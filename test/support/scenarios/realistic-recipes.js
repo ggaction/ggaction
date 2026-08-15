@@ -79,6 +79,13 @@ const COMPOSITE_SPECS = Object.freeze([
   { id: "paired-summary-dashboard", kind: "composition", family: "dashboard" }
 ]);
 
+const ALL_ANALYSIS_SPECS = Object.freeze([
+  ...SIMPLE_SPECS,
+  ...INTERMEDIATE_SPECS,
+  ...ADVANCED_SPECS,
+  ...COMPOSITE_SPECS
+]);
+
 function aggregateValue(value) {
   return value === "median" ? "median" : value === "sum" ? "sum" : "mean";
 }
@@ -189,8 +196,13 @@ function titleContext(dataset, view, spec, factors) {
   });
 }
 
-function canvas() {
-  return { ...CANVAS, margin: { ...CANVAS.margin } };
+function canvas(factors) {
+  const margin = { ...CANVAS.margin };
+  if (factors?.legendPosition === "left") margin.left = 1_000;
+  if (factors?.legendPosition === "right") margin.right = 760;
+  if (factors?.legendPosition === "top") margin.top = 420;
+  if (factors?.legendPosition === "bottom") margin.bottom = 420;
+  return { ...CANVAS, width: 2_600, height: 1_120, margin };
 }
 
 function sparseCategoryValues(rows, field) {
@@ -230,6 +242,7 @@ function guides(factors, xTitle, yTitle, {
         title: { text: xTitle }
       },
       y: {
+        position: factors.legendPosition === "left" ? "right" : "left",
         ...(yValues === undefined ? {} : { ticksAndLabels: { values: yValues } }),
         title: { text: yTitle }
       }
@@ -355,7 +368,7 @@ function buildPoint(spec, factors, resolution) {
   const { view, context } = resolution;
   const summary = spec.kind === "summary-point";
   let program = chart()
-    .createCanvas(canvas())
+    .createCanvas(canvas(factors))
     .createData({ id: "analysisRows", values: view.rows })
     .createPointMark({
       id: "points",
@@ -379,6 +392,8 @@ function buildPoint(spec, factors, resolution) {
     });
   program = summary && spec.variant === "bubble"
     ? program.encodeSize({ target: "points", field: "count", scale: { range: [12, 170] } })
+    : spec.variant === "encoded"
+      ? program.encodeSize({ target: "points", field: "value", scale: { range: [10, 90] } })
     : program.encodePointRadius({ target: "points", value: factors.radius });
   if (["jitter", "jitter-large"].includes(spec.variant)) {
     program = program.jitterPoints({
@@ -413,7 +428,7 @@ function buildBar(spec, factors, resolution) {
     scale: { nice: true, zero: true }
   };
   let program = chart()
-    .createCanvas(canvas())
+    .createCanvas(canvas(factors))
     .createData({ id: "analysisRows", values: view.rows })
     .createBarMark({ id: "bars", opacity: factors.opacity })
     [horizontal ? "encodeX" : "encodeY"]({ target: "bars", ...value })
@@ -454,7 +469,7 @@ function buildHistogram(spec, factors, resolution) {
   const { view, context } = resolution;
   const segmented = ["stack", "normalize"].includes(spec.variant);
   return chart()
-    .createCanvas(canvas())
+    .createCanvas(canvas(factors))
     .createData({ id: "analysisRows", values: view.rows })
     .createHistogram({
       id: "histogram",
@@ -474,7 +489,11 @@ function buildHistogram(spec, factors, resolution) {
     .createGuides({
       axes: {
         x: { ticksAndLabels: { count: 5 }, title: { text: context.measureAxis } },
-        y: { ticksAndLabels: { count: 5 }, title: { text: "Count" } }
+        y: {
+          position: factors.legendPosition === "left" ? "right" : "left",
+          ticksAndLabels: { count: 5 },
+          title: { text: "Count" }
+        }
       },
       grid: false,
       legend: segmented
@@ -488,7 +507,7 @@ function buildBox(spec, factors, resolution) {
   const { view, context } = resolution;
   const horizontal = spec.orientation === "horizontal";
   return chart()
-    .createCanvas(canvas())
+    .createCanvas(canvas(factors))
     .createData({ id: "analysisRows", values: view.rows })
     .createBoxPlot({
       id: "boxes",
@@ -532,7 +551,7 @@ function buildDensity(spec, factors, resolution) {
   const spread = at(0.75) - at(0.25) || ordered.at(-1) - ordered[0];
   const bandwidth = Math.max(Number.MIN_VALUE, spread * factors.bandwidthRatio);
   let program = chart()
-    .createCanvas(canvas())
+    .createCanvas(canvas(factors))
     .createData({ id: "analysisRows", values: view.rows })
     .createAreaMark({ id: "density", opacity: factors.opacity })
     .encodeDensity({
@@ -575,7 +594,7 @@ function buildRankPath(spec, factors, resolution) {
   const mark = spec.kind === "area" ? "createAreaMark" : "createLineMark";
   const edit = spec.kind === "area" ? "editAreaMark" : "editLineMark";
   let program = chart()
-    .createCanvas(canvas())
+    .createCanvas(canvas(factors))
     .createData({ id: "analysisRows", values: view.rows })
     [mark]({ id: "rankPath", opacity: factors.opacity })
     .encodeX({
@@ -615,6 +634,7 @@ function buildRankPath(spec, factors, resolution) {
 
 function buildArc(spec, factors, resolution) {
   const { view, context } = resolution;
+  const horizontalLegend = ["top", "bottom"].includes(factors.legendPosition);
   return chart()
     .createCanvas({
       width: 2200,
@@ -635,7 +655,11 @@ function buildArc(spec, factors, resolution) {
     .createGuides({
       axes: false,
       grid: false,
-      legend: { position: factors.legendPosition, title: context.dimensionText }
+      legend: {
+        position: factors.legendPosition,
+        title: context.dimensionText,
+        ...(horizontalLegend ? { columns: Math.min(3, view.rows.length) } : {})
+      }
     })
     .createTitle({ text: context.title, subtitle: context.analysisQuestion, align: factors.titleAlign });
 }
@@ -643,7 +667,7 @@ function buildArc(spec, factors, resolution) {
 function buildHeatmap(spec, factors, resolution) {
   const { view, context } = resolution;
   let program = chart()
-    .createCanvas(canvas())
+    .createCanvas(canvas(factors))
     .createData({ id: "analysisRows", values: view.rows })
     .createHeatmap({
       id: "cells",
@@ -677,7 +701,7 @@ function buildInterval(spec, factors, resolution) {
   const { view, context } = resolution;
   const horizontal = spec.orientation === "horizontal";
   return chart()
-    .createCanvas(canvas())
+    .createCanvas(canvas(factors))
     .createData({ id: "analysisRows", values: view.rows })
     .createErrorBar({
       id: "intervals",
@@ -708,7 +732,7 @@ function buildInterval(spec, factors, resolution) {
 function buildLabels(spec, factors, resolution) {
   const { view, context } = resolution;
   let program = chart()
-    .createCanvas(canvas())
+    .createCanvas(canvas(factors))
     .createData({ id: "analysisRows", values: view.rows })
     .createPointMark({ id: "anchorPoints", fill: "#64748b" })
     .encodeX({ target: "anchorPoints", field: "rank" })
@@ -740,14 +764,18 @@ function buildLabels(spec, factors, resolution) {
   });
 }
 
+function facetCanvas(columns) {
+  return {
+    width: 420 + columns * 140,
+    height: 420,
+    margin: { top: 90, right: 100, bottom: 120, left: 300 }
+  };
+}
+
 function buildFacet(spec, factors, resolution) {
   const { view, context } = resolution;
   return chart()
-    .createCanvas({
-      width: 700,
-      height: 420,
-      margin: { top: 90, right: 100, bottom: 120, left: 300 }
-    })
+    .createCanvas(facetCanvas(factors.columns))
     .createData({ id: "analysisRows", values: view.rows })
     .createPointMark({ id: "facetPoints", opacity: factors.opacity })
     .encodeX({ target: "facetPoints", field: "value", scale: { zero: false } })
@@ -760,7 +788,9 @@ function buildFacet(spec, factors, resolution) {
           title: { text: context.measureAxis }
         },
         y: {
-          ticksAndLabels: { values: sparseCategoryValues(view.rows, "category") },
+          ...(factors.facetScales === "shared"
+            ? { ticksAndLabels: { values: sparseCategoryValues(view.rows, "category") } }
+            : {}),
           title: { text: context.dimensionText }
         }
       },
@@ -781,8 +811,8 @@ function miniSummary(view, color, title, context) {
   return chart()
     .createCanvas({
       width: 1600,
-      height: 720,
-      margin: { top: 280, right: 160, bottom: 160, left: 440 }
+      height: 900,
+      margin: { top: 420, right: 160, bottom: 160, left: 440 }
     })
     .createData({ values: view.rows })
     .createBarMark({ id: "miniBars", fill: color })
@@ -806,15 +836,15 @@ function miniSummary(view, color, title, context) {
       },
       legend: false
     })
-    .createTitle({ text: title });
+    .createTitle({ text: title, maxWidth: 960, wrap: "word", lineHeight: 32 });
 }
 
 function miniDistribution(view, color, title, context) {
   return chart()
     .createCanvas({
-      width: 1600,
-      height: 720,
-      margin: { top: 280, right: 160, bottom: 160, left: 440 }
+      width: 1450,
+      height: 980,
+      margin: { top: 420, right: 160, bottom: 160, left: 440 }
     })
     .createData({ values: view.rows })
     .createPointMark({ id: "miniPoints", fill: color, opacity: 0.62 })
@@ -830,7 +860,7 @@ function miniDistribution(view, color, title, context) {
       },
       legend: false
     })
-    .createTitle({ text: title });
+    .createTitle({ text: title, maxWidth: 810, wrap: "word", lineHeight: 32 });
 }
 
 function buildComposition(spec, factors, resolution) {
@@ -885,25 +915,52 @@ function capabilityFor(spec) {
   return "record";
 }
 
+function palettesFor(spec) {
+  const index = ALL_ANALYSIS_SPECS.indexOf(spec);
+  if (index < 0) throw new Error(`Unknown realistic analysis spec "${spec.id}".`);
+  return Object.freeze(Array.from({ length: 4 }, (_, offset) =>
+    PALETTES[(index * 4 + offset) % PALETTES.length]
+  ));
+}
+
 function factorsFor(spec, dataset) {
-  const fieldPairs = realisticFieldPairDomain(dataset, capabilityFor(spec));
+  const allFieldPairs = realisticFieldPairDomain(dataset, capabilityFor(spec));
+  let fieldPairs = allFieldPairs;
+  if (spec.kind === "bar" && ["stack", "fill"].includes(spec.layout)) {
+    fieldPairs = allFieldPairs.filter((pair, index, values) =>
+      values.findIndex(candidate => candidate.dimensionIndex === pair.dimensionIndex) === index
+    );
+  } else if (spec.kind === "arc") {
+    fieldPairs = allFieldPairs.filter(fieldPair => ["mean", "median", "sum"].every(aggregate =>
+      summaryView({ dataset, fieldPair, aggregate }).rows.some(row => row.magnitude > 0)
+    ));
+  } else if (
+    ["summary-point", "labels", "composition"].includes(spec.kind) ||
+    spec.kind === "bar" && spec.layout === undefined
+  ) {
+    fieldPairs = allFieldPairs.filter(fieldPair => ["mean", "median", "sum"].every(aggregate => {
+      const values = summaryView({ dataset, fieldPair, aggregate }).rows.map(row => row.value);
+      return values.some(value => value !== 0) && new Set(values).size >= 2;
+    }));
+  }
   if (fieldPairs.length === 0) return undefined;
   const fields = {
     fieldPair: fieldPairs
   };
+  const palettes = palettesFor(spec);
   const titled = { ...fields, titleAlign: ["left", "center", "right"] };
   const summarized = { ...titled, aggregate: ["mean", "median", "sum"] };
-  const colored = { ...titled, palette: PALETTES, legendPosition: LEGEND_POSITIONS };
+  const colored = { ...titled, palette: palettes, legendPosition: LEGEND_POSITIONS };
   const summarizedColor = {
     ...summarized,
-    palette: PALETTES,
+    palette: palettes,
     legendPosition: LEGEND_POSITIONS
   };
   if (["point", "summary-point"].includes(spec.kind)) return {
     ...(spec.kind === "summary-point" ? summarizedColor : colored),
     shape: ["circle", "diamond", "triangle-up", "square"],
     opacity: [0.48, 0.7, 0.9],
-    ...(spec.variant === "bubble" ? {} : { radius: [2.5, 4, 6] })
+    ...(["bubble", "encoded"].includes(spec.variant) ? {} : { radius: [2.5, 4, 6] })
   };
   if (spec.kind === "bar") return {
     ...colored,
@@ -918,7 +975,8 @@ function factorsFor(spec, dataset) {
     nice: [false, true]
   };
   if (spec.kind === "box") return {
-    ...colored, ...(spec.minmax ? {} : { whisker: [1, 1.5, 2] }), outliers: [false, true],
+    ...colored,
+    ...(spec.minmax ? {} : { whisker: [1, 1.5, 2], outliers: [false, true] }),
     width: [0.45, 0.68, 0.82]
   };
   if (spec.kind === "density") return {
@@ -950,7 +1008,7 @@ function factorsFor(spec, dataset) {
     } : {})
   };
   if (spec.kind === "facet") return {
-    ...titled, palette: PALETTES, opacity: [0.48, 0.7, 0.9], columns: [2, 3, 4],
+    ...titled, palette: palettes, opacity: [0.48, 0.7, 0.9], columns: [2, 3, 4],
     gap: [8, 16, 28], padding: [4, 10, 18], facetScales: ["shared", "independent"],
     facetAxes: ["each", "outer"]
   };
@@ -1082,6 +1140,24 @@ function sameNumber(left, right) {
     Math.abs(left - right) <= Math.max(1, Math.abs(right)) * 1e-10;
 }
 
+function arcLegendHasFinalPosition(program, position, categoryCount) {
+  const canvasArgs = directNode(program, "createCanvas")?.args;
+  const labels = program.graphicSpec?.objects?.colorLegendLabels?.items;
+  if (canvasArgs === undefined || labels?.length !== categoryCount) return false;
+  const plot = {
+    top: canvasArgs.margin.top,
+    right: canvasArgs.width - canvasArgs.margin.right,
+    bottom: canvasArgs.height - canvasArgs.margin.bottom,
+    left: canvasArgs.margin.left
+  };
+  return labels.every(({ properties }) => {
+    if (position === "top") return properties.y < plot.top;
+    if (position === "right") return properties.x > plot.right;
+    if (position === "bottom") return properties.y > plot.bottom;
+    return position === "left" && properties.x < plot.left;
+  });
+}
+
 function factorEvidence(spec, program, factors, resolution, name) {
   const value = factors[name];
   const { view } = resolution;
@@ -1089,7 +1165,8 @@ function factorEvidence(spec, program, factors, resolution, name) {
   if (name === "fieldPair") {
     const roles = realisticDatasetRoles(factors.dataset);
     const bindings = view.provenance.fieldBindings;
-    return bindings.measure === roles.measures[value.measureIndex] &&
+    const countLayout = spec.kind === "bar" && ["stack", "fill"].includes(spec.layout);
+    return (countLayout || bindings.measure === roles.measures[value.measureIndex]) &&
       bindings.dimension === roles.dimensions[value.dimensionIndex]
       ? "provenance.fieldBindings"
       : undefined;
@@ -1121,8 +1198,12 @@ function factorEvidence(spec, program, factors, resolution, name) {
   }
   if (name === "legendPosition") {
     const args = node("createGuides");
-    return args?.legend?.position === value
-      ? "trace.createGuides.legend.position"
+    const finalArcPosition = spec.kind !== "arc" ||
+      arcLegendHasFinalPosition(program, value, view.rows.length);
+    return args?.legend?.position === value && finalArcPosition
+      ? spec.kind === "arc"
+        ? "trace.createGuides.legend.position+final-graphic:colorLegendLabels.position"
+        : "trace.createGuides.legend.position"
       : undefined;
   }
   if (name === "shape") {
@@ -1227,10 +1308,22 @@ function factorEvidence(spec, program, factors, resolution, name) {
     ["columns", "gap", "padding", "facetScales", "facetAxes"].includes(name)
   ) {
     const args = node("facet");
-    const observed = name === "facetScales"
+    const canvas = name === "columns" ? facetCanvas(value) : undefined;
+    const children = name === "columns" ? Object.values(program.children ?? {}) : [];
+    const observed = name === "columns"
+      ? args?.columns === value && node("createCanvas")?.width === canvas.width &&
+        program.compositionSpec?.columns === Math.min(value, children.length) &&
+        children.length > 0 && children.every(child =>
+          child.resolvedScales.x?.range?.at(-1) === canvas.width - canvas.margin.right
+        )
+      : name === "facetScales"
       ? args?.scales?.x === value && args?.scales?.y === value
       : name === "facetAxes" ? args?.guides?.axes === value : args?.[name] === value;
-    return observed ? `trace.facet.${name}` : undefined;
+    return observed
+      ? name === "columns"
+        ? "final-semantic-or-graphic:facet.columns+canvas.width+composition+child-x-range"
+        : `trace.facet.${name}`
+      : undefined;
   }
   if (name === "compositionDirection") {
     return directTraceHas(program, value === "horizontal" ? "hconcat" : "vconcat", {

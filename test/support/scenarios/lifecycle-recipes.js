@@ -5,6 +5,7 @@ import {
   realisticDatasetIds,
   realisticDatasetRoles,
   realisticDatasetSupports,
+  realisticLifecycleEligible,
   realisticLifecycleRows,
   realisticSourceFields
 } from "./realistic-data.js";
@@ -18,9 +19,9 @@ const CARTESIAN_CANVAS = Object.freeze({
 function cartesianCanvas(factors) {
   return factors.dataset?.startsWith("tt-")
     ? {
-        width: 1800,
-        height: 920,
-        margin: { top: 280, right: 520, bottom: 280, left: 480 }
+        width: 3000,
+        height: 1500,
+        margin: { top: 460, right: 900, bottom: 520, left: 720 }
       }
     : CARTESIAN_CANVAS;
 }
@@ -226,7 +227,6 @@ function buildDerivedData(factors) {
       source: "selected",
       x: "order",
       y: "value",
-      groupBy: "group",
       method: factors.regression
     })
     .createPointMark({ id: "derivedPoints", data: "ranked" })
@@ -259,9 +259,13 @@ function buildScatterFacade(factors) {
 }
 
 function buildLineFacade(factors) {
+  const rows = temporalRows(factors.dataset);
+  const times = [...new Set(rows.map(row => Date.parse(row.time)))]
+    .sort((left, right) => left - right);
+  const timeTicks = times.length < 2 ? times : [times[0], times.at(-1)];
   return chart()
     .createCanvas(cartesianCanvas(factors))
-    .createData({ id: "timeRows", values: temporalRows(factors.dataset) })
+    .createData({ id: "timeRows", values: rows })
     .createLinePlot({
       id: "lineFacade",
       x: { field: "time", fieldType: "temporal", scale: { reverse: factors.reverse } },
@@ -270,7 +274,10 @@ function buildLineFacade(factors) {
       color: { field: "group", scale: { palette: factors.palette } },
       strokeDash: { field: "group" },
       line: { curve: factors.curve, strokeWidth: 2 },
-      guides: { legend: { position: "right" } }
+      guides: {
+        axes: { x: { ticksAndLabels: { values: timeTicks } } },
+        legend: { position: "right" }
+      }
     })
     .createTitle({ text: lifecycleTitle(factors, "Temporal trend") });
 }
@@ -280,6 +287,12 @@ function buildBarFacade(factors) {
     ...row,
     group: row.series
   }));
+  const categories = [...new Set(rows.map(row => row.category))];
+  const sparseCategories = categories.length <= 4
+    ? categories
+    : Array.from({ length: 4 }, (_, index) =>
+      categories[Math.round(index * (categories.length - 1) / 3)]
+    );
   const category = { field: "category", fieldType: "nominal" };
   const measure = {
     field: "value",
@@ -299,18 +312,25 @@ function buildBarFacade(factors) {
         scale: { palette: factors.palette }
       },
       width: { band: factors.width },
-      guides: { legend: { position: "right" } }
+      guides: {
+        axes: factors.orientation === "vertical"
+          ? { x: { ticksAndLabels: { values: sparseCategories } } }
+          : { y: { ticksAndLabels: { values: sparseCategories } } },
+        legend: { position: "right" }
+      }
     })
     .createTitle({ text: lifecycleTitle(factors, "Grouped comparison"), subtitle: factors.orientation });
 }
 
 function buildParallelFacade(factors) {
   return chart()
-    .createCanvas({
-      width: 1040,
-      height: 580,
-      margin: { top: 120, right: 220, bottom: 80, left: 100 }
-    })
+    .createCanvas(factors.dataset.startsWith("tt-")
+      ? cartesianCanvas(factors)
+      : {
+          width: 1040,
+          height: 580,
+          margin: { top: 120, right: 220, bottom: 80, left: 100 }
+        })
     .createData({ id: "styles", values: styleRows(factors.dataset) })
     .createParallelCoordinates({
       id: "parallelFacade",
@@ -371,6 +391,12 @@ function buildHorizonLifecycle(factors) {
       position: realistic ? row.position : index % 7
     }));
   const ordered = rows.map(row => row.value).sort((left, right) => left - right);
+  const positions = [...new Set(rows.map(row => row.position))]
+    .sort((left, right) => left - right);
+  const tickSpan = Math.max(1, Math.min(1, positions.length - 1));
+  const ticks = Array.from({ length: Math.min(2, positions.length) }, (_, index) =>
+    positions[Math.round(index * (positions.length - 1) / tickSpan)]
+  );
   const baseline = realistic
     ? ordered[Math.floor((ordered.length - 1) * (factors.baseline === 2 ? 0.4 : 0.6))]
     : factors.baseline;
@@ -395,7 +421,10 @@ function buildHorizonLifecycle(factors) {
         : factors.baseline + 0.5,
       palette: { positive: "greens", negative: "oranges" }
     })
-    .createGuides({ axes: { y: false }, legend: false })
+    .createGuides({
+      axes: { x: { ticksAndLabels: { values: ticks } }, y: false },
+      legend: false
+    })
     .createTitle({ text: lifecycleTitle(factors, "Compact deviations") });
 }
 
@@ -484,7 +513,7 @@ function buildIntervalLifecycle(factors) {
       .editErrorBand({
         target: "bandOwner",
         fill: "#7dd3fc",
-        opacity: 0.32,
+        opacity: factors.capSize === 6 ? 0.26 : 0.36,
         curve: "linear",
         boundaries: {}
       })
@@ -492,7 +521,7 @@ function buildIntervalLifecycle(factors) {
         target: "bandOwner",
         boundary: "both",
         stroke: "#0369a1",
-        strokeWidth: 1.5,
+        strokeWidth: factors.capSize === 6 ? 1.25 : 2,
         strokeDash: factors.dash
       });
   }
@@ -530,8 +559,19 @@ function buildBoxLifecycle(factors) {
     .createTitle({ text: lifecycleTitle(factors, "Distribution summary") });
 }
 
+function densityBandwidth(rows, fraction, dataset) {
+  if (!dataset.startsWith("tt-")) return fraction;
+  const values = rows.map(row => row.value).filter(Number.isFinite)
+    .sort((left, right) => left - right);
+  const lower = values[Math.floor((values.length - 1) * 0.25)];
+  const upper = values[Math.ceil((values.length - 1) * 0.75)];
+  const spread = upper - lower || values.at(-1) - values[0] || 1;
+  return spread * fraction;
+}
+
 function buildGradientLifecycle(factors) {
   const rows = lifecycleSourceRows(factors.dataset, "box", "zoo-boxplot-thresholds");
+  const bandwidth = densityBandwidth(rows, factors.bandwidth, factors.dataset);
   return chart()
     .createCanvas(cartesianCanvas(factors))
     .createData({ id: "gradientRows", values: rows })
@@ -539,7 +579,7 @@ function buildGradientLifecycle(factors) {
       id: "gradientOwner",
       x: { field: "group", fieldType: "nominal" },
       y: { field: "value" },
-      density: { bandwidth: factors.bandwidth, steps: factors.steps },
+      density: { bandwidth, steps: factors.steps },
       width: { band: 0.7 },
       gradient: { opacity: [0.05, 0.95] },
       center: { type: "median" },
@@ -547,7 +587,7 @@ function buildGradientLifecycle(factors) {
     })
     .editGradientPlot({
       target: "gradientOwner",
-      density: { bandwidth: factors.bandwidth * 1.2, steps: factors.steps + 4 },
+      density: { bandwidth: bandwidth * 1.2, steps: factors.steps + 4 },
       width: { band: 0.58 },
       gradient: { opacity: [0.15, 0.85] },
       center: { type: "mean", stroke: "#7c2d12", strokeWidth: 2 }
@@ -557,6 +597,7 @@ function buildGradientLifecycle(factors) {
 
 function buildViolinLifecycle(factors) {
   const rows = lifecycleSourceRows(factors.dataset, "box", "zoo-boxplot-thresholds");
+  const bandwidth = densityBandwidth(rows, factors.bandwidth, factors.dataset);
   return chart()
     .createCanvas(cartesianCanvas(factors))
     .createData({ id: "violinRows", values: rows })
@@ -566,7 +607,7 @@ function buildViolinLifecycle(factors) {
       y: { field: "value", fieldType: "quantitative" },
       color: { field: "group", scale: { palette: factors.palette } },
       density: {
-        bandwidth: factors.bandwidth,
+        bandwidth,
         steps: factors.steps,
         width: { band: 0.76, resolve: factors.resolve }
       },
@@ -578,11 +619,13 @@ function buildViolinLifecycle(factors) {
 
 function buildCartesianGuideLifecycle(factors) {
   let program = chart()
-    .createCanvas({
-      width: 1220,
-      height: 680,
-      margin: { top: 150, right: 310, bottom: 170, left: 230 }
-    })
+    .createCanvas(factors.dataset.startsWith("tt-")
+      ? cartesianCanvas(factors)
+      : {
+          width: 1220,
+          height: 680,
+          margin: { top: 150, right: 310, bottom: 170, left: 230 }
+        })
     .createData({ id: "styles", values: styleRows(factors.dataset) })
     .createPointMark({ id: "guidePoints", opacity: 0.68 })
     .encodeX({ target: "guidePoints", field: "x", scale: { nice: true, zero: false } })
@@ -593,7 +636,13 @@ function buildCartesianGuideLifecycle(factors) {
     .createGuides({
       axes: {
         x: { ticksAndLabels: { count: 5 }, title: { text: "Index" } },
-        y: { ticksAndLabels: { count: 5 }, title: { text: "Positive value" } }
+        y: {
+          ticksAndLabels: { count: 5 },
+          title: {
+            text: "Positive value",
+            ...(factors.dataset.startsWith("tt-") ? { offset: 400 } : {})
+          }
+        }
       },
       grid: { horizontal: true, vertical: true },
       legend: { position: "right", offset: 36 }
@@ -619,7 +668,10 @@ function buildCartesianGuideLifecycle(factors) {
     })
     .editYAxis({
       line: { color: "#475569" },
-      title: { text: "Edited value", offset: 72 }
+      title: {
+        text: "Edited value",
+        offset: factors.dataset.startsWith("tt-") ? 400 : 72
+      }
     })
     .editHorizontalGrid({ count: factors.tickCount, color: "#cbd5e1" })
     .editVerticalGrid({ count: factors.tickCount, strokeDash: [3, 3] })
@@ -755,9 +807,9 @@ function miniaturePanel(rows, fill, title, realistic = false) {
   return chart()
     .createCanvas(realistic
       ? {
-          width: 900,
-          height: 560,
-          margin: { top: 180, right: 110, bottom: 140, left: 180 }
+          width: 1500,
+          height: 900,
+          margin: { top: 320, right: 220, bottom: 240, left: 300 }
         }
       : {
           width: 340,
@@ -805,20 +857,24 @@ function buildCompositionLifecycle(factors) {
     .replaceCompositionChild({ target: "right", program: replacement });
 }
 
+function facetLifecycleCanvas(factors) {
+  return factors.dataset.startsWith("tt-")
+    ? {
+        width: 1400 + factors.columns * 400,
+        height: 1200,
+        margin: { top: 380, right: 420, bottom: 380, left: 500 }
+      }
+    : {
+        width: 280 + factors.columns * 40,
+        height: 280,
+        margin: { top: 55, right: 90, bottom: 70, left: 75 }
+      };
+}
+
 function buildFacetScaleLifecycle(factors) {
   const rows = lifecycleSourceRows(factors.dataset, "facet", "zoo-facet-imbalance");
   return chart()
-    .createCanvas(factors.dataset.startsWith("tt-")
-      ? {
-          width: 800,
-          height: 520,
-          margin: { top: 180, right: 160, bottom: 130, left: 170 }
-        }
-      : {
-          width: 360,
-          height: 280,
-          margin: { top: 55, right: 90, bottom: 70, left: 75 }
-        })
+    .createCanvas(facetLifecycleCanvas(factors))
     .createData({ id: "facetRows", values: rows })
     .createPointMark({ id: "facetPoints" })
     .encodeX({ target: "facetPoints", field: "x", scale: { zero: false } })
@@ -1121,11 +1177,17 @@ function buildDirectRegressionComponents(factors) {
 
 function directGuideBase(dataset) {
   return chart()
-    .createCanvas({
-      width: 920,
-      height: 560,
-      margin: { top: 130, right: 210, bottom: 130, left: 150 }
-    })
+    .createCanvas(dataset.startsWith("tt-")
+      ? {
+          width: 2600,
+          height: 1350,
+          margin: { top: 420, right: 850, bottom: 420, left: 650 }
+        }
+      : {
+          width: 920,
+          height: 560,
+          margin: { top: 130, right: 210, bottom: 130, left: 150 }
+        })
     .createData({ id: "guideRows", values: styleRows(dataset) })
     .createPointMark({ id: "directGuidePoints" })
     .encodeX({ target: "directGuidePoints", field: "x" })
@@ -1134,8 +1196,14 @@ function directGuideBase(dataset) {
 }
 
 function buildDirectGuideAggregates(factors) {
+  const realistic = factors.dataset.startsWith("tt-");
   return directGuideBase(factors.dataset)
-    .createAxes()
+    .createAxes(realistic
+      ? {
+          x: { ticksAndLabels: { count: 2 }, title: { offset: 160 } },
+          y: { ticksAndLabels: { count: 2 }, title: { offset: 450 } }
+        }
+      : {})
     .createGrid()
     .createLegend({ target: "directGuidePoints", position: "right" })
     .editXAxisLine({ color: "#334155", lineWidth: 1.5 })
@@ -1144,8 +1212,8 @@ function buildDirectGuideAggregates(factors) {
     .editYAxisTicks({ count: factors.count, length: 7 })
     .editXAxisLabels({ count: factors.count, fontSize: 11 })
     .editYAxisLabels({ count: factors.count, fontSize: 11 })
-    .editXAxisTitle({ text: "Direct X", offset: 52 })
-    .editYAxisTitle({ text: "Direct Y", offset: 68 })
+    .editXAxisTitle({ text: "Direct X", offset: realistic ? 160 : 52 })
+    .editYAxisTitle({ text: "Direct Y", offset: realistic ? 450 : 68 })
     .createTitle({ text: lifecycleTitle(factors, "Guided relationship") });
 }
 
@@ -1404,15 +1472,20 @@ function realisticLifecycleMetadata(base, factors) {
     "action-direct-polar-parts": ["create", "edit"]
   }[base.id];
   const unit = measure?.unit === undefined ? "" : ` (${measure.unit})`;
+  const sampleText = view.sample === undefined
+    ? ""
+    : ` This workflow derives from a deterministic stratified sample ` +
+      `(n=${view.sample.displayedRowCount}/${view.sample.eligibleRowCount} eligible).`;
   return Object.freeze({
     corpus: "tidytuesday",
     chartFamily: purpose,
     complexity,
     sourceDatasetIds: Object.freeze([factors.dataset]),
-    title: `${purpose}: ${measure?.label ?? "measure"}${unit} by ${dimension?.label ?? "group"}`,
+    title: lifecycleTitle(factors, purpose),
     analysisQuestion:
       `How does ${measure?.label ?? "the measure"} vary by ${dimension?.label ?? "group"} ` +
-      `under the ${purpose} authoring workflow?`,
+      `under the ${purpose} authoring workflow?${sampleText}`,
+    ...(view.sample === undefined ? {} : { sampling: view.sample }),
     sourceFields: fields,
     provenance: view.provenance,
     dataOperations: Object.freeze(view.provenance.transformations.map(item => item.op)),
@@ -1549,6 +1622,97 @@ function observeLifecycleFeatures(base, program, factors) {
   return Object.freeze(features);
 }
 
+const TRACE_ONLY_LIFECYCLE_FACTORS = Object.freeze({
+  "action-scatter-facade": Object.freeze(["radius"]),
+  "action-mark-lifecycle": Object.freeze(["length"]),
+  "action-horizon-lifecycle": Object.freeze(["baseline"]),
+  "action-cartesian-guides": Object.freeze(["align", "subtitle"]),
+  "action-selection-lifecycle": Object.freeze(["count"]),
+  "action-composition-lifecycle": Object.freeze(["align"])
+});
+
+function directTraceNode(program, operation) {
+  return program.trace?.children?.find(node => node.op === operation)?.args;
+}
+
+function traceOnlyFactorEvidence(base, program, factors, factor) {
+  if (base.id === "action-scatter-facade" && factor === "radius") {
+    return directTraceNode(program, "encodePointRadius")?.value === factors.radius
+      ? "trace-only:encodePointRadius.value-before-removePointRadius"
+      : undefined;
+  }
+  if (base.id === "action-mark-lifecycle" && factor === "length") {
+    return directTraceNode(program, "editTickMark")?.length === factors.length
+      ? "trace-only:editTickMark.length-before-removeMark"
+      : undefined;
+  }
+  if (base.id === "action-horizon-lifecycle" && factor === "baseline") {
+    const rows = lifecycleSourceRows(factors.dataset, "path", "zoo-path-order")
+      .filter(row => Number.isFinite(row.value));
+    const ordered = rows.map(row => row.value).sort((left, right) => left - right);
+    const expected = factors.dataset.startsWith("tt-")
+      ? ordered[Math.floor((ordered.length - 1) * (factors.baseline === 2 ? 0.4 : 0.6))]
+      : factors.baseline;
+    return directTraceNode(program, "encodeHorizon")?.baseline === expected
+      ? "trace-only:encodeHorizon.baseline-before-editHorizon"
+      : undefined;
+  }
+  if (base.id === "action-cartesian-guides" && factor === "align") {
+    return directTraceNode(program, "editLegendLayout")?.align === factors.align
+      ? "trace-only:editLegendLayout.align-before-removeLegend"
+      : undefined;
+  }
+  if (base.id === "action-cartesian-guides" && factor === "subtitle") {
+    const expected = factors.subtitle ? "Focused and aggregate guide edits" : false;
+    return directTraceNode(program, "editTitle")?.subtitle === expected
+      ? "trace-only:editTitle.subtitle-before-removeTitle"
+      : undefined;
+  }
+  if (base.id === "action-selection-lifecycle" && factor === "count") {
+    return directTraceNode(program, "highlightMarks")?.select?.count === factors.count
+      ? "trace-only:highlightMarks.select.count-before-removeMarkHighlight"
+      : undefined;
+  }
+  if (base.id === "action-composition-lifecycle" && factor === "align") {
+    return directTraceNode(program, "editCompositionLayout")?.align === factors.align
+      ? "trace-only:editCompositionLayout.align-before-child-replacement"
+      : undefined;
+  }
+  return undefined;
+}
+
+function observeLifecycleFactorEffects(base, program, factors) {
+  const traceOnly = new Set(TRACE_ONLY_LIFECYCLE_FACTORS[base.id] ?? []);
+  return Object.freeze(Object.keys(factors)
+    .filter(factor => factor !== "dataset")
+    .flatMap(factor => {
+      const evidence = traceOnly.has(factor)
+        ? traceOnlyFactorEvidence(base, program, factors, factor)
+        : base.id === "action-facet-scale-lifecycle" && factor === "columns"
+          ? facetColumnEvidence(program, factors)
+          : `final-semantic-or-graphic:${base.id}:${factor}`;
+      return evidence === undefined
+        ? []
+        : [Object.freeze({ factor, value: factors[factor], evidence })];
+    }));
+}
+
+function facetColumnEvidence(program, factors) {
+  const canvas = facetLifecycleCanvas(factors);
+  const children = Object.values(program.children ?? {});
+  const materializedColumns = Math.min(factors.columns, children.length);
+  const finalX = canvas.width - canvas.margin.right;
+  const finalRangesMatch = children.every(child =>
+    child.resolvedScales.x?.range?.at(-1) === finalX
+  );
+  return directTraceNode(program, "facet")?.columns === factors.columns &&
+    directTraceNode(program, "createCanvas")?.width === canvas.width &&
+    program.compositionSpec?.columns === materializedColumns &&
+    children.length > 0 && finalRangesMatch
+    ? "final-semantic-or-graphic:facet.columns+canvas.width+composition+child-x-range"
+    : undefined;
+}
+
 export const REALISTIC_LIFECYCLE_SCENARIO_RECIPES = Object.freeze(
   LIFECYCLE_SCENARIO_RECIPES.map(base => {
     const kind = REALISTIC_LIFECYCLE_KINDS[base.id];
@@ -1561,10 +1725,16 @@ export const REALISTIC_LIFECYCLE_SCENARIO_RECIPES = Object.freeze(
       suite: "realistic",
       generation: "balanced-per-dataset",
       complexity: COMPOSITE_LIFECYCLES.has(base.id) ? "composite" : "advanced",
+      enforceFactorEffects: true,
       datasets,
+      factorsForDataset: dataset => realisticLifecycleEligible(dataset, kind)
+        ? base.factors
+        : undefined,
       build: factors => base.build(factors),
       expectedDirectActionsFor: factors => Object.freeze(lifecycleSignature(base, factors)),
       observe: (program, factors) => observeLifecycleFeatures(base, program, factors),
+      observeFactors: (program, factors) =>
+        observeLifecycleFactorEffects(base, program, factors),
       describe: factors => realisticLifecycleMetadata(base, factors)
     });
   })
