@@ -1,4 +1,5 @@
 import { chart, hconcat, vconcat } from "../../../src/index.js";
+import { measureTextWidth } from "../../../src/core/textMetrics.js";
 import { PALETTE_NAMES } from "../../../src/grammar/palettes.js";
 
 import {
@@ -764,18 +765,33 @@ function buildLabels(spec, factors, resolution) {
   });
 }
 
-function facetCanvas(columns) {
+function facetGuideLayout(view, factors) {
+  const allCategories = [...new Set(view.rows.map(row => row.category))];
+  const displayedCategories = factors.facetScales === "shared"
+    ? sparseCategoryValues(view.rows, "category")
+    : allCategories;
+  const maximumLabelWidth = Math.max(...displayedCategories.map(value =>
+    measureTextWidth(String(value), { fontSize: 12 })
+  ));
+  const titleOffset = Math.ceil(maximumLabelWidth + 28);
+  const leftMargin = Math.max(300, titleOffset + 16);
+  return { displayedCategories, titleOffset, leftMargin };
+}
+
+function facetCanvas(columns, guideLayout) {
+  const extraGuideWidth = guideLayout.leftMargin - 300;
   return {
-    width: 420 + columns * 140,
+    width: 420 + columns * 140 + extraGuideWidth,
     height: 420,
-    margin: { top: 90, right: 100, bottom: 120, left: 300 }
+    margin: { top: 90, right: 100, bottom: 120, left: guideLayout.leftMargin }
   };
 }
 
 function buildFacet(spec, factors, resolution) {
   const { view, context } = resolution;
+  const guideLayout = facetGuideLayout(view, factors);
   return chart()
-    .createCanvas(facetCanvas(factors.columns))
+    .createCanvas(facetCanvas(factors.columns, guideLayout))
     .createData({ id: "analysisRows", values: view.rows })
     .createPointMark({ id: "facetPoints", opacity: factors.opacity })
     .encodeX({ target: "facetPoints", field: "value", scale: { zero: false } })
@@ -789,9 +805,9 @@ function buildFacet(spec, factors, resolution) {
         },
         y: {
           ...(factors.facetScales === "shared"
-            ? { ticksAndLabels: { values: sparseCategoryValues(view.rows, "category") } }
+            ? { ticksAndLabels: { values: guideLayout.displayedCategories } }
             : {}),
-          title: { text: context.dimensionText }
+          title: { text: context.dimensionText, offset: guideLayout.titleOffset }
         }
       },
       legend: false
@@ -1308,8 +1324,11 @@ function factorEvidence(spec, program, factors, resolution, name) {
     ["columns", "gap", "padding", "facetScales", "facetAxes"].includes(name)
   ) {
     const args = node("facet");
-    const canvas = name === "columns" ? facetCanvas(value) : undefined;
+    const canvas = name === "columns"
+      ? facetCanvas(value, facetGuideLayout(view, factors))
+      : undefined;
     const children = name === "columns" ? Object.values(program.children ?? {}) : [];
+    const finalFacet = program.compositionSpec?.facet;
     const observed = name === "columns"
       ? args?.columns === value && node("createCanvas")?.width === canvas.width &&
         program.compositionSpec?.columns === Math.min(value, children.length) &&
@@ -1317,11 +1336,18 @@ function factorEvidence(spec, program, factors, resolution, name) {
           child.resolvedScales.x?.range?.at(-1) === canvas.width - canvas.margin.right
         )
       : name === "facetScales"
-      ? args?.scales?.x === value && args?.scales?.y === value
-      : name === "facetAxes" ? args?.guides?.axes === value : args?.[name] === value;
+      ? args?.scales?.x === value && args?.scales?.y === value &&
+        finalFacet?.scales?.x === value && finalFacet?.scales?.y === value
+      : name === "facetAxes"
+        ? args?.guides?.axes === value && finalFacet?.guides?.axes === value
+        : args?.[name] === value;
     return observed
       ? name === "columns"
         ? "final-semantic-or-graphic:facet.columns+canvas.width+composition+child-x-range"
+        : name === "facetScales"
+          ? "trace.facet.scales+final-semantic:composition.facet.scales"
+          : name === "facetAxes"
+            ? "trace.facet.guides.axes+final-semantic:composition.facet.guides.axes"
         : `trace.facet.${name}`
       : undefined;
   }
