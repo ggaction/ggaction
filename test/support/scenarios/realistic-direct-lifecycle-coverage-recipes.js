@@ -241,7 +241,7 @@ function regressionLifecycleView(dataset) {
   });
 }
 
-function removalLifecycleView(dataset) {
+function recordOrderLifecycleView(dataset, projectionKind) {
   const records = realisticRecordView(dataset, {
     includeSecondaryDimension: true,
     deriveSubgroup: true
@@ -302,24 +302,39 @@ function removalLifecycleView(dataset) {
           source: "sourceRowIndex",
           as: "angle"
         }),
-        freeze({ op: "lifecycle-projection", kind: "removal" })
+        freeze({ op: "lifecycle-projection", kind: projectionKind })
       ]
     }
   });
 }
 
+function selectionLifecycleView(dataset) {
+  try {
+    return realisticLifecycleRows(dataset, "style");
+  } catch (error) {
+    if (!isRealisticIneligibleDataError(error)) throw error;
+    return recordOrderLifecycleView(dataset, "selection");
+  }
+}
+
 function extendedView(dataset, kind, {
   derivedEncodingProjection = false,
   removalProjection = false,
+  selectionProjection = false,
   singleSeriesProjection = false,
   statisticalProjection = false
 } = {}) {
   const base = kind === "regression"
     ? regressionLifecycleView(dataset)
     : removalProjection
-      ? removalLifecycleView(dataset)
-      : realisticLifecycleRows(dataset, kind);
+      ? recordOrderLifecycleView(dataset, "removal")
+      : selectionProjection
+        ? selectionLifecycleView(dataset)
+        : realisticLifecycleRows(dataset, kind);
   const singleSeriesValue = singleSeriesProjection
+    ? "All observations"
+    : undefined;
+  const selectionSeriesValue = selectionProjection
     ? "All observations"
     : undefined;
   const rows = base.rows.map((row, index) => {
@@ -356,6 +371,7 @@ function extendedView(dataset, kind, {
         String(row.group ?? row.series ?? row.category ?? `Series ${index % 3}`),
       series: singleSeriesValue ??
         String(row.series ?? row.group ?? row.category ?? `Series ${index % 3}`),
+      ...(selectionProjection ? { selectionSeries: selectionSeriesValue } : {}),
       ...(statisticalProjection ? { bandGroup: "All observations" } : {}),
       ...(derivedEncodingProjection ? { horizonGroup: "All observations" } : {}),
       label: String(row.label ?? row.category ?? row.group ?? row.id ?? index + 1),
@@ -383,6 +399,17 @@ function extendedView(dataset, kind, {
               derivedField: "group",
               value: singleSeriesValue,
               purpose: "collapse only derived grouping channels while preserving authentic category labels and rows"
+            })]
+          : []),
+        ...(selectionProjection
+          ? [freeze({
+              op: "overall-selection-line-cohort-projection",
+              groupProjection: "all-observations",
+              derivedField: "selectionSeries",
+              value: selectionSeriesValue,
+              purpose:
+                "form one truthful overall source-order line cohort for selection witnesses " +
+                "without dropping rows or changing source categories"
             })]
           : []),
         ...(statisticalProjection
@@ -712,7 +739,12 @@ function selectorOptions(kind, value, rows) {
 }
 
 function buildSelectionCoverage(factors) {
-  const { view, program: initial } = createBase(factors.dataset, "style");
+  const { view, program: initial } = createBase(
+    factors.dataset,
+    "style",
+    "analysisRows",
+    { selectionProjection: true }
+  );
   let program = initial.createPointMark({ id: "selectionPoints", data: "analysisRows" })
     .encodeX({ target: "selectionPoints", field: "positiveX", scale: { zero: false } })
     .encodeY({ target: "selectionPoints", field: "positiveY", scale: { zero: false } })
@@ -724,6 +756,7 @@ function buildSelectionCoverage(factors) {
   const filterVariants = [
     selectorOptions("channel", "x", view.rows),
     selectorOptions("property", "x", view.rows),
+    selectorOptions("property", "y", view.rows),
     selectorOptions("operator", "eq", view.rows),
     selectorOptions("operator", "oneOf", view.rows),
     selectorOptions("operator", "range", view.rows),
@@ -821,11 +854,11 @@ function buildSelectionCoverage(factors) {
         .encodeR({ target, field: "positiveY" });
     } else if (["group", "strokeDash", "strokeWidth"].includes(channel)) {
       program = program.createLineMark({ id: target, data: "analysisRows" })
-        .encodeX({ target, field: "positiveX", scale: { id: `channel-x-${index}` } })
+        .encodeX({ target, field: "rowOrdinal", scale: { id: `channel-x-${index}` } })
         .encodeY({ target, field: "positiveY", scale: { id: `channel-y-${index}` } })
-        .encodeGroup({ target, field: "group" });
+        .encodeGroup({ target, field: "selectionSeries" });
       if (channel === "strokeDash") {
-        program = program.encodeStrokeDash({ target, field: "group" });
+        program = program.encodeStrokeDash({ target, field: "selectionSeries" });
       }
     } else {
       program = program.createPointMark({ id: target, data: "analysisRows" })
@@ -862,15 +895,19 @@ function buildSelectionCoverage(factors) {
   }
   for (const operator of SELECTOR_OPERATORS) highlight(selectorOptions("operator", operator, view.rows));
   program = program.createLineMark({ id: "selectionLine", data: "analysisRows" })
-    .encodeX({ target: "selectionLine", field: "positiveX", scale: { id: "selection-line-x", zero: false } })
+    .encodeX({ target: "selectionLine", field: "rowOrdinal", scale: { id: "selection-line-x", zero: false } })
     .encodeY({ target: "selectionLine", field: "positiveY", scale: { id: "selection-line-y", zero: false } })
-    .encodeGroup({ target: "selectionLine", field: "group" });
+    .encodeGroup({ target: "selectionLine", field: "selectionSeries" });
   for (const [index, strokeDash] of DASHES.entries()) {
     const id = `dash-highlight-${index}`;
     program = program.highlightMarks({
       id,
       target: "selectionLine",
-      select: { field: "group", op: "eq", value: view.rows[0].group },
+      select: {
+        field: "selectionSeries",
+        op: "eq",
+        value: view.rows[0].selectionSeries
+      },
       stroke: "#7f1d1d",
       strokeWidth: 2,
       strokeDash,
@@ -1166,7 +1203,7 @@ function buildStatisticalCoverage(factors) {
   for (const [index, [center, extent]] of intervalVariants.entries()) {
     program = program.editErrorBar({
       target: editableError,
-      caps: false,
+      caps: index === intervalVariants.length - 1,
       capSize: 8,
       stroke: "#991b1b",
       strokeWidth: 1.8,
@@ -1187,11 +1224,13 @@ function buildStatisticalCoverage(factors) {
         fill: "#93c5fd",
         opacity: 0.2,
         curve: "linear",
-        boundaries: {
-          stroke: "#1d4ed8", strokeWidth: 1,
-          strokeDash: DASHES[bandIndex % DASHES.length], opacity: 0.8,
-          curve: "linear"
-        },
+        boundaries: bandIndex === 0
+          ? false
+          : {
+              stroke: "#1d4ed8", strokeWidth: 1,
+              strokeDash: DASHES[bandIndex % DASHES.length], opacity: 0.8,
+              curve: "linear"
+            },
         ...options
       });
     } catch (error) {
@@ -1408,7 +1447,9 @@ function buildDerivedEncodingCoverage(factors) {
       resolve: index % 2 ? "independent" : "shared",
       missing: index % 2 ? "error" : "break",
       overflow: index % 2 ? "error" : "clip",
-      palette: horizonPalette(index)
+      palette: index === quantitativeTypes.length - 1
+        ? { positive: "purpleblue", negative: "goldred" }
+        : horizonPalette(index)
     };
     program = program.encodeHorizon(common);
   }
@@ -1502,7 +1543,7 @@ function buildDerivedEncodingCoverage(factors) {
     resolve: "independent",
     missing: "error",
     overflow: "error",
-    palette: horizonPalette(2)
+    palette: { positive: "purpleblue", negative: "goldred" }
   });
 
   program = program.createBarMark({ id: "histogramOwner", data: "analysisRows" });
@@ -1560,6 +1601,34 @@ function buildDerivedEncodingCoverage(factors) {
           })
     });
   }
+  program = program.createAreaMark({
+    id: "density-vertical-top",
+    data: "analysisRows",
+    fill: "#c4b5fd",
+    opacity: 0.28,
+    stroke: "#7c3aed",
+    strokeWidth: 1
+  }).encodeDensity({
+    target: "density-vertical-top",
+    source: "analysisRows",
+    field: "positiveY",
+    groupBy: "category",
+    bandwidth: "auto",
+    extent: "auto",
+    steps: 40,
+    kernel: "gaussian",
+    normalization: "unit",
+    as: ["densityValue", "densityEstimate"],
+    densityChannel: "y",
+    coordinate: "main",
+    valueScale: scale("linear", "density-value-top", 0),
+    placement: {
+      type: "category",
+      side: "top",
+      width: { band: 0.7, resolve: "shared" },
+      scale: categoricalScale("density-category-vertical-top", "band")
+    }
+  });
   for (const [index, side] of ["left", "both"].entries()) {
     const target = `density-horizontal-${side}`;
     program = program.createAreaMark({
@@ -1772,6 +1841,16 @@ function buildRegressionCoverage(factors) {
     method: "polynomial",
     degree: 2,
     confidence: 0.9,
+    interval: "mean"
+  }).createRegressionData({
+    id: "directPredictionFit",
+    source: "directRows",
+    x: "rowOrdinal",
+    y: "positiveY",
+    groupBy: "group",
+    method: "polynomial",
+    degree: 2,
+    confidence: 0.9,
     interval: "prediction"
   }).createRegressionData({
     id: "directLoessFit",
@@ -1813,6 +1892,34 @@ function buildRegressionCoverage(factors) {
       curve
     });
   }
+  program = program.createRegressionBand({
+    id: "direct-regression-prediction-band",
+    data: "directPredictionFit",
+    x: "rowOrdinal",
+    lower: "__regression_ci_lower",
+    upper: "__regression_ci_upper",
+    groupBy: "group",
+    coordinate: "main",
+    xScale: "direct-regression-x",
+    yScale: "direct-regression-y",
+    color: "#ddd6fe",
+    opacity: 0.1,
+    stroke: "#6d28d9",
+    strokeWidth: 0.8,
+    curve: "linear"
+  }).createRegressionLine({
+    id: "direct-regression-prediction-line",
+    data: "directPredictionFit",
+    x: "rowOrdinal",
+    y: "positiveY",
+    groupBy: "group",
+    coordinate: "main",
+    xScale: "direct-regression-x",
+    yScale: "direct-regression-y",
+    colorScale: "direct-regression-color",
+    strokeWidth: 1.6,
+    curve: "linear"
+  });
   for (const [index, curve] of CURVES.entries()) {
     program = program.editRegressionBand({
       target: "direct-regression-band-linear",
@@ -2002,6 +2109,7 @@ function metadataFor(recipe, factors) {
   const view = extendedView(factors.dataset, recipe.kind, {
     derivedEncodingProjection: recipe.derivedEncodingProjection,
     removalProjection: recipe.removalProjection,
+    selectionProjection: recipe.selectionProjection,
     singleSeriesProjection: recipe.singleSeriesProjection,
     statisticalProjection: recipe.statisticalProjection
   });
@@ -2054,6 +2162,7 @@ function makeRecipe({
   expectedDirectActions,
   derivedEncodingProjection = false,
   removalProjection = false,
+  selectionProjection = false,
   singleSeriesProjection = false,
   statisticalProjection = false
 }) {
@@ -2074,6 +2183,7 @@ function makeRecipe({
     family,
     derivedEncodingProjection,
     removalProjection,
+    selectionProjection,
     singleSeriesProjection,
     statisticalProjection,
     factorsForDataset(dataset) {
@@ -2208,6 +2318,7 @@ const SELECTION_RECIPE = makeRecipe({
   family: "direct-lifecycle-selection",
   complexity: "advanced",
   kind: "style",
+  selectionProjection: true,
   build: buildSelectionCoverage,
   expectedDirectActions: [
     "filterMarks", "highlightMarks"
@@ -2301,6 +2412,14 @@ function decimalTicksAndLabels() {
       fontFamily: "sans-serif",
       fontWeight: 500
     }
+  };
+}
+
+function formattedTicksAndLabels(format) {
+  const ticksAndLabels = decimalTicksAndLabels();
+  return {
+    ...ticksAndLabels,
+    labels: { ...ticksAndLabels.labels, format }
   };
 }
 
@@ -2445,6 +2564,15 @@ const POLAR_GUIDE_RECIPE = makeDelegatedGuideRecipe({
   augment(program) {
     const theta = decimalPolarAxis("theta", 0);
     const radius = decimalPolarAxis("radius", 90);
+    const formatted = formattedTicksAndLabels(".2f");
+    const formattedTheta = {
+      ...theta,
+      ticksAndLabels: formatted
+    };
+    const formattedRadius = {
+      ...radius,
+      ticksAndLabels: formatted
+    };
     let next = program
       .removeLegend({ target: "points", channels: ["color"] })
       .removeThetaAxis({ coordinate: "polar", scale: "theta" })
@@ -2455,8 +2583,24 @@ const POLAR_GUIDE_RECIPE = makeDelegatedGuideRecipe({
         legend: false
       }).removeThetaAxis({ coordinate: "polar", scale: "theta" })
       .removeRadialAxis({ coordinate: "polar", scale: "radius" })
+      .createGuides({
+        axes: {
+          coordinate: { id: "polar", type: "polar" },
+          theta: formattedTheta,
+          radius: formattedRadius
+        },
+        grid: false,
+        legend: false
+      }).removeThetaAxis({ coordinate: "polar", scale: "theta" })
+      .removeRadialAxis({ coordinate: "polar", scale: "radius" })
       .createAxes({
         coordinate: { id: "polar", type: "polar" }, theta, radius
+      }).removeThetaAxis({ coordinate: "polar", scale: "theta" })
+      .removeRadialAxis({ coordinate: "polar", scale: "radius" })
+      .createAxes({
+        coordinate: { id: "polar", type: "polar" },
+        theta: formattedTheta,
+        radius: formattedRadius
       }).removeThetaAxis({ coordinate: "polar", scale: "theta" })
       .removeRadialAxis({ coordinate: "polar", scale: "radius" })
       .createThetaAxis(theta)
@@ -2464,7 +2608,17 @@ const POLAR_GUIDE_RECIPE = makeDelegatedGuideRecipe({
       .editThetaAxis({ labels: decimalTicksAndLabels().labels })
       .editThetaAxis({ ticksAndLabels: decimalTicksAndLabels() })
       .editRadialAxis({ labels: decimalTicksAndLabels().labels })
-      .editRadialAxis({ ticksAndLabels: decimalTicksAndLabels() });
+      .editRadialAxis({ ticksAndLabels: decimalTicksAndLabels() })
+      .editThetaAxis({ labels: formatted.labels })
+      .editThetaAxis({ ticksAndLabels: formatted })
+      .editRadialAxis({ labels: formatted.labels })
+      .editRadialAxis({ ticksAndLabels: formatted })
+      .editThetaAxisLabels({ format: ".2f" })
+      .editRadialAxisLabels({ format: ".2f" })
+      .removeThetaAxis({ coordinate: "polar", scale: "theta" })
+      .removeRadialAxis({ coordinate: "polar", scale: "radius" })
+      .createThetaAxis(formattedTheta)
+      .createRadialAxis(formattedRadius);
     next = next.createPointMark({ id: "polarCoordinateWitness", data: "analysisRows" })
       .createCoordinate({
         id: "polarWitness",

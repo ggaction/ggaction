@@ -1422,6 +1422,31 @@ const COMPOSITE_LIFECYCLES = new Set([
   "action-direct-data-resources"
 ]);
 
+function chartFamilyCoverageSchedule(factor, variants) {
+  const selectionVariantIds = Array.from({ length: 5 }, () => variants).flat();
+  return Object.freeze({
+    factor,
+    selectionVariantIds: Object.freeze(selectionVariantIds),
+    minimumSelections: selectionVariantIds.length,
+    assignment: "round-robin-datasets-per-variant",
+    variantRequirements: Object.freeze(variants.map(variantId => Object.freeze({
+      variantId,
+      minimumOccurrences: 5,
+      minimumDatasets: 3
+    }))),
+    minimumDatasetsPerRequirement: 3
+  });
+}
+
+const CHART_FAMILY_COVERAGE_SCHEDULES = Object.freeze({
+  "action-interval-lifecycle": chartFamilyCoverageSchedule("kind", ["bar", "band"]),
+  "action-direct-bar-offsets": chartFamilyCoverageSchedule(
+    "orientation",
+    ["horizontal", "vertical"]
+  ),
+  "action-direct-axis-parts": chartFamilyCoverageSchedule("mode", ["leaves", "groups"])
+});
+
 function realisticLifecycleMetadata(base, factors) {
   const kind = REALISTIC_LIFECYCLE_KINDS[base.id];
   const view = realisticLifecycleRows(factors.dataset, kind);
@@ -1716,6 +1741,7 @@ function facetColumnEvidence(program, factors) {
 export const REALISTIC_LIFECYCLE_SCENARIO_RECIPES = Object.freeze(
   LIFECYCLE_SCENARIO_RECIPES.map(base => {
     const kind = REALISTIC_LIFECYCLE_KINDS[base.id];
+    const coverageSchedule = CHART_FAMILY_COVERAGE_SCHEDULES[base.id];
     const datasets = realisticDatasetIds().filter(dataset =>
       realisticDatasetSupports(dataset, kind)
     );
@@ -1727,6 +1753,12 @@ export const REALISTIC_LIFECYCLE_SCENARIO_RECIPES = Object.freeze(
       complexity: COMPOSITE_LIFECYCLES.has(base.id) ? "composite" : "advanced",
       enforceFactorEffects: true,
       datasets,
+      ...(coverageSchedule === undefined
+        ? {}
+        : {
+            coverageSchedule,
+            minimumSelections: coverageSchedule.minimumSelections
+          }),
       factorsForDataset: dataset => realisticLifecycleEligible(dataset, kind)
         ? base.factors
         : undefined,

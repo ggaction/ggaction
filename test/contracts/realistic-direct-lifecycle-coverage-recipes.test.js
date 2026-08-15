@@ -95,6 +95,43 @@ const REMOVAL_CHANNELS = Object.freeze([
   "color", "group", "opacity", "radius", "size", "strokeDash", "strokeWidth",
   "text", "theta", "x", "x2", "xOffset", "y", "y2", "yOffset"
 ]);
+const DIRECT_COVERAGE_TAIL_IDS = Object.freeze([
+  "option-value:createErrorBand.boundaries=boolean:false",
+  "option-value:createRegressionData.interval=string:mean",
+  "option-value:editErrorBar.caps=boolean:true",
+  "option-value:encodeDensity.placement.side=string:top",
+  "literal-diversity:createAxes.radius.ticksAndLabels.labels.format",
+  "literal-diversity:createAxes.theta.ticksAndLabels.labels.format",
+  "literal-diversity:createGuides.axes.radius.ticksAndLabels.labels.format",
+  "literal-diversity:createGuides.axes.theta.ticksAndLabels.labels.format",
+  "literal-diversity:createRadialAxis.ticksAndLabels.labels.format",
+  "literal-diversity:createThetaAxis.ticksAndLabels.labels.format",
+  "literal-diversity:editHorizon.palette.negative",
+  "literal-diversity:editHorizon.palette.positive",
+  "literal-diversity:editRadialAxis.labels.format",
+  "literal-diversity:editRadialAxis.ticksAndLabels.labels.format",
+  "literal-diversity:editRadialAxisLabels.format",
+  "literal-diversity:editThetaAxis.labels.format",
+  "literal-diversity:editThetaAxis.ticksAndLabels.labels.format",
+  "literal-diversity:editThetaAxisLabels.format",
+  "literal-diversity:encodeHorizon.palette.negative",
+  "literal-diversity:encodeHorizon.palette.positive",
+  "literal-diversity:filterMarks.property"
+]);
+const ALTERNATE_POLAR_FORMAT_PATHS = Object.freeze([
+  ["createAxes", "radius.ticksAndLabels.labels.format"],
+  ["createAxes", "theta.ticksAndLabels.labels.format"],
+  ["createGuides", "axes.radius.ticksAndLabels.labels.format"],
+  ["createGuides", "axes.theta.ticksAndLabels.labels.format"],
+  ["createRadialAxis", "ticksAndLabels.labels.format"],
+  ["createThetaAxis", "ticksAndLabels.labels.format"],
+  ["editRadialAxis", "labels.format"],
+  ["editRadialAxis", "ticksAndLabels.labels.format"],
+  ["editRadialAxisLabels", "format"],
+  ["editThetaAxis", "labels.format"],
+  ["editThetaAxis", "ticksAndLabels.labels.format"],
+  ["editThetaAxisLabels", "format"]
+]);
 let inventoryPromise = buildPublicOptionInventory(JSON.parse(readFileSync(
   new URL("../../knowledge/action-cards.json", import.meta.url),
   "utf8"
@@ -256,6 +293,47 @@ function directTraceValues(entry, option) {
     : nestedTraceValues(entry.args, option.path);
 }
 
+function observeDirectCoverageTail(program) {
+  const observed = new Set();
+  const traces = program.trace.children ?? [];
+  const has = (operation, predicate) => traces.some(entry =>
+    entry.op === operation && predicate(entry.args)
+  );
+  if (has("createErrorBand", args => args.boundaries === false)) {
+    observed.add("option-value:createErrorBand.boundaries=boolean:false");
+  }
+  if (has("createRegressionData", args => args.interval === "mean")) {
+    observed.add("option-value:createRegressionData.interval=string:mean");
+  }
+  if (has("editErrorBar", args => args.caps === true)) {
+    observed.add("option-value:editErrorBar.caps=boolean:true");
+  }
+  if (has("encodeDensity", args => args.placement?.side === "top")) {
+    observed.add("option-value:encodeDensity.placement.side=string:top");
+  }
+  if (has("encodeHorizon", args => args.palette?.positive === "purpleblue")) {
+    observed.add("literal-diversity:encodeHorizon.palette.positive");
+  }
+  if (has("encodeHorizon", args => args.palette?.negative === "goldred")) {
+    observed.add("literal-diversity:encodeHorizon.palette.negative");
+  }
+  if (has("editHorizon", args => args.palette?.positive === "purpleblue")) {
+    observed.add("literal-diversity:editHorizon.palette.positive");
+  }
+  if (has("editHorizon", args => args.palette?.negative === "goldred")) {
+    observed.add("literal-diversity:editHorizon.palette.negative");
+  }
+  if (has("filterMarks", args => args.property === "y")) {
+    observed.add("literal-diversity:filterMarks.property");
+  }
+  for (const [operation, path] of ALTERNATE_POLAR_FORMAT_PATHS) {
+    if (has(operation, args => nestedTraceValues(args, path).includes(".2f"))) {
+      observed.add(`literal-diversity:${operation}.${path}`);
+    }
+  }
+  return observed;
+}
+
 function targetEvidenceIndex(inventory, targetIds) {
   const targets = new Set(targetIds);
   const pathLiterals = inventory.pathLiteralRequirements.filter(requirement =>
@@ -388,7 +466,10 @@ function evaluatePlan(recipe, factors, index) {
     title: metadata.title,
     description: metadata.analysisQuestion
   }), label);
-  return observeDirectTargets(program, metadata, index);
+  return Object.freeze({
+    targets: observeDirectTargets(program, metadata, index),
+    coverageTail: observeDirectCoverageTail(program)
+  });
 }
 
 let projectionPromise;
@@ -406,6 +487,7 @@ async function buildProjection() {
     inventoryPromise = undefined;
     collectGarbage();
     const stats = new Map(targetIds.map(id => [id, emptyStats()]));
+    const coverageTailStats = new Map(DIRECT_COVERAGE_TAIL_IDS.map(id => [id, emptyStats()]));
     const plans = REALISTIC_DIRECT_LIFECYCLE_COVERAGE_RECIPES.flatMap(recipe =>
       realisticDirectLifecycleCoverageFactors(recipe).map(factors => ({ recipe, factors }))
     );
@@ -414,8 +496,13 @@ async function buildProjection() {
       try {
         for (const { recipe, factors } of datasetPlans) {
           try {
-            for (const target of evaluatePlan(recipe, factors, index)) {
+            const observed = evaluatePlan(recipe, factors, index);
+            for (const target of observed.targets) {
               const targetStats = stats.get(target);
+              if (targetStats !== undefined) record(targetStats, dataset);
+            }
+            for (const target of observed.coverageTail) {
+              const targetStats = coverageTailStats.get(target);
               if (targetStats !== undefined) record(targetStats, dataset);
             }
             chartCount += 1;
@@ -429,7 +516,7 @@ async function buildProjection() {
         collectGarbage();
       }
     }
-    return Object.freeze({ chartCount, targetIds, stats });
+    return Object.freeze({ chartCount, targetIds, stats, coverageTailStats });
   })();
   return projectionPromise;
 }
@@ -487,6 +574,155 @@ test("defines ten bounded schedules totaling fifty authentic TT charts", () => {
     }
   }
   assert.ok(REALISTIC_DIRECT_LIFECYCLE_COVERAGE_COUNTS.maximumFamilySelections <= 900);
+});
+
+test("materializes every alternate direct coverage-tail witness", () => {
+  const dataset = "tt-global-temperatures";
+  const recipeIds = [
+    "realistic-direct-lifecycle-selection-coverage",
+    "realistic-direct-lifecycle-statistical-coverage",
+    "realistic-direct-lifecycle-derived-encoding-coverage",
+    "realistic-direct-lifecycle-regression-coverage",
+    "realistic-direct-lifecycle-polar-guide-coverage"
+  ];
+  const observed = new Set();
+  try {
+    for (const recipeId of recipeIds) {
+      const recipe = REALISTIC_DIRECT_LIFECYCLE_COVERAGE_RECIPES.find(value =>
+        value.id === recipeId
+      );
+      const profile = recipe.factorsForDataset(dataset).profile[0];
+      const factors = { dataset, profile };
+      const program = recipe.build(factors);
+      const metadata = recipe.describe(factors);
+      for (const id of observeDirectCoverageTail(program)) observed.add(id);
+      assertTruthfulMetadata(recipe, factors, program, metadata, recipeId);
+      assertGraphicIntegrity(program, recipeId);
+      assertAnalyticLayerIntegrity(program, recipeId);
+      assertSvgIntegrity(renderToSVG(program, {
+        title: metadata.title,
+        description: metadata.analysisQuestion
+      }), recipeId);
+    }
+    assert.deepEqual([...observed].sort(), [...DIRECT_COVERAGE_TAIL_IDS].sort());
+  } finally {
+    releaseTidyTuesdaySourceCache(dataset);
+    collectGarbage();
+  }
+});
+
+test("keeps authentic Christmas Song selection lines materially continuous", () => {
+  const dataset = "tt-christmas-songs";
+  const recipe = REALISTIC_DIRECT_LIFECYCLE_COVERAGE_RECIPES.find(value =>
+    value.id === "realistic-direct-lifecycle-selection-coverage"
+  );
+  const profile = recipe.factorsForDataset(dataset).profile[0];
+  const factors = { dataset, profile };
+  try {
+    const program = recipe.build(factors);
+    const metadata = recipe.describe(factors);
+    const rows = program.semanticSpec.datasets.find(value =>
+      value.id === "analysisRows"
+    ).values;
+    assert.equal(rows.length, 124);
+    assert.equal(new Set(rows.map(row => row.sourceRowIndex)).size, rows.length);
+    assert.equal(new Set(rows.map(row => row.group)).size, 8);
+    assert.deepEqual([...new Set(rows.map(row => row.selectionSeries))], [
+      "All observations"
+    ]);
+    assert.equal(metadata.provenance.sourceRowCount, rows.length);
+    assert.equal(
+      metadata.provenance.sourceSelectionSha256,
+      "f1a7dfe2ebec175f586b91e357bdfa98027e388e7ec8fa98fad0ab7a13736628"
+    );
+    assert.equal(
+      createHash("sha256")
+        .update(metadata.provenance.sourceRowIndexes.join(","))
+        .digest("hex"),
+      metadata.provenance.sourceSelectionSha256
+    );
+    assert.deepEqual(
+      metadata.provenance.transformations.find(value =>
+        value.op === "overall-selection-line-cohort-projection"
+      ),
+      {
+        op: "overall-selection-line-cohort-projection",
+        groupProjection: "all-observations",
+        derivedField: "selectionSeries",
+        value: "All observations",
+        purpose:
+          "form one truthful overall source-order line cohort for selection witnesses " +
+          "without dropping rows or changing source categories"
+      }
+    );
+    const continuousTargets = new Set([
+      "channel-selection-group",
+      "channel-selection-strokeDash",
+      "selectionLine"
+    ]);
+    const grouped = program.trace.children.filter(value =>
+      value.op === "encodeGroup" && continuousTargets.has(value.args.target)
+    );
+    const ordered = program.trace.children.filter(value =>
+      value.op === "encodeX" && continuousTargets.has(value.args.target)
+    );
+    assert.equal(grouped.length, continuousTargets.size);
+    assert.ok(grouped.every(value => value.args.field === "selectionSeries"));
+    assert.equal(ordered.length, continuousTargets.size);
+    assert.ok(ordered.every(value => value.args.field === "rowOrdinal"));
+    assertTruthfulMetadata(recipe, factors, program, metadata, dataset);
+    assertGraphicIntegrity(program, dataset);
+    assertAnalyticLayerIntegrity(program, dataset);
+    assertSvgIntegrity(renderToSVG(program, {
+      title: metadata.title,
+      description: metadata.analysisQuestion
+    }), dataset);
+  } finally {
+    releaseTidyTuesdaySourceCache(dataset);
+    collectGarbage();
+  }
+});
+
+test("falls back to authentic source order for one-measure Spiders selection", () => {
+  const dataset = "tt-spiders";
+  const recipe = REALISTIC_DIRECT_LIFECYCLE_COVERAGE_RECIPES.find(value =>
+    value.id === "realistic-direct-lifecycle-selection-coverage"
+  );
+  const factors = { dataset, profile: recipe.factorsForDataset(dataset).profile[0] };
+  try {
+    const program = recipe.build(factors);
+    const metadata = recipe.describe(factors);
+    const rows = program.semanticSpec.datasets.find(value =>
+      value.id === "analysisRows"
+    ).values;
+    assert.equal(rows.length, 160);
+    assert.equal(new Set(rows.map(row => row.sourceRowIndex)).size, rows.length);
+    assert.deepEqual([...new Set(rows.map(row => row.selectionSeries))], [
+      "All observations"
+    ]);
+    assert.equal(
+      metadata.provenance.sourceSelectionSha256,
+      "76c3c4bd8e4428fa9b9e2f77f3382459a6737cf7c728bfe7a1abb49d0c4a225b"
+    );
+    assert.deepEqual(
+      metadata.provenance.transformations.find(value =>
+        value.op === "lifecycle-projection" && value.kind === "selection"
+      ),
+      { op: "lifecycle-projection", kind: "selection" }
+    );
+    assert.ok(rows.every((row, index) =>
+      row.x === index + 1 &&
+      row.y === row.value &&
+      (index === 0 || rows[index - 1].sourceRowIndex < row.sourceRowIndex)
+    ));
+    assertTruthfulMetadata(recipe, factors, program, metadata, dataset);
+    assertGraphicIntegrity(program, dataset);
+    assertAnalyticLayerIntegrity(program, dataset);
+    assertSvgIntegrity(renderToSVG(program), dataset);
+  } finally {
+    releaseTidyTuesdaySourceCache(dataset);
+    collectGarbage();
+  }
 });
 
 test("locks the disjoint corrected hard-requirement partition at 918", async () => {
@@ -1884,6 +2120,12 @@ test("fifty direct-root builds close every assigned gap with material graphics",
   assert.equal(projection.targetIds.length, 918);
   assert.deepEqual(
     projection.targetIds.filter(id => !meetsMinimum(projection.stats.get(id))),
+    []
+  );
+  assert.deepEqual(
+    DIRECT_COVERAGE_TAIL_IDS.filter(id =>
+      !meetsMinimum(projection.coverageTailStats.get(id))
+    ),
     []
   );
 });

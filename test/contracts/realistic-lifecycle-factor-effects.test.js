@@ -24,6 +24,43 @@ function factorsAtBaseline(dataset, domains) {
   };
 }
 
+test("schedules every two-way chart-family lifecycle at five TT witnesses per family", () => {
+  const expected = new Map([
+    ["realistic-action-interval-lifecycle", ["kind", ["bar", "band"]]],
+    ["realistic-action-direct-bar-offsets", [
+      "orientation",
+      ["horizontal", "vertical"]
+    ]],
+    ["realistic-action-direct-axis-parts", ["mode", ["leaves", "groups"]]]
+  ]);
+  const scheduled = REALISTIC_LIFECYCLE_SCENARIO_RECIPES.filter(recipe =>
+    recipe.coverageSchedule !== undefined
+  );
+  assert.deepEqual(scheduled.map(recipe => recipe.id), [...expected.keys()]);
+  for (const recipe of scheduled) {
+    const [factor, variants] = expected.get(recipe.id);
+    const schedule = recipe.coverageSchedule;
+    assert.equal(schedule.factor, factor, recipe.id);
+    assert.equal(recipe.minimumSelections, 10, recipe.id);
+    assert.equal(schedule.minimumSelections, 10, recipe.id);
+    assert.equal(schedule.minimumDatasetsPerRequirement, 3, recipe.id);
+    assert.equal(schedule.assignment, "round-robin-datasets-per-variant", recipe.id);
+    assert.deepEqual(schedule.variantRequirements, variants.map(variantId => ({
+      variantId,
+      minimumOccurrences: 5,
+      minimumDatasets: 3
+    })), recipe.id);
+    assert.deepEqual(
+      Object.fromEntries(variants.map(variantId => [
+        variantId,
+        schedule.selectionVariantIds.filter(value => value === variantId).length
+      ])),
+      Object.fromEntries(variants.map(variantId => [variantId, 5])),
+      recipe.id
+    );
+  }
+});
+
 test("every realistic lifecycle factor has a final or explicit transient effect", () => {
   assert.equal(REALISTIC_LIFECYCLE_SCENARIO_RECIPES.length, 28);
   for (const recipe of REALISTIC_LIFECYCLE_SCENARIO_RECIPES) {
