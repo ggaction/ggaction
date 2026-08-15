@@ -168,7 +168,7 @@ type AggregateOperation =
   | ParameterizedAggregateOperation;
 ```
 
-- Signature: `encodeY({ field?, target?, fieldType?, scale?, coordinate?, aggregate?, bin?, stack? })`
+- Signature: `encodeY({ field?, target?, fieldType?, scale?, coordinate?, aggregate?, stack? })`
 - `field`: point/area/line/rect/ordinal-bar에서는 필수 field다. histogram count y는 x field에서 추론한다.
 - `target`, `fieldType`, `scale`, `coordinate`: x와 같은 selection/storage contract이다. Continuous y
   auto range는 bottom-to-top, ordinal y band는 top-to-bottom이다.

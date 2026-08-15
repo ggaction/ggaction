@@ -809,6 +809,12 @@ async function testTypeScriptConsumer(directory) {
     const program: ChartProgram = chart().createCanvas({ width: 100, height: 100 });
     const centerLayout: ColorLayout = "center";
     const centerStack: YStackMode = "center";
+    const invalidYBin: Parameters<ChartProgram["encodeY"]>[0] = {
+      field: "value",
+      // @ts-expect-error Direct y encodings do not support binning.
+      bin: { maxBins: 10 }
+    };
+    void invalidYBin;
     const centeredArea: ChartProgram = chart()
       .createCanvas()
       .createData({ values: [

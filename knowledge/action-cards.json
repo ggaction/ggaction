@@ -1887,10 +1887,6 @@
           "required": false
         },
         {
-          "name": "bin",
-          "required": false
-        },
-        {
           "name": "aggregate",
           "required": false
         },
@@ -1904,7 +1900,7 @@
         }
       ],
       "callPatterns": [
-        "encodeY({ target?, coordinate?, scale?, field?, fieldType?, bin?, aggregate?, stack? })"
+        "encodeY({ target?, coordinate?, scale?, field?, fieldType?, aggregate?, stack?, datum? })"
       ],
       "snippet": "program.encodeY({ field: \"y\" })",
       "errors": [],

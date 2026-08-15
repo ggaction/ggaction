@@ -1055,7 +1055,7 @@ export type PositionEncodingOptions = PositionEncodingBase & PositionScaleBranch
 
 export type YPositionEncodingOptions =
   PositionEncodingOptions extends infer T
-    ? T extends unknown ? Omit<T, "stack"> & { stack?: YStackMode } : never
+    ? T extends unknown ? Omit<T, "bin" | "stack"> & { stack?: YStackMode } : never
     : never;
 
 export interface ThetaScaleOptions {
