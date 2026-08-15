@@ -137,6 +137,51 @@ function pdfFixture(content, { compressed = false } = {}) {
   ]);
 }
 
+async function pngReadabilityEvidence(bytes) {
+  const image = await loadImage(bytes);
+  const tileSize = 256;
+  const canvas = createCanvas(tileSize, tileSize);
+  const context = canvas.getContext("2d");
+  const bounds = { left: image.width, top: image.height, right: -1, bottom: -1 };
+  let strongInkPixels = 0;
+  for (let y = 0; y < image.height; y += tileSize) {
+    for (let x = 0; x < image.width; x += tileSize) {
+      const width = Math.min(tileSize, image.width - x);
+      const height = Math.min(tileSize, image.height - y);
+      context.clearRect(0, 0, tileSize, tileSize);
+      context.drawImage(image, x, y, width, height, 0, 0, width, height);
+      const pixels = context.getImageData(0, 0, width, height).data;
+      for (let row = 0; row < height; row += 1) {
+        for (let column = 0; column < width; column += 1) {
+          const index = (row * width + column) * 4;
+          const contrast = Math.max(
+            255 - pixels[index],
+            255 - pixels[index + 1],
+            255 - pixels[index + 2]
+          );
+          if (contrast <= 32) continue;
+          strongInkPixels += 1;
+          bounds.left = Math.min(bounds.left, x + column);
+          bounds.top = Math.min(bounds.top, y + row);
+          bounds.right = Math.max(bounds.right, x + column);
+          bounds.bottom = Math.max(bounds.bottom, y + row);
+        }
+      }
+    }
+  }
+  assert.ok(strongInkPixels > 0, "readability evidence requires strong visible ink");
+  return Object.freeze({
+    strongInkPixels,
+    strongInkDensity: strongInkPixels / (image.width * image.height),
+    bounds: Object.freeze({
+      x: bounds.left,
+      y: bounds.top,
+      width: bounds.right - bounds.left + 1,
+      height: bounds.bottom - bounds.top + 1
+    })
+  });
+}
+
 function stableWireValue(value) {
   if (Array.isArray(value)) return `[${value.map(stableWireValue).join(",")}]`;
   if (value !== null && typeof value === "object") {
@@ -1417,7 +1462,7 @@ test("reads length-bounded compressed PDF text and rejects drawing-only streams"
   );
 });
 
-test("accepts the exact thin PNG and compressed PDF artifact regressions", async t => {
+test("accepts the exact readable PNG and compressed PDF artifact regressions", async t => {
   const directory = await mkdtemp(path.join(tmpdir(), "ggaction-realistic-evidence-"));
   t.after(() => rm(directory, { recursive: true, force: true }));
   const tuition = Object.freeze({
@@ -1428,7 +1473,7 @@ test("accepts the exact thin PNG and compressed PDF artifact regressions", async
       profile: Object.freeze({ id: "decimal-object" })
     }),
     semanticFingerprint:
-      "67d31643644ef2ddee978bc5bb7336d043715bfb33b311c9b3cb98953596b468"
+      "46c3ae794d397f0017bcc5b7a6a962bcf21dbed3d1b515abcb4767e4e0997495"
   });
   const outerSpace = Object.freeze({
     id: "realistic-ranked-dots-1c891ae5f0d9",
@@ -1467,6 +1512,9 @@ test("accepts the exact thin PNG and compressed PDF artifact regressions", async
     output: directory
   });
   assert.equal(pngOutcome.ok, true, pngOutcome.error?.stack);
+  const readability = await pngReadabilityEvidence(
+    await readFile(pngOutcome.result.artifacts.png.output)
+  );
   assert.deepEqual({
     width: pngOutcome.result.artifacts.png.width,
     height: pngOutcome.result.artifacts.png.height,
@@ -1474,12 +1522,17 @@ test("accepts the exact thin PNG and compressed PDF artifact regressions", async
     nonBlank: pngOutcome.result.artifacts.png.validation.nonBlank,
     nativePixelScan: pngOutcome.result.artifacts.png.validation.nativePixelScan
   }, {
-    width: 4_400,
-    height: 3_200,
-    sha256: "335ee3fe785d8aeb296a5e7c4013eb5247350c0dd1db67f459bb9843ed7cf180",
+    width: 1_600,
+    height: 1_000,
+    sha256: "9ab55916988e2fef7e9446edd6e596d20d418db6a3e5dd6f24077994e0a5aa0e",
     nonBlank: true,
     nativePixelScan: true
   });
+  assert.ok(readability.strongInkDensity >= 0.01, readability);
+  assert.ok(readability.bounds.x <= 64, readability);
+  assert.ok(readability.bounds.y <= 45, readability);
+  assert.ok(readability.bounds.width >= 1_190, readability);
+  assert.ok(readability.bounds.height >= 870, readability);
 
   const pdfOutcome = await executeRealisticScenarioTask({
     index: 1,

@@ -66,11 +66,19 @@ const FACET_SWEEP_CHILD_ENV = "GGACTION_DIRECT_FACET_SWEEP_CHILD";
 const FACET_SWEEP_RESOURCE_PREFIX = "direct-facet-sweep-resource:";
 const FACET_SWEEP_TEST_NAME =
   "preflights the maximal facet profile on all fifty eligible TT datasets";
+const CARTESIAN_GUIDE_SWEEP_CHILD_ENV =
+  "GGACTION_DIRECT_CARTESIAN_GUIDE_SWEEP_CHILD";
+const CARTESIAN_GUIDE_SWEEP_RESOURCE_PREFIX =
+  "direct-cartesian-guide-sweep-resource:";
+const CARTESIAN_GUIDE_SWEEP_TEST_NAME =
+  "keeps direct Cartesian guide presentation readable on all fifty eligible TT datasets";
 const REGRESSION_SWEEP_CHILD_ENV = "GGACTION_DIRECT_REGRESSION_SWEEP_CHILD";
 const REGRESSION_SWEEP_RESOURCE_PREFIX = "direct-regression-sweep-resource:";
 const REGRESSION_SWEEP_TEST_NAME =
   "preflights the maximal regression profile on all fifty eligible TT datasets";
 const MAX_DISPOSABLE_SWEEP_RSS_KIB = 512 * 1_024;
+const GENERIC_DIRECT_LIFECYCLE_ANALYSIS_QUESTION =
+  "Direct lifecycle options are exercised against one truthful TidyTuesday projection.";
 const REGRESSION_ANALYSIS_QUESTION =
   "How does the selected measure vary across stable source-record order within full-source-supported groups?";
 const STATISTICAL_SWEEP_CHILD_ENV = "GGACTION_DIRECT_STATISTICAL_SWEEP_CHILD";
@@ -574,6 +582,171 @@ test("defines ten bounded schedules totaling fifty authentic TT charts", () => {
     }
   }
   assert.ok(REALISTIC_DIRECT_LIFECYCLE_COVERAGE_COUNTS.maximumFamilySelections <= 900);
+});
+
+test(CARTESIAN_GUIDE_SWEEP_TEST_NAME, () => {
+  if (process.env[CARTESIAN_GUIDE_SWEEP_CHILD_ENV] !== "1") {
+    runSweepInDisposableProcess({
+      childEnvironmentName: CARTESIAN_GUIDE_SWEEP_CHILD_ENV,
+      expectedResources: {
+        builds: 50,
+        eligibleDatasets: 50,
+        minimumRows: 2,
+        maximumRows: 8,
+        minimumTitleGap: 43,
+        minimumLegendGap: 41.75
+      },
+      resourcePrefix: CARTESIAN_GUIDE_SWEEP_RESOURCE_PREFIX,
+      testName: CARTESIAN_GUIDE_SWEEP_TEST_NAME
+    });
+    return;
+  }
+  const recipe = REALISTIC_DIRECT_LIFECYCLE_COVERAGE_RECIPES.find(value =>
+    value.id === "realistic-direct-lifecycle-cartesian-guide-coverage"
+  );
+  const requiredGraphics = [
+    "xAxisLine", "xAxisTicks", "xAxisLabels", "xAxisTitle",
+    "yAxisLine", "yAxisTicks", "yAxisLabels", "yAxisTitle",
+    "colorLegendSymbols", "colorLegendLabels", "colorLegendTitle"
+  ];
+  let builds = 0;
+  let minimumRows = Number.POSITIVE_INFINITY;
+  let maximumRows = 0;
+  let minimumTitleGap = Number.POSITIVE_INFINITY;
+  let minimumLegendGap = Number.POSITIVE_INFINITY;
+  let minimumRightLegendGutter = Number.POSITIVE_INFINITY;
+  assert.equal(recipe.datasets.length, 50);
+  for (const dataset of recipe.datasets) {
+    try {
+      const domains = recipe.factorsForDataset(dataset);
+      const profile = domains?.profile.find(value => value.id === "decimal-object");
+      assert.notEqual(profile, undefined, `${dataset} decimal-object eligibility`);
+      const factors = { dataset, profile };
+      const program = recipe.build(factors);
+      const metadata = recipe.describe(factors);
+      const graphic = program.graphicSpec.objects;
+      const rows = program.semanticSpec.datasets.find(value =>
+        value.id === "analysisRows"
+      ).values;
+      const titleBounds = resolveConcreteGraphicBounds(
+        program.graphicSpec,
+        "chartTitle"
+      );
+      const subtitleBounds = resolveConcreteGraphicBounds(
+        program.graphicSpec,
+        "chartSubtitle"
+      );
+      const legendBounds = [
+        "colorLegendSymbols", "colorLegendLabels", "colorLegendTitle"
+      ].map(id => resolveConcreteGraphicBounds(program.graphicSpec, id));
+      const titleGap = 180 - Math.max(titleBounds.bottom, subtitleBounds.bottom);
+      const legendGap = Math.min(...legendBounds.map(bounds => bounds.left)) - 1_140;
+      const rightLegendGutter = 1_600 - Math.max(
+        ...legendBounds.map(bounds => bounds.right)
+      );
+      const pointRadii = graphic.points.items.map(item => item.properties.radius);
+      assert.deepEqual(graphic.canvas.properties, {
+        width: 1_600,
+        height: 1_000,
+        background: "#ffffff"
+      }, dataset);
+      assert.deepEqual(program.resolvedScales.x.range, [260, 1_140], dataset);
+      assert.deepEqual(program.resolvedScales.y.range, [850, 180], dataset);
+      assert.deepEqual(program.resolvedScales.size.range, [154, 616], dataset);
+      assert.ok(requiredGraphics.every(id => graphic[id] !== undefined), dataset);
+      assert.equal(graphic.chartTitle.properties.fontSize, 30, dataset);
+      assert.ok((graphic.chartSubtitle.items ?? [graphic.chartSubtitle])
+        .every(item => item.properties.fontSize === 17), dataset);
+      assert.ok(graphic.xAxisLabels.items.every(item =>
+        item.properties.fontSize === 15
+      ), dataset);
+      assert.deepEqual(
+        graphic.xAxisLabels.items.map(item => item.properties.text),
+        rows.map(row => String(row.rank)),
+        dataset
+      );
+      assert.ok(graphic.yAxisLabels.items.every(item =>
+        item.properties.fontSize === 15
+      ), dataset);
+      assert.ok(graphic.colorLegendLabels.items.every(item =>
+        item.properties.fontSize === 15
+      ), dataset);
+      assert.ok(Math.min(...pointRadii) >= 7, dataset);
+      assert.ok(Math.max(...pointRadii) <= 14.01, dataset);
+      assert.deepEqual(program.markConfigs.decimalLegendLines, {
+        shape: "circle",
+        opacity: 0.45,
+        radius: 6,
+        fill: "#0f172a"
+      }, dataset);
+      assert.equal(graphic.cartesianCoordinateWitness, undefined, dataset);
+      assert.equal(program.markConfigs.cartesianCoordinateWitness, undefined, dataset);
+      const directTrace = program.trace.children ?? [];
+      assert.ok(directTrace.some(entry =>
+        entry.op === "createCoordinate" &&
+        entry.args.id === "cartesianWitness"
+      ), `${dataset} createCoordinate witness trace`);
+      assert.ok(directTrace.some(entry =>
+        entry.op === "encodeX" &&
+        entry.args.target === "cartesianCoordinateWitness"
+      ), `${dataset} encodeX witness trace`);
+      assert.ok(directTrace.some(entry =>
+        entry.op === "encodeY" &&
+        entry.args.target === "cartesianCoordinateWitness"
+      ), `${dataset} encodeY witness trace`);
+      assert.ok(directTrace.some(entry =>
+        entry.op === "removeMark" &&
+        entry.args.target === "cartesianCoordinateWitness"
+      ), `${dataset} removeMark witness trace`);
+      assert.equal(graphic.colorLegendLabels.items.length, rows.length, dataset);
+      assert.deepEqual(
+        graphic.colorLegendLabels.items.map(item => item.properties.text),
+        rows.map(row => row.category),
+        dataset
+      );
+      assert.equal(metadata.title, program.semanticSpec.title.text, dataset);
+      assert.equal(
+        metadata.analysisQuestion,
+        program.semanticSpec.title.subtitle,
+        dataset
+      );
+      assert.doesNotMatch(metadata.title, /direct-lifecycle|authentic tt-/u, dataset);
+      assert.notEqual(
+        metadata.analysisQuestion,
+        GENERIC_DIRECT_LIFECYCLE_ANALYSIS_QUESTION,
+        dataset
+      );
+      assert.ok(titleGap >= 43, dataset);
+      assert.ok(legendGap >= 41.75, dataset);
+      assert.ok(rightLegendGutter >= 40, dataset);
+      assertTruthfulMetadata(recipe, factors, program, metadata, dataset);
+      assertGraphicIntegrity(program, dataset);
+      minimumRows = Math.min(minimumRows, rows.length);
+      maximumRows = Math.max(maximumRows, rows.length);
+      minimumTitleGap = Math.min(minimumTitleGap, titleGap);
+      minimumLegendGap = Math.min(minimumLegendGap, legendGap);
+      minimumRightLegendGutter = Math.min(
+        minimumRightLegendGutter,
+        rightLegendGutter
+      );
+      builds += 1;
+    } finally {
+      releaseTidyTuesdaySourceCache(dataset);
+      collectGarbage();
+    }
+  }
+  const maxRssKiB = process.resourceUsage().maxRSS;
+  assert.ok(maxRssKiB < MAX_DISPOSABLE_SWEEP_RSS_KIB, { maxRssKiB });
+  console.log(`${CARTESIAN_GUIDE_SWEEP_RESOURCE_PREFIX}${JSON.stringify({
+    builds,
+    eligibleDatasets: recipe.datasets.length,
+    minimumRows,
+    maximumRows,
+    minimumTitleGap,
+    minimumLegendGap,
+    minimumRightLegendGutter,
+    maxRssKiB
+  })}`);
 });
 
 test("materializes every alternate direct coverage-tail witness", () => {

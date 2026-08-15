@@ -25,6 +25,13 @@ const CURVES = Object.freeze([
 const KERNELS = Object.freeze(["epanechnikov", "gaussian", "triangular", "uniform"]);
 const NORMALIZATIONS = Object.freeze(["unit", "count"]);
 const FACET_LEGEND_SAFETY_GUTTER = 12;
+const CARTESIAN_GUIDE_CANVAS = Object.freeze({
+  width: 1_600,
+  height: 1_000,
+  margin: Object.freeze({ top: 180, right: 460, bottom: 150, left: 260 })
+});
+const CARTESIAN_GUIDE_SIZE_RANGE = Object.freeze([154, 616]);
+const CARTESIAN_GUIDE_WITNESS_RADIUS = 6;
 const DEFAULT_ANALYSIS_QUESTION =
   "Direct lifecycle options are exercised against one truthful TidyTuesday projection.";
 const REGRESSION_ANALYSIS_QUESTION =
@@ -2220,7 +2227,8 @@ function delegatedGuideFactors(delegate, factors) {
 }
 
 function makeDelegatedGuideRecipe({
-  id, family, complexity, delegate, expectedDirectActions, augment, profileIds
+  id, family, complexity, delegate, expectedDirectActions, augment, profileIds,
+  preserveDelegatePresentation = false
 }) {
   const datasets = freeze([...delegate.datasets]);
   const includedProfiles = profileIds === undefined ? undefined : new Set(profileIds);
@@ -2264,11 +2272,10 @@ function makeDelegatedGuideRecipe({
     },
     build(factors) {
       const delegated = delegate.build(delegatedGuideFactors(delegate, factors));
-      return finish(
-        augment === undefined ? delegated : augment(delegated),
-        factors.dataset,
-        family
-      );
+      const augmented = augment === undefined ? delegated : augment(delegated);
+      return preserveDelegatePresentation
+        ? augmented
+        : finish(augmented, factors.dataset, family);
     },
     observe() {
       return freeze([]);
@@ -2289,9 +2296,13 @@ function makeDelegatedGuideRecipe({
         ...source,
         chartFamily: family,
         complexity,
-        title: titleFor(factors.dataset, family),
-        analysisQuestion:
-          "Direct lifecycle options are exercised against one truthful TidyTuesday projection.",
+        ...(preserveDelegatePresentation
+          ? {}
+          : {
+              title: titleFor(factors.dataset, family),
+              analysisQuestion:
+                "Direct lifecycle options are exercised against one truthful TidyTuesday projection."
+            }),
         activeFeatures: []
       });
     }
@@ -2437,6 +2448,119 @@ function decimalCartesianAxis() {
   };
 }
 
+function readableCartesianTicksAndLabels(format, values) {
+  return {
+    ...(values === undefined ? { count: 5 } : { values }),
+    ticks: { length: 8, color: "#475569", lineWidth: 1.25 },
+    labels: {
+      offset: 12,
+      format,
+      color: "#334155",
+      fontSize: 15,
+      fontFamily: "sans-serif",
+      fontWeight: 500
+    }
+  };
+}
+
+function restoreReadableCartesianGuidePresentation(program, presentation) {
+  const xTicksAndLabels = readableCartesianTicksAndLabels(
+    ".0f",
+    presentation.xValues
+  );
+  const yTicksAndLabels = readableCartesianTicksAndLabels({ decimals: 3 });
+  return program
+    .editCanvas({
+      width: CARTESIAN_GUIDE_CANVAS.width,
+      height: CARTESIAN_GUIDE_CANVAS.height,
+      margin: { ...CARTESIAN_GUIDE_CANVAS.margin }
+    })
+    .editScale({ id: "size", range: [...CARTESIAN_GUIDE_SIZE_RANGE] })
+    .encodePointRadius({
+      target: "decimalLegendLines",
+      value: CARTESIAN_GUIDE_WITNESS_RADIUS
+    })
+    .editPointMark({ target: "points", strokeWidth: 1.2 })
+    .editPointMark({
+      target: "decimalLegendLines",
+      fill: "#0f172a",
+      opacity: 0.45
+    })
+    .editXAxisTicksAndLabels({ position: "bottom", ...xTicksAndLabels })
+    .createXAxisLine({
+      scale: "x",
+      position: "bottom",
+      color: "#475569",
+      lineWidth: 1.25
+    })
+    .createXAxisTitle({
+      scale: "x",
+      position: "bottom",
+      text: presentation.xTitle,
+      at: "center",
+      offset: 64,
+      rotation: 0,
+      color: "#0f172a",
+      fontSize: 17,
+      fontFamily: "sans-serif",
+      fontWeight: 700
+    })
+    .createYAxis({
+      scale: "y",
+      coordinate: "main",
+      position: "left",
+      line: { color: "#475569", lineWidth: 1.25 },
+      ticksAndLabels: yTicksAndLabels,
+      title: {
+        text: presentation.yTitle,
+        at: "center",
+        offset: 190,
+        rotation: -Math.PI / 2,
+        color: "#0f172a",
+        fontSize: 17,
+        fontFamily: "sans-serif",
+        fontWeight: 700
+      }
+    })
+    .createLegend({
+      target: "points",
+      channels: ["color"],
+      position: "right",
+      align: "center",
+      direction: "vertical",
+      offset: 42,
+      title: presentation.legendTitle,
+      symbol: "auto",
+      labels: {
+        offset: 10,
+        fontSize: 15,
+        fontFamily: "sans-serif",
+        fontWeight: 500
+      },
+      titleStyle: {
+        fontSize: 17,
+        fontFamily: "sans-serif",
+        fontWeight: 700
+      }
+    })
+    .editTitle({
+      maxWidth: 900,
+      lineHeight: 34,
+      titleStyle: {
+        color: "#0f172a",
+        fontSize: 30,
+        fontFamily: "sans-serif",
+        fontWeight: 700
+      },
+      subtitleStyle: {
+        color: "#475569",
+        fontSize: 17,
+        fontFamily: "sans-serif",
+        fontWeight: 400
+      }
+    });
+}
+
 function decimalPolarAxis(scaleId, angle = 0) {
   return {
     scale: scaleId,
@@ -2461,12 +2585,22 @@ const CARTESIAN_GUIDE_RECIPE = makeDelegatedGuideRecipe({
   complexity: "advanced",
   delegate: GUIDE_RECIPE_BY_ID.get("realistic-guide-scale-cartesian-lifecycle"),
   profileIds: ["decimal-object"],
+  preserveDelegatePresentation: true,
   expectedDirectActions: [
     "createCoordinate", "createGuides", "createAxes", "createXAxis",
     "createXAxisTicksAndLabels", "editXAxis", "editXAxisTicksAndLabels",
     "editLegend"
   ],
   augment(program) {
+    const analysisRows = program.semanticSpec.datasets.find(dataset =>
+      dataset.id === "analysisRows"
+    ).values;
+    const presentation = {
+      xTitle: program.semanticSpec.guides.axis.x.title,
+      yTitle: program.semanticSpec.guides.axis.y.title,
+      legendTitle: program.semanticSpec.guides.legend.color.title,
+      xValues: analysisRows.map(row => row.rank)
+    };
     const axis = decimalCartesianAxis();
     let next = program
       .removeLegend({ target: "points", channels: ["color"] })
@@ -2546,8 +2680,9 @@ const CARTESIAN_GUIDE_RECIPE = makeDelegatedGuideRecipe({
       .encodeY({
         target: "cartesianCoordinateWitness", field: "value",
         fieldType: "quantitative", scale: { id: "cartesian-witness-y" }
-      });
-    return next;
+      })
+      .removeMark({ target: "cartesianCoordinateWitness" });
+    return restoreReadableCartesianGuidePresentation(next, presentation);
   }
 });
 
