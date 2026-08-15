@@ -28,6 +28,7 @@ import {
   selectStableEntries,
   loadTidyTuesdayDatasetEntries,
   loadTidyTuesdaySourceEntries,
+  releaseTidyTuesdaySourceCache,
   tidyTuesdayFixtureEntries,
   tidyTuesdayFixtureReport,
   tidyTuesdaySourceEntries,
@@ -310,6 +311,11 @@ test("exposes every verified source row with immutable original lineage", () => 
   assert.notStrictEqual(first, second);
   assert.notStrictEqual(first[0].row, source[0].row);
   assert.deepEqual(first, second);
+
+  releaseTidyTuesdaySourceCache(id);
+  const reloaded = tidyTuesdaySourceEntries(id);
+  assert.notStrictEqual(reloaded, source);
+  assert.deepEqual(reloaded, source);
 });
 
 test("keeps optional raw caches outside git and the published package", () => {

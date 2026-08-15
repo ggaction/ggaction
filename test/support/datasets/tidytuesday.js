@@ -191,6 +191,12 @@ export function tidyTuesdaySourceEntries(id) {
   return sourceEntryCache.get(id);
 }
 
+export function releaseTidyTuesdaySourceCache(id) {
+  requireTidyTuesdayDefinition(id);
+  sourceCache.delete(id);
+  sourceEntryCache.delete(id);
+}
+
 export function tidyTuesdayFixtureRows(id) {
   if (!fixtureCache.has(id)) {
     const definition = requireTidyTuesdayDefinition(id);
