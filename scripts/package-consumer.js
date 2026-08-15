@@ -924,6 +924,15 @@ async function testTypeScriptConsumer(directory) {
       line: { curve: "linear", strokeWidth: 2 },
       guides: false
     };
+    const invalidClosedLineOptions: CreateLinePlotOptions = {
+      x: "x",
+      y: "y",
+      line: {
+        // @ts-expect-error Cartesian line facades cannot author closed Polar paths.
+        closed: true
+      }
+    };
+    void invalidClosedLineOptions;
     const lineFacade: ChartProgram = chart()
       .createCanvas()
       .createData({ values: [{ x: 1, y: 2, group: "A" }] })

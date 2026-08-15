@@ -1737,7 +1737,7 @@ export interface CreateLinePlotOptions {
     curve?: CurveInterpolation;
     stroke?: string;
     opacity?: number;
-    closed?: boolean;
+    closed?: false;
   };
   guides?: false | CreateGuidesOptions;
 }
