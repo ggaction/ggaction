@@ -10,6 +10,25 @@ import {
 const DEFAULT_ROW_LIMIT = 160;
 const DEFAULT_GROUP_LIMIT = 8;
 const DEFAULT_SUBGROUP_LIMIT = 8;
+const FIELD_PAIR_CAPABILITIES = new Set([
+  "record", "distribution", "interval", "histogram", "segmented-histogram",
+  "grouped", "matrix", "facet", "ordered", "temporal", "paired-measures"
+]);
+const LIFECYCLE_KINDS = new Set([
+  "style", "parallel", "temporal", "regression", "path", "bar", "facet",
+  "interval", "box", "histogram", "polar"
+]);
+
+class RealisticIneligibleDataError extends Error {}
+
+function ineligibleData(message) {
+  return new RealisticIneligibleDataError(message);
+}
+
+export function isRealisticIneligibleDataError(error) {
+  return error instanceof RealisticIneligibleDataError;
+}
+
 const fieldPairCache = new Map();
 
 function freezeRecord(value) {
@@ -140,6 +159,9 @@ export function realisticDatasetRoles(id) {
 }
 
 export function realisticDatasetSupports(id, capability) {
+  if (!LIFECYCLE_KINDS.has(capability)) {
+    throw new Error(`Unknown realistic lifecycle capability "${capability}".`);
+  }
   const roles = realisticDatasetRoles(id);
   if (capability === "temporal") return roles.temporal.length > 0;
   if (["regression", "path"].includes(capability)) {
@@ -148,7 +170,73 @@ export function realisticDatasetSupports(id, capability) {
   return roles.measures.length > 0 && roles.dimensions.length > 0;
 }
 
+export function realisticLifecycleEligible(id, capability) {
+  if (!LIFECYCLE_KINDS.has(capability)) {
+    throw new Error(`Unknown realistic lifecycle capability "${capability}".`);
+  }
+  try {
+    const rows = realisticLifecycleRows(id, capability).rows;
+    if (rows.length < 2) return false;
+    if (capability === "interval") {
+      return rows.every(row => row.lower < row.center && row.center < row.upper);
+    }
+    if (capability === "box") {
+      const groups = new Map();
+      for (const row of rows) {
+        if (!groups.has(row.group)) groups.set(row.group, []);
+        groups.get(row.group).push(row.value);
+      }
+      return groups.size >= 2 && [...groups.values()].every(values =>
+        values.length >= 5 && Math.min(...values) < Math.max(...values)
+      );
+    }
+    if (capability === "histogram") {
+      return rows.length >= 20 && new Set(rows.map(row => row.value)).size >= 5;
+    }
+    if (["style", "parallel"].includes(capability)) {
+      return new Set(rows.map(row => row.x)).size >= 2 &&
+        new Set(rows.map(row => row.y)).size >= 2 &&
+        new Set(rows.map(row => row.color)).size >= 2;
+    }
+    if (capability === "bar") {
+      return new Set(rows.map(row => row.category)).size >= 2 &&
+        new Set(rows.map(row => row.group)).size >= 2;
+    }
+    if (capability === "facet") {
+      const facets = new Map();
+      for (const row of rows) {
+        facets.set(row.facet, (facets.get(row.facet) ?? 0) + 1);
+      }
+      return facets.size >= 2 && [...facets.values()].every(count => count >= 3) &&
+        new Set(rows.map(row => row.category)).size >= 2;
+    }
+    if (capability === "polar") {
+      return new Set(rows.map(row => row.group)).size >= 2 &&
+        new Set(rows.map(row => row.weight)).size >= 2;
+    }
+    if (["regression", "path"].includes(capability)) {
+      const groups = new Map();
+      for (const row of rows) {
+        if (!groups.has(row.group)) groups.set(row.group, []);
+        groups.get(row.group).push(row);
+      }
+      return groups.size >= 2 && [...groups.values()].every(values =>
+        values.length >= (capability === "regression" ? 5 : 2) &&
+        new Set(values.map(row => row.x)).size >= (capability === "regression" ? 4 : 2) &&
+        new Set(values.map(row => row.y)).size >= 2
+      );
+    }
+    return true;
+  } catch (error) {
+    if (!(error instanceof RealisticIneligibleDataError)) throw error;
+    return false;
+  }
+}
+
 export function realisticFieldPairDomain(id, capability = "record") {
+  if (!FIELD_PAIR_CAPABILITIES.has(capability)) {
+    throw new Error(`Unknown realistic field-pair capability "${capability}".`);
+  }
   const cacheKey = `${id}\0${capability}`;
   if (fieldPairCache.has(cacheKey)) return fieldPairCache.get(cacheKey);
   const roles = realisticDatasetRoles(id);
@@ -357,7 +445,7 @@ function stableSelection(entries, limit, { measures, dimensions, strata }) {
     selected.add(entries[index]);
   }
   if (selected.size > limit) {
-    throw new RangeError("Realistic row limit cannot retain all required witness rows.");
+    throw ineligibleData("Realistic row limit cannot retain all required witness rows.");
   }
   return [...selected].sort((left, right) => left.sourceRowIndex - right.sourceRowIndex);
 }
@@ -382,7 +470,7 @@ function provenance(id, bindings, sourceRowIndexes, transformations, {
 } = {}) {
   const indexes = unique(sourceRowIndexes).sort((left, right) => left - right);
   if (indexes.length === 0) {
-    throw new Error(`Dataset "${id}" realistic lineage cannot be empty.`);
+    throw ineligibleData(`Dataset "${id}" realistic lineage cannot be empty.`);
   }
   if (explicitIndexes && indexes.length > MAX_EXPLICIT_SOURCE_ROW_INDEXES) {
     throw new RangeError(
@@ -414,7 +502,7 @@ function extendProvenance(value, transformations) {
 
 function assertView(id, kind, rows) {
   if (rows.length < 2) {
-    throw new Error(
+    throw ineligibleData(
       `Dataset "${id}" has fewer than two valid rows for realistic ${kind} analysis.`
     );
   }
@@ -435,6 +523,8 @@ export function realisticRecordView(id, {
   subgroupLimit = DEFAULT_SUBGROUP_LIMIT,
   minimumPerGroup = 1,
   minimumPerSubgroup = 1,
+  minimumRetainedGroupRows = 1,
+  requireRetainedGroupVariation = false,
   witnessCross = false
 } = {}) {
   const roles = realisticDatasetRoles(id);
@@ -476,7 +566,9 @@ export function realisticRecordView(id, {
       .map(([category]) => category)
     : retainedCategoryValues.map(String).filter(category => groupStats.has(category)));
   if (retainedGroups.size === 0) {
-    throw new Error(`Dataset "${id}" has no rows for the requested retained categories.`);
+    throw ineligibleData(
+      `Dataset "${id}" has no rows for the requested retained categories.`
+    );
   }
   let eligible = entries.filter(({ row }) =>
     finite(row[measure]) !== undefined &&
@@ -498,6 +590,25 @@ export function realisticRecordView(id, {
     eligible = eligible.filter(({ row }) =>
       retainedSubgroups.has(String(scalarCategory(row[secondaryDimension])))
     );
+  }
+  if (minimumRetainedGroupRows > 1 || requireRetainedGroupVariation) {
+    const retainedStats = new Map();
+    for (const { row } of eligible) {
+      const category = String(scalarCategory(row[dimension]));
+      const value = finite(row[measure]);
+      if (!retainedStats.has(category)) retainedStats.set(category, []);
+      retainedStats.get(category).push(value);
+    }
+    const supported = new Set([...retainedStats]
+      .filter(([, values]) => values.length >= minimumRetainedGroupRows &&
+        (!requireRetainedGroupVariation || new Set(values).size > 1))
+      .map(([category]) => category));
+    eligible = eligible.filter(({ row }) =>
+      supported.has(String(scalarCategory(row[dimension])))
+    );
+    if (supported.size === 0) {
+      throw ineligibleData(`Dataset "${id}" has no sufficiently varied retained groups.`);
+    }
   }
   const selected = stableSelection(eligible, rowLimit, {
     measures: unique([measure, secondaryMeasure].filter(Boolean)),
@@ -606,6 +717,14 @@ export function realisticRecordView(id, {
               op: "top-subgroups",
               field: secondaryDimension,
               limit: subgroupLimit
+            })]),
+        ...(minimumRetainedGroupRows <= 1 && !requireRetainedGroupVariation
+          ? []
+          : [freezeRecord({
+              op: "filter-supported-groups",
+              field: dimension,
+              minimumRows: minimumRetainedGroupRows,
+              requireVariation: requireRetainedGroupVariation
             })]),
         freezeRecord({
           op: "witness-preserving-even-sample",
@@ -779,7 +898,7 @@ export function realisticOrderedView(id, {
     : roles.temporal.find(field => field !== measure) ??
       roles.order.find(field => field !== measure);
   if (sequence === undefined) {
-    throw new Error(
+    throw ineligibleData(
       `Dataset "${id}" requires a real ${temporalOnly ? "temporal" : "order or temporal"} field.`
     );
   }
@@ -817,7 +936,7 @@ export function realisticOrderedView(id, {
     return String(left).localeCompare(String(right));
   });
   if (distinctOrder.length < 3) {
-    throw new Error(`Dataset "${id}" requires at least three real ordered values.`);
+    throw ineligibleData(`Dataset "${id}" requires at least three real ordered values.`);
   }
   const rankByValue = new Map(distinctOrder.map((value, index) => [value, index]));
   const bucketCount = Math.min(binLimit, distinctOrder.length);
@@ -887,20 +1006,29 @@ export function realisticOrderedView(id, {
         }
       : {}),
     provenance: provenance(id, bindings, sourceRowIndexes, [
-      freezeRecord({ op: "filter-valid", fields: [measure, dimension, sequence] }),
-      freezeRecord({ op: "top-groups", field: dimension, limit: groupLimit }),
+      freezeRecord({
+        op: "filter-valid",
+        fields: unique([measure, dimension, sequence])
+      }),
       ...(singleSeries
         ? [freezeRecord({
             op: "single-series-projection",
             source: dimension,
+            as: "group",
+            value: "all-observations",
             purpose: "avoid grouping an ordered field by itself"
           })]
         : []),
       freezeRecord({
+        op: "top-groups",
+        field: singleSeries ? "group" : dimension,
+        limit: groupLimit
+      }),
+      freezeRecord({
         op: temporal ? "temporal-bin-aggregate" : "ordered-bin-aggregate",
         field: measure,
         orderBy: sequence,
-        groupBy: dimension,
+        groupBy: singleSeries ? "group" : dimension,
         bins: bucketCount,
         aggregate: operation
       }),
@@ -938,19 +1066,49 @@ export function realisticGroupedView(id, {
   });
   const { measure, dimension, secondaryDimension } = record.provenance.fieldBindings;
   if (secondaryDimension === undefined) {
-    throw new Error(
+    throw ineligibleData(
       `Dataset "${id}" requires a second source dimension for realistic grouped analysis.`
     );
   }
-  const retainedCategories = new Set(record.rows.map(row => String(row.category)));
-  const retainedSubgroups = new Set(record.rows.map(row => String(row.subgroup)));
+  const sourceEntries = tidyTuesdaySourceEntries(id);
+  const countRows = operation === "count"
+    ? sourceEntries.flatMap(({ row, sourceRowIndex }) => {
+        const category = scalarCategory(row[dimension]);
+        const subgroup = scalarCategory(row[secondaryDimension]);
+        return category === undefined || subgroup === undefined
+          ? []
+          : [{ category: String(category), subgroup: String(subgroup), sourceRowIndex }];
+      })
+    : undefined;
+  const countCategories = new Map();
+  for (const row of countRows ?? []) {
+    countCategories.set(row.category, (countCategories.get(row.category) ?? 0) + 1);
+  }
+  const retainedCategories = operation === "count"
+    ? new Set([...countCategories]
+        .sort((left, right) => right[1] - left[1] || left[0].localeCompare(right[0]))
+        .slice(0, groupLimit)
+        .map(([category]) => category))
+    : new Set(record.rows.map(row => String(row.category)));
+  const countSubgroups = new Map();
+  for (const row of countRows ?? []) {
+    if (!retainedCategories.has(row.category)) continue;
+    countSubgroups.set(row.subgroup, (countSubgroups.get(row.subgroup) ?? 0) + 1);
+  }
+  const retainedSubgroups = operation === "count"
+    ? new Set([...countSubgroups]
+        .sort((left, right) => right[1] - left[1] || left[0].localeCompare(right[0]))
+        .slice(0, subgroupLimit)
+        .map(([subgroup]) => subgroup))
+    : new Set(record.rows.map(row => String(row.subgroup)));
   const grouped = new Map();
-  for (const { row, sourceRowIndex } of tidyTuesdaySourceEntries(id)) {
+  for (const { row, sourceRowIndex } of sourceEntries) {
     const value = finite(row[measure]);
     const category = scalarCategory(row[dimension]);
     const subgroup = scalarCategory(row[secondaryDimension]);
     if (
-      value === undefined || category === undefined || subgroup === undefined ||
+      (operation !== "count" && value === undefined) ||
+      category === undefined || subgroup === undefined ||
       !retainedCategories.has(String(category)) ||
       !retainedSubgroups.has(String(subgroup))
     ) continue;
@@ -970,15 +1128,23 @@ export function realisticGroupedView(id, {
   }));
   const sourceRowIndexes = aggregates.flatMap(row => row.sourceRowIndexes);
   const rows = aggregates.map(({ sourceRowIndexes: _sourceRowIndexes, ...row }) => row);
+  const fieldBindings = operation === "count"
+    ? freezeRecord({ dimension, secondaryDimension })
+    : record.provenance.fieldBindings;
   return freezeRecord({
     rows: assertView(id, "grouped", rows),
     aggregate: operation,
     provenance: provenance(
       id,
-      record.provenance.fieldBindings,
+      fieldBindings,
       sourceRowIndexes,
       [
-        freezeRecord({ op: "filter-valid", fields: [measure, dimension, secondaryDimension] }),
+        freezeRecord({
+          op: "filter-valid",
+          fields: operation === "count"
+            ? [dimension, secondaryDimension]
+            : [measure, dimension, secondaryDimension]
+        }),
         freezeRecord({ op: "top-groups", field: dimension, limit: groupLimit }),
         freezeRecord({
           op: "top-subgroups",
@@ -987,7 +1153,7 @@ export function realisticGroupedView(id, {
         }),
         freezeRecord({
           op: "category-subgroup-aggregate",
-          field: measure,
+          ...(operation === "count" ? {} : { field: measure }),
           groupBy: [dimension, secondaryDimension],
           aggregate: operation,
           purpose: operation === "count"
@@ -1072,6 +1238,19 @@ export function realisticCompositionView(id, {
 
 function actualCapabilityEligible(id, pair, capability) {
   try {
+    if (capability === "paired-measures") {
+      const view = realisticRecordView(id, {
+        ...pair,
+        includeSecondaryMeasure: true,
+        includeSecondaryDimension: false,
+        deriveSubgroup: false,
+        groupLimit: 24
+      });
+      const rows = view.rows.filter(row => Number.isFinite(row.secondary));
+      return rows.length >= 12 &&
+        new Set(rows.map(row => row.value)).size >= 3 &&
+        new Set(rows.map(row => row.secondary)).size >= 3;
+    }
     if (capability === "grouped") {
       const view = realisticGroupedView(id, { ...pair, aggregate: "mean" });
       return new Set(view.rows.map(row => row.category)).size >= 2 &&
@@ -1143,13 +1322,73 @@ function actualCapabilityEligible(id, pair, capability) {
     }
     return view.rows.length >= 2 && new Set(view.rows.map(row => row.category)).size >= 2;
   } catch (error) {
-    const expected = error instanceof Error && (
-      error.message.startsWith(`Dataset "${id}"`) ||
-      error.message === "Realistic row limit cannot retain all required witness rows."
-    );
-    if (!expected) throw error;
+    if (!(error instanceof RealisticIneligibleDataError)) throw error;
     return false;
   }
+}
+
+function lifecycleXProjection(records) {
+  const bindings = records.provenance.fieldBindings;
+  const candidates = [
+    bindings.secondaryMeasure === undefined ? undefined : {
+      field: bindings.secondaryMeasure,
+      type: "secondaryMeasure",
+      selected: row => finite(row.secondary),
+      source: row => finite(row[bindings.secondaryMeasure])
+    },
+    bindings.order === undefined ? undefined : {
+      field: bindings.order,
+      type: "order",
+      selected: row => finite(row.orderNumeric),
+      source: row => scalarCategory(row[bindings.order])
+    },
+    bindings.temporal === undefined ? undefined : {
+      field: bindings.temporal,
+      type: "temporal",
+      selected: row => {
+        const value = Date.parse(row.time);
+        return Number.isFinite(value) ? value : undefined;
+      },
+      source: row => {
+        const value = Date.parse(row[bindings.temporal]);
+        return Number.isFinite(value) ? value : undefined;
+      }
+    }
+  ].filter(Boolean).filter(candidate => candidate.field !== bindings.measure);
+  return candidates.find(candidate => {
+    const values = records.rows.flatMap(row => {
+      const value = candidate.selected(row);
+      return value === undefined ? [] : [value];
+    });
+    return values.length >= 2 && new Set(values).size >= 2;
+  });
+}
+
+function lifecycleEligibleSourceCount(id, kind, records, xProjection) {
+  const bindings = records.provenance.fieldBindings;
+  const retainedCategories = new Set(records.rows.map(row => String(row.category)));
+  const retainedSubgroups = new Set(records.rows.flatMap(row =>
+    row.subgroup === undefined ? [] : [String(row.subgroup)]
+  ));
+  return tidyTuesdaySourceEntries(id).filter(({ row }) => {
+    const category = scalarCategory(row[bindings.dimension]);
+    if (
+      finite(row[bindings.measure]) === undefined || category === undefined ||
+      !retainedCategories.has(String(category))
+    ) return false;
+    if (bindings.secondaryDimension !== undefined) {
+      const subgroup = scalarCategory(row[bindings.secondaryDimension]);
+      if (subgroup === undefined || !retainedSubgroups.has(String(subgroup))) return false;
+    }
+    const time = bindings.temporal === undefined
+      ? undefined
+      : Date.parse(row[bindings.temporal]);
+    if (["style", "parallel", "regression", "path"].includes(kind)) {
+      return xProjection?.source(row) !== undefined;
+    }
+    if (kind === "temporal") return Number.isFinite(time);
+    return true;
+  }).length;
 }
 
 export function realisticLifecycleRows(id, kind) {
@@ -1162,24 +1401,26 @@ export function realisticLifecycleRows(id, kind) {
   const summaryRows = summary.rows;
   const transformations = [...records.provenance.transformations];
   let rows;
+  let xProjection;
   if (["style", "parallel"].includes(kind)) {
     const minimum = Math.min(...recordRows.map(row => row.value));
     const maximum = Math.max(...recordRows.map(row => row.value));
     const span = maximum - minimum || 1;
-    const usable = recordRows.filter(row =>
-      Number.isFinite(row.secondary) || Number.isFinite(row.orderNumeric)
-    );
+    xProjection = lifecycleXProjection(records);
+    const usable = xProjection === undefined
+      ? []
+      : recordRows.filter(row => xProjection.selected(row) !== undefined);
     if (usable.length < 2) {
-      throw new Error(
+      throw ineligibleData(
         `Dataset "${id}" requires a second measure or source order for ${kind} analysis.`
       );
     }
     rows = usable.map((row, index) => ({
       id: row.key,
-      x: row.secondary ?? row.orderNumeric,
+      x: xProjection.selected(row),
       y: row.value,
       positive: Math.abs(row.value),
-      size: Math.abs(row.secondary ?? row.value),
+      size: Math.abs(xProjection.selected(row)),
       opacity: (row.value - minimum) / span,
       color: row.category,
       shape: row.subgroup,
@@ -1189,14 +1430,22 @@ export function realisticLifecycleRows(id, kind) {
       sourceRowIndex: row.sourceRowIndex
     }));
     transformations.push(
+      freezeRecord({
+        op: "filter-valid-analysis-x",
+        field: xProjection.field
+      }),
       freezeRecord({ op: "absolute-magnitude", source: "value", as: "positive" }),
       freezeRecord({ op: "min-max-normalize", source: "value", as: "opacity" }),
       freezeRecord({ op: "stable-angle-rank", source: "sourceRowIndex", as: "angle" })
     );
   } else if (kind === "temporal") {
-    const temporalRows = recordRows.filter(row => row.time !== undefined);
+    const temporalRows = recordRows.filter(row =>
+      row.time !== undefined && Number.isFinite(Date.parse(row.time))
+    );
     if (temporalRows.length < 2) {
-      throw new Error(`Dataset "${id}" requires a source temporal field for lifecycle time analysis.`);
+      throw ineligibleData(
+        `Dataset "${id}" requires a source temporal field for lifecycle time analysis.`
+      );
     }
     const ordered = [...temporalRows].sort((left, right) =>
       Date.parse(left.time) - Date.parse(right.time) ||
@@ -1210,32 +1459,32 @@ export function realisticLifecycleRows(id, kind) {
       group: row.subgroup,
       sourceRowIndex: row.sourceRowIndex
     }));
-    transformations.push(freezeRecord({
-      op: "stable-order-rank",
-      source: records.provenance.fieldBindings.temporal,
-      as: "order"
-    }));
+    transformations.push(
+      freezeRecord({
+        op: "filter-valid-temporal",
+        field: records.provenance.fieldBindings.temporal
+      }),
+      freezeRecord({
+        op: "stable-order-rank",
+        source: records.provenance.fieldBindings.temporal,
+        as: "order"
+      })
+    );
   } else if (["regression", "path"].includes(kind)) {
-    const xValue = row => {
-      if (Number.isFinite(row.secondary)) return row.secondary;
-      if (Number.isFinite(row.orderNumeric)) return row.orderNumeric;
-      if (row.time !== undefined) {
-        const timestamp = Date.parse(row.time);
-        if (Number.isFinite(timestamp)) return timestamp;
-      }
-      return undefined;
-    };
-    const pairedRows = recordRows.filter(row => xValue(row) !== undefined);
+    xProjection = lifecycleXProjection(records);
+    const pairedRows = xProjection === undefined
+      ? []
+      : recordRows.filter(row => xProjection.selected(row) !== undefined);
     if (pairedRows.length < 2) {
-      throw new Error(
+      throw ineligibleData(
         `Dataset "${id}" requires a second measure or source order/time field for ${kind} analysis.`
       );
     }
     const projected = pairedRows.map(row => ({
       id: row.key,
-      x: xValue(row),
+      x: xProjection.selected(row),
       y: row.value,
-      position: xValue(row),
+      position: xProjection.selected(row),
       value: row.value,
       series: row.subgroup,
       group: row.subgroup,
@@ -1250,8 +1499,10 @@ export function realisticLifecycleRows(id, kind) {
       }
       rows = [...grouped.values()].map(groupRows => ({
         ...groupRows[0],
+        id: `path-aggregate-${String(groupRows[0].group)}-${String(groupRows[0].x)}`,
         y: groupRows.reduce((sum, row) => sum + row.y, 0) / groupRows.length,
-        value: groupRows.reduce((sum, row) => sum + row.value, 0) / groupRows.length
+        value: groupRows.reduce((sum, row) => sum + row.value, 0) / groupRows.length,
+        sourceRowIndexes: groupRows.map(row => row.sourceRowIndex)
       })).sort((left, right) =>
         String(left.group).localeCompare(String(right.group)) || left.x - right.x
       );
@@ -1259,12 +1510,21 @@ export function realisticLifecycleRows(id, kind) {
       rows = projected;
     }
     transformations.push(freezeRecord({
+      op: "filter-valid-analysis-pair",
+      fields: [xProjection.field, records.provenance.fieldBindings.measure]
+    }));
+    transformations.push(freezeRecord({
       op: "project-real-analysis-pair",
-      x: records.provenance.fieldBindings.secondaryMeasure ??
-        records.provenance.fieldBindings.order ??
-        records.provenance.fieldBindings.temporal,
+      x: xProjection.field,
       y: records.provenance.fieldBindings.measure
     }));
+    if (kind === "path") {
+      transformations.push(freezeRecord({
+        op: "duplicate-position-mean",
+        groupBy: ["group", "x"],
+        fields: ["y", "value"]
+      }));
+    }
   } else if (["bar", "facet"].includes(kind)) {
     rows = recordRows.map(row => ({
       id: row.key,
@@ -1325,12 +1585,40 @@ export function realisticLifecycleRows(id, kind) {
   const additionalTransformations = ["interval", "polar"].includes(kind)
     ? transformations.slice(records.provenance.transformations.length)
     : transformations.slice(source.transformations.length);
+  const allTransformations = [
+    ...source.transformations,
+    ...additionalTransformations,
+    freezeRecord({ op: "lifecycle-projection", kind })
+  ];
+  const recordBased = !["interval", "polar"].includes(kind);
+  const sourceRowIndexes = recordBased
+    ? unique(rows.flatMap(row => row.sourceRowIndexes ?? [row.sourceRowIndex]))
+    : undefined;
+  if (kind === "path") {
+    rows = rows.map(({
+      sourceRowIndex: _sourceRowIndex,
+      sourceRowIndexes: _sourceRowIndexes,
+      ...row
+    }) => row);
+  }
   return freezeRecord({
     rows,
-    provenance: extendProvenance(source, [
-      ...source.transformations,
-      ...additionalTransformations,
-      freezeRecord({ op: "lifecycle-projection", kind })
-    ])
+    ...(recordBased
+      ? { sample: freezeRecord({
+          ...records.sample,
+          displayedRowCount: sourceRowIndexes.length,
+          eligibleRowCount: lifecycleEligibleSourceCount(id, kind, records, xProjection),
+          outputRowCount: rows.length
+        }) }
+      : {}),
+    provenance: recordBased
+      ? provenance(
+          id,
+          source.fieldBindings,
+          sourceRowIndexes,
+          allTransformations,
+          { explicitIndexes: true }
+        )
+      : extendProvenance(source, allTransformations)
   });
 }
