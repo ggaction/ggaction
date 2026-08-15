@@ -354,7 +354,9 @@ export const rematerializePointMark = action(
         ? dataset.values.map((_, index) => {
           const existing = existingArea(existingChildren[index], graphic.type);
           return Math.sqrt(
-            existing ?? Math.PI * (config.radius ?? DEFAULT_POINT_RADIUS) ** 2
+            config.radius === undefined
+              ? existing ?? Math.PI * DEFAULT_POINT_RADIUS ** 2
+              : Math.PI * config.radius ** 2
           );
         })
         : area.map(value => Math.sqrt(value));
