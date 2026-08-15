@@ -2,9 +2,12 @@ import { chart } from "../../../src/index.js";
 import { measureTextWidth } from "../../../src/core/textMetrics.js";
 
 import {
+  isRealisticIneligibleDataError,
   realisticDatasetIds,
+  realisticDatasetRoles,
   realisticDatasetSupports,
   realisticLifecycleRows,
+  realisticRecordView,
   realisticSourceFields
 } from "./realistic-data.js";
 import {
@@ -22,6 +25,10 @@ const CURVES = Object.freeze([
 const KERNELS = Object.freeze(["epanechnikov", "gaussian", "triangular", "uniform"]);
 const NORMALIZATIONS = Object.freeze(["unit", "count"]);
 const FACET_LEGEND_SAFETY_GUTTER = 12;
+const DEFAULT_ANALYSIS_QUESTION =
+  "Direct lifecycle options are exercised against one truthful TidyTuesday projection.";
+const REGRESSION_ANALYSIS_QUESTION =
+  "How does the selected measure vary across stable source-record order within full-source-supported groups?";
 const SELECTOR_CHANNELS = Object.freeze([
   "x", "y", "x2", "y2", "xOffset", "yOffset", "theta", "radius",
   "color", "strokeDash", "size", "shape", "group", "opacity"
@@ -107,8 +114,134 @@ function canvas() {
   };
 }
 
-function extendedView(dataset, kind) {
-  const base = realisticLifecycleRows(dataset, kind);
+function regressionLifecycleView(dataset) {
+  const roles = realisticDatasetRoles(dataset);
+  const dimensionOrder = [
+    ...(roles.dimensions.length > 1 ? [1] : []),
+    0,
+    ...roles.dimensions.slice(2).map((_, index) => index + 2)
+  ];
+  const candidates = dimensionOrder.flatMap((dimensionIndex, priority) => {
+    try {
+      const records = realisticRecordView(dataset, {
+        dimensionIndex,
+        includeSecondaryDimension: false,
+        deriveSubgroup: false,
+        minimumPerGroup: 4,
+        minimumRetainedGroupRows: 4,
+        requireRetainedGroupVariation: true
+      });
+      const sampledGroups = new Map();
+      for (const row of records.rows) {
+        const label = String(row.category);
+        const values = sampledGroups.get(label) ?? [];
+        values.push(row.value);
+        sampledGroups.set(label, values);
+      }
+      if ([...sampledGroups.values()].some(values =>
+        values.length < 4 || new Set(values).size < 2
+      )) return [];
+      return [{ records, priority }];
+    } catch (error) {
+      if (!isRealisticIneligibleDataError(error)) throw error;
+      return [];
+    }
+  }).sort((left, right) =>
+    right.records.sample.eligibleRowCount - left.records.sample.eligibleRowCount ||
+    right.records.rows.length - left.records.rows.length ||
+    left.priority - right.priority
+  );
+  let records;
+  let groupProjection;
+  if (candidates.length > 0) {
+    records = candidates[0].records;
+    groupProjection = {
+      id: "source-dimension",
+      field: records.provenance.fieldBindings.dimension,
+      value(row) {
+        return String(row.category);
+      }
+    };
+  } else {
+    records = realisticRecordView(dataset, {
+      includeSecondaryDimension: false,
+      deriveSubgroup: false,
+      groupLimit: 160,
+      minimumPerGroup: 1
+    });
+    if (records.rows.length < 4 || new Set(records.rows.map(row => row.value)).size < 2) {
+      throw new Error(
+        `Dataset "${dataset}" has no truthful rows for polynomial regression.`
+      );
+    }
+    groupProjection = {
+      id: "all-observations",
+      value() {
+        return "All observations";
+      }
+    };
+  }
+  const rows = records.rows.map((row, index) => ({
+    id: row.key,
+    x: index + 1,
+    y: row.value,
+    position: index + 1,
+    value: row.value,
+    label: row.label,
+    sourceGroup: String(row.category),
+    series: groupProjection.value(row),
+    group: groupProjection.value(row),
+    sourceRowIndex: row.sourceRowIndex
+  }));
+  const retainedGroups = [...new Set(rows.map(row => row.group))];
+  const transformations = [
+    ...records.provenance.transformations,
+    freeze({
+      op: "polynomial-supported-group-projection",
+      groupProjection: groupProjection.id,
+      ...(groupProjection.field === undefined
+        ? { derivedField: "all-observations" }
+        : { field: groupProjection.field }),
+      selectionBasis: "full-source-before-sample",
+      minimumRows: 4,
+      minimumDistinctX: 3,
+      minimumDistinctY: 2,
+      eligibleRowCount: records.sample.eligibleRowCount,
+      retainedGroups
+    }),
+    freeze({
+      op: "stable-selected-source-order-rank",
+      source: "sourceRowIndex",
+      as: "x"
+    }),
+    freeze({
+      op: "project-real-analysis-pair",
+      x: "sourceRowIndex",
+      y: records.provenance.fieldBindings.measure
+    }),
+    freeze({ op: "lifecycle-projection", kind: "regression" })
+  ];
+  return freeze({
+    rows,
+    sample: {
+      ...records.sample,
+      displayedRowCount: rows.length,
+      outputRowCount: rows.length
+    },
+    provenance: {
+      ...records.provenance,
+      transformations
+    }
+  });
+}
+
+function extendedView(dataset, kind, { singleSeriesProjection = false } = {}) {
+  const base = kind === "regression"
+    ? regressionLifecycleView(dataset)
+    : realisticLifecycleRows(dataset, kind);
+  const singleSeriesValue = singleSeriesProjection
+    ? "All observations"
+    : undefined;
   const rows = base.rows.map((row, index) => {
     const first = Number.isFinite(row.x)
       ? row.x
@@ -139,9 +272,11 @@ function extendedView(dataset, kind) {
       positionEnd: (Number.isFinite(row.position) ? row.position : index + 1) + 0.28,
       bucket: index % 3 + 1,
       category: String(row.category ?? row.group ?? `Group ${index % 4}`),
-      group: String(row.group ?? row.series ?? row.category ?? `Series ${index % 3}`),
-      series: String(row.series ?? row.group ?? row.category ?? `Series ${index % 3}`),
-      label: String(row.category ?? row.group ?? row.id ?? index + 1),
+      group: singleSeriesValue ??
+        String(row.group ?? row.series ?? row.category ?? `Series ${index % 3}`),
+      series: singleSeriesValue ??
+        String(row.series ?? row.group ?? row.category ?? `Series ${index % 3}`),
+      label: String(row.label ?? row.category ?? row.group ?? row.id ?? index + 1),
       size: Math.abs(Number.isFinite(row.size) ? row.size : first) + 1,
       opacity: Number.isFinite(row.opacity) ? Math.max(0, Math.min(1, row.opacity)) : 0.7,
       angle: Number.isFinite(row.angle) ? row.angle : index * 360 / Math.max(1, base.rows.length)
@@ -154,15 +289,20 @@ function extendedView(dataset, kind) {
       ...base.provenance,
       transformations: [
         ...base.provenance.transformations,
-        {
+        freeze({
           op: "direct-lifecycle-field-projection",
           purpose: "derive positive, interval, position, label, and grouping witnesses without adding rows",
           sourceRowCount: rows.length
-        },
-        {
-          op: "single-series-projection",
-          purpose: "retain one source-backed series for direct lifecycle comparisons"
-        }
+        }),
+        ...(singleSeriesProjection
+          ? [freeze({
+              op: "single-series-projection",
+              groupProjection: "all-observations",
+              derivedField: "group",
+              value: singleSeriesValue,
+              purpose: "collapse only derived grouping channels while preserving authentic category labels and rows"
+            })]
+          : [])
       ]
     }
   });
@@ -192,8 +332,8 @@ function scale(type, id, ordinal = 0) {
   };
 }
 
-function createBase(dataset, kind, id = "analysisRows") {
-  const view = extendedView(dataset, kind);
+function createBase(dataset, kind, id = "analysisRows", options = {}) {
+  const view = extendedView(dataset, kind, options);
   return {
     view,
     program: chart()
@@ -217,11 +357,11 @@ const TITLE_FAMILY_BY_RECIPE_FAMILY = Object.freeze({
   "direct-lifecycle-facet": "Facet and composition layout lifecycle coverage"
 });
 
-function finish(program, dataset, family) {
+function finish(program, dataset, family, analysisQuestion = DEFAULT_ANALYSIS_QUESTION) {
   const text = titleFor(dataset, family);
   const options = {
     text,
-    subtitle: "Direct lifecycle options are exercised against one truthful TidyTuesday projection.",
+    subtitle: analysisQuestion,
     align: "left",
     maxWidth: 1_700,
     wrap: "word",
@@ -704,7 +844,12 @@ function baseEncodingForRemoval(program, target, channel) {
 }
 
 function buildRemovalCoverage(factors) {
-  const { program: initial } = createBase(factors.dataset, "style");
+  const { program: initial } = createBase(
+    factors.dataset,
+    "style",
+    "analysisRows",
+    { singleSeriesProjection: true }
+  );
   let program = initial.filterData({
     id: "removalMaterialRows",
     source: "analysisRows",
@@ -1549,7 +1694,12 @@ function buildRegressionCoverage(factors) {
     target: "direct-regression-band-linear",
     stroke: false
   });
-  return finish(program, factors.dataset, "Regression model and component lifecycle coverage");
+  return finish(
+    program,
+    factors.dataset,
+    "Regression model and component lifecycle coverage",
+    REGRESSION_ANALYSIS_QUESTION
+  );
 }
 
 function buildMiscellaneousCoverage(factors) {
@@ -1712,7 +1862,9 @@ function buildFacetCoverage(factors) {
 }
 
 function metadataFor(recipe, factors) {
-  const view = extendedView(factors.dataset, recipe.kind);
+  const view = extendedView(factors.dataset, recipe.kind, {
+    singleSeriesProjection: recipe.singleSeriesProjection
+  });
   const fields = realisticSourceFields(factors.dataset, view.provenance.fieldBindings);
   const titleFamily = TITLE_FAMILY_BY_RECIPE_FAMILY[recipe.family] ?? recipe.family;
   return freeze({
@@ -1721,8 +1873,9 @@ function metadataFor(recipe, factors) {
     complexity: recipe.complexity,
     sourceDatasetIds: [factors.dataset],
     title: titleFor(factors.dataset, titleFamily),
-    analysisQuestion:
-      "Direct lifecycle options are exercised against one truthful TidyTuesday projection.",
+    analysisQuestion: recipe.kind === "regression"
+      ? REGRESSION_ANALYSIS_QUESTION
+      : DEFAULT_ANALYSIS_QUESTION,
     sourceFields: fields,
     ...(view.sample === undefined ? {} : { sampling: view.sample }),
     provenance: view.provenance,
@@ -1746,7 +1899,15 @@ function schedule() {
   });
 }
 
-function makeRecipe({ id, family, complexity, kind, build, expectedDirectActions }) {
+function makeRecipe({
+  id,
+  family,
+  complexity,
+  kind,
+  build,
+  expectedDirectActions,
+  singleSeriesProjection = false
+}) {
   const datasets = freeze(DATASETS.filter(dataset => realisticDatasetSupports(dataset, kind)));
   const coverageSchedule = schedule();
   const recipe = {
@@ -1762,6 +1923,7 @@ function makeRecipe({ id, family, complexity, kind, build, expectedDirectActions
     minimumSelections: coverageSchedule.minimumSelections,
     kind,
     family,
+    singleSeriesProjection,
     factorsForDataset(dataset) {
       return datasets.includes(dataset) ? freeze({ profile: PROFILES }) : undefined;
     },
@@ -1905,6 +2067,7 @@ const REMOVAL_RECIPE = makeRecipe({
   family: "direct-lifecycle-removal",
   complexity: "simple",
   kind: "style",
+  singleSeriesProjection: true,
   build: buildRemovalCoverage,
   expectedDirectActions: ["removeEncoding"]
 });

@@ -14,7 +14,10 @@ import { assertAnalyticLayerIntegrity } from "../oracles/analytic-layer-integrit
 import { assertGraphicIntegrity } from "../oracles/graphic-integrity.js";
 import { assertSvgIntegrity } from "../oracles/svg-integrity.js";
 import { datasetDefinition } from "../support/datasets/catalog.js";
-import { releaseTidyTuesdaySourceCache } from "../support/datasets/tidytuesday.js";
+import {
+  releaseTidyTuesdaySourceCache,
+  tidyTuesdaySourceEntries
+} from "../support/datasets/tidytuesday.js";
 import { buildPublicOptionInventory } from "../support/scenarios/coverage-inventory.js";
 import {
   SOURCE_INDEX_ENCODING,
@@ -54,9 +57,15 @@ const REPLAY_CORRECTED_SHA256 =
   "e58f38f8c129884aa7ea3d364b52d67e5927593052ff39cc3b8199c7dca20059";
 const FACET_SWEEP_CHILD_ENV = "GGACTION_DIRECT_FACET_SWEEP_CHILD";
 const FACET_SWEEP_RESOURCE_PREFIX = "direct-facet-sweep-resource:";
-const MAX_FACET_SWEEP_RSS_KIB = 512 * 1_024;
 const FACET_SWEEP_TEST_NAME =
   "preflights the maximal facet profile on all fifty eligible TT datasets";
+const REGRESSION_SWEEP_CHILD_ENV = "GGACTION_DIRECT_REGRESSION_SWEEP_CHILD";
+const REGRESSION_SWEEP_RESOURCE_PREFIX = "direct-regression-sweep-resource:";
+const REGRESSION_SWEEP_TEST_NAME =
+  "preflights the maximal regression profile on all fifty eligible TT datasets";
+const MAX_DISPOSABLE_SWEEP_RSS_KIB = 512 * 1_024;
+const REGRESSION_ANALYSIS_QUESTION =
+  "How does the selected measure vary across stable source-record order within full-source-supported groups?";
 let inventoryPromise = buildPublicOptionInventory(JSON.parse(readFileSync(
   new URL("../../knowledge/action-cards.json", import.meta.url),
   "utf8"
@@ -101,15 +110,20 @@ function createGarbageCollector() {
 
 const collectGarbage = createGarbageCollector();
 
-function runFacetSweepInDisposableProcess() {
+function runSweepInDisposableProcess({
+  childEnvironmentName,
+  expectedResources,
+  resourcePrefix,
+  testName
+}) {
   const childEnvironment = {
     ...process.env,
-    [FACET_SWEEP_CHILD_ENV]: "1"
+    [childEnvironmentName]: "1"
   };
   delete childEnvironment.NODE_TEST_CONTEXT;
   const child = spawnSync(process.execPath, [
     "--test",
-    `--test-name-pattern=^${FACET_SWEEP_TEST_NAME}$`,
+    `--test-name-pattern=^${testName}$`,
     fileURLToPath(import.meta.url)
   ], {
     encoding: "utf8",
@@ -120,17 +134,16 @@ function runFacetSweepInDisposableProcess() {
   assert.equal(child.signal, null, child.stderr);
   assert.equal(child.status, 0, `${child.stdout}\n${child.stderr}`);
   const resourceLine = child.stdout.split("\n").find(line =>
-    line.includes(FACET_SWEEP_RESOURCE_PREFIX)
+    line.includes(resourcePrefix)
   );
   assert.notEqual(resourceLine, undefined, child.stdout);
   const resources = JSON.parse(
-    resourceLine.slice(resourceLine.indexOf(FACET_SWEEP_RESOURCE_PREFIX) +
-      FACET_SWEEP_RESOURCE_PREFIX.length)
+    resourceLine.slice(resourceLine.indexOf(resourcePrefix) + resourcePrefix.length)
   );
-  assert.equal(resources.builds, 50);
-  assert.equal(resources.maximumWidth, 4_648);
-  assert.equal(resources.maximumHeight, 2_210);
-  assert.ok(resources.maxRssKiB < MAX_FACET_SWEEP_RSS_KIB, resources);
+  for (const [key, value] of Object.entries(expectedResources)) {
+    assert.deepEqual(resources[key], value, `${testName} ${key}`);
+  }
+  assert.ok(resources.maxRssKiB < MAX_DISPOSABLE_SWEEP_RSS_KIB, resources);
 }
 
 function hashIds(ids) {
@@ -604,7 +617,16 @@ test("keeps every authentic TV-ratings series label inside the shared facet lege
 
 test(FACET_SWEEP_TEST_NAME, () => {
   if (process.env[FACET_SWEEP_CHILD_ENV] !== "1") {
-    runFacetSweepInDisposableProcess();
+    runSweepInDisposableProcess({
+      childEnvironmentName: FACET_SWEEP_CHILD_ENV,
+      expectedResources: {
+        builds: 50,
+        maximumWidth: 4_648,
+        maximumHeight: 2_210
+      },
+      resourcePrefix: FACET_SWEEP_RESOURCE_PREFIX,
+      testName: FACET_SWEEP_TEST_NAME
+    });
     return;
   }
   const recipe = REALISTIC_DIRECT_LIFECYCLE_COVERAGE_RECIPES.find(value =>
@@ -661,11 +683,304 @@ test(FACET_SWEEP_TEST_NAME, () => {
   assert.equal(maximumHeight, 2_210);
   collectGarbage();
   const maxRssKiB = process.resourceUsage().maxRSS;
-  assert.ok(maxRssKiB < MAX_FACET_SWEEP_RSS_KIB, { maxRssKiB });
+  assert.ok(maxRssKiB < MAX_DISPOSABLE_SWEEP_RSS_KIB, { maxRssKiB });
   console.log(`${FACET_SWEEP_RESOURCE_PREFIX}${JSON.stringify({
     builds,
     maximumWidth,
     maximumHeight,
+    maxRssKiB
+  })}`);
+});
+
+test("selects polynomial-safe Space Launch groups before sampling", () => {
+  const dataset = "tt-space-launches";
+  const recipe = REALISTIC_DIRECT_LIFECYCLE_COVERAGE_RECIPES.find(value =>
+    value.id === "realistic-direct-lifecycle-regression-coverage"
+  );
+  const factors = { dataset, profile: { id: "maximal" } };
+  let captured = false;
+  let semanticDigest;
+  let provenanceSnapshot;
+  try {
+    const result = runScenario({
+      id: "regression-direct-polynomial-space-launches",
+      recipe: recipe.id,
+      factors
+    }, {
+      deterministic: false,
+      captureProgram(program) {
+        captured = true;
+        const metadata = recipe.describe(factors);
+        const provenance = metadata.provenance;
+        const rows = program.semanticSpec.datasets.find(value =>
+          value.id === "analysisRows"
+        ).values;
+        const sourceByIndex = new Map(tidyTuesdaySourceEntries(dataset).map(entry => [
+          entry.sourceRowIndex,
+          entry.row
+        ]));
+        const groups = new Map();
+        for (const row of rows) {
+          const values = groups.get(row.group) ?? [];
+          values.push(row);
+          groups.set(row.group, values);
+          const source = sourceByIndex.get(row.sourceRowIndex);
+          assert.equal(row.group, String(source.agency_type));
+          assert.equal(row.label, String(source.mission ?? source.agency_type));
+        }
+        assert.deepEqual(
+          Object.fromEntries([...groups].map(([group, values]) => [group, values.length])),
+          { state: 127, private: 27, startup: 6 }
+        );
+        assert.ok([...groups.values()].every(values =>
+          values.length >= 4 &&
+          new Set(values.map(row => row.rowOrdinal)).size >= 3 &&
+          new Set(values.map(row => row.positiveY)).size >= 2
+        ));
+        const fullSourceFilterIndex = provenance.transformations.findIndex(value =>
+          value.op === "filter-supported-groups"
+        );
+        const sampleIndex = provenance.transformations.findIndex(value =>
+          value.op === "witness-preserving-even-sample"
+        );
+        assert.ok(fullSourceFilterIndex >= 0);
+        assert.ok(fullSourceFilterIndex < sampleIndex);
+        assert.deepEqual(provenance.transformations[fullSourceFilterIndex], {
+          op: "filter-supported-groups",
+          field: "agency_type",
+          minimumRows: 4,
+          requireVariation: true
+        });
+        assert.deepEqual(
+          provenance.transformations.find(value =>
+            value.op === "polynomial-supported-group-projection"
+          ),
+          {
+            op: "polynomial-supported-group-projection",
+            groupProjection: "source-dimension",
+            field: "agency_type",
+            selectionBasis: "full-source-before-sample",
+            minimumRows: 4,
+            minimumDistinctX: 3,
+            minimumDistinctY: 2,
+            eligibleRowCount: 5_726,
+            retainedGroups: ["state", "private", "startup"]
+          }
+        );
+        assert.deepEqual(metadata.sampling, {
+          method: "deterministic-stratified-witness-sample",
+          eligibleRowCount: 5_726,
+          displayedRowCount: 160,
+          limit: 160,
+          strata: ["agency_type"],
+          outputRowCount: 160
+        });
+        assert.equal(provenance.sourceRowCount, 160);
+        assert.equal(provenance.sourceRowIndexes.length, 160);
+        assert.equal(new Set(provenance.sourceRowIndexes).size, 160);
+        assert.equal(
+          provenance.sourceSelectionSha256,
+          "cdea226599db8c6a2f7904fffe380046617641b299570c25472799788f66b77f"
+        );
+        assert.equal(
+          createHash("sha256").update(provenance.sourceRowIndexes.join(",")).digest("hex"),
+          provenance.sourceSelectionSha256
+        );
+        assert.equal(metadata.analysisQuestion, REGRESSION_ANALYSIS_QUESTION);
+        assert.equal(program.semanticSpec.title.subtitle, REGRESSION_ANALYSIS_QUESTION);
+        assert.equal(metadata.dataOperations.includes("single-series-projection"), false);
+        assertGraphicIntegrity(program, dataset);
+        assertAnalyticLayerIntegrity(program, dataset);
+        assertSvgIntegrity(renderToSVG(program), dataset);
+        semanticDigest = createHash("sha256")
+          .update(JSON.stringify(program.semanticSpec))
+          .digest("hex");
+        provenanceSnapshot = provenance;
+      }
+    });
+    assert.equal(captured, true);
+    assert.deepEqual(result.renderers, ["svg"]);
+    assert.ok(result.directOperations.includes("createRegression"));
+    assert.ok(result.directOperations.includes("createRegressionData"));
+    assert.ok(result.directOperations.includes("createRegressionBand"));
+    assert.ok(result.directOperations.includes("createRegressionLine"));
+    releaseTidyTuesdaySourceCache(dataset);
+    collectGarbage();
+    const repeated = recipe.build(factors);
+    const repeatedMetadata = recipe.describe(factors);
+    assert.equal(
+      createHash("sha256").update(JSON.stringify(repeated.semanticSpec)).digest("hex"),
+      semanticDigest
+    );
+    assert.deepEqual(repeatedMetadata.provenance, provenanceSnapshot);
+  } finally {
+    releaseTidyTuesdaySourceCache(dataset);
+    collectGarbage();
+  }
+});
+
+test("keeps the assigned single-series operation truthful and removal-only", () => {
+  const removal = REALISTIC_DIRECT_LIFECYCLE_COVERAGE_RECIPES.find(value =>
+    value.id === "realistic-direct-lifecycle-removal-coverage"
+  );
+  const expectedCategoryCounts = {
+    "tt-penguins": 3,
+    "tt-global-temperatures": 8,
+    "tt-london-marathon-winners": 4,
+    "tt-himalayan-peaks": 1,
+    "tt-us-tornadoes": 8
+  };
+  for (const dataset of WITNESS_DATASETS) {
+    try {
+      const factors = { dataset, profile: { id: "maximal" } };
+      const program = removal.build(factors);
+      const metadata = removal.describe(factors);
+      const rows = program.semanticSpec.datasets.find(value =>
+        value.id === "analysisRows"
+      ).values;
+      assert.deepEqual([...new Set(rows.map(row => row.group))], ["All observations"]);
+      assert.deepEqual([...new Set(rows.map(row => row.series))], ["All observations"]);
+      assert.equal(
+        new Set(rows.map(row => row.category)).size,
+        expectedCategoryCounts[dataset],
+        `${dataset} authentic categories remain intact`
+      );
+      assert.ok(rows.every(row => row.category !== "All observations"), dataset);
+      assert.deepEqual(
+        metadata.provenance.transformations.find(value =>
+          value.op === "single-series-projection"
+        ),
+        {
+          op: "single-series-projection",
+          groupProjection: "all-observations",
+          derivedField: "group",
+          value: "All observations",
+          purpose:
+            "collapse only derived grouping channels while preserving authentic category labels and rows"
+        }
+      );
+    } finally {
+      releaseTidyTuesdaySourceCache(dataset);
+      collectGarbage();
+    }
+  }
+  for (const recipe of REALISTIC_DIRECT_LIFECYCLE_COVERAGE_RECIPES) {
+    if (recipe.id === removal.id) continue;
+    const dataset = recipe.datasets[0];
+    const profile = recipe.factorsForDataset(dataset)?.profile?.[0];
+    if (profile === undefined) continue;
+    assert.equal(
+      recipe.describe({ dataset, profile }).dataOperations.includes(
+        "single-series-projection"
+      ),
+      false,
+      recipe.id
+    );
+    releaseTidyTuesdaySourceCache(dataset);
+  }
+  collectGarbage();
+});
+
+test(REGRESSION_SWEEP_TEST_NAME, () => {
+  if (process.env[REGRESSION_SWEEP_CHILD_ENV] !== "1") {
+    runSweepInDisposableProcess({
+      childEnvironmentName: REGRESSION_SWEEP_CHILD_ENV,
+      expectedResources: {
+        builds: 50,
+        minimumRows: 49,
+        maximumRows: 160,
+        minimumGroups: 1,
+        maximumGroups: 8,
+        fallbackDatasets: ["tt-global-temperatures", "tt-cats-vs-dogs"]
+      },
+      resourcePrefix: REGRESSION_SWEEP_RESOURCE_PREFIX,
+      testName: REGRESSION_SWEEP_TEST_NAME
+    });
+    return;
+  }
+  const recipe = REALISTIC_DIRECT_LIFECYCLE_COVERAGE_RECIPES.find(value =>
+    value.id === "realistic-direct-lifecycle-regression-coverage"
+  );
+  let builds = 0;
+  let minimumRows = Number.POSITIVE_INFINITY;
+  let maximumRows = 0;
+  let minimumGroups = Number.POSITIVE_INFINITY;
+  let maximumGroups = 0;
+  const fallbackDatasets = [];
+  assert.equal(recipe.datasets.length, 50);
+  for (const dataset of recipe.datasets) {
+    try {
+      const domains = recipe.factorsForDataset(dataset);
+      const profile = domains?.profile.find(value => value.id === "maximal");
+      assert.notEqual(profile, undefined, `${dataset} maximal regression eligibility`);
+      const factors = { dataset, profile };
+      const program = recipe.build(factors);
+      const metadata = recipe.describe(factors);
+      const rows = program.semanticSpec.datasets.find(value =>
+        value.id === "analysisRows"
+      ).values;
+      const groups = new Map();
+      for (const row of rows) {
+        const values = groups.get(row.group) ?? [];
+        values.push(row);
+        groups.set(row.group, values);
+      }
+      assert.ok([...groups.values()].every(values =>
+        values.length >= 4 &&
+        new Set(values.map(row => row.rowOrdinal)).size >= 3 &&
+        new Set(values.map(row => row.positiveY)).size >= 2
+      ), `${dataset} polynomial group support`);
+      const projection = metadata.provenance.transformations.find(value =>
+        value.op === "polynomial-supported-group-projection"
+      );
+      assert.notEqual(projection, undefined, `${dataset} polynomial projection`);
+      assert.equal(projection.selectionBasis, "full-source-before-sample");
+      if (projection.groupProjection === "all-observations") {
+        fallbackDatasets.push(dataset);
+      } else {
+        const filterIndex = metadata.provenance.transformations.findIndex(value =>
+          value.op === "filter-supported-groups"
+        );
+        const sampleIndex = metadata.provenance.transformations.findIndex(value =>
+          value.op === "witness-preserving-even-sample"
+        );
+        assert.ok(filterIndex >= 0 && filterIndex < sampleIndex, dataset);
+      }
+      assert.equal(metadata.provenance.sourceRowCount, rows.length, dataset);
+      assert.equal(metadata.provenance.sourceRowIndexes.length, rows.length, dataset);
+      assert.equal(
+        createHash("sha256")
+          .update(metadata.provenance.sourceRowIndexes.join(","))
+          .digest("hex"),
+        metadata.provenance.sourceSelectionSha256,
+        dataset
+      );
+      assert.equal(metadata.analysisQuestion, REGRESSION_ANALYSIS_QUESTION);
+      assert.equal(metadata.dataOperations.includes("single-series-projection"), false);
+      assertGraphicIntegrity(program, dataset);
+      assertAnalyticLayerIntegrity(program, dataset);
+      assertSvgIntegrity(renderToSVG(program), dataset);
+      minimumRows = Math.min(minimumRows, rows.length);
+      maximumRows = Math.max(maximumRows, rows.length);
+      minimumGroups = Math.min(minimumGroups, groups.size);
+      maximumGroups = Math.max(maximumGroups, groups.size);
+      builds += 1;
+    } finally {
+      releaseTidyTuesdaySourceCache(dataset);
+      collectGarbage();
+    }
+  }
+  assert.equal(builds, 50);
+  collectGarbage();
+  const maxRssKiB = process.resourceUsage().maxRSS;
+  assert.ok(maxRssKiB < MAX_DISPOSABLE_SWEEP_RSS_KIB, { maxRssKiB });
+  console.log(`${REGRESSION_SWEEP_RESOURCE_PREFIX}${JSON.stringify({
+    builds,
+    minimumRows,
+    maximumRows,
+    minimumGroups,
+    maximumGroups,
+    fallbackDatasets,
     maxRssKiB
   })}`);
 });
