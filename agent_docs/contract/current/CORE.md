@@ -549,6 +549,13 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
   range cardinality는 최대 `10,000`이다.
 - `unknown`은 direct unattached scale에서는 channel을 알 수 없으므로 그대로 저장한다. Consumer가 attach될 때
   concrete channel fallback validation과 supported item-grain policy를 적용한다.
+- Standalone `createScale`/`editScale`은 위의 전체 vocabulary를 유지하지만 action 안의 nested scale은
+  consumer role별 public type만 노출한다. Quantitative position은 continuous transformed options, temporal
+  position은 `time`, categorical position은 `band | point`를 사용하며 zero-baseline bar/histogram/density
+  output에서는 `log`를 제외한다. Categorical color는 `ordinal`, size/opacity는 `linear`, shape/dash는
+  `ordinal`이고 stroke width는 quantitative transformed scale이다. Palette/interpolation 같은 color-only
+  option이나 padding 같은 discrete-position option을 다른 role에 전달하면 저장 후 무시하지 않고 즉시
+  거부한다. Point row consumers만 channel-valid `unknown` fallback을 author할 수 있다.
 - Effect: semantic definition만 저장한다. equivalent repeated call은 idempotent, conflicting definition은 오류다.
 - Coverage: `test/unit/actions/scales/scale-actions.test.js`와 grammar scale tests가 types,
   auto/explicit values, idempotence와 conflicts를 검증한다. Consumer-specific ordinal range와 `unknown`

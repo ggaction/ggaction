@@ -199,7 +199,7 @@ export interface CategoryDensityPlacement {
   side?: DensityPlacementSide;
   width?: DensityPlacementWidth;
   split?: DensityPlacementSplit;
-  scale?: ScaleOptions;
+  scale?: NonPointBandPositionScaleOptions;
 }
 export type DensityPlacement =
   | BaselineDensityPlacement
@@ -914,6 +914,79 @@ export interface ScaleOptions {
   unknown?: unknown;
 }
 
+export type QuantitativePositionScaleType =
+  | "linear" | "log" | "pow" | "sqrt" | "symlog";
+type ScaleFields<Keys extends keyof ScaleOptions> = Pick<ScaleOptions, Keys>;
+export type NonPointQuantitativePositionScaleOptions = ScaleFields<
+  "id" | "nice" | "zero" | "clamp" | "reverse" |
+  "base" | "exponent" | "constant"
+> & {
+  type?: QuantitativePositionScaleType;
+  domain?: "auto" | readonly [number, number];
+  range?: "auto" | readonly [number, number];
+};
+export type QuantitativePositionScaleOptions =
+  NonPointQuantitativePositionScaleOptions & { unknown?: number };
+export type ZeroSupportingPositionScaleType =
+  | "linear" | "pow" | "sqrt" | "symlog";
+export type NonPointZeroSupportingPositionScaleOptions = Omit<
+  NonPointQuantitativePositionScaleOptions,
+  "base" | "type"
+> & { type?: ZeroSupportingPositionScaleType };
+export type NonPointTemporalPositionScaleOptions = ScaleFields<
+  "id" | "nice" | "clamp" | "reverse"
+> & {
+  type?: "time";
+  domain?: "auto" | readonly [number, number];
+  range?: "auto" | readonly [number, number];
+};
+export type TemporalPositionScaleOptions =
+  NonPointTemporalPositionScaleOptions & { unknown?: number };
+export type NonPointBandPositionScaleOptions = ScaleFields<
+  "id" | "reverse" | "paddingInner" | "paddingOuter" | "align"
+> & {
+  type?: "band";
+  domain?: "auto" | readonly unknown[];
+  range?: "auto" | readonly [number, number];
+};
+export type BandPositionScaleOptions =
+  NonPointBandPositionScaleOptions & { unknown?: number };
+export type NonPointPointPositionScaleOptions = ScaleFields<
+  "id" | "reverse" | "padding" | "align"
+> & {
+  type?: "point";
+  domain?: "auto" | readonly unknown[];
+  range?: "auto" | readonly [number, number];
+};
+export type PointPositionScaleOptions =
+  NonPointPointPositionScaleOptions & { unknown?: number };
+export type CategoricalPositionScaleOptions =
+  | BandPositionScaleOptions
+  | PointPositionScaleOptions;
+export type NonPointCategoricalPositionScaleOptions =
+  | NonPointBandPositionScaleOptions
+  | NonPointPointPositionScaleOptions;
+type WithoutScaleId<T> = T extends unknown ? Omit<T, "id"> : never;
+export type NonPointCategoricalColorScaleOptions = ScaleFields<"id" | "palette"> & {
+  type?: "ordinal";
+  domain?: "auto" | readonly unknown[];
+  range?: "auto" | readonly string[] | { readonly palette: Palette };
+};
+export type CategoricalColorScaleOptions =
+  NonPointCategoricalColorScaleOptions & { unknown?: string };
+export type SizeScaleOptions = ScaleFields<"id"> & {
+  type?: "linear";
+  domain?: "auto" | readonly [number, number];
+  range?: "auto" | readonly [number, number];
+  unknown?: number;
+};
+export type ShapeScaleOptions = ScaleFields<"id"> & {
+  type?: "ordinal";
+  domain?: "auto" | readonly unknown[];
+  range?: "auto" | readonly PointShape[];
+  unknown?: PointShape;
+};
+
 export type CreateScaleOptions = ScaleOptions & { id: string };
 
 export interface EditScaleOptions {
@@ -937,13 +1010,10 @@ export interface EditScaleOptions {
   unknown?: unknown;
 }
 
-export interface PositionEncodingOptions {
+interface PositionEncodingBase {
   field: string;
   target?: string;
-  fieldType?: FieldType;
-  scale?: ScaleOptions;
   coordinate?: string;
-  aggregate?: AggregateOperation;
   bin?:
     | { maxBins?: number; step?: never; boundaries?: never }
     | { maxBins?: never; step: number; boundaries?: never }
@@ -955,8 +1025,38 @@ export interface PositionEncodingOptions {
   stack?: StackMode;
 }
 
+type PositionScaleBranches<Quantitative, Temporal, Categorical> =
+  | {
+      fieldType?: "quantitative";
+      aggregate?: never;
+      scale?: Quantitative;
+    }
+  | {
+      fieldType: "temporal";
+      aggregate?: never;
+      scale?: Temporal;
+    }
+  | {
+      fieldType: "nominal" | "ordinal";
+      aggregate?: never;
+      scale?: Categorical;
+    }
+  | {
+      fieldType?: FieldType;
+      aggregate: AggregateOperation;
+      scale?: Quantitative;
+    };
+
+export type PositionEncodingOptions = PositionEncodingBase & PositionScaleBranches<
+  QuantitativePositionScaleOptions,
+  TemporalPositionScaleOptions,
+  CategoricalPositionScaleOptions
+>;
+
 export type YPositionEncodingOptions =
-  Omit<PositionEncodingOptions, "stack"> & { stack?: YStackMode };
+  PositionEncodingOptions extends infer T
+    ? T extends unknown ? Omit<T, "stack"> & { stack?: YStackMode } : never
+    : never;
 
 export interface ThetaScaleOptions {
   id?: string;
@@ -971,7 +1071,6 @@ export interface ThetaScaleOptions {
   paddingOuter?: number;
   padding?: number;
   align?: number;
-  unknown?: unknown;
 }
 
 export interface RadiusScaleOptions {
@@ -986,7 +1085,6 @@ export interface RadiusScaleOptions {
   base?: number;
   exponent?: number;
   constant?: number;
-  unknown?: unknown;
 }
 
 export interface ThetaEncodingOptions {
@@ -1011,15 +1109,33 @@ type RulePositionValue =
   | { field: string; datum?: never }
   | { field?: never; datum: unknown };
 
-export type RulePositionEncodingOptions = RulePositionValue & {
+type RulePositionEncodingBase = RulePositionValue & {
   target?: string;
-  fieldType: FieldType;
-  scale?: ScaleOptions;
   coordinate?: string;
 };
 
+export type RulePositionEncodingOptions = RulePositionEncodingBase & (
+  | {
+      fieldType: "quantitative";
+      scale?: NonPointQuantitativePositionScaleOptions;
+    }
+  | {
+      fieldType: "temporal";
+      scale?: NonPointTemporalPositionScaleOptions;
+    }
+  | {
+      fieldType: "nominal" | "ordinal";
+      scale?: NonPointCategoricalPositionScaleOptions;
+    }
+);
+
+type SecondaryRulePositionEncodingOptions = RulePositionEncodingBase & {
+  fieldType: FieldType;
+  scale?: { id?: string };
+};
+
 export type SecondaryPositionEncodingOptions =
-  | RulePositionEncodingOptions
+  | SecondaryRulePositionEncodingOptions
   | {
       field: string;
       datum?: never;
@@ -1034,8 +1150,8 @@ export type HistogramEncodingOptions = {
   target?: string;
   coordinate?: string;
   stack?: StackMode;
-  xScale?: ScaleOptions;
-  yScale?: ScaleOptions;
+  xScale?: NonPointQuantitativePositionScaleOptions;
+  yScale?: NonPointZeroSupportingPositionScaleOptions;
 } & (
   | { maxBins?: number; binStep?: never; binBoundaries?: never }
   | { maxBins?: never; binStep: number; binBoundaries?: never }
@@ -1050,7 +1166,7 @@ export interface CategoricalEncodingOptions {
   field: string;
   target?: string;
   fieldType?: "nominal" | "ordinal";
-  scale?: ScaleOptions;
+  scale?: CategoricalColorScaleOptions;
   palette?: Palette;
   layout?: ColorLayout;
 }
@@ -1072,13 +1188,13 @@ type DensityEncodingBase = Omit<DensityDataOptions, "id"> & {
   target?: string;
   densityChannel?: "x" | "y";
   coordinate?: string;
-  valueScale?: ScaleOptions;
+  valueScale?: NonPointQuantitativePositionScaleOptions;
 };
 
 export type DensityEncodingOptions = DensityEncodingBase & (
   | {
       placement?: BaselineDensityPlacement;
-      densityScale?: ScaleOptions;
+      densityScale?: NonPointZeroSupportingPositionScaleOptions;
     }
   | {
       placement: CategoryDensityPlacement;
@@ -1086,16 +1202,33 @@ export type DensityEncodingOptions = DensityEncodingBase & (
     }
 );
 
-export interface HorizonXEncoding {
-  field: string;
-  fieldType?: "quantitative" | "temporal";
-  scale?: ScaleOptions;
-}
+export type HorizonXEncoding = { field: string } & (
+  | {
+      fieldType: "quantitative";
+      scale?: NonPointQuantitativePositionScaleOptions;
+    }
+  | {
+      fieldType: "temporal";
+      scale?: NonPointTemporalPositionScaleOptions;
+    }
+  | {
+      fieldType?: undefined;
+      scale?:
+        | NonPointQuantitativePositionScaleOptions
+        | NonPointTemporalPositionScaleOptions;
+    }
+);
+
+export type HorizonYScaleOptions = ScaleFields<"id" | "clamp" | "reverse"> & {
+  type?: "linear";
+  domain?: readonly [0, 1];
+  range?: "auto" | readonly [number, number];
+};
 
 export interface HorizonYEncoding {
   field: string;
   fieldType?: "quantitative";
-  scale?: ScaleOptions;
+  scale?: HorizonYScaleOptions;
 }
 
 export interface HorizonPaletteOptions {
@@ -1183,25 +1316,30 @@ export interface EditBin2DDataOptions {
   as?: DatasetBin2DOutputFields;
 }
 
-export interface ErrorBarPositionChannel {
-  field?: string;
-  fieldType?: "nominal" | "ordinal" | "temporal";
-  scale?: ScaleOptions;
-}
+export type ErrorBarPositionChannel = { field?: string } & (
+  | {
+      fieldType?: "nominal" | "ordinal";
+      scale?: NonPointCategoricalPositionScaleOptions;
+    }
+  | {
+      fieldType: "temporal";
+      scale?: NonPointTemporalPositionScaleOptions;
+    }
+);
 
 export interface ErrorBarStatisticalIntervalChannel {
   field?: string;
   center?: IntervalCenter;
   extent?: IntervalExtent;
   level?: number;
-  scale?: ScaleOptions;
+  scale?: NonPointQuantitativePositionScaleOptions;
 }
 
 export interface ErrorBarExplicitIntervalChannel {
   center: string;
   lower: string;
   upper: string;
-  scale?: ScaleOptions;
+  scale?: NonPointQuantitativePositionScaleOptions;
 }
 
 export type ErrorBarIntervalChannel =
@@ -1241,14 +1379,14 @@ export interface EditErrorBarOptions {
 
 export interface BoxPlotCategoryChannel {
   field: string;
-  fieldType: "nominal" | "ordinal" | "temporal";
-  scale?: ScaleOptions;
+  fieldType: "nominal" | "ordinal";
+  scale?: NonPointBandPositionScaleOptions;
 }
 
 export interface BoxPlotMeasureChannel {
   field: string;
   fieldType?: "quantitative";
-  scale?: ScaleOptions;
+  scale?: NonPointQuantitativePositionScaleOptions;
 }
 
 export type BoxPlotPositionChannel =
@@ -1349,7 +1487,23 @@ export interface GradientPlotOptions {
 
 export type ViolinPlotPositionChannel =
   | string
-  | BoxPlotPositionChannel;
+  | {
+      field: string;
+      fieldType: "nominal" | "ordinal";
+      scale?: NonPointBandPositionScaleOptions;
+    }
+  | {
+      field: string;
+      fieldType: "quantitative";
+      scale?: NonPointQuantitativePositionScaleOptions;
+    }
+  | {
+      field: string;
+      fieldType?: undefined;
+      scale?:
+        | NonPointBandPositionScaleOptions
+        | NonPointQuantitativePositionScaleOptions;
+    };
 
 export interface ViolinPlotDensityOptions
   extends GradientPlotDensityOptions {
@@ -1363,7 +1517,9 @@ export interface ViolinPlotSplitOptions {
 
 export type ViolinPlotColorOptions =
   | string
-  | Omit<CategoricalEncodingOptions, "target">;
+  | (Omit<CategoricalEncodingOptions, "target" | "scale"> & {
+      scale?: NonPointCategoricalColorScaleOptions;
+    });
 
 export interface ViolinPlotAreaOptions {
   fill?: string;
@@ -1397,23 +1553,105 @@ export interface EditGradientPlotOptions {
   center?: false | GradientPlotCenterOptions;
 }
 
-type BasicPositionChannel =
+type FacadePositionChannel<Quantitative, Temporal, Categorical> =
   | string
-  | Omit<PositionEncodingOptions, "target" | "coordinate">;
+  | (Omit<PositionEncodingBase, "target" | "coordinate"> &
+      PositionScaleBranches<Quantitative, Temporal, Categorical>);
+type BasicPositionChannel = FacadePositionChannel<
+  QuantitativePositionScaleOptions,
+  TemporalPositionScaleOptions,
+  CategoricalPositionScaleOptions
+>;
+type NonPointPositionChannel =
+  | string
+  | (Omit<PositionEncodingBase, "target" | "coordinate"> & (
+      | {
+          fieldType?: "quantitative";
+          aggregate?: never;
+          scale?: NonPointQuantitativePositionScaleOptions;
+        }
+      | {
+          fieldType: "temporal";
+          aggregate?: never;
+          scale?: NonPointTemporalPositionScaleOptions;
+        }
+      | {
+          fieldType?: FieldType;
+          aggregate: AggregateOperation;
+          scale?: NonPointQuantitativePositionScaleOptions;
+        }
+    ));
+type BandPositionChannel = FacadePositionChannel<
+  NonPointZeroSupportingPositionScaleOptions,
+  NonPointTemporalPositionScaleOptions,
+  NonPointBandPositionScaleOptions
+>;
 type BasicColorChannel =
   | string
-  | (ColorEncodingOptions extends infer T
-      ? T extends unknown ? Omit<T, "target"> : never
-      : never);
+  | {
+      field: string;
+      fieldType?: "nominal" | "ordinal";
+      scale?: CategoricalColorScaleOptions;
+      palette?: Palette;
+      layout?: ColorLayout;
+    }
+  | {
+      field: string;
+      fieldType: "quantitative";
+      aggregate?: AggregateOperation;
+      scale?: ContinuousColorScaleOptions | DiscretizedColorScaleOptions;
+      palette?: Palette;
+      layout?: never;
+    }
+  | {
+      field: string;
+      fieldType: "temporal";
+      aggregate?: never;
+      scale?: ContinuousColorScaleOptions;
+      palette?: Palette;
+      layout?: never;
+    };
+type NonPointCategoricalColorChannel =
+  | string
+  | {
+      field: string;
+      fieldType?: "nominal" | "ordinal";
+      scale?: NonPointCategoricalColorScaleOptions;
+      palette?: Palette;
+      layout?: ColorLayout;
+    };
+type QuantitativeBarColorChannel = {
+  field: string;
+  fieldType: "quantitative";
+  aggregate?: AggregateOperation;
+  scale?:
+    | NonPointContinuousColorScaleOptions
+    | NonPointDiscretizedColorScaleOptions;
+  palette?: Palette;
+  layout?: never;
+};
+type BarColorChannel =
+  | NonPointCategoricalColorChannel
+  | QuantitativeBarColorChannel;
+type RectColorChannel =
+  | NonPointCategoricalColorChannel
+  | QuantitativeBarColorChannel
+  | {
+      field: string;
+      fieldType: "temporal";
+      scale?: NonPointContinuousColorScaleOptions;
+      palette?: Palette;
+      layout?: never;
+    };
 export type BasicSizeChannel = string | {
   field: string;
   fieldType?: "quantitative";
-  scale?: ScaleOptions;
+  scale?: SizeScaleOptions;
 };
 export type BasicShapeChannel = string | {
   field: string;
   fieldType?: "nominal";
-  scale?: ScaleOptions;
+  scale?: ShapeScaleOptions;
 };
 export type BasicStrokeDashChannel =
   StrokeDashEncodingOptions extends infer T
@@ -1421,12 +1659,25 @@ export type BasicStrokeDashChannel =
     : never;
 
 export type ParallelMissingPolicy = "break" | "drop-row" | "error";
-export type ParallelDimension = string | {
+export type ParallelDimension = string | ({
   field: string;
-  fieldType?: "quantitative" | "ordinal";
   title?: string;
-  scale?: Omit<ScaleOptions, "id">;
-};
+} & (
+  | {
+      fieldType: "quantitative";
+      scale?: WithoutScaleId<QuantitativePositionScaleOptions>;
+    }
+  | {
+      fieldType: "ordinal";
+      scale?: WithoutScaleId<CategoricalPositionScaleOptions>;
+    }
+  | {
+      fieldType?: undefined;
+      scale?: WithoutScaleId<
+        QuantitativePositionScaleOptions | CategoricalPositionScaleOptions
+      >;
+    }
+));
 export interface ParallelCoordinatesEncodingOptions {
   target?: string;
   coordinate?: string;
@@ -1441,7 +1692,7 @@ export interface CreateParallelCoordinatesOptions {
   dimensions: readonly [ParallelDimension, ParallelDimension, ...ParallelDimension[]];
   key?: string;
   missing?: ParallelMissingPolicy;
-  color?: BasicColorChannel;
+  color?: NonPointCategoricalColorChannel;
   strokeDash?: BasicStrokeDashChannel;
   line?: {
     strokeWidth?: number;
@@ -1476,9 +1727,9 @@ export interface CreateLinePlotOptions {
   id?: string;
   data?: string;
   coordinate?: string;
-  x: BasicPositionChannel;
-  y: BasicPositionChannel;
-  color?: BasicColorChannel;
+  x: NonPointPositionChannel;
+  y: NonPointPositionChannel;
+  color?: NonPointCategoricalColorChannel;
   groupBy?: string;
   strokeDash?: BasicStrokeDashChannel;
   line?: {
@@ -1500,9 +1751,9 @@ export interface CreateBarPlotOptions {
   id?: string;
   data?: string;
   coordinate?: string;
-  x: BasicPositionChannel;
-  y: BasicPositionChannel;
-  color?: BasicColorChannel;
+  x: BandPositionChannel;
+  y: BandPositionChannel;
+  color?: BarColorChannel;
   width?: Omit<BarWidthOptions, "target">;
   bar?: {
     fill?: string;
@@ -1518,7 +1769,7 @@ export type CreateHistogramOptions = BasicHistogramEncoding & {
   data?: string;
   coordinate?: string;
   field: string;
-  color?: BasicColorChannel;
+  color?: NonPointCategoricalColorChannel;
   bar?: {
     fill?: string;
     opacity?: number;
@@ -1540,21 +1791,31 @@ export interface HeatmapBaseOptions {
   guides?: false | CreateGuidesOptions;
 }
 
+export type HeatmapCategoryPositionChannel =
+  | string
+  | {
+      field: string;
+      fieldType?: "nominal" | "ordinal";
+      scale?: NonPointBandPositionScaleOptions;
+    };
+
 export interface PreGriddedHeatmapOptions extends HeatmapBaseOptions {
-  x: BasicPositionChannel;
-  y: BasicPositionChannel;
+  x: HeatmapCategoryPositionChannel;
+  y: HeatmapCategoryPositionChannel;
   bin?: never;
-  color: BasicColorChannel;
+  color: RectColorChannel;
 }
 
 export interface BinnedHeatmapPositionChannel {
   field: string;
   fieldType?: "quantitative";
-  scale?: ScaleOptions;
+  scale?: NonPointQuantitativePositionScaleOptions;
 }
 
 export interface BinnedHeatmapColorOptions {
-  scale?: ContinuousColorScaleOptions | DiscretizedColorScaleOptions;
+  scale?:
+    | NonPointContinuousColorScaleOptions
+    | NonPointDiscretizedColorScaleOptions;
   palette?: Palette;
 }
 
@@ -1575,25 +1836,30 @@ export type CreateHeatmapOptions =
   | PreGriddedHeatmapOptions
   | BinnedHeatmapOptions;
 
-export interface ErrorBandPositionChannel {
-  field?: string;
-  fieldType?: "quantitative" | "temporal";
-  scale?: ScaleOptions;
-}
+export type ErrorBandPositionChannel = { field?: string } & (
+  | {
+      fieldType?: "quantitative";
+      scale?: NonPointQuantitativePositionScaleOptions;
+    }
+  | {
+      fieldType: "temporal";
+      scale?: NonPointTemporalPositionScaleOptions;
+    }
+);
 
 export interface ErrorBandStatisticalIntervalChannel {
   field?: string;
   center?: IntervalCenter;
   extent?: IntervalExtent;
   level?: number;
-  scale?: ScaleOptions;
+  scale?: NonPointQuantitativePositionScaleOptions;
 }
 
 export interface ErrorBandExplicitIntervalChannel {
   center: string;
   lower: string;
   upper: string;
-  scale?: ScaleOptions;
+  scale?: NonPointQuantitativePositionScaleOptions;
 }
 
 export type ErrorBandIntervalChannel =
@@ -1775,8 +2041,9 @@ export type StrokeDashEncodingOptions =
       scale?: never;
     };
 
-export interface ContinuousColorScaleOptions {
-  id?: string;
+export type NonPointContinuousColorScaleOptions = ScaleFields<
+  "id" | "interpolate" | "clamp" | "reverse"
+> & {
   type?: "sequential";
   domain?: "auto" | readonly [unknown, unknown];
   range?: "auto" | readonly [string, string, ...string[]];
@@ -1784,37 +2051,45 @@ export interface ContinuousColorScaleOptions {
     name: PaletteName;
     extent?: readonly [number, number];
   };
-  interpolate?: ContinuousColorInterpolation;
-  clamp?: boolean;
-  reverse?: boolean;
-}
+};
 
+export type ContinuousColorScaleOptions =
+  NonPointContinuousColorScaleOptions & { unknown?: string };
+
+export type NonPointQuantizeColorScaleOptions = ScaleFields<
+  "id" | "clamp" | "reverse"
+> & {
+  type: "quantize";
+  domain?: "auto" | readonly [number, number];
+  range?: "auto" | readonly [string, string, ...string[]];
+  palette?: PaletteName | { name: PaletteName; count?: number };
+};
+export type NonPointQuantileColorScaleOptions = ScaleFields<"id" | "reverse"> & {
+  type: "quantile";
+  domain?: "auto" | readonly number[];
+  range?: "auto" | readonly [string, string, ...string[]];
+  palette?: PaletteName | { name: PaletteName; count?: number };
+};
+export type NonPointThresholdColorScaleOptions = ScaleFields<"id" | "reverse"> & {
+  type: "threshold";
+  domain: readonly number[];
+  range?: "auto" | readonly [string, string, ...string[]];
+  palette?: PaletteName | { name: PaletteName; count?: number };
+};
+export type NonPointDiscretizedColorScaleOptions =
+  | NonPointQuantizeColorScaleOptions
+  | NonPointQuantileColorScaleOptions
+  | NonPointThresholdColorScaleOptions;
+export type QuantizeColorScaleOptions =
+  NonPointQuantizeColorScaleOptions & { unknown?: string };
+export type QuantileColorScaleOptions =
+  NonPointQuantileColorScaleOptions & { unknown?: string };
+export type ThresholdColorScaleOptions =
+  NonPointThresholdColorScaleOptions & { unknown?: string };
 export type DiscretizedColorScaleOptions =
-  | {
-      id?: string;
-      type: "quantize";
-      domain?: "auto" | readonly [number, number];
-      range?: "auto" | readonly [string, string, ...string[]];
-      palette?: PaletteName | { name: PaletteName; count?: number };
-      clamp?: boolean;
-      reverse?: boolean;
-    }
-  | {
-      id?: string;
-      type: "quantile";
-      domain?: "auto" | readonly number[];
-      range?: "auto" | readonly [string, string, ...string[]];
-      palette?: PaletteName | { name: PaletteName; count?: number };
-      reverse?: boolean;
-    }
-  | {
-      id?: string;
-      type: "threshold";
-      domain: readonly number[];
-      range?: "auto" | readonly [string, string, ...string[]];
-      palette?: PaletteName | { name: PaletteName; count?: number };
-      reverse?: boolean;
-    };
+  | QuantizeColorScaleOptions
+  | QuantileColorScaleOptions
+  | ThresholdColorScaleOptions;
 
 export type ColorEncodingOptions =
   | CategoricalEncodingOptions
@@ -1837,16 +2112,14 @@ export type ColorEncodingOptions =
       layout?: never;
     };
 
-export interface OpacityScaleOptions {
-  id?: string;
+export type OpacityScaleOptions = ScaleFields<
+  "id" | "nice" | "zero" | "clamp" | "reverse"
+> & {
   type?: "linear";
   domain?: "auto" | readonly [number, number];
   range?: "auto" | readonly [number, number];
-  nice?: boolean;
-  zero?: boolean;
-  clamp?: boolean;
-  reverse?: boolean;
-}
+  unknown?: number;
+};
 
 export type OpacityEncodingOptions =
   | { value: number; field?: never; target?: string }
@@ -1858,19 +2131,7 @@ export type OpacityEncodingOptions =
       scale?: OpacityScaleOptions;
     };
 
-export interface StrokeWidthScaleOptions {
-  id?: string;
-  type?: "linear" | "log" | "pow" | "sqrt" | "symlog";
-  domain?: "auto" | readonly [number, number];
-  range?: "auto" | readonly [number, number];
-  nice?: boolean;
-  zero?: boolean;
-  clamp?: boolean;
-  reverse?: boolean;
-  base?: number;
-  exponent?: number;
-  constant?: number;
-}
+export type StrokeWidthScaleOptions = NonPointQuantitativePositionScaleOptions;
 
 export type StrokeWidthEncodingOptions =
   | {
@@ -2340,8 +2601,8 @@ export class ChartProgram {
   encodeX2(options: SecondaryPositionEncodingOptions): ChartProgram;
   encodeColor(options: ColorEncodingOptions): ChartProgram;
   encodeStrokeDash(options: StrokeDashEncodingOptions): ChartProgram;
-  encodeSize(options: { field: string; target?: string; fieldType?: "quantitative"; scale?: ScaleOptions }): ChartProgram;
-  encodeShape(options: { field: string; target?: string; fieldType?: "nominal"; scale?: ScaleOptions }): ChartProgram;
+  encodeSize(options: { field: string; target?: string; fieldType?: "quantitative"; scale?: SizeScaleOptions }): ChartProgram;
+  encodeShape(options: { field: string; target?: string; fieldType?: "nominal"; scale?: ShapeScaleOptions }): ChartProgram;
   encodeAngle(options:
     | { target?: string; value: number; field?: never; fieldType?: never }
     | { target?: string; field: string; fieldType?: "quantitative"; value?: never }
@@ -2359,7 +2620,7 @@ export class ChartProgram {
     target?: string;
     fieldType?: "quantitative";
     coordinate?: string;
-    scale?: ScaleOptions;
+    scale?: NonPointQuantitativePositionScaleOptions;
   }): ChartProgram;
   encodeXRange(options: {
     lower: string;
@@ -2367,7 +2628,7 @@ export class ChartProgram {
     target?: string;
     fieldType?: "quantitative";
     coordinate?: string;
-    scale?: ScaleOptions;
+    scale?: NonPointQuantitativePositionScaleOptions;
   }): ChartProgram;
   encodeGroup(options: { field: string; target?: string; fieldType?: "nominal" }): ChartProgram;
   encodePathOrder(options: PathOrderEncodingOptions): ChartProgram;

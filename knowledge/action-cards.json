@@ -1785,8 +1785,8 @@
         ],
         "idOptions": [
           "target",
-          "scale",
-          "coordinate"
+          "coordinate",
+          "scale"
         ]
       },
       "options": [
@@ -1799,19 +1799,15 @@
           "required": false
         },
         {
+          "name": "coordinate",
+          "required": false
+        },
+        {
           "name": "fieldType",
           "required": false
         },
         {
           "name": "scale",
-          "required": false
-        },
-        {
-          "name": "coordinate",
-          "required": false
-        },
-        {
-          "name": "aggregate",
           "required": false
         },
         {
@@ -1823,12 +1819,16 @@
           "required": false
         },
         {
+          "name": "aggregate",
+          "required": false
+        },
+        {
           "name": "datum",
           "required": false
         }
       ],
       "callPatterns": [
-        "encodeX({ target?, scale?, coordinate?, field?, fieldType?, aggregate?, bin?, stack? })"
+        "encodeX({ target?, coordinate?, scale?, field?, fieldType?, bin?, stack?, aggregate? })"
       ],
       "snippet": "program.encodeX({ field: \"x\" })",
       "errors": [],
@@ -1861,8 +1861,8 @@
         ],
         "idOptions": [
           "target",
-          "scale",
-          "coordinate"
+          "coordinate",
+          "scale"
         ]
       },
       "options": [
@@ -1875,6 +1875,10 @@
           "required": false
         },
         {
+          "name": "coordinate",
+          "required": false
+        },
+        {
           "name": "fieldType",
           "required": false
         },
@@ -1883,15 +1887,11 @@
           "required": false
         },
         {
-          "name": "coordinate",
+          "name": "bin",
           "required": false
         },
         {
           "name": "aggregate",
-          "required": false
-        },
-        {
-          "name": "bin",
           "required": false
         },
         {
@@ -1904,7 +1904,7 @@
         }
       ],
       "callPatterns": [
-        "encodeY({ target?, scale?, coordinate?, field?, fieldType?, aggregate?, bin?, stack? })"
+        "encodeY({ target?, coordinate?, scale?, field?, fieldType?, bin?, aggregate?, stack? })"
       ],
       "snippet": "program.encodeY({ field: \"y\" })",
       "errors": [],
@@ -2210,7 +2210,7 @@
       "layer": "user-facing",
       "domain": "encodings",
       "summary": "Encode or replace a quantitative field as equal-area point size.",
-      "signature": "encodeSize(options: { field: string; target?: string; fieldType?: \"quantitative\"; scale?: ScaleOptions }): ChartProgram;",
+      "signature": "encodeSize(options: { field: string; target?: string; fieldType?: \"quantitative\"; scale?: SizeScaleOptions }): ChartProgram;",
       "intents": [
         "encode size",
         "encode",
@@ -2265,7 +2265,7 @@
       "layer": "user-facing",
       "domain": "encodings",
       "summary": "Encode or replace a nominal field with the shared 12-value point-shape vocabulary.",
-      "signature": "encodeShape(options: { field: string; target?: string; fieldType?: \"nominal\"; scale?: ScaleOptions }): ChartProgram;",
+      "signature": "encodeShape(options: { field: string; target?: string; fieldType?: \"nominal\"; scale?: ShapeScaleOptions }): ChartProgram;",
       "intents": [
         "encode shape",
         "encode",
@@ -2886,7 +2886,7 @@
       "layer": "user-facing",
       "domain": "encodings",
       "summary": "Atomically compose area or ranged-bar encodeY and encodeY2.",
-      "signature": "encodeYRange(options: { lower: string; upper: string; target?: string; fieldType?: \"quantitative\"; coordinate?: string; scale?: ScaleOptions; }): ChartProgram;",
+      "signature": "encodeYRange(options: { lower: string; upper: string; target?: string; fieldType?: \"quantitative\"; coordinate?: string; scale?: NonPointQuantitativePositionScaleOptions; }): ChartProgram;",
       "intents": [
         "encode y range",
         "encode",
@@ -2949,7 +2949,7 @@
       "layer": "user-facing",
       "domain": "encodings",
       "summary": "Atomically compose area or ranged-bar encodeX and encodeX2.",
-      "signature": "encodeXRange(options: { lower: string; upper: string; target?: string; fieldType?: \"quantitative\"; coordinate?: string; scale?: ScaleOptions; }): ChartProgram;",
+      "signature": "encodeXRange(options: { lower: string; upper: string; target?: string; fieldType?: \"quantitative\"; coordinate?: string; scale?: NonPointQuantitativePositionScaleOptions; }): ChartProgram;",
       "intents": [
         "encode x range",
         "encode",

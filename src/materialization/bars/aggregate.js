@@ -11,9 +11,9 @@ import {
 import {
   isDiscretePositionScaleType,
   mapContinuousScaleValues,
-  mapOrdinalPositionValues,
-  mapSequentialColors
+  mapOrdinalPositionValues
 } from "../../grammar/scales/index.js";
+import { mapScaleConsumerValues } from "../scales/map.js";
 import {
   DEFAULT_BAR_FILL,
   DEFAULT_BAR_STROKE,
@@ -72,14 +72,8 @@ export function deriveAggregateRectangles(required, resolved, widthConfig) {
   const baseline = DEFAULT_SERIES_BASELINE;
   const continuousColor = colorEncoding?.fieldType === "quantitative";
   if (continuousColor) {
-    const mappedColors = mapSequentialColors(
-      cells.map(cell => cell.color),
-      colorScale.domain,
-      colorScale.range,
-      {
-        interpolation: colorScale.interpolate,
-        clamp: colorScale.clamp ?? false
-      }
+    const mappedColors = mapScaleConsumerValues(
+      cells.map(cell => cell.color), colorScale, "color"
     );
     const cellByCategory = new Map(
       cells.map((cell, index) => [cell[channels.category], { cell, index }])

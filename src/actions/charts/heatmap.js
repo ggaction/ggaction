@@ -45,14 +45,15 @@ function normalizeBin(value) {
   };
 }
 
-function normalizeBinnedPosition(value, channel) {
+function normalizePosition(value, channel, categorical = false) {
   const label = `${OPERATION} ${channel}`;
   const encoding = normalizeFieldEncoding(value, label);
   validateOptionObject(encoding, BINNED_POSITION_OPTIONS, label);
   const field = validateNonEmptyString(encoding.field, `${label} field`);
-  const fieldType = encoding.fieldType ?? "quantitative";
-  if (fieldType !== "quantitative") {
-    throw new Error(`${label} requires a quantitative field.`);
+  const types = categorical ? ["nominal", "ordinal"] : ["quantitative"];
+  const fieldType = encoding.fieldType ?? types[0];
+  if (!types.includes(fieldType)) {
+    throw new Error(`${label} requires a ${categorical ? "categorical" : "quantitative"} field.`);
   }
   if (encoding.scale !== undefined && !isPlainObject(encoding.scale)) {
     throw new TypeError(`${label} scale must be a plain object.`);
@@ -77,7 +78,7 @@ function resolvedPosition(encoding, field, extent) {
     scale: {
       type: "linear",
       nice: false,
-      zero: false,
+      ...(scale.type !== "log" && { zero: false }),
       ...scale,
       domain: scale.domain === undefined || scale.domain === "auto"
         ? extent
@@ -149,8 +150,8 @@ export const createHeatmap = action(
     const rect = normalizeAppearance(args.rect, RECT_OPTIONS, `${OPERATION} rect`);
     const guides = normalizeGuides(args.guides, OPERATION);
     if (args.bin === undefined) {
-      const x = normalizeFieldEncoding(args.x, `${OPERATION} x`);
-      const y = normalizeFieldEncoding(args.y, `${OPERATION} y`);
+      const x = normalizePosition(args.x, "x", true);
+      const y = normalizePosition(args.y, "y", true);
       const color = normalizeFieldEncoding(args.color, `${OPERATION} color`);
       const next = this
         .createRectMark({ id, data, ...rect })
@@ -160,8 +161,8 @@ export const createHeatmap = action(
       return applyFacadeGuides(next, guides);
     }
 
-    const x = normalizeBinnedPosition(args.x, "x");
-    const y = normalizeBinnedPosition(args.y, "y");
+    const x = normalizePosition(args.x, "x");
+    const y = normalizePosition(args.y, "y");
     const bin = normalizeBin(args.bin);
     const color = normalizeBinnedColor(args.color);
     const resolvedGuides = binnedGuides(guides, x.field, y.field);

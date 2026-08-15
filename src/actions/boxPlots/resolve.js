@@ -1,7 +1,7 @@
 import { resolveOptionalUserId, validateUserId } from "../../core/identifiers.js";
 import { findLayer, hasLayer } from "../../selectors/layers.js";
 
-const CATEGORY_TYPES = Object.freeze(["nominal", "ordinal", "temporal"]);
+const CATEGORY_TYPES = Object.freeze(["nominal", "ordinal"]);
 
 export function resolveBoxOrientation(x, y) {
   const xType = x?.fieldType ?? "quantitative";

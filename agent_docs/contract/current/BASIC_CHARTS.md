@@ -151,8 +151,8 @@ createHistogram({
   binStep?: PositiveFinite;
   binBoundaries?: readonly [Finite, Finite, ...Finite[]];
   stack?: StackMode;
-  xScale?: ScaleOptions;
-  yScale?: ScaleOptions;
+  xScale?: NonPointQuantitativePositionScaleOptions;
+  yScale?: NonPointZeroSupportingPositionScaleOptions;
   color?: FieldName | ColorEncodingOptionsWithoutTarget;
   bar?: BarMarkAppearanceOptions;
   guides?: false | CreateGuidesOptions;
@@ -199,7 +199,7 @@ createHeatmap({
     includeEmpty?: boolean;
   };
   color?: FieldName | ColorEncodingOptionsWithoutTarget | {
-    scale?: ContinuousColorScaleOptions;
+    scale?: NonPointContinuousColorScaleOptions | NonPointDiscretizedColorScaleOptions;
     palette?: Palette;
   };
   rect?: { opacity?: number; stroke?: string | false; strokeWidth?: number };

@@ -12,7 +12,9 @@ export function resolveDensityScaleOptions(value, defaults, label) {
   if (value !== undefined && !isPlainObject(value)) {
     throw new TypeError(`${label} must be a plain object.`);
   }
-  return { ...defaults, ...(value ?? {}) };
+  const scale = { ...defaults, ...(value ?? {}) };
+  if (value?.type === "log" && value.zero === undefined) delete scale.zero;
+  return scale;
 }
 
 export function resolveDensityCategoryScaleOptions(value, fallbackId) {

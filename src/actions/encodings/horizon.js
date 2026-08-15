@@ -234,11 +234,11 @@ const editHorizon = action(
     if (requestedYScale.id !== undefined && requestedYScale.id !== currentY.id) {
       throw new Error("editHorizon y scale cannot change its id.");
     }
-    const nextY = resolveFoldedHorizonScaleOptions(layer.id, {
-      ...currentY,
-      ...requestedYScale,
-      id: currentY.id
-    });
+    const nextY = resolveFoldedHorizonScaleOptions(
+      layer.id,
+      { ...requestedYScale, id: currentY.id },
+      currentY
+    );
     next = applyScaleDefinition(next, currentY, nextY);
 
     const colors = resolveHorizonPaletteColors(candidate);

@@ -185,11 +185,17 @@ export function resolveHorizonPaletteColors(transform) {
   return { domain, range };
 }
 
-export function resolveFoldedHorizonScaleOptions(target, requested) {
+export function resolveFoldedHorizonScaleOptions(target, requested, existing = {}) {
   if (requested !== undefined && !isPlainObject(requested)) {
     throw new TypeError("Horizon y scale must be a plain object.");
   }
-  const options = requested ?? {};
+  const patch = requested ?? {};
+  validateOptionObject(
+    patch,
+    ["id", "type", "domain", "range", "clamp", "reverse"],
+    "Horizon y scale"
+  );
+  const options = { ...existing, ...patch };
   if (
     options.domain !== undefined &&
     (!Array.isArray(options.domain) ||

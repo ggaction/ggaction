@@ -216,16 +216,16 @@ test("derives a bounded public option inventory without runtime prototype paths"
 
   assert.equal(inventory.counts.publicActions, 167);
   assert.equal(inventory.counts.topLevelOptionPaths, 1_095);
-  assert.equal(inventory.counts.nestedOptionPaths, 1_606);
-  assert.equal(inventory.counts.optionPaths, 2_701);
-  assert.equal(inventory.counts.requiredOptionPaths, 2_473);
-  assert.equal(inventory.counts.excludedOptionPaths, 228);
+  assert.equal(inventory.counts.nestedOptionPaths, 4_305);
+  assert.equal(inventory.counts.optionPaths, 5_400);
+  assert.equal(inventory.counts.requiredOptionPaths, 4_699);
+  assert.equal(inventory.counts.excludedOptionPaths, 701);
   assert.equal(inventory.counts.topLevelCategoricalPaths, 262);
   assert.equal(inventory.counts.topLevelLiteralValues, 1_000);
-  assert.equal(inventory.counts.literalFamilies, 79);
-  assert.equal(inventory.counts.pathLiteralRequirements, 1_534);
+  assert.equal(inventory.counts.literalFamilies, 85);
+  assert.equal(inventory.counts.pathLiteralRequirements, 2_234);
   assert.equal(inventory.counts.familyLiteralRequirements, 175);
-  assert.equal(inventory.counts.pathDiversityRequirements, 111);
+  assert.equal(inventory.counts.pathDiversityRequirements, 143);
   assert.equal(inventory.optionPaths.some(option => option.id ===
     "option-path:createCanvas.margin.top"), true);
   assert.equal(inventory.optionPaths.some(option => option.id ===
@@ -237,11 +237,29 @@ test("derives a bounded public option inventory without runtime prototype paths"
     /__@|(?:^|\.)(?:anchor|charAt|toFixed|toString)(?:\.|$)|\.length\./u.test(option.path)
   ), false);
   assert.deepEqual(
-    Object.fromEntries([...Map.groupBy(inventory.excludedOptionPaths, value => value.reason)]
-      .map(([reason, values]) => [reason, values.length])),
-    { "redacted-array": 228 }
+    inventory.excludedOptionPaths.reduce((counts, value) => ({
+      ...counts,
+      [value.reason]: (counts[value.reason] ?? 0) + 1
+    }), {}),
+    { "redacted-array": 701 }
   );
   const optionById = new Map(inventory.optionPaths.map(option => [option.id, option]));
+  const values = id => optionById.get(id)?.values ?? [];
+  assert.equal(optionById.has("option-path:createScatterPlot.x.scale.palette"), false);
+  assert.equal(optionById.has("option-path:createScatterPlot.x.scale.interpolate"), false);
+  assert.equal(optionById.has("option-path:encodeSize.scale.nice"), false);
+  assert.deepEqual(values("option-path:encodeSize.scale.type"), ["string:linear"]);
+  assert.equal(values("option-path:createBarPlot.y.scale.type").includes("string:log"), false);
+  assert.deepEqual(values("option-path:createHeatmap.x.scale.type"), [
+    "string:band", "string:linear", "string:log", "string:pow", "string:sqrt",
+    "string:symlog"
+  ]);
+  const scaleTypePaths = inventory.optionPaths.filter(option =>
+    option.required &&
+    /(?:^|\.)(?:xScale|yScale|valueScale|densityScale|scale)\.type$/u.test(option.path)
+  );
+  assert.equal(scaleTypePaths.length, 59);
+  assert.equal(scaleTypePaths.reduce((sum, option) => sum + option.values.length, 0), 257);
   assert.equal(inventory.excludedOptionPaths.every(option =>
     optionById.get(option.replacement)?.required === true
   ), true);
@@ -256,7 +274,7 @@ test("derives a bounded public option inventory without runtime prototype paths"
     "option-path:createData.values[]"), false);
   assert.equal(ledger.requirements.some(requirement => requirement.id ===
     "option-path:createDerivedData.transform[].type"), false);
-  assert.equal(ledger.requirements.length, 4_354);
+  assert.equal(ledger.requirements.length, 7_280);
   assert.throws(() => createScenarioCoverageLedger({
     publicInventory: inventory,
     rendererFeatures: [],

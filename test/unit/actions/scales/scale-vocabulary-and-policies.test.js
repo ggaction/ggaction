@@ -279,3 +279,54 @@ test("rejects a color type edit that would change an active legend recipe", () =
     "sequential"
   );
 });
+
+test("rejects role-irrelevant opacity and stroke-width scale options", () => {
+  const points = chart()
+    .createCanvas({ width: 240, height: 180, margin: 20 })
+    .createData({ values: rows })
+    .createPointMark();
+  const lines = chart()
+    .createCanvas({ width: 240, height: 180, margin: 20 })
+    .createData({ values: rows.map((row, index) => ({
+      ...row, x: index + 1, size: index + 1
+    })) })
+    .createRuleMark()
+    .encodeX({ field: "x", fieldType: "quantitative" })
+    .encodeX2({ field: "y", fieldType: "quantitative" })
+    .encodeY({ field: "y", fieldType: "quantitative" });
+
+  for (const scale of [{ padding: 0.2 }, { base: 2 }, { exponent: 2 }]) {
+    assert.throws(
+      () => points.encodeOpacity({ field: "opacity", scale }),
+      /Unknown scale option/
+    );
+  }
+  for (const scale of [
+    { paddingInner: 0.2 },
+    { unknown: 2 },
+    { type: "linear", base: 2 },
+    { type: "sqrt", exponent: 2 },
+    { type: "log", zero: false }
+  ]) {
+    assert.throws(
+      () => lines.encodeStrokeWidth({ field: "size", scale }),
+      /Unknown scale option|does not support/
+    );
+  }
+
+  const transformed = lines
+    .encodeStrokeWidth({
+      field: "size",
+      scale: { type: "log", domain: [1, 100], base: 2, reverse: true }
+    });
+  const fallback = points.encodeOpacity({
+    field: "opacity",
+    scale: { domain: [0, 1], unknown: 0.25 }
+  });
+  assert.equal(transformed.resolvedScales.strokeWidth.type, "log");
+  assert.equal(transformed.resolvedScales.strokeWidth.base, 2);
+  assert.equal(
+    fallback.graphicSpec.objects.point.items[1].properties.opacity,
+    0.25
+  );
+});

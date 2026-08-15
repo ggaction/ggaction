@@ -775,8 +775,12 @@ async function testTypeScriptConsumer(directory) {
       type DatasetTransform,
       type JitterMaxOffset,
       type JitterPointsOptions,
+      type NonPointQuantitativePositionScaleOptions,
+      type OpacityScaleOptions,
       type ParallelCoordinatesEncodingOptions,
       type RemoveJitterOptions,
+      type ShapeScaleOptions,
+      type SizeScaleOptions,
       type StrokeWidthEncodingOptions,
       type ThetaEncodingOptions,
       type ThetaScaleOptions,
@@ -833,6 +837,59 @@ async function testTypeScriptConsumer(directory) {
       y: { field: "y", scale: { zero: false } },
       guides: false
     };
+    const opacityScale: OpacityScaleOptions = {
+      type: "linear", zero: false, unknown: 0.25
+    };
+    const linePositionScale: NonPointQuantitativePositionScaleOptions = {
+      type: "log", domain: [1, 100], base: 10
+    };
+    const pointSizeScale: SizeScaleOptions = {
+      type: "linear", domain: [0, 10], range: [2, 20], unknown: 5
+    };
+    const pointShapeScale: ShapeScaleOptions = {
+      type: "ordinal", unknown: "diamond"
+    };
+    void [opacityScale, linePositionScale, pointSizeScale, pointShapeScale];
+    const invalidOpacityPadding: OpacityScaleOptions = {
+      // @ts-expect-error Opacity scales do not accept band padding.
+      padding: 0.2
+    };
+    void invalidOpacityPadding;
+    const invalidPositionPalette: CreateScatterPlotOptions = {
+      x: { field: "x", scale: {
+        // @ts-expect-error Position scales do not accept color palettes.
+        palette: "blues"
+      } },
+      y: "y"
+    };
+    const invalidSizeNice: CreateScatterPlotOptions = {
+      x: "x",
+      y: "y",
+      size: { field: "size", scale: {
+        // @ts-expect-error Size scales do not expose ignored position options.
+        nice: true
+      } }
+    };
+    const invalidZeroSupportingLog: CreateBarPlotOptions = {
+      x: { field: "category", fieldType: "nominal" },
+      y: { field: "value", aggregate: "sum", scale: {
+        // @ts-expect-error Zero-baseline bars cannot use logarithmic scales.
+        type: "log"
+      } }
+    };
+    const invalidHorizonYScale: HorizonEncodingOptions = {
+      x: "x",
+      y: { field: "value", scale: {
+        // @ts-expect-error Folded horizon amplitude cannot be made nice.
+        nice: true
+      } }
+    };
+    void [
+      invalidPositionPalette,
+      invalidSizeNice,
+      invalidZeroSupportingLog,
+      invalidHorizonYScale
+    ];
     const scatterFacade: ChartProgram = chart()
       .createCanvas()
       .createData({ values: [{ x: 1, y: 2 }] })
@@ -874,7 +931,12 @@ async function testTypeScriptConsumer(directory) {
     const parallelOptions: CreateParallelCoordinatesOptions = {
       dimensions: [
         { field: "first", scale: { zero: false } },
-        { field: "second", title: "Second" }
+        {
+          field: "second",
+          fieldType: "ordinal",
+          title: "Second",
+          scale: { type: "band", paddingInner: 0.1 }
+        }
       ],
       key: "row key",
       missing: "break",

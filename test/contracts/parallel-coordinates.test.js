@@ -32,7 +32,11 @@ test("keeps Parallel declarations and root type exports synchronized", () => {
 
   assert.match(programTypes,
     /^export type ParallelMissingPolicy = "break" \| "drop-row" \| "error";$/m);
-  assert.match(programTypes, /^export type ParallelDimension = string \| \{$/m);
+  assert.match(programTypes, /^export type ParallelDimension = string \| \(\{$/m);
+  assert.match(programTypes,
+    /fieldType: "quantitative";\n      scale\?: WithoutScaleId<QuantitativePositionScaleOptions>;/);
+  assert.match(programTypes,
+    /fieldType: "ordinal";\n      scale\?: WithoutScaleId<CategoricalPositionScaleOptions>;/);
   assert.match(programTypes, /^export interface ParallelCoordinatesEncodingOptions/m);
   assert.match(programTypes, /^export interface CreateParallelCoordinatesOptions/m);
   assert.match(programTypes,

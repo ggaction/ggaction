@@ -697,7 +697,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 
 ### Formal values — `encodeHistogram`
 
-- Implemented: `encodeHistogram({ field: FieldName; target?: UserId; coordinate?: UserId; maxBins?: PositiveInteger; binStep?: PositiveFinite; binBoundaries?: readonly [Finite, Finite, ...Finite[]]; stack?: "zero" | "normalize" | null; xScale?: PositionScale; yScale?: PositionScale })`; 세 bin option은 mutually exclusive다.
+- Implemented: `encodeHistogram({ field: FieldName; target?: UserId; coordinate?: UserId; maxBins?: PositiveInteger; binStep?: PositiveFinite; binBoundaries?: readonly [Finite, Finite, ...Finite[]]; stack?: "zero" | "normalize" | null; xScale?: NonPointQuantitativePositionScale; yScale?: NonPointZeroSupportingPositionScale })`; 세 bin option은 mutually exclusive다.
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
@@ -937,7 +937,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 
 ### Formal values — `encodeColor`
 
-- Implemented: `encodeColor({ field: FieldName; target?: UserId; fieldType?: "nominal" | "ordinal"; layout?: "stack" | "fill" | "group" | "overlay" | "diverging" | "center"; scale?: ColorScale } | { field: FieldName; target?: UserId; fieldType: "quantitative" | "temporal"; aggregate?: AggregateOperation; scale?: SequentialColorScale | DiscretizedColorScale })`; `"center"` is area-only, ordinal supports ordered categorical values including finite numbers, rect supports categorical or continuous fill without layout/aggregate, discretized scales require quantitative point color, aggregate is valid only for quantitative aggregate bars, and mark compatibility narrows the categorical layout set.
+- Implemented: `encodeColor({ field: FieldName; target?: UserId; fieldType?: "nominal" | "ordinal"; layout?: "stack" | "fill" | "group" | "overlay" | "diverging" | "center"; scale?: ColorScale } | { field: FieldName; target?: UserId; fieldType: "quantitative" | "temporal"; aggregate?: AggregateOperation; scale?: SequentialColorScale | DiscretizedColorScale })`; `"center"` is area-only, ordinal supports ordered categorical values including finite numbers, rect supports categorical or continuous fill without layout/aggregate, discretized scales support quantitative point/rect consumers and quantitative aggregate bars, `unknown` remains point-row-only, and mark compatibility narrows the categorical layout set.
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `encodeColor`
@@ -1026,7 +1026,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 
 ### Formal values — `encodeSize`
 
-- Implemented: `encodeSize({ field: FieldName; target?: UserId; fieldType?: "quantitative"; scale?: { id?: UserId; type?: "linear"; domain?: ContinuousDomain; range?: "auto" | readonly [NonNegativeFinite, NonNegativeFinite] } })`
+- Implemented: `encodeSize({ field: FieldName; target?: UserId; fieldType?: "quantitative"; scale?: { id?: UserId; type?: "linear"; domain?: ContinuousDomain; range?: "auto" | readonly [NonNegativeFinite, NonNegativeFinite]; unknown?: NonNegativeFinite } })`
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `encodeSize`
@@ -1053,7 +1053,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 
 ### Formal values — `encodeShape`
 
-- Implemented: `encodeShape({ field: FieldName; target?: UserId; fieldType?: "nominal"; scale?: { id?: UserId; type?: "ordinal"; domain?: OrdinalDomain; range?: "auto" | readonly PointShape[] } })`
+- Implemented: `encodeShape({ field: FieldName; target?: UserId; fieldType?: "nominal"; scale?: { id?: UserId; type?: "ordinal"; domain?: OrdinalDomain; range?: "auto" | readonly PointShape[]; unknown?: PointShape } })`
 - Reassignment: 다시 호출하면 shape field와 compatible scale binding을 교체하고 heterogeneous point
   children 및 existing shape legend를 rematerialize한다.
 - Proposed (NOT IMPLEMENTED): —
@@ -1111,7 +1111,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 
 ### Formal values — `encodeOpacity`
 
-- Implemented: `encodeOpacity({ value: UnitInterval; target?: UserId } | { field: FieldName; target?: UserId; fieldType?: "quantitative"; scale?: { id?: UserId; type?: "linear"; domain?: ContinuousDomain; range?: "auto" | readonly [UnitInterval, UnitInterval]; nice?: boolean; zero?: boolean; clamp?: boolean; reverse?: boolean } })`
+- Implemented: `encodeOpacity({ value: UnitInterval; target?: UserId } | { field: FieldName; target?: UserId; fieldType?: "quantitative"; scale?: { id?: UserId; type?: "linear"; domain?: ContinuousDomain; range?: "auto" | readonly [UnitInterval, UnitInterval]; nice?: boolean; zero?: boolean; clamp?: boolean; reverse?: boolean; unknown?: UnitInterval } })`
 - Planned (NOT IMPLEMENTED): transformed opacity scale types.
 - Proposed (NOT IMPLEMENTED): —
 

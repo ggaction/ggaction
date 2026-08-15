@@ -180,6 +180,14 @@ export function resolvePositionEncoding(program, channel, args, operation) {
         : {}
   );
   if (
+    layer.mark.type === "bar" &&
+    program.markConfigs[target]?.boxPlot === undefined &&
+    scale.type === "log" &&
+    policy.bin === undefined
+  ) {
+    throw new Error('Bar scale type "log" does not support zero baselines.');
+  }
+  if (
     layer.mark.type === "arc" &&
     channel === "theta" &&
     ["ordinal", "nominal"].includes(fieldType) &&

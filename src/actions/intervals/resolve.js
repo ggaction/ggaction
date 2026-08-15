@@ -46,7 +46,7 @@ function scaleOptions(program, value, inferredId, defaults = {}) {
     throw new TypeError("Interval scale must be a plain object.");
   }
   const id = value?.id ?? inferredId;
-  return {
+  const scale = {
     ...(id !== undefined && findSemanticScale(program, id) !== undefined
       ? {}
       : defaults),
@@ -55,6 +55,8 @@ function scaleOptions(program, value, inferredId, defaults = {}) {
       ? { id: inferredId }
       : {})
   };
+  if (value?.type === "log" && value.zero === undefined) delete scale.zero;
+  return scale;
 }
 
 function hasAny(value, keys) {

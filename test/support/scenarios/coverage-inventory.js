@@ -153,7 +153,14 @@ function declaredInFile(property, project, declarationFile) {
 }
 
 function structuredProperties(checker, project, declarationFile, type) {
-  const properties = new Map();
+  const properties = [];
+  const seen = new Set();
+  const add = property => {
+    if (!seen.has(property)) {
+      seen.add(property);
+      properties.push(property);
+    }
+  };
   const candidates = flattenedTypes(type).filter(current => {
     const printed = checker.typeToString(current);
     return !(
@@ -167,28 +174,34 @@ function structuredProperties(checker, project, declarationFile, type) {
   if (candidates.length === 0) return [];
   for (const property of checker.getPropertiesOfType(type)) {
     if (declaredInFile(property, project, declarationFile)) {
-      properties.set(property.name, property);
+      add(property);
     }
   }
   for (const current of candidates) {
-    const mappedAlias = current.getAliasSymbol?.()?.name;
+    const aliasSymbol = current.getAliasSymbol?.();
+    const mappedAlias = aliasSymbol?.name;
+    const typeSymbol = aliasSymbol ?? current.getSymbol?.();
+    const localMappedAlias = typeSymbol !== undefined &&
+      declaredInFile(typeSymbol, project, declarationFile);
     for (const property of checker.getPropertiesOfType(current)) {
       if (
         (
           declaredInFile(property, project, declarationFile) ||
           (
             property.valueDeclaration === undefined &&
-            ["Partial", "Readonly", "Record"].includes(mappedAlias) &&
+            (
+              localMappedAlias ||
+              ["Omit", "Partial", "Pick", "Readonly", "Record"].includes(mappedAlias)
+            ) &&
             /^[A-Za-z][A-Za-z0-9]*$/u.test(property.name)
           )
-        ) &&
-        !properties.has(property.name)
+        )
       ) {
-        properties.set(property.name, property);
+        add(property);
       }
     }
   }
-  return [...properties.values()];
+  return properties;
 }
 
 function optionPathId(action, optionPath) {
@@ -226,6 +239,11 @@ function collectActionPaths({
   const paths = new Map();
   const visit = (type, parentPath, depth, ancestry) => {
     if (depth >= MAX_OPTION_PATH_DEPTH) return;
+    const currentIds = [type, ...(type.getTypes?.() ?? [])]
+      .filter(value => !isPrimitiveType(checker, value))
+      .map(value => value.id);
+    if (currentIds.some(id => ancestry.has(id))) return;
+    const nextAncestry = new Set([...ancestry, ...currentIds]);
     const elements = arrayElementTypes(checker, type);
     if (elements.length > 0) {
       const arrayPath = `${parentPath}[]`;
@@ -239,7 +257,7 @@ function collectActionPaths({
         });
       }
       for (const element of elements) {
-        visit(element, arrayPath, depth + 1, ancestry);
+        visit(element, arrayPath, depth + 1, nextAncestry);
       }
       return;
     }
@@ -283,17 +301,15 @@ function collectActionPaths({
         });
       }
 
-      const childIds = flattenedTypes(propertyValue.type).map(child => child.id);
-      if (childIds.some(id => ancestry.has(id))) continue;
       visit(
         propertyValue.type,
         propertyPath,
         depth + 1,
-        new Set([...ancestry, ...childIds])
+        nextAncestry
       );
     }
   };
-  visit(parameterType, "", 0, new Set(flattenedTypes(parameterType).map(type => type.id)));
+  visit(parameterType, "", 0, new Set());
   return [...paths.values()];
 }
 

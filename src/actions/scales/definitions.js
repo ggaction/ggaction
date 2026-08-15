@@ -35,12 +35,11 @@ const BASE_OPTIONS = ["id", "type", "domain", "range"];
 const UNKNOWN_OPTIONS = [...BASE_OPTIONS, "unknown"];
 const CLAMP_REVERSE = ["clamp", "reverse"];
 const BOOLEAN_OPTIONS = ["nice", "zero", ...CLAMP_REVERSE];
+const TRANSFORM_OPTIONS = ["base", "exponent", "constant"];
 const POSITION_OPTIONS = [
   ...BASE_OPTIONS,
   ...BOOLEAN_OPTIONS,
-  "base",
-  "exponent",
-  "constant",
+  ...TRANSFORM_OPTIONS,
   "paddingInner",
   "paddingOuter",
   "padding",
@@ -52,6 +51,10 @@ const SEQUENTIAL_COLOR_OPTIONS = [
   ...COLOR_OPTIONS,
   "interpolate",
   ...CLAMP_REVERSE
+];
+const OPACITY_OPTIONS = [...BASE_OPTIONS, ...BOOLEAN_OPTIONS, "unknown"];
+const STROKE_WIDTH_OPTIONS = [
+  ...BASE_OPTIONS, ...BOOLEAN_OPTIONS, ...TRANSFORM_OPTIONS
 ];
 
 function optionsObject(options) {
@@ -123,7 +126,10 @@ export function resolvePositionScaleDefinition(
         ...(existing === undefined && defaults.nice !== undefined
           ? { nice: defaults.nice }
           : {}),
-        ...(existing === undefined && defaults.zero !== undefined
+        ...(
+          existing === undefined &&
+          defaults.zero !== undefined &&
+          (type !== "log" || defaults.zero)
           ? { zero: defaults.zero }
           : {})
       },
@@ -296,11 +302,11 @@ export function resolveAppearanceScaleDefinition(program, channel, options) {
 
 export function resolveOpacityScaleDefinition(program, options) {
   optionsObject(options);
-  validateKeys(options, POSITION_OPTIONS, "scale");
+  validateKeys(options, OPACITY_OPTIONS, "scale");
   const id = validateUserId(options.id ?? "opacity", "Scale id");
   const existing = findSemanticScale(program, id);
   const type = validateLinearScaleType(options.type ?? existing?.type ?? "linear");
-  validateBooleanOptions(options, BOOLEAN_OPTIONS);
+  validateBooleanOptions(options, BOOLEAN_OPTIONS, type);
   const scale = {
     id,
     type,
@@ -316,12 +322,17 @@ export function resolveOpacityScaleDefinition(program, options) {
 
 export function resolveStrokeWidthScaleDefinition(program, options) {
   optionsObject(options);
-  validateKeys(options, POSITION_OPTIONS, "scale");
+  validateKeys(options, STROKE_WIDTH_OPTIONS, "scale");
   const id = validateUserId(options.id ?? "strokeWidth", "Scale id");
   const existing = findSemanticScale(program, id);
   const type = options.type ?? existing?.type ?? "linear";
   validateScaleTypeForRole(type, SCALE_ROLES.quantitativePosition);
-  validateBooleanOptions(options, BOOLEAN_OPTIONS);
+  validateBooleanOptions(options, BOOLEAN_OPTIONS, type);
+  for (const property of TRANSFORM_OPTIONS) {
+    if (options[property] !== undefined) {
+      validateScalePropertyForType(type, property);
+    }
+  }
   const domain = validateScaleDomain(options.domain ?? existing?.domain ?? "auto");
   if (domain !== "auto" && domain.some(value => value < 0)) {
     throw new RangeError("StrokeWidth scale domain cannot contain negative values.");
@@ -333,7 +344,7 @@ export function resolveStrokeWidthScaleDefinition(program, options) {
     range: validateStrokeWidthRange(options.range ?? existing?.range ?? "auto")
   };
   return assignOptions(
-    scale, options, existing, [...BOOLEAN_OPTIONS, "base", "exponent", "constant"]
+    scale, options, existing, [...BOOLEAN_OPTIONS, ...TRANSFORM_OPTIONS]
   );
 }
 

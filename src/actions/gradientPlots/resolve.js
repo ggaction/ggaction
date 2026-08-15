@@ -1,7 +1,7 @@
 import { resolveOptionalUserId, validateUserId } from "../../core/identifiers.js";
 import { findLayer, hasLayer } from "../../selectors/layers.js";
 
-const CATEGORICAL = Object.freeze(["nominal", "ordinal", "temporal"]);
+const CATEGORICAL = Object.freeze(["nominal", "ordinal"]);
 
 export function resolveGradientOrientation(x, y) {
   const xType = x?.fieldType;
