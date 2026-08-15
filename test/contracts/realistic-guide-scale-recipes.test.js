@@ -766,6 +766,152 @@ test("runs every non-sequential scale profile with branch-exact direct actions",
   assert.equal(builds, 3 * 11);
 });
 
+test("uses truthful record counts when a quantize share field has zero span", () => {
+  const dataset = "tt-trash-wheel";
+  const recipe = SCALE_VOCABULARY_RECIPES.find(value => value.id.endsWith("primary"));
+  try {
+    const domains = recipe.factorsForDataset(dataset);
+    const factors = Object.freeze({
+      dataset,
+      fieldPair: domains.fieldPair.find(value =>
+        value.bindingId === "eligible:GlassBottles-by-Name"
+      ),
+      variant: domains.variant.find(value => value.id === "color-quantize")
+    });
+    const program = recipe.build(factors);
+    const metadata = recipe.describe(factors);
+    const rows = program.semanticSpec.datasets.find(value =>
+      value.id === "analysisRows"
+    ).values;
+    const color = program.semanticSpec.layers.find(value =>
+      value.id === "points"
+    ).encoding.color;
+    const aggregate = metadata.provenance.transformations.find(value =>
+      value.op === "group-aggregate"
+    );
+
+    assert.deepEqual(rows.map(row => Object.freeze({
+      category: row.category,
+      value: row.value,
+      share: row.share,
+      count: row.count
+    })), [
+      {
+        category: "Mister Trash Wheel",
+        value: 18,
+        share: 0.5,
+        count: 629
+      },
+      {
+        category: "Professor Trash Wheel",
+        value: 18,
+        share: 0.5,
+        count: 113
+      }
+    ]);
+    assert.equal(color.field, "count");
+    assert.equal(color.fieldType, "quantitative");
+    assert.equal(color.scale, "color");
+    assert.deepEqual(program.resolvedScales.color.domain, [113, 629]);
+    assert.deepEqual(program.resolvedScales.color.thresholds, [242, 371, 500]);
+    assert.equal(program.semanticSpec.guides.legend.color.title, "Source records per Name");
+    assert.equal(
+      program.graphicSpec.objects.colorLegendTitle.properties.text,
+      "Source records per Name"
+    );
+    assert.equal(aggregate.aggregate, "median");
+    assert.ok(aggregate.statistics.includes("count"));
+    assert.equal(metadata.provenance.sourceRowCount, 742);
+    assert.equal(
+      metadata.provenance.sourceSelectionSha256,
+      "c9967e4dcf62b8e91ace45d0213b4835be92f6450160741551f05a6485164505"
+    );
+    assert.deepEqual(
+      recipe.observeFactors(program, factors).map(effect => effect.factor),
+      ["fieldPair", "variant"]
+    );
+    assertTruthfulMetadata(recipe, factors, program, metadata, "trash-wheel-quantize-count");
+    assertGraphicIntegrity(program, "trash-wheel-quantize-count");
+    assertAnalyticLayerIntegrity(program, "trash-wheel-quantize-count");
+    assertSvgIntegrity(renderToSVG(program, {
+      title: metadata.title,
+      description: metadata.analysisQuestion
+    }), "trash-wheel-quantize-count");
+  } finally {
+    releaseTidyTuesdaySourceCache(dataset);
+  }
+});
+
+test("preflights every quantitative non-sequential scale on every eligible field pair", () => {
+  const recipe = SCALE_VOCABULARY_RECIPES.find(value => value.id.endsWith("primary"));
+  const quantitativeTypes = new Set(["quantize", "quantile", "threshold"]);
+  let fieldPairs = 0;
+  let builds = 0;
+  let countFallbacks = 0;
+  for (const dataset of recipe.datasets) {
+    try {
+      const domains = recipe.factorsForDataset(dataset);
+      assert.notEqual(domains, undefined, `${dataset} eligibility`);
+      const variants = domains.variant.filter(variant => quantitativeTypes.has(variant.type));
+      assert.equal(variants.length, 3, `${dataset} quantitative scale variants`);
+      for (const fieldPair of domains.fieldPair) {
+        fieldPairs += 1;
+        for (const variant of variants) {
+          const factors = Object.freeze({ dataset, fieldPair, variant });
+          const label = `${dataset}-${fieldPair.bindingId}-${variant.id}`;
+          const program = recipe.build(factors);
+          const metadata = recipe.describe(factors);
+          const rows = program.semanticSpec.datasets.find(value =>
+            value.id === "analysisRows"
+          ).values;
+          const color = program.semanticSpec.layers.find(value =>
+            value.id === "points"
+          ).encoding.color;
+          const shareValues = rows.map(row => row.share);
+          const shareSpan = Math.max(...shareValues) - Math.min(...shareValues);
+          const colorValues = rows.map(row => row[color.field]);
+
+          assert.ok(Math.max(...colorValues) > Math.min(...colorValues), `${label} color span`);
+          if (shareSpan === 0) {
+            assert.equal(color.field, "count", `${label} truthful fallback`);
+            assert.match(
+              program.semanticSpec.guides.legend.color.title,
+              /^Source records per /u,
+              `${label} exposed fallback`
+            );
+            countFallbacks += 1;
+          } else {
+            assert.equal(color.field, "share", `${label} aggregate-share field`);
+          }
+          assert.ok(
+            Math.max(...program.resolvedScales.color.domain) >
+              Math.min(...program.resolvedScales.color.domain),
+            `${label} resolved color domain`
+          );
+          assert.deepEqual(
+            recipe.observeFactors(program, factors).map(effect => effect.factor),
+            ["fieldPair", "variant"],
+            `${label} factor evidence`
+          );
+          assertTruthfulMetadata(recipe, factors, program, metadata, label);
+          assertGraphicIntegrity(program, label);
+          assertAnalyticLayerIntegrity(program, label);
+          assertSvgIntegrity(renderToSVG(program, {
+            title: metadata.title,
+            description: metadata.analysisQuestion
+          }), label);
+          builds += 1;
+        }
+      }
+    } finally {
+      releaseTidyTuesdaySourceCache(dataset);
+    }
+  }
+  assert.equal(fieldPairs, 753);
+  assert.equal(builds, 753 * 3);
+  assert.equal(countFallbacks, 68 * 2);
+});
+
 test("preserves whitespace through a realistic long wrapped title block", () => {
   const dataset = "tt-nurses";
   const recipe = REALISTIC_GUIDE_SCALE_RECIPES.find(value =>

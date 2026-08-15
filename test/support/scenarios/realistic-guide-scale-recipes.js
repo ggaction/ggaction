@@ -1421,9 +1421,47 @@ function sequentialPalette(variant, objectForm, edited = false) {
   };
 }
 
+function quantitativeColorEncoding(view, context, variant) {
+  const candidates = variant.type === "sequential"
+    ? [{ field: "share", legendTitle: context.measureText }]
+    : [
+        { field: "share", legendTitle: context.measureText },
+        {
+          field: "count",
+          legendTitle: `Source records per ${context.dimensionText}`
+        },
+        {
+          field: "rank",
+          legendTitle: `${context.dimensionText} aggregate rank`
+        }
+      ];
+  for (const candidate of candidates) {
+    const values = view.rows.map(row => row[candidate.field]).filter(Number.isFinite);
+    const minimum = Math.min(...values);
+    const maximum = Math.max(...values);
+    if (variant.type === "sequential" || minimum < maximum) {
+      return Object.freeze({
+        ...candidate,
+        values: Object.freeze(values),
+        extent: Object.freeze([minimum, maximum]),
+        normalized: candidate.field === "share"
+      });
+    }
+  }
+  throw new Error(
+    `Dataset "${view.provenance.sourceDataset}" has no varying truthful quantitative color field.`
+  );
+}
+
+function interpolatedThresholds(extent, ratios) {
+  const [minimum, maximum] = extent;
+  return ratios.map(ratio => minimum + (maximum - minimum) * ratio);
+}
+
 function colorScaleOptions(variant, {
   id = "color",
-  createObjectPalette = false
+  createObjectPalette = false,
+  encoding
 } = {}) {
   const initial = scaleBoolean(variant);
   if (variant.type === "sequential") {
@@ -1451,7 +1489,11 @@ function colorScaleOptions(variant, {
     };
   }
   const range = ["#eff6ff", "#93c5fd", "#3b82f6", "#1e3a8a"];
-  const domain = variant.type === "threshold" ? [0.25, 0.5, 0.75] : [0, 1];
+  const normalized = encoding?.normalized ?? true;
+  const extent = normalized ? [0, 1] : encoding.extent;
+  const domain = variant.type === "threshold"
+    ? interpolatedThresholds(extent, [0.25, 0.5, 0.75])
+    : variant.type === "quantile" && !normalized ? encoding.values : extent;
   return {
     create: {
       id,
@@ -1464,7 +1506,9 @@ function colorScaleOptions(variant, {
     edit: {
       id,
       type: variant.type,
-      domain: variant.type === "threshold" ? [0.2, 0.55, 0.8] : "auto",
+      domain: variant.type === "threshold"
+        ? interpolatedThresholds(extent, [0.2, 0.55, 0.8])
+        : "auto",
       range: [...range].reverse(),
       reverse: !initial,
       unknown: "#64748b"
@@ -1476,13 +1520,16 @@ function buildScaleVocabulary(factors) {
   const view = summaryView(factors);
   const context = contextFor(factors.dataset, view, "guide-scale-vocabulary");
   const { variant } = factors;
+  const colorEncoding = variant.kind === "color"
+    ? quantitativeColorEncoding(view, context, variant)
+    : undefined;
   const definitions = variant.kind === "position"
     ? positionScaleOptions(variant, view)
     : variant.kind === "category"
       ? categoryScaleOptions(variant, view)
       : variant.kind === "category-shape"
         ? ordinalShapeScaleOptions(variant, view)
-        : colorScaleOptions(variant);
+        : colorScaleOptions(variant, { encoding: colorEncoding });
   const comparisonDefinitions = variant.type === "sequential"
     ? colorScaleOptions(variant, {
         id: "colorComparison",
@@ -1513,7 +1560,7 @@ function buildScaleVocabulary(factors) {
   });
   program = program.encodeColor({
     target: "points",
-    field: variant.kind === "color" ? "share" : "category",
+    field: variant.kind === "color" ? colorEncoding.field : "category",
     fieldType: variant.kind === "color" ? "quantitative" : "nominal",
     scale: variant.kind === "color" ? { id: "color" }
       : { palette: "tableau10" }
@@ -1650,7 +1697,7 @@ function buildScaleVocabulary(factors) {
       align: "center",
       direction: "vertical",
       offset: 180,
-      title: context.measureText,
+      title: colorEncoding.legendTitle,
       symbol: { width: 20, height: 12, stroke: "#ffffff", strokeWidth: 1 },
       labels: {
         offset: 9,
