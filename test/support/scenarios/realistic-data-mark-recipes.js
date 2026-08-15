@@ -1,6 +1,7 @@
 import { createHash } from "node:crypto";
 
 import { chart } from "../../../src/index.js";
+import { measureTextWidth } from "../../../src/core/textMetrics.js";
 
 import {
   isRealisticIneligibleDataError,
@@ -39,6 +40,14 @@ const STATIC_PALETTE_COLORS = Object.freeze({
   set2: "#66c2a5",
   dark2: "#1b9e77",
   viridis: "#3b528b"
+});
+const DENSITY_CATEGORY_PADDING_INNER = 0.08;
+const DENSITY_CATEGORY_PADDING_OUTER = 0.06;
+const DENSITY_AXIS_LABEL_GAP = 16;
+const DENSITY_AXIS_LABEL_STYLE = Object.freeze({
+  fontSize: 12,
+  fontFamily: "sans-serif",
+  fontWeight: "normal"
 });
 const CURVES = Object.freeze([
   "linear", "step", "step-before", "step-after", "basis", "cardinal",
@@ -676,7 +685,9 @@ function densityPlacement(factors, view) {
       split: { field: "subgroup", domain: view.splitDomain },
       scale: {
         type: "band", domain: "auto", range: "auto", align: 0.5,
-        padding: 0.12, paddingInner: 0.08, paddingOuter: 0.06,
+        padding: 0.12,
+        paddingInner: DENSITY_CATEGORY_PADDING_INNER,
+        paddingOuter: DENSITY_CATEGORY_PADDING_OUTER,
         reverse: factors.reverse
       }
     };
@@ -687,9 +698,35 @@ function densityPlacement(factors, view) {
     width,
     scale: {
       type: "band", domain: "auto", range: "auto", align: 0.5,
-      padding: 0.12, paddingInner: 0.08, paddingOuter: 0.06,
+      padding: 0.12,
+      paddingInner: DENSITY_CATEGORY_PADDING_INNER,
+      paddingOuter: DENSITY_CATEGORY_PADDING_OUTER,
       reverse: factors.reverse
     }
+  };
+}
+
+function densityCanvas(factors, view) {
+  const base = canvas();
+  if (factors.placement.type === "baseline" || factors.densityChannel !== "x") {
+    return base;
+  }
+  const labels = unique(view.rows.map(row => String(row.category)));
+  const widest = Math.max(...labels.map(label =>
+    measureTextWidth(label, DENSITY_AXIS_LABEL_STYLE)
+  ));
+  const bandDenominator = Math.max(
+    1,
+    labels.length - DENSITY_CATEGORY_PADDING_INNER +
+      DENSITY_CATEGORY_PADDING_OUTER * 2
+  );
+  const requiredPlotWidth = bandDenominator * (widest + DENSITY_AXIS_LABEL_GAP);
+  return {
+    ...base,
+    width: Math.max(
+      base.width,
+      Math.ceil(base.margin.left + requiredPlotWidth + base.margin.right)
+    )
   };
 }
 
@@ -705,7 +742,7 @@ function buildDensity(factors) {
   const placement = densityPlacement(factors, view);
   const baseline = factors.placement.type === "baseline";
   let program = chart()
-    .createCanvas(canvas())
+    .createCanvas(densityCanvas(factors, view))
     .createData({ id: "analysisRows", values: view.rows })
     .createAreaMark({
       id: "densityArea",

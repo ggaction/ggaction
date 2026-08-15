@@ -1,15 +1,25 @@
 import assert from "node:assert/strict";
+import { spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import test from "node:test";
+import { fileURLToPath } from "node:url";
 
+import {
+  resolveTextBounds,
+  textBoundsIntersect
+} from "../../src/core/textMetrics.js";
 import { renderToSVG } from "../../src/renderers/svg.js";
 import { assertAnalyticLayerIntegrity } from "../oracles/analytic-layer-integrity.js";
 import { assertGraphicIntegrity } from "../oracles/graphic-integrity.js";
 import { assertSvgIntegrity } from "../oracles/svg-integrity.js";
 import { datasetDefinition } from "../support/datasets/catalog.js";
-import { releaseTidyTuesdaySourceCache } from "../support/datasets/tidytuesday.js";
+import {
+  releaseTidyTuesdaySourceCache,
+  tidyTuesdaySourceEntries
+} from "../support/datasets/tidytuesday.js";
 import { buildPublicOptionInventory } from "../support/scenarios/coverage-inventory.js";
+import { runScenario } from "../support/scenarios/engine.js";
 import {
   REALISTIC_DATA_MARK_COUNTS,
   REALISTIC_DATA_MARK_INTERACTIONS,
@@ -57,6 +67,11 @@ const TARGET_ACTIONS = Object.freeze([
   "encodeBarWidth",
   "removeCategoryOrder"
 ]);
+const DENSITY_SWEEP_CHILD_ENV = "GGACTION_DATA_MARK_DENSITY_SWEEP_CHILD";
+const DENSITY_SWEEP_RESOURCE_PREFIX = "data-mark-density-sweep-resource:";
+const DENSITY_SWEEP_TEST_NAME =
+  "preflights every eligible density field pair on a label-preserving axis";
+const MAX_DISPOSABLE_SWEEP_RSS_KIB = 512 * 1_024;
 const actionCards = JSON.parse(readFileSync(
   new URL("../../knowledge/action-cards.json", import.meta.url),
   "utf8"
@@ -131,6 +146,64 @@ function finalProgramFingerprint(program) {
     .update("\0")
     .update(JSON.stringify(program.graphicSpec))
     .digest("hex");
+}
+
+function runDensitySweepInDisposableProcess() {
+  const childEnvironment = {
+    ...process.env,
+    [DENSITY_SWEEP_CHILD_ENV]: "1"
+  };
+  delete childEnvironment.NODE_TEST_CONTEXT;
+  const child = spawnSync(process.execPath, [
+    "--expose-gc",
+    "--max-old-space-size=288",
+    "--test",
+    `--test-name-pattern=^${DENSITY_SWEEP_TEST_NAME}$`,
+    fileURLToPath(import.meta.url)
+  ], {
+    encoding: "utf8",
+    env: childEnvironment,
+    maxBuffer: 2 * 1_024 * 1_024
+  });
+  assert.equal(child.error, undefined, child.error?.message);
+  assert.equal(child.signal, null, child.stderr);
+  assert.equal(child.status, 0, `${child.stdout}\n${child.stderr}`);
+  const resourceLine = child.stdout.split("\n").find(line =>
+    line.includes(DENSITY_SWEEP_RESOURCE_PREFIX)
+  );
+  assert.notEqual(resourceLine, undefined, child.stdout);
+  const resources = JSON.parse(resourceLine.slice(
+    resourceLine.indexOf(DENSITY_SWEEP_RESOURCE_PREFIX) +
+      DENSITY_SWEEP_RESOURCE_PREFIX.length
+  ));
+  assert.deepEqual({
+    eligibleDatasets: resources.eligibleDatasets,
+    fieldPairs: resources.fieldPairs,
+    factorCases: resources.factorCases,
+    builds: resources.builds
+  }, {
+    eligibleDatasets: 45,
+    fieldPairs: 510,
+    factorCases: 7,
+    builds: 517
+  });
+  assert.ok(resources.maximumWidth <= 5_000, resources);
+  assert.ok(resources.maximumSvgBytes < 200_000, resources);
+  assert.ok(resources.maxRssKiB < MAX_DISPOSABLE_SWEEP_RSS_KIB, resources);
+}
+
+function assertDensityStressProgram(recipe, factors, label) {
+  const program = recipe.build(factors);
+  assertGraphicIntegrity(program, label);
+  assertAnalyticLayerIntegrity(program, label);
+  const svg = renderToSVG(program);
+  assertSvgIntegrity(svg, label);
+  assert.deepEqual(
+    new Set(recipe.observeFactors(program, factors).map(effect => effect.factor)),
+    new Set(Object.keys(factors).filter(name => name !== "dataset")),
+    `${label} factor effects`
+  );
+  return { program, svgBytes: Buffer.byteLength(svg) };
 }
 
 test("defines focused realistic recipes over at least three actual TidyTuesday datasets", () => {
@@ -397,6 +470,249 @@ test("split-density eligibility is filtered before deterministic sampling", () =
       releaseTidyTuesdaySourceCache(dataset);
     }
   }
+});
+
+test("preserves every authentic volcano density category on the expanded x-axis", () => {
+  const dataset = "tt-volcanoes";
+  const recipe = REALISTIC_DATA_MARK_SCENARIO_RECIPES.find(candidate =>
+    candidate.id === "realistic-maximal-density"
+  );
+  const expectedCategories = [
+    "Subduction zone / Continental crust (>25 km)",
+    "Intraplate / Continental crust (>25 km)",
+    "Subduction zone / Oceanic crust (< 15 km)",
+    "Rift zone / Continental crust (>25 km)"
+  ];
+  try {
+    const domains = recipe.factorsForDataset(dataset);
+    const factors = Object.freeze({
+      dataset,
+      fieldPair: domains.fieldPair.find(value =>
+        value.bindingId === "eligible:longitude-by-tectonic_settings"
+      ),
+      placement: domains.placement.find(value =>
+        value.id === "category-compact-shared"
+      ),
+      densityChannel: "x",
+      kernel: "gaussian",
+      normalization: "count",
+      steps: 40,
+      bandwidthRatio: 0.2,
+      reverse: false,
+      palette: "tableau10"
+    });
+    const metadata = recipe.describe(factors);
+    const sourceByIndex = new Map(tidyTuesdaySourceEntries(dataset).map(entry =>
+      [entry.sourceRowIndex, entry.row]
+    ));
+    let captured = false;
+    const result = runScenario({
+      id: "audit7-volcano-density-long-category-labels",
+      recipe: recipe.id,
+      factors
+    }, {
+      deterministic: false,
+      captureProgram(program) {
+        captured = true;
+        const rows = program.semanticSpec.datasets.find(value =>
+          value.id === "analysisRows"
+        ).values;
+        assert.deepEqual([...new Set(rows.map(row => row.category))], expectedCategories);
+        for (const row of rows) {
+          const source = sourceByIndex.get(row.sourceRowIndex);
+          assert.notEqual(source, undefined, `source row ${row.sourceRowIndex}`);
+          assert.equal(row.value, source.longitude);
+          assert.equal(row.category, source.tectonic_settings);
+        }
+
+        const labels = program.graphicSpec.objects.xAxisLabels.items;
+        assert.deepEqual(labels.map(item => item.properties.text), expectedCategories);
+        assert.deepEqual(
+          program.graphicSpec.objects.colorLegendLabels.items.map(item =>
+            item.properties.text
+          ),
+          expectedCategories
+        );
+        const bounds = labels.map(item => resolveTextBounds(item.properties))
+          .sort((left, right) => left.left - right.left);
+        assert.equal(bounds.some((item, index) =>
+          index > 0 && textBoundsIntersect(bounds[index - 1], item)
+        ), false);
+        assert.equal(program.graphicSpec.objects.canvas.properties.width, 1_987);
+        assert.ok(program.graphicSpec.objects.canvas.properties.width < 2_200);
+
+        assertGraphicIntegrity(program, dataset);
+        assertAnalyticLayerIntegrity(program, dataset);
+        assertSvgIntegrity(renderToSVG(program, {
+          title: metadata.title,
+          description: metadata.analysisQuestion
+        }), dataset);
+      }
+    });
+    assert.equal(captured, true);
+    assert.equal(metadata.provenance.sourceDataset, dataset);
+    assert.deepEqual(metadata.provenance.fieldBindings, {
+      measure: "longitude",
+      dimension: "tectonic_settings",
+      order: "elevation",
+      identifier: "volcano_number",
+      label: "volcano_name"
+    });
+    assert.equal(metadata.sampling.eligibleRowCount, 768);
+    assert.equal(metadata.sampling.displayedRowCount, 160);
+    assert.equal(metadata.provenance.sourceRowCount, 160);
+    assert.equal(
+      metadata.provenance.sourceSelectionSha256,
+      "64d7e3a6e00958db0fad968bb3bc85fd7ed2473d8fe8e1e4bab0bed6e71ecb85"
+    );
+    assert.deepEqual(metadata.dataOperations, [
+      "filter-valid",
+      "top-groups",
+      "filter-supported-groups",
+      "witness-preserving-even-sample",
+      "source-order-numeric-projection",
+      "project"
+    ]);
+    assert.deepEqual(
+      new Set(result.factorEffects.map(effect => effect.factor)),
+      new Set(Object.keys(factors).filter(name => name !== "dataset"))
+    );
+    assert.ok(result.directOperations.includes("encodeDensity"));
+    assert.ok(result.directOperations.includes("editDensity"));
+    assert.deepEqual(result.renderers, ["svg"]);
+    assert.match(result.svgSha256, /^[a-f0-9]{64}$/u);
+  } finally {
+    releaseTidyTuesdaySourceCache(dataset);
+  }
+});
+
+test(DENSITY_SWEEP_TEST_NAME, () => {
+  if (process.env[DENSITY_SWEEP_CHILD_ENV] !== "1") {
+    runDensitySweepInDisposableProcess();
+    return;
+  }
+  const recipe = REALISTIC_DATA_MARK_SCENARIO_RECIPES.find(candidate =>
+    candidate.id === "realistic-maximal-density"
+  );
+  let eligibleDatasets = 0;
+  let fieldPairs = 0;
+  let builds = 0;
+  let maximumWidth = 0;
+  let maximumSvgBytes = 0;
+  for (const dataset of recipe.datasets) {
+    try {
+      const domains = recipe.factorsForDataset(dataset);
+      if (domains === undefined) continue;
+      eligibleDatasets += 1;
+      const placement = domains.placement.find(value =>
+        value.id === "category-compact-shared"
+      );
+      for (const [index, fieldPair] of domains.fieldPair.entries()) {
+        const factors = Object.freeze({
+          dataset,
+          fieldPair,
+          placement,
+          densityChannel: "x",
+          kernel: domains.kernel[index % domains.kernel.length],
+          normalization: domains.normalization[index % domains.normalization.length],
+          steps: domains.steps[index % domains.steps.length],
+          bandwidthRatio: domains.bandwidthRatio[index % domains.bandwidthRatio.length],
+          reverse: domains.reverse[index % domains.reverse.length],
+          palette: domains.palette[index % domains.palette.length]
+        });
+        const label = `${dataset}-${fieldPair.bindingId}-density-x-axis`;
+        const { program, svgBytes } = assertDensityStressProgram(recipe, factors, label);
+        const rows = program.semanticSpec.datasets.find(value =>
+          value.id === "analysisRows"
+        ).values;
+        const categories = [...new Set(rows.map(row => row.category))];
+        assert.deepEqual(
+          program.graphicSpec.objects.xAxisLabels.items.map(item =>
+            item.properties.text
+          ),
+          categories.map(String),
+          `${label} complete axis labels`
+        );
+        assert.deepEqual(
+          program.graphicSpec.objects.colorLegendLabels.items.map(item =>
+            item.properties.text
+          ),
+          categories.map(String),
+          `${label} complete legend labels`
+        );
+        const width = program.graphicSpec.objects.canvas.properties.width;
+        assert.ok(width <= 5_000, `${label} bounded width ${width}`);
+        maximumWidth = Math.max(maximumWidth, width);
+        maximumSvgBytes = Math.max(maximumSvgBytes, svgBytes);
+        fieldPairs += 1;
+        builds += 1;
+      }
+    } finally {
+      releaseTidyTuesdaySourceCache(dataset);
+      globalThis.gc?.();
+    }
+  }
+
+  const factorDataset = "tt-penguins";
+  let factorCases = 0;
+  try {
+    const domains = recipe.factorsForDataset(factorDataset);
+    const seen = Object.fromEntries(Object.keys(domains)
+      .filter(name => name !== "fieldPair")
+      .map(name => [name, new Set()]));
+    const caseCount = Math.max(...Object.entries(domains)
+      .filter(([name]) => name !== "fieldPair")
+      .map(([, domain]) => domain.length));
+    for (let index = 0; index < caseCount; index += 1) {
+      const factors = { dataset: factorDataset };
+      for (const [name, domain] of Object.entries(domains)) {
+        factors[name] = domain[index % domain.length];
+        if (name !== "fieldPair") seen[name].add(JSON.stringify(factors[name]));
+      }
+      const label = `${factorDataset}-density-factor-case-${index}`;
+      const { program, svgBytes } = assertDensityStressProgram(
+        recipe,
+        Object.freeze(factors),
+        label
+      );
+      maximumWidth = Math.max(
+        maximumWidth,
+        program.graphicSpec.objects.canvas.properties.width
+      );
+      maximumSvgBytes = Math.max(maximumSvgBytes, svgBytes);
+      factorCases += 1;
+      builds += 1;
+    }
+    for (const [name, domain] of Object.entries(domains)) {
+      if (name === "fieldPair") continue;
+      assert.deepEqual(
+        seen[name],
+        new Set(domain.map(value => JSON.stringify(value))),
+        `${name} advertised density values`
+      );
+    }
+  } finally {
+    releaseTidyTuesdaySourceCache(factorDataset);
+    globalThis.gc?.();
+  }
+
+  assert.equal(eligibleDatasets, 45);
+  assert.equal(fieldPairs, 510);
+  assert.equal(factorCases, 7);
+  assert.equal(builds, 517);
+  assert.ok(maximumWidth <= 5_000, { maximumWidth });
+  assert.ok(maximumSvgBytes < 200_000, { maximumSvgBytes });
+  const maxRssKiB = process.resourceUsage().maxRSS;
+  assert.ok(maxRssKiB < MAX_DISPOSABLE_SWEEP_RSS_KIB, { maxRssKiB });
+  console.log(`${DENSITY_SWEEP_RESOURCE_PREFIX}${JSON.stringify({
+    eligibleDatasets,
+    fieldPairs,
+    factorCases,
+    builds,
+    maximumWidth,
+    maximumSvgBytes,
+    maxRssKiB
+  })}`);
 });
 
 test("known corpus-wide density and axis witnesses remain nondegenerate", () => {
