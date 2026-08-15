@@ -1620,6 +1620,14 @@ type NonPointCategoricalColorChannel =
       palette?: Palette;
       layout?: ColorLayout;
     };
+type LineCategoricalColorChannel =
+  | string
+  | {
+      field: string;
+      fieldType?: "nominal" | "ordinal";
+      scale?: NonPointCategoricalColorScaleOptions;
+      palette?: Palette;
+    };
 type QuantitativeBarColorChannel = {
   field: string;
   fieldType: "quantitative";
@@ -1692,7 +1700,7 @@ export interface CreateParallelCoordinatesOptions {
   dimensions: readonly [ParallelDimension, ParallelDimension, ...ParallelDimension[]];
   key?: string;
   missing?: ParallelMissingPolicy;
-  color?: NonPointCategoricalColorChannel;
+  color?: LineCategoricalColorChannel;
   strokeDash?: BasicStrokeDashChannel;
   line?: {
     strokeWidth?: number;
@@ -1729,7 +1737,7 @@ export interface CreateLinePlotOptions {
   coordinate?: string;
   x: NonPointPositionChannel;
   y: NonPointPositionChannel;
-  color?: NonPointCategoricalColorChannel;
+  color?: LineCategoricalColorChannel;
   groupBy?: string;
   strokeDash?: BasicStrokeDashChannel;
   line?: {

@@ -216,20 +216,24 @@ test("derives a bounded public option inventory without runtime prototype paths"
 
   assert.equal(inventory.counts.publicActions, 167);
   assert.equal(inventory.counts.topLevelOptionPaths, 1_095);
-  assert.equal(inventory.counts.nestedOptionPaths, 4_305);
-  assert.equal(inventory.counts.optionPaths, 5_400);
-  assert.equal(inventory.counts.requiredOptionPaths, 4_699);
+  assert.equal(inventory.counts.nestedOptionPaths, 4_303);
+  assert.equal(inventory.counts.optionPaths, 5_398);
+  assert.equal(inventory.counts.requiredOptionPaths, 4_697);
   assert.equal(inventory.counts.excludedOptionPaths, 701);
   assert.equal(inventory.counts.topLevelCategoricalPaths, 262);
   assert.equal(inventory.counts.topLevelLiteralValues, 1_000);
   assert.equal(inventory.counts.literalFamilies, 85);
-  assert.equal(inventory.counts.pathLiteralRequirements, 2_233);
+  assert.equal(inventory.counts.pathLiteralRequirements, 2_221);
   assert.equal(inventory.counts.familyLiteralRequirements, 175);
   assert.equal(inventory.counts.pathDiversityRequirements, 143);
   assert.equal(inventory.optionPaths.some(option => option.id ===
     "option-path:createCanvas.margin.top"), true);
   assert.equal(inventory.optionPaths.some(option => option.id ===
     "option-path:editCanvas.margin.right"), true);
+  assert.equal(inventory.optionPaths.some(option => option.id ===
+    "option-path:createLinePlot.color.layout"), false);
+  assert.equal(inventory.optionPaths.some(option => option.id ===
+    "option-path:createParallelCoordinates.color.layout"), false);
   assert.equal(inventory.optionPaths.some(option =>
     option.path.split(".").includes("resolved")
   ), false);
@@ -274,7 +278,7 @@ test("derives a bounded public option inventory without runtime prototype paths"
     "option-path:createData.values[]"), false);
   assert.equal(ledger.requirements.some(requirement => requirement.id ===
     "option-path:createDerivedData.transform[].type"), false);
-  assert.equal(ledger.requirements.length, 7_279);
+  assert.equal(ledger.requirements.length, 7_265);
   assert.throws(() => createScenarioCoverageLedger({
     publicInventory: inventory,
     rendererFeatures: [],

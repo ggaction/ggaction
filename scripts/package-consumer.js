@@ -933,6 +933,16 @@ async function testTypeScriptConsumer(directory) {
       }
     };
     void invalidClosedLineOptions;
+    const invalidLineColorLayout: CreateLinePlotOptions = {
+      x: "x",
+      y: "y",
+      color: {
+        field: "group",
+        // @ts-expect-error Line color cannot use categorical fill-layout policies.
+        layout: "overlay"
+      }
+    };
+    void invalidLineColorLayout;
     const lineFacade: ChartProgram = chart()
       .createCanvas()
       .createData({ values: [{ x: 1, y: 2, group: "A" }] })
@@ -953,6 +963,15 @@ async function testTypeScriptConsumer(directory) {
       line: { curve: "linear", closed: false },
       guides: false
     };
+    const invalidParallelColorLayout: CreateParallelCoordinatesOptions = {
+      dimensions: ["first", "second"],
+      color: {
+        field: "group",
+        // @ts-expect-error Parallel line color cannot use categorical fill-layout policies.
+        layout: "overlay"
+      }
+    };
+    void invalidParallelColorLayout;
     const parallelEncoding: ParallelCoordinatesEncodingOptions = {
       dimensions: ["first", "second"],
       key: "row key"
