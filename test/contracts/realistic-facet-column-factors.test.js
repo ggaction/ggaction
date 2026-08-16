@@ -1,13 +1,16 @@
 import assert from "node:assert/strict";
+import { spawnSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import test from "node:test";
+import { fileURLToPath } from "node:url";
 
-import { resolveTextBounds, textBoundsIntersect } from "../../src/core/textMetrics.js";
 import { renderToSVG } from "../../src/renderers/svg.js";
 import { assertAnalyticLayerIntegrity } from "../oracles/analytic-layer-integrity.js";
 import { assertGraphicIntegrity } from "../oracles/graphic-integrity.js";
 import { assertSvgIntegrity } from "../oracles/svg-integrity.js";
 import { releaseTidyTuesdaySourceCache } from "../support/datasets/tidytuesday.js";
+import { assertFacetGuideGeometry } from
+  "../support/scenarios/realistic-facet-interaction-sweep-worker.js";
 import { REALISTIC_LIFECYCLE_SCENARIO_RECIPES } from
   "../support/scenarios/lifecycle-recipes.js";
 import { REALISTIC_ANALYSIS_RECIPES } from
@@ -15,6 +18,33 @@ import { REALISTIC_ANALYSIS_RECIPES } from
 
 const LIFECYCLE_COLUMNS = Object.freeze([2, 3]);
 const ANALYSIS_COLUMNS = Object.freeze([2, 3, 4]);
+const FACET_INTERACTION_SWEEP_TEST_NAME =
+  "covers every eligible facet binding plus every column-scale-axis interaction";
+// Cached Node 20.20.2 reference run: 36,219.158417 ms.
+const FACET_INTERACTION_SWEEP_BENCHMARK_MS = 36_220;
+const FACET_INTERACTION_SWEEP_CHILD_TIMEOUT_MS =
+  FACET_INTERACTION_SWEEP_BENCHMARK_MS * 4;
+const FACET_INTERACTION_SWEEP_TEST_TIMEOUT_MS =
+  FACET_INTERACTION_SWEEP_CHILD_TIMEOUT_MS + 10_000;
+const MAX_FACET_INTERACTION_CHILD_RSS_KIB = 512 * 1_024;
+const FACET_INTERACTION_SWEEP_WORKER = fileURLToPath(new URL(
+  "../support/scenarios/realistic-facet-interaction-sweep-worker.js",
+  import.meta.url
+));
+const EXPECTED_FACET_INTERACTION_OCCURRENCES = Object.freeze({
+  "2/shared/each": 46,
+  "2/shared/outer": 46,
+  "2/independent/each": 46,
+  "2/independent/outer": 46,
+  "3/shared/each": 46,
+  "3/shared/outer": 46,
+  "3/independent/each": 46,
+  "3/independent/outer": 46,
+  "4/shared/each": 45,
+  "4/shared/outer": 45,
+  "4/independent/each": 45,
+  "4/independent/outer": 45
+});
 const CHRISTMAS_SONG_LABELS = Object.freeze([
   "JINGLE BELL ROCK",
   "WHITE CHRISTMAS",
@@ -63,31 +93,62 @@ function buildObserved(recipe, factors, label) {
   }
 }
 
-function columnEffect(result) {
-  return result.effects.find(effect => effect.factor === "columns");
+function runFacetInteractionSweepInDisposableProcess() {
+  const child = spawnSync(process.execPath, [
+    "--expose-gc",
+    "--max-old-space-size=288",
+    FACET_INTERACTION_SWEEP_WORKER
+  ], {
+    encoding: "utf8",
+    maxBuffer: 2 * 1_024 * 1_024,
+    timeout: FACET_INTERACTION_SWEEP_CHILD_TIMEOUT_MS
+  });
+  assert.equal(
+    child.error,
+    undefined,
+    child.error?.stack ??
+      `facet interaction worker exceeded ${FACET_INTERACTION_SWEEP_CHILD_TIMEOUT_MS} ms`
+  );
+  assert.equal(child.signal, null, child.stderr || child.stdout);
+  assert.equal(child.status, 0, child.stderr || child.stdout);
+  assert.equal(child.stderr, "", child.stderr);
+  const reportLines = child.stdout.trim().split("\n");
+  assert.equal(reportLines.length, 1, child.stdout);
+  const resources = JSON.parse(reportLines[0]);
+  assert.deepEqual({
+    eligibleDatasets: resources.eligibleDatasets,
+    eligibleFieldPairs: resources.eligibleFieldPairs,
+    builds: resources.builds
+  }, {
+    eligibleDatasets: 38,
+    eligibleFieldPairs: 548,
+    builds: 548
+  });
+  assert.deepEqual(
+    Object.fromEntries(Object.entries(resources.interactions).map(([key, evidence]) => [
+      key,
+      evidence.occurrences
+    ])),
+    EXPECTED_FACET_INTERACTION_OCCURRENCES
+  );
+  for (const [key, evidence] of Object.entries(resources.interactions)) {
+    assert.ok(evidence.occurrences >= 5, `${key} occurrences`);
+    assert.ok(evidence.datasets >= 3, `${key} datasets`);
+  }
+  assert.equal(
+    Number.isSafeInteger(resources.childMaxRssKiB),
+    true,
+    JSON.stringify(resources)
+  );
+  assert.ok(
+    resources.childMaxRssKiB < MAX_FACET_INTERACTION_CHILD_RSS_KIB,
+    `${resources.childMaxRssKiB} < ${MAX_FACET_INTERACTION_CHILD_RSS_KIB} ` +
+      "per-process child RSS bound"
+  );
 }
 
-function assertFacetGuideGeometry(program, label) {
-  let childGuides = 0;
-  for (const [childId, child] of Object.entries(program.children)) {
-    const title = child.graphicSpec.objects.yAxisTitle;
-    const labels = child.graphicSpec.objects.yAxisLabels;
-    if (title === undefined && labels === undefined) continue;
-    assert.notEqual(title, undefined, `${label}/${childId} title`);
-    assert.ok(labels?.items.length > 0, `${label}/${childId} labels`);
-    const titleBounds = resolveTextBounds(title.properties);
-    for (const item of labels.items) {
-      const labelBounds = resolveTextBounds(item.properties);
-      assert.equal(
-        textBoundsIntersect(titleBounds, labelBounds),
-        false,
-        `${label}/${childId}/${item.properties.text}`
-      );
-    }
-    childGuides += 1;
-  }
-  assert.ok(childGuides > 0, `${label} materializes y-axis guides`);
-  return childGuides;
+function columnEffect(result) {
+  return result.effects.find(effect => effect.factor === "columns");
 }
 
 test("schedules each facet axis policy five times across real datasets", () => {
@@ -336,65 +397,8 @@ test("every analysis facet column produces a distinct final TT chart", () => {
   assert.equal(eligibleDatasets, 38);
 });
 
-test("covers every eligible facet binding plus every column-scale-axis interaction", () => {
-  let eligibleDatasets = 0;
-  let eligibleFieldPairs = 0;
-  let builds = 0;
-  for (const dataset of analysisRecipe.datasets) {
-    try {
-      const domains = analysisRecipe.factorsForDataset(dataset);
-      if (domains === undefined) continue;
-      eligibleDatasets += 1;
-      eligibleFieldPairs += domains.fieldPair.length;
-      const selections = new Map();
-      const add = (fieldPair, columns, facetScales, facetAxes) => {
-        const key = [fieldPair.bindingId, columns, facetScales, facetAxes].join("/");
-        selections.set(key, { fieldPair, columns, facetScales, facetAxes });
-      };
-      for (const fieldPair of domains.fieldPair) {
-        add(fieldPair, 2, "independent", "each");
-      }
-      for (const columns of domains.columns) {
-        for (const facetScales of domains.facetScales) {
-          for (const facetAxes of domains.facetAxes) {
-            add(domains.fieldPair[0], columns, facetScales, facetAxes);
-          }
-        }
-      }
-
-      for (const selection of selections.values()) {
-        const factors = baselineFactors(dataset, domains, {
-          ...selection,
-          gap: 16,
-          padding: 18
-        });
-        const label = [
-          dataset,
-          selection.fieldPair.bindingId,
-          selection.columns,
-          selection.facetScales,
-          selection.facetAxes
-        ].join("/");
-        try {
-          const program = analysisRecipe.build(factors);
-          assertGraphicIntegrity(program, label);
-          assertFacetGuideGeometry(program, label);
-          const effects = new Map(analysisRecipe.observeFactors(program, factors).map(effect =>
-            [effect.factor, effect]
-          ));
-          for (const name of ["columns", "facetScales", "facetAxes"]) {
-            assert.equal(effects.get(name)?.value, factors[name], `${label}/${name}`);
-          }
-          builds += 1;
-        } finally {
-          analysisRecipe.releaseResolution(factors);
-        }
-      }
-    } finally {
-      releaseTidyTuesdaySourceCache(dataset);
-    }
-  }
-  assert.equal(eligibleDatasets, 38);
-  assert.equal(eligibleFieldPairs, 548);
-  assert.equal(builds, 966);
+test(FACET_INTERACTION_SWEEP_TEST_NAME, {
+  timeout: FACET_INTERACTION_SWEEP_TEST_TIMEOUT_MS
+}, () => {
+  runFacetInteractionSweepInDisposableProcess();
 });
