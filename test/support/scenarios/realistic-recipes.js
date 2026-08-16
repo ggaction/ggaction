@@ -1454,7 +1454,16 @@ function observeFactorEffects(spec, program, factors, resolution) {
 
 function makeRecipe(spec, complexity) {
   const datasets = realisticDatasetIds();
-  const factors = Object.freeze(factorsFor(spec, datasets[0]));
+  let factors;
+  for (const dataset of datasets) {
+    const candidate = factorsFor(spec, dataset);
+    if (candidate === undefined) continue;
+    factors = Object.freeze(candidate);
+    break;
+  }
+  if (factors === undefined) {
+    throw new Error(`No realistic dataset supports recipe "${spec.id}".`);
+  }
   let cachedFactors;
   let cachedResolution;
   const resolve = values => {
