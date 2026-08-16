@@ -634,11 +634,12 @@ function galleryDocument(title, body) {
 body{font-family:system-ui,sans-serif;margin:24px;background:#f8fafc;color:#0f172a}
 a{color:#1d4ed8}.grid{display:grid;grid-template-columns:minmax(0,1400px);justify-content:center;gap:22px}
 .card{background:white;border:1px solid #cbd5e1;border-radius:10px;padding:12px;overflow:hidden}
-.card img{display:block;width:100%;height:auto;background:white}.meta{font-size:13px;color:#475569}
+.card img{display:block;width:100%;height:auto;background:white}.chart-number{font-variant-numeric:tabular-nums;text-decoration:none;color:#475569}.chart-id{font-size:12px;color:#64748b;overflow-wrap:anywhere}.meta{font-size:13px;color:#475569}
 </style></head><body><h1>${escapeHtml(title)}</h1>${body}</body></html>\n`;
 }
 
-async function writeGallery(output, entries) {
+export async function writeGallery(output, entries) {
+  const ordinalById = new Map(entries.map((entry, index) => [entry.id, index + 1]));
   const grouped = new Map();
   for (const entry of entries) {
     const values = grouped.get(entry.dataset) ?? [];
@@ -651,6 +652,8 @@ async function writeGallery(output, entries) {
   for (const [dataset, values] of [...grouped].sort()) {
     links.push(`<li><a href="datasets/${escapeHtml(dataset)}.html">${escapeHtml(dataset)}</a> — ${values.length} charts</li>`);
     const cards = values.map(entry => {
+      const ordinal = String(ordinalById.get(entry.id)).padStart(4, "0");
+      const anchor = `chart-${ordinal}`;
       const svg = entry.artifacts.svg?.output;
       const png = entry.artifacts.png?.output;
       const pdf = entry.artifacts.pdf?.output;
@@ -658,8 +661,8 @@ async function writeGallery(output, entries) {
         `<a href="../${escapeHtml(svg)}"><img loading="lazy" src="../${escapeHtml(svg)}" alt="${escapeHtml(entry.title)}"></a>`;
       const outputs = [png && `<a href="../${escapeHtml(png)}">PNG</a>`, pdf &&
         `<a href="../${escapeHtml(pdf)}">PDF</a>`].filter(Boolean).join(" · ");
-      return `<article class="card"><h2>${escapeHtml(entry.title)}</h2>${image}
-<p>${escapeHtml(entry.analysisQuestion)}</p><p class="meta">${escapeHtml(entry.chartFamily)} · ${escapeHtml(entry.complexity)} · ${escapeHtml(entry.recipe)}${outputs ? ` · ${outputs}` : ""}</p></article>`;
+      return `<article class="card" id="${anchor}" data-chart-id="${escapeHtml(entry.id)}"><h2><a class="chart-number" href="#${anchor}">#${ordinal}</a> · ${escapeHtml(entry.title)}</h2>${image}
+<p>${escapeHtml(entry.analysisQuestion)}</p><p class="chart-id">ID: <code>${escapeHtml(entry.id)}</code></p><p class="meta">${escapeHtml(entry.chartFamily)} · ${escapeHtml(entry.complexity)} · ${escapeHtml(entry.recipe)}${outputs ? ` · ${outputs}` : ""}</p></article>`;
     }).join("\n");
     await writeFile(
       path.join(datasetDirectory, `${dataset}.html`),

@@ -32,13 +32,50 @@ import {
   promoteRealisticScenarioRun,
   realisticScenarioRunLayout,
   runRealisticScenarioCorpus,
-  serializeRealisticScenarioOutcomeChunk
+  serializeRealisticScenarioOutcomeChunk,
+  writeGallery
 } from
   "../../scripts/run-realistic-scenarios.js";
 import { releaseTidyTuesdaySourceCache } from
   "../support/datasets/tidytuesday.js";
 
 let boundedGeneration;
+
+test("labels every gallery chart with a short ordinal and stable descriptor id", async () => {
+  const output = await mkdtemp(path.join(tmpdir(), "ggaction-gallery-labels-"));
+  try {
+    const entries = [
+      {
+        id: "recipe-alpha-a1",
+        dataset: "dataset-a",
+        title: "Alpha",
+        analysisQuestion: "Question A?",
+        chartFamily: "family-a",
+        complexity: "simple",
+        recipe: "recipe-alpha",
+        artifacts: { svg: { output: "svg/a.svg" }, png: { output: "png/a.png" } }
+      },
+      {
+        id: "recipe-beta-b2",
+        dataset: "dataset-a",
+        title: "Beta",
+        analysisQuestion: "Question B?",
+        chartFamily: "family-b",
+        complexity: "advanced",
+        recipe: "recipe-beta",
+        artifacts: { svg: { output: "svg/b.svg" } }
+      }
+    ];
+    await writeGallery(output, entries);
+    const page = await readFile(path.join(output, "datasets", "dataset-a.html"), "utf8");
+    assert.match(page, /id="chart-0001" data-chart-id="recipe-alpha-a1"/u);
+    assert.match(page, /href="#chart-0001">#0001<\/a>/u);
+    assert.match(page, /ID: <code>recipe-alpha-a1<\/code>/u);
+    assert.match(page, /id="chart-0002" data-chart-id="recipe-beta-b2"/u);
+  } finally {
+    await rm(output, { recursive: true, force: true });
+  }
+});
 
 test("fails closed when strict artifact execution exceeds 512 MiB per child", () => {
   const strict = parseRealisticScenarioArguments([]);
