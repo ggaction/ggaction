@@ -9,6 +9,7 @@ const childPath = fileURLToPath(new URL(
 
 const MAX_DIAGNOSTIC_OUTPUT = 8_192;
 const EXECUTION_CHILD_OLD_SPACE_MIB = 224;
+const EXECUTION_CHILD_SCENARIO_LIMIT = 24;
 const CHILD_SOFT_TERMINATION_GRACE_MS = 1_000;
 const CHILD_HARD_TERMINATION_GRACE_MS = 4_000;
 const CHILD_CLOSE_GRACE_MS = 5_000;
@@ -488,16 +489,20 @@ export async function runRealisticScenarioDatasetIsolated({
   const resources = [];
   let cursor = 0;
   while (cursor < tasks.length) {
-    const remaining = tasks.slice(cursor);
+    const batchEnd = Math.min(
+      cursor + EXECUTION_CHILD_SCENARIO_LIMIT,
+      tasks.length
+    );
+    const batch = tasks.slice(cursor, batchEnd);
     try {
       const completed = await runRealisticScenarioExecutionChild({
         dataset,
-        tasks: remaining,
+        tasks: batch,
         timeout
       }, dependencies);
       outcomes.push(...completed.outcomes);
       resources.push(completed.resource);
-      cursor = tasks.length;
+      cursor = batchEnd;
     } catch (error) {
       const partial = Array.isArray(error?.partialOutcomes)
         ? error.partialOutcomes
@@ -514,7 +519,7 @@ export async function runRealisticScenarioDatasetIsolated({
         }
         throw error;
       }
-      if (cursor >= tasks.length) {
+      if (cursor >= batchEnd) {
         if (record(error) && Object.isExtensible(error)) {
           error.partialOutcomes = deepFreeze([...outcomes]);
           error.executionResources = deepFreeze([...resources]);

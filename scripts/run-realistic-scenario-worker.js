@@ -337,6 +337,7 @@ export async function executeRealisticScenarioTask(task) {
         program = value;
       }
     });
+    if (task.artifacts) globalThis.gc?.();
     const artifactResult = task.artifacts
       ? await renderArtifacts(program, task.descriptor, result, task)
       : Object.freeze({

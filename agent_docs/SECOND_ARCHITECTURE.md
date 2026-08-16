@@ -2273,8 +2273,9 @@ Node 20/22 memory bound와 typed CSV streaming oracle을 고정한다.
 
 Descriptor 생성 뒤의 chart build, deterministic replay와 renderer 검증도 corpus 전체의
 V8/native high-water를 한 process에 누적하지 않는다. Runner는 descriptor를 dataset별로 묶고
-정확히 한 dataset child만 직렬 실행한다. 정상 경로에서 child 하나가 같은 source dataset의
-72개 scenario를 순서대로 처리하고 종료한 뒤 다음 dataset child를 시작한다. Crash, timeout 또는
+정상 경로에서 각 dataset의 72개 scenario를 최대 24개씩 bounded child 세 개에 나눠 순서대로
+실행한다. 한 child가 종료된 뒤에만 같은 dataset의 다음 child나 다음 dataset child를 시작한다.
+Crash, timeout 또는
 protocol 위반이 있으면 이미 직렬화와 descriptor identity 검증이 끝난 결과만 commit하고 실패한
 scenario를 기록한 다음, 남은 scenario는 새 child에서 계속한다. 이전 child의 exit/close가 확인된
 경우에만 새 child를 시작한다. SIGTERM 뒤 SIGKILL까지 bounded escalation했는데도 종료를 확인하지
@@ -2282,15 +2283,22 @@ scenario를 기록한 다음, 남은 scenario는 새 child에서 계속한다. �
 
 Execution child는 224MiB V8 old-space guardrail을 사용한다. 192MiB 이하는 최신 peak dataset의
 maximal workload를 완료하지 못하므로 사용하지 않는다. Coordinator는 완료된 dataset outcome을
-checksum과 descriptor index를 가진 run-local V8 structured-clone binary chunk로 직렬화하고, 해당
+세 batch가 모두 끝난 뒤 checksum과 descriptor index를 가진 dataset별 run-local V8
+structured-clone binary chunk 하나로 직렬화하고, 해당
 object graph를 해제한 뒤 다음 child를 시작한다. Binary payload는 `undefined` own property를 포함한
 IPC structured-clone 의미를 보존한다. 모든 child가 종료된 뒤에만 canonical order로 chunk를 다시
 읽고 검증하여 coverage와 manifest 입력을 복원한다. 따라서 이전 dataset outcome retention은 child
 process-tree peak와 겹치지 않는다. 각 compact outcome의 IPC
 serialization이 끝난 뒤 program, replay와 SVG temporary가 더 이상 reachable하지 않은 시점에
-explicit GC를 실행한다. Dataset 종료 때 source cache를 release하고 마지막 GC 뒤 resource
+explicit GC를 실행한다. 각 batch child가 종료될 때 source cache를 release하고 마지막 GC 뒤 resource
 snapshot을 보낸 다음 process가 종료된다. `--no-artifacts` 경로는 native Canvas, PNG와 PDF
 adapter를 import하지 않는다. Artifact run만 이 dependency를 lazy import한다.
+
+Artifact 경로는 deterministic replay 뒤 native Canvas·PNG·PDF 렌더 직전에도 GC하여 replay
+temporary와 native renderer allocation이 겹치지 않게 한다. 정상 strict artifact run은 execution
+child의 process-wide RSS high-water가 512MiB 이하일 것을 성공 조건으로 요구한다. 초과 또는 final
+high-water 누락은 resource gate 실패로 기록하고 immutable run은 보존하되 `latest` promotion을
+금지한다.
 
 Runner는 child별 complete/partial RSS, child/coordinator monotonic wall time, coordinator lifetime
 high-water와 execution-phase sampled RSS를 별도로 보존한다. Snapshot 전에 실패한 child에는 RSS를
@@ -2301,6 +2309,10 @@ maximum과 execution-phase coordinator sample maximum의 합이다. 둘 다 실�
 coordinator current RSS를 더한 표본임을 이름으로 드러낸다. Scenario timeout은 outcome마다 다시
 시작되고 child termination을 확인한 뒤에만 다음 process를 만든다. Execution concurrency는 memory
 bound를 위해 1로 고정한다.
+
+Resource의 같은 dataset record가 여러 개인 것은 의도된 batch 경계다. 정상 strict 전수 실행은
+50 datasets × 3 batches = 150개의 complete child record를 가지며 `firstScenarioIndex`와
+`requestedScenarios`로 canonical partition을 검증한다.
 
 Public user program의 canonical owner는 `examples/<chart>/program.js`다. `public.test.js`와
 `png.render.js`는 이를 import하여 실제 example flow를 검증한다. 반대로

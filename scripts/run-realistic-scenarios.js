@@ -39,9 +39,39 @@ const MAX_SCENARIO_TIMEOUT = 30 * 60_000;
 const MAX_GENERATION_TIMEOUT = 60 * 60_000;
 const DEFAULT_GENERATION_TIMEOUT = 30 * 60_000;
 const MAX_SCENARIOS = 3_600;
+const MAX_STRICT_ARTIFACT_EXECUTION_CHILD_RSS_BYTES = 512 * 1_024 * 1_024;
 const MIN_STRICT_PDF_COUNT = 5;
 const SAFE_RUN_ID = /^[A-Za-z0-9][A-Za-z0-9._-]*$/u;
 const SHA256 = /^[a-f0-9]{64}$/u;
+
+function realisticExecutionResourceGate(resources, options) {
+  const enforced = options.artifacts && !options.allowPartial;
+  const observedBytes = resources?.maximumChildRssBytes;
+  const observed = Number.isSafeInteger(observedBytes) && observedBytes >= 0;
+  return Object.freeze({
+    enforced,
+    limitBytes: MAX_STRICT_ARTIFACT_EXECUTION_CHILD_RSS_BYTES,
+    ...(observed ? { observedBytes } : {}),
+    passed: !enforced || (observed &&
+      observedBytes <= MAX_STRICT_ARTIFACT_EXECUTION_CHILD_RSS_BYTES)
+  });
+}
+
+export function assertRealisticExecutionResourceBound(resources, options) {
+  const gate = realisticExecutionResourceGate(resources, options);
+  if (!gate.enforced || gate.passed) return gate;
+  const observed = gate.observedBytes === undefined
+    ? "an unavailable high-water mark"
+    : `${gate.observedBytes} bytes`;
+  const error = new RangeError(
+    `Strict realistic artifact execution child RSS ${observed} exceeds or cannot satisfy ` +
+      `the ${gate.limitBytes} byte limit.`
+  );
+  error.name = "ScenarioResourceError";
+  error.executionResources = resources;
+  error.executionResourceGate = gate;
+  throw error;
+}
 
 function integer(value, label, { minimum, maximum }) {
   if (typeof value !== "string" || !/^(?:0|[1-9][0-9]*)$/u.test(value)) {
@@ -807,8 +837,13 @@ export async function runRealisticScenarioCorpus(options, {
   resolvedGeneration = undefined;
   globalThis.gc?.();
   let executed;
+  let executionResourceGate;
   try {
     executed = await runScenarios(descriptors, options, layout.output);
+    executionResourceGate = assertRealisticExecutionResourceBound(
+      executed.resources,
+      options
+    );
   } catch (error) {
     await writeFile(
       path.join(layout.output, "report.json"),
@@ -823,6 +858,7 @@ export async function runRealisticScenarioCorpus(options, {
         generation,
         generationResources,
         executionResources: error?.executionResources,
+        executionResourceGate: error?.executionResourceGate,
         error: {
           name: error?.name ?? "Error",
           message: error?.message ?? String(error),
@@ -860,6 +896,7 @@ export async function runRealisticScenarioCorpus(options, {
     generation,
     generationResources,
     executionResources,
+    executionResourceGate,
     successCount: successes.length,
     failureCount: failures.length,
     coverage,
@@ -913,6 +950,7 @@ export async function runRealisticScenarioCorpus(options, {
       executionResources.maximumExecutionPhaseConservativeCombinedRssBytes,
     executionMaximumConservativeCombinedRssBytes:
       executionResources.maximumConservativeCombinedRssBytes,
+    executionResourceGatePassed: executionResourceGate.passed,
     passed: successes.length,
     failed: failures.length,
     coveragePassed: coverage.passed,

@@ -25,6 +25,7 @@ import {
 } from
   "../../scripts/run-realistic-scenario-worker.js";
 import {
+  assertRealisticExecutionResourceBound,
   generateRealisticDescriptorsInWorker,
   parseRealisticScenarioArguments,
   parseRealisticScenarioOutcomeChunk,
@@ -38,6 +39,45 @@ import { releaseTidyTuesdaySourceCache } from
   "../support/datasets/tidytuesday.js";
 
 let boundedGeneration;
+
+test("fails closed when strict artifact execution exceeds 512 MiB per child", () => {
+  const strict = parseRealisticScenarioArguments([]);
+  const boundary = 512 * 1_024 * 1_024;
+  assert.deepEqual(
+    assertRealisticExecutionResourceBound({ maximumChildRssBytes: boundary }, strict),
+    {
+      enforced: true,
+      limitBytes: boundary,
+      observedBytes: boundary,
+      passed: true
+    }
+  );
+  assert.throws(
+    () => assertRealisticExecutionResourceBound(
+      { maximumChildRssBytes: boundary + 1 },
+      strict
+    ),
+    error => error.name === "ScenarioResourceError" &&
+      error.executionResourceGate.observedBytes === boundary + 1 &&
+      error.executionResources.maximumChildRssBytes === boundary + 1
+  );
+  assert.throws(
+    () => assertRealisticExecutionResourceBound({}, strict),
+    error => error.name === "ScenarioResourceError" &&
+      error.executionResourceGate.observedBytes === undefined
+  );
+  for (const options of [
+    parseRealisticScenarioArguments(["--no-artifacts"]),
+    parseRealisticScenarioArguments(["--allow-partial", "--limit=1"])
+  ]) {
+    const gate = assertRealisticExecutionResourceBound(
+      { maximumChildRssBytes: boundary + 1 },
+      options
+    );
+    assert.equal(gate.enforced, false);
+    assert.equal(gate.passed, true);
+  }
+});
 
 function generated() {
   boundedGeneration ??= generateRealisticDescriptorsInWorker({ limit: 1 });
@@ -488,6 +528,131 @@ test("isolates serial dataset execution in a bounded child process", async () =>
   assert.equal(completed.resource.maximumIpcSampledCombinedRssBytes > 0, true);
   assert.equal(Object.isFrozen(completed), true);
   assert.equal(Object.isFrozen(completed.resource), true);
+});
+
+test("runs one dataset in ordered serial batches of at most 24 scenarios", async () => {
+  const tasks = Array.from({ length: 50 }, (_, index) => Object.freeze({
+    index,
+    descriptor: executionDescriptor(index)
+  }));
+  const batches = [];
+  let activeChildren = 0;
+  let maximumActiveChildren = 0;
+  const completed = await runRealisticScenarioDatasetIsolated({
+    dataset: "fixture-dataset",
+    tasks,
+    timeout: 1_000
+  }, {
+    spawn() {
+      const child = childDouble();
+      child.send = (message, callback) => {
+        batches.push(message.tasks.map(task => task.index));
+        activeChildren += 1;
+        maximumActiveChildren = Math.max(maximumActiveChildren, activeChildren);
+        queueMicrotask(() => callback?.(null));
+        queueMicrotask(() => {
+          const childResources = Object.freeze({
+            rssBytes: 10,
+            maximumRssBytes: 20,
+            wallTimeMs: 1
+          });
+          for (const task of message.tasks) {
+            child.emit("message", {
+              kind: "outcome",
+              dataset: "fixture-dataset",
+              outcome: { index: task.index, ok: true, result: executionResult(task) },
+              resources: childResources
+            });
+          }
+          child.emit("message", {
+            kind: "resources",
+            dataset: "fixture-dataset",
+            resources: childResources
+          });
+          child.emit("exit", 0, null);
+          child.emit("close", 0, null);
+          activeChildren -= 1;
+        });
+      };
+      return child;
+    }
+  });
+  assert.deepEqual(batches.map(batch => batch.length), [24, 24, 2]);
+  assert.deepEqual(batches.flat(), tasks.map(task => task.index));
+  assert.equal(maximumActiveChildren, 1);
+  assert.equal(activeChildren, 0);
+  assert.deepEqual(
+    completed.outcomes.map(outcome => outcome.result.id),
+    tasks.map(task => task.descriptor.id)
+  );
+  assert.deepEqual(
+    completed.resources.map(resource => resource.firstScenarioIndex),
+    [0, 24, 48]
+  );
+  assert.deepEqual(
+    completed.resources.map(resource => resource.requestedScenarios),
+    [24, 24, 2]
+  );
+  assert.deepEqual(
+    completed.resources.map(resource => resource.completedScenarios),
+    [24, 24, 2]
+  );
+});
+
+test("fails closed at a completed batch boundary without blaming the next task", async () => {
+  const tasks = Array.from({ length: 25 }, (_, index) => Object.freeze({
+    index,
+    descriptor: executionDescriptor(index)
+  }));
+  const resources = Object.freeze({
+    rssBytes: 10,
+    maximumRssBytes: 20,
+    wallTimeMs: 1
+  });
+  let spawnCount = 0;
+  const failure = runRealisticScenarioDatasetIsolated({
+    dataset: "fixture-dataset",
+    tasks,
+    timeout: 1_000
+  }, {
+    spawn() {
+      spawnCount += 1;
+      const child = childDouble();
+      child.send = (message, callback) => {
+        queueMicrotask(() => callback?.(null));
+        queueMicrotask(() => {
+          for (const task of message.tasks) {
+            child.emit("message", {
+              kind: "outcome",
+              dataset: "fixture-dataset",
+              outcome: { index: task.index, ok: true, result: executionResult(task) },
+              resources
+            });
+          }
+          child.emit("exit", 17, null);
+          child.emit("close", 17, null);
+        });
+      };
+      return child;
+    }
+  });
+  let boundaryError;
+  await assert.rejects(
+    failure,
+    error => {
+      boundaryError = error;
+      return error.name === "WorkerExitError" &&
+        error.partialOutcomes?.length === 24 &&
+        error.partialOutcomes.every(outcome => outcome.ok) &&
+        error.executionResources?.length === 1 &&
+        error.executionResources[0].completedScenarios === 24;
+    }
+  );
+  assert.equal(spawnCount, 1);
+  assert.deepEqual(
+    boundaryError.partialOutcomes.map(outcome => outcome.result.id),
+    tasks.slice(0, 24).map(task => task.descriptor.id)
+  );
 });
 
 test("bounds execution child protocol, timeout, and crash failures", async () => {
