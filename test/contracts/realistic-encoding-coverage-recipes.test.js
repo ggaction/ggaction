@@ -177,6 +177,23 @@ async function projection() {
           const program = recipe.build(factors);
           const metadata = recipe.describe(factors);
           assertMetadata(recipe, factors, program, metadata, label);
+          assert.deepEqual(
+            program.graphicSpec.objects.canvas.properties,
+            { width: 1_600, height: 1_000, background: "#ffffff" },
+            `${label} compact readable canvas`
+          );
+          if (recipe.id === "realistic-direct-polar-encoding-options") {
+            assert.deepEqual(
+              program.semanticSpec.layers.map(layer => layer.id),
+              ["theta-aggregate-count", "theta-aggregate-sum"],
+              `${label} final polar-only presentation`
+            );
+            assert.equal(
+              directEntries(program, "removeMark").length,
+              9,
+              `${label} transient polar point witnesses removed`
+            );
+          }
           assertGraphicIntegrity(program, label);
           assertAnalyticLayerIntegrity(program, label);
           assertSvgIntegrity(renderToSVG(program, {

@@ -805,6 +805,44 @@ function guideOptions(profile, resources, context, ordinal, action) {
   };
 }
 
+function restoreCartesianHistogramPresentation(
+  program,
+  profile,
+  resources,
+  context,
+  ordinal
+) {
+  if (profile.guideMode !== "polar") return program;
+  const next = program
+    .removeMark({ target: "polarContextPoints" })
+    .removeLegend({
+      target: (profile.legendProfile ?? 0) % 4 === 1
+        ? "seriesContextLines"
+        : "contextPoints",
+      channels: ["color"]
+    })
+    .editCanvas({
+      width: 1_600,
+      height: 1_100,
+      margin: { top: 220, right: 400, bottom: 220, left: 400 }
+    });
+  const { legend: _legend, ...cartesianGuides } = guideOptions({
+    ...profile,
+    guideMode: "cartesian",
+    orientation: "vertical",
+    axisType: "cartesian"
+  }, resources, context, ordinal, "createHistogram");
+  return next.createGuides({
+    ...cartesianGuides,
+    legend: {
+      target: "contextPoints",
+      channels: ["color"],
+      position: "right",
+      title: context.dimensionText
+    }
+  });
+}
+
 function sourceProgram(view, profile, action) {
   const manualProxyGeometry = ["createHeatmap", "createHistogram"].includes(action);
   let program = chart()
@@ -1063,8 +1101,15 @@ function contextPosition(action, profile, channel) {
   return categoryPosition(action, profile, channel);
 }
 
+function analysisQuestion(context, profile, family) {
+  const presentation = profile.guideMode === "polar"
+    ? `after exercising the ${profile.id} guide options, with a cartesian final presentation`
+    : `with the ${profile.id} display profile`;
+  return `How does ${context.measureText} vary across ${context.dimensionText} when the ${family} is shown ${presentation}?`;
+}
+
 function titleProgram(program, context, profile, family) {
-  const question = `How does ${context.measureText} vary across ${context.dimensionText} when the ${family} uses the ${profile.id} display profile?`;
+  const question = analysisQuestion(context, profile, family);
   return program.createTitle({
     text: context.title,
     subtitle: question,
@@ -1552,7 +1597,7 @@ function buildHistogram(factors) {
       : feature === 4
           ? { binBoundaries: boundaries }
           : { maxBins: 14 };
-  const program = sourceProgram(view, profile, "createHistogram").createHistogram({
+  let program = sourceProgram(view, profile, "createHistogram").createHistogram({
     id: "facadeHistogram",
     data: "analysisRows",
     coordinate: "main",
@@ -1591,6 +1636,13 @@ function buildHistogram(factors) {
       "createHistogram"
     )
   });
+  program = restoreCartesianHistogramPresentation(
+    program,
+    profile,
+    histogramResources,
+    context,
+    ordinal
+  );
   return titleProgram(
     materializeGuideProxyGeometry(program, view),
     context,
@@ -1703,7 +1755,7 @@ function makeRecipe({ id, family, capability, action, complexity, build }) {
         complexity,
         sourceDatasetIds: [values.dataset],
         title: context.title,
-        analysisQuestion: `How does ${context.measureText} vary across ${context.dimensionText} when the ${family} uses the ${values.variant.id} display profile?`,
+        analysisQuestion: analysisQuestion(context, values.variant, family),
         sourceFields: context.fields,
         sample: view.sample,
         provenance: view.provenance,

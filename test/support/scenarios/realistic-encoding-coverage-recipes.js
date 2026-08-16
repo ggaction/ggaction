@@ -37,10 +37,10 @@ function freeze(value) {
 
 function canvas() {
   return {
-    width: 2_200,
-    height: 1_300,
+    width: 1_600,
+    height: 1_000,
     background: "#ffffff",
-    margin: { top: 180, right: 180, bottom: 180, left: 180 }
+    margin: { top: 140, right: 140, bottom: 140, left: 140 }
   };
 }
 
@@ -137,7 +137,7 @@ function finish(program, factors, family) {
     text: `${family}: ${factors.dataset} authentic observations`,
     subtitle: "Every option is executed directly against pinned TidyTuesday source rows.",
     align: "left",
-    maxWidth: 1_700,
+    maxWidth: 1_250,
     wrap: "word",
     lineHeight: 28
   });
@@ -929,6 +929,12 @@ function buildPolarCoverage(factors) {
         }
       })
       .encodeColor({ target: id, field: "category", layout: "overlay" });
+  }
+  for (const id of [
+    ...thetaVariants.map(variant => `theta-${variant.id}`),
+    ...QUANTITATIVE_TYPES.map(type => `radius-${type}`)
+  ]) {
+    program = program.removeMark({ target: id });
   }
   return finish(program, factors, "direct-polar-encoding-options");
 }

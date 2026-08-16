@@ -255,6 +255,28 @@ async function buildProjectionChunk(planDescriptors) {
           `${label} independently observed factors`
         );
         assertMetadata(recipe, factors, program, metadata, label);
+        if (action === "createHistogram" && factors.variant.guideMode === "polar") {
+          assert.equal(
+            program.semanticSpec.layers.some(layer =>
+              layer.id === "polarContextPoints"
+            ),
+            false,
+            `${label} removes the polar coverage witness from the final chart`
+          );
+          assert.deepEqual(
+            program.semanticSpec.guides.axis,
+            {
+              x: { coordinate: "main", scale: "mainValue", title: metadata.sourceFields[0].label },
+              y: { coordinate: "main", scale: "mainCount", title: "Observation count" }
+            },
+            `${label} restores cartesian axes for cartesian histogram marks`
+          );
+          assert.deepEqual(
+            program.graphicSpec.objects.canvas.properties,
+            { width: 1_600, height: 1_100, background: "#ffffff" },
+            `${label} compact final canvas`
+          );
+        }
         assertGraphicIntegrity(program, label);
         assertAnalyticLayerIntegrity(program, label);
         assertSvgIntegrity(renderToSVG(program, {
