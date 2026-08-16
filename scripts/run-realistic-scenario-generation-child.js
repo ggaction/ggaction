@@ -25,10 +25,10 @@ function serializedError(error) {
 }
 
 function resourceReport() {
-  const usage = process.resourceUsage();
+  const rssBytes = process.memoryUsage().rss;
   return Object.freeze({
-    rssBytes: process.memoryUsage().rss,
-    maximumRssBytes: usage.maxRSS * 1_024
+    rssBytes,
+    maximumRssBytes: Math.max(rssBytes, process.resourceUsage().maxRSS * 1_024)
   });
 }
 
