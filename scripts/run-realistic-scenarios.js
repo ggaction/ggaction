@@ -632,7 +632,7 @@ function galleryDocument(title, body) {
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width">
 <title>${escapeHtml(title)}</title><style>
 body{font-family:system-ui,sans-serif;margin:24px;background:#f8fafc;color:#0f172a}
-a{color:#1d4ed8}.grid{display:grid;grid-template-columns:minmax(0,1400px);justify-content:center;gap:22px}
+a{color:#1d4ed8}.grid{display:grid;grid-template-columns:minmax(0,900px);justify-content:center;gap:22px}
 .card{background:white;border:1px solid #cbd5e1;border-radius:10px;padding:12px;overflow:hidden}
 .card img{display:block;width:100%;height:auto;background:white}.chart-number{font-variant-numeric:tabular-nums;text-decoration:none;color:#475569}.chart-id{font-size:12px;color:#64748b;overflow-wrap:anywhere}.meta{font-size:13px;color:#475569}
 </style></head><body><h1>${escapeHtml(title)}</h1>${body}</body></html>\n`;
