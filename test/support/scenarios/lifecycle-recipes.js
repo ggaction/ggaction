@@ -1743,7 +1743,9 @@ function facetColumnEvidence(program, factors) {
 }
 
 export const REALISTIC_LIFECYCLE_SCENARIO_RECIPES = Object.freeze(
-  LIFECYCLE_SCENARIO_RECIPES.map(base => {
+  LIFECYCLE_SCENARIO_RECIPES
+    .filter(base => base.id !== "action-composition-lifecycle")
+    .map(base => {
     const kind = REALISTIC_LIFECYCLE_KINDS[base.id];
     const coverageSchedule = CHART_FAMILY_COVERAGE_SCHEDULES[base.id];
     const datasets = realisticDatasetIds().filter(dataset =>

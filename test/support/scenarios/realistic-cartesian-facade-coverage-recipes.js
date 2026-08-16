@@ -37,10 +37,10 @@ const CURVES = Object.freeze([
 const DASH_VALUES = Object.freeze(["solid", "dashed", "dotted", "dashdot"]);
 const PROFILE_COUNT = 36;
 const CANVAS = Object.freeze({
-  width: 2_300,
-  height: 1_220,
+  width: 900,
+  height: 800,
   background: "#ffffff",
-  margin: Object.freeze({ top: 250, right: 420, bottom: 150, left: 620 })
+  margin: Object.freeze({ top: 160, right: 300, bottom: 140, left: 260 })
 });
 
 function freeze(value) {
@@ -142,7 +142,7 @@ function contextFor(dataset, view, action) {
     fields,
     title: `${measure?.label ?? view.provenance.fieldBindings.measure} by ${
       dimension?.label ?? view.provenance.fieldBindings.dimension
-    } — ${action} option ledger`,
+    }`,
     measureText: measure?.label ?? view.provenance.fieldBindings.measure,
     dimensionText: dimension?.label ?? view.provenance.fieldBindings.dimension
   });
@@ -646,28 +646,10 @@ function auxiliaryCategoricalLegend(program, { series = false } = {}) {
   return next;
 }
 
-function programForGuide(view, guide, action) {
-  let program = chart()
+function programForGuide(view) {
+  return chart()
     .createCanvas(canvas())
-    .createData({ id: "analysisRows", values: view.rows })
-    .createCoordinate({ id: "main", type: "cartesian" });
-  if (
-    guide.kind === "cartesian-count" ||
-    guide.kind === "cartesian-values" ||
-    (guide.kind === "cartesian-disabled" && action === "createParallelCoordinates")
-  ) {
-    program = auxiliaryCartesian(program, view.rows);
-  }
-  if (guide.kind.startsWith("polar")) program = auxiliaryPolar(program);
-  if (guide.kind === "parallel") program = auxiliaryParallel(program);
-  if (guide.kind === "gradient-legend") program = auxiliaryGradientLegend(program);
-  if (["line-legend", "layer-legend"].includes(guide.kind)) {
-    program = auxiliaryCategoricalLegend(program, { series: guide.kind === "line-legend" });
-  }
-  if (["cartesian-count", "cartesian-values"].includes(guide.kind)) {
-    program = auxiliaryCategoricalLegend(program);
-  }
-  return program;
+    .createData({ id: "analysisRows", values: view.rows });
 }
 
 function lineStyle() {
@@ -754,233 +736,46 @@ function categoricalLegend(index, symbol, target = "guideColorPoints") {
   };
 }
 
-function guideOptions(variant, view, action) {
-  const guide = variant.guide;
-  if (guide.kind === "off") return false;
-  if (guide.kind === "cartesian-disabled") {
-    const auxiliary = action === "createParallelCoordinates";
-    const axis = (channel, index) => ({
-      ...cartesianAxis(channel, "auto", "count", index),
-      scale: auxiliary ? (channel === "x" ? "guideX" : "guideY") : `main${channel.toUpperCase()}`,
-      coordinate: "main",
-      ...(action === "createBarPlot" &&
-        ["nominal", "ordinal", "temporal"].includes(
-          barPosition(variant, view.rows)[channel].fieldType
-        ) ? {
-        ticksAndLabels: {
-          values: barPosition(variant, view.rows)[channel].fieldType === "temporal"
-            ? [...new Set(view.rows.map(row => Date.parse(row.observedAt)))].slice(0, 2)
-            : [...new Set(view.rows.map(row => row.category))].slice(0, 2),
-          ticks: tickStyle(),
-          labels: labelStyle("auto")
-        }
-      } : {})
-    });
-    return {
-      axes: {
-        coordinate: { id: "main", type: "auto" },
-        x: guide.disabled === "x" ? false : axis("x", 0),
-        y: guide.disabled === "y" ? false : axis("y", 0),
-        theta: false,
-        radius: false
-      },
-      grid: {
-        horizontal: action === "createBarPlot"
-          ? variant.ordinal % 2 === 0
-          : guide.disabled === "x",
-        vertical: action === "createBarPlot"
-          ? variant.ordinal % 2 === 1
-          : guide.disabled === "y",
-        theta: false,
-        radial: false
-      },
-      legend: false
-    };
-  }
-  if (guide.kind === "cartesian-count") {
-    const symbol = guide.index % 3 === 0
-      ? "auto"
-      : guide.index % 3 === 1
-        ? { width: 18, height: 12, stroke: "#ffffff", strokeWidth: 0.8 }
-        : { layers: [
-            { type: "line", length: 24, lineWidth: 2 },
-            { type: "point", shape: "circle", size: 5, fill: "#2563eb", stroke: "#ffffff", strokeWidth: 0.7 },
-            { type: "swatch", width: 16, height: 11, stroke: "#ffffff", strokeWidth: 0.7 }
-          ] };
-    return {
-      axes: {
-        coordinate: { id: "main", type: "cartesian" },
-        x: cartesianAxis("x", guide.format, "count", guide.index),
-        y: cartesianAxis("y", guide.format, "count", guide.index + 1),
-        theta: false,
-        radius: false
-      },
-      grid: {
-        horizontal: {
-          scale: "guideY", coordinate: "main", count: 4,
-          color: "#e2e8f0", lineWidth: 0.8, strokeDash: [2, 3]
-        },
-        vertical: {
-          scale: "guideX", coordinate: "main", count: 4,
-          color: "#dbeafe", lineWidth: 0.8, strokeDash: [4, 3]
-        },
-        theta: false,
-        radial: false
-      },
-      legend: categoricalLegend([0, 2, 6, 8][guide.index % 4], symbol)
-    };
-  }
-  if (guide.kind === "cartesian-values") {
-    const xValues = numericSamples(view.rows, "positiveValue");
-    const yValues = numericSamples(view.rows, "positiveSecondary");
-    const axis = (channel, values, index) => ({
-      ...cartesianAxis(channel, ".2f", "count", index),
-      ticksAndLabels: {
-        values,
-        ticks: tickStyle(),
-        labels: labelStyle(".2f")
-      }
-    });
-    return {
-      axes: {
-        coordinate: { id: "main", type: "cartesian" },
-        x: axis("x", xValues, 1),
-        y: axis("y", yValues, 2),
-        theta: false,
-        radius: false
-      },
-      grid: {
-        horizontal: {
-          scale: "guideY", coordinate: "main", values: yValues,
-          color: "#e2e8f0", lineWidth: 0.8, strokeDash: [2, 3]
-        },
-        vertical: {
-          scale: "guideX", coordinate: "main", values: xValues,
-          color: "#dbeafe", lineWidth: 0.8, strokeDash: [4, 3]
-        },
-        theta: false,
-        radial: false
-      },
-      legend: categoricalLegend(10, { width: 18, height: 12, stroke: "#ffffff", strokeWidth: 0.8 })
-    };
-  }
-  if (guide.kind.startsWith("polar")) {
-    const valuesPolicy = guide.kind === "polar-values";
-    const titleDisabled = guide.kind === "polar-title-disabled";
-    const booleanGrid = guide.kind === "polar-grid-booleans";
-    const thetaValues = numericSamples(view.rows, "sourcePosition");
-    const radiusValues = numericSamples(view.rows, "positiveSecondary");
-    const polarAxis = (channel, values, index) => ({
-      scale: channel === "theta" ? "guideTheta" : "guideRadius",
-      coordinate: "guidePolar",
-      angle: channel === "theta" ? 0 : 90,
-      line: lineStyle(),
-      ticksAndLabels: {
-        ...(valuesPolicy ? { values } : { count: 5 }),
-        ticks: tickStyle(),
-        labels: labelStyle(index % 2 === 0 ? ".0f" : ".1f")
-      },
-      title: titleDisabled
-        ? false
-        : {
-            text: channel === "theta" ? "Source rank" : "Positive secondary",
-            offset: 34,
-            color: "#0f172a",
-            fontSize: 13,
-            fontFamily: "sans-serif",
-            fontWeight: 700,
-            ...(channel === "radius" ? { position: index % 2 === 0 ? "inside" : "outside" } : {})
-          }
-    });
-    const direction = (channel, values) => ({
-      scale: channel === "theta" ? "guideTheta" : "guideRadius",
-      coordinate: "guidePolar",
-      ...(valuesPolicy ? { values } : { count: 5 }),
-      color: "#dbeafe",
-      lineWidth: 0.8,
-      strokeDash: [3, 3]
-    });
-    return {
-      axes: {
-        coordinate: { id: "guidePolar", type: "polar" },
-        theta: polarAxis("theta", thetaValues, variant.ordinal),
-        radius: polarAxis("radius", radiusValues, variant.ordinal + 1)
-      },
-      grid: {
-        horizontal: false,
-        vertical: false,
-        theta: booleanGrid ? true : direction("theta", thetaValues),
-        radial: booleanGrid ? true : direction("radius", radiusValues)
-      },
-      legend: false
-    };
-  }
-  if (guide.kind === "parallel") {
-    return {
-      axes: {
-        coordinate: { id: "guideParallel", type: "parallel" }
-      },
-      grid: false,
-      legend: false
-    };
-  }
-  if (guide.kind === "gradient-legend") {
-    return {
-      axes: false,
-      grid: false,
-      legend: {
-        target: "guideGradientPoints",
-        channels: ["color"],
-        position: "right",
-        align: "center",
-        offset: 42,
-        titlePosition: "top",
-        title: "Positive source value",
-        count: 5,
-        gradient: { length: 180, thickness: 18 },
-        labels: {
-          offset: 9, color: "#334155", fontSize: 11,
-          fontFamily: "sans-serif", fontWeight: 500
-        },
-        titleStyle: {
-          color: "#0f172a", fontSize: 12,
-          fontFamily: "sans-serif", fontWeight: 700
-        },
-        border: { color: "#cbd5e1", lineWidth: 1, padding: 9, background: "#ffffff" }
-      }
-    };
-  }
-  if (guide.kind === "line-legend") {
-    return {
-      axes: false,
-      grid: false,
-      legend: {
-        ...categoricalLegend(
-          15,
-          { length: 28, lineWidth: 2.4 },
-          "guideSeriesLines"
-        ),
-        channels: ["color", "strokeDash"]
-      }
-    };
-  }
+function titleForAnalysisField(channel, context) {
+  const field = channel?.field;
+  if (field === "positiveValue") return context.measureText;
+  if (field === "positiveSecondary") return "Related measure";
+  if (field === "category") return context.dimensionText;
+  if (field === "subgroup") return "Related category";
+  if (field === "observedAt" || field === "observedAtSecondary") return "Selected-record order";
+  return undefined;
+}
+
+function guideOptions(_variant, _view, action, context, position) {
+  const target = action === "createScatterPlot"
+    ? "mainScatter"
+    : action === "createBarPlot"
+      ? "mainBars"
+      : action === "createLinePlot"
+        ? "mainLines"
+        : "mainParallel";
   return {
-    axes: false,
+    axes: action === "createParallelCoordinates"
+      ? { coordinate: { id: "mainParallelCoordinate", type: "parallel" } }
+      : {
+          coordinate: { id: "main", type: "cartesian" },
+          x: { title: { text: titleForAnalysisField(position.x, context) } },
+          y: { title: { text: titleForAnalysisField(position.y, context) } }
+        },
     grid: false,
-    legend: categoricalLegend(13, {
-      layers: [
-        { type: "line", length: 26, lineWidth: 2 },
-        { type: "point", shape: "circle", size: 5, fill: "#2563eb", stroke: "#ffffff", strokeWidth: 0.7 },
-        { type: "swatch", width: 17, height: 11, stroke: "#ffffff", strokeWidth: 0.7 }
-      ]
-    })
+    legend: {
+      target,
+      channels: ["color"],
+      position: "right",
+      title: context.dimensionText
+    }
   };
 }
 
-function finish(program, context, action, variant) {
-  const question = `Which ${action} option branches remain visible for authentic ${
-    context.measureText
-  } records under orthogonal profile ${variant.ordinal + 1}?`;
+function finish(program, context, action) {
+  const question = action === "createParallelCoordinates"
+    ? `How do ${context.measureText} and related measures vary across ${context.dimensionText}?`
+    : `How does ${context.measureText} vary across ${context.dimensionText}?`;
   return program.createTitle({
     text: context.title,
     subtitle: question,
@@ -991,34 +786,37 @@ function finish(program, context, action, variant) {
   });
 }
 
-function scatterOptions(factors, view) {
-  const position = scatterPosition(factors.variant, view.rows);
+function scatterOptions(factors, view, context) {
+  const position = {
+    x: {
+      field: "positiveValue",
+      fieldType: "quantitative",
+      scale: { id: "mainX", type: "linear", nice: true, zero: false }
+    },
+    y: {
+      field: "positiveSecondary",
+      fieldType: "quantitative",
+      scale: { id: "mainY", type: "linear", nice: true, zero: false }
+    }
+  };
   const index = factors.variant.ordinal;
   return {
     id: "mainScatter",
     data: "analysisRows",
     coordinate: "main",
     ...position,
-    ...(index === 35 ? {} : { color: scatterColor(index) }),
-    size: {
-      field: "positiveSecondary", fieldType: "quantitative",
-      scale: { id: "mainSize", type: "linear", domain: "auto", range: "auto", unknown: 4 }
-    },
-    shape: {
-      field: "subgroup", fieldType: "nominal",
-      scale: {
-        id: "mainShape", type: "ordinal", domain: "auto", range: "auto",
-        unknown: index % 2 === 0 ? "circle" : "square"
-      }
+    color: {
+      field: "category",
+      fieldType: "nominal",
+      scale: { id: "mainColor", type: "ordinal", palette: "tableau10" }
     },
     point: {
       shape: index % 2 === 0 ? "circle" : "square",
-      ...(index === 35 ? { fill: "#2563eb" } : {}),
       opacity: 0.78,
       stroke: "#ffffff",
       strokeWidth: 0.8
     },
-    guides: guideOptions(factors.variant, view, "createScatterPlot")
+    guides: guideOptions(factors.variant, view, "createScatterPlot", context, position)
   };
 }
 
@@ -1027,29 +825,45 @@ function buildScatter(factors) {
   const view = viewFor(factors);
   const context = contextFor(factors.dataset, view, action);
   const program = programForGuide(view, factors.variant.guide, action)
-    .createScatterPlot(scatterOptions(factors, view));
+    .createScatterPlot(scatterOptions(factors, view, context));
   return finish(program, context, action, factors.variant);
 }
 
-function barOptions(factors, view) {
+function barOptions(factors, view, context) {
   const index = factors.variant.ordinal;
-  const color = barColor(index);
   return {
     id: "mainBars",
     data: "analysisRows",
     coordinate: "main",
-    ...barPosition(factors.variant, view.rows),
-    ...(color === undefined ? {} : { color }),
+    x: {
+      field: "positiveValue",
+      fieldType: "quantitative",
+      aggregate: "mean",
+      scale: { id: "mainX", type: "linear", nice: true, zero: true }
+    },
+    y: {
+      field: "category",
+      fieldType: "nominal",
+      scale: categoricalScale("mainY", "band", index)
+    },
+    color: {
+      field: "category",
+      fieldType: "nominal",
+      layout: "group",
+      scale: { id: "mainColor", type: "ordinal", palette: "tableau10" }
+    },
     ...(index >= 18 && index <= 20 || index === 26
       ? {}
       : { width: index % 2 === 0 ? { band: 0.72 } : { pixels: 18 } }),
     bar: {
-      ...(index === 35 ? { fill: "#2563eb" } : {}),
       opacity: 0.82,
       stroke: "#ffffff",
       strokeWidth: 0.7
     },
-    guides: guideOptions(factors.variant, view, "createBarPlot")
+    guides: guideOptions(factors.variant, view, "createBarPlot", context, {
+      x: { field: "positiveValue" },
+      y: { field: "category" }
+    })
   };
 }
 
@@ -1058,33 +872,46 @@ function buildBar(factors) {
   const view = viewFor(factors);
   const context = contextFor(factors.dataset, view, action);
   const program = programForGuide(view, factors.variant.guide, action)
-    .createBarPlot(barOptions(factors, view));
+    .createBarPlot(barOptions(factors, view, context));
   return finish(program, context, action, factors.variant);
 }
 
-function lineOptions(factors, view) {
+function lineOptions(factors, view, context) {
   const index = factors.variant.ordinal;
   const aggregateLine = index === 5 || (index >= 6 && index <= 14) ||
     index === 16 || index === 17;
-  const color = categoricalFacadeColor(index);
+  const position = {
+    x: {
+      field: "observedAt",
+      fieldType: "temporal",
+      scale: { id: "mainX", type: "time", nice: true }
+    },
+    y: {
+      field: "positiveValue",
+      fieldType: "quantitative",
+      aggregate: "mean",
+      scale: { id: "mainY", type: "linear", nice: true, zero: false }
+    }
+  };
   return {
     id: "mainLines",
     data: "analysisRows",
     coordinate: "main",
-    ...linePosition(factors.variant, view.rows),
-    ...(aggregateLine || color === undefined
-      ? {}
-      : { color }),
-    ...(aggregateLine ? {} : { groupBy: "category" }),
+    ...position,
+    color: {
+      field: "category",
+      fieldType: "nominal",
+      scale: { id: "mainColor", type: "ordinal", palette: "tableau10" }
+    },
+    groupBy: "category",
     strokeDash: aggregateLine ? { value: DASH_VALUES[index % DASH_VALUES.length] } : strokeDash(index),
     line: {
       strokeWidth: 1.8,
       curve: CURVES[index % CURVES.length],
-      ...(index === 35 ? { stroke: "#2563eb" } : {}),
       opacity: 0.72,
       closed: false
     },
-    guides: guideOptions(factors.variant, view, "createLinePlot")
+    guides: guideOptions(factors.variant, view, "createLinePlot", context, position)
   };
 }
 
@@ -1093,16 +920,16 @@ function buildLine(factors) {
   const view = viewFor(factors);
   const context = contextFor(factors.dataset, view, action);
   const program = programForGuide(view, factors.variant.guide, action)
-    .createLinePlot(lineOptions(factors, view));
+    .createLinePlot(lineOptions(factors, view, context));
   return finish(program, context, action, factors.variant);
 }
 
-function parallelDimensions(index) {
+function parallelDimensions(index, context) {
   const types = ["linear", "log", "pow", "sqrt", "symlog"];
   const type = types[index % types.length];
   return [
     {
-      field: "positiveValue", title: "Positive value", fieldType: "quantitative",
+      field: "positiveValue", title: context.measureText, fieldType: "quantitative",
       scale: quantitativeScale(undefined, type, { index })
     },
     {
@@ -1110,7 +937,7 @@ function parallelDimensions(index) {
       scale: quantitativeScale(undefined, types[(index + 1) % types.length], { index: index + 1 })
     },
     {
-      field: "category", title: "Source category", fieldType: "ordinal",
+      field: "category", title: context.dimensionText, fieldType: "ordinal",
       scale: categoricalScale(undefined, index % 2 === 0 ? "band" : "point", index)
     }
   ].map(dimension => ({
@@ -1119,28 +946,28 @@ function parallelDimensions(index) {
   }));
 }
 
-function parallelOptions(factors, view) {
+function parallelOptions(factors, view, context) {
   const index = factors.variant.ordinal;
-  const color = categoricalFacadeColor(index);
   return {
     id: "mainParallel",
     data: "analysisRows",
     coordinate: "mainParallelCoordinate",
-    dimensions: parallelDimensions(index),
+    dimensions: parallelDimensions(index, context),
     key: "key",
     missing: ["break", "drop-row", "error"][index % 3],
-    ...(color === undefined
-      ? {}
-      : { color }),
+    color: {
+      field: "category",
+      fieldType: "nominal",
+      scale: { id: "mainColor", type: "ordinal", palette: "tableau10" }
+    },
     strokeDash: strokeDash(index),
     line: {
       strokeWidth: 1.35,
-      ...(index === 35 ? { stroke: "#2563eb" } : {}),
       opacity: 0.48,
       curve: "linear",
       closed: false
     },
-    guides: guideOptions(factors.variant, view, "createParallelCoordinates")
+    guides: guideOptions(factors.variant, view, "createParallelCoordinates", context)
   };
 }
 
@@ -1149,7 +976,7 @@ function buildParallel(factors) {
   const view = viewFor(factors);
   const context = contextFor(factors.dataset, view, action);
   const program = programForGuide(view, factors.variant.guide, action)
-    .createParallelCoordinates(parallelOptions(factors, view));
+    .createParallelCoordinates(parallelOptions(factors, view, context));
   return finish(program, context, action, factors.variant);
 }
 

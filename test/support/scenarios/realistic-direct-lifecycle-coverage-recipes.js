@@ -31,6 +31,12 @@ const CARTESIAN_GUIDE_CANVAS = Object.freeze({
   margin: Object.freeze({ top: 180, right: 460, bottom: 150, left: 260 })
 });
 const CARTESIAN_GUIDE_SIZE_RANGE = Object.freeze([154, 616]);
+const READABLE_CANVAS = Object.freeze({
+  width: 800,
+  height: 720,
+  background: "#ffffff",
+  margin: Object.freeze({ top: 170, right: 220, bottom: 120, left: 190 })
+});
 const CARTESIAN_GUIDE_WITNESS_RADIUS = 6;
 const DEFAULT_ANALYSIS_QUESTION =
   "Direct lifecycle options are exercised against one truthful TidyTuesday projection.";
@@ -125,6 +131,10 @@ function canvas() {
     background: "#ffffff",
     margin: { top: 430, right: 760, bottom: 430, left: 650 }
   };
+}
+
+function readableCanvas() {
+  return { ...READABLE_CANVAS, margin: { ...READABLE_CANVAS.margin } };
 }
 
 function regressionLifecycleView(dataset) {
@@ -491,13 +501,19 @@ const TITLE_FAMILY_BY_RECIPE_FAMILY = Object.freeze({
   "direct-lifecycle-facet": "Facet and composition layout lifecycle coverage"
 });
 
-function finish(program, dataset, family, analysisQuestion = DEFAULT_ANALYSIS_QUESTION) {
+function finish(
+  program,
+  dataset,
+  family,
+  analysisQuestion = DEFAULT_ANALYSIS_QUESTION,
+  maxWidth = 1_700
+) {
   const text = titleFor(dataset, family);
   const options = {
     text,
     subtitle: analysisQuestion,
     align: "left",
-    maxWidth: 1_700,
+    maxWidth,
     wrap: "word",
     lineHeight: 28
   };
@@ -1090,6 +1106,25 @@ function errorAppearance(index) {
   };
 }
 
+function removeAllMarks(program) {
+  let next = program;
+  for (const layer of program.semanticSpec.layers) {
+    if (!next.semanticSpec.layers.some(candidate => candidate.id === layer.id)) continue;
+    next = next.removeMark({ target: layer.id });
+  }
+  return next;
+}
+
+function readableFieldContext(dataset, view) {
+  const fields = realisticSourceFields(dataset, view.provenance.fieldBindings);
+  const byName = new Map(fields.map(field => [field.field, field]));
+  const bindings = view.provenance.fieldBindings;
+  return {
+    measure: byName.get(bindings.measure)?.label ?? bindings.measure ?? "Selected measure",
+    dimension: byName.get(bindings.dimension)?.label ?? bindings.dimension ?? "Observed category"
+  };
+}
+
 export function realisticDirectLifecycleErrorBandFailure(index, error) {
   const rawReason = error instanceof Error ? error.message : String(error);
   const compactReason = rawReason.replace(/\s+/gu, " ").trim();
@@ -1377,11 +1412,48 @@ function buildStatisticalCoverage(factors) {
     gradientIndex += 1;
   }
 
+  const context = readableFieldContext(factors.dataset, view);
+  program = removeAllMarks(program)
+    .editCanvas(readableCanvas())
+    .createBoxPlot({
+      id: "readableDistribution",
+      data: "analysisRows",
+      x: {
+        field: "positiveY",
+        fieldType: "quantitative",
+        scale: { id: "readableValue", type: "linear", nice: true, zero: false }
+      },
+      y: {
+        field: "category",
+        fieldType: "nominal",
+        scale: { id: "readableCategory", type: "band" }
+      },
+      guides: false
+    })
+    .encodeColor({
+      target: "readableDistribution",
+      field: "category",
+      fieldType: "nominal",
+      scale: { palette: "tableau10" }
+    })
+    .createGuides({
+      axes: {
+        x: { title: { text: context.measure } },
+        y: { title: { text: context.dimension } }
+      },
+      legend: {
+        target: "readableDistribution",
+        channels: ["color"],
+        position: "right",
+        title: context.dimension
+      }
+    });
   return finish(
     program,
     factors.dataset,
-    "Statistical interval and distribution lifecycle coverage",
-    STATISTICAL_ANALYSIS_QUESTION
+    `${context.measure} distribution by ${context.dimension}`,
+    `How does ${context.measure} vary across ${context.dimension}?`,
+    390
   );
 }
 
@@ -1725,11 +1797,48 @@ function buildDerivedEncodingCoverage(factors) {
       placement
     });
   }
+  const context = readableFieldContext(factors.dataset, view);
+  program = removeAllMarks(program)
+    .editCanvas(readableCanvas())
+    .createLineMark({ id: "readableTrend", data: "analysisRows", strokeWidth: 1.8 })
+    .encodeX({
+      target: "readableTrend",
+      field: "timeUnique",
+      fieldType: "temporal",
+      scale: { nice: true }
+    })
+    .encodeY({
+      target: "readableTrend",
+      field: "positiveY",
+      fieldType: "quantitative",
+      aggregate: "mean",
+      scale: { nice: true, zero: false }
+    })
+    .encodeGroup({ target: "readableTrend", field: "category" })
+    .encodeColor({
+      target: "readableTrend",
+      field: "category",
+      fieldType: "nominal",
+      scale: { palette: "tableau10" }
+    })
+    .createGuides({
+      axes: {
+        x: { title: { text: "Observation time" } },
+        y: { title: { text: context.measure } }
+      },
+      legend: {
+        target: "readableTrend",
+        channels: ["color"],
+        position: "right",
+        title: context.dimension
+      }
+    });
   return finish(
     program,
     factors.dataset,
-    "Horizon, histogram, and density lifecycle coverage",
-    DERIVED_ENCODING_ANALYSIS_QUESTION
+    `${context.measure} over time by ${context.dimension}`,
+    `How does ${context.measure} change over time across ${context.dimension}?`,
+    390
   );
 }
 
@@ -2121,14 +2230,33 @@ function metadataFor(recipe, factors) {
     statisticalProjection: recipe.statisticalProjection
   });
   const fields = realisticSourceFields(factors.dataset, view.provenance.fieldBindings);
+  const fieldContext = readableFieldContext(factors.dataset, view);
   const titleFamily = TITLE_FAMILY_BY_RECIPE_FAMILY[recipe.family] ?? recipe.family;
+  const presentation = recipe.statisticalProjection
+    ? {
+        title: titleFor(
+          factors.dataset,
+          `${fieldContext.measure} distribution by ${fieldContext.dimension}`
+        ),
+        analysisQuestion: `How does ${fieldContext.measure} vary across ${fieldContext.dimension}?`
+      }
+    : recipe.derivedEncodingProjection
+      ? {
+          title: titleFor(
+            factors.dataset,
+            `${fieldContext.measure} over time by ${fieldContext.dimension}`
+          ),
+          analysisQuestion:
+            `How does ${fieldContext.measure} change over time across ${fieldContext.dimension}?`
+        }
+      : undefined;
   return freeze({
     corpus: "tidytuesday",
     chartFamily: recipe.family,
     complexity: recipe.complexity,
     sourceDatasetIds: [factors.dataset],
-    title: titleFor(factors.dataset, titleFamily),
-    analysisQuestion: recipe.kind === "regression"
+    title: presentation?.title ?? titleFor(factors.dataset, titleFamily),
+    analysisQuestion: presentation?.analysisQuestion ?? (recipe.kind === "regression"
       ? REGRESSION_ANALYSIS_QUESTION
       : recipe.statisticalProjection
         ? STATISTICAL_ANALYSIS_QUESTION
@@ -2136,7 +2264,7 @@ function metadataFor(recipe, factors) {
           ? DERIVED_ENCODING_ANALYSIS_QUESTION
           : recipe.removalProjection
             ? REMOVAL_ANALYSIS_QUESTION
-            : DEFAULT_ANALYSIS_QUESTION,
+            : DEFAULT_ANALYSIS_QUESTION),
     sourceFields: fields,
     ...(view.sample === undefined ? {} : { sampling: view.sample }),
     provenance: view.provenance,

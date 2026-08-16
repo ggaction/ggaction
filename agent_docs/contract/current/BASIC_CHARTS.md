@@ -278,6 +278,8 @@ createParallelCoordinates({
 - `line`은 existing open linear line appearance를 재사용한다. Curved/closed paths는 Parallel topology와 맞지 않아
   거부한다. Color와 stroke dash는 row item에 적용되고 applicable legend를 만든다.
 - Omitted guides는 dimension axes와 applicable legend를 만들며 `guides: false`는 guide branch를 만들지 않는다.
+- Parallel facade guides are scoped to the facade's Parallel coordinate. Cartesian or Polar axis channels and a
+  conflicting coordinate id/type are rejected before the chart changes.
 - Semantic/graphic/order/Canvas calls와 Node PNG는 approved Cars primitive와 exact match다.
 
 ### Formal values — `createParallelCoordinates`

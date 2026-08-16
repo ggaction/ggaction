@@ -16,9 +16,9 @@ import {
 } from "./realistic-data.js";
 
 const CANVAS = Object.freeze({
-  width: 1800,
-  height: 920,
-  margin: Object.freeze({ top: 280, right: 520, bottom: 280, left: 480 })
+  width: 900,
+  height: 800,
+  margin: Object.freeze({ top: 150, right: 240, bottom: 120, left: 220 })
 });
 
 const PALETTES = Object.freeze([...PALETTE_NAMES]);
@@ -97,7 +97,7 @@ const ADVANCED_SPECS = Object.freeze([
 ]);
 
 const COMPOSITE_SPECS = Object.freeze([
-  { id: "paired-summary-dashboard", kind: "composition", family: "dashboard" }
+  { id: "paired-summary-dashboard", kind: "facet", family: "facet" }
 ]);
 
 const ALL_ANALYSIS_SPECS = Object.freeze([
@@ -137,12 +137,8 @@ function titleContext(dataset, view, spec, factors) {
   const aggregate = aggregateLabel(operation);
   const aggregateAdjective = aggregateLabel(operation, { adjective: true });
   const sampleN = view.sample?.displayedRowCount;
-  const sampleTitle = sampleN === undefined
-    ? ""
-    : ` — stratified sample (n=${sampleN})`;
-  const sampleQuestion = sampleN === undefined
-    ? ""
-    : ` in the deterministic stratified sample of ${sampleN} authentic rows`;
+  const sampleTitle = "";
+  const sampleQuestion = "";
   const sequenceTitle = `${measureAxis} over ${sequenceText ?? "source order"}` +
     (sequenceIsDimension ? "" : ` by ${dimensionText}`);
   let title;
@@ -219,21 +215,23 @@ function titleContext(dataset, view, spec, factors) {
 
 function canvas(factors) {
   const margin = { ...CANVAS.margin };
-  if (factors?.legendPosition === "left") margin.left = 1_000;
-  if (factors?.legendPosition === "right") margin.right = 760;
-  if (factors?.legendPosition === "top") margin.top = 420;
-  if (factors?.legendPosition === "bottom") margin.bottom = 420;
-  return { ...CANVAS, width: 2_600, height: 1_120, margin };
+  if (factors?.legendPosition === "left") margin.left = 240;
+  if (factors?.legendPosition === "right") margin.right = 240;
+  if (factors?.legendPosition === "top") margin.top = 150;
+  if (factors?.legendPosition === "bottom") margin.bottom = 120;
+  return { ...CANVAS, margin };
 }
 
 function sparseCategoryValues(rows, field) {
-  const values = [...new Set(rows.map(row => row[field]))];
-  const longest = Math.max(...values.map(value => String(value).length));
-  const limit = longest > 50 ? 1 : longest > 24 ? 2 : 4;
-  if (values.length <= limit) return values;
-  return [...new Set(Array.from({ length: limit }, (_, index) =>
-    values[Math.round(index * (values.length - 1) / (limit - 1))]
-  ))];
+  return [...new Set(rows.map(row => row[field]))];
+}
+
+function compactHorizontalCategoryValues(rows, field) {
+  const values = sparseCategoryValues(rows, field);
+  if (values.length <= 4) return values;
+  return Array.from({ length: 4 }, (_, index) =>
+    values[Math.round(index * (values.length - 1) / 3)]
+  );
 }
 
 function guides(factors, xTitle, yTitle, {
@@ -263,14 +261,14 @@ function guides(factors, xTitle, yTitle, {
         title: { text: xTitle }
       },
       y: {
-        position: factors.legendPosition === "left" ? "right" : "left",
+        position: "left",
         ...(yValues === undefined ? {} : { ticksAndLabels: { values: yValues } }),
         title: { text: yTitle }
       }
     },
     grid: false,
     legend: legend
-      ? { position: factors.legendPosition, title: legendTitle }
+      ? { position: "right", title: legendTitle }
       : false
   };
 }
@@ -295,7 +293,10 @@ function finish(program, context, factors, {
     .createTitle({
       text: context.title,
       subtitle: context.analysisQuestion,
-      align: factors.titleAlign
+      align: factors.titleAlign,
+      maxWidth: 600,
+      wrap: "word",
+      lineHeight: 26
     });
 }
 
@@ -320,6 +321,22 @@ function summaryView(factors, operation = aggregateValue(factors.aggregate)) {
     measureIndex: factors.fieldPair.measureIndex,
     dimensionIndex: factors.fieldPair.dimensionIndex
   });
+}
+
+function readableValueScale(rows) {
+  const values = rows.map(row => row.value).filter(Number.isFinite).sort((a, b) => a - b);
+  const median = values[Math.floor(values.length / 2)];
+  const maximum = values.at(-1);
+  const stronglySkewed = values.length > 2 && maximum > Math.max(1, Math.abs(median)) * 20;
+  if (!stronglySkewed) return { nice: true, zero: false };
+  return values[0] > 0
+    ? { type: "log", nice: true, zero: false }
+    : { type: "symlog", nice: true, zero: false, constant: 1 };
+}
+
+function preferHorizontalCategories(rows) {
+  const categories = [...new Set(rows.map(row => String(row.category)))];
+  return categories.length > 5 || categories.some(value => value.length > 14);
 }
 
 function orderedView(factors, spec) {
@@ -398,7 +415,7 @@ function buildPoint(spec, factors, resolution) {
       stroke: "#ffffff",
       strokeWidth: 0.6
     })
-    .encodeX({ target: "points", field: "value", scale: { nice: true, zero: false } })
+    .encodeX({ target: "points", field: "value", scale: readableValueScale(view.rows) })
     .encodeY({
       target: "points",
       field: "category",
@@ -440,7 +457,8 @@ function buildPoint(spec, factors, resolution) {
 function buildBar(spec, factors, resolution) {
   const grouped = spec.layout !== undefined;
   const { view, context } = resolution;
-  const horizontal = spec.orientation === "horizontal";
+  const horizontal = spec.orientation === "horizontal" ||
+    preferHorizontalCategories(view.rows);
   const countLayout = ["stack", "fill"].includes(spec.layout);
   const category = { field: "category", fieldType: "nominal" };
   const value = {
@@ -518,15 +536,23 @@ function buildHistogram(spec, factors, resolution) {
       },
       grid: false,
       legend: segmented
-        ? { position: factors.legendPosition, title: context.dimensionText }
+        ? { position: "right", title: context.dimensionText }
         : false
     })
-    .createTitle({ text: context.title, subtitle: context.analysisQuestion, align: factors.titleAlign });
+    .createTitle({
+      text: context.title,
+      subtitle: context.analysisQuestion,
+      align: factors.titleAlign,
+      maxWidth: 600,
+      wrap: "word",
+      lineHeight: 26
+    });
 }
 
 function buildBox(spec, factors, resolution) {
   const { view, context } = resolution;
-  const horizontal = spec.orientation === "horizontal";
+  const horizontal = spec.orientation === "horizontal" ||
+    preferHorizontalCategories(view.rows);
   return chart()
     .createCanvas(canvas(factors))
     .createData({ id: "analysisRows", values: view.rows })
@@ -562,7 +588,14 @@ function buildBox(spec, factors, resolution) {
             legendTitle: context.dimensionText
           }
     ))
-    .createTitle({ text: context.title, subtitle: context.analysisQuestion, align: factors.titleAlign });
+    .createTitle({
+      text: context.title,
+      subtitle: context.analysisQuestion,
+      align: factors.titleAlign,
+      maxWidth: 600,
+      wrap: "word",
+      lineHeight: 26
+    });
 }
 
 function buildDensity(spec, factors, resolution) {
@@ -658,9 +691,9 @@ function buildArc(spec, factors, resolution) {
   const horizontalLegend = ["top", "bottom"].includes(factors.legendPosition);
   return chart()
     .createCanvas({
-      width: 2200,
-      height: 1100,
-      margin: { top: 280, right: 800, bottom: 350, left: 400 }
+      width: 800,
+      height: 800,
+      margin: { top: 150, right: 240, bottom: 100, left: 100 }
     })
     .createData({ id: "analysisRows", values: view.rows })
     .createArcMark({
@@ -677,23 +710,38 @@ function buildArc(spec, factors, resolution) {
       axes: false,
       grid: false,
       legend: {
-        position: factors.legendPosition,
+        position: "right",
         title: context.dimensionText,
-        ...(horizontalLegend ? { columns: Math.min(3, view.rows.length) } : {})
+        columns: 1
       }
     })
-    .createTitle({ text: context.title, subtitle: context.analysisQuestion, align: factors.titleAlign });
+    .createTitle({
+      text: context.title,
+      subtitle: context.analysisQuestion,
+      align: factors.titleAlign,
+      maxWidth: 600,
+      wrap: "word",
+      lineHeight: 26
+    });
 }
 
 function buildHeatmap(spec, factors, resolution) {
   const { view, context } = resolution;
+  const xValues = [...new Set(view.rows.map(row => row.x))];
+  const yValues = [...new Set(view.rows.map(row => row.y))];
+  const labelLoad = values => values.reduce((sum, value) =>
+    sum + measureTextWidth(String(value), { fontSize: 12 }), 0
+  );
+  const transpose = labelLoad(xValues) > labelLoad(yValues);
+  const xField = transpose ? "y" : "x";
+  const yField = transpose ? "x" : "y";
   let program = chart()
     .createCanvas(canvas(factors))
     .createData({ id: "analysisRows", values: view.rows })
     .createHeatmap({
       id: "cells",
-      x: { field: "x", fieldType: "nominal" },
-      y: { field: "y", fieldType: "nominal" },
+      x: { field: xField, fieldType: "nominal" },
+      y: { field: yField, fieldType: "nominal" },
       color: {
         field: "value",
         fieldType: "quantitative",
@@ -705,22 +753,23 @@ function buildHeatmap(spec, factors, resolution) {
   if (spec.variant === "labels") {
     program = program
       .createTextMark({ id: "cellLabels", fontSize: 8, align: "center", baseline: "middle" })
-      .encodeX({ target: "cellLabels", field: "x", fieldType: "nominal" })
-      .encodeY({ target: "cellLabels", field: "y", fieldType: "nominal" })
+      .encodeX({ target: "cellLabels", field: xField, fieldType: "nominal" })
+      .encodeY({ target: "cellLabels", field: yField, fieldType: "nominal" })
       .encodeText({ target: "cellLabels", field: "value", format: ".2f" });
   }
   return finish(program, context, factors, {
-    xTitle: context.dimensionText,
-    yTitle: context.secondaryDimensionText,
+    xTitle: transpose ? context.secondaryDimensionText : context.dimensionText,
+    yTitle: transpose ? context.dimensionText : context.secondaryDimensionText,
     legendTitle: `Mean ${context.measureAxis}`,
-    xValues: sparseCategoryValues(view.rows, "x"),
-    yValues: sparseCategoryValues(view.rows, "y")
+    xValues: compactHorizontalCategoryValues(view.rows, xField),
+    yValues: sparseCategoryValues(view.rows, yField)
   });
 }
 
 function buildInterval(spec, factors, resolution) {
   const { view, context } = resolution;
-  const horizontal = spec.orientation === "horizontal";
+  const horizontal = spec.orientation === "horizontal" ||
+    preferHorizontalCategories(view.rows);
   return chart()
     .createCanvas(canvas(factors))
     .createData({ id: "analysisRows", values: view.rows })
@@ -747,7 +796,14 @@ function buildInterval(spec, factors, resolution) {
           : { xValues: sparseCategoryValues(view.rows, "category") })
       }
     ))
-    .createTitle({ text: context.title, subtitle: context.analysisQuestion, align: factors.titleAlign });
+    .createTitle({
+      text: context.title,
+      subtitle: context.analysisQuestion,
+      align: factors.titleAlign,
+      maxWidth: 600,
+      wrap: "word",
+      lineHeight: 26
+    });
 }
 
 function buildLabels(spec, factors, resolution) {
@@ -976,7 +1032,8 @@ function factorsFor(spec, dataset) {
   ) {
     fieldPairs = allFieldPairs.filter(fieldPair => ["mean", "median", "sum"].every(aggregate => {
       const values = summaryView({ dataset, fieldPair, aggregate }).rows.map(row => row.value);
-      return values.some(value => value !== 0) && new Set(values).size >= 2;
+      return values.length >= 5 && values.some(value => value !== 0) &&
+        new Set(values).size >= 2;
     }));
   }
   if (fieldPairs.length === 0) return undefined;
