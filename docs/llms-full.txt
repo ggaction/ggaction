@@ -12449,8 +12449,8 @@ interface ChartProgramActions {
   encodeX2(options: SecondaryPositionEncodingOptions): ChartProgram;
   encodeColor(options: ColorEncodingOptions): ChartProgram;
   encodeStrokeDash(options: StrokeDashEncodingOptions): ChartProgram;
-  encodeSize(options: { field: string; target?: string; fieldType?: "quantitative"; scale?: ScaleOptions }): ChartProgram;
-  encodeShape(options: { field: string; target?: string; fieldType?: "nominal"; scale?: ScaleOptions }): ChartProgram;
+  encodeSize(options: { field: string; target?: string; fieldType?: "quantitative"; scale?: SizeScaleOptions }): ChartProgram;
+  encodeShape(options: { field: string; target?: string; fieldType?: "nominal"; scale?: ShapeScaleOptions }): ChartProgram;
   encodeAngle(options: | { target?: string; value: number; field?: never; fieldType?: never } | { target?: string; field: string; fieldType?: "quantitative"; value?: never } ): ChartProgram;
   encodeOpacity(options: OpacityEncodingOptions): ChartProgram;
   encodeRadius(options: { value: number; target?: string }): ChartProgram;
@@ -12459,8 +12459,8 @@ interface ChartProgramActions {
   encodeXOffset(options: XOffsetEncodingOptions): ChartProgram;
   encodeYOffset(options: YOffsetEncodingOptions): ChartProgram;
   encodeY2(options: SecondaryPositionEncodingOptions): ChartProgram;
-  encodeYRange(options: { lower: string; upper: string; target?: string; fieldType?: "quantitative"; coordinate?: string; scale?: ScaleOptions; }): ChartProgram;
-  encodeXRange(options: { lower: string; upper: string; target?: string; fieldType?: "quantitative"; coordinate?: string; scale?: ScaleOptions; }): ChartProgram;
+  encodeYRange(options: { lower: string; upper: string; target?: string; fieldType?: "quantitative"; coordinate?: string; scale?: NonPointQuantitativePositionScaleOptions; }): ChartProgram;
+  encodeXRange(options: { lower: string; upper: string; target?: string; fieldType?: "quantitative"; coordinate?: string; scale?: NonPointQuantitativePositionScaleOptions; }): ChartProgram;
   encodeGroup(options: { field: string; target?: string; fieldType?: "nominal" }): ChartProgram;
   encodePathOrder(options: PathOrderEncodingOptions): ChartProgram;
   orderCategories(options: OrderCategoriesOptions): ChartProgram;
