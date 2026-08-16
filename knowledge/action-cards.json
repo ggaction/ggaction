@@ -10596,10 +10596,6 @@
       },
       "options": [
         {
-          "name": "stack",
-          "required": false
-        },
-        {
           "name": "xScale",
           "required": false
         },
@@ -10617,6 +10613,10 @@
         },
         {
           "name": "binBoundaries",
+          "required": false
+        },
+        {
+          "name": "stack",
           "required": false
         },
         {
