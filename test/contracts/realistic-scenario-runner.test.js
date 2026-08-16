@@ -27,6 +27,7 @@ import {
 import {
   assertRealisticExecutionResourceBound,
   generateRealisticDescriptorsInWorker,
+  interpretableGalleryEntries,
   parseRealisticScenarioArguments,
   parseRealisticScenarioOutcomeChunk,
   promoteRealisticScenarioRun,
@@ -40,6 +41,25 @@ import { releaseTidyTuesdaySourceCache } from
   "../support/datasets/tidytuesday.js";
 
 let boundedGeneration;
+
+test("keeps diagnostic scenarios out of the human gallery and enforces compact canvases", () => {
+  const entry = (recipe, width = 900, height = 800) => ({
+    id: `${recipe}-id`, recipe, artifacts: { png: { width, height } }
+  });
+  const readable = entry("realistic-category-boxes");
+  const readableFacade = entry("realistic-statistical-facade-coverage-box", 800, 720);
+  assert.deepEqual(
+    interpretableGalleryEntries([
+      readable,
+      readableFacade,
+      entry("realistic-guide-scale-simple", 4_400, 3_200),
+      entry("realistic-action-direct-parallel"),
+      entry("realistic-ranked-line"),
+      entry("realistic-category-boxes", 1_200, 800)
+    ]),
+    [readable, readableFacade]
+  );
+});
 
 test("labels every gallery chart with a short ordinal and stable descriptor id", async () => {
   const output = await mkdtemp(path.join(tmpdir(), "ggaction-gallery-labels-"));

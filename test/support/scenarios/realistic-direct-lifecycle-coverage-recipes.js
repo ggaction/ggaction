@@ -1803,8 +1803,9 @@ function buildDerivedEncodingCoverage(factors) {
     .createLineMark({ id: "readableTrend", data: "analysisRows", strokeWidth: 1.8 })
     .encodeX({
       target: "readableTrend",
-      field: "timeUnique",
-      fieldType: "temporal",
+      field: "rowOrdinal",
+      fieldType: "quantitative",
+      bin: { maxBins: 24 },
       scale: { nice: true }
     })
     .encodeY({
@@ -1823,7 +1824,7 @@ function buildDerivedEncodingCoverage(factors) {
     })
     .createGuides({
       axes: {
-        x: { title: { text: "Observation time" } },
+        x: { title: { text: "Selected-record bin" } },
         y: { title: { text: context.measure } }
       },
       legend: {
@@ -1836,8 +1837,8 @@ function buildDerivedEncodingCoverage(factors) {
   return finish(
     program,
     factors.dataset,
-    `${context.measure} over time by ${context.dimension}`,
-    `How does ${context.measure} change over time across ${context.dimension}?`,
+    `${context.measure} across selected records by ${context.dimension}`,
+    `How does binned mean ${context.measure} vary across ${context.dimension}?`,
     390
   );
 }
@@ -2244,10 +2245,10 @@ function metadataFor(recipe, factors) {
       ? {
           title: titleFor(
             factors.dataset,
-            `${fieldContext.measure} over time by ${fieldContext.dimension}`
+            `${fieldContext.measure} across selected records by ${fieldContext.dimension}`
           ),
           analysisQuestion:
-            `How does ${fieldContext.measure} change over time across ${fieldContext.dimension}?`
+            `How does binned mean ${fieldContext.measure} vary across ${fieldContext.dimension}?`
         }
       : undefined;
   return freeze({

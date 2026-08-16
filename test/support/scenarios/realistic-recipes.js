@@ -237,6 +237,8 @@ function compactHorizontalCategoryValues(rows, field) {
 function guides(factors, xTitle, yTitle, {
   legend = true,
   legendTitle = "Group",
+  legendTarget,
+  legendChannels,
   xCount,
   xFormat,
   xValues,
@@ -268,7 +270,12 @@ function guides(factors, xTitle, yTitle, {
     },
     grid: false,
     legend: legend
-      ? { position: "right", title: legendTitle }
+      ? {
+          ...(legendTarget === undefined ? {} : { target: legendTarget }),
+          ...(legendChannels === undefined ? {} : { channels: legendChannels }),
+          position: "right",
+          title: legendTitle
+        }
       : false
   };
 }
@@ -278,6 +285,8 @@ function finish(program, context, factors, {
   yTitle,
   legend = true,
   legendTitle,
+  legendTarget,
+  legendChannels,
   xCount,
   xFormat,
   xValues,
@@ -288,7 +297,10 @@ function finish(program, context, factors, {
       factors,
       xTitle ?? context.dimensionText,
       yTitle ?? context.measureText,
-      { legend, legendTitle, xCount, xFormat, xValues, yValues }
+      {
+        legend, legendTitle, legendTarget, legendChannels,
+        xCount, xFormat, xValues, yValues
+      }
     ))
     .createTitle({
       text: context.title,
@@ -432,7 +444,7 @@ function buildPoint(spec, factors, resolution) {
     ? program.encodeSize({ target: "points", field: "count", scale: { range: [12, 170] } })
     : spec.variant === "encoded"
       ? program.encodeSize({ target: "points", field: "value", scale: { range: [10, 90] } })
-    : program.encodePointRadius({ target: "points", value: factors.radius });
+    : program.encodePointRadius({ target: "points", value: Math.max(6, factors.radius) });
   if (["jitter", "jitter-large"].includes(spec.variant)) {
     program = program.jitterPoints({
       target: "points",
@@ -450,7 +462,10 @@ function buildPoint(spec, factors, resolution) {
     .createTitle({
       text: context.title,
       subtitle: context.analysisQuestion,
-      align: factors.titleAlign
+      align: factors.titleAlign,
+      maxWidth: 600,
+      wrap: "word",
+      lineHeight: 26
     });
 }
 
@@ -506,7 +521,7 @@ function buildBar(spec, factors, resolution) {
 
 function buildHistogram(spec, factors, resolution) {
   const { view, context } = resolution;
-  const segmented = ["stack", "normalize"].includes(spec.variant);
+  const segmented = true;
   return chart()
     .createCanvas(canvas(factors))
     .createData({ id: "analysisRows", values: view.rows })
@@ -811,9 +826,15 @@ function buildLabels(spec, factors, resolution) {
   let program = chart()
     .createCanvas(canvas(factors))
     .createData({ id: "analysisRows", values: view.rows })
-    .createPointMark({ id: "anchorPoints", fill: "#64748b" })
+    .createPointMark({ id: "anchorPoints" })
     .encodeX({ target: "anchorPoints", field: "rank" })
     .encodeY({ target: "anchorPoints", field: "value", scale: { zero: false } })
+    .encodeColor({
+      target: "anchorPoints",
+      field: "category",
+      fieldType: "nominal",
+      scale: { palette: factors.palette }
+    })
     .createTextMark({
       id: "labels",
       fontSize: factors.fontSize,
@@ -837,7 +858,7 @@ function buildLabels(spec, factors, resolution) {
   return finish(program, context, factors, {
     xTitle: "Rank",
     yTitle: `${context.aggregate} ${context.measureAxis}`,
-    legend: false
+    legendTitle: context.dimensionText
   });
 }
 
@@ -896,7 +917,14 @@ function buildFacet(spec, factors, resolution) {
       scales: { x: factors.facetScales, y: factors.facetScales },
       guides: { axes: factors.facetAxes, legend: false }
     })
-    .createTitle({ text: context.title, subtitle: context.analysisQuestion, align: factors.titleAlign });
+    .createTitle({
+      text: context.title,
+      subtitle: context.analysisQuestion,
+      align: factors.titleAlign,
+      maxWidth: 600,
+      wrap: "word",
+      lineHeight: 26
+    });
 }
 
 function miniSummary(view, color, title, context) {
@@ -1063,7 +1091,7 @@ function factorsFor(spec, dataset) {
     opacity: [0.58, 0.78, 0.94]
   };
   if (spec.kind === "histogram") return {
-    ...(spec.variant === "plain" || spec.variant === "fine" ? titled : colored),
+    ...colored,
     ...(spec.variant === "fine" ? {} : { maxBins: [8, 12, 18] }),
     nice: [false, true]
   };
@@ -1094,7 +1122,7 @@ function factorsFor(spec, dataset) {
     strokeWidth: [1, 1.8, 3]
   };
   if (spec.kind === "labels") return {
-    ...summarized, fontSize: [10, 12, 15], fontWeight: ["normal", 600, 800],
+    ...summarizedColor, fontSize: [10, 12, 15], fontWeight: ["normal", 600, 800],
     ...(spec.variant === "layout" ? {
       labelAxis: ["x", "y", "both"], labelPadding: [1, 3, 6],
       maxDisplacement: [16, 36, 72]
