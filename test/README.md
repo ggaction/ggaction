@@ -6,6 +6,11 @@ The default suite runs unit, contract, chart, gate, and documentation tests:
 npm test
 ```
 
+Every suite launched through `scripts/run-tests.js` runs at most four test files
+concurrently, independent of the host CPU count. The limit does not change the
+discovered file list or order, coverage policy, or concurrency managed inside an
+individual test module.
+
 Use a selector after `--` while developing one capability:
 
 ```sh

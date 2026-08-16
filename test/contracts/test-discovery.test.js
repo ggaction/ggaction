@@ -8,7 +8,8 @@ import {
   classifyTestFile,
   collectTestFiles,
   matchesCapabilityEntry,
-  TEST_CAPABILITIES
+  TEST_CAPABILITIES,
+  testRunnerArguments
 } from "../../scripts/run-tests.js";
 import { collectReachableModules } from "../support/module-imports.js";
 
@@ -164,6 +165,33 @@ test("selects tests by chart, capability, or relative path", () => {
     collectTestFiles("all", testRoot, ["contracts/test-discovery.test.js"]),
     [path.join(testRoot, "contracts", "test-discovery.test.js")]
   );
+});
+
+test("caps file concurrency without changing file order or coverage policy", () => {
+  const files = Object.freeze([
+    "/repository/test/unit/example.test.js",
+    "/repository/test/contracts/example.test.js"
+  ]);
+
+  assert.deepEqual(testRunnerArguments("all", files), [
+    "--test",
+    "--test-concurrency=4",
+    ...files
+  ]);
+  assert.deepEqual(testRunnerArguments("coverage", files), [
+    "--test",
+    "--test-concurrency=4",
+    "--experimental-test-coverage",
+    "--test-coverage-include=src/**/*.js",
+    "--test-coverage-lines=94",
+    "--test-coverage-branches=89",
+    "--test-coverage-functions=98",
+    ...files
+  ]);
+  assert.deepEqual(files, [
+    "/repository/test/unit/example.test.js",
+    "/repository/test/contracts/example.test.js"
+  ]);
 });
 
 test("maps every named capability entry to an exact file or prefix", () => {

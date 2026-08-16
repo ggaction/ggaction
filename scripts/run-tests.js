@@ -121,6 +121,21 @@ function coverageSummary(output) {
     `${Object.keys(CRITICAL_COVERAGE_FLOORS).length} critical floors passed.\n`;
 }
 
+export function testRunnerArguments(suite, files) {
+  const args = ["--test", "--test-concurrency=4"];
+  if (suite === "coverage") {
+    args.push(
+      "--experimental-test-coverage",
+      "--test-coverage-include=src/**/*.js",
+      "--test-coverage-lines=94",
+      "--test-coverage-branches=89",
+      "--test-coverage-functions=98"
+    );
+  }
+  args.push(...files);
+  return args;
+}
+
 function run(suite, selectors) {
   const files = collectTestFiles(suite, testRoot, selectors);
   if (files.length === 0) {
@@ -132,17 +147,7 @@ function run(suite, selectors) {
     throw new Error(`No test files found for suite "${suite}"${suffix}.`);
   }
   const coverage = suite === "coverage";
-  const args = ["--test"];
-  if (coverage) {
-    args.push(
-      "--experimental-test-coverage",
-      "--test-coverage-include=src/**/*.js",
-      "--test-coverage-lines=94",
-      "--test-coverage-branches=89",
-      "--test-coverage-functions=98"
-    );
-  }
-  args.push(...files);
+  const args = testRunnerArguments(suite, files);
   const result = spawnSync(process.execPath, args, {
     cwd: repositoryRoot,
     ...(coverage
