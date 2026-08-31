@@ -8,7 +8,8 @@ title: Text Marks
 {% include chart-example.html id="annotation" %}
 
 Text marks turn data values into visible labels. Add one after a compatible point,
-bar, rect, or rule layer and ggaction persists that layer as the annotation source.
+bar, rect, rule, or arc layer and ggaction persists that layer as the annotation
+source.
 
 ## `createTextMark(options?)`
 
@@ -26,10 +27,11 @@ const annotated = points
 ```
 
 The first omitted ID is `"text"`. When `data` is omitted, the current compatible
-layer—or one unique compatible layer—supplies its dataset, Cartesian position,
-and final visual-item grain. This means aggregate bars receive one label per bar,
-while rect labels anchor at cell centers. Pass `data` explicitly to assemble an independent
-text layer with `encodeX` and `encodeY`.
+layer—or one unique compatible layer—supplies its dataset, position, and final
+visual-item grain. This means aggregate bars receive one label per bar, rect
+labels anchor at cell centers, and arc labels anchor at sector centers. Pass
+`data` explicitly to assemble an independent text layer with `encodeX` and
+`encodeY`.
 
 Creation options are `id`, `data`, `text`, `fill`, `opacity`, `fontSize`,
 `fontFamily`, `fontWeight`, `align`, `baseline`, `rotation`, `dx`, and `dy`.
@@ -54,6 +56,17 @@ Calling `encodeText` again replaces the previous field or constant assignment.
 bars
   .createTextMark({ dy: -4, align: "center" })
   .encodeText({ field: "value", format: ".1f" });
+```
+
+Arc-source text is anchored halfway between each sector's inner and outer radii
+at its angular midpoint. The anchor is derived from the materialized sector path,
+so Canvas, scale, padding, and inner-radius changes keep labels aligned. A field
+used for arc text must resolve to one value at the final sector grain.
+
+```javascript
+const labeledDonut = donut
+  .createTextMark({ align: "center", baseline: "middle" })
+  .encodeText({ field: "percentageLabel" });
 ```
 
 ## `editTextMark(options)`

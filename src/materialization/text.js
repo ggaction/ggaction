@@ -1,5 +1,9 @@
 import { resolveBarChannels } from "../grammar/bars/policy.js";
+import { resolveAnnularSectorAnchor } from "../grammar/polarPaths.js";
+import { resolvePolarFrame } from "../grammar/polar.js";
+import { findGraphic } from "../grammar/schemas/graphicTree.js";
 import { formatTextValue } from "../grammar/text.js";
+import { resolveGraphicBounds } from "../layout/canvas.js";
 import { findDataset } from "../selectors/datasets.js";
 import { findLayer } from "../selectors/layers.js";
 import { resolveMarkItems } from "./selection/policies/index.js";
@@ -40,7 +44,16 @@ function barAnchor(program, source, item) {
       };
 }
 
+function arcAnchor(program, item) {
+  const graphic = findGraphic(program.graphicSpec, item.graphicIds[0])?.object;
+  return resolveAnnularSectorAnchor({
+    frame: resolvePolarFrame(resolveGraphicBounds(program)),
+    commands: graphic?.properties?.commands
+  });
+}
+
 function sourceAnchor(program, source, item) {
+  if (source.mark.type === "arc") return arcAnchor(program, item);
   if (source.mark.type === "bar") return barAnchor(program, source, item);
   if (source.mark.type === "rect") {
     return {
@@ -104,7 +117,10 @@ function relativeLuminance(color) {
 }
 
 function sourceTextConfig(config, source, item) {
-  if (source.mark.type !== "rect" || config.fillExplicit === true) return config;
+  if (
+    !["arc", "rect"].includes(source.mark.type) ||
+    config.fillExplicit === true
+  ) return config;
   const luminance = relativeLuminance(item.properties.fill);
   if (luminance === undefined) return config;
   return {
