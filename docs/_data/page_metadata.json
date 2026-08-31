@@ -265,7 +265,7 @@
   },
   "/api/marks/text/": {
     "title": "Text Marks",
-    "description": "Text marks turn data values into visible labels. Add one after a compatible point, bar, rect, or rule layer and ggaction persists that layer as the annotation source.",
+    "description": "Text marks turn data values into visible labels. Add one after a compatible point, bar, rect, rule, or arc layer and ggaction persists that layer as the annotation source.",
     "image": "/assets/images/annotated-imdb-scatterplot.png"
   },
   "/api/marks/rect/": {

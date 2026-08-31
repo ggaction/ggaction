@@ -162,7 +162,7 @@ export function canMaterializeText(program, layer) {
   if (layer.source !== undefined) {
     const source = findLayer(program, layer.source);
     return source !== undefined &&
-      ["point", "bar", "rule", "rect"].includes(source.mark?.type) &&
+      ["point", "bar", "rule", "rect", "arc"].includes(source.mark?.type) &&
       Array.isArray(program.graphicSpec.objects[source.id]?.items);
   }
   return hasCartesianPositionScales(layer);

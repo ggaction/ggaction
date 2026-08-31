@@ -3,7 +3,8 @@ import test from "node:test";
 
 import {
   buildAnnularSectorCommands,
-  buildPolarCircleCommands
+  buildPolarCircleCommands,
+  resolveAnnularSectorAnchor
 } from "../../../src/grammar/polarPaths.js";
 
 const frame = Object.freeze({
@@ -87,6 +88,29 @@ test("supports reverse sweeps, full circles, and angular padding", () => {
   assert.notDeepEqual(padded[0], { op: "M", x: 100, y: 40 });
 });
 
+test("derives pie and donut anchors from concrete sector commands", () => {
+  const pie = buildAnnularSectorCommands({
+    frame,
+    startTheta: 0,
+    endTheta: 90,
+    outerRadius: 40
+  });
+  const pieAnchor = resolveAnnularSectorAnchor({ frame, commands: pie });
+  close(pieAnchor.x, 100 + 20 / Math.sqrt(2));
+  close(pieAnchor.y, 80 - 20 / Math.sqrt(2));
+
+  const donut = buildAnnularSectorCommands({
+    frame,
+    startTheta: 90,
+    endTheta: 0,
+    innerRadius: 20,
+    outerRadius: 40
+  });
+  const donutAnchor = resolveAnnularSectorAnchor({ frame, commands: donut });
+  close(donutAnchor.x, 100 + 30 / Math.sqrt(2));
+  close(donutAnchor.y, 80 - 30 / Math.sqrt(2));
+});
+
 test("rejects invalid frames, radii, sweeps, and padding", () => {
   assert.throws(
     () => buildPolarCircleCommands({ ...frame, availableRadius: -1 }, 1),
@@ -120,5 +144,9 @@ test("rejects invalid frames, radii, sweeps, and padding", () => {
       padAngle: 30
     }),
     /padAngle/
+  );
+  assert.throws(
+    () => resolveAnnularSectorAnchor({ frame, commands: [] }),
+    /annular-sector path commands/
   );
 });

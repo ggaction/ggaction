@@ -649,8 +649,9 @@ createTextMark({ id?, data?, text?, fill?, opacity?, fontSize?, fontFamily?, fon
 ```
 
 Create a semantic text layer. Omitted data and position attach to the current
-or unique compatible point, bar, rect, or rule layer. `text` is constant-content
-shorthand. [Text marks](../api/marks/text.md)
+or unique compatible point, bar, rect, rule, or arc layer. Arc text anchors at
+sector centers. `text` is constant-content shorthand.
+[Text marks](../api/marks/text.md)
 
 ### `editTextMark`
 

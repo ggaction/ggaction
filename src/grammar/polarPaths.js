@@ -35,6 +35,69 @@ function pointAt(frame, theta, radius) {
   };
 }
 
+function pointTheta(frame, point) {
+  return Math.atan2(
+    point.x - frame.centerX,
+    frame.centerY - point.y
+  ) * 180 / Math.PI;
+}
+
+function pointRadius(frame, point) {
+  return Math.hypot(
+    point.x - frame.centerX,
+    point.y - frame.centerY
+  );
+}
+
+export function resolveAnnularSectorAnchor({ frame, commands }) {
+  validateFrame(frame);
+  if (!Array.isArray(commands)) {
+    throw new TypeError("Polar sector anchor requires path commands.");
+  }
+  const start = commands[0];
+  const firstCurve = commands.find(command => command.op === "C");
+  const radialIndex = commands.findIndex(command => command.op === "L");
+  const outerEnd = commands[radialIndex - 1];
+  const innerEnd = commands[radialIndex];
+  if (
+    start?.op !== "M" ||
+    firstCurve?.op !== "C" ||
+    radialIndex < 2 ||
+    outerEnd === undefined ||
+    innerEnd?.op !== "L" ||
+    ![
+      start.x, start.y, firstCurve.x1, firstCurve.y1,
+      outerEnd.x, outerEnd.y, innerEnd.x, innerEnd.y
+    ].every(Number.isFinite)
+  ) {
+    throw new Error("Polar sector anchor requires annular-sector path commands.");
+  }
+
+  const radial = {
+    x: start.x - frame.centerX,
+    y: start.y - frame.centerY
+  };
+  const tangent = {
+    x: firstCurve.x1 - start.x,
+    y: firstCurve.y1 - start.y
+  };
+  const direction = Math.sign(radial.x * tangent.y - radial.y * tangent.x);
+  if (direction === 0) {
+    throw new Error("Polar sector anchor requires a directed outer arc.");
+  }
+
+  const startTheta = pointTheta(frame, start);
+  const endTheta = pointTheta(frame, outerEnd);
+  const wrappedSweep = direction > 0
+    ? (endTheta - startTheta + 360) % 360
+    : -((startTheta - endTheta + 360) % 360);
+  const sweep = wrappedSweep === 0 ? direction * 360 : wrappedSweep;
+  const outerRadius = pointRadius(frame, start);
+  const innerRadius = pointRadius(frame, innerEnd);
+  const radius = (innerRadius + outerRadius) / 2;
+  return Object.freeze(pointAt(frame, startTheta + sweep / 2, radius));
+}
+
 function arcCommands(frame, radius, startTheta, endTheta) {
   const sweep = endTheta - startTheta;
   const segments = Math.ceil(Math.abs(sweep) / MAX_ARC_SEGMENT);
