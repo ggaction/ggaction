@@ -26,9 +26,14 @@ export function resolveSeriesLayoutDomain({
   const compatibleDirect = directConsumers.every(({ consumer }) =>
     layoutConsumers.every(({ consumer: layoutConsumer }) => {
       const aggregate = layoutConsumer.encoding.aggregate;
-      return aggregate !== "count" &&
-        consumer.encoding.fieldType === "quantitative" &&
-        consumer.encoding.field === layoutConsumer.encoding.field;
+      const directEncoding = consumer.encoding;
+      return directEncoding.fieldType === "quantitative" && (
+        Object.hasOwn(directEncoding, "datum") ||
+        (
+          aggregate !== "count" &&
+          directEncoding.field === layoutConsumer.encoding.field
+        )
+      );
     })
   );
   if (!compatibleDirect) {
