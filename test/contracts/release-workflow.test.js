@@ -26,6 +26,16 @@ test("uses current trusted-publishing requirements without an npm secret", () =>
   assert.doesNotMatch(workflow, /NPM_TOKEN|NODE_AUTH_TOKEN|secrets\.[A-Za-z_]*NPM/);
 });
 
+test("keeps generated release documentation strict across native PNG platforms", () => {
+  assert.match(
+    workflow,
+    /npm run docs:generate[\s\S]*npm run test:docs[\s\S]*git diff --exit-code/
+  );
+  assert.match(workflow, /knowledge\/action-cards\.json/);
+  assert.match(workflow, /:\(exclude\)docs\/assets\/images\/\*\.png/);
+  assert.doesNotMatch(workflow, /:\(exclude\)[^\n]*(manifest|\.json|\.md|\.txt)/);
+});
+
 test("qualifies, retains, verifies, and publishes one exact artifact", () => {
   for (const command of [
     "npm test",
