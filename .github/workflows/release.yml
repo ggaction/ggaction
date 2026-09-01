@@ -53,7 +53,15 @@ jobs:
           npm run contracts:catalog:check
           npm run docs:generate
           npm run test:docs
-          git diff --exit-code -- docs examples/README.md knowledge/action-cards.json
+          # Native Canvas PNG bytes vary across supported operating systems.
+          # Their sources, manifest, dimensions, and rendered output remain
+          # covered by documentation and render tests; all other generated
+          # documentation must stay byte-identical to the release tag.
+          git diff --exit-code -- \
+            docs \
+            examples/README.md \
+            knowledge/action-cards.json \
+            ':(exclude)docs/assets/images/*.png'
       - name: Run unit, acceptance, and contract tests
         run: npm test
       - name: Set up the coverage and documentation runtime
