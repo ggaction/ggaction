@@ -75,6 +75,13 @@ different field or scale. Bar centers and line vertices then map the same
 temporal values to the same x positions; bar width remains mark layout rather
 than a second scale.
 
+Rule and row-positioned text annotations may also reuse that temporal bar
+scale when their temporal encoding names the same field. A matching annotation
+value maps exactly to the corresponding bar center. Annotation-only dates may
+extend an automatic time domain, but they do not participate in the
+bar-bandwidth calculation, so adding an event between observations does not
+silently narrow every bar.
+
 Supported operations are `count`, `sum`, `mean`, `median`, `min`, `max`,
 `distinct`, `valid`, `missing`, `variance`, `varianceP`, `stdev`, `stdevP`,
 `stderr`, `q1`, `q3`, `ciLower`, and `ciUpper`. `distinct`, `valid`, `missing`,

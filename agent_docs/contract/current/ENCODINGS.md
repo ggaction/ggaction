@@ -142,8 +142,10 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
     quantitative, temporal and ordinal fields; exhaustive Cartesian products are intentionally excluded.
   - ✅ Covered: point/line/area/bar/rule log/pow/sqrt/symlog mapping, parameters, clamp/reverse, guides and Canvas resize.
   - ✅ Covered: band/point defaults, padding/alignment, reversed range, bar bandwidth compatibility and shared point centers.
-  - ✅ Covered: temporal aggregate bar bandwidth plus a compatible line consumer on the same field and scale,
-    explicit independent scales, incompatible field rejection, Canvas resize and scale reversal.
+  - ✅ Covered: temporal aggregate bar bandwidth plus compatible line, rule, and text consumers on the same
+    field and scale; annotation-only temporal values do not change the bar-derived bandwidth, while matching
+    values align to bar centers; explicit independent scales, incompatible field rejection, Canvas resize and
+    scale reversal.
   - ✅ Covered: point missing/invalid and explicit-domain `unknown`; compound-grain rejection.
 - Evidence: position, temporal, histogram-bin and ordinal-bar action tests, including
   `test/unit/actions/scales/temporal-bar-line-sharing.test.js`,

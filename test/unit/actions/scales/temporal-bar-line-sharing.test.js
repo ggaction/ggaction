@@ -99,6 +99,53 @@ test("preserves explicitly independent temporal and quantitative scales", () => 
   assert.equal(independent.graphicSpec.objects.trend.items.length, 1);
 });
 
+test("aligns rule and text annotations on a shared temporal bar scale", () => {
+  const barsOnly = chart()
+    .createCanvas({ width: 360, height: 260, margin: 40 })
+    .createData({ values: rows })
+    .createBarMark({ id: "bars" })
+    .encodeX({ field: "year", fieldType: "temporal" })
+    .encodeY({ field: "value", aggregate: "mean" });
+  const bandwidth = barsOnly.resolvedScales.x.bandwidth;
+  const events = Object.freeze([
+    Object.freeze({ year: "2001-01-01", value: 10, label: "Exact" }),
+    Object.freeze({ year: "2001-07-01", value: 10, label: "Between" })
+  ]);
+  const annotated = barsOnly
+    .createData({ id: "events", values: events })
+    .createRuleMark({ id: "eventRules", data: "events" })
+    .encodeX({
+      target: "eventRules",
+      field: "year",
+      fieldType: "temporal",
+      scale: { id: "x" }
+    })
+    .createTextMark({ id: "eventLabels", data: "events" })
+    .encodeX({
+      target: "eventLabels",
+      field: "year",
+      fieldType: "temporal",
+      scale: { id: "x" }
+    })
+    .encodeY({
+      target: "eventLabels",
+      field: "value",
+      fieldType: "quantitative",
+      scale: { id: "y" }
+    })
+    .encodeText({ target: "eventLabels", field: "label" });
+
+  const bar = annotated.graphicSpec.objects.bars.items[1].properties;
+  const barCenter = bar.x + bar.width / 2;
+  const rule = annotated.graphicSpec.objects.eventRules.items[0].properties;
+  const text = annotated.graphicSpec.objects.eventLabels.items[0].properties;
+
+  assert.equal(annotated.resolvedScales.x.bandwidth, bandwidth);
+  assert.ok(Math.abs(rule.x1 - barCenter) < 1e-9);
+  assert.ok(Math.abs(rule.x2 - barCenter) < 1e-9);
+  assert.ok(Math.abs(text.x - barCenter) < 1e-9);
+});
+
 test("rejects a shared temporal scale with different field meaning", () => {
   const independentLine = chart()
     .createCanvas({ width: 360, height: 260, margin: 40 })
@@ -115,7 +162,7 @@ test("rejects a shared temporal scale with different field meaning", () => {
       fieldType: "temporal",
       scale: { id: "x" }
     }),
-    /requires compatible bar or line consumers of one field/
+    /requires compatible bar, line, rule, or text consumers of one field/
   );
   assert.equal(
     independentLine.semanticSpec.layers.find(layer => layer.id === "trend").encoding,

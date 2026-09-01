@@ -331,10 +331,9 @@ export function resolveScaleMaterialization({
   }
   if (scale.type === "time" && ["x", "y"].includes(channel)) {
     const temporalBarBand = resolveTemporalBarBand(
-      consumers,
+      valuesByConsumer,
       domain,
-      range,
-      allValues
+      range
     );
     if (temporalBarBand !== undefined) {
       resolvedScale = {
