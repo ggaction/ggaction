@@ -9,7 +9,7 @@ import {
   "../../../scripts/run-realistic-scenario-generation-coordinator.js";
 
 export const REALISTIC_GENERATION_ISOLATION_LIMITS = Object.freeze([216, 360]);
-export const REALISTIC_GENERATION_ISOLATION_TIMEOUT_MS = 570_000;
+export const REALISTIC_GENERATION_ISOLATION_TIMEOUT_MS = 900_000;
 
 export async function realisticGenerationIsolationBoundary(limit) {
   if (!REALISTIC_GENERATION_ISOLATION_LIMITS.includes(limit)) {

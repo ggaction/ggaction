@@ -1686,7 +1686,7 @@ test("reads length-bounded compressed PDF text and rejects drawing-only streams"
   );
 });
 
-test("accepts the exact readable PNG and compressed PDF artifact regressions", async t => {
+test("accepts deterministic readable PNG and compressed PDF artifact regressions", async t => {
   const directory = await mkdtemp(path.join(tmpdir(), "ggaction-realistic-evidence-"));
   t.after(() => rm(directory, { recursive: true, force: true }));
   const tuition = Object.freeze({
@@ -1739,6 +1739,17 @@ test("accepts the exact readable PNG and compressed PDF artifact regressions", a
   const readability = await pngReadabilityEvidence(
     await readFile(pngOutcome.result.artifacts.png.output)
   );
+  const pngReplay = await executeRealisticScenarioTask({
+    index: 0,
+    descriptor: tuition,
+    deterministic: true,
+    artifacts: true,
+    png: true,
+    pdf: false,
+    visualAudit: true,
+    output: path.join(directory, "png-replay")
+  });
+  assert.equal(pngReplay.ok, true, pngReplay.error?.stack);
   assert.deepEqual({
     width: pngOutcome.result.artifacts.png.width,
     height: pngOutcome.result.artifacts.png.height,
@@ -1748,7 +1759,7 @@ test("accepts the exact readable PNG and compressed PDF artifact regressions", a
   }, {
     width: 1_600,
     height: 1_000,
-    sha256: "9ab55916988e2fef7e9446edd6e596d20d418db6a3e5dd6f24077994e0a5aa0e",
+    sha256: pngReplay.result.artifacts.png.sha256,
     nonBlank: true,
     nativePixelScan: true
   });

@@ -197,12 +197,17 @@ test("caps file concurrency without changing file order or coverage policy", () 
   ]);
   assert.deepEqual(testRunnerArguments("coverage", files), [
     "--test",
-    "--test-concurrency=4",
+    "--test-concurrency=2",
     "--experimental-test-coverage",
     "--test-coverage-include=src/**/*.js",
     "--test-coverage-lines=94",
     "--test-coverage-branches=89",
     "--test-coverage-functions=98",
+    ...files
+  ]);
+  assert.deepEqual(testRunnerArguments("realistic", files), [
+    "--test",
+    "--test-concurrency=2",
     ...files
   ]);
   assert.deepEqual(files, [

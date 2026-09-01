@@ -130,7 +130,8 @@ function coverageSummary(output) {
 }
 
 export function testRunnerArguments(suite, files) {
-  const args = ["--test", "--test-concurrency=4"];
+  const concurrency = ["coverage", "realistic"].includes(suite) ? 2 : 4;
+  const args = ["--test", `--test-concurrency=${concurrency}`];
   if (suite === "coverage") {
     args.push(
       "--experimental-test-coverage",
