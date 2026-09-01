@@ -7,8 +7,6 @@ title: Ordinal and Stroke Dash Scales
 
 {% include chart-example.html id="line" %}
 
-{% include chart-example.html id="line" %}
-
 ## Discrete and ordinal scales
 
 Band/point position, color, and stroke-dash encodings use ordered discrete

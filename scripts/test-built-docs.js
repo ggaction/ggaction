@@ -14,6 +14,7 @@ const contentTypes = new Map([
   [".js", "text/javascript"],
   [".json", "application/json"],
   [".png", "image/png"],
+  [".ts", "text/plain"],
   [".txt", "text/plain"]
 ]);
 
@@ -76,7 +77,7 @@ function routeFor(file) {
 
 function llmReferences(source) {
   return [...source.matchAll(
-    /\.\/(?:llms-full\.txt|(?:[A-Za-z0-9_-]+\/)*(?:#[A-Za-z0-9_-]+)?)/g
+    /\.\/(?:[A-Za-z0-9_.-]+\/)*(?:[A-Za-z0-9_.-]+)?(?:#[A-Za-z0-9_-]+)?/g
   )].map(match => match[0]);
 }
 
@@ -246,6 +247,30 @@ try {
   await search.fill("polar points");
   await results.first().waitFor({ state: "visible" });
   assert.match(await results.first().getAttribute("href"), /\/tutorials\/polar-points\/$/);
+  for (const [query, expectedPaths] of [
+    ["PDFMetadata", ["/ggaction/api/rendering/", "/ggaction/reference/runtime/"]],
+    ["maxDisplacement", [
+      "/ggaction/api/marks/text/",
+      "/ggaction/recipes/annotations/",
+      "/ggaction/reference/actions/marks/"
+    ]],
+    ["logarithmic scale", ["/ggaction/api/scales/"]],
+    ["tooltip", ["/ggaction/supported-features/"]],
+    ["responsive canvas", ["/ggaction/responsive-charts/"]],
+    ["high dpi", ["/ggaction/api/rendering/"]],
+    ["serialize svg", ["/ggaction/api/rendering/"]],
+    ["resourceNamespace", [
+      "/ggaction/api/rendering/",
+      "/ggaction/accessibility/",
+      "/ggaction/reference/runtime/"
+    ]],
+    ["pie chart", ["/ggaction/tutorials/polar-arcs/"]]
+  ]) {
+    await search.fill(query);
+    await results.first().waitFor({ state: "visible" });
+    const firstPath = await results.first().evaluate(link => new URL(link.href).pathname);
+    assert.equal(expectedPaths.includes(firstPath), true, `${query}: ${firstPath}`);
+  }
   await desktop.keyboard.press("ArrowDown");
   assert.equal(await search.evaluate(element => element === document.activeElement), true);
   const activeResult = await search.getAttribute("aria-activedescendant");
@@ -272,8 +297,7 @@ try {
   const llmsResponse = await fetch(`${baseUrl}llms.txt`);
   assert.equal(llmsResponse.ok, true);
   const llmsTargets = llmReferences(await llmsResponse.text());
-  assert.equal(llmsTargets.length > 40, true);
-  assert.equal(llmsTargets.length < 50, true);
+  assert.equal(llmsTargets.length > 100, true);
   assert.equal(new Set(llmsTargets).size, llmsTargets.length);
   for (const target of llmsTargets) {
     const url = new URL(target, `${baseUrl}llms.txt`);
@@ -290,6 +314,12 @@ try {
       );
     }
   }
+  const llmsManifestResponse = await fetch(`${baseUrl}llms-manifest.json`);
+  assert.equal(llmsManifestResponse.ok, true);
+  const llmsManifest = await llmsManifestResponse.json();
+  assert.equal(llmsManifest.sectionCount > 100, true);
+  assert.equal(llmsManifest.sections.length, llmsManifest.sectionCount);
+  assert.equal(llmsManifest.sections.every(section => /^[a-f0-9]{64}$/.test(section.sha256)), true);
 
   await desktop.goto(`${baseUrl}tutorials/`, { waitUntil: "networkidle" });
   assert.equal(
@@ -323,7 +353,7 @@ try {
     true
   );
   assert.equal(
-    await desktop.locator('[data-gallery-tasks~="interaction"]:not([hidden])').count(),
+    await desktop.locator('[data-gallery-tasks~="selection"]:not([hidden])').count(),
     0
   );
   await desktop.goto(`${baseUrl}gallery/all/`, { waitUntil: "networkidle" });

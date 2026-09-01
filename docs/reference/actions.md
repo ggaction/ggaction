@@ -176,7 +176,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`encodeX2`](./actions/encodings.md#encodex2) | user-facing | encodings |
 | [`encodeXOffset`](./actions/encodings.md#encodexoffset) | user-facing | encodings |
 | [`encodeXRange`](./actions/encodings.md#encodexrange) | user-facing | encodings |
-| [`encodeY`](./actions/encodings.md#encodecolor) | user-facing | encodings |
+| [`encodeY`](./actions/encodings.md#encodey) | user-facing | encodings |
 | [`encodeY2`](./actions/encodings.md#encodey2) | user-facing | encodings |
 | [`encodeYOffset`](./actions/encodings.md#encodeyoffset) | user-facing | encodings |
 | [`encodeYRange`](./actions/encodings.md#encodeyrange) | user-facing | encodings |
@@ -188,7 +188,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`layoutLabels`](./actions/marks.md#layoutlabels) | user-facing | marks |
 | [`orderCategories`](./actions/encodings.md#ordercategories) | user-facing | encodings |
 | [`removeCategoryOrder`](./actions/encodings.md#removecategoryorder) | user-facing | encodings |
-| [`removeEncoding`](./actions/encodings.md#encodeangle) | user-facing | encodings |
+| [`removeEncoding`](./actions/encodings.md#removeencoding) | user-facing | encodings |
 | [`removeGrid`](./actions/advanced.md#directional-grids) | user-facing | grid |
 | [`removeJitter`](./actions/marks.md#removejitter) | user-facing | marks |
 | [`removeLabelLayout`](./actions/marks.md#removelabellayout) | user-facing | marks |

@@ -54,7 +54,8 @@ const program = chart()
 ## MCP server for LLM
 
 ggaction includes a local, read-only MCP server that gives coding assistants
-current action names, exact call shapes, and task-specific authoring steps
+current action names, syntax-valid call templates, explicit placeholders, and
+task-specific authoring steps
 without loading the complete documentation.
 
 <p align="left">

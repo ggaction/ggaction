@@ -7,8 +7,6 @@ title: Discretized Color Scales
 
 {% include chart-example.html id="scatterplot" %}
 
-{% include chart-example.html id="scatterplot" %}
-
 ## Discretized point color
 
 Quantitative point color can create concrete color classes instead of a

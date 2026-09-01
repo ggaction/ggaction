@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Chart Gallery
-description: Browse complete ggaction charts by Cartesian, statistical, Polar, composition, and interaction task.
+description: Browse complete ggaction charts by Cartesian, statistical, Polar, composition, and static selection task.
 ---
 
 # Chart Gallery

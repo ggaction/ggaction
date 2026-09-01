@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ggaction.github.io/ggaction/schemas/action-cards.schema.json",
+  "title": "ggaction compact action-card collection",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "packageVersion",
+    "typeSource",
+    "errorPolicy",
+    "count",
+    "cards"
+  ],
+  "properties": {
+    "schemaVersion": { "const": 2 },
+    "packageVersion": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$" },
+    "typeSource": { "const": "types/program.d.ts" },
+    "errorPolicy": { "type": "string", "minLength": 40, "maxLength": 300 },
+    "count": { "type": "integer", "minimum": 1 },
+    "cards": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "action-card.schema.json" }
+    }
+  }
+}

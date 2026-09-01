@@ -6,6 +6,7 @@ import { spawnSync } from "node:child_process";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
 
+import Ajv2020 from "ajv/dist/2020.js";
 import { createCanvas } from "@napi-rs/canvas";
 
 import { chart, render } from "../../src/index.js";
@@ -87,17 +88,21 @@ async function executeAuthoring(packet, { rows, renderer }) {
 }
 
 test("intent taxonomy covers every supported constraint with exact owners", async () => {
-  const [taxonomy, cards] = await Promise.all([
+  const [taxonomy, cards, schema] = await Promise.all([
     json("intent-taxonomy.json"),
-    json("action-cards.json")
+    json("action-cards.json"),
+    json("intent-taxonomy.schema.json")
   ]);
+  const validate = new Ajv2020({ strict: true }).compile(schema);
+  assert.equal(validate(taxonomy), true, JSON.stringify(validate.errors));
   assert.deepEqual(validateResolverKnowledge(), {
     cards: 173,
-    constraints: 80,
-    providers: 74,
-    supported: 75,
+    constraints: 89,
+    providers: 83,
+    supported: 84,
     unsupported: 5
   });
+  assert.equal(taxonomy.packageVersion, cards.packageVersion);
   const requiredFamilies = [
     "chart",
     "transform",
@@ -146,13 +151,20 @@ test("every exact action name resolves to its compact card without gaps", async 
       assert.equal(first.actionPlan[0].requiredOptions.includes(option.name), true, `${card.name}.${option.name}`);
     }
     assert.deepEqual(first.exactCalls, [card.snippet], card.name);
-    assert.equal(first.schemaVersion, 3, card.name);
+    assert.equal(first.schemaVersion, 4, card.name);
+    assert.equal(first.packageVersion, cards.packageVersion, card.name);
+    const prerequisites = authoringPrerequisites.filter(entry =>
+      entry.id !== `action.${card.name}`
+    );
     assert.deepEqual(first.authoring, {
       imports: ['import { chart } from "ggaction";'],
       initialize: "let program = chart()",
-      prerequisites: authoringPrerequisites,
+      prerequisites,
       steps: [`program = ${card.snippet}`]
     }, card.name);
+    assert.deepEqual(first.appliedOptions, [], card.name);
+    assert.equal(Array.isArray(first.placeholderBindings), true, card.name);
+    assert.deepEqual(first.unmatchedRequirements, [], card.name);
     assert.deepEqual(first.unsupported, [], card.name);
     assert.deepEqual(first.unresolved, [], card.name);
     assert.equal(first.candidates.length, 1, card.name);
@@ -456,13 +468,157 @@ test("keeps terminal unsupported output separate from open renderer decisions", 
   );
 });
 
+test("reports concrete options, placeholders, and unsupported requirements without silent partials", () => {
+  const horizon = searchGgaction("horizon chart with three bands");
+  assert.deepEqual(horizon.actionPlan.map(entry => entry.id), [
+    "action.createAreaMark",
+    "action.createHorizonChart"
+  ]);
+  assert.deepEqual(horizon.appliedOptions, [{
+    owner: "encodeHorizon",
+    option: "bands",
+    value: "3",
+    source: "three bands"
+  }]);
+  assert.deepEqual(horizon.unmatchedRequirements, []);
+
+  const legend = searchGgaction(
+    "line chart with color legend at bottom, 3 columns, horizontal direction as svg"
+  );
+  assert.match(legend.exactCalls[0], /position: "bottom", columns: 3, direction: "horizontal"/);
+  assert.deepEqual(legend.appliedOptions.map(entry => entry.option), ["guides"]);
+  assert.deepEqual(legend.unresolved, []);
+
+  const bins = searchGgaction(
+    "bin2d with 20 x-bins and 30 y-bins, include empty cells"
+  );
+  assert.deepEqual(bins.appliedOptions.map(entry => [entry.option, entry.value]), [
+    ["bins", "{ x: 20, y: 30 }"],
+    ["includeEmpty", "true"]
+  ]);
+  const oneAxis = searchGgaction("bin2d with 20 x-bins");
+  assert.deepEqual(oneAxis.unmatchedRequirements, ["20 x-bins"]);
+  assert.deepEqual(oneAxis.unresolved.map(entry => entry.constraint), [
+    "transform.bin2d.bins.y"
+  ]);
+  const heatmapBins = searchGgaction("heatmap with 20 bins and include empty cells");
+  assert.equal(
+    heatmapBins.exactCalls[0],
+    'program.createHeatmap({ x: "x", y: "y", bin: { bins: 20, includeEmpty: true } })'
+  );
+  const histogramBins = searchGgaction("histogram with 12 bins");
+  assert.match(histogramBins.exactCalls[0], /maxBins: 12/);
+
+  const fields = searchGgaction(
+    "scatter plot with x field horsepower y field mpg color field origin size field weight"
+  );
+  assert.deepEqual(fields.appliedOptions.map(entry => [entry.option, entry.value]), [
+    ["x", '"horsepower"'],
+    ["y", '"mpg"'],
+    ["color", '"origin"'],
+    ["size", '"weight"']
+  ]);
+  assert.deepEqual(fields.placeholderBindings.filter(entry => entry.kind === "field")
+    .map(entry => entry.name), ["horsepower", "mpg", "origin", "weight"]);
+  const terseFields = searchGgaction("scatter plot x horsepower y mpg as svg");
+  assert.deepEqual(terseFields.appliedOptions.map(entry => [entry.option, entry.value]), [
+    ["x", '"horsepower"'],
+    ["y", '"mpg"']
+  ]);
+  assert.deepEqual(terseFields.placeholderBindings.filter(entry => entry.kind === "field")
+    .map(entry => entry.name), ["horsepower", "mpg"]);
+  const versusFields = searchGgaction("scatter plot of mpg vs horsepower as svg");
+  assert.match(versusFields.exactCalls[0], /x: "horsepower", y: "mpg"/);
+
+  const title = searchGgaction(
+    'chart title "Revenue" subtitle "Quarterly" font size 18'
+  );
+  assert.equal(
+    title.exactCalls[0],
+    'program.createTitle({ text: "Revenue", subtitle: "Quarterly", titleStyle: { fontSize: 18 } })'
+  );
+  assert.deepEqual(title.placeholderBindings.map(entry => entry.name), ["values"]);
+  const naturalTitle = searchGgaction("scatter plot titled Sales font size 20 as svg");
+  assert.equal(
+    naturalTitle.exactCalls[1],
+    'program.createTitle({ text: "Sales", titleStyle: { fontSize: 20 } })'
+  );
+  const unscopedFont = searchGgaction("scatter plot with font size 20 as svg");
+  assert.deepEqual(unscopedFont.unmatchedRequirements, ["font size 20"]);
+
+  const missingLegendChannel = searchGgaction(
+    "scatter plot with horizontal legend at bottom as svg"
+  );
+  assert.equal(missingLegendChannel.exactCalls[0].includes("legend"), false);
+  assert.deepEqual(missingLegendChannel.unmatchedRequirements, ["legend channel"]);
+  assert.deepEqual(missingLegendChannel.unresolved.map(entry => entry.constraint), [
+    "guide.legend",
+    "layout.legend.bottom"
+  ]);
+  const unscopedColumns = searchGgaction("bar chart with 3 columns as svg");
+  assert.deepEqual(unscopedColumns.unmatchedRequirements, ["3 columns"]);
+
+  const horizontalBar = searchGgaction("horizontal bar chart as svg");
+  assert.deepEqual(horizontalBar.exactCalls.slice(0, 3), [
+    'program.createBarMark({ id: "bar" })',
+    'program.encodeY({ field: "category", fieldType: "nominal" })',
+    'program.encodeX({ field: "value", fieldType: "quantitative" })'
+  ]);
+  const canvas = searchGgaction("scatter plot as canvas");
+  assert.equal(canvas.exactCalls.at(-1), "render(program, context)");
+  assert.equal(canvas.placeholderBindings.some(entry => entry.name === "context"), true);
+
+  const pngRatio = searchGgaction("scatter plot as png pixel ratio 2");
+  assert.match(pngRatio.exactCalls.at(-1), /pixelRatio: 2/);
+  const svgRatio = searchGgaction("scatter plot as svg pixel ratio 2");
+  assert.deepEqual(svgRatio.unmatchedRequirements, ["pixel ratio 2"]);
+  assert.deepEqual(svgRatio.unresolved.map(entry => entry.constraint), [
+    "renderer.pixelRatio"
+  ]);
+
+  const accessible = searchGgaction(
+    'scatter plot as svg with svg title "Fuel economy" description "MPG by horsepower" accessible'
+  );
+  assert.deepEqual(accessible.appliedOptions.map(entry => entry.option), [
+    "title",
+    "description"
+  ]);
+  assert.deepEqual(accessible.unresolved, []);
+
+  const missingAccessibleText = searchGgaction("accessible scatter plot as svg");
+  assert.deepEqual(missingAccessibleText.unmatchedRequirements, ["accessible output"]);
+  assert.deepEqual(missingAccessibleText.unresolved.map(entry => entry.constraint), [
+    "renderer.svg.accessibleText"
+  ]);
+  assert.deepEqual(
+    docsFallbackResources(missingAccessibleText).map(resource => resource.uri),
+    ["ggaction://docs/accessibility"]
+  );
+
+  const responsive = searchGgaction("responsive scatter plot");
+  assert.deepEqual(responsive.unmatchedRequirements, ["responsive"]);
+  assert.deepEqual(responsive.unresolved.map(entry => entry.constraint), [
+    "layout.responsive"
+  ]);
+
+  const interaction = searchGgaction("scatter plot with tooltip and hover interaction");
+  assert.deepEqual(interaction.unsupported.map(entry => entry.constraint), [
+    "unsupported.interaction"
+  ]);
+  const areaDash = searchGgaction("area chart with dashed stroke");
+  assert.equal(areaDash.actionPlan.some(entry => entry.name === "encodeStrokeDash"), false);
+  assert.deepEqual(areaDash.unsupported.map(entry => entry.constraint), [
+    "unsupported.areaStrokeDash"
+  ]);
+});
+
 test("design fixtures prove bounded one-call task closure without silent partials", async () => {
   const [fixtures, schema] = await Promise.all([
     json("task-closure-cases.json"),
     json("task-packet.schema.json")
   ]);
   assert.equal(fixtures.role, "resolver-design-fixtures-not-evaluation-corpus");
-  assert.equal(schema.properties.schemaVersion.const, 3);
+  assert.equal(schema.properties.schemaVersion.const, 4);
   assert.deepEqual(schema.properties.authoring.required, [
     "imports",
     "initialize",
@@ -470,15 +626,28 @@ test("design fixtures prove bounded one-call task closure without silent partial
     "steps"
   ]);
   assert.equal(schema.properties.authoring.properties.imports.maxItems, 4);
+  assert.equal(schema.properties.authoring.properties.prerequisites.minItems, 0);
   assert.equal(schema.properties.authoring.properties.steps.maxItems, 20);
+  const validatePacket = new Ajv2020({ strict: true }).compile(schema);
   const sizes = [];
   for (const fixture of fixtures.cases) {
     const packet = searchGgaction(fixture.query);
+    assert.equal(
+      validatePacket(packet),
+      true,
+      `${fixture.id}: ${JSON.stringify(validatePacket.errors)}`
+    );
     assert.deepEqual(Object.keys(packet).sort(), [...schema.required].sort(), fixture.id);
     assert.deepEqual(packet.matchedConstraints, fixture.constraints, fixture.id);
     assert.deepEqual(
-      packet.actionPlan.map(entry => ({ id: entry.id, options: entry.requiredOptions })),
-      fixture.plan,
+      packet.actionPlan.map(entry => ({
+        id: entry.id,
+        options: [...entry.requiredOptions].sort()
+      })),
+      fixture.plan.map(entry => ({
+        id: entry.id,
+        options: [...entry.options].sort()
+      })),
       fixture.id
     );
     assert.deepEqual(
@@ -526,6 +695,14 @@ test("every supported constraint and design-fixture authoring step type-checks",
     const packet = searchGgaction(constraint.phrases[0]);
     assert.equal(packet.matchedConstraints.includes(constraint.id), true, constraint.id);
     const covered = packet.actionPlan.flatMap(entry => entry.constraints);
+    if (
+      constraint.id === "guide.legend" ||
+      constraint.id.startsWith("layout.legend.")
+    ) {
+      assert.equal(covered.includes(constraint.id), false, constraint.id);
+      assert.equal(packet.unresolved.some(entry => entry.constraint === constraint.id), true);
+      continue;
+    }
     assert.equal(covered.includes(constraint.id), true, constraint.id);
     assert.equal(packet.unresolved.some(entry => entry.constraint === constraint.id), false, constraint.id);
     for (const call of packet.exactCalls) calls.add(call);
@@ -586,7 +763,8 @@ test("task packets reject ambiguous, unsupported, empty, and oversized input exp
   const conflict = searchGgaction("legend at top and legend at bottom");
   assert.deepEqual(conflict.unresolved.map(entry => entry.constraint), [
     "layout.legend.bottom",
-    "layout.legend.top"
+    "layout.legend.top",
+    "guide.legend"
   ]);
   assert.equal(conflict.actionPlan.some(entry => entry.name === "editLegendLayout"), false);
 

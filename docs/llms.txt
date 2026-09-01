@@ -2,7 +2,7 @@
 ggaction is a JavaScript chart-authoring library built around immutable,
 hierarchical actions. Use this file as a routing index. The linked selective
 HTML routes are canonical; the generated full-text bundle is available at
-./llms-full.txt.
+./llms-full.txt
 
 ## Start
 
@@ -75,3 +75,95 @@ are internal operations.
 - Browser Canvas, browser-safe SVG, Node PNG, and vector PDF share one
   backend-neutral graphicSpec contract.
 - The package is ESM-only. Node entry points require Node.js 20 or later.
+
+## Machine-readable contracts and canonical page inventory
+
+- Full bundle section manifest and hashes: ./llms-manifest.json
+- Typed compact action-card collection: ./actions.json
+- Action-card item schema: ./schemas/action-card.schema.json
+- Action-card collection schema: ./schemas/action-cards.schema.json
+- MCP task-packet schema: ./schemas/task-packet.schema.json
+- Full-bundle manifest schema: ./schemas/llms-manifest.schema.json
+- Resolver intent taxonomy: ./intent-taxonomy.json
+- Resolver intent-taxonomy schema: ./schemas/intent-taxonomy.schema.json
+- Bounded MCP resource catalog: ./mcp-resources.json
+- Bounded MCP resource-catalog schema: ./schemas/mcp-resources.schema.json
+- Exact public ChartProgram declaration: ./types/program.d.ts
+- Tutorials: ./tutorials/
+- Polar Line and Radar Tutorial: ./tutorials/polar-lines/
+- Polar Arc Tutorial: ./tutorials/polar-arcs/
+- Horizon Chart Tutorial: ./tutorials/horizon/
+- Error Band Tutorial: ./tutorials/error-band/
+- Horizon Chart Recipe: ./recipes/horizon/
+- Error Band Recipe: ./recipes/error-band/
+- Box Plot Recipe: ./recipes/box-plot/
+- Violin Plot Recipe: ./recipes/violin-plot/
+- Composition Recipe: ./recipes/composition/
+- Facet Recipe: ./recipes/facet/
+- Parallel Coordinates Recipe: ./recipes/parallel-coordinates/
+- Rose Chart Recipe: ./recipes/rose-chart/
+- Gradient Plot Recipe: ./recipes/gradient-plot/
+- Annotation Recipe: ./recipes/annotations/
+- Path Ordering Recipe: ./recipes/path-ordering/
+- Chart Gallery: ./gallery/
+- All Chart Examples: ./gallery/all/
+- Chart API: ./api/
+- Parallel Coordinates: ./api/parallel-coordinates/
+- Canvas: ./api/canvas/
+- Source and Derived Data: ./api/data/source-and-derived/
+- Data Filtering: ./api/data/filtering/
+- Statistical Data Transforms: ./api/data/statistical-transforms/
+- Time-Unit Data Transforms: ./api/data/time-units/
+- Window Data Transforms: ./api/data/window/
+- Rectangular 2D Bins: ./api/data/bin2d/
+- Marks: ./api/marks/
+- Point Marks: ./api/marks/point/
+- Line and Area Marks: ./api/marks/line-area/
+- Bar Marks: ./api/marks/bar/
+- Rule Marks: ./api/marks/rule/
+- Text Marks: ./api/marks/text/
+- Rect Marks: ./api/marks/rect/
+- Encodings: ./api/encodings/
+- Regression: ./api/regression/
+- Error Bars: ./api/error-bars/
+- Violin Plots: ./api/violin-plots/
+- Guides: ./api/guides/
+- Titles: ./api/titles/
+- Program Composition: ./api/composition/
+- Quantitative Positions: ./api/position/quantitative/
+- Temporal Line Positions: ./api/position/temporal/
+- Ordinal Bar Positions: ./api/position/ordinal-bars/
+- Category Ordering: ./api/position/category-ordering/
+- Histogram Positions: ./api/position/histogram/
+- Ordinal Offsets: ./api/position/offsets/
+- Color Encoding: ./api/series/color/
+- Stroke Dash Encoding: ./api/series/stroke-dash/
+- Point Appearance: ./api/appearance/point/
+- Mark Style: ./api/appearance/mark-style/
+- Position Scales: ./api/scales/position/
+- Ordinal and Dash Scales: ./api/scales/ordinal-and-dash/
+- Continuous Color Scales: ./api/scales/continuous-color/
+- Discretized Color Scales: ./api/scales/discretized-color/
+- Missing Scale Values: ./api/scales/missing-values/
+- Coordinates: ./api/coordinates/
+- Axes: ./api/axes/
+- Grids: ./api/grids/
+- Categorical and Size Legends: ./api/legends/categorical/
+- Continuous Legends: ./api/legends/continuous/
+- Composite Legend Symbols: ./api/legends/composite/
+- Editing Legends: ./api/legends/editing/
+- Accessibility: ./accessibility/
+- Runtime and Browser Compatibility: ./compatibility/
+- Responsive Charts: ./responsive-charts/
+- Performance and Large Charts: ./performance/
+- Data Updates and Live Refresh: ./data-updates/
+- Errors and Recovery: ./errors-and-recovery/
+- Versioning and Documentation Provenance: ./versioning/
+- Fonts and Text Rendering: ./fonts/
+- TypeScript: ./typescript/
+- Advanced Axis Components: ./advanced/axis-components/
+- Mark Actions: ./reference/actions/marks/
+- Encoding Actions: ./reference/actions/encodings/
+- Statistical Layer Actions: ./reference/actions/statistics/
+- Guide, Axis, Grid, and Title Actions: ./reference/actions/guides/
+- Extension Actions: ./reference/actions/extension/

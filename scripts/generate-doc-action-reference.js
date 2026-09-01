@@ -84,6 +84,21 @@ function headingId(block) {
     .replace(/\s+/g, "-");
 }
 
+function headingActionNames(block, actionByName) {
+  const title = block.match(/^###\s+(.+)$/m)?.[1] ?? "";
+  return [...title.matchAll(/`([A-Za-z][A-Za-z0-9]*)`/g)]
+    .map(match => match[1])
+    .filter(name => actionByName.has(name));
+}
+
+function locationNames(block, actionByName, locations) {
+  const named = headingActionNames(block, actionByName);
+  if (named.length > 0) return named;
+  return [...calls(block)].filter(name =>
+    actionByName.has(name) && !locations.has(name)
+  );
+}
+
 function page({ title, description, introduction, body }) {
   const nestedBody = body.replace(/\]\(\.\.\//g, "](../../");
   return [
@@ -122,7 +137,10 @@ export async function buildDocActionReference() {
 
   for (const family of families) {
     const selected = blocks.filter(block => {
-      const names = [...calls(block)].filter(name => actionByName.has(name));
+      const named = headingActionNames(block, actionByName);
+      const names = named.length > 0
+        ? named
+        : [...calls(block)].filter(name => actionByName.has(name));
       const domains = new Set(names.map(name => actionByName.get(name).domain));
       return family.domains.some(domain => domains.has(domain));
     });
@@ -135,8 +153,8 @@ export async function buildDocActionReference() {
     }));
     for (const block of selected) {
       const anchor = headingId(block);
-      for (const name of calls(block)) {
-        if (actionByName.has(name)) locations.set(name, `/reference/actions/${family.id}/#${anchor}`);
+      for (const name of locationNames(block, actionByName, locations)) {
+        locations.set(name, `/reference/actions/${family.id}/#${anchor}`);
       }
     }
   }
@@ -150,8 +168,8 @@ export async function buildDocActionReference() {
   }));
   for (const block of h3Blocks(advanced)) {
     const anchor = headingId(block);
-    for (const name of calls(block)) {
-      if (actionByName.has(name)) locations.set(name, `/reference/actions/advanced/#${anchor}`);
+    for (const name of locationNames(block, actionByName, locations)) {
+      locations.set(name, `/reference/actions/advanced/#${anchor}`);
     }
   }
 

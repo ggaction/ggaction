@@ -6,8 +6,8 @@ title: Local MCP for LLM Chart Authoring
 # Local MCP for LLM Chart Authoring
 
 The `ggaction` package includes a local, read-only MCP server that helps a
-language model choose current actions and exact call shapes without preloading
-the complete documentation. It runs over standard input/output on the user's
+language model choose current actions and syntax-valid call templates without
+preloading the complete documentation. It runs over standard input/output on the user's
 machine. It does not require a hosted server, account, or authentication.
 
 The server does not execute chart code, render output, read request-selected
@@ -82,11 +82,20 @@ not append dataset contents, code scaffolding, or evaluator instructions:
 scatter plot with a color legend at bottom as svg
 ```
 
-The result is a bounded JSON task packet with:
+The versioned result is a bounded JSON task packet with:
 
+- `schemaVersion` and `packageVersion` — the packet shape and installed
+  package contract that produced it
 - `matchedConstraints` — recognized parts of the request
 - `actionPlan` — actions and runtime operations in execution order
-- `exactCalls` — short calls with current option names
+- `exactCalls` — syntax-valid calls with current option names; template field
+  names are not claims about the caller's dataset
+- `appliedOptions` — query text that was parsed into a concrete action or
+  renderer option
+- `placeholderBindings` — required rows, fields, host objects, child programs,
+  text, or existing resources that the caller must supply or confirm
+- `unmatchedRequirements` — request details retained because they could not be
+  applied safely
 - `authoring` — exact package imports, `chart()` initialization, reusable
   non-duplicated Canvas/data prerequisites, immutable reassignment steps with
   closed target and derived-data handoffs, and the selected renderer call
@@ -126,10 +135,17 @@ program = program.createScatterPlot({
 const output = renderToSVG(program)
 ```
 
+In this example, `values` is a required caller binding and `x` and `y` are
+reported field placeholders. Replace or confirm every
+`placeholderBindings` entry before treating the template as a completed user
+program. If `unmatchedRequirements` or `unresolved` is non-empty, do not claim
+that the request is fully implemented.
+
 The resolver closes only deterministic runtime dependencies. It can add a
-required area owner for density, pass a derived dataset to its consumer, bind a
-unique compatible scale, or name a stable mark target. It does not invent a
-missing chart, label positions, legend channel, or composition children; those
+required mark owner for density or a named Horizon/polar chart family, pass a
+derived dataset to its consumer, bind a unique compatible scale, or name a
+stable mark target. It does not invent a missing chart, label positions,
+legend channel, or composition children; those
 remain explicit `unresolved` decisions.
 
 Unsupported output and a missing supported renderer are separate decisions.
@@ -158,6 +174,21 @@ complete request
   → read only the recommended bounded section when unresolved
   → clarify and search again
 ```
+
+The public machine-readable copies are the typed
+[`actions.json`](./actions.json) collection and its
+[`item`](./schemas/action-card.schema.json) and
+[`collection`](./schemas/action-cards.schema.json) schemas, the
+[`intent-taxonomy.json`](./intent-taxonomy.json) resolver vocabulary with its
+[`schema`](./schemas/intent-taxonomy.schema.json), the
+[`mcp-resources.json`](./mcp-resources.json) bounded resource catalog with its
+[`schema`](./schemas/mcp-resources.schema.json), and the
+[`task-packet.schema.json`](./schemas/task-packet.schema.json) result contract.
+The complete LLM bundle also publishes a
+[`manifest`](./llms-manifest.json) and
+[`manifest schema`](./schemas/llms-manifest.schema.json). Use artifacts from
+the same `packageVersion`; the local installed files remain authoritative for
+an installed MCP process.
 
 ## What the server does not provide
 

@@ -110,9 +110,9 @@
       "query": "violin plot with legend",
       "constraints": ["chart.violin", "guide.legend"],
       "plan": [
-        { "id": "action.createViolinPlot", "options": ["x", "y", "guides"] }
+        { "id": "action.createViolinPlot", "options": ["x", "y"] }
       ],
-      "unresolved": []
+      "unresolved": ["guide.legend"]
     },
     {
       "id": "density-axis",

@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import test from "node:test";
 
+import Ajv2020 from "ajv/dist/2020.js";
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { InMemoryTransport } from "@modelcontextprotocol/sdk/inMemory.js";
 
@@ -62,7 +63,8 @@ test("exposes exactly one read-only search tool with a byte-equal direct payload
     assert.deepEqual(called.content[0], { type: "text", text: direct });
     assert.equal(Buffer.byteLength(called.content[0].text) <= 6144, true);
     const packet = JSON.parse(called.content[0].text);
-    assert.equal(packet.schemaVersion, 3);
+    assert.equal(packet.schemaVersion, 4);
+    assert.equal(packet.packageVersion, "0.0.10");
     assert.deepEqual(packet.authoring.imports, [
       'import { chart } from "ggaction";',
       'import { renderToSVG } from "ggaction/svg";'
@@ -73,12 +75,28 @@ test("exposes exactly one read-only search tool with a byte-equal direct payload
     ]);
     assert.equal(packet.unsupported.length, 0);
     assert.equal(packet.unresolved.length, 0);
+    assert.deepEqual(packet.unmatchedRequirements, []);
+    assert.equal(packet.placeholderBindings.some(entry => entry.name === "values"), true);
   } finally {
     await close();
   }
 });
 
 test("keeps resource discovery bounded and reads exact cards and recipes", async () => {
+  const resourcesArtifact = JSON.parse(readFileSync(
+    new URL("../../knowledge/mcp-resources.json", import.meta.url),
+    "utf8"
+  ));
+  const resourcesSchema = JSON.parse(readFileSync(
+    new URL("../../knowledge/mcp-resources.schema.json", import.meta.url),
+    "utf8"
+  ));
+  const validateResources = new Ajv2020({ strict: true }).compile(resourcesSchema);
+  assert.equal(
+    validateResources(resourcesArtifact),
+    true,
+    JSON.stringify(validateResources.errors)
+  );
   const resources = listKnowledgeResources();
   const templates = listKnowledgeResourceTemplates();
   assert.equal(resources.length, 9);
@@ -89,8 +107,11 @@ test("keeps resource discovery bounded and reads exact cards and recipes", async
   assert.equal(resources.some(resource => resource.uri.startsWith("ggaction://docs/")), false);
 
   const card = readKnowledgeResource("ggaction://actions/createScatterPlot");
+  const overview = readKnowledgeResource("ggaction://overview");
   const recipe = readKnowledgeResource("ggaction://recipes/scatter-svg");
   assert.equal(JSON.parse(card.text).name, "createScatterPlot");
+  assert.equal(JSON.parse(overview.text).packageVersion, "0.0.10");
+  assert.equal(JSON.parse(recipe.text).packageVersion, "0.0.10");
   assert.deepEqual(JSON.parse(recipe.text).packet.exactCalls, [
     "program.createScatterPlot({ x: { field: \"x\", fieldType: \"quantitative\" }, y: { field: \"y\", fieldType: \"quantitative\" }, color: \"category\", guides: { legend: { position: \"bottom\" } } })",
     "renderToSVG(program)"
@@ -99,7 +120,7 @@ test("keeps resource discovery bounded and reads exact cards and recipes", async
     'program = program.createScatterPlot({ x: { field: "x", fieldType: "quantitative" }, y: { field: "y", fieldType: "quantitative" }, color: "category", guides: { legend: { position: "bottom" } } })',
     "const output = renderToSVG(program)"
   ]);
-  for (const resource of [card, recipe]) {
+  for (const resource of [overview, card, recipe]) {
     assert.ok(Buffer.byteLength(resource.text) <= 6144, resource.uri);
   }
 });

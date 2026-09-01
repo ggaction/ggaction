@@ -90,7 +90,7 @@ remain available for custom layering and editing.
 | Coordinates | Named Cartesian, Polar, and Parallel resources; x/y use Cartesian, theta/radius use Polar, and ordered dimensions use Parallel |
 | Scales | Linear/log/pow/sqrt/symlog position across compatible marks, UTC time, band/point position with semantic explicit/count/category/summary ordering, ordinal/sequential/quantize/quantile/threshold color, point-item unknown fallbacks, named/direct stroke dash, and padded band-local xOffset/yOffset |
 | Aggregates | count, sum, mean, median, min/max, distinct/valid/missing, sample/population dispersion, quartiles, standard error, normal 95% mean endpoints, parameterized quantile, and ordered first/last |
-| Guides | Automatic Cartesian x/y and Polar theta/radius axes, closed numeric/UTC label formats, independently editable Cartesian and Polar grids, editable four-edge continuous/left-right categorical legends, and right-side interval legends |
+| Guides | Automatic Cartesian x/y and Polar theta/radius axes, closed numeric/UTC label formats, independently editable Cartesian and Polar grids, editable four-edge categorical and continuous legends, and right-side interval legends |
 | Titles | One four-edge title with an optional subtitle, deterministic word/character wrapping, and partial editing |
 | Rendering | Browser Canvas, browser-safe SVG string, Node PNG, and single-page vector PDF |
 | Graphics | Concrete canvas, circle, line, rect, text, `M/L/C/Z` command paths, shared 8-value line/area curves, and heterogeneous drawable collections |
@@ -106,8 +106,11 @@ pass `guides: {}` or nested options to create applicable guides.
 
 ### Data, transforms, and heatmaps
 
-Transforms beyond the documented filters, regressions, density and interval
-derivations, as well as interactive legends, are not implemented.
+The public one-transform derived-data union covers rectangular 2D bins,
+filters, regression, density, Horizon folding, intervals, UTC time units, and
+window operations. Arbitrary transform pipelines and transforms outside that
+documented union are not implemented. Interactive legends are also not
+implemented.
 Pre-gridded heatmaps do not synthesize missing cells. Binned heatmaps support
 fixed rectangular bins only; weighted, adaptive, hexagonal, and overflow bins
 are not implemented. Cell text must be added as a separate text layer.

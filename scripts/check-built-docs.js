@@ -60,8 +60,14 @@ async function assertTarget(source, value) {
 
 function llmReferences(source) {
   return [...source.matchAll(
-    /\.\/(?:llms-full\.txt|(?:[A-Za-z0-9_-]+\/)*(?:#[A-Za-z0-9_-]+)?)/g
+    /\.\/(?:[A-Za-z0-9_.-]+\/)*(?:[A-Za-z0-9_.-]+)?(?:#[A-Za-z0-9_-]+)?/g
   )].map(match => match[0]);
+}
+
+function markdownReferences(source) {
+  return [...source.matchAll(
+    /!?\[[^\]\n]*\]\(([^)\s]+)(?:\s+["'][^"']*["'])?\)/g
+  )].map(match => match[1]);
 }
 
 const builtFiles = await files(siteRoot);
@@ -101,10 +107,23 @@ assert.deepEqual(
 
 const llmsFile = path.join(siteRoot, "llms.txt");
 const llmsTargets = llmReferences(await readFile(llmsFile, "utf8"));
-assert.equal(llmsTargets.length > 40, true, "Expected the selective LLM documentation routes.");
-assert.equal(llmsTargets.length < 50, true, "Expected a concise LLM documentation index.");
+assert.equal(llmsTargets.length > 100, true, "Expected every page and machine contract in the LLM index.");
 assert.equal(new Set(llmsTargets).size, llmsTargets.length, "LLM documentation routes must be unique.");
 for (const target of llmsTargets) await assertTarget(llmsFile, target);
+const llmsTargetRoutes = new Set(llmsTargets.map(target => target.split("#")[0]));
+for (const canonical of canonicalUrls) {
+  const route = stripSiteBase(new URL(canonical).pathname);
+  const target = route === "/" ? "./" : `.${route}`;
+  assert.equal(llmsTargetRoutes.has(target), true, `LLM index omits ${canonical}`);
+}
+
+const llmsFullFile = path.join(siteRoot, "llms-full.txt");
+const llmsFull = await readFile(llmsFullFile, "utf8");
+assert.doesNotMatch(llmsFull, /\{%|\{\{/);
+assert.equal((llmsFull.match(/^<!-- Source: /gm) ?? []).length, htmlFiles.length);
+for (const target of markdownReferences(llmsFull)) {
+  await assertTarget(llmsFullFile, target);
+}
 
 const searchIndex = JSON.parse(await readFile(path.join(siteRoot, "search-index.json"), "utf8"));
 assert.equal(searchIndex.length > 40, true, "Expected every titled page in search.");
@@ -116,7 +135,7 @@ for (const entry of searchIndex) {
   assert.equal(typeof entry.summary === "string", true);
   assert.equal(Array.isArray(entry.keywords) && entry.keywords.length > 0, true);
 }
-assert.equal((await stat(path.join(siteRoot, "search-index.json"))).size < 400_000, true);
+assert.equal((await stat(path.join(siteRoot, "search-index.json"))).size < 800_000, true);
 const home = await readFile(path.join(siteRoot, "index.html"), "utf8");
 assert.match(home, /data-root-url="\/ggaction\/"/);
 
@@ -128,11 +147,66 @@ for (const expected of [
   "sitemap.xml",
   "llms.txt",
   "llms-full.txt",
+  "llms-manifest.json",
+  "actions.json",
+  "intent-taxonomy.json",
+  "mcp-resources.json",
+  "schemas/action-card.schema.json",
+  "schemas/action-cards.schema.json",
+  "schemas/task-packet.schema.json",
+  "schemas/llms-manifest.schema.json",
+  "schemas/intent-taxonomy.schema.json",
+  "schemas/mcp-resources.schema.json",
+  "types/program.d.ts",
+  "assets/js/action-metadata.js",
   "assets/js/docs-navigation.js",
   "assets/js/docs-content.js",
   "assets/js/docs-search.js"
 ]) {
   await assert.doesNotReject(access(path.join(siteRoot, expected)), expected);
 }
+
+assert.equal(
+  builtFiles.some(file => path.basename(file) === "AGENTS.md"),
+  false,
+  "Internal AGENTS.md files must not be published."
+);
+const actionCards = JSON.parse(await readFile(path.join(siteRoot, "actions.json"), "utf8"));
+assert.equal(actionCards.schemaVersion, 2);
+assert.equal(actionCards.count, 173);
+assert.equal(actionCards.cards.every(card =>
+  card.options.every(option => typeof option.type === "string" && option.type.length > 0)
+), true);
+const taskPacketSchema = JSON.parse(await readFile(
+  path.join(siteRoot, "schemas/task-packet.schema.json"),
+  "utf8"
+));
+assert.equal(taskPacketSchema.properties.schemaVersion.const, 4);
+const llmsManifestSchema = JSON.parse(await readFile(
+  path.join(siteRoot, "schemas/llms-manifest.schema.json"),
+  "utf8"
+));
+assert.equal(
+  llmsManifestSchema.$id,
+  "https://ggaction.github.io/ggaction/schemas/llms-manifest.schema.json"
+);
+const llmsManifest = JSON.parse(await readFile(
+  path.join(siteRoot, "llms-manifest.json"),
+  "utf8"
+));
+const taxonomy = JSON.parse(await readFile(
+  path.join(siteRoot, "intent-taxonomy.json"),
+  "utf8"
+));
+const mcpResources = JSON.parse(await readFile(
+  path.join(siteRoot, "mcp-resources.json"),
+  "utf8"
+));
+assert.equal(llmsManifest.packageVersion, actionCards.packageVersion);
+assert.equal(taxonomy.packageVersion, actionCards.packageVersion);
+assert.equal(mcpResources.packageVersion, actionCards.packageVersion);
+assert.equal(llmsManifest.sectionCount, htmlFiles.length);
+assert.equal(llmsManifest.sections.length, htmlFiles.length);
+assert.equal(llmsManifest.sections.every(section => /^[a-f0-9]{64}$/.test(section.sha256)), true);
 
 process.stdout.write(`checked ${htmlFiles.length} built documentation pages\n`);

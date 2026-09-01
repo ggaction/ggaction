@@ -6,11 +6,18 @@ import path from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
 
+import Ajv2020 from "ajv/dist/2020.js";
+
 import {
   buildConciseLlmDocumentation,
   buildFullLlmDocumentation,
+  buildLlmManifest,
   sanitizeMarkdown
 } from "../../scripts/generate-llm-docs.js";
+import {
+  buildDocMachineArtifacts,
+  generateDocMachineArtifacts
+} from "../../scripts/generate-doc-machine-artifacts.js";
 import {
   buildRuntimeSignatureSection,
   buildSignatureSection,
@@ -126,7 +133,13 @@ function declaredProgramMethods() {
 }
 
 function markdownWithoutCodeFences(markdown) {
-  return markdown.replace(/```[\s\S]*?```/g, "");
+  return markdown.replace(/```[\s\S]*?```|~~~[\s\S]*?~~~/g, "");
+}
+
+function llmReferences(source) {
+  return [...source.matchAll(
+    /\.\/(?:[A-Za-z0-9_.-]+\/)*(?:[A-Za-z0-9_.-]+)?(?:#[A-Za-z0-9_-]+)?/g
+  )].map(match => match[0]);
 }
 
 function referenceSection(reference, heading, nextHeading) {
@@ -184,9 +197,25 @@ test("keeps navigation and page order complete", async () => {
   assert.deepEqual(new Set(order), pageUrls);
   for (const url of navigation) assert.equal(pageUrls.has(url), true, url);
   assert.equal(navigation.includes("/api/"), true);
-  assert.equal(navigation.length, 21);
+  assert.equal(navigation.length >= 30, true);
+
+  const groups = new Set([...read("docs/_data/navigation_groups.yml").matchAll(
+    /^- id:\s+(\S+)$/gm
+  )].map(match => match[1]));
+  const ordersByGroup = new Map();
+  for (const page of registry.filter(entry => entry.nav_group)) {
+    assert.equal(groups.has(page.nav_group), true, `${page.url} nav group`);
+    assert.match(page.nav_order, /^\d+$/, `${page.url} nav order`);
+    const orders = ordersByGroup.get(page.nav_group) ?? [];
+    orders.push(page.nav_order);
+    ordersByGroup.set(page.nav_group, orders);
+  }
+  for (const [group, orders] of ordersByGroup) {
+    assert.equal(new Set(orders).size, orders.length, `${group} nav orders`);
+  }
 
   const byUrl = new Map(registry.map(page => [page.url, page]));
+  assert.equal(byUrl.get("/api/scales/")?.parent, "/api/");
   for (const page of registry) {
     if (!page.parent) continue;
     assert.notEqual(byUrl.get(page.parent), undefined, `${page.url} parent`);
@@ -732,7 +761,7 @@ test("indexes documentation headings for section search", () => {
   assert.match(content, /docs-action-signature/);
   assert.match(content, /docs-action-filter-input/);
   assert.match(content, /data-action-lookup/);
-  assert.match(content, /docs-action-metadata/);
+  assert.match(content, /ggactionDocsActionMetadata/);
   assert.doesNotMatch(content, /actionPrefixes/);
   assert.match(content, /docs-code-label/);
   assert.match(content, /role === "Output"/);
@@ -752,7 +781,10 @@ test("keeps the compact search index generated and action-aware", async () => {
     true
   );
   assert.equal(index.length > 100, true);
-  assert.equal(JSON.stringify(index).length < 400_000, true);
+  assert.equal(JSON.stringify(index).length < 800_000, true);
+  assert.equal(index.every(entry => entry.keywords.every(keyword =>
+    typeof keyword === "string" && keyword.length > 0
+  )), true);
   assert.equal(index.every(entry => !Object.hasOwn(entry, "html")), true);
   assert.equal(index.some(entry => entry.url === "/reference/actions/guides/#editlegend"), true);
   assert.equal(index.some(entry => entry.keywords.includes("removeLegend")), true);
@@ -764,6 +796,24 @@ test("keeps the compact search index generated and action-aware", async () => {
     index.find(entry => entry.url === "/tutorials/polar-points/")?.keywords.includes("Polar points"),
     true
   );
+  for (const [term, routes] of [
+    ["PDFMetadata", ["/reference/runtime/", "/api/rendering/"]],
+    ["HorizonOverflowPolicy", ["/recipes/horizon/"]],
+    ["maxDisplacement", ["/api/marks/text/", "/recipes/annotations/", "/reference/actions/marks/"]],
+    ["axis label rotation", ["/api/axes/"]],
+    ["logarithmic scale", ["/api/scales/"]],
+    ["tooltip", ["/supported-features/"]],
+    ["responsive canvas", ["/responsive-charts/"]],
+    ["high dpi", ["/api/rendering/"]],
+    ["serialize svg", ["/api/rendering/"]],
+    ["resourceNamespace", ["/api/rendering/", "/accessibility/", "/reference/runtime/"]],
+    ["pie chart", ["/tutorials/polar-arcs/"]]
+  ]) {
+    assert.equal(index.some(entry =>
+      routes.includes(entry.url.split("#")[0]) &&
+      entry.keywords.some(keyword => keyword.toLowerCase() === term.toLowerCase())
+    ), true, term);
+  }
   const actionReference = read("docs/reference/actions.md");
   assert.match(actionReference, /data-action-lookup/);
   assert.match(actionReference, /Filter exact actions/);
@@ -783,6 +833,46 @@ test("keeps every public action available to documentation interactions", async 
   ]) {
     assert.notEqual(metadata[name], undefined, name);
   }
+  const include = read("docs/_includes/action-metadata.html");
+  assert.match(include, /assets\/js\/action-metadata\.js/);
+  assert.doesNotMatch(include, /site\.data\.action_metadata|type="application\/json"/);
+  assert.match(read("docs/assets/js/action-metadata.js"), /ggactionDocsActionMetadata/);
+});
+
+test("publishes schemas, typed action cards, and declarations from canonical sources", async () => {
+  await generateDocMachineArtifacts({ check: true });
+  const artifacts = await buildDocMachineArtifacts();
+  for (const artifact of artifacts) {
+    assert.equal(
+      read(artifact.destination),
+      read(artifact.source),
+      artifact.destination
+    );
+  }
+  const cards = JSON.parse(read("docs/actions.json"));
+  assert.equal(cards.schemaVersion, 2);
+  assert.equal(cards.packageVersion, JSON.parse(read("package.json")).version);
+  assert.equal(cards.count, declaredProgramMethods().length);
+  assert.equal(cards.cards.every(card =>
+    card.schemaVersion === 2 &&
+    card.options.every(option => typeof option.type === "string" && option.type.length > 0)
+  ), true);
+  for (const schema of [
+    "action-card.schema.json",
+    "action-cards.schema.json",
+    "task-packet.schema.json",
+    "llms-manifest.schema.json",
+    "intent-taxonomy.schema.json",
+    "mcp-resources.schema.json"
+  ]) {
+    assert.equal(
+      JSON.parse(read(`docs/schemas/${schema}`)).$id,
+      `https://ggaction.github.io/ggaction/schemas/${schema}`
+    );
+  }
+  const packageVersion = JSON.parse(read("package.json")).version;
+  assert.equal(JSON.parse(read("docs/intent-taxonomy.json")).packageVersion, packageVersion);
+  assert.equal(JSON.parse(read("docs/mcp-resources.json")).packageVersion, packageVersion);
 });
 
 test("keeps point legend support consistent across public guidance", () => {
@@ -885,19 +975,52 @@ test("keeps rendering guidance executable and aligned with the Canvas contract",
   );
 });
 
+test("does not repeat identical includes in one documentation position", async () => {
+  const markdownFiles = (await files(docsRoot)).filter(isDocumentationMarkdown);
+  for (const file of markdownFiles) {
+    let previousInclude;
+    for (const line of readFileSync(file, "utf8").split("\n")) {
+      const include = line.trim().match(/^\{%\s+include\s+(.+?)\s*%\}$/)?.[1];
+      if (include !== undefined) {
+        assert.notEqual(include, previousInclude, `${file}: duplicate include ${include}`);
+        previousInclude = include;
+      } else if (line.trim().length > 0) {
+        previousInclude = undefined;
+      }
+    }
+  }
+});
+
 test("keeps concise and full LLM documentation synchronized", async () => {
   const index = read("docs/llms.txt");
-  const lines = index.trim().split("\n");
-  const targets = [...index.matchAll(
-    /\.\/(?:llms-full\.txt|(?:[A-Za-z0-9_-]+\/)*(?:#[A-Za-z0-9_-]+)?)/g
-  )].map(match => match[0]);
+  const targets = llmReferences(index);
+  const registry = pageRegistry();
+  const routes = new Set(registry.map(page => page.url));
+  const targetRoutes = new Set(targets.map(target => target.split("#")[0]));
 
-  assert.equal(lines.length < 80, true);
   assert.match(index, /\.\/llms-full\.txt/);
   assert.match(index, /\.\/reference\/actions\/charts-data\//);
   assert.doesNotMatch(index, /\.md(?:#|\b)/);
   assert.equal(new Set(targets).size, targets.length);
-  assert.equal(targets.length < 50, true);
+  assert.equal(targets.length >= registry.length + 12, true);
+  for (const route of routes) {
+    const token = route === "/" ? "./" : `.${route}`;
+    assert.equal(targetRoutes.has(token), true, `llms.txt omits ${route}`);
+  }
+  for (const artifact of [
+    "./llms-full.txt",
+    "./llms-manifest.json",
+    "./actions.json",
+    "./schemas/action-card.schema.json",
+    "./schemas/action-cards.schema.json",
+    "./schemas/task-packet.schema.json",
+    "./schemas/llms-manifest.schema.json",
+    "./intent-taxonomy.json",
+    "./schemas/intent-taxonomy.schema.json",
+    "./mcp-resources.json",
+    "./schemas/mcp-resources.schema.json",
+    "./types/program.d.ts"
+  ]) assert.equal(targets.includes(artifact), true, artifact);
   assert.match(index, /Canvas, SVG, PNG, and PDF rendering/);
   assert.match(index, /Supported features and limitations/);
   assert.match(index, /Exact program and renderer signatures/);
@@ -910,21 +1033,83 @@ test("keeps concise and full LLM documentation synchronized", async () => {
   );
   assert.match(
     read(".github/workflows/release.yml"),
-    /npm run docs:llms/
+    /npm run docs:generate/
   );
   assert.equal(
     read("docs/llms-full.txt"),
     await buildFullLlmDocumentation()
   );
   const full = read("docs/llms-full.txt");
+  const manifest = JSON.parse(read("docs/llms-manifest.json"));
+  const manifestSchema = JSON.parse(read("docs/schemas/llms-manifest.schema.json"));
+  const validateManifest = new Ajv2020({ strict: true }).compile(manifestSchema);
+  assert.equal(
+    validateManifest(manifest),
+    true,
+    JSON.stringify(validateManifest.errors)
+  );
+  assert.deepEqual(manifest, await buildLlmManifest());
+  assert.equal(manifest.packageVersion, JSON.parse(read("package.json")).version);
+  assert.equal(manifest.sectionCount, registry.length);
+  assert.equal(manifest.sections.length, registry.length);
+  assert.deepEqual(manifest.sections.map(section => section.route), registry.map(page => page.url));
+  for (const section of manifest.sections) {
+    assert.match(section.sha256, /^[a-f0-9]{64}$/);
+    assert.equal(section.bytes > 0, true, section.route);
+    assert.equal(existsSync(path.join(docsRoot, section.source)), true, section.source);
+  }
+  assert.equal((full.match(/^<!-- Source: /gm) ?? []).length, registry.length);
   assert.doesNotMatch(full, /\{%|\{\{/);
-  assert.doesNotMatch(full, /<(?:div|article|span|a|img|figure|details|summary)\b/i);
-  const packageVersion = JSON.parse(read("package.json")).version
-    .replaceAll(".", "\\.");
+  assert.doesNotMatch(
+    markdownWithoutCodeFences(full),
+    /<(?:div|article|span|a|img|figure|details|summary)\b/i
+  );
+  assert.match(full, /<canvas\b/);
   assert.match(
     full,
-    new RegExp("Experimental " + packageVersion)
+    /\[Charts, Data, and Composition Actions[^\]]*\]\(\.\/reference\/actions\/charts-data\/\)/
   );
+  const packageVersion = JSON.parse(read("package.json")).version.replaceAll(".", "\\.");
+  assert.match(
+    full,
+    new RegExp("Package metadata version: " + packageVersion + "\\.")
+  );
+  assert.match(full, /A branch may contain unreleased changes/);
+
+  const sourceByRoute = new Map((await files(docsRoot))
+    .filter(isDocumentationMarkdown)
+    .map(file => [prettyUrl(file), file]));
+  const linkSource = markdownWithoutCodeFences(full);
+  for (const match of linkSource.matchAll(/!?\[[^\]\n]*\]\(([^)\s]+)(?:\s+["'][^"']*["'])?\)/g)) {
+    const target = match[1];
+    if (/^(?:https?:|mailto:|data:|javascript:)/.test(target)) continue;
+    assert.match(target, /^\.\//, `non-canonical LLM link: ${target}`);
+    assert.doesNotMatch(target, /\.md(?:#|$)/, target);
+    const [pathname, fragment] = target.split("#");
+    if (pathname.endsWith("/")) {
+      const route = pathname === "./" ? "/" : `/${pathname.slice(2)}`;
+      const source = sourceByRoute.get(route);
+      assert.notEqual(source, undefined, `unknown LLM route ${target}`);
+      if (fragment !== undefined) {
+        assert.equal(
+          headingIds(readFileSync(source, "utf8")).has(fragment),
+          true,
+          `missing LLM fragment ${target}`
+        );
+      }
+    } else {
+      assert.equal(
+        existsSync(path.join(docsRoot, pathname.slice(2))),
+        true,
+        `missing LLM artifact ${target}`
+      );
+    }
+  }
+  for (const match of linkSource.matchAll(/!\[[^\]\n]*\]\(([^)\s]+)/g)) {
+    if (!/^(?:https?:|data:)/.test(match[1])) {
+      assert.match(match[1], /^\.\/assets\//, `non-canonical LLM image ${match[1]}`);
+    }
+  }
   assert.equal(
     sanitizeMarkdown('<div><strong>Scale</strong><span>maps values</span></div>'),
     "Scale maps values"

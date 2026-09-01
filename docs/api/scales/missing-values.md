@@ -7,8 +7,6 @@ title: Scale Missing Values
 
 {% include chart-example.html id="scatterplot" %}
 
-{% include chart-example.html id="scatterplot" %}
-
 ## Missing and invalid values
 
 Point encodings can provide an `unknown` fallback inside their scale options:

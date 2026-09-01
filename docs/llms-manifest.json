@@ -1,0 +1,2053 @@
+{
+  "schemaVersion": 1,
+  "packageVersion": "0.0.10",
+  "sourceStatus": "checked-out-repository-documentation",
+  "bundle": "llms-full.txt",
+  "sectionCount": 124,
+  "sections": [
+    {
+      "order": 1,
+      "title": "ggaction",
+      "route": "/",
+      "source": "index.md",
+      "headings": [
+        "ggaction",
+        "start-here",
+        "common-chart-types",
+        "statistics-and-uncertainty",
+        "alternative-coordinates",
+        "go-deeper"
+      ],
+      "bytes": 2255,
+      "sha256": "0601fa4190520c0ae8db0f50a6991f01cb7c15783aee2acad01991b712c1ff81"
+    },
+    {
+      "order": 2,
+      "title": "Getting Started",
+      "route": "/getting-started/",
+      "source": "getting-started.md",
+      "headings": [
+        "getting-started",
+        "1-create-a-browser-project",
+        "2-build-the-program",
+        "3-run-it",
+        "package-entries-and-compatibility",
+        "runnable-repository-examples",
+        "next"
+      ],
+      "bytes": 5181,
+      "sha256": "7a0cb7ded7b47fb29fb33a8128f777cd4bd8e107331372ee2c92e2a6bee03989"
+    },
+    {
+      "order": 3,
+      "title": "Local MCP for LLM Chart Authoring",
+      "route": "/mcp/",
+      "source": "mcp.md",
+      "headings": [
+        "local-mcp-for-llm-chart-authoring",
+        "measured-impact",
+        "install-and-launch",
+        "one-tool-workflow",
+        "read-only-resources",
+        "what-the-server-does-not-provide",
+        "related"
+      ],
+      "bytes": 8584,
+      "sha256": "97f8509cd8776c90e2118183c8f7ce180890d78c57d752e27ee2591f2578aeb7"
+    },
+    {
+      "order": 4,
+      "title": "LLM Chart Authoring Contract",
+      "route": "/llm-authoring/",
+      "source": "llm-authoring.md",
+      "headings": [
+        "llm-chart-authoring-contract",
+        "complete-program-bootstrap",
+        "common-task-families",
+        "renderer-selection",
+        "terminal-limitations-and-open-decisions",
+        "compact-knowledge-route"
+      ],
+      "bytes": 4447,
+      "sha256": "4f22a8f9c26cda5c805926cbb28aa1ffbd0927801fca50a3f1b1d1937012629c"
+    },
+    {
+      "order": 5,
+      "title": "Tutorials",
+      "route": "/tutorials/",
+      "source": "tutorials/index.md",
+      "headings": [
+        "tutorials"
+      ],
+      "bytes": 588,
+      "sha256": "23211b2b3ae3db031041e3315ab894676ec387f1d972b8b95f4d3da20f919986"
+    },
+    {
+      "order": 6,
+      "title": "Scatterplot Tutorial",
+      "route": "/tutorials/scatterplot/",
+      "source": "tutorials/scatterplot.md",
+      "headings": [
+        "cars-scatterplot-tutorial",
+        "complete-program",
+        "what-each-stage-establishes",
+        "reassign-encodings",
+        "continuous-appearance-variants",
+        "key-action-trace",
+        "run-and-continue"
+      ],
+      "bytes": 5294,
+      "sha256": "85ccb45cc012dda65408bd3134dfbc042a7cdaa46ec7578a73de6e96b2dd9544"
+    },
+    {
+      "order": 7,
+      "title": "Polar Point Tutorial",
+      "route": "/tutorials/polar-points/",
+      "source": "tutorials/polar-points.md",
+      "headings": [
+        "polar-point-chart-tutorial",
+        "complete-program",
+        "scale-control",
+        "add-polar-guides",
+        "current-boundary",
+        "related"
+      ],
+      "bytes": 3526,
+      "sha256": "76b784067a2fff5cbc6eebc4ad1995891b8ce4bedae92427954aba0e512f1e5a"
+    },
+    {
+      "order": 8,
+      "title": "Polar Line and Radar Tutorial",
+      "route": "/tutorials/polar-lines/",
+      "source": "tutorials/polar-lines.md",
+      "headings": [
+        "polar-lines-and-radar-tutorial",
+        "open-polar-trends",
+        "complete-program",
+        "closed-radar-paths",
+        "related"
+      ],
+      "bytes": 3413,
+      "sha256": "a3c3d1871b5509e0325a691468f64d1bad914c0d5d2efac563906a361a5a54b2"
+    },
+    {
+      "order": 9,
+      "title": "Polar Arc Tutorial",
+      "route": "/tutorials/polar-arcs/",
+      "source": "tutorials/polar-arcs.md",
+      "headings": [
+        "polar-arc-tutorial",
+        "count-a-category-into-a-donut",
+        "complete-program",
+        "sum-a-field-into-weighted-sectors",
+        "rose-overlays",
+        "radial-bars",
+        "editing-an-arc",
+        "related"
+      ],
+      "bytes": 6076,
+      "sha256": "0d9aa3def4e31ba56b4eea046485bae850c927634ff4b9ade6475f350c0bc70e"
+    },
+    {
+      "order": 10,
+      "title": "Line Chart Tutorial",
+      "route": "/tutorials/line-chart/",
+      "source": "tutorials/line-chart.md",
+      "headings": [
+        "cars-line-chart-tutorial",
+        "complete-program",
+        "what-the-actions-establish",
+        "change-the-curve",
+        "change-the-dash-assignment",
+        "key-action-trace",
+        "run-and-continue"
+      ],
+      "bytes": 4637,
+      "sha256": "5e25d9e97eced619d52762c66abce686159221b7cb4971797e7ab1d3404b3b4b"
+    },
+    {
+      "order": 11,
+      "title": "Histogram Tutorial",
+      "route": "/tutorials/histogram/",
+      "source": "tutorials/histogram.md",
+      "headings": [
+        "cars-histogram-tutorial",
+        "complete-program",
+        "what-the-actions-establish",
+        "key-action-trace",
+        "run-and-continue"
+      ],
+      "bytes": 4060,
+      "sha256": "9ece358b13d8989d25e29cd9bf1842feda2f4417dd2de22c392efe3fc4b2bc57"
+    },
+    {
+      "order": 12,
+      "title": "Bar Chart Tutorial",
+      "route": "/tutorials/grouped-bar/",
+      "source": "tutorials/grouped-bar.md",
+      "headings": [
+        "bar-chart-tutorial",
+        "complete-program",
+        "what-the-actions-establish",
+        "width-spacing-and-reassignment",
+        "key-action-trace",
+        "run-and-continue"
+      ],
+      "bytes": 3915,
+      "sha256": "dec61c7ba09a43e226e1da00d8d77aa9d7f23a938ec8ee698dff3feb5ca01fee"
+    },
+    {
+      "order": 13,
+      "title": "Regression Scatterplot Tutorial",
+      "route": "/tutorials/regression-scatterplot/",
+      "source": "tutorials/regression-scatterplot.md",
+      "headings": [
+        "regression-scatterplot-tutorial",
+        "complete-program",
+        "what-the-actions-establish",
+        "key-action-trace",
+        "run-and-continue"
+      ],
+      "bytes": 4108,
+      "sha256": "b1488d342843a9b61508ee79470463a5e7d122ff791c876a59e1437dd5d79be2"
+    },
+    {
+      "order": 14,
+      "title": "Density Area Tutorial",
+      "route": "/tutorials/density-area/",
+      "source": "tutorials/density-area.md",
+      "headings": [
+        "density-area-chart-tutorial",
+        "complete-program",
+        "what-the-actions-establish",
+        "move-and-wrap-the-title",
+        "key-action-trace",
+        "run-and-continue"
+      ],
+      "bytes": 4949,
+      "sha256": "95faa370bf46a9b7bbdc28371a27638243c79616e8b4c2847b966d01ba5f21dd"
+    },
+    {
+      "order": 15,
+      "title": "Horizon Chart Tutorial",
+      "route": "/tutorials/horizon/",
+      "source": "tutorials/horizon.md",
+      "headings": [
+        "horizon-chart-tutorial",
+        "complete-program",
+        "what-the-atomic-encoding-owns",
+        "revise-without-mutation",
+        "key-action-trace"
+      ],
+      "bytes": 3100,
+      "sha256": "305862aa1c680dcf0d71ef090df5c6715bc6ece052feb256cab2fc03e01fec3b"
+    },
+    {
+      "order": 16,
+      "title": "Error Bar Tutorial",
+      "route": "/tutorials/error-bar/",
+      "source": "tutorials/error-bar.md",
+      "headings": [
+        "error-bar-chart-tutorial",
+        "complete-program",
+        "what-the-actions-establish",
+        "add-intervals-to-an-existing-layer",
+        "key-action-trace",
+        "run-and-continue"
+      ],
+      "bytes": 3479,
+      "sha256": "e8894edf3eb1317ab376d30a58acc6366da360a0eeda28fb29399a0bdbe1f18e"
+    },
+    {
+      "order": 17,
+      "title": "Error Band Tutorial",
+      "route": "/tutorials/error-band/",
+      "source": "tutorials/error-band.md",
+      "headings": [
+        "error-band-chart-tutorial",
+        "complete-program",
+        "what-the-actions-establish",
+        "horizontal-bands-and-boundaries",
+        "key-action-trace",
+        "run-and-continue"
+      ],
+      "bytes": 3703,
+      "sha256": "209be648b9aa00f7da1891367e0d429916a878cf37da79a5c652db382a930378"
+    },
+    {
+      "order": 18,
+      "title": "Mark Selection Tutorial",
+      "route": "/tutorials/mark-selection/",
+      "source": "tutorials/mark-selection.md",
+      "headings": [
+        "mark-selection-and-highlighting-tutorial",
+        "highlight-grouped-maximum-points",
+        "select-a-complete-histogram-stack",
+        "highlight-one-line-series",
+        "choose-filtering-reusable-selection-or-highlighting",
+        "run-and-continue"
+      ],
+      "bytes": 4055,
+      "sha256": "20a22c4403de106a21f782447559cbbd04ab529ce7343cce6cf3d7a0666fd1cb"
+    },
+    {
+      "order": 19,
+      "title": "Chart Recipes",
+      "route": "/recipes/",
+      "source": "recipes/index.md",
+      "headings": [
+        "chart-recipes"
+      ],
+      "bytes": 794,
+      "sha256": "36bc7c39a75f1850c879d5ad6d7a130f3c9aca387b23e9da4aca4a37bf02dd7d"
+    },
+    {
+      "order": 20,
+      "title": "Scatterplot Recipe",
+      "route": "/recipes/scatterplot/",
+      "source": "recipes/scatterplot.md",
+      "headings": [
+        "scatterplot-recipe",
+        "minimal-flow",
+        "you-must-decide",
+        "the-library-infers",
+        "continue"
+      ],
+      "bytes": 1078,
+      "sha256": "dd89e239c78fd6b1a26ded28c128f9c482245f3d9134a1dbe1e828b82926d09f"
+    },
+    {
+      "order": 21,
+      "title": "Line Chart Recipe",
+      "route": "/recipes/line-chart/",
+      "source": "recipes/line-chart.md",
+      "headings": [
+        "line-chart-recipe",
+        "minimal-flow",
+        "you-must-decide",
+        "the-library-infers",
+        "continue"
+      ],
+      "bytes": 2084,
+      "sha256": "aecb9bb8a72444d256107588ffa4dc1ba249b8ca4554dd45aabca8840d1ee0ef"
+    },
+    {
+      "order": 22,
+      "title": "Histogram Recipe",
+      "route": "/recipes/histogram/",
+      "source": "recipes/histogram.md",
+      "headings": [
+        "histogram-recipe",
+        "minimal-flow",
+        "you-must-decide",
+        "the-library-infers",
+        "continue"
+      ],
+      "bytes": 1082,
+      "sha256": "951cb574bc48af881accdd2fbcb86004a9f203dea46a18fbb4a7d2ac5f87a3a1"
+    },
+    {
+      "order": 23,
+      "title": "Bar Chart Recipe",
+      "route": "/recipes/bar-chart/",
+      "source": "recipes/bar-chart.md",
+      "headings": [
+        "bar-chart-recipe",
+        "minimal-grouped-flow",
+        "you-must-decide",
+        "the-library-infers",
+        "continue"
+      ],
+      "bytes": 1785,
+      "sha256": "dbb78e823160851d22a13cae946687223e306051fb94409e8aa764287458969f"
+    },
+    {
+      "order": 24,
+      "title": "Heatmap Recipe",
+      "route": "/recipes/heatmap/",
+      "source": "recipes/heatmap.md",
+      "headings": [
+        "heatmap-recipe",
+        "pre-gridded-flow",
+        "raw-row-binned-flow",
+        "you-must-decide",
+        "the-library-infers",
+        "continue"
+      ],
+      "bytes": 2158,
+      "sha256": "a0d6bed6c7352fb3886422ffe3c8ae4358c7f461ea906abecf85a347826fb636"
+    },
+    {
+      "order": 25,
+      "title": "Regression Scatterplot Recipe",
+      "route": "/recipes/regression-scatterplot/",
+      "source": "recipes/regression-scatterplot.md",
+      "headings": [
+        "regression-scatterplot-recipe",
+        "minimal-flow",
+        "you-must-decide",
+        "the-library-infers",
+        "continue"
+      ],
+      "bytes": 1539,
+      "sha256": "a8f88c07aada4275b50274d6ba31683d8a762fb856e236640a130e5183003767"
+    },
+    {
+      "order": 26,
+      "title": "Density Area Recipe",
+      "route": "/recipes/density-area/",
+      "source": "recipes/density-area.md",
+      "headings": [
+        "density-area-recipe",
+        "minimal-flow",
+        "you-must-decide",
+        "the-library-infers",
+        "continue"
+      ],
+      "bytes": 1219,
+      "sha256": "9e077a57aa8d4130e43b82ec6263510e04c54ce0d554c082365777303261c180"
+    },
+    {
+      "order": 27,
+      "title": "Horizon Chart Recipe",
+      "route": "/recipes/horizon/",
+      "source": "recipes/horizon.md",
+      "headings": [
+        "horizon-chart-recipe",
+        "minimal-flow",
+        "you-must-decide",
+        "the-library-infers",
+        "continue"
+      ],
+      "bytes": 1018,
+      "sha256": "0fcd56f90b7e4ed5d4911e8330da425302f77f901cdb560ca174dd18651f52de"
+    },
+    {
+      "order": 28,
+      "title": "Error Bar Recipe",
+      "route": "/recipes/error-bar/",
+      "source": "recipes/error-bar.md",
+      "headings": [
+        "error-bar-recipe",
+        "minimal-flow",
+        "you-must-decide",
+        "the-library-infers",
+        "continue"
+      ],
+      "bytes": 911,
+      "sha256": "05b8a425549c6f370bd5d5606b781cf81e6fbfa8e4802b06251a91e64d593f29"
+    },
+    {
+      "order": 29,
+      "title": "Error Band Recipe",
+      "route": "/recipes/error-band/",
+      "source": "recipes/error-band.md",
+      "headings": [
+        "error-band-recipe",
+        "minimal-flow",
+        "you-must-decide",
+        "the-library-infers",
+        "continue"
+      ],
+      "bytes": 1078,
+      "sha256": "0bf29c9cdf2b6786381ea2444aa7151df8baa14d5a167c9f57fb8656d953fdfe"
+    },
+    {
+      "order": 30,
+      "title": "Box Plot Recipe",
+      "route": "/recipes/box-plot/",
+      "source": "recipes/box-plot.md",
+      "headings": [
+        "box-plot-recipe",
+        "minimal-flow",
+        "you-must-decide",
+        "the-library-infers",
+        "continue"
+      ],
+      "bytes": 1058,
+      "sha256": "e149edaf5cef027192961e35fadc05fd10afae7cb733ffe427bd5dea5b4254c4"
+    },
+    {
+      "order": 31,
+      "title": "Violin Plot Recipe",
+      "route": "/recipes/violin-plot/",
+      "source": "recipes/violin-plot.md",
+      "headings": [
+        "violin-plot-recipe",
+        "minimal-flow",
+        "you-must-decide",
+        "the-library-infers",
+        "continue"
+      ],
+      "bytes": 1082,
+      "sha256": "1cea0966db8a967d5b89b321d3bfbcae200b8d5efab310f140d934956d038666"
+    },
+    {
+      "order": 32,
+      "title": "Composition Recipe",
+      "route": "/recipes/composition/",
+      "source": "recipes/composition.md",
+      "headings": [
+        "composition-recipe",
+        "minimal-flow",
+        "you-must-decide",
+        "the-library-infers",
+        "continue"
+      ],
+      "bytes": 1318,
+      "sha256": "7509b5e1643c8d41693af769edc38055894c71f985c301c165e116608ec995c8"
+    },
+    {
+      "order": 33,
+      "title": "Facet Recipe",
+      "route": "/recipes/facet/",
+      "source": "recipes/facet.md",
+      "headings": [
+        "facet-recipe",
+        "minimal-flow",
+        "you-must-decide",
+        "the-library-infers",
+        "continue"
+      ],
+      "bytes": 1143,
+      "sha256": "306d6835d311d6571e1d10ba9b871e12a50d72e76d2f67057f37b2cb9647d029"
+    },
+    {
+      "order": 34,
+      "title": "Parallel Coordinates Recipe",
+      "route": "/recipes/parallel-coordinates/",
+      "source": "recipes/parallel-coordinates.md",
+      "headings": [
+        "parallel-coordinates-recipe",
+        "minimal-flow",
+        "you-must-decide",
+        "the-library-infers",
+        "continue"
+      ],
+      "bytes": 1012,
+      "sha256": "b10cfe45a76eff45130021e52cae38d6c26e14bf707cb1ff288ce2a9c7b9f495"
+    },
+    {
+      "order": 35,
+      "title": "Rose Chart Recipe",
+      "route": "/recipes/rose-chart/",
+      "source": "recipes/rose-chart.md",
+      "headings": [
+        "rose-chart-recipe",
+        "minimal-flow",
+        "you-must-decide",
+        "the-library-infers",
+        "continue"
+      ],
+      "bytes": 2208,
+      "sha256": "ee056bf7ca28bcc9988cd7d785fbe2a589eba4f861629e7279430bb9099d9540"
+    },
+    {
+      "order": 36,
+      "title": "Gradient Plot Recipe",
+      "route": "/recipes/gradient-plot/",
+      "source": "recipes/gradient-plot.md",
+      "headings": [
+        "gradient-plot-recipe",
+        "minimal-flow",
+        "you-must-decide",
+        "the-library-infers",
+        "continue"
+      ],
+      "bytes": 1064,
+      "sha256": "0144b03c96e2d475b43c9446daee8d985342dacfafc070503522b8b1ecf15c6b"
+    },
+    {
+      "order": 37,
+      "title": "Annotation Recipe",
+      "route": "/recipes/annotations/",
+      "source": "recipes/annotations.md",
+      "headings": [
+        "annotation-recipe",
+        "minimal-flow",
+        "you-must-decide",
+        "the-library-infers",
+        "continue"
+      ],
+      "bytes": 1433,
+      "sha256": "98cfe61c38ff5732300b97a3df7cc518590e56c2706c9868afb4f4a19c28ac7c"
+    },
+    {
+      "order": 38,
+      "title": "Path Ordering Recipe",
+      "route": "/recipes/path-ordering/",
+      "source": "recipes/path-ordering.md",
+      "headings": [
+        "path-ordering-recipe",
+        "minimal-flow",
+        "you-must-decide",
+        "the-library-infers",
+        "continue"
+      ],
+      "bytes": 1034,
+      "sha256": "2bcdb7b21b89841196f0ec943b62a8c70767f73805e19b8cc0cbee9c5d17a016"
+    },
+    {
+      "order": 39,
+      "title": "Troubleshooting",
+      "route": "/troubleshooting/",
+      "source": "troubleshooting.md",
+      "headings": [
+        "troubleshooting",
+        "a-legend-needs-more-margin",
+        "a-target-cannot-be-inferred",
+        "a-mark-is-not-ready-to-materialize",
+        "a-scale-cannot-be-shared",
+        "an-explicit-domain-omits-data",
+        "createguides-selects-nothing",
+        "createdata-rejects-the-dataset",
+        "temporal-values-cannot-be-parsed",
+        "a-filter-produces-an-empty-mark",
+        "an-encoding-is-incompatible-with-the-mark",
+        "a-facet-or-composition-cannot-share-a-resource",
+        "browser-canvas-renders-nothing",
+        "node-png-or-pdf-export-is-unavailable-in-the-browser",
+        "inspect-the-program"
+      ],
+      "bytes": 7553,
+      "sha256": "b8516ec21c219f78c08a3c084d397a2fa7ea0af4b8dbfc5e80d2ad10a64ec0b2"
+    },
+    {
+      "order": 40,
+      "title": "Chart Gallery",
+      "route": "/gallery/",
+      "source": "gallery.md",
+      "headings": [
+        "chart-gallery",
+        "choose-a-next-step"
+      ],
+      "bytes": 456,
+      "sha256": "f75186a0f3682464a40fde7335bebdd048c38249d849de1331d84e1252d03974"
+    },
+    {
+      "order": 41,
+      "title": "All Chart Examples",
+      "route": "/gallery/all/",
+      "source": "gallery/all.md",
+      "headings": [
+        "all-chart-examples"
+      ],
+      "bytes": 163,
+      "sha256": "172be01238f35219cc46d38fb9bbaaf2a707fd82df8b187ed6546f696bd6d99f"
+    },
+    {
+      "order": 42,
+      "title": "Chart API",
+      "route": "/api/",
+      "source": "api/index.md",
+      "headings": [
+        "chart-api",
+        "statistical-and-distribution-facades",
+        "exact-action-lookup"
+      ],
+      "bytes": 2320,
+      "sha256": "fda37265fc4d45066c8ada977d7a377ab2c64119b252e7bd6b1a93e4ba3cab8d"
+    },
+    {
+      "order": 43,
+      "title": "Basic Charts",
+      "route": "/api/basic-charts/",
+      "source": "api/basic-charts.md",
+      "headings": [
+        "basic-charts",
+        "choose-a-facade",
+        "shared-behavior",
+        "createscatterplot",
+        "createlineplot",
+        "createbarplot",
+        "createhistogram",
+        "createheatmap",
+        "other-complete-chart-facades",
+        "advanced-authoring"
+      ],
+      "bytes": 9423,
+      "sha256": "3bc90e3d75380c16603f0554d3bbb8288b2cdc5578e7f1d9bd08b3a95aa55eba"
+    },
+    {
+      "order": 44,
+      "title": "Parallel Coordinates",
+      "route": "/api/parallel-coordinates/",
+      "source": "api/parallel-coordinates.md",
+      "headings": [
+        "parallel-coordinates",
+        "complete-chart-action",
+        "dimensions",
+        "row-identity-and-missing-values",
+        "advanced-encoding",
+        "appearance-guides-and-revisions",
+        "limitations",
+        "related"
+      ],
+      "bytes": 4245,
+      "sha256": "5a65500bb5d613400a42f0a2dfaca9ba99ad5542cb81e507a1bbe11f9b7fa0a6"
+    },
+    {
+      "order": 45,
+      "title": "Canvas",
+      "route": "/api/canvas/",
+      "source": "api/canvas.md",
+      "headings": [
+        "canvas",
+        "at-a-glance",
+        "createcanvasoptions",
+        "editcanvasoptions",
+        "errors-and-limitations",
+        "related"
+      ],
+      "bytes": 1831,
+      "sha256": "50e1405cd99994a8e962e3de51ee04ea8e1f7eca67b59dd93c053de65b9375b7"
+    },
+    {
+      "order": 46,
+      "title": "Data",
+      "route": "/api/data/",
+      "source": "api/data.md",
+      "headings": [
+        "data",
+        "at-a-glance",
+        "shared-invariants",
+        "errors-and-limitations",
+        "related"
+      ],
+      "bytes": 1859,
+      "sha256": "88f2f4a8b77294121a2f4de9b5ad36c863fcd7bb843b6aa12ba902c22b09aa7a"
+    },
+    {
+      "order": 47,
+      "title": "Source and Derived Data",
+      "route": "/api/data/source-and-derived/",
+      "source": "api/data/source-and-derived.md",
+      "headings": [
+        "source-and-derived-data",
+        "createdata-id-values",
+        "create-derived-data",
+        "related"
+      ],
+      "bytes": 4344,
+      "sha256": "df2e6b546fd7a9003054a62d17b93bac086f731562d9a158ba3679f59e95f8ff"
+    },
+    {
+      "order": 48,
+      "title": "Data Filtering",
+      "route": "/api/data/filtering/",
+      "source": "api/data/filtering.md",
+      "headings": [
+        "data-and-mark-filtering",
+        "filterdata-id-source-field-oneof-predicate-range",
+        "filter-marks",
+        "related"
+      ],
+      "bytes": 3708,
+      "sha256": "d457d67bba8363c2d72d6f829ae0b86da3d87159e8aa744af6807d32293fa904"
+    },
+    {
+      "order": 49,
+      "title": "Statistical Data Transforms",
+      "route": "/api/data/statistical-transforms/",
+      "source": "api/data/statistical-transforms.md",
+      "headings": [
+        "statistical-data-transforms",
+        "createregressiondata-id-source-x-y-groupby-method-degree-span-confidence-interval",
+        "create-interval-data",
+        "createdensitydata-id-source-field-groupby-bandwidth-extent-steps-kernel-normalization-as",
+        "related"
+      ],
+      "bytes": 4890,
+      "sha256": "6e0daabedd90eb3dc6d51a3eb1b358950dd690fd825764d2d692e88c62d851bb"
+    },
+    {
+      "order": 50,
+      "title": "Time-Unit Data Transforms",
+      "route": "/api/data/time-units/",
+      "source": "api/data/time-units.md",
+      "headings": [
+        "time-unit-data-transforms",
+        "createtimeunitdata-id-source-field-unit-as",
+        "boundaries",
+        "related"
+      ],
+      "bytes": 2260,
+      "sha256": "2bd0039c5ec9bf279904360e51f776dfccc9edd02015155a13446e08fc76c356"
+    },
+    {
+      "order": 51,
+      "title": "Window Data Transforms",
+      "route": "/api/data/window/",
+      "source": "api/data/window.md",
+      "headings": [
+        "window-data-transforms",
+        "createwindowdata-id-source-partitionby-sortby-operations",
+        "related"
+      ],
+      "bytes": 3932,
+      "sha256": "54aadf5186fd402e87054ed802e7149b27b9f93437e045f881b38d8ee4ceadc6"
+    },
+    {
+      "order": 52,
+      "title": "Rectangular 2D Bins",
+      "route": "/api/data/bin2d/",
+      "source": "api/data/bin2d.md",
+      "headings": [
+        "rectangular-2d-bins",
+        "createbin2ddata-id-source-x-y-bins-extent-includeempty-members-as",
+        "revisions",
+        "editbin2ddata",
+        "related"
+      ],
+      "bytes": 5088,
+      "sha256": "963cbf02ba062e9dff13ceb3fcc315994f18ee030bd5eb1bcb28cb27c417dad6"
+    },
+    {
+      "order": 53,
+      "title": "Marks",
+      "route": "/api/marks/",
+      "source": "api/marks.md",
+      "headings": [
+        "marks",
+        "choose-a-mark-family",
+        "at-a-glance",
+        "shared-inference",
+        "tick-marks",
+        "related"
+      ],
+      "bytes": 4723,
+      "sha256": "969b703c5b32c34488a9f7f247cf5ae1648815454959feb2c6431dbbab54bcb5"
+    },
+    {
+      "order": 54,
+      "title": "Point Marks",
+      "route": "/api/marks/point/",
+      "source": "api/marks/point.md",
+      "headings": [
+        "point-marks",
+        "createpointmark-id-data-shape-fill-opacity-stroke-strokewidth",
+        "editpointmark-target-shape-fill-opacity-stroke-strokewidth",
+        "jitterpoints-target-channel-maxoffset-seed-key",
+        "removejitter-target",
+        "continue-with-encodings",
+        "errors-and-limitations"
+      ],
+      "bytes": 4872,
+      "sha256": "bec5a70ed420e6c9951db294317186ca10d6496bd5e36d58a9cc9809adeabbc3"
+    },
+    {
+      "order": 55,
+      "title": "Line and Area Marks",
+      "route": "/api/marks/line-area/",
+      "source": "api/marks/line-area.md",
+      "headings": [
+        "line-and-area-marks",
+        "line-marks",
+        "createlinemark-id-data-stroke-strokewidth-opacity-curve-closed",
+        "editlinemark-target-stroke-strokewidth-opacity-curve-closed",
+        "polar-lines-and-radar-paths",
+        "area-marks",
+        "createareamark-id-data-fill-opacity-stroke-strokewidth-curve",
+        "editareamark-target-fill-opacity-stroke-strokewidth-curve",
+        "arc-marks",
+        "createarcmark-id-data-innerradius-padangle-fill-opacity-stroke-strokewidth",
+        "editarcmark-target-innerradius-padangle-fill-opacity-stroke-strokewidth",
+        "related"
+      ],
+      "bytes": 6676,
+      "sha256": "b9e12e29a00c9579b9d81283f0794cb2d010812cfd0947a021a7e0f77f442929"
+    },
+    {
+      "order": 56,
+      "title": "Bar Marks",
+      "route": "/api/marks/bar/",
+      "source": "api/marks/bar.md",
+      "headings": [
+        "bar-marks",
+        "createbarmark-id-data-fill-opacity-stroke-strokewidth",
+        "edit-bar-mark",
+        "related"
+      ],
+      "bytes": 2136,
+      "sha256": "c4a72d27c161660e18d91e6c3d2a4e6ec2679329fccffca89cc42447c4f38911"
+    },
+    {
+      "order": 57,
+      "title": "Rule Marks",
+      "route": "/api/marks/rule/",
+      "source": "api/marks/rule.md",
+      "headings": [
+        "rule-marks",
+        "createrulemark-id-data",
+        "related"
+      ],
+      "bytes": 2096,
+      "sha256": "8ee7382307578dda7db63beb4d0a44af24fcd211867ece1c7886b2b943d22843"
+    },
+    {
+      "order": 58,
+      "title": "Text Marks",
+      "route": "/api/marks/text/",
+      "source": "api/marks/text.md",
+      "headings": [
+        "text-marks",
+        "createtextmarkoptions",
+        "font-weights",
+        "encodetext-target-field-value-format",
+        "edittextmarkoptions",
+        "layoutlabelsoptions",
+        "removelabellayoutoptions",
+        "related"
+      ],
+      "bytes": 4873,
+      "sha256": "17ce11d5d9f14c9b075803310b40d2ecdcf7276f6d5bbe307c57d3a869465574"
+    },
+    {
+      "order": 59,
+      "title": "Rect Marks",
+      "route": "/api/marks/rect/",
+      "source": "api/marks/rect.md",
+      "headings": [
+        "rect-marks",
+        "createrectmark-id-data-fill-opacity-stroke-strokewidth",
+        "editrectmark-target-fill-opacity-stroke-strokewidth",
+        "cell-labels-and-selection",
+        "related"
+      ],
+      "bytes": 2338,
+      "sha256": "dca83f7b8dacd9ebdb86f0817ef5bb6364627c015b7dbe2751dfd702bd192263"
+    },
+    {
+      "order": 60,
+      "title": "Encodings",
+      "route": "/api/encodings/",
+      "source": "api/encodings.md",
+      "headings": [
+        "encodings",
+        "choose-a-family",
+        "supported-markchannel-matrix",
+        "position-channels",
+        "color-channels",
+        "selection-and-guides",
+        "direction",
+        "atomic-relationships",
+        "atomic-density",
+        "atomic-horizon",
+        "removing-an-encoding",
+        "shared-inference-and-ordering",
+        "errors-and-limitations",
+        "related"
+      ],
+      "bytes": 9584,
+      "sha256": "7c5ac73ec7f31e19e02873378a703055443552c7710847a5a95a28e899b19b89"
+    },
+    {
+      "order": 61,
+      "title": "Regression",
+      "route": "/api/regression/",
+      "source": "api/regression.md",
+      "headings": [
+        "regression",
+        "at-a-glance",
+        "createregressionoptions",
+        "editing-a-regression",
+        "editing-generated-components",
+        "errors-and-limitations",
+        "related"
+      ],
+      "bytes": 6236,
+      "sha256": "a99ec91853a6b8d2ec7cd440223687b117b8a30123889fb05206f7df18059dd7"
+    },
+    {
+      "order": 62,
+      "title": "Error Bars",
+      "route": "/api/error-bars/",
+      "source": "api/error-bars.md",
+      "headings": [
+        "error-bars",
+        "at-a-glance",
+        "createerrorbaroptions",
+        "horizontal-intervals",
+        "existing-interval-fields",
+        "inference-from-an-encoded-layer",
+        "defaults-and-graphical-result",
+        "editing-error-bars",
+        "errors-and-current-limitations",
+        "related"
+      ],
+      "bytes": 7106,
+      "sha256": "6336fdf9486405e7a3d24203e0a7f3bdc9ebee2bb8496509f2854f28cc16fc5e"
+    },
+    {
+      "order": 63,
+      "title": "Error Bands",
+      "route": "/api/error-bands/",
+      "source": "api/error-bands.md",
+      "headings": [
+        "error-bands",
+        "at-a-glance",
+        "createerrorbandoptions",
+        "inference-and-ownership",
+        "editing-the-band"
+      ],
+      "bytes": 6751,
+      "sha256": "d392080f8c373dd299b973c54bdef318ec43ce6204b30a068a1f3cf738c22733"
+    },
+    {
+      "order": 64,
+      "title": "Box Plots",
+      "route": "/api/box-plots/",
+      "source": "api/box-plots.md",
+      "headings": [
+        "box-plots",
+        "at-a-glance",
+        "createboxplot",
+        "editing-a-box-plot",
+        "current-statistical-and-visual-defaults",
+        "current-limitations",
+        "related"
+      ],
+      "bytes": 6265,
+      "sha256": "575a15b1ce0a615a27fa0c738f9412ecb172646d2884dc9238d72080782681f1"
+    },
+    {
+      "order": 65,
+      "title": "Gradient Plots",
+      "route": "/api/gradient-plots/",
+      "source": "api/gradient-plots.md",
+      "headings": [
+        "gradient-plots",
+        "create-a-gradient-plot",
+        "options-and-defaults",
+        "edit-and-compose",
+        "current-limitations",
+        "related"
+      ],
+      "bytes": 4556,
+      "sha256": "4d985cbdac64637b18db222f7c4b50c06c444ff211ad98c7edf628d669f5755f"
+    },
+    {
+      "order": 66,
+      "title": "Violin Plots",
+      "route": "/api/violin-plots/",
+      "source": "api/violin-plots.md",
+      "headings": [
+        "violin-plots",
+        "minimal-vertical-violin",
+        "density-width-and-orientation",
+        "split-a-category-into-two-halves",
+        "appearance-and-guides",
+        "editing",
+        "current-boundary",
+        "related"
+      ],
+      "bytes": 3155,
+      "sha256": "c380b61979245f2f23cf3b4b93045663f502cfacadf154ffe14f094cad29ecb6"
+    },
+    {
+      "order": 67,
+      "title": "Guides",
+      "route": "/api/guides/",
+      "source": "api/guides.md",
+      "headings": [
+        "guides",
+        "at-a-glance",
+        "createguidesoptions",
+        "errors-and-limitations",
+        "related"
+      ],
+      "bytes": 4808,
+      "sha256": "95f09a48623e3a5ee3abda37bcff8494b11d3b8629e3439845cfeccada91c802"
+    },
+    {
+      "order": 68,
+      "title": "Titles",
+      "route": "/api/titles/",
+      "source": "api/titles.md",
+      "headings": [
+        "titles",
+        "at-a-glance",
+        "createtitleoptions",
+        "position-alignment-and-wrapping",
+        "edittitleoptions",
+        "removetitle",
+        "stored-result",
+        "errors-and-limitations",
+        "related"
+      ],
+      "bytes": 4629,
+      "sha256": "ac6589cb22770fa7a72a6d267b14d7af520391bf40af097e3211569ac1defa6a"
+    },
+    {
+      "order": 69,
+      "title": "Rendering",
+      "route": "/api/rendering/",
+      "source": "api/rendering.md",
+      "headings": [
+        "rendering",
+        "at-a-glance",
+        "complete-example-program",
+        "browser-canvas",
+        "svg-output",
+        "png-output",
+        "pdf-output",
+        "errors-and-limitations",
+        "related"
+      ],
+      "bytes": 7873,
+      "sha256": "7714eb43f14d9c93f01560d36115f1353d14d41a1e7f23801461dc0c4c2e19ba"
+    },
+    {
+      "order": 70,
+      "title": "Program Composition",
+      "route": "/api/composition/",
+      "source": "api/composition.md",
+      "headings": [
+        "program-composition",
+        "arrange-complete-programs",
+        "automatic-and-explicit-child-sizes",
+        "compose-cartesian-and-polar-charts",
+        "repeat-the-current-chart-by-a-field",
+        "edit-the-layout",
+        "edit-facet-scale-and-guide-policies",
+        "replace-one-stable-slot",
+        "state-trace-and-action-scope"
+      ],
+      "bytes": 10820,
+      "sha256": "ce2f46e6f7ec50a408355e34dd645059afcb7de07e01e82ea037ee996a3aa6bd"
+    },
+    {
+      "order": 71,
+      "title": "Position Encodings",
+      "route": "/api/position-encodings/",
+      "source": "api/position-encodings.md",
+      "headings": [
+        "position-encodings",
+        "supported-marks-and-modes",
+        "choose-an-encoding",
+        "shared-inference",
+        "polar-positions",
+        "rule-endpoints",
+        "related"
+      ],
+      "bytes": 7447,
+      "sha256": "5e3d8111fd126c8ff9f964d56523e98d37804d77590b0a591479229687ab588e"
+    },
+    {
+      "order": 72,
+      "title": "Quantitative Positions",
+      "route": "/api/position/quantitative/",
+      "source": "api/position/quantitative.md",
+      "headings": [
+        "quantitative-positions",
+        "at-a-glance",
+        "point-encodexoptions-and-encodeyoptions",
+        "errors-and-limitations",
+        "related"
+      ],
+      "bytes": 2033,
+      "sha256": "cf61a06dd96fb11cb23752626476997ce9904854aac277f2ed54591bba69f8ae"
+    },
+    {
+      "order": 73,
+      "title": "Temporal Line Positions",
+      "route": "/api/position/temporal/",
+      "source": "api/position/temporal.md",
+      "headings": [
+        "temporal-line-positions",
+        "at-a-glance",
+        "temporal-line-encodexoptions",
+        "aggregate-line-encodeyoptions",
+        "errors-and-limitations",
+        "related"
+      ],
+      "bytes": 4725,
+      "sha256": "cdd0603990ec0e56e8d0a6de9cbb3f8ae54c229c0c8fea016abb4031c7d07cbc"
+    },
+    {
+      "order": 74,
+      "title": "Ordinal Bar Positions",
+      "route": "/api/position/ordinal-bars/",
+      "source": "api/position/ordinal-bars.md",
+      "headings": [
+        "bar-positions",
+        "at-a-glance",
+        "ordinal-bar-encodexoptions",
+        "aggregate-ordinal-bar-encodeyoptions",
+        "temporal-and-horizontal-bars",
+        "errors-and-limitations",
+        "related"
+      ],
+      "bytes": 4171,
+      "sha256": "90079069edbad258558639168075b660bd49e650007a5dfbd4b2123f20c49b5a"
+    },
+    {
+      "order": 75,
+      "title": "Category Ordering",
+      "route": "/api/position/category-ordering/",
+      "source": "api/position/category-ordering.md",
+      "headings": [
+        "category-ordering",
+        "ordercategoriesoptions",
+        "removecategoryorder-target-channel",
+        "related"
+      ],
+      "bytes": 2527,
+      "sha256": "568486cb4e2de1db1a1250daa99b2a2b6b45ecee707356b94c528b58bc162234"
+    },
+    {
+      "order": 76,
+      "title": "Histogram Positions",
+      "route": "/api/position/histogram/",
+      "source": "api/position/histogram.md",
+      "headings": [
+        "histogram-positions",
+        "at-a-glance",
+        "binned-bar-encodexoptions",
+        "countstack-bar-encodeyoptions",
+        "errors-and-limitations",
+        "related"
+      ],
+      "bytes": 3365,
+      "sha256": "95f5601f2db0e05516113d0b723466fdfe5b646a4f8e803ab9c30c9f2b37a658"
+    },
+    {
+      "order": 77,
+      "title": "Ordinal Offsets",
+      "route": "/api/position/offsets/",
+      "source": "api/position/offsets.md",
+      "headings": [
+        "ordinal-offsets",
+        "at-a-glance",
+        "advanced-encodexoffsetoptions-and-encodeyoffsetoptions",
+        "errors-and-limitations",
+        "related"
+      ],
+      "bytes": 2491,
+      "sha256": "5a5987f27ef0a0659f4cc6325396cec3dd6b776d3383e0b1aff39874f6df6a4c"
+    },
+    {
+      "order": 78,
+      "title": "Series Encodings",
+      "route": "/api/series-encodings/",
+      "source": "api/series-encodings.md",
+      "headings": [
+        "series-encodings",
+        "at-a-glance",
+        "explicit-path-topology",
+        "focused-series-families",
+        "errors-and-limitations",
+        "related"
+      ],
+      "bytes": 3018,
+      "sha256": "59de0b8cb15623c9dcf45925013a372b7c2ab26bd12c3e5d4b8cc04a23ea216c"
+    },
+    {
+      "order": 79,
+      "title": "Color Encoding",
+      "route": "/api/series/color/",
+      "source": "api/series/color.md",
+      "headings": [
+        "color-encoding",
+        "encodecoloroptions",
+        "center-stacked-areas",
+        "continuous-aggregate-bar-color",
+        "related"
+      ],
+      "bytes": 8810,
+      "sha256": "357ed7392218c8913903d1592244a832a4d11a35ce6874251fd8fa0783c64df0"
+    },
+    {
+      "order": 80,
+      "title": "Stroke Dash Encoding",
+      "route": "/api/series/stroke-dash/",
+      "source": "api/series/stroke-dash.md",
+      "headings": [
+        "stroke-dash-encoding",
+        "encodestrokedashoptions",
+        "related"
+      ],
+      "bytes": 2333,
+      "sha256": "07a69b6fd4d2887b62fccb4173693dd7143f54df012aaf0ce3d3d813df1224d9"
+    },
+    {
+      "order": 81,
+      "title": "Appearance Encodings",
+      "route": "/api/appearance/",
+      "source": "api/appearance.md",
+      "headings": [
+        "appearance-encodings",
+        "at-a-glance",
+        "supported-highlight-marks",
+        "focused-appearance-families",
+        "errors-and-limitations",
+        "related"
+      ],
+      "bytes": 4246,
+      "sha256": "ca37b9500669eabe5b0aa79a008a307ae4af0caae4d6d51cc91520d2253c6eba"
+    },
+    {
+      "order": 82,
+      "title": "Selection and Highlighting",
+      "route": "/api/appearance/selection-and-highlighting/",
+      "source": "api/appearance/selection-and-highlighting.md",
+      "headings": [
+        "selection-and-highlighting",
+        "mark-selection-and-highlighting",
+        "editing-and-removing-stored-intent",
+        "related"
+      ],
+      "bytes": 7076,
+      "sha256": "b7a7f8f6656c1dfddaaf936010824860838f66216cd4e300c93629c15c6a06d0"
+    },
+    {
+      "order": 83,
+      "title": "Point Appearance",
+      "route": "/api/appearance/point/",
+      "source": "api/appearance/point.md",
+      "headings": [
+        "point-appearance",
+        "encoderadius-value-target",
+        "removepointradius-target",
+        "point-field-encodings",
+        "related"
+      ],
+      "bytes": 3063,
+      "sha256": "a70a927c194a65c0aca6dbe60de869b96350d483b56a2aeffc3f1768ed8e4114"
+    },
+    {
+      "order": 84,
+      "title": "Mark Style",
+      "route": "/api/appearance/mark-style/",
+      "source": "api/appearance/mark-style.md",
+      "headings": [
+        "mark-style",
+        "rule-appearance",
+        "encodebarwidth-band-pixels-target",
+        "related"
+      ],
+      "bytes": 3173,
+      "sha256": "c92fb4f05cea0e156c23faffaa5520065cdb89715710c060a858645b2cd9de00"
+    },
+    {
+      "order": 85,
+      "title": "Scale Options",
+      "route": "/api/scales/",
+      "source": "api/scales.md",
+      "headings": [
+        "scale-options",
+        "at-a-glance",
+        "focused-scale-families",
+        "errors-and-limitations",
+        "related"
+      ],
+      "bytes": 4802,
+      "sha256": "d44d684c2c1df8590e11c6b957c8e9b5b5328019cfef9186ffd007b7a49df5c5"
+    },
+    {
+      "order": 86,
+      "title": "Position Scales",
+      "route": "/api/scales/position/",
+      "source": "api/scales/position.md",
+      "headings": [
+        "position-scales",
+        "compatibility-matrix",
+        "continuous-scales",
+        "binned-bar-x-scales",
+        "aggregate-ordinal-bar-y-scales",
+        "related"
+      ],
+      "bytes": 4760,
+      "sha256": "44064f8d02434051219116199647d844e5fdc0ce44e9c3d6e86b1a455f3aafd9"
+    },
+    {
+      "order": 87,
+      "title": "Ordinal and Dash Scales",
+      "route": "/api/scales/ordinal-and-dash/",
+      "source": "api/scales/ordinal-and-dash.md",
+      "headings": [
+        "ordinal-and-stroke-dash-scales",
+        "discrete-and-ordinal-scales",
+        "stroke-dash-ranges",
+        "related"
+      ],
+      "bytes": 1955,
+      "sha256": "0c59cbc9ee1c8e5dcc08fc7ce786ddded03edb0b40ce528f65d53c2ddb10774a"
+    },
+    {
+      "order": 88,
+      "title": "Continuous Color Scales",
+      "route": "/api/scales/continuous-color/",
+      "source": "api/scales/continuous-color.md",
+      "headings": [
+        "continuous-color-scales",
+        "named-palettes",
+        "continuous-point-and-aggregate-bar-color",
+        "related"
+      ],
+      "bytes": 3507,
+      "sha256": "607d73aa1935dc7091c6bd5dd13af93efa1c6177a0eb947fe3ab8499e66eede1"
+    },
+    {
+      "order": 89,
+      "title": "Discretized Color Scales",
+      "route": "/api/scales/discretized-color/",
+      "source": "api/scales/discretized-color.md",
+      "headings": [
+        "discretized-color-scales",
+        "discretized-point-color",
+        "related"
+      ],
+      "bytes": 1559,
+      "sha256": "9c0ee621cdb9920795bc26f9e67d035b0105670d9558188c7df475887b9b3fca"
+    },
+    {
+      "order": 90,
+      "title": "Missing Scale Values",
+      "route": "/api/scales/missing-values/",
+      "source": "api/scales/missing-values.md",
+      "headings": [
+        "scale-missing-values",
+        "missing-and-invalid-values",
+        "related"
+      ],
+      "bytes": 1183,
+      "sha256": "8e47092362e104b4ca41bebcdfb656239bb675e8ec0941666ada35e036ac8fd7"
+    },
+    {
+      "order": 91,
+      "title": "Coordinates",
+      "route": "/api/coordinates/",
+      "source": "api/coordinates.md",
+      "headings": [
+        "coordinates",
+        "at-a-glance",
+        "createcoordinate-id-type-layers",
+        "errors-and-limitations",
+        "related"
+      ],
+      "bytes": 2458,
+      "sha256": "a4766ad16fbc095e74a59690bd328f27ab3106b325e3bdb214840a4d265b14b8"
+    },
+    {
+      "order": 92,
+      "title": "Axes",
+      "route": "/api/axes/",
+      "source": "api/axes.md",
+      "headings": [
+        "axes",
+        "at-a-glance",
+        "createaxesoptions",
+        "editing-a-complete-axis",
+        "removing-an-axis",
+        "errors-and-limitations",
+        "related"
+      ],
+      "bytes": 10021,
+      "sha256": "8aaf0a8bbd52107bf0452b2218238e3268cc9c426406feb56768fe0062687309"
+    },
+    {
+      "order": 93,
+      "title": "Grids",
+      "route": "/api/grids/",
+      "source": "api/grids.md",
+      "headings": [
+        "grids",
+        "at-a-glance",
+        "creategridoptions",
+        "editing-grids",
+        "removing-grids",
+        "errors-and-limitations",
+        "related"
+      ],
+      "bytes": 5134,
+      "sha256": "b853dc7f81b71a2f5b615029d984a05d6970f80fbbd8b81b62ad27804ac400f4"
+    },
+    {
+      "order": 94,
+      "title": "Legends",
+      "route": "/api/legends/",
+      "source": "api/legends.md",
+      "headings": [
+        "legends",
+        "at-a-glance",
+        "supported-legend-families",
+        "focused-legend-families",
+        "errors-and-limitations",
+        "related"
+      ],
+      "bytes": 3050,
+      "sha256": "64467f712a50b86fafc711e96adecfb5a6211b85134e8de36ae9332c5821e6d4"
+    },
+    {
+      "order": 95,
+      "title": "Categorical and Size Legends",
+      "route": "/api/legends/categorical/",
+      "source": "api/legends/categorical.md",
+      "headings": [
+        "categorical-and-size-legends",
+        "createlegendoptions",
+        "related"
+      ],
+      "bytes": 4614,
+      "sha256": "fc9580893934ccaa46d6f8af2ac2b8200687cdc3f714743036ea20bae77ba8b5"
+    },
+    {
+      "order": 96,
+      "title": "Continuous Legends",
+      "route": "/api/legends/continuous/",
+      "source": "api/legends/continuous.md",
+      "headings": [
+        "continuous-legends",
+        "continuous-color-and-opacity",
+        "related"
+      ],
+      "bytes": 2283,
+      "sha256": "a6e9cb2fd07f7f0e3cfe867e05cc1a57367c1c81ef390a8e2639b9453a5a08a8"
+    },
+    {
+      "order": 97,
+      "title": "Composite Legend Symbols",
+      "route": "/api/legends/composite/",
+      "source": "api/legends/composite.md",
+      "headings": [
+        "composite-legend-symbols",
+        "layered-symbols",
+        "items-and-semantics",
+        "optional-border",
+        "related"
+      ],
+      "bytes": 2835,
+      "sha256": "be2d3da79ec0de2bfb544bee6f2b844404f8935f67d8756290731c04ee4bbdc5"
+    },
+    {
+      "order": 98,
+      "title": "Editing Legends",
+      "route": "/api/legends/editing/",
+      "source": "api/legends/editing.md",
+      "headings": [
+        "editing-legends",
+        "updates-and-trace",
+        "focused-edits",
+        "removing-a-legend",
+        "related"
+      ],
+      "bytes": 4416,
+      "sha256": "28089c100baff594872f6bc509c24f0f43740e8b93c6cd03815570dd3713f22a"
+    },
+    {
+      "order": 99,
+      "title": "ChartProgram and Immutability",
+      "route": "/concepts/chart-program/",
+      "source": "concepts/chart-program.md",
+      "headings": [
+        "chartprogram-and-immutability",
+        "program-state",
+        "inspecting-authored-and-materialized-state"
+      ],
+      "bytes": 5534,
+      "sha256": "a949c043440cbd091948b52541d58a923807dba4b6fe48de00123f3d528844ad"
+    },
+    {
+      "order": 100,
+      "title": "Semantic and Graphical State",
+      "route": "/concepts/semantic-and-graphics/",
+      "source": "concepts/semantic-and-graphics.md",
+      "headings": [
+        "semantic-and-graphical-state",
+        "semantic-state",
+        "graphical-state",
+        "no-automatic-compiler"
+      ],
+      "bytes": 2295,
+      "sha256": "130200a1c675fc9353a6548ce98a1e990cbcd1224713bc71780bb015ff832fbc"
+    },
+    {
+      "order": 101,
+      "title": "Actions and Trace Trees",
+      "route": "/concepts/actions-and-trace/",
+      "source": "concepts/actions-and-trace.md",
+      "headings": [
+        "actions-and-trace-trees"
+      ],
+      "bytes": 1169,
+      "sha256": "1f3998861587dfd69dca58efe13de724099a7619357003fbcf741a840fa741b7"
+    },
+    {
+      "order": 102,
+      "title": "Accessibility",
+      "route": "/accessibility/",
+      "source": "accessibility.md",
+      "headings": [
+        "accessibility",
+        "output-contract",
+        "accessible-svg",
+        "accessible-canvas",
+        "authoring-checks",
+        "related"
+      ],
+      "bytes": 3604,
+      "sha256": "3821da0269845b95c51b499678e42ecc15d44bca75e37976229f84cd80c8734f"
+    },
+    {
+      "order": 103,
+      "title": "Runtime and Browser Compatibility",
+      "route": "/compatibility/",
+      "source": "compatibility.md",
+      "headings": [
+        "runtime-and-browser-compatibility",
+        "entry-points",
+        "browser-applications",
+        "server-rendering",
+        "compatibility-checklist",
+        "related"
+      ],
+      "bytes": 3324,
+      "sha256": "ae1ba9f53a0e7776124294fe2bffbf745eb513032b1b1873ebad89d42b395beb"
+    },
+    {
+      "order": 104,
+      "title": "Responsive Charts",
+      "route": "/responsive-charts/",
+      "source": "responsive-charts.md",
+      "headings": [
+        "responsive-charts",
+        "complete-browser-pattern",
+        "size-and-density-are-separate",
+        "resize-policy",
+        "related"
+      ],
+      "bytes": 3067,
+      "sha256": "6f5cfec78f5b3a90bd89b1ee583a6b05ff8457317a7912477ab367d5adcb1881"
+    },
+    {
+      "order": 105,
+      "title": "Performance and Large Charts",
+      "route": "/performance/",
+      "source": "performance.md",
+      "headings": [
+        "performance-and-large-charts",
+        "choose-the-output-deliberately",
+        "measure-authoring-and-rendering-separately",
+        "reduce-work-at-the-right-boundary",
+        "allocation-limits",
+        "large-chart-review",
+        "related"
+      ],
+      "bytes": 4034,
+      "sha256": "15c2729a721014cd6615f6a5b17949467a17f39ee3b02f6ccb694b5aa04d1a8c"
+    },
+    {
+      "order": 106,
+      "title": "Data Updates and Live Refresh",
+      "route": "/data-updates/",
+      "source": "data-updates.md",
+      "headings": [
+        "data-updates-and-live-refresh",
+        "rebuild-from-source-rows",
+        "what-can-be-revised-in-place",
+        "async-update-policy",
+        "derived-data",
+        "related"
+      ],
+      "bytes": 3121,
+      "sha256": "8ab4a39d0af44b360f50bf887f489be63f21c0af6149099c794dc7022ffec131"
+    },
+    {
+      "order": 107,
+      "title": "Errors and Recovery",
+      "route": "/errors-and-recovery/",
+      "source": "errors-and-recovery.md",
+      "headings": [
+        "errors-and-recovery",
+        "error-categories",
+        "recover-without-losing-the-previous-chart",
+        "common-failures",
+        "diagnosis-order",
+        "related"
+      ],
+      "bytes": 3506,
+      "sha256": "3f2913503d8bb4100cc2b1e262c5829bde327af77844e912b24417c55769c029"
+    },
+    {
+      "order": 108,
+      "title": "Versioning and Documentation Provenance",
+      "route": "/versioning/",
+      "source": "versioning.md",
+      "headings": [
+        "versioning-and-documentation-provenance",
+        "know-which-contract-you-are-reading",
+        "confirm-an-installation",
+        "upgrade-checklist",
+        "related"
+      ],
+      "bytes": 2744,
+      "sha256": "ad0559a7eea17134ca9d2651c1ff776c32cffe75824f2dc7a434db4d59a213c4"
+    },
+    {
+      "order": 109,
+      "title": "Fonts and Text Rendering",
+      "route": "/fonts/",
+      "source": "fonts.md",
+      "headings": [
+        "fonts-and-text-rendering",
+        "cross-platform-contract",
+        "set-text-styles-explicitly",
+        "loading-in-browsers",
+        "reproducibility-checklist",
+        "related"
+      ],
+      "bytes": 2998,
+      "sha256": "6e6729e957a0137348e2645025673ac5c53b3af8f1a588d9526f53e54f73ad47"
+    },
+    {
+      "order": 110,
+      "title": "TypeScript",
+      "route": "/typescript/",
+      "source": "typescript.md",
+      "headings": [
+        "typescript",
+        "strict-esm-setup",
+        "type-chart-options-before-authoring",
+        "renderer-types",
+        "extensions",
+        "exact-machine-readable-sources",
+        "related"
+      ],
+      "bytes": 3698,
+      "sha256": "b4600c8eda4cb03117266ccc95300618f707729c3d92c93062703eb6ba392619"
+    },
+    {
+      "order": 111,
+      "title": "Advanced Axis Components",
+      "route": "/advanced/axis-components/",
+      "source": "advanced/axis-components.md",
+      "headings": [
+        "advanced-axis-components",
+        "complete-single-channel-axes",
+        "lines",
+        "ticks",
+        "labels",
+        "ticks-and-labels-together",
+        "titles"
+      ],
+      "bytes": 5975,
+      "sha256": "80f28dd33c51a14bffa365ed299ac591263c07f411d9f4c8fe65d5a240aeec0f"
+    },
+    {
+      "order": 112,
+      "title": "Supported Features",
+      "route": "/supported-features/",
+      "source": "supported-features.md",
+      "headings": [
+        "supported-features",
+        "complete-chart-support",
+        "cartesian-charts",
+        "statistical-layers",
+        "intervals-and-distributions",
+        "polar-charts",
+        "parallel-coordinates",
+        "shared-foundations",
+        "current-limitations",
+        "data-transforms-and-heatmaps",
+        "guides-and-interval-charts",
+        "distribution-charts",
+        "selection-appearance-and-text",
+        "coordinates-and-composition"
+      ],
+      "bytes": 11700,
+      "sha256": "b6062ff07c170c78b689f3fdf4c6b692a212f7cc02cae7e1285048e6ca43a5de"
+    },
+    {
+      "order": 113,
+      "title": "Complete Action Reference",
+      "route": "/reference/actions/",
+      "source": "reference/actions.md",
+      "headings": [
+        "action-reference",
+        "exact-action-lookup"
+      ],
+      "bytes": 18540,
+      "sha256": "997f7c929fa894ee47b7550aa0c70df78ad35c7e6c37ce75a254efcf79a37f3b"
+    },
+    {
+      "order": 114,
+      "title": "Charts, Data, and Composition Actions",
+      "route": "/reference/actions/charts-data/",
+      "source": "reference/actions/charts-data.md",
+      "headings": [
+        "charts-data-and-composition-actions",
+        "createcanvas",
+        "editcanvas",
+        "editcompositionlayout",
+        "replacecompositionchild",
+        "facet",
+        "editfacetheaders",
+        "editfacetscales",
+        "editfacetguides",
+        "createdata",
+        "createscatterplot",
+        "createlineplot",
+        "createbarplot",
+        "createhistogram",
+        "createheatmap",
+        "createparallelcoordinates",
+        "filterdata",
+        "filtermarks",
+        "highlightmarks",
+        "removemarkhighlight",
+        "createregressiondata",
+        "createdensitydata",
+        "createtimeunitdata",
+        "createwindowdata",
+        "createbin2ddata",
+        "editbin2ddata",
+        "related"
+      ],
+      "bytes": 8533,
+      "sha256": "6aaa725034a2d5819cf84b395f1a44883a57a310f395a7010081ba7bda21ac66"
+    },
+    {
+      "order": 115,
+      "title": "Mark Actions",
+      "route": "/reference/actions/marks/",
+      "source": "reference/actions/marks.md",
+      "headings": [
+        "mark-actions",
+        "createpointmark",
+        "editpointmark",
+        "createtickmark",
+        "edittickmark",
+        "jitterpoints",
+        "removejitter",
+        "removemark",
+        "createlinemark",
+        "editlinemark",
+        "createbarmark",
+        "editbarmark",
+        "createareamark",
+        "editareamark",
+        "createarcmark",
+        "editarcmark",
+        "createrulemark",
+        "createrectmark",
+        "editrectmark",
+        "createtextmark",
+        "edittextmark",
+        "layoutlabels",
+        "removelabellayout",
+        "position-capability-matrix",
+        "related"
+      ],
+      "bytes": 8033,
+      "sha256": "7663ccc5e9ec29ddadd40a9f2d3ef45549fe677ca8ef5625e411b96bb8356da6"
+    },
+    {
+      "order": 116,
+      "title": "Encoding Actions",
+      "route": "/reference/actions/encodings/",
+      "source": "reference/actions/encodings.md",
+      "headings": [
+        "encoding-actions",
+        "encodex",
+        "encodey",
+        "encodey2",
+        "encodex2",
+        "encodeyrange",
+        "encodexrange",
+        "encodegroup",
+        "encodepathorder",
+        "encodeparallelcoordinates",
+        "removepathorder",
+        "ordercategories",
+        "removecategoryorder",
+        "removeencoding",
+        "encodeangle",
+        "encodetext",
+        "encodexoffset",
+        "encodeyoffset",
+        "encodehistogram",
+        "encodedensity",
+        "editdensity",
+        "encodehorizon",
+        "edithorizon",
+        "encodecolor",
+        "color-capability-matrix",
+        "encodestrokedash",
+        "encoderadius",
+        "encodetheta",
+        "encoder",
+        "encodepointradius",
+        "removepointradius",
+        "encodesize",
+        "encodeshape",
+        "encodeopacity",
+        "encodestroke",
+        "encodestrokewidth",
+        "encodebarwidth",
+        "related"
+      ],
+      "bytes": 14183,
+      "sha256": "e922f45668a6dc82c9ef15fc212c2070288c6d13aaded7420bd7663c5ad32d1a"
+    },
+    {
+      "order": 117,
+      "title": "Statistical Layer Actions",
+      "route": "/reference/actions/statistics/",
+      "source": "reference/actions/statistics.md",
+      "headings": [
+        "statistical-layer-actions",
+        "createintervaldata",
+        "createregression",
+        "editregression",
+        "createerrorbar",
+        "editerrorbar",
+        "createerrorband",
+        "editerrorband-and-editerrorbandboundary",
+        "createboxplot",
+        "editboxplot",
+        "creategradientplot",
+        "editgradientplot",
+        "createviolinplot",
+        "related"
+      ],
+      "bytes": 6200,
+      "sha256": "e33b359499c9eab6a3800971ff98375e1cc258433f8cca2975b615df187d3a10"
+    },
+    {
+      "order": 118,
+      "title": "Guide, Axis, Grid, and Title Actions",
+      "route": "/reference/actions/guides/",
+      "source": "reference/actions/guides.md",
+      "headings": [
+        "guide-axis-grid-and-title-actions",
+        "createguides",
+        "createaxes",
+        "createthetaaxis",
+        "createradialaxis",
+        "editthetaaxis",
+        "editradialaxis",
+        "editthetaaxisline",
+        "editradialaxisline",
+        "editthetaaxisticks",
+        "editradialaxisticks",
+        "editthetaaxislabels",
+        "editradialaxislabels",
+        "editthetaaxistitle",
+        "editradialaxistitle",
+        "removethetaaxis",
+        "removeradialaxis",
+        "creategrid",
+        "createthetagrid",
+        "createradialgrid",
+        "editthetagrid",
+        "editradialgrid",
+        "createlegend",
+        "editlegend",
+        "focused-legend-edits",
+        "removelegend",
+        "createtitle",
+        "edittitle",
+        "removetitle",
+        "related"
+      ],
+      "bytes": 7424,
+      "sha256": "91bf973f7846ef364ea473c9c613931b64c8bd190d595bac20daae7526d86dee"
+    },
+    {
+      "order": 119,
+      "title": "Advanced Chart Actions",
+      "route": "/reference/actions/advanced/",
+      "source": "reference/actions/advanced.md",
+      "headings": [
+        "advanced-chart-actions",
+        "reusable-mark-selections",
+        "editmarkselection",
+        "removemarkselection",
+        "semantic-resources-and-regression-layers",
+        "complete-single-channel-axes",
+        "complete-axis-removal",
+        "axis-lines-ticks-and-labels",
+        "ticklabel-groups-and-axis-titles",
+        "directional-grids",
+        "related"
+      ],
+      "bytes": 7368,
+      "sha256": "4c444c371e6d62b83280f5051845d65ace93264ce7c16f10de226818f9b7228f"
+    },
+    {
+      "order": 120,
+      "title": "Extension Actions",
+      "route": "/reference/actions/extension/",
+      "source": "reference/actions/extension.md",
+      "headings": [
+        "extension-actions",
+        "related"
+      ],
+      "bytes": 1710,
+      "sha256": "4310217f38cc2c124545f4d628fd8db6711fad1286a21023233fe8936bbf99fa"
+    },
+    {
+      "order": 121,
+      "title": "Program and Rendering Functions",
+      "route": "/reference/runtime/",
+      "source": "reference/runtime.md",
+      "headings": [
+        "program-and-rendering-functions",
+        "program-functions",
+        "exact-typescript-signatures",
+        "ggaction",
+        "ggactionbasic",
+        "ggactionsvg",
+        "ggactionpng",
+        "ggactionpdf",
+        "rendering-functions",
+        "internal-trace-operations"
+      ],
+      "bytes": 3283,
+      "sha256": "005ff239adaedd6b7c150ea05bf7bb63e3dd6db009a78ce40e613bf3c08f1606"
+    },
+    {
+      "order": 122,
+      "title": "Exact TypeScript Contract",
+      "route": "/reference/types/",
+      "source": "reference/types.md",
+      "headings": [
+        "exact-typescript-contract",
+        "exact-typescript-signatures",
+        "related"
+      ],
+      "bytes": 14432,
+      "sha256": "b5cdc2c8222c38f4a78d697262431235f84da46b3de2224b907d98f59be8e2cd"
+    },
+    {
+      "order": 123,
+      "title": "Action Authoring",
+      "route": "/extension/action-authoring/",
+      "source": "extension/action-authoring.md",
+      "headings": [
+        "action-authoring",
+        "strict-typescript-authoring",
+        "isolated-program-classes",
+        "action-contract"
+      ],
+      "bytes": 5245,
+      "sha256": "9461583ca4ff6b3d8878f76a711d08e20e80358a37b08a160213415383d78a71"
+    },
+    {
+      "order": 124,
+      "title": "Primitive API",
+      "route": "/extension/primitives/",
+      "source": "extension/primitives.md",
+      "headings": [
+        "primitive-extension-api",
+        "editsemantic-property-value-remove",
+        "creategraphics-id-type-length-parent-before-after",
+        "editgraphics-target-property-value-remove",
+        "scale-materialization"
+      ],
+      "bytes": 11910,
+      "sha256": "17a04bb9805ad43313a35c6eb3f4674ec47b8452587d8cb68e2348e7e32c45c5"
+    }
+  ]
+}

@@ -624,12 +624,38 @@ async function testMcpConsumer(directory) {
   const { searchGgactionText } = await import(
     pathToFileURL(path.join(installedRoot, "src", "mcp", "adapter.js")).href
   );
-  const taskPacketSchema = JSON.parse(await readFile(
-    path.join(installedRoot, "knowledge", "task-packet.schema.json"),
+  const [
+    taskPacketSchema,
+    intentTaxonomySchema,
+    mcpResourcesSchema,
+    intentTaxonomy,
+    mcpResources
+  ] = await Promise.all([
+    "task-packet.schema.json",
+    "intent-taxonomy.schema.json",
+    "mcp-resources.schema.json",
+    "intent-taxonomy.json",
+    "mcp-resources.json"
+  ].map(async file => JSON.parse(await readFile(
+    path.join(installedRoot, "knowledge", file),
     "utf8"
-  ));
-  if (taskPacketSchema.properties?.schemaVersion?.const !== 3) {
-    throw new Error("Installed task packet schema must require schemaVersion 3.");
+  ))));
+  if (taskPacketSchema.properties?.schemaVersion?.const !== 4) {
+    throw new Error("Installed task packet schema must require schemaVersion 4.");
+  }
+  if (
+    intentTaxonomySchema.$id !==
+      "https://ggaction.github.io/ggaction/schemas/intent-taxonomy.schema.json" ||
+    mcpResourcesSchema.$id !==
+      "https://ggaction.github.io/ggaction/schemas/mcp-resources.schema.json"
+  ) {
+    throw new Error("Installed resolver knowledge schemas are missing or stale.");
+  }
+  if (
+    intentTaxonomy.packageVersion !== "0.0.10" ||
+    mcpResources.packageVersion !== "0.0.10"
+  ) {
+    throw new Error("Installed resolver knowledge must match the package version.");
   }
   const transport = new StdioClientTransport({
     command: executable,
@@ -658,11 +684,15 @@ async function testMcpConsumer(directory) {
     }
     const packet = JSON.parse(result.content[0].text);
     if (
-      packet.schemaVersion !== 3 ||
+      packet.schemaVersion !== 4 ||
+      packet.packageVersion !== "0.0.10" ||
       packet.authoring?.initialize !== "let program = chart()" ||
-      packet.authoring?.prerequisites?.length !== 2
+      packet.authoring?.prerequisites?.length !== 2 ||
+      !Array.isArray(packet.appliedOptions) ||
+      !Array.isArray(packet.placeholderBindings) ||
+      !Array.isArray(packet.unmatchedRequirements)
     ) {
-      throw new Error("Installed MCP did not return the task packet v3 authoring bootstrap.");
+      throw new Error("Installed MCP did not return the task packet v4 authoring bootstrap.");
     }
     const authoringSource = [
       'import assert from "node:assert/strict";',
@@ -1530,7 +1560,7 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.a
       "private-export-rejection",
       "installed-local-mcp",
       "direct-mcp-byte-equality",
-      "task-packet-v3-authoring-execution",
+      "task-packet-v4-authoring-execution",
       "explicit-unresolved-docs-fallback",
       "terminal-unsupported-no-fallback"
     ]

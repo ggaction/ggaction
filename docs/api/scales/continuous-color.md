@@ -7,8 +7,6 @@ title: Continuous Color Scales
 
 {% include chart-example.html id="density" %}
 
-{% include chart-example.html id="density" %}
-
 ## Named palettes
 
 Use a name directly or an object with optional sampling controls:

@@ -14,6 +14,7 @@ const declarationFile = path.join(root, "types/program.d.ts");
 const intentFile = path.join(root, "knowledge/action-intents.json");
 const referenceSourceFile = path.join(root, "docs/_sources/action-reference.md");
 const routeFile = path.join(root, "docs/_data/action_reference_links.json");
+const packageFile = path.join(root, "package.json");
 
 const operationPrefixes = Object.freeze([
   "create",
@@ -436,7 +437,11 @@ export function validateActionCards({ cards, actions, declarations, routes }) {
     if (card.signature !== declaration.signature) {
       throw new Error(`Signature drift in compact card ${card.name}.`);
     }
-    const expectedOptions = declaration.options.map(({ name, required }) => ({ name, required }));
+    const expectedOptions = declaration.options.map(({ name, required, type }) => ({
+      name,
+      required,
+      type
+    }));
     if (JSON.stringify(card.options) !== JSON.stringify(expectedOptions)) {
       throw new Error(`Option drift in compact card ${card.name}.`);
     }
@@ -486,15 +491,17 @@ export function validateActionCards({ cards, actions, declarations, routes }) {
 }
 
 export async function buildActionCards() {
-  const [catalogSource, intentSourceText, referenceSource, routeSource] = await Promise.all([
+  const [catalogSource, intentSourceText, referenceSource, routeSource, packageSource] = await Promise.all([
     readFile(catalogFile, "utf8"),
     readFile(intentFile, "utf8"),
     readFile(referenceSourceFile, "utf8"),
-    readFile(routeFile, "utf8")
+    readFile(routeFile, "utf8"),
+    readFile(packageFile, "utf8")
   ]);
   const catalog = JSON.parse(catalogSource);
   const intentSource = JSON.parse(intentSourceText);
   const routes = JSON.parse(routeSource);
+  const packageVersion = JSON.parse(packageSource).version;
   if (intentSource.schemaVersion !== 1) {
     throw new Error("knowledge/action-intents.json must use schemaVersion 1.");
   }
@@ -523,7 +530,7 @@ export async function buildActionCards() {
       ?? summaryByName.get(action.name)
       ?? generatedSummary(action, intentSource);
     return {
-      schemaVersion: 1,
+      schemaVersion: 2,
       name: action.name,
       layer: action.layer,
       domain: action.domain,
@@ -532,7 +539,11 @@ export async function buildActionCards() {
       intents: buildIntents(action, intentSource),
       lifecycle: action.lifecycle,
       resources: actionResources(action, optionNames, intentSource),
-      options: declaration.options.map(({ name, required }) => ({ name, required })),
+      options: declaration.options.map(({ name, required, type }) => ({
+        name,
+        required,
+        type
+      })),
       callPatterns: callPatterns(action, declaration.options, intentSource),
       snippet,
       errors: intentSource.errorOverrides[action.name] ?? [],
@@ -542,7 +553,10 @@ export async function buildActionCards() {
   const stats = validateActionCards({ cards, actions: catalog.actions, declarations, routes });
   return {
     artifact: {
-      schemaVersion: 1,
+      schemaVersion: 2,
+      packageVersion,
+      typeSource: "types/program.d.ts",
+      errorPolicy: "An empty errors array means the compact card has no curated error override; consult the canonical route for validation, inference, and recovery behavior.",
       count: cards.length,
       cards
     },
