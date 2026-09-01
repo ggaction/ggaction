@@ -195,7 +195,12 @@ export function createTemporalBarReference(rows, layout) {
     },
     axes: {
       x: {
-        line: { x1: timeRange[0], y1: bounds.y + bounds.height, x2: timeRange[1], y2: bounds.y + bounds.height },
+        line: {
+          x1: bounds.x,
+          y1: bounds.y + bounds.height,
+          x2: bounds.x + bounds.width,
+          y2: bounds.y + bounds.height
+        },
         ticks: xTicks,
         title: { x: bounds.x + bounds.width / 2, y: bounds.y + bounds.height + 42, text: "year", rotation: 0 }
       },
