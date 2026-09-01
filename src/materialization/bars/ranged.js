@@ -33,11 +33,14 @@ export function deriveRangedRectangles(required, program, width) {
   const fills = color === undefined
     ? dataset.values.map(() => appearance.fill ?? config.fill ?? DEFAULT_BAR_FILL)
     : mapOrdinalValues(dataset.values.map(row => row[color.field]), program.resolvedScales[color.scale].domain, program.resolvedScales[color.scale].range);
+  const appearanceConfig = color === undefined
+    ? config
+    : { ...config, stroke: undefined };
   return dataset.values.map((_, index) => vertical ? {
     x: centers[index] - band / 2, y: Math.min(first[index], second[index]), width: band,
     height: Math.abs(second[index] - first[index]), fill: fills[index],
     ...resolveBarAppearance(
-      config,
+      appearanceConfig,
       undefined,
       color === undefined ? DEFAULT_BAR_STROKE : fills[index],
       1
@@ -46,7 +49,7 @@ export function deriveRangedRectangles(required, program, width) {
     x: Math.min(first[index], second[index]), y: centers[index] - band / 2,
     width: Math.abs(second[index] - first[index]), height: band, fill: fills[index],
     ...resolveBarAppearance(
-      config,
+      appearanceConfig,
       undefined,
       color === undefined ? DEFAULT_BAR_STROKE : fills[index],
       1
