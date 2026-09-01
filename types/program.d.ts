@@ -707,10 +707,11 @@ export interface CanvasOptions {
 
 export type XAxisPosition = "bottom" | "top";
 export type YAxisPosition = "left" | "right";
+type TimeAxisDirective = "Y" | "m" | "d" | "b";
 export type AxisFormatString =
   | ".0f" | ".1f" | ".2f"
   | ".0%" | ".1%" | ".2e"
-  | "%Y" | "%Y-%m" | "%Y-%m-%d";
+  | `${string}%${TimeAxisDirective}${string}`;
 export type AxisFormat =
   | "auto"
   | AxisFormatString

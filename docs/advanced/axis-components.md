@@ -92,20 +92,23 @@ program.editYAxisLabels({ offset: 16, fontSize: 13 });
 
 Labels accept `scale` on creation plus `position`, `count`, `values`, `offset`,
 `format`, `color`, `fontSize`, `fontFamily`, and `fontWeight`. Format is
-`"auto"`, `{ decimals: nonNegativeInteger }`, or one of the closed strings
-below. Default offsets are 18 for x and 12 for y; default font size is 12.
+`"auto"`, `{ decimals: nonNegativeInteger }`, a closed numeric string, or a
+validated time directive sequence. Default offsets are 18 for x and 12 for y;
+default font size is 12.
 
 | Scale | Explicit format strings |
 | --- | --- |
 | Linear | `.0f`, `.1f`, `.2f`, `.0%`, `.1%`, `.2e` |
-| Time | `%Y`, `%Y-%m`, `%Y-%m-%d` (UTC) |
+| Time | UTC `%Y`, `%m`, `%d`, `%b` directives plus literals; `%%` is a literal percent |
 | Ordinal | none; use `"auto"` |
 
 Automatic time labels select year, month, day, hour, minute, or second
 precision from the resolved domain span, then minimally refine that precision
 when distinct tick values would collide. This handles UTC month lengths, leap
 days, and sub-day intervals without changing explicit format strings.
-Incompatible format/scale pairs are rejected before graphics are changed.
+Composite formats such as `%b %Y`, `%Y-%m`, and `%Y/%m/%d` are accepted when
+every directive is supported. Unknown or dangling directives and incompatible
+format/scale pairs are rejected before graphics are changed.
 
 Labels reuse existing tick values when count/values are omitted. Conflicting
 tick and label configurations produce an error.

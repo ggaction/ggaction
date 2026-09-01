@@ -49,7 +49,8 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - `count`/`values`: tick contract와 같으며 existing ticks가 있으면 생략 시 그 정책을 재사용한다.
 - `offset`: non-negative finite number; x default `18`, y default `12`.
 - `format`: `"auto" | { decimals: nonNegativeInteger } | AxisFormatString`. Numeric tokens는
-  quantitative, UTC tokens는 time에서만 허용하고 ordinal은 auto만 허용한다.
+  quantitative에서만 허용한다. Time format은 `%Y | %m | %d | %b` UTC directive 하나 이상과 literal의
+  sequence이며 literal percent는 `%%`다. Unknown/dangling directive는 거부하고 ordinal은 auto만 허용한다.
 - `color`: non-empty string; `fontSize`: positive finite; `fontFamily`: non-empty string;
   `fontWeight`: string 또는 finite number.
 - Effect: formatted text, aligned data-space coordinates와 font style을 text collection에 저장한다.
@@ -96,10 +97,12 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 ```typescript
 type AxisPositionX = "bottom" | "top";
 type AxisPositionY = "left" | "right";
+type TimeAxisDirective = "Y" | "m" | "d" | "b";
+type TimeAxisFormatString = `${string}%${TimeAxisDirective}${string}`;
 type AxisFormatString =
   | ".0f" | ".1f" | ".2f"
   | ".0%" | ".1%" | ".2e"
-  | "%Y" | "%Y-%m" | "%Y-%m-%d";
+  | TimeAxisFormatString;
 type TickValue = string | boolean | Finite;
 type TickOptions = {
   length?: NonNegativeFinite;

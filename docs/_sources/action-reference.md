@@ -1688,7 +1688,9 @@ editYAxisLabels({
 
 Axis `position` is `"bottom" | "top"` for x and `"left" | "right"` for y.
 Label `format` accepts `"auto"`, `{ decimals }`, numeric `.0f/.1f/.2f/.0%/.1%/.2e`,
-or UTC `%Y/%Y-%m/%Y-%m-%d` tokens when compatible with the resolved scale.
+or a UTC sequence of `%Y/%m/%d/%b` directives and literals when compatible with
+the resolved scale. Use `%%` for a literal percent; unknown or dangling
+directives reject.
 
 ### Tick/label groups and axis titles
 

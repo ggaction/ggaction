@@ -158,6 +158,17 @@ test("validates temporal axis formatting and explicit tick values", () => {
     ),
     ["1970", "1972", "1974", "1976", "1978", "1980", "1982"]
   );
+  assert.deepEqual(
+    encoded.createXAxis({
+      ticksAndLabels: { labels: { format: "%b %Y" } }
+    }).graphicSpec.objects.xAxisLabels.items.map(
+      child => child.properties.text
+    ),
+    [
+      "Jan 1970", "Jan 1972", "Jan 1974", "Jan 1976",
+      "Jan 1978", "Jan 1980", "Jan 1982"
+    ]
+  );
 
   assert.throws(
     () => encoded.createXAxis({

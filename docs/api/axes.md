@@ -97,11 +97,14 @@ placed outward from the selected edge. The Canvas margin must already be large
 enough; guide creation does not resize it.
 
 Numeric label formats are `.0f`, `.1f`, `.2f`, `.0%`, `.1%`, and `.2e`.
-UTC time formats are `%Y`, `%Y-%m`, and `%Y-%m-%d`. Numeric formats require a
-linear scale, time formats require a time scale, and ordinal labels use
-`"auto"`. The existing `{ decimals: nonNegativeInteger }` form remains
-available for linear labels. Explicit formats remain exact and may intentionally
-produce repeated display strings.
+UTC time formats compose `%Y` (year), `%m` (two-digit month), `%d` (two-digit
+day), and `%b` (English abbreviated month) with literals, for example `%b %Y`,
+`%Y-%m`, or `%Y/%m/%d`; use `%%` for a literal percent sign. Every time format
+must contain at least one date directive, and unknown or dangling directives
+are rejected. Numeric formats require a linear scale, time formats require a
+time scale, and ordinal labels use `"auto"`. The existing `{ decimals:
+nonNegativeInteger }` form remains available for linear labels. Explicit
+formats remain exact and may intentionally produce repeated display strings.
 
 The selected coordinate ID is stored on each semantic axis. Canvas size and
 margin edits explicitly rematerialize positional scales and every connected
