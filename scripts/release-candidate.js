@@ -4,7 +4,6 @@ import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { createPackageArtifact } from "./package-artifact.js";
 import { extractReleaseNotes, generateReleaseNotes } from "./release-notes.js";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
@@ -53,6 +52,7 @@ async function repositoryIdentity({ tag, ref }) {
 
 export async function createReleaseCandidate({ tag, ref }) {
   const identity = await repositoryIdentity({ tag, ref });
+  const { createPackageArtifact } = await import("./package-artifact.js");
   const artifact = await createPackageArtifact({ outputDirectory: releaseDirectory });
   const notes = await generateReleaseNotes({ version: identity.version });
   const manifest = Object.freeze({
