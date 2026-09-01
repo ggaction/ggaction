@@ -12,6 +12,9 @@ All notable changes to `ggaction` are recorded in this file.
 - Published versioned action cards, task-packet schemas, the exact
   `ChartProgram` declaration, and a hashed LLM section manifest as deployed
   machine-readable documentation artifacts.
+- Added binned quantitative line aggregates with shared position-scale reuse,
+  stable series grouping, path ordering, selection, and rematerialization
+  behavior.
 
 ### Changed
 
@@ -36,6 +39,11 @@ All notable changes to `ggaction` are recorded in this file.
 - Prevented incompatible area stroke-dash steps from appearing as executable
   MCP output and stopped silently dropping recognized numeric, layout,
   accessibility, and interaction requirements.
+- Rematerialized every complete mark that consumes a shared automatic position
+  scale when a new ranged consumer expands its domain, keeping inherited error
+  bands aligned with existing lines.
+- Preserved direct quantitative line values at their row grain instead of
+  collapsing repeated positions through the aggregate-line path.
 
 ## [0.0.10] - 2026-08-11
 
