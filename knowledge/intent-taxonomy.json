@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "packageVersion": "0.0.10",
+  "packageVersion": "0.0.11",
   "constraints": [
     { "id": "program.canvas", "phrases": ["chart canvas", "create canvas", "plot bounds"] },
     { "id": "program.data", "phrases": ["create dataset", "load rows", "inline data"] },

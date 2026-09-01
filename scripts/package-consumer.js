@@ -652,8 +652,8 @@ async function testMcpConsumer(directory) {
     throw new Error("Installed resolver knowledge schemas are missing or stale.");
   }
   if (
-    intentTaxonomy.packageVersion !== "0.0.10" ||
-    mcpResources.packageVersion !== "0.0.10"
+    intentTaxonomy.packageVersion !== "0.0.11" ||
+    mcpResources.packageVersion !== "0.0.11"
   ) {
     throw new Error("Installed resolver knowledge must match the package version.");
   }
@@ -685,7 +685,7 @@ async function testMcpConsumer(directory) {
     const packet = JSON.parse(result.content[0].text);
     if (
       packet.schemaVersion !== 4 ||
-      packet.packageVersion !== "0.0.10" ||
+      packet.packageVersion !== "0.0.11" ||
       packet.authoring?.initialize !== "let program = chart()" ||
       packet.authoring?.prerequisites?.length !== 2 ||
       !Array.isArray(packet.appliedOptions) ||
