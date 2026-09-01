@@ -116,6 +116,9 @@ createBarPlot({
 
 - Stable default ID is `barPlot`.
 - Hierarchy: `createBarMark`, `encodeX`, `encodeY`, optional `encodeColor`/`encodeBarWidth`, optional `createGuides`.
+- `x`/`y` field strings and option objects without `fieldType` infer finite numeric data as quantitative and
+  other supported scalar data as nominal. Explicit `fieldType` remains authoritative for ordinal numeric categories
+  and temporal fields.
 - Aggregate, ranged, vertical/horizontal, group/stack/fill/overlay/diverging behavior stays owned by the existing bar
   position and `color.layout` policies. The facade does not introduce a second layout option.
 - Constant appearance belongs to `bar`; field-driven color stays top-level. Width reuses the exact `encodeBarWidth`

@@ -33,6 +33,22 @@ test("creates the shortest aggregate bar plot with stable defaults", () => {
   assert.equal(source.semanticSpec.layers.length, 0);
 });
 
+test("infers bar position field types for string shorthand", () => {
+  const program = base().createBarPlot({
+    x: "category",
+    y: "value",
+    guides: false
+  });
+  const { x, y } = program.semanticSpec.layers[0].encoding;
+
+  assert.equal(x.field, "category");
+  assert.equal(x.fieldType, "nominal");
+  assert.equal(y.field, "value");
+  assert.equal(y.fieldType, "quantitative");
+  assert.equal(y.aggregate, "mean");
+  assert.equal(program.graphicSpec.objects.barPlot.items.length, 2);
+});
+
 test("forwards grouped bar layout, width, and appearance without retaining input", () => {
   const options = {
     id: "bars",

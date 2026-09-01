@@ -2,6 +2,7 @@ import { resolveOptionalUserId, validateUserId } from "../../core/identifiers.js
 import { isPlainObject } from "../../core/immutable.js";
 import { validateOptionObject } from "../../core/validation.js";
 import { findDataset } from "../../selectors/datasets.js";
+import { isNominalValue } from "../../grammar/scales/fields.js";
 import { hasLayer } from "../../selectors/layers.js";
 
 export function validateFacadeOptions(args, supported, operation) {
@@ -60,6 +61,25 @@ export function normalizeFieldEncoding(value, label) {
 export function normalizeEncoding(value, label) {
   if (value === undefined) return undefined;
   return normalizeFieldEncoding(value, label);
+}
+
+export function inferFacadeFieldType(program, data, encoding, label) {
+  if (encoding.fieldType !== undefined) return encoding.fieldType;
+  if (typeof encoding.field !== "string" || encoding.field.length === 0) {
+    throw new TypeError(`${label} field must be a non-empty string.`);
+  }
+  const dataset = findDataset(program, data);
+  const values = dataset.values
+    .map(row => row?.[encoding.field])
+    .filter(value => value !== undefined && value !== null && value !== "");
+  if (values.length === 0) {
+    throw new Error(`${label} field "${encoding.field}" has no values.`);
+  }
+  if (values.every(Number.isFinite)) return "quantitative";
+  if (values.every(isNominalValue)) return "nominal";
+  throw new Error(
+    `${label} field "${encoding.field}" requires an explicit fieldType.`
+  );
 }
 
 export function normalizeStrokeDashEncoding(
