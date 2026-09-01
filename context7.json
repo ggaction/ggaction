@@ -1,0 +1,37 @@
+{
+  "$schema": "https://context7.com/schema/context7.json",
+  "projectTitle": "ggaction",
+  "description": "An immutable, traceable JavaScript grammar for building, revising, inspecting, and rendering charts through explicit graphical actions.",
+  "branch": "main",
+  "folders": [
+    "docs"
+  ],
+  "excludeFolders": [
+    "docs/_sources",
+    "docs/assets",
+    "docs/README.md"
+  ],
+  "excludeFiles": [
+    "AGENTS.md",
+    "CHANGELOG.md",
+    "CODE_OF_CONDUCT.md",
+    "CONTRIBUTING.md",
+    "llms-full.txt",
+    "llms.txt"
+  ],
+  "rules": [
+    "Use Node.js 20 or newer and ECMAScript modules; CommonJS require() is not supported.",
+    "Start ordinary charts with chart().createCanvas().createData({ values }) and keep values as an array of plain row objects.",
+    "ChartProgram is immutable: assign or return the ChartProgram produced by each action instead of expecting in-place mutation.",
+    "Import from ggaction/basic only for creating and rendering scatter, line, bar, histogram, or heatmap charts; import from ggaction for editing, selection, composition, alternative coordinates, or statistical layers.",
+    "Render only after authoring: use render(program, canvasContext) in the browser, or the ggaction/svg, ggaction/png, and ggaction/pdf adapters for those outputs.",
+    "Use documented domain actions for normal chart authoring; use ggaction/extension primitives only when authoring custom actions.",
+    "Provide explicit resource IDs when multiple datasets, marks, scales, coordinate systems, or child programs make a target ambiguous.",
+    "Do not expect an automatic semantic-to-graphic compiler; each domain action materializes the graphics required by its semantic change."
+  ],
+  "previousVersions": [
+    {
+      "tag": "v0.0.11"
+    }
+  ]
+}

@@ -219,6 +219,7 @@ browser entry. See the [local MCP guide](https://ggaction.github.io/ggaction/mcp
 - [Tutorials and Examples](https://ggaction.github.io/ggaction/tutorials/)
 - [Action Reference](https://ggaction.github.io/ggaction/reference/actions/)
 - [Local MCP for LLM Chart Authoring](https://ggaction.github.io/ggaction/mcp/)
+- [Context7 library](https://context7.com/ggaction/ggaction) — use the library ID `/ggaction/ggaction`
 - [Concepts](https://ggaction.github.io/ggaction/concepts/chart-program/)
 - [Supported Features](https://ggaction.github.io/ggaction/supported-features/)
 
