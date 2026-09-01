@@ -173,7 +173,8 @@ export function normalizeContinuousLegend(args, kind) {
   };
 }
 
-function selectCandidate(program, requested, candidates) {
+export function selectLegendLayer(program, requested, predicate) {
+  const candidates = program.semanticSpec.layers.filter(predicate);
   if (requested === undefined) return candidates.length === 1
     ? candidates[0]
     : undefined;
@@ -182,11 +183,12 @@ function selectCandidate(program, requested, candidates) {
 }
 
 export function resolveContinuousPoint(program, requested, channel) {
-  const candidates = program.semanticSpec.layers.filter(layer =>
-    layer.mark?.type === "point" &&
-    layer.encoding?.[channel]?.scale !== undefined
+  const layer = selectLegendLayer(
+    program,
+    requested,
+    candidate => candidate.mark?.type === "point" &&
+      candidate.encoding?.[channel]?.scale !== undefined
   );
-  const layer = selectCandidate(program, requested, candidates);
   if (layer === undefined) {
     throw new Error(
       requested === undefined
@@ -198,11 +200,12 @@ export function resolveContinuousPoint(program, requested, channel) {
 }
 
 export function resolveContinuousColorLayer(program, requested) {
-  const candidates = program.semanticSpec.layers.filter(layer =>
-    ["point", "bar", "rect"].includes(layer.mark?.type) &&
-    layer.encoding?.color?.scale !== undefined
+  const layer = selectLegendLayer(
+    program,
+    requested,
+    candidate => ["point", "bar", "rect"].includes(candidate.mark?.type) &&
+      candidate.encoding?.color?.scale !== undefined
   );
-  const layer = selectCandidate(program, requested, candidates);
   if (layer === undefined) {
     throw new Error(
       requested === undefined

@@ -1,5 +1,8 @@
 import { cloneAndFreeze, isPlainObject } from "../../../core/immutable.js";
-import { MARK_GRAPHIC_PROPERTIES } from "../../../grammar/markSelection.js";
+import {
+  MARK_GRAPHIC_PROPERTIES,
+  selectMarkItemKeys
+} from "../../../grammar/markSelection.js";
 import { unionConcreteGraphicBounds } from
   "../../../grammar/schemas/graphicBounds.js";
 
@@ -128,4 +131,21 @@ export function finalizeItems(program, layer, grain, definitions, graphicType) {
       ))
     });
   }));
+}
+
+export function reorderHighlightedItems(program, layer, definitions) {
+  let ordered = definitions;
+  for (const config of Object.values(
+    program.materializationConfigs.highlights ?? {}
+  )) {
+    if (config.target !== layer.id || config.bringToFront !== true) continue;
+    const selection = program.materializationConfigs.selections?.[config.selection];
+    if (selection?.target !== layer.id) continue;
+    const selected = new Set(selectMarkItemKeys(ordered, selection.selector));
+    ordered = [
+      ...ordered.filter(definition => !selected.has(definition.key)),
+      ...ordered.filter(definition => selected.has(definition.key))
+    ];
+  }
+  return ordered;
 }

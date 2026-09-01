@@ -8,6 +8,7 @@ import {
 import {
   assertMarkAvailable,
   applyLayeredMarkInheritance,
+  editMarkGraphic,
   materializeInheritedMark,
   resolveLayeredMarkInheritance,
   resolveMarkId,
@@ -68,6 +69,17 @@ function validatePolarLineConfig(layer, config) {
   if ((config.curve ?? "linear") !== "linear") {
     throw new Error("Polar line position currently requires curve \"linear\".");
   }
+}
+
+function applyLineMaterialization(program, id, materialization, opacity) {
+  return editMarkGraphic(program, id, {
+    length: materialization.commands.length,
+    commands: materialization.commands,
+    stroke: materialization.strokes,
+    strokeWidth: materialization.strokeWidths,
+    strokeDash: materialization.strokeDashes,
+    ...(opacity === undefined ? {} : { opacity })
+  });
 }
 
 const createLineMark = action(
@@ -217,36 +229,12 @@ const rematerializeLineMark = action(
         existingChildren,
         defaults: { stroke: DEFAULT_LINE_STROKE, strokeWidth: DEFAULT_LINE_WIDTH }
       });
-      let next = resolved
-        .editGraphics({
-          target: id,
-          property: "length",
-          value: materialization.commands.length
-        })
-        .editGraphics({
-          target: id,
-          property: "commands",
-          value: materialization.commands
-        })
-        .editGraphics({ target: id, property: "stroke", value: materialization.strokes })
-        .editGraphics({
-          target: id,
-          property: "strokeWidth",
-          value: materialization.strokeWidths
-        })
-        .editGraphics({
-          target: id,
-          property: "strokeDash",
-          value: materialization.strokeDashes
-        });
-      if (config.opacity !== undefined) {
-        next = next.editGraphics({
-          target: id,
-          property: "opacity",
-          value: config.opacity
-        });
-      }
-      return next;
+      return applyLineMaterialization(
+        resolved,
+        id,
+        materialization,
+        config.opacity
+      );
     }
 
     if (
@@ -296,28 +284,12 @@ const rematerializeLineMark = action(
       defaults: { stroke: DEFAULT_LINE_STROKE, strokeWidth: DEFAULT_LINE_WIDTH }
     });
 
-    let next = resolved
-      .editGraphics({
-        target: id,
-        property: "length",
-        value: materialization.commands.length
-      })
-      .editGraphics({ target: id, property: "commands", value: materialization.commands })
-      .editGraphics({ target: id, property: "stroke", value: materialization.strokes })
-      .editGraphics({ target: id, property: "strokeWidth", value: materialization.strokeWidths })
-      .editGraphics({
-        target: id,
-        property: "strokeDash",
-        value: materialization.strokeDashes
-      });
-    if (config.opacity !== undefined) {
-      next = next.editGraphics({
-        target: id,
-        property: "opacity",
-        value: config.opacity
-      });
-    }
-    return next;
+    return applyLineMaterialization(
+      resolved,
+      id,
+      materialization,
+      config.opacity
+    );
   }
 );
 

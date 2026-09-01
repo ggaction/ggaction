@@ -14,7 +14,9 @@ import { findCanvasGraphic, resolveLegendGraphicPlacement } from
   "../../../materialization/graphicHierarchy.js";
 import {
   formatContinuousValues,
-  sampleContinuousValues
+  sampleContinuousValues,
+  selectLegendLayer,
+  styleContinuousText
 } from "./continuous/common.js";
 
 const SIZE_OPTIONS = Object.freeze(["target", "count"]);
@@ -25,13 +27,7 @@ export function isSizeLegendPoint(layer) {
 }
 
 export function resolveSizeLegendPoint(program, requested) {
-  const candidates = program.semanticSpec.layers.filter(isSizeLegendPoint);
-  const layer = requested === undefined
-    ? candidates.length === 1 ? candidates[0] : undefined
-    : (() => {
-        const candidate = findLayer(program, requested);
-        return candidates.includes(candidate) ? candidate : undefined;
-      })();
+  const layer = selectLegendLayer(program, requested, isSizeLegendPoint);
   if (layer === undefined) {
     throw new Error(
       requested === undefined
@@ -61,26 +57,6 @@ function bounds(program) {
     throw new Error("Legend layout requires Canvas bounds and width.");
   }
   return value;
-}
-
-function styleText(program, id, { title = false, style } = {}) {
-  const resolved = style ?? {
-    color: title ? DEFAULT_COLORS.strongText : DEFAULT_COLORS.text,
-    fontSize: title ? 13 : 12,
-    fontFamily: DEFAULT_FONT_FAMILY,
-    fontWeight: title ? 600 : "normal"
-  };
-  return program
-    .editGraphics({
-      target: id,
-      property: "fill",
-      value: resolved.color
-    })
-    .editGraphics({ target: id, property: "fontSize", value: resolved.fontSize })
-    .editGraphics({ target: id, property: "fontFamily", value: resolved.fontFamily })
-    .editGraphics({ target: id, property: "fontWeight", value: resolved.fontWeight })
-    .editGraphics({ target: id, property: "textAlign", value: "left" })
-    .editGraphics({ target: id, property: "textBaseline", value: "middle" });
 }
 
 export const rematerializeSizeLegend = action(
@@ -151,17 +127,30 @@ export const rematerializeSizeLegend = action(
       .editGraphics({ target: "sizeLegendTitle", property: "x", value: originX })
       .editGraphics({ target: "sizeLegendTitle", property: "y", value: titleY })
       .editGraphics({ target: "sizeLegendTitle", property: "text", value: title });
-    next = styleText(next, "sizeLegendLabels", {
-      style: currentConfig.inheritAppearance === true
+    next = styleContinuousText(
+      next,
+      "sizeLegendLabels",
+      currentConfig.inheritAppearance === true
         ? categorical.labels
-        : undefined
-    });
-    return styleText(next, "sizeLegendTitle", {
-      title: true,
-      style: currentConfig.inheritAppearance === true
+        : {
+            color: DEFAULT_COLORS.text,
+            fontSize: 12,
+            fontFamily: DEFAULT_FONT_FAMILY,
+            fontWeight: "normal"
+          }
+    );
+    return styleContinuousText(
+      next,
+      "sizeLegendTitle",
+      currentConfig.inheritAppearance === true
         ? categorical.titleStyle
-        : undefined
-    });
+        : {
+            color: DEFAULT_COLORS.strongText,
+            fontSize: 13,
+            fontFamily: DEFAULT_FONT_FAMILY,
+            fontWeight: 600
+          }
+    );
   }
 );
 

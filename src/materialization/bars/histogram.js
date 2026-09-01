@@ -13,8 +13,7 @@ import { resolveBarColorLayout } from "../../grammar/bars/policy.js";
 import { layoutSeriesPartition } from "../../grammar/seriesLayout.js";
 import {
   DEFAULT_BAR_FILL,
-  DEFAULT_BAR_STROKE,
-  DEFAULT_BAR_STROKE_WIDTH
+  resolveBarAppearance
 } from "./resolve.js";
 
 export function deriveHistogramSegments({
@@ -141,23 +140,7 @@ export function deriveHistogramRectangles(required, resolved) {
         config.fill ??
         existing[index]?.properties.fill ??
         DEFAULT_BAR_FILL,
-      stroke:
-        appearance.stroke === false
-          ? "transparent"
-          : appearance.stroke ?? config.stroke ??
-            existing[index]?.properties.stroke ??
-            DEFAULT_BAR_STROKE,
-      strokeWidth:
-        appearance.stroke === false
-          ? 0
-          : appearance.strokeWidth ?? config.strokeWidth ??
-            existing[index]?.properties.strokeWidth ??
-            DEFAULT_BAR_STROKE_WIDTH,
-      ...((appearance.opacity ?? config.opacity) === undefined
-        ? (existing[index]?.properties.opacity === undefined
-            ? {}
-            : { opacity: existing[index].properties.opacity })
-        : { opacity: appearance.opacity ?? config.opacity })
+      ...resolveBarAppearance(config, existing[index]?.properties)
     };
   });
 }

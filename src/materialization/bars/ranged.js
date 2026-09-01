@@ -1,6 +1,10 @@
 import { mapContinuousScaleValues, mapOrdinalPositionValues, mapOrdinalValues } from "../../grammar/scales/index.js";
 import { resolveBarWidth } from "../../grammar/bars/geometry.js";
-import { DEFAULT_BAR_FILL, DEFAULT_BAR_STROKE, DEFAULT_BAR_STROKE_WIDTH } from "./resolve.js";
+import {
+  DEFAULT_BAR_FILL,
+  DEFAULT_BAR_STROKE,
+  resolveBarAppearance
+} from "./resolve.js";
 
 export function deriveRangedRectangles(required, program, width) {
   const { layer, dataset } = required;
@@ -32,22 +36,20 @@ export function deriveRangedRectangles(required, program, width) {
   return dataset.values.map((_, index) => vertical ? {
     x: centers[index] - band / 2, y: Math.min(first[index], second[index]), width: band,
     height: Math.abs(second[index] - first[index]), fill: fills[index],
-    stroke: appearance.stroke === false
-      ? "transparent"
-      : appearance.stroke ?? (color === undefined ? config.stroke ?? DEFAULT_BAR_STROKE : fills[index]),
-    strokeWidth: appearance.stroke === false
-      ? 0
-      : appearance.strokeWidth ?? config.strokeWidth ?? DEFAULT_BAR_STROKE_WIDTH,
-    opacity: appearance.opacity ?? config.opacity ?? 1
+    ...resolveBarAppearance(
+      config,
+      undefined,
+      color === undefined ? DEFAULT_BAR_STROKE : fills[index],
+      1
+    )
   } : {
     x: Math.min(first[index], second[index]), y: centers[index] - band / 2,
     width: Math.abs(second[index] - first[index]), height: band, fill: fills[index],
-    stroke: appearance.stroke === false
-      ? "transparent"
-      : appearance.stroke ?? (color === undefined ? config.stroke ?? DEFAULT_BAR_STROKE : fills[index]),
-    strokeWidth: appearance.stroke === false
-      ? 0
-      : appearance.strokeWidth ?? config.strokeWidth ?? DEFAULT_BAR_STROKE_WIDTH,
-    opacity: appearance.opacity ?? config.opacity ?? 1
+    ...resolveBarAppearance(
+      config,
+      undefined,
+      color === undefined ? DEFAULT_BAR_STROKE : fills[index],
+      1
+    )
   });
 }

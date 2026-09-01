@@ -8,6 +8,27 @@ export const DEFAULT_BAR_FILL = DEFAULT_COLORS.mark;
 export const DEFAULT_BAR_STROKE = "white";
 export const DEFAULT_BAR_STROKE_WIDTH = 0.5;
 
+export function resolveBarAppearance(
+  config,
+  existing,
+  defaultStroke = DEFAULT_BAR_STROKE,
+  defaultOpacity
+) {
+  const appearance = config.barAppearance ?? {};
+  const opacity = appearance.opacity ?? config.opacity ??
+    existing?.opacity ?? defaultOpacity;
+  return {
+    stroke: appearance.stroke === false
+      ? "transparent"
+      : appearance.stroke ?? config.stroke ?? existing?.stroke ?? defaultStroke,
+    strokeWidth: appearance.stroke === false
+      ? 0
+      : appearance.strokeWidth ?? config.strokeWidth ??
+        existing?.strokeWidth ?? DEFAULT_BAR_STROKE_WIDTH,
+    ...(opacity === undefined ? {} : { opacity })
+  };
+}
+
 export function requireCompleteBar(program, id) {
   const layer = findLayer(program, id);
 
