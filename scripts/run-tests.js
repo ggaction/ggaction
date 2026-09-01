@@ -108,11 +108,9 @@ function matchesSelector(file, root, selector) {
 }
 
 export function collectTestFiles(suite = "all", root = testRoot, selectors = []) {
-  const requested = suite === "all"
+  const requested = suite === "all" || suite === "coverage"
     ? new Set(NORMAL_SUITES)
-    : suite === "coverage"
-      ? new Set([...NORMAL_SUITES, "realistic"])
-      : new Set([suite]);
+    : new Set([suite]);
   return walk(root)
     .filter(file => requested.has(classifyTestFile(file, root)))
     .filter(file => selectors.length === 0 || selectors.some(
@@ -129,9 +127,29 @@ function coverageSummary(output) {
     `${Object.keys(CRITICAL_COVERAGE_FLOORS).length} critical floors passed.\n`;
 }
 
-export function testRunnerArguments(suite, files) {
-  const concurrency = ["coverage", "realistic"].includes(suite) ? 2 : 4;
+export function parseTestShard(argument) {
+  const match = /^--shard=(\d+)\/(\d+)$/.exec(argument);
+  if (match === null) {
+    throw new Error(
+      `Invalid test shard "${argument}". Expected --shard=<index>/<total>.`
+    );
+  }
+  const index = Number(match[1]);
+  const total = Number(match[2]);
+  if (index < 1 || total < 1 || index > total) {
+    throw new Error(
+      `Invalid test shard "${argument}". Expected 1 <= index <= total.`
+    );
+  }
+  return Object.freeze({ index, total });
+}
+
+export function testRunnerArguments(suite, files, shard) {
+  const concurrency = suite === "realistic" ? 2 : 4;
   const args = ["--test", `--test-concurrency=${concurrency}`];
+  if (shard !== undefined) {
+    args.push(`--test-shard=${shard.index}/${shard.total}`);
+  }
   if (suite === "coverage") {
     args.push(
       "--experimental-test-coverage",
@@ -145,7 +163,7 @@ export function testRunnerArguments(suite, files) {
   return args;
 }
 
-function run(suite, selectors) {
+function run(suite, selectors, shard) {
   const files = collectTestFiles(suite, testRoot, selectors);
   if (files.length === 0) {
     if (suite === "gates" && selectors.length === 0) {
@@ -156,7 +174,7 @@ function run(suite, selectors) {
     throw new Error(`No test files found for suite "${suite}"${suffix}.`);
   }
   const coverage = suite === "coverage";
-  const args = testRunnerArguments(suite, files);
+  const args = testRunnerArguments(suite, files, shard);
   const result = spawnSync(process.execPath, args, {
     cwd: repositoryRoot,
     ...(coverage
@@ -189,11 +207,22 @@ if (
     "coverage"
   ]);
   const suite = accepted.has(requested) ? requested : "all";
-  const selectors = accepted.has(requested)
+  const arguments_ = accepted.has(requested)
     ? process.argv.slice(3)
     : process.argv.slice(2);
+  const shardArguments = arguments_.filter(argument => argument.startsWith("--shard"));
+  if (shardArguments.length > 1) {
+    throw new Error("Only one --shard=<index>/<total> option is allowed.");
+  }
+  const shard = shardArguments.length === 0
+    ? undefined
+    : parseTestShard(shardArguments[0]);
+  const selectors = arguments_.filter(argument => !argument.startsWith("--shard"));
+  if (shard !== undefined && suite !== "realistic") {
+    throw new Error("Test sharding is supported only for the realistic suite.");
+  }
   if (suite === "coverage" && selectors.length > 0) {
     throw new Error("Coverage requires the complete normal test suite.");
   }
-  run(suite, selectors);
+  run(suite, selectors, shard);
 }

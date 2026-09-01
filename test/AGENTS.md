@@ -21,6 +21,7 @@ Apply these instructions to tests, fixtures, examples, generated artifacts, and 
 - Pair representative examples or images with focused semantic, geometric, mathematical, package, and architecture assertions. Visual output alone is not sufficient evidence.
 - Pair fixed numeric cases with invariants such as monotonicity, conservation, non-negativity, interval containment, and stable ordering for continuous or statistical behavior.
 - Match coverage to the affected layer: pure numeric oracles for computation, state and order assertions for structure, concrete properties plus rematerialization for geometry/style, and pixels only for representative visual differences.
+- Keep source-coverage instrumentation and realistic corpus sweeps separate. Run both gates, but do not reinstrument the realistic suite inside coverage; partition realistic CI into exhaustive, disjoint test-file shards instead.
 - Split a large test module by contract owner or lifecycle concern, not an arbitrary line target. Keep explicit primitive programs, declarative manifests, and independent oracles intact.
 
 ## Active Review Gates
