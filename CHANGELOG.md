@@ -4,6 +4,8 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+## [0.0.11] - 2026-09-02
+
 ### Added
 
 - Added production guidance for accessibility, compatibility, responsive
@@ -15,6 +17,12 @@ All notable changes to `ggaction` are recorded in this file.
 - Added binned quantitative line aggregates with shared position-scale reuse,
   stable series grouping, path ordering, selection, and rematerialization
   behavior.
+- Added text labels for complete arc sectors, with anchors derived from final
+  annular geometry and replay after Canvas, scale, padding, or inner-radius
+  changes.
+- Added a provenance-verified 50-source TidyTuesday corpus and deterministic
+  smoke, deep, and realistic scenario runners for data, mark, encoding, guide,
+  scale, lifecycle, facade, and renderer qualification.
 
 ### Changed
 
@@ -26,6 +34,14 @@ All notable changes to `ggaction` are recorded in this file.
   broader unsupported interaction and animation wording.
 - Expanded documentation search and the LLM routing index from prose-only
   excerpts to complete canonical-page and technical-symbol coverage.
+- Inferred quantitative versus nominal bar positions from field-string
+  shorthand, inferred omitted rule datum types from scalar values, and allowed
+  compatible datum rules to share grouped or stacked measure scales.
+- Hardened transforms, scales, layouts, selections, legends, and Canvas, PNG,
+  SVG, and PDF rendering with deterministic finite-value, cardinality,
+  geometry, native-backend, and output-size boundaries.
+- Updated the Canvas runtime and browser build dependencies while preserving
+  explicit package and browser-bundle headroom across supported platforms.
 
 ### Fixed
 
@@ -44,6 +60,14 @@ All notable changes to `ggaction` are recorded in this file.
   bands aligned with existing lines.
 - Preserved direct quantitative line values at their row grain instead of
   collapsing repeated positions through the aggregate-line path.
+- Aligned temporal bar annotations with their final geometry, spanned temporal
+  axis baselines across the plot, and composed multi-part UTC tick formats
+  without losing date or time components.
+- Preserved encoded ranged-bar outlines and the default or encoded radius of
+  path-shaped points across materialization and rendering.
+- Kept discretized heatmap domains nondegenerate, reserved data-aware facet
+  guide space, and made realistic gallery charts readable without weakening
+  the diagnostic corpus.
 
 ## [0.0.10] - 2026-08-11
 
@@ -255,6 +279,7 @@ All notable changes to `ggaction` are recorded in this file.
 - Cartesian charts are the complete current path. Polar semantic tokens exist only where explicitly documented and do
   not imply complete polar rendering.
 
+[0.0.11]: https://github.com/ggaction/ggaction/releases/tag/v0.0.11
 [0.0.10]: https://github.com/ggaction/ggaction/releases/tag/v0.0.10
 [0.0.9]: https://github.com/ggaction/ggaction/releases/tag/v0.0.9
 [0.0.8]: https://github.com/ggaction/ggaction/releases/tag/v0.0.8
