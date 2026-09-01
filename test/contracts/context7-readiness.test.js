@@ -16,6 +16,8 @@ const packageMetadata = JSON.parse(readFileSync(
   path.join(repositoryRoot, "package.json"),
   "utf8"
 ));
+const repositoryUrl = new URL(packageMetadata.repository.url.replace(/^git\+/, ""));
+const expectedContext7Url = `https://context7.com${repositoryUrl.pathname.replace(/\.git$/, "")}`;
 
 const allowedKeys = new Set([
   "$schema",
@@ -90,15 +92,9 @@ test("Context7 configuration matches the supported repository schema", () => {
   if (config.redirect !== undefined) {
     assertBoundedString(config.redirect, "redirect", 1, 500);
   }
-  assert.equal(
-    config.url === undefined,
-    config.public_key === undefined,
-    "ownership url and public_key must be added together"
-  );
-  if (config.url !== undefined) {
-    assert.doesNotThrow(() => new URL(config.url));
-    assertBoundedString(config.public_key, "public_key", 1, 100);
-  }
+  assert.equal(config.url, expectedContext7Url);
+  assertBoundedString(config.public_key, "public_key", 1, 100);
+  assert.match(config.public_key, /^pk_[A-Za-z0-9]+$/);
 });
 
 test("Context7 indexes canonical public documentation without duplicate bundles", () => {

@@ -1,5 +1,7 @@
 {
   "$schema": "https://context7.com/schema/context7.json",
+  "url": "https://context7.com/ggaction/ggaction",
+  "public_key": "pk_lRnfPRoUGB8BFds9D65Z9",
   "projectTitle": "ggaction",
   "description": "An immutable, traceable JavaScript grammar for building, revising, inspecting, and rendering charts through explicit graphical actions.",
   "branch": "main",
