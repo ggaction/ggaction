@@ -1417,7 +1417,13 @@ function observeFactorEffects(spec, program, factors, resolution) {
 
 function makeRecipe(spec, complexity) {
   const datasets = realisticDatasetIds();
-  const factors = Object.freeze(factorsFor(spec, datasets[0]));
+  let cachedDefaultFactors;
+  const defaultFactors = () => {
+    if (cachedDefaultFactors === undefined) {
+      cachedDefaultFactors = Object.freeze(factorsFor(spec, datasets[0]));
+    }
+    return cachedDefaultFactors;
+  };
   let cachedFactors;
   let cachedResolution;
   const resolve = values => {
@@ -1433,11 +1439,13 @@ function makeRecipe(spec, complexity) {
     generation: "balanced-per-dataset",
     complexity,
     enforceFactorEffects: true,
+    get factors() {
+      return defaultFactors();
+    },
     ...(spec.kind === "facet"
       ? { coverageSchedule: FACET_AXES_COVERAGE_SCHEDULE }
       : {}),
     datasets,
-    factors,
     factorsForDataset(dataset) {
       const value = factorsFor(spec, dataset);
       return value === undefined ? undefined : Object.freeze(value);

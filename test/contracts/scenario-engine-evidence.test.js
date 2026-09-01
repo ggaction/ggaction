@@ -1,4 +1,8 @@
 import assert from "node:assert/strict";
+import { spawnSync } from "node:child_process";
+import { mkdtempSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
+import path from "node:path";
 import test from "node:test";
 
 import {
@@ -10,6 +14,27 @@ import {
   scenarioSelectionPacingTarget,
   validateScenarioFactorEffects
 } from "../support/scenarios/engine.js";
+
+test("imports the scenario engine without the optional TidyTuesday cache", () => {
+  const emptyCache = mkdtempSync(path.join(tmpdir(), "ggaction-empty-tidytuesday-"));
+  try {
+    const engineUrl = new URL("../support/scenarios/engine.js", import.meta.url).href;
+    const result = spawnSync(process.execPath, [
+      "--input-type=module",
+      "--eval",
+      `await import(${JSON.stringify(engineUrl)});`
+    ], {
+      encoding: "utf8",
+      env: {
+        ...process.env,
+        GGACTION_TEST_TIDYTUESDAY_CACHE_ROOT: emptyCache
+      }
+    });
+    assert.equal(result.status, 0, result.stderr);
+  } finally {
+    rmSync(emptyCache, { recursive: true, force: true });
+  }
+});
 
 test("paces large recipe reservations across every eligible dataset", () => {
   assert.equal(scenarioSelectionPacingTarget(327, 1, 50), 7);

@@ -2591,12 +2591,18 @@ function makeRecipe({
   schedule = coverageSchedule(variants)
 }) {
   const datasets = realisticDatasetIds();
-  const factors = factorContract(INITIAL_FACTOR_DATASET, capability, variants);
-  if (factors === undefined) {
-    throw new Error(
-      `${INITIAL_FACTOR_DATASET} must remain eligible for realistic ${capability} recipes.`
-    );
-  }
+  let cachedDefaultFactors;
+  const defaultFactors = () => {
+    if (cachedDefaultFactors === undefined) {
+      cachedDefaultFactors = factorContract(INITIAL_FACTOR_DATASET, capability, variants);
+      if (cachedDefaultFactors === undefined) {
+        throw new Error(
+          `${INITIAL_FACTOR_DATASET} must remain eligible for realistic ${capability} recipes.`
+        );
+      }
+    }
+    return cachedDefaultFactors;
+  };
   return Object.freeze({
     id,
     suite: "realistic",
@@ -2604,7 +2610,9 @@ function makeRecipe({
     complexity,
     enforceFactorEffects: true,
     datasets: Object.freeze(datasets),
-    factors,
+    get factors() {
+      return defaultFactors();
+    },
     expectedDirectActions: actions,
     ...(actionsFor === undefined ? {} : { expectedDirectActionsFor: actionsFor }),
     coverageSchedule: schedule,

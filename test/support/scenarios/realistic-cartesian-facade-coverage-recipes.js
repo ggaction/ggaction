@@ -45,7 +45,9 @@ const CANVAS = Object.freeze({
 
 function freeze(value) {
   if (value === null || typeof value !== "object" || Object.isFrozen(value)) return value;
-  for (const child of Object.values(value)) freeze(child);
+  for (const descriptor of Object.values(Object.getOwnPropertyDescriptors(value))) {
+    if (Object.hasOwn(descriptor, "value")) freeze(descriptor.value);
+  }
   return Object.freeze(value);
 }
 
@@ -1240,8 +1242,16 @@ function sameValue(left, right) {
 function makeRecipe({ id, action, complexity, build }) {
   const datasets = freeze(realisticDatasetIds());
   const variants = VARIANTS[action];
-  const factors = factorContract(INITIAL_DATASET, variants);
-  if (factors === undefined) throw new Error(`${INITIAL_DATASET} must remain eligible for ${id}.`);
+  let cachedDefaultFactors;
+  const defaultFactors = () => {
+    if (cachedDefaultFactors === undefined) {
+      cachedDefaultFactors = factorContract(INITIAL_DATASET, variants);
+      if (cachedDefaultFactors === undefined) {
+        throw new Error(`${INITIAL_DATASET} must remain eligible for ${id}.`);
+      }
+    }
+    return cachedDefaultFactors;
+  };
   const schedule = coverageSchedule(variants);
   return freeze({
     id,
@@ -1250,7 +1260,9 @@ function makeRecipe({ id, action, complexity, build }) {
     complexity,
     enforceFactorEffects: true,
     datasets,
-    factors,
+    get factors() {
+      return defaultFactors();
+    },
     expectedDirectActions: freeze([action]),
     coverageSchedule: schedule,
     minimumSelections: schedule.minimumSelections,
