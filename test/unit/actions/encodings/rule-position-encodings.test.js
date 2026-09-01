@@ -14,7 +14,6 @@ test("materializes full-span datum rules against plot bounds", () => {
     .createRuleMark({ id: "vertical" })
     .encodeX({
       datum: 25,
-      fieldType: "quantitative",
       scale: { domain: [0, 100] }
     });
   const horizontal = vertical
@@ -37,6 +36,10 @@ test("materializes full-span datum rules against plot bounds", () => {
       strokeDash: [],
       opacity: 1
     }
+  );
+  assert.equal(
+    vertical.semanticSpec.layers[0].encoding.x.fieldType,
+    "quantitative"
   );
   assert.deepEqual(
     horizontal.graphicSpec.objects.horizontal.items[0].properties,
@@ -189,6 +192,10 @@ test("validates rule endpoint contracts atomically", () => {
   assert.throws(
     () => rule.encodeX({ field: "x1" }),
     /requires fieldType/
+  );
+  assert.throws(
+    () => rule.encodeX({ datum: {} }),
+    /datum requires an explicit fieldType/
   );
   assert.throws(
     () => rule.encodeX({ datum: Infinity, fieldType: "quantitative" }),

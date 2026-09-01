@@ -1134,20 +1134,33 @@ type RulePositionEncodingBase = RulePositionValue & {
   coordinate?: string;
 };
 
-export type RulePositionEncodingOptions = RulePositionEncodingBase & (
-  | {
-      fieldType: "quantitative";
-      scale?: NonPointQuantitativePositionScaleOptions;
-    }
-  | {
-      fieldType: "temporal";
-      scale?: NonPointTemporalPositionScaleOptions;
-    }
-  | {
-      fieldType: "nominal" | "ordinal";
-      scale?: NonPointCategoricalPositionScaleOptions;
-    }
-);
+type InferredRuleDatumPositionEncodingOptions = {
+  field?: never;
+  datum: unknown;
+  target?: string;
+  coordinate?: string;
+  fieldType?: undefined;
+  scale?:
+    | NonPointQuantitativePositionScaleOptions
+    | NonPointCategoricalPositionScaleOptions;
+};
+
+export type RulePositionEncodingOptions =
+  | InferredRuleDatumPositionEncodingOptions
+  | RulePositionEncodingBase & (
+    | {
+        fieldType: "quantitative";
+        scale?: NonPointQuantitativePositionScaleOptions;
+      }
+    | {
+        fieldType: "temporal";
+        scale?: NonPointTemporalPositionScaleOptions;
+      }
+    | {
+        fieldType: "nominal" | "ordinal";
+        scale?: NonPointCategoricalPositionScaleOptions;
+      }
+    );
 
 type SecondaryRulePositionEncodingOptions = RulePositionEncodingBase & {
   fieldType: FieldType;

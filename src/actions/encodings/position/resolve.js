@@ -1,6 +1,7 @@
 import { validateUserId } from "../../../core/identifiers.js";
 import { getPositionCoordinateDefaults } from "../../../grammar/coordinates.js";
 import {
+  isNominalValue,
   readNominalField,
   readQuantitativeField,
   readScaleField,
@@ -32,6 +33,12 @@ const POSITION_ENCODING_OPTIONS = Object.freeze([
   "field", "datum", "target", "fieldType", "scale", "coordinate",
   "aggregate", "bin", "stack", "weight"
 ]);
+
+function inferRuleDatumFieldType(datum, operation) {
+  if (Number.isFinite(datum)) return "quantitative";
+  if (isNominalValue(datum)) return "nominal";
+  throw new Error(`${operation} datum requires an explicit fieldType.`);
+}
 
 function validateCoordinateFamily(layer, channel, operation) {
   const family = getPositionChannelDefinition(channel).family;
@@ -96,7 +103,7 @@ export function resolvePositionEncoding(program, channel, args, operation) {
     if (hasField === hasDatum) {
       throw new Error(`${operation} requires exactly one of field or datum for a rule mark.`);
     }
-    if (args.fieldType === undefined) {
+    if (hasField && args.fieldType === undefined) {
       throw new Error(`${operation} requires fieldType for a rule mark.`);
     }
   } else if (hasDatum) {
@@ -104,10 +111,12 @@ export function resolvePositionEncoding(program, channel, args, operation) {
   }
   const previous = layer.encoding?.[channel];
   const requestedFieldType = args.fieldType ?? previous?.fieldType ?? (
-    layer.mark.type === "arc" && channel === "theta" &&
-      ["count", "sum"].includes(args.aggregate)
-      ? "nominal"
-      : "quantitative"
+    layer.mark.type === "rule" && hasDatum
+      ? inferRuleDatumFieldType(args.datum, operation)
+      : layer.mark.type === "arc" && channel === "theta" &&
+          ["count", "sum"].includes(args.aggregate)
+        ? "nominal"
+        : "quantitative"
   );
   const fieldType = requestedFieldType === "nominal"
     ? "nominal"
