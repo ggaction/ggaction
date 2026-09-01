@@ -8,12 +8,17 @@ import {
   classifyTestFile,
   collectTestFiles,
   matchesCapabilityEntry,
+  parseTestShard,
   TEST_CAPABILITIES,
   testRunnerArguments
 } from "../../scripts/run-tests.js";
 import { collectReachableModules } from "../support/module-imports.js";
 
 const testRoot = fileURLToPath(new URL("../", import.meta.url));
+const ciWorkflow = readFileSync(
+  new URL("../../.github/workflows/ci.yml", import.meta.url),
+  "utf8"
+);
 
 function walk(directory) {
   return readdirSync(directory, { withFileTypes: true }).flatMap(entry => {
@@ -46,7 +51,7 @@ test("discovers every normal, render, and browser test recursively exactly once"
   }
 });
 
-test("separates network-backed corpus sweeps from the default suite", () => {
+test("separates network-backed corpus sweeps from source coverage", () => {
   const normal = collectTestFiles("all", testRoot);
   const realistic = collectTestFiles("realistic", testRoot);
 
@@ -58,8 +63,23 @@ test("separates network-backed corpus sweeps from the default suite", () => {
   assert.equal(normal.some(file => realistic.includes(file)), false);
   assert.deepEqual(
     new Set(collectTestFiles("coverage", testRoot)),
-    new Set([...normal, ...realistic])
+    new Set(normal)
   );
+});
+
+test("shards realistic CI after preparing its dataset cache once", () => {
+  assert.match(ciWorkflow, /^\s{2}realistic-data:\s*$/m);
+  assert.match(ciWorkflow, /^\s{4}needs: realistic-data\s*$/m);
+  assert.match(ciWorkflow, /^\s{8}shard: \[1, 2, 3, 4, 5, 6, 7\]\s*$/m);
+  assert.match(
+    ciWorkflow,
+    /npm run test:realistic -- --shard=\$\{\{ matrix\.shard \}\}\/7/
+  );
+  const coverageJob = ciWorkflow.slice(
+    ciWorkflow.indexOf("\n  coverage:"),
+    ciWorkflow.indexOf("\n  documentation:")
+  );
+  assert.doesNotMatch(coverageJob, /dataset|test:realistic/i);
 });
 
 test("does not discover programs or support modules as tests", () => {
@@ -197,7 +217,7 @@ test("caps file concurrency without changing file order or coverage policy", () 
   ]);
   assert.deepEqual(testRunnerArguments("coverage", files), [
     "--test",
-    "--test-concurrency=2",
+    "--test-concurrency=4",
     "--experimental-test-coverage",
     "--test-coverage-include=src/**/*.js",
     "--test-coverage-lines=94",
@@ -210,10 +230,33 @@ test("caps file concurrency without changing file order or coverage policy", () 
     "--test-concurrency=2",
     ...files
   ]);
+  assert.deepEqual(
+    testRunnerArguments("realistic", files, { index: 2, total: 7 }),
+    [
+      "--test",
+      "--test-concurrency=2",
+      "--test-shard=2/7",
+      ...files
+    ]
+  );
   assert.deepEqual(files, [
     "/repository/test/unit/example.test.js",
     "/repository/test/contracts/example.test.js"
   ]);
+});
+
+test("validates realistic shard coordinates before invoking Node", () => {
+  assert.deepEqual(parseTestShard("--shard=1/7"), { index: 1, total: 7 });
+  assert.deepEqual(parseTestShard("--shard=7/7"), { index: 7, total: 7 });
+  for (const value of [
+    "--shard",
+    "--shard=0/7",
+    "--shard=8/7",
+    "--shard=1/0",
+    "--shard=one/seven"
+  ]) {
+    assert.throws(() => parseTestShard(value), /Invalid test shard/);
+  }
 });
 
 test("maps every named capability entry to an exact file or prefix", () => {
