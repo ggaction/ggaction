@@ -23,8 +23,10 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - `position`: x=`"bottom" | "top"`, y=`"left" | "right"`; defaults는 bottom/left다.
 - `color`: non-empty string, 기본 theme text color.
 - `lineWidth`: non-negative finite number, 기본값 `1`; 0은 보이지 않는 line을 허용한다.
-- Effect: endpoint는 resolved scale range와 Canvas plot bounds에서 항상 재추론한다. semantic guide에는
-  scale만 저장하고 style과 endpoints는 graphical state다.
+- Effect: endpoint는 resolved scale range와 Canvas plot bounds에서 항상 재추론한다. Temporal aggregate-bar
+  time scale은 bar-center mapping을 위해 inset된 range를 유지하지만, axis line만 grid와 같은 complete plot
+  span을 사용해 baseline end cap을 노출하지 않는다. Reverse direction은 endpoint order에 반영한다. semantic
+  guide에는 scale만 저장하고 style과 endpoints는 graphical state다.
 
 ## Shared axis-tick contract
 

@@ -107,6 +107,12 @@ The selected coordinate ID is stored on each semantic axis. Canvas size and
 margin edits explicitly rematerialize positional scales and every connected
 axis component.
 
+A temporal aggregate-bar scale keeps its inset range for bar centers, ticks,
+and labels. Its axis baseline alone spans the complete plot edge, matching the
+crossing grid geometry so a differently colored zero-grid line cannot remain
+visible as end caps. Reversed scales reverse the stored baseline endpoints
+without changing that complete visible span.
+
 The trace preserves its decomposition:
 
 ```text
