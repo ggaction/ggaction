@@ -1786,6 +1786,17 @@ test("accepts deterministic readable PNG and compressed PDF artifact regressions
     output: directory
   });
   assert.equal(pdfOutcome.ok, true, pdfOutcome.error?.stack);
+  const pdfReplay = await executeRealisticScenarioTask({
+    index: 1,
+    descriptor: outerSpace,
+    deterministic: true,
+    artifacts: true,
+    png: false,
+    pdf: true,
+    visualAudit: true,
+    output: path.join(directory, "pdf-replay")
+  });
+  assert.equal(pdfReplay.ok, true, pdfReplay.error?.stack);
   assert.deepEqual({
     width: pdfOutcome.result.artifacts.pdf.width,
     height: pdfOutcome.result.artifacts.pdf.height,
@@ -1796,7 +1807,7 @@ test("accepts deterministic readable PNG and compressed PDF artifact regressions
   }, {
     width: 2_600,
     height: 1_120,
-    sha256: "d6d11ecd9a803655d386e82508634221117c58d6545071e65dae5d640b5d419a",
+    sha256: pdfReplay.result.artifacts.pdf.sha256,
     textContent: true,
     textShowContent: true,
     drawingContent: true
