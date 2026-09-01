@@ -42,6 +42,7 @@ export const TEST_CAPABILITIES = Object.freeze(Object.fromEntries(
     Object.freeze(entries.map(entry => normalizeCapabilityEntry(name, entry)))
   ])
 ));
+const REALISTIC_TEST_ENTRIES = TEST_CAPABILITIES.realistic ?? Object.freeze([]);
 
 const NORMAL_SUITES = Object.freeze([
   "unit",
@@ -50,7 +51,7 @@ const NORMAL_SUITES = Object.freeze([
   "gates",
   "docs"
 ]);
-const SPECIAL_SUITES = Object.freeze(["browser", "render"]);
+const SPECIAL_SUITES = Object.freeze(["browser", "realistic", "render"]);
 
 function walk(directory) {
   return readdirSync(directory, { withFileTypes: true }).flatMap(entry => {
@@ -61,6 +62,7 @@ function walk(directory) {
 
 export function classifyTestFile(file, root = testRoot) {
   const relative = path.relative(root, file);
+  const normalized = relative.split(path.sep).join("/");
   const [owner] = relative.split(path.sep);
   if (
     file.endsWith(".render.js") &&
@@ -69,6 +71,10 @@ export function classifyTestFile(file, root = testRoot) {
     return "render";
   }
   if (file.endsWith(".browser.js") && owner === "browser") return "browser";
+  if (
+    file.endsWith(".test.js") &&
+    REALISTIC_TEST_ENTRIES.some(entry => matchesCapabilityEntry(normalized, entry))
+  ) return "realistic";
   if (file.endsWith(".test.js") && NORMAL_SUITES.includes(owner)) return owner;
   return undefined;
 }
@@ -102,9 +108,11 @@ function matchesSelector(file, root, selector) {
 }
 
 export function collectTestFiles(suite = "all", root = testRoot, selectors = []) {
-  const requested = suite === "all" || suite === "coverage"
+  const requested = suite === "all"
     ? new Set(NORMAL_SUITES)
-    : new Set([suite]);
+    : suite === "coverage"
+      ? new Set([...NORMAL_SUITES, "realistic"])
+      : new Set([suite]);
   return walk(root)
     .filter(file => requested.has(classifyTestFile(file, root)))
     .filter(file => selectors.length === 0 || selectors.some(

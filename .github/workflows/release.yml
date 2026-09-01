@@ -65,6 +65,17 @@ jobs:
           node-version: 22
           registry-url: https://registry.npmjs.org/
           package-manager-cache: false
+      - name: Restore verified dataset corpus
+        id: dataset-cache
+        uses: actions/cache@v5
+        with:
+          path: .artifacts/datasets/tidytuesday
+          key: ggaction-tidytuesday-${{ runner.os }}-${{ hashFiles('data/corpus/manifest.json') }}
+      - name: Fetch and verify dataset corpus
+        if: steps.dataset-cache.outputs.cache-hit != 'true'
+        run: npm run datasets:sync
+      - name: Run realistic corpus contracts
+        run: npm run test:realistic
       - name: Enforce coverage thresholds
         run: npm run test:coverage
       - name: Install Chromium

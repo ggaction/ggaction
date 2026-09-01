@@ -81,6 +81,12 @@
       { "type": "prefix", "path": "contracts/visual-capability-" },
       { "type": "file", "path": "contracts/composition-integration.test.js" }
     ],
+    "realistic": [
+      { "type": "file", "path": "contracts/dataset-fixtures.test.js" },
+      { "type": "prefix", "path": "contracts/generated-scenario" },
+      { "type": "file", "path": "contracts/generated-lifecycle-scenarios.test.js" },
+      { "type": "prefix", "path": "contracts/realistic-" }
+    ],
     "rendering": [
       { "type": "prefix", "path": "unit/renderers/" },
       { "type": "file", "path": "contracts/renderer-consumer-matrix.test.js" },
