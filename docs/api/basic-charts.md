@@ -125,6 +125,18 @@ Required options are `x` and `y`. Position option objects select vertical,
 horizontal, aggregate, or ranged geometry. `color.layout` owns grouped,
 stacked, normalized-fill, overlay, and diverging arrangements.
 
+Field strings use data-driven shorthand: finite numeric fields infer
+quantitative positions and other supported scalar fields infer nominal
+positions. Use an option object with `fieldType` when a numeric field is an
+ordinal category or when a field is temporal.
+
+```javascript
+const bars = chart()
+  .createCanvas()
+  .createData({ values: rows })
+  .createBarPlot({ x: "product", y: "units_sold" });
+```
+
 ```javascript
 const bars = chart()
   .createCanvas({ margin: { right: 140 } })

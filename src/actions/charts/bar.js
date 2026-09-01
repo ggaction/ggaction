@@ -1,6 +1,7 @@
 import { action } from "../../core/action.js";
 import {
   applyFacadeGuides,
+  inferFacadeFieldType,
   normalizeAppearance,
   normalizeEncoding,
   normalizeFieldEncoding,
@@ -35,6 +36,8 @@ export const createBarPlot = action(
     const bar = normalizeAppearance(args.bar, BAR_OPTIONS, "createBarPlot bar");
     const x = normalizeFieldEncoding(args.x, "createBarPlot x");
     const y = normalizeFieldEncoding(args.y, "createBarPlot y");
+    x.fieldType = inferFacadeFieldType(this, data, x, "createBarPlot x");
+    y.fieldType = inferFacadeFieldType(this, data, y, "createBarPlot y");
     const color = normalizeEncoding(args.color, "createBarPlot color");
     const width = normalizeTargetOptions(args.width, "createBarPlot width");
     const guides = normalizeGuides(args.guides, "createBarPlot");
