@@ -216,16 +216,16 @@ test("derives a bounded public option inventory without runtime prototype paths"
 
   assert.equal(inventory.counts.publicActions, 167);
   assert.equal(inventory.counts.topLevelOptionPaths, 1_094);
-  assert.equal(inventory.counts.nestedOptionPaths, 3_884);
-  assert.equal(inventory.counts.optionPaths, 4_978);
-  assert.equal(inventory.counts.requiredOptionPaths, 4_318);
-  assert.equal(inventory.counts.excludedOptionPaths, 660);
+  assert.equal(inventory.counts.nestedOptionPaths, 3_723);
+  assert.equal(inventory.counts.optionPaths, 4_817);
+  assert.equal(inventory.counts.requiredOptionPaths, 4_169);
+  assert.equal(inventory.counts.excludedOptionPaths, 648);
   assert.equal(inventory.counts.topLevelCategoricalPaths, 262);
-  assert.equal(inventory.counts.topLevelLiteralValues, 1_000);
-  assert.equal(inventory.counts.literalFamilies, 90);
-  assert.equal(inventory.counts.pathLiteralRequirements, 2_102);
-  assert.equal(inventory.counts.familyLiteralRequirements, 175);
-  assert.equal(inventory.counts.pathDiversityRequirements, 130);
+  assert.equal(inventory.counts.topLevelLiteralValues, 982);
+  assert.equal(inventory.counts.literalFamilies, 92);
+  assert.equal(inventory.counts.pathLiteralRequirements, 2_073);
+  assert.equal(inventory.counts.familyLiteralRequirements, 173);
+  assert.equal(inventory.counts.pathDiversityRequirements, 127);
   assert.equal(inventory.optionPaths.some(option => option.id ===
     "option-path:createCanvas.margin.top"), true);
   assert.equal(inventory.optionPaths.some(option => option.id ===
@@ -237,6 +237,10 @@ test("derives a bounded public option inventory without runtime prototype paths"
   assert.equal(inventory.optionPaths.some(option => option.id ===
     "option-path:encodeY.bin"), false);
   const optionById = new Map(inventory.optionPaths.map(option => [option.id, option]));
+  assert.equal(
+    optionById.get("option-path:createXAxisLabels.format")?.literalPolicy,
+    "family-values"
+  );
   for (const id of [
     "option-path:createScatterPlot.x.aggregate",
     "option-path:createScatterPlot.x.bin",
@@ -267,7 +271,7 @@ test("derives a bounded public option inventory without runtime prototype paths"
       ...counts,
       [value.reason]: (counts[value.reason] ?? 0) + 1
     }), {}),
-    { "redacted-array": 660 }
+    { "redacted-array": 648 }
   );
   const values = id => optionById.get(id)?.values ?? [];
   assert.equal(optionById.has("option-path:createScatterPlot.x.scale.palette"), false);
@@ -308,7 +312,7 @@ test("derives a bounded public option inventory without runtime prototype paths"
     "option-path:createData.values[]"), false);
   assert.equal(ledger.requirements.some(requirement => requirement.id ===
     "option-path:createDerivedData.transform[].type"), false);
-  assert.equal(ledger.requirements.length, 6_767);
+  assert.equal(ledger.requirements.length, 6_587);
   assert.throws(() => createScenarioCoverageLedger({
     publicInventory: inventory,
     rendererFeatures: [],

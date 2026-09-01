@@ -21,7 +21,11 @@ const LINE_OPTIONS = Object.freeze([
 ]);
 
 function scopeParallelGuides(guides, coordinate) {
-  if (guides === false || guides.axes === false) return guides;
+  if (guides === false) return guides;
+  if (guides.grid !== undefined && guides.grid !== false) {
+    throw new Error("createParallelCoordinates guides do not accept grid options.");
+  }
+  if (guides.axes === false) return guides;
   const axes = guides.axes ?? {};
   const descriptor = axes.coordinate ?? {};
   if (

@@ -283,6 +283,7 @@ createParallelCoordinates({
 - Omitted guides는 dimension axes와 applicable legend를 만들며 `guides: false`는 guide branch를 만들지 않는다.
 - Parallel facade guides are scoped to the facade's Parallel coordinate. Cartesian or Polar axis channels and a
   conflicting coordinate id/type are rejected before the chart changes.
+- Parallel facade guides do not accept grid options; `grid` may only be omitted or `false`.
 - Semantic/graphic/order/Canvas calls와 Node PNG는 approved Cars primitive와 exact match다.
 
 ### Formal values — `createParallelCoordinates`

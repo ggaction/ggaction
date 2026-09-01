@@ -16,9 +16,9 @@ import {
 } from "./realistic-data.js";
 
 const CANVAS = Object.freeze({
-  width: 900,
-  height: 800,
-  margin: Object.freeze({ top: 150, right: 240, bottom: 120, left: 220 })
+  width: 1800,
+  height: 920,
+  margin: Object.freeze({ top: 280, right: 520, bottom: 280, left: 480 })
 });
 
 const PALETTES = Object.freeze([...PALETTE_NAMES]);
@@ -97,7 +97,7 @@ const ADVANCED_SPECS = Object.freeze([
 ]);
 
 const COMPOSITE_SPECS = Object.freeze([
-  { id: "paired-summary-dashboard", kind: "facet", family: "facet" }
+  { id: "paired-summary-dashboard", kind: "composition", family: "dashboard" }
 ]);
 
 const ALL_ANALYSIS_SPECS = Object.freeze([
@@ -137,8 +137,12 @@ function titleContext(dataset, view, spec, factors) {
   const aggregate = aggregateLabel(operation);
   const aggregateAdjective = aggregateLabel(operation, { adjective: true });
   const sampleN = view.sample?.displayedRowCount;
-  const sampleTitle = "";
-  const sampleQuestion = "";
+  const sampleTitle = sampleN === undefined
+    ? ""
+    : ` — stratified sample (n=${sampleN})`;
+  const sampleQuestion = sampleN === undefined
+    ? ""
+    : ` in the deterministic stratified sample of ${sampleN} authentic rows`;
   const sequenceTitle = `${measureAxis} over ${sequenceText ?? "source order"}` +
     (sequenceIsDimension ? "" : ` by ${dimensionText}`);
   let title;
@@ -215,30 +219,26 @@ function titleContext(dataset, view, spec, factors) {
 
 function canvas(factors) {
   const margin = { ...CANVAS.margin };
-  if (factors?.legendPosition === "left") margin.left = 240;
-  if (factors?.legendPosition === "right") margin.right = 240;
-  if (factors?.legendPosition === "top") margin.top = 150;
-  if (factors?.legendPosition === "bottom") margin.bottom = 120;
-  return { ...CANVAS, margin };
+  if (factors?.legendPosition === "left") margin.left = 1_000;
+  if (factors?.legendPosition === "right") margin.right = 760;
+  if (factors?.legendPosition === "top") margin.top = 420;
+  if (factors?.legendPosition === "bottom") margin.bottom = 420;
+  return { ...CANVAS, width: 2_600, height: 1_120, margin };
 }
 
 function sparseCategoryValues(rows, field) {
-  return [...new Set(rows.map(row => row[field]))];
-}
-
-function compactHorizontalCategoryValues(rows, field) {
-  const values = sparseCategoryValues(rows, field);
-  if (values.length <= 4) return values;
-  return Array.from({ length: 4 }, (_, index) =>
-    values[Math.round(index * (values.length - 1) / 3)]
-  );
+  const values = [...new Set(rows.map(row => row[field]))];
+  const longest = Math.max(...values.map(value => String(value).length));
+  const limit = longest > 50 ? 1 : longest > 24 ? 2 : 4;
+  if (values.length <= limit) return values;
+  return [...new Set(Array.from({ length: limit }, (_, index) =>
+    values[Math.round(index * (values.length - 1) / (limit - 1))]
+  ))];
 }
 
 function guides(factors, xTitle, yTitle, {
   legend = true,
   legendTitle = "Group",
-  legendTarget,
-  legendChannels,
   xCount,
   xFormat,
   xValues,
@@ -263,19 +263,14 @@ function guides(factors, xTitle, yTitle, {
         title: { text: xTitle }
       },
       y: {
-        position: "left",
+        position: factors.legendPosition === "left" ? "right" : "left",
         ...(yValues === undefined ? {} : { ticksAndLabels: { values: yValues } }),
         title: { text: yTitle }
       }
     },
     grid: false,
     legend: legend
-      ? {
-          ...(legendTarget === undefined ? {} : { target: legendTarget }),
-          ...(legendChannels === undefined ? {} : { channels: legendChannels }),
-          position: "right",
-          title: legendTitle
-        }
+      ? { position: factors.legendPosition, title: legendTitle }
       : false
   };
 }
@@ -285,8 +280,6 @@ function finish(program, context, factors, {
   yTitle,
   legend = true,
   legendTitle,
-  legendTarget,
-  legendChannels,
   xCount,
   xFormat,
   xValues,
@@ -297,18 +290,12 @@ function finish(program, context, factors, {
       factors,
       xTitle ?? context.dimensionText,
       yTitle ?? context.measureText,
-      {
-        legend, legendTitle, legendTarget, legendChannels,
-        xCount, xFormat, xValues, yValues
-      }
+      { legend, legendTitle, xCount, xFormat, xValues, yValues }
     ))
     .createTitle({
       text: context.title,
       subtitle: context.analysisQuestion,
-      align: factors.titleAlign,
-      maxWidth: 600,
-      wrap: "word",
-      lineHeight: 26
+      align: factors.titleAlign
     });
 }
 
@@ -333,22 +320,6 @@ function summaryView(factors, operation = aggregateValue(factors.aggregate)) {
     measureIndex: factors.fieldPair.measureIndex,
     dimensionIndex: factors.fieldPair.dimensionIndex
   });
-}
-
-function readableValueScale(rows) {
-  const values = rows.map(row => row.value).filter(Number.isFinite).sort((a, b) => a - b);
-  const median = values[Math.floor(values.length / 2)];
-  const maximum = values.at(-1);
-  const stronglySkewed = values.length > 2 && maximum > Math.max(1, Math.abs(median)) * 20;
-  if (!stronglySkewed) return { nice: true, zero: false };
-  return values[0] > 0
-    ? { type: "log", nice: true, zero: false }
-    : { type: "symlog", nice: true, zero: false, constant: 1 };
-}
-
-function preferHorizontalCategories(rows) {
-  const categories = [...new Set(rows.map(row => String(row.category)))];
-  return categories.length > 5 || categories.some(value => value.length > 14);
 }
 
 function orderedView(factors, spec) {
@@ -427,7 +398,7 @@ function buildPoint(spec, factors, resolution) {
       stroke: "#ffffff",
       strokeWidth: 0.6
     })
-    .encodeX({ target: "points", field: "value", scale: readableValueScale(view.rows) })
+    .encodeX({ target: "points", field: "value", scale: { nice: true, zero: false } })
     .encodeY({
       target: "points",
       field: "category",
@@ -444,7 +415,7 @@ function buildPoint(spec, factors, resolution) {
     ? program.encodeSize({ target: "points", field: "count", scale: { range: [12, 170] } })
     : spec.variant === "encoded"
       ? program.encodeSize({ target: "points", field: "value", scale: { range: [10, 90] } })
-    : program.encodePointRadius({ target: "points", value: Math.max(6, factors.radius) });
+    : program.encodePointRadius({ target: "points", value: factors.radius });
   if (["jitter", "jitter-large"].includes(spec.variant)) {
     program = program.jitterPoints({
       target: "points",
@@ -462,18 +433,14 @@ function buildPoint(spec, factors, resolution) {
     .createTitle({
       text: context.title,
       subtitle: context.analysisQuestion,
-      align: factors.titleAlign,
-      maxWidth: 600,
-      wrap: "word",
-      lineHeight: 26
+      align: factors.titleAlign
     });
 }
 
 function buildBar(spec, factors, resolution) {
   const grouped = spec.layout !== undefined;
   const { view, context } = resolution;
-  const horizontal = spec.orientation === "horizontal" ||
-    preferHorizontalCategories(view.rows);
+  const horizontal = spec.orientation === "horizontal";
   const countLayout = ["stack", "fill"].includes(spec.layout);
   const category = { field: "category", fieldType: "nominal" };
   const value = {
@@ -521,7 +488,7 @@ function buildBar(spec, factors, resolution) {
 
 function buildHistogram(spec, factors, resolution) {
   const { view, context } = resolution;
-  const segmented = true;
+  const segmented = ["stack", "normalize"].includes(spec.variant);
   return chart()
     .createCanvas(canvas(factors))
     .createData({ id: "analysisRows", values: view.rows })
@@ -551,23 +518,15 @@ function buildHistogram(spec, factors, resolution) {
       },
       grid: false,
       legend: segmented
-        ? { position: "right", title: context.dimensionText }
+        ? { position: factors.legendPosition, title: context.dimensionText }
         : false
     })
-    .createTitle({
-      text: context.title,
-      subtitle: context.analysisQuestion,
-      align: factors.titleAlign,
-      maxWidth: 600,
-      wrap: "word",
-      lineHeight: 26
-    });
+    .createTitle({ text: context.title, subtitle: context.analysisQuestion, align: factors.titleAlign });
 }
 
 function buildBox(spec, factors, resolution) {
   const { view, context } = resolution;
-  const horizontal = spec.orientation === "horizontal" ||
-    preferHorizontalCategories(view.rows);
+  const horizontal = spec.orientation === "horizontal";
   return chart()
     .createCanvas(canvas(factors))
     .createData({ id: "analysisRows", values: view.rows })
@@ -603,14 +562,7 @@ function buildBox(spec, factors, resolution) {
             legendTitle: context.dimensionText
           }
     ))
-    .createTitle({
-      text: context.title,
-      subtitle: context.analysisQuestion,
-      align: factors.titleAlign,
-      maxWidth: 600,
-      wrap: "word",
-      lineHeight: 26
-    });
+    .createTitle({ text: context.title, subtitle: context.analysisQuestion, align: factors.titleAlign });
 }
 
 function buildDensity(spec, factors, resolution) {
@@ -704,11 +656,24 @@ function buildRankPath(spec, factors, resolution) {
 function buildArc(spec, factors, resolution) {
   const { view, context } = resolution;
   const horizontalLegend = ["top", "bottom"].includes(factors.legendPosition);
+  const margin = horizontalLegend
+    ? {
+        top: factors.legendPosition === "top" ? 220 : 90,
+        right: 60,
+        bottom: factors.legendPosition === "bottom" ? 220 : 80,
+        left: 60
+      }
+    : {
+        top: 300,
+        right: factors.legendPosition === "right" ? 420 : 80,
+        bottom: 80,
+        left: factors.legendPosition === "left" ? 420 : 80
+      };
   return chart()
     .createCanvas({
-      width: 800,
+      width: 900,
       height: 800,
-      margin: { top: 150, right: 240, bottom: 100, left: 100 }
+      margin
     })
     .createData({ id: "analysisRows", values: view.rows })
     .createArcMark({
@@ -725,16 +690,16 @@ function buildArc(spec, factors, resolution) {
       axes: false,
       grid: false,
       legend: {
-        position: "right",
+        position: factors.legendPosition,
         title: context.dimensionText,
-        columns: 1
+        ...(horizontalLegend ? { columns: Math.min(3, view.rows.length) } : {})
       }
     })
     .createTitle({
       text: context.title,
       subtitle: context.analysisQuestion,
       align: factors.titleAlign,
-      maxWidth: 600,
+      maxWidth: horizontalLegend ? 760 : 360,
       wrap: "word",
       lineHeight: 26
     });
@@ -742,21 +707,13 @@ function buildArc(spec, factors, resolution) {
 
 function buildHeatmap(spec, factors, resolution) {
   const { view, context } = resolution;
-  const xValues = [...new Set(view.rows.map(row => row.x))];
-  const yValues = [...new Set(view.rows.map(row => row.y))];
-  const labelLoad = values => values.reduce((sum, value) =>
-    sum + measureTextWidth(String(value), { fontSize: 12 }), 0
-  );
-  const transpose = labelLoad(xValues) > labelLoad(yValues);
-  const xField = transpose ? "y" : "x";
-  const yField = transpose ? "x" : "y";
   let program = chart()
     .createCanvas(canvas(factors))
     .createData({ id: "analysisRows", values: view.rows })
     .createHeatmap({
       id: "cells",
-      x: { field: xField, fieldType: "nominal" },
-      y: { field: yField, fieldType: "nominal" },
+      x: { field: "x", fieldType: "nominal" },
+      y: { field: "y", fieldType: "nominal" },
       color: {
         field: "value",
         fieldType: "quantitative",
@@ -768,23 +725,22 @@ function buildHeatmap(spec, factors, resolution) {
   if (spec.variant === "labels") {
     program = program
       .createTextMark({ id: "cellLabels", fontSize: 8, align: "center", baseline: "middle" })
-      .encodeX({ target: "cellLabels", field: xField, fieldType: "nominal" })
-      .encodeY({ target: "cellLabels", field: yField, fieldType: "nominal" })
+      .encodeX({ target: "cellLabels", field: "x", fieldType: "nominal" })
+      .encodeY({ target: "cellLabels", field: "y", fieldType: "nominal" })
       .encodeText({ target: "cellLabels", field: "value", format: ".2f" });
   }
   return finish(program, context, factors, {
-    xTitle: transpose ? context.secondaryDimensionText : context.dimensionText,
-    yTitle: transpose ? context.dimensionText : context.secondaryDimensionText,
+    xTitle: context.dimensionText,
+    yTitle: context.secondaryDimensionText,
     legendTitle: `Mean ${context.measureAxis}`,
-    xValues: compactHorizontalCategoryValues(view.rows, xField),
-    yValues: sparseCategoryValues(view.rows, yField)
+    xValues: sparseCategoryValues(view.rows, "x"),
+    yValues: sparseCategoryValues(view.rows, "y")
   });
 }
 
 function buildInterval(spec, factors, resolution) {
   const { view, context } = resolution;
-  const horizontal = spec.orientation === "horizontal" ||
-    preferHorizontalCategories(view.rows);
+  const horizontal = spec.orientation === "horizontal";
   return chart()
     .createCanvas(canvas(factors))
     .createData({ id: "analysisRows", values: view.rows })
@@ -811,14 +767,7 @@ function buildInterval(spec, factors, resolution) {
           : { xValues: sparseCategoryValues(view.rows, "category") })
       }
     ))
-    .createTitle({
-      text: context.title,
-      subtitle: context.analysisQuestion,
-      align: factors.titleAlign,
-      maxWidth: 600,
-      wrap: "word",
-      lineHeight: 26
-    });
+    .createTitle({ text: context.title, subtitle: context.analysisQuestion, align: factors.titleAlign });
 }
 
 function buildLabels(spec, factors, resolution) {
@@ -826,15 +775,9 @@ function buildLabels(spec, factors, resolution) {
   let program = chart()
     .createCanvas(canvas(factors))
     .createData({ id: "analysisRows", values: view.rows })
-    .createPointMark({ id: "anchorPoints" })
+    .createPointMark({ id: "anchorPoints", fill: "#64748b" })
     .encodeX({ target: "anchorPoints", field: "rank" })
     .encodeY({ target: "anchorPoints", field: "value", scale: { zero: false } })
-    .encodeColor({
-      target: "anchorPoints",
-      field: "category",
-      fieldType: "nominal",
-      scale: { palette: factors.palette }
-    })
     .createTextMark({
       id: "labels",
       fontSize: factors.fontSize,
@@ -858,7 +801,7 @@ function buildLabels(spec, factors, resolution) {
   return finish(program, context, factors, {
     xTitle: "Rank",
     yTitle: `${context.aggregate} ${context.measureAxis}`,
-    legendTitle: context.dimensionText
+    legend: false
   });
 }
 
@@ -917,14 +860,7 @@ function buildFacet(spec, factors, resolution) {
       scales: { x: factors.facetScales, y: factors.facetScales },
       guides: { axes: factors.facetAxes, legend: false }
     })
-    .createTitle({
-      text: context.title,
-      subtitle: context.analysisQuestion,
-      align: factors.titleAlign,
-      maxWidth: 600,
-      wrap: "word",
-      lineHeight: 26
-    });
+    .createTitle({ text: context.title, subtitle: context.analysisQuestion, align: factors.titleAlign });
 }
 
 function miniSummary(view, color, title, context) {
@@ -1060,8 +996,7 @@ function factorsFor(spec, dataset) {
   ) {
     fieldPairs = allFieldPairs.filter(fieldPair => ["mean", "median", "sum"].every(aggregate => {
       const values = summaryView({ dataset, fieldPair, aggregate }).rows.map(row => row.value);
-      return values.length >= 5 && values.some(value => value !== 0) &&
-        new Set(values).size >= 2;
+      return values.some(value => value !== 0) && new Set(values).size >= 2;
     }));
   }
   if (fieldPairs.length === 0) return undefined;
@@ -1091,7 +1026,7 @@ function factorsFor(spec, dataset) {
     opacity: [0.58, 0.78, 0.94]
   };
   if (spec.kind === "histogram") return {
-    ...colored,
+    ...(spec.variant === "plain" || spec.variant === "fine" ? titled : colored),
     ...(spec.variant === "fine" ? {} : { maxBins: [8, 12, 18] }),
     nice: [false, true]
   };
@@ -1122,7 +1057,7 @@ function factorsFor(spec, dataset) {
     strokeWidth: [1, 1.8, 3]
   };
   if (spec.kind === "labels") return {
-    ...summarizedColor, fontSize: [10, 12, 15], fontWeight: ["normal", 600, 800],
+    ...summarized, fontSize: [10, 12, 15], fontWeight: ["normal", 600, 800],
     ...(spec.variant === "layout" ? {
       labelAxis: ["x", "y", "both"], labelPadding: [1, 3, 6],
       maxDisplacement: [16, 36, 72]
@@ -1482,16 +1417,7 @@ function observeFactorEffects(spec, program, factors, resolution) {
 
 function makeRecipe(spec, complexity) {
   const datasets = realisticDatasetIds();
-  let factors;
-  for (const dataset of datasets) {
-    const candidate = factorsFor(spec, dataset);
-    if (candidate === undefined) continue;
-    factors = Object.freeze(candidate);
-    break;
-  }
-  if (factors === undefined) {
-    throw new Error(`No realistic dataset supports recipe "${spec.id}".`);
-  }
+  const factors = Object.freeze(factorsFor(spec, datasets[0]));
   let cachedFactors;
   let cachedResolution;
   const resolve = values => {

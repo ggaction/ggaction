@@ -48,16 +48,18 @@ test("keeps diagnostic scenarios out of the human gallery and enforces compact c
   });
   const readable = entry("realistic-category-boxes");
   const readableFacade = entry("realistic-statistical-facade-coverage-box", 800, 720);
+  const diagnosticFacade = entry("realistic-cartesian-facade-coverage-bar");
   assert.deepEqual(
     interpretableGalleryEntries([
       readable,
       readableFacade,
+      diagnosticFacade,
       entry("realistic-guide-scale-simple", 4_400, 3_200),
       entry("realistic-action-direct-parallel"),
       entry("realistic-ranked-line"),
       entry("realistic-category-boxes", 1_200, 800)
     ]),
-    [readable, readableFacade]
+    [readable]
   );
 });
 

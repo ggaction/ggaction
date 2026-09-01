@@ -907,6 +907,13 @@ type GradientPlotDensityLegendOptions = {
 type GradientPlotGuideOptions = Omit<CartesianGuideOptions, "legend"> & {
   legend?: false | GradientPlotDensityLegendOptions;
 };
+type ParallelGuideOptions = {
+  axes?: false | {
+    coordinate?: { id?: string; type?: "auto" | "parallel" };
+  };
+  grid?: false;
+  legend?: false | LegendOptions;
+};
 
 export interface CreateCoordinateOptions {
   id?: string;
@@ -1803,7 +1810,7 @@ export interface CreateParallelCoordinatesOptions {
     curve?: "linear";
     closed?: false;
   };
-  guides?: false | CreateGuidesOptions;
+  guides?: false | ParallelGuideOptions;
 }
 
 export interface CreateScatterPlotOptions {

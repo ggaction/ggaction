@@ -170,6 +170,12 @@ test("keeps Parallel facade guides on the Parallel coordinate", () => {
     dimensions,
     guides: { axes: { coordinate: { id: "main", type: "cartesian" } } }
   }), /guides must use the chart's Parallel coordinate/u);
+  assert.throws(() => base.createParallelCoordinates({
+    id: "gridProfiles",
+    data: "cars",
+    dimensions,
+    guides: { grid: { horizontal: true } }
+  }), /do not accept grid options/u);
 });
 
 test("keeps facade-specific branches out of materialization and renderers", () => {

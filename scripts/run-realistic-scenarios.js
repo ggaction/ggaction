@@ -638,19 +638,13 @@ a{color:#1d4ed8}.grid{display:grid;grid-template-columns:minmax(0,900px);justify
 </style></head><body><h1>${escapeHtml(title)}</h1>${body}</body></html>\n`;
 }
 
-const INTERPRETABLE_DIRECT_RECIPES = Object.freeze(new Set([
-  "realistic-direct-lifecycle-derived-encoding-coverage",
-  "realistic-direct-lifecycle-statistical-coverage"
-]));
-const INTERPRETABLE_RECIPE_PREFIXES = Object.freeze([
-  "realistic-cartesian-facade-coverage-",
-  "realistic-statistical-facade-coverage-"
-]);
 const DIAGNOSTIC_RECIPE_PREFIXES = Object.freeze([
   "realistic-action-",
+  "realistic-cartesian-facade-coverage-",
   "realistic-direct-",
   "realistic-guide-scale-",
-  "realistic-maximal-"
+  "realistic-maximal-",
+  "realistic-statistical-facade-coverage-"
 ]);
 const NON_INTERPRETABLE_GALLERY_RECIPES = Object.freeze(new Set([
   "realistic-ranked-line",
@@ -672,10 +666,6 @@ export function interpretableGalleryEntries(entries) {
       png.width >= 800 && png.width <= 900 && png.height >= 720 && png.height <= 900 &&
       png.width / png.height >= 0.8 && png.width / png.height <= 1.25;
     if (!compactCanvas || NON_INTERPRETABLE_GALLERY_RECIPES.has(entry.recipe)) return false;
-    if (INTERPRETABLE_DIRECT_RECIPES.has(entry.recipe)) return true;
-    if (INTERPRETABLE_RECIPE_PREFIXES.some(prefix => entry.recipe.startsWith(prefix))) {
-      return true;
-    }
     return entry.recipe.startsWith("realistic-") &&
       !DIAGNOSTIC_RECIPE_PREFIXES.some(prefix => entry.recipe.startsWith(prefix));
   }));

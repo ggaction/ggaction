@@ -34,10 +34,10 @@ const SHAPE_FAMILY_LITERAL_VALUE_KEYS = Object.freeze([
   "string:triangle-left"
 ]);
 const CANVAS = Object.freeze({
-  width: 800,
-  height: 720,
+  width: 1_900,
+  height: 2_000,
   background: "#ffffff",
-  margin: Object.freeze({ top: 170, right: 220, bottom: 120, left: 230 })
+  margin: Object.freeze({ top: 650, right: 360, bottom: 650, left: 340 })
 });
 const VIEW_CACHE_LIMIT = 16;
 const QUANTITATIVE_SCALE_TYPES = Object.freeze([
@@ -760,24 +760,234 @@ function polarGrid(profile, resources) {
   };
 }
 
-function guideOptions(_profile, _resources, _context, _ordinal, action) {
-  if (action === "createBoxPlot") return { legend: false };
+function guideOptions(profile, resources, context, ordinal, action) {
+  if (profile.guideMode === "none") {
+    return false;
+  }
+  if (profile.guideMode === "parallel") {
+    return {
+      axes: { coordinate: { id: "parallelContext", type: "parallel" } },
+      grid: false,
+      legend: false
+    };
+  }
+  if (profile.guideMode === "polar") {
+    return {
+      axes: {
+        coordinate: { id: "polarContext", type: "polar" },
+        theta: polarAxisStyle(resources.theta, "theta", profile),
+        radius: polarAxisStyle(resources.radius, "radius", profile)
+      },
+      grid: polarGrid(profile, resources),
+      legend: profile.legend === false
+        ? false
+        : legendOptions(profile, context, action)
+    };
+  }
   return {
-    ...(action === "createHistogram"
-      ? { axes: { x: { ticksAndLabels: { count: 4 } }, y: { ticksAndLabels: { count: 4 } } } }
-      : {}),
-    legend: { position: "right" }
+    axes: profile.axes === false
+      ? false
+      : {
+          coordinate: { id: "main", type: profile.axisType },
+          x: profile.axisFalse === "x"
+            ? false
+            : axisStyle(resources.x, "x", profile, ordinal),
+          y: profile.axisFalse === "y"
+            ? false
+            : axisStyle(resources.y, "y", profile, ordinal),
+          theta: false,
+          radius: false
+        },
+    grid: cartesianGrid(profile, resources),
+    legend: profile.legend === false
+      ? false
+      : legendOptions(profile, context, action)
   };
 }
 
-function restoreCartesianHistogramPresentation(program) {
-  return program;
+function restoreCartesianHistogramPresentation(
+  program,
+  profile,
+  resources,
+  context,
+  ordinal
+) {
+  if (profile.guideMode !== "polar") return program;
+  const next = program
+    .removeMark({ target: "polarContextPoints" })
+    .removeLegend({
+      target: (profile.legendProfile ?? 0) % 4 === 1
+        ? "seriesContextLines"
+        : "contextPoints",
+      channels: ["color"]
+    })
+    .editCanvas({
+      width: 1_600,
+      height: 1_100,
+      margin: { top: 220, right: 400, bottom: 220, left: 400 }
+    });
+  const { legend: _legend, ...cartesianGuides } = guideOptions({
+    ...profile,
+    guideMode: "cartesian",
+    orientation: "vertical",
+    axisType: "cartesian"
+  }, resources, context, ordinal, "createHistogram");
+  return next.createGuides({
+    ...cartesianGuides,
+    legend: {
+      target: "contextPoints",
+      channels: ["color"],
+      position: "right",
+      title: context.dimensionText
+    }
+  });
 }
 
-function sourceProgram(view) {
-  return chart()
+function sourceProgram(view, profile, action) {
+  const manualProxyGeometry = ["createHeatmap", "createHistogram"].includes(action);
+  let program = chart()
     .createCanvas(canvas())
-    .createData({ id: "analysisRows", values: view.rows });
+    .createData({ id: "analysisRows", values: view.rows })
+    .createCoordinate({ id: "main", type: "cartesian" })
+    .createPointMark({
+      id: "contextPoints",
+      data: "analysisRows",
+      shape: "circle",
+      opacity: 0.07,
+      stroke: "#ffffff",
+      strokeWidth: 0.4
+    });
+  if (!manualProxyGeometry) {
+    program = program
+      .encodeX({
+        target: "contextPoints",
+        coordinate: "main",
+        ...contextPosition(action, profile, "x")
+      })
+      .encodeY({
+        target: "contextPoints",
+        coordinate: "main",
+        ...contextPosition(action, profile, "y")
+      })
+      .encodePointRadius({ target: "contextPoints", value: 2.4 });
+  }
+  program = program.encodeColor({
+      target: "contextPoints",
+      field: "category",
+      fieldType: "nominal",
+      scale: { id: "contextColor", type: "ordinal", palette: "tableau10" }
+    });
+  if (profile.legendKind === "continuous") {
+    program = program
+      .createPointMark({
+        id: "continuousContextPoints",
+        data: "analysisRows",
+        shape: "circle",
+        opacity: 0.05,
+        stroke: "#ffffff",
+        strokeWidth: 0.4
+      });
+    if (!manualProxyGeometry) {
+      program = program
+        .encodeX({
+          target: "continuousContextPoints",
+          coordinate: "main",
+          ...contextPosition(action, profile, "x")
+        })
+        .encodeY({
+          target: "continuousContextPoints",
+          coordinate: "main",
+          ...contextPosition(action, profile, "y")
+        })
+        .encodePointRadius({ target: "continuousContextPoints", value: 2.1 });
+    }
+    program = program.encodeColor({
+        target: "continuousContextPoints",
+        field: "value",
+        fieldType: "quantitative",
+        scale: {
+          id: "continuousContextColor",
+          type: "sequential",
+          palette: "viridis"
+        }
+      });
+  }
+  if (profile.legendKind !== "continuous" && (profile.legendProfile ?? 0) % 4 === 1) {
+    program = program
+      .createLineMark({
+        id: "seriesContextLines",
+        data: "analysisRows",
+        opacity: 0.04,
+        strokeWidth: 0.6
+      })
+      .encodeX({
+        target: "seriesContextLines",
+        coordinate: "main",
+        field: "sourcePosition",
+        fieldType: "quantitative",
+        scale: { id: "seriesPosition", type: "linear" }
+      })
+      .encodeY({
+        target: "seriesContextLines",
+        coordinate: "main",
+        field: "positiveValue",
+        fieldType: "quantitative",
+        scale: { id: "seriesValue", type: "linear" }
+      })
+      .encodeColor({
+        target: "seriesContextLines",
+        field: "distributionHalf",
+        fieldType: "nominal",
+        scale: { id: "seriesContextColor", type: "ordinal", palette: "tableau10" }
+      });
+  }
+  if (profile.guideMode === "polar") {
+    program = program
+      .createCoordinate({ id: "polarContext", type: "polar" })
+      .createPointMark({
+        id: "polarContextPoints",
+        data: "analysisRows",
+        shape: "circle",
+        opacity: 0.09
+      })
+      .encodeTheta({
+        target: "polarContextPoints",
+        coordinate: "polarContext",
+        field: "sourcePosition",
+        fieldType: "quantitative",
+        scale: { id: "thetaScale", type: "linear", nice: true, zero: false }
+      })
+      .encodeR({
+        target: "polarContextPoints",
+        coordinate: "polarContext",
+        field: "positiveValue",
+        fieldType: "quantitative",
+        scale: { id: "radiusScale", type: "linear", nice: true, zero: false }
+      })
+      .encodePointRadius({ target: "polarContextPoints", value: 2.5 });
+  }
+  if (profile.guideMode === "parallel") {
+    program = program
+      .createCoordinate({ id: "parallelContext", type: "parallel" })
+      .createLineMark({
+        id: "parallelContextLines",
+        data: "analysisRows",
+        stroke: "#94a3b8",
+        strokeWidth: 0.5,
+        opacity: 0.08
+      })
+      .encodeParallelCoordinates({
+        target: "parallelContextLines",
+        coordinate: "parallelContext",
+        dimensions: [
+          { field: "value", fieldType: "quantitative", title: "Observed value" },
+          { field: "sourcePosition", fieldType: "quantitative", title: "Source order" }
+        ],
+        key: "key",
+        missing: "drop-row"
+      });
+  }
+  return program;
 }
 
 function proxyPosition(value, minimum, maximum, start, end) {
@@ -785,8 +995,36 @@ function proxyPosition(value, minimum, maximum, start, end) {
   return start + (value - minimum) / (maximum - minimum) * (end - start);
 }
 
-function materializeGuideProxyGeometry(program) {
-  return program;
+function materializeGuideProxyGeometry(program, view) {
+  const values = view.rows.map(row => row.positiveValue);
+  const minimum = Math.min(...values);
+  const maximum = Math.max(...values);
+  const x = view.rows.map((row, index) => proxyPosition(
+    index,
+    0,
+    Math.max(1, view.rows.length - 1),
+    CANVAS.margin.left,
+    CANVAS.width - CANVAS.margin.right
+  ));
+  const y = values.map(value => proxyPosition(
+    value,
+    minimum,
+    maximum,
+    CANVAS.height - CANVAS.margin.bottom,
+    CANVAS.margin.top
+  ));
+  let next = program;
+  for (const [id, radius] of [
+    ["contextPoints", 2.4],
+    ["continuousContextPoints", 2.1]
+  ]) {
+    if (next.graphicSpec.objects[id] === undefined) continue;
+    next = next
+      .editGraphics({ target: id, property: "x", value: x })
+      .editGraphics({ target: id, property: "y", value: y })
+      .editGraphics({ target: id, property: "radius", value: radius });
+  }
+  return next;
 }
 
 function quantitativeScale(id, type, profileIndex) {
@@ -837,7 +1075,7 @@ function distributionScaleProfile(action, profile) {
 }
 
 function categoryPosition(action, profile, channel) {
-  const categoryChannel = "y";
+  const categoryChannel = profile.orientation === "vertical" ? "x" : "y";
   const scaleProfile = distributionScaleProfile(action, profile);
   return channel === categoryChannel
     ? {
@@ -871,7 +1109,7 @@ function analysisQuestion(context, profile, family) {
 }
 
 function titleProgram(program, context, profile, family) {
-  const question = `How does ${context.measureText} vary across ${context.dimensionText}?`;
+  const question = analysisQuestion(context, profile, family);
   return program.createTitle({
     text: context.title,
     subtitle: question,
@@ -940,6 +1178,7 @@ function buildBox(factors) {
   const resources = guideResources(view, context, profile.orientation);
   let program = sourceProgram(view, profile, "createBoxPlot").createBoxPlot({
     id: "facadeBoxes",
+    target: "contextPoints",
     data: "analysisRows",
     coordinate: "main",
     x: categoryPosition("createBoxPlot", profile, "x"),
@@ -975,16 +1214,6 @@ function buildBox(factors) {
       radius: feature === 4 ? 5 : 3.2,
       opacity: feature === 4 ? 0.45 : 0.72
     }
-  }).encodeColor({
-    target: "facadeBoxes",
-    field: "category",
-    fieldType: "nominal",
-    scale: { id: "facadeBoxColor", type: "ordinal", palette: "tableau10" }
-  }).createLegend({
-    target: "facadeBoxes",
-    channels: ["color"],
-    position: "right",
-    title: context.dimensionText
   });
   return titleProgram(program, context, profile, "distribution box plot");
 }
@@ -1018,6 +1247,7 @@ function buildGradient(factors) {
       };
   let program = sourceProgram(view, profile, "createGradientPlot").createGradientPlot({
     id: "facadeGradients",
+    target: "contextPoints",
     data: "analysisRows",
     coordinate: "main",
     x: categoryPosition("createGradientPlot", profile, "x"),
@@ -1080,7 +1310,9 @@ function buildViolin(factors) {
         ? ["upper-half", "lower-half"]
         : ["lower-half", "upper-half"]
     },
-    color: violinColor(profile, profile.violinLayout ?? "overlay"),
+    ...(fillOnly ? {} : {
+      color: violinColor(profile, profile.violinLayout ?? "overlay")
+    }),
     density: {
       ...densityOptions(profile, ordinal, "createViolinPlot"),
       width: {
@@ -1382,12 +1614,14 @@ function buildHistogram(factors) {
       HISTOGRAM_COUNT_SCALE_TYPES[yTypeIndex],
       yTypeIndex
     ),
-    color: categoricalColor(
-      "createHistogram",
-      "category",
-      ordinal,
-      profile.histogramLayout ?? ["diverging", "group", "overlay"][ordinal % 3]
-    ),
+    ...(fillOnly ? {} : {
+      color: categoricalColor(
+        "createHistogram",
+        "category",
+        ordinal,
+        profile.histogramLayout ?? ["diverging", "group", "overlay"][ordinal % 3]
+      )
+    }),
     bar: {
       ...(fillOnly ? { fill: "#60a5fa" } : {}),
       opacity: feature === 5 ? 0.66 : feature === 6 ? 0.92 : 0.82,
@@ -1418,7 +1652,9 @@ function buildHistogram(factors) {
 }
 
 function coverageSchedule(variants) {
-  const selectionVariantIds = variants.map(variant => variant.id);
+  const selectionVariantIds = Array.from({ length: 5 }, () => variants)
+    .flat()
+    .map(variant => variant.id);
   return freeze({
     factor: "variant",
     selectionVariantIds,
@@ -1426,16 +1662,16 @@ function coverageSchedule(variants) {
     assignment: "round-robin-datasets-per-variant",
     variantRequirements: variants.map(variant => ({
       variantId: variant.id,
-      minimumOccurrences: 1,
-      minimumDatasets: 1
+      minimumOccurrences: 5,
+      minimumDatasets: 3
     })),
-    minimumDatasetsPerRequirement: 1
+    minimumDatasetsPerRequirement: 3
   });
 }
 
 function eligibleVariants(dataset, action) {
   const supportsTemporal = realisticDatasetRoles(dataset).temporal.length > 0;
-  const variants = profilesForAction(action).flatMap((profile, ordinal) =>
+  return freeze(profilesForAction(action).flatMap((profile, ordinal) =>
     profile.requiresTemporal && !supportsTemporal
       ? []
       : [{
@@ -1443,8 +1679,7 @@ function eligibleVariants(dataset, action) {
           ordinal,
           supportsTemporal
         }]
-  );
-  return freeze(variants.slice(0, 1));
+  ));
 }
 
 function factorContract(dataset, capability, action) {
@@ -1467,13 +1702,13 @@ function makeRecipe({ id, family, capability, action, complexity, build }) {
   const datasets = freeze(realisticDatasetIds());
   const factors = factorContract(INITIAL_DATASET, capability, action);
   if (factors === undefined) throw new Error(`${INITIAL_DATASET} must remain eligible for ${id}.`);
-  const schedule = coverageSchedule(factors.variant);
+  const schedule = coverageSchedule(profilesForAction(action));
   return freeze({
     id,
     suite: "realistic",
     generation: "balanced-per-dataset",
     complexity,
-    enforceFactorEffects: false,
+    enforceFactorEffects: true,
     datasets,
     factors,
     expectedDirectActions: freeze([action]),
