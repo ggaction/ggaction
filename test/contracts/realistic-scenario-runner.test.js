@@ -1764,8 +1764,14 @@ test("accepts deterministic readable PNG and compressed PDF artifact regressions
     nativePixelScan: true
   });
   assert.ok(readability.strongInkDensity >= 0.01, readability);
-  assert.ok(readability.bounds.x <= 64, readability);
-  assert.ok(readability.bounds.y <= 45, readability);
+  assert.ok(
+    readability.bounds.x <= pngOutcome.result.artifacts.png.width * 0.05,
+    JSON.stringify(readability)
+  );
+  assert.ok(
+    readability.bounds.y <= pngOutcome.result.artifacts.png.height * 0.05,
+    JSON.stringify(readability)
+  );
   assert.ok(readability.bounds.width >= 1_190, readability);
   assert.ok(readability.bounds.height >= 870, readability);
 
