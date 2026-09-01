@@ -5,6 +5,7 @@ import { join } from "node:path";
 import test from "node:test";
 import { inflateSync } from "node:zlib";
 
+import { chart, hconcat } from "../../../src/index.js";
 import { renderToPDF } from "../../../src/renderers/pdf.js";
 
 function completeGraphicSpec() {
@@ -186,6 +187,37 @@ test("writes one logical-size vector PDF page with metadata and text", async t =
   assert.match(content, /\bm\b/);
   assert.match(content, /\bl\b/);
   assert.match(content, /\bc\b/);
+});
+
+test("preserves hconcat text translations when child margins differ", async t => {
+  const directory = await mkdtemp(join(tmpdir(), "ggaction-pdf-concat-"));
+  t.after(() => rm(directory, { recursive: true, force: true }));
+  const output = join(directory, "comparison.pdf");
+  const panel = (title, left) => chart()
+    .createCanvas({
+      width: 240,
+      height: 160,
+      margin: { top: 58, right: 16, bottom: 24, left },
+      background: "white"
+    })
+    .createTitle({ text: title, position: "top", align: "left", gap: 0 });
+  const comparison = hconcat({
+    id: "comparison",
+    programs: [
+      { id: "left", program: panel("Left panel", 50) },
+      { id: "right", program: panel("Right panel", 10) }
+    ],
+    gap: 20,
+    align: "start",
+    padding: 0
+  });
+
+  await renderToPDF(comparison, { output });
+  const content = decodedPDFStreams(await readFile(output));
+
+  assert.match(content, /1 0 0 1 50 27 cm[\s\S]*?\bBT\b/);
+  assert.match(content, /1 0 0 1 270 27 cm[\s\S]*?\bBT\b/);
+  assert.doesNotMatch(content, /1 0 0 1 10 27 cm[\s\S]*?\bBT\b/);
 });
 
 test("rejects invalid options and metadata before writing output", async t => {

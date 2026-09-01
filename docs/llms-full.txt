@@ -6947,7 +6947,9 @@ strings plus an array of non-empty `keywords`.
 
 Text remains selectable/searchable PDF text. Paths, strokes, fills, clipping,
 opacity, dashes, and linear gradients remain vector output; the adapter does not
-rasterize the chart or accept `pixelRatio`.
+rasterize the chart or accept `pixelRatio`. Nested Canvas translations apply to
+text as well as shapes, so concat children with different plot margins retain
+their distinct title and axis-label origins in PDF output.
 
 The current renderers support concrete canvas, collection, circle, rect, line,
 text, and `M/L/C/Z` command-path graphics. Path and line strokes may use concrete
