@@ -830,7 +830,7 @@ function addAppearanceEncodings(program) {
       target: "text-value", coordinate: "text-value-coordinate",
       field: "y", scale: { id: "text-value-y", zero: false }
     })
-    .encodeText({ target: "text-value", value: "Authentic observation", format: "auto" });
+    .encodeText({ target: "text-value", value: 42.25, format: ".2f" });
 }
 
 function buildAppearanceCoverage(factors) {

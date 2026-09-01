@@ -104,7 +104,10 @@ function relativeLuminance(color) {
 }
 
 function sourceTextConfig(config, source, item) {
-  if (source.mark.type !== "rect" || config.fillExplicit === true) return config;
+  if (
+    !["arc", "rect"].includes(source.mark.type) ||
+    config.fillExplicit === true
+  ) return config;
   const luminance = relativeLuminance(item.properties.fill);
   if (luminance === undefined) return config;
   return {

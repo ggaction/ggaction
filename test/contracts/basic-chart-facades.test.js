@@ -4,6 +4,8 @@ import path from "node:path";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
 
+import { chart } from "../../src/index.js";
+
 import { createCarsHistogram } from "../../examples/cars-histogram/program.js";
 import { createCarsBoxPlot } from "../../examples/cars-box-plot/program.js";
 import { createCarsGradientPlot } from "../../examples/cars-gradient-plot/program.js";
@@ -139,6 +141,41 @@ test("hands every facade result to its documented resource edit path", () => {
     assert.notDeepEqual(edited.graphicSpec, program.graphicSpec, FACADE_ACTIONS[index]);
     assert.equal(edited.trace.children.at(-1).op, operation, FACADE_ACTIONS[index]);
   }
+});
+
+test("keeps Parallel facade guides on the Parallel coordinate", () => {
+  const rows = loadCars().slice(0, 4);
+  const base = chart()
+    .createCanvas({ width: 640, height: 480 })
+    .createData({ id: "cars", values: rows })
+    .createScatterPlot({
+      id: "context",
+      data: "cars",
+      x: "Horsepower",
+      y: "Miles_per_Gallon",
+      guides: false
+    });
+  const dimensions = ["Horsepower", "Miles_per_Gallon"];
+
+  const parallel = base.createParallelCoordinates({
+    id: "profiles",
+    data: "cars",
+    dimensions
+  });
+  assert.equal(parallel.semanticSpec.guides.axis.parallel.target, "profiles");
+  assert.equal(parallel.semanticSpec.guides.axis.parallel.coordinate, "parallel");
+  assert.throws(() => base.createParallelCoordinates({
+    id: "invalidProfiles",
+    data: "cars",
+    dimensions,
+    guides: { axes: { coordinate: { id: "main", type: "cartesian" } } }
+  }), /guides must use the chart's Parallel coordinate/u);
+  assert.throws(() => base.createParallelCoordinates({
+    id: "gridProfiles",
+    data: "cars",
+    dimensions,
+    guides: { grid: { horizontal: true } }
+  }), /do not accept grid options/u);
 });
 
 test("keeps facade-specific branches out of materialization and renderers", () => {

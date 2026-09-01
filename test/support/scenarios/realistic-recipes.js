@@ -656,11 +656,24 @@ function buildRankPath(spec, factors, resolution) {
 function buildArc(spec, factors, resolution) {
   const { view, context } = resolution;
   const horizontalLegend = ["top", "bottom"].includes(factors.legendPosition);
+  const margin = horizontalLegend
+    ? {
+        top: factors.legendPosition === "top" ? 220 : 90,
+        right: 60,
+        bottom: factors.legendPosition === "bottom" ? 220 : 80,
+        left: 60
+      }
+    : {
+        top: 300,
+        right: factors.legendPosition === "right" ? 420 : 80,
+        bottom: 80,
+        left: factors.legendPosition === "left" ? 420 : 80
+      };
   return chart()
     .createCanvas({
-      width: 2200,
-      height: 1100,
-      margin: { top: 280, right: 800, bottom: 350, left: 400 }
+      width: 900,
+      height: 800,
+      margin
     })
     .createData({ id: "analysisRows", values: view.rows })
     .createArcMark({
@@ -682,7 +695,14 @@ function buildArc(spec, factors, resolution) {
         ...(horizontalLegend ? { columns: Math.min(3, view.rows.length) } : {})
       }
     })
-    .createTitle({ text: context.title, subtitle: context.analysisQuestion, align: factors.titleAlign });
+    .createTitle({
+      text: context.title,
+      subtitle: context.analysisQuestion,
+      align: factors.titleAlign,
+      maxWidth: horizontalLegend ? 760 : 360,
+      wrap: "word",
+      lineHeight: 26
+    });
 }
 
 function buildHeatmap(spec, factors, resolution) {
@@ -1397,7 +1417,13 @@ function observeFactorEffects(spec, program, factors, resolution) {
 
 function makeRecipe(spec, complexity) {
   const datasets = realisticDatasetIds();
-  const factors = Object.freeze(factorsFor(spec, datasets[0]));
+  let cachedDefaultFactors;
+  const defaultFactors = () => {
+    if (cachedDefaultFactors === undefined) {
+      cachedDefaultFactors = Object.freeze(factorsFor(spec, datasets[0]));
+    }
+    return cachedDefaultFactors;
+  };
   let cachedFactors;
   let cachedResolution;
   const resolve = values => {
@@ -1413,11 +1439,13 @@ function makeRecipe(spec, complexity) {
     generation: "balanced-per-dataset",
     complexity,
     enforceFactorEffects: true,
+    get factors() {
+      return defaultFactors();
+    },
     ...(spec.kind === "facet"
       ? { coverageSchedule: FACET_AXES_COVERAGE_SCHEDULE }
       : {}),
     datasets,
-    factors,
     factorsForDataset(dataset) {
       const value = factorsFor(spec, dataset);
       return value === undefined ? undefined : Object.freeze(value);

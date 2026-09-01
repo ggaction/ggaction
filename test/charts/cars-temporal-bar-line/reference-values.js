@@ -124,7 +124,12 @@ export function createCarsTemporalBarLineValues(rows) {
     })),
     axes: {
       x: {
-        line: { x1: x.range[0], y1: baseline, x2: x.range[1], y2: baseline },
+        line: {
+          x1: bounds.x,
+          y1: baseline,
+          x2: bounds.x + bounds.width,
+          y2: baseline
+        },
         ticks: xTicks,
         title: { x: bounds.x + bounds.width / 2, y: baseline + 42, text: "Year" }
       },

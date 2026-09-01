@@ -20,6 +20,37 @@ const LINE_OPTIONS = Object.freeze([
   "strokeWidth", "stroke", "opacity", "curve", "closed"
 ]);
 
+function scopeParallelGuides(guides, coordinate) {
+  if (guides === false) return guides;
+  if (guides.grid !== undefined && guides.grid !== false) {
+    throw new Error("createParallelCoordinates guides do not accept grid options.");
+  }
+  if (guides.axes === false) return guides;
+  const axes = guides.axes ?? {};
+  const descriptor = axes.coordinate ?? {};
+  if (
+    descriptor.id !== undefined && descriptor.id !== coordinate ||
+    descriptor.type !== undefined &&
+      descriptor.type !== "auto" && descriptor.type !== "parallel"
+  ) {
+    throw new Error(
+      "createParallelCoordinates guides must use the chart's Parallel coordinate."
+    );
+  }
+  if (["x", "y", "theta", "radius"].some(channel => axes[channel] !== undefined)) {
+    throw new Error(
+      "createParallelCoordinates guides do not accept Cartesian or Polar axis channels."
+    );
+  }
+  return {
+    ...guides,
+    axes: {
+      ...axes,
+      coordinate: { ...descriptor, id: coordinate, type: "parallel" }
+    }
+  };
+}
+
 export const createParallelCoordinates = action(
   {
     op: "createParallelCoordinates",
@@ -55,7 +86,10 @@ export const createParallelCoordinates = action(
       args.strokeDash,
       "createParallelCoordinates strokeDash"
     );
-    const guides = normalizeGuides(args.guides, "createParallelCoordinates");
+    const guides = scopeParallelGuides(
+      normalizeGuides(args.guides, "createParallelCoordinates"),
+      coordinate
+    );
 
     let next = this
       .createCoordinate({ id: coordinate, type: "parallel" })

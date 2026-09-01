@@ -27,7 +27,7 @@ function validateRadius(value, label, frame) {
   return value;
 }
 
-function pointAt(frame, theta, radius) {
+export function resolvePolarPoint(frame, theta, radius) {
   const radians = theta * Math.PI / 180;
   return {
     x: frame.centerX + radius * Math.sin(radians),
@@ -47,8 +47,8 @@ function arcCommands(frame, radius, startTheta, endTheta) {
     const endRadians = end * Math.PI / 180;
     const deltaRadians = endRadians - startRadians;
     const control = 4 / 3 * Math.tan(deltaRadians / 4);
-    const from = pointAt(frame, start, radius);
-    const to = pointAt(frame, end, radius);
+    const from = resolvePolarPoint(frame, start, radius);
+    const to = resolvePolarPoint(frame, end, radius);
     const fromDerivative = {
       x: radius * Math.cos(startRadians),
       y: radius * Math.sin(startRadians)
@@ -147,13 +147,13 @@ export function buildAnnularSectorCommands({
   const start = startTheta + direction * padAngle / 2;
   const end = endTheta - direction * padAngle / 2;
   const commands = [
-    { op: "M", ...pointAt(frame, start, outerRadius) },
+    { op: "M", ...resolvePolarPoint(frame, start, outerRadius) },
     ...arcCommands(frame, outerRadius, start, end)
   ];
   if (innerRadius === 0) {
     commands.push({ op: "L", x: frame.centerX, y: frame.centerY });
   } else {
-    commands.push({ op: "L", ...pointAt(frame, end, innerRadius) });
+    commands.push({ op: "L", ...resolvePolarPoint(frame, end, innerRadius) });
     commands.push(...arcCommands(frame, innerRadius, end, start));
   }
   commands.push({ op: "Z" });

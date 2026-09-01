@@ -555,13 +555,15 @@ independent assembly and does not inherit position encodings.
 
 - Signature: `createTextMark({ id?, data?, text?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy? } = {})`.
 - The first omitted ID resolves to `"text"`. Passing `data` explicitly creates an independent text layer; otherwise
-  the current compatible point, bar, rect, or rule layer, then one unique compatible layer, supplies data, coordinate,
-  Cartesian position encodings, and a persisted semantic `source` relation.
+  the current compatible point, bar, rect, rule, or complete arc layer, then one unique compatible layer, supplies data,
+  coordinate, compatible position encodings, and a persisted semantic `source` relation.
 - `text` is a constant-content shorthand for wrapped `encodeText({ value: text })`. Appearance options use wrapped
   `editTextMark`; defaults are theme text fill, opacity `1`, 12px sans-serif normal text, left/alphabetic alignment,
   zero rotation, and zero offsets.
 - Concrete children are backend-neutral text primitives. A source-owned annotation anchors to final point centers,
-  bar measure endpoints, rect centers, or rule endpoints, so aggregate bars produce one label per final bar rather than one per row.
+  bar measure endpoints, rect centers, rule endpoints, or arc-sector radial/angular midpoints, so aggregate bars and arcs
+  produce one label per final visual item rather than one per row. Arc anchors derive from concrete sector paths and replay
+  after Canvas, scale, padding, and inner-radius changes.
 - Collision avoidance is not automatic. Authors may preserve explicit placement or assign it afterward with
   `layoutLabels()`.
 
@@ -572,7 +574,7 @@ independent assembly and does not inherit position encodings.
 
 ### Value coverage — `createTextMark`
 
-- ✅ Covered: deterministic ID, explicit/inferred data, point/bar/rule source inference, incomplete creation, constant
+- ✅ Covered: deterministic ID, explicit/inferred data, point/bar/rule/arc source inference, incomplete creation, constant
   content shorthand, explicit typography, offsets, ambiguity and invalid options.
 - Evidence: `test/unit/actions/marks/text-mark.test.js` and the annotated IMDb Gate pair.
 

@@ -110,6 +110,43 @@ test("rematerializes temporal axis geometry after Canvas edits", () => {
   assert.equal(before.graphicSpec.objects.xAxisTicks.items.at(-1).properties.x1, 550);
 });
 
+test("spans temporal bar baselines across the complete plot bounds", () => {
+  const program = chart()
+    .createCanvas({
+      width: 720,
+      height: 460,
+      margin: { top: 52, right: 36, bottom: 52, left: 88 }
+    })
+    .createData({
+      values: [
+        { date: Date.UTC(2024, 0, 1), value: 10 },
+        { date: Date.UTC(2024, 1, 1), value: 20 },
+        { date: Date.UTC(2024, 2, 1), value: 15 }
+      ]
+    })
+    .createBarPlot({
+      x: { field: "date", fieldType: "temporal" },
+      y: { field: "value" },
+      guides: false
+    })
+    .createGrid({
+      horizontal: { values: [0], color: "#d9d9d9", lineWidth: 0.7 }
+    })
+    .createXAxisLine({ color: "#333333", lineWidth: 0.8 });
+
+  const range = program.resolvedScales.x.range;
+  const grid = program.graphicSpec.objects.horizontalGridLines.items[0].properties;
+  const axis = program.graphicSpec.objects.xAxisLine.properties;
+  const reversedAxis = program.editScale({ id: "x", reverse: true })
+    .graphicSpec.objects.xAxisLine.properties;
+
+  assert.ok(range[0] > 88);
+  assert.ok(range[1] < 684);
+  assert.deepEqual([grid.x1, grid.x2], [88, 684]);
+  assert.deepEqual([axis.x1, axis.x2], [88, 684]);
+  assert.deepEqual([reversedAxis.x1, reversedAxis.x2], [684, 88]);
+});
+
 test("validates temporal axis formatting and explicit tick values", () => {
   const encoded = createTemporalLine();
 
@@ -120,6 +157,17 @@ test("validates temporal axis formatting and explicit tick values", () => {
       child => child.properties.text
     ),
     ["1970", "1972", "1974", "1976", "1978", "1980", "1982"]
+  );
+  assert.deepEqual(
+    encoded.createXAxis({
+      ticksAndLabels: { labels: { format: "%b %Y" } }
+    }).graphicSpec.objects.xAxisLabels.items.map(
+      child => child.properties.text
+    ),
+    [
+      "Jan 1970", "Jan 1972", "Jan 1974", "Jan 1976",
+      "Jan 1978", "Jan 1980", "Jan 1982"
+    ]
   );
 
   assert.throws(

@@ -181,14 +181,18 @@
 - Automatic cross-axis sizing rematerializes unit children. Nested compositions keep their intrinsic layout and are
   placed inside the resolved slot using the outer composition's `align` policy instead of stretching their internal
   cells, gaps, or guide geometry.
+- Every renderer applies each nested Canvas translation to both shape and text coordinates. PDF output preserves
+  distinct child-local margins in `hconcat`/`vconcat`; a later child's text position includes its composition slot
+  offset instead of falling back to the root or sibling origin.
 - Cartesian `facet` supports the mark and derived-data families listed above. A Polar source is rejected before any
   child or partial parent state is created because theta/radius facet scale and guide resolution are not implemented.
 
 ### Value coverage — cross-feature integration
 
 - ✅ Covered: direct and nested Polar concat, nested replacement and explicit ancestor propagation, immutable prior
-  state, centered unequal snapshots, Cartesian facet shared/independent scale and guide resolution, and explicit
-  Polar-facet rejection.
+  state, centered unequal snapshots, PDF text translation across unequal child margins, Cartesian facet
+  shared/independent scale and guide resolution, and explicit Polar-facet rejection.
 - Evidence: `test/charts/cross-feature-integration/`,
   `test/contracts/composition-integration.test.js`, and
-  `test/contracts/visual-capability-surface.test.js`.
+  `test/contracts/visual-capability-surface.test.js`, plus
+  `test/unit/renderers/pdf-renderer.test.js` for backend translation parity.

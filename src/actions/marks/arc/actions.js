@@ -10,7 +10,10 @@ import { buildAnnularSectorCommands } from "../../../grammar/polarPaths.js";
 import { resolvePolarFrame } from "../../../grammar/polar.js";
 import { mapOrdinalValues } from "../../../grammar/scales/index.js";
 import { resolveGraphicBounds } from "../../../layout/canvas.js";
-import { canMaterializeArc } from "../../../materialization/marks/index.js";
+import {
+  canMaterializeArc,
+  getSourceDependentMarkSteps
+} from "../../../materialization/marks/index.js";
 import { findDataset } from "../../../selectors/datasets.js";
 import { findLayer, resolveEligibleLayer } from "../../../selectors/layers.js";
 import { DEFAULT_COLORS } from "../../../theme/defaults.js";
@@ -245,9 +248,12 @@ const editArcMark = action(
         allowStrokeRemoval: true
       })
     );
-    return canMaterializeArc(next, layer)
-      ? next.rematerializeArcMark({ id: layer.id })
-      : next;
+    if (!canMaterializeArc(next, layer)) return next;
+    let rematerialized = next.rematerializeArcMark({ id: layer.id });
+    for (const step of getSourceDependentMarkSteps(rematerialized, layer.id)) {
+      rematerialized = rematerialized[step.op](step.args);
+    }
+    return rematerialized;
   }
 );
 

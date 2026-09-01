@@ -116,6 +116,9 @@ createBarPlot({
 
 - Stable default ID is `barPlot`.
 - Hierarchy: `createBarMark`, `encodeX`, `encodeY`, optional `encodeColor`/`encodeBarWidth`, optional `createGuides`.
+- `x`/`y` field strings and option objects without `fieldType` infer finite numeric data as quantitative and
+  other supported scalar data as nominal. Explicit `fieldType` remains authoritative for ordinal numeric categories
+  and temporal fields.
 - Aggregate, ranged, vertical/horizontal, group/stack/fill/overlay/diverging behavior stays owned by the existing bar
   position and `color.layout` policies. The facade does not introduce a second layout option.
 - Constant appearance belongs to `bar`; field-driven color stays top-level. Width reuses the exact `encodeBarWidth`
@@ -278,6 +281,9 @@ createParallelCoordinates({
 - `line`은 existing open linear line appearance를 재사용한다. Curved/closed paths는 Parallel topology와 맞지 않아
   거부한다. Color와 stroke dash는 row item에 적용되고 applicable legend를 만든다.
 - Omitted guides는 dimension axes와 applicable legend를 만들며 `guides: false`는 guide branch를 만들지 않는다.
+- Parallel facade guides are scoped to the facade's Parallel coordinate. Cartesian or Polar axis channels and a
+  conflicting coordinate id/type are rejected before the chart changes.
+- Parallel facade guides do not accept grid options; `grid` may only be omitted or `false`.
 - Semantic/graphic/order/Canvas calls와 Node PNG는 approved Cars primitive와 exact match다.
 
 ### Formal values — `createParallelCoordinates`

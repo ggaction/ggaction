@@ -32,20 +32,20 @@ const EXPECTED_TARGETS = Object.freeze({
   createScatterPlot: Object.freeze({ requirements: 376, diversity: 9 }),
   createBarPlot: Object.freeze({ requirements: 372, diversity: 10 }),
   createLinePlot: Object.freeze({ requirements: 342, diversity: 8 }),
-  createParallelCoordinates: Object.freeze({ requirements: 281, diversity: 7 })
+  createParallelCoordinates: Object.freeze({ requirements: 104, diversity: 3 })
 });
 const EXPECTED_REQUIREMENT_DIGESTS = Object.freeze({
   // Locked after public declarations match the runtime-supported facade branches.
   createScatterPlot: "490a6a22271e848fbabbe6cbba8fa9c4485a69856eb6daa1931c43bc9c3022e8",
   createBarPlot: "7954fb91976c7734c9091519436b17d76e2059765cbfaf3565d514d9ac8d6267",
   createLinePlot: "4829a1e66827a6ce81f6b31ad5fa152e7a46b59e289e2cc7e8252f146ee2651f",
-  createParallelCoordinates: "0a6e2b26566c57669eb32594026704c550f1e787d2852885739679bdd3094a22"
+  createParallelCoordinates: "81736b35e79853986e491b455aed6501d02b989e0192efb2cf4bd8bce7d77088"
 });
 const EXPECTED_DIVERSITY_DIGESTS = Object.freeze({
   createScatterPlot: "73677faf48edd8271ab5b687a13d356e4e1c54a0ebca296708ee1071bfef0910",
   createBarPlot: "3df3869de37f6dbcfcfc5532f6bed97431ad2474c9d5644ffb374815c1ffdfc9",
   createLinePlot: "b8553f894ffdd4e44b9200c3608ee8fcdb2b77912c6e1358a7830a59857b4c41",
-  createParallelCoordinates: "42d035eab13fa419b634af59965bbda32c00c0da0013aa62f2996f0f4393ce85"
+  createParallelCoordinates: "ec8f99f3b8ef011bcabbfdc64266d1157e99697a96dc593e026efb9f77793a18"
 });
 const OTHER_RECIPE_REQUIREMENT_IDS = new Set(`
 option-path:createBarPlot.color
@@ -623,10 +623,10 @@ test("locks the exact assigned option, literal, aggregate, and diversity target 
     actionRequirementCount += requirementIds.length;
     diversityCount += diversityIds.length;
   }
-  assert.equal(actionRequirementCount, 1_371);
+  assert.equal(actionRequirementCount, 1_194);
   assert.equal(target.familyLiterals.length, 15);
-  assert.equal(actionRequirementCount + target.familyLiterals.length, 1_386);
-  assert.equal(diversityCount, 34);
+  assert.equal(actionRequirementCount + target.familyLiterals.length, 1_209);
+  assert.equal(diversityCount, 30);
 });
 
 test("keeps every orthogonal profile materially distinct under one authentic witness", {

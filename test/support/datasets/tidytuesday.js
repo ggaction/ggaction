@@ -7,10 +7,9 @@ import { datasetDefinition, DATASET_CORPUS } from "./catalog.js";
 import { parseTypedCsv } from "./csv.js";
 
 const repositoryRoot = fileURLToPath(new URL("../../../", import.meta.url));
-const cacheRoot = path.resolve(
-  repositoryRoot,
-  DATASET_CORPUS.tidyTuesday.cacheDirectory
-);
+const cacheRoot = process.env.GGACTION_TEST_TIDYTUESDAY_CACHE_ROOT === undefined
+  ? path.resolve(repositoryRoot, DATASET_CORPUS.tidyTuesday.cacheDirectory)
+  : path.resolve(process.env.GGACTION_TEST_TIDYTUESDAY_CACHE_ROOT);
 const fixtureCache = new Map();
 const fixtureEntryCache = new Map();
 const sourceCache = new Map();

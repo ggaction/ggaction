@@ -56,6 +56,30 @@ jobs:
       - name: Render PNG regression charts
         run: npm run test:render
 
+  realistic:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v6
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+      - name: Install dependencies
+        run: npm ci
+      - name: Restore verified dataset corpus
+        id: dataset-cache
+        uses: actions/cache@v5
+        with:
+          path: .artifacts/datasets/tidytuesday
+          key: ggaction-tidytuesday-${{ runner.os }}-${{ hashFiles('data/corpus/manifest.json') }}
+      - name: Fetch and verify dataset corpus
+        if: steps.dataset-cache.outputs.cache-hit != 'true'
+        run: npm run datasets:sync
+      - name: Run realistic corpus contracts
+        run: npm run test:realistic
+
   coverage:
     runs-on: ubuntu-latest
     steps:
@@ -68,6 +92,15 @@ jobs:
           cache: npm
       - name: Install dependencies
         run: npm ci
+      - name: Restore verified dataset corpus
+        id: dataset-cache
+        uses: actions/cache@v5
+        with:
+          path: .artifacts/datasets/tidytuesday
+          key: ggaction-tidytuesday-${{ runner.os }}-${{ hashFiles('data/corpus/manifest.json') }}
+      - name: Fetch and verify dataset corpus
+        if: steps.dataset-cache.outputs.cache-hit != 'true'
+        run: npm run datasets:sync
       - name: Enforce coverage thresholds
         run: npm run test:coverage
 

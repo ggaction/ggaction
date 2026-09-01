@@ -16,8 +16,7 @@ import {
 import { mapScaleConsumerValues } from "../scales/map.js";
 import {
   DEFAULT_BAR_FILL,
-  DEFAULT_BAR_STROKE,
-  DEFAULT_BAR_STROKE_WIDTH
+  resolveBarAppearance
 } from "./resolve.js";
 import { deriveGroupedRectangles } from "./grouped.js";
 import { resolveBarWidth } from "../../grammar/bars/geometry.js";
@@ -107,19 +106,7 @@ export function deriveAggregateRectangles(required, resolved, widthConfig) {
         width: vertical ? thickness : Math.abs(start - end),
         height: vertical ? Math.abs(start - end) : thickness,
         fill: mappedColors[index],
-        stroke: appearance.stroke === false
-          ? "transparent"
-          : appearance.stroke ?? config.stroke ??
-            existing[index]?.properties.stroke ?? DEFAULT_BAR_STROKE,
-        strokeWidth: appearance.stroke === false
-          ? 0
-          : appearance.strokeWidth ?? config.strokeWidth ??
-            existing[index]?.properties.strokeWidth ?? DEFAULT_BAR_STROKE_WIDTH,
-        ...((appearance.opacity ?? config.opacity) === undefined
-          ? (existing[index]?.properties.opacity === undefined
-              ? {}
-              : { opacity: existing[index].properties.opacity })
-          : { opacity: appearance.opacity ?? config.opacity })
+        ...resolveBarAppearance(config, existing[index]?.properties)
       }];
     });
   }
@@ -168,20 +155,7 @@ export function deriveAggregateRectangles(required, resolved, widthConfig) {
       fill: segment.color === undefined
         ? appearance.fill ?? config.fill ?? colors.get(segment.color)
         : colors.get(segment.color),
-      stroke: appearance.stroke === false
-        ? "transparent"
-        : appearance.stroke ?? config.stroke ?? existing[index]?.properties.stroke ?? DEFAULT_BAR_STROKE,
-      strokeWidth:
-        appearance.stroke === false
-          ? 0
-          : appearance.strokeWidth ?? config.strokeWidth ??
-            existing[index]?.properties.strokeWidth ??
-            DEFAULT_BAR_STROKE_WIDTH,
-      ...((appearance.opacity ?? config.opacity) === undefined
-        ? (existing[index]?.properties.opacity === undefined
-            ? {}
-            : { opacity: existing[index].properties.opacity })
-        : { opacity: appearance.opacity ?? config.opacity })
+      ...resolveBarAppearance(config, existing[index]?.properties)
     };
   });
 }

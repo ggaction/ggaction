@@ -23,8 +23,10 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - `position`: x=`"bottom" | "top"`, y=`"left" | "right"`; defaults는 bottom/left다.
 - `color`: non-empty string, 기본 theme text color.
 - `lineWidth`: non-negative finite number, 기본값 `1`; 0은 보이지 않는 line을 허용한다.
-- Effect: endpoint는 resolved scale range와 Canvas plot bounds에서 항상 재추론한다. semantic guide에는
-  scale만 저장하고 style과 endpoints는 graphical state다.
+- Effect: endpoint는 resolved scale range와 Canvas plot bounds에서 항상 재추론한다. Temporal aggregate-bar
+  time scale은 bar-center mapping을 위해 inset된 range를 유지하지만, axis line만 grid와 같은 complete plot
+  span을 사용해 baseline end cap을 노출하지 않는다. Reverse direction은 endpoint order에 반영한다. semantic
+  guide에는 scale만 저장하고 style과 endpoints는 graphical state다.
 
 ## Shared axis-tick contract
 
@@ -47,7 +49,8 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - `count`/`values`: tick contract와 같으며 existing ticks가 있으면 생략 시 그 정책을 재사용한다.
 - `offset`: non-negative finite number; x default `18`, y default `12`.
 - `format`: `"auto" | { decimals: nonNegativeInteger } | AxisFormatString`. Numeric tokens는
-  quantitative, UTC tokens는 time에서만 허용하고 ordinal은 auto만 허용한다.
+  quantitative에서만 허용한다. Time format은 `%Y | %m | %d | %b` UTC directive 하나 이상과 literal의
+  sequence이며 literal percent는 `%%`다. Unknown/dangling directive는 거부하고 ordinal은 auto만 허용한다.
 - `color`: non-empty string; `fontSize`: positive finite; `fontFamily`: non-empty string;
   `fontWeight`: string 또는 finite number.
 - Effect: formatted text, aligned data-space coordinates와 font style을 text collection에 저장한다.
@@ -94,10 +97,12 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 ```typescript
 type AxisPositionX = "bottom" | "top";
 type AxisPositionY = "left" | "right";
+type TimeAxisDirective = "Y" | "m" | "d" | "b";
+type TimeAxisFormatString = `${string}%${TimeAxisDirective}${string}`;
 type AxisFormatString =
   | ".0f" | ".1f" | ".2f"
   | ".0%" | ".1%" | ".2e"
-  | "%Y" | "%Y-%m" | "%Y-%m-%d";
+  | TimeAxisFormatString;
 type TickValue = string | boolean | Finite;
 type TickOptions = {
   length?: NonNegativeFinite;

@@ -3,7 +3,8 @@ import test from "node:test";
 
 import {
   buildAnnularSectorCommands,
-  buildPolarCircleCommands
+  buildPolarCircleCommands,
+  resolvePolarPoint
 } from "../../../src/grammar/polarPaths.js";
 
 const frame = Object.freeze({
@@ -85,6 +86,16 @@ test("supports reverse sweeps, full circles, and angular padding", () => {
     padAngle: 10
   });
   assert.notDeepEqual(padded[0], { op: "M", x: 100, y: 40 });
+});
+
+test("resolves Polar points for pie and donut anchors", () => {
+  const pieAnchor = resolvePolarPoint(frame, 45, 20);
+  close(pieAnchor.x, 100 + 20 / Math.sqrt(2));
+  close(pieAnchor.y, 80 - 20 / Math.sqrt(2));
+
+  const donutAnchor = resolvePolarPoint(frame, 45, 30);
+  close(donutAnchor.x, 100 + 30 / Math.sqrt(2));
+  close(donutAnchor.y, 80 - 30 / Math.sqrt(2));
 });
 
 test("rejects invalid frames, radii, sweeps, and padding", () => {

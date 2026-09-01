@@ -649,8 +649,9 @@ createTextMark({ id?, data?, text?, fill?, opacity?, fontSize?, fontFamily?, fon
 ```
 
 Create a semantic text layer. Omitted data and position attach to the current
-or unique compatible point, bar, rect, or rule layer. `text` is constant-content
-shorthand. [Text marks](../api/marks/text.md)
+or unique compatible point, bar, rect, rule, or arc layer. Arc text anchors at
+sector centers. `text` is constant-content shorthand.
+[Text marks](../api/marks/text.md)
 
 ### `editTextMark`
 
@@ -699,21 +700,22 @@ semantic base positions. [Text marks](../api/marks/text.md)
 
 ```javascript
 encodeX({ field, target?, fieldType?, aggregate?, stack?, coordinate?, bin?, scale? })
-encodeX({ datum, target?, fieldType, coordinate?, scale? }) // rule
+encodeX({ datum, target?, fieldType?, coordinate?, scale? }) // rule
 ```
 
 Create or compatibly replace an x encoding for the supported mark/type pairs in
 the matrix above. Rects accept a discrete x band or the primary x edge of a
 complete x/x2 range. Bars accept binned x, vertical categories, or a horizontal
-aggregate measure. Rules accept exactly one field or datum and an explicit
-field type.
+aggregate measure. Rules accept exactly one field or datum. Datum rules infer
+finite numbers as quantitative and other supported scalars as nominal; field
+rules require an explicit field type.
 [Position encodings](../api/position-encodings.md)
 
 ### `encodeY`
 
 ```javascript
 encodeY({ field?, target?, fieldType?, aggregate?, stack?, coordinate?, scale? })
-encodeY({ datum, target?, fieldType, coordinate?, scale? }) // rule
+encodeY({ datum, target?, fieldType?, coordinate?, scale? }) // rule
 ```
 
 Create or compatibly replace a y encoding. With bar marks, a quantitative y
@@ -724,7 +726,7 @@ from the complete pair and is not stored separately. Bar stack accepts
 Aggregate values may be scalar names or parameterized quantile
 and ordered first/last objects. A complete histogram x/y pair materializes concrete rects.
 Rects accept a discrete y band or the primary y edge of a complete y/y2 range.
-Rules accept exactly one field or datum and an explicit field type.
+Rules use the same datum inference and explicit field-mode type contract as x.
 [Position encodings](../api/position-encodings.md)
 
 ### `encodeY2`
@@ -1686,7 +1688,9 @@ editYAxisLabels({
 
 Axis `position` is `"bottom" | "top"` for x and `"left" | "right"` for y.
 Label `format` accepts `"auto"`, `{ decimals }`, numeric `.0f/.1f/.2f/.0%/.1%/.2e`,
-or UTC `%Y/%Y-%m/%Y-%m-%d` tokens when compatible with the resolved scale.
+or a UTC sequence of `%Y/%m/%d/%b` directives and literals when compatible with
+the resolved scale. Use `%%` for a literal percent; unknown or dangling
+directives reject.
 
 ### Tick/label groups and axis titles
 

@@ -50,8 +50,8 @@ export function resolveOffsetScalePolicy({
   };
 }
 
-export function resolveTemporalBarBand(consumers, domain, range, values) {
-  const temporalBars = consumers.filter(consumer => {
+export function resolveTemporalBarBand(valuesByConsumer, domain, range) {
+  const temporalBars = valuesByConsumer.filter(({ consumer }) => {
     const channels = resolveBarChannels(consumer.layer);
     return resolveBarGrain(consumer.layer) === BAR_GRAINS.aggregate &&
       channels?.category === consumer.channel &&
@@ -59,18 +59,22 @@ export function resolveTemporalBarBand(consumers, domain, range, values) {
   });
   if (temporalBars.length === 0) return undefined;
   const temporalFields = new Set(
-    temporalBars.map(consumer => consumer.encoding.field)
+    temporalBars.map(({ consumer }) => consumer.encoding.field)
   );
-  const compatibleLines = consumers.filter(consumer =>
-    consumer.layer.mark?.type === "line" &&
-    consumer.encoding.fieldType === "temporal" &&
-    temporalFields.has(consumer.encoding.field)
+  const compatibleConsumers = valuesByConsumer.filter(({ consumer }) =>
+    ["line", "rule", "text"].includes(consumer.layer.mark?.type) &&
+      consumer.encoding.fieldType === "temporal" &&
+      temporalFields.has(consumer.encoding.field)
   );
-  if (temporalBars.length + compatibleLines.length !== consumers.length) {
+  if (
+    temporalBars.length + compatibleConsumers.length !==
+    valuesByConsumer.length
+  ) {
     throw new Error(
-      "A temporal bar position scale requires compatible bar or line consumers of one field."
+      "A temporal bar position scale requires compatible bar, line, rule, or text consumers of one field."
     );
   }
+  const values = temporalBars.flatMap(item => item.values);
   const ordered = [...new Set(values)].sort((left, right) => left - right);
   if (ordered.length < 2) {
     throw new Error("Temporal bar position requires at least two distinct values.");

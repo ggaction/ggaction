@@ -12,7 +12,9 @@ import { DEFAULT_COLORS, DEFAULT_FONT_FAMILY } from
   "../../../theme/defaults.js";
 import {
   formatContinuousValues,
-  sampleContinuousValues
+  sampleContinuousValues,
+  selectLegendLayer,
+  styleContinuousText
 } from "./continuous/common.js";
 
 const OPTIONS = Object.freeze(["target", "count"]);
@@ -38,13 +40,11 @@ export function isStrokeWidthLegendLayer(layer) {
 }
 
 function resolveLayer(program, requested) {
-  const candidates = program.semanticSpec.layers.filter(isStrokeWidthLegendLayer);
-  const layer = requested === undefined
-    ? candidates.length === 1 ? candidates[0] : undefined
-    : (() => {
-        const candidate = findLayer(program, requested);
-        return candidates.includes(candidate) ? candidate : undefined;
-      })();
+  const layer = selectLegendLayer(
+    program,
+    requested,
+    isStrokeWidthLegendLayer
+  );
   if (layer === undefined) {
     throw new Error(
       requested === undefined
@@ -61,16 +61,6 @@ function requireScale(program, id) {
     throw new Error(`Stroke-width legend requires resolved quantitative scale "${id}".`);
   }
   return scale;
-}
-
-function styleText(program, id, style) {
-  return program
-    .editGraphics({ target: id, property: "fill", value: style.color })
-    .editGraphics({ target: id, property: "fontSize", value: style.fontSize })
-    .editGraphics({ target: id, property: "fontFamily", value: style.fontFamily })
-    .editGraphics({ target: id, property: "fontWeight", value: style.fontWeight })
-    .editGraphics({ target: id, property: "textAlign", value: "left" })
-    .editGraphics({ target: id, property: "textBaseline", value: "middle" });
 }
 
 export const rematerializeStrokeWidthLegend = action(
@@ -134,13 +124,13 @@ export const rematerializeStrokeWidthLegend = action(
         property: "text",
         value: formatContinuousValues(values, scale.domain, "quantitative")
       });
-    next = styleText(next, "strokeWidthLegendLabels", config.labels);
+    next = styleContinuousText(next, "strokeWidthLegendLabels", config.labels);
     if (config.titleVisible === false) return next;
     next = next
       .editGraphics({ target: "strokeWidthLegendTitle", property: "x", value: originX })
       .editGraphics({ target: "strokeWidthLegendTitle", property: "y", value: titleY })
       .editGraphics({ target: "strokeWidthLegendTitle", property: "text", value: title });
-    return styleText(next, "strokeWidthLegendTitle", config.titleStyle);
+    return styleContinuousText(next, "strokeWidthLegendTitle", config.titleStyle);
   }
 );
 

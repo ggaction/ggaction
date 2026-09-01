@@ -90,6 +90,21 @@ test("materializes a nominal-category ranged bar and removes stale aggregate sta
   assert.deepEqual(rectangles.map(rect => rect.properties.opacity), [1, 1]);
 });
 
+test("uses encoded ranged-bar fills as implicit strokes", () => {
+  const colored = rangedBar().encodeColor({
+    target: "range",
+    field: "group",
+    fieldType: "nominal",
+    scale: { palette: "tableau10" }
+  });
+  const rectangles = colored.graphicSpec.objects.range.items;
+
+  assert.deepEqual(
+    rectangles.map(rect => rect.properties.stroke),
+    rectangles.map(rect => rect.properties.fill)
+  );
+});
+
 test("supports atomic range encoding, pixel width, and Canvas rematerialization", () => {
   const base = chart()
     .createCanvas({ width: 150, height: 150 })

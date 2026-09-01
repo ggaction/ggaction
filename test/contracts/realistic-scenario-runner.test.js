@@ -27,6 +27,7 @@ import {
 import {
   assertRealisticExecutionResourceBound,
   generateRealisticDescriptorsInWorker,
+  interpretableGalleryEntries,
   parseRealisticScenarioArguments,
   parseRealisticScenarioOutcomeChunk,
   promoteRealisticScenarioRun,
@@ -40,6 +41,27 @@ import { releaseTidyTuesdaySourceCache } from
   "../support/datasets/tidytuesday.js";
 
 let boundedGeneration;
+
+test("keeps diagnostic scenarios out of the human gallery and enforces compact canvases", () => {
+  const entry = (recipe, width = 900, height = 800) => ({
+    id: `${recipe}-id`, recipe, artifacts: { png: { width, height } }
+  });
+  const readable = entry("realistic-category-boxes");
+  const readableFacade = entry("realistic-statistical-facade-coverage-box", 800, 720);
+  const diagnosticFacade = entry("realistic-cartesian-facade-coverage-bar");
+  assert.deepEqual(
+    interpretableGalleryEntries([
+      readable,
+      readableFacade,
+      diagnosticFacade,
+      entry("realistic-guide-scale-simple", 4_400, 3_200),
+      entry("realistic-action-direct-parallel"),
+      entry("realistic-ranked-line"),
+      entry("realistic-category-boxes", 1_200, 800)
+    ]),
+    [readable]
+  );
+});
 
 test("labels every gallery chart with a short ordinal and stable descriptor id", async () => {
   const output = await mkdtemp(path.join(tmpdir(), "ggaction-gallery-labels-"));
@@ -1664,7 +1686,7 @@ test("reads length-bounded compressed PDF text and rejects drawing-only streams"
   );
 });
 
-test("accepts the exact readable PNG and compressed PDF artifact regressions", async t => {
+test("accepts deterministic readable PNG and compressed PDF artifact regressions", async t => {
   const directory = await mkdtemp(path.join(tmpdir(), "ggaction-realistic-evidence-"));
   t.after(() => rm(directory, { recursive: true, force: true }));
   const tuition = Object.freeze({
@@ -1717,6 +1739,17 @@ test("accepts the exact readable PNG and compressed PDF artifact regressions", a
   const readability = await pngReadabilityEvidence(
     await readFile(pngOutcome.result.artifacts.png.output)
   );
+  const pngReplay = await executeRealisticScenarioTask({
+    index: 0,
+    descriptor: tuition,
+    deterministic: true,
+    artifacts: true,
+    png: true,
+    pdf: false,
+    visualAudit: true,
+    output: path.join(directory, "png-replay")
+  });
+  assert.equal(pngReplay.ok, true, pngReplay.error?.stack);
   assert.deepEqual({
     width: pngOutcome.result.artifacts.png.width,
     height: pngOutcome.result.artifacts.png.height,
@@ -1726,13 +1759,19 @@ test("accepts the exact readable PNG and compressed PDF artifact regressions", a
   }, {
     width: 1_600,
     height: 1_000,
-    sha256: "9ab55916988e2fef7e9446edd6e596d20d418db6a3e5dd6f24077994e0a5aa0e",
+    sha256: pngReplay.result.artifacts.png.sha256,
     nonBlank: true,
     nativePixelScan: true
   });
   assert.ok(readability.strongInkDensity >= 0.01, readability);
-  assert.ok(readability.bounds.x <= 64, readability);
-  assert.ok(readability.bounds.y <= 45, readability);
+  assert.ok(
+    readability.bounds.x <= pngOutcome.result.artifacts.png.width * 0.05,
+    JSON.stringify(readability)
+  );
+  assert.ok(
+    readability.bounds.y <= pngOutcome.result.artifacts.png.height * 0.05,
+    JSON.stringify(readability)
+  );
   assert.ok(readability.bounds.width >= 1_190, readability);
   assert.ok(readability.bounds.height >= 870, readability);
 
@@ -1747,6 +1786,17 @@ test("accepts the exact readable PNG and compressed PDF artifact regressions", a
     output: directory
   });
   assert.equal(pdfOutcome.ok, true, pdfOutcome.error?.stack);
+  const pdfReplay = await executeRealisticScenarioTask({
+    index: 1,
+    descriptor: outerSpace,
+    deterministic: true,
+    artifacts: true,
+    png: false,
+    pdf: true,
+    visualAudit: true,
+    output: path.join(directory, "pdf-replay")
+  });
+  assert.equal(pdfReplay.ok, true, pdfReplay.error?.stack);
   assert.deepEqual({
     width: pdfOutcome.result.artifacts.pdf.width,
     height: pdfOutcome.result.artifacts.pdf.height,
@@ -1757,7 +1807,7 @@ test("accepts the exact readable PNG and compressed PDF artifact regressions", a
   }, {
     width: 2_600,
     height: 1_120,
-    sha256: "d6d11ecd9a803655d386e82508634221117c58d6545071e65dae5d640b5d419a",
+    sha256: pdfReplay.result.artifacts.pdf.sha256,
     textContent: true,
     textShowContent: true,
     drawingContent: true

@@ -86,11 +86,13 @@ function categoricalLiterals(checker, type) {
   const values = new Map();
   const aliases = new Set();
   const visited = new Set();
+  let open = false;
   const visit = current => {
     if (visited.has(current.id)) return;
     visited.add(current.id);
     const alias = current.getAliasSymbol?.()?.name;
     if (typeof alias === "string") aliases.add(alias);
+    if (current.isTemplateLiteralType?.()) open = true;
     if (current.isStringLiteralType?.()) {
       values.set(`string:${encodeURIComponent(current.value)}`, Object.freeze({
         type: "string",
@@ -111,6 +113,7 @@ function categoricalLiterals(checker, type) {
   };
   visit(type);
   return Object.freeze({
+    open,
     aliases: Object.freeze([...aliases].sort()),
     values: Object.freeze([...values.values()].sort((left, right) =>
       left.key.localeCompare(right.key)
@@ -253,7 +256,11 @@ function collectActionPaths({
           path: arrayPath,
           depth,
           topLevel: false,
-          literals: Object.freeze({ aliases: Object.freeze([]), values: Object.freeze([]) })
+          literals: Object.freeze({
+            open: false,
+            aliases: Object.freeze([]),
+            values: Object.freeze([])
+          })
         });
       }
       for (const element of elements) {
@@ -290,6 +297,7 @@ function collectActionPaths({
         paths.set(propertyPath, {
           ...existing,
           literals: Object.freeze({
+            open: existing.literals.open || literals.open,
             aliases: Object.freeze([...new Set([
               ...existing.literals.aliases,
               ...literals.aliases
@@ -317,8 +325,13 @@ function finalizeInventory(cards, rawPaths) {
   const familyInputs = new Map();
   for (const pathValue of rawPaths) {
     if (pathValue.literals.values.length === 0) continue;
-    const key = pathValue.literals.values.map(value => value.key).join("|");
-    const current = familyInputs.get(key) ?? { aliases: new Set(), paths: [] };
+    const literalKey = pathValue.literals.values.map(value => value.key).join("|");
+    const key = pathValue.literals.open ? `open:${literalKey}` : literalKey;
+    const current = familyInputs.get(key) ?? {
+      aliases: new Set(),
+      open: pathValue.literals.open,
+      paths: []
+    };
     pathValue.literals.aliases.forEach(alias => current.aliases.add(alias));
     current.paths.push(pathValue);
     familyInputs.set(key, current);
@@ -332,7 +345,10 @@ function finalizeInventory(cards, rawPaths) {
       aliases: Object.freeze([...input.aliases].sort()),
       values,
       size: values.length,
-      policy: values.length <= SMALL_LITERAL_FAMILY_LIMIT ? "path-values" : "family-values",
+      open: input.open,
+      policy: !input.open && values.length <= SMALL_LITERAL_FAMILY_LIMIT
+        ? "path-values"
+        : "family-values",
       paths: Object.freeze(input.paths.map(pathValue =>
         optionPathId(pathValue.action, pathValue.path)
       ).sort())
@@ -340,7 +356,8 @@ function finalizeInventory(cards, rawPaths) {
   }));
 
   const optionPaths = rawPaths.map(pathValue => {
-    const key = pathValue.literals.values.map(value => value.key).join("|");
+    const literalKey = pathValue.literals.values.map(value => value.key).join("|");
+    const key = pathValue.literals.open ? `open:${literalKey}` : literalKey;
     const family = families.get(key);
     const arrayIndex = pathValue.path.indexOf("[]");
     const arrayParent = arrayIndex === -1

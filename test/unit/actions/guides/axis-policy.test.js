@@ -58,6 +58,15 @@ test("formats every accepted numeric and UTC axis token", () => {
   }
   assert.equal(formatAxisValue(timestamp, "time", "%Y", auto), "2024");
   assert.equal(formatAxisValue(timestamp, "time", "%Y-%m", auto), "2024-01");
+  assert.equal(formatAxisValue(timestamp, "time", "%b %Y", auto), "Jan 2024");
+  assert.equal(
+    formatAxisValue(timestamp, "time", "%Y/%m/%d", auto),
+    "2024/01/02"
+  );
+  assert.equal(
+    formatAxisValue(timestamp, "time", "%b %% %Y", auto),
+    "Jan % 2024"
+  );
   assert.equal(
     formatAxisValue(timestamp, "time", "%Y-%m-%d", auto),
     "2024-01-02"
@@ -83,6 +92,9 @@ test("rejects unknown and scale-incompatible axis formats", () => {
   const auto = value => String(value);
 
   assert.throws(() => validateAxisFormat(".3f"), /supported format string/);
+  assert.throws(() => validateAxisFormat("%Y-%q"), /supported format string/);
+  assert.throws(() => validateAxisFormat("%Y-%"), /supported format string/);
+  assert.throws(() => validateAxisFormat("calendar"), /supported format string/);
   assert.throws(() => validateAxisFormat({ decimals: -1 }), /Label format/);
   assert.throws(
     () => formatAxisValue(1, "linear", "%Y", auto),

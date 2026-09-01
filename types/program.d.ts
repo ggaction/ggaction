@@ -707,10 +707,11 @@ export interface CanvasOptions {
 
 export type XAxisPosition = "bottom" | "top";
 export type YAxisPosition = "left" | "right";
+type TimeAxisDirective = "Y" | "m" | "d" | "b";
 export type AxisFormatString =
   | ".0f" | ".1f" | ".2f"
   | ".0%" | ".1%" | ".2e"
-  | "%Y" | "%Y-%m" | "%Y-%m-%d";
+  | `${string}%${TimeAxisDirective}${string}`;
 export type AxisFormat =
   | "auto"
   | AxisFormatString
@@ -905,6 +906,13 @@ type GradientPlotDensityLegendOptions = {
 };
 type GradientPlotGuideOptions = Omit<CartesianGuideOptions, "legend"> & {
   legend?: false | GradientPlotDensityLegendOptions;
+};
+type ParallelGuideOptions = {
+  axes?: false | {
+    coordinate?: { id?: string; type?: "auto" | "parallel" };
+  };
+  grid?: false;
+  legend?: false | LegendOptions;
 };
 
 export interface CreateCoordinateOptions {
@@ -1134,20 +1142,33 @@ type RulePositionEncodingBase = RulePositionValue & {
   coordinate?: string;
 };
 
-export type RulePositionEncodingOptions = RulePositionEncodingBase & (
-  | {
-      fieldType: "quantitative";
-      scale?: NonPointQuantitativePositionScaleOptions;
-    }
-  | {
-      fieldType: "temporal";
-      scale?: NonPointTemporalPositionScaleOptions;
-    }
-  | {
-      fieldType: "nominal" | "ordinal";
-      scale?: NonPointCategoricalPositionScaleOptions;
-    }
-);
+type InferredRuleDatumPositionEncodingOptions = {
+  field?: never;
+  datum: unknown;
+  target?: string;
+  coordinate?: string;
+  fieldType?: undefined;
+  scale?:
+    | NonPointQuantitativePositionScaleOptions
+    | NonPointCategoricalPositionScaleOptions;
+};
+
+export type RulePositionEncodingOptions =
+  | InferredRuleDatumPositionEncodingOptions
+  | RulePositionEncodingBase & (
+    | {
+        fieldType: "quantitative";
+        scale?: NonPointQuantitativePositionScaleOptions;
+      }
+    | {
+        fieldType: "temporal";
+        scale?: NonPointTemporalPositionScaleOptions;
+      }
+    | {
+        fieldType: "nominal" | "ordinal";
+        scale?: NonPointCategoricalPositionScaleOptions;
+      }
+    );
 
 type SecondaryRulePositionEncodingOptions = RulePositionEncodingBase & {
   fieldType: FieldType;
@@ -1789,7 +1810,7 @@ export interface CreateParallelCoordinatesOptions {
     curve?: "linear";
     closed?: false;
   };
-  guides?: false | CreateGuidesOptions;
+  guides?: false | ParallelGuideOptions;
 }
 
 export interface CreateScatterPlotOptions {

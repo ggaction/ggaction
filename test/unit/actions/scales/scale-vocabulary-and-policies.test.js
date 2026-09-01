@@ -28,6 +28,31 @@ function fallbackPoints() {
     });
 }
 
+test("shares a grouped bar measure scale with a quantitative datum rule", () => {
+  const program = chart()
+    .createCanvas({ width: 300, height: 240, margin: 20 })
+    .createData({
+      values: [
+        { product: "A", channel: "Online", revenue: 40 },
+        { product: "A", channel: "Store", revenue: 30 },
+        { product: "B", channel: "Online", revenue: 60 },
+        { product: "B", channel: "Store", revenue: 50 }
+      ]
+    })
+    .createBarPlot({
+      x: { field: "product", fieldType: "nominal" },
+      y: "revenue",
+      color: { field: "channel", layout: "group" },
+      guides: false
+    })
+    .createRuleMark({ id: "target" })
+    .encodeY({ datum: 75, fieldType: "quantitative" });
+
+  assert.equal(program.graphicSpec.objects.target.items.length, 1);
+  assert.equal(program.resolvedScales.y.domain[0] <= 0, true);
+  assert.equal(program.resolvedScales.y.domain.at(-1) >= 75, true);
+});
+
 test("creates every public scale type with its type-specific definition", () => {
   let program = chart()
     .createScale({ id: "sequential", type: "sequential", palette: "viridis" })

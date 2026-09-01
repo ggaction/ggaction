@@ -6,6 +6,19 @@ The default suite runs unit, contract, chart, gate, and documentation tests:
 npm test
 ```
 
+The default suite deliberately excludes network-backed realistic corpus sweeps.
+Fetch the checksum-pinned TidyTuesday corpus once, then run those contracts
+explicitly:
+
+```sh
+npm run datasets:sync
+npm run test:realistic
+```
+
+CI and the release preflight cache the verified corpus by the corpus manifest
+hash and fetch it on a cache miss. Coverage still includes both the default and
+realistic suites, so `npm run test:coverage` also requires the local corpus.
+
 Every suite launched through `scripts/run-tests.js` runs at most four test files
 concurrently, independent of the host CPU count. The limit does not change the
 discovered file list or order, coverage policy, or concurrency managed inside an
@@ -24,8 +37,8 @@ Selectors match an exact chart directory, a named capability in
 `test/`. Each capability entry declares either `file` or `prefix`; unknown
 capabilities and accidental filename substrings never match. Every normal test
 belongs to at least one named capability, so focused runs remain complete as the
-suite grows. Browser and PNG regressions remain explicit because they
-start external rendering resources:
+suite grows. Realistic corpus sweeps, browser tests, and PNG regressions remain
+explicit because they require external data or rendering resources:
 
 ```sh
 npm run test:browser

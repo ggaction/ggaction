@@ -72,6 +72,7 @@
     "test:charts": "node scripts/run-tests.js charts",
     "test:gates": "node scripts/run-tests.js gates",
     "test:docs": "node scripts/run-tests.js docs",
+    "test:realistic": "node scripts/run-tests.js realistic",
     "test:browser": "node scripts/run-tests.js browser",
     "test:docs:built": "node scripts/check-built-docs.js _site",
     "test:docs:browser": "node scripts/test-built-docs.js _site",
@@ -129,7 +130,7 @@
   },
   "devDependencies": {
     "@axe-core/playwright": "^4.12.1",
-    "esbuild": "0.25.12",
+    "esbuild": "0.28.2",
     "es-module-lexer": "^1.7.0",
     "gifenc": "^1.0.3",
     "playwright": "^1.61.1",

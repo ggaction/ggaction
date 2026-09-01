@@ -152,7 +152,13 @@ test("builds both arc recipes at every legend position across all fifty TT sourc
         for (const legendPosition of LEGEND_POSITIONS) {
           const factors = Object.freeze({ ...baseline, legendPosition });
           try {
-            const program = recipe.build(factors);
+            let program;
+            try {
+              program = recipe.build(factors);
+            } catch (error) {
+              error.message = `${recipe.id}/${dataset}/${legendPosition}: ${error.message}`;
+              throw error;
+            }
             assertGraphicIntegrity(program, `${recipe.id}/${dataset}/${legendPosition}`);
             assert.equal(directArgs(program, "createGuides").legend.position, legendPosition);
             assert.ok(recipe.observeFactors(program, factors).some(effect =>

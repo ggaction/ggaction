@@ -36,6 +36,8 @@ const program = chart()
 
 ## The library infers
 
+- Position type for field-string shorthand: finite numeric values are quantitative and other supported scalar
+  values are nominal
 - First-appearance x and group order
 - Mean y at the final x/group grain
 - xOffset slots from grouped color layout

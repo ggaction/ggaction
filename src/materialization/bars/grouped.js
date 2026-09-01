@@ -5,8 +5,7 @@ import {
 } from "../../grammar/scales/index.js";
 import { sameOrderedValues } from "../../core/validation.js";
 import {
-  DEFAULT_BAR_STROKE,
-  DEFAULT_BAR_STROKE_WIDTH
+  resolveBarAppearance
 } from "./resolve.js";
 import { resolveBarWidth } from "../../grammar/bars/geometry.js";
 import { DEFAULT_SERIES_BASELINE } from "../../grammar/seriesLayout.js";
@@ -82,7 +81,6 @@ export function deriveGroupedRectangles(required, resolved, widthConfig) {
   );
   const existing = resolved.graphicSpec.objects[layer.id].items;
   const config = resolved.markConfigs[layer.id] ?? {};
-  const appearance = config.barAppearance ?? {};
 
   return cells.map((cell, index) => {
     const categoryValue = cell[channels.category];
@@ -140,20 +138,7 @@ export function deriveGroupedRectangles(required, resolved, widthConfig) {
     return {
       ...geometry,
       fill: colors.get(cell.color),
-      stroke: appearance.stroke === false
-        ? "transparent"
-        : appearance.stroke ?? config.stroke ?? existing[index]?.properties.stroke ?? DEFAULT_BAR_STROKE,
-      strokeWidth:
-        appearance.stroke === false
-          ? 0
-          : appearance.strokeWidth ?? config.strokeWidth ??
-            existing[index]?.properties.strokeWidth ??
-            DEFAULT_BAR_STROKE_WIDTH,
-      ...((appearance.opacity ?? config.opacity) === undefined
-        ? (existing[index]?.properties.opacity === undefined
-            ? {}
-            : { opacity: existing[index].properties.opacity })
-        : { opacity: appearance.opacity ?? config.opacity })
+      ...resolveBarAppearance(config, existing[index]?.properties)
     };
   });
 }

@@ -40,7 +40,7 @@ export function validateLayerSemanticValue(
   parsed,
   value,
   {
-    sourceMarkTypes = ["point", "bar", "rule", "rect"],
+    sourceMarkTypes = ["point", "bar", "rule", "rect", "arc"],
     validateParallel
   } = {}
 ) {

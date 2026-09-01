@@ -24,6 +24,20 @@ function validateStyle({ color, lineWidth }) {
   validateNonNegativeFinite(lineWidth, "Axis lineWidth");
 }
 
+function resolveLineRange(resolvedScale, bounds, channel) {
+  const range = resolvedScale?.range;
+  if (
+    resolvedScale?.type !== "time" ||
+    !Number.isFinite(resolvedScale.bandwidth)
+  ) return range;
+  const plotRange = channel === "x"
+    ? [bounds.x, bounds.x + bounds.width]
+    : [bounds.y + bounds.height, bounds.y];
+  return Math.sign(range[1] - range[0]) === Math.sign(plotRange[1] - plotRange[0])
+    ? plotRange
+    : plotRange.reverse();
+}
+
 function resolveGeometry(program, channel, scaleId, position) {
   const hasConsumer = program.semanticSpec.layers.some(
     layer => layer.encoding?.[channel]?.scale === scaleId
@@ -35,7 +49,8 @@ function resolveGeometry(program, channel, scaleId, position) {
     );
   }
 
-  const range = program.resolvedScales[scaleId]?.range;
+  const resolvedScale = program.resolvedScales[scaleId];
+  const range = resolvedScale?.range;
   const bounds = resolveGraphicBounds(program);
 
   if (!Array.isArray(range) || range.length !== 2 || !range.every(Number.isFinite)) {
@@ -49,7 +64,12 @@ function resolveGeometry(program, channel, scaleId, position) {
     throw new Error("Axis line requires graphical Canvas bounds.");
   }
 
-  return resolveAxisLineGeometry(bounds, channel, position, range);
+  return resolveAxisLineGeometry(
+    bounds,
+    channel,
+    position,
+    resolveLineRange(resolvedScale, bounds, channel)
+  );
 }
 
 function axisIds(channel) {

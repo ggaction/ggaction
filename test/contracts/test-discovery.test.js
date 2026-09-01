@@ -30,6 +30,7 @@ test("discovers every normal, render, and browser test recursively exactly once"
   );
   const discovered = [
     ...collectTestFiles("all", testRoot),
+    ...collectTestFiles("realistic", testRoot),
     ...collectTestFiles("render", testRoot),
     ...collectTestFiles("browser", testRoot)
   ];
@@ -43,6 +44,22 @@ test("discovers every normal, render, and browser test recursively exactly once"
       path.relative(testRoot, file)
     );
   }
+});
+
+test("separates network-backed corpus sweeps from the default suite", () => {
+  const normal = collectTestFiles("all", testRoot);
+  const realistic = collectTestFiles("realistic", testRoot);
+
+  assert.equal(realistic.length, 20);
+  assert.equal(realistic.every(file => file.endsWith(".test.js")), true);
+  assert.equal(realistic.some(file => file.endsWith(
+    `${path.sep}dataset-fixtures.test.js`
+  )), true);
+  assert.equal(normal.some(file => realistic.includes(file)), false);
+  assert.deepEqual(
+    new Set(collectTestFiles("coverage", testRoot)),
+    new Set([...normal, ...realistic])
+  );
 });
 
 test("does not discover programs or support modules as tests", () => {
@@ -180,12 +197,17 @@ test("caps file concurrency without changing file order or coverage policy", () 
   ]);
   assert.deepEqual(testRunnerArguments("coverage", files), [
     "--test",
-    "--test-concurrency=4",
+    "--test-concurrency=2",
     "--experimental-test-coverage",
     "--test-coverage-include=src/**/*.js",
     "--test-coverage-lines=94",
     "--test-coverage-branches=89",
     "--test-coverage-functions=98",
+    ...files
+  ]);
+  assert.deepEqual(testRunnerArguments("realistic", files), [
+    "--test",
+    "--test-concurrency=2",
     ...files
   ]);
   assert.deepEqual(files, [
@@ -197,6 +219,7 @@ test("caps file concurrency without changing file order or coverage policy", () 
 test("maps every named capability entry to an exact file or prefix", () => {
   const discovered = [
     ...collectTestFiles("all", testRoot),
+    ...collectTestFiles("realistic", testRoot),
     ...collectTestFiles("render", testRoot),
     ...collectTestFiles("browser", testRoot)
   ];
@@ -217,7 +240,7 @@ test("maps every named capability entry to an exact file or prefix", () => {
       );
     }
     assert.equal(
-      ["all", "render", "browser"].some(suite =>
+      ["all", "realistic", "render", "browser"].some(suite =>
         collectTestFiles(suite, testRoot, [`capability:${name}`]).length > 0
       ),
       true,

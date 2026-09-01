@@ -96,14 +96,16 @@ Polar theta/radius cannot be mixed on one layer.
 
 ## Rule endpoints
 
-Rule positions use the same `encodeX` and `encodeY` actions with an explicit
-`fieldType`, but accept exactly one of `field` or `datum`:
+Rule positions use the same `encodeX` and `encodeY` actions and accept exactly
+one of `field` or `datum`. Datum-only rules infer finite numbers as quantitative
+and other supported scalar values as nominal. Field rules, temporal data, and
+ambiguous values require an explicit `fieldType`:
 
 ```javascript
 program
   .createRuleMark()
-  .encodeX({ datum: 15, fieldType: "quantitative" })
-  .encodeY({ datum: 20, fieldType: "quantitative" })
+  .encodeX({ datum: 15 })
+  .encodeY({ datum: 20 })
   .encodeY2({ datum: 80, fieldType: "quantitative" });
 ```
 

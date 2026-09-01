@@ -4,7 +4,10 @@ import {
   DEFAULT_TEXT_MARK,
   normalizeTextMarkConfig
 } from "../../../grammar/text.js";
-import { canMaterializeText } from "../../../materialization/marks/index.js";
+import {
+  canMaterializeArc,
+  canMaterializeText
+} from "../../../materialization/marks/index.js";
 import { resolveTextGraphicItems } from "../../../materialization/text.js";
 import { findLayer, resolveEligibleLayer } from "../../../selectors/layers.js";
 import {
@@ -25,7 +28,7 @@ const STYLE_OPTIONS = Object.freeze([
 const CREATE_OPTIONS = Object.freeze(["id", "data", "text", ...STYLE_OPTIONS]);
 const EDIT_OPTIONS = Object.freeze(["target", ...STYLE_OPTIONS]);
 const REMATERIALIZE_OPTIONS = Object.freeze(["id", "replayLayout"]);
-const SOURCE_TYPES = new Set(["point", "bar", "rule", "rect"]);
+const SOURCE_TYPES = new Set(["point", "bar", "rule", "rect", "arc"]);
 
 function sourceMatchesData(program, layer, requestedData) {
   if (requestedData === undefined || layer?.data === requestedData) return true;
@@ -38,6 +41,7 @@ function eligibleSource(program, layer, requestedData) {
     layer.data === undefined ||
     !sourceMatchesData(program, layer, requestedData)
   ) return false;
+  if (layer.mark.type === "arc") return canMaterializeArc(program, layer);
   const encodings = resolveCompatibleEncodings(program, layer, "text");
   return encodings.x !== undefined && encodings.y !== undefined;
 }
@@ -64,7 +68,9 @@ function resolveTextInheritance(program, args) {
     source: source.id,
     data: source.data,
     coordinate: source.coordinate,
-    encoding: resolveCompatibleEncodings(program, source, "text")
+    encoding: source.mark.type === "arc"
+      ? {}
+      : resolveCompatibleEncodings(program, source, "text")
   };
 }
 

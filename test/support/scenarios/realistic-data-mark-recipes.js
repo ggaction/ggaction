@@ -79,7 +79,9 @@ const DATASETS = Object.freeze(realisticDatasetIds());
 
 function frozen(value) {
   if (value === null || typeof value !== "object" || Object.isFrozen(value)) return value;
-  for (const child of Object.values(value)) frozen(child);
+  for (const descriptor of Object.values(Object.getOwnPropertyDescriptors(value))) {
+    if (Object.hasOwn(descriptor, "value")) frozen(descriptor.value);
+  }
   return Object.freeze(value);
 }
 
@@ -1685,21 +1687,22 @@ function observeFactorEffects(config, program, factors) {
 
 function makeRecipe(config) {
   const datasets = config.datasets ?? DATASETS;
-  let first;
-  let firstFactors;
-  for (const dataset of datasets) {
-    try {
-      const factors = config.factorsForDataset(dataset);
-      if (factors !== undefined) {
-        first = dataset;
-        firstFactors = factors;
-        break;
+  let cachedDefaultFactors;
+  const defaultFactors = () => {
+    if (cachedDefaultFactors !== undefined) return cachedDefaultFactors;
+    for (const dataset of datasets) {
+      try {
+        const factors = config.factorsForDataset(dataset);
+        if (factors !== undefined) {
+          cachedDefaultFactors = factors;
+          return cachedDefaultFactors;
+        }
+      } finally {
+        releaseTidyTuesdaySourceCache(dataset);
       }
-    } finally {
-      releaseTidyTuesdaySourceCache(dataset);
     }
-  }
-  if (first === undefined) throw new Error(`${config.id} has no eligible TidyTuesday dataset.`);
+    throw new Error(`${config.id} has no eligible TidyTuesday dataset.`);
+  };
   return frozen({
     id: config.id,
     suite: "realistic",
@@ -1708,7 +1711,9 @@ function makeRecipe(config) {
     enforceFactorEffects: true,
     minimumSelections: config.minimumSelections,
     datasets,
-    factors: firstFactors,
+    get factors() {
+      return defaultFactors();
+    },
     factorsForDataset: config.factorsForDataset,
     expectedDirectActions: config.requiredOperations,
     build: config.build,

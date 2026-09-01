@@ -2232,9 +2232,10 @@ function makeDelegatedGuideRecipe({
 }) {
   const datasets = freeze([...delegate.datasets]);
   const includedProfiles = profileIds === undefined ? undefined : new Set(profileIds);
-  const profiles = freeze(delegate.factors.variant
-    .filter(variant => includedProfiles === undefined || includedProfiles.has(variant.id))
-    .map(variant => ({ id: variant.id })));
+  const profiles = freeze([
+    ...new Set(delegate.coverageSchedule.selectionVariantIds)
+  ].filter(variantId => includedProfiles === undefined || includedProfiles.has(variantId))
+    .map(id => ({ id })));
   const selectionVariantIds = profiles.flatMap(profile =>
     Array(REQUIRED_REPETITIONS).fill(profile.id)
   );

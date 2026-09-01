@@ -45,7 +45,9 @@ const CANVAS = Object.freeze({
 
 function freeze(value) {
   if (value === null || typeof value !== "object" || Object.isFrozen(value)) return value;
-  for (const child of Object.values(value)) freeze(child);
+  for (const descriptor of Object.values(Object.getOwnPropertyDescriptors(value))) {
+    if (Object.hasOwn(descriptor, "value")) freeze(descriptor.value);
+  }
   return Object.freeze(value);
 }
 
@@ -754,9 +756,55 @@ function categoricalLegend(index, symbol, target = "guideColorPoints") {
   };
 }
 
+function categoricalLegendSymbol(index) {
+  return index % 3 === 0
+    ? "auto"
+    : index % 3 === 1
+      ? { width: 18, height: 12, stroke: "#ffffff", strokeWidth: 0.8 }
+      : { layers: [
+          { type: "line", length: 24, lineWidth: 2 },
+          {
+            type: "point", shape: "circle", size: 5,
+            fill: "#2563eb", stroke: "#ffffff", strokeWidth: 0.7
+          },
+          {
+            type: "swatch", width: 16, height: 11,
+            stroke: "#ffffff", strokeWidth: 0.7
+          }
+        ] };
+}
+
 function guideOptions(variant, view, action) {
   const guide = variant.guide;
   if (guide.kind === "off") return false;
+  if (
+    action === "createParallelCoordinates" &&
+    !["gradient-legend", "line-legend", "layer-legend"].includes(guide.kind)
+  ) {
+    const legend = guide.kind === "cartesian-count"
+      ? categoricalLegend(
+          [0, 2, 6, 8][guide.index % 4],
+          categoricalLegendSymbol(guide.index)
+        )
+      : guide.kind === "cartesian-values"
+        ? categoricalLegend(10, {
+            width: 18,
+            height: 12,
+            stroke: "#ffffff",
+            strokeWidth: 0.8
+          })
+        : false;
+    return {
+      axes: {
+        coordinate: {
+          id: "mainParallelCoordinate",
+          type: variant.ordinal % 2 === 0 ? "parallel" : "auto"
+        }
+      },
+      grid: false,
+      legend
+    };
+  }
   if (guide.kind === "cartesian-disabled") {
     const auxiliary = action === "createParallelCoordinates";
     const axis = (channel, index) => ({
@@ -798,15 +846,7 @@ function guideOptions(variant, view, action) {
     };
   }
   if (guide.kind === "cartesian-count") {
-    const symbol = guide.index % 3 === 0
-      ? "auto"
-      : guide.index % 3 === 1
-        ? { width: 18, height: 12, stroke: "#ffffff", strokeWidth: 0.8 }
-        : { layers: [
-            { type: "line", length: 24, lineWidth: 2 },
-            { type: "point", shape: "circle", size: 5, fill: "#2563eb", stroke: "#ffffff", strokeWidth: 0.7 },
-            { type: "swatch", width: 16, height: 11, stroke: "#ffffff", strokeWidth: 0.7 }
-          ] };
+    const symbol = categoricalLegendSymbol(guide.index);
     return {
       axes: {
         coordinate: { id: "main", type: "cartesian" },
@@ -1202,8 +1242,16 @@ function sameValue(left, right) {
 function makeRecipe({ id, action, complexity, build }) {
   const datasets = freeze(realisticDatasetIds());
   const variants = VARIANTS[action];
-  const factors = factorContract(INITIAL_DATASET, variants);
-  if (factors === undefined) throw new Error(`${INITIAL_DATASET} must remain eligible for ${id}.`);
+  let cachedDefaultFactors;
+  const defaultFactors = () => {
+    if (cachedDefaultFactors === undefined) {
+      cachedDefaultFactors = factorContract(INITIAL_DATASET, variants);
+      if (cachedDefaultFactors === undefined) {
+        throw new Error(`${INITIAL_DATASET} must remain eligible for ${id}.`);
+      }
+    }
+    return cachedDefaultFactors;
+  };
   const schedule = coverageSchedule(variants);
   return freeze({
     id,
@@ -1212,7 +1260,9 @@ function makeRecipe({ id, action, complexity, build }) {
     complexity,
     enforceFactorEffects: true,
     datasets,
-    factors,
+    get factors() {
+      return defaultFactors();
+    },
     expectedDirectActions: freeze([action]),
     coverageSchedule: schedule,
     minimumSelections: schedule.minimumSelections,

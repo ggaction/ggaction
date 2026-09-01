@@ -1811,6 +1811,10 @@
           "required": false
         },
         {
+          "name": "datum",
+          "required": false
+        },
+        {
           "name": "bin",
           "required": false
         },
@@ -1821,14 +1825,10 @@
         {
           "name": "aggregate",
           "required": false
-        },
-        {
-          "name": "datum",
-          "required": false
         }
       ],
       "callPatterns": [
-        "encodeX({ target?, coordinate?, scale?, field?, fieldType?, bin?, stack?, aggregate? })"
+        "encodeX({ target?, coordinate?, scale?, field?, fieldType?, datum?, bin?, stack? })"
       ],
       "snippet": "program.encodeX({ field: \"x\" })",
       "errors": [],
@@ -1887,20 +1887,20 @@
           "required": false
         },
         {
+          "name": "datum",
+          "required": false
+        },
+        {
           "name": "aggregate",
           "required": false
         },
         {
           "name": "stack",
           "required": false
-        },
-        {
-          "name": "datum",
-          "required": false
         }
       ],
       "callPatterns": [
-        "encodeY({ target?, coordinate?, scale?, field?, fieldType?, aggregate?, stack?, datum? })"
+        "encodeY({ target?, coordinate?, scale?, field?, fieldType?, datum?, aggregate?, stack? })"
       ],
       "snippet": "program.encodeY({ field: \"y\" })",
       "errors": [],

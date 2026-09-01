@@ -111,6 +111,43 @@ test("anchors aggregate bar labels and rule labels to final visual items", () =>
   assert.deepEqual([text.x, text.y], [rule.x2 + 3, rule.y2]);
 });
 
+test("attaches text to arc-sector centers and rematerializes with the arc", () => {
+  const source = chart()
+    .createCanvas({ width: 300, height: 300, margin: 30 })
+    .createData({ values: [
+      { category: "A", value: 40, label: "40%" },
+      { category: "B", value: 60, label: "60%" }
+    ] })
+    .createArcMark({ innerRadius: 0.4 })
+    .encodeTheta({
+      field: "category",
+      aggregate: "sum",
+      weight: "value"
+    })
+    .encodeColor({ field: "category" });
+  const labeled = source
+    .createTextMark({ align: "center", baseline: "middle" })
+    .encodeText({ field: "label" });
+  const edited = labeled.editArcMark({ innerRadius: 0.6 });
+
+  assert.equal(labeled.semanticSpec.layers.at(-1).source, "arc");
+  assert.deepEqual(
+    labeled.graphicSpec.objects.text.items.map(item => item.properties.text),
+    ["40%", "60%"]
+  );
+  assert.equal(labeled.graphicSpec.objects.text.items.every(item =>
+    Number.isFinite(item.properties.x) &&
+    Number.isFinite(item.properties.y) &&
+    item.properties.textAlign === "center" &&
+    item.properties.textBaseline === "middle"
+  ), true);
+  assert.notDeepEqual(
+    edited.graphicSpec.objects.text.items.map(item => item.properties),
+    labeled.graphicSpec.objects.text.items.map(item => item.properties)
+  );
+  assert.equal(source.graphicSpec.objects.text, undefined);
+});
+
 test("rematerializes text after Canvas, scale, and style edits", () => {
   const original = pointSource()
     .createTextMark({ dx: 4 })

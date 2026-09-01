@@ -2445,6 +2445,8 @@ const program = chart()
 
 ## The library infers
 
+- Position type for field-string shorthand: finite numeric values are quantitative and other supported scalar
+  values are nominal
 - First-appearance x and group order
 - Mean y at the final x/group grain
 - xOffset slots from grouped color layout
@@ -3625,6 +3627,18 @@ createBarPlot(options: CreateBarPlotOptions): ChartProgram
 Required options are `x` and `y`. Position option objects select vertical,
 horizontal, aggregate, or ranged geometry. `color.layout` owns grouped,
 stacked, normalized-fill, overlay, and diverging arrangements.
+
+Field strings use data-driven shorthand: finite numeric fields infer
+quantitative positions and other supported scalar fields infer nominal
+positions. Use an option object with `fieldType` when a numeric field is an
+ordinal category or when a field is temporal.
+
+```javascript
+const bars = chart()
+  .createCanvas()
+  .createData({ values: rows })
+  .createBarPlot({ x: "product", y: "units_sold" });
+```
 
 ```javascript
 const bars = chart()
@@ -5125,7 +5139,8 @@ it. Canvas and scale changes recompute all endpoints.
 # Text marks
 
 Text marks turn data values into visible labels. Add one after a compatible point,
-bar, rect, or rule layer and ggaction persists that layer as the annotation source.
+bar, rect, rule, or arc layer and ggaction persists that layer as the annotation
+source.
 
 ## `createTextMark(options?)`
 
@@ -5143,10 +5158,11 @@ const annotated = points
 ```
 
 The first omitted ID is `"text"`. When `data` is omitted, the current compatible
-layer—or one unique compatible layer—supplies its dataset, Cartesian position,
-and final visual-item grain. This means aggregate bars receive one label per bar,
-while rect labels anchor at cell centers. Pass `data` explicitly to assemble an independent
-text layer with `encodeX` and `encodeY`.
+layer—or one unique compatible layer—supplies its dataset, position, and final
+visual-item grain. This means aggregate bars receive one label per bar, rect
+labels anchor at cell centers, and arc labels anchor at sector centers. Pass
+`data` explicitly to assemble an independent text layer with `encodeX` and
+`encodeY`.
 
 Creation options are `id`, `data`, `text`, `fill`, `opacity`, `fontSize`,
 `fontFamily`, `fontWeight`, `align`, `baseline`, `rotation`, `dx`, and `dy`.
@@ -5171,6 +5187,17 @@ Calling `encodeText` again replaces the previous field or constant assignment.
 bars
   .createTextMark({ dy: -4, align: "center" })
   .encodeText({ field: "value", format: ".1f" });
+```
+
+Arc-source text is anchored halfway between each sector's inner and outer radii
+at its angular midpoint. The anchor is derived from the materialized sector path,
+so Canvas, scale, padding, and inner-radius changes keep labels aligned. A field
+used for arc text must resolve to one value at the final sector grain.
+
+```javascript
+const labeledDonut = donut
+  .createTextMark({ align: "center", baseline: "middle" })
+  .encodeText({ field: "percentageLabel" });
 ```
 
 ## `editTextMark(options)`
@@ -6920,7 +6947,9 @@ strings plus an array of non-empty `keywords`.
 
 Text remains selectable/searchable PDF text. Paths, strokes, fills, clipping,
 opacity, dashes, and linear gradients remain vector output; the adapter does not
-rasterize the chart or accept `pixelRatio`.
+rasterize the chart or accept `pixelRatio`. Nested Canvas translations apply to
+text as well as shapes, so concat children with different plot margins retain
+their distinct title and axis-label origins in PDF output.
 
 The current renderers support concrete canvas, collection, circle, rect, line,
 text, and `M/L/C/Z` command-path graphics. Path and line strokes may use concrete
@@ -7318,14 +7347,16 @@ Polar theta/radius cannot be mixed on one layer.
 
 ## Rule endpoints
 
-Rule positions use the same `encodeX` and `encodeY` actions with an explicit
-`fieldType`, but accept exactly one of `field` or `datum`:
+Rule positions use the same `encodeX` and `encodeY` actions and accept exactly
+one of `field` or `datum`. Datum-only rules infer finite numbers as quantitative
+and other supported scalar values as nominal. Field rules, temporal data, and
+ambiguous values require an explicit `fieldType`:
 
 ```javascript
 program
   .createRuleMark()
-  .encodeX({ datum: 15, fieldType: "quantitative" })
-  .encodeY({ datum: 20, fieldType: "quantitative" })
+  .encodeX({ datum: 15 })
+  .encodeY({ datum: 20 })
   .encodeY2({ datum: 80, fieldType: "quantitative" });
 ```
 
@@ -7464,6 +7495,13 @@ repeat `encodeX` or `encodeY` for that line unless it intentionally needs a
 different field or scale. Bar centers and line vertices then map the same
 temporal values to the same x positions; bar width remains mark layout rather
 than a second scale.
+
+Rule and row-positioned text annotations may also reuse that temporal bar
+scale when their temporal encoding names the same field. A matching annotation
+value maps exactly to the corresponding bar center. Annotation-only dates may
+extend an automatic time domain, but they do not participate in the
+bar-bandwidth calculation, so adding an event between observations does not
+silently narrow every bar.
 
 Supported operations are `count`, `sum`, `mean`, `median`, `min`, `max`,
 `distinct`, `valid`, `missing`, `variance`, `varianceP`, `stdev`, `stdevP`,
@@ -9143,15 +9181,24 @@ placed outward from the selected edge. The Canvas margin must already be large
 enough; guide creation does not resize it.
 
 Numeric label formats are `.0f`, `.1f`, `.2f`, `.0%`, `.1%`, and `.2e`.
-UTC time formats are `%Y`, `%Y-%m`, and `%Y-%m-%d`. Numeric formats require a
-linear scale, time formats require a time scale, and ordinal labels use
-`"auto"`. The existing `{ decimals: nonNegativeInteger }` form remains
-available for linear labels. Explicit formats remain exact and may intentionally
-produce repeated display strings.
+UTC time formats compose `%Y` (year), `%m` (two-digit month), `%d` (two-digit
+day), and `%b` (English abbreviated month) with literals, for example `%b %Y`,
+`%Y-%m`, or `%Y/%m/%d`; use `%%` for a literal percent sign. Every time format
+must contain at least one date directive, and unknown or dangling directives
+are rejected. Numeric formats require a linear scale, time formats require a
+time scale, and ordinal labels use `"auto"`. The existing `{ decimals:
+nonNegativeInteger }` form remains available for linear labels. Explicit
+formats remain exact and may intentionally produce repeated display strings.
 
 The selected coordinate ID is stored on each semantic axis. Canvas size and
 margin edits explicitly rematerialize positional scales and every connected
 axis component.
+
+A temporal aggregate-bar scale keeps its inset range for bar centers, ticks,
+and labels. Its axis baseline alone spans the complete plot edge, matching the
+crossing grid geometry so a differently colored zero-grid line cannot remain
+visible as end caps. Reversed scales reverse the stored baseline endpoints
+without changing that complete visible span.
 
 The trace preserves its decomposition:
 
@@ -10197,20 +10244,23 @@ program.editYAxisLabels({ offset: 16, fontSize: 13 });
 
 Labels accept `scale` on creation plus `position`, `count`, `values`, `offset`,
 `format`, `color`, `fontSize`, `fontFamily`, and `fontWeight`. Format is
-`"auto"`, `{ decimals: nonNegativeInteger }`, or one of the closed strings
-below. Default offsets are 18 for x and 12 for y; default font size is 12.
+`"auto"`, `{ decimals: nonNegativeInteger }`, a closed numeric string, or a
+validated time directive sequence. Default offsets are 18 for x and 12 for y;
+default font size is 12.
 
 | Scale | Explicit format strings |
 | --- | --- |
 | Linear | `.0f`, `.1f`, `.2f`, `.0%`, `.1%`, `.2e` |
-| Time | `%Y`, `%Y-%m`, `%Y-%m-%d` (UTC) |
+| Time | UTC `%Y`, `%m`, `%d`, `%b` directives plus literals; `%%` is a literal percent |
 | Ordinal | none; use `"auto"` |
 
 Automatic time labels select year, month, day, hour, minute, or second
 precision from the resolved domain span, then minimally refine that precision
 when distinct tick values would collide. This handles UTC month lengths, leap
 days, and sub-day intervals without changing explicit format strings.
-Incompatible format/scale pairs are rejected before graphics are changed.
+Composite formats such as `%b %Y`, `%Y-%m`, and `%Y/%m/%d` are accepted when
+every directive is supported. Unknown or dangling directives and incompatible
+format/scale pairs are rejected before graphics are changed.
 
 Labels reuse existing tick values when count/values are omitted. Conflicting
 tick and label configurations produce an error.
@@ -11096,8 +11146,9 @@ createTextMark({ id?, data?, text?, fill?, opacity?, fontSize?, fontFamily?, fon
 ```
 
 Create a semantic text layer. Omitted data and position attach to the current
-or unique compatible point, bar, rect, or rule layer. `text` is constant-content
-shorthand. [Text marks](../../api/marks/text.md)
+or unique compatible point, bar, rect, rule, or arc layer. Arc text anchors at
+sector centers. `text` is constant-content shorthand.
+[Text marks](../../api/marks/text.md)
 
 ## `editTextMark`
 
@@ -11154,21 +11205,22 @@ These are direct immutable `ChartProgram` actions. Each accepts one option objec
 
 ```javascript
 encodeX({ field, target?, fieldType?, aggregate?, stack?, coordinate?, bin?, scale? })
-encodeX({ datum, target?, fieldType, coordinate?, scale? }) // rule
+encodeX({ datum, target?, fieldType?, coordinate?, scale? }) // rule
 ```
 
 Create or compatibly replace an x encoding for the supported mark/type pairs in
 the matrix above. Rects accept a discrete x band or the primary x edge of a
 complete x/x2 range. Bars accept binned x, vertical categories, or a horizontal
-aggregate measure. Rules accept exactly one field or datum and an explicit
-field type.
+aggregate measure. Rules accept exactly one field or datum. Datum rules infer
+finite numbers as quantitative and other supported scalars as nominal; field
+rules require an explicit field type.
 [Position encodings](../../api/position-encodings.md)
 
 ## `encodeY`
 
 ```javascript
 encodeY({ field?, target?, fieldType?, aggregate?, stack?, coordinate?, scale? })
-encodeY({ datum, target?, fieldType, coordinate?, scale? }) // rule
+encodeY({ datum, target?, fieldType?, coordinate?, scale? }) // rule
 ```
 
 Create or compatibly replace a y encoding. With bar marks, a quantitative y
@@ -11179,7 +11231,7 @@ from the complete pair and is not stored separately. Bar stack accepts
 Aggregate values may be scalar names or parameterized quantile
 and ordered first/last objects. A complete histogram x/y pair materializes concrete rects.
 Rects accept a discrete y band or the primary y edge of a complete y/y2 range.
-Rules accept exactly one field or datum and an explicit field type.
+Rules use the same datum inference and explicit field-mode type contract as x.
 [Position encodings](../../api/position-encodings.md)
 
 ## `encodeY2`
@@ -12179,7 +12231,9 @@ editYAxisLabels({
 
 Axis `position` is `"bottom" | "top"` for x and `"left" | "right"` for y.
 Label `format` accepts `"auto"`, `{ decimals }`, numeric `.0f/.1f/.2f/.0%/.1%/.2e`,
-or UTC `%Y/%Y-%m/%Y-%m-%d` tokens when compatible with the resolved scale.
+or a UTC sequence of `%Y/%m/%d/%b` directives and literals when compatible with
+the resolved scale. Use `%%` for a literal percent; unknown or dangling
+directives reject.
 
 ## Tick/label groups and axis titles
 

@@ -97,6 +97,8 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
 - Layered rule datum: inherited position provenance가 있는 rule에 datum x를 작성하면 secondary endpoint가
   없는 경우 inherited y branch만 제거해 vertical full-span을 만든다. Explicit data나 field x는 이 정리를
   적용하지 않는다.
+- Rule datum inference: finite number datum은 quantitative, 다른 supported scalar datum은 nominal로 추론한다.
+  Temporal 또는 ambiguous datum은 `fieldType`을 명시해야 하며 rule field mode는 계속 explicit `fieldType`을 요구한다.
 - Reassignment: 같은 target에 다시 호출하면 compatible field와 scale binding을 교체한다. scale ID를
   생략하면 현재 x scale을 재사용하고, explicit new ID는 이전 scale을 남긴 채 axis/vertical grid를
   새 scale에 rebind한다. inferred title은 새 field로 바뀌고 custom title/style은 유지된다.
@@ -108,6 +110,8 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
 - Implemented: `encodeX({ field: FieldName; target?: UserId; fieldType?: "quantitative" | "temporal" | "ordinal"; scale?: PositionScale; coordinate?: UserId; aggregate?: AggregateOperation; bin?: BinDefinition; stack?: "zero" | "normalize" | null })`; 실제 조합은 canonical matrix와 mark grain policy가 제한한다.
 - Implemented quantitative extension: `{ scale?: { type?: "log" | "pow" | "sqrt" | "symlog"; base?: PositiveFiniteExceptOne; exponent?: PositiveFinite; constant?: PositiveFinite; clamp?: boolean; reverse?: boolean } }` for compatible point, line, area, bar and rule materializers.
 - Implemented point fallback: `{ scale?: { unknown?: Finite } }`; temporal `time` remains UTC-only.
+- Implemented rule datum shorthand: `encodeX({ datum, target?, fieldType?, scale?, coordinate? })`; omitted
+  `fieldType` infers finite numbers as quantitative and other supported scalars as nominal.
 - Proposed (NOT IMPLEMENTED): Polar positional action.
 
 ### Value coverage — `encodeX`
@@ -138,8 +142,10 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
     quantitative, temporal and ordinal fields; exhaustive Cartesian products are intentionally excluded.
   - ✅ Covered: point/line/area/bar/rule log/pow/sqrt/symlog mapping, parameters, clamp/reverse, guides and Canvas resize.
   - ✅ Covered: band/point defaults, padding/alignment, reversed range, bar bandwidth compatibility and shared point centers.
-  - ✅ Covered: temporal aggregate bar bandwidth plus a compatible line consumer on the same field and scale,
-    explicit independent scales, incompatible field rejection, Canvas resize and scale reversal.
+  - ✅ Covered: temporal aggregate bar bandwidth plus compatible line, rule, and text consumers on the same
+    field and scale; annotation-only temporal values do not change the bar-derived bandwidth, while matching
+    values align to bar centers; explicit independent scales, incompatible field rejection, Canvas resize and
+    scale reversal.
   - ✅ Covered: point missing/invalid and explicit-domain `unknown`; compound-grain rejection.
 - Evidence: position, temporal, histogram-bin and ordinal-bar action tests, including
   `test/unit/actions/scales/temporal-bar-line-sharing.test.js`,

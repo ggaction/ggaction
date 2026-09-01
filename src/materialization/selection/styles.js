@@ -29,6 +29,22 @@ function normalizeOffset(offset) {
   return { x, y };
 }
 
+function normalizeOptionalStroke(args, mark) {
+  const stroke = args.stroke === undefined
+    ? undefined
+    : validateNonEmptyString(args.stroke, `${mark} highlight stroke`);
+  const strokeWidth = args.strokeWidth === undefined
+    ? undefined
+    : validateNonNegativeFinite(
+        args.strokeWidth,
+        `${mark} highlight strokeWidth`
+      );
+  if (strokeWidth !== undefined && stroke === undefined) {
+    throw new Error(`${mark} highlight strokeWidth requires stroke.`);
+  }
+  return { stroke, strokeWidth };
+}
+
 export function normalizeDimOthers(dimOthers) {
   if (dimOthers === undefined || dimOthers === false) return false;
   if (dimOthers === true) return { opacity: DEFAULT_DIM_OPACITY };
@@ -58,15 +74,7 @@ export function normalizePointHighlightStyle(args) {
   const opacity = args.opacity === undefined
     ? undefined
     : validateUnitInterval(args.opacity, "Point highlight opacity");
-  const stroke = args.stroke === undefined
-    ? undefined
-    : validateNonEmptyString(args.stroke, "Point highlight stroke");
-  const strokeWidth = args.strokeWidth === undefined
-    ? undefined
-    : validateNonNegativeFinite(args.strokeWidth, "Point highlight strokeWidth");
-  if (strokeWidth !== undefined && stroke === undefined) {
-    throw new Error("Point highlight strokeWidth requires stroke.");
-  }
+  const { stroke, strokeWidth } = normalizeOptionalStroke(args, "Point");
   return {
     fill,
     ...(opacity === undefined ? {} : { opacity }),
@@ -96,15 +104,7 @@ function normalizeRectangularHighlightStyle(args, mark, { offset = false } = {})
   const opacity = args.opacity === undefined
     ? undefined
     : validateUnitInterval(args.opacity, `${mark} highlight opacity`);
-  const stroke = args.stroke === undefined
-    ? undefined
-    : validateNonEmptyString(args.stroke, `${mark} highlight stroke`);
-  const strokeWidth = args.strokeWidth === undefined
-    ? undefined
-    : validateNonNegativeFinite(args.strokeWidth, `${mark} highlight strokeWidth`);
-  if (strokeWidth !== undefined && stroke === undefined) {
-    throw new Error(`${mark} highlight strokeWidth requires stroke.`);
-  }
+  const { stroke, strokeWidth } = normalizeOptionalStroke(args, mark);
   const hasAppearanceOverride = opacity !== undefined || stroke !== undefined ||
     strokeWidth !== undefined || args.offset !== undefined;
   const fill = explicitFill === undefined && hasAppearanceOverride
@@ -178,15 +178,7 @@ export function normalizeAreaHighlightStyle(args, mark = "Area") {
   if (args.color !== undefined && args.fill !== undefined) {
     throw new Error(`${mark} highlight accepts color or fill, not both.`);
   }
-  const stroke = args.stroke === undefined
-    ? undefined
-    : validateNonEmptyString(args.stroke, `${mark} highlight stroke`);
-  const strokeWidth = args.strokeWidth === undefined
-    ? undefined
-    : validateNonNegativeFinite(args.strokeWidth, `${mark} highlight strokeWidth`);
-  if (strokeWidth !== undefined && stroke === undefined) {
-    throw new Error(`${mark} highlight strokeWidth requires stroke.`);
-  }
+  const { stroke, strokeWidth } = normalizeOptionalStroke(args, mark);
   return {
     fill: validateNonEmptyString(
       args.fill ?? args.color ?? DEFAULT_COLORS.highlight,
