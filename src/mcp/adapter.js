@@ -28,7 +28,7 @@ export const OVERVIEW_URI = "ggaction://overview";
 export const SEARCH_TOOL = Object.freeze({
   name: SEARCH_TOOL_NAME,
   title: "Search ggaction authoring knowledge",
-  description: "Resolve one complete ggaction chart request into a bounded ordered task packet with exact imports, authoring prerequisites, executable immutable steps, terminal unsupported constraints, and explicit unresolved decisions.",
+  description: "Resolve one complete ggaction chart request into a bounded ordered task packet with exact imports, authoring prerequisites, syntax-valid immutable steps, applied options, explicit placeholders and unmatched requirements, terminal unsupported constraints, and unresolved decisions.",
   inputSchema: Object.freeze({
     type: "object",
     additionalProperties: false,
@@ -164,6 +164,7 @@ export function readKnowledgeResource(uri, { allowedDocs = [] } = {}) {
   if (uri === OVERVIEW_URI) {
     return jsonResource(uri, {
       schemaVersion: resourcesArtifact.schemaVersion,
+      packageVersion: resourcesArtifact.packageVersion,
       title: resourcesArtifact.overview.title,
       text: resourcesArtifact.overview.text
     });
@@ -184,6 +185,7 @@ export function readKnowledgeResource(uri, { allowedDocs = [] } = {}) {
     if (!recipe) throw new KnowledgeResourceError(`Unknown ggaction recipe: ${id}`);
     return jsonResource(uri, {
       schemaVersion: resourcesArtifact.schemaVersion,
+      packageVersion: resourcesArtifact.packageVersion,
       ...recipe,
       packet: searchGgaction(recipe.query)
     });
@@ -201,6 +203,9 @@ export function readKnowledgeResource(uri, { allowedDocs = [] } = {}) {
   throw new KnowledgeResourceError(`Unknown knowledge resource URI: ${uri}`);
 }
 
-if (cardsArtifact.schemaVersion !== 1 || resourcesArtifact.schemaVersion !== 2) {
-  throw new Error("MCP action cards must use schemaVersion 1 and resources schemaVersion 2.");
+if (cardsArtifact.schemaVersion !== 2 || resourcesArtifact.schemaVersion !== 2) {
+  throw new Error("MCP action cards and resources must use schemaVersion 2.");
+}
+if (resourcesArtifact.packageVersion !== cardsArtifact.packageVersion) {
+  throw new Error("MCP action cards and resources must use one packageVersion.");
 }

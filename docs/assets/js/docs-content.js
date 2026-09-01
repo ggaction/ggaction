@@ -2,9 +2,8 @@
   const content = document.querySelector(".docs-content");
   if (!content) return;
 
-  const metadataNode = document.querySelector("#docs-action-metadata");
   const actionMetadata = new Map(Object.entries(
-    metadataNode ? JSON.parse(metadataNode.textContent) : {}
+    globalThis.ggactionDocsActionMetadata ?? {}
   ));
   const redirectsNode = document.querySelector("#docs-action-redirects");
   if (redirectsNode && window.location.hash.length > 1) {

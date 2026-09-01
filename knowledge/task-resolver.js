@@ -45,6 +45,10 @@ const standaloneGuideNames = new Set([
 const docsResourceByDecision = Object.freeze({
   "chart.type": "ggaction://docs/choose-chart-type",
   "renderer.format": "ggaction://docs/choose-renderer",
+  "layout.responsive": "ggaction://docs/responsive-layout",
+  "output.accessibility": "ggaction://docs/accessibility",
+  "renderer.svg.accessibleText": "ggaction://docs/accessibility",
+  "renderer.pixelRatio": "ggaction://docs/responsive-layout",
   "query.intent": "ggaction://docs/getting-started"
 });
 
@@ -192,7 +196,9 @@ function conflictResult(matched) {
       unresolved.push({
         constraint: entry.id,
         reason: `This conflicts within ${group}: ${entries.map(candidate => candidate.id).join(", ")}.`,
-        resources: ["ggaction://docs/legend-layout"]
+        resources: [group === "legend.position"
+          ? "ggaction://docs/legend-layout"
+          : "ggaction://docs/choose-chart-type"]
       });
     }
   }
@@ -457,6 +463,96 @@ function closeRuntimeDependencies(entries) {
   const semantic = name => closed.find(entry =>
     entry.provider.name === name && !entry.provider.id.startsWith("exact.")
   );
+  const chartOwner = constraint => closed.find(entry =>
+    entry.coverage.includes(constraint)
+  );
+  const expandChartOwner = (owner, { before = [], after = [] }) => {
+    if (!owner) return;
+    const index = closed.indexOf(owner);
+    closed = [
+      ...closed.slice(0, index),
+      ...before,
+      owner,
+      ...after,
+      ...closed.slice(index + 1)
+    ];
+  };
+  const chartDependency = (name, options) => {
+    const existing = closed.find(entry =>
+      entry.provider.name === name && !entry.provider.id.startsWith("exact.")
+    );
+    if (!existing) return dependencyEntry(name, options);
+    closed = closed.filter(entry => entry !== existing);
+    return withBaseOptions(existing, options);
+  };
+  const expandChartConstraint = (constraint, dependencies) => {
+    const owner = chartOwner(constraint);
+    if (owner) expandChartOwner(owner, dependencies());
+  };
+
+  expandChartConstraint("chart.area", () => ({
+    after: [
+      chartDependency("encodeX", { field: `"x"`, fieldType: `"quantitative"` }),
+      chartDependency("encodeY", { field: `"y"`, fieldType: `"quantitative"` })
+    ]
+  }));
+  expandChartConstraint("chart.bar.horizontal", () => ({
+    after: [
+      chartDependency("encodeY", {
+        field: `"category"`,
+        fieldType: `"nominal"`
+      }),
+      chartDependency("encodeX", {
+        field: `"value"`,
+        fieldType: `"quantitative"`
+      })
+    ]
+  }));
+  expandChartConstraint("chart.horizon", () => ({
+    before: [chartDependency("createAreaMark", { id: `"horizon"` })]
+  }));
+  for (const constraint of ["chart.pie", "chart.donut"]) {
+    expandChartConstraint(constraint, () => ({
+      after: [
+        chartDependency("encodeTheta", {
+          field: `"category"`,
+          fieldType: `"nominal"`,
+          aggregate: `"count"`
+        }),
+        chartDependency("encodeColor", { field: `"category"` })
+      ]
+    }));
+  }
+  expandChartConstraint("chart.rose", () => ({
+    after: [
+      chartDependency("encodeTheta", {
+        field: `"category"`,
+        fieldType: `"ordinal"`
+      }),
+      chartDependency("encodeR", {
+        field: `"value"`,
+        fieldType: `"quantitative"`
+      }),
+      chartDependency("encodeColor", {
+        field: `"series"`,
+        layout: `"overlay"`
+      })
+    ]
+  }));
+  expandChartConstraint("chart.radar", () => ({
+    after: [
+      chartDependency("encodeTheta", {
+        field: `"category"`,
+        fieldType: `"nominal"`
+      }),
+      chartDependency("encodeR", {
+        field: `"value"`,
+        fieldType: `"quantitative"`
+      }),
+      chartDependency("encodeGroup", { field: `"series"` }),
+      chartDependency("encodeColor", { field: `"series"` })
+    ]
+  }));
 
   const explicitData = semantic("createData");
   if (explicitData) {
@@ -743,7 +839,9 @@ function closeRuntimeDependencies(entries) {
     const created = defaultMarkIds[entry.provider.name];
     if (created !== undefined) {
       currentMark = entry.provider.baseOptions?.id?.replaceAll('"', "") ?? created;
-      currentMarkKind = markKinds[entry.provider.name];
+      currentMarkKind = entry.coverage.includes("chart.bar.horizontal")
+        ? "bar-horizontal"
+        : markKinds[entry.provider.name];
       return entry;
     }
     if (!currentMark || entry.provider.name === "createErrorBar") return entry;
@@ -764,6 +862,14 @@ function closeRuntimeDependencies(entries) {
     if (currentMarkKind === "bar" && entry.provider.name === "encodeY") {
       options.field = `"value"`;
       options.fieldType = `"quantitative"`;
+    }
+    if (currentMarkKind === "bar-horizontal" && entry.provider.name === "encodeX") {
+      options.field = `"value"`;
+      options.fieldType = `"quantitative"`;
+    }
+    if (currentMarkKind === "bar-horizontal" && entry.provider.name === "encodeY") {
+      options.field = `"category"`;
+      options.fieldType = `"nominal"`;
     }
     if (pendingScale && ["encodeX", "encodeY"].includes(entry.provider.name)) {
       options.scale = `{ id: ${pendingScale} }`;
@@ -815,7 +921,7 @@ function actionCall(provider, options) {
 
 function planEntry(entry, step) {
   const { provider, coverage } = entry;
-  const options = mergeOptionValues(provider, coverage);
+  const mergedOptions = mergeOptionValues(provider, coverage);
   if (provider.kind === "runtime") {
     return {
       plan: {
@@ -832,6 +938,9 @@ function planEntry(entry, step) {
     };
   }
   const card = cards.get(provider.name);
+  const options = new Map(card.options
+    .filter(option => mergedOptions.has(option.name))
+    .map(option => [option.name, mergedOptions.get(option.name)]));
   return {
     plan: {
       step,
@@ -881,13 +990,13 @@ function authoringSteps(entries) {
 
 function authoringBlock(entries) {
   const plannedPrerequisites = new Set(entries
-    .map(entry => entry.plan.id)
-    .filter(id => authoringPrerequisiteNames.some(name => id === `action.${name}`)));
+    .map(entry => entry.plan.name)
+    .filter(name => authoringPrerequisiteNames.includes(name)));
   return {
     imports: authoringImports(entries),
     initialize: "let program = chart()",
     prerequisites: authoringPrerequisiteNames
-      .filter(name => !plannedPrerequisites.has(`action.${name}`))
+      .filter(name => !plannedPrerequisites.has(name))
       .map(name => {
       const card = cards.get(name);
       return {
@@ -901,6 +1010,638 @@ function authoringBlock(entries) {
       }),
     steps: authoringSteps(entries)
   };
+}
+
+function codeString(value) {
+  return JSON.stringify(value);
+}
+
+function mergeExactCallOptions(call, options) {
+  if (!call || options.size === 0) return call;
+  const objectEnd = call.lastIndexOf("})");
+  const objectStart = call.indexOf("({");
+  if (objectStart === -1 || objectEnd === -1 || objectEnd < objectStart) {
+    throw new Error(`Cannot apply requested options to exact call: ${call}`);
+  }
+  let body = call.slice(objectStart + 2, objectEnd).trim();
+  for (const [name, value] of options) {
+    const simple = new RegExp(
+      `(^|,\\s*)${name}\\s*:\\s*(?:"[^"]*"|'[^']*'|-?[0-9]+(?:\\.[0-9]+)?|true|false)(?=\\s*,|$)`
+    );
+    if (simple.test(body)) {
+      body = body.replace(simple, (_match, prefix) => `${prefix}${name}: ${value}`);
+    } else {
+      body = `${body}${body.length === 0 ? "" : ", "}${name}: ${value}`;
+    }
+  }
+  return `${call.slice(0, objectStart + 2)}${body}${call.slice(objectEnd)}`;
+}
+
+function entryWithRequestedOptions(entry, options) {
+  if (entry.provider.exactCall) {
+    return {
+      ...entry,
+      provider: {
+        ...entry.provider,
+        exactCall: mergeExactCallOptions(entry.provider.exactCall, options),
+        exactOptionNames: unique([
+          ...(entry.provider.exactOptionNames ?? []),
+          ...options.keys()
+        ])
+      }
+    };
+  }
+  const optionsByConstraint = Object.fromEntries(Object.entries(
+    entry.provider.optionsByConstraint ?? {}
+  ).map(([constraint, configured]) => [
+    constraint,
+    Object.fromEntries(Object.entries(configured).filter(([name]) => !options.has(name)))
+  ]));
+  const configured = withBaseOptions(entry, Object.fromEntries(options));
+  return {
+    ...configured,
+    provider: {
+      ...configured.provider,
+      optionsByConstraint
+    }
+  };
+}
+
+function requestedText(match, ...indexes) {
+  return indexes.map(index => match?.[index]).find(value => value !== undefined)?.trim();
+}
+
+const requestStopWords = new Set([
+  "and", "as", "at", "axes", "axis", "coordinate", "coordinates",
+  "encoding", "field", "for", "is", "legend", "on", "option", "options",
+  "palette", "scale", "then", "to", "using", "with"
+]);
+
+function fieldRequest(query, channel) {
+  const match = query.match(new RegExp(
+    `\\b${channel}(?:(?:\\s+(?:field|encoding|by|is))|\\s*[:=]|\\s+)\\s*(?:"([^"]+)"|'([^']+)'|([A-Za-z_$][A-Za-z0-9_$.-]*))`,
+    "i"
+  ));
+  if (!match) return undefined;
+  const value = requestedText(match, 1, 2, 3);
+  return requestStopWords.has(value.toLowerCase())
+    ? undefined
+    : { value, source: match[0] };
+}
+
+function appearanceFieldRequest(query, channel) {
+  const match = query.match(new RegExp(
+    `\\b${channel}(?:\\s+(?:by|field|encoding))?\\s*(?:"([^"]+)"|'([^']+)'|([A-Za-z_$][A-Za-z0-9_$.-]*))`,
+    "i"
+  ));
+  if (!match) return undefined;
+  const value = requestedText(match, 1, 2, 3);
+  if (requestStopWords.has(value.toLowerCase())) return undefined;
+  return { value, source: match[0] };
+}
+
+function explicitOptionMention(query, optionName) {
+  const escaped = optionName.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const spaced = optionName.replace(/([a-z0-9])([A-Z])/g, "$1 $2");
+  const escapedSpaced = spaced.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const assignment = query.match(new RegExp(
+    `\\b(?:${escaped}|${escapedSpaced})\\b\\s*(?:=|:|\\bis\\b|\\bto\\b)\\s*[^,;]+`,
+    "i"
+  ));
+  if (assignment) return assignment[0].trim();
+  if (optionName !== spaced) {
+    return query.match(new RegExp(`\\b${escaped}\\b`, "i"))?.[0];
+  }
+  return undefined;
+}
+
+function applyRequestedOptions(entries, query) {
+  let configured = entries;
+  const appliedOptions = [];
+  const unmatchedRequirements = [];
+  const unresolved = [];
+
+  const apply = (names, optionValues, source) => {
+    const target = configured.find(entry => names.includes(entry.provider.name));
+    if (!target || optionValues.size === 0) return false;
+    configured = configured.map(entry => entry === target
+      ? entryWithRequestedOptions(entry, optionValues)
+      : entry);
+    for (const [option, value] of optionValues) {
+      appliedOptions.push({
+        owner: target.provider.name,
+        option,
+        value,
+        source
+      });
+    }
+    return true;
+  };
+
+  const bands = query.match(
+    /\b(?:(one|two|three|four|five|six|seven|eight|nine|ten|\d+)\s+bands?|bands?\s*(?:of|=|:)?\s*(one|two|three|four|five|six|seven|eight|nine|ten|\d+))\b/i
+  );
+  if (bands) {
+    const requestedBands = requestedText(bands, 1, 2);
+    const value = Number({
+      one: 1,
+      two: 2,
+      three: 3,
+      four: 4,
+      five: 5,
+      six: 6,
+      seven: 7,
+      eight: 8,
+      nine: 9,
+      ten: 10
+    }[requestedBands.toLowerCase()] ?? requestedBands);
+    if (Number.isInteger(value) && value > 0) {
+      apply(["encodeHorizon", "editHorizon"], new Map([
+        ["bands", String(value)]
+      ]), bands[0]);
+    } else {
+      unmatchedRequirements.push(bands[0]);
+      unresolved.push(unresolvedDecision(
+        "request.option.horizon.bands",
+        "Horizon bands must be a positive integer."
+      ));
+    }
+  }
+
+  const legendRequested = /\b(?:legend|encoding key)\b/i.test(query);
+  const exactLegendAction = configured.some(entry =>
+    entry.provider.id.startsWith("exact.") && /Legend/.test(entry.provider.name)
+  );
+  const hasLegendPolicyOwner = configured.some(entry =>
+    entry.provider.name === "facet"
+  );
+  const legendChannelConstraints = new Set([
+    "encoding.color",
+    "encoding.opacity",
+    "encoding.shape",
+    "encoding.size",
+    "encoding.strokeDash",
+    "encoding.strokeWidth"
+  ]);
+  const hasLegendChannel = configured.some(entry =>
+    entry.coverage.some(constraint => legendChannelConstraints.has(constraint))
+  );
+  if (
+    legendRequested &&
+    !hasLegendChannel &&
+    !exactLegendAction &&
+    !hasLegendPolicyOwner
+  ) {
+    const openLegendConstraints = unique(configured.flatMap(entry => entry.coverage)
+      .filter(constraint =>
+        constraint === "guide.legend" || constraint.startsWith("layout.legend.")
+      ));
+    configured = configured
+      .map(entry => ({
+        ...entry,
+        coverage: entry.coverage.filter(constraint =>
+          constraint !== "guide.legend" && !constraint.startsWith("layout.legend.")
+        )
+      }))
+      .filter(entry => entry.coverage.length > 0 || entry.provider.id.startsWith("exact."));
+    unmatchedRequirements.push("legend channel");
+    for (const constraint of openLegendConstraints) {
+      unresolved.push(unresolvedDecision(
+        constraint,
+        "A legend requires a concrete compatible encoding channel such as color, shape, size, opacity, stroke dash, or stroke width."
+      ));
+    }
+  }
+
+  const position = query.match(/\blegend\s+(?:at|on)\s+(top|bottom|left|right)\b/i);
+  const columns = legendRequested
+    ? query.match(/\b(?:(\d+)\s+columns?|columns?\s*(?:=|:)?\s*(\d+))\b/i)
+    : undefined;
+  const unscopedColumns = !legendRequested
+    ? query.match(/\b(?:(\d+)\s+columns?|columns?\s*(?:=|:)?\s*(\d+))\b/i)
+    : undefined;
+  const direction = legendRequested ? query.match(
+    /\b(?:(horizontal|vertical)(?:\s+direction)?\s+legend|legend(?:\s+direction)?\s*(?:=|:|is)?\s*(horizontal|vertical)|direction\s*(?:=|:|is)?\s*(horizontal|vertical)|legend\b[^,;]{0,60}\b(horizontal|vertical)|(horizontal|vertical)\s+direction)\b/i
+  ) : undefined;
+  const legendOptions = new Map();
+  if (position) legendOptions.set("position", codeString(position[1].toLowerCase()));
+  if (columns) {
+    const value = Number(requestedText(columns, 1, 2));
+    if (Number.isInteger(value) && value > 0) {
+      legendOptions.set("columns", String(value));
+    } else {
+      unmatchedRequirements.push(columns[0]);
+      unresolved.push(unresolvedDecision(
+        "request.option.legend.columns",
+        "Legend columns must be a positive integer."
+      ));
+    }
+  }
+  if (direction) {
+    legendOptions.set(
+      "direction",
+      codeString(requestedText(direction, 1, 2, 3, 4, 5).toLowerCase())
+    );
+  }
+  if (unscopedColumns) {
+    unmatchedRequirements.push(unscopedColumns[0]);
+    unresolved.push(unresolvedDecision(
+      "request.option.columns",
+      "A column count requires a concrete owner such as a legend or composition layout."
+    ));
+  }
+  if (
+    legendOptions.size > 0 &&
+    (hasLegendChannel || exactLegendAction || hasLegendPolicyOwner)
+  ) {
+    const source = [position?.[0], columns?.[0], direction?.[0]].filter(Boolean).join(", ");
+    if (!apply(["editLegendLayout", "createLegend"], legendOptions, source)) {
+      const legend = [...legendOptions]
+        .map(([name, value]) => `${name}: ${value}`)
+        .join(", ");
+      apply([...facadeGuideOwners], new Map([
+        ["guides", `{ legend: { ${legend} } }`]
+      ]), source);
+    }
+  }
+
+  const xBins = query.match(/\b(\d+)\s+x[ -]?bins?\b/i);
+  const yBins = query.match(/\b(\d+)\s+y[ -]?bins?\b/i);
+  const allBins = query.match(/\b(\d+)\s+(?:bins?|bins? per axis)\b/i);
+  const binOptions = new Map();
+  const binSources = [];
+  if (xBins || yBins) {
+    if (xBins && yBins) {
+      const x = Number(xBins[1]);
+      const y = Number(yBins[1]);
+      if (x > 0 && y > 0) {
+        binOptions.set("bins", `{ x: ${x}, y: ${y} }`);
+        binSources.push(xBins[0], yBins[0]);
+      } else {
+        const source = `${xBins[0]}; ${yBins[0]}`;
+        unmatchedRequirements.push(source);
+        unresolved.push(unresolvedDecision(
+          "request.option.bin2d.bins",
+          "Two-dimensional x and y bin counts must be positive integers."
+        ));
+      }
+    } else {
+      const missingAxis = xBins ? "y" : "x";
+      const source = (xBins ?? yBins)[0];
+      unmatchedRequirements.push(source);
+      unresolved.push(unresolvedDecision(
+        `transform.bin2d.bins.${missingAxis}`,
+        `Two-dimensional bin counts require both x and y; the request specifies only ${source}.`
+      ));
+    }
+  } else if (allBins) {
+    const value = Number(allBins[1]);
+    if (Number.isInteger(value) && value > 0) {
+      binOptions.set("bins", String(value));
+      binSources.push(allBins[0]);
+    } else {
+      unmatchedRequirements.push(allBins[0]);
+      unresolved.push(unresolvedDecision(
+        "request.option.bin2d.bins",
+        "Two-dimensional bin counts must be positive integers."
+      ));
+    }
+  }
+  const emptyCells = query.match(/\b(include|exclude|omit)\s+empty\s+(?:bins|cells)\b/i);
+  if (emptyCells) {
+    binOptions.set("includeEmpty", String(emptyCells[1].toLowerCase() === "include"));
+    binSources.push(emptyCells[0]);
+  }
+  if (binOptions.size > 0) {
+    const source = binSources.join("; ");
+    if (!apply(["createBin2DData", "editBin2DData"], binOptions, source)) {
+      const nested = [...binOptions]
+        .map(([name, value]) => `${name}: ${value}`)
+        .join(", ");
+      const appliedHeatmap = apply(
+        ["createHeatmap"],
+        new Map([["bin", `{ ${nested} }`]]),
+        source
+      );
+      const scalarBins = binOptions.get("bins");
+      const appliedHistogram = !appliedHeatmap &&
+        scalarBins !== undefined &&
+        /^\d+$/.test(scalarBins) &&
+        !binOptions.has("includeEmpty") &&
+        apply(["createHistogram"], new Map([["maxBins", scalarBins]]), source);
+      if (!appliedHeatmap && !appliedHistogram) {
+        unmatchedRequirements.push(source);
+        unresolved.push(unresolvedDecision(
+          "request.option.bin2d",
+          "Two-dimensional bin options require a heatmap or a create/edit Bin2D data action."
+        ));
+      }
+    }
+  }
+
+  const title = query.match(
+    /\b(?:titled\b|(?:chart\s+)?title\b(?:\s+(?:is|text))?)\s*[:=]?\s*(?:"([^"]+)"|'([^']+)'|([A-Za-z0-9][^,;]*?))(?=\s+(?:(?:and|with)\s+)?(?:font(?:[ -]?size)?|subtitle|on\s+|as\s+)|$)/i
+  );
+  const titleText = requestedText(title, 1, 2, 3);
+  if (titleText && !requestStopWords.has(titleText.toLowerCase())) {
+    apply(["createTitle", "editTitle"], new Map([
+      ["text", codeString(titleText)]
+    ]), title[0]);
+  }
+  const subtitle = query.match(
+    /\bsubtitle(?:\s+(?:is|text))?\s*[:=]?\s*(?:"([^"]+)"|'([^']+)'|([A-Za-z0-9][^,;]*?))(?=\s+(?:(?:and|with)\s+)?(?:font(?:[ -]?size)?|title|on\s+|as\s+)|$)/i
+  );
+  const subtitleText = requestedText(subtitle, 1, 2, 3);
+  if (subtitleText && !requestStopWords.has(subtitleText.toLowerCase())) {
+    apply(["createTitle", "editTitle"], new Map([
+      ["subtitle", codeString(subtitleText)]
+    ]), subtitle[0]);
+  }
+  const fontSize = query.match(/\bfont[ -]?size\s*(?:=|:)?\s*(\d+(?:\.\d+)?)\b/i);
+  if (fontSize) {
+    const value = Number(fontSize[1]);
+    const applied = value > 0 && apply(["createTitle", "editTitle"], new Map([
+      ["titleStyle", `{ fontSize: ${fontSize[1]} }`]
+    ]), fontSize[0]);
+    if (!applied) {
+      unmatchedRequirements.push(fontSize[0]);
+      unresolved.push(unresolvedDecision(
+        "request.option.fontSize",
+        value > 0
+          ? "A font size requires a concrete text owner such as a chart title, axis, legend, or text mark."
+          : "Font size must be a positive finite number."
+      ));
+    }
+  }
+
+  const fieldOwners = Object.freeze({
+    x: [
+      "createScatterPlot", "createLinePlot", "createBarPlot", "createHeatmap",
+      "createBoxPlot", "createViolinPlot", "createGradientPlot",
+      "createRegressionData", "createBin2DData", "encodeHorizon"
+    ],
+    y: [
+      "createScatterPlot", "createLinePlot", "createBarPlot", "createHeatmap",
+      "createBoxPlot", "createViolinPlot", "createGradientPlot",
+      "createRegressionData", "createBin2DData", "encodeHorizon"
+    ]
+  });
+  const appliedFieldChannels = new Set();
+  for (const channel of ["x", "y"]) {
+    const request = fieldRequest(query, channel);
+    if (!request || /^(?:bins?|axis|encoding|field)$/i.test(request.value)) continue;
+    const direct = apply(fieldOwners[channel], new Map([
+      [channel, codeString(request.value)]
+    ]), request.source);
+    const encoded = direct || apply([`encode${channel.toUpperCase()}`], new Map([
+      ["field", codeString(request.value)]
+    ]), request.source);
+    if (encoded) appliedFieldChannels.add(channel);
+  }
+  const versus = query.match(
+    /\b(?:plot|chart)\s+of\s+(?:"([^"]+)"|'([^']+)'|([A-Za-z_$][A-Za-z0-9_$.-]*))\s+(?:vs\.?|versus|against)\s+(?:"([^"]+)"|'([^']+)'|([A-Za-z_$][A-Za-z0-9_$.-]*))/i
+  );
+  if (versus && appliedFieldChannels.size === 0) {
+    const y = requestedText(versus, 1, 2, 3);
+    const x = requestedText(versus, 4, 5, 6);
+    for (const [channel, value] of [["x", x], ["y", y]]) {
+      const direct = apply(fieldOwners[channel], new Map([
+        [channel, codeString(value)]
+      ]), versus[0]);
+      if (!direct) apply([`encode${channel.toUpperCase()}`], new Map([
+        ["field", codeString(value)]
+      ]), versus[0]);
+    }
+  }
+
+  const appearanceOwners = Object.freeze({
+    color: ["createScatterPlot", "createLinePlot", "createBarPlot", "createViolinPlot"],
+    size: ["createScatterPlot"],
+    shape: ["createScatterPlot"]
+  });
+  for (const channel of ["color", "size", "shape"]) {
+    const request = appearanceFieldRequest(query, channel);
+    if (!request) continue;
+    const direct = apply(appearanceOwners[channel], new Map([
+      [channel, codeString(request.value)]
+    ]), request.source);
+    if (!direct) apply([
+      `encode${channel[0].toUpperCase()}${channel.slice(1)}`
+    ], new Map([["field", codeString(request.value)]]), request.source);
+  }
+
+  const svg = configured.find(entry => entry.provider.name === "renderToSVG");
+  if (svg) {
+    const svgTitle = query.match(/\bsvg\s+title\s*(?:=|:)?\s*(?:"([^"]+)"|'([^']+)')/i);
+    const svgDescription = query.match(/\bdescription\s*(?:=|:)?\s*(?:"([^"]+)"|'([^']+)')/i);
+    const svgOptions = new Map();
+    if (svgTitle) svgOptions.set("title", codeString(requestedText(svgTitle, 1, 2)));
+    if (svgDescription) {
+      svgOptions.set("description", codeString(requestedText(svgDescription, 1, 2)));
+    }
+    if (svgOptions.size > 0) {
+      const body = [...svgOptions].map(([name, value]) => `${name}: ${value}`).join(", ");
+      configured = configured.map(entry => entry === svg ? {
+        ...entry,
+        provider: { ...entry.provider, call: `renderToSVG(program, { ${body} })` }
+      } : entry);
+      for (const [option, value] of svgOptions) {
+        appliedOptions.push({ owner: "renderToSVG", option, value, source: "SVG accessible text" });
+      }
+    }
+  }
+
+  const pixelRatio = query.match(/\bpixel[ -]?ratio\s*(?:=|:)?\s*(\d+(?:\.\d+)?)\b/i);
+  if (pixelRatio) {
+    const value = Number(pixelRatio[1]);
+    const renderer = configured.find(entry =>
+      ["render", "renderToPNG"].includes(entry.provider.name)
+    );
+    if (renderer && value > 0) {
+      const call = renderer.provider.name === "render"
+        ? `render(program, context, { pixelRatio: ${pixelRatio[1]} })`
+        : renderer.provider.call.replace(/\s*}\)$/, `, pixelRatio: ${pixelRatio[1]} })`);
+      configured = configured.map(entry => entry === renderer ? {
+        ...entry,
+        provider: { ...entry.provider, call }
+      } : entry);
+      appliedOptions.push({
+        owner: renderer.provider.name,
+        option: "pixelRatio",
+        value: pixelRatio[1],
+        source: pixelRatio[0]
+      });
+    } else {
+      unmatchedRequirements.push(pixelRatio[0]);
+      unresolved.push(unresolvedDecision(
+        "renderer.pixelRatio",
+        value > 0
+          ? "pixelRatio applies only to Browser Canvas or PNG output; choose one of those renderers or remove the requirement."
+          : "pixelRatio must be a positive finite number."
+      ));
+    }
+  } else if (/\b(?:high[ -]?dpi|retina)\b/i.test(query)) {
+    const source = query.match(/\b(?:high[ -]?dpi|retina)\b/i)[0];
+    unmatchedRequirements.push(source);
+    unresolved.push(unresolvedDecision(
+      "renderer.pixelRatio",
+      "High-density raster or Canvas output requires an explicit positive pixelRatio."
+    ));
+  }
+
+  if (/\bresponsive\b/i.test(query)) {
+    unmatchedRequirements.push("responsive");
+    unresolved.push(unresolvedDecision(
+      "layout.responsive",
+      "Responsive charts require host resize observation and immutable program rebuilding; no container size was supplied."
+    ));
+  }
+  if (/\b(?:accessible|accessibility|aria)\b/i.test(query)) {
+    const hasAccessibleSvgText = appliedOptions.some(entry =>
+      entry.owner === "renderToSVG" && entry.option === "title"
+    ) && appliedOptions.some(entry =>
+      entry.owner === "renderToSVG" && entry.option === "description"
+    );
+    if (!hasAccessibleSvgText) {
+      unmatchedRequirements.push("accessible output");
+      unresolved.push(unresolvedDecision(
+        svg ? "renderer.svg.accessibleText" : "output.accessibility",
+        svg
+          ? "Accessible SVG output requires concrete title and description strings."
+          : "Accessibility requires an output-specific accessible name, description, and host fallback strategy."
+      ));
+    }
+  }
+
+  const appliedKeys = new Set(appliedOptions.map(entry =>
+    `${entry.owner}.${normalize(entry.option)}`
+  ));
+  const normalizedQuery = normalize(query);
+  for (const entry of configured.filter(candidate => candidate.provider.kind === "action")) {
+    const card = cards.get(entry.provider.name);
+    const configuredOptions = mergeOptionValues(entry.provider, entry.coverage);
+    for (const option of card?.options ?? []) {
+      const optionPhrase = normalize(option.name);
+      if (optionPhrase.length < 3 || !phraseOccurrences(normalizedQuery, optionPhrase).length) continue;
+      if (appliedKeys.has(`${entry.provider.name}.${optionPhrase}`)) continue;
+      if (configuredOptions.has(option.name)) continue;
+      if (
+        (option.name === "stroke" && /\b(?:stroke[ -]?dash|dashed?\s+stroke)\b/i.test(query)) ||
+        (option.name === "bins" && unresolved.some(decision =>
+          decision.constraint.startsWith("transform.bin2d.bins.")
+        ))
+      ) continue;
+      const source = explicitOptionMention(query, option.name);
+      if (!source) continue;
+      const requirement = `${entry.provider.name}.${option.name}: ${source}`;
+      if (unmatchedRequirements.includes(requirement)) continue;
+      unmatchedRequirements.push(requirement);
+      unresolved.push(unresolvedDecision(
+        `request.option.${entry.provider.name}.${option.name}`,
+        `The request mentions ${option.name}, but its value could not be parsed safely for ${entry.provider.name}.`
+      ));
+    }
+  }
+
+  return {
+    entries: configured,
+    appliedOptions,
+    unmatchedRequirements: unique(unmatchedRequirements),
+    unresolved
+  };
+}
+
+function placeholderBindings(entries, appliedOptions = []) {
+  const placeholders = new Map();
+  const add = (name, kind, usedBy, reason) => {
+    const key = `${kind}:${name}`;
+    const current = placeholders.get(key) ?? {
+      name,
+      kind,
+      required: true,
+      usedBy: [],
+      reason
+    };
+    current.usedBy = unique([...current.usedBy, usedBy]);
+    placeholders.set(key, current);
+  };
+  const plannedData = entries.find(entry => entry.plan.name === "createData");
+  if (!plannedData || /\bvalues\s*:\s*values\b/.test(plannedData.call)) {
+    add(
+      "values",
+      "binding",
+      "createData",
+      "Supply the caller-owned dataset rows before running the authoring block."
+    );
+  }
+  for (const entry of entries) {
+    if (entry.plan.name === "render") {
+      add(
+        "context",
+        "runtime",
+        "render",
+        "Supply a CanvasRenderingContext2D from the host page."
+      );
+    }
+    if (["hconcat", "vconcat"].includes(entry.plan.name)) {
+      add(
+        "programs",
+        "program",
+        entry.plan.name,
+        "Replace the repeated sample program with two complete child ChartPrograms."
+      );
+    }
+    const fieldMatches = entry.call.matchAll(
+      /\b(?:field|x|y|color|size|shape|groupBy|weight):\s*"(x|y|value|category|label|angle|date|a|b|series)"/g
+    );
+    for (const match of fieldMatches) {
+      add(
+        match[1],
+        "field",
+        entry.plan.name,
+        "Replace this template name unless the input dataset declares the same field."
+      );
+    }
+    if (entry.call.includes('"Chart title"')) {
+      add(
+        "Chart title",
+        "text",
+        entry.plan.name,
+        "Replace the sample title with user-approved chart text."
+      );
+    }
+    if (entry.plan.id.startsWith("exact.")) {
+      const card = cards.get(entry.plan.name);
+      for (const prerequisite of card?.resources.prerequisites ?? []) {
+        add(
+          prerequisite,
+          "resource",
+          entry.plan.name,
+          "Provide or create this action-card prerequisite before applying the exact call."
+        );
+      }
+    }
+  }
+  for (const applied of appliedOptions) {
+    if (
+      !new Set(["color", "field", "groupBy", "shape", "size", "weight", "x", "y"])
+        .has(applied.option)
+    ) continue;
+    let field;
+    try {
+      field = JSON.parse(applied.value);
+    } catch {
+      continue;
+    }
+    if (typeof field !== "string" || field.length === 0) continue;
+    add(
+      field,
+      "field",
+      applied.owner,
+      "Confirm that this request-supplied field exists in the caller-owned dataset."
+    );
+  }
+  return [...placeholders.values()];
 }
 
 function hasIncompleteRulePrimaryPair(entries) {
@@ -1060,8 +1801,11 @@ function genericUnresolved(normalizedQuery, matchedIds, exactNames) {
 }
 
 export function validateResolverKnowledge() {
-  if (cardsArtifact.schemaVersion !== 1 || taxonomy.schemaVersion !== 2) {
-    throw new Error("Compact action cards must use schemaVersion 1 and the intent taxonomy schemaVersion 2.");
+  if (cardsArtifact.schemaVersion !== 2 || taxonomy.schemaVersion !== 2) {
+    throw new Error("Compact action cards and the intent taxonomy must use schemaVersion 2.");
+  }
+  if (taxonomy.packageVersion !== cardsArtifact.packageVersion) {
+    throw new Error("Compact action cards and the intent taxonomy must use one packageVersion.");
   }
   if (constraints.size !== taxonomy.constraints.length) {
     throw new Error("Intent constraint IDs must be unique.");
@@ -1191,23 +1935,31 @@ export function searchGgaction(query) {
     ));
   }
 
-  const ordered = closeRuntimeDependencies(adaptProviderDependencies(selected).sort((left, right) =>
+  let ordered = closeRuntimeDependencies(adaptProviderDependencies(selected).sort((left, right) =>
     left.provider.order - right.provider.order ||
     providerRequestPosition(left, positions) - providerRequestPosition(right, positions) ||
     left.provider.id.localeCompare(right.provider.id)
   ));
+  const requested = applyRequestedOptions(ordered, query);
+  ordered = requested.entries;
+  unresolved.push(...requested.unresolved);
   const closure = runtimeClosureDecisions(ordered);
-  if (unsupported.length === 0 && unresolved.length === 0) {
-    unsupported.push(...closure.unsupported);
-    unresolved.push(...closure.unresolved);
+  unsupported.push(...closure.unsupported);
+  unresolved.push(...closure.unresolved);
+  if (closure.unsupported.some(entry => entry.constraint === "unsupported.areaStrokeDash")) {
+    ordered = ordered.filter(entry => entry.provider.name !== "encodeStrokeDash");
   }
   const entries = ordered.map((entry, index) => planEntry(entry, index + 1));
   const packet = {
-    schemaVersion: 3,
+    schemaVersion: 4,
+    packageVersion: cardsArtifact.packageVersion,
     query: query.trim(),
     matchedConstraints: [...matchedIds],
     actionPlan: entries.map(entry => entry.plan),
     exactCalls: entries.map(entry => entry.call),
+    appliedOptions: requested.appliedOptions,
+    placeholderBindings: placeholderBindings(entries, requested.appliedOptions),
+    unmatchedRequirements: requested.unmatchedRequirements,
     authoring: authoringBlock(entries),
     unsupported,
     unresolved: unique(unresolved.map(entry => JSON.stringify(entry))).map(JSON.parse),

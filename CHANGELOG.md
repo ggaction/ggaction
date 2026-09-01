@@ -4,6 +4,39 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+### Added
+
+- Added production guidance for accessibility, compatibility, responsive
+  layout, performance, data refresh, error recovery, version provenance,
+  fonts, and strict TypeScript use.
+- Published versioned action cards, task-packet schemas, the exact
+  `ChartProgram` declaration, and a hashed LLM section manifest as deployed
+  machine-readable documentation artifacts.
+
+### Changed
+
+- Expanded compact action cards with exact option type strings and upgraded
+  MCP task packets with package provenance, applied options, explicit
+  placeholders, and unmatched-requirement preservation.
+- Expanded chart-intent resolution for area, Horizon, pie, donut, rose, radar,
+  Polar axes, accessibility, responsive output, common option values, and
+  broader unsupported interaction and animation wording.
+- Expanded documentation search and the LLM routing index from prose-only
+  excerpts to complete canonical-page and technical-symbol coverage.
+
+### Fixed
+
+- Rewrote full LLM-bundle links and images against deployed canonical routes,
+  preserved links authored with HTML/Liquid, and exposed deterministic section
+  hashes and source-status metadata.
+- Corrected the one-transform `DatasetTransform` documentation, all eight
+  public transform branches, legend placement support, duplicated chart
+  figures, generated action anchors, navigation order, and leaked internal
+  instruction files.
+- Prevented incompatible area stroke-dash steps from appearing as executable
+  MCP output and stopped silently dropping recognized numeric, layout,
+  accessibility, and interaction requirements.
+
 ## [0.0.10] - 2026-08-11
 
 ### Added

@@ -7,8 +7,6 @@ title: Statistical Data Transforms
 
 {% include chart-example.html id="regression" %}
 
-{% include chart-example.html id="regression" %}
-
 ## `createRegressionData({ id, source?, x, y, groupBy?, method?, degree?, span?, confidence?, interval? })`
 
 Create deterministic regression predictions from an existing dataset. This is

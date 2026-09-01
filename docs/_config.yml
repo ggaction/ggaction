@@ -18,3 +18,4 @@ relative_links:
 exclude:
   - README.md
   - AGENTS.md
+  - assets/AGENTS.md

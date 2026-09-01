@@ -116,6 +116,8 @@ the complete user request. Follow `authoring.prerequisites` and
 `authoring.steps` in order. Explicit Canvas or data actions occur in the steps
 and are omitted from prerequisites so they execute only once. The packet closes
 deterministic target, field-type, scale, and derived-data dependencies; missing
-semantic choices remain unresolved. Read documentation only for URIs explicitly
-listed in `unresolved[].resources`. See [Local MCP](./mcp.md) for installation
-and the packet contract.
+semantic choices remain unresolved. Confirm every `placeholderBindings` entry,
+apply or clarify every `unmatchedRequirements` entry, and never treat template
+field names as inferred dataset facts. Read documentation only for URIs
+explicitly listed in `unresolved[].resources`. See [Local MCP](./mcp.md) for
+installation and the packet contract.

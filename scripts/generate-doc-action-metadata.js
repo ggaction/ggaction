@@ -5,6 +5,7 @@ import { fileURLToPath } from "node:url";
 const root = fileURLToPath(new URL("../", import.meta.url));
 const catalogFile = path.join(root, "agent_docs/contract/ACTION_INDEX.json");
 const outputFile = path.join(root, "docs/_data/action_metadata.json");
+const browserOutputFile = path.join(root, "docs/assets/js/action-metadata.js");
 
 function operation(name) {
   for (const candidate of [
@@ -32,15 +33,23 @@ export async function buildDocActionMetadata() {
 }
 
 export async function generateDocActionMetadata({ check = false } = {}) {
-  const expected = `${JSON.stringify(await buildDocActionMetadata(), null, 2)}\n`;
+  const metadata = await buildDocActionMetadata();
+  const expected = `${JSON.stringify(metadata, null, 2)}\n`;
+  const browserExpected = `globalThis.ggactionDocsActionMetadata = ${JSON.stringify(metadata)};\n`;
   if (check) {
-    const current = await readFile(outputFile, "utf8");
-    if (current !== expected) {
+    const [current, browserCurrent] = await Promise.all([
+      readFile(outputFile, "utf8"),
+      readFile(browserOutputFile, "utf8")
+    ]);
+    if (current !== expected || browserCurrent !== browserExpected) {
       throw new Error("Generated documentation action metadata is stale. Run npm run docs:actions.");
     }
     return;
   }
-  await writeFile(outputFile, expected);
+  await Promise.all([
+    writeFile(outputFile, expected),
+    writeFile(browserOutputFile, browserExpected)
+  ]);
   process.stdout.write("generated documentation action metadata\n");
 }
 

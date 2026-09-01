@@ -10,7 +10,7 @@
   },
   "/mcp/": {
     "title": "Local MCP for LLM Chart Authoring",
-    "description": "The ggaction package includes a local, read only MCP server that helps a language model choose current actions and exact call shapes without preloading the complete documentation."
+    "description": "The ggaction package includes a local, read only MCP server that helps a language model choose current actions and syntax valid call templates without preloading the complete…"
   },
   "/llm-authoring/": {
     "title": "LLM Chart Authoring Contract",
@@ -180,7 +180,7 @@
   },
   "/gallery/": {
     "title": "Chart Gallery",
-    "description": "Browse complete ggaction charts by Cartesian, statistical, Polar, composition, and interaction task."
+    "description": "Browse complete ggaction charts by Cartesian, statistical, Polar, composition, and static selection task."
   },
   "/gallery/all/": {
     "title": "All Chart Examples",
@@ -479,6 +479,42 @@
   "/concepts/actions-and-trace/": {
     "title": "Actions and Trace Trees",
     "description": "Every chart authoring method is an action. Calling a high level action records that action and any wrapped actions it invokes as children."
+  },
+  "/accessibility/": {
+    "title": "Accessibility",
+    "description": "ggaction produces static chart graphics. Accessibility therefore has two parts: author a chart whose meaning is not carried by color alone, then give the rendered output an…"
+  },
+  "/compatibility/": {
+    "title": "Runtime and Browser Compatibility",
+    "description": "ggaction is an ESM only package. The supported Node.js floor is 20. Continuous integration installs and tests the packed package on Node.js 20, 22, and 24; browser package and…"
+  },
+  "/responsive-charts/": {
+    "title": "Responsive Charts",
+    "description": "A ggaction ChartProgram has concrete logical Canvas dimensions. Responsive behavior belongs to the host: measure a container, rebuild the immutable program with the new width and…"
+  },
+  "/performance/": {
+    "title": "Performance and Large Charts",
+    "description": "Performance depends on source row count, derived transforms, final graphic item count, text measurement, output dimensions, and renderer choice."
+  },
+  "/data-updates/": {
+    "title": "Data Updates and Live Refresh",
+    "description": "Source datasets are immutable and create only. createData copies and freezes caller owned rows; it does not provide an action that replaces those values."
+  },
+  "/errors-and-recovery/": {
+    "title": "Errors and Recovery",
+    "description": "ggaction rejects ambiguous state, invalid options, incompatible resources, and renderer allocation failures instead of guessing."
+  },
+  "/versioning/": {
+    "title": "Versioning and Documentation Provenance",
+    "description": "ggaction is experimental and remains below 1.0. Minor releases can change public action signatures, inference rules, generated graphics, or renderer behavior."
+  },
+  "/fonts/": {
+    "title": "Fonts and Text Rendering",
+    "description": "ggaction stores a CSS style fontFamily string in concrete text graphics and passes it to the selected rendering backend. The default family is sans serif."
+  },
+  "/typescript/": {
+    "title": "TypeScript",
+    "description": "ggaction ships TypeScript declarations with every public export. Install no separate @types package."
   },
   "/advanced/axis-components/": {
     "title": "Advanced Axis Components",

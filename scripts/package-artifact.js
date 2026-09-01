@@ -22,9 +22,9 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 const npmCommand = process.platform === "win32" ? "npm.cmd" : "npm";
 
 export const PACKAGE_LIMITS = Object.freeze({
-  entries: 430,
-  packedBytes: 460_000,
-  unpackedBytes: 2_400_000
+  entries: 440,
+  packedBytes: 500_000,
+  unpackedBytes: 2_500_000
 });
 
 const REQUIRED_FILES = Object.freeze([
@@ -32,10 +32,14 @@ const REQUIRED_FILES = Object.freeze([
   "LICENSE",
   "README.md",
   "package.json",
+  "knowledge/action-card.schema.json",
   "knowledge/action-cards.json",
+  "knowledge/action-cards.schema.json",
   "knowledge/extension-authoring.md",
   "knowledge/intent-taxonomy.json",
+  "knowledge/intent-taxonomy.schema.json",
   "knowledge/mcp-resources.json",
+  "knowledge/mcp-resources.schema.json",
   "knowledge/task-packet.schema.json",
   "knowledge/task-resolver.js",
   "src/index.js",
@@ -58,9 +62,13 @@ const REQUIRED_FILES = Object.freeze([
 
 const FORBIDDEN_BASENAMES = new Set(["AGENTS.md"]);
 const COMPACT_JSON_FILES = Object.freeze([
+  "knowledge/action-card.schema.json",
   "knowledge/action-cards.json",
+  "knowledge/action-cards.schema.json",
   "knowledge/intent-taxonomy.json",
+  "knowledge/intent-taxonomy.schema.json",
   "knowledge/mcp-resources.json",
+  "knowledge/mcp-resources.schema.json",
   "knowledge/task-packet.schema.json"
 ]);
 const COMPACT_JAVASCRIPT_FILES = Object.freeze([
@@ -171,10 +179,14 @@ export function validatePackageManifest(manifest) {
       !file.startsWith("src/") &&
       !file.startsWith("types/") &&
       ![
+        "knowledge/action-card.schema.json",
         "knowledge/action-cards.json",
+        "knowledge/action-cards.schema.json",
         "knowledge/extension-authoring.md",
         "knowledge/intent-taxonomy.json",
+        "knowledge/intent-taxonomy.schema.json",
         "knowledge/mcp-resources.json",
+        "knowledge/mcp-resources.schema.json",
         "knowledge/task-packet.schema.json",
         "knowledge/task-resolver.js"
       ].includes(file)

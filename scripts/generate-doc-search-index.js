@@ -7,12 +7,27 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 const docsRoot = path.join(root, "docs");
 const pagesFile = path.join(docsRoot, "_data/pages.yml");
 const actionCatalogFile = path.join(root, "agent_docs/contract/ACTION_INDEX.json");
+const actionCardsFile = path.join(root, "knowledge/action-cards.json");
 const pageMetadataFile = path.join(docsRoot, "_data/page_metadata.json");
 const chartCatalogFile = path.join(docsRoot, "_data/chart_examples.yml");
 const outputFile = path.join(docsRoot, "search-index.json");
 
 const SEARCH_ALIASES = new Map([
-  ["/api/axes/", ["axis label", "tick label", "axis title"]],
+  ["/accessibility/", ["accessible chart", "aria label", "alt text", "accessible svg"]],
+  ["/responsive-charts/", ["responsive canvas", "responsive chart", "ResizeObserver", "retina", "device pixel ratio"]],
+  ["/performance/", ["large dataset", "large chart", "render benchmark", "allocation limit"]],
+  ["/data-updates/", ["live data", "streaming data", "replace data", "refresh chart"]],
+  ["/errors-and-recovery/", ["error handling", "TypeError", "RangeError", "recovery"]],
+  ["/compatibility/", ["browser support", "Node 20", "Node 22", "Node 24", "ESM only", "CommonJS"]],
+  ["/fonts/", ["web font", "font loading", "font fallback", "font family"]],
+  ["/typescript/", ["TypeScript setup", "strict types", "declaration file"]],
+  ["/api/axes/", ["axis label", "tick label", "axis title", "axis label rotation"]],
+  ["/api/marks/text/", ["maxDisplacement", "label displacement", "collision labels"]],
+  ["/api/scales/", ["logarithmic scale", "log scale", "scale precedence"]],
+  ["/api/rendering/", [
+    "PDFMetadata", "SVGRenderOptions", "resourceNamespace", "pixel ratio",
+    "high dpi", "retina", "serialize svg", "save svg"
+  ]],
   ["/api/error-bars/", ["confidence interval", "uncertainty"]],
   ["/api/error-bands/", ["confidence interval", "uncertainty ribbon"]],
   ["/api/composition/", ["dashboard", "small multiples", "facet"]],
@@ -27,6 +42,10 @@ const SEARCH_ALIASES = new Map([
     "unsupported.geo", "unsupported.animation", "unsupported.interaction",
     "unsupported.3d", "unsupported.jpg", "renderer.format"
   ]],
+  ["/supported-features/", ["tooltip", "tooltips", "interactive chart", "unsupported feature"]],
+  ["/tutorials/polar-arcs/", ["pie chart", "donut chart", "doughnut chart", "weighted donut"]],
+  ["/tutorials/polar-lines/", ["radar chart", "spider chart", "polar line chart"]],
+  ["/recipes/horizon/", ["HorizonOverflowPolicy", "horizon overflow", "horizon bands"]],
   ["/api/position/offsets/", ["grouped bar", "side by side bars"]],
   ["/tutorials/grouped-bar/", ["grouped bar", "side by side bars"]],
   ["/recipes/bar-chart/", ["grouped bar", "side by side bars"]]
@@ -44,7 +63,7 @@ function searchKind(url, sectionTitle) {
 
 function aliases(url) {
   return [...SEARCH_ALIASES.entries()]
-    .filter(([prefix]) => url.startsWith(prefix))
+    .filter(([route]) => url === route)
     .flatMap(([, values]) => values);
 }
 
@@ -97,6 +116,21 @@ function cleanText(source) {
     .trim();
 }
 
+function technicalKeywords(source) {
+  const technical = [
+    ...source.matchAll(/```[^\n]*\n([\s\S]*?)```|~~~[^\n]*\n([\s\S]*?)~~~/g),
+    ...source.matchAll(/`([^`\n]+)`/g)
+  ].flatMap(match => (match[1] ?? match[2] ?? "").match(
+    /[A-Za-z_$][A-Za-z0-9_$]*/g
+  ) ?? []);
+  return [...new Set(technical.filter(value =>
+    value.length >= 3 && !new Set([
+      "const", "let", "return", "import", "from", "true", "false",
+      "readonly", "string", "number", "undefined", "program"
+    ]).has(value)
+  ))].slice(0, 180);
+}
+
 function heading(source) {
   const explicit = source.match(/\{#([A-Za-z][A-Za-z0-9_-]*)\}\s*$/)?.[1];
   const label = cleanText(source.replace(/\{#[A-Za-z][A-Za-z0-9_-]*\}\s*$/, ""));
@@ -139,15 +173,24 @@ function summary(text) {
 }
 
 export async function buildDocSearchIndex() {
-  const [pagesSource, catalogSource, pageMetadataSource, chartCatalogSource] = await Promise.all([
+  const [
+    pagesSource,
+    catalogSource,
+    actionCardsSource,
+    pageMetadataSource,
+    chartCatalogSource
+  ] = await Promise.all([
     readFile(pagesFile, "utf8"),
     readFile(actionCatalogFile, "utf8"),
+    readFile(actionCardsFile, "utf8"),
     readFile(pageMetadataFile, "utf8"),
     readFile(chartCatalogFile, "utf8")
   ]);
   const actions = JSON.parse(catalogSource).actions;
+  const actionCards = JSON.parse(actionCardsSource).cards;
   const pageMetadata = JSON.parse(pageMetadataSource);
   const metadata = new Map(actions.map(action => [action.name, action]));
+  const cards = new Map(actionCards.map(card => [card.name, card]));
   const chartMetadata = new Map();
   for (const chart of readDocChartCatalog(chartCatalogSource)) {
     chartMetadata.set(chart.url, chart);
@@ -165,12 +208,18 @@ export async function buildDocSearchIndex() {
       url: page.url,
       kind: searchKind(page.url),
       summary: summary(pageSummary),
-      keywords: [page.title, ...chartKeywords(chartMetadata.get(page.url)), ...aliases(page.url)]
+      keywords: [
+        page.title,
+        ...chartKeywords(chartMetadata.get(page.url)),
+        ...aliases(page.url),
+        ...technicalKeywords(source)
+      ]
     });
     for (const section of sections.slice(1)) {
       if (!section.heading?.id) continue;
       const actionName = section.heading.label.match(/^([A-Za-z][A-Za-z0-9]*)/)?.[1];
       const action = metadata.get(actionName);
+      const card = cards.get(actionName);
       entries.push({
         pageTitle: page.title,
         sectionTitle: section.heading.label,
@@ -182,12 +231,17 @@ export async function buildDocSearchIndex() {
               action.name,
               action.layer,
               action.domain,
+              ...(card?.intents ?? []),
+              ...(card?.options.flatMap(option => [option.name, option.type]) ?? []),
+              ...(card ? [card.signature] : []),
+              ...technicalKeywords(section.body.join("\n")),
               ...chartKeywords(chartMetadata.get(`${page.url}#${section.heading.id}`)),
               ...aliases(page.url)
             ]
           : [
               page.title,
               section.heading.label,
+              ...technicalKeywords(section.body.join("\n")),
               ...chartKeywords(chartMetadata.get(`${page.url}#${section.heading.id}`)),
               ...aliases(page.url)
             ]

@@ -614,7 +614,7 @@
   caption: Final visual items selected and emphasized by their rendered grain.
   summary: Select, filter, and emphasize final point, bar, and line items.
   actions: selectMarks · highlightMarks
-  tasks: interaction
+  tasks: selection
   gallery_featured: true
   url: /tutorials/mark-selection/
   tutorial_order: 130

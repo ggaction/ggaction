@@ -6,6 +6,8 @@ import { spawnSync } from "node:child_process";
 import test from "node:test";
 import { fileURLToPath } from "node:url";
 
+import Ajv2020 from "ajv/dist/2020.js";
+
 import {
   buildActionCards,
   validateActionCards
@@ -14,6 +16,7 @@ import {
 const root = fileURLToPath(new URL("../../", import.meta.url));
 const cardFile = path.join(root, "knowledge/action-cards.json");
 const schemaFile = path.join(root, "knowledge/action-card.schema.json");
+const collectionSchemaFile = path.join(root, "knowledge/action-cards.schema.json");
 const intentFile = path.join(root, "knowledge/action-intents.json");
 const declarationFile = path.join(root, "types/program.d.ts");
 const tscFile = path.join(root, "node_modules/.bin/tsc");
@@ -25,6 +28,12 @@ test("compact action cards are generated from the current action contract", asyn
   ]);
   assert.equal(currentSource, `${JSON.stringify(artifact, null, 2)}\n`);
   assert.equal(artifact.count, 173);
+  assert.equal(artifact.schemaVersion, 2);
+  assert.equal(artifact.packageVersion, JSON.parse(
+    await readFile(path.join(root, "package.json"), "utf8")
+  ).version);
+  assert.equal(artifact.typeSource, "types/program.d.ts");
+  assert.match(artifact.errorPolicy, /curated error override/);
   assert.equal(stats.count, 173);
   assert.equal(stats.maxBytes <= 3072, true);
   assert.equal(stats.medianBytes <= 1536, true);
@@ -43,21 +52,37 @@ test("compact action cards are generated from the current action contract", asyn
   );
 });
 
-test("compact action cards satisfy the bounded public schema projection", async () => {
-  const [artifact, schema, intents] = await Promise.all([
+test("compact action cards satisfy the bounded typed public schema projection", async () => {
+  const [artifact, schema, collectionSchema, intents] = await Promise.all([
     readFile(cardFile, "utf8").then(JSON.parse),
     readFile(schemaFile, "utf8").then(JSON.parse),
+    readFile(collectionSchemaFile, "utf8").then(JSON.parse),
     readFile(intentFile, "utf8").then(JSON.parse)
   ]);
+  assert.equal(collectionSchema.properties.schemaVersion.const, 2);
+  assert.equal(collectionSchema.properties.cards.items.$ref, "action-card.schema.json");
+  assert.equal(schema.properties.schemaVersion.const, 2);
+  assert.deepEqual(schema.properties.options.items.required, ["name", "required", "type"]);
+  const ajv = new Ajv2020({ strict: true });
+  ajv.addSchema(schema);
+  const validateCollection = ajv.compile(collectionSchema);
+  assert.equal(
+    validateCollection(artifact),
+    true,
+    JSON.stringify(validateCollection.errors)
+  );
   const expectedKeys = [...schema.required].sort();
   for (const card of artifact.cards) {
     assert.deepEqual(Object.keys(card).sort(), expectedKeys, card.name);
-    assert.equal(card.schemaVersion, 1, card.name);
+    assert.equal(card.schemaVersion, 2, card.name);
     assert.equal(card.summary.length >= 20 && card.summary.length <= 420, true, card.name);
     assert.equal(card.intents.length >= 3 && card.intents.length <= 7, true, card.name);
     assert.equal(new Set(card.intents).size, card.intents.length, card.name);
     assert.equal(card.callPatterns.length >= 1 && card.callPatterns.length <= 2, true, card.name);
     assert.equal(card.errors.length <= 2, true, card.name);
+    assert.equal(card.options.every(option =>
+      typeof option.type === "string" && option.type.length > 0
+    ), true, card.name);
     assert.match(card.route, /^\/reference\//, card.name);
     assert.doesNotMatch(JSON.stringify(card), /relatedActions|typeDefinitions|documentationBody/);
   }

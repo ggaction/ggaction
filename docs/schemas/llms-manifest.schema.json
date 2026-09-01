@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ggaction.github.io/ggaction/schemas/llms-manifest.schema.json",
+  "title": "ggaction full LLM documentation manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "packageVersion",
+    "sourceStatus",
+    "bundle",
+    "sectionCount",
+    "sections"
+  ],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "packageVersion": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$"
+    },
+    "sourceStatus": { "const": "checked-out-repository-documentation" },
+    "bundle": { "const": "llms-full.txt" },
+    "sectionCount": { "type": "integer", "minimum": 1 },
+    "sections": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "order",
+          "title",
+          "route",
+          "source",
+          "headings",
+          "bytes",
+          "sha256"
+        ],
+        "properties": {
+          "order": { "type": "integer", "minimum": 1 },
+          "title": { "type": "string", "minLength": 1 },
+          "route": { "type": "string", "pattern": "^/" },
+          "source": { "type": "string", "pattern": "^[A-Za-z0-9_./-]+\\.md$" },
+          "headings": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": { "type": "string", "minLength": 1 }
+          },
+          "bytes": { "type": "integer", "minimum": 1 },
+          "sha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" }
+        }
+      }
+    }
+  }
+}

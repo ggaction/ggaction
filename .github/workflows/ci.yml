@@ -123,8 +123,15 @@ jobs:
           bundler-cache: true
       - name: Verify current documentation sources
         run: |
+          npm run examples:index:check
+          npm run contracts:cards:check
+          npm run docs:reference:check
+          npm run docs:actions:check
           npm run docs:signatures:check
           npm run docs:capabilities:check
+          npm run docs:metadata:check
+          npm run docs:search:check
+          npm run docs:machine:check
           npm run test:docs
       - name: Build documentation with Jekyll
         run: npm run docs:build

@@ -25,9 +25,13 @@ test("isolates npm pack from the caller's global cache", () => {
 
 test("publishes only the bounded public package artifact", async () => {
   const compactJsonPaths = [
+    "knowledge/action-card.schema.json",
     "knowledge/action-cards.json",
+    "knowledge/action-cards.schema.json",
     "knowledge/intent-taxonomy.json",
+    "knowledge/intent-taxonomy.schema.json",
     "knowledge/mcp-resources.json",
+    "knowledge/mcp-resources.schema.json",
     "knowledge/task-packet.schema.json"
   ];
   const sourceJson = await Promise.all(compactJsonPaths.map(async path => {
@@ -50,10 +54,14 @@ test("publishes only the bounded public package artifact", async () => {
   assert.ok(paths.every(path =>
     ["CHANGELOG.md", "LICENSE", "README.md", "package.json"].includes(path) ||
     path.startsWith("src/") || path.startsWith("types/") || [
+      "knowledge/action-card.schema.json",
       "knowledge/action-cards.json",
+      "knowledge/action-cards.schema.json",
       "knowledge/extension-authoring.md",
       "knowledge/intent-taxonomy.json",
+      "knowledge/intent-taxonomy.schema.json",
       "knowledge/mcp-resources.json",
+      "knowledge/mcp-resources.schema.json",
       "knowledge/task-packet.schema.json",
       "knowledge/task-resolver.js"
     ].includes(path)
@@ -86,10 +94,14 @@ test("rejects missing, forbidden, and oversized package manifests", () => {
       "LICENSE",
       "README.md",
       "package.json",
+      "knowledge/action-card.schema.json",
       "knowledge/action-cards.json",
+      "knowledge/action-cards.schema.json",
       "knowledge/extension-authoring.md",
       "knowledge/intent-taxonomy.json",
+      "knowledge/intent-taxonomy.schema.json",
       "knowledge/mcp-resources.json",
+      "knowledge/mcp-resources.schema.json",
       "knowledge/task-packet.schema.json",
       "knowledge/task-resolver.js",
       "src/index.js",
