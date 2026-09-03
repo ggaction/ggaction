@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 
-const expectedVersion = "0.0.11";
+const expectedVersion = "0.0.12";
 const cdnUrl =
   `https://cdn.jsdelivr.net/npm/ggaction@${expectedVersion}/+esm`;
 const exampleUrl = new URL(

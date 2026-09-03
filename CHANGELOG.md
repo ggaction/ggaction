@@ -4,6 +4,36 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+## [0.0.12] - 2026-09-03
+
+### Added
+
+- Added direct quantitative theta encodings for Polar arc marks, producing one
+  proportional sector per positive row with deterministic order, validation,
+  selection, rematerialization, strict types, and executable documentation.
+- Added quantitative independent positions for explicit error bars and
+  categorical `xOffset`/`yOffset` grouping for points, rules, and complete
+  point-and-whisker charts. Inferred intervals now reuse the source offset
+  field, scale, padding, and statistical grouping.
+- Added Context7 project metadata, ownership verification, bounded indexing
+  rules, and manual or release-triggered documentation refresh automation.
+
+### Changed
+
+- Sharded the realistic data corpus across seven CI jobs and removed duplicate
+  coverage work from the ordinary test job, while retaining the complete
+  release qualification suite.
+- Updated the locked `fast-uri` and `qs` dependency lines and retained a clean
+  production dependency audit across the supported Node.js package matrix.
+
+### Fixed
+
+- Kept grouped points, whisker rules, and fixed-width caps on the same
+  categorical sub-slot after Canvas, scale, offset-scale, and data changes.
+- Preserved an explicitly authored shared facet legend at its child
+  `left`, `right`, `top`, or `bottom` edge, including horizontal alignment and
+  the correct width-versus-height reservation after composition layout edits.
+
 ## [0.0.11] - 2026-09-02
 
 ### Added
@@ -279,6 +309,7 @@ All notable changes to `ggaction` are recorded in this file.
 - Cartesian charts are the complete current path. Polar semantic tokens exist only where explicitly documented and do
   not imply complete polar rendering.
 
+[0.0.12]: https://github.com/ggaction/ggaction/releases/tag/v0.0.12
 [0.0.11]: https://github.com/ggaction/ggaction/releases/tag/v0.0.11
 [0.0.10]: https://github.com/ggaction/ggaction/releases/tag/v0.0.10
 [0.0.9]: https://github.com/ggaction/ggaction/releases/tag/v0.0.9

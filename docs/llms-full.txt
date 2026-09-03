@@ -2,7 +2,7 @@
 
 
 
-Package metadata version: 0.0.11.
+Package metadata version: 0.0.12.
 
 Source status: generated from the checked-out repository documentation. A branch may contain unreleased changes; verify the installed package version and types before generating code.
 
@@ -26,7 +26,7 @@ Build, inspect, select, and revise charts one meaningful action at a time.
 Start with a complete example, then use the API pages when you need to customize
 one part. The main, basic, extension, SVG, PNG, and PDF entry points include TypeScript declarations.
 
- Experimental 0.0.11 · APIs may change before 1.0.0. Review the [changelog](https://github.com/ggaction/ggaction/blob/main/CHANGELOG.md) when upgrading.
+ Experimental 0.0.12 · APIs may change before 1.0.0. Review the [changelog](https://github.com/ggaction/ggaction/blob/main/CHANGELOG.md) when upgrading.
 
 ## Start here
 
