@@ -1370,6 +1370,10 @@ export type ErrorBarPositionChannel = { field?: string } & (
       fieldType: "temporal";
       scale?: NonPointTemporalPositionScaleOptions;
     }
+  | {
+      fieldType: "quantitative";
+      scale?: NonPointQuantitativePositionScaleOptions;
+    }
 );
 
 export interface ErrorBarStatisticalIntervalChannel {

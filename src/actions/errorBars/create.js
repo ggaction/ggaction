@@ -28,14 +28,16 @@ const ERROR_BAR_POLICY = Object.freeze({
   resourceLabel: "error-bar",
   defaultId: "errorBar",
   ownerLabel: "Error-bar id",
-  positionTypes: Object.freeze(["nominal", "ordinal", "temporal"]),
+  positionTypes: Object.freeze([
+    "quantitative", "nominal", "ordinal", "temporal"
+  ]),
   defaultPositionType: "nominal",
   defaultIntervalChannel: "y",
   scaleDefaults: () => ({}),
   intervalScaleDefaults: Object.freeze({ nice: true, zero: false }),
   allowExplicitGrouping: false,
   ambiguousMessage:
-    "createErrorBar requires one quantitative interval axis and one nominal, ordinal, or temporal position axis."
+    "createErrorBar requires one quantitative interval axis and one compatible position axis; use interval options to disambiguate two quantitative channels."
 });
 
 function resolveErrorBar(program, args) {

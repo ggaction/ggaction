@@ -53,7 +53,7 @@ The channel types are:
 ```typescript
 type PositionChannel = {
   field?: string;
-  fieldType?: "nominal" | "ordinal" | "temporal";
+  fieldType?: "quantitative" | "nominal" | "ordinal" | "temporal";
   scale?: ScaleOptions;
 };
 
@@ -82,6 +82,42 @@ No orientation flag is required. Statistical mean defaults to a two-sided
 The independent position field is always part of statistical grouping.
 `groupBy` can add one more grouping field. Group order follows first appearance
 in the source data. Groups without enough valid quantitative values are omitted.
+
+### Quantitative independent positions
+
+Use an explicit interval definition when observations sit on a numeric x or y
+position. The `lower` and `upper` fields identify the interval axis, so the
+other quantitative channel remains the independent position:
+
+```javascript
+const learningCurve = chart()
+  .createCanvas()
+  .createData({ values: rows })
+  .createErrorBar({
+    x: {
+      field: "trainingCharts",
+      fieldType: "quantitative",
+      scale: { id: "x", zero: false }
+    },
+    y: {
+      center: "estimate",
+      lower: "lower",
+      upper: "upper",
+      scale: { id: "y", zero: false }
+    }
+  });
+
+const logLearningCurve = learningCurve.editScale({
+  id: "x",
+  type: "log",
+  base: 2
+});
+```
+
+The main rule and both caps share the same position scale and stay aligned
+after supported scale edits. If both channels are quantitative and neither one
+contains interval options, supply an explicit interval definition to remove
+the ambiguity.
 
 ## Horizontal intervals
 

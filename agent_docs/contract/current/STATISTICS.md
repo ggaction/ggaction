@@ -36,8 +36,10 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 ## `createErrorBar`
 
 - Current signature: `createErrorBar({ id?, target?, data?, x?, y?, groupBy?, coordinate?, caps?, capSize?, stroke?, strokeWidth?, strokeDash?, opacity? } = {})`.
-- Exactly one of x/y is a nominal, ordinal, or temporal position channel and the other is a quantitative
-  interval channel. This supports vertical or horizontal orientation without a separate orientation flag.
+- Exactly one of x/y is an identifiable quantitative interval channel and the other is a quantitative, nominal,
+  ordinal, or temporal position channel. Interval options such as `lower`/`upper` disambiguate a quantitative
+  position from a quantitative interval. This supports vertical or horizontal orientation without a separate
+  orientation flag.
 - Statistical intervals accept `{ field, center?, extent?, level?, scale? }` and default to
   mean/Student-t CI/0.95. Explicit intervals accept `{ center, lower, upper, scale? }`, use existing rows,
   and never create derived data.
@@ -64,7 +66,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 
 ### Formal values — `createErrorBar`
 
-- Implemented: `createErrorBar({ id?: UserId; target?: UserId; data?: UserId; x?: PositionChannel | StatisticalIntervalChannel | ExplicitIntervalChannel; y?: PositionChannel | StatisticalIntervalChannel | ExplicitIntervalChannel; groupBy?: FieldName; coordinate?: UserId; caps?: boolean; capSize?: PositiveFinite; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; strokeDash?: DashStyle | DashPattern; opacity?: UnitInterval } = {})`, where `PositionChannel = { field?: FieldName; fieldType?: "nominal" | "ordinal" | "temporal"; scale?: PositionScale }`, `StatisticalIntervalChannel = { field?: FieldName; center?: "mean" | "median"; extent?: "stderr" | "stdev" | "ci" | "iqr"; level?: UnitIntervalExclusive; scale?: PositionScale }`, and `ExplicitIntervalChannel = { center: FieldName; lower: FieldName; upper: FieldName; scale?: PositionScale }`.
+- Implemented: `createErrorBar({ id?: UserId; target?: UserId; data?: UserId; x?: PositionChannel | StatisticalIntervalChannel | ExplicitIntervalChannel; y?: PositionChannel | StatisticalIntervalChannel | ExplicitIntervalChannel; groupBy?: FieldName; coordinate?: UserId; caps?: boolean; capSize?: PositiveFinite; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; strokeDash?: DashStyle | DashPattern; opacity?: UnitInterval } = {})`, where `PositionChannel = { field?: FieldName; fieldType?: "quantitative" | "nominal" | "ordinal" | "temporal"; scale?: PositionScale }`, `StatisticalIntervalChannel = { field?: FieldName; center?: "mean" | "median"; extent?: "stderr" | "stdev" | "ci" | "iqr"; level?: UnitIntervalExclusive; scale?: PositionScale }`, and `ExplicitIntervalChannel = { center: FieldName; lower: FieldName; upper: FieldName; scale?: PositionScale }`.
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
@@ -74,6 +76,8 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
   sources, orientation ambiguity rejection, point and line source marks, semantic group reuse and color exclusion.
 - ✅ Covered: vertical/horizontal statistical intervals, explicit rows without derivation, caps on/off, cap size,
   stroke/width/dash/opacity, statistical/explicit convergence, deterministic namespacing and complete child trace.
+- ✅ Covered: explicit intervals on a quantitative independent position and shared transformed-scale
+  rematerialization of the main rule and both caps.
 - ✅ Covered: fixed cap span through Canvas and shared-scale rematerialization, six primitive/public
   semantic-graphic-Canvas/pixel pairs, immutable source rows and atomic validation failure.
 - ✅ Covered: executable child trace and interval tests cover custom center/extent/level forwarding; visual variants

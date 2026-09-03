@@ -257,6 +257,49 @@ test("uses explicit interval rows without deriving data or creating disabled cap
   assert.deepEqual(base.semanticSpec.datasets[0].values, rows);
 });
 
+test("supports quantitative positions and keeps caps aligned after a log scale edit", () => {
+  const rows = [
+    { trainingCharts: 100, estimate: 0.42, lower: 0.38, upper: 0.46 },
+    { trainingCharts: 200, estimate: 0.51, lower: 0.47, upper: 0.55 }
+  ];
+  const linear = chart()
+    .createCanvas(canvas)
+    .createData({ id: "raw", values: rows })
+    .createErrorBar({
+      data: "raw",
+      x: {
+        field: "trainingCharts",
+        fieldType: "quantitative",
+        scale: { id: "x", zero: false }
+      },
+      y: {
+        center: "estimate",
+        lower: "lower",
+        upper: "upper",
+        scale: { id: "y", zero: false }
+      },
+      caps: true
+    });
+  const logarithmic = linear.editScale({ id: "x", type: "log", base: 2 });
+
+  assert.equal(linear.semanticSpec.scales.find(scale => scale.id === "x").type, "linear");
+  assert.deepEqual(
+    logarithmic.semanticSpec.layers.map(layer => layer.encoding.x.fieldType),
+    ["quantitative", "quantitative", "quantitative"]
+  );
+  assert.equal(logarithmic.resolvedScales.x.type, "log");
+  assert.equal(logarithmic.resolvedScales.x.base, 2);
+  const main = logarithmic.graphicSpec.objects.errorBar.items;
+  for (const id of ["errorBarLowerCap", "errorBarUpperCap"]) {
+    assert.deepEqual(
+      logarithmic.graphicSpec.objects[id].items.map(item =>
+        (item.properties.x1 + item.properties.x2) / 2
+      ),
+      main.map(item => item.properties.x1)
+    );
+  }
+});
+
 test("forwards one custom appearance and cap size to every owned rule", () => {
   const program = encodedPoints().createErrorBar({
     capSize: 16,

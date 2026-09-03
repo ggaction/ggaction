@@ -1902,8 +1902,10 @@ createErrorBar
    └─ materializeRuleSpan
 ```
 
-Exactly one of x/y is categorical/ordinal/temporal position이고 다른 하나는 quantitative interval이므로
-vertical과 horizontal orientation을 같은 action이 infer한다. Statistical mode는 source row에서
+Exactly one of x/y is identifiable quantitative interval이고 다른 하나는
+quantitative/categorical/ordinal/temporal position이므로 vertical과 horizontal orientation을 같은 action이
+infer한다. 두 channel이 모두 quantitative이면 explicit interval fields나 statistical interval option이 interval
+axis를 명확히 결정해야 한다. Statistical mode는 source row에서
 mean/median interval을 만들고 explicit mode는 existing center/lower/upper field를 사용한다. Existing encoded
 layer에서 data, coordinate, x/y field와 scale을 추론할 때 mark type이 아니라 persisted encoding capability를
 selector predicate로 검사한다. Color는 appearance이고 `encoding.group`만 추가 statistical grouping으로

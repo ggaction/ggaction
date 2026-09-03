@@ -1163,7 +1163,8 @@ createErrorBar({
 
 Create vertical or horizontal statistical or explicit intervals. With one
 eligible encoded layer, the shortest call infers its fields, orientation, data,
-coordinate, and scales.
+coordinate, and scales. Explicit interval fields also allow the independent
+position to be quantitative.
 [Error bars](../api/error-bars.md)
 
 ### `editErrorBar`
