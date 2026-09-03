@@ -1,6 +1,10 @@
 name: Refresh Context7 documentation
 
 on:
+  workflow_call:
+    secrets:
+      CONTEXT7_API_KEY:
+        required: true
   workflow_dispatch:
   release:
     types: [published]

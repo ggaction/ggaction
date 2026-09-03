@@ -12,6 +12,12 @@ const workflowPath = path.join(
   "workflows",
   "context7-refresh.yml"
 );
+const releaseWorkflowPath = path.join(
+  repositoryRoot,
+  ".github",
+  "workflows",
+  "release.yml"
+);
 const packageMetadata = JSON.parse(readFileSync(
   path.join(repositoryRoot, "package.json"),
   "utf8"
@@ -127,9 +133,12 @@ test("Context7 indexes canonical public documentation without duplicate bundles"
   );
 });
 
-test("Context7 refreshes only on releases or an explicit manual dispatch", () => {
+test("Context7 refresh is wired to releases and explicit manual dispatch", () => {
   const workflow = readFileSync(workflowPath, "utf8");
+  const releaseWorkflow = readFileSync(releaseWorkflowPath, "utf8");
 
+  assert.match(workflow, /^\s{2}workflow_call:\s*$/m);
+  assert.match(workflow, /^\s{6}CONTEXT7_API_KEY:\s*\n\s{8}required: true\s*$/m);
   assert.match(workflow, /^\s{2}workflow_dispatch:\s*$/m);
   assert.match(workflow, /^\s{2}release:\s*$/m);
   assert.match(workflow, /^\s{4}types: \[published\]\s*$/m);
@@ -138,4 +147,12 @@ test("Context7 refreshes only on releases or an explicit manual dispatch", () =>
   assert.match(workflow, /https:\/\/context7\.com\/api\/v1\/refresh/);
   assert.match(workflow, /--fail-with-body --silent --show-error/);
   assert.match(workflow, /"libraryName":"\/\$\{\{ github\.repository \}\}"/);
+  assert.match(
+    releaseWorkflow,
+    /^\s{2}context7-refresh:\s*\n\s{4}needs: publish\s*\n\s{4}uses: \.\/\.github\/workflows\/context7-refresh\.yml\s*$/m
+  );
+  assert.match(
+    releaseWorkflow,
+    /^\s{6}CONTEXT7_API_KEY: \$\{\{ secrets\.CONTEXT7_API_KEY \}\}\s*$/m
+  );
 });
