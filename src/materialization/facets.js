@@ -175,7 +175,9 @@ export function resolveFacetProgramLayout(program, preparedLegend) {
     sharedLegend: spec.facet.guides.legend === "shared",
     ...(preparedLegend === undefined ? {} : {
       sharedLegendGap: preparedLegend.reservation.gap,
-      sharedLegendWidth: preparedLegend.reservation.width
+      sharedLegendWidth: preparedLegend.reservation.width,
+      sharedLegendHeight: preparedLegend.reservation.height,
+      sharedLegendPosition: preparedLegend.reservation.position
     })
   });
   const plots = spec.children.map(id => ({

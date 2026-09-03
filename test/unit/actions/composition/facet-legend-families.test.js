@@ -2,6 +2,9 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import { chart } from "../../../../src/index.js";
+import { resolveConcreteGraphicBounds } from
+  "../../../../src/grammar/schemas/graphicBounds.js";
+import { resolveGraphicBounds } from "../../../../src/layout/canvas.js";
 import { namespaceGraphicId } from
   "../../../../src/materialization/compositionSnapshot.js";
 
@@ -69,6 +72,28 @@ const families = Object.freeze([
   }
 ]);
 
+function facetPlotUnion(program) {
+  const bounds = program.compositionSpec.children.map(id => {
+    const child = resolveGraphicBounds(program.children[id]);
+    const canvas = program.graphicSpec.objects[namespaceGraphicId(
+      `${program.compositionSpec.id}-${id}`,
+      "canvas"
+    )].properties;
+    return {
+      left: canvas.x + child.x,
+      right: canvas.x + child.x + child.width,
+      top: canvas.y + child.y,
+      bottom: canvas.y + child.y + child.height
+    };
+  });
+  return {
+    left: Math.min(...bounds.map(value => value.left)),
+    right: Math.max(...bounds.map(value => value.right)),
+    top: Math.min(...bounds.map(value => value.top)),
+    bottom: Math.max(...bounds.map(value => value.bottom))
+  };
+}
+
 test("promotes every compatible concrete legend family to one parent owner", () => {
   for (const family of families) {
     const source = family.build(pointBase());
@@ -128,4 +153,86 @@ test("rejects a shared legend when independent child scales are incompatible", (
   );
   assert.equal(source.compositionSpec, undefined);
   assert.ok(source.graphicSpec.objects.colorLegendSymbols);
+});
+
+test("preserves the configured shared legend edge and horizontal alignment", () => {
+  const cases = [
+    { position: "right", align: "center" },
+    { position: "left", align: "center" },
+    { position: "top", align: "left" },
+    { position: "bottom", align: "right" }
+  ];
+  for (const { position, align } of cases) {
+    const source = pointBase()
+      .editCanvas({
+        width: 700,
+        height: 500,
+        margin: { top: 140, right: 220, bottom: 140, left: 220 }
+      })
+      .encodeColor({ field: "category" })
+      .createLegend({
+        channels: ["color"],
+        position,
+        align,
+        direction: ["right", "left"].includes(position)
+          ? "vertical"
+          : "horizontal"
+      });
+    const faceted = source.facet({
+      field: "group",
+      columns: 1,
+      guides: { legend: "shared" }
+    });
+    const owner = resolveConcreteGraphicBounds(
+      faceted.graphicSpec,
+      "facet-shared-legend"
+    );
+    const plot = facetPlotUnion(faceted);
+
+    assert.equal(faceted.guideConfigs.legend.color.position, position);
+    assert.equal(faceted.guideConfigs.legend.color.align, align);
+    if (position === "right") assert.ok(owner.left > plot.right);
+    if (position === "left") assert.ok(owner.right < plot.left);
+    if (position === "top") {
+      assert.ok(owner.bottom < plot.top);
+      assert.equal(owner.left, plot.left);
+    }
+    if (position === "bottom") {
+      assert.ok(owner.top > plot.bottom);
+      assert.equal(owner.right, plot.right);
+    }
+    assert.equal(
+      faceted.graphicSpec.objects.canvas.properties.width,
+      ["top", "bottom"].includes(position) ? 700 : 850
+    );
+  }
+});
+
+test("keeps a bottom shared legend below the plot after facet layout edits", () => {
+  const source = pointBase()
+    .editCanvas({
+      height: 360,
+      margin: { top: 60, right: 100, bottom: 110, left: 60 }
+    })
+    .encodeColor({ field: "category" })
+    .createLegend({
+      channels: ["color"],
+      position: "bottom",
+      direction: "horizontal"
+    });
+  const faceted = source.facet({
+    field: "group",
+    columns: 1,
+    guides: { legend: "shared" }
+  });
+  const edited = faceted.editCompositionLayout({ gap: 24, padding: 8 });
+  const owner = resolveConcreteGraphicBounds(
+    edited.graphicSpec,
+    "facet-shared-legend"
+  );
+
+  assert.equal(edited.guideConfigs.legend.color.position, "bottom");
+  assert.ok(owner.top > facetPlotUnion(edited).bottom);
+  assert.equal(faceted.graphicSpec.objects.canvas.properties.width, 500);
+  assert.equal(edited.graphicSpec.objects.canvas.properties.width, 516);
 });

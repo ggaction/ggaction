@@ -1116,8 +1116,8 @@
         "replace-one-stable-slot",
         "state-trace-and-action-scope"
       ],
-      "bytes": 10820,
-      "sha256": "ce2f46e6f7ec50a408355e34dd645059afcb7de07e01e82ea037ee996a3aa6bd"
+      "bytes": 12038,
+      "sha256": "88cc1745b7c712ada481482c3d15bb24e4856667970c2822f613840d26f97aaa"
     },
     {
       "order": 71,
@@ -1807,8 +1807,8 @@
         "editbin2ddata",
         "related"
       ],
-      "bytes": 8533,
-      "sha256": "6aaa725034a2d5819cf84b395f1a44883a57a310f395a7010081ba7bda21ac66"
+      "bytes": 8753,
+      "sha256": "7c0f0861b7e4e65ab337cef6149f71b8408d1fe9c998d9ca61fa7fb51057a803"
     },
     {
       "order": 115,

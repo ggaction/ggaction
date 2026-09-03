@@ -239,7 +239,10 @@ ancestor. Values preserve source first appearance; scale policies can be
 `"shared"` or `"independent"` by supported channel, and layered regression
 data and other supported statistical descendants are recomputed per cell.
 `guides: { axes: "outer" }` keeps axes only on occupied outer cells, while
-`guides: { legend: "shared" }` promotes one compatible parent-owned legend.
+`guides: { legend: "shared" }` promotes one compatible parent-owned legend at
+the child legend's configured `left`, `right`, `top`, or `bottom` edge. Top and
+bottom promotion also preserves the child legend's horizontal alignment;
+author those options with `createLegend` before calling `facet`.
 See [Program composition](../api/composition.md#repeat-the-current-chart-by-a-field).
 
 ### `editFacetHeaders`

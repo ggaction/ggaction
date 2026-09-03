@@ -17,7 +17,10 @@
   axes on the leftmost occupied cell in each row, including an incomplete final row.
 - `guides.legend` is `false` by default. `"shared"` promotes one compatible categorical, gradient, discretized-color,
   size, or opacity recipe to a parent-owned concrete guide. Independent or otherwise incompatible child guide
-  definitions are rejected before a facet result is returned.
+  definitions are rejected before a facet result is returned. Promotion preserves the concrete child legend's
+  configured `"left" | "right" | "top" | "bottom"` edge and the horizontal alignment of top/bottom legends. The
+  parent reserves width only for a side legend and height only for a horizontal legend. An inferred legacy
+  categorical legend defaults to `"right"`; facet itself has no separate legend-position option.
 - The result is a composition parent whose `children` retain immutable filtered programs and whose `graphicSpec` contains the complete namespaced nested-Canvas snapshot.
 - Canonical title order is `.facet(...).createTitle(...)`. A valid title authored before `facet` is promoted once to the parent.
 - Parent title alignment uses the translated child-plot union. Each facet header is centered on its own translated
@@ -42,7 +45,8 @@
   explicit-domain precedence, shared ordinal order, shared/independent histogram policy, parent categorical legend,
   parent gradient/discretized/size/opacity legends, occupied-edge outer axes, title promotion, child-plot-aligned
   parent title and headers, empty-string header display, renderer isolation, layout rematerialization, immutable
-  base/children, incompatible guide, invalid channel, dependency, and ambiguous-source rejection.
+  base/children, four-edge shared-legend placement and layout-edit preservation, incompatible guide, invalid
+  channel, dependency, and ambiguous-source rejection.
 - Evidence: `test/unit/grammar/facets.test.js`, `test/unit/grammar/facet-dependencies.test.js`,
   `test/unit/grammar/facet-scales.test.js`, `test/unit/actions/composition/facet-derivation.test.js`,
   `test/unit/actions/composition/facet.test.js`, `test/unit/actions/composition/facet-derived-families.test.js`,
