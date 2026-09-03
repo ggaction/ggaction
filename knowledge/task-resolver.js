@@ -515,9 +515,8 @@ function closeRuntimeDependencies(entries) {
     expandChartConstraint(constraint, () => ({
       after: [
         chartDependency("encodeTheta", {
-          field: `"category"`,
-          fieldType: `"nominal"`,
-          aggregate: `"count"`
+          field: `"value"`,
+          fieldType: `"quantitative"`
         }),
         chartDependency("encodeColor", { field: `"category"` })
       ]
@@ -852,7 +851,11 @@ function closeRuntimeDependencies(entries) {
     ) {
       options.fieldType = `"quantitative"`;
     }
-    if (entry.provider.name === "encodeTheta" && currentMarkKind === "arc") {
+    if (
+      entry.provider.name === "encodeTheta" &&
+      currentMarkKind === "arc" &&
+      entry.provider.baseOptions?.fieldType === undefined
+    ) {
       options.fieldType = `"ordinal"`;
     }
     if (currentMarkKind === "bar" && entry.provider.name === "encodeX") {

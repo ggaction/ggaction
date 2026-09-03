@@ -61,7 +61,7 @@ remain available for custom layering and editing.
 | Capability | Polar points | Polar line / radar | Arc / donut / rose / radial bar |
 | --- | --- | --- | --- |
 | Semantic mark | point | line | arc |
-| Position | theta/radius | theta/radius | count theta, or theta/radius |
+| Position | theta/radius | theta/radius | direct quantitative theta, categorical count/weighted-sum theta, or theta/radius |
 | Nominal color | point fill | series stroke | sector fill, including overlay grain |
 | Stroke dash | — | nominal or constant; 4 named styles | — |
 | Appearance | radius, opacity, shape | stroke width, opacity, open/closed | inner radius, angular padding, fill, outline, opacity |

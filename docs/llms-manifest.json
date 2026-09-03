@@ -137,6 +137,7 @@
       "source": "tutorials/polar-arcs.md",
       "headings": [
         "polar-arc-tutorial",
+        "map-values-directly-into-a-pie",
         "count-a-category-into-a-donut",
         "complete-program",
         "sum-a-field-into-weighted-sectors",
@@ -145,8 +146,8 @@
         "editing-an-arc",
         "related"
       ],
-      "bytes": 6076,
-      "sha256": "0d9aa3def4e31ba56b4eea046485bae850c927634ff4b9ade6475f350c0bc70e"
+      "bytes": 6930,
+      "sha256": "f3758a2aca3611efaa4749c4f78839af7e689d294aa0cc3c157b64b38e25bea7"
     },
     {
       "order": 10,
@@ -854,8 +855,8 @@
         "editarcmark-target-innerradius-padangle-fill-opacity-stroke-strokewidth",
         "related"
       ],
-      "bytes": 6676,
-      "sha256": "b9e12e29a00c9579b9d81283f0794cb2d010812cfd0947a021a7e0f77f442929"
+      "bytes": 6778,
+      "sha256": "e9ef17179b3c8096d69b19ace2cdf2e43705b4628a135382dd554be3464e5233"
     },
     {
       "order": 56,
@@ -938,8 +939,8 @@
         "errors-and-limitations",
         "related"
       ],
-      "bytes": 9584,
-      "sha256": "7c5ac73ec7f31e19e02873378a703055443552c7710847a5a95a28e899b19b89"
+      "bytes": 9632,
+      "sha256": "5bc5a15cca051504ad7770c731cdab447614071b748cf338f363a8a70ab5c63a"
     },
     {
       "order": 61,
@@ -1130,8 +1131,8 @@
         "rule-endpoints",
         "related"
       ],
-      "bytes": 7447,
-      "sha256": "5e3d8111fd126c8ff9f964d56523e98d37804d77590b0a591479229687ab588e"
+      "bytes": 7699,
+      "sha256": "d52d3c1699f4791b66b96823471e35ec4abd55d1530501a3f175c56f579391ae"
     },
     {
       "order": 72,
@@ -1755,8 +1756,8 @@
         "selection-appearance-and-text",
         "coordinates-and-composition"
       ],
-      "bytes": 11700,
-      "sha256": "b6062ff07c170c78b689f3fdf4c6b692a212f7cc02cae7e1285048e6ca43a5de"
+      "bytes": 11752,
+      "sha256": "79bbbe1d3bec2c9a7779506467f10d46c07f1a18060cad912301d96c512a8980"
     },
     {
       "order": 113,
@@ -1839,8 +1840,8 @@
         "position-capability-matrix",
         "related"
       ],
-      "bytes": 8033,
-      "sha256": "7663ccc5e9ec29ddadd40a9f2d3ef45549fe677ca8ef5625e411b96bb8356da6"
+      "bytes": 8138,
+      "sha256": "f37ab5898ee822db72632d49a28c816eb8f34ef74289dba8ceaef8629f734ef5"
     },
     {
       "order": 116,
@@ -1887,8 +1888,8 @@
         "encodebarwidth",
         "related"
       ],
-      "bytes": 14183,
-      "sha256": "e922f45668a6dc82c9ef15fc212c2070288c6d13aaded7420bd7663c5ad32d1a"
+      "bytes": 14365,
+      "sha256": "cfa41ddd9a7b722cecdcb53052c8109e46bdaf5188d701ec292d1bce9b0790b5"
     },
     {
       "order": 117,

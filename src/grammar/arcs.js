@@ -17,10 +17,28 @@ function requireArcLayer(layer) {
     throw new Error("Arc derivation requires a semantic arc mark.");
   }
   const theta = layer.encoding?.theta;
-  if (theta === undefined || !["nominal", "ordinal"].includes(theta.fieldType)) {
-    throw new Error(`Arc mark "${layer.id}" requires categorical theta.`);
+  if (
+    theta === undefined ||
+    !["quantitative", "nominal", "ordinal"].includes(theta.fieldType)
+  ) {
+    throw new Error(
+      `Arc mark "${layer.id}" requires quantitative or categorical theta.`
+    );
   }
   return theta;
+}
+
+function requireContinuousThetaScale(scale, label) {
+  if (
+    scale?.type !== "linear" ||
+    !Array.isArray(scale.range) ||
+    scale.range.length !== 2 ||
+    !scale.range.every(Number.isFinite) ||
+    scale.range[0] === scale.range[1]
+  ) {
+    throw new Error(`${label} requires a resolved linear scale.`);
+  }
+  return scale;
 }
 
 function requireBandScale(scale, label) {
@@ -45,24 +63,90 @@ function colorValues(rows, encoding) {
     : readNominalField(rows, encoding.field);
 }
 
-export function readArcThetaWeights(rows, field, layerId = "arc") {
-  if (!Array.isArray(rows)) throw new TypeError("Arc theta weights require rows.");
+function readNonNegativeArcThetaValues(rows, field, layerId, role) {
+  if (!Array.isArray(rows)) throw new TypeError(`Arc theta ${role}s require rows.`);
   if (typeof field !== "string" || field.length === 0) {
-    throw new TypeError("Arc theta weight must be a non-empty string.");
+    throw new TypeError(`Arc theta ${role} must be a non-empty string.`);
   }
-  const weights = rows.map((row, index) => {
+  const values = rows.map((row, index) => {
     const value = row?.[field];
     if (!Number.isFinite(value) || value < 0) {
       throw new TypeError(
-        `Arc theta weight field "${field}" must contain non-negative finite numbers at row ${index}.`
+        `Arc theta ${role} field "${field}" must contain non-negative finite numbers at row ${index}.`
       );
     }
     return value;
   });
-  if (weights.every(value => value === 0)) {
-    throw new Error(`Arc mark "${layerId}" theta weights must have a positive total.`);
+  if (values.every(value => value === 0)) {
+    throw new Error(`Arc mark "${layerId}" theta ${role}s must have a positive total.`);
   }
-  return cloneAndFreeze(weights);
+  return cloneAndFreeze(values);
+}
+
+export function readArcThetaWeights(rows, field, layerId = "arc") {
+  return readNonNegativeArcThetaValues(rows, field, layerId, "weight");
+}
+
+export function readArcThetaValues(rows, field, layerId = "arc") {
+  return readNonNegativeArcThetaValues(rows, field, layerId, "value");
+}
+
+function resolveProportionalRanges(values, range, labelAt) {
+  const total = values.reduce((sum, value) => sum + value, 0);
+  const normalizedTotal = Number.isFinite(total)
+    ? undefined
+    : normalizedFiniteSum(values, "Arc theta values");
+  if (total === 0 || normalizedTotal?.total <= 0) {
+    throw new Error("Arc theta values must have a positive total.");
+  }
+  const span = range[1] - range[0];
+  let cursor = range[0];
+  let cumulative = 0;
+  let cumulativeCorrection = 0;
+  return values.map((value, index) => {
+    const normalizedValue = normalizedTotal === undefined
+      ? value
+      : value / normalizedTotal.scale;
+    const next = cumulative + normalizedValue;
+    if (normalizedTotal !== undefined) {
+      cumulativeCorrection += Math.abs(cumulative) >= Math.abs(normalizedValue)
+        ? cumulative - next + normalizedValue
+        : normalizedValue - next + cumulative;
+    }
+    cumulative = next;
+    const directEnd = cursor + value / total * span;
+    const endTheta = index === values.length - 1
+      ? range[1]
+      : normalizedTotal === undefined && Number.isFinite(directEnd)
+        ? directEnd
+        : interpolateNumber(
+            range[0],
+            range[1],
+            (cumulative + cumulativeCorrection) /
+              (normalizedTotal?.total ?? total)
+          );
+    if (!Number.isFinite(endTheta) || endTheta === cursor) {
+      throw new RangeError(
+        `Arc theta ${labelAt(index)} cannot resolve a distinct finite sector.`
+      );
+    }
+    const result = { startTheta: cursor, endTheta };
+    cursor = endTheta;
+    return result;
+  });
+}
+
+function resolveProportionalRadii(layer, frame, innerRadiusRatio) {
+  if (!Number.isFinite(frame?.availableRadius) || frame.availableRadius < 0) {
+    throw new RangeError(`Arc mark "${layer.id}" requires a finite available radius.`);
+  }
+  return {
+    innerRadius: requireFiniteResult(
+      frame.availableRadius * innerRadiusRatio,
+      `Arc mark "${layer.id}" inner radius`
+    ),
+    outerRadius: frame.availableRadius
+  };
 }
 
 function proportionalSectors(rows, layer, thetaScale, frame, innerRadiusRatio) {
@@ -87,14 +171,7 @@ function proportionalSectors(rows, layer, thetaScale, frame, innerRadiusRatio) {
       weight: weights[index]
     });
   }
-  if (!Number.isFinite(frame?.availableRadius) || frame.availableRadius < 0) {
-    throw new RangeError(`Arc mark "${layer.id}" requires a finite available radius.`);
-  }
-  const innerRadius = requireFiniteResult(
-    frame.availableRadius * innerRadiusRatio,
-    `Arc mark "${layer.id}" inner radius`
-  );
-  let cursor = thetaScale.range[0];
+  const radii = resolveProportionalRadii(layer, frame, innerRadiusRatio);
   const sectors = [];
   const positiveValues = thetaScale.domain.filter(value =>
     groups.get(value).some(item => item.weight > 0)
@@ -103,48 +180,15 @@ function proportionalSectors(rows, layer, thetaScale, frame, innerRadiusRatio) {
     groups.get(value).map(item => item.weight),
     `Arc theta group "${String(value)}" aggregate`
   ));
-  const total = aggregateValues.reduce((sum, value) => sum + value, 0);
-  const normalizedTotal = Number.isFinite(total)
-    ? undefined
-    : normalizedFiniteSum(
-        aggregateValues,
-        `Arc mark "${layer.id}" theta aggregates`
-      );
-  if (total === 0 || normalizedTotal?.total <= 0) {
-    throw new Error(`Arc mark "${layer.id}" has no positive theta weight.`);
-  }
-  const span = thetaScale.range[1] - thetaScale.range[0];
-  let cumulative = 0;
-  let cumulativeCorrection = 0;
+  const ranges = resolveProportionalRanges(
+    aggregateValues,
+    thetaScale.range,
+    index => `group "${String(positiveValues[index])}"`
+  );
   for (const [positiveIndex, value] of positiveValues.entries()) {
     const group = groups.get(value);
     const aggregateValue = aggregateValues[positiveIndex];
-    const normalizedValue = normalizedTotal === undefined
-      ? aggregateValue
-      : aggregateValue / normalizedTotal.scale;
-    const next = cumulative + normalizedValue;
-    if (normalizedTotal !== undefined) {
-      cumulativeCorrection += Math.abs(cumulative) >= Math.abs(normalizedValue)
-        ? cumulative - next + normalizedValue
-        : normalizedValue - next + cumulative;
-    }
-    cumulative = next;
-    const directEnd = cursor + aggregateValue / total * span;
-    const endTheta = positiveIndex === positiveValues.length - 1
-      ? thetaScale.range[1]
-      : normalizedTotal === undefined && Number.isFinite(directEnd)
-        ? directEnd
-        : interpolateNumber(
-            thetaScale.range[0],
-            thetaScale.range[1],
-            (cumulative + cumulativeCorrection) /
-              (normalizedTotal?.total ?? total)
-          );
-    if (!Number.isFinite(endTheta) || endTheta === cursor) {
-      throw new RangeError(
-        `Arc theta group "${String(value)}" cannot resolve a distinct finite sector.`
-      );
-    }
+    const { startTheta, endTheta } = ranges[positiveIndex];
     const distinctColors = [...new Set(group.map(item => item.color))];
     if (distinctColors.length > 1) {
       throw new Error(
@@ -157,15 +201,44 @@ function proportionalSectors(rows, layer, thetaScale, frame, innerRadiusRatio) {
       count: group.length,
       aggregateValue,
       color: distinctColors[0],
-      startTheta: cursor,
+      startTheta,
       endTheta,
-      innerRadius,
-      outerRadius: frame.availableRadius,
+      ...radii,
       sourceIndices: group.map(item => item.sourceIndex)
     });
-    cursor = endTheta;
   }
   return sectors;
+}
+
+function quantitativeSectors(rows, layer, thetaScale, frame, innerRadiusRatio) {
+  const theta = layer.encoding.theta;
+  if (layer.encoding?.radius !== undefined) {
+    throw new Error(
+      `Arc mark "${layer.id}" cannot combine quantitative theta with radius.`
+    );
+  }
+  const values = readArcThetaValues(rows, theta.field, layer.id);
+  const colors = colorValues(rows, layer.encoding?.color);
+  const positiveIndices = values
+    .map((value, index) => value > 0 ? index : undefined)
+    .filter(index => index !== undefined);
+  const positiveValues = positiveIndices.map(index => values[index]);
+  const ranges = resolveProportionalRanges(
+    positiveValues,
+    thetaScale.range,
+    index => `row ${positiveIndices[index]}`
+  );
+  const radii = resolveProportionalRadii(layer, frame, innerRadiusRatio);
+  return positiveIndices.map((sourceIndex, index) => ({
+    key: `${String(values[sourceIndex])}:${sourceIndex}`,
+    theta: values[sourceIndex],
+    count: 1,
+    aggregateValue: values[sourceIndex],
+    color: colors[sourceIndex],
+    ...ranges[index],
+    ...radii,
+    sourceIndices: [sourceIndex]
+  }));
 }
 
 function radialSectors(rows, layer, thetaScale, radiusScale) {
@@ -223,7 +296,6 @@ export function deriveArcSectors(rows, layer, {
 } = {}) {
   if (!Array.isArray(rows)) throw new TypeError("Arc derivation requires rows.");
   const theta = requireArcLayer(layer);
-  requireBandScale(thetaScale, `Arc mark "${layer.id}" theta`);
   if (
     !Number.isFinite(innerRadiusRatio) ||
     innerRadiusRatio < 0 ||
@@ -231,8 +303,27 @@ export function deriveArcSectors(rows, layer, {
   ) {
     throw new RangeError("Arc innerRadius must be from 0 (inclusive) to 1 (exclusive).");
   }
-  const sectors = ["count", "sum"].includes(theta.aggregate)
-    ? proportionalSectors(rows, layer, thetaScale, frame, innerRadiusRatio)
-    : radialSectors(rows, layer, thetaScale, radiusScale);
+  const sectors = theta.fieldType === "quantitative"
+    ? quantitativeSectors(
+        rows,
+        layer,
+        requireContinuousThetaScale(thetaScale, `Arc mark "${layer.id}" theta`),
+        frame,
+        innerRadiusRatio
+      )
+    : ["count", "sum"].includes(theta.aggregate)
+      ? proportionalSectors(
+          rows,
+          layer,
+          requireBandScale(thetaScale, `Arc mark "${layer.id}" theta`),
+          frame,
+          innerRadiusRatio
+        )
+      : radialSectors(
+          rows,
+          layer,
+          requireBandScale(thetaScale, `Arc mark "${layer.id}" theta`),
+          radiusScale
+        );
   return cloneAndFreeze({ sectors });
 }

@@ -108,9 +108,17 @@ export function isIntentionallyEmptyArea(program, layer) {
 export function canMaterializeArc(_program, layer) {
   if (
     layer.mark?.type !== "arc" ||
-    layer.encoding?.theta?.scale === undefined ||
-    !["nominal", "ordinal"].includes(layer.encoding.theta.fieldType)
+    layer.encoding?.theta?.scale === undefined
   ) {
+    return false;
+  }
+  if (layer.encoding.theta.fieldType === "quantitative") {
+    return (
+      layer.encoding.theta.aggregate === undefined &&
+      layer.encoding?.radius === undefined
+    );
+  }
+  if (!["nominal", "ordinal"].includes(layer.encoding.theta.fieldType)) {
     return false;
   }
   if (["count", "sum"].includes(layer.encoding.theta.aggregate)) {

@@ -2,7 +2,7 @@ import { validateAggregate } from "../../../../grammar/aggregate.js";
 import { validateNonEmptyString } from "../../../../core/validation.js";
 import { emptyPositionPolicy } from "./common.js";
 
-export function resolveArcPositionPolicy({ channel, args, fieldType }) {
+export function resolveArcPositionPolicy({ channel, args, fieldType, layer }) {
   if (args.bin !== undefined) {
     throw new Error(`Arc ${channel} encoding does not support bin.`);
   }
@@ -10,6 +10,11 @@ export function resolveArcPositionPolicy({ channel, args, fieldType }) {
     throw new Error(`Arc ${channel} encoding does not support stack.`);
   }
   if (channel === "radius") {
+    if (layer.encoding?.theta?.fieldType === "quantitative") {
+      throw new Error(
+        "Arc radius encoding cannot be combined with quantitative theta."
+      );
+    }
     if (args.aggregate !== undefined) {
       throw new Error("Arc radius encoding does not support aggregate.");
     }
@@ -18,8 +23,24 @@ export function resolveArcPositionPolicy({ channel, args, fieldType }) {
     }
     return emptyPositionPolicy();
   }
+  if (fieldType === "quantitative") {
+    if (layer.encoding?.radius !== undefined) {
+      throw new Error(
+        "Quantitative arc theta cannot be combined with radius encoding."
+      );
+    }
+    if (args.aggregate !== undefined) {
+      throw new Error("Quantitative arc theta does not support aggregate.");
+    }
+    if (args.weight !== undefined) {
+      throw new Error("Quantitative arc theta does not support weight.");
+    }
+    return emptyPositionPolicy();
+  }
   if (!["ordinal", "nominal"].includes(fieldType)) {
-    throw new Error("Arc theta encoding requires an ordinal or nominal field.");
+    throw new Error(
+      "Arc theta encoding requires a quantitative, ordinal, or nominal field."
+    );
   }
   if (args.aggregate === undefined) {
     if (args.weight !== undefined) {

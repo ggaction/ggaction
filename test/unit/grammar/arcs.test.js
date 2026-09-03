@@ -3,6 +3,7 @@ import test from "node:test";
 
 import {
   deriveArcSectors,
+  readArcThetaValues,
   readArcThetaWeights
 } from "../../../src/grammar/arcs.js";
 
@@ -71,6 +72,74 @@ test("derives repeated and fractional weighted theta sectors without expanding r
   assert.equal(rows.length, 4);
 });
 
+test("derives one proportional sector per positive quantitative theta row", () => {
+  const rows = Object.freeze([
+    Object.freeze({ category: "A", value: 2 }),
+    Object.freeze({ category: "A", value: 1 }),
+    Object.freeze({ category: "B", value: 3 }),
+    Object.freeze({ category: "B", value: 0 })
+  ]);
+  const layer = {
+    id: "arc",
+    mark: { type: "arc" },
+    encoding: {
+      theta: {
+        field: "value",
+        fieldType: "quantitative",
+        scale: "theta"
+      },
+      color: {
+        field: "category",
+        fieldType: "nominal",
+        scale: "color"
+      }
+    }
+  };
+  const derived = deriveArcSectors(rows, layer, {
+    thetaScale: { type: "linear", domain: [0, 3], range: [0, 360] },
+    frame,
+    innerRadiusRatio: 0.25
+  });
+
+  assert.deepEqual(derived.sectors.map(sector => ({
+    theta: sector.theta,
+    color: sector.color,
+    startTheta: sector.startTheta,
+    endTheta: sector.endTheta,
+    innerRadius: sector.innerRadius,
+    outerRadius: sector.outerRadius,
+    sourceIndices: sector.sourceIndices
+  })), [
+    {
+      theta: 2,
+      color: "A",
+      startTheta: 0,
+      endTheta: 120,
+      innerRadius: 20,
+      outerRadius: 80,
+      sourceIndices: [0]
+    },
+    {
+      theta: 1,
+      color: "A",
+      startTheta: 120,
+      endTheta: 180,
+      innerRadius: 20,
+      outerRadius: 80,
+      sourceIndices: [1]
+    },
+    {
+      theta: 3,
+      color: "B",
+      startTheta: 180,
+      endTheta: 360,
+      innerRadius: 20,
+      outerRadius: 80,
+      sourceIndices: [2]
+    }
+  ]);
+});
+
 test("keeps proportional sectors finite across the full numeric theta range", () => {
   const range = [-Number.MAX_VALUE, Number.MAX_VALUE];
   const scale = {
@@ -119,6 +188,19 @@ test("rejects invalid weighted theta values and a zero total", () => {
   }
   assert.throws(
     () => readArcThetaWeights([{ weight: 0 }, { weight: 0 }], "weight", "arc"),
+    /positive total/
+  );
+});
+
+test("rejects invalid direct quantitative theta values and a zero total", () => {
+  for (const value of [-1, Infinity, NaN, undefined, "2"]) {
+    assert.throws(
+      () => readArcThetaValues([{ value }], "value", "arc"),
+      /non-negative finite numbers at row 0/
+    );
+  }
+  assert.throws(
+    () => readArcThetaValues([{ value: 0 }, { value: 0 }], "value", "arc"),
     /positive total/
   );
 });

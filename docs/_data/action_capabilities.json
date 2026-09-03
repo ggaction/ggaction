@@ -44,9 +44,9 @@
       "support": {
         "point": ["quantitative", "temporal", "ordinal", "nominal"],
         "line": ["quantitative", "temporal", "ordinal", "nominal"],
-        "arc": ["ordinal", "nominal"]
+        "arc": ["quantitative", "ordinal", "nominal"]
       },
-      "modes": "arc accepts aggregate: count or weighted sum for proportional sectors"
+      "modes": "arc maps direct quantitative values, category counts, or category-weighted sums to proportional sectors"
     },
     {
       "action": "encodeR",

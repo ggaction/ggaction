@@ -436,9 +436,10 @@ independent assembly and does not inherit position encodings.
 - The first inferred ID is `"arc"`; data follows the shared current/explicit dataset contract.
 - `innerRadius` is a ratio in `[0, 1)` of the available Polar radius. `padAngle` is a non-negative degree value.
 - Default appearance is theme fill, opacity `1`, white stroke, and stroke width `1`.
-- Effect: creates semantic mark type `arc` and an empty path collection. Count theta alone completes a pie/donut;
-  categorical theta plus quantitative radius completes equal-band radial sectors. Concrete output contains only closed
-  `M/L/C/Z` commands and appearance properties.
+- Effect: creates semantic mark type `arc` and an empty path collection. Direct quantitative theta, categorical count,
+  or categorical weighted-sum theta completes a proportional pie/donut; categorical theta plus quantitative radius
+  completes equal-band radial sectors. Concrete output contains only closed `M/L/C/Z` commands and appearance
+  properties.
 - Multiple rows in one theta band use stable larger-first overlay order. A mapped outer radius equal to the inner
   baseline is omitted. Automatic radius range starts at `innerRadius * availableRadius`.
 
@@ -450,7 +451,8 @@ independent assembly and does not inherit position encodings.
 ### Value coverage — `createArcMark`
 
 - ✅ Covered: inferred/explicit ID and data, empty initial path collection, duplicate role ambiguity and immutable trace.
-- ✅ Covered: count donut, categorical radial sectors, larger-first overlay, zero-radius omission and encoding order.
+- ✅ Covered: direct quantitative and count donuts, categorical radial sectors, larger-first overlay, zero-radius
+  omission and encoding order.
 - ✅ Covered: representative inner radius, pad, fill/opacity/stroke/width defaults and invalid geometry.
 - Evidence: `test/unit/actions/marks/create-arc-mark.test.js`, `test/unit/actions/marks/arc-mark.test.js`, and
   `test/unit/grammar/arcs.test.js`.

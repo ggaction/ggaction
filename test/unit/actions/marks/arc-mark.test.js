@@ -84,6 +84,51 @@ test("materializes weighted theta and removes stale weight when reassigned to co
   );
 });
 
+test("materializes direct quantitative theta as one proportional sector per row", () => {
+  const program = base({ innerRadius: 0.25 })
+    .encodeTheta({ field: "value" })
+    .encodeColor({ field: "category" });
+
+  assert.deepEqual(program.semanticSpec.layers[0].encoding.theta, {
+    field: "value",
+    fieldType: "quantitative",
+    scale: "theta"
+  });
+  assert.equal(program.graphicSpec.objects.arc.items.length, 3);
+  assert.deepEqual(program.graphicSpec.objects.arc.items.map(
+    item => item.properties.fill
+  ), ["#4c78a8", "#4c78a8", "#f58518"]);
+  assert.equal(
+    program.graphicSpec.objects.arc.items.every(
+      item => item.properties.commands.at(-1).op === "Z"
+    ),
+    true
+  );
+});
+
+test("removes categorical theta aggregation when explicitly reassigned to direct values", () => {
+  const initial = base()
+    .encodeTheta({
+      field: "category",
+      aggregate: "sum",
+      weight: "value"
+    });
+  const reassigned = initial.encodeTheta({
+    field: "value",
+    fieldType: "quantitative",
+    scale: { id: "theta-values" }
+  });
+
+  assert.deepEqual(reassigned.semanticSpec.layers[0].encoding.theta, {
+    field: "value",
+    fieldType: "quantitative",
+    scale: "theta-values"
+  });
+  assert.equal(reassigned.graphicSpec.objects.arc.items.length, 3);
+  assert.equal(initial.semanticSpec.layers[0].encoding.theta.aggregate, "sum");
+  assert.equal(initial.semanticSpec.layers[0].encoding.theta.weight, "value");
+});
+
 test("keeps incomplete arc collections empty and converges across encoding order", () => {
   const thetaOnly = base().encodeTheta({
     field: "category",
@@ -181,8 +226,16 @@ test("rejects incompatible arc position and appearance contracts atomically", ()
   const before = JSON.stringify(program);
 
   assert.throws(
-    () => program.encodeTheta({ field: "value" }),
-    /does not support field type|requires an ordinal or nominal/
+    () => program.encodeTheta({
+      field: "value",
+      fieldType: "quantitative",
+      aggregate: "sum"
+    }),
+    /Quantitative arc theta does not support aggregate/
+  );
+  assert.throws(
+    () => program.encodeTheta({ field: "value", weight: "value" }),
+    /Quantitative arc theta does not support weight/
   );
   assert.throws(
     () => program.encodeTheta({
@@ -206,6 +259,18 @@ test("rejects incompatible arc position and appearance contracts atomically", ()
       weight: "value"
     }),
     /weight requires aggregate: "sum"/
+  );
+  assert.throws(
+    () => base()
+      .encodeTheta({ field: "value" })
+      .encodeR({ field: "value" }),
+    /cannot be combined with quantitative theta/
+  );
+  assert.throws(
+    () => base()
+      .encodeR({ field: "value" })
+      .encodeTheta({ field: "value" }),
+    /cannot be combined with radius encoding/
   );
   assert.throws(
     () => radial().editArcMark({ fill: "red" }),
@@ -246,6 +311,31 @@ test("rejects invalid weighted theta rows before state or trace changes", () => 
       aggregate: "sum",
       weight: "weight"
     }),
+    /positive total/
+  );
+});
+
+test("rejects invalid direct theta rows before state or trace changes", () => {
+  for (const value of [-1, Infinity, NaN, undefined, "2"]) {
+    const program = chart()
+      .createCanvas({ width: 300, height: 300, margin: 30 })
+      .createData({ values: [{ value }] })
+      .createArcMark();
+    const before = JSON.stringify(program);
+
+    assert.throws(
+      () => program.encodeTheta({ field: "value" }),
+      /non-negative finite numbers at row 0/
+    );
+    assert.equal(JSON.stringify(program), before);
+  }
+
+  const zeros = chart()
+    .createCanvas({ width: 300, height: 300, margin: 30 })
+    .createData({ values: [{ value: 0 }, { value: 0 }] })
+    .createArcMark();
+  assert.throws(
+    () => zeros.encodeTheta({ field: "value" }),
     /positive total/
   );
 });

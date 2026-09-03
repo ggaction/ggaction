@@ -564,6 +564,12 @@ test("reports concrete options, placeholders, and unsupported requirements witho
     'program.encodeY({ field: "category", fieldType: "nominal" })',
     'program.encodeX({ field: "value", fieldType: "quantitative" })'
   ]);
+  const pie = searchGgaction("pie chart");
+  assert.deepEqual(pie.exactCalls.slice(0, 3), [
+    'program.createArcMark({ innerRadius: 0 })',
+    'program.encodeTheta({ field: "value", fieldType: "quantitative" })',
+    'program.encodeColor({ field: "category" })'
+  ]);
   const canvas = searchGgaction("scatter plot as canvas");
   assert.equal(canvas.exactCalls.at(-1), "render(program, context)");
   assert.equal(canvas.placeholderBindings.some(entry => entry.name === "context"), true);
