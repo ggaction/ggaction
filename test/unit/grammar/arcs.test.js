@@ -140,6 +140,40 @@ test("derives one proportional sector per positive quantitative theta row", () =
   ]);
 });
 
+test("normalizes overflowing direct quantitative theta totals", () => {
+  const maximum = Number.MAX_VALUE;
+  const layer = {
+    id: "arc",
+    mark: { type: "arc" },
+    encoding: {
+      theta: {
+        field: "value",
+        fieldType: "quantitative",
+        scale: "theta"
+      }
+    }
+  };
+  const { sectors } = deriveArcSectors(
+    [{ value: maximum }, { value: maximum }],
+    layer,
+    {
+      thetaScale: { type: "linear", domain: [0, maximum], range: [0, 360] },
+      frame
+    }
+  );
+
+  assert.deepEqual(sectors.map(sector => [sector.startTheta, sector.endTheta]), [
+    [0, 180],
+    [180, 360]
+  ]);
+  assert.equal(
+    sectors.every(sector =>
+      Number.isFinite(sector.startTheta) && Number.isFinite(sector.endTheta)
+    ),
+    true
+  );
+});
+
 test("keeps proportional sectors finite across the full numeric theta range", () => {
   const range = [-Number.MAX_VALUE, Number.MAX_VALUE];
   const scale = {
