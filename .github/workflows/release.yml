@@ -217,6 +217,12 @@ jobs:
         with:
           path: _site
 
+  context7-refresh:
+    needs: publish
+    uses: ./.github/workflows/context7-refresh.yml
+    secrets:
+      CONTEXT7_API_KEY: ${{ secrets.CONTEXT7_API_KEY }}
+
   pages-deploy:
     needs: pages-build
     runs-on: ubuntu-latest
