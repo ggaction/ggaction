@@ -1175,11 +1175,16 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 - 첫 Polar position action은 `polar` coordinate를 생성·저장한다. 같은 layer의 Cartesian x/y와 혼합할 수 없다.
 - Theta만 있는 incomplete point는 semantic과 resolved scale을 유지하지만 visible x/y geometry를 만들지 않는다.
 - Reassignment는 같은 action과 scale lifecycle을 사용한다.
-- Arc marks use a band scale for categorical theta. `aggregate: "count"` partitions the full theta range by
-  category count. `aggregate: "sum"` requires a `weight` field and partitions it by each category's sum of
-  non-negative finite weights. Cross-category totals use normalized ratios so a finite sector partition remains
+- Arc marks accept direct quantitative theta: without `aggregate` or `weight`, each positive source row becomes
+  one sector and its numeric field value determines its share of the full theta range. Source-row order is
+  preserved, zero values are omitted, negative/non-finite values and an all-zero total are rejected, and this mode
+  cannot be combined with radius encoding.
+- Arc marks also retain categorical theta modes. A band scale plus `aggregate: "count"` partitions the full theta
+  range by category count. `aggregate: "sum"` requires a `weight` field and partitions it by each category's sum
+  of non-negative finite weights. Cross-category totals use normalized ratios so a finite sector partition remains
   valid even when the raw grand total overflows; an individual unrepresentable group sum or indistinguishable
-  positive angular sector is rejected. Both modes are arc-only and infer nominal field type when omitted.
+  positive angular sector is rejected. Both aggregate modes infer nominal field type when omitted. Categorical
+  theta without aggregation remains available with quantitative radius for radial sectors.
 
 ### Formal values — `encodeTheta`
 
@@ -1192,8 +1197,10 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 
 - ✅ Covered: shortest call, quantitative and discrete mappings, explicit/reversed ranges, invalid span and type.
 - ✅ Covered: order independence, one-channel incomplete state, Cartesian conflict and immutable failure.
-- ✅ Covered: arc count and weighted-sum partition, fractional/repeated categories, strict invalid/all-zero weight
-  rejection, extreme normalized totals, circular categorical bands, larger-first radial overlay and zero-radius omission.
+- ✅ Covered: direct quantitative arc partition, row-order/source-grain preservation, zero omission,
+  strict invalid/all-zero value rejection, arc count and weighted-sum partition, fractional/repeated categories,
+  strict invalid/all-zero weight rejection, extreme normalized totals, circular categorical bands,
+  larger-first radial overlay and zero-radius omission.
 - Evidence: Polar grammar, encoding, chart, browser and render tests.
 
 ## `encodeR`

@@ -80,6 +80,28 @@ function applyArcThetaWeight(program, target, channel, previous, aggregate, weig
   });
 }
 
+function removeStaleArcThetaAggregate(
+  program,
+  target,
+  channel,
+  previous,
+  fieldType,
+  aggregate
+) {
+  if (
+    channel !== "theta" ||
+    fieldType !== "quantitative" ||
+    aggregate !== undefined ||
+    previous?.aggregate === undefined
+  ) {
+    return program;
+  }
+  return program.editSemantic({
+    property: `layer[${target}].encoding.theta.aggregate`,
+    remove: true
+  });
+}
+
 export function applyPositionSemantics(program, {
   target,
   channel,
@@ -124,6 +146,14 @@ export function applyPositionSemantics(program, {
       value
     });
   }
+  next = removeStaleArcThetaAggregate(
+    next,
+    target,
+    channel,
+    previous,
+    fieldType,
+    aggregate
+  );
   return applyArcThetaWeight(
     next,
     target,

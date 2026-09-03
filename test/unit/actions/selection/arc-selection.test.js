@@ -9,6 +9,7 @@ import { createGapminderPopulationDonut } from
   "../../../../examples/gapminder-population-donut/program.js";
 import { resolveStoredSelection } from
   "../../../../src/materialization/selection/state.js";
+import { chart } from "../../../../src/index.js";
 import { loadCars, loadGapminder } from "../../../support/data.js";
 
 test("selects count sectors at their final visual grain", () => {
@@ -45,6 +46,32 @@ test("selects weighted sectors at the grouped source-member grain", () => {
   assert.equal(item.members.every(row => row.cluster === 4), true);
   assert.equal(item.members.length > 1, true);
   assert.equal(selected.graphicSpec, base.graphicSpec);
+});
+
+test("selects direct quantitative sectors at source-row grain", () => {
+  const rows = [
+    { category: "A", value: 2 },
+    { category: "A", value: 1 },
+    { category: "B", value: 3 }
+  ];
+  const selected = chart()
+    .createCanvas({ width: 300, height: 300, margin: 30 })
+    .createData({ values: rows })
+    .createArcMark()
+    .encodeTheta({ field: "value" })
+    .encodeColor({ field: "category" })
+    .selectMarks({
+      target: "arc",
+      channel: "theta",
+      op: "eq",
+      value: 1
+    });
+  const resolved = resolveStoredSelection(selected);
+  const item = resolved.items.find(candidate => resolved.keys.includes(candidate.key));
+
+  assert.deepEqual(resolved.keys, ["arc/sector/1"]);
+  assert.equal(item.channels.theta, 1);
+  assert.deepEqual(item.members, [rows[1]]);
 });
 
 test("selects the largest radial sector by semantic radius", () => {

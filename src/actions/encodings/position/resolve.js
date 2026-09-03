@@ -22,7 +22,10 @@ import {
   validateAggregateFieldValues,
 } from "../../../grammar/aggregate.js";
 import { normalizeRuleDatum } from "../../../grammar/rules.js";
-import { readArcThetaWeights } from "../../../grammar/arcs.js";
+import {
+  readArcThetaValues,
+  readArcThetaWeights
+} from "../../../grammar/arcs.js";
 import { resolveMarkPositionPolicy } from "./policies/index.js";
 import {
   getPositionChannelDefinition,
@@ -128,9 +131,14 @@ export function resolvePositionEncoding(program, channel, args, operation) {
     : args.field;
   const datum = args.datum;
   const effectiveArgs = { ...args };
+  const directQuantitativeArcTheta =
+    layer.mark.type === "arc" &&
+    channel === "theta" &&
+    fieldType === "quantitative";
   for (const property of ["aggregate", "bin", "stack"]) {
     if (!Object.hasOwn(effectiveArgs, property) && previous !== undefined &&
-      Object.hasOwn(previous, property)) {
+      Object.hasOwn(previous, property) &&
+      !(directQuantitativeArcTheta && property === "aggregate")) {
       effectiveArgs[property] = previous[property];
     }
   }
@@ -220,6 +228,8 @@ export function resolvePositionEncoding(program, channel, args, operation) {
     policy.aggregate === "sum"
   ) {
     readArcThetaWeights(dataset.values, policy.weight, layer.id);
+  } else if (directQuantitativeArcTheta) {
+    readArcThetaValues(dataset.values, field, layer.id);
   } else if (program.markConfigs[target]?.boxPlot !== undefined) {
     for (const [index, row] of dataset.values.entries()) {
       const value = row[field];

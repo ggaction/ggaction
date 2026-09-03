@@ -5,9 +5,36 @@ title: Polar Arc Tutorial
 
 # Polar Arc Tutorial
 
-Arc marks turn Polar positions into closed sector paths. Use count or weighted
-sum aggregation for proportional donut sectors, or combine categorical theta
-bands with a quantitative radius for rose charts and radial bars.
+Arc marks turn Polar positions into closed sector paths. Map a quantitative
+theta field directly to proportional sectors, aggregate categorical theta by
+count or weighted sum, or combine categorical theta bands with a quantitative
+radius for rose charts and radial bars.
+
+## Map values directly into a pie
+
+When each row already contains one category and its final numeric value, pass
+that value field directly to `encodeTheta`:
+
+```javascript
+const data = [
+  { source: "Search", visitors: 50 },
+  { source: "Direct", visitors: 20 },
+  { source: "Social", visitors: 20 },
+  { source: "Referral", visitors: 10 }
+];
+
+const pie = chart()
+  .createCanvas()
+  .createData({ values: data })
+  .createArcMark()
+  .encodeTheta({ field: "visitors" })
+  .encodeColor({ field: "source" });
+```
+
+Each positive row becomes one sector, in source-row order, and its sweep is its
+value divided by the sum of all positive values. Zero values are omitted.
+Values must be non-negative finite numbers and the total must be positive.
+`encodeR` is not combined with direct quantitative arc theta.
 
 ## Count a category into a donut
 

@@ -949,9 +949,36 @@ interpolation only; Cartesian lines retain the complete curve vocabulary.
 
 # Polar Arc Tutorial
 
-Arc marks turn Polar positions into closed sector paths. Use count or weighted
-sum aggregation for proportional donut sectors, or combine categorical theta
-bands with a quantitative radius for rose charts and radial bars.
+Arc marks turn Polar positions into closed sector paths. Map a quantitative
+theta field directly to proportional sectors, aggregate categorical theta by
+count or weighted sum, or combine categorical theta bands with a quantitative
+radius for rose charts and radial bars.
+
+## Map values directly into a pie
+
+When each row already contains one category and its final numeric value, pass
+that value field directly to `encodeTheta`:
+
+```javascript
+const data = [
+  { source: "Search", visitors: 50 },
+  { source: "Direct", visitors: 20 },
+  { source: "Social", visitors: 20 },
+  { source: "Referral", visitors: 10 }
+];
+
+const pie = chart()
+  .createCanvas()
+  .createData({ values: data })
+  .createArcMark()
+  .encodeTheta({ field: "visitors" })
+  .encodeColor({ field: "source" });
+```
+
+Each positive row becomes one sector, in source-row order, and its sweep is its
+value divided by the sum of all positive values. Zero values are omitted.
+Values must be non-negative finite numbers and the total must be positive.
+`encodeR` is not combined with direct quantitative arc theta.
 
 ## Count a category into a donut
 
@@ -5016,11 +5043,12 @@ const donut = chart()
 ```
 
 `innerRadius` is a ratio from `0` inclusive to `1` exclusive. `padAngle` uses
-degrees. Count theta creates proportional pie or donut sectors. Categorical
-theta plus quantitative `encodeR` creates equal-angle radial sectors; repeated
-rows in one angle band are drawn larger first so smaller overlays remain
-visible. Arc graphics are ordinary closed path commands, so renderers do not
-interpret Polar semantics.
+degrees. Direct quantitative theta creates one proportional sector per positive
+row. Count or weighted-sum categorical theta creates aggregated proportional
+sectors. Categorical theta plus quantitative `encodeR` creates equal-angle
+radial sectors; repeated rows in one angle band are drawn larger first so
+smaller overlays remain visible. Arc graphics are ordinary closed path
+commands, so renderers do not interpret Polar semantics.
 
 ### `editArcMark({ target?, innerRadius?, padAngle?, fill?, opacity?, stroke?, strokeWidth? })`
 
@@ -5387,7 +5415,7 @@ The tables below are generated from the same reviewed capability registry used b
 | `encodeX` | point, line, area, bar, rect, rule, tick, text | point/bar/rect/rule/tick/text: quantitative, temporal, ordinal, nominal; line/area: quantitative, temporal | field; rule also accepts datum; bar accepts aggregate or bin |
 | `encodeY` | point, line, area, bar, rect, rule, tick, text | point/line/bar/rect/rule/tick/text: quantitative, temporal, ordinal, nominal; area: quantitative, temporal | field; rule also accepts datum; bar accepts aggregate or count |
 | `encodeX2` / `encodeY2` | area, ranged bar, rect, rule | area/ranged bar/rect/rule: matching primary | secondary field; rule also accepts datum |
-| `encodeTheta` | point, line, arc | point/line: quantitative, temporal, ordinal, nominal; arc: ordinal, nominal | arc accepts aggregate: count or weighted sum for proportional sectors |
+| `encodeTheta` | point, line, arc | point/line: quantitative, temporal, ordinal, nominal; arc: quantitative, ordinal, nominal | arc maps direct quantitative values, category counts, or category-weighted sums to proportional sectors |
 | `encodeR` | point, line, arc | point/line/arc: quantitative | radial position; arc combines it with a categorical theta band |
 | `encodeParallelCoordinates` | line | line: quantitative, ordinal | atomic ordered dimensions; one namespaced scale and axis per dimension |
 
@@ -7288,7 +7316,7 @@ resolve a channel scale, and explicitly materialize the affected graphics.
 | `encodeX` | point, line, area, bar, rect, rule, tick, text | point/bar/rect/rule/tick/text: quantitative, temporal, ordinal, nominal; line/area: quantitative, temporal | field; rule also accepts datum; bar accepts aggregate or bin |
 | `encodeY` | point, line, area, bar, rect, rule, tick, text | point/line/bar/rect/rule/tick/text: quantitative, temporal, ordinal, nominal; area: quantitative, temporal | field; rule also accepts datum; bar accepts aggregate or count |
 | `encodeX2` / `encodeY2` | area, ranged bar, rect, rule | area/ranged bar/rect/rule: matching primary | secondary field; rule also accepts datum |
-| `encodeTheta` | point, line, arc | point/line: quantitative, temporal, ordinal, nominal; arc: ordinal, nominal | arc accepts aggregate: count or weighted sum for proportional sectors |
+| `encodeTheta` | point, line, arc | point/line: quantitative, temporal, ordinal, nominal; arc: quantitative, ordinal, nominal | arc maps direct quantitative values, category counts, or category-weighted sums to proportional sectors |
 | `encodeR` | point, line, arc | point/line/arc: quantitative | radial position; arc combines it with a categorical theta band |
 | `encodeParallelCoordinates` | line | line: quantitative, ordinal | atomic ordered dimensions; one namespaced scale and axis per dimension |
 
@@ -7299,7 +7327,7 @@ resolve a channel scale, and explicitly materialize the affected graphics.
 | Position points | point mark, quantitative, temporal, or ordinal fields | `encodeX`, `encodeY` | [Quantitative positions](./api/position/quantitative/) |
 | Position Polar points | point mark, angle field and quantitative radius field | `encodeTheta`, `encodeR` | [Polar point tutorial](./tutorials/polar-points/) |
 | Draw Polar lines or radar paths | line mark, angle field and quantitative radius field | `encodeTheta`, `encodeR` | [Polar line tutorial](./tutorials/polar-lines/) |
-| Draw donuts, rose charts, or radial bars | arc mark, categorical count/weighted-sum theta or quantitative radius | `encodeTheta`, optional `encodeR` | [Polar arc tutorial](./tutorials/polar-arcs/) |
+| Draw pies, donuts, rose charts, or radial bars | arc mark, direct quantitative theta, categorical count/weighted-sum theta, or quantitative radius | `encodeTheta`, optional `encodeR` | [Polar arc tutorial](./tutorials/polar-arcs/) |
 | Draw discrete or ranged cells | rect mark, two discrete positions or complete x/x2 and y/y2 pairs | `encodeX`, `encodeY`, optional `encodeX2`, `encodeY2` | [Rect marks](./api/marks/rect/) |
 | Draw an aggregate time series | line mark, temporal x and quantitative y | `encodeX`, `encodeY` | [Temporal lines](./api/position/temporal/) |
 | Build vertical aggregate bars | bar mark, ordinal/temporal x and quantitative y | `encodeX`, `encodeY` | [Bar positions](./api/position/ordinal-bars/) |
@@ -7344,10 +7372,12 @@ program
 ```
 
 `encodeTheta` accepts point or line marks with quantitative, temporal, ordinal,
-or nominal fields. Arc marks accept nominal or ordinal theta; `aggregate:
-"count"` creates count-proportional sectors. `aggregate: "sum"` plus a
-non-negative finite `weight` field creates weighted proportional sectors.
-Categorical theta plus quantitative `encodeR` creates radial sectors.
+or nominal fields. For an arc mark, an aggregate-free quantitative field makes
+one proportional sector per positive source row. `aggregate: "count"` over a
+nominal or ordinal field creates count-proportional sectors. `aggregate: "sum"`
+plus a non-negative finite `weight` field creates category-weighted
+proportional sectors. Categorical theta plus quantitative `encodeR` creates
+radial sectors; direct quantitative arc theta does not combine with `encodeR`.
 Quantitative angle scales are linear; temporal angles use time scales; discrete
 angles use point or band scales. The automatic range is `[0, 360]` degrees with
 0 at 12 o'clock and clockwise positive direction.
@@ -11176,7 +11206,7 @@ remain available for custom layering and editing.
 | Capability | Polar points | Polar line / radar | Arc / donut / rose / radial bar |
 | --- | --- | --- | --- |
 | Semantic mark | point | line | arc |
-| Position | theta/radius | theta/radius | count theta, or theta/radius |
+| Position | theta/radius | theta/radius | direct quantitative theta, categorical count/weighted-sum theta, or theta/radius |
 | Nominal color | point fill | series stroke | sector fill, including overlay grain |
 | Stroke dash | — | nominal or constant; 4 named styles | — |
 | Appearance | radius, opacity, shape | stroke width, opacity, open/closed | inner radius, angular padding, fill, outline, opacity |
@@ -11894,9 +11924,10 @@ Edit constant area appearance. `stroke: false` removes an existing outline.
 createArcMark({ id?, data?, innerRadius?, padAngle?, fill?, opacity?, stroke?, strokeWidth? } = {})
 ```
 
-Create a semantic arc mark and empty closed-path collection. Count theta
-materializes proportional pie or donut sectors; categorical theta plus radius
-materializes radial sectors. [Marks](./api/marks/line-area/#arc-marks)
+Create a semantic arc mark and empty closed-path collection. Direct
+quantitative theta, category counts, or category-weighted sums materialize
+proportional pie or donut sectors; categorical theta plus radius materializes
+radial sectors. [Marks](./api/marks/line-area/#arc-marks)
 
 ## `editArcMark`
 
@@ -11986,7 +12017,7 @@ semantic base positions. [Text marks](./api/marks/text/)
 | `encodeX` | point, line, area, bar, rect, rule, tick, text | point/bar/rect/rule/tick/text: quantitative, temporal, ordinal, nominal; line/area: quantitative, temporal | field; rule also accepts datum; bar accepts aggregate or bin |
 | `encodeY` | point, line, area, bar, rect, rule, tick, text | point/line/bar/rect/rule/tick/text: quantitative, temporal, ordinal, nominal; area: quantitative, temporal | field; rule also accepts datum; bar accepts aggregate or count |
 | `encodeX2` / `encodeY2` | area, ranged bar, rect, rule | area/ranged bar/rect/rule: matching primary | secondary field; rule also accepts datum |
-| `encodeTheta` | point, line, arc | point/line: quantitative, temporal, ordinal, nominal; arc: ordinal, nominal | arc accepts aggregate: count or weighted sum for proportional sectors |
+| `encodeTheta` | point, line, arc | point/line: quantitative, temporal, ordinal, nominal; arc: quantitative, ordinal, nominal | arc maps direct quantitative values, category counts, or category-weighted sums to proportional sectors |
 | `encodeR` | point, line, arc | point/line/arc: quantitative | radial position; arc combines it with a categorical theta band |
 | `encodeParallelCoordinates` | line | line: quantitative, ordinal | atomic ordered dimensions; one namespaced scale and axis per dimension |
 
@@ -12324,13 +12355,16 @@ Apply a constant point radius. [Constant appearance](./api/appearance/)
 ## `encodeTheta`
 
 ```javascript
-encodeTheta({ field, target?, fieldType?, aggregate?, scale?, coordinate? })
+encodeTheta({ field, target?, fieldType?, aggregate?, weight?, scale?, coordinate? })
 ```
 
 Encode Polar angle in clockwise degrees from 12 o'clock. Quantitative,
 temporal, ordinal, and nominal fields are supported for point and line marks.
-Arc marks accept nominal or ordinal fields and optional `aggregate: "count"`.
-The default scale ID is `theta` and its automatic range is `[0, 360]`.
+For arc marks, an aggregate-free quantitative field directly determines each
+row's proportional sector angle. Nominal or ordinal arc fields support
+`aggregate: "count"`, `aggregate: "sum"` plus `weight`, or categorical theta
+bands paired with radius. The default scale ID is `theta` and its automatic
+range is `[0, 360]`.
 [Polar positions](./api/position-encodings/#polar-positions)
 
 ## `encodeR`

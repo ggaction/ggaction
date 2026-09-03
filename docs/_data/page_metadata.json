@@ -36,7 +36,7 @@
   },
   "/tutorials/polar-arcs/": {
     "title": "Polar Arc Tutorial",
-    "description": "Arc marks turn Polar positions into closed sector paths. Use count or weighted sum aggregation for proportional donut sectors, or combine categorical theta bands with a…",
+    "description": "Arc marks turn Polar positions into closed sector paths. Map a quantitative theta field directly to proportional sectors, aggregate categorical theta by count or weighted sum, or…",
     "image": "/assets/images/cars-origin-donut.png"
   },
   "/tutorials/line-chart/": {

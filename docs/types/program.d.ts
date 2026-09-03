@@ -1116,6 +1116,10 @@ export interface RadiusScaleOptions {
 }
 
 export interface ThetaEncodingOptions {
+  /**
+   * Arc marks interpret an aggregate-free quantitative field as per-row sector
+   * weights. Categorical arc theta retains the count and weighted-sum modes.
+   */
   field: string;
   target?: string;
   fieldType?: FieldType;

@@ -334,13 +334,16 @@ Apply a constant point radius. [Constant appearance](../../api/appearance.md)
 ## `encodeTheta`
 
 ```javascript
-encodeTheta({ field, target?, fieldType?, aggregate?, scale?, coordinate? })
+encodeTheta({ field, target?, fieldType?, aggregate?, weight?, scale?, coordinate? })
 ```
 
 Encode Polar angle in clockwise degrees from 12 o'clock. Quantitative,
 temporal, ordinal, and nominal fields are supported for point and line marks.
-Arc marks accept nominal or ordinal fields and optional `aggregate: "count"`.
-The default scale ID is `theta` and its automatic range is `[0, 360]`.
+For arc marks, an aggregate-free quantitative field directly determines each
+row's proportional sector angle. Nominal or ordinal arc fields support
+`aggregate: "count"`, `aggregate: "sum"` plus `weight`, or categorical theta
+bands paired with radius. The default scale ID is `theta` and its automatic
+range is `[0, 360]`.
 [Polar positions](../../api/position-encodings.md#polar-positions)
 
 ## `encodeR`

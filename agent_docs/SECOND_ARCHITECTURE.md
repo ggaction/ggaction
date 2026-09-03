@@ -1450,6 +1450,10 @@ planned contract이므로 시각 구현 승인을 받기 전에는 지원하지 
 ### Arc
 
 - Arc는 bar의 coordinate-dependent 변형이 아니라 별도 semantic `arc` mark다.
+- Aggregate 없는 quantitative theta는 positive source row마다 하나의 final sector를 만들고 row value의
+  합에 대한 비율로 full theta range를 나눈다. Source order와 row grain을 보존하며 zero row는 생략한다.
+  Negative/non-finite value와 all-zero total은 semantic state 변경 전에 거부하고 radius encoding과 함께
+  사용할 수 없다.
 - Count theta는 category별 final aggregate grain을 한 바퀴의 비율로 나누며 radius encoding 없이도 pie/donut
   sector를 materialize한다.
 - Ordinal/nominal theta와 quantitative radius는 equal-angle band 안의 radial sector를 만든다. Color

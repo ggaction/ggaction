@@ -148,11 +148,12 @@ const donut = chart()
 ```
 
 `innerRadius` is a ratio from `0` inclusive to `1` exclusive. `padAngle` uses
-degrees. Count theta creates proportional pie or donut sectors. Categorical
-theta plus quantitative `encodeR` creates equal-angle radial sectors; repeated
-rows in one angle band are drawn larger first so smaller overlays remain
-visible. Arc graphics are ordinary closed path commands, so renderers do not
-interpret Polar semantics.
+degrees. Direct quantitative theta creates one proportional sector per positive
+row. Count or weighted-sum categorical theta creates aggregated proportional
+sectors. Categorical theta plus quantitative `encodeR` creates equal-angle
+radial sectors; repeated rows in one angle band are drawn larger first so
+smaller overlays remain visible. Arc graphics are ordinary closed path
+commands, so renderers do not interpret Polar semantics.
 
 ### `editArcMark({ target?, innerRadius?, padAngle?, fill?, opacity?, stroke?, strokeWidth? })`
 
