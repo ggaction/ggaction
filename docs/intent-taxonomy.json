@@ -43,7 +43,7 @@
     { "id": "transform.interval", "phrases": ["interval data", "confidence interval data", "summary interval"] },
 
     { "id": "statistics.regression", "phrases": ["regression line", "trend line", "fitted line", "regression fit", "best fit line", "fitted trend"] },
-    { "id": "statistics.errorBar", "phrases": ["error bars", "error bar"] },
+    { "id": "statistics.errorBar", "phrases": ["error bars", "error bar", "point and whisker", "point whisker plot", "uncertainty whiskers"] },
     { "id": "statistics.errorBand", "phrases": ["error band", "uncertainty ribbon", "confidence band"] },
 
     { "id": "scale.create", "phrases": ["create scale", "named scale", "custom scale"] },

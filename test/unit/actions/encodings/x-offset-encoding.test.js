@@ -212,6 +212,79 @@ test("rematerializes an automatic xOffset range after Canvas edits", () => {
   assert.deepEqual(program.resolvedScales.xOffset.range, [0, 160]);
 });
 
+test("dodges point rows within categorical x slots and tracks parent scale edits", () => {
+  const base = chart()
+    .createCanvas({
+      width: 400,
+      height: 300,
+      margin: { top: 20, right: 20, bottom: 40, left: 40 }
+    })
+    .createData({ values: [
+      { category: "A", model: "one", value: 1 },
+      { category: "A", model: "two", value: 2 },
+      { category: "B", model: "one", value: 3 },
+      { category: "B", model: "two", value: 4 }
+    ] })
+    .createPointMark()
+    .encodeX({ field: "category", fieldType: "ordinal" })
+    .encodeY({ field: "value" })
+    .encodeXOffset({
+      field: "model",
+      paddingInner: 0.2,
+      paddingOuter: 0.1
+    });
+  const resized = base.editCanvas({ width: 600 });
+  const repadded = base.editScale({ id: "x", padding: 1 });
+
+  assert.deepEqual(
+    base.graphicSpec.objects.point.items.map(item => item.properties.x),
+    [82.5, 167.5, 252.5, 337.5]
+  );
+  assert.deepEqual(base.resolvedScales.xOffset.range, [0, 170]);
+  assert.deepEqual(
+    resized.graphicSpec.objects.point.items.map(item => item.properties.x),
+    [107.5, 242.5, 377.5, 512.5]
+  );
+  assert.deepEqual(resized.resolvedScales.xOffset.range, [0, 270]);
+  assert.deepEqual(repadded.resolvedScales.xOffset.range, [0, 340 / 3]);
+  assert.notDeepEqual(
+    repadded.graphicSpec.objects.point.items.map(item => item.properties.x),
+    base.graphicSpec.objects.point.items.map(item => item.properties.x)
+  );
+});
+
+test("supports explicit reversed point offset ranges and rejects numeric parents", () => {
+  const rows = [
+    { category: "A", model: "one", value: 1 },
+    { category: "A", model: "two", value: 2 }
+  ];
+  const categorical = chart()
+    .createCanvas({ width: 300, height: 200 })
+    .createData({ values: rows })
+    .createPointMark()
+    .encodeX({ field: "category", fieldType: "ordinal" })
+    .encodeY({ field: "value" });
+  const reversed = categorical.encodeXOffset({
+    field: "model",
+    scale: { range: [100, 0] }
+  });
+  const x = reversed.graphicSpec.objects.point.items.map(
+    item => item.properties.x
+  );
+
+  assert.equal(x[0] > x[1], true);
+  assert.throws(
+    () => chart()
+      .createCanvas({ width: 300, height: 200 })
+      .createData({ values: rows })
+      .createPointMark()
+      .encodeX({ field: "value" })
+      .encodeY({ field: "value" })
+      .encodeXOffset({ field: "model" }),
+    /x category encoding/
+  );
+});
+
 test("validates xOffset prerequisites, fields, and scale options", () => {
   const program = aggregateBarProgram();
 

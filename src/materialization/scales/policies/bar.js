@@ -1,4 +1,3 @@
-import { normalizeOffsetPadding } from "../../../grammar/bars/geometry.js";
 import {
   BAR_GRAINS,
   resolveBarChannels,
@@ -8,48 +7,6 @@ import {
   interpolateNumber,
   inverseLerp
 } from "../../../grammar/numeric.js";
-export function resolveOffsetScalePolicy({
-  consumers,
-  resolvedScales,
-  markConfigs,
-  id,
-  channel
-}) {
-  const parentChannel = channel === "xOffset" ? "x" : "y";
-  const bandwidths = consumers.map(consumer => {
-    if (parentChannel === "x" && consumer.layer.encoding?.x?.bin !== undefined) {
-      return 1;
-    }
-    const parentScaleId = consumer.layer.encoding?.[parentChannel]?.scale;
-    return resolvedScales[parentScaleId]?.bandwidth;
-  });
-  if (
-    bandwidths.some(value => !Number.isFinite(value)) ||
-    new Set(bandwidths).size !== 1
-  ) {
-    throw new Error(
-      `${channel} scale "${id}" requires one shared resolved ${parentChannel} bandwidth.`
-    );
-  }
-  const paddings = consumers.map(consumer => normalizeOffsetPadding(
-    markConfigs[consumer.layer.id]?.[channel],
-    undefined,
-    channel
-  ));
-  const signatures = new Set(
-    paddings.map(padding => JSON.stringify(padding))
-  );
-  if (signatures.size !== 1) {
-    throw new Error(
-      `${channel} scale "${id}" requires one shared padding policy.`
-    );
-  }
-  return {
-    parentBandwidth: bandwidths[0],
-    ...paddings[0]
-  };
-}
-
 export function resolveTemporalBarBand(valuesByConsumer, domain, range) {
   const temporalBars = valuesByConsumer.filter(({ consumer }) => {
     const channels = resolveBarChannels(consumer.layer);

@@ -32,6 +32,9 @@ test("owns the implemented semantic and legend vocabularies in one module", () =
   ]);
   assert.equal(getPositionChannelDefinition("theta").family, "polar");
   assert.equal(getPositionChannelDefinition("x").gridDirection, "vertical");
+  assert.deepEqual(getPositionChannelDefinition("xOffset").markTypes, [
+    "bar", "point", "rule"
+  ]);
   assert.equal(normalizePositionScaleChannel("x2"), "x");
   assert.equal(normalizePositionScaleChannel("color"), "color");
   assert.deepEqual(positionChannelsForFamily("polar"), ["theta", "radius"]);

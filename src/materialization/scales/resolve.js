@@ -27,10 +27,8 @@ import {
   validateTimeScaleType
 } from "../../grammar/scales/index.js";
 import { resolveArcAutoPositionRange } from "./policies/arc.js";
-import {
-  resolveOffsetScalePolicy,
-  resolveTemporalBarBand
-} from "./policies/bar.js";
+import { resolveTemporalBarBand } from "./policies/bar.js";
+import { resolveOffsetScalePolicy } from "./policies/offset.js";
 import { resolveBinnedPositionDomain } from "./policies/binnedPosition.js";
 import { resolveSeriesLayoutDomain } from "./policies/series.js";
 import { OFFSET_POSITION_CHANNELS } from "../../core/vocabulary.js";

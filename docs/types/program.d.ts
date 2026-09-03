@@ -1370,6 +1370,10 @@ export type ErrorBarPositionChannel = { field?: string } & (
       fieldType: "temporal";
       scale?: NonPointTemporalPositionScaleOptions;
     }
+  | {
+      fieldType: "quantitative";
+      scale?: NonPointQuantitativePositionScaleOptions;
+    }
 );
 
 export interface ErrorBarStatisticalIntervalChannel {
@@ -1391,12 +1395,22 @@ export type ErrorBarIntervalChannel =
   | ErrorBarStatisticalIntervalChannel
   | ErrorBarExplicitIntervalChannel;
 
+export interface ErrorBarOffsetChannel {
+  field?: string;
+  fieldType?: "nominal" | "ordinal";
+  scale?: OffsetScaleOptions;
+  paddingInner?: number;
+  paddingOuter?: number;
+}
+
 export interface ErrorBarOptions {
   id?: string;
   target?: string;
   data?: string;
   x?: ErrorBarPositionChannel | ErrorBarIntervalChannel;
   y?: ErrorBarPositionChannel | ErrorBarIntervalChannel;
+  xOffset?: ErrorBarOffsetChannel;
+  yOffset?: ErrorBarOffsetChannel;
   groupBy?: string;
   coordinate?: string;
   caps?: boolean;

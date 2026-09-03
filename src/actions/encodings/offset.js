@@ -36,27 +36,39 @@ function createOffsetEncoding(channel) {
       const { id: target, dataset, layer } = resolveTarget(
         this,
         args.target,
-        ["bar"],
-        "bar mark"
+        ["bar", "point", "rule"],
+        "offset-compatible mark"
       );
 
-      const channels = resolveBarChannels(layer);
-      if (
-        resolveBarGrain(layer) === undefined ||
-        channels?.category !== parentChannel
-      ) {
-        throw new Error(
-          `${operation} requires a complete bar with a ${parentChannel} category encoding.`
-        );
-      }
-      if (
-        layer.encoding?.color !== undefined &&
-        (resolveBarColorLayout(layer) !== "group" ||
-          layer.encoding.color.field !== args.field)
-      ) {
-        throw new Error(
-          `${operation} field must match a grouped bar color field.`
-        );
+      if (layer.mark.type === "bar") {
+        const channels = resolveBarChannels(layer);
+        if (
+          resolveBarGrain(layer) === undefined ||
+          channels?.category !== parentChannel
+        ) {
+          throw new Error(
+            `${operation} requires a complete bar with a ${parentChannel} category encoding.`
+          );
+        }
+        if (
+          layer.encoding?.color !== undefined &&
+          (resolveBarColorLayout(layer) !== "group" ||
+            layer.encoding.color.field !== args.field)
+        ) {
+          throw new Error(
+            `${operation} field must match a grouped bar color field.`
+          );
+        }
+      } else {
+        const parent = layer.encoding?.[parentChannel];
+        if (
+          parent === undefined ||
+          !["nominal", "ordinal"].includes(parent.fieldType)
+        ) {
+          throw new Error(
+            `${operation} requires a ${parentChannel} category encoding (categorical position).`
+          );
+        }
       }
 
       readNominalField(dataset.values, args.field);
@@ -67,7 +79,7 @@ function createOffsetEncoding(channel) {
       const scale = resolveOffsetScaleDefinition(this, requestedScale, channel);
       if (Object.hasOwn(scale, "unknown")) {
         throw new Error(
-          `${channel} scale unknown is not supported for grouped bars.`
+          `${channel} scale unknown is not supported for offset positions.`
         );
       }
       const padding = normalizeOffsetPadding(
@@ -87,7 +99,7 @@ function createOffsetEncoding(channel) {
       next = applyEncodingScale(next, scale, requestedScale, {
         reassignment: layer.encoding?.[channel]?.scale === scale.id
       });
-      if (layer.encoding?.color === undefined) {
+      if (layer.mark.type === "bar" && layer.encoding?.color === undefined) {
         return next
           .rematerializeScale({ id: scale.id })
           .editGraphics({ target, property: "length", value: 0 });

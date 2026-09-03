@@ -1,4 +1,7 @@
-import { POSITION_CHANNELS } from "../../core/vocabulary.js";
+import {
+  POSITION_CHANNELS,
+  POSITION_ENCODING_CHANNELS
+} from "../../core/vocabulary.js";
 import { getMarkMaterializationPolicy } from "./policies.js";
 
 export {
@@ -75,7 +78,7 @@ export function getPositionEncodingMaterializationSteps(program, layer, scaleId)
 export function getScaleConsumerMaterializationMode(layer, channel) {
   const policy = getMarkMaterializationPolicy(layer);
   if (policy === undefined) return "direct";
-  if (POSITION_CHANNELS.includes(channel)) {
+  if (POSITION_ENCODING_CHANNELS.includes(channel)) {
     return policy.scaleApplication.position ?? policy.scaleApplication.default;
   }
   if (policy.scaleApplication.deferredChannels?.includes(channel)) {

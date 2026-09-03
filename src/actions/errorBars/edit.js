@@ -94,6 +94,16 @@ function capArgs(config, id, intervalField) {
     coordinate: config.coordinate,
     positionScale: config.positionScale,
     intervalScale: config.intervalScale,
+    ...(config.offset === undefined
+      ? {}
+      : {
+          offsetChannel: config.offset.channel,
+          offsetField: config.offset.field,
+          offsetFieldType: config.offset.fieldType,
+          offsetScale: config.offset.scale,
+          offsetPaddingInner: config.offset.paddingInner,
+          offsetPaddingOuter: config.offset.paddingOuter
+        }),
     capSize: config.capSize,
     stroke: config.stroke,
     strokeWidth: config.strokeWidth,

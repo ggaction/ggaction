@@ -968,6 +968,8 @@
         "error-bars",
         "at-a-glance",
         "createerrorbaroptions",
+        "grouped-point-and-whisker-positions",
+        "quantitative-independent-positions",
         "horizontal-intervals",
         "existing-interval-fields",
         "inference-from-an-encoded-layer",
@@ -976,8 +978,8 @@
         "errors-and-current-limitations",
         "related"
       ],
-      "bytes": 7106,
-      "sha256": "6336fdf9486405e7a3d24203e0a7f3bdc9ebee2bb8496509f2854f28cc16fc5e"
+      "bytes": 9788,
+      "sha256": "0c5d5c7c4cb29e62225ddad27ec783a71dfd7bd8690d234734c01475ea02baa7"
     },
     {
       "order": 63,
@@ -1131,8 +1133,8 @@
         "rule-endpoints",
         "related"
       ],
-      "bytes": 7699,
-      "sha256": "d52d3c1699f4791b66b96823471e35ec4abd55d1530501a3f175c56f579391ae"
+      "bytes": 7713,
+      "sha256": "0f3f574f5a957abcffeed612a9a06d57547d47eb331e7d77f2f4b93886be2c6c"
     },
     {
       "order": 72,
@@ -1224,8 +1226,8 @@
         "errors-and-limitations",
         "related"
       ],
-      "bytes": 2491,
-      "sha256": "5a5987f27ef0a0659f4cc6325396cec3dd6b776d3383e0b1aff39874f6df6a4c"
+      "bytes": 2685,
+      "sha256": "7af3a05a825e72d0e44d9f9eebb6f0f2a0f3294d69120ad461df304245544290"
     },
     {
       "order": 78,
@@ -1888,8 +1890,8 @@
         "encodebarwidth",
         "related"
       ],
-      "bytes": 14365,
-      "sha256": "cfa41ddd9a7b722cecdcb53052c8109e46bdaf5188d701ec292d1bce9b0790b5"
+      "bytes": 14431,
+      "sha256": "6beb0b0cf114488e06963b7de7cd30831535a9c0702443cc6c346ea7e62ecd78"
     },
     {
       "order": 117,
@@ -1912,8 +1914,8 @@
         "createviolinplot",
         "related"
       ],
-      "bytes": 6200,
-      "sha256": "e33b359499c9eab6a3800971ff98375e1cc258433f8cca2975b615df187d3a10"
+      "bytes": 6487,
+      "sha256": "46b4e72db18c26a1a63718a5cdedc20e8406ae9afcd7cacdf8d094656094ce2b"
     },
     {
       "order": 118,

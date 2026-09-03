@@ -11,8 +11,8 @@ title: Ordinal Offsets
 
 | Action | Shortest call | Required state | Result |
 | --- | --- | --- | --- |
-| `encodeXOffset` | `encodeXOffset({ field: "group" })` | ordinal x bar | Nominal slots inside each x band |
-| `encodeYOffset` | `encodeYOffset({ field: "group" })` | ordinal y bar | Nominal slots inside each y band |
+| `encodeXOffset` | `encodeXOffset({ field: "group" })` | categorical x on bar, point, or rule | Nominal slots inside each x category |
+| `encodeYOffset` | `encodeYOffset({ field: "group" })` | categorical y on bar, point, or rule | Nominal slots inside each y category |
 
 Most chart authors should use:
 
@@ -29,7 +29,7 @@ horizontal bar as a wrapped child with the same field.
 | --- | --- | --- |
 | `field` | non-empty string | required |
 | `fieldType` | `"nominal"` or `"ordinal"` | `"nominal"` |
-| `target` | aggregate bar mark ID | current mark |
+| `target` | bar, point, or rule mark ID | current eligible mark |
 | `scale.id` | scale ID | channel name: `"xOffset"` or `"yOffset"` |
 | `scale.type` | `"ordinal"` | `"ordinal"` |
 | `scale.domain` | `"auto"` or unique nominal values | `"auto"` |
@@ -37,12 +37,14 @@ horizontal bar as a wrapped child with the same field.
 | `paddingInner` | finite number from `0` inclusive to `1` exclusive | `0` |
 | `paddingOuter` | non-negative finite number | `0` |
 
-The automatic range is the parent category bandwidth, not the full plot range.
-Its step divides one ordinal x or y band into equal categorical slots. Explicit domain order and
+The automatic range is one parent category slot, not the full plot range. Bars use
+the parent band width; point and rule marks use the parent point-scale step.
+The offset step divides that slot into equal categorical sub-slots. Explicit domain order and
 reversed ranges are supported. Inner padding reduces each slot bandwidth;
 outer padding reserves step fractions before the first and after the last slot.
 Calling the action again for the same field preserves omitted padding values.
-This action resolves slot geometry but does not create rectangles by itself.
+Bars use the resolved sub-band width. Point and rule rows use each sub-slot center,
+which makes point-and-whisker layers share exact positions.
 
 When grouped color already exists, direct offset calls must use the same field.
 Change both fields atomically with `encodeColor({ field: next, layout: "group" })`.
@@ -51,10 +53,10 @@ legend while preserving explicit legend titles and styles.
 
 ## Errors and limitations
 
-`xOffset` requires one resolved ordinal x bandwidth; `yOffset` requires one
-resolved ordinal y bandwidth. Color and offset domains must have identical
+`xOffset` requires a categorical x parent; `yOffset` requires a categorical y
+parent. Color and offset domains must have identical
 order before grouped rectangles can be materialized. Every consumer of one
-shared offset scale must use the same padding policy and parent bandwidth.
+shared offset scale must use the same padding policy and parent slot size.
 
 ## Related
 

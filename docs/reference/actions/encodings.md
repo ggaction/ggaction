@@ -182,9 +182,10 @@ encodeXOffset({
 })
 ```
 
-Create or compatibly update an advanced nominal offset scale within an ordinal
-bar x band. Padding defaults to zero and is preserved when omitted on a later
-same-field call. Grouped color layout normally invokes this action automatically.
+Create or compatibly update a categorical sub-slot scale within a bar, point, or
+rule x category. Point/rule marks use slot centers; bars use slot bandwidth.
+Padding defaults to zero and is preserved on a later same-field call. Grouped
+bar color layout normally invokes this action automatically.
 [Position encodings](../../api/position-encodings.md)
 
 ## `encodeYOffset`
@@ -196,9 +197,9 @@ encodeYOffset({
 ```
 
 Create or compatibly update the corresponding categorical offset scale within
-an ordinal bar y band. Horizontal grouped color layout invokes this action as a
-wrapped child; explicit domain order, reversed range, and padding follow the
-same contract as `encodeXOffset`.
+a bar, point, or rule y category. Horizontal grouped bar color invokes this
+action as a wrapped child; explicit domain order, reversed range, and padding
+follow the same contract as `encodeXOffset`.
 [Position encodings](../../api/position-encodings.md)
 
 ## `encodeHistogram`

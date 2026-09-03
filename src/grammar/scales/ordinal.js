@@ -278,3 +278,26 @@ export function mapOrdinalPositionValues(values, scale) {
     );
   }));
 }
+
+export function mapOrdinalOffsetValues(values, scale) {
+  const indices = new Map(scale.domain.map((value, index) => [value, index]));
+  const direction = Math.sign(scale.step) || 1;
+  const denominator = Math.max(
+    1,
+    scale.domain.length - scale.paddingInner + scale.paddingOuter * 2
+  );
+  return cloneAndFreeze(values.map(value => {
+    const index = indices.get(value);
+    if (index === undefined) {
+      throw new Error(`Value "${value}" is outside the ordinal domain.`);
+    }
+    const direct = scale.start + index * scale.step +
+      direction * scale.bandwidth / 2;
+    return finitePosition(
+      direct,
+      scale,
+      (scale.paddingOuter + index + (1 - scale.paddingInner) / 2) /
+        denominator
+    );
+  }));
+}
