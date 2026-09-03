@@ -55,11 +55,76 @@ test("aligns unequal children inside stable grid tracks", () => {
   ]);
 });
 
+test("reserves a shared legend lane on its configured edge", () => {
+  const options = {
+    children: [children[0]],
+    padding: { top: 5, right: 7, bottom: 11, left: 13 },
+    titleHeight: 20,
+    sharedLegend: true,
+    sharedLegendGap: 6,
+    sharedLegendWidth: 30,
+    sharedLegendHeight: 12
+  };
+  const right = resolveFacetLayout({
+    ...options,
+    sharedLegendPosition: "right"
+  });
+  const left = resolveFacetLayout({
+    ...options,
+    sharedLegendPosition: "left"
+  });
+  const top = resolveFacetLayout({
+    ...options,
+    sharedLegendPosition: "top"
+  });
+  const bottom = resolveFacetLayout({
+    ...options,
+    sharedLegendPosition: "bottom"
+  });
+
+  assert.deepEqual(
+    [right.width, right.height, right.children[0].x, right.children[0].y],
+    [156, 116, 13, 25]
+  );
+  assert.deepEqual(
+    [left.width, left.height, left.children[0].x, left.children[0].y],
+    [156, 116, 49, 25]
+  );
+  assert.deepEqual(
+    [top.width, top.height, top.children[0].x, top.children[0].y],
+    [120, 134, 13, 43]
+  );
+  assert.deepEqual(
+    [bottom.width, bottom.height, bottom.children[0].x, bottom.children[0].y],
+    [120, 134, 13, 25]
+  );
+  assert.deepEqual(
+    [right.legend.position, right.legend.x, right.legend.y],
+    ["right", 126, 55]
+  );
+  assert.deepEqual(
+    [left.legend.position, left.legend.x, left.legend.y],
+    ["left", 0, 55]
+  );
+  assert.deepEqual(
+    [top.legend.position, top.legend.x, top.legend.y],
+    ["top", 0, 20]
+  );
+  assert.deepEqual(
+    [bottom.legend.position, bottom.legend.x, bottom.legend.y],
+    ["bottom", 0, 122]
+  );
+});
+
 test("rejects invalid grid options without mutating inputs", () => {
   const snapshot = structuredClone(children);
   assert.throws(() => resolveFacetLayout({ children, columns: 0 }), /positive integer/);
   assert.throws(() => resolveFacetLayout({ children, gap: -1 }), /non-negative/);
   assert.throws(() => resolveFacetLayout({ children, align: "middle" }), /Unknown composition align/);
   assert.throws(() => resolveFacetLayout({ children, padding: { inline: 2 } }), /Unknown composition padding/);
+  assert.throws(
+    () => resolveFacetLayout({ children, sharedLegendPosition: "inline" }),
+    /Unknown facet shared legend position/
+  );
   assert.deepEqual(children, snapshot);
 });

@@ -360,9 +360,13 @@ boundary를 다시 계산한다. Child scale을 먼저 해결한 다음 mark와 
 deduplicated plan으로 rematerialize하고, parent가 namespaced child Canvas snapshot을
 attach한다. Axes는 기본적으로 cell-owned이고 `guides.axes: "outer"`이면 column별 bottommost occupied cell과
 row별 leftmost occupied cell만 유지한다. Explicit `guides.legend: "shared"`는 compatible categorical, gradient,
-discretized-color, size 또는 opacity recipe를 parent-owned concrete graphic으로 승격한다. Repeated header와 chart
-title도 parent-owned concrete graphics다. Canonical title order는 `facet(...).createTitle(...)`이며 이미 valid한 unit
-title은 cell에서 제거하고 parent에 한 번 promote한다. `editFacetHeaders`와 facet-compatible
+discretized-color, size 또는 opacity recipe를 parent-owned concrete graphic으로 승격한다. Guide preparation은
+source legend의 concrete bounds와 `left | right | top | bottom` edge, horizontal alignment를 함께 보존한다. Facet
+layout은 side edge면 width lane, top/bottom edge면 height lane을 child grid 전에 확정하고, placement는 그 lane과
+translated child-plot union을 기준으로 guide snapshot을 이동한다. Explicit guide가 없어서 legacy categorical
+legend를 합성하는 경우에만 right edge가 기본값이다. Repeated header와 chart title도 parent-owned concrete
+graphics다. Canonical title order는 `facet(...).createTitle(...)`이며 이미 valid한 unit title은 cell에서 제거하고
+parent에 한 번 promote한다. `editFacetHeaders`와 facet-compatible
 `editCompositionLayout({ columns?, gap?, align?, padding? })`은 child identity를 보존한 채 parent snapshot만 다시
 materialize한다. `editFacetScales`와 `editFacetGuides`는 parent에 retained된 pre-facet semantic/materialization
 state와 current field/data/value definition에서 stable child IDs를 다시 derive/replay한 뒤 complete children과 parent

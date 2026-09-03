@@ -7270,6 +7270,43 @@ and source-row count multiplied by child count must not exceed the shared
 | `guides.axes` | `"each"` | `"outer"` keeps x axes on the bottommost occupied cell in each column and y axes on the leftmost occupied cell in each row |
 | `guides.legend` | `false` | `"shared"` promotes one compatible parent-owned categorical, gradient, discretized-color, size, or opacity legend |
 
+Author the legend position on the unit chart before calling `facet`. Promotion
+preserves an explicit `left`, `right`, `top`, or `bottom` edge and the
+horizontal `align` used by top and bottom legends; there is no separate facet
+legend-position option:
+
+```javascript
+const source = chart()
+  .createCanvas({
+    width: 420,
+    height: 300,
+    margin: { top: 40, right: 40, bottom: 90, left: 60 }
+  })
+  .createData({ values: cars })
+  .createPointMark()
+  .encodeX({ field: "Horsepower" })
+  .encodeY({ field: "Miles_per_Gallon" })
+  .encodeColor({ field: "Cylinders", fieldType: "ordinal" })
+  .createLegend({
+    channels: ["color"],
+    position: "bottom",
+    direction: "horizontal",
+    align: "center"
+  });
+
+const facetedWithBottomLegend = source.facet({
+  field: "Origin",
+  columns: 1,
+  guides: { legend: "shared" }
+});
+```
+
+For a promoted top or bottom legend, the parent reserves a horizontal lane and
+keeps the child-grid width unchanged. Left and right legends reserve a vertical
+lane instead. If the source has no concrete legend and `facet` infers the
+legacy categorical shared legend, the default remains `right`. Subsequent
+`editCompositionLayout` calls preserve the promoted edge and alignment.
+
 Shared auto domains use the full faceted result; independent auto domains are
 resolved from each cell. An explicit semantic domain always wins. Regression,
 density, interval/error-band, and box-summary/outlier datasets are replayed
@@ -11657,7 +11694,10 @@ ancestor. Values preserve source first appearance; scale policies can be
 `"shared"` or `"independent"` by supported channel, and layered regression
 data and other supported statistical descendants are recomputed per cell.
 `guides: { axes: "outer" }` keeps axes only on occupied outer cells, while
-`guides: { legend: "shared" }` promotes one compatible parent-owned legend.
+`guides: { legend: "shared" }` promotes one compatible parent-owned legend at
+the child legend's configured `left`, `right`, `top`, or `bottom` edge. Top and
+bottom promotion also preserves the child legend's horizontal alignment;
+author those options with `createLegend` before calling `facet`.
 See [Program composition](./api/composition/#repeat-the-current-chart-by-a-field).
 
 ## `editFacetHeaders`

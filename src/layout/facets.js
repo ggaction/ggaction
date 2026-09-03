@@ -9,6 +9,11 @@ import {
 
 export const DEFAULT_FACET_LEGEND_GAP = 18;
 export const DEFAULT_FACET_LEGEND_WIDTH = 132;
+export const DEFAULT_FACET_LEGEND_HEIGHT = 0;
+
+const FACET_LEGEND_POSITIONS = Object.freeze([
+  "right", "left", "top", "bottom"
+]);
 
 function resolveColumns(columns, count) {
   const value = columns ?? count;
@@ -33,7 +38,9 @@ export function resolveFacetLayout({
   titleHeight = 0,
   sharedLegend = false,
   sharedLegendGap = DEFAULT_FACET_LEGEND_GAP,
-  sharedLegendWidth = DEFAULT_FACET_LEGEND_WIDTH
+  sharedLegendWidth = DEFAULT_FACET_LEGEND_WIDTH,
+  sharedLegendHeight = DEFAULT_FACET_LEGEND_HEIGHT,
+  sharedLegendPosition = "right"
 } = {}) {
   const values = children?.map(child => child?.value);
   const resolvedChildren = normalizeCompositionChildren(children?.map(
@@ -58,6 +65,20 @@ export function resolveFacetLayout({
     sharedLegendWidth,
     "Facet shared legend width"
   );
+  const legendHeight = validateCompositionSpacing(
+    sharedLegendHeight,
+    "Facet shared legend height"
+  );
+  if (!FACET_LEGEND_POSITIONS.includes(sharedLegendPosition)) {
+    throw new Error(
+      `Unknown facet shared legend position "${sharedLegendPosition}".`
+    );
+  }
+  const sideLegend = ["right", "left"].includes(sharedLegendPosition);
+  const beforeGrid = ["left", "top"].includes(sharedLegendPosition);
+  const legendLane = sharedLegend
+    ? legendGap + (sideLegend ? legendWidth : legendHeight)
+    : 0;
   const rowCount = Math.ceil(resolvedChildren.length / resolvedColumns);
   const columnWidths = Array(resolvedColumns).fill(-Infinity);
   const rowHeights = Array(rowCount).fill(-Infinity);
@@ -83,14 +104,16 @@ export function resolveFacetLayout({
       value: values[index],
       column,
       row,
-      x: columnStarts[column] + alignedOffset(
-        columnWidths[column] - child.width,
-        resolvedAlign
-      ),
-      y: rowStarts[row] + alignedOffset(
-        rowHeights[row] - child.height,
-        resolvedAlign
-      ),
+      x: columnStarts[column] + (beforeGrid && sideLegend ? legendLane : 0) +
+        alignedOffset(
+          columnWidths[column] - child.width,
+          resolvedAlign
+        ),
+      y: rowStarts[row] + (beforeGrid && !sideLegend ? legendLane : 0) +
+        alignedOffset(
+          rowHeights[row] - child.height,
+          resolvedAlign
+        ),
       width: child.width,
       height: child.height
     };
@@ -111,16 +134,22 @@ export function resolveFacetLayout({
     padding: resolvedPadding,
     titleHeight: resolvedTitleHeight,
     gridWidth,
-    width: gridWidth + (sharedLegend
-      ? legendGap + legendWidth
-      : 0),
-    height: gridHeight,
+    width: gridWidth + (sideLegend ? legendLane : 0),
+    height: gridHeight + (sideLegend ? 0 : legendLane),
     children: placements,
     ...(sharedLegend ? {
       legend: {
-        x: gridWidth + legendGap,
-        y: resolvedTitleHeight + resolvedPadding.top + 30,
-        width: legendWidth
+        position: sharedLegendPosition,
+        x: sharedLegendPosition === "right"
+          ? gridWidth + legendGap
+          : 0,
+        y: sharedLegendPosition === "bottom"
+          ? gridHeight + legendGap
+          : sharedLegendPosition === "top"
+            ? resolvedTitleHeight
+            : resolvedTitleHeight + resolvedPadding.top + 30,
+        width: legendWidth,
+        height: legendHeight
       }
     } : {})
   });

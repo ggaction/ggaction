@@ -69,7 +69,13 @@ export function resolveLegacyCategoricalLegend(program) {
   return {
     mode: "legacyCategorical",
     compatibility,
-    reservation: { gap: 18, width: 132 },
+    reservation: {
+      position: "right",
+      align: "center",
+      gap: 18,
+      width: 132,
+      height: 0
+    },
     legend: {
       field: config.field,
       mark: encodings[0].layer.mark.type,

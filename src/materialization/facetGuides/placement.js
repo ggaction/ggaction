@@ -33,12 +33,27 @@ function removeNamespacedGraphics(program, namespace, ids) {
 }
 
 function legendTranslation(prepared, plot, layout) {
+  const position = prepared.reservation.position;
+  if (["top", "bottom"].includes(position)) {
+    const width = prepared.bounds.right - prepared.bounds.left;
+    const left = prepared.reservation.align === "left"
+      ? plot.x
+      : prepared.reservation.align === "right"
+        ? plot.x + plot.width - width
+        : plot.x + (plot.width - width) / 2;
+    return {
+      x: left - prepared.bounds.left,
+      y: layout.legend.y - prepared.bounds.top
+    };
+  }
   const strips = prepared.source.graphicSpec.objects.colorGradientStrips;
   if (strips?.items?.[0] !== undefined) {
     const properties = strips.items[0].properties;
     const length = prepared.source.guideConfigs.legend.gradient.gradient.length;
     return {
-      x: layout.legend.x - properties.x,
+      x: layout.legend.x - (position === "left"
+        ? prepared.bounds.left
+        : properties.x),
       y: plot.y + (plot.height - length) / 2 - properties.y
     };
   }

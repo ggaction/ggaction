@@ -149,6 +149,27 @@ function compatibleLegendChildren(program, source, inferred) {
   });
 }
 
+function promotedLegendPlacement(source, kinds) {
+  const positioned = kinds.map(kind => source.guideConfigs.legend[kind])
+    .filter(config => config.position !== undefined);
+  const positions = new Set(positioned.map(config => config.position));
+  if (positions.size > 1) {
+    throw new Error(
+      "Shared facet legends must use one common edge position."
+    );
+  }
+  const aligns = new Set(positioned.map(config => config.align ?? "center"));
+  if (aligns.size > 1) {
+    throw new Error(
+      "Shared facet legends must use one common alignment."
+    );
+  }
+  return {
+    position: positioned[0]?.position ?? "right",
+    align: positioned[0]?.align ?? "center"
+  };
+}
+
 export function prepareSharedFacetLegend(program) {
   if (program.compositionSpec.facet.guides.legend !== "shared") {
     return undefined;
@@ -176,6 +197,8 @@ export function prepareSharedFacetLegend(program) {
     throw new Error("Shared facet legend has no measurable concrete bounds.");
   }
   const gradient = kinds.includes("gradient");
+  const placement = promotedLegendPlacement(source, kinds);
+  const width = Math.ceil(bounds.right - bounds.left);
   return {
     mode: "promoted",
     source,
@@ -185,8 +208,10 @@ export function prepareSharedFacetLegend(program) {
     bounds,
     compatibility,
     reservation: {
+      ...placement,
       gap: gradient ? 24 : 18,
-      width: gradient ? 112 : Math.max(132, Math.ceil(bounds.right - bounds.left))
+      width: Math.max(gradient ? 112 : 132, width),
+      height: Math.ceil(bounds.bottom - bounds.top)
     }
   };
 }
