@@ -59,9 +59,9 @@ test("loads release verification without package build dependencies", async t =>
   ));
   assert.equal(typeof isolated.verifyReleaseCandidate, "function");
   assert.deepEqual(isolated.validateReleaseIdentity({
-    tag: "v0.0.11",
-    ref: "refs/tags/v0.0.11",
-    packageVersion: "0.0.11",
-    lockVersion: "0.0.11"
-  }), { tag: "v0.0.11", version: "0.0.11" });
+    tag: "v0.0.12",
+    ref: "refs/tags/v0.0.12",
+    packageVersion: "0.0.12",
+    lockVersion: "0.0.12"
+  }), { tag: "v0.0.12", version: "0.0.12" });
 });
