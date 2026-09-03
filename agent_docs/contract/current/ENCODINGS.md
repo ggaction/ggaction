@@ -274,25 +274,29 @@ type AggregateOperation =
   timestamp로 해석한다.
 - Current scale vocabulary는 UTC temporal `time`, discrete position `band | point`, appearance/offset
   `ordinal`, quantitative `linear`과 point-only transformed aliases다.
-- Horizontal `layout: "group"`은 yOffset이 없으므로 명시적으로 거부한다. Stack/fill/overlay/diverging은
-  quantitative x measure에서 materialize한다.
+- Horizontal `layout: "group"`은 yOffset을 사용한다. Stack/fill/overlay/diverging은 quantitative x measure에서
+  materialize한다.
 - Evidence: `test/unit/grammar/position-compatibility.test.js`, scale temporal normalization tests,
   point mixed-position tests, jobs `temporal-x`/`horizontal-bar` primitive-public exact pairs.
 
 ## `encodeXOffset`
 
 - Signature: `encodeXOffset({ field, target?, fieldType?, scale?, paddingInner?, paddingOuter? })`
-- `field`: categorical grouping field. complete histogram 또는 ordinal aggregate bar에 허용된다. Existing grouped
-  color가 있으면 같은 field만 직접 설정할 수 있고 field 교체는 atomic `encodeColor`가 소유한다.
-- `target`: optional eligible bar ID.
+- `field`: categorical grouping field. Categorical x position을 가진 point/rule 또는 complete histogram/ordinal
+  aggregate bar에 허용된다. Existing grouped bar color가 있으면 같은 field만 직접 설정할 수 있고 field 교체는
+  atomic `encodeColor`가 소유한다.
+- `target`: optional eligible bar, point, or rule ID.
 - `fieldType`: `"nominal" | "ordinal"`; 기본값은 nominal이다.
-- `scale`: ordinal scale contract; 기본 ID `xOffset`, domain은 grouping order, range는 parent x band다.
+- `scale`: ordinal scale contract; 기본 ID `xOffset`, domain은 grouping order, automatic range는 parent x band 또는
+  point-scale step 크기의 categorical slot이다.
 - `paddingInner`: finite `[0, 1)`, sibling slot 사이의 step fraction. 기본값은 `0`이다.
 - `paddingOuter`: non-negative finite, 첫/마지막 slot 바깥의 step fraction. 기본값은 `0`이다.
-- Effect: x band 안에 group sub-band를 만들고 padding intent를 immutable mark materialization config에
+- Effect: parent x category 안에 group sub-slots를 만들고 padding intent를 immutable mark materialization config에
   저장한다. 같은 field 재호출에서 생략한 padding은 기존 값을 유지한다. Explicit/reversed range endpoint를
-  유지한 채 signed step, start와 positive bandwidth를 계산하고 dependent bar를 rematerialize한다.
-- Shared xOffset scale의 consumer는 같은 padding policy와 parent bandwidth를 사용해야 한다.
+  유지한 채 signed step, start와 positive bandwidth를 계산한다. Bar는 sub-band rectangle을, point와 rule은
+  sub-slot center를 사용한다. Parent/offset scale, Canvas 또는 data가 바뀌면 dependent mark를 rematerialize한다.
+- Shared xOffset scale의 consumer는 같은 padding policy와 같은 크기의 resolved parent categorical slot을 사용해야
+  한다.
 
 ### Formal values — `encodeXOffset`
 
@@ -303,7 +307,7 @@ type AggregateOperation =
 ### Value coverage — `encodeXOffset`
 
 - `field`, `target`
-  - ✅ Covered: nominal grouping field, explicit/inferred eligible grouped bar, missing/incompatible prerequisites.
+  - ✅ Covered: nominal grouping field, explicit/inferred eligible bar/point/rule, missing/incompatible prerequisites.
 - `fieldType`
   - ✅ Covered: `"nominal" | "ordinal"`와 invalid alternatives.
 - `scale.id/type/domain/range`
@@ -313,15 +317,18 @@ type AggregateOperation =
     zero-bandwidth와 shared-policy rejection.
 - Reassignment
   - ✅ Covered: same-field scale/padding edit, grouped color mismatch rejection와 atomic color-owned field change.
+- Point/rule materialization
+  - ✅ Covered: categorical point-scale slots, reversed offset range, parent scale edit, Canvas resize, vertical error-bar
+    main/cap alignment and cap reconstruction.
 - Evidence: `test/unit/actions/encodings/x-offset-encoding.test.js`.
 
 ## `encodeYOffset`
 
 - Signature: `encodeYOffset({ field, target?, fieldType?, scale?, paddingInner?, paddingOuter? })`
-- `encodeXOffset`과 같은 categorical sub-band 계약을 y category band에 적용한다. Horizontal aggregate bar의
-  complete x/y encoding이 필요하고 grouped color가 있으면 같은 field를 사용해야 한다.
-- 기본 scale ID는 `yOffset`이며 auto range는 parent y band다. Explicit/reversed range, padding intent,
-  Canvas rematerialization과 shared-consumer compatibility는 xOffset과 동일하다.
+- `encodeXOffset`과 같은 categorical sub-slot 계약을 y category에 적용한다. Categorical y를 가진 point/rule 또는
+  horizontal aggregate bar를 지원하며 grouped bar color가 있으면 같은 field를 사용해야 한다.
+- 기본 scale ID는 `yOffset`이며 auto range는 parent y band 또는 point-scale step 크기다. Explicit/reversed range,
+  padding intent, Canvas/parent-scale rematerialization과 shared-consumer compatibility는 xOffset과 동일하다.
 - `encodeColor({ layout: "group" })`은 horizontal bar에서 이 action을 wrapped child로 호출한다.
 
 ### Formal values — `encodeYOffset`
@@ -332,9 +339,9 @@ type AggregateOperation =
 
 ### Value coverage — `encodeYOffset`
 
-- ✅ Covered: direct and color-owned assignment, nominal/ordinal field types, default and explicit scale definitions,
-  padding, reversed range, Canvas rematerialization, explicit color-domain reassignment, incompatible orientation and
-  earlier-program immutability.
+- ✅ Covered: direct and color-owned assignment, bar/point/rule targets, nominal/ordinal field types, default and explicit
+  scale definitions, padding, reversed range, Canvas rematerialization, explicit color-domain reassignment, incompatible
+  orientation and earlier-program immutability.
 - Evidence: `test/unit/actions/encodings/y-offset-encoding.test.js`,
   `test/charts/jobs-horizontal-grouped-bar/public.test.js`.
 

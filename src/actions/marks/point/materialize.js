@@ -22,7 +22,10 @@ import {
 import { findDataset } from "../../../selectors/datasets.js";
 import { findLayer } from "../../../selectors/layers.js";
 import { rematerializeHighlightBaseline } from "../lifecycle.js";
-import { resolveRowEncodingValues } from
+import {
+  resolveRowEncodingValues,
+  resolveRowPositionValues
+} from
   "../../../materialization/rowEncoding.js";
 
 const REMATERIALIZE_OPTIONS = Object.freeze(["id"]);
@@ -33,8 +36,8 @@ function resolvePointPositions(program, layer, dataset) {
     layer.encoding?.radius !== undefined;
   if (!hasPolar) {
     return {
-      x: resolveRowEncodingValues(program, layer, dataset, "x"),
-      y: resolveRowEncodingValues(program, layer, dataset, "y")
+      x: resolveRowPositionValues(program, layer, dataset, "x"),
+      y: resolveRowPositionValues(program, layer, dataset, "y")
     };
   }
   const theta = resolveRowEncodingValues(program, layer, dataset, "theta");
@@ -222,8 +225,20 @@ export const rematerializePointMark = action(
       resetValue: []
     });
     if (highlighted !== undefined) return highlighted;
-    const layer = findLayer(this, id);
-    const graphic = this.graphicSpec.objects[id];
+    let resolved = this;
+    const initialLayer = findLayer(resolved, id);
+    for (const channel of ["xOffset", "yOffset"]) {
+      const scaleId = initialLayer?.encoding?.[channel]?.scale;
+      if (scaleId !== undefined) {
+        resolved = resolved.rematerializeScale({
+          id: scaleId,
+          guides: false,
+          marks: false
+        });
+      }
+    }
+    const layer = findLayer(resolved, id);
+    const graphic = resolved.graphicSpec.objects[id];
 
     if (layer?.mark?.type !== "point") {
       throw new Error(`Unknown point mark "${id}".`);
@@ -231,18 +246,23 @@ export const rematerializePointMark = action(
     if (!["circle", "rect", "path", "collection"].includes(graphic?.type)) {
       throw new Error(`Point mark "${id}" requires point graphics.`);
     }
-    const dataset = findDataset(this, layer.data);
+    const dataset = findDataset(resolved, layer.data);
     if (dataset === undefined) {
       throw new Error(`Point mark "${id}" requires an existing dataset.`);
     }
 
-    const positions = resolvePointPositions(this, layer, dataset);
-    const mappedFill = resolveRowEncodingValues(this, layer, dataset, "color");
-    const area = resolveRowEncodingValues(this, layer, dataset, "size");
-    const encodedShape = resolveRowEncodingValues(this, layer, dataset, "shape");
-    const encodedOpacity = resolveRowEncodingValues(this, layer, dataset, "opacity");
+    const positions = resolvePointPositions(resolved, layer, dataset);
+    const mappedFill = resolveRowEncodingValues(resolved, layer, dataset, "color");
+    const area = resolveRowEncodingValues(resolved, layer, dataset, "size");
+    const encodedShape = resolveRowEncodingValues(resolved, layer, dataset, "shape");
+    const encodedOpacity = resolveRowEncodingValues(
+      resolved,
+      layer,
+      dataset,
+      "opacity"
+    );
     const angles = resolveDirectionValues(dataset.values, layer.encoding?.angle);
-    const config = this.markConfigs[id] ?? {};
+    const config = resolved.markConfigs[id] ?? {};
     const fill = mappedFill ?? config.fill ?? DEFAULT_POINT_FILL;
     const shapes = encodedShape ?? dataset.values.map(() => config.shape ?? "circle");
     const existingChildren = graphic.items ?? [];
@@ -252,7 +272,7 @@ export const rematerializePointMark = action(
       angles !== undefined ||
       graphic.type === "collection" ||
       getPointGraphicType(constantShape) !== graphic.type;
-    const jittered = applyPointJitter(this, {
+    const jittered = applyPointJitter(resolved, {
       id,
       layer,
       dataset,

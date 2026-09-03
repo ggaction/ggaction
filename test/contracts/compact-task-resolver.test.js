@@ -252,6 +252,14 @@ test("uses the regression owner for its fitted line and uncertainty ribbon", () 
   ]);
 });
 
+test("routes point-and-whisker language to the error-bar action", () => {
+  const packet = searchGgaction("Create a grouped point-and-whisker plot.");
+  assert.deepEqual(packet.matchedConstraints, ["statistics.errorBar"]);
+  assert.deepEqual(packet.actionPlan.map(entry => entry.id), [
+    "action.createErrorBar"
+  ]);
+});
+
 test("injects an executable point source for an explicit regression-layer request", () => {
   const packet = searchGgaction(
     "Derive regression data, add a path mark with map to x and map to y, " +

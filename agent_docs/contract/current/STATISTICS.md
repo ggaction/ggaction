@@ -35,7 +35,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 
 ## `createErrorBar`
 
-- Current signature: `createErrorBar({ id?, target?, data?, x?, y?, groupBy?, coordinate?, caps?, capSize?, stroke?, strokeWidth?, strokeDash?, opacity? } = {})`.
+- Current signature: `createErrorBar({ id?, target?, data?, x?, y?, xOffset?, yOffset?, groupBy?, coordinate?, caps?, capSize?, stroke?, strokeWidth?, strokeDash?, opacity? } = {})`.
 - Exactly one of x/y is an identifiable quantitative interval channel and the other is a quantitative, nominal,
   ordinal, or temporal position channel. Interval options such as `lower`/`upper` disambiguate a quantitative
   position from a quantitative interval. This supports vertical or horizontal orientation without a separate
@@ -53,11 +53,17 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - The independent position field is always statistical grouping. A persisted `group` encoding adds its field;
   color is appearance and never silently becomes grouping. Two quantitative axes or multiple source layers
   require explicit disambiguation.
+- A categorical independent position may add its matching `xOffset` or `yOffset`. The offset accepts
+  `{ field?, fieldType?, scale?, paddingInner?, paddingOuter? }`, is inferred from an encoded source when omitted, and
+  adds its field to statistical grouping. Main rule and both caps reuse the same ordinal offset scale and padding as the
+  source point. The opposite-direction offset and offsets on quantitative/temporal independent positions are rejected.
 - Omitted `id` resolves once to `"errorBar"`; child data and rules are namespaced as
   `errorBarIntervalData`, `errorBarLowerCap`, and `errorBarUpperCap`.
 - Effect: statistical mode calls wrapped `createIntervalData`; explicit mode uses the source dataset directly.
   The aggregate then calls main `createRuleMark`, endpoint/style assignments and, unless `caps: false`, two
-  wrapped `createErrorBarCap` components. Vertical intervals store x/y/y2 and horizontal intervals y/x/x2.
+  wrapped `createErrorBarCap` components. Vertical intervals store x/y/y2 and optional xOffset; horizontal intervals
+  store y/x/x2 and optional yOffset. Offset center mapping survives Canvas/parent-scale rematerialization and cap
+  removal/restoration.
 - Appearance defaults are enabled 8-logical-pixel caps, `#4c78a8`, width `1.5`, solid dash and opacity `1`.
   `capSize` is a positive finite graphical span. Stroke width is non-negative, opacity is in `[0, 1]`, and dash
   accepts the shared named styles or an explicit dash pattern. Fixed cap spans survive Canvas/scale
@@ -66,7 +72,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 
 ### Formal values — `createErrorBar`
 
-- Implemented: `createErrorBar({ id?: UserId; target?: UserId; data?: UserId; x?: PositionChannel | StatisticalIntervalChannel | ExplicitIntervalChannel; y?: PositionChannel | StatisticalIntervalChannel | ExplicitIntervalChannel; groupBy?: FieldName; coordinate?: UserId; caps?: boolean; capSize?: PositiveFinite; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; strokeDash?: DashStyle | DashPattern; opacity?: UnitInterval } = {})`, where `PositionChannel = { field?: FieldName; fieldType?: "quantitative" | "nominal" | "ordinal" | "temporal"; scale?: PositionScale }`, `StatisticalIntervalChannel = { field?: FieldName; center?: "mean" | "median"; extent?: "stderr" | "stdev" | "ci" | "iqr"; level?: UnitIntervalExclusive; scale?: PositionScale }`, and `ExplicitIntervalChannel = { center: FieldName; lower: FieldName; upper: FieldName; scale?: PositionScale }`.
+- Implemented: `createErrorBar({ id?: UserId; target?: UserId; data?: UserId; x?: PositionChannel | StatisticalIntervalChannel | ExplicitIntervalChannel; y?: PositionChannel | StatisticalIntervalChannel | ExplicitIntervalChannel; xOffset?: OffsetChannel; yOffset?: OffsetChannel; groupBy?: FieldName; coordinate?: UserId; caps?: boolean; capSize?: PositiveFinite; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; strokeDash?: DashStyle | DashPattern; opacity?: UnitInterval } = {})`, where `PositionChannel = { field?: FieldName; fieldType?: "quantitative" | "nominal" | "ordinal" | "temporal"; scale?: PositionScale }`, `OffsetChannel = { field?: FieldName; fieldType?: "nominal" | "ordinal"; scale?: OffsetScale; paddingInner?: UnitIntervalLessThan1; paddingOuter?: NonNegativeFinite }`, `StatisticalIntervalChannel = { field?: FieldName; center?: "mean" | "median"; extent?: "stderr" | "stdev" | "ci" | "iqr"; level?: UnitIntervalExclusive; scale?: PositionScale }`, and `ExplicitIntervalChannel = { center: FieldName; lower: FieldName; upper: FieldName; scale?: PositionScale }`.
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
@@ -78,6 +84,8 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
   stroke/width/dash/opacity, statistical/explicit convergence, deterministic namespacing and complete child trace.
 - ✅ Covered: explicit intervals on a quantitative independent position and shared transformed-scale
   rematerialization of the main rule and both caps.
+- ✅ Covered: inferred vertical xOffset and explicit horizontal yOffset, automatic inclusion in statistical grouping,
+  shared point/main/cap centers, padding, Canvas resize, cap removal/restoration, orientation and parent-type rejection.
 - ✅ Covered: fixed cap span through Canvas and shared-scale rematerialization, six primitive/public
   semantic-graphic-Canvas/pixel pairs, immutable source rows and atomic validation failure.
 - ✅ Covered: executable child trace and interval tests cover custom center/extent/level forwarding; visual variants
@@ -90,7 +98,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - Signature: `editErrorBar({ target?, caps?, capSize?, stroke?, strokeWidth?, strokeDash?, opacity?, statistics? })`.
 - `target` selects the stable main error-bar layer; omission uses current/unique eligible owner inference.
 - Omitted appearance leaves the stored value unchanged. `caps: false` removes both owned cap layers and graphics;
-  `caps: true` restores missing caps from the owner's stored data, fields, coordinate and scales.
+  `caps: true` restores missing caps from the owner's stored data, fields, coordinate, position/offset scales and padding.
 - `statistics: { center?, extent?, level? }` is valid only for a statistical interval owner. It partially merges with
   stored interval provenance, validates the complete center/extent/level combination, creates one namespaced immutable
   interval revision, explicitly rebinds the main rule and enabled caps, rematerializes them, and safely releases the

@@ -871,9 +871,10 @@ encodeXOffset({
 })
 ```
 
-Create or compatibly update an advanced nominal offset scale within an ordinal
-bar x band. Padding defaults to zero and is preserved when omitted on a later
-same-field call. Grouped color layout normally invokes this action automatically.
+Create or compatibly update a categorical sub-slot scale within a bar, point, or
+rule x category. Point/rule marks use slot centers; bars use slot bandwidth.
+Padding defaults to zero and is preserved on a later same-field call. Grouped
+bar color layout normally invokes this action automatically.
 [Position encodings](../api/position-encodings.md)
 
 ### `encodeYOffset`
@@ -885,9 +886,9 @@ encodeYOffset({
 ```
 
 Create or compatibly update the corresponding categorical offset scale within
-an ordinal bar y band. Horizontal grouped color layout invokes this action as a
-wrapped child; explicit domain order, reversed range, and padding follow the
-same contract as `encodeXOffset`.
+a bar, point, or rule y category. Horizontal grouped bar color invokes this
+action as a wrapped child; explicit domain order, reversed range, and padding
+follow the same contract as `encodeXOffset`.
 [Position encodings](../api/position-encodings.md)
 
 ### `encodeHistogram`
@@ -1156,7 +1157,7 @@ removes grouping. Component-only changes retain the current fitted rows.
 
 ```javascript
 createErrorBar({
-  id?, target?, data?, x?, y?, groupBy?, coordinate?,
+  id?, target?, data?, x?, y?, xOffset?, yOffset?, groupBy?, coordinate?,
   caps?, capSize?, stroke?, strokeWidth?, strokeDash?, opacity?
 } = {})
 ```
@@ -1164,7 +1165,9 @@ createErrorBar({
 Create vertical or horizontal statistical or explicit intervals. With one
 eligible encoded layer, the shortest call infers its fields, orientation, data,
 coordinate, and scales. Explicit interval fields also allow the independent
-position to be quantitative.
+position to be quantitative. A categorical source can also infer a matching
+xOffset/yOffset; its field joins statistical grouping and aligns source points,
+the main rule, and both caps on one shared sub-slot scale.
 [Error bars](../api/error-bars.md)
 
 ### `editErrorBar`

@@ -2943,7 +2943,7 @@
       "name": "encodeXOffset",
       "layer": "user-facing",
       "domain": "encodings",
-      "summary": "Create or compatibly update an advanced nominal offset scale within an ordinal bar x band.",
+      "summary": "Create or compatibly update a categorical sub-slot scale within a bar, point, or rule x category.",
       "signature": "encodeXOffset(options: XOffsetEncodingOptions): ChartProgram;",
       "intents": [
         "encode x offset",
@@ -3012,7 +3012,7 @@
       "name": "encodeYOffset",
       "layer": "user-facing",
       "domain": "encodings",
-      "summary": "Create or compatibly update the corresponding categorical offset scale within an ordinal bar y band.",
+      "summary": "Create or compatibly update the corresponding categorical offset scale within a bar, point, or rule y category.",
       "signature": "encodeYOffset(options: YOffsetEncodingOptions): ChartProgram;",
       "intents": [
         "encode y offset",
@@ -4493,6 +4493,16 @@
           "type": "ErrorBarIntervalChannel | ErrorBarPositionChannel | undefined"
         },
         {
+          "name": "xOffset",
+          "required": false,
+          "type": "ErrorBarOffsetChannel | undefined"
+        },
+        {
+          "name": "yOffset",
+          "required": false,
+          "type": "ErrorBarOffsetChannel | undefined"
+        },
+        {
           "name": "groupBy",
           "required": false,
           "type": "string | undefined"
@@ -4534,7 +4544,7 @@
         }
       ],
       "callPatterns": [
-        "createErrorBar({ id?, target?, data?, coordinate?, x?, y?, groupBy?, caps? })"
+        "createErrorBar({ id?, target?, data?, coordinate?, x?, y?, xOffset?, yOffset? })"
       ],
       "snippet": "program.createErrorBar({})",
       "errors": [],

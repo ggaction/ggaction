@@ -5751,6 +5751,8 @@ createErrorBar({
   data?: string;
   x?: PositionChannel | StatisticalIntervalChannel | ExplicitIntervalChannel;
   y?: PositionChannel | StatisticalIntervalChannel | ExplicitIntervalChannel;
+  xOffset?: OffsetChannel;
+  yOffset?: OffsetChannel;
   groupBy?: string;
   coordinate?: string;
   caps?: boolean;
@@ -5785,6 +5787,14 @@ type ExplicitIntervalChannel = {
   upper: string;
   scale?: ScaleOptions;
 };
+
+type OffsetChannel = {
+  field?: string;
+  fieldType?: "nominal" | "ordinal";
+  scale?: OffsetScaleOptions;
+  paddingInner?: number;
+  paddingOuter?: number;
+};
 ```
 
 Exactly one channel is positional and the other is quantitative. Putting the
@@ -5796,6 +5806,46 @@ No orientation flag is required. Statistical mean defaults to a two-sided
 The independent position field is always part of statistical grouping.
 `groupBy` can add one more grouping field. Group order follows first appearance
 in the source data. Groups without enough valid quantitative values are omitted.
+
+### Grouped point-and-whisker positions
+
+Use `encodeXOffset` or `encodeYOffset` when more than one estimate belongs to a
+category. An error bar inferred from that point layer reuses the offset field,
+scale, domain order, and padding automatically:
+
+```javascript
+const grouped = chart()
+  .createCanvas()
+  .createData({ values: rows })
+  .createPointMark({ id: "estimates" })
+  .encodeX({ field: "metric", fieldType: "ordinal" })
+  .encodeY({ field: "value" })
+  .encodeXOffset({
+    field: "model",
+    paddingInner: 0.2,
+    paddingOuter: 0.1
+  })
+  .createErrorBar({ target: "estimates" });
+```
+
+Statistical mode groups by both `metric` and `model`, so each model receives a
+separate interval. The source point, main interval rule, and both fixed-width
+caps use the same sub-slot center. That alignment is recomputed after Canvas,
+parent-position-scale, offset-scale, or data changes.
+
+For a direct facade without a source layer, pass the matching offset explicitly:
+
+```javascript
+program.createErrorBar({
+  x: { field: "metric", fieldType: "nominal" },
+  y: { center: "estimate", lower: "lower", upper: "upper" },
+  xOffset: { field: "model", paddingInner: 0.2 }
+});
+```
+
+Vertical intervals accept only `xOffset`; horizontal intervals accept only
+`yOffset`. The independent position must be nominal or ordinal. Numeric and
+temporal positions do not have category slots and therefore reject offsets.
 
 ### Quantitative independent positions
 
@@ -5884,7 +5934,8 @@ const overlay = chart()
 With omitted x and y, `target` selects an existing layer. Without `target`, the
 action uses the current eligible layer, then one unique eligible layer. The
 layer may use any compatible mark type; eligibility comes from its complete
-field-based x/y encodings. Data, coordinate, and x/y scale IDs are reused.
+field-based x/y encodings. Data, coordinate, x/y scale IDs, and a matching
+categorical xOffset/yOffset assignment are reused.
 Passing only an existing scale `id` also preserves that scale's stored domain,
 range, `nice`, and `zero` policy; interval defaults are used only for new scales.
 
@@ -5953,7 +6004,8 @@ only for confidence intervals. Explicit center/lower/upper owners reject a
 statistics edit instead of converting modes.
 
 `caps: false` removes both owned cap resources. A later `caps: true` recreates
-them from the owner's stored data, fields, coordinate, and scales. The main
+them from the owner's stored data, fields, coordinate, position/offset scales,
+and offset padding. The main
 interval retains its current dataset unless `statistics` is supplied.
 The complete request is validated before the wrapped rematerialization runs.
 
@@ -7373,7 +7425,7 @@ resolve a channel scale, and explicitly materialize the affected graphics.
 | Estimate a distribution | area mark, quantitative field | `encodeDensity` | [Encodings](./api/encodings/#atomic-density) |
 | Center aligned area series | area mark, quantitative/temporal x, non-negative quantitative y, nominal group | `encodeY({ stack: "center" })` or `encodeColor({ layout: "center" })` | [Color encoding](./api/series/color/#center-stacked-areas) |
 | Draw full-span or bounded rules | rule mark, field or datum endpoints | `encodeX`, `encodeY`, `encodeX2`, `encodeY2` | [Rule endpoints](./api/position-encodings/#rule-endpoints) |
-| Control within-band grouping | complete ordinal-bar positions | `encodeXOffset`, `encodeYOffset` | [Offsets](./api/position/offsets/) |
+| Control within-category grouping | categorical bar, point, or rule position | `encodeXOffset`, `encodeYOffset` | [Offsets](./api/position/offsets/) |
 
 For ordinary grouped bar charts, prefer
 `encodeColor({ field, layout: "group" })`; it calls the matching advanced
@@ -7885,8 +7937,8 @@ zero-height rectangles. Grouped histograms require categorical color with
 
 | Action | Shortest call | Required state | Result |
 | --- | --- | --- | --- |
-| `encodeXOffset` | `encodeXOffset({ field: "group" })` | ordinal x bar | Nominal slots inside each x band |
-| `encodeYOffset` | `encodeYOffset({ field: "group" })` | ordinal y bar | Nominal slots inside each y band |
+| `encodeXOffset` | `encodeXOffset({ field: "group" })` | categorical x on bar, point, or rule | Nominal slots inside each x category |
+| `encodeYOffset` | `encodeYOffset({ field: "group" })` | categorical y on bar, point, or rule | Nominal slots inside each y category |
 
 Most chart authors should use:
 
@@ -7903,7 +7955,7 @@ horizontal bar as a wrapped child with the same field.
 | --- | --- | --- |
 | `field` | non-empty string | required |
 | `fieldType` | `"nominal"` or `"ordinal"` | `"nominal"` |
-| `target` | aggregate bar mark ID | current mark |
+| `target` | bar, point, or rule mark ID | current eligible mark |
 | `scale.id` | scale ID | channel name: `"xOffset"` or `"yOffset"` |
 | `scale.type` | `"ordinal"` | `"ordinal"` |
 | `scale.domain` | `"auto"` or unique nominal values | `"auto"` |
@@ -7911,12 +7963,14 @@ horizontal bar as a wrapped child with the same field.
 | `paddingInner` | finite number from `0` inclusive to `1` exclusive | `0` |
 | `paddingOuter` | non-negative finite number | `0` |
 
-The automatic range is the parent category bandwidth, not the full plot range.
-Its step divides one ordinal x or y band into equal categorical slots. Explicit domain order and
+The automatic range is one parent category slot, not the full plot range. Bars use
+the parent band width; point and rule marks use the parent point-scale step.
+The offset step divides that slot into equal categorical sub-slots. Explicit domain order and
 reversed ranges are supported. Inner padding reduces each slot bandwidth;
 outer padding reserves step fractions before the first and after the last slot.
 Calling the action again for the same field preserves omitted padding values.
-This action resolves slot geometry but does not create rectangles by itself.
+Bars use the resolved sub-band width. Point and rule rows use each sub-slot center,
+which makes point-and-whisker layers share exact positions.
 
 When grouped color already exists, direct offset calls must use the same field.
 Change both fields atomically with `encodeColor({ field: next, layout: "group" })`.
@@ -7925,10 +7979,10 @@ legend while preserving explicit legend titles and styles.
 
 ## Errors and limitations
 
-`xOffset` requires one resolved ordinal x bandwidth; `yOffset` requires one
-resolved ordinal y bandwidth. Color and offset domains must have identical
+`xOffset` requires a categorical x parent; `yOffset` requires a categorical y
+parent. Color and offset domains must have identical
 order before grouped rectangles can be materialized. Every consumer of one
-shared offset scale must use the same padding policy and parent bandwidth.
+shared offset scale must use the same padding policy and parent slot size.
 
 ## Related
 
@@ -12241,9 +12295,10 @@ encodeXOffset({
 })
 ```
 
-Create or compatibly update an advanced nominal offset scale within an ordinal
-bar x band. Padding defaults to zero and is preserved when omitted on a later
-same-field call. Grouped color layout normally invokes this action automatically.
+Create or compatibly update a categorical sub-slot scale within a bar, point, or
+rule x category. Point/rule marks use slot centers; bars use slot bandwidth.
+Padding defaults to zero and is preserved on a later same-field call. Grouped
+bar color layout normally invokes this action automatically.
 [Position encodings](./api/position-encodings/)
 
 ## `encodeYOffset`
@@ -12255,9 +12310,9 @@ encodeYOffset({
 ```
 
 Create or compatibly update the corresponding categorical offset scale within
-an ordinal bar y band. Horizontal grouped color layout invokes this action as a
-wrapped child; explicit domain order, reversed range, and padding follow the
-same contract as `encodeXOffset`.
+a bar, point, or rule y category. Horizontal grouped bar color invokes this
+action as a wrapped child; explicit domain order, reversed range, and padding
+follow the same contract as `encodeXOffset`.
 [Position encodings](./api/position-encodings/)
 
 ## `encodeHistogram`
@@ -12546,7 +12601,7 @@ removes grouping. Component-only changes retain the current fitted rows.
 
 ```javascript
 createErrorBar({
-  id?, target?, data?, x?, y?, groupBy?, coordinate?,
+  id?, target?, data?, x?, y?, xOffset?, yOffset?, groupBy?, coordinate?,
   caps?, capSize?, stroke?, strokeWidth?, strokeDash?, opacity?
 } = {})
 ```
@@ -12554,7 +12609,9 @@ createErrorBar({
 Create vertical or horizontal statistical or explicit intervals. With one
 eligible encoded layer, the shortest call infers its fields, orientation, data,
 coordinate, and scales. Explicit interval fields also allow the independent
-position to be quantitative.
+position to be quantitative. A categorical source can also infer a matching
+xOffset/yOffset; its field joins statistical grouping and aligns source points,
+the main rule, and both caps on one shared sub-slot scale.
 [Error bars](./api/error-bars/)
 
 ## `editErrorBar`

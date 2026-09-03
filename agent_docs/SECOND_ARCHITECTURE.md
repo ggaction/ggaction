@@ -682,10 +682,10 @@ materializationConfigs.marks.points.opacity = 0.27;
 graphicSpec.objects.points.items[0].properties.opacity = 0.27;
 ```
 
-Grouped bar의 width mode와 directional offset padding도 semantic scale에 중복 저장하지 않는다.
+Grouped mark의 directional offset padding과 grouped bar의 width mode도 semantic scale에 중복 저장하지 않는다.
 `materializationConfigs.marks[target].barWidth`는 mutually exclusive band/pixel intent를,
 `materializationConfigs.marks[target].xOffset | yOffset`은 inner/outer padding intent를 소유한다. Scale
-materializer는 shared offset consumer의 padding policy와 parent bandwidth가 일치하는지 검증한 뒤
+materializer는 shared offset consumer의 padding policy와 parent categorical slot 크기가 일치하는지 검증한 뒤
 signed step, start와 concrete bandwidth를 `resolvedScales`에 계산한다.
 
 `group`은 path를 series로 나누는 semantic channel이지만 scale이나 guide를 만들지
@@ -694,7 +694,8 @@ signed step, start와 concrete bandwidth를 `resolvedScales`에 계산한다.
 만들지 않고, 같은 order 값은 source row order로 안정화하며 repeated position도 별도 vertex로 보존한다.
 생략하면 기존 independent-position automatic sort가 그대로 동작하고 `removePathOrder`는 explicit branch를
 제거해 그 동작으로 복귀한다. `y2`는 area upper bound이며 기존 y scale을 정확히 공유한다. `xOffset`과 `yOffset`은 ordinal
-category band 안의 grouped-bar sub-band를 표현한다. Primary positional encoding의 optional `title`은
+category slot 안의 grouped sub-slot을 표현한다. Bar는 resolved bandwidth를 rectangle에 적용하고 point/rule은
+sub-slot center를 parent position에 더한다. Primary positional encoding의 optional `title`은
 field 또는 transform provenance에서 추론되는 guide title을 명시적으로 덮어쓰는 semantic text다.
 Guide materializer는 이 값을 가장 먼저 읽으며 renderer가 title을 다시 추론하지 않는다.
 
@@ -742,7 +743,8 @@ boolean policy, transformed parameter, interpolation, padding과 align을 검증
 domain/range의 concrete value contract만 제공한다.
 Category position은 width가 필요한 bar에서 `band`, center만 필요한 point/rule에서 `point`를 사용하고
 appearance/offset lookup은 `ordinal`이 소유한다. Band/point는 signed step, aligned start와 각각 positive/zero
-bandwidth를 resolved state에 저장한다. Channel default ID는 일반적으로
+bandwidth를 resolved state에 저장한다. Offset auto range는 positive band bandwidth를 우선하고 point position에서는
+absolute step을 하나의 categorical slot 크기로 사용한다. Channel default ID는 일반적으로
 `x`, `y`, `color`, `size`, `shape`, `strokeDash`, `xOffset`, `yOffset`처럼 channel 이름을 쓴다.
 독립 scale이 필요할 때 명시적 ID를 제공한다.
 
@@ -986,7 +988,7 @@ resolvedScales.x = {
 ```
 
 Ordinal positional scale은 domain/range 외에 step과 bandwidth 같은 geometry를 가질 수
-있다. `xOffset`과 `yOffset`은 각각 parent x/y bandwidth를 읽어 sub-band를 만든다. Color, dash, shape,
+있다. `xOffset`과 `yOffset`은 각각 parent x/y band 또는 point-step slot을 읽어 sub-slot을 만든다. Color, dash, shape,
 size scale은 concrete palette 또는 range를 저장한다.
 
 `resolvedScales`는 renderer input이 아니다. Action materializer가 concrete mark와 guide
@@ -1894,7 +1896,7 @@ createErrorBar
 ├─ createIntervalData? (statistical mode only)
 │  ├─ createDerivedData
 │  └─ materializeIntervalData
-├─ createRuleMark + encodeX/encodeY + encodeX2/encodeY2
+├─ createRuleMark + encodeX/encodeY + encodeX2/encodeY2 + encodeXOffset/encodeYOffset?
 ├─ appearance encoding actions
 ├─ createErrorBarCap? (caps enabled)
 │  └─ materializeRuleSpan
@@ -1908,8 +1910,10 @@ infer한다. 두 channel이 모두 quantitative이면 explicit interval fields�
 axis를 명확히 결정해야 한다. Statistical mode는 source row에서
 mean/median interval을 만들고 explicit mode는 existing center/lower/upper field를 사용한다. Existing encoded
 layer에서 data, coordinate, x/y field와 scale을 추론할 때 mark type이 아니라 persisted encoding capability를
-selector predicate로 검사한다. Color는 appearance이고 `encoding.group`만 추가 statistical grouping으로
-해석한다. Main rule과 optional fixed-pixel caps는 shared stroke/width/dash/opacity assignment를 사용하며
+selector predicate로 검사한다. Color는 appearance이고 `encoding.group`만 일반 series grouping으로 해석한다.
+Matching categorical xOffset/yOffset이 있으면 offset field도 statistical grouping에 포함하고 source point, main rule,
+fixed-pixel caps가 동일한 ordinal offset scale과 padding을 공유한다. Main rule과 optional fixed-pixel caps는 shared
+stroke/width/dash/opacity assignment를 사용하며
 ordinary resource로 저장된다. 별도 composite registry는 만들지 않는다.
 
 ### Error band

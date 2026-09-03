@@ -37,6 +37,8 @@ createErrorBar({
   data?: string;
   x?: PositionChannel | StatisticalIntervalChannel | ExplicitIntervalChannel;
   y?: PositionChannel | StatisticalIntervalChannel | ExplicitIntervalChannel;
+  xOffset?: OffsetChannel;
+  yOffset?: OffsetChannel;
   groupBy?: string;
   coordinate?: string;
   caps?: boolean;
@@ -71,6 +73,14 @@ type ExplicitIntervalChannel = {
   upper: string;
   scale?: ScaleOptions;
 };
+
+type OffsetChannel = {
+  field?: string;
+  fieldType?: "nominal" | "ordinal";
+  scale?: OffsetScaleOptions;
+  paddingInner?: number;
+  paddingOuter?: number;
+};
 ```
 
 Exactly one channel is positional and the other is quantitative. Putting the
@@ -82,6 +92,46 @@ No orientation flag is required. Statistical mean defaults to a two-sided
 The independent position field is always part of statistical grouping.
 `groupBy` can add one more grouping field. Group order follows first appearance
 in the source data. Groups without enough valid quantitative values are omitted.
+
+### Grouped point-and-whisker positions
+
+Use `encodeXOffset` or `encodeYOffset` when more than one estimate belongs to a
+category. An error bar inferred from that point layer reuses the offset field,
+scale, domain order, and padding automatically:
+
+```javascript
+const grouped = chart()
+  .createCanvas()
+  .createData({ values: rows })
+  .createPointMark({ id: "estimates" })
+  .encodeX({ field: "metric", fieldType: "ordinal" })
+  .encodeY({ field: "value" })
+  .encodeXOffset({
+    field: "model",
+    paddingInner: 0.2,
+    paddingOuter: 0.1
+  })
+  .createErrorBar({ target: "estimates" });
+```
+
+Statistical mode groups by both `metric` and `model`, so each model receives a
+separate interval. The source point, main interval rule, and both fixed-width
+caps use the same sub-slot center. That alignment is recomputed after Canvas,
+parent-position-scale, offset-scale, or data changes.
+
+For a direct facade without a source layer, pass the matching offset explicitly:
+
+```javascript
+program.createErrorBar({
+  x: { field: "metric", fieldType: "nominal" },
+  y: { center: "estimate", lower: "lower", upper: "upper" },
+  xOffset: { field: "model", paddingInner: 0.2 }
+});
+```
+
+Vertical intervals accept only `xOffset`; horizontal intervals accept only
+`yOffset`. The independent position must be nominal or ordinal. Numeric and
+temporal positions do not have category slots and therefore reject offsets.
 
 ### Quantitative independent positions
 
@@ -170,7 +220,8 @@ const overlay = chart()
 With omitted x and y, `target` selects an existing layer. Without `target`, the
 action uses the current eligible layer, then one unique eligible layer. The
 layer may use any compatible mark type; eligibility comes from its complete
-field-based x/y encodings. Data, coordinate, and x/y scale IDs are reused.
+field-based x/y encodings. Data, coordinate, x/y scale IDs, and a matching
+categorical xOffset/yOffset assignment are reused.
 Passing only an existing scale `id` also preserves that scale's stored domain,
 range, `nice`, and `zero` policy; interval defaults are used only for new scales.
 
@@ -239,7 +290,8 @@ only for confidence intervals. Explicit center/lower/upper owners reject a
 statistics edit instead of converting modes.
 
 `caps: false` removes both owned cap resources. A later `caps: true` recreates
-them from the owner's stored data, fields, coordinate, and scales. The main
+them from the owner's stored data, fields, coordinate, position/offset scales,
+and offset padding. The main
 interval retains its current dataset unless `statistics` is supplied.
 The complete request is validated before the wrapped rematerialization runs.
 

@@ -114,6 +114,33 @@ test("rematerializes yOffset slots after Canvas and color-domain edits", () => {
   );
 });
 
+test("dodges point rows symmetrically within categorical y slots", () => {
+  const program = chart()
+    .createCanvas({
+      width: 300,
+      height: 400,
+      margin: { top: 20, right: 20, bottom: 40, left: 40 }
+    })
+    .createData({ values: [
+      { category: "A", model: "one", value: 1 },
+      { category: "A", model: "two", value: 2 },
+      { category: "B", model: "one", value: 3 },
+      { category: "B", model: "two", value: 4 }
+    ] })
+    .createPointMark()
+    .encodeX({ field: "value" })
+    .encodeY({ field: "category", fieldType: "ordinal" })
+    .encodeYOffset({ field: "model" });
+  const y = program.graphicSpec.objects.point.items.map(
+    item => item.properties.y
+  );
+
+  assert.equal(y[0] < y[1], true);
+  assert.equal(y[2] < y[3], true);
+  assert.equal(y[2] > y[1], true);
+  assert.deepEqual(program.resolvedScales.yOffset.range, [0, 170]);
+});
+
 test("rejects offset channels that do not match the bar category direction", () => {
   assert.throws(
     () => horizontalBarProgram().encodeXOffset({ field: "sex" }),

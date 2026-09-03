@@ -52,7 +52,7 @@ removes grouping. Component-only changes retain the current fitted rows.
 
 ```javascript
 createErrorBar({
-  id?, target?, data?, x?, y?, groupBy?, coordinate?,
+  id?, target?, data?, x?, y?, xOffset?, yOffset?, groupBy?, coordinate?,
   caps?, capSize?, stroke?, strokeWidth?, strokeDash?, opacity?
 } = {})
 ```
@@ -60,7 +60,9 @@ createErrorBar({
 Create vertical or horizontal statistical or explicit intervals. With one
 eligible encoded layer, the shortest call infers its fields, orientation, data,
 coordinate, and scales. Explicit interval fields also allow the independent
-position to be quantitative.
+position to be quantitative. A categorical source can also infer a matching
+xOffset/yOffset; its field joins statistical grouping and aligns source points,
+the main rule, and both caps on one shared sub-slot scale.
 [Error bars](../../api/error-bars.md)
 
 ## `editErrorBar`

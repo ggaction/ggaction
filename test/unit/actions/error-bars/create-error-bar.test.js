@@ -300,6 +300,114 @@ test("supports quantitative positions and keeps caps aligned after a log scale e
   }
 });
 
+test("inherits categorical point offsets and keeps every whisker layer aligned", () => {
+  const rows = [
+    { category: "A", model: "one", value: 1 },
+    { category: "A", model: "one", value: 3 },
+    { category: "A", model: "two", value: 2 },
+    { category: "A", model: "two", value: 4 },
+    { category: "B", model: "one", value: 3 },
+    { category: "B", model: "one", value: 5 },
+    { category: "B", model: "two", value: 4 },
+    { category: "B", model: "two", value: 6 }
+  ];
+  const created = chart()
+    .createCanvas({
+      width: 400,
+      height: 300,
+      margin: { top: 20, right: 20, bottom: 40, left: 40 }
+    })
+    .createData({ values: rows })
+    .createPointMark({ id: "estimates" })
+    .encodeX({ field: "category", fieldType: "ordinal" })
+    .encodeY({ field: "value" })
+    .encodeXOffset({
+      field: "model",
+      paddingInner: 0.2,
+      paddingOuter: 0.1
+    })
+    .createErrorBar({ target: "estimates" });
+  const resized = created.editCanvas({ width: 600 });
+  const restored = resized
+    .editErrorBar({ caps: false })
+    .editErrorBar({ caps: true });
+
+  assert.deepEqual(
+    created.semanticSpec.datasets.at(-1).transform[0].groupBy,
+    ["category", "model"]
+  );
+  for (const layer of created.semanticSpec.layers) {
+    assert.deepEqual(layer.encoding.xOffset, {
+      field: "model",
+      fieldType: "nominal",
+      scale: "xOffset"
+    });
+  }
+  for (const program of [created, resized, restored]) {
+    const main = program.graphicSpec.objects.errorBar.items.map(
+      item => item.properties.x1
+    );
+    const points = [...new Set(
+      program.graphicSpec.objects.estimates.items.map(item => item.properties.x)
+    )];
+    assert.deepEqual(main, points);
+    for (const id of ["errorBarLowerCap", "errorBarUpperCap"]) {
+      assert.deepEqual(
+        program.graphicSpec.objects[id].items.map(item =>
+          (item.properties.x1 + item.properties.x2) / 2
+        ),
+        main
+      );
+    }
+  }
+  assert.deepEqual(created.resolvedScales.xOffset.range, [0, 170]);
+  assert.deepEqual(resized.resolvedScales.xOffset.range, [0, 270]);
+});
+
+test("accepts explicit horizontal yOffset facades and validates orientation", () => {
+  const rows = [
+    { category: "A", model: "one", center: 3, lower: 2, upper: 4 },
+    { category: "A", model: "two", center: 5, lower: 4, upper: 6 }
+  ];
+  const base = chart()
+    .createCanvas(canvas)
+    .createData({ values: rows });
+  const program = base.createErrorBar({
+    x: { center: "center", lower: "lower", upper: "upper" },
+    y: { field: "category", fieldType: "nominal" },
+    yOffset: { field: "model", paddingInner: 0.2 }
+  });
+  const main = program.graphicSpec.objects.errorBar.items.map(
+    item => item.properties.y1
+  );
+
+  assert.equal(main[0] < main[1], true);
+  for (const id of ["errorBarLowerCap", "errorBarUpperCap"]) {
+    assert.deepEqual(
+      program.graphicSpec.objects[id].items.map(item =>
+        (item.properties.y1 + item.properties.y2) / 2
+      ),
+      main
+    );
+  }
+  assert.throws(
+    () => base.createErrorBar({
+      x: { field: "category", fieldType: "nominal" },
+      y: { center: "center", lower: "lower", upper: "upper" },
+      yOffset: { field: "model" }
+    }),
+    /does not match the vertical interval orientation/
+  );
+  assert.throws(
+    () => base.createErrorBar({
+      x: { field: "center", fieldType: "quantitative" },
+      y: { center: "center", lower: "lower", upper: "upper" },
+      xOffset: { field: "model" }
+    }),
+    /requires a categorical x position/
+  );
+});
+
 test("forwards one custom appearance and cap size to every owned rule", () => {
   const program = encodedPoints().createErrorBar({
     capSize: 16,

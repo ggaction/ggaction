@@ -41,7 +41,7 @@ resolve a channel scale, and explicitly materialize the affected graphics.
 | Estimate a distribution | area mark, quantitative field | `encodeDensity` | [Encodings](./encodings.md#atomic-density) |
 | Center aligned area series | area mark, quantitative/temporal x, non-negative quantitative y, nominal group | `encodeY({ stack: "center" })` or `encodeColor({ layout: "center" })` | [Color encoding](./series/color.md#center-stacked-areas) |
 | Draw full-span or bounded rules | rule mark, field or datum endpoints | `encodeX`, `encodeY`, `encodeX2`, `encodeY2` | [Rule endpoints](#rule-endpoints) |
-| Control within-band grouping | complete ordinal-bar positions | `encodeXOffset`, `encodeYOffset` | [Offsets](./position/offsets.md) |
+| Control within-category grouping | categorical bar, point, or rule position | `encodeXOffset`, `encodeYOffset` | [Offsets](./position/offsets.md) |
 
 For ordinary grouped bar charts, prefer
 `encodeColor({ field, layout: "group" })`; it calls the matching advanced

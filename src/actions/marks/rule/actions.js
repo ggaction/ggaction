@@ -3,6 +3,7 @@ import { validateUserId } from "../../../core/identifiers.js";
 import { validatePositiveFinite } from "../../../core/validation.js";
 import {
   mapContinuousScaleValues,
+  mapOrdinalOffsetValues,
   mapOrdinalPositionValues,
   mapOrdinalValues,
   normalizeStrokeDashPattern
@@ -25,6 +26,8 @@ import {
 import { resolveMarkGraphicPlacement } from
   "../../../materialization/graphicHierarchy.js";
 import { rematerializeHighlightBaseline } from "../lifecycle.js";
+import { applyOffsetPositionValues } from
+  "../../../materialization/rowEncoding.js";
 
 const CREATE_OPTIONS = Object.freeze(["id", "data"]);
 const REMATERIALIZE_OPTIONS = Object.freeze(["id"]);
@@ -154,7 +157,10 @@ const rematerializeRuleMark = action(
     }
 
     const scaleIds = [...new Set(
-      ["x", "y", "x2", "y2", "strokeDash", "strokeWidth", "opacity"]
+      [
+        "x", "y", "x2", "y2", "xOffset", "yOffset",
+        "strokeDash", "strokeWidth", "opacity"
+      ]
         .map(channel => layer.encoding?.[channel]?.scale)
         .filter(scale => scale !== undefined)
     )];
@@ -177,6 +183,25 @@ const rematerializeRuleMark = action(
         derived.values[channel],
         resolved.resolvedScales[encoding.scale]
       );
+    }
+    for (const [channel, offsetChannel] of [
+      ["x", "xOffset"],
+      ["y", "yOffset"]
+    ]) {
+      const encoding = layer.encoding?.[offsetChannel];
+      if (encoding === undefined || mapped[channel] === undefined) continue;
+      const offsetScale = resolved.resolvedScales[encoding.scale];
+      const offset = mapOrdinalOffsetValues(
+        derived.values[offsetChannel],
+        offsetScale
+      );
+      mapped[channel] = applyOffsetPositionValues({
+        base: mapped[channel],
+        offset,
+        parentScale: resolved.resolvedScales[layer.encoding[channel].scale],
+        offsetScale,
+        channel
+      });
     }
     const bounds = resolveGraphicBounds(resolved);
     const x1 = [];

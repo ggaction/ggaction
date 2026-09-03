@@ -86,14 +86,14 @@ export const POSITION_CHANNEL_DEFINITIONS = Object.freeze({
     role: "offset",
     scaleChannel: "xOffset",
     coordinate: Object.freeze({ id: "main", type: "cartesian" }),
-    markTypes: Object.freeze(["bar"])
+    markTypes: Object.freeze(["bar", "point", "rule"])
   }),
   yOffset: Object.freeze({
     family: "cartesian",
     role: "offset",
     scaleChannel: "yOffset",
     coordinate: Object.freeze({ id: "main", type: "cartesian" }),
-    markTypes: Object.freeze(["bar"])
+    markTypes: Object.freeze(["bar", "point", "rule"])
   }),
   theta: Object.freeze({
     family: "polar",

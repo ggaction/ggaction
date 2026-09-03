@@ -140,6 +140,30 @@ function intervalPositions(path, type) {
 }
 
 function errorBarPositions(path, type) {
+  if (path.startsWith("xOffset.")) {
+    return {
+      x: positionChannel("point"),
+      y: {
+        center: "center",
+        lower: "lower",
+        upper: "upper",
+        scale: positionScale("linear")
+      },
+      xOffset: { field: "subgroup", scale: { type } }
+    };
+  }
+  if (path.startsWith("yOffset.")) {
+    return {
+      x: {
+        center: "center",
+        lower: "lower",
+        upper: "upper",
+        scale: positionScale("linear")
+      },
+      y: positionChannel("point"),
+      yOffset: { field: "subgroup", scale: { type } }
+    };
+  }
   const isDimension = ["band", "point", "time"].includes(type);
   const requested = isDimension
     ? positionChannel(type)
@@ -410,8 +434,8 @@ test("derives only role-reachable nested scale type paths", async () => {
     /(?:^|\.)(?:xScale|yScale|valueScale|densityScale|scale)\.type$/u.test(option.path)
   );
 
-  assert.equal(scaleTypes.length, 59);
-  assert.equal(scaleTypes.reduce((sum, option) => sum + option.values.length, 0), 256);
+  assert.equal(scaleTypes.length, 61);
+  assert.equal(scaleTypes.reduce((sum, option) => sum + option.values.length, 0), 258);
   assert.doesNotMatch(declarations, /scale\?: ScaleOptions/u);
   assert.equal(options.has("option-path:createScatterPlot.x.scale.palette"), false);
   assert.equal(options.has("option-path:createScatterPlot.x.scale.interpolate"), false);
@@ -457,7 +481,7 @@ test("executes every strict nested scale type path and literal", async () => {
       witnesses += 1;
     }
   }
-  assert.equal(witnesses, 256);
+  assert.equal(witnesses, 258);
 });
 
 test("materializes every role-specific nested scale type vocabulary", () => {
