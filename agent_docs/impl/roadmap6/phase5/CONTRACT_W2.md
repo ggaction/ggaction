@@ -1,5 +1,7 @@
 # Phase 5 W2 — Legend content와 edge layout 계약
 
+현재 상태: A/B/C 구현 및 통합 검증 완료 — [최종 결과](RESULTS_W2_INTEGRATION.md). 아래 각 단계의 미완료 문구는 해당 checkpoint 당시의 실행 기록이다.
+
 [전체 실행 승인](../APPROVAL.md)을 적용한다. 기준 `4d7e37d4`, W1은 완료했다. 각 변경을 구현·검증·commit/push한 뒤 다음 변경으로 간다. 아래 범위 전체가 W2이며 A만 구현한 상태를 W2 완료로 기록하지 않는다.
 
 ## A — Standalone sampled size 편집 복구

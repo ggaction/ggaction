@@ -10590,7 +10590,11 @@ At top and bottom, categorical content precedes size content with 40 pixels
 between their occupied bounds. Blocks wrap to another row away from the plot
 when necessary. The whole group, including its border, follows `align` and
 `offset`. `direction`, `columns`, `titlePosition`, and `itemGap` apply to both
-item grids. Each block retains its own title, sample sizes, and label gap.
+item grids. Newly combined blocks share label and title typography at every
+edge, including the default title color `#334155`. Each block retains its own
+title text, sample sizes, and label gap. A size legend created independently
+keeps its stored styles when added to a categorical legend; its standalone
+default title color remains `#0f172a`.
 Title spacing also includes labels that are taller than the samples.
 A size border retained from an earlier standalone legend stays inside the
 shared outer border. Other legends place this complete group as one block.

@@ -276,8 +276,7 @@ export function resolveLegendCreationPlan(program, args = {}, layers = program.s
       target: requestedPoint.id,
       ...(count === undefined ? {} : { count }),
       ...(categoricalArgs.labels?.offset === undefined ? {} : { labels: { offset: categoricalArgs.labels.offset } }),
-      inheritAppearance: categoricalArgs.position === "left" ||
-        categoricalArgs.labels !== undefined || categoricalArgs.titleStyle !== undefined
+      inheritAppearance: true
     } });
     // Validate both content owners before any component action starts.
     resolveCategoricalLegendConfig(program, steps[0].args);

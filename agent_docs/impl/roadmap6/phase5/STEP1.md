@@ -10,7 +10,7 @@
 - [x] W1 A2 Cartesian/Polar optional component 정렬 — [검증](RESULTS_W1_OPTIONAL.md)
 - [x] W1 A3 Parallel field 기반 축 편집·생성·제거 — [검증](RESULTS_W1_PARALLEL.md)
 - [x] W1 A3 선행 오류: dimension 재배치 뒤 stale axis 수정 — [검증](RESULTS_PARALLEL_REPLAY.md)
-- [ ] R6-P5-W2 Legend content와 edge layout — [계약](CONTRACT_W2.md)
+- [x] R6-P5-W2 Legend content와 edge layout — [계약](CONTRACT_W2.md)
 - [x] W2 A standalone size editor/owner isolation — [검증](RESULTS_W2_SIZE.md)
 - [x] W2 B 선행 shape-only 오류 #86 — [검증](RESULTS_W2_SHAPE.md)
 - [x] W2 B1 explicit content 생성·recipe provenance와 layer order, #88/#89 — [검증](RESULTS_W2_CONTENT_CREATE.md)
@@ -33,8 +33,8 @@
 - [x] W2 C2 categorical recipe/shape/font 실제 spacing #106 — [검증](RESULTS_W2_CATEGORICAL_SPACING.md)
 - [x] W2 opacity symbol TypeScript/runtime parity #107 — [검증](RESULTS_W2_OPACITY_SYMBOL_TYPES.md)
 - [x] W2 C2 categorical side option parity #108 — [검증](RESULTS_W2_CATEGORICAL_SIDE_OPTIONS.md)
-- [ ] W2 combined size의 edge-dependent default #109
-- [ ] W2 C2 전체 family×edge×lifecycle 통합 matrix
+- [x] W2 combined size의 edge-dependent default #109 — [검증](RESULTS_W2_COMBINED_SIZE_APPEARANCE.md)
+- [x] W2 C2 전체 family×edge×lifecycle 통합 matrix — [결과](RESULTS_W2_INTEGRATION.md)
 - [ ] R6-P5-W3 Final-item labels·reference·common format
 - [ ] R6-P5-W4 Program theme와 local override
 - [ ] R6-P5-W5 Opt-in fitting과 guide label layout

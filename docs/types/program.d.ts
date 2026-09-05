@@ -2747,6 +2747,7 @@ export interface LegendOptions {
   gradient?: { length?: number; thickness?: number };
   symbol?: LegendSymbolRecipe;
   labels?: LegendTextOptions;
+  /** New categorical+size blocks share typography on every edge; retained standalone size styles remain independent. */
   titleStyle?: LegendTitleStyleOptions;
   itemGap?: number;
   border?: boolean | LegendBorderOptions;

@@ -584,6 +584,17 @@ async function testNodeConsumer(directory) {
           .editLegendLayout({ position, columns: 1 }).graphicSpec, p.graphicSpec);
       }
     }
+    for (const factory of [chart, basicChart]) for (const position of ["left", "right", "top", "bottom"]) {
+      const source = factory().createCanvas({ width: 1800, height: 1400, margin: 450 })
+        .createData({ values: [{ x: 0, y: 0, g: "A", m: 0 }, { x: 1, y: 1, g: "B", m: 10 }] })
+        .createPointMark().encodeX({ field: "x" }).encodeY({ field: "y" }).encodeColor({ field: "g" }).encodeSize({ field: "m" });
+      const p = source.createLegend({ channels: ["color", "size"], position, itemGap: 28 });
+      assert.equal(p.graphicSpec.objects.sizeLegendTitle.properties.fill, "#334155");
+      if (factory === chart) {
+        assert.deepEqual(p.editLegendLayout({ position: "right" }).graphicSpec,
+          source.createLegend({ channels: ["color", "size"], position: "right", itemGap: 28 }).graphicSpec);
+      }
+    }
     const legendContentBase = chart().createCanvas({ width: 800, height: 700, margin: { right: 300 } })
       .createData({ values: [{ x: 1, y: 2, g: "A", m: 4 }, { x: 2, y: 3, g: "B", m: 9 }] })
       .createPointMark({ id: "contentPoints" }).encodeX({ field: "x" }).encodeY({ field: "y" })

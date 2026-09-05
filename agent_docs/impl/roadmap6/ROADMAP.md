@@ -115,7 +115,7 @@ S는 기존 owner 위의 교정·연결, M은 여러 consumer의 lifecycle 변�
 | 2 | completed | W1–W5와 6개 public 흐름 구현·검증, A/B/V/X 사용자 승인 |
 | 3 | completed | Pie/Donut·Density·Horizon, A/V/B/X approved; Current 177 / Planned 0 |
 | 4 | completed | W1–W5와 20개 시각 target, 소비자·고정 source 통합 검증 완료 — [Phase 4 X](phase4/REVIEW.md) |
-| 5 | in-progress | W1 A1/A2/A3 축 lifecycle 완료 — [결과](phase5/RESULTS_W1_PARALLEL.md); 범례 W2·label/format/theme/fitting W3–W5 진행 예정 |
+| 5 | in-progress | W1 축 lifecycle·W2 범례 통합 완료 — [W2 결과](phase5/RESULTS_W2_INTEGRATION.md); label/format/theme/fitting W3–W5 진행 예정 |
 | 6 | planned | Data·transform·통계·filter·composite role 편집 |
 | 7 | planned | Polar Scatter/Line, Radar, Rug/Strip |
 | 8 | planned | Interval/Regression, Dot/Lollipop/Dumbbell, ECDF |

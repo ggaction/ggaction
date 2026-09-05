@@ -176,7 +176,7 @@ Primary owner는 누락 방지를 위한 책임 단위이며, 관련 작업이 �
 - 수정·추가 방향: Standalone/combined size, categorical/continuous/interval/width legend의 edge 지원과 recipe 편집을 공통 layout owner로 연결한다. Legacy bottom mode를 명시한다.
 - 완료 검증: 지원하는 각 kind×edge×lifecycle 검증, unsupported 셀 이유 명시. Combined color/shape 일부 제거 뒤 설명과 graphics가 일치.
 - 근거: audit/REPORT.md: D08. [원래 조사](audit/REPORT.md)
-- 처분: 구현 또는 명시적인 계약 유지·migration 결정의 제안. 아직 완료·승인 상태가 아니다.
+- 처분: [전체 승인](APPROVAL.md) 아래 W2 A/B/C와 kind×edge×lifecycle 통합을 완료했다. [최종 결과와 unsupported 셀](phase5/RESULTS_W2_INTEGRATION.md)을 따른다.
 
 ### D09 — Type·aggregate·temporal inference의 분석 의미
 

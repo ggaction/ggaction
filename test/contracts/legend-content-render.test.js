@@ -13,7 +13,7 @@ function contentBase() {
     .encodeColor({ field: "g" }).encodeShape({ field: "g" }).encodeSize({ field: "m" });
 }
 
-function colorPrimitive(base, size) {
+function colorPrimitive(base, size, sizeTitleFill = "#334155") {
   const color = base
     .createGraphics({ id: "colorLegendSymbols", type: "rect", length: 2, parent: "canvas" })
     .editGraphics({ target: "colorLegendSymbols", property: "x", value: 508.25 })
@@ -68,7 +68,7 @@ function colorPrimitive(base, size) {
     .editGraphics({ target: "sizeLegendTitle", property: "x", value: 530 })
     .editGraphics({ target: "sizeLegendTitle", property: "y", value: 147 })
     .editGraphics({ target: "sizeLegendTitle", property: "text", value: "m" })
-    .editGraphics({ target: "sizeLegendTitle", property: "fill", value: "#0f172a" })
+    .editGraphics({ target: "sizeLegendTitle", property: "fill", value: sizeTitleFill })
     .editGraphics({ target: "sizeLegendTitle", property: "fontSize", value: 13 })
     .editGraphics({ target: "sizeLegendTitle", property: "fontFamily", value: "sans-serif" })
     .editGraphics({ target: "sizeLegendTitle", property: "fontWeight", value: 600 })
@@ -181,7 +181,7 @@ test("matches point content replacement to the existing independent graphic targ
     const base = contentBase();
     const size = variant === "color-size";
     const channels = size ? ["color", "size"] : variant === "shape-only" ? ["shape"] : ["color"];
-    const primitive = variant === "shape-only" ? shapePrimitive(base) : colorPrimitive(base, size);
+    const primitive = variant === "shape-only" ? shapePrimitive(base) : colorPrimitive(base, size, "#0f172a");
     const options = { channels, ...(size ? { count: 3 } : {}) };
     const artifact = { scope: "charts", capability: "legend-layout", chart: "legend-content-editing",
       variant, title: `Revised ${variant} content`,

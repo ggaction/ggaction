@@ -52,7 +52,7 @@ export function combinedPrimitive(edge){
     .editGraphics({target:'sizeLegendTitle',property:'x',value:552.8200000000002})
     .editGraphics({target:'sizeLegendTitle',property:'y',value:ty})
     .editGraphics({target:'sizeLegendTitle',property:'text',value:'m'})
-    .editGraphics({target:'sizeLegendTitle',property:'fill',value:'#0f172a'})
+    .editGraphics({target:'sizeLegendTitle',property:'fill',value:'#334155'})
     .editGraphics({target:'sizeLegendTitle',property:'fontSize',value:13})
     .editGraphics({target:'sizeLegendTitle',property:'fontFamily',value:'sans-serif'})
     .editGraphics({target:'sizeLegendTitle',property:'fontWeight',value:600})

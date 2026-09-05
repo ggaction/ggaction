@@ -651,7 +651,7 @@ export function createCarsRegressionScatterplotPrimitives(cars, {
     .editGraphics({ target: "sizeLegendTitle", property: "x", value: sizeLegend.title.x })
     .editGraphics({ target: "sizeLegendTitle", property: "y", value: sizeLegend.title.y })
     .editGraphics({ target: "sizeLegendTitle", property: "text", value: sizeLegend.title.text })
-    .editGraphics({ target: "sizeLegendTitle", property: "fill", value: "#0f172a" })
+    .editGraphics({ target: "sizeLegendTitle", property: "fill", value: "#334155" })
     .editGraphics({ target: "sizeLegendTitle", property: "fontSize", value: 13 })
     .editGraphics({ target: "sizeLegendTitle", property: "fontFamily", value: "sans-serif" })
     .editGraphics({ target: "sizeLegendTitle", property: "fontWeight", value: 600 })
