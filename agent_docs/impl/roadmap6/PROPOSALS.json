@@ -170,7 +170,7 @@
       "gateStates": {
         "R6-P2-A": "approved",
         "R6-P2-V": "approved",
-        "R6-P2-X": "planned",
+        "R6-P2-X": "ready-for-review",
         "R6-P2-B": "approved"
       },
       "workPackages": [
@@ -244,7 +244,7 @@
           "resultEvidence": "phase2/RESULTS.md#w5--bar-incomplete-authoring"
         }
       ],
-      "activity": "result-validation",
+      "activity": "result-review",
       "contractReview": {
         "file": "phase2/CONTRACT_REVIEW.md",
         "baselineCommit": "bbc8a3fc256c9afa877f696ed6ade1f51ffb7522",
@@ -279,7 +279,9 @@
           "timestamp",
           "year",
           "auto"
-        ]
+        ],
+        "publicEvidence": "phase2/public-visual-results.json",
+        "publicPairs": 6
       },
       "bundleReview": {
         "file": "phase2/BUNDLE_REVIEW.md",
@@ -303,7 +305,9 @@
           "packageStatus": "passed",
           "evidence": "phase2/RESULTS.md#integration--verified-consumers-and-compatibility"
         }
-      }
+      },
+      "verifiedSourceCommit": "3a4ca3b59cd604cd2456b2d196e3edd73d24e303",
+      "resultEvidence": "phase2/REVIEW.md"
     },
     {
       "id": 3,

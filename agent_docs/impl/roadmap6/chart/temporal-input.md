@@ -118,5 +118,5 @@ Runtime unit/owner matrix는 별도 focused 테스트로 검증했다. 실제 �
 
 Normal tests는 exact domain, 두 positioned points, UTC labels/ISO strings, 원본 값 보존, explicit auto/year
 동등성, target JavaScript 구문과 input hash를 검사한다. PNG 3개와 source/image/pixel/call hash는
-[결과](../phase2/visual-results.json)에 있다. 전체 temporal channel·facade·transform·Rule datum·selection의
+[결과](../phase2/public-visual-results.json)에 있다. 전체 temporal channel·facade·transform·Rule datum·selection의
 matrix는 [Phase 2 검증](../phase2/VALIDATION.md)을 따른다. 이 두 점만으로 전체 parser 지원 완료를 주장하지 않는다.

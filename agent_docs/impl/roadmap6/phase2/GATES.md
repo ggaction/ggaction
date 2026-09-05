@@ -3,9 +3,9 @@
 ## 공통 상태
 
 R6-P2-A는 approved다. 2026-09-05 사용자가 “ㄱㄱ”로 아래 계약의 구현을 승인했다.
-B/V는 approved, X는 planned다. 새 시각 target과 bundle 예산은 각각 독립 결정이다.
+B/V는 approved, X는 ready-for-review이며 미승인이다. 새 시각 target과 bundle 예산은 각각 독립 결정이다.
 허용 상태는 planned | ready-for-review | approved | changes-requested다.
-[VISUAL_REVIEW.md](VISUAL_REVIEW.md)의 6개 target을 사용자가 “승인한다”로 승인했다. 해당 public 흐름을 구현·검증한다.
+[VISUAL_REVIEW.md](VISUAL_REVIEW.md)의 6개 target을 사용자가 “승인한다”로 승인했다. 해당 public 흐름을 구현·검증했다.
 [BUNDLE_REVIEW.md](BUNDLE_REVIEW.md)의 full 상한 조정은 승인·적용·재검증을 마쳤다.
 
 ## R6-P2-A — Contract and scope
@@ -45,7 +45,9 @@ B/V는 approved, X는 planned다. 새 시각 target과 bundle 예산은 각각 �
 - 승인 범위: country-color, tuple-color-dash, series-appearance, timestamp, year, auto의 여섯 target.
   이 기록을 먼저 갱신한 뒤 A의 W2/W3/W4 계약에 따라 public 구현과 consumer 검증을 진행한다.
 - 실제 package: [VISUAL_REVIEW.md](VISUAL_REVIEW.md), 실행 가능한 두 chart slice, [6개 hash·ink 결과](visual-results.json).
-- 검증: focused normal 10/10, render 6/6, 전체 npm test 2,381/2,381. Primitive 이미지를 직접 확인했으며 public API 구현은 미착수다.
+- 승인 당시 검증: focused normal 10/10, render 6/6, 전체 npm test 2,381/2,381. 당시에는 primitive만 실행했다.
+- 현재 결과: public 6개 쌍을 구현하고 같은 실행의 exact graphic/draw order/Canvas/pixels, 실제 표시 trace를 검증했다.
+  Source `3a4ca3b59cd604cd2456b2d196e3edd73d24e303`; [public 증거](public-visual-results.json), [X 검토](REVIEW.md).
 - 검토 대상: V1 series identity·tuple·color/dash/width/opacity, V2 explicit temporal input 의미.
   정확한 primitive/public call 계획은 [계약 검토](CONTRACT_REVIEW.md)의 visual 표를 따른다.
   기존 lower chain 출력 동등성 교정은 증명 후에만 N/A로 확정한다.
@@ -64,23 +66,29 @@ B/V는 approved, X는 planned다. 새 시각 target과 bundle 예산은 각각 �
 - 검토 당시 결과: npm test 2,381/2,381, V focused 10/10, V PNG 6/6, 기존 대표 PNG 19/19.
   Installed package는 full gzip 231,731 > 230,000으로 실패했다.
 - B 사용자 승인: **“조정한다”로 full 235,000 상한 승인**. 적용과 installed package 재검증을 통과했다.
-- V 사용자 승인: **“승인한다”로 위 6개 target 승인**. 새 public flow 검증과 전체 Phase의 X 완료는 남아 있다.
+- V 사용자 승인: **“승인한다”로 위 6개 target 승인**. Public 검증을 완료했으며 전체 Phase의 X 승인은 남아 있다.
 
 ## R6-P2-X — Result and closeout
 
-- 상태: planned
-- 검토 대상: [GOAL.md](GOAL.md)의 전체 승인 범위 결과와 [STEP1.md](STEP1.md)의 실제 완료 상태.
+- 상태: ready-for-review — 미승인
+- 검토 대상: [REVIEW.md](REVIEW.md)의 W1–W5, 6개 public 시각 쌍, 호환성·consumer 검증과 후속 범위.
+- Verified source: [`3a4ca3b59cd604cd2456b2d196e3edd73d24e303`](https://github.com/ggaction/ggaction/commit/3a4ca3b59cd604cd2456b2d196e3edd73d24e303),
+  source tree `9d3bd5e26b67634851e6009faac4b8c7c9e15002`, `origin/codex/roadmap6-hierarchical-actions` push 확인.
+- 실제 결과: normal 2,432/2,432, realistic 167/167, contracts 260/260, PNG 22/22, browser 2/2,
+  installed package exit 0; coverage 95.03/91.15/98.75%, critical floors 72/72. Active Planned 0.
+- Package SHA-256: `f7c6f0e0f18140b237970a965148ba326034779c693991635e134aadfa1c8108`.
+  Full 234,258 / 235,000; Basic 124,897 / 125,000; SVG 6,418 / 25,000 bytes.
 - 필요 증거: verified source commit/remote ref, focused·누적 tests, strict positive/negative declarations, actual trace, immutable failure, documentation/metadata/generated diff와 compatibility 예제.
 - 시각 범위: 승인된 target별 same-run decoded primitive/public pixel equality, concrete graphic parity, renderer 소비 결과. 시각 범위가 없으면 이유를 기록한다.
 - 추가 조건: 관련 finding의 다른 work package가 남아 있으면 항목 전체를 닫지 않는다. Unsupported·deferred 항목의 이유와 다음 owner를 명시한다.
 - 승인 효과: 이 단계 결과에 의존하는 다음 Phase의 A package 준비·해당 Gate 절차로 이동한다. 후속 API를 자동 승인하지 않는다.
 - 승인 전 차단: 이 단계 결과가 승인되었다고 가정하는 후속 구현 및 Phase completed 표시.
 
-## 승인 기록
+## A 승인 기록
 
 - Review commit / remote ref: `e06b57db5624a5b0d66cea425cff4aa5f5f4caad` / `origin/codex/roadmap6-hierarchical-actions`
 - 검증 명령과 실제 결과: [VALIDATION.md](VALIDATION.md)의 baseline 43/43와 관련 기존 테스트 100/100. 새 API 구현 검증은 미실행.
 - 사용자 승인 근거: 2026-09-05 사용자가 Phase 2 계약 구현 질문에 “ㄱㄱ”라고 답했다. 위 remote package의 계약을 승인한 것으로 기록한다. Phase 1 X는 이전 “승인한다”로 이미 승인되었다.
-- 남은 작업: 비시각 교정/primitive target → V 승인 뒤 해당 public flow → 전체 consumer 검증과 X.
+- 이후 작업: W1–W5와 public flow·전체 consumer 검증을 마쳤다. 현재 남은 Gate는 위 X 결과 승인이다.
 
 실행 시 실제 증거를 채운다. 문서 작성 날짜나 이전 로드맵 승인을 이 Gate의 승인으로 재사용하지 않는다.
