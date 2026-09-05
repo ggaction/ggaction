@@ -15,5 +15,6 @@ W1–W5 구현 기준은 `082e6cc7`이다. [전체 실행·0.0.13 릴리즈 승�
 1. Ruby 3.3/Bundler 2.4.19의 현재 macOS 플랫폼 `arm64-darwin-25`가 lockfile에서 빠져 frozen preflight가 실패했다. 플랫폼 한 줄만 추가했으며 gem 버전은 그대로다.
 2. 새 `createRosePlot`의 검색 intent `rose chart`가 기존 Rose recipe 키워드와 동점이었다. 알파벳 순으로 액션 참조가 먼저 나와 기존 사용자 경로 검사가 실패했다. 같은 점수에서는 제목에도 검색어가 들어간 결과를 먼저 보여 준다. 실제 액션 이름 검색의 우선순위는 유지하며 browser 검사에 `createRosePlot` 경로를 추가했다.
 3. Realistic/generated 검사에서 새 direct 액션 2개, midpoint·범례 order·radial mapping의 옵션 목록과 실행 증거가 누락됐다. 전체 실행의 실패를 보존하며 필요한 생성 시나리오와 exact inventory를 함께 보완한다. 숫자나 hash 갱신만으로 누락된 동작 증거를 완료 처리하지 않는다.
+4. Nested legend 타입이 facade의 position 역할보다 넓었다. Cartesian은 x/y, Pie·measured radial은 theta, 선언된 quantitative/temporal Line·Area·Density와 Parallel은 scale/values로 구분했다. 일반 lower legend 타입과 runtime은 바꾸지 않았다. Positive/negative strict 타입 검사 1/1, 생성 문서 동기화와 normal 2,748/2,748 통과. 관련 실제 데이터 사례 보완은 계속 진행한다.
 
 로그: `.artifacts/roadmap6-authoring/phase4-integration-*.log`. Realistic 전체와 renderer 전체 및 최종 원장 대조는 아직 진행 중이다.

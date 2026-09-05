@@ -911,13 +911,13 @@ type PathLegendOptions = Omit<LegendOptions, "symbol" | "gradient" | "count"> & 
 type CartesianGuideOptions = {
   axes?: false | CartesianAxesOptions;
   grid?: false | CartesianGridOptions;
-  legend?: false | FilledMarkLegendOptions;
+  legend?: false | (Omit<FilledMarkLegendOptions, "order"> & { order?: CartesianLegendOrder });
 };
 type CartesianPathGuideOptions = Omit<CartesianGuideOptions, "legend"> & {
-  legend?: false | PathLegendOptions;
+  legend?: false | (Omit<PathLegendOptions, "order"> & { order?: LegendValueOrder });
 };
 type CartesianCategoricalGuideOptions = Omit<CartesianGuideOptions, "legend"> & {
-  legend?: false | Omit<FilledMarkLegendOptions, "count" | "gradient">;
+  legend?: false | (Omit<FilledMarkLegendOptions, "count" | "gradient" | "order"> & { order?: CartesianLegendOrder });
 };
 type BoxPlotGuideOptions = Omit<CartesianGuideOptions, "legend"> & { legend?: false };
 type GradientPlotDensityLegendOptions = {
@@ -932,7 +932,7 @@ type ParallelGuideOptions = {
     coordinate?: { id?: string; type?: "auto" | "parallel" };
   };
   grid?: false;
-  legend?: false | PathLegendOptions;
+  legend?: false | (Omit<PathLegendOptions, "order"> & { order?: LegendValueOrder });
 };
 
 export interface CreateCoordinateOptions {
@@ -2041,7 +2041,7 @@ export interface CreateHorizonPlotOptions {
   guides?: false | HorizonPlotGuideOptions;
 }
 
-export type DensityPlotLegendOptions = PieLegendOptions;
+export type DensityPlotLegendOptions = Omit<PieLegendOptions, "order"> & { order?: LegendValueOrder };
 export type DensityPlotGuideOptions = Omit<CartesianCategoricalGuideOptions, "legend"> & {
   legend?: false | DensityPlotLegendOptions;
 };
@@ -2082,8 +2082,9 @@ export type PieColor = string | {
   scale?: NonPointCategoricalColorScaleOptions;
   palette?: Palette;
 };
-export type PieLegendOptions = Omit<FilledMarkLegendOptions, "count" | "gradient" | "channels"> & {
+export type PieLegendOptions = Omit<FilledMarkLegendOptions, "count" | "gradient" | "channels" | "order"> & {
   channels?: readonly ["color"];
+  order?: LegendValueOrder | { channel: "theta"; values?: never };
 };
 export type CreatePiePlotOptions = {
   id?: string;
@@ -2663,8 +2664,9 @@ export interface LegendBorderOptions {
   background?: string;
 }
 
-export type LegendOrder = "scale" |
-  { values: readonly CategoryValue[]; channel?: never } |
+type LegendValueOrder = "scale" | { values: readonly CategoryValue[]; channel?: never };
+type CartesianLegendOrder = LegendValueOrder | { channel: "x" | "y"; values?: never };
+export type LegendOrder = LegendValueOrder |
   { channel: "x" | "y" | "theta"; values?: never };
 
 export interface LegendOptions {

@@ -41,6 +41,7 @@ type TitleWrap = "word" | "character";
   각 item의 color/shape/dash는 원래 scale에서 category 값으로 조회하므로 팔레트 배정이 바뀌지 않는다.
   Linked position scale/order 변경은 범례도 갱신한다. 연결 인코딩 제거·field/category-set 불일치는 atomic 오류이며
   먼저 `editLegend({ order: "scale" })`로 policy를 제거할 수 있다. Continuous/interval/size/stroke-width/opacity는 order를 거부한다.
+  Complete chart의 nested guide 선언은 가능한 position 역할로 좁힌다: Cartesian categorical 위치는 x/y, Pie·measured radial은 theta이다. 선언된 위치가 quantitative/temporal뿐인 Line·Area·Density와 dimension 축을 사용하는 Parallel은 scale 또는 explicit values만 노출한다. 일반 createLegend/editLegend의 lower 계약은 그대로다.
 - `channels`: unique compatible subset of
   `"color" | "strokeDash" | "strokeWidth" | "shape" | "size" | "opacity"`. 생략하면
   target의 compatible channels를 추론한다. Sequential color는 gradient, field-driven opacity는 sampled

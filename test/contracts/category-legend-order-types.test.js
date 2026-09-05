@@ -23,6 +23,23 @@ p.createLegend({ order: { channel: "theta" } });
 p.editLegend({ order: { values: [false, 0, "A"] } });
 p.editLegend({ order: "scale" });
 basic.createLegend({ order: { channel: "x" } });
+p.createScatterPlot({ x: "x", y: "y", guides: { legend: { order: { channel: "x" } } } });
+p.createBarPlot({ x: "x", y: "y", guides: { legend: { order: { channel: "y" } } } });
+p.createLinePlot({ x: "x", y: "y", guides: { legend: { order: { values: ["A"] } } } });
+p.createPiePlot({ category: "group", guides: { legend: { order: { channel: "theta" } } } });
+p.createDensityPlot({ field: "x", guides: { legend: { order: "scale" } } });
+// @ts-expect-error Cartesian facades cannot link theta
+p.createScatterPlot({ x: "x", y: "y", guides: { legend: { order: { channel: "theta" } } } });
+// @ts-expect-error Cartesian facades cannot link theta
+p.createBarPlot({ x: "x", y: "y", guides: { legend: { order: { channel: "theta" } } } });
+// @ts-expect-error declared Line positions are quantitative or temporal
+p.createLinePlot({ x: "x", y: "y", guides: { legend: { order: { channel: "x" } } } });
+// @ts-expect-error Parallel has dimension axes, not categorical x/y/theta
+p.createParallelCoordinates({ dimensions: ["x", "y"], guides: { legend: { order: { channel: "y" } } } });
+// @ts-expect-error Pie does not have Cartesian positions
+p.createPiePlot({ category: "group", guides: { legend: { order: { channel: "x" } } } });
+// @ts-expect-error Density positions are quantitative or temporal
+p.createDensityPlot({ field: "x", guides: { legend: { order: { channel: "theta" } } } });
 // @ts-expect-error radius is quantitative position
 p.orderCategories({ channel: "radius", values: [1] });
 // @ts-expect-error direction belongs only to computed order

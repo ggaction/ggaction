@@ -116,6 +116,12 @@ incompatible field/domain fails; first reset with `editLegend({ order: "scale" }
 Omitted `order` on an edit preserves the policy. Continuous and interval legends
 do not accept categorical ordering.
 
+Inside a complete chart's `guides.legend`, linked channels follow that chart's
+position roles: categorical Cartesian positions use `x` or `y`; Pie, Rose, and
+Radial Bar use `theta`. Line, Area, Density, and Parallel facade declarations
+offer `"scale"` or explicit `values`, since their declared positions do not
+provide a categorical axis to link.
+
 ## Related
 
 [Legend overview](../legends.md) · [Composite symbols](./composite.md) · [Editing legends](./editing.md)
