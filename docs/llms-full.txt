@@ -4790,6 +4790,11 @@ Zero degrees is vertical/up and positive values rotate clockwise; Tick length
 and center remain fixed. `removeEncoding({ channel: "angle" })` restores the
 unrotated baseline.
 
+Point, Bar, and Rect creation and editing accept `stroke: false` to disable the
+outline and set its width to zero. Scatter `point.stroke` and Bar/Histogram
+`bar.stroke` pass this option through to their mark owners. Restoring a color
+with the corresponding edit action enables an outline again.
+
 ## Related
 
 [Encodings](./api/encodings/) · [Statistical layers](./api/regression/) ·
@@ -11950,7 +11955,8 @@ These are direct immutable `ChartProgram` actions. Each accepts one option objec
 createPointMark({ id?, data?, shape?, fill?, opacity?, stroke?, strokeWidth? } = {})
 ```
 
-Create a semantic point mark with one of 12 equal-area shape realizations. [Marks](./api/marks/)
+Create a semantic point mark with one of 12 equal-area shape realizations.
+`stroke: false` disables the outline and its width at creation. [Marks](./api/marks/)
 
 ## `editPointMark`
 
@@ -12036,7 +12042,8 @@ semantic encodings. [Marks](./api/marks/)
 createBarMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth? } = {})
 ```
 
-Create a semantic bar mark and empty rect collection. [Marks](./api/marks/)
+Create a semantic bar mark and empty rect collection.
+`stroke: false` disables the outline and its width at creation. [Marks](./api/marks/)
 
 ## `editBarMark`
 
@@ -13464,16 +13471,16 @@ interface ChartProgramActions {
   createWindowData(options: WindowDataOptions): ChartProgram;
   createBin2DData(options: Bin2DDataOptions): ChartProgram;
   editBin2DData(options: EditBin2DDataOptions): ChartProgram;
-  createPointMark(options?: { id?: string; data?: string; shape?: PointShape; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
-  editPointMark(options: { target?: string; shape?: PointShape; fill?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; }): ChartProgram;
+  createPointMark(options?: { id?: string; data?: string; shape?: PointShape; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
+  editPointMark(options: { target?: string; shape?: PointShape; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
   createTickMark(options?: { id?: string; data?: string; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }): ChartProgram;
   editTickMark(options: { target?: string; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }): ChartProgram;
   jitterPoints(options: JitterPointsOptions): ChartProgram;
   removeJitter(options?: RemoveJitterOptions): ChartProgram;
   createLineMark(options?: { id?: string; data?: string; strokeWidth?: number; curve?: CurveInterpolation; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
   editLineMark(options: { target?: string; strokeWidth?: number; curve?: CurveInterpolation; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
-  createBarMark(options?: { id?: string; data?: string; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
-  editBarMark(options: { target?: string; fill?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; }): ChartProgram;
+  createBarMark(options?: { id?: string; data?: string; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
+  editBarMark(options: { target?: string; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
   createAreaMark(options?: { id?: string; data?: string; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; }): ChartProgram;
   createArcMark(options?: { id?: string; data?: string; innerRadius?: number; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
   editArcMark(options: { target?: string; innerRadius?: number; padAngle?: number; fill?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; }): ChartProgram;

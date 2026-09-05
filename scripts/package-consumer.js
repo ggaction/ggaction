@@ -837,6 +837,24 @@ async function testTypeScriptConsumer(directory) {
     } from "ggaction/basic";
 
     const program: ChartProgram = chart().createCanvas({ width: 100, height: 100 });
+    program.createPointMark({ stroke: false });
+    program.createBarMark({ stroke: false });
+    program.createRectMark({ stroke: false });
+    program.createScatterPlot({ x: "x", y: "y", point: { stroke: false } });
+    program.createBarPlot({ x: "category", y: "y", bar: { stroke: false } });
+    program.createHistogram({ field: "x", bar: { stroke: false } });
+    basicChart().createPointMark({ stroke: false });
+    basicChart().createBarMark({ stroke: false });
+    // @ts-expect-error true is not a stroke color or the false opt-out.
+    program.createPointMark({ stroke: true });
+    // @ts-expect-error numeric stroke is not supported.
+    program.createBarMark({ stroke: 0 });
+    // @ts-expect-error unknown appearance options are rejected.
+    program.createScatterPlot({ x: "x", y: "y", point: { outline: false } });
+    // @ts-expect-error Area creation still requires a string stroke.
+    program.createAreaMark({ stroke: false });
+    // @ts-expect-error Arc creation still requires a string stroke.
+    program.createArcMark({ stroke: false });
     const centerLayout: ColorLayout = "center";
     const centerStack: YStackMode = "center";
     const invalidYBin: Parameters<ChartProgram["encodeY"]>[0] = {

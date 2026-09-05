@@ -114,7 +114,9 @@
             "B06"
           ],
           "scope": "Point/Bar의 실제 허용 범위를 declarations, shared alias, Current prose에 맞춘다. Rect 비교 사례를 유지하고 Area/Arc 확장은 이 수정과 분리한다.",
-          "acceptance": "JS·TS의 동일 positive/negative case 결과, unknown style option 거부, 기존 render 유지."
+          "acceptance": "JS·TS의 동일 positive/negative case 결과, unknown style option 거부, 기존 render 유지.",
+          "status": "implemented-and-verified",
+          "resultEvidence": "phase1/RESULTS.md#w3--strokefalse-정합성"
         },
         {
           "id": "R6-P1-W4",
@@ -781,7 +783,7 @@
       "id": "B06",
       "title": "Point/Bar stroke:false의 runtime·type·prose 불일치",
       "kind": "reproduced-bug-or-contract-mismatch",
-      "status": "proposed",
+      "status": "implemented-and-verified",
       "primaryPhase": 1,
       "primaryWorkPackage": "R6-P1-W3",
       "relatedWorkPackages": [
@@ -794,7 +796,8 @@
       "recommended": "Point/Bar의 실제 허용 범위를 declarations, shared alias, Current prose에 맞춘다. Rect 비교 사례를 유지하고 Area/Arc 확장은 이 수정과 분리한다.",
       "acceptance": "JS·TS의 동일 positive/negative case 결과, unknown style option 거부, 기존 render 유지.",
       "evidence": "audit/probe-results.json: P08; audit/type-results.txt",
-      "disposition": "implementation-or-explicit-contract-decision-proposed"
+      "disposition": "Point/Bar and facade declarations aligned with existing runtime; strict installed consumer verified. Phase 1 X review pending.",
+      "resultEvidence": "phase1/RESULTS.md#w3--strokefalse-정합성"
     },
     {
       "id": "B07",

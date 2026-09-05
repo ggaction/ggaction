@@ -130,6 +130,11 @@ Zero degrees is vertical/up and positive values rotate clockwise; Tick length
 and center remain fixed. `removeEncoding({ channel: "angle" })` restores the
 unrotated baseline.
 
+Point, Bar, and Rect creation and editing accept `stroke: false` to disable the
+outline and set its width to zero. Scatter `point.stroke` and Bar/Histogram
+`bar.stroke` pass this option through to their mark owners. Restoring a color
+with the corresponding edit action enables an outline again.
+
 ## Related
 
 [Encodings](./encodings.md) · [Statistical layers](./regression.md) ·

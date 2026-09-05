@@ -41,6 +41,7 @@ export interface LinearGradientPaint {
   ];
 }
 export type FillPaint = string | LinearGradientPaint;
+type FilledMarkStroke = string | false;
 export type CurveInterpolation =
   | "linear"
   | "step"
@@ -1851,7 +1852,7 @@ export interface CreateScatterPlotOptions {
     shape?: PointShape;
     fill?: string;
     opacity?: number;
-    stroke?: string;
+    stroke?: FilledMarkStroke;
     strokeWidth?: number;
   };
   guides?: false | CreateGuidesOptions;
@@ -1896,7 +1897,7 @@ export interface CreateBarPlotOptions {
   bar?: {
     fill?: string;
     opacity?: number;
-    stroke?: string;
+    stroke?: FilledMarkStroke;
     strokeWidth?: number;
   };
   guides?: false | CreateGuidesOptions;
@@ -1911,7 +1912,7 @@ export type CreateHistogramOptions = BasicHistogramEncoding & {
   bar?: {
     fill?: string;
     opacity?: number;
-    stroke?: string;
+    stroke?: FilledMarkStroke;
     strokeWidth?: number;
   };
   guides?: false | CreateGuidesOptions;
@@ -2628,7 +2629,7 @@ export class ChartProgram {
     shape?: PointShape;
     fill?: string;
     opacity?: number;
-    stroke?: string;
+    stroke?: FilledMarkStroke;
     strokeWidth?: number;
   }): ChartProgram;
   editPointMark(options: {
@@ -2636,7 +2637,7 @@ export class ChartProgram {
     shape?: PointShape;
     fill?: string;
     opacity?: number;
-    stroke?: string | false;
+    stroke?: FilledMarkStroke;
     strokeWidth?: number;
   }): ChartProgram;
   createTickMark(options?: {
@@ -2678,14 +2679,14 @@ export class ChartProgram {
     data?: string;
     fill?: string;
     opacity?: number;
-    stroke?: string;
+    stroke?: FilledMarkStroke;
     strokeWidth?: number;
   }): ChartProgram;
   editBarMark(options: {
     target?: string;
     fill?: string;
     opacity?: number;
-    stroke?: string | false;
+    stroke?: FilledMarkStroke;
     strokeWidth?: number;
   }): ChartProgram;
   createAreaMark(options?: {

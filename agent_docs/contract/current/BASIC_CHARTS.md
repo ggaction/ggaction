@@ -16,6 +16,8 @@ Basic Chart facade는 existing domain action을 wrapped child로 조합하는 us
 - Outer/nested option shape and resource ownership are resolved before the first child. Any later child validation failure
   returns no partial program because every transition and trace branch is immutable.
 - Optional encodings appear in state and trace only when requested.
+- Scatter `point.stroke`, Bar/Histogram `bar.stroke` accept a non-empty color string or `false`, matching their
+  child mark creation/edit owners. `false` disables the outline and its width; incompatible width edits remain errors.
 
 ## `createScatterPlot`
 

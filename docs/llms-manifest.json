@@ -816,8 +816,8 @@
         "tick-marks",
         "related"
       ],
-      "bytes": 4723,
-      "sha256": "969b703c5b32c34488a9f7f247cf5ae1648815454959feb2c6431dbbab54bcb5"
+      "bytes": 5019,
+      "sha256": "19c02cff3a57f5d0f06f3f77bc3213bd040f9c7441c34ddf9a5d3d49b452d1a7"
     },
     {
       "order": 54,
@@ -1842,8 +1842,8 @@
         "position-capability-matrix",
         "related"
       ],
-      "bytes": 8138,
-      "sha256": "f37ab5898ee822db72632d49a28c816eb8f34ef74289dba8ceaef8629f734ef5"
+      "bytes": 8266,
+      "sha256": "1f1ee5c234c19ba585098ea2cc0a554bf47176048101be1d42fd8b912473b165"
     },
     {
       "order": 116,
@@ -2020,8 +2020,8 @@
         "exact-typescript-signatures",
         "related"
       ],
-      "bytes": 14432,
-      "sha256": "b5cdc2c8222c38f4a78d697262431235f84da46b3de2224b907d98f59be8e2cd"
+      "bytes": 14456,
+      "sha256": "763b0ac9183fa1792eb4462095d1449c9ff80d2a69a69e3af58608615526fa38"
     },
     {
       "order": 123,

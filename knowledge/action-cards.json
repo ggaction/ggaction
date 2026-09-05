@@ -780,7 +780,7 @@
       "layer": "user-facing",
       "domain": "marks",
       "summary": "Create a semantic point mark with one of 12 equal-area shape realizations.",
-      "signature": "createPointMark(options?: { id?: string; data?: string; shape?: PointShape; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;",
+      "signature": "createPointMark(options?: { id?: string; data?: string; shape?: PointShape; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;",
       "intents": [
         "create point mark",
         "create",
@@ -832,7 +832,7 @@
         {
           "name": "stroke",
           "required": false,
-          "type": "string | undefined"
+          "type": "FilledMarkStroke | undefined"
         },
         {
           "name": "strokeWidth",
@@ -1221,7 +1221,7 @@
       "layer": "user-facing",
       "domain": "marks",
       "summary": "Change constant point shape, fill, opacity, or outline appearance and rematerialize its concrete items.",
-      "signature": "editPointMark(options: { target?: string; shape?: PointShape; fill?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; }): ChartProgram;",
+      "signature": "editPointMark(options: { target?: string; shape?: PointShape; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;",
       "intents": [
         "edit point mark",
         "edit",
@@ -1265,7 +1265,7 @@
         {
           "name": "stroke",
           "required": false,
-          "type": "string | false | undefined"
+          "type": "FilledMarkStroke | undefined"
         },
         {
           "name": "strokeWidth",
@@ -1626,7 +1626,7 @@
       "layer": "user-facing",
       "domain": "marks",
       "summary": "Create a semantic bar mark and empty rect collection.",
-      "signature": "createBarMark(options?: { id?: string; data?: string; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;",
+      "signature": "createBarMark(options?: { id?: string; data?: string; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;",
       "intents": [
         "create bar mark",
         "create",
@@ -1673,7 +1673,7 @@
         {
           "name": "stroke",
           "required": false,
-          "type": "string | undefined"
+          "type": "FilledMarkStroke | undefined"
         },
         {
           "name": "strokeWidth",
@@ -1694,7 +1694,7 @@
       "layer": "user-facing",
       "domain": "marks",
       "summary": "Edit whole-bar appearance and rematerialize every concrete rectangle.",
-      "signature": "editBarMark(options: { target?: string; fill?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; }): ChartProgram;",
+      "signature": "editBarMark(options: { target?: string; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;",
       "intents": [
         "edit bar mark",
         "edit",
@@ -1733,7 +1733,7 @@
         {
           "name": "stroke",
           "required": false,
-          "type": "string | false | undefined"
+          "type": "FilledMarkStroke | undefined"
         },
         {
           "name": "strokeWidth",
@@ -11480,7 +11480,7 @@
         {
           "name": "point",
           "required": false,
-          "type": "{ shape?: PointShape | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: string | undefined; strokeWidth?: number | undefined; } | undefined"
+          "type": "{ shape?: PointShape | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; } | undefined"
         },
         {
           "name": "guides",
@@ -11653,7 +11653,7 @@
         {
           "name": "bar",
           "required": false,
-          "type": "{ fill?: string | undefined; opacity?: number | undefined; stroke?: string | undefined; strokeWidth?: number | undefined; } | undefined"
+          "type": "{ fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; } | undefined"
         },
         {
           "name": "guides",
@@ -11760,7 +11760,7 @@
         {
           "name": "bar",
           "required": false,
-          "type": "{ fill?: string | undefined; opacity?: number | undefined; stroke?: string | undefined; strokeWidth?: number | undefined; } | undefined"
+          "type": "{ fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; } | undefined"
         },
         {
           "name": "guides",

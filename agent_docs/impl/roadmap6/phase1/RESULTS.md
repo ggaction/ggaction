@@ -36,3 +36,16 @@
 - 문서: Current CORE/MARKS/BASIC_CHARTS, source-and-derived/action-reference와 generated reference/search/LLM 동기화.
   Runtime definition-only 경계를 변경하지 않아 public declaration 변경과 새 visual target은 없다.
 - 원장: B05 구현·검증 완료, Phase 1 X 검토 대기. 로그는 `.artifacts/roadmap6-authoring/derived-*.log`.
+
+## W3 — stroke:false 정합성
+
+- 기준 commit: `d1c0262d` (W2). Runtime을 변경하지 않고 private shared `FilledMarkStroke` alias로 Point/Bar의
+  create/edit와 Scatter point·Bar/Histogram bar appearance 선언을 정합화했다. 새 public export는 없다.
+- 변경 전 strict TS probe: runtime이 허용하는 5개 Point/Bar/facade 호출을 잘못 거부했다. Rect는 이미 통과했다.
+- 변경 후 package consumer: root/basic의 positive 호출, true/numeric stroke·unknown option negative,
+  Area/Arc creation의 기존 false 거부를 포함하여 `npm run test:package` exit 0.
+- Runtime 회귀: Point/Bar/Rect의 create/edit convergence, false outline width 0, 위치 완성·resize 후 유지,
+  facade forwarding, 잘못된 입력의 immutable failure. Focused mark tests 38/38 통과.
+- `npm run test:contracts`: 255/255 통과. Current BASIC_CHARTS/MARKS, public marks/action reference,
+  generated cards/actions/signatures/types/search/LLM 동기화. 기존 render 동작만 검증하므로 V는 적용 대상 없음.
+- 원장: B06 구현·검증 완료, Phase 1 X 검토 대기. 로그는 `.artifacts/roadmap6-authoring/stroke-*.log`.

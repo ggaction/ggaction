@@ -6,7 +6,7 @@
 - [x] A Gate 증거 commit/push와 명시적 사용자 승인 기록
 - [x] R6-P1-W1 Bar pair-role와 temporal 선언 — [실행 증거](RESULTS.md#w1--bar-pair-role와-temporal-선언)
 - [x] R6-P1-W2 미완성 derived data의 consumer 검증 — [실행 증거](RESULTS.md#w2--definition-only-data-소비)
-- [ ] R6-P1-W3 stroke:false runtime·type·prose 정합성
+- [x] R6-P1-W3 stroke:false runtime·type·prose 정합성 — [실행 증거](RESULTS.md#w3--strokefalse-정합성)
 - [ ] R6-P1-W4 MCP false completion와 intent shadow
 - [ ] R6-P1-W5 Internal inventory의 전체 집합 검증
 - [ ] 모든 시각 variant의 primitive target 작성·표시·V 승인

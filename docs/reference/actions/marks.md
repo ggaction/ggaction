@@ -14,7 +14,8 @@ These are direct immutable `ChartProgram` actions. Each accepts one option objec
 createPointMark({ id?, data?, shape?, fill?, opacity?, stroke?, strokeWidth? } = {})
 ```
 
-Create a semantic point mark with one of 12 equal-area shape realizations. [Marks](../../api/marks.md)
+Create a semantic point mark with one of 12 equal-area shape realizations.
+`stroke: false` disables the outline and its width at creation. [Marks](../../api/marks.md)
 
 ## `editPointMark`
 
@@ -100,7 +101,8 @@ semantic encodings. [Marks](../../api/marks.md)
 createBarMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth? } = {})
 ```
 
-Create a semantic bar mark and empty rect collection. [Marks](../../api/marks.md)
+Create a semantic bar mark and empty rect collection.
+`stroke: false` disables the outline and its width at creation. [Marks](../../api/marks.md)
 
 ## `editBarMark`
 

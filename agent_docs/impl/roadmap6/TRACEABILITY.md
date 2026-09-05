@@ -67,7 +67,7 @@ Primary owner는 누락 방지를 위한 책임 단위이며, 관련 작업이 �
 - 수정·추가 방향: Point/Bar의 실제 허용 범위를 declarations, shared alias, Current prose에 맞춘다. Rect 비교 사례를 유지하고 Area/Arc 확장은 이 수정과 분리한다.
 - 완료 검증: JS·TS의 동일 positive/negative case 결과, unknown style option 거부, 기존 render 유지.
 - 근거: audit/probe-results.json: P08; audit/type-results.txt. [원래 조사](audit/REPORT.md)
-- 처분: 구현 또는 명시적인 계약 유지·migration 결정의 제안. 아직 완료·승인 상태가 아니다.
+- 처분: Point/Bar create/edit와 관련 facade의 shared stroke 선언을 runtime과 맞췄다. Rect 비교와 Area/Arc의 기존 제한, strict installed consumer를 검증했고 Phase 1 X 검토를 기다린다. [실행 증거](phase1/RESULTS.md#w3--strokefalse-정합성)
 
 ### B07 — 가로 temporal Bar의 type 누락
 

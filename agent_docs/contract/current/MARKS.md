@@ -45,7 +45,7 @@ Definition registration and internal layer rebinding remain available without au
   - Effect: semantic mark는 항상 `point`지만 concrete child는 circle, rect 또는 normalized path가 된다.
 - `fill`, `opacity`, `stroke`, `strokeWidth`: Implemented creation-time appearance shorthand. 각각
   `editPointMark`와 같은 validation/config persistence를 사용하며 wrapped `editPointMark`로 적용한다.
-  Field-driven color와 constant fill은 충돌한다.
+  `stroke: false`는 outline과 width를 끈다. Field-driven color와 constant fill은 충돌한다.
 - Effect: dataset cardinality와 같은 길이의 point graphic collection을 만들며 아직 위치 property가
   없으므로 encoding 전에는 보이지 않을 수 있다.
 - Default glyph size: compatible Cartesian x/y 또는 Polar theta/r position이 완성되면 materializer가
@@ -61,7 +61,7 @@ Definition registration and internal layer rebinding remain available without au
 
 ### Formal values — `createPointMark`
 
-- Implemented: `createPointMark({ id?: UserId; data?: UserId; shape?: PointShape; fill?: NonEmptyString; opacity?: UnitInterval; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite } = {})`
+- Implemented: `createPointMark({ id?: UserId; data?: UserId; shape?: PointShape; fill?: NonEmptyString; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite } = {})`
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
@@ -329,13 +329,13 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 - Effect: semantic `bar` layer와 길이 0의 rect collection을 만든다. 관련 x/y/grouping semantics가
   완성될 때 rect가 materialize된다.
 - `fill`, `opacity`, `stroke`, `strokeWidth`: Implemented creation-time appearance shorthand. Wrapped
-  `editBarMark`와 동일한 validation/config persistence를 사용한다. Creation에서는 `stroke: false`를 받지 않는다.
+  `editBarMark`와 동일한 validation/config persistence를 사용한다. `stroke: false`는 outline과 width를 끈다.
 - Coverage: `test/unit/actions/marks/create-bar-mark.test.js`가 inference, empty data,
   invalid options와 conflicts를 검증한다.
 
 ### Formal values — `createBarMark`
 
-- Implemented: `createBarMark({ id?: UserId; data?: UserId; fill?: NonEmptyString; opacity?: UnitInterval; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite } = {})`
+- Implemented: `createBarMark({ id?: UserId; data?: UserId; fill?: NonEmptyString; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite } = {})`
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `createBarMark`
@@ -344,6 +344,8 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
   - ✅ Covered: omission→`"bar"`, current/explicit/empty dataset, second unnamed ambiguity, invalid options와 conflicts.
 - `fill`, `opacity`, `stroke`, `strokeWidth`
   - ✅ Covered: representative combined creation, validation reuse, config persistence and grouped-bar rematerialization.
+  - ✅ Covered: false outline opt-out, create/edit convergence, facade forwarding, strict declaration positive/negative
+    and existing Rect comparison in `test/unit/actions/marks/filled-mark-stroke.test.js` and `scripts/package-consumer.js`.
 - No proposal: orientation/group/stack/width는 mark parameter가 아니라 encoding action이 소유한다.
 - Evidence: `test/unit/actions/marks/create-bar-mark.test.js`.
 
