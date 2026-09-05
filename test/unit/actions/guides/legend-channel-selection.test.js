@@ -130,7 +130,41 @@ test("combined size selection rejects ambiguous point owners", () => {
   const before = base().createPointMark({ id: "other" }).encodeX({ field: "x" }).encodeY({ field: "y" })
     .encodeColor({ field: "g" }).encodeSize({ field: "m" });
   assert.throws(() => before.createLegend({ channels: ["color", "size"] }), /explicit target/);
+  assert.throws(() => before.createLegend(), /explicit target/);
   const actual = before.createLegend({ target: "other", channels: ["color", "size"] });
   assert.equal(actual.guideConfigs.legend.color.target, "other");
   assert.equal(actual.guideConfigs.legend.size.target, "other");
+});
+
+
+test("point channel omission matches explicit content across Full and Basic authoring", () => {
+  const selections = [["color"], ["shape"], ["size"], ["color", "shape"],
+    ["color", "size"], ["shape", "size"], ["color", "shape", "size"]];
+  for (const create of [chart, basicChart]) {
+    for (const channels of selections) {
+      let before = create().createCanvas({ width: 800, height: 700, margin: { right: 300 } })
+        .createData({ values: rows }).createPointMark({ id: "points" })
+        .encodeX({ field: "x" }).encodeY({ field: "y" });
+      if (channels.includes("color")) before = before.encodeColor({ field: "g" });
+      if (channels.includes("shape")) before = before.encodeShape({ field: "g" });
+      if (channels.includes("size")) before = before.encodeSize({ field: "m" });
+      const explicit = before.createLegend({ channels });
+      for (const actual of [before.createLegend(), before.createLegend({ target: "points" }),
+        before.createGuides({ axes: false, grid: false, legend: {} })]) {
+        assert.deepEqual(represented(actual), [...channels].sort());
+        assert.deepEqual(actual.semanticSpec, explicit.semanticSpec);
+        assert.deepEqual(actual.graphicSpec, explicit.graphicSpec);
+        assert.deepEqual(actual.guideConfigs, explicit.guideConfigs);
+      }
+      const facade = create().createCanvas({ width: 800, height: 700, margin: { right: 300 } })
+        .createData({ values: rows }).createScatterPlot({ id: "points", x: "x", y: "y",
+          ...(channels.includes("color") ? { color: "g" } : {}),
+          ...(channels.includes("shape") ? { shape: "g" } : {}),
+          ...(channels.includes("size") ? { size: "m" } : {}),
+          guides: { axes: false, grid: false, legend: {} } });
+      assert.deepEqual(facade.graphicSpec, explicit.graphicSpec);
+      assert.deepEqual(represented(facade), [...channels].sort());
+      assert.equal(before.semanticSpec.guides.legend, undefined);
+    }
+  }
 });

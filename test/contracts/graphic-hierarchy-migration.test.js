@@ -67,7 +67,7 @@ const EXPECTED_DRAW_ORDER = Object.freeze({
     "canvas", "horizontalGridLines", "rankedCarsPlot",
     "xAxisLine", "xAxisTicks", "xAxisLabels", "xAxisTitle",
     "yAxisLine", "yAxisTicks", "yAxisLabels", "yAxisTitle",
-    "seriesLegendSymbolPoints", "seriesLegendLabels", "seriesLegendTitle",
+    "colorLegendSymbolPoints", "colorLegendLabels", "colorLegendTitle",
     "chartTitle", "chartSubtitle"
   ],
   "cars-origin-jitter": [

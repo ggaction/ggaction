@@ -141,11 +141,11 @@ test("propagates an immutable Polar child revision through explicit ancestor rep
     background: "white"
   });
   assert.equal(
-    revisedPolar.graphicSpec.objects.seriesLegendSymbols.items.length,
+    revisedPolar.graphicSpec.objects.colorLegendSymbols.items.length,
     1
   );
   assert.equal(revisedPolar.graphicSpec.objects.point.items.length, 2);
-  assert.equal(polar.graphicSpec.objects.seriesLegendSymbols.items.length, 2);
+  assert.equal(polar.graphicSpec.objects.colorLegendSymbols.items.length, 2);
   assert.equal(polar.graphicSpec.objects.point.items.length, 4);
   assert.equal(inner.children.polar, polar);
   assert.equal(outer.children.inner, inner);

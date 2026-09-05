@@ -49,9 +49,10 @@ type TitleWrap = "word" | "character";
 - Explicit channels는 생성할 content의 정확한 집합이다. Point의 `["color","shape","size"]`,
   `["color","size"]`, `["shape","size"]`는 categorical와 size를 분리 생성한다. Size가 선택되지 않으면
   이미 size encoding이 있어도 companion을 추가하지 않는다. Categorical-only에 count는 오류다.
-  Omitted channels의 기존 color+shape(+size) inference는 유지하며, color-only/shape-only/color+size point의
-  omitted inference는 아직 line-series fallback이므로 정확한 content에는 explicit channels가 필요하다.
-- Point의 explicit color-only selection은 color swatch legend를 만들고, shape 또는 composite channel
+  Point의 ordinal color/shape와 quantitative size는 채널 생략 시 실제 encoding의 전체 집합으로 추론한다.
+  일곱 nonempty subset 모두 explicit 선택과 같은 semantic/config/graphic 결과이며, color+size와 shape+size도 size를 누락하지 않는다.
+  Size companion을 추론할 point 후보가 여럿이면 target을 요구하며 categorical-only로 조용히 축소하지 않는다.
+- Point의 inferred/explicit color-only selection은 color swatch legend를 만들고, shape 또는 composite channel
   선택은 typed point series legend를 만든다.
 - Shape-only point legend는 color binding 없이도 생성·재생성한다. 다른 line의 존재는 이 경로에 영향을 주지 않는다.
   Automatic line+point recipe는 point와 line 모두 같은 color field와 scale을 공유할 때만 추론한다.
@@ -246,7 +247,8 @@ encoding removal/recreation, combined legend와 Polar 가이드를 검증한다.
 - Evidence: `test/unit/actions/guides/legend-bottom-layout.test.js` and bottom-mode pairs in
   `test/contracts/legend-lifecycle-render.test.js`.
 - Evidence: `test/unit/actions/guides/legend-channel-selection.test.js` and
-  `test/contracts/legend-content-render.test.js` prove selection, recipe provenance and ordered component replacement.
+  `test/contracts/legend-content-render.test.js` prove exact explicit/inferred point content across Full/Basic,
+  recipe provenance and ordered component replacement, with independent primitive graphics and pixels.
 - Evidence: `test/unit/actions/guides/size-legend-editing.test.js`, `test/contracts/legend-lifecycle-render.test.js`,
   `test/unit/actions/guides/legend-edit-actions.test.js`,
   `test/unit/actions/guides/stroke-width-legend.test.js`,

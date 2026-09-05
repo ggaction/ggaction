@@ -38,7 +38,7 @@ test("maps numeric ordinal point categories in first-appearance order", () => {
     program.graphicSpec.objects.points.items.map(item => item.properties.fill)
   ).size, 3);
   assert.deepEqual(
-    program.graphicSpec.objects.seriesLegendLabels.items.map(
+    program.graphicSpec.objects.colorLegendLabels.items.map(
       item => item.properties.text
     ),
     ["4", "6", "8"]

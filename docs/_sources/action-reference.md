@@ -1713,6 +1713,9 @@ createLegend({
 Create categorical, point-size, continuous-color gradient, discretized-color
 interval, or field-opacity sample legends. Explicit `channels` creates exactly
 the selected content; include `"size"` in a point categorical-and-size request.
+Omitted point channels infer the available categorical color, shape, and
+quantitative size with the same result as explicit selection. Color-only uses
+swatches; shape uses typed symbols; a size encoding adds its own sample block.
 Continuous legends support right, left, top, and bottom
 placement. Categorical legends also support left side placement; composite
 point and size blocks remain in deterministic vertical order. Horizontal

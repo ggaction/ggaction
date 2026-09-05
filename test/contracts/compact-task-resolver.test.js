@@ -296,7 +296,7 @@ test("provides exact executable Canvas and SVG authoring bootstraps", async () =
     rows: rows.map((row, index) => ({ ...row, category: index % 2 ? "B" : "A" })),
     renderer: "svg"
   });
-  assert.ok(legendResult.program.graphicSpec.objects.seriesLegendSymbols.items.length > 0);
+  assert.ok(legendResult.program.graphicSpec.objects.colorLegendSymbols.items.length > 0);
 
   const canvasPacket = searchGgaction("scatter plot as browser canvas");
   assert.deepEqual(canvasPacket.authoring.imports, [

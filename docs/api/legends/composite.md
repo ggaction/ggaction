@@ -87,7 +87,9 @@ color scale, its line is layered behind each typed circle/square symbol. A
 separate `guide.legend.size` block samples five evenly spaced domain values by
 default and maps their areas through the resolved quantitative size scale.
 Include `"size"` in an explicit channel array to create that block. Omitting
-`channels` retains the inferred color-plus-shape-and-size combination.
+`channels` infers the available categorical color, shape, and quantitative size
+channels, including color-plus-size and shape-plus-size without requiring all
+three encodings.
 
 ## Optional border
 

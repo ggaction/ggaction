@@ -2723,7 +2723,7 @@ export interface LegendOptions {
   /** Categorical item order; preserves the appearance scale's assignments. */
   order?: LegendOrder;
   target?: string;
-  /** Exact requested content. Include size explicitly for a categorical-plus-size point legend. */
+  /** Exact requested content; omission infers encoded point color/shape/size. Explicit subsets include size only when listed. */
   channels?: readonly ("color" | "strokeDash" | "strokeWidth" | "shape" | "size" | "opacity")[];
   position?: "right" | "left" | "bottom" | "top";
   align?: "left" | "center" | "right";

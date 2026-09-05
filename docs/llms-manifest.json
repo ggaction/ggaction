@@ -1524,8 +1524,8 @@
         "item-order-without-changing-color",
         "related"
       ],
-      "bytes": 7384,
-      "sha256": "115fdbe8d0ece5b9b3a2513df6de03ea8d23c8364ce986db3b661b53a62ef8c3"
+      "bytes": 7494,
+      "sha256": "bd04c41b079ce976184a562a933c649babab92e09c49d83091c34f72b3780202"
     },
     {
       "order": 97,
@@ -1552,8 +1552,8 @@
         "optional-border",
         "related"
       ],
-      "bytes": 3326,
-      "sha256": "ec12facda35e8f727eeb4279583f01fc743d66b0421d1df989b01023afd96595"
+      "bytes": 3430,
+      "sha256": "7cedb8be84889e7ac51f4f6cecb078cc05a18fbe1e65b7b724f91faaaca4bdf2"
     },
     {
       "order": 99,
@@ -2002,8 +2002,8 @@
         "removetitle",
         "related"
       ],
-      "bytes": 11622,
-      "sha256": "405db14eddf3d8c00f64a1f71d1e2d6745abf81d01d02a95fc149964bf10aee3"
+      "bytes": 11852,
+      "sha256": "efd6832c69de16328ec12d019d90148b0e5c4d64d4b448317802f76242d8ffec"
     },
     {
       "order": 120,

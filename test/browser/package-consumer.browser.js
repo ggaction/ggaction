@@ -213,7 +213,13 @@ test.before(async () => {
         .encodeColor({ field: "g" }).encodeShape({ field: "g" }).encodeSize({ field: "m" });
       const onlyColorContent = legendContentBase.createLegend({ channels: ["color"] });
       const colorSizeContent = legendContentBase.createLegend({ channels: ["color", "size"], count: 3 });
-      render(colorSizeContent, document.getElementById("legend-content").getContext("2d"));
+      const inferredSizeBase = legendContentBase.removeEncoding({ channel: "shape" });
+      const inferredColorSize = inferredSizeBase.createLegend({ count: 3 });
+      const inferredColorBase = inferredSizeBase.removeEncoding({ channel: "size" });
+      const inferredColor = inferredColorBase.createLegend();
+      const inferredShape = legendContentBase.removeEncoding({ channel: "color" })
+        .removeEncoding({ channel: "size" }).createLegend();
+      render(inferredColorSize, document.getElementById("legend-content").getContext("2d"));
       const bottomLegendBase = chart().createCanvas({ width: 640, height: 600,
         margin: { left: 60, right: 100, top: 40, bottom: 150 } })
         .createData({ values: [{ x: 1, y: 2, g: "A" }, { x: 2, y: 3, g: "B" }] })
@@ -232,6 +238,11 @@ test.before(async () => {
       render(editedSizeLegend, document.getElementById("size-legend").getContext("2d"));
       document.querySelector("#status").textContent = "complete";
       window.__ggactionConsumer = {
+        inferredColorType: inferredColor.graphicSpec.objects.colorLegendSymbols.type,
+        inferredShapeType: inferredShape.guideConfigs.legend.series.symbol.layers[0].type,
+        inferredSizeParity: JSON.stringify(inferredColorSize.graphicSpec) === JSON.stringify(
+          inferredSizeBase.createLegend({ channels: ["color", "size"], count: 3 }).graphicSpec),
+        inferredSizeSVG: renderToSVG(inferredColorSize).startsWith("<svg "),
         onlyColorKinds: Object.keys(onlyColorContent.guideConfigs.legend),
         onlyColorSymbol: onlyColorContent.graphicSpec.objects.colorLegendSymbols.type,
         combinedContentKinds: Object.keys(colorSizeContent.guideConfigs.legend),
@@ -336,6 +347,10 @@ test("imports and renders the packed browser entries", async () => {
     waitFor: () => window.__ggactionConsumer !== undefined
   });
   assert.deepEqual(await windowValue(page, "__ggactionConsumer"), {
+    inferredColorType: "rect",
+    inferredShapeType: "point",
+    inferredSizeParity: true,
+    inferredSizeSVG: true,
     onlyColorKinds: ["color"],
     onlyColorSymbol: "rect",
     combinedContentKinds: ["color", "size"],

@@ -37,10 +37,11 @@ samples without a shape explanation. Selecting just `["color"]` or `["shape"]`
 does not add a size block. Sample `count` requires size to be selected in a
 categorical request. Encodings and mark appearance remain unchanged.
 
-For point marks encoding only color, only shape, or color plus size, specify
-`channels` explicitly; their omitted-channel inference still uses the older
-line-series fallback. Inferred color-plus-shape with optional size retains its
-combined point legend.
+Omitting `channels` on a point mark infers its encoded categorical color, shape,
+and quantitative size. Color alone uses swatches; shape uses typed symbols;
+color plus size and shape plus size each create both corresponding blocks.
+The result matches explicitly listing those channels. If several point marks
+can own an inferred size companion, specify `target`.
 
 Every categorical legend uses the same right-side default:
 
@@ -50,8 +51,8 @@ Every categorical legend uses the same right-side default:
 | bar histogram | `color` | `right` | swatch |
 | grouped ordinal bar | `color` | `right` | swatch |
 | grouped area | `color` | `right` | swatch |
-| point | explicitly selected `color` only | `right` | swatch |
-| point | explicitly selected `shape` only | `right` | typed point |
+| point | inferred or selected `color` only | `right` | swatch |
+| point | inferred or selected `shape` only | `right` | typed point |
 | point + matching line | `color` + `shape` | `right` | line over typed point |
 | quantitative point size | `size` | `right`, standalone or below point series | five equal-area circles |
 | quantitative/temporal point color | `color` | `right` | continuous gradient with five labels |

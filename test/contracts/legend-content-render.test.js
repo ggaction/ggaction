@@ -123,3 +123,30 @@ test("matches exact point legend content to independent graphic primitives", asy
     assert.equal(actual.pixelHash, expected.pixelHash);
   }
 });
+
+
+test("matches inferred point legend content to independent graphic primitives", async () => {
+  const references = [];
+  for (const variant of ["color-only", "color-size", "shape-only"]) {
+    const size = variant === "color-size";
+    let base = contentBase();
+    if (variant !== "shape-only") base = base.removeEncoding({ channel: "shape" });
+    else base = base.removeEncoding({ channel: "color" });
+    if (!size) base = base.removeEncoding({ channel: "size" });
+    const primitive = variant === "shape-only" ? shapePrimitive(base) : colorPrimitive(base, size);
+    const options = size ? { count: 3 } : {};
+    const artifact = { scope: "charts", capability: "legend-layout", chart: "legend-inference",
+      variant, title: `Inferred ${variant} content`,
+      userFacingCallChain: size ? 'base.createLegend({ count: 3 })' : 'base.createLegend()' };
+    const png = { width: 800, height: 700, colors: ["#4c78a8"],
+      regions: [{ name: "plot", x: 60, y: 20, width: 450, height: 630, minimumInkPixels: 150 }] };
+    const expected = await assertRenderedPNG(primitive, { ...png, artifact: { ...artifact, kind: "primitive" } });
+    references.push({ base, primitive, options, artifact, png, expected });
+  }
+  for (const { base, primitive, options, artifact, png, expected } of references) {
+    const publicProgram = base.createLegend(options);
+    assertChartProgramsEquivalent({ primitiveProgram: primitive, publicProgram, compareSemanticSpec: false });
+    const actual = await assertRenderedPNG(publicProgram, { ...png, artifact: { ...artifact, kind: "user-facing" } });
+    assert.equal(actual.pixelHash, expected.pixelHash);
+  }
+});

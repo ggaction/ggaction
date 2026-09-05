@@ -499,6 +499,18 @@ async function testNodeConsumer(directory) {
     assert.deepEqual(Object.keys(colorSizeContent.guideConfigs.legend), ["color", "size"]);
     assert.equal(colorSizeContent.graphicSpec.objects.sizeLegendSymbols.items.length, 3);
     assert.match(renderToSVG(colorSizeContent), /<svg /);
+    const inferredColorBase = legendContentBase.removeEncoding({ channel: "shape" })
+      .removeEncoding({ channel: "size" });
+    const inferredColor = inferredColorBase.createLegend();
+    assert.deepEqual(inferredColor.graphicSpec, inferredColorBase.createLegend({ channels: ["color"] }).graphicSpec);
+    assert.equal(inferredColor.graphicSpec.objects.colorLegendSymbols.type, "rect");
+    const inferredSizeBase = legendContentBase.removeEncoding({ channel: "shape" });
+    assert.deepEqual(inferredSizeBase.createLegend({ count: 3 }).graphicSpec,
+      inferredSizeBase.createLegend({ channels: ["color", "size"], count: 3 }).graphicSpec);
+    const inferredShape = legendContentBase.removeEncoding({ channel: "color" })
+      .removeEncoding({ channel: "size" }).createLegend();
+    assert.deepEqual(inferredShape.guideConfigs.legend.series.channels, ["shape"]);
+    assert.equal(inferredShape.graphicSpec.objects.seriesLegendSymbolPoints.items.length, 2);
 
     const bottomLegendBase = chart().createCanvas({ width: 640, height: 600,
       margin: { left: 60, right: 100, top: 40, bottom: 150 } })

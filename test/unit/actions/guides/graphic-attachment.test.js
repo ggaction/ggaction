@@ -49,9 +49,9 @@ test("keeps legends before titles even when authored after them", () => {
 
   assert.deepEqual(children, [
     "plot-main",
-    "seriesLegendSymbols",
-    "seriesLegendLabels",
-    "seriesLegendTitle",
+    "colorLegendSymbols",
+    "colorLegendLabels",
+    "colorLegendTitle",
     "chartTitle"
   ]);
   for (const id of children.slice(1)) {

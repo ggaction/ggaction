@@ -20,7 +20,6 @@ import {
 import {
   resolveCurrentDefinition,
   resolveDefinition,
-  resolveLegendKind,
   resolveTarget,
   sameValues
 } from "./resolve.js";
@@ -147,17 +146,16 @@ export const rematerializeLegend = action(
 
 export function resolveCategoricalLegendConfig(program, args = {}) {
   const layer = resolveTarget(program, args.target);
-  const kind = resolveLegendKind(layer, args.channels);
-  const options = normalizeOptions({ ...args,
-    symbol: resolveLegendSymbol(program, layer, args.channels, args.symbol)
-  }, kind);
   const definition = resolveDefinition(
     program,
     layer,
-    options.channels,
-    options.title,
+    args.channels,
+    args.title,
     args.order === undefined ? undefined : normalizeLegendOrder(args.order)
   );
+  const options = normalizeOptions({ ...args,
+    symbol: resolveLegendSymbol(program, layer, definition.channels, args.symbol)
+  }, definition.kind);
   const config = {
     target: layer.id,
     ...definition,
@@ -290,12 +288,13 @@ export function resolveLegendCreationPlan(program, args = {}, layers = program.s
   const pointCandidates = candidates.filter(layer =>
     layer.mark?.type === "point" &&
     (channels === undefined
-      ? layer.encoding?.shape?.scale !== undefined && layer.encoding?.color?.scale !== undefined
+      ? ["color", "shape"].some(channel => layer.encoding?.[channel]?.scale !== undefined)
       : (wantsShape || wantsSize) && channels.every(channel =>
         ["color", "shape", "size"].includes(channel) && layer.encoding?.[channel]?.scale !== undefined))
   );
   const requestedPoint = requestedCandidate(program, args.target, pointCandidates);
-  if (wantsSize && requestedPoint === undefined) {
+  const inferredSize = channels === undefined && pointCandidates.some(isSizeLegendPoint);
+  if ((wantsSize || inferredSize) && requestedPoint === undefined) {
     throw new Error("Combined size legend requires one eligible point mark or an explicit target.");
   }
   if (requestedPoint !== undefined) {

@@ -44,7 +44,7 @@ export function resolveTarget(program, requested) {
 
 export const sameValues = sameOrderedValues;
 
-export function resolveLegendKind(layer, requestedChannels) {
+function resolveLegendKind(layer, requestedChannels) {
   if (["bar", "area", "arc", "rect"].includes(layer.mark.type)) return "color";
   if (
     layer.mark.type === "point" &&
@@ -78,12 +78,10 @@ function resolveOrdinalScales(program, scaleIds) {
 }
 
 export function resolveDefinition(program, layer, requestedChannels, requestedTitle, order) {
-  const kind = resolveLegendKind(layer, requestedChannels);
-  const channels = requestedChannels ?? (kind === "color"
-    ? ["color"]
-    : CHANNELS.filter(
-        channel => layer.encoding?.[channel]?.scale !== undefined
-      ));
+  const channels = requestedChannels ?? (["line", "point"].includes(layer.mark.type)
+    ? CHANNELS.filter(channel => layer.encoding?.[channel]?.scale !== undefined)
+    : ["color"]);
+  const kind = resolveLegendKind(layer, channels);
   if (
     !Array.isArray(channels) ||
     channels.length === 0 ||
