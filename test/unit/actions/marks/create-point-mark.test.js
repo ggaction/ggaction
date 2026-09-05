@@ -1,6 +1,25 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
+test("accepts prototype property names as explicit mark IDs throughout their lifecycle", () => {
+  for (const id of ["constructor", "toString", "hasOwnProperty", "valueOf", "__proto__"]) {
+    const before = chart()
+      .createCanvas({ width: 200, height: 160, margin: 20 })
+      .createData({ values: [{ x: 1, y: 2 }, { x: 2, y: 4 }] });
+    const program = before.createPointMark({ id })
+      .encodeX({ target: id, field: "x" })
+      .encodeY({ target: id, field: "y" });
+    assert.ok(Object.hasOwn(program.graphicSpec.objects, id));
+    assert.equal(program.graphicSpec.objects[id].items.length, 2);
+    assert.equal(program.editCanvas({ width: 240 }).graphicSpec.objects[id].items.length, 2);
+    assert.throws(() => program.createPointMark({ id }), /already exists/);
+    const removed = program.removeMark({ target: id });
+    assert.equal(Object.hasOwn(removed.graphicSpec.objects, id), false);
+    assert.doesNotThrow(() => removed.createPointMark({ id, data: "data" }));
+    assert.equal(Object.hasOwn(before.graphicSpec.objects, id), false);
+  }
+});
+
 import { chart } from "../../../../src/ChartProgram.js";
 
 test("creates a point mark from currentData with default circle shape", () => {

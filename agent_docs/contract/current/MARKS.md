@@ -20,6 +20,8 @@ Ordinary mark creation may omit `id` for the first mark of that semantic type. T
   deterministic role ID `"point" | "line" | "bar" | "area" | "arc" | "rule" | "tick" | "text"`. A second mark of the same type requires an
 explicit user ID; the library never invents numbered public-resource IDs. Explicit IDs retain the existing
 validation and uniqueness contract.
+Prototype property names such as constructor, toString and __proto__ are ordinary explicit IDs. Only an
+own resource with the same ID is a collision.
 
 When `data` is omitted, every ordinary mark family uses one shared layered-inference policy. The current eligible
 layer, otherwise one unique layer on the current dataset, may contribute its coordinate and compatible field-based
