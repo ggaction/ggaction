@@ -107,7 +107,9 @@ aggregate benchmark와 원본 provenance hash로 정리했다. PR #27의 strict 
 
 현재 Phase 1 오류 교정 단계다. 액션 173개의 감사 결과를 기반으로 오류 8건·설계 문제 20건·추가 액션군 19개를
 12단계, 46개 작업 묶음과 차트군 계약 13개로 연결했다. 2026-09-05 사용자 선택으로 F20은 범위에서 제외했다.
-사용자의 “밀자” 지시로 Phase 0을 닫고 Phase 1 교정을 시작했다. 후속 새 API는 Proposed이며 로드맵 전체를 완료한 기록이 아니다.
+사용자의 “밀자” 지시로 Phase 0을 닫고 Phase 1의 W1–W5를 구현·검증했다. 전체 기본 테스트 2,329개와
+관련 렌더 쌍 2개가 통과했고 [R6-P1-X 결과 검토](roadmap6/phase1/REVIEW.md)를 기다린다.
+B01 lower 작성 순서는 Phase 2에 남으며 후속 새 API는 Proposed다. Phase나 로드맵 전체를 완료한 기록이 아니다.
 
 - 계획: [`roadmap6/ROADMAP.md`](roadmap6/ROADMAP.md)
 - 전체 항목: [`roadmap6/TRACEABILITY.md`](roadmap6/TRACEABILITY.md)

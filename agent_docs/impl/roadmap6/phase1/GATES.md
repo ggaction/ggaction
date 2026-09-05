@@ -2,7 +2,7 @@
 
 ## 공통 상태
 
-R6-P1-A는 approved다. R6-P1-X는 planned이며 구현 결과를 기다린다. R6-P1-V 적용 여부는 아래에 명시한다.
+R6-P1-A는 approved다. R6-P1-X는 ready-for-review이며 [구체적인 결과 package](REVIEW.md)를 검토한다. R6-P1-V 적용 여부는 아래에 명시한다.
 허용 상태는 planned | ready-for-review | approved | changes-requested다.
 이 문서는 지금 승인을 요청하는 문서가 아니라 실행 시점의 검토 범위와 경계를 미리 선언한다.
 
@@ -31,7 +31,12 @@ R6-P1-A는 approved다. R6-P1-X는 planned이며 구현 결과를 기다린다. 
 
 ## R6-P1-X — Result and closeout
 
-- 상태: planned
+- 상태: ready-for-review
+- 검증한 source commit / remote ref: `d72e7062fd2e0fb378b2b93843eeeb84baa2e28e` / `origin/codex/roadmap6-hierarchical-actions`.
+- 결과 package: [REVIEW.md](REVIEW.md), 작업별 [RESULTS.md](RESULTS.md). 전체 기본 테스트 2,329/2,329,
+  contracts 259/259, focused render 2/2, installed package consumer exit 0.
+- 명시적 후속 범위: B01 lower measure-first는 D14 / R6-P2-W5에 남는다. B02/B03의 완성 chart와 D01의
+  Polar radius 의미는 각각 F05/F08/Phase 4의 별도 owner가 처리한다.
 - 검토 대상: [GOAL.md](GOAL.md)의 전체 승인 범위 결과와 [STEP1.md](STEP1.md)의 실제 완료 상태.
 - 필요 증거: verified source commit/remote ref, focused·누적 tests, strict positive/negative declarations, actual trace, immutable failure, documentation/metadata/generated diff와 compatibility 예제.
 - 시각 범위: 승인된 target별 same-run decoded primitive/public pixel equality, concrete graphic parity, renderer 소비 결과. 시각 범위가 없으면 이유를 기록한다.
@@ -44,6 +49,6 @@ R6-P1-A는 approved다. R6-P1-X는 planned이며 구현 결과를 기다린다. 
 - Review commit / remote ref: cf13920ed517cfc6c333b04ec55a724826960228 / codex/roadmap6-hierarchical-actions
 - 검증 명령과 실제 결과: 기준 감사의 43개 API·7개 MCP 관측·4개 type 호출과 255개 contract tests. 새 구현 결과는 작업별로 추가한다.
 - 사용자 승인 근거: 2026-09-05 사용자가 F01–F19 범위를 선택한 뒤 “밀자”라고 지시했다. 이미 commit/push된 계획을 실행하라는 승인으로 기록하며, 아직 검토하지 않은 새 API·시각 target의 승인을 대신하지 않는다.
-- 남은 작업: R6-P1-W1–W5 구현과 X evidence.
+- 남은 작업: R6-P1-X 결과 승인. W1–W5 교정은 구현·검증했으며 B01 전체와 신규 액션군을 완료로 표시하지 않는다.
 
 실행 시 실제 증거를 채운다. 문서 작성 날짜나 이전 로드맵 승인을 이 Gate의 승인으로 재사용하지 않는다.

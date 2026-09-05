@@ -9,12 +9,12 @@
 - [x] R6-P1-W3 stroke:false runtime·type·prose 정합성 — [실행 증거](RESULTS.md#w3--strokefalse-정합성)
 - [x] R6-P1-W4 MCP false completion와 intent shadow — [실행 증거](RESULTS.md#w4--mcp-chart-closure와-phrase-우선순위)
 - [x] R6-P1-W5 Internal inventory의 전체 집합 검증 — [실행 증거](RESULTS.md#w5--internal-inventory-전체-집합)
-- [ ] 모든 시각 variant의 primitive target 작성·표시·V 승인
-- [ ] 승인된 variant의 public 구현과 같은 실행의 primitive/public render 비교
-- [ ] 누적 검증·migration·문서·원장 동기화
+- [x] V 적용성 확인 — 새 시각 target 없음, 기존 출력과의 정합성 교정으로 N/A
+- [x] 기존 가로 Bar·temporal chart의 primitive/public render 비교 2/2 통과
+- [x] 누적 검증·migration·문서·원장 동기화 — [검토 package](REVIEW.md)
 - [ ] X Gate의 증거 commit/push와 명시적 사용자 승인 기록
 
-위 체크는 미래 실행용이다. 계획 문서를 만든 사실을 구현 완료나 Gate 승인으로 표시하지 않는다.
+체크된 항목은 실제 실행 증거를 갖춘 결과다. 사용자 승인이 없는 X Gate와 후속 Proposed API는 완료로 표시하지 않는다.
 
 ## 순서
 

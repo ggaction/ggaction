@@ -1,6 +1,6 @@
 # Roadmap 6 — Hierarchical Chart Authoring and Action Consistency
 
-> **문서 상태 — 현재 실행 계획.** 현재 작업은 Phase 1의 재현 오류 교정이다. 2026-09-05 사용자의 진행 승인으로 착수했다.
+> **문서 상태 — 현재 실행 계획.** Phase 1의 W1–W5 교정을 구현·검증했고 [R6-P1-X 결과 검토](phase1/REVIEW.md)를 기다린다.
 > 액션군 범위는 사용자 선택에 따라 F01–F19로 구성했다. 구체적인 새 API와 행동 변경은 Proposed다.
 > 이 문서를 작성해 달라는 요청은 모든 설계안·구현·배포의 일괄 승인을 뜻하지 않는다.
 > 실행 위치는 [ROADMAP_INDEX.json](../ROADMAP_INDEX.json), 현재 제품 계약은
@@ -112,7 +112,7 @@ S는 기존 owner 위의 교정·연결, M은 여러 consumer의 lifecycle 변�
 | Phase | 상태 | 범위 |
 | --- | --- | --- |
 | 0 | completed | 감사 기준, 우선순위, 결정 원장, 검증·Gate 정의 |
-| 1 | in-progress | B01–B08 재현 오류와 계약 불일치 |
+| 1 | in-progress | W1–W5 구현·검증, R6-P1-X 검토 대기. B01 lower 작성 순서는 Phase 2에 남음 |
 | 2 | planned | 계층 공통 규칙, guide 재사용, grouping·appearance·추론 정리 |
 | 3 | planned | Pie/Donut, Density, Horizon의 얇은 완성 facade |
 | 4 | planned | Baseline, layout, order, 중심색과 Area·Rose/Radial |

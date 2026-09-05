@@ -1,7 +1,7 @@
 {
   "version": 1,
   "roadmap": "roadmap6",
-  "status": "proposed",
+  "status": "in-progress",
   "baseline": {
     "commit": "cee752b0580e6f31630ad5dd2224ab3b5f5f682b",
     "packageVersion": "0.0.12",
@@ -78,7 +78,7 @@
       "gateStates": {
         "R6-P1-A": "approved",
         "R6-P1-V": "planned",
-        "R6-P1-X": "planned"
+        "R6-P1-X": "ready-for-review"
       },
       "workPackages": [
         {
@@ -145,7 +145,9 @@
           "resultEvidence": "phase1/RESULTS.md#w5--internal-inventory-전체-집합"
         }
       ],
-      "visualGateApplicability": "not-applicable-to-current-correction-scope"
+      "visualGateApplicability": "not-applicable-to-current-correction-scope",
+      "resultEvidence": "phase1/REVIEW.md",
+      "verifiedSourceCommit": "d72e7062fd2e0fb378b2b93843eeeb84baa2e28e"
     },
     {
       "id": 2,
@@ -208,6 +210,7 @@
           "title": "유효한 incomplete intent 보존",
           "relativeSize": "M",
           "findingIds": [
+            "B01",
             "D14"
           ],
           "scope": "Bar width와 measure-first encoding 중 geometry 없이 검증 가능한 intent를 보존한다. Missing positions 완료 시 원래 requested width와 role을 적용한다.",
