@@ -3172,7 +3172,41 @@
       }
     }
   ],
-  "plannedActions": [],
+  "plannedActions": [
+    {
+      "name": "createPiePlot",
+      "status": "planned",
+      "readiness": "accepted",
+      "layer": "user-facing",
+      "domain": "charts",
+      "contract": {
+        "file": "agent_docs/contract/planned/COMPLETE_CHARTS.md",
+        "anchor": "createpieplot"
+      }
+    },
+    {
+      "name": "createDensityPlot",
+      "status": "planned",
+      "readiness": "accepted",
+      "layer": "user-facing",
+      "domain": "statistics",
+      "contract": {
+        "file": "agent_docs/contract/planned/COMPLETE_CHARTS.md",
+        "anchor": "createdensityplot"
+      }
+    },
+    {
+      "name": "createHorizonPlot",
+      "status": "planned",
+      "readiness": "accepted",
+      "layer": "user-facing",
+      "domain": "statistics",
+      "contract": {
+        "file": "agent_docs/contract/planned/COMPLETE_CHARTS.md",
+        "anchor": "createhorizonplot"
+      }
+    }
+  ],
   "plannedCapabilities": [],
   "internal": {
     "materialization": [

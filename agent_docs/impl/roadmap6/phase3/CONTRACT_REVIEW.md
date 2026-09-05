@@ -2,6 +2,7 @@
 
 상태: **approved contract / 미구현**. 2026-09-05 사용자가 Phase 3 A 승인 질문에 “승인한다”라고 답했다.
 검토 package `bd18718a9c1aed5f91b485bc1aeab54616e9e5a3`, 승인 기준 HEAD `0f3531ae9c242190df9457b1ed4289491963ba77`의 P3-C01–C07을 승인했다.
+승인된 세 action을 [Planned owner](../../../contract/planned/COMPLETE_CHARTS.md)에 등록했다.
 범위는 F01·F06·F07이며 F20은 제외한다. 원격 검토 ref와 승인 상태는 [GATES.md](GATES.md)가 소유한다.
 
 ## 이번에 확정할 결정
@@ -103,7 +104,7 @@ filtered data와의 조합은 현재 consumer가 지원하는 범위를 검증�
 2. Full chart registrar에 세 methods를 연결한다. Basic은 기존 5 Cartesian facades와 entry boundary를 유지한다.
    최종 direct inventory 예상은 **174 → 177**이다. Donut alias는 추가하지 않으므로 178로 세지 않는다.
 3. 각 coherent change에서 runtime/declarations/Current/action index·catalog·cards/option metadata/
-   generated reference·LLM docs/examples를 동기화한다. 구현 전 Current count와 Planned count는 변경하지 않는다.
+   generated reference·LLM docs/examples를 동기화한다. A 승인 전 Current count와 Planned count는 변경하지 않는다. 승인 뒤에는 accepted subset만 Planned에 등록한다.
 4. MCP chart intents의 Pie/Donut·Density·Horizon은 실제로 완성되는 facade 호출을 제공하도록 연결한다.
    Pie와 Donut은 같은 method를 쓰되 Donut의 inner radius를 explicit하게 표시한다.
    Raw arc/area 및 density/horizon transform 요청의 lower provider는 유지한다.

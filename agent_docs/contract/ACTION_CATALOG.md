@@ -187,6 +187,9 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 
 | Action | Readiness | Contract |
 | --- | --- | --- |
+| `createPiePlot` | accepted | [Open](planned/COMPLETE_CHARTS.md#createpieplot) |
+| `createDensityPlot` | accepted | [Open](planned/COMPLETE_CHARTS.md#createdensityplot) |
+| `createHorizonPlot` | accepted | [Open](planned/COMPLETE_CHARTS.md#createhorizonplot) |
 
 ## Planned capabilities
 

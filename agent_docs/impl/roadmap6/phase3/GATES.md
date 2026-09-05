@@ -60,4 +60,5 @@ V/X는 planned다. 허용 상태: planned | ready-for-review | approved | change
 - 승인 기준 HEAD: `0f3531ae9c242190df9457b1ed4289491963ba77`; 계약 package `bd18718a9c1aed5f91b485bc1aeab54616e9e5a3`의 P3-C01–C07과 9개 target 작성 범위.
 - 효과: Planned 등록·비시각 준비·primitive target 작성 가능. V/X와 조건부 bundle B는 승인하지 않았다.
 - 실제 검증: baseline 52/52, related existing tests 176/176, 문서 lower calls 3/3, 최종 navigation 10/10, local links 214개. 재현 명령은 [VALIDATION.md](VALIDATION.md).
-- 남은 작업: 승인 계약의 Planned 등록, primitive targets와 V 승인, public implementation·누적 acceptance·X 승인.
+- Planned 등록: accepted 3개, Current 174개 유지. `npm run test:contracts` 260/260, fail/skip 0.
+- 남은 작업: primitive targets와 V 승인, public implementation·누적 acceptance·X 승인.

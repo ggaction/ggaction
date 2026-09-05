@@ -8,7 +8,7 @@
 - [x] A 계약 제안·호환성·consumer matrix·9개 V target 계획 작성
 - [x] A package 최종 검증·commit/push·exact remote ref 기록
 - [x] A 명시적 사용자 승인 기록
-- [ ] 승인된 새 계약의 Planned 등록과 비시각 준비
+- [x] 승인된 새 계약의 Planned 등록과 비시각 준비
 - [ ] 9개 primitive targets 작성·표시·V 승인
 - [ ] R6-P3-W1 Pie/Donut public flow와 lower lifecycle
 - [ ] R6-P3-W2 Density public flow와 lower lifecycle
