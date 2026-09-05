@@ -2706,6 +2706,8 @@ export type LegendSymbolLayer =
 
 export type LegendSymbolRecipe =
   | "auto"
+  /** Sampled opacity uses a single point recipe; radius defaults to 7 and must be positive. */
+  | { type?: "point"; radius?: number; fill?: string; stroke?: string; strokeWidth?: number }
   | { length?: number; lineWidth?: number }
   | { width?: number; height?: number; stroke?: string; strokeWidth?: number }
   | { layers: readonly LegendSymbolLayer[] };

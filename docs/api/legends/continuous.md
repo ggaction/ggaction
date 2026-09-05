@@ -26,7 +26,10 @@ A field-driven quantitative `opacity` encoding produces representative point
 samples in ascending domain order. Reversing the opacity range changes symbol
 appearance without reversing labels. Its neutral default symbol is a circle
 with radius `7` and fill `#4c78a8`; pass one `{ type: "point", ... }` recipe to
-override it.
+override it. `type` is optional and only accepts `"point"`; `radius` must be
+positive. `fill`, `stroke`, and non-negative `strokeWidth` are also supported.
+The same recipe works with `editLegend`, `editLegendSymbols`, and
+`createGuides({ legend: ... })`, including TypeScript.
 
 ~~~javascript
 program.createLegend({ channels: ["opacity"], position: "left" });

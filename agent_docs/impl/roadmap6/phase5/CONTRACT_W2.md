@@ -56,4 +56,4 @@ Single horizontal occupied alignment/offset #102는 [RESULTS_W2_OCCUPIED_ALIGNME
 
 Side alignment/title style/gradient title-position의 생성·편집 parity #103은 [RESULTS_W2_OPTION_PARITY.md](RESULTS_W2_OPTION_PARITY.md)에 기록한다. 큰 sample/font 내부 간격과 전체 통합 matrix는 남아 있다.
 
-Opacity sample/stroke/font 간격과 mirrored side lane #104는 [RESULTS_W2_OPACITY_SPACING.md](RESULTS_W2_OPACITY_SPACING.md)에 기록한다. [C2 interval/width 실제 stroke spacing #105](RESULTS_W2_ITEM_STROKE_SPACING.md)를 수정·검증했다. [C2 categorical recipe/shape/font spacing #106](RESULTS_W2_CATEGORICAL_SPACING.md)을 수정·검증했다. Opacity symbol type/runtime parity와 전체 통합은 남아 있다.
+Opacity sample/stroke/font 간격과 mirrored side lane #104는 [RESULTS_W2_OPACITY_SPACING.md](RESULTS_W2_OPACITY_SPACING.md)에 기록한다. [C2 interval/width 실제 stroke spacing #105](RESULTS_W2_ITEM_STROKE_SPACING.md)를 수정·검증했다. [C2 categorical recipe/shape/font spacing #106](RESULTS_W2_CATEGORICAL_SPACING.md)을 수정·검증했다. [Opacity symbol TypeScript parity #107](RESULTS_W2_OPACITY_SYMBOL_TYPES.md)를 수정·검증했다. 전체 통합은 남아 있다.

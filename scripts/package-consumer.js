@@ -2135,6 +2135,15 @@ async function testTypeScriptConsumer(directory) {
     void lastAction;
     void withoutXAxis;
     void invalidTransform;
+
+    const opacityLegendTypes = chart().createCanvas({ width: 1200, height: 1000, margin: 300 })
+      .createData({ values: [{ x: 0, y: 0, m: 0 }, { x: 1, y: 1, m: 1 }] })
+      .createPointMark().encodeX({ field: "x" }).encodeY({ field: "y" }).encodeOpacity({ field: "m" });
+    opacityLegendTypes.createLegend({ channels: ["opacity"], symbol: { type: "point", radius: 9, fill: "red", stroke: "black", strokeWidth: 2 } })
+      .editLegend({ symbol: { radius: 11 } }).editLegendSymbols({ symbol: { type: "point", radius: 13 } });
+    opacityLegendTypes.createGuides({ legend: { channels: ["opacity"], symbol: { radius: 9 } } });
+    // @ts-expect-error Opacity symbol radius must be numeric.
+    opacityLegendTypes.createLegend({ channels: ["opacity"], symbol: { radius: "9" } });
   `);
   await writeFile(path.join(directory, "tsconfig.json"), `${JSON.stringify({
     compilerOptions: {

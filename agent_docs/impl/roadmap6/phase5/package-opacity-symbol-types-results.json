@@ -1,0 +1,31 @@
+{
+  "file": "/Users/hyeonjeon/Projects/ggaction-clean-20260905/.artifacts/roadmap6-authoring/package-opacity-symbol-types/ggaction-0.0.12.tgz",
+  "filename": "ggaction-0.0.12.tgz",
+  "sha256": "cf7030f8e1f5cdcea68ac2420f0daa9c2679bf1bc4c1c1c3bcc13ec1491972c4",
+  "entryCount": 452,
+  "size": 509163,
+  "unpackedSize": 2432387,
+  "browserBundles": {
+    "full": {
+      "specifier": "ggaction",
+      "chunks": 1,
+      "modules": 399,
+      "minifiedBytes": 951777,
+      "gzipBytes": 253346
+    },
+    "basic": {
+      "specifier": "ggaction/basic",
+      "chunks": 1,
+      "modules": 242,
+      "minifiedBytes": 509170,
+      "gzipBytes": 139625
+    },
+    "svg": {
+      "specifier": "ggaction/svg",
+      "chunks": 1,
+      "modules": 15,
+      "minifiedBytes": 19840,
+      "gzipBytes": 6437
+    }
+  }
+}
