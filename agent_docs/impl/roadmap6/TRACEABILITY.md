@@ -1,6 +1,8 @@
 # Roadmap 6 — 전체 항목 추적 원장
 
-기준 감사의 B01–B08, D01–D20, F01–F20을 모두 보존한다. 모든 작업 상태는 **Proposed / 미구현**이다.
+이번 범위의 B01–B08, D01–D20, F01–F19 총 47개 항목을 추적한다. 모든 작업 상태는 **Proposed / 미구현**이다.
+사용자는 2026-09-05 F20 제외와 나머지 19개 액션군 구성을 선택했다. F20은 실행·연구·완료 대상이 아니며
+원래 관측은 고정된 감사 기록에만 남긴다.
 Primary owner는 누락 방지를 위한 책임 단위이며, 관련 작업이 여러 단계에 있으면 함께 닫아야 한다.
 각 항목의 원래 관측·코드 근거는 [감사 보고서](audit/REPORT.md), 모든 기존 액션과의 연결은
 [173개 전수표](audit/ACTION_INVENTORY.md)에 있다. 기계 판독본은 [PROPOSALS.json](PROPOSALS.json)이다.
@@ -267,7 +269,7 @@ Primary owner는 누락 방지를 위한 책임 단위이며, 관련 작업이 �
 - 근거: audit/REPORT.md: D20. [원래 조사](audit/REPORT.md)
 - 처분: 구현 또는 명시적인 계약 유지·migration 결정의 제안. 아직 완료·승인 상태가 아니다.
 
-## 추가 액션군 20개
+## 추가 액션군 19개
 
 | ID | 항목 | Primary owner | 관련 작업 |
 | --- | --- | --- | --- |
@@ -290,7 +292,6 @@ Primary owner는 누락 방지를 위한 책임 단위이며, 관련 작업이 �
 | F17 | Polar component / Parallel axis / guide edit | [R6-P5-W1](phase5/GOAL.md) | R6-P5-W1 |
 | F18 | Theme / typography / format / fitting | [R6-P5-W4](phase5/GOAL.md) | R6-P5-W3, R6-P5-W4, R6-P5-W5 |
 | F19 | Facet grid / repeat / child structure | [R6-P10-W1](phase10/GOAL.md) | R6-P10-W1, R6-P10-W2, R6-P10-W3 |
-| F20 | Waterfall / range / OHLC / hierarchy / flow / network / geo | [R6-P11-W3](phase11/GOAL.md) | R6-P11-W3 |
 
 ### F01 — Pie / Donut
 
@@ -443,14 +444,6 @@ Primary owner는 누락 방지를 위한 책임 단위이며, 관련 작업이 �
 - 완료 검증: 2D facet identity/order, empty-cell policy, shared/independent scale 결과, legend 설명 보존. 전체 source edit 후 cell들이 같은 recipe로 재생성.
 - 근거: audit/REPORT.md: F19. [원래 조사](audit/REPORT.md)
 - 처분: 구현 또는 명시적인 계약 유지·migration 결정의 제안. 아직 완료·승인 상태가 아니다.
-
-### F20 — Waterfall / range / OHLC / hierarchy / flow / network / geo
-
-- Rationale: 새로운 grain/layout/projection이 필요한 후보는 수요와 의미 설계를 확보한 뒤 별도 실행 범위로 선택한다.
-- 수정·추가 방향: Waterfall/range/OHLC/hierarchy/flow/network/geo를 FUTURE 문서의 entry criteria로 평가한다. 새로운 기능 전체를 이번 roadmap 구현 완료 조건으로 위장하지 않는다.
-- 완료 검증: 후보별 dataset·semantic grain·layout·consumer 수요와 별도 계획/보류/거절 이유. 원래 F20 참조 유지.
-- 근거: audit/REPORT.md: F20. [원래 조사](audit/REPORT.md)
-- 처분: 별도 연구 제안. [후보별 진입 조건](FUTURE.md)을 만족한 범위만 후속 승인한다.
 
 ## 원장 운영
 

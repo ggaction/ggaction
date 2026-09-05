@@ -6,7 +6,6 @@
 - [ ] A Gate 증거 commit/push와 명시적 사용자 승인 기록
 - [ ] R6-P11-W1 계층·card·discovery 전체 대조
 - [ ] R6-P11-W2 Cross-layer 검증과 installed consumer
-- [ ] R6-P11-W3 F20 후보별 다음 단계 결정
 - [ ] R6-P11-W4 Contract·문서·이력 closeout
 - [ ] 누적 검증·migration·문서·원장 동기화
 - [ ] X Gate의 증거 commit/push와 명시적 사용자 승인 기록

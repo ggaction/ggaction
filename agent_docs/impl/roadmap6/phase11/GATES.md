@@ -9,7 +9,7 @@
 ## R6-P11-A — Contract and scope
 
 - 상태: planned
-- 검토 대상: 최종 전체 inventory, 검증 corpus, package와 discovery budgets, F20 disposition 및 closeout evidence.
+- 검토 대상: 선택한 19개 액션군과 기존 오류·설계 문제의 최종 inventory, 검증 corpus, package와 discovery budgets 및 closeout evidence.
 - 필요 증거: exact baseline commit, 구현할 public signature 또는 before/after call, [GOAL.md](GOAL.md)의 작업별 의미·owner·지원/오류 matrix, [DESIGN_DECISIONS.md](../DESIGN_DECISIONS.md)의 해당 migration 결정.
 - 추가 증거: focused 재현 결과와 실행 가능한 public/primitive target 계획, Current/type/card/package 영향, 남은 불확실성.
 - 준비 완료 조건: 전체 package를 검증하여 commit/push하고 그 ref를 이 문서에 기록한다.

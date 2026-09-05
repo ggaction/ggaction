@@ -17,8 +17,8 @@
 | 현재 개발 순서 확인 | [`impl/README.md`](impl/README.md) |
 
 **현재 활성 계획은 Roadmap 6 Phase 0**이다. 계층적 chart authoring과 action consistency의 상세 계획을
-[`impl/roadmap6/ROADMAP.md`](impl/roadmap6/ROADMAP.md)에서 관리한다. 새 API는 Proposed이며 구현·승인을
-시작한 상태가 아니다. 마지막 완료 owner는 Roadmap 5.4 Phase 6이다.
+[`impl/roadmap6/ROADMAP.md`](impl/roadmap6/ROADMAP.md)에서 관리한다. 사용자 선택에 따라 새 액션군 F01–F19를
+범위로 삼았다. 구체적인 API는 Proposed이며 구현은 시작하지 않았다. 마지막 완료 owner는 Roadmap 5.4 Phase 6이다.
 Nullable active pointer와 마지막 완료 owner의 machine-readable source는
 [`impl/ROADMAP_INDEX.json`](impl/ROADMAP_INDEX.json)이다.
 

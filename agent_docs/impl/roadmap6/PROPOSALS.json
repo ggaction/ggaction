@@ -40,8 +40,8 @@
           "title": "계층과 traceability 작성",
           "relativeSize": "M",
           "findingIds": [],
-          "scope": "H0–H4, exposure, lifecycle을 분리한다. 모든 B/D/F 항목에 primary owner, dependent phases와 acceptance를 부여한다.",
-          "acceptance": "48개 ID 중 누락·중복 primary owner 0; 전체 액션 전수표 링크가 존재한다."
+          "scope": "H0–H4, exposure, lifecycle을 분리한다. 범위에 포함된 B01–B08, D01–D20, F01–F19에 primary owner, dependent phases와 acceptance를 부여한다.",
+          "acceptance": "47개 ID 중 누락·중복 primary owner 0; 전체 액션 전수표 링크가 존재한다."
         },
         {
           "id": "R6-P0-W3",
@@ -56,7 +56,7 @@
           "title": "검증과 납품 순서 작성",
           "relativeSize": "M",
           "findingIds": [],
-          "scope": "수치·계층·편집·render·types·MCP·package matrix와 F20 별도 연구 진입 기준을 작성한다.",
+          "scope": "수치·계층·편집·render·types·MCP·package matrix와 선택한 19개 액션군의 납품 순서를 작성한다.",
           "acceptance": "각 단계가 진입 조건, 구체적 결과, 실패 조건, 다음 Gate를 가진다."
         }
       ]
@@ -651,16 +651,6 @@
           "findingIds": [],
           "scope": "각 chart의 H0 시작과 H2 시작, H3 edit를 같은 evidence corpus에서 비교한다. Fresh compositional scenarios, MCP completion, renderers, package/browser ceilings를 검증한다.",
           "acceptance": "승인된 facade마다 child-chain·primitive equivalence와 edit/rematerialization matrix 완료. Existing release gates 통과, 새 payload/bundle 초과를 숨기지 않음."
-        },
-        {
-          "id": "R6-P11-W3",
-          "title": "F20 후보별 다음 단계 결정",
-          "relativeSize": "M",
-          "findingIds": [
-            "F20"
-          ],
-          "scope": "Waterfall/range/OHLC/hierarchy/flow/network/geo를 FUTURE 문서의 entry criteria로 평가한다. 새로운 기능 전체를 이번 roadmap 구현 완료 조건으로 위장하지 않는다.",
-          "acceptance": "후보별 dataset·semantic grain·layout·consumer 수요와 별도 계획/보류/거절 이유. 원래 F20 참조 유지."
         },
         {
           "id": "R6-P11-W4",
@@ -1610,25 +1600,36 @@
       "acceptance": "2D facet identity/order, empty-cell policy, shared/independent scale 결과, legend 설명 보존. 전체 source edit 후 cell들이 같은 recipe로 재생성.",
       "evidence": "audit/REPORT.md: F19",
       "disposition": "implementation-or-explicit-contract-decision-proposed"
-    },
-    {
-      "id": "F20",
-      "title": "Waterfall / range / OHLC / hierarchy / flow / network / geo",
-      "kind": "proposed-family",
-      "status": "proposed",
-      "primaryPhase": 11,
-      "primaryWorkPackage": "R6-P11-W3",
-      "relatedWorkPackages": [
-        {
-          "phase": 11,
-          "workPackage": "R6-P11-W3"
-        }
-      ],
-      "rationale": "새로운 grain/layout/projection이 필요한 후보는 수요와 의미 설계를 확보한 뒤 별도 실행 범위로 선택한다.",
-      "recommended": "Waterfall/range/OHLC/hierarchy/flow/network/geo를 FUTURE 문서의 entry criteria로 평가한다. 새로운 기능 전체를 이번 roadmap 구현 완료 조건으로 위장하지 않는다.",
-      "acceptance": "후보별 dataset·semantic grain·layout·consumer 수요와 별도 계획/보류/거절 이유. 원래 F20 참조 유지.",
-      "evidence": "audit/REPORT.md: F20",
-      "disposition": "separate-research-proposed"
     }
-  ]
+  ],
+  "scopeDecision": {
+    "date": "2026-09-05",
+    "source": "user",
+    "request": "20번은 빼고 나머지로 이번 로드맵 구성하자",
+    "includedActionFamilies": [
+      "F01",
+      "F02",
+      "F03",
+      "F04",
+      "F05",
+      "F06",
+      "F07",
+      "F08",
+      "F09",
+      "F10",
+      "F11",
+      "F12",
+      "F13",
+      "F14",
+      "F15",
+      "F16",
+      "F17",
+      "F18",
+      "F19"
+    ],
+    "excludedFindingIds": [
+      "F20"
+    ],
+    "effect": "F20의 연구·구현·후속 분류 작업과 완료 조건을 이번 로드맵에서 제외한다. 구체적인 API와 Gate 상태는 변경하지 않는다."
+  }
 }

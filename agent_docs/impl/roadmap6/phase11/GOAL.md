@@ -4,7 +4,7 @@
 
 상태: planned. 구현·사용자 승인 기록 없음.
 
-단계별 구현을 전체 액션 계층과 제품 surface에서 검증한다. 승인된 실행 범위를 닫고 장기 후보의 처분을 명시한다.
+단계별 구현을 전체 액션 계층과 제품 surface에서 검증한다. 선택한 19개 액션군과 기존 오류·설계 문제의 결과를 확인하여 실행 범위를 닫는다.
 
 ## 선행 조건
 
@@ -25,13 +25,6 @@
 - 연결: 로드맵 공통 관리.
 - 작업: 각 chart의 H0 시작과 H2 시작, H3 edit를 같은 evidence corpus에서 비교한다. Fresh compositional scenarios, MCP completion, renderers, package/browser ceilings를 검증한다.
 - 완료 조건: 승인된 facade마다 child-chain·primitive equivalence와 edit/rematerialization matrix 완료. Existing release gates 통과, 새 payload/bundle 초과를 숨기지 않음.
-
-### R6-P11-W3 — F20 후보별 다음 단계 결정
-
-- 상대 규모: M. 시간 약속이 아닌 변경 구조 비교다.
-- 연결: F20.
-- 작업: Waterfall/range/OHLC/hierarchy/flow/network/geo를 FUTURE 문서의 entry criteria로 평가한다. 새로운 기능 전체를 이번 roadmap 구현 완료 조건으로 위장하지 않는다.
-- 완료 조건: 후보별 dataset·semantic grain·layout·consumer 수요와 별도 계획/보류/거절 이유. 원래 F20 참조 유지.
 
 ### R6-P11-W4 — Contract·문서·이력 closeout
 

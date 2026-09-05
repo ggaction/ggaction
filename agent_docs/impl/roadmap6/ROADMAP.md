@@ -1,7 +1,7 @@
 # Roadmap 6 — Hierarchical Chart Authoring and Action Consistency
 
 > **문서 상태 — 현재 실행 계획.** 현재 작업은 Phase 0의 상세 계획 작성이다. 구현은 시작하지 않았다.
-> 새 API와 행동 변경은 모두 Proposed이며 사용자 승인을 기록하지 않았다.
+> 액션군 범위는 사용자 선택에 따라 F01–F19로 구성했다. 구체적인 새 API와 행동 변경은 Proposed다.
 > 이 문서를 작성해 달라는 요청은 모든 설계안·구현·배포의 일괄 승인을 뜻하지 않는다.
 > 실행 위치는 [ROADMAP_INDEX.json](../ROADMAP_INDEX.json), 현재 제품 계약은
 > [ACTION_INDEX.json](../../contract/ACTION_INDEX.json)이 소유한다.
@@ -22,13 +22,20 @@ Facade 개수를 늘리는 것만으로 완료를 판정하지 않는다.
 4. 편집 뒤 의미, provenance, resource identity, graphics, trace가 함께 수렴한다.
 5. Runtime, TypeScript, Current 계약, card, MCP가 같은 지원 범위를 설명한다.
 
+## 이번 로드맵 범위
+
+2026-09-05 사용자 결정에 따라 **F01–F19의 19개 액션군**으로 구성한다.
+F20 전문 차트 후보는 연구·구현·후속 분류 작업과 완료 기준에서 제외한다.
+기존 오류 B01–B08과 설계 문제 D01–D20을 포함해 **47개 대상 항목, 12단계, 46개 작업 묶음**이다.
+차트군 계약 13개와 하위 데이터·편집·guide·style·composition 계층을 연결하는 순서는 유지한다.
+
 ## 출발점과 조사 범위
 
 - 기준 commit: [cee752b0580e6f31630ad5dd2224ab3b5f5f682b](https://github.com/ggaction/ggaction/commit/cee752b0580e6f31630ad5dd2224ab3b5f5f682b), package 0.0.12.
 - 직접 액션 173개: user-facing 167, advanced 3, primitive 3.
 - Wrapped method 284개: 직접 계약 173개와 internal 111개. Internal manifest에는 95개만 기록.
 - 공개 API 43개 사례, MCP 7개 요청과 생성 코드 실행, TypeScript 4개 호출을 조사했다.
-- 오류·표면 불일치 B01–B08, 설계 문제 D01–D20, 추가 후보 F01–F20을 모두 추적한다.
+- 실행 대상은 오류·표면 불일치 B01–B08, 설계 문제 D01–D20, 추가 액션군 F01–F19다.
 - 원래 감사는 모든 액션의 계약을 전수 대조한 결과다. 가능한 입력 조합 전체의 무결성 증명은 아니다.
 - 이전 이슈 #64–#78의 수정·종료와 이번 신규 B 항목을 혼동하지 않는다.
 
@@ -41,12 +48,11 @@ Facade 개수를 늘리는 것만으로 완료를 판정하지 않는다.
 | 문서 | 담당 내용 |
 | --- | --- |
 | 이 문서 | 전체 목표, 단계, 의존 관계, 우선순위, 완료 기준 |
-| [TRACEABILITY.md](TRACEABILITY.md) | 48개 원래 항목 → 작업 묶음 → 검증 조건 |
+| [TRACEABILITY.md](TRACEABILITY.md) | 47개 대상 항목 → 작업 묶음 → 검증 조건 |
 | [PROPOSALS.json](PROPOSALS.json) | 위 추적 관계, 단계와 Proposed 상태의 기계 판독 원장 |
 | [DESIGN_DECISIONS.md](DESIGN_DECISIONS.md) | 공통 API·기본값·추론·호환성 결정의 권고안과 이유 |
 | [DOMAIN_ACTIONS.md](DOMAIN_ACTIONS.md) | Labels/data/guide/theme/composition의 하위 액션군 계약 |
 | [VALIDATION.md](VALIDATION.md) | 수치·계층·편집·render·types·MCP·package 검증과 Gate 운영 |
-| [FUTURE.md](FUTURE.md) | F20 후보별 추가 연구와 별도 로드맵 진입 조건 |
 | phaseN/GOAL.md | 단계 범위, 선행 조건, 구체적인 작업과 종료 조건 |
 | phaseN/STEP1.md | 작업 순서와 아직 실행하지 않은 체크리스트 |
 | phaseN/GATES.md | 결정·시각 목표·완성 결과별 승인 경계 |
@@ -116,7 +122,7 @@ S는 기존 owner 위의 교정·연결, M은 여러 consumer의 lifecycle 변�
 | 8 | planned | Interval/Regression, Dot/Lollipop/Dumbbell, ECDF |
 | 9 | planned | Deterministic point packing과 Raincloud |
 | 10 | planned | Facet grid, repeat, named child 구조 편집 |
-| 11 | planned | 전체 계층·MCP·package 검증, F20 처분, closeout |
+| 11 | planned | 전체 계층·MCP·package 검증과 closeout |
 
 ## 의존 관계와 기본 실행 순서
 
@@ -140,7 +146,7 @@ flowchart TD
 
 기본 실행 순서는 번호순이다. 화살표는 단계 종료에 필요한 선행 결과를 나타낸다.
 Phase 3과 4의 독립 부분, Phase 5와 6의 사전 조사·설계는 다른 owner의 승인된 작업과 겹칠 수 있으나
-미승인 계약이나 구현을 건너뛰는 근거로 쓰지 않는다. F20의 수요·데이터 조사만은 어느 단계에서도 가능하다.
+미승인 계약이나 구현을 건너뛰는 근거로 쓰지 않는다.
 
 - Pie의 첫 납품은 optional label/theme/fold 구현을 기다리지 않는다.
 - MCP의 거짓 완료는 새 Area/Strip facade를 기다리지 않고 Phase 1에서 unresolved로 교정할 수 있다.
@@ -151,7 +157,7 @@ Phase 3과 4의 독립 부분, Phase 5와 6의 사전 조사·설계는 다른 o
 
 ## Phase 0 — Baseline and decisions
 
-[상세 목표](phase0/GOAL.md)에서 173개 액션, 48개 finding, 재현과 승인 상태를 고정한다.
+[상세 목표](phase0/GOAL.md)에서 173개 액션, 실행 대상 47개 finding, 재현과 승인 상태를 고정한다.
 [공통 결정](DESIGN_DECISIONS.md)은 추천 방향이고, 미래 공개 API의 최종 signature는 각 구현 Gate에서 확정한다.
 [Gate](phase0/GATES.md)는 이번 계획의 범위·진행 순서와 Phase 1 착수 대상을 검토한다.
 
@@ -220,8 +226,8 @@ insert/remove/reorder와 shared guide 소유권을 확장한다. Polar/Parallel�
 ## Phase 11 — Integration and explicit closeout
 
 [상세 목표](phase11/GOAL.md). 모든 액션을 다시 대조하여 authoring role·editableVia·supports·units·completion을
-최신 계약과 연결한다. Approved scope의 남은 Planned를 0으로 만들고 [F20](FUTURE.md)은 후보별로
-별도 로드맵 제안·승인된 장기 보류·거절 이유 중 하나를 기록한다.
+최신 계약과 연결한다. 이번 범위에 포함된 action/capability의 남은 Planned를 0으로 만들고
+선택한 19개 액션군과 기존 오류·설계 문제의 결과를 확인한다.
 완료 문서를 테스트나 제품이 실행 의존성으로 읽지 않도록 durable evidence를 capability owner로 이전한다.
 
 ## Approval Gates
@@ -241,11 +247,11 @@ insert/remove/reorder와 shared guide 소유권을 확장한다. Polar/Parallel�
 ## 완료 기준과 범위 제어
 
 완료는 승인한 구현 범위의 모든 작업, consumer matrix, migration과 evidence가 닫혔을 때만 선언한다.
-원래 발견한 48개 항목은 구현·명시적 유지 결정·별도 제안으로의 이관 중 하나의 근거를 가져야 한다.
+범위에 포함된 47개 항목은 구현·명시적 유지 결정·별도 제안으로의 이관 중 하나의 근거를 가져야 한다.
 단순히 날짜가 지났거나 facade 수가 늘었다는 이유로 완료하지 않는다.
 
-F01의 Donut 별도 alias, F17의 editGuides, F18 fitting의 세부 API, F19의 Polar/Parallel 적용,
-F20의 새 mark/layout family는 조건부다. 보류 시 원래 ID와 rationale를 남기고, 이미 승인되어 Planned가 된
+F01의 Donut 별도 alias, F17의 editGuides, F18 fitting의 세부 API, F19의 Polar/Parallel 적용은
+세부 설계에서 확정한다. 보류 시 원래 ID와 rationale를 남기고, 이미 승인되어 Planned가 된
 항목은 임의로 원장에서 지우지 않는다. API 정리 과정에서 제안 이름을 바꿔도 finding ID는 유지한다.
 
 배포 단위·버전·PR·merge·publish·docs deploy는 구현 결과 이후 별도 작업이다.

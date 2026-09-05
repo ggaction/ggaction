@@ -258,7 +258,7 @@ unresolved/empty explanation을 구분한다. Cards에 모든 transitive type을
 | 의미가 바뀌는 default | aggregate, group, radius, CI, temporal | 기존 유지 + explicit 새 mode 우선 | 양쪽 결과·provenance 비교 |
 | strictness·lifecycle 변화 | fill conflict, guide ensure, filter replace | migration example·compatibility branch | old→new 작업 chain |
 | alias/rename | confidence/level, Donut, layout | 하나의 canonical owner, 양쪽 충돌 오류 | declarations·trace·docs |
-| feature 보류 | F20, 조건부 guide/compose | 이유·dependency·재검토 기준 유지 | 원장상 미해결 누락 0 |
+| 세부 capability 보류 | 조건부 guide/compose | 이유·dependency·재검토 기준 유지 | 실행 범위의 미해결 누락 0 |
 
 각 A Gate에는 기존 호출, 새 호출, 결과 차이, 권장 migration을 최소 한 쌍 포함한다.
 현행 behavior를 유지하기로 결정한 항목도 해결로 셀 수 있지만, 혼란을 막는 명시적 문서·type/card·검증이 있어야 한다.
@@ -282,4 +282,3 @@ unresolved/empty explanation을 구분한다. Cards에 모든 transitive type을
 | CI 공통 method/level | 기존 계산 유지 + explicit method | Phase 6 A |
 | Packing overflow | explicit error 또는 structured best effort를 mode로 구분 | Phase 9 A |
 | Polar/Parallel facet·per-cell override | family별 capability 확인 후 별도 승인 | Phase 10 A |
-| F20 최종 범위 | 후보별 별도 계획 또는 명시적 보류 | Phase 11 X |
