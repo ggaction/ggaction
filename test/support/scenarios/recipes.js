@@ -755,6 +755,16 @@ function buildCompleteDensity(factors) {
   return program;
 }
 
+function buildCompleteRadial(factors, operation) {
+  let program = chart().createCanvas(canvas({ square: true }))
+    .createData({ id: "source", values: polarRows(factors.dataset) })
+    [operation]({ id: "sectors", category: "category",
+      ...(factors.weighted ? { value: "value", aggregate: "sum" } : {}),
+      arc: { innerRadius: factors.innerRadius } });
+  if (factors.edit) program = program.editArcMark({ target: "sectors", opacity: 0.75 });
+  return program;
+}
+
 function buildCompleteHorizon(factors) {
   let program = chart().createCanvas(canvas())
     .createData({ id: "source", values: lineRows(factors.dataset) })
@@ -765,6 +775,11 @@ function buildCompleteHorizon(factors) {
 }
 
 export const SCENARIO_RECIPES = Object.freeze([
+  ...["createRosePlot", "createRadialBarPlot"].map(operation =>
+    recipe(operation === "createRosePlot" ? "complete-rose" : "complete-radial-bar",
+      ["zoo-polar-wrap"], {
+        weighted: [false, true], innerRadius: [0, 0.5], edit: [false, true]
+      }, factors => buildCompleteRadial(factors, operation))),
   recipe("complete-pie", ["zoo-polar-wrap"], {
     weighted: [false, true], innerRadius: [0, 0.5], edit: [false, true]
   }, buildCompletePie),

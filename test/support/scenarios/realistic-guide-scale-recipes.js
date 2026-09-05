@@ -1495,6 +1495,7 @@ function colorScaleOptions(variant, {
         id,
         type: "sequential",
         domain: "auto",
+        midpoint: "auto",
         palette: sequentialPalette(variant, createObjectPalette),
         interpolate: variant.interpolate,
         clamp: initial,
@@ -1505,6 +1506,7 @@ function colorScaleOptions(variant, {
         id,
         type: "sequential",
         domain: [0, 1],
+        midpoint: initial ? "auto" : 0.4,
         palette: sequentialPalette(variant, !createObjectPalette, true),
         interpolate: variant.interpolate,
         clamp: !initial,
@@ -1822,7 +1824,21 @@ function buildPolar(factors) {
   const angle = variant.id === "values-outside" ? 180 : variant.id === "title-opt-out" ? 270 : 90;
   let program = chart()
     .createCanvas(canvas())
-    .createData({ id: "analysisRows", values: view.rows })
+    .createData({ id: "analysisRows", values: view.rows });
+  // Exercise measured scale creation and revision before the point guide flow.
+  // Category counts use the actual summary rows, with no fabricated measure.
+  for (const radialMapping of ["area", "radius-length"]) {
+    const id = `measured-${radialMapping}`;
+    program = program.createScale({ id, type: "linear", radialMapping,
+      domain: [0, 1], range: "auto", zero: true, nice: false })
+      .createArcMark({ id, data: "analysisRows", innerRadius: 0.3 })
+      .encodeTheta({ target: id, coordinate: `${id}-coordinate`, field: "category", fieldType: "nominal",
+        scale: { id: `${id}-theta` } })
+      .encodeR({ target: id, aggregate: "count", mapping: radialMapping, scale: { id } })
+      .editScale({ id, radialMapping, domain: [0, 2] })
+      .removeMark({ target: id });
+  }
+  program = program
     .createPointMark({
       id: "points",
       shape: "circle",
@@ -1832,6 +1848,7 @@ function buildPolar(factors) {
     })
     .encodeTheta({
       target: "points",
+      coordinate: "polar",
       field: "rank",
       fieldType: "quantitative",
       scale: { id: "theta", type: "linear", nice: true, zero: false }

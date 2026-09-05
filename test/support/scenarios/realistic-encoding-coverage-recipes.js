@@ -585,6 +585,7 @@ function addColorScales(program) {
       fieldType: "quantitative",
       scale: {
         id: `${id}-color`, type: "sequential", domain: "auto",
+        midpoint: "auto",
         ...(index < 2
           ? { palette: index === 0 ? "viridis" : "magma" }
           : index === 7
@@ -986,6 +987,17 @@ function buildPolarCoverage(factors) {
     ...QUANTITATIVE_TYPES.map(type => `radius-${type}`)
   ]) {
     program = program.removeMark({ target: id });
+  }
+  for (const mapping of ["area", "radius-length"]) {
+    for (const aggregate of ["count", "sum"]) {
+      const id = `measured-${mapping}-${aggregate}`;
+      program = program.createArcMark({ id, data: "analysisRows", innerRadius: 0.3 })
+        .encodeTheta({ target: id, coordinate: `${id}-coordinate`, field: "category", fieldType: "nominal" })
+        .encodeR({ target: id, mapping, aggregate,
+          ...(aggregate === "sum" ? { field: "radius" } : {}),
+          scale: { id: `${id}-scale` } })
+        .encodeColor({ target: id, field: "category" });
+    }
   }
   return finish(program, factors, "direct-polar-encoding-options");
 }

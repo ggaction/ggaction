@@ -33,6 +33,42 @@ for (const dataset of datasets) {
   const bandwidth = (maximum - minimum) / 10;
   assert.ok(values.length >= 8 && categories.size >= 2 && bandwidth > 0);
   for (let variant = 0; variant < 5; variant += 1) {
+    for (const operation of ["createRosePlot", "createRadialBarPlot"]) {
+      test(`authors ${operation} variant ${variant + 1} from ${dataset.name} with proportional measured sectors`, () => {
+        const sum = variant % 2 === 1;
+        const totals = new Map();
+        for (const row of values) totals.set(row[dataset.category],
+          (totals.get(row[dataset.category]) ?? 0) + (sum ? row[dataset.value] : 1));
+        const maximum = Math.max(...totals.values());
+        const hole = variant >= 2 ? 70 : 0;
+        const source = chart().createCanvas(layout).createData({ id: "observations", values });
+        const before = JSON.stringify(source);
+        let program = source[operation]({ id: "measured", category: dataset.category,
+          ...(sum ? { value: dataset.value, aggregate: "sum" } : {}),
+          radiusScale: { range: [hole, 140] }, arc: { innerRadius: hole / 140 },
+          guides: { axes: false, grid: false, legend: false } });
+        const assertRadii = (current, domainMaximum, centerX) => {
+          assert.deepEqual(current.resolvedScales.radius.domain, [0, domainMaximum]);
+          assert.equal(current.graphicSpec.objects.measured.items.length, totals.size);
+          for (const [index, value] of [...totals.values()].entries()) {
+            const start = current.graphicSpec.objects.measured.items[index].properties.commands[0];
+            const actual = Math.hypot(start.x - centerX, start.y - 500);
+            const expected = operation === "createRosePlot"
+              ? Math.sqrt(hole ** 2 + (140 ** 2 - hole ** 2) * value / domainMaximum)
+              : hole + (140 - hole) * value / domainMaximum;
+            assert.ok(Math.abs(actual - expected) < 1e-8, `${operation} category ${index}`);
+          }
+          inspect(current, values, `${dataset.name} ${operation} ${variant}`);
+        };
+        assertRadii(program, maximum, 700);
+        if (variant === 4) {
+          program = program.editScale({ id: "radius", domain: [0, maximum * 2] })
+            .editCanvas({ width: 1500 });
+          assertRadii(program, maximum * 2, 750);
+        }
+        assert.equal(JSON.stringify(source), before);
+      });
+    }
     test(`authors pie variant ${variant + 1} from ${dataset.name} with complete sectors and immutable source`, () => {
       const source = chart().createCanvas(layout).createData({ id: "observations", values });
       const snapshot = structuredClone(source.semanticSpec);

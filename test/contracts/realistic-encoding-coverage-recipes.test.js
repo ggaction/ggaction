@@ -24,10 +24,10 @@ const actionCards = JSON.parse(readFileSync(
 ));
 const inventoryPromise = buildPublicOptionInventory(actionCards);
 const EXPECTED = Object.freeze({
-  paths: 266,
-  pathSha256: "f34b1690554e9b03b35885f972c9aa3ca64ab600fa14cbba42d7dfad03bb41f4",
-  literals: 252,
-  literalSha256: "594c184b6f562097cd7ff59cb5ba2cb68379314e2d9802a985470fdc0159b3b2",
+  paths: 269,
+  pathSha256: "924976a5e0ef1f2a65c59aa3984fcfa174dcc9319550d7e1955ff05ac7c0a5db",
+  literals: 257,
+  literalSha256: "791431479ab02006796f183ad57dd0be976dd54e29a6b9b57e372bbd392c92e7",
   diversity: 9,
   diversitySha256: "bd6a602f3ed8ec4c3b838ea75503e7bc1c3a7005962add809467c01190c57906"
 });
@@ -185,7 +185,9 @@ async function projection() {
           if (recipe.id === "realistic-direct-polar-encoding-options") {
             assert.deepEqual(
               program.semanticSpec.layers.map(layer => layer.id),
-              ["theta-aggregate-count", "theta-aggregate-sum"],
+              ["theta-aggregate-count", "theta-aggregate-sum",
+                "measured-area-count", "measured-area-sum",
+                "measured-radius-length-count", "measured-radius-length-sum"],
               `${label} final polar-only presentation`
             );
             assert.equal(

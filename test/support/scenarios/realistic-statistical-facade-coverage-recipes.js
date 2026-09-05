@@ -1394,6 +1394,7 @@ function heatmapBinnedColor(ordinal) {
       type: "sequential",
       domain: "auto",
       interpolate: COLOR_INTERPOLATIONS[index],
+      midpoint: "auto",
       clamp: index % 2 === 0,
       reverse: index % 3 === 0
     };

@@ -295,6 +295,7 @@ function continuousColor(index, aggregate) {
       id: "mainColor",
       type: "sequential",
       domain: "auto",
+      midpoint: "auto",
       palette: index % 2 === 0 ? "viridis" : { name: "magma", extent: [0.1, 0.9] },
       interpolate,
       clamp: index % 2 === 0,
@@ -363,6 +364,7 @@ function scatterPosition(variant, rows) {
 }
 
 function scatterColor(index) {
+  if (index === 7) return paletteEncoding(index, "subgroup");
   if (index < 8) return paletteEncoding(index);
   if (index < 16) return continuousColor(index - 8);
   if (index < 19) return discretizedColor(index - 16);
@@ -704,6 +706,13 @@ function guideOptions(variant, program, options, action) {
     const symbol = layer.mark.type === "line" && index % 3 === 1
       ? { length: 28, lineWidth: 2.4 } : categoricalLegendSymbol(index);
     legend = categoricalLegend(index, symbol, options.id);
+    const linked = ["x", "y"].find(channel =>
+      layer.encoding[channel]?.field === color.field &&
+      ["nominal", "ordinal"].includes(layer.encoding[channel]?.fieldType));
+    legend.order = linked !== undefined && (index % 3 === 2 || index === 22 || layer.mark.type === "point")
+      ? { channel: linked }
+      : index % 2 === 0 ? "scale"
+      : { values: [...program.resolvedScales[color.scale].domain].reverse() };
     if (legend.position === "left") legend.offset = 260;
     // A line sample remains a useful legend recipe for an explicitly grouped path.
     if (guide.kind === "line-legend" && layer.mark.type === "line") legend.symbol = { length: 28, lineWidth: 2.4 };

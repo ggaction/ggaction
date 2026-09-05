@@ -79,7 +79,7 @@ const LEGACY_SCALE_INVENTORY_COUNTS = Object.freeze({
   createBoxPlot: Object.freeze({ paths: 30, literals: 32, diversity: 0 }),
   createGradientPlot: Object.freeze({ paths: 30, literals: 32, diversity: 0 }),
   createViolinPlot: Object.freeze({ paths: 39, literals: 35, diversity: 2 }),
-  createHeatmap: Object.freeze({ paths: 42, literals: 51, diversity: 2 }),
+  createHeatmap: Object.freeze({ paths: 43, literals: 52, diversity: 2 }),
   createHistogram: Object.freeze({ paths: 32, literals: 32, diversity: 2 })
 });
 const TAIL_LITERAL_REQUIREMENT_IDS = Object.freeze([
@@ -664,7 +664,7 @@ contractTest("the 460-chart projection losslessly subsumes the retired facade sc
       literals: target.literals.length,
       diversity: target.diversity.length
     },
-    { paths: 173, literals: 182, diversity: 6 }
+    { paths: 174, literals: 183, diversity: 6 }
   );
   assert.deepEqual(
     [...target.options, ...target.literals].filter(requirement =>

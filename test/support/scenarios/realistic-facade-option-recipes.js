@@ -456,6 +456,7 @@ function heatmapColorScale(variant) {
     id,
     type: "sequential",
     domain: "auto",
+    midpoint: "auto",
     interpolate: variant.interpolate,
     clamp: index % 2 === 0,
     reverse: index % 3 === 0

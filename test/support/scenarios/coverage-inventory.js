@@ -277,6 +277,10 @@ function collectActionPaths({
     )) {
       if (Object.hasOwn(EXCLUDED_OPTION_PATH_SEGMENTS, property.name)) continue;
       const propertyValue = readPropertyType(checker, project, property, declaration);
+      // Exclusive unions can forbid a property with `?: never`; omission is
+      // not an executable option witness. Other union branches are visited too.
+      if (flattenedTypes(propertyValue.type).every(value =>
+        /^(?:never|undefined)$/u.test(checker.typeToString(value)))) continue;
       const propertyPath = parentPath.length === 0
         ? property.name
         : `${parentPath}.${property.name}`;

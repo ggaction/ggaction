@@ -214,18 +214,18 @@ function smallPolicy(overrides = {}) {
 test("derives a bounded public option inventory without runtime prototype paths", async () => {
   const inventory = await buildPublicOptionInventory(actionCards);
 
-  assert.equal(inventory.counts.publicActions, 173);
-  assert.equal(inventory.counts.topLevelOptionPaths, 1173);
-  assert.equal(inventory.counts.nestedOptionPaths, 3926);
-  assert.equal(inventory.counts.optionPaths, 5099);
-  assert.equal(inventory.counts.requiredOptionPaths, 4395);
-  assert.equal(inventory.counts.excludedOptionPaths, 704);
-  assert.equal(inventory.counts.topLevelCategoricalPaths, 302);
-  assert.equal(inventory.counts.topLevelLiteralValues, 1071);
-  assert.equal(inventory.counts.literalFamilies, 92);
-  assert.equal(inventory.counts.pathLiteralRequirements, 2408);
+  assert.equal(inventory.counts.publicActions, 175);
+  assert.equal(inventory.counts.topLevelOptionPaths, 1201);
+  assert.equal(inventory.counts.nestedOptionPaths, 4332);
+  assert.equal(inventory.counts.optionPaths, 5533);
+  assert.equal(inventory.counts.requiredOptionPaths, 4762);
+  assert.equal(inventory.counts.excludedOptionPaths, 771);
+  assert.equal(inventory.counts.topLevelCategoricalPaths, 316);
+  assert.equal(inventory.counts.topLevelLiteralValues, 1093);
+  assert.equal(inventory.counts.literalFamilies, 98);
+  assert.equal(inventory.counts.pathLiteralRequirements, 2567);
   assert.equal(inventory.counts.familyLiteralRequirements, 174);
-  assert.equal(inventory.counts.pathDiversityRequirements, 140);
+  assert.equal(inventory.counts.pathDiversityRequirements, 152);
   assert.equal(inventory.optionPaths.some(option => option.id ===
     "option-path:createCanvas.margin.top"), true);
   assert.equal(inventory.optionPaths.some(option => option.id ===
@@ -241,6 +241,12 @@ test("derives a bounded public option inventory without runtime prototype paths"
   assert.equal(inventory.optionPaths.some(option => option.id ===
     "option-path:encodeY.bin"), false);
   const optionById = new Map(inventory.optionPaths.map(option => [option.id, option]));
+  for (const action of ["createLinePlot", "createParallelCoordinates", "createAreaPlot", "createDensityPlot"]) {
+    assert.equal(optionById.has(`option-path:${action}.guides.legend.order.channel`), false,
+      "an optional never property is not an executable option");
+  }
+  assert.equal(optionById.has("option-path:createScatterPlot.guides.legend.order.channel"), true,
+    "a valid branch of an exclusive union remains executable");
   assert.equal(
     optionById.get("option-path:createXAxisLabels.format")?.literalPolicy,
     "family-values"
@@ -275,7 +281,7 @@ test("derives a bounded public option inventory without runtime prototype paths"
       ...counts,
       [value.reason]: (counts[value.reason] ?? 0) + 1
     }), {}),
-    { "redacted-array": 704 }
+    { "redacted-array": 771 }
   );
   const values = id => optionById.get(id)?.values ?? [];
   assert.equal(optionById.has("option-path:createScatterPlot.x.scale.palette"), false);
@@ -300,8 +306,8 @@ test("derives a bounded public option inventory without runtime prototype paths"
     option.required &&
     /(?:^|\.)(?:xScale|yScale|valueScale|densityScale|scale)\.type$/u.test(option.path)
   );
-  assert.equal(scaleTypePaths.length, 71);
-  assert.equal(scaleTypePaths.reduce((sum, option) => sum + option.values.length, 0), 293);
+  assert.equal(scaleTypePaths.length, 75);
+  assert.equal(scaleTypePaths.reduce((sum, option) => sum + option.values.length, 0), 297);
   assert.equal(inventory.excludedOptionPaths.every(option =>
     optionById.get(option.replacement)?.required === true
   ), true);
@@ -316,7 +322,7 @@ test("derives a bounded public option inventory without runtime prototype paths"
     "option-path:createData.values[]"), false);
   assert.equal(ledger.requirements.some(requirement => requirement.id ===
     "option-path:createDerivedData.transform[].type"), false);
-  assert.equal(ledger.requirements.length, 7155);
+  assert.equal(ledger.requirements.length, 7683);
   assert.throws(() => createScenarioCoverageLedger({
     publicInventory: inventory,
     rendererFeatures: [],
