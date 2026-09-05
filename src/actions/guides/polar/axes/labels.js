@@ -26,11 +26,12 @@ import {
   prefix,
   resolveAngle,
   validateModeOptions,
+  validateComponentCreateArgs,
   validateObject,
   withAxisSemantics
 } from "./shared.js";
 
-function labelGeometry(program, kind, config) {
+function labelGeometry(program, kind, config, angle = resolveAngle(program, kind, {})) {
   const frame = resolvePolarFrameForProgram(program);
   const mapped = mapPolarGuideValues(program, config);
   const text = formatPolarGuideValues(program, config, mapped.values);
@@ -45,7 +46,7 @@ function labelGeometry(program, kind, config) {
         })
       : resolveRadialAxisLabels({
           frame,
-          angle: resolveAngle(program, kind, {}),
+          angle,
           radii: mapped.positions,
           offset: config.offset
         }))
@@ -171,7 +172,7 @@ function makeCreateLabels(kind) {
     op: operation.create,
     description: `Create the Polar ${kind}-axis labels.`
   }, function (args = {}) {
-    validateObject(args, LABEL_CREATE_OPTIONS, operation.create);
+    validateComponentCreateArgs(kind, args, LABEL_CREATE_OPTIONS, operation.create);
     validateModeOptions(args, operation.create);
     const names = polarGuideNames(kind);
     if (this.graphicSpec.objects[names.labels] !== undefined) {
@@ -180,7 +181,7 @@ function makeCreateLabels(kind) {
     const resources = componentResources(this, kind, args, operation.create);
     const angle = resolveAngle(this, kind, args);
     const config = resolveLabelConfig(this, kind, args, resources);
-    labelGeometry(this, kind, config);
+    labelGeometry(this, kind, config, angle);
     let next = withAxisSemantics(this, kind, resources);
     if (kind === "radius" &&
         next.guideConfigs.axis?.radius?.layout === undefined) {

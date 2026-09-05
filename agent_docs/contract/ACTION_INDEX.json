@@ -2704,6 +2704,24 @@
       }
     },
     {
+      "name": "createThetaAxisLine",
+      "layer": "user-facing",
+      "domain": "axes",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Edited by editThetaAxisLine; removed with the owning complete axis",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/AXES.md",
+        "anchor": "createThetaAxisLine"
+      }
+    },
+    {
       "name": "editThetaAxisLine",
       "layer": "user-facing",
       "domain": "axes",
@@ -2719,6 +2737,24 @@
       "contract": {
         "file": "agent_docs/contract/current/AXES.md",
         "anchor": "editThetaAxisLine"
+      }
+    },
+    {
+      "name": "createRadialAxisLine",
+      "layer": "user-facing",
+      "domain": "axes",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Edited by editRadialAxisLine; removed with the owning complete axis",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/AXES.md",
+        "anchor": "createRadialAxisLine"
       }
     },
     {
@@ -2740,6 +2776,24 @@
       }
     },
     {
+      "name": "createThetaAxisTicks",
+      "layer": "user-facing",
+      "domain": "axes",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Edited by editThetaAxisTicks; removed with the owning complete axis",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/AXES.md",
+        "anchor": "createThetaAxisTicks"
+      }
+    },
+    {
       "name": "editThetaAxisTicks",
       "layer": "user-facing",
       "domain": "axes",
@@ -2755,6 +2809,24 @@
       "contract": {
         "file": "agent_docs/contract/current/AXES.md",
         "anchor": "editThetaAxisTicks"
+      }
+    },
+    {
+      "name": "createRadialAxisTicks",
+      "layer": "user-facing",
+      "domain": "axes",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Edited by editRadialAxisTicks; removed with the owning complete axis",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/AXES.md",
+        "anchor": "createRadialAxisTicks"
       }
     },
     {
@@ -2776,6 +2848,24 @@
       }
     },
     {
+      "name": "createThetaAxisLabels",
+      "layer": "user-facing",
+      "domain": "axes",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Edited by editThetaAxisLabels; removed with the owning complete axis",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/AXES.md",
+        "anchor": "createThetaAxisLabels"
+      }
+    },
+    {
       "name": "editThetaAxisLabels",
       "layer": "user-facing",
       "domain": "axes",
@@ -2791,6 +2881,24 @@
       "contract": {
         "file": "agent_docs/contract/current/AXES.md",
         "anchor": "editThetaAxisLabels"
+      }
+    },
+    {
+      "name": "createRadialAxisLabels",
+      "layer": "user-facing",
+      "domain": "axes",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Edited by editRadialAxisLabels; removed with the owning complete axis",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/AXES.md",
+        "anchor": "createRadialAxisLabels"
       }
     },
     {
@@ -2812,6 +2920,24 @@
       }
     },
     {
+      "name": "createThetaAxisTitle",
+      "layer": "user-facing",
+      "domain": "axes",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Edited by editThetaAxisTitle; removed with the owning complete axis",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/AXES.md",
+        "anchor": "createThetaAxisTitle"
+      }
+    },
+    {
       "name": "editThetaAxisTitle",
       "layer": "user-facing",
       "domain": "axes",
@@ -2827,6 +2953,24 @@
       "contract": {
         "file": "agent_docs/contract/current/AXES.md",
         "anchor": "editThetaAxisTitle"
+      }
+    },
+    {
+      "name": "createRadialAxisTitle",
+      "layer": "user-facing",
+      "domain": "axes",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Edited by editRadialAxisTitle; removed with the owning complete axis",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/AXES.md",
+        "anchor": "createRadialAxisTitle"
       }
     },
     {
@@ -3371,14 +3515,6 @@
       "editTitleText",
       "createSubtitleText",
       "editSubtitleText",
-      "createThetaAxisLine",
-      "createRadialAxisLine",
-      "createThetaAxisTicks",
-      "createRadialAxisTicks",
-      "createThetaAxisLabels",
-      "createRadialAxisLabels",
-      "createThetaAxisTitle",
-      "createRadialAxisTitle",
       "createCategoricalLegend",
       "createGradientLegend",
       "createIntervalLegend",

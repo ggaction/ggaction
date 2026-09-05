@@ -1468,14 +1468,15 @@
       "headings": [
         "axes",
         "at-a-glance",
+        "polar-component-creation",
         "createaxesoptions",
         "editing-a-complete-axis",
         "removing-an-axis",
         "errors-and-limitations",
         "related"
       ],
-      "bytes": 10021,
-      "sha256": "8aaf0a8bbd52107bf0452b2218238e3268cc9c426406feb56768fe0062687309"
+      "bytes": 12248,
+      "sha256": "673a9a671b259ad886a3ae40b04cea9435b940a1da748924c3ebb8e16f4790e2"
     },
     {
       "order": 94,
@@ -1799,8 +1800,8 @@
         "action-reference",
         "exact-action-lookup"
       ],
-      "bytes": 19312,
-      "sha256": "02e74d7a7a58753d1409c3d0e0b1c103611b318a62131afd17e460d8e42ce2ad"
+      "bytes": 20120,
+      "sha256": "689d8c6e8bb691c736c8b29f21b1a6728d7b9d9b10913d63419fd573947d7250"
     },
     {
       "order": 115,
@@ -1967,6 +1968,14 @@
         "createradialaxis",
         "editthetaaxis",
         "editradialaxis",
+        "createthetaaxisline",
+        "createradialaxisline",
+        "createthetaaxisticks",
+        "createradialaxisticks",
+        "createthetaaxislabels",
+        "createradialaxislabels",
+        "createthetaaxistitle",
+        "createradialaxistitle",
         "editthetaaxisline",
         "editradialaxisline",
         "editthetaaxisticks",
@@ -1991,8 +2000,8 @@
         "removetitle",
         "related"
       ],
-      "bytes": 7705,
-      "sha256": "998cff9358897588e947b021552b328b3cfb98632f483f23995863733557ca06"
+      "bytes": 11090,
+      "sha256": "812d98bb56fc33d17b22e6a69a20bd0a5610c7511008f28cb21fdd396d458608"
     },
     {
       "order": 120,
@@ -2057,8 +2066,8 @@
         "exact-typescript-signatures",
         "related"
       ],
-      "bytes": 14797,
-      "sha256": "3915f0a925331ef986332fd68f32e1d591dbaf65217eb23476a5a74d4fb30352"
+      "bytes": 15421,
+      "sha256": "bf11dba640c9dd64d25c92aaece51bf7f381db7c9d24961f64b49c75c4778417"
     },
     {
       "order": 124,

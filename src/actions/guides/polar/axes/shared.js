@@ -48,6 +48,12 @@ export function validateObject(args, supported, operation) {
   validateOptionObject(args, supported, operation);
 }
 
+export function validateComponentCreateArgs(kind, args, supported, operation) {
+  validateObject(args, kind === "theta"
+    ? supported.filter(option => !["angle", "position"].includes(option))
+    : supported, operation);
+}
+
 export function validateModeOptions(args, operation) {
   if (Object.hasOwn(args, "count") && Object.hasOwn(args, "values")) {
     throw new Error(`${operation} cannot use count and values together.`);

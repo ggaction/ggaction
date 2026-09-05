@@ -18,6 +18,7 @@ import {
   operations,
   prefix,
   resolveAngle,
+  validateComponentCreateArgs,
   validateObject,
   withAxisSemantics
 } from "./shared.js";
@@ -76,7 +77,7 @@ function makeCreateLine(kind) {
     op: operation.create,
     description: `Create the Polar ${kind}-axis baseline.`
   }, function (args = {}) {
-    validateObject(args, LINE_CREATE_OPTIONS, operation.create);
+    validateComponentCreateArgs(kind, args, LINE_CREATE_OPTIONS, operation.create);
     const names = polarGuideNames(kind);
     if (this.graphicSpec.objects[names.line] !== undefined) {
       throw new Error(`${operation.create} requires a missing axis line.`);

@@ -1273,6 +1273,15 @@ function buildDirectAxisParts(factors) {
 
 function buildDirectPolarParts(factors) {
   const rows = lifecycleSourceRows(factors.dataset, "polar", "zoo-polar-wrap");
+  const binding = { coordinate: "polar" };
+  const theta = { ...binding, scale: "theta" };
+  const radial = { ...binding, scale: "radius", angle: factors.angle };
+  const tickMode = field => factors.count === 4 ? { count: factors.count } : {
+    values: [Math.min(...rows.map(row => row[field])), Math.max(...rows.map(row => row[field]))]
+  };
+  const labels = { color: "#334155", offset: 12, fontSize: 11, fontFamily: "sans-serif", fontWeight: 600,
+    format: factors.count === 4 ? "auto" : { decimals: 1 } };
+  const title = { color: "#0f172a", fontSize: 13, fontFamily: "sans-serif", fontWeight: 600 };
   return chart()
     .createCanvas(polarCanvas(factors, true))
     .createData({ id: "directPolarRows", values: rows })
@@ -1285,6 +1294,16 @@ function buildDirectPolarParts(factors) {
     })
     .createThetaAxis()
     .createRadialAxis({ angle: factors.angle })
+    .removeThetaAxis()
+    .removeRadialAxis()
+    .createThetaAxisLine({ ...theta, color: "#334155", lineWidth: 2 })
+    .createThetaAxisTicks({ ...theta, ...tickMode("angle"), length: 7, color: "#334155", lineWidth: 1 })
+    .createThetaAxisLabels({ ...theta, ...tickMode("angle"), ...labels })
+    .createThetaAxisTitle({ ...theta, ...title, text: "Direct angle", offset: 28 })
+    .createRadialAxisLine({ ...radial, color: "#334155", lineWidth: 2 })
+    .createRadialAxisTicks({ ...radial, ...tickMode("radius"), length: 7, color: "#334155", lineWidth: 1 })
+    .createRadialAxisLabels({ ...radial, ...tickMode("radius"), ...labels })
+    .createRadialAxisTitle({ ...radial, ...title, text: "Direct radius", offset: 8, position: factors.angle === 45 ? "inside" : "outside" })
     .editThetaAxisLine({ lineWidth: 2 })
     .editRadialAxisLine({ color: "#334155" })
     .editThetaAxisTicks({ count: factors.count, length: 7 })
@@ -1606,6 +1625,8 @@ function lifecycleSignature(base, factors) {
       "createXAxis", "createYAxis", "createHorizontalGrid", "createVerticalGrid"
     ],
     "action-direct-polar-parts": [
+      "createThetaAxisLine", "createThetaAxisTicks", "createThetaAxisLabels", "createThetaAxisTitle",
+      "createRadialAxisLine", "createRadialAxisTicks", "createRadialAxisLabels", "createRadialAxisTitle",
       "createThetaAxis", "createRadialAxis", "editThetaAxisLine", "editRadialAxisLine",
       "editThetaAxisTicks", "editRadialAxisTicks", "editThetaAxisLabels",
       "editRadialAxisLabels", "editThetaAxisTitle", "editRadialAxisTitle",

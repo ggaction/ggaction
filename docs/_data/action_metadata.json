@@ -739,8 +739,18 @@
     "layer": "user-facing",
     "domain": "axes"
   },
+  "createThetaAxisLine": {
+    "operation": "create",
+    "layer": "user-facing",
+    "domain": "axes"
+  },
   "editThetaAxisLine": {
     "operation": "edit",
+    "layer": "user-facing",
+    "domain": "axes"
+  },
+  "createRadialAxisLine": {
+    "operation": "create",
     "layer": "user-facing",
     "domain": "axes"
   },
@@ -749,8 +759,18 @@
     "layer": "user-facing",
     "domain": "axes"
   },
+  "createThetaAxisTicks": {
+    "operation": "create",
+    "layer": "user-facing",
+    "domain": "axes"
+  },
   "editThetaAxisTicks": {
     "operation": "edit",
+    "layer": "user-facing",
+    "domain": "axes"
+  },
+  "createRadialAxisTicks": {
+    "operation": "create",
     "layer": "user-facing",
     "domain": "axes"
   },
@@ -759,8 +779,18 @@
     "layer": "user-facing",
     "domain": "axes"
   },
+  "createThetaAxisLabels": {
+    "operation": "create",
+    "layer": "user-facing",
+    "domain": "axes"
+  },
   "editThetaAxisLabels": {
     "operation": "edit",
+    "layer": "user-facing",
+    "domain": "axes"
+  },
+  "createRadialAxisLabels": {
+    "operation": "create",
     "layer": "user-facing",
     "domain": "axes"
   },
@@ -769,8 +799,18 @@
     "layer": "user-facing",
     "domain": "axes"
   },
+  "createThetaAxisTitle": {
+    "operation": "create",
+    "layer": "user-facing",
+    "domain": "axes"
+  },
   "editThetaAxisTitle": {
     "operation": "edit",
+    "layer": "user-facing",
+    "domain": "axes"
+  },
+  "createRadialAxisTitle": {
+    "operation": "create",
     "layer": "user-facing",
     "domain": "axes"
   },

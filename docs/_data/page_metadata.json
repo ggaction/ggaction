@@ -442,7 +442,7 @@
   },
   "/api/axes/": {
     "title": "Axes",
-    "description": "Creates complete axes for encoded Cartesian x/y, Polar theta/radius, or Parallel dimension channels. This is the recommended axis action for ordinary chart authoring.",
+    "description": "Create a missing Polar axis component without rebuilding the other components. These actions are available from ggaction.",
     "image": "/assets/images/cars-scatterplot.png"
   },
   "/api/grids/": {

@@ -853,6 +853,8 @@ spokes, radial grid는 concentric paths를
 style은 materialization config가 소유한다. `graphicSpec`에는 최종 path/line/text만 기록하므로 renderer는 여전히
 Polar scale, tick, coordinate를 추론하지 않는다. Grid는 관련 mark보다 먼저, axis는 mark보다 나중에 그려지며
 action call order가 drawing order를 결정하지 않는다.
+Complete Polar axis와 공개 focused component 생성은 같은 wrapped guide owner를 호출한다.
+독립적인 component 작성에서도 binding·angle·style의 기존 저장 위치를 공유하며, 별도의 facade cache나 renderer 추론을 만들지 않는다. 세부 lifecycle은 [Current axes 계약](contract/current/AXES.md)이 소유한다.
 
 Radial-axis title의 default `position: "inside"`는 resolved radial baseline midpoint 아래에 놓인다. Explicit
 `position: "outside"`는 endpoint 바깥 방향에 배치하고 `offset`을 endpoint와 title 사이 간격으로 해석한다.

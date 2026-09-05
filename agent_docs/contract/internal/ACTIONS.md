@@ -93,14 +93,6 @@ type과 direct action 계약에서는 제외되지만 hierarchy는 `trace`에 �
 
 | Internal action | Public owner | Role |
 | --- | --- | --- |
-| `createThetaAxisLine` | `createThetaAxis` | outer circular baseline |
-| `createRadialAxisLine` | `createRadialAxis` | center-to-edge baseline |
-| `createThetaAxisTicks` | `createThetaAxis` | outward perimeter ticks |
-| `createRadialAxisTicks` | `createRadialAxis` | perpendicular radial ticks |
-| `createThetaAxisLabels` | `createThetaAxis` | perimeter value labels |
-| `createRadialAxisLabels` | `createRadialAxis` | radial value labels |
-| `createThetaAxisTitle` | `createThetaAxis` | inferred theta title |
-| `createRadialAxisTitle` | `createRadialAxis` | inferred radius title |
 | `createParallelAxes` | `createAxes`, `createParallelCoordinates` | dimension lines, ticks, labels, and titles for a Parallel layer |
 | `createCategoricalLegend` | `createLegend` | categorical color/shape/stroke-dash block |
 | `createGradientLegend` | `createLegend` | continuous color gradient block |

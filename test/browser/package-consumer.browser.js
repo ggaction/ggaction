@@ -26,6 +26,7 @@ test.before(async () => {
     <canvas id="axis" aria-label="Axis component lifecycle chart"></canvas>
     <canvas id="bin2d" aria-label="2D bin lifecycle chart"></canvas>
     <canvas id="basic" aria-label="Basic entry scatterplot"></canvas>
+    <canvas id="polar-components" aria-label="Polar axis component creation"></canvas>
     <div id="svg"></div><div id="svg-resources"></div><script type="importmap">
     {"imports":{"ggaction":"/node_modules/ggaction/src/index.js","ggaction/basic":"/node_modules/ggaction/src/basic.js","ggaction/svg":"/node_modules/ggaction/src/renderers/svg.js"}}
     </script><script type="module">
@@ -171,8 +172,22 @@ test.before(async () => {
       const resourceReferences = resourceSVGs.map(
         svg => svg.querySelector("rect").getAttribute("fill")
       );
+      const polarComponents = chart()
+        .createCanvas({ width: 300, height: 500, margin: 50 })
+        .createData({ values: [{ angle: 0, value: 0 }, { angle: 1, value: 20 }] })
+        .createPointMark().encodeTheta({ field: "angle" }).encodeR({ field: "value", scale: { zero: true } })
+        .createRadialAxisTitle({ angle: 180, position: "outside", text: "Long radial title" })
+        .createRadialAxisLabels({ count: 3 }).createRadialAxisTicks({ count: 3 }).createRadialAxisLine()
+        .createThetaAxisLine().createThetaAxisTicks({ values: [0, 0.5] })
+        .createThetaAxisLabels({ values: [0, 0.5] }).createThetaAxisTitle({ text: "Direction" });
+      const polarCanvas = document.querySelector("#polar-components");
+      render(polarComponents, polarCanvas.getContext("2d"));
       document.querySelector("#status").textContent = "complete";
       window.__ggactionConsumer = {
+        polarCanvas: [polarCanvas.width, polarCanvas.height],
+        polarTitleY: polarComponents.graphicSpec.objects.radialAxisTitle.properties.y,
+        polarSharedAngle: polarComponents.guideConfigs.axis.radius.layout.angle,
+        polarSVGTitle: renderToSVG(polarComponents).includes("Long radial title"),
         width: canvas.width,
         height: canvas.height,
         points: program.graphicSpec.objects.point.items.length,
@@ -250,6 +265,10 @@ test("imports and renders the packed browser entries", async () => {
     waitFor: () => window.__ggactionConsumer !== undefined
   });
   assert.deepEqual(await windowValue(page, "__ggactionConsumer"), {
+    polarCanvas: [300, 500],
+    polarTitleY: 358,
+    polarSharedAngle: 180,
+    polarSVGTitle: true,
     width: 160,
     height: 120,
     points: 2,

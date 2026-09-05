@@ -850,9 +850,10 @@
           "acceptance": "긴 title/legend/axis label 사례에서 bounds와 최소 plot을 만족하거나 explicit overflow. 반복 호출 수렴, 무한 layout loop 없음."
         }
       ],
-      "activity": "baseline-and-contract-preparation",
+      "activity": "W1-polar-focused-creation-verified",
       "baselineEvidence": "phase5/baseline-results.json",
-      "executionApproval": "APPROVAL.md"
+      "executionApproval": "APPROVAL.md",
+      "partialEvidence": "phase5/RESULTS_W1_CREATE.md"
     },
     {
       "id": 6,

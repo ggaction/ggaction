@@ -123,6 +123,14 @@ interface ChartProgramActions {
   createYAxis(options?: CompleteAxisOptions<YAxisPosition>): ChartProgram;
   createThetaAxis(options?: CompletePolarAxisOptions): ChartProgram;
   createRadialAxis(options?: CompleteRadialAxisOptions): ChartProgram;
+  createThetaAxisLine(options?: CreateThetaAxisLineOptions): ChartProgram;
+  createRadialAxisLine(options?: CreateRadialAxisLineOptions): ChartProgram;
+  createThetaAxisTicks(options?: CreateThetaAxisTicksOptions): ChartProgram;
+  createRadialAxisTicks(options?: CreateRadialAxisTicksOptions): ChartProgram;
+  createThetaAxisLabels(options?: CreateThetaAxisLabelsOptions): ChartProgram;
+  createRadialAxisLabels(options?: CreateRadialAxisLabelsOptions): ChartProgram;
+  createThetaAxisTitle(options?: CreateThetaAxisTitleOptions): ChartProgram;
+  createRadialAxisTitle(options?: CreateRadialAxisTitleOptions): ChartProgram;
   editThetaAxisLine(options?: AxisLineStyleOptions): ChartProgram;
   editRadialAxisLine(options?: AxisLineStyleOptions): ChartProgram;
   editThetaAxisTicks(options?: PolarTickOptions): ChartProgram;

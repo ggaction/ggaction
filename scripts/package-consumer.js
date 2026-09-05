@@ -507,6 +507,19 @@ async function testNodeConsumer(directory) {
       .encodePointRadius({ value: 3 });
     assert.equal(polar.semanticSpec.layers[0].coordinate, "polar");
     assert.equal(polar.graphicSpec.objects.point.items.length, 2);
+    const polarComponents = polar.editCanvas({ width: 480, height: 480, margin: 80 })
+      .createThetaAxisTitle({ text: "Angle" })
+      .createThetaAxisLine().createThetaAxisTicks({ values: [0, 0.5] })
+      .createThetaAxisLabels({ values: [0, 0.5] })
+      .createRadialAxisTitle({ angle: 180, text: "Distance", position: "outside" })
+      .createRadialAxisLine().createRadialAxisTicks({ count: 3 })
+      .createRadialAxisLabels({ count: 3 });
+    assert.equal(polarComponents.guideConfigs.axis.radius.layout.angle, 180);
+    assert.equal(polarComponents.graphicSpec.objects.thetaAxisLabels.items.length, 2);
+    assert.equal(polarComponents.graphicSpec.objects.radialAxisTitle.properties.text, "Distance");
+    assert.match(renderToSVG(polarComponents), /Distance/);
+    assert.equal(polar.graphicSpec.objects.thetaAxisTitle, undefined);
+
     const arcs = chart()
       .createCanvas({ width: 160, height: 160, margin: 20 })
       .createData({ values: [{ group: "A" }, { group: "A" }, { group: "B" }] })
@@ -1683,6 +1696,18 @@ async function testTypeScriptConsumer(directory) {
     polar.encodeR({ field: "distance", aggregate: "sum", mapping: "area", scale: { zero: true, nice: false } });
     polar.encodeR({ aggregate: "count", mapping: "radius-length" });
     polar.editScale({ radialMapping: "area" });
+    const componentOptions: import("ggaction").CreateRadialAxisLabelsOptions = {
+      angle: 135, values: [0, 1], fontWeight: 600
+    };
+    polar.createThetaAxisLine().createThetaAxisTicks({ count: 3 })
+      .createThetaAxisLabels({ values: [0, 1] }).createThetaAxisTitle({ text: "Angle" });
+    polar.createRadialAxisLine({ angle: 135 }).createRadialAxisTicks({ count: 3 })
+      .createRadialAxisLabels(componentOptions).createRadialAxisTitle({ position: "outside" });
+    // @ts-expect-error Theta component has no radial angle
+    polar.createThetaAxisTitle({ angle: 90 });
+    // @ts-expect-error Tick selection policies are exclusive
+    polar.createRadialAxisLabels({ count: 3, values: [0, 1] });
+
     // @ts-expect-error measured count has no field
     polar.encodeR({ field: "distance", aggregate: "count", mapping: "area" });
     // @ts-expect-error measured scale cannot reverse

@@ -256,6 +256,134 @@ Edits selected radius-axis components; `angle` rematerializes every existing com
 - ✅ Covered: aggregate component routing and whole-axis angle movement.
 - No proposal; Evidence: `test/unit/actions/guides/polar-axis-actions.test.js`.
 
+## Polar focused component creation
+
+Full에서 theta/radial line·ticks·labels·title을 독립적으로 생성한다. Complete axis와 같은 wrapped owner·defaults·schema·materialization을 사용한다. Basic에는 노출하지 않는다. Existing component 생성은 오류이며 대응 focused edit는 existing component를 요구한다. 전체 remove 뒤 원하는 component만 다시 생성할 수 있다.
+
+기존 semantic axis binding이 있으면 scale/coordinate를 계승하고, 없으면 compatible Polar encoding에서 유일하게 추론한다. 모호한 resource는 explicit ID를 요구한다. Theta create는 angle과 radial-only position을 거부한다. Radial create의 angle은 유한 degrees, 생략 시 기존 aggregate angle 또는 기본 90이다. 이미 생성한 component와 다른 angle은 오류이며 변경은 editRadialAxis가 소유한다. Label/title을 첫 component로 생성해도 요청한 angle로 bounds와 geometry를 검증한다.
+
+Ticks/labels의 count와 values는 배타적이고 같은 existing mode/default owner를 사용한다. Title text는 stored field/title에서 추론한다. Typography·offset·line style은 대응 focused editor의 값과 검증을 재사용한다. Invalid options/bindings/style/space, duplicate resource는 이전 program과 입력을 보존하는 atomic failure다. Scale/Canvas/encoding 편집은 생성 순서와 무관하게 같은 owner를 rematerialize한다.
+
+## `createThetaAxisLine`
+
+- Signature: `createThetaAxisLine(options?: CreateThetaAxisLineOptions): ChartProgram`.
+- Behavior and defaults: Polar focused component creation above and the corresponding focused editor below.
+
+### Formal values — `createThetaAxisLine`
+
+- Implemented: missing theta line creation with inferred/explicit scale and coordinate and the corresponding style options; angle is not accepted.
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `createThetaAxisLine`
+
+- ✅ Covered: full/Basic classification, independent creation and aggregate equivalence, create order, restore, resource/style errors, angle ownership, scale/Canvas replay and immutability.
+- Evidence: `test/unit/actions/guides/polar-component-creation.test.js`, `test/contracts/polar-component-types.test.js`, `test/unit/actions/guides/polar-axis-actions.test.js`.
+
+## `createRadialAxisLine`
+
+- Signature: `createRadialAxisLine(options?: CreateRadialAxisLineOptions): ChartProgram`.
+- Behavior and defaults: Polar focused component creation above and the corresponding focused editor below.
+
+### Formal values — `createRadialAxisLine`
+
+- Implemented: missing radial line creation with inferred/explicit scale and coordinate and the corresponding style options, optional shared radial angle.
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `createRadialAxisLine`
+
+- ✅ Covered: full/Basic classification, independent creation and aggregate equivalence, create order, restore, resource/style errors, angle ownership, scale/Canvas replay and immutability.
+- Evidence: `test/unit/actions/guides/polar-component-creation.test.js`, `test/contracts/polar-component-types.test.js`, `test/unit/actions/guides/polar-axis-actions.test.js`.
+
+## `createThetaAxisTicks`
+
+- Signature: `createThetaAxisTicks(options?: CreateThetaAxisTicksOptions): ChartProgram`.
+- Behavior and defaults: Polar focused component creation above and the corresponding focused editor below.
+
+### Formal values — `createThetaAxisTicks`
+
+- Implemented: missing theta ticks creation with inferred/explicit scale and coordinate and the corresponding style options; angle is not accepted; count and values are exclusive.
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `createThetaAxisTicks`
+
+- ✅ Covered: full/Basic classification, independent creation and aggregate equivalence, create order, restore, resource/style errors, angle ownership, scale/Canvas replay and immutability.
+- Evidence: `test/unit/actions/guides/polar-component-creation.test.js`, `test/contracts/polar-component-types.test.js`, `test/unit/actions/guides/polar-axis-actions.test.js`.
+
+## `createRadialAxisTicks`
+
+- Signature: `createRadialAxisTicks(options?: CreateRadialAxisTicksOptions): ChartProgram`.
+- Behavior and defaults: Polar focused component creation above and the corresponding focused editor below.
+
+### Formal values — `createRadialAxisTicks`
+
+- Implemented: missing radial ticks creation with inferred/explicit scale and coordinate and the corresponding style options, optional shared radial angle; count and values are exclusive.
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `createRadialAxisTicks`
+
+- ✅ Covered: full/Basic classification, independent creation and aggregate equivalence, create order, restore, resource/style errors, angle ownership, scale/Canvas replay and immutability.
+- Evidence: `test/unit/actions/guides/polar-component-creation.test.js`, `test/contracts/polar-component-types.test.js`, `test/unit/actions/guides/polar-axis-actions.test.js`.
+
+## `createThetaAxisLabels`
+
+- Signature: `createThetaAxisLabels(options?: CreateThetaAxisLabelsOptions): ChartProgram`.
+- Behavior and defaults: Polar focused component creation above and the corresponding focused editor below.
+
+### Formal values — `createThetaAxisLabels`
+
+- Implemented: missing theta labels creation with inferred/explicit scale and coordinate and the corresponding style options; angle is not accepted; count and values are exclusive.
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `createThetaAxisLabels`
+
+- ✅ Covered: full/Basic classification, independent creation and aggregate equivalence, create order, restore, resource/style errors, angle ownership, scale/Canvas replay and immutability.
+- Evidence: `test/unit/actions/guides/polar-component-creation.test.js`, `test/contracts/polar-component-types.test.js`, `test/unit/actions/guides/polar-axis-actions.test.js`.
+
+## `createRadialAxisLabels`
+
+- Signature: `createRadialAxisLabels(options?: CreateRadialAxisLabelsOptions): ChartProgram`.
+- Behavior and defaults: Polar focused component creation above and the corresponding focused editor below.
+
+### Formal values — `createRadialAxisLabels`
+
+- Implemented: missing radial labels creation with inferred/explicit scale and coordinate and the corresponding style options, optional shared radial angle; count and values are exclusive.
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `createRadialAxisLabels`
+
+- ✅ Covered: full/Basic classification, independent creation and aggregate equivalence, create order, restore, resource/style errors, angle ownership, scale/Canvas replay and immutability.
+- Evidence: `test/unit/actions/guides/polar-component-creation.test.js`, `test/contracts/polar-component-types.test.js`, `test/unit/actions/guides/polar-axis-actions.test.js`.
+
+## `createThetaAxisTitle`
+
+- Signature: `createThetaAxisTitle(options?: CreateThetaAxisTitleOptions): ChartProgram`.
+- Behavior and defaults: Polar focused component creation above and the corresponding focused editor below.
+
+### Formal values — `createThetaAxisTitle`
+
+- Implemented: missing theta title creation with inferred/explicit scale and coordinate and the corresponding style options; angle is not accepted.
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `createThetaAxisTitle`
+
+- ✅ Covered: full/Basic classification, independent creation and aggregate equivalence, create order, restore, resource/style errors, angle ownership, scale/Canvas replay and immutability.
+- Evidence: `test/unit/actions/guides/polar-component-creation.test.js`, `test/contracts/polar-component-types.test.js`, `test/unit/actions/guides/polar-axis-actions.test.js`.
+
+## `createRadialAxisTitle`
+
+- Signature: `createRadialAxisTitle(options?: CreateRadialAxisTitleOptions): ChartProgram`.
+- Behavior and defaults: Polar focused component creation above and the corresponding focused editor below.
+
+### Formal values — `createRadialAxisTitle`
+
+- Implemented: missing radial title creation with inferred/explicit scale and coordinate and the corresponding style options, optional shared radial angle.
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `createRadialAxisTitle`
+
+- ✅ Covered: full/Basic classification, independent creation and aggregate equivalence, create order, restore, resource/style errors, angle ownership, scale/Canvas replay and immutability.
+- Evidence: `test/unit/actions/guides/polar-component-creation.test.js`, `test/contracts/polar-component-types.test.js`, `test/unit/actions/guides/polar-axis-actions.test.js`.
+
 ## `editThetaAxisLine`
 
 ### Formal values — `editThetaAxisLine`

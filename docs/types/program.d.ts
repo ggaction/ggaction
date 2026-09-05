@@ -819,6 +819,23 @@ export interface PolarTitleOptions {
 export interface RadialTitleOptions extends PolarTitleOptions {
   position?: "inside" | "outside";
 }
+export type PolarAxisTickSelection =
+  | { count?: number; values?: never }
+  | { values: readonly AxisValue[]; count?: never };
+export type CreateThetaAxisLineOptions = AxisLineStyleOptions &
+  Omit<PolarGuideResourceOptions, "angle">;
+export type CreateRadialAxisLineOptions = AxisLineStyleOptions & PolarGuideResourceOptions;
+export type CreateThetaAxisTicksOptions = Omit<PolarTickOptions, "count" | "values"> &
+  PolarAxisTickSelection & Omit<PolarGuideResourceOptions, "angle">;
+export type CreateRadialAxisTicksOptions = Omit<PolarTickOptions, "count" | "values"> &
+  PolarAxisTickSelection & PolarGuideResourceOptions;
+export type CreateThetaAxisLabelsOptions = Omit<PolarLabelOptions, "count" | "values"> &
+  PolarAxisTickSelection & Omit<PolarGuideResourceOptions, "angle">;
+export type CreateRadialAxisLabelsOptions = Omit<PolarLabelOptions, "count" | "values"> &
+  PolarAxisTickSelection & PolarGuideResourceOptions;
+export type CreateThetaAxisTitleOptions = PolarTitleOptions &
+  Omit<PolarGuideResourceOptions, "angle">;
+export type CreateRadialAxisTitleOptions = RadialTitleOptions & PolarGuideResourceOptions;
 export interface CompletePolarAxisOptions extends PolarGuideResourceOptions {
   line?: AxisLineStyleOptions;
   ticksAndLabels?: PolarTicksAndLabelsOptions;
@@ -3020,6 +3037,14 @@ export class ChartProgram {
   createYAxis(options?: CompleteAxisOptions<YAxisPosition>): ChartProgram;
   createThetaAxis(options?: CompletePolarAxisOptions): ChartProgram;
   createRadialAxis(options?: CompleteRadialAxisOptions): ChartProgram;
+  createThetaAxisLine(options?: CreateThetaAxisLineOptions): ChartProgram;
+  createRadialAxisLine(options?: CreateRadialAxisLineOptions): ChartProgram;
+  createThetaAxisTicks(options?: CreateThetaAxisTicksOptions): ChartProgram;
+  createRadialAxisTicks(options?: CreateRadialAxisTicksOptions): ChartProgram;
+  createThetaAxisLabels(options?: CreateThetaAxisLabelsOptions): ChartProgram;
+  createRadialAxisLabels(options?: CreateRadialAxisLabelsOptions): ChartProgram;
+  createThetaAxisTitle(options?: CreateThetaAxisTitleOptions): ChartProgram;
+  createRadialAxisTitle(options?: CreateRadialAxisTitleOptions): ChartProgram;
   editThetaAxisLine(options?: AxisLineStyleOptions): ChartProgram;
   editRadialAxisLine(options?: AxisLineStyleOptions): ChartProgram;
   editThetaAxisTicks(options?: PolarTickOptions): ChartProgram;

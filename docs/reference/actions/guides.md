@@ -60,6 +60,70 @@ editRadialAxis({ angle?, line?, ticks?, labels?, ticksAndLabels?, title? })
 Edit selected radial components; `angle` moves the whole axis.
 [Axes](../../api/axes.md#editing-a-complete-axis)
 
+## `createThetaAxisLine`
+
+```javascript
+createThetaAxisLine({ scale?, coordinate?, color?, lineWidth? } = {})
+```
+
+Create missing theta-axis line independently of the other components. Reuse stored axis bindings or infer one compatible Polar encoding. Existing components are edited with the matching `edit` action. [Axes](../../api/axes.md#polar-component-creation)
+
+## `createRadialAxisLine`
+
+```javascript
+createRadialAxisLine({ scale?, coordinate?, angle?, color?, lineWidth? } = {})
+```
+
+Create missing radial-axis line independently of the other components. Reuse stored axis bindings or infer one compatible Polar encoding. Existing components are edited with the matching `edit` action. [Axes](../../api/axes.md#polar-component-creation)
+
+## `createThetaAxisTicks`
+
+```javascript
+createThetaAxisTicks({ scale?, coordinate?, count?, values?, length?, color?, lineWidth? } = {})
+```
+
+Create missing theta-axis ticks independently of the other components. Use count or exact values, never both. Reuse stored axis bindings or infer one compatible Polar encoding. Existing components are edited with the matching `edit` action. [Axes](../../api/axes.md#polar-component-creation)
+
+## `createRadialAxisTicks`
+
+```javascript
+createRadialAxisTicks({ scale?, coordinate?, angle?, count?, values?, length?, color?, lineWidth? } = {})
+```
+
+Create missing radial-axis ticks independently of the other components. Use count or exact values, never both. Reuse stored axis bindings or infer one compatible Polar encoding. Existing components are edited with the matching `edit` action. [Axes](../../api/axes.md#polar-component-creation)
+
+## `createThetaAxisLabels`
+
+```javascript
+createThetaAxisLabels({ scale?, coordinate?, count?, values?, offset?, format?, color?, fontSize?, fontFamily?, fontWeight? } = {})
+```
+
+Create missing theta-axis labels independently of the other components. Use count or exact values, never both. Reuse stored axis bindings or infer one compatible Polar encoding. Existing components are edited with the matching `edit` action. [Axes](../../api/axes.md#polar-component-creation)
+
+## `createRadialAxisLabels`
+
+```javascript
+createRadialAxisLabels({ scale?, coordinate?, angle?, count?, values?, offset?, format?, color?, fontSize?, fontFamily?, fontWeight? } = {})
+```
+
+Create missing radial-axis labels independently of the other components. Use count or exact values, never both. Reuse stored axis bindings or infer one compatible Polar encoding. Existing components are edited with the matching `edit` action. [Axes](../../api/axes.md#polar-component-creation)
+
+## `createThetaAxisTitle`
+
+```javascript
+createThetaAxisTitle({ scale?, coordinate?, text?, offset?, color?, fontSize?, fontFamily?, fontWeight? } = {})
+```
+
+Create missing theta-axis title independently of the other components. Reuse stored axis bindings or infer one compatible Polar encoding. Existing components are edited with the matching `edit` action. [Axes](../../api/axes.md#polar-component-creation)
+
+## `createRadialAxisTitle`
+
+```javascript
+createRadialAxisTitle({ scale?, coordinate?, angle?, text?, offset?, color?, fontSize?, fontFamily?, fontWeight?, position? } = {})
+```
+
+Create missing radial-axis title independently of the other components. Reuse stored axis bindings or infer one compatible Polar encoding. Existing components are edited with the matching `edit` action. [Axes](../../api/axes.md#polar-component-creation)
+
 ## `editThetaAxisLine`
 
 ```javascript

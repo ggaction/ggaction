@@ -3,7 +3,7 @@
   "packageVersion": "0.0.12",
   "typeSource": "types/program.d.ts",
   "errorPolicy": "An empty errors array means the compact card has no curated error override; consult the canonical route for validation, inference, and recovery behavior.",
-  "count": 181,
+  "count": 189,
   "cards": [
     {
       "schemaVersion": 2,
@@ -10479,6 +10479,64 @@
     },
     {
       "schemaVersion": 2,
+      "name": "createThetaAxisLine",
+      "layer": "user-facing",
+      "domain": "axes",
+      "summary": "Create missing theta-axis line independently of the other components.",
+      "signature": "createThetaAxisLine(options?: CreateThetaAxisLineOptions): ChartProgram;",
+      "intents": [
+        "create theta axis line",
+        "create",
+        "add",
+        "axis guide",
+        "scale annotation",
+        "theta-axis line",
+        "angular baseline"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "compatible scale or encoding context"
+        ],
+        "owns": [
+          "theta-axis line"
+        ],
+        "idOptions": [
+          "scale",
+          "coordinate"
+        ]
+      },
+      "options": [
+        {
+          "name": "color",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "lineWidth",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "scale",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "coordinate",
+          "required": false,
+          "type": "string | undefined"
+        }
+      ],
+      "callPatterns": [
+        "createThetaAxisLine({ scale?, coordinate?, color?, lineWidth? })"
+      ],
+      "snippet": "program.createThetaAxisLine({})",
+      "errors": [],
+      "route": "/reference/actions/guides/#createthetaaxisline"
+    },
+    {
+      "schemaVersion": 2,
       "name": "editThetaAxisLine",
       "layer": "user-facing",
       "domain": "axes",
@@ -10523,6 +10581,69 @@
     },
     {
       "schemaVersion": 2,
+      "name": "createRadialAxisLine",
+      "layer": "user-facing",
+      "domain": "axes",
+      "summary": "Create missing radial-axis line independently of the other components.",
+      "signature": "createRadialAxisLine(options?: CreateRadialAxisLineOptions): ChartProgram;",
+      "intents": [
+        "create radial axis line",
+        "create",
+        "add",
+        "axis guide",
+        "scale annotation",
+        "radial-axis line",
+        "polar baseline"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "compatible scale or encoding context"
+        ],
+        "owns": [
+          "radial-axis line"
+        ],
+        "idOptions": [
+          "scale",
+          "coordinate"
+        ]
+      },
+      "options": [
+        {
+          "name": "color",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "lineWidth",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "scale",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "coordinate",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "angle",
+          "required": false,
+          "type": "number | undefined"
+        }
+      ],
+      "callPatterns": [
+        "createRadialAxisLine({ scale?, coordinate?, color?, lineWidth?, angle? })"
+      ],
+      "snippet": "program.createRadialAxisLine({})",
+      "errors": [],
+      "route": "/reference/actions/guides/#createradialaxisline"
+    },
+    {
+      "schemaVersion": 2,
       "name": "editRadialAxisLine",
       "layer": "user-facing",
       "domain": "axes",
@@ -10564,6 +10685,79 @@
       "snippet": "program.editRadialAxisLine({ color: \"#f28e2b\" })",
       "errors": [],
       "route": "/reference/actions/guides/#editradialaxisline"
+    },
+    {
+      "schemaVersion": 2,
+      "name": "createThetaAxisTicks",
+      "layer": "user-facing",
+      "domain": "axes",
+      "summary": "Create missing theta-axis ticks independently of the other components.",
+      "signature": "createThetaAxisTicks(options?: CreateThetaAxisTicksOptions): ChartProgram;",
+      "intents": [
+        "create theta axis ticks",
+        "create",
+        "add",
+        "axis guide",
+        "scale annotation",
+        "theta-axis ticks",
+        "angular tick marks"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "compatible scale or encoding context"
+        ],
+        "owns": [
+          "theta-axis ticks"
+        ],
+        "idOptions": [
+          "scale",
+          "coordinate"
+        ]
+      },
+      "options": [
+        {
+          "name": "color",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "lineWidth",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "length",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "count",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "values",
+          "required": false,
+          "type": "readonly AxisValue[] | undefined"
+        },
+        {
+          "name": "scale",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "coordinate",
+          "required": false,
+          "type": "string | undefined"
+        }
+      ],
+      "callPatterns": [
+        "createThetaAxisTicks({ scale?, coordinate?, color?, lineWidth?, length?, count?, values? })"
+      ],
+      "snippet": "program.createThetaAxisTicks({})",
+      "errors": [],
+      "route": "/reference/actions/guides/#createthetaaxisticks"
     },
     {
       "schemaVersion": 2,
@@ -10626,6 +10820,84 @@
     },
     {
       "schemaVersion": 2,
+      "name": "createRadialAxisTicks",
+      "layer": "user-facing",
+      "domain": "axes",
+      "summary": "Create missing radial-axis ticks independently of the other components.",
+      "signature": "createRadialAxisTicks(options?: CreateRadialAxisTicksOptions): ChartProgram;",
+      "intents": [
+        "create radial axis ticks",
+        "create",
+        "add",
+        "axis guide",
+        "scale annotation",
+        "radial-axis ticks",
+        "radial tick marks"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "compatible scale or encoding context"
+        ],
+        "owns": [
+          "radial-axis ticks"
+        ],
+        "idOptions": [
+          "scale",
+          "coordinate"
+        ]
+      },
+      "options": [
+        {
+          "name": "color",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "lineWidth",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "length",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "count",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "values",
+          "required": false,
+          "type": "readonly AxisValue[] | undefined"
+        },
+        {
+          "name": "scale",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "coordinate",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "angle",
+          "required": false,
+          "type": "number | undefined"
+        }
+      ],
+      "callPatterns": [
+        "createRadialAxisTicks({ scale?, coordinate?, color?, lineWidth?, length?, count?, values?, angle? })"
+      ],
+      "snippet": "program.createRadialAxisTicks({})",
+      "errors": [],
+      "route": "/reference/actions/guides/#createradialaxisticks"
+    },
+    {
+      "schemaVersion": 2,
       "name": "editRadialAxisTicks",
       "layer": "user-facing",
       "domain": "axes",
@@ -10682,6 +10954,94 @@
       "snippet": "program.editRadialAxisTicks({ count: 5 })",
       "errors": [],
       "route": "/reference/actions/guides/#editradialaxisticks"
+    },
+    {
+      "schemaVersion": 2,
+      "name": "createThetaAxisLabels",
+      "layer": "user-facing",
+      "domain": "axes",
+      "summary": "Create missing theta-axis labels independently of the other components.",
+      "signature": "createThetaAxisLabels(options?: CreateThetaAxisLabelsOptions): ChartProgram;",
+      "intents": [
+        "create theta axis labels",
+        "create",
+        "add",
+        "axis guide",
+        "scale annotation",
+        "theta-axis labels",
+        "angular tick text"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "compatible scale or encoding context"
+        ],
+        "owns": [
+          "theta-axis labels"
+        ],
+        "idOptions": [
+          "scale",
+          "coordinate"
+        ]
+      },
+      "options": [
+        {
+          "name": "offset",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "format",
+          "required": false,
+          "type": "AxisFormat | undefined"
+        },
+        {
+          "name": "color",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "fontSize",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "fontFamily",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "fontWeight",
+          "required": false,
+          "type": "string | number | undefined"
+        },
+        {
+          "name": "count",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "values",
+          "required": false,
+          "type": "readonly AxisValue[] | undefined"
+        },
+        {
+          "name": "scale",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "coordinate",
+          "required": false,
+          "type": "string | undefined"
+        }
+      ],
+      "callPatterns": [
+        "createThetaAxisLabels({ scale?, coordinate?, offset?, format?, color?, fontSize?, fontFamily?, fontWeight? })"
+      ],
+      "snippet": "program.createThetaAxisLabels({})",
+      "errors": [],
+      "route": "/reference/actions/guides/#createthetaaxislabels"
     },
     {
       "schemaVersion": 2,
@@ -10759,6 +11119,99 @@
     },
     {
       "schemaVersion": 2,
+      "name": "createRadialAxisLabels",
+      "layer": "user-facing",
+      "domain": "axes",
+      "summary": "Create missing radial-axis labels independently of the other components.",
+      "signature": "createRadialAxisLabels(options?: CreateRadialAxisLabelsOptions): ChartProgram;",
+      "intents": [
+        "create radial axis labels",
+        "create",
+        "add",
+        "axis guide",
+        "scale annotation",
+        "radial-axis labels",
+        "radial tick text"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "compatible scale or encoding context"
+        ],
+        "owns": [
+          "radial-axis labels"
+        ],
+        "idOptions": [
+          "scale",
+          "coordinate"
+        ]
+      },
+      "options": [
+        {
+          "name": "offset",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "format",
+          "required": false,
+          "type": "AxisFormat | undefined"
+        },
+        {
+          "name": "color",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "fontSize",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "fontFamily",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "fontWeight",
+          "required": false,
+          "type": "string | number | undefined"
+        },
+        {
+          "name": "count",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "values",
+          "required": false,
+          "type": "readonly AxisValue[] | undefined"
+        },
+        {
+          "name": "scale",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "coordinate",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "angle",
+          "required": false,
+          "type": "number | undefined"
+        }
+      ],
+      "callPatterns": [
+        "createRadialAxisLabels({ scale?, coordinate?, offset?, format?, color?, fontSize?, fontFamily?, fontWeight? })"
+      ],
+      "snippet": "program.createRadialAxisLabels({})",
+      "errors": [],
+      "route": "/reference/actions/guides/#createradialaxislabels"
+    },
+    {
+      "schemaVersion": 2,
       "name": "editRadialAxisLabels",
       "layer": "user-facing",
       "domain": "axes",
@@ -10833,6 +11286,84 @@
     },
     {
       "schemaVersion": 2,
+      "name": "createThetaAxisTitle",
+      "layer": "user-facing",
+      "domain": "axes",
+      "summary": "Create missing theta-axis title independently of the other components.",
+      "signature": "createThetaAxisTitle(options?: CreateThetaAxisTitleOptions): ChartProgram;",
+      "intents": [
+        "create theta axis title",
+        "create",
+        "add",
+        "axis guide",
+        "scale annotation",
+        "theta-axis title",
+        "angular field title"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "compatible scale or encoding context"
+        ],
+        "owns": [
+          "theta-axis title"
+        ],
+        "idOptions": [
+          "scale",
+          "coordinate"
+        ]
+      },
+      "options": [
+        {
+          "name": "text",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "offset",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "color",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "fontSize",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "fontFamily",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "fontWeight",
+          "required": false,
+          "type": "string | number | undefined"
+        },
+        {
+          "name": "scale",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "coordinate",
+          "required": false,
+          "type": "string | undefined"
+        }
+      ],
+      "callPatterns": [
+        "createThetaAxisTitle({ scale?, coordinate?, text?, offset?, color?, fontSize?, fontFamily?, fontWeight? })"
+      ],
+      "snippet": "program.createThetaAxisTitle({})",
+      "errors": [],
+      "route": "/reference/actions/guides/#createthetaaxistitle"
+    },
+    {
+      "schemaVersion": 2,
       "name": "editThetaAxisTitle",
       "layer": "user-facing",
       "domain": "axes",
@@ -10894,6 +11425,94 @@
       "snippet": "program.editThetaAxisTitle({ text: \"Chart title\" })",
       "errors": [],
       "route": "/reference/actions/guides/#editthetaaxistitle"
+    },
+    {
+      "schemaVersion": 2,
+      "name": "createRadialAxisTitle",
+      "layer": "user-facing",
+      "domain": "axes",
+      "summary": "Create missing radial-axis title independently of the other components.",
+      "signature": "createRadialAxisTitle(options?: CreateRadialAxisTitleOptions): ChartProgram;",
+      "intents": [
+        "create radial axis title",
+        "create",
+        "add",
+        "axis guide",
+        "scale annotation",
+        "radial-axis title",
+        "polar field title"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "compatible scale or encoding context"
+        ],
+        "owns": [
+          "radial-axis title"
+        ],
+        "idOptions": [
+          "scale",
+          "coordinate"
+        ]
+      },
+      "options": [
+        {
+          "name": "position",
+          "required": false,
+          "type": "\"inside\" | \"outside\" | undefined"
+        },
+        {
+          "name": "text",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "offset",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "color",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "fontSize",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "fontFamily",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "fontWeight",
+          "required": false,
+          "type": "string | number | undefined"
+        },
+        {
+          "name": "scale",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "coordinate",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "angle",
+          "required": false,
+          "type": "number | undefined"
+        }
+      ],
+      "callPatterns": [
+        "createRadialAxisTitle({ scale?, coordinate?, position?, text?, offset?, color?, fontSize?, fontFamily? })"
+      ],
+      "snippet": "program.createRadialAxisTitle({})",
+      "errors": [],
+      "route": "/reference/actions/guides/#createradialaxistitle"
     },
     {
       "schemaVersion": 2,

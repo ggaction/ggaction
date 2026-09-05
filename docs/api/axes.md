@@ -16,6 +16,57 @@ title: Axes
 | `editYAxis` | `editYAxis({ position: "right" })` | Existing y-axis components | Retained components moved together |
 | `removeXAxis` / `removeYAxis` | `removeXAxis()` | Existing complete axis | Semantic, graphic, and stored axis state removed |
 
+## Polar component creation
+
+Create a missing Polar axis component without rebuilding the other components.
+These actions are available from `ggaction`.
+
+| Component | Theta action | Radial action |
+| --- | --- | --- |
+| Baseline | `createThetaAxisLine` | `createRadialAxisLine` |
+| Tick marks | `createThetaAxisTicks` | `createRadialAxisTicks` |
+| Tick text | `createThetaAxisLabels` | `createRadialAxisLabels` |
+| Title | `createThetaAxisTitle` | `createRadialAxisTitle` |
+
+```javascript
+import { chart } from "ggaction";
+
+const program = chart()
+  .createCanvas({ width: 480, height: 480, margin: 80 })
+  .createData({ values: [
+    { direction: 0, distance: 2 },
+    { direction: 120, distance: 4 },
+    { direction: 240, distance: 6 }
+  ] })
+  .createPointMark()
+  .encodeTheta({ field: "direction", scale: { domain: [0, 360] } })
+  .encodeR({ field: "distance", scale: { zero: true } })
+  .createThetaAxis({ title: false })
+  .createThetaAxisTitle({ text: "Direction" })
+  .editThetaAxisTitle({ fontWeight: 600 })
+  .createRadialAxisLine({ angle: 45 })
+  .createRadialAxisTicks({ values: [0, 3, 6] })
+  .createRadialAxisLabels({ values: [0, 3, 6] })
+  .createRadialAxisTitle({ text: "Distance" });
+```
+
+All eight actions accept optional `scale` and `coordinate` IDs. Existing axis
+bindings take precedence over inference; otherwise exactly one compatible Polar
+encoding must identify the resources. Use the matching focused editor to change
+an existing component. Duplicate creation fails. After `removeThetaAxis()` or
+`removeRadialAxis()`, the same create actions can rebuild selected components.
+
+Tick and label creation accepts either `count` or exact data-space `values`.
+Other style options match the corresponding focused editor below. Radial
+creation also accepts `angle` in degrees: the first component establishes it
+(default `90`), and later components share it. Change the angle with
+`editRadialAxis({ angle })`; conflicting component angles are rejected. Theta
+components do not accept `angle`. Only radial titles accept
+`position: "inside" | "outside"`.
+
+Omitted title text follows the encoded field or its explicit title. Component
+styles and bindings survive Canvas, scale, and compatible encoding edits.
+
 ## `createAxes(options?)`
 
 Creates complete axes for encoded Cartesian x/y, Polar theta/radius, or Parallel dimension channels. This is the recommended axis

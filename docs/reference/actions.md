@@ -64,6 +64,10 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createPiePlot`](./actions/charts-data.md#createpieplot) | user-facing | charts |
 | [`createPointMark`](./actions/marks.md#createpointmark) | user-facing | marks |
 | [`createRadialAxis`](./actions/guides.md#createradialaxis) | user-facing | axes |
+| [`createRadialAxisLabels`](./actions/guides.md#createradialaxislabels) | user-facing | axes |
+| [`createRadialAxisLine`](./actions/guides.md#createradialaxisline) | user-facing | axes |
+| [`createRadialAxisTicks`](./actions/guides.md#createradialaxisticks) | user-facing | axes |
+| [`createRadialAxisTitle`](./actions/guides.md#createradialaxistitle) | user-facing | axes |
 | [`createRadialBarPlot`](./actions/charts-data.md#createradialbarplot) | user-facing | charts |
 | [`createRadialGrid`](./actions/guides.md#createradialgrid) | user-facing | grid |
 | [`createRectMark`](./actions/marks.md#createrectmark) | user-facing | marks |
@@ -77,6 +81,10 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createScatterPlot`](./actions/charts-data.md#createscatterplot) | user-facing | charts |
 | [`createTextMark`](./actions/marks.md#createtextmark) | user-facing | marks |
 | [`createThetaAxis`](./actions/guides.md#createthetaaxis) | user-facing | axes |
+| [`createThetaAxisLabels`](./actions/guides.md#createthetaaxislabels) | user-facing | axes |
+| [`createThetaAxisLine`](./actions/guides.md#createthetaaxisline) | user-facing | axes |
+| [`createThetaAxisTicks`](./actions/guides.md#createthetaaxisticks) | user-facing | axes |
+| [`createThetaAxisTitle`](./actions/guides.md#createthetaaxistitle) | user-facing | axes |
 | [`createThetaGrid`](./actions/guides.md#createthetagrid) | user-facing | grid |
 | [`createTickMark`](./actions/marks.md#createtickmark) | user-facing | marks |
 | [`createTimeUnitData`](./actions/charts-data.md#createtimeunitdata) | user-facing | core |

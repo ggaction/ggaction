@@ -23,11 +23,12 @@ import {
   TICK_CREATE_OPTIONS,
   TICK_EDIT_OPTIONS,
   validateModeOptions,
+  validateComponentCreateArgs,
   validateObject,
   withAxisSemantics
 } from "./shared.js";
 
-function tickGeometry(program, kind, config) {
+function tickGeometry(program, kind, config, angle = resolveAngle(program, kind, {})) {
   const frame = resolvePolarFrameForProgram(program);
   const mapped = mapPolarGuideValues(program, config);
   return {
@@ -40,7 +41,7 @@ function tickGeometry(program, kind, config) {
         })
       : resolveRadialAxisTicks({
           frame,
-          angle: resolveAngle(program, kind, {}),
+          angle,
           radii: mapped.positions,
           length: config.length
         }))
@@ -131,7 +132,7 @@ function makeCreateTicks(kind) {
     op: operation.create,
     description: `Create the Polar ${kind}-axis ticks.`
   }, function (args = {}) {
-    validateObject(args, TICK_CREATE_OPTIONS, operation.create);
+    validateComponentCreateArgs(kind, args, TICK_CREATE_OPTIONS, operation.create);
     validateModeOptions(args, operation.create);
     const names = polarGuideNames(kind);
     if (this.graphicSpec.objects[names.ticks] !== undefined) {
@@ -140,7 +141,7 @@ function makeCreateTicks(kind) {
     const resources = componentResources(this, kind, args, operation.create);
     const angle = resolveAngle(this, kind, args);
     const config = resolveTickConfig(this, kind, args, resources);
-    tickGeometry(this, kind, config);
+    tickGeometry(this, kind, config, angle);
     let next = withAxisSemantics(this, kind, resources);
     if (kind === "radius" &&
         next.guideConfigs.axis?.radius?.layout === undefined) {

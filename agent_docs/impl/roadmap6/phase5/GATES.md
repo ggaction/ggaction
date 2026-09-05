@@ -39,6 +39,8 @@
 
 ## 승인 기록
 
+- W1 A1 부분 결과: [Polar focused 생성 8개](RESULTS_W1_CREATE.md). 해당 문서를 추가한 source commit이 review checkpoint이며, 전체 Phase A/V/X package는 여전히 미완료다.
+
 - Review commit / remote ref: 미정
 - 검증 명령과 실제 결과: 미실행
 - 사용자 승인 근거: [APPROVAL.md](../APPROVAL.md)의 남은 로드맵 전체 실행·릴리즈 승인

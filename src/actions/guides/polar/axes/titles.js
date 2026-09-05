@@ -24,17 +24,18 @@ import {
   resolveAngle,
   TITLE_CREATE_OPTIONS,
   TITLE_EDIT_OPTIONS,
+  validateComponentCreateArgs,
   validateObject,
   withAxisSemantics
 } from "./shared.js";
 
-function titleGeometry(program, kind, config) {
+function titleGeometry(program, kind, config, angle = resolveAngle(program, kind, {})) {
   const frame = resolvePolarFrameForProgram(program);
   return kind === "theta"
     ? resolveThetaAxisTitle({ frame, offset: config.offset })
     : resolveRadialAxisTitle({
         frame,
-        angle: resolveAngle(program, kind, {}),
+        angle,
         offset: config.offset,
         position: config.position
       });
@@ -142,7 +143,7 @@ function makeCreateTitle(kind) {
     op: operation.create,
     description: `Create the Polar ${kind}-axis title.`
   }, function (args = {}) {
-    validateObject(args, TITLE_CREATE_OPTIONS, operation.create);
+    validateComponentCreateArgs(kind, args, TITLE_CREATE_OPTIONS, operation.create);
     const names = polarGuideNames(kind);
     if (this.graphicSpec.objects[names.title] !== undefined) {
       throw new Error(`${operation.create} requires a missing axis title.`);
@@ -154,7 +155,7 @@ function makeCreateTitle(kind) {
       args.text ?? inferAxisTitleText(this, names.channel, resources.scale),
       "Polar axis title text"
     );
-    const geometry = titleGeometry(this, kind, config);
+    const geometry = titleGeometry(this, kind, config, angle);
     validateTitleGeometry(this, kind, config, geometry, text);
     let next = withAxisSemantics(this, kind, resources);
     if (kind === "radius" &&
