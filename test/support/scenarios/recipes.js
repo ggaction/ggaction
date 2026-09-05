@@ -736,7 +736,44 @@ function recipe(id, datasets, factors, build) {
   return Object.freeze({ id, datasets: Object.freeze(datasets), factors: Object.freeze(factors), build });
 }
 
+function buildCompletePie(factors) {
+  let program = chart().createCanvas(canvas({ square: true }))
+    .createData({ id: "source", values: polarRows(factors.dataset) })
+    .createPiePlot({ id: "pie", category: "category",
+      ...(factors.weighted ? { value: "value", aggregate: "sum" } : {}),
+      arc: { innerRadius: factors.innerRadius, padAngle: 1 } });
+  if (factors.edit) program = program.editArcMark({ target: "pie", opacity: 0.75 });
+  return program;
+}
+
+function buildCompleteDensity(factors) {
+  let program = chart().createCanvas(canvas())
+    .createData({ id: "source", values: densityRows(factors.dataset) })
+    .createDensityPlot({ id: "density", field: "value", densityChannel: factors.channel, steps: 32,
+      ...(factors.grouped ? { groupBy: "category", color: "category" } : {}) });
+  if (factors.edit) program = program.editDensity({ target: "density", steps: 48 });
+  return program;
+}
+
+function buildCompleteHorizon(factors) {
+  let program = chart().createCanvas(canvas())
+    .createData({ id: "source", values: lineRows(factors.dataset) })
+    .createHorizonPlot({ id: "horizon", x: { field: "time", fieldType: "temporal" },
+      y: "value", groupBy: "category", bands: factors.bands, baseline: factors.baseline });
+  if (factors.edit) program = program.editHorizon({ target: "horizon", bands: factors.bands + 1 });
+  return program;
+}
+
 export const SCENARIO_RECIPES = Object.freeze([
+  recipe("complete-pie", ["zoo-polar-wrap"], {
+    weighted: [false, true], innerRadius: [0, 0.5], edit: [false, true]
+  }, buildCompletePie),
+  recipe("complete-density", ["zoo-multimodal-density"], {
+    channel: ["x", "y"], grouped: [false, true], edit: [false, true]
+  }, buildCompleteDensity),
+  recipe("complete-horizon", ["zoo-temporal-irregular"], {
+    bands: [2, 3], baseline: [0, 2], edit: [false, true]
+  }, buildCompleteHorizon),
   recipe("scatter-transforms", [
     "zoo-positive-log-decades", "zoo-quantitative-extremes",
     "zoo-multi-encoding-styles", "zoo-constant-domain", "tt-penguins"

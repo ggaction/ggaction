@@ -88,3 +88,20 @@ Full 여유는 30 bytes다. 나머지 facades를 추가한 뒤 실제 installed 
 로그: `.artifacts/roadmap6-authoring/horizon-{focused,render,integration-focused,browser,package,docs-built,docs-browser}.log`,
 `phase3-coverage.log`. 공개 시각 evidence는 `render-public-review.mjs`, 같은 tarball 소비자·크기 evidence는
 `verify-package.mjs`로 commit 후 생성한다. 기존 A/V snapshot을 덮어쓰지 않는다.
+
+## Generated scenario acceptance
+
+확장 realistic suite에서 두 inventory 실패를 발견했다. User-facing action 수와 recursive option 수가
+세 신규 facade 이전 값으로 고정되어 있었고, generated smoke registry에는 새 H0의 direct-root 호출도 없었다.
+공개 등록을 제외하거나 기준을 낮추지 않고 세 complete chart recipe를 추가했다. Count/sum·donut,
+Density 두 방향과 explicit group/color, temporal Horizon bands/baseline, 각각의 lower edit를 생성한다.
+
+- 실제 171개 user-facing action 전부가 generated scenario의 top-level trace에 존재한다.
+- Recursive inventory는 4,879 option paths(필수 4,202 / 제외 677), scale 68 paths / 280 literal values,
+  ledger 6,850 requirements로 동기화했다. Array redaction과 unsupported-path 검사는 그대로다.
+- `generated-lifecycle-scenarios`, `generated-scenario-feature-coverage`, `generated-scenarios`의 **13/13**이
+  통과했다. Deterministic deep pair coverage와 전체 offline smoke의 graphic/analytic/SVG integrity를 포함한다.
+- 변경은 test generator와 acceptance expectations에 한정된다. Runtime/type/knowledge/package bytes와
+  80999264의 시각 증거는 그대로다. 전체 corpus sweep 결과는 이어지는 통합 기록에 남긴다.
+
+로그: `.artifacts/roadmap6-authoring/phase3-generated-regression.log`.
