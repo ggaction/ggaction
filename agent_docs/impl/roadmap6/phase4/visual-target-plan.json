@@ -9,77 +9,88 @@
       "gate": "R6-P4-V1",
       "fixtureSource": "examples/area-layout/targets.json",
       "primitiveStatus": "rendered",
-      "publicStatus": "not-implemented"
+      "publicStatus": "implemented-verified",
+      "resultEvidence": "RESULTS_V1.md"
     },
     {
       "id": "area-signed-baseline",
       "gate": "R6-P4-V1",
       "fixtureSource": "examples/area-layout/targets.json",
       "primitiveStatus": "rendered",
-      "publicStatus": "not-implemented"
+      "publicStatus": "implemented-verified",
+      "resultEvidence": "RESULTS_V1.md"
     },
     {
       "id": "area-horizontal-log",
       "gate": "R6-P4-V1",
       "fixtureSource": "examples/area-layout/targets.json",
       "primitiveStatus": "rendered",
-      "publicStatus": "not-implemented"
+      "publicStatus": "implemented-verified",
+      "resultEvidence": "RESULTS_V1.md"
     },
     {
       "id": "ribbon-crossing",
       "gate": "R6-P4-V1",
       "fixtureSource": "examples/area-layout/targets.json",
       "primitiveStatus": "rendered",
-      "publicStatus": "not-implemented"
+      "publicStatus": "implemented-verified",
+      "resultEvidence": "RESULTS_V1.md"
     },
     {
       "id": "area-missing-break",
       "gate": "R6-P4-V1",
       "fixtureSource": "examples/area-layout/targets.json",
       "primitiveStatus": "rendered",
-      "publicStatus": "not-implemented"
+      "publicStatus": "implemented-verified",
+      "resultEvidence": "RESULTS_V1.md"
     },
     {
       "id": "area-stack",
       "gate": "R6-P4-V1",
       "fixtureSource": "examples/area-layout/targets.json",
       "primitiveStatus": "rendered",
-      "publicStatus": "not-implemented"
+      "publicStatus": "implemented-verified",
+      "resultEvidence": "RESULTS_V1.md"
     },
     {
       "id": "area-fill",
       "gate": "R6-P4-V1",
       "fixtureSource": "examples/area-layout/targets.json",
       "primitiveStatus": "rendered",
-      "publicStatus": "not-implemented"
+      "publicStatus": "implemented-verified",
+      "resultEvidence": "RESULTS_V1.md"
     },
     {
       "id": "area-diverging",
       "gate": "R6-P4-V1",
       "fixtureSource": "examples/area-layout/targets.json",
       "primitiveStatus": "rendered",
-      "publicStatus": "not-implemented"
+      "publicStatus": "implemented-verified",
+      "resultEvidence": "RESULTS_V1.md"
     },
     {
       "id": "area-center",
       "gate": "R6-P4-V1",
       "fixtureSource": "examples/area-layout/targets.json",
       "primitiveStatus": "rendered",
-      "publicStatus": "not-implemented"
+      "publicStatus": "implemented-verified",
+      "resultEvidence": "RESULTS_V1.md"
     },
     {
       "id": "bar-independent-stack",
       "gate": "R6-P4-V1",
       "fixtureSource": "examples/area-layout/targets.json",
       "primitiveStatus": "rendered",
-      "publicStatus": "not-implemented"
+      "publicStatus": "implemented-verified",
+      "resultEvidence": "RESULTS_V1.md"
     },
     {
       "id": "bar-layout-roundtrip",
       "gate": "R6-P4-V1",
       "fixtureSource": "examples/area-layout/targets.json",
       "primitiveStatus": "rendered",
-      "publicStatus": "not-implemented"
+      "publicStatus": "implemented-verified",
+      "resultEvidence": "RESULTS_V1.md"
     },
     {
       "id": "rose-disk",
@@ -136,8 +147,11 @@
         }
       ],
       "independentOracle": "Annulus area ratios 2:3:4; all three sectors; actual value radius guide.",
-      "primitiveStatus": "not-authored",
-      "publicStatus": "not-implemented"
+      "primitiveStatus": "rendered",
+      "publicStatus": "implemented-verified",
+      "fixtureSource": "examples/radial-sectors/program.js",
+      "manifestSource": "test/charts/radial-sectors/manifest.js",
+      "resultEvidence": "RESULTS_W3.md"
     },
     {
       "id": "rose-hole",
@@ -197,8 +211,11 @@
         }
       ],
       "independentOracle": "Annulus area ratios 2:3:4; all three sectors; actual value radius guide.",
-      "primitiveStatus": "not-authored",
-      "publicStatus": "not-implemented"
+      "primitiveStatus": "rendered",
+      "publicStatus": "implemented-verified",
+      "fixtureSource": "examples/radial-sectors/program.js",
+      "manifestSource": "test/charts/radial-sectors/manifest.js",
+      "resultEvidence": "RESULTS_W3.md"
     },
     {
       "id": "radial-disk",
@@ -255,8 +272,11 @@
         }
       ],
       "independentOracle": "Outer minus inner radius ratios 2:3:4; all three sectors; actual value radius guide.",
-      "primitiveStatus": "not-authored",
-      "publicStatus": "not-implemented"
+      "primitiveStatus": "rendered",
+      "publicStatus": "implemented-verified",
+      "fixtureSource": "examples/radial-sectors/program.js",
+      "manifestSource": "test/charts/radial-sectors/manifest.js",
+      "resultEvidence": "RESULTS_W3.md"
     },
     {
       "id": "radial-hole",
@@ -316,8 +336,11 @@
         }
       ],
       "independentOracle": "Outer minus inner radius ratios 2:3:4; all three sectors; actual value radius guide.",
-      "primitiveStatus": "not-authored",
-      "publicStatus": "not-implemented"
+      "primitiveStatus": "rendered",
+      "publicStatus": "implemented-verified",
+      "fixtureSource": "examples/radial-sectors/program.js",
+      "manifestSource": "test/charts/radial-sectors/manifest.js",
+      "resultEvidence": "RESULTS_W3.md"
     },
     {
       "id": "radial-theta-legend-order",
@@ -388,8 +411,11 @@
         }
       ],
       "independentOracle": "Theta and legend C,A,B; per-category colors and lengths remain unchanged; path/draw order not overridden.",
-      "primitiveStatus": "not-authored",
-      "publicStatus": "not-implemented"
+      "primitiveStatus": "rendered",
+      "publicStatus": "implemented-verified",
+      "fixtureSource": "examples/radial-sectors/program.js",
+      "manifestSource": "test/charts/radial-sectors/manifest.js",
+      "resultEvidence": "RESULTS_W3.md"
     },
     {
       "id": "color-midpoint-asymmetric",

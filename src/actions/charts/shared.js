@@ -172,3 +172,29 @@ export function targetArgs(encoding, target) {
 export function applyFacadeGuides(program, guides, target, explicitGuides = guides) {
   return fulfillFacadeGuides(program, guides, target, explicitGuides);
 }
+
+export function normalizeArcCategory(value, operation) {
+  const label = `${operation} category`;
+  const category = normalizeFieldEncoding(value, label);
+  validateOptionObject(category, ["field", "fieldType", "scale"], label);
+  validateNonEmptyString(category.field, `${label} field`);
+  const fieldType = category.fieldType === undefined ? "nominal" : category.fieldType;
+  if (!["nominal", "ordinal"].includes(fieldType)) throw new TypeError(`${label} must be nominal or ordinal.`);
+  if (category.scale !== undefined) {
+    validateOptionObject(category.scale, ["id", "type", "domain", "range", "reverse"], `${label}.scale`);
+    if (category.scale.type !== undefined && category.scale.type !== "band") {
+      throw new TypeError(`${label}.scale.type must be band.`);
+    }
+  }
+  return { ...omitUndefinedOptions(category), fieldType,
+    ...(category.scale === undefined ? {} : { scale: omitUndefinedOptions(category.scale) }) };
+}
+
+export function normalizeCategoryAggregate(args, operation) {
+  const aggregate = args.aggregate === undefined ? "count" : args.aggregate;
+  if (!["count", "sum"].includes(aggregate) || (aggregate === "sum") !== (args.value !== undefined)) {
+    throw new Error(`${operation} requires count without value or explicit sum with value.`);
+  }
+  if (args.value !== undefined) validateNonEmptyString(args.value, `${operation} value`);
+  return aggregate;
+}

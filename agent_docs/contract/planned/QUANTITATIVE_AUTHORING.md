@@ -4,34 +4,8 @@
 [Phase 4 계약](../../impl/roadmap6/phase4/CONTRACT_REVIEW.md)의 P4-C01–C09와 이름 `layoutSeries`를 승인했다.
 `encodeLayout` alias는 만들지 않는다. Area/layout의 승인된 V1 구현은 Current COMPLETE_CHARTS/ENCODINGS/MARKS로 이동했다.
 완성 차트의 입력 union·전체 hierarchy·저장 결과는 아래 chart owner에 함께 보존한다.
-남은 새 direct 2개와 capability 2개는 Planned 상태다. 로드맵 전체 실행은 승인되었으며 구현·검증 후 Current로 이동한다.
+남은 sequential midpoint/transition capability 1개는 Planned 상태다. Rose/Radial facade와 measured radius는 Current COMPLETE_CHARTS/ENCODINGS/CORE로 이동했다. 로드맵 전체 실행은 승인되었으며 구현·검증 후 Current로 이동한다.
 Theta/legend order는 Current ENCODINGS/LEGEND_AND_TITLE로 이동했다.
-
-
-
-## `createRosePlot`
-
-- Lifecycle: Aggregate create-only. Entry: full만. Category 필수. Value 없음→count, value 있음→explicit aggregate:sum.
-  Optional id/data/coordinate/radiusScale/color/arc/guides. Default id rosePlot, color category.
-- Equal-angle, category aggregate, zero-based domain, area mapping. `r=sqrt(r0²+t(R²-r0²))`.
-  Arc/theta/encodeR/color/Polar guide를 합성한다. Facade 자체 transform/source/cache는 없다.
-- Semantic scale.radialMapping이 mapper를 소유하며 radius encoding.aggregate는 category grain을 소유한다.
-  Radius guide도 같은 mapper와 원래 측정 단위를 사용한다. Primitive는 concrete path commands다.
-- All-zero/negative/nonfinite/unequal-angle/비호환 shared consumer/nonzero padAngle은 오류다.
-  양수 category는 모두 표현하며 0 category는 domain/legend에 남고 sector는 없다.
-- Lower edit: encodeR, editArcMark, editScale, orderCategories, legend editors. 모든 실패는 immutable다.
-- [전체 Rose/Radial 계약](../../impl/roadmap6/chart/rose-radial-bar.md).
-- Coverage: missing. Hole 0/0.5의 면적비·숫자/guide/selection/render pair를 검증해야 한다.
-
-## `createRadialBarPlot`
-
-- Lifecycle: Aggregate create-only. Entry: full만. Rose와 동일한 옵션·오류·child owner를 쓴다.
-- Default id radialBarPlot. Mapping만 radius-length이며 `r=r0+t(R-r0)`로 측정한다.
-  Generic encodeR의 기존 row grain/domain/default는 바꾸지 않는다.
-- Radius.length가 아니라 outer radius minus inner radius가 value에 비례한다.
-  최소 양수가 자동 domain min 때문에 사라지지 않아야 한다. Source indices는 category의 모든 행을 유지한다.
-- [전체 Rose/Radial 계약](../../impl/roadmap6/chart/rose-radial-bar.md), [수치 oracle](../../impl/roadmap6/phase4/VALIDATION.md).
-- Coverage: missing. Disk/hole, duplicate category, count/sum, domain/edit/shared consumers와 renderer를 검증해야 한다.
 
 
 

@@ -874,6 +874,16 @@
     "layer": "user-facing",
     "domain": "charts"
   },
+  "createRosePlot": {
+    "operation": "create",
+    "layer": "user-facing",
+    "domain": "charts"
+  },
+  "createRadialBarPlot": {
+    "operation": "create",
+    "layer": "user-facing",
+    "domain": "charts"
+  },
   "createDensityPlot": {
     "operation": "create",
     "layer": "user-facing",

@@ -183,6 +183,8 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`createRectMark`](current/MARKS.md#createrectmark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editRectMark`](current/MARKS.md#editrectmark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createPiePlot`](current/COMPLETE_CHARTS.md#createpieplot) | charts | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
+| user-facing | [`createRosePlot`](current/COMPLETE_CHARTS.md#createroseplot) | charts | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
+| user-facing | [`createRadialBarPlot`](current/COMPLETE_CHARTS.md#createradialbarplot) | charts | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createDensityPlot`](current/COMPLETE_CHARTS.md#createdensityplot) | statistics | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createHorizonPlot`](current/COMPLETE_CHARTS.md#createhorizonplot) | statistics | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createAreaPlot`](current/COMPLETE_CHARTS.md#createareaplot) | charts | Aggregate create-only | Complete | ✅ / ✅ / ✅ |
@@ -192,8 +194,6 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 
 | Action | Readiness | Contract |
 | --- | --- | --- |
-| `createRosePlot` | accepted | [Open](planned/QUANTITATIVE_AUTHORING.md#createroseplot) |
-| `createRadialBarPlot` | accepted | [Open](planned/QUANTITATIVE_AUTHORING.md#createradialbarplot) |
 
 ## Planned capabilities
 

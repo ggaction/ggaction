@@ -30,6 +30,8 @@
   "termAliases": {
     "AreaPlot": ["area chart", "ribbon", "stacked area"],
     "Series": ["series placement", "grouped bars", "stacked series"],
+    "RosePlot": ["rose chart", "coxcomb chart", "polar area chart", "proportional sector area"],
+    "RadialBarPlot": ["radial bar chart", "radial bar plot", "proportional radial length"],
     "PiePlot": ["pie plot", "pie chart", "donut chart", "doughnut chart", "category proportions"],
     "Canvas": ["canvas", "chart size", "plot bounds"],
     "Data": ["dataset", "rows"],
@@ -172,6 +174,8 @@
     "createAreaPlot": { "x": "time", "y": "value" },
     "layoutSeries": { "mode": "stack" },
     "createPiePlot": { "category": "category" },
+    "createRosePlot": { "category": "category" },
+    "createRadialBarPlot": { "category": "category" },
     "createHorizonPlot": { "x": "time", "y": "value" },
     "createDensityPlot": { "field": "value" },
     "editRuleMark": { "stroke": "#334155" },

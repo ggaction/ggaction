@@ -64,12 +64,14 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createPiePlot`](./actions/charts-data.md#createpieplot) | user-facing | charts |
 | [`createPointMark`](./actions/marks.md#createpointmark) | user-facing | marks |
 | [`createRadialAxis`](./actions/guides.md#createradialaxis) | user-facing | axes |
+| [`createRadialBarPlot`](./actions/charts-data.md#createradialbarplot) | user-facing | charts |
 | [`createRadialGrid`](./actions/guides.md#createradialgrid) | user-facing | grid |
 | [`createRectMark`](./actions/marks.md#createrectmark) | user-facing | marks |
 | [`createRegression`](./actions/statistics.md#createregression) | user-facing | statistics |
 | [`createRegressionBand`](./actions/advanced.md#semantic-resources-and-regression-layers) | user-facing | statistics |
 | [`createRegressionData`](./actions/charts-data.md#createregressiondata) | user-facing | core |
 | [`createRegressionLine`](./actions/advanced.md#semantic-resources-and-regression-layers) | user-facing | statistics |
+| [`createRosePlot`](./actions/charts-data.md#createroseplot) | user-facing | charts |
 | [`createRuleMark`](./actions/marks.md#createrulemark) | user-facing | marks |
 | [`createScale`](./actions/extension.md#extension-actions) | user-facing | core |
 | [`createScatterPlot`](./actions/charts-data.md#createscatterplot) | user-facing | charts |

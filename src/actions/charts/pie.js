@@ -1,34 +1,13 @@
 import { action } from "../../core/action.js";
-import { validateNonEmptyString, validateOptionObject } from "../../core/validation.js";
 import {
   applyFacadeGuides, normalizeAppearance, normalizeCategoricalColor, normalizeCategoricalGuides,
-  normalizeFieldEncoding, omitUndefinedOptions,
+  normalizeArcCategory, normalizeCategoryAggregate, omitUndefinedOptions,
   resolveFacadeData, resolveFacadeId, validateFacadeOptions
 } from "./shared.js";
 
 const OPERATION = "createPiePlot";
 const OPTIONS = ["id", "data", "coordinate", "category", "value", "aggregate", "color", "arc", "guides"];
 const ARC_OPTIONS = ["innerRadius", "padAngle", "fill", "opacity", "stroke", "strokeWidth"];
-const CATEGORY_SCALE_OPTIONS = ["id", "type", "domain", "range", "reverse"];
-
-function categoryOptions(value) {
-  const category = normalizeFieldEncoding(value, `${OPERATION} category`);
-  validateOptionObject(category, ["field", "fieldType", "scale"], `${OPERATION} category`);
-  validateNonEmptyString(category.field, `${OPERATION} category field`);
-  const fieldType = category.fieldType === undefined ? "nominal" : category.fieldType;
-  if (!["nominal", "ordinal"].includes(fieldType)) {
-    throw new TypeError(`${OPERATION} category must be nominal or ordinal.`);
-  }
-  if (category.scale !== undefined) {
-    validateOptionObject(category.scale, CATEGORY_SCALE_OPTIONS, `${OPERATION} category.scale`);
-    if (category.scale.type !== undefined && category.scale.type !== "band") {
-      throw new TypeError(`${OPERATION} category.scale.type must be band.`);
-    }
-  }
-  return { ...omitUndefinedOptions(category), fieldType,
-    ...(category.scale === undefined ? {} : { scale: omitUndefinedOptions(category.scale) }) };
-}
-
 function guideOptions(value, color) {
   const guides = normalizeCategoricalGuides(value, OPERATION, color);
   if (guides === false) return false;
@@ -46,13 +25,8 @@ export const createPiePlot = action({
   validateFacadeOptions(args, OPTIONS, OPERATION);
   const id = resolveFacadeId(this, args.id, { defaultId: "piePlot", operation: OPERATION });
   const data = resolveFacadeData(this, args.data, OPERATION);
-  const category = categoryOptions(args.category);
-  const aggregate = args.aggregate === undefined ? "count" : args.aggregate;
-  if (!["count", "sum"].includes(aggregate) ||
-    (aggregate === "sum") !== (args.value !== undefined)) {
-    throw new Error(`${OPERATION} requires count without value or explicit sum with value.`);
-  }
-  if (args.value !== undefined) validateNonEmptyString(args.value, `${OPERATION} value`);
+  const category = normalizeArcCategory(args.category, OPERATION);
+  const aggregate = normalizeCategoryAggregate(args, OPERATION);
   const arc = omitUndefinedOptions(normalizeAppearance(args.arc, ARC_OPTIONS, `${OPERATION} arc`));
   const color = args.color === false ? undefined
     : normalizeCategoricalColor(args.color === undefined ? category.field : args.color, `${OPERATION} color`);

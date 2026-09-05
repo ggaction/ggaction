@@ -247,8 +247,8 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Gzip ceiling |
 | --- | ---: |
-| `ggaction` | 245,000 bytes |
-| `ggaction/basic` | 132,000 bytes |
+| `ggaction` | 247,000 bytes |
+| `ggaction/basic` | 136,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 
 이 값은 current executable regression ceiling이며 측정 결과 자체가 아니다. Canonical numeric owner는
@@ -750,7 +750,7 @@ category grain을 소유한다. Arc grammar는 합산값과 원본 sourceIndices
 aggregate에서 [0,max] domain을 결정한다. 공통 continuous mapper가 area/length 의미를 적용하므로 Arc와 Polar
 axis/grid는 별도의 보정식을 갖지 않는다. Math는 outer radius로 정규화한 뒤 제곱하여 overflow를 피한다.
 명시적 Arc innerRadius provenance는 private mark config에서만 추적하여 explicit range와의 충돌을 검사하며,
-기본 innerRadius 0을 사용자가 선택한 ratio라고 추측하지 않는다. Public measured encoder는 Current이며 Rose/Radial facade는 아직 Planned다.
+기본 innerRadius 0을 사용자가 선택한 ratio라고 추측하지 않는다. Public measured encoder와 Rose/Radial facade는 Current다. Facade는 이 lower chain을 합성하며 Polar guide fulfillment도 공통 guide owner가 scope·reuse·conflict를 검증한다.
 
 Measured radius의 public 진입은 encodeR(mapping, aggregate), scale의 하위 소유자는 createScale/editScale(radialMapping)이다. 같은 scale에 정책을 중복 저장하지 않는다. Shared normalization이 radialMapping을 보존·검증하며, measured Arc가 theta를 기다릴 때 domain이나 placeholder mark를 만들지 않는다. Layered Arc inheritance는 category aggregate를 함께 보존하며 Point에는 이 radius를 전파하지 않는다.
 

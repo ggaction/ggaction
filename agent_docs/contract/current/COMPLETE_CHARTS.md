@@ -7,6 +7,60 @@ Data는 explicit/current/unique, coordinate는 explicit/bound/unique/family defa
 Guide 생략/{}는 자기 layer의 compatible guide를 확보하고 false는 이번 확보만 생략한다.
 기존 guide를 삭제하거나 충돌하는 resource를 덮지 않는다. 모든 실패는 caller와 이전 program/trace를 보존한다.
 
+## `createRosePlot`
+
+`createRosePlot({ id?, data?, coordinate?, category, value?, aggregate?, radiusScale?, color?, arc?, guides? })`.
+Default id는 `rosePlot`. Full 전용 Aggregate create-only이며 구멍을 제외한 sector 면적를 category count/sum에 비례시킨다.
+
+- Category는 PieCategory, color는 PieColor를 재사용한다. Category는 필수이며 숫자도 nominal shorthand다. Color는 기본 category이고 false로 생략한다. Color와 arc.fill을 함께 쓰면 오류다.
+- Value 없음은 count. Value field가 있으면 aggregate:sum을 명시한다. Category별로 합치고 원본 행과 selection membership을 보존한다. 별도 derived dataset이나 façade recipe를 저장하지 않는다.
+- `radiusScale`은 MeasuredRadiusScaleOptions: id, linear type, domain:auto|[0,U], range:auto|[r0,R], zero:true, nice:false, reverse:false, clamp. 모든 aggregate<=U이며 0<=r0<R, 실제 Canvas에 들어가야 한다.
+- Arc appearance는 Pie와 같되 padAngle은 0만 지원한다. innerRadius는 [0,1)이고 auto range를 조정한다. Explicit range는 hole을 정하며 명시한 innerRadius와 일치해야 한다.
+- Zero category는 domain/legend에 남고 sector만 생략한다. Empty/all-zero/negative/nonfinite/overflow/unrepresentable-positive thickness와 범주 내 여러 색은 오류다.
+- Guides 기본은 categorical theta axis, 실제 count/sum 단위 radial axis, 적용 가능한 Polar grids와 color legend다. False는 이번 생성을 생략한다. axes는 theta/radius와 Polar coordinate만, grid는 theta/radial만, legend는 categorical PieLegendOptions만 받는다.
+- 기존 same-scale/same-coordinate guide는 명시된 appearance가 같으면 재사용한다. 생략된 style은 보존하며 빠진 component는 기존 wrapped creation action으로 채운다. Foreign resource, 다른 명시적 appearance, 기존 title의 false 제거 요청은 오류다. 다른 layer의 guide를 overwrite하지 않는다.
+- Child hierarchy: createArcMark → encodeTheta → encodeR(mapping:"area",aggregate) → encodeColor? → scoped guide fulfillment. Mapping은 scale.radialMapping, aggregate는 radius encoding 한 곳에 저장한다.
+- Editing은 encodeR, editArcMark, editScale, orderCategories, legend/guide actions가 소유한다. 별도 edit facade는 없다. 같은 id 재생성, unknown keys, Cartesian/weighted theta, incompatible shared scale은 immutable 오류다.
+
+### Formal values — `createRosePlot`
+
+- Implemented: `createRosePlot(options: CreateRosePlotOptions): ChartProgram`.
+- Required: category. Value/aggregate는 count-without-value 또는 sum-with-value의 배타 union이다.
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `createRosePlot`
+
+- ✅ Covered: shortest count, sum/zero/source membership, defaults, invalid options/data/geometry, scalar color, no guides, reuse/foreign guides, lower edits/resize and immutable failures.
+- ✅ Covered: disk/hole 및 linked theta-legend order의 primitive/public semantic·graphic·Canvas parity와 independent literal geometry.
+- Evidence: `test/unit/actions/charts/radial-plots.test.js`, `test/charts/radial-sectors/`, `test/contracts/radial-chart-types.test.js`, `examples/radial-sectors/program.js`.
+
+## `createRadialBarPlot`
+
+`createRadialBarPlot({ id?, data?, coordinate?, category, value?, aggregate?, radiusScale?, color?, arc?, guides? })`.
+Default id는 `radialBarPlot`. Full 전용 Aggregate create-only이며 구멍부터 바깥쪽까지 잰 반지름 길이를 category count/sum에 비례시킨다.
+
+- Category는 PieCategory, color는 PieColor를 재사용한다. Category는 필수이며 숫자도 nominal shorthand다. Color는 기본 category이고 false로 생략한다. Color와 arc.fill을 함께 쓰면 오류다.
+- Value 없음은 count. Value field가 있으면 aggregate:sum을 명시한다. Category별로 합치고 원본 행과 selection membership을 보존한다. 별도 derived dataset이나 façade recipe를 저장하지 않는다.
+- `radiusScale`은 MeasuredRadiusScaleOptions: id, linear type, domain:auto|[0,U], range:auto|[r0,R], zero:true, nice:false, reverse:false, clamp. 모든 aggregate<=U이며 0<=r0<R, 실제 Canvas에 들어가야 한다.
+- Arc appearance는 Pie와 같되 padAngle은 0만 지원한다. innerRadius는 [0,1)이고 auto range를 조정한다. Explicit range는 hole을 정하며 명시한 innerRadius와 일치해야 한다.
+- Zero category는 domain/legend에 남고 sector만 생략한다. Empty/all-zero/negative/nonfinite/overflow/unrepresentable-positive thickness와 범주 내 여러 색은 오류다.
+- Guides 기본은 categorical theta axis, 실제 count/sum 단위 radial axis, 적용 가능한 Polar grids와 color legend다. False는 이번 생성을 생략한다. axes는 theta/radius와 Polar coordinate만, grid는 theta/radial만, legend는 categorical PieLegendOptions만 받는다.
+- 기존 same-scale/same-coordinate guide는 명시된 appearance가 같으면 재사용한다. 생략된 style은 보존하며 빠진 component는 기존 wrapped creation action으로 채운다. Foreign resource, 다른 명시적 appearance, 기존 title의 false 제거 요청은 오류다. 다른 layer의 guide를 overwrite하지 않는다.
+- Child hierarchy: createArcMark → encodeTheta → encodeR(mapping:"radius-length",aggregate) → encodeColor? → scoped guide fulfillment. Mapping은 scale.radialMapping, aggregate는 radius encoding 한 곳에 저장한다.
+- Editing은 encodeR, editArcMark, editScale, orderCategories, legend/guide actions가 소유한다. 별도 edit facade는 없다. 같은 id 재생성, unknown keys, Cartesian/weighted theta, incompatible shared scale은 immutable 오류다.
+
+### Formal values — `createRadialBarPlot`
+
+- Implemented: `createRadialBarPlot(options: CreateRadialBarPlotOptions): ChartProgram`.
+- Required: category. Value/aggregate는 count-without-value 또는 sum-with-value의 배타 union이다.
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `createRadialBarPlot`
+
+- ✅ Covered: shortest count, sum/zero/source membership, defaults, invalid options/data/geometry, scalar color, no guides, reuse/foreign guides, lower edits/resize and immutable failures.
+- ✅ Covered: disk/hole 및 linked theta-legend order의 primitive/public semantic·graphic·Canvas parity와 independent literal geometry.
+- Evidence: `test/unit/actions/charts/radial-plots.test.js`, `test/charts/radial-sectors/`, `test/contracts/radial-chart-types.test.js`, `examples/radial-sectors/program.js`.
+
 ## `createPiePlot`
 
 `createPiePlot({ id?, data?, coordinate?, category, value?, aggregate?, color?, arc?, guides? })`.

@@ -1,0 +1,50 @@
+{
+  "scope": "measured-radial-chart-facades",
+  "status": "passed",
+  "artifact": {
+    "file": ".artifacts/roadmap6-authoring/radial-facade-package-verified/ggaction-0.0.12.tgz",
+    "sha256": "77a3bd9b39fb34f4601f32aa5b8d0e263a0e59c9097ee2c4142c55050516a5e5",
+    "packedBytes": 494189,
+    "unpackedBytes": 2360635,
+    "entryCount": 441
+  },
+  "checks": [
+    "installed-node-runtime-and-renderers",
+    "rose-and-radial-bar-sum-count",
+    "strict-positive-negative-types",
+    "installed-tutorial-consumers",
+    "MCP-server",
+    "minimal-browser-bundles"
+  ],
+  "browserBundles": {
+    "full": {
+      "specifier": "ggaction",
+      "chunks": 1,
+      "modules": 388,
+      "minifiedBytes": 929833,
+      "gzipBytes": 245072
+    },
+    "basic": {
+      "specifier": "ggaction/basic",
+      "chunks": 1,
+      "modules": 233,
+      "minifiedBytes": 491633,
+      "gzipBytes": 134702
+    },
+    "svg": {
+      "specifier": "ggaction/svg",
+      "chunks": 1,
+      "modules": 15,
+      "minifiedBytes": 19840,
+      "gzipBytes": 6437
+    }
+  },
+  "budgets": {
+    "ggaction": 247000,
+    "ggaction/basic": 136000,
+    "ggaction/svg": 25000
+  },
+  "mcp": {
+    "coldStartMilliseconds": 452.9475419999999
+  }
+}

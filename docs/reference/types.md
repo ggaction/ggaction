@@ -111,6 +111,8 @@ interface ChartProgramActions {
   createBarPlot(options: CreateBarPlotOptions): ChartProgram;
   createHistogram(options: CreateHistogramOptions): ChartProgram;
   createPiePlot(options: CreatePiePlotOptions): ChartProgram;
+  createRosePlot(options: CreateRosePlotOptions): ChartProgram;
+  createRadialBarPlot(options: CreateRadialBarPlotOptions): ChartProgram;
   createDensityPlot(options: CreateDensityPlotOptions): ChartProgram;
   createHorizonPlot(options: CreateHorizonPlotOptions): ChartProgram;
   createHeatmap(options: CreateHeatmapOptions): ChartProgram;

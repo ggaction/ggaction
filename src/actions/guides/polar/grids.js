@@ -28,7 +28,7 @@ const EDIT_OPTIONS = Object.freeze([
   "count", "values", "color", "lineWidth", "strokeDash"
 ]);
 
-function operationNames(kind) {
+export function polarGridOperations(kind) {
   const prefix = kind === "theta" ? "Theta" : "Radial";
   return {
     create: `create${prefix}Grid`,
@@ -46,7 +46,7 @@ function validateStrokeDash(value) {
   }
 }
 
-function validateOptions(args, operation, create) {
+export function validatePolarGridOptions(args, operation, create) {
   validateOptionObject(
     args,
     create ? CREATE_OPTIONS : EDIT_OPTIONS,
@@ -154,7 +154,7 @@ function editConcrete(program, kind, config, geometry) {
 }
 
 function makeRematerialize(kind) {
-  const operations = operationNames(kind);
+  const operations = polarGridOperations(kind);
   return action({
     op: operations.rematerialize,
     description: `Recompute concrete Polar ${kind} grid geometry.`
@@ -181,12 +181,12 @@ function makeRematerialize(kind) {
 }
 
 function makeCreate(kind) {
-  const operations = operationNames(kind);
+  const operations = polarGridOperations(kind);
   return action({
     op: operations.create,
     description: `Create a semantic and concrete Polar ${kind} grid.`
   }, function (args = {}) {
-    validateOptions(args, operations.create, true);
+    validatePolarGridOptions(args, operations.create, true);
     const graphic = polarGuideNames(kind).grid;
     if (this.semanticSpec.guides.grid?.[kind] !== undefined ||
         this.graphicSpec.objects[graphic] !== undefined) {
@@ -222,12 +222,12 @@ function makeCreate(kind) {
 }
 
 function makeEdit(kind) {
-  const operations = operationNames(kind);
+  const operations = polarGridOperations(kind);
   return action({
     op: operations.edit,
     description: `Edit the existing Polar ${kind} grid.`
   }, function (args = {}) {
-    validateOptions(args, operations.edit, false);
+    validatePolarGridOptions(args, operations.edit, false);
     const previous = this.guideConfigs.grid?.[kind];
     if (previous === undefined) {
       throw new Error(`${operations.edit} requires an existing grid.`);

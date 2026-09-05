@@ -3,7 +3,7 @@
   "packageVersion": "0.0.12",
   "typeSource": "types/program.d.ts",
   "errorPolicy": "An empty errors array means the compact card has no curated error override; consult the canonical route for validation, inference, and recovery behavior.",
-  "count": 179,
+  "count": 181,
   "cards": [
     {
       "schemaVersion": 2,
@@ -12342,6 +12342,184 @@
       "snippet": "program.createPiePlot({ category: \"category\" })",
       "errors": [],
       "route": "/reference/actions/charts-data/#createpieplot"
+    },
+    {
+      "schemaVersion": 2,
+      "name": "createRosePlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "summary": "Create equal-angle sectors whose sector area, excluding the hole is proportional to category count or sum.",
+      "signature": "createRosePlot(options: CreateRosePlotOptions): ChartProgram;",
+      "intents": [
+        "create rose plot",
+        "create",
+        "add",
+        "complete chart",
+        "chart facade",
+        "rose chart",
+        "coxcomb chart"
+      ],
+      "lifecycle": "Aggregate create-only",
+      "resources": {
+        "prerequisites": [
+          "canvas and dataset context"
+        ],
+        "owns": [
+          "rose chart"
+        ],
+        "idOptions": [
+          "id",
+          "data",
+          "coordinate"
+        ]
+      },
+      "options": [
+        {
+          "name": "id",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "data",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "coordinate",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "category",
+          "required": true,
+          "type": "PieCategory"
+        },
+        {
+          "name": "color",
+          "required": false,
+          "type": "false | PieColor | undefined"
+        },
+        {
+          "name": "radiusScale",
+          "required": false,
+          "type": "MeasuredRadiusScaleOptions | undefined"
+        },
+        {
+          "name": "arc",
+          "required": false,
+          "type": "{ innerRadius?: number | undefined; padAngle?: 0 | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: string | undefined; strokeWidth?: number | undefined; } | undefined"
+        },
+        {
+          "name": "guides",
+          "required": false,
+          "type": "false | MeasuredRadialGuideOptions | undefined"
+        },
+        {
+          "name": "value",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "aggregate",
+          "required": false,
+          "type": "\"count\" | \"sum\" | undefined"
+        }
+      ],
+      "callPatterns": [
+        "createRosePlot({ category, id?, data?, coordinate?, color?, radiusScale?, arc?, guides? })"
+      ],
+      "snippet": "program.createRosePlot({ category: \"category\" })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#createroseplot"
+    },
+    {
+      "schemaVersion": 2,
+      "name": "createRadialBarPlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "summary": "Create equal-angle sectors whose radial length measured from the inner edge is proportional to category count or sum.",
+      "signature": "createRadialBarPlot(options: CreateRadialBarPlotOptions): ChartProgram;",
+      "intents": [
+        "create radial bar plot",
+        "create",
+        "add",
+        "complete chart",
+        "chart facade",
+        "radial bar chart",
+        "radial bar plot"
+      ],
+      "lifecycle": "Aggregate create-only",
+      "resources": {
+        "prerequisites": [
+          "canvas and dataset context"
+        ],
+        "owns": [
+          "radial bar chart"
+        ],
+        "idOptions": [
+          "id",
+          "data",
+          "coordinate"
+        ]
+      },
+      "options": [
+        {
+          "name": "id",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "data",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "coordinate",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "category",
+          "required": true,
+          "type": "PieCategory"
+        },
+        {
+          "name": "color",
+          "required": false,
+          "type": "false | PieColor | undefined"
+        },
+        {
+          "name": "radiusScale",
+          "required": false,
+          "type": "MeasuredRadiusScaleOptions | undefined"
+        },
+        {
+          "name": "arc",
+          "required": false,
+          "type": "{ innerRadius?: number | undefined; padAngle?: 0 | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: string | undefined; strokeWidth?: number | undefined; } | undefined"
+        },
+        {
+          "name": "guides",
+          "required": false,
+          "type": "false | MeasuredRadialGuideOptions | undefined"
+        },
+        {
+          "name": "value",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "aggregate",
+          "required": false,
+          "type": "\"count\" | \"sum\" | undefined"
+        }
+      ],
+      "callPatterns": [
+        "createRadialBarPlot({ category, id?, data?, coordinate?, color?, radiusScale?, arc?, guides? })"
+      ],
+      "snippet": "program.createRadialBarPlot({ category: \"category\" })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#createradialbarplot"
     },
     {
       "schemaVersion": 2,

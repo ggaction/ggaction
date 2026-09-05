@@ -22,7 +22,7 @@ const AXIS_EDIT_OPTIONS = Object.freeze([
   "angle", "line", "ticks", "labels", "ticksAndLabels", "title"
 ]);
 
-function validateAxisArgs(kind, args, operation) {
+export function validatePolarAxisArgs(kind, args, operation) {
   validateObject(args, AXIS_OPTIONS, operation);
   if (Object.hasOwn(args, "line")) {
     validateObject(args.line, LINE_EDIT_OPTIONS, `${operation}.line`);
@@ -68,7 +68,7 @@ function makeCreateAxis(kind) {
     op: operation,
     description: `Create the complete Polar ${kind} axis.`
   }, function (args = {}) {
-    validateAxisArgs(kind, args, operation);
+    validatePolarAxisArgs(kind, args, operation);
     const resources = resolvePolarGuideResources(this, kind, args, operation);
     const angle = resolveAngle(this, kind, args);
     const shared = {

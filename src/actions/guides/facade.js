@@ -1,3 +1,6 @@
+import { findCoordinate } from "../../selectors/coordinates.js";
+import { polarGuideNames } from "./polar/resolve.js";
+import { polarGridOperations, validatePolarGridOptions } from "./polar/grids.js";
 import { findLayer } from "../../selectors/layers.js";
 import { resolveGuideOptions } from "./guides.js";
 import { resolveGridOptions } from "./grids/grid.js";
@@ -7,32 +10,42 @@ import { assertGuideOptions, guideConflict, resolveStoredGuideCoordinate } from 
 import { planFacadeLegend } from "./facadeLegend.js";
 import { applyLegendCreationPlan } from "./legends/categorical/actions.js";
 
+function facadeGridNames(direction) {
+  return ["theta", "radial"].includes(direction)
+    ? { ...polarGridOperations(direction), channel: polarGuideNames(direction).channel }
+    : gridNames(direction);
+}
+
 function scopeGrid(program, layer, args) {
   const directions = resolveGridOptions(program, args, [layer]);
   const scoped = {};
+  const polar = findCoordinate(program, layer.coordinate)?.type === "polar";
   for (const [direction, option] of Object.entries(directions)) {
     if (option === undefined) continue;
-    if (!["horizontal", "vertical"].includes(direction)) {
-      guideConflict("Cartesian and Parallel facades do not own Polar grids");
+    if (polar !== ["theta", "radial"].includes(direction)) {
+      guideConflict("grid coordinate family does not belong to this facade");
     }
-    const { channel, create } = gridNames(direction);
+    const { channel, create } = facadeGridNames(direction);
     const scale = layer.encoding?.[channel]?.scale;
     if (scale === undefined || option.scale !== undefined && option.scale !== scale ||
       option.coordinate !== undefined && option.coordinate !== layer.coordinate) {
       guideConflict(`${direction} grid does not belong to this facade`);
     }
     scoped[direction] = { ...option, scale, coordinate: layer.coordinate };
-    validateGridCreateArgs(scoped[direction], create);
+    if (polar) validatePolarGridOptions(scoped[direction], create, true);
+    else validateGridCreateArgs(scoped[direction], create);
   }
   // An explicit vertical-only request must not re-enable horizontal grid defaults.
-  if (scoped.horizontal === undefined) scoped.horizontal = false;
+  if (polar) {
+    for (const direction of ["theta", "radial"]) if (scoped[direction] === undefined) scoped[direction] = false;
+  } else if (scoped.horizontal === undefined) scoped.horizontal = false;
   return scoped;
 }
 
 function planGrid(program, args) {
   return Object.entries(args).flatMap(([direction, option]) => {
     if (option === false) return [];
-    const { channel, create } = gridNames(direction);
+    const { channel, create } = facadeGridNames(direction);
     const guide = program.semanticSpec.guides.grid?.[direction];
     const config = program.guideConfigs.grid?.[direction];
     if (guide === undefined && config === undefined) return [{ op: create, args: option }];

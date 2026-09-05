@@ -682,3 +682,19 @@
   actions: createAreaPlot layoutSeries encodeGroup
   tasks: trend comparison
   url: /tutorials/area-layout/
+
+- id: radial-sectors
+  example: /examples/radial-sectors/
+  title: Measured rose sectors
+  image: /assets/images/radial-sectors.png
+  alt: Three equal-angle sectors with annular areas proportional to values two, three, and four
+  width: 2000
+  height: 1400
+  thumbnail: /assets/images/radial-sectors-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 448
+  caption: Rose sectors preserve proportional area after excluding the central hole.
+  summary: Compare category sums with proportional area or radial length.
+  actions: createRosePlot · createRadialBarPlot · encodeR
+  tasks: polar category comparison
+  url: /tutorials/polar-arcs/#measured-rose-and-radial-bar-plots

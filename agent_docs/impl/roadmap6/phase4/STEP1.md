@@ -17,7 +17,7 @@
 - [x] W1 lower endpoint/missing/range 구현 — focused 21/21, strict types 1/1, 정상 누적 2614/2614
 - [x] R6-P4-W1 Area baseline/range와 facade 기능·동등성 구현 — package B 승인·같은 tarball 전체 검증 통과
 - [x] R6-P4-W2 Color와 독립한 layout assignment 기능·호환 구현 — package B 승인·같은 tarball 전체 검증 통과
-- [ ] R6-P4-W3 Rose와 Radial bar — [encodeR·scale·하위 계산 검증 완료](RESULTS_RADIAL_ENCODING.md), chart facade·시각 동등성 진행 중
+- [x] R6-P4-W3 Rose와 Radial bar — [하위·facade·V2 5개 동등성 검증 완료](RESULTS_W3.md)
 - [x] R6-P4-W4 Theta와 legend domain order — [구현·검증](RESULTS_W4.md)
 - [ ] R6-P4-W5 Diverging midpoint와 scale/legend transition
 - [ ] 모든 시각 variant의 primitive target 작성·표시·V 승인
@@ -25,7 +25,7 @@
 - [ ] 누적 검증·migration·문서·원장 동기화
 - [ ] X Gate의 증거 commit/push와 명시적 사용자 승인 기록
 
-A/V1 승인과 W1/W2 공개 구현·11개 primitive/public 동등성은 완료했다. [package B](BUNDLE_REVIEW.md) 승인과 재검증을 완료했다. V2/V3/X는 미완료다. 계획 문서를 만든 사실을 구현 완료나 Gate 승인으로 표시하지 않는다.
+A/V1 승인과 W1/W2 공개 구현·11개 primitive/public 동등성은 완료했다. [package B](BUNDLE_REVIEW.md) 승인과 재검증을 완료했다. V2 5개 변형의 구현·검증도 완료했다. V3/W5 및 Phase 전체 통합 검증은 미완료다. 계획 문서를 만든 사실을 구현 완료나 Gate 승인으로 표시하지 않는다.
 
 ## 순서
 

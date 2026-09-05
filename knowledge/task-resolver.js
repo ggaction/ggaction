@@ -521,22 +521,6 @@ function closeRuntimeDependencies(entries) {
       })
     ]
   }));
-  expandChartConstraint("chart.rose", () => ({
-    after: [
-      chartDependency("encodeTheta", {
-        field: `"category"`,
-        fieldType: `"ordinal"`
-      }),
-      chartDependency("encodeR", {
-        field: `"value"`,
-        fieldType: `"quantitative"`
-      }),
-      chartDependency("encodeColor", {
-        field: `"series"`,
-        layout: `"overlay"`
-      })
-    ]
-  }));
   expandChartConstraint("chart.radar", () => ({
     after: [
       chartDependency("encodeTheta", {
@@ -811,6 +795,8 @@ function closeRuntimeDependencies(entries) {
     createGradientPlot: "gradientPlot",
     createViolinPlot: "violinPlot",
     createPiePlot: "piePlot",
+    createRosePlot: "rosePlot",
+    createRadialBarPlot: "radialBarPlot",
     createDensityPlot: "densityPlot",
     createHorizonPlot: "horizonPlot"
   });
@@ -831,6 +817,8 @@ function closeRuntimeDependencies(entries) {
     createGradientPlot: "rect",
     createViolinPlot: "area",
     createPiePlot: "arc",
+    createRosePlot: "arc",
+    createRadialBarPlot: "arc",
     createDensityPlot: "area",
     createHorizonPlot: "area"
   });
@@ -1194,7 +1182,7 @@ function applyRequestedOptions(entries, query) {
     "encoding.strokeWidth"
   ]);
   const hasLegendChannel = configured.some(entry =>
-    entry.provider.name === "createPiePlot" ||
+    ["createPiePlot", "createRosePlot", "createRadialBarPlot"].includes(entry.provider.name) ||
     entry.coverage.some(constraint => legendChannelConstraints.has(constraint))
   );
   if (
@@ -1426,7 +1414,7 @@ function applyRequestedOptions(entries, query) {
   }
 
   const appearanceOwners = Object.freeze({
-    color: ["createScatterPlot", "createLinePlot", "createAreaPlot", "createBarPlot", "createViolinPlot", "createPiePlot"],
+    color: ["createScatterPlot", "createLinePlot", "createAreaPlot", "createBarPlot", "createViolinPlot", "createPiePlot", "createRosePlot", "createRadialBarPlot"],
     size: ["createScatterPlot"],
     shape: ["createScatterPlot"]
   });

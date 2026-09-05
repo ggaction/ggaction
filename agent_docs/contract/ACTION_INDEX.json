@@ -3190,6 +3190,42 @@
       }
     },
     {
+      "name": "createRosePlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "status": "implemented",
+      "lifecycle": "Aggregate create-only",
+      "update": "`encodeR`, `editArcMark`, `editScale`, theta order and guide actions",
+      "audit": "Intentional",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "anchor": "createroseplot"
+      }
+    },
+    {
+      "name": "createRadialBarPlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "status": "implemented",
+      "lifecycle": "Aggregate create-only",
+      "update": "`encodeR`, `editArcMark`, `editScale`, theta order and guide actions",
+      "audit": "Intentional",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "anchor": "createradialbarplot"
+      }
+    },
+    {
       "name": "createDensityPlot",
       "layer": "user-facing",
       "domain": "statistics",
@@ -3262,30 +3298,7 @@
       }
     }
   ],
-  "plannedActions": [
-    {
-      "name": "createRosePlot",
-      "status": "planned",
-      "readiness": "accepted",
-      "layer": "user-facing",
-      "domain": "charts",
-      "contract": {
-        "file": "agent_docs/contract/planned/QUANTITATIVE_AUTHORING.md",
-        "anchor": "createroseplot"
-      }
-    },
-    {
-      "name": "createRadialBarPlot",
-      "status": "planned",
-      "readiness": "accepted",
-      "layer": "user-facing",
-      "domain": "charts",
-      "contract": {
-        "file": "agent_docs/contract/planned/QUANTITATIVE_AUTHORING.md",
-        "anchor": "createradialbarplot"
-      }
-    }
-  ],
+  "plannedActions": [],
   "plannedCapabilities": [
     {
       "id": "sequential-midpoint-and-transitions",

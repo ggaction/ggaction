@@ -153,12 +153,44 @@ Repeated categories and fractional weights are valid. Every weight must be a
 non-negative finite number, and the total must be positive. Invalid input fails
 before semantic state or trace changes; source rows are never expanded.
 
+## Measured rose and radial bar plots
+
+{% include chart-example.html id="radial-sectors" %}
+
+`createRosePlot` makes annular area proportional to category count or sum.
+`createRadialBarPlot` makes length from the inner edge proportional to the same
+measure. This is the canonical `examples/radial-sectors/program.js` rose-hole variant:
+
+```javascript
+import { chart, render } from "ggaction";
+const program = chart()
+  .createCanvas({ width: 1000, height: 700, margin: 150 })
+  .createData({ id: "source", values: [
+    { category: "A", value: 2 }, { category: "B", value: 3 }, { category: "C", value: 4 }
+  ] })
+  .createRosePlot({ id: "sectors", category: "category", value: "value", aggregate: "sum", radiusScale: { range: [70, 140] } });
+render(program, document.querySelector("canvas").getContext("2d"));
+```
+
+The inner radius is 70 pixels. Outer radii are approximately 110.68, 126.19,
+and 140, preserving annular area ratios 2:3:4. Replacing the chart action with
+`createRadialBarPlot` gives radii 105, 122.5, and 140, preserving radial length
+ratios 2:3:4. Without value/aggregate, both actions count rows per category.
+
+The full package provides both actions. Zero categories stay in the domain and
+legend but draw no sector. Use `color:false` for one `arc.fill`, or `guides:false`
+to skip guides. These measured modes require `padAngle:0`, a zero-based linear
+scale, and non-negative finite values with at least one positive category.
+Edit the result through `encodeR`, `editArcMark`, `editScale`, category ordering,
+and guide actions. See the position encoding reference for the equivalent lower chain.
+
 ## Rose overlays
 
 {% include chart-example.html id="rose" %}
 
-A rose chart uses one equal theta band per month and overlays the three causes
-inside that band. The following fragment continues from an imported `chart`
+This lower-level overlay uses equal theta bands and maps each source row to radial length.
+For category sums represented by annular area, use createRosePlot above. The three causes
+share each month band. The following fragment continues from an imported `chart`
 function and a loaded `nightingaleRows` array containing one row per month and
 cause.
 

@@ -97,8 +97,8 @@ test("chart packets either materialize their chart or expose the missing decisio
     ["pie chart", "arc", 3, []],
     ["donut chart", "arc", 3, []],
     ["density plot", "area", 1, []],
-    ["rose chart", "arc", 2, []],
-    ["radial bar chart", "arc", 2, []],
+    ["rose chart", "arc", 3, []],
+    ["radial bar chart", "arc", 3, []],
     ["radar chart", "line", 1, []],
     ["area chart", "area", 1, []],
     ["strip plot", "point", 3, ["chart.strip.placement"]]
@@ -141,18 +141,31 @@ test("raw mark requests remain distinct from incomplete chart requests", () => {
 test("specific polar phrases shadow only overlapping generic chart phrases", async () => {
   for (const query of ["radial bar chart", "polar area chart"]) {
     const packet = searchGgaction(query);
-    assert.deepEqual(packet.matchedConstraints, ["chart.rose"], query);
+    assert.deepEqual(packet.matchedConstraints, [query === "radial bar chart" ? "chart.radialBar" : "chart.rose"], query);
     assert.equal(packet.actionPlan.some(entry => entry.name === "createBarPlot"), false, query);
     assert.equal(packet.actionPlan.some(entry => entry.name === "createAreaMark"), false, query);
   }
   const separate = searchGgaction("radial bar chart and bar chart");
-  assert.ok(separate.matchedConstraints.includes("chart.rose"));
+  assert.ok(separate.matchedConstraints.includes("chart.radialBar"));
   assert.ok(separate.matchedConstraints.includes("chart.bar"));
   const { program } = await executeAuthoring(separate, { rows: [
     { value: 2, category: "A", series: "one" },
     { value: 3, category: "B", series: "one" }
   ] });
   assert.deepEqual(program.semanticSpec.layers.map(layer => layer.mark.type), ["arc", "bar"]);
+});
+
+test("rose and radial bar discovery select distinct complete measurement owners", async () => {
+  for (const [query, action, mapping] of [["rose chart", "createRosePlot", "area"], ["radial bar chart", "createRadialBarPlot", "radius-length"]]) {
+    const packet = searchGgaction(query);
+    assert.deepEqual(packet.actionPlan.map(entry => entry.name), [action]);
+    assert.deepEqual(packet.unresolved, []);
+    const { program } = await executeAuthoring(packet, { rows: [{ category: "A" }, { category: "A" }, { category: "B" }] });
+    assert.equal(program.semanticSpec.layers[0].encoding.radius.aggregate, "count");
+    assert.equal(program.resolvedScales.radius.radialMapping, mapping);
+    assert.deepEqual(program.resolvedScales.radius.domain, [0, 2]);
+    assert.ok(program.guideConfigs.axis.radius);
+  }
 });
 
 test("intent taxonomy covers every supported constraint with exact owners", async () => {
@@ -165,9 +178,9 @@ test("intent taxonomy covers every supported constraint with exact owners", asyn
   assert.equal(validate(taxonomy), true, JSON.stringify(validate.errors));
   assert.deepEqual(validateResolverKnowledge(), {
     cards: cards.count,
-    constraints: 90,
-    providers: 84,
-    supported: 85,
+    constraints: 91,
+    providers: 85,
+    supported: 86,
     unsupported: 5
   });
   assert.equal(taxonomy.packageVersion, cards.packageVersion);

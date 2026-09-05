@@ -142,13 +142,14 @@
         "count-a-category-into-a-donut",
         "complete-program",
         "sum-a-field-into-weighted-sectors",
+        "measured-rose-and-radial-bar-plots",
         "rose-overlays",
         "radial-bars",
         "editing-an-arc",
         "related"
       ],
-      "bytes": 8283,
-      "sha256": "16cb1e85327bc76c47b49911c6b9d140b7aa9eb095dc875341a8e9c1e9765135"
+      "bytes": 9950,
+      "sha256": "0aac15d284b755bbf54bf010df0cc05f3dbdff5c36d579e7eb443898623b4a31"
     },
     {
       "order": 10,
@@ -1796,8 +1797,8 @@
         "action-reference",
         "exact-action-lookup"
       ],
-      "bytes": 19112,
-      "sha256": "f9b0ba4d20109f1ec2390afad17c853f3de61706d7dd160d4d588c9172870d3c"
+      "bytes": 19312,
+      "sha256": "02e74d7a7a58753d1409c3d0e0b1c103611b318a62131afd17e460d8e42ce2ad"
     },
     {
       "order": 115,
@@ -1821,6 +1822,8 @@
         "createhistogram",
         "createareaplot",
         "createpieplot",
+        "createroseplot",
+        "createradialbarplot",
         "createheatmap",
         "createparallelcoordinates",
         "filterdata",
@@ -1835,8 +1838,8 @@
         "editbin2ddata",
         "related"
       ],
-      "bytes": 11685,
-      "sha256": "79b75d4dbf8c6d5f766d5c291e8db4842f56e2443db74c408d4b15e213e1868e"
+      "bytes": 13873,
+      "sha256": "14b92dad2cf1d933ac9e3aae6face9ac5a70b910a4967de0dd55d6a0d20ff0ee"
     },
     {
       "order": 116,
@@ -2052,8 +2055,8 @@
         "exact-typescript-signatures",
         "related"
       ],
-      "bytes": 14659,
-      "sha256": "e0b18e121ed9deb9b580c218f63b5f0f6be2d20f4756dacd7e921ce5fd516e19"
+      "bytes": 14797,
+      "sha256": "3915f0a925331ef986332fd68f32e1d591dbaf65217eb23476a5a74d4fb30352"
     },
     {
       "order": 124,

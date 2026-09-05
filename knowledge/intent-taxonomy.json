@@ -21,7 +21,8 @@
     { "id": "chart.horizon", "phrases": ["horizon chart", "horizon plot"] },
     { "id": "chart.pie", "phrases": ["pie chart", "pie plot"], "exclusiveGroup": "polar.partition-chart" },
     { "id": "chart.donut", "phrases": ["donut chart", "doughnut chart", "donut plot"], "exclusiveGroup": "polar.partition-chart" },
-    { "id": "chart.rose", "phrases": ["rose chart", "coxcomb chart", "polar area chart", "radial bar chart"], "shadows": ["chart.bar", "chart.area"] },
+    { "id": "chart.rose", "phrases": ["rose chart", "rose plot", "coxcomb chart", "polar area chart"], "shadows": ["chart.bar", "chart.area"] },
+    { "id": "chart.radialBar", "phrases": ["radial bar chart", "radial bar plot"], "shadows": ["chart.bar"] },
     { "id": "chart.radar", "phrases": ["radar chart", "spider chart", "polar line chart"] },
 
     { "id": "mark.point", "phrases": ["point mark", "circle marks"] },
@@ -125,7 +126,8 @@
     { "id": "action.createHorizonPlot", "kind": "action", "name": "createHorizonPlot", "order": 50, "anchors": ["chart.horizon"], "covers": ["chart.horizon", "encoding.x", "encoding.y", "guide.axes", "guide.xAxis", "guide.grid", "guide.all"], "baseOptions": { "x": "\"x\"", "y": "\"y\"" } },
     { "id": "action.createPieChart", "kind": "action", "name": "createPiePlot", "order": 40, "anchors": ["chart.pie"], "covers": ["chart.pie", "encoding.color", "guide.legend", "guide.all"], "baseOptions": { "category": "\"category\"" } },
     { "id": "action.createDonutChart", "kind": "action", "name": "createPiePlot", "order": 40, "anchors": ["chart.donut"], "covers": ["chart.donut", "encoding.color", "guide.legend", "guide.all"], "baseOptions": { "category": "\"category\"", "arc": "{ innerRadius: 0.55, padAngle: 2 }" } },
-    { "id": "action.createRoseChart", "kind": "action", "name": "createArcMark", "order": 40, "anchors": ["chart.rose"], "covers": ["chart.rose"], "baseOptions": { "padAngle": "1", "opacity": "0.9" } },
+    { "id": "action.createRoseChart", "kind": "action", "name": "createRosePlot", "order": 40, "anchors": ["chart.rose"], "covers": ["chart.rose", "encoding.theta", "encoding.radius", "encoding.color", "guide.axes", "guide.grid", "guide.legend", "guide.all"], "baseOptions": { "category": "\"category\"" } },
+    { "id": "action.createRadialBarChart", "kind": "action", "name": "createRadialBarPlot", "order": 40, "anchors": ["chart.radialBar"], "covers": ["chart.radialBar", "encoding.theta", "encoding.radius", "encoding.color", "guide.axes", "guide.grid", "guide.legend", "guide.all"], "baseOptions": { "category": "\"category\"" } },
     { "id": "action.createRadarChart", "kind": "action", "name": "createLineMark", "order": 40, "anchors": ["chart.radar"], "covers": ["chart.radar"], "baseOptions": { "closed": "true" } },
 
     { "id": "action.createPointMark", "kind": "action", "name": "createPointMark", "order": 40, "anchors": ["mark.point"], "covers": ["mark.point"], "baseOptions": {} },

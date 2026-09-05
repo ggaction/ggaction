@@ -1110,10 +1110,40 @@ Repeated categories and fractional weights are valid. Every weight must be a
 non-negative finite number, and the total must be positive. Invalid input fails
 before semantic state or trace changes; source rows are never expanded.
 
+## Measured rose and radial bar plots
+
+`createRosePlot` makes annular area proportional to category count or sum.
+`createRadialBarPlot` makes length from the inner edge proportional to the same
+measure. This is the canonical `examples/radial-sectors/program.js` rose-hole variant:
+
+```javascript
+import { chart, render } from "ggaction";
+const program = chart()
+  .createCanvas({ width: 1000, height: 700, margin: 150 })
+  .createData({ id: "source", values: [
+    { category: "A", value: 2 }, { category: "B", value: 3 }, { category: "C", value: 4 }
+  ] })
+  .createRosePlot({ id: "sectors", category: "category", value: "value", aggregate: "sum", radiusScale: { range: [70, 140] } });
+render(program, document.querySelector("canvas").getContext("2d"));
+```
+
+The inner radius is 70 pixels. Outer radii are approximately 110.68, 126.19,
+and 140, preserving annular area ratios 2:3:4. Replacing the chart action with
+`createRadialBarPlot` gives radii 105, 122.5, and 140, preserving radial length
+ratios 2:3:4. Without value/aggregate, both actions count rows per category.
+
+The full package provides both actions. Zero categories stay in the domain and
+legend but draw no sector. Use `color:false` for one `arc.fill`, or `guides:false`
+to skip guides. These measured modes require `padAngle:0`, a zero-based linear
+scale, and non-negative finite values with at least one positive category.
+Edit the result through `encodeR`, `editArcMark`, `editScale`, category ordering,
+and guide actions. See the position encoding reference for the equivalent lower chain.
+
 ## Rose overlays
 
-A rose chart uses one equal theta band per month and overlays the three causes
-inside that band. The following fragment continues from an imported `chart`
+This lower-level overlay uses equal theta bands and maps each source row to radial length.
+For category sums represented by annular area, use createRosePlot above. The three causes
+share each month band. The following fragment continues from an imported `chart`
 function and a loaded `nightingaleRows` array containing one row per month and
 cause.
 
@@ -11935,12 +11965,14 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createPiePlot`](./reference/actions/charts-data/#createpieplot) | user-facing | charts |
 | [`createPointMark`](./reference/actions/marks/#createpointmark) | user-facing | marks |
 | [`createRadialAxis`](./reference/actions/guides/#createradialaxis) | user-facing | axes |
+| [`createRadialBarPlot`](./reference/actions/charts-data/#createradialbarplot) | user-facing | charts |
 | [`createRadialGrid`](./reference/actions/guides/#createradialgrid) | user-facing | grid |
 | [`createRectMark`](./reference/actions/marks/#createrectmark) | user-facing | marks |
 | [`createRegression`](./reference/actions/statistics/#createregression) | user-facing | statistics |
 | [`createRegressionBand`](./reference/actions/advanced/#semantic-resources-and-regression-layers) | user-facing | statistics |
 | [`createRegressionData`](./reference/actions/charts-data/#createregressiondata) | user-facing | core |
 | [`createRegressionLine`](./reference/actions/advanced/#semantic-resources-and-regression-layers) | user-facing | statistics |
+| [`createRosePlot`](./reference/actions/charts-data/#createroseplot) | user-facing | charts |
 | [`createRuleMark`](./reference/actions/marks/#createrulemark) | user-facing | marks |
 | [`createScale`](./reference/actions/extension/#extension-actions) | user-facing | core |
 | [`createScatterPlot`](./reference/actions/charts-data/#createscatterplot) | user-facing | charts |
@@ -12260,6 +12292,30 @@ or grid; `guides: false` skips guide creation. Explicit axes/grid requests must
 be false. A zero-weight category may remain in the color legend without a sector.
 The default id is `piePlot`. Edit with `editArcMark`, theta/color encodings,
 scales and legend actions. [Pie and donut tutorial](./tutorials/polar-arcs/#complete-pie-and-donut-plots)
+
+## `createRosePlot`
+
+```javascript
+createRosePlot({ id?, data?, coordinate?, category, value?, aggregate?, radiusScale?, color?, arc?, guides? })
+```
+
+Create equal-angle sectors whose sector area, excluding the hole is proportional to category count or sum. Category is required; omit value for count or provide value with aggregate: "sum". Color defaults to category and guides provide theta/radius axes, Polar grids, and a categorical legend. Use guides:false to skip them, or color:false with arc.fill for one color.
+
+The default id is `rosePlot`. Radius scales are linear and zero-based; explicit domain [0,U] must cover all aggregates and range [inner,outer] must fit Canvas. Arc padAngle is 0 and an explicitly specified innerRadius must agree with the range. Zero categories retain domain entries but draw no sector. Negative, nonfinite, empty/all-zero and unrepresentable positive-thickness inputs are errors. Edit the child mark, encodings, scales and guides with their own actions.
+
+[Measured radial tutorial](./tutorials/polar-arcs/#measured-rose-and-radial-bar-plots)
+
+## `createRadialBarPlot`
+
+```javascript
+createRadialBarPlot({ id?, data?, coordinate?, category, value?, aggregate?, radiusScale?, color?, arc?, guides? })
+```
+
+Create equal-angle sectors whose radial length measured from the inner edge is proportional to category count or sum. Category is required; omit value for count or provide value with aggregate: "sum". Color defaults to category and guides provide theta/radius axes, Polar grids, and a categorical legend. Use guides:false to skip them, or color:false with arc.fill for one color.
+
+The default id is `radialBarPlot`. Radius scales are linear and zero-based; explicit domain [0,U] must cover all aggregates and range [inner,outer] must fit Canvas. Arc padAngle is 0 and an explicitly specified innerRadius must agree with the range. Zero categories retain domain entries but draw no sector. Negative, nonfinite, empty/all-zero and unrepresentable positive-thickness inputs are errors. Edit the child mark, encodings, scales and guides with their own actions.
+
+[Measured radial tutorial](./tutorials/polar-arcs/#measured-rose-and-radial-bar-plots)
 
 ## `createHeatmap`
 
@@ -14102,6 +14158,8 @@ interface ChartProgramActions {
   createBarPlot(options: CreateBarPlotOptions): ChartProgram;
   createHistogram(options: CreateHistogramOptions): ChartProgram;
   createPiePlot(options: CreatePiePlotOptions): ChartProgram;
+  createRosePlot(options: CreateRosePlotOptions): ChartProgram;
+  createRadialBarPlot(options: CreateRadialBarPlotOptions): ChartProgram;
   createDensityPlot(options: CreateDensityPlotOptions): ChartProgram;
   createHorizonPlot(options: CreateHorizonPlotOptions): ChartProgram;
   createHeatmap(options: CreateHeatmapOptions): ChartProgram;

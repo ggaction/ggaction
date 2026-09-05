@@ -584,18 +584,17 @@
           "scope": "Equal-angle area mode와 zero-baseline radius-length mode를 구분한다. Arc·theta/radius owner를 재사용하고 inner radius를 포함한 area mapping을 확정한다.",
           "acceptance": "값2·3·4가 모두 표현됨. Area 비율·radius-length 비율 각각 독립 수치 검증. Polar scatter 기본 encodeR는 바뀌지 않음.",
           "contractEvidence": "phase4/CONTRACT_REVIEW.md",
-          "implementationStatus": "in-progress",
-          "implementationEvidence": "phase4/RESULTS_RADIAL_ENCODING.md",
+          "implementationStatus": "implemented-verified",
+          "implementationEvidence": "phase4/RESULTS_W3.md",
           "completedScope": [
             "measured-radius-grammar-and-primitives",
             "encodeR-measured-mapping",
-            "scale-policy-lifecycle-and-inheritance"
-          ],
-          "remainingScope": [
+            "scale-policy-lifecycle-and-inheritance",
             "createRosePlot-and-createRadialBarPlot",
             "V2-public-primitive-render-parity",
-            "chart-discovery-and-phase-integration"
-          ]
+            "distinct-chart-discovery"
+          ],
+          "status": "completed"
         },
         {
           "id": "R6-P4-W4",
@@ -623,7 +622,7 @@
           "contractEvidence": "phase4/CONTRACT_REVIEW.md"
         }
       ],
-      "activity": "implementing-measured-radial-and-midpoint",
+      "activity": "implementing-midpoint-and-scale-transitions",
       "contractEvidence": "phase4/CONTRACT_REVIEW.md",
       "baselineEvidence": "phase4/baseline-results.json",
       "baselineCommit": "93dceb3761e170207058e6a7280060fedd471244",
@@ -717,10 +716,17 @@
         "packageEvidence": "phase4/package-order-results.json"
       },
       "remainingWorkPackages": [
-        "R6-P4-W3",
         "R6-P4-W5"
       ],
-      "remainingExecutionApproval": "APPROVAL.md"
+      "remainingExecutionApproval": "APPROVAL.md",
+      "implementationW3Validation": {
+        "normalTests": 2706,
+        "visualVariants": 5,
+        "renderTests": 10,
+        "strictTypeTests": 1,
+        "browserTests": 61,
+        "packageEvidence": "phase4/package-radial-facade-results.json"
+      }
     },
     {
       "id": 5,
@@ -1246,7 +1252,7 @@
       "id": "D01",
       "title": "Radius default와 Rose area 의미",
       "kind": "design-issue",
-      "status": "proposed",
+      "status": "implemented-verified",
       "primaryPhase": 4,
       "primaryWorkPackage": "R6-P4-W3",
       "relatedWorkPackages": [
@@ -1259,7 +1265,8 @@
       "recommended": "Equal-angle area mode와 zero-baseline radius-length mode를 구분한다. Arc·theta/radius owner를 재사용하고 inner radius를 포함한 area mapping을 확정한다.",
       "acceptance": "값2·3·4가 모두 표현됨. Area 비율·radius-length 비율 각각 독립 수치 검증. Polar scatter 기본 encodeR는 바뀌지 않음.",
       "evidence": "audit/REPORT.md: D01",
-      "disposition": "implementation-or-explicit-contract-decision-proposed"
+      "disposition": "Measured radius grammar, encoding and complete Rose/Radial bar facades preserve area versus length; numeric, render, browser and installed package evidence passes. Full Phase 4 integration remains.",
+      "resultEvidence": "phase4/RESULTS_W3.md"
     },
     {
       "id": "D02",
@@ -1721,7 +1728,7 @@
       "id": "F04",
       "title": "Rose / Radial bar",
       "kind": "proposed-family",
-      "status": "proposed",
+      "status": "implemented-verified",
       "primaryPhase": 4,
       "primaryWorkPackage": "R6-P4-W3",
       "relatedWorkPackages": [
@@ -1734,7 +1741,8 @@
       "recommended": "Equal-angle area mode와 zero-baseline radius-length mode를 구분한다. Arc·theta/radius owner를 재사용하고 inner radius를 포함한 area mapping을 확정한다.",
       "acceptance": "값2·3·4가 모두 표현됨. Area 비율·radius-length 비율 각각 독립 수치 검증. Polar scatter 기본 encodeR는 바뀌지 않음.",
       "evidence": "audit/REPORT.md: F04",
-      "disposition": "implementation-or-explicit-contract-decision-proposed"
+      "disposition": "Measured radius grammar, encoding and complete Rose/Radial bar facades preserve area versus length; numeric, render, browser and installed package evidence passes. Full Phase 4 integration remains.",
+      "resultEvidence": "phase4/RESULTS_W3.md"
     },
     {
       "id": "F05",

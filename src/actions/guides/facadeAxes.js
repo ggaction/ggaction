@@ -1,3 +1,5 @@
+import { validatePolarAxisArgs } from "./polar/axes/facade.js";
+import { prefix as polarPrefix, resolveAngle } from "./polar/axes/shared.js";
 import { validateAxesArgs } from "./axes/axes.js";
 import { validateAxisArgs } from "./axes/axis.js";
 import { validateAxisTickGroupArgs } from "./axes/tickGroups.js";
@@ -15,6 +17,23 @@ export function scopeFacadeAxes(program, layer, args) {
   }
   if (descriptor.type !== undefined && descriptor.type !== "auto" && descriptor.type !== coordinate.type) {
     guideConflict("axes.coordinate.type does not match this facade");
+  }
+  if (coordinate.type === "polar") {
+    if (args.x !== undefined || args.y !== undefined) guideConflict("Polar facades do not own Cartesian axes");
+    const scoped = { coordinate: { id: coordinate.id, type: "polar" } };
+    for (const channel of ["theta", "radius"]) {
+      const option = args[channel];
+      const scale = layer.encoding?.[channel]?.scale;
+      if (option === false || option === undefined && scale === undefined) { scoped[channel] = false; continue; }
+      if (scale === undefined || option?.scale !== undefined && option.scale !== scale ||
+        option?.coordinate !== undefined && option.coordinate !== coordinate.id) {
+        guideConflict(`axes.${channel} does not belong to this facade`);
+      }
+      scoped[channel] = { ...option, scale, coordinate: coordinate.id };
+      validatePolarAxisArgs(channel, scoped[channel], `create${polarPrefix(channel)}Axis`);
+      resolveAngle(program, channel, scoped[channel]);
+    }
+    return scoped;
   }
   if (args.theta !== undefined || args.radius !== undefined) {
     guideConflict("Cartesian and Parallel facades do not own Polar axes");
@@ -121,6 +140,50 @@ export function planFacadeAxes(program, layer, scoped, explicit = {}) {
     }
     return [];
   }
+  if (scoped.coordinate.type === "polar") {
+    return ["theta", "radius"].flatMap(channel => scoped[channel] === false ? []
+      : planPolarAxis(program, channel, scoped[channel], explicit[channel] ?? {}));
+  }
   return ["x", "y"].flatMap(channel => scoped[channel] === false ? []
     : planAxis(program, channel, scoped[channel], explicit[channel] ?? {}));
+}
+
+function planPolarAxis(program, channel, args, explicit) {
+  const prefix = polarPrefix(channel);
+  const guide = program.semanticSpec.guides.axis?.[channel];
+  const configs = program.guideConfigs.axis?.[channel] ?? {};
+  if (guide === undefined && Object.keys(configs).length === 0) return [{ op: `create${prefix}Axis`, args }];
+  if (guide?.scale !== args.scale || resolveStoredGuideCoordinate(program, guide, channel) !== args.coordinate) {
+    guideConflict(`${channel} axis uses a different coordinate or scale`);
+  }
+  if (explicit.title === false && configs.title !== undefined) guideConflict(`${channel} axis already has a title`);
+  const shared = { scale: args.scale, coordinate: args.coordinate,
+    ...(channel === "radius" ? { angle: resolveAngle(program, channel, args) } : {}) };
+  const group = args.ticksAndLabels ?? {};
+  const explicitGroup = explicit.ticksAndLabels ?? {};
+  const mode = Object.fromEntries(["count", "values"].filter(key => Object.hasOwn(explicitGroup, key))
+    .map(key => [key, explicitGroup[key]]));
+  const requested = {
+    line: explicit.line ?? {},
+    ticks: { ...mode, ...explicitGroup.ticks },
+    labels: { ...mode, ...explicitGroup.labels },
+    title: explicit.title || {}
+  };
+  const steps = [];
+  for (const component of ["line", "ticks", "labels", "title"]) {
+    const config = configs[component];
+    if (config !== undefined) {
+      if (config.scale !== args.scale || config.coordinate !== args.coordinate) guideConflict(`${channel} ${component} uses different resources`);
+      assertGuideOptions(requested[component], component === "title" ? { ...config, text: guide.title } : config,
+        `${channel} axis ${component}`);
+      continue;
+    }
+    if (component === "title" && args.title === false) continue;
+    const options = component === "line" ? args.line ?? {} : component === "title" ? args.title ?? {}
+      : { ...tickMode(configs[component === "ticks" ? "labels" : "ticks"]),
+          ...Object.fromEntries(["count", "values"].filter(key => Object.hasOwn(group, key)).map(key => [key, group[key]])),
+          ...group[component] };
+    steps.push({ op: `create${prefix}Axis${component[0].toUpperCase() + component.slice(1)}`, args: { ...shared, ...options } });
+  }
+  return steps;
 }

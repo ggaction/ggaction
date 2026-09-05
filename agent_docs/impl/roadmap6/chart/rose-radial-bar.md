@@ -1,6 +1,6 @@
 # Roadmap 6 — Rose / Radial bar
 
-**승인된 Phase 4 A 계약 / 미구현. 시각 V 승인은 아직 없다.**
+**Current 구현·검증 완료. [전체 실행 승인](../APPROVAL.md)에 따라 V2 다섯 변형과 installed package를 검증했다. [결과](../phase4/RESULTS_W3.md).**
 [P4-C04 계약](../phase4/CONTRACT_REVIEW.md), [Gate](../phase4/GATES.md),
 [수치·V 계획](../phase4/VALIDATION.md)에 연결한다. 범위는 F04·D01이다.
 
@@ -10,7 +10,7 @@ Rose는 equal-angle sector의 면적, Radial bar는 inner radius에서 바깥쪽
 같은 Arc/theta/radius owner를 쓰되 측정 의미를 구분한다. 두 차트 모두 2·3·4가 세 개의 sector로 보인다.
 
 ~~~javascript
-// Proposed APIs. These are separate immutable branches.
+// Current APIs. These are separate immutable branches.
 import { chart } from 'ggaction';
 const values = [{ category: 'A', value: 2 }, { category: 'B', value: 3 }, { category: 'C', value: 4 }];
 const base = chart().createCanvas({ width: 1000, height: 700, margin: 150 })
@@ -81,7 +81,7 @@ Weighted-angle·signed Rose·abs(value) 자동 보정은 지원하지 않는다.
 ## Hierarchy와 명시적 lower chain
 
 ~~~javascript
-// Proposed lower equivalence of rose; encodeR options are not Current yet.
+// Current lower-level equivalent of a rose plot.
 const lower = base.createArcMark({ id: 'r', data: 'data' })
   .encodeTheta({ target: 'r', field: 'category', fieldType: 'nominal' })
   .encodeR({ target: 'r', field: 'value', aggregate: 'sum', mapping: 'area' })

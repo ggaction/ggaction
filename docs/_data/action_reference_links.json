@@ -14,6 +14,8 @@
   "createHistogram": "/reference/actions/charts-data/#createhistogram",
   "createAreaPlot": "/reference/actions/charts-data/#createareaplot",
   "createPiePlot": "/reference/actions/charts-data/#createpieplot",
+  "createRosePlot": "/reference/actions/charts-data/#createroseplot",
+  "createRadialBarPlot": "/reference/actions/charts-data/#createradialbarplot",
   "createHeatmap": "/reference/actions/charts-data/#createheatmap",
   "createParallelCoordinates": "/reference/actions/charts-data/#createparallelcoordinates",
   "filterData": "/reference/actions/charts-data/#filterdata",

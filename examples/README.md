@@ -234,6 +234,12 @@ Define bounds and independently revise series identity, placement, and color.
 
 Representative actions: `createAreaPlot layoutSeries encodeGroup`. [Documentation](https://ggaction.github.io/ggaction/tutorials/area-layout/).
 
+### [Measured rose sectors](./radial-sectors/)
+
+Compare category sums with proportional area or radial length.
+
+Representative actions: `createRosePlot`, `createRadialBarPlot`, `encodeR`. [Documentation](https://ggaction.github.io/ggaction/tutorials/polar-arcs/#measured-rose-and-radial-bar-plots).
+
 ## Development fixtures
 
 Other directories under `examples/` support focused browser, package, and

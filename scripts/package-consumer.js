@@ -360,6 +360,15 @@ async function testNodeConsumer(directory) {
     assert.deepEqual(orderedPie.graphicSpec.objects.colorLegendLabels.items.map(item => item.properties.text), ["C", "A", "B"]);
     assert.deepEqual(orderedPie.editLegend({ order: "scale" }).guideConfigs.legend.color.domain, ["A", "B", "C"]);
     assert.throws(() => orderedPie.removeEncoding({ channel: "theta" }), /Reset linked legend/);
+    for (const [operation, mapping] of [["createRosePlot", "area"], ["createRadialBarPlot", "radius-length"]]) {
+      const radial = chart().createCanvas({ width: 1000, height: 700, margin: 150 })
+        .createData({ values: [{ category: "A", value: 2 }, { category: "B", value: 3 }, { category: "C", value: 4 }] })
+        [operation]({ id: "radial", category: "category", value: "value", aggregate: "sum", radiusScale: { range: [70, 140] } });
+      assert.equal(radial.resolvedScales.radius.radialMapping, mapping);
+      assert.equal(radial.graphicSpec.objects.radial.items.length, 3);
+      assert.equal(radial.graphicSpec.objects.radialAxisTitle.properties.text, "sum(value)");
+      assert.equal(typeof basicChart()[operation], "undefined");
+    }
     const measuredRadius = chart().createCanvas({ width: 1000, height: 700, margin: 150 })
       .createData({ values: [{ category: "A", value: 1 }, { category: "A", value: 1 }, { category: "B", value: 4 }] })
       .createArcMark({ id: "radial" })
@@ -922,6 +931,16 @@ async function testTypeScriptConsumer(directory) {
     } from "ggaction/basic";
 
     const program: ChartProgram = chart().createCanvas({ width: 100, height: 100 });
+    const roseOptions: import("ggaction").CreateRosePlotOptions = { category: "category", radiusScale: { range: [70, 140] } };
+    program.createRosePlot(roseOptions);
+    const radialOptions: import("ggaction").CreateRadialBarPlotOptions = { category: "category", value: "value", aggregate: "sum" };
+    program.createRadialBarPlot(radialOptions);
+    // @ts-expect-error measured facades are Full only
+    basicChart().createRosePlot(roseOptions);
+    // @ts-expect-error value requires explicit sum
+    program.createRadialBarPlot({ category: "category", value: "value" });
+    // @ts-expect-error measured padding is zero
+    program.createRosePlot({ category: "category", arc: { padAngle: 1 } });
     program.createPiePlot({ category: "category" });
     program.createPiePlot({ category: { field: "category", scale: { domain: ["B", "A"], reverse: true } },
       value: "value", aggregate: "sum", arc: { innerRadius: 0.55, padAngle: 2 }, guides: { axes: false, grid: false } });

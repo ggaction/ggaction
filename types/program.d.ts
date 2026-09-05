@@ -2093,6 +2093,20 @@ export type CreatePiePlotOptions = {
   guides?: false | { axes?: false; grid?: false; legend?: false | PieLegendOptions };
 } & ({ value?: never; aggregate?: "count" } | { value: string; aggregate: "sum" });
 
+export type MeasuredRadialGuideOptions = {
+  axes?: false | Pick<CreateAxesOptions, "theta" | "radius"> & {
+    coordinate?: { id?: string; type?: "auto" | "polar" };
+  };
+  grid?: false | Pick<CreateGridOptions, "theta" | "radial">;
+  legend?: false | PieLegendOptions;
+};
+export type CreateRosePlotOptions = Omit<CreatePiePlotOptions, "guides" | "arc" | "aggregate" | "value"> & {
+  radiusScale?: MeasuredRadiusScaleOptions;
+  arc?: { innerRadius?: number; padAngle?: 0; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number };
+  guides?: false | MeasuredRadialGuideOptions;
+} & ({ value?: never; aggregate?: "count" } | { value: string; aggregate: "sum" });
+export type CreateRadialBarPlotOptions = CreateRosePlotOptions;
+
 export interface HeatmapBaseOptions {
   id?: string;
   data?: string;
@@ -2990,6 +3004,8 @@ export class ChartProgram {
   createBarPlot(options: CreateBarPlotOptions): ChartProgram;
   createHistogram(options: CreateHistogramOptions): ChartProgram;
   createPiePlot(options: CreatePiePlotOptions): ChartProgram;
+  createRosePlot(options: CreateRosePlotOptions): ChartProgram;
+  createRadialBarPlot(options: CreateRadialBarPlotOptions): ChartProgram;
   createDensityPlot(options: CreateDensityPlotOptions): ChartProgram;
   createHorizonPlot(options: CreateHorizonPlotOptions): ChartProgram;
   createHeatmap(options: CreateHeatmapOptions): ChartProgram;

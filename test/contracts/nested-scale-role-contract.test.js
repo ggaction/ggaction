@@ -378,6 +378,13 @@ function buildScaleWitness(action, path, type) {
         ...(path === "color.scale.type" ? { groupBy: "category", color: colorChannel(type) }
           : path === "valueScale.type" ? { valueScale: positionScale(type) }
             : { densityScale: positionScale(type) }) });
+    case "createRosePlot":
+    case "createRadialBarPlot":
+      return source()[action]({
+        category: path === "category.scale.type" ? { field: "category", scale: { type } } : "category",
+        ...(path === "color.scale.type" ? { color: colorChannel(type) } : {}),
+        ...(path === "radiusScale.type" ? { radiusScale: { type } } : {}), guides: false
+      });
     case "createPiePlot":
       return source().createPiePlot({
         category: path === "category.scale.type" ? { field: "category", scale: { type } } : "category",
@@ -467,11 +474,11 @@ test("derives only role-reachable nested scale type paths", async () => {
   const options = new Map(inventory.optionPaths.map(option => [option.id, option]));
   const scaleTypes = inventory.optionPaths.filter(option =>
     option.required &&
-    /(?:^|\.)(?:xScale|yScale|valueScale|densityScale|scale)\.type$/u.test(option.path)
+    /(?:^|\.)(?:xScale|yScale|valueScale|densityScale|radiusScale|scale)\.type$/u.test(option.path)
   );
 
-  assert.equal(scaleTypes.length, 71);
-  assert.equal(scaleTypes.reduce((sum, option) => sum + option.values.length, 0), 293);
+  assert.equal(scaleTypes.length, 77);
+  assert.equal(scaleTypes.reduce((sum, option) => sum + option.values.length, 0), 299);
   assert.doesNotMatch(declarations, /scale\?: ScaleOptions/u);
   assert.equal(options.has("option-path:createScatterPlot.x.scale.palette"), false);
   assert.equal(options.has("option-path:createScatterPlot.x.scale.interpolate"), false);
@@ -498,7 +505,7 @@ test("executes every strict nested scale type path and literal", async () => {
   const inventory = await inventoryPromise;
   const scaleTypes = inventory.optionPaths.filter(option =>
     option.required &&
-    /(?:^|\.)(?:xScale|yScale|valueScale|densityScale|scale)\.type$/u.test(option.path)
+    /(?:^|\.)(?:xScale|yScale|valueScale|densityScale|radiusScale|scale)\.type$/u.test(option.path)
   );
   let witnesses = 0;
   for (const option of scaleTypes) {
@@ -521,7 +528,7 @@ test("executes every strict nested scale type path and literal", async () => {
       witnesses += 1;
     }
   }
-  assert.equal(witnesses, 293);
+  assert.equal(witnesses, 299);
 });
 
 test("materializes every role-specific nested scale type vocabulary", () => {

@@ -417,6 +417,30 @@ be false. A zero-weight category may remain in the color legend without a sector
 The default id is `piePlot`. Edit with `editArcMark`, theta/color encodings,
 scales and legend actions. [Pie and donut tutorial](../tutorials/polar-arcs.md#complete-pie-and-donut-plots)
 
+### `createRosePlot`
+
+```javascript
+createRosePlot({ id?, data?, coordinate?, category, value?, aggregate?, radiusScale?, color?, arc?, guides? })
+```
+
+Create equal-angle sectors whose sector area, excluding the hole is proportional to category count or sum. Category is required; omit value for count or provide value with aggregate: "sum". Color defaults to category and guides provide theta/radius axes, Polar grids, and a categorical legend. Use guides:false to skip them, or color:false with arc.fill for one color.
+
+The default id is `rosePlot`. Radius scales are linear and zero-based; explicit domain [0,U] must cover all aggregates and range [inner,outer] must fit Canvas. Arc padAngle is 0 and an explicitly specified innerRadius must agree with the range. Zero categories retain domain entries but draw no sector. Negative, nonfinite, empty/all-zero and unrepresentable positive-thickness inputs are errors. Edit the child mark, encodings, scales and guides with their own actions.
+
+[Measured radial tutorial](../tutorials/polar-arcs.md#measured-rose-and-radial-bar-plots)
+
+### `createRadialBarPlot`
+
+```javascript
+createRadialBarPlot({ id?, data?, coordinate?, category, value?, aggregate?, radiusScale?, color?, arc?, guides? })
+```
+
+Create equal-angle sectors whose radial length measured from the inner edge is proportional to category count or sum. Category is required; omit value for count or provide value with aggregate: "sum". Color defaults to category and guides provide theta/radius axes, Polar grids, and a categorical legend. Use guides:false to skip them, or color:false with arc.fill for one color.
+
+The default id is `radialBarPlot`. Radius scales are linear and zero-based; explicit domain [0,U] must cover all aggregates and range [inner,outer] must fit Canvas. Arc padAngle is 0 and an explicitly specified innerRadius must agree with the range. Zero categories retain domain entries but draw no sector. Negative, nonfinite, empty/all-zero and unrepresentable positive-thickness inputs are errors. Edit the child mark, encodings, scales and guides with their own actions.
+
+[Measured radial tutorial](../tutorials/polar-arcs.md#measured-rose-and-radial-bar-plots)
+
 ### `createHeatmap`
 
 ```javascript
