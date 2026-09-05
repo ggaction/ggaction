@@ -2,6 +2,7 @@
 
 상태: 계약 검토용 기준 증거. 새 API 구현 결과는 아니다.
 공개 결정은 [CONTRACT_REVIEW.md](CONTRACT_REVIEW.md), 승인 경계는 [GATES.md](GATES.md)가 소유한다.
+검토 package [`bd18718a9c1aed5f91b485bc1aeab54616e9e5a3`](https://github.com/ggaction/ggaction/commit/bd18718a9c1aed5f91b485bc1aeab54616e9e5a3)을 원격 branch에 push했다.
 
 ## 실제 실행한 검증
 

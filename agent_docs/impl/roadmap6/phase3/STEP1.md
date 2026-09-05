@@ -6,7 +6,7 @@
 - [x] 실제 lower 소유권·defaults·guide·coordinate·style 조사
 - [x] 52건 baseline probe와 176건 관련 기존 tests 확인
 - [x] A 계약 제안·호환성·consumer matrix·9개 V target 계획 작성
-- [ ] A package 최종 검증·commit/push·exact remote ref 기록
+- [x] A package 최종 검증·commit/push·exact remote ref 기록
 - [ ] A 명시적 사용자 승인 기록
 - [ ] 승인된 새 계약의 Planned 등록과 비시각 준비
 - [ ] 9개 primitive targets 작성·표시·V 승인

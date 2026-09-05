@@ -15,7 +15,7 @@ V/X는 planned다. 허용 상태: planned | ready-for-review | approved | change
   Horizon x-only guides·기존 coordinate child·post-encode opacity 적용, 현재 bundle ceilings 유지.
 - Baseline commit: `9625e71c374868756652fb8dff8153dc61500c6e`.
 - Source tree: `9d3bd5e26b67634851e6009faac4b8c7c9e15002`; types tree: `25e66ad6bb83ea1481194255e3521d5f2911dbea`.
-- Review package commit / remote ref: 검증 package push 후 아래 승인 기록에 고정한다.
+- Review package commit: [`bd18718a9c1aed5f91b485bc1aeab54616e9e5a3`](https://github.com/ggaction/ggaction/commit/bd18718a9c1aed5f91b485bc1aeab54616e9e5a3). 원격 `origin/codex/roadmap6-hierarchical-actions` push 확인.
 - 실제 증거: [baseline.probes.mjs](baseline.probes.mjs), [52건 snapshot](baseline-results.json),
   [176건 기존 tests와 consumer matrix](VALIDATION.md). Chart 계약에는 Current lower chain과 proposed H0를 구분했다.
 - 호환성: production/source/types/Current/basic 변경 없음. 기존 explicit lower Pie/Density/Horizon과 guide escape 유지.
@@ -54,7 +54,8 @@ V/X는 planned다. 허용 상태: planned | ready-for-review | approved | change
 
 ## 승인 기록
 
-- Review commit / remote branch: package 검증·push 후 기록.
+- Review commit: [`bd18718a9c1aed5f91b485bc1aeab54616e9e5a3`](https://github.com/ggaction/ggaction/commit/bd18718a9c1aed5f91b485bc1aeab54616e9e5a3).
+- Remote branch: `origin/codex/roadmap6-hierarchical-actions`; push 완료.
 - 사용자 승인 근거: 없음. 이번 “승인한다”는 Phase 2 X에만 적용했다.
 - 실제 검증: baseline 52/52, related existing tests 176/176, 문서 lower calls 3/3, 최종 navigation 10/10, local links 214개. 재현 명령은 [VALIDATION.md](VALIDATION.md).
 - 남은 작업: A 승인, primitive targets와 V 승인, public implementation·누적 acceptance·X 승인.

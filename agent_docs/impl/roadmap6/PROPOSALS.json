@@ -386,7 +386,8 @@
         "createHorizonPlot"
       ],
       "proposedVisualTargets": 9,
-      "proposedPackageBoundary": "full-only; existing full/basic/svg gzip ceilings unchanged"
+      "proposedPackageBoundary": "full-only; existing full/basic/svg gzip ceilings unchanged",
+      "reviewPackageCommit": "bd18718a9c1aed5f91b485bc1aeab54616e9e5a3"
     },
     {
       "id": 4,
