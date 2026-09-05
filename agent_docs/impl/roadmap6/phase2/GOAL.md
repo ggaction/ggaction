@@ -2,7 +2,7 @@
 
 ## 상태와 목표
 
-상태: in-progress — [R6-P2-A 계약 검토](CONTRACT_REVIEW.md) ready-for-review. 2026-09-05 R6-P1-X 사용자 승인을 반영해 준비했다. 43개 현재 동작과 관련 기존 테스트 100개를 확인했으며 production 의미·API 구현은 아직 시작하지 않았다.
+상태: in-progress — [R6-P2-A 계약 검토](CONTRACT_REVIEW.md) approved. 2026-09-05 “ㄱㄱ” 승인을 반영해 구현에 착수한다. 기준 동작 43건과 관련 기존 테스트 100건은 계약 검토 증거이며 실제 구현 결과는 별도로 기록한다.
 
 새 facade가 물려받을 guide, group, appearance, inference, incomplete-state 계약을 정리한다. 같은 결정을 여러 owner가 다르게 수행하지 않게 한다.
 

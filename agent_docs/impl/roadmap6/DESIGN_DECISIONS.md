@@ -6,7 +6,7 @@
 달라지는 차이를 우선 해결한다.
 
 K01–K06과 K08의 Phase 2 적용 범위를 [구체 계약 검토](phase2/CONTRACT_REVIEW.md)에서 상세화했다.
-아직 Proposed이며 후속 metadata schema·layout·chart API를 함께 승인하거나 Current로 승격하지 않는다.
+그 문서의 Phase 2 범위는 R6-P2-A 승인으로 Planned다. 후속 metadata schema·layout·chart API는 함께 승인하거나 Current로 승격하지 않는다.
 
 ## 결정 원칙
 

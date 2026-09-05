@@ -217,7 +217,11 @@ test("keeps planned direct actions and reassignment gaps explicit", () => {
   assert.equal(new Set(names).size, names.length);
   assert.equal(names.every(name => !current.has(name)), true);
   assert.equal(names.every(name => !maybeFutureActions.has(name)), true);
-  assert.equal(names.includes("editRuleMark"), false);
+  const declared = new Set(declaredProgramMethods());
+  for (const name of names) {
+    assert.equal(declared.has(name), false, `${name} is planned, not a public declaration`);
+    assert.equal(typeof ChartProgram.prototype[name], "undefined", `${name} is planned, not implemented`);
+  }
 
   for (const action of index.plannedActions) {
     assert.equal(

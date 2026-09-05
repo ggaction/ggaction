@@ -17,7 +17,8 @@
     "approvedGates": [
       "R6-P0-A",
       "R6-P1-A",
-      "R6-P1-X"
+      "R6-P1-X",
+      "R6-P2-A"
     ],
     "implementationStarted": true,
     "reviewCommit": "cf13920ed517cfc6c333b04ec55a724826960228",
@@ -165,7 +166,7 @@
         1
       ],
       "gateStates": {
-        "R6-P2-A": "ready-for-review",
+        "R6-P2-A": "approved",
         "R6-P2-V": "planned",
         "R6-P2-X": "planned"
       },
@@ -230,14 +231,19 @@
           "contractEvidence": "phase2/CONTRACT_REVIEW.md"
         }
       ],
-      "activity": "contract-review-awaiting-approval",
+      "activity": "implementation",
       "contractReview": {
         "file": "phase2/CONTRACT_REVIEW.md",
         "baselineCommit": "bbc8a3fc256c9afa877f696ed6ade1f51ffb7522",
         "evidence": "phase2/VALIDATION.md",
         "baselineProbes": 43,
         "focusedBaselineTests": 100,
-        "approval": null,
+        "approval": {
+          "date": "2026-09-05",
+          "userDirection": "ㄱㄱ",
+          "scope": "R6-P2-A 계약 전체와 명시적 제외 범위. V 대상은 primitive 검토 후 해당 public flow를 구현한다.",
+          "reviewCommit": "e06b57db5624a5b0d66cea425cff4aa5f5f4caad"
+        },
         "reviewPackageCommit": "e06b57db5624a5b0d66cea425cff4aa5f5f4caad"
       }
     },

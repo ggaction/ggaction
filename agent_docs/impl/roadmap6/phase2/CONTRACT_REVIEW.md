@@ -1,6 +1,7 @@
 # R6-P2-A — 공통 작성 계약 검토
 
-상태: **Proposed / ready-for-review**. Phase 1 결과 승인은 기록했고 이 문서의 새 API·의미 변경은 아직 승인받지 않았다.
+상태: **approved contract / 구현 전 기준 검토 기록**. 2026-09-05 사용자가 “ㄱㄱ”로 R6-P2-A 구현을 승인했다.
+승인된 미구현 계약은 [Planned owner](../../../contract/planned/SHARED_AUTHORING.md)에 등록했고 각 구현에서 Current로 전환한다.
 이 package는 Phase 2 W1–W5의 구현 결정을 검토한다. Production source, public declarations, Current/Planned,
 MCP cards를 먼저 바꾸지 않았다. F01–F19와 이후 Phase는 기존 순서를 유지하며 F20은 제외한다.
 
@@ -453,7 +454,7 @@ tuple delimiter/type 충돌, constant↔field 역방향, JSON 전후 false, temp
 - K01–K06/K08의 이 단계 구체화는 이 문서가 소유한다. [DESIGN_DECISIONS](../DESIGN_DECISIONS.md)의
   후속 layout/새 chart/metadata 확장 제안을 이번 A 승인으로 자동 확정하지 않는다.
 
-R6-P2-A 승인은 위 public delta·오류 migration·기본값 보존·범위 제외와 검증 계획에 대한 승인이다.
+2026-09-05 기록한 R6-P2-A 승인은 위 public delta·오류 migration·기본값 보존·범위 제외와 검증 계획에 대한 승인이다.
 R6-P1-X의 “승인한다”를 재사용하지 않는다. API 구현 전에 이 구체적인 계약에 대한 검토가 필요하다는 근거는
 [root AGENTS](../../../../AGENTS.md)의 “Discuss material changes to public APIs, persisted schemas, or core
 architecture with the user before implementing them.”과 [impl AGENTS](../../AGENTS.md)의

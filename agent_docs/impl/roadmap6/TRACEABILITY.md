@@ -2,7 +2,7 @@
 
 이번 범위의 B01–B08, D01–D20, F01–F19 총 47개 항목을 추적한다. Phase 1의 실행 상태와 검증 결과는
 [실행 증거](phase1/RESULTS.md)에 기록한다. Phase 1 X는 사용자 승인으로 닫았고
-[Phase 2 계약 검토](phase2/CONTRACT_REVIEW.md)는 ready-for-review다. 나머지 항목은 별도 표시가 없으면 Proposed / 미구현이다.
+[Phase 2 계약 검토](phase2/CONTRACT_REVIEW.md)는 approved이며 구현 중이다. 나머지 항목은 별도 표시가 없으면 Proposed / 미구현이다.
 사용자는 2026-09-05 F20 제외와 나머지 19개 액션군 구성을 선택했다. F20은 실행·연구·완료 대상이 아니며
 원래 관측은 고정된 감사 기록에만 남긴다.
 Primary owner는 누락 방지를 위한 책임 단위이며, 관련 작업이 여러 단계에 있으면 함께 닫아야 한다.
@@ -159,7 +159,7 @@ Primary owner는 누락 방지를 위한 책임 단위이며, 관련 작업이 �
 - 근거: audit/REPORT.md: D06. [원래 조사](audit/REPORT.md)
 - 추가 근거: Phase 2 S13(Line field width의 무효 scalar edit), S15(Point opacity와 남은 field/legend),
   S16(ErrorBand 역방향 color assignment), S18(basic radius child 미등록)을 [재현 결과](phase2/baseline-results.json)에 추가했다.
-- 처분: [Phase 2 W3 계약 검토](phase2/CONTRACT_REVIEW.md)에 mode/충돌/reset·package 경로를 구체화했다. Proposed이며 아직 구현·승인 상태가 아니다.
+- 처분: [Phase 2 W3 계약 검토](phase2/CONTRACT_REVIEW.md)에 mode/충돌/reset·package 경로를 구체화했다. 계약은 R6-P2-A 승인으로 Planned이며 아직 구현 완료가 아니다.
 
 ### D07 — Cartesian/Polar/Parallel 축 lifecycle 공백
 

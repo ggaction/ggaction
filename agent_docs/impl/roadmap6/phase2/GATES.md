@@ -2,14 +2,14 @@
 
 ## 공통 상태
 
-R6-P2-A는 ready-for-review다. R6-P1-X 결과 승인을 받고 아래 계약 package를 준비했다.
-R6-P2-A/V/X의 사용자 승인은 아직 없고 V/X는 planned다.
+R6-P2-A는 approved다. 2026-09-05 사용자가 “ㄱㄱ”로 아래 계약의 구현을 승인했다.
+V/X는 planned이며 새 시각 target의 검토는 해당 Gate에서 진행한다.
 허용 상태는 planned | ready-for-review | approved | changes-requested다.
 현재 검토 대상은 [CONTRACT_REVIEW.md](CONTRACT_REVIEW.md)의 API·의미·migration·범위다.
 
 ## R6-P2-A — Contract and scope
 
-- 상태: ready-for-review
+- 상태: approved
 - 구체 package: [CONTRACT_REVIEW.md](CONTRACT_REVIEW.md), [검증과 acceptance](VALIDATION.md),
   [실행 source](baseline.probes.mjs), [43건 결과](baseline-results.json).
 - Baseline: `bbc8a3fc256c9afa877f696ed6ade1f51ffb7522`; source tree `bd17aeb7d38e1d184bc714a182e13feea5923279`.
@@ -50,7 +50,7 @@ R6-P2-A/V/X의 사용자 승인은 아직 없고 V/X는 planned다.
 
 - Review commit / remote ref: `e06b57db5624a5b0d66cea425cff4aa5f5f4caad` / `origin/codex/roadmap6-hierarchical-actions`
 - 검증 명령과 실제 결과: [VALIDATION.md](VALIDATION.md)의 baseline 43/43와 관련 기존 테스트 100/100. 새 API 구현 검증은 미실행.
-- 사용자 승인 근거: R6-P2-A는 없음. 2026-09-05 “승인한다”는 Phase 1 X 결과 승인으로 이미 반영했다.
-- 남은 작업: A 계약 승인 → 비시각 교정/primitive target → V 승인 뒤 해당 public flow → 전체 consumer 검증과 X.
+- 사용자 승인 근거: 2026-09-05 사용자가 Phase 2 계약 구현 질문에 “ㄱㄱ”라고 답했다. 위 remote package의 계약을 승인한 것으로 기록한다. Phase 1 X는 이전 “승인한다”로 이미 승인되었다.
+- 남은 작업: 비시각 교정/primitive target → V 승인 뒤 해당 public flow → 전체 consumer 검증과 X.
 
 실행 시 실제 증거를 채운다. 문서 작성 날짜나 이전 로드맵 승인을 이 Gate의 승인으로 재사용하지 않는다.

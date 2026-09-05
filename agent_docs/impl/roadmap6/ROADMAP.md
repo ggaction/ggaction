@@ -1,6 +1,6 @@
 # Roadmap 6 — Hierarchical Chart Authoring and Action Consistency
 
-> **문서 상태 — 현재 실행 계획.** 2026-09-05 사용자의 “승인한다”로 [R6-P1-X 결과](phase1/REVIEW.md)를 승인했고 [Phase 2 계약 검토](phase2/CONTRACT_REVIEW.md)를 준비했다.
+> **문서 상태 — 현재 실행 계획.** 2026-09-05 사용자의 “승인한다”로 [R6-P1-X 결과](phase1/REVIEW.md)를 승인했고 [Phase 2 계약](phase2/CONTRACT_REVIEW.md)도 “ㄱㄱ”로 승인받아 구현에 착수한다.
 > 액션군 범위는 사용자 선택에 따라 F01–F19로 구성했다. 구체적인 새 API와 행동 변경은 Proposed다.
 > 이 문서를 작성해 달라는 요청은 모든 설계안·구현·배포의 일괄 승인을 뜻하지 않는다.
 > 실행 위치는 [ROADMAP_INDEX.json](../ROADMAP_INDEX.json), 현재 제품 계약은
@@ -113,7 +113,7 @@ S는 기존 owner 위의 교정·연결, M은 여러 consumer의 lifecycle 변�
 | --- | --- | --- |
 | 0 | completed | 감사 기준, 우선순위, 결정 원장, 검증·Gate 정의 |
 | 1 | completed | W1–W5 구현·검증과 R6-P1-X 사용자 승인. B01 lower 작성 순서는 Phase 2에 남음 |
-| 2 | in-progress | R6-P2-A ready-for-review: 43건 재현, 100개 기존 테스트, 구체 API·호환성·consumer 계약 |
+| 2 | in-progress | R6-P2-A approved: 공통 작성 규칙 구현, 새 시각 target은 V에서 검토 |
 | 3 | planned | Pie/Donut, Density, Horizon의 얇은 완성 facade |
 | 4 | planned | Baseline, layout, order, 중심색과 Area·Rose/Radial |
 | 5 | planned | 축·범례 lifecycle, label·format·theme·명시적 fitting |

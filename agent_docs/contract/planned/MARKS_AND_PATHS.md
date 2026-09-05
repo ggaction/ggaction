@@ -4,6 +4,9 @@ These contracts are accepted future API work; they are not current public behavi
 
 ## rule mark geometry — implemented compatibility note
 
+아래는 이전 구현의 compatibility 기록이다. 새로 승인된 Rule 생성 style과 얇은 `editRuleMark`는
+[Shared authoring](SHARED_AUTHORING.md#editrulemark)의 Planned 계약이며, 아래의 과거 제외 결정을 대체한다.
+
 ```typescript
 createRuleMark({
   id?: UserId;
