@@ -59,7 +59,7 @@ Primary owner는 누락 방지를 위한 책임 단위이며, 관련 작업이 �
 - 수정·추가 방향: Definition-only dataset과 materialized dataset을 구별한다. Scatter뿐 아니라 같은 consumer selection owner를 쓰는 진입점에 domain precondition을 적용한다.
 - 완료 검증: createDerivedData 자체 계약 유지. 후속 action이 internal TypeError 대신 필요한 materialized data를 설명하고 원래 program/trace는 보존.
 - 근거: audit/probe-results.json: P18–P19. [원래 조사](audit/REPORT.md)
-- 처분: 공통 selector에서 chart/mark의 materialized values를 검증하도록 교정했다. 정의·internal rebind·빈 배열·불변성을 검증했고 Phase 1 X 검토를 기다린다. [실행 증거](phase1/RESULTS.md#w2--definition-only-data-소비)
+- 처분: 공통 selector에서 chart/mark의 materialized values를 검증하도록 교정했다. 정의·internal rebind·빈 배열·불변성을 검증했고 Phase 1 X 결과 승인을 받았다. [실행 증거](phase1/RESULTS.md#w2--definition-only-data-소비)
 
 ### B06 — Point/Bar stroke:false의 runtime·type·prose 불일치
 
@@ -67,7 +67,7 @@ Primary owner는 누락 방지를 위한 책임 단위이며, 관련 작업이 �
 - 수정·추가 방향: Point/Bar의 실제 허용 범위를 declarations, shared alias, Current prose에 맞춘다. Rect 비교 사례를 유지하고 Area/Arc 확장은 이 수정과 분리한다.
 - 완료 검증: JS·TS의 동일 positive/negative case 결과, unknown style option 거부, 기존 render 유지.
 - 근거: audit/probe-results.json: P08; audit/type-results.txt. [원래 조사](audit/REPORT.md)
-- 처분: Point/Bar create/edit와 관련 facade의 shared stroke 선언을 runtime과 맞췄다. Rect 비교와 Area/Arc의 기존 제한, strict installed consumer를 검증했고 Phase 1 X 검토를 기다린다. [실행 증거](phase1/RESULTS.md#w3--strokefalse-정합성)
+- 처분: Point/Bar create/edit와 관련 facade의 shared stroke 선언을 runtime과 맞췄다. Rect 비교와 Area/Arc의 기존 제한, strict installed consumer를 검증했고 Phase 1 X 결과 승인을 받았다. [실행 증거](phase1/RESULTS.md#w3--strokefalse-정합성)
 
 ### B07 — 가로 temporal Bar의 type 누락
 
@@ -75,7 +75,7 @@ Primary owner는 누락 방지를 위한 책임 단위이며, 관련 작업이 �
 - 수정·추가 방향: Facade에서 x/y category·measure를 함께 preflight하고 기존 position owner를 호출한다. 수평 temporal category type을 공통 role union으로 표현한다. Mean default는 유지한다.
 - 완료 검증: 가로/세로 shorthand, explicit aggregate, temporal category가 runtime와 strict TS에서 일치. 잘못된 양쪽 category/measure 조합은 명확히 거부.
 - 근거: audit/probe-results.json: P38; audit/type-results.txt. [원래 조사](audit/REPORT.md)
-- 처분: runtime에 이미 있던 temporal y 지원을 선언에 반영했고 strict positive/negative와 모든 nested scale 경로 실행이 통과했다. 구현·검증 완료, Phase 1 X 검토 대기. [실행 증거](phase1/RESULTS.md#w1--bar-pair-role와-temporal-선언)
+- 처분: runtime에 이미 있던 temporal y 지원을 선언에 반영했고 strict positive/negative와 모든 nested scale 경로 실행이 통과했다. 구현·검증 완료, Phase 1 X 결과 승인. [실행 증거](phase1/RESULTS.md#w1--bar-pair-role와-temporal-선언)
 
 ### B08 — Internal wrapped inventory 16개 누락
 

@@ -1,6 +1,6 @@
 # R6-P1-X — 기존 오류 교정 결과 검토
 
-상태: **ready-for-review**. Phase 1의 W1–W5 구현·검증은 끝났으며 사용자 결과 승인은 아직 없다.
+상태: **approved**. 2026-09-05 사용자가 “승인한다”로 Phase 1 W1–W5 결과와 명시적 후속 범위를 승인했다. 검토 package commit은 `a7d2ec5afc450b46d7b9a4caf96c6f42e54d5641`이며 Phase 2 계약 준비로 이동한다.
 이 검토는 F01–F19의 새 API나 시각 target을 승인하는 절차가 아니다.
 
 ## 정확한 코드와 범위
@@ -97,9 +97,9 @@ resize·style edit 뒤에도 일치한다. W3는 runtime을 바꾸지 않는다.
 - B02/B03는 거짓 완료 안내를 고쳤다. 완성 Area, Strip/Rug는 F05/F08에서 구현한다.
 - B04는 불필요한 Cartesian layer를 제거했다. D01의 positive-minimum radius와 Rose/Radius-length 의미는 Phase 4에 남는다.
 - B05–B08은 이번 교정 범위의 구현·검증을 마쳤다. F01–F19와 D 항목을 완료나 Current로 승격하지 않았다.
-- R6-P1-X 승인 뒤 Phase 2 A package로 넘어간다. 이후 API·기본값 변경·시각 target은 해당 Gate에서 확정한다.
+- R6-P1-X 승인을 기록했고 Phase 2 A package 준비로 넘어갔다. 이후 API·기본값 변경·시각 target은 해당 Gate에서 확정한다.
 
 승인 요청의 근거는 [`agent_docs/impl/AGENTS.md`](../../AGENTS.md)의
 “Treat Gates as hard execution boundaries. Add intermediate Gates for independent public decisions, findings,
 or visual targets and stop at the first unapproved Gate.”다. 사용자의 “밀자” 지시는 Phase 1 A 실행 승인으로
-이미 반영했으며 다시 묻지 않는다. 여기서 검토하는 것은 그 실행 결과와 명시적으로 남긴 후속 범위다.
+이미 반영했으며 다시 묻지 않는다. 이번 “승인한다”로 실행 결과와 명시적으로 남긴 후속 범위도 승인되었다. 후속 API의 승인은 포함하지 않는다.

@@ -2,7 +2,7 @@
 
 ## 공통 상태
 
-R6-P1-A는 approved다. R6-P1-X는 ready-for-review이며 [구체적인 결과 package](REVIEW.md)를 검토한다. R6-P1-V 적용 여부는 아래에 명시한다.
+R6-P1-A는 approved다. R6-P1-X는 approved이며 [구체적인 결과 package](REVIEW.md)에 대한 2026-09-05 사용자 승인을 기록했다. R6-P1-V 적용 여부는 아래에 명시한다.
 허용 상태는 planned | ready-for-review | approved | changes-requested다.
 이 문서는 지금 승인을 요청하는 문서가 아니라 실행 시점의 검토 범위와 경계를 미리 선언한다.
 
@@ -31,7 +31,8 @@ R6-P1-A는 approved다. R6-P1-X는 ready-for-review이며 [구체적인 결과 p
 
 ## R6-P1-X — Result and closeout
 
-- 상태: ready-for-review
+- 상태: approved
+- 사용자 승인: 2026-09-05 “승인한다”. Phase 1 결과와 명시적 후속 범위에 대한 승인이다.
 - Review package commit: [`a7d2ec5afc450b46d7b9a4caf96c6f42e54d5641`](https://github.com/ggaction/ggaction/commit/a7d2ec5afc450b46d7b9a4caf96c6f42e54d5641), 위 remote branch에 push 확인.
 - 검증한 source commit / remote ref: `d72e7062fd2e0fb378b2b93843eeeb84baa2e28e` / `origin/codex/roadmap6-hierarchical-actions`.
 - 결과 package: [REVIEW.md](REVIEW.md), 작업별 [RESULTS.md](RESULTS.md). 전체 기본 테스트 2,329/2,329,
@@ -50,6 +51,7 @@ R6-P1-A는 approved다. R6-P1-X는 ready-for-review이며 [구체적인 결과 p
 - Review commit / remote ref: cf13920ed517cfc6c333b04ec55a724826960228 / codex/roadmap6-hierarchical-actions
 - 검증 명령과 실제 결과: 기준 감사의 43개 API·7개 MCP 관측·4개 type 호출과 255개 contract tests. 새 구현 결과는 작업별로 추가한다.
 - 사용자 승인 근거: 2026-09-05 사용자가 F01–F19 범위를 선택한 뒤 “밀자”라고 지시했다. 이미 commit/push된 계획을 실행하라는 승인으로 기록하며, 아직 검토하지 않은 새 API·시각 target의 승인을 대신하지 않는다.
-- 남은 작업: R6-P1-X 결과 승인. W1–W5 교정은 구현·검증했으며 B01 전체와 신규 액션군을 완료로 표시하지 않는다.
+- 결과 승인: 2026-09-05 “승인한다”. `a7d2ec5afc450b46d7b9a4caf96c6f42e54d5641`의 W1–W5 결과와 명시적 후속 범위를 승인했고 R6-P1-X를 닫았다.
+- 다음 작업: Phase 2 A 계약 검토 package 준비. B01 전체와 신규 액션군을 완료로 표시하지 않는다.
 
 실행 시 실제 증거를 채운다. 문서 작성 날짜나 이전 로드맵 승인을 이 Gate의 승인으로 재사용하지 않는다.

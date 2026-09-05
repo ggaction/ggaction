@@ -2,7 +2,7 @@
 
 ## 상태와 목표
 
-상태: planned. 구현·사용자 승인 기록 없음.
+상태: in-progress — 계약 검토 준비. 2026-09-05 R6-P1-X 사용자 승인을 반영해 착수했다. R6-P2-A는 미승인이며 production 의미·API 구현은 아직 시작하지 않았다.
 
 새 facade가 물려받을 guide, group, appearance, inference, incomplete-state 계약을 정리한다. 같은 결정을 여러 owner가 다르게 수행하지 않게 한다.
 

@@ -16,7 +16,8 @@
   "approval": {
     "approvedGates": [
       "R6-P0-A",
-      "R6-P1-A"
+      "R6-P1-A",
+      "R6-P1-X"
     ],
     "implementationStarted": true,
     "reviewCommit": "cf13920ed517cfc6c333b04ec55a724826960228",
@@ -71,14 +72,14 @@
     {
       "id": 1,
       "title": "Reproduced correctness and contract repairs",
-      "status": "in-progress",
+      "status": "completed",
       "dependencies": [
         0
       ],
       "gateStates": {
         "R6-P1-A": "approved",
         "R6-P1-V": "planned",
-        "R6-P1-X": "ready-for-review"
+        "R6-P1-X": "approved"
       },
       "workPackages": [
         {
@@ -148,12 +149,18 @@
       "visualGateApplicability": "not-applicable-to-current-correction-scope",
       "resultEvidence": "phase1/REVIEW.md",
       "verifiedSourceCommit": "d72e7062fd2e0fb378b2b93843eeeb84baa2e28e",
-      "reviewPackageCommit": "a7d2ec5afc450b46d7b9a4caf96c6f42e54d5641"
+      "reviewPackageCommit": "a7d2ec5afc450b46d7b9a4caf96c6f42e54d5641",
+      "resultApproval": {
+        "date": "2026-09-05",
+        "userDirection": "승인한다",
+        "reviewCommit": "a7d2ec5afc450b46d7b9a4caf96c6f42e54d5641",
+        "scope": "Phase 1 W1–W5 결과와 명시적 후속 범위 승인. Phase 2 계약 검토 준비로 이동하며 후속 API·시각 target은 별도 Gate를 유지한다."
+      }
     },
     {
       "id": 2,
       "title": "Shared authoring semantics",
-      "status": "planned",
+      "status": "in-progress",
       "dependencies": [
         1
       ],
@@ -217,7 +224,8 @@
           "scope": "Bar width와 measure-first encoding 중 geometry 없이 검증 가능한 intent를 보존한다. Missing positions 완료 시 원래 requested width와 role을 적용한다.",
           "acceptance": "width-first/last, category-first/measure-first의 semantic/graphic 동등성. Invalid field/width는 즉시 거부, placeholder graphics 없음."
         }
-      ]
+      ],
+      "activity": "contract-review-preparation"
     },
     {
       "id": 3,

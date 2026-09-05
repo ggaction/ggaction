@@ -4,9 +4,9 @@
 
 ## 현재 작업
 
-- **현재 활성 계획은 Roadmap 6 Phase 1**이다. [`roadmap6/ROADMAP.md`](roadmap6/ROADMAP.md)는
+- **현재 활성 계획은 Roadmap 6 Phase 2**이다. [`roadmap6/ROADMAP.md`](roadmap6/ROADMAP.md)는
   173개 액션 감사에서 나온 오류 8건·설계 문제 20건·사용자가 선택한 추가 액션군 19개를 12단계로 연결한다.
-  Phase 1 교정을 구현·검증했고 [결과 검토](roadmap6/phase1/REVIEW.md)를 기다린다. 후속 신규 API의 구체 설계는 Proposed다.
+  Phase 1 [결과](roadmap6/phase1/REVIEW.md)를 사용자 승인으로 닫고 Phase 2 계약 검토를 준비한다. 후속 신규 API의 구체 설계는 Proposed다.
 - [`roadmap6/TRACEABILITY.md`](roadmap6/TRACEABILITY.md) — 실행 대상 47개 항목과 작업·검증 조건
 - [`roadmap6/DESIGN_DECISIONS.md`](roadmap6/DESIGN_DECISIONS.md) — 공통 결정과 migration
 - 마지막 완료 owner는 [Roadmap 5.4 Phase 6](roadmap5.4/ROADMAP.md)이다.
