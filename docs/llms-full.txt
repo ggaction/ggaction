@@ -10658,7 +10658,10 @@ single vertical column, center alignment and a top title. At top/bottom, use
 `align`, `direction`, `columns` and `titlePosition` to arrange the item grid.
 `titlePosition: "left"` places the title beside the grid. The same controls
 are editable through `editLegend` and `editLegendLayout`. Symbol size, label
-style, spacing and borders remain editable.
+style, spacing and borders remain editable. Swatch layout includes its full
+stroke width in both dimensions. The default `labels.offset: 8` is the gap
+after the painted swatch edge. Large samples and text expand rows and keep
+12 pixels below a visible top title; insufficient Canvas space is an error.
 
 ~~~javascript
 program.createLegend({
@@ -10874,7 +10877,10 @@ Partial styles and title visibility survive Canvas, scale and data updates.
 
 Stroke-width legends additionally support four-edge layout and borders on creation
 and editing. Their line samples remain 32 pixels long; sample widths come from
-the encoded scale. The default offset is 30 and item gap is 32. Side title and
+the encoded scale. Their common sample slot includes the widest stroke at
+both line ends. `labels.offset` is the minimum gap after this occupied slot,
+defaulting to 12 pixels. Thinner samples retain the same label column.
+The default offset is 30 and item gap is 32. Side title and
 first sample centers are 20 and 52 pixels below the plot top. Thick side samples and large labels
 move down as needed to keep a 12-pixel gap below the title. Horizontal grids
 measure the thickest sample when allocating rows. Hidden titles do not occupy

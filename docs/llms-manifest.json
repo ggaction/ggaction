@@ -1538,8 +1538,8 @@
         "continuous-color-and-opacity",
         "related"
       ],
-      "bytes": 4163,
-      "sha256": "fdd6d9f66f7e3d70838bdf7c367c8f428587dab9431cf25f939303c94bd3e765"
+      "bytes": 4421,
+      "sha256": "3c1085232fa858727a677215ba75ea7967636f9d4026fd31136605b643f47b46"
     },
     {
       "order": 98,
@@ -1569,8 +1569,8 @@
         "removing-a-legend",
         "related"
       ],
-      "bytes": 10954,
-      "sha256": "1ffc1c55d7a70819e1cb24110c989e8dc139164b723ad5522d496c1315171591"
+      "bytes": 11157,
+      "sha256": "7aa680089cbf7d58375bb808aef41dd3fa5d28fe96f34e18d9274de52c60b8db"
     },
     {
       "order": 100,

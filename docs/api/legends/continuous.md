@@ -79,7 +79,10 @@ single vertical column, center alignment and a top title. At top/bottom, use
 `align`, `direction`, `columns` and `titlePosition` to arrange the item grid.
 `titlePosition: "left"` places the title beside the grid. The same controls
 are editable through `editLegend` and `editLegendLayout`. Symbol size, label
-style, spacing and borders remain editable.
+style, spacing and borders remain editable. Swatch layout includes its full
+stroke width in both dimensions. The default `labels.offset: 8` is the gap
+after the painted swatch edge. Large samples and text expand rows and keep
+12 pixels below a visible top title; insufficient Canvas space is an error.
 
 ~~~javascript
 program.createLegend({

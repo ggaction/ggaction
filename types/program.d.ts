@@ -2668,7 +2668,9 @@ export interface RemoveMarkOptions {
 }
 
 export interface LegendTextOptions {
-  /** Size: gap after the sample slot (minimum width 32), default 12. Opacity: gap outside the circle stroke, default 12 (inline 8). */
+  /** Gap after the occupied sample slot: interval default 8; size/width default 12.
+   * Size retains a minimum 32px slot. Width includes the widest line stroke.
+   * Opacity: visible circle-stroke gap, default 12 (inline 8). */
   offset?: number;
   color?: string;
   fontSize?: number;

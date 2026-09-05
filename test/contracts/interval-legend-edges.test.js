@@ -3,19 +3,20 @@ import test from "node:test";
 import { assertChartProgramsEquivalent } from "../support/chart-equivalence.js";
 import { chart } from "../../src/index.js";
 import { assertRenderedPNG } from "../support/png.js";
+// Stroke0.5 expands each14px swatch slot to14.5px; label gap remains8px.
 const edgeReferences = {
-  right: { x: [790,790], y: [252,280], labelX: [812,812], title: [790,220], align: "left" },
-  left: { x: [165.32,165.32], y: [252,280], labelX: [187.32,187.32], title: [165.32,220], align: "left" },
-  top: { x: [444.5,510.82], y: [164,164], labelX: [466.5,532.8199999999999], title: [500,139.5], align: "center" },
-  bottom: { x: [444.5,510.82], y: [561,561], labelX: [466.5,532.8199999999999], title: [500,536.5], align: "center" }
+  right: { x: [790.25,790.25], y: [252,280], labelX: [812.5,812.5], title: [790,220], align: "left" },
+  left: { x: [165.07,165.07], y: [252,280], labelX: [187.32,187.32], title: [164.82,220], align: "left" },
 };
-// Align the literal occupied content, including sample strokes or unused slots.
+// Two occupied slots14.5, label widths16.32/22.68 and column gap28.
 for (const edge of ["top", "bottom"]) {
-  const r = edgeReferences[edge], dx = 500 - ((r.x[0] - 0.25) + (r.labelX[1] + 22.68)) / 2, dy = edge === "top" ? -0.25 : 0;
-  r.x = r.x.map(x => x + dx);
-  r.labelX = r.labelX.map(x => x + dx);
-  r.y = r.y.map(y => y + dy);
-  r.title = [r.title[0] + dx, r.title[1] + dy];
+  const first = 240 + (520 - (38.82 + 45.18 + 28)) / 2;
+  const x = [first + 0.25, first + (38.82 + 28) + 0.25];
+  const labelX = x.map(value => value + 14.25 + 8);
+  const dx = 500 - ((x[0] - 0.25) + (labelX[1] + 22.68)) / 2;
+  edgeReferences[edge] = { x: x.map(value => value + dx), labelX: labelX.map(value => value + dx),
+    y: edge === "top" ? [163.75,163.75] : [561.25,561.25],
+    title: [500 + dx, edge === "top" ? 139 : 536.5], align: "center" };
 }
 function intervalBase() {
   return chart().createCanvas({width:1000,height:700,margin:{left:240,right:240,top:200,bottom:200}})

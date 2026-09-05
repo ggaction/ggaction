@@ -538,6 +538,21 @@ async function testNodeConsumer(directory) {
         }
       }
     }
+    for (const kind of ["interval", "strokeWidth"]) for (const position of ["left", "right", "top", "bottom"]) {
+      let source = chart().createCanvas({ width: 1600, height: 1200, margin: 400 })
+        .createData({ values: [{x:0,y:0,m:0,g:"A"},{x:1,y:1,m:0,g:"A"},{x:2,y:2,m:10,g:"B"},{x:3,y:3,m:10,g:"B"}] });
+      source = kind === "interval" ? source.createPointMark() : source.createLineMark();
+      source = source.encodeX({field:"x"}).encodeY({field:"y"});
+      source = kind === "interval" ? source.encodeColor({field:"m",fieldType:"quantitative",scale:{type:"quantize",range:["red","blue"]}})
+        : source.encodeGroup({field:"g"}).encodeStrokeWidth({field:"m",scale:{range:[2,60]}});
+      const p = source.createLegend({position,...(kind === "interval"?{symbol:{stroke:"black",strokeWidth:40}}:{count:2})});
+      const prefix = kind === "interval" ? "colorLegend" : "strokeWidthLegend";
+      const symbol = p.graphicSpec.objects[prefix+"Symbols"].items.at(-1).properties;
+      const label = p.graphicSpec.objects[prefix+"Labels"].items.at(-1).properties;
+      const gap = label.x - (kind === "interval" ? symbol.x + symbol.width : symbol.x2) - symbol.strokeWidth / 2;
+      assert.ok(Math.abs(gap - (kind === "interval" ? 8 : 12)) < 1e-8);
+      assert.match(renderToSVG(p), /<svg /);
+    }
     const legendContentBase = chart().createCanvas({ width: 800, height: 700, margin: { right: 300 } })
       .createData({ values: [{ x: 1, y: 2, g: "A", m: 4 }, { x: 2, y: 3, g: "B", m: 9 }] })
       .createPointMark({ id: "contentPoints" }).encodeX({ field: "x" }).encodeY({ field: "y" })

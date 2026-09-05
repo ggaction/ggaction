@@ -260,6 +260,23 @@ test.before(async () => {
           nearEdge === (position === "top" ? 260 : 740) && renderToSVG(program).startsWith("<svg "));
         render(program, document.getElementById("legend-content").getContext("2d"));
       }
+      const itemStrokeGaps = [];
+    for (const kind of ["interval", "strokeWidth"]) for (const position of ["left", "right", "top", "bottom"]) {
+      let source = chart().createCanvas({ width: 1600, height: 1200, margin: 400 })
+        .createData({ values: [{x:0,y:0,m:0,g:"A"},{x:1,y:1,m:0,g:"A"},{x:2,y:2,m:10,g:"B"},{x:3,y:3,m:10,g:"B"}] });
+      source = kind === "interval" ? source.createPointMark() : source.createLineMark();
+      source = source.encodeX({field:"x"}).encodeY({field:"y"});
+      source = kind === "interval" ? source.encodeColor({field:"m",fieldType:"quantitative",scale:{type:"quantize",range:["red","blue"]}})
+        : source.encodeGroup({field:"g"}).encodeStrokeWidth({field:"m",scale:{range:[2,60]}});
+      const p = source.createLegend({position,...(kind === "interval"?{symbol:{stroke:"black",strokeWidth:40}}:{count:2})});
+      const prefix = kind === "interval" ? "colorLegend" : "strokeWidthLegend";
+      const symbol = p.graphicSpec.objects[prefix+"Symbols"].items.at(-1).properties;
+      const label = p.graphicSpec.objects[prefix+"Labels"].items.at(-1).properties;
+      const gap = label.x - (kind === "interval" ? symbol.x + symbol.width : symbol.x2) - symbol.strokeWidth / 2;
+      itemStrokeGaps.push(Math.round(gap * 1e8) / 1e8);
+      if (!renderToSVG(p).startsWith("<svg ")) throw new Error("Item legend SVG missing");
+      render(p, document.getElementById("legend-content").getContext("2d"));
+    }
       const opacitySampleGaps = [];
       for (const position of ["left", "right", "top", "bottom"]) {
         const p = guideSource.createLegend({ channels: ["opacity"], position, count: 3, offset: 40,
@@ -370,6 +387,7 @@ test.before(async () => {
         guideOrder,
         transitionEdges,
         occupiedAlignment,
+        itemStrokeGaps,
         opacitySampleGaps,
         ignoredOptionRejects,
         gradientTitleParity,
@@ -513,6 +531,7 @@ test("imports and renders the packed browser entries", async () => {
     transitionEdges: ["left", "right", "top", "bottom"].map(position => [position, position, true, true, true]),
     hiddenCategorical: [36, true],
     occupiedAlignment: [true, true, true, true, true, true],
+    itemStrokeGaps: [8, 8, 8, 8, 12, 12, 12, 12],
     opacitySampleGaps: [12, 12, 12, 12],
     ignoredOptionRejects: 18,
     gradientTitleParity: [true, true, true, true, true, true],

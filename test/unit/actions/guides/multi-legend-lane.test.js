@@ -275,7 +275,7 @@ test("orders independent interval and stroke-width recipes by layer", () => {
   assert.equal(strokeTitle.x, 560);
   assert.ok(intervalTitle.y < strokeTitle.y);
   assert.equal(centers(program, "colorLegendSymbols").every(x => x === 576), true);
-  assert.equal(values(program, "strokeWidthLegendLabels", "x").every(x => x === 604), true);
+  assert.equal(values(program, "strokeWidthLegendLabels", "x").every(x => x === 608), true);
 });
 
 for (const position of ["top", "bottom"]) {

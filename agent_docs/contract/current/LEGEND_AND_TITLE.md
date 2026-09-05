@@ -237,7 +237,7 @@ encoding removal/recreation, combined legend와 Polar 가이드를 검증한다.
   Kind-incompatible options fail before the prior program changes.
 - Standalone size edits own four-edge/grid layout, border, `title`, `count`, `labels`, and `titleStyle`, including focused title/label/count actions. Count is 2..10,000; custom/auto/hidden title and partial styles survive Canvas/scale/filter replay. Labels default to font12/normal and offset12 after the sample slot; titles to font13/600. Side title/item origin은 plot.y+20/+52이며 pitch는 최소40이다. Equal-area scale mapping, formatter와 symbol defaults를 유지한다. Unrelated categorical targets never supply inherited appearance or placement. Basic creates size legends but does not expose editors. Symbol, gradient and order remain unsupported for standalone size.
 - Sampled size/stroke-width titleStyle accepts only color/fontSize/fontFamily/fontWeight; offset belongs to labels.
-- Stroke-width edits own four-edge layout/grid/border, `title`, `count`, `labels`, and `titleStyle`. Symbol, gradient and order options are rejected. Label `offset` controls the distance after the fixed 32-pixel line sample. Exact current item placement is defined in the stroke-width item layout section below.
+- Stroke-width edits own four-edge layout/grid/border, `title`, `count`, `labels`, and `titleStyle`. Symbol, gradient and order options are rejected. Label `offset` controls the minimum distance after the occupied sample slot (32-pixel line plus the widest stroke). Exact current item placement is defined in the stroke-width item layout section below.
 - Effect: stores graphical config immutably and invokes the corresponding wrapped rematerialization action.
   Categorical symbol recipe changes reconcile concrete graphic types without leaving stale objects. If the
   edited block participates in a side lane, all sibling blocks rematerialize before the lane is placed again.
@@ -529,7 +529,7 @@ config normalization과 rematerialization을 공유한다. Evidence:
 
 ### Stroke-width item layout
 
-Full의 createLegend/editLegend/editLegendLayout은 position right/left/top/bottom, layout edge, align/direction/columns/titlePosition, offset/itemGap과 border를 지원한다. Side는 vertical/center/one column/top title이다. Default offset30, side itemGap32, line length32, label offset12와 기존 font/color/scale formatter를 유지한다. Title centerY=plot.y+20, first sample centerY=plot.y+52로 공통 item layout에 맞춘다(이전 +28/+62). Side에서 두꺼운 sample/큰 label/title이 기본 시작 좌표를 넘으면 title 아래 gap12를 확보하도록 첫 sample을 내린다. Horizontal은 maximum sample width를 row height에 포함하며 각 sample stroke extent와 실제 visible labels/title을 Canvas bounds 및 border 계산에 포함한다. Hidden title은 제외하고 stored title은 보존한다. 생성·편집·Canvas/scale replay 모두 공간 부족을 오류로 반환한다.
+Full의 createLegend/editLegend/editLegendLayout은 position right/left/top/bottom, layout edge, align/direction/columns/titlePosition, offset/itemGap과 border를 지원한다. Side는 vertical/center/one column/top title이다. Default offset30, side itemGap32, line length32, label offset12와 기존 font/color/scale formatter를 유지한다. Title centerY=plot.y+20, first sample centerY=plot.y+52로 공통 item layout에 맞춘다(이전 +28/+62). Side에서 두꺼운 sample/큰 label/title이 기본 시작 좌표를 넘으면 title 아래 gap12를 확보하도록 첫 sample을 내린다. Horizontal은 maximum sample stroke width를 row height에 포함하며 각 sample stroke extent와 실제 visible labels/title을 Canvas bounds 및 border 계산에 포함한다. Hidden title은 제외하고 stored title은 보존한다. 생성·편집·Canvas/scale replay 모두 공간 부족을 오류로 반환한다.
 
 Basic의 기존 export/encoding/family 경계는 유지한다. Width는 Full-only이며 새 direct action은 없다. Symbol recipe/gradient/order는 거부한다. TitleStyle의 offset도 거부하며 labels offset은 허용한다.
 
@@ -553,3 +553,11 @@ Categorical+size create/edit/content replacement은 모든 edge를 허용하고 
 각 block의 실제 title/text/symbol/stroke/nested border bounds를 측정해 categorical→size 순서로 gap40을 두고 배치한다. Plot 폭을 넘으면 다음 outward row로 wrap한다. Top title/content 간격은12이며 sample보다 큰 label도 content 높이에 포함한다. Inline title은 content와 함께 이동한다. 두 block union을 categorical border로 둘러싸고, single combined group의 outer occupied bounds를 plot 폭의 align과 plot edge offset에 맞춘다. 여러 group이 있으면 결합 내부를 보존한 채 atomic block으로 기존 horizontal lane에 넣는다. Size graphics는 categorical 뒤, independent continuous companion 앞에 생성해 creation/content replay의 drawing order도 보존한다.
 
 Canvas overflow 또는 최종 chart title/x-axis guide와 교차하면 immutable failure다. Evidence: `test/unit/actions/guides/combined-legend-edges.test.js`, `test/contracts/combined-legend-edges.test.js`, packed consumer/browser 및 Cars replay. 다른 family의 전체 C2 collision/transition matrix 완료를 뜻하지 않는다.
+
+### 항목형 interval/stroke-width의 실제 sample spacing
+
+공통 item layout은 배치 전에 sample별 stroke bounds를 측정한다. Interval slot은 swatch width+strokeWidth, height+strokeWidth다. Width slot은 line length32+maximum strokeWidth이고 height는 maximum strokeWidth다. 각 sample의 nominal origin을 공통 slot 안에 옮기고 labels.offset은 slot의 occupied right 뒤 minimum gap(default interval8/width12)이다. 두께가 다르면 label column을 유지하여 얇은 sample의 실제 gap은 커진다. Size의 minimum32 slot은 유지한다.
+
+Side pitch와 첫 item/title gap12, horizontal row/column/inline 배치, border와 Canvas fit이 같은 actual extent를 사용한다. Default stroke도 포함하므로 interval의 기존 actual label gap7.75를8로 교정한다. Width의32px line length는 유지되며 stroke extent만큼 slot과 label column이 확장된다. 공간 부족은 earlier program을 변경하지 않는 오류다.
+
+Evidence: `test/unit/actions/guides/item-legend-stroke-spacing.test.js`의72case matrix/lifecycle, `test/contracts/item-legend-stroke-spacing.test.js`의독립 literal primitive/graphics/order/PNG, existing interval/width/size paired references 및 package/browser probes.

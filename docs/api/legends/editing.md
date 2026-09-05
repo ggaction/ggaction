@@ -89,7 +89,10 @@ Partial styles and title visibility survive Canvas, scale and data updates.
 
 Stroke-width legends additionally support four-edge layout and borders on creation
 and editing. Their line samples remain 32 pixels long; sample widths come from
-the encoded scale. The default offset is 30 and item gap is 32. Side title and
+the encoded scale. Their common sample slot includes the widest stroke at
+both line ends. `labels.offset` is the minimum gap after this occupied slot,
+defaulting to 12 pixels. Thinner samples retain the same label column.
+The default offset is 30 and item gap is 32. Side title and
 first sample centers are 20 and 52 pixels below the plot top. Thick side samples and large labels
 move down as needed to keep a 12-pixel gap below the title. Horizontal grids
 measure the thickest sample when allocating rows. Hidden titles do not occupy
