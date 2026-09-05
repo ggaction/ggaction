@@ -455,3 +455,10 @@ Primary owner는 누락 방지를 위한 책임 단위이며, 관련 작업이 �
 이름 변경이나 phase 재배치에도 B/D/F ID는 바꾸지 않는다. 관련 작업 전체가 완료되기 전 primary 작업 하나만 보고 항목을 닫지 않는다.
 새 발견은 기존 근거를 고치지 않고 새 ID로 추가한다. 보류에는 이유, 남은 dependency, 재검토 조건과 명시적 처분을 기록한다.
 승인된 Planned 항목은 사용자의 결정 없이 누락시키거나 Proposed로 되돌리지 않는다.
+
+## Phase 4 A 검토 준비 — 미구현
+
+2026-09-05 [P4-C01–C09 계약](phase4/CONTRACT_REVIEW.md)과 [49건 기준 관측](phase4/baseline-results.json),
+[검증 계획](phase4/VALIDATION.md)을 작성했다. D01/F04→W3, D03→W2, F05→W1, D14의 잔여 theta/legend→W4,
+D18→W5를 구체화했다. 아직 어느 항목도 이번 준비만으로 완료·해결 처리하지 않는다.
+F20은 계속 제외한다. 새 후보 4개는 phase-local Proposed이며 Current 177 / Planned 0이다.

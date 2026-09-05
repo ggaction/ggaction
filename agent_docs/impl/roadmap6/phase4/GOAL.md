@@ -2,13 +2,14 @@
 
 ## 상태와 목표
 
-상태: in-progress — Phase 3 X 사용자 승인 뒤 A 계약 검토를 준비한다. Phase 4 A/V/X는 미승인이며 production 구현은 시작하지 않았다.
+상태: in-progress — Phase 3 X 사용자 승인 뒤 [A 계약 검토](CONTRACT_REVIEW.md)가 ready-for-review다. Phase 4 A/V/X는 미승인이며 production 구현은 시작하지 않았다.
 
 차트 이름보다 먼저 baseline·layout·mapping의 의미를 완성한다. Area, Rose와 Radial bar를 정확한 측정 계약 위에 제공한다.
 
 ## 선행 조건
 
 - [Phase 2](../phase2/GOAL.md)의 R6-P2-X 승인과 필요한 결과.
+- [Phase 3 X](../phase3/REVIEW.md) 사용자 승인·완료. Baseline `93dceb3761e170207058e6a7280060fedd471244`.
 
 ## 구체적인 작업 묶음
 
@@ -59,3 +60,10 @@
 - [STEP1.md](STEP1.md)의 실행 체크를 갱신하고 [GATES.md](GATES.md)에 실제 증거만 기록한다.
 - R6-P4-X 승인 전 이 결과를 전제로 하는 다음 단계 구현을 시작하지 않는다.
 - 구현하지 않은 후보는 완료로 표시하지 않고 [추적 원장](../TRACEABILITY.md)에 처분을 남긴다.
+
+## 이번 A 검토 산출물
+
+- [P4-C01–C09 결정·signature·migration](CONTRACT_REVIEW.md)과 [4개 후보](candidates.json).
+- [현재 API 49건 재현](baseline-results.json), [수치·소비자 matrix](VALIDATION.md).
+- [20개 V target 계획](visual-target-plan.json): 입력·dimensions·publicCalls 고정, primitive/public 모두 미구현.
+- Current 177 / Planned 0 유지. 새 3 H0는 full 전용, encodeLayout은 full/basic Bar에 제안한다.

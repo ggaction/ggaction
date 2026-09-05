@@ -2,16 +2,16 @@
 
 ## 공통 상태
 
-모든 Gate는 planned다. 아직 ready-for-review나 approved인 Gate가 없다.
+A는 ready-for-review다. V/V1/V2/V3/X는 planned이며 승인된 Phase 4 Gate는 없다.
 허용 상태는 planned | ready-for-review | approved | changes-requested다.
-이 문서는 지금 승인을 요청하는 문서가 아니라 실행 시점의 검토 범위와 경계를 미리 선언한다.
+이번 검토 대상은 [CONTRACT_REVIEW.md](CONTRACT_REVIEW.md)의 P4-C01–C09다. Phase 3 X 승인을 재사용하지 않는다.
 
 ## R6-P4-A — Contract and scope
 
-- 상태: planned
+- 상태: ready-for-review
 - 검토 대상: K07–K08의 baseline/range API, stack transition, theta order, diverging midpoint와 migration.
 - 필요 증거: exact baseline commit, 구현할 public signature 또는 before/after call, [GOAL.md](GOAL.md)의 작업별 의미·owner·지원/오류 matrix, [DESIGN_DECISIONS.md](../DESIGN_DECISIONS.md)의 해당 migration 결정.
-- 추가 증거: focused 재현 결과와 실행 가능한 public/primitive target 계획, Current/type/card/package 영향, 남은 불확실성.
+- 추가 증거: [49건 baseline](baseline-results.json), [4개 후보](candidates.json), [20개 future public call 계획](visual-target-plan.json), [200/200 기존 tests와 acceptance](VALIDATION.md). Current 177 / Planned 0, production 변경 0.
 - 준비 완료 조건: 전체 package를 검증하여 commit/push하고 그 ref를 이 문서에 기록한다.
 - 승인 효과: 이 단계의 확정된 비시각 작업과 primitive target 작성을 열며, V 대상 public 구현은 V 승인 전까지 차단한다.
 - 승인 전 차단: 이 단계의 production 의미·API 구현 및 해당 결과에 의존하는 후속 단계.
@@ -27,6 +27,14 @@
 - 승인 전 차단: 해당 variant의 public flow 구현과 public-render 동등성 완료 선언.
 - 예외 처리: 출력이 바뀌지 않는 교정은 영향 없음을 A에서 입증하고 V 범위를 명시적으로 N/A 처리한다. 자동 승인으로 표기하지 않는다.
 
+### 독립 V 범위
+
+- R6-P4-V1: planned. Area/baseline/range/missing/layout 11 variants.
+- R6-P4-V2: planned. Rose/Radial mapping·theta/legend order 5 variants.
+- R6-P4-V3: planned. Midpoint·scale/legend transition 4 variants.
+- 각 대상의 입력·미래 호출·수치 oracle는 [target plan](visual-target-plan.json)에 고정했다. 아직 primitive source/image는 없다.
+- Parent V는 세 범위 모두 승인된 뒤에만 approved로 기록한다. 한 V 승인이 다른 V의 public 구현을 열지 않는다.
+
 ## R6-P4-X — Result and closeout
 
 - 상태: planned
@@ -40,8 +48,10 @@
 ## 승인 기록
 
 - Review commit / remote ref: 미정
-- 검증 명령과 실제 결과: 미실행
+- 검증 명령과 실제 결과: [VALIDATION.md](VALIDATION.md). 49건 replay, 199 immutable checks, 관련 기존 tests 200/200. 새 production/primitive 구현 없음.
 - 사용자 승인 근거: 없음
-- 남은 작업: 해당 GOAL/STEP 전 범위
+- 남은 작업: A 승인, V1/V2/V3 primitive 작성·승인, W1–W5 구현과 누적 검증, X 승인.
+- Baseline commit: `93dceb3761e170207058e6a7280060fedd471244`.
+- Full/Basic/SVG 상한 237000/125000/25000 유지. 초과 시 별도 B가 필요하며 이번 A에는 상한 증가가 없다.
 
 실행 시 실제 증거를 채운다. 문서 작성 날짜나 이전 로드맵 승인을 이 Gate의 승인으로 재사용하지 않는다.

@@ -18,7 +18,7 @@
 
 **현재 활성 계획은 Roadmap 6 Phase 4**이다. 계층적 chart authoring과 action consistency의 상세 계획을
 [`impl/roadmap6/ROADMAP.md`](impl/roadmap6/ROADMAP.md)에서 관리한다. 사용자 선택에 따라 새 액션군 F01–F19를
-범위로 삼았다. Phase 1–3 결과를 승인받아 완료했다. [Phase 3 X 결과](impl/roadmap6/phase3/REVIEW.md)의 세 facade·9개 시각 결과·설치 검증을 확정했고, [Phase 4 계약](impl/roadmap6/phase4/GOAL.md)을 준비한다. Phase 4의 API·시각 target은 미승인이다.
+범위로 삼았다. Phase 1–3 결과를 승인받아 완료했다. [Phase 3 X 결과](impl/roadmap6/phase3/REVIEW.md)의 세 facade·9개 시각 결과·설치 검증을 확정했고, [Phase 4 A 계약](impl/roadmap6/phase4/CONTRACT_REVIEW.md)이 ready-for-review다. 49건 재현과 새 4개 액션 제안을 정리했다. Phase 4의 API·시각 target은 미승인이다.
 후속 신규 API의 구체 설계는 Proposed다. 마지막 완료 owner는 Roadmap 5.4 Phase 6이다.
 Nullable active pointer와 마지막 완료 owner의 machine-readable source는
 [`impl/ROADMAP_INDEX.json`](impl/ROADMAP_INDEX.json)이다.

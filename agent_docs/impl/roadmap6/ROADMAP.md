@@ -1,6 +1,6 @@
 # Roadmap 6 — Hierarchical Chart Authoring and Action Consistency
 
-> **문서 상태 — 현재 실행 계획.** Phase 1–3 결과를 사용자 승인으로 완료했다. [Phase 3 X 결과](phase3/REVIEW.md)의 Pie/Donut·Density·Horizon과 9개 시각 결과, 같은 tarball 소비자 검증을 확정했다. 현재는 [Phase 4](phase4/GOAL.md)의 baseline·layout·radial mapping·order·midpoint 계약을 준비한다. Phase 4 A/V/X는 아직 미승인이다.
+> **문서 상태 — 현재 실행 계획.** Phase 1–3 결과를 사용자 승인으로 완료했다. [Phase 3 X 결과](phase3/REVIEW.md)의 Pie/Donut·Density·Horizon과 9개 시각 결과, 같은 tarball 소비자 검증을 확정했다. 현재는 [Phase 4 A 계약](phase4/CONTRACT_REVIEW.md)이 ready-for-review다. Baseline·layout·radial mapping·order·midpoint의 구체 계약과 49건 재현을 정리했다. Phase 4 A/V/X는 아직 미승인이다.
 > 액션군 범위는 사용자 선택에 따라 F01–F19로 구성했다. 후속 액션군의 구체적인 API와 행동 변경은 각 Phase Gate에서 확정한다.
 > 이 문서를 작성해 달라는 요청은 모든 설계안·구현·배포의 일괄 승인을 뜻하지 않는다.
 > 실행 위치는 [ROADMAP_INDEX.json](../ROADMAP_INDEX.json), 현재 제품 계약은
@@ -12,8 +12,8 @@ ggaction의 핵심은 차트 전체를 짧게 정의하는 액션부터 개별 e
 여러 층위에서 작성할 수 있다는 데 있다. 이번 로드맵은 **상위에서 만들고, 중간에서 의미를 바꾸고,
 아래에서 모양을 다듬는 경로가 연결된 API**를 만든다.
 
-Pie는 기존 arc 조합으로 그릴 수 있지만 완성 차트 액션이 없다. 반대로 Parallel에는 완성 차트 액션이
-있지만 축의 세부 스타일을 바꾸는 공개 경로가 부족하다. 두 문제를 같은 기준으로 해결한다.
+감사 당시 Pie는 arc 조합만 있었고 완성 차트 액션이 없었다. Phase 3에서 createPiePlot을 구현·승인했다.
+Parallel에는 완성 차트 액션이 있지만 축의 세부 스타일을 바꾸는 공개 경로가 부족하다. 두 문제를 같은 기준으로 해결한다.
 Facade 개수를 늘리는 것만으로 완료를 판정하지 않는다.
 
 1. 가장 짧은 모호하지 않은 호출로 의도한 차트가 완성된다.
@@ -115,7 +115,7 @@ S는 기존 owner 위의 교정·연결, M은 여러 consumer의 lifecycle 변�
 | 1 | completed | W1–W5 구현·검증과 R6-P1-X 사용자 승인. B01 lower 작성 순서는 Phase 2 W5에서 교정 |
 | 2 | completed | W1–W5와 6개 public 흐름 구현·검증, A/B/V/X 사용자 승인 |
 | 3 | completed | Pie/Donut·Density·Horizon, A/V/B/X approved; Current 177 / Planned 0 |
-| 4 | in-progress | Baseline, layout, order, 중심색과 Area·Rose/Radial의 A 계약 준비; API 미승인 |
+| 4 | in-progress | Baseline, layout, order, 중심색과 Area·Rose/Radial의 A ready-for-review; API 미승인 |
 | 5 | planned | 축·범례 lifecycle, label·format·theme·명시적 fitting |
 | 6 | planned | Data·transform·통계·filter·composite role 편집 |
 | 7 | planned | Polar Scatter/Line, Radar, Rug/Strip |
@@ -194,6 +194,9 @@ Full 237,000-byte B와 [X 결과](phase3/REVIEW.md)를 승인받아 Phase 3을 �
 [Rose/Radial bar](chart/rose-radial-bar.md)의 area/radius-length 의미를 구분한다.
 Color에서 독립한 layout 전환, theta category order, diverging midpoint와 legend transition을 같은
 의미 owner로 정리한다. 기존 결과를 조용히 재해석하지 않는다.
+
+Phase 4 A 검토는 [P4-C01–C09](phase4/CONTRACT_REVIEW.md), [새 4개 후보](phase4/candidates.json),
+[49건 재현·200 tests·V 계획](phase4/VALIDATION.md)을 포함한다. A는 ready-for-review이며 production 구현은 미시작이다.
 
 ## Phase 5 — Guides, labels and appearance
 

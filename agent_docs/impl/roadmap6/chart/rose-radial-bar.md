@@ -1,113 +1,141 @@
 # Roadmap 6 — Rose / Radial bar
 
-**상태: Proposed, 미구현·미승인.** 아래 새 이름과 option 구조는 추천 계약 초안이다.
-현행 API가 아니며 그대로 실행 가능한 예제로 주장하지 않는다. Phase 4 A에서 signature를 확정하고
-V에서 primitive 목표를 확인한 뒤 public flow를 구현한다.
+**Proposed / Phase 4 A 검토용. 미구현·미승인이다.**
+[P4-C04 계약](../phase4/CONTRACT_REVIEW.md), [Gate](../phase4/GATES.md),
+[수치·V 계획](../phase4/VALIDATION.md)에 연결한다. 범위는 F04·D01이다.
 
-## 목적과 범위
+## 목적과 최종 public API
 
-Equal-angle category sector의 면적으로 값을 나타내는 Rose와 radius 길이로 나타내는 Radial bar를 분리한다.
-
-- 연결 항목: F04, D01, B04.
-- 실행 owner: [Phase 4](../phase4/GOAL.md).
-- 공통 기준: [DESIGN_DECISIONS.md](../DESIGN_DECISIONS.md), [VALIDATION.md](../VALIDATION.md).
-
-## 데이터와 최종 public chain 초안
-
-아래 synthetic rows를 수치 oracle와 최소 visual target의 출발점으로 쓴다.
-A에서 실제 public signature를 확정하고, primitive/public 두 프로그램이 같은 manifest의 values와 dimensions를 사용한다.
+Rose는 equal-angle sector의 면적, Radial bar는 inner radius에서 바깥쪽으로 잰 길이로 값을 나타낸다.
+같은 Arc/theta/radius owner를 쓰되 측정 의미를 구분한다. 두 차트 모두 2·3·4가 세 개의 sector로 보인다.
 
 ~~~javascript
-// Proposed API design — not a Current executable example.
+// Proposed APIs. These are separate immutable branches.
 import { chart } from 'ggaction';
-
 const values = [{ category: 'A', value: 2 }, { category: 'B', value: 3 }, { category: 'C', value: 4 }];
-const base = chart()
-  .createCanvas({ width: 1000, height: 700, margin: 150 })
+const base = chart().createCanvas({ width: 1000, height: 700, margin: 150 })
   .createData({ id: 'data', values });
-
-const rose = base.createRosePlot({ category: 'category', value: 'value', aggregate: 'sum' });
-const radial = base.createRadialBarPlot({ category: 'category', value: 'value', aggregate: 'sum' });
+const rose = base.createRosePlot({ id: 'r', category: 'category', value: 'value', aggregate: 'sum' });
+const radial = base.createRadialBarPlot({ id: 'r', category: 'category', value: 'value', aggregate: 'sum' });
+const hole = base.createRosePlot({
+  id: 'r', category: 'category', value: 'value', aggregate: 'sum', arc: { innerRadius: 0.5 }
+});
+const count = base.createRosePlot({ id: 'r', category: 'category' });
 ~~~
 
-Id/data/coordinate의 생략은 공통 current/unique 규칙을 따른다. 같은 종류의 resource가 여러 개면 explicit target을
-요구한다. 예제의 base에서 각 const는 독립된 immutable program이며, chart를 한 program에 겹칠 때는
-명시적 IDs와 compatible shared scale/guide를 사용한다.
+두 facade는 동일한 옵션을 받으며 mapping만 area / radius-length로 고정한다.
 
-## 주요 설계 결정과 rationale
+| 옵션 | 계약 |
+| --- | --- |
+| id/data/coordinate | optional string, id 기본 rosePlot/radialBarPlot. 기존 data/Polar resolver |
+| category | 필수, PieCategory의 field string 또는 `{field,fieldType?:nominal/ordinal,scale?}` 재사용 |
+| value/aggregate | Pie처럼 배타 union. value 없음→aggregate 생략 또는 count; value field 있음→aggregate:'sum' 필수 |
+| radiusScale | optional, P4-C04의 linear zero-based domain/range subset |
+| color | 기본 category. false 또는 PieColor의 명시적 nominal/ordinal field/scale/palette |
+| arc | `{innerRadius?,padAngle?,fill?,opacity?,stroke?,strokeWidth?}`. 아래 측정 제약 추가 |
+| guides | false 또는 `{axes?,grid?,legend?}`. axes/grid는 기존 Polar guide 옵션의 적용 가능한 subset, legend는 PieLegendOptions |
 
-| 결정 | 권장 계약 | 이유 |
-| --- | --- | --- |
-| Rose | Equal-angle, non-negative aggregate에 area-proportional mapping을 적용한다. | Linear radius는 area를 제곱으로 과장한다. |
-| Radial bar | Zero baseline과 radius-length 의미를 사용한다. | 최소 양수 category가 radius 0으로 사라지는 것을 막는다. |
-| Inner radius | Area 모드 r=sqrt(r0²+t(R²-r0²)); radius-length는 별도 linear radial length mapping. | Donut hole이 있어도 측정 의미가 유지된다. |
-| Guides | 실제 값 단위의 radius guide와 category theta guide를 선택한다. Label은 mapping 결과가 아니라 데이터 의미를 설명한다. | Radius geometry와 value scale 해석을 일치시킨다. |
-| Compatibility | 일반 encodeR와 Polar scatter의 기본 mapping은 유지한다. | 차트별 size semantics를 모든 radius channel에 강제하지 않는다. |
+Category theta는 band/equal-angle만 허용한다. Theta aggregate·weight, numeric theta position, arbitrary mapping override,
+row-level aggregate 생략 sum, unknown input keys는 오류다. Value string으로 sum을 추측하지 않는다.
+Categorical theta domain/range/reverse는 기존 PieCategory subset을 사용하며 order는 기존 lower order owner로 편집한다.
+차트에서 자동 색을 끄고 fill을 명시하려면 color:false를 사용한다. Color는 합쳐진 category 안에서 한 값이어야 한다.
 
-## 중요한 action hierarchy
+Canvas와 materialized dataset은 사전 조건이다. Data explicit→current→unique 및 coordinate resolver는 Phase 3과 동일하다.
+선택한 data는 mark child에 직접 전달한다. 같은 mark id 재생성, 잘못된 family의 coordinate, 모호한 scale/guide는 오류다.
+Guides 생략은 **radius의 실제 값 guide와 category theta guide, category color legend**를 기존 applicable owner로 확보한다.
+Guides:false는 guide 생성 생략이다. 없는 Polar title/component를 편집으로 생성하는 기능은 Phase 5에 남긴다.
+현재 facade guide scoping helper는 Cartesian/Parallel용이므로 이 단계에서 Polar resource scoping을 추가한다.
+기존 createAxes/createGrid의 Polar owner를 호출하고, facade가 무관한 coordinate/scale/legend를 수정하지 않게
+same-target reuse와 foreign-resource 오류를 검증한다. Generic createGuides에 target 옵션을 새로 추가하는 제안은 아니다.
 
-아래 트리의 기존 이름은 재사용해야 할 owner다. 괄호의 역할 문장은 helper/public API 이름을 확정한 것이 아니다.
-새 domain action이 필요하면 meaningful wrapped child로 만들고 실제 top-level trace와 대조한다.
+## 측정값·angle·hole의 수치 계약
+
+Category마다 count 또는 nonnegative finite value sum을 구한다. Equal-angle의 category 순서는 first appearance다.
+Duplicate category의 값은 하나의 sector에 합쳐지고 sourceIndices는 모든 원본 행을 유지한다.
+Category n개에서 간격 없는 sector angle은 2π/n, partial theta range면 그 range 길이/n이다.
+Category set이 같으면 각 angle은 값 편집에 따라 바뀌지 않는다.
+
+Scale 자동 domain은 [0,max(category aggregate)], nice:false다. Explicit domain도 [0,U]이고 U는 aggregate max 이상이어야 한다.
+U>0, radius range는 0<=r0<R인 finite pair가 필요하다. t=value/U라 하면:
+
+- Rose: `r = sqrt(r0*r0 + t*(R*R-r0*r0))`.
+- Radial bar: `r = r0 + t*(R-r0)`.
+
+예: R=140, r0=70, 값 2/3/4는 Rose outer radii 약 **110.679718 / 126.194295 / 140**,
+Radial bar는 **105 / 122.5 / 140**이다. Rose의 annulus 면적비는 2:3:4, Radial의 radial length 비는 2:3:4다.
+기존 `sqrt` scale의 [70,140] mapping은 첫 반지름 약119.497475로 이 Rose 공식을 만족하지 않는다.
+Hole 없는 Rose에서만 sqrt의 일반적인 형태와 일치한다.
+
+Auto radius range는 기존 Arc의 innerRadius ratio를 사용한다. Explicit range=[r0,R]이면 그 range가 hole을 정의하고,
+facade에서 arc.innerRadius도 명시했다면 r0/R와 일치해야 한다. 불일치는 오류다.
+Auto range에서 innerRadius edit는 range와 모든 outer radius를 재계산한다. Explicit range에서 ratio edit가 충돌하면
+오류이며 먼저 range:auto로 바꾸거나 일치하는 조합을 명시해야 한다. Shared auto scale의 innerRadius 일치 guard는 유지한다.
+InnerRadius는 0 이상 1 미만이다. 이 두 측정 facade의 padAngle은 **0만 지원**한다. Nonzero padding이 실제 ink 면적을
+바꾸는 문제를 숨기지 않는다. Generic Arc/Pie의 기존 padding은 그대로 유지한다.
+
+Zero category는 color/theta domain·legend에 남되 면적/길이 0인 sector는 그리지 않는다.
+전체가 zero, 음수 input, NaN/Infinity, 빈 dataset, overflow 합계, 음수/역전 domain이나 radius range는 오류다.
+양수가 하나 이상이면 모든 양수 category를 표현한다. 최소 양수가 radius 0으로 사라지는 기본값을 쓰지 않는다.
+Weighted-angle·signed Rose·abs(value) 자동 보정은 지원하지 않는다.
+
+## Hierarchy와 명시적 lower chain
+
+~~~javascript
+// Proposed lower equivalence of rose; encodeR options are not Current yet.
+const lower = base.createArcMark({ id: 'r', data: 'data' })
+  .encodeTheta({ target: 'r', field: 'category', fieldType: 'nominal' })
+  .encodeR({ target: 'r', field: 'value', aggregate: 'sum', mapping: 'area' })
+  .encodeColor({ target: 'r', field: 'category', fieldType: 'nominal' })
+  .createGuides();
+~~~
 
 ~~~text
 createRosePlot / createRadialBarPlot
 ├─ createArcMark
-├─ encodeTheta (categorical equal-angle)
-├─ radius mapping assignment (area or radius-length)
-│  ├─ zero baseline + category aggregate
-│  └─ existing radius scale / arc materialization owner
-├─ encodeColor?
-└─ createGuides? (meaning-appropriate Polar guides)
+├─ createCoordinate? (Polar, existing resolver)
+├─ encodeTheta (categorical equal-angle, no theta aggregate)
+├─ encodeR (count/sum category grain; area/radius-length mapping)
+│  ├─ existing category aggregation / sourceIndices
+│  ├─ radius scale definition / shared-consumer validation
+│  └─ Arc materialization (same mapper as radial guides)
+├─ encodeColor? (category default or explicit series-constant field)
+└─ createGuides? (value radius, category theta, optional color legend)
 ~~~
 
-Facade가 child의 inference·validation·aggregation·geometry를 복제해서는 안 된다.
-완성 chart를 lower public chain으로 풀었을 때 같은 의미와 graphics를 얻어야 한다.
+`encodeR({field})`와 Polar scatter의 기존 default/type/row grain은 그대로다. New mapping은 opt-in이며
+기존 encodeRadius alias도 동일 계약에 위임한다. Facade가 source를 summarizeData로 몰래 교체하거나
+renderer에 area-specific radius 보정을 넣지 않는다. 별도 Cartesian Bar layer도 만들지 않는다.
 
-## 저장 결과 계약
+## 저장 결과와 lifecycle
 
-**semanticSpec:** Category aggregation, equal-angle policy, zero baseline, area/radius-length mode, source/value unit을 명시한다. 새 semantic field의 정확한 schema는 Phase 4 A에서 확정한다.
+Semantic layer의 categorical theta, radius aggregate count/sum, color field와 원본 data 관계를 유지한다.
+Mapping은 해당 semantic scale의 radialMapping, domain/range는 기존 scale 속성에 저장한다.
+Encoding에 mapping 복사본·facade recipe·final radii를 추가하지 않는다. Graphic은 concrete path commands·paint뿐이다.
+Count에는 가짜 value field가 없다. Radius guide title은 count 또는 원래 value field 단위를 설명한다.
+Guide 위치도 area mapper를 사용하므로 Rose의 반지름 tick을 선형 간격으로 잘못 그리지 않는다.
 
-**graphicSpec:** Concrete arc sector 3개와 mapping에 맞는 radii를 저장한다. 다른 Cartesian Bar layer가 추가되지 않는다.
+| 편집 | owner와 결과 |
+| --- | --- |
+| value/aggregate/mapping | encodeR 재할당. Category grain·domain·marks·guide를 같이 갱신 |
+| legacy radius 복귀 | removeEncoding radius 후 기존 encodeR field 재작성. 생략으로 mapping 해제 추측 금지 |
+| innerRadius/appearance | editArcMark. Mapping/range compatibility부터 검증 |
+| scale domain/range | editScale. Zero-based mapping과 모든 공유 consumer 검증 |
+| theta order | orderCategories/removeCategoryOrder channel theta. 값과 source identity 유지 |
+| legend 순서만 변경 | createLegend/editLegend order. 색 배정 유지, geometry와 별도 |
+| Canvas/data 변경 | 기존 rematerialization planner. Source indices·selection/highlight와 guides 갱신 |
 
-**Config/context/trace:** Persistent style·layout policy는 해당 config owner에, 분석 의미와 resource relation은
-semantic owner에 둔다. Context는 다음 호출의 convenience만 저장하며 새 canonical state로 사용하지 않는다.
-Trace에는 실제 child 호출을 보존하되 큰 derived values 배열을 반복 복제하지 않는다.
-새 schema의 정확한 경로는 A Gate에서 architecture와 함께 결정한다.
+같은 radius scale을 generic Point/Arc와 measured Arc가 공유하는 혼합은 거부한다.
+Area와 radius-length도 다른 mapping이므로 하나의 scale에 섞지 않는다. 공통 범위가 필요하면 별도의 scale id를 사용한다.
+범위/consumer 오류는 이전 program·trace·caller inputs를 유지하며 외부에 반쪽 결과를 반환하지 않는다.
+Label/selection은 category aggregate와 sourceIndices의 기존 Arc 규칙을 사용하고 row-level label을 임의 대표값으로 줄이지 않는다.
 
-## 아래층 편집과 lifecycle
+## 검증과 완료 조건
 
-Arc inner radius/style, theta order, value/aggregate·radius domain과 guides를 lower owner로 수정한다. Area mode에서 inner radius edit는 해당 의미에 맞게 radii 전체를 재계산한다.
+[V2 계획](../phase4/VALIDATION.md)은 disk/hole Rose, disk/hole Radial, theta와 legend link를 포함한다.
+Literal radius/sector area/length oracle, category duplicate sum, 0/all-zero/negative, count, explicit range,
+sourceIndices·selection, mapping/innerRadius/domain/order edit와 nonempty shortest call을 함께 검사한다.
+Primitive/public semantic·graphic·Canvas·decoded PNG 동등성, SVG/PDF, browser installed consumer,
+strict positive/negative declarations와 MCP generated call 실행이 완료 조건이다.
 
-모든 지원 edit는 source/scale/Canvas/filter/selection/label/guide 소비자 중 실제 영향을 받는 대상을 먼저 검증한다.
-Rematerialization은 scale→mark→guide→layout→highlight 순서의 기존 planner를 사용한다.
-Unsupported consumer가 있으면 부분 변경 없이 거부하며 이전 program·trace·caller values를 보존한다.
-
-## Primitive와 visual variant
-
-- 2/3/4의 3개 sector, zero와 all-zero/negative failure.
-- Hole 0/0.5, 비대칭 값, Rose와 Radial의 비교.
-- Explicit domain과 value-labelled radius guide.
-- MCP radial-bar 의도가 한 Polar chart만 생성.
-
-각 variant의 primitive source와 target public chain을 함께 검토한다. 새 API가 없을 때 primitive는 기존 domain
-owner와 세 public primitive로 구체화하며 renderer 내부에 의미를 넣지 않는다. V 승인 뒤 public program을 작성하고
-같은 실행의 decoded PNG pixels·graphic structure·Canvas calls를 비교한다.
-Canvas/SVG/PNG/PDF consumer coverage에서 해당 chart에 적용되지 않는 기능은 이유와 함께 N/A로 기록한다.
-
-## 수치·계층 검증
-
-Rose sector area θ(r²-r0²)/2의 비율이 aggregate 비율과 일치한다. Radial은 r-r0 길이 비율로 검증한다. 두 oracle를 혼용하지 않는다.
-
-- Shortest valid call의 completion과 필요한 channel/coordinate 확인.
-- H0와 명시적 H1/H2 chain의 의미·graphic 동등성, trace owner 재사용.
-- Compatible authoring 순서의 수렴, 반복 assignment의 idempotence.
-- 생성→semantic edit→style edit→Canvas/data/scale rematerialization→remove/recreate 경로.
-- Positive/negative strict TypeScript와 runtime 오류 matrix.
-- Contract/card/docs/MCP의 supported·unresolved 범위 동기화.
-
-## 범위 밖과 완료 조건
-
-Unequal-angle weighted Rose, signed Rose, 자동 임의 normalization은 별도 제안이다.
-
-해당 phase의 승인 범위에서 위 source·API·수치·편집·render·types·docs evidence가 충족돼야 chart cycle을 닫는다.
-차트명이 존재하거나 그림 하나가 생성됐다는 사실만으로 완료하지 않는다.
+신규 negative/unequal-angle 측정 mode, gap 보정 면적 encoding, rainbow/diverging 의미 자동 추론,
+새 renderer primitive나 Polar guide lifecycle 전체 재설계는 포함하지 않는다. F20은 계속 제외한다.

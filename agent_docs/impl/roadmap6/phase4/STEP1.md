@@ -3,9 +3,9 @@
 ## 진행 상태
 
 - [x] Phase 3 X 사용자 승인과 완료 기록 확인
-- [ ] Current baseline·owner·existing defaults·실패 경계 재현
+- [x] Current baseline·owner·existing defaults·실패 경계 재현 — 49 cases / 199 immutable checks / 기존 200 tests
 
-- [ ] A Gate의 정확한 결정·호환성·검증 범위 확정
+- [x] A Gate 검토안의 정확한 결정·호환성·검증 범위 작성 — P4-C01–C09 / 새 4 actions / 20 V targets
 - [ ] A Gate 증거 commit/push와 명시적 사용자 승인 기록
 - [ ] R6-P4-W1 Area baseline/range와 facade
 - [ ] R6-P4-W2 Color와 독립한 layout assignment
@@ -17,7 +17,7 @@
 - [ ] 누적 검증·migration·문서·원장 동기화
 - [ ] X Gate의 증거 commit/push와 명시적 사용자 승인 기록
 
-위 체크는 미래 실행용이다. 계획 문서를 만든 사실을 구현 완료나 Gate 승인으로 표시하지 않는다.
+A 준비만 완료했고 production 구현 체크는 미완료다. 계획 문서를 만든 사실을 구현 완료나 Gate 승인으로 표시하지 않는다.
 
 ## 순서
 
@@ -37,3 +37,8 @@
 - Trace의 의미 있는 child owner와 이전 program 불변성.
 - 필요한 경우 artifact manifest, input hash, 이미지와 exact target public call chain.
 - 해결·유지·보류한 finding ID와 다음 단계에 남긴 dependency.
+
+## A 준비 결과
+
+[계약 검토](CONTRACT_REVIEW.md), [실제 관측](baseline-results.json), [검증 계획](VALIDATION.md)을 작성했다.
+Phase 3 승인 runtime을 그대로 조사했다. Production source/types/card/API는 바꾸지 않았다.
