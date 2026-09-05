@@ -2,13 +2,13 @@
 
 ## 공통 상태
 
-Phase 2 X 결과 승인은 기록했다. **R6-P3-A는 ready-for-review이며 아직 미승인**이다.
+Phase 2 X 결과 승인은 기록했다. **R6-P3-A는 2026-09-05 사용자 “승인한다”로 approved**다.
 V/X는 planned다. 허용 상태: planned | ready-for-review | approved | changes-requested.
-현재 작업은 검토 package 준비뿐이며 production API·새 primitive target은 구현하지 않았다.
+승인된 비시각 계약 준비와 primitive target 작성을 진행한다. 신규 public 시각 flow는 V 승인 전까지 구현하지 않는다.
 
 ## R6-P3-A — Contract and scope
 
-- 상태: ready-for-review
+- 상태: approved
 - 범위: [CONTRACT_REVIEW.md](CONTRACT_REVIEW.md)의 P3-C01–C07과
   [Pie/Donut](../chart/pie-donut.md), [Density](../chart/density.md), [Horizon](../chart/horizon.md).
 - 결정: full-only H0 3개, Donut은 Pie innerRadius 옵션, count/explicit sum, baseline Density와 explicit group color,
@@ -56,6 +56,8 @@ V/X는 planned다. 허용 상태: planned | ready-for-review | approved | change
 
 - Review commit: [`bd18718a9c1aed5f91b485bc1aeab54616e9e5a3`](https://github.com/ggaction/ggaction/commit/bd18718a9c1aed5f91b485bc1aeab54616e9e5a3).
 - Remote branch: `origin/codex/roadmap6-hierarchical-actions`; push 완료.
-- 사용자 승인 근거: 없음. 이번 “승인한다”는 Phase 2 X에만 적용했다.
+- 사용자 승인 근거: 2026-09-05 Phase 3 A 승인 질문에 “승인한다”라고 답했다.
+- 승인 기준 HEAD: `0f3531ae9c242190df9457b1ed4289491963ba77`; 계약 package `bd18718a9c1aed5f91b485bc1aeab54616e9e5a3`의 P3-C01–C07과 9개 target 작성 범위.
+- 효과: Planned 등록·비시각 준비·primitive target 작성 가능. V/X와 조건부 bundle B는 승인하지 않았다.
 - 실제 검증: baseline 52/52, related existing tests 176/176, 문서 lower calls 3/3, 최종 navigation 10/10, local links 214개. 재현 명령은 [VALIDATION.md](VALIDATION.md).
-- 남은 작업: A 승인, primitive targets와 V 승인, public implementation·누적 acceptance·X 승인.
+- 남은 작업: 승인 계약의 Planned 등록, primitive targets와 V 승인, public implementation·누적 acceptance·X 승인.

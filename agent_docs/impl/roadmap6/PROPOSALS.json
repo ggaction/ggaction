@@ -21,7 +21,8 @@
       "R6-P2-A",
       "R6-P2-B",
       "R6-P2-V",
-      "R6-P2-X"
+      "R6-P2-X",
+      "R6-P3-A"
     ],
     "implementationStarted": true,
     "reviewCommit": "cf13920ed517cfc6c333b04ec55a724826960228",
@@ -326,7 +327,7 @@
         2
       ],
       "gateStates": {
-        "R6-P3-A": "ready-for-review",
+        "R6-P3-A": "approved",
         "R6-P3-V": "planned",
         "R6-P3-X": "planned"
       },
@@ -341,7 +342,7 @@
           "scope": "Category count와 explicit weighted sum의 createPiePlot을 제안한다. Donut은 arc.innerRadius로 작성하고 별도 alias는 추가하지 않는 방향이다. Color는 category 기본, guide는 legend만이며 labels/theta order는 후속 단계다.",
           "acceptance": "category count·중복 category sum·donut hole·no axes/grid·하위 edit chain이 chart 계약과 일치. Facade-child semantic/graphic 동등성.",
           "contractEvidence": "phase3/CONTRACT_REVIEW.md",
-          "status": "contract-proposed"
+          "status": "contract-approved-awaiting-visual-target"
         },
         {
           "id": "R6-P3-W2",
@@ -353,7 +354,7 @@
           "scope": "Baseline-only createDensityPlot을 제안한다. 기존 KDE와 densityChannel을 재사용하고 groupBy와 color는 별도 명시하며 color는 retained group field만 지원한다. Orientation edit와 raw metadata join은 추가하지 않는다.",
           "acceptance": "세로/가로·grouped density의 값과 영역이 기존 chain과 동일. editDensity/editAreaMark/editScale 후 owner 유지.",
           "contractEvidence": "phase3/CONTRACT_REVIEW.md",
-          "status": "contract-proposed"
+          "status": "contract-approved-awaiting-visual-target"
         },
         {
           "id": "R6-P3-W3",
@@ -365,10 +366,10 @@
           "scope": "필수 x/y를 받는 createHorizonPlot을 제안한다. 기존 createCoordinate로 좌표를 연결하고 encodeHorizon 뒤 explicit opacity를 적용한다. H0는 x guide만 허용하며 기존 lower guide escape는 유지한다.",
           "acceptance": "signed data와 editHorizon의 revision 검증. Folded y를 원래 양적 축처럼 표시하거나 internal band color legend를 자동 생성하지 않음.",
           "contractEvidence": "phase3/CONTRACT_REVIEW.md",
-          "status": "contract-proposed"
+          "status": "contract-approved-awaiting-visual-target"
         }
       ],
-      "activity": "awaiting-contract-approval",
+      "activity": "visual-target-authoring",
       "contractEvidence": "phase3/CONTRACT_REVIEW.md",
       "baselineEvidence": "phase3/baseline-results.json",
       "baselineCommit": "9625e71c374868756652fb8dff8153dc61500c6e",
@@ -387,7 +388,14 @@
       ],
       "proposedVisualTargets": 9,
       "proposedPackageBoundary": "full-only; existing full/basic/svg gzip ceilings unchanged",
-      "reviewPackageCommit": "bd18718a9c1aed5f91b485bc1aeab54616e9e5a3"
+      "reviewPackageCommit": "bd18718a9c1aed5f91b485bc1aeab54616e9e5a3",
+      "contractApproval": {
+        "date": "2026-09-05",
+        "userDirection": "승인한다",
+        "reviewCommit": "bd18718a9c1aed5f91b485bc1aeab54616e9e5a3",
+        "approvalBaselineCommit": "0f3531ae9c242190df9457b1ed4289491963ba77",
+        "scope": "P3-C01–C07, Planned 등록과 비시각 준비·9개 primitive target 작성. V 승인 전 신규 public 시각 flow 구현 차단; bundle ceilings 유지."
+      }
     },
     {
       "id": 4,
@@ -1393,7 +1401,7 @@
       "id": "F01",
       "title": "Pie / Donut",
       "kind": "proposed-family",
-      "status": "proposed",
+      "status": "planned",
       "primaryPhase": 3,
       "primaryWorkPackage": "R6-P3-W1",
       "relatedWorkPackages": [
@@ -1406,7 +1414,7 @@
       "recommended": "Category count와 explicit weighted sum의 createPiePlot을 제안한다. Donut은 arc.innerRadius로 작성하고 별도 alias는 추가하지 않는 방향이다. Color는 category 기본, guide는 legend만이며 labels/theta order는 후속 단계다.",
       "acceptance": "category count·중복 category sum·donut hole·no axes/grid·하위 edit chain이 chart 계약과 일치. Facade-child semantic/graphic 동등성.",
       "evidence": "audit/REPORT.md: F01",
-      "disposition": "phase3-contract-ready-for-review-unapproved",
+      "disposition": "phase3-contract-approved-awaiting-visual-target",
       "contractEvidence": "phase3/CONTRACT_REVIEW.md"
     },
     {
@@ -1489,7 +1497,7 @@
       "id": "F06",
       "title": "Density",
       "kind": "proposed-family",
-      "status": "proposed",
+      "status": "planned",
       "primaryPhase": 3,
       "primaryWorkPackage": "R6-P3-W2",
       "relatedWorkPackages": [
@@ -1502,14 +1510,14 @@
       "recommended": "Baseline-only createDensityPlot을 제안한다. 기존 KDE와 densityChannel을 재사용하고 groupBy와 color는 별도 명시하며 color는 retained group field만 지원한다. Orientation edit와 raw metadata join은 추가하지 않는다.",
       "acceptance": "세로/가로·grouped density의 값과 영역이 기존 chain과 동일. editDensity/editAreaMark/editScale 후 owner 유지.",
       "evidence": "audit/REPORT.md: F06",
-      "disposition": "phase3-contract-ready-for-review-unapproved",
+      "disposition": "phase3-contract-approved-awaiting-visual-target",
       "contractEvidence": "phase3/CONTRACT_REVIEW.md"
     },
     {
       "id": "F07",
       "title": "Horizon",
       "kind": "proposed-family",
-      "status": "proposed",
+      "status": "planned",
       "primaryPhase": 3,
       "primaryWorkPackage": "R6-P3-W3",
       "relatedWorkPackages": [
@@ -1522,7 +1530,7 @@
       "recommended": "필수 x/y를 받는 createHorizonPlot을 제안한다. 기존 createCoordinate로 좌표를 연결하고 encodeHorizon 뒤 explicit opacity를 적용한다. H0는 x guide만 허용하며 기존 lower guide escape는 유지한다.",
       "acceptance": "signed data와 editHorizon의 revision 검증. Folded y를 원래 양적 축처럼 표시하거나 internal band color legend를 자동 생성하지 않음.",
       "evidence": "audit/REPORT.md: F07",
-      "disposition": "phase3-contract-ready-for-review-unapproved",
+      "disposition": "phase3-contract-approved-awaiting-visual-target",
       "contractEvidence": "phase3/CONTRACT_REVIEW.md"
     },
     {

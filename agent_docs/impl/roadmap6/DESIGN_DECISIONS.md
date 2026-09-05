@@ -8,9 +8,9 @@
 K01–K06과 K08의 Phase 2 적용 범위를 [구체 계약 검토](phase2/CONTRACT_REVIEW.md)에서 상세화했다.
 그 문서의 Phase 2 범위는 구현·검증하고 R6-P2-X 승인을 기록했다. 후속 metadata schema·layout·chart API는 함께 승인하거나 Current로 승격하지 않는다.
 
-K02–K06의 Phase 3 적용은 [P3-C01–C07 계약 제안](phase3/CONTRACT_REVIEW.md)에 구체화했으며 A 미승인이다.
+K02–K06의 Phase 3 적용은 [P3-C01–C07 계약 제안](phase3/CONTRACT_REVIEW.md)에 구체화했으며 2026-09-05 R6-P3-A 사용자 승인을 기록했다.
 새 3개 full-only facade, 별도 Donut alias 미추가, count/explicit sum, Density group-field color, Horizon x-only
-guide와 existing coordinate child·post-encode opacity, 현행 bundle 상한 유지가 이번 검토 범위다.
+guide와 existing coordinate child·post-encode opacity, 현행 bundle 상한 유지가 승인된 범위다. Public 시각 flow는 V 승인 전까지 차단한다.
 
 ## 결정 원칙
 

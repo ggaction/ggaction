@@ -1,6 +1,6 @@
 # Roadmap 6 — Density
 
-**상태: R6-P3-A Proposed / 미승인·미구현.** 새 `createDensityPlot`은 아직 Current API가 아니다.
+**상태: R6-P3-A approved / Planned·미구현.** 새 `createDensityPlot`은 아직 Current API가 아니다.
 [Phase 3 계약 검토](../phase3/CONTRACT_REVIEW.md)의 P3-C01·C04·C06–C07이 이 chart의 승인 제안이다.
 연결 F06·D02·D04, owner [Phase 3 W2](../phase3/GOAL.md).
 
@@ -10,7 +10,7 @@
 Baseline density의 기존 통계·orientation owner를 재사용한다. Violin의 category placement와 Raincloud composition은 별도다.
 
 ~~~typescript
-// Proposed; existing referenced option types keep their current meaning.
+// Planned; existing referenced option types keep their current meaning.
 type DensityPlotLegendOptions = Omit<FilledMarkLegendOptions, "count" | "gradient" | "channels"> & {
   channels?: readonly ["color"];
 };

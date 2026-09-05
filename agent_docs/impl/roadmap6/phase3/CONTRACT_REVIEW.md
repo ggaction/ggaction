@@ -1,7 +1,7 @@
 # R6-P3-A — Pie/Donut·Density·Horizon 계약 검토
 
-상태: **ready-for-review / 미승인·미구현**. Phase 2 X에 대한 2026-09-05 “승인한다”는
-Phase 2 결과 승인으로 기록했다. 이 문서의 새 API를 승인한 것으로 재사용하지 않는다.
+상태: **approved contract / 미구현**. 2026-09-05 사용자가 Phase 3 A 승인 질문에 “승인한다”라고 답했다.
+검토 package `bd18718a9c1aed5f91b485bc1aeab54616e9e5a3`, 승인 기준 HEAD `0f3531ae9c242190df9457b1ed4289491963ba77`의 P3-C01–C07을 승인했다.
 범위는 F01·F06·F07이며 F20은 제외한다. 원격 검토 ref와 승인 상태는 [GATES.md](GATES.md)가 소유한다.
 
 ## 이번에 확정할 결정

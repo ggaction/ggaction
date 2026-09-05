@@ -1,6 +1,6 @@
 # Roadmap 6 — Horizon
 
-**상태: R6-P3-A Proposed / 미승인·미구현.** `createHorizonPlot`은 Current API가 아니다.
+**상태: R6-P3-A approved / Planned·미구현.** `createHorizonPlot`은 Current API가 아니다.
 [Phase 3 계약 검토](../phase3/CONTRACT_REVIEW.md)의 P3-C01·C05–C07을 적용한다.
 연결 F07·D04, owner [Phase 3 W3](../phase3/GOAL.md).
 
@@ -10,7 +10,7 @@
 Folded y의 0..1은 원본 amplitude 축이 아니다. 여러 group은 같은 panel에 overlay하며 small multiples를 만들지 않는다.
 
 ~~~typescript
-// Proposed; referenced Horizon types preserve their current meaning.
+// Planned; referenced Horizon types preserve their current meaning.
 type HorizonPlotGuideOptions = {
   axes?: false | (Omit<CartesianAxesOptions, "y"> & { y?: false });
   grid?: false | (Pick<CartesianGridOptions, "vertical"> & { horizontal?: false });

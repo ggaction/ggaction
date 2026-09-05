@@ -304,7 +304,7 @@ Primary owner는 누락 방지를 위한 책임 단위이며, 관련 작업이 �
 - 수정·추가 방향: Category count와 explicit weighted sum의 createPiePlot을 제안한다. Donut은 arc.innerRadius로 작성하고 별도 alias는 추가하지 않는 방향이다. Color는 category 기본, guide는 legend만이며 labels/theta order는 후속 단계다.
 - 완료 검증: category count·중복 category sum·donut hole·no axes/grid·하위 edit chain이 chart 계약과 일치. Facade-child semantic/graphic 동등성.
 - 근거: audit/REPORT.md: F01. [원래 조사](audit/REPORT.md)
-- 처분: [Phase 3 A 계약 package](phase3/CONTRACT_REVIEW.md)는 ready-for-review다. 52건 baseline과 176건 기존 tests를 확인했으며 새 API는 미승인·미구현이다.
+- 처분: [Phase 3 A 계약](phase3/CONTRACT_REVIEW.md)을 사용자 승인으로 기록했다. 새 API는 Planned이며 V 승인 뒤 public flow를 구현한다.
 
 ### F02 — Polar Scatter / Line
 
@@ -344,7 +344,7 @@ Primary owner는 누락 방지를 위한 책임 단위이며, 관련 작업이 �
 - 수정·추가 방향: Baseline-only createDensityPlot을 제안한다. 기존 KDE와 densityChannel을 재사용하고 groupBy와 color는 별도 명시하며 color는 retained group field만 지원한다. Orientation edit와 raw metadata join은 추가하지 않는다.
 - 완료 검증: 세로/가로·grouped density의 값과 영역이 기존 chain과 동일. editDensity/editAreaMark/editScale 후 owner 유지.
 - 근거: audit/REPORT.md: F06. [원래 조사](audit/REPORT.md)
-- 처분: [Phase 3 A 계약 package](phase3/CONTRACT_REVIEW.md)는 ready-for-review다. 52건 baseline과 176건 기존 tests를 확인했으며 새 API는 미승인·미구현이다.
+- 처분: [Phase 3 A 계약](phase3/CONTRACT_REVIEW.md)을 사용자 승인으로 기록했다. 새 API는 Planned이며 V 승인 뒤 public flow를 구현한다.
 
 ### F07 — Horizon
 
@@ -352,7 +352,7 @@ Primary owner는 누락 방지를 위한 책임 단위이며, 관련 작업이 �
 - 수정·추가 방향: 필수 x/y를 받는 createHorizonPlot을 제안한다. 기존 createCoordinate로 좌표를 연결하고 encodeHorizon 뒤 explicit opacity를 적용한다. H0는 x guide만 허용하며 기존 lower guide escape는 유지한다.
 - 완료 검증: signed data와 editHorizon의 revision 검증. Folded y를 원래 양적 축처럼 표시하거나 internal band color legend를 자동 생성하지 않음.
 - 근거: audit/REPORT.md: F07. [원래 조사](audit/REPORT.md)
-- 처분: [Phase 3 A 계약 package](phase3/CONTRACT_REVIEW.md)는 ready-for-review다. 52건 baseline과 176건 기존 tests를 확인했으며 새 API는 미승인·미구현이다.
+- 처분: [Phase 3 A 계약](phase3/CONTRACT_REVIEW.md)을 사용자 승인으로 기록했다. 새 API는 Planned이며 V 승인 뒤 public flow를 구현한다.
 
 ### F08 — Rug / Strip
 

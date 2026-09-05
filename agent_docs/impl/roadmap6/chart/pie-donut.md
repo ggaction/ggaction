@@ -1,6 +1,6 @@
 # Roadmap 6 — Pie / Donut
 
-**상태: R6-P3-A Proposed / 미승인·미구현.** 아래 `createPiePlot`은 최종 승인 제안이며 Current API가 아니다.
+**상태: R6-P3-A approved / Planned·미구현.** 아래 `createPiePlot`은 승인된 계약이며 Current API가 아니다.
 [Phase 3 계약 검토](../phase3/CONTRACT_REVIEW.md)의 P3-C01–C03·C06–C07을 적용한다.
 연결 항목 F01·D05·D13·D14, owner [Phase 3 W1](../phase3/GOAL.md).
 
@@ -10,7 +10,7 @@ Category별 count 또는 nonnegative weighted sum의 부분-전체 관계다. Do
 독립 `createDonutPlot` alias는 추가하지 않고 검색의 donut/doughnut 동의어를 같은 facade로 연결한다.
 
 ~~~typescript
-// Proposed; not yet exported.
+// Planned; not yet exported.
 type PieCategory = string | {
   field: string;
   fieldType?: "nominal" | "ordinal";

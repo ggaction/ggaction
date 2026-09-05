@@ -2,7 +2,7 @@
 
 ## 상태와 목표
 
-상태: in-progress — A 계약 package는 ready-for-review다. Phase 3의 A/V/X는 아직 승인되지 않았으며 API 구현은 미착수다. [구체 계약](CONTRACT_REVIEW.md)의 P3-C01–C07과 [검증·consumer matrix](VALIDATION.md)를 검토한다.
+상태: in-progress — A 계약을 사용자 승인으로 기록했다. Planned 등록과 primitive target 작성을 진행하며 V/X는 아직 미승인이다. [구체 계약](CONTRACT_REVIEW.md)의 P3-C01–C07과 [검증·consumer matrix](VALIDATION.md)를 검토한다.
 
 가장 직접적인 상위 계층 공백을 기존 domain owner 위에서 메운다. Pie를 우선 납품하고 Density·Horizon도 같은 기준으로 완성한다.
 

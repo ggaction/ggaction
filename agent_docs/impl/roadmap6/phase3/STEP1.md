@@ -7,7 +7,7 @@
 - [x] 52건 baseline probe와 176건 관련 기존 tests 확인
 - [x] A 계약 제안·호환성·consumer matrix·9개 V target 계획 작성
 - [x] A package 최종 검증·commit/push·exact remote ref 기록
-- [ ] A 명시적 사용자 승인 기록
+- [x] A 명시적 사용자 승인 기록
 - [ ] 승인된 새 계약의 Planned 등록과 비시각 준비
 - [ ] 9개 primitive targets 작성·표시·V 승인
 - [ ] R6-P3-W1 Pie/Donut public flow와 lower lifecycle
@@ -16,7 +16,7 @@
 - [ ] Same-run public/primitive parity·누적 검증·문서·원장 동기화
 - [ ] X package commit/push와 명시적 사용자 승인 기록
 
-완료 체크는 계약 제안 준비까지다. A/V/X의 승인이나 새 API의 구현 완료를 뜻하지 않는다.
+A 계약 준비·원격 고정과 사용자 승인까지 완료했다. V/X 승인이나 새 API의 구현 완료를 뜻하지 않는다.
 [계약 검토](CONTRACT_REVIEW.md), [Gate](GATES.md), [검증](VALIDATION.md)가 현재 evidence를 소유한다.
 
 ## 실행 순서와 경계
@@ -46,4 +46,5 @@
 - Approval baseline: `9625e71c374868756652fb8dff8153dc61500c6e`.
 - Source/types는 Phase 2 검증본과 동일. A baseline script·문서만 작성했다.
 - 상세 current observations: [baseline-results.json](baseline-results.json).
-- Production implementation·new render·new type check는 미실행이며 A/V 승인 뒤 수행한다.
+- A 승인 기준 HEAD는 `0f3531ae9c242190df9457b1ed4289491963ba77`이며 사용자 답은 “승인한다”다.
+- Production public flow·new render·new type check는 아직 미실행. Primitive는 A 승인에 따라 작성하고 public flow는 V 승인 뒤 구현한다.
