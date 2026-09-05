@@ -20,7 +20,7 @@
 
 `removeLegend({target?,channels})`에서 categorical combined block의 일부 channel 제거를 atomic reauthor로 제공한다. Encodings/mark는 유지하고 남은 legend channels와 category-to-symbol mapping만 갱신한다. Empty remaining block은 제거한다. `editLegend({target?,channels})`는 같은 target의 명시적 supported channel selection으로 legend resource를 재작성하는 경로다. 기존 layout/text/visibility/compatible recipe/order를 보존하며 다른 kind로 바뀌어 해석할 수 없는 explicit settings는 오류로 알린다. Full/Basic이 실제 지원하는 channel/kind 경계를 유지한다.
 
-[#86](https://github.com/ggaction/ggaction/issues/86)의 shape-only + unrelated line crash도 이 재작성 경로에서 제거한다. 자동 symbol과 explicit layered symbol의 provenance를 구분하여 남은 channel을 설명하는 recipe를 유지한다. Data/scale palette를 legend 순서에 맞춰 재할당하지 않는다. Color/shape/dash 일부 제거, size block 유지, hidden/custom/auto title, multiple target, inverse authoring order를 검증한다.
+[#86](https://github.com/ggaction/ggaction/issues/86)의 shape-only + unrelated line crash는 [선행 수정·검증](RESULTS_W2_SHAPE.md)을 완료했다. 자동 symbol과 explicit layered symbol의 provenance를 구분하여 남은 channel을 설명하는 recipe를 유지한다. Data/scale palette를 legend 순서에 맞춰 재할당하지 않는다. Color/shape/dash 일부 제거, size block 유지, hidden/custom/auto title, multiple target, inverse authoring order를 검증한다.
 
 ## C — 명시적 layout과 family×edge 수렴
 

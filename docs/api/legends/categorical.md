@@ -39,11 +39,17 @@ Every categorical legend uses the same right-side default:
 | grouped ordinal bar | `color` | `right` | swatch |
 | grouped area | `color` | `right` | swatch |
 | point | explicitly selected `color` only | `right` | swatch |
+| point | explicitly selected `shape` only | `right` | typed point |
 | point + matching line | `color` + `shape` | `right` | line over typed point |
 | quantitative point size | `size` | `right`, standalone or below point series | five equal-area circles |
 | quantitative/temporal point color | `color` | `right` | continuous gradient with five labels |
 | discretized quantitative point color | `color` | `right` | ordered interval swatches |
 | quantitative point opacity | `opacity` | `right` | five constant-size circles with sampled opacity |
+
+A shape-only point legend also works when the chart contains unrelated lines.
+The automatic line-and-point symbol requires the point and line to share both
+the encoded color field and color scale. Removing the point's color encoding
+preserves its remaining shape legend.
 
 | Option | Type | Default |
 | --- | --- | --- |

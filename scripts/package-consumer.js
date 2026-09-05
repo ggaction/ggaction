@@ -476,6 +476,18 @@ async function testNodeConsumer(directory) {
         "encodeColor"
       ]
     );
+    const shapeLegendBase = chart().createCanvas({ width: 640, height: 420, margin: { right: 180 } })
+      .createData({ values: [{ x: 1, y: 2, group: "A" }, { x: 2, y: 3, group: "B" }] })
+      .createPointMark({ id: "shapePoints" }).encodeX({ field: "x" }).encodeY({ field: "y" })
+      .encodeShape({ field: "group" }).encodeColor({ field: "group" })
+      .createLegend({ channels: ["color", "shape"] })
+      .createLineMark({ id: "unrelatedLine" }).encodeX({ field: "x" }).encodeY({ field: "y" });
+    const shapeLegend = shapeLegendBase.removeEncoding({ target: "shapePoints", channel: "color" });
+    assert.deepEqual(shapeLegend.semanticSpec.guides.legend.series.channels, ["shape"]);
+    assert.deepEqual(shapeLegend.guideConfigs.legend.series.symbol.layers.map(layer => layer.type), ["point"]);
+    assert.equal(shapeLegend.graphicSpec.objects.seriesLegendSymbolPoints.items.length, 2);
+    assert.match(renderToSVG(shapeLegend), /<svg /);
+
     const editedSizeLegend = chart().createCanvas({ width: 640, height: 420, margin: { right: 180 } })
       .createData({ values: [{ x: 1, y: 2, m: 10 }, { x: 2, y: 3, m: 30 }] })
       .createPointMark().encodeX({ field: "x" }).encodeY({ field: "y" })

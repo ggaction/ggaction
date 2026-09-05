@@ -300,10 +300,11 @@ export function resolveLegendCreationPlan(program, args = {}, layers = program.s
         "Combined point series and size legends currently require a side position."
       );
     }
-    const hasMatchingLine = layers.some(candidate =>
+    const pointColor = requestedPoint.encoding?.color;
+    const hasMatchingLine = pointColor?.scale !== undefined && layers.some(candidate =>
       candidate.mark?.type === "line" &&
-      candidate.encoding?.color?.field === requestedPoint.encoding.color.field &&
-      candidate.encoding.color.scale === requestedPoint.encoding.color.scale
+      candidate.encoding?.color?.field === pointColor.field &&
+      candidate.encoding?.color?.scale === pointColor.scale
     );
     const symbol = categoricalArgs.symbol ?? {
       layers: [

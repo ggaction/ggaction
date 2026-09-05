@@ -48,6 +48,9 @@ type TitleWrap = "word" | "character";
   point block을 선택한다. Opacity는 단독 channel만 지원한다.
 - Point의 explicit color-only selection은 color swatch legend를 만들고, shape 또는 composite channel
   선택은 typed point series legend를 만든다.
+- Shape-only point legend는 color binding 없이도 생성·재생성한다. 다른 line의 존재는 이 경로에 영향을 주지 않는다.
+  Automatic line+point recipe는 point와 line 모두 같은 color field와 scale을 공유할 때만 추론한다.
+  Evidence: `test/unit/actions/guides/shape-legend-ownership.test.js` (creation, color removal, Canvas/shape-scale replay).
 - Explicit `["size"]` 또는 유일한 size-only point는 categorical dispatch보다 먼저 standalone size legend를
   선택한다. Multiple size points는 explicit target을 요구한다. Standalone은 right만 지원하고 combined
   point-series+size block은 right/left를 지원한다.

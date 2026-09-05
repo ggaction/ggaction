@@ -12,7 +12,8 @@
 - [x] W1 A3 선행 오류: dimension 재배치 뒤 stale axis 수정 — [검증](RESULTS_PARALLEL_REPLAY.md)
 - [ ] R6-P5-W2 Legend content와 edge layout — [계약](CONTRACT_W2.md)
 - [x] W2 A standalone size editor/owner isolation — [검증](RESULTS_W2_SIZE.md)
-- [ ] W2 B combined content 재작성과 shape-only 오류 #86
+- [x] W2 B 선행 shape-only 오류 #86 — [검증](RESULTS_W2_SHAPE.md)
+- [ ] W2 B combined content 부분 제거·재작성과 recipe provenance
 - [ ] W2 C 명시적 bottom mode와 four-edge layout, 오류 #87
 - [ ] R6-P5-W3 Final-item labels·reference·common format
 - [ ] R6-P5-W4 Program theme와 local override

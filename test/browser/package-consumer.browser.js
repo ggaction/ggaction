@@ -28,6 +28,7 @@ test.before(async () => {
     <canvas id="basic" aria-label="Basic entry scatterplot"></canvas>
     <canvas id="polar-components" aria-label="Polar axis component creation"></canvas>
     <canvas id="size-legend" aria-label="Edited standalone size legend"></canvas>
+    <canvas id="shape-legend" aria-label="Shape legend after color removal"></canvas>
     <canvas id="parallel-reencoded" aria-label="Reordered Parallel dimension axes"></canvas>
     <div id="svg"></div><div id="svg-resources"></div><script type="importmap">
     {"imports":{"ggaction":"/node_modules/ggaction/src/index.js","ggaction/basic":"/node_modules/ggaction/src/basic.js","ggaction/svg":"/node_modules/ggaction/src/renderers/svg.js"}}
@@ -196,6 +197,14 @@ test.before(async () => {
         .createParallelAxis({ field: "first", line: false, labels: false, title: false, ticks: {} })
         .removeParallelAxis({ field: "second" });
       render(styledParallel, document.getElementById("parallel-reencoded").getContext("2d"));
+      const shapeLegend = chart().createCanvas({ width: 640, height: 420, margin: { right: 180 } })
+        .createData({ values: [{ x: 1, y: 2, group: "A" }, { x: 2, y: 3, group: "B" }] })
+        .createPointMark({ id: "shapePoints" }).encodeX({ field: "x" }).encodeY({ field: "y" })
+        .encodeShape({ field: "group" }).encodeColor({ field: "group" })
+        .createLegend({ channels: ["color", "shape"] })
+        .createLineMark({ id: "unrelatedLine" }).encodeX({ field: "x" }).encodeY({ field: "y" })
+        .removeEncoding({ target: "shapePoints", channel: "color" });
+      render(shapeLegend, document.getElementById("shape-legend").getContext("2d"));
       const editedSizeLegend = chart().createCanvas({ width: 640, height: 420, margin: { right: 180 } })
         .createData({ values: [{ x: 1, y: 2, m: 10 }, { x: 2, y: 3, m: 30 }] })
         .createPointMark().encodeX({ field: "x" }).encodeY({ field: "y" })
@@ -206,6 +215,9 @@ test.before(async () => {
       render(editedSizeLegend, document.getElementById("size-legend").getContext("2d"));
       document.querySelector("#status").textContent = "complete";
       window.__ggactionConsumer = {
+        shapeLegendChannels: shapeLegend.semanticSpec.guides.legend.series.channels,
+        shapeLegendItems: shapeLegend.graphicSpec.objects.seriesLegendSymbolPoints.items.length,
+        shapeLegendSVG: renderToSVG(shapeLegend).startsWith("<svg "),
         sizeLegendRadii: editedSizeLegend.graphicSpec.objects.sizeLegendSymbols.items.map(item => item.properties.radius),
         sizeLegendTitle: editedSizeLegend.graphicSpec.objects.sizeLegendTitle.properties.text,
         hiddenSizeTitle: !renderToSVG(hiddenSizeLegend).includes("Mass"),
@@ -299,6 +311,9 @@ test("imports and renders the packed browser entries", async () => {
     waitFor: () => window.__ggactionConsumer !== undefined
   });
   assert.deepEqual(await windowValue(page, "__ggactionConsumer"), {
+    shapeLegendChannels: ["shape"],
+    shapeLegendItems: 2,
+    shapeLegendSVG: true,
     sizeLegendRadii: [2, Math.sqrt(20), 6],
     sizeLegendTitle: "Mass",
     hiddenSizeTitle: true,
