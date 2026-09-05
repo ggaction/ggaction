@@ -31,9 +31,16 @@ type TitleWrap = "word" | "character";
 - Sampled opacity legend는 active quantitative opacity scale이 있는 Point와 Line을 지원한다.
   Line도 기존 circle sample recipe를 사용하며 constant assignment는 자신의 opacity block만 제거한다.
 
-- Signature: `createLegend({ target?, channels?, position?, align?, direction?, columns?, offset?, titlePosition?, title?, symbol?, labels?, titleStyle?, itemGap?, border?, count?, gradient? })`.
+- Signature: `createLegend({ target?, channels?, position?, align?, direction?, columns?, offset?, titlePosition?, title?, symbol?, labels?, titleStyle?, itemGap?, border?, count?, gradient?, order? })`.
 - `target`: compatible mark ID; 생략하면 current 또는 유일한 eligible mark를 추론한다. Sequential gradient는
   point와 aggregate bar를 지원한다.
+- `order`: categorical 전용 `"scale" | { values: readonly CategoryValue[] } | { channel: "x"|"y"|"theta" }`.
+  생략은 기존 scale domain 순서. Explicit values는 nonempty unique partial list이며 빠진 값은 source first appearance 순서로 붙이며, source에 없는 explicit scale-domain 항목도 마지막에 유지한다.
+  Unknown/duplicate/non-scalar는 오류. Link는 같은 target의 같은 categorical field와 동일 category set을 요구한다.
+  Policy는 semantic `guide.legend.color/series.order`에 저장하며 config에는 resolved item order만 저장한다.
+  각 item의 color/shape/dash는 원래 scale에서 category 값으로 조회하므로 팔레트 배정이 바뀌지 않는다.
+  Linked position scale/order 변경은 범례도 갱신한다. 연결 인코딩 제거·field/category-set 불일치는 atomic 오류이며
+  먼저 `editLegend({ order: "scale" })`로 policy를 제거할 수 있다. Continuous/interval/size/stroke-width/opacity는 order를 거부한다.
 - `channels`: unique compatible subset of
   `"color" | "strokeDash" | "strokeWidth" | "shape" | "size" | "opacity"`. 생략하면
   target의 compatible channels를 추론한다. Sequential color는 gradient, field-driven opacity는 sampled
@@ -68,8 +75,8 @@ type TitleWrap = "word" | "character";
 - `gradient`: sequential color 전용 `{ length?, thickness? }`, defaults `120`과 `12`.
 - Discretized quantitative color는 right/vertical interval swatches를 추론하고 `offset`, `itemGap`,
   swatch width/height/stroke, label/title style을 concrete graphics로 materialize한다.
-- Effect: categorical semantics에는 scale/channel/title만 저장하고 placement, recipe, fonts, border는
-  graphical config와 concrete collection으로 만든다. resolved domain order를 item order로 사용하며
+- Effect: categorical semantics에는 scale/channel/title와 선택적 order policy를 저장하고 placement, recipe, fonts, border는
+  graphical config와 concrete collection으로 만든다. resolved appearance domain에 order policy를 적용한 순서를 item order로 사용하며
   categorical/discretized resolved item cardinality는 최대 `10,000`이다.
 - Composite layers share one item-local origin. Their concrete union bounds determine label placement and
   declared layer order determines rendering order in right, top, and bottom layouts.
@@ -96,7 +103,7 @@ type TitleWrap = "word" | "character";
 
 ### Formal values — `createLegend`
 
-- Implemented: `createLegend({ target?: UserId; channels?: readonly LegendChannel[]; position?: LegendPosition; align?: LegendAlign; direction?: LegendDirection; columns?: PositiveInteger; offset?: NonNegativeFinite; titlePosition?: "top" | "left"; title?: NonEmptyString; symbol?: "auto" | LegendSymbolLayer | { layers: readonly LegendSymbolLayer[] }; labels?: TextStyle; titleStyle?: TextStyle; itemGap?: PositiveFinite; border?: LegendBorder; count?: IntegerAtLeast2; gradient?: { length?: PositiveFinite; thickness?: PositiveFinite } } = {})`
+- Implemented: `createLegend({ target?: UserId; channels?: readonly LegendChannel[]; position?: LegendPosition; align?: LegendAlign; direction?: LegendDirection; columns?: PositiveInteger; offset?: NonNegativeFinite; titlePosition?: "top" | "left"; title?: NonEmptyString; symbol?: "auto" | LegendSymbolLayer | { layers: readonly LegendSymbolLayer[] }; labels?: TextStyle; titleStyle?: TextStyle; itemGap?: PositiveFinite; border?: LegendBorder; count?: IntegerAtLeast2; gradient?: { length?: PositiveFinite; thickness?: PositiveFinite }; order?: "scale" | { values: readonly CategoryValue[] } | { channel: "x"|"y"|"theta" } } = {})`
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
@@ -162,9 +169,16 @@ type TitleWrap = "word" | "character";
   `test/unit/layout/legend-lane.test.js`, `test/unit/actions/guides/multi-legend-lane.test.js`, and
   `test/charts/cars-multi-legend-layout/`.
 
+## Categorical order evidence
+
+`test/unit/actions/guides/legend-order.test.js`는 creation/edit/reset, domain·field compatibility, shared scale,
+encoding removal/recreation, combined legend와 Polar 가이드를 검증한다. `test/charts/theta-legend-order/`는
+독립 수치 oracle, primitive/public graphic·Canvas·decoded PNG·SVG/PDF 동등성을 검사한다.
+`test/contracts/category-legend-order-types.test.js`는 positive/negative declaration 계약을 검사한다.
+
 ## `editLegend`
 
-- Signature: `editLegend({ target?, position?, align?, direction?, columns?, offset?, titlePosition?, title?, symbol?, labels?, titleStyle?, itemGap?, border?, count?, gradient? })`.
+- Signature: `editLegend({ target?, position?, align?, direction?, columns?, offset?, titlePosition?, title?, symbol?, labels?, titleStyle?, itemGap?, border?, count?, gradient?, order? })`.
 - `target` selects an existing logical legend by mark ID. It may be omitted only when exactly one target owns all
   active blocks; independent targets are ambiguous.
 - At least one non-target change is required. Semantic `channels` and scale binding are intentionally not editable.
@@ -258,7 +272,7 @@ type TitleWrap = "word" | "character";
 
 ## `editLegendSymbols`
 
-- Signature: `editLegendSymbols({ target?, symbol?, count?, gradient? })`.
+- Signature: `editLegendSymbols({ target?, symbol?, count?, gradient?, order? })`.
 - Legend kind별 기존 symbol/count/gradient validation을 그대로 사용한다.
 
 ### Formal values — `editLegendSymbols`

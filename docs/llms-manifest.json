@@ -1153,8 +1153,8 @@
         "related",
         "area-bounds"
       ],
-      "bytes": 8155,
-      "sha256": "4c0dfe97ded5294cae8ca4037b2150698db933804ae1de7eae2f1e3fab011b1f"
+      "bytes": 8163,
+      "sha256": "2e9a683381037fd1f2666fb331fc418451a1a1a91637c57d005ddb9d1518e7ee"
     },
     {
       "order": 73,
@@ -1214,10 +1214,11 @@
         "category-ordering",
         "ordercategoriesoptions",
         "removecategoryorder-target-channel",
+        "polar-categories-and-legend-order",
         "related"
       ],
-      "bytes": 2527,
-      "sha256": "568486cb4e2de1db1a1250daa99b2a2b6b45ecee707356b94c528b58bc162234"
+      "bytes": 3244,
+      "sha256": "d3f4c8ed3d577beece8120cac77fa1087a4fe860e906e500277f1c5806d7dbd3"
     },
     {
       "order": 77,
@@ -1512,10 +1513,11 @@
       "headings": [
         "categorical-and-size-legends",
         "createlegendoptions",
+        "item-order-without-changing-color",
         "related"
       ],
-      "bytes": 4614,
-      "sha256": "fc9580893934ccaa46d6f8af2ac2b8200687cdc3f714743036ea20bae77ba8b5"
+      "bytes": 5646,
+      "sha256": "74ab56c48502632f388c230fe4eb6e18985b1e34983b8e2474d59904cc9fa93f"
     },
     {
       "order": 97,
@@ -1916,8 +1918,8 @@
         "encodebarwidth",
         "related"
       ],
-      "bytes": 17142,
-      "sha256": "a8ac3053ecae6b02fbf1a59458f19f04c1770e0443d4ce65c459ee48cc9b9e01"
+      "bytes": 17154,
+      "sha256": "b4c1a9f376f1058b779661129d6138094fb77354abc01e7c3b57c2acbad9732d"
     },
     {
       "order": 118,
@@ -1982,8 +1984,8 @@
         "removetitle",
         "related"
       ],
-      "bytes": 7424,
-      "sha256": "91bf973f7846ef364ea473c9c613931b64c8bd190d595bac20daae7526d86dee"
+      "bytes": 7705,
+      "sha256": "998cff9358897588e947b021552b328b3cfb98632f483f23995863733557ca06"
     },
     {
       "order": 120,

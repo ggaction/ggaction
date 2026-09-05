@@ -25,6 +25,7 @@ const LOADERS = Object.freeze({
 });
 
 const EXPECTED_DRAW_ORDER = Object.freeze({
+  "theta-legend-order": ["canvas", "pie", "colorLegendSymbols", "colorLegendLabels", "colorLegendTitle"],
   "area-layout": ["canvas", "horizontalGridLines", "m", "xAxisLine", "xAxisTicks", "xAxisLabels", "xAxisTitle",
     "yAxisLine", "yAxisTicks", "yAxisLabels", "yAxisTitle"],
   "horizon-plot": ["canvas", "verticalGridLines", "horizon",

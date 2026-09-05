@@ -1,5 +1,7 @@
 # Roadmap 6 Phase 4 Step 1 — Baselines layouts and quantitative meaning
 
+[전체 실행 승인](../APPROVAL.md)으로 이후 단계·한도 조정을 승인받았다. 개별 Gate 대기는 이전 이력이며 실제 검증 완료와 구분한다.
+
 ## 진행 상태
 
 - [x] Phase 3 X 사용자 승인과 완료 기록 확인
@@ -16,7 +18,7 @@
 - [x] R6-P4-W1 Area baseline/range와 facade 기능·동등성 구현 — package B 승인·같은 tarball 전체 검증 통과
 - [x] R6-P4-W2 Color와 독립한 layout assignment 기능·호환 구현 — package B 승인·같은 tarball 전체 검증 통과
 - [ ] R6-P4-W3 Rose와 Radial bar
-- [ ] R6-P4-W4 Theta와 legend domain order
+- [x] R6-P4-W4 Theta와 legend domain order — [구현·검증](RESULTS_W4.md)
 - [ ] R6-P4-W5 Diverging midpoint와 scale/legend transition
 - [ ] 모든 시각 variant의 primitive target 작성·표시·V 승인
 - [x] V1에서 승인된 11개 variant의 public 구현과 같은 실행의 primitive/public render 비교

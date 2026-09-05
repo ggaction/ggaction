@@ -2,7 +2,7 @@
 
 ## 상태와 목표
 
-상태: in-progress — Phase 3 X 사용자 승인 뒤 [A 계약](CONTRACT_REVIEW.md)을 layoutSeries 이름 변경과 함께 승인받았다. V1도 승인받아 W1/W2를 구현했다. Package 용량 B 승인과 같은 tarball 재검증을 완료했으며 V2/V3/X는 미승인이다.
+상태: in-progress — Phase 3 X 사용자 승인 뒤 [A 계약](CONTRACT_REVIEW.md)을 layoutSeries 이름 변경과 함께 승인받았다. V1도 승인받아 W1/W2를 구현했다. Package 용량 B와 W4 theta/legend order 검증을 완료했다. 남은 실행은 [로드맵 전체 승인](../APPROVAL.md)을 따른다.
 
 차트 이름보다 먼저 baseline·layout·mapping의 의미를 완성한다. Area, Rose와 Radial bar를 정확한 측정 계약 위에 제공한다.
 
@@ -71,5 +71,5 @@
 ## W1/W2 구현 상태
 
 [결과](RESULTS_V1.md), [11개 승인 표현과의 비교](implementation-v1-results.json), [B 검토](BUNDLE_REVIEW.md).
-Current direct 179 / Planned actions 2, capabilities 3이다. W1/W2의 공개 동작은 구현했으며
-B 승인 후 같은 tarball의 Full/Basic/SVG gzip guard와 전체 installed consumer는 통과했다. W3–W5와 V2/V3/X는 미완료다.
+Current direct 179 / Planned actions 2, capabilities 2이다. W1/W2의 공개 동작은 구현했으며
+B 승인 후 같은 tarball의 Full/Basic/SVG gzip guard와 전체 installed consumer는 통과했다. W4는 [별도 결과](RESULTS_W4.md)처럼 구현·검증했다. W3/W5 및 Phase 전체 통합 검증은 미완료다.

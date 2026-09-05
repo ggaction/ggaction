@@ -3644,7 +3644,7 @@
       "name": "orderCategories",
       "layer": "user-facing",
       "domain": "encodings",
-      "summary": "Assign explicit or computed semantic order to a nominal/ordinal Cartesian x or y position.",
+      "summary": "Assign explicit or computed semantic order to a nominal/ordinal Cartesian x/y or Polar theta position.",
       "signature": "orderCategories(options: OrderCategoriesOptions): ChartProgram;",
       "intents": [
         "order categories",
@@ -3676,7 +3676,7 @@
         {
           "name": "channel",
           "required": true,
-          "type": "\"x\" | \"y\""
+          "type": "\"theta\" | \"x\" | \"y\""
         },
         {
           "name": "values",
@@ -3736,7 +3736,7 @@
         {
           "name": "channel",
           "required": true,
-          "type": "\"x\" | \"y\""
+          "type": "\"theta\" | \"x\" | \"y\""
         }
       ],
       "callPatterns": [
@@ -7734,6 +7734,11 @@
       },
       "options": [
         {
+          "name": "order",
+          "required": false,
+          "type": "LegendOrder | undefined"
+        },
+        {
           "name": "target",
           "required": false,
           "type": "string | undefined"
@@ -7815,7 +7820,7 @@
         }
       ],
       "callPatterns": [
-        "createLegend({ target?, channels?, position?, align?, direction?, columns?, offset?, titlePosition? })"
+        "createLegend({ target?, order?, channels?, position?, align?, direction?, columns?, offset? })"
       ],
       "snippet": "program.createLegend({})",
       "errors": [],
@@ -7853,6 +7858,11 @@
           "name": "title",
           "required": false,
           "type": "string | false | undefined"
+        },
+        {
+          "name": "order",
+          "required": false,
+          "type": "LegendOrder | undefined"
         },
         {
           "name": "target",
@@ -7926,7 +7936,7 @@
         }
       ],
       "callPatterns": [
-        "editLegend({ target?, title?, position?, align?, direction?, columns?, offset?, titlePosition? })"
+        "editLegend({ target?, title?, order?, position?, align?, direction?, columns?, offset? })"
       ],
       "snippet": "program.editLegend({ title: \"title\" })",
       "errors": [],

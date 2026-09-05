@@ -49,6 +49,7 @@ Every categorical legend uses the same right-side default:
 | --- | --- | --- |
 | `target` | compatible mark ID | current or unique compatible mark |
 | `channels` | compatible channel array; continuous guides use one `color` or `opacity` | compatible encoded channels |
+| `order` | `"scale"`, `{ values: [...] }`, or `{ channel: "x"/"y"/"theta" }`; categorical only | `"scale"` |
 | `position` | `right/left/bottom/top`; combined point-size guides use a side | `"right"` |
 | `align` | `"left"`, `"center"`, or `"right"` | `"center"` |
 | `direction` | `"horizontal"` or `"vertical"` | `"horizontal"` |
@@ -98,6 +99,22 @@ densityArea.createLegend({
   offset: 8
 });
 ~~~
+
+## Item order without changing color
+
+`createLegend` and `editLegend` accept the same categorical `order` policy.
+An explicit non-empty list puts those categories first and appends omitted
+categories in source first-appearance order. Explicit scale-domain entries absent
+from the source remain at the end. Unknown and duplicate categories are errors.
+Color, shape, and dash assignments remain attached to category values.
+
+To follow the same target's categorical x, y, or theta domain, use
+`order: { channel: "theta" }` (substitute x or y as needed). The linked encoding
+must use the same field and category set as the legend. Its later order/scale
+changes update the legend. Removing that encoding or changing it to an
+incompatible field/domain fails; first reset with `editLegend({ order: "scale" })`.
+Omitted `order` on an edit preserves the policy. Continuous and interval legends
+do not accept categorical ordering.
 
 ## Related
 

@@ -357,7 +357,7 @@
   },
   "/api/position/category-ordering/": {
     "title": "Category Ordering",
-    "description": "Use orderCategories when a nominal or ordinal x/y position should follow an explicit list or a data derived order.",
+    "description": "Use orderCategories when a nominal or ordinal x/y/theta position should follow an explicit list or a data derived order.",
     "image": "/assets/images/ordered-category-bar.png"
   },
   "/api/position/histogram/": {

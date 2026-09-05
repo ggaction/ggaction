@@ -16,6 +16,7 @@ export const CHANNELS = CATEGORICAL_LEGEND_CHANNELS;
 const OPTIONS = Object.freeze([
   "target",
   "channels",
+  "order",
   "position",
   "align",
   "direction",

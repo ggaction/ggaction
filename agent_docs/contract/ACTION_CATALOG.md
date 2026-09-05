@@ -200,7 +200,6 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | Kind | Capability | Readiness | Contract |
 | --- | --- | --- | --- |
 | parameter | Measured radial mapping | accepted | [Open](planned/QUANTITATIVE_AUTHORING.md#measured-radial-mapping) |
-| parameter | Theta and legend order | accepted | [Open](planned/QUANTITATIVE_AUTHORING.md#theta-and-legend-order) |
 | parameter | Sequential midpoint and transitions | accepted | [Open](planned/QUANTITATIVE_AUTHORING.md#sequential-midpoint-and-transitions) |
 
 ## Internal inventories

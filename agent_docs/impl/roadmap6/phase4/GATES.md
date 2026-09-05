@@ -1,5 +1,7 @@
 # Roadmap 6 Phase 4 Gates — Baselines layouts and quantitative meaning
 
+최신 [로드맵 전체 실행 승인](../APPROVAL.md)으로 남은 V2/V3/X 및 후속 단계의 실행이 승인되었다. 아래 개별 승인 기록은 당시 이력이며 실제 완료 검증은 계속 필요하다.
+
 ## 공통 상태
 
 A/V1/B는 approved이며 V/V2/V3/X는 planned다. V1 시각 목표만 승인되었고 Phase 결과 승인은 아직 없다.

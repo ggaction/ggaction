@@ -350,6 +350,16 @@ async function testNodeConsumer(directory) {
         .resolvedScales.x.domain,
       ["Beta", "Alpha"]
     );
+    const orderedPie = chart().createCanvas({ width: 1000, height: 700, margin: 150 })
+      .createData({ values: [{ category: "A", value: 2 }, { category: "B", value: 3 }, { category: "C", value: 4 }] })
+      .createPiePlot({ category: "category", value: "value", aggregate: "sum" })
+      .orderCategories({ channel: "theta", values: ["C", "A"] })
+      .editLegend({ order: { channel: "theta" } });
+    assert.deepEqual(orderedPie.resolvedScales.theta.domain, ["C", "A", "B"]);
+    assert.deepEqual(orderedPie.resolvedScales.color.domain, ["A", "B", "C"]);
+    assert.deepEqual(orderedPie.graphicSpec.objects.colorLegendLabels.items.map(item => item.properties.text), ["C", "A", "B"]);
+    assert.deepEqual(orderedPie.editLegend({ order: "scale" }).guideConfigs.legend.color.domain, ["A", "B", "C"]);
+    assert.throws(() => orderedPie.removeEncoding({ channel: "theta" }), /Reset linked legend/);
     assert.equal(barFacade.graphicSpec.objects.barPlot.items.length, 2);
     const histogramFacade = chart()
       .createCanvas({ width: 160, height: 120, margin: 20 })
@@ -1337,6 +1347,13 @@ async function testTypeScriptConsumer(directory) {
       .encodeY({ field: "value", aggregate: "sum" })
       .orderCategories(categoryOrderOptions)
       .removeCategoryOrder({ channel: "x" });
+    program.orderCategories({ channel: "theta", values: ["C"] }).removeCategoryOrder({ channel: "theta" });
+    program.createLegend({ order: { channel: "theta" } }).editLegend({ order: "scale" });
+    program.editLegend({ order: { values: ["C", 1, false] } });
+    // @ts-expect-error legend order policies are exclusive
+    program.editLegend({ order: { channel: "theta", values: ["C"] } });
+    // @ts-expect-error radius is not a categorical order channel
+    program.orderCategories({ channel: "radius", values: [1] });
     const barOptions: CreateBarPlotOptions = {
       x: { field: "category", fieldType: "ordinal" },
       y: { field: "value", aggregate: "mean" },

@@ -170,7 +170,7 @@ Bar까지 series-constant로 제한하지 않는다.
 ## P4-C04 — Radius 측정 mode
 
 정확한 H0 호출과 수치식은 [Rose/Radial 계약](../chart/rose-radial-bar.md)에 있다.
-`encodeR`와 기존 alias `encodeRadius`에 Arc 전용 opt-in을 추가한다.
+`encodeR`에 Arc 전용 opt-in을 추가한다. `encodeRadius`는 점의 glyph 크기이며 별칭이 아니다.
 
 ~~~typescript
 type ArcMeasuredRadius = {

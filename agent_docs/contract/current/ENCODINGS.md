@@ -696,7 +696,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 ## `orderCategories`
 
 - Signature: `orderCategories({ target?, channel, values } | { target?, channel, by, direction? })`.
-- `channel`: nominal/ordinal Cartesian `"x" | "y"`. Temporal/quantitative position과 appearance channel은
+- `channel`: nominal/ordinal Cartesian `"x" | "y"` 또는 Polar `"theta"` (Arc/Point/Line). Temporal/quantitative position과 appearance channel은
   지원하지 않는다.
 - `target`: explicit compatible mark ID. 생략하면 current compatible mark, 아니면 unique compatible mark만
   추론하며 ambiguity는 explicit ID를 요구한다.
@@ -709,7 +709,8 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 - `direction`: computed mode의 `"ascending" | "descending"`, 기본값은 ascending이다. Count/summary/category
   tie는 source first appearance 순서를 유지한다.
 - Effect: normalized intent를 `semanticSpec.layers[target].encoding[channel].categoryOrder`에 저장한다. Source
-  row와 semantic scale domain은 바꾸지 않고 resolved scale domain, 모든 compatible scale consumer의 mark
+  theta에서도 weighted Arc의 각 category weight와 기존 color/shape/dash 배정을 보존하며 path vertex·drawing order는 바꾸지 않는다.
+  Source row와 semantic scale domain은 바꾸지 않고 resolved scale domain, 모든 compatible scale consumer의 mark
   geometry, connected axis와 selection item order를 한 action에서 rematerialize한다.
 - Scale authority: semantic scale domain은 `"auto"`여야 한다. Existing explicit domain과 category-order
   assignment를 동시에 두어 precedence를 추측하지 않는다.
@@ -720,7 +721,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 
 ### Formal values — `orderCategories`
 
-- Implemented: `orderCategories({ target?: UserId; channel: "x" | "y" } & ({ values: readonly CategoryValue[] } | { by: "category" | "count" | { field: FieldName; aggregate: "sum" | "mean" | "min" | "max" }; direction?: "ascending" | "descending" }))`.
+- Implemented: `orderCategories({ target?: UserId; channel: "x" | "y" | "theta" } & ({ values: readonly CategoryValue[] } | { by: "category" | "count" | { field: FieldName; aggregate: "sum" | "mean" | "min" | "max" }; direction?: "ascending" | "descending" }))`.
 - Proposed (NOT IMPLEMENTED): locale/natural collation, comparator callbacks, null placement, temporal ordering,
   appearance-channel ordering and source-row reordering.
 
@@ -728,7 +729,9 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 
 - ✅ Covered: complete/partial explicit list, unknown/duplicate values and first-appearance completion.
 - ✅ Covered: category/count and sum/mean/min/max in both direction families, stable ties and caller ownership.
-- ✅ Covered: x/y, bar/point, current/unique/explicit/ambiguous target, incompatible channel/type and shared consumers.
+- ✅ Covered: x/y/theta, Bar/Point/Arc/Polar Line, current/unique/explicit/ambiguous target, incompatible channel/type and shared consumers.
+- ✅ Covered: linked categorical legend order, weighted sector conservation, explicit domain conflicts and reset.
+- Evidence for theta: `test/unit/actions/guides/legend-order.test.js`, `test/charts/theta-legend-order/`, `test/contracts/category-legend-order-types.test.js`.
 - ✅ Covered: scale domain, mark geometry, axes, selection item order, reassignment, shared/independent facet replay.
 - Evidence: `test/unit/grammar/category-order.test.js`,
   `test/unit/actions/encodings/category-order.test.js` and
@@ -744,7 +747,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 
 ### Formal values — `removeCategoryOrder`
 
-- Implemented: `removeCategoryOrder({ target?: UserId; channel: "x" | "y" })`.
+- Implemented: `removeCategoryOrder({ target?: UserId; channel: "x" | "y" | "theta" })`.
 - Proposed (NOT IMPLEMENTED): generic scale-domain removal alias.
 
 ### Value coverage — `removeCategoryOrder`

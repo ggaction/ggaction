@@ -7,7 +7,7 @@ title: Category Ordering
 
 {% include chart-example.html id="ordered-category-bar" %}
 
-Use `orderCategories` when a nominal or ordinal x/y position should follow an
+Use `orderCategories` when a nominal or ordinal x/y/theta position should follow an
 explicit list or a data-derived order. The assignment changes the resolved
 position domain, mark geometry, axis labels, and final selection-item order
 together. It never reorders source rows.
@@ -24,7 +24,7 @@ const ordered = program.orderCategories({
 ```
 
 `target` defaults to the current compatible mark, then the unique compatible
-mark. `channel` is required and accepts categorical Cartesian `"x"` or `"y"`.
+mark. `channel` is required and accepts categorical Cartesian `"x"`/`"y"` and Polar `"theta"` on Arc, Point, or Line marks.
 
 Choose exactly one ordering mode:
 
@@ -60,6 +60,21 @@ Removal deletes the stored order assignment and restores the automatic
 first-appearance domain. The mark and existing connected axis are updated in
 place; the dataset, semantic scale definition, mark ID, and guide identity are
 preserved. Removing a missing assignment is an error.
+
+## Polar categories and legend order
+
+On an existing weighted Pie, these calls put category C first without changing
+its weight or color (fragment; `pie` must already encode categories A, B, and C):
+
+```javascript
+const ordered = pie.orderCategories({ channel: "theta", values: ["C", "A"] });
+const linked = ordered.editLegend({ order: { channel: "theta" } });
+const resetLegend = linked.editLegend({ order: "scale" });
+```
+
+The first call leaves the legend in its appearance-scale order. The second links
+the legend to the target's theta domain. Resetting the legend leaves sector
+positions unchanged. Ordering theta does not assign path vertex or drawing order.
 
 ## Related
 

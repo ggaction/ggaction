@@ -2634,7 +2634,13 @@ export interface LegendBorderOptions {
   background?: string;
 }
 
+export type LegendOrder = "scale" |
+  { values: readonly CategoryValue[]; channel?: never } |
+  { channel: "x" | "y" | "theta"; values?: never };
+
 export interface LegendOptions {
+  /** Categorical item order; preserves the appearance scale's assignments. */
+  order?: LegendOrder;
   target?: string;
   channels?: readonly ("color" | "strokeDash" | "strokeWidth" | "shape" | "size" | "opacity")[];
   position?: "right" | "left" | "bottom" | "top";
@@ -2735,11 +2741,11 @@ export type CategoryOrder =
     };
 export type OrderCategoriesOptions = {
   target?: string;
-  channel: "x" | "y";
+  channel: "x" | "y" | "theta";
 } & CategoryOrder;
 export interface RemoveCategoryOrderOptions {
   target?: string;
-  channel: "x" | "y";
+  channel: "x" | "y" | "theta";
 }
 
 export interface TitleOptions {

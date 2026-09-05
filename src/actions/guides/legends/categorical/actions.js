@@ -1,3 +1,4 @@
+import { normalizeLegendOrder } from "../../../../grammar/categoryOrder.js";
 import { action } from "../../../../core/action.js";
 import { validateOptionObject } from "../../../../core/validation.js";
 import { noOptions, resolveLayout, activeConfig } from "./layout.js";
@@ -150,7 +151,8 @@ export function resolveCategoricalLegendConfig(program, args = {}) {
     program,
     layer,
     options.channels,
-    options.title
+    options.title,
+    args.order === undefined ? undefined : normalizeLegendOrder(args.order)
   );
   const config = {
     target: layer.id,
@@ -211,6 +213,12 @@ export const createCategoricalLegend = action(
           property: "guide.legend.color.title",
           value: definition.title
         });
+    }
+    if (args.order !== undefined && args.order !== "scale") {
+      next = next.editSemantic({
+        property: `guide.legend.${kind}.order`,
+        value: normalizeLegendOrder(args.order)
+      });
     }
     next = next._withLegendConfig(kind, config);
     if (config.border !== false) next = next.createLegendBackground();

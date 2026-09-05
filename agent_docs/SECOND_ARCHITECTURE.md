@@ -732,13 +732,18 @@ line, Polar line, density/error/regression 같은 generated path와 non-row-pres
 position이 완성되면 owning line/area materializer가 같은 branch를 적용한다. Canvas, scale, data/filter,
 selection/highlight와 facet replay도 이 canonical materializer를 호출해 explicit order를 다시 적용한다.
 
-Categorical Cartesian `x | y` order도 scale definition mutation이 아니라 position encoding이 소유하는 semantic
+Categorical Cartesian `x | y`와 Polar `theta` order도 scale definition mutation이 아니라 position encoding이 소유하는 semantic
 assignment다. `encoding[channel].categoryOrder`에는 explicit category list 또는 category/count/summary 계산
 intent를 저장하고 semantic scale의 `domain: "auto"`는 유지한다. Scale materializer가 current dataset에서
 deterministic domain을 풀고, owning action이 scale → connected marks → guides 순서로 explicit materialization
 plan을 실행한다. 그래서 data/facet replay는 stored intent를 다시 계산할 수 있고 source row 순서는 바뀌지
 않는다. Shared facet scale은 base resolved order를 사용하며 independent scale은 각 cell dataset에서 intent를
 다시 푼다. `removeCategoryOrder`는 assignment만 제거해 automatic first-appearance domain으로 복귀한다.
+
+Categorical legend의 선택적 `guide.legend.color/series.order`는 위치 order와 별개다. Explicit values 또는
+같은 target의 categorical channel link를 저장하고, legend resolver가 appearance scale의 value→symbol 배정을
+보존한 item permutation을 계산한다. Linked positional scale은 guide dependency planner의 legend dependency에
+포함하며 reset은 order leaf를 제거한다. Invalid link나 연결 encoding 제거는 public action을 거부한다.
 
 ### Semantic scale
 

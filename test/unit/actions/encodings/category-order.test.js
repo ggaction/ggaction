@@ -204,7 +204,7 @@ test("rejects invalid targets, channels, assignments, and values atomically", ()
   const snapshot = base.semanticSpec;
   assert.throws(
     () => base.orderCategories({ target: "bars", channel: "color", by: "category" }),
-    /channel must be x or y/
+    /channel must be x, y, or theta/
   );
   assert.throws(
     () => base.orderCategories({ target: "bars", channel: "y", by: "category" }),

@@ -7702,7 +7702,7 @@ resolve a channel scale, and explicitly materialize the affected graphics.
 | Draw an aggregate time series | line mark, temporal x and quantitative y | `encodeX`, `encodeY` | [Temporal lines](./api/position/temporal/) |
 | Build vertical aggregate bars | bar mark, ordinal/temporal x and quantitative y | `encodeX`, `encodeY` | [Bar positions](./api/position/ordinal-bars/) |
 | Build horizontal aggregate bars | bar mark, quantitative x and ordinal/temporal y | `encodeX`, `encodeY` | [Bar positions](./api/position/ordinal-bars/) |
-| Order categorical positions | nominal/ordinal x or y | `orderCategories`, `removeCategoryOrder` | [Category ordering](./api/position/category-ordering/) |
+| Order categorical positions | nominal/ordinal x, y, or theta | `orderCategories`, `removeCategoryOrder` | [Category ordering](./api/position/category-ordering/) |
 | Bin and count values | bar mark, quantitative field | `encodeHistogram` or `encodeX` + `encodeY` | [Histograms](./api/position/histogram/) |
 | Estimate a distribution | area mark, quantitative field | `encodeDensity` | [Encodings](./api/encodings/#atomic-density) |
 | Center aligned area series | area mark, quantitative/temporal x, non-negative quantitative y, nominal group | `encodeY({ stack: "center" })` or `encodeColor({ layout: "center" })` | [Color encoding](./api/series/color/#center-stacked-areas) |
@@ -8127,7 +8127,7 @@ fill, and diverging layouts use the quantitative x measure.
 
 # Category Ordering
 
-Use `orderCategories` when a nominal or ordinal x/y position should follow an
+Use `orderCategories` when a nominal or ordinal x/y/theta position should follow an
 explicit list or a data-derived order. The assignment changes the resolved
 position domain, mark geometry, axis labels, and final selection-item order
 together. It never reorders source rows.
@@ -8144,7 +8144,7 @@ const ordered = program.orderCategories({
 ```
 
 `target` defaults to the current compatible mark, then the unique compatible
-mark. `channel` is required and accepts categorical Cartesian `"x"` or `"y"`.
+mark. `channel` is required and accepts categorical Cartesian `"x"`/`"y"` and Polar `"theta"` on Arc, Point, or Line marks.
 
 Choose exactly one ordering mode:
 
@@ -8180,6 +8180,21 @@ Removal deletes the stored order assignment and restores the automatic
 first-appearance domain. The mark and existing connected axis are updated in
 place; the dataset, semantic scale definition, mark ID, and guide identity are
 preserved. Removing a missing assignment is an error.
+
+## Polar categories and legend order
+
+On an existing weighted Pie, these calls put category C first without changing
+its weight or color (fragment; `pie` must already encode categories A, B, and C):
+
+```javascript
+const ordered = pie.orderCategories({ channel: "theta", values: ["C", "A"] });
+const linked = ordered.editLegend({ order: { channel: "theta" } });
+const resetLegend = linked.editLegend({ order: "scale" });
+```
+
+The first call leaves the legend in its appearance-scale order. The second links
+the legend to the target's theta domain. Resetting the legend leaves sector
+positions unchanged. Ordering theta does not assign path vertex or drawing order.
 
 ## Related
 
@@ -10101,6 +10116,7 @@ Every categorical legend uses the same right-side default:
 | --- | --- | --- |
 | `target` | compatible mark ID | current or unique compatible mark |
 | `channels` | compatible channel array; continuous guides use one `color` or `opacity` | compatible encoded channels |
+| `order` | `"scale"`, `{ values: [...] }`, or `{ channel: "x"/"y"/"theta" }`; categorical only | `"scale"` |
 | `position` | `right/left/bottom/top`; combined point-size guides use a side | `"right"` |
 | `align` | `"left"`, `"center"`, or `"right"` | `"center"` |
 | `direction` | `"horizontal"` or `"vertical"` | `"horizontal"` |
@@ -10150,6 +10166,22 @@ densityArea.createLegend({
   offset: 8
 });
 ~~~
+
+## Item order without changing color
+
+`createLegend` and `editLegend` accept the same categorical `order` policy.
+An explicit non-empty list puts those categories first and appends omitted
+categories in source first-appearance order. Explicit scale-domain entries absent
+from the source remain at the end. Unknown and duplicate categories are errors.
+Color, shape, and dash assignments remain attached to category values.
+
+To follow the same target's categorical x, y, or theta domain, use
+`order: { channel: "theta" }` (substitute x or y as needed). The linked encoding
+must use the same field and category set as the legend. Its later order/scale
+changes update the legend. Removing that encoding or changing it to an
+incompatible field/domain fails; first reset with `editLegend({ order: "scale" })`.
+Omitted `order` on an edit preserves the policy. Continuous and interval legends
+do not accept categorical ordering.
 
 ## Related
 
@@ -12733,8 +12765,8 @@ orderCategories({ target?, channel, values })
 orderCategories({ target?, channel, by, direction? })
 ```
 
-Assign explicit or computed semantic order to a nominal/ordinal Cartesian x or
-y position. Omitted explicit values and computed ties preserve source
+Assign explicit or computed semantic order to a nominal/ordinal Cartesian x/y or
+Polar theta position. Omitted explicit values and computed ties preserve source
 first-appearance order. The scale, connected marks, axis, and selection-item
 order are updated together. [Category ordering](./api/position/category-ordering/)
 
@@ -13465,7 +13497,7 @@ Edit the existing radial grid. [Grids](./api/grids/#editing-grids)
 createLegend({
   target?, channels?, position?, align?, direction?, columns?, offset?,
   titlePosition?, title?, symbol?, labels?, titleStyle?, itemGap?, border?, count?,
-  gradient?
+  gradient?, order?
 })
 ```
 
@@ -13475,7 +13507,8 @@ placement. Categorical legends also support left side placement; composite
 point and size blocks remain in deterministic vertical order. Horizontal
 sampled-opacity legends accept `titlePosition: "left"` for one inline
 title-symbol-label reading line. Same-edge top/bottom blocks are left-packed
-with a 40-pixel occupied-bound gap.
+with a 40-pixel occupied-bound gap. Categorical `order` accepts `"scale"`,
+`{ values: [...] }`, or `{ channel: "x" | "y" | "theta" }` while preserving each category's color/shape/dash.
 [Legends](./api/legends/)
 
 ## `editLegend`
@@ -13483,11 +13516,12 @@ with a 40-pixel occupied-bound gap.
 ```javascript
 editLegend({
   target?, position?, align?, direction?, columns?, offset?, titlePosition?,
-  title?, symbol?, labels?, titleStyle?, itemGap?, border?, count?, gradient?
+  title?, symbol?, labels?, titleStyle?, itemGap?, border?, count?, gradient?, order?
 })
 ```
 
-Partially edit one existing legend. `title` accepts a non-empty string,
+Partially edit one existing legend. Categorical `order` can be reassigned or reset
+with `"scale"`; linked position changes also refresh its item order. `title` accepts a non-empty string,
 `"auto"`, or `false`; semantic channel bindings cannot be edited. A
 horizontal sampled-opacity legend accepts `titlePosition: "left"` and inline
 spacing edits. A

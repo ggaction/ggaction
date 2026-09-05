@@ -151,8 +151,8 @@ orderCategories({ target?, channel, values })
 orderCategories({ target?, channel, by, direction? })
 ```
 
-Assign explicit or computed semantic order to a nominal/ordinal Cartesian x or
-y position. Omitted explicit values and computed ties preserve source
+Assign explicit or computed semantic order to a nominal/ordinal Cartesian x/y or
+Polar theta position. Omitted explicit values and computed ties preserve source
 first-appearance order. The scale, connected marks, axis, and selection-item
 order are updated together. [Category ordering](../../api/position/category-ordering.md)
 

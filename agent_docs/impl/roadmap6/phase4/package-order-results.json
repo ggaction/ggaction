@@ -1,0 +1,47 @@
+{
+  "status": "passed",
+  "scope": "theta-and-legend-order",
+  "artifact": {
+    "filename": "ggaction-0.0.12.tgz",
+    "sha256": "55d3c354c7a97542ad37f500ae06b85b0f4bfba53d5752292a333d59f5f262c8",
+    "packedBytes": 488061,
+    "unpackedBytes": 2332587,
+    "entries": 439
+  },
+  "checks": [
+    "node-runtime-and-renderers",
+    "theta-and-linked-legend-order",
+    "mcp",
+    "strict-typescript",
+    "installed-tutorials",
+    "minimal-browser-bundles"
+  ],
+  "browserBundles": {
+    "full": {
+      "specifier": "ggaction",
+      "chunks": 1,
+      "modules": 386,
+      "minifiedBytes": 917456,
+      "gzipBytes": 241200
+    },
+    "basic": {
+      "specifier": "ggaction/basic",
+      "chunks": 1,
+      "modules": 227,
+      "minifiedBytes": 469060,
+      "gzipBytes": 129138
+    },
+    "svg": {
+      "specifier": "ggaction/svg",
+      "chunks": 1,
+      "modules": 15,
+      "minifiedBytes": 19840,
+      "gzipBytes": 6418
+    }
+  },
+  "limits": {
+    "ggaction": 242000,
+    "ggaction/basic": 130000,
+    "ggaction/svg": 25000
+  }
+}

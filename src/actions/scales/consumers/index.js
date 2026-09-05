@@ -7,7 +7,7 @@ import {
   requireConsumerDataset
 } from "./common.js";
 import { resolveMarkFamilyConsumerValues } from "./families.js";
-import { resolveCategoryOrder } from "../../../grammar/categoryOrder.js";
+import { CATEGORY_ORDER_CHANNELS, resolveCategoryOrder } from "../../../grammar/categoryOrder.js";
 
 export { findScale, findScaleConsumers } from "./common.js";
 export {
@@ -50,6 +50,10 @@ export function resolveConsumerValues(program, consumer) {
 export function resolveConsumerCategoryOrder(program, consumer) {
   const order = consumer.encoding.categoryOrder;
   if (order === undefined) return undefined;
+  if (!CATEGORY_ORDER_CHANNELS.includes(consumer.channel) ||
+    !["nominal", "ordinal"].includes(consumer.encoding.fieldType)) {
+    throw new Error("Remove category order before assigning a non-categorical position.");
+  }
   const dataset = requireConsumerDataset(program, consumer);
   return resolveCategoryOrder(dataset.values, consumer.encoding.field, order);
 }

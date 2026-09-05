@@ -11,6 +11,7 @@ import {
 import { getMarkMaterializationStep } from "../../materialization/marks/index.js";
 import { buildMaterializationPlan } from "../../materialization/planner.js";
 import {
+  CATEGORY_ORDER_CHANNELS,
   normalizeCategoryOrder,
   resolveCategoryOrder
 } from "../../grammar/categoryOrder.js";
@@ -19,8 +20,8 @@ const ORDER_OPTIONS = Object.freeze(["target", "channel", "values", "by", "direc
 const REMOVE_OPTIONS = Object.freeze(["target", "channel"]);
 
 function resolveAssignment(program, args, operation, { activeOnly = false } = {}) {
-  if (!["x", "y"].includes(args.channel)) {
-    throw new Error(`${operation} channel must be x or y.`);
+  if (!CATEGORY_ORDER_CHANNELS.includes(args.channel)) {
+    throw new Error(`${operation} channel must be x, y, or theta.`);
   }
   const requested = args.target === undefined
     ? undefined

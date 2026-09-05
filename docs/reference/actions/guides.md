@@ -189,7 +189,7 @@ Edit the existing radial grid. [Grids](../../api/grids.md#editing-grids)
 createLegend({
   target?, channels?, position?, align?, direction?, columns?, offset?,
   titlePosition?, title?, symbol?, labels?, titleStyle?, itemGap?, border?, count?,
-  gradient?
+  gradient?, order?
 })
 ```
 
@@ -199,7 +199,8 @@ placement. Categorical legends also support left side placement; composite
 point and size blocks remain in deterministic vertical order. Horizontal
 sampled-opacity legends accept `titlePosition: "left"` for one inline
 title-symbol-label reading line. Same-edge top/bottom blocks are left-packed
-with a 40-pixel occupied-bound gap.
+with a 40-pixel occupied-bound gap. Categorical `order` accepts `"scale"`,
+`{ values: [...] }`, or `{ channel: "x" | "y" | "theta" }` while preserving each category's color/shape/dash.
 [Legends](../../api/legends.md)
 
 ## `editLegend`
@@ -207,11 +208,12 @@ with a 40-pixel occupied-bound gap.
 ```javascript
 editLegend({
   target?, position?, align?, direction?, columns?, offset?, titlePosition?,
-  title?, symbol?, labels?, titleStyle?, itemGap?, border?, count?, gradient?
+  title?, symbol?, labels?, titleStyle?, itemGap?, border?, count?, gradient?, order?
 })
 ```
 
-Partially edit one existing legend. `title` accepts a non-empty string,
+Partially edit one existing legend. Categorical `order` can be reassigned or reset
+with `"scale"`; linked position changes also refresh its item order. `title` accepts a non-empty string,
 `"auto"`, or `false`; semantic channel bindings cannot be edited. A
 horizontal sampled-opacity legend accepts `titlePosition: "left"` and inline
 spacing edits. A

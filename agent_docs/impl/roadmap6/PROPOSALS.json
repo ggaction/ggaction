@@ -594,7 +594,10 @@
           ],
           "scope": "Category order를 theta에 확장한다. Vertex/stack/drawing order와 혼합하지 않고 stable tie-break, explicit order, legend-domain 연결을 정의한다.",
           "acceptance": "Pie/Radar category identity가 값 수정만으로 바뀌지 않음. Omitted category/ties/unknown-order-entry policy와 edit/clear 수렴.",
-          "contractEvidence": "phase4/CONTRACT_REVIEW.md"
+          "contractEvidence": "phase4/CONTRACT_REVIEW.md",
+          "status": "completed",
+          "implementationStatus": "implemented-verified",
+          "implementationEvidence": "phase4/RESULTS_W4.md"
         },
         {
           "id": "R6-P4-W5",
@@ -608,7 +611,7 @@
           "contractEvidence": "phase4/CONTRACT_REVIEW.md"
         }
       ],
-      "activity": "area-layout-verified-awaiting-v2-v3",
+      "activity": "implementing-measured-radial-and-midpoint",
       "contractEvidence": "phase4/CONTRACT_REVIEW.md",
       "baselineEvidence": "phase4/baseline-results.json",
       "baselineCommit": "93dceb3761e170207058e6a7280060fedd471244",
@@ -692,7 +695,20 @@
           "ggaction/svg": 25000
         }
       },
-      "packageFailureEvidence": "phase4/package-results.json"
+      "packageFailureEvidence": "phase4/package-results.json",
+      "implementationW4Validation": {
+        "normalTests": 2661,
+        "visualVariants": 2,
+        "renderTests": 4,
+        "browserTests": 60,
+        "finalFocusedBrowserTests": 1,
+        "packageEvidence": "phase4/package-order-results.json"
+      },
+      "remainingWorkPackages": [
+        "R6-P4-W3",
+        "R6-P4-W5"
+      ],
+      "remainingExecutionApproval": "APPROVAL.md"
     },
     {
       "id": 5,
@@ -1500,8 +1516,9 @@
       "recommended": "Bar width와 measure-first encoding 중 geometry 없이 검증 가능한 intent를 보존한다. Missing positions 완료 시 원래 requested width와 role을 적용한다.",
       "acceptance": "width-first/last, category-first/measure-first의 semantic/graphic 동등성. Invalid field/width는 즉시 거부, placeholder graphics 없음.",
       "evidence": "audit/REPORT.md: D14",
-      "disposition": "Bar incomplete width and measure authoring verified in Phase 2 W5; non-Cartesian ordering remains in Phase 4 W4.",
-      "resultEvidence": "phase2/RESULTS.md#w5--bar-incomplete-authoring"
+      "disposition": "Phase 2 incomplete authoring and Phase 4 theta/legend ordering are implemented and verified; full Phase 4 integration remains.",
+      "resultEvidence": "phase2/RESULTS.md#w5--bar-incomplete-authoring",
+      "implementationEvidence": "phase4/RESULTS_W4.md"
     },
     {
       "id": "D15",
@@ -2051,5 +2068,11 @@
       "F20"
     ],
     "effect": "F20의 연구·구현·후속 분류 작업과 완료 조건을 이번 로드맵에서 제외한다. 구체적인 API와 Gate 상태는 변경하지 않는다."
+  },
+  "executionApproval": {
+    "userDirection": "이번 로드맵 다 승인하니까 끝까지 밀어 한도높이는것도 다 승인",
+    "baselineCommit": "f45dcdee70e6442eac96b20e00f4a5435a295a8d",
+    "evidence": "APPROVAL.md",
+    "scope": "All remaining Roadmap 6 work and necessary budget increases; F20 remains excluded. Approval does not claim implementation or validation complete."
   }
 }

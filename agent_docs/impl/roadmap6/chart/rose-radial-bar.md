@@ -103,7 +103,7 @@ createRosePlot / createRadialBarPlot
 ~~~
 
 `encodeR({field})`와 Polar scatter의 기존 default/type/row grain은 그대로다. New mapping은 opt-in이며
-기존 encodeRadius alias도 동일 계약에 위임한다. Facade가 source를 summarizeData로 몰래 교체하거나
+`encodeRadius`/`encodePointRadius`는 점의 glyph 크기이며 이 반지름 위치 확장에 포함하지 않는다. Facade가 source를 summarizeData로 몰래 교체하거나
 renderer에 area-specific radius 보정을 넣지 않는다. 별도 Cartesian Bar layer도 만들지 않는다.
 
 ## 저장 결과와 lifecycle

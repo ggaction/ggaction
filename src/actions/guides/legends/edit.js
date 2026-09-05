@@ -1,3 +1,5 @@
+import { normalizeLegendOrder } from "../../../grammar/categoryOrder.js";
+import { resolveDefinition } from "./categorical/resolve.js";
 import { action } from "../../../core/action.js";
 import {
   validateGeneratedItemLimit,
@@ -24,7 +26,7 @@ import {
 const OPTIONS = Object.freeze([
   "target", "position", "align", "direction", "columns", "offset",
   "titlePosition", "title", "symbol", "labels", "titleStyle", "itemGap",
-  "border", "count", "gradient"
+  "border", "count", "gradient", "order"
 ]);
 
 function mergeObject(previous, patch) {
@@ -283,6 +285,11 @@ function editCategorical(program, kind, previous, size, args) {
     inferredTitle,
     titleVisible
   };
+  const order = args.order === undefined
+    ? program.semanticSpec.guides.legend?.[kind]?.order
+    : normalizeLegendOrder(args.order);
+  // Resolve the final domain before changing semantic/config/graphic state.
+  resolveDefinition(program, findLayer(program, previous.target), previous.channels, title, order);
   const oldSymbols = categoricalSymbolIds(previous);
   const newSymbols = categoricalSymbolIds(config);
   let next = program;
@@ -291,6 +298,15 @@ function editCategorical(program, kind, previous, size, args) {
       property: `guide.legend.${kind}.title`,
       value: title
     });
+  }
+  if (args.order !== undefined) {
+    if (order === "scale") {
+      if (program.semanticSpec.guides.legend?.[kind]?.order !== undefined) {
+        next = next.editSemantic({ property: `guide.legend.${kind}.order`, remove: true });
+      }
+    } else {
+      next = next.editSemantic({ property: `guide.legend.${kind}.order`, value: order });
+    }
   }
   next = next._withLegendConfig(kind, config);
   for (const id of oldSymbols) {

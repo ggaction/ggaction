@@ -3299,17 +3299,6 @@
       }
     },
     {
-      "id": "theta-and-legend-order",
-      "name": "Theta and legend order",
-      "kind": "parameter",
-      "status": "planned",
-      "readiness": "accepted",
-      "contract": {
-        "file": "agent_docs/contract/planned/QUANTITATIVE_AUTHORING.md",
-        "anchor": "theta-and-legend-order"
-      }
-    },
-    {
       "id": "sequential-midpoint-and-transitions",
       "name": "Sequential midpoint and transitions",
       "kind": "parameter",

@@ -224,7 +224,7 @@ Primary owner는 누락 방지를 위한 책임 단위이며, 관련 작업이 �
 - 수정·추가 방향: Bar width와 measure-first encoding 중 geometry 없이 검증 가능한 intent를 보존한다. Missing positions 완료 시 원래 requested width와 role을 적용한다.
 - 완료 검증: width-first/last, category-first/measure-first의 semantic/graphic 동등성. Invalid field/width는 즉시 거부, placeholder graphics 없음.
 - 근거: audit/REPORT.md: D14. [원래 조사](audit/REPORT.md)
-- 처분: 구현 또는 명시적인 계약 유지·migration 결정의 제안. 아직 완료·승인 상태가 아니다.
+- 처분: Phase 2 미완성 authoring과 [W4 theta/legend order](phase4/RESULTS_W4.md)를 구현·검증했다. Phase 4 전체 통합 검증은 남아 있다.
 
 ### D15 — 반복 filter와 empty view 공백
 
@@ -474,3 +474,7 @@ primitive state 정책을 비시각 범위에서 준비했다. [V1의 11개 시�
 `createAreaPlot`, `layoutSeries`, datum/missing endpoints와 series ownership을 구현했다. D03/F05의 기능 증거는
 [W1/W2 결과](phase4/RESULTS_V1.md)에 있다. 원본 V1 승인 픽셀 11개를 public API로 재현했다.
 Full/Basic 용량 조정은 [별도 B](phase4/BUNDLE_REVIEW.md)로 승인받았으며 같은 tarball 전체 검증을 통과했다. D01/F04/D14/D18과 V2/V3/X는 미완료이며 F20은 제외한다.
+
+## W4 구현 후 갱신
+
+[전체 승인](APPROVAL.md)에 따라 theta/legend 순서 연결과 reset을 구현했다. [결과](phase4/RESULTS_W4.md)에 2,661 normal tests, 두 시각 pair, browser와 installed package 증거를 기록했다. D01/F04의 radial mapping과 D18 midpoint, 이후 Phase 5–11은 계속 진행한다. F20은 제외한다.

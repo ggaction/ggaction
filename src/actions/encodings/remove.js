@@ -172,8 +172,9 @@ function reconcileCategoricalLegend(program, target, channels) {
   if (remaining.length === 0) {
     return removeLegendKinds(program, [kind]);
   }
+  const order = program.semanticSpec.guides.legend?.[kind]?.order;
   const next = removeLegendKinds(program, [kind]);
-  const options = { target, channels: remaining };
+  const options = { target, channels: remaining, ...(order === undefined ? {} : { order }) };
   for (const property of LEGEND_OPTION_KEYS) {
     if (
       (property === "columns" && config[property] === undefined) ||
@@ -221,6 +222,14 @@ export const removeEncoding = action(
     if (args.channel === "group" && layer.layout?.mode !== undefined && layer.layout.mode !== "overlay") throw new Error("Remove active series layout before removing its group.");
     const channels = activeCascade(layer, args.channel);
     assertEncodingSelectionCompatibility(this, layer.id, channels);
+    for (const kind of ["series", "color"]) {
+      const config = this.guideConfigs.legend?.[kind];
+      const order = this.semanticSpec.guides.legend?.[kind]?.order;
+      if (config?.target === layer.id && channels.includes(order?.channel) &&
+        config.channels.some(channel => !channels.includes(channel))) {
+        throw new Error('Reset linked legend order to "scale" before removing its position encoding.');
+      }
+    }
     if (["line", "area"].includes(layer.mark?.type)) {
       const dataset = findDataset(this, layer.data);
       if (args.channel === "group") {

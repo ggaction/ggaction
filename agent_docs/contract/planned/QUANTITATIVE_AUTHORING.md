@@ -4,7 +4,8 @@
 [Phase 4 계약](../../impl/roadmap6/phase4/CONTRACT_REVIEW.md)의 P4-C01–C09와 이름 `layoutSeries`를 승인했다.
 `encodeLayout` alias는 만들지 않는다. Area/layout의 승인된 V1 구현은 Current COMPLETE_CHARTS/ENCODINGS/MARKS로 이동했다.
 완성 차트의 입력 union·전체 hierarchy·저장 결과는 아래 chart owner에 함께 보존한다.
-남은 새 direct 2개와 capability 3개는 이후 V2/V3의 승인 전 Planned 상태다.
+남은 새 direct 2개와 capability 2개는 Planned 상태다. 로드맵 전체 실행은 승인되었으며 구현·검증 후 Current로 이동한다.
+Theta/legend order는 Current ENCODINGS/LEGEND_AND_TITLE로 이동했다.
 
 
 
@@ -36,20 +37,11 @@
 
 ## Measured radial mapping
 
-- Planned parameter extension: Arc encodeR/encodeRadius에 mapping:area|radius-length 및 explicit sum/count.
+- Planned parameter extension: Arc encodeR에 mapping:area|radius-length 및 explicit sum/count.
 - Scale subset: linear, zero:true, nice:false, reverse:false; domain:auto|[0,U], range:auto|[r0,R], clamp?, id?.
   U>0이며 관측 max 이상, 0<=r0<R, padAngle=0, explicit hole/range 일치가 필요하다.
 - Canonical mapping은 scale.radialMapping. Shared consumers는 같은 mapping, auto innerRadius 정책을 요구한다.
 - Category group grain, sourceIndices, value radius guides, inverse mapping을 함께 검증한다. Coverage missing.
-
-## Theta and legend order
-
-- Planned parameter extension: orderCategories/removeCategoryOrder channel에 theta 추가.
-- Categorical Arc/Polar point/line만, existing values/by/direction/tie/explicit-domain 오류 계약 재사용.
-- Categorical createLegend/editLegend order는 scale 또는 `{values:[...]}` 또는 `{channel:x|y|theta}`.
-  Legend item permutation만 바꾸고 value→color 대응은 유지한다. Unknown/duplicate/empty list는 오류다.
-- Link는 같은 target의 same data/field/category set을 요구하며 후속 invalidation은 atomic 오류다.
-  Canonical policy는 semantic guide.legend.kind.order다. Coverage missing.
 
 ## Sequential midpoint and transitions
 

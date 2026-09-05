@@ -1,3 +1,6 @@
+import { requireDataset } from "../../../../selectors/datasets.js";
+import { readNominalField } from "../../../../grammar/scales/fields.js";
+import { resolveLegendOrderDomain } from "../../../../grammar/categoryOrder.js";
 import { validateUserId } from "../../../../core/identifiers.js";
 import {
   sameOrderedValues,
@@ -74,7 +77,7 @@ function resolveOrdinalScales(program, scaleIds) {
   return { scales, domain: scales[0].domain };
 }
 
-export function resolveDefinition(program, layer, requestedChannels, requestedTitle) {
+export function resolveDefinition(program, layer, requestedChannels, requestedTitle, order) {
   const kind = resolveLegendKind(layer, requestedChannels);
   const channels = requestedChannels ?? (kind === "color"
     ? ["color"]
@@ -109,13 +112,22 @@ export function resolveDefinition(program, layer, requestedChannels, requestedTi
   const scales = encodings.map(item => item.encoding.scale);
   const resolved = resolveOrdinalScales(program, scales);
   const field = [...fields][0];
+  let linked;
+  if (order?.channel !== undefined) {
+    const position = layer.encoding?.[order.channel];
+    if (!["nominal", "ordinal"].includes(position?.fieldType) || position.field !== field) {
+      throw new Error("Linked legend order requires the same categorical field on its target.");
+    }
+    linked = program.resolvedScales[position.scale]?.domain;
+  }
   return {
     kind,
     channels,
     scales,
     field,
     title: nonEmptyString(requestedTitle ?? field, "Legend title"),
-    domain: resolved.domain
+    domain: resolveLegendOrderDomain(resolved.domain, order, linked,
+      order?.values === undefined ? undefined : readNominalField(requireDataset(program, layer.data).values, field))
   };
 }
 
@@ -133,6 +145,7 @@ export function resolveCurrentDefinition(program, config) {
     program,
     layer,
     channels,
-    config.inferredTitle === true ? undefined : guide.title
+    config.inferredTitle === true ? undefined : guide.title,
+    guide.order
   );
 }
