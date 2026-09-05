@@ -1,6 +1,6 @@
 # R6-P3-B — Full browser bundle budget
 
-상태: **ready-for-review**. A/V로 승인된 세 facade를 구현했고 package의 기능 검증은 통과했다.
+상태: **approved**. 2026-09-05 사용자가 Full 235,000 → 237,000 bytes 조정 질문에 “승인한다”라고 답했다. 승인 기준 HEAD는 `d2b1f7bf05d11357b9b9b6ed5520f442ef3d07f4`다. 아래는 결정 당시의 제안·측정 기록이며 승인 후 적용 결과는 RESULTS에 별도로 기록한다.
 Full bundle 상한 변경은 A/V 승인에 포함되지 않았으며, 이 문서는 그 별도 결정을 구체화한다.
 상한 변경은 아직 적용하지 않았다. X와 다음 Phase 구현도 승인 전이다.
 

@@ -18,7 +18,8 @@
 - [x] R6-P3-W3 Horizon public flow와 lower lifecycle
 - [x] Same-run public/primitive parity·누적 검증 결과·문서·원장 동기화
 - [x] 조건부 B 용량 검토안과 같은 tarball 측정 evidence 준비
-- [ ] B 사용자 결정과 package 전체 exit 0 확인
+- [x] B 명시적 사용자 승인 기록 (Full 237,000 bytes)
+- [ ] 승인 상한 적용과 같은 tarball package 전체 exit 0 확인
 - [ ] X package commit/push와 명시적 사용자 승인 기록
 
 A/V 승인 뒤 세 public flow·lower lifecycle·시각 동등성·문서와 누적 기능 검증을 완료했다.

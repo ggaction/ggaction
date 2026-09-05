@@ -3,7 +3,7 @@
 ## 공통 상태
 
 Phase 2 X 결과 승인은 기록했다. **R6-P3-A는 2026-09-05 사용자 “승인한다”로 approved**다.
-V는 2026-09-05 사용자 “승인한다”로 approved, B는 ready-for-review, X는 planned다.
+V는 2026-09-05 사용자 “승인한다”로 approved, B는 2026-09-05 사용자 “승인한다”로 approved, X는 planned다.
 허용 상태: planned | ready-for-review | approved | changes-requested.
 세 public flow와 9개 same-run public/primitive 검증을 완료했다(Current 177 / Planned 0).
 Full 923-byte 초과를 기록하고 기존 상한을 유지한 채 B 검토를 준비했다.
@@ -48,7 +48,8 @@ Full 923-byte 초과를 기록하고 기존 상한을 유지한 채 B 검토를 
 
 ## R6-P3-B — Full browser bundle budget
 
-- 상태: ready-for-review. 사용자 승인 없음.
+- 상태: approved. 2026-09-05 사용자가 Full 235,000 → 237,000 bytes 조정 질문에 “승인한다”라고 답했다.
+- 승인 기준 HEAD: `d2b1f7bf05d11357b9b9b6ed5520f442ef3d07f4`. Review package `c7ff0309d19729251b569e61498d52ca714f80bc`의 Full 상한 변경·같은 tarball 재검증·X 준비만 승인했다.
 - 범위: [BUNDLE_REVIEW.md](BUNDLE_REVIEW.md)의 Full gzip 상한 235,000 → 237,000 bytes 제안.
   Basic 125,000 / SVG 25,000, 측정 방식과 fixture는 유지한다. 상한 변경은 아직 적용하지 않았다.
 - 근거: 같은 installed tarball에서 Full 235,923 bytes로 923 bytes 초과. Basic 124,897 / SVG 6,418 통과.

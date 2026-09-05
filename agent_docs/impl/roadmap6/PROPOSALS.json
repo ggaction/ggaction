@@ -23,7 +23,8 @@
       "R6-P2-V",
       "R6-P2-X",
       "R6-P3-A",
-      "R6-P3-V"
+      "R6-P3-V",
+      "R6-P3-B"
     ],
     "implementationStarted": true,
     "reviewCommit": "cf13920ed517cfc6c333b04ec55a724826960228",
@@ -330,7 +331,7 @@
       "gateStates": {
         "R6-P3-A": "approved",
         "R6-P3-V": "approved",
-        "R6-P3-B": "ready-for-review",
+        "R6-P3-B": "approved",
         "R6-P3-X": "planned"
       },
       "workPackages": [
@@ -374,7 +375,7 @@
           "resultEvidence": "phase3/RESULTS.md#w3--horizon"
         }
       ],
-      "activity": "awaiting-bundle-budget-decision",
+      "activity": "applying-approved-bundle-budget",
       "contractEvidence": "phase3/CONTRACT_REVIEW.md",
       "baselineEvidence": "phase3/baseline-results.json",
       "baselineCommit": "9625e71c374868756652fb8dff8153dc61500c6e",
@@ -464,7 +465,7 @@
       },
       "bundleReview": {
         "file": "phase3/BUNDLE_REVIEW.md",
-        "state": "ready-for-review",
+        "state": "approved",
         "currentLimits": {
           "ggaction": 235000,
           "ggaction/basic": 125000,
@@ -483,7 +484,14 @@
         "fullExcessBytes": 923,
         "limitChangeApplied": false,
         "scope": "Full ceiling only; preserve Basic/SVG limits and measurement. Reverify installed package before X review. No next Phase, PR, deployment, or publishing approval.",
-        "reviewPackageCommit": "c7ff0309d19729251b569e61498d52ca714f80bc"
+        "reviewPackageCommit": "c7ff0309d19729251b569e61498d52ca714f80bc",
+        "approval": {
+          "date": "2026-09-05",
+          "userDirection": "승인한다",
+          "reviewCommit": "c7ff0309d19729251b569e61498d52ca714f80bc",
+          "approvalBaselineCommit": "d2b1f7bf05d11357b9b9b6ed5520f442ef3d07f4",
+          "scope": "Full gzip ceiling 235000 → 237000 only; Basic 125000 and SVG 25000 unchanged. Reverify the reviewed tarball and prepare X. X, next Phase, PR, deployment, and publishing are not approved."
+        }
       }
     },
     {
