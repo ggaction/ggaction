@@ -8,6 +8,25 @@ description: Map fields and constants to position, grouping, color, shape, size,
 
 These are direct immutable `ChartProgram` actions. Each accepts one option object and returns a new program.
 
+## `layoutSeries`
+
+```javascript
+layoutSeries({ target?, mode })
+```
+
+Assign group, stack, fill, overlay, diverging, or center placement independently of color. Full supports Bar
+and Area; Basic supports Bar and excludes center. Aggregate/histogram bars support all modes except center,
+ranged bars only overlay, and areas reject group. Ribbons support overlay only; raw accumulation requires
+aligned rows and a zero baseline. Stack/fill/center require nonnegative values; diverging separates signs.
+A zero-total fill has zero thickness and a [0,1] domain. Density retains its statistical orientation limits.
+
+`encodeGroup` owns identity and source first-appearance order; color owns appearance. Reassign this action to
+change placement. Leaving group removes its active offset and unused automatic offset scale; user/shared
+scales survive. Removing color preserves identity and placement. Switch to overlay before removing a required
+group. Legacy color.layout, measure.stack and Bar offsets delegate to this action; the last explicit layout
+request wins. Color reassignment without layout preserves the stored mode. Stack aliases zero/normalize/null/
+center mean stack/fill/overlay/center. Failed topology, shared-scale or guide validation preserves the previous program.
+
 ## `encodeX`
 
 ```javascript

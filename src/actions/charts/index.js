@@ -1,3 +1,4 @@
+import { createAreaPlot } from "./area.js";
 import { createHeatmap } from "./heatmap.js";
 import { createBarPlot } from "./bar.js";
 import { createHistogram } from "./histogram.js";
@@ -9,6 +10,7 @@ import { createDensityPlot } from "./density.js";
 import { createHorizonPlot } from "./horizon.js";
 
 export function registerChartActions(ProgramClass) {
+  ProgramClass.prototype.createAreaPlot = createAreaPlot;
   ProgramClass.prototype.createBarPlot = createBarPlot;
   ProgramClass.prototype.createHeatmap = createHeatmap;
   ProgramClass.prototype.createHistogram = createHistogram;

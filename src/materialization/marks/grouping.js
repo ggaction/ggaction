@@ -36,6 +36,10 @@ export function assertPathGroupCompatible(program, layer, dataset, group) {
       );
     }
   }
+  if (layer.layout?.mode !== undefined) {
+    if (group === undefined && !["overlay"].includes(layer.layout.mode)) throw new Error("Remove active series layout before removing its group.");
+    return;
+  }
   if (layer.mark?.type === "area" && (
     layer.encoding?.y?.stack === "center" ||
     ![undefined, "overlay"].includes(layer.encoding?.color?.layout)

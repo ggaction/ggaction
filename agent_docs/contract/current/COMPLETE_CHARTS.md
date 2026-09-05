@@ -123,3 +123,38 @@ Default id는 `horizonPlot`, lifecycle은 Aggregate create-only다.
 - ✅ Covered: three public/primitive semantic/graphic/order/Canvas pairs and lower band/style/scale/resize revisions.
 - Evidence: `test/unit/actions/charts/horizon-plot.test.js`, `test/charts/horizon-plot/{primitive,public}.test.js`,
   `test/charts/horizon-plot/{png,vector}.render.js`, `examples/horizon-plot/program.js`, `scripts/package-consumer.js`.
+
+## `createAreaPlot`
+
+- Implemented: `createAreaPlot(options: CreateAreaPlotOptions): ChartProgram`; full only, Aggregate create-only.
+- Required x/y. ValueChannel defaults to y; the opposite field is quantitative or temporal. Independent options are
+  field/fieldType/temporalUnit/scale. Measurement is a field string, `{field,scale?}`, or `{lower,upper,scale?}`.
+  Bounds are field strings or finite `{datum}`; at least one field is required. Simple baseline defaults to 0.
+  Explicit range and baseline conflict. Crossing endpoints retain their roles without sorting or swapping.
+- Optional id defaults to areaPlot; data/coordinate follow the shared facade resolver. GroupBy is an explicit
+  nominal field or unique nonempty tuple. Color is optional nominal/ordinal field appearance, constant within each
+  series; it does not infer a group. Area accepts fill/opacity/stroke/strokeWidth/curve; opacity defaults to .2.
+  Explicit fill conflicts with field color. Unknown keys, nested target/coordinate, aggregate/bin/stack are errors.
+- Layout defaults to overlay; stack/fill/diverging require one field and baseline 0 on an aligned unique group grid.
+  Center additionally requires vertical nonnegative values. Missing defaults to error; break accepts null/undefined
+  measure endpoints and emits segments of at least two valid samples. Stacked series break together at each gap.
+- Wrapped children: createAreaMark → encodeGroup? → independent position → range endpoint owners → layoutSeries
+  → encodeColor? → scoped guides. No derived source column, chart recipe, geometry cache or renderer policy is added.
+- Semantic effects: mark.missing, field/datum endpoints, encoding.group and layer.layout.mode. Graphic effects:
+  closed concrete paths; endpoint/layout values drive scales, guides and source-owned selection. Guides false skips
+  this facade's creation; omitted guides secure compatible Cartesian axes/grid and optional categorical color legend.
+- Editing uses encodeX/YRange, encodeX2/Y2, encodeGroup, layoutSeries, editAreaMark and existing scale/guide/data editors.
+  Log baselines must be valid for the final pair. Invalid input/resource/grain/style/guide transitions preserve the
+  complete previous program, action trace and caller-owned input.
+
+### Formal values — `createAreaPlot`
+
+- Implemented: required x/y; valueChannel x|y; layout overlay|stack|fill|diverging|center; missing error|break.
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `createAreaPlot`
+
+- ✅ Covered: shortest/lower equivalence, signed/log/ribbon/stack/fill/diverging/center/break, invalid roles/options,
+  immutable edits, exact semantic/graphic/order/Canvas and decoded PNG pairs.
+- Evidence: `test/unit/actions/charts/area-facade.test.js`, `test/unit/actions/encodings/series-layout.test.js`,
+  `test/charts/area-layout/`, `examples/area-layout/program.js`, `test/contracts/area-endpoint-types.test.js`.

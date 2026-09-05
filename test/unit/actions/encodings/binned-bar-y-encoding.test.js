@@ -26,7 +26,6 @@ test("infers a count/zero-stack bar y encoding", () => {
     field: "Displacement",
     fieldType: "quantitative",
     aggregate: "count",
-    stack: "zero",
     scale: "y"
   });
   assert.deepEqual(program.semanticSpec.scales[1], {
@@ -56,35 +55,18 @@ test("infers a count/zero-stack bar y encoding", () => {
   const node = program.trace.children.at(-1);
   assert.equal(node.op, "encodeY");
   assert.deepEqual(node.args, {});
-  assert.deepEqual(node.children.map(child => child.op), [
-    "createCoordinate",
-    "editSemantic",
-    "editSemantic",
-    "editSemantic",
-    "editSemantic",
-    "editSemantic",
-    "createScale",
-    "rematerializeBarMark"
-  ]);
-  assert.deepEqual(node.children.at(-1).children.map(child => child.op), [
-    "rematerializeScale",
-    "rematerializeScale",
-    "editGraphics",
-    "editGraphics",
-    "editGraphics",
-    "editGraphics",
-    "editGraphics",
-    "editGraphics",
-    "editGraphics",
-    "editGraphics"
-  ]);
+  const layout = node.children.at(-1);
+  assert.equal(layout.op, "layoutSeries");
+  assert.equal(layout.args.mode, "stack");
+  const mark = layout.children.find(child => child.op === "rematerializeBarMark");
+  assert.deepEqual(mark.children.slice(0, 2).map(child => child.op), ["rematerializeScale", "rematerializeScale"]);
+
 });
 
 test("accepts explicit equivalent semantics and scale bounds", () => {
   const program = histogramProgram().encodeY({
     field: "Displacement",
     aggregate: "count",
-    stack: "zero",
     scale: {
       id: "countY",
       domain: [0, 200],
@@ -105,7 +87,7 @@ test("accepts explicit equivalent semantics and scale bounds", () => {
 test("normalizes histogram partitions through the direct y encoding", () => {
   const program = histogramProgram().encodeY({ stack: "normalize" });
 
-  assert.equal(program.semanticSpec.layers[0].encoding.y.stack, "normalize");
+  assert.equal(program.semanticSpec.layers[0].layout.mode, "fill");
   assert.deepEqual(program.resolvedScales.y.domain, [0, 1]);
   assert.equal(program.graphicSpec.objects.bars.items.length, 9);
 });

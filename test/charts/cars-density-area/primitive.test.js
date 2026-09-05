@@ -61,20 +61,19 @@ test("authors and renders the complete primitive density area chart", () => {
     mark: { type: "area" },
     data: "densitiesDensityData",
     coordinate: "main",
+    layout: { mode: "overlay" },
     encoding: {
       x: { field: "Acceleration_value", fieldType: "quantitative", scale: "x" },
       y: {
         field: "Acceleration_density",
         fieldType: "quantitative",
         scale: "y",
-        stack: null
       },
       group: { field: "Origin", fieldType: "nominal" },
       color: {
         field: "Origin",
         fieldType: "nominal",
-        scale: "color",
-        layout: "overlay"
+        scale: "color"
       }
     }
   }]);

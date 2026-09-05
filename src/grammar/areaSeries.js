@@ -1,18 +1,11 @@
 import { cloneAndFreeze } from "../core/immutable.js";
-import {
-  readNominalField,
-  readQuantitativeField,
-  readTemporalField
-} from "./scales/index.js";
-import {
-  layoutSeriesPartition,
-  validateColorLayout
-} from "./seriesLayout.js";
+import { readNominalField, readQuantitativeField, readTemporalField } from "./scales/index.js";
+import { layoutSeriesPartition, validateColorLayout } from "./seriesLayout.js";
 import { stableOrderPathValues } from "./pathOrder.js";
 import { deriveCategoricalDensitySeries } from "./categoricalDensity.js";
 import { validatePathSeriesAppearance } from "./pathSeries.js";
-
 import { readAreaEndpoint, validateAreaEndpointPair } from "./areaEndpoints.js";
+import { validateGeneratedItemLimit } from "../core/validation.js";
 
 function indexSegments(segments) {
   const indexed = [];
@@ -86,6 +79,7 @@ export function deriveAreaSeries(rows, layer) {
   if (groups.size === 0) {
     throw new Error(`Area mark "${layer.id}" has no values.`);
   }
+  layoutRawAreaGroups(groups, { layer, vertical, primary, secondary });
   const series = [...groups.values()].flatMap(item => {
     const key = vertical ? "x" : "y";
     const values = pathOrder === undefined
@@ -363,4 +357,51 @@ export function layoutDensityAreaSeries(derived, layout = "overlay") {
       values: valuesBySeries[index]
     }))
   });
+}
+
+export function layoutRawAreaGroups(groups, { layer, vertical, primary, secondary }) {
+  const mode = layer.layout?.mode ?? "overlay";
+  validateColorLayout(mode);
+  if (mode === "overlay") return;
+  if (mode === "group" || (mode === "center" && !vertical)) {
+    throw new Error(`Area layout "${mode}" is incompatible with this orientation.`);
+  }
+  const primaryDatum = Object.hasOwn(primary, "datum");
+  const secondaryDatum = Object.hasOwn(secondary, "datum");
+  if (primaryDatum === secondaryDatum || (primaryDatum ? primary.datum : secondary.datum) !== 0) {
+    throw new Error("Stacked area requires one value field and one zero datum endpoint.");
+  }
+  const position = vertical ? "x" : "y";
+  const lower = vertical ? "y" : "x", upper = `${lower}2`;
+  const measure = primaryDatum ? upper : lower;
+  const series = [...groups.values()];
+  const indices = series.map(item => {
+    const index = new Map();
+    for (const value of item.values) {
+      if (index.has(value[position])) throw new Error("Area layout requires unique group/position rows.");
+      index.set(value[position], value);
+    }
+    return index;
+  });
+  const positions = [...new Set(series.flatMap(item => item.values.map(value => value[position])))].sort((a, b) => a - b);
+  validateGeneratedItemLimit(positions.length * series.length, "Area layout cell count");
+  if (indices.some(index => index.size !== positions.length || positions.some(value => !index.has(value)))) {
+    throw new Error("Area layout requires an aligned row for every group and position.");
+  }
+  for (const position of positions) {
+    const points = indices.map(index => index.get(position));
+    if (points.some(point => point[measure] == null)) {
+      for (const point of points) { point[lower] = null; point[upper] = null; }
+      continue;
+    }
+    const segments = layoutSeriesPartition(points.map(point => point[measure]), mode);
+    const byIndex = new Map(segments.map(segment => [segment.index, segment]));
+    let endpoint = mode === "center" ? segments[0]?.start ?? 0 : 0;
+    points.forEach((point, index) => {
+      const segment = byIndex.get(index);
+      point[lower] = segment?.start ?? (mode === "diverging" ? 0 : endpoint);
+      point[upper] = segment?.end ?? (mode === "diverging" ? 0 : endpoint);
+      if (segment !== undefined && mode !== "diverging") endpoint = segment.end;
+    });
+  }
 }

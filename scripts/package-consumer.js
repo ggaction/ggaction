@@ -265,6 +265,22 @@ async function testNodeConsumer(directory) {
     assert.ok(horizon.graphicSpec.objects.area.items.length > 0);
     assert.equal(horizon.editHorizon({ bands: 2 })
       .semanticSpec.datasets.at(-1).transform[0].bands, 2);
+    const areaRows = ["A", "B"].flatMap(series => [1, 2].map(x => ({ x, category: String(x), value: series === "A" ? x + 1 : x, series })));
+    const areaFacade = chart().createCanvas({ width: 160, height: 120, margin: 20 })
+      .createData({ values: areaRows }).createAreaPlot({ x: "x", y: "value", groupBy: "series", layout: "stack", guides: false });
+    assert.equal(areaFacade.graphicSpec.objects.areaPlot.items.length, 2);
+    assert.equal(areaFacade.semanticSpec.layers[0].encoding.y2.datum, 0);
+    assert.deepEqual(areaFacade.resolvedScales.y.domain, [0, 5]);
+    assert.match(renderToSVG(areaFacade), /<path/);
+    assert.deepEqual(areaFacade.layoutSeries({ mode: "fill" }).resolvedScales.y.domain, [0, 1]);
+    const basicSeries = basicChart().createCanvas({ width: 160, height: 120, margin: 20 })
+      .createData({ values: areaRows }).createBarPlot({ x: "category", y: { field: "value", aggregate: "sum" }, guides: false })
+      .encodeGroup({ field: "series" }).layoutSeries({ mode: "group" });
+    assert.equal(basicSeries.graphicSpec.objects.barPlot.items.length, 4);
+    const basicStack = basicSeries.layoutSeries({ mode: "stack" });
+    assert.equal(basicStack.resolvedScales.xOffset, undefined);
+    assert.deepEqual(basicStack.layoutSeries({ mode: "group" }).graphicSpec, basicSeries.graphicSpec);
+    assert.equal(basicSeries.createAreaPlot, undefined);
     const lineFacade = chart()
       .createCanvas({ width: 160, height: 120, margin: 20 })
       .createData({ values: [
@@ -1238,6 +1254,17 @@ async function testTypeScriptConsumer(directory) {
       }
     };
     void [invalidLineColorLayout, invalidLineXAggregate, invalidLineYPolicies];
+    chart().createAreaPlot({ x: "time", y: "value", baseline: 0, missing: "break" }).layoutSeries({ mode: "center" });
+    chart().createAreaPlot({ x: "time", y: { lower: "lo", upper: "hi" } });
+    basicChart().encodeGroup({ fields: ["series", "region"] }).layoutSeries({ mode: "stack" });
+    // @ts-expect-error Area facade is full-only.
+    basicChart().createAreaPlot({ x: "time", y: "value" });
+    // @ts-expect-error Basic Bar cannot center.
+    basicChart().layoutSeries({ mode: "center" });
+    // @ts-expect-error layout mode is required.
+    chart().layoutSeries({});
+    // @ts-expect-error range and baseline cannot both own the endpoints.
+    chart().createAreaPlot({ x: "time", y: { lower: "lo", upper: "hi" }, baseline: 0 });
     const lineFacade: ChartProgram = chart()
       .createCanvas()
       .createData({ values: [{ x: 1, y: 2, group: "A" }] })

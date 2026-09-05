@@ -507,6 +507,20 @@ const TEMPORAL_MODES = Object.freeze([
   { temporalUnit: "timestamp", field: "timeTimestamp", end: "timeTimestampEnd" }
 ]);
 
+function addAreaDatumRanges(program) {
+  let next = program;
+  for (const axis of ["x", "y"]) for (const baseline of [0, 1, 2]) {
+    const id = `area-${axis}-datum-${baseline}`;
+    const independent = axis === "x" ? "encodeY" : "encodeX";
+    const range = axis === "x" ? "encodeXRange" : "encodeYRange";
+    next = next.createAreaMark({ id, data: "analysisRows", opacity: 0.15 })
+      [independent]({ target: id, field: "order", coordinate: `${id}-coordinate`, scale: { id: `${id}-independent` } })
+      [range]({ target: id, lower: { datum: baseline }, upper: axis, scale: { id: `${id}-measure` } })
+      [range]({ target: id, lower: axis, upper: { datum: baseline } });
+  }
+  return next;
+}
+
 function addTemporalRanges(program) {
   let next = program;
   for (const mode of TEMPORAL_MODES) {
@@ -528,7 +542,7 @@ function buildPositionCoverage(factors) {
     op: "direct-position-encoding-exercise",
     actions: POSITION_ACTIONS
   }]);
-  let program = addTemporalRanges(addPositionScales(programFor(view)));
+  let program = addAreaDatumRanges(addTemporalRanges(addPositionScales(programFor(view))));
   program = addHorizontalAggregateBars(program);
   program = addVerticalAggregateBars(program);
   program = addBinnedX(program);

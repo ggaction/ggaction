@@ -3,7 +3,7 @@
   "packageVersion": "0.0.12",
   "typeSource": "types/program.d.ts",
   "errorPolicy": "An empty errors array means the compact card has no curated error override; consult the canonical route for validation, inference, and recovery behavior.",
-  "count": 177,
+  "count": 179,
   "cards": [
     {
       "schemaVersion": 2,
@@ -12552,6 +12552,158 @@
       "snippet": "program.createHorizonPlot({ x: \"time\", y: \"value\" })",
       "errors": [],
       "route": "/reference/actions/statistics/#createhorizonplot"
+    },
+    {
+      "schemaVersion": 2,
+      "name": "createAreaPlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "summary": "Create a simple area, crossing ribbon, or accumulated series chart in the full entry.",
+      "signature": "createAreaPlot(options: CreateAreaPlotOptions): ChartProgram;",
+      "intents": [
+        "create area plot",
+        "create",
+        "add",
+        "complete chart",
+        "chart facade",
+        "area chart",
+        "ribbon"
+      ],
+      "lifecycle": "Aggregate create-only",
+      "resources": {
+        "prerequisites": [
+          "canvas and dataset context"
+        ],
+        "owns": [
+          "area chart"
+        ],
+        "idOptions": [
+          "id",
+          "data",
+          "coordinate"
+        ]
+      },
+      "options": [
+        {
+          "name": "id",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "data",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "coordinate",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "groupBy",
+          "required": false,
+          "type": "string | readonly [string, ...string[]] | undefined"
+        },
+        {
+          "name": "layout",
+          "required": false,
+          "type": "\"center\" | \"diverging\" | \"fill\" | \"overlay\" | \"stack\" | undefined"
+        },
+        {
+          "name": "missing",
+          "required": false,
+          "type": "\"break\" | \"error\" | undefined"
+        },
+        {
+          "name": "color",
+          "required": false,
+          "type": "string | { field: string; fieldType?: \"nominal\" | \"ordinal\" | undefined; scale?: NonPointCategoricalColorScaleOptions | undefined; palette?: Palette | undefined; } | undefined"
+        },
+        {
+          "name": "area",
+          "required": false,
+          "type": "{ fill?: string | undefined; opacity?: number | undefined; stroke?: string | undefined; strokeWidth?: number | undefined; curve?: CurveInterpolation | undefined; } | undefined"
+        },
+        {
+          "name": "guides",
+          "required": false,
+          "type": "false | DensityPlotGuideOptions | undefined"
+        },
+        {
+          "name": "valueChannel",
+          "required": false,
+          "type": "\"x\" | \"y\" | undefined"
+        },
+        {
+          "name": "x",
+          "required": true,
+          "type": "{ field: string; scale?: NonPointQuantitativePositionScaleOptions | undefined; } | AreaPlotIndependentChannel | ({ ...; } & ({ ...; } | { ...; }))"
+        },
+        {
+          "name": "y",
+          "required": true,
+          "type": "{ field: string; scale?: NonPointQuantitativePositionScaleOptions | undefined; } | AreaPlotIndependentChannel | ({ ...; } & ({ ...; } | { ...; }))"
+        },
+        {
+          "name": "baseline",
+          "required": false,
+          "type": "number | undefined"
+        }
+      ],
+      "callPatterns": [
+        "createAreaPlot({ x, y })",
+        "createAreaPlot({ x, y, groupBy, layout })"
+      ],
+      "snippet": "program.createAreaPlot({ x: \"time\", y: \"value\" })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#createareaplot"
+    },
+    {
+      "schemaVersion": 2,
+      "name": "layoutSeries",
+      "layer": "user-facing",
+      "domain": "encodings",
+      "summary": "Assign group, stack, fill, overlay, diverging, or center placement independently of color.",
+      "signature": "layoutSeries(options: SeriesLayoutOptions): ChartProgram;",
+      "intents": [
+        "layout series",
+        "layout",
+        "avoid overlap",
+        "visual encoding",
+        "field mapping",
+        "series placement",
+        "grouped bars"
+      ],
+      "lifecycle": "Assignment",
+      "resources": {
+        "prerequisites": [
+          "existing series placement"
+        ],
+        "owns": [
+          "series placement"
+        ],
+        "idOptions": [
+          "target"
+        ]
+      },
+      "options": [
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "mode",
+          "required": true,
+          "type": "ColorLayout"
+        }
+      ],
+      "callPatterns": [
+        "layoutSeries({ mode })"
+      ],
+      "snippet": "program.layoutSeries({ mode: \"stack\" })",
+      "errors": [],
+      "route": "/reference/actions/encodings/#layoutseries"
     }
   ]
 }

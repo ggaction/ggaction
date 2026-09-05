@@ -1,3 +1,4 @@
+import { readSeriesIdentity } from "../../grammar/pathSeries.js";
 import {
   countHistogramBins,
   findHistogramBinIndex,
@@ -33,6 +34,29 @@ export function deriveHistogramSegments({
   });
   const colorEncoding = layer.encoding?.color;
   const layout = resolveBarColorLayout(layer);
+
+  if (layer.encoding?.group !== undefined) {
+    const identity = readSeriesIdentity(dataset.values, layer);
+    const cellRows = bins.boundaries.slice(0, -1).map(() => identity.domain.map(() => []));
+    const index = new Map(identity.domain.map((value, i) => [value, i]));
+    xValues.forEach((value, i) => { const bin = findHistogramBinIndex(value, bins.boundaries);
+      if (bin !== -1) cellRows[bin][index.get(identity.values[i])].push(dataset.values[i]); });
+    return cellRows.flatMap((cells, bin) => layoutSeriesPartition(cells.map(rows => rows.length), layout).map(segment => {
+      const members = cells[segment.index];
+      let color, colorValue;
+      if (colorEncoding !== undefined) {
+        const values = readNominalField(members, colorEncoding.field);
+        if (new Set(values).size !== 1) throw new Error("Histogram color requires one value within each bin/series cell.");
+        colorValue = values[0];
+        const scale = resolvedScales[colorEncoding.scale];
+        color = mapOrdinalValues([colorValue], scale.domain, scale.range)[0];
+      }
+      return { bin, start: bins.boundaries[bin], end: bins.boundaries[bin + 1],
+        category: segment.index, categoryCount: identity.domain.length,
+        stackStart: segment.start, stackEnd: segment.end, members,
+        ...(color === undefined ? {} : { color, colorValue }) };
+    }));
+  }
 
   if (colorEncoding?.scale === undefined) {
     return countHistogramBins(xValues, bins.boundaries).flatMap((count, bin) =>

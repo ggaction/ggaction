@@ -2,17 +2,11 @@ import { validateUserId } from "../../core/identifiers.js";
 import { findDataset } from "../../selectors/datasets.js";
 import { resolveEligibleLayer } from "../../selectors/layers.js";
 import { hasMaterializedLegend } from "../../materialization/legends.js";
-import {
-  applyDetachedScaleRematerialization,
-  applyMaterializationPlan
-} from "../../materialization/dependencies.js";
+import { applyDetachedScaleRematerialization, applyMaterializationPlan } from "../../materialization/dependencies.js";
 import { planEncodingRematerialization } from "../../materialization/encodings.js";
 import { findSemanticScale } from "../../selectors/scales.js";
 import { validateOptionObject } from "../../core/validation.js";
-import {
-  getMarkGraphicTypes,
-  getPositionChannelDefinition
-} from "../../core/vocabulary.js";
+import { getMarkGraphicTypes, getPositionChannelDefinition } from "../../core/vocabulary.js";
 
 export function validateOptions(args, supported, operation) {
   validateOptionObject(args, supported, operation);
@@ -190,4 +184,15 @@ export function resolveTarget(
   }
 
   return { id, dataset, layer };
+}
+
+export function inferSeriesGroup(program, layer, field, origin) {
+  const group = layer.encoding?.group;
+  if (group !== undefined && group.inferredFrom !== origin) {
+    if (origin === "offset" && (group.fields !== undefined || group.field !== field)) {
+      throw new Error("Offset field conflicts with the stored series group.");
+    }
+    return program;
+  }
+  return setEncodingProperties(program, layer.id, "group", { field, fieldType: "nominal", inferredFrom: origin });
 }

@@ -343,7 +343,7 @@ test("colors statistical and explicit horizontal bands without stack dispatch", 
     const layer = program.semanticSpec.layers.find(
       candidate => candidate.id === "errorBand"
     );
-    assert.equal(layer.encoding.color.layout, "overlay");
+    assert.equal(layer.layout.mode, "overlay");
     assert.equal(layer.encoding.x.stack, undefined);
     assert.equal(layer.encoding.y.stack, undefined);
     assert.equal(

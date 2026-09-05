@@ -13,7 +13,7 @@
         "tick": ["quantitative", "temporal", "ordinal", "nominal"],
         "text": ["quantitative", "temporal", "ordinal", "nominal"]
       },
-      "modes": "field; rule also accepts datum; bar accepts aggregate or bin"
+      "modes": "field; rule and area also accept datum; bar accepts aggregate or bin"
     },
     {
       "action": "encodeY",
@@ -27,7 +27,7 @@
         "tick": ["quantitative", "temporal", "ordinal", "nominal"],
         "text": ["quantitative", "temporal", "ordinal", "nominal"]
       },
-      "modes": "field; rule also accepts datum; bar accepts aggregate or count"
+      "modes": "field; rule and area also accept datum; bar accepts aggregate or count"
     },
     {
       "action": "encodeX2 / encodeY2",
@@ -37,7 +37,7 @@
         "rect": ["matching primary"],
         "rule": ["matching primary"]
       },
-      "modes": "secondary field; rule also accepts datum"
+      "modes": "secondary field; rule and area also accept datum"
     },
     {
       "action": "encodeTheta",

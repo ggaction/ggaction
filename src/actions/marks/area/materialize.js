@@ -136,7 +136,7 @@ export function resolveAreaMaterialization({
       : deriveAreaSeries(rows, layer)
     : deriveDensityAreaSeries(rows, layer, densityTransform);
   const colorEncoding = layer.encoding?.color;
-  const layout = colorEncoding?.layout ?? "overlay";
+  const layout = layer.layout?.mode ?? colorEncoding?.layout ?? "overlay";
   const categoricalDensity = densityTransform?.placement?.type === "category";
   const derived = densityTransform === undefined || categoricalDensity
     ? rawDerived

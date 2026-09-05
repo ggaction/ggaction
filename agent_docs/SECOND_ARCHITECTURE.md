@@ -258,8 +258,13 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 Semantic primitive는 layer.layout.mode, layer.mark.missing, encoding.group.inferredFrom을
 각각 배치 결정·결측 정책·legacy 추론 origin의 단일 위치로 저장하고 vocabulary를 검사한다.
-저장과 제거는 immutable하며 graphics를 바꾸지 않는다. 배치 materializer와 public layoutSeries,
-Area facade 연결은 아직 Planned다. Primitive target은 별도 수치 oracle와 explicit graphic edits를 사용한다.
+Primitive 저장과 제거는 immutable하며 graphics를 바꾸지 않는다. 공개 layoutSeries는 최종 의미를 preflight한 뒤
+wrapped offset/endpoint/scale/mark/guide owner를 명시적으로 호출한다. createAreaPlot은 이 하위 owner들의 합성이다.
+Raw Area 경계·공동 결측 분할은 areaSeries, Bar aggregate cells는 bars/aggregate가 소유한다. 두 materializer와
+selection은 같은 series identity와 bounds를 사용하며 별도 renderer 추론이나 H0 recipe를 저장하지 않는다.
+자동 offset scale의 소유권만 mark config에 기록한다. Group에서 떠나면 encoding/config를 정리하고 실제
+layer/guide 참조가 없는 owned scale을 semantic primitive로 제거한다. 이 removal은 resolved cache와 currentScale도 정리한다.
+Primitive target은 별도 수치 oracle와 explicit graphic edits를 사용하고 public 결과와 exact parity로 비교한다.
 
 ## `ChartProgram`의 canonical state
 

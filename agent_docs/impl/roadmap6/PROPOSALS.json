@@ -541,7 +541,8 @@
         "R6-P4-X": "planned",
         "R6-P4-V1": "approved",
         "R6-P4-V2": "planned",
-        "R6-P4-V3": "planned"
+        "R6-P4-V3": "planned",
+        "R6-P4-B": "planned"
       },
       "workPackages": [
         {
@@ -553,7 +554,10 @@
           ],
           "scope": "Constant data endpoint를 lower owner에 추가하고 simple area, ranged ribbon, stacked area를 구분한다. Nonlinear scale과 missing path break를 명시한다.",
           "acceptance": "simple x/y 입력이 실제 area를 그림. Baseline/domain/zero/log·range edit 수렴. 가짜 source field와 renderer inference 없음.",
-          "contractEvidence": "phase4/CONTRACT_REVIEW.md"
+          "contractEvidence": "phase4/CONTRACT_REVIEW.md",
+          "status": "in-progress",
+          "implementationStatus": "implemented-consumer-verified-package-budget-pending",
+          "implementationEvidence": "phase4/RESULTS_V1.md"
         },
         {
           "id": "R6-P4-W2",
@@ -564,7 +568,10 @@
           ],
           "scope": "Group/stack/fill/overlay/diverging을 atomic owner에 모은다. 기존 color.layout/measure.stack/offset 경로가 owner에 위임하도록 migration한다.",
           "acceptance": "group→stack→group에서 scale, offset, normalization, guides, selections에 stale 상태 없음. Negative/missing/group conflict atomic.",
-          "contractEvidence": "phase4/CONTRACT_REVIEW.md"
+          "contractEvidence": "phase4/CONTRACT_REVIEW.md",
+          "status": "in-progress",
+          "implementationStatus": "implemented-consumer-verified-package-budget-pending",
+          "implementationEvidence": "phase4/RESULTS_V1.md"
         },
         {
           "id": "R6-P4-W3",
@@ -601,7 +608,7 @@
           "contractEvidence": "phase4/CONTRACT_REVIEW.md"
         }
       ],
-      "activity": "implementing-area-and-series-layout",
+      "activity": "area-layout-implemented-awaiting-package-budget",
       "contractEvidence": "phase4/CONTRACT_REVIEW.md",
       "baselineEvidence": "phase4/baseline-results.json",
       "baselineCommit": "93dceb3761e170207058e6a7280060fedd471244",
@@ -650,6 +657,18 @@
         "reviewCommit": "ee9daf0c58eb682a09ab0dddc3af9ff241bb76a1",
         "approvalBaselineCommit": "102fbee9cc76dd6ec31fef9d39680d8501dba839",
         "scope": "V1 Area/layout 11 primitive targets; implement W1/W2 public flows and validate transitions and consumers. V2/V3/X remain unapproved."
+      },
+      "implementationV1Evidence": "phase4/RESULTS_V1.md",
+      "implementationV1Results": "phase4/implementation-v1-results.json",
+      "packageEvidence": "phase4/package-results.json",
+      "budgetReview": "phase4/BUNDLE_REVIEW.md",
+      "implementationV1Validation": {
+        "normalTests": 2646,
+        "renderTests": 183,
+        "browserTests": 59,
+        "approvedVisualPairs": 11,
+        "criticalCoverageFloors": 74,
+        "packageStatus": "failed-bundle-budget"
       }
     },
     {
@@ -1215,7 +1234,7 @@
       "id": "D03",
       "title": "Color에 종속된 layout과 전환 제한",
       "kind": "design-issue",
-      "status": "proposed",
+      "status": "partially-implemented",
       "primaryPhase": 4,
       "primaryWorkPackage": "R6-P4-W2",
       "relatedWorkPackages": [
@@ -1228,7 +1247,8 @@
       "recommended": "Group/stack/fill/overlay/diverging을 atomic owner에 모은다. 기존 color.layout/measure.stack/offset 경로가 owner에 위임하도록 migration한다.",
       "acceptance": "group→stack→group에서 scale, offset, normalization, guides, selections에 stale 상태 없음. Negative/missing/group conflict atomic.",
       "evidence": "audit/REPORT.md: D03",
-      "disposition": "implementation-or-explicit-contract-decision-proposed"
+      "disposition": "Approved V1 public behavior, lifecycle and consumer checks implemented. Full/Basic package budget Gate B and Phase X remain pending.",
+      "implementationEvidence": "phase4/RESULTS_V1.md"
     },
     {
       "id": "D04",
@@ -1668,7 +1688,7 @@
       "id": "F05",
       "title": "Area / baseline / range",
       "kind": "proposed-family",
-      "status": "proposed",
+      "status": "partially-implemented",
       "primaryPhase": 4,
       "primaryWorkPackage": "R6-P4-W1",
       "relatedWorkPackages": [
@@ -1681,7 +1701,8 @@
       "recommended": "Constant data endpoint를 lower owner에 추가하고 simple area, ranged ribbon, stacked area를 구분한다. Nonlinear scale과 missing path break를 명시한다.",
       "acceptance": "simple x/y 입력이 실제 area를 그림. Baseline/domain/zero/log·range edit 수렴. 가짜 source field와 renderer inference 없음.",
       "evidence": "audit/REPORT.md: F05",
-      "disposition": "implementation-or-explicit-contract-decision-proposed"
+      "disposition": "Approved V1 public behavior, lifecycle and consumer checks implemented. Full/Basic package budget Gate B and Phase X remain pending.",
+      "implementationEvidence": "phase4/RESULTS_V1.md"
     },
     {
       "id": "F06",

@@ -15,5 +15,5 @@ test("authors the center target with explicit semantic and graphic primitives", 
     ),
     false
   );
-  assert.deepEqual(program.semanticSpec.layers[0].encoding.y.stack, "center");
+  assert.deepEqual(program.semanticSpec.layers[0].layout.mode, "center");
 });

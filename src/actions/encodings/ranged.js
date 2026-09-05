@@ -1,32 +1,19 @@
-import { prepareAreaRange } from "./areaRange.js";
-import { readAreaEndpoint, validateAreaEndpointPair } from "../../grammar/areaEndpoints.js";
+import { readAreaEndpoint, validateAreaEndpointPair, normalizeAreaBound } from "../../grammar/areaEndpoints.js";
 import { action } from "../../core/action.js";
 import { validateUserId } from "../../core/identifiers.js";
 import { isPlainObject } from "../../core/immutable.js";
-import {
-  readNominalField,
-  readQuantitativeField,
-  readScaleField,
-  readTemporalField,
-  resolveTemporalUnit,
-  validateSemanticFieldType
-} from "../../grammar/scales/index.js";
+import { readNominalField, readQuantitativeField, readScaleField, readTemporalField, resolveTemporalUnit, validateSemanticFieldType } from "../../grammar/scales/index.js";
 import { normalizeRuleDatum } from "../../grammar/rules.js";
 import { normalizeGroupFields } from "../../grammar/pathSeries.js";
 import { assertPathGroupCompatible, validatePathGroupAppearance } from "../../materialization/marks/grouping.js";
-import {
-  canMaterializeArea,
-  canMaterializeLine,
-  getPositionEncodingMaterializationSteps
-} from "../../materialization/marks/index.js";
+import { canMaterializeArea, canMaterializeLine, getPositionEncodingMaterializationSteps } from "../../materialization/marks/index.js";
 import { findLayer } from "../../selectors/layers.js";
-import {
-  resolveTarget,
-  setEncodingProperties,
-  validateOptions
-} from "./shared.js";
-
+import { resolveTarget, setEncodingProperties, validateOptions } from "./shared.js";
 import { applyTemporalUnit } from "./temporal.js";
+import { deriveAreaSeries } from "../../grammar/areaSeries.js";
+import { resolvePositionEncoding } from "./position/resolve.js";
+import { resolveScalePreview } from "../scales/preview.js";
+import { findUpstreamTransform } from "../../materialization/dataProvenance.js";
 
 const SECONDARY_OPTIONS = Object.freeze([
   "field", "datum", "target", "fieldType", "scale", "coordinate", "temporalUnit"
@@ -134,6 +121,7 @@ function encodeSecondaryPosition(program, channel, args, operation, types) {
 
   let next = program;
   if (layer.mark.type === "bar") {
+    if (layer.layout?.mode !== undefined && layer.layout.mode !== "overlay") throw new Error("Ranged bars support only overlay layout; clear series layout before assigning endpoints.");
     for (const property of ["aggregate", "stack", "bin"]) {
       if (layer.encoding?.[primaryChannel]?.[property] !== undefined) {
         next = next.editSemantic({
@@ -213,7 +201,7 @@ function rangeAction(channel) {
       ...(Object.hasOwn(args, "temporalUnit") ? { temporalUnit: args.temporalUnit } : {}),
       fieldType: args.fieldType ?? "quantitative"
     };
-    const { layer, dataset } = resolveTarget(this, args.target, ["area", "bar", "rect"], "ranged mark");
+    const { layer, dataset } = resolveTarget(this, args.target, ["area", "bar", "rect", "rule"], "ranged mark");
     let next = this;
     let lower = { field: args.lower }, upper = { field: args.upper };
     if (layer.mark.type === "area") {
@@ -246,8 +234,8 @@ const encodeGroup = action(
     const { id: target, dataset, layer } = resolveTarget(
       this,
       args.target,
-      ["line", "area"],
-      "path mark"
+      ["line", "area", "bar"],
+      "series mark"
     );
     if ((args.fieldType ?? "nominal") !== "nominal") {
       throw new Error("encodeGroup requires a nominal field.");
@@ -265,7 +253,8 @@ const encodeGroup = action(
       fieldType: "nominal"
     };
     assertPathGroupCompatible(this, layer, dataset, group);
-    validatePathGroupAppearance(this, {
+    for (const field of fields) readNominalField(dataset.values, field);
+    if (layer.mark.type !== "bar") validatePathGroupAppearance(this, {
       ...layer, encoding: { ...layer.encoding, group }
     }, dataset);
     let next = this;
@@ -275,8 +264,17 @@ const encodeGroup = action(
         property: `layer[${target}].encoding.group.${alternate}`, remove: true
       });
     }
+    if (layer.encoding?.group?.inferredFrom !== undefined) next = next.editSemantic({ property: `layer[${target}].encoding.group.inferredFrom`, remove: true });
     next = setEncodingProperties(next, target, "group", group);
+    if (layer.mark.type === "bar") {
+      const mode = layer.layout?.mode;
+      if (mode !== undefined) return next.layoutSeries({ target, mode });
+      if (layer.encoding?.x?.scale === undefined || layer.encoding?.y?.scale === undefined) return next;
+      for (const step of getPositionEncodingMaterializationSteps(next, findLayer(next, target), layer.encoding?.y?.scale)) next = next[step.op](step.args);
+      return next;
+    }
     if (layer.mark.type === "area") {
+      if (layer.layout?.mode !== undefined) return next.layoutSeries({ target, mode: layer.layout.mode });
       const updated = findLayer(next, target);
       return canMaterializeArea(next, updated)
         ? next.rematerializeAreaMark({ id: target })
@@ -299,4 +297,28 @@ export function registerRangedEncodingActions(ProgramClass) {
   registerBasicRangedEncodingActions(ProgramClass);
   ProgramClass.prototype.encodeXRange = encodeXRange;
   ProgramClass.prototype.encodeYRange = encodeYRange;
+}
+
+export function prepareAreaRange(program, layer, dataset, channel, args, common) {
+  const lower = normalizeAreaBound(args.lower), upper = normalizeAreaBound(args.upper);
+  validateAreaEndpointPair(lower, upper);
+  if (common.fieldType !== "quantitative") throw new Error("Area range requires quantitative endpoints.");
+  readAreaEndpoint(dataset.values, { ...upper, fieldType: "quantitative" }, layer.mark.missing);
+  const resolved = resolvePositionEncoding(program, channel, { ...common, ...lower,
+    ...(args.coordinate === undefined ? {} : { coordinate: args.coordinate }),
+    ...(args.scale === undefined ? {} : { scale: args.scale }) }, `encode${channel.toUpperCase()}Range`);
+  const secondary = { ...upper, fieldType: "quantitative", scale: resolved.scale.id };
+  const primary = { ...lower, fieldType: "quantitative", scale: resolved.scale.id };
+  const updated = { ...layer, coordinate: resolved.coordinate.id,
+    encoding: { ...layer.encoding, [channel]: primary, [`${channel}2`]: secondary } };
+  const scales = program.semanticSpec.scales.filter(scale => scale.id !== resolved.scale.id);
+  const preview = { ...program, markConfigs: program.markConfigs, canvasConfig: program.canvasConfig,
+    semanticSpec: { ...program.semanticSpec,
+      layers: program.semanticSpec.layers.map(item => item.id === layer.id ? updated : item),
+      scales: [...scales, resolved.scale] } };
+  resolveScalePreview(preview, resolved.scale.id);
+  if (canMaterializeArea(preview, updated) && !findUpstreamTransform(program, dataset, "density")) {
+    deriveAreaSeries(dataset.values, updated);
+  }
+  return { lower, upper, secondary };
 }

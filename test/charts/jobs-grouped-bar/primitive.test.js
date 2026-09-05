@@ -34,20 +34,20 @@ test("authors and renders the complete primitive jobs grouped bar chart", () => 
     mark: { type: "bar" },
     data: "jobs",
     coordinate: "main",
+    layout: { mode: "group" },
     encoding: {
+      group: { field: "sex", fieldType: "nominal", inferredFrom: "color" },
       x: { field: "year", fieldType: "ordinal", scale: "x" },
       y: {
         field: "perc",
         fieldType: "quantitative",
         aggregate: "mean",
-        stack: null,
         scale: "y"
       },
       color: {
         field: "sex",
         fieldType: "nominal",
-        scale: "color",
-        layout: "group"
+        scale: "color"
       },
       xOffset: {
         field: "sex",

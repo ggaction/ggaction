@@ -26,24 +26,19 @@ function verticalArea(reference) {
       .editSemantic({ property: "layer[m].encoding.group.field", value: reference.options.groupBy })
       .editSemantic({ property: "layer[m].encoding.group.fieldType", value: "nominal" });
   }
-  if (reference.options.missing === "break") {
-    // Resolve the oracle's explicit domain through the constant baseline consumer.
-    // The current strict field reader cannot yet consume missing area endpoints.
-    program = program.editSemantic({ property: "layer[m].encoding.y.scale", remove: true });
-  }
   program = program
     .createScale({ id: "x", type: "linear", domain: reference.xDomain, range: "auto", nice: true, zero: false })
     .createScale({ id: "y", type: "linear", domain: reference.yDomain, range: "auto",
       nice: reference.options.y?.scale?.nice ?? true, zero: false })
     .rematerializeScale({ id: "x" })
     .rematerializeScale({ id: "y" })
-    // The current domain resolver does not yet consume the planned endpoint/layout policies.
-    // Resolve the independent oracle's domain, then record the target automatic-domain intent.
+    // Keep the reference domain independent from automatic domain inference.
     .editSemantic({ property: "scale[x].domain", value: "auto" })
     .editSemantic({ property: "scale[y].domain", value: "auto" });
-  if (reference.options.missing === "break") {
-    program = program.editSemantic({ property: "layer[m].encoding.y.scale", value: "y" });
-  }
+  program = program.editSemantic({ property: "scale[x].nice", remove: true })
+    .editSemantic({ property: "scale[x].zero", remove: true })
+    .editSemantic({ property: "scale[y].zero", remove: true });
+  if (reference.options.y?.scale?.nice === undefined) program = program.editSemantic({ property: "scale[y].nice", remove: true });
   if (reference.options.color) {
     program = program
       .editSemantic({ property: "layer[m].encoding.color.field", value: reference.options.color })
@@ -79,8 +74,8 @@ function horizontalArea(reference) {
     .editSemantic({ property: "layer[m].encoding.x2.datum", value: reference.secondary.datum })
     .editSemantic({ property: "layer[m].encoding.x2.fieldType", value: "quantitative" })
     .editSemantic({ property: "layer[m].encoding.x2.scale", value: "x" })
+    .createScale({ id: "y", type: "linear", domain: reference.yDomain, range: "auto" })
     .createScale({ id: "x", type: "log", domain: reference.xDomain, range: "auto", nice: false })
-    .createScale({ id: "y", type: "linear", domain: reference.yDomain, range: "auto", nice: true, zero: false })
     .rematerializeScale({ id: "x" })
     .rematerializeScale({ id: "y" })
     .editSemantic({ property: "scale[x].domain", value: "auto" })
@@ -131,7 +126,7 @@ export function createBarPrimitive(id) {
       .rematerializeScale({ id: "xOffset" });
   }
   // For the roundtrip target this authors the final expected group state.
-  // The future public group -> stack -> group transitions are not executed here.
+  // The public roundtrip must converge on these independently authored rectangles.
   return program
     .editGraphics({ target: "m", property: "length", value: reference.items.length })
     .editGraphics({ target: "m", property: "x", value: reference.items.map(item => item.x) })

@@ -17,6 +17,7 @@ function operation(name) {
   if (
     name === "jitterPoints" ||
     name === "layoutLabels" ||
+    name === "layoutSeries" ||
     name === "orderCategories" ||
     name === "replaceCompositionChild"
   ) return "edit";

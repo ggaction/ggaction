@@ -29,6 +29,7 @@ const authoringCanvasOptions = Object.freeze({
 const facadeGuideOwners = new Set([
   "createScatterPlot",
   "createLinePlot",
+  "createAreaPlot",
   "createBarPlot",
   "createBoxPlot",
   "createGradientPlot",
@@ -508,12 +509,6 @@ function closeRuntimeDependencies(entries) {
     if (owner) expandChartOwner(owner, dependencies());
   };
 
-  expandChartConstraint("chart.area", () => ({
-    after: [
-      chartDependency("encodeX", { field: `"x"`, fieldType: `"quantitative"` }),
-      chartDependency("encodeY", { field: `"y"`, fieldType: `"quantitative"` })
-    ]
-  }));
   expandChartConstraint("chart.bar.horizontal", () => ({
     after: [
       chartDependency("encodeY", {
@@ -810,6 +805,7 @@ function closeRuntimeDependencies(entries) {
     createTextMark: "text",
     createScatterPlot: "scatterPlot",
     createLinePlot: "linePlot",
+    createAreaPlot: "areaPlot",
     createBarPlot: "barPlot",
     createBoxPlot: "boxPlot",
     createGradientPlot: "gradientPlot",
@@ -829,6 +825,7 @@ function closeRuntimeDependencies(entries) {
     createTextMark: "text",
     createScatterPlot: "point",
     createLinePlot: "line",
+    createAreaPlot: "area",
     createBarPlot: "bar",
     createBoxPlot: "bar",
     createGradientPlot: "rect",
@@ -1390,12 +1387,12 @@ function applyRequestedOptions(entries, query) {
 
   const fieldOwners = Object.freeze({
     x: [
-      "createScatterPlot", "createLinePlot", "createBarPlot", "createHeatmap",
+      "createScatterPlot", "createLinePlot", "createAreaPlot", "createBarPlot", "createHeatmap",
       "createBoxPlot", "createViolinPlot", "createGradientPlot",
       "createRegressionData", "createBin2DData", "encodeHorizon", "createHorizonPlot"
     ],
     y: [
-      "createScatterPlot", "createLinePlot", "createBarPlot", "createHeatmap",
+      "createScatterPlot", "createLinePlot", "createAreaPlot", "createBarPlot", "createHeatmap",
       "createBoxPlot", "createViolinPlot", "createGradientPlot",
       "createRegressionData", "createBin2DData", "encodeHorizon", "createHorizonPlot"
     ]
@@ -1429,7 +1426,7 @@ function applyRequestedOptions(entries, query) {
   }
 
   const appearanceOwners = Object.freeze({
-    color: ["createScatterPlot", "createLinePlot", "createBarPlot", "createViolinPlot", "createPiePlot"],
+    color: ["createScatterPlot", "createLinePlot", "createAreaPlot", "createBarPlot", "createViolinPlot", "createPiePlot"],
     size: ["createScatterPlot"],
     shape: ["createScatterPlot"]
   });
@@ -1715,12 +1712,6 @@ function runtimeClosureDecisions(entries) {
   const unresolved = [];
   const unsupported = [];
   const chartConstraints = new Set(entries.flatMap(entry => entry.coverage));
-  if (chartConstraints.has("chart.area")) {
-    unresolved.push(unresolvedDecision(
-      "chart.area.baseline",
-      "This area-chart template leaves its baseline unresolved. Choose an explicit secondary-position, density, or stack recipe before treating it as a drawable chart."
-    ));
-  }
   if (chartConstraints.has("chart.strip")) {
     unresolved.push(unresolvedDecision(
       "chart.strip.placement",
@@ -1782,7 +1773,7 @@ function runtimeClosureDecisions(entries) {
       `Scale "${id}" is not connected to a compatible encoding; choose the channel that should consume it.`
     ));
   }
-  if (names.has("createAreaMark") && names.has("encodeStrokeDash")) {
+  if ((names.has("createAreaMark") || names.has("createAreaPlot")) && names.has("encodeStrokeDash")) {
     unsupported.push({
       constraint: "unsupported.areaStrokeDash",
       reason: "Field-driven stroke dash is not supported for area marks; use a line or rule mark for dash encoding."

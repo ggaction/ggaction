@@ -2,9 +2,9 @@
 
 ## 공통 상태
 
-A는 approved다. V1은 approved이며 V/V2/V3/X는 planned다. 시각 목표와 결과 승인은 아직 없다.
+A는 approved다. V1은 approved이며 V/V2/V3/X는 planned다. V1 시각 목표만 승인되었고 Phase 결과 승인은 아직 없다.
 허용 상태는 planned | ready-for-review | approved | changes-requested다.
-현재 검토 대상은 [V1 검토 묶음](VISUAL_REVIEW_V1.md)의 11개 Area/layout primitive다. A 승인과 Phase 3 X 승인을 V1 승인으로 재사용하지 않는다.
+현재 검토 대상은 V1 구현 후의 [package 용량 B](BUNDLE_REVIEW.md)다. A 승인과 Phase 3 X 승인을 V1 승인으로 재사용하지 않는다.
 
 ## R6-P4-A — Contract and scope
 
@@ -32,7 +32,7 @@ A는 approved다. V1은 approved이며 V/V2/V3/X는 planned다. 시각 목표와
 - R6-P4-V1: approved. [Area/baseline/range/missing/layout 11 variants](VISUAL_REVIEW_V1.md).
 - R6-P4-V2: planned. Rose/Radial mapping·theta/legend order 5 variants.
 - R6-P4-V3: planned. Midpoint·scale/legend transition 4 variants.
-- V1의 입력·미래 호출은 [실행 fixture](../../../../test/gates/area-layout/targets.json), source·표현은 [manifest](../../../../test/gates/area-layout/manifest.js)가 소유한다. [수치·렌더 결과](visual-v1-results.json)를 기록했다. V2/V3 9개는 [target plan](visual-target-plan.json)에 남아 있다.
+- V1의 입력·미래 호출은 [실행 fixture](../../../../examples/area-layout/targets.json), source·표현은 [manifest](../../../../test/charts/area-layout/manifest.js)가 소유한다. [수치·렌더 결과](visual-v1-results.json)를 기록했다. V2/V3 9개는 [target plan](visual-target-plan.json)에 남아 있다.
 - Parent V는 세 범위 모두 승인된 뒤에만 approved로 기록한다. 한 V 승인이 다른 V의 public 구현을 열지 않는다.
 
 ## R6-P4-X — Result and closeout
@@ -56,7 +56,7 @@ A는 approved다. V1은 approved이며 V/V2/V3/X는 planned다. 시각 목표와
 - 승인 기준 HEAD: `b93acb55859dfd90028ffa91f1e6fc2ef4c356fc`.
 - 승인 delta: `encodeLayout` → `layoutSeries`. Bar/Area의 series 배치만 담당하며 canvas/facet/composition layout은 포함하지 않는다. 이전 이름의 alias를 만들지 않는다.
 - 승인 범위: P4-C01–C09의 위 이름 변경 포함, Planned 등록·비시각 준비·20개 primitive target 작성. 각 V 승인 전 public visual flow 구현 차단.
-- 남은 작업: V1/V2/V3 primitive 작성·승인, W1–W5 구현과 누적 검증, X 승인.
+- 남은 작업: package B, V2/V3 primitive 작성·승인, W3–W5 구현과 누적 검증, X 승인.
 - Baseline commit: `93dceb3761e170207058e6a7280060fedd471244`.
 - Full/Basic/SVG 상한 237000/125000/25000 유지. 초과 시 별도 B가 필요하며 이번 A에는 상한 증가가 없다.
 
@@ -76,3 +76,14 @@ A는 approved다. V1은 approved이며 V/V2/V3/X는 planned다. 시각 목표와
 - 사용자 답변: “승인한다”. 기준 HEAD: `102fbee9cc76dd6ec31fef9d39680d8501dba839`.
 - 승인 대상: `ee9daf0c58eb682a09ab0dddc3af9ff241bb76a1`의 11개 Area/layout primitive 목표와 표시된 public calls.
 - W1/W2 public 구현·전환·실패·소비자 검증을 시작한다. V2/V3/X는 미승인이다.
+
+
+## R6-P4-B — Full/Basic package budget
+
+- 상태: planned. [구현 결과](RESULTS_V1.md)와 [용량 검토](BUNDLE_REVIEW.md)를 고정한다.
+- 범위: Full 237,000 → 242,000 / Basic 125,000 → 130,000 bytes 제안. SVG 25,000 유지.
+- 근거: 승인된 W1/W2를 구현했으나 [고정 tarball](package-results.json)의 gzip guard가 실패한다.
+- 현재 검증: normal 2646, render 183, browser 59, coverage 74 critical floors, 11개 승인 시각 결과 동등성.
+- 승인 효과: 두 guard와 architecture 표만 변경하고 같은 tarball installed consumer를 재검증한다.
+- 승인 전 차단: 상한 변경과 package 전체 통과 선언. V2/V3/X는 별도 Gate로 유지한다.
+- 준비 완료 조건: 전체 검토 묶음을 검증·commit/push하고 실제 source/remote ref를 아래 기록한다.

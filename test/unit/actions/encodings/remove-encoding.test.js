@@ -87,7 +87,7 @@ test("removes appearance encodings and only their matching legend blocks", () =>
   assert.equal(withoutColor.semanticSpec.layers[0].encoding.color, undefined);
 });
 
-test("removes grouped-bar color companions and restores normalized baseline policy", () => {
+test("removes color while retaining group offsets and normalized layout", () => {
   const grouped = chart()
     .createCanvas({ width: 260, height: 180, margin: 30 })
     .createData({ values: [
@@ -101,9 +101,9 @@ test("removes grouped-bar color companions and restores normalized baseline poli
   const ungrouped = grouped.removeEncoding({ channel: "color" });
 
   assert.equal(ungrouped.semanticSpec.layers[0].encoding.color, undefined);
-  assert.equal(ungrouped.semanticSpec.layers[0].encoding.xOffset, undefined);
-  assert.equal(ungrouped.markConfigs.bars?.xOffset, undefined);
-  assert.equal(ungrouped.graphicSpec.objects.bars.items.length, 1);
+  assert.deepEqual(ungrouped.semanticSpec.layers[0].encoding.xOffset, grouped.semanticSpec.layers[0].encoding.xOffset);
+  assert.deepEqual(ungrouped.markConfigs.bars?.xOffset, grouped.markConfigs.bars.xOffset);
+  assert.equal(ungrouped.graphicSpec.objects.bars.items.length, 2);
 
   const normalized = chart()
     .createCanvas({ width: 260, height: 180, margin: 30 })
@@ -115,7 +115,7 @@ test("removes grouped-bar color companions and restores normalized baseline poli
     .encodeHistogram({ field: "value" })
     .encodeColor({ field: "group", layout: "fill" });
   const baseline = normalized.removeEncoding({ channel: "color" });
-  assert.equal(baseline.semanticSpec.layers[0].encoding.y.stack, "zero");
+  assert.equal(baseline.semanticSpec.layers[0].layout.mode, "fill");
   assert.equal(baseline.graphicSpec.objects.hist.items.length > 0, true);
 });
 

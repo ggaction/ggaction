@@ -21,7 +21,7 @@ test("builds the public jobs grouped bar chart with chart actions", () => {
     scale: "x"
   });
   assert.equal(layer.encoding.y.aggregate, "mean");
-  assert.equal(layer.encoding.y.stack, null);
+  assert.equal(layer.layout.mode, "group");
   assert.equal(layer.encoding.color.field, "sex");
   assert.equal(layer.encoding.xOffset.field, "sex");
   assert.equal(program.graphicSpec.objects.bars.items.length, 30);

@@ -53,7 +53,7 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
   Complete marks are rebuilt; incomplete marks remain as empty collections until a later encoding completes them.
   Canvas, surviving-scale and appearance edits preserve that empty state; they cannot recreate partial row graphics.
 - Primary `x`/`y` removal also removes the same-mark secondary endpoint and directional offset. Grouped-bar color
-  removal removes its generated offset. Removing an area group also removes a same-field dependent color assignment.
+  removal preserves canonical group/layout and active offsets. Legacy unnormalized area group removal also clears dependent color.
   A normalized bar color layout returns to the ordinary zero baseline.
 - Matching categorical, gradient/interval color, size, opacity and stroke-width legend blocks are removed or
   reconstructed without deleting other blocks. Axis/grid resources are removed only when the removed primary
@@ -576,7 +576,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 - `field` 또는 `fields` 중 정확히 하나가 필요하다. `fields`는 non-empty unique field-name tuple이고
   각 값은 nominal scalar다. `[field]`는 기존 `{ field, fieldType: "nominal" }` state로 정규화한다.
   복수 key는 `{ fields: [...], fieldType: "nominal" }`로 저장하며 field와 fields를 함께 남기지 않는다.
-- `target`: current/unique Line 또는 Area. `fieldType`은 nominal만 허용하며 생략 시 nominal이다.
+- `target`: current/unique Line, Area 또는 Bar. `fieldType`은 nominal만 허용하며 생략 시 nominal이다.
 - 명시적 group만 path identity를 결정한다. Ordinary ranged Area와 Cartesian direct/aggregate/bin 및
   Polar Line을 지원한다. Color/dash/width/opacity는 최종 series 안에서 raw field 값이 하나여야 한다.
   같은 mapped appearance로 합쳐지더라도 서로 다른 raw 값은 오류다. Appearance가 경로를 추가 분할하지 않는다.
@@ -589,7 +589,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
   identity로 돌아가며 남은 appearance가 모호하면 오류다. Field selector는 tuple의 각 field를 조회한다.
 - Parallel은 row identity를 소유하므로 encodeGroup을 거부한다. Density/Violin, Horizon, Regression,
   ErrorBand의 owned group은 각 editor가 관리하며 tuple·잘못된 group·직접 removal을 거부한다.
-  Center/stack/fill Area는 기존 단일 color/group 결합을 유지한다.
+  Raw Area와 Bar의 배치는 layoutSeries가 소유하며 explicit group과 color를 독립적으로 편집한다.
 
 ### Formal values — `encodeGroup`
 
@@ -995,23 +995,21 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
   interval/continuous legend label은 distinct finite sample을 구분할 때까지 precision을 높인다.
 - Rect color는 categorical 또는 continuous fill을 final observed cell grain에 적용하며 layout/aggregate를 받지 않는다.
   Missing color나 incomplete position row는 cell과 automatic domain에서 함께 생략한다.
-- Effect: color semantic, resolved layout과 scale을 저장한다. `group`은 orientation에 따라 wrapped
-  `encodeXOffset` 또는 `encodeYOffset`, `fill`은
-  wrapped `encodeY({ stack: "normalize" })`, center는 wrapped `encodeY({ stack: "center" })`, overlay는
-  non-stacked y, stack/diverging은 zero-stack y를 사용한다. Raw area center는 color field의 nominal group이
-  없을 때 wrapped `encodeGroup`으로 같은 field를 원자적으로 만든다. Aggregate bar group/overlay의 semantic
-  start endpoint는 0이며 scale domain과 concrete rect가
-  같은 endpoint를 소비한다. Bar는 rect, area는 closed path로 concrete materialize한다.
+- Effect: color는 field/scale/appearance를 저장하고 Bar/Area의 layout 요청은 wrapped layoutSeries가 소유한다.
+  Mode는 layer.layout.mode 한 곳에 저장하며 group→offset→scale→mark/guide 하위 owner를 합성한다.
+  Legacy inferred group은 inferredFrom으로 추적하고 explicit group/color는 독립적이다. Center도 같은 owner를 사용한다.
+  Bar 시작 endpoint는 0이며 concrete rect, Area는 concrete closed path다.
 - Reassignment: 같은 target의 categorical color field를 교체한다. omitted scale ID는 current color scale을
   재사용하고 explicit new ID는 새 scale을 만든다. Existing compatible legend의 domain, symbols,
   labels와 inferred title을 갱신하며 custom title/layout/style은 보존한다.
 - Grouped-bar reassignment는 color semantic을 먼저 교체한 뒤 wrapped directional offset action으로 matching
-  field와 domain을 원자적으로 교체하고 measure policy, bars와 existing legend를 rematerialize한다. Direct offset field
-  mismatch나 layout transition은 earlier program을 바꾸지 않고 거부한다.
+  inferred group field와 source-first-appearance offset domain을 원자적으로 교체한다. Color scale domain 순서는
+  slot 위치를 재정렬하지 않는다. Measure policy, bars와 existing legend를 rematerialize한다. Direct offset field
+  mismatch는 오류지만 유효한 layout transition은 layoutSeries로 수행한다. 실패 시 이전 program은 불변이다.
 - Line color and stroke-dash assignments may precede complete positions. Field scales resolve immediately, while
   line graphics stay empty until position prerequisites are complete. Compatible encoding orders converge.
 - Coverage: 모든 대표 chart와 legend tests가 mark별 materialization을 검증한다. Five-layout bar matrix,
-  four-layout area matrix, normalized/signed domains, primitive/public equivalence와 transition rejection을 포함한다.
+  five-layout area matrix, normalized/signed domains, primitive/public equivalence와 transition validation을 포함한다.
 
 ### Formal values — `encodeColor`
 
@@ -1031,7 +1029,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
   - ✅ Covered: omission, all six values, bar/area compatibility, normalized, signed and centered baseline policies,
     group/overlay zero endpoint, positive/mixed/all-negative/zero partitions, incompatible explicit domain,
     aligned/missing/duplicate center topology, no-auto-opacity overlay, invalid transition atomicity와
-    center의 wrapped `encodeGroup` ownership.
+    center의 wrapped `layoutSeries` ownership.
 - `scale.id/type/domain`
   - ✅ Covered: ordinal scale default, nominal/ordinal field types, explicit ID/order, incomplete explicit domain rejection.
 - `scale.range/palette`
@@ -1366,7 +1364,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
   lower `encodeBarWidth`를 받는다. Box의 미완성 measure에 자동 aggregate를 추가하지 않는다.
 - 오류: 잘못된 width는 즉시 거부한다. Histogram bin은 category slot width를 지원하지 않으며 width를 먼저
   저장한 뒤 histogram을 완성하는 마지막 position action도 거부한다. 완성된 group layout은 matching
-  color/directional offset이 없으면 거부한다.
+  group/directional offset이 없으면 거부한다. Color는 필수가 아니다.
 - Coverage: aggregate/grouped/ranged bar tests가 implicit default, explicit value, invalid range, both orientations와
   resize geometry를 검증한다.
 
@@ -1421,3 +1419,45 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 - 자동 domain에 두 endpoint를 포함한다. Explicit domain/clamp/reverse는 기존 정책이며 primary datum의 axis title은 측정 field인 secondary를 따른다.
 - missing:error는 strict, break는 null/undefined 측정 endpoint만 제외하며 유효 연속점 2개 이상의 closed segment를 만든다. 독립 위치/그룹/NaN/Infinity는 오류다. 각 segment 선택 항목은 그 segment의 원본 행만 참조한다.
 - Evidence: test/unit/actions/encodings/area-endpoints.test.js. 두 방향, field↔datum, 최종 log range, 가짜 field 없음, 결측 segmentation/selection, resize와 immutable rejection.
+
+## `layoutSeries`
+
+- Implemented: `layoutSeries({target?,mode}): ChartProgram`. Assignment, full and Basic; Basic supports Bar only
+  and excludes center from its type. Target uses current/unique eligible Bar or Area. Mode is required.
+- Modes: group/stack/fill/overlay/diverging/center. Aggregate/histogram Bar supports all except center;
+  ranged Bar supports overlay only. Raw Area supports all except group, with center vertical only.
+  Two-field ribbons only overlay. Density delegates to its existing statistical grain/orientation limits.
+  Horizon, Line, Point, Arc, Rect and Rule use their own layout owners and reject this action.
+- Canonical state: `layer.layout.mode`. Identity: `encoding.group` field/fields, in stable first-source appearance.
+  Color is appearance and does not reorder the series. Bar color retains its per-aggregate-cell categorical or
+  quantitative grain; Area color is constant within a series. Tuple keys never add derived source fields.
+- Stack/fill/center require finite nonnegative values. Diverging accumulates signs separately from zero.
+  Fill total zero has zero thickness and domain [0,1]. Center spans ±total/2. Numeric overflow/precision failures
+  reject the entire action. Raw Area requires an aligned unique group×position grid and one zero datum endpoint;
+  an incomplete simple vertical range can obtain its y2=0 through encodeY2. Missing rows are never synthesized.
+- Reassignment recomputes scales, geometry, guides and selection. Overlay clears accumulation. Group creates the
+  category-axis offset through its existing owner; leaving group removes active offsets and padding. Only an
+  automatically generated, unreferenced offset scale is removed; explicit or shared scales are retained.
+- Legacy color.layout, measure.stack and Bar offsets delegate to this owner. Zero/normalize/null/center map to
+  stack/fill/overlay/center. The last explicit request wins; omitted color.layout preserves a stored mode.
+  Related edits normalize legacy stack/color.layout leaves instead of keeping duplicate policies.
+- Initial legacy color still supplies the usual group/stack default. Inferred group stores only
+  `inferredFrom:color|offset`; each adapter may revise its own inferred identity. Explicit encodeGroup clears the
+  marker. An offset conflicting with an explicit group rejects; independent color remains valid at its cell grain.
+- Removing color preserves group/layout. Removing a group required by active accumulation/grouping rejects;
+  first assign overlay. Incomplete lower encodings remain empty rather than silently recreating endpoints.
+- Effects are explicit wrapped semantic/scale/offset/mark/guide owners. Renderers still consume only graphics.
+  Every invalid target, mode, grain, shared-scale constraint or downstream guide/selection preflight is immutable.
+
+### Formal values — `layoutSeries`
+
+- Implemented: `SeriesLayoutOptions = {target?:string; mode:ColorLayout}`.
+- Basic: `BasicSeriesLayoutOptions` excludes center; no encodeLayout alias.
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `layoutSeries`
+
+- ✅ Covered: complete mode math and group/stack/group transitions, raw shared breaks, tuple/color independence,
+  legacy adapters, automatic/user offset ownership, invalid topology and immutable failures, Basic boundary.
+- Evidence: `test/unit/actions/encodings/series-layout.test.js`, `test/unit/actions/encodings/bar-authoring-order.test.js`,
+  `test/charts/area-layout/`, `test/contracts/area-endpoint-types.test.js`.

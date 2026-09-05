@@ -16,13 +16,13 @@ function decodedStreams(buffer) {
     });
 }
 
-export async function assertVectorParity(variant) {
+export async function assertVectorParity(variant, { geometry = "path" } = {}) {
   const publicProgram = variant.userFacing();
   const primitive = variant.primitive();
   assertDisplayedProgram(variant, publicProgram);
   const svg = renderToSVG(publicProgram, { title: variant.title });
   assert.equal(svg, renderToSVG(primitive, { title: variant.title }));
-  assert.match(svg, /<path\b/);
+  assert.match(svg, new RegExp(`<${geometry}\\b`));
   assert.doesNotMatch(svg, /<image\b/);
   const directory = await mkdtemp(join(tmpdir(), "ggaction-vector-parity-"));
   try {

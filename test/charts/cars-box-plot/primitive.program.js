@@ -141,7 +141,10 @@ export function createCarsBoxPlotPrimitives(cars, options = {}) {
       .editSemantic({ property: "layer[boxPlot].encoding.color.field", value: "Origin" })
       .editSemantic({ property: "layer[boxPlot].encoding.color.fieldType", value: "nominal" })
       .editSemantic({ property: "layer[boxPlot].encoding.color.scale", value: "color" })
-      .editSemantic({ property: "layer[boxPlot].encoding.color.layout", value: "overlay" });
+      .editSemantic({ property: "layer[boxPlot].layout.mode", value: "overlay" })
+    .editSemantic({ property: "layer[boxPlot].encoding.group.field", value: "Origin" })
+    .editSemantic({ property: "layer[boxPlot].encoding.group.fieldType", value: "nominal" })
+    .editSemantic({ property: "layer[boxPlot].encoding.group.inferredFrom", value: "color" });
   }
 
   program = program

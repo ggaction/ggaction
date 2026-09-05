@@ -92,6 +92,7 @@ are internal operations.
 - Tutorials: ./tutorials/
 - Polar Line and Radar Tutorial: ./tutorials/polar-lines/
 - Polar Arc Tutorial: ./tutorials/polar-arcs/
+- Area and Series Layout: ./tutorials/area-layout/
 - Horizon Chart Tutorial: ./tutorials/horizon/
 - Error Band Tutorial: ./tutorials/error-band/
 - Horizon Chart Recipe: ./recipes/horizon/

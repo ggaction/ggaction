@@ -96,7 +96,7 @@ export function createGapminderErrorBandPrimitives(gapminder) {
       value: "color"
     })
     .editSemantic({
-      property: "layer[errorBand].encoding.color.layout",
+      property: "layer[errorBand].layout.mode",
       value: "overlay"
     })
     .editSemantic({ property: "scale[x].type", value: "time" })

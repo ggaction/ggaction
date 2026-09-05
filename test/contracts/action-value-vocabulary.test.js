@@ -80,8 +80,7 @@ test("keeps accepted planned capabilities linked and non-public", () => {
   assert.match(currentCorpus, /op: "first" \| "last"/);
   assert.match(currentCorpus, /mean ± 1\.96 \* stderr/);
   assert.match(currentCorpus, /layout\?: "stack" \| "fill" \| "group" \| "overlay" \| "diverging" \| "center"/);
-  assert.match(currentCorpus, /center는 wrapped `encodeY\(\{ stack: "center" \}\)`/);
-  assert.match(currentCorpus, /center의 wrapped `encodeGroup` ownership/);
+  assert.match(currentCorpus, /center의 wrapped `layoutSeries` ownership/);
   assert.doesNotMatch(plannedCorpus, /Status: Planned[\s\S]*center-stacked area/i);
   const paletteType = currentCorpus.match(
     /type PaletteName =([\s\S]*?);\n\ntype Palette =/

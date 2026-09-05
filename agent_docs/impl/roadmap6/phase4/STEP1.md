@@ -13,17 +13,17 @@
 - [x] V1 Area/layout primitive 11개 작성·수치·PNG 검증 및 검토 문서 준비
 - [x] V1의 명시적 시각 승인 — “승인한다”, 기준 102fbee9
 - [x] W1 lower endpoint/missing/range 구현 — focused 21/21, strict types 1/1, 정상 누적 2614/2614
-- [ ] R6-P4-W1 Area baseline/range와 facade
-- [ ] R6-P4-W2 Color와 독립한 layout assignment
+- [x] R6-P4-W1 Area baseline/range와 facade 기능·동등성 구현 — package B 대기
+- [x] R6-P4-W2 Color와 독립한 layout assignment 기능·호환 구현 — package B 대기
 - [ ] R6-P4-W3 Rose와 Radial bar
 - [ ] R6-P4-W4 Theta와 legend domain order
 - [ ] R6-P4-W5 Diverging midpoint와 scale/legend transition
 - [ ] 모든 시각 variant의 primitive target 작성·표시·V 승인
-- [ ] 승인된 variant의 public 구현과 같은 실행의 primitive/public render 비교
+- [x] V1에서 승인된 11개 variant의 public 구현과 같은 실행의 primitive/public render 비교
 - [ ] 누적 검증·migration·문서·원장 동기화
 - [ ] X Gate의 증거 commit/push와 명시적 사용자 승인 기록
 
-A 승인·Planned 등록·비시각 primitive state 준비와 V1 target 작성은 완료했다. Public visual flow 구현 체크는 미완료다. 계획 문서를 만든 사실을 구현 완료나 Gate 승인으로 표시하지 않는다.
+A/V1 승인과 W1/W2 공개 구현·11개 primitive/public 동등성은 완료했다. [package B](BUNDLE_REVIEW.md)와 V2/V3/X는 미완료다. 계획 문서를 만든 사실을 구현 완료나 Gate 승인으로 표시하지 않는다.
 
 ## 순서
 
@@ -48,3 +48,8 @@ A 승인·Planned 등록·비시각 primitive state 준비와 V1 target 작성�
 
 [계약 검토](CONTRACT_REVIEW.md), [실제 관측](baseline-results.json), [검증 계획](VALIDATION.md)을 작성했다.
 Phase 3 승인 runtime을 그대로 조사했다. Production source/types/card/API는 바꾸지 않았다.
+
+## W1/W2 검증 결과
+
+[RESULTS_V1.md](RESULTS_V1.md)에 source·consumer·수치·시각·패키지 결과를 기록했다.
+`createAreaPlot`과 `layoutSeries`는 Current다. Gzip 상한은 변경하지 않았다.

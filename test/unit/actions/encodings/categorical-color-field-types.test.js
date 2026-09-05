@@ -62,7 +62,7 @@ test("uses numeric ordinal categories as histogram stack partitions", () => {
     })
     .createLegend();
 
-  assert.equal(program.semanticSpec.layers[0].encoding.color.layout, "stack");
+  assert.equal(program.semanticSpec.layers[0].layout.mode, "stack");
   assert.deepEqual(program.resolvedScales.color.domain, [4, 6, 8]);
   assert.ok(program.graphicSpec.objects.bars.items.length > 0);
   assert.equal(

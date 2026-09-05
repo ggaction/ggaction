@@ -118,7 +118,7 @@ test("forwards grouped bar layout, width, and appearance without retaining input
   const program = base().createBarPlot(options);
   const layer = program.semanticSpec.layers[0];
 
-  assert.equal(layer.encoding.color.layout, "group");
+  assert.equal(layer.layout.mode, "group");
   assert.equal(layer.encoding.xOffset.field, "group");
   assert.equal(program.graphicSpec.objects.bars.items.length, 4);
   assert.deepEqual(program.trace.children.at(-1).children.map(child => child.op), [
@@ -138,7 +138,7 @@ test("supports horizontal stacked bars through existing position and color polic
     guides: false
   });
 
-  assert.equal(program.semanticSpec.layers[0].encoding.x.stack, "zero");
+  assert.equal(program.semanticSpec.layers[0].layout.mode, "stack");
   assert.equal(program.graphicSpec.objects.barPlot.items.length, 4);
   assert.equal(
     program.graphicSpec.objects.barPlot.items.every(item =>
@@ -166,9 +166,9 @@ test("reuses overlay, diverging, and fixed-pixel bar policies", () => {
     guides: false
   });
 
-  assert.equal(overlay.semanticSpec.layers[0].encoding.color.layout, "overlay");
+  assert.equal(overlay.semanticSpec.layers[0].layout.mode, "overlay");
   assert.equal(overlay.markConfigs.barPlot.barWidth.pixels, 14);
-  assert.equal(diverging.semanticSpec.layers[0].encoding.color.layout, "diverging");
+  assert.equal(diverging.semanticSpec.layers[0].layout.mode, "diverging");
   assert.equal(diverging.graphicSpec.objects.barPlot.items.length, 2);
 });
 
@@ -199,7 +199,7 @@ test("creates the shortest histogram through one atomic encoding child", () => {
   assert.equal(layer.id, "histogram");
   assert.deepEqual(layer.encoding.x.bin, { maxBins: 10 });
   assert.equal(layer.encoding.y.aggregate, "count");
-  assert.equal(layer.encoding.y.stack, "zero");
+  assert.equal(layer.layout.mode, "stack");
   assert.deepEqual(program.trace.children.at(-1).children.map(child => child.op), [
     "createBarMark", "encodeHistogram", "createGuides"
   ]);
@@ -221,8 +221,8 @@ test("forwards histogram bin, stack, color, appearance, and guide options", () =
   const layer = program.semanticSpec.layers[0];
 
   assert.deepEqual(layer.encoding.x.bin, { boundaries: [0, 3, 6] });
-  assert.equal(layer.encoding.y.stack, "normalize");
-  assert.equal(layer.encoding.color.layout, "fill");
+  assert.equal(layer.layout.mode, "fill");
+  assert.equal(layer.layout.mode, "fill");
   assert.equal(program.graphicSpec.objects.bins.items[0].properties.opacity, 0.7);
   assert.deepEqual(program.trace.children.at(-1).children.map(child => child.op), [
     "createBarMark", "encodeHistogram", "encodeColor"

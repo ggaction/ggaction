@@ -137,6 +137,30 @@ createHistogram({ id?, data?, coordinate?, field, maxBins?, binStep?, binBoundar
 Create a bar layer with atomic bin and count encodings. Exactly one bin mode may
 be specified. [Basic Charts](../../api/basic-charts.md#createhistogram)
 
+## `createAreaPlot`
+
+```javascript
+createAreaPlot({ id?, data?, coordinate?, x, y, valueChannel?, baseline?, groupBy?, layout?, missing?, color?, area?, guides? })
+```
+
+Create a simple area, crossing ribbon, or accumulated series chart in the full entry. The default ID is
+`areaPlot`; x and y are required. `valueChannel` defaults to y. Its measurement is a field string,
+`{field,scale?}`, or `{lower,upper,scale?}`. Each bound is a field string or finite `{datum}` and at least
+one bound must use a field. A simple field closes to baseline 0; `baseline` cannot accompany a range.
+The independent position is quantitative or temporal and accepts field/fieldType/temporalUnit/scale.
+
+`groupBy` explicitly identifies nominal series using a field or a unique nonempty tuple. Color is optional,
+categorical, and constant within each series. `layout` defaults to overlay; stack/fill/diverging require
+one value field, baseline 0 and aligned unique group×position rows. Center also requires vertical nonnegative
+values. Missing defaults to error; `missing:"break"` closes separate segments with at least two valid points.
+A missing measure at one position splits every accumulated series there. NaN, infinity and missing independent
+positions remain errors. No source rows or baseline fields are synthesized.
+
+`area` accepts fill/opacity/stroke/strokeWidth/curve; opacity defaults to .2. Field color conflicts with fill.
+Guides default to compatible Cartesian axes/grid and an optional categorical color legend; false skips creation.
+Edit the result with range/endpoint encodings, encodeGroup, layoutSeries, editAreaMark and scale/guide actions.
+See the [Area and series layout tutorial](../../tutorials/area-layout.md).
+
 ## `createPiePlot`
 
 ```javascript

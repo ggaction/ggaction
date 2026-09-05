@@ -35,7 +35,9 @@ test("authors and renders the complete primitive cars histogram", () => {
       mark: { type: "bar" },
       data: "cars",
       coordinate: "main",
+      layout: { mode: "stack" },
       encoding: {
+        group: { field: "Origin", fieldType: "nominal", inferredFrom: "color" },
         x: {
           field: "Displacement",
           fieldType: "quantitative",
@@ -46,14 +48,12 @@ test("authors and renders the complete primitive cars histogram", () => {
           field: "Displacement",
           fieldType: "quantitative",
           aggregate: "count",
-          stack: "zero",
           scale: "y"
         },
         color: {
           field: "Origin",
           fieldType: "nominal",
-          scale: "color",
-          layout: "stack"
+          scale: "color"
         }
       }
     }

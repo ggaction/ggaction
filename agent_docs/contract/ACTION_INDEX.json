@@ -3224,31 +3224,45 @@
         "file": "agent_docs/contract/current/COMPLETE_CHARTS.md",
         "anchor": "createhorizonplot"
       }
-    }
-  ],
-  "plannedActions": [
+    },
     {
       "name": "createAreaPlot",
-      "status": "planned",
-      "readiness": "accepted",
+      "status": "implemented",
       "layer": "user-facing",
       "domain": "charts",
       "contract": {
-        "file": "agent_docs/contract/planned/QUANTITATIVE_AUTHORING.md",
+        "file": "agent_docs/contract/current/COMPLETE_CHARTS.md",
         "anchor": "createareaplot"
+      },
+      "lifecycle": "Aggregate create-only",
+      "update": "Reassign layoutSeries; edit endpoints, group, appearance, scales and guides",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
       }
     },
     {
       "name": "layoutSeries",
-      "status": "planned",
-      "readiness": "accepted",
+      "status": "implemented",
       "layer": "user-facing",
       "domain": "encodings",
       "contract": {
-        "file": "agent_docs/contract/planned/QUANTITATIVE_AUTHORING.md",
+        "file": "agent_docs/contract/current/ENCODINGS.md",
         "anchor": "layoutseries"
+      },
+      "lifecycle": "Assignment",
+      "update": "Reassign layoutSeries; edit endpoints, group, appearance, scales and guides",
+      "audit": "Reassignment — Implemented",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
       }
-    },
+    }
+  ],
+  "plannedActions": [
     {
       "name": "createRosePlot",
       "status": "planned",
@@ -3273,28 +3287,6 @@
     }
   ],
   "plannedCapabilities": [
-    {
-      "id": "area-datum-endpoints",
-      "name": "Area datum endpoints",
-      "kind": "parameter",
-      "status": "planned",
-      "readiness": "accepted",
-      "contract": {
-        "file": "agent_docs/contract/planned/QUANTITATIVE_AUTHORING.md",
-        "anchor": "area-datum-endpoints"
-      }
-    },
-    {
-      "id": "series-layout-ownership",
-      "name": "Series layout ownership",
-      "kind": "behavior",
-      "status": "planned",
-      "readiness": "accepted",
-      "contract": {
-        "file": "agent_docs/contract/planned/QUANTITATIVE_AUTHORING.md",
-        "anchor": "series-layout-ownership"
-      }
-    },
     {
       "id": "measured-radial-mapping",
       "name": "Measured radial mapping",

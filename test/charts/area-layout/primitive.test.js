@@ -73,15 +73,11 @@ test("missing sample remains in source while no polygon bridges its gap", () => 
   assert.deepEqual(paths.map(path => [...new Set(path.map(p => p.x))]), [[150, 325], [675, 850]]);
 });
 
-test("target calls retain the intended roundtrip without claiming a public implementation", () => {
-  const target = targetDefinitions.find(t => t.id === "bar-layout-roundtrip");
-  assert.deepEqual(target.publicCalls.filter(c => c.op === "layoutSeries").map(c => c.args.mode), ["group", "stack", "group"]);
+test("primitive chains keep high-level action implementations out of the baseline", () => {
   for (const variant of visualVariants) {
-    assert.equal(variant.userFacing, undefined);
+    assert.equal(typeof variant.userFacing, "function");
     const program = variant.primitive();
-    assert.equal(program.layoutSeries, undefined);
     assert.equal(program.encodeLayout, undefined);
-    assert.equal(program.createAreaPlot, undefined);
     assert.ok(program.trace.children.every(call => !["layoutSeries", "createAreaPlot"].includes(call.op)));
   }
 });

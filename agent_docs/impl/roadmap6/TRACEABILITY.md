@@ -134,7 +134,7 @@ Primary owner는 누락 방지를 위한 책임 단위이며, 관련 작업이 �
 - 수정·추가 방향: Group/stack/fill/overlay/diverging을 atomic owner에 모은다. 기존 color.layout/measure.stack/offset 경로가 owner에 위임하도록 migration한다.
 - 완료 검증: group→stack→group에서 scale, offset, normalization, guides, selections에 stale 상태 없음. Negative/missing/group conflict atomic.
 - 근거: audit/REPORT.md: D03. [원래 조사](audit/REPORT.md)
-- 처분: 구현 또는 명시적인 계약 유지·migration 결정의 제안. 아직 완료·승인 상태가 아니다.
+- 처분: [W1/W2 구현과 consumer 검증](phase4/RESULTS_V1.md) 및 승인된 11개 시각 결과의 동등성을 완료했다. Package 용량 B와 Phase X가 남아 있어 항목 전체는 닫지 않는다.
 
 ### D04 — Complete facade와 deferred composite의 역할 혼합
 
@@ -336,7 +336,7 @@ Primary owner는 누락 방지를 위한 책임 단위이며, 관련 작업이 �
 - 수정·추가 방향: Constant data endpoint를 lower owner에 추가하고 simple area, ranged ribbon, stacked area를 구분한다. Nonlinear scale과 missing path break를 명시한다.
 - 완료 검증: simple x/y 입력이 실제 area를 그림. Baseline/domain/zero/log·range edit 수렴. 가짜 source field와 renderer inference 없음.
 - 근거: audit/REPORT.md: F05. [원래 조사](audit/REPORT.md)
-- 처분: 구현 또는 명시적인 계약 유지·migration 결정의 제안. 아직 완료·승인 상태가 아니다.
+- 처분: [W1/W2 구현과 consumer 검증](phase4/RESULTS_V1.md) 및 승인된 11개 시각 결과의 동등성을 완료했다. Package 용량 B와 Phase X가 남아 있어 항목 전체는 닫지 않는다.
 
 ### F06 — Density
 
@@ -468,3 +468,9 @@ F20은 계속 제외한다. A 준비 당시 새 후보 4개는 phase-local Propo
 사용자가 layoutSeries 이름 변경까지 승인했다. Direct 4개와 capability 5개를 Planned로 등록하고,
 primitive state 정책을 비시각 범위에서 준비했다. [V1의 11개 시각 목표](phase4/VISUAL_REVIEW_V1.md)는
 실행·검증했지만 공개 액션 구현 전이다. D03/F05를 해결 처리하지 않으며 D01/F04/D14/D18도 남는다.
+
+## Phase 4 V1 구현 이후 — package B 검토
+
+`createAreaPlot`, `layoutSeries`, datum/missing endpoints와 series ownership을 구현했다. D03/F05의 기능 증거는
+[W1/W2 결과](phase4/RESULTS_V1.md)에 있다. 원본 V1 승인 픽셀 11개를 public API로 재현했다.
+Full/Basic 용량 초과는 [별도 B](phase4/BUNDLE_REVIEW.md)에 남겼다. D01/F04/D14/D18과 V2/V3/X는 미완료이며 F20은 제외한다.

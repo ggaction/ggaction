@@ -80,3 +80,12 @@ export function validatePathSeriesAppearance(rows, layer) {
   }
   return grouping;
 }
+
+export function readSeriesIdentity(rows, layer) {
+  const group = layer.encoding?.group;
+  const fields = group === undefined ? [] : normalizeGroupFields(group.fields ?? group.field);
+  for (const field of fields) readNominalField(rows, field);
+  const values = rows.map(row => fields.length === 0 ? undefined : fields.length === 1
+    ? row[fields[0]] : JSON.stringify(fields.map(field => row[field])));
+  return { fields, values, domain: [...new Set(values)] };
+}

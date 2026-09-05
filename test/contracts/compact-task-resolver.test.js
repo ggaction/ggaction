@@ -100,7 +100,7 @@ test("chart packets either materialize their chart or expose the missing decisio
     ["rose chart", "arc", 2, []],
     ["radial bar chart", "arc", 2, []],
     ["radar chart", "line", 1, []],
-    ["area chart", "area", 0, ["chart.area.baseline"]],
+    ["area chart", "area", 1, []],
     ["strip plot", "point", 3, ["chart.strip.placement"]]
   ]) {
     const packet = searchGgaction(query);
@@ -134,7 +134,7 @@ test("raw mark requests remain distinct from incomplete chart requests", () => {
     assert.deepEqual(packet.unresolved, [], query);
     assert.deepEqual(packet.actionPlan.map(entry => entry.name), [action], query);
   }
-  assert.match(searchGgaction("area chart").unresolved[0].reason, /baseline|secondary/u);
+  assert.deepEqual(searchGgaction("area chart").actionPlan.map(entry => entry.name), ["createAreaPlot"]);
   assert.match(searchGgaction("strip plot").unresolved[0].reason, /measure|placement/u);
 });
 
@@ -909,4 +909,16 @@ test("task packets reject ambiguous, unsupported, empty, and oversized input exp
   ].join(" ");
   assert.equal(dense.length <= 500, true);
   assert.throws(() => searchGgaction(dense), /hard ceiling is 6144 bytes/);
+});
+
+
+test("area discovery uses the complete facade and preserves requested fields and guides", async () => {
+  const packet = searchGgaction('area chart with x="time", y="value" and x axis');
+  assert.deepEqual(packet.actionPlan.map(entry => entry.name), ["createAreaPlot"]);
+  assert.deepEqual(packet.unresolved, []);
+  const { program } = await executeAuthoring(packet, { rows: [{ time: 1, value: 2 }, { time: 2, value: 4 }] });
+  assert.equal(program.semanticSpec.layers[0].encoding.y2.datum, 0);
+  assert.equal(program.semanticSpec.layers[0].encoding.x.field, "time");
+  assert.equal(program.graphicSpec.objects.areaPlot.items.length, 1);
+  assert.deepEqual(Object.keys(program.semanticSpec.guides.axis), ["x", "y"]);
 });

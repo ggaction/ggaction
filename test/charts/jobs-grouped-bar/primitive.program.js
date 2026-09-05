@@ -57,10 +57,6 @@ export function createJobsGroupedBarPrimitives(
       property: "layer[bars].encoding.y.aggregate",
       value: "mean"
     })
-    .editSemantic({
-      property: "layer[bars].encoding.y.stack",
-      value: layout === "diverging" ? "zero" : null
-    })
     .editSemantic({ property: "layer[bars].encoding.y.scale", value: "y" })
     .editSemantic({
       property: "layer[bars].encoding.color.field",
@@ -76,9 +72,12 @@ export function createJobsGroupedBarPrimitives(
     });
 
   program = program.editSemantic({
-    property: "layer[bars].encoding.color.layout",
+    property: "layer[bars].layout.mode",
     value: layout
-  });
+  })
+    .editSemantic({ property: "layer[bars].encoding.group.field", value: groupField })
+    .editSemantic({ property: "layer[bars].encoding.group.fieldType", value: "nominal" })
+    .editSemantic({ property: "layer[bars].encoding.group.inferredFrom", value: "color" });
 
   if (layout === "group") {
     program = program

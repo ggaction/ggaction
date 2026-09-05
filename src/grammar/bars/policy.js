@@ -73,6 +73,7 @@ export function resolveBarGrain(layer) {
 }
 
 export function inferBarColorLayout(layer) {
+  if (layer?.layout?.mode !== undefined) return layer.layout.mode;
   if (layer?.encoding?.color?.layout !== undefined) {
     return layer.encoding.color.layout;
   }
@@ -84,6 +85,7 @@ export function inferBarColorLayout(layer) {
 }
 
 export function resolveBarColorLayout(layer) {
+  if (layer?.layout?.mode !== undefined) return layer.layout.mode;
   if (layer?.encoding?.color?.layout !== undefined) {
     return layer.encoding.color.layout;
   }

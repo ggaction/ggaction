@@ -55,6 +55,11 @@
     "title": "Regression Scatterplot Tutorial",
     "description": "This tutorial filters the cars dataset to Japan and the USA, maps point size to Acceleration and point color/shape to Origin, then adds one linear fit and 95% mean response…"
   },
+  "/tutorials/area-layout/": {
+    "title": "Area and Series Layout",
+    "description": "An area measures the space between a value and a baseline, or between two explicit bounds.",
+    "image": "/assets/images/area-layout.png"
+  },
   "/tutorials/density-area/": {
     "title": "Density Area Tutorial",
     "description": "Use createDensityPlot to complete a density chart in one action:",

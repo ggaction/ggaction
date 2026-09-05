@@ -2,42 +2,11 @@
 
 상태: Planned, readiness accepted. 사용자가 2026-09-05 “그렇게하자. 그것까지 포함해서 승인한다”라고 답해
 [Phase 4 계약](../../impl/roadmap6/phase4/CONTRACT_REVIEW.md)의 P4-C01–C09와 이름 `layoutSeries`를 승인했다.
-`encodeLayout` alias는 만들지 않는다. Public runtime/declaration은 아직 없으며 시각 V 승인 뒤 구현한다.
+`encodeLayout` alias는 만들지 않는다. Area/layout의 승인된 V1 구현은 Current COMPLETE_CHARTS/ENCODINGS/MARKS로 이동했다.
 완성 차트의 입력 union·전체 hierarchy·저장 결과는 아래 chart owner에 함께 보존한다.
-Current 177개는 그대로이며 새 direct 4개와 기존 method의 capability 5개가 이 Planned 범위다.
+남은 새 direct 2개와 capability 3개는 이후 V2/V3의 승인 전 Planned 상태다.
 
-## `createAreaPlot`
 
-- Lifecycle: Aggregate create-only. Entry: ggaction full만. Shape: 필수 x/y, valueChannel 기본 y,
-  id/data/coordinate?, baseline?, groupBy?, layout?, missing?, color?, area?, guides?.
-- 독립 위치는 quantitative/temporal field. 측정 위치는 field 또는 `{lower,upper,scale?}`.
-  Bound는 field string 또는 `{datum:number}`이고 최소 하나는 field다. Simple baseline 기본 0,
-  명시적 range와 baseline 동시 입력은 오류다. Missing 기본 error, break는 명시적 선택이다.
-- Child owners: createAreaMark, coordinate, encodeGroup, position/range, layoutSeries, color, scoped guides.
-- Field와 datum은 encoding, missing은 mark, mode는 layer.layout, appearance는 mark config가 소유한다.
-  Source에 zero field를 추가하지 않는다. Graphics는 concrete closed path commands다.
-- 오류: 잘못된 role/option, 빈 입력/유효 segment 없음, invalid log baseline, incompatible group/stack/grain/guide.
-  실패에서 이전 program/trace/caller 입력을 유지한다. 아래층 편집은 range/group/layoutSeries/editAreaMark/editScale.
-- [전체 Area 계약](../../impl/roadmap6/chart/area.md), [수치·소비자 acceptance](../../impl/roadmap6/phase4/VALIDATION.md).
-- Coverage: missing. 승인된 public/primitive pair와 strict declarations가 생겨야 구현 완료다.
-
-## `layoutSeries`
-
-- Lifecycle: Assignment. Entry: full/basic; Basic은 Bar만이며 center를 타입에서 제외한다.
-- Signature: `layoutSeries({target?:string, mode:"group"|"stack"|"fill"|"overlay"|"diverging"|"center"})`.
-- Bar/Area의 series 배치를 소유한다. Canvas, facet, composition, path vertex, draw order는 대상이 아니다.
-- Mode는 필수이고 overlay가 누적 배치 해제다. 새 edit/remove alias 없이 재호출로 배치를 바꾼다.
-- Bar aggregate/histogram은 group/stack/fill/diverging/overlay. Ranged Bar는 overlay만.
-  Raw simple Area는 overlay/stack/fill/diverging, vertical nonnegative일 때 center.
-  Two-field ribbon은 overlay만이며 Area group은 오류다. Density는 기존 grain/방향 한도를 유지한다.
-- Stack/fill/center는 nonnegative, diverging은 signed. Fill sum=0은 두께 0, domain [0,1].
-  Area 누적은 aligned unique group×position과 baseline 0을 요구한다. Missing을 임의 zero로 보충하지 않는다.
-- Canonical mode는 layer.layout.mode, identity는 encoding.group. Color는 appearance를 담당한다.
-  Legacy color.layout/measure.stack/Bar offset 입력은 같은 owner에 위임하고 마지막 명시적 배치 요청을 적용한다.
-- Group에서 떠날 때 active offset을 정리하며 shared/user-owned scale은 삭제하지 않는다.
-  Color 제거는 group/layout을 유지한다. 필요한 group 제거·공유 scale 불일치는 atomic 오류다.
-- [정확한 adapter·provenance·호환성 계약](../../impl/roadmap6/phase4/CONTRACT_REVIEW.md).
-- Coverage: missing. 기존 series math는 존재하지만 새 public 배치와 전환은 미구현이다.
 
 ## `createRosePlot`
 
@@ -63,21 +32,7 @@ Current 177개는 그대로이며 새 direct 4개와 기존 method의 capability
 - [전체 Rose/Radial 계약](../../impl/roadmap6/chart/rose-radial-bar.md), [수치 oracle](../../impl/roadmap6/phase4/VALIDATION.md).
 - Coverage: missing. Disk/hole, duplicate category, count/sum, domain/edit/shared consumers와 renderer를 검증해야 한다.
 
-## Area datum endpoints
 
-- Planned parameter extension: encodeX/Y/X2/Y2의 Area quantitative endpoint field|datum,
-  encodeXRange/YRange의 mixed bounds와 final pair preflight. Primary/secondary는 같은 scale이다.
-- Lower/upper는 primary/secondary 역할 이름으로 값의 대소를 강제하지 않는다. 기존 crossing ribbon을 유지한다.
-- createAreaMark/editAreaMark missing:error|break는 semantic mark policy다. Break는 null/undefined 측정 endpoint만
-  허용하고 missing independent/group, NaN/Infinity는 오류다. 연속 유효점 2개 이상 segment만 그린다.
-- Current Rule datum, Bar/Rect field 계약은 유지한다. Raw endpoint/missing/range 부분은 구현되었으며 current ENCODINGS/MARKS와 area-endpoints.test.js가 소유한다. 누적 shared break와 facade는 layout 구현과 통합 검증 뒤 완료한다.
-
-## Series layout ownership
-
-- Planned behavior extension: encodeGroup의 Bar 지원과 color.layout/measure.stack/offset의 단일 layoutSeries owner 위임.
-- Explicit group은 color 변경으로 교체하지 않는다. Legacy inferredFrom origin만 canonical group에 저장한다.
-- Area 색은 series-constant, Bar는 aggregate cell의 기존 quantitative/categorical color grain을 유지한다.
-- Endpoint/group/layout/scale/guide/highlight를 최종 구성으로 preflight한다. Coverage missing.
 
 ## Measured radial mapping
 

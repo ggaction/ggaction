@@ -883,5 +883,15 @@
     "operation": "create",
     "layer": "user-facing",
     "domain": "statistics"
+  },
+  "createAreaPlot": {
+    "operation": "create",
+    "layer": "user-facing",
+    "domain": "charts"
+  },
+  "layoutSeries": {
+    "operation": "edit",
+    "layer": "user-facing",
+    "domain": "encodings"
   }
 }

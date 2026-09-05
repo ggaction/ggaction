@@ -93,10 +93,6 @@ export function createCarsDensityAreaPrimitiveProgram(cars, {
       value: "y"
     })
     .editSemantic({
-      property: "layer[densities].encoding.y.stack",
-      value: null
-    })
-    .editSemantic({
       property: "layer[densities].encoding.group.field",
       value: "Origin"
     })
@@ -117,7 +113,7 @@ export function createCarsDensityAreaPrimitiveProgram(cars, {
       value: "color"
     })
     .editSemantic({
-      property: "layer[densities].encoding.color.layout",
+      property: "layer[densities].layout.mode",
       value: "overlay"
     })
     .editSemantic({ property: "scale[x].type", value: "linear" })

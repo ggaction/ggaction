@@ -1,4 +1,4 @@
-import targets from "./targets.json" with { type: "json" };
+import targets from "../../../examples/area-layout/targets.json" with { type: "json" };
 import { partitionReference, referenceAreaCommands, referenceBarItems, splitReferenceSegments } from "../../oracles/series-area.js";
 
 function freeze(value) {

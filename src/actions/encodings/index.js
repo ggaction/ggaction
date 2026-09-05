@@ -1,3 +1,4 @@
+import { registerSeriesLayoutAction } from "./seriesLayout.js";
 import { registerDensityEncodingAction } from "./density.js";
 import { registerPathOrderEncodingActions } from "./pathOrder.js";
 import { registerHorizonEncodingAction } from "./horizon.js";
@@ -16,6 +17,7 @@ import { registerBarWidthEncodingAction } from "./barWidth.js";
 import { registerEncodingRemovalAction } from "./remove.js";
 
 export function registerEncodingActions(ProgramClass) {
+  registerSeriesLayoutAction(ProgramClass);
   registerPositionEncodingActions(ProgramClass);
   registerRangedEncodingActions(ProgramClass);
   registerOffsetEncodingAction(ProgramClass);

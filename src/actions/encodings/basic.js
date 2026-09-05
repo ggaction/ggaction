@@ -1,3 +1,4 @@
+import { registerSeriesLayoutAction } from "./seriesLayout.js";
 import { registerBasicAppearanceEncodingActions } from "./appearance.js";
 import { registerBarWidthEncodingAction } from "./barWidth.js";
 import { registerColorEncodingAction } from "./color/index.js";
@@ -10,6 +11,7 @@ import { registerBasicRangedEncodingActions } from "./ranged.js";
 import { registerStrokeDashEncodingActions } from "./strokeDash.js";
 
 export function registerBasicEncodingActions(ProgramClass) {
+  registerSeriesLayoutAction(ProgramClass);
   registerCartesianPositionEncodingActions(ProgramClass);
   registerBasicRangedEncodingActions(ProgramClass);
   registerColorEncodingAction(ProgramClass);

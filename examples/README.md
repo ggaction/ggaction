@@ -228,6 +228,12 @@ Create a complete category pie or explicitly weighted donut with one action.
 
 Representative actions: `createPiePlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/polar-arcs/#complete-pie-and-donut-plots).
 
+### [Area with an explicit baseline](./area-layout/)
+
+Define bounds and independently revise series identity, placement, and color.
+
+Representative actions: `createAreaPlot layoutSeries encodeGroup`. [Documentation](https://ggaction.github.io/ggaction/tutorials/area-layout/).
+
 ## Development fixtures
 
 Other directories under `examples/` support focused browser, package, and

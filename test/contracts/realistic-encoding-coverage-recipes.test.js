@@ -24,8 +24,8 @@ const actionCards = JSON.parse(readFileSync(
 ));
 const inventoryPromise = buildPublicOptionInventory(actionCards);
 const EXPECTED = Object.freeze({
-  paths: 262,
-  pathSha256: "c655b249f4bc9e049114ec866d3c33de6904d6d58add07654fb9ebcf3c7fd9e2",
+  paths: 266,
+  pathSha256: "f34b1690554e9b03b35885f972c9aa3ca64ab600fa14cbba42d7dfad03bb41f4",
   literals: 252,
   literalSha256: "594c184b6f562097cd7ff59cb5ba2cb68379314e2d9802a985470fdc0159b3b2",
   diversity: 9,

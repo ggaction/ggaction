@@ -92,6 +92,7 @@ function lifecyclePurpose(recipeId, factors) {
     "action-derived-data": "Derived-data analysis",
     "action-scatter-facade": "Multivariate relationship",
     "action-line-facade": "Temporal trend",
+    "action-area-facade": "Temporal baseline area",
     "action-bar-facade": "Grouped comparison",
     "action-parallel-facade": "Multivariate profile",
     "action-mark-lifecycle": "Ranged observations",
@@ -256,6 +257,17 @@ function buildScatterFacade(factors) {
     .encodeAngle({ target: "scatterFacade", field: "angle" })
     .removeEncoding({ target: "scatterFacade", channel: "shape" })
     .createTitle({ text: lifecycleTitle(factors, "Multivariate relationship") });
+}
+
+function buildAreaFacade(factors) {
+  return chart().createCanvas(cartesianCanvas(factors))
+    .createData({ id: "areaRows", values: temporalRows(factors.dataset) })
+    .createAreaPlot({ id: "areaFacade", x: { field: "time", fieldType: "temporal" },
+      y: "value", groupBy: "group", baseline: factors.baseline,
+      color: { field: "group", scale: { palette: factors.palette } },
+      area: { curve: factors.curve }, guides: { legend: { position: "right" } } })
+    .layoutSeries({ target: "areaFacade", mode: "overlay" })
+    .createTitle({ text: lifecycleTitle(factors, "Temporal baseline area") });
 }
 
 function buildLineFacade(factors) {
@@ -1298,6 +1310,9 @@ export const LIFECYCLE_SCENARIO_RECIPES = Object.freeze([
   recipe("action-scatter-facade", ["zoo-multi-encoding-styles"], {
     nice: [false, true], palette: ["tableau10", "set2"], radius: [3, 6]
   }, buildScatterFacade),
+  recipe("action-area-facade", ["zoo-temporal-boundaries"], {
+    baseline: [0, 1], palette: ["tableau10", "dark2"], curve: ["linear", "step"]
+  }, buildAreaFacade),
   recipe("action-line-facade", ["zoo-temporal-boundaries"], {
     reverse: [false, true], palette: ["tableau10", "dark2"],
     curve: ["linear", "step"]
@@ -1390,6 +1405,7 @@ const REALISTIC_LIFECYCLE_KINDS = Object.freeze({
   "action-derived-data": "temporal",
   "action-scatter-facade": "style",
   "action-line-facade": "temporal",
+  "action-area-facade": "temporal",
   "action-bar-facade": "bar",
   "action-parallel-facade": "parallel",
   "action-mark-lifecycle": "path",
@@ -1475,6 +1491,7 @@ function realisticLifecycleMetadata(base, factors) {
     "action-derived-data": ["create", "filter"],
     "action-scatter-facade": ["create", "remove"],
     "action-line-facade": ["create"],
+    "action-area-facade": ["create", "edit"],
     "action-bar-facade": ["create"],
     "action-parallel-facade": ["create"],
     "action-mark-lifecycle": ["create", "edit", "remove"],
@@ -1536,6 +1553,7 @@ function lifecycleSignature(base, factors) {
       "createScatterPlot", "encodePointRadius", "removePointRadius", "removeEncoding"
     ],
     "action-line-facade": ["createLinePlot"],
+    "action-area-facade": ["createAreaPlot", "layoutSeries"],
     "action-bar-facade": ["createBarPlot"],
     "action-parallel-facade": ["createParallelCoordinates"],
     "action-mark-lifecycle": [
@@ -1812,5 +1830,5 @@ export const LIFECYCLE_EXPECTED_ACTIONS = Object.freeze([
   "createRegressionLine", "editRegressionLine", "filterMarks",
   "removeMarkHighlight", "highlightMarks", "editThetaAxis", "editRadialAxis",
   "editThetaGrid", "editRadialGrid", "replaceCompositionChild", "editFacetScales",
-  "createScatterPlot", "createLinePlot", "createBarPlot", "createParallelCoordinates"
+  "createScatterPlot", "createLinePlot", "createAreaPlot", "layoutSeries", "createBarPlot", "createParallelCoordinates"
 ]);

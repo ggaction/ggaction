@@ -57,19 +57,12 @@ test("encodes a nominal xOffset inside each ordinal x band", () => {
     paddingInner: 0,
     paddingOuter: 0
   });
-  assert.deepEqual(program.graphicSpec.objects.bars.items, []);
+  assert.equal(program.graphicSpec.objects.bars.items.length, 4);
   assert.equal(before.semanticSpec.layers[0].encoding.xOffset, undefined);
 
   const node = program.trace.children.at(-1);
   assert.equal(node.op, "encodeXOffset");
-  assert.deepEqual(node.children.map(child => child.op), [
-    "editSemantic",
-    "editSemantic",
-    "editSemantic",
-    "createScale",
-    "rematerializeScale",
-    "editGraphics"
-  ]);
+  assert.equal(node.children.find(child => child.op === "layoutSeries").args.mode, "group");
 });
 
 test("supports explicit xOffset domain order and reversed range", () => {
@@ -314,7 +307,7 @@ test("validates xOffset prerequisites, fields, and scale options", () => {
   );
   assert.throws(
     () => groupedBarProgram().encodeXOffset({ field: "other" }),
-    /must match a grouped bar color field/
+    /nominal value/
   );
   assert.throws(
     () => program.encodeXOffset({ field: "sex", fieldType: "quantitative" }),

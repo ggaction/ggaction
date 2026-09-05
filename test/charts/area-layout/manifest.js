@@ -1,3 +1,4 @@
+import { areaLayoutExamples } from "../../../examples/area-layout/program.js";
 import { defineVisualVariant } from "../../support/visual-variants.js";
 import { targetDefinitions } from "./reference-values.js";
 import { createAreaPrimitive, createBarPrimitive } from "./primitive.program.js";
@@ -25,9 +26,10 @@ export const visualVariants = Object.freeze(targetDefinitions.map(target => {
     minimumInkPixels: 1000, colors };
   return defineVisualVariant({
     chart: "area-layout", variant: target.id, title: titles[target.id],
+    userFacing: areaLayoutExamples[target.id],
     primitive: () => bar ? createBarPrimitive(target.id) : createAreaPrimitive(target.id),
     width: target.dimensions.width, height: target.dimensions.height,
     callChain: "chart()\n" + target.publicCalls.map(call => `  .${call.op}(${JSON.stringify(call.args)})`).join("\n") + ";",
-    colors, regions: [region], artifact: { scope: "review" }
+    colors, regions: [region], artifact: { scope: "charts", capability: "series-layout" }
   });
 }));

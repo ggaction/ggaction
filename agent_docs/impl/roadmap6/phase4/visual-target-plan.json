@@ -7,77 +7,77 @@
     {
       "id": "area-simple",
       "gate": "R6-P4-V1",
-      "fixtureSource": "test/gates/area-layout/targets.json",
+      "fixtureSource": "examples/area-layout/targets.json",
       "primitiveStatus": "rendered",
       "publicStatus": "not-implemented"
     },
     {
       "id": "area-signed-baseline",
       "gate": "R6-P4-V1",
-      "fixtureSource": "test/gates/area-layout/targets.json",
+      "fixtureSource": "examples/area-layout/targets.json",
       "primitiveStatus": "rendered",
       "publicStatus": "not-implemented"
     },
     {
       "id": "area-horizontal-log",
       "gate": "R6-P4-V1",
-      "fixtureSource": "test/gates/area-layout/targets.json",
+      "fixtureSource": "examples/area-layout/targets.json",
       "primitiveStatus": "rendered",
       "publicStatus": "not-implemented"
     },
     {
       "id": "ribbon-crossing",
       "gate": "R6-P4-V1",
-      "fixtureSource": "test/gates/area-layout/targets.json",
+      "fixtureSource": "examples/area-layout/targets.json",
       "primitiveStatus": "rendered",
       "publicStatus": "not-implemented"
     },
     {
       "id": "area-missing-break",
       "gate": "R6-P4-V1",
-      "fixtureSource": "test/gates/area-layout/targets.json",
+      "fixtureSource": "examples/area-layout/targets.json",
       "primitiveStatus": "rendered",
       "publicStatus": "not-implemented"
     },
     {
       "id": "area-stack",
       "gate": "R6-P4-V1",
-      "fixtureSource": "test/gates/area-layout/targets.json",
+      "fixtureSource": "examples/area-layout/targets.json",
       "primitiveStatus": "rendered",
       "publicStatus": "not-implemented"
     },
     {
       "id": "area-fill",
       "gate": "R6-P4-V1",
-      "fixtureSource": "test/gates/area-layout/targets.json",
+      "fixtureSource": "examples/area-layout/targets.json",
       "primitiveStatus": "rendered",
       "publicStatus": "not-implemented"
     },
     {
       "id": "area-diverging",
       "gate": "R6-P4-V1",
-      "fixtureSource": "test/gates/area-layout/targets.json",
+      "fixtureSource": "examples/area-layout/targets.json",
       "primitiveStatus": "rendered",
       "publicStatus": "not-implemented"
     },
     {
       "id": "area-center",
       "gate": "R6-P4-V1",
-      "fixtureSource": "test/gates/area-layout/targets.json",
+      "fixtureSource": "examples/area-layout/targets.json",
       "primitiveStatus": "rendered",
       "publicStatus": "not-implemented"
     },
     {
       "id": "bar-independent-stack",
       "gate": "R6-P4-V1",
-      "fixtureSource": "test/gates/area-layout/targets.json",
+      "fixtureSource": "examples/area-layout/targets.json",
       "primitiveStatus": "rendered",
       "publicStatus": "not-implemented"
     },
     {
       "id": "bar-layout-roundtrip",
       "gate": "R6-P4-V1",
-      "fixtureSource": "test/gates/area-layout/targets.json",
+      "fixtureSource": "examples/area-layout/targets.json",
       "primitiveStatus": "rendered",
       "publicStatus": "not-implemented"
     },

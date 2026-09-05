@@ -1,3 +1,4 @@
+import { createAreaSimple } from "./area-layout/program.js";
 import { createHorizonExample } from "./horizon-plot/program.js";
 import { createDensityExample } from "./density-plot/program.js";
 import { createPieExample } from "./pie-plot/program.js";
@@ -97,6 +98,12 @@ function example({ id, data, width, height, createProgram, ...options }) {
 }
 
 export const PUBLIC_CHARTS = Object.freeze([
+  example({
+    id: "area-layout", data: {}, width: 1000, height: 700, docsGroup: "tutorials",
+    createProgram: () => createAreaSimple(),
+    browser: { path: "area-layout/", canvas: "#chart",
+      state: { global: "__ggactionExample", expected: { id: "area-layout", width: 1000, height: 700 } } }
+  }),
   example({
     id: "horizon-plot", data: {}, width: 1000, height: 700, docsGroup: "tutorials",
     createProgram: () => createHorizonExample(),

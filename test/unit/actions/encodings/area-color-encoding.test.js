@@ -53,10 +53,9 @@ test("colors density paths in the group domain order", () => {
   assert.deepEqual(program.semanticSpec.layers[0].encoding.color, {
     field: "Origin",
     fieldType: "nominal",
-    scale: "color",
-    layout: "overlay"
+    scale: "color"
   });
-  assert.equal(program.semanticSpec.layers[0].encoding.y.stack, null);
+  assert.equal(program.semanticSpec.layers[0].layout.mode, "overlay");
   assert.deepEqual(program.resolvedScales.color.domain, expected.groupDomain);
   assert.deepEqual(
     program.graphicSpec.objects.densities.items.map(child => child.properties.fill),
@@ -97,11 +96,11 @@ test("materializes stacked and normalized vertical density areas", () => {
     layout: "center"
   });
 
-  assert.equal(stacked.semanticSpec.layers[0].encoding.y.stack, "zero");
+  assert.equal(stacked.semanticSpec.layers[0].layout.mode, "stack");
   assert.equal(stacked.resolvedScales.y.domain[1] > 0.25, true);
-  assert.equal(filled.semanticSpec.layers[0].encoding.y.stack, "normalize");
+  assert.equal(filled.semanticSpec.layers[0].layout.mode, "fill");
   assert.deepEqual(filled.resolvedScales.y.domain, [0, 1]);
-  assert.equal(centered.semanticSpec.layers[0].encoding.y.stack, "center");
+  assert.equal(centered.semanticSpec.layers[0].layout.mode, "center");
   assert.equal(centered.resolvedScales.y.domain[0] < 0, true);
   assert.equal(centered.resolvedScales.y.domain[1] > 0, true);
   assert.equal(
@@ -113,19 +112,16 @@ test("materializes stacked and normalized vertical density areas", () => {
   assert.equal(centered.graphicSpec.objects.densities.items.length, 3);
 });
 
-test("rejects unsupported area layouts and layout transitions atomically", () => {
+test("rejects unsupported area layouts and supports valid layout transitions", () => {
   const before = densityArea();
   assert.throws(
     () => before.encodeColor({ field: "Origin", layout: "group" }),
     /does not support "group"/
   );
   const overlay = before.encodeColor({ field: "Origin" });
-  assert.throws(
-    () => overlay.encodeColor({ field: "Origin", layout: "stack" }),
-    /transition from "overlay" to "stack"/
-  );
+  assert.equal(overlay.encodeColor({ field: "Origin", layout: "stack" }).semanticSpec.layers[0].layout.mode, "stack");
   assert.equal(before.semanticSpec.layers[0].encoding.color, undefined);
-  assert.equal(overlay.semanticSpec.layers[0].encoding.color.layout, "overlay");
+  assert.equal(overlay.semanticSpec.layers[0].layout.mode, "overlay");
 });
 
 test("rematerializes colored area paths after Canvas edits", () => {
@@ -198,19 +194,18 @@ test("authors a raw centered area through one color layout assignment", () => {
 
   assert.deepEqual(layer.encoding.group, {
     field: "group",
-    fieldType: "nominal"
+    fieldType: "nominal",
+    inferredFrom: "color"
   });
   assert.deepEqual(layer.encoding.y, {
     field: "value",
     fieldType: "quantitative",
-    scale: "y",
-    stack: "center"
+    scale: "y"
   });
   assert.deepEqual(layer.encoding.color, {
     field: "group",
     fieldType: "nominal",
-    scale: "color",
-    layout: "center"
+    scale: "color"
   });
   assert.deepEqual(program.resolvedScales.y.domain, [-3, 3]);
   assert.deepEqual(program.resolvedScales.color.domain, ["A", "B"]);
@@ -221,9 +216,9 @@ test("authors a raw centered area through one color layout assignment", () => {
   );
   assert.equal(before.semanticSpec.layers[0].encoding.group, undefined);
   assert.deepEqual(
-    colorTrace.children.filter(node => ["encodeGroup", "encodeY"].includes(node.op))
+    colorTrace.children.filter(node => ["layoutSeries"].includes(node.op))
       .map(node => node.op),
-    ["encodeGroup", "encodeY"]
+    ["layoutSeries"]
   );
 });
 
@@ -307,7 +302,7 @@ test("rejects invalid center topology, clipping domains, and centered bars atomi
   const incomplete = rawArea(CENTER_ROWS.slice(0, -1));
   assert.throws(
     () => incomplete.encodeColor({ field: "group", layout: "center" }),
-    /one aligned value/
+    /aligned/
   );
 
   const clipped = chart()
@@ -338,8 +333,5 @@ test("rejects invalid center topology, clipping domains, and centered bars atomi
 
   const overlay = densityArea()
     .encodeColor({ field: "Origin", layout: "overlay" });
-  assert.throws(
-    () => overlay.encodeY({ field: "Acceleration_density", stack: "center" }),
-    /matching center color layout/
-  );
+  assert.equal(overlay.encodeY({ field: "Acceleration_density", stack: "center" }).semanticSpec.layers[0].layout.mode, "center");
 });

@@ -34,6 +34,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | --- | --- | --- |
 | [`createArcMark`](./actions/marks.md#createarcmark) | user-facing | marks |
 | [`createAreaMark`](./actions/marks.md#createareamark) | user-facing | marks |
+| [`createAreaPlot`](./actions/charts-data.md#createareaplot) | user-facing | charts |
 | [`createAxes`](./actions/guides.md#createaxes) | user-facing | axes |
 | [`createBarMark`](./actions/marks.md#createbarmark) | user-facing | marks |
 | [`createBarPlot`](./actions/charts-data.md#createbarplot) | user-facing | charts |
@@ -190,6 +191,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`highlightMarks`](./actions/charts-data.md#highlightmarks) | user-facing | mark-selection |
 | [`jitterPoints`](./actions/marks.md#jitterpoints) | user-facing | marks |
 | [`layoutLabels`](./actions/marks.md#layoutlabels) | user-facing | marks |
+| [`layoutSeries`](./actions/encodings.md#layoutseries) | user-facing | encodings |
 | [`orderCategories`](./actions/encodings.md#ordercategories) | user-facing | encodings |
 | [`removeCategoryOrder`](./actions/encodings.md#removecategoryorder) | user-facing | encodings |
 | [`removeEncoding`](./actions/encodings.md#removeencoding) | user-facing | encodings |

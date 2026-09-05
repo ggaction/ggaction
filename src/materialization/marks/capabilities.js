@@ -145,9 +145,9 @@ export function canMaterializeBar(program, layer) {
   ) {
     const offsetChannel = resolveBarOffsetChannel(layer);
     return (
-      layer.encoding?.color?.field !== undefined &&
-      layer.encoding?.[offsetChannel]?.field === layer.encoding.color.field &&
-      layer.encoding[offsetChannel].scale !== undefined
+      (layer.encoding?.group !== undefined || (layer.encoding?.color?.field !== undefined &&
+      layer.encoding?.[offsetChannel]?.field === layer.encoding.color.field)) &&
+      layer.encoding[offsetChannel]?.scale !== undefined
     );
   }
   return true;

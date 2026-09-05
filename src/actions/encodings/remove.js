@@ -81,7 +81,7 @@ function activeCascade(layer, channel) {
     channels.add("y2");
     channels.add("yOffset");
   }
-  if (channel === "color" && layer.mark?.type === "bar") {
+  if (channel === "color" && layer.mark?.type === "bar" && layer.layout === undefined) {
     if (resolveBarColorLayout(layer) === "group") {
       channels.add(resolveBarOffsetChannel(layer));
     }
@@ -89,6 +89,7 @@ function activeCascade(layer, channel) {
   if (
     channel === "group" &&
     layer.mark?.type === "area" &&
+    layer.layout === undefined &&
     layer.encoding?.color?.field !== undefined &&
     layer.encoding.color.field === layer.encoding.group?.field
   ) {
@@ -217,6 +218,7 @@ export const removeEncoding = action(
       );
     }
     const layer = resolveTarget(this, args.target, args.channel);
+    if (args.channel === "group" && layer.layout?.mode !== undefined && layer.layout.mode !== "overlay") throw new Error("Remove active series layout before removing its group.");
     const channels = activeCascade(layer, args.channel);
     assertEncodingSelectionCompatibility(this, layer.id, channels);
     if (["line", "area"].includes(layer.mark?.type)) {

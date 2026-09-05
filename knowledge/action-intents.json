@@ -28,6 +28,8 @@
     "primitives": ["extension primitive", "low-level authoring"]
   },
   "termAliases": {
+    "AreaPlot": ["area chart", "ribbon", "stacked area"],
+    "Series": ["series placement", "grouped bars", "stacked series"],
     "PiePlot": ["pie plot", "pie chart", "donut chart", "doughnut chart", "category proportions"],
     "Canvas": ["canvas", "chart size", "plot bounds"],
     "Data": ["dataset", "rows"],
@@ -166,6 +168,8 @@
     "editGraphics": "Sets a concrete graphic property or removes a top-level graphic resource inside an extension action."
   },
   "sampleOverrides": {
+    "createAreaPlot": { "x": "time", "y": "value" },
+    "layoutSeries": { "mode": "stack" },
     "createPiePlot": { "category": "category" },
     "createHorizonPlot": { "x": "time", "y": "value" },
     "createDensityPlot": { "field": "value" },
@@ -275,6 +279,8 @@
     "encodeText": { "field": "label" }
   },
   "callPatternOverrides": {
+    "createAreaPlot": ["createAreaPlot({ x, y })", "createAreaPlot({ x, y, groupBy, layout })"],
+    "layoutSeries": ["layoutSeries({ mode })"],
     "createHorizonPlot": ["createHorizonPlot({ x, y })", "createHorizonPlot({ x, y, bands?, baseline?, palette?, area? })"],
     "createDensityPlot": ["createDensityPlot({ field })", "createDensityPlot({ field, groupBy, color, densityChannel? })"],
     "createPiePlot": ["createPiePlot({ category })", "createPiePlot({ category, value, aggregate: \"sum\", arc? })"],

@@ -77,6 +77,7 @@ interface ChartProgramActions {
   encodeYRange(options: RangePositionEncodingOptions): ChartProgram;
   encodeXRange(options: RangePositionEncodingOptions): ChartProgram;
   encodeGroup(options: GroupEncodingOptions): ChartProgram;
+  layoutSeries(options: SeriesLayoutOptions): ChartProgram;
   encodePathOrder(options: PathOrderEncodingOptions): ChartProgram;
   orderCategories(options: OrderCategoriesOptions): ChartProgram;
   encodeParallelCoordinates(options: ParallelCoordinatesEncodingOptions): ChartProgram;
@@ -106,6 +107,7 @@ interface ChartProgramActions {
   createViolinPlot(options: ViolinPlotOptions): ChartProgram;
   createScatterPlot(options: CreateScatterPlotOptions): ChartProgram;
   createLinePlot(options: CreateLinePlotOptions): ChartProgram;
+  createAreaPlot(options: CreateAreaPlotOptions): ChartProgram;
   createBarPlot(options: CreateBarPlotOptions): ChartProgram;
   createHistogram(options: CreateHistogramOptions): ChartProgram;
   createPiePlot(options: CreatePiePlotOptions): ChartProgram;

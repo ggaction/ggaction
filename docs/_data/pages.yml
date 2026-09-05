@@ -43,6 +43,9 @@
 - title: Regression Scatterplot Tutorial
   url: /tutorials/regression-scatterplot/
   parent: /tutorials/
+- title: Area and Series Layout
+  url: /tutorials/area-layout/
+  parent: /tutorials/
 - title: Density Area Tutorial
   url: /tutorials/density-area/
   parent: /tutorials/

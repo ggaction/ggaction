@@ -83,10 +83,6 @@ export function createCarsHistogramPrimitiveProgram(
       property: "layer[bars].encoding.y.aggregate",
       value: "count"
     })
-    .editSemantic({
-      property: "layer[bars].encoding.y.stack",
-      value: stack
-    })
     .editSemantic({ property: "layer[bars].encoding.y.scale", value: "y" })
     .editSemantic({
       property: "layer[bars].encoding.color.field",
@@ -102,9 +98,12 @@ export function createCarsHistogramPrimitiveProgram(
     });
 
   program = program.editSemantic({
-    property: "layer[bars].encoding.color.layout",
+    property: "layer[bars].layout.mode",
     value: resolvedColorLayout
-  });
+  })
+    .editSemantic({ property: "layer[bars].encoding.group.field", value: "Origin" })
+    .editSemantic({ property: "layer[bars].encoding.group.fieldType", value: "nominal" })
+    .editSemantic({ property: "layer[bars].encoding.group.inferredFrom", value: "color" });
 
   return program
     .editSemantic({ property: "scale[x].type", value: "linear" })

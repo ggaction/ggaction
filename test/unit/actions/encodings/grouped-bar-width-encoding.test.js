@@ -32,6 +32,7 @@ test("materializes grouped rectangles with the default band", () => {
   );
 
   assert.deepEqual(program.markConfigs.bars, {
+    seriesOffsetScale: "xOffset",
     xOffset: { paddingInner: 0, paddingOuter: 0 },
     barWidth: { band: 0.72 }
   });
@@ -125,7 +126,7 @@ test("allows an explicit pixel width wider than its group slot", () => {
   assert.equal(program.graphicSpec.objects.bars.items[0].properties.width, 120);
 });
 
-test("uses one explicit domain order for color and group slots", () => {
+test("keeps source group slots independent of the color domain", () => {
   const program = chart()
     .createCanvas({
       width: 420,
@@ -146,10 +147,10 @@ test("uses one explicit domain order for color and group slots", () => {
     child => child.properties
   );
 
-  assert.deepEqual(program.resolvedScales.xOffset.domain, ["women", "men"]);
+  assert.deepEqual(program.resolvedScales.xOffset.domain, ["men", "women"]);
   assert.deepEqual(rectangles.slice(0, 2).map(rect => rect.fill), [
-    "#4c78a8",
-    "#f58518"
+    "#f58518",
+    "#4c78a8"
   ]);
   assert.deepEqual(
     rectangles.slice(0, 2).map(rect => Number(rect.x.toFixed(6))),
@@ -205,7 +206,7 @@ test("validates grouped bar width options and prerequisites", () => {
   const uncolored = incomplete.encodeBarWidth();
   assert.deepEqual(uncolored.markConfigs.bars.barWidth, { band: 0.72 });
   assert.deepEqual(program.markConfigs, {
-    bars: { xOffset: { paddingInner: 0, paddingOuter: 0 } }
+    bars: { seriesOffsetScale: "xOffset", xOffset: { paddingInner: 0, paddingOuter: 0 } }
   });
 });
 
@@ -230,6 +231,7 @@ test("requires an explicit target when more than one bar mark is eligible", () =
     /bar mark target is ambiguous/
   );
   assert.deepEqual(ambiguous.markConfigs.bars, {
+    seriesOffsetScale: "xOffset",
     xOffset: { paddingInner: 0, paddingOuter: 0 }
   });
 });

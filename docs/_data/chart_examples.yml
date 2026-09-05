@@ -666,3 +666,19 @@
   actions: createPiePlot
   tasks: part-to-whole
   url: /tutorials/polar-arcs/#complete-pie-and-donut-plots
+
+- id: area-layout
+  example: /examples/area-layout/
+  title: Area with an explicit baseline
+  image: /assets/images/area-layout.png
+  alt: Three measured values form a translucent area closing to zero
+  width: 2000
+  height: 1400
+  thumbnail: /assets/images/area-layout-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 448
+  caption: The value field and a constant zero share the same automatic domain.
+  summary: Define bounds and independently revise series identity, placement, and color.
+  actions: createAreaPlot layoutSeries encodeGroup
+  tasks: trend comparison
+  url: /tutorials/area-layout/

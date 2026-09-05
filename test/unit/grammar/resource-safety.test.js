@@ -183,7 +183,7 @@ test("bounds Cartesian category-by-series layout cells", () => {
   assert.throws(
     () => chart()
       .createCanvas({ width: 300, height: 200, margin: 20 })
-      .createData({ values: [{ category: "c0", group: "g0", value: 1 }] })
+      .createData({ values: colors.map((group, index) => ({ category: categories[index], group, value: 1 })) })
       .createBarMark()
       .encodeX({
         field: "category",

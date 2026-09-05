@@ -1750,6 +1750,75 @@ program
 - Export the same immutable program with
  [PNG rendering](./api/rendering/#png-output).
 
+<!-- Source: /tutorials/area-layout/ -->
+
+# Area and Series Layout
+
+An area measures the space between a value and a baseline, or between two explicit bounds.
+Start with a complete chart, then edit its endpoints, grouping, placement, and appearance separately.
+
+## Start with a zero baseline
+
+```javascript
+import { chart } from 'ggaction';
+const program = chart()
+  .createCanvas({ width: 1000, height: 700, margin: 150 })
+  .createData({ id: 'data', values: [
+    { time: 1, value: 2 }, { time: 2, value: 4 }, { time: 3, value: 3 }
+  ] })
+  .createAreaPlot({ x: 'time', y: 'value' });
+```
+
+The value stays on y; y2 stores a constant zero. Both endpoints contribute to the automatic domain.
+The default opacity is 0.2. The [canonical executable example](https://github.com/ggaction/ggaction/blob/codex/roadmap6-hierarchical-actions/examples/area-layout/program.js)
+uses the same action flow and includes independent variants for the remaining cases.
+
+## Choose bounds and orientation
+
+Given a prepared program with `low`, `high`, `time`, and `value` fields, these are alternative creation calls:
+
+```javascript
+// Fragments: each starts from a prepared Canvas and dataset.
+base.createAreaPlot({ x: 'time', y: { lower: 'low', upper: 'high' } });
+base.createAreaPlot({ x: 'time', y: 'value', baseline: 1 });
+base.createAreaPlot({ x: { field: 'value', scale: { type: 'log' } },
+  y: 'time', valueChannel: 'x', baseline: 1 });
+```
+
+Lower and upper identify the two path boundaries; crossing values are preserved. A logarithmic value
+scale needs a positive baseline. Edit an existing baseline with `encodeY2({datum:1})`, or replace both
+bounds atomically with `encodeYRange`.
+
+## Separate series identity, placement, and color
+
+```javascript
+// Fragment: rows have aligned time samples, nonnegative value, series, and region fields.
+const stacked = base.createAreaPlot({ x: 'time', y: 'value', groupBy: 'series',
+  layout: 'stack', color: 'region' });
+const shares = stacked.layoutSeries({ mode: 'fill' });
+const overlay = shares.layoutSeries({ mode: 'overlay' });
+```
+
+`groupBy` determines which observations form a series. `layoutSeries` determines where that series is
+placed. Color may use another field when its value is constant within each series. Fill normalizes each
+position to one; diverging accumulates positive and negative values separately; center places the total
+symmetrically around zero. Stack, fill and center require nonnegative values. Series use source appearance
+order, independently of color-domain or legend order.
+
+Bar charts use the same separation. After `createBarPlot`, assign `encodeGroup({field:'series'})` and
+`layoutSeries({mode:'group'})` or `layoutSeries({mode:'stack'})`. Color is optional. Group → stack → group
+rebuilds the offsets from the current group. Removing color preserves the grouped or stacked geometry.
+
+## Keep gaps explicit
+
+Use `missing:'break'` for null or undefined measure endpoints. The chart closes separate segments on either
+side of a gap, retaining only segments with at least two valid samples. Accumulated series break together
+at a missing position. Missing rows are not created, and misaligned group grids are errors. Invalid independent
+positions, NaN and infinity remain errors.
+
+For the exact options and limits, see [`createAreaPlot`](./reference/actions/charts-data/#createareaplot)
+and [`layoutSeries`](./reference/actions/encodings/#layoutseries).
+
 <!-- Source: /tutorials/density-area/ -->
 
 # Density Area Chart Tutorial
@@ -5568,9 +5637,9 @@ The tables below are generated from the same reviewed capability registry used b
 
 | Action | Supported marks | Field types | Important modes |
 | --- | --- | --- | --- |
-| `encodeX` | point, line, area, bar, rect, rule, tick, text | point/bar/rect/rule/tick/text: quantitative, temporal, ordinal, nominal; line/area: quantitative, temporal | field; rule also accepts datum; bar accepts aggregate or bin |
-| `encodeY` | point, line, area, bar, rect, rule, tick, text | point/line/bar/rect/rule/tick/text: quantitative, temporal, ordinal, nominal; area: quantitative, temporal | field; rule also accepts datum; bar accepts aggregate or count |
-| `encodeX2` / `encodeY2` | area, ranged bar, rect, rule | area/ranged bar/rect/rule: matching primary | secondary field; rule also accepts datum |
+| `encodeX` | point, line, area, bar, rect, rule, tick, text | point/bar/rect/rule/tick/text: quantitative, temporal, ordinal, nominal; line/area: quantitative, temporal | field; rule and area also accept datum; bar accepts aggregate or bin |
+| `encodeY` | point, line, area, bar, rect, rule, tick, text | point/line/bar/rect/rule/tick/text: quantitative, temporal, ordinal, nominal; area: quantitative, temporal | field; rule and area also accept datum; bar accepts aggregate or count |
+| `encodeX2` / `encodeY2` | area, ranged bar, rect, rule | area/ranged bar/rect/rule: matching primary | secondary field; rule and area also accept datum |
 | `encodeTheta` | point, line, arc | point/line: quantitative, temporal, ordinal, nominal; arc: quantitative, ordinal, nominal | arc maps direct quantitative values, category counts, or category-weighted sums to proportional sectors |
 | `encodeR` | point, line, arc | point/line/arc: quantitative | radial position; arc combines it with a categorical theta band |
 | `encodeParallelCoordinates` | line | line: quantitative, ordinal | atomic ordered dimensions; one namespaced scale and axis per dimension |
@@ -7614,9 +7683,9 @@ resolve a channel scale, and explicitly materialize the affected graphics.
 
 | Action | Supported marks | Field types | Important modes |
 | --- | --- | --- | --- |
-| `encodeX` | point, line, area, bar, rect, rule, tick, text | point/bar/rect/rule/tick/text: quantitative, temporal, ordinal, nominal; line/area: quantitative, temporal | field; rule also accepts datum; bar accepts aggregate or bin |
-| `encodeY` | point, line, area, bar, rect, rule, tick, text | point/line/bar/rect/rule/tick/text: quantitative, temporal, ordinal, nominal; area: quantitative, temporal | field; rule also accepts datum; bar accepts aggregate or count |
-| `encodeX2` / `encodeY2` | area, ranged bar, rect, rule | area/ranged bar/rect/rule: matching primary | secondary field; rule also accepts datum |
+| `encodeX` | point, line, area, bar, rect, rule, tick, text | point/bar/rect/rule/tick/text: quantitative, temporal, ordinal, nominal; line/area: quantitative, temporal | field; rule and area also accept datum; bar accepts aggregate or bin |
+| `encodeY` | point, line, area, bar, rect, rule, tick, text | point/line/bar/rect/rule/tick/text: quantitative, temporal, ordinal, nominal; area: quantitative, temporal | field; rule and area also accept datum; bar accepts aggregate or count |
+| `encodeX2` / `encodeY2` | area, ranged bar, rect, rule | area/ranged bar/rect/rule: matching primary | secondary field; rule and area also accept datum |
 | `encodeTheta` | point, line, arc | point/line: quantitative, temporal, ordinal, nominal; arc: quantitative, ordinal, nominal | arc maps direct quantitative values, category counts, or category-weighted sums to proportional sectors |
 | `encodeR` | point, line, arc | point/line/arc: quantitative | radial position; arc combines it with a categorical theta band |
 | `encodeParallelCoordinates` | line | line: quantitative, ordinal | atomic ordered dimensions; one namespaced scale and axis per dimension |
@@ -8365,8 +8434,8 @@ scales; point fields also support discretized color. Aggregate bars additionally
 color value per final rectangle. Line and categorical bar materializers may use
 the field for grouping when no explicit group is present. With `encodeGroup`,
 Line and ordinary overlay Area color is an independent field with one raw value
-per series. Stacked Area layouts retain a matching single group field;
-`layout: "center"` creates that group when absent.
+per series. Raw Area supports an independent group field or tuple. Color must be constant within each group;
+`layout: "center"` can infer the initial group from color when no group is present.
 
 | Mode | Supported marks | Field types | Important options |
 | --- | --- | --- | --- |
@@ -8434,7 +8503,7 @@ program.encodeColor({
 See [continuous color scales](./api/scales/continuous-color/#named-palettes) for the complete vocabulary.
 
 For an ordinal-category mean bar, `layout: "group"` is the default. It keeps
-the measure stack null, invokes `encodeXOffset` for vertical bars or
+placement in `layoutSeries`, invokes `encodeXOffset` for vertical bars or
 `encodeYOffset` for horizontal bars, and recomputes the measure domain from
 zero and one mean per category/color cell. Negative and positive bars therefore
 extend in opposite directions from the same zero baseline. Color and offset
@@ -8454,8 +8523,8 @@ rematerialized; inferred titles follow the field while explicit titles and
 styles remain unchanged.
 
 On a complete histogram, `encodeColor` rematerializes each non-empty bin as
-zero-stacked category rects. Stack and fill order follow the resolved color
-domain. The y scale continues to use each bin's total count, and an explicit
+zero-stacked category rects. Stack and fill order follow source first appearance of each series,
+independently of the color domain. The y scale continues to use each bin's total count, and an explicit
 domain must contain every observed category.
 
 ```javascript
@@ -8471,7 +8540,7 @@ histogram.encodeColor({
 
 Histogram color defaults to `stack`. `fill` normalizes every non-negative bin
 partition to one and uses `[0, 1]` as the automatic y domain. `group` places
-series side by side within each bin, `overlay` draws them in color-domain order
+series side by side within each bin, `overlay` draws them in series order
 without changing opacity, and `diverging` accumulates positive and negative
 values independently around zero. Ordinal aggregate bars support the same five
 values; their group and overlay layouts use zero as each rectangle's start
@@ -8495,16 +8564,16 @@ densityArea.encodeColor({
 
 Area layouts support `stack`, `fill`, `overlay`, `diverging`, and `center`; `group` is
 bar-only. Each existing path receives the resolved color for its group. Path order,
-color domain order, and later legend order share the same ordered categories;
+color domain order, and legend order have separate roles;
 Canvas and shared-scale changes rematerialize every affected area fill.
-Once a color layout exists, changing it to another layout is rejected until a
-future companion-cleanup contract is implemented; the earlier program remains
-unchanged.
+Change placement with `layoutSeries({mode})` or an explicit color layout option. The last explicit
+request wins. A color edit that omits layout preserves placement. Removing color retains group and
+layout; group-to-stack transitions remove active offsets and only unused automatic offset scales.
 
 ### Center-stacked areas
 
 `layout: "center"` is the area-only shorthand for matching grouping, color, and
-`encodeY({ stack: "center" })` in one atomic call:
+`layoutSeries({ mode: "center" })` in one atomic call:
 
 ```javascript
 const stream = chart()
@@ -8525,7 +8594,7 @@ Every category must contribute exactly one finite non-negative value at every
 quantitative or temporal x position. First appearance determines stable series
 order. At each position, the total partition spans `[-total / 2, total / 2]`;
 each series keeps its original thickness. Missing positions, duplicate
-group/x rows, negative values, ranged areas, and centered bars are rejected
+group/x rows, negative values, two-field ribbons, and centered bars are rejected
 before semantic state changes. An explicit y domain must contain every resolved
 lower and upper bound. Wiggle baselines and automatic imputation are not part
 of this mode.
@@ -11758,6 +11827,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | --- | --- | --- |
 | [`createArcMark`](./reference/actions/marks/#createarcmark) | user-facing | marks |
 | [`createAreaMark`](./reference/actions/marks/#createareamark) | user-facing | marks |
+| [`createAreaPlot`](./reference/actions/charts-data/#createareaplot) | user-facing | charts |
 | [`createAxes`](./reference/actions/guides/#createaxes) | user-facing | axes |
 | [`createBarMark`](./reference/actions/marks/#createbarmark) | user-facing | marks |
 | [`createBarPlot`](./reference/actions/charts-data/#createbarplot) | user-facing | charts |
@@ -11914,6 +11984,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`highlightMarks`](./reference/actions/charts-data/#highlightmarks) | user-facing | mark-selection |
 | [`jitterPoints`](./reference/actions/marks/#jitterpoints) | user-facing | marks |
 | [`layoutLabels`](./reference/actions/marks/#layoutlabels) | user-facing | marks |
+| [`layoutSeries`](./reference/actions/encodings/#layoutseries) | user-facing | encodings |
 | [`orderCategories`](./reference/actions/encodings/#ordercategories) | user-facing | encodings |
 | [`removeCategoryOrder`](./reference/actions/encodings/#removecategoryorder) | user-facing | encodings |
 | [`removeEncoding`](./reference/actions/encodings/#removeencoding) | user-facing | encodings |
@@ -12068,6 +12139,30 @@ createHistogram({ id?, data?, coordinate?, field, maxBins?, binStep?, binBoundar
 
 Create a bar layer with atomic bin and count encodings. Exactly one bin mode may
 be specified. [Basic Charts](./api/basic-charts/#createhistogram)
+
+## `createAreaPlot`
+
+```javascript
+createAreaPlot({ id?, data?, coordinate?, x, y, valueChannel?, baseline?, groupBy?, layout?, missing?, color?, area?, guides? })
+```
+
+Create a simple area, crossing ribbon, or accumulated series chart in the full entry. The default ID is
+`areaPlot`; x and y are required. `valueChannel` defaults to y. Its measurement is a field string,
+`{field,scale?}`, or `{lower,upper,scale?}`. Each bound is a field string or finite `{datum}` and at least
+one bound must use a field. A simple field closes to baseline 0; `baseline` cannot accompany a range.
+The independent position is quantitative or temporal and accepts field/fieldType/temporalUnit/scale.
+
+`groupBy` explicitly identifies nominal series using a field or a unique nonempty tuple. Color is optional,
+categorical, and constant within each series. `layout` defaults to overlay; stack/fill/diverging require
+one value field, baseline 0 and aligned unique group×position rows. Center also requires vertical nonnegative
+values. Missing defaults to error; `missing:"break"` closes separate segments with at least two valid points.
+A missing measure at one position splits every accumulated series there. NaN, infinity and missing independent
+positions remain errors. No source rows or baseline fields are synthesized.
+
+`area` accepts fill/opacity/stroke/strokeWidth/curve; opacity defaults to .2. Field color conflicts with fill.
+Guides default to compatible Cartesian axes/grid and an optional categorical color legend; false skips creation.
+Edit the result with range/endpoint encodings, encodeGroup, layoutSeries, editAreaMark and scale/guide actions.
+See the [Area and series layout tutorial](./tutorials/area-layout/).
 
 ## `createPiePlot`
 
@@ -12472,9 +12567,9 @@ semantic base positions. [Text marks](./api/marks/text/)
 
 | Action | Supported marks | Field types | Important modes |
 | --- | --- | --- | --- |
-| `encodeX` | point, line, area, bar, rect, rule, tick, text | point/bar/rect/rule/tick/text: quantitative, temporal, ordinal, nominal; line/area: quantitative, temporal | field; rule also accepts datum; bar accepts aggregate or bin |
-| `encodeY` | point, line, area, bar, rect, rule, tick, text | point/line/bar/rect/rule/tick/text: quantitative, temporal, ordinal, nominal; area: quantitative, temporal | field; rule also accepts datum; bar accepts aggregate or count |
-| `encodeX2` / `encodeY2` | area, ranged bar, rect, rule | area/ranged bar/rect/rule: matching primary | secondary field; rule also accepts datum |
+| `encodeX` | point, line, area, bar, rect, rule, tick, text | point/bar/rect/rule/tick/text: quantitative, temporal, ordinal, nominal; line/area: quantitative, temporal | field; rule and area also accept datum; bar accepts aggregate or bin |
+| `encodeY` | point, line, area, bar, rect, rule, tick, text | point/line/bar/rect/rule/tick/text: quantitative, temporal, ordinal, nominal; area: quantitative, temporal | field; rule and area also accept datum; bar accepts aggregate or count |
+| `encodeX2` / `encodeY2` | area, ranged bar, rect, rule | area/ranged bar/rect/rule: matching primary | secondary field; rule and area also accept datum |
 | `encodeTheta` | point, line, arc | point/line: quantitative, temporal, ordinal, nominal; arc: quantitative, ordinal, nominal | arc maps direct quantitative values, category counts, or category-weighted sums to proportional sectors |
 | `encodeR` | point, line, arc | point/line/arc: quantitative | radial position; arc combines it with a categorical theta band |
 | `encodeParallelCoordinates` | line | line: quantitative, ordinal | atomic ordered dimensions; one namespaced scale and axis per dimension |
@@ -12494,6 +12589,25 @@ binding clears it. Domains and tick values are already normalized timestamps.
 # Encoding Actions
 
 These are direct immutable `ChartProgram` actions. Each accepts one option object and returns a new program.
+
+## `layoutSeries`
+
+```javascript
+layoutSeries({ target?, mode })
+```
+
+Assign group, stack, fill, overlay, diverging, or center placement independently of color. Full supports Bar
+and Area; Basic supports Bar and excludes center. Aggregate/histogram bars support all modes except center,
+ranged bars only overlay, and areas reject group. Ribbons support overlay only; raw accumulation requires
+aligned rows and a zero baseline. Stack/fill/center require nonnegative values; diverging separates signs.
+A zero-total fill has zero thickness and a [0,1] domain. Density retains its statistical orientation limits.
+
+`encodeGroup` owns identity and source first-appearance order; color owns appearance. Reassign this action to
+change placement. Leaving group removes its active offset and unused automatic offset scale; user/shared
+scales survive. Removing color preserves identity and placement. Switch to overlay before removing a required
+group. Legacy color.layout, measure.stack and Bar offsets delegate to this action; the last explicit layout
+request wins. Color reassignment without layout preserves the stored mode. Stack aliases zero/normalize/null/
+center mean stack/fill/overlay/center. Failed topology, shared-scale or guide validation preserves the previous program.
 
 ## `encodeX`
 
@@ -13874,6 +13988,7 @@ interface ChartProgramActions {
   encodeYRange(options: RangePositionEncodingOptions): ChartProgram;
   encodeXRange(options: RangePositionEncodingOptions): ChartProgram;
   encodeGroup(options: GroupEncodingOptions): ChartProgram;
+  layoutSeries(options: SeriesLayoutOptions): ChartProgram;
   encodePathOrder(options: PathOrderEncodingOptions): ChartProgram;
   orderCategories(options: OrderCategoriesOptions): ChartProgram;
   encodeParallelCoordinates(options: ParallelCoordinatesEncodingOptions): ChartProgram;
@@ -13903,6 +14018,7 @@ interface ChartProgramActions {
   createViolinPlot(options: ViolinPlotOptions): ChartProgram;
   createScatterPlot(options: CreateScatterPlotOptions): ChartProgram;
   createLinePlot(options: CreateLinePlotOptions): ChartProgram;
+  createAreaPlot(options: CreateAreaPlotOptions): ChartProgram;
   createBarPlot(options: CreateBarPlotOptions): ChartProgram;
   createHistogram(options: CreateHistogramOptions): ChartProgram;
   createPiePlot(options: CreatePiePlotOptions): ChartProgram;

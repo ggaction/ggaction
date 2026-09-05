@@ -1,3 +1,5 @@
+import { stackLayoutMode } from "../seriesLayout.js";
+import { resolveBarGrain } from "../../../grammar/bars/policy.js";
 import { action } from "../../../core/action.js";
 import {
   getPositionEncodingMaterializationSteps
@@ -62,6 +64,9 @@ function encodePosition(program, channel, args, operation) {
     reassignment: previous?.scale === scale.id,
     allowTypeChange: layer.mark.type === "area"
   });
+  if (["bar", "area"].includes(layer.mark.type) && Object.hasOwn(args, "stack") && args.stack !== undefined) {
+    next = next.editSemantic({ property: `layer[${target}].layout.mode`, value: stackLayoutMode(args.stack) });
+  }
   next = rebindPositionGuides(
     next,
     channel,
@@ -78,7 +83,7 @@ function encodePosition(program, channel, args, operation) {
       field: encoding.field,
       fieldType: encoding.fieldType,
       aggregate: encoding.aggregate,
-      stack: encoding.stack,
+      ...(layer.layout?.mode === undefined ? {} : { stack: encoding.stack }),
       scale: {
         id: encoding.scale,
         ...(storedScale?.zero === undefined ? { zero: encoding.stack !== null } : {})
@@ -109,6 +114,15 @@ function encodePosition(program, channel, args, operation) {
   }
 
   const updated = findLayer(next, target);
+  if (["bar", "area"].includes(layer.mark.type) && next.markConfigs[target]?.boxPlot === undefined &&
+      updated.encoding?.x?.scale !== undefined && updated.encoding?.y?.scale !== undefined) {
+    const requested = Object.hasOwn(args, "stack") ? args.stack : undefined;
+    const mode = requested !== undefined ? stackLayoutMode(requested) : updated.layout?.mode ??
+      (layer.mark.type === "bar" && resolveBarGrain(updated) === "histogram" ? stackLayoutMode(updated.encoding.y.stack) : undefined);
+    if (mode !== undefined && (layer.mark.type === "area" || resolveBarGrain(updated) !== undefined)) {
+      return applyDetachedScaleRematerialization(next.layoutSeries({ target, mode }), [layer]);
+    }
+  }
   for (const step of getPositionEncodingMaterializationSteps(
     next,
     updated,

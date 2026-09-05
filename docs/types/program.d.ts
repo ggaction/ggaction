@@ -1918,6 +1918,31 @@ export type GroupEncodingOptions = { target?: string; fieldType?: "nominal" } & 
   | { fields: readonly [string, ...string[]]; field?: never }
 );
 
+export interface SeriesLayoutOptions { target?: string; mode: ColorLayout; }
+export interface BasicSeriesLayoutOptions { target?: string; mode: Exclude<ColorLayout, "center">; }
+export type AreaPlotIndependentChannel = string | ({ field: string } & (
+  | { fieldType?: "quantitative"; scale?: NonPointQuantitativePositionScaleOptions }
+  | { fieldType: "temporal"; temporalUnit?: TemporalInputUnit; scale?: NonPointTemporalPositionScaleOptions }
+));
+export type AreaPlotMeasureChannel = string | { field: string; scale?: NonPointQuantitativePositionScaleOptions }
+  | ({ scale?: NonPointQuantitativePositionScaleOptions } & (
+    | { lower: string; upper: string | { datum: number } }
+    | { lower: { datum: number }; upper: string }
+  ));
+export type CreateAreaPlotOptions = {
+  id?: string; data?: string; coordinate?: string;
+  groupBy?: string | readonly [string, ...string[]];
+  layout?: Exclude<ColorLayout, "group">; missing?: "error" | "break";
+  color?: string | { field: string; fieldType?: "nominal" | "ordinal"; scale?: NonPointCategoricalColorScaleOptions; palette?: Palette };
+  area?: { fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation };
+  guides?: false | DensityPlotGuideOptions;
+} & (
+  | { valueChannel?: "y"; x: AreaPlotIndependentChannel; y: Exclude<AreaPlotMeasureChannel, { lower: unknown }>; baseline?: number }
+  | { valueChannel?: "y"; x: AreaPlotIndependentChannel; y: Extract<AreaPlotMeasureChannel, { lower: unknown }>; baseline?: never }
+  | { valueChannel: "x"; x: Exclude<AreaPlotMeasureChannel, { lower: unknown }>; y: AreaPlotIndependentChannel; baseline?: number }
+  | { valueChannel: "x"; x: Extract<AreaPlotMeasureChannel, { lower: unknown }>; y: AreaPlotIndependentChannel; baseline?: never }
+);
+
 export interface CreateLinePlotOptions {
   id?: string;
   data?: string;
@@ -2905,6 +2930,7 @@ export class ChartProgram {
   encodeYRange(options: RangePositionEncodingOptions): ChartProgram;
   encodeXRange(options: RangePositionEncodingOptions): ChartProgram;
   encodeGroup(options: GroupEncodingOptions): ChartProgram;
+  layoutSeries(options: SeriesLayoutOptions): ChartProgram;
   encodePathOrder(options: PathOrderEncodingOptions): ChartProgram;
   orderCategories(options: OrderCategoriesOptions): ChartProgram;
   encodeParallelCoordinates(options: ParallelCoordinatesEncodingOptions): ChartProgram;
@@ -2941,6 +2967,7 @@ export class ChartProgram {
   createViolinPlot(options: ViolinPlotOptions): ChartProgram;
   createScatterPlot(options: CreateScatterPlotOptions): ChartProgram;
   createLinePlot(options: CreateLinePlotOptions): ChartProgram;
+  createAreaPlot(options: CreateAreaPlotOptions): ChartProgram;
   createBarPlot(options: CreateBarPlotOptions): ChartProgram;
   createHistogram(options: CreateHistogramOptions): ChartProgram;
   createPiePlot(options: CreatePiePlotOptions): ChartProgram;

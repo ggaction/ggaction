@@ -18,7 +18,7 @@ test("builds the public cars histogram with chart actions", () => {
   assert.equal(program.semanticSpec.layers[0].mark.type, "bar");
   assert.equal(program.semanticSpec.layers[0].encoding.x.bin.maxBins, 10);
   assert.equal(program.semanticSpec.layers[0].encoding.y.aggregate, "count");
-  assert.equal(program.semanticSpec.layers[0].encoding.y.stack, "zero");
+  assert.equal(program.semanticSpec.layers[0].layout.mode, "stack");
   assert.equal(bars.items.length, 15);
   assert.equal(program.semanticSpec.guides.grid.horizontal.scale, "y");
   assert.equal(

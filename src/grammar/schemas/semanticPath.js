@@ -144,7 +144,7 @@ export function parseSemanticPath(property, { allowContainer = false } = {}) {
 
   if (allowContainer) {
     const entityMatch = property.match(
-      new RegExp(`^(dataset|layer)\\[(${USER_ID_SOURCE})\\]$`)
+      new RegExp(`^(dataset|layer|scale)\\[(${USER_ID_SOURCE})\\]$`)
     );
     if (entityMatch) {
       const [, kind, id] = entityMatch;

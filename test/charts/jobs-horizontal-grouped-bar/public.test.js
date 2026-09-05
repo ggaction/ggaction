@@ -20,16 +20,15 @@ test("builds the approved horizontal grouped bar through public actions", () => 
       field: "perc",
       fieldType: "quantitative",
       aggregate: "mean",
-      stack: null,
       scale: "x"
     },
     y: { field: "year", fieldType: "ordinal", scale: "y" },
     color: {
       field: "sex",
       fieldType: "nominal",
-      scale: "color",
-      layout: "group"
+      scale: "color"
     },
+    group: { field: "sex", fieldType: "nominal", inferredFrom: "color" },
     yOffset: { field: "sex", fieldType: "nominal", scale: "yOffset" }
   });
   assert.deepEqual(program.semanticSpec.scales.find(scale => scale.id === "yOffset"), {
@@ -39,13 +38,14 @@ test("builds the approved horizontal grouped bar through public actions", () => 
     range: "auto"
   });
   assert.deepEqual(program.markConfigs.bar, {
+    seriesOffsetScale: "yOffset",
     yOffset: { paddingInner: 0, paddingOuter: 0 },
     barWidth: { band: 0.72 }
   });
   assert.equal(program.graphicSpec.objects.bar.items.length, 30);
 
   const color = program.trace.children.find(node => node.op === "encodeColor");
-  assert.equal(color.children.some(node => node.op === "encodeYOffset"), true);
+  assert.equal(color.children.find(node => node.op === "layoutSeries").children.some(node => node.op === "encodeYOffset"), true);
   assert.deepEqual(
     program.trace.children.map(node => node.op),
     [

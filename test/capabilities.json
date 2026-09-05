@@ -9,7 +9,7 @@
       { "type": "prefix", "path": "unit/core/" }
     ],
     "area-layout": [
-      { "type": "prefix", "path": "gates/area-layout/" }
+      { "type": "prefix", "path": "charts/area-layout/" }
     ],
     "artifacts": [
       { "type": "file", "path": "contracts/chart-variant-structure.test.js" },

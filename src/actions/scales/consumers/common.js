@@ -1,3 +1,4 @@
+import { readSeriesIdentity } from "../../../grammar/pathSeries.js";
 import { readAreaEndpoint } from "../../../grammar/areaEndpoints.js";
 import { readScaleField } from "../../../grammar/scales/index.js";
 import { findDataset } from "../../../selectors/datasets.js";
@@ -42,7 +43,7 @@ export function requireConsumerDataset(program, consumer) {
 export function isDirectCategoricalConsumer(consumer) {
   return ["color", "strokeDash", "xOffset", "yOffset", "shape"].includes(
     consumer.channel
-  ) && consumer.encoding.fieldType === "nominal";
+  ) && ["nominal", "ordinal"].includes(consumer.encoding.fieldType);
 }
 
 export function readConsumerFieldValues(
@@ -52,6 +53,9 @@ export function readConsumerFieldValues(
   scale = findScale(program, consumer.encoding.scale)
 ) {
   const { field, fieldType, temporalUnit } = consumer.encoding;
+  if (consumer.layer.mark.type === "bar" && consumer.layer.encoding?.group !== undefined && ["xOffset", "yOffset"].includes(consumer.channel)) {
+    return readSeriesIdentity(dataset.values, consumer.layer).values;
+  }
   const parallel = consumer.role === "parallelDimension";
   if (!parallel && !isDirectCategoricalConsumer(consumer) &&
     fieldType !== "quantitative" && fieldType !== "temporal" &&

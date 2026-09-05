@@ -13,7 +13,8 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
   materialization을 수행하지 않는다.
 - `remove`: `true`일 때 value 대신 supported encoding channel, legend branch 또는 complete layer resource를
   삭제하고 empty parent object를 prune한다. Source dataset은 삭제할 수 없고 unreferenced derived dataset만
-  complete resource removal을 허용한다.
+  complete resource removal을 허용한다. Unreferenced scale container도 제거할 수 있고 resolvedScales/currentScale을 정리한다.
+  Layer/guide/parallel reference가 남은 scale은 오류이며 graphics는 이 primitive가 변경하지 않는다.
 - Series policy leaves: `layer[id].layout.mode`는 group/stack/fill/overlay/diverging/center,
   `layer[id].mark.missing`은 error/break, `layer[id].encoding.group.inferredFrom`은 color/offset이다.
   `layer[id].layout` container 제거를 지원한다. 이 primitive 저장은 layout·path segmentation을 실행하지 않는다.

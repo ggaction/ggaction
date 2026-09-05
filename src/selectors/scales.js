@@ -19,3 +19,9 @@ export function requireResolvedScale(program, id, type) {
   }
   return scale;
 }
+
+export function hasSemanticScaleReferences(spec, id) {
+  const referenced = value => value !== null && typeof value === "object" && Object.entries(value).some(([key, child]) =>
+    (key === "scale" && child === id) || (key === "scales" && Array.isArray(child) && child.includes(id)) || referenced(child));
+  return referenced(spec.layers) || referenced(spec.guides);
+}

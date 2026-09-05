@@ -54,12 +54,7 @@ export function resolveColorLayout(layer, requested, barGrain) {
             : undefined
       );
   if (requested !== undefined) validateColorLayout(requested);
-  if (existing !== undefined && requested !== undefined && requested !== existing) {
-    throw new Error(
-      `Color layout transition from "${existing}" to "${requested}" is not supported.`
-    );
-  }
-  const layout = requested ?? existing ?? (
+  const layout = requested ?? layer.layout?.mode ?? existing ?? (
     layer.mark.type === "bar"
       ? barGrain === BAR_GRAINS.histogram
         ? "stack"
@@ -85,7 +80,8 @@ export function resolveColorLayout(layer, requested, barGrain) {
   ) {
     throw new Error('Arc color layout currently supports only "overlay".');
   }
-  if (isRangedArea(layer) && layout !== "overlay") {
+  if (isRangedArea(layer) && layer.encoding?.x2?.datum === undefined && layer.encoding?.y2?.datum === undefined &&
+    layer.encoding?.x?.datum === undefined && layer.encoding?.y?.datum === undefined && layout !== "overlay") {
     throw new Error('Ranged area color encoding supports only "overlay" layout.');
   }
   return layout;

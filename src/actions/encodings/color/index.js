@@ -1,3 +1,4 @@
+import { inferSeriesGroup } from "../shared.js";
 import { action } from "../../../core/action.js";
 import {
   readNominalField,
@@ -27,8 +28,7 @@ import { findUpstreamTransform } from
 import { validatePathSeriesAppearance } from "../../../grammar/pathSeries.js";
 import { encodeContinuousColor } from "./continuous.js";
 import {
-  applyColorLayoutCompanion,
-  preSynchronizeGroupedOffset
+  applyColorLayoutCompanion
 } from "./layout.js";
 import {
   assertNoConstantColor,
@@ -86,8 +86,8 @@ const encodeColor = action(
     const layout = resolveColorLayout(layer, args.layout, barGrain);
     const createsCenterGroup = layer.mark.type === "area" &&
       layout === "center" && layer.encoding?.group === undefined;
-    const ordinaryGroup = layer.encoding?.group !== undefined &&
-      layout === "overlay" && densityTransform === undefined && horizonTransform === undefined;
+    const ordinaryGroup = layer.mark.type === "area" && !createsCenterGroup &&
+      densityTransform === undefined && horizonTransform === undefined;
     if (
       layer.mark.type === "area" &&
       !createsCenterGroup &&
@@ -128,8 +128,8 @@ const encodeColor = action(
       readNominalField(dataset.values, args.field);
     }
 
-    let next = createsCenterGroup
-      ? this.encodeGroup({ target, field: args.field })
+    let next = layer.mark.type === "bar" || createsCenterGroup
+      ? inferSeriesGroup(this, layer, args.field, "color")
       : this;
     next = applyTemporalUnit(next, target, "color", undefined, layer.encoding?.color).editSemantic({
       property: `layer[${target}].encoding.color.field`,
@@ -143,21 +143,12 @@ const encodeColor = action(
         property: `layer[${target}].encoding.color.scale`,
         value: scale.id
       });
-    if (layout !== undefined) {
+    if (layout !== undefined && (layer.mark.type === "arc" || horizonTransform !== undefined)) {
       next = next.editSemantic({
         property: `layer[${target}].encoding.color.layout`,
         value: layout
       });
     }
-    next = preSynchronizeGroupedOffset(next, {
-      target,
-      layer,
-      layout,
-      field: args.field,
-      fieldType,
-      scale,
-      requestedScale
-    });
     next = applyEncodingScale(next, scale, requestedScale, {
       reassignment: layer.encoding?.color?.scale === scale.id
     });
@@ -166,7 +157,8 @@ const encodeColor = action(
       layer,
       layout,
       scale,
-      field: args.field
+      field: args.field,
+      horizon: horizonTransform !== undefined
     });
 
     return applyDetachedScaleRematerialization(applyMaterializationPlan(

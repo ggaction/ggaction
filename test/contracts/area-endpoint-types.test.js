@@ -13,7 +13,35 @@ test("area endpoint declarations accept mixed bounds and reject ambiguous consta
     const file = path.join(directory, "area.mts");
     await writeFile(file, `
 import type { ChartProgram } from ${JSON.stringify(path.join(root, "types/program.js"))};
+import type { BasicChartProgram } from ${JSON.stringify(path.join(root, "types/basic.js"))};
 declare const program: ChartProgram;
+declare const basic: BasicChartProgram;
+program.createAreaPlot({ x: "time", y: "value" }).layoutSeries({ mode: "center" });
+program.createAreaPlot({ x: { field: "value", scale: { type: "log" } }, y: "time", valueChannel: "x", baseline: 1 });
+program.createAreaPlot({ x: "time", y: { lower: { datum: 0 }, upper: "value" }, missing: "break" });
+basic.encodeGroup({ fields: ["series", "region"] }).layoutSeries({ mode: "stack" });
+// @ts-expect-error Area belongs to the full entry
+basic.createAreaPlot({ x: "time", y: "value" });
+// @ts-expect-error Bar does not support center
+basic.layoutSeries({ mode: "center" });
+// @ts-expect-error layout mode is required
+program.layoutSeries({});
+// @ts-expect-error no encodeLayout alias
+program.encodeLayout({ mode: "stack" });
+// @ts-expect-error Area does not support group placement
+program.createAreaPlot({ x: "time", y: "value", layout: "group" });
+// @ts-expect-error both endpoints cannot be constants
+program.createAreaPlot({ x: "time", y: { lower: { datum: 0 }, upper: { datum: 1 } } });
+// @ts-expect-error range and baseline cannot both own the endpoints
+program.createAreaPlot({ x: "time", y: { lower: "lo", upper: "hi" }, baseline: 0 });
+// @ts-expect-error independent position cannot be nominal
+program.createAreaPlot({ x: { field: "time", fieldType: "nominal" }, y: "value" });
+// @ts-expect-error quantitative independent positions cannot use temporal scales
+program.createAreaPlot({ x: { field: "time", fieldType: "quantitative", scale: { type: "time" } }, y: "value" });
+// @ts-expect-error temporal units require a temporal field role
+program.createAreaPlot({ x: { field: "time", temporalUnit: "seconds" }, y: "value" });
+// @ts-expect-error measurement does not aggregate raw rows
+program.createAreaPlot({ x: "time", y: { field: "value", aggregate: "sum" } });
 program.createAreaMark({ missing: "break" });
 program.editAreaMark({ missing: "error" });
 program.encodeYRange({ lower: "value", upper: { datum: 0 } });

@@ -101,7 +101,7 @@ test("histogram y-first resolves count and zero stack only when binned x arrives
       const expected = base().encodeX(x).encodeY(y);
       assert.deepEqual(state(actual), state(expected));
       assert.equal(actual.semanticSpec.layers[0].encoding.y.aggregate, "count");
-      assert.equal(actual.semanticSpec.layers[0].encoding.y.stack, "zero");
+      assert.equal(actual.semanticSpec.layers[0].layout.mode, "stack");
       assert.equal(actual.graphicSpec.objects.bars.items.length, 2);
     }
   }

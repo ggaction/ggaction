@@ -32,9 +32,9 @@ test("matches primitives through the public center layout", () => {
   ]);
   assert.deepEqual(
     program.trace.children[5].children
-      .filter(node => ["encodeGroup", "encodeY"].includes(node.op))
+      .filter(node => ["layoutSeries"].includes(node.op))
       .map(node => node.op),
-    ["encodeGroup", "encodeY"]
+    ["layoutSeries"]
   );
   assert.deepEqual(program.resolvedScales.y.domain, [-18_000_000, 18_000_000]);
   assert.equal(program.graphicSpec.objects.occupations.items.length, 5);

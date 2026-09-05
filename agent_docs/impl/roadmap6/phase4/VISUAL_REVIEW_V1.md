@@ -13,14 +13,16 @@ Rose/Radial·theta order의 V2, midpoint/legend의 V3, 최종 X는 이 승인에
 
 ## 재현 source와 표시 내용
 
-- [입력과 목표 publicCalls](../../../../test/gates/area-layout/targets.json): 11개 사례의 유일한 실행 fixture owner. 원본 행, 옵션, 1000×700 / margin 150 포함.
-- [시각 manifest](../../../../test/gates/area-layout/manifest.js): 제목, primitive factory, call chain, 색상과 plot-region ink 조건.
-- [실제로 실행한 primitive](../../../../test/gates/area-layout/primitive.program.js): 기존 lower action과 editSemantic/editGraphics의 명시적 chain.
-- [독립 수학 oracle](../../../../test/oracles/series-area.js), [fixture reference](../../../../test/gates/area-layout/reference-values.js), [literal/invariant 검사](../../../../test/gates/area-layout/reference-values.test.js), [상태·renderer 검사](../../../../test/gates/area-layout/primitive.test.js).
-- [PNG 회귀 entry](../../../../test/gates/area-layout/png.render.js), [기록/재현 runner](verify-visual-v1.mjs), [실제 결과 JSON](visual-v1-results.json).
+아래 승인은 당시 primitive 결과를 고정한 역사 기록이다. 승인 후 public 구현은 `test/charts/area-layout`으로 승격했으며 [현재 실행 결과](implementation-v1-results.json)에서 승인 픽셀과 다시 비교한다. `visual-v1-results.json`은 수정하지 않는다.
 
-아래 public call은 **구현할 목표 호출**이다. 현재 실행 trace는 primitive/lower action이며,
-결과 JSON의 `executedPrimitiveTopLevelOperations`와 구분해서 보존했다. 새 public method는 아직 없다.
+- [입력과 목표 publicCalls](../../../../examples/area-layout/targets.json): 11개 사례의 유일한 실행 fixture owner. 원본 행, 옵션, 1000×700 / margin 150 포함.
+- [시각 manifest](../../../../test/charts/area-layout/manifest.js): 제목, primitive factory, call chain, 색상과 plot-region ink 조건.
+- [실제로 실행한 primitive](../../../../test/charts/area-layout/primitive.program.js): 기존 lower action과 editSemantic/editGraphics의 명시적 chain.
+- [독립 수학 oracle](../../../../test/oracles/series-area.js), [fixture reference](../../../../test/charts/area-layout/reference-values.js), [literal/invariant 검사](../../../../test/charts/area-layout/reference-values.test.js), [상태·renderer 검사](../../../../test/charts/area-layout/primitive.test.js).
+- [PNG 회귀 entry](../../../../test/charts/area-layout/png.render.js), [기록/재현 runner](verify-visual-v1.mjs), [실제 결과 JSON](visual-v1-results.json).
+
+아래 public call은 **구현할 목표 호출**이다. 승인 당시 실행 trace는 primitive/lower action이며,
+결과 JSON의 `executedPrimitiveTopLevelOperations`와 구분해서 보존했다. 승인 당시에는 새 public method가 없었다.
 각 PNG 폴더의 variant.json에도 동일한 목표 call chain이 기록된다.
 
 ## 의미·표현에서 확인할 것
@@ -74,8 +76,8 @@ immutable failure, public trace·graphicSpec·decoded pixels의 primitive/public
 export TMPDIR="$PWD/.artifacts/repository-study/tmp"
 export NPM_CONFIG_CACHE="$PWD/.artifacts/repository-study/npm-cache"
 export PLAYWRIGHT_BROWSERS_PATH="$PWD/.artifacts/repository-study/browsers"
-node --test test/gates/area-layout/*.test.js
-node --test test/gates/area-layout/png.render.js
+node --test test/charts/area-layout/*.test.js
+node --test test/charts/area-layout/png.render.js
 node agent_docs/impl/roadmap6/phase4/verify-visual-v1.mjs
 npm test
 ```

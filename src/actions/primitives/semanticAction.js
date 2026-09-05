@@ -1,3 +1,4 @@
+import { hasSemanticScaleReferences } from "../../selectors/scales.js";
 import { action } from "../../core/action.js";
 import {
   cloneAndFreeze,
@@ -75,7 +76,10 @@ function removeEntity(spec, parsed) {
   const collection = spec[parsed.collection];
   const index = collection.findIndex(item => item.id === parsed.id);
   if (index === -1) return spec;
-  if (parsed.kind === "layer" && parsed.path.length === 0) {
+  if (parsed.kind === "scale" && parsed.path.length === 0) {
+    if (hasSemanticScaleReferences(spec, parsed.id)) throw new Error(`Scale "${parsed.id}" is still referenced.`);
+  }
+  if (["layer", "scale"].includes(parsed.kind) && parsed.path.length === 0) {
     const nextCollection = collection.filter((_, itemIndex) => itemIndex !== index);
     return freezeOwned({
       ...spec,
@@ -159,11 +163,15 @@ export function createSemanticPrimitiveAction(validateSemanticValue) {
           parsed.kind === "layer" &&
           parsed.path.length === 0 &&
           this.context.currentMark === parsed.id;
+        const removesScale = parsed.kind === "scale" && parsed.path.length === 0;
+        const resolvedScales = removesScale ? Object.fromEntries(Object.entries(this.resolvedScales).filter(([id]) => id !== parsed.id)) : this.resolvedScales;
         return this._clone({
           semanticSpec,
-          ...(clearsCurrentData || clearsCurrentMark
+          ...(removesScale ? { resolvedScales: freezeOwned(resolvedScales) } : {}),
+          ...(clearsCurrentData || clearsCurrentMark || (removesScale && this.context.currentScale === parsed.id)
             ? { context: freezeOwned({
                 ...this.context,
+                ...(removesScale && this.context.currentScale === parsed.id ? { currentScale: undefined } : {}),
                 ...(clearsCurrentData ? { currentData: undefined } : {}),
                 ...(clearsCurrentMark ? { currentMark: undefined } : {})
               }) }

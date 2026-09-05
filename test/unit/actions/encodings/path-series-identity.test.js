@@ -198,12 +198,11 @@ test("supports tuple identity in Polar lines and ordinary ranged areas", () => {
   assert.equal(paths(highlighted).filter(item => item.fill === "black").length, 2);
 });
 
-test("rejects tuple edits of centered and owned density paths", () => {
+test("supports centered tuples while preserving statistical grouping owners", () => {
   const centered = base(observed).createAreaMark({ id: "paths" })
     .encodeX({ field: "x" }).encodeY({ field: "y" })
     .encodeColor({ field: "country", layout: "center" });
-  assertAtomic(centered, p => p.encodeGroup({ fields: ["country", "scenario"] }),
-    /one group field/);
+  assert.deepEqual(centered.encodeGroup({ fields: ["country", "scenario"] }).semanticSpec.layers[0].encoding.group.fields, ["country", "scenario"]);
   const density = base().createAreaMark({ id: "paths" })
     .encodeDensity({ field: "y", groupBy: "country", bandwidth: 1 });
   assertAtomic(density, p => p.encodeGroup({ fields: ["country", "scenario"] }), /editDensity/);

@@ -47,6 +47,6 @@ test("rejects invalid series policy values and aliases without mutation", () => 
   }
   assert.throws(() => base.editSemantic({ property: "layer[m].layout", value: { mode: "stack" } }), /Unknown semantic/);
   assert.throws(() => base.editSemantic({ property: "layer[m].mark.missing", value: "skip" }), /missing policy/);
-  assert.equal(typeof base.layoutSeries, "undefined");
+  assert.equal(typeof base.layoutSeries, "function");
   assert.equal(typeof base.encodeLayout, "undefined");
 });

@@ -363,6 +363,16 @@ function buildScaleWitness(action, path, type) {
           : barPositions(path, type)),
         guides: false
       });
+    case "createAreaPlot":
+      if (path === "color.scale.type") return source().createAreaPlot({ x: "x", y: "value", groupBy: "category", color: colorChannel(type), guides: false });
+      if (type === "time") return source().createAreaPlot(path.startsWith("x.")
+        ? { x: positionChannel(type), y: "value", guides: false }
+        : { x: "value", y: positionChannel(type), valueChannel: "x", guides: false });
+      return source().createAreaPlot({
+        x: path.startsWith("x.") ? { field: "x", scale: positionScale(type) } : "x",
+        y: path.startsWith("y.") ? { field: "value", scale: positionScale(type) } : "value",
+        baseline: type === "log" && path.startsWith("y.") ? 1 : 0, guides: false
+      });
     case "createDensityPlot":
       return source().createDensityPlot({ field: "value", guides: false,
         ...(path === "color.scale.type" ? { groupBy: "category", color: colorChannel(type) }
@@ -460,8 +470,8 @@ test("derives only role-reachable nested scale type paths", async () => {
     /(?:^|\.)(?:xScale|yScale|valueScale|densityScale|scale)\.type$/u.test(option.path)
   );
 
-  assert.equal(scaleTypes.length, 68);
-  assert.equal(scaleTypes.reduce((sum, option) => sum + option.values.length, 0), 280);
+  assert.equal(scaleTypes.length, 71);
+  assert.equal(scaleTypes.reduce((sum, option) => sum + option.values.length, 0), 293);
   assert.doesNotMatch(declarations, /scale\?: ScaleOptions/u);
   assert.equal(options.has("option-path:createScatterPlot.x.scale.palette"), false);
   assert.equal(options.has("option-path:createScatterPlot.x.scale.interpolate"), false);
@@ -511,7 +521,7 @@ test("executes every strict nested scale type path and literal", async () => {
       witnesses += 1;
     }
   }
-  assert.equal(witnesses, 280);
+  assert.equal(witnesses, 293);
 });
 
 test("materializes every role-specific nested scale type vocabulary", () => {

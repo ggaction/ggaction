@@ -1,16 +1,17 @@
 # Roadmap 6 — Area / ranged ribbon / stacked area
 
-**승인된 Phase 4 A 계약 / 미구현. 아직 Current API가 아니다.**
+**Phase 4 A/V1 승인 범위의 구현 계약. `createAreaPlot`과 `layoutSeries`는 Current다.**
+최종 Phase X와 용량 B 승인은 별도이며, [현재 실행 증거](../phase4/implementation-v1-results.json)에 11개 승인 이미지와의 동등성을 기록한다.
 [P4-C01–C03 계약](../phase4/CONTRACT_REVIEW.md), [Gate](../phase4/GATES.md),
 [재현과 acceptance](../phase4/VALIDATION.md)가 이 계약을 연결한다. 연결 항목은 F05·D03이다.
 
-## 목적과 최종 public API 제안
+## 목적과 public API
 
 Simple area의 value→baseline, ribbon의 두 endpoint, stack의 누적 두께를 구분한다.
 상위 액션은 아래층의 측정·group·layout·guide를 조합하고, 별도 chart recipe를 저장하지 않는다.
 
 ~~~javascript
-// Proposed API. Each result branches independently from base.
+// Each result branches independently from base.
 import { chart } from 'ggaction';
 const values = [
   { time: 1, value: 2, low: 1, high: 3 },
@@ -58,11 +59,11 @@ Canvas와 materialized dataset은 이미 있어야 한다. data는 explicit→cu
 
 ## 정확한 하위 호출과 hierarchy
 
-아래는 simple facade의 **미래 lower equivalence**다. 현재 Area datum은 미지원이므로 아직 실행되지 않는다.
+아래는 simple facade와 실제로 동등한 lower chain이다. 원본 행에 baseline 필드를 추가하지 않는다.
 
 ~~~javascript
-// Proposed equivalent of simple above; value remains on primary y.
-const lower = base.createAreaMark({ id: 'a', data: 'data' })
+// Equivalent of simple above; value remains on primary y.
+const lower = base.createAreaMark({ id: 'a', data: 'data', missing: 'error' })
   .encodeX({ target: 'a', field: 'time' })
   .encodeYRange({ target: 'a', lower: 'value', upper: { datum: 0 } })
   .layoutSeries({ target: 'a', mode: 'overlay' })
@@ -142,7 +143,7 @@ Aggregation·stack math·path generation을 facade에 복제하지 않는다. Da
 
 [V1 계획](../phase4/VALIDATION.md)은 simple signed/explicit baseline, horizontal log, crossing ribbon,
 missing segments, independent grouped Bar, stacked/fill/diverging/center Area를 다룬다.
-Primitive source는 A 승인 후, public flow는 해당 V 승인 후 만든다. 각 target의 input/dimension/call을 하나의 manifest에
+Primitive source와 public flow는 V1 승인을 거쳐 구현했다. 각 target의 input/dimension/call을 하나의 manifest에
 두고 실제 top-level trace와 대조한다. 독립 수치 oracle와 graphic/Canvas/decoded PNG pixel equality,
 SVG/PDF, lifecycle·strict declarations·full/basic boundary로 완료를 판정한다.
 
