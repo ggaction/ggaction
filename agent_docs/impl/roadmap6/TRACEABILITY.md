@@ -83,7 +83,7 @@ Primary owner는 누락 방지를 위한 책임 단위이며, 관련 작업이 �
 - 수정·추가 방향: 등록 wrapped method = direct ∪ internal, 교집합 없음, manifest orphan 없음의 전체 집합 대조를 만든다. 누락 16개를 internal에 기록한다.
 - 완료 검증: 현재 기준 direct173/internal111/registered284와 일치하며 임의 internal method 누락을 탐지한다. Public promotion 없음.
 - 근거: audit/inventory-reconciliation.json. [원래 조사](audit/REPORT.md)
-- 처분: 구현 또는 명시적인 계약 유지·migration 결정의 제안. 아직 완료·승인 상태가 아니다.
+- 처분: 16개를 internal manifest에 보완하고 wrapper metadata 기반 전체 집합과 문서 owner를 검사한다. 173 direct + 111 internal = 284 registered이며 public promotion은 없다. [실행 증거](phase1/RESULTS.md#w5--internal-inventory-전체-집합)
 
 ## 설계 문제 20건
 

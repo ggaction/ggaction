@@ -2617,6 +2617,18 @@
       "rematerializeVerticalGrid"
     ],
     "guideComponents": [
+      "createParallelAxes",
+      "createLegendBackground",
+      "createLegendSymbols",
+      "createLegendSymbolLines",
+      "createLegendSymbolPoints",
+      "createLegendSymbolSwatches",
+      "createLegendLabels",
+      "createLegendTitle",
+      "createTitleText",
+      "editTitleText",
+      "createSubtitleText",
+      "editSubtitleText",
       "createThetaAxisLine",
       "createRadialAxisLine",
       "createThetaAxisTicks",
@@ -2635,6 +2647,10 @@
       ,"createStrokeWidthLegend"
     ],
     "stateTransitions": [
+      "createCategoricalDensityData",
+      "configureAreaStrokeFromFill",
+      "clearStrokeDashEncoding",
+      "clearOpacityEncoding",
       "composeFacetGuides",
       "rebindLayerData",
       "rebindGradientPlotProfile",

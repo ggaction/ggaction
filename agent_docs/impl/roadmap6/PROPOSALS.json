@@ -140,7 +140,9 @@
             "B08"
           ],
           "scope": "등록 wrapped method = direct ∪ internal, 교집합 없음, manifest orphan 없음의 전체 집합 대조를 만든다. 누락 16개를 internal에 기록한다.",
-          "acceptance": "현재 기준 direct173/internal111/registered284와 일치하며 임의 internal method 누락을 탐지한다. Public promotion 없음."
+          "acceptance": "현재 기준 direct173/internal111/registered284와 일치하며 임의 internal method 누락을 탐지한다. Public promotion 없음.",
+          "status": "implemented-and-verified",
+          "resultEvidence": "phase1/RESULTS.md#w5--internal-inventory-전체-집합"
         }
       ],
       "visualGateApplicability": "not-applicable-to-current-correction-scope"
@@ -828,7 +830,7 @@
       "id": "B08",
       "title": "Internal wrapped inventory 16개 누락",
       "kind": "reproduced-bug-or-contract-mismatch",
-      "status": "proposed",
+      "status": "implemented-and-verified",
       "primaryPhase": 1,
       "primaryWorkPackage": "R6-P1-W5",
       "relatedWorkPackages": [
@@ -841,7 +843,8 @@
       "recommended": "등록 wrapped method = direct ∪ internal, 교집합 없음, manifest orphan 없음의 전체 집합 대조를 만든다. 누락 16개를 internal에 기록한다.",
       "acceptance": "현재 기준 direct173/internal111/registered284와 일치하며 임의 internal method 누락을 탐지한다. Public promotion 없음.",
       "evidence": "audit/inventory-reconciliation.json",
-      "disposition": "implementation-or-explicit-contract-decision-proposed"
+      "disposition": "Manifest and internal owner tables reconcile all 284 wrapped methods as 173 direct plus 111 internal; exhaustive partition guard passes.",
+      "resultEvidence": "phase1/RESULTS.md#w5--internal-inventory-전체-집합"
     },
     {
       "id": "D01",

@@ -2,6 +2,10 @@
 
 These actions may appear in traces but are not public direct actions or primitives.
 
+현재 등록된 wrapped method는 direct 173개와 internal 111개로 분리된다. 두 집합은 겹치지 않고 합집합은
+등록된 284개 전체와 같다. [`../ACTION_INDEX.json`](../ACTION_INDEX.json)이 목록을 소유하며,
+`test/contracts/action-catalog.test.js`는 wrapper metadata로 runtime을 읽어 누락·중복·orphan과 각 owner 표의 누락을 검사한다.
+
 ## Internal materialization inventory
 
 이 표는 runtime과 trace에 존재하지만 public type과 direct action 계약에서 제외되는 wrapped
@@ -27,6 +31,8 @@ domain action을 통해서만 실행한다.
 | `materializeTimeUnitData` | time-unit data actions |
 | `materializeWindowData` | window data actions |
 | `materializeRuleSpan` | error-bar cap components and rule rematerialization |
+| `materializeLabelLayout` | `layoutLabels` and positioned-label rematerialization |
+| `rematerializeArcMark` | arc mark and Polar encoding actions |
 | `rematerializeAreaMark` | area mark and encoding actions |
 | `rematerializeBarMark` | bar mark and encoding actions |
 | `rematerializeErrorBandBoundary` | `editErrorBandBoundary` selected boundary appearance |
@@ -36,6 +42,7 @@ domain action을 통해서만 실행한다.
 | `rematerializeIntervalLegend` | discretized color legend, scale, and Canvas actions |
 | `rematerializeGrid` | grid aggregate and Canvas actions |
 | `rematerializeHorizontalGrid` | horizontal grid and Canvas actions |
+| `rematerializeHorizontalLegendLane` | top/bottom categorical legend lane packing and Canvas actions |
 | `rematerializeRadialGrid` | radial grid, scale, and Canvas actions |
 | `rematerializeLegend` | legend, encoding, scale, and Canvas actions |
 | `rematerializeLegendBackground` | categorical legend border/background component |
@@ -54,9 +61,12 @@ domain action을 통해서만 실행한다.
 | `rematerializeRectMark` | rect mark and position/color encoding actions |
 | `rematerializeRuleMark` | rule mark, endpoint, appearance, scale, and Canvas actions |
 | `rematerializeScale` | scale-owning encoding and Canvas actions |
+| `rematerializeSideLegendLane` | left/right categorical legend lane packing and Canvas actions |
 | `rematerializeSizeLegend` | point size legend, scale, and Canvas actions |
 | `rematerializeStrokeWidthLegend` | line/rule stroke-width legend, scale, and Canvas actions |
 | `rematerializeThetaGrid` | theta grid, scale, and Canvas actions |
+| `rematerializeTextMark` | text mark, position, content, and appearance actions |
+| `rematerializeTickMark` | Tick position, angle, length, appearance, and Canvas actions |
 | `rematerializeTitle` | title and Canvas actions |
 | `rematerializeVerticalGrid` | vertical grid and Canvas actions |
 
@@ -69,8 +79,11 @@ domain action을 통해서만 실행한다.
 | `rebindGradientPlotProfile` | `facet` | Rebind one gradient owner config to its cell-local source and profile revision |
 | `createCategoricalDensityData` | `encodeDensity`, `editDensity` | Create category/split density provenance before the shared density materializer runs |
 | `configureAreaStrokeFromFill` | `createViolinPlot` | Preserve the intent that each categorical density outline follows its materialized fill |
+| `clearStrokeDashEncoding` | `encodeStrokeDash` | Remove the previous semantic dash assignment before field/constant reassignment |
+| `clearOpacityEncoding` | `encodeOpacity` | Remove the previous semantic opacity assignment before field/constant reassignment |
 | `releaseDerivedData` | derived-data revision owners | Remove an unreferenced old derived revision through `editSemantic({ remove: true })` |
 | `replayDerivedData` | `facet` | Recreate one supported stored transform through its canonical data materializer |
+| `setQuantitativeColorScale` | `encodeColor` | Author sequential or discretized color-scale semantics through primitive edits |
 | `useProgram` | `hconcat`, `vconcat`, and child replacement | Retain one immutable named child program before composition materialization |
 
 ## Internal guide component inventory
@@ -88,6 +101,7 @@ type과 direct action 계약에서는 제외되지만 hierarchy는 `trace`에 �
 | `createRadialAxisLabels` | `createRadialAxis` | radial value labels |
 | `createThetaAxisTitle` | `createThetaAxis` | inferred theta title |
 | `createRadialAxisTitle` | `createRadialAxis` | inferred radius title |
+| `createParallelAxes` | `createAxes`, `createParallelCoordinates` | dimension lines, ticks, labels, and titles for a Parallel layer |
 | `createCategoricalLegend` | `createLegend` | categorical color/shape/stroke-dash block |
 | `createGradientLegend` | `createLegend` | continuous color gradient block |
 | `createIntervalLegend` | `createLegend` | discretized color interval swatch block |
@@ -96,9 +110,17 @@ type과 direct action 계약에서는 제외되지만 hierarchy는 `trace`에 �
 | `removeOpacityLegend` | `encodeOpacity` | compose semantic/graphic primitive removals for an ineligible field-opacity guide |
 | `createSizeLegend` | `createLegend` | quantitative equal-area point-size block |
 | `createStrokeWidthLegend` | `createLegend` | quantitative line/rule stroke-width sample block |
-
-`setQuantitativeColorScale`은 `encodeColor`가 sequential 또는 discretized color scale semantic을
-primitive edits로 저장하기 위해 호출하는 internal wrapped state transition이다.
+| `createLegendBackground` | `createLegend` | categorical legend background and border rectangle |
+| `createLegendSymbols` | `createLegend` | aggregate of the compatible categorical symbol components |
+| `createLegendSymbolLines` | `createLegend` | categorical line-symbol collection |
+| `createLegendSymbolPoints` | `createLegend` | categorical point-symbol collection |
+| `createLegendSymbolSwatches` | `createLegend` | categorical filled-swatch collection |
+| `createLegendLabels` | `createLegend` | categorical legend label collection |
+| `createLegendTitle` | `createLegend` | categorical legend title text |
+| `createTitleText` | `createTitle` | primary title text graphic |
+| `editTitleText` | `editTitle`, title rematerialization | revise the primary title text graphic |
+| `createSubtitleText` | `createTitle`, `editTitle` | optional subtitle text graphic |
+| `editSubtitleText` | `editTitle`, title rematerialization | revise an existing subtitle text graphic |
 
 ## Internal aggregate component inventory
 

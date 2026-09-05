@@ -69,3 +69,17 @@
 - `npm run test:contracts`: 258/258 통과. `npm run test:package`: exit 0 (installed MCP/direct byte equality 포함).
 - 문서: architecture의 packet v4/의미 경계, MCP public 설명, generated taxonomy/search/LLM 동기화.
   추가 모델 호출 없음. B02/B03/B04 교정·검증 완료, 새로운 완성 chart는 F05/F08/F04 owner에 남는다.
+
+## W5 — Internal inventory 전체 집합
+
+- 기준 commit: `2e8db0e4` (W4). Manifest에 빠진 guide component 12개와 state transition 4개를 추가했다.
+- 현재 집합: direct 173 + internal 111 = registered wrapped 284. Internal은 materialization 55,
+  guide component 28, state transition 11, aggregate component 17이다. Public promotion은 없다.
+- Runtime 조회는 이름 prefix가 아닌 `getWrappedActionMetadata`로 판정한다. 내부 group 중복, direct/internal
+  교집합, 미분류 wrapped action, 존재하지 않는 manifest action, method 이름과 metadata.op 불일치를 검사한다.
+- 각 internal action의 문서 owner 표도 정확히 1회씩 전체 집합과 일치해야 한다. 기존 prose에만 있던 state action과
+  누락된 materializer·guide·title owner를 보강했다.
+- 새 invariant를 목록 수정 전에 실행하면 실제 누락 16개를 모두 이름으로 보고하며 실패했다. 문서 대조도 실패했다.
+  수정 뒤 focused catalog tests 11/11, `npm run test:contracts` 259/259 통과.
+- `node scripts/generate-action-catalog.js --check`: exit 0. Direct API와 generated public catalog는 변하지 않는다.
+- B08 구현·검증 완료, Phase 1 X 검토 대기. 로그는 `.artifacts/roadmap6-authoring/inventory-*.log`.
