@@ -1849,6 +1849,7 @@ export interface CreateScatterPlotOptions {
   size?: BasicSizeChannel;
   shape?: BasicShapeChannel;
   point?: {
+    radius?: number;
     shape?: PointShape;
     fill?: string;
     opacity?: number;
@@ -2032,7 +2033,7 @@ export interface ErrorBandOptions {
 
 export interface EditErrorBandOptions {
   target?: string;
-  fill?: string;
+  fill?: string | false;
   opacity?: number;
   curve?: CurveInterpolation;
   statistics?: {
@@ -2276,6 +2277,13 @@ export type OpacityEncodingOptions =
     };
 
 export type StrokeWidthScaleOptions = NonPointQuantitativePositionScaleOptions;
+
+export interface RuleStyleOptions {
+  stroke?: string;
+  strokeWidth?: number;
+  strokeDash?: DashStyle | DashPattern;
+  opacity?: number;
+}
 
 export type StrokeWidthEncodingOptions =
   | {
@@ -2724,7 +2732,8 @@ export class ChartProgram {
   }): ChartProgram;
   createRectMark(options?: RectMarkOptions): ChartProgram;
   editRectMark(options: EditRectMarkOptions): ChartProgram;
-  createRuleMark(options?: { id?: string; data?: string }): ChartProgram;
+  createRuleMark(options?: { id?: string; data?: string } & RuleStyleOptions): ChartProgram;
+  editRuleMark(options: { target?: string } & RuleStyleOptions): ChartProgram;
   createTextMark(options?: TextMarkOptions): ChartProgram;
   editTextMark(options: EditTextMarkOptions): ChartProgram;
   layoutLabels(options?: LabelLayoutOptions): ChartProgram;

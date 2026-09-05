@@ -178,7 +178,16 @@ export const editErrorBand = action(
     const config = { ...this.markConfigs[owner.id] };
     const errorBand = { ...config.errorBand };
     if (Object.hasOwn(args, "fill")) {
-      errorBand.fill = validateNonEmptyString(args.fill, "Error-band fill");
+      if (args.fill === false) {
+        delete errorBand.fill;
+        config.fill = DEFAULT_COLORS.mark;
+      } else {
+        if (owner.encoding?.color !== undefined) {
+          throw new Error("editErrorBand fill conflicts with a color encoding; remove the color encoding first.");
+        }
+        errorBand.fill = validateNonEmptyString(args.fill, "Error-band fill");
+        config.fill = errorBand.fill;
+      }
     }
     if (Object.hasOwn(args, "opacity")) {
       config.opacity = validateUnitInterval(args.opacity, "Error-band opacity");

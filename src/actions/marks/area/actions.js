@@ -244,6 +244,7 @@ const editAreaMark = action(
     let config = { ...this.markConfigs[layer.id] };
     if (Object.hasOwn(args, "fill")) {
       config.fill = validateNonEmptyString(args.fill, "Area fill");
+      if (config.errorBand !== undefined) config.errorBand = { ...config.errorBand, fill: config.fill };
     }
     if (Object.hasOwn(args, "opacity")) {
       config.opacity = validateUnitInterval(args.opacity, "Area opacity");

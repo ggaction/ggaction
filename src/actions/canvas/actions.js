@@ -161,7 +161,9 @@ export const createBasicCanvas = action(
       background: Object.hasOwn(args, "background")
         ? args.background
         : DEFAULT_CANVAS.background,
-      margin: normalizeMargin(args.margin, DEFAULT_MARGIN),
+      margin: Object.hasOwn(args, "margin")
+        ? normalizeMargin(args.margin, DEFAULT_MARGIN)
+        : DEFAULT_MARGIN,
       size: {
         width: Object.hasOwn(args, "width") ? "explicit" : "auto",
         height: Object.hasOwn(args, "height") ? "explicit" : "auto"

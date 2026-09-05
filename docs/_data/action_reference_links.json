@@ -40,6 +40,7 @@
   "createArcMark": "/reference/actions/marks/#createarcmark",
   "editArcMark": "/reference/actions/marks/#editarcmark",
   "createRuleMark": "/reference/actions/marks/#createrulemark",
+  "editRuleMark": "/reference/actions/marks/#editrulemark",
   "createRectMark": "/reference/actions/marks/#createrectmark",
   "editRectMark": "/reference/actions/marks/#editrectmark",
   "createTextMark": "/reference/actions/marks/#createtextmark",

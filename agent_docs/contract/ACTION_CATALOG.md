@@ -35,7 +35,8 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`createBarMark`](current/MARKS.md#createbarmark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editBarMark`](current/MARKS.md#editbarmark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createAreaMark`](current/MARKS.md#createareamark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
-| user-facing | [`createRuleMark`](current/MARKS.md#createrulemark) | marks | Immutable create-only | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`createRuleMark`](current/MARKS.md#createrulemark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editRuleMark`](current/MARKS.md#editrulemark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editAreaMark`](current/MARKS.md#editareamark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`encodeX`](current/ENCODINGS.md#encodex) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
 | user-facing | [`encodeY`](current/ENCODINGS.md#encodey) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
@@ -186,13 +187,11 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 
 | Action | Readiness | Contract |
 | --- | --- | --- |
-| `editRuleMark` | accepted | [Open](planned/SHARED_AUTHORING.md#editrulemark) |
 
 ## Planned capabilities
 
 | Kind | Capability | Readiness | Contract |
 | --- | --- | --- | --- |
-| behavior | Scalar style conflicts, assignment replacement and facade forwarding | accepted | [Open](planned/SHARED_AUTHORING.md#appearance) |
 | behavior | Explicit temporal input units and serializable group opt-out | accepted | [Open](planned/SHARED_AUTHORING.md#inference) |
 
 ## Internal inventories

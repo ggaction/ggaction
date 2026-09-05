@@ -211,6 +211,28 @@ async function testNodeConsumer(directory) {
       .createData({ values: [{ x: 1, y: 2 }, { x: 2, y: 4 }] })
       .createScatterPlot({ x: "x", y: "y", guides: false });
     assert.equal(basicScatter.graphicSpec.objects.scatterPlot.items.length, 2);
+    assert.ok(basicScatter.encodePointRadius({ value: 0 })
+      .graphicSpec.objects.scatterPlot.items.every(item => item.properties.radius === 0));
+    for (const factory of [chart, basicChart]) {
+      const radius = factory().createCanvas().createData({ values: [{ x: 1, y: 2 }] })
+        .createScatterPlot({ x: "x", y: "y", point: { radius: 4 }, guides: false });
+      assert.equal(radius.graphicSpec.objects.scatterPlot.items[0].properties.radius, 4);
+    }
+    const ruleSource = chart().createCanvas().createData({ values: [{ x: 1 }, { x: 2 }] });
+    const styledRule = ruleSource.createRuleMark({ stroke: "red", strokeWidth: 0, opacity: 0.5 })
+      .encodeX({ field: "x", fieldType: "quantitative" }).editRuleMark({ strokeDash: "dashed", opacity: 0.8 });
+    const lowerRule = ruleSource.createRuleMark().encodeStroke({ value: "red" })
+      .encodeStrokeWidth({ value: 0 }).encodeOpacity({ value: 0.5 })
+      .encodeX({ field: "x", fieldType: "quantitative" }).encodeStrokeDash({ value: "dashed" }).encodeOpacity({ value: 0.8 });
+    assert.deepEqual(styledRule.graphicSpec, lowerRule.graphicSpec);
+    const filledBand = chart().createCanvas().createData({ values: [
+      { x: 1, y: 2, lower: 1, upper: 3, group: "A" },
+      { x: 2, y: 3, lower: 2, upper: 4, group: "A" }
+    ] }).createErrorBand({ x: { field: "x" },
+      y: { center: "y", lower: "lower", upper: "upper" }, groupBy: "group", fill: "red" });
+    assert.throws(() => filledBand.encodeColor({ field: "group" }), /constant appearance/);
+    assert.equal(filledBand.editErrorBand({ fill: false }).encodeColor({ field: "group" })
+      .semanticSpec.layers[0].encoding.color.field, "group");
     assert.equal(basicScatter.createRegression, undefined);
     assert.equal(typeof basicRender, "function");
     const horizon = chart()
@@ -848,6 +870,23 @@ async function testTypeScriptConsumer(directory) {
     program.createBarMark({ stroke: false });
     program.createRectMark({ stroke: false });
     program.createScatterPlot({ x: "x", y: "y", point: { stroke: false } });
+    const ruleStyle: import("ggaction").RuleStyleOptions = {
+      stroke: "red", strokeWidth: 0, strokeDash: "dashed", opacity: 0
+    };
+    program.createRuleMark(ruleStyle).editRuleMark({ ...ruleStyle, target: "rule" });
+    program.editErrorBand({ fill: false });
+    basicChart().createScatterPlot({ x: "x", y: "y", point: { radius: 0 } })
+      .encodePointRadius({ value: 3 });
+    // @ts-expect-error Rule constant stroke does not accept false.
+    program.editRuleMark({ stroke: false });
+    // @ts-expect-error ErrorBand reset is edit-only.
+    program.createErrorBand({ fill: false });
+    // @ts-expect-error Basic keeps the older alias internal.
+    basicChart().encodeRadius({ value: 3 });
+    // @ts-expect-error Basic does not add the default-entry radius remover.
+    basicChart().removePointRadius();
+    // @ts-expect-error Basic does not add Rule editing.
+    basicChart().editRuleMark({ opacity: 0.5 });
     program.createBarPlot({ x: "category", y: "y", bar: { stroke: false } });
     program.createHistogram({ field: "x", bar: { stroke: false } });
     basicChart().createPointMark({ stroke: false });

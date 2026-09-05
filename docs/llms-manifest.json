@@ -666,8 +666,8 @@
         "other-complete-chart-facades",
         "advanced-authoring"
       ],
-      "bytes": 10357,
-      "sha256": "b8908be9747061de2eb40ea72069f1730b913981fda089a87121be71f837d11d"
+      "bytes": 10546,
+      "sha256": "725c04b28d639556f4749d461c0c767489b9dcd486a06d2ed6b293b37bf4b456"
     },
     {
       "order": 44,
@@ -882,8 +882,8 @@
         "createrulemark-id-data",
         "related"
       ],
-      "bytes": 2096,
-      "sha256": "8ee7382307578dda7db63beb4d0a44af24fcd211867ece1c7886b2b943d22843"
+      "bytes": 2436,
+      "sha256": "238ab7298184480bf050881e2d9e6d6de58082e32287b5fd3efa672161184afb"
     },
     {
       "order": 58,
@@ -993,8 +993,8 @@
         "inference-and-ownership",
         "editing-the-band"
       ],
-      "bytes": 6751,
-      "sha256": "d392080f8c373dd299b973c54bdef318ec43ce6204b30a068a1f3cf738c22733"
+      "bytes": 7036,
+      "sha256": "d9acbe988d39f30f8ee2583ca27666648bf76de441f762f5b7587d5c2a6f0881"
     },
     {
       "order": 64,
@@ -1316,8 +1316,8 @@
         "point-field-encodings",
         "related"
       ],
-      "bytes": 3063,
-      "sha256": "a70a927c194a65c0aca6dbe60de869b96350d483b56a2aeffc3f1768ed8e4114"
+      "bytes": 3341,
+      "sha256": "52d6d79a3266bda669ff57eb796cf4d4f769947c84b1234372b8fe9dbf72016a"
     },
     {
       "order": 84,
@@ -1330,8 +1330,8 @@
         "encodebarwidth-band-pixels-target",
         "related"
       ],
-      "bytes": 4262,
-      "sha256": "5b5c0f1ddfc2818e372660ab315716b90fd5ba36db11799e714f315633664cee"
+      "bytes": 4578,
+      "sha256": "f27a1887b11ebcd50f724bb74da0e5fe6b6aa22f189ad96ede2185f828c9382d"
     },
     {
       "order": 85,
@@ -1771,8 +1771,8 @@
         "action-reference",
         "exact-action-lookup"
       ],
-      "bytes": 18540,
-      "sha256": "997f7c929fa894ee47b7550aa0c70df78ad35c7e6c37ce75a254efcf79a37f3b"
+      "bytes": 18624,
+      "sha256": "a6e58a78980e4a2229fe95034aa799dc8166eb134f218aeb24d35bd1a0ea2ba3"
     },
     {
       "order": 114,
@@ -1834,6 +1834,7 @@
         "createarcmark",
         "editarcmark",
         "createrulemark",
+        "editrulemark",
         "createrectmark",
         "editrectmark",
         "createtextmark",
@@ -1843,8 +1844,8 @@
         "position-capability-matrix",
         "related"
       ],
-      "bytes": 8266,
-      "sha256": "1f1ee5c234c19ba585098ea2cc0a554bf47176048101be1d42fd8b912473b165"
+      "bytes": 8642,
+      "sha256": "c9ff323c6871d059aecc924510a1034377f582f5cdf002988328dd60cfa1551d"
     },
     {
       "order": 116,
@@ -1915,8 +1916,8 @@
         "createviolinplot",
         "related"
       ],
-      "bytes": 6503,
-      "sha256": "e2bfa24fd4c7f93a60fd9f5bf7753d899aedae35c422f2156ea05390e409947e"
+      "bytes": 6667,
+      "sha256": "cda1581808b5bd4d0c362c1a512977cb001b7809f0dafe13321d1d8946bf704d"
     },
     {
       "order": 118,
@@ -2021,8 +2022,8 @@
         "exact-typescript-signatures",
         "related"
       ],
-      "bytes": 14419,
-      "sha256": "11603005e19f1d72446698aa137365668e5236d92d9827770814ec6098925771"
+      "bytes": 14517,
+      "sha256": "d8f3b16123c4e6f9a8e5eb6f627e10abfb1781955e9aa87eef8526aa0bcef570"
     },
     {
       "order": 123,

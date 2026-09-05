@@ -26,9 +26,10 @@ function errorBand() {
     .encodeColor({ target: "errorBand", field: "group" });
 }
 
-test("edits a colored band body with a persistent constant override", () => {
+test("requires explicit color removal before a persistent constant band fill", () => {
   const before = errorBand();
-  const edited = before.editErrorBand({
+  assert.throws(() => before.editErrorBand({ fill: "#7dd3fc" }), /conflicts with a color encoding/);
+  const edited = before.removeEncoding({ channel: "color" }).editErrorBand({
     fill: "#7dd3fc",
     opacity: 0.34,
     curve: "cardinal"

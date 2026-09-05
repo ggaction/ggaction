@@ -163,6 +163,7 @@
     "editGraphics": "Sets a concrete graphic property or removes a top-level graphic resource inside an extension action."
   },
   "sampleOverrides": {
+    "editRuleMark": { "stroke": "#334155" },
     "encodeGroup": { "field": "country" },
     "filterData": {
       "id": "filtered",

@@ -163,7 +163,7 @@ test("intent taxonomy covers every supported constraint with exact owners", asyn
   const validate = new Ajv2020({ strict: true }).compile(schema);
   assert.equal(validate(taxonomy), true, JSON.stringify(validate.errors));
   assert.deepEqual(validateResolverKnowledge(), {
-    cards: 173,
+    cards: 174,
     constraints: 90,
     providers: 84,
     supported: 85,
@@ -187,7 +187,7 @@ test("intent taxonomy covers every supported constraint with exact owners", asyn
       family
     );
   }
-  assert.equal(cards.count, 173);
+  assert.equal(cards.count, 174);
 
   const declarationByRuntime = {
     hconcat: "index.d.ts",

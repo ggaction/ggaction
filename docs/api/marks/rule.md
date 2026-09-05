@@ -35,13 +35,18 @@ rule, while datum x symmetrically creates a vertical full-span rule. Field
 endpoints preserve the orthogonal inherited channel for interval construction.
 Rules created with explicit `data` do not apply this provenance-based cleanup.
 
-Rule appearance is edited through encoding actions rather than a separate mark
-editor:
+Rule creation and `editRuleMark({ target?, stroke?, strokeWidth?, strokeDash?, opacity? })`
+accept constant styles. They validate all options before delegating requested
+styles in the following order:
 
 - `encodeStroke`
 - `encodeStrokeWidth`
 - `encodeStrokeDash`
 - `encodeOpacity`
+
+At least one style is required for editing. Scalar edits reject active field
+encodings; use the corresponding encoder with `{ value }` to replace them.
+Styles persist while endpoints are incomplete and after Canvas resizing.
 
 `encodeStrokeWidth({ field, scale? })` maps a non-negative quantitative field
 to one concrete width per rule item. Use `createLegend({ channels:

@@ -7,11 +7,7 @@
 
 ## `editRuleMark`
 
-`editRuleMark({ target?, stroke?, strokeWidth?, strokeDash?, opacity? })`는 선택한 Rule의 scalar style을 기존
-`encodeStroke`, `encodeStrokeWidth`, `encodeStrokeDash`, `encodeOpacity` child로 작성한다. 적어도 한 변경이
-필요하고 active field encoding과 scalar edit는 충돌한다. Default entry 전용이며 별도 위치/통계 owner를 만들지 않는다.
-Create Rule도 같은 scalar 옵션을 기존 owner에 위임한다. Width는 non-negative finite logical pixels,
-opacity는 [0,1], stroke는 non-empty color, dash는 기존 DashStyle/DashPattern이다.
+구현되어 Planned inventory에서 제거했다. 현재 계약은 [Rule styles](../current/MARKS.md#editrulemark)가 소유한다.
 
 ## Guide reuse
 
@@ -25,11 +21,9 @@ opacity는 [0,1], stroke는 non-empty color, dash는 기존 DashStyle/DashPatter
 
 ## Appearance
 
-Line의 encodeStrokeWidth/encodeOpacity constant·field 모드와 scalar editor 충돌 검증은 구현되었다.
-현재 계약은 [Encodings](../current/ENCODINGS.md)와 [Marks](../current/MARKS.md)가 소유한다. 남은 범위는 다음과 같다. ErrorBand fill, Point opacity, Line width의
-잘못된 scalar 성공을 교정한다. ErrorBand `fill:false`는 constant override를 제거하며 투명색을 뜻하지 않는다.
-Scatter `point.radius`는 encodePointRadius로 전달하며 size와 충돌한다. 기존 root encodePointRadius를 basic에도 공개한다.
-Rule editor/creation style은 위 계약을 따른다. Root-only 통계·Rule·일반 opacity를 basic에 추가하지 않는다.
+구현되어 Planned inventory에서 제거했다. [Encodings](../current/ENCODINGS.md),
+[Marks](../current/MARKS.md), [ErrorBand](../current/STATISTICS.md#editerrorband),
+[Scatter](../current/BASIC_CHARTS.md#createscatterplot)가 현재 계약을 소유한다.
 
 ## Inference
 

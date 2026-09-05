@@ -139,6 +139,11 @@
     "layer": "user-facing",
     "domain": "marks"
   },
+  "editRuleMark": {
+    "operation": "edit",
+    "layer": "user-facing",
+    "domain": "marks"
+  },
   "editAreaMark": {
     "operation": "edit",
     "layer": "user-facing",

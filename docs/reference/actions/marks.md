@@ -158,11 +158,21 @@ Edit arc geometry or appearance and rematerialize complete sector paths.
 ## `createRuleMark`
 
 ```javascript
-createRuleMark({ id?, data? } = {})
+createRuleMark({ id?, data?, stroke?, strokeWidth?, strokeDash?, opacity? } = {})
 ```
 
 Create a semantic rule mark and empty line collection. The first omitted ID is
 `"rule"`; data defaults to current data. [Marks](../../api/marks.md)
+
+## `editRuleMark`
+
+```javascript
+editRuleMark({ target?, stroke?, strokeWidth?, strokeDash?, opacity? })
+```
+
+Edit constant Rule appearance through the four existing encoding owners. At least
+one style is required; field appearance conflicts with scalar editing. Creation
+accepts the same styles. [Rule marks](../../api/marks/rule.md)
 
 ## `createRectMark`
 

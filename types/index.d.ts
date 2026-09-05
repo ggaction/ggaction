@@ -88,6 +88,7 @@ export type {
   EditErrorBandBoundaryOptions,
   EditErrorBandOptions,
   EditErrorBarOptions,
+  RuleStyleOptions,
   EditBoxPlotOptions,
   EditLegendBorderOptions,
   EditLegendLabelsOptions,

@@ -128,6 +128,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editRegression`](./actions/statistics.md#editregression) | user-facing | statistics |
 | [`editRegressionBand`](./actions/advanced.md#semantic-resources-and-regression-layers) | user-facing | statistics |
 | [`editRegressionLine`](./actions/advanced.md#semantic-resources-and-regression-layers) | user-facing | statistics |
+| [`editRuleMark`](./actions/marks.md#editrulemark) | user-facing | marks |
 | [`editScale`](./actions/extension.md#extension-actions) | user-facing | core |
 | [`editSemantic`](./actions/extension.md#extension-actions) | primitive | primitives |
 | [`editTextMark`](./actions/marks.md#edittextmark) | user-facing | marks |

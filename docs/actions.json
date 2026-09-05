@@ -3,7 +3,7 @@
   "packageVersion": "0.0.12",
   "typeSource": "types/program.d.ts",
   "errorPolicy": "An empty errors array means the compact card has no curated error override; consult the canonical route for validation, inference, and recovery behavior.",
-  "count": 173,
+  "count": 174,
   "cards": [
     {
       "schemaVersion": 2,
@@ -1827,7 +1827,7 @@
       "layer": "user-facing",
       "domain": "marks",
       "summary": "Create a semantic rule mark and empty line collection.",
-      "signature": "createRuleMark(options?: { id?: string; data?: string }): ChartProgram;",
+      "signature": "createRuleMark(options?: { id?: string; data?: string } & RuleStyleOptions): ChartProgram;",
       "intents": [
         "create rule mark",
         "create",
@@ -1837,7 +1837,7 @@
         "rule mark",
         "reference line"
       ],
-      "lifecycle": "Immutable create-only",
+      "lifecycle": "Mutable resource",
       "resources": {
         "prerequisites": [
           "dataset and coordinate context"
@@ -1860,14 +1860,94 @@
           "name": "data",
           "required": false,
           "type": "string | undefined"
+        },
+        {
+          "name": "stroke",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "strokeWidth",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "strokeDash",
+          "required": false,
+          "type": "DashPattern | DashStyle | undefined"
+        },
+        {
+          "name": "opacity",
+          "required": false,
+          "type": "number | undefined"
         }
       ],
       "callPatterns": [
-        "createRuleMark({ id?, data? })"
+        "createRuleMark({ id?, data?, stroke?, strokeWidth?, strokeDash?, opacity? })"
       ],
       "snippet": "program.createRuleMark({})",
       "errors": [],
       "route": "/reference/actions/marks/#createrulemark"
+    },
+    {
+      "schemaVersion": 2,
+      "name": "editRuleMark",
+      "layer": "user-facing",
+      "domain": "marks",
+      "summary": "Edit constant Rule appearance through the four existing encoding owners.",
+      "signature": "editRuleMark(options: { target?: string } & RuleStyleOptions): ChartProgram;",
+      "intents": [
+        "edit rule mark",
+        "edit",
+        "change",
+        "graphical mark",
+        "mark appearance",
+        "rule mark",
+        "reference line"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing rule mark"
+        ],
+        "owns": [],
+        "idOptions": [
+          "target"
+        ]
+      },
+      "options": [
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "stroke",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "strokeWidth",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "strokeDash",
+          "required": false,
+          "type": "DashPattern | DashStyle | undefined"
+        },
+        {
+          "name": "opacity",
+          "required": false,
+          "type": "number | undefined"
+        }
+      ],
+      "callPatterns": [
+        "editRuleMark({ target?, stroke?, strokeWidth?, strokeDash?, opacity? })"
+      ],
+      "snippet": "program.editRuleMark({ stroke: \"#334155\" })",
+      "errors": [],
+      "route": "/reference/actions/marks/#editrulemark"
     },
     {
       "schemaVersion": 2,
@@ -4732,7 +4812,7 @@
       "name": "editErrorBand",
       "layer": "user-facing",
       "domain": "statistics",
-      "summary": "Edit the band body, statistical interval, or both owned boundary components without addressing generated line IDs.",
+      "summary": "Constant band fill conflicts with active color.",
       "signature": "editErrorBand(options: EditErrorBandOptions): ChartProgram;",
       "intents": [
         "edit error band",
@@ -4763,7 +4843,7 @@
         {
           "name": "fill",
           "required": false,
-          "type": "string | undefined"
+          "type": "string | false | undefined"
         },
         {
           "name": "opacity",
@@ -4798,7 +4878,7 @@
       "name": "editErrorBandBoundary",
       "layer": "user-facing",
       "domain": "statistics",
-      "summary": "Edit the band body, statistical interval, or both owned boundary components without addressing generated line IDs.",
+      "summary": "Constant band fill conflicts with active color.",
       "signature": "editErrorBandBoundary(options: EditErrorBandBoundaryOptions): ChartProgram;",
       "intents": [
         "edit error band boundary",
@@ -11490,7 +11570,7 @@
         {
           "name": "point",
           "required": false,
-          "type": "{ shape?: PointShape | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; } | undefined"
+          "type": "{ radius?: number | undefined; shape?: PointShape | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; } | undefined"
         },
         {
           "name": "guides",

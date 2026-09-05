@@ -1498,7 +1498,9 @@ planned contract이므로 시각 구현 승인을 받기 전에는 지원하지 
 ### Rule
 
 - Rule은 semantic `rule` layer 하나와 backend-neutral `line` collection 하나를 가진다.
-- `createRuleMark`는 identity, data binding과 empty collection만 만들고 position/style을 받지 않는다.
+- `createRuleMark`는 identity, data binding과 empty collection을 만들고 요청된 scalar style을 기존
+  encodeStroke/encodeStrokeWidth/encodeStrokeDash/encodeOpacity에 위임한다. editRuleMark도 같은 owner를
+  사용하며 모든 입력을 먼저 검증한다. Active field assignment와 scalar edit는 충돌한다.
 - `encodeX`, `encodeY`, `encodeX2`, `encodeY2`가 field 또는 datum endpoint를 독립적으로 저장하며,
   secondary endpoint는 corresponding primary와 scale, coordinate, field type을 공유한다.
 - x-only/y-only는 current plot bounds 전체를 지나는 vertical/horizontal line이 된다.
@@ -2170,7 +2172,9 @@ resource topology, symbol recipe, layout와 rendering equivalence를 먼저 증�
 registrar를 한 번 조립하고 top-level `ChartProgram.js`가 이를 core program subclass에 등록한다.
 `actions/basic.js`는 같은 domain action 중 다섯 common Cartesian facade의 생성에 필요한
 subset만 조립하고 `BasicChartProgram.js`가 별도 core subclass에 등록한다. 두 assembly는
-같은 core state와 ordinary facade/materializer를 공유한다. Canvas와 2D-bin은 Basic graph가
+같은 core state와 ordinary facade/materializer를 공유한다. Scatter point.radius는 Basic에서도
+encodePointRadius → internal encodeRadius로 전달된다. Rule/general opacity/statistics는 추가하지 않는다.
+Canvas와 2D-bin은 Basic graph가
 편집·revision planner를 끌어오지 않도록 동일 validation과 primitive를 사용하는 one-shot
 creation action을 등록하며, full entry의 lifecycle action과 op identity는 유지한다.
 따라서 `core/`는 `actions/`를 import하지 않는다. `grammar/`는 core utility와 다른 pure grammar만,

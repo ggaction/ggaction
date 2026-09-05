@@ -3667,8 +3667,11 @@ const scatter = chart()
 ```
 
 The stable default mark ID is `scatterPlot`. Omitted size materializes the
-default point radius of `3`. Constant fill, shape, opacity, stroke, and stroke
-width belong in `point`; field-driven color, size, and shape remain top-level.
+default point radius of `3`. `point.radius` accepts a non-negative finite logical
+radius, including zero, and conflicts with `size`. It delegates to
+`encodePointRadius` → `encodeRadius` in default and Basic entries. Constant fill,
+shape, opacity, stroke, and stroke width belong in `point`; field-driven color,
+size, and shape remain top-level.
 
 ## `createLinePlot`
 
@@ -5200,13 +5203,18 @@ rule, while datum x symmetrically creates a vertical full-span rule. Field
 endpoints preserve the orthogonal inherited channel for interval construction.
 Rules created with explicit `data` do not apply this provenance-based cleanup.
 
-Rule appearance is edited through encoding actions rather than a separate mark
-editor:
+Rule creation and `editRuleMark({ target?, stroke?, strokeWidth?, strokeDash?, opacity? })`
+accept constant styles. They validate all options before delegating requested
+styles in the following order:
 
 - `encodeStroke`
 - `encodeStrokeWidth`
 - `encodeStrokeDash`
 - `encodeOpacity`
+
+At least one style is required for editing. Scalar edits reject active field
+encodings; use the corresponding encoder with `{ value }` to replace them.
+Styles persist while endpoints are incomplete and after Canvas resizing.
 
 `encodeStrokeWidth({ field, scale? })` maps a non-negative quantitative field
 to one concrete width per rule item. Use `createLegend({ channels:
@@ -6238,7 +6246,7 @@ layer IDs. The create action intentionally accepts one shared boundary recipe.
 `editErrorBand()` changes the stable body appearance:
 
 ```javascript
-program.editErrorBand({
+program.removeEncoding({ target: "errorBand", channel: "color" }).editErrorBand({
   statistics: { extent: "ci", level: 0.9 },
   fill: "#7dd3fc",
   opacity: 0.34,
@@ -6246,9 +6254,12 @@ program.editErrorBand({
 });
 ```
 
-An explicit edit fill overrides concrete encoded colors while retaining the
-semantic color encoding and legend. The override persists through Canvas and
-scale rematerialization. `statistics: { center?, extent?, level? }` creates one
+A constant fill conflicts with active color. Remove the color encoding first,
+as above, to clear its legend consistently. Conversely, a band created or edited
+with explicit fill rejects `encodeColor` until `editErrorBand({ fill: false })`
+clears that override. This edit-only reset restores encoded color or the theme
+default; it does not make the band transparent. Creation still requires a string
+fill. `statistics: { center?, extent?, level? }` creates one
 immutable interval revision for statistical owners and rebinds the body and
 enabled boundaries. Explicit interval owners reject that option.
 
@@ -8720,7 +8731,9 @@ Broadcast a non-negative finite graphical radius to a point mark.
 program.encodeRadius({ value: 3 });
 ```
 
-`encodePointRadius({ value, target? })` is the preferred alias in Polar charts.
+`encodePointRadius({ value, target? })` is available in default and Basic entries.
+Scatter `point.radius` delegates to it and conflicts with top-level `size`.
+The older `encodeRadius` alias and `removePointRadius` remain default-entry APIs.
 It records `encodeRadius` as a wrapped child and remains distinct from
 `encodeR`, which assigns semantic radial position.
 
@@ -8769,7 +8782,8 @@ symbols are stored as typed items in one graphical collection.
 linear scale with automatic range `[0.2, 1]`; its scale supports explicit
 domain/range plus `nice`, `zero`, `clamp`, and `reverse`. Calling the action
 again atomically replaces constant↔field or field↔field mode. Every resolved
-opacity remains concrete in `graphicSpec`.
+opacity remains concrete in `graphicSpec`. `editPointMark({ opacity })` rejects
+active field opacity; explicitly call `encodeOpacity({ value })` to replace it.
 
 All point appearance actions invoke the same point materializer. Existing x,
 y, color, size, shape, and opacity state is recombined after each change and
@@ -8828,6 +8842,11 @@ Rules also reuse `encodeStrokeDash` in constant or nominal-field mode and
 `encodeOpacity` in constant or quantitative-field mode. Field modes produce
 one concrete value per rule line; constant modes remain scale-free. Recalling
 an owning action replaces that appearance assignment immutably.
+
+`createRuleMark` and `editRuleMark` accept scalar stroke, strokeWidth, strokeDash
+and opacity. Both delegate requested styles to these four encoding owners after
+full validation. Editing requires at least one style and rejects active field
+appearance. Endpoints and statistical component ownership remain separate.
 
 ## `encodeBarWidth({ band?, pixels?, target? })`
 
@@ -11673,6 +11692,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editRegression`](./reference/actions/statistics/#editregression) | user-facing | statistics |
 | [`editRegressionBand`](./reference/actions/advanced/#semantic-resources-and-regression-layers) | user-facing | statistics |
 | [`editRegressionLine`](./reference/actions/advanced/#semantic-resources-and-regression-layers) | user-facing | statistics |
+| [`editRuleMark`](./reference/actions/marks/#editrulemark) | user-facing | marks |
 | [`editScale`](./reference/actions/extension/#extension-actions) | user-facing | core |
 | [`editSemantic`](./reference/actions/extension/#extension-actions) | primitive | primitives |
 | [`editTextMark`](./reference/actions/marks/#edittextmark) | user-facing | marks |
@@ -12186,11 +12206,21 @@ Edit arc geometry or appearance and rematerialize complete sector paths.
 ## `createRuleMark`
 
 ```javascript
-createRuleMark({ id?, data? } = {})
+createRuleMark({ id?, data?, stroke?, strokeWidth?, strokeDash?, opacity? } = {})
 ```
 
 Create a semantic rule mark and empty line collection. The first omitted ID is
 `"rule"`; data defaults to current data. [Marks](./api/marks/)
+
+## `editRuleMark`
+
+```javascript
+editRuleMark({ target?, stroke?, strokeWidth?, strokeDash?, opacity? })
+```
+
+Edit constant Rule appearance through the four existing encoding owners. At least
+one style is required; field appearance conflicts with scalar editing. Creation
+accepts the same styles. [Rule marks](./api/marks/rule/)
 
 ## `createRectMark`
 
@@ -12819,6 +12849,9 @@ editErrorBandBoundary({
   target?, boundary?, stroke?, strokeWidth?, strokeDash?, opacity?, curve?
 })
 ```
+
+Constant band fill conflicts with active color. Remove that encoding first, or
+use edit-only `fill: false` to clear a constant fill and restore color eligibility.
 
 Edit the band body, statistical interval, or both owned boundary components
 without addressing generated line IDs. `boundaries: false` disables both;
@@ -13585,7 +13618,8 @@ interface ChartProgramActions {
   editArcMark(options: { target?: string; innerRadius?: number; padAngle?: number; fill?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; }): ChartProgram;
   createRectMark(options?: RectMarkOptions): ChartProgram;
   editRectMark(options: EditRectMarkOptions): ChartProgram;
-  createRuleMark(options?: { id?: string; data?: string }): ChartProgram;
+  createRuleMark(options?: { id?: string; data?: string } & RuleStyleOptions): ChartProgram;
+  editRuleMark(options: { target?: string } & RuleStyleOptions): ChartProgram;
   createTextMark(options?: TextMarkOptions): ChartProgram;
   editTextMark(options: EditTextMarkOptions): ChartProgram;
   layoutLabels(options?: LabelLayoutOptions): ChartProgram;

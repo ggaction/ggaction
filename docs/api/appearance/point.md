@@ -15,7 +15,9 @@ Broadcast a non-negative finite graphical radius to a point mark.
 program.encodeRadius({ value: 3 });
 ```
 
-`encodePointRadius({ value, target? })` is the preferred alias in Polar charts.
+`encodePointRadius({ value, target? })` is available in default and Basic entries.
+Scatter `point.radius` delegates to it and conflicts with top-level `size`.
+The older `encodeRadius` alias and `removePointRadius` remain default-entry APIs.
 It records `encodeRadius` as a wrapped child and remains distinct from
 `encodeR`, which assigns semantic radial position.
 
@@ -64,7 +66,8 @@ symbols are stored as typed items in one graphical collection.
 linear scale with automatic range `[0.2, 1]`; its scale supports explicit
 domain/range plus `nice`, `zero`, `clamp`, and `reverse`. Calling the action
 again atomically replaces constant↔field or field↔field mode. Every resolved
-opacity remains concrete in `graphicSpec`.
+opacity remains concrete in `graphicSpec`. `editPointMark({ opacity })` rejects
+active field opacity; explicitly call `encodeOpacity({ value })` to replace it.
 
 All point appearance actions invoke the same point materializer. Existing x,
 y, color, size, shape, and opacity state is recombined after each change and

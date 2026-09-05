@@ -105,6 +105,9 @@ editErrorBandBoundary({
 })
 ```
 
+Constant band fill conflicts with active color. Remove that encoding first, or
+use edit-only `fill: false` to clear a constant fill and restore color eligibility.
+
 Edit the band body, statistical interval, or both owned boundary components
 without addressing generated line IDs. `boundaries: false` disables both;
 an object creates or edits both. The focused boundary action still accepts

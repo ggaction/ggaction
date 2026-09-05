@@ -933,6 +933,9 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 
 ## `encodeColor`
 
+- An ErrorBand with explicit constant fill rejects color encoding. Use `editErrorBand({ fill: false })`
+  to restore field eligibility. The reverse transition requires removing the color encoding first.
+
 - Signature: `encodeColor({ field, target?, fieldType?, layout?, aggregate?, scale? })`
 - `field`: 필수 field. nominal/ordinal은 categorical color contract에, quantitative/temporal은 point에 사용하며
   aggregate bar는 quantitative field를 지원한다.
@@ -1277,6 +1280,8 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 - Additive public alias for `encodeRadius`. It calls `encodeRadius` as one wrapped child, so trace decomposition and
   all glyph-size validation remain owned by the existing action.
 - It never writes the semantic Polar `radius` channel.
+- Available in default and Basic entries. Scatter `point.radius` delegates to this wrapped alias. Basic keeps
+  encodeRadius as its internal dependency and does not expose removePointRadius or general opacity.
 
 ### Formal values — `encodePointRadius`
 

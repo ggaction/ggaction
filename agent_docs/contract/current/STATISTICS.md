@@ -191,8 +191,10 @@ without naming generated child layers.
 
 - Signature: `editErrorBand({ target?, fill?, opacity?, curve?, statistics?, boundaries? })`.
 - The stable owner is an error-band area created by `createErrorBand`; omission uses current/unique inference.
-- A focused fill is an explicit owner override and therefore remains constant even when the band retains a color
-  encoding. Opacity and curve update the existing area materialization without replacing interval data.
+- Constant fill conflicts with an active color encoding. Remove color with `removeEncoding({ channel: "color" })`
+  first; this also updates the owned legend. Conversely, encodeColor rejects an explicit ErrorBand fill.
+- Edit-only `fill: false` removes the constant override, restoring active encoded color or the theme default.
+  It is not transparency and is invalid at creation. Opacity and curve preserve interval data.
 - `statistics` follows `editErrorBar`: it is statistical-owner-only, validates the complete partial merge, revisions
   immutable interval data, and rebinds/rematerializes the body and every enabled boundary.
 - `boundaries: false` is a desired-state disable and succeeds when both are already absent. A boundary appearance
@@ -200,15 +202,17 @@ without naming generated child layers.
 
 ### Formal values — `editErrorBand`
 
-- Implemented: `editErrorBand({ target?: UserId; fill?: NonEmptyString; opacity?: UnitInterval; curve?: CurveInterpolation; statistics?: { center?: "mean" | "median"; extent?: "stderr" | "stdev" | "ci" | "iqr"; level?: UnitIntervalExclusive }; boundaries?: false | ErrorBandBoundaryAppearance })`.
+- Implemented: `editErrorBand({ target?: UserId; fill?: NonEmptyString | false; opacity?: UnitInterval; curve?: CurveInterpolation; statistics?: { center?: "mean" | "median"; extent?: "stderr" | "stdev" | "ci" | "iqr"; level?: UnitIntervalExclusive }; boundaries?: false | ErrorBandBoundaryAppearance })`.
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `editErrorBand`
 
-- ✅ Covered: inferred/explicit owner, constant fill over encoded color, opacity/curve, statistical revision,
+- ✅ Covered: inferred/explicit owner, explicit color removal before constant fill, opacity/curve, statistical revision,
   both-boundary enable/edit/disable including repeated disable, Canvas persistence, immutability, empty/invalid edit
   rejection and exact Gate parity.
+- ✅ Covered: both-direction color conflicts, reset to theme/field mode, selection/highlight and boundary/statistical
+  replay; `test/unit/actions/encodings/style-assignment-lifecycle.test.js`.
 - Evidence: `test/unit/actions/error-bands/edit-error-band.test.js` and Roadmap 3 focused-editing Gate.
 
 ## `editErrorBandBoundary`
@@ -228,6 +232,8 @@ without naming generated child layers.
 - ✅ Covered: both/default, lower and upper selection, missing-component creation, existing-component edit,
   independent appearance, child trace, invalid selection/style and immutable failure.
 - ✅ Covered: approved absent-to-both boundary primitive/public and pixel parity.
+- ✅ Covered: both-direction color conflicts, reset to theme/field mode, selection/highlight and boundary/statistical
+  replay; `test/unit/actions/encodings/style-assignment-lifecycle.test.js`.
 - Evidence: `test/unit/actions/error-bands/edit-error-band.test.js` and Roadmap 3 focused-editing Gate.
 
 ## `createRegression`

@@ -37,14 +37,14 @@ test("compact action cards are generated from the current action contract", asyn
     readFile(cardFile, "utf8")
   ]);
   assert.equal(currentSource, `${JSON.stringify(artifact, null, 2)}\n`);
-  assert.equal(artifact.count, 173);
+  assert.equal(artifact.count, 174);
   assert.equal(artifact.schemaVersion, 2);
   assert.equal(artifact.packageVersion, JSON.parse(
     await readFile(path.join(root, "package.json"), "utf8")
   ).version);
   assert.equal(artifact.typeSource, "types/program.d.ts");
   assert.match(artifact.errorPolicy, /curated error override/);
-  assert.equal(stats.count, 173);
+  assert.equal(stats.count, 174);
   assert.equal(stats.maxBytes <= 3072, true);
   assert.equal(stats.medianBytes <= 1536, true);
   assert.deepEqual(

@@ -123,3 +123,26 @@ Phase 전체는 구현 중이며 A/B/V는 승인되었다. X는 아직 승인되
 - 로그: `.artifacts/roadmap6-authoring/series-{all,identity,appearance,owner,public,browser,render,package}.log`.
 - W2 runtime과 3개 public 시각 흐름은 구현되었다. D02는 package 통합 검증을 남긴다. D06은 Line 부분만
   구현되었으며 Rule/Scatter/Point/ErrorBand는 다음 작업이다. D10의 JSON opt-out은 W4에 남는다.
+
+
+## W3 — Style assignment and facade forwarding
+
+- Rule creation and the new `editRuleMark` preflight all scalar styles before invoking existing stroke → width →
+  dash → opacity children. Explicit/current/unique Rule targeting, field conflicts, pending style and immutable
+  failure preserve lower-owner behavior. ErrorBar body/cap styling remains with its composite editor.
+- Point scalar opacity now rejects active field opacity. ErrorBand constant fill and color reject one another;
+  explicit color removal clears its legend, and edit-only `fill:false` clears a constant override. Statistics,
+  boundaries and highlight replay preserve the restored field/theme result. Creation still rejects false fill.
+- Scatter `point.radius` supports zero and conflicts with size. Default and Basic delegate to encodePointRadius →
+  encodeRadius. Basic publicly types only the preferred alias; no Rule/general opacity/radius-removal expansion.
+- Installed-consumer testing found another Basic default bug: `createCanvas()` passed omitted margin into the
+  validator. Basic now applies the shared default only on omission; explicit undefined/null remain invalid.
+  Default/partial/zero-margin cases exactly match full-entry graphics and Canvas config.
+- Current owners, public type exports, canonical reference, tutorials and generated metadata/cards are synchronized.
+  Direct action count is **174**. Rule/appearance are removed from the active Planned inventory.
+- Latest full normal suite: **2,413/2,413, exit 0**. Representative Scatter/Rule/ErrorBand PNG parity:
+  **20/20, exit 0**, including same-run primitive/public decoded pixels. Rule and assignment lifecycle tests
+  additionally compare exact graphic state, draw order and Canvas calls and reject partial invalid edits.
+- Installed package Node, Basic, MCP, strict TypeScript and tutorial checks pass before the bundle guard fails:
+  **Basic 125,347 > 125,000 bytes, exit 1**. The limit remains unchanged; package-wide success is pending.
+  W4 and final size integration must complete before X. Logs: `.artifacts/roadmap6-authoring/style-{all,render,package,docs}.log`.

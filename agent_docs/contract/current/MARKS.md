@@ -92,6 +92,7 @@ Definition registration and internal layer rebinding remain available without au
 - `opacity`는 `[0, 1]`, `stroke`는 non-empty color string 또는 edit-time `false`, `strokeWidth`는 non-negative
   finite logical pixel이다. `stroke: false`는 outline과 stored width를 함께 비활성화하며 simultaneous
   `strokeWidth`는 오류다. 이후 string stroke는 point default width `1`로 복원한다.
+- Scalar opacity conflicts with active field opacity; use `encodeOpacity({ value })` for explicit replacement.
 - 최소 한 appearance property가 필요하며 omitted properties는 기존 stored config를 보존한다.
 - Effect: mark materialization config를 갱신하고 wrapped `rematerializePointMark`로 concrete items를
   equal-area circle, rect 또는 path recipe로 교체한다. Semantic mark/data/encoding은 바꾸지 않는다.
@@ -493,24 +494,24 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 ## `createRuleMark`
 
-- Signature: `createRuleMark({ id?, data? } = {})`.
+- Signature: `createRuleMark({ id?, data?, stroke?, strokeWidth?, strokeDash?, opacity? } = {})`.
 - `id`: 첫 unnamed rule은 deterministic `"rule"`을 사용한다. 동일 type의 두 번째 rule은 explicit ID가
   필요하며 numbered public ID를 만들지 않는다.
 - `data`: existing dataset ID. 생략하면 current dataset을 사용하며 안전한 current source가 없으면 오류다.
-- Effect: semantic `rule` layer와 길이 0의 backend-neutral `line` collection을 만든다. 위치와 appearance는
-  create parameter가 아니라 `encodeX/Y/X2/Y2`, `encodeStroke`, `encodeStrokeWidth`, `encodeStrokeDash`,
-  `encodeOpacity`가 독립적으로 소유한다.
+- Effect: semantic `rule` layer와 길이 0의 backend-neutral `line` collection을 만든다. Position은
+  `encodeX/Y/X2/Y2`가 소유한다. 생성 style은 모든 옵션을 먼저 검증한 뒤 요청된 순서대로
+  `encodeStroke`, `encodeStrokeWidth`, `encodeStrokeDash`, `encodeOpacity` wrapped child에 위임한다.
 - Layered position provenance: omitted `data`로 compatible layer의 position을 상속하면 source와 inherited
   channel을 internal mark config에 기록한다. 이후 datum x 또는 y를 작성할 때 반대 primary channel만
   inherited이고 secondary endpoint가 없으면 그 inherited branch를 제거해 full-span rule을 만든다.
   Field endpoint는 orthogonal inherited channel을 보존해 interval을 구성하며, explicit `data`로 만든 rule은
   이 provenance 기반 정리를 적용하지 않는다.
-- Lifecycle: immutable create-only. `editRuleMark`는 없으며 endpoint/style 변경은 owning encode action을
-  다시 호출한다.
+- Lifecycle: immutable resource editing. Scalar style은 `editRuleMark`, field appearance와 endpoint는
+  corresponding encoding action으로 편집한다. 위치가 불완전하면 style을 저장하고 빈 collection을 유지한다.
 
 ### Formal values — `createRuleMark`
 
-- Implemented: `createRuleMark({ id?: UserId; data?: UserId } = {})`.
+- Implemented: `createRuleMark({ id?: UserId; data?: UserId; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; strokeDash?: DashStyle | DashPattern; opacity?: UnitInterval } = {})`.
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `createRuleMark`
@@ -520,6 +521,29 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 - ✅ Covered: empty line collection, default appearance config, immutable earlier program과 wrapped trace.
 - Evidence: `test/unit/actions/marks/create-rule-mark.test.js`,
   `test/contracts/rule-inherited-datum-span.test.js`, and `test/charts/cars-error-bar/primitive.test.js`.
+
+## `editRuleMark`
+
+- Signature: `editRuleMark({ target?, stroke?, strokeWidth?, strokeDash?, opacity? })`.
+- Target resolution is explicit Rule → current Rule → unique Rule. Missing, non-Rule and ambiguous targets fail.
+- At least one style is required. Full closed-option and value validation happens before the first child action.
+- Requested children run in stroke → strokeWidth → strokeDash → opacity order and reuse their encoding owners.
+  Active field appearance conflicts with a scalar edit; call that encoder with `{ value }` to replace the binding.
+- Width accepts zero; opacity is in `[0,1]`; stroke is a non-empty color string; dash uses shared names/patterns.
+- Endpoint, data, cap, and statistical ownership remain unchanged. ErrorBar appearance uses `editErrorBar`.
+- Complete rules rematerialize immediately; incomplete rules retain appearance until completion. Canvas changes,
+  legends and stored highlights replay through the same lower owners.
+
+### Formal values — `editRuleMark`
+
+- Implemented: `editRuleMark({ target?: UserId; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; strokeDash?: DashStyle | DashPattern; opacity?: UnitInterval })`.
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `editRuleMark`
+
+- ✅ Covered: creation/editor/lower-chain exact graphic, draw-order and Canvas call parity; child order, pending
+  style, full preflight, field conflicts, target inference, invalid values, resize and immutable failure.
+- Evidence: `test/unit/actions/marks/rule-style-authoring.test.js`.
 
 ## `createRectMark`
 

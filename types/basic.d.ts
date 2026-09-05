@@ -58,6 +58,7 @@ type BasicMethodKey =
   | "encodeX2"
   | "encodeY2"
   | "encodeGroup"
+  | "encodePointRadius"
   | "encodeColor"
   | "encodeStrokeDash"
   | "encodeSize"

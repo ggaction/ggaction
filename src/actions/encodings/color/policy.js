@@ -24,6 +24,7 @@ export function assertNoConstantColor(program, layer) {
   const hasConstant = {
     point: config?.fill !== undefined,
     line: config?.stroke !== undefined,
+    area: config?.errorBand?.fill !== undefined,
     bar: config?.barAppearance?.fill !== undefined,
     arc: config?.fill !== undefined,
     rect: config?.fillExplicit === true

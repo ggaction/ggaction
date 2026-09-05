@@ -9,6 +9,19 @@ const rows = Object.freeze([
   Object.freeze({ x: 2, y: 4, category: "B", value: 5 })
 ]);
 
+test("Basic omitted Canvas options preserve full-entry defaults and explicit invalid values", () => {
+  for (const options of [undefined, {}, { width: 800 }, { margin: 0 }, { margin: { left: 50 } }]) {
+    const basic = basicChart().createCanvas(options);
+    const full = fullChart().createCanvas(options);
+    assert.deepEqual(basic.graphicSpec, full.graphicSpec);
+    assert.deepEqual(basic.materializationConfigs.canvas, full.materializationConfigs.canvas);
+  }
+  for (const factory of [basicChart, fullChart]) {
+    assert.throws(() => factory().createCanvas({ margin: undefined }), /margin/);
+    assert.throws(() => factory().createCanvas({ margin: null }), /margin/);
+  }
+});
+
 function base(values = rows) {
   return basicChart()
     .createCanvas({

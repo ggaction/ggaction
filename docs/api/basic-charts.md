@@ -88,8 +88,11 @@ const scatter = chart()
 ```
 
 The stable default mark ID is `scatterPlot`. Omitted size materializes the
-default point radius of `3`. Constant fill, shape, opacity, stroke, and stroke
-width belong in `point`; field-driven color, size, and shape remain top-level.
+default point radius of `3`. `point.radius` accepts a non-negative finite logical
+radius, including zero, and conflicts with `size`. It delegates to
+`encodePointRadius` → `encodeRadius` in default and Basic entries. Constant fill,
+shape, opacity, stroke, and stroke width belong in `point`; field-driven color,
+size, and shape remain top-level.
 
 ## `createLinePlot`
 

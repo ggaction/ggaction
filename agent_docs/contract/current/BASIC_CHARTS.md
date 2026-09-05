@@ -54,7 +54,7 @@ createScatterPlot({
   color?: FieldName | ColorEncodingOptionsWithoutTarget;
   size?: FieldName | SizeEncodingOptionsWithoutTarget;
   shape?: FieldName | ShapeEncodingOptionsWithoutTarget;
-  point?: PointMarkAppearanceOptions;
+  point?: PointMarkAppearanceOptions & { radius?: NonNegativeFinite };
   guides?: false | CreateGuidesOptions;
 }): ChartProgram;
 ```
@@ -63,7 +63,11 @@ createScatterPlot({
 - Hierarchy: `createPointMark`, `encodeX`, `encodeY`, optional `encodeColor`/`encodeSize`/`encodeShape`,
   optional `createGuides`.
 - Constant appearance belongs to `point`; field-driven color/size/shape stays top-level. Child conflicts are preserved.
-- Omitted size uses the materialized point radius `3`; the facade does not author an explicit radius config.
+- `point.radius` is a non-negative finite logical radius; zero is valid. It calls `encodePointRadius` →
+  `encodeRadius` after x/y and before optional field appearance. It conflicts with top-level `size`.
+- Omitted radius and size use the materialized point radius `3`; no explicit radius config is authored.
+- Default and Basic entries share this chain. Basic exposes `encodePointRadius` and registers its internal
+  encodeRadius dependency; Basic types do not expose encodeRadius, removePointRadius, Rule or general opacity.
 - Semantic/graphic/render output exactly matches the equivalent explicit action chain and approved Cars primitive.
 
 ### Formal values — `createScatterPlot`

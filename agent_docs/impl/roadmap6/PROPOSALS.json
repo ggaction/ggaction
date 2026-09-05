@@ -212,8 +212,8 @@
           "scope": "Line constant/field width·opacity, Scatter radius, Rule 생성·editRuleMark를 기존 owner로 연결한다. ErrorBand fill·Point opacity·Line width의 field 충돌과 명시적 교체/override 해제를 정리한다. Basic encodePointRadius child·공개 경로도 포함한다.",
           "acceptance": "create/edit/field/constant 지원 matrix 일치. Override 뒤 scale·legend가 거짓 의미를 설명하지 않음. Local highlight override 별도 유지.",
           "contractEvidence": "phase2/CONTRACT_REVIEW.md",
-          "implementationStatus": "line-appearance-implemented-remaining-owners-in-progress",
-          "resultEvidence": "phase2/RESULTS.md#w2--explicit-series-identity-and-line-appearance"
+          "implementationStatus": "implemented-functional-package-size-pending",
+          "resultEvidence": "phase2/RESULTS.md#w3--style-assignment-and-facade-forwarding"
         },
         {
           "id": "R6-P2-W4",

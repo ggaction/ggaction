@@ -2,6 +2,7 @@ import { action } from "../../core/action.js";
 import { isPlainObject } from "../../core/immutable.js";
 import {
   validateKeys,
+  validateNonEmptyString,
 } from "../../core/validation.js";
 import { DEFAULT_COLORS } from "../../theme/defaults.js";
 import { validateCurveInterpolation } from "../../grammar/curveCommands.js";
@@ -158,6 +159,7 @@ export const createErrorBand = action(
     const resolved = resolveErrorBand(this, args);
     const curve = validateCurveInterpolation(args.curve ?? "linear");
     const boundaries = resolveBoundaries(args.boundaries, curve);
+    if (args.fill !== undefined) validateNonEmptyString(args.fill, "Error-band fill");
     let next = createResolvedIntervalData(this, resolved);
     next = next.createAreaMark({
       id: resolved.id,
@@ -216,6 +218,7 @@ export const createErrorBand = action(
     return next._withMarkConfig(resolved.id, {
       ...next.markConfigs[resolved.id],
       errorBand: {
+        ...(args.fill === undefined ? {} : { fill: args.fill }),
         data: resolved.dataId,
         orientation: resolved.orientation,
         position: resolved.position,

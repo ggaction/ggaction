@@ -530,8 +530,8 @@
       "layer": "user-facing",
       "domain": "marks",
       "status": "implemented",
-      "lifecycle": "Immutable create-only",
-      "update": "Endpoint and appearance assignments reauthor the existing rule",
+      "lifecycle": "Mutable resource",
+      "update": "`editRuleMark`; endpoint and field appearance assignments retain their encoding owners",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -541,6 +541,24 @@
       "contract": {
         "file": "agent_docs/contract/current/MARKS.md",
         "anchor": "createrulemark"
+      }
+    },
+    {
+      "name": "editRuleMark",
+      "layer": "user-facing",
+      "domain": "marks",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Edits constant rule appearance through existing encoding actions",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/MARKS.md",
+        "anchor": "editrulemark"
       }
     },
     {
@@ -3154,31 +3172,8 @@
       }
     }
   ],
-  "plannedActions": [
-    {
-      "name": "editRuleMark",
-      "status": "planned",
-      "readiness": "accepted",
-      "layer": "user-facing",
-      "domain": "marks",
-      "contract": {
-        "file": "agent_docs/contract/planned/SHARED_AUTHORING.md",
-        "anchor": "editrulemark"
-      }
-    }
-  ],
+  "plannedActions": [],
   "plannedCapabilities": [
-    {
-      "id": "appearance-assignment-consistency",
-      "name": "Scalar style conflicts, assignment replacement and facade forwarding",
-      "kind": "behavior",
-      "status": "planned",
-      "readiness": "accepted",
-      "contract": {
-        "file": "agent_docs/contract/planned/SHARED_AUTHORING.md",
-        "anchor": "appearance"
-      }
-    },
     {
       "id": "explicit-temporal-input",
       "name": "Explicit temporal input units and serializable group opt-out",

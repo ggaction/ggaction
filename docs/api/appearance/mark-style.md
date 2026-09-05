@@ -47,6 +47,11 @@ Rules also reuse `encodeStrokeDash` in constant or nominal-field mode and
 one concrete value per rule line; constant modes remain scale-free. Recalling
 an owning action replaces that appearance assignment immutably.
 
+`createRuleMark` and `editRuleMark` accept scalar stroke, strokeWidth, strokeDash
+and opacity. Both delegate requested styles to these four encoding owners after
+full validation. Editing requires at least one style and rejects active field
+appearance. Endpoints and statistical component ownership remain separate.
+
 ## `encodeBarWidth({ band?, pixels?, target? })`
 
 Override the fraction of each resolved category band—or directional offset slot for group

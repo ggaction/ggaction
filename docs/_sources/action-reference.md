@@ -60,7 +60,8 @@ interface ChartProgramActions {
   editArcMark(options: { target?: string; innerRadius?: number; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
   createRectMark(options?: RectMarkOptions): ChartProgram;
   editRectMark(options: EditRectMarkOptions): ChartProgram;
-  createRuleMark(options?: { id?: string; data?: string }): ChartProgram;
+  createRuleMark(options?: { id?: string; data?: string } & RuleStyleOptions): ChartProgram;
+  editRuleMark(options: { target?: string } & RuleStyleOptions): ChartProgram;
   createTextMark(options?: TextMarkOptions): ChartProgram;
   editTextMark(options: EditTextMarkOptions): ChartProgram;
   editAreaMark(options: { target?: string; fill?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; curve?: CurveInterpolation; }): ChartProgram;
@@ -622,11 +623,21 @@ Edit arc geometry or appearance and rematerialize complete sector paths.
 ### `createRuleMark`
 
 ```javascript
-createRuleMark({ id?, data? } = {})
+createRuleMark({ id?, data?, stroke?, strokeWidth?, strokeDash?, opacity? } = {})
 ```
 
 Create a semantic rule mark and empty line collection. The first omitted ID is
 `"rule"`; data defaults to current data. [Marks](../api/marks.md)
+
+### `editRuleMark`
+
+```javascript
+editRuleMark({ target?, stroke?, strokeWidth?, strokeDash?, opacity? })
+```
+
+Edit constant Rule appearance through the four existing encoding owners. At least
+one style is required; field appearance conflicts with scalar editing. Creation
+accepts the same styles. [Rule marks](../api/marks/rule.md)
 
 ### `createRectMark`
 
@@ -1227,6 +1238,9 @@ editErrorBandBoundary({
   target?, boundary?, stroke?, strokeWidth?, strokeDash?, opacity?, curve?
 })
 ```
+
+Constant band fill conflicts with active color. Remove that encoding first, or
+use edit-only `fill: false` to clear a constant fill and restore color eligibility.
 
 Edit the band body, statistical interval, or both owned boundary components
 without addressing generated line IDs. `boundaries: false` disables both;
