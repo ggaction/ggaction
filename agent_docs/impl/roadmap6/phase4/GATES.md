@@ -47,7 +47,10 @@ A는 ready-for-review다. V/V1/V2/V3/X는 planned이며 승인된 Phase 4 Gate�
 
 ## 승인 기록
 
-- Review commit / remote ref: 미정
+- Review commit: `f229fa003d5de81f7131d4c23811b834bd36d50e`.
+- Remote ref: `origin/codex/roadmap6-hierarchical-actions`에 push 및 ls-remote 일치 확인.
+- 검토 내용: 이 commit의 P4-C01–C09, 새 direct action 4개, 기존 action 변경, 20 V target 계획.
+- 검토 고정일: 2026-09-05. A 승인 기록은 아직 없다.
 - 검증 명령과 실제 결과: [VALIDATION.md](VALIDATION.md). 49건 replay, 199 immutable checks, 관련 기존 tests 200/200. 새 production/primitive 구현 없음.
 - 사용자 승인 근거: 없음
 - 남은 작업: A 승인, V1/V2/V3 primitive 작성·승인, W1–W5 구현과 누적 검증, X 승인.

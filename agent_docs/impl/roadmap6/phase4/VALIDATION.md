@@ -3,6 +3,9 @@
 A는 아직 미승인이다. 이 문서 앞부분은 **실제로 실행한 현재 baseline 검증**, 뒷부분은 **미래 구현 acceptance**다.
 [계약 검토](CONTRACT_REVIEW.md), [후보 원장](candidates.json), [승인 상태](GATES.md)를 함께 읽는다.
 
+검증된 A package commit은 `f229fa003d5de81f7131d4c23811b834bd36d50e`이며 원격 branch에 push했다.
+후속 checkpoint는 Gate ref와 준비 완료 상태만 기록하며 승인이나 production 변경을 포함하지 않는다.
+
 ## A 준비에서 실제 실행한 것
 
 | 확인 | 실제 결과 |

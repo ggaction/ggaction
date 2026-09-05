@@ -622,7 +622,8 @@
       "candidateEvidence": "phase4/candidates.json",
       "proposedVisualTargets": 20,
       "visualPlanEvidence": "phase4/visual-target-plan.json",
-      "proposedPackageBoundary": "Three new H0 full-only; encodeLayout full/basic Bar; existing bundle limits unchanged"
+      "proposedPackageBoundary": "Three new H0 full-only; encodeLayout full/basic Bar; existing bundle limits unchanged",
+      "reviewPackageCommit": "f229fa003d5de81f7131d4c23811b834bd36d50e"
     },
     {
       "id": 5,
