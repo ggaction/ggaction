@@ -1775,9 +1775,9 @@ removeLegend({ target?, channels? })
 ```
 
 Remove every legend block owned by one mark when `channels` is omitted, or
-remove selected complete channel blocks while preserving mark encodings,
-scales, and unrelated blocks. Combined categorical blocks require their full
-represented channel set. [Legends](../api/legends.md)
+remove selected channels while preserving mark encodings, scales, and unrelated
+blocks. Partial categorical removal retains remaining channels, styles, title
+visibility, layout and item order; automatic symbols are inferred again. [Legends](../api/legends.md)
 
 ### `createTitle`
 

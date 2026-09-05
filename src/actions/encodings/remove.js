@@ -15,7 +15,11 @@ import {
   getSourceDependentMarkSteps
 } from "../../materialization/marks/index.js";
 import { findLayer } from "../../selectors/layers.js";
-import { removeLegendKinds } from "../guides/legends/remove.js";
+import {
+  removeLegendKinds,
+  resolveCategoricalLegendRevision,
+  createCategoricalLegendFromConfig
+} from "../guides/legends/lifecycle.js";
 import { clearMarkGraphic } from "./shared.js";
 import { applyDetachedScaleRematerialization } from "../../materialization/dependencies.js";
 import { findDataset } from "../../selectors/datasets.js";
@@ -40,10 +44,6 @@ const SPECIALIZED_LEGEND_KIND = Object.freeze({
   opacity: Object.freeze(["opacity"]),
   strokeWidth: Object.freeze(["strokeWidth"])
 });
-const LEGEND_OPTION_KEYS = Object.freeze([
-  "position", "layout", "align", "direction", "columns", "offset", "titlePosition",
-  "title", "symbol", "labels", "titleStyle", "itemGap", "border"
-]);
 
 function resolveTarget(program, requested, channel) {
   const candidates = program.semanticSpec.layers.filter(
@@ -172,18 +172,9 @@ function reconcileCategoricalLegend(program, target, channels) {
   if (remaining.length === 0) {
     return removeLegendKinds(program, [kind]);
   }
-  const order = program.semanticSpec.guides.legend?.[kind]?.order;
+  const revision = resolveCategoricalLegendRevision(program, kind, config, remaining);
   const next = removeLegendKinds(program, [kind]);
-  const options = { target, channels: remaining, ...(order === undefined ? {} : { order }) };
-  for (const property of LEGEND_OPTION_KEYS) {
-    if (
-      (property === "columns" && config[property] === undefined) ||
-      (property === "symbol" && config.inferredSymbol) ||
-      (property === "title" && config.inferredTitle)
-    ) continue;
-    options[property] = config[property];
-  }
-  return next.createLegend(options);
+  return createCategoricalLegendFromConfig(next, revision.config, revision.order);
 }
 
 function cleanupLegends(program, target, channels) {

@@ -499,6 +499,15 @@ async function testNodeConsumer(directory) {
     assert.deepEqual(Object.keys(colorSizeContent.guideConfigs.legend), ["color", "size"]);
     assert.equal(colorSizeContent.graphicSpec.objects.sizeLegendSymbols.items.length, 3);
     assert.match(renderToSVG(colorSizeContent), /<svg /);
+    const hiddenContent = legendContentBase.createLegend({ count: 3 }).editLegend({ title: false });
+    const partialContent = hiddenContent.removeLegend({ channels: ["shape"] });
+    assert.deepEqual(partialContent.guideConfigs.legend.color.channels, ["color"]);
+    assert.equal(partialContent.guideConfigs.legend.color.titleVisible, false);
+    assert.equal(partialContent.graphicSpec.objects.colorLegendTitle, undefined);
+    assert.equal(partialContent.graphicSpec.objects.sizeLegendSymbols.items.length, 3);
+    assert.deepEqual(partialContent.semanticSpec.layers, hiddenContent.semanticSpec.layers);
+    assert.equal(hiddenContent.removeEncoding({ channel: "shape" }).graphicSpec.objects.colorLegendTitle, undefined);
+    assert.match(renderToSVG(partialContent), /<svg /);
     const inferredColorBase = legendContentBase.removeEncoding({ channel: "shape" })
       .removeEncoding({ channel: "size" });
     const inferredColor = inferredColorBase.createLegend();

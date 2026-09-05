@@ -1,8 +1,7 @@
 import { action } from "../../../../core/action.js";
 import { formatVisibleText } from "../../../../core/textMetrics.js";
 import { activeConfig, graphic, noOptions, resolveLayout } from "./layout.js";
-import { resolveLegendGraphicPlacement } from
-  "../../../../materialization/graphicHierarchy.js";
+import { resolveCategoricalLegendPlacement } from "../lifecycle.js";
 
 export const rematerializeLegendLabels = action(
   { op: "rematerializeLegendLabels", description: "Rematerialize categorical legend labels." },
@@ -46,7 +45,7 @@ export const createLegendLabels = action(
         id,
         type: "text",
         length: config.domain.length,
-        ...resolveLegendGraphicPlacement(this)
+        ...resolveCategoricalLegendPlacement(this)
       })
       .rematerializeLegendLabels();
   }
@@ -95,7 +94,7 @@ export const createLegendTitle = action(
       .createGraphics({
         id,
         type: "text",
-        ...resolveLegendGraphicPlacement(this)
+        ...resolveCategoricalLegendPlacement(this)
       })
       .rematerializeLegendTitle();
   }
@@ -138,7 +137,7 @@ export const createLegendBackground = action(
       .createGraphics({
         id,
         type: "rect",
-        ...resolveLegendGraphicPlacement(this)
+        ...resolveCategoricalLegendPlacement(this)
       })
       .rematerializeLegendBackground();
   }

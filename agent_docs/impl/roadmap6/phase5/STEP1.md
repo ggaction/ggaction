@@ -15,7 +15,8 @@
 - [x] W2 B 선행 shape-only 오류 #86 — [검증](RESULTS_W2_SHAPE.md)
 - [x] W2 B1 explicit content 생성·recipe provenance와 layer order, #88/#89 — [검증](RESULTS_W2_CONTENT_CREATE.md)
 - [x] W2 B2 선행 point omission inference #90 — [검증](RESULTS_W2_INFERENCE.md)
-- [ ] W2 B2 combined content 부분 제거·편집·재작성과 전체 replay
+- [x] W2 B2 partial channel 제거·공통 재작성과 hidden title #91 — [검증](RESULTS_W2_REMOVAL.md)
+- [ ] W2 B2 editLegend content 교체와 전체 automatic recipe replay
 - [x] W2 C1 명시적 categorical bottom mode, 오류 #87 — [검증](RESULTS_W2_BOTTOM.md)
 - [ ] W2 C2 전체 family×edge layout과 통합 matrix
 - [ ] R6-P5-W3 Final-item labels·reference·common format

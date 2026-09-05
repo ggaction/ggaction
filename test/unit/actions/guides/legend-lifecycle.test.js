@@ -173,9 +173,9 @@ test("removes size or opacity independently and rematerializes what remains", ()
   assert.ok(withoutOpacity.graphicSpec.objects.sizeLegendSymbols);
 });
 
-test("requires complete combined channel sets and validates selectors atomically", () => {
+test("validates legend content removal selectors atomically", () => {
   const program = compositeProgram();
-  const invalidChannels = Object.freeze(["color"]);
+  const invalidChannels = Object.freeze(["color", "strokeWidth"]);
   for (const channels of [
     invalidChannels,
     [],
@@ -189,7 +189,7 @@ test("requires complete combined channel sets and validates selectors atomically
       /combined block|at least one|duplicate|no complete block|Unsupported|must be an array/
     );
   }
-  assert.deepEqual(invalidChannels, ["color"]);
+  assert.deepEqual(invalidChannels, ["color", "strokeWidth"]);
   assert.ok(program.guideConfigs.legend.series);
   assert.ok(program.guideConfigs.legend.size);
   assert.ok(program.guideConfigs.legend.opacity);

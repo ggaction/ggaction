@@ -8611,7 +8611,7 @@
       "name": "removeLegend",
       "layer": "user-facing",
       "domain": "legend_and_title",
-      "summary": "Remove every legend block owned by one mark when channels is omitted, or remove selected complete channel blocks while preserving mark encodings, scales, and unrelated blocks.",
+      "summary": "Remove every legend block owned by one mark when channels is omitted, or remove selected channels while preserving mark encodings, scales, and unrelated blocks.",
       "signature": "removeLegend(options?: RemoveLegendOptions): ChartProgram;",
       "intents": [
         "remove legend",

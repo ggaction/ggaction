@@ -18,7 +18,7 @@
 
 ## B — Content selection과 재작성
 
-B1 구현·검증은 [RESULTS_W2_CONTENT_CREATE.md](RESULTS_W2_CONTENT_CREATE.md)에 기록했다. [#90](https://github.com/ggaction/ggaction/issues/90)의 point omission inference는 [RESULTS_W2_INFERENCE.md](RESULTS_W2_INFERENCE.md)에서 수정·검증했다. B2 partial removal/content edit는 미완료다.
+B1 구현·검증은 [RESULTS_W2_CONTENT_CREATE.md](RESULTS_W2_CONTENT_CREATE.md)에 기록했다. [#90](https://github.com/ggaction/ggaction/issues/90)의 point omission inference는 [RESULTS_W2_INFERENCE.md](RESULTS_W2_INFERENCE.md)에서 수정·검증했다. B2 partial removal과 공통 재작성의 hidden title #91은 [RESULTS_W2_REMOVAL.md](RESULTS_W2_REMOVAL.md)에서 완료했다. Content 교체 편집과 전체 automatic recipe replay는 미완료다.
 
 B1은 [#88](https://github.com/ggaction/ggaction/issues/88)의 explicit selection부터 바로잡는다. 명시 channels는 생성할 설명의 정확한 집합이다. Point categorical+size는 `["color","shape","size"]`, `["color","size"]`, `["shape","size"]`로 분리 dispatch하며 size를 제외하면 companion/count를 자동 추가하지 않는다. Color-only는 다른 shape 인코딩의 존재와 무관한 swatch다. Omission의 기존 inferred point-series+size는 유지한다. Auto symbol은 inferredSymbol provenance를 저장하고 edit auto reset·encoding removal이 recipe를 재추론한다. Explicit recipe와 layer 순서는 보존한다. 이것은 B2 partial removal/target content edit 완료와 구분한다.
 

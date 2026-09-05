@@ -150,3 +150,28 @@ test("matches inferred point legend content to independent graphic primitives", 
     assert.equal(actual.pixelHash, expected.pixelHash);
   }
 });
+
+test("matches partial point legend removal to independent graphic primitives", async () => {
+  const references = [];
+  for (const variant of ["color-only", "color-size", "shape-only"]) {
+    const base = contentBase();
+    const size = variant === "color-size";
+    let primitive = variant === "shape-only" ? shapePrimitive(base) : colorPrimitive(base, size);
+    // A content edit preserves the former series label offset of 10 pixels.
+    if (variant === "color-only") primitive = primitive.editGraphics({ target: "colorLegendLabels", property: "x", value: 532 });
+    const channels = variant === "shape-only" ? ["color", "size"] : size ? ["shape"] : ["shape", "size"];
+    const artifact = { scope: "charts", capability: "legend-layout", chart: "legend-partial-removal",
+      variant, title: `Retained ${variant} content`,
+      userFacingCallChain: `base.createLegend({ count: 3 }).removeLegend(${JSON.stringify({ channels })})` };
+    const png = { width: 800, height: 700, colors: ["#4c78a8", "#f58518"],
+      regions: [{ name: "plot", x: 60, y: 20, width: 450, height: 630, minimumInkPixels: 150 }] };
+    const expected = await assertRenderedPNG(primitive, { ...png, artifact: { ...artifact, kind: "primitive" } });
+    references.push({ base, primitive, channels, artifact, png, expected });
+  }
+  for (const { base, primitive, channels, artifact, png, expected } of references) {
+    const publicProgram = base.createLegend({ count: 3 }).removeLegend({ channels });
+    assertChartProgramsEquivalent({ primitiveProgram: primitive, publicProgram, compareSemanticSpec: false });
+    const actual = await assertRenderedPNG(publicProgram, { ...png, artifact: { ...artifact, kind: "user-facing" } });
+    assert.equal(actual.pixelHash, expected.pixelHash);
+  }
+});

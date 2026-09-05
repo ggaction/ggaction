@@ -2659,6 +2659,7 @@ export interface RemoveGridOptions {
 
 export interface RemoveLegendOptions {
   target?: string;
+  /** Remove selected content, including part of a combined categorical legend; omission removes every owned block. */
   channels?: readonly ("color" | "strokeDash" | "strokeWidth" | "shape" | "size" | "opacity")[];
 }
 

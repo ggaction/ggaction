@@ -347,9 +347,13 @@ config normalization과 rematerialization을 공유한다. Evidence:
 - Omitted `channels`는 one stable mark target에 속한 모든 categorical, size, continuous color, interval, opacity와
   stroke-width block을 complete semantic/graphic/config resource 단위로 제거하는 기존 behavior다.
 - Explicit `channels`는 unique non-empty subset of
-  `"color" | "strokeDash" | "strokeWidth" | "shape" | "size" | "opacity"`이며 matching complete block만
-  제거한다. Combined categorical block은 stored represented channel set 전체를 한 call에 지정해야 한다. 일부만
-  요청하면 collateral removal 대신 오류다. Missing block, duplicate/unknown channel과 empty selection도 오류다.
+  `"color" | "strokeDash" | "strokeWidth" | "shape" | "size" | "opacity"`이며 matching content만
+  제거한다. Combined categorical block의 일부 color/shape/strokeDash만 요청하면 남은 채널로 같은 범례를 재작성한다.
+  마지막 채널을 제거하면 block을 삭제한다. Missing block, duplicate/unknown channel과 empty selection도 오류다.
+- Partial categorical 재작성은 title visibility/custom 또는 inferred title, labels/titleStyle, layout/border/order와 explicit recipe를 보존한다.
+  Auto recipe는 남은 채널로 재추론한다. Category-to-color/shape/dash scale 배정은 변경하지 않는다.
+  Categorical content는 retained sampled companions 앞에 생성하여 direct creation과 같은 drawing order를 유지한다.
+  Encoding 제거도 같은 content revision owner를 사용하며 숨긴 제목을 다시 만들지 않는다.
 - Retained block은 그대로 보존하고 categorical+size 또는 same-side lane layout dependency가 바뀌면 existing
   `rematerializeLegend`를 wrapped child로 호출한다. Categorical block만 제거하고 size를 보존하면 inherited categorical typography를
   해제하고 standalone defaults/position에서 다시 materialize한다. Removed composite block은 retained size를
@@ -370,7 +374,8 @@ config normalization과 rematerialization을 공유한다. Evidence:
   gradient, interval and stroke-width removal, retained-block rematerialization and recreation.
 - ✅ Covered: empty/duplicate/unknown/missing channels, encoding/scale preservation and prior-program/caller immutability.
 - Evidence: `test/unit/actions/guides/remove-guides.test.js`,
-  `test/unit/actions/guides/legend-lifecycle.test.js`, and `test/contracts/legend-lifecycle-render.test.js`.
+  `test/unit/actions/guides/legend-content-removal.test.js`, `test/unit/actions/guides/legend-lifecycle.test.js`,
+  `test/contracts/legend-content-render.test.js` and `test/contracts/legend-lifecycle-render.test.js`.
 
 ## `createGuides`
 

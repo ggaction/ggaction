@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "scope": "Phase 5 W2 partial legend removal and hidden title preservation",
+  "status": "passed",
+  "artifact": {
+    "filename": "ggaction-0.0.12.tgz",
+    "sha256": "c90d9b049809787635c8258a651bc3d9c33ad8d33b92ebfde8fc63819c681374",
+    "entries": 448,
+    "packedBytes": 503855,
+    "unpackedBytes": 2411789
+  },
+  "checks": [
+    "Node runtime and renderers",
+    "strict TypeScript",
+    "MCP",
+    "tutorials",
+    "browser bundle budgets",
+    "same-artifact Chromium Canvas and SVG"
+  ],
+  "browserBundles": {
+    "full": {
+      "specifier": "ggaction",
+      "chunks": 1,
+      "modules": 395,
+      "minifiedBytes": 943215,
+      "gzipBytes": 250788
+    },
+    "basic": {
+      "specifier": "ggaction/basic",
+      "chunks": 1,
+      "modules": 239,
+      "minifiedBytes": 503923,
+      "gzipBytes": 138111
+    },
+    "svg": {
+      "specifier": "ggaction/svg",
+      "chunks": 1,
+      "modules": 15,
+      "minifiedBytes": 19840,
+      "gzipBytes": 6437
+    }
+  }
+}

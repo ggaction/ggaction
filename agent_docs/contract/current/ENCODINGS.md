@@ -55,6 +55,9 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
 - Primary `x`/`y` removal also removes the same-mark secondary endpoint and directional offset. Grouped-bar color
   removal preserves canonical group/layout and active offsets. Legacy unnormalized area group removal also clears dependent color.
   A normalized bar color layout returns to the ordinary zero baseline.
+- Categorical 재작성은 partial removeLegend와 같은 lifecycle owner를 사용한다. Hidden title, custom/inferred title,
+  layout/styles/order와 explicit symbol recipe를 보존하며 automatic recipe만 남은 채널로 재추론한다.
+  Evidence: `test/unit/actions/guides/legend-content-removal.test.js`.
 - Matching categorical, gradient/interval color, size, opacity and stroke-width legend blocks are removed or
   reconstructed without deleting other blocks. Axis/grid resources are removed only when the removed primary
   scale has no remaining same-channel consumer.

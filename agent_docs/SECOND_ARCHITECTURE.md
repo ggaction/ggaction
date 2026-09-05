@@ -248,7 +248,7 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 | Entry | Gzip ceiling |
 | --- | ---: |
 | `ggaction` | 251,000 bytes |
-| `ggaction/basic` | 138,000 bytes |
+| `ggaction/basic` | 139,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 
 이 값은 current executable regression ceiling이며 측정 결과 자체가 아니다. Canonical numeric owner는
@@ -1753,6 +1753,12 @@ descriptor와 persisted encoding/scale을 읽어 한 번 결정한다. `createGu
 axis와 grid만 선택하므로 theta-only count arc가 radial guide를 합성하지 않는다.
 
 ### Legend
+
+Categorical creation와 content revision의 공통 owner는 `actions/guides/legends/lifecycle.js`다.
+선택된 channels의 definition/automatic recipe를 재검증하고 기존 title visibility, styles, order와 caller recipe를
+보존한다. createLegend, partial removeLegend, removeEncoding이 이 owner를 공유하며 semantic/graphic 변경은
+기존 wrapped primitives와 component materializers로 명시적으로 수행한다. Resource-kind cleanup도 같은 owner가
+관리한다. Renderer에는 content 추론·복원 로직을 추가하지 않는다.
 
 Categorical legend는 color, strokeDash, shape와 mark recipe를 하나의 generic legend
 layout/materialization pipeline으로 조립한다.

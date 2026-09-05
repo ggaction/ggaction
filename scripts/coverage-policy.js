@@ -38,6 +38,7 @@ export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
 });
 
 export const CRITICAL_COVERAGE_OVERRIDES = Object.freeze({
+  "actions/guides/legends/lifecycle.js": Object.freeze({ lines: 90, branches: 80, functions: 100 }),
   "grammar/parallelAxisTitles.js": Object.freeze({ lines: 95, branches: 85, functions: 100 }),
   "actions/encodings/seriesLayout.js": Object.freeze({ lines: 95, branches: 85, functions: 100 }),
   "actions/charts/area.js": Object.freeze({ lines: 95, branches: 90, functions: 100 }),

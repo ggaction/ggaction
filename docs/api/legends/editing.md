@@ -101,7 +101,7 @@ const withoutLegend = program.removeLegend({ target: "points" });
 `target` may be omitted when exactly one legend owner exists. Independent
 legend owners require an explicit target.
 
-Pass `channels` to remove only matching complete blocks:
+Pass `channels` to remove only the selected content:
 
 ```javascript
 const withoutSize = program.removeLegend({
@@ -111,10 +111,16 @@ const withoutSize = program.removeLegend({
 ```
 
 Accepted channels are `color`, `strokeDash`, `strokeWidth`, `shape`, `size`,
-and `opacity`. A combined categorical block is one resource: if it represents
-both `color` and `shape`, supply both or the action fails without changing the
-program. Retained blocks are rematerialized when their layout depended on the
-removed block. Encodings, scales, and unrelated legend blocks remain.
+and `opacity`. In a combined color-and-shape legend, removing `shape` keeps the
+color explanation and removing `color` keeps the shape explanation. The last
+remaining channel removes the block. Partial removal preserves title visibility,
+custom titles, styles, layout, item order, and explicit symbol recipes. Automatic
+symbols are inferred again from the remaining channels. Removing an encoding
+uses the same revision rules and also preserves a hidden legend title.
+
+Retained blocks are rematerialized when their layout depended on the removed
+content. `removeLegend` preserves mark encodings, scales, and unrelated blocks.
+A missing channel or an empty, duplicate, or unknown channel list is an error.
 
 Canvas changes and relevant encoding actions explicitly rematerialize the
 legend from the latest ordinal domains and ranges. The renderer still reads

@@ -219,7 +219,9 @@ test.before(async () => {
       const inferredColor = inferredColorBase.createLegend();
       const inferredShape = legendContentBase.removeEncoding({ channel: "color" })
         .removeEncoding({ channel: "size" }).createLegend();
-      render(inferredColorSize, document.getElementById("legend-content").getContext("2d"));
+      const hiddenContent = legendContentBase.createLegend({ count: 3 }).editLegend({ title: false });
+      const partialContent = hiddenContent.removeLegend({ channels: ["shape"] });
+      render(partialContent, document.getElementById("legend-content").getContext("2d"));
       const bottomLegendBase = chart().createCanvas({ width: 640, height: 600,
         margin: { left: 60, right: 100, top: 40, bottom: 150 } })
         .createData({ values: [{ x: 1, y: 2, g: "A" }, { x: 2, y: 3, g: "B" }] })
@@ -238,6 +240,11 @@ test.before(async () => {
       render(editedSizeLegend, document.getElementById("size-legend").getContext("2d"));
       document.querySelector("#status").textContent = "complete";
       window.__ggactionConsumer = {
+        partialChannels: partialContent.guideConfigs.legend.color.channels,
+        partialTitleHidden: partialContent.graphicSpec.objects.colorLegendTitle === undefined,
+        encodingTitleHidden: hiddenContent.removeEncoding({ channel: "shape" }).graphicSpec.objects.colorLegendTitle === undefined,
+        partialSizeCount: partialContent.graphicSpec.objects.sizeLegendSymbols.items.length,
+        partialSVG: renderToSVG(partialContent).startsWith("<svg "),
         inferredColorType: inferredColor.graphicSpec.objects.colorLegendSymbols.type,
         inferredShapeType: inferredShape.guideConfigs.legend.series.symbol.layers[0].type,
         inferredSizeParity: JSON.stringify(inferredColorSize.graphicSpec) === JSON.stringify(
@@ -347,6 +354,11 @@ test("imports and renders the packed browser entries", async () => {
     waitFor: () => window.__ggactionConsumer !== undefined
   });
   assert.deepEqual(await windowValue(page, "__ggactionConsumer"), {
+    partialChannels: ["color"],
+    partialTitleHidden: true,
+    encodingTitleHidden: true,
+    partialSizeCount: 3,
+    partialSVG: true,
     inferredColorType: "rect",
     inferredShapeType: "point",
     inferredSizeParity: true,

@@ -5,6 +5,7 @@ import { noOptions, resolveLayout, activeConfig } from "./layout.js";
 import { normalizeOptions } from "./options.js";
 import { resolveLegendSymbol } from "./recipes.js";
 import { validateLegendChannels } from "../target.js";
+import { createCategoricalLegendFromConfig } from "../lifecycle.js";
 import { findLayer } from "../../../../selectors/layers.js";
 import { findSemanticScale } from "../../../../selectors/scales.js";
 import { isSizeLegendPoint, resolveSizeLegendConfig } from "../size.js";
@@ -182,8 +183,6 @@ export const createCategoricalLegend = action(
   { op: "createCategoricalLegend", description: "Create one categorical legend block." },
   function (args = {}) {
     const config = resolveCategoricalLegendConfig(this, args);
-    const { kind } = config;
-    const definition = config;
     if (
       this.semanticSpec.guides.legend?.series !== undefined ||
       this.semanticSpec.guides.legend?.color !== undefined
@@ -191,44 +190,8 @@ export const createCategoricalLegend = action(
       throw new Error("createCategoricalLegend requires a missing legend.");
     }
     resolveLayout(this, config);
-    let next = this;
-    if (kind === "series") {
-      next = next
-        .editSemantic({
-          property: "guide.legend.series.channels",
-          value: definition.channels
-        })
-        .editSemantic({
-          property: "guide.legend.series.scales",
-          value: definition.scales
-        })
-        .editSemantic({
-          property: "guide.legend.series.title",
-          value: definition.title
-        });
-    } else {
-      next = next
-        .editSemantic({
-          property: "guide.legend.color.scale",
-          value: definition.scales[0]
-        })
-        .editSemantic({
-          property: "guide.legend.color.title",
-          value: definition.title
-        });
-    }
-    if (args.order !== undefined && args.order !== "scale") {
-      next = next.editSemantic({
-        property: `guide.legend.${kind}.order`,
-        value: normalizeLegendOrder(args.order)
-      });
-    }
-    next = next._withLegendConfig(kind, config);
-    if (config.border !== false) next = next.createLegendBackground();
-    return next
-      .createLegendSymbols()
-      .createLegendLabels()
-      .createLegendTitle();
+    return createCategoricalLegendFromConfig(this, config,
+      args.order === undefined ? undefined : normalizeLegendOrder(args.order));
   }
 );
 

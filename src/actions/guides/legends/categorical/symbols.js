@@ -9,8 +9,7 @@ import {
   symbolGraphic,
   symbolWidth
 } from "./layout.js";
-import { resolveLegendGraphicPlacement } from
-  "../../../../materialization/graphicHierarchy.js";
+import { resolveCategoricalLegendPlacement } from "../lifecycle.js";
 import { createPointShapeGraphic } from "../../../../grammar/pointShapes.js";
 
 function makeEditSymbol(type) {
@@ -129,7 +128,7 @@ function makeCreateSymbol(type, edit) {
         .createGraphics({
           id,
           type: graphicType,
-          ...resolveLegendGraphicPlacement(this),
+          ...resolveCategoricalLegendPlacement(this),
           ...(this.graphicSpec.objects[graphic(config, "Labels")] === undefined
             ? {}
             : { before: graphic(config, "Labels") }),
