@@ -686,7 +686,7 @@ async function testNodeConsumer(directory) {
     assert.equal(weightedArcs.graphicSpec.objects.arc.items.length, 2);
     assert.equal(weightedArcs.semanticSpec.layers[0].encoding.theta.weight, "weight");
     const weightedRules = chart()
-      .createCanvas({ width: 240, height: 160, margin: 30 })
+      .createCanvas({ width: 500, height: 350, margin: { top: 30, bottom: 30, left: 30, right: 150 } })
       .createData({ values: [
         { x: 1, x2: 3, y: 2, weight: 0 },
         { x: 2, x2: 4, y: 4, weight: 10 }
@@ -703,6 +703,15 @@ async function testNodeConsumer(directory) {
       ),
       [1, 6]
     );
+    for (const position of ["right", "left", "top", "bottom"]) {
+      const roomy = weightedRules.removeLegend().editCanvas({ width: 1000, height: 800, margin: 250 });
+      const edge = roomy.createLegend({ channels: ["strokeWidth"], position, count: 3, border: true });
+      assert.equal(edge.guideConfigs.legend.strokeWidth.position, position);
+      assert.deepEqual(edge.editLegend({ position: "top", columns: 2, title: false }).graphicSpec,
+        roomy.createLegend({ channels: ["strokeWidth"], position: "top", columns: 2, count: 3, border: true })
+          .editLegend({ title: false }).graphicSpec);
+      assert.ok(renderToSVG(edge).includes("stroke-width"));
+    }
     const pair = hconcat({
       programs: [program, polar],
       gap: 8
@@ -1927,6 +1936,8 @@ async function testTypeScriptConsumer(directory) {
       .encodeY({ field: "y", fieldType: "quantitative" })
       .encodeStrokeWidth(strokeWidthOptions)
       .createLegend({ channels: ["strokeWidth"] });
+    weightedRules.editLegendLayout({ position: "top", layout: "edge", columns: 3, direction: "vertical", titlePosition: "left" })
+      .editLegend({ border: { padding: 8 }, title: false });
     const jitterOffset: JitterMaxOffset = { pixels: 2 };
     const jitterOptions: JitterPointsOptions = {
       channel: "x",

@@ -62,9 +62,9 @@ test.before(async () => {
         .removeMarkSelection({ selection: "focus" });
       const editedLegend = chart()
         .createCanvas({
-          width: 160,
-          height: 120,
-          margin: { top: 10, right: 80, bottom: 20, left: 20 }
+          width: 800,
+          height: 700,
+          margin: 200
         })
         .createData({ values: [
           { x: 1, y: 2, group: "A", weight: 2 },
@@ -80,6 +80,7 @@ test.before(async () => {
         .createLegend({ channels: ["strokeWidth"] })
         .editLegend({
           count: 3,
+          position: "top", columns: 2, border: true,
           title: "Weight",
           labels: { color: "#123456" }
         });
@@ -322,6 +323,8 @@ test.before(async () => {
           program.materializationConfigs.selections === undefined &&
           program.materializationConfigs.highlights === undefined,
         legendCanvas: [legendCanvas.width, legendCanvas.height],
+        widthLegendPosition: editedLegend.guideConfigs.legend.strokeWidth.position,
+        widthLegendSVG: renderToSVG(editedLegend).startsWith("<svg "),
         legendCount: editedLegend.guideConfigs.legend.strokeWidth.count,
         legendTitle:
           editedLegend.graphicSpec.objects.strokeWidthLegendTitle.properties.text,
@@ -433,7 +436,9 @@ test("imports and renders the packed browser entries", async () => {
     strokeWidths: [0, 0],
     removedChannels: true,
     selectionRemoved: true,
-    legendCanvas: [160, 120],
+    legendCanvas: [800, 700],
+    widthLegendPosition: "top",
+    widthLegendSVG: true,
     legendCount: 3,
     legendTitle: "Weight",
     legendLabelColor: "#123456",

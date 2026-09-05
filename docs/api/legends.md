@@ -55,10 +55,12 @@ Opacity legends support Point and Line; discretized color legends support Point,
 Combined point-series and quantitative-size legends require a right or left
 side position so both blocks remain in one vertical stack. A left block must
 fit outside any left y-axis guides; use sufficient margin and offset.
-Standalone stroke-width legends use the right side. `editLegend` supports
-`title`, `count`, `labels`, and `titleStyle`; layout, symbol, border, gradient,
-and item-gap edits remain unsupported for that sampled block. Edit its
-quantitative mapping through `editScale`.
+Stroke-width legends support all four edges through `createLegend` and
+`editLegendLayout`. Use `layout: "edge"`, `offset`, `itemGap`, and horizontal
+`align`, `direction`, `columns`, and `titlePosition` controls. Title, count,
+label/title styles, and border are editable. Side positions require vertical
+direction, center alignment, one column, and a top title. Symbol recipes,
+gradient, and order are unsupported; edit quantitative mapping through `editScale`.
 Right-side layout requires sufficient right margin; bottom layout requires
 sufficient bottom margin; top layout requires enough top margin for its title,
 item grid, offset, and optional border. The library reports a layout error

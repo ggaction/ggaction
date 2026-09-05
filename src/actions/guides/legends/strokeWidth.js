@@ -1,23 +1,33 @@
 import { action } from "../../../core/action.js";
 import {
   validateGeneratedItemLimit,
+  validateNonEmptyString,
+  validateOptionObject,
   validateKeys
 } from "../../../core/validation.js";
 import { mapContinuousScaleValues } from "../../../grammar/scales/index.js";
-import { resolveGraphicBounds } from "../../../layout/canvas.js";
+import { resolveLegendItemLayout } from "../../../layout/legendItems.js";
 import { resolveLegendGraphicPlacement } from
   "../../../materialization/graphicHierarchy.js";
 import { findLayer } from "../../../selectors/layers.js";
 import { DEFAULT_COLORS, DEFAULT_FONT_FAMILY } from
   "../../../theme/defaults.js";
 import {
+  assertLegendBoundsInsideCanvas,
+  editLegendBackground,
+  normalizeItemLegendLayout,
+  normalizeLegendBorder,
+  normalizeLegendTextOptions,
+  resolveContinuousBounds,
+  resolveLegendBackgroundFromBounds,
   formatContinuousValues,
   sampleContinuousValues,
   selectLegendLayer,
   styleContinuousText
 } from "./continuous/common.js";
 
-const OPTIONS = Object.freeze(["target", "count"]);
+const OPTIONS = Object.freeze(["target", "count", "position", "layout", "align",
+  "direction", "columns", "titlePosition", "offset", "itemGap", "title", "labels", "titleStyle", "border"]);
 
 export const STROKE_WIDTH_LEGEND_LABELS = Object.freeze({
   offset: 12,
@@ -63,6 +73,18 @@ function requireScale(program, id) {
   return scale;
 }
 
+export function resolveStrokeWidthLegendLayout(program, config) {
+  const scale = requireScale(program, config.scale);
+  const { plot, canvas } = resolveContinuousBounds(program);
+  const values = sampleContinuousValues(scale.domain, config.count);
+  const widths = mapContinuousScaleValues(values, scale);
+  const labels = formatContinuousValues(values, scale.domain, "quantitative");
+  const layout = resolveLegendItemLayout(plot, config, labels, { width: 32, height: 0, strokeWidth: widths });
+  assertLegendBoundsInsideCanvas(layout.bounds, canvas, "Stroke-width legend layout");
+  const background = resolveLegendBackgroundFromBounds(layout.bounds, config.border, canvas, "Stroke-width legend");
+  return { ...layout, widths, labels, background };
+}
+
 export const rematerializeStrokeWidthLegend = /* @__PURE__ */ action(
   {
     op: "rematerializeStrokeWidthLegend",
@@ -86,16 +108,9 @@ export const rematerializeStrokeWidthLegend = /* @__PURE__ */ action(
       throw new Error("Stroke-width legend target requires a strokeWidth encoding.");
     }
     const scale = requireScale(this, encoding.scale);
-    const plot = resolveGraphicBounds(this);
-    if (plot === undefined) {
-      throw new Error("Stroke-width legend requires resolved plot bounds.");
-    }
-    const values = sampleContinuousValues(scale.domain, config.count);
-    const widths = mapContinuousScaleValues(values, scale);
-    const originX = plot.x + plot.width + 30;
-    const titleY = plot.y + 28;
-    const y = values.map((_, index) => titleY + 34 + index * 32);
     const title = config.inferredTitle === true ? encoding.field : config.title;
+    const layout = resolveStrokeWidthLegendLayout(this, { ...config, scale: encoding.scale, title });
+    const { itemY: y, widths } = layout;
     let next = this
       .editSemantic({ property: "guide.legend.strokeWidth.scale", value: encoding.scale })
       .editSemantic({ property: "guide.legend.strokeWidth.title", value: title })
@@ -105,38 +120,42 @@ export const rematerializeStrokeWidthLegend = /* @__PURE__ */ action(
         title,
         domain: scale.domain
       })
-      .editGraphics({ target: "strokeWidthLegendSymbols", property: "length", value: values.length })
-      .editGraphics({ target: "strokeWidthLegendSymbols", property: "x1", value: values.map(() => originX) })
-      .editGraphics({ target: "strokeWidthLegendSymbols", property: "x2", value: values.map(() => originX + 32) })
+      .editGraphics({ target: "strokeWidthLegendSymbols", property: "length", value: widths.length })
+      .editGraphics({ target: "strokeWidthLegendSymbols", property: "x1", value: layout.symbolX })
+      .editGraphics({ target: "strokeWidthLegendSymbols", property: "x2", value: layout.symbolX.map(x => x + 32) })
       .editGraphics({ target: "strokeWidthLegendSymbols", property: "y1", value: y })
       .editGraphics({ target: "strokeWidthLegendSymbols", property: "y2", value: y })
       .editGraphics({ target: "strokeWidthLegendSymbols", property: "stroke", value: DEFAULT_COLORS.mark })
       .editGraphics({ target: "strokeWidthLegendSymbols", property: "strokeWidth", value: widths })
-      .editGraphics({ target: "strokeWidthLegendLabels", property: "length", value: values.length })
+      .editGraphics({ target: "strokeWidthLegendLabels", property: "length", value: widths.length })
       .editGraphics({
         target: "strokeWidthLegendLabels",
         property: "x",
-        value: values.map(() => originX + 32 + config.labels.offset)
+        value: layout.labelX
       })
       .editGraphics({ target: "strokeWidthLegendLabels", property: "y", value: y })
       .editGraphics({
         target: "strokeWidthLegendLabels",
         property: "text",
-        value: formatContinuousValues(values, scale.domain, "quantitative")
+        value: layout.labels
       });
+    next = editLegendBackground(next, "strokeWidthLegendBackground", layout.background, config.border);
     next = styleContinuousText(next, "strokeWidthLegendLabels", config.labels);
     if (config.titleVisible === false) return next;
     next = next
-      .editGraphics({ target: "strokeWidthLegendTitle", property: "x", value: originX })
-      .editGraphics({ target: "strokeWidthLegendTitle", property: "y", value: titleY })
+      .editGraphics({ target: "strokeWidthLegendTitle", property: "x", value: layout.title.x })
+      .editGraphics({ target: "strokeWidthLegendTitle", property: "y", value: layout.title.y })
       .editGraphics({ target: "strokeWidthLegendTitle", property: "text", value: title });
-    return styleContinuousText(next, "strokeWidthLegendTitle", config.titleStyle);
+    return styleContinuousText(next, "strokeWidthLegendTitle", config.titleStyle, { align: layout.title.align });
   }
 );
 
 
 export function resolveStrokeWidthLegendConfig(program, args = {}) {
   validateKeys(args, OPTIONS, "createStrokeWidthLegend");
+  if (args.title !== undefined) validateNonEmptyString(args.title, "Legend title");
+  if (args.titleStyle !== undefined) validateOptionObject(args.titleStyle,
+    ["color", "fontSize", "fontFamily", "fontWeight"], "createLegend.titleStyle");
   const layer = resolveLayer(program, args.target);
   const encoding = layer.encoding.strokeWidth;
   requireScale(program, encoding.scale);
@@ -150,22 +169,29 @@ export function resolveStrokeWidthLegendConfig(program, args = {}) {
   return {
     target: layer.id,
     scale: encoding.scale,
-    title: encoding.field,
-    inferredTitle: true,
+    ...normalizeItemLegendLayout({ ...args, itemGap: args.itemGap ?? 32 }),
+    title: args.title ?? encoding.field,
+    inferredTitle: args.title === undefined,
     count,
-    labels: { ...STROKE_WIDTH_LEGEND_LABELS },
-    titleStyle: { ...STROKE_WIDTH_LEGEND_TITLE_STYLE },
+    labels: normalizeLegendTextOptions(args.labels, "createLegend.labels", STROKE_WIDTH_LEGEND_LABELS),
+    titleStyle: normalizeLegendTextOptions(args.titleStyle, "createLegend.titleStyle", STROKE_WIDTH_LEGEND_TITLE_STYLE),
+    border: normalizeLegendBorder(args.border),
     titleVisible: true
   };
 }
 
 export function createStrokeWidthLegendFromConfig(program, config) {
+  resolveStrokeWidthLegendLayout(program, config);
   const { count } = config;
   let next = program
     .editSemantic({ property: "guide.legend.strokeWidth.scale", value: config.scale })
     .editSemantic({ property: "guide.legend.strokeWidth.title", value: config.title })
-    ._withLegendConfig("strokeWidth", config)
-    .createGraphics({
+    ._withLegendConfig("strokeWidth", config);
+  if (config.border !== false) {
+    next = next.createGraphics({ id: "strokeWidthLegendBackground", type: "rect",
+      ...resolveLegendGraphicPlacement(program) });
+  }
+  next = next.createGraphics({
       id: "strokeWidthLegendSymbols",
       type: "line",
       length: count,

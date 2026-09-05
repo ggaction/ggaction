@@ -16,9 +16,9 @@ import {
 function legendLifecycleProgram() {
   return chart()
     .createCanvas({
-      width: 160,
-      height: 120,
-      margin: { top: 10, right: 80, bottom: 20, left: 20 }
+      width: 240,
+      height: 240,
+      margin: { top: 10, right: 130, bottom: 20, left: 20 }
     })
     .createData({ values: [
       { x: 1, y: 2, group: "A", weight: 2 },
@@ -78,8 +78,8 @@ test("renders the edited stroke-width block and its selective removal", async ()
       output: join(directory, "legend-lifecycle.png"),
       pixelRatio: 2
     });
-    assert.equal(result.width, 320);
-    assert.equal(result.height, 240);
+    assert.equal(result.width, 480);
+    assert.equal(result.height, 480);
     assert.equal(result.bytes > 0, true);
   } finally {
     await rm(directory, { recursive: true, force: true });

@@ -88,9 +88,9 @@ test("validates stroke-width edits before changing stored state", () => {
   assert.equal(edited.guideConfigs.legend.strokeWidth.labels.color, "#123456");
 
   for (const invalid of [
-    { position: "right" },
+    { gradient: {} },
     { symbol: "auto" },
-    { border: true },
+    { order: "scale" },
     { count: 1 },
     { labels: { fontSize: 0 } },
     { titleStyle: { color: "" } }
@@ -118,10 +118,7 @@ test("routes compatible focused stroke-width edits through editLegend", () => {
     program.graphicSpec.objects.strokeWidthLegendTitle.properties.fontWeight,
     700
   );
-  assert.throws(
-    () => program.editLegendLayout({ offset: 10 }),
-    /stroke-width legend does not accept offset/
-  );
+  assert.equal(program.editLegendLayout({ offset: 10 }).guideConfigs.legend.strokeWidth.offset, 10);
 });
 
 test("removes one complete composite block and preserves retained blocks", () => {

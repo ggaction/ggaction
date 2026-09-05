@@ -6,7 +6,7 @@ import { build } from "vite";
 
 export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
   ggaction: 253_000,
-  "ggaction/basic": 139_000,
+  "ggaction/basic": 140_000,
   "ggaction/svg": 25_000
 });
 

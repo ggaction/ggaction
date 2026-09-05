@@ -39,7 +39,7 @@ the new edge; explicitly stored columns/alignment/title placement remain and
 must be made compatible in the same edit. A horizontal opacity legend can switch to
 `titlePosition: "left"`; unless spacing is supplied in the same edit, the
 inline mode selects its 8-pixel symbol-label and 20-pixel sample defaults.
-Standalone size and stroke-width legends accept only `title`, `count`, `labels`,
+Standalone size legends accept only `title`, `count`, `labels`,
 and `titleStyle` and keep their existing right-side placement. On a Full program
 with an existing standalone size legend, this fragment edits its sampled content:
 
@@ -59,6 +59,23 @@ through 10,000. Size labels use a default offset of 28 pixels from the sample
 center, editable through `labels: { offset }`; title styles do not accept an
 offset. Defaults remain size 12/normal for labels and size 13/600 for titles.
 Partial styles and title visibility survive Canvas, scale and data updates.
+
+Stroke-width legends additionally support four-edge layout and borders on creation
+and editing. Their line samples remain 32 pixels long; sample widths come from
+the encoded scale. The default offset is 30 and item gap is 32. Side title and
+first sample centers are 20 and 52 pixels below the plot top. Thick side samples and large labels
+move down as needed to keep a 12-pixel gap below the title. Horizontal grids
+measure the thickest sample when allocating rows. Hidden titles do not occupy
+space; visible content and borders must fit the Canvas.
+
+For a line or rule with an existing stroke-width legend (fragment):
+
+```javascript
+weightedLines.editLegend({
+  position: "top", layout: "edge", columns: 3,
+  titlePosition: "left", count: 3, border: true
+});
+```
 Basic supports size legend creation; these editing actions require Full.
 
 ## Replacing legend content

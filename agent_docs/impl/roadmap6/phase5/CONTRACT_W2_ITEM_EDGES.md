@@ -13,3 +13,11 @@ Multi-block lane은 config.position을 읽고 interval border를 group bounds에
 Primitive target: Canvas1000×700, margins L/R240 T/B200, 두 interval <5/≥5, width14/height12/label offset8, font12 title13/600. 독립 좌표와 primitive를 먼저 렌더링한 뒤 public four-edge 결과를 대조한다. Final gate는 normal/coverage, current/type/docs/cards, representative PNG, real-data matrix, installed tarball과 동일 browser artifact를 요구한다.
 
 기존 interval의 side align left/right는 받아 저장만 하고 실제 좌표에는 적용하지 않았다. C2 item-side 정책에서는 이 무효 값을 거부하고 center를 canonical 값으로 검증한다. 기존 transition style 회귀의 redundant align:left는 center로 migration하고, source gradient의 align:left가 interval로 넘어갈 때는 destination normalizer를 mutation 전에 호출해 명시적으로 거부한다. 실제 위치를 바꾸지 않는 값의 보존을 유효한 layout 지원으로 간주하지 않는다. 전체 family transition/side alignment 확장은 후속 C2에서 다룬다.
+
+## Stroke-width 항목 배치
+
+두 번째 변경은 stroke-width에 같은 edge/grid 계약을 적용한다. Size와 결합 범례는 후속 변경으로 남긴다. Width scale의 linear/log/pow/sqrt/symlog mapping, count5, line length32, labels offset12, 기존 font/color, side pitch32를 유지한다. Right title/item origin은 공통 item layout의 plot.y+20/+52로 통일한다(이전 +28/+62). Position/edge/align/direction/columns/titlePosition/offset/itemGap과 label/title styles 및 border를 create/edit 모두 지원한다. Side의 single column/vertical/center/top 제한은 interval과 같다. Per-sample 실제 stroke extent를 bounds에 포함하고 grid row는 최대 stroke width를 수용한다. 새 스타일 shorthand나 symbol recipe는 추가하지 않는다.
+
+Primitive를 public 구현 전에 `.artifacts/roadmap6-authoring/stroke-width-edge-targets.mjs`로 작성·렌더링한다. Canvas1000×700, margin L/R240 T/B200, width samples2/10 및 label0/10, title m이다. Explicit count2인 네 방향 목표와 create/edit/Canvas/scale/filter/content replacement의 동일 최종 결과를 검증한다.
+
+공통 side item 배치는 큰 sample/label/title이 기본 anchor 사이에 들어가지 않으면 첫 item을 내려 title 아래 gap12를 확보한다. Default dimensions의 기존 literal anchors는 유지한다. Width의 Basic 지원은 기존 registrar/encoding 경계상 해당 없음이며 이번 구현은 Full이다.

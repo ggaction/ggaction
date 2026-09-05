@@ -62,7 +62,7 @@ const LEGEND_RESOURCE_POLICIES = Object.freeze({
     family: "strokeWidth",
     rematerializeOp: "rematerializeStrokeWidthLegend",
     graphicIds: Object.freeze([
-      "strokeWidthLegendSymbols", "strokeWidthLegendLabels",
+      "strokeWidthLegendBackground", "strokeWidthLegendSymbols", "strokeWidthLegendLabels",
       "strokeWidthLegendTitle"
     ])
   })

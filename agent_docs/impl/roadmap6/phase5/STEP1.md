@@ -20,6 +20,7 @@
 - [x] W2 B2 automatic recipe의 companion/data/scale replay와 #93 — [검증](RESULTS_W2_RECIPE_REPLAY.md)
 - [x] W2 C1 명시적 categorical bottom mode, 오류 #87 — [검증](RESULTS_W2_BOTTOM.md)
 - [x] W2 C2 item layout 기반·interval 네 방향과 hidden title bounds #94 — [검증](RESULTS_W2_INTERVAL_EDGES.md)
+- [x] W2 C2 stroke-width 네 방향과 Canvas overflow #95 — [검증](RESULTS_W2_WIDTH_EDGES.md)
 - [ ] W2 C2 나머지 family×edge layout과 collision/transition 통합 matrix
 - [ ] R6-P5-W3 Final-item labels·reference·common format
 - [ ] R6-P5-W4 Program theme와 local override

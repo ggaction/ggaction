@@ -61,7 +61,7 @@ type TitleWrap = "word" | "character";
   선택한다. Multiple size points는 explicit target을 요구한다. Standalone은 right만 지원하고 combined
   point-series+size block은 right/left를 지원한다.
 - Explicit `["strokeWidth"]` 또는 유일한 stroke-width-only line/rule은 standalone stroke-width legend를 선택한다.
-  It accepts `count`, uses the encoded quantitative scale and currently supports only right-side placement.
+  Full에서 encoded quantitative scale을 사용하며 count와 네 방향 edge/grid/layout, text styles, border를 지원한다. Basic에는 strokeWidth encoding/family가 없으며 이 변경에서 추가하지 않는다.
 - `position`: categorical과 continuous color/opacity는 left를 포함한 네 방향을 지원한다.
   combined point-size legend는 right/left side position을 사용한다. chart-independent default는 `"right"`다.
 - `align`: `"left" | "center" | "right"`, 기본 center. right와 left side position은
@@ -72,7 +72,7 @@ type TitleWrap = "word" | "character";
   기존 Canvas 하단 고정 single-row는 position bottom + layout legacy-bottom으로 명시한다. Labels y=height−28,
   title y=height−52이며 align/itemGap/recipe/styles/border를 지원한다. Columns, vertical direction, left title,
   offset≠8은 edge에서만 지원한다. Legacy mode에서 다른 edge로 옮길 때 layout edge도 같은 edit에 명시한다.
-  기존 compact examples는 legacy-bottom으로 migration한다. Interval은 layout:"edge"를 지원하며 legacy-bottom은 거부한다. Gradient/opacity/size/width의 layout option은 아직 지원하지 않는다.
+  기존 compact examples는 legacy-bottom으로 migration한다. Interval은 layout:"edge"를 지원하며 legacy-bottom은 거부한다. Stroke-width도 layout:"edge"를 지원한다. Gradient/opacity/size의 layout option은 아직 지원하지 않는다.
 - `offset`: non-negative finite number, 기본 `8`; plot과 legend block 간 거리다.
 - `titlePosition`: `"top" | "left"`, 기본 top. `"left"`는 horizontal categorical과 sampled opacity
   legend에서 title, symbol, label을 한 reading line으로 배치한다. Gradient와 side opacity는 `"top"`만 지원한다.
@@ -144,7 +144,7 @@ type TitleWrap = "word" | "character";
     unchanged composite point-series+size dispatch.
   - ✅ Covered: exact explicit point color/shape/size subsets in Full/Basic and complete scatter facades;
     selected count, unselected encoding isolation, color swatch stability and combined owner ambiguity.
-  - ✅ Covered: explicit/inferred standalone line/rule stroke width, count, right-side placement and scale
+  - ✅ Covered: explicit/inferred standalone line/rule stroke width, count, four-edge placement and scale
     rematerialization.
   - ✅ Covered: opacity as one continuous guide channel; constant opacity and incompatible mixes rejected.
 - `position`
@@ -251,7 +251,7 @@ encoding removal/recreation, combined legend와 Polar 가이드를 검증한다.
 - ✅ Covered: custom/hidden/auto title transitions and symbol recipe reconciliation.
 - ✅ Covered: gradient count/extent and opacity count/gap/symbol edits with incompatible-kind rejection.
 - ✅ Covered: standalone size count, exact equal-area radii, labels/titleStyle/offset, custom/hidden/auto title, focused editors, invalid/missing/ambiguous options, independent owners and Canvas/scale/filter replay.
-- ✅ Covered: stroke-width count, labels/titleStyle, custom/hidden/auto title, right-side bounded option rejection and
+- ✅ Covered: stroke-width count, labels/titleStyle, custom/hidden/auto title, four-edge layout, borders, bounded option rejection and
   scale/Canvas rematerialization.
 - ✅ Covered: Canvas/edit action-order convergence, insufficient margin, immutability, trace, browser/PNG parity.
 - ✅ Covered: explicit edge/legacy-bottom default, mode transitions, focused color/title style preservation,
@@ -516,3 +516,11 @@ config normalization과 rematerialization을 공유한다. Evidence:
 
 - ✅ Covered: title/subtitle cleanup, no-options validation, missing-resource behavior and immutability.
 - Evidence: `test/unit/actions/guides/remove-guides.test.js` and Roadmap 3 focused-editing Gate.
+
+### Stroke-width item layout
+
+Full의 createLegend/editLegend/editLegendLayout은 position right/left/top/bottom, layout edge, align/direction/columns/titlePosition, offset/itemGap과 border를 지원한다. Side는 vertical/center/one column/top title이다. Default offset30, side itemGap32, line length32, label offset12와 기존 font/color/scale formatter를 유지한다. Title centerY=plot.y+20, first sample centerY=plot.y+52로 공통 item layout에 맞춘다(이전 +28/+62). Side에서 두꺼운 sample/큰 label/title이 기본 시작 좌표를 넘으면 title 아래 gap12를 확보하도록 첫 sample을 내린다. Horizontal은 maximum sample width를 row height에 포함하며 각 sample stroke extent와 실제 visible labels/title을 Canvas bounds 및 border 계산에 포함한다. Hidden title은 제외하고 stored title은 보존한다. 생성·편집·Canvas/scale replay 모두 공간 부족을 오류로 반환한다.
+
+Basic의 기존 export/encoding/family 경계는 유지한다. Width는 Full-only이며 새 direct action은 없다. Symbol recipe/gradient/order는 거부한다. TitleStyle의 offset도 거부하며 labels offset은 허용한다.
+
+Evidence: `test/unit/actions/guides/stroke-width-legend-edges.test.js`, `test/contracts/stroke-width-legend-edges.test.js` (독립 literal primitive/graphics/Canvas calls/pixels), `test/unit/actions/guides/stroke-width-legend.test.js`, installed package/browser probes.

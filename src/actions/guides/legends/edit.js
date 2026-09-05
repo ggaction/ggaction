@@ -13,6 +13,8 @@ import { resolveLegendCreationPlan } from "./categorical/actions.js";
 import { categoricalSymbolIds, reconcileCategoricalSymbols, createCategoricalLegendFromConfig, resolveCategoricalLegendRevision, removeLegendKinds } from "./lifecycle.js";
 import { createGradientLegendFromConfig } from "./continuous/gradient.js";
 import {
+  normalizeItemLegendLayout,
+  normalizeLegendBorder,
   normalizeLegendTextOptions,
   normalizeContinuousLegend,
   validatePositive
@@ -27,6 +29,7 @@ import { SIZE_LEGEND_LABELS, SIZE_LEGEND_TITLE_STYLE, createSizeLegendFromConfig
 import {
   STROKE_WIDTH_LEGEND_LABELS,
   STROKE_WIDTH_LEGEND_TITLE_STYLE,
+  resolveStrokeWidthLegendLayout,
   createStrokeWidthLegendFromConfig
 } from "./strokeWidth.js";
 
@@ -206,7 +209,8 @@ function editInterval(program, previous, args) {
 function resolveSampledLegendEdit(program, kind, previous, args) {
   const size = kind === "size";
   const label = size ? "size" : "stroke-width";
-  const allowed = ["target", "title", "count", "labels", "titleStyle"];
+  const allowed = ["target", "title", "count", "labels", "titleStyle",
+    ...(!size ? ["position", "layout", "align", "direction", "columns", "titlePosition", "offset", "itemGap", "border"] : [])];
   for (const key of Object.keys(args)) {
     if (!allowed.includes(key)) {
       throw new Error(`${label} legend does not accept ${key}.`);
@@ -251,6 +255,13 @@ function resolveSampledLegendEdit(program, kind, previous, args) {
       previous.titleStyle ?? (size ? SIZE_LEGEND_TITLE_STYLE : STROKE_WIDTH_LEGEND_TITLE_STYLE)
     )
   };
+  if (!size) {
+    Object.assign(config, normalizeItemLegendLayout({ ...previous, ...args,
+      direction: args.direction ?? (args.position !== undefined && args.position !== previous.position
+        ? undefined : previous.direction) }));
+    config.border = normalizeLegendBorder(mergeBorder(previous.border, args.border));
+    resolveStrokeWidthLegendLayout(program, config);
+  }
   return { config, titleMode, title, titleVisible };
 }
 
@@ -265,6 +276,9 @@ function editSampledLegend(program, kind, previous, args) {
     });
   }
   next = next._withLegendConfig(kind, config);
+  if (kind === "strokeWidth") next = reconcileGraphic(next, `${prefix}Background`, config.border !== false, {
+    type: "rect", before: `${prefix}Symbols`
+  });
   next = reconcileGraphic(next, `${prefix}Title`, titleVisible, {
     type: "text"
   });

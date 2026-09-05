@@ -35,12 +35,11 @@ function legendPosition(program, kind, config) {
   if (kind === "size") {
     return categoricalFor(program, config.target)?.position ?? "right";
   }
-  if (kind === "strokeWidth") return "right";
   return config.position;
 }
 
 function requestedOffset(kind, config) {
-  return ["size", "strokeWidth"].includes(kind)
+  return kind === "size"
     ? 30
     : config.offset;
 }
@@ -142,7 +141,7 @@ function blockDescriptor(program, kind, config) {
 }
 
 function borderFor(kind, config) {
-  return ["series", "color", "gradient", "opacity", "interval"].includes(kind)
+  return ["series", "color", "gradient", "opacity", "interval", "strokeWidth"].includes(kind)
     ? config.border
     : false;
 }

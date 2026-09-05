@@ -4,6 +4,9 @@ import { alignLegendStart, resolveLegendGrid } from "./legend.js";
 // Measure item content before choosing its edge. Family owners supply the
 // sample dimensions and formatted labels; this module does not inspect scales.
 export function resolveLegendItemLayout(plot, config, labels, symbol) {
+  const strokes = labels.map((_, index) => Array.isArray(symbol.strokeWidth)
+    ? symbol.strokeWidth[index] : symbol.strokeWidth ?? 0);
+  const sampleHeight = Math.max(symbol.height, ...strokes);
   const side = ["left", "right"].includes(config.position);
   const titleVisible = config.titleVisible !== false;
   const titleWidth = titleVisible ? measureTextWidth(config.title, config.titleStyle) : 0;
@@ -19,13 +22,16 @@ export function resolveLegendItemLayout(plot, config, labels, symbol) {
     const width = Math.max(itemWidth, titleWidth);
     const x = config.position === "right" ? plot.x + plot.width + config.offset
       : plot.x - config.offset - width;
-    const pitch = Math.max(config.itemGap, symbol.height, config.labels.fontSize);
+    const itemHeight = Math.max(sampleHeight, config.labels.fontSize);
+    const pitch = Math.max(config.itemGap, itemHeight);
     symbolX = labels.map(() => x);
     labelX = labels.map(() => x + symbol.width + config.labels.offset);
-    itemY = labels.map((_, index) => plot.y + 52 + index * pitch);
+    const firstY = Math.max(plot.y + 52, titleVisible
+      ? plot.y + 20 + titleHeight / 2 + 12 + itemHeight / 2 : plot.y + 52);
+    itemY = labels.map((_, index) => firstY + index * pitch);
     title = { x, y: plot.y + 20, align: "left" };
   } else {
-    const grid = resolveLegendGrid({ ...config, domain: labels }, symbol.width, labels.length, symbol.height);
+    const grid = resolveLegendGrid({ ...config, domain: labels }, symbol.width, labels.length, sampleHeight);
     const inline = config.titlePosition === "left" && titleVisible;
     const prefix = inline ? titleWidth + 20 : 0;
     const width = inline ? prefix + grid.gridWidth : Math.max(titleWidth, grid.gridWidth);
@@ -51,12 +57,11 @@ export function resolveLegendItemLayout(plot, config, labels, symbol) {
   const textBounds = (x, y, text, style, align = "left") => resolveTextBounds({
     x, y, text, ...style, textAlign: align, textBaseline: "middle"
   });
-  const extent = (symbol.strokeWidth ?? 0) / 2;
   const bounds = [
     ...(titleVisible ? [textBounds(title.x, title.y, config.title, config.titleStyle, title.align)] : []),
     ...labels.map((label, index) => textBounds(labelX[index], itemY[index], label, config.labels)),
-    ...symbolX.map((x, index) => ({ left: x - extent, right: x + symbol.width + extent,
-      top: itemY[index] - symbol.height / 2 - extent, bottom: itemY[index] + symbol.height / 2 + extent }))
+    ...symbolX.map((x, index) => ({ left: x - strokes[index] / 2, right: x + symbol.width + strokes[index] / 2,
+      top: itemY[index] - symbol.height / 2 - strokes[index] / 2, bottom: itemY[index] + symbol.height / 2 + strokes[index] / 2 }))
   ];
   return { symbolX, labelX, itemY, title, bounds };
 }

@@ -39,6 +39,10 @@ function requestedCandidate(program, target, candidates) {
 }
 
 function resolveStandaloneLegendStep(args, kind) {
+  if (kind === "strokeWidth") {
+    const { channels: _channels, ...options } = args;
+    return { op: "createStrokeWidthLegend", args: options };
+  }
   const { target, count, position, channels: _channels, ...unsupported } = args;
   const label = kind === "size" ? "size" : "stroke-width";
   const unsupportedKeys = Object.keys(unsupported);
