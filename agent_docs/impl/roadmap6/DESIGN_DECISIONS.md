@@ -1,12 +1,16 @@
 # Roadmap 6 — 공통 설계 결정과 호환성
 
-모든 항목은 Proposed 권고안이다. 현재 동작의 근거는 [감사 보고서](audit/REPORT.md),
+각 항목은 연결된 Gate의 승인·구현 범위를 따른다. 후속 범위는 별도 표시가 없으면 Proposed 권고안이다. 현재 동작의 근거는 [감사 보고서](audit/REPORT.md),
 구현 순서는 [로드맵](ROADMAP.md), finding별 원장은 [TRACEABILITY.md](TRACEABILITY.md)다.
 같은 API의 모든 default 숫자를 통일하는 것이 목적이 아니다. 같은 의도인데 분석 결과나 작성 가능성이
 달라지는 차이를 우선 해결한다.
 
 K01–K06과 K08의 Phase 2 적용 범위를 [구체 계약 검토](phase2/CONTRACT_REVIEW.md)에서 상세화했다.
-그 문서의 Phase 2 범위는 R6-P2-A 승인으로 Planned다. 후속 metadata schema·layout·chart API는 함께 승인하거나 Current로 승격하지 않는다.
+그 문서의 Phase 2 범위는 구현·검증하고 R6-P2-X 승인을 기록했다. 후속 metadata schema·layout·chart API는 함께 승인하거나 Current로 승격하지 않는다.
+
+K02–K06의 Phase 3 적용은 [P3-C01–C07 계약 제안](phase3/CONTRACT_REVIEW.md)에 구체화했으며 A 미승인이다.
+새 3개 full-only facade, 별도 Donut alias 미추가, count/explicit sum, Density group-field color, Horizon x-only
+guide와 existing coordinate child·post-encode opacity, 현행 bundle 상한 유지가 이번 검토 범위다.
 
 ## 결정 원칙
 
@@ -271,7 +275,7 @@ unresolved/empty explanation을 구분한다. Cards에 모든 transitive type을
 
 | 결정 | 추천 방향 | 확정 owner |
 | --- | --- | --- |
-| Donut 별도 이름 | 같은 Pie owner의 optional alias; 독립 수요 확인 | Phase 3 A |
+| Donut 별도 이름 | Pie arc.innerRadius로 작성, 별도 alias 미추가 제안 | Phase 3 A / P3-C02 |
 | Pie weighted aggregate | value를 쓰면 aggregate를 명시 | Phase 3 A |
 | Box/Gradient 이름·deferred 유지 | 유지 + authoring role 설명; 하위 facade는 수요 기반 | Phase 2 A |
 | Baseline/stack public 이름 | 역할이 드러나는 작은 domain action | Phase 4 A |

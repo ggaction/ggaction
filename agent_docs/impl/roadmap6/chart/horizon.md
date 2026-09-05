@@ -1,110 +1,148 @@
 # Roadmap 6 — Horizon
 
-**상태: Proposed, 미구현·미승인.** 아래 새 이름과 option 구조는 추천 계약 초안이다.
-현행 API가 아니며 그대로 실행 가능한 예제로 주장하지 않는다. Phase 3 A에서 signature를 확정하고
-V에서 primitive 목표를 확인한 뒤 public flow를 구현한다.
+**상태: R6-P3-A Proposed / 미승인·미구현.** `createHorizonPlot`은 Current API가 아니다.
+[Phase 3 계약 검토](../phase3/CONTRACT_REVIEW.md)의 P3-C01·C05–C07을 적용한다.
+연결 F07·D04, owner [Phase 3 W3](../phase3/GOAL.md).
 
-## 목적과 범위
+## 설명과 공개 계약 제안
 
-기준선에 대한 signed amplitude를 band로 접어 작은 높이에서 시계열 변화를 표현한다. Folded y는 원래 값의 y 축과 다르다.
+원래 y를 baseline 기준의 signed amplitude로 나누고 bands로 접어 낮은 높이에 표시한다.
+Folded y의 0..1은 원본 amplitude 축이 아니다. 여러 group은 같은 panel에 overlay하며 small multiples를 만들지 않는다.
 
-- 연결 항목: F07, D04.
-- 실행 owner: [Phase 3](../phase3/GOAL.md).
-- 공통 기준: [DESIGN_DECISIONS.md](../DESIGN_DECISIONS.md), [VALIDATION.md](../VALIDATION.md).
-
-## 데이터와 최종 public chain 초안
-
-아래 synthetic rows를 수치 oracle와 최소 visual target의 출발점으로 쓴다.
-A에서 실제 public signature를 확정하고, primitive/public 두 프로그램이 같은 manifest의 values와 dimensions를 사용한다.
-
-~~~javascript
-// Proposed API design — not a Current executable example.
-import { chart } from 'ggaction';
-
-const values = [{ time: 1, value: -3 }, { time: 2, value: 2 }, { time: 3, value: 6 }, { time: 4, value: -1 }];
-const base = chart()
-  .createCanvas({ width: 1000, height: 700, margin: 150 })
-  .createData({ id: 'data', values });
-
-const horizon = base.createHorizonPlot({ x: 'time', y: 'value' });
+~~~typescript
+// Proposed; referenced Horizon types preserve their current meaning.
+type HorizonPlotGuideOptions = {
+  axes?: false | (Omit<CartesianAxesOptions, "y"> & { y?: false });
+  grid?: false | (Pick<CartesianGridOptions, "vertical"> & { horizontal?: false });
+  legend?: false;
+};
+type CreateHorizonPlotOptions = {
+  id?: string;
+  data?: string;
+  coordinate?: string;
+  x: string | HorizonXEncoding;
+  y: string | HorizonYEncoding;
+  groupBy?: string | false;
+  bands?: number;
+  baseline?: number;
+  extent?: "auto" | number;
+  resolve?: HorizonResolution;
+  missing?: HorizonMissingPolicy;
+  overflow?: HorizonOverflowPolicy;
+  palette?: HorizonPaletteOptions;
+  area?: {
+    opacity?: number;
+    stroke?: string;
+    strokeWidth?: number;
+    curve?: CurveInterpolation;
+  };
+  guides?: false | HorizonPlotGuideOptions;
+};
+// createHorizonPlot(options: CreateHorizonPlotOptions): ChartProgram;
 ~~~
 
-Id/data/coordinate의 생략은 공통 current/unique 규칙을 따른다. 같은 종류의 resource가 여러 개면 explicit target을
-요구한다. 예제의 base에서 각 const는 독립된 immutable program이며, chart를 한 program에 겹칠 때는
-명시적 IDs와 compatible shared scale/guide를 사용한다.
+`HorizonPlotGuideOptions`는 axes false 또는 Cartesian x 옵션과 y:false,
+grid false 또는 vertical 옵션과 horizontal:false, legend:false만 허용한다.
+X axis의 line/ticks/labels/title 및 vertical grid style은 기존 owner의 vocabulary다.
+Coordinate descriptor나 scale를 명시하면 facade가 만든 layer의 binding과 일치해야 한다.
+원본 단위를 설명하는 전용 amplitude guide는 이 단계에 추가하지 않는다.
 
-## 주요 설계 결정과 rationale
+Top-level `source/target/color`, `area.fill`, nested x/y `target/coordinate`, tuple group은 거부한다.
+Color는 transform palette가 소유하므로 일반 fill shorthand로 덮지 않는다.
+`HorizonXEncoding`의 quantitative/temporal/temporalUnit과 `HorizonYEncoding`의 folded scale 제한을 그대로 재사용한다.
 
-| 결정 | 권장 계약 | 이유 |
-| --- | --- | --- |
-| Meaning | Baseline/sign/bands와 folded extent를 기존 Horizon owner에 위임한다. | 같은 모양 뒤의 original amplitude 의미를 유지한다. |
-| Guides | Original x만 자동 제공한다. Folded y와 internal sign/band color legend는 자동 생성하지 않는다. | 0..1 folded position을 원본값처럼 읽게 하지 않는다. |
-| Group | 명시적 group과 source selection을 사용한다. 통계 parameter shorthand는 lower vocabulary와 일치시킨다. | 다른 series를 우연히 하나의 path로 합치지 않는다. |
+## 현재 실행 가능한 lower chain과 제안 H0
+
+~~~javascript
+import { chart } from 'ggaction';
+const values = [
+  { time: 0, value: -4 }, { time: 1, value: 4 }
+];
+const base = chart()
+  .createCanvas({ width: 1000, height: 700, margin: 150 })
+  .createData({ id: 'source', values });
+
+const lower = base
+  .createAreaMark({ id: 'horizon', data: 'source' })
+  .createCoordinate({ id: 'timeline', type: 'cartesian', layers: ['horizon'] })
+  .encodeHorizon({ target: 'horizon', x: 'time', y: 'value' })
+  .editAreaMark({ target: 'horizon', opacity: 0.8 })
+  .createGuides();
+
+// Proposed equivalent; not executable yet.
+const proposed = base.createHorizonPlot({
+  id: 'horizon', data: 'source', coordinate: 'timeline',
+  x: 'time', y: 'value', area: { opacity: 0.8 }
+});
+~~~
+
+최단 제안은 `base.createHorizonPlot({x:'time',y:'value'})`, default id horizonPlot이다.
+원본 x/y inference를 지원하는 기존 `encodeHorizon()`는 유지하지만 새 H0는 두 역할을 명시해야 한다.
+모든 facade가 사용하는 data/coordinate ambiguity와 immutability 규칙을 따른다.
+
+## Default·지원·오류
+
+| 항목 | 계약 |
+| --- | --- |
+| Defaults | bands 3, baseline 0, extent auto, resolve shared, missing break, overflow clip, positive blues/negative reds |
+| X | Explicit quantitative/temporal 우선. Numeric shorthand는 quantitative, date-like 값은 기존 temporal inference. temporalUnit은 explicit temporal에서만 |
+| Y | Quantitative 원본. Geometry의 lower/upper는 folded values. Y scale은 linear, domain [0,1]만 |
+| Group | 생략/false=새 mark의 ungrouped. String=explicit source group; 하나의 coordinate에서 profiles overlay |
+| Extent | 기존 shared/independent normalization 유지. Facade가 series별 scale나 panel을 새로 생성하지 않음 |
+| Empty | 모든 y가 baseline이면 0 paths가 정당한 결과. Source x domain과 extent 0 provenance는 보존 |
+| Invalid | 잘못된 fields/types/bands/extent/palette, duplicate/invalid x와 missing policy 위반은 기존 owner의 오류 |
+| Coordinate | Explicit id는 createAreaMark 뒤 기존 createCoordinate({id,type:'cartesian',layers:[id]})로 연결. encodeHorizon 옵션 추가 없음 |
+| Appearance | 기본 opacity 1. Explicit opacity는 encodeHorizon 뒤 editAreaMark로 적용. Curve·stroke·strokeWidth는 기존 Area owner, create stroke:false 미지원 |
+| Guides | 생략/{}=원본 x axis와 vertical grid. axes.y/horizontal grid/legend는 false 외의 요청이면 새 facade에서 오류 |
+| Lower escape | 기존 createYAxis({scale:foldedScale})·createLegend({target})의 명시적 작성은 유지. 이를 원본 y/사용자 category 설명으로 간주하지 않음 |
+
+현재 encodeHorizon은 createAreaMark에 준 opacity를 1로 재설정한다. 이를 변경해 기존 lower 동작을 바꾸지 않고,
+facade가 explicit 요청을 뒤에서 정확히 적용한다. Scalar fill과 internal field color를 충돌 없이 동시 지원한다고 약속하지 않는다.
 
 ## 중요한 action hierarchy
 
-아래 트리의 기존 이름은 재사용해야 할 owner다. 괄호의 역할 문장은 helper/public API 이름을 확정한 것이 아니다.
-새 domain action이 필요하면 meaningful wrapped child로 만들고 실제 top-level trace와 대조한다.
-
 ~~~text
 createHorizonPlot
-├─ createAreaMark
+├─ createAreaMark (resolved id/data, optional curve/stroke)
+├─ createCoordinate? (explicit coordinate attachment only)
 ├─ encodeHorizon
-│  ├─ createHorizonData
+│  ├─ createHorizonData → materializeHorizonData
 │  ├─ rebindLayerData
-│  ├─ encodeX / encodeY / encodeY2 / encodeGroup / encodeColor
-│  └─ affected materialization plan
-└─ createGuides? (original x only)
+│  ├─ encodeX / encodeY / encodeGroup / encodeY2 / encodeColor
+│  └─ editAreaMark (current opaque default)
+├─ editAreaMark? (explicit facade opacity after encoding)
+└─ guide fulfillment → existing x axis / vertical grid components
 ~~~
 
-Facade가 child의 inference·validation·aggregation·geometry를 복제해서는 안 된다.
-완성 chart를 lower public chain으로 풀었을 때 같은 의미와 graphics를 얻어야 한다.
+좌표를 고르기 위해 raw encodeX를 임시로 설정했다 지우는 경로를 추가하지 않는다.
+Existing coordinate action으로 binding을 정하고 통계·position inference를 Horizon owner가 한 번 수행한다.
+Default x/y scale id와 generated field/revision identity는 lower owner가 소유한다.
 
-## 저장 결과 계약
+## 저장 결과와 아래층 편집
 
-**semanticSpec:** Original x/y, baseline, band parameter, sign/group, source/derived revision과 folded scale relation을 저장한다.
+- Raw source와 Horizon derived snapshot에 원본 x/y/unit, groupBy, bands/baseline/extent/resolve/missing/
+  overflow/palette 및 resolved extent/bandHeight를 저장한다.
+- Layer는 ordinary area와 derived data binding, x/y/y2/group/color encodings를 가진다.
+  X의 source title과 folded y scale [0,1]을 유지한다. 별도 `horizonChart` state는 만들지 않는다.
+- Graphic은 concrete closed area paths/paint와 x guide graphics다. Renderer는 sign/band/folding을 해석하지 않는다.
+- `editHorizon`은 새 snapshot/rebind/release와 affected consumer rematerialization을 소유한다.
+  `editAreaMark`의 opacity/outline/curve, x `editScale`, x guide editors가 그대로 작동해야 한다.
+  Target identity와 edited opacity는 revision 뒤 유지한다.
+- Selection/highlight는 지원되는 현재 derived final-item 의미만 검증한다. 원본 amplitude selector나 내부 group
+  key를 사용자에게 직접 요구하는 새 API를 만들지 않는다. Shared scale/Canvas 변경 뒤 이전 program은 보존한다.
+- Raw source 역할 편집의 기존 지원은 유지하고, 새로운 cross-family generic bind/filter/compose는 후속 owner에 남긴다.
 
-**graphicSpec:** Ordinary closed area paths, concrete band colors, optional x guides를 저장한다. Horizon-specific renderer branch를 추가하지 않는다.
+## V target 계획과 독립 oracle
 
-**Config/context/trace:** Persistent style·layout policy는 해당 config owner에, 분석 의미와 resource relation은
-semantic owner에 둔다. Context는 다음 호출의 convenience만 저장하며 새 canonical state로 사용하지 않는다.
-Trace에는 실제 child 호출을 보존하되 큰 derived values 배열을 반복 복제하지 않는다.
-새 schema의 정확한 경로는 A Gate에서 architecture와 함께 결정한다.
+공통 Canvas 1000×700, margin 150. Values와 call을 함께 manifest에 고정할 계획이며 실제 primitive는 A 승인 뒤 작성한다.
 
-## 아래층 편집과 lifecycle
+| Variant | Values / 제안 public chain | 의미 oracle |
+| --- | --- | --- |
+| signed | time 0/1, value -4/+4; `createHorizonPlot({id:'horizon',x:'time',y:'value'})` | 3 bands×2 signs, 6 paths, extent 4·bandHeight 4/3, folded [0,1] |
+| temporal | time 1000/2000, value -4/+4; `createHorizonPlot({id:'horizon',x:{field:'time',fieldType:'temporal',temporalUnit:'timestamp',scale:{nice:false}},y:'value'})` | X domain [1000,2000], 원본 단위와 derived timestamp 관계 |
+| baseline-style | time 0/1, value -2/+6; `createHorizonPlot({id:'horizon',x:'time',y:'value',baseline:2,bands:2,area:{opacity:.8}}).editHorizon({target:'horizon',bands:3}).editAreaMark({target:'horizon',opacity:.6})` | Baseline-relative -4/+4, 최종 3 bands·6 paths·opacity .6 |
 
-editHorizon은 새 data revision과 downstream rematerialization을 소유한다. editAreaMark, x scale/axis edit를 사용하고 internal band key를 사용자에게 target으로 요구하지 않는다.
-
-모든 지원 edit는 source/scale/Canvas/filter/selection/label/guide 소비자 중 실제 영향을 받는 대상을 먼저 검증한다.
-Rematerialization은 scale→mark→guide→layout→highlight 순서의 기존 planner를 사용한다.
-Unsupported consumer가 있으면 부분 변경 없이 거부하며 이전 program·trace·caller values를 보존한다.
-
-## Primitive와 visual variant
-
-- 양수/음수/양쪽 amplitude, baseline 0/명시값.
-- Bands 변경, source revision, shared x overlay.
-- x guides on/off, folded y guide 요청의 explicit rejection.
-- Resize와 earlier program immutability.
-
-각 variant의 primitive source와 target public chain을 함께 검토한다. 새 API가 없을 때 primitive는 기존 domain
-owner와 세 public primitive로 구체화하며 renderer 내부에 의미를 넣지 않는다. V 승인 뒤 public program을 작성하고
-같은 실행의 decoded PNG pixels·graphic structure·Canvas calls를 비교한다.
-Canvas/SVG/PNG/PDF consumer coverage에서 해당 chart에 적용되지 않는 기능은 이유와 함께 N/A로 기록한다.
-
-## 수치·계층 검증
-
-기존 encodeHorizon의 동일 입력에서 band별 path·sign·folded y 결과가 일치한다. Band 경계 clipping은 기존 grammar oracle를 따른다.
-
-- Shortest valid call의 completion과 필요한 channel/coordinate 확인.
-- H0와 명시적 H1/H2 chain의 의미·graphic 동등성, trace owner 재사용.
-- Compatible authoring 순서의 수렴, 반복 assignment의 idempotence.
-- 생성→semantic edit→style edit→Canvas/data/scale rematerialization→remove/recreate 경로.
-- Positive/negative strict TypeScript와 runtime 오류 matrix.
-- Contract/card/docs/MCP의 supported·unresolved 범위 동기화.
-
-## 범위 밖과 완료 조건
-
-원본 amplitude 설명을 위한 새로운 전용 guide와 여러 series small multiples는 후속 composition 범위다.
-
-해당 phase의 승인 범위에서 위 source·API·수치·편집·render·types·docs evidence가 충족돼야 chart cycle을 닫는다.
-차트명이 존재하거나 그림 하나가 생성됐다는 사실만으로 완료하지 않는다.
+전부 nonzero target으로 plot ink를 확인한다. All-baseline empty는 numeric test에서 별도로 허용한다.
+Group shared/independent, missing break, explicit coordinate ambiguity, y/legend 거부, revision과 guide/scale/resize는
+비시각 acceptance에 포함한다. 새로운 amplitude guide와 panel layout은 후속 composition/guide 범위다.
+[Baseline H01–H16](../phase3/baseline-results.json), [consumer matrix](../phase3/VALIDATION.md)를 함께 적용한다.

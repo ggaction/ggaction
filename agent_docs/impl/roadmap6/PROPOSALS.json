@@ -326,20 +326,22 @@
         2
       ],
       "gateStates": {
-        "R6-P3-A": "planned",
+        "R6-P3-A": "ready-for-review",
         "R6-P3-V": "planned",
         "R6-P3-X": "planned"
       },
       "workPackages": [
         {
           "id": "R6-P3-W1",
-          "title": "Pie와 선택적 Donut facade",
+          "title": "Pie와 Donut 표현",
           "relativeSize": "M",
           "findingIds": [
             "F01"
           ],
-          "scope": "Category count, 명시적 weighted sum, arc options, Pie guide defaults를 연결한다. Donut은 동일 owner의 alias 여부만 결정한다. Labels는 Phase 5 후속 opt-in으로 분리한다.",
-          "acceptance": "category count·중복 category sum·donut hole·no axes/grid·하위 edit chain이 chart 계약과 일치. Facade-child semantic/graphic 동등성."
+          "scope": "Category count와 explicit weighted sum의 createPiePlot을 제안한다. Donut은 arc.innerRadius로 작성하고 별도 alias는 추가하지 않는 방향이다. Color는 category 기본, guide는 legend만이며 labels/theta order는 후속 단계다.",
+          "acceptance": "category count·중복 category sum·donut hole·no axes/grid·하위 edit chain이 chart 계약과 일치. Facade-child semantic/graphic 동등성.",
+          "contractEvidence": "phase3/CONTRACT_REVIEW.md",
+          "status": "contract-proposed"
         },
         {
           "id": "R6-P3-W2",
@@ -348,8 +350,10 @@
           "findingIds": [
             "F06"
           ],
-          "scope": "createAreaMark→encodeDensity→compatible guides를 연결한다. KDE bandwidth, grouping, densityChannel과 orientation은 기존 owner가 소유한다.",
-          "acceptance": "세로/가로·grouped density의 값과 영역이 기존 chain과 동일. editDensity/editAreaMark/editScale 후 owner 유지."
+          "scope": "Baseline-only createDensityPlot을 제안한다. 기존 KDE와 densityChannel을 재사용하고 groupBy와 color는 별도 명시하며 color는 retained group field만 지원한다. Orientation edit와 raw metadata join은 추가하지 않는다.",
+          "acceptance": "세로/가로·grouped density의 값과 영역이 기존 chain과 동일. editDensity/editAreaMark/editScale 후 owner 유지.",
+          "contractEvidence": "phase3/CONTRACT_REVIEW.md",
+          "status": "contract-proposed"
         },
         {
           "id": "R6-P3-W3",
@@ -358,11 +362,31 @@
           "findingIds": [
             "F07"
           ],
-          "scope": "Area→encodeHorizon→x guide를 연결한다. Baseline, bands, grouping, negative amplitude의 의미를 기존 folded owner에 위임한다.",
-          "acceptance": "signed data와 editHorizon의 revision 검증. Folded y를 원래 양적 축처럼 표시하거나 internal band color legend를 자동 생성하지 않음."
+          "scope": "필수 x/y를 받는 createHorizonPlot을 제안한다. 기존 createCoordinate로 좌표를 연결하고 encodeHorizon 뒤 explicit opacity를 적용한다. H0는 x guide만 허용하며 기존 lower guide escape는 유지한다.",
+          "acceptance": "signed data와 editHorizon의 revision 검증. Folded y를 원래 양적 축처럼 표시하거나 internal band color legend를 자동 생성하지 않음.",
+          "contractEvidence": "phase3/CONTRACT_REVIEW.md",
+          "status": "contract-proposed"
         }
       ],
-      "activity": "contract-review-preparation"
+      "activity": "awaiting-contract-approval",
+      "contractEvidence": "phase3/CONTRACT_REVIEW.md",
+      "baselineEvidence": "phase3/baseline-results.json",
+      "baselineCommit": "9625e71c374868756652fb8dff8153dc61500c6e",
+      "sourceTree": "9d3bd5e26b67634851e6009faac4b8c7c9e15002",
+      "typesTree": "25e66ad6bb83ea1481194255e3521d5f2911dbea",
+      "baselineValidation": {
+        "observations": 52,
+        "focusedTests": 176,
+        "focusedFiles": 27,
+        "newPublicApisImplemented": 0
+      },
+      "proposedDirectActions": [
+        "createPiePlot",
+        "createDensityPlot",
+        "createHorizonPlot"
+      ],
+      "proposedVisualTargets": 9,
+      "proposedPackageBoundary": "full-only; existing full/basic/svg gzip ceilings unchanged"
     },
     {
       "id": 4,
@@ -1378,10 +1402,11 @@
         }
       ],
       "rationale": "Arc/theta는 이미 있으므로 가장 직접적인 H0 공백을 작은 facade로 메운다.",
-      "recommended": "Category count, 명시적 weighted sum, arc options, Pie guide defaults를 연결한다. Donut은 동일 owner의 alias 여부만 결정한다. Labels는 Phase 5 후속 opt-in으로 분리한다.",
+      "recommended": "Category count와 explicit weighted sum의 createPiePlot을 제안한다. Donut은 arc.innerRadius로 작성하고 별도 alias는 추가하지 않는 방향이다. Color는 category 기본, guide는 legend만이며 labels/theta order는 후속 단계다.",
       "acceptance": "category count·중복 category sum·donut hole·no axes/grid·하위 edit chain이 chart 계약과 일치. Facade-child semantic/graphic 동등성.",
       "evidence": "audit/REPORT.md: F01",
-      "disposition": "implementation-or-explicit-contract-decision-proposed"
+      "disposition": "phase3-contract-ready-for-review-unapproved",
+      "contractEvidence": "phase3/CONTRACT_REVIEW.md"
     },
     {
       "id": "F02",
@@ -1473,10 +1498,11 @@
         }
       ],
       "rationale": "이미 완성된 density owner를 상위 의도에 연결한다.",
-      "recommended": "createAreaMark→encodeDensity→compatible guides를 연결한다. KDE bandwidth, grouping, densityChannel과 orientation은 기존 owner가 소유한다.",
+      "recommended": "Baseline-only createDensityPlot을 제안한다. 기존 KDE와 densityChannel을 재사용하고 groupBy와 color는 별도 명시하며 color는 retained group field만 지원한다. Orientation edit와 raw metadata join은 추가하지 않는다.",
       "acceptance": "세로/가로·grouped density의 값과 영역이 기존 chain과 동일. editDensity/editAreaMark/editScale 후 owner 유지.",
       "evidence": "audit/REPORT.md: F06",
-      "disposition": "implementation-or-explicit-contract-decision-proposed"
+      "disposition": "phase3-contract-ready-for-review-unapproved",
+      "contractEvidence": "phase3/CONTRACT_REVIEW.md"
     },
     {
       "id": "F07",
@@ -1492,10 +1518,11 @@
         }
       ],
       "rationale": "이미 완성된 Horizon owner와 guide 제한을 안전한 facade로 제공한다.",
-      "recommended": "Area→encodeHorizon→x guide를 연결한다. Baseline, bands, grouping, negative amplitude의 의미를 기존 folded owner에 위임한다.",
+      "recommended": "필수 x/y를 받는 createHorizonPlot을 제안한다. 기존 createCoordinate로 좌표를 연결하고 encodeHorizon 뒤 explicit opacity를 적용한다. H0는 x guide만 허용하며 기존 lower guide escape는 유지한다.",
       "acceptance": "signed data와 editHorizon의 revision 검증. Folded y를 원래 양적 축처럼 표시하거나 internal band color legend를 자동 생성하지 않음.",
       "evidence": "audit/REPORT.md: F07",
-      "disposition": "implementation-or-explicit-contract-decision-proposed"
+      "disposition": "phase3-contract-ready-for-review-unapproved",
+      "contractEvidence": "phase3/CONTRACT_REVIEW.md"
     },
     {
       "id": "F08",

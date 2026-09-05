@@ -2,33 +2,48 @@
 
 ## 진행 상태
 
-- [ ] A Gate의 정확한 결정·호환성·검증 범위 확정
-- [ ] A Gate 증거 commit/push와 명시적 사용자 승인 기록
-- [ ] R6-P3-W1 Pie와 선택적 Donut facade
-- [ ] R6-P3-W2 Density facade
-- [ ] R6-P3-W3 Horizon facade
-- [ ] 모든 시각 variant의 primitive target 작성·표시·V 승인
-- [ ] 승인된 variant의 public 구현과 같은 실행의 primitive/public render 비교
-- [ ] 누적 검증·migration·문서·원장 동기화
-- [ ] X Gate의 증거 commit/push와 명시적 사용자 승인 기록
+- [x] Phase 2 X 사용자 승인 기록과 기준 commit 고정
+- [x] 실제 lower 소유권·defaults·guide·coordinate·style 조사
+- [x] 52건 baseline probe와 176건 관련 기존 tests 확인
+- [x] A 계약 제안·호환성·consumer matrix·9개 V target 계획 작성
+- [ ] A package 최종 검증·commit/push·exact remote ref 기록
+- [ ] A 명시적 사용자 승인 기록
+- [ ] 승인된 새 계약의 Planned 등록과 비시각 준비
+- [ ] 9개 primitive targets 작성·표시·V 승인
+- [ ] R6-P3-W1 Pie/Donut public flow와 lower lifecycle
+- [ ] R6-P3-W2 Density public flow와 lower lifecycle
+- [ ] R6-P3-W3 Horizon public flow와 lower lifecycle
+- [ ] Same-run public/primitive parity·누적 검증·문서·원장 동기화
+- [ ] X package commit/push와 명시적 사용자 승인 기록
 
-위 체크는 미래 실행용이다. 계획 문서를 만든 사실을 구현 완료나 Gate 승인으로 표시하지 않는다.
+완료 체크는 계약 제안 준비까지다. A/V/X의 승인이나 새 API의 구현 완료를 뜻하지 않는다.
+[계약 검토](CONTRACT_REVIEW.md), [Gate](GATES.md), [검증](VALIDATION.md)가 현재 evidence를 소유한다.
 
-## 순서
+## 실행 순서와 경계
 
-1. [GOAL.md](GOAL.md)의 범위를 기준 source에서 다시 확인한다. 변한 근거는 별도 delta로 기록한다.
-2. [GATES.md](GATES.md)의 A review package를 구체화하고 승인 상태를 확인한다.
-3. 작업 묶음을 위 순서로 진행한다. 공유 owner 변경은 dependent facade보다 먼저 완료한다.
-4. 시각 변화가 있으면 해당 variant의 primitive target을 먼저 작성하고 V 승인 뒤 public flow를 구현한다.
-5. 하나의 coherent conceptual change를 검증해 commit/push한 뒤 다음 변경으로 이동한다. 한 W가 크면 공개 계약과 owner 경계로 나눈다.
-6. Source→unit/type→contract/trace→render→consumer 순서로 해당 변경에 필요한 검증을 확장한다.
-7. 실패는 원인·입력·남은 작업으로 기록하며 통과 사례만 추려 Gate를 완료하지 않는다.
-8. 승인 범위의 결과를 X package로 닫고 사용자 승인을 받은 뒤 dependent phase로 이동한다.
+1. A package의 P3-C01–C07을 사용자에게 제시한다. 승인 전 신규 public API나 primitive target을 만들지 않는다.
+2. A 승인 내용을 먼저 기록한다. 승인된 scope를 Planned에 등록하고 source/type/guide policy의 비시각 준비를 수행한다.
+3. 각 chart 계약의 9개 targets를 single manifest와 independently authored primitive로 만든다.
+   새로운 공개 flow가 없는 상태임을 표시하고 실제 이미지와 exact public target call로 V를 요청한다.
+4. V 승인된 범위만 Pie → Density → Horizon 순으로 구현한다. 기존 helper·statistical owner를 재사용한다.
+   매 conceptual change는 관련 source/types/Current/cards/docs/tests를 검증해 commit/push한다.
+5. Source/semantic/trace → strict runtime/type errors → lifecycle/guide/selection → render parity → installed consumer
+   순서로 acceptance를 닫는다. 새 failure를 숨기거나 상한을 자동 변경하지 않는다.
+6. Cumulative suite와 실제 package·coverage/docs·realistic 결과를 기록하고 stable capability owners로 evidence를 이동한다.
+7. X package를 원격 ref로 고정하고 승인받는다. 승인 전 Phase 3 completed로 표시하지 않는다.
 
-## 실행 기록에 남길 것
+## 발견하여 교정한 제안
 
-- 기준/결과 commit과 remote ref, 실제 실행 명령과 exit/result.
-- 변경한 public call의 before/after 및 의미·appearance 차이.
-- Trace의 의미 있는 child owner와 이전 program 불변성.
-- 필요한 경우 artifact manifest, input hash, 이미지와 exact target public call chain.
-- 해결·유지·보류한 finding ID와 다음 단계에 남긴 dependency.
+- Pie final-share cache는 불필요하다. 기존 theta encoding과 sector derivation·concrete paths를 사용한다.
+- Density group/color는 일반 Area와 달리 같은 retained group field만 지원한다. 원본 metadata color variant를 제거했다.
+- Horizon은 기존 coordinate child로 explicit 좌표 선택이 가능하다. encodeHorizon 옵션을 추가하지 않는다.
+- Horizon explicit lower folded y/legend는 허용되므로 신규 H0에서 별도 의미 검증이 필요하다.
+- Horizon explicit opacity는 encoding 뒤 editAreaMark로 적용해야 한다. Lower default를 바꾸지 않는다.
+- Donut 독립 alias는 P3-C02에서 미추가를 제안한다. Hole/padding 의미와 visual target은 W1에 포함한다.
+
+## 실행 기록
+
+- Approval baseline: `9625e71c374868756652fb8dff8153dc61500c6e`.
+- Source/types는 Phase 2 검증본과 동일. A baseline script·문서만 작성했다.
+- 상세 current observations: [baseline-results.json](baseline-results.json).
+- Production implementation·new render·new type check는 미실행이며 A/V 승인 뒤 수행한다.

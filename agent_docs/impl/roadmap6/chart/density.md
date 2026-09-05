@@ -1,114 +1,155 @@
 # Roadmap 6 — Density
 
-**상태: Proposed, 미구현·미승인.** 아래 새 이름과 option 구조는 추천 계약 초안이다.
-현행 API가 아니며 그대로 실행 가능한 예제로 주장하지 않는다. Phase 3 A에서 signature를 확정하고
-V에서 primitive 목표를 확인한 뒤 public flow를 구현한다.
+**상태: R6-P3-A Proposed / 미승인·미구현.** 새 `createDensityPlot`은 아직 Current API가 아니다.
+[Phase 3 계약 검토](../phase3/CONTRACT_REVIEW.md)의 P3-C01·C04·C06–C07이 이 chart의 승인 제안이다.
+연결 F06·D02·D04, owner [Phase 3 W2](../phase3/GOAL.md).
 
-## 목적과 범위
+## 설명과 공개 계약 제안
 
-한 quantitative variable의 KDE를 area로 표현하는 완성 chart다. 기존 encodeDensity의 baseline placement와 통계 옵션을 재사용한다.
+한 quantitative variable의 Gaussian KDE를 baseline-closed area로 보여준다.
+Baseline density의 기존 통계·orientation owner를 재사용한다. Violin의 category placement와 Raincloud composition은 별도다.
 
-- 연결 항목: F06, D02, D04.
-- 실행 owner: [Phase 3](../phase3/GOAL.md).
-- 공통 기준: [DESIGN_DECISIONS.md](../DESIGN_DECISIONS.md), [VALIDATION.md](../VALIDATION.md).
+~~~typescript
+// Proposed; existing referenced option types keep their current meaning.
+type DensityPlotLegendOptions = Omit<FilledMarkLegendOptions, "count" | "gradient" | "channels"> & {
+  channels?: readonly ["color"];
+};
+type DensityPlotGuideOptions = Omit<CartesianCategoricalGuideOptions, "legend"> & {
+  legend?: false | DensityPlotLegendOptions;
+};
+type CreateDensityPlotOptions = {
+  id?: string;
+  data?: string;
+  coordinate?: string;
+  field: string;
+  groupBy?: string | false;
+  bandwidth?: "auto" | number;
+  extent?: "auto" | readonly [number, number];
+  steps?: number;
+  kernel?: DensityKernel;
+  normalization?: DensityNormalization;
+  as?: readonly [string, string];
+  densityChannel?: "x" | "y";
+  valueScale?: NonPointQuantitativePositionScaleOptions;
+  densityScale?: NonPointZeroSupportingPositionScaleOptions;
+  color?: string | {
+    field: string;
+    fieldType?: "nominal" | "ordinal";
+    scale?: NonPointCategoricalColorScaleOptions;
+    palette?: Palette;
+    layout?: "overlay";
+  };
+  area?: {
+    fill?: string;
+    opacity?: number;
+    stroke?: string;
+    strokeWidth?: number;
+    curve?: CurveInterpolation;
+  };
+  guides?: false | DensityPlotGuideOptions;
+};
+// createDensityPlot(options: CreateDensityPlotOptions): ChartProgram;
+~~~
 
-## 데이터와 최종 public chain 초안
+`DensityPlotGuideOptions`는 기존 Cartesian categorical filled-mark guide vocabulary를 사용한다.
+Axes는 x/y, grid는 horizontal/vertical, legend는 group color만이며 gradient/count legend는 제외한다.
+Nested target/coordinate가 아니라 facade의 id/coordinate가 layer binding을 소유한다.
+`placement`, `source`, `target`, raw x/y, tuple group, stack/center color layout은 이 facade에서 거부한다.
+통계 parameter를 별도 `density:{}` 객체로 다시 포장하지 않고 encodeDensity와 같은 이름을 쓴다.
 
-아래 synthetic rows를 수치 oracle와 최소 visual target의 출발점으로 쓴다.
-A에서 실제 public signature를 확정하고, primitive/public 두 프로그램이 같은 manifest의 values와 dimensions를 사용한다.
+## 현재 실행 가능한 lower chain과 제안 H0
 
 ~~~javascript
-// Proposed API design — not a Current executable example.
 import { chart } from 'ggaction';
-
-const values = [{ value: 1, group: 'A' }, { value: 2, group: 'A' }, { value: 4, group: 'A' }, { value: 3, group: 'B' }, { value: 5, group: 'B' }];
+const values = [
+  { value: 1, group: 'A' }, { value: 2, group: 'A' },
+  { value: 3, group: 'B' }, { value: 5, group: 'B' }
+];
 const base = chart()
   .createCanvas({ width: 1000, height: 700, margin: 150 })
-  .createData({ id: 'data', values });
+  .createData({ id: 'source', values });
 
-const density = base.createDensityPlot({ field: 'value' });
-const grouped = base.createDensityPlot({
-  field: 'value', groupBy: 'group', densityChannel: 'y'
+const lower = base
+  .createAreaMark({ id: 'density', data: 'source' })
+  .encodeDensity({ target: 'density', field: 'value', groupBy: 'group',
+    bandwidth: 1, extent: [0, 6], steps: 61 })
+  .encodeColor({ target: 'density', field: 'group' })
+  .createGuides({ legend: { target: 'density' } });
+
+// Proposed equivalent; not executable yet.
+const proposed = base.createDensityPlot({
+  id: 'density', data: 'source', field: 'value',
+  groupBy: 'group', color: 'group', bandwidth: 1, extent: [0, 6], steps: 61
 });
 ~~~
 
-Id/data/coordinate의 생략은 공통 current/unique 규칙을 따른다. 같은 종류의 resource가 여러 개면 explicit target을
-요구한다. 예제의 base에서 각 const는 독립된 immutable program이며, chart를 한 program에 겹칠 때는
-명시적 IDs와 compatible shared scale/guide를 사용한다.
+최단 제안은 `base.createDensityPlot({ field:'value' })`다. Default id densityPlot.
+`densityChannel:'y'`는 x=value/y=density이며 `'x'`는 x=density/y=value다.
+`horizontal:true` 같은 두 번째 orientation vocabulary는 추가하지 않는다.
 
-## 주요 설계 결정과 rationale
+## Default·지원·오류
 
-| 결정 | 권장 계약 | 이유 |
-| --- | --- | --- |
-| Owner | KDE bandwidth/grid/extent는 encodeDensity와 derived owner에 위임한다. | 수학을 facade에 복제하지 않는다. |
-| Orientation | densityChannel과 value axis를 동일 lower vocabulary로 표현한다. | Horizontal/vertical API를 이중 설계하지 않는다. |
-| Group | Explicit group을 identity로, appearance field는 series grain에서 검증한다. | Group과 color를 별개로 바꿀 수 있다. |
-| Default | 현행 KDE default를 보존하고 입력 범위·단위·결과를 문서화한다. | 새 이름 추가와 통계 변화는 다른 결정이다. |
+| 항목 | 계약 |
+| --- | --- |
+| KDE | 현행 gaussian, normalization unit, bandwidth auto, extent auto, steps 100 유지 |
+| Group | 생략/false=ungrouped, string=explicit group. Fresh mark에 resolved data를 전달하므로 다른 mark의 group을 상속하지 않음 |
+| Color | 생략=field color 없음. group만 지정해도 자동 색 추론 안 함. 사용하려면 explicit groupBy와 같은 field 필요 |
+| Derived fields | Group field(있을 때), value output, density output만 보존. `as` 기본은 field_value / field_density |
+| Raw metadata | 원본의 series-constant region 같은 field도 자동 복사·join하지 않음. 다른 color field를 일반 Area처럼 허용한다고 문서화하지 않음 |
+| Missing | Finite numeric field와 유효한 nominal group row만 사용. 일부 invalid row는 제외; 유효 row가 없으면 오류 |
+| Bandwidth/extent | Auto는 pooled valid values로 계산. 전체 유효 표본이 constant/singleton이면 자동 추정 오류; explicit positive bandwidth와 increasing finite extent를 함께 주면 작성 가능 |
+| Grid limits | Steps 2..10,000; output profiles×steps ≤10,000, valid rows×steps ≤10,000,000의 현행 제한 유지 |
+| Normalization | unit=각 profile의 KDE, count=해당 profile의 valid sample 수를 곱함. 유한 extent의 sampled integral이 정확히 1이라고 주장하지 않음 |
+| Scales | value nice:false/zero:false, density nice:true/zero:true 기본. Density magnitude domain은 zero를 포함해야 함 |
+| Area | 기본 fill theme·opacity .2·linear. Explicit fill+field color는 충돌 오류. strokeWidth는 stroke와 함께; create stroke:false는 미지원 |
+| Guides | Value와 Density 축; orientation에 맞는 현재 자동 grid 방향. Legend는 explicit group color가 있을 때만. Chart title은 별도 action |
+
+Color appearance를 바꿔 KDE의 partition이 바뀌어서는 안 된다. 다른 raw field의 category palette를 원하면
+group domain에 대한 explicit color scale range/palette를 작성할 수 있다. Metadata join 지원을 새로 약속하지 않는다.
 
 ## 중요한 action hierarchy
 
-아래 트리의 기존 이름은 재사용해야 할 owner다. 괄호의 역할 문장은 helper/public API 이름을 확정한 것이 아니다.
-새 domain action이 필요하면 meaningful wrapped child로 만들고 실제 top-level trace와 대조한다.
-
 ~~~text
 createDensityPlot
-├─ createAreaMark
-├─ encodeDensity
+├─ createAreaMark (resolved id/data and area options)
+├─ encodeDensity (baseline only; source fields and statistics)
 │  ├─ createDensityData → materializeDensityData
-│  ├─ source binding + encodeX / encodeY
+│  ├─ explicit derived data binding
+│  ├─ encodeX / encodeY / encodeGroup?
 │  └─ rematerializeAreaMark
-├─ encodeColor? / encodeGroup?
-└─ createGuides?
+├─ encodeColor? (same retained group field; overlay)
+└─ guide fulfillment → existing axes/grid/legend components
 ~~~
 
-Facade가 child의 inference·validation·aggregation·geometry를 복제해서는 안 된다.
-완성 chart를 lower public chain으로 풀었을 때 같은 의미와 graphics를 얻어야 한다.
+groupBy는 encodeDensity가 소유한다. Facade가 뒤에서 다시 encodeGroup을 덧붙여 partition을 바꾸지 않는다.
+KDE 수식·sampling·derived names·zero baseline·path closure를 복제하지 않는다.
+Current lower chain과 semantic/graphic 동등성, 실제 facade child trace, failure immutability를 별도로 증명한다.
 
-## 저장 결과 계약
+## 저장 결과와 아래층 편집
 
-**semanticSpec:** Source→density derived snapshot provenance, field/group/kernel parameters, densityChannel과 area baseline을 보존한다.
+- Raw dataset과 materialized density snapshot의 source/transform/resolved bandwidth·extent가 provenance다.
+  Layer.data는 derived snapshot을 가리키고 ordinary x/y/group/color encodings를 가진다.
+- Orientation은 value/density field의 channel binding과 기존 transform/area consumer 관계로 표현한다.
+  별도 façade state나 원본 metadata cache는 추가하지 않는다.
+- Graphic은 ordinary closed area path commands/paint와 concrete Cartesian guide objects다.
+  Renderer는 KDE·grouping·orientation inference를 계산하지 않는다.
+- `editDensity`는 새 revision을 만들고 현재 id/field/output/scale/coordinate 관계를 owner 규칙대로 보존한다.
+  Bandwidth·extent·steps·kernel·normalization·source/group 변화 중 현재 지원되는 조합만 사용한다.
+  Source/group 변경이 현재 color/selection과 충돌하면 오류이고 이전 program은 그대로다.
+- `editAreaMark`의 appearance, `editScale`, guide editors, selection/highlight·resize를 현재 consumer로 검증한다.
+  `editDensity({densityChannel})`는 현재 미지원이다. 신규 방향/역할 편집은 Phase 6에서 승인받는다.
 
-**graphicSpec:** Concrete closed area paths와 value/density axes를 저장한다. Renderer는 KDE를 계산하지 않는다.
+## V target 계획과 수치 oracle
 
-**Config/context/trace:** Persistent style·layout policy는 해당 config owner에, 분석 의미와 resource relation은
-semantic owner에 둔다. Context는 다음 호출의 convenience만 저장하며 새 canonical state로 사용하지 않는다.
-Trace에는 실제 child 호출을 보존하되 큰 derived values 배열을 반복 복제하지 않는다.
-새 schema의 정확한 경로는 A Gate에서 architecture와 함께 결정한다.
+위 values와 1000×700, margin 150을 사용할 계획이다. 실제 primitive/manifest는 A 뒤 작성한다.
 
-## 아래층 편집과 lifecycle
+| Variant | 제안 public call (base 뒤) | 의미 oracle |
+| --- | --- | --- |
+| vertical | `createDensityPlot({id:'density',field:'value',bandwidth:1,extent:[0,6],steps:61})` | 61 samples, one closed path, x value/y density |
+| grouped | `createDensityPlot({id:'density',field:'value',groupBy:'group',color:'group',bandwidth:1,extent:[0,6],steps:61})` | 122 samples, two paths/colors, 각 group n=2 |
+| horizontal | `createDensityPlot({id:'density',field:'value',groupBy:'group',color:'group',densityChannel:'x',bandwidth:1,extent:[0,6],steps:61})` | 같은 KDE 수치, x density/y value, 축 title 교환 |
 
-editDensity의 statistics revision, editAreaMark의 fill/opacity/outline, encodeColor, editScale, guide component 편집을 제공한다. Density 방향 role edit를 추가하면 Phase 6의 owner 규칙에 맞춘다.
-
-모든 지원 edit는 source/scale/Canvas/filter/selection/label/guide 소비자 중 실제 영향을 받는 대상을 먼저 검증한다.
-Rematerialization은 scale→mark→guide→layout→highlight 순서의 기존 planner를 사용한다.
-Unsupported consumer가 있으면 부분 변경 없이 거부하며 이전 program·trace·caller values를 보존한다.
-
-## Primitive와 visual variant
-
-- 단일 density와 grouped density.
-- 세로/가로, bandwidth 변경 전후, constant sample와 invalid input.
-- Color가 group field와 다른 series-constant field.
-- Canvas·shared scale edit와 primitive/public 동등성.
-
-각 variant의 primitive source와 target public chain을 함께 검토한다. 새 API가 없을 때 primitive는 기존 domain
-owner와 세 public primitive로 구체화하며 renderer 내부에 의미를 넣지 않는다. V 승인 뒤 public program을 작성하고
-같은 실행의 decoded PNG pixels·graphic structure·Canvas calls를 비교한다.
-Canvas/SVG/PNG/PDF consumer coverage에서 해당 chart에 적용되지 않는 기능은 이유와 함께 N/A로 기록한다.
-
-## 수치·계층 검증
-
-기존 encodeDensity의 같은 parameter와 derived values가 일치한다. Sampled integral을 근거 없이 정확히 1이라고 단정하지 않고 기존 수치 oracle·sampling 계약을 사용한다.
-
-- Shortest valid call의 completion과 필요한 channel/coordinate 확인.
-- H0와 명시적 H1/H2 chain의 의미·graphic 동등성, trace owner 재사용.
-- Compatible authoring 순서의 수렴, 반복 assignment의 idempotence.
-- 생성→semantic edit→style edit→Canvas/data/scale rematerialization→remove/recreate 경로.
-- Positive/negative strict TypeScript와 runtime 오류 matrix.
-- Contract/card/docs/MCP의 supported·unresolved 범위 동기화.
-
-## 범위 밖과 완료 조건
-
-Violin category placement와 Raincloud composite는 각각 별도 chart contract다. Facade가 모든 density mode를 자동 추론하지 않는다.
-
-해당 phase의 승인 범위에서 위 source·API·수치·편집·render·types·docs evidence가 충족돼야 chart cycle을 닫는다.
-차트명이 존재하거나 그림 하나가 생성됐다는 사실만으로 완료하지 않는다.
+독립 Gaussian 공식과 fixture의 고정 수치, sampled grid endpoints, count/unit 비율을 확인한다.
+Constant sample explicit 경로·invalid rows·all-invalid·collision·scale zero 오류, stats revision·shared scale·Canvas edit는
+비시각 acceptance다. 미래 orientation edit·metadata color variant를 승인 대상처럼 만들지 않는다.
+[Baseline D01–D16](../phase3/baseline-results.json)과 [consumer matrix](../phase3/VALIDATION.md)를 적용한다.

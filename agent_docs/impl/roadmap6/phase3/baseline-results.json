@@ -1,0 +1,2584 @@
+{
+  "baselineCommit": "9625e71c374868756652fb8dff8153dc61500c6e",
+  "sourceTree": "9d3bd5e26b67634851e6009faac4b8c7c9e15002",
+  "command": "node agent_docs/impl/roadmap6/phase3/baseline.probes.mjs",
+  "cases": [
+    {
+      "id": "A01",
+      "claim": "All three proposed facades and Donut alias are absent from full/basic",
+      "outcome": "accepted",
+      "inputUnchanged": true,
+      "details": {
+        "absent": [
+          "createPiePlot",
+          "createDensityPlot",
+          "createHorizonPlot",
+          "createDonutPlot"
+        ]
+      },
+      "topLevelTrace": []
+    },
+    {
+      "id": "P01",
+      "claim": "Category count completes two sectors without radius",
+      "outcome": "accepted",
+      "inputUnchanged": true,
+      "details": {
+        "encoding": {
+          "theta": {
+            "field": "c",
+            "fieldType": "nominal",
+            "aggregate": "count",
+            "scale": "theta"
+          }
+        },
+        "sectors": [
+          {
+            "key": "A",
+            "theta": "A",
+            "count": 2,
+            "aggregateValue": 2,
+            "startTheta": 0,
+            "endTheta": 240,
+            "innerRadius": 0,
+            "outerRadius": 200,
+            "sourceIndices": [
+              0,
+              1
+            ]
+          },
+          {
+            "key": "B",
+            "theta": "B",
+            "count": 1,
+            "aggregateValue": 1,
+            "startTheta": 240,
+            "endTheta": 360,
+            "innerRadius": 0,
+            "outerRadius": 200,
+            "sourceIndices": [
+              2
+            ]
+          }
+        ],
+        "config": {
+          "innerRadius": 0,
+          "padAngle": 0,
+          "opacity": 1,
+          "stroke": "#ffffff",
+          "strokeWidth": 1
+        },
+        "guides": {}
+      },
+      "topLevelTrace": [
+        "createCanvas",
+        "createData",
+        "createArcMark",
+        "encodeTheta"
+      ]
+    },
+    {
+      "id": "P02",
+      "claim": "Duplicate-category weighted sum yields equal halves",
+      "outcome": "accepted",
+      "inputUnchanged": true,
+      "details": {
+        "encoding": {
+          "theta": {
+            "field": "c",
+            "fieldType": "nominal",
+            "aggregate": "sum",
+            "weight": "v",
+            "scale": "theta"
+          }
+        },
+        "sectors": [
+          {
+            "key": "A",
+            "theta": "A",
+            "count": 2,
+            "aggregateValue": 5,
+            "startTheta": 0,
+            "endTheta": 180,
+            "innerRadius": 0,
+            "outerRadius": 200,
+            "sourceIndices": [
+              0,
+              1
+            ]
+          },
+          {
+            "key": "B",
+            "theta": "B",
+            "count": 1,
+            "aggregateValue": 5,
+            "startTheta": 180,
+            "endTheta": 360,
+            "innerRadius": 0,
+            "outerRadius": 200,
+            "sourceIndices": [
+              2
+            ]
+          }
+        ],
+        "config": {
+          "innerRadius": 0,
+          "padAngle": 0,
+          "opacity": 1,
+          "stroke": "#ffffff",
+          "strokeWidth": 1
+        },
+        "guides": {}
+      },
+      "topLevelTrace": [
+        "createCanvas",
+        "createData",
+        "createArcMark",
+        "encodeTheta"
+      ]
+    },
+    {
+      "id": "P03",
+      "claim": "Donut ratio and degree padding use the existing arc editor",
+      "outcome": "accepted",
+      "inputUnchanged": true,
+      "details": {
+        "encoding": {
+          "theta": {
+            "field": "c",
+            "fieldType": "nominal",
+            "aggregate": "sum",
+            "weight": "v",
+            "scale": "theta"
+          }
+        },
+        "sectors": [
+          {
+            "key": "A",
+            "theta": "A",
+            "count": 2,
+            "aggregateValue": 5,
+            "startTheta": 0,
+            "endTheta": 180,
+            "innerRadius": 110.00000000000001,
+            "outerRadius": 200,
+            "sourceIndices": [
+              0,
+              1
+            ]
+          },
+          {
+            "key": "B",
+            "theta": "B",
+            "count": 1,
+            "aggregateValue": 5,
+            "startTheta": 180,
+            "endTheta": 360,
+            "innerRadius": 110.00000000000001,
+            "outerRadius": 200,
+            "sourceIndices": [
+              2
+            ]
+          }
+        ],
+        "config": {
+          "innerRadius": 0.55,
+          "padAngle": 2,
+          "opacity": 1,
+          "stroke": "#ffffff",
+          "strokeWidth": 1
+        },
+        "guides": {}
+      },
+      "topLevelTrace": [
+        "createCanvas",
+        "createData",
+        "createArcMark",
+        "encodeTheta",
+        "editArcMark"
+      ]
+    },
+    {
+      "id": "P04",
+      "claim": "Explicit nominal numeric categories remain count partitions",
+      "outcome": "accepted",
+      "inputUnchanged": true,
+      "details": {
+        "encoding": {
+          "theta": {
+            "field": "c",
+            "fieldType": "nominal",
+            "aggregate": "count",
+            "scale": "theta"
+          }
+        },
+        "sectors": [
+          {
+            "key": 2,
+            "theta": 2,
+            "count": 2,
+            "aggregateValue": 2,
+            "startTheta": 0,
+            "endTheta": 240,
+            "innerRadius": 0,
+            "outerRadius": 200,
+            "sourceIndices": [
+              0,
+              1
+            ]
+          },
+          {
+            "key": 3,
+            "theta": 3,
+            "count": 1,
+            "aggregateValue": 1,
+            "startTheta": 240,
+            "endTheta": 360,
+            "innerRadius": 0,
+            "outerRadius": 200,
+            "sourceIndices": [
+              2
+            ]
+          }
+        ],
+        "config": {
+          "innerRadius": 0,
+          "padAngle": 0,
+          "opacity": 1,
+          "stroke": "#ffffff",
+          "strokeWidth": 1
+        },
+        "guides": {}
+      },
+      "topLevelTrace": [
+        "createCanvas",
+        "createData",
+        "createArcMark",
+        "encodeTheta"
+      ]
+    },
+    {
+      "id": "P05",
+      "claim": "Zero-total category has no sector but remains in the color legend domain",
+      "outcome": "accepted",
+      "inputUnchanged": true,
+      "details": {
+        "encoding": {
+          "theta": {
+            "field": "c",
+            "fieldType": "nominal",
+            "aggregate": "sum",
+            "weight": "v",
+            "scale": "theta"
+          },
+          "color": {
+            "field": "c",
+            "fieldType": "nominal",
+            "scale": "color"
+          }
+        },
+        "sectors": [
+          {
+            "key": "B",
+            "theta": "B",
+            "count": 1,
+            "aggregateValue": 5,
+            "color": "B",
+            "startTheta": 0,
+            "endTheta": 360,
+            "innerRadius": 0,
+            "outerRadius": 200,
+            "sourceIndices": [
+              1
+            ]
+          }
+        ],
+        "config": {
+          "innerRadius": 0,
+          "padAngle": 0,
+          "opacity": 1,
+          "stroke": "#ffffff",
+          "strokeWidth": 1
+        },
+        "guides": {
+          "legend": {
+            "color": {
+              "scale": "color",
+              "title": "c"
+            }
+          }
+        },
+        "legendDomain": [
+          "A",
+          "B"
+        ]
+      },
+      "topLevelTrace": [
+        "createCanvas",
+        "createData",
+        "createArcMark",
+        "encodeTheta",
+        "encodeColor",
+        "createGuides"
+      ]
+    },
+    {
+      "id": "P06",
+      "claim": "Negative weight rejects",
+      "outcome": "rejected",
+      "inputUnchanged": true,
+      "error": "Arc theta weight field \"v\" must contain non-negative finite numbers at row 0."
+    },
+    {
+      "id": "P07",
+      "claim": "Nonfinite weight rejects",
+      "outcome": "rejected",
+      "inputUnchanged": true,
+      "error": "Arc theta weight field \"v\" must contain non-negative finite numbers at row 0."
+    },
+    {
+      "id": "P08",
+      "claim": "All-zero weights reject",
+      "outcome": "rejected",
+      "inputUnchanged": true,
+      "error": "Arc mark \"pie\" theta weights must have a positive total."
+    },
+    {
+      "id": "P09",
+      "claim": "Missing category rejects",
+      "outcome": "rejected",
+      "inputUnchanged": true,
+      "error": "Field \"c\" must contain a nominal value at row 0."
+    },
+    {
+      "id": "P10",
+      "claim": "Color field can differ when constant within each final slice",
+      "outcome": "accepted",
+      "inputUnchanged": true,
+      "details": {
+        "encoding": {
+          "theta": {
+            "field": "c",
+            "fieldType": "nominal",
+            "aggregate": "sum",
+            "weight": "v",
+            "scale": "theta"
+          },
+          "color": {
+            "field": "color",
+            "fieldType": "nominal",
+            "scale": "color"
+          }
+        },
+        "sectors": [
+          {
+            "key": "A",
+            "theta": "A",
+            "count": 2,
+            "aggregateValue": 5,
+            "color": "warm",
+            "startTheta": 0,
+            "endTheta": 180,
+            "innerRadius": 0,
+            "outerRadius": 200,
+            "sourceIndices": [
+              0,
+              1
+            ]
+          },
+          {
+            "key": "B",
+            "theta": "B",
+            "count": 1,
+            "aggregateValue": 5,
+            "color": "cool",
+            "startTheta": 180,
+            "endTheta": 360,
+            "innerRadius": 0,
+            "outerRadius": 200,
+            "sourceIndices": [
+              2
+            ]
+          }
+        ],
+        "config": {
+          "innerRadius": 0,
+          "padAngle": 0,
+          "opacity": 1,
+          "stroke": "#ffffff",
+          "strokeWidth": 1
+        },
+        "guides": {}
+      },
+      "topLevelTrace": [
+        "createCanvas",
+        "createData",
+        "createArcMark",
+        "encodeTheta",
+        "encodeColor"
+      ]
+    },
+    {
+      "id": "P11",
+      "claim": "Color varying within one final slice rejects",
+      "outcome": "rejected",
+      "inputUnchanged": true,
+      "error": "Aggregated arc theta group \"A\" must resolve to one color value."
+    },
+    {
+      "id": "P12",
+      "claim": "Lower field color rejects a preconfigured scalar arc fill",
+      "outcome": "rejected",
+      "inputUnchanged": true,
+      "error": "encodeColor cannot replace constant appearance on arc mark \"pie\"."
+    },
+    {
+      "id": "P13",
+      "claim": "Existing facade planner reuses compatible arc legend",
+      "outcome": "accepted",
+      "inputUnchanged": true,
+      "details": {
+        "guides": {
+          "legend": {
+            "color": {
+              "scale": "color",
+              "title": "c"
+            }
+          }
+        }
+      },
+      "topLevelTrace": [
+        "createCanvas",
+        "createData",
+        "createArcMark",
+        "encodeTheta",
+        "encodeColor",
+        "createGuides"
+      ]
+    },
+    {
+      "id": "P14",
+      "claim": "Legend-only facade policy without color is a valid no-op",
+      "outcome": "accepted",
+      "inputUnchanged": true,
+      "details": {
+        "guides": {}
+      },
+      "topLevelTrace": [
+        "createCanvas",
+        "createData",
+        "createArcMark",
+        "encodeTheta"
+      ]
+    },
+    {
+      "id": "P15",
+      "claim": "Cartesian facade axis planner does not support pie axes",
+      "outcome": "rejected",
+      "inputUnchanged": true,
+      "error": "createAxes coordinate type conflicts with Polar encodings."
+    },
+    {
+      "id": "P16",
+      "claim": "Facade legend targeting a different layer rejects",
+      "outcome": "rejected",
+      "inputUnchanged": true,
+      "error": "Facade guide conflict: legend target does not belong to this facade. Use the existing guide editor or disable this facade's guide branch."
+    },
+    {
+      "id": "P17",
+      "claim": "Theta reassignment sum to count clears stale weight",
+      "outcome": "accepted",
+      "inputUnchanged": true,
+      "details": {
+        "encoding": {
+          "theta": {
+            "field": "c",
+            "fieldType": "nominal",
+            "aggregate": "count",
+            "scale": "theta"
+          }
+        },
+        "sectors": [
+          {
+            "key": "A",
+            "theta": "A",
+            "count": 2,
+            "aggregateValue": 2,
+            "startTheta": 0,
+            "endTheta": 240,
+            "innerRadius": 0,
+            "outerRadius": 200,
+            "sourceIndices": [
+              0,
+              1
+            ]
+          },
+          {
+            "key": "B",
+            "theta": "B",
+            "count": 1,
+            "aggregateValue": 1,
+            "startTheta": 240,
+            "endTheta": 360,
+            "innerRadius": 0,
+            "outerRadius": 200,
+            "sourceIndices": [
+              2
+            ]
+          }
+        ],
+        "config": {
+          "innerRadius": 0,
+          "padAngle": 0,
+          "opacity": 1,
+          "stroke": "#ffffff",
+          "strokeWidth": 1
+        },
+        "guides": {}
+      },
+      "topLevelTrace": [
+        "createCanvas",
+        "createData",
+        "createArcMark",
+        "encodeTheta",
+        "encodeTheta"
+      ]
+    },
+    {
+      "id": "P18",
+      "claim": "A reversed partial sweep preserves the weighted partition",
+      "outcome": "accepted",
+      "inputUnchanged": true,
+      "details": {
+        "encoding": {
+          "theta": {
+            "field": "c",
+            "fieldType": "nominal",
+            "aggregate": "sum",
+            "weight": "v",
+            "scale": "theta"
+          }
+        },
+        "sectors": [
+          {
+            "key": "A",
+            "theta": "A",
+            "count": 2,
+            "aggregateValue": 5,
+            "startTheta": 180,
+            "endTheta": 90,
+            "innerRadius": 0,
+            "outerRadius": 200,
+            "sourceIndices": [
+              0,
+              1
+            ]
+          },
+          {
+            "key": "B",
+            "theta": "B",
+            "count": 1,
+            "aggregateValue": 5,
+            "startTheta": 90,
+            "endTheta": 0,
+            "innerRadius": 0,
+            "outerRadius": 200,
+            "sourceIndices": [
+              2
+            ]
+          }
+        ],
+        "config": {
+          "innerRadius": 0,
+          "padAngle": 0,
+          "opacity": 1,
+          "stroke": "#ffffff",
+          "strokeWidth": 1
+        },
+        "guides": {}
+      },
+      "topLevelTrace": [
+        "createCanvas",
+        "createData",
+        "createArcMark",
+        "encodeTheta"
+      ]
+    },
+    {
+      "id": "P19",
+      "claim": "Existing explicit theta scale domain controls category order",
+      "outcome": "accepted",
+      "inputUnchanged": true,
+      "details": {
+        "encoding": {
+          "theta": {
+            "field": "c",
+            "fieldType": "nominal",
+            "aggregate": "count",
+            "scale": "theta"
+          }
+        },
+        "sectors": [
+          {
+            "key": "B",
+            "theta": "B",
+            "count": 1,
+            "aggregateValue": 1,
+            "startTheta": 0,
+            "endTheta": 120,
+            "innerRadius": 0,
+            "outerRadius": 200,
+            "sourceIndices": [
+              2
+            ]
+          },
+          {
+            "key": "A",
+            "theta": "A",
+            "count": 2,
+            "aggregateValue": 2,
+            "startTheta": 120,
+            "endTheta": 360,
+            "innerRadius": 0,
+            "outerRadius": 200,
+            "sourceIndices": [
+              0,
+              1
+            ]
+          }
+        ],
+        "config": {
+          "innerRadius": 0,
+          "padAngle": 0,
+          "opacity": 1,
+          "stroke": "#ffffff",
+          "strokeWidth": 1
+        },
+        "guides": {}
+      },
+      "topLevelTrace": [
+        "createCanvas",
+        "createData",
+        "createArcMark",
+        "encodeTheta"
+      ]
+    },
+    {
+      "id": "D01",
+      "claim": "Baseline density preserves current KDE defaults",
+      "outcome": "accepted",
+      "inputUnchanged": true,
+      "details": {
+        "layer": {
+          "id": "density",
+          "mark": {
+            "type": "area"
+          },
+          "data": "densityDensityData",
+          "coordinate": "main",
+          "encoding": {
+            "x": {
+              "field": "v_value",
+              "fieldType": "quantitative",
+              "scale": "x"
+            },
+            "y": {
+              "field": "v_density",
+              "fieldType": "quantitative",
+              "scale": "y"
+            }
+          }
+        },
+        "transform": {
+          "type": "density",
+          "field": "v",
+          "bandwidth": "auto",
+          "extent": "auto",
+          "steps": 100,
+          "kernel": "gaussian",
+          "normalization": "unit",
+          "as": [
+            "v_value",
+            "v_density"
+          ],
+          "resolve": "shared",
+          "resolved": {
+            "bandwidth": 1.049124713013727,
+            "extent": [
+              1,
+              5
+            ]
+          }
+        },
+        "dataId": "densityDensityData",
+        "source": "source",
+        "rows": 100,
+        "first": {
+          "v_value": 1,
+          "v_density": 0.17093783517785002
+        },
+        "paths": 1,
+        "config": {
+          "fill": "#4c78a8",
+          "opacity": 0.2
+        },
+        "guides": {}
+      },
+      "topLevelTrace": [
+        "createCanvas",
+        "createData",
+        "createAreaMark",
+        "encodeDensity"
+      ]
+    },
+    {
+      "id": "D02",
+      "claim": "densityChannel x swaps value/density roles and guide titles",
+      "outcome": "accepted",
+      "inputUnchanged": true,
+      "details": {
+        "layer": {
+          "id": "density",
+          "mark": {
+            "type": "area"
+          },
+          "data": "densityDensityData",
+          "coordinate": "main",
+          "encoding": {
+            "x": {
+              "field": "v_density",
+              "fieldType": "quantitative",
+              "scale": "x"
+            },
+            "y": {
+              "field": "v_value",
+              "fieldType": "quantitative",
+              "scale": "y"
+            }
+          }
+        },
+        "transform": {
+          "type": "density",
+          "field": "v",
+          "bandwidth": "auto",
+          "extent": "auto",
+          "steps": 100,
+          "kernel": "gaussian",
+          "normalization": "unit",
+          "as": [
+            "v_value",
+            "v_density"
+          ],
+          "resolve": "shared",
+          "resolved": {
+            "bandwidth": 1.049124713013727,
+            "extent": [
+              1,
+              5
+            ]
+          }
+        },
+        "dataId": "densityDensityData",
+        "source": "source",
+        "rows": 100,
+        "first": {
+          "v_value": 1,
+          "v_density": 0.17093783517785002
+        },
+        "paths": 1,
+        "config": {
+          "fill": "#4c78a8",
+          "opacity": 0.2
+        },
+        "guides": {
+          "axis": {
+            "x": {
+              "coordinate": "main",
+              "scale": "x",
+              "title": "Density"
+            },
+            "y": {
+              "coordinate": "main",
+              "scale": "y",
+              "title": "v"
+            }
+          },
+          "grid": {
+            "horizontal": {
+              "scale": "y",
+              "coordinate": "main"
+            }
+          }
+        }
+      },
+      "topLevelTrace": [
+        "createCanvas",
+        "createData",
+        "createAreaMark",
+        "encodeDensity",
+        "createGuides"
+      ]
+    },
+    {
+      "id": "D03",
+      "claim": "Explicit grouping creates separate profiles without automatic color",
+      "outcome": "accepted",
+      "inputUnchanged": true,
+      "details": {
+        "layer": {
+          "id": "density",
+          "mark": {
+            "type": "area"
+          },
+          "data": "densityDensityData",
+          "coordinate": "main",
+          "encoding": {
+            "x": {
+              "field": "v_value",
+              "fieldType": "quantitative",
+              "scale": "x"
+            },
+            "y": {
+              "field": "v_density",
+              "fieldType": "quantitative",
+              "scale": "y"
+            },
+            "group": {
+              "field": "g",
+              "fieldType": "nominal"
+            }
+          }
+        },
+        "transform": {
+          "type": "density",
+          "field": "v",
+          "groupBy": "g",
+          "bandwidth": "auto",
+          "extent": "auto",
+          "steps": 100,
+          "kernel": "gaussian",
+          "normalization": "unit",
+          "as": [
+            "v_value",
+            "v_density"
+          ],
+          "resolve": "shared",
+          "resolved": {
+            "bandwidth": 1.049124713013727,
+            "extent": [
+              1,
+              5
+            ]
+          }
+        },
+        "dataId": "densityDensityData",
+        "source": "source",
+        "rows": 200,
+        "first": {
+          "g": "A",
+          "v_value": 1,
+          "v_density": 0.3108471157157681
+        },
+        "paths": 2,
+        "config": {
+          "fill": "#4c78a8",
+          "opacity": 0.2
+        },
+        "guides": {}
+      },
+      "topLevelTrace": [
+        "createCanvas",
+        "createData",
+        "createAreaMark",
+        "encodeDensity"
+      ]
+    },
+    {
+      "id": "D04",
+      "claim": "Grouped color can use the retained group field with guides",
+      "outcome": "accepted",
+      "inputUnchanged": true,
+      "details": {
+        "layer": {
+          "id": "density",
+          "mark": {
+            "type": "area"
+          },
+          "data": "densityDensityData",
+          "coordinate": "main",
+          "encoding": {
+            "x": {
+              "field": "v_value",
+              "fieldType": "quantitative",
+              "scale": "x"
+            },
+            "y": {
+              "field": "v_density",
+              "fieldType": "quantitative",
+              "scale": "y",
+              "stack": null
+            },
+            "group": {
+              "field": "g",
+              "fieldType": "nominal"
+            },
+            "color": {
+              "field": "g",
+              "fieldType": "nominal",
+              "scale": "color",
+              "layout": "overlay"
+            }
+          }
+        },
+        "transform": {
+          "type": "density",
+          "field": "v",
+          "groupBy": "g",
+          "bandwidth": "auto",
+          "extent": "auto",
+          "steps": 100,
+          "kernel": "gaussian",
+          "normalization": "unit",
+          "as": [
+            "v_value",
+            "v_density"
+          ],
+          "resolve": "shared",
+          "resolved": {
+            "bandwidth": 1.049124713013727,
+            "extent": [
+              1,
+              5
+            ]
+          }
+        },
+        "dataId": "densityDensityData",
+        "source": "source",
+        "rows": 200,
+        "first": {
+          "g": "A",
+          "v_value": 1,
+          "v_density": 0.3108471157157681
+        },
+        "paths": 2,
+        "config": {
+          "fill": "#4c78a8",
+          "opacity": 0.2
+        },
+        "guides": {
+          "axis": {
+            "x": {
+              "coordinate": "main",
+              "scale": "x",
+              "title": "v"
+            },
+            "y": {
+              "coordinate": "main",
+              "scale": "y",
+              "title": "Density"
+            }
+          },
+          "grid": {
+            "horizontal": {
+              "scale": "y",
+              "coordinate": "main"
+            }
+          },
+          "legend": {
+            "color": {
+              "scale": "color",
+              "title": "g"
+            }
+          }
+        }
+      },
+      "topLevelTrace": [
+        "createCanvas",
+        "createData",
+        "createAreaMark",
+        "encodeDensity",
+        "encodeColor",
+        "createGuides"
+      ]
+    },
+    {
+      "id": "D05",
+      "claim": "Raw series-constant metadata is absent from the derived density dataset",
+      "outcome": "rejected",
+      "inputUnchanged": true,
+      "error": "Area color encoding must match an existing group encoding."
+    },
+    {
+      "id": "D06",
+      "claim": "Finite numeric rows and valid nominal groups survive; invalid rows are filtered",
+      "outcome": "accepted",
+      "inputUnchanged": true,
+      "details": {
+        "layer": {
+          "id": "density",
+          "mark": {
+            "type": "area"
+          },
+          "data": "densityDensityData",
+          "coordinate": "main",
+          "encoding": {
+            "x": {
+              "field": "v_value",
+              "fieldType": "quantitative",
+              "scale": "x"
+            },
+            "y": {
+              "field": "v_density",
+              "fieldType": "quantitative",
+              "scale": "y"
+            },
+            "group": {
+              "field": "g",
+              "fieldType": "nominal"
+            }
+          }
+        },
+        "transform": {
+          "type": "density",
+          "field": "v",
+          "groupBy": "g",
+          "bandwidth": 1,
+          "extent": [
+            0,
+            6
+          ],
+          "steps": 7,
+          "kernel": "gaussian",
+          "normalization": "unit",
+          "as": [
+            "v_value",
+            "v_density"
+          ],
+          "resolve": "shared",
+          "resolved": {
+            "bandwidth": 1,
+            "extent": [
+              0,
+              6
+            ]
+          }
+        },
+        "dataId": "densityDensityData",
+        "source": "source",
+        "rows": 14,
+        "first": {
+          "g": "A",
+          "v_value": 0,
+          "v_density": 0.14798084551616572
+        },
+        "paths": 2,
+        "config": {
+          "fill": "#4c78a8",
+          "opacity": 0.2
+        },
+        "guides": {}
+      },
+      "topLevelTrace": [
+        "createCanvas",
+        "createData",
+        "createAreaMark",
+        "encodeDensity"
+      ]
+    },
+    {
+      "id": "D07",
+      "claim": "No finite sample rejects",
+      "outcome": "rejected",
+      "inputUnchanged": true,
+      "error": "Density requires at least one valid field/group row."
+    },
+    {
+      "id": "D08",
+      "claim": "Constant sample rejects automatic bandwidth",
+      "outcome": "rejected",
+      "inputUnchanged": true,
+      "error": "Density auto bandwidth requires varying finite values."
+    },
+    {
+      "id": "D09",
+      "claim": "Singleton sample accepts explicit bandwidth and extent",
+      "outcome": "accepted",
+      "inputUnchanged": true,
+      "details": {
+        "layer": {
+          "id": "density",
+          "mark": {
+            "type": "area"
+          },
+          "data": "densityDensityData",
+          "coordinate": "main",
+          "encoding": {
+            "x": {
+              "field": "v_value",
+              "fieldType": "quantitative",
+              "scale": "x"
+            },
+            "y": {
+              "field": "v_density",
+              "fieldType": "quantitative",
+              "scale": "y"
+            }
+          }
+        },
+        "transform": {
+          "type": "density",
+          "field": "v",
+          "bandwidth": 1,
+          "extent": [
+            0,
+            6
+          ],
+          "steps": 7,
+          "kernel": "gaussian",
+          "normalization": "unit",
+          "as": [
+            "v_value",
+            "v_density"
+          ],
+          "resolve": "shared",
+          "resolved": {
+            "bandwidth": 1,
+            "extent": [
+              0,
+              6
+            ]
+          }
+        },
+        "dataId": "densityDensityData",
+        "source": "source",
+        "rows": 7,
+        "first": {
+          "v_value": 0,
+          "v_density": 0.0044318484119380075
+        },
+        "paths": 1,
+        "config": {
+          "fill": "#4c78a8",
+          "opacity": 0.2
+        },
+        "guides": {}
+      },
+      "topLevelTrace": [
+        "createCanvas",
+        "createData",
+        "createAreaMark",
+        "encodeDensity"
+      ]
+    },
+    {
+      "id": "D10",
+      "claim": "Count normalization multiplies unit profile by retained group sample count",
+      "outcome": "accepted",
+      "inputUnchanged": true,
+      "details": {
+        "layer": {
+          "id": "density",
+          "mark": {
+            "type": "area"
+          },
+          "data": "densityDensityData",
+          "coordinate": "main",
+          "encoding": {
+            "x": {
+              "field": "v_value",
+              "fieldType": "quantitative",
+              "scale": "x"
+            },
+            "y": {
+              "field": "v_density",
+              "fieldType": "quantitative",
+              "scale": "y"
+            },
+            "group": {
+              "field": "g",
+              "fieldType": "nominal"
+            }
+          }
+        },
+        "transform": {
+          "type": "density",
+          "field": "v",
+          "groupBy": "g",
+          "bandwidth": 1,
+          "extent": [
+            0,
+            6
+          ],
+          "steps": 7,
+          "kernel": "gaussian",
+          "normalization": "count",
+          "as": [
+            "v_value",
+            "v_density"
+          ],
+          "resolve": "shared",
+          "resolved": {
+            "bandwidth": 1,
+            "extent": [
+              0,
+              6
+            ]
+          }
+        },
+        "dataId": "densityDensityData",
+        "source": "source",
+        "rows": 14,
+        "first": {
+          "g": "A",
+          "v_value": 0,
+          "v_density": 0.29596169103233144
+        },
+        "paths": 2,
+        "config": {
+          "fill": "#4c78a8",
+          "opacity": 0.2
+        },
+        "guides": {}
+      },
+      "topLevelTrace": [
+        "createCanvas",
+        "createData",
+        "createAreaMark",
+        "encodeDensity"
+      ]
+    },
+    {
+      "id": "D11",
+      "claim": "Derived output identity collision rejects",
+      "outcome": "rejected",
+      "inputUnchanged": true,
+      "error": "Dataset \"densityDensityData\" already exists."
+    },
+    {
+      "id": "D12",
+      "claim": "A one-step density grid rejects",
+      "outcome": "rejected",
+      "inputUnchanged": true,
+      "error": "Density steps must be an integer of at least 2."
+    },
+    {
+      "id": "D13",
+      "claim": "Statistical edit creates a new density snapshot without changing owner",
+      "outcome": "accepted",
+      "inputUnchanged": true,
+      "details": {
+        "layer": {
+          "id": "density",
+          "mark": {
+            "type": "area"
+          },
+          "data": "densityDensityDataRevision1",
+          "coordinate": "main",
+          "encoding": {
+            "x": {
+              "field": "v_value",
+              "fieldType": "quantitative",
+              "scale": "x"
+            },
+            "y": {
+              "field": "v_density",
+              "fieldType": "quantitative",
+              "scale": "y"
+            }
+          }
+        },
+        "transform": {
+          "type": "density",
+          "field": "v",
+          "bandwidth": 0.5,
+          "extent": "auto",
+          "steps": 100,
+          "kernel": "gaussian",
+          "normalization": "unit",
+          "as": [
+            "v_value",
+            "v_density"
+          ],
+          "resolve": "shared",
+          "resolved": {
+            "bandwidth": 0.5,
+            "extent": [
+              1,
+              5
+            ]
+          }
+        },
+        "dataId": "densityDensityDataRevision1",
+        "source": "source",
+        "rows": 100,
+        "first": {
+          "v_value": 1,
+          "v_density": 0.22653353857019537
+        },
+        "paths": 1,
+        "config": {
+          "fill": "#4c78a8",
+          "opacity": 0.2
+        },
+        "guides": {}
+      },
+      "topLevelTrace": [
+        "createCanvas",
+        "createData",
+        "createAreaMark",
+        "encodeDensity",
+        "editDensity"
+      ]
+    },
+    {
+      "id": "D14",
+      "claim": "editDensity has no orientation option",
+      "outcome": "rejected",
+      "inputUnchanged": true,
+      "error": "Unknown editDensity option \"densityChannel\"."
+    },
+    {
+      "id": "D15",
+      "claim": "Color varying over the sampled profile rejects",
+      "outcome": "rejected",
+      "inputUnchanged": true,
+      "error": "Area color encoding must match an existing group encoding."
+    },
+    {
+      "id": "D16",
+      "claim": "Density magnitude domain must include the zero baseline",
+      "outcome": "rejected",
+      "inputUnchanged": true,
+      "error": "Density area mark \"density\" requires a scale domain containing zero."
+    },
+    {
+      "id": "H01",
+      "claim": "Signed Horizon creates six ordinary paths with opaque band defaults",
+      "outcome": "accepted",
+      "inputUnchanged": true,
+      "details": {
+        "layer": {
+          "id": "horizon",
+          "mark": {
+            "type": "area"
+          },
+          "data": "horizonHorizonData",
+          "coordinate": "main",
+          "encoding": {
+            "x": {
+              "field": "horizonHorizonX",
+              "fieldType": "quantitative",
+              "scale": "x",
+              "title": "T"
+            },
+            "y": {
+              "field": "horizonHorizonLower",
+              "fieldType": "quantitative",
+              "scale": "horizonHorizonAmplitude"
+            },
+            "group": {
+              "field": "horizonHorizonGroup",
+              "fieldType": "nominal"
+            },
+            "y2": {
+              "field": "horizonHorizonUpper",
+              "fieldType": "quantitative",
+              "scale": "horizonHorizonAmplitude"
+            },
+            "color": {
+              "field": "horizonHorizonColor",
+              "fieldType": "nominal",
+              "scale": "horizonHorizonColor",
+              "layout": "overlay"
+            }
+          }
+        },
+        "transform": {
+          "type": "horizon",
+          "x": {
+            "field": "t",
+            "fieldType": "quantitative"
+          },
+          "y": {
+            "field": "v",
+            "fieldType": "quantitative"
+          },
+          "bands": 3,
+          "baseline": 0,
+          "extent": "auto",
+          "resolve": "shared",
+          "missing": "break",
+          "overflow": "clip",
+          "palette": {
+            "positive": {
+              "name": "blues"
+            },
+            "negative": {
+              "name": "reds"
+            }
+          },
+          "as": {
+            "x": "horizonHorizonX",
+            "lower": "horizonHorizonLower",
+            "upper": "horizonHorizonUpper",
+            "group": "horizonHorizonGroup",
+            "color": "horizonHorizonColor",
+            "sign": "horizonHorizonSign",
+            "band": "horizonHorizonBand",
+            "segment": "horizonHorizonSegment"
+          },
+          "resolved": {
+            "extents": [
+              {
+                "extent": 4,
+                "bandHeight": 1.3333333333333333
+              }
+            ]
+          }
+        },
+        "dataId": "horizonHorizonData",
+        "source": "source",
+        "rows": 12,
+        "first": {
+          "horizonHorizonX": 0,
+          "horizonHorizonLower": 0,
+          "horizonHorizonUpper": 1,
+          "horizonHorizonGroup": "[null,\"negative\",0,0]",
+          "horizonHorizonColor": "negative:0",
+          "horizonHorizonSign": "negative",
+          "horizonHorizonBand": 0,
+          "horizonHorizonSegment": 0
+        },
+        "paths": 6,
+        "config": {
+          "fill": "#4c78a8",
+          "opacity": 1
+        },
+        "guides": {}
+      },
+      "topLevelTrace": [
+        "createCanvas",
+        "createData",
+        "createAreaMark",
+        "encodeHorizon"
+      ]
+    },
+    {
+      "id": "H02",
+      "claim": "Existing facade planner creates only original x axis and vertical grid",
+      "outcome": "accepted",
+      "inputUnchanged": true,
+      "details": {
+        "layer": {
+          "id": "horizon",
+          "mark": {
+            "type": "area"
+          },
+          "data": "horizonHorizonData",
+          "coordinate": "main",
+          "encoding": {
+            "x": {
+              "field": "horizonHorizonX",
+              "fieldType": "quantitative",
+              "scale": "x",
+              "title": "T"
+            },
+            "y": {
+              "field": "horizonHorizonLower",
+              "fieldType": "quantitative",
+              "scale": "horizonHorizonAmplitude"
+            },
+            "group": {
+              "field": "horizonHorizonGroup",
+              "fieldType": "nominal"
+            },
+            "y2": {
+              "field": "horizonHorizonUpper",
+              "fieldType": "quantitative",
+              "scale": "horizonHorizonAmplitude"
+            },
+            "color": {
+              "field": "horizonHorizonColor",
+              "fieldType": "nominal",
+              "scale": "horizonHorizonColor",
+              "layout": "overlay"
+            }
+          }
+        },
+        "transform": {
+          "type": "horizon",
+          "x": {
+            "field": "t",
+            "fieldType": "quantitative"
+          },
+          "y": {
+            "field": "v",
+            "fieldType": "quantitative"
+          },
+          "bands": 3,
+          "baseline": 0,
+          "extent": "auto",
+          "resolve": "shared",
+          "missing": "break",
+          "overflow": "clip",
+          "palette": {
+            "positive": {
+              "name": "blues"
+            },
+            "negative": {
+              "name": "reds"
+            }
+          },
+          "as": {
+            "x": "horizonHorizonX",
+            "lower": "horizonHorizonLower",
+            "upper": "horizonHorizonUpper",
+            "group": "horizonHorizonGroup",
+            "color": "horizonHorizonColor",
+            "sign": "horizonHorizonSign",
+            "band": "horizonHorizonBand",
+            "segment": "horizonHorizonSegment"
+          },
+          "resolved": {
+            "extents": [
+              {
+                "extent": 4,
+                "bandHeight": 1.3333333333333333
+              }
+            ]
+          }
+        },
+        "dataId": "horizonHorizonData",
+        "source": "source",
+        "rows": 12,
+        "first": {
+          "horizonHorizonX": 0,
+          "horizonHorizonLower": 0,
+          "horizonHorizonUpper": 1,
+          "horizonHorizonGroup": "[null,\"negative\",0,0]",
+          "horizonHorizonColor": "negative:0",
+          "horizonHorizonSign": "negative",
+          "horizonHorizonBand": 0,
+          "horizonHorizonSegment": 0
+        },
+        "paths": 6,
+        "config": {
+          "fill": "#4c78a8",
+          "opacity": 1
+        },
+        "guides": {
+          "axis": {
+            "x": {
+              "coordinate": "main",
+              "scale": "x",
+              "title": "T"
+            }
+          },
+          "grid": {
+            "vertical": {
+              "scale": "x",
+              "coordinate": "main"
+            }
+          }
+        }
+      },
+      "topLevelTrace": [
+        "createCanvas",
+        "createData",
+        "createAreaMark",
+        "encodeHorizon",
+        "createGuides"
+      ]
+    },
+    {
+      "id": "H03",
+      "claim": "Explicit lower y axis can display folded internal values",
+      "outcome": "accepted",
+      "inputUnchanged": true,
+      "details": {
+        "guides": {
+          "axis": {
+            "y": {
+              "scale": "horizonHorizonAmplitude",
+              "title": "horizonHorizonLower"
+            }
+          }
+        },
+        "foldedDomain": [
+          0,
+          1
+        ]
+      },
+      "topLevelTrace": [
+        "createCanvas",
+        "createData",
+        "createAreaMark",
+        "encodeHorizon",
+        "createYAxis"
+      ]
+    },
+    {
+      "id": "H04",
+      "claim": "Explicit lower legend can expose internal Horizon band keys",
+      "outcome": "accepted",
+      "inputUnchanged": true,
+      "details": {
+        "guides": {
+          "legend": {
+            "color": {
+              "scale": "horizonHorizonColor",
+              "title": "horizonHorizonColor"
+            }
+          }
+        },
+        "legendDomain": [
+          "negative:0",
+          "negative:1",
+          "negative:2",
+          "positive:0",
+          "positive:1",
+          "positive:2"
+        ]
+      },
+      "topLevelTrace": [
+        "createCanvas",
+        "createData",
+        "createAreaMark",
+        "encodeHorizon",
+        "createLegend"
+      ]
+    },
+    {
+      "id": "H05",
+      "claim": "All-baseline Horizon is intentionally empty with a valid x domain",
+      "outcome": "accepted",
+      "inputUnchanged": true,
+      "details": {
+        "layer": {
+          "id": "horizon",
+          "mark": {
+            "type": "area"
+          },
+          "data": "horizonHorizonData",
+          "coordinate": "main",
+          "encoding": {
+            "x": {
+              "field": "horizonHorizonX",
+              "fieldType": "quantitative",
+              "scale": "x",
+              "title": "T"
+            },
+            "y": {
+              "field": "horizonHorizonLower",
+              "fieldType": "quantitative",
+              "scale": "horizonHorizonAmplitude"
+            },
+            "group": {
+              "field": "horizonHorizonGroup",
+              "fieldType": "nominal"
+            },
+            "y2": {
+              "field": "horizonHorizonUpper",
+              "fieldType": "quantitative",
+              "scale": "horizonHorizonAmplitude"
+            },
+            "color": {
+              "field": "horizonHorizonColor",
+              "fieldType": "nominal",
+              "scale": "horizonHorizonColor",
+              "layout": "overlay"
+            }
+          }
+        },
+        "transform": {
+          "type": "horizon",
+          "x": {
+            "field": "t",
+            "fieldType": "quantitative"
+          },
+          "y": {
+            "field": "v",
+            "fieldType": "quantitative"
+          },
+          "bands": 3,
+          "baseline": 5,
+          "extent": "auto",
+          "resolve": "shared",
+          "missing": "break",
+          "overflow": "clip",
+          "palette": {
+            "positive": {
+              "name": "blues"
+            },
+            "negative": {
+              "name": "reds"
+            }
+          },
+          "as": {
+            "x": "horizonHorizonX",
+            "lower": "horizonHorizonLower",
+            "upper": "horizonHorizonUpper",
+            "group": "horizonHorizonGroup",
+            "color": "horizonHorizonColor",
+            "sign": "horizonHorizonSign",
+            "band": "horizonHorizonBand",
+            "segment": "horizonHorizonSegment"
+          },
+          "resolved": {
+            "extents": [
+              {
+                "extent": 0,
+                "bandHeight": 0
+              }
+            ]
+          }
+        },
+        "dataId": "horizonHorizonData",
+        "source": "source",
+        "rows": 0,
+        "first": null,
+        "paths": 0,
+        "config": {
+          "fill": "#4c78a8",
+          "opacity": 1
+        },
+        "guides": {}
+      },
+      "topLevelTrace": [
+        "createCanvas",
+        "createData",
+        "createAreaMark",
+        "encodeHorizon"
+      ]
+    },
+    {
+      "id": "H06",
+      "claim": "Multiple unattached Cartesian coordinates require an explicit choice",
+      "outcome": "rejected",
+      "inputUnchanged": true,
+      "error": "x encoding requires coordinate when multiple cartesian coordinates are available."
+    },
+    {
+      "id": "H07",
+      "claim": "Existing coordinate action attaches the intended Horizon owner without new encode options",
+      "outcome": "accepted",
+      "inputUnchanged": true,
+      "details": {
+        "layer": {
+          "id": "horizon",
+          "mark": {
+            "type": "area"
+          },
+          "data": "horizonHorizonData",
+          "coordinate": "two",
+          "encoding": {
+            "x": {
+              "field": "horizonHorizonX",
+              "fieldType": "quantitative",
+              "scale": "x",
+              "title": "T"
+            },
+            "y": {
+              "field": "horizonHorizonLower",
+              "fieldType": "quantitative",
+              "scale": "horizonHorizonAmplitude"
+            },
+            "group": {
+              "field": "horizonHorizonGroup",
+              "fieldType": "nominal"
+            },
+            "y2": {
+              "field": "horizonHorizonUpper",
+              "fieldType": "quantitative",
+              "scale": "horizonHorizonAmplitude"
+            },
+            "color": {
+              "field": "horizonHorizonColor",
+              "fieldType": "nominal",
+              "scale": "horizonHorizonColor",
+              "layout": "overlay"
+            }
+          }
+        },
+        "transform": {
+          "type": "horizon",
+          "x": {
+            "field": "t",
+            "fieldType": "quantitative"
+          },
+          "y": {
+            "field": "v",
+            "fieldType": "quantitative"
+          },
+          "bands": 3,
+          "baseline": 0,
+          "extent": "auto",
+          "resolve": "shared",
+          "missing": "break",
+          "overflow": "clip",
+          "palette": {
+            "positive": {
+              "name": "blues"
+            },
+            "negative": {
+              "name": "reds"
+            }
+          },
+          "as": {
+            "x": "horizonHorizonX",
+            "lower": "horizonHorizonLower",
+            "upper": "horizonHorizonUpper",
+            "group": "horizonHorizonGroup",
+            "color": "horizonHorizonColor",
+            "sign": "horizonHorizonSign",
+            "band": "horizonHorizonBand",
+            "segment": "horizonHorizonSegment"
+          },
+          "resolved": {
+            "extents": [
+              {
+                "extent": 4,
+                "bandHeight": 1.3333333333333333
+              }
+            ]
+          }
+        },
+        "dataId": "horizonHorizonData",
+        "source": "source",
+        "rows": 12,
+        "first": {
+          "horizonHorizonX": 0,
+          "horizonHorizonLower": 0,
+          "horizonHorizonUpper": 1,
+          "horizonHorizonGroup": "[null,\"negative\",0,0]",
+          "horizonHorizonColor": "negative:0",
+          "horizonHorizonSign": "negative",
+          "horizonHorizonBand": 0,
+          "horizonHorizonSegment": 0
+        },
+        "paths": 6,
+        "config": {
+          "fill": "#4c78a8",
+          "opacity": 1
+        },
+        "guides": {}
+      },
+      "topLevelTrace": [
+        "createCanvas",
+        "createData",
+        "createAreaMark",
+        "createCoordinate",
+        "createCoordinate",
+        "createCoordinate",
+        "encodeHorizon"
+      ]
+    },
+    {
+      "id": "H08",
+      "claim": "encodeHorizon currently rejects a coordinate option",
+      "outcome": "rejected",
+      "inputUnchanged": true,
+      "error": "Unknown encodeHorizon option \"coordinate\"."
+    },
+    {
+      "id": "H09",
+      "claim": "Horizon encoding resets an earlier area opacity to one",
+      "outcome": "accepted",
+      "inputUnchanged": true,
+      "details": {
+        "layer": {
+          "id": "horizon",
+          "mark": {
+            "type": "area"
+          },
+          "data": "horizonHorizonData",
+          "coordinate": "main",
+          "encoding": {
+            "x": {
+              "field": "horizonHorizonX",
+              "fieldType": "quantitative",
+              "scale": "x",
+              "title": "T"
+            },
+            "y": {
+              "field": "horizonHorizonLower",
+              "fieldType": "quantitative",
+              "scale": "horizonHorizonAmplitude"
+            },
+            "group": {
+              "field": "horizonHorizonGroup",
+              "fieldType": "nominal"
+            },
+            "y2": {
+              "field": "horizonHorizonUpper",
+              "fieldType": "quantitative",
+              "scale": "horizonHorizonAmplitude"
+            },
+            "color": {
+              "field": "horizonHorizonColor",
+              "fieldType": "nominal",
+              "scale": "horizonHorizonColor",
+              "layout": "overlay"
+            }
+          }
+        },
+        "transform": {
+          "type": "horizon",
+          "x": {
+            "field": "t",
+            "fieldType": "quantitative"
+          },
+          "y": {
+            "field": "v",
+            "fieldType": "quantitative"
+          },
+          "bands": 3,
+          "baseline": 0,
+          "extent": "auto",
+          "resolve": "shared",
+          "missing": "break",
+          "overflow": "clip",
+          "palette": {
+            "positive": {
+              "name": "blues"
+            },
+            "negative": {
+              "name": "reds"
+            }
+          },
+          "as": {
+            "x": "horizonHorizonX",
+            "lower": "horizonHorizonLower",
+            "upper": "horizonHorizonUpper",
+            "group": "horizonHorizonGroup",
+            "color": "horizonHorizonColor",
+            "sign": "horizonHorizonSign",
+            "band": "horizonHorizonBand",
+            "segment": "horizonHorizonSegment"
+          },
+          "resolved": {
+            "extents": [
+              {
+                "extent": 4,
+                "bandHeight": 1.3333333333333333
+              }
+            ]
+          }
+        },
+        "dataId": "horizonHorizonData",
+        "source": "source",
+        "rows": 12,
+        "first": {
+          "horizonHorizonX": 0,
+          "horizonHorizonLower": 0,
+          "horizonHorizonUpper": 1,
+          "horizonHorizonGroup": "[null,\"negative\",0,0]",
+          "horizonHorizonColor": "negative:0",
+          "horizonHorizonSign": "negative",
+          "horizonHorizonBand": 0,
+          "horizonHorizonSegment": 0
+        },
+        "paths": 6,
+        "config": {
+          "fill": "#4c78a8",
+          "opacity": 1
+        },
+        "guides": {}
+      },
+      "topLevelTrace": [
+        "createCanvas",
+        "createData",
+        "createAreaMark",
+        "encodeHorizon"
+      ]
+    },
+    {
+      "id": "H10",
+      "claim": "Post-encoding area editor restores explicit opacity",
+      "outcome": "accepted",
+      "inputUnchanged": true,
+      "details": {
+        "layer": {
+          "id": "horizon",
+          "mark": {
+            "type": "area"
+          },
+          "data": "horizonHorizonData",
+          "coordinate": "main",
+          "encoding": {
+            "x": {
+              "field": "horizonHorizonX",
+              "fieldType": "quantitative",
+              "scale": "x",
+              "title": "T"
+            },
+            "y": {
+              "field": "horizonHorizonLower",
+              "fieldType": "quantitative",
+              "scale": "horizonHorizonAmplitude"
+            },
+            "group": {
+              "field": "horizonHorizonGroup",
+              "fieldType": "nominal"
+            },
+            "y2": {
+              "field": "horizonHorizonUpper",
+              "fieldType": "quantitative",
+              "scale": "horizonHorizonAmplitude"
+            },
+            "color": {
+              "field": "horizonHorizonColor",
+              "fieldType": "nominal",
+              "scale": "horizonHorizonColor",
+              "layout": "overlay"
+            }
+          }
+        },
+        "transform": {
+          "type": "horizon",
+          "x": {
+            "field": "t",
+            "fieldType": "quantitative"
+          },
+          "y": {
+            "field": "v",
+            "fieldType": "quantitative"
+          },
+          "bands": 3,
+          "baseline": 0,
+          "extent": "auto",
+          "resolve": "shared",
+          "missing": "break",
+          "overflow": "clip",
+          "palette": {
+            "positive": {
+              "name": "blues"
+            },
+            "negative": {
+              "name": "reds"
+            }
+          },
+          "as": {
+            "x": "horizonHorizonX",
+            "lower": "horizonHorizonLower",
+            "upper": "horizonHorizonUpper",
+            "group": "horizonHorizonGroup",
+            "color": "horizonHorizonColor",
+            "sign": "horizonHorizonSign",
+            "band": "horizonHorizonBand",
+            "segment": "horizonHorizonSegment"
+          },
+          "resolved": {
+            "extents": [
+              {
+                "extent": 4,
+                "bandHeight": 1.3333333333333333
+              }
+            ]
+          }
+        },
+        "dataId": "horizonHorizonData",
+        "source": "source",
+        "rows": 12,
+        "first": {
+          "horizonHorizonX": 0,
+          "horizonHorizonLower": 0,
+          "horizonHorizonUpper": 1,
+          "horizonHorizonGroup": "[null,\"negative\",0,0]",
+          "horizonHorizonColor": "negative:0",
+          "horizonHorizonSign": "negative",
+          "horizonHorizonBand": 0,
+          "horizonHorizonSegment": 0
+        },
+        "paths": 6,
+        "config": {
+          "fill": "#4c78a8",
+          "opacity": 0.3
+        },
+        "guides": {}
+      },
+      "topLevelTrace": [
+        "createCanvas",
+        "createData",
+        "createAreaMark",
+        "encodeHorizon",
+        "editAreaMark"
+      ]
+    },
+    {
+      "id": "H11",
+      "claim": "Explicit timestamp unit is preserved in Horizon provenance",
+      "outcome": "accepted",
+      "inputUnchanged": true,
+      "details": {
+        "layer": {
+          "id": "horizon",
+          "mark": {
+            "type": "area"
+          },
+          "data": "horizonHorizonData",
+          "coordinate": "main",
+          "encoding": {
+            "x": {
+              "field": "horizonHorizonX",
+              "fieldType": "temporal",
+              "temporalUnit": "timestamp",
+              "scale": "x",
+              "title": "T"
+            },
+            "y": {
+              "field": "horizonHorizonLower",
+              "fieldType": "quantitative",
+              "scale": "horizonHorizonAmplitude"
+            },
+            "group": {
+              "field": "horizonHorizonGroup",
+              "fieldType": "nominal"
+            },
+            "y2": {
+              "field": "horizonHorizonUpper",
+              "fieldType": "quantitative",
+              "scale": "horizonHorizonAmplitude"
+            },
+            "color": {
+              "field": "horizonHorizonColor",
+              "fieldType": "nominal",
+              "scale": "horizonHorizonColor",
+              "layout": "overlay"
+            }
+          }
+        },
+        "transform": {
+          "type": "horizon",
+          "x": {
+            "field": "t",
+            "fieldType": "temporal",
+            "temporalUnit": "timestamp"
+          },
+          "y": {
+            "field": "v",
+            "fieldType": "quantitative"
+          },
+          "bands": 3,
+          "baseline": 0,
+          "extent": "auto",
+          "resolve": "shared",
+          "missing": "break",
+          "overflow": "clip",
+          "palette": {
+            "positive": {
+              "name": "blues"
+            },
+            "negative": {
+              "name": "reds"
+            }
+          },
+          "as": {
+            "x": "horizonHorizonX",
+            "lower": "horizonHorizonLower",
+            "upper": "horizonHorizonUpper",
+            "group": "horizonHorizonGroup",
+            "color": "horizonHorizonColor",
+            "sign": "horizonHorizonSign",
+            "band": "horizonHorizonBand",
+            "segment": "horizonHorizonSegment"
+          },
+          "resolved": {
+            "extents": [
+              {
+                "extent": 2,
+                "bandHeight": 0.6666666666666666
+              }
+            ]
+          }
+        },
+        "dataId": "horizonHorizonData",
+        "source": "source",
+        "rows": 12,
+        "first": {
+          "horizonHorizonX": 1000,
+          "horizonHorizonLower": 0,
+          "horizonHorizonUpper": 1,
+          "horizonHorizonGroup": "[null,\"negative\",0,0]",
+          "horizonHorizonColor": "negative:0",
+          "horizonHorizonSign": "negative",
+          "horizonHorizonBand": 0,
+          "horizonHorizonSegment": 0
+        },
+        "paths": 6,
+        "config": {
+          "fill": "#4c78a8",
+          "opacity": 1
+        },
+        "guides": {}
+      },
+      "topLevelTrace": [
+        "createCanvas",
+        "createData",
+        "createAreaMark",
+        "encodeHorizon"
+      ]
+    },
+    {
+      "id": "H12",
+      "claim": "Explicit false keeps Horizon ungrouped through JSON",
+      "outcome": "accepted",
+      "inputUnchanged": true,
+      "details": {
+        "layer": {
+          "id": "horizon",
+          "mark": {
+            "type": "area"
+          },
+          "data": "horizonHorizonData",
+          "coordinate": "main",
+          "encoding": {
+            "x": {
+              "field": "horizonHorizonX",
+              "fieldType": "quantitative",
+              "scale": "x",
+              "title": "T"
+            },
+            "y": {
+              "field": "horizonHorizonLower",
+              "fieldType": "quantitative",
+              "scale": "horizonHorizonAmplitude"
+            },
+            "group": {
+              "field": "horizonHorizonGroup",
+              "fieldType": "nominal"
+            },
+            "y2": {
+              "field": "horizonHorizonUpper",
+              "fieldType": "quantitative",
+              "scale": "horizonHorizonAmplitude"
+            },
+            "color": {
+              "field": "horizonHorizonColor",
+              "fieldType": "nominal",
+              "scale": "horizonHorizonColor",
+              "layout": "overlay"
+            }
+          }
+        },
+        "transform": {
+          "type": "horizon",
+          "x": {
+            "field": "t",
+            "fieldType": "quantitative"
+          },
+          "y": {
+            "field": "v",
+            "fieldType": "quantitative"
+          },
+          "bands": 3,
+          "baseline": 0,
+          "extent": "auto",
+          "resolve": "shared",
+          "missing": "break",
+          "overflow": "clip",
+          "palette": {
+            "positive": {
+              "name": "blues"
+            },
+            "negative": {
+              "name": "reds"
+            }
+          },
+          "as": {
+            "x": "horizonHorizonX",
+            "lower": "horizonHorizonLower",
+            "upper": "horizonHorizonUpper",
+            "group": "horizonHorizonGroup",
+            "color": "horizonHorizonColor",
+            "sign": "horizonHorizonSign",
+            "band": "horizonHorizonBand",
+            "segment": "horizonHorizonSegment"
+          },
+          "resolved": {
+            "extents": [
+              {
+                "extent": 4,
+                "bandHeight": 1.3333333333333333
+              }
+            ]
+          }
+        },
+        "dataId": "horizonHorizonData",
+        "source": "source",
+        "rows": 12,
+        "first": {
+          "horizonHorizonX": 0,
+          "horizonHorizonLower": 0,
+          "horizonHorizonUpper": 1,
+          "horizonHorizonGroup": "[null,\"negative\",0,0]",
+          "horizonHorizonColor": "negative:0",
+          "horizonHorizonSign": "negative",
+          "horizonHorizonBand": 0,
+          "horizonHorizonSegment": 0
+        },
+        "paths": 6,
+        "config": {
+          "fill": "#4c78a8",
+          "opacity": 1
+        },
+        "guides": {}
+      },
+      "topLevelTrace": [
+        "createCanvas",
+        "createData",
+        "createAreaMark",
+        "encodeHorizon"
+      ]
+    },
+    {
+      "id": "H13",
+      "claim": "Grouped Horizon overlays profiles in one coordinate, without panel layout",
+      "outcome": "accepted",
+      "inputUnchanged": true,
+      "details": {
+        "layer": {
+          "id": "horizon",
+          "mark": {
+            "type": "area"
+          },
+          "data": "horizonHorizonData",
+          "coordinate": "main",
+          "encoding": {
+            "x": {
+              "field": "horizonHorizonX",
+              "fieldType": "quantitative",
+              "scale": "x",
+              "title": "T"
+            },
+            "y": {
+              "field": "horizonHorizonLower",
+              "fieldType": "quantitative",
+              "scale": "horizonHorizonAmplitude"
+            },
+            "group": {
+              "field": "horizonHorizonGroup",
+              "fieldType": "nominal"
+            },
+            "y2": {
+              "field": "horizonHorizonUpper",
+              "fieldType": "quantitative",
+              "scale": "horizonHorizonAmplitude"
+            },
+            "color": {
+              "field": "horizonHorizonColor",
+              "fieldType": "nominal",
+              "scale": "horizonHorizonColor",
+              "layout": "overlay"
+            }
+          }
+        },
+        "transform": {
+          "type": "horizon",
+          "x": {
+            "field": "t",
+            "fieldType": "quantitative"
+          },
+          "y": {
+            "field": "v",
+            "fieldType": "quantitative"
+          },
+          "groupBy": "g",
+          "bands": 3,
+          "baseline": 0,
+          "extent": "auto",
+          "resolve": "shared",
+          "missing": "break",
+          "overflow": "clip",
+          "palette": {
+            "positive": {
+              "name": "blues"
+            },
+            "negative": {
+              "name": "reds"
+            }
+          },
+          "as": {
+            "x": "horizonHorizonX",
+            "lower": "horizonHorizonLower",
+            "upper": "horizonHorizonUpper",
+            "group": "horizonHorizonGroup",
+            "color": "horizonHorizonColor",
+            "sign": "horizonHorizonSign",
+            "band": "horizonHorizonBand",
+            "segment": "horizonHorizonSegment"
+          },
+          "resolved": {
+            "extents": [
+              {
+                "group": "A",
+                "extent": 4,
+                "bandHeight": 1.3333333333333333
+              },
+              {
+                "group": "B",
+                "extent": 4,
+                "bandHeight": 1.3333333333333333
+              }
+            ]
+          }
+        },
+        "dataId": "horizonHorizonData",
+        "source": "source",
+        "rows": 20,
+        "first": {
+          "g": "A",
+          "horizonHorizonX": 0,
+          "horizonHorizonLower": 0,
+          "horizonHorizonUpper": 1,
+          "horizonHorizonGroup": "[\"A\",\"negative\",0,0]",
+          "horizonHorizonColor": "negative:0",
+          "horizonHorizonSign": "negative",
+          "horizonHorizonBand": 0,
+          "horizonHorizonSegment": 0
+        },
+        "paths": 10,
+        "config": {
+          "fill": "#4c78a8",
+          "opacity": 1
+        },
+        "guides": {}
+      },
+      "topLevelTrace": [
+        "createCanvas",
+        "createData",
+        "createAreaMark",
+        "encodeHorizon"
+      ]
+    },
+    {
+      "id": "H14",
+      "claim": "Horizon edit revises the snapshot and preserves edited opacity",
+      "outcome": "accepted",
+      "inputUnchanged": true,
+      "details": {
+        "layer": {
+          "id": "horizon",
+          "mark": {
+            "type": "area"
+          },
+          "data": "horizonHorizonDataRevision1",
+          "coordinate": "main",
+          "encoding": {
+            "x": {
+              "field": "horizonHorizonX",
+              "fieldType": "quantitative",
+              "scale": "x",
+              "title": "T"
+            },
+            "y": {
+              "field": "horizonHorizonLower",
+              "fieldType": "quantitative",
+              "scale": "horizonHorizonAmplitude"
+            },
+            "group": {
+              "field": "horizonHorizonGroup",
+              "fieldType": "nominal"
+            },
+            "y2": {
+              "field": "horizonHorizonUpper",
+              "fieldType": "quantitative",
+              "scale": "horizonHorizonAmplitude"
+            },
+            "color": {
+              "field": "horizonHorizonColor",
+              "fieldType": "nominal",
+              "scale": "horizonHorizonColor",
+              "layout": "overlay"
+            }
+          }
+        },
+        "transform": {
+          "type": "horizon",
+          "x": {
+            "field": "t",
+            "fieldType": "quantitative"
+          },
+          "y": {
+            "field": "v",
+            "fieldType": "quantitative"
+          },
+          "bands": 2,
+          "baseline": 0,
+          "extent": "auto",
+          "resolve": "shared",
+          "missing": "break",
+          "overflow": "clip",
+          "palette": {
+            "positive": {
+              "name": "blues"
+            },
+            "negative": {
+              "name": "reds"
+            }
+          },
+          "as": {
+            "x": "horizonHorizonX",
+            "lower": "horizonHorizonLower",
+            "upper": "horizonHorizonUpper",
+            "group": "horizonHorizonGroup",
+            "color": "horizonHorizonColor",
+            "sign": "horizonHorizonSign",
+            "band": "horizonHorizonBand",
+            "segment": "horizonHorizonSegment"
+          },
+          "resolved": {
+            "extents": [
+              {
+                "extent": 4,
+                "bandHeight": 2
+              }
+            ]
+          }
+        },
+        "dataId": "horizonHorizonDataRevision1",
+        "source": "source",
+        "rows": 8,
+        "first": {
+          "horizonHorizonX": 0,
+          "horizonHorizonLower": 0,
+          "horizonHorizonUpper": 1,
+          "horizonHorizonGroup": "[null,\"negative\",0,0]",
+          "horizonHorizonColor": "negative:0",
+          "horizonHorizonSign": "negative",
+          "horizonHorizonBand": 0,
+          "horizonHorizonSegment": 0
+        },
+        "paths": 4,
+        "config": {
+          "fill": "#4c78a8",
+          "opacity": 0.3
+        },
+        "guides": {}
+      },
+      "topLevelTrace": [
+        "createCanvas",
+        "createData",
+        "createAreaMark",
+        "encodeHorizon",
+        "editAreaMark",
+        "editHorizon"
+      ]
+    },
+    {
+      "id": "H15",
+      "claim": "Zero Horizon bands reject",
+      "outcome": "rejected",
+      "inputUnchanged": true,
+      "error": "Horizon bands must be a positive integer."
+    },
+    {
+      "id": "H16",
+      "claim": "Original-value y domain is invalid for folded Horizon scale",
+      "outcome": "rejected",
+      "inputUnchanged": true,
+      "error": "Horizon y scale domain must be [0, 1]."
+    }
+  ]
+}

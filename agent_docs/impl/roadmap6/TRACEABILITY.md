@@ -301,10 +301,10 @@ Primary owner는 누락 방지를 위한 책임 단위이며, 관련 작업이 �
 ### F01 — Pie / Donut
 
 - Rationale: Arc/theta는 이미 있으므로 가장 직접적인 H0 공백을 작은 facade로 메운다.
-- 수정·추가 방향: Category count, 명시적 weighted sum, arc options, Pie guide defaults를 연결한다. Donut은 동일 owner의 alias 여부만 결정한다. Labels는 Phase 5 후속 opt-in으로 분리한다.
+- 수정·추가 방향: Category count와 explicit weighted sum의 createPiePlot을 제안한다. Donut은 arc.innerRadius로 작성하고 별도 alias는 추가하지 않는 방향이다. Color는 category 기본, guide는 legend만이며 labels/theta order는 후속 단계다.
 - 완료 검증: category count·중복 category sum·donut hole·no axes/grid·하위 edit chain이 chart 계약과 일치. Facade-child semantic/graphic 동등성.
 - 근거: audit/REPORT.md: F01. [원래 조사](audit/REPORT.md)
-- 처분: 구현 또는 명시적인 계약 유지·migration 결정의 제안. 아직 완료·승인 상태가 아니다.
+- 처분: [Phase 3 A 계약 package](phase3/CONTRACT_REVIEW.md)는 ready-for-review다. 52건 baseline과 176건 기존 tests를 확인했으며 새 API는 미승인·미구현이다.
 
 ### F02 — Polar Scatter / Line
 
@@ -341,18 +341,18 @@ Primary owner는 누락 방지를 위한 책임 단위이며, 관련 작업이 �
 ### F06 — Density
 
 - Rationale: 이미 완성된 density owner를 상위 의도에 연결한다.
-- 수정·추가 방향: createAreaMark→encodeDensity→compatible guides를 연결한다. KDE bandwidth, grouping, densityChannel과 orientation은 기존 owner가 소유한다.
+- 수정·추가 방향: Baseline-only createDensityPlot을 제안한다. 기존 KDE와 densityChannel을 재사용하고 groupBy와 color는 별도 명시하며 color는 retained group field만 지원한다. Orientation edit와 raw metadata join은 추가하지 않는다.
 - 완료 검증: 세로/가로·grouped density의 값과 영역이 기존 chain과 동일. editDensity/editAreaMark/editScale 후 owner 유지.
 - 근거: audit/REPORT.md: F06. [원래 조사](audit/REPORT.md)
-- 처분: 구현 또는 명시적인 계약 유지·migration 결정의 제안. 아직 완료·승인 상태가 아니다.
+- 처분: [Phase 3 A 계약 package](phase3/CONTRACT_REVIEW.md)는 ready-for-review다. 52건 baseline과 176건 기존 tests를 확인했으며 새 API는 미승인·미구현이다.
 
 ### F07 — Horizon
 
 - Rationale: 이미 완성된 Horizon owner와 guide 제한을 안전한 facade로 제공한다.
-- 수정·추가 방향: Area→encodeHorizon→x guide를 연결한다. Baseline, bands, grouping, negative amplitude의 의미를 기존 folded owner에 위임한다.
+- 수정·추가 방향: 필수 x/y를 받는 createHorizonPlot을 제안한다. 기존 createCoordinate로 좌표를 연결하고 encodeHorizon 뒤 explicit opacity를 적용한다. H0는 x guide만 허용하며 기존 lower guide escape는 유지한다.
 - 완료 검증: signed data와 editHorizon의 revision 검증. Folded y를 원래 양적 축처럼 표시하거나 internal band color legend를 자동 생성하지 않음.
 - 근거: audit/REPORT.md: F07. [원래 조사](audit/REPORT.md)
-- 처분: 구현 또는 명시적인 계약 유지·migration 결정의 제안. 아직 완료·승인 상태가 아니다.
+- 처분: [Phase 3 A 계약 package](phase3/CONTRACT_REVIEW.md)는 ready-for-review다. 52건 baseline과 176건 기존 tests를 확인했으며 새 API는 미승인·미구현이다.
 
 ### F08 — Rug / Strip
 
