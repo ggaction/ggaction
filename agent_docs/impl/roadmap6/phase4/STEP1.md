@@ -22,10 +22,10 @@
 - [x] R6-P4-W5 Diverging midpoint와 scale/legend transition — [전체 구현·V3 4개 변형 검증](RESULTS_W5.md)
 - [x] 모든 시각 variant의 primitive target 작성·표시·전체 실행 승인 적용 — V1 11 + V2 5 + V3 4
 - [x] V1에서 승인된 11개 variant의 public 구현과 같은 실행의 primitive/public render 비교
-- [ ] 누적 검증·migration·문서·원장 동기화
-- [ ] X Gate의 증거 commit/push와 명시적 사용자 승인 기록
+- [x] 누적 검증·migration·문서·원장 동기화 — [최종 X](REVIEW.md)
+- [x] X 승인 근거·구현·검증 증거 동기화 — 전체 실행 승인 적용; 이 closeout commit을 원격 checkpoint로 보존
 
-A/V1 승인과 W1/W2 공개 구현·11개 primitive/public 동등성은 완료했다. [package B](BUNDLE_REVIEW.md) 승인과 재검증을 완료했다. V2 5개 변형의 구현·검증도 완료했다. V3/W5 구현·검증도 완료했다. Phase 전체 통합 검증은 미완료다. 계획 문서를 만든 사실을 구현 완료나 Gate 승인으로 표시하지 않는다.
+A/V1 승인과 W1/W2 공개 구현·11개 primitive/public 동등성은 완료했다. [package B](BUNDLE_REVIEW.md) 승인과 재검증을 완료했다. V2 5개 변형의 구현·검증도 완료했다. V3/W5 구현·검증도 완료했다. Phase 전체 통합 검증도 완료했다. 계획 문서를 만든 사실을 구현 완료나 Gate 승인으로 표시하지 않는다.
 
 ## 순서
 

@@ -531,7 +531,7 @@
     {
       "id": 4,
       "title": "Baselines layouts and quantitative meaning",
-      "status": "in-progress",
+      "status": "completed",
       "dependencies": [
         2
       ],
@@ -632,7 +632,7 @@
           "status": "completed"
         }
       ],
-      "activity": "phase-integration-validation",
+      "activity": "completed",
       "contractEvidence": "phase4/CONTRACT_REVIEW.md",
       "baselineEvidence": "phase4/baseline-results.json",
       "baselineCommit": "93dceb3761e170207058e6a7280060fedd471244",
@@ -735,11 +735,7 @@
         "browserTests": 61,
         "packageEvidence": "phase4/package-radial-facade-results.json"
       },
-      "remainingIntegration": [
-        "fixed-commit-realistic-scenarios",
-        "built-docs-browser",
-        "phase-exit-traceability"
-      ],
+      "remainingIntegration": [],
       "implementationW5Validation": {
         "normalTests": 2748,
         "browserTests": 63,
@@ -748,20 +744,54 @@
         "transitionEvidence": "phase4/RESULTS_W5.md",
         "packageEvidence": "phase4/package-color-transition-results.json"
       },
-      "integrationEvidence": "phase4/INTEGRATION.md"
+      "integrationEvidence": "phase4/integration-results.json",
+      "completionEvidence": "phase4/REVIEW.md",
+      "integrationValidation": {
+        "status": "passed",
+        "runtimeCommit": "7d5982aaa472c234182de917251ff973ff913f1c",
+        "sourceTree": "1e5a95d028132ffaaf6464b95760ea916b85e155",
+        "typesTree": "2028a79cd493f64f3a739414e20491b5dd783f7a",
+        "additionalTestCommit": "42531150",
+        "normal": 2756,
+        "realistic": 242,
+        "render": 205,
+        "browser": 63,
+        "packageBrowser": 1,
+        "builtDocPages": 125,
+        "coverage": {
+          "lines": 95.16,
+          "branches": 91.7,
+          "functions": 98.79,
+          "criticalFloors": 74
+        },
+        "packageEvidence": "package-labels-results.json",
+        "packageSha256": "4eaa9a4a34cecc7b4bb40529324b70d03dfdb9f1a22aa697f86f8a362ca1abcf",
+        "currentDirectActions": 181,
+        "plannedActions": 0,
+        "plannedCapabilities": 0,
+        "phaseVisualTargets": 20,
+        "galleryVariants": 168,
+        "activeReviewVariants": 0,
+        "closedIssues": [
+          80,
+          81
+        ],
+        "releaseStatus": "not-released",
+        "remainingScope": "Roadmap 6 phases 5–11 and the authorized 0.0.13 release; F20 excluded"
+      }
     },
     {
       "id": 5,
       "title": "Guides labels and appearance",
-      "status": "planned",
+      "status": "in-progress",
       "dependencies": [
         3,
         4
       ],
       "gateStates": {
-        "R6-P5-A": "planned",
-        "R6-P5-V": "planned",
-        "R6-P5-X": "planned"
+        "R6-P5-A": "approved",
+        "R6-P5-V": "approved",
+        "R6-P5-X": "approved"
       },
       "workPackages": [
         {
@@ -819,7 +849,10 @@
           "scope": "Bounded deterministic text fitting과 guide wrap/rotation/overlap 정책을 기존 text metrics 위에 추가한다. Fixed Canvas default와 분리한다.",
           "acceptance": "긴 title/legend/axis label 사례에서 bounds와 최소 plot을 만족하거나 explicit overflow. 반복 호출 수렴, 무한 layout loop 없음."
         }
-      ]
+      ],
+      "activity": "baseline-and-contract-preparation",
+      "baselineEvidence": "phase5/baseline-results.json",
+      "executionApproval": "APPROVAL.md"
     },
     {
       "id": 6,
@@ -1287,8 +1320,8 @@
       "recommended": "Equal-angle area mode와 zero-baseline radius-length mode를 구분한다. Arc·theta/radius owner를 재사용하고 inner radius를 포함한 area mapping을 확정한다.",
       "acceptance": "값2·3·4가 모두 표현됨. Area 비율·radius-length 비율 각각 독립 수치 검증. Polar scatter 기본 encodeR는 바뀌지 않음.",
       "evidence": "audit/REPORT.md: D01",
-      "disposition": "Measured radius grammar, encoding and complete Rose/Radial bar facades preserve area versus length; numeric, render, browser and installed package evidence passes. Full Phase 4 integration remains.",
-      "resultEvidence": "phase4/RESULTS_W3.md"
+      "disposition": "Implemented and verified through Phase 4 integration; D14 includes the Phase 2 incomplete-width work and Phase 4 theta/legend order.",
+      "resultEvidence": "phase4/REVIEW.md"
     },
     {
       "id": "D02",
@@ -1314,7 +1347,7 @@
       "id": "D03",
       "title": "Color에 종속된 layout과 전환 제한",
       "kind": "design-issue",
-      "status": "partially-implemented",
+      "status": "implemented-verified",
       "primaryPhase": 4,
       "primaryWorkPackage": "R6-P4-W2",
       "relatedWorkPackages": [
@@ -1327,8 +1360,9 @@
       "recommended": "Group/stack/fill/overlay/diverging을 atomic owner에 모은다. 기존 color.layout/measure.stack/offset 경로가 owner에 위임하도록 migration한다.",
       "acceptance": "group→stack→group에서 scale, offset, normalization, guides, selections에 stale 상태 없음. Negative/missing/group conflict atomic.",
       "evidence": "audit/REPORT.md: D03",
-      "disposition": "Approved V1 public behavior, lifecycle and consumer checks implemented. Budget Gate B approved and the same reviewed tarball passes all package checks. Phase X remains pending.",
-      "implementationEvidence": "phase4/RESULTS_V1.md"
+      "disposition": "Implemented and verified through Phase 4 integration; D14 includes the Phase 2 incomplete-width work and Phase 4 theta/legend order.",
+      "implementationEvidence": "phase4/RESULTS_V1.md",
+      "resultEvidence": "phase4/REVIEW.md"
     },
     {
       "id": "D04",
@@ -1540,7 +1574,7 @@
       "id": "D14",
       "title": "Order와 incomplete width의 부분 지원",
       "kind": "design-issue",
-      "status": "partially-implemented",
+      "status": "implemented-verified",
       "primaryPhase": 2,
       "primaryWorkPackage": "R6-P2-W5",
       "relatedWorkPackages": [
@@ -1557,8 +1591,8 @@
       "recommended": "Bar width와 measure-first encoding 중 geometry 없이 검증 가능한 intent를 보존한다. Missing positions 완료 시 원래 requested width와 role을 적용한다.",
       "acceptance": "width-first/last, category-first/measure-first의 semantic/graphic 동등성. Invalid field/width는 즉시 거부, placeholder graphics 없음.",
       "evidence": "audit/REPORT.md: D14",
-      "disposition": "Phase 2 incomplete authoring and Phase 4 theta/legend ordering are implemented and verified; full Phase 4 integration remains.",
-      "resultEvidence": "phase2/RESULTS.md#w5--bar-incomplete-authoring",
+      "disposition": "Implemented and verified through Phase 4 integration; D14 includes the Phase 2 incomplete-width work and Phase 4 theta/legend order.",
+      "resultEvidence": "phase4/REVIEW.md",
       "implementationEvidence": "phase4/RESULTS_W4.md"
     },
     {
@@ -1639,8 +1673,9 @@
       "recommended": "명시적 semantic midpoint를 추가하고 sequential/discretized/diverging recipe transition을 shared consumers 전체와 함께 preflight한다.",
       "acceptance": "비대칭 domain에서 midpoint의 neutral color 검증. Legend 유무·복수 mark에서 전환 동일. Incompatible consumer 하나면 전부 rollback.",
       "evidence": "audit/REPORT.md: D18",
-      "disposition": "Quantitative midpoint and atomic color scale/legend family transitions are implemented and verified; full Phase 4 integration remains.",
-      "implementationEvidence": "phase4/RESULTS_W5.md"
+      "disposition": "Implemented and verified through Phase 4 integration; D14 includes the Phase 2 incomplete-width work and Phase 4 theta/legend order.",
+      "implementationEvidence": "phase4/RESULTS_W5.md",
+      "resultEvidence": "phase4/REVIEW.md"
     },
     {
       "id": "D19",
@@ -1764,14 +1799,14 @@
       "recommended": "Equal-angle area mode와 zero-baseline radius-length mode를 구분한다. Arc·theta/radius owner를 재사용하고 inner radius를 포함한 area mapping을 확정한다.",
       "acceptance": "값2·3·4가 모두 표현됨. Area 비율·radius-length 비율 각각 독립 수치 검증. Polar scatter 기본 encodeR는 바뀌지 않음.",
       "evidence": "audit/REPORT.md: F04",
-      "disposition": "Measured radius grammar, encoding and complete Rose/Radial bar facades preserve area versus length; numeric, render, browser and installed package evidence passes. Full Phase 4 integration remains.",
-      "resultEvidence": "phase4/RESULTS_W3.md"
+      "disposition": "Implemented and verified through Phase 4 integration; D14 includes the Phase 2 incomplete-width work and Phase 4 theta/legend order.",
+      "resultEvidence": "phase4/REVIEW.md"
     },
     {
       "id": "F05",
       "title": "Area / baseline / range",
       "kind": "proposed-family",
-      "status": "partially-implemented",
+      "status": "implemented-verified",
       "primaryPhase": 4,
       "primaryWorkPackage": "R6-P4-W1",
       "relatedWorkPackages": [
@@ -1784,8 +1819,9 @@
       "recommended": "Constant data endpoint를 lower owner에 추가하고 simple area, ranged ribbon, stacked area를 구분한다. Nonlinear scale과 missing path break를 명시한다.",
       "acceptance": "simple x/y 입력이 실제 area를 그림. Baseline/domain/zero/log·range edit 수렴. 가짜 source field와 renderer inference 없음.",
       "evidence": "audit/REPORT.md: F05",
-      "disposition": "Approved V1 public behavior, lifecycle and consumer checks implemented. Budget Gate B approved and the same reviewed tarball passes all package checks. Phase X remains pending.",
-      "implementationEvidence": "phase4/RESULTS_V1.md"
+      "disposition": "Implemented and verified through Phase 4 integration; D14 includes the Phase 2 incomplete-width work and Phase 4 theta/legend order.",
+      "implementationEvidence": "phase4/RESULTS_V1.md",
+      "resultEvidence": "phase4/REVIEW.md"
     },
     {
       "id": "F06",

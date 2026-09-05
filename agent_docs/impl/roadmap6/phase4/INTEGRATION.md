@@ -1,6 +1,6 @@
 # Phase 4 통합 검증 기록
 
-W1–W5 구현 기준은 `082e6cc7`이다. [전체 실행·0.0.13 릴리즈 승인](../APPROVAL.md)을 적용한다. 이 기록은 진행 중인 통합 검증이며 Phase 완료 기록이 아니다.
+W1–W5 구현 기준은 `082e6cc7`이다. [전체 실행·0.0.13 릴리즈 승인](../APPROVAL.md)을 적용한다. 이 문서는 초기 실패를 포함한 실행 이력이다. 최신 완료 판정은 [Phase 4 X](REVIEW.md)와 [최종 결과](integration-results.json)를 따른다.
 
 ## 현재 통과한 검사
 
@@ -54,3 +54,7 @@ Measured radial의 label/filter/highlight/composition 소비자 대조에서 두
 - 라벨 수정 후 built docs browser도 exit 0으로 완료했다. Desktop 검색·keyboard·Axe·no-JS와 125개 문서의 320/390/768px 검사를 통과했다.
 - Area facade의 남은 composition 셀을 실제 실행으로 확인했다. Tuple group의 stacked Area를 site별 facet으로 나누면 독립 도메인이 `[0,6]`/`[0,12]`이며 columns/gap 변경 뒤에도 유지된다. Baseline 1과 crossing ribbon의 concat은 child semantic/graphic snapshot을 그대로 보존한다. `area-facade.test.js` **5/5**, 새 사례 2개이며 runtime 수정은 없었다.
 - #80/#81은 원격 `7d5982aa` 수정과 검증 근거를 연결해 닫았다. Release 완료로 표시하지 않았다.
+
+## Phase 4 최종 종료
+
+고정 runtime `7d5982aa`의 마지막 realistic **242/242**, Area composition 검사 두 개를 포함한 normal **2,756/2,756**을 통과했다. Runtime/types/public docs/package 내용은 위 패키지 검증 기준과 동일하다. 모든 범위의 통합 검증을 완료해 [Phase 4 X](REVIEW.md)로 종료한다. Phase 5–11과 0.0.13 릴리즈는 계속 진행한다.

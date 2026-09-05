@@ -1,6 +1,6 @@
 # Roadmap 6 — Hierarchical Chart Authoring and Action Consistency
 
-> **문서 상태 — 현재 실행 계획.** Phase 1–3 완료, Phase 4 W1–W5 구현과 최종 통합 검증을 진행 중이다. 새 Area·Rose·Radial Bar와 layoutSeries, theta/legend order, midpoint/legend 전환의 현재 결과는 [통합 기록](phase4/INTEGRATION.md)을 따른다.
+> **문서 상태 — 현재 실행 계획.** Phase 1–4를 완료했고 Phase 5의 guide/label/appearance 계약과 구현을 진행한다. Area·Rose·Radial Bar와 layoutSeries, theta/legend order, midpoint/legend 전환의 최종 결과는 [Phase 4 X](phase4/REVIEW.md)를 따른다.
 > [사용자의 전체 실행·0.0.13 릴리즈 승인](APPROVAL.md)은 F20을 제외한 남은 계약·시각 목표·구현·검증과 필요한 한도 조정을 포함한다. 승인과 검증 완료를 구분하며 Phase 5–11은 아직 구현 완료가 아니다.
 > 실행 위치는 [ROADMAP_INDEX.json](../ROADMAP_INDEX.json), 현재 제품 계약은
 > [ACTION_INDEX.json](../../contract/ACTION_INDEX.json)이 소유한다.
@@ -194,8 +194,7 @@ Full 237,000-byte B와 [X 결과](phase3/REVIEW.md)를 승인받아 Phase 3을 �
 Color에서 독립한 layout 전환, theta category order, diverging midpoint와 legend transition을 같은
 의미 owner로 정리한다. 기존 결과를 조용히 재해석하지 않는다.
 
-Phase 4 A 검토는 [P4-C01–C09](phase4/CONTRACT_REVIEW.md), [새 4개 후보](phase4/candidates.json),
-[49건 재현·200 tests·V 계획](phase4/VALIDATION.md)을 포함한다. A는 승인되었으며 [V1의 11개 primitive 시각 목표](phase4/VISUAL_REVIEW_V1.md)를 렌더·검증했다. V1은 검토 준비 상태이고 V2/V3는 계획 상태다.
+Phase 4는 [X 결과](phase4/REVIEW.md)로 완료했다. 새 direct 4개가 모두 Current이며 20개 시각 target과 고정 runtime의 normal 2,756/2,756, realistic 242/242, renderer/browser/coverage/docs/package를 검증했다. [A 기준](phase4/VALIDATION.md)은 당시 관측 이력으로 보존한다.
 
 ## Phase 5 — Guides, labels and appearance
 

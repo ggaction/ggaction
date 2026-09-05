@@ -2,7 +2,7 @@
 
 ## 상태와 목표
 
-상태: in-progress — Phase 3 X 사용자 승인 뒤 [A 계약](CONTRACT_REVIEW.md)을 layoutSeries 이름 변경과 함께 승인받았다. V1도 승인받아 W1/W2를 구현했다. Package 용량 B와 W4 theta/legend order 검증을 완료했다. W3의 [measured encodeR·scale·두 chart facade와 V2 동등성](RESULTS_W3.md)을 구현·검증했다. 남은 실행은 [로드맵 전체 승인](../APPROVAL.md)을 따른다.
+상태: completed. [전체 실행 승인](../APPROVAL.md) 아래 W1–W5와 20개 시각 target, 소비자·고정 source 통합 검증을 완료했다. 현재 결과와 실제 지원 경계는 [Phase 4 X](REVIEW.md)를 따른다.
 
 차트 이름보다 먼저 baseline·layout·mapping의 의미를 완성한다. Area, Rose와 Radial bar를 정확한 측정 계약 위에 제공한다.
 
@@ -72,4 +72,4 @@
 
 [결과](RESULTS_V1.md), [11개 승인 표현과의 비교](implementation-v1-results.json), [B 검토](BUNDLE_REVIEW.md).
 Current direct 179 / Planned actions 2, capabilities 2이다. W1/W2의 공개 동작은 구현했으며
-B 승인 후 같은 tarball의 Full/Basic/SVG gzip guard와 전체 installed consumer는 통과했다. W4는 [별도 결과](RESULTS_W4.md)처럼 구현·검증했다. W3는 [별도 결과](RESULTS_W3.md)처럼 구현·검증했다. 현재 Current direct 181 / Planned actions 0, capabilities 0이다. W5도 [midpoint·family transition·V3 4개 변형](RESULTS_W5.md)을 구현·검증했다. Phase 전체 통합 검증은 미완료다.
+B 승인 후 같은 tarball의 Full/Basic/SVG gzip guard와 전체 installed consumer는 통과했다. W4는 [별도 결과](RESULTS_W4.md)처럼 구현·검증했다. W3는 [별도 결과](RESULTS_W3.md)처럼 구현·검증했다. 현재 Current direct 181 / Planned actions 0, capabilities 0이다. W5도 [midpoint·family transition·V3 4개 변형](RESULTS_W5.md)을 구현·검증했다. Phase 전체 통합 검증도 [최종 X](REVIEW.md)에서 완료했다.

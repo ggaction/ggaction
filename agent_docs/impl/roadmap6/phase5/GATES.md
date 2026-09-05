@@ -8,7 +8,7 @@
 
 ## R6-P5-A — Contract and scope
 
-- 상태: planned
+- 상태: approved — [전체 실행 승인](../APPROVAL.md); 세부 검토·검증 package는 미완료
 - 검토 대상: K09–K11의 component lifecycle, legend recipe/edge, label source/content, format/unit, theme/fitting.
 - 필요 증거: exact baseline commit, 구현할 public signature 또는 before/after call, [GOAL.md](GOAL.md)의 작업별 의미·owner·지원/오류 matrix, [DESIGN_DECISIONS.md](../DESIGN_DECISIONS.md)의 해당 migration 결정.
 - 추가 증거: focused 재현 결과와 실행 가능한 public/primitive target 계획, Current/type/card/package 영향, 남은 불확실성.
@@ -18,7 +18,7 @@
 
 ## R6-P5-V — Visual target
 
-- 상태: planned
+- 상태: approved — [전체 실행 승인](../APPROVAL.md); 세부 검토·검증 package는 미완료
 - 검토 대상: 이 단계에서 모양이 변하는 각 primitive variant. 서로 독립인 target은 V1/V2로 분리한다.
 - 필요 증거: exact executable primitive source, target public call chain, semantic 결과, input/dimension/variant manifest, 실제 rendered image.
 - 경로: .artifacts/test/png/review/<chart>/<variant>/ 및 git에 포함된 재현 source. 로컬 이미지 경로만으로 review package를 완료하지 않는다.
@@ -29,7 +29,7 @@
 
 ## R6-P5-X — Result and closeout
 
-- 상태: planned
+- 상태: approved — [전체 실행 승인](../APPROVAL.md); 세부 검토·검증 package는 미완료
 - 검토 대상: [GOAL.md](GOAL.md)의 전체 승인 범위 결과와 [STEP1.md](STEP1.md)의 실제 완료 상태.
 - 필요 증거: verified source commit/remote ref, focused·누적 tests, strict positive/negative declarations, actual trace, immutable failure, documentation/metadata/generated diff와 compatibility 예제.
 - 시각 범위: 승인된 target별 same-run decoded primitive/public pixel equality, concrete graphic parity, renderer 소비 결과. 시각 범위가 없으면 이유를 기록한다.
@@ -41,7 +41,7 @@
 
 - Review commit / remote ref: 미정
 - 검증 명령과 실제 결과: 미실행
-- 사용자 승인 근거: 없음
+- 사용자 승인 근거: [APPROVAL.md](../APPROVAL.md)의 남은 로드맵 전체 실행·릴리즈 승인
 - 남은 작업: 해당 GOAL/STEP 전 범위
 
 실행 시 실제 증거를 채운다. 문서 작성 날짜나 이전 로드맵 승인을 이 Gate의 승인으로 재사용하지 않는다.

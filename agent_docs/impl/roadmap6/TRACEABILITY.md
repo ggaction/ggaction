@@ -118,7 +118,7 @@ Primary owner는 누락 방지를 위한 책임 단위이며, 관련 작업이 �
 - 수정·추가 방향: Equal-angle area mode와 zero-baseline radius-length mode를 구분한다. Arc·theta/radius owner를 재사용하고 inner radius를 포함한 area mapping을 확정한다.
 - 완료 검증: 값2·3·4가 모두 표현됨. Area 비율·radius-length 비율 각각 독립 수치 검증. Polar scatter 기본 encodeR는 바뀌지 않음.
 - 근거: audit/REPORT.md: D01. [원래 조사](audit/REPORT.md)
-- 처분: 구현 또는 명시적인 계약 유지·migration 결정의 제안. 아직 완료·승인 상태가 아니다.
+- 처분: [Phase 4 X](phase4/REVIEW.md)의 구현·통합 검증으로 implemented-verified.
 
 ### D02 — Group identity와 appearance field 결합
 
@@ -134,7 +134,7 @@ Primary owner는 누락 방지를 위한 책임 단위이며, 관련 작업이 �
 - 수정·추가 방향: Group/stack/fill/overlay/diverging을 atomic owner에 모은다. 기존 color.layout/measure.stack/offset 경로가 owner에 위임하도록 migration한다.
 - 완료 검증: group→stack→group에서 scale, offset, normalization, guides, selections에 stale 상태 없음. Negative/missing/group conflict atomic.
 - 근거: audit/REPORT.md: D03. [원래 조사](audit/REPORT.md)
-- 처분: [W1/W2 구현과 consumer 검증](phase4/RESULTS_V1.md) 및 승인된 11개 시각 결과의 동등성을 완료했다. Package 용량 B 승인과 같은 tarball 전체 검증도 통과했다. Phase X가 남아 있어 항목 전체는 닫지 않는다.
+- 처분: [Phase 4 X](phase4/REVIEW.md)의 구현·통합 검증으로 implemented-verified.
 
 ### D04 — Complete facade와 deferred composite의 역할 혼합
 
@@ -224,7 +224,7 @@ Primary owner는 누락 방지를 위한 책임 단위이며, 관련 작업이 �
 - 수정·추가 방향: Bar width와 measure-first encoding 중 geometry 없이 검증 가능한 intent를 보존한다. Missing positions 완료 시 원래 requested width와 role을 적용한다.
 - 완료 검증: width-first/last, category-first/measure-first의 semantic/graphic 동등성. Invalid field/width는 즉시 거부, placeholder graphics 없음.
 - 근거: audit/REPORT.md: D14. [원래 조사](audit/REPORT.md)
-- 처분: Phase 2 미완성 authoring과 [W4 theta/legend order](phase4/RESULTS_W4.md)를 구현·검증했다. Phase 4 전체 통합 검증은 남아 있다.
+- 처분: [Phase 4 X](phase4/REVIEW.md)의 구현·통합 검증으로 implemented-verified. Phase 2 incomplete width와 theta/legend order를 함께 대조했다.
 
 ### D15 — 반복 filter와 empty view 공백
 
@@ -256,7 +256,7 @@ Primary owner는 누락 방지를 위한 책임 단위이며, 관련 작업이 �
 - 수정·추가 방향: 명시적 semantic midpoint를 추가하고 sequential/discretized/diverging recipe transition을 shared consumers 전체와 함께 preflight한다.
 - 완료 검증: 비대칭 domain에서 midpoint의 neutral color 검증. Legend 유무·복수 mark에서 전환 동일. Incompatible consumer 하나면 전부 rollback.
 - 근거: audit/REPORT.md: D18. [원래 조사](audit/REPORT.md)
-- 처분: 구현 또는 명시적인 계약 유지·migration 결정의 제안. 아직 완료·승인 상태가 아니다.
+- 처분: [Phase 4 X](phase4/REVIEW.md)의 구현·통합 검증으로 implemented-verified.
 
 ### D19 — Facet/repeat/child 구조 편집의 한계
 
@@ -328,7 +328,7 @@ Primary owner는 누락 방지를 위한 책임 단위이며, 관련 작업이 �
 - 수정·추가 방향: Equal-angle area mode와 zero-baseline radius-length mode를 구분한다. Arc·theta/radius owner를 재사용하고 inner radius를 포함한 area mapping을 확정한다.
 - 완료 검증: 값2·3·4가 모두 표현됨. Area 비율·radius-length 비율 각각 독립 수치 검증. Polar scatter 기본 encodeR는 바뀌지 않음.
 - 근거: audit/REPORT.md: F04. [원래 조사](audit/REPORT.md)
-- 처분: 구현 또는 명시적인 계약 유지·migration 결정의 제안. 아직 완료·승인 상태가 아니다.
+- 처분: [Phase 4 X](phase4/REVIEW.md)의 구현·통합 검증으로 implemented-verified.
 
 ### F05 — Area / baseline / range
 
@@ -336,7 +336,7 @@ Primary owner는 누락 방지를 위한 책임 단위이며, 관련 작업이 �
 - 수정·추가 방향: Constant data endpoint를 lower owner에 추가하고 simple area, ranged ribbon, stacked area를 구분한다. Nonlinear scale과 missing path break를 명시한다.
 - 완료 검증: simple x/y 입력이 실제 area를 그림. Baseline/domain/zero/log·range edit 수렴. 가짜 source field와 renderer inference 없음.
 - 근거: audit/REPORT.md: F05. [원래 조사](audit/REPORT.md)
-- 처분: [W1/W2 구현과 consumer 검증](phase4/RESULTS_V1.md) 및 승인된 11개 시각 결과의 동등성을 완료했다. Package 용량 B 승인과 같은 tarball 전체 검증도 통과했다. Phase X가 남아 있어 항목 전체는 닫지 않는다.
+- 처분: [Phase 4 X](phase4/REVIEW.md)의 구현·통합 검증으로 implemented-verified.
 
 ### F06 — Density
 
@@ -478,3 +478,7 @@ Full/Basic 용량 조정은 [별도 B](phase4/BUNDLE_REVIEW.md)로 승인받았�
 ## W4 구현 후 갱신
 
 [전체 승인](APPROVAL.md)에 따라 theta/legend 순서 연결과 reset을 구현했다. [결과](phase4/RESULTS_W4.md)에 2,661 normal tests, 두 시각 pair, browser와 installed package 증거를 기록했다. D01/F04의 radial mapping과 D18 midpoint, 이후 Phase 5–11은 계속 진행한다. F20은 제외한다.
+
+## Phase 4 X 완료
+
+[최종 결과](phase4/REVIEW.md)로 D01/D03/D14/D18/F04/F05를 완료했다. Current 181 / Planned 0, 고정 runtime의 normal 2,756/2,756과 realistic 242/242, render/browser/coverage/docs/package가 통과했다. F20 제외를 유지하고 Phase 5부터 진행한다.

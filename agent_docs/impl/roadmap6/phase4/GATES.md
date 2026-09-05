@@ -4,7 +4,7 @@
 
 ## 공통 상태
 
-A/V1/B의 개별 승인과 V/V2/V3/X의 [전체 실행 승인](../APPROVAL.md)이 있다. W1–W5의 구현 검증을 완료했으며 Phase 전체 완료 판정은 최종 통합 검사가 끝날 때 기록한다. 아래의 개별 미승인 문구는 전체 승인 이전 이력이다.
+A/V1/B의 개별 승인과 V/V2/V3/X의 [전체 실행 승인](../APPROVAL.md)이 있다. W1–W5의 구현 검증을 완료했으며 Phase 전체 최종 통합 검사도 [X 결과](REVIEW.md)에서 완료했다. 아래의 개별 미승인 문구는 전체 승인 이전 이력이다.
 허용 상태는 planned | ready-for-review | approved | changes-requested다.
 V1 구현 후의 [package 용량 B](BUNDLE_REVIEW.md)를 사용자 승인받아 같은 tarball 재검증까지 통과했다. A 승인과 Phase 3 X 승인을 V1 승인으로 재사용하지 않는다.
 
@@ -101,3 +101,7 @@ V1 구현 후의 [package 용량 B](BUNDLE_REVIEW.md)를 사용자 승인받아 
 - V2/V3/X, 새 API, PR·배포·publish는 이 승인에 포함하지 않는다.
 
 - 승인 후 결과: [같은 tarball 전체 통과](package-approved-results.json), Full 240,319 / Basic 128,538 / SVG 6,418 bytes. Documentation/package artifact 계약 6/6 통과. README의 현재 Basic 상한도 동기화했다.
+
+## 최종 X 결과
+
+[전체 실행 승인](../APPROVAL.md)을 적용해 [구현·검증·소비자 대조](REVIEW.md)를 완료했다. Runtime `7d5982aa`, normal 2,756/2,756, realistic 242/242, render 205/205, browser 63/63 및 같은 tarball 설치·built docs가 통과했다. Current 181 / Planned 0이며 Phase 4는 completed다. Phase 5–11과 실제 0.0.13 릴리즈는 남는다.

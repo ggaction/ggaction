@@ -4,10 +4,10 @@
 
 ## 현재 작업
 
-- **현재 활성 계획은 Roadmap 6 Phase 4**이다. [`roadmap6/ROADMAP.md`](roadmap6/ROADMAP.md)는
+- **현재 활성 계획은 Roadmap 6 Phase 5**이다. [`roadmap6/ROADMAP.md`](roadmap6/ROADMAP.md)는
   173개 액션 감사에서 나온 오류 8건·설계 문제 20건·사용자가 선택한 추가 액션군 19개를 12단계로 연결한다.
-  Phase 1–3 결과를 승인받아 완료했다. [Phase 3 X 결과](roadmap6/phase3/REVIEW.md)의 세 facade·9개 시각 결과·설치 검증을 확정했고, [Phase 4 A 계약](roadmap6/phase4/CONTRACT_REVIEW.md)이 layoutSeries 이름 변경까지 포함해 승인되었다. 49건 재현과 새 4개 액션 제안을 정리했다. Phase 4 A는 승인되었고 [V1의 Area/layout 11개 시각 목표](roadmap6/phase4/VISUAL_REVIEW_V1.md)를 렌더·검증하여 검토 준비를 마쳤다. V1/V2/V3/X 승인은 아직 없다.
-- [`roadmap6/phase4/GOAL.md`](roadmap6/phase4/GOAL.md) — Baseline·layout·radial mapping·order·midpoint의 다음 계약 범위
+  Phase 1–4를 완료했다. [Phase 4 X 결과](roadmap6/phase4/REVIEW.md)에 Area·Rose·Radial Bar·layoutSeries와 순서·색상 의미의 구현 및 통합 검증을 기록했다. [전체 실행·0.0.13 릴리즈 승인](roadmap6/APPROVAL.md)을 적용하며, 현재는 [Phase 5의 축·라벨·스타일](roadmap6/phase5/GOAL.md)을 진행한다.
+- [`roadmap6/phase5/GOAL.md`](roadmap6/phase5/GOAL.md) — Guide component lifecycle·legend·labels·theme·fitting
 - [`roadmap6/TRACEABILITY.md`](roadmap6/TRACEABILITY.md) — 실행 대상 47개 항목과 작업·검증 조건
 - [`roadmap6/DESIGN_DECISIONS.md`](roadmap6/DESIGN_DECISIONS.md) — 공통 결정과 migration
 - 마지막 완료 owner는 [Roadmap 5.4 Phase 6](roadmap5.4/ROADMAP.md)이다.
