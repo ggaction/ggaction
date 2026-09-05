@@ -237,7 +237,8 @@
         "evidence": "phase2/VALIDATION.md",
         "baselineProbes": 43,
         "focusedBaselineTests": 100,
-        "approval": null
+        "approval": null,
+        "reviewPackageCommit": "e06b57db5624a5b0d66cea425cff4aa5f5f4caad"
       }
     },
     {

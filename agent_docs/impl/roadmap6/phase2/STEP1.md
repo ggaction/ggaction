@@ -4,7 +4,7 @@
 
 - [x] A Gate의 정확한 결정·호환성·검증 범위 검토안 작성 — [CONTRACT_REVIEW.md](CONTRACT_REVIEW.md)
 - [x] 현재 동작 43건·관련 기존 테스트 100건 확인 — [VALIDATION.md](VALIDATION.md)
-- [ ] A Gate 증거 commit/push 및 review ref 기록
+- [x] A Gate 증거 commit/push 및 review ref 기록 — `e06b57db5624a5b0d66cea425cff4aa5f5f4caad`
 - [ ] A Gate의 명시적 사용자 승인 기록
 - [ ] R6-P2-W1 Complete facade와 guide 확보
 - [ ] R6-P2-W2 Series와 appearance 분리

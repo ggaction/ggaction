@@ -14,7 +14,8 @@ R6-P2-A/V/X의 사용자 승인은 아직 없고 V/X는 planned다.
   [실행 source](baseline.probes.mjs), [43건 결과](baseline-results.json).
 - Baseline: `bbc8a3fc256c9afa877f696ed6ade1f51ffb7522`; source tree `bd17aeb7d38e1d184bc714a182e13feea5923279`.
 - 실제 검증: baseline 43/43, 관련 기존 tests 100/100. Source/API 구현·새 visual target은 아직 없다.
-- Review package commit: package 검증·push 뒤 이 필드에 기록한다.
+- Review package commit: [`e06b57db5624a5b0d66cea425cff4aa5f5f4caad`](https://github.com/ggaction/ggaction/commit/e06b57db5624a5b0d66cea425cff4aa5f5f4caad),
+  `origin/codex/roadmap6-hierarchical-actions`에 push 확인.
 - 검토 대상: K01–K06 및 K08의 common API, 기존 defaults/alias 유지 범위, ErrorBand style migration.
 - 필요 증거: exact baseline commit, 구현할 public signature 또는 before/after call, [GOAL.md](GOAL.md)의 작업별 의미·owner·지원/오류 matrix, [DESIGN_DECISIONS.md](../DESIGN_DECISIONS.md)의 해당 migration 결정.
 - 추가 증거: focused 재현 결과와 실행 가능한 public/primitive target 계획, Current/type/card/package 영향, 남은 불확실성.
@@ -47,7 +48,7 @@ R6-P2-A/V/X의 사용자 승인은 아직 없고 V/X는 planned다.
 
 ## 승인 기록
 
-- Review commit / remote ref: package push 뒤 기록 / `codex/roadmap6-hierarchical-actions`
+- Review commit / remote ref: `e06b57db5624a5b0d66cea425cff4aa5f5f4caad` / `origin/codex/roadmap6-hierarchical-actions`
 - 검증 명령과 실제 결과: [VALIDATION.md](VALIDATION.md)의 baseline 43/43와 관련 기존 테스트 100/100. 새 API 구현 검증은 미실행.
 - 사용자 승인 근거: R6-P2-A는 없음. 2026-09-05 “승인한다”는 Phase 1 X 결과 승인으로 이미 반영했다.
 - 남은 작업: A 계약 승인 → 비시각 교정/primitive target → V 승인 뒤 해당 public flow → 전체 consumer 검증과 X.

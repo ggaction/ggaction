@@ -19,6 +19,9 @@ MCP cards를 먼저 바꾸지 않았다. F01–F19와 이후 Phase는 기존 순
 같은 entry에서 가능하게 한다. `ensureGuides`, `createBoxMark`, 일반 compiler, 별도 전역 추론 엔진은 공개하지 않는다.
 `layoutBars`/`encodeStack`, Polar guide lifecycle, Pie 등 새 완성 chart의 구현은 원래 후속 owner에 남긴다.
 
+원격 검토 package: [`e06b57db5624a5b0d66cea425cff4aa5f5f4caad`](https://github.com/ggaction/ggaction/commit/e06b57db5624a5b0d66cea425cff4aa5f5f4caad).
+Gate 상태와 승인 경계는 [GATES.md](GATES.md)에 기록한다.
+
 ## 기준과 확인한 현상
 
 - 정확한 baseline: [`bbc8a3fc256c9afa877f696ed6ade1f51ffb7522`](https://github.com/ggaction/ggaction/commit/bbc8a3fc256c9afa877f696ed6ade1f51ffb7522).

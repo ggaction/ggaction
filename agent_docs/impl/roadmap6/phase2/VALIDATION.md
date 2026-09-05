@@ -10,7 +10,7 @@
 | Phase 1 승인 기록 뒤 navigation test | 7/7, exit 0; 승인 기록 commit `bbc8a3fc`에 반영 |
 | `node agent_docs/impl/roadmap6/phase2/baseline.probes.mjs` | 43/43 관측과 저장 JSON 일치; 모든 input program/trace 불변 |
 | 아래 12개 기존 test file | 100/100, fail/skip 0 |
-| Review local routes/anchors | `agent-docs-navigation.test.js`로 확인 |
+| Review local routes/anchors | `agent-docs-navigation.test.js` 7/7, exit 0 |
 | 원장 | 47 findings / 46 work packages / 12 phases, Phase 1 X approved, Phase 2 A는 미승인 |
 | `git diff --check` | whitespace 오류 없음 |
 
@@ -47,6 +47,8 @@ Temp/cache/browser는 이 저장소 `.artifacts/repository-study/` 아래를 사
 [승인된 Phase 1 결과](../phase1/REVIEW.md)에 있는 검증이다. Phase 2 package에서 source/types/runtime를
 변경하지 않았으므로 이를 baseline으로 참조하고 새 구현 결과로 세지 않는다. 이번 A 준비에서 새 visual
 primitive, public target render, 새 API runtime/TypeScript 검증, full browser/coverage/docs build는 실행하지 않았다.
+
+검토 package commit: `e06b57db5624a5b0d66cea425cff4aa5f5f4caad`, 위 remote branch에 push했다.
 
 ## 구현 후 반드시 채울 matrix — 현재 미실행
 
