@@ -2,13 +2,13 @@
 
 ## 공통 상태
 
-A는 ready-for-review다. V/V1/V2/V3/X는 planned이며 승인된 Phase 4 Gate는 없다.
+A는 approved다. V/V1/V2/V3/X는 planned이며 시각 목표와 결과 승인은 아직 없다.
 허용 상태는 planned | ready-for-review | approved | changes-requested다.
 이번 검토 대상은 [CONTRACT_REVIEW.md](CONTRACT_REVIEW.md)의 P4-C01–C09다. Phase 3 X 승인을 재사용하지 않는다.
 
 ## R6-P4-A — Contract and scope
 
-- 상태: ready-for-review
+- 상태: approved
 - 검토 대상: K07–K08의 baseline/range API, stack transition, theta order, diverging midpoint와 migration.
 - 필요 증거: exact baseline commit, 구현할 public signature 또는 before/after call, [GOAL.md](GOAL.md)의 작업별 의미·owner·지원/오류 matrix, [DESIGN_DECISIONS.md](../DESIGN_DECISIONS.md)의 해당 migration 결정.
 - 추가 증거: [49건 baseline](baseline-results.json), [4개 후보](candidates.json), [20개 future public call 계획](visual-target-plan.json), [200/200 기존 tests와 acceptance](VALIDATION.md). Current 177 / Planned 0, production 변경 0.
@@ -50,10 +50,13 @@ A는 ready-for-review다. V/V1/V2/V3/X는 planned이며 승인된 Phase 4 Gate�
 - Review commit: `f229fa003d5de81f7131d4c23811b834bd36d50e`.
 - Remote ref: `origin/codex/roadmap6-hierarchical-actions`에 push 및 ls-remote 일치 확인.
 - 검토 내용: 이 commit의 P4-C01–C09, 새 direct action 4개, 기존 action 변경, 20 V target 계획.
-- 검토 고정일: 2026-09-05. A 승인 기록은 아직 없다.
+- 검토 고정일: 2026-09-05. A 승인: 사용자가 이름을 layoutSeries로 바꾸는 결정까지 포함해 승인했다.
 - 검증 명령과 실제 결과: [VALIDATION.md](VALIDATION.md). 49건 replay, 199 immutable checks, 관련 기존 tests 200/200. 새 production/primitive 구현 없음.
-- 사용자 승인 근거: 없음
-- 남은 작업: A 승인, V1/V2/V3 primitive 작성·승인, W1–W5 구현과 누적 검증, X 승인.
+- 사용자 승인 근거: “그렇게하자. 그것까지 포함해서 승인한다”.
+- 승인 기준 HEAD: `b93acb55859dfd90028ffa91f1e6fc2ef4c356fc`.
+- 승인 delta: `encodeLayout` → `layoutSeries`. Bar/Area의 series 배치만 담당하며 canvas/facet/composition layout은 포함하지 않는다. 이전 이름의 alias를 만들지 않는다.
+- 승인 범위: P4-C01–C09의 위 이름 변경 포함, Planned 등록·비시각 준비·20개 primitive target 작성. 각 V 승인 전 public visual flow 구현 차단.
+- 남은 작업: V1/V2/V3 primitive 작성·승인, W1–W5 구현과 누적 검증, X 승인.
 - Baseline commit: `93dceb3761e170207058e6a7280060fedd471244`.
 - Full/Basic/SVG 상한 237000/125000/25000 유지. 초과 시 별도 B가 필요하며 이번 A에는 상한 증가가 없다.
 

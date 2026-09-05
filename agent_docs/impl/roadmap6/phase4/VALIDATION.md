@@ -1,6 +1,6 @@
 # Phase 4 — A 검증과 V/X acceptance
 
-A는 아직 미승인이다. 이 문서 앞부분은 **실제로 실행한 현재 baseline 검증**, 뒷부분은 **미래 구현 acceptance**다.
+A는 layoutSeries 이름 변경을 포함해 승인되었다. V는 아직 미승인이다. 이 문서 앞부분은 **실제로 실행한 현재 baseline 검증**, 뒷부분은 **미래 구현 acceptance**다.
 [계약 검토](CONTRACT_REVIEW.md), [후보 원장](candidates.json), [승인 상태](GATES.md)를 함께 읽는다.
 
 검증된 A package commit은 `f229fa003d5de81f7131d4c23811b834bd36d50e`이며 원격 branch에 push했다.
@@ -161,7 +161,7 @@ facade를 새로 생성해야만 수정할 수 있는 우회 구조는 허용하
 | Labels | 현재 mark별 지원 경로의 data identity와 value, unsupported aggregate label은 오류. 새 label family는 Phase 7 |
 | Composition/facet | 현재 허용 Cartesian/Polar 조합에서 canonical fields 보존, scoped resource remap. 미지원 조합을 새 지원으로 주장하지 않음 |
 | Schema/immutable/trace | 신규 canonical 경로의 validation·clone/freeze·serialization·namespace remap, 실제 wrapped child, duplicated state 없음 |
-| Full/basic/types | 새 3 H0 full only, encodeLayout 양쪽, Basic Bar 지원. 기존 Basic 미공개 editor/order/Polar 유출 0 |
+| Full/basic/types | 새 3 H0 full only, layoutSeries 양쪽, Basic Bar 지원. 기존 Basic 미공개 editor/order/Polar 유출 0 |
 | Catalog/cards/docs/MCP | Current/Planned/action-index/type/options 일치, hierarchy/변경된 기본값·오류 문서, 실제 생성 코드 실행 |
 | Render/browser/package | primitive/public parity, PNG/SVG/PDF, 설치된 tarball browser 실행, export boundary와 gzip 상한 |
 
@@ -176,3 +176,8 @@ Package는 Full/Basic/SVG의 승인된 **237000/125000/25000**을 그대로 측�
 같은 packed tarball의 설치 테스트·browser·exports를 통과시키고 source/ref/hash를 X package에 기록한다.
 후보 4개를 실제 Current로 옮기고 Phase 4의 Planned 잔여 0을 확인하며 schema/default/migration을 명시한다.
 D14는 Phase 2의 width/order 교정과 이번 theta/legend 부분을 함께 대조해 닫고, 다른 단계 소유 항목을 선행 완료로 표시하지 않는다.
+
+## A 승인 delta
+
+사용자가 `encodeLayout`을 `layoutSeries`로 바꾸는 결정까지 포함해 P4-C01–C09를 승인했다.
+Baseline source/JSON은 당시 이름의 부재 관측을 그대로 보존한다. 현재 계약·후보·미래 target calls만 새 이름을 사용한다.

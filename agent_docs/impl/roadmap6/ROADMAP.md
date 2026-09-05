@@ -1,6 +1,6 @@
 # Roadmap 6 — Hierarchical Chart Authoring and Action Consistency
 
-> **문서 상태 — 현재 실행 계획.** Phase 1–3 결과를 사용자 승인으로 완료했다. [Phase 3 X 결과](phase3/REVIEW.md)의 Pie/Donut·Density·Horizon과 9개 시각 결과, 같은 tarball 소비자 검증을 확정했다. 현재는 [Phase 4 A 계약](phase4/CONTRACT_REVIEW.md)이 ready-for-review다. Baseline·layout·radial mapping·order·midpoint의 구체 계약과 49건 재현을 정리했다. Phase 4 A/V/X는 아직 미승인이다.
+> **문서 상태 — 현재 실행 계획.** Phase 1–3 결과를 사용자 승인으로 완료했다. [Phase 3 X 결과](phase3/REVIEW.md)의 Pie/Donut·Density·Horizon과 9개 시각 결과, 같은 tarball 소비자 검증을 확정했다. 현재는 [Phase 4 A 계약](phase4/CONTRACT_REVIEW.md)이 layoutSeries 이름 변경까지 포함해 승인되었다. Baseline·layout·radial mapping·order·midpoint의 구체 계약과 49건 재현을 정리했다. Phase 4 A는 승인되었고 V/X는 아직 미승인이다.
 > 액션군 범위는 사용자 선택에 따라 F01–F19로 구성했다. 후속 액션군의 구체적인 API와 행동 변경은 각 Phase Gate에서 확정한다.
 > 이 문서를 작성해 달라는 요청은 모든 설계안·구현·배포의 일괄 승인을 뜻하지 않는다.
 > 실행 위치는 [ROADMAP_INDEX.json](../ROADMAP_INDEX.json), 현재 제품 계약은
@@ -115,7 +115,7 @@ S는 기존 owner 위의 교정·연결, M은 여러 consumer의 lifecycle 변�
 | 1 | completed | W1–W5 구현·검증과 R6-P1-X 사용자 승인. B01 lower 작성 순서는 Phase 2 W5에서 교정 |
 | 2 | completed | W1–W5와 6개 public 흐름 구현·검증, A/B/V/X 사용자 승인 |
 | 3 | completed | Pie/Donut·Density·Horizon, A/V/B/X approved; Current 177 / Planned 0 |
-| 4 | in-progress | Baseline, layout, order, 중심색과 Area·Rose/Radial의 A ready-for-review; API 미승인 |
+| 4 | in-progress | Baseline, layout, order, 중심색과 Area·Rose/Radial의 A 승인; layoutSeries와 primitive 시각 목표 준비 |
 | 5 | planned | 축·범례 lifecycle, label·format·theme·명시적 fitting |
 | 6 | planned | Data·transform·통계·filter·composite role 편집 |
 | 7 | planned | Polar Scatter/Line, Radar, Rug/Strip |
@@ -196,7 +196,7 @@ Color에서 독립한 layout 전환, theta category order, diverging midpoint와
 의미 owner로 정리한다. 기존 결과를 조용히 재해석하지 않는다.
 
 Phase 4 A 검토는 [P4-C01–C09](phase4/CONTRACT_REVIEW.md), [새 4개 후보](phase4/candidates.json),
-[49건 재현·200 tests·V 계획](phase4/VALIDATION.md)을 포함한다. A는 ready-for-review이며 production 구현은 미시작이다.
+[49건 재현·200 tests·V 계획](phase4/VALIDATION.md)을 포함한다. A는 승인되었으며 primitive 시각 목표를 준비한다.
 
 ## Phase 5 — Guides, labels and appearance
 

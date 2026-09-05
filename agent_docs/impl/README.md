@@ -6,7 +6,7 @@
 
 - **현재 활성 계획은 Roadmap 6 Phase 4**이다. [`roadmap6/ROADMAP.md`](roadmap6/ROADMAP.md)는
   173개 액션 감사에서 나온 오류 8건·설계 문제 20건·사용자가 선택한 추가 액션군 19개를 12단계로 연결한다.
-  Phase 1–3 결과를 승인받아 완료했다. [Phase 3 X 결과](roadmap6/phase3/REVIEW.md)의 세 facade·9개 시각 결과·설치 검증을 확정했고, [Phase 4 A 계약](roadmap6/phase4/CONTRACT_REVIEW.md)이 ready-for-review다. 49건 재현과 새 4개 액션 제안을 정리했다. Phase 4의 API·시각 target은 미승인이다.
+  Phase 1–3 결과를 승인받아 완료했다. [Phase 3 X 결과](roadmap6/phase3/REVIEW.md)의 세 facade·9개 시각 결과·설치 검증을 확정했고, [Phase 4 A 계약](roadmap6/phase4/CONTRACT_REVIEW.md)이 layoutSeries 이름 변경까지 포함해 승인되었다. 49건 재현과 새 4개 액션 제안을 정리했다. Phase 4 A는 승인되었고 시각 target은 준비 중이다.
 - [`roadmap6/phase4/GOAL.md`](roadmap6/phase4/GOAL.md) — Baseline·layout·radial mapping·order·midpoint의 다음 계약 범위
 - [`roadmap6/TRACEABILITY.md`](roadmap6/TRACEABILITY.md) — 실행 대상 47개 항목과 작업·검증 조건
 - [`roadmap6/DESIGN_DECISIONS.md`](roadmap6/DESIGN_DECISIONS.md) — 공통 결정과 migration

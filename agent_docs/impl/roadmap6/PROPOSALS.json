@@ -25,7 +25,8 @@
       "R6-P3-A",
       "R6-P3-V",
       "R6-P3-B",
-      "R6-P3-X"
+      "R6-P3-X",
+      "R6-P4-A"
     ],
     "implementationStarted": true,
     "reviewCommit": "cf13920ed517cfc6c333b04ec55a724826960228",
@@ -535,7 +536,7 @@
         2
       ],
       "gateStates": {
-        "R6-P4-A": "ready-for-review",
+        "R6-P4-A": "approved",
         "R6-P4-V": "planned",
         "R6-P4-X": "planned",
         "R6-P4-V1": "planned",
@@ -600,7 +601,7 @@
           "contractEvidence": "phase4/CONTRACT_REVIEW.md"
         }
       ],
-      "activity": "contract-review-ready",
+      "activity": "preparing-visual-targets",
       "contractEvidence": "phase4/CONTRACT_REVIEW.md",
       "baselineEvidence": "phase4/baseline-results.json",
       "baselineCommit": "93dceb3761e170207058e6a7280060fedd471244",
@@ -615,15 +616,23 @@
       },
       "proposedDirectActions": [
         "createAreaPlot",
-        "encodeLayout",
+        "layoutSeries",
         "createRosePlot",
         "createRadialBarPlot"
       ],
       "candidateEvidence": "phase4/candidates.json",
       "proposedVisualTargets": 20,
       "visualPlanEvidence": "phase4/visual-target-plan.json",
-      "proposedPackageBoundary": "Three new H0 full-only; encodeLayout full/basic Bar; existing bundle limits unchanged",
-      "reviewPackageCommit": "f229fa003d5de81f7131d4c23811b834bd36d50e"
+      "proposedPackageBoundary": "Three new H0 full-only; layoutSeries full/basic Bar; existing bundle limits unchanged",
+      "reviewPackageCommit": "f229fa003d5de81f7131d4c23811b834bd36d50e",
+      "contractApproval": {
+        "date": "2026-09-05",
+        "userDirection": "그렇게하자. 그것까지 포함해서 승인한다",
+        "reviewCommit": "f229fa003d5de81f7131d4c23811b834bd36d50e",
+        "approvalBaselineCommit": "b93acb55859dfd90028ffa91f1e6fc2ef4c356fc",
+        "delta": "Rename encodeLayout to layoutSeries without an alias; Bar/Area series layout only.",
+        "scope": "P4-C01–C09 with naming delta; planned registration, nonvisual preparation and primitive targets. Public visual flows await their V approvals; budgets unchanged."
+      }
     },
     {
       "id": 5,

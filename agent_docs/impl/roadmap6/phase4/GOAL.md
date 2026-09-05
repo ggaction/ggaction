@@ -2,7 +2,7 @@
 
 ## 상태와 목표
 
-상태: in-progress — Phase 3 X 사용자 승인 뒤 [A 계약 검토](CONTRACT_REVIEW.md)가 ready-for-review다. Phase 4 A/V/X는 미승인이며 production 구현은 시작하지 않았다.
+상태: in-progress — Phase 3 X 사용자 승인 뒤 [A 계약](CONTRACT_REVIEW.md)을 layoutSeries 이름 변경과 함께 승인받았다. V/X는 미승인이며 primitive 시각 목표를 준비한다.
 
 차트 이름보다 먼저 baseline·layout·mapping의 의미를 완성한다. Area, Rose와 Radial bar를 정확한 측정 계약 위에 제공한다.
 
@@ -66,4 +66,4 @@
 - [P4-C01–C09 결정·signature·migration](CONTRACT_REVIEW.md)과 [4개 후보](candidates.json).
 - [현재 API 49건 재현](baseline-results.json), [수치·소비자 matrix](VALIDATION.md).
 - [20개 V target 계획](visual-target-plan.json): 입력·dimensions·publicCalls 고정, primitive/public 모두 미구현.
-- Current 177 / Planned 0 유지. 새 3 H0는 full 전용, encodeLayout은 full/basic Bar에 제안한다.
+- Current 177 / Planned 0 유지. 새 3 H0는 full 전용, layoutSeries은 full/basic Bar에 제안한다.

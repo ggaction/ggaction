@@ -732,7 +732,7 @@
           }
         },
         {
-          "op": "encodeLayout",
+          "op": "layoutSeries",
           "args": {
             "target": "m",
             "mode": "stack"
@@ -830,21 +830,21 @@
           }
         },
         {
-          "op": "encodeLayout",
+          "op": "layoutSeries",
           "args": {
             "target": "m",
             "mode": "group"
           }
         },
         {
-          "op": "encodeLayout",
+          "op": "layoutSeries",
           "args": {
             "target": "m",
             "mode": "stack"
           }
         },
         {
-          "op": "encodeLayout",
+          "op": "layoutSeries",
           "args": {
             "target": "m",
             "mode": "group"

@@ -1,6 +1,6 @@
 # Roadmap 6 — Area / ranged ribbon / stacked area
 
-**Proposed / Phase 4 A 검토용. 아직 Current API가 아니다.**
+**승인된 Phase 4 A 계약 / 미구현. 아직 Current API가 아니다.**
 [P4-C01–C03 계약](../phase4/CONTRACT_REVIEW.md), [Gate](../phase4/GATES.md),
 [재현과 acceptance](../phase4/VALIDATION.md)가 이 계약을 연결한다. 연결 항목은 F05·D03이다.
 
@@ -65,7 +65,7 @@ Canvas와 materialized dataset은 이미 있어야 한다. data는 explicit→cu
 const lower = base.createAreaMark({ id: 'a', data: 'data' })
   .encodeX({ target: 'a', field: 'time' })
   .encodeYRange({ target: 'a', lower: 'value', upper: { datum: 0 } })
-  .encodeLayout({ target: 'a', mode: 'overlay' })
+  .layoutSeries({ target: 'a', mode: 'overlay' })
   .createGuides();
 ~~~
 
@@ -82,7 +82,7 @@ createAreaPlot
 │  ├─ encodeX / encodeY (primary field or datum)
 │  ├─ encodeX2 / encodeY2 (secondary, same scale)
 │  └─ shared scale → Area materialization
-├─ encodeLayout (canonical mode; reused series math)
+├─ layoutSeries (canonical mode; reused series math)
 ├─ encodeColor? (series-constant appearance)
 └─ createGuides? (applicable axes/grid/legend)
 ~~~
@@ -127,7 +127,7 @@ Fill sum=0은 두께 0, domain [0,1]이며 total=0을 분모로 나누지 않는
 | --- | --- |
 | baseline 변경 | encodeX2/encodeY2 datum 재할당. Scale/domain/guide 전체 갱신 |
 | field↔datum / ribbon 변경 | encodeXRange/encodeYRange로 최종 pair를 atomic 검증 |
-| overlay→stack→fill→overlay | encodeLayout. Raw baseline 0, aligned grid 등 최종 mode 조건 검사 |
+| overlay→stack→fill→overlay | layoutSeries. Raw baseline 0, aligned grid 등 최종 mode 조건 검사 |
 | group / series-constant color 변경 | encodeGroup / encodeColor. 명시적 group은 color 변경으로 교체하지 않음 |
 | missing·appearance 변경 | editAreaMark. Missing은 semantic 정책, appearance는 기존 config owner |
 | scale·resize | editScale / editCanvas. Endpoint·stack·guide·selection을 같은 planner로 갱신 |

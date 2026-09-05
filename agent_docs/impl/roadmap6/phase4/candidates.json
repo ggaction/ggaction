@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "status": "proposed",
+  "status": "accepted",
   "gate": "R6-P4-A",
   "implemented": false,
   "currentDirectActions": 177,
@@ -17,7 +17,7 @@
       "workPackage": "R6-P4-W1"
     },
     {
-      "name": "encodeLayout",
+      "name": "layoutSeries",
       "level": "H2",
       "entryPoints": [
         "ggaction",
@@ -119,5 +119,10 @@
     "ggaction/basic": 125000,
     "ggaction/svg": 25000
   },
-  "approvalRequestedForBudgetIncrease": false
+  "approvalRequestedForBudgetIncrease": false,
+  "namingDecision": {
+    "previousName": "encodeLayout",
+    "acceptedName": "layoutSeries",
+    "alias": false
+  }
 }

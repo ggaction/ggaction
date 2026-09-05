@@ -1,6 +1,6 @@
 # Roadmap 6 — Rose / Radial bar
 
-**Proposed / Phase 4 A 검토용. 미구현·미승인이다.**
+**승인된 Phase 4 A 계약 / 미구현. 시각 V 승인은 아직 없다.**
 [P4-C04 계약](../phase4/CONTRACT_REVIEW.md), [Gate](../phase4/GATES.md),
 [수치·V 계획](../phase4/VALIDATION.md)에 연결한다. 범위는 F04·D01이다.
 

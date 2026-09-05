@@ -135,7 +135,7 @@ Diverging color는 palette 이름 외에 midpoint 의미를 저장한다. 비대
 연결: D03, D14, F05, F15. Owner: Phase 2·4·6.
 
 Color는 appearance이고 stack/group/fill/overlay/diverging은 layout 의미다.
-Phase 4 A의 제안 이름은 `encodeLayout`이다. 하나의 owner가 baseline, offset, normalization과
+Phase 4 A의 제안 이름은 `layoutSeries`이다. 하나의 owner가 baseline, offset, normalization과
 group/stack order를 원자적으로 바꾸게 한다. 기존 color.layout은 호환 adapter로 위임한다.
 
 Group→stack→group에서는 stale offsets가 없어야 한다. Negative 값과 normalized stack의 분모, missing series의
@@ -282,7 +282,7 @@ unresolved/empty explanation을 구분한다. Cards에 모든 transitive type을
 | Donut 별도 이름 | Pie arc.innerRadius로 작성, 별도 alias 미추가 제안 | Phase 3 A / P3-C02 |
 | Pie weighted aggregate | value를 쓰면 aggregate를 명시 | Phase 3 A |
 | Box/Gradient 이름·deferred 유지 | 유지 + authoring role 설명; 하위 facade는 수요 기반 | Phase 2 A |
-| Baseline/layout public 이름 | 기존 datum/range 확장 + encodeLayout, [P4-C01–C03 제안](phase4/CONTRACT_REVIEW.md) | Phase 4 A |
+| Baseline/layout public 이름 | 기존 datum/range 확장 + layoutSeries, [P4-C01–C03 제안](phase4/CONTRACT_REVIEW.md) | Phase 4 A |
 | Rose negative/unequal-angle | 첫 범위는 non-negative equal-angle만 | Phase 4 A |
 | Style override conflict | explicit assignment 교체 전까지 오류 | Phase 2 A |
 | Source schema·temporal unit 표면 | 기존 계약 위의 opt-in | Phase 2 A |

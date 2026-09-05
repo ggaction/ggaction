@@ -1,16 +1,17 @@
 # R6-P4-A — Area·layout·radial mapping·order·midpoint 계약 검토
 
-상태: **Proposed / ready-for-review, 미승인·미구현**. Phase 3 X의 사용자 “승인한다”는
-Phase 3 완료와 이 검토 준비를 열었다. 아래 P4-C01–C09의 production 구현 승인은 아직 없다.
+상태: **approved contract / 미구현**. 사용자가 “그렇게하자. 그것까지 포함해서 승인한다”라고 답해
+P4-C01–C09와 `encodeLayout` → `layoutSeries` 이름 변경을 승인했다. 기존 이름의 alias는 만들지 않는다.
+확정된 계약에 따라 비시각 준비·primitive 작성을 진행하며 각 V 승인 전 public visual flow는 구현하지 않는다.
 정확한 원격 검토 ref는 [GATES.md](GATES.md)가 소유한다. F20은 계속 제외한다.
 
-## 승인할 결정과 이유
+## 승인된 결정과 이유
 
 | 결정 | 제안 | 이유 |
 | --- | --- | --- |
 | P4-C01 / endpoint | Area의 기존 position/range에 `datum` 추가. 새 baseline action 없음 | Rule의 data-space vocabulary와 ranged owner 재사용 |
 | P4-C02 / Area | `createAreaPlot`, 기본 baseline 0, 명시적 ribbon·group/layout·missing 정책 | 짧은 호출이 완성 영역을 만들고 아래층에서 그대로 편집 가능 |
-| P4-C03 / layout | `encodeLayout`; group identity·layout·appearance 분리 | color/stack/offset의 경쟁하는 상태와 전환 실패 제거 |
+| P4-C03 / layout | `layoutSeries`; group identity·layout·appearance 분리 | color/stack/offset의 경쟁하는 상태와 전환 실패 제거 |
 | P4-C04 / radial | `createRosePlot`, `createRadialBarPlot`; 기존 `encodeR`의 opt-in mapping | 동일 Arc owner로 면적과 길이를 구분하며 일반 radius 기본값 보존 |
 | P4-C05 / order | theta category order + categorical legend의 별도 order policy | 부채꼴/항목 순서 변경이 category의 색을 재배정하지 않음 |
 | P4-C06 / midpoint | 기존 sequential scale에 `midpoint` 추가. 새 diverging scale type 없음 | 팔레트·보간·역전·소비자를 재사용하고 비대칭 domain의 기준값 명시 |
@@ -114,14 +115,14 @@ Density/Horizon의 derived missing 정책은 해당 transform owner를 유지하
 ~~~javascript
 // Proposed, after complete Bar category/measure or Area position assignment.
 const grouped = bars.encodeGroup({ target: "bars", field: "series" })
-  .encodeLayout({ target: "bars", mode: "group" });
-const stacked = grouped.encodeLayout({ target: "bars", mode: "stack" });
-const restored = stacked.encodeLayout({ target: "bars", mode: "group" });
+  .layoutSeries({ target: "bars", mode: "group" });
+const stacked = grouped.layoutSeries({ target: "bars", mode: "stack" });
+const restored = stacked.layoutSeries({ target: "bars", mode: "group" });
 const plain = restored.removeEncoding({ target: "bars", channel: "color" });
 // Same group/layout geometry; constant appearance can now be edited separately.
 ~~~
 
-Signature는 `encodeLayout({ target?: string, mode: "group"|"stack"|"fill"|"overlay"|"diverging"|"center" })`다.
+Signature는 `layoutSeries({ target?: string, mode: "group"|"stack"|"fill"|"overlay"|"diverging"|"center" })`다.
 mode는 필수다. 새 `layoutBars`, `encodeStack`, `removeLayout` alias는 만들지 않는다.
 명시적 해제는 `mode:"overlay"`다. `encodeGroup`은 기존 field/fields union을 Bar로 확장한다.
 Group fields는 scale 없는 nominal tuple identity다. Group 순서는 안정된 first appearance이며
@@ -280,10 +281,10 @@ Context는 current resource의 편의만 담당하고 H0 result recipe나 render
 Group tuple/sourceIndices·aggregate value의 기존 provenance를 유지해 selection/highlight가 올바른 원본 행을 참조하게 한다.
 
 새 direct action은 **4개, full inventory 177→181 예상**이다. A 시점은 Current 177 / Planned 0을 유지한다.
-3 H0는 full 전용이다. `encodeLayout`은 full/basic에 추가하며 Basic은 기존 Bar만 다룬다.
+3 H0는 full 전용이다. `layoutSeries`은 full/basic에 추가하며 Basic은 기존 Bar만 다룬다.
 Basic의 기존 `encodeGroup`/color/offset/scale/legend creation은 해당 확장을 받지만, 현재 미공개인
 edit/remove/order/Polar/Area API를 함께 공개하지 않는다. 타입은 entry별 공개 범위와 runtime 일치를 검증한다.
-Basic의 encodeLayout 타입은 Bar가 지원하지 않는 center를 제외한다.
+Basic의 layoutSeries 타입은 Bar가 지원하지 않는 center를 제외한다.
 새 이름뿐 아니라 기존 option과 관측 가능한 state normalization 변경도 Current/card/schema/LLM docs/MCP에 기록한다.
 MCP는 Area/Rose/Radial bar를 실제 완성 facade로 해결하며 radius/area primitive intent와 구분한다.
 
