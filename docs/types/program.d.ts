@@ -1965,6 +1965,29 @@ export type CreateHistogramOptions = BasicHistogramEncoding & {
   guides?: false | CartesianCategoricalGuideOptions;
 };
 
+export type HorizonPlotGuideOptions = {
+  axes?: false | (Omit<CartesianAxesOptions, "y"> & { y?: false });
+  grid?: false | (Pick<CartesianGridOptions, "vertical"> & { horizontal?: false });
+  legend?: false;
+};
+export interface CreateHorizonPlotOptions {
+  id?: string;
+  data?: string;
+  coordinate?: string;
+  x: string | HorizonXEncoding;
+  y: string | HorizonYEncoding;
+  groupBy?: string | false;
+  bands?: number;
+  baseline?: number;
+  extent?: "auto" | number;
+  resolve?: HorizonResolution;
+  missing?: HorizonMissingPolicy;
+  overflow?: HorizonOverflowPolicy;
+  palette?: HorizonPaletteOptions;
+  area?: { opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation };
+  guides?: false | HorizonPlotGuideOptions;
+}
+
 export type DensityPlotLegendOptions = PieLegendOptions;
 export type DensityPlotGuideOptions = Omit<CartesianCategoricalGuideOptions, "legend"> & {
   legend?: false | DensityPlotLegendOptions;
@@ -2907,6 +2930,7 @@ export class ChartProgram {
   createHistogram(options: CreateHistogramOptions): ChartProgram;
   createPiePlot(options: CreatePiePlotOptions): ChartProgram;
   createDensityPlot(options: CreateDensityPlotOptions): ChartProgram;
+  createHorizonPlot(options: CreateHorizonPlotOptions): ChartProgram;
   createHeatmap(options: CreateHeatmapOptions): ChartProgram;
   createParallelCoordinates(options: CreateParallelCoordinatesOptions): ChartProgram;
   removeMark(options?: RemoveMarkOptions): ChartProgram;

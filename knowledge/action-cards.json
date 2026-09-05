@@ -3,7 +3,7 @@
   "packageVersion": "0.0.12",
   "typeSource": "types/program.d.ts",
   "errorPolicy": "An empty errors array means the compact card has no curated error override; consult the canonical route for validation, inference, and recovery behavior.",
-  "count": 176,
+  "count": 177,
   "cards": [
     {
       "schemaVersion": 2,
@@ -12427,6 +12427,121 @@
       "snippet": "program.createDensityPlot({ field: \"value\" })",
       "errors": [],
       "route": "/reference/actions/statistics/#createdensityplot"
+    },
+    {
+      "schemaVersion": 2,
+      "name": "createHorizonPlot",
+      "layer": "user-facing",
+      "domain": "statistics",
+      "summary": "Creates horizon chart for horizon plot.",
+      "signature": "createHorizonPlot(options: CreateHorizonPlotOptions): ChartProgram;",
+      "intents": [
+        "create horizon plot",
+        "create",
+        "add",
+        "statistical layer",
+        "statistical transform",
+        "horizon chart",
+        "horizon plot"
+      ],
+      "lifecycle": "Aggregate create-only",
+      "resources": {
+        "prerequisites": [
+          "statistical source and coordinate context"
+        ],
+        "owns": [
+          "horizon chart"
+        ],
+        "idOptions": [
+          "id",
+          "data",
+          "coordinate"
+        ]
+      },
+      "options": [
+        {
+          "name": "id",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "data",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "coordinate",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "x",
+          "required": true,
+          "type": "string | HorizonXEncoding"
+        },
+        {
+          "name": "y",
+          "required": true,
+          "type": "string | HorizonYEncoding"
+        },
+        {
+          "name": "groupBy",
+          "required": false,
+          "type": "string | false | undefined"
+        },
+        {
+          "name": "bands",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "baseline",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "extent",
+          "required": false,
+          "type": "number | \"auto\" | undefined"
+        },
+        {
+          "name": "resolve",
+          "required": false,
+          "type": "HorizonResolution | undefined"
+        },
+        {
+          "name": "missing",
+          "required": false,
+          "type": "HorizonMissingPolicy | undefined"
+        },
+        {
+          "name": "overflow",
+          "required": false,
+          "type": "HorizonOverflowPolicy | undefined"
+        },
+        {
+          "name": "palette",
+          "required": false,
+          "type": "HorizonPaletteOptions | undefined"
+        },
+        {
+          "name": "area",
+          "required": false,
+          "type": "{ opacity?: number | undefined; stroke?: string | undefined; strokeWidth?: number | undefined; curve?: CurveInterpolation | undefined; } | undefined"
+        },
+        {
+          "name": "guides",
+          "required": false,
+          "type": "false | HorizonPlotGuideOptions | undefined"
+        }
+      ],
+      "callPatterns": [
+        "createHorizonPlot({ x, y })",
+        "createHorizonPlot({ x, y, bands?, baseline?, palette?, area? })"
+      ],
+      "snippet": "program.createHorizonPlot({ x: \"time\", y: \"value\" })",
+      "errors": [],
+      "route": "/reference/actions/statistics/#createhorizonplot"
     }
   ]
 }

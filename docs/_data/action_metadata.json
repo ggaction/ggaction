@@ -878,5 +878,10 @@
     "operation": "create",
     "layer": "user-facing",
     "domain": "statistics"
+  },
+  "createHorizonPlot": {
+    "operation": "create",
+    "layer": "user-facing",
+    "domain": "statistics"
   }
 }

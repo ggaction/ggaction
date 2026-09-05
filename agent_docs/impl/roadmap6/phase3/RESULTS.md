@@ -1,7 +1,7 @@
 # Phase 3 구현 결과
 
 A와 9개 V target은 승인되었다. 아래는 구현 checkpoint다. Phase 전체의 X는 아직 승인 전이며
-Horizon과 누적 consumer acceptance·bundle 크기 해결을 남긴다.
+세 public flow는 구현되었으며 누적 consumer acceptance·bundle 크기 해결을 남긴다.
 
 ## W1 — Pie and Donut
 
@@ -56,3 +56,35 @@ Full 여유는 30 bytes다. 나머지 facades를 추가한 뒤 실제 installed 
 - Source docs 47/47, Jekyll build와 built 124-page links/assets 검사는 통과했다. Desktop/keyboard/접근성/no-JS와 320/390/768px 전체 browser 검사가 통과했다. 최종 누적 normal은 **2,537/2,537**, fail/skip 0이다.
 
 로그: `.artifacts/roadmap6-authoring/density-{focused,render,docs-contracts,browser,realistic,all,package,bundle,docs-verify}.log`.
+
+## W3 — Horizon
+
+- 기준 commit: `6b0fa4eb` (Density checkpoint). Full-only `createHorizonPlot`은 explicit x/y,
+  기존 signed-band 계산·palette·missing/overflow policy를 사용한다. Coordinate는 기존 child로 연결하고,
+  explicit opacity는 encodeHorizon 뒤 editAreaMark로 적용한다. H0는 original x guide만 확보한다.
+- 같은 x scale을 공유하는 두 번째 Horizon이 기존 x축을 재생성할 때 derived field title 때문에 실패하는
+  lower 버그를 수정했다. Original x title을 encodeX 전에 저장한다. 계산·최종 semantic·그래픽·defaults를 바꾸지 않고
+  기존 lower trace의 title child 순서만 교정했으며 두 Horizon의 guide 재사용 회귀 검사를 추가했다.
+- Signed/temporal/baseline-style의 public/primitive를 stable slice로 이관했다. Explicit coordinate/opacity,
+  all-baseline empty collection, missing/overflow, derived selection, lower band/style/scale/resize를 검증했다.
+  Palette null은 defaults로 숨기지 않고 거부한다. Nonempty area series의 기존 최소 두 점 계약을 유지한다.
+- Discovery는 Horizon을 새 H0 한 번으로 작성하고 bands와 x/y 요청을 전달한다. Pie Cartesian guide,
+  Horizon folded y/internal legend, Density의 보존되지 않은 raw color 조합을 unresolved로 설명한다.
+  Exact lower actions는 남는다. Plain grid 동의어를 추가하고 Pie의 자동 categorical legend를 인식한다.
+- Current **177 / Planned 0**, nested scale vocabulary **68 paths / 280 literal witnesses**. Runtime, declarations,
+  strict installed type consumer, cards/reference/search/LLM, same public example/browser/tutorial/image를 맞췄다.
+- 검증: canonical PNG **3/3**, SVG/PDF **3/3**, actual browser **1/1**. 세 facade × 세 pinned datasets × 다섯 변형
+  **45/45**와 resolver/graphic hierarchy를 합친 focused **69/69**가 통과했다. Horizon folds는 독립 수치 oracle로
+  group/sign/band별 모든 x와 amplitude, row/path count, resolved extents를 확인한다.
+  영화 데이터의 연도별 singleton 실패도 immutable하게 검증하고, 성공 사례는 caller가 두 release period를 명시한다.
+- 최초 누적 normal의 두 실패는 누락된 public graphic inventory와 인식되지 않던 grid 동의어였다.
+  수정 뒤 normal **2,585건**을 포함한 coverage가 통과했다: **95.09% lines / 91.31% branches / 98.76% functions**,
+  **72 critical floors**. Source docs **47/47**, Jekyll build, **124 pages** links/assets, desktop search·keyboard·Axe·no-JS와
+  전체 **320/390/768px** containment 검사가 통과했다.
+- Installed Node/MCP/strict TypeScript/tutorial consumer는 통과했지만 Full gzip **235,923 / 235,000**, **923 bytes 초과**로
+  전체 package 검증은 **exit 1**이다. 상한은 올리지 않았다. Same-commit 세 entry의 측정과 전체 realistic suite,
+  아홉 public 시각 결과를 다음 통합 evidence로 기록한다. Phase X는 승인 전이다.
+
+로그: `.artifacts/roadmap6-authoring/horizon-{focused,render,integration-focused,browser,package,docs-built,docs-browser}.log`,
+`phase3-coverage.log`. 공개 시각 evidence는 `render-public-review.mjs`, 같은 tarball 소비자·크기 evidence는
+`verify-package.mjs`로 commit 후 생성한다. 기존 A/V snapshot을 덮어쓰지 않는다.

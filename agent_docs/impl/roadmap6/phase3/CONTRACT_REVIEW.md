@@ -2,7 +2,7 @@
 
 상태: **approved contract**. 아래는 A 당시의 계약 제안 기록이며 현재 구현 진척은 [STEP1](STEP1.md)을 따른다. 2026-09-05 사용자가 Phase 3 A 승인 질문에 “승인한다”라고 답했다.
 검토 package `bd18718a9c1aed5f91b485bc1aeab54616e9e5a3`, 승인 기준 HEAD `0f3531ae9c242190df9457b1ed4289491963ba77`의 P3-C01–C07을 승인했다.
-승인된 세 action을 [Planned owner](../../../contract/planned/COMPLETE_CHARTS.md)에 등록했다.
+승인 당시 세 action을 Planned owner에 등록했으며, 구현 후 [Current owner](../../../contract/current/COMPLETE_CHARTS.md)로 이관했다.
 범위는 F01·F06·F07이며 F20은 제외한다. 원격 검토 ref와 승인 상태는 [GATES.md](GATES.md)가 소유한다.
 
 ## 이번에 확정할 결정

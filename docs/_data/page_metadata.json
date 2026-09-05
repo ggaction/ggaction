@@ -62,7 +62,8 @@
   },
   "/tutorials/horizon/": {
     "title": "Horizon Chart Tutorial",
-    "description": "This chart folds Kenya's life expectancy above and below a 55 year baseline into three compact bands. The source rows stay immutable."
+    "description": "Use createHorizonPlot to author signed bands and the original x axis in one action:",
+    "image": "/assets/images/horizon-plot.png"
   },
   "/tutorials/error-bar/": {
     "title": "Error Bar Tutorial",

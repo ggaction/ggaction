@@ -25,6 +25,8 @@ const LOADERS = Object.freeze({
 });
 
 const EXPECTED_DRAW_ORDER = Object.freeze({
+  "horizon-plot": ["canvas", "verticalGridLines", "horizon",
+    "xAxisLine", "xAxisTicks", "xAxisLabels", "xAxisTitle"],
   "density-plot": ["canvas", "horizontalGridLines", "density",
     "xAxisLine", "xAxisTicks", "xAxisLabels", "xAxisTitle",
     "yAxisLine", "yAxisTicks", "yAxisLabels", "yAxisTitle"],

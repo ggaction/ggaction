@@ -1,3 +1,4 @@
+import { createHorizonExample } from "./horizon-plot/program.js";
 import { createDensityExample } from "./density-plot/program.js";
 import { createPieExample } from "./pie-plot/program.js";
 import { createTemporalInput } from "./temporal-input/program.js";
@@ -96,6 +97,12 @@ function example({ id, data, width, height, createProgram, ...options }) {
 }
 
 export const PUBLIC_CHARTS = Object.freeze([
+  example({
+    id: "horizon-plot", data: {}, width: 1000, height: 700, docsGroup: "tutorials",
+    createProgram: () => createHorizonExample(),
+    browser: { path: "horizon-plot/", canvas: "#chart",
+      state: { global: "__ggactionExample", expected: { id: "horizon-plot", width: 1000, height: 700 } } }
+  }),
   example({
     id: "density-plot", data: {}, width: 1000, height: 700, docsGroup: "tutorials",
     createProgram: () => createDensityExample(),

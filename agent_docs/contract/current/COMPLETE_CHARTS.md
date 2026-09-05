@@ -83,3 +83,43 @@ Default id는 `densityPlot`, lifecycle은 Aggregate create-only다.
 - ✅ Covered: three public/primitive semantic/graphic/order/Canvas pairs and lower statistics/style/scale/resize revisions.
 - Evidence: `test/unit/actions/charts/density-plot.test.js`, `test/charts/density-plot/{primitive,public}.test.js`,
   `test/charts/density-plot/{png,vector}.render.js`, `examples/density-plot/program.js`, `scripts/package-consumer.js`.
+
+## `createHorizonPlot`
+
+`createHorizonPlot({ id?, data?, coordinate?, x, y, groupBy?, bands?, baseline?, extent?, resolve?, missing?, overflow?, palette?, area?, guides? })`.
+Default id는 `horizonPlot`, lifecycle은 Aggregate create-only다.
+
+- X/y는 필수 field string 또는 HorizonXEncoding/HorizonYEncoding이다. X는 quantitative/temporal,
+  temporalUnit은 temporal x에만 지원한다. Y는 quantitative, folded linear scale [0,1]만 지원한다.
+- 기존 bands 3, baseline 0, extent auto, shared resolution, missing break, overflow clip,
+  positive blues/negative reds palette를 유지한다. GroupBy 생략/false는 ungrouped, string은 explicit group이다.
+  여러 group은 하나의 coordinate에 overlay하며 facade가 small multiples를 만들지 않는다.
+- Explicit coordinate는 기존 `createCoordinate` child로 연결한다. Lower encodeHorizon의 옵션은 늘리지 않는다.
+- Area는 opacity/stroke/strokeWidth/curve만. Palette가 internal band color를 소유하므로 fill/generic color는 오류다.
+  기본 opacity 1이며 explicit opacity는 encodeHorizon 뒤 editAreaMark로 적용한다. Optional undefined는 생략과 같다.
+- Guides는 original x axis와 vertical grid만 확보한다. Axes.y, grid.horizontal, legend는 false만 받는다.
+  Lower createYAxis/createLegend를 명시적으로 호출하는 경로는 유지하지만 folded amplitude와 internal band key를
+  원본 측정값의 y축·legend라고 추론하지 않는다.
+- All-baseline data는 original x domain과 resolved extent 0을 가진 정당한 empty path collection이다.
+  Nonempty area series는 기존 최소 두 점 계약을 따르며 singleton group을 자동 삭제하지 않는다.
+  Missing/duplicate x·invalid palette/statistical/scale options는 lower owner의 검증을 따른다.
+- Effects: `createAreaMark → createCoordinate? → encodeHorizon → editAreaMark? → x guide fulfillment`.
+  Source fields/units와 signed-fold provenance는 dataset, final x/y/y2/group/color는 ordinary layer encoding,
+  concrete closed paths는 graphicSpec이 소유한다. 새 계산·상태·renderer 분기는 없다.
+- Editing: `editHorizon`, `editAreaMark`, x scale/guide editor, selection/resize를 사용한다.
+  Selection은 derived final band membership을 따르며 raw amplitude field를 보존한다고 약속하지 않는다.
+  Shared x guide는 derived field 이름이 아니라 original x title로 호환성을 검증한다.
+
+### Formal values — `createHorizonPlot`
+
+- Implemented: `createHorizonPlot(options: CreateHorizonPlotOptions): ChartProgram`.
+- Required: x, y. Unknown keys, unsupported roles/styles/guides, missing fields and conflicting resources fail immutably.
+- Proposed (NOT IMPLEMENTED): No proposal in this action contract. Original-amplitude guides and small multiples are separate capabilities.
+
+### Value coverage — `createHorizonPlot`
+
+- ✅ Covered: shortest signed defaults, temporal input units, nonzero baseline, zero extent, explicit coordinate/opacity,
+  missing/overflow policy, guide reuse/conflict, role/option errors, derived selection, source/caller immutability.
+- ✅ Covered: three public/primitive semantic/graphic/order/Canvas pairs and lower band/style/scale/resize revisions.
+- Evidence: `test/unit/actions/charts/horizon-plot.test.js`, `test/charts/horizon-plot/{primitive,public}.test.js`,
+  `test/charts/horizon-plot/{png,vector}.render.js`, `examples/horizon-plot/program.js`, `scripts/package-consumer.js`.

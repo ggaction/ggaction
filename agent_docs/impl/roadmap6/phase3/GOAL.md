@@ -2,7 +2,7 @@
 
 ## 상태와 목표
 
-상태: in-progress — A 계약은 승인되었고 Planned 3개를 등록했다. 9개 primitive target을 작성·검증해 [V 시각 검토](VISUAL_REVIEW.md)를 준비했다. V는 사용자 승인으로 approved, X는 planned다. Pie/Donut과 Density를 구현했다(Current 176 / Planned 1). Horizon과 Full bundle 크기 해결을 이어간다. [구현 결과](RESULTS.md)를 따른다. [구체 계약](CONTRACT_REVIEW.md)의 P3-C01–C07과 [검증·consumer matrix](VALIDATION.md)를 적용한다.
+상태: in-progress — A 계약은 승인되었고 Planned 3개를 등록했다. 9개 primitive target을 작성·검증해 [V 시각 검토](VISUAL_REVIEW.md)를 준비했다. V는 사용자 승인으로 approved, X는 planned다. 세 facades를 구현했다(Current 177 / Planned 0). Full bundle 상한 초과와 최종 evidence·X 승인을 남긴다. [구현 결과](RESULTS.md)를 따른다. [구체 계약](CONTRACT_REVIEW.md)의 P3-C01–C07과 [검증·consumer matrix](VALIDATION.md)를 적용한다.
 
 가장 직접적인 상위 계층 공백을 기존 domain owner 위에서 메운다. Pie를 우선 납품하고 Density·Horizon도 같은 기준으로 완성한다.
 

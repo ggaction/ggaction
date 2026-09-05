@@ -555,11 +555,10 @@ test("keeps terminal unsupported output separate from open renderer decisions", 
 test("reports concrete options, placeholders, and unsupported requirements without silent partials", () => {
   const horizon = searchGgaction("horizon chart with three bands");
   assert.deepEqual(horizon.actionPlan.map(entry => entry.id), [
-    "action.createAreaMark",
-    "action.createHorizonChart"
+    "action.createHorizonPlot"
   ]);
   assert.deepEqual(horizon.appliedOptions, [{
-    owner: "encodeHorizon",
+    owner: "createHorizonPlot",
     option: "bands",
     value: "3",
     source: "three bands"
@@ -696,6 +695,47 @@ test("reports concrete options, placeholders, and unsupported requirements witho
   assert.deepEqual(areaDash.unsupported.map(entry => entry.constraint), [
     "unsupported.areaStrokeDash"
   ]);
+});
+
+test("executes the complete Horizon facade with original field roles, bands and owned x guides", async () => {
+  const packet = searchGgaction('horizon chart with x="time", y="value", four bands and x axis');
+  assert.deepEqual(packet.actionPlan.map(entry => entry.name), ["createHorizonPlot"]);
+  assert.deepEqual(packet.unresolved, []);
+  const { program } = await executeAuthoring(packet, { rows: [
+    { time: 0, value: -4 }, { time: 1, value: 0 }, { time: 2, value: 4 }
+  ] });
+  const transform = program.semanticSpec.datasets[1].transform[0];
+  assert.equal(transform.x.field, "time");
+  assert.equal(transform.y.field, "value");
+  assert.equal(transform.bands, 4);
+  assert.equal(program.graphicSpec.objects.horizonPlot.items.length, 8);
+  assert.deepEqual(Object.keys(program.semanticSpec.guides.axis), ["x"]);
+});
+
+test("reports incompatible complete-chart guides and derived color as unresolved without invalid actions", async () => {
+  for (const [query, forbidden, decision] of [
+    ["pie chart with x axis", "createXAxis", "guide.xAxis"],
+    ["donut chart with grid", "createGrid", "guide.grid"],
+    ["horizon chart with y axis", "createYAxis", "guide.yAxis"],
+    ["horizon chart with color legend", "createLegend", "guide.legend"],
+    ["density plot with color encoding", "encodeColor", "encoding.color"],
+    ["density plot with color legend", "createLegend", "guide.legend"]
+  ]) {
+    const packet = searchGgaction(query);
+    assert.ok(packet.unresolved.some(entry => entry.constraint === decision), query);
+    assert.ok(!packet.actionPlan.some(entry => entry.name === forbidden), query);
+    await executeAuthoring(packet, { rows: [
+      { x: 0, y: -1, value: 1, category: "A" }, { x: 1, y: 0, value: 2, category: "A" },
+      { x: 2, y: 1, value: 4, category: "B" }
+    ] });
+  }
+  const pie = searchGgaction("pie chart with legend");
+  assert.deepEqual(pie.unresolved, []);
+  assert.deepEqual(pie.actionPlan.map(entry => entry.name), ["createPiePlot"]);
+  for (const action of ["createYAxis", "createLegend", "encodeColor"]) {
+    const lower = searchGgaction(action);
+    assert.ok(lower.actionPlan.some(entry => entry.name === action), action);
+  }
 });
 
 test("design fixtures prove bounded one-call task closure without silent partials", async () => {

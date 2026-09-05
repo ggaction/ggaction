@@ -237,13 +237,14 @@
       "source": "tutorials/horizon.md",
       "headings": [
         "horizon-chart-tutorial",
+        "complete-horizon-facade",
         "complete-program",
         "what-the-atomic-encoding-owns",
         "revise-without-mutation",
         "key-action-trace"
       ],
-      "bytes": 3100,
-      "sha256": "305862aa1c680dcf0d71ef090df5c6715bc6ece052feb256cab2fc03e01fec3b"
+      "bytes": 4542,
+      "sha256": "4c762025b15ad4c9b99bc1c9a2235dcd37d4791227e8b2e9daa2dbfbcfb08900"
     },
     {
       "order": 16,
@@ -1775,8 +1776,8 @@
         "action-reference",
         "exact-action-lookup"
       ],
-      "bytes": 18821,
-      "sha256": "364fe668a5672dda1dca89ba7d0f811325a17ea7265057f80e86d03ff0d2c302"
+      "bytes": 18925,
+      "sha256": "28ab4205f5dbb24e52e76f59b99b16587ca030b4645eaa7433e8b4df1267b3bd"
     },
     {
       "order": 114,
@@ -1907,6 +1908,7 @@
       "source": "reference/actions/statistics.md",
       "headings": [
         "statistical-layer-actions",
+        "createhorizonplot",
         "createdensityplot",
         "createintervaldata",
         "createregression",
@@ -1922,8 +1924,8 @@
         "createviolinplot",
         "related"
       ],
-      "bytes": 8125,
-      "sha256": "edbe4b65c638e8c56786827c6e499df25062a7ae5bcc6017e813e9b706b3198a"
+      "bytes": 9010,
+      "sha256": "a9ce80883dc3fc0036e31477eb2aa31e581b00daaee7e03e22f72138f5f48df3"
     },
     {
       "order": 118,
@@ -2028,8 +2030,8 @@
         "exact-typescript-signatures",
         "related"
       ],
-      "bytes": 14407,
-      "sha256": "6776f304c3c35a59f8dd363ab12515f07928fb8a2df9da1c9d6b5e362b062c2a"
+      "bytes": 14477,
+      "sha256": "c70aefbd4b64ad2e4858496186d1f80b4a20692de0f0ab072caa28a8a4d9362b"
     },
     {
       "order": 123,

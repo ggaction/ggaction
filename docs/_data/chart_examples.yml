@@ -619,6 +619,22 @@
   url: /tutorials/mark-selection/
   tutorial_order: 130
 
+- id: horizon-plot
+  example: /examples/horizon-plot/
+  title: Signed Horizon chart
+  image: /assets/images/horizon-plot.png
+  alt: Red negative and blue positive values folded into three bands on each side of zero
+  width: 2000
+  height: 1400
+  thumbnail: /assets/images/horizon-plot-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 448
+  caption: Three signed folds preserve the original x positions.
+  summary: Define explicit source roles, then revise bands, baseline, palette, and appearance.
+  actions: createHorizonPlot
+  tasks: trend comparison
+  url: /tutorials/horizon/#complete-horizon-facade
+
 - id: density-plot
   example: /examples/density-plot/
   title: Density profile

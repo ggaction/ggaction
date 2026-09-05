@@ -321,6 +321,21 @@ createHistogram({ id?, data?, coordinate?, field, maxBins?, binStep?, binBoundar
 Create a bar layer with atomic bin and count encodings. Exactly one bin mode may
 be specified. [Basic Charts](../api/basic-charts.md#createhistogram)
 
+### `createHorizonPlot`
+
+```js
+createHorizonPlot({ id?, data?, coordinate?, x, y, groupBy?, bands?, baseline?, extent?, resolve?, missing?, overflow?, palette?, area?, guides? })
+```
+
+Create a complete signed, folded area chart from explicit x and y source fields. Defaults use three bands,
+a zero baseline, automatic shared extent, blue positive bands and red negative bands. Temporal x fields
+support the existing temporal unit vocabulary. The full entry owns this facade; Basic does not expose it.
+
+The original x axis and vertical grid are the only automatic guides. Folded y/horizontal grid/internal
+band legend options accept only false. Palette owns fill; area appearance accepts opacity, stroke,
+strokeWidth and curve. Explicit opacity is applied after encoding. Revise statistics with editHorizon
+and style with editAreaMark. See the [Horizon tutorial](../tutorials/horizon.md).
+
 ### `createDensityPlot`
 
 ```js

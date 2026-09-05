@@ -1863,6 +1863,11 @@ Density edit은 source, output field, orientation과 scale binding을 유지한�
 
 ### Horizon
 
+Full-only `createHorizonPlot`은 `createAreaMark → createCoordinate? → encodeHorizon → editAreaMark? → x guide fulfillment`를
+조합한다. Explicit opacity는 lower encoding의 opaque default 뒤에 적용한다. Palette가 band color를 소유하며
+automatic guide는 original x만 보여준다. 별도 amplitude guide나 chart state는 추가하지 않는다.
+정확한 계약은 [Complete chart facades](contract/current/COMPLETE_CHARTS.md#createhorizonplot)를 따른다.
+
 ```text
 encodeHorizon
 ├─ createHorizonData

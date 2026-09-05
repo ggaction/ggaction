@@ -915,6 +915,8 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
   표현되지 않으면 materialization 전에 `RangeError`다.
 - Facet replay: shared y scale이면 parent auto extent를 모든 cell에 고정하고, independent y scale이면 cell마다
   다시 계산한다.
+- Shared x guides: 원래 x field의 title을 x position materialization 전에 저장한다. 같은 source x를 공유하는
+  Horizon을 추가할 때 namespaced derived field 이름 때문에 title inference가 충돌하지 않는다.
 
 ### Formal values — `encodeHorizon`
 

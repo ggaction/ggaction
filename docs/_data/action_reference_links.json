@@ -83,6 +83,7 @@
   "encodeStroke": "/reference/actions/encodings/#encodestroke",
   "encodeStrokeWidth": "/reference/actions/encodings/#encodestrokewidth",
   "encodeBarWidth": "/reference/actions/encodings/#encodebarwidth",
+  "createHorizonPlot": "/reference/actions/statistics/#createhorizonplot",
   "createDensityPlot": "/reference/actions/statistics/#createdensityplot",
   "createIntervalData": "/reference/actions/statistics/#createintervaldata",
   "createRegression": "/reference/actions/statistics/#createregression",

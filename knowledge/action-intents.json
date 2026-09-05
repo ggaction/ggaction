@@ -80,6 +80,7 @@
     "ParallelCoordinates": ["parallel coordinates", "multiple dimensions"],
     "Histogram": ["histogram", "one-dimensional distribution"],
     "Density": ["density plot", "kernel density estimate"],
+    "HorizonPlot": ["horizon chart", "horizon plot", "signed folded bands"],
     "DensityPlot": ["density plot", "kernel density estimate", "distribution"],
     "Horizon": ["horizon chart", "banded time series"],
     "BarWidth": ["bar width", "band occupancy"],
@@ -166,6 +167,7 @@
   },
   "sampleOverrides": {
     "createPiePlot": { "category": "category" },
+    "createHorizonPlot": { "x": "time", "y": "value" },
     "createDensityPlot": { "field": "value" },
     "editRuleMark": { "stroke": "#334155" },
     "encodeGroup": { "field": "country" },
@@ -273,6 +275,7 @@
     "encodeText": { "field": "label" }
   },
   "callPatternOverrides": {
+    "createHorizonPlot": ["createHorizonPlot({ x, y })", "createHorizonPlot({ x, y, bands?, baseline?, palette?, area? })"],
     "createDensityPlot": ["createDensityPlot({ field })", "createDensityPlot({ field, groupBy, color, densityChannel? })"],
     "createPiePlot": ["createPiePlot({ category })", "createPiePlot({ category, value, aggregate: \"sum\", arc? })"],
     "encodeGroup": ["encodeGroup({ field, target?, fieldType? })", "encodeGroup({ fields: [first, ...rest], target?, fieldType? })"],

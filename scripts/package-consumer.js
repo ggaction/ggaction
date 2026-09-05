@@ -925,6 +925,27 @@ async function testTypeScriptConsumer(directory) {
     program.createDensityPlot({ field: "value", densityScale: { type: "log" } });
     // @ts-expect-error Density cannot create a continuous color legend.
     program.createDensityPlot({ field: "value", guides: { legend: { gradient: {} } } });
+    const completeHorizonOptions: import("ggaction").CreateHorizonPlotOptions = { x: "time", y: "value", guides: false };
+    program.createHorizonPlot(completeHorizonOptions).editHorizon({ target: "horizonPlot", bands: 4 });
+    program.createHorizonPlot({ x: { field: "time", fieldType: "temporal", temporalUnit: "timestamp" },
+      y: { field: "value", scale: { type: "linear", domain: [0, 1] } }, groupBy: false,
+      area: { opacity: 0.6 }, guides: { axes: { y: false }, grid: { horizontal: false, vertical: {} }, legend: false } });
+    // @ts-expect-error Horizon is full-only.
+    basicChart().createHorizonPlot({ x: "time", y: "value" });
+    // @ts-expect-error Horizon requires explicit y.
+    program.createHorizonPlot({ x: "time" });
+    // @ts-expect-error Folded y only supports linear.
+    program.createHorizonPlot({ x: "time", y: { field: "value", scale: { type: "log" } } });
+    // @ts-expect-error Palette owns Horizon fill.
+    program.createHorizonPlot({ x: "time", y: "value", area: { fill: "red" } });
+    // @ts-expect-error Generic field color is not a Horizon facade role.
+    program.createHorizonPlot({ x: "time", y: "value", color: "group" });
+    // @ts-expect-error A folded y axis is an explicit lower action.
+    program.createHorizonPlot({ x: "time", y: "value", guides: { axes: { y: {} } } });
+    // @ts-expect-error The facade cannot create a folded horizontal grid.
+    program.createHorizonPlot({ x: "time", y: "value", guides: { grid: { horizontal: {} } } });
+    // @ts-expect-error Internal band colors are not an automatic amplitude legend.
+    program.createHorizonPlot({ x: "time", y: "value", guides: { legend: {} } });
     program.createPointMark({ stroke: false });
     program.createBarMark({ stroke: false });
     program.createRectMark({ stroke: false });

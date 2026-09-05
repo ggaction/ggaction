@@ -53,6 +53,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createGuides`](./actions/guides.md#createguides) | user-facing | legend_and_title |
 | [`createHeatmap`](./actions/charts-data.md#createheatmap) | user-facing | charts |
 | [`createHistogram`](./actions/charts-data.md#createhistogram) | user-facing | charts |
+| [`createHorizonPlot`](./actions/statistics.md#createhorizonplot) | user-facing | statistics |
 | [`createHorizontalGrid`](./actions/advanced.md#directional-grids) | user-facing | grid |
 | [`createIntervalData`](./actions/statistics.md#createintervaldata) | user-facing | statistics |
 | [`createLegend`](./actions/guides.md#createlegend) | user-facing | legend_and_title |

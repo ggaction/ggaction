@@ -526,9 +526,6 @@ function closeRuntimeDependencies(entries) {
       })
     ]
   }));
-  expandChartConstraint("chart.horizon", () => ({
-    before: [chartDependency("createAreaMark", { id: `"horizon"` })]
-  }));
   expandChartConstraint("chart.rose", () => ({
     after: [
       chartDependency("encodeTheta", {
@@ -816,7 +813,10 @@ function closeRuntimeDependencies(entries) {
     createBarPlot: "barPlot",
     createBoxPlot: "boxPlot",
     createGradientPlot: "gradientPlot",
-    createViolinPlot: "violinPlot"
+    createViolinPlot: "violinPlot",
+    createPiePlot: "piePlot",
+    createDensityPlot: "densityPlot",
+    createHorizonPlot: "horizonPlot"
   });
   const markKinds = Object.freeze({
     createPointMark: "point",
@@ -832,7 +832,10 @@ function closeRuntimeDependencies(entries) {
     createBarPlot: "bar",
     createBoxPlot: "bar",
     createGradientPlot: "rect",
-    createViolinPlot: "area"
+    createViolinPlot: "area",
+    createPiePlot: "arc",
+    createDensityPlot: "area",
+    createHorizonPlot: "area"
   });
   closed = closed.map(entry => {
     if (entry.provider.id.startsWith("exact.")) return entry;
@@ -1166,7 +1169,7 @@ function applyRequestedOptions(entries, query) {
       ten: 10
     }[requestedBands.toLowerCase()] ?? requestedBands);
     if (Number.isInteger(value) && value > 0) {
-      apply(["encodeHorizon", "editHorizon"], new Map([
+      apply(["createHorizonPlot", "encodeHorizon", "editHorizon"], new Map([
         ["bands", String(value)]
       ]), bands[0]);
     } else {
@@ -1194,6 +1197,7 @@ function applyRequestedOptions(entries, query) {
     "encoding.strokeWidth"
   ]);
   const hasLegendChannel = configured.some(entry =>
+    entry.provider.name === "createPiePlot" ||
     entry.coverage.some(constraint => legendChannelConstraints.has(constraint))
   );
   if (
@@ -1388,12 +1392,12 @@ function applyRequestedOptions(entries, query) {
     x: [
       "createScatterPlot", "createLinePlot", "createBarPlot", "createHeatmap",
       "createBoxPlot", "createViolinPlot", "createGradientPlot",
-      "createRegressionData", "createBin2DData", "encodeHorizon"
+      "createRegressionData", "createBin2DData", "encodeHorizon", "createHorizonPlot"
     ],
     y: [
       "createScatterPlot", "createLinePlot", "createBarPlot", "createHeatmap",
       "createBoxPlot", "createViolinPlot", "createGradientPlot",
-      "createRegressionData", "createBin2DData", "encodeHorizon"
+      "createRegressionData", "createBin2DData", "encodeHorizon", "createHorizonPlot"
     ]
   });
   const appliedFieldChannels = new Set();
@@ -1425,7 +1429,7 @@ function applyRequestedOptions(entries, query) {
   }
 
   const appearanceOwners = Object.freeze({
-    color: ["createScatterPlot", "createLinePlot", "createBarPlot", "createViolinPlot"],
+    color: ["createScatterPlot", "createLinePlot", "createBarPlot", "createViolinPlot", "createPiePlot"],
     size: ["createScatterPlot"],
     shape: ["createScatterPlot"]
   });
@@ -1795,6 +1799,32 @@ function unresolvedDecision(constraint, reason) {
   return { constraint, reason, resources: [resource] };
 }
 
+function completeChartBoundaries(matchedIds, blocked) {
+  const unresolved = [];
+  const pie = ["chart.pie", "chart.donut"].some(id => matchedIds.has(id) && !blocked.has(id));
+  const horizon = matchedIds.has("chart.horizon") && !blocked.has("chart.horizon");
+  const density = matchedIds.has("chart.density") && !blocked.has("chart.density");
+  for (const constraint of matchedIds) {
+    let reason;
+    if (pie && ["encoding.x", "encoding.y", "guide.axes", "guide.xAxis", "guide.yAxis", "guide.grid"].includes(constraint)) {
+      reason = "A pie has categorical sectors and a color legend. Cartesian positions, axes, and grids require a different chart or an explicit lower-level recipe.";
+    }
+    if (horizon && (constraint === "guide.yAxis" || constraint === "encoding.color" ||
+      constraint === "guide.legend" || constraint.startsWith("layout.legend."))) {
+      reason = "Horizon's y scale and palette describe internal folded bands. Choose an explicit lower-level guide or a separate original-amplitude guide; the facade only creates original-x guides.";
+    }
+    if (density && (constraint === "encoding.color" || constraint === "guide.legend" ||
+      constraint.startsWith("layout.legend."))) {
+      reason = "Density color requires an explicit groupBy field and matching color field. Its derived data does not retain arbitrary raw categories; choose that grouping before requesting a color legend.";
+    }
+    if (reason) {
+      blocked.add(constraint);
+      unresolved.push(unresolvedDecision(constraint, reason));
+    }
+  }
+  return unresolved;
+}
+
 function genericUnresolved(normalizedQuery, matchedIds, exactNames) {
   const unresolved = [];
   const taskSpecificMatches = [...matchedIds].filter(id =>
@@ -1944,6 +1974,7 @@ export function searchGgaction(query) {
   )] : [];
   const { blocked, unresolved: conflicts } = conflictResult(matched);
   unresolved.push(...conflicts);
+  unresolved.push(...completeChartBoundaries(matchedIds, blocked));
 
   const supportedIds = new Set([...matchedIds].filter(id => {
     const constraint = constraints.get(id);

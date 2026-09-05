@@ -537,7 +537,8 @@ test("keeps tutorial action flows aligned with public examples", () => {
     ],
     ["density-area", "examples/cars-density-area/program.js", "return chart()", "## Complete program"],
     ["density-area", "examples/density-plot/program.js", "return chart()"],
-    ["horizon", "examples/gapminder-horizon/program.js", "return chart()"],
+    ["horizon", "examples/gapminder-horizon/program.js", "return chart()", "## Complete program"],
+    ["horizon", "examples/horizon-plot/program.js", "const program = chart()"],
     [
       "error-bar",
       "examples/cars-error-bar/program.js",

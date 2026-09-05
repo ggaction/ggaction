@@ -48,6 +48,8 @@ export type {
   CreateHistogramOptions,
   CreatePiePlotOptions,
   CreateDensityPlotOptions,
+  CreateHorizonPlotOptions,
+  HorizonPlotGuideOptions,
   DensityPlotGuideOptions,
   DensityPlotLegendOptions,
   PieCategory,

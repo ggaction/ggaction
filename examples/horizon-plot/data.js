@@ -1,15 +1,4 @@
-import { calculateHorizon } from "../../oracles/horizon.js";
 export const layout = Object.freeze({ width: 1000, height: 700, margin: 150 });
-export const bandColors = Object.freeze({
-  negative: Object.freeze(["#fdc9b4", "#fa7051", "#970b13"]),
-  positive: Object.freeze(["#cfe1f2", "#74b2d7", "#0a4a90"])
-});
-// Each successive band overlays the previous bands at alpha 0.6 on white.
-// Literal references use C_out = 0.6 * C_band + 0.4 * C_previous.
-export const translucentBandColors = Object.freeze({
-  negative: Object.freeze(["#fedfd2", "#fc9c85", "#bf4540"]),
-  positive: Object.freeze(["#e2edf7", "#a0cae4", "#467db2"])
-});
 const frozenRows = rows => Object.freeze(rows.map(Object.freeze));
 export const rows = Object.freeze({
   signed: frozenRows([
@@ -38,7 +27,3 @@ export const revisions = Object.freeze({
     Object.freeze({ op: "editAreaMark", args: Object.freeze({ target: "horizon", opacity: 0.6 }) })
   ])
 });
-export function referenceHorizon(variant) {
-  return calculateHorizon(rows[variant], { xField: "time", yField: "value",
-    bands: 3, baseline: variant === "baseline-style" ? 2 : 0 });
-}

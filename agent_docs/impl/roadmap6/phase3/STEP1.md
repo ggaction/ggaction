@@ -15,11 +15,11 @@
 - [x] V 명시적 사용자 승인
 - [x] R6-P3-W1 Pie/Donut public flow와 lower lifecycle
 - [x] R6-P3-W2 Density public flow와 lower lifecycle
-- [ ] R6-P3-W3 Horizon public flow와 lower lifecycle
+- [x] R6-P3-W3 Horizon public flow와 lower lifecycle
 - [ ] Same-run public/primitive parity·누적 검증·문서·원장 동기화
 - [ ] X package commit/push와 명시적 사용자 승인 기록
 
-A/V 승인 뒤 Pie/Donut의 public flow·lower lifecycle·package·문서 검증을 완료했다. Density public flow도 구현했으며 Horizon과 bundle 통합·전체 X 승인을 남긴다. [구현 결과](RESULTS.md)를 따른다.
+A/V 승인 뒤 Pie/Donut의 public flow·lower lifecycle·package·문서 검증을 완료했다. Density와 Horizon public flow도 구현했다. Bundle 통합·전체 X 승인을 남긴다. [구현 결과](RESULTS.md)를 따른다.
 [계약 검토](CONTRACT_REVIEW.md), [시각 검토](VISUAL_REVIEW.md), [Gate](GATES.md), [검증](VALIDATION.md)가 현재 evidence를 소유한다.
 
 ## 실행 순서와 경계
@@ -58,3 +58,5 @@ A/V 승인 뒤 Pie/Donut의 public flow·lower lifecycle·package·문서 검증
 
 - W2 구현: Current 176 / Planned 1. Focused 86/86, PNG·SVG/PDF 각 3/3, browser 1/1, 새 realistic 30/30. Package는 Full 235,428 > 235,000으로 실패하며 상한은 유지한다. 기능 구현과 package 완료를 구분한다.
 - W2 누적 normal 2,537/2,537과 docs browser 전체 검사가 통과했다. Package 상한 초과는 통합 미해결 항목으로 유지한다.
+
+- W3 구현: Current 177 / Planned 0. Signed/temporal/baseline-style, shared x title regression, strict guide/color boundaries, 실제 데이터 45건을 검증했다. 누적 coverage는 normal 2,585건을 포함하며 lines 95.09% / branches 91.31% / functions 98.76%, critical floors 72개 통과다. Installed Full 235,923 > 235,000으로 package 전체는 실패한다.

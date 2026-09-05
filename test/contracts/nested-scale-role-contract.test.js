@@ -281,6 +281,12 @@ function buildScaleWitness(action, path, type) {
         groupBy: "category",
         placement: { type: "category", scale: { type } }
       });
+    case "createHorizonPlot":
+      return source().createHorizonPlot({
+        x: path.startsWith("x.") ? positionChannel(type, "x") : "x",
+        y: { field: "value", scale: { type: path.startsWith("y.") ? type : "linear" } },
+        guides: false
+      });
     case "encodeHorizon":
       return source().createAreaMark().encodeHorizon({
         x: path.startsWith("x.")
@@ -454,8 +460,8 @@ test("derives only role-reachable nested scale type paths", async () => {
     /(?:^|\.)(?:xScale|yScale|valueScale|densityScale|scale)\.type$/u.test(option.path)
   );
 
-  assert.equal(scaleTypes.length, 66);
-  assert.equal(scaleTypes.reduce((sum, option) => sum + option.values.length, 0), 273);
+  assert.equal(scaleTypes.length, 68);
+  assert.equal(scaleTypes.reduce((sum, option) => sum + option.values.length, 0), 280);
   assert.doesNotMatch(declarations, /scale\?: ScaleOptions/u);
   assert.equal(options.has("option-path:createScatterPlot.x.scale.palette"), false);
   assert.equal(options.has("option-path:createScatterPlot.x.scale.interpolate"), false);
@@ -505,7 +511,7 @@ test("executes every strict nested scale type path and literal", async () => {
       witnesses += 1;
     }
   }
-  assert.equal(witnesses, 273);
+  assert.equal(witnesses, 280);
 });
 
 test("materializes every role-specific nested scale type vocabulary", () => {

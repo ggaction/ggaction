@@ -6,6 +6,7 @@ import { createScatterPlot } from "./scatter.js";
 import { createParallelCoordinates } from "./parallel.js";
 import { createPiePlot } from "./pie.js";
 import { createDensityPlot } from "./density.js";
+import { createHorizonPlot } from "./horizon.js";
 
 export function registerChartActions(ProgramClass) {
   ProgramClass.prototype.createBarPlot = createBarPlot;
@@ -16,4 +17,5 @@ export function registerChartActions(ProgramClass) {
   ProgramClass.prototype.createParallelCoordinates = createParallelCoordinates;
   ProgramClass.prototype.createPiePlot = createPiePlot;
   ProgramClass.prototype.createDensityPlot = createDensityPlot;
+  ProgramClass.prototype.createHorizonPlot = createHorizonPlot;
 }

@@ -210,6 +210,12 @@ Select, filter, and emphasize final point, bar, and line items.
 
 Representative actions: `selectMarks`, `highlightMarks`. [Documentation](https://ggaction.github.io/ggaction/tutorials/mark-selection/).
 
+### [Signed Horizon chart](./horizon-plot/)
+
+Define explicit source roles, then revise bands, baseline, palette, and appearance.
+
+Representative actions: `createHorizonPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/horizon/#complete-horizon-facade).
+
 ### [Density profile](./density-plot/)
 
 Estimate one variable, then add explicit groups and color.

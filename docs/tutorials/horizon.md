@@ -5,6 +5,36 @@ title: Horizon Chart Tutorial
 
 # Horizon Chart Tutorial
 
+## Complete Horizon facade
+
+{% include chart-example.html id="horizon-plot" %}
+
+Use `createHorizonPlot` to author signed bands and the original x axis in one action:
+
+```javascript
+import { chart } from "ggaction";
+
+const program = chart()
+  .createCanvas({ width: 1000, height: 700, margin: 150 })
+  .createData({ id: "source", values: [
+    { time: 0, value: -4 }, { time: 1, value: -3 }, { time: 2, value: -1 },
+    { time: 3, value: 0 }, { time: 4, value: 1 }, { time: 5, value: 3 }, { time: 6, value: 4 }
+  ] })
+  .createHorizonPlot({ id: "horizon", x: "time", y: "value" });
+```
+
+X and y are explicit source roles. The defaults use three bands on either side of zero, an automatic
+shared extent, blue for positive values, and red for negative values. Temporal x values accept the
+existing `temporalUnit` option. The folded y scale is `[0, 1]`; the facade shows only the original x
+axis and vertical grid. It does not infer an original-amplitude y axis or a legend from internal band keys.
+
+Use `editHorizon` for bands, baseline, palette, or source revisions and `editAreaMark` for opacity,
+stroke, and curve. An explicit `area.opacity` is applied after the encoding's opaque default.
+All-baseline input correctly produces no area paths while retaining the original x domain.
+
+The [runnable example](https://github.com/ggaction/ggaction/tree/main/examples/horizon-plot) includes
+signed, temporal, and baseline/style variants. The program below exposes the same lower owners on real data.
+
 ![Kenya life expectancy Horizon chart](../assets/images/gapminder-horizon.png)
 
 This chart folds Kenya's life expectancy above and below a 55-year baseline

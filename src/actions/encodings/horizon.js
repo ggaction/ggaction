@@ -71,16 +71,16 @@ function applyHorizonEncoding(program, {
   colorScale
 }) {
   let next = clearOwnedEncodings(program, layer)
+    .editSemantic({
+      property: `layer[${layer.id}].encoding.x.title`,
+      value: layer.encoding?.x?.title ?? inferHorizonTitle(transform.x.field)
+    })
     .encodeX({
       target: layer.id,
       field: transform.as.x,
       fieldType: transform.x.fieldType,
       ...(transform.x.fieldType === "temporal" ? { temporalUnit: "timestamp" } : {}),
       scale: xScale
-    })
-    .editSemantic({
-      property: `layer[${layer.id}].encoding.x.title`,
-      value: layer.encoding?.x?.title ?? inferHorizonTitle(transform.x.field)
     })
     .encodeY({
       target: layer.id,

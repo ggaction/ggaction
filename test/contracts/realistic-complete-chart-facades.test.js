@@ -5,6 +5,7 @@ import { renderToSVG } from "../../src/renderers/svg.js";
 import { assertAnalyticLayerIntegrity } from "../oracles/analytic-layer-integrity.js";
 import { assertGraphicIntegrity } from "../oracles/graphic-integrity.js";
 import { assertSvgIntegrity } from "../oracles/svg-integrity.js";
+import { calculateHorizon } from "../oracles/horizon.js";
 import { loadCars, loadGapminder, loadImdbSelected } from "../support/data.js";
 
 const datasets = [
@@ -69,6 +70,76 @@ for (const dataset of datasets) {
       const derived = program.semanticSpec.datasets.find(data => data.id === program.semanticSpec.layers[0].data);
       assert.equal(derived.source, "observations");
       assert.equal(derived.values.length, profiles * (variant === 4 ? 61 : 51));
+      assert.deepEqual(source.semanticSpec, snapshot);
+    });
+
+    test(`authors Horizon variant ${variant + 1} from ${dataset.name} against independent signed folds`, () => {
+      // The x role is explicit input order, not a fabricated time series.
+      let ordered = values.map((row, recordIndex) => ({ ...row, recordIndex,
+        ...(variant === 3 && recordIndex % 11 === 5 ? { [dataset.value]: null } : {}) }));
+      const grouped = variant === 1 || variant === 2;
+      const groupField = dataset.name === "movies" ? "releasePeriod" : dataset.category;
+      if (grouped && dataset.name === "movies") {
+        const counts = new Map();
+        for (const row of ordered) counts.set(row[dataset.category], (counts.get(row[dataset.category]) ?? 0) + 1);
+        assert.ok([...counts.values()].some(count => count === 1));
+        const allYears = chart().createCanvas(layout).createData({ id: "observations", values: ordered });
+        const original = structuredClone({ semantic: allYears.semanticSpec, graphic: allYears.graphicSpec, trace: allYears.trace });
+        assert.throws(() => allYears.createHorizonPlot({ x: "recordIndex", y: dataset.value,
+          groupBy: dataset.category, baseline: (minimum + maximum) / 2 }), /at least two points/);
+        assert.deepEqual({ semantic: allYears.semanticSpec, graphic: allYears.graphicSpec, trace: allYears.trace }, original);
+        // The caller explicitly groups release years into two periods; no records are dropped.
+        ordered = ordered.map(row => ({ ...row,
+          releasePeriod: Number(row.Released_Year) < 1980 ? "before 1980" : "1980 onward" }));
+      }
+      const source = chart().createCanvas(layout).createData({ id: "observations", values: ordered });
+      const snapshot = structuredClone(source.semanticSpec);
+      const options = {
+        baseline: (minimum + maximum) / 2,
+        ...(grouped ? { groupBy: groupField } : {}),
+        ...(variant === 2 ? { bands: 4, resolve: "independent" } : {}),
+        ...(variant === 4 ? { bands: 2, extent: (maximum - minimum) / 4 } : {})
+      };
+      let program = source.createHorizonPlot({ id: "folds", x: "recordIndex", y: dataset.value, ...options,
+        ...(variant === 2 ? { area: { curve: "monotone" } } : {}),
+        ...(variant === 3 ? { area: { opacity: 0.6 }, missing: "break" } : {}) });
+      if (variant === 4) {
+        options.bands = 4;
+        program = program.editHorizon({ target: "folds", bands: options.bands,
+          palette: { positive: "greens", negative: "oranges" } });
+      }
+      inspect(program, ordered, `${dataset.name} Horizon ${variant}`);
+      const expected = calculateHorizon(ordered, { xField: "recordIndex", yField: dataset.value, ...options });
+      const derived = program.semanticSpec.datasets.find(data => data.id === program.semanticSpec.layers[0].data);
+      const transform = derived.transform[0];
+      assert.equal(derived.source, "observations");
+      assert.equal(program.graphicSpec.objects.folds.items.length, expected.series.length);
+      assert.equal(derived.values.length, expected.series.reduce((sum, series) => sum + series.points.length, 0));
+      assert.deepEqual(transform.resolved.extents.map(entry => entry.extent), expected.groups.map(entry => entry.extent));
+      const referenceBands = new Map();
+      for (const series of expected.series) {
+        const key = JSON.stringify([series.group, series.sign, series.bandIndex]);
+        if (!referenceBands.has(key)) referenceBands.set(key, []);
+        referenceBands.get(key).push(...series.points.map(point => [point.x, point.amplitude / series.bandHeight]));
+      }
+      const actualBands = new Map();
+      for (const row of derived.values) {
+        const key = JSON.stringify([grouped ? row[groupField] : null, row[transform.as.sign], row[transform.as.band]]);
+        if (!actualBands.has(key)) actualBands.set(key, []);
+        actualBands.get(key).push([row[transform.as.x], row[transform.as.upper]]);
+        assert.equal(row[transform.as.lower], 0);
+      }
+      assert.deepEqual([...actualBands.keys()].sort(), [...referenceBands.keys()].sort());
+      for (const [key, points] of referenceBands) {
+        const byPosition = (a, b) => a[0] - b[0] || a[1] - b[1];
+        const actual = actualBands.get(key).sort(byPosition);
+        points.sort(byPosition);
+        assert.equal(actual.length, points.length);
+        for (const [index, point] of points.entries()) {
+          assert.ok(Math.abs(actual[index][0] - point[0]) < 1e-9);
+          assert.ok(Math.abs(actual[index][1] - point[1]) < 1e-10);
+        }
+      }
       assert.deepEqual(source.semanticSpec, snapshot);
     });
   }

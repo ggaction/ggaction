@@ -1927,6 +1927,34 @@ program
 
 # Horizon Chart Tutorial
 
+## Complete Horizon facade
+
+Use `createHorizonPlot` to author signed bands and the original x axis in one action:
+
+```javascript
+import { chart } from "ggaction";
+
+const program = chart()
+  .createCanvas({ width: 1000, height: 700, margin: 150 })
+  .createData({ id: "source", values: [
+    { time: 0, value: -4 }, { time: 1, value: -3 }, { time: 2, value: -1 },
+    { time: 3, value: 0 }, { time: 4, value: 1 }, { time: 5, value: 3 }, { time: 6, value: 4 }
+  ] })
+  .createHorizonPlot({ id: "horizon", x: "time", y: "value" });
+```
+
+X and y are explicit source roles. The defaults use three bands on either side of zero, an automatic
+shared extent, blue for positive values, and red for negative values. Temporal x values accept the
+existing `temporalUnit` option. The folded y scale is `[0, 1]`; the facade shows only the original x
+axis and vertical grid. It does not infer an original-amplitude y axis or a legend from internal band keys.
+
+Use `editHorizon` for bands, baseline, palette, or source revisions and `editAreaMark` for opacity,
+stroke, and curve. An explicit `area.opacity` is applied after the encoding's opaque default.
+All-baseline input correctly produces no area paths while retaining the original x domain.
+
+The [runnable example](https://github.com/ggaction/ggaction/tree/main/examples/horizon-plot) includes
+signed, temporal, and baseline/style variants. The program below exposes the same lower owners on real data.
+
 ![Kenya life expectancy Horizon chart](./assets/images/gapminder-horizon.png)
 
 This chart folds Kenya's life expectancy above and below a 55-year baseline
@@ -11731,6 +11759,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createGuides`](./reference/actions/guides/#createguides) | user-facing | legend_and_title |
 | [`createHeatmap`](./reference/actions/charts-data/#createheatmap) | user-facing | charts |
 | [`createHistogram`](./reference/actions/charts-data/#createhistogram) | user-facing | charts |
+| [`createHorizonPlot`](./reference/actions/statistics/#createhorizonplot) | user-facing | statistics |
 | [`createHorizontalGrid`](./reference/actions/advanced/#directional-grids) | user-facing | grid |
 | [`createIntervalData`](./reference/actions/statistics/#createintervaldata) | user-facing | statistics |
 | [`createLegend`](./reference/actions/guides/#createlegend) | user-facing | legend_and_title |
@@ -12899,6 +12928,21 @@ accept it. The modes are mutually exclusive. The first omitted mode defaults to
 
 These are direct immutable `ChartProgram` actions. Each accepts one option object and returns a new program.
 
+## `createHorizonPlot`
+
+```js
+createHorizonPlot({ id?, data?, coordinate?, x, y, groupBy?, bands?, baseline?, extent?, resolve?, missing?, overflow?, palette?, area?, guides? })
+```
+
+Create a complete signed, folded area chart from explicit x and y source fields. Defaults use three bands,
+a zero baseline, automatic shared extent, blue positive bands and red negative bands. Temporal x fields
+support the existing temporal unit vocabulary. The full entry owns this facade; Basic does not expose it.
+
+The original x axis and vertical grid are the only automatic guides. Folded y/horizontal grid/internal
+band legend options accept only false. Palette owns fill; area appearance accepts opacity, stroke,
+strokeWidth and curve. Explicit opacity is applied after encoding. Revise statistics with editHorizon
+and style with editAreaMark. See the [Horizon tutorial](./tutorials/horizon/).
+
 ## `createDensityPlot`
 
 ```js
@@ -13843,6 +13887,7 @@ interface ChartProgramActions {
   createHistogram(options: CreateHistogramOptions): ChartProgram;
   createPiePlot(options: CreatePiePlotOptions): ChartProgram;
   createDensityPlot(options: CreateDensityPlotOptions): ChartProgram;
+  createHorizonPlot(options: CreateHorizonPlotOptions): ChartProgram;
   createHeatmap(options: CreateHeatmapOptions): ChartProgram;
   createParallelCoordinates(options: CreateParallelCoordinatesOptions): ChartProgram;
   removeMark(options?: RemoveMarkOptions): ChartProgram;

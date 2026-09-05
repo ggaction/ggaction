@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { visualVariants } from "./manifest.js";
 import { referenceHorizon, rows, targets, revisions } from "./reference-values.js";
-import { displayedActionCalls } from "../../support/visual-variants.js";
+import { displayedActionCalls, assertDisplayedProgram } from "../../support/visual-variants.js";
 
 for (const variant of visualVariants) {
   test(`authors ${variant.variant} folded paths against an independent signed-band oracle`, () => {
@@ -37,11 +37,11 @@ for (const variant of visualVariants) {
     assert.equal(dataset.source, "source");
     assert.deepEqual(rows[variant.variant], before);
   });
-  test(`records the exact future ${variant.variant} Horizon facade and revision chain`, () => {
+  test(`records the exact displayed ${variant.variant} Horizon facade and revision chain`, () => {
     const calls = displayedActionCalls(variant.callChain);
     assert.deepEqual(calls.map(c => c.op), ["createCanvas", "createData", "createHorizonPlot", ...(revisions[variant.variant] ?? []).map(e => e.op)]);
     assert.deepEqual(calls[2].args, targets[variant.variant]);
     assert.deepEqual(calls.slice(3), revisions[variant.variant] ?? []);
-    assert.equal(variant.userFacing, undefined);
+    assertDisplayedProgram(variant, variant.userFacing());
   });
 }

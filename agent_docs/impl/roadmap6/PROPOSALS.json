@@ -369,10 +369,11 @@
           "scope": "필수 x/y를 받는 createHorizonPlot을 제안한다. 기존 createCoordinate로 좌표를 연결하고 encodeHorizon 뒤 explicit opacity를 적용한다. H0는 x guide만 허용하며 기존 lower guide escape는 유지한다.",
           "acceptance": "signed data와 editHorizon의 revision 검증. Folded y를 원래 양적 축처럼 표시하거나 internal band color legend를 자동 생성하지 않음.",
           "contractEvidence": "phase3/CONTRACT_REVIEW.md",
-          "status": "visual-approved-awaiting-implementation"
+          "status": "implemented-awaiting-integration",
+          "resultEvidence": "phase3/RESULTS.md#w3--horizon"
         }
       ],
-      "activity": "implementing-approved-chart-facades",
+      "activity": "verifying-public-facades-and-package-budget",
       "contractEvidence": "phase3/CONTRACT_REVIEW.md",
       "baselineEvidence": "phase3/baseline-results.json",
       "baselineCommit": "9625e71c374868756652fb8dff8153dc61500c6e",
@@ -1558,8 +1559,9 @@
       "recommended": "필수 x/y를 받는 createHorizonPlot을 제안한다. 기존 createCoordinate로 좌표를 연결하고 encodeHorizon 뒤 explicit opacity를 적용한다. H0는 x guide만 허용하며 기존 lower guide escape는 유지한다.",
       "acceptance": "signed data와 editHorizon의 revision 검증. Folded y를 원래 양적 축처럼 표시하거나 internal band color legend를 자동 생성하지 않음.",
       "evidence": "audit/REPORT.md: F07",
-      "disposition": "phase3-contract-approved-awaiting-visual-target",
-      "contractEvidence": "phase3/CONTRACT_REVIEW.md"
+      "disposition": "implemented-awaiting-bundle-integration-and-phase-exit",
+      "contractEvidence": "phase3/CONTRACT_REVIEW.md",
+      "resultEvidence": "phase3/RESULTS.md#w3--horizon"
     },
     {
       "id": "F08",
