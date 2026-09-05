@@ -134,13 +134,20 @@ Default x/y scale id와 generated field/revision identity는 lower owner가 소�
 
 ## V target 계획과 독립 oracle
 
-공통 Canvas 1000×700, margin 150. Values와 call을 함께 manifest에 고정할 계획이며 실제 primitive는 A 승인 뒤 작성한다.
+공통 Canvas 1000×700, margin 150. [단일 manifest](../../../../test/gates/horizon-plot/manifest.js)에
+[values](../../../../test/gates/horizon-plot/reference-values.js)와 call을 고정했고
+[primitive](../../../../test/gates/horizon-plot/primitive.program.js)를 실행·렌더링했다. 신규 facade는 아직 미구현이다.
 
 | Variant | Values / 제안 public chain | 의미 oracle |
 | --- | --- | --- |
-| signed | time 0/1, value -4/+4; `createHorizonPlot({id:'horizon',x:'time',y:'value'})` | 3 bands×2 signs, 6 paths, extent 4·bandHeight 4/3, folded [0,1] |
-| temporal | time 1000/2000, value -4/+4; `createHorizonPlot({id:'horizon',x:{field:'time',fieldType:'temporal',temporalUnit:'timestamp',scale:{nice:false}},y:'value'})` | X domain [1000,2000], 원본 단위와 derived timestamp 관계 |
-| baseline-style | time 0/1, value -2/+6; `createHorizonPlot({id:'horizon',x:'time',y:'value',baseline:2,bands:2,area:{opacity:.8}}).editHorizon({target:'horizon',bands:3}).editAreaMark({target:'horizon',opacity:.6})` | Baseline-relative -4/+4, 최종 3 bands·6 paths·opacity .6 |
+| signed | time [0,1,2,3,4,5,6], value [-4,-3,-1,0,1,3,4]; `createHorizonPlot({id:'horizon',x:'time',y:'value'})` | 3 bands×2 signs, 6 paths·24 derived rows, extent 4·bandHeight 4/3, folded [0,1] |
+| temporal | time [1000,1100,1300,1500,1700,1900,2000], value [-4,-3,-1,0,1,3,4]; `createHorizonPlot({id:'horizon',x:{field:'time',fieldType:'temporal',temporalUnit:'timestamp',scale:{nice:false}},y:'value'})` | X domain [1000,2000], 원본 단위와 derived timestamp 관계 |
+| baseline-style | time [0,1,2,3,4,5,6], value [-2,-1,1,2,3,5,6]; `createHorizonPlot({id:'horizon',x:'time',y:'value',baseline:2,bands:2,area:{opacity:.8}}).editHorizon({target:'horizon',bands:3}).editAreaMark({target:'horizon',opacity:.6})` | Baseline-relative [-4,-3,-1,0,1,3,4], 최종 3 bands·6 paths·opacity .6 |
+
+A의 2점 ±4 예시는 현행 sample folding 뒤 선형 연결에서 band들이 같은 삼각형으로 겹쳐 가장 진한 색만
+보였다. V 검토에서 세 band의 경계와 색을 확인할 수 있도록 위 7개 관측값으로 fixture를 구체화했다.
+API/options·folding 계산·renderer는 바꾸지 않았다. 기존 2점 baseline probe는 그대로 보존하며,
+이 이미지를 연속 구간 전체의 band 경계 보간까지 새로 검증한 증거로 세지 않는다.
 
 전부 nonzero target으로 plot ink를 확인한다. All-baseline empty는 numeric test에서 별도로 허용한다.
 Group shared/independent, missing break, explicit coordinate ambiguity, y/legend 거부, revision과 guide/scale/resize는

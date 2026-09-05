@@ -144,7 +144,9 @@ Public top-level trace는 createPiePlot 한 번이며 실제 child args와 하�
 
 ## V target 계획과 수치 oracle
 
-같은 values와 Canvas 1000×700, margin 150을 manifest에 넣을 계획이다. 새 target source/render는 A 승인 뒤 작성한다.
+같은 values와 Canvas 1000×700, margin 150을 [단일 manifest](../../../../test/gates/pie-plot/manifest.js)에 고정했다.
+[실행한 primitive](../../../../test/gates/pie-plot/primitive.program.js)는 기존 Arc/theta/color/guide 액션을 명시적으로 조합한다.
+신규 facade는 아직 미구현이며, 독립 sector oracle로 각도·비율·concrete path commands를 검증한다.
 
 | Variant | 제안 public call (base 뒤) | 독립 의미 oracle |
 | --- | --- | --- |
@@ -154,6 +156,6 @@ Public top-level trace는 createPiePlot 한 번이며 실제 child args와 하�
 
 One-category full ring, zero/negative/all-zero, missing category, typed numeric category, same-category color conflict,
 reversed sweep·explicit domain, guide conflict/reuse는 비시각 acceptance에 포함한다.
-Primitive는 독립 숫자로 작성하고 public과 같은 실행의 graphics/Canvas calls/decoded pixels를 비교한다.
+V 승인 뒤 구현한 public과 primitive의 같은 실행 graphics/Canvas calls/decoded pixels를 비교한다.
 이 단계에서 label on·new theta order까지 실행했다는 완료 주장은 금지한다.
 [52건 baseline](../phase3/baseline-results.json)의 P01–P19와 [consumer matrix](../phase3/VALIDATION.md)를 함께 적용한다.

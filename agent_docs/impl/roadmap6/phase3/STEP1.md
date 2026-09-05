@@ -9,7 +9,8 @@
 - [x] A package 최종 검증·commit/push·exact remote ref 기록
 - [x] A 명시적 사용자 승인 기록
 - [x] 승인된 새 계약의 Planned 등록과 비시각 준비
-- [ ] 9개 primitive targets 작성·표시·V 승인
+- [x] 9개 primitive targets 작성·수치 검증·렌더링
+- [ ] 검토 package·정확한 호출·이미지 표시와 V 승인
 - [ ] R6-P3-W1 Pie/Donut public flow와 lower lifecycle
 - [ ] R6-P3-W2 Density public flow와 lower lifecycle
 - [ ] R6-P3-W3 Horizon public flow와 lower lifecycle
@@ -47,4 +48,5 @@ A 계약 준비·원격 고정과 사용자 승인까지 완료했다. V/X 승�
 - Source/types는 Phase 2 검증본과 동일. A baseline script·문서만 작성했다.
 - 상세 current observations: [baseline-results.json](baseline-results.json).
 - A 승인 기준 HEAD는 `0f3531ae9c242190df9457b1ed4289491963ba77`이며 사용자 답은 “승인한다”다.
-- Production public flow·new render·new type check는 아직 미실행. Primitive는 A 승인에 따라 작성하고 public flow는 V 승인 뒤 구현한다.
+- 승인된 세 계약은 Planned에 등록했다. 9개 primitive의 normal 19건·PNG 9건이 통과했고 public flow는 V 승인 뒤 구현한다.
+- Density grid는 현행 y축 기준임을 명시했다. Horizon V fixture는 band가 구분되도록 2점에서 7점으로 구체화했고 기존 baseline은 보존했다.

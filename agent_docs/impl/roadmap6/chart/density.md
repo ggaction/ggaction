@@ -102,7 +102,7 @@ const proposed = base.createDensityPlot({
 | Normalization | unit=각 profile의 KDE, count=해당 profile의 valid sample 수를 곱함. 유한 extent의 sampled integral이 정확히 1이라고 주장하지 않음 |
 | Scales | value nice:false/zero:false, density nice:true/zero:true 기본. Density magnitude domain은 zero를 포함해야 함 |
 | Area | 기본 fill theme·opacity .2·linear. Explicit fill+field color는 충돌 오류. strokeWidth는 stroke와 함께; create stroke:false는 미지원 |
-| Guides | Value와 Density 축; orientation에 맞는 현재 자동 grid 방향. Legend는 explicit group color가 있을 때만. Chart title은 별도 action |
+| Guides | Value와 Density 축; 자동 grid는 두 orientation 모두 현행 Cartesian y축 기준 horizontal. Legend는 explicit group color가 있을 때만. Chart title은 별도 action |
 
 Color appearance를 바꿔 KDE의 partition이 바뀌어서는 안 된다. 다른 raw field의 category palette를 원하면
 group domain에 대한 explicit color scale range/palette를 작성할 수 있다. Metadata join 지원을 새로 약속하지 않는다.
@@ -141,13 +141,18 @@ Current lower chain과 semantic/graphic 동등성, 실제 facade child trace, fa
 
 ## V target 계획과 수치 oracle
 
-위 values와 1000×700, margin 150을 사용할 계획이다. 실제 primitive/manifest는 A 뒤 작성한다.
+위 values와 1000×700, margin 150을 [단일 manifest](../../../../test/gates/density-plot/manifest.js)에 고정했다.
+[실행한 primitive](../../../../test/gates/density-plot/primitive.program.js)는 기존 lower chain이며 신규 facade는 아직 미구현이다.
 
 | Variant | 제안 public call (base 뒤) | 의미 oracle |
 | --- | --- | --- |
 | vertical | `createDensityPlot({id:'density',field:'value',bandwidth:1,extent:[0,6],steps:61})` | 61 samples, one closed path, x value/y density |
 | grouped | `createDensityPlot({id:'density',field:'value',groupBy:'group',color:'group',bandwidth:1,extent:[0,6],steps:61})` | 122 samples, two paths/colors, 각 group n=2 |
 | horizontal | `createDensityPlot({id:'density',field:'value',groupBy:'group',color:'group',densityChannel:'x',bandwidth:1,extent:[0,6],steps:61})` | 같은 KDE 수치, x density/y value, 축 title 교환 |
+
+V 작성 중 grid의 기존 기본값을 직접 확인했다. Density 방향이 바뀌면 grid도 자동 교환된다는 테스트 가정은
+틀렸으며, 이를 y축 기준 horizontal로 고쳤다. A의 모호한 “orientation에 맞는” 표현을 구체화했고
+production grid/default나 target public options를 변경하지 않았다. Explicit guide 방향 선택은 기존 계약을 따른다.
 
 독립 Gaussian 공식과 fixture의 고정 수치, sampled grid endpoints, count/unit 비율을 확인한다.
 Constant sample explicit 경로·invalid rows·all-invalid·collision·scale zero 오류, stats revision·shared scale·Canvas edit는
