@@ -1,6 +1,8 @@
 import { action } from "../../core/action.js";
 import { formatTextValue, validateTextFormat } from "../../grammar/text.js";
+import { normalizeMarkLabelContent, resolveMarkLabelValues } from "../../grammar/markLabels.js";
 import { canMaterializeText } from "../../materialization/marks/index.js";
+import { resolveMarkItems } from "../../materialization/selection/policies/index.js";
 import { findLayer } from "../../selectors/layers.js";
 import {
   resolveTarget,
@@ -8,7 +10,7 @@ import {
   validateOptions
 } from "./shared.js";
 
-const OPTIONS = Object.freeze(["target", "field", "value", "format"]);
+const OPTIONS = Object.freeze(["target", "field", "value", "content", "normalizeBy", "format"]);
 
 function validateTextField(rows, field, format) {
   if (typeof field !== "string" || field.length === 0) {
@@ -26,14 +28,18 @@ function validateTextField(rows, field, format) {
 export const encodeText = action(
   {
     op: "encodeText",
-    description: "Assign field-driven or constant text content."
+    description: "Assign field, constant, or source semantic text content."
   },
   function (args = {}) {
     validateOptions(args, OPTIONS, "encodeText");
     const hasField = Object.hasOwn(args, "field");
     const hasValue = Object.hasOwn(args, "value");
-    if (hasField === hasValue) {
-      throw new Error("encodeText requires exactly one of field or value.");
+    const hasContent = Object.hasOwn(args, "content");
+    if ([hasField, hasValue, hasContent].filter(Boolean).length !== 1) {
+      throw new Error("encodeText requires exactly one of field, value, or content.");
+    }
+    if (Object.hasOwn(args, "normalizeBy") && (!hasContent || args.content !== "share")) {
+      throw new Error("Text normalizeBy is only supported with share content.");
     }
     const { id: target, dataset, layer } = resolveTarget(
       this,
@@ -43,23 +49,32 @@ export const encodeText = action(
     );
     const previous = layer.encoding?.text;
     const format = validateTextFormat(args.format ?? previous?.format ?? "auto");
+    const content = hasContent
+      ? normalizeMarkLabelContent(findLayer(this, layer.source), args)
+      : undefined;
     if (hasField) validateTextField(dataset.values, args.field, format);
-    else if (formatTextValue(args.value, format) === undefined) {
+    else if (hasValue && formatTextValue(args.value, format) === undefined) {
       throw new Error("encodeText value must produce non-empty text.");
     }
 
-    let next = this;
-    const alternate = hasField ? "datum" : "field";
-    if (Object.hasOwn(previous ?? {}, alternate)) {
-      next = next.editSemantic({
-        property: `layer[${target}].encoding.text.${alternate}`,
-        remove: true
-      });
-    }
-    next = setEncodingProperties(next, target, "text", {
-      [hasField ? "field" : "datum"]: hasField ? args.field : args.value,
+    const properties = {
+      ...(hasContent ? content : { [hasField ? "field" : "datum"]: hasField ? args.field : args.value }),
       format
-    });
+    };
+    const proposed = { ...layer, encoding: { ...layer.encoding, text: properties } };
+    if (hasContent && canMaterializeText(this, proposed)) {
+      const source = findLayer(this, layer.source);
+      for (const value of resolveMarkLabelValues(source, resolveMarkItems(this, source.id), content)) {
+        formatTextValue(value, format);
+      }
+    }
+    let next = this;
+    for (const property of ["field", "datum", "content", "normalizeBy"]) {
+      if (Object.hasOwn(previous ?? {}, property) && !Object.hasOwn(properties, property)) {
+        next = next.editSemantic({ property: `layer[${target}].encoding.text.${property}`, remove: true });
+      }
+    }
+    next = setEncodingProperties(next, target, "text", properties);
     const updated = findLayer(next, target);
     return canMaterializeText(next, updated)
       ? next.rematerializeTextMark({ id: target })

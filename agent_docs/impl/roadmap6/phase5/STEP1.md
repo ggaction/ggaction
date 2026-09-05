@@ -37,6 +37,8 @@
 - [x] W2 C2 전체 family×edge×lifecycle 통합 matrix — [결과](RESULTS_W2_INTEGRATION.md)
 - [ ] R6-P5-W3 Final-item labels·reference·common format
 - [x] W3 A explicit text source와 source dependency replay, #110 — [계약](CONTRACT_W3_TEXT_SOURCE.md), [결과](RESULTS_W3_TEXT_SOURCE.md)
+- [x] W3 B1 category/value/share content·percent·Histogram replay·precision types, #111/#112 — [계약](CONTRACT_W3_LABEL_CONTENT.md), [결과](RESULTS_W3_LABEL_CONTENT.md)
+- [ ] W3 B2 createMarkLabels facade와 후속 reference/annotation/common format
 - [ ] R6-P5-W4 Program theme와 local override
 - [ ] R6-P5-W5 Opt-in fitting과 guide label layout
 - [ ] 모든 시각 variant의 primitive target 작성·표시·V 승인

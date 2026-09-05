@@ -926,6 +926,23 @@ async function testNodeConsumer(directory) {
     assert.match(svg, /<title>Package consumer chart<\\/title>/);
     assert.match(svg, /<circle /);
 
+    const histogramLabels = chart().createCanvas({ width: 480, height: 360, margin: 50 })
+      .createData({ values: [{ value: 1 }, { value: 1.5 }, { value: 100 }] })
+      .createBarMark().encodeHistogram({ field: "value", maxBins: 2 })
+      .createTextMark({ text: "bin" });
+    assert.deepEqual(histogramLabels.editCanvas({ width: 600 }).resolvedScales.x.domain, histogramLabels.resolvedScales.x.domain);
+    const filteredHistogramLabels = histogramLabels.filterMarks({ target: "bar", channel: "x", op: "lt", value: 50 });
+    assert.ok(filteredHistogramLabels.editCanvas({ width: 600 }).graphicSpec.objects.text.items.length > 0);
+
+    const semanticLabels = chart().createCanvas({ width: 480, height: 360, margin: 50 })
+      .createData({ values: [{ category: "A", value: 1 }, { category: "A", value: 1 }, { category: "B", value: 6 }] })
+      .createPiePlot({ category: "category", value: "value", aggregate: "sum", guides: false })
+      .createTextMark().encodeText({ content: "share", format: ".1%" });
+    assert.deepEqual(semanticLabels.graphicSpec.objects.text.items.map(i => i.properties.text), ["25.0%", "75.0%"]);
+    assert.deepEqual(semanticLabels.filterMarks({ target: "piePlot", field: "category", op: "eq", value: "B" })
+      .graphicSpec.objects.text.items.map(i => i.properties.text), ["100.0%"]);
+    assert.deepEqual(semanticLabels.encodeText({ content: "value", format: "auto" }).graphicSpec.objects.text.items.map(i => i.properties.text), ["2", "6"]);
+
     const textSource = chart().createCanvas({ width: 400, height: 300, margin: 40 })
       .createData({ values: [{ x: 1, y: 2, label: "Alpha" }, { x: 2, y: 4, label: "Beta" }] })
       .createPointMark().createTextMark({ source: "point" }).encodeText({ field: "label" });
@@ -2174,6 +2191,24 @@ async function testTypeScriptConsumer(directory) {
     void withoutXAxis;
     void invalidTransform;
 
+    chart().encodeText({ content: "share", normalizeBy: "category", format: ".12%" });
+    chart().encodeText({ content: "category" });
+    chart().encodeText({ value: 0.5, format: ".01%" });
+    // @ts-expect-error Precision cannot exceed twelve.
+    chart().encodeText({ value: 1, format: ".13f" });
+    // @ts-expect-error Precision cannot be negative.
+    chart().encodeText({ value: 1, format: ".-1%" });
+    // @ts-expect-error Precision must be an integer.
+    chart().encodeText({ value: 1, format: ".1.5f" });
+    chart().encodeText({ content: "value", format: ".2f" });
+    // @ts-expect-error Semantic content and raw field are exclusive.
+    chart().encodeText({ content: "value", field: "value" });
+    // @ts-expect-error Normalization only applies to share content.
+    chart().encodeText({ content: "category", normalizeBy: "source" });
+    // @ts-expect-error Normalization scope is closed.
+    chart().encodeText({ content: "share", normalizeBy: "rows" });
+    // @ts-expect-error Content vocabulary is closed.
+    chart().encodeText({ content: "total" });
     chart().createTextMark({ source: "points", text: "Label" }).editTextMark({ dx: 2 });
     // @ts-expect-error Source is a mark ID.
     chart().createTextMark({ source: 1 });

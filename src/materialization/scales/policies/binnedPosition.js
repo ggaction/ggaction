@@ -4,8 +4,7 @@ export function resolveBinnedPositionDomain({
   valuesByConsumer,
   channel,
   scale,
-  id,
-  allValues
+  id
 }) {
   const binnedPositions = valuesByConsumer.filter(
     ({ consumer }) =>
@@ -13,7 +12,12 @@ export function resolveBinnedPositionDomain({
       consumer.encoding.bin !== undefined
   );
   if (binnedPositions.length === 0) return undefined;
-  if (channel !== "x" || binnedPositions.length !== valuesByConsumer.length) {
+  const independentConsumers = valuesByConsumer.filter(({ consumer }) =>
+    !(consumer.layer.mark?.type === "text" && binnedPositions.some(
+      ({ consumer: owner }) => consumer.layer.source === owner.layer.id
+    ))
+  );
+  if (channel !== "x" || binnedPositions.length !== independentConsumers.length) {
     throw new Error(
       `Binned scale "${id}" cannot be shared with an unbinned consumer.`
     );
@@ -25,7 +29,7 @@ export function resolveBinnedPositionDomain({
     throw new Error(`Binned scale "${id}" requires one shared bin definition.`);
   }
   return resolveHistogramBins({
-    values: allValues,
+    values: binnedPositions.flatMap(item => item.values).filter(value => value !== undefined),
     bin: binnedPositions[0].consumer.encoding.bin,
     domain: scale.domain,
     nice: scale.nice ?? true,

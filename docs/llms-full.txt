@@ -5520,17 +5520,57 @@ For example, `650` renders as `700`. The authored value remains unchanged in the
 program state. Titles, facet headers, legends, and Cartesian or Polar axis text
 use this same renderer policy.
 
-## `encodeText({ target?, field?, value?, format? })`
+## `encodeText({ target?, field?, value?, content?, normalizeBy?, format? })`
 
-Provide exactly one of `field` or `value`. `format` defaults to `"auto"`; fixed
-decimal formats from `".0f"` through `".12f"` are available for numeric content.
-Calling `encodeText` again replaces the previous field or constant assignment.
+Provide exactly one of `field`, constant `value`, or semantic `content`.
+`format` defaults to `"auto"`; numeric formats include `".0f"`–`".12f"` and
+`".0%"`–`".12%"`. Calling `encodeText` again replaces the previous content
+assignment and preserves the previous format unless you supply one. Precision
+is an integer from 0 through 12; two-digit zero-padded forms such as `".01f"`
+are also accepted and mean the same as `".1f"`.
 
 ```javascript
 bars
   .createTextMark({ dy: -4, align: "center" })
   .encodeText({ field: "value", format: ".1f" });
 ```
+
+Use semantic content when the label should describe the source's final items:
+
+```javascript
+// Fragment: pie contains a completed Pie mark.
+const percentages = pie
+  .createTextMark({ align: "center", baseline: "middle" })
+  .encodeText({ content: "share", format: ".1%" });
+
+// Fragment: stackedBars contains a completed Bar mark.
+const segmentValues = stackedBars
+  .createTextMark({ align: "center", dy: -4 })
+  .encodeText({ content: "value" });
+```
+
+`content: "value"` reads each Bar segment's aggregate before stacking or
+normalization, each histogram segment's count, each Pie sector's count or
+weighted sum, or an Arc's radial value. For two stacked values of 10 and 30,
+it labels them 10 and 30. `content: "category"` reads the category of an
+aggregate Bar or categorical Arc.
+
+`content: "share"` divides these values by their total across the current
+source's final items. Use `normalizeBy: "category"` for percentages within
+each Bar category or histogram bin. Arc shares use `normalizeBy: "source"`,
+the default. Filtering the source recalculates the denominator. Negative or
+undefined values and non-positive denominators are errors; an empty final
+item set produces no labels. Zero-height bars omitted from final items also
+have no labels. With `format: "auto"`, a share is a fraction; use a percent
+token to display a percentage.
+
+Semantic content requires an attached Bar or Arc. For Point, Rule, Rect,
+ranged Bar, or an independent text layer, choose a `field` or constant
+`value` explicitly. Histogram intervals and quantitative Arc theta have no
+inferred category label. Source completion, position changes, and scale
+edits replay the stored content alongside the label anchors. For existing facet
+child programs, add labels after faceting; the current facet template contract
+does not support pre-existing text layers.
 
 Arc-source text is anchored halfway between each sector's inner and outer radii
 at its angular midpoint. The anchor is derived from the materialized sector path,

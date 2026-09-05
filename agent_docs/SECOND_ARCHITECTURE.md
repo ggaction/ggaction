@@ -1657,13 +1657,19 @@ Text annotation은 explicit source 또는 current/unique compatible point/bar/re
 Explicit source는 미완성이어도 관계를 저장하며 capability owner가 source readiness를 검사한다. Position encoding plan과
 scale edit은 직접 scale consumer 뒤에 source-dependent label을 재계산한다. 미완성으로 돌아가면 기존 label을 지우고
 완성 시 복구한다. 새 scale binding도 inherited text scale ID가 아닌 source relation을 통해 추적한다.
+Source-owned text는 source가 포함된 bin domain의 독립 raw consumer가 아니다. Binned owner 값만으로 domain을
+계산하며 position scale refresh는 attached text를 유예하고 source geometry 완료 뒤 dependency plan이 실행한다.
 Position encoding과 coordinate도 새 text layer에 명시적으로 복사하지만 concrete anchor는 source의 final
 visual item grain에서 결정한다. 따라서 aggregate bar는 source row가 아니라 final bar마다 하나의 label을
 만들고 rect는 cell center, rule은 final endpoint에 붙는다. Rect source에서 text fill을 생략하면 realized cell
 six-digit hex fill의 relative luminance로 theme light/dark text를 결정한다. 다른 fill syntax는 normal text
 default를 유지하고 explicit text fill은 항상 우선한다. Text 내용은
-scale 없는 `encoding.text` field/datum assignment이며,
-typography, alignment, rotation과 `dx`/`dy`는 materialization config가 소유한다. Canvas 또는 scale edit은
+scale 없는 `encoding.text` field/datum 또는 content assignment다. Semantic content는 final-item membership과
+source encoding을 받아 `grammar/markLabels.js`에서 category/value/share를 계산한다. Canonical aggregate를
+재사용하고 source/category normalization scope를 encoding.text.normalizeBy에 저장한다. 원본 행 전체나
+누적 끝점을 분모·구간 값으로 잘못 사용하지 않는다. Empty final set은 empty text이며 renderer는 share 의미를 모른다.
+Text encoding action과 source dependency plan이 내용과 anchor의 재계산을 명시적으로 실행한다.
+Typography, alignment, rotation과 `dx`/`dy`는 materialization config가 소유한다. Canvas 또는 scale edit은
 registered text policy를 통해 concrete label을 다시 만든다.
 
 Collision-aware label layout은 semantic text position을 다시 author하지 않는다.

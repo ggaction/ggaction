@@ -1409,29 +1409,46 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 
 ## `encodeText`
 
-- Signature: `encodeText({ target?, field?, value?, format? })` with exactly one of `field` or `value`.
+- Signature: `encodeText({ target?, field?, value?, content?, normalizeBy?, format? })` with exactly one of `field`, `value`, or `content`.
 - `target`: current compatible text mark, otherwise one unique text mark; ambiguity requires an explicit ID.
 - `field`: a field present on the text dataset. For a source-owned aggregate bar annotation, a matching measure field
-  resolves to the final aggregate endpoint rather than an arbitrary source row.
-  The same priority applies to a measured Arc's radius field: its final category aggregate supplies the label.
-  Identical member values and singleton groups do not override sum/count with a raw value. Category and other common
-  fields retain their common-item content.
+  resolves to the final aggregate endpoint rather than an arbitrary source row. A measured Arc's radius field uses its
+  final category aggregate. Common fields retain their common-item content. Use semantic `content:"value"` for the
+  source statistic before stacking or normalization instead of interpreting a field as cumulative geometry.
 - `value`: constant content repeated at every final text anchor.
-- `format`: `"auto"` or a fixed-decimal token `.0f` through `.12f`. Auto uses deterministic string conversion;
-  fixed format requires finite numeric content. Null, undefined, and empty content do not create placeholder children.
-- Reassignment replaces the alternate field/value branch, preserves the previous format when omitted, and
-  rematerializes final text without changing position semantics or the source mark.
+- `content`: `"category" | "value" | "share"`, requiring an attached Bar or Arc source. Incomplete sources retain the
+  intent until their position is complete. Point/Rule/Rect and independent text use explicit field or constant content.
+  Category reads an aggregate Bar's category channel or categorical Arc theta; histogram intervals and quantitative theta
+  require explicit field/constant labels. Ranged Bars have no inferred single value and require explicit content fields.
+- Semantic value is the canonical aggregate over each final Bar item's members, histogram segment count, Pie sector
+  count/weighted sum/quantitative theta, or Radial Arc radius. It is independent of stack endpoints and normalized heights.
+- Share divides these values by the current final-item total. `normalizeBy:"source"` is the default on each share assignment;
+  Bar also supports `"category"` for its category or histogram bin. Other content rejects normalizeBy. Source filtering and
+  facet-local data change the denominator. Labels may be added to already-created facet child programs; current facet
+  templates reject pre-existing text layers. Finite non-negative values and a positive denominator are required; an empty
+  final-item set yields empty text. Zero-height bars excluded from final items produce no placeholder labels.
+  Scaling by the maximum before summing preserves meaningful shares when the raw sum would overflow.
+- `format`: `"auto"`, fixed-decimal `.0f`–`.12f`, or percent `.0%`–`.12%`. Auto uses deterministic string conversion,
+  so share content with auto is a fraction. Percent multiplies by 100, rounds to the specified decimals and appends `%`.
+  Numeric formats require finite values and reject percent overflow. Precision is an integer from 0 through 12;
+  two-digit zero-padded 00–09 forms remain supported in both runtime and TypeScript. Negative, fractional and >12
+  precision tokens are rejected by declarations as well as runtime. Null/undefined/empty content creates no placeholders.
+- Reassignment replaces incompatible field/datum/content/normalization branches, preserves previous format when omitted,
+  and rematerializes final text. Source encoding/scale/filter changes replay semantic content and reject incompatible source
+  meaning or invalid shares without mutating an earlier program. Geometry and source data remain owned by the source mark.
 
 ### Formal values — `encodeText`
 
-- Implemented: `encodeText({ target?: UserId; format?: "auto" | ".0f" … ".12f" } & ({ field: FieldName; value?: never } | { field?: never; value: unknown }))`.
-- Proposed (NOT IMPLEMENTED): date/time and locale-aware formatting tokens.
+- Implemented: `encodeText({ target?: UserId; format?: "auto" | ".0f" … ".12f" | ".0%" … ".12%" } & ({ field: FieldName } | { value: unknown } | { content: "category" | "value" } | { content: "share"; normalizeBy?: "source" | "category" }))`; branches are mutually exclusive.
+- Proposed (NOT IMPLEMENTED): date/time and locale-aware text formatting tokens.
 
 ### Value coverage — `encodeText`
 
-- ✅ Covered: field/value exclusivity, reassignment, automatic and fixed-decimal formatting, missing field,
-  invalid format, direct row positions, source point/bar/rule anchors, and order-independent completion.
-- Evidence: `test/unit/actions/marks/text-mark.test.js` and the annotated IMDb Gate pair.
+- ✅ Covered: field/value/content exclusivity and reassignment, every percent precision, missing/invalid inputs,
+  source value/category/share, both Bar orientations, histogram bins, Pie/quantitative/radial Arc, canonical aggregates,
+  normalization scope, finite/negative/zero/overflow cases, source completion and filter/scale/Canvas replay.
+- Evidence: `test/unit/actions/marks/text-mark.test.js`, `test/unit/actions/marks/text-content.test.js`,
+  `test/unit/grammar/mark-label-content.test.js`, `test/contracts/mark-label-content.test.js`, installed consumer type/runtime probes.
 
 ## Area endpoint와 range의 공통 계약
 

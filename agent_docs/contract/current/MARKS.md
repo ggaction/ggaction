@@ -615,7 +615,9 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
   produce one label per final visual item rather than one per row. Arc anchors derive from concrete sector paths and replay
   after Canvas, scale, padding, and inner-radius changes.
   Source-owned text does not contribute raw rows as an independent series-layout domain or aggregation policy.
-  Count and normalized Bar domains therefore remain unchanged by adding labels and resizing.
+  Count and normalized Bar domains therefore remain unchanged by adding labels and resizing. Histogram source-owned
+  text is also excluded from independent bin-domain consumers; actual binned owners supply domain values. Position scale
+  refresh defers attached labels until source geometry completes, preventing cardinality mismatches during filtering.
 - Collision avoidance is not automatic. Authors may preserve explicit placement or assign it afterward with
   `layoutLabels()`.
 

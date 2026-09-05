@@ -2327,7 +2327,9 @@ export interface OffsetEncodingOptions {
 export interface XOffsetEncodingOptions extends OffsetEncodingOptions {}
 export interface YOffsetEncodingOptions extends OffsetEncodingOptions {}
 
-export type TextFormat = "auto" | `.${number}f`;
+type TextFormatDigit = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
+type TextFormatPrecision = TextFormatDigit | 10 | 11 | 12 | `0${TextFormatDigit}`;
+export type TextFormat = "auto" | `.${TextFormatPrecision}${"f" | "%"}`;
 
 export interface TextMarkOptions {
   id?: string;
@@ -2391,8 +2393,10 @@ export type TextEncodingOptions = {
   target?: string;
   format?: TextFormat;
 } & (
-  | { field: string; value?: never }
-  | { field?: never; value: unknown }
+  | { field: string; value?: never; content?: never; normalizeBy?: never }
+  | { field?: never; value: unknown; content?: never; normalizeBy?: never }
+  | { field?: never; value?: never; content: "category" | "value"; normalizeBy?: never }
+  | { field?: never; value?: never; content: "share"; normalizeBy?: "source" | "category" }
 );
 
 export type BarWidthOptions = { target?: string } & (

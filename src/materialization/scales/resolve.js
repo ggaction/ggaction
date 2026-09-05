@@ -233,8 +233,7 @@ export function resolveScaleMaterialization({
         valuesByConsumer,
         channel,
         scale,
-        id,
-        allValues
+        id
       });
   const seriesLayouts = valuesByConsumer.map(item => item.seriesLayout);
   const seriesDomain = isDiscretizedColor || binnedDomain !== undefined

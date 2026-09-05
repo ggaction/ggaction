@@ -33,6 +33,8 @@ const ENCODING_PATHS = Object.freeze([
   "encoding.radius.aggregate",
   "encoding.theta.categoryOrder",
   "encoding.text.format",
+  "encoding.text.content",
+  "encoding.text.normalizeBy",
   "encoding.parallel.dimensions",
   "encoding.parallel.key",
   "encoding.parallel.missing",

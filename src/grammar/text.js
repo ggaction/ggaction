@@ -14,18 +14,18 @@ export const DEFAULT_TEXT_MARK = cloneAndFreeze({
   dy: 0
 });
 
-const FIXED_FORMAT = /^\.(\d{1,2})f$/;
+const FIXED_FORMAT = /^\.(\d{1,2})(f|%)$/;
 
 export function validateTextFormat(format) {
   if (format === undefined || format === "auto") return format ?? "auto";
   if (typeof format !== "string" || !FIXED_FORMAT.test(format)) {
     throw new Error(
-      'Text format must be "auto" or a fixed-decimal token such as ".1f".'
+      'Text format must be "auto" or a fixed-decimal/percent token such as ".1f" or ".1%".'
     );
   }
   const decimals = Number(format.match(FIXED_FORMAT)[1]);
   if (decimals > 12) {
-    throw new RangeError("Text fixed-decimal format supports at most 12 decimals.");
+    throw new RangeError("Text fixed-decimal/percent format supports at most 12 decimals.");
   }
   return format;
 }
@@ -40,7 +40,13 @@ export function formatTextValue(value, format = "auto") {
   if (!Number.isFinite(value)) {
     throw new TypeError(`Text format "${resolved}" requires a finite number.`);
   }
-  return value.toFixed(Number(resolved.match(FIXED_FORMAT)[1]));
+  const decimals = Number(resolved.match(FIXED_FORMAT)[1]);
+  if (resolved.endsWith("%")) {
+    const percentage = value * 100;
+    if (!Number.isFinite(percentage)) throw new RangeError("Text percent format overflow.");
+    return `${percentage.toFixed(decimals)}%`;
+  }
+  return value.toFixed(decimals);
 }
 
 export function normalizeTextMarkConfig(options, base = DEFAULT_TEXT_MARK) {

@@ -31,6 +31,7 @@ test.before(async () => {
     <canvas id="shape-legend" aria-label="Shape legend after color removal"></canvas>
     <canvas id="bottom-legend" aria-label="Explicit bottom legend layout"></canvas>
     <canvas id="legend-content" aria-label="Explicit color and size legend content"></canvas>
+    <canvas id="semantic-labels" aria-label="Pie shares from final source items"></canvas>
     <canvas id="parallel-reencoded" aria-label="Reordered Parallel dimension axes"></canvas>
     <div id="svg"></div><div id="svg-resources"></div><script type="importmap">
     {"imports":{"ggaction":"/node_modules/ggaction/src/index.js","ggaction/basic":"/node_modules/ggaction/src/basic.js","ggaction/svg":"/node_modules/ggaction/src/renderers/svg.js"}}
@@ -387,9 +388,20 @@ test.before(async () => {
         .editLegendTitle({ title: "Mass" }).editLegendLabels({ fontWeight: 700 });
       const hiddenSizeLegend = editedSizeLegend.editLegendTitle({ title: false });
       render(editedSizeLegend, document.getElementById("size-legend").getContext("2d"));
+      const semanticLabels = chart().createCanvas({ width: 480, height: 360, margin: 50 })
+        .createData({ values: [{ category: "A", value: 1 }, { category: "A", value: 1 }, { category: "B", value: 6 }] })
+        .createPiePlot({ category: "category", value: "value", aggregate: "sum", guides: false })
+        .createTextMark({ source: "piePlot", align: "center", baseline: "middle" })
+        .encodeText({ content: "share", format: ".1%" });
+      render(semanticLabels, document.getElementById("semantic-labels").getContext("2d"));
+      const semanticLabelSVG = renderToSVG(semanticLabels);
       document.querySelector("#status").textContent = "complete";
       window.__ggactionGuideComparisons = guideComparisons;
       window.__ggactionConsumer = {
+        semanticTexts: semanticLabels.graphicSpec.objects.text.items.map(i => i.properties.text),
+        semanticTextSVG: semanticLabelSVG.includes("25.0%") && semanticLabelSVG.includes("75.0%"),
+        semanticFiltered: semanticLabels.filterMarks({ target: "piePlot", field: "category", op: "eq", value: "B" })
+          .graphicSpec.objects.text.items.map(i => i.properties.text),
         intervalPosition: intervalTop.guideConfigs.legend.interval.position,
         intervalColumns: intervalTop.guideConfigs.legend.interval.columns,
         intervalSVG: renderToSVG(intervalTop).startsWith("<svg "),
@@ -537,6 +549,9 @@ test("imports and renders the packed browser entries", async () => {
   assert.equal(guideComparisons.length, 4);
   for (const [actual, expected] of guideComparisons) assert.deepEqual(actual, expected);
   assert.deepEqual(await windowValue(page, "__ggactionConsumer"), {
+    semanticTexts: ["25.0%", "75.0%"],
+    semanticTextSVG: true,
+    semanticFiltered: ["100.0%"],
     intervalPosition: "top",
     intervalColumns: 2,
     intervalSVG: true,

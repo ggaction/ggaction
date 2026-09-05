@@ -94,6 +94,8 @@ export function getScaleConsumerMaterializationMode(layer, channel) {
   const policy = getMarkMaterializationPolicy(layer);
   if (policy === undefined) return "direct";
   if (POSITION_ENCODING_CHANNELS.includes(channel)) {
+    // Attached labels require their source's completed geometry, after scales.
+    if (layer.source !== undefined && policy.sourceDependent === true) return "defer";
     return policy.scaleApplication.position ?? policy.scaleApplication.default;
   }
   if (policy.scaleApplication.deferredChannels?.includes(channel)) {

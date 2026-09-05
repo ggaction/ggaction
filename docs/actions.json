@@ -3860,10 +3860,20 @@
           "name": "value",
           "required": false,
           "type": "unknown"
+        },
+        {
+          "name": "content",
+          "required": false,
+          "type": "\"category\" | \"share\" | \"value\" | undefined"
+        },
+        {
+          "name": "normalizeBy",
+          "required": false,
+          "type": "\"category\" | \"source\" | undefined"
         }
       ],
       "callPatterns": [
-        "encodeText({ target?, format?, field?, value? })"
+        "encodeText({ target?, format?, field?, value?, content?, normalizeBy? })"
       ],
       "snippet": "program.encodeText({ field: \"label\" })",
       "errors": [],

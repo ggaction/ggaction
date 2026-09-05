@@ -4,6 +4,7 @@ import {
   MARK_TYPES,
   STACK_MODES
 } from "../../../core/vocabulary.js";
+import { validateMarkLabelContent, validateMarkLabelNormalization } from "../../../grammar/markLabels.js";
 import { validateAggregate } from "../../../grammar/aggregate.js";
 import {
   normalizeHistogramBin,
@@ -58,6 +59,8 @@ export function validateLayerSemanticValue(
   if (property === "encoding.group.inferredFrom" && !["color", "offset"].includes(value)) {
     throw new Error(`Unsupported group inference origin "${value}".`);
   }
+  if (property === "encoding.text.content") validateMarkLabelContent(value);
+  if (property === "encoding.text.normalizeBy") validateMarkLabelNormalization(value);
   if (property === "source") {
     validateLayerSource(program, parsed, value, sourceMarkTypes);
   }

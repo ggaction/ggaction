@@ -216,7 +216,7 @@ Primary owner는 누락 방지를 위한 책임 단위이며, 관련 작업이 �
 - 수정·추가 방향: 명시적 source mark와 category/aggregate/share content, data/plot anchor reference, annotation을 text/rule/rect owner 위에 제공한다. Axis/legend/text formatter·rotation unit을 정리한다.
 - 완료 검증: 집계 Bar/Pie에 final item당 label 하나, percent 분모 검증. Multiple eligible marks에서 explicit source가 작동. Scale/data/filter 후 label과 anchor 수렴.
 - 근거: audit/REPORT.md: D13. [원래 조사](audit/REPORT.md)
-- 처분: 구현 또는 명시적인 계약 유지·migration 결정의 제안. 아직 완료·승인 상태가 아니다.
+- 처분: 진행 중. [W3 A](phase5/RESULTS_W3_TEXT_SOURCE.md)의 explicit source와 [W3 B1](phase5/RESULTS_W3_LABEL_CONTENT.md)의 category/value/share·percent·source replay를 구현·검증했다. createMarkLabels, reference/annotation 및 공통 formatter/rotation은 남아 있다. 전체 승인 하에 계속 구현한다.
 
 ### D14 — Order와 incomplete width의 부분 지원
 
@@ -408,7 +408,7 @@ Primary owner는 누락 방지를 위한 책임 단위이며, 관련 작업이 �
 - 수정·추가 방향: 명시적 source mark와 category/aggregate/share content, data/plot anchor reference, annotation을 text/rule/rect owner 위에 제공한다. Axis/legend/text formatter·rotation unit을 정리한다.
 - 완료 검증: 집계 Bar/Pie에 final item당 label 하나, percent 분모 검증. Multiple eligible marks에서 explicit source가 작동. Scale/data/filter 후 label과 anchor 수렴.
 - 근거: audit/REPORT.md: F14. [원래 조사](audit/REPORT.md)
-- 처분: 구현 또는 명시적인 계약 유지·migration 결정의 제안. 아직 완료·승인 상태가 아니다.
+- 처분: 진행 중. [W3 A](phase5/RESULTS_W3_TEXT_SOURCE.md)의 explicit source와 [W3 B1](phase5/RESULTS_W3_LABEL_CONTENT.md)의 category/value/share·percent·source replay를 구현·검증했다. createMarkLabels, reference/annotation 및 공통 formatter/rotation은 남아 있다. 전체 승인 하에 계속 구현한다.
 
 ### F15 — Summary / bin / fold / computed / stack data
 

@@ -1,4 +1,5 @@
 import { resolveBarChannels } from "../grammar/bars/policy.js";
+import { resolveMarkLabelValues } from "../grammar/markLabels.js";
 import { formatTextValue } from "../grammar/text.js";
 import { findDataset } from "../selectors/datasets.js";
 import { findLayer } from "../selectors/layers.js";
@@ -130,12 +131,14 @@ function resolveSourceTextItems(program, layer, config) {
     throw new Error(`Text mark "${layer.id}" requires source layer "${layer.source}".`);
   }
   const items = resolveMarkItems(program, source.id);
-  return items.flatMap(item => {
+  const values = layer.encoding.text.content === undefined ? undefined
+    : resolveMarkLabelValues(source, items, layer.encoding.text);
+  return items.flatMap((item, index) => {
     const anchor = sourceAnchor(program, source, item);
     const concrete = concreteItem(
       sourceTextConfig(config, source, item),
       anchor,
-      contentValue(layer.encoding.text, item, source),
+      values === undefined ? contentValue(layer.encoding.text, item, source) : values[index],
       layer.encoding.text.format
     );
     return concrete === undefined ? [] : [{ graphic: concrete, anchor }];
