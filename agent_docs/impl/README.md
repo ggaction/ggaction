@@ -6,7 +6,7 @@
 
 - **현재 활성 계획은 Roadmap 6 Phase 3**이다. [`roadmap6/ROADMAP.md`](roadmap6/ROADMAP.md)는
   173개 액션 감사에서 나온 오류 8건·설계 문제 20건·사용자가 선택한 추가 액션군 19개를 12단계로 연결한다.
-  Phase 2 [결과](roadmap6/phase2/REVIEW.md)를 사용자 승인으로 닫고 Phase 3 [A 계약](roadmap6/phase3/CONTRACT_REVIEW.md)을 승인받아 Planned 3개를 등록하고 [9개 primitive 시각 목표](roadmap6/phase3/VISUAL_REVIEW.md)를 검토할 수 있게 준비했다. Public 시각 flow는 V 승인 뒤 구현한다.
+  Phase 2 X와 Phase 3 A/V 승인을 기록했다. Pie/Donut·Density·Horizon 구현과 9개 public 시각 동등성 검증을 완료했다(Current 177 / Planned 0). [결과](roadmap6/phase3/RESULTS.md)와 Full 923-byte 초과의 [B 검토](roadmap6/phase3/BUNDLE_REVIEW.md)를 준비했으며 기존 상한은 유지한다. B 결정·package 통과·X 승인을 남긴다.
 - [`roadmap6/phase3/GOAL.md`](roadmap6/phase3/GOAL.md) — Pie/Donut·Density·Horizon의 승인 계약과 시각 검토 범위
 - [`roadmap6/TRACEABILITY.md`](roadmap6/TRACEABILITY.md) — 실행 대상 47개 항목과 작업·검증 조건
 - [`roadmap6/DESIGN_DECISIONS.md`](roadmap6/DESIGN_DECISIONS.md) — 공통 결정과 migration

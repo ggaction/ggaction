@@ -1,6 +1,8 @@
 # Phase 3 — A/V 검증과 구현 acceptance
 
-상태: A 승인 기준과 V primitive 검증 증거. 새 API 구현 결과는 아니다.
+이 문서의 A/V 절은 승인 당시 baseline과 acceptance 계획을 보존한다.
+현재 새 API 구현 결과는 [RESULTS.md의 최종 통합 검증](RESULTS.md#최종-통합-검증),
+미해결 package 상한은 [BUNDLE_REVIEW.md](BUNDLE_REVIEW.md)를 따른다.
 공개 결정은 [CONTRACT_REVIEW.md](CONTRACT_REVIEW.md), 승인 경계는 [GATES.md](GATES.md)가 소유한다.
 검토 package [`bd18718a9c1aed5f91b485bc1aeab54616e9e5a3`](https://github.com/ggaction/ggaction/commit/bd18718a9c1aed5f91b485bc1aeab54616e9e5a3)을 원격 branch에 push했다.
 
@@ -165,3 +167,24 @@ V에서는 plot-region ink와 independent numeric oracle를 확인하고, 새 pu
 decoded PNG RGBA parity를 확인한다. SVG/PDF는 현재 path/guide dispatch의 실제 출력을 검증한다.
 All-baseline empty test는 nonempty visual target의 ink assertion과 분리한다.
 X에서 stable capability owners로 evidence를 이전하고 review artifacts·완료 roadmap executable dependency를 정리한다.
+
+## Public 구현 검증 재현
+
+Runtime source `80999264535b312d82ca3f58928b4428bf749ac5`, generated scenario 교정
+`39b082d643412c5190c3ca51f180d10c2c7efa72`를 기준으로 한다. 같은 runtime의 coverage는 normal 2,585건을
+포함한다. Realistic 전체 실행의 두 inventory 실패와 교정 후 13/13의 구분은 RESULTS에 명시했다.
+새 테스트를 완료된 roadmap에서 import하지 않으며 stable chart와 contract owners에서 실행한다.
+
+```sh
+export TMPDIR="$PWD/.artifacts/repository-study/tmp"
+export NPM_CONFIG_CACHE="$PWD/.artifacts/repository-study/npm-cache"
+export PLAYWRIGHT_BROWSERS_PATH="$PWD/.artifacts/repository-study/browsers"
+npm run test:coverage
+npm run test:realistic
+node --test test/contracts/generated-lifecycle-scenarios.test.js test/contracts/generated-scenario-feature-coverage.test.js test/contracts/generated-scenarios.test.js
+node agent_docs/impl/roadmap6/phase3/render-public-review.mjs
+node agent_docs/impl/roadmap6/phase3/verify-package.mjs
+```
+
+마지막 명령의 현재 기대 결과는 Full 923-byte 초과의 **exit 1**이다. 승인되지 않은 상한을 변경하거나
+예상 실패를 성공으로 치환하지 않는다. 문서 browser 검증에는 repository-local locked gems와 Ruby 3.3.12를 사용했다.

@@ -1,7 +1,9 @@
 # Phase 3 구현 결과
 
-A와 9개 V target은 승인되었다. 아래는 구현 checkpoint다. Phase 전체의 X는 아직 승인 전이며
-세 public flow는 구현되었으며 누적 consumer acceptance·bundle 크기 해결을 남긴다.
+A와 9개 V target은 승인되었다. 세 public flow의 구현과 기능 검증을 완료했다.
+Full bundle이 기존 상한을 923 bytes 초과하므로 package 전체는 실패 상태다.
+[B 검토](BUNDLE_REVIEW.md)와 이후 Phase 전체 X 승인을 남긴다. 아래의 W1–W3는 각 구현 시점의 checkpoint이고,
+현재 누적 판정은 마지막 통합 검증 절이 소유한다.
 
 ## W1 — Pie and Donut
 
@@ -105,3 +107,48 @@ Density 두 방향과 explicit group/color, temporal Horizon bands/baseline, 각
   80999264의 시각 증거는 그대로다. 전체 corpus sweep 결과는 이어지는 통합 기록에 남긴다.
 
 로그: `.artifacts/roadmap6-authoring/phase3-generated-regression.log`.
+
+## 최종 통합 검증
+
+Runtime·declarations·knowledge 구현 commit은
+[`80999264535b312d82ca3f58928b4428bf749ac5`](https://github.com/ggaction/ggaction/commit/80999264535b312d82ca3f58928b4428bf749ac5),
+generated scenario 교정 commit은
+[`39b082d643412c5190c3ca51f180d10c2c7efa72`](https://github.com/ggaction/ggaction/commit/39b082d643412c5190c3ca51f180d10c2c7efa72)다.
+두 commit 사이 src/types/knowledge/scripts/package.json/package-lock.json의 diff는 없다.
+Runtime tree `6d5a80e311cabdc67dff5da739dcce3346e3841d`, types tree `38cbb7b6d7feaa5b044a56189ea874b8bde5d581`이다.
+
+| 검증 | 실제 결과와 범위 |
+| --- | --- |
+| Normal + coverage | 2,585건 통과, lines 95.09% / branches 91.31% / functions 98.76%, critical floors 72개 통과 |
+| 확장 realistic 전체 실행 | 212건 중 210 통과 / 2 실패, exit 1. 두 실패는 아래 generated inventory 검사이며 runtime 실패가 아니다 |
+| 교정 후 영향받은 realistic 모듈 재검증 | 3개 모듈 13/13 통과. 전체 212건을 다시 실행한 결과로 표시하지 않는다 |
+| 새 complete chart realistic | 위 전체 실행에 포함된 세 facade × 세 pinned datasets × 다섯 변형 45/45 통과 |
+| Public/primitive 시각 동등성 | 9/9: semanticSpec·graphicSpec·draw order·Canvas calls·decoded PNG·SVG·decoded PDF streams 일치 |
+| 승인된 V 보존 | 9/9 pixel hash 일치. Source hashes 90개와 PNG hashes 18개 재확인 |
+| 비교 화면 | Desktop 1440px / mobile 390px, 18개 이미지 로드·9개 정확한 호출·overflow/page error 없음 |
+| 문서와 실제 예제 | Source docs 47/47, Jekyll build와 124페이지 links/assets, 전체 docs browser desktop·320/390/768px 통과. 세 신규 example browser 각각 1/1 |
+| Installed package | Node/MCP/strict TypeScript/tutorial 통과. Full 235,923 > 235,000으로 전체 exit 1; Basic 124,897 / SVG 6,418 통과 |
+| 현재 공개 범위 | Current 177 / Planned 0. Full-only 3개, Basic 표면 유지, F20 제외, X 미승인 |
+
+확장 realistic 실행에서 실패한 정확한 검사 이름은 다음 둘이다.
+
+- `calls every user-facing action directly from a generated scenario root`
+- `derives a bounded public option inventory without runtime prototype paths`
+
+앞 절의 교정 뒤 `generated-lifecycle-scenarios.test.js`, `generated-scenario-feature-coverage.test.js`,
+`generated-scenarios.test.js` 전체를 재실행했다. Direct-root smoke, recursive option inventory와 deep pair
+coverage가 모두 통과했다. 변경은 offline recipe registry와 기대값에 한정되며 50개 실제 데이터셋에 쓰는
+`REALISTIC_SCENARIO_RECIPES`와 runtime은 그대로다. 이미 통과한 나머지 210개를 이유 없이 다시 실행하지 않았다.
+따라서 기록은 **전체 실행 210/212 + 교정 후 관련 모듈 13/13**이며, 새 전체 실행 212/212라고 주장하지 않는다.
+
+시각 evidence는 [public-visual-results.json](public-visual-results.json), 같은 tarball의 소비자·세 entry 측정은
+[package-results.json](package-results.json)에 source ref와 hash를 포함한다. 기존 A/V snapshot은 보존했다.
+Stable tests와 manifests는 `test/charts/{pie-plot,density-plot,horizon-plot}/`에 있고 승인 전 review subtree는 제거했다.
+전체 package 실패를 해결하기 전 X를 준비 완료나 Phase 완료로 기록하지 않는다.
+
+최종 로그: `.artifacts/roadmap6-authoring/phase3-{coverage,realistic,generated-regression,package,review-ui,evidence-audit,docs-final}.log`.
+
+검토 기록을 정리한 뒤 navigation/documentation-truth **10/10**, 변경 Markdown 10개에서 local links **262개**,
+원장 47 findings / 46 work packages / 12 phases와 F20 제외를 확인했다. Source hashes 90개·PNG hashes 18개를
+다시 확인했고 package source와 기존 bundle limits가 변경되지 않았다. 로그는 `phase3-final-navigation.log`,
+`phase3-final-record-check.json`이다. 마지막 원격 review commit 고정은 문서 ref만 바꾼다.

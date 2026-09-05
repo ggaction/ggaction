@@ -3,8 +3,10 @@
 ## 공통 상태
 
 Phase 2 X 결과 승인은 기록했다. **R6-P3-A는 2026-09-05 사용자 “승인한다”로 approved**다.
-V는 2026-09-05 사용자 “승인한다”로 approved, X는 planned다. 허용 상태: planned | ready-for-review | approved | changes-requested.
-세 Planned 등록과 9개 primitive target 작성을 완료했다. 승인된 9개 시각 목표에 맞는 public flow 구현과 consumer 검증을 진행한다.
+V는 2026-09-05 사용자 “승인한다”로 approved, B는 ready-for-review, X는 planned다.
+허용 상태: planned | ready-for-review | approved | changes-requested.
+세 public flow와 9개 same-run public/primitive 검증을 완료했다(Current 177 / Planned 0).
+Full 923-byte 초과를 기록하고 기존 상한을 유지한 채 B 검토를 준비했다.
 
 ## R6-P3-A — Contract and scope
 
@@ -44,6 +46,22 @@ V는 2026-09-05 사용자 “승인한다”로 approved, X는 planned다. 허�
 - 승인 효과: 확인한 variant의 public action flow 구현만 연다.
 - 승인 전 차단: 새 public flow와 primitive/public equality 완료 선언. 독립 target 수정은 별도 V 검토한다.
 
+## R6-P3-B — Full browser bundle budget
+
+- 상태: ready-for-review. 사용자 승인 없음.
+- 범위: [BUNDLE_REVIEW.md](BUNDLE_REVIEW.md)의 Full gzip 상한 235,000 → 237,000 bytes 제안.
+  Basic 125,000 / SVG 25,000, 측정 방식과 fixture는 유지한다. 상한 변경은 아직 적용하지 않았다.
+- 근거: 같은 installed tarball에서 Full 235,923 bytes로 923 bytes 초과. Basic 124,897 / SVG 6,418 통과.
+  Node/MCP/strict TypeScript/tutorial 기능 검증은 통과했지만 package 전체는 exit 1이다.
+- Runtime source commit: `80999264535b312d82ca3f58928b4428bf749ac5`.
+  Test 교정 commit: `39b082d643412c5190c3ca51f180d10c2c7efa72`, packaged source와 같은 bytes.
+- 증거: [같은 tarball 소비자와 bundle](package-results.json), [9개 public 시각 결과](public-visual-results.json),
+  [구현과 누적 검증](RESULTS.md#최종-통합-검증). 전체 realistic 210/212의 두 inventory 실패는 관련 모듈 13/13 재검증으로 교정했다.
+- Review package commit: push 후 별도 ref 기록으로 고정한다. 그 기록 전 승인 요청하지 않는다.
+- 승인 효과: canonical guard와 architecture 표의 Full 상한만 수정하고 installed package를 재검증한다.
+  이후 X 검토 준비를 연다. 새 API·다음 Phase·PR·배포·publish 승인은 아니다.
+- 승인 전 차단: bundle 상한 변경과 package 통과 선언. X는 package 실패가 남아 있는 동안 planned로 유지한다.
+
 ## R6-P3-X — Result and closeout
 
 - 상태: planned
@@ -57,9 +75,10 @@ V는 2026-09-05 사용자 “승인한다”로 approved, X는 planned다. 허�
 
 ## 조건부 독립 Gate
 
-현재 bundle budget 증가를 제안하거나 승인한 사실은 없다. Full 235,000 / Basic 125,000 / SVG 25,000 bytes를 유지한다.
-구현의 실제 installed consumer 측정이 이를 초과하고 의미를 유지하는 수정만으로 해소하지 못하면,
-구체 delta·artifact·검증을 갖춘 별도 R6-P3-B를 먼저 선언하고 승인받는다. 이 A는 그 승인을 포함하지 않는다.
+A P3-C07은 Full 235,000 / Basic 125,000 / SVG 25,000 bytes를 유지하도록 승인되었다.
+실제 installed 측정은 공통 helper 중복 정리 뒤에도 Full이 923 bytes 초과한다. 이를 근거로 위 R6-P3-B를
+구체 delta·artifact·검증과 함께 별도 선언했다. A/V와 사용자의 “계속해”를 새 상한 승인으로 기록하지 않는다.
+B 승인 없이 상한을 올리지 않는다. 추가 최적화 또는 일부 범위 보류의 대안도 B 문서에 명시했다.
 
 ## 승인 기록
 
@@ -70,4 +89,4 @@ V는 2026-09-05 사용자 “승인한다”로 approved, X는 planned다. 허�
 - 효과: Planned 등록·비시각 준비·primitive target 작성 가능. V/X와 조건부 bundle B는 승인하지 않았다.
 - 실제 검증: baseline 52/52, related existing tests 176/176, 문서 lower calls 3/3, 최종 navigation 10/10, local links 214개. 재현 명령은 [VALIDATION.md](VALIDATION.md).
 - Planned 등록: accepted 3개, Current 174개 유지. `npm run test:contracts` 260/260, fail/skip 0.
-- 남은 작업: public implementation·누적 acceptance·X 승인.
+- 현재 남은 작업: B 사용자 결정·package 전체 통과·X 검토와 승인. Public 구현·시각 검증·기능 회귀 결과는 위 B evidence에 기록했다.

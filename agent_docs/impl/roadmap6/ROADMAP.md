@@ -1,6 +1,6 @@
 # Roadmap 6 — Hierarchical Chart Authoring and Action Consistency
 
-> **문서 상태 — 현재 실행 계획.** [R6-P1-X 결과](phase1/REVIEW.md)와 [Phase 2 계약](phase2/CONTRACT_REVIEW.md), B/V를 승인받아 W1–W5를 구현했다. [구현·검증 결과](phase2/RESULTS.md)를 R6-P2-X로 승인받았으며 Phase 3 [A 계약](phase3/CONTRACT_REVIEW.md)을 사용자 승인으로 기록했다. Planned 3개를 등록했고 [9개 primitive 시각 목표](phase3/VISUAL_REVIEW.md)가 V 검토 준비를 마쳤다.
+> **문서 상태 — 현재 실행 계획.** Phase 1/2 X와 Phase 3 A/V 승인을 기록했다. Phase 3의 Pie/Donut·Density·Horizon 세 facade와 9개 public 시각 동등성 검증을 완료했다(Current 177 / Planned 0). [구현·검증 결과](phase3/RESULTS.md)를 바탕으로 Full bundle 923-byte 초과의 [B 검토](phase3/BUNDLE_REVIEW.md)를 준비했다. 상한은 유지하며 B 미승인, X planned다.
 > 액션군 범위는 사용자 선택에 따라 F01–F19로 구성했다. 후속 액션군의 구체적인 API와 행동 변경은 각 Phase Gate에서 확정한다.
 > 이 문서를 작성해 달라는 요청은 모든 설계안·구현·배포의 일괄 승인을 뜻하지 않는다.
 > 실행 위치는 [ROADMAP_INDEX.json](../ROADMAP_INDEX.json), 현재 제품 계약은
@@ -184,8 +184,9 @@ appearance grain을 분리한다. Constant/field style의 지원 표, incomplete
 Horizon은 folded y의 guide 제한을 명시한다. 하위 edit 경로까지 입증한다.
 현재 [A 계약 검토](phase3/CONTRACT_REVIEW.md)는 full-only 3개 facade, Donut의 innerRadius 표현,
 Density의 explicit group color, Horizon의 기존 coordinate child와 opacity 적용을 승인했다.
-[V 검토](phase3/VISUAL_REVIEW.md)의 primitive 9개·normal 19건·PNG 9건과 누적 normal 2,451건을 확인했다.
-Public 시각 flow는 V 승인 뒤 구현한다.
+[V 검토](phase3/VISUAL_REVIEW.md)를 승인받아 세 public flow를 구현했고 9개 public/primitive 동등성과
+누적 normal 2,585건을 검증했다. Realistic 전체 실행과 교정 재검증의 정확한 범위는 [결과](phase3/RESULTS.md)를 따른다.
+Full 923-byte 초과에 대한 [B 결정](phase3/BUNDLE_REVIEW.md), package 통과와 X 승인을 남긴다.
 
 ## Phase 4 — Baselines, layouts and quantitative meaning
 
