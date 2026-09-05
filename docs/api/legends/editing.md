@@ -208,3 +208,11 @@ Pass `createGuides({ legend: false })` to opt out.
 ## Related
 
 [Legend overview](../legends.md) · [Guides](../guides.md) · [Canvas](../canvas.md)
+
+Combined categorical-size legends can also move between all four edges with
+`editLegendLayout({ position })`. Moving to a different edge infers the direction
+when it is omitted; explicit incompatible grid controls still fail. On top and
+bottom the categorical layout controls position both blocks. The size block's
+own stored layout returns when the categorical channels are removed. A title
+edit changes the categorical title; the size block retains its own title and
+visibility. Whole-content replacement preserves both retained blocks' settings.

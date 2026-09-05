@@ -43,3 +43,5 @@ Same-edge multi-block ordering, border grouping, title/axis collision과 bounded
 C2의 stroke-width 네 방향 생성·편집·재배치와 Canvas overflow #95 수정은 [RESULTS_W2_WIDTH_EDGES.md](RESULTS_W2_WIDTH_EDGES.md)에서 검증했다. Size/combined 및 전체 collision/transition matrix는 계속 미완료다.
 
 Size standalone 네 방향과 독립 content owner, 큰 sample/label 간격 및 nested side border #96은 [RESULTS_W2_SIZE_EDGES.md](RESULTS_W2_SIZE_EDGES.md)에서 검증했다. Combined top/bottom group과 전체 collision/transition matrix는 계속 미완료다.
+
+Combined horizontal group, 큰 label/title spacing과 생성 순서 #97은 [RESULTS_W2_COMBINED_EDGES.md](RESULTS_W2_COMBINED_EDGES.md)에서 검증했다. 전체 family collision/transition 통합과 W3–W5는 계속 미완료다.

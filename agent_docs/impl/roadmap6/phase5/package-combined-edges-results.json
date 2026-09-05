@@ -1,0 +1,31 @@
+{
+  "file": "/Users/hyeonjeon/Projects/ggaction-clean-20260905/.artifacts/roadmap6-authoring/package-combined-edges-final/ggaction-0.0.12.tgz",
+  "filename": "ggaction-0.0.12.tgz",
+  "sha256": "e60bf170355c9e6523b6633240198fa809a15b3c28e78f892108494d493af586",
+  "entryCount": 450,
+  "size": 508622,
+  "unpackedSize": 2433900,
+  "browserBundles": {
+    "full": {
+      "specifier": "ggaction",
+      "chunks": 1,
+      "modules": 397,
+      "minifiedBytes": 953709,
+      "gzipBytes": 253617
+    },
+    "basic": {
+      "specifier": "ggaction/basic",
+      "chunks": 1,
+      "modules": 241,
+      "minifiedBytes": 510336,
+      "gzipBytes": 139807
+    },
+    "svg": {
+      "specifier": "ggaction/svg",
+      "chunks": 1,
+      "modules": 15,
+      "minifiedBytes": 19840,
+      "gzipBytes": 6437
+    }
+  }
+}

@@ -125,6 +125,10 @@ test("supports an explicit quantitative symbol count and validates point legends
   );
   assert.throws(
     () => regressionProgram().createLegend({ position: "bottom" }),
-    /require a side position/
+    /requires more bottom-margin/
   );
+  const bottom = regressionProgram().editCanvas({ width: 1200, height: 900, margin: { bottom: 350 } })
+    .createLegend({ position: "bottom", count: 3, columns: 2 });
+  assert.equal(bottom.guideConfigs.legend.series.position, "bottom");
+  assert.equal(bottom.graphicSpec.objects.sizeLegendSymbols.items.length, 3);
 });

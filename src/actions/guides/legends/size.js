@@ -25,6 +25,7 @@ import {
   selectLegendLayer,
   styleContinuousText
 } from "./continuous/common.js";
+import { legendResourcePolicies } from "../../../materialization/guides/resources.js";
 
 const SIZE_OPTIONS = Object.freeze(["target", "count", "position", "layout", "align",
   "direction", "columns", "titlePosition", "offset", "itemGap", "title", "labels", "titleStyle", "border"]);
@@ -76,6 +77,15 @@ export function resolveSizeLegendLayout(program, config) {
   const labels = inherit ? { ...categorical.labels, offset: config.labels.offset } : config.labels;
   const titleStyle = inherit ? categorical.titleStyle : config.titleStyle;
   const position = categorical?.position ?? config.position;
+  if (categorical?.layout === "legacy-bottom") {
+    throw new Error('Combined size legends require layout "edge".');
+  }
+  const horizontal = categorical !== undefined && ["top", "bottom"].includes(position);
+  const geometry = horizontal ? {
+    position, align: categorical.align, direction: categorical.direction,
+    columns: categorical.columns, titlePosition: categorical.titlePosition,
+    offset: categorical.offset, itemGap: categorical.itemGap
+  } : { position };
   const values = sampleContinuousValues(scale.domain, config.count);
   const areas = mapLinearValues(values, scale.domain, scale.range, { clamp: scale.clamp ?? false });
   const radii = areas.map(area => Math.sqrt(area / Math.PI));
@@ -83,7 +93,7 @@ export function resolveSizeLegendLayout(program, config) {
   const width = Math.max(32, radius * 2);
   const { plot, canvas } = resolveContinuousBounds(program);
   const text = formatContinuousValues(values, scale.domain, "quantitative");
-  const layout = resolveLegendItemLayout(plot, { ...config, position, labels, titleStyle }, text, {
+  const layout = resolveLegendItemLayout(plot, { ...config, ...geometry, labels, titleStyle }, text, {
     width, height: radius * 2,
     itemBounds: radii.map(r => ({ left: width / 2 - r, right: width / 2 + r, top: -r, bottom: r }))
   });
@@ -189,31 +199,37 @@ export function resolveSizeLegendConfig(program, args = {}) {
 export function createSizeLegendFromConfig(program, config) {
   resolveSizeLegendLayout(program, config);
   const { count } = config;
+  const following = new Set(legendResourcePolicies().filter(policy =>
+    policy.kind !== "size" && policy.family !== "categorical" &&
+    program.guideConfigs.legend?.[policy.kind] !== undefined
+  ).flatMap(policy => policy.graphicIds));
+  const before = program.graphicSpec.objects.canvas?.children?.find(id => following.has(id));
+  const placement = resolveLegendGraphicPlacement(program, before === undefined ? {} : { before });
   let next = program
     .editSemantic({ property: "guide.legend.size.scale", value: config.scale })
     .editSemantic({ property: "guide.legend.size.title", value: config.title })
     ._withLegendConfig("size", config);
   if (config.border !== false) {
     next = next.createGraphics({ id: "sizeLegendBackground", type: "rect",
-      ...resolveLegendGraphicPlacement(program) });
+      ...placement });
   }
   next = next.createGraphics({
       id: "sizeLegendSymbols",
       type: "circle",
       length: count,
-      ...resolveLegendGraphicPlacement(program)
+      ...placement
     })
     .createGraphics({
       id: "sizeLegendLabels",
       type: "text",
       length: count,
-      ...resolveLegendGraphicPlacement(program)
+      ...placement
     });
   if (config.titleVisible !== false) {
     next = next.createGraphics({
       id: "sizeLegendTitle",
       type: "text",
-      ...resolveLegendGraphicPlacement(program)
+      ...placement
     });
   }
   return next.rematerializeSizeLegend();

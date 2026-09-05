@@ -278,7 +278,7 @@ function editSampledLegend(program, kind, previous, args) {
     type: "rect", before: `${prefix}Symbols`
   });
   next = reconcileGraphic(next, `${prefix}Title`, titleVisible, {
-    type: "text"
+    type: "text", after: `${prefix}Labels`
   });
   return next.rematerializeLegend();
 }
@@ -318,9 +318,8 @@ function resolveCategoricalEdit(program, kind, previous, size, args, storedOrder
     layout: args.layout === undefined ? previous.layout : args.layout,
     position: args.position ?? previous.position,
     align: args.align ?? previous.align,
-    direction: args.direction ?? (args.position === "left"
-      ? "vertical"
-      : previous.direction),
+    direction: args.direction ?? (args.position !== undefined && args.position !== previous.position
+      ? undefined : previous.direction),
     ...(args.columns === undefined && previous.columns === undefined
       ? {} : { columns: args.columns ?? previous.columns }),
     offset: args.offset ?? previous.offset,
@@ -384,7 +383,8 @@ function editCategorical(program, kind, previous, size, args) {
   next = reconcileGraphic(next, titleId, titleVisible, {
     type: "text",
     ...(next.graphicSpec.objects.sizeLegendSymbols === undefined
-      ? {} : { before: "sizeLegendSymbols" })
+      ? {} : { before: next.graphicSpec.objects.sizeLegendBackground === undefined
+        ? "sizeLegendSymbols" : "sizeLegendBackground" })
   });
   if (size !== undefined) {
     next = next._withLegendConfig("size", sizeConfig);
@@ -429,8 +429,8 @@ function editLegendContent(program, target, args) {
     categorical.order = edited.order;
     if (size !== undefined) {
       size.config = edited.sizeConfig;
-      if (!["left", "right"].includes(categorical.config.position)) {
-        throw new Error("Combined point series and size legends currently require a side position.");
+      if (categorical.config.layout === "legacy-bottom") {
+        throw new Error('Combined size legends require layout "edge".');
       }
     }
   } else {

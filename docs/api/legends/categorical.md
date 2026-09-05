@@ -55,7 +55,7 @@ Every categorical legend uses the same right-side default:
 | point | inferred or selected `color` only | `right` | swatch |
 | point | inferred or selected `shape` only | `right` | typed point |
 | point + matching line | `color` + `shape` | `right` | line over typed point |
-| quantitative point size | `size` | all four edges standalone; either side with point series | five equal-area circles |
+| quantitative point size | `size` | all four edges, standalone or combined | five equal-area circles |
 | quantitative/temporal point color | `color` | `right` | continuous gradient with five labels |
 | discretized quantitative point color | `color` | `right/left/top/bottom` | ordered interval swatches |
 | quantitative point opacity | `opacity` | `right` | five constant-size circles with sampled opacity |
@@ -70,7 +70,7 @@ preserves its remaining shape legend.
 | `target` | compatible mark ID | current or unique compatible mark |
 | `channels` | compatible channel array; continuous guides use one `color` or `opacity` | compatible encoded channels |
 | `order` | `"scale"`, `{ values: [...] }`, or `{ channel: "x"/"y"/"theta" }`; categorical only | `"scale"` |
-| `position` | `right/left/bottom/top`; combined point-size guides use a side | `"right"` |
+| `position` | `right/left/bottom/top` | `"right"` |
 | `layout` | categorical `"edge"` or `"legacy-bottom"` | `"edge"` |
 | `align` | `"left"`, `"center"`, or `"right"` | `"center"` |
 | `direction` | `"horizontal"` or `"vertical"` | `"horizontal"` |
@@ -155,3 +155,30 @@ provide a categorical axis to link.
 ## Related
 
 [Legend overview](../legends.md) · [Composite symbols](./composite.md) · [Editing legends](./editing.md)
+
+### Combined categorical and size layout
+
+Point legends can combine categorical color or shape with quantitative size on
+any edge. For a point chart with both encodings, this fragment places a bordered
+legend above the plot:
+
+```js
+program.createLegend({
+  channels: ["color", "size"],
+  position: "top",
+  count: 3,
+  offset: 30,
+  columns: 2,
+  border: true
+});
+```
+
+At top and bottom, categorical content precedes size content with 40 pixels
+between their occupied bounds. Blocks wrap to another row away from the plot
+when necessary. The whole group, including its border, follows `align` and
+`offset`. `direction`, `columns`, `titlePosition`, and `itemGap` apply to both
+item grids. Each block retains its own title, sample sizes, and label gap.
+Title spacing also includes labels that are taller than the samples.
+A size border retained from an earlier standalone legend stays inside the
+shared outer border. Other legends place this complete group as one block.
+Combined legends require `layout: "edge"`; `"legacy-bottom"` is unsupported.

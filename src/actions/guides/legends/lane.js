@@ -9,6 +9,7 @@ import { finiteMidpoint } from "../../../grammar/numeric.js";
 import { resolveGraphicBounds } from "../../../layout/canvas.js";
 import {
   resolveHorizontalLegendLane,
+  resolveHorizontalLegendGroup,
   resolveSideLegendLane
 } from "../../../layout/legendLane.js";
 import { findCanvasGraphic } from
@@ -291,13 +292,16 @@ function horizontalGroups(program, groups) {
   return groups.map(group => {
     const representative = group.blocks[0];
     const config = program.guideConfigs.legend?.[representative.kind];
-    const titleId = representative.titleId;
+    const atomic = group.blocks.length > 1;
+    const titleId = atomic ? undefined : representative.titleId;
     const contentIds = group.blocks.flatMap(block => block.foregroundIds)
       .filter(id => id !== titleId);
+    if (atomic) contentIds.push(...group.blocks.slice(1).flatMap(block =>
+      block.backgroundId === undefined ? [] : [block.backgroundId]));
     const content = unionConcreteGraphicBounds(program.graphicSpec, contentIds);
     const foreground = unionConcreteGraphicBounds(
       program.graphicSpec,
-      group.blocks.flatMap(block => block.foregroundIds)
+      [...contentIds, ...(titleId === undefined ? [] : [titleId])]
     );
     if (content === undefined || foreground === undefined) {
       throw new Error(`Legend lane could not measure ${group.id} content.`);
@@ -308,11 +312,12 @@ function horizontalGroups(program, groups) {
       : border.padding + border.lineWidth / 2;
     return {
       id: group.id,
+      atomic,
       titleId,
       contentIds,
-      title: representative.title,
+      title: atomic ? undefined : representative.title,
       inline: config?.titlePosition === "left",
-      element: representative.symbol.bounds,
+      element: atomic ? foreground : representative.symbol.bounds,
       content,
       horizontal: { left: foreground.left, right: foreground.right,
         top: foreground.top, bottom: foreground.bottom },
@@ -321,6 +326,33 @@ function horizontalGroups(program, groups) {
       backgroundId: group.backgroundId
     };
   });
+}
+
+function applyHorizontalPlan(program, groups, plan) {
+  let next = program;
+  const byId = new Map(groups.map(group => [group.id, group]));
+  for (const placement of plan.placements) {
+    const group = byId.get(placement.id);
+    if (group.titleId !== undefined) {
+      next = translateGraphic(next, group.titleId, placement.dx, placement.titleDy);
+    }
+    for (const id of group.contentIds) {
+      next = translateGraphic(next, id, placement.dx, placement.contentDy);
+    }
+    if (placement.background !== undefined) {
+      for (const property of ["x", "y", "width", "height"]) {
+        next = next.editGraphics({ target: placement.background.id, property,
+          value: placement.background[property] });
+      }
+    }
+  }
+  if (plan.background !== undefined) {
+    for (const property of ["x", "y", "width", "height"]) {
+      next = next.editGraphics({ target: plan.background.id, property,
+        value: plan.background[property] });
+    }
+  }
+  return next;
 }
 
 export const rematerializeSideLegendLane = action(
@@ -420,55 +452,36 @@ export const rematerializeHorizontalLegendLane = action(
       throw new Error("Legend lane requires resolved Canvas and plot bounds.");
     }
     const configs = this.guideConfigs.legend ?? {};
-    const plans = ["top", "bottom"].flatMap(edge => {
-      const entries = edgeKinds(this, edge);
-      if (entries.length < 2) return [];
-      const blocks = entries.map(([kind, config]) =>
-        blockDescriptor(this, kind, config)
-      );
-      const groups = groupBlocks(blocks, configs);
-      if (groups.length < 2) return [];
-      const horizontal = horizontalGroups(this, groups);
+    let next = this;
+    for (const edge of ["top", "bottom"]) {
+      const entries = edgeKinds(next, edge);
+      if (entries.length < 2) continue;
+      let groups = groupBlocks(entries.map(([kind, config]) =>
+        blockDescriptor(next, kind, config)), configs);
+      for (const group of groups.filter(group => group.blocks.length > 1)) {
+        const config = configs[group.blocks[0].kind];
+        const children = horizontalGroups(next, group.blocks.map((block, index) => ({
+          id: block.id, blocks: [block], border: index === 0 ? false : block.border,
+          backgroundId: index === 0 ? undefined : block.backgroundId
+        }))).map(child => ({ ...child, element: child.content }));
+        const plan = resolveHorizontalLegendGroup({ edge, plot, canvas, groups: children,
+          align: config.align, offset: config.offset, border: group.border,
+          backgroundId: group.backgroundId,
+          collisionBounds: groups.length === 1 ? horizontalCollisionBounds(next, edge) : [] });
+        next = applyHorizontalPlan(next, children, plan);
+      }
+      if (groups.length < 2) continue;
+      groups = groupBlocks(entries.map(([kind, config]) =>
+        blockDescriptor(next, kind, config)), configs);
+      const horizontal = horizontalGroups(next, groups);
       const plan = resolveHorizontalLegendLane({
         edge,
         plot,
         canvas,
         groups: horizontal,
-        collisionBounds: horizontalCollisionBounds(this, edge)
+        collisionBounds: horizontalCollisionBounds(next, edge)
       });
-      return [{ plan, groups: horizontal }];
-    });
-    let next = this;
-    for (const { plan, groups } of plans) {
-      const byId = new Map(groups.map(group => [group.id, group]));
-      for (const placement of plan.placements) {
-        const group = byId.get(placement.id);
-        if (group.titleId !== undefined) {
-          next = translateGraphic(
-            next,
-            group.titleId,
-            placement.dx,
-            placement.titleDy
-          );
-        }
-        for (const id of group.contentIds) {
-          next = translateGraphic(
-            next,
-            id,
-            placement.dx,
-            placement.contentDy
-          );
-        }
-        if (placement.background !== undefined) {
-          for (const property of ["x", "y", "width", "height"]) {
-            next = next.editGraphics({
-              target: placement.background.id,
-              property,
-              value: placement.background[property]
-            });
-          }
-        }
-      }
+      next = applyHorizontalPlan(next, horizontal, plan);
     }
     return next;
   }

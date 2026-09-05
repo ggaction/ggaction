@@ -236,6 +236,13 @@ function normalizeHorizontalRow(entries) {
       )
     : commonTitleY + titleDescent + HORIZONTAL_LEGEND_TITLE_ELEMENT_GAP;
   return entries.map(({ group, dx }) => {
+    if (group.atomic) {
+      const contentDy = elementAnchor - group.element.top;
+      const foreground = translateBounds(group.content, dx, contentDy);
+      return { id: group.id, dx, titleDy: contentDy, contentDy, foreground,
+        occupied: expandBounds(foreground, group.inset), padding: group.padding,
+        backgroundId: group.backgroundId };
+    }
     const contentDy = commonTitleY === undefined
       ? elementAnchor - midpoint(
           group.element.top,
@@ -352,5 +359,61 @@ export function resolveHorizontalLegendLane({
     })),
     occupied,
     rowCount: packed.length
+  };
+}
+
+// Compose independently measured content blocks before the outer edge lane
+// treats the whole group as one indivisible item.
+export function resolveHorizontalLegendGroup({ edge, plot, canvas, groups,
+  align, offset, border, backgroundId, collisionBounds = [] }) {
+  const inset = decoration(border);
+  const innerPlot = { ...plot, x: plot.x + inset, width: plot.width - inset * 2 };
+  const packed = packHorizontalRows(groups, innerPlot);
+  const rows = packed.map(normalizeHorizontalRow);
+  let cursor = 0;
+  const placements = [];
+  for (const row of rows) {
+    const bounds = unionBounds(row.map(item => item.occupied));
+    const dy = edge === "top" ? cursor - bounds.bottom : cursor - bounds.top;
+    const translated = row.map(item => translateHorizontalPlacement(item, dy));
+    placements.push(...translated);
+    const occupied = unionBounds(translated.map(item => item.occupied));
+    cursor = edge === "top" ? occupied.top - HORIZONTAL_LEGEND_BLOCK_GAP
+      : occupied.bottom + HORIZONTAL_LEGEND_BLOCK_GAP;
+  }
+  const foreground = unionBounds(placements.map(item => item.occupied));
+  const occupied = expandBounds(foreground, inset);
+  const width = occupied.right - occupied.left;
+  const x = align === "left" ? plot.x : align === "right" ? plot.x + plot.width - width
+    : plot.x + (plot.width - width) / 2;
+  const dx = x - occupied.left;
+  const dy = edge === "top" ? plot.y - offset - occupied.bottom
+    : plot.y + plot.height + offset - occupied.top;
+  const finalBounds = translateBounds(occupied, dx, dy);
+  if (finalBounds.left < 0 || finalBounds.right > canvas.width ||
+    finalBounds.top < 0 || finalBounds.bottom > canvas.height) {
+    throw new Error(`Combined legend requires more ${edge}-margin or Canvas space.`);
+  }
+  if (collisionBounds.some(bounds => overlap(finalBounds, bounds))) {
+    throw new Error(`Combined ${edge} legend and ${edge === "top" ? "chart titles" : "x-axis guides"} require more margin space.`);
+  }
+  return {
+    placements: placements.map(item => ({ ...item, dx: item.dx + dx,
+      titleDy: item.titleDy + dy, contentDy: item.contentDy + dy,
+      ...(item.backgroundId === undefined ? {} : { background: {
+        id: item.backgroundId,
+        x: item.foreground.left + dx - item.padding,
+        y: item.foreground.top + dy - item.padding,
+        width: item.foreground.right - item.foreground.left + item.padding * 2,
+        height: item.foreground.bottom - item.foreground.top + item.padding * 2
+      } }) })),
+    occupied: finalBounds,
+    background: backgroundId === undefined ? undefined : {
+      id: backgroundId,
+      x: foreground.left + dx - border.padding,
+      y: foreground.top + dy - border.padding,
+      width: foreground.right - foreground.left + border.padding * 2,
+      height: foreground.bottom - foreground.top + border.padding * 2
+    }
   };
 }

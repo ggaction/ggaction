@@ -1522,10 +1522,11 @@
         "categorical-and-size-legends",
         "createlegendoptions",
         "item-order-without-changing-color",
-        "related"
+        "related",
+        "combined-categorical-and-size-layout"
       ],
-      "bytes": 7941,
-      "sha256": "86ad522544461fc254a559dbfb8d6832b8c04c67f2b6407eaa8e1672b7eaf838"
+      "bytes": 8931,
+      "sha256": "2582c559af8285ede9dc007353115ee94dbed34e95f8583d7a6afac7393f50e0"
     },
     {
       "order": 97,
@@ -1568,8 +1569,8 @@
         "removing-a-legend",
         "related"
       ],
-      "bytes": 8775,
-      "sha256": "e13788913c46028e0626683b0c81f72e9ea882ff45920eefbeb86c7066037d34"
+      "bytes": 9325,
+      "sha256": "f2747b8d5379aecb920be34796f20ccdec8875b2d6790d46bfe108ff251aed71"
     },
     {
       "order": 100,

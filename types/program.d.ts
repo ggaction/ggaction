@@ -3136,6 +3136,7 @@ export class ChartProgram {
   editRadialGrid(options: EditPolarGridOptions): ChartProgram;
   editGrid(options: EditGridDirectionsOptions): ChartProgram;
   removeGrid(options?: RemoveGridOptions): ChartProgram;
+  /** Combined categorical and size legends support all four edges with layout "edge". */
   createLegend(options?: LegendOptions): ChartProgram;
   editLegend(options: EditLegendOptions): ChartProgram;
   editLegendLayout(options: EditLegendLayoutOptions): ChartProgram;

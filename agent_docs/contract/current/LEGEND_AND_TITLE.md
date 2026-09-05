@@ -59,11 +59,11 @@ type TitleWrap = "word" | "character";
   Evidence: `test/unit/actions/guides/shape-legend-ownership.test.js` (creation, color removal, Canvas/shape-scale replay).
 - Explicit `["size"]` 또는 유일한 size-only point는 categorical dispatch보다 먼저 standalone size legend를
   선택한다. Multiple size points는 explicit target을 요구한다. Standalone은 네 방향을 지원하고 combined
-  point-series+size block은 right/left를 지원한다.
+  point-series+size block도 네 방향을 지원한다.
 - Explicit `["strokeWidth"]` 또는 유일한 stroke-width-only line/rule은 standalone stroke-width legend를 선택한다.
   Full에서 encoded quantitative scale을 사용하며 count와 네 방향 edge/grid/layout, text styles, border를 지원한다. Basic에는 strokeWidth encoding/family가 없으며 이 변경에서 추가하지 않는다.
 - `position`: categorical과 continuous color/opacity는 left를 포함한 네 방향을 지원한다.
-  combined point-size legend는 right/left side position을 사용한다. chart-independent default는 `"right"`다.
+  combined point-size legend도 네 방향 edge position을 사용한다. chart-independent default는 `"right"`다.
 - `align`: `"left" | "center" | "right"`, 기본 center. right와 left side position은
   첫 계약에서 center만 허용한다.
 - `direction`: `"horizontal" | "vertical"`; top/bottom item-grid fill order를 결정하며 기본 horizontal이다.
@@ -215,8 +215,7 @@ encoding removal/recreation, combined legend와 Polar 가이드를 검증한다.
   leaves. `title` accepts a custom non-empty string, `"auto"` for field inference, or `false` to hide its graphic.
 - Categorical `layout` omission은 stored edge/legacy-bottom을 보존한다. Style/title/border edit나 Canvas/scale/encoding replay가
   mode를 바꾸지 않는다. Explicit editLegend/editLegendLayout({layout})만 mode를 전환한다.
-- Categorical and combined point-size legends accept left/right side layout; the first left contract requires
-  center alignment and vertical flow. `count` rematerializes an existing size block.
+- Categorical and combined point-size legends accept all four edges. Left requires center alignment and vertical flow. Edge 변경 시 omitted direction은 새 edge의 default로 추론한다. `count` rematerializes an existing size block.
 - Gradient edits own `count` and `gradient`; opacity edits own `count`, `itemGap`, and a single point symbol recipe.
   Horizontal opacity edits also own `titlePosition`; entering `"left"` without explicit spacing selects the inline
   8-pixel symbol-label and 20-pixel sample defaults.
@@ -224,10 +223,7 @@ encoding removal/recreation, combined legend와 Polar 가이드를 검증한다.
   Kind-incompatible options fail before the prior program changes.
 - Standalone size edits own four-edge/grid layout, border, `title`, `count`, `labels`, and `titleStyle`, including focused title/label/count actions. Count is 2..10,000; custom/auto/hidden title and partial styles survive Canvas/scale/filter replay. Labels default to font12/normal and offset12 after the sample slot; titles to font13/600. Side title/item origin은 plot.y+20/+52이며 pitch는 최소40이다. Equal-area scale mapping, formatter와 symbol defaults를 유지한다. Unrelated categorical targets never supply inherited appearance or placement. Basic creates size legends but does not expose editors. Symbol, gradient and order remain unsupported for standalone size.
 - Sampled size/stroke-width titleStyle accepts only color/fontSize/fontFamily/fontWeight; offset belongs to labels.
-- Stroke-width edits own `title`, `count`, `labels`, and `titleStyle`. The block remains in its current right-side
-  placement; layout, symbol, border, gradient and item-gap options are rejected before state changes. Label `offset`
-  controls the distance after the fixed 32-pixel line sample. Custom/hidden/auto title transitions and partial text-style
-  merges use the same modes as other legend kinds.
+- Stroke-width edits own four-edge layout/grid/border, `title`, `count`, `labels`, and `titleStyle`. Symbol, gradient and order options are rejected. Label `offset` controls the distance after the fixed 32-pixel line sample. Exact current item placement is defined in the stroke-width item layout section below.
 - Effect: stores graphical config immutably and invokes the corresponding wrapped rematerialization action.
   Categorical symbol recipe changes reconcile concrete graphic types without leaving stale objects. If the
   edited block participates in a side lane, all sibling blocks rematerialize before the lane is placed again.
@@ -531,6 +527,15 @@ Size는 실제 최대 diameter와 minimum slot width32를 측정하고 circle을
 
 Full/Basic의 standalone create는 네 방향과 layout edge, horizontal align/direction/columns/titlePosition, offset/itemGap, text styles 및 border를 지원한다. Full edits와 Canvas/scale/filter/content replay가 같은 owner를 사용한다. Side item controls는 interval/width와 같은 vertical/center/one column/top title 계약이다. Visible circle/text/background가 Canvas를 벗어나면 실패하고 hidden title은 제외한다.
 
-Combined categorical+size side는 각 owner의 content를 먼저 materialize한 뒤 lane이 결합한다. Size는 categorical의 private size 좌표를 읽지 않는다. Shared label start44는 최소값이며 각 block의 symbol center와 requested label 간격을 수용하도록 확장한다. Retained size 자체 border는 content와 함께 재배치하고 outer categorical group border가 그 occupied bounds를 포함한다. Combined top/bottom과 전체 collision 대칭성은 아직 이 계약 범위가 아니다.
+Combined categorical+size side는 각 owner의 content를 먼저 materialize한 뒤 lane이 결합한다. Size는 categorical의 private size 좌표를 읽지 않는다. Shared label start44는 최소값이며 각 block의 symbol center와 requested label 간격을 수용하도록 확장한다. Retained size 자체 border는 content와 함께 재배치하고 outer categorical group border가 그 occupied bounds를 포함한다. Top/bottom 결합도 지원하며 아래 group 계약을 따른다. 전체 family collision 대칭성은 계속 별도 검증 범위다.
 
 Evidence: `test/unit/actions/guides/size-legend-edges.test.js`, `test/contracts/size-legend-edges.test.js`, 기존 size content/editor/lane 및 Cars regression primitive pairs.
+
+
+### Combined horizontal layout
+
+Categorical+size create/edit/content replacement은 모든 edge를 허용하고 legacy-bottom 결합은 오류다. Horizontal에서는 categorical position/align/direction/columns/titlePosition/offset/itemGap이 두 block의 effective geometry다. Size 자체 설정은 덮어쓰지 않아 categorical 제거 후 복원하며 자체 title/visibility/count/labels.offset/border를 보존한다. Shared typography patch와 categorical title edit 의미는 기존과 같다.
+
+각 block의 실제 title/text/symbol/stroke/nested border bounds를 측정해 categorical→size 순서로 gap40을 두고 배치한다. Plot 폭을 넘으면 다음 outward row로 wrap한다. Top title/content 간격은12이며 sample보다 큰 label도 content 높이에 포함한다. Inline title은 content와 함께 이동한다. 두 block union을 categorical border로 둘러싸고, single combined group의 outer occupied bounds를 plot 폭의 align과 plot edge offset에 맞춘다. 여러 group이 있으면 결합 내부를 보존한 채 atomic block으로 기존 horizontal lane에 넣는다. Size graphics는 categorical 뒤, independent continuous companion 앞에 생성해 creation/content replay의 drawing order도 보존한다.
+
+Canvas overflow 또는 최종 chart title/x-axis guide와 교차하면 immutable failure다. Evidence: `test/unit/actions/guides/combined-legend-edges.test.js`, `test/contracts/combined-legend-edges.test.js`, packed consumer/browser 및 Cars replay. 다른 family의 전체 C2 collision/transition matrix 완료를 뜻하지 않는다.

@@ -226,6 +226,10 @@ test.before(async () => {
         .createLegend({ channels: ["color"], position: "top", layout: "edge", columns: 2 });
       const onlyColorContent = legendContentBase.createLegend({ channels: ["color"] });
       const colorSizeContent = legendContentBase.createLegend({ channels: ["color", "size"], count: 3 });
+      const horizontalCombined = legendContentBase.editCanvas({ width: 1000, height: 800, margin: 250 })
+        .createLegend({ channels: ["color", "size"], position: "top", count: 3, offset: 30, itemGap: 20, border: true })
+        .editLegendLayout({ position: "bottom" });
+      render(horizontalCombined, document.getElementById("legend-content").getContext("2d"));
       const inferredSizeBase = legendContentBase.removeEncoding({ channel: "shape" });
       const inferredColorSize = inferredSizeBase.createLegend({ count: 3 });
       const inferredColorBase = inferredSizeBase.removeEncoding({ channel: "size" });
@@ -281,6 +285,9 @@ test.before(async () => {
         onlyColorSymbol: onlyColorContent.graphicSpec.objects.colorLegendSymbols.type,
         combinedContentKinds: Object.keys(colorSizeContent.guideConfigs.legend),
         combinedContentCount: colorSizeContent.graphicSpec.objects.sizeLegendSymbols.items.length,
+        combinedPosition: horizontalCombined.guideConfigs.legend.color.position,
+        combinedSVG: renderToSVG(horizontalCombined).startsWith("<svg "),
+        combinedTitlesAligned: horizontalCombined.graphicSpec.objects.colorLegendTitle.properties.y === horizontalCombined.graphicSpec.objects.sizeLegendTitle.properties.y,
         combinedContentSVG: renderToSVG(colorSizeContent).startsWith("<svg "),
         legacyBottomYs: legacyBottomLegend.graphicSpec.objects.colorLegendLabels.items.map(item => item.properties.y),
         edgeBottomYs: edgeBottomLegend.graphicSpec.objects.colorLegendLabels.items.map(item => item.properties.y),
@@ -408,6 +415,9 @@ test("imports and renders the packed browser entries", async () => {
     onlyColorSymbol: "rect",
     combinedContentKinds: ["color", "size"],
     combinedContentCount: 3,
+    combinedPosition: "bottom",
+    combinedSVG: true,
+    combinedTitlesAligned: true,
     combinedContentSVG: true,
     legacyBottomYs: [572, 572],
     edgeBottomYs: [489, 489],

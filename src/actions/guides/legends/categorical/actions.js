@@ -260,14 +260,8 @@ export function resolveLegendCreationPlan(program, args = {}, layers = program.s
     if (count !== undefined && !combined) {
       throw new Error("Legend count requires a selected size legend.");
     }
-    if (
-      combined &&
-      categoricalArgs.position !== undefined &&
-      !["right", "left"].includes(categoricalArgs.position)
-    ) {
-      throw new Error(
-        "Combined point series and size legends currently require a side position."
-      );
+    if (combined && categoricalArgs.layout === "legacy-bottom") {
+      throw new Error('Combined size legends require layout "edge".');
     }
     const inferredChannels = ["color", "shape"].filter(
       channel => requestedPoint.encoding?.[channel]?.scale !== undefined

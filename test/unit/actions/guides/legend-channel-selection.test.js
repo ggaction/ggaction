@@ -57,12 +57,14 @@ test("unselected shape and size encodings do not change an explicit color legend
   assert.equal(colorSize.graphicSpec.objects.sizeLegendSymbols.items.length, 3);
 });
 
-test("explicit point content supports top layout when size is not selected", () => {
+test("explicit point content selects categorical-only or combined top layout", () => {
   const before = base().editCanvas({ margin: { top: 150, right: 300, bottom: 60, left: 60 } });
   const actual = before.createLegend({ channels: ["color", "shape"], position: "top" });
   assert.equal(actual.guideConfigs.legend.series.position, "top");
   assert.equal(actual.guideConfigs.legend.size, undefined);
-  assert.throws(() => before.createLegend({ channels: ["color", "shape", "size"], position: "top" }), /side position/);
+  const combined = before.createLegend({ channels: ["color", "shape", "size"], position: "top" });
+  assert.deepEqual(represented(combined), ["color", "shape", "size"]);
+  assert.equal(combined.guideConfigs.legend.series.position, "top");
 });
 
 test("omitted content retains inferred combined point and size creation", () => {

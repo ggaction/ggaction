@@ -535,6 +535,18 @@ async function testNodeConsumer(directory) {
     assert.deepEqual(Object.keys(colorSizeContent.guideConfigs.legend), ["color", "size"]);
     assert.equal(colorSizeContent.graphicSpec.objects.sizeLegendSymbols.items.length, 3);
     assert.match(renderToSVG(colorSizeContent), /<svg /);
+    for (const create of [chart, basicChart]) for (const position of ["top", "bottom"]) {
+      const source = create().createCanvas({ width: 1200, height: 1000, margin: 300 })
+        .createData({ values: [{ x: 1, y: 1, g: "A", m: 0 }, { x: 2, y: 2, g: "B", m: 10 }] })
+        .createPointMark().encodeX({ field: "x" }).encodeY({ field: "y" })
+        .encodeColor({ field: "g" }).encodeSize({ field: "m", scale: { range: [4 * Math.PI, 36 * Math.PI] } });
+      const combined = source.createLegend({ channels: ["color", "size"], position, count: 2, offset: 30, itemGap: 20, border: true });
+      assert.equal(combined.guideConfigs.legend.color.position, position);
+      assert.equal(combined.graphicSpec.objects.colorLegendTitle.properties.y, combined.graphicSpec.objects.sizeLegendTitle.properties.y);
+      assert.ok(combined.graphicSpec.objects.sizeLegendSymbols.items[0].properties.x > combined.graphicSpec.objects.colorLegendLabels.items.at(-1).properties.x);
+      assert.match(renderToSVG(combined), /<svg /);
+      if (create === chart) assert.deepEqual(combined.editLegend({ channels: ["color", "size"] }).graphicSpec, combined.graphicSpec);
+    }
     const editedContent = legendContentBase.createLegend({ channels: ["size"] })
       .editLegend({ labels: { color: "red" }, titleStyle: { fontWeight: 900 } })
       .editLegend({ channels: ["color", "shape", "size"], count: 3 })
@@ -1598,7 +1610,7 @@ async function testTypeScriptConsumer(directory) {
     program.editLegend({ channels: ["size"], position: "top", columns: 2, border: true, count: 3, title: "Mass", labels: { offset: 12, fontWeight: 700 }, titleStyle: { color: "red" } })
       .editLegendTitle({ title: false }).editLegendTitle({ title: "auto" }).editLegendSymbols({ count: 4 });
     program.createLegend({ channels: ["color", "shape", "size"], count: 3 });
-    basicChart().createLegend({ channels: ["color", "size"], count: 3 });
+    basicChart().createLegend({ channels: ["color", "size"], position: "top", columns: 2, count: 3, border: true });
     program.createLegend({ position: "bottom", layout: "legacy-bottom" })
       .editLegend({ layout: "edge" }).editLegendLayout({ layout: "legacy-bottom" });
     basicChart().createGuides({ axes: false, grid: false,

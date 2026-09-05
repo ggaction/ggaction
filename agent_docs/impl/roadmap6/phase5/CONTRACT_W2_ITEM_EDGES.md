@@ -29,3 +29,11 @@ Size materializer도 공통 item owner에 연결한다. 실제 maximum diameter�
 Full/Basic standalone create의 네 방향과 Full editing/border/grid 지원을 먼저 검증한다. Categorical+size side는 각 owner가 독립 content를 만든 뒤 기존 lane에서 결합하고, size가 categorical layout의 private `.size` 좌표를 읽던 의존성을 제거한다. Combined top/bottom은 뒤이은 group layout 통합으로 남기며 이 부분 결과만으로 C2를 완료하지 않는다. Shared appearance도 size label offset12를 기준으로 한다.
 
 Primitive target: Canvas1000×700, L/R240 T/B200, samples radius2/6, labels0/10, count2, title m. 네 edge를 public 구현 전에 렌더링한다. Size의 실제 circle bounds와 visible texts를 검증하고 숨긴 title은 제외한다. 기존 arbitrary standalone +78/+112 위치는 공통 anchor로 대체한다.
+
+## Combined horizontal group
+
+[#97](https://github.com/ggaction/ggaction/issues/97)의 생성 거부/편집 겹침을 수정한다. Categorical+size는 edge 네 방향을 공유하며 legacy-bottom 결합은 오류다. Horizontal에서 categorical의 position/align/direction/columns/titlePosition/offset/itemGap을 두 content의 effective geometry로 사용한다. Size의 자체 config는 보존해 categorical 제거 후 복원하며 count/label slot offset/자체 border/text visibility는 size owner에 남는다. Shared title edit의 기존 categorical title 의미는 유지한다.
+
+Top/bottom은 categorical→size 순서, measured occupied block 사이 gap40으로 배치하며 폭을 넘으면 기존 horizontal lane처럼 다음 outward row로 wrap한다. 각 block의 top title과 element anchor를 정렬하고 inline title은 자기 content와 함께 이동한다. 두 content와 retained size background를 union하고 categorical border를 한 outer border로 다시 계산한다. 하나의 combined group만 있으면 outer occupied bounds를 plot width에 align하고 plot edge와 offset 간격을 확보한다. 여러 group의 edge lane에서는 이 결합 결과를 쪼개지 않고 atomic content로 배치한다. 다른 단독 family의 기존 multi-lane 정렬 계약은 유지한다.
+
+Hidden title/실제 sample stroke/border를 포함한 최종 bounds를 검증한다. Group 내부 배치와 외부 lane 배치 모두 pure layout plan을 만든 뒤 wrapped rematerializer가 graphics를 옮긴다. Full/Basic 생성, Full 편집/content/remove/Canvas/scale/filter, nested border와 multi-lane, exact primitive/pixels/package/browser를 검증한다. 전체 C2의 다른 family collision/transition은 이 변경으로 완료 처리하지 않는다.
