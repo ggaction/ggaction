@@ -18,6 +18,14 @@ export function validTimestamp(value) {
   return Number.isFinite(value) && Number.isFinite(new Date(value).getTime());
 }
 
+function utcBucket(...parts) {
+  const timestamp = utcTimestamp(...parts);
+  if (!validTimestamp(timestamp)) {
+    throw new RangeError("Time-unit bucket start is outside the supported Date range.");
+  }
+  return timestamp;
+}
+
 export const TIME_UNITS = cloneAndFreeze([
   "year",
   "quarter",
@@ -82,15 +90,15 @@ export function floorUtcTimeUnit(timestamp, unit) {
   }
   const year = date.getUTCFullYear();
   const month = date.getUTCMonth();
-  if (unit === "year") return utcTimestamp(year);
-  if (unit === "quarter") return utcTimestamp(year, Math.floor(month / 3) * 3);
-  if (unit === "month") return utcTimestamp(year, month);
+  if (unit === "year") return utcBucket(year);
+  if (unit === "quarter") return utcBucket(year, Math.floor(month / 3) * 3);
+  if (unit === "month") return utcBucket(year, month);
   const day = date.getUTCDate();
-  if (unit === "day") return utcTimestamp(year, month, day);
+  if (unit === "day") return utcBucket(year, month, day);
   const hour = date.getUTCHours();
-  if (unit === "hour") return utcTimestamp(year, month, day, hour);
+  if (unit === "hour") return utcBucket(year, month, day, hour);
   const minute = date.getUTCMinutes();
-  if (unit === "minute") return utcTimestamp(year, month, day, hour, minute);
+  if (unit === "minute") return utcBucket(year, month, day, hour, minute);
   return Math.floor(timestamp / 1000) * 1000;
 }
 

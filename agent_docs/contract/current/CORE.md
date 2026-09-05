@@ -313,6 +313,9 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 
 ## `createTimeUnitData`
 
+유효한 input timestamp라도 요청한 bucket 시작이 Date의 표현 범위 밖이면 RangeError로 거절한다.
+NaN bucket을 저장하지 않으며 실패 시 source program과 trace는 유지된다.
+
 - Signature: `createTimeUnitData({ id, source?, field, unit, as })`
 - Lifecycle: immutable create-only다. `id`는 필수 새 derived dataset ID이며 existing dataset을 수정하거나 consumer를
   rebind하지 않는다.
