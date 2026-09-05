@@ -1,8 +1,7 @@
+import { resolveScalePreview } from "./preview.js";
 import { action } from "../../core/action.js";
 import { validateUserId } from "../../core/identifiers.js";
-import { normalizePositionScaleChannel } from "../../core/vocabulary.js";
 import { validateKeys } from "../../core/validation.js";
-import { resolveGraphicBounds } from "../../layout/canvas.js";
 import {
   applyMaterializationPlan,
   planScaleGuideRematerialization
@@ -14,16 +13,6 @@ import {
 } from "../../materialization/marks/index.js";
 import { mapScaleConsumerValues } from
   "../../materialization/scales/map.js";
-import { resolveScaleMaterialization } from
-  "../../materialization/scales/resolve.js";
-import {
-  findScale,
-  findScaleConsumers,
-  resolveConsumerCategoryOrder,
-  resolveConsumerValues,
-  resolveSeriesLayoutScaleValues
-} from "./consumers/index.js";
-
 const OPTIONS = Object.freeze(["id", "guides", "marks"]);
 
 function validateOptions(args) {
@@ -36,16 +25,6 @@ function validateOptions(args) {
   }
 }
 
-function resolveScaleChannel(id, consumers) {
-  const channels = new Set(
-    consumers.map(consumer => normalizePositionScaleChannel(consumer.channel))
-  );
-  if (channels.size !== 1) {
-    throw new Error(`Scale "${id}" cannot be shared across channels.`);
-  }
-  return normalizePositionScaleChannel(consumers[0].channel);
-}
-
 export const rematerializeScale = action(
   {
     op: "rematerializeScale",
@@ -54,31 +33,7 @@ export const rematerializeScale = action(
   function (args = {}) {
     validateOptions(args);
     const id = validateUserId(args.id, "Scale id");
-    const scale = findScale(this, id);
-    const consumers = findScaleConsumers(this, id);
-    if (consumers.length === 0) {
-      throw new Error(`Scale "${id}" has no supported consumers.`);
-    }
-    const channel = resolveScaleChannel(id, consumers);
-    const valuesByConsumer = consumers.map(consumer => ({
-      consumer,
-      values: resolveConsumerValues(this, consumer),
-      categoryOrder: resolveConsumerCategoryOrder(this, consumer),
-      seriesLayout: resolveSeriesLayoutScaleValues(this, consumer)
-    }));
-    const resolvedScale = resolveScaleMaterialization({
-      id,
-      scale,
-      channel,
-      consumers,
-      valuesByConsumer,
-      bounds: ["color", "strokeDash", "strokeWidth", "shape", "size", "opacity", "xOffset", "yOffset"]
-        .includes(channel)
-        ? undefined
-        : resolveGraphicBounds(this),
-      resolvedScales: this.resolvedScales,
-      markConfigs: this.markConfigs
-    });
+    const { channel, valuesByConsumer, resolvedScale } = resolveScalePreview(this, id);
     let next = this._withResolvedScale(id, resolvedScale);
 
     for (const { consumer, values } of valuesByConsumer) {

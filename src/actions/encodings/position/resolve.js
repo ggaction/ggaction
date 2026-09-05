@@ -1,3 +1,4 @@
+import { readAreaEndpoint } from "../../../grammar/areaEndpoints.js";
 import { validateUserId } from "../../../core/identifiers.js";
 import { getPositionCoordinateDefaults } from "../../../grammar/coordinates.js";
 import {
@@ -110,6 +111,12 @@ export function resolvePositionEncoding(program, channel, args, operation) {
     if (hasField && args.fieldType === undefined) {
       throw new Error(`${operation} requires fieldType for a rule mark.`);
     }
+  } else if (layer.mark.type === "area") {
+    if (hasField === hasDatum) throw new Error(`${operation} requires exactly one of field or datum for an area mark.`);
+    if (hasDatum && (!Number.isFinite(args.datum) || (args.fieldType ?? "quantitative") !== "quantitative" ||
+      ["aggregate", "bin", "stack", "temporalUnit"].some(key => Object.hasOwn(args, key)))) {
+      throw new Error("Area datum requires a finite quantitative constant without aggregate, bin, stack, or temporalUnit.");
+    }
   } else if (hasDatum) {
     throw new Error(`${operation} does not support datum for a ${layer.mark.type} mark.`);
   }
@@ -132,7 +139,7 @@ export function resolvePositionEncoding(program, channel, args, operation) {
     : args.field;
   const datum = args.datum;
   const temporalUnit = resolveTemporalUnit({ ...args, ...(hasDatum ? {} : { field }) }, fieldType, previous);
-  const usesField = layer.mark.type !== "rule" || hasField;
+  const usesField = !["rule", "area"].includes(layer.mark.type) || hasField;
   if (usesField && (typeof field !== "string" || field.length === 0)) {
     throw new TypeError(`${operation} field must be a non-empty string.`);
   }
@@ -230,7 +237,9 @@ export function resolvePositionEncoding(program, channel, args, operation) {
       "Position scale unknown currently requires a row-owned point mark."
     );
   }
-  if (layer.mark.type === "rule" && hasDatum) {
+  if (layer.mark.type === "area" && fieldType === "quantitative") {
+    readAreaEndpoint(dataset.values, { ...(hasDatum ? { datum } : { field }), fieldType }, layer.mark.missing);
+  } else if (layer.mark.type === "rule" && hasDatum) {
     normalizeRuleDatum(datum, fieldType, channel, temporalUnit);
   } else if (aggregateOutput) {
     validateAggregateFieldType(policy.aggregate, fieldType);

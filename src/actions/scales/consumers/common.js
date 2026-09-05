@@ -1,3 +1,4 @@
+import { readAreaEndpoint } from "../../../grammar/areaEndpoints.js";
 import { readScaleField } from "../../../grammar/scales/index.js";
 import { findDataset } from "../../../selectors/datasets.js";
 import { requireSemanticScale } from "../../../selectors/scales.js";
@@ -59,6 +60,9 @@ export function readConsumerFieldValues(
     throw new Error(
       `Scale materialization requires a quantitative encoding on mark "${consumer.layer.id}".`
     );
+  }
+  if (consumer.layer.mark.type === "area" && ["x", "y", "x2", "y2"].includes(consumer.channel) && fieldType === "quantitative") {
+    return readAreaEndpoint(dataset.values, consumer.encoding, consumer.layer.mark.missing).filter(value => value != null);
   }
   return readScaleField(dataset.values, field, fieldType, {
     allowUnknown: parallel || Object.hasOwn(scale, "unknown"), temporalUnit

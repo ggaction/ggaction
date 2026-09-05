@@ -1211,9 +1211,21 @@ type SecondaryRulePositionEncodingOptions = RulePositionEncodingBase & {
 
 export type SecondaryPositionEncodingOptions =
   | SecondaryRulePositionEncodingOptions
+  | { datum: number; field?: never; fieldType?: "quantitative"; target?: string; scale?: { id?: string }; coordinate?: string }
   | ({ field: string; datum?: never; target?: string; scale?: { id?: string }; coordinate?: string } & TemporalBindingBranch);
 
-type RangePositionEncodingOptions = {
+type AreaRangePositionEncodingOptions = {
+  target?: string;
+  coordinate?: string;
+  fieldType?: "quantitative";
+  temporalUnit?: never;
+  scale?: NonPointQuantitativePositionScaleOptions;
+} & (
+  | { lower: string; upper: { datum: number } }
+  | { lower: { datum: number }; upper: string }
+);
+
+type RangePositionEncodingOptions = AreaRangePositionEncodingOptions | {
   lower: string;
   upper: string;
   target?: string;
@@ -2831,6 +2843,7 @@ export class ChartProgram {
     stroke?: string;
     strokeWidth?: number;
     curve?: CurveInterpolation;
+    missing?: "error" | "break";
   }): ChartProgram;
   createArcMark(options?: {
     id?: string;
@@ -2866,6 +2879,7 @@ export class ChartProgram {
     stroke?: string | false;
     strokeWidth?: number;
     curve?: CurveInterpolation;
+    missing?: "error" | "break";
   }): ChartProgram;
 
   encodeX(options: PositionEncodingOptions | RulePositionEncodingOptions): ChartProgram;

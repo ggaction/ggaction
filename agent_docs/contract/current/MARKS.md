@@ -379,7 +379,7 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 ## `createAreaMark`
 
-- Signature: `createAreaMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth?, curve? } = {})`
+- Signature: `createAreaMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth?, curve?, missing? } = {})`
 - `id`, `data`: 첫 unnamed area의 deterministic `"area"` 또는 explicit 새 ID와 optional existing/current dataset이다.
 - `fill`: Implemented, non-empty color string. 기본값은 theme mark color `"#4c78a8"`다.
 - `opacity`: Implemented, `[0, 1]` finite number. 기본값은 `0.2`다.
@@ -394,7 +394,7 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 ### Formal values — `createAreaMark`
 
-- Implemented: `createAreaMark({ id?: UserId; data?: UserId; fill?: NonEmptyString; opacity?: UnitInterval; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; curve?: CurveInterpolation } = {})`
+- Implemented: `createAreaMark({ id?: UserId; data?: UserId; fill?: NonEmptyString; opacity?: UnitInterval; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; curve?: CurveInterpolation; missing?: "error" | "break" } = {})`
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
@@ -415,9 +415,12 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 - Evidence: `test/unit/actions/marks/create-area-mark.test.js`, area materialization,
   `test/unit/actions/marks/edit-area-mark.test.js`, density and regression chart tests.
 
+- `missing`: Implemented `"error"|"break"`, 기본 error. Semantic mark.missing에만 저장한다. Break는 raw Area 측정 endpoint의 null/undefined에서 2점 이상 segment로 나누며 density/horizon 재해석을 거부한다.
+- Evidence: test/unit/actions/encodings/area-endpoints.test.js.
+
 ## `editAreaMark`
 
-- Signature: `editAreaMark({ target?, fill?, opacity?, stroke?, strokeWidth?, curve? })`.
+- Signature: `editAreaMark({ target?, fill?, opacity?, stroke?, strokeWidth?, curve?, missing? })`.
 - `target`: existing area mark. Current compatible mark 또는 유일한 area mark를 infer하고 ambiguity는
   explicit target을 요구한다.
 - `fill`, `opacity`: constant graphical appearance다. Field-driven color encoding이 있으면 fill edit는
@@ -425,12 +428,13 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 - `stroke`: non-empty string은 outline을 생성/교체하고 `false`는 outline과 stored width를 제거한다.
 - `strokeWidth`: non-negative finite number. Width-only edit은 active outline을 요구한다.
 - `curve`: shared 8-value interpolation. Complete area는 즉시 concrete commands를 다시 만든다.
-- Effect: private mark config를 immutable하게 갱신하고 complete mark는 wrapped `rematerializeAreaMark`를
-  호출한다. Data, encodings, scales와 coordinates는 바꾸지 않는다.
+- `missing`: createAreaMark와 같은 semantic 정책을 재할당한다. 실패는 이전 program을 보존한다.
+- Effect: private mark config 또는 missing semantic 정책을 immutable하게 갱신하고 complete mark는 wrapped `rematerializeAreaMark`를
+  호출한다. Data와 coordinates는 바꾸지 않으며 missing 변경은 scales와 closed paths를 다시 계산한다.
 
 ### Formal values — `editAreaMark`
 
-- Implemented: `editAreaMark({ target?: UserId; fill?: NonEmptyString; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite; curve?: CurveInterpolation })`.
+- Implemented: `editAreaMark({ target?: UserId; fill?: NonEmptyString; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite; curve?: CurveInterpolation; missing?: "error" | "break" })`.
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 

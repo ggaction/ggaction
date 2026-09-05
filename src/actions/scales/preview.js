@@ -1,0 +1,23 @@
+import { normalizePositionScaleChannel } from "../../core/vocabulary.js";
+import { resolveGraphicBounds } from "../../layout/canvas.js";
+import { resolveScaleMaterialization } from "../../materialization/scales/resolve.js";
+import { findScale, findScaleConsumers, resolveConsumerCategoryOrder,
+  resolveConsumerValues, resolveSeriesLayoutScaleValues } from "./consumers/index.js";
+
+export function resolveScalePreview(program, id) {
+  const scale = findScale(program, id);
+  const consumers = findScaleConsumers(program, id);
+  if (consumers.length === 0) throw new Error(`Scale "${id}" has no supported consumers.`);
+  const channels = new Set(consumers.map(consumer => normalizePositionScaleChannel(consumer.channel)));
+  if (channels.size !== 1) throw new Error(`Scale "${id}" cannot be shared across channels.`);
+  const channel = channels.values().next().value;
+  const valuesByConsumer = consumers.map(consumer => ({ consumer,
+    values: resolveConsumerValues(program, consumer),
+    categoryOrder: resolveConsumerCategoryOrder(program, consumer),
+    seriesLayout: resolveSeriesLayoutScaleValues(program, consumer) }));
+  const resolvedScale = resolveScaleMaterialization({ id, scale, channel, consumers, valuesByConsumer,
+    bounds: ["color", "strokeDash", "strokeWidth", "shape", "size", "opacity", "xOffset", "yOffset"].includes(channel)
+      ? undefined : resolveGraphicBounds(program),
+    resolvedScales: program.resolvedScales, markConfigs: program.markConfigs });
+  return { channel, consumers, valuesByConsumer, resolvedScale };
+}

@@ -55,14 +55,14 @@ createDerivedData({
 })
 createRegressionBand({
   id, data, x, lower, upper, groupBy?, coordinate, xScale, yScale,
-  color?, opacity?, stroke?, strokeWidth?, curve?
+  color?, opacity?, stroke?, strokeWidth?, curve?, missing?
 })
-editRegressionBand({ target?, color?, opacity?, stroke?, strokeWidth?, curve? })
+editRegressionBand({ target?, color?, opacity?, stroke?, strokeWidth?, curve?, missing? })
 createRegressionLine({
   id, data, x, y, groupBy?, coordinate, xScale, yScale,
-  colorScale?, strokeWidth?, curve?
+  colorScale?, strokeWidth?, curve?, missing?
 })
-editRegressionLine({ target?, strokeWidth?, curve? })
+editRegressionLine({ target?, strokeWidth?, curve?, missing? })
 ```
 
 These actions explicitly author named semantic resources or the component

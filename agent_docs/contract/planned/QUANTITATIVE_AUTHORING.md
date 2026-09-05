@@ -70,7 +70,7 @@ Current 177개는 그대로이며 새 direct 4개와 기존 method의 capability
 - Lower/upper는 primary/secondary 역할 이름으로 값의 대소를 강제하지 않는다. 기존 crossing ribbon을 유지한다.
 - createAreaMark/editAreaMark missing:error|break는 semantic mark policy다. Break는 null/undefined 측정 endpoint만
   허용하고 missing independent/group, NaN/Infinity는 오류다. 연속 유효점 2개 이상 segment만 그린다.
-- Current Rule datum, Bar/Rect field 계약은 유지한다. Coverage missing.
+- Current Rule datum, Bar/Rect field 계약은 유지한다. Raw endpoint/missing/range 부분은 구현되었으며 current ENCODINGS/MARKS와 area-endpoints.test.js가 소유한다. 누적 shared break와 facade는 layout 구현과 통합 검증 뒤 완료한다.
 
 ## Series layout ownership
 

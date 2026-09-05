@@ -1,3 +1,5 @@
+import { prepareAreaRange } from "./areaRange.js";
+import { readAreaEndpoint, validateAreaEndpointPair } from "../../grammar/areaEndpoints.js";
 import { action } from "../../core/action.js";
 import { validateUserId } from "../../core/identifiers.js";
 import { isPlainObject } from "../../core/immutable.js";
@@ -79,12 +81,13 @@ function encodeSecondaryPosition(program, channel, args, operation, types) {
   validateSecondaryScale(args, primary.scale, primaryChannel);
 
   const rule = layer.mark.type === "rule";
+  const area = layer.mark.type === "area";
   const hasField = Object.hasOwn(args, "field");
   const hasDatum = Object.hasOwn(args, "datum");
-  if (rule && hasField === hasDatum) {
+  if ((rule || area) && hasField === hasDatum) {
     throw new Error(`${operation} requires exactly one of field or datum for a rule mark.`);
   }
-  if (!rule && (!hasField || hasDatum)) {
+  if (!rule && !area && (!hasField || hasDatum)) {
     throw new Error(`${operation} requires a field for a ranged mark.`);
   }
   if (rule && args.fieldType === undefined) {
@@ -120,7 +123,11 @@ function encodeSecondaryPosition(program, channel, args, operation, types) {
   }
   const previous = layer.encoding?.[channel];
   const temporalUnit = resolveTemporalUnit(args, fieldType, previous);
-  if (hasField && layer.mark.type === "rect") {
+  if (area) {
+    const endpoint = { ...(hasField ? { field: args.field } : { datum: args.datum }), fieldType };
+    validateAreaEndpointPair(primary, endpoint);
+    readAreaEndpoint(dataset.values, endpoint, layer.mark.missing);
+  } else if (hasField && layer.mark.type === "rect") {
     readScaleField(dataset.values, args.field, fieldType, { allowUnknown: true, temporalUnit });
   } else if (hasField) validateSecondaryField(dataset, args.field, fieldType, temporalUnit);
   else normalizeRuleDatum(args.datum, fieldType, channel, temporalUnit);
@@ -206,11 +213,23 @@ function rangeAction(channel) {
       ...(Object.hasOwn(args, "temporalUnit") ? { temporalUnit: args.temporalUnit } : {}),
       fieldType: args.fieldType ?? "quantitative"
     };
-    return this[primary]({
-      ...common, field: args.lower,
+    const { layer, dataset } = resolveTarget(this, args.target, ["area", "bar", "rect"], "ranged mark");
+    let next = this;
+    let lower = { field: args.lower }, upper = { field: args.upper };
+    if (layer.mark.type === "area") {
+      common.target = layer.id;
+      const prepared = prepareAreaRange(this, layer, dataset, channel, args, common);
+      lower = prepared.lower; upper = prepared.upper;
+      const secondaryChannel = `${channel}2`;
+      if (layer.encoding?.[secondaryChannel] !== undefined) next = next.editSemantic({ property: `layer[${layer.id}].encoding.${secondaryChannel}`, remove: true });
+      next = setEncodingProperties(next, layer.id, secondaryChannel, prepared.secondary);
+      common.target = layer.id;
+    }
+    return next[primary]({
+      ...common, ...lower,
       ...(args.coordinate === undefined ? {} : { coordinate: args.coordinate }),
       ...(args.scale === undefined ? {} : { scale: args.scale })
-    })[secondary]({ ...common, field: args.upper });
+    })[secondary]({ ...common, ...upper });
   });
 }
 

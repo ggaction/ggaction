@@ -100,7 +100,7 @@ through the shared line materialization lifecycle.
 
 ## Area marks
 
-### `createAreaMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth?, curve? } = {})`
+### `createAreaMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth?, curve?, missing? } = {})`
 
 ```javascript
 const area = chart()
@@ -118,7 +118,7 @@ without creating a scale or legend. For a center-stacked area,
 `encodeColor({ field, layout: "center" })` can author the matching group and
 center y policy atomically.
 
-### `editAreaMark({ target?, fill?, opacity?, stroke?, strokeWidth?, curve? })`
+### `editAreaMark({ target?, fill?, opacity?, stroke?, strokeWidth?, curve?, missing? })`
 
 ```javascript
 program.editAreaMark({
@@ -167,3 +167,13 @@ the outline and stored width; a later string stroke restores width `1`.
 [Position encodings](../position-encodings.md) · [Polar line tutorial](../../tutorials/polar-lines.md) ·
 [Series encodings](../series-encodings.md) ·
 [Density](../encodings.md#atomic-density) · [Error bands](../error-bands.md)
+
+Area endpoints can use a quantitative field or a finite `{ datum: number }` bound.
+At least one endpoint must be a field; the independent position is always a field.
+Use `encodeYRange({ lower: "value", upper: { datum: 0 } })` for a vertical zero baseline.
+Both endpoints contribute to the shared scale domain. A log scale requires a nonzero baseline of the same sign as the field values.
+
+The default `missing: "error"` rejects missing endpoints. With `missing: "break"`,
+null or undefined measured endpoints split the path into closed segments with at least two consecutive valid samples.
+Missing independent positions, invalid group keys, NaN and Infinity remain errors.
+`editAreaMark({ missing: "break" })` changes the same policy. Density and Horizon retain their own missing-data policies.

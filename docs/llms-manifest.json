@@ -851,15 +851,15 @@
         "editlinemark-target-stroke-strokewidth-opacity-curve-closed",
         "polar-lines-and-radar-paths",
         "area-marks",
-        "createareamark-id-data-fill-opacity-stroke-strokewidth-curve",
-        "editareamark-target-fill-opacity-stroke-strokewidth-curve",
+        "createareamark-id-data-fill-opacity-stroke-strokewidth-curve-missing",
+        "editareamark-target-fill-opacity-stroke-strokewidth-curve-missing",
         "arc-marks",
         "createarcmark-id-data-innerradius-padangle-fill-opacity-stroke-strokewidth",
         "editarcmark-target-innerradius-padangle-fill-opacity-stroke-strokewidth",
         "related"
       ],
-      "bytes": 6778,
-      "sha256": "e9ef17179b3c8096d69b19ace2cdf2e43705b4628a135382dd554be3464e5233"
+      "bytes": 7594,
+      "sha256": "1163cab7d974a539a72470f4bbecf4b49b94408eecd593042ada341ad451291e"
     },
     {
       "order": 56,
@@ -1135,10 +1135,11 @@
         "shared-inference",
         "polar-positions",
         "rule-endpoints",
-        "related"
+        "related",
+        "area-bounds"
       ],
-      "bytes": 7713,
-      "sha256": "0f3f574f5a957abcffeed612a9a06d57547d47eb331e7d77f2f4b93886be2c6c"
+      "bytes": 8131,
+      "sha256": "3d5c79742099128a6e1f19aaadfa3a1bdbb83e046a8e5c85bca9f78601002f60"
     },
     {
       "order": 72,
@@ -1850,8 +1851,8 @@
         "position-capability-matrix",
         "related"
       ],
-      "bytes": 9001,
-      "sha256": "e2ed074fe8e08e0bb938bbb02d6415ac4d24a2f95292c6e54a3335538a584c24"
+      "bytes": 9273,
+      "sha256": "f2fd6711d15b3a0dac5120e1b30781662c85f27d5825ca9184189ac98ef1522c"
     },
     {
       "order": 116,
@@ -1898,8 +1899,8 @@
         "encodebarwidth",
         "related"
       ],
-      "bytes": 15653,
-      "sha256": "6a3d1a3cf2b6276c862bfdf7ce5ee4e4fa93788623c2531b480988dbe4c5dd10"
+      "bytes": 15867,
+      "sha256": "cbe0a43f41ada94b3237feffc4f2c5ab4febb43e6b6c833be4c018068511ed6d"
     },
     {
       "order": 117,
@@ -1985,8 +1986,8 @@
         "directional-grids",
         "related"
       ],
-      "bytes": 7527,
-      "sha256": "2add3fc368c0762f1f67c47688c7ee5e3dbfcfa902ea193264d59517eeb1618f"
+      "bytes": 7567,
+      "sha256": "975bb8ba4798e6d740903a6ed7acd19d9daeaae33b6d5b7ca76fbc6449fc23e0"
     },
     {
       "order": 120,
@@ -2030,8 +2031,8 @@
         "exact-typescript-signatures",
         "related"
       ],
-      "bytes": 14477,
-      "sha256": "c70aefbd4b64ad2e4858496186d1f80b4a20692de0f0ab072caa28a8a4d9362b"
+      "bytes": 14535,
+      "sha256": "83b21ddd4626a0b73120296c5b65c129d80e51779062fd6ea041cbdc5102b18b"
     },
     {
       "order": 123,

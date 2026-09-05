@@ -5136,7 +5136,7 @@ through the shared line materialization lifecycle.
 
 ## Area marks
 
-### `createAreaMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth?, curve? } = {})`
+### `createAreaMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth?, curve?, missing? } = {})`
 
 ```javascript
 const area = chart()
@@ -5154,7 +5154,7 @@ without creating a scale or legend. For a center-stacked area,
 `encodeColor({ field, layout: "center" })` can author the matching group and
 center y policy atomically.
 
-### `editAreaMark({ target?, fill?, opacity?, stroke?, strokeWidth?, curve? })`
+### `editAreaMark({ target?, fill?, opacity?, stroke?, strokeWidth?, curve?, missing? })`
 
 ```javascript
 program.editAreaMark({
@@ -5203,6 +5203,16 @@ the outline and stored width; a later string stroke restores width `1`.
 [Position encodings](./api/position-encodings/) · [Polar line tutorial](./tutorials/polar-lines/) ·
 [Series encodings](./api/series-encodings/) ·
 [Density](./api/encodings/#atomic-density) · [Error bands](./api/error-bands/)
+
+Area endpoints can use a quantitative field or a finite `{ datum: number }` bound.
+At least one endpoint must be a field; the independent position is always a field.
+Use `encodeYRange({ lower: "value", upper: { datum: 0 } })` for a vertical zero baseline.
+Both endpoints contribute to the shared scale domain. A log scale requires a nonzero baseline of the same sign as the field values.
+
+The default `missing: "error"` rejects missing endpoints. With `missing: "break"`,
+null or undefined measured endpoints split the path into closed segments with at least two consecutive valid samples.
+Missing independent positions, invalid group keys, NaN and Infinity remain errors.
+`editAreaMark({ missing: "break" })` changes the same policy. Density and Horizon retain their own missing-data policies.
 
 <!-- Source: /api/marks/bar/ -->
 
@@ -7708,6 +7718,14 @@ Calling the same action again replaces only that endpoint.
 
 [Encodings](./api/encodings/) · [Scale options](./api/scales/) ·
 [Coordinates](./api/coordinates/) · [Series encodings](./api/series-encodings/)
+
+## Area bounds
+
+Area `encodeXRange` and `encodeYRange` accept a field name or `{ datum: number }`
+for each bound, with at least one field. Bounds retain their order even when they cross.
+The two endpoints share one scale; reassignment validates the final pair and scale together.
+`encodeX2` and `encodeY2` accept quantitative datum bounds without an explicit fieldType.
+Use a finite, nonzero baseline for log scales.
 
 <!-- Source: /api/position/quantitative/ -->
 
@@ -12329,7 +12347,7 @@ field-driven color encoding. [Marks](./api/marks/)
 ## `createAreaMark`
 
 ```javascript
-createAreaMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth?, curve? } = {})
+createAreaMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth?, curve?, missing? } = {})
 ```
 
 Create a semantic area mark and empty path collection. Fixed fill defaults to
@@ -12337,10 +12355,12 @@ Create a semantic area mark and empty path collection. Fixed fill defaults to
 Curve defaults to `"linear"` and accepts the shared eight-value vocabulary.
 [Marks](./api/marks/)
 
+Area `missing` defaults to `"error"`. `"break"` splits null/undefined measured endpoints into closed segments with at least two samples; independent positions and nonfinite values remain strict. Density/Horizon missing policies are not reinterpreted.
+
 ## `editAreaMark`
 
 ```javascript
-editAreaMark({ target?, fill?, opacity?, stroke?, strokeWidth?, curve? })
+editAreaMark({ target?, fill?, opacity?, stroke?, strokeWidth?, curve?, missing? })
 ```
 
 Edit constant area appearance. `stroke: false` removes an existing outline.
@@ -12536,7 +12556,7 @@ It requires an existing x and shares its scale and coordinate.
 encodeYRange({ lower, upper, target?, fieldType?, coordinate?, scale? })
 ```
 
-Atomically compose area or ranged-bar `encodeY` and `encodeY2`.
+Atomically compose area or ranged-bar `encodeY` and `encodeY2`. Area bounds accept field strings or `{ datum: number }`, with at least one field. Final endpoints and scale are validated together.
 [Encodings](./api/encodings/)
 
 ## `encodeXRange`
@@ -12545,7 +12565,7 @@ Atomically compose area or ranged-bar `encodeY` and `encodeY2`.
 encodeXRange({ lower, upper, target?, fieldType?, coordinate?, scale? })
 ```
 
-Atomically compose area or ranged-bar `encodeX` and `encodeX2`.
+Atomically compose area or ranged-bar `encodeX` and `encodeX2`. Area bounds accept field strings or `{ datum: number }`, with at least one field.
 [Encodings](./api/encodings/)
 
 ## `encodeGroup`
@@ -13482,14 +13502,14 @@ createDerivedData({
 })
 createRegressionBand({
   id, data, x, lower, upper, groupBy?, coordinate, xScale, yScale,
-  color?, opacity?, stroke?, strokeWidth?, curve?
+  color?, opacity?, stroke?, strokeWidth?, curve?, missing?
 })
-editRegressionBand({ target?, color?, opacity?, stroke?, strokeWidth?, curve? })
+editRegressionBand({ target?, color?, opacity?, stroke?, strokeWidth?, curve?, missing? })
 createRegressionLine({
   id, data, x, y, groupBy?, coordinate, xScale, yScale,
-  colorScale?, strokeWidth?, curve?
+  colorScale?, strokeWidth?, curve?, missing?
 })
-editRegressionLine({ target?, strokeWidth?, curve? })
+editRegressionLine({ target?, strokeWidth?, curve?, missing? })
 ```
 
 These actions explicitly author named semantic resources or the component
@@ -13822,7 +13842,7 @@ interface ChartProgramActions {
   editLineMark(options: { target?: string; strokeWidth?: number; curve?: CurveInterpolation; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
   createBarMark(options?: { id?: string; data?: string; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
   editBarMark(options: { target?: string; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
-  createAreaMark(options?: { id?: string; data?: string; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; }): ChartProgram;
+  createAreaMark(options?: { id?: string; data?: string; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }): ChartProgram;
   createArcMark(options?: { id?: string; data?: string; innerRadius?: number; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
   editArcMark(options: { target?: string; innerRadius?: number; padAngle?: number; fill?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; }): ChartProgram;
   createRectMark(options?: RectMarkOptions): ChartProgram;
@@ -13833,7 +13853,7 @@ interface ChartProgramActions {
   editTextMark(options: EditTextMarkOptions): ChartProgram;
   layoutLabels(options?: LabelLayoutOptions): ChartProgram;
   removeLabelLayout(options?: RemoveLabelLayoutOptions): ChartProgram;
-  editAreaMark(options: { target?: string; fill?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; curve?: CurveInterpolation; }): ChartProgram;
+  editAreaMark(options: { target?: string; fill?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }): ChartProgram;
   encodeX(options: PositionEncodingOptions | RulePositionEncodingOptions): ChartProgram;
   encodeY(options: YPositionEncodingOptions | RulePositionEncodingOptions): ChartProgram;
   encodeTheta(options: ThetaEncodingOptions): ChartProgram;

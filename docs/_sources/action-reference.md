@@ -635,7 +635,7 @@ field-driven color encoding. [Marks](../api/marks.md)
 ### `createAreaMark`
 
 ```javascript
-createAreaMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth?, curve? } = {})
+createAreaMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth?, curve?, missing? } = {})
 ```
 
 Create a semantic area mark and empty path collection. Fixed fill defaults to
@@ -643,10 +643,12 @@ Create a semantic area mark and empty path collection. Fixed fill defaults to
 Curve defaults to `"linear"` and accepts the shared eight-value vocabulary.
 [Marks](../api/marks.md)
 
+Area `missing` defaults to `"error"`. `"break"` splits null/undefined measured endpoints into closed segments with at least two samples; independent positions and nonfinite values remain strict. Density/Horizon missing policies are not reinterpreted.
+
 ### `editAreaMark`
 
 ```javascript
-editAreaMark({ target?, fill?, opacity?, stroke?, strokeWidth?, curve? })
+editAreaMark({ target?, fill?, opacity?, stroke?, strokeWidth?, curve?, missing? })
 ```
 
 Edit constant area appearance. `stroke: false` removes an existing outline.
@@ -834,7 +836,7 @@ It requires an existing x and shares its scale and coordinate.
 encodeYRange({ lower, upper, target?, fieldType?, coordinate?, scale? })
 ```
 
-Atomically compose area or ranged-bar `encodeY` and `encodeY2`.
+Atomically compose area or ranged-bar `encodeY` and `encodeY2`. Area bounds accept field strings or `{ datum: number }`, with at least one field. Final endpoints and scale are validated together.
 [Encodings](../api/encodings.md)
 
 ### `encodeXRange`
@@ -843,7 +845,7 @@ Atomically compose area or ranged-bar `encodeY` and `encodeY2`.
 encodeXRange({ lower, upper, target?, fieldType?, coordinate?, scale? })
 ```
 
-Atomically compose area or ranged-bar `encodeX` and `encodeX2`.
+Atomically compose area or ranged-bar `encodeX` and `encodeX2`. Area bounds accept field strings or `{ datum: number }`, with at least one field.
 [Encodings](../api/encodings.md)
 
 ### `encodeGroup`
@@ -1708,14 +1710,14 @@ createDerivedData({
 })
 createRegressionBand({
   id, data, x, lower, upper, groupBy?, coordinate, xScale, yScale,
-  color?, opacity?, stroke?, strokeWidth?, curve?
+  color?, opacity?, stroke?, strokeWidth?, curve?, missing?
 })
-editRegressionBand({ target?, color?, opacity?, stroke?, strokeWidth?, curve? })
+editRegressionBand({ target?, color?, opacity?, stroke?, strokeWidth?, curve?, missing? })
 createRegressionLine({
   id, data, x, y, groupBy?, coordinate, xScale, yScale,
-  colorScale?, strokeWidth?, curve?
+  colorScale?, strokeWidth?, curve?, missing?
 })
-editRegressionLine({ target?, strokeWidth?, curve? })
+editRegressionLine({ target?, strokeWidth?, curve?, missing? })
 ```
 
 These actions explicitly author named semantic resources or the component

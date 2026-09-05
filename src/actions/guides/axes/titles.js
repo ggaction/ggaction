@@ -102,7 +102,9 @@ export function inferAxisTitleText(program, channel, scaleId) {
   const titles = new Set();
   const primaryTitles = new Set();
   for (const layer of program.semanticSpec.layers) {
-    const encoding = layer.encoding?.[channel];
+    const primary = layer.encoding?.[channel];
+    const encoding = layer.mark?.type === "area" && Object.hasOwn(primary ?? {}, "datum")
+      ? layer.encoding?.[`${channel}2`] : primary;
     if (
       encoding?.scale === scaleId &&
       typeof encoding.field === "string" &&

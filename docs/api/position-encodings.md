@@ -121,3 +121,11 @@ Calling the same action again replaces only that endpoint.
 
 [Encodings](./encodings.md) · [Scale options](./scales.md) ·
 [Coordinates](./coordinates.md) · [Series encodings](./series-encodings.md)
+
+## Area bounds
+
+Area `encodeXRange` and `encodeYRange` accept a field name or `{ datum: number }`
+for each bound, with at least one field. Bounds retain their order even when they cross.
+The two endpoints share one scale; reassignment validates the final pair and scale together.
+`encodeX2` and `encodeY2` accept quantitative datum bounds without an explicit fieldType.
+Use a finite, nonzero baseline for log scales.

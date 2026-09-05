@@ -117,7 +117,7 @@ field-driven color encoding. [Marks](../../api/marks.md)
 ## `createAreaMark`
 
 ```javascript
-createAreaMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth?, curve? } = {})
+createAreaMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth?, curve?, missing? } = {})
 ```
 
 Create a semantic area mark and empty path collection. Fixed fill defaults to
@@ -125,10 +125,12 @@ Create a semantic area mark and empty path collection. Fixed fill defaults to
 Curve defaults to `"linear"` and accepts the shared eight-value vocabulary.
 [Marks](../../api/marks.md)
 
+Area `missing` defaults to `"error"`. `"break"` splits null/undefined measured endpoints into closed segments with at least two samples; independent positions and nonfinite values remain strict. Density/Horizon missing policies are not reinterpreted.
+
 ## `editAreaMark`
 
 ```javascript
-editAreaMark({ target?, fill?, opacity?, stroke?, strokeWidth?, curve? })
+editAreaMark({ target?, fill?, opacity?, stroke?, strokeWidth?, curve?, missing? })
 ```
 
 Edit constant area appearance. `stroke: false` removes an existing outline.

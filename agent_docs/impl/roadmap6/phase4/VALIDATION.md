@@ -205,3 +205,12 @@ encoding.group.inferredFrom leaves와 layout container 제거를 추가했다. C
 - API public flow·실제 roundtrip·primitive/public pixel equality·신규 SVG/PDF/browser/package는 아직 실행하지 않았다. V1 target 작성 완료와 공개 구현 완료는 다르다.
 
 실제 이미지, 정확한 미래 public calls, 의도적 교차 표현, primitive scale 준비 경계는 [V1 검토 문서](VISUAL_REVIEW_V1.md)에 묶었다.
+
+## V1 승인 뒤 W1 lower 구현
+
+- Raw Area의 finite datum endpoint·mixed range·missing:error/break를 position/scale/path/selection owner에 연결했다.
+- 최종 pair/scale의 pure preflight를 실제 scale 계산과 공유한다. Zero-baseline linear에서 positive-baseline log로 한 번에 편집할 수 있다.
+- Primary datum의 title은 실제 측정 field를 따르며 원본 데이터는 그대로 보존한다.
+- Focused 21/21, strict positive/negative TypeScript 1/1, docs:generate 성공.
+- 정상 누적 **2614/2614**, fail/cancelled/skip 0. 기존 ErrorBand의 그림을 바꾸지 않고 추가 companion trace를 반영했다.
+- layoutSeries·Area facade·누적 공동 break·11개 public/primitive 통합은 다음 작업이다. W1/W2 완료로 표시하지 않는다.

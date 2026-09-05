@@ -1,3 +1,4 @@
+import { readAreaEndpoint } from "../../../grammar/areaEndpoints.js";
 import { normalizeRuleDatum } from "../../../grammar/rules.js";
 import {
   findScale,
@@ -17,6 +18,10 @@ export {
 export function resolveConsumerValues(program, consumer) {
   const dataset = requireConsumerDataset(program, consumer);
   if (Object.hasOwn(consumer.encoding, "datum")) {
+    if (consumer.layer.mark.type === "area") {
+      readAreaEndpoint(dataset.values, consumer.encoding, consumer.layer.mark.missing);
+      return [consumer.encoding.datum];
+    }
     return [normalizeRuleDatum(
       consumer.encoding.datum,
       consumer.encoding.fieldType,

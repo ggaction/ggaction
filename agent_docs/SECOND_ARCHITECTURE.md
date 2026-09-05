@@ -2652,3 +2652,11 @@ Roadmap 4에서는 Parallel coordinate가 세 번째 current coordinate family�
 guides를 wrapped child action으로 조립한다. Advanced `encodeParallelCoordinates`는 같은 stored schema와
 materialization lifecycle을 직접 author하며 Canvas/scale/data/filter/selection 변경은 ordinary line path와
 dimension guide를 deterministic plan으로 rematerialize한다.
+
+### Area endpoint와 결측 domain의 단일 해석
+
+`grammar/areaEndpoints.js`는 quantitative field/datum과 raw Area의 error/break 값을 해석한다.
+Position assignment, scale 소비자, path grammar가 이 해석을 공유하며 source rows는 변경하지 않는다.
+`actions/encodings/areaRange.js`는 최종 pair와 scale을 순수 preview한 뒤 기존 wrapped primary/secondary를
+실행한다. `actions/scales/preview.js`의 소비자·domain 계산은 실제 rematerializeScale과 이 preflight가 공유한다.
+Break의 각 closed segment는 원본 row indices를 유지해 selection과 geometry의 grain이 같다.

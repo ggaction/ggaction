@@ -67,13 +67,14 @@ export function applyEncodingScale(
   program,
   definition,
   options = {},
-  { reassignment = false } = {}
+  { reassignment = false, allowTypeChange = false } = {}
 ) {
   const existing = findSemanticScale(program, definition.id);
   if (existing === undefined) {
     return program.createScale(definition);
   }
   if (existing.type !== definition.type) {
+    if (reassignment && allowTypeChange) return program.editScale({ ...definition });
     throw new Error(
       `Scale "${definition.id}" cannot change type from "${existing.type}" to "${definition.type}".`
     );

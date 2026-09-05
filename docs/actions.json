@@ -1759,7 +1759,7 @@
       "layer": "user-facing",
       "domain": "marks",
       "summary": "Create a semantic area mark and empty path collection.",
-      "signature": "createAreaMark(options?: { id?: string; data?: string; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; }): ChartProgram;",
+      "signature": "createAreaMark(options?: { id?: string; data?: string; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; missing?: \"error\" | \"break\"; }): ChartProgram;",
       "intents": [
         "create area mark",
         "create",
@@ -1817,10 +1817,15 @@
           "name": "curve",
           "required": false,
           "type": "CurveInterpolation | undefined"
+        },
+        {
+          "name": "missing",
+          "required": false,
+          "type": "\"break\" | \"error\" | undefined"
         }
       ],
       "callPatterns": [
-        "createAreaMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth?, curve? })"
+        "createAreaMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth?, curve?, missing? })"
       ],
       "snippet": "program.createAreaMark({})",
       "errors": [],
@@ -1960,7 +1965,7 @@
       "layer": "user-facing",
       "domain": "marks",
       "summary": "Edit constant area appearance.",
-      "signature": "editAreaMark(options: { target?: string; fill?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; curve?: CurveInterpolation; }): ChartProgram;",
+      "signature": "editAreaMark(options: { target?: string; fill?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; curve?: CurveInterpolation; missing?: \"error\" | \"break\"; }): ChartProgram;",
       "intents": [
         "edit area mark",
         "edit",
@@ -2010,10 +2015,15 @@
           "name": "curve",
           "required": false,
           "type": "CurveInterpolation | undefined"
+        },
+        {
+          "name": "missing",
+          "required": false,
+          "type": "\"break\" | \"error\" | undefined"
         }
       ],
       "callPatterns": [
-        "editAreaMark({ target?, fill?, opacity?, stroke?, strokeWidth?, curve? })"
+        "editAreaMark({ target?, fill?, opacity?, stroke?, strokeWidth?, curve?, missing? })"
       ],
       "snippet": "program.editAreaMark({ fill: \"#f28e2b\" })",
       "errors": [],
@@ -2227,27 +2237,12 @@
       },
       "options": [
         {
-          "name": "field",
-          "required": false,
-          "type": "string | undefined"
-        },
-        {
           "name": "datum",
           "required": false,
           "type": "unknown"
         },
         {
-          "name": "target",
-          "required": false,
-          "type": "string | undefined"
-        },
-        {
-          "name": "scale",
-          "required": false,
-          "type": "{ id?: string | undefined; } | { id?: string | undefined; } | undefined"
-        },
-        {
-          "name": "coordinate",
+          "name": "field",
           "required": false,
           "type": "string | undefined"
         },
@@ -2257,13 +2252,28 @@
           "type": "\"nominal\" | \"ordinal\" | \"quantitative\" | \"temporal\" | undefined"
         },
         {
+          "name": "target",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "scale",
+          "required": false,
+          "type": "{ id?: string | undefined; } | { id?: string | undefined; } | { id?: string | undefined; } | undefined"
+        },
+        {
+          "name": "coordinate",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
           "name": "temporalUnit",
           "required": false,
-          "type": "TemporalInputUnit | undefined"
+          "type": "undefined"
         }
       ],
       "callPatterns": [
-        "encodeX2({ target?, scale?, coordinate?, field?, datum?, fieldType?, temporalUnit? })"
+        "encodeX2({ target?, scale?, coordinate?, datum?, field?, fieldType?, temporalUnit? })"
       ],
       "snippet": "program.encodeX2({ field: \"x2\" })",
       "errors": [],
@@ -3219,27 +3229,12 @@
       },
       "options": [
         {
-          "name": "field",
-          "required": false,
-          "type": "string | undefined"
-        },
-        {
           "name": "datum",
           "required": false,
           "type": "unknown"
         },
         {
-          "name": "target",
-          "required": false,
-          "type": "string | undefined"
-        },
-        {
-          "name": "scale",
-          "required": false,
-          "type": "{ id?: string | undefined; } | { id?: string | undefined; } | undefined"
-        },
-        {
-          "name": "coordinate",
+          "name": "field",
           "required": false,
           "type": "string | undefined"
         },
@@ -3249,13 +3244,28 @@
           "type": "\"nominal\" | \"ordinal\" | \"quantitative\" | \"temporal\" | undefined"
         },
         {
+          "name": "target",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "scale",
+          "required": false,
+          "type": "{ id?: string | undefined; } | { id?: string | undefined; } | { id?: string | undefined; } | undefined"
+        },
+        {
+          "name": "coordinate",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
           "name": "temporalUnit",
           "required": false,
-          "type": "TemporalInputUnit | undefined"
+          "type": "undefined"
         }
       ],
       "callPatterns": [
-        "encodeY2({ target?, scale?, coordinate?, field?, datum?, fieldType?, temporalUnit? })"
+        "encodeY2({ target?, scale?, coordinate?, datum?, field?, fieldType?, temporalUnit? })"
       ],
       "snippet": "program.encodeY2({ field: \"y2\" })",
       "errors": [],
@@ -3293,16 +3303,6 @@
       },
       "options": [
         {
-          "name": "lower",
-          "required": true,
-          "type": "string"
-        },
-        {
-          "name": "upper",
-          "required": true,
-          "type": "string"
-        },
-        {
           "name": "target",
           "required": false,
           "type": "string | undefined"
@@ -3326,6 +3326,16 @@
           "name": "scale",
           "required": false,
           "type": "NonPointQuantitativePositionScaleOptions | NonPointTemporalPositionScaleOptions | undefined"
+        },
+        {
+          "name": "lower",
+          "required": true,
+          "type": "string | { datum: number; }"
+        },
+        {
+          "name": "upper",
+          "required": true,
+          "type": "string | { datum: number; }"
         }
       ],
       "callPatterns": [
@@ -3367,16 +3377,6 @@
       },
       "options": [
         {
-          "name": "lower",
-          "required": true,
-          "type": "string"
-        },
-        {
-          "name": "upper",
-          "required": true,
-          "type": "string"
-        },
-        {
           "name": "target",
           "required": false,
           "type": "string | undefined"
@@ -3400,6 +3400,16 @@
           "name": "scale",
           "required": false,
           "type": "NonPointQuantitativePositionScaleOptions | NonPointTemporalPositionScaleOptions | undefined"
+        },
+        {
+          "name": "lower",
+          "required": true,
+          "type": "string | { datum: number; }"
+        },
+        {
+          "name": "upper",
+          "required": true,
+          "type": "string | { datum: number; }"
         }
       ],
       "callPatterns": [

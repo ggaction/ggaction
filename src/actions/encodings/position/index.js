@@ -59,7 +59,8 @@ function encodePosition(program, channel, args, operation) {
       value: scale.id
     });
   next = applyEncodingScale(next, scale, requestedScale, {
-    reassignment: previous?.scale === scale.id
+    reassignment: previous?.scale === scale.id,
+    allowTypeChange: layer.mark.type === "area"
   });
   next = rebindPositionGuides(
     next,

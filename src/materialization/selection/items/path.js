@@ -25,7 +25,8 @@ function rowsForSeries(rows, key) {
 
 function seriesDefinitions(layer, rows, series) {
   return series.map(item => {
-    const members = rowsForSeries(rows, item.key);
+    const members = item.sourceIndices === undefined ? rowsForSeries(rows, item.key)
+      : item.sourceIndices.map(index => rows[index]);
     const fields = { ...uniqueFields(members), ...item.key };
     const channels = channelMapFromRow(fields, layer);
     return { fields, channels, members };

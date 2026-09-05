@@ -550,7 +550,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 ## `encodeXRange`
 
 - Signature: `encodeXRange({ lower, upper, target?, fieldType?, coordinate?, scale? })`
-- `lower`, `upper`: required quantitative field names이며 각각 x와 x2가 된다.
+- `lower`, `upper`: Area는 field string 또는 finite datum 객체이며 최소 하나는 field다. Bar/Rect는 field names이고 각각 x와 x2가 된다.
 - Effect: wrapped `encodeX` 뒤 area/bar-compatible `encodeX2`를 호출하는 atomic action이다.
 - Horizontal area는 y independent position 순서로 lower path와 reversed upper path를 연결해 Z-closed
   concrete path를 만들고 ranged bar는 one rect per observed category를 만든다. x/x2는 one shared scale and coordinate를 사용한다.
@@ -1413,3 +1413,11 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 - ✅ Covered: field/value exclusivity, reassignment, automatic and fixed-decimal formatting, missing field,
   invalid format, direct row positions, source point/bar/rule anchors, and order-independent completion.
 - Evidence: `test/unit/actions/marks/text-mark.test.js` and the annotated IMDb Gate pair.
+
+## Area endpoint와 range의 공통 계약
+
+- Implemented: Area의 encodeX/Y/X2/Y2는 quantitative field 또는 finite datum 중 하나를 받는다. Primary datum은 aggregate/bin/stack/temporalUnit과 함께 쓸 수 없다. 독립 위치는 field이며 두 datum endpoint는 오류다.
+- encodeXRange/encodeYRange의 lower/upper는 field string 또는 `{datum:number}`다. 최소 하나는 field. 최종 두 endpoint와 scale로 preflight한 뒤 companion semantics와 wrapped primary/secondary를 기록한다. 이전 endpoint의 log-zero 같은 중간 충돌은 최종 유효 range를 막지 않는다.
+- 자동 domain에 두 endpoint를 포함한다. Explicit domain/clamp/reverse는 기존 정책이며 primary datum의 axis title은 측정 field인 secondary를 따른다.
+- missing:error는 strict, break는 null/undefined 측정 endpoint만 제외하며 유효 연속점 2개 이상의 closed segment를 만든다. 독립 위치/그룹/NaN/Infinity는 오류다. 각 segment 선택 항목은 그 segment의 원본 행만 참조한다.
+- Evidence: test/unit/actions/encodings/area-endpoints.test.js. 두 방향, field↔datum, 최종 log range, 가짜 field 없음, 결측 segmentation/selection, resize와 immutable rejection.

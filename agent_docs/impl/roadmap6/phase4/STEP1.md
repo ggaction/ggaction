@@ -12,6 +12,7 @@
 - [x] Primitive target용 비시각 semantic leaves와 closed vocabulary 검증
 - [x] V1 Area/layout primitive 11개 작성·수치·PNG 검증 및 검토 문서 준비
 - [x] V1의 명시적 시각 승인 — “승인한다”, 기준 102fbee9
+- [x] W1 lower endpoint/missing/range 구현 — focused 21/21, strict types 1/1, 정상 누적 2614/2614
 - [ ] R6-P4-W1 Area baseline/range와 facade
 - [ ] R6-P4-W2 Color와 독립한 layout assignment
 - [ ] R6-P4-W3 Rose와 Radial bar

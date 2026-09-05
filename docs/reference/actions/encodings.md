@@ -69,7 +69,7 @@ It requires an existing x and shares its scale and coordinate.
 encodeYRange({ lower, upper, target?, fieldType?, coordinate?, scale? })
 ```
 
-Atomically compose area or ranged-bar `encodeY` and `encodeY2`.
+Atomically compose area or ranged-bar `encodeY` and `encodeY2`. Area bounds accept field strings or `{ datum: number }`, with at least one field. Final endpoints and scale are validated together.
 [Encodings](../../api/encodings.md)
 
 ## `encodeXRange`
@@ -78,7 +78,7 @@ Atomically compose area or ranged-bar `encodeY` and `encodeY2`.
 encodeXRange({ lower, upper, target?, fieldType?, coordinate?, scale? })
 ```
 
-Atomically compose area or ranged-bar `encodeX` and `encodeX2`.
+Atomically compose area or ranged-bar `encodeX` and `encodeX2`. Area bounds accept field strings or `{ datum: number }`, with at least one field.
 [Encodings](../../api/encodings.md)
 
 ## `encodeGroup`

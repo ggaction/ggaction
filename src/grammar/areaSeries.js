@@ -12,6 +12,8 @@ import { stableOrderPathValues } from "./pathOrder.js";
 import { deriveCategoricalDensitySeries } from "./categoricalDensity.js";
 import { validatePathSeriesAppearance } from "./pathSeries.js";
 
+import { readAreaEndpoint, validateAreaEndpointPair } from "./areaEndpoints.js";
+
 function indexSegments(segments) {
   const indexed = [];
   for (const segment of segments) indexed[segment.index] = segment;
@@ -44,12 +46,13 @@ export function deriveAreaSeries(rows, layer) {
   const independentValues = independent.fieldType === "temporal"
     ? readTemporalField(rows, independent.field, independent.temporalUnit)
     : readQuantitativeField(rows, independent.field);
-  const lower = vertical
-    ? readQuantitativeField(rows, y.field)
-    : readQuantitativeField(rows, x.field);
-  const upper = vertical
-    ? readQuantitativeField(rows, y2.field)
-    : readQuantitativeField(rows, x2.field);
+  if (Object.hasOwn(independent, "datum")) throw new Error("Area independent position requires a field.");
+  const primary = vertical ? y : x;
+  const secondary = vertical ? y2 : x2;
+  validateAreaEndpointPair(primary, secondary);
+  const missing = layer.mark.missing ?? "error";
+  const lower = readAreaEndpoint(rows, primary, missing);
+  const upper = readAreaEndpoint(rows, secondary, missing);
   const pathOrder = layer.encoding?.pathOrder;
   const orderValues = pathOrder === undefined
     ? undefined
@@ -68,11 +71,13 @@ export function deriveAreaSeries(rows, layer) {
           x: independentValues[index],
           y: lower[index],
           y2: upper[index],
+          ...(missing === "break" ? { sourceIndex: index } : {}),
           ...(orderValues === undefined ? {} : { pathOrder: orderValues[index] })
         }
       : {
           x: lower[index],
           x2: upper[index],
+          ...(missing === "break" ? { sourceIndex: index } : {}),
           y: independentValues[index],
           ...(orderValues === undefined ? {} : { pathOrder: orderValues[index] })
         });
@@ -81,7 +86,7 @@ export function deriveAreaSeries(rows, layer) {
   if (groups.size === 0) {
     throw new Error(`Area mark "${layer.id}" has no values.`);
   }
-  const series = [...groups.values()].map(item => {
+  const series = [...groups.values()].flatMap(item => {
     const key = vertical ? "x" : "y";
     const values = pathOrder === undefined
       ? item.values.sort((left, right) => left[key] - right[key])
@@ -90,6 +95,22 @@ export function deriveAreaSeries(rows, layer) {
           item.values.map(value => value.pathOrder),
           pathOrder.order
         );
+    if (missing === "break") {
+      const segments = [];
+      let segment = [];
+      const emit = () => {
+        if (segment.length >= 2) segments.push({ key: item.key,
+          sourceIndices: segment.map(value => value.sourceIndex),
+          values: segment.map(({ sourceIndex, ...value }) => value) });
+        segment = [];
+      };
+      for (const value of values) {
+        if ((vertical ? value.y == null || value.y2 == null : value.x == null || value.x2 == null)) emit();
+        else segment.push(value);
+      }
+      emit();
+      return segments;
+    }
     if (values.length < 2) {
       throw new Error(
         `Area series on mark "${layer.id}" requires at least two points.`
@@ -97,6 +118,7 @@ export function deriveAreaSeries(rows, layer) {
     }
     return { key: item.key, values };
   });
+  if (series.length === 0) throw new Error(`Area mark "${layer.id}" has no valid segment with at least two points.`);
   return cloneAndFreeze({
     orientation,
     xValues: series.flatMap(item => item.values.flatMap(value =>
