@@ -25,6 +25,7 @@ const LOADERS = Object.freeze({
 });
 
 const EXPECTED_DRAW_ORDER = Object.freeze({
+  "pie-plot": ["canvas", "pie", "colorLegendSymbols", "colorLegendLabels", "colorLegendTitle"],
   "temporal-input": [
     "canvas", "horizontalGridLines", "events",
     "xAxisLine", "xAxisTicks", "xAxisLabels", "xAxisTitle",

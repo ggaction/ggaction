@@ -1797,6 +1797,21 @@ reconcile한다. Concrete type이나 cardinality가 바뀌어 stable node를 교
 Aggregate action은 user-facing intent를 concise하게 표현하되 기존 wrapped child를 실제로
 호출한다.
 
+### Complete Pie
+
+```text
+createPiePlot
+├─ createArcMark
+├─ encodeTheta(category count | explicit weighted sum)
+├─ encodeColor?
+└─ compatible categorical guide fulfillment
+```
+
+Full-only H0가 source와 역할을 명시해 기존 owner를 조합한다. Partition 계산·sector membership·geometry는
+기존 Arc/theta owner에 남고 별도 chart state나 compiler가 없다. Donut은 같은 Arc의 inner radius이며,
+편집은 lower mark·encoding·scale·guide action이 맡는다. 정확한 계약은
+[Complete chart facades](contract/current/COMPLETE_CHARTS.md#createpieplot)를 따른다.
+
 ### Histogram
 
 ```text

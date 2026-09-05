@@ -137,6 +137,25 @@ createHistogram({ id?, data?, coordinate?, field, maxBins?, binStep?, binBoundar
 Create a bar layer with atomic bin and count encodings. Exactly one bin mode may
 be specified. [Basic Charts](../../api/basic-charts.md#createhistogram)
 
+## `createPiePlot`
+
+```javascript
+createPiePlot({ id?, data?, coordinate?, category, value?, aggregate?, color?, arc?, guides? })
+```
+
+Create one sector per category in the full package. `category` is required and
+defaults to nominal count, including numeric categories. For weights, provide
+both `value` and `aggregate: "sum"`; values must be finite and nonnegative with
+a positive total. Color defaults to the category. Use `color: false` for a
+scalar `arc.fill`; otherwise each slice must resolve to one categorical color.
+
+`arc.innerRadius` is a radius ratio in [0,1), and `arc.padAngle` is in degrees.
+Use these options for a donut. `guides` defaults to a color legend with no axes
+or grid; `guides: false` skips guide creation. Explicit axes/grid requests must
+be false. A zero-weight category may remain in the color legend without a sector.
+The default id is `piePlot`. Edit with `editArcMark`, theta/color encodings,
+scales and legend actions. [Pie and donut tutorial](../../tutorials/polar-arcs.md#complete-pie-and-donut-plots)
+
 ## `createHeatmap`
 
 ```javascript

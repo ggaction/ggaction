@@ -5,9 +5,6 @@ import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import { createCanvas, loadImage } from "@napi-rs/canvas";
 import { chart, render } from "../../../../src/index.js";
-import { visualVariants as pie } from "../../../../test/gates/pie-plot/manifest.js";
-import { visualVariants as density } from "../../../../test/gates/density-plot/manifest.js";
-import { visualVariants as horizon } from "../../../../test/gates/horizon-plot/manifest.js";
 import { assertRenderedPNG } from "../../../../test/support/png.js";
 import { displayedActionCalls } from "../../../../test/support/visual-variants.js";
 import { createMockCanvasContext } from "../../../../test/support/canvas.js";
@@ -23,6 +20,9 @@ assert.equal(git("rev-parse", "HEAD:types"), "25e66ad6bb83ea1481194255e3521d5f29
 for (const action of ["createPiePlot", "createDensityPlot", "createHorizonPlot"]) {
   assert.equal(typeof chart()[action], "undefined", `${action} is still a Planned contract`);
 }
+const { visualVariants: pie } = await import("../../../../test/gates/pie-plot/manifest.js");
+const { visualVariants: density } = await import("../../../../test/gates/density-plot/manifest.js");
+const { visualVariants: horizon } = await import("../../../../test/gates/horizon-plot/manifest.js");
 const digest = value => createHash("sha256").update(value).digest("hex");
 const hashValue = value => digest(JSON.stringify(value));
 const escape = value => String(value).replaceAll("&", "&amp;").replaceAll("<", "&lt;")

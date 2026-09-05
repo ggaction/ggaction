@@ -1965,6 +1965,30 @@ export type CreateHistogramOptions = BasicHistogramEncoding & {
   guides?: false | CartesianCategoricalGuideOptions;
 };
 
+export type PieCategory = string | {
+  field: string;
+  fieldType?: "nominal" | "ordinal";
+  scale?: Pick<ThetaScaleOptions, "id" | "domain" | "range" | "reverse"> & { type?: "band" };
+};
+export type PieColor = string | {
+  field: string;
+  fieldType?: "nominal" | "ordinal";
+  scale?: NonPointCategoricalColorScaleOptions;
+  palette?: Palette;
+};
+export type PieLegendOptions = Omit<FilledMarkLegendOptions, "count" | "gradient" | "channels"> & {
+  channels?: readonly ["color"];
+};
+export type CreatePiePlotOptions = {
+  id?: string;
+  data?: string;
+  coordinate?: string;
+  category: PieCategory;
+  color?: false | PieColor;
+  arc?: { innerRadius?: number; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number };
+  guides?: false | { axes?: false; grid?: false; legend?: false | PieLegendOptions };
+} & ({ value?: never; aggregate?: "count" } | { value: string; aggregate: "sum" });
+
 export interface HeatmapBaseOptions {
   id?: string;
   data?: string;
@@ -2851,6 +2875,7 @@ export class ChartProgram {
   createLinePlot(options: CreateLinePlotOptions): ChartProgram;
   createBarPlot(options: CreateBarPlotOptions): ChartProgram;
   createHistogram(options: CreateHistogramOptions): ChartProgram;
+  createPiePlot(options: CreatePiePlotOptions): ChartProgram;
   createHeatmap(options: CreateHeatmapOptions): ChartProgram;
   createParallelCoordinates(options: CreateParallelCoordinatesOptions): ChartProgram;
   removeMark(options?: RemoveMarkOptions): ChartProgram;

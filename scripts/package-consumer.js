@@ -882,6 +882,29 @@ async function testTypeScriptConsumer(directory) {
     } from "ggaction/basic";
 
     const program: ChartProgram = chart().createCanvas({ width: 100, height: 100 });
+    program.createPiePlot({ category: "category" });
+    program.createPiePlot({ category: { field: "category", scale: { domain: ["B", "A"], reverse: true } },
+      value: "value", aggregate: "sum", arc: { innerRadius: 0.55, padAngle: 2 }, guides: { axes: false, grid: false } });
+    const pieOptions: import("ggaction").CreatePiePlotOptions = { category: "category", color: false, arc: { fill: "red" } };
+    program.createPiePlot(pieOptions).editArcMark({ target: "piePlot", innerRadius: 0.2 });
+    // @ts-expect-error Pie is full-only.
+    basicChart().createPiePlot({ category: "category" });
+    // @ts-expect-error A pie requires its category role.
+    program.createPiePlot({});
+    // @ts-expect-error A weighted pie requires explicit sum.
+    program.createPiePlot({ category: "category", value: "value" });
+    // @ts-expect-error Count cannot receive a weight field.
+    program.createPiePlot({ category: "category", value: "value", aggregate: "count" });
+    // @ts-expect-error Sum requires a weight field.
+    program.createPiePlot({ category: "category", aggregate: "sum" });
+    // @ts-expect-error Category theta has a band scale.
+    program.createPiePlot({ category: { field: "category", scale: { type: "linear" } } });
+    // @ts-expect-error Pie guides cannot create axes.
+    program.createPiePlot({ category: "category", guides: { axes: {} } });
+    // @ts-expect-error Pie legends describe categorical color.
+    program.createPiePlot({ category: "category", guides: { legend: { channels: ["size"] } } });
+    // @ts-expect-error Pie color has no area layout option.
+    program.createPiePlot({ category: "category", color: { field: "category", layout: "stack" } });
     program.createPointMark({ stroke: false });
     program.createBarMark({ stroke: false });
     program.createRectMark({ stroke: false });

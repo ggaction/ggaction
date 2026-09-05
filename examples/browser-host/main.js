@@ -39,7 +39,7 @@ async function loadExampleData(definition) {
   ));
 }
 
-const id = new URLSearchParams(window.location.search).get("chart");
+const id = new URLSearchParams(window.location.search).get("chart") ?? document.body.dataset.chart;
 const example = PUBLIC_CHARTS.find(candidate => candidate.id === id);
 if (example === undefined) throw new Error(`Unknown browser chart "${id}".`);
 

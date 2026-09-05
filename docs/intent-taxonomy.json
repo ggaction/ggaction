@@ -123,8 +123,8 @@
     { "id": "action.createAreaChart", "kind": "action", "name": "createAreaMark", "order": 40, "anchors": ["chart.area"], "covers": ["chart.area"], "baseOptions": {} },
     { "id": "action.createStripChart", "kind": "action", "name": "createPointMark", "order": 40, "anchors": ["chart.strip"], "covers": ["chart.strip"], "baseOptions": {} },
     { "id": "action.createHorizonChart", "kind": "action", "name": "encodeHorizon", "order": 50, "anchors": ["chart.horizon"], "covers": ["chart.horizon"], "baseOptions": { "x": "\"x\"", "y": "\"y\"" } },
-    { "id": "action.createPieChart", "kind": "action", "name": "createArcMark", "order": 40, "anchors": ["chart.pie"], "covers": ["chart.pie"], "baseOptions": { "innerRadius": "0" } },
-    { "id": "action.createDonutChart", "kind": "action", "name": "createArcMark", "order": 40, "anchors": ["chart.donut"], "covers": ["chart.donut"], "baseOptions": { "innerRadius": "0.5", "padAngle": "1" } },
+    { "id": "action.createPieChart", "kind": "action", "name": "createPiePlot", "order": 40, "anchors": ["chart.pie"], "covers": ["chart.pie", "encoding.color", "guide.legend"], "baseOptions": { "category": "\"category\"" } },
+    { "id": "action.createDonutChart", "kind": "action", "name": "createPiePlot", "order": 40, "anchors": ["chart.donut"], "covers": ["chart.donut", "encoding.color", "guide.legend"], "baseOptions": { "category": "\"category\"", "arc": "{ innerRadius: 0.55, padAngle: 2 }" } },
     { "id": "action.createRoseChart", "kind": "action", "name": "createArcMark", "order": 40, "anchors": ["chart.rose"], "covers": ["chart.rose"], "baseOptions": { "padAngle": "1", "opacity": "0.9" } },
     { "id": "action.createRadarChart", "kind": "action", "name": "createLineMark", "order": 40, "anchors": ["chart.radar"], "covers": ["chart.radar"], "baseOptions": { "closed": "true" } },
 

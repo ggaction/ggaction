@@ -18,7 +18,6 @@
     ],
     "charts": [
       { "type": "prefix", "path": "charts/" },
-      { "type": "prefix", "path": "gates/pie-plot/" },
       { "type": "prefix", "path": "gates/density-plot/" },
       { "type": "prefix", "path": "gates/horizon-plot/" }
     ],

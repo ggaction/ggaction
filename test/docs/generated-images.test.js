@@ -94,8 +94,9 @@ test("keeps the generated Getting Started image aligned with its exact program",
 test("keeps generated mark-selection tutorial images canonical and fresh", () => {
   const tutorial = read("docs/tutorials/mark-selection.md");
 
-  assert.equal(tutorialImages.length, 3);
-  for (const { id, width, height } of tutorialImages) {
+  const selectionImages = tutorialImages.filter(({ id }) => id.startsWith("mark-selection-"));
+  assert.equal(selectionImages.length, 3);
+  for (const { id, width, height } of selectionImages) {
     assertPng(id, width, height);
     assertThumbnail(id, width, height);
     assert.match(tutorial, new RegExp(`assets/images/${id}\\.png`));

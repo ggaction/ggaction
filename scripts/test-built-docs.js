@@ -264,7 +264,7 @@ try {
       "/ggaction/accessibility/",
       "/ggaction/reference/runtime/"
     ]],
-    ["pie chart", ["/ggaction/tutorials/polar-arcs/"]]
+    ["pie chart", ["/ggaction/tutorials/polar-arcs/", "/ggaction/reference/actions/charts-data/"]]
   ]) {
     await search.fill(query);
     await results.first().waitFor({ state: "visible" });

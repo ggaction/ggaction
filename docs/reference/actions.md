@@ -58,6 +58,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createLineMark`](./actions/marks.md#createlinemark) | user-facing | marks |
 | [`createLinePlot`](./actions/charts-data.md#createlineplot) | user-facing | charts |
 | [`createParallelCoordinates`](./actions/charts-data.md#createparallelcoordinates) | user-facing | charts |
+| [`createPiePlot`](./actions/charts-data.md#createpieplot) | user-facing | charts |
 | [`createPointMark`](./actions/marks.md#createpointmark) | user-facing | marks |
 | [`createRadialAxis`](./actions/guides.md#createradialaxis) | user-facing | axes |
 | [`createRadialGrid`](./actions/guides.md#createradialgrid) | user-facing | grid |

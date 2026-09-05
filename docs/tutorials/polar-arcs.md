@@ -10,6 +10,39 @@ theta field directly to proportional sectors, aggregate categorical theta by
 count or weighted sum, or combine categorical theta bands with a quantitative
 radius for rose charts and radial bars.
 
+## Complete pie and donut plots
+
+{% include chart-example.html id="pie-plot" %}
+
+Use `createPiePlot` for a complete category count or explicitly weighted pie.
+This is the count variant of the canonical `examples/pie-plot/program.js`:
+
+```javascript
+import { chart, render } from "ggaction";
+
+const program = chart()
+  .createCanvas({ width: 1000, height: 700, margin: 150 })
+  .createData({ id: "source", values: [
+    { category: "A", value: 2 }, { category: "A", value: 3 },
+    { category: "B", value: 5 }
+  ] })
+  .createPiePlot({ id: "pie", category: "category" });
+
+render(program, document.querySelector("canvas").getContext("2d"));
+```
+
+A occupies 240° and B 120° because count uses source rows. To sum the `value`
+field, replace the last chart action with
+`createPiePlot({ id: "pie", category: "category", value: "value", aggregate: "sum" })`;
+the totals are then 5 and 5. Add `arc: { innerRadius: 0.55, padAngle: 2 }` to that
+call for the canonical donut variant. The hole and padding do not change those totals.
+
+The facade requires a category even for numeric category labels. It defaults
+to a category color legend without axes or grid. For one fill color, set
+`color: false` and `arc: { fill: "#4c78a8" }`. The full package provides this
+action; it is not part of `ggaction/basic`. The lower actions below remain
+available for direct row weights, rose charts and independent editing.
+
 ## Map values directly into a pie
 
 When each row already contains one category and its final numeric value, pass

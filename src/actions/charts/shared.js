@@ -104,6 +104,10 @@ export function normalizeAppearance(value, supported, label) {
   return { ...value };
 }
 
+export function omitUndefinedOptions(value) {
+  return Object.fromEntries(Object.entries(value).filter(([, option]) => option !== undefined));
+}
+
 export function normalizeTargetOptions(value, label) {
   if (value === undefined) return undefined;
   if (!isPlainObject(value)) {

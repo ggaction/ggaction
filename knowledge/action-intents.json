@@ -28,6 +28,7 @@
     "primitives": ["extension primitive", "low-level authoring"]
   },
   "termAliases": {
+    "PiePlot": ["pie plot", "pie chart", "donut chart", "doughnut chart", "category proportions"],
     "Canvas": ["canvas", "chart size", "plot bounds"],
     "Data": ["dataset", "rows"],
     "DensityData": ["kernel density data", "KDE"],
@@ -163,6 +164,7 @@
     "editGraphics": "Sets a concrete graphic property or removes a top-level graphic resource inside an extension action."
   },
   "sampleOverrides": {
+    "createPiePlot": { "category": "category" },
     "editRuleMark": { "stroke": "#334155" },
     "encodeGroup": { "field": "country" },
     "filterData": {
@@ -269,6 +271,7 @@
     "encodeText": { "field": "label" }
   },
   "callPatternOverrides": {
+    "createPiePlot": ["createPiePlot({ category })", "createPiePlot({ category, value, aggregate: \"sum\", arc? })"],
     "encodeGroup": ["encodeGroup({ field, target?, fieldType? })", "encodeGroup({ fields: [first, ...rest], target?, fieldType? })"],
     "createBoxPlot": ["createBoxPlot({ x, y, guides? })", "createBoxPlot({ id?, data? })"],
     "createGradientPlot": ["createGradientPlot({ x, y, guides? })", "createGradientPlot({ id?, data? })"],

@@ -3,34 +3,14 @@
 상태: **Planned / accepted / NOT IMPLEMENTED**. 2026-09-05 사용자의 “승인한다”는
 [고정된 Phase 3 A 계약](https://github.com/ggaction/ggaction/blob/bd18718a9c1aed5f91b485bc1aeab54616e9e5a3/agent_docs/impl/roadmap6/phase3/CONTRACT_REVIEW.md)의
 P3-C01–C07 승인이다. 승인 기준 HEAD는 `0f3531ae9c242190df9457b1ed4289491963ba77`이다.
-이 파일은 세 신규 direct action의 활성 Planned owner다. 정확한 승인 signature·기본값·오류·하위 chain·
+이 파일은 남은 두 신규 direct action의 활성 Planned owner다. 정확한 승인 signature·기본값·오류·하위 chain·
 stored-result·migration·consumer matrix는 아래의 고정 chart 계약을 함께 적용한다.
 
-세 facade는 full `ggaction` 전용이며 Basic에는 추가하지 않는다. 아직 public runtime/declaration에는 없고,
-primitive 시각 목표 승인을 받은 뒤 public flow를 구현한다. 현재 guide/math/mark/renderer owner를 재사용하며
+세 facade는 full `ggaction` 전용이며 Basic에는 추가하지 않는다. 아래 두 action은 public runtime/declaration에 없으며,
+승인된 primitive 시각 목표에 맞춰 public flow를 구현한다. 현재 guide/math/mark/renderer owner를 재사용하며
 새 mark family·통계 default·semantic cache·renderer branch를 만들지 않는다.
 
-## `createPiePlot`
-
-승인 계약: [Pie / Donut](https://github.com/ggaction/ggaction/blob/bd18718a9c1aed5f91b485bc1aeab54616e9e5a3/agent_docs/impl/roadmap6/chart/pie-donut.md).
-
-`createPiePlot({ id?, data?, coordinate?, category, value?, aggregate?, color?, arc?, guides? })`.
-Lifecycle은 Aggregate create-only이며 default id는 `piePlot`이다.
-
-- Category는 string 또는 `{field, fieldType?:nominal|ordinal, scale?}`. Numeric shorthand도 nominal이다.
-- Value 없음은 count, value field가 있으면 `aggregate:"sum"` 필수. Count+value, sum-without-value는 오류다.
-- Nonnegative finite weights만 허용한다. 0-total sector는 생략하지만 color-domain legend에는 남을 수 있다.
-  Negative/missing/nonfinite weight와 all-zero denominator는 오류다.
-- Color 생략은 category, false는 field color 없음. 별도 field는 각 final slice 안에서 유일해야 한다.
-  Explicit scalar `arc.fill`과 field color가 함께 있으면 오류다.
-- Arc innerRadius는 [0,1)의 radius 비율, padAngle은 nonnegative degrees다. Count/sum과 radius는 별도 의미다.
-- Guide 생략/{}는 axes/grid 없이 category color legend를 확보한다. Axes/grid는 false만 허용한다.
-  Guides:false는 기존 guide 제거가 아니라 이 호출의 guide 확보 생략이다.
-- `createArcMark → encodeTheta → encodeColor? → existing guide fulfillment` 계층을 사용한다.
-  Donut은 `arc.innerRadius`로 작성하며 별도 `createDonutPlot` alias를 추가하지 않는다.
-- Semantic은 raw source와 theta/category/aggregate/weight/scale/coordinate/color 관계다. Share cache는 신설하지 않는다.
-  Graphic은 ordinary concrete path collection이다.
-- `editArcMark`, theta/color assignment, scale·legend editor가 편집 owner다. Labels/new theta order는 후속 범위다.
+Pie/Donut은 [Current owner](../current/COMPLETE_CHARTS.md#createpieplot)로 구현·검증과 함께 이관했다.
 
 ## `createDensityPlot`
 
@@ -79,7 +59,7 @@ Data는 explicit/current/unique, coordinate는 explicit/bound/unique/family defa
 모호한 resource를 첫 번째로 고르지 않는다. Resolved data를 mark child에 명시해 다른 mark의 encodings를 상속하지 않는다.
 Caller 입력과 이전 program/trace를 보존한다. Unknown options, missing required roles, conflicting guide/scale는 오류다.
 
-현재 세 action의 runtime/type/effect coverage는 미구현이다. A의 lower baseline 52건·관련 existing tests 176건은
+남은 두 action의 runtime/type/effect coverage는 미구현이다. A의 lower baseline 52건·관련 existing tests 176건은
 재사용할 owner의 근거이며 신규 API coverage가 아니다. Primitive 9개 확인 뒤 public/primitive exact graphics·
 draw order·Canvas calls·decoded pixels, numeric oracle, lifecycle/consumer·strict types·package·docs를 검증한다.
 Implemented 승격 시 Current owner로 이관하고 각 Planned index entry를 제거한다.

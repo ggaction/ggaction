@@ -182,12 +182,12 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`createParallelCoordinates`](current/BASIC_CHARTS.md#createparallelcoordinates) | charts | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createRectMark`](current/MARKS.md#createrectmark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editRectMark`](current/MARKS.md#editrectmark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`createPiePlot`](current/COMPLETE_CHARTS.md#createpieplot) | charts | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
 
 ## Planned direct actions
 
 | Action | Readiness | Contract |
 | --- | --- | --- |
-| `createPiePlot` | accepted | [Open](planned/COMPLETE_CHARTS.md#createpieplot) |
 | `createDensityPlot` | accepted | [Open](planned/COMPLETE_CHARTS.md#createdensityplot) |
 | `createHorizonPlot` | accepted | [Open](planned/COMPLETE_CHARTS.md#createhorizonplot) |
 

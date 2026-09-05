@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { visualVariants } from "./manifest.js";
 import { referenceSectors, rows, targets } from "./reference-values.js";
-import { displayedActionCalls } from "../../support/visual-variants.js";
+import { displayedActionCalls, assertDisplayedProgram } from "../../support/visual-variants.js";
 
 for (const variant of visualVariants) {
   test(`authors ${variant.variant} sectors with independently calculated angles and paths`, () => {
@@ -33,10 +33,10 @@ for (const variant of visualVariants) {
     assert.equal(p.markConfigs.pie.innerRadius, variant.variant === "donut" ? 0.55 : 0);
     assert.deepEqual(p.trace.children.map(c => c.op), ["createCanvas", "createData", "createArcMark", "encodeTheta", "encodeColor", "createGuides"]);
   });
-  test(`records the exact future ${variant.variant} facade call without executing it`, () => {
+  test(`records the exact displayed ${variant.variant} facade call`, () => {
     const calls = displayedActionCalls(variant.callChain);
     assert.deepEqual(calls.map(c => c.op), ["createCanvas", "createData", "createPiePlot"]);
     assert.deepEqual(calls.at(-1).args, targets[variant.variant]);
-    assert.equal(variant.userFacing, undefined);
+    assertDisplayedProgram(variant, variant.userFacing());
   });
 }

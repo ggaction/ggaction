@@ -1,6 +1,6 @@
 # Roadmap 6 — Pie / Donut
 
-**상태: R6-P3-A approved / Planned·미구현.** 아래 `createPiePlot`은 승인된 계약이며 Current API가 아니다.
+**상태: A/V approved / Pie public flow 구현.** 현재 API의 canonical owner는 [Current 계약](../../../contract/current/COMPLETE_CHARTS.md#createpieplot)이다. Phase 3 X는 아직 승인 전이다.
 [Phase 3 계약 검토](../phase3/CONTRACT_REVIEW.md)의 P3-C01–C03·C06–C07을 적용한다.
 연결 항목 F01·D05·D13·D14, owner [Phase 3 W1](../phase3/GOAL.md).
 
@@ -10,7 +10,7 @@ Category별 count 또는 nonnegative weighted sum의 부분-전체 관계다. Do
 독립 `createDonutPlot` alias는 추가하지 않고 검색의 donut/doughnut 동의어를 같은 facade로 연결한다.
 
 ~~~typescript
-// Planned; not yet exported.
+// Full ggaction entry; not included in ggaction/basic.
 type PieCategory = string | {
   field: string;
   fieldType?: "nominal" | "ordinal";
@@ -144,9 +144,9 @@ Public top-level trace는 createPiePlot 한 번이며 실제 child args와 하�
 
 ## V target 계획과 수치 oracle
 
-같은 values와 Canvas 1000×700, margin 150을 [단일 manifest](../../../../test/gates/pie-plot/manifest.js)에 고정했다.
-[실행한 primitive](../../../../test/gates/pie-plot/primitive.program.js)는 기존 Arc/theta/color/guide 액션을 명시적으로 조합한다.
-신규 facade는 아직 미구현이며, 독립 sector oracle로 각도·비율·concrete path commands를 검증한다.
+같은 values와 Canvas 1000×700, margin 150을 [단일 manifest](../../../../test/charts/pie-plot/manifest.js)에 고정했다.
+[실행한 primitive](../../../../test/charts/pie-plot/primitive.program.js)는 기존 Arc/theta/color/guide 액션을 명시적으로 조합한다.
+구현한 facade와 같은 실행의 graphics·Canvas calls·decoded pixels가 일치한다. 독립 sector oracle로 각도·비율·concrete path commands도 검증한다.
 
 | Variant | 제안 public call (base 뒤) | 독립 의미 oracle |
 | --- | --- | --- |
@@ -156,6 +156,6 @@ Public top-level trace는 createPiePlot 한 번이며 실제 child args와 하�
 
 One-category full ring, zero/negative/all-zero, missing category, typed numeric category, same-category color conflict,
 reversed sweep·explicit domain, guide conflict/reuse는 비시각 acceptance에 포함한다.
-V 승인 뒤 구현한 public과 primitive의 같은 실행 graphics/Canvas calls/decoded pixels를 비교한다.
+승인된 세 public/primitive 쌍의 같은 실행 graphics/Canvas calls/decoded pixels를 비교했다.
 이 단계에서 label on·new theta order까지 실행했다는 완료 주장은 금지한다.
 [52건 baseline](../phase3/baseline-results.json)의 P01–P19와 [consumer matrix](../phase3/VALIDATION.md)를 함께 적용한다.

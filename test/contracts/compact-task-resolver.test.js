@@ -94,7 +94,8 @@ test("chart packets either materialize their chart or expose the missing decisio
     { x: 3, y: 4, value: 4, category: "C", series: "one" }
   ];
   for (const [query, kind, count, unresolved] of [
-    ["pie chart", "arc", 2, []],
+    ["pie chart", "arc", 3, []],
+    ["donut chart", "arc", 3, []],
     ["density plot", "area", 1, []],
     ["rose chart", "arc", 2, []],
     ["radial bar chart", "arc", 2, []],
@@ -163,7 +164,7 @@ test("intent taxonomy covers every supported constraint with exact owners", asyn
   const validate = new Ajv2020({ strict: true }).compile(schema);
   assert.equal(validate(taxonomy), true, JSON.stringify(validate.errors));
   assert.deepEqual(validateResolverKnowledge(), {
-    cards: 174,
+    cards: cards.count,
     constraints: 90,
     providers: 84,
     supported: 85,
@@ -187,7 +188,7 @@ test("intent taxonomy covers every supported constraint with exact owners", asyn
       family
     );
   }
-  assert.equal(cards.count, 174);
+  assert.equal(cards.count, cards.cards.length);
 
   const declarationByRuntime = {
     hconcat: "index.d.ts",
@@ -640,11 +641,7 @@ test("reports concrete options, placeholders, and unsupported requirements witho
     'program.encodeX({ field: "value", fieldType: "quantitative" })'
   ]);
   const pie = searchGgaction("pie chart");
-  assert.deepEqual(pie.exactCalls.slice(0, 3), [
-    'program.createArcMark({ innerRadius: 0 })',
-    'program.encodeTheta({ field: "value", fieldType: "quantitative" })',
-    'program.encodeColor({ field: "category" })'
-  ]);
+  assert.deepEqual(pie.exactCalls, ['program.createPiePlot({ category: "category" })']);
   const canvas = searchGgaction("scatter plot as canvas");
   assert.equal(canvas.exactCalls.at(-1), "render(program, context)");
   assert.equal(canvas.placeholderBindings.some(entry => entry.name === "context"), true);

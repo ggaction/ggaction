@@ -618,3 +618,19 @@
   gallery_featured: true
   url: /tutorials/mark-selection/
   tutorial_order: 130
+
+- id: pie-plot
+  example: /examples/pie-plot/
+  title: Category pie chart
+  image: /assets/images/pie-plot.png
+  alt: Pie chart with category A occupying two thirds and category B one third
+  width: 2000
+  height: 1400
+  thumbnail: /assets/images/pie-plot-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 448
+  caption: Two rows in A and one in B produce 240 and 120 degree sectors.
+  summary: Create a complete category pie or explicitly weighted donut with one action.
+  actions: createPiePlot
+  tasks: part-to-whole
+  url: /tutorials/polar-arcs/#complete-pie-and-donut-plots

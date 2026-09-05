@@ -3170,20 +3170,27 @@
         "file": "agent_docs/contract/current/MARKS.md",
         "anchor": "editrectmark"
       }
+    },
+    {
+      "name": "createPiePlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "status": "implemented",
+      "lifecycle": "Aggregate create-only",
+      "update": "`editArcMark`, theta/color encodings, scale and legend actions",
+      "audit": "Intentional",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "anchor": "createpieplot"
+      }
     }
   ],
   "plannedActions": [
-    {
-      "name": "createPiePlot",
-      "status": "planned",
-      "readiness": "accepted",
-      "layer": "user-facing",
-      "domain": "charts",
-      "contract": {
-        "file": "agent_docs/contract/planned/COMPLETE_CHARTS.md",
-        "anchor": "createpieplot"
-      }
-    },
     {
       "name": "createDensityPlot",
       "status": "planned",

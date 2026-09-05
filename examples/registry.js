@@ -1,3 +1,4 @@
+import { createPieExample } from "./pie-plot/program.js";
 import { createTemporalInput } from "./temporal-input/program.js";
 import { createCarsBoxPlot } from "./cars-box-plot/program.js";
 import { createSeriesIdentity } from "./series-identity/program.js";
@@ -94,6 +95,12 @@ function example({ id, data, width, height, createProgram, ...options }) {
 }
 
 export const PUBLIC_CHARTS = Object.freeze([
+  example({
+    id: "pie-plot", data: {}, width: 1000, height: 700, docsGroup: "tutorials",
+    createProgram: () => createPieExample(),
+    browser: { path: "pie-plot/", canvas: "#chart",
+      state: { global: "__ggactionExample", expected: { id: "pie-plot", width: 1000, height: 700 } } }
+  }),
   example({
     id: "temporal-input", data: {}, width: 760, height: 420,
     createProgram: () => createTemporalInput(),

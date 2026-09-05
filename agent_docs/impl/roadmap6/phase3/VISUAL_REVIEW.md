@@ -2,8 +2,7 @@
 
 ## 검토 상태와 승인 범위
 
-**R6-P3-A와 R6-P3-V는 승인되었다.** 2026-09-05 사용자가 “승인한다”로 아래 9개 target과 호출을 승인했다. 승인된 세 계약을 Planned에 등록했으며
-Current는 174개, Planned는 3개다. 신규 `createPiePlot`·`createDensityPlot`·`createHorizonPlot`은 아직 구현하지 않았다.
+**R6-P3-A와 R6-P3-V는 승인되었다.** 2026-09-05 사용자가 “승인한다”로 아래 9개 target과 호출을 승인했다. 아래는 V 승인 당시의 snapshot이다(Current 174 / Planned 3, public 미구현). 구현 진척은 [STEP1](STEP1.md)을 따른다.
 
 [전체 검토 화면](../../../../.artifacts/roadmap6-authoring/phase3-visual-review.html)은 9개 이미지마다
 **구현할 정확한 public 호출**과 **현재 실행한 primitive source**를 함께 표시한다.
@@ -44,7 +43,7 @@ folded [0,1] y축이나 internal band color legend를 생성하지 않는다.
 
 | Chart | 단일 manifest와 정확한 public call | 실제 primitive | 독립 reference / normal test |
 | --- | --- | --- | --- |
-| Pie/Donut | [manifest.js](../../../../test/gates/pie-plot/manifest.js) | [primitive.program.js](../../../../test/gates/pie-plot/primitive.program.js) | [reference](../../../../test/gates/pie-plot/reference-values.js) · [tests](../../../../test/gates/pie-plot/primitive.test.js) |
+| Pie/Donut | [manifest.js](../../../../test/charts/pie-plot/manifest.js) | [primitive.program.js](../../../../test/charts/pie-plot/primitive.program.js) | [reference](../../../../test/charts/pie-plot/reference-values.js) · [tests](../../../../test/charts/pie-plot/primitive.test.js) |
 | Density | [manifest.js](../../../../test/gates/density-plot/manifest.js) | [primitive.program.js](../../../../test/gates/density-plot/primitive.program.js) | [reference](../../../../test/gates/density-plot/reference-values.js) · [tests](../../../../test/gates/density-plot/primitive.test.js) |
 | Horizon | [manifest.js](../../../../test/gates/horizon-plot/manifest.js) | [primitive.program.js](../../../../test/gates/horizon-plot/primitive.program.js) | [reference](../../../../test/gates/horizon-plot/reference-values.js) · [tests](../../../../test/gates/horizon-plot/primitive.test.js) |
 
@@ -95,6 +94,8 @@ semantic/graphic/Canvas/pixel equality, strict declaration, installed consumer�
 
 PNG의 text rasterization은 native 환경에 의존한다. JSON에 Node/platform/arch를 기록했고
 같은 실행의 public/primitive decoded pixel equality는 구현 뒤 별도로 확인한다.
+
+Pie 실행 소스 링크는 승인 후 이전한 stable owner를 가리킨다. 승인 당시의 정확한 파일과 hash는 위 primitive commit과 `visual-results.json`에 보존했다.
 
 ## 재현
 

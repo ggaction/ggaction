@@ -343,7 +343,8 @@
           "scope": "Category count와 explicit weighted sum의 createPiePlot을 제안한다. Donut은 arc.innerRadius로 작성하고 별도 alias는 추가하지 않는 방향이다. Color는 category 기본, guide는 legend만이며 labels/theta order는 후속 단계다.",
           "acceptance": "category count·중복 category sum·donut hole·no axes/grid·하위 edit chain이 chart 계약과 일치. Facade-child semantic/graphic 동등성.",
           "contractEvidence": "phase3/CONTRACT_REVIEW.md",
-          "status": "visual-approved-awaiting-implementation"
+          "status": "implemented-and-verified",
+          "resultEvidence": "phase3/RESULTS.md#w1--pie-and-donut"
         },
         {
           "id": "R6-P3-W2",
@@ -1438,8 +1439,9 @@
       "recommended": "Category count와 explicit weighted sum의 createPiePlot을 제안한다. Donut은 arc.innerRadius로 작성하고 별도 alias는 추가하지 않는 방향이다. Color는 category 기본, guide는 legend만이며 labels/theta order는 후속 단계다.",
       "acceptance": "category count·중복 category sum·donut hole·no axes/grid·하위 edit chain이 chart 계약과 일치. Facade-child semantic/graphic 동등성.",
       "evidence": "audit/REPORT.md: F01",
-      "disposition": "phase3-contract-approved-awaiting-visual-target",
-      "contractEvidence": "phase3/CONTRACT_REVIEW.md"
+      "disposition": "implemented-verified-awaiting-phase-exit",
+      "contractEvidence": "phase3/CONTRACT_REVIEW.md",
+      "resultEvidence": "phase3/RESULTS.md#w1--pie-and-donut"
     },
     {
       "id": "F02",

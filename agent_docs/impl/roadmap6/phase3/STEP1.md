@@ -13,13 +13,13 @@
 - [x] V 검토 문서·정확한 호출·이미지와 source 증거 작성
 - [x] V package 원격 ref 고정
 - [x] V 명시적 사용자 승인
-- [ ] R6-P3-W1 Pie/Donut public flow와 lower lifecycle
+- [x] R6-P3-W1 Pie/Donut public flow와 lower lifecycle
 - [ ] R6-P3-W2 Density public flow와 lower lifecycle
 - [ ] R6-P3-W3 Horizon public flow와 lower lifecycle
 - [ ] Same-run public/primitive parity·누적 검증·문서·원장 동기화
 - [ ] X package commit/push와 명시적 사용자 승인 기록
 
-A 승인과 primitive 작성·검증을 완료했다. V를 승인받았으며 새 API 구현·X 승인은 아직 남아 있다.
+A/V 승인 뒤 Pie/Donut의 public flow·lower lifecycle·package·문서 검증을 완료했다. Density/Horizon 구현과 전체 X 승인은 남아 있다. [구현 결과](RESULTS.md)를 따른다.
 [계약 검토](CONTRACT_REVIEW.md), [시각 검토](VISUAL_REVIEW.md), [Gate](GATES.md), [검증](VALIDATION.md)가 현재 evidence를 소유한다.
 
 ## 실행 순서와 경계
@@ -53,3 +53,5 @@ A 승인과 primitive 작성·검증을 완료했다. V를 승인받았으며 �
 - 승인된 세 계약은 Planned에 등록했다. 9개 primitive의 normal 19건·PNG 9건이 통과했고 public flow는 V 승인 뒤 구현한다.
 - Density grid는 현행 y축 기준임을 명시했다. Horizon V fixture는 band가 구분되도록 2점에서 7점으로 구체화했고 기존 baseline은 보존했다.
 - V package `1f7debaab66856597deaf8a039648ce23b123e41`를 원격 branch에 push했다. 2026-09-05 사용자가 V를 승인했다. 신규 public flow 구현을 시작한다.
+
+- W1 구현: Current 175 / Planned 2. Pie 48/48, contracts 260/260, PNG 3/3와 SVG/PDF 3/3, example browser 1/1, installed package exit 0. Source docs 47/47, built 124 pages, desktop/320/390/768px browser 검사 통과. Full gzip 234,970 / Basic 124,897 / SVG 6,418 bytes.

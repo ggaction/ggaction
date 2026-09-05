@@ -868,5 +868,10 @@
     "operation": "edit",
     "layer": "user-facing",
     "domain": "marks"
+  },
+  "createPiePlot": {
+    "operation": "create",
+    "layer": "user-facing",
+    "domain": "charts"
   }
 }

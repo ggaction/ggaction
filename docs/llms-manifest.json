@@ -137,6 +137,7 @@
       "source": "tutorials/polar-arcs.md",
       "headings": [
         "polar-arc-tutorial",
+        "complete-pie-and-donut-plots",
         "map-values-directly-into-a-pie",
         "count-a-category-into-a-donut",
         "complete-program",
@@ -146,8 +147,8 @@
         "editing-an-arc",
         "related"
       ],
-      "bytes": 6930,
-      "sha256": "f3758a2aca3611efaa4749c4f78839af7e689d294aa0cc3c157b64b38e25bea7"
+      "bytes": 8283,
+      "sha256": "16cb1e85327bc76c47b49911c6b9d140b7aa9eb095dc875341a8e9c1e9765135"
     },
     {
       "order": 10,
@@ -1773,8 +1774,8 @@
         "action-reference",
         "exact-action-lookup"
       ],
-      "bytes": 18624,
-      "sha256": "a6e58a78980e4a2229fe95034aa799dc8166eb134f218aeb24d35bd1a0ea2ba3"
+      "bytes": 18717,
+      "sha256": "f7036d5a83966dc31fd2440e0c5660b888de53e156e582a7a0a75b35797cc5cf"
     },
     {
       "order": 114,
@@ -1796,6 +1797,7 @@
         "createlineplot",
         "createbarplot",
         "createhistogram",
+        "createpieplot",
         "createheatmap",
         "createparallelcoordinates",
         "filterdata",
@@ -1810,8 +1812,8 @@
         "editbin2ddata",
         "related"
       ],
-      "bytes": 8941,
-      "sha256": "ec9f4c8041b940593e2ae352b6c5de745109fcc852acf0e8b6165121a2c7cd27"
+      "bytes": 9974,
+      "sha256": "e758e59f882fba912a72f343ad831ecaa35be7f802328ec1bb583a4f7bc0e8c9"
     },
     {
       "order": 115,
@@ -2024,8 +2026,8 @@
         "exact-typescript-signatures",
         "related"
       ],
-      "bytes": 14275,
-      "sha256": "e52abde0e3df1a9b24c7c42f53156dadaf2d14c7d7c1242e5d990588c5064a06"
+      "bytes": 14337,
+      "sha256": "9c7502891de26825c835639e8e1471772e6b7d5369e40cb3be9d46c7c9967bec"
     },
     {
       "order": 123,

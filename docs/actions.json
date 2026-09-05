@@ -3,7 +3,7 @@
   "packageVersion": "0.0.12",
   "typeSource": "types/program.d.ts",
   "errorPolicy": "An empty errors array means the compact card has no curated error override; consult the canonical route for validation, inference, and recovery behavior.",
-  "count": 174,
+  "count": 175,
   "cards": [
     {
       "schemaVersion": 2,
@@ -12217,6 +12217,91 @@
       "snippet": "program.editRectMark({ fill: \"#f28e2b\" })",
       "errors": [],
       "route": "/reference/actions/marks/#editrectmark"
+    },
+    {
+      "schemaVersion": 2,
+      "name": "createPiePlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "summary": "Create one sector per category in the full package.",
+      "signature": "createPiePlot(options: CreatePiePlotOptions): ChartProgram;",
+      "intents": [
+        "create pie plot",
+        "create",
+        "add",
+        "complete chart",
+        "chart facade",
+        "pie plot",
+        "pie chart"
+      ],
+      "lifecycle": "Aggregate create-only",
+      "resources": {
+        "prerequisites": [
+          "canvas and dataset context"
+        ],
+        "owns": [
+          "pie plot"
+        ],
+        "idOptions": [
+          "id",
+          "data",
+          "coordinate"
+        ]
+      },
+      "options": [
+        {
+          "name": "id",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "data",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "coordinate",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "category",
+          "required": true,
+          "type": "PieCategory"
+        },
+        {
+          "name": "color",
+          "required": false,
+          "type": "false | PieColor | undefined"
+        },
+        {
+          "name": "arc",
+          "required": false,
+          "type": "{ innerRadius?: number | undefined; padAngle?: number | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: string | undefined; strokeWidth?: number | undefined; } | undefined"
+        },
+        {
+          "name": "guides",
+          "required": false,
+          "type": "false | { axes?: false | undefined; grid?: false | undefined; legend?: false | PieLegendOptions | undefined; } | undefined"
+        },
+        {
+          "name": "value",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "aggregate",
+          "required": false,
+          "type": "\"count\" | \"sum\" | undefined"
+        }
+      ],
+      "callPatterns": [
+        "createPiePlot({ category })",
+        "createPiePlot({ category, value, aggregate: \"sum\", arc? })"
+      ],
+      "snippet": "program.createPiePlot({ category: \"category\" })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#createpieplot"
     }
   ]
 }

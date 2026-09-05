@@ -1,6 +1,6 @@
 # R6-P3-A — Pie/Donut·Density·Horizon 계약 검토
 
-상태: **approved contract / 미구현**. 2026-09-05 사용자가 Phase 3 A 승인 질문에 “승인한다”라고 답했다.
+상태: **approved contract**. 아래는 A 당시의 계약 제안 기록이며 현재 구현 진척은 [STEP1](STEP1.md)을 따른다. 2026-09-05 사용자가 Phase 3 A 승인 질문에 “승인한다”라고 답했다.
 검토 package `bd18718a9c1aed5f91b485bc1aeab54616e9e5a3`, 승인 기준 HEAD `0f3531ae9c242190df9457b1ed4289491963ba77`의 P3-C01–C07을 승인했다.
 승인된 세 action을 [Planned owner](../../../contract/planned/COMPLETE_CHARTS.md)에 등록했다.
 범위는 F01·F06·F07이며 F20은 제외한다. 원격 검토 ref와 승인 상태는 [GATES.md](GATES.md)가 소유한다.
@@ -125,7 +125,7 @@ V 대상은 Pie count/weighted/donut 3종, Density vertical/grouped/horizontal 3
 Horizon signed/temporal/baseline+style edit 3종의 **9개 target**이다.
 A 검토 package에는 새 primitive render나 미래 public API 실행 결과가 없었다.
 A 승인 뒤 실제 source/manifest/images를 작성·검증했으며 [V 검토](VISUAL_REVIEW.md)에 정확한 values·dimensions·public call과
-기존 Density grid의 명확화·Horizon 7점 fixture를 기록했다. 새 public API는 아직 미구현이다.
+기존 Density grid의 명확화·Horizon 7점 fixture를 기록했다. 이 V 준비 시점의 새 public API는 미구현이었다.
 
 V 승인 뒤 public flow를 연결하고, 같은 실행의 concrete graphicSpec·draw order·Canvas calls·decoded PNG pixels와
 독립 numeric oracle를 비교한다. 유효한 Horizon empty는 별도 numeric acceptance로 검증해 plot-ink 판정을 우회하지 않는다.

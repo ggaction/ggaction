@@ -12,6 +12,7 @@
   "createLinePlot": "/reference/actions/charts-data/#createlineplot",
   "createBarPlot": "/reference/actions/charts-data/#createbarplot",
   "createHistogram": "/reference/actions/charts-data/#createhistogram",
+  "createPiePlot": "/reference/actions/charts-data/#createpieplot",
   "createHeatmap": "/reference/actions/charts-data/#createheatmap",
   "createParallelCoordinates": "/reference/actions/charts-data/#createparallelcoordinates",
   "filterData": "/reference/actions/charts-data/#filterdata",

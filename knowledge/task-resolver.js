@@ -529,17 +529,6 @@ function closeRuntimeDependencies(entries) {
   expandChartConstraint("chart.horizon", () => ({
     before: [chartDependency("createAreaMark", { id: `"horizon"` })]
   }));
-  for (const constraint of ["chart.pie", "chart.donut"]) {
-    expandChartConstraint(constraint, () => ({
-      after: [
-        chartDependency("encodeTheta", {
-          field: `"value"`,
-          fieldType: `"quantitative"`
-        }),
-        chartDependency("encodeColor", { field: `"category"` })
-      ]
-    }));
-  }
   expandChartConstraint("chart.rose", () => ({
     after: [
       chartDependency("encodeTheta", {

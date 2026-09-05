@@ -210,6 +210,12 @@ Select, filter, and emphasize final point, bar, and line items.
 
 Representative actions: `selectMarks`, `highlightMarks`. [Documentation](https://ggaction.github.io/ggaction/tutorials/mark-selection/).
 
+### [Category pie chart](./pie-plot/)
+
+Create a complete category pie or explicitly weighted donut with one action.
+
+Representative actions: `createPiePlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/polar-arcs/#complete-pie-and-donut-plots).
+
 ## Development fixtures
 
 Other directories under `examples/` support focused browser, package, and

@@ -39,7 +39,7 @@ V는 2026-09-05 사용자 “승인한다”로 approved, X는 planned다. 허�
 - A 이후 명확화: Density 자동 grid는 두 orientation 모두 현행 y축 기준 horizontal.
   Horizon V 입력은 band 구분을 위해 2점에서 7개 관측값으로 구체화했다. 기존 2점 baseline과 production 의미는 유지했다.
 - Artifact: `.artifacts/test/png/review/<chart>/<variant>/`와 generated variant.json.
-- 현재: accepted Planned 3개 / Current 174개, 신규 public API 미구현. Public parity 미실행.
+- V 승인 당시: accepted Planned 3개 / Current 174개, 신규 public API 미구현. 당시 public parity 미실행. 이후 구현은 [STEP1](STEP1.md)을 따른다.
 - Source/types: A에서 검증한 tree와 동일. Full/Basic/SVG ceilings 변경 없음.
 - 승인 효과: 확인한 variant의 public action flow 구현만 연다.
 - 승인 전 차단: 새 public flow와 primitive/public equality 완료 선언. 독립 target 수정은 별도 V 검토한다.
