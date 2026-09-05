@@ -1990,7 +1990,9 @@ export function searchGgaction(query) {
     appliedOptions: requested.appliedOptions,
     placeholderBindings: placeholderBindings(entries, requested.appliedOptions),
     unmatchedRequirements: negation
-      ? unique(query.trim().match(/[\s\S]{1,180}/g))
+      ? (query.trim().length <= 180
+          ? [query.trim()]
+          : query.trim().match(/[\s\S]{1,176}/g).map((part, index) => `${index + 1}. ${part}`))
       : requested.unmatchedRequirements,
     authoring: authoringBlock(entries),
     unsupported,

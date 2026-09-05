@@ -27,7 +27,8 @@ test("retains exclusions without proposing contradictory actions or facade defau
     "scatter plot, no unknown feature",
     "scatter plot with neither axes nor grid",
     "scatter plot without axes but with a legend",
-    `scatter plot without ${"optional decoration ".repeat(23)}`
+    `scatter plot without ${"optional decoration ".repeat(23)}`,
+    `scatter plot without ${"x".repeat(470)}`
   ]) {
     const packet = searchGgaction(query);
     assert.equal(validate(packet), true, JSON.stringify(validate.errors));
@@ -36,7 +37,10 @@ test("retains exclusions without proposing contradictory actions or facade defau
     assert.deepEqual(packet.authoring.steps, [], query);
     assert.deepEqual(packet.appliedOptions, [], query);
     assert.deepEqual(packet.matchedConstraints, [], query);
-    assert.equal(packet.unmatchedRequirements.join(""), query.trim(), query);
+    const retained = query.trim().length <= 180
+      ? packet.unmatchedRequirements.join("")
+      : packet.unmatchedRequirements.map(part => part.replace(/^\d+\. /, "")).join("");
+    assert.equal(retained, query.trim(), query);
     assert.deepEqual(packet.unresolved.map(entry => entry.constraint), ["request.negation"]);
     assert.ok(docsFallbackResources(packet).length > 0);
     assert.ok(taskPacketBytes(packet) <= 6144);
