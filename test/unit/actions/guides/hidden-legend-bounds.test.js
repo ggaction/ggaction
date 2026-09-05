@@ -33,3 +33,31 @@ test("hidden inline opacity titles do not reserve text width or title gap", () =
     assert.deepEqual(long.graphicSpec, short.graphicSpec);
   }
 });
+
+test("hidden categorical titles contribute no height, inline gap or legacy border space", () => {
+  for (const kind of ["color", "series"]) for (const position of ["left", "right", "top", "bottom", "legacy-bottom"]) {
+    let src = chart().createCanvas({ width: 1000, height: 800, margin: 250 })
+      .createData({ values: [{ x: 0, y: 0, g: "A" }, { x: 10, y: 10, g: "B" }] })
+      .createPointMark().encodeX({ field: "x" }).encodeY({ field: "y" });
+    src = kind === "color" ? src.encodeColor({ field: "g" }) : src.encodeShape({ field: "g" });
+    for (const border of [false, true]) {
+      const options = { position: position === "legacy-bottom" ? "bottom" : position,
+        layout: position === "legacy-bottom" ? position : "edge", border };
+      const visible = src.createLegend(options), hidden = visible.editLegend({ title: false });
+      const styled = hidden.editLegend({ titleStyle: { fontSize: 1000 } });
+      assert.deepEqual(styled.graphicSpec, hidden.graphicSpec);
+      assert.equal(styled.guideConfigs.legend[kind].titleStyle.fontSize, 1000);
+      const before = JSON.stringify(styled);
+      assert.throws(() => styled.editLegend({ title: "auto" }), /margin|Canvas/, `${kind}/${position}/border:${border}`);
+      assert.equal(JSON.stringify(styled), before);
+      assert.deepEqual(hidden.editLegend({ title: "auto" }).graphicSpec, visible.graphicSpec);
+      assert.deepEqual(styled.editCanvas({ width: 1100 }).graphicSpec, hidden.editCanvas({ width: 1100 }).graphicSpec);
+      assert.deepEqual(styled.editScale({ id: "x", domain: [-5, 15] }).graphicSpec,
+        hidden.editScale({ id: "x", domain: [-5, 15] }).graphicSpec);
+      if (["top", "bottom"].includes(position)) {
+        assert.deepEqual(hidden.editLegend({ titlePosition: "left" }).graphicSpec, hidden.graphicSpec);
+        assert.deepEqual(styled.editLegend({ titlePosition: "left" }).graphicSpec, hidden.graphicSpec);
+      }
+    }
+  }
+});

@@ -25,6 +25,7 @@
 - [x] W2 C2 combined categorical+size 네 방향 group·큰 label/title gap·creation order #97 — [검증](RESULTS_W2_COMBINED_EDGES.md)
 - [x] W2 C2 공통 same-edge collision과 title-first bordered legend #98/#99 — [검증](RESULTS_W2_GUIDE_COLLISIONS.md)
 - [x] W2 C2 compatible gradient↔interval 네 edge transition #100 — [검증](RESULTS_W2_COLOR_TRANSITIONS.md)
+- [x] W2 C2 hidden categorical title 공간과 legacy 복원 #101 — [검증](RESULTS_W2_HIDDEN_CATEGORICAL.md)
 - [ ] W2 C2 나머지 occupied alignment와 통합 matrix
 - [ ] R6-P5-W3 Final-item labels·reference·common format
 - [ ] R6-P5-W4 Program theme와 local override

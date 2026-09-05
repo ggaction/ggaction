@@ -248,7 +248,7 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 | Entry | Gzip ceiling |
 | --- | ---: |
 | `ggaction` | 254,000 bytes |
-| `ggaction/basic` | 140,000 bytes |
+| `ggaction/basic` | 141,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 
 이 값은 current executable regression ceiling이며 측정 결과 자체가 아니다. Canonical numeric owner는
@@ -1757,7 +1757,7 @@ axis와 grid만 선택하므로 theta-only count arc가 radial guide를 합성�
 항목형 범례의 pure content→edge owner `layout/legendItems.js`는 formatted labels와 sample dimensions를 받아
 측정 후 single-edge 좌표를 반환한다. 기존 categorical grid 측정을 공유하며 interval, size와 stroke-width가 소비한다.
 Scale/format/appearance 검증은 family action에 남고 multi-block placement는 기존 lane owner가 final
-concrete bounds를 소비한다. Hidden continuous title은 실제 occupied bounds에 포함하지 않는다.
+concrete bounds를 소비한다. Hidden title은 실제 occupied bounds에 포함하지 않는다. Categorical grid도 hidden title의 높이와 inline gap을 제외하고 legacy-bottom border는 visible item bounds를 사용한다.
 Size는 categorical 내부 좌표 계산에 의존하지 않고 실제 circle bounds와 sample slot을 제공한다. Side lane은 각 block의 요구 간격을 포함한 공통 label column과 nested border bounds를 소유한다. Horizontal 결합은 pure group layout이 independent block을 먼저 pack하고 outer lane이 그 결과를 atomic block으로 배치한다. Nested border와 두 title을 함께 이동하며 size 자체 layout config는 보존한다. Same-edge collision은 공통 최종 상태 검증으로 수렴한다. 전체 occupied alignment/transition matrix는 아직 진행 중이다.
 
 Categorical creation와 content revision의 공통 owner는 `actions/guides/legends/lifecycle.js`다.

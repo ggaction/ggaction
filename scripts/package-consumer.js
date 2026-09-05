@@ -593,6 +593,11 @@ async function testNodeConsumer(directory) {
     assert.deepEqual(editedContent.editLegend({ channels: ["shape"] }).guideConfigs.legend.series.channels, ["shape"]);
     assert.match(renderToSVG(editedContent), /<svg /);
     const hiddenContent = legendContentBase.createLegend({ count: 3 }).editLegend({ title: false });
+    const hiddenCategorical = legendContentBase.editCanvas({ width: 1200, height: 1000, margin: 300 })
+      .createLegend({ channels: ["color"], position: "bottom", border: true }).editLegend({ title: false });
+    assert.deepEqual(hiddenCategorical.editLegend({ titleStyle: { fontSize: 1000 }, titlePosition: "left" }).graphicSpec,
+      hiddenCategorical.graphicSpec);
+    assert.equal(hiddenCategorical.graphicSpec.objects.colorLegendBackground.properties.height, 36);
     const partialContent = hiddenContent.removeLegend({ channels: ["shape"] });
     assert.deepEqual(partialContent.guideConfigs.legend.color.channels, ["color"]);
     assert.equal(partialContent.guideConfigs.legend.color.titleVisible, false);

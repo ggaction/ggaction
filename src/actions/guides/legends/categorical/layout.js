@@ -131,11 +131,13 @@ function resolveLeftLayout(bounds, canvas, config, width, count) {
 function resolveGridLayout(bounds, canvas, config, width, count, top) {
   const { cells, columnWidths, gridWidth, gridHeight, rowHeight } =
     resolveLegendGrid(config, width, count);
-  const inlineTitle = config.titlePosition === "left";
-  const titleWidth = config.titleVisible === false
+  const titleVisible = config.titleVisible !== false;
+  const inlineTitle = titleVisible && config.titlePosition === "left";
+  const titleWidth = !titleVisible
     ? 0
     : measureLegendTextWidth(config.title, config.titleStyle);
-  const titleGap = inlineTitle ? 20 : 12;
+  const titleHeight = titleVisible ? config.titleStyle.fontSize : 0;
+  const titleGap = titleVisible ? (inlineTitle ? 20 : 12) : 0;
   const totalWidth = inlineTitle
     ? titleWidth + titleGap + gridWidth
     : Math.max(titleWidth, gridWidth);
@@ -151,14 +153,14 @@ function resolveGridLayout(bounds, canvas, config, width, count, top) {
     : start + (totalWidth - gridWidth) / 2;
   const gridTop = top
     ? edge - gridHeight
-    : inlineTitle ? edge : edge + config.titleStyle.fontSize + titleGap;
+    : inlineTitle ? edge : edge + titleHeight + titleGap;
   const blockTop = top
     ? inlineTitle
       ? Math.min(
           gridTop,
-          edge / 2 + gridTop / 2 - config.titleStyle.fontSize / 2
+          edge / 2 + gridTop / 2 - titleHeight / 2
         )
-      : gridTop - titleGap - config.titleStyle.fontSize
+      : gridTop - titleGap - titleHeight
     : edge;
   const blockBottom = top ? edge : gridTop + gridHeight;
   if (top) {
@@ -191,8 +193,8 @@ function resolveGridLayout(bounds, canvas, config, width, count, top) {
   const titleY = inlineTitle
     ? gridTop + gridHeight / 2
     : top
-      ? gridTop - titleGap - config.titleStyle.fontSize / 2
-      : blockTop + config.titleStyle.fontSize / 2;
+      ? gridTop - titleGap - titleHeight / 2
+      : blockTop + titleHeight / 2;
   let background;
   if (config.border !== false) {
     background = {
@@ -244,17 +246,23 @@ function resolveCompactBottomLayout(bounds, canvas, config, width, count) {
   const itemY = Array(count).fill(canvas.height - 28);
   const titleX = start + totalWidth / 2;
   const titleY = canvas.height - 52;
-  if (titleY <= bounds.y + bounds.height) {
+  const maxHeight = Math.max(config.labels.fontSize, measureLegendSymbolHeight(config));
+  const itemTop = itemY[0] - maxHeight / 2;
+  if ((config.titleVisible === false ? itemTop : titleY) <= bounds.y + bounds.height) {
     throw new Error("Legend layout requires more bottom-margin space.");
+  }
+  if (config.titleVisible !== false) {
+    assertLegendBoundsInsideCanvas(
+      [textBounds(titleX, titleY, config.title, config.titleStyle, "center")],
+      canvas,
+      "Legacy bottom legend title"
+    );
   }
   let background;
   if (config.border !== false) {
-    const maxHeight = Math.max(
-      config.labels.fontSize,
-      measureLegendSymbolHeight(config)
-    );
     const x = start - config.border.padding;
-    const y = titleY - config.titleStyle.fontSize / 2 - config.border.padding;
+    const y = (config.titleVisible === false ? itemTop : titleY - config.titleStyle.fontSize / 2)
+      - config.border.padding;
     background = {
       x,
       y,

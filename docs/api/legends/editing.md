@@ -38,7 +38,10 @@ legend does not move it into the edge grid. Switch explicitly with
 `editLegendLayout({ layout: "edge" })`; changing a legacy legend to another
 position also requires `layout: "edge"` in that edit. A string title becomes explicit, `title: "auto"` restores field-name
 inference, and `title: false` hides the concrete title without discarding the
-stored semantic title. Gradient and opacity legends accept only their
+stored semantic title. A hidden categorical title contributes no height or inline
+gap to the grid or border. Changing its stored text style leaves the visible
+legend unchanged; restoration checks that the visible title fits. Legacy-bottom
+sample positions stay fixed, with a border around the visible items. Gradient and opacity legends accept only their
 kind-compatible options. Interval legends support all four positions and
 `layout: "edge"`; top/bottom grids also accept alignment, direction, columns
 and inline titles. Side positions require vertical flow, center alignment,

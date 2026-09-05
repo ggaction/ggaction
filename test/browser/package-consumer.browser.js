@@ -279,6 +279,10 @@ test.before(async () => {
         .editLegend({ channels: ["color", "size"], count: 3 })
         .editLegend({ labels: { fontWeight: 700 } });
       const hiddenContent = legendContentBase.createLegend({ count: 3 }).editLegend({ title: false });
+      const hiddenCategorical = legendContentBase.editCanvas({ width: 1200, height: 1000, margin: 300 })
+        .createLegend({ channels: ["color"], position: "bottom", border: true }).editLegend({ title: false });
+      const hiddenStyled = hiddenCategorical.editLegend({ titleStyle: { fontSize: 1000 }, titlePosition: "left" });
+      render(hiddenStyled, document.getElementById("legend-content").getContext("2d"));
       const partialContent = hiddenContent.removeLegend({ channels: ["shape"] });
       render(intervalTop, document.getElementById("legend-content").getContext("2d"));
       const bottomLegendBase = chart().createCanvas({ width: 640, height: 600,
@@ -328,6 +332,8 @@ test.before(async () => {
         guideRejects,
         guideOrder,
         transitionEdges,
+        hiddenCategorical: [hiddenStyled.graphicSpec.objects.colorLegendBackground.properties.height,
+          renderToSVG(hiddenStyled) === renderToSVG(hiddenCategorical)],
         combinedSVG: renderToSVG(horizontalCombined).startsWith("<svg "),
         combinedTitlesAligned: horizontalCombined.graphicSpec.objects.colorLegendTitle.properties.y === horizontalCombined.graphicSpec.objects.sizeLegendTitle.properties.y,
         combinedContentSVG: renderToSVG(colorSizeContent).startsWith("<svg "),
@@ -464,6 +470,7 @@ test("imports and renders the packed browser entries", async () => {
     guideRejects: 4,
     guideOrder: [true, true],
     transitionEdges: ["left", "right", "top", "bottom"].map(position => [position, position, true, true, true]),
+    hiddenCategorical: [36, true],
     combinedSVG: true,
     combinedTitlesAligned: true,
     combinedContentSVG: true,
