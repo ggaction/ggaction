@@ -16,8 +16,10 @@ npm run test:realistic
 ```
 
 CI and the release preflight cache the verified corpus by the corpus manifest
-hash and fetch it on a cache miss. Coverage still includes both the default and
-realistic suites, so `npm run test:coverage` also requires the local corpus.
+hash and fetch it on a cache miss. `npm run test:coverage` instruments the default
+suite and does not require the corpus. Run both `npm run test:coverage` and
+`npm run test:realistic`: source coverage and realistic corpus sweeps are separate
+validation gates, and neither replaces the other.
 
 Every suite launched through `scripts/run-tests.js` runs at most four test files
 concurrently, independent of the host CPU count. The limit does not change the
