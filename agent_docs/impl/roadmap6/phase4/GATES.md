@@ -2,9 +2,9 @@
 
 ## 공통 상태
 
-A는 approved다. V/V1/V2/V3/X는 planned이며 시각 목표와 결과 승인은 아직 없다.
+A는 approved다. V1은 ready-for-review이며 V/V2/V3/X는 planned다. 시각 목표와 결과 승인은 아직 없다.
 허용 상태는 planned | ready-for-review | approved | changes-requested다.
-이번 검토 대상은 [CONTRACT_REVIEW.md](CONTRACT_REVIEW.md)의 P4-C01–C09다. Phase 3 X 승인을 재사용하지 않는다.
+현재 검토 대상은 [V1 검토 묶음](VISUAL_REVIEW_V1.md)의 11개 Area/layout primitive다. A 승인과 Phase 3 X 승인을 V1 승인으로 재사용하지 않는다.
 
 ## R6-P4-A — Contract and scope
 
@@ -29,10 +29,10 @@ A는 approved다. V/V1/V2/V3/X는 planned이며 시각 목표와 결과 승인�
 
 ### 독립 V 범위
 
-- R6-P4-V1: planned. Area/baseline/range/missing/layout 11 variants.
+- R6-P4-V1: ready-for-review. [Area/baseline/range/missing/layout 11 variants](VISUAL_REVIEW_V1.md).
 - R6-P4-V2: planned. Rose/Radial mapping·theta/legend order 5 variants.
 - R6-P4-V3: planned. Midpoint·scale/legend transition 4 variants.
-- 각 대상의 입력·미래 호출·수치 oracle는 [target plan](visual-target-plan.json)에 고정했다. 아직 primitive source/image는 없다.
+- V1의 입력·미래 호출은 [실행 fixture](../../../../test/gates/area-layout/targets.json), source·표현은 [manifest](../../../../test/gates/area-layout/manifest.js)가 소유한다. [수치·렌더 결과](visual-v1-results.json)를 기록했다. V2/V3 9개는 [target plan](visual-target-plan.json)에 남아 있다.
 - Parent V는 세 범위 모두 승인된 뒤에만 approved로 기록한다. 한 V 승인이 다른 V의 public 구현을 열지 않는다.
 
 ## R6-P4-X — Result and closeout
@@ -61,3 +61,10 @@ A는 approved다. V/V1/V2/V3/X는 planned이며 시각 목표와 결과 승인�
 - Full/Basic/SVG 상한 237000/125000/25000 유지. 초과 시 별도 B가 필요하며 이번 A에는 상한 증가가 없다.
 
 실행 시 실제 증거를 채운다. 문서 작성 날짜나 이전 로드맵 승인을 이 Gate의 승인으로 재사용하지 않는다.
+
+## V1 검토 준비
+
+- 검토 문서: [VISUAL_REVIEW_V1.md](VISUAL_REVIEW_V1.md).
+- 범위: Area 9개, 색상 없는 Bar layout 2개. 원본 데이터 유지, endpoint datum, closed segment, layout.mode 저장과 실제 PNG.
+- Focused 20/20, discovery 포함 33/33, 정상 누적 2608/2608, PNG 11/11. 실제 renderer는 graphicSpec만 소비한다. Public action flow와 roundtrip 실행은 아직 없다.
+- V1 승인 효과: W1/W2의 해당 public flow 구현·전환/실패/소비자 검증을 연다. V2/V3와 X는 별도 미승인으로 유지한다.

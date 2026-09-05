@@ -196,7 +196,7 @@ Color에서 독립한 layout 전환, theta category order, diverging midpoint와
 의미 owner로 정리한다. 기존 결과를 조용히 재해석하지 않는다.
 
 Phase 4 A 검토는 [P4-C01–C09](phase4/CONTRACT_REVIEW.md), [새 4개 후보](phase4/candidates.json),
-[49건 재현·200 tests·V 계획](phase4/VALIDATION.md)을 포함한다. A는 승인되었으며 primitive 시각 목표를 준비한다.
+[49건 재현·200 tests·V 계획](phase4/VALIDATION.md)을 포함한다. A는 승인되었으며 [V1의 11개 primitive 시각 목표](phase4/VISUAL_REVIEW_V1.md)를 렌더·검증했다. V1은 검토 준비 상태이고 V2/V3는 계획 상태다.
 
 ## Phase 5 — Guides, labels and appearance
 

@@ -461,4 +461,10 @@ Primary owner는 누락 방지를 위한 책임 단위이며, 관련 작업이 �
 2026-09-05 [P4-C01–C09 계약](phase4/CONTRACT_REVIEW.md)과 [49건 기준 관측](phase4/baseline-results.json),
 [검증 계획](phase4/VALIDATION.md)을 작성했다. D01/F04→W3, D03→W2, F05→W1, D14의 잔여 theta/legend→W4,
 D18→W5를 구체화했다. 아직 어느 항목도 이번 준비만으로 완료·해결 처리하지 않는다.
-F20은 계속 제외한다. 새 후보 4개는 phase-local Proposed이며 Current 177 / Planned 0이다.
+F20은 계속 제외한다. A 준비 당시 새 후보 4개는 phase-local Proposed였으며 Current 177 / Planned 0이었다.
+
+## Phase 4 A 승인 이후 — V1 준비
+
+사용자가 layoutSeries 이름 변경까지 승인했다. Direct 4개와 capability 5개를 Planned로 등록하고,
+primitive state 정책을 비시각 범위에서 준비했다. [V1의 11개 시각 목표](phase4/VISUAL_REVIEW_V1.md)는
+실행·검증했지만 공개 액션 구현 전이다. D03/F05를 해결 처리하지 않으며 D01/F04/D14/D18도 남는다.

@@ -102,12 +102,10 @@ Radial 공식은 overflow를 피하는 동치 계산이 가능하지만 유한�
 Path curve와 renderer 근사는 기존 정책으로 처리하며 일반 image ink 면적을 완벽한 수학 면적이라고 주장하지 않는다.
 Rose의 gap/stroke/outline 장식과 값에 의한 sector 측정은 구분하고 첫 범위에서 padAngle은 0만 허용한다.
 
-## V target 계획 — 아직 작성·렌더링하지 않음
+## V target 계획과 현재 작성 상태
 
-[visual-target-plan.json](visual-target-plan.json)에 **20 variants**의 정확한 input values, 1000×700 / margin 150,
-순서 있는 미래 publicCalls와 independentOracle을 저장했다. F20 제외와는 무관한 시각 사례 수다.
-현재는 executed:false, primitiveStatus:not-authored, publicStatus:not-implemented다.
-A 승인 뒤 이 계획으로 하나의 실행 manifest를 만들고 실제 이미지·source·call을 해당 V package에 고정한다.
+전체 계획은 **20 variants**이며 F20 제외와는 무관한 시각 사례 수다. V1의 11개는 [실행 fixture](../../../../test/gates/area-layout/targets.json)로 이전하고 [계획 원장](visual-target-plan.json)은 그 owner만 참조한다. 나머지 V2/V3 9개는 미작성 계획이다.
+V1 primitive는 실제 렌더했으며 전체 publicCalls 실행은 여전히 0개다. [V1 검토](VISUAL_REVIEW_V1.md)와 [기록 결과](visual-v1-results.json)가 현재 증거다.
 
 | Gate | targets | 검토하는 차이 |
 | --- | --- | --- |
@@ -192,3 +190,18 @@ encoding.group.inferredFrom leaves와 layout container 제거를 추가했다. C
 그래픽 배치와 segmentation은 실행하지 않는다. Current primitive 계약·typed state·architecture·공개 extension 문서와
 생성 산출물을 함께 갱신했다. Focused 44/44, 정상 누적 **2588/2588**, fail/skip 0을 통과했다.
 이는 V 승인 전 허용된 비시각 준비이며 layoutSeries/createAreaPlot의 구현 완료가 아니다.
+
+## V1 실제 검증 결과
+
+- Active slice: test/gates/area-layout. Source 추가 이후 runtime/types는 fda8671e와 동일하다.
+- 독립 수학·primitive 의미·원본 불변·graphicSpec-only Canvas 동등성: **20/20**.
+- Test discovery와 위 focused tests 합계: **33/33**. 새 area-layout capability selector를 등록했다.
+- PNG render entry: **11/11**, 모든 plot-region ink/color 조건 통과.
+- 기록 runner 재실행: **11/11** source/geometry/pixel hash 및 region 색상 수 일치.
+- 정상 누적 npm test: **2608/2608**, fail/cancelled/skip 0.
+- 변경 Markdown 8개 local link 266개 존재 확인, git diff --check 통과.
+- 처음 전체 검사에서 새 테스트 capability 등록 누락을 발견했다. 등록과 정렬을 교정해 discovery 13/13 및 정상 누적 2608/2608을 통과했다.
+- 기록 JSON에서 Map 색상 수가 빈 객체로 저장되는 문제를 명시 객체 변환으로 고쳤고 record/replay 일치를 확인했다.
+- API public flow·실제 roundtrip·primitive/public pixel equality·신규 SVG/PDF/browser/package는 아직 실행하지 않았다. V1 target 작성 완료와 공개 구현 완료는 다르다.
+
+실제 이미지, 정확한 미래 public calls, 의도적 교차 표현, primitive scale 준비 경계는 [V1 검토 문서](VISUAL_REVIEW_V1.md)에 묶었다.

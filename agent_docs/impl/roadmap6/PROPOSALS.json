@@ -539,7 +539,7 @@
         "R6-P4-A": "approved",
         "R6-P4-V": "planned",
         "R6-P4-X": "planned",
-        "R6-P4-V1": "planned",
+        "R6-P4-V1": "ready-for-review",
         "R6-P4-V2": "planned",
         "R6-P4-V3": "planned"
       },
@@ -601,7 +601,7 @@
           "contractEvidence": "phase4/CONTRACT_REVIEW.md"
         }
       ],
-      "activity": "preparing-visual-targets",
+      "activity": "awaiting-area-layout-visual-review",
       "contractEvidence": "phase4/CONTRACT_REVIEW.md",
       "baselineEvidence": "phase4/baseline-results.json",
       "baselineCommit": "93dceb3761e170207058e6a7280060fedd471244",
@@ -632,6 +632,17 @@
         "approvalBaselineCommit": "b93acb55859dfd90028ffa91f1e6fc2ef4c356fc",
         "delta": "Rename encodeLayout to layoutSeries without an alias; Bar/Area series layout only.",
         "scope": "P4-C01–C09 with naming delta; planned registration, nonvisual preparation and primitive targets. Public visual flows await their V approvals; budgets unchanged."
+      },
+      "visualV1Evidence": "phase4/VISUAL_REVIEW_V1.md",
+      "visualV1Results": "phase4/visual-v1-results.json",
+      "visualV1Validation": {
+        "variants": 11,
+        "focusedTests": 20,
+        "pngTests": 11,
+        "publicExecuted": false,
+        "normalTests": 2608,
+        "discoveryAndFocusedTests": 33,
+        "replayedPrimitiveTargets": 11
       }
     },
     {

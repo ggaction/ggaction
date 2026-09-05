@@ -10,6 +10,8 @@
 - [x] A Gate의 명시적 사용자 승인 기록 — layoutSeries 이름 변경 포함
 - [x] 승인된 신규 direct 4개와 기존 capability 5개 Planned 등록
 - [x] Primitive target용 비시각 semantic leaves와 closed vocabulary 검증
+- [x] V1 Area/layout primitive 11개 작성·수치·PNG 검증 및 검토 문서 준비
+- [ ] V1의 명시적 시각 승인
 - [ ] R6-P4-W1 Area baseline/range와 facade
 - [ ] R6-P4-W2 Color와 독립한 layout assignment
 - [ ] R6-P4-W3 Rose와 Radial bar
@@ -20,7 +22,7 @@
 - [ ] 누적 검증·migration·문서·원장 동기화
 - [ ] X Gate의 증거 commit/push와 명시적 사용자 승인 기록
 
-A 준비만 완료했고 production 구현 체크는 미완료다. 계획 문서를 만든 사실을 구현 완료나 Gate 승인으로 표시하지 않는다.
+A 승인·Planned 등록·비시각 primitive state 준비와 V1 target 작성은 완료했다. Public visual flow 구현 체크는 미완료다. 계획 문서를 만든 사실을 구현 완료나 Gate 승인으로 표시하지 않는다.
 
 ## 순서
 
