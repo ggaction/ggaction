@@ -171,11 +171,14 @@ function buildLegend(
   const totalWidth = titlePosition === "left"
     ? titleWidth + titleGap + itemsWidth
     : itemsWidth;
-  const start = bounds.x + (bounds.width - totalWidth) / 2;
+  // The swatch stroke adds .25 on the left; an inline 13px title adds .5 below the 12px row.
+  const dx = titlePosition === "left" ? 0 : 0.125;
+  const dy = titlePosition === "left" ? -0.5 : -0.25;
+  const start = bounds.x + (bounds.width - totalWidth) / 2 + dx;
   let cursor = titlePosition === "left"
     ? start + titleWidth + titleGap
     : start;
-  const itemY = bounds.y - offset - symbolHeight / 2;
+  const itemY = bounds.y - offset - symbolHeight / 2 + dy;
   const items = groupDomain.map((group, index) => {
     const item = {
       group,
@@ -197,8 +200,8 @@ function buildLegend(
     titlePosition,
     offset,
     title: {
-      x: titlePosition === "left" ? start : bounds.x + bounds.width / 2,
-      y: titlePosition === "left" ? itemY : itemY - 26,
+      x: titlePosition === "left" ? start : bounds.x + bounds.width / 2 + dx,
+      y: titlePosition === "left" ? itemY : itemY - 12 / 2 - 12 - 13 / 2,
       text: titleText,
       textAlign: titlePosition === "left" ? "left" : "center"
     },

@@ -110,13 +110,13 @@ export function resolveIntervalLayout(program, config, scale) {
   assertLegendBoundsInsideCanvas(
     occupiedBounds,
     canvas,
-    "Interval legend layout"
+    "Interval legend layout", config
   );
   const background = resolveLegendBackgroundFromBounds(
     occupiedBounds,
     config.border,
     canvas,
-    "Interval legend"
+    "Interval legend", config
   );
   return { labels, ...layout, background };
 }

@@ -80,7 +80,7 @@ test("creates the density top legend with a left title and area swatches", () =>
     }))
   );
   assert.equal(program.graphicSpec.objects.colorLegendTitle.properties.x, 252.0144);
-  assert.equal(program.graphicSpec.objects.colorLegendTitle.properties.y, 116);
+  assert.equal(program.graphicSpec.objects.colorLegendTitle.properties.y, 115.5);
   assert.equal(program.graphicSpec.objects.colorLegendTitle.properties.textAlign, "left");
 });
 
@@ -167,6 +167,6 @@ test("validates top layout vocabulary and available margin", () => {
     .encodeColor({ field: "group" });
   assert.throws(
     () => cramped.createLegend({ position: "top" }),
-    /more top-margin space/
+    /more top-margin.*space/
   );
 });

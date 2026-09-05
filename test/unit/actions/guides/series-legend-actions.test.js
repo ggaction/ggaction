@@ -256,7 +256,7 @@ test("rematerializes bottom composite layout and fails atomically when cramped",
     () => createBottomSeriesLine()
       .editCanvas({ margin: { top: 30, right: 30, bottom: 40, left: 40 } })
       .createLegend({ position: "bottom", border: true }),
-    /bottom-margin space/
+    /bottom-margin.*space/
   );
   assert.equal(before.graphicSpec.objects.canvas.properties.width, 500);
 });

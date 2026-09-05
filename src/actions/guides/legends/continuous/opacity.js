@@ -192,13 +192,13 @@ function resolveOpacityLayout(program, config, scale) {
   assertLegendBoundsInsideCanvas(
     occupiedBounds,
     canvas,
-    "Opacity legend layout"
+    "Opacity legend layout", config
   );
   const background = resolveLegendBackgroundFromBounds(
     occupiedBounds,
     config.border,
     canvas,
-    "Opacity legend"
+    "Opacity legend", config
   );
   return { values, texts, symbols, labels, title, background };
 }

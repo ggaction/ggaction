@@ -51,3 +51,5 @@ Same-edge collision과 title-first placement #98/#99는 [RESULTS_W2_GUIDE_COLLIS
 Compatible gradient↔interval 네 edge transition #100은 [RESULTS_W2_COLOR_TRANSITIONS.md](RESULTS_W2_COLOR_TRANSITIONS.md)에 기록한다. 최종 occupied alignment matrix와 W3–W5는 남아 있다.
 
 Hidden categorical title 공간과 legacy visible-title 복원 #101은 [RESULTS_W2_HIDDEN_CATEGORICAL.md](RESULTS_W2_HIDDEN_CATEGORICAL.md)에 기록한다. 전체 occupied alignment 통합은 남아 있다.
+
+Single horizontal occupied alignment/offset #102는 [RESULTS_W2_OCCUPIED_ALIGNMENT.md](RESULTS_W2_OCCUPIED_ALIGNMENT.md)에 기록한다. 큰 sample/font 내부 간격·side option과 전체 통합 matrix는 남아 있다.

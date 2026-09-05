@@ -118,6 +118,7 @@ type TitleWrap = "word" | "character";
 - Same-target categorical and size blocks retain their shared border group. Independent categorical,
   gradient, interval, opacity, and stroke-width blocks keep their own group bounds while participating in
   the same lane. A lane that does not fit the requested margin or Canvas height fails atomically.
+- Single top/bottom edge legend는 최종 foreground/background union의 실제 occupied bounds를 plot x edge/center에 맞춘다. Visible text, actual symbol/line stroke와 collection children, border stroke를 포함한다. Top offset은 occupied bottom과 plot top의 거리이며 bottom offset은 plot bottom과 occupied top의 거리다. Intrinsic 좌표가 Canvas를 넘더라도 최종 배치가 들어가면 허용하며, 최종 overflow는 immutable error다. 모든 family의 생성·편집·content 교체·Canvas/scale/encoding replay에 같은 기준을 적용한다. Explicit legacy-bottom은 이 배치에서 제외하고 독립 edge legend가 있어도 고정 anchors를 유지한다. Evidence: `test/unit/actions/guides/occupied-legend-alignment.test.js`, `test/contracts/occupied-legend-alignment.test.js`.
 - Two or more top- or bottom-positioned categorical, gradient, interval, size, stroke-width, or opacity blocks share a horizontal-edge lane.
   The lane starts at the plot's left edge and places blocks consecutively in stable layer/family order with
   40 logical pixels between occupied bounds. A block moves to the next outward row only when it does not fit

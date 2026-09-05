@@ -234,6 +234,19 @@ test.before(async () => {
         .createData({ values: [{ x: 0, y: 0, m: 0 }, { x: 10, y: 10, m: 10 }] })
         .createPointMark().encodeX({ field: "x" }).encodeY({ field: "y" })
         .encodeColor({ field: "m", fieldType: "quantitative" }).encodeOpacity({ field: "m" });
+      const occupiedAlignment = [];
+      for (const position of ["top", "bottom"]) for (const align of ["left", "center", "right"]) {
+        const program = guideSource.createLegend({ channels: ["color"], position, align, offset: 40, border: true });
+        const border = program.graphicSpec.objects.colorGradientBackground.properties;
+        const left = border.x - border.strokeWidth / 2;
+        const right = border.x + border.width + border.strokeWidth / 2;
+        const actual = align === "left" ? left : align === "right" ? right : (left + right) / 2;
+        const nearEdge = position === "top" ? border.y + border.height + border.strokeWidth / 2
+          : border.y - border.strokeWidth / 2;
+        occupiedAlignment.push(Math.abs(actual - ({ left: 300, center: 600, right: 900 }[align])) < 1e-9 &&
+          nearEdge === (position === "top" ? 260 : 740) && renderToSVG(program).startsWith("<svg "));
+        render(program, document.getElementById("legend-content").getContext("2d"));
+      }
       const guideTitle = { text: "Chart", position: "top" };
       let guideRejects = 0;
       const guideOrder = [];
@@ -332,6 +345,7 @@ test.before(async () => {
         guideRejects,
         guideOrder,
         transitionEdges,
+        occupiedAlignment,
         hiddenCategorical: [hiddenStyled.graphicSpec.objects.colorLegendBackground.properties.height,
           renderToSVG(hiddenStyled) === renderToSVG(hiddenCategorical)],
         combinedSVG: renderToSVG(horizontalCombined).startsWith("<svg "),
@@ -471,6 +485,7 @@ test("imports and renders the packed browser entries", async () => {
     guideOrder: [true, true],
     transitionEdges: ["left", "right", "top", "bottom"].map(position => [position, position, true, true, true]),
     hiddenCategorical: [36, true],
+    occupiedAlignment: [true, true, true, true, true, true],
     combinedSVG: true,
     combinedTitlesAligned: true,
     combinedContentSVG: true,

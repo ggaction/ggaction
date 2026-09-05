@@ -1,0 +1,31 @@
+{
+  "file": "/Users/hyeonjeon/Projects/ggaction-clean-20260905/.artifacts/roadmap6-authoring/package-occupied-alignment-final/ggaction-0.0.12.tgz",
+  "filename": "ggaction-0.0.12.tgz",
+  "sha256": "c4c90b017c355a04272b6720d45df5cbb058c0f83fb183160f32b5ac0c80478b",
+  "entryCount": 452,
+  "size": 509903,
+  "unpackedSize": 2437436,
+  "browserBundles": {
+    "full": {
+      "specifier": "ggaction",
+      "chunks": 1,
+      "modules": 399,
+      "minifiedBytes": 953829,
+      "gzipBytes": 254000
+    },
+    "basic": {
+      "specifier": "ggaction/basic",
+      "chunks": 1,
+      "modules": 242,
+      "minifiedBytes": 511276,
+      "gzipBytes": 140242
+    },
+    "svg": {
+      "specifier": "ggaction/svg",
+      "chunks": 1,
+      "modules": 15,
+      "minifiedBytes": 19840,
+      "gzipBytes": 6437
+    }
+  }
+}

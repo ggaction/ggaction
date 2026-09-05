@@ -128,7 +128,7 @@ function resolveLeftLayout(bounds, canvas, config, width, count) {
   };
 }
 
-function resolveGridLayout(bounds, canvas, config, width, count, top) {
+function resolveGridLayout(bounds, config, width, count, top) {
   const { cells, columnWidths, gridWidth, gridHeight, rowHeight } =
     resolveLegendGrid(config, width, count);
   const titleVisible = config.titleVisible !== false;
@@ -142,9 +142,6 @@ function resolveGridLayout(bounds, canvas, config, width, count, top) {
     ? titleWidth + titleGap + gridWidth
     : Math.max(titleWidth, gridWidth);
   const start = alignLegendStart(bounds, totalWidth, config.align);
-  if (start < 0 || start + totalWidth > canvas.width) {
-    throw new Error("Legend layout requires more horizontal Canvas space.");
-  }
   const edge = top
     ? bounds.y - config.offset
     : bounds.y + bounds.height + config.offset;
@@ -163,21 +160,7 @@ function resolveGridLayout(bounds, canvas, config, width, count, top) {
       : gridTop - titleGap - titleHeight
     : edge;
   const blockBottom = top ? edge : gridTop + gridHeight;
-  if (top) {
-    if (blockTop < 0) {
-      throw new Error("Legend layout requires more top-margin space.");
-    }
-  } else {
-    const occupiedTop = config.border === false
-      ? blockTop
-      : blockTop - config.border.padding;
-    const occupiedBottom = config.border === false
-      ? blockBottom
-      : blockBottom + config.border.padding;
-    if (occupiedTop < 0 || occupiedBottom > canvas.height) {
-      throw new Error("Legend layout requires more bottom-margin space.");
-    }
-  }
+  // The shared horizontal lane validates final concrete occupied bounds.
   const columnX = [];
   let cursor = gridStart;
   for (const columnWidth of columnWidths) {
@@ -203,11 +186,6 @@ function resolveGridLayout(bounds, canvas, config, width, count, top) {
       width: totalWidth + config.border.padding * 2,
       height: blockBottom - blockTop + config.border.padding * 2
     };
-    if (background.x < 0 || background.y < 0 ||
-      background.x + background.width > canvas.width ||
-      (!top && background.y + background.height > canvas.height)) {
-      throw new Error(`Legend background requires more ${top ? "top" : "bottom"} or horizontal space.`);
-    }
   }
   return {
     symbolX,
@@ -338,13 +316,13 @@ export function resolveLayout(program, config) {
   }
 
   if (config.position === "top") {
-    return resolveGridLayout(bounds, canvas, config, width, count, true);
+    return resolveGridLayout(bounds, config, width, count, true);
   }
 
   if (config.layout === "legacy-bottom") {
     return resolveCompactBottomLayout(bounds, canvas, config, width, count);
   }
-  return resolveGridLayout(bounds, canvas, config, width, count, false);
+  return resolveGridLayout(bounds, config, width, count, false);
 }
 
 export function resolveAppearance(program, config) {

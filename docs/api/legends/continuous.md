@@ -49,7 +49,11 @@ program.createLegend({
 Gradient legends reject categorical-only `symbol`, `columns`, `direction`, and
 `itemGap`. Opacity legends reject `columns`, `direction`, and `gradient`.
 Gradient and side-positioned opacity legends require `titlePosition: "top"`.
-Both forms require enough requested Canvas margin and never resize the Canvas.
+For a single top or bottom legend, `align` uses the complete visible outer
+bounds, including endpoint labels, symbol strokes and any border. `offset` is
+the gap between the plot and the nearest outer legend edge. This rule also
+applies to interval, size and stroke-width legends. Both forms require enough
+requested Canvas margin and never resize the Canvas.
 Their requested sample `count` is limited to the inclusive range `2`–`10,000`.
 
 For a `quantize`, `quantile`, or `threshold` point-color scale, the same call

@@ -14,6 +14,7 @@ import {
   sampleNumericRange
 } from "../../../../grammar/numeric.js";
 import { resolveGraphicBounds } from "../../../../layout/canvas.js";
+import { isHorizontalEdgeLegend } from "../../../../layout/legendLane.js";
 import { DEFAULT_COLORS, DEFAULT_FONT_FAMILY } from
   "../../../../theme/defaults.js";
 import { findLayer } from "../../../../selectors/layers.js";
@@ -285,7 +286,10 @@ export function resolveLegendTextBounds(position, text, style) {
   });
 }
 
-export function assertLegendBoundsInsideCanvas(bounds, canvas, label) {
+export function assertLegendBoundsInsideCanvas(bounds, canvas, label, config) {
+  // Horizontal content is intrinsic until the shared lane places its actual
+  // concrete bounds. Only that final placement can determine Canvas fit.
+  if (isHorizontalEdgeLegend(config)) return;
   if (bounds.some(item =>
     item.left < 0 || item.right > canvas.width ||
     item.top < 0 || item.bottom > canvas.height
@@ -298,7 +302,8 @@ export function resolveLegendBackgroundFromBounds(
   bounds,
   border,
   canvas,
-  label
+  label,
+  config
 ) {
   if (border === false) return undefined;
   const strokeExtent = border.lineWidth / 2;
@@ -316,11 +321,11 @@ export function resolveLegendBackgroundFromBounds(
   y -= border.padding;
   right += border.padding;
   bottom += border.padding;
-  if (
+  if (!isHorizontalEdgeLegend(config) && (
     x - strokeExtent < 0 || y - strokeExtent < 0 ||
     right + strokeExtent > canvas.width ||
     bottom + strokeExtent > canvas.height
-  ) {
+  )) {
     throw new Error(`${label} background requires more Canvas margin space.`);
   }
   return { x, y, width: right - x, height: bottom - y };

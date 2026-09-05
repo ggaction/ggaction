@@ -80,8 +80,8 @@ export function resolveStrokeWidthLegendLayout(program, config) {
   const widths = mapContinuousScaleValues(values, scale);
   const labels = formatContinuousValues(values, scale.domain, "quantitative");
   const layout = resolveLegendItemLayout(plot, config, labels, { width: 32, height: 0, strokeWidth: widths });
-  assertLegendBoundsInsideCanvas(layout.bounds, canvas, "Stroke-width legend layout");
-  const background = resolveLegendBackgroundFromBounds(layout.bounds, config.border, canvas, "Stroke-width legend");
+  assertLegendBoundsInsideCanvas(layout.bounds, canvas, "Stroke-width legend layout", config);
+  const background = resolveLegendBackgroundFromBounds(layout.bounds, config.border, canvas, "Stroke-width legend", config);
   return { ...layout, widths, labels, background };
 }
 

@@ -42,7 +42,7 @@ domain action을 통해서만 실행한다.
 | `rematerializeIntervalLegend` | discretized color legend, scale, and Canvas actions |
 | `rematerializeGrid` | grid aggregate and Canvas actions |
 | `rematerializeHorizontalGrid` | horizontal grid and Canvas actions |
-| `rematerializeHorizontalLegendLane` | top/bottom categorical legend lane packing and Canvas actions |
+| `rematerializeHorizontalLegendLane` | top/bottom single occupied-bound alignment, multi-block packing and final Canvas fit |
 | `rematerializeRadialGrid` | radial grid, scale, and Canvas actions |
 | `rematerializeLegend` | legend, encoding, scale, and Canvas actions |
 | `rematerializeLegendBackground` | categorical legend border/background component |

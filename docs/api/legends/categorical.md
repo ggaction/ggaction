@@ -102,8 +102,11 @@ require `layout: "edge"`. Layout mode is preserved by edits and replay.
 
 Top and bottom legends use a general item grid. `columns` caps the column count;
 `direction: "horizontal"` fills rows first and `"vertical"` fills columns
-first. `align` positions the complete title-plus-items block within plot
-bounds. The title appears above the grid by default, or beside it with
+first. For a single edge legend, `align` positions the actual outer bounds of
+the complete title, items and border against the plot left edge, center or right
+edge. Strokes and label extents count toward these bounds. `offset` measures
+the gap from the plot to the nearest outer legend edge. The final block must
+fit the requested Canvas. The title appears above the grid by default, or beside it with
 `titlePosition: "left"`.
 
 A categorical legend resolves at most 10,000 domain items. A layered symbol

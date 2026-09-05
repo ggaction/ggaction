@@ -10498,8 +10498,11 @@ require `layout: "edge"`. Layout mode is preserved by edits and replay.
 
 Top and bottom legends use a general item grid. `columns` caps the column count;
 `direction: "horizontal"` fills rows first and `"vertical"` fills columns
-first. `align` positions the complete title-plus-items block within plot
-bounds. The title appears above the grid by default, or beside it with
+first. For a single edge legend, `align` positions the actual outer bounds of
+the complete title, items and border against the plot left edge, center or right
+edge. Strokes and label extents count toward these bounds. `offset` measures
+the gap from the plot to the nearest outer legend edge. The final block must
+fit the requested Canvas. The title appears above the grid by default, or beside it with
 `titlePosition: "left"`.
 
 A categorical legend resolves at most 10,000 domain items. A layered symbol
@@ -10625,7 +10628,11 @@ program.createLegend({
 Gradient legends reject categorical-only `symbol`, `columns`, `direction`, and
 `itemGap`. Opacity legends reject `columns`, `direction`, and `gradient`.
 Gradient and side-positioned opacity legends require `titlePosition: "top"`.
-Both forms require enough requested Canvas margin and never resize the Canvas.
+For a single top or bottom legend, `align` uses the complete visible outer
+bounds, including endpoint labels, symbol strokes and any border. `offset` is
+the gap between the plot and the nearest outer legend edge. This rule also
+applies to interval, size and stroke-width legends. Both forms require enough
+requested Canvas margin and never resize the Canvas.
 Their requested sample `count` is limited to the inclusive range `2`–`10,000`.
 
 For a `quantize`, `quantile`, or `threshold` point-color scale, the same call
@@ -10778,6 +10785,11 @@ its size companion counts as one group. Overlap is an error in either authoring
 order; provide more margin space or different offsets. Canvas and scale updates
 apply the same check after dependent guides have moved. A failed action leaves
 the earlier program unchanged.
+
+A single top/bottom edge legend keeps its actual outer bounds aligned to the
+plot after content, border, style or Canvas changes. Its `offset` includes the
+border stroke, so adding a border preserves the requested plot-to-legend gap.
+Explicit `legacy-bottom` retains its fixed Canvas anchors.
 
 `editLegend()` updates one existing stable legend. Omit `target` when exactly
 one legend target exists; otherwise pass its mark ID. It accepts content, layout and appearance changes supported by the resulting

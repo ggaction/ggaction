@@ -6,6 +6,7 @@ import {
   HORIZONTAL_LEGEND_TITLE_ELEMENT_GAP,
   SIDE_LEGEND_BLOCK_GAP,
   resolveHorizontalLegendLane,
+  resolveHorizontalLegendGroup,
   resolveSideLegendLane
 } from "../../../src/layout/legendLane.js";
 
@@ -230,4 +231,22 @@ test("rejects horizontal overflow and guide collisions atomically", () => {
     }),
     /x-axis guides require more margin space/
   );
+});
+
+
+test("combined horizontal groups reject intersecting reserved bounds but permit touching edges", () => {
+  for (const edge of ["top", "bottom"]) {
+    const options = { edge, plot: { x: 100, y: 300, width: 600, height: 200 },
+      canvas: { width: 800, height: 800 }, align: "center", offset: 40,
+      border: { padding: 10, lineWidth: 2 },
+      groups: [horizontalGroup({ id: "color", x: 0, y: 0 }),
+        horizontalGroup({ id: "size", x: 200, y: 0 })] };
+    const result = resolveHorizontalLegendGroup(options);
+    const { left, right, top, bottom } = result.occupied;
+    assert.equal(edge === "top" ? bottom : top, edge === "top" ? 260 : 540);
+    assert.deepEqual(resolveHorizontalLegendGroup({ ...options,
+      collisionBounds: [{ left: right, right: right + 10, top, bottom }] }), result);
+    assert.throws(() => resolveHorizontalLegendGroup({ ...options,
+      collisionBounds: [{ left, right: left + 1, top, bottom }] }), /require more margin space/);
+  }
 });

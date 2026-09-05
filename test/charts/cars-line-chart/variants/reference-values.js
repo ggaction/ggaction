@@ -550,16 +550,21 @@ function createCompositeLegendLayout(baseline, canvas, config) {
     blockBottom = gridTop + gridHeight;
   }
 
+  const padding = 10;
+  const dx = config.align === "right" ? -10.5 : config.align === "left" ? 10.5 : 0;
+  const dy = config.position === "top" ? -10.5 : 10.5;
+  titleX += dx;
+  titleY += dy;
   const columnX = [];
   let cursor = gridStart;
   for (const width of columnWidths) {
-    columnX.push(cursor);
+    columnX.push(cursor + dx);
     cursor += width + COMPOSITE_SYMBOL.itemGap;
   }
   const items = cells.map((cell, index) => {
     const x1 = columnX[cell.column];
     const y = gridTop + rowHeight / 2 +
-      cell.row * (rowHeight + COMPOSITE_SYMBOL.itemGap);
+      cell.row * (rowHeight + COMPOSITE_SYMBOL.itemGap) + dy;
     return Object.freeze({
       origin: baseline.origins[index],
       color: baseline.series[index].color,
@@ -572,10 +577,9 @@ function createCompositeLegendLayout(baseline, canvas, config) {
         COMPOSITE_SYMBOL.labelOffset
     });
   });
-  const padding = 10;
   const background = Object.freeze({
-    x: start - padding,
-    y: blockTop - padding,
+    x: start - padding + dx,
+    y: blockTop - padding + dy,
     width: totalWidth + padding * 2,
     height: blockBottom - blockTop + padding * 2,
     fill: config.position === "top" ? "white" : "#f8fafc",

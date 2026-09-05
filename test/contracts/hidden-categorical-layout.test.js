@@ -6,10 +6,10 @@ import { assertRenderedPNG } from "../support/png.js";
 export function base() {return chart().createCanvas({width:1000,height:800,margin:250})
 .createData({values:[{x:0,y:0,g:'A'},{x:10,y:10,g:'B'}]}).createPointMark().encodeX({field:'x'}).encodeY({field:'y'}).encodeColor({field:'g'});}
 export function primitive(position){
- const top=position==='top',x=top?[458.68,512]:[460.68,510], y=top?230:558;
+ const top=position==='top',x=top?[458.68,512]:[460.68,510], y=top?217.5:570.5;
  return base().createGraphics({id:'colorLegendBackground',type:'rect',parent:'canvas'})
  .editGraphics({target:'colorLegendBackground',property:'x',value:top?446.68:448.68})
- .editGraphics({target:'colorLegendBackground',property:'y',value:top?218:546})
+ .editGraphics({target:'colorLegendBackground',property:'y',value:top?205.5:558.5})
  .editGraphics({target:'colorLegendBackground',property:'width',value:top?106.64:102.64})
  .editGraphics({target:'colorLegendBackground',property:'height',value:36})
  .editGraphics({target:'colorLegendBackground',property:'fill',value:'transparent'})

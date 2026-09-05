@@ -9,6 +9,13 @@ const edgeReferences = {
   top: { x: [429.02,512.3399999999999], y: [164,164], labelX: [473.02,556.3399999999999], title: [500,139.5], align: "center" },
   bottom: { x: [429.02,512.3399999999999], y: [561,561], labelX: [473.02,556.3399999999999], title: [500,536.5], align: "center" }
 };
+// Align the literal occupied content, including sample strokes or unused slots.
+for (const edge of ["top", "bottom"]) {
+  const r = edgeReferences[edge], dx = 500 - ((r.x[0] - 1) + (r.labelX[1] + 14.64)) / 2;
+  r.x = r.x.map(x => x + dx);
+  r.labelX = r.labelX.map(x => x + dx);
+  r.title = [r.title[0] + dx, r.title[1]];
+}
 function widthBase() {
   return chart().createCanvas({width:1000,height:700,margin:{left:240,right:240,top:200,bottom:200}})
     .createData({values:[{x:1,y:1,g:"A",m:0},{x:2,y:2,g:"A",m:0},{x:1,y:2,g:"B",m:10},{x:2,y:1,g:"B",m:10}]})

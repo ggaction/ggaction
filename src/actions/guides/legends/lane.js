@@ -10,6 +10,8 @@ import { resolveGraphicBounds } from "../../../layout/canvas.js";
 import {
   resolveHorizontalLegendLane,
   resolveHorizontalLegendGroup,
+  resolveSingleHorizontalLegendPlacement,
+  isHorizontalEdgeLegend,
   resolveSideLegendLane
 } from "../../../layout/legendLane.js";
 import { findCanvasGraphic } from
@@ -130,12 +132,10 @@ function blockDescriptor(program, kind, config) {
       x: textAnchor(program, components.labelId),
       width: labels.right - labels.left
     },
-    occupiedBounds: components.backgroundId === undefined
-      ? bounds
-      : resolveConcreteGraphicBounds(
-          program.graphicSpec,
-          components.backgroundId
-        ),
+    occupiedBounds: unionConcreteGraphicBounds(program.graphicSpec, [
+      ...foregroundIds,
+      ...(components.backgroundId === undefined ? [] : [components.backgroundId])
+    ]),
     ...components,
     foregroundIds
   };
@@ -194,13 +194,15 @@ export function hasMultiSideLegendLane(program) {
   return ["right", "left"].some(side => edgeKinds(program, side).length > 1);
 }
 
-export function hasMultiHorizontalLegendLane(program) {
-  return ["top", "bottom"].some(edge => edgeKinds(program, edge).length > 1);
+export function hasHorizontalLegendLane(program) {
+  return ["top", "bottom"].some(edge => edgeKinds(program, edge).some(
+    ([, config]) => isHorizontalEdgeLegend({ ...config, position: edge })
+  ));
 }
 
-export function hasMultiLegendLane(program) {
+export function hasLegendLane(program) {
   return hasMultiSideLegendLane(program) ||
-    hasMultiHorizontalLegendLane(program);
+    hasHorizontalLegendLane(program);
 }
 
 function translateCommands(commands, dx, dy) {
@@ -435,8 +437,20 @@ export const rematerializeHorizontalLegendLane = action(
     const configs = this.guideConfigs.legend ?? {};
     let next = this;
     for (const edge of ["top", "bottom"]) {
-      const entries = edgeKinds(next, edge);
-      if (entries.length < 2) continue;
+      const entries = edgeKinds(next, edge).filter(
+        ([, config]) => isHorizontalEdgeLegend({ ...config, position: edge })
+      );
+      if (entries.length === 0) continue;
+      if (entries.length === 1) {
+        const [kind, config] = entries[0];
+        const ids = existingIds(next, kind);
+        const bounds = unionConcreteGraphicBounds(next.graphicSpec, ids);
+        const { dx, dy } = resolveSingleHorizontalLegendPlacement({
+          plot, canvas, config, bounds
+        });
+        for (const id of ids) next = translateGraphic(next, id, dx, dy);
+        continue;
+      }
       let groups = groupBlocks(entries.map(([kind, config]) =>
         blockDescriptor(next, kind, config)), configs);
       for (const group of groups.filter(group => group.blocks.length > 1)) {

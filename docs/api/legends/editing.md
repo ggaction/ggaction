@@ -17,6 +17,11 @@ order; provide more margin space or different offsets. Canvas and scale updates
 apply the same check after dependent guides have moved. A failed action leaves
 the earlier program unchanged.
 
+A single top/bottom edge legend keeps its actual outer bounds aligned to the
+plot after content, border, style or Canvas changes. Its `offset` includes the
+border stroke, so adding a border preserves the requested plot-to-legend gap.
+Explicit `legacy-bottom` retains its fixed Canvas anchors.
+
 `editLegend()` updates one existing stable legend. Omit `target` when exactly
 one legend target exists; otherwise pass its mark ID. It accepts content, layout and appearance changes supported by the resulting
 legend kind. Mark encodings and scales stay unchanged.

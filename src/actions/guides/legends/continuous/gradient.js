@@ -116,13 +116,13 @@ function resolveGradientLayout(program, config, scale) {
   assertLegendBoundsInsideCanvas(
     occupiedBounds,
     canvas,
-    "Gradient legend layout"
+    "Gradient legend layout", config
   );
   const background = resolveLegendBackgroundFromBounds(
     occupiedBounds,
     config.border,
     canvas,
-    "Gradient legend"
+    "Gradient legend", config
   );
   return {
     vertical, x, y, length, thickness, values, texts, labels, ticks, title,

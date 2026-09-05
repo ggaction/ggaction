@@ -583,6 +583,26 @@ async function testNodeConsumer(directory) {
       assert.deepEqual(opacityTitle.editCanvas({ width: 1240 }).graphicSpec,
         opacity.editCanvas({ width: 1240 }).createTitle(title).createLegend(options).graphicSpec);
     }
+    for (const create of [chart, basicChart]) for (const position of ["top", "bottom"]) {
+      for (const align of ["left", "center", "right"]) {
+        const source = create().createCanvas({ width: 1200, height: 1000, margin: 300 })
+          .createData({ values: [{ x: 0, y: 0 }, { x: 10, y: 10 }] })
+          .createPointMark().encodeX({ field: "x" }).encodeY({ field: "y" })
+          .encodeColor({ field: "x", fieldType: "quantitative" });
+        const program = source.createLegend({ position, align, offset: 40, border: true });
+        const border = program.graphicSpec.objects.colorGradientBackground.properties;
+        const left = border.x - border.strokeWidth / 2;
+        const right = border.x + border.width + border.strokeWidth / 2;
+        const actual = align === "left" ? left : align === "right" ? right : (left + right) / 2;
+        assert.ok(Math.abs(actual - ({ left: 300, center: 600, right: 900 }[align])) < 1e-9);
+        const nearEdge = position === "top" ? border.y + border.height + border.strokeWidth / 2
+          : border.y - border.strokeWidth / 2;
+        assert.equal(nearEdge, position === "top" ? 260 : 740);
+        assert.match(renderToSVG(program), /<svg /);
+        if (create === chart) assert.deepEqual(program.editLegend({ border: false })
+          .editLegend({ border: true }).graphicSpec, program.graphicSpec);
+      }
+    }
     const editedContent = legendContentBase.createLegend({ channels: ["size"] })
       .editLegend({ labels: { color: "red" }, titleStyle: { fontWeight: 900 } })
       .editLegend({ channels: ["color", "shape", "size"], count: 3 })

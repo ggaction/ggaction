@@ -1525,8 +1525,8 @@
         "related",
         "combined-categorical-and-size-layout"
       ],
-      "bytes": 8931,
-      "sha256": "2582c559af8285ede9dc007353115ee94dbed34e95f8583d7a6afac7393f50e0"
+      "bytes": 9189,
+      "sha256": "ebce0bc3622c8e5c791e0b6507ecb49bd5a91119fe7508f5635b444032aa3bff"
     },
     {
       "order": 97,
@@ -1538,8 +1538,8 @@
         "continuous-color-and-opacity",
         "related"
       ],
-      "bytes": 2872,
-      "sha256": "91254d966546cde98e7a10ed8f2de235a5c16d283566ffbe5dd9f185375e26cb"
+      "bytes": 3152,
+      "sha256": "d54819d04d8987113bde9bd7aaad74998f2c7aa871a3737aa4477cd1e2f7db71"
     },
     {
       "order": 98,
@@ -1569,8 +1569,8 @@
         "removing-a-legend",
         "related"
       ],
-      "bytes": 10117,
-      "sha256": "0e2e2887fb8e1aa622e44971bc97efe8c856e68c3ae544f1d60f34325a27feae"
+      "bytes": 10411,
+      "sha256": "14aabcaedc5e910aaad24f9f6aefdc2b0d7b9ee1c0e42673810b14ce05b6a2de"
     },
     {
       "order": 100,

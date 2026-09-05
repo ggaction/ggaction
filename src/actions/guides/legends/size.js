@@ -97,8 +97,8 @@ export function resolveSizeLegendLayout(program, config) {
     width, height: radius * 2,
     itemBounds: radii.map(r => ({ left: width / 2 - r, right: width / 2 + r, top: -r, bottom: r }))
   });
-  assertLegendBoundsInsideCanvas(layout.bounds, canvas, "Size legend layout");
-  const background = resolveLegendBackgroundFromBounds(layout.bounds, config.border, canvas, "Size legend");
+  assertLegendBoundsInsideCanvas(layout.bounds, canvas, "Size legend layout", { ...config, ...geometry });
+  const background = resolveLegendBackgroundFromBounds(layout.bounds, config.border, canvas, "Size legend", { ...config, ...geometry });
   return { ...layout, symbolX: layout.symbolX.map(x => x + width / 2), radii, text, labels, titleStyle, background };
 }
 

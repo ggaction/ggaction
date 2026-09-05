@@ -4,6 +4,28 @@ export const SIDE_LEGEND_SYMBOL_CENTER = 16;
 export const SIDE_LEGEND_LABEL_START = 44;
 export const HORIZONTAL_LEGEND_TITLE_ELEMENT_GAP = 12;
 
+export function isHorizontalEdgeLegend(config) {
+  return config !== undefined &&
+    ["top", "bottom"].includes(config.position) &&
+    config.layout !== "legacy-bottom";
+}
+
+export function resolveSingleHorizontalLegendPlacement({ plot, canvas, config, bounds }) {
+  if (!isHorizontalEdgeLegend(config)) {
+    throw new Error("Single legend placement requires a horizontal edge layout.");
+  }
+  const dx = config.align === "left" ? plot.x - bounds.left
+    : config.align === "right" ? plot.x + plot.width - bounds.right
+      : plot.x + plot.width / 2 - midpoint(bounds.left, bounds.right);
+  const dy = config.position === "top" ? plot.y - config.offset - bounds.bottom
+    : plot.y + plot.height + config.offset - bounds.top;
+  const occupied = translateBounds(bounds, dx, dy);
+  if (occupied.left < 0 || occupied.right > canvas.width || occupied.top < 0 || occupied.bottom > canvas.height) {
+    throw new Error(`Legend layout requires more ${config.position}-margin or Canvas space.`);
+  }
+  return { dx, dy, occupied };
+}
+
 function midpoint(start, end) {
   const sum = start + end;
   const result = Number.isFinite(sum) ? sum / 2 : start / 2 + end / 2;

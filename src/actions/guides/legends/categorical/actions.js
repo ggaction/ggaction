@@ -16,8 +16,8 @@ import { isOpacityLegendLayer } from "../../../../materialization/legends.js";
 import { legendResourcePolicies } from
   "../../../../materialization/guides/resources.js";
 import {
-  hasMultiHorizontalLegendLane,
-  hasMultiLegendLane,
+  hasHorizontalLegendLane,
+  hasLegendLane,
   hasMultiSideLegendLane
 } from "../lane.js";
 import {
@@ -28,7 +28,7 @@ import {
 } from "./resolve.js";
 
 function finishLegend(program) {
-  return hasMultiLegendLane(program) ? program.rematerializeLegend() : program;
+  return hasLegendLane(program) ? program.rematerializeLegend() : program;
 }
 
 function requestedCandidate(program, target, candidates) {
@@ -132,7 +132,7 @@ export const rematerializeLegend = action(
     if (hasMultiSideLegendLane(next)) {
       next = next.rematerializeSideLegendLane();
     }
-    if (hasMultiHorizontalLegendLane(next)) {
+    if (hasHorizontalLegendLane(next)) {
       next = next.rematerializeHorizontalLegendLane();
     }
     return next;

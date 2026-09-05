@@ -9,6 +9,14 @@ const edgeReferences = {
   top: { x: [444.5,510.82], y: [164,164], labelX: [466.5,532.8199999999999], title: [500,139.5], align: "center" },
   bottom: { x: [444.5,510.82], y: [561,561], labelX: [466.5,532.8199999999999], title: [500,536.5], align: "center" }
 };
+// Align the literal occupied content, including sample strokes or unused slots.
+for (const edge of ["top", "bottom"]) {
+  const r = edgeReferences[edge], dx = 500 - ((r.x[0] - 0.25) + (r.labelX[1] + 22.68)) / 2, dy = edge === "top" ? -0.25 : 0;
+  r.x = r.x.map(x => x + dx);
+  r.labelX = r.labelX.map(x => x + dx);
+  r.y = r.y.map(y => y + dy);
+  r.title = [r.title[0] + dx, r.title[1] + dy];
+}
 function intervalBase() {
   return chart().createCanvas({width:1000,height:700,margin:{left:240,right:240,top:200,bottom:200}})
     .createData({values:[{x:1,y:1,m:0},{x:2,y:2,m:10}]}).createPointMark()
