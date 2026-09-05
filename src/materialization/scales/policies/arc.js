@@ -54,13 +54,14 @@ export function resolveMeasuredRadiusDomain({ scale, channel, allValues }) {
 
 export function validateMeasuredRadiusConsumers({ scale, domain, range, consumers, markConfigs, thetaScales }) {
   if (scale.radialMapping === undefined) return;
-  validateMeasuredRadiusScale({ ...scale, domain, range });
-  for (const { layer, encoding } of consumers) {
+  validateMeasuredRadiusScale({ ...scale, domain, range }, { allowAuto: true });
+  for (const consumer of consumers) {
+    const { layer, encoding } = consumer;
     const theta = layer.encoding?.theta;
     const thetaScale = thetaScales[layer.id];
-    if (layer.mark?.type !== "arc" || !["count", "sum"].includes(encoding.aggregate) ||
+    if (!isPendingMeasuredRadiusConsumer(consumer) && (layer.mark?.type !== "arc" || !["count", "sum"].includes(encoding.aggregate) ||
       !["nominal", "ordinal"].includes(theta?.fieldType) || theta.aggregate !== undefined ||
-      thetaScale?.type !== "band" || (thetaScale.paddingInner ?? 0) !== 0 || (thetaScale.paddingOuter ?? 0) !== 0) {
+      thetaScale?.type !== "band" || (thetaScale.paddingInner ?? 0) !== 0 || (thetaScale.paddingOuter ?? 0) !== 0)) {
       throw new Error("Measured radius requires only equal-angle categorical Arc consumers.");
     }
     const config = markConfigs[layer.id] ?? {};
@@ -70,4 +71,9 @@ export function validateMeasuredRadiusConsumers({ scale, domain, range, consumer
       throw new Error("Measured Arc innerRadius must agree with its explicit radius range.");
     }
   }
+}
+
+export function isPendingMeasuredRadiusConsumer({ layer, channel, encoding }) {
+  return layer.mark?.type === "arc" && channel === "radius" &&
+    ["count", "sum"].includes(encoding.aggregate) && layer.encoding?.theta === undefined;
 }

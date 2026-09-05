@@ -1,3 +1,5 @@
+import { resolveScaleRange } from "../../grammar/scales/index.js";
+import { resolveArcAutoPositionRange, validateMeasuredRadiusConsumers } from "../../materialization/scales/policies/arc.js";
 import { findSemanticScale } from "../../selectors/scales.js";
 import { normalizePositionScaleChannel } from "../../core/vocabulary.js";
 import { resolveGraphicBounds } from "../../layout/canvas.js";
@@ -22,4 +24,11 @@ export function resolveScalePreview(program, id) {
     resolvedScales: program.resolvedScales, markConfigs: program.markConfigs, thetaScales: scale.radialMapping === undefined ? undefined : Object.fromEntries(consumers.map(({ layer }) =>
       [layer.id, findSemanticScale(program, layer.encoding?.theta?.scale)])) });
   return { channel, consumers, valuesByConsumer, resolvedScale };
+}
+
+export function validatePendingMeasuredScale(program, scale, consumers) {
+  const range = resolveArcAutoPositionRange({ consumers, scale, channel: "radius",
+    range: resolveScaleRange(scale.range, "radius", resolveGraphicBounds(program)), markConfigs: program.markConfigs });
+  validateMeasuredRadiusConsumers({ scale, domain: scale.domain, range, consumers,
+    markConfigs: program.markConfigs, thetaScales: {} });
 }

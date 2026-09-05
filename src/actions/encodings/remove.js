@@ -220,6 +220,10 @@ export const removeEncoding = action(
     }
     const layer = resolveTarget(this, args.target, args.channel);
     if (args.channel === "group" && layer.layout?.mode !== undefined && layer.layout.mode !== "overlay") throw new Error("Remove active series layout before removing its group.");
+    if (args.channel === "theta" && layer.mark.type === "arc" &&
+      ["count", "sum"].includes(layer.encoding?.radius?.aggregate)) {
+      throw new Error("Remove measured radius before removing its category theta encoding.");
+    }
     const channels = activeCascade(layer, args.channel);
     assertEncodingSelectionCompatibility(this, layer.id, channels);
     for (const kind of ["series", "color"]) {

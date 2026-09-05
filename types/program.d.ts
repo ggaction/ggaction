@@ -941,7 +941,10 @@ export interface CreateCoordinateOptions {
   layers?: readonly string[];
 }
 
+export type RadialMapping = "area" | "radius-length";
+
 export interface ScaleOptions {
+  radialMapping?: RadialMapping;
   id?: string;
   type?: ScaleType;
   domain?: "auto" | readonly unknown[];
@@ -1038,6 +1041,7 @@ export type ShapeScaleOptions = ScaleFields<"id"> & {
 export type CreateScaleOptions = ScaleOptions & { id: string };
 
 export interface EditScaleOptions {
+  radialMapping?: RadialMapping;
   id?: string;
   type?: ScaleType;
   domain?: "auto" | readonly unknown[];
@@ -1152,13 +1156,22 @@ export type ThetaEncodingOptions = {
   | { fieldType: "temporal"; temporalUnit?: TemporalInputUnit }
 );
 
-export interface RadialEncodingOptions {
-  field: string;
+export type MeasuredRadiusScaleOptions = Pick<RadiusScaleOptions, "id" | "domain" | "range" | "clamp"> & {
+  type?: "linear";
+  zero?: true;
+  nice?: false;
+  reverse?: false;
+};
+
+export type RadialEncodingOptions = {
   target?: string;
   fieldType?: "quantitative";
-  scale?: RadiusScaleOptions;
   coordinate?: string;
-}
+} & (
+  | { field: string; mapping?: never; aggregate?: never; scale?: RadiusScaleOptions }
+  | { field: string; mapping?: RadialMapping; aggregate: "sum"; scale?: MeasuredRadiusScaleOptions }
+  | { field?: never; mapping?: RadialMapping; aggregate: "count"; scale?: MeasuredRadiusScaleOptions }
+);
 
 type RulePositionValue =
   | { field: string; datum?: never }

@@ -151,6 +151,10 @@ function validateLegendTypeTransition(program, scale, nextType) {
 }
 
 function normalizeDefinition(scale, channel, consumers, patch) {
+  if (scale.radialMapping !== undefined && Object.hasOwn(patch, "radialMapping") &&
+    patch.radialMapping === undefined && consumers.some(consumer => consumer.encoding.aggregate !== undefined)) {
+    throw new Error("Remove measured radius encodings before clearing their scale mapping.");
+  }
   const type = patch.type ?? scale.type;
   validateTypeTransition(scale, type, channel, consumers);
   const definition = normalizeScaleDefinition({

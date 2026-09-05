@@ -1287,7 +1287,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 
 ## `encodeR`
 
-- Signature: `encodeR({ field, target?, fieldType?: "quantitative", scale?, coordinate? })`
+- Signature: `encodeR({ field?, aggregate?: "count" | "sum", mapping?: "area" | "radius-length", target?, fieldType?: "quantitative", scale?, coordinate? })`
 - Radius is semantic Polar position, distinct from graphical `encodeRadius`/`encodePointRadius` glyph size.
 - Auto range is `[0, min(plotWidth, plotHeight) / 2]`. Explicit range values are non-negative logical Canvas
   pixels and must fit current plot bounds.
@@ -1296,9 +1296,17 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 - Radius만 있는 incomplete point는 semantic/config를 유지하고 complete theta/radius pair가 생기면 x/y를
   materialize한다.
 
+- Measured Arc mode opts in with `mapping:"area"|"radius-length"` and `aggregate:"sum"` plus field, or `aggregate:"count"` without field. Omitted mapping/aggregate on reassignment preserve the existing assignment; ordinary radius does not infer aggregation.
+- Measured radius groups by categorical theta, preserves source row membership, and uses one sector per positive category. Zero categories remain in theta/color domains. Empty/all-zero, negative, nonfinite values, category overflow, and conflicting colors within a category are errors.
+- Area mapping uses `r=sqrt(r0²+t(R²-r0²))`; radius-length uses `r=r0+t(R-r0)`, where `t=value/U`. Positive thickness lost to numeric precision is an error. Axis/grid labels retain count or sum units through the same mapping.
+- Measured scale subset is linear, zero:true, nice:false, reverse:false, optional clamp, domain:auto|[0,U], range:auto|[r0,R]. U must cover every category aggregate; 0<=r0<R. Theta is equal-angle categorical band without padding/aggregate/weight, and Arc padAngle is 0.
+- Auto range follows Canvas and innerRadius. Explicit range defines the hole; an explicitly authored Arc innerRadius must agree with r0/R. Ordinary Point/Arc consumers cannot share a measured scale. Compatible measured Arc consumers share its mapping and require one auto innerRadius policy.
+- Radius-first assignment stays pending until theta exists, without a fabricated domain or graphic. Pending explicit range still must fit Canvas. Remove measured radius before removing its category theta; this prevents orphaned aggregate guides. Adding a compatible Arc inherits the aggregate; ordinary Point inheritance excludes measured radius.
+- Mapping is stored once on the scale as radialMapping. `editScale({radialMapping})` changes all compatible consumers; `encodeR({mapping})` changes the assigned scale through the same lower action. Clearing mapping while aggregate consumers remain is rejected. To reuse the scale for ordinary radius, remove the radius encoding, clear its orphaned radialMapping with editScale, then encodeR a field; a fresh scale id also works.
+
 ### Formal values — `encodeR`
 
-- Implemented: `encodeR({ field: FieldName; target?: UserId; fieldType?: "quantitative"; scale?: RadiusScaleOptions; coordinate?: UserId })`
+- Implemented: `encodeR(RadialEncodingOptions)` — ordinary field/RadiusScaleOptions, or sum+field/count-without-field and optional inherited RadialMapping/MeasuredRadiusScaleOptions.
 - Range: `"auto" | readonly [NonNegativeFinite, NonNegativeFinite]` within the current available radius.
 - Proposed (NOT IMPLEMENTED): —
 
@@ -1306,7 +1314,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 
 - ✅ Covered: auto/explicit/reversed range, zero policy, resize, scale edit and out-of-bounds error.
 - ✅ Covered: filter, selection, highlight, appearance encodings and order-independent completion.
-- Evidence: Polar encoding, selection, chart, browser and render tests.
+- Evidence: Polar encoding, selection, chart, browser and render tests. Measured extension: `test/unit/actions/encodings/measured-radius-encoding.test.js`, `test/unit/grammar/measured-radius.test.js`, `test/unit/actions/marks/measured-arc-primitives.test.js`, `test/contracts/measured-radius-types.test.js`.
 
 ## `encodePointRadius`
 

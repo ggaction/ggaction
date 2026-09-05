@@ -23,7 +23,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
   measured Arc에서 count/sum, equal-angle categorical theta, nonnegative finite aggregate와 positive maximum,
   zero-based linear domain, increasing radius range 및 padAngle 0을 요구한다. Count는 field를 저장하지 않는다.
   이 leaves의 저장 자체는 graphics를 바꾸지 않으며 후속 scale/Arc materialization이 같은 mapper를 사용한다.
-  일반 `encodeR` mapping 옵션과 Rose/Radial facade는 아직 Planned다.
+  일반 `encodeR` mapping 옵션은 Current이며 Rose/Radial facade는 아직 Planned다.
 - Effect: 해당 path만 structural copy하고 기존 program을 보존한다. path가 dataset/layer/scale/coordinate를
   가리키면 current context를 내부적으로 갱신할 수 있다. graphic rematerialization은 자동으로 하지 않는다.
 - 오류: unknown path, closed vocabulary 위반, invalid transform/scale/guide value, existing source dataset

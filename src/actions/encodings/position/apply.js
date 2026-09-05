@@ -131,12 +131,14 @@ export function applyPositionSemantics(program, {
     channel,
     previous,
     hasField
-  )
-    .editSemantic({
+  );
+  if (hasField || datum !== undefined) {
+    next = next.editSemantic({
       property: `layer[${target}].encoding.${channel}.${hasField ? "field" : "datum"}`,
       value: hasField ? field : datum
-    })
-    .editSemantic({
+    });
+  }
+  next = next.editSemantic({
       property: `layer[${target}].encoding.${channel}.fieldType`,
       value: fieldType
     });

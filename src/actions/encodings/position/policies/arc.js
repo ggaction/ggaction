@@ -1,3 +1,4 @@
+import { validateRadialMapping } from "../../../../grammar/scales/radial.js";
 import { validateAggregate } from "../../../../grammar/aggregate.js";
 import { validateNonEmptyString } from "../../../../core/validation.js";
 import { emptyPositionPolicy } from "./common.js";
@@ -14,6 +15,19 @@ export function resolveArcPositionPolicy({ channel, args, fieldType, layer }) {
       throw new Error(
         "Arc radius encoding cannot be combined with quantitative theta."
       );
+    }
+    if (args.mapping !== undefined) {
+      validateRadialMapping(args.mapping);
+      if (fieldType !== "quantitative" || !["count", "sum"].includes(args.aggregate)) {
+        throw new Error("Measured radius requires quantitative count or sum aggregation.");
+      }
+      if (args.aggregate === "count" && Object.hasOwn(args, "field")) {
+        throw new Error("Measured radius count does not accept a field.");
+      }
+      if (layer.encoding?.theta?.aggregate !== undefined) {
+        throw new Error("Measured radius requires equal-angle theta without aggregation.");
+      }
+      return { ...emptyPositionPolicy(), aggregate: args.aggregate };
     }
     if (args.aggregate !== undefined) {
       throw new Error("Arc radius encoding does not support aggregate.");

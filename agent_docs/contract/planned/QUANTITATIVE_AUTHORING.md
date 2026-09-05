@@ -35,14 +35,6 @@ Theta/legend order는 Current ENCODINGS/LEGEND_AND_TITLE로 이동했다.
 
 
 
-## Measured radial mapping
-
-- Planned parameter extension: Arc encodeR에 mapping:area|radius-length 및 explicit sum/count.
-- Scale subset: linear, zero:true, nice:false, reverse:false; domain:auto|[0,U], range:auto|[r0,R], clamp?, id?.
-  U>0이며 관측 max 이상, 0<=r0<R, padAngle=0, explicit hole/range 일치가 필요하다.
-- Canonical mapping은 scale.radialMapping. Shared consumers는 같은 mapping, auto innerRadius 정책을 요구한다.
-- Category group grain, sourceIndices, value radius guides, inverse mapping을 함께 검증한다. Coverage missing.
-
 ## Sequential midpoint and transitions
 
 - Planned parameter extension: quantitative sequential createScale/nested scale/editScale의 midpoint:number|auto.

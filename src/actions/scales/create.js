@@ -36,7 +36,7 @@ const CREATE_SCALE_OPTIONS = Object.freeze([
   "align",
   "palette",
   "interpolate",
-  "unknown"
+  "radialMapping", "unknown"
 ]);
 
 function validateOptions(args) {
@@ -134,7 +134,7 @@ export const createScale = action(
     for (const property of [
       "nice", "zero", "clamp", "reverse", "base", "exponent", "constant",
       "paddingInner", "paddingOuter", "padding", "align", "interpolate",
-      "unknown"
+      "radialMapping", "unknown"
     ]) {
       if (definition[property] === undefined) continue;
       next = next.editSemantic({

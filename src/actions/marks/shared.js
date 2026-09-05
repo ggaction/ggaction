@@ -73,7 +73,7 @@ const POSITION_POLICY_SUBSETS = Object.freeze([
 ]);
 
 function inheritedPositionEncodings(encoding) {
-  if (encoding?.field === undefined) return undefined;
+  if (encoding?.field === undefined && encoding?.aggregate !== "count") return undefined;
   const base = Object.fromEntries(
     ["field", "fieldType", "scale", "title", "temporalUnit"]
       .filter(property => Object.hasOwn(encoding, property))
@@ -99,6 +99,9 @@ function inheritedPositionEncodings(encoding) {
 function scaleSupportsEncoding(program, markType, channel, encoding) {
   const scale = findSemanticScale(program, encoding.scale);
   if (scale === undefined) return false;
+  if (scale.radialMapping !== undefined) {
+    return markType === "arc" && channel === "radius" && ["count", "sum"].includes(encoding.aggregate);
+  }
   const categorical = ["nominal", "ordinal"].includes(encoding.fieldType);
   if (categorical) {
     if (["bar", "rect"].includes(markType)) return scale.type === "band";
@@ -138,7 +141,8 @@ export function resolveCompatibleEncodings(program, source, markType) {
             layer: candidate,
             dataset,
             channel,
-            args: encoding,
+            args: { ...encoding, ...(channel === "radius" && findSemanticScale(program, encoding.scale)?.radialMapping !== undefined
+              ? { mapping: findSemanticScale(program, encoding.scale).radialMapping } : {}) },
             field: encoding.field,
             fieldType: encoding.fieldType
           });

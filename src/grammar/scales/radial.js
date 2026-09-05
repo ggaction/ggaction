@@ -8,19 +8,19 @@ export function validateRadialMapping(mapping) {
   return mapping;
 }
 
-export function validateMeasuredRadiusScale(scale) {
+export function validateMeasuredRadiusScale(scale, { allowAuto = false } = {}) {
   validateRadialMapping(scale.radialMapping);
   if (scale.type !== "linear" || (scale.nice !== undefined && scale.nice !== false) ||
     (scale.zero !== undefined && scale.zero !== true) ||
     (scale.reverse !== undefined && scale.reverse !== false) || Object.hasOwn(scale, "unknown")) {
     throw new Error("Measured radius requires a linear, zero-based, non-reversed scale without nice or unknown.");
   }
-  if (!Array.isArray(scale.domain) || scale.domain.length !== 2 ||
-    scale.domain[0] !== 0 || !Number.isFinite(scale.domain[1]) || scale.domain[1] <= 0) {
+  if (!(allowAuto && scale.domain === "auto") && (!Array.isArray(scale.domain) || scale.domain.length !== 2 ||
+    scale.domain[0] !== 0 || !Number.isFinite(scale.domain[1]) || scale.domain[1] <= 0)) {
     throw new RangeError("Measured radius domain must be [0, positive finite maximum].");
   }
-  if (!Array.isArray(scale.range) || scale.range.length !== 2 ||
-    !scale.range.every(Number.isFinite) || scale.range[0] < 0 || scale.range[0] >= scale.range[1]) {
+  if (!(allowAuto && scale.range === "auto") && (!Array.isArray(scale.range) || scale.range.length !== 2 ||
+    !scale.range.every(Number.isFinite) || scale.range[0] < 0 || scale.range[0] >= scale.range[1])) {
     throw new RangeError("Measured radius range must satisfy 0 <= inner < outer with finite radii.");
   }
   if (scale.clamp !== undefined && typeof scale.clamp !== "boolean") {

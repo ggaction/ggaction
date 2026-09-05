@@ -3288,17 +3288,6 @@
   ],
   "plannedCapabilities": [
     {
-      "id": "measured-radial-mapping",
-      "name": "Measured radial mapping",
-      "kind": "parameter",
-      "status": "planned",
-      "readiness": "accepted",
-      "contract": {
-        "file": "agent_docs/contract/planned/QUANTITATIVE_AUTHORING.md",
-        "anchor": "measured-radial-mapping"
-      }
-    },
-    {
       "id": "sequential-midpoint-and-transitions",
       "name": "Sequential midpoint and transitions",
       "kind": "parameter",

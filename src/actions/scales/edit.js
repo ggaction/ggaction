@@ -18,7 +18,7 @@ import {
 const OPTIONS = Object.freeze([
   "id", "type", "domain", "range", "nice", "zero", "clamp", "reverse",
   "base", "exponent", "constant", "paddingInner", "paddingOuter", "padding",
-  "align", "interpolate", "unknown", "palette"
+  "align", "interpolate", "unknown", "palette", "radialMapping"
 ]);
 const EDITABLE = Object.freeze(
   OPTIONS.filter(option => !["id", "palette"].includes(option))

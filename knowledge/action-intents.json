@@ -168,6 +168,7 @@
     "editGraphics": "Sets a concrete graphic property or removes a top-level graphic resource inside an extension action."
   },
   "sampleOverrides": {
+    "encodeR": { "field": "value" },
     "createAreaPlot": { "x": "time", "y": "value" },
     "layoutSeries": { "mode": "stack" },
     "createPiePlot": { "category": "category" },

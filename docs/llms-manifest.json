@@ -1149,12 +1149,13 @@
         "choose-an-encoding",
         "shared-inference",
         "polar-positions",
+        "measured-radial-sectors",
         "rule-endpoints",
         "related",
         "area-bounds"
       ],
-      "bytes": 8163,
-      "sha256": "2e9a683381037fd1f2666fb331fc418451a1a1a91637c57d005ddb9d1518e7ee"
+      "bytes": 9677,
+      "sha256": "5bc043de4a317a6eadc417b7a3a503625d1294810135811dd32d880804a79552"
     },
     {
       "order": 73,
@@ -1381,10 +1382,11 @@
         "continuous-scales",
         "binned-bar-x-scales",
         "aggregate-ordinal-bar-y-scales",
+        "measured-radius-scales",
         "related"
       ],
-      "bytes": 4760,
-      "sha256": "44064f8d02434051219116199647d844e5fdc0ce44e9c3d6e86b1a455f3aafd9"
+      "bytes": 5614,
+      "sha256": "79cf42a30877143b6b143b55240ab1d95a15c8fce9bdd08a437d82feb969cc0d"
     },
     {
       "order": 88,

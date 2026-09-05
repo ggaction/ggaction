@@ -2,7 +2,7 @@
 
 ## 상태와 목표
 
-상태: in-progress — Phase 3 X 사용자 승인 뒤 [A 계약](CONTRACT_REVIEW.md)을 layoutSeries 이름 변경과 함께 승인받았다. V1도 승인받아 W1/W2를 구현했다. Package 용량 B와 W4 theta/legend order 검증을 완료했다. 남은 실행은 [로드맵 전체 승인](../APPROVAL.md)을 따른다.
+상태: in-progress — Phase 3 X 사용자 승인 뒤 [A 계약](CONTRACT_REVIEW.md)을 layoutSeries 이름 변경과 함께 승인받았다. V1도 승인받아 W1/W2를 구현했다. Package 용량 B와 W4 theta/legend order 검증을 완료했다. W3의 [measured encodeR·scale 기반](RESULTS_RADIAL_ENCODING.md)을 구현했으며 두 chart facade와 V2 동등성은 남아 있다. 남은 실행은 [로드맵 전체 승인](../APPROVAL.md)을 따른다.
 
 차트 이름보다 먼저 baseline·layout·mapping의 의미를 완성한다. Area, Rose와 Radial bar를 정확한 측정 계약 위에 제공한다.
 

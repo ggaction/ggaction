@@ -78,7 +78,7 @@ export function applyEncodingScale(
   for (const property of [
     "domain", "range", "nice", "zero", "clamp", "reverse",
     "base", "exponent", "constant", "paddingInner", "paddingOuter",
-    "padding", "align", "unknown", "interpolate"
+    "padding", "align", "unknown", "interpolate", "radialMapping"
   ]) {
     if (Object.hasOwn(options, property)) patch[property] = definition[property];
   }

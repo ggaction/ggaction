@@ -50,7 +50,7 @@ export function needsCanvasScaleRematerialization(program, scale) {
     (scale.range === "auto" ||
       usesRadialScale(program, scale.id) ||
       semanticGuideUsesScale(program, scale.id)) &&
-    program.resolvedScales[scale.id] !== undefined &&
+    (program.resolvedScales[scale.id] !== undefined || scale.radialMapping !== undefined) &&
     usesPositionalScale(program, scale.id)
   );
 }

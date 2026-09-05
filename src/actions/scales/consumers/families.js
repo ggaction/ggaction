@@ -1,3 +1,4 @@
+import { isPendingMeasuredRadiusConsumer } from "../../../materialization/scales/policies/arc.js";
 import { deriveMeasuredArcValues } from "../../../grammar/arcs.js";
 import { deriveBarAggregates } from "../../../grammar/bars/aggregate.js";
 import {
@@ -29,7 +30,7 @@ function lineDerivationOptions(program, consumer, dataset) {
 export function resolveMarkFamilyConsumerValues(program, consumer, dataset) {
   if (consumer.layer.mark?.type === "arc" && consumer.channel === "radius" &&
     findScale(program, consumer.encoding.scale).radialMapping !== undefined) {
-    return { matched: true, values: deriveMeasuredArcValues(dataset.values, consumer.layer).map(item => item.radius) };
+    return { matched: true, values: isPendingMeasuredRadiusConsumer(consumer) ? [] : deriveMeasuredArcValues(dataset.values, consumer.layer).map(item => item.radius) };
   }
 
   if (consumer.layer.mark?.type === "rect") {

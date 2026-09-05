@@ -583,7 +583,19 @@
           ],
           "scope": "Equal-angle area mode와 zero-baseline radius-length mode를 구분한다. Arc·theta/radius owner를 재사용하고 inner radius를 포함한 area mapping을 확정한다.",
           "acceptance": "값2·3·4가 모두 표현됨. Area 비율·radius-length 비율 각각 독립 수치 검증. Polar scatter 기본 encodeR는 바뀌지 않음.",
-          "contractEvidence": "phase4/CONTRACT_REVIEW.md"
+          "contractEvidence": "phase4/CONTRACT_REVIEW.md",
+          "implementationStatus": "in-progress",
+          "implementationEvidence": "phase4/RESULTS_RADIAL_ENCODING.md",
+          "completedScope": [
+            "measured-radius-grammar-and-primitives",
+            "encodeR-measured-mapping",
+            "scale-policy-lifecycle-and-inheritance"
+          ],
+          "remainingScope": [
+            "createRosePlot-and-createRadialBarPlot",
+            "V2-public-primitive-render-parity",
+            "chart-discovery-and-phase-integration"
+          ]
         },
         {
           "id": "R6-P4-W4",

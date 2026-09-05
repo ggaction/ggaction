@@ -1,3 +1,4 @@
+import { findSemanticScale } from "../../../selectors/scales.js";
 import { readAreaEndpoint } from "../../../grammar/areaEndpoints.js";
 import { validateUserId } from "../../../core/identifiers.js";
 import { getPositionCoordinateDefaults } from "../../../grammar/coordinates.js";
@@ -36,7 +37,7 @@ import {
 
 const POSITION_ENCODING_OPTIONS = Object.freeze([
   "field", "datum", "target", "fieldType", "scale", "coordinate",
-  "aggregate", "bin", "stack", "weight", "temporalUnit"
+  "aggregate", "bin", "stack", "weight", "temporalUnit", "mapping"
 ]);
 
 function inferRuleDatumFieldType(datum, operation) {
@@ -101,6 +102,9 @@ export function resolvePositionEncoding(program, channel, args, operation) {
   ) {
     throw new Error(`${operation} weight is supported only for arc theta encoding.`);
   }
+  if (Object.hasOwn(args, "mapping") && (layer.mark.type !== "arc" || channel !== "radius")) {
+    throw new Error(`${operation} mapping requires Arc radius.`);
+  }
   validateCoordinateFamily(layer, channel, operation);
   const hasField = Object.hasOwn(args, "field");
   const hasDatum = Object.hasOwn(args, "datum");
@@ -121,6 +125,10 @@ export function resolvePositionEncoding(program, channel, args, operation) {
     throw new Error(`${operation} does not support datum for a ${layer.mark.type} mark.`);
   }
   const previous = layer.encoding?.[channel];
+  const mapping = channel === "radius" && layer.mark.type === "arc"
+    ? args.mapping ?? findSemanticScale(program, previous?.scale)?.radialMapping
+    : undefined;
+  const countRadius = mapping !== undefined && (args.aggregate ?? previous?.aggregate) === "count";
   const requestedFieldType = args.fieldType ?? previous?.fieldType ?? (
     layer.mark.type === "rule" && hasDatum
       ? inferRuleDatumFieldType(args.datum, operation)
@@ -139,7 +147,7 @@ export function resolvePositionEncoding(program, channel, args, operation) {
     : args.field;
   const datum = args.datum;
   const temporalUnit = resolveTemporalUnit({ ...args, ...(hasDatum ? {} : { field }) }, fieldType, previous);
-  const usesField = !["rule", "area"].includes(layer.mark.type) || hasField;
+  const usesField = !countRadius && (!["rule", "area"].includes(layer.mark.type) || hasField);
   if (usesField && (typeof field !== "string" || field.length === 0)) {
     throw new TypeError(`${operation} field must be a non-empty string.`);
   }
@@ -153,7 +161,7 @@ export function resolvePositionEncoding(program, channel, args, operation) {
       validateAggregateFieldValues(dataset.values, field, fieldType);
     } else readScaleField(dataset.values, field, fieldType, { temporalUnit });
   }
-  const effectiveArgs = { ...args };
+  const effectiveArgs = { ...args, ...(mapping === undefined ? {} : { mapping }) };
   const directQuantitativeArcTheta =
     layer.mark.type === "arc" &&
     channel === "theta" &&
@@ -194,7 +202,8 @@ export function resolvePositionEncoding(program, channel, args, operation) {
     channel,
     aggregateOutput ? "quantitative" : fieldType,
     requestedScale,
-    layer.mark.type === "bar"
+    mapping !== undefined ? { radialMapping: mapping, zero: true, nice: false }
+      : layer.mark.type === "bar"
       ? program.markConfigs[target]?.boxPlot !== undefined && fieldType === "quantitative"
         ? { nice: true, zero: false }
         : fieldType === "quantitative"
@@ -241,6 +250,8 @@ export function resolvePositionEncoding(program, channel, args, operation) {
     readAreaEndpoint(dataset.values, { ...(hasDatum ? { datum } : { field }), fieldType }, layer.mark.missing);
   } else if (layer.mark.type === "rule" && hasDatum) {
     normalizeRuleDatum(datum, fieldType, channel, temporalUnit);
+  } else if (countRadius) {
+    // Count has no source measure field. Category-grain validation runs once theta exists.
   } else if (aggregateOutput) {
     validateAggregateFieldType(policy.aggregate, fieldType);
     validateAggregateFieldValues(dataset.values, field, fieldType);
@@ -269,6 +280,12 @@ export function resolvePositionEncoding(program, channel, args, operation) {
     readNominalField(dataset.values, field);
   } else readQuantitativeField(dataset.values, field);
 
+  if (mapping !== undefined) {
+    const values = countRadius ? dataset.values.map(() => 1) : readQuantitativeField(dataset.values, field);
+    if (values.length === 0 || values.some(value => value < 0) || !values.some(value => value > 0)) {
+      throw new Error("Measured radius requires non-negative values and a positive aggregate.");
+    }
+  }
   if (
     ["bar", "rect"].includes(layer.mark.type) &&
     ["ordinal", "nominal"].includes(fieldType) &&
@@ -280,7 +297,7 @@ export function resolvePositionEncoding(program, channel, args, operation) {
     target,
     layer,
     previous,
-    requestedScale,
+    requestedScale: mapping === undefined ? requestedScale : { ...requestedScale, radialMapping: mapping },
     field,
     datum,
     hasField: usesField,

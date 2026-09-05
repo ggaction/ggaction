@@ -96,6 +96,36 @@ both channels and their scales resolve. A line may use
 `createLineMark({ closed: true })` for a closed radar path. Cartesian x/y and
 Polar theta/radius cannot be mixed on one layer.
 
+## Measured radial sectors
+
+On an Arc mark with categorical theta, `encodeR` can aggregate a measure per
+category and encode either annular area or radial length. This fragment assumes
+`program` already has data with `category` and non-negative numeric `value` fields:
+
+```javascript
+program
+  .createArcMark({ innerRadius: 0.5 })
+  .encodeTheta({ field: "category", fieldType: "nominal" })
+  .encodeR({ field: "value", aggregate: "sum", mapping: "area" })
+  .createRadialAxis();
+```
+
+Use `mapping: "radius-length"` to make length from the inner edge proportional
+to the aggregate. Use `{ aggregate: "count", mapping: "area" }` without a field
+to count rows per category. Both modes use equal-angle sectors and a zero-based
+linear scale. Zero categories remain in categorical domains but draw no sector.
+Negative, nonfinite, all-zero, and unrepresentable positive-thickness inputs are errors.
+
+The radial axis shows count or sum units with the same mapping as the sectors.
+An explicit radius range `[inner, outer]` defines the hole and must agree with
+an explicitly specified Arc innerRadius ratio. These modes require zero theta
+padding and `padAngle: 0`; `nice: true`, `zero: false`, and `reverse: true` are errors.
+
+Reassigning `encodeR` preserves omitted mapping and aggregate. To change the
+mapping on a shared measured scale, use `editScale({ id, radialMapping: "area" })`;
+all its compatible sectors and radial guides update together. Ordinary point
+radius and measured Arc radius require separate scales.
+
 ## Rule endpoints
 
 Rule positions use the same `encodeX` and `encodeY` actions and accept exactly

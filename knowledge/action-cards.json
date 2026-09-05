@@ -2933,16 +2933,11 @@
         ],
         "idOptions": [
           "target",
-          "scale",
-          "coordinate"
+          "coordinate",
+          "scale"
         ]
       },
       "options": [
-        {
-          "name": "field",
-          "required": true,
-          "type": "string"
-        },
         {
           "name": "target",
           "required": false,
@@ -2954,18 +2949,33 @@
           "type": "\"quantitative\" | undefined"
         },
         {
-          "name": "scale",
-          "required": false,
-          "type": "RadiusScaleOptions | undefined"
-        },
-        {
           "name": "coordinate",
           "required": false,
           "type": "string | undefined"
+        },
+        {
+          "name": "field",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "mapping",
+          "required": false,
+          "type": "RadialMapping | undefined"
+        },
+        {
+          "name": "aggregate",
+          "required": false,
+          "type": "\"count\" | \"sum\" | undefined"
+        },
+        {
+          "name": "scale",
+          "required": false,
+          "type": "RadiusScaleOptions | MeasuredRadiusScaleOptions | undefined"
         }
       ],
       "callPatterns": [
-        "encodeR({ field, target?, scale?, coordinate?, fieldType? })"
+        "encodeR({ target?, coordinate?, scale?, fieldType?, field?, mapping?, aggregate? })"
       ],
       "snippet": "program.encodeR({ field: \"value\" })",
       "errors": [],
@@ -8631,6 +8641,11 @@
       },
       "options": [
         {
+          "name": "radialMapping",
+          "required": false,
+          "type": "RadialMapping | undefined"
+        },
+        {
           "name": "id",
           "required": true,
           "type": "string"
@@ -8722,7 +8737,7 @@
         }
       ],
       "callPatterns": [
-        "createScale({ id, type?, domain?, range?, nice?, zero?, clamp?, reverse? })"
+        "createScale({ id, radialMapping?, type?, domain?, range?, nice?, zero?, clamp? })"
       ],
       "snippet": "program.createScale({ id: \"scale-1\" })",
       "errors": [],
@@ -8755,6 +8770,11 @@
         ]
       },
       "options": [
+        {
+          "name": "radialMapping",
+          "required": false,
+          "type": "RadialMapping | undefined"
+        },
         {
           "name": "id",
           "required": false,
@@ -8847,7 +8867,7 @@
         }
       ],
       "callPatterns": [
-        "editScale({ id?, type?, domain?, range?, nice?, zero?, clamp?, reverse? })"
+        "editScale({ id?, radialMapping?, type?, domain?, range?, nice?, zero?, clamp? })"
       ],
       "snippet": "program.editScale({ type: \"linear\" })",
       "errors": [],

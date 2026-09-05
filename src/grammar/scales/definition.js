@@ -1,3 +1,4 @@
+import { validateMeasuredRadiusScale } from "./radial.js";
 import { validateContinuousColorInterpolation } from "./color.js";
 import { isTransformedScaleType } from "./mapping.js";
 import {
@@ -149,5 +150,13 @@ export function normalizeScaleDefinition({
     }
   }
 
+  const radialMapping = Object.hasOwn(patch, "radialMapping") ? patch.radialMapping : previous.radialMapping;
+  if (radialMapping !== undefined) {
+    definition.radialMapping = radialMapping;
+    validateMeasuredRadiusScale({ ...definition,
+      ...(Object.hasOwn(patch, "unknown") || Object.hasOwn(previous, "unknown")
+        ? { unknown: patch.unknown ?? previous.unknown } : {})
+    }, { allowAuto: true });
+  }
   return definition;
 }

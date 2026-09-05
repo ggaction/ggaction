@@ -360,6 +360,20 @@ async function testNodeConsumer(directory) {
     assert.deepEqual(orderedPie.graphicSpec.objects.colorLegendLabels.items.map(item => item.properties.text), ["C", "A", "B"]);
     assert.deepEqual(orderedPie.editLegend({ order: "scale" }).guideConfigs.legend.color.domain, ["A", "B", "C"]);
     assert.throws(() => orderedPie.removeEncoding({ channel: "theta" }), /Reset linked legend/);
+    const measuredRadius = chart().createCanvas({ width: 1000, height: 700, margin: 150 })
+      .createData({ values: [{ category: "A", value: 1 }, { category: "A", value: 1 }, { category: "B", value: 4 }] })
+      .createArcMark({ id: "radial" })
+      .encodeR({ field: "value", aggregate: "sum", mapping: "area", scale: { range: [70, 140] } })
+      .encodeTheta({ field: "category", fieldType: "nominal" })
+      .createRadialAxis();
+    assert.deepEqual(measuredRadius.resolvedScales.radius.domain, [0, 4]);
+    assert.equal(measuredRadius.graphicSpec.objects.radial.items.length, 2);
+    const radialLength = measuredRadius.editScale({ id: "radius", radialMapping: "radius-length" });
+    assert.equal(radialLength.resolvedScales.radius.radialMapping, "radius-length");
+    assert.notDeepEqual(radialLength.graphicSpec, measuredRadius.graphicSpec);
+    const radialCount = measuredRadius.encodeR({ aggregate: "count" });
+    assert.deepEqual(radialCount.resolvedScales.radius.domain, [0, 2]);
+    assert.equal(Object.hasOwn(radialCount.semanticSpec.layers[0].encoding.radius, "field"), false);
     assert.equal(barFacade.graphicSpec.objects.barPlot.items.length, 2);
     const histogramFacade = chart()
       .createCanvas({ width: 160, height: 120, margin: 20 })
@@ -1626,6 +1640,13 @@ async function testTypeScriptConsumer(directory) {
       .encodeTheta({ field: "angle", scale: { range: [0, 360] } })
       .encodeR({ field: "distance", scale: { type: "sqrt" } })
       .encodePointRadius({ value: 2 });
+    polar.encodeR({ field: "distance", aggregate: "sum", mapping: "area", scale: { zero: true, nice: false } });
+    polar.encodeR({ aggregate: "count", mapping: "radius-length" });
+    polar.editScale({ radialMapping: "area" });
+    // @ts-expect-error measured count has no field
+    polar.encodeR({ field: "distance", aggregate: "count", mapping: "area" });
+    // @ts-expect-error measured scale cannot reverse
+    polar.encodeR({ aggregate: "count", mapping: "area", scale: { reverse: true } });
     const arcs: ChartProgram = chart()
       .createCanvas()
       .createData({ values: [{ group: "A" }, { group: "B" }] })

@@ -117,7 +117,7 @@ Guide 위치도 area mapper를 사용하므로 Rose의 반지름 tick을 선형 
 | 편집 | owner와 결과 |
 | --- | --- |
 | value/aggregate/mapping | encodeR 재할당. Category grain·domain·marks·guide를 같이 갱신 |
-| legacy radius 복귀 | removeEncoding radius 후 기존 encodeR field 재작성. 생략으로 mapping 해제 추측 금지 |
+| legacy radius 복귀 | removeEncoding radius 후 새 scale id로 encodeR field 재작성. 기존 scale을 재사용하면 orphan scale의 radialMapping을 editScale로 명시 제거. 생략으로 mapping 해제 추측 금지 |
 | innerRadius/appearance | editArcMark. Mapping/range compatibility부터 검증 |
 | scale domain/range | editScale. Zero-based mapping과 모든 공유 consumer 검증 |
 | theta order | orderCategories/removeCategoryOrder channel theta. 값과 source identity 유지 |

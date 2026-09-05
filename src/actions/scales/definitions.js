@@ -121,7 +121,7 @@ export function resolvePositionScaleDefinition(
     ...normalizeScaleDefinition({
       type,
       previous: existing,
-      patch: options,
+      patch: { ...options, ...(defaults.radialMapping === undefined ? {} : { radialMapping: defaults.radialMapping }) },
       defaults: {
         ...(existing === undefined && defaults.nice !== undefined
           ? { nice: defaults.nice }
