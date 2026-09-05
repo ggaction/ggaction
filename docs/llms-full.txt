@@ -9332,8 +9332,8 @@ immutable program unchanged.
 Scale type transitions reject incompatible field types, channels, or mark
 grains before changing the immutable program. Quantitative Point, aggregate Bar,
 and Rect color can transition between sequential and discretized scales. A
-right/vertical, center-aligned gradient or interval legend changes family in the same action,
-retaining common text and layout settings. Custom family-specific settings
+compatible gradient or interval legend on any of the four edges changes family
+in the same action, retaining its edge, alignment and common text/layout settings. Custom family-specific settings
 require explicit removal and recreation; see [color transitions](./api/scales/discretized-color/#changing-color-scale-families).
 
 ## Related
@@ -9625,7 +9625,7 @@ Use `program.editScale({ id: "colors", midpoint: "auto" })` to remove the policy
 and restore interpolation across the domain endpoints. Omitting midpoint in an
 edit or encoding reassignment preserves it. Direct `createScale` accepts the
 same option. Scale-family changes follow the [color transition rules](./api/scales/discretized-color/#changing-color-scale-families),
-including atomic replacement of compatible right/vertical legends.
+including atomic replacement of compatible legends on all four edges.
 
 ## Related
 
@@ -9697,13 +9697,17 @@ This is the executable example used by the render and browser checks. The final
 classes split at 3; zero still has zero bar height. The obsolete midpoint is
 removed and is not restored automatically on a later return to sequential color.
 
-A legend can switch families when it is right/vertical and its family-specific
-settings are defaults. The transition preserves its target, title and visibility,
-labels, title style, border, alignment, and offset. New family-specific settings
+A legend can switch families on all four edges when its family-specific
+settings are defaults. Left/right use vertical placement and center alignment.
+Top/bottom support left, center or right alignment with the default horizontal
+interval flow. Both families require a top title for transitions. The transition preserves its target, title and visibility,
+labels, title style, border, position, alignment, and offset. New family-specific settings
 use that family's defaults. A custom gradient count/size, interval symbol, or
 item gap causes an error instead of being discarded. Use `removeLegend`, change
 the scale, and call `createLegend` with the desired new style in that case.
-Other legend positions are not eligible for automatic family transitions.
+A horizontal interval column count, vertical flow or inline title cannot be
+carried into a gradient and causes an error. An explicit single column on a
+side interval legend is equivalent to the default and remains compatible.
 
 Explicit extents, quantile samples, and threshold boundaries have different
 meanings. Supply a new `domain` when changing between those meanings; `"auto"`

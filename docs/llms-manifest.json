@@ -1370,8 +1370,8 @@
         "errors-and-limitations",
         "related"
       ],
-      "bytes": 4897,
-      "sha256": "b9916d69845d2e0f0f819606977558cf48599d48e458672002b6f8784744589c"
+      "bytes": 4922,
+      "sha256": "d18f44210d4b663ad0caacc78e4b86b2d50e47fb92f6f1d14dadd74193ec4cf1"
     },
     {
       "order": 87,
@@ -1416,8 +1416,8 @@
         "explicit-color-midpoint",
         "related"
       ],
-      "bytes": 5657,
-      "sha256": "1867628453400f09e67fdd72ed109adfe8429b753e2fbe5c1492b3b2fa21ff23"
+      "bytes": 5660,
+      "sha256": "a66aa2c701333bab1bb9457fe6a6d6a76c8c9e7d0e2354fdc3f817d678577a36"
     },
     {
       "order": 90,
@@ -1430,8 +1430,8 @@
         "changing-color-scale-families",
         "related"
       ],
-      "bytes": 4080,
-      "sha256": "fbe32714af1fcaa44ecab8ad61539242618360ac3d967a33a994e602d7526574"
+      "bytes": 4436,
+      "sha256": "a45b463fe66bb923671c8924ffe6eef1b96dcdd7b170a9150673784dfc6fc024"
     },
     {
       "order": 91,

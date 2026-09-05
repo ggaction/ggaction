@@ -74,8 +74,10 @@ test("rejects custom family styles and unsupported placement without losing any 
   const sources = [
     make("point").editLegend({ count: 3 }),
     make("point").editLegend({ gradient: { length: 130 } }),
-    make("point").editLegend({ position: "left" }),
     make("point").editLegend({ align: "left" }),
+    make("point", { type: "quantize" }).editLegend({ position: "top", columns: 2 }),
+    make("point", { type: "quantize" }).editLegend({ position: "top", direction: "vertical" }),
+    make("point", { type: "quantize" }).editLegend({ position: "top", titlePosition: "left" }),
     make("point", { type: "quantize" }).editLegend({ symbol: { width: 18 } }),
     make("point", { type: "quantize" }).editLegend({ itemGap: 32 })
   ];
@@ -153,4 +155,50 @@ test("highlighted item identity and baseline colors survive scale and legend tra
   const q = p.editScale(definition("quantize"));
   assert.deepEqual(fills(q), ["blue", "blue", "red", "green"]);
   assert.deepEqual(fills(q.editScale(definition("sequential"))), ["#0000ff", "#6666ff", "#ffcccc", "green"]);
+});
+
+test("color legend transitions preserve compatible edges, alignment and title state through both public paths", () => {
+  let cases = 0;
+  for (const kind of ["point", "bar", "rect"]) for (const type of ["quantize", "quantile", "threshold"])
+    for (const position of ["left", "right", "top", "bottom"])
+      for (const align of ["left", "right"].includes(position) ? ["center"] : ["left", "center", "right"])
+        for (const hidden of [false, true]) {
+          const common = { target: "m", channels: ["color"], position, align, offset: 55,
+            title: "Value", border: { padding: 5, color: "gray" },
+            labels: { offset: 12, color: "navy", fontSize: 11 }, titleStyle: { fontSize: 14 } };
+          const source = make(kind, { legend: false }).editCanvas({ width: 1400, height: 1200, margin: 350 })
+            .createTitle({ text: "Chart" });
+          const create = p => {
+            const next = p.createLegend(common);
+            return hidden ? next.editLegend({ title: false }) : next;
+          };
+          const original = create(source), before = snapshot(original);
+          const q = original.editScale(definition(type));
+          assert.deepEqual(q.graphicSpec, create(source.editScale(definition(type))).graphicSpec);
+          const config = q.guideConfigs.legend.interval;
+          for (const key of ["target", "position", "align", "offset", "title", "titleVisible", "inferredTitle", "labels", "titleStyle", "border"]) {
+            assert.deepEqual(config[key], original.guideConfigs.legend.gradient[key], key);
+          }
+          const reassigned = original.encodeColor({ target: "m", field: "value", fieldType: "quantitative", scale: definition(type) });
+          assert.deepEqual(reassigned.graphicSpec, q.graphicSpec);
+          assert.deepEqual(reassigned.semanticSpec, q.semanticSpec);
+          const back = q.editScale(definition("sequential"));
+          assert.deepEqual(back.graphicSpec, create(source.editScale({ ...definition("sequential"), midpoint: "auto" })).graphicSpec);
+          assert.deepEqual(q.editCanvas({ width: 1440 }).graphicSpec,
+            original.editCanvas({ width: 1440 }).editScale(definition(type)).graphicSpec);
+          assert.equal(snapshot(original), before);
+          cases += 1;
+        }
+  assert.equal(cases, 144);
+});
+
+test("side single-column interval layout is compatible while horizontal grid settings remain explicit", () => {
+  for (const position of ["left", "right"]) {
+    const p = make("point", { type: "quantize", legend: false }).editCanvas({ margin: 250 })
+      .createLegend({ position, columns: 1 });
+    const q = p.editScale(definition("sequential"));
+    assert.equal(q.guideConfigs.legend.gradient.position, position);
+    assert.equal(q.guideConfigs.legend.gradient.inferredTitle, true);
+    assert.deepEqual(q.editLegend({ title: false }).editLegend({ title: "auto" }).graphicSpec, q.graphicSpec);
+  }
 });

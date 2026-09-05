@@ -238,6 +238,20 @@ test.before(async () => {
       let guideRejects = 0;
       const guideOrder = [];
       const guideComparisons = [];
+      const transitionEdges = [];
+      for (const position of ["left", "right", "top", "bottom"]) {
+        const source = guideSource.createLegend({ channels: ["color"], position, border: true })
+          .editLegend({ title: false });
+        const interval = source.editScale({ id: source.guideConfigs.legend.gradient.scale,
+          type: "quantize", domain: [0, 10], range: ["blue", "red"] });
+        const back = interval.editScale({ id: interval.guideConfigs.legend.interval.scale,
+          type: "sequential", domain: [0, 10], range: ["blue", "red"] });
+        transitionEdges.push([interval.guideConfigs.legend.interval.position,
+          back.guideConfigs.legend.gradient.position, back.graphicSpec.objects.colorGradientTitle === undefined,
+          renderToSVG(interval).startsWith("<svg "), renderToSVG(back).startsWith("<svg ")]);
+        render(interval, document.getElementById("legend-content").getContext("2d"));
+        render(back, document.getElementById("legend-content").getContext("2d"));
+      }
       for (const channel of ["color", "opacity"]) {
         const options = { channels: [channel], position: "top", offset: 40, border: true };
         const program = guideSource.createTitle(guideTitle).createLegend(options);
@@ -313,6 +327,7 @@ test.before(async () => {
         combinedPosition: horizontalCombined.guideConfigs.legend.color.position,
         guideRejects,
         guideOrder,
+        transitionEdges,
         combinedSVG: renderToSVG(horizontalCombined).startsWith("<svg "),
         combinedTitlesAligned: horizontalCombined.graphicSpec.objects.colorLegendTitle.properties.y === horizontalCombined.graphicSpec.objects.sizeLegendTitle.properties.y,
         combinedContentSVG: renderToSVG(colorSizeContent).startsWith("<svg "),
@@ -448,6 +463,7 @@ test("imports and renders the packed browser entries", async () => {
     combinedPosition: "bottom",
     guideRejects: 4,
     guideOrder: [true, true],
+    transitionEdges: ["left", "right", "top", "bottom"].map(position => [position, position, true, true, true]),
     combinedSVG: true,
     combinedTitlesAligned: true,
     combinedContentSVG: true,

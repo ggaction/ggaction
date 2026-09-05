@@ -116,7 +116,7 @@ Use `program.editScale({ id: "colors", midpoint: "auto" })` to remove the policy
 and restore interpolation across the domain endpoints. Omitting midpoint in an
 edit or encoding reassignment preserves it. Direct `createScale` accepts the
 same option. Scale-family changes follow the [color transition rules](./discretized-color.md#changing-color-scale-families),
-including atomic replacement of compatible right/vertical legends.
+including atomic replacement of compatible legends on all four edges.
 
 ## Related
 

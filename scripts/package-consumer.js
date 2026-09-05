@@ -357,6 +357,20 @@ async function testNodeConsumer(directory) {
     assert.deepEqual(intervalTransition.graphicSpec.objects.transition.items.map(item => item.properties.fill), ["blue", "red", "red"]);
     assert.equal(intervalTransition.guideConfigs.legend.gradient, undefined);
     assert.equal(intervalTransition.guideConfigs.legend.interval.scale, "transitionColor");
+    for (const position of ["left", "right", "top", "bottom"]) {
+      const source = transitionBase.editCanvas({ width: 1400, height: 1200, margin: 350 })
+        .editLegend({ position, offset: 100, border: true, title: false });
+      const interval = source.editScale({ id: "transitionColor", type: "quantize", domain: [-2, 8], range: ["blue", "red"] });
+      assert.equal(interval.guideConfigs.legend.interval.position, position);
+      assert.equal(interval.guideConfigs.legend.interval.titleVisible, false);
+      assert.match(renderToSVG(interval), /<svg /);
+      const back = interval.encodeColor({ target: "transition", field: "value", fieldType: "quantitative",
+        scale: { type: "sequential", domain: [-2, 8], range: ["blue", "white", "red"] } });
+      assert.equal(back.guideConfigs.legend.gradient.position, position);
+      assert.equal(back.guideConfigs.legend.gradient.titleVisible, false);
+      assert.deepEqual(back.editCanvas({ width: 1440 }).graphicSpec,
+        back.editCanvas({ width: 1440 }).editLegend({ position }).graphicSpec);
+    }
     assert.equal(intervalTransition.encodeColor({ target: "transition", field: "value", fieldType: "quantitative", scale: { type: "sequential", domain: [-2, 8], range: ["blue", "white", "red"] } }).guideConfigs.legend.interval, undefined);
     const basicInterval = basicChart().createCanvas({ width: 1000, height: 700, margin: 150 }).createData({ values: transitionRows })
       .createBarPlot({ id: "interval", x: "category", y: { field: "value", aggregate: "sum" }, color: { field: "value", fieldType: "quantitative", scale: { type: "quantize", range: ["blue", "red"] } } });

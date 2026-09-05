@@ -114,8 +114,8 @@ immutable program unchanged.
 Scale type transitions reject incompatible field types, channels, or mark
 grains before changing the immutable program. Quantitative Point, aggregate Bar,
 and Rect color can transition between sequential and discretized scales. A
-right/vertical, center-aligned gradient or interval legend changes family in the same action,
-retaining common text and layout settings. Custom family-specific settings
+compatible gradient or interval legend on any of the four edges changes family
+in the same action, retaining its edge, alignment and common text/layout settings. Custom family-specific settings
 require explicit removal and recreation; see [color transitions](./scales/discretized-color.md#changing-color-scale-families).
 
 ## Related

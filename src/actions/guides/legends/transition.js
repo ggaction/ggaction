@@ -12,20 +12,20 @@ export function planColorLegendTransition(program, scale, nextType) {
   if (from === undefined || to === undefined || from === to) return undefined;
   const stored = program.guideConfigs.legend?.[from];
   if (stored?.scale !== scale.id) return undefined;
-  if (stored.position !== "right" || (stored.direction ?? "vertical") !== "vertical") {
-    throw new Error("Color legend transition requires right/vertical placement; remove and recreate the legend for other layouts.");
-  }
-  const defaults = from === "gradient" ? normalizeContinuousLegend({}, "gradient") : normalizeIntervalLegend({});
+  const side = ["left", "right"].includes(stored.position);
+  const defaults = from === "gradient" ? normalizeContinuousLegend({ position: stored.position }, "gradient")
+    : normalizeIntervalLegend({ position: stored.position });
   const custom = from === "gradient"
     ? stored.count !== defaults.count || !same(stored.gradient, DEFAULT_GRADIENT_SIZE) || stored.itemGap !== defaults.itemGap
-    : !same(stored.symbol, defaults.symbol) || stored.itemGap !== defaults.itemGap;
+    : !same(stored.symbol, defaults.symbol) || stored.itemGap !== defaults.itemGap ||
+      stored.direction !== defaults.direction || (stored.columns !== undefined && !(side && stored.columns === 1));
   if (custom) {
     throw new Error("Color legend transition cannot discard custom family settings; remove and recreate the legend explicitly.");
   }
   const args = {
-    target: stored.target, channels: ["color"], position: "right",
+    target: stored.target, channels: ["color"], position: stored.position,
     labels: stored.labels, titleStyle: stored.titleStyle, border: stored.border,
-    align: stored.align, offset: stored.offset,
+    align: stored.align, offset: stored.offset, titlePosition: stored.titlePosition,
     ...(stored.inferredTitle ? {} : { title: stored.title })
   };
   try {

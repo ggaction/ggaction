@@ -1,0 +1,31 @@
+{
+  "file": "/Users/hyeonjeon/Projects/ggaction-clean-20260905/.artifacts/roadmap6-authoring/package-transition-edges-final/ggaction-0.0.12.tgz",
+  "filename": "ggaction-0.0.12.tgz",
+  "sha256": "aa68d1567ed6d06f3872f2c39c952e235fb7f0d55ade5bb5753fbed3c8a121a3",
+  "entryCount": 452,
+  "size": 509371,
+  "unpackedSize": 2435426,
+  "browserBundles": {
+    "full": {
+      "specifier": "ggaction",
+      "chunks": 1,
+      "modules": 399,
+      "minifiedBytes": 953353,
+      "gzipBytes": 253698
+    },
+    "basic": {
+      "specifier": "ggaction/basic",
+      "chunks": 1,
+      "modules": 242,
+      "minifiedBytes": 510810,
+      "gzipBytes": 139979
+    },
+    "svg": {
+      "specifier": "ggaction/svg",
+      "chunks": 1,
+      "modules": 15,
+      "minifiedBytes": 19840,
+      "gzipBytes": 6437
+    }
+  }
+}

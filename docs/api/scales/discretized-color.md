@@ -71,13 +71,17 @@ This is the executable example used by the render and browser checks. The final
 classes split at 3; zero still has zero bar height. The obsolete midpoint is
 removed and is not restored automatically on a later return to sequential color.
 
-A legend can switch families when it is right/vertical and its family-specific
-settings are defaults. The transition preserves its target, title and visibility,
-labels, title style, border, alignment, and offset. New family-specific settings
+A legend can switch families on all four edges when its family-specific
+settings are defaults. Left/right use vertical placement and center alignment.
+Top/bottom support left, center or right alignment with the default horizontal
+interval flow. Both families require a top title for transitions. The transition preserves its target, title and visibility,
+labels, title style, border, position, alignment, and offset. New family-specific settings
 use that family's defaults. A custom gradient count/size, interval symbol, or
 item gap causes an error instead of being discarded. Use `removeLegend`, change
 the scale, and call `createLegend` with the desired new style in that case.
-Other legend positions are not eligible for automatic family transitions.
+A horizontal interval column count, vertical flow or inline title cannot be
+carried into a gradient and causes an error. An explicit single column on a
+side interval legend is equivalent to the default and remains compatible.
 
 Explicit extents, quantile samples, and threshold boundaries have different
 meanings. Supply a new `domain` when changing between those meanings; `"auto"`
