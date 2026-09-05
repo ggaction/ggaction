@@ -2,7 +2,8 @@
 
 ## 검토 상태
 
-R6-P2-A 승인 범위에 따라 실행 가능한 primitive 목표 6개를 준비했다. **V 승인과 새 public API 구현은 아직 없다.**
+R6-P2-A 승인 범위에 따라 실행 가능한 primitive 목표 6개를 준비했고 사용자가 **“승인한다”로 V를 승인했다.**
+[승인 기록](GATES.md#r6-p2-v--visual-target)을 먼저 갱신했으며 새 public API 구현·검증을 진행한다.
 실제 source 기준은 W1 commit `4355af45`; runtime source tree·입력·source·호출·PNG·decoded pixel hash와
 실제 plot ink 수치는 [visual-results.json](visual-results.json)에 있다.
 

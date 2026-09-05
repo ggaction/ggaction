@@ -19,7 +19,8 @@
       "R6-P1-A",
       "R6-P1-X",
       "R6-P2-A",
-      "R6-P2-B"
+      "R6-P2-B",
+      "R6-P2-V"
     ],
     "implementationStarted": true,
     "reviewCommit": "cf13920ed517cfc6c333b04ec55a724826960228",
@@ -168,7 +169,7 @@
       ],
       "gateStates": {
         "R6-P2-A": "approved",
-        "R6-P2-V": "ready-for-review",
+        "R6-P2-V": "approved",
         "R6-P2-X": "planned",
         "R6-P2-B": "approved"
       },
@@ -237,7 +238,7 @@
           "resultEvidence": "phase2/RESULTS.md#w5--bar-incomplete-authoring"
         }
       ],
-      "activity": "visual-review",
+      "activity": "public-implementation",
       "contractReview": {
         "file": "phase2/CONTRACT_REVIEW.md",
         "baselineCommit": "bbc8a3fc256c9afa877f696ed6ade1f51ffb7522",
@@ -258,7 +259,13 @@
         "primitiveVariants": 6,
         "focusedTests": 10,
         "renderTests": 6,
-        "reviewPackageCommit": "ca820fa941f4359e814ee6f65a01e574512f5c08"
+        "reviewPackageCommit": "ca820fa941f4359e814ee6f65a01e574512f5c08",
+        "approval": {
+          "userDirection": "승인한다",
+          "scope": "country-color, tuple-color-dash, series-appearance, timestamp, year, auto의 6개 target. A의 W2/W3/W4 계약에 따른 public 구현과 consumer 검증. X 승인은 별도다.",
+          "reviewCommit": "ca820fa941f4359e814ee6f65a01e574512f5c08",
+          "approvalBaselineCommit": "1883d8b47a87a71c623edcb9158399ac88b3556d"
+        }
       },
       "bundleReview": {
         "file": "phase2/BUNDLE_REVIEW.md",

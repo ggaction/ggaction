@@ -3,9 +3,10 @@
 ## 공통 상태
 
 R6-P2-A는 approved다. 2026-09-05 사용자가 “ㄱㄱ”로 아래 계약의 구현을 승인했다.
-B는 approved, V는 ready-for-review, X는 planned다. 새 시각 target과 bundle 예산은 각각 독립 결정이다.
+B/V는 approved, X는 planned다. 새 시각 target과 bundle 예산은 각각 독립 결정이다.
 허용 상태는 planned | ready-for-review | approved | changes-requested다.
-현재 검토 대상은 [VISUAL_REVIEW.md](VISUAL_REVIEW.md)의 6개 target이다. [BUNDLE_REVIEW.md](BUNDLE_REVIEW.md)의 full 상한 조정은 승인·적용·재검증을 마쳤다.
+[VISUAL_REVIEW.md](VISUAL_REVIEW.md)의 6개 target을 사용자가 “승인한다”로 승인했다. 해당 public 흐름을 구현·검증한다.
+[BUNDLE_REVIEW.md](BUNDLE_REVIEW.md)의 full 상한 조정은 승인·적용·재검증을 마쳤다.
 
 ## R6-P2-A — Contract and scope
 
@@ -37,7 +38,12 @@ B는 approved, V는 ready-for-review, X는 planned다. 새 시각 target과 bund
 
 ## R6-P2-V — Visual target
 
-- 상태: ready-for-review
+- 상태: approved
+- 사용자 승인 근거: 시각 목표 6개의 별도 승인 대기를 안내한 뒤 사용자가 “승인한다”라고 답했다.
+  검토 package는 `ca820fa941f4359e814ee6f65a01e574512f5c08`, 승인 직전 HEAD는
+  `1883d8b47a87a71c623edcb9158399ac88b3556d`이며 둘 다 원격 branch에 push되어 있다.
+- 승인 범위: country-color, tuple-color-dash, series-appearance, timestamp, year, auto의 여섯 target.
+  이 기록을 먼저 갱신한 뒤 A의 W2/W3/W4 계약에 따라 public 구현과 consumer 검증을 진행한다.
 - 실제 package: [VISUAL_REVIEW.md](VISUAL_REVIEW.md), 실행 가능한 두 chart slice, [6개 hash·ink 결과](visual-results.json).
 - 검증: focused normal 10/10, render 6/6, 전체 npm test 2,381/2,381. Primitive 이미지를 직접 확인했으며 public API 구현은 미착수다.
 - 검토 대상: V1 series identity·tuple·color/dash/width/opacity, V2 explicit temporal input 의미.
@@ -58,8 +64,7 @@ B는 approved, V는 ready-for-review, X는 planned다. 새 시각 target과 bund
 - 검토 당시 결과: npm test 2,381/2,381, V focused 10/10, V PNG 6/6, 기존 대표 PNG 19/19.
   Installed package는 full gzip 231,731 > 230,000으로 실패했다.
 - B 사용자 승인: **“조정한다”로 full 235,000 상한 승인**. 적용과 installed package 재검증을 통과했다.
-- V 사용자 승인: **없음**, ready-for-review다. A 또는 B 승인을 새 시각 target 승인으로 재사용하지 않는다.
-  새 public flow와 전체 Phase의 X 완료는 남아 있다.
+- V 사용자 승인: **“승인한다”로 위 6개 target 승인**. 새 public flow 검증과 전체 Phase의 X 완료는 남아 있다.
 
 ## R6-P2-X — Result and closeout
 
