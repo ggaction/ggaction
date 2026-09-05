@@ -1,5 +1,9 @@
 # Current program composition actions
 
+Nested snapshots preserve complete child ancestry with collision-free graphic IDs. Each composition adds only its
+own namespace prefix; existing identifiers are not encoded again. Identifier length grows linearly with ancestry.
+Exact internal graphic ID spelling is not a public authoring option.
+
 ## `facet`
 
 - Signature: `facet({ id?, field, data?, columns?, gap?, align?, padding?, scales?, guides? })`.

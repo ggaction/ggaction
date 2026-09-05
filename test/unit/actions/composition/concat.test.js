@@ -32,6 +32,24 @@ function nestedCanvases(program) {
   );
 }
 
+test("bounds nested snapshot identifier growth by ancestry length", () => {
+  const leaf = child({ width: 80, height: 80, color: "red" });
+  const before = JSON.stringify(leaf);
+  let program = leaf;
+  let longest = 0;
+  for (let depth = 1; depth <= 12; depth++) {
+    program = hconcat({ programs: [
+      { id: "nested", program }, { id: "leaf", program: leaf }
+    ] });
+    const nextLongest = Math.max(...Object.keys(program.graphicSpec.objects).map(id => id.length));
+    assert.ok(nextLongest - longest <= 200);
+    assert.ok(JSON.stringify(program.graphicSpec).length < 300_000);
+    longest = nextLongest;
+  }
+  assert.equal(JSON.stringify(leaf), before);
+  assert.doesNotThrow(() => render(program, createMockCanvasContext()));
+});
+
 test("composes auto-height children horizontally without mutating sources", () => {
   const left = child({
     width: 200,
