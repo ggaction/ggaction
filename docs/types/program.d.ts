@@ -1,5 +1,6 @@
 import type { RegisteredExtensionActions } from "./extension.js";
 
+export type TemporalInputUnit = "auto" | "year" | "timestamp";
 export type FieldType = "quantitative" | "temporal" | "ordinal" | "nominal";
 export type GraphicType =
   | "canvas"
@@ -305,10 +306,10 @@ export interface HorizonOutputFields {
 }
 export interface DatasetHorizonTransform {
   readonly type: "horizon";
-  readonly x: {
-    readonly field: string;
-    readonly fieldType: "quantitative" | "temporal";
-  };
+  readonly x: { readonly field: string } & (
+    | { readonly fieldType: "quantitative"; readonly temporalUnit?: never }
+    | { readonly fieldType: "temporal"; readonly temporalUnit?: TemporalInputUnit }
+  );
   readonly y: {
     readonly field: string;
     readonly fieldType: "quantitative";
@@ -429,6 +430,7 @@ export interface DatasetTimeUnitTransform {
   readonly type: "timeUnit";
   readonly field: string;
   readonly unit: TimeUnit;
+  readonly temporalUnit?: TemporalInputUnit;
   readonly as: string;
 }
 export interface Bin2DCounts {
@@ -896,11 +898,27 @@ type CartesianAxesOptions = Omit<
   coordinate?: { id?: string; type?: "auto" | "cartesian" };
 };
 type CartesianGridOptions = Pick<CreateGridOptions, "horizontal" | "vertical">;
+type FilledMarkLegendOptions = Omit<LegendOptions, "symbol"> & {
+  symbol?: "auto"
+    | { width?: number; height?: number; stroke?: string; strokeWidth?: number }
+    | { layers: readonly LegendSymbolLayer[] };
+};
+type PathLegendOptions = Omit<LegendOptions, "symbol" | "gradient" | "count"> & {
+  symbol?: "auto" | { length?: number; lineWidth?: number }
+    | { layers: readonly LegendSymbolLayer[] };
+};
 type CartesianGuideOptions = {
   axes?: false | CartesianAxesOptions;
   grid?: false | CartesianGridOptions;
-  legend?: false | LegendOptions;
+  legend?: false | FilledMarkLegendOptions;
 };
+type CartesianPathGuideOptions = Omit<CartesianGuideOptions, "legend"> & {
+  legend?: false | PathLegendOptions;
+};
+type CartesianCategoricalGuideOptions = Omit<CartesianGuideOptions, "legend"> & {
+  legend?: false | Omit<FilledMarkLegendOptions, "count" | "gradient">;
+};
+type BoxPlotGuideOptions = Omit<CartesianGuideOptions, "legend"> & { legend?: false };
 type GradientPlotDensityLegendOptions = {
   title?: string;
   position?: "right";
@@ -913,7 +931,7 @@ type ParallelGuideOptions = {
     coordinate?: { id?: string; type?: "auto" | "parallel" };
   };
   grid?: false;
-  legend?: false | LegendOptions;
+  legend?: false | PathLegendOptions;
 };
 
 export interface CreateCoordinateOptions {
@@ -1062,6 +1080,7 @@ type PositionScaleBranches<Quantitative, Temporal, Categorical> =
     }
   | {
       fieldType: "temporal";
+      temporalUnit?: TemporalInputUnit;
       aggregate?: never;
       scale?: Temporal;
     }
@@ -1116,19 +1135,21 @@ export interface RadiusScaleOptions {
   constant?: number;
 }
 
-export interface ThetaEncodingOptions {
+export type ThetaEncodingOptions = {
   /**
    * Arc marks interpret an aggregate-free quantitative field as per-row sector
    * weights. Categorical arc theta retains the count and weighted-sum modes.
    */
   field: string;
   target?: string;
-  fieldType?: FieldType;
   scale?: ThetaScaleOptions;
   coordinate?: string;
   aggregate?: "count" | "sum";
   weight?: string;
-}
+} & (
+  | { fieldType?: Exclude<FieldType, "temporal">; temporalUnit?: never }
+  | { fieldType: "temporal"; temporalUnit?: TemporalInputUnit }
+);
 
 export interface RadialEncodingOptions {
   field: string;
@@ -1167,6 +1188,7 @@ export type RulePositionEncodingOptions =
       }
     | {
         fieldType: "temporal";
+        temporalUnit?: TemporalInputUnit;
         scale?: NonPointTemporalPositionScaleOptions;
       }
     | {
@@ -1175,21 +1197,30 @@ export type RulePositionEncodingOptions =
       }
     );
 
+type TemporalBindingBranch =
+  | { fieldType?: "quantitative"; temporalUnit?: never }
+  | { fieldType: "temporal"; temporalUnit?: TemporalInputUnit };
+
 type SecondaryRulePositionEncodingOptions = RulePositionEncodingBase & {
-  fieldType: FieldType;
   scale?: { id?: string };
-};
+} & (
+  | { fieldType: Exclude<FieldType, "temporal">; temporalUnit?: never }
+  | { fieldType: "temporal"; temporalUnit?: TemporalInputUnit }
+);
 
 export type SecondaryPositionEncodingOptions =
   | SecondaryRulePositionEncodingOptions
-  | {
-      field: string;
-      datum?: never;
-      target?: string;
-      fieldType?: "quantitative" | "temporal";
-      scale?: { id?: string };
-      coordinate?: string;
-    };
+  | ({ field: string; datum?: never; target?: string; scale?: { id?: string }; coordinate?: string } & TemporalBindingBranch);
+
+type RangePositionEncodingOptions = {
+  lower: string;
+  upper: string;
+  target?: string;
+  coordinate?: string;
+} & (
+  | { fieldType?: "quantitative"; temporalUnit?: never; scale?: NonPointQuantitativePositionScaleOptions }
+  | { fieldType: "temporal"; temporalUnit?: TemporalInputUnit; scale?: NonPointTemporalPositionScaleOptions }
+);
 
 export type HistogramEncodingOptions = {
   field: string;
@@ -1230,7 +1261,8 @@ export interface DensityDataOptions {
   as?: readonly [string, string];
 }
 
-type DensityEncodingBase = Omit<DensityDataOptions, "id"> & {
+type DensityEncodingBase = Omit<DensityDataOptions, "id" | "groupBy"> & {
+  groupBy?: string | false;
   target?: string;
   densityChannel?: "x" | "y";
   coordinate?: string;
@@ -1255,6 +1287,7 @@ export type HorizonXEncoding = { field: string } & (
     }
   | {
       fieldType: "temporal";
+      temporalUnit?: TemporalInputUnit;
       scale?: NonPointTemporalPositionScaleOptions;
     }
   | {
@@ -1287,7 +1320,7 @@ export interface HorizonEncodingOptions {
   source?: string;
   x?: string | HorizonXEncoding;
   y?: string | HorizonYEncoding;
-  groupBy?: string;
+  groupBy?: string | false;
   bands?: number;
   baseline?: number;
   extent?: "auto" | number;
@@ -1335,6 +1368,7 @@ export interface TimeUnitDataOptions {
   source?: string;
   field: string;
   unit: TimeUnit;
+  temporalUnit?: TemporalInputUnit;
   as: string;
 }
 
@@ -1369,6 +1403,7 @@ export type ErrorBarPositionChannel = { field?: string } & (
     }
   | {
       fieldType: "temporal";
+      temporalUnit?: TemporalInputUnit;
       scale?: NonPointTemporalPositionScaleOptions;
     }
   | {
@@ -1482,7 +1517,7 @@ export interface BoxPlotOptions {
     radius?: number;
     opacity?: number;
   };
-  guides?: false | CartesianGuideOptions;
+  guides?: false | BoxPlotGuideOptions;
 }
 
 export interface EditBoxPlotOptions {
@@ -1603,7 +1638,7 @@ export interface ViolinPlotOptions {
   color?: ViolinPlotColorOptions;
   density?: ViolinPlotDensityOptions;
   area?: ViolinPlotAreaOptions;
-  guides?: false | CartesianGuideOptions;
+  guides?: false | CartesianCategoricalGuideOptions;
 }
 
 export interface EditGradientPlotOptions {
@@ -1630,6 +1665,7 @@ type PointFacadePositionChannel =
         }
       | {
           fieldType: "temporal";
+          temporalUnit?: TemporalInputUnit;
           scale?: TemporalPositionScaleOptions;
         }
       | {
@@ -1646,6 +1682,7 @@ type LineXPositionChannel =
         }
       | {
           fieldType: "temporal";
+          temporalUnit?: TemporalInputUnit;
           scale?: NonPointTemporalPositionScaleOptions;
         }
     ));
@@ -1659,6 +1696,7 @@ type LineYPositionChannel =
         }
       | {
           fieldType: "temporal";
+          temporalUnit?: TemporalInputUnit;
           aggregate?: never;
           scale?: NonPointTemporalPositionScaleOptions;
         }
@@ -1673,6 +1711,7 @@ type BarYPositionChannel =
   | {
       field: string;
       fieldType: "temporal";
+      temporalUnit?: TemporalInputUnit;
       aggregate?: never;
       stack?: never;
       scale?: NonPointTemporalPositionScaleOptions;
@@ -1711,6 +1750,7 @@ type BasicColorChannel =
   | {
       field: string;
       fieldType: "temporal";
+      temporalUnit?: TemporalInputUnit;
       scale?: ContinuousColorScaleOptions;
       palette?: Palette;
     };
@@ -1775,6 +1815,7 @@ type RectColorChannel =
   | {
       field: string;
       fieldType: "temporal";
+      temporalUnit?: TemporalInputUnit;
       scale?: NonPointContinuousColorScaleOptions;
       palette?: Palette;
     };
@@ -1856,7 +1897,7 @@ export interface CreateScatterPlotOptions {
     stroke?: FilledMarkStroke;
     strokeWidth?: number;
   };
-  guides?: false | CreateGuidesOptions;
+  guides?: false | CartesianGuideOptions;
 }
 
 export type GroupEncodingOptions = { target?: string; fieldType?: "nominal" } & (
@@ -1880,7 +1921,7 @@ export interface CreateLinePlotOptions {
     opacity?: number;
     closed?: false;
   };
-  guides?: false | CreateGuidesOptions;
+  guides?: false | CartesianPathGuideOptions;
 }
 
 type BasicHistogramEncoding =
@@ -1906,7 +1947,7 @@ export interface CreateBarPlotOptions {
     stroke?: FilledMarkStroke;
     strokeWidth?: number;
   };
-  guides?: false | CreateGuidesOptions;
+  guides?: false | CartesianGuideOptions;
 }
 
 export type CreateHistogramOptions = BasicHistogramEncoding & {
@@ -1921,7 +1962,7 @@ export type CreateHistogramOptions = BasicHistogramEncoding & {
     stroke?: FilledMarkStroke;
     strokeWidth?: number;
   };
-  guides?: false | CreateGuidesOptions;
+  guides?: false | CartesianCategoricalGuideOptions;
 };
 
 export interface HeatmapBaseOptions {
@@ -1988,6 +2029,7 @@ export type ErrorBandPositionChannel = { field?: string } & (
     }
   | {
       fieldType: "temporal";
+      temporalUnit?: TemporalInputUnit;
       scale?: NonPointTemporalPositionScaleOptions;
     }
 );
@@ -2251,6 +2293,7 @@ export type ColorEncodingOptions =
       field: string;
       target?: string;
       fieldType: "temporal";
+      temporalUnit?: TemporalInputUnit;
       aggregate?: never;
       scale?: ContinuousColorScaleOptions;
       palette?: Palette;
@@ -2378,7 +2421,7 @@ type RegressionCommonOptions = {
   target?: string;
   x?: string;
   y?: string;
-  groupBy?: string;
+  groupBy?: string | false;
   line?: { strokeWidth?: number; curve?: CurveInterpolation };
 };
 
@@ -2767,22 +2810,8 @@ export class ChartProgram {
   encodeXOffset(options: XOffsetEncodingOptions): ChartProgram;
   encodeYOffset(options: YOffsetEncodingOptions): ChartProgram;
   encodeY2(options: SecondaryPositionEncodingOptions): ChartProgram;
-  encodeYRange(options: {
-    lower: string;
-    upper: string;
-    target?: string;
-    fieldType?: "quantitative";
-    coordinate?: string;
-    scale?: NonPointQuantitativePositionScaleOptions;
-  }): ChartProgram;
-  encodeXRange(options: {
-    lower: string;
-    upper: string;
-    target?: string;
-    fieldType?: "quantitative";
-    coordinate?: string;
-    scale?: NonPointQuantitativePositionScaleOptions;
-  }): ChartProgram;
+  encodeYRange(options: RangePositionEncodingOptions): ChartProgram;
+  encodeXRange(options: RangePositionEncodingOptions): ChartProgram;
   encodeGroup(options: GroupEncodingOptions): ChartProgram;
   encodePathOrder(options: PathOrderEncodingOptions): ChartProgram;
   orderCategories(options: OrderCategoriesOptions): ChartProgram;

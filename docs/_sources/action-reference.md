@@ -427,7 +427,7 @@ median supports interquartile range. [Data](../api/data.md)
 ### `createTimeUnitData`
 
 ```javascript
-createTimeUnitData({ id, source?, field, unit, as })
+createTimeUnitData({ id, source?, field, temporalUnit?, unit, as })
 ```
 
 Create an immutable row-preserving dataset with one UTC year, quarter, month,
@@ -714,6 +714,12 @@ semantic base positions. [Text marks](../api/marks/text.md)
 | `encodeParallelCoordinates` | line | line: quantitative, ordinal | atomic ordered dimensions; one namespaced scale and axis per dimension |
 <!-- action-capabilities:position:end -->
 
+Temporal input branches accept `temporalUnit: "auto" | "year" | "timestamp"`.
+Timestamp means Unix milliseconds; year means UTC January 1. Omission preserves
+the existing parser. Same-binding reassignment retains an explicit unit; a new
+binding clears it. Domains and tick values are already normalized timestamps.
+[Temporal input](../api/position/temporal.md)
+
 ### `encodeX`
 
 ```javascript
@@ -927,6 +933,11 @@ histogram action. Choose at most one of `maxBins`, `binStep`, and
 `binBoundaries`. `maxBins` defaults to `10`; `stack` defaults to `"zero"`.
 Use `stack: "normalize"` for a unit-height partition.
 [Encodings](../api/encodings.md)
+
+Creation `groupBy:false` explicitly requests ungrouped Regression, Density or
+Horizon and survives JSON serialization. Editors preserve omission, reject
+explicit undefined and clear with false. Data-only transform groupBy options
+remain unchanged.
 
 ### `encodeDensity`
 

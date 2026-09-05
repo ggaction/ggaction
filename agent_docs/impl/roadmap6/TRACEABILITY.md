@@ -2,7 +2,7 @@
 
 이번 범위의 B01–B08, D01–D20, F01–F19 총 47개 항목을 추적한다. Phase 1의 실행 상태와 검증 결과는
 [실행 증거](phase1/RESULTS.md)에 기록한다. Phase 1 X는 사용자 승인으로 닫았고
-[Phase 2 계약 검토](phase2/CONTRACT_REVIEW.md)는 approved이며 구현 중이다. 나머지 항목은 별도 표시가 없으면 Proposed / 미구현이다.
+[Phase 2 계약 검토](phase2/CONTRACT_REVIEW.md)는 approved이며 구현·누적 realistic·consumer 검증을 마쳤다. X 결과 승인은 대기 중이다. 나머지 항목은 별도 표시가 없으면 Proposed / 미구현이다.
 사용자는 2026-09-05 F20 제외와 나머지 19개 액션군 구성을 선택했다. F20은 실행·연구·완료 대상이 아니며
 원래 관측은 고정된 감사 기록에만 남긴다.
 Primary owner는 누락 방지를 위한 책임 단위이며, 관련 작업이 여러 단계에 있으면 함께 닫아야 한다.
@@ -126,7 +126,7 @@ Primary owner는 누락 방지를 위한 책임 단위이며, 관련 작업이 �
 - 수정·추가 방향: encodeGroup의 identity와 color/dash/width의 final-series appearance를 분리한다. Multi-key group을 충돌 없는 구조로 다룬다. Existing inferred grouping의 호환 경로를 유지한다.
 - 완료 검증: country group+continent color 성공; 한 series의 모호한 appearance 거부; field 작성 순서와 group edit 뒤 수렴.
 - 근거: audit/REPORT.md: D02. [원래 조사](audit/REPORT.md)
-- 처분: 구현 또는 명시적인 계약 유지·migration 결정의 제안. 아직 완료·승인 상태가 아니다.
+- 처분: [W2 구현·consumer 검증](phase2/RESULTS.md#w2--explicit-series-identity-and-line-appearance) 완료. Scalar/tuple identity와 appearance를 분리했고 최종 package 크기도 통과했다. Phase 2 X는 미승인이다.
 
 ### D03 — Color에 종속된 layout과 전환 제한
 
@@ -142,7 +142,7 @@ Primary owner는 누락 방지를 위한 책임 단위이며, 관련 작업이 �
 - 수정·추가 방향: Box/Gradient deferred 역할을 metadata에 명시한다. H0는 compatible guide를 재사용하고 missing만 생성한다. Low-level create strictness는 유지한다. Box guides default는 초기에는 유지하는 안을 확정한다.
 - 완료 검증: Scatter→Line 기본 조합 성공, incompatible scale guide는 atomic conflict. omitted/{} /false matrix가 facade와 child별로 명시됨.
 - 근거: audit/REPORT.md: D04. [원래 조사](audit/REPORT.md)
-- 처분: 구현 또는 명시적인 계약 유지·migration 결정의 제안. 아직 완료·승인 상태가 아니다.
+- 처분: [W1](phase2/RESULTS.md#w1--facade-guide-reuse)의 deferred metadata·owned guide 재사용과 선언 정합성을 검증했다. 전수 metadata audit는 Phase 11에 남기며 항목 전체를 닫지 않는다.
 
 ### D05 — Guide default와 facade 중첩 비대칭
 
@@ -150,7 +150,7 @@ Primary owner는 누락 방지를 위한 책임 단위이며, 관련 작업이 �
 - 수정·추가 방향: Box/Gradient deferred 역할을 metadata에 명시한다. H0는 compatible guide를 재사용하고 missing만 생성한다. Low-level create strictness는 유지한다. Box guides default는 초기에는 유지하는 안을 확정한다.
 - 완료 검증: Scatter→Line 기본 조합 성공, incompatible scale guide는 atomic conflict. omitted/{} /false matrix가 facade와 child별로 명시됨.
 - 근거: audit/REPORT.md: D05. [원래 조사](audit/REPORT.md)
-- 처분: 구현 또는 명시적인 계약 유지·migration 결정의 제안. 아직 완료·승인 상태가 아니다.
+- 처분: [W1](phase2/RESULTS.md#w1--facade-guide-reuse)의 공유 guide·conflict·omission/false matrix를 검증했다. 최종 installed package도 통과했으며 Phase 2 X는 미승인이다.
 
 ### D06 — Constant/field/create/edit style의 비대칭
 
@@ -160,7 +160,7 @@ Primary owner는 누락 방지를 위한 책임 단위이며, 관련 작업이 �
 - 근거: audit/REPORT.md: D06. [원래 조사](audit/REPORT.md)
 - 추가 근거: Phase 2 S13(Line field width의 무효 scalar edit), S15(Point opacity와 남은 field/legend),
   S16(ErrorBand 역방향 color assignment), S18(basic radius child 미등록)을 [재현 결과](phase2/baseline-results.json)에 추가했다.
-- 처분: [Phase 2 W3 계약 검토](phase2/CONTRACT_REVIEW.md)에 mode/충돌/reset·package 경로를 구체화했다. 계약은 R6-P2-A 승인으로 Planned이며 아직 구현 완료가 아니다.
+- 처분: [W3](phase2/RESULTS.md#w3--style-assignment-and-facade-forwarding)와 W2 Line appearance의 create/edit/field/constant·reset·Basic alias를 구현·검증했다. 최종 package 통과, Phase 2 X 미승인이다.
 
 ### D07 — Cartesian/Polar/Parallel 축 lifecycle 공백
 
@@ -184,7 +184,7 @@ Primary owner는 누락 방지를 위한 책임 단위이며, 관련 작업이 �
 - 수정·추가 방향: Explicit type/schema/temporal unit/aggregate를 우선하는 선택표를 확정한다. groupBy:false의 JSON round trip을 제공하고 create omission과 edit preservation을 구분한다.
 - 완료 검증: numeric nominal color, mean Bar, year/timestamp 기존 결과 비교. 생략·false·undefined·auto의 source/trace/serialization 의미를 검사.
 - 근거: audit/REPORT.md: D09. [원래 조사](audit/REPORT.md)
-- 처분: 구현 또는 명시적인 계약 유지·migration 결정의 제안. 아직 완료·승인 상태가 아니다.
+- 처분: [W4](phase2/RESULTS.md#w4--explicit-temporal-input-and-json-opt-out)의 temporalUnit·binding 보존·기존 분석 defaults를 구현·검증했다. Source schema API는 승인된 Phase 2 범위에서 제외되었다. Phase 2 X는 미승인이다.
 
 ### D10 — 통계 grouping inference와 JSON opt-out
 
@@ -192,7 +192,7 @@ Primary owner는 누락 방지를 위한 책임 단위이며, 관련 작업이 �
 - 수정·추가 방향: Explicit type/schema/temporal unit/aggregate를 우선하는 선택표를 확정한다. groupBy:false의 JSON round trip을 제공하고 create omission과 edit preservation을 구분한다.
 - 완료 검증: numeric nominal color, mean Bar, year/timestamp 기존 결과 비교. 생략·false·undefined·auto의 source/trace/serialization 의미를 검사.
 - 근거: audit/REPORT.md: D10. [원래 조사](audit/REPORT.md)
-- 처분: 구현 또는 명시적인 계약 유지·migration 결정의 제안. 아직 완료·승인 상태가 아니다.
+- 처분: [W2/W4](phase2/RESULTS.md#w4--explicit-temporal-input-and-json-opt-out)의 명시적 group identity와 groupBy:false JSON round trip, create/edit omission matrix를 구현·검증했다. Phase 2 X는 미승인이다.
 
 ### D11 — CI method와 level 어휘 불일치
 

@@ -15,7 +15,7 @@ title: Time-Unit Data Transforms
 row. Use it when timestamps within the same calendar unit need a shared value
 before a later encoding, filter, aggregation, or window operation.
 
-## `createTimeUnitData({ id, source?, field, unit, as })`
+## `createTimeUnitData({ id, source?, field, temporalUnit?, unit, as })`
 
 ```javascript
 import { chart } from "ggaction";
@@ -44,6 +44,7 @@ console.log(program.semanticSpec.datasets[1].values[0].month);
 | `id` | new dataset ID | required |
 | `source` | existing dataset ID | current dataset |
 | `field` | temporal field name | required |
+| `temporalUnit` | `"auto"`, `"year"`, or `"timestamp"` input mode | existing automatic parser |
 | `unit` | `"year"`, `"quarter"`, `"month"`, `"day"`, `"hour"`, `"minute"`, or `"second"` | required |
 | `as` | new output field name | required |
 
@@ -51,6 +52,11 @@ The output is a finite timestamp at the start of the requested UTC unit.
 Quarter starts are January 1, April 1, July 1, and October 1. The action accepts
 the same temporal input forms as a temporal position scale: finite timestamps,
 parseable temporal strings, date-only strings, and four-digit years.
+
+Input `temporalUnit` and calendar `unit` are independent. For numeric Unix
+milliseconds use `temporalUnit: "timestamp"`. Bind the resulting field with
+`fieldType: "temporal", temporalUnit: "timestamp"`, including small positive
+bucket timestamps. The chosen input unit is stored in the transform.
 
 The source dataset remains unchanged. The derived dataset preserves row order
 and every existing field, then adds `as`. The output name must differ from the

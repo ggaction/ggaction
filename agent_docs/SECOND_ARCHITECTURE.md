@@ -1495,6 +1495,15 @@ planned contract이므로 시각 구현 승인을 받기 전에는 지원하지 
 - density는 scale로 변환된 zero baseline에서 닫는다.
 - color encoding이 있으면 group domain 순서로 fill을 적용한다.
 
+### Temporal input normalization
+
+TemporalInputUnit belongs to the encoding or transform input descriptor. The shared fields parser implements
+explicit auto/year/timestamp; positions, color, scale consumers, geometry and channel selections consume it.
+Raw rows are immutable. Same-binding reassignment preserves a unit; new bindings clear stale units. Time scales
+and ticks consume normalized timestamps. Horizon-generated timestamps carry an explicit timestamp binding.
+Regression/Density/Horizon normalize JSON groupBy:false before creating their existing transforms; no schema
+or false field sentinel is added. Mean Bar and nominal numeric color defaults remain unchanged.
+
 ### Rule
 
 - Rule은 semantic `rule` layer 하나와 backend-neutral `line` collection 하나를 가진다.

@@ -666,8 +666,8 @@
         "other-complete-chart-facades",
         "advanced-authoring"
       ],
-      "bytes": 10546,
-      "sha256": "725c04b28d639556f4749d461c0c767489b9dcd486a06d2ed6b293b37bf4b456"
+      "bytes": 10940,
+      "sha256": "f77104c48491adfeabe4f4d0fc49f8245d3d058fbd60685f494f74328213a4a9"
     },
     {
       "order": 44,
@@ -768,12 +768,12 @@
       "source": "api/data/time-units.md",
       "headings": [
         "time-unit-data-transforms",
-        "createtimeunitdata-id-source-field-unit-as",
+        "createtimeunitdata-id-source-field-temporalunit-unit-as",
         "boundaries",
         "related"
       ],
-      "bytes": 2260,
-      "sha256": "2bd0039c5ec9bf279904360e51f776dfccc9edd02015155a13446e08fc76c356"
+      "bytes": 2670,
+      "sha256": "0340eef3286a087779b588b64a45b6cc3e44bcab16625e69b798caa2389e58df"
     },
     {
       "order": 51,
@@ -937,10 +937,11 @@
         "removing-an-encoding",
         "shared-inference-and-ordering",
         "errors-and-limitations",
-        "related"
+        "related",
+        "explicit-grouping-and-time-inputs"
       ],
-      "bytes": 9632,
-      "sha256": "5bc5a15cca051504ad7770c731cdab447614071b748cf338f363a8a70ab5c63a"
+      "bytes": 10309,
+      "sha256": "9e1cf0c61cd4b477dbd8203312bce0d5fa5bd200a8a2bde84fb0db6dc67797b9"
     },
     {
       "order": 61,
@@ -956,8 +957,8 @@
         "errors-and-limitations",
         "related"
       ],
-      "bytes": 6236,
-      "sha256": "a99ec91853a6b8d2ec7cd440223687b117b8a30123889fb05206f7df18059dd7"
+      "bytes": 6378,
+      "sha256": "93fd7004cdebfadd9db5002dd3d8e04c7f88857bb2e6ead58fcf4fb38a8a1e4e"
     },
     {
       "order": 62,
@@ -1160,12 +1161,13 @@
         "temporal-line-positions",
         "at-a-glance",
         "temporal-line-encodexoptions",
+        "explicit-input-units",
         "aggregate-line-encodeyoptions",
         "errors-and-limitations",
         "related"
       ],
-      "bytes": 4725,
-      "sha256": "cdd0603990ec0e56e8d0a6de9cbb3f8ae54c229c0c8fea016abb4031c7d07cbc"
+      "bytes": 6215,
+      "sha256": "bc717ea7f9df48956ccbf9ec8ab658af744d7d12e4ce53d7ef819e00c2a1b2f6"
     },
     {
       "order": 74,
@@ -1808,8 +1810,8 @@
         "editbin2ddata",
         "related"
       ],
-      "bytes": 8926,
-      "sha256": "c38e21f662989d707c0bd246de60dfcfd3ad7a404d5712f2481acc4b2d31c3b5"
+      "bytes": 8941,
+      "sha256": "ec9f4c8041b940593e2ae352b6c5de745109fcc852acf0e8b6165121a2c7cd27"
     },
     {
       "order": 115,
@@ -1844,8 +1846,8 @@
         "position-capability-matrix",
         "related"
       ],
-      "bytes": 8642,
-      "sha256": "c9ff323c6871d059aecc924510a1034377f582f5cdf002988328dd60cfa1551d"
+      "bytes": 9001,
+      "sha256": "e2ed074fe8e08e0bb938bbb02d6415ac4d24a2f95292c6e54a3335538a584c24"
     },
     {
       "order": 116,
@@ -1892,8 +1894,8 @@
         "encodebarwidth",
         "related"
       ],
-      "bytes": 15404,
-      "sha256": "2f9cf5946b409e8ba572f04a25e04b463fa7e70255af4be38fcbd74afd67d255"
+      "bytes": 15653,
+      "sha256": "6a3d1a3cf2b6276c862bfdf7ce5ee4e4fa93788623c2531b480988dbe4c5dd10"
     },
     {
       "order": 117,
@@ -2022,8 +2024,8 @@
         "exact-typescript-signatures",
         "related"
       ],
-      "bytes": 14517,
-      "sha256": "d8f3b16123c4e6f9a8e5eb6f627e10abfb1781955e9aa87eef8526aa0bcef570"
+      "bytes": 14275,
+      "sha256": "e52abde0e3df1a9b24c7c42f53156dadaf2d14c7d7c1242e5d990588c5064a06"
     },
     {
       "order": 123,

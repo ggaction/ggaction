@@ -140,7 +140,7 @@ export const createErrorBarCap = action(
   function (args = {}) {
     validateKeys(args, [
       "id", "data", "orientation", "positionField", "positionFieldType",
-      "intervalField", "coordinate", "positionScale", "intervalScale",
+      "intervalField", "coordinate", "positionScale", "intervalScale", "positionTemporalUnit",
       "offsetChannel", "offsetField", "offsetFieldType", "offsetScale",
       "offsetPaddingInner", "offsetPaddingOuter",
       "capSize", "stroke", "strokeWidth", "strokeDash", "opacity"
@@ -166,6 +166,7 @@ export const createErrorBarCap = action(
         target: args.id,
         field: args.positionField,
         fieldType: args.positionFieldType,
+        ...(args.positionTemporalUnit === undefined ? {} : { temporalUnit: args.positionTemporalUnit }),
         coordinate: args.coordinate,
         scale: { id: args.positionScale }
       })
@@ -207,6 +208,7 @@ function positionArgs(resolved) {
     target: resolved.id,
     field: resolved.position.field,
     fieldType: resolved.position.fieldType,
+    ...(resolved.position.temporalUnit === undefined ? {} : { temporalUnit: resolved.position.temporalUnit }),
     coordinate: resolved.coordinate,
     scale: resolved.position.scale
   };
@@ -282,6 +284,7 @@ export const createErrorBar = action(
           orientation: resolved.orientation,
           positionField: resolved.position.field,
           positionFieldType: resolved.position.fieldType,
+        ...(resolved.position.temporalUnit === undefined ? {} : { positionTemporalUnit: resolved.position.temporalUnit }),
           intervalField: field,
           coordinate: resolved.coordinate,
           positionScale: intervalLayer.encoding[resolved.position.channel].scale,
@@ -311,6 +314,7 @@ export const createErrorBar = action(
         orientation: resolved.orientation,
         positionField: resolved.position.field,
         positionFieldType: resolved.position.fieldType,
+        ...(resolved.position.temporalUnit === undefined ? {} : { positionTemporalUnit: resolved.position.temporalUnit }),
         lowerField: resolved.fields.lower,
         upperField: resolved.fields.upper,
         coordinate: resolved.coordinate,

@@ -5,10 +5,7 @@ import {
 import {
   mapOrdinalOffsetValues,
   mapOrdinalPositionValues,
-  readNominalField,
-  readQuantitativeField,
-  readScaleField,
-  readTemporalField
+  readScaleField
 } from "../grammar/scales/index.js";
 import {
   finiteMidpoint,
@@ -26,15 +23,9 @@ export function resolveRowEncodingValues(program, layer, dataset, channel) {
     );
   }
   const categorical = ["nominal", "ordinal"].includes(encoding.fieldType);
-  const values = Object.hasOwn(scale, "unknown")
-    ? readScaleField(dataset.values, encoding.field, encoding.fieldType, {
-        allowUnknown: true
-      })
-    : categorical
-      ? readNominalField(dataset.values, encoding.field)
-      : encoding.fieldType === "temporal"
-        ? readTemporalField(dataset.values, encoding.field)
-        : readQuantitativeField(dataset.values, encoding.field);
+  const values = readScaleField(dataset.values, encoding.field, encoding.fieldType, {
+    allowUnknown: Object.hasOwn(scale, "unknown"), temporalUnit: encoding.temporalUnit
+  });
   if (categorical && OFFSET_POSITION_CHANNELS.includes(channel)) {
     return mapOrdinalOffsetValues(values, scale);
   }

@@ -1,3 +1,4 @@
+import { createTemporalInput } from "./temporal-input/program.js";
 import { createCarsBoxPlot } from "./cars-box-plot/program.js";
 import { createSeriesIdentity } from "./series-identity/program.js";
 import { createCarsGradientPlot } from "./cars-gradient-plot/program.js";
@@ -93,6 +94,12 @@ function example({ id, data, width, height, createProgram, ...options }) {
 }
 
 export const PUBLIC_CHARTS = Object.freeze([
+  example({
+    id: "temporal-input", data: {}, width: 760, height: 420,
+    createProgram: () => createTemporalInput(),
+    browser: { path: "browser-host/?chart=temporal-input", canvas: "#chart",
+      state: { global: "__ggactionExample", expected: { id: "temporal-input", width: 760, height: 420 } } }
+  }),
   example({
     id: "series-identity", data: {}, width: 760, height: 460,
     createProgram: () => createSeriesIdentity(),

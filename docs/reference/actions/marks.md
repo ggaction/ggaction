@@ -249,6 +249,12 @@ semantic base positions. [Text marks](../../api/marks/text.md)
 | `encodeParallelCoordinates` | line | line: quantitative, ordinal | atomic ordered dimensions; one namespaced scale and axis per dimension |
 <!-- action-capabilities:position:end -->
 
+Temporal input branches accept `temporalUnit: "auto" | "year" | "timestamp"`.
+Timestamp means Unix milliseconds; year means UTC January 1. Omission preserves
+the existing parser. Same-binding reassignment retains an explicit unit; a new
+binding clears it. Domains and tick values are already normalized timestamps.
+[Temporal input](../../api/position/temporal.md)
+
 ## Related
 
 [Action Reference](../actions.md) · [Chart API](../../api/index.md) · [Supported Features](../../supported-features.md)

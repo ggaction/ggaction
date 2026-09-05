@@ -23,6 +23,10 @@ Basic Chart facade는 existing domain action을 wrapped child로 조합하는 us
 
 - Scatter, Line, Bar, Histogram, Heatmap, Parallel, Violin과 Box/Gradient completion의 공통 계약이다.
   Automatic applicability와 target은 해당 facade의 layer/coordinate에서만 추론한다.
+- Cartesian facade의 타입은 Cartesian axes/grid만 제공한다. Line/Parallel 범례는 path symbol과 layered
+  symbol을 받고, Point/Bar/Rect/Violin의 shorthand는 swatch symbol이다. Box에는 범례를 소유할
+  appearance encoding이 없으므로 `guides.legend`는 false만 받는다. Histogram/Violin은 categorical
+  범례 옵션을 받는다. 다른 layer의 guide는 해당 lower guide action으로 작성한다.
 - Compatible 축·격자·범례를 재사용하고 없는 구성요소만 기존 wrapped owner로 만든다. 처음 생성할 때는
   가능한 경우 createGuides를 사용하며, 부분 보완은 실제 필요한 axis/tick/label/title/grid/legend child만 호출한다.
   별도 public ensureGuides나 observer는 없다. Direct createGuides/createAxes/leaf create의 strict 생성 계약은 유지한다.

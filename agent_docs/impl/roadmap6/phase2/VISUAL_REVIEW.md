@@ -10,7 +10,7 @@ R6-P2-A 승인 범위에 따라 실행 가능한 primitive 목표 6개를 준비
 - [Series identity 차트 계약](../chart/series-identity.md): 나라별 4 paths / tuple 8 paths / 독립 width·opacity.
 - [Temporal input 차트 계약](../chart/temporal-input.md): 같은 1000/2000을 timestamp/year/auto로 해석.
 - [검토 화면](../../../../.artifacts/roadmap6-authoring/visual-review.html): 실제 이미지와 각 variant의 정확한 target chain.
-- [V1 단일 manifest](../../../../test/charts/series-identity/manifest.js), [V2 단일 manifest](../../../../test/gates/temporal-input/manifest.js).
+- [V1 단일 manifest](../../../../test/charts/series-identity/manifest.js), [V2 단일 manifest](../../../../test/charts/temporal-input/manifest.js).
 
 ## 실제 결과
 
@@ -19,9 +19,9 @@ R6-P2-A 승인 범위에 따라 실행 가능한 primitive 목표 6개를 준비
 | country-color | 나라 4개가 독립된 4 paths, 대륙은 2색 | [PNG](../../../../.artifacts/test/png/charts/series-identity/series-identity/country-color/primitive.png) |
 | tuple-color-dash | 나라 × scenario 8 paths, 실선/점선 | [PNG](../../../../.artifacts/test/png/charts/series-identity/series-identity/tuple-color-dash/primitive.png) |
 | series-appearance | 4 paths에 width 2/4/6/8, opacity .25/.5/.75/1 | [PNG](../../../../.artifacts/test/png/charts/series-identity/series-identity/series-appearance/primitive.png) |
-| timestamp | domain [1000,2000], UTC 00:00:01/00:00:02 | [PNG](../../../../.artifacts/test/png/review/temporal-input/timestamp/primitive.png) |
-| year | UTC 1000/2000년 1월 1일 | [PNG](../../../../.artifacts/test/png/review/temporal-input/year/primitive.png) |
-| auto | 기존 숫자 연도 의미 유지; year와 같은 domain | [PNG](../../../../.artifacts/test/png/review/temporal-input/auto/primitive.png) |
+| timestamp | domain [1000,2000], UTC 00:00:01/00:00:02 | [PNG](../../../../.artifacts/test/png/charts/temporal-input/temporal-input/timestamp/primitive.png) |
+| year | UTC 1000/2000년 1월 1일 | [PNG](../../../../.artifacts/test/png/charts/temporal-input/temporal-input/year/primitive.png) |
+| auto | 기존 숫자 연도 의미 유지; year와 같은 domain | [PNG](../../../../.artifacts/test/png/charts/temporal-input/temporal-input/auto/primitive.png) |
 
 10/10 focused normal tests, 6/6 render tests, 최종 전체 `npm test` 2,381/2,381이 통과했다. Source rows의 membership, literal geometry,
 styles, temporal domains/labels, tuple collision 및 ambiguous-value target oracle를 검사했다.
@@ -40,8 +40,8 @@ Repository root에서 아래 명령을 실행한다. Source는 git에 들어 있
 
 ```sh
 npm ci
-node --test test/charts/series-identity/primitive.test.js test/gates/temporal-input/contract.test.js
-node scripts/run-tests.js render test/charts/series-identity test/gates/temporal-input
+node --test test/charts/series-identity/primitive.test.js test/charts/temporal-input/primitive.test.js
+node scripts/run-tests.js render test/charts/series-identity test/charts/temporal-input
 node agent_docs/impl/roadmap6/phase2/render-review.mjs
 ```
 

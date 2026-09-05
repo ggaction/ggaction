@@ -27,18 +27,7 @@ function seriesDefinitions(layer, rows, series) {
   return series.map(item => {
     const members = rowsForSeries(rows, item.key);
     const fields = { ...uniqueFields(members), ...item.key };
-    const channels = Object.fromEntries(
-      Object.entries(layer.encoding ?? {}).flatMap(([channel, encoding]) => {
-        if (encoding.field === undefined) {
-          return Object.hasOwn(encoding, "datum")
-            ? [[channel, encoding.datum]]
-            : [];
-        }
-        return Object.hasOwn(fields, encoding.field)
-          ? [[channel, fields[encoding.field]]]
-          : [];
-      })
-    );
+    const channels = channelMapFromRow(fields, layer);
     return { fields, channels, members };
   });
 }

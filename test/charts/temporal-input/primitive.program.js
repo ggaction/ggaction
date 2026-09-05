@@ -3,7 +3,7 @@ import { layout } from "./fixture.js";
 import { referenceFor } from "./reference-values.js";
 
 // Independent normalization supplies ISO strings to the existing parser. The
-// proposed temporalUnit public binding is intentionally not executed yet.
+// primitive remains independent of the public temporalUnit binding.
 export function createTemporalInputPrimitive(variant) {
   const reference = referenceFor(variant);
   return chart()

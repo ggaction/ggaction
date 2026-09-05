@@ -6,6 +6,7 @@ import {
   readQuantitativeField,
   readScaleField,
   readTemporalField,
+  resolveTemporalUnit,
   validateFieldType,
   validatePositionChannel
 } from "../../../grammar/scales/index.js";
@@ -34,7 +35,7 @@ import {
 
 const POSITION_ENCODING_OPTIONS = Object.freeze([
   "field", "datum", "target", "fieldType", "scale", "coordinate",
-  "aggregate", "bin", "stack", "weight"
+  "aggregate", "bin", "stack", "weight", "temporalUnit"
 ]);
 
 function inferRuleDatumFieldType(datum, operation) {
@@ -130,6 +131,7 @@ export function resolvePositionEncoding(program, channel, args, operation) {
     ? xEncoding.field
     : args.field;
   const datum = args.datum;
+  const temporalUnit = resolveTemporalUnit({ ...args, ...(hasDatum ? {} : { field }) }, fieldType, previous);
   const usesField = layer.mark.type !== "rule" || hasField;
   if (usesField && (typeof field !== "string" || field.length === 0)) {
     throw new TypeError(`${operation} field must be a non-empty string.`);
@@ -142,7 +144,7 @@ export function resolvePositionEncoding(program, channel, args, operation) {
     }
     if (fieldType === "quantitative") {
       validateAggregateFieldValues(dataset.values, field, fieldType);
-    } else readScaleField(dataset.values, field, fieldType);
+    } else readScaleField(dataset.values, field, fieldType, { temporalUnit });
   }
   const effectiveArgs = { ...args };
   const directQuantitativeArcTheta =
@@ -229,7 +231,7 @@ export function resolvePositionEncoding(program, channel, args, operation) {
     );
   }
   if (layer.mark.type === "rule" && hasDatum) {
-    normalizeRuleDatum(datum, fieldType, channel);
+    normalizeRuleDatum(datum, fieldType, channel, temporalUnit);
   } else if (aggregateOutput) {
     validateAggregateFieldType(policy.aggregate, fieldType);
     validateAggregateFieldValues(dataset.values, field, fieldType);
@@ -250,10 +252,10 @@ export function resolvePositionEncoding(program, channel, args, operation) {
       }
     }
   } else if (layer.mark.type === "rect") {
-    readScaleField(dataset.values, field, fieldType, { allowUnknown: true });
+    readScaleField(dataset.values, field, fieldType, { allowUnknown: true, temporalUnit });
   } else if (Object.hasOwn(scale, "unknown")) {
-    readScaleField(dataset.values, field, fieldType, { allowUnknown: true });
-  } else if (fieldType === "temporal") readTemporalField(dataset.values, field);
+    readScaleField(dataset.values, field, fieldType, { allowUnknown: true, temporalUnit });
+  } else if (fieldType === "temporal") readTemporalField(dataset.values, field, temporalUnit);
   else if (["ordinal", "nominal"].includes(fieldType)) {
     readNominalField(dataset.values, field);
   } else readQuantitativeField(dataset.values, field);
@@ -274,6 +276,7 @@ export function resolvePositionEncoding(program, channel, args, operation) {
     datum,
     hasField: usesField,
     fieldType,
+    temporalUnit,
     scale,
     coordinate: resolveCoordinate(program, channel, layer, args.coordinate),
     ...policy

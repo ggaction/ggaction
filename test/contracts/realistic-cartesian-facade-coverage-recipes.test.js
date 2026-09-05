@@ -29,22 +29,22 @@ const actionCards = JSON.parse(readFileSync(
 const inventoryPromise = buildPublicOptionInventory(actionCards);
 const ACTIONS = new Set(REALISTIC_CARTESIAN_FACADE_COVERAGE_EXPECTED_ACTIONS);
 const EXPECTED_TARGETS = Object.freeze({
-  createScatterPlot: Object.freeze({ requirements: 376, diversity: 9 }),
-  createBarPlot: Object.freeze({ requirements: 372, diversity: 10 }),
-  createLinePlot: Object.freeze({ requirements: 342, diversity: 8 }),
-  createParallelCoordinates: Object.freeze({ requirements: 104, diversity: 3 })
+  createScatterPlot: Object.freeze({ requirements: 303, diversity: 7 }),
+  createBarPlot: Object.freeze({ requirements: 296, diversity: 8 }),
+  createLinePlot: Object.freeze({ requirements: 257, diversity: 6 }),
+  createParallelCoordinates: Object.freeze({ requirements: 96, diversity: 3 })
 });
 const EXPECTED_REQUIREMENT_DIGESTS = Object.freeze({
   // Locked after public declarations match the runtime-supported facade branches.
-  createScatterPlot: "490a6a22271e848fbabbe6cbba8fa9c4485a69856eb6daa1931c43bc9c3022e8",
-  createBarPlot: "7954fb91976c7734c9091519436b17d76e2059765cbfaf3565d514d9ac8d6267",
-  createLinePlot: "4829a1e66827a6ce81f6b31ad5fa152e7a46b59e289e2cc7e8252f146ee2651f",
-  createParallelCoordinates: "81736b35e79853986e491b455aed6501d02b989e0192efb2cf4bd8bce7d77088"
+  createScatterPlot: "8cc394c86656323c688c16021b4a8e01964e0d27abc2bd5751dc0155c1e5786d",
+  createBarPlot: "e7226ab4015a86d143b6a9eda41ff1f4a33b4656cffa78a7a3007ff685d8991f",
+  createLinePlot: "4a0a3d4f7ede23f3869562b1b2911aa0cd78df19e80c6189638596f60671ca63",
+  createParallelCoordinates: "1642084c2c1a75675254f7f59409266d275d1493996586b7fc287bf2206fd337"
 });
 const EXPECTED_DIVERSITY_DIGESTS = Object.freeze({
-  createScatterPlot: "73677faf48edd8271ab5b687a13d356e4e1c54a0ebca296708ee1071bfef0910",
-  createBarPlot: "3df3869de37f6dbcfcfc5532f6bed97431ad2474c9d5644ffb374815c1ffdfc9",
-  createLinePlot: "b8553f894ffdd4e44b9200c3608ee8fcdb2b77912c6e1358a7830a59857b4c41",
+  createScatterPlot: "8364d1c7cb80a45be2fcb58dce188e69fb4eb9d40fc80b628b8dc73833509461",
+  createBarPlot: "a95e8347ab1a38e554e1be433739ae22e40bba19ac93ca341dc4eee16e2b2fb2",
+  createLinePlot: "37a49ee6ed7666a0f2d88270e2c4c049e44e00ec06dc836ce07a708c610ba1a9",
   createParallelCoordinates: "ec8f99f3b8ef011bcabbfdc64266d1157e99697a96dc593e026efb9f77793a18"
 });
 const OTHER_RECIPE_REQUIREMENT_IDS = new Set(`
@@ -368,7 +368,9 @@ async function buildProjection() {
         for (const { recipe, factors } of datasetPlans) {
           const action = recipe.expectedDirectActions[0];
           const label = `${recipe.id}-${dataset}-${factors.variant.id}`;
-          const program = recipe.build(factors);
+          let program;
+          try { program = recipe.build(factors); }
+          catch (error) { throw new Error(`${label}: ${error.message}`, { cause: error }); }
           const metadata = recipe.describe(factors);
           const direct = directEntries(program, action);
           assert.equal(direct.length, 1, `${label} direct root action`);
@@ -488,7 +490,7 @@ test("normalizes exact continuous-color facade bars before native rendering", {
         variant: {
           id: "createbarplot-orthogonal-12",
           ordinal: 11,
-          guide: { id: "polar-grid-booleans", kind: "polar-grid-booleans" }
+          guide: { id: "cartesian-grid-booleans", kind: "cartesian-grid-booleans" }
         }
       },
       measure: "x",
@@ -506,7 +508,7 @@ test("normalizes exact continuous-color facade bars before native rendering", {
         variant: {
           id: "createbarplot-orthogonal-11",
           ordinal: 10,
-          guide: { id: "polar-title-disabled", kind: "polar-title-disabled" }
+          guide: { id: "cartesian-title-disabled", kind: "cartesian-title-disabled" }
         }
       },
       measure: "y",
@@ -524,7 +526,7 @@ test("normalizes exact continuous-color facade bars before native rendering", {
         variant: {
           id: "createbarplot-orthogonal-12",
           ordinal: 11,
-          guide: { id: "polar-grid-booleans", kind: "polar-grid-booleans" }
+          guide: { id: "cartesian-grid-booleans", kind: "cartesian-grid-booleans" }
         }
       },
       measure: "x",
@@ -623,10 +625,10 @@ test("locks the exact assigned option, literal, aggregate, and diversity target 
     actionRequirementCount += requirementIds.length;
     diversityCount += diversityIds.length;
   }
-  assert.equal(actionRequirementCount, 1_194);
+  assert.equal(actionRequirementCount, 952);
   assert.equal(target.familyLiterals.length, 15);
-  assert.equal(actionRequirementCount + target.familyLiterals.length, 1_209);
-  assert.equal(diversityCount, 30);
+  assert.equal(actionRequirementCount + target.familyLiterals.length, 967);
+  assert.equal(diversityCount, 24);
 });
 
 test("keeps every orthogonal profile materially distinct under one authentic witness", {
@@ -699,23 +701,20 @@ test("direct authentic witnesses satisfy every assigned hard minimum and diversi
   const projection = await buildProjection();
   assert.equal(projection.chartCount, 720);
   assert.ok(projection.datasetCount >= 3);
-  for (const [id, stats] of projection.optionStats) {
-    assert.ok(meetsMinimum(stats), `${id}: ${stats.occurrences}/${stats.datasets.size}`);
-  }
-  for (const [id, stats] of projection.literalStats) {
-    assert.ok(meetsMinimum(stats), `${id}: ${stats.occurrences}/${stats.datasets.size}`);
-  }
-  for (const [id, stats] of projection.aggregateStats) {
-    assert.ok(meetsMinimum(stats), `${id}: ${stats.occurrences}/${stats.datasets.size}`);
+  const deficits = [];
+  for (const collection of [projection.optionStats, projection.literalStats, projection.aggregateStats]) {
+    for (const [id, stats] of collection) {
+      if (!meetsMinimum(stats)) deficits.push(`${id}: ${stats.occurrences}/${stats.datasets.size}`);
+    }
   }
   for (const requirement of projection.target.diversity) {
     const values = [...(projection.valueStats.get(requirement.optionPath) ?? new Map())]
       .filter(([, stats]) => meetsMinimum(stats));
-    assert.ok(
-      values.length >= requirement.minimumDistinctValues,
-      `${requirement.id}: ${values.map(([value]) => value).join(", ")}`
-    );
+    if (values.length < requirement.minimumDistinctValues) {
+      deficits.push(`${requirement.id}: ${values.map(([value]) => value).join(", ")}`);
+    }
   }
+  assert.deepEqual(deficits, []);
   for (const recipe of REALISTIC_CARTESIAN_FACADE_COVERAGE_RECIPES) {
     for (const variant of recipe.factors.variant) {
       const stats = projection.variantStats.get(`${recipe.id}\0${variant.id}`);

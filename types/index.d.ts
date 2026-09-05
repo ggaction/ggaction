@@ -201,6 +201,7 @@ export type {
   ThetaScaleOptions,
   TimeUnit,
   TimeUnitDataOptions,
+  TemporalInputUnit,
   TraceNode,
   TitleOptions,
   EditTitleOptions,

@@ -1,9 +1,4 @@
-import {
-  readNominalField,
-  readQuantitativeField,
-  readScaleField,
-  readTemporalField
-} from "../../../grammar/scales/index.js";
+import { readScaleField } from "../../../grammar/scales/index.js";
 import { findDataset } from "../../../selectors/datasets.js";
 import { requireSemanticScale } from "../../../selectors/scales.js";
 import { SCALED_ENCODING_CHANNELS } from "../../../core/vocabulary.js";
@@ -55,55 +50,17 @@ export function readConsumerFieldValues(
   dataset,
   scale = findScale(program, consumer.encoding.scale)
 ) {
-  const allowUnknown = Object.hasOwn(scale, "unknown");
-  if (consumer.role === "parallelDimension") {
-    return readScaleField(
-      dataset.values,
-      consumer.encoding.field,
-      consumer.encoding.fieldType,
-      { allowUnknown: true }
-    );
-  }
-  if (isDirectCategoricalConsumer(consumer)) {
-    return allowUnknown
-      ? readScaleField(
-          dataset.values,
-          consumer.encoding.field,
-          consumer.encoding.fieldType,
-          { allowUnknown: true }
-        )
-      : readNominalField(dataset.values, consumer.encoding.field);
-  }
-  if (consumer.encoding.fieldType === "temporal") {
-    return allowUnknown
-      ? readScaleField(dataset.values, consumer.encoding.field, "temporal", {
-          allowUnknown: true
-        })
-      : readTemporalField(dataset.values, consumer.encoding.field);
-  }
-  if (["nominal", "ordinal"].includes(consumer.encoding.fieldType)) {
-    if (!["ordinal", "band", "point"].includes(scale.type)) {
-      throw new Error(
-        `Scale materialization requires a quantitative encoding on mark "${consumer.layer.id}".`
-      );
-    }
-    return allowUnknown
-      ? readScaleField(
-          dataset.values,
-          consumer.encoding.field,
-          consumer.encoding.fieldType,
-          { allowUnknown: true }
-        )
-      : readNominalField(dataset.values, consumer.encoding.field);
-  }
-  if (consumer.encoding.fieldType !== "quantitative") {
+  const { field, fieldType, temporalUnit } = consumer.encoding;
+  const parallel = consumer.role === "parallelDimension";
+  if (!parallel && !isDirectCategoricalConsumer(consumer) &&
+    fieldType !== "quantitative" && fieldType !== "temporal" &&
+    (!["nominal", "ordinal"].includes(fieldType) ||
+      !["ordinal", "band", "point"].includes(scale.type))) {
     throw new Error(
       `Scale materialization requires a quantitative encoding on mark "${consumer.layer.id}".`
     );
   }
-  return allowUnknown
-    ? readScaleField(dataset.values, consumer.encoding.field, "quantitative", {
-        allowUnknown: true
-      })
-    : readQuantitativeField(dataset.values, consumer.encoding.field);
+  return readScaleField(dataset.values, field, fieldType, {
+    allowUnknown: parallel || Object.hasOwn(scale, "unknown"), temporalUnit
+  });
 }

@@ -285,7 +285,7 @@ type AggregateOperation =
 - Bar horizontal: `quantitative aggregate x + ordinal | temporal y`.
 - Bar orientation은 complete pair에서 추론하며 semantic mark에 중복 저장하지 않는다. Histogram은
   binned quantitative x/count y로 vertical을 결정한다.
-- Temporal normalization은 source dataset을 바꾸지 않는다. 1000–9999 정수와 4자리 문자열은 UTC
+- Temporal normalization은 source dataset을 바꾸지 않는다. 생략/auto에서 1000–9999 정수와 4자리 문자열은 UTC
   year, `YYYY-MM-DD`/`YYYY/MM/DD`는 검증된 UTC date, 그 밖의 valid string과 finite number는
   timestamp로 해석한다.
 - Current scale vocabulary는 UTC temporal `time`, discrete position `band | point`, appearance/offset
@@ -294,6 +294,36 @@ type AggregateOperation =
   materialize한다.
 - Evidence: `test/unit/grammar/position-compatibility.test.js`, scale temporal normalization tests,
   point mixed-position tests, jobs `temporal-x`/`horizontal-bar` primitive-public exact pairs.
+
+## Temporal input units
+
+- `TemporalInputUnit = "auto" | "year" | "timestamp"`. Existing temporal branches of x/y, supported x2/y2,
+  xRange/yRange, theta, color and Rule datum accept `temporalUnit`. Facade and interval-composite position
+  objects forward it; no new mark/channel field-type support is introduced.
+- Omission uses the existing parser without storing a new property. Explicit auto stores `"auto"`. Auto preserves
+  four-digit year/date/zone parsing. Year accepts an integer 0–9999 or exactly four digits and uses UTC January 1.
+  Timestamp accepts a finite numeric Unix millisecond value in the Date range; strings and Date objects fail.
+  False, null and unknown units fail. No seconds inference is performed.
+- Unit is stored in `layer.encoding.<channel>.temporalUnit`. Same-field or same-datum reassignment preserves
+  the previous explicit unit when omitted. A new field or field/datum transition clears an omitted unit.
+  Non-temporal reassignment removes it; explicitly supplying a unit to non-temporal args fails.
+- Primary/secondary endpoints share their scale but own input units independently. Range shorthands forward one
+  explicit unit to both. Scale domains and tick values are already timestamps and are never reparsed as years.
+- Scale consumers, Line/Bar temporal grouping, geometry and channel selection/filter use normalized values.
+  Raw-field selectors and source rows retain original values. Different input units can share a time scale.
+- Horizon x input and TimeUnit transform input store the same unit. Horizon-generated x is explicitly bound as
+  timestamp to avoid interpreting a small positive timestamp as a year. TimeUnit output should likewise be bound
+  with `temporalUnit: "timestamp"`; its calendar `unit` is a separate option.
+- Regression, Density and Horizon creation accept JSON-safe `groupBy:false`. Regression omission infers the
+  unique Point color/shape field; explicit undefined remains its legacy opt-out. Density omission/undefined stays
+  ungrouped. Horizon omission/undefined infers stored group. Their editors preserve omitted grouping, reject
+  explicit undefined and clear with false. `"auto"` stays a literal field name, not a sentinel.
+- Data-only groupBy options are unchanged. False is normalized before transform creation and is not stored as a field.
+- Numeric color remains nominal by default and repeated Bar values still use mean. Explicit type and aggregate win.
+- ✅ Covered: parser boundaries, owner/entry matrix, same/new binding transitions, scale/Canvas/legend/selection,
+  grouping opt-out and independent primitive/public graphics and pixels. Evidence:
+  `test/unit/actions/encodings/temporal-input-units.test.js`, `group-inference-opt-out.test.js`,
+  `test/charts/temporal-input/`, `examples/temporal-input/`.
 
 ## `encodeXOffset`
 
@@ -766,7 +796,8 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 ## `encodeDensity`
 
 - Signature: `encodeDensity({ field, target?, source?, groupBy?, bandwidth?, extent?, steps?, kernel?, normalization?, as?, densityChannel?, coordinate?, valueScale?, densityScale?, placement? })`
-- `field`, `source`, `groupBy`, `bandwidth`, `extent`, `steps`, `as`: `createDensityData`와 같은 계약이며
+- `groupBy:false` requests ungrouped density and survives JSON serialization.
+- `field`, `source`, `bandwidth`, `extent`, `steps`, `as`: `createDensityData`와 같은 계약이며
   derived ID는 `${target}DensityData`로 namespace된다.
 - `kernel`: `"gaussian" | "epanechnikov" | "uniform" | "triangular"`; 생략 시 Gaussian이다.
 - `normalization`: `"unit" | "count"`; 생략 시 unit이며 count는 group-local sample count로 magnitude를
@@ -792,7 +823,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 
 ### Formal values — `encodeDensity`
 
-- Implemented: `encodeDensity({ field: FieldName; target?: UserId; source?: UserId; groupBy?: FieldName; bandwidth?: "auto" | PositiveFinite; extent?: "auto" | OrderedFinitePair; steps?: IntegerAtLeast2; kernel?: "gaussian" | "epanechnikov" | "uniform" | "triangular"; normalization?: "unit" | "count"; as?: readonly [FieldName, FieldName]; densityChannel?: "x" | "y"; coordinate?: UserId; valueScale?: PositionScale; densityScale?: PositionScale; placement?: { type: "baseline" } | { type: "category"; side?: "both" | "left" | "right" | "top" | "bottom"; width?: { band?: UnitIntervalExclusiveOrOne; resolve?: "shared" | "independent" }; split?: { field: FieldName; domain?: readonly [unknown, unknown] }; scale?: BandScale } })`
+- Implemented: `encodeDensity({ field: FieldName; target?: UserId; source?: UserId; groupBy?: FieldName | false; bandwidth?: "auto" | PositiveFinite; extent?: "auto" | OrderedFinitePair; steps?: IntegerAtLeast2; kernel?: "gaussian" | "epanechnikov" | "uniform" | "triangular"; normalization?: "unit" | "count"; as?: readonly [FieldName, FieldName]; densityChannel?: "x" | "y"; coordinate?: UserId; valueScale?: PositionScale; densityScale?: PositionScale; placement?: { type: "baseline" } | { type: "category"; side?: "both" | "left" | "right" | "top" | "bottom"; width?: { band?: UnitIntervalExclusiveOrOne; resolve?: "shared" | "independent" }; split?: { field: FieldName; domain?: readonly [unknown, unknown] }; scale?: BandScale } })`
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
@@ -868,7 +899,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 - `source`: 원본 dataset ID. 생략하면 target layer data 또는 current data를 사용한다.
 - `x`, `y`: field string 또는 `{ field, fieldType?, scale? }`. 생략하면 target이나 같은 source의 유일한 compatible
   encoding을 추론한다. x는 quantitative/temporal, y는 quantitative만 허용한다.
-- `groupBy`: optional nominal field. 생략하면 target의 existing group encoding을 추론한다.
+- `groupBy`: optional nominal field or false. Omission/undefined infers the target group; false explicitly opts out.
 - `bands`: positive integer `<= 10,000`, 기본 `3`.
 - `baseline`: finite number, 기본 `0`.
 - `extent`: `"auto"` 또는 positive finite number, 기본 `"auto"`. Shared auto는 전체 group extent 하나를,
@@ -887,7 +918,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 
 ### Formal values — `encodeHorizon`
 
-- Implemented: `encodeHorizon({ target?: UserId; source?: UserId; x?: FieldName | { field: FieldName; fieldType?: "quantitative" | "temporal"; scale?: PositionScale }; y?: FieldName | { field: FieldName; fieldType?: "quantitative"; scale?: PositionScale }; groupBy?: FieldName; bands?: PositiveInteger; baseline?: Finite; extent?: "auto" | PositiveFinite; resolve?: "shared" | "independent"; missing?: "break" | "error"; overflow?: "clip" | "error"; palette?: { positive?: Palette; negative?: Palette } })`.
+- Implemented: `encodeHorizon({ target?: UserId; source?: UserId; x?: FieldName | { field: FieldName; fieldType?: "quantitative" | "temporal"; temporalUnit?: TemporalInputUnit (temporal only); scale?: PositionScale }; y?: FieldName | { field: FieldName; fieldType?: "quantitative"; scale?: PositionScale }; groupBy?: FieldName | false; bands?: PositiveInteger; baseline?: Finite; extent?: "auto" | PositiveFinite; resolve?: "shared" | "independent"; missing?: "break" | "error"; overflow?: "clip" | "error"; palette?: { positive?: Palette; negative?: Palette } })`.
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 

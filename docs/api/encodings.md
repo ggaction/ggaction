@@ -175,3 +175,17 @@ nothing, see [Troubleshooting](../troubleshooting.md#a-target-cannot-be-inferred
 [Position Encodings](./position-encodings.md) ·
 [Series Encodings](./series-encodings.md) ·
 [Appearance](./appearance.md) · [Scale Options](./scales.md)
+
+
+## Explicit grouping and time inputs
+
+`createRegression`, `encodeDensity` and `encodeHorizon` accept `groupBy: false`
+for a JSON-safe ungrouped result. Regression omission infers one color/shape
+field; Density omission stays ungrouped; Horizon omission infers stored group.
+Their editors preserve omitted grouping, reject explicit undefined and clear it
+with false. `"auto"` remains a literal field name.
+
+Temporal bindings accept `temporalUnit: "auto" | "year" | "timestamp"`; see
+[temporal inputs](./position/temporal.md#explicit-input-units). The option changes
+input interpretation without modifying raw rows or the existing mean Bar and
+nominal numeric color defaults.

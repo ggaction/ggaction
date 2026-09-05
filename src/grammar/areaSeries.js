@@ -42,7 +42,7 @@ export function deriveAreaSeries(rows, layer) {
   const orientation = vertical ? "vertical" : "horizontal";
   const independent = vertical ? x : y;
   const independentValues = independent.fieldType === "temporal"
-    ? readTemporalField(rows, independent.field)
+    ? readTemporalField(rows, independent.field, independent.temporalUnit)
     : readQuantitativeField(rows, independent.field);
   const lower = vertical
     ? readQuantitativeField(rows, y.field)
@@ -134,7 +134,7 @@ export function deriveCenteredAreaSeries(rows, layer) {
     );
   }
   const xValues = x.fieldType === "temporal"
-    ? readTemporalField(rows, x.field)
+    ? readTemporalField(rows, x.field, x.temporalUnit)
     : readQuantitativeField(rows, x.field);
   const yValues = readQuantitativeField(rows, y.field);
   const groups = readNominalField(rows, group.field);

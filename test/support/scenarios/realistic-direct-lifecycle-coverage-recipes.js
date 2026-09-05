@@ -722,7 +722,8 @@ function buildDataAndMarkCoverage(factors) {
 
   program = program.createRuleMark({ id: "ranges", data: "directMaterialRows" })
     .encodeXRange({ target: "ranges", lower: "lower", upper: "upper" })
-    .encodeYRange({ target: "ranges", lower: "position", upper: "positionEnd" });
+    .encodeYRange({ target: "ranges", lower: "position", upper: "positionEnd" })
+    .editRuleMark({ target: "ranges", stroke: "#7c3aed", strokeWidth: 1.5, strokeDash: "dashed", opacity: 0.65 });
 
   return finish(program, factors.dataset, "Data, mark, and encoding lifecycle coverage");
 }
@@ -2321,7 +2322,7 @@ const DATA_MARK_RECIPE = makeRecipe({
     "editCanvas", "filterData", "createDensityData", "createBin2DData", "editBin2DData",
     "createTextMark", "editTextMark", "createTickMark", "editTickMark", "createRectMark",
     "editRectMark", "createAreaMark", "editAreaMark", "createLineMark", "editLineMark",
-    "createBarMark", "editBarMark"
+    "createBarMark", "editBarMark", "editRuleMark"
   ]
 });
 

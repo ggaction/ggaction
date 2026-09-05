@@ -1,3 +1,4 @@
+import { createTemporalInput } from "../../../examples/temporal-input/program.js";
 import { defineVisualVariant } from "../../support/visual-variants.js";
 import { cases, layout } from "./fixture.js";
 import { referenceFor } from "./reference-values.js";
@@ -16,8 +17,9 @@ export function targetCall(variant) {
 export const visualVariants = Object.freeze(cases.map(variant => defineVisualVariant({
   chart: "temporal-input", variant: variant.id, title: variant.title,
   callChain: targetCall(variant), primitive: () => createTemporalInputPrimitive(variant),
+  userFacing: () => createTemporalInput(variant),
   width: layout.width, height: layout.height, colors: [layout.color],
-  compareSemanticSpec: false, artifact: { scope: "review" },
+  compareSemanticSpec: false, artifact: { scope: "charts", capability: "temporal-input" },
   regions: [{ name: "time-plot", ...referenceFor(variant).plot, minimumInkPixels: 400 }]
 })));
 

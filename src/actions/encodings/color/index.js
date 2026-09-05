@@ -2,6 +2,7 @@ import { action } from "../../../core/action.js";
 import {
   readNominalField,
   readScaleField,
+  resolveTemporalUnit,
   validateCategoricalFieldType
 } from "../../../grammar/scales/index.js";
 import {
@@ -36,6 +37,8 @@ import {
   resolveColorScaleOptions
 } from "./policy.js";
 
+import { applyTemporalUnit } from "../temporal.js";
+
 const encodeColor = action(
   {
     op: "encodeColor",
@@ -54,6 +57,7 @@ const encodeColor = action(
       throw new Error("Categorical color does not support aggregate.");
     }
     const fieldType = validateCategoricalFieldType(requestedFieldType);
+    resolveTemporalUnit(args, fieldType);
     const { id: target, dataset, layer } = resolveTarget(
       this,
       args.target,
@@ -127,7 +131,7 @@ const encodeColor = action(
     let next = createsCenterGroup
       ? this.encodeGroup({ target, field: args.field })
       : this;
-    next = next.editSemantic({
+    next = applyTemporalUnit(next, target, "color", undefined, layer.encoding?.color).editSemantic({
       property: `layer[${target}].encoding.color.field`,
       value: args.field
     })

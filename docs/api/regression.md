@@ -28,7 +28,8 @@ The shortest call infers the target from the current or only eligible point
 mark, x/y from its quantitative positions, and group from the unique nominal
 field used by color and/or shape. Dataset, Cartesian coordinate, and x/y scales
 come from that point layer. Inference fails rather than choosing among multiple
-targets or group fields. Explicit `groupBy: undefined` requests one model.
+targets or group fields. Explicit `groupBy: false` requests one model and survives JSON serialization.
+Legacy explicit `groupBy: undefined` keeps the same JavaScript behavior.
 
 ```javascript
 program.createRegression({
@@ -47,7 +48,7 @@ program.createRegression({
 | --- | --- | --- |
 | `target` | eligible point mark ID | inferred |
 | `x`, `y` | quantitative field names | target x/y fields |
-| `groupBy` | nominal field name or `undefined` | unique color/shape field |
+| `groupBy` | nominal field name or `false` (legacy explicit `undefined` also supported) | unique color/shape field |
 | `method` | `"linear"`, `"polynomial"`, or `"loess"` | `"linear"` |
 | `degree` | integer from `1` through `32` for polynomial | `2` |
 | `span` | number greater than `0` and at most `1` for LOESS | `0.75` |

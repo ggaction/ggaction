@@ -123,12 +123,12 @@ function deriveCartesianLineSeries(rows, layer, options = {}) {
     validateAggregateFieldValues(rows, y.field, y.fieldType);
   }
   const xValues = x.fieldType === "temporal"
-    ? readTemporalField(rows, x.field)
+    ? readTemporalField(rows, x.field, x.temporalUnit)
     : readQuantitativeField(rows, x.field);
   const yValues = isAggregate
     ? undefined
     : y.fieldType === "temporal"
-      ? readTemporalField(rows, y.field)
+      ? readTemporalField(rows, y.field, y.temporalUnit)
       : readQuantitativeField(rows, y.field);
   const seriesFields = validatePathSeriesAppearance(rows, layer);
   const binBoundaries = binnedAggregate
@@ -290,7 +290,7 @@ function readThetaValues(rows, encoding) {
     return readNominalField(rows, encoding.field);
   }
   return encoding.fieldType === "temporal"
-    ? readTemporalField(rows, encoding.field)
+    ? readTemporalField(rows, encoding.field, encoding.temporalUnit)
     : readQuantitativeField(rows, encoding.field);
 }
 

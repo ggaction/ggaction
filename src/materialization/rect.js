@@ -8,7 +8,7 @@ import { mapScaleConsumerValues } from "./scales/map.js";
 
 function optionalValues(rows, encoding) {
   return readScaleField(rows, encoding.field, encoding.fieldType, {
-    allowUnknown: true
+    allowUnknown: true, temporalUnit: encoding.temporalUnit
   });
 }
 

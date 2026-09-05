@@ -1,5 +1,5 @@
 import { cloneAndFreeze, isPlainObject } from "../core/immutable.js";
-import { normalizeTemporalValue } from "./scales/fields.js";
+import { normalizeTemporalValue, validateTemporalUnit } from "./scales/fields.js";
 
 export function utcTimestamp(
   year,
@@ -36,7 +36,7 @@ export const TIME_UNITS = cloneAndFreeze([
   "second"
 ]);
 
-const TRANSFORM_KEYS = Object.freeze(["type", "field", "unit", "as"]);
+const TRANSFORM_KEYS = Object.freeze(["type", "field", "unit", "as", "temporalUnit"]);
 
 function requireField(value, label) {
   if (typeof value !== "string" || value.length === 0) {
@@ -60,6 +60,7 @@ export function validateTimeUnitTransform(transform) {
   if (transform.type !== "timeUnit") {
     throw new Error(`Unsupported time-unit transform "${transform.type}".`);
   }
+  validateTemporalUnit(transform.temporalUnit);
   const field = requireField(transform.field, "Time-unit field");
   const output = requireField(transform.as, "Time-unit output field");
   if (field === output) {
@@ -71,8 +72,9 @@ export function validateTimeUnitTransform(transform) {
   return transform;
 }
 
-export function normalizeTimeUnitTransform({ field, unit, as } = {}) {
-  const transform = { type: "timeUnit", field, unit, as };
+export function normalizeTimeUnitTransform({ field, unit, as, temporalUnit } = {}) {
+  const transform = { type: "timeUnit", field, unit, as,
+    ...(temporalUnit === undefined ? {} : { temporalUnit }) };
   validateTimeUnitTransform(transform);
   return cloneAndFreeze(transform);
 }
@@ -116,7 +118,7 @@ export function deriveTimeUnitRows(rows, transform) {
     if (Object.hasOwn(row, transform.as)) {
       throw new Error(`Time-unit output field "${transform.as}" already exists.`);
     }
-    const timestamp = normalizeTemporalValue(row[transform.field], transform.field, index);
+    const timestamp = normalizeTemporalValue(row[transform.field], transform.field, index, transform.temporalUnit);
     return {
       ...row,
       [transform.as]: floorUtcTimeUnit(timestamp, transform.unit)

@@ -317,10 +317,14 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 
 ## `createTimeUnitData`
 
+- Optional temporalUnit uses the common explicit input parser and is stored on the timeUnit transform.
+  It controls input interpretation; unit controls the calendar bucket. Output is always a UTC timestamp.
+  Bind output as temporal with temporalUnit:"timestamp" to avoid the legacy numeric-year heuristic.
+
 유효한 input timestamp라도 요청한 bucket 시작이 Date의 표현 범위 밖이면 RangeError로 거절한다.
 NaN bucket을 저장하지 않으며 실패 시 source program과 trace는 유지된다.
 
-- Signature: `createTimeUnitData({ id, source?, field, unit, as })`
+- Signature: `createTimeUnitData({ id, source?, field, temporalUnit?, unit, as })`
 - Lifecycle: immutable create-only다. `id`는 필수 새 derived dataset ID이며 existing dataset을 수정하거나 consumer를
   rebind하지 않는다.
 - `source`: existing dataset ID다. 생략하면 current data를 사용하며 안전하게 추론할 수 없으면 오류다.
@@ -340,7 +344,7 @@ NaN bucket을 저장하지 않으며 실패 시 source program과 trace는 유�
 
 ### Formal values — `createTimeUnitData`
 
-- Implemented: `createTimeUnitData({ id: UserId; source?: UserId; field: FieldName; unit: "year" | "quarter" | "month" | "day" | "hour" | "minute" | "second"; as: FieldName })`.
+- Implemented: `createTimeUnitData({ id: UserId; source?: UserId; field: FieldName; temporalUnit?: "auto" | "year" | "timestamp"; unit: "year" | "quarter" | "month" | "day" | "hour" | "minute" | "second"; as: FieldName })`.
 - `DatasetTimeUnitTransform = { readonly type: "timeUnit"; readonly field: FieldName; readonly unit: TimeUnit; readonly as: FieldName }`.
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): Week, local timezone/DST, aggregation, resampling과 edit/revision action은 없다.

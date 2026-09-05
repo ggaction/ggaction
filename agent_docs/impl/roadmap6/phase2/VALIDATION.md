@@ -1,6 +1,7 @@
 # Phase 2 — A package 검증과 구현 acceptance
 
-기준: `bbc8a3fc256c9afa877f696ed6ade1f51ffb7522`. 아래 **실행 결과**와 **미래 acceptance**를 구분한다.
+이 문서는 A 검토 시점의 baseline과 구현 acceptance를 보존한다. 기준은
+`bbc8a3fc256c9afa877f696ed6ade1f51ffb7522`이며 구현 후의 실제 결과는 [RESULTS.md](RESULTS.md)가 소유한다.
 승인할 public delta와 범위는 [CONTRACT_REVIEW.md](CONTRACT_REVIEW.md)가 소유한다.
 
 ## 이번 package에서 실행한 검증
@@ -50,7 +51,7 @@ primitive, public target render, 새 API runtime/TypeScript 검증, full browser
 
 검토 package commit: `e06b57db5624a5b0d66cea425cff4aa5f5f4caad`, 위 remote branch에 push했다.
 
-## 구현 후 반드시 채울 matrix — 현재 미실행
+## 구현 acceptance matrix — A 검토 시점의 요구사항
 
 각 행은 최소 acceptance이며, 구현하면서 실제 source owner를 따라 필요한 negative case를 추가한다.
 통과·승인된 것으로 미리 표시하지 않는다. 테스트는 최종적으로 capability-oriented `test/`에 두고

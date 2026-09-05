@@ -24,7 +24,7 @@ import {
 
 function categoryValues(rows, encoding) {
   return encoding.fieldType === "temporal"
-    ? readTemporalField(rows, encoding.field)
+    ? readTemporalField(rows, encoding.field, encoding.temporalUnit)
     : readNominalField(rows, encoding.field);
 }
 

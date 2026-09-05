@@ -105,12 +105,13 @@ export function deriveGroupedRectangles(required, resolved, widthConfig) {
         ? mapContinuousScaleValues([cell.x], xScale)[0] - xScale.bandwidth / 2
         : (xScale.start ?? xScale.range[0]) + category * xScale.step;
       const center = temporal
-        ? categoryStart + offsetCenter
+        ? (categoryDirection > 0 ? categoryStart + offsetCenter
+          : mapContinuousScaleValues([cell.x], xScale)[0] - (offsetCenter - offsetMidpoint))
         : xScale.step > 0 && offsetScale.step > 0
         ? categoryStart + offsetCenter
         : categoryStart + xScale.step / 2 +
           categoryDirection * (offsetCenter - offsetMidpoint);
-      const x = temporal || (xScale.step > 0 && offsetScale.step > 0)
+      const x = (temporal && categoryDirection > 0) || (xScale.step > 0 && offsetScale.step > 0)
         ? categoryStart + offsetScale.start + offset * offsetScale.step +
           (offsetScale.bandwidth - width) / 2
         : center - width / 2;
@@ -121,7 +122,8 @@ export function deriveGroupedRectangles(required, resolved, widthConfig) {
         height: Math.abs(baseline - valuePosition)
       };
     } else {
-      const categoryCenter = mapOrdinalPositionValues(
+      const categoryCenter = (categoryScale.type === "time"
+        ? mapContinuousScaleValues : mapOrdinalPositionValues)(
         [categoryValue],
         categoryScale
       )[0];

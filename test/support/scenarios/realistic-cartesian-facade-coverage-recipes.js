@@ -95,6 +95,10 @@ function viewFor(factors) {
     positiveValue: row.value - valueMinimum + 1,
     positiveSecondary: Math.abs(row.value - valueMinimum) * 0.5 + index + 1,
     sourcePosition: index + 1,
+    observedYear: 2000 + (index % 20),
+    observedYearSecondary: 2024 - (index % 20),
+    observedTimestamp: Date.UTC(2000 + (index % 20), index % 12, 1),
+    observedTimestampSecondary: Date.UTC(2024 - (index % 20), 11 - (index % 12), 1),
     observedAt: new Date(Date.UTC(2000 + (index % 20), index % 12, 1)).toISOString(),
     observedAtSecondary: new Date(
       Date.UTC(2024 - (index % 20), 11 - (index % 12), 1)
@@ -127,7 +131,7 @@ function viewFor(factors) {
         {
           op: "deterministic-temporal-witness",
           source: "source-selection-order-rank",
-          as: ["observedAt", "observedAtSecondary"],
+          as: ["observedAt", "observedAtSecondary", "observedYear", "observedYearSecondary", "observedTimestamp", "observedTimestampSecondary"],
           calendar: "UTC"
         }
       ]
@@ -162,11 +166,11 @@ function guideModes() {
       index
     })),
     { id: "cartesian-explicit-values", kind: "cartesian-values" },
-    { id: "polar-count", kind: "polar-count" },
-    { id: "polar-values", kind: "polar-values" },
-    { id: "polar-title-disabled", kind: "polar-title-disabled" },
-    { id: "polar-grid-booleans", kind: "polar-grid-booleans" },
-    { id: "parallel-axes", kind: "parallel" },
+    { id: "cartesian-count", kind: "cartesian-count" },
+    { id: "cartesian-values", kind: "cartesian-values" },
+    { id: "cartesian-title-disabled", kind: "cartesian-title-disabled" },
+    { id: "cartesian-grid-booleans", kind: "cartesian-grid-booleans" },
+    { id: "cartesian-axes", kind: "cartesian-axes" },
     { id: "gradient-legend", kind: "gradient-legend" },
     { id: "line-symbol-legend", kind: "line-legend" },
     { id: "layer-symbol-legend", kind: "layer-legend" }
@@ -329,6 +333,12 @@ function categoricalColor(index) {
   };
 }
 
+function temporalBinding(index, secondary = false) {
+  const temporalUnit = ["auto", "year", "timestamp"][index % 3];
+  const field = { auto: "observedAt", year: "observedYear", timestamp: "observedTimestamp" }[temporalUnit];
+  return { field: field + (secondary ? "Secondary" : ""), fieldType: "temporal", temporalUnit };
+}
+
 function scatterPosition(variant, rows) {
   const index = variant.ordinal;
   const type = ["linear", "log", "pow", "sqrt", "symlog", "time", "band", "point"][
@@ -336,8 +346,8 @@ function scatterPosition(variant, rows) {
   ];
   if (type === "time") {
     return {
-      x: { field: "observedAt", fieldType: "temporal", scale: quantitativeScale("mainX", type, { point: true, index }) },
-      y: { field: "observedAtSecondary", fieldType: "temporal", scale: quantitativeScale("mainY", type, { point: true, index: index + 1 }) }
+      x: { ...temporalBinding(Math.floor(index / 8)), scale: quantitativeScale("mainX", type, { point: true, index }) },
+      y: { ...temporalBinding(Math.floor(index / 8), true), scale: quantitativeScale("mainY", type, { point: true, index: index + 1 }) }
     };
   }
   if (["band", "point"].includes(type)) {
@@ -357,13 +367,13 @@ function scatterColor(index) {
   if (index < 16) return continuousColor(index - 8);
   if (index < 19) return discretizedColor(index - 16);
   if (index < 25) return paletteEncoding(index - 19);
-  if (index === 25) {
+  if (index >= 25 && index <= 27) {
     return {
-      field: "observedAt",
-      fieldType: "temporal",
+      ...temporalBinding(index - 25),
       scale: {
+        ...(index === 26 ? { range: "auto" } : { palette: "viridis" }),
         id: "mainColor", type: "sequential", domain: "auto",
-        palette: "viridis", interpolate: "rgb", clamp: true, reverse: false,
+        interpolate: "rgb", clamp: true, reverse: false,
         unknown: "#94a3b8"
       }
     };
@@ -415,16 +425,16 @@ function barPosition(variant, rows) {
       scale: quantitativeScale("mainY", "linear", { index })
     };
     return { x, y };
-  } else if (index === 26) {
+  } else if (index >= 24 && index <= 29) {
     const temporal = {
-      field: "observedAt", fieldType: "temporal",
+      ...temporalBinding(Math.floor((index - 24) / 2)),
       scale: quantitativeScale(orientation === "vertical" ? "mainX" : "mainY", "time", { index })
     };
     const aggregate = {
       field: "positiveValue", fieldType: "quantitative", aggregate: "mean",
       scale: quantitativeScale(orientation === "vertical" ? "mainY" : "mainX", "linear", { index })
     };
-    return { x: temporal, y: aggregate };
+    return orientation === "vertical" ? { x: temporal, y: aggregate } : { x: aggregate, y: temporal };
   } else {
     measure = {
       field: "positiveValue", fieldType: "quantitative",
@@ -464,11 +474,15 @@ function barColor(index) {
 
 function linePosition(variant, rows) {
   const index = variant.ordinal;
+  if (index >= 30 && index <= 32) return {
+    x: { field: "sourcePosition", fieldType: "quantitative", scale: quantitativeScale("mainX", "linear", { index }) },
+    y: { ...temporalBinding(index - 30), scale: quantitativeScale("mainY", "time", { index }) }
+  };
   if (index < 6) {
     const type = ["linear", "log", "pow", "sqrt", "symlog", "time"][index];
     return type === "time"
       ? {
-          x: { field: "observedAt", fieldType: "temporal", scale: quantitativeScale("mainX", type, { index }) },
+          x: { ...temporalBinding(index), scale: quantitativeScale("mainX", type, { index }) },
           y: {
             field: "positiveValue", fieldType: "quantitative", aggregate: "mean",
             scale: quantitativeScale("mainY", "linear", { index: index + 1 })
@@ -492,7 +506,7 @@ function linePosition(variant, rows) {
   if (index < 15) {
     return {
       x: {
-        field: "observedAt", fieldType: "temporal",
+        ...temporalBinding(index),
         scale: quantitativeScale("mainX", "time", { index })
       },
       y: aggregateChannel("positiveValue", "mainY", index)
@@ -547,129 +561,10 @@ function strokeDash(index) {
   return { value: DASH_VALUES[index % DASH_VALUES.length] };
 }
 
-function auxiliaryCartesian(program, rows) {
-  return program
-    .createPointMark({ id: "guideCartesianPoints", data: "analysisRows", opacity: 0.02 })
-    .encodeX({
-      target: "guideCartesianPoints", coordinate: "main",
-      field: "positiveValue", fieldType: "quantitative",
-      scale: { id: "guideX", type: "linear", nice: true, zero: false }
-    })
-    .encodeY({
-      target: "guideCartesianPoints", coordinate: "main",
-      field: "positiveSecondary", fieldType: "quantitative",
-      scale: { id: "guideY", type: "linear", nice: true, zero: false }
-    })
-    .encodePointRadius({ target: "guideCartesianPoints", value: 1 });
-}
-
-function auxiliaryPolar(program) {
-  return program
-    .createCoordinate({ id: "guidePolar", type: "polar" })
-    .createPointMark({ id: "guidePolarPoints", data: "analysisRows", opacity: 0.02 })
-    .encodeTheta({
-      target: "guidePolarPoints", coordinate: "guidePolar",
-      field: "sourcePosition", fieldType: "quantitative",
-      scale: { id: "guideTheta", type: "linear", nice: true, zero: false }
-    })
-    .encodeR({
-      target: "guidePolarPoints", coordinate: "guidePolar",
-      field: "positiveSecondary", fieldType: "quantitative",
-      scale: { id: "guideRadius", type: "linear", nice: true, zero: true }
-    })
-    .encodePointRadius({ target: "guidePolarPoints", value: 1 });
-}
-
-function auxiliaryParallel(program) {
-  return program
-    .createCoordinate({ id: "guideParallel", type: "parallel" })
-    .createLineMark({ id: "guideParallelLines", data: "analysisRows", opacity: 0.02 })
-    .encodeParallelCoordinates({
-      target: "guideParallelLines",
-      coordinate: "guideParallel",
-      dimensions: [
-        { field: "positiveValue", title: "Value", fieldType: "quantitative" },
-        { field: "positiveSecondary", title: "Secondary", fieldType: "quantitative" },
-        { field: "category", title: "Category", fieldType: "ordinal" }
-      ],
-      key: "key",
-      missing: "error"
-    });
-}
-
-function auxiliaryGradientLegend(program) {
-  return program
-    .createPointMark({ id: "guideGradientPoints", data: "analysisRows", opacity: 0.02 })
-    .encodeX({
-      target: "guideGradientPoints", coordinate: "main",
-      field: "positiveValue", fieldType: "quantitative",
-      scale: { id: "gradientX", type: "linear", nice: true, zero: false }
-    })
-    .encodeY({
-      target: "guideGradientPoints", coordinate: "main",
-      field: "positiveSecondary", fieldType: "quantitative",
-      scale: { id: "gradientY", type: "linear", nice: true, zero: false }
-    })
-    .encodeColor({
-      target: "guideGradientPoints", field: "positiveValue", fieldType: "quantitative",
-      scale: { id: "guideGradientColor", type: "sequential", palette: "viridis" }
-    })
-    .encodePointRadius({ target: "guideGradientPoints", value: 1 });
-}
-
-function auxiliaryCategoricalLegend(program, { series = false } = {}) {
-  const target = series ? "guideSeriesLines" : "guideColorPoints";
-  let next = program[series ? "createLineMark" : "createPointMark"]({
-    id: target,
-    data: "analysisRows",
-    opacity: 0.02
-  })
-    .encodeX({
-      target, coordinate: "main",
-      field: "sourcePosition", fieldType: "quantitative",
-      scale: { id: "seriesX", type: "linear", nice: true, zero: false }
-    })
-    .encodeY({
-      target, coordinate: "main",
-      field: "positiveValue", fieldType: "quantitative",
-      scale: { id: "seriesY", type: "linear", nice: true, zero: false }
-    })
-    .encodeColor({
-      target, field: "category", fieldType: "nominal",
-      scale: { id: "guideSeriesColor", type: "ordinal", palette: "tableau10" }
-    });
-  if (!series) next = next.encodePointRadius({ target, value: 1 });
-  if (series) {
-    next = next.encodeStrokeDash({
-      target: "guideSeriesLines", field: "category", fieldType: "nominal",
-      scale: { id: "guideSeriesDash", type: "ordinal", range: "auto" }
-    });
-  }
-  return next;
-}
-
-function programForGuide(view, guide, action) {
-  let program = chart()
-    .createCanvas(canvas())
+function programForGuide(view) {
+  return chart().createCanvas(canvas())
     .createData({ id: "analysisRows", values: view.rows })
     .createCoordinate({ id: "main", type: "cartesian" });
-  if (
-    guide.kind === "cartesian-count" ||
-    guide.kind === "cartesian-values" ||
-    (guide.kind === "cartesian-disabled" && action === "createParallelCoordinates")
-  ) {
-    program = auxiliaryCartesian(program, view.rows);
-  }
-  if (guide.kind.startsWith("polar")) program = auxiliaryPolar(program);
-  if (guide.kind === "parallel") program = auxiliaryParallel(program);
-  if (guide.kind === "gradient-legend") program = auxiliaryGradientLegend(program);
-  if (["line-legend", "layer-legend"].includes(guide.kind)) {
-    program = auxiliaryCategoricalLegend(program, { series: guide.kind === "line-legend" });
-  }
-  if (["cartesian-count", "cartesian-values"].includes(guide.kind)) {
-    program = auxiliaryCategoricalLegend(program);
-  }
-  return program;
 }
 
 function lineStyle() {
@@ -774,247 +669,68 @@ function categoricalLegendSymbol(index) {
         ] };
 }
 
-function guideOptions(variant, view, action) {
+function guideOptions(variant, program, options, action) {
   const guide = variant.guide;
   if (guide.kind === "off") return false;
-  if (
-    action === "createParallelCoordinates" &&
-    !["gradient-legend", "line-legend", "layer-legend"].includes(guide.kind)
-  ) {
-    const legend = guide.kind === "cartesian-count"
-      ? categoricalLegend(
-          [0, 2, 6, 8][guide.index % 4],
-          categoricalLegendSymbol(guide.index)
-        )
-      : guide.kind === "cartesian-values"
-        ? categoricalLegend(10, {
-            width: 18,
-            height: 12,
-            stroke: "#ffffff",
-            strokeWidth: 0.8
-          })
-        : false;
-    return {
-      axes: {
-        coordinate: {
-          id: "mainParallelCoordinate",
-          type: variant.ordinal % 2 === 0 ? "parallel" : "auto"
-        }
-      },
-      grid: false,
-      legend
-    };
+  const layer = program.semanticSpec.layers.find(layer => layer.id === options.id);
+  const parallel = action === "createParallelCoordinates";
+  const explicitValues = guide.kind.includes("values");
+  const disabled = guide.kind === "cartesian-disabled" ? guide.disabled : undefined;
+  const index = variant.ordinal;
+  const axes = { coordinate: { id: layer.coordinate, type: index % 2 ? "auto" : parallel ? "parallel" : "cartesian" } };
+  const grid = {};
+  if (!parallel) {
+    for (const [channel, direction] of [["x", "vertical"], ["y", "horizontal"]]) {
+      const scaleId = layer.encoding[channel].scale;
+      const scale = program.resolvedScales[scaleId];
+      const categorical = ["band", "point"].includes(scale.type);
+      const values = [...new Set([scale.domain[0], scale.domain.at(-1)])];
+      const ticks = explicitValues || categorical || !["linear", "time"].includes(scale.type) ? { values } : { count: 4 };
+      const format = categorical || scale.type === "time" ? "auto" : guide.format ?? AXIS_FORMATS[index % 4];
+      axes[channel] = disabled === channel ? false : {
+        ...cartesianAxis(channel, format, "count", index + (channel === "y" ? 1 : 0)),
+        coordinate: layer.coordinate, scale: scaleId,
+        ticksAndLabels: { ...ticks, ticks: tickStyle(), labels: labelStyle(format) }
+      };
+      grid[direction] = categorical || disabled === channel ? false : guide.kind.includes("booleans") ? true : {
+        scale: scaleId, coordinate: layer.coordinate, ...ticks,
+        color: channel === "x" ? "#dbeafe" : "#e2e8f0", lineWidth: 0.8, strokeDash: [2, 3]
+      };
+    }
   }
-  if (guide.kind === "cartesian-disabled") {
-    const auxiliary = action === "createParallelCoordinates";
-    const axis = (channel, index) => ({
-      ...cartesianAxis(channel, "auto", "count", index),
-      scale: auxiliary ? (channel === "x" ? "guideX" : "guideY") : `main${channel.toUpperCase()}`,
-      coordinate: "main",
-      ...(action === "createBarPlot" &&
-        ["nominal", "ordinal", "temporal"].includes(
-          barPosition(variant, view.rows)[channel].fieldType
-        ) ? {
-        ticksAndLabels: {
-          values: barPosition(variant, view.rows)[channel].fieldType === "temporal"
-            ? [...new Set(view.rows.map(row => Date.parse(row.observedAt)))].slice(0, 2)
-            : [...new Set(view.rows.map(row => row.category))].slice(0, 2),
-          ticks: tickStyle(),
-          labels: labelStyle("auto")
-        }
-      } : {})
-    });
-    return {
-      axes: {
-        coordinate: { id: "main", type: "auto" },
-        x: guide.disabled === "x" ? false : axis("x", 0),
-        y: guide.disabled === "y" ? false : axis("y", 0),
-        theta: false,
-        radius: false
-      },
-      grid: {
-        horizontal: action === "createBarPlot"
-          ? variant.ordinal % 2 === 0
-          : guide.disabled === "x",
-        vertical: action === "createBarPlot"
-          ? variant.ordinal % 2 === 1
-          : guide.disabled === "y",
-        theta: false,
-        radial: false
-      },
-      legend: false
-    };
+  const color = layer.encoding.color;
+  let legend = false;
+  if (color !== undefined && ["nominal", "ordinal"].includes(color.fieldType)) {
+    const symbol = layer.mark.type === "line" && index % 3 === 1
+      ? { length: 28, lineWidth: 2.4 } : categoricalLegendSymbol(index);
+    legend = categoricalLegend(index, symbol, options.id);
+    if (legend.position === "left") legend.offset = 260;
+    // A line sample remains a useful legend recipe for an explicitly grouped path.
+    if (guide.kind === "line-legend" && layer.mark.type === "line") legend.symbol = { length: 28, lineWidth: 2.4 };
   }
-  if (guide.kind === "cartesian-count") {
-    const symbol = categoricalLegendSymbol(guide.index);
-    return {
-      axes: {
-        coordinate: { id: "main", type: "cartesian" },
-        x: cartesianAxis("x", guide.format, "count", guide.index),
-        y: cartesianAxis("y", guide.format, "count", guide.index + 1),
-        theta: false,
-        radius: false
-      },
-      grid: {
-        horizontal: {
-          scale: "guideY", coordinate: "main", count: 4,
-          color: "#e2e8f0", lineWidth: 0.8, strokeDash: [2, 3]
-        },
-        vertical: {
-          scale: "guideX", coordinate: "main", count: 4,
-          color: "#dbeafe", lineWidth: 0.8, strokeDash: [4, 3]
-        },
-        theta: false,
-        radial: false
-      },
-      legend: categoricalLegend([0, 2, 6, 8][guide.index % 4], symbol)
-    };
+  if (color !== undefined && program.resolvedScales[color.scale].type === "sequential") {
+    legend = { target: options.id, channels: ["color"], position: "right", title: color.field,
+      count: 4, gradient: { length: 150, thickness: 14 },
+      labels: { offset: 8, color: "#334155", fontSize: 11, fontFamily: "sans-serif", fontWeight: 500 },
+      titleStyle: { color: "#0f172a", fontSize: 12, fontFamily: "sans-serif", fontWeight: 700 },
+      border: { color: "#cbd5e1", lineWidth: 1, padding: 9, background: "#ffffff" } };
   }
-  if (guide.kind === "cartesian-values") {
-    const xValues = numericSamples(view.rows, "positiveValue");
-    const yValues = numericSamples(view.rows, "positiveSecondary");
-    const axis = (channel, values, index) => ({
-      ...cartesianAxis(channel, ".2f", "count", index),
-      ticksAndLabels: {
-        values,
-        ticks: tickStyle(),
-        labels: labelStyle(".2f")
-      }
-    });
-    return {
-      axes: {
-        coordinate: { id: "main", type: "cartesian" },
-        x: axis("x", xValues, 1),
-        y: axis("y", yValues, 2),
-        theta: false,
-        radius: false
-      },
-      grid: {
-        horizontal: {
-          scale: "guideY", coordinate: "main", values: yValues,
-          color: "#e2e8f0", lineWidth: 0.8, strokeDash: [2, 3]
-        },
-        vertical: {
-          scale: "guideX", coordinate: "main", values: xValues,
-          color: "#dbeafe", lineWidth: 0.8, strokeDash: [4, 3]
-        },
-        theta: false,
-        radial: false
-      },
-      legend: categoricalLegend(10, { width: 18, height: 12, stroke: "#ffffff", strokeWidth: 0.8 })
-    };
+  if (!parallel && axes.y && ["left", "right"].includes(legend.position)) {
+    axes.y.position = legend.position === "right" ? "left" : "right";
   }
-  if (guide.kind.startsWith("polar")) {
-    const valuesPolicy = guide.kind === "polar-values";
-    const titleDisabled = guide.kind === "polar-title-disabled";
-    const booleanGrid = guide.kind === "polar-grid-booleans";
-    const thetaValues = numericSamples(view.rows, "sourcePosition");
-    const radiusValues = numericSamples(view.rows, "positiveSecondary");
-    const polarAxis = (channel, values, index) => ({
-      scale: channel === "theta" ? "guideTheta" : "guideRadius",
-      coordinate: "guidePolar",
-      angle: channel === "theta" ? 0 : 90,
-      line: lineStyle(),
-      ticksAndLabels: {
-        ...(valuesPolicy ? { values } : { count: 5 }),
-        ticks: tickStyle(),
-        labels: labelStyle(index % 2 === 0 ? ".0f" : ".1f")
-      },
-      title: titleDisabled
-        ? false
-        : {
-            text: channel === "theta" ? "Source rank" : "Positive secondary",
-            offset: 34,
-            color: "#0f172a",
-            fontSize: 13,
-            fontFamily: "sans-serif",
-            fontWeight: 700,
-            ...(channel === "radius" ? { position: index % 2 === 0 ? "inside" : "outside" } : {})
-          }
-    });
-    const direction = (channel, values) => ({
-      scale: channel === "theta" ? "guideTheta" : "guideRadius",
-      coordinate: "guidePolar",
-      ...(valuesPolicy ? { values } : { count: 5 }),
-      color: "#dbeafe",
-      lineWidth: 0.8,
-      strokeDash: [3, 3]
-    });
-    return {
-      axes: {
-        coordinate: { id: "guidePolar", type: "polar" },
-        theta: polarAxis("theta", thetaValues, variant.ordinal),
-        radius: polarAxis("radius", radiusValues, variant.ordinal + 1)
-      },
-      grid: {
-        horizontal: false,
-        vertical: false,
-        theta: booleanGrid ? true : direction("theta", thetaValues),
-        radial: booleanGrid ? true : direction("radius", radiusValues)
-      },
-      legend: false
-    };
-  }
-  if (guide.kind === "parallel") {
-    return {
-      axes: {
-        coordinate: { id: "guideParallel", type: "parallel" }
-      },
-      grid: false,
-      legend: false
-    };
-  }
-  if (guide.kind === "gradient-legend") {
-    return {
-      axes: false,
-      grid: false,
-      legend: {
-        target: "guideGradientPoints",
-        channels: ["color"],
-        position: "right",
-        align: "center",
-        offset: 42,
-        titlePosition: "top",
-        title: "Positive source value",
-        count: 5,
-        gradient: { length: 180, thickness: 18 },
-        labels: {
-          offset: 9, color: "#334155", fontSize: 11,
-          fontFamily: "sans-serif", fontWeight: 500
-        },
-        titleStyle: {
-          color: "#0f172a", fontSize: 12,
-          fontFamily: "sans-serif", fontWeight: 700
-        },
-        border: { color: "#cbd5e1", lineWidth: 1, padding: 9, background: "#ffffff" }
-      }
-    };
-  }
-  if (guide.kind === "line-legend") {
-    return {
-      axes: false,
-      grid: false,
-      legend: {
-        ...categoricalLegend(
-          15,
-          { length: 28, lineWidth: 2.4 },
-          "guideSeriesLines"
-        ),
-        channels: ["color", "strokeDash"]
-      }
-    };
-  }
-  return {
-    axes: false,
-    grid: false,
-    legend: categoricalLegend(13, {
-      layers: [
-        { type: "line", length: 26, lineWidth: 2 },
-        { type: "point", shape: "circle", size: 5, fill: "#2563eb", stroke: "#ffffff", strokeWidth: 0.7 },
-        { type: "swatch", width: 17, height: 11, stroke: "#ffffff", strokeWidth: 0.7 }
-      ]
-    })
-  };
+  const legendOnly = guide.kind.endsWith("legend");
+  return { axes: legendOnly ? false : axes,
+    grid: legendOnly || parallel || Object.values(grid).every(value => value === false) ? false : grid, legend };
+}
+
+function buildFacade(factors, action, optionsFactory) {
+  const view = viewFor(factors);
+  const options = optionsFactory(factors, view);
+  const base = programForGuide(view);
+  const positioned = base[action]({ ...options, guides: false });
+  const program = base[action]({ ...options,
+    guides: guideOptions(factors.variant, positioned, options, action) });
+  return finish(program, contextFor(factors.dataset, view, action), action, factors.variant);
 }
 
 function finish(program, context, action, variant) {
@@ -1040,10 +756,10 @@ function scatterOptions(factors, view) {
     coordinate: "main",
     ...position,
     ...(index === 35 ? {} : { color: scatterColor(index) }),
-    size: {
+    ...(index % 4 >= 2 || index === 35 ? {} : { size: {
       field: "positiveSecondary", fieldType: "quantitative",
       scale: { id: "mainSize", type: "linear", domain: "auto", range: "auto", unknown: 4 }
-    },
+    } }),
     shape: {
       field: "subgroup", fieldType: "nominal",
       scale: {
@@ -1053,22 +769,15 @@ function scatterOptions(factors, view) {
     },
     point: {
       shape: index % 2 === 0 ? "circle" : "square",
-      ...(index === 35 ? { fill: "#2563eb" } : {}),
-      opacity: 0.78,
-      stroke: "#ffffff",
-      strokeWidth: 0.8
+      ...(index === 35 ? { fill: "#2563eb", radius: 4 } : {}),
+      opacity: 0.6 + index / 100,
+      ...(index === 0 ? { stroke: false } : { stroke: "#ffffff", strokeWidth: 0.8 })
     },
-    guides: guideOptions(factors.variant, view, "createScatterPlot")
   };
 }
 
 function buildScatter(factors) {
-  const action = "createScatterPlot";
-  const view = viewFor(factors);
-  const context = contextFor(factors.dataset, view, action);
-  const program = programForGuide(view, factors.variant.guide, action)
-    .createScatterPlot(scatterOptions(factors, view));
-  return finish(program, context, action, factors.variant);
+  return buildFacade(factors, "createScatterPlot", scatterOptions);
 }
 
 function barOptions(factors, view) {
@@ -1080,26 +789,19 @@ function barOptions(factors, view) {
     coordinate: "main",
     ...barPosition(factors.variant, view.rows),
     ...(color === undefined ? {} : { color }),
-    ...(index >= 18 && index <= 20 || index === 26
+    ...(index >= 18 && index <= 20 || index >= 24 && index <= 29
       ? {}
       : { width: index % 2 === 0 ? { band: 0.72 } : { pixels: 18 } }),
     bar: {
       ...(index === 35 ? { fill: "#2563eb" } : {}),
-      opacity: 0.82,
-      stroke: "#ffffff",
-      strokeWidth: 0.7
+      opacity: 0.55 + index / 100,
+      ...(index === 0 ? { stroke: false } : { stroke: "#ffffff", strokeWidth: 0.7 })
     },
-    guides: guideOptions(factors.variant, view, "createBarPlot")
   };
 }
 
 function buildBar(factors) {
-  const action = "createBarPlot";
-  const view = viewFor(factors);
-  const context = contextFor(factors.dataset, view, action);
-  const program = programForGuide(view, factors.variant.guide, action)
-    .createBarPlot(barOptions(factors, view));
-  return finish(program, context, action, factors.variant);
+  return buildFacade(factors, "createBarPlot", barOptions);
 }
 
 function lineOptions(factors, view) {
@@ -1115,26 +817,20 @@ function lineOptions(factors, view) {
     ...(aggregateLine || color === undefined
       ? {}
       : { color }),
-    ...(aggregateLine ? {} : { groupBy: "category" }),
+    ...(aggregateLine ? {} : { groupBy: index === 33 ? ["category", "subgroup"] : "category" }),
     strokeDash: aggregateLine ? { value: DASH_VALUES[index % DASH_VALUES.length] } : strokeDash(index),
     line: {
       strokeWidth: 1.8,
       curve: CURVES[index % CURVES.length],
       ...(index === 35 ? { stroke: "#2563eb" } : {}),
-      opacity: 0.72,
+      opacity: 0.5 + index / 100,
       closed: false
     },
-    guides: guideOptions(factors.variant, view, "createLinePlot")
   };
 }
 
 function buildLine(factors) {
-  const action = "createLinePlot";
-  const view = viewFor(factors);
-  const context = contextFor(factors.dataset, view, action);
-  const program = programForGuide(view, factors.variant.guide, action)
-    .createLinePlot(lineOptions(factors, view));
-  return finish(program, context, action, factors.variant);
+  return buildFacade(factors, "createLinePlot", lineOptions);
 }
 
 function parallelDimensions(index) {
@@ -1180,20 +876,14 @@ function parallelOptions(factors, view) {
       curve: "linear",
       closed: false
     },
-    guides: guideOptions(factors.variant, view, "createParallelCoordinates")
   };
 }
 
 function buildParallel(factors) {
-  const action = "createParallelCoordinates";
-  const view = viewFor(factors);
-  const context = contextFor(factors.dataset, view, action);
-  const program = programForGuide(view, factors.variant.guide, action)
-    .createParallelCoordinates(parallelOptions(factors, view));
-  return finish(program, context, action, factors.variant);
+  return buildFacade(factors, "createParallelCoordinates", parallelOptions);
 }
 
-function expectedFacadeArgs(action, factors, view) {
+function expectedFacadeArgs(action, factors, view, program) {
   const options = action === "createScatterPlot"
     ? scatterOptions(factors, view)
     : action === "createBarPlot"
@@ -1201,7 +891,7 @@ function expectedFacadeArgs(action, factors, view) {
       : action === "createLinePlot"
         ? lineOptions(factors, view)
         : parallelOptions(factors, view);
-  return summarizeArgs(options);
+  return summarizeArgs({ ...options, guides: guideOptions(factors.variant, program, options, action) });
 }
 
 function coverageSchedule(variants) {
@@ -1288,7 +978,7 @@ function makeRecipe({ id, action, complexity, build }) {
         data !== undefined && sameValue(data.values, view.rows) &&
         program.semanticSpec.title?.text === title;
       const variantObserved = direct !== undefined &&
-        sameValue(direct.args, expectedFacadeArgs(action, values, view)) &&
+        sameValue(direct.args, expectedFacadeArgs(action, values, view, program)) &&
         program.semanticSpec.title?.subtitle === question;
       return freeze([
         ...(fieldPairObserved ? [{

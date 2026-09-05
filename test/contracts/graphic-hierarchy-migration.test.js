@@ -25,6 +25,12 @@ const LOADERS = Object.freeze({
 });
 
 const EXPECTED_DRAW_ORDER = Object.freeze({
+  "temporal-input": [
+    "canvas", "horizontalGridLines", "events",
+    "xAxisLine", "xAxisTicks", "xAxisLabels", "xAxisTitle",
+    "yAxisLine", "yAxisTicks", "yAxisLabels", "yAxisTitle",
+    "chartTitle", "chartSubtitle"
+  ],
   "series-identity": [
     "canvas", "horizontalGridLines", "series",
     "xAxisLine", "xAxisTicks", "xAxisLabels", "xAxisTitle",

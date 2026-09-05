@@ -42,6 +42,8 @@ import {
   validateUnusedHorizonEncodings
 } from "./horizon/resolve.js";
 
+import { applyTemporalUnit } from "./temporal.js";
+
 const OPTIONS = Object.freeze([
   "target", "source", "x", "y", "groupBy", "bands", "baseline", "extent",
   "resolve", "missing", "overflow", "palette"
@@ -73,6 +75,7 @@ function applyHorizonEncoding(program, {
       target: layer.id,
       field: transform.as.x,
       fieldType: transform.x.fieldType,
+      ...(transform.x.fieldType === "temporal" ? { temporalUnit: "timestamp" } : {}),
       scale: xScale
     })
     .editSemantic({
@@ -113,6 +116,9 @@ const editHorizon = action(
   },
   function (args = {}) {
     validateOptionObject(args, EDIT_OPTIONS, "editHorizon");
+    if (Object.hasOwn(args, "groupBy") && args.groupBy === undefined) {
+      throw new Error("editHorizon groupBy requires a field string or false.");
+    }
     if (!EDITABLE.some(option => Object.hasOwn(args, option))) {
       throw new Error("editHorizon requires at least one Horizon option.");
     }
@@ -145,7 +151,8 @@ const editHorizon = action(
     );
     const candidate = validateHorizonTransform({
       type: "horizon",
-      x: { field: x.field, fieldType: x.fieldType },
+      x: { field: x.field, fieldType: x.fieldType,
+        ...(x.temporalUnit === undefined ? {} : { temporalUnit: x.temporalUnit }) },
       y: { field: y.field, fieldType: y.fieldType },
       ...(groupBy === undefined ? {} : { groupBy }),
       bands: args.bands ?? prior.bands,
@@ -189,6 +196,8 @@ const editHorizon = action(
         value: x.fieldType
       });
     }
+    next = applyTemporalUnit(next, layer.id, "x",
+      x.fieldType === "temporal" ? "timestamp" : undefined, layer.encoding.x);
     if (Object.hasOwn(args, "x")) {
       next = next.editSemantic({
         property: `layer[${layer.id}].encoding.x.title`,
@@ -210,7 +219,7 @@ const editHorizon = action(
       requestedXScale.domain === undefined &&
       currentX.domain === "auto"
       ? source.values.map((row, index) => x.fieldType === "temporal"
-          ? normalizeTemporalValue(row[x.field], x.field, index)
+          ? normalizeTemporalValue(row[x.field], x.field, index, x.temporalUnit)
           : row[x.field])
       : undefined;
     const nextX = resolvePositionScaleDefinition(next, "x", x.fieldType, {
@@ -285,7 +294,8 @@ const encodeHorizon = action(
     const as = horizonOutputFields(layer.id);
     const transform = validateHorizonTransform({
       type: "horizon",
-      x: { field: x.field, fieldType: x.fieldType },
+      x: { field: x.field, fieldType: x.fieldType,
+        ...(x.temporalUnit === undefined ? {} : { temporalUnit: x.temporalUnit }) },
       y: { field: y.field, fieldType: y.fieldType },
       ...(groupBy === undefined ? {} : { groupBy }),
       bands: args.bands ?? 3,
@@ -308,7 +318,7 @@ const encodeHorizon = action(
         ? {
             domain: source.values.map((row, index) =>
               x.fieldType === "temporal"
-                ? normalizeTemporalValue(row[x.field], x.field, index)
+                ? normalizeTemporalValue(row[x.field], x.field, index, x.temporalUnit)
                 : row[x.field]
             )
           }

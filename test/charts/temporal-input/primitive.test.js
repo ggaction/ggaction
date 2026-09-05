@@ -20,7 +20,7 @@ for (const [index, variant] of cases.entries()) {
       assert.ok(Math.abs(item.properties.y - reference.points[i].y) < 1e-10);
     });
     assert.deepEqual(program.semanticSpec.datasets[0].values.map(({ time, value }) => ({ time, value })), rows);
-    assert.equal(visualVariants[index].userFacing, undefined);
+    assert.equal(typeof visualVariants[index].userFacing, "function");
     assert.doesNotThrow(() => parseAst(visualVariants[index].callChain));
   });
 }

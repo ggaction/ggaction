@@ -7,18 +7,20 @@
 - [x] A Gate 증거 commit/push 및 review ref 기록 — `e06b57db5624a5b0d66cea425cff4aa5f5f4caad`
 - [x] A Gate의 명시적 사용자 승인 기록 — 2026-09-05 “ㄱㄱ”
 - [x] R6-P2-W1 Complete facade와 guide 확보 — 기능·회귀·installed package 통과, [결과](RESULTS.md#w1--facade-guide-reuse)
-- [x] R6-P2-W2 Series와 appearance 분리 — 기능·시각 검증 완료, Basic package 크기 통합 대기, [결과](RESULTS.md#w2--explicit-series-identity-and-line-appearance)
-- [x] R6-P2-W3 Style mode와 shorthand 정합성 — 기능·types·render 검증, Basic package 크기 통합 대기
-- [ ] R6-P2-W4 Inference·JSON opt-out·분석 defaults
+- [x] R6-P2-W2 Series와 appearance 분리 — 기능·시각·installed package 검증, [결과](RESULTS.md#w2--explicit-series-identity-and-line-appearance)
+- [x] R6-P2-W3 Style mode와 shorthand 정합성 — 기능·types·render·installed package 검증
+- [x] R6-P2-W4 Inference·JSON opt-out·분석 defaults — [결과](RESULTS.md#w4--explicit-temporal-input-and-json-opt-out)
 - [x] R6-P2-W5 유효한 incomplete intent 보존 — [결과](RESULTS.md#w5--bar-incomplete-authoring)
 - [x] 모든 시각 variant의 primitive target 작성·표시 — [6개 검토안](VISUAL_REVIEW.md)
 - [x] V의 명시적 사용자 승인 — “승인한다”, 6개 target, [승인 기록](GATES.md#r6-p2-v--visual-target)
 - [x] B의 full bundle 예산 결정과 installed package 재검증 — “조정한다”, full 235,000 bytes, [결과](RESULTS.md#b--browser-bundle-budget-acceptance)
-- [ ] 승인된 variant의 public 구현과 같은 실행의 primitive/public render 비교
-- [ ] 누적 검증·migration·문서·원장 동기화
-- [ ] X Gate의 증거 commit/push와 명시적 사용자 승인 기록
+- [x] 승인된 variant의 public 구현과 같은 실행의 primitive/public render 비교 — 6개 쌍
+- [x] 누적 검증·migration·문서·원장 동기화 — normal 2,432, realistic 167, contracts 260, PNG 22, browser 2, package·coverage 통과
+- [ ] X Gate의 증거 commit/push와 review ref 기록
+- [ ] X Gate의 명시적 사용자 승인 기록
 
-체크한 항목의 실제 검증은 [결과](RESULTS.md)에 기록한다. A/B/V 승인을 기록했고 W1/W5를 검증했다. X 승인과 미실행 결과를 완료로 표시하지 않는다.
+체크한 항목의 실제 검증은 [결과](RESULTS.md)에 기록한다. W1–W5와 승인된 6개 public 흐름을 검증했다.
+누적 realistic 검사까지 통과했다. Review package의 commit/push를 준비하며 X는 미승인이다.
 
 ## 순서
 

@@ -205,70 +205,34 @@ const rematerializeLineMark = action(
 
     if (parallel !== undefined) {
       validateParallelRows(dataset.values, parallel.dimensions, parallel);
-      let resolved = this;
-      if (args.scales !== false) {
-        for (const dimension of parallel.dimensions) {
-          resolved = resolved.rematerializeScale({ id: dimension.scale });
-        }
-      }
-      for (const channel of args.scales === false
-        ? []
-        : ["color", "strokeDash", "strokeWidth", "opacity"]) {
-        const scaleId = layer.encoding?.[channel]?.scale;
-        if (scaleId !== undefined) {
-          resolved = resolved.rematerializeScale({ id: scaleId });
-        }
-      }
-      const materialization = resolveParallelLineMaterialization({
-        rows: dataset.values,
-        parallel,
-        layer,
-        resolvedScales: resolved.resolvedScales,
-        bounds: resolveGraphicBounds(resolved),
-        config,
-        existingChildren,
-        defaults: { stroke: DEFAULT_LINE_STROKE, strokeWidth: DEFAULT_LINE_WIDTH }
-      });
-      return applyLineMaterialization(
-        resolved,
-        id,
-        materialization
-      );
     }
-
-    if (
-      polar
-        ? thetaScaleId === undefined || radiusScaleId === undefined
-        : xScaleId === undefined || yScaleId === undefined
-    ) {
-      throw new Error(
-        polar
-          ? `Line mark "${id}" requires theta and radius scales.`
-          : `Line mark "${id}" requires x and y scales.`
-      );
+    const positions = parallel !== undefined
+      ? parallel.dimensions.map(dimension => dimension.scale)
+      : polar ? [thetaScaleId, radiusScaleId] : [xScaleId, yScaleId];
+    if (positions.some(scale => scale === undefined)) {
+      throw new Error(`Line mark "${id}" requires ${polar ? "theta and radius" : "x and y"} scales.`);
     }
-
-    let resolved = args.scales === false
-      ? this
-      : polar
-        ? this
-            .rematerializeScale({ id: thetaScaleId })
-            .rematerializeScale({ id: radiusScaleId })
-        : this
-            .rematerializeScale({ id: xScaleId })
-            .rematerializeScale({ id: yScaleId });
-
-    for (const channel of args.scales === false ? [] : ["color", "strokeDash", "strokeWidth", "opacity"]) {
-      const scaleId = layer.encoding?.[channel]?.scale;
-      if (scaleId !== undefined) {
-        resolved = resolved.rematerializeScale({ id: scaleId });
+    let resolved = this;
+    if (args.scales !== false) {
+      const appearance = ["color", "strokeDash", "strokeWidth", "opacity"]
+        .map(channel => layer.encoding?.[channel]?.scale).filter(scale => scale !== undefined);
+      for (const scale of [...positions, ...appearance]) {
+        resolved = resolved.rematerializeScale({ id: scale });
       }
+    }
+    const shared = {
+      rows: dataset.values, layer, config, existingChildren,
+      resolvedScales: resolved.resolvedScales,
+      bounds: resolveGraphicBounds(resolved),
+      defaults: { stroke: DEFAULT_LINE_STROKE, strokeWidth: DEFAULT_LINE_WIDTH }
+    };
+    if (parallel !== undefined) {
+      return applyLineMaterialization(resolved, id,
+        resolveParallelLineMaterialization({ ...shared, parallel }));
     }
 
     const materialization = resolvePositionedLineMaterialization({
-      rows: dataset.values,
-      layer,
-      resolvedScales: resolved.resolvedScales,
+      ...shared,
       xBinBoundaries: layer.encoding?.x?.bin === undefined
         ? undefined
         : resolveLineBins(
@@ -276,11 +240,7 @@ const rematerializeLineMark = action(
             layer,
             requireSemanticScale(resolved, xScaleId)
           ).boundaries,
-      bounds: resolveGraphicBounds(resolved),
-      config,
-      existingChildren,
-      polar,
-      defaults: { stroke: DEFAULT_LINE_STROKE, strokeWidth: DEFAULT_LINE_WIDTH }
+      polar
     });
 
     return applyLineMaterialization(

@@ -35,6 +35,9 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 
 ## `createErrorBar`
 
+- Temporal independent position options forward `temporalUnit` to the body and every cap, including later
+  cap recreation. The interval itself remains quantitative; input-unit options are invalid on that interval.
+
 - Current signature: `createErrorBar({ id?, target?, data?, x?, y?, xOffset?, yOffset?, groupBy?, coordinate?, caps?, capSize?, stroke?, strokeWidth?, strokeDash?, opacity? } = {})`.
 - Exactly one of x/y is an identifiable quantitative interval channel and the other is a quantitative, nominal,
   ordinal, or temporal position channel. Interval options such as `lower`/`upper` disambiguate a quantitative
@@ -121,6 +124,9 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - Evidence: `test/unit/actions/error-bars/edit-error-bar.test.js` and Roadmap 3 focused-editing Gate.
 
 ## `createErrorBand`
+
+- Temporal independent position options forward `temporalUnit` to the area and both boundary lines. Stored
+  unit survives boundary removal/recreation and interval revision; the quantitative interval rejects input units.
 
 - Current signature: `createErrorBand({ id?, target?, data?, x?, y?, groupBy?, coordinate?, fill?, opacity?, curve?, boundaries? } = {})`.
 - Exactly one of x/y is a quantitative statistical or explicit interval; the other is a quantitative or temporal
@@ -241,8 +247,9 @@ without naming generated child layers.
 - Signature: `createRegression({ target?, x?, y?, groupBy?, method?, degree?, span?, confidence?, interval?, band?, line? })`
 - `target`: quantitative x/y point mark ID. 생략하면 current mark, 아니면 유일한 eligible point를 추론한다.
 - `x`, `y`: non-empty field names. 생략하면 target의 x/y encoding field를 사용한다.
-- `groupBy`: nominal field 또는 explicit `undefined`. 생략하면 matching color/shape field가 하나일 때
-  추론한다. 후보가 둘 이상이면 오류이며 explicit undefined는 ungrouped regression을 요청한다.
+- `groupBy`: nominal field, false, or legacy explicit undefined. Omission infers one matching color/shape field;
+  ambiguous candidates fail. False requests one ungrouped model and survives JSON serialization. Explicit undefined
+  keeps its existing JavaScript opt-out. Editors preserve omission, reject undefined and clear with false.
 - `method`, `degree`, `span`: Implemented regression method contract를 child `createRegressionData`에 전달한다.
   Polynomial degree는 `1..32`이며 derived output/work limits도 child data contract와 동일하다.
 - `confidence`: `(0, 1)` finite number, 기본값 `0.95`.
@@ -263,7 +270,7 @@ without naming generated child layers.
 
 ### Formal values — `createRegression`
 
-- Implemented: `createRegression({ target?: UserId; x?: FieldName; y?: FieldName; groupBy?: FieldName; line?: { strokeWidth?: NonNegativeFinite; curve?: CurveInterpolation } } & ({ method?: "linear"; confidence?: UnitIntervalExclusive; interval?: "mean" | "prediction"; band?: false | RegressionBandOptions } | { method: "polynomial"; degree?: PositiveInteger; confidence?: UnitIntervalExclusive; interval?: "mean" | "prediction"; band?: false | RegressionBandOptions } | { method: "loess"; span?: UnitIntervalExclusiveZero; band?: false }))`
+- Implemented: `createRegression({ target?: UserId; x?: FieldName; y?: FieldName; groupBy?: FieldName | false; line?: { strokeWidth?: NonNegativeFinite; curve?: CurveInterpolation } } & ({ method?: "linear"; confidence?: UnitIntervalExclusive; interval?: "mean" | "prediction"; band?: false | RegressionBandOptions } | { method: "polynomial"; degree?: PositiveInteger; confidence?: UnitIntervalExclusive; interval?: "mean" | "prediction"; band?: false | RegressionBandOptions } | { method: "loess"; span?: UnitIntervalExclusiveZero; band?: false }))`
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 

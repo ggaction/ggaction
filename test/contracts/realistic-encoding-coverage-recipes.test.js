@@ -24,10 +24,10 @@ const actionCards = JSON.parse(readFileSync(
 ));
 const inventoryPromise = buildPublicOptionInventory(actionCards);
 const EXPECTED = Object.freeze({
-  paths: 254,
-  pathSha256: "fcae969c9f8930fb962935062bc144e9cbd887022c50b886f75e01d9c9aac68b",
-  literals: 224,
-  literalSha256: "6aa7dc9c58fd41530352598010c688cc7914c960a5350caa588a62affed4bb8b",
+  paths: 262,
+  pathSha256: "c655b249f4bc9e049114ec866d3c33de6904d6d58add07654fb9ebcf3c7fd9e2",
+  literals: 252,
+  literalSha256: "594c184b6f562097cd7ff59cb5ba2cb68379314e2d9802a985470fdc0159b3b2",
   diversity: 9,
   diversitySha256: "bd6a602f3ed8ec4c3b838ea75503e7bc1c3a7005962add809467c01190c57906"
 });
@@ -190,7 +190,7 @@ async function projection() {
             );
             assert.equal(
               directEntries(program, "removeMark").length,
-              9,
+              12,
               `${label} transient polar point witnesses removed`
             );
           }

@@ -17,8 +17,7 @@
       { "type": "prefix", "path": "charts/centered-area-stream/" }
     ],
     "charts": [
-      { "type": "prefix", "path": "charts/" },
-      { "type": "prefix", "path": "gates/temporal-input/" }
+      { "type": "prefix", "path": "charts/" }
     ],
     "data": [
       { "type": "prefix", "path": "unit/actions/data/" },

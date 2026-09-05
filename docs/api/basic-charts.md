@@ -52,6 +52,11 @@ facade editor.
   guide styles require the owning editor or a disabled guide branch.
 - `guides: false` and nested `false` skip this call's requests; they do not delete
   existing guides. Direct `createGuides` and guide creation actions remain strict.
+- Facade guides describe the facade's own layer and coordinate. Cartesian facades
+  accept Cartesian axes and grids. Line and Parallel legends accept line symbols
+  or explicit symbol layers; Histogram and Violin legends are categorical. Box
+  plots have no owned appearance legend. Use the lower guide actions to describe
+  another layer. Heatmap interval-color legends are currently unsupported.
 - A facade validates its complete option object before changing the program.
 - To revise the result, use the resource action that owns the decision, such as
   `encodeX`, `editScale`, `editPointMark`, or `editLegend`. Aggregate

@@ -7,15 +7,15 @@ import {
   validateNonEmptyString as requireField,
   validateOptionObject
 } from "../../core/validation.js";
-import { readQuantitativeField } from "../../grammar/scales/index.js";
+import { readQuantitativeField, resolveTemporalUnit } from "../../grammar/scales/index.js";
 import { findDataset } from "../../selectors/datasets.js";
 import { hasLayer, resolveEligibleLayer } from "../../selectors/layers.js";
 import { findSemanticScale } from "../../selectors/scales.js";
 
 const CHANNEL_OPTIONS = [
-  "field", "fieldType", "scale", "center", "extent", "level", "lower", "upper"
+  "field", "fieldType", "scale", "center", "extent", "level", "lower", "upper", "temporalUnit"
 ];
-const INTERVAL_PARAMETER_KEYS = CHANNEL_OPTIONS.slice(3);
+const INTERVAL_PARAMETER_KEYS = ["center", "extent", "level", "lower", "upper"];
 const POSITION_CHANNELS = ["x", "y"];
 const FIELD_TYPES = [
   "quantitative", "temporal", "ordinal", "nominal"
@@ -123,8 +123,10 @@ function resolvePosition(program, channel, explicit, inferred, {
       `${operation} ${channel} position requires ${positionTypes.join(", ")} field type.`
     );
   }
+  const temporalUnit = resolveTemporalUnit({ ...explicit, field: explicit?.field ?? inferred?.field }, fieldType, inferred);
   return {
     channel,
+    ...(temporalUnit === undefined ? {} : { temporalUnit }),
     field: requireField(
       explicit?.field ?? inferred?.field,
       `${operation} ${channel} field`
@@ -143,6 +145,9 @@ function resolveInterval(program, channel, explicit, inferred, dataset, {
   operation,
   intervalScaleDefaults
 }) {
+  if (Object.hasOwn(explicit ?? {}, "temporalUnit")) {
+    throw new Error(`${operation} ${channel} interval does not accept temporalUnit.`);
+  }
   if (explicit?.fieldType !== undefined) {
     throw new Error(`${operation} ${channel} interval does not accept fieldType.`);
   }

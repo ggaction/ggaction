@@ -240,10 +240,20 @@ function buildScaleWitness(action, path, type) {
         .encodeY({ field: "category", fieldType: "nominal" })
         .encodeYOffset({ field: "subgroup", scale: { type } });
     case "encodeXRange":
+      if (type === "time") {
+        return source().createRectMark()
+          .encodeYRange({ lower: "lower", upper: "upper" })
+          .encodeXRange({ lower: "time", upper: "time", fieldType: "temporal", scale: { type } });
+      }
       return source().createAreaMark().encodeY({ field: "y" }).encodeXRange({
         lower: "lower", upper: "upper", scale: positionScale(type)
       });
     case "encodeYRange":
+      if (type === "time") {
+        return source().createRectMark()
+          .encodeXRange({ lower: "lower", upper: "upper" })
+          .encodeYRange({ lower: "time", upper: "time", fieldType: "temporal", scale: { type } });
+      }
       return source().createAreaMark().encodeX({ field: "x" }).encodeYRange({
         lower: "lower", upper: "upper", scale: positionScale(type)
       });
@@ -435,7 +445,7 @@ test("derives only role-reachable nested scale type paths", async () => {
   );
 
   assert.equal(scaleTypes.length, 61);
-  assert.equal(scaleTypes.reduce((sum, option) => sum + option.values.length, 0), 259);
+  assert.equal(scaleTypes.reduce((sum, option) => sum + option.values.length, 0), 261);
   assert.doesNotMatch(declarations, /scale\?: ScaleOptions/u);
   assert.equal(options.has("option-path:createScatterPlot.x.scale.palette"), false);
   assert.equal(options.has("option-path:createScatterPlot.x.scale.interpolate"), false);
@@ -485,7 +495,7 @@ test("executes every strict nested scale type path and literal", async () => {
       witnesses += 1;
     }
   }
-  assert.equal(witnesses, 259);
+  assert.equal(witnesses, 261);
 });
 
 test("materializes every role-specific nested scale type vocabulary", () => {

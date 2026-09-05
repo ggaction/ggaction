@@ -72,8 +72,9 @@ function resolveBoundaries(value, areaCurve) {
   });
 }
 
-function positionOptions({ target, field, fieldType, coordinate, scale }) {
-  return { target, field, fieldType, coordinate, scale: { id: scale } };
+function positionOptions({ target, field, fieldType, coordinate, scale, temporalUnit }) {
+  return { target, field, fieldType, coordinate, scale: { id: scale },
+    ...(temporalUnit === undefined ? {} : { temporalUnit }) };
 }
 
 export const createErrorBandBoundary = action(
@@ -104,6 +105,7 @@ export const createErrorBandBoundary = action(
         target: id,
         field: vertical ? bound : position.field,
         fieldType: vertical ? "quantitative" : position.fieldType,
+        temporalUnit: vertical ? undefined : position.temporalUnit,
         coordinate,
         scale: vertical ? intervalScale : positionScale
       }))
@@ -111,6 +113,7 @@ export const createErrorBandBoundary = action(
         target: id,
         field: vertical ? position.field : bound,
         fieldType: vertical ? position.fieldType : "quantitative",
+        temporalUnit: vertical ? position.temporalUnit : undefined,
         coordinate,
         scale: vertical ? positionScale : intervalScale
       }));
@@ -133,6 +136,7 @@ function positionArgs(resolved) {
     target: resolved.id,
     field: resolved.position.field,
     fieldType: resolved.position.fieldType,
+    ...(resolved.position.temporalUnit === undefined ? {} : { temporalUnit: resolved.position.temporalUnit }),
     coordinate: resolved.coordinate,
     scale: resolved.position.scale
   };

@@ -520,13 +520,18 @@
           "type": "TimeUnit"
         },
         {
+          "name": "temporalUnit",
+          "required": false,
+          "type": "TemporalInputUnit | undefined"
+        },
+        {
           "name": "as",
           "required": true,
           "type": "string"
         }
       ],
       "callPatterns": [
-        "createTimeUnitData({ id, field, unit, as, source? })"
+        "createTimeUnitData({ id, field, unit, as, source?, temporalUnit? })"
       ],
       "snippet": "program.createTimeUnitData({ id: \"time-unit-data-1\", field: \"value\", unit: \"month\", as: \"derived\" })",
       "errors": [],
@@ -2090,6 +2095,11 @@
           "name": "aggregate",
           "required": false,
           "type": "undefined"
+        },
+        {
+          "name": "temporalUnit",
+          "required": false,
+          "type": "TemporalInputUnit | undefined"
         }
       ],
       "callPatterns": [
@@ -2170,6 +2180,11 @@
           "name": "stack",
           "required": false,
           "type": "YStackMode | undefined"
+        },
+        {
+          "name": "temporalUnit",
+          "required": false,
+          "type": "TemporalInputUnit | undefined"
         }
       ],
       "callPatterns": [
@@ -2227,11 +2242,6 @@
           "type": "string | undefined"
         },
         {
-          "name": "fieldType",
-          "required": false,
-          "type": "FieldType | undefined"
-        },
-        {
           "name": "scale",
           "required": false,
           "type": "{ id?: string | undefined; } | { id?: string | undefined; } | undefined"
@@ -2240,10 +2250,20 @@
           "name": "coordinate",
           "required": false,
           "type": "string | undefined"
+        },
+        {
+          "name": "fieldType",
+          "required": false,
+          "type": "\"nominal\" | \"ordinal\" | \"quantitative\" | \"temporal\" | undefined"
+        },
+        {
+          "name": "temporalUnit",
+          "required": false,
+          "type": "TemporalInputUnit | undefined"
         }
       ],
       "callPatterns": [
-        "encodeX2({ target?, scale?, coordinate?, field?, datum?, fieldType? })"
+        "encodeX2({ target?, scale?, coordinate?, field?, datum?, fieldType?, temporalUnit? })"
       ],
       "snippet": "program.encodeX2({ field: \"x2\" })",
       "errors": [],
@@ -2314,10 +2334,15 @@
           "name": "aggregate",
           "required": false,
           "type": "AggregateOperation | undefined"
+        },
+        {
+          "name": "temporalUnit",
+          "required": false,
+          "type": "TemporalInputUnit | undefined"
         }
       ],
       "callPatterns": [
-        "encodeColor({ field, target?, scale?, fieldType?, palette?, layout?, aggregate? })"
+        "encodeColor({ field, target?, scale?, fieldType?, palette?, layout?, aggregate?, temporalUnit? })"
       ],
       "snippet": "program.encodeColor({ field: \"value\" })",
       "errors": [],
@@ -2834,11 +2859,6 @@
           "type": "string | undefined"
         },
         {
-          "name": "fieldType",
-          "required": false,
-          "type": "FieldType | undefined"
-        },
-        {
           "name": "scale",
           "required": false,
           "type": "ThetaScaleOptions | undefined"
@@ -2857,10 +2877,20 @@
           "name": "weight",
           "required": false,
           "type": "string | undefined"
+        },
+        {
+          "name": "fieldType",
+          "required": false,
+          "type": "\"nominal\" | \"ordinal\" | \"quantitative\" | \"temporal\" | undefined"
+        },
+        {
+          "name": "temporalUnit",
+          "required": false,
+          "type": "TemporalInputUnit | undefined"
         }
       ],
       "callPatterns": [
-        "encodeTheta({ field, target?, scale?, coordinate?, fieldType?, aggregate?, weight? })"
+        "encodeTheta({ field, target?, scale?, coordinate?, aggregate?, weight?, fieldType?, temporalUnit? })"
       ],
       "snippet": "program.encodeTheta({ field: \"value\" })",
       "errors": [],
@@ -3204,11 +3234,6 @@
           "type": "string | undefined"
         },
         {
-          "name": "fieldType",
-          "required": false,
-          "type": "FieldType | undefined"
-        },
-        {
           "name": "scale",
           "required": false,
           "type": "{ id?: string | undefined; } | { id?: string | undefined; } | undefined"
@@ -3217,10 +3242,20 @@
           "name": "coordinate",
           "required": false,
           "type": "string | undefined"
+        },
+        {
+          "name": "fieldType",
+          "required": false,
+          "type": "\"nominal\" | \"ordinal\" | \"quantitative\" | \"temporal\" | undefined"
+        },
+        {
+          "name": "temporalUnit",
+          "required": false,
+          "type": "TemporalInputUnit | undefined"
         }
       ],
       "callPatterns": [
-        "encodeY2({ target?, scale?, coordinate?, field?, datum?, fieldType? })"
+        "encodeY2({ target?, scale?, coordinate?, field?, datum?, fieldType?, temporalUnit? })"
       ],
       "snippet": "program.encodeY2({ field: \"y2\" })",
       "errors": [],
@@ -3232,7 +3267,7 @@
       "layer": "user-facing",
       "domain": "encodings",
       "summary": "Atomically compose area or ranged-bar encodeY and encodeY2.",
-      "signature": "encodeYRange(options: { lower: string; upper: string; target?: string; fieldType?: \"quantitative\"; coordinate?: string; scale?: NonPointQuantitativePositionScaleOptions; }): ChartProgram;",
+      "signature": "encodeYRange(options: RangePositionEncodingOptions): ChartProgram;",
       "intents": [
         "encode y range",
         "encode",
@@ -3273,23 +3308,28 @@
           "type": "string | undefined"
         },
         {
-          "name": "fieldType",
-          "required": false,
-          "type": "\"quantitative\" | undefined"
-        },
-        {
           "name": "coordinate",
           "required": false,
           "type": "string | undefined"
         },
         {
+          "name": "fieldType",
+          "required": false,
+          "type": "\"quantitative\" | \"temporal\" | undefined"
+        },
+        {
+          "name": "temporalUnit",
+          "required": false,
+          "type": "TemporalInputUnit | undefined"
+        },
+        {
           "name": "scale",
           "required": false,
-          "type": "NonPointQuantitativePositionScaleOptions | undefined"
+          "type": "NonPointQuantitativePositionScaleOptions | NonPointTemporalPositionScaleOptions | undefined"
         }
       ],
       "callPatterns": [
-        "encodeYRange({ lower, upper, target?, coordinate?, scale?, fieldType? })"
+        "encodeYRange({ lower, upper, target?, coordinate?, scale?, fieldType?, temporalUnit? })"
       ],
       "snippet": "program.encodeYRange({ lower: \"lower\", upper: \"upper\" })",
       "errors": [],
@@ -3301,7 +3341,7 @@
       "layer": "user-facing",
       "domain": "encodings",
       "summary": "Atomically compose area or ranged-bar encodeX and encodeX2.",
-      "signature": "encodeXRange(options: { lower: string; upper: string; target?: string; fieldType?: \"quantitative\"; coordinate?: string; scale?: NonPointQuantitativePositionScaleOptions; }): ChartProgram;",
+      "signature": "encodeXRange(options: RangePositionEncodingOptions): ChartProgram;",
       "intents": [
         "encode x range",
         "encode",
@@ -3342,23 +3382,28 @@
           "type": "string | undefined"
         },
         {
-          "name": "fieldType",
-          "required": false,
-          "type": "\"quantitative\" | undefined"
-        },
-        {
           "name": "coordinate",
           "required": false,
           "type": "string | undefined"
         },
         {
+          "name": "fieldType",
+          "required": false,
+          "type": "\"quantitative\" | \"temporal\" | undefined"
+        },
+        {
+          "name": "temporalUnit",
+          "required": false,
+          "type": "TemporalInputUnit | undefined"
+        },
+        {
           "name": "scale",
           "required": false,
-          "type": "NonPointQuantitativePositionScaleOptions | undefined"
+          "type": "NonPointQuantitativePositionScaleOptions | NonPointTemporalPositionScaleOptions | undefined"
         }
       ],
       "callPatterns": [
-        "encodeXRange({ lower, upper, target?, coordinate?, scale?, fieldType? })"
+        "encodeXRange({ lower, upper, target?, coordinate?, scale?, fieldType?, temporalUnit? })"
       ],
       "snippet": "program.encodeXRange({ lower: \"lower\", upper: \"upper\" })",
       "errors": [],
@@ -3927,11 +3972,6 @@
           "type": "string"
         },
         {
-          "name": "groupBy",
-          "required": false,
-          "type": "string | undefined"
-        },
-        {
           "name": "bandwidth",
           "required": false,
           "type": "number | \"auto\" | undefined"
@@ -3960,6 +4000,11 @@
           "name": "as",
           "required": false,
           "type": "readonly [string, string] | undefined"
+        },
+        {
+          "name": "groupBy",
+          "required": false,
+          "type": "string | false | undefined"
         },
         {
           "name": "target",
@@ -3993,7 +4038,7 @@
         }
       ],
       "callPatterns": [
-        "encodeDensity({ field, source?, target?, coordinate?, groupBy?, bandwidth?, extent?, steps? })"
+        "encodeDensity({ field, source?, target?, coordinate?, bandwidth?, extent?, steps?, kernel? })"
       ],
       "snippet": "program.encodeDensity({ field: \"value\" })",
       "errors": [],
@@ -4138,7 +4183,7 @@
         {
           "name": "groupBy",
           "required": false,
-          "type": "string | undefined"
+          "type": "string | false | undefined"
         },
         {
           "name": "bands",
@@ -4378,7 +4423,7 @@
         {
           "name": "groupBy",
           "required": false,
-          "type": "string | undefined"
+          "type": "string | false | undefined"
         },
         {
           "name": "line",
@@ -5040,7 +5085,7 @@
         {
           "name": "guides",
           "required": false,
-          "type": "false | CartesianGuideOptions | undefined"
+          "type": "false | BoxPlotGuideOptions | undefined"
         }
       ],
       "callPatterns": [
@@ -5391,7 +5436,7 @@
         {
           "name": "guides",
           "required": false,
-          "type": "false | CartesianGuideOptions | undefined"
+          "type": "false | CartesianCategoricalGuideOptions | undefined"
         }
       ],
       "callPatterns": [
@@ -11575,7 +11620,7 @@
         {
           "name": "guides",
           "required": false,
-          "type": "false | CreateGuidesOptions | undefined"
+          "type": "false | CartesianGuideOptions | undefined"
         }
       ],
       "callPatterns": [
@@ -11664,7 +11709,7 @@
         {
           "name": "guides",
           "required": false,
-          "type": "false | CreateGuidesOptions | undefined"
+          "type": "false | CartesianPathGuideOptions | undefined"
         }
       ],
       "callPatterns": [
@@ -11748,7 +11793,7 @@
         {
           "name": "guides",
           "required": false,
-          "type": "false | CreateGuidesOptions | undefined"
+          "type": "false | CartesianGuideOptions | undefined"
         }
       ],
       "callPatterns": [
@@ -11855,7 +11900,7 @@
         {
           "name": "guides",
           "required": false,
-          "type": "false | CreateGuidesOptions | undefined"
+          "type": "false | CartesianCategoricalGuideOptions | undefined"
         }
       ],
       "callPatterns": [

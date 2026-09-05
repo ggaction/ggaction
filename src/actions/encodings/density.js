@@ -80,7 +80,7 @@ const encodeDensity = action(
     validateOptions(args, OPTIONS, "encodeDensity");
     const layer = findArea(this, args.target);
     const field = requireDensityField(args.field, "Density field");
-    const groupBy = args.groupBy === undefined
+    const groupBy = args.groupBy === undefined || args.groupBy === false
       ? undefined
       : requireDensityField(args.groupBy, "Density groupBy");
     const source = validateUserId(

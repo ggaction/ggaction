@@ -75,7 +75,7 @@ const POSITION_POLICY_SUBSETS = Object.freeze([
 function inheritedPositionEncodings(encoding) {
   if (encoding?.field === undefined) return undefined;
   const base = Object.fromEntries(
-    ["field", "fieldType", "scale", "title"]
+    ["field", "fieldType", "scale", "title", "temporalUnit"]
       .filter(property => Object.hasOwn(encoding, property))
       .map(property => [property, encoding[property]])
   );

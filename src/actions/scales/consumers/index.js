@@ -20,7 +20,8 @@ export function resolveConsumerValues(program, consumer) {
     return [normalizeRuleDatum(
       consumer.encoding.datum,
       consumer.encoding.fieldType,
-      consumer.channel
+      consumer.channel,
+      consumer.encoding.temporalUnit
     )];
   }
   if (

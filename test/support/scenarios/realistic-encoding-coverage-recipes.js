@@ -98,6 +98,10 @@ function encodingView(dataset, extraOperations = []) {
       categoryEnd: categories[(categories.indexOf(String(row.category)) + 1) % categories.length],
       groupEnd: groups[(groups.indexOf(String(row.subgroup)) + 1) % groups.length],
       time: row.time,
+      timeYear: new Date(row.time).getUTCFullYear(),
+      timeTimestamp: new Date(row.time).getTime(),
+      timeYearEnd: new Date(source.rows[(index + 1) % source.rows.length].time).getUTCFullYear(),
+      timeTimestampEnd: new Date(source.rows[(index + 1) % source.rows.length].time).getTime(),
       timeEnd: source.rows[(index + 1) % source.rows.length].time,
       order: index + 1,
       angle: index * 360 / source.rows.length,
@@ -497,12 +501,34 @@ function addPositionScales(program) {
   });
 }
 
+const TEMPORAL_MODES = Object.freeze([
+  { temporalUnit: "auto", field: "time", end: "timeEnd" },
+  { temporalUnit: "year", field: "timeYear", end: "timeYearEnd" },
+  { temporalUnit: "timestamp", field: "timeTimestamp", end: "timeTimestampEnd" }
+]);
+
+function addTemporalRanges(program) {
+  let next = program;
+  for (const mode of TEMPORAL_MODES) {
+    const id = `temporal-ranges-${mode.temporalUnit}`;
+    const options = { target: id, fieldType: "temporal", temporalUnit: mode.temporalUnit };
+    next = next.createRuleMark({ id, data: "analysisRows" })
+      .encodeXRange({ ...options, coordinate: `${id}-coordinate`, lower: mode.field, upper: mode.end, scale: timeScale(`${id}-x`, false, { unknown: false }) })
+      .encodeYRange({ ...options, lower: mode.field, upper: mode.end, scale: timeScale(`${id}-y`, false, { unknown: false }) })
+      .encodeX({ ...options, field: mode.field })
+      .encodeY({ ...options, field: mode.field })
+      .encodeX2({ ...options, field: mode.end })
+      .encodeY2({ ...options, field: mode.end });
+  }
+  return next;
+}
+
 function buildPositionCoverage(factors) {
   const view = encodingView(factors.dataset, [{
     op: "direct-position-encoding-exercise",
     actions: POSITION_ACTIONS
   }]);
-  let program = addPositionScales(programFor(view));
+  let program = addTemporalRanges(addPositionScales(programFor(view)));
   program = addHorizontalAggregateBars(program);
   program = addVerticalAggregateBars(program);
   program = addBinnedX(program);
@@ -841,6 +867,13 @@ function buildAppearanceCoverage(factors) {
   let program = addColorScales(programFor(view));
   program = addColorAggregatesAndLayouts(program);
   program = addAppearanceEncodings(program);
+  for (const mode of TEMPORAL_MODES) {
+    const id = `color-input-${mode.temporalUnit}`;
+    program = positionedPoint(program, id).encodeColor({
+      target: id, field: mode.field, fieldType: "temporal", temporalUnit: mode.temporalUnit,
+      scale: { id: `${id}-scale`, type: "sequential", palette: "viridis" }
+    });
+  }
   return finish(program, factors, "direct-appearance-encoding-options");
 }
 
@@ -857,6 +890,10 @@ function buildPolarCoverage(factors) {
   }]);
   let program = programFor(view);
   const thetaVariants = [
+    ...TEMPORAL_MODES.map(mode => ({ id: `input-${mode.temporalUnit}`, theta: {
+      field: mode.field, fieldType: "temporal", temporalUnit: mode.temporalUnit,
+      scale: timeScale(`theta-input-${mode.temporalUnit}`, false, { unknown: false })
+    } })),
     {
       id: "linear",
       theta: {

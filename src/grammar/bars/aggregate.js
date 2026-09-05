@@ -33,7 +33,7 @@ export function deriveBarAggregates(rows, layer) {
   const { channels, category, measure } = requireAggregateBarEncoding(layer);
   validateAggregateFieldValues(rows, measure.field, measure.fieldType);
   const categoryValues = category.fieldType === "temporal"
-    ? readTemporalField(rows, category.field)
+    ? readTemporalField(rows, category.field, category.temporalUnit)
     : readNominalField(rows, category.field);
   const color = layer.encoding?.color;
   let colorValues;

@@ -3173,19 +3173,7 @@
     }
   ],
   "plannedActions": [],
-  "plannedCapabilities": [
-    {
-      "id": "explicit-temporal-input",
-      "name": "Explicit temporal input units and serializable group opt-out",
-      "kind": "behavior",
-      "status": "planned",
-      "readiness": "accepted",
-      "contract": {
-        "file": "agent_docs/contract/planned/SHARED_AUTHORING.md",
-        "anchor": "inference"
-      }
-    }
-  ],
+  "plannedCapabilities": [],
   "internal": {
     "materialization": [
       "materializeBoxOutlierData",

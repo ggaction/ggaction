@@ -90,6 +90,7 @@ function capArgs(config, id, intervalField) {
     orientation: config.orientation,
     positionField: config.positionField,
     positionFieldType: config.positionFieldType,
+    ...(config.positionTemporalUnit === undefined ? {} : { positionTemporalUnit: config.positionTemporalUnit }),
     intervalField,
     coordinate: config.coordinate,
     positionScale: config.positionScale,

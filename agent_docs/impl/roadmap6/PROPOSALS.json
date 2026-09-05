@@ -199,7 +199,7 @@
           "scope": "encodeGroup의 identity와 color/dash/width의 final-series appearance를 분리한다. Multi-key group을 충돌 없는 구조로 다룬다. Existing inferred grouping의 호환 경로를 유지한다.",
           "acceptance": "country group+continent color 성공; 한 series의 모호한 appearance 거부; field 작성 순서와 group edit 뒤 수렴.",
           "contractEvidence": "phase2/CONTRACT_REVIEW.md",
-          "implementationStatus": "implemented-functional-package-size-pending",
+          "implementationStatus": "implemented-verified",
           "resultEvidence": "phase2/RESULTS.md#w2--explicit-series-identity-and-line-appearance"
         },
         {
@@ -212,7 +212,7 @@
           "scope": "Line constant/field width·opacity, Scatter radius, Rule 생성·editRuleMark를 기존 owner로 연결한다. ErrorBand fill·Point opacity·Line width의 field 충돌과 명시적 교체/override 해제를 정리한다. Basic encodePointRadius child·공개 경로도 포함한다.",
           "acceptance": "create/edit/field/constant 지원 matrix 일치. Override 뒤 scale·legend가 거짓 의미를 설명하지 않음. Local highlight override 별도 유지.",
           "contractEvidence": "phase2/CONTRACT_REVIEW.md",
-          "implementationStatus": "implemented-functional-package-size-pending",
+          "implementationStatus": "implemented-verified",
           "resultEvidence": "phase2/RESULTS.md#w3--style-assignment-and-facade-forwarding"
         },
         {
@@ -225,7 +225,9 @@
           ],
           "scope": "명시적 fieldType/aggregate/temporalUnit을 우선하고 기존 분석 defaults를 유지한다. createRegression/encodeDensity/encodeHorizon의 groupBy:false와 editor preservation을 정리한다. Source schema API 추가는 이번 단계에서 제외한다.",
           "acceptance": "numeric nominal color, mean Bar, year/timestamp 기존 결과 비교. 생략·false·undefined·auto의 source/trace/serialization 의미를 검사.",
-          "contractEvidence": "phase2/CONTRACT_REVIEW.md"
+          "contractEvidence": "phase2/CONTRACT_REVIEW.md",
+          "implementationStatus": "implemented-verified",
+          "resultEvidence": "phase2/RESULTS.md#w4--explicit-temporal-input-and-json-opt-out"
         },
         {
           "id": "R6-P2-W5",
@@ -242,7 +244,7 @@
           "resultEvidence": "phase2/RESULTS.md#w5--bar-incomplete-authoring"
         }
       ],
-      "activity": "public-implementation",
+      "activity": "result-validation",
       "contractReview": {
         "file": "phase2/CONTRACT_REVIEW.md",
         "baselineCommit": "bbc8a3fc256c9afa877f696ed6ade1f51ffb7522",
@@ -273,7 +275,10 @@
         "implementedVariants": [
           "country-color",
           "tuple-color-dash",
-          "series-appearance"
+          "series-appearance",
+          "timestamp",
+          "year",
+          "auto"
         ]
       },
       "bundleReview": {
@@ -292,11 +297,11 @@
           "reviewCommit": "ca820fa941f4359e814ee6f65a01e574512f5c08"
         },
         "latestMeasurement": {
-          "full": 232951,
-          "basic": 125223,
+          "full": 234258,
+          "basic": 124897,
           "svg": 6418,
-          "packageStatus": "basic-size-failed",
-          "evidence": "phase2/RESULTS.md#w2--explicit-series-identity-and-line-appearance"
+          "packageStatus": "passed",
+          "evidence": "phase2/RESULTS.md#integration--verified-consumers-and-compatibility"
         }
       }
     },
@@ -954,7 +959,7 @@
       "id": "D02",
       "title": "Group identity와 appearance field 결합",
       "kind": "design-issue",
-      "status": "proposed",
+      "status": "implemented-verified",
       "primaryPhase": 2,
       "primaryWorkPackage": "R6-P2-W2",
       "relatedWorkPackages": [
@@ -967,8 +972,8 @@
       "recommended": "encodeGroup의 identity와 color/dash/width의 final-series appearance를 분리한다. Multi-key group을 충돌 없는 구조로 다룬다. Existing inferred grouping의 호환 경로를 유지한다.",
       "acceptance": "country group+continent color 성공; 한 series의 모호한 appearance 거부; field 작성 순서와 group edit 뒤 수렴.",
       "evidence": "audit/REPORT.md: D02",
-      "disposition": "W2 runtime and visual pairs implemented; installed consumer passes until Basic bundle size. Phase 2 integration and X remain pending.",
-      "resultEvidence": "phase2/RESULTS.md#w2--explicit-series-identity-and-line-appearance"
+      "disposition": "Approved Phase 2 scope implemented and consumer-verified; result Gate X remains unapproved.",
+      "resultEvidence": "phase2/RESULTS.md#integration--verified-consumers-and-compatibility"
     },
     {
       "id": "D03",
@@ -1033,7 +1038,7 @@
       "id": "D06",
       "title": "Constant/field/create/edit style의 비대칭",
       "kind": "design-issue",
-      "status": "proposed",
+      "status": "implemented-verified",
       "primaryPhase": 2,
       "primaryWorkPackage": "R6-P2-W3",
       "relatedWorkPackages": [
@@ -1046,14 +1051,15 @@
       "recommended": "Line constant width/opacity, Scatter point radius, Rule style 경로를 공통 owner로 연결한다. ErrorBand fill의 semantic color/legend 충돌을 명시적 assignment 교체로 정리한다.",
       "acceptance": "create/edit/field/constant 지원 matrix 일치. Override 뒤 scale·legend가 거짓 의미를 설명하지 않음. Local highlight override 별도 유지.",
       "evidence": "audit/REPORT.md: D06",
-      "disposition": "implementation-or-explicit-contract-decision-proposed",
+      "disposition": "Approved Phase 2 scope implemented and consumer-verified; result Gate X remains unapproved.",
       "additionalEvidence": "phase2/baseline-results.json",
       "additionalProbeIds": [
         "S13",
         "S15",
         "S16",
         "S18"
-      ]
+      ],
+      "resultEvidence": "phase2/RESULTS.md#integration--verified-consumers-and-compatibility"
     },
     {
       "id": "D07",
@@ -1097,7 +1103,7 @@
       "id": "D09",
       "title": "Type·aggregate·temporal inference의 분석 의미",
       "kind": "design-issue",
-      "status": "proposed",
+      "status": "implemented-verified",
       "primaryPhase": 2,
       "primaryWorkPackage": "R6-P2-W4",
       "relatedWorkPackages": [
@@ -1110,13 +1116,14 @@
       "recommended": "Explicit type/schema/temporal unit/aggregate를 우선하는 선택표를 확정한다. groupBy:false의 JSON round trip을 제공하고 create omission과 edit preservation을 구분한다.",
       "acceptance": "numeric nominal color, mean Bar, year/timestamp 기존 결과 비교. 생략·false·undefined·auto의 source/trace/serialization 의미를 검사.",
       "evidence": "audit/REPORT.md: D09",
-      "disposition": "implementation-or-explicit-contract-decision-proposed"
+      "disposition": "Approved Phase 2 scope implemented and consumer-verified; result Gate X remains unapproved.",
+      "resultEvidence": "phase2/RESULTS.md#integration--verified-consumers-and-compatibility"
     },
     {
       "id": "D10",
       "title": "통계 grouping inference와 JSON opt-out",
       "kind": "design-issue",
-      "status": "proposed",
+      "status": "implemented-verified",
       "primaryPhase": 2,
       "primaryWorkPackage": "R6-P2-W4",
       "relatedWorkPackages": [
@@ -1133,7 +1140,8 @@
       "recommended": "Explicit type/schema/temporal unit/aggregate를 우선하는 선택표를 확정한다. groupBy:false의 JSON round trip을 제공하고 create omission과 edit preservation을 구분한다.",
       "acceptance": "numeric nominal color, mean Bar, year/timestamp 기존 결과 비교. 생략·false·undefined·auto의 source/trace/serialization 의미를 검사.",
       "evidence": "audit/REPORT.md: D10",
-      "disposition": "implementation-or-explicit-contract-decision-proposed"
+      "disposition": "Approved Phase 2 scope implemented and consumer-verified; result Gate X remains unapproved.",
+      "resultEvidence": "phase2/RESULTS.md#integration--verified-consumers-and-compatibility"
     },
     {
       "id": "D11",

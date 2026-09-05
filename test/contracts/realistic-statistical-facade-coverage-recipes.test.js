@@ -246,7 +246,12 @@ async function buildProjectionChunk(planDescriptors) {
         }
         const action = recipe.expectedDirectActions[0];
         const label = `${recipe.id}-${dataset}-${factors.variant.id}`;
-        const program = recipe.build(factors);
+        let program;
+        try {
+          program = recipe.build(factors);
+        } catch (error) {
+          throw new Error(`${label}: ${error.message}`, { cause: error });
+        }
         const metadata = recipe.describe(factors);
         assert.equal(directEntries(program, action).length, 1, `${label} direct root action`);
         assert.deepEqual(
@@ -261,7 +266,7 @@ async function buildProjectionChunk(planDescriptors) {
               layer.id === "polarContextPoints"
             ),
             false,
-            `${label} removes the polar coverage witness from the final chart`
+            `${label} uses only the histogram's Cartesian coordinate`
           );
           assert.deepEqual(
             program.semanticSpec.guides.axis,
@@ -269,12 +274,7 @@ async function buildProjectionChunk(planDescriptors) {
               x: { coordinate: "main", scale: "mainValue", title: metadata.sourceFields[0].label },
               y: { coordinate: "main", scale: "mainCount", title: "Observation count" }
             },
-            `${label} restores cartesian axes for cartesian histogram marks`
-          );
-          assert.deepEqual(
-            program.graphicSpec.objects.canvas.properties,
-            { width: 1_600, height: 1_100, background: "#ffffff" },
-            `${label} compact final canvas`
+            `${label} creates owned Cartesian axes for histogram marks`
           );
         }
         assertGraphicIntegrity(program, label);

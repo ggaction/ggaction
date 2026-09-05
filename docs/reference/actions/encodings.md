@@ -222,6 +222,11 @@ histogram action. Choose at most one of `maxBins`, `binStep`, and
 Use `stack: "normalize"` for a unit-height partition.
 [Encodings](../../api/encodings.md)
 
+Creation `groupBy:false` explicitly requests ungrouped Regression, Density or
+Horizon and survives JSON serialization. Editors preserve omission, reject
+explicit undefined and clear with false. Data-only transform groupBy options
+remain unchanged.
+
 ## `encodeDensity`
 
 ```javascript

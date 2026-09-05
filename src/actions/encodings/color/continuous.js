@@ -1,7 +1,8 @@
 import {
   readQuantitativeField,
   readScaleField,
-  readTemporalField
+  readTemporalField,
+  resolveTemporalUnit
 } from "../../../grammar/scales/index.js";
 import {
   BAR_GRAINS,
@@ -32,6 +33,8 @@ import {
   resolveColorScaleOptions
 } from "./policy.js";
 
+import { applyTemporalUnit } from "../temporal.js";
+
 export function encodeContinuousColor(program, args) {
   if (!["quantitative", "temporal"].includes(args.fieldType)) {
     throw new Error(`Unsupported color field type "${args.fieldType}".`);
@@ -46,6 +49,7 @@ export function encodeContinuousColor(program, args) {
     "continuous color mark"
   );
   assertNoConstantColor(program, layer);
+  const temporalUnit = resolveTemporalUnit(args, args.fieldType, layer.encoding?.color);
   const requestedScale = resolveReassignmentScaleOptions(
     layer.encoding?.color,
     resolveColorScaleOptions(args)
@@ -98,18 +102,18 @@ export function encodeContinuousColor(program, args) {
   }
   if (layer.mark.type === "rect") {
     readScaleField(dataset.values, args.field, args.fieldType, {
-      allowUnknown: true
+      allowUnknown: true, temporalUnit
     });
   } else if (Object.hasOwn(scale, "unknown")) {
     readScaleField(dataset.values, args.field, args.fieldType, {
-      allowUnknown: true
+      allowUnknown: true, temporalUnit
     });
   } else if (args.fieldType === "temporal") {
-    readTemporalField(dataset.values, args.field);
+    readTemporalField(dataset.values, args.field, temporalUnit);
   } else {
     readQuantitativeField(dataset.values, args.field);
   }
-  const next = program
+  const next = applyTemporalUnit(program, target, "color", temporalUnit, layer.encoding?.color)
     .editSemantic({
       property: `layer[${target}].encoding.color.field`,
       value: args.field

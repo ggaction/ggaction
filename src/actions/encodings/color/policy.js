@@ -5,7 +5,7 @@ import {
 import { validateColorLayout } from "../../../grammar/seriesLayout.js";
 
 export const COLOR_ENCODING_OPTIONS = Object.freeze([
-  "field", "target", "fieldType", "scale", "palette", "layout", "aggregate"
+  "field", "target", "fieldType", "scale", "palette", "layout", "aggregate", "temporalUnit"
 ]);
 
 export function resolveColorScaleOptions(args) {

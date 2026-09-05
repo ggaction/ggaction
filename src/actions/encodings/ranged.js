@@ -6,6 +6,7 @@ import {
   readQuantitativeField,
   readScaleField,
   readTemporalField,
+  resolveTemporalUnit,
   validateSemanticFieldType
 } from "../../grammar/scales/index.js";
 import { normalizeRuleDatum } from "../../grammar/rules.js";
@@ -23,11 +24,13 @@ import {
   validateOptions
 } from "./shared.js";
 
+import { applyTemporalUnit } from "./temporal.js";
+
 const SECONDARY_OPTIONS = Object.freeze([
-  "field", "datum", "target", "fieldType", "scale", "coordinate"
+  "field", "datum", "target", "fieldType", "scale", "coordinate", "temporalUnit"
 ]);
 const RANGE_OPTIONS = Object.freeze([
-  "lower", "upper", "target", "fieldType", "coordinate", "scale"
+  "lower", "upper", "target", "fieldType", "coordinate", "scale", "temporalUnit"
 ]);
 const GROUP_OPTIONS = Object.freeze(["field", "fields", "target", "fieldType"]);
 
@@ -42,11 +45,11 @@ function validateSecondaryScale(args, primaryScale, axisLabel) {
   }
 }
 
-function validateSecondaryField(dataset, field, fieldType) {
+function validateSecondaryField(dataset, field, fieldType, temporalUnit) {
   if (["nominal", "ordinal"].includes(fieldType)) {
     readNominalField(dataset.values, field);
   } else if (fieldType === "temporal") {
-    readTemporalField(dataset.values, field);
+    readTemporalField(dataset.values, field, temporalUnit);
   } else {
     readQuantitativeField(dataset.values, field);
   }
@@ -115,12 +118,13 @@ function encodeSecondaryPosition(program, channel, args, operation, types) {
       `${operation} fieldType must match the primary ${primaryChannel} fieldType.`
     );
   }
-  if (hasField && layer.mark.type === "rect") {
-    readScaleField(dataset.values, args.field, fieldType, { allowUnknown: true });
-  } else if (hasField) validateSecondaryField(dataset, args.field, fieldType);
-  else normalizeRuleDatum(args.datum, fieldType, channel);
-
   const previous = layer.encoding?.[channel];
+  const temporalUnit = resolveTemporalUnit(args, fieldType, previous);
+  if (hasField && layer.mark.type === "rect") {
+    readScaleField(dataset.values, args.field, fieldType, { allowUnknown: true, temporalUnit });
+  } else if (hasField) validateSecondaryField(dataset, args.field, fieldType, temporalUnit);
+  else normalizeRuleDatum(args.datum, fieldType, channel, temporalUnit);
+
   let next = program;
   if (layer.mark.type === "bar") {
     for (const property of ["aggregate", "stack", "bin"]) {
@@ -147,6 +151,7 @@ function encodeSecondaryPosition(program, channel, args, operation, types) {
     scale: primary.scale
   });
 
+  next = applyTemporalUnit(next, target, channel, temporalUnit, previous);
   const updated = findLayer(next, target);
   for (const step of getPositionEncodingMaterializationSteps(
     next,
@@ -190,51 +195,27 @@ const encodeY2 = action(
   }
 );
 
-const encodeYRange = action(
-  {
-    op: "encodeYRange",
-    description: "Atomically encode lower and upper area bounds."
-  },
-  function (args = {}) {
-    validateOptions(args, RANGE_OPTIONS, "encodeYRange");
-    const target = args.target;
-    const lower = this.encodeY({
-      field: args.lower,
-      ...(target === undefined ? {} : { target }),
-      fieldType: args.fieldType ?? "quantitative",
+function rangeAction(channel) {
+  const primary = channel === "x" ? "encodeX" : "encodeY";
+  const secondary = channel === "x" ? "encodeX2" : "encodeY2";
+  const op = channel === "x" ? "encodeXRange" : "encodeYRange";
+  return action({ op, description: "Atomically encode lower and upper bounds." }, function (args = {}) {
+    validateOptions(args, RANGE_OPTIONS, op);
+    const common = {
+      ...(args.target === undefined ? {} : { target: args.target }),
+      ...(Object.hasOwn(args, "temporalUnit") ? { temporalUnit: args.temporalUnit } : {}),
+      fieldType: args.fieldType ?? "quantitative"
+    };
+    return this[primary]({
+      ...common, field: args.lower,
       ...(args.coordinate === undefined ? {} : { coordinate: args.coordinate }),
       ...(args.scale === undefined ? {} : { scale: args.scale })
-    });
-    return lower.encodeY2({
-      field: args.upper,
-      ...(target === undefined ? {} : { target }),
-      fieldType: args.fieldType ?? "quantitative"
-    });
-  }
-);
+    })[secondary]({ ...common, field: args.upper });
+  });
+}
 
-const encodeXRange = action(
-  {
-    op: "encodeXRange",
-    description: "Atomically encode lower and upper horizontal area bounds."
-  },
-  function (args = {}) {
-    validateOptions(args, RANGE_OPTIONS, "encodeXRange");
-    const target = args.target;
-    const lower = this.encodeX({
-      field: args.lower,
-      ...(target === undefined ? {} : { target }),
-      fieldType: args.fieldType ?? "quantitative",
-      ...(args.coordinate === undefined ? {} : { coordinate: args.coordinate }),
-      ...(args.scale === undefined ? {} : { scale: args.scale })
-    });
-    return lower.encodeX2({
-      field: args.upper,
-      ...(target === undefined ? {} : { target }),
-      fieldType: args.fieldType ?? "quantitative"
-    });
-  }
-);
+const encodeYRange = rangeAction("y");
+const encodeXRange = rangeAction("x");
 
 const encodeGroup = action(
   {

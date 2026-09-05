@@ -16,7 +16,7 @@
 
 ## 최종 public API와 계층
 
-정확한 옵션·tick values·title을 포함한 세 chain은 [단일 manifest](../../../../test/gates/temporal-input/manifest.js)의
+정확한 옵션·tick values·title을 포함한 세 chain은 [단일 manifest](../../../../test/charts/temporal-input/manifest.js)의
 `targetCall()`에 있다. [검토 생성기](../phase2/render-review.mjs)는 이미지를 해당 chain과 함께 표시한다.
 
 ```javascript
@@ -103,16 +103,16 @@ H0 createScatterPlot → createPointMark/encodeX/encodeY → 공통 temporal par
 
 ## 저장 의미와 primitive의 경계
 
-승인 후 `encoding.x.temporalUnit`에 명시한 단위를 저장하고 원본 rows는 유지한다. 같은 binding 재할당의
+구현된 public 프로그램은 `encoding.x.temporalUnit`에 명시한 단위를 저장하고 원본 rows는 유지한다. 같은 binding 재할당의
 생략은 저장 단위를 보존한다. 새 field/field↔datum 전환과 non-temporal 전환은 [승인된 A 계약](../phase2/CONTRACT_REVIEW.md)을 따른다.
 
-[Primitive](../../../../test/gates/temporal-input/primitive.program.js)는 [독립 reference](../../../../test/gates/temporal-input/reference-values.js)로
-계산한 ISO 문자열 컬럼을 추가해 기존 temporal parser를 사용한다. 이는 새 API의 결과를 선행 구현한 것이
-아니며 `temporalUnit`을 실행하거나 아직 없는 semantic property를 저장하지 않는다. Primitive는 raw time/value도
+[Primitive](../../../../test/charts/temporal-input/primitive.program.js)는 [독립 reference](../../../../test/charts/temporal-input/reference-values.js)로
+계산한 ISO 문자열 컬럼을 추가해 기존 temporal parser를 사용한다. Primitive는 `temporalUnit`에 의존하지 않아
+public 단위 정규화 결과와 독립적으로 비교할 수 있다. Primitive는 raw time/value도
 보존한다. Public 목표의 원본 dataset에는 보조 isoTime 컬럼이 필요하지 않다.
 
-현재 primitive의 resolved scale, 실제 UTC label, 점 좌표와 literal timestamp를 검증했다. 새 public binding의
-저장·편집·consumer 지원 및 동일 실행의 primitive/public pixels 검증은 V 승인 뒤 수행한다.
+Public 구현과 primitive의 exact graphic/draw-order/Canvas call 및 같은 실행 PNG 3개 비교를 통과했다.
+Runtime unit/owner matrix는 별도 focused 테스트로 검증했다. 실제 수치는 Phase 2 RESULTS에 기록한다.
 
 ## 검증과 범위
 

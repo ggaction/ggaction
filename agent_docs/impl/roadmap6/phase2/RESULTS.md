@@ -1,6 +1,7 @@
 # Phase 2 구현 결과
 
-Phase 전체는 구현 중이며 A/B/V는 승인되었다. X는 아직 승인되지 않았다. 아래 결과는 A/B 승인 범위의 검증된 개별 변경이다.
+Phase 전체의 A/B/V는 승인되었다. X는 아직 승인되지 않았다. 아래 W별 초기 실행 기록을 보존하며,
+가장 최근 source의 누적 검증과 package 상태는 마지막 통합 검증 기록을 따른다.
 
 ## W5 — Bar incomplete authoring
 
@@ -51,7 +52,7 @@ Phase 전체는 구현 중이며 A/B/V는 승인되었다. X는 아직 승인되
 - W1 checkpoint 검증: 전체 tests **2,371/2,371**, guide owners 집중 **291/291**, cards/catalog/navigation
   **22/22**, 대표 PNG **19/19**. 당시 installed package는 full gzip **231,731 > 230,000**으로 **exit 1**이었다.
   Basic **124,174 / 125,000**, SVG **6,418 / 25,000**. [예산 결정안](BUNDLE_REVIEW.md)을 분리했다.
-- 현재 처분: [B 승인·적용 뒤 installed package 검증](#b--browser-bundle-budget-acceptance)이 **exit 0**으로
+- 이 checkpoint의 처분: [B 승인·적용 뒤 installed package 검증](#b--browser-bundle-budget-acceptance)이 **exit 0**으로
   통과하여 W1과 D05를 implemented-verified로 기록했다. D04의 Box/Gradient metadata 교정도 반영했지만
   Phase 11 전수 metadata 검사는 남아 있다. 새 public series/appearance/temporal flow는 아직 구현하지 않았다.
 
@@ -62,7 +63,7 @@ Phase 전체는 구현 중이며 A/B/V는 승인되었다. X는 아직 승인되
   input hashes·normal/render tests를 `test/gates/`에 준비했다. 현재 활성 review slice로만 등록했다.
 - Normal focused **10/10**, renderer **6/6**, 최종 전체 `npm test` **2,381/2,381** (exit 0).
   [hash·plot ink 결과](visual-results.json)와 [이미지·호출 검토](VISUAL_REVIEW.md)를 생성하고 실제 이미지를 확인했다.
-- V는 ready-for-review이며 승인되지 않았다. Primitive/reference만 실행했고 새 public grouping/opacity/
+- 이 checkpoint에서 V는 ready-for-review였다. Primitive/reference만 실행했고 새 public grouping/opacity/
   temporalUnit의 성공이나 실패를 검증했다고 하지 않는다. Public semantic/trace/pixel parity는 다음 작업이다.
 - 이 review package 시점에는 B도 ready-for-review였고 full 231,731 > 230,000으로 package 검증이 실패했다.
   이후 B의 별도 승인과 적용 결과는 아래와 같다. 전체 Phase의 X 완료를 요청하지 않는다.
@@ -117,11 +118,11 @@ Phase 전체는 구현 중이며 A/B/V는 승인되었다. X는 아직 승인되
   focused **12/12**; Line appearance **9/9**; 실제 browser **1/1**; 대표 render **16/16**.
   Render에는 승인된 series **3/3**의 graphicSpec·draw order·Canvas call·같은 실행 decoded pixel 비교가 포함된다.
 - Installed package는 Node·MCP·strict TS·tutorial consumer와 Vite bundle 생성을 통과한 뒤 **Basic 크기에서 실패**했다.
-  기능 통과를 package 전체 통과로 표시하지 않는다. 현재 gzip은 full **232,951**, Basic **125,223**, SVG **6,418** bytes다.
+  기능 통과를 package 전체 통과로 표시하지 않는다. 이 checkpoint의 gzip은 full **232,951**, Basic **125,223**, SVG **6,418** bytes다.
   Basic 상한 **125,000**을 **223 bytes** 넘는다. 기존 상한은 변경하지 않았으며 남은 W3/W4 통합 후
   package 크기 문제를 해소해야 X를 완성할 수 있다.
 - 로그: `.artifacts/roadmap6-authoring/series-{all,identity,appearance,owner,public,browser,render,package}.log`.
-- W2 runtime과 3개 public 시각 흐름은 구현되었다. D02는 package 통합 검증을 남긴다. D06은 Line 부분만
+- 이 checkpoint에서 W2 runtime과 3개 public 시각 흐름은 구현되었다. D02는 package 통합 검증을 남겼다. D06은 Line 부분만
   구현되었으며 Rule/Scatter/Point/ErrorBand는 다음 작업이다. D10의 JSON opt-out은 W4에 남는다.
 
 
@@ -140,9 +141,69 @@ Phase 전체는 구현 중이며 A/B/V는 승인되었다. X는 아직 승인되
   Default/partial/zero-margin cases exactly match full-entry graphics and Canvas config.
 - Current owners, public type exports, canonical reference, tutorials and generated metadata/cards are synchronized.
   Direct action count is **174**. Rule/appearance are removed from the active Planned inventory.
-- Latest full normal suite: **2,413/2,413, exit 0**. Representative Scatter/Rule/ErrorBand PNG parity:
+- W3 checkpoint full normal suite: **2,413/2,413, exit 0**. Representative Scatter/Rule/ErrorBand PNG parity:
   **20/20, exit 0**, including same-run primitive/public decoded pixels. Rule and assignment lifecycle tests
   additionally compare exact graphic state, draw order and Canvas calls and reject partial invalid edits.
 - Installed package Node, Basic, MCP, strict TypeScript and tutorial checks pass before the bundle guard fails:
   **Basic 125,347 > 125,000 bytes, exit 1**. The limit remains unchanged; package-wide success is pending.
   W4 and final size integration must complete before X. Logs: `.artifacts/roadmap6-authoring/style-{all,render,package,docs}.log`.
+
+## W4 — Explicit temporal input and JSON opt-out
+
+- `TemporalInputUnit = "auto" | "year" | "timestamp"`를 기존 temporal binding에 추가했다.
+  `year`는 0–9999 정수 또는 네 자리 숫자 문자열을 UTC 1월 1일로 해석한다. `timestamp`는 Date 범위의
+  유한한 millisecond 숫자만 받는다. `auto`와 생략은 기존 숫자 연도·날짜 문자열 해석을 유지한다.
+  Unix seconds를 추론하지 않는다. Scale domain·tick values는 이미 정규화된 timestamp다.
+- 같은 field/datum의 단위 생략은 저장 값을 유지한다. Field 교체, field↔datum, non-temporal 전환은
+  이전 단위를 제거하며 명시적 `auto`는 저장한다. Layer가 상속하는 위치도 단위를 함께 보존한다.
+  Raw rows는 바꾸지 않고 channel selector는 정규화된 시간, field selector는 원본 값을 읽는다.
+- X/Y, Rule datum과 X2/Y2, 지원되는 Rect/Rule range, Theta, color, facade 위치, ErrorBand/ErrorBar의
+  독립 위치, Horizon X와 TimeUnit의 기존 consumer를 연결했다. 새 temporal 채널은 만들지 않았다.
+  Horizon/TimeUnit의 출력은 timestamp이며 Horizon은 파생 위치를 `timestamp`로 바인딩해 이중 해석을 막는다.
+  Shared scale·canvas edit·selection·highlight·interval cap/boundary 재생성에도 같은 단위가 적용된다.
+- `createRegression`, `encodeDensity`, `encodeHorizon`에 JSON으로 보존되는 `groupBy:false`를 제공한다.
+  Regression 생략은 기존 Point color/shape 추론, 명시적 undefined는 기존 opt-out이다. Density 생략/undefined는
+  ungrouped, Horizon 생략/undefined는 기존 group 추론을 유지한다. Editor 생략은 보존, false는 해제,
+  string은 교체, 명시적 undefined는 오류다. 문자열 `"auto"`는 실제 field 이름이다.
+  Data-only Regression/Density API에는 false sentinel을 추가하지 않았다.
+- Numeric nominal color, Bar mean, 기존 Line aggregate, analytic owner의 grouping 기본값을 보존했다.
+  Group은 appearance와 독립적이지만 한 final series 안의 모호한 appearance는 계속 오류다.
+- 승인된 temporal 세 쌍을 `examples/temporal-input/`과 `test/charts/temporal-input/`으로 옮겼다.
+  Raw 1000/2000의 timestamp/year/auto domain, 라벨, 원본 보존을 독립 ISO oracle와 비교한다.
+  Series 세 쌍과 함께 stable capability registry에 등록했으며 완료된 Gate 디렉토리를 실행 의존성으로 남기지 않는다.
+- 통합 검사에서 horizontal grouped temporal Bar가 ordinal mapper를 사용하던 오류와 reversed temporal
+  category의 group offset 방향 오류를 발견해 수정했다. 세 단위 × reverse 두 값에서 가로·세로 geometry의
+  transpose 관계를 검증하고 기존 non-reversed arithmetic과 대표 PNG 결과를 보존했다.
+- Current·types·public docs·canonical reference·174개 direct action cards를 동기화했다.
+  Active Planned 목록에서 마지막 temporal 항목을 제거했다. Source schema API는 이번 범위가 아니다.
+
+## Integration — Verified consumers and compatibility
+
+- W1의 owned-guide 계약에 맞게 facade declaration을 교정했다. Cartesian facade는 Cartesian guide,
+  Line/Parallel은 line symbol 또는 explicit layers, Histogram/Violin은 categorical legend를 사용한다.
+  Box의 owned legend는 지원하지 않는다. 다른 layer의 guide는 기존 lower guide action으로 작성한다.
+  Heatmap의 interval legend 같은 미지원 owner 조합은 Phase 5의 D08 범위에 남는다.
+- 실제 시나리오에서 foreign layer의 범례를 facade 옵션으로 전달하던 fixture를 고쳤다. Owned scale과
+  domain을 기준으로 guide를 만들고 새 temporal 옵션도 root action trace와 실제 결과로 검증한다.
+  Cartesian **720개**, statistical **460개**의 차트를 만들며 option/literal별 **5회·3개 dataset** 최소값을 유지했다.
+  Inventory는 **168개 일반 public action, 4,481개 option path, 6,321개 coverage requirement**다.
+  Direct catalog의 174에는 별도 extension action 6개가 포함된다.
+- Basic에 등록하지 않는 full-only appearance action factory 세 곳의 순수 생성 표시를 바로잡아 미사용
+  코드가 제거되게 했다. Shared temporal reader도 하나로 모았다. Basic public 기능과 **125,000-byte**
+  상한은 유지했다. W2/W3 checkpoint에서 실패한 package 크기를 이번 통합에서 해소했다.
+- 최종 normal suite **2,432/2,432**, contracts **260/260**, realistic suite **167/167**, 대표 PNG **22/22**,
+  실제 browser **2/2**, installed package **exit 0**.
+  Package는 Node/Basic/MCP, strict positive/negative TypeScript, tutorials, renderer entry, private export,
+  production Vite bundle을 검사했다. TypeScript는 facade별 미지원 guide 조합도 거부한다.
+- 검증 tarball SHA-256: `f7c6f0e0f18140b237970a965148ba326034779c693991635e134aadfa1c8108`.
+
+| 엔트리 | 최종 gzip bytes | 승인된 상한 | 여유 |
+| --- | ---: | ---: | ---: |
+| ggaction | 234,258 | 235,000 | 742 |
+| ggaction/basic | 124,897 | 125,000 | 103 |
+| ggaction/svg | 6,418 | 25,000 | 18,582 |
+
+- Coverage는 **95.03% lines / 91.15% branches / 98.75% functions**, critical floor **72개 모두 통과**다.
+  Browser는 두 stable public example의 Canvas 크기·접근 가능한 이름·실제 상태·실행 오류를 검사했다.
+- 최종 실행 로그: `.artifacts/roadmap6-authoring/phase2-final-{all,contracts,realistic,render,browser,package,coverage}.log`.
+  모든 명령이 exit 0이며 source commit에 연결한 시각 증거와 X 검토 package를 준비한다. X는 미승인이다.

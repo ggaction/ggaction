@@ -21,6 +21,9 @@ const ENCODING_PATHS = Object.freeze([
   "encoding.color.layout",
   "encoding.color.aggregate",
   "encoding.group.fields",
+  ...["x", "y", "x2", "y2", "theta", "color"].map(channel =>
+    `encoding.${channel}.temporalUnit`
+  ),
   "encoding.pathOrder.field",
   "encoding.pathOrder.fieldType",
   "encoding.pathOrder.order",

@@ -122,7 +122,7 @@ const encodePointRadius = action(
   }
 );
 
-const removePointRadius = action(
+const removePointRadius = /* @__PURE__ */ action(
   {
     op: "removePointRadius",
     description: "Remove a constant point radius and restore the theme default."
@@ -166,7 +166,7 @@ const encodeShape = action(
   }
 );
 
-const clearOpacityEncoding = action(
+const clearOpacityEncoding = /* @__PURE__ */ action(
   {
     op: "clearOpacityEncoding",
     description: "Remove the semantic field-driven opacity assignment."
@@ -181,7 +181,7 @@ const clearOpacityEncoding = action(
   }
 );
 
-const encodeOpacity = action(
+const encodeOpacity = /* @__PURE__ */ action(
   {
     op: "encodeOpacity",
     description: "Assign constant or field-driven mark opacity."

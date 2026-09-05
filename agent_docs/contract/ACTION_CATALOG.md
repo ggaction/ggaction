@@ -192,7 +192,6 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 
 | Kind | Capability | Readiness | Contract |
 | --- | --- | --- | --- |
-| behavior | Explicit temporal input units and serializable group opt-out | accepted | [Open](planned/SHARED_AUTHORING.md#inference) |
 
 ## Internal inventories
 

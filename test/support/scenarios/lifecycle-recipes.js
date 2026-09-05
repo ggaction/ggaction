@@ -1022,6 +1022,7 @@ function buildDirectRangedMarks(factors) {
     .encodeStroke({ target: "directRules", value: factors.stroke })
     .encodeStrokeWidth({ target: "directRules", field: "position" })
     .encodeOpacity({ target: "directRules", value: factors.opacity })
+    .editRuleMark({ target: "directRules", stroke: factors.stroke, opacity: factors.opacity })
     .createRectMark({ id: "directRects", data: "directRanges", opacity: 0.12 })
     .encodeX({ target: "directRects", field: "lower", scale: { id: "x" } })
     .encodeX2({ target: "directRects", field: "upper" })
@@ -1568,7 +1569,7 @@ function lifecycleSignature(base, factors) {
       "encodeRadius", "encodeOpacity", "createTextMark", "encodeText", "editTextMark"
     ],
     "action-direct-ranged-marks": [
-      "createRuleMark", "encodeX2", "encodeY2", "createRectMark", "editRectMark",
+      "createRuleMark", "editRuleMark", "encodeX2", "encodeY2", "createRectMark", "editRectMark",
       "createAreaMark", "encodeXRange"
     ],
     "action-direct-histogram": ["createBarMark", "encodeHistogram", "editBarMark"],
@@ -1798,7 +1799,7 @@ export const REALISTIC_LIFECYCLE_REQUIRED_FEATURES = Object.freeze([
 export const LIFECYCLE_EXPECTED_ACTIONS = Object.freeze([
   "filterData", "createRegressionData", "createWindowData", "createTimeUnitData",
   "createIntervalData", "createTickMark", "editTickMark", "removeMark",
-  "editAreaMark", "encodeShape", "encodeAngle", "removePointRadius",
+  "editAreaMark", "editRuleMark", "encodeShape", "encodeAngle", "removePointRadius",
   "encodeYOffset", "encodeParallelCoordinates", "removeEncoding", "encodeHorizon",
   "editHorizon", "createRegression", "editRegression", "editErrorBar",
   "editErrorBand", "editErrorBandBoundary", "editBoxPlot", "createGradientPlot",

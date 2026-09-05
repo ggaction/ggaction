@@ -40,6 +40,39 @@ Parseable date strings and finite timestamps are normalized for scale
 resolution without changing the source dataset. The path remains empty until y
 is encoded.
 
+## Explicit input units
+
+Temporal positions and temporal color accept `temporalUnit: "auto" | "year" |
+"timestamp"`. The same option reaches supported Rule datum/endpoints, range
+shorthands, facade positions, ErrorBar/ErrorBand independent positions and
+Horizon x.
+
+| Input mode | Meaning of numeric 1000 and 2000 |
+| --- | --- |
+| `timestamp` | Unix milliseconds: 1970-01-01 00:00:01 and 00:00:02 UTC |
+| `year` | UTC January 1 in years 1000 and 2000 |
+| omitted or `auto` | Existing four-digit numeric year interpretation |
+
+Explicit year accepts integer 0–9999 or exactly four digits. Timestamp requires
+a finite number in the Date range; numeric strings, Date objects and automatic
+seconds inference are excluded. Other unit names, null and false fail.
+
+```javascript
+program.encodeX({
+  field: "time", fieldType: "temporal", temporalUnit: "timestamp",
+  scale: { nice: false }
+});
+```
+
+The unit is stored with the binding and leaves source rows unchanged. Reassigning
+the same field or datum without a unit retains it; changing field or switching
+field/datum returns to automatic parsing. Non-temporal bindings reject the option.
+Primary and secondary endpoints can specify different input units on one scale.
+Domains and tick values are already timestamps and are never parsed again.
+Channel selectors read normalized values; raw-field selectors read original rows.
+
+See the runnable [three-variant example](https://github.com/ggaction/ggaction/tree/main/examples/temporal-input).
+
 ## Aggregate line `encodeY(options)`
 
 ```javascript

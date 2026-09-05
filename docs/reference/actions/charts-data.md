@@ -231,7 +231,7 @@ kernel to `"gaussian"`, and normalization to `"unit"`.
 ## `createTimeUnitData`
 
 ```javascript
-createTimeUnitData({ id, source?, field, unit, as })
+createTimeUnitData({ id, source?, field, temporalUnit?, unit, as })
 ```
 
 Create an immutable row-preserving dataset with one UTC year, quarter, month,

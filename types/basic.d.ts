@@ -31,6 +31,7 @@ export type {
   SecondaryPositionEncodingOptions,
   SemanticSpec,
   StrokeDashEncodingOptions,
+  TemporalInputUnit,
   TraceNode,
   XAxisPosition,
   XOffsetEncodingOptions,

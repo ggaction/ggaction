@@ -233,6 +233,22 @@ async function testNodeConsumer(directory) {
     assert.throws(() => filledBand.encodeColor({ field: "group" }), /constant appearance/);
     assert.equal(filledBand.editErrorBand({ fill: false }).encodeColor({ field: "group" })
       .semanticSpec.layers[0].encoding.color.field, "group");
+    for (const factory of [chart, basicChart]) {
+      const timed = factory().createCanvas().createData({ values: [{ time: 1000, y: 1 }, { time: 2000, y: 2 }] })
+        .createScatterPlot({ x: { field: "time", fieldType: "temporal", temporalUnit: "timestamp", scale: { nice: false } }, y: "y", guides: false });
+      assert.deepEqual(timed.resolvedScales.x.domain, [1000, 2000]);
+      assert.equal(timed.encodeX({ field: "time" }).semanticSpec.layers[0].encoding.x.temporalUnit, "timestamp");
+    }
+    const timedHorizon = chart().createCanvas().createData({ values: [{ time: 1000, y: 1 }, { time: 2000, y: 2 }] })
+      .createAreaMark().encodeHorizon({ x: { field: "time", fieldType: "temporal", temporalUnit: "timestamp", scale: { nice: false } }, y: "y", groupBy: false });
+    assert.deepEqual(timedHorizon.resolvedScales.x.domain, [1000, 2000]);
+    assert.equal(timedHorizon.semanticSpec.datasets.at(-1).transform[0].groupBy, undefined);
+    const regressionOptOut = chart().createCanvas().createData({ values: [
+      { x: 1, y: 2, group: "A" }, { x: 2, y: 5, group: "A" },
+      { x: 3, y: 6, group: "B" }, { x: 4, y: 9, group: "B" }
+    ] }).createScatterPlot({ x: "x", y: "y", color: "group", guides: false })
+      .createRegression(JSON.parse(JSON.stringify({ groupBy: false, band: false })));
+    assert.equal(regressionOptOut.semanticSpec.datasets.at(-1).transform[0].groupBy, undefined);
     assert.equal(basicScatter.createRegression, undefined);
     assert.equal(typeof basicRender, "function");
     const horizon = chart()
@@ -877,6 +893,45 @@ async function testTypeScriptConsumer(directory) {
     program.editErrorBand({ fill: false });
     basicChart().createScatterPlot({ x: "x", y: "y", point: { radius: 0 } })
       .encodePointRadius({ value: 3 });
+    const inputUnit: import("ggaction").TemporalInputUnit = "timestamp";
+    const basicUnit: import("ggaction/basic").TemporalInputUnit = inputUnit;
+    program.encodeX({ datum: 1000, fieldType: "temporal", temporalUnit: inputUnit });
+    program.encodeX2({ field: "time", fieldType: "temporal", temporalUnit: inputUnit });
+    program.encodeTheta({ field: "time", fieldType: "temporal", temporalUnit: inputUnit });
+    program.encodeColor({ field: "time", fieldType: "temporal", temporalUnit: inputUnit });
+    program.encodeYRange({ lower: "start", upper: "end", fieldType: "temporal", temporalUnit: inputUnit });
+    program.createTimeUnitData({ id: "seconds", field: "time", unit: "second", as: "bucket", temporalUnit: inputUnit });
+    program.createRegression({ groupBy: false });
+    program.encodeDensity({ field: "y", groupBy: false });
+    program.encodeHorizon({ groupBy: false, x: { field: "time", fieldType: "temporal", temporalUnit: inputUnit } });
+    basicChart().createScatterPlot({ x: { field: "time", fieldType: "temporal", temporalUnit: basicUnit }, y: "y" });
+    program.createScatterPlot({ x: "x", y: "y", guides: { axes: { coordinate: { type: "cartesian" } } } });
+    program.createLinePlot({ x: "x", y: "y", guides: { legend: { symbol: { length: 20 } } } });
+    program.createHistogram({ field: "x", guides: { legend: { symbol: { width: 20 } } } });
+    // @ts-expect-error Cartesian facades cannot create Polar axes.
+    program.createScatterPlot({ x: "x", y: "y", guides: { axes: { theta: {} } } });
+    // @ts-expect-error Basic has the same owned Cartesian guide contract.
+    basicChart().createBarPlot({ x: "x", y: "y", guides: { axes: { coordinate: { type: "polar" } } } });
+    // @ts-expect-error Line legends use line symbols or explicit layers.
+    program.createLinePlot({ x: "x", y: "y", guides: { legend: { symbol: { width: 20 } } } });
+    // @ts-expect-error Box plots have no appearance encoding for an owned legend.
+    program.createBoxPlot({ x: "x", y: "y", guides: { legend: { title: "Group" } } });
+    // @ts-expect-error Histogram legends are categorical.
+    program.createHistogram({ field: "x", guides: { legend: { gradient: { length: 100 } } } });
+    // @ts-expect-error Non-temporal inputs do not accept temporal units.
+    program.encodeX({ field: "time", fieldType: "quantitative", temporalUnit: inputUnit });
+    // @ts-expect-error Unit vocabulary excludes seconds inference.
+    program.encodeY({ field: "time", fieldType: "temporal", temporalUnit: "seconds" });
+    // @ts-expect-error Non-temporal secondary endpoints reject units.
+    program.encodeX2({ field: "time", fieldType: "quantitative", temporalUnit: inputUnit });
+    // @ts-expect-error Non-temporal Theta rejects units.
+    program.encodeTheta({ field: "time", fieldType: "quantitative", temporalUnit: inputUnit });
+    // @ts-expect-error Nominal colors do not accept temporal units.
+    program.encodeColor({ field: "time", fieldType: "nominal", temporalUnit: inputUnit });
+    // @ts-expect-error Data-only Regression grouping did not gain the opt-out sentinel.
+    program.createRegressionData({ id: "fit", x: "x", y: "y", groupBy: false });
+    // @ts-expect-error Data-only Density grouping did not gain the opt-out sentinel.
+    program.createDensityData({ id: "kde", field: "y", groupBy: false });
     // @ts-expect-error Rule constant stroke does not accept false.
     program.editRuleMark({ stroke: false });
     // @ts-expect-error ErrorBand reset is edit-only.
