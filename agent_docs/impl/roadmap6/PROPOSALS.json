@@ -167,9 +167,9 @@
       ],
       "gateStates": {
         "R6-P2-A": "approved",
-        "R6-P2-V": "planned",
+        "R6-P2-V": "ready-for-review",
         "R6-P2-X": "planned",
-        "R6-P2-B": "planned"
+        "R6-P2-B": "ready-for-review"
       },
       "workPackages": [
         {
@@ -236,7 +236,7 @@
           "resultEvidence": "phase2/RESULTS.md#w5--bar-incomplete-authoring"
         }
       ],
-      "activity": "implementation",
+      "activity": "visual-and-bundle-review",
       "contractReview": {
         "file": "phase2/CONTRACT_REVIEW.md",
         "baselineCommit": "bbc8a3fc256c9afa877f696ed6ade1f51ffb7522",
@@ -250,6 +250,20 @@
           "reviewCommit": "e06b57db5624a5b0d66cea425cff4aa5f5f4caad"
         },
         "reviewPackageCommit": "e06b57db5624a5b0d66cea425cff4aa5f5f4caad"
+      },
+      "visualReview": {
+        "file": "phase2/VISUAL_REVIEW.md",
+        "evidence": "phase2/visual-results.json",
+        "primitiveVariants": 6,
+        "focusedTests": 10,
+        "renderTests": 6
+      },
+      "bundleReview": {
+        "file": "phase2/BUNDLE_REVIEW.md",
+        "fullGzipBytes": 231731,
+        "currentFullLimit": 230000,
+        "proposedFullLimit": 235000,
+        "packageStatus": "failed-full-ceiling"
       }
     },
     {

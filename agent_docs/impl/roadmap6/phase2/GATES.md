@@ -3,9 +3,9 @@
 ## 공통 상태
 
 R6-P2-A는 approved다. 2026-09-05 사용자가 “ㄱㄱ”로 아래 계약의 구현을 승인했다.
-V/X는 planned이며 새 시각 target의 검토는 해당 Gate에서 진행한다.
+B/V는 ready-for-review, X는 planned다. 새 시각 target과 bundle 예산은 각각 독립 결정이다.
 허용 상태는 planned | ready-for-review | approved | changes-requested다.
-현재 검토 대상은 [CONTRACT_REVIEW.md](CONTRACT_REVIEW.md)의 API·의미·migration·범위다.
+현재 검토 대상은 [VISUAL_REVIEW.md](VISUAL_REVIEW.md)의 6개 target과 [BUNDLE_REVIEW.md](BUNDLE_REVIEW.md)의 full 상한 결정이다.
 
 ## R6-P2-A — Contract and scope
 
@@ -25,7 +25,7 @@ V/X는 planned이며 새 시각 target의 검토는 해당 Gate에서 진행한�
 
 ## R6-P2-B — Browser bundle budget
 
-- 상태: planned
+- 상태: ready-for-review
 - 검토 대상: [BUNDLE_REVIEW.md](BUNDLE_REVIEW.md)의 실제 full 231,731 bytes 및 235,000 상한 제안.
 - 독립적인 추가 결정이며 기존 A 승인에 포함하지 않는다. 현행 230,000 상한은 유지 중이다.
 - 승인 전 차단: full 상한 변경과 W1 package 완료 선언. V primitive 준비는 독립적으로 가능하다.
@@ -33,7 +33,9 @@ V/X는 planned이며 새 시각 target의 검토는 해당 Gate에서 진행한�
 
 ## R6-P2-V — Visual target
 
-- 상태: planned
+- 상태: ready-for-review
+- 실제 package: [VISUAL_REVIEW.md](VISUAL_REVIEW.md), 실행 가능한 두 chart slice, [6개 hash·ink 결과](visual-results.json).
+- 검증: focused normal 10/10, render 6/6, 전체 npm test 2,381/2,381. Primitive 이미지를 직접 확인했으며 public API 구현은 미착수다.
 - 검토 대상: V1 series identity·tuple·color/dash/width/opacity, V2 explicit temporal input 의미.
   정확한 primitive/public call 계획은 [계약 검토](CONTRACT_REVIEW.md)의 visual 표를 따른다.
   기존 lower chain 출력 동등성 교정은 증명 후에만 N/A로 확정한다.

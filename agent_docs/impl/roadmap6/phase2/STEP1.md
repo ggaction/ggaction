@@ -11,7 +11,9 @@
 - [ ] R6-P2-W3 Style mode와 shorthand 정합성
 - [ ] R6-P2-W4 Inference·JSON opt-out·분석 defaults
 - [x] R6-P2-W5 유효한 incomplete intent 보존 — [결과](RESULTS.md#w5--bar-incomplete-authoring)
-- [ ] 모든 시각 variant의 primitive target 작성·표시·V 승인
+- [x] 모든 시각 variant의 primitive target 작성·표시 — [6개 검토안](VISUAL_REVIEW.md)
+- [ ] V의 명시적 사용자 승인
+- [ ] B의 full bundle 예산 결정과 installed package 재검증
 - [ ] 승인된 variant의 public 구현과 같은 실행의 primitive/public render 비교
 - [ ] 누적 검증·migration·문서·원장 동기화
 - [ ] X Gate의 증거 commit/push와 명시적 사용자 승인 기록

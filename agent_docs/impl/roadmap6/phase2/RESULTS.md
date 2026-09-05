@@ -54,3 +54,15 @@ Phase 전체는 구현 중이며 V/X는 아직 승인되지 않았다. 아래 �
 - 처분: W1 기능 구현·회귀 검증은 끝났지만 package ceiling이 미해결이므로 W1 전체 완료 표시는 보류한다.
   D05도 전체 verified로 닫지 않는다. D04의 Box/Gradient metadata 교정은 반영했으며 Phase 11 전수
   metadata 검사를 대신하지 않는다. 새 public series/appearance/temporal flow는 아직 구현하지 않았다.
+
+## V1 / V2 — Primitive review package
+
+- Runtime 기준: `4355af45` (W1 checkpoint); runtime source tree `f85fa1f71e28364c5d6b6998dcb9410334935219`.
+- Series identity 세 variant와 temporal input 세 variant의 실행 source·독립 references·단일 manifests·
+  input hashes·normal/render tests를 `test/gates/`에 준비했다. 현재 활성 review slice로만 등록했다.
+- Normal focused **10/10**, renderer **6/6**, 최종 전체 `npm test` **2,381/2,381** (exit 0).
+  [hash·plot ink 결과](visual-results.json)와 [이미지·호출 검토](VISUAL_REVIEW.md)를 생성하고 실제 이미지를 확인했다.
+- V는 ready-for-review이며 승인되지 않았다. Primitive/reference만 실행했고 새 public grouping/opacity/
+  temporalUnit의 성공이나 실패를 검증했다고 하지 않는다. Public semantic/trace/pixel parity는 다음 작업이다.
+- B도 ready-for-review이며 현행 ceiling은 유지했다. W1 package의 full 231,731 > 230,000 실패는 그대로다.
+  전체 Phase의 X 완료를 요청하지 않는다.
