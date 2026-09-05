@@ -1,6 +1,6 @@
 # Phase 2 구현 결과
 
-Phase 전체는 구현 중이며 V/X는 아직 승인되지 않았다. 아래 결과는 A 승인 범위의 검증된 개별 변경이다.
+Phase 전체는 구현 중이며 V/X는 아직 승인되지 않았다. 아래 결과는 A/B 승인 범위의 검증된 개별 변경이다.
 
 ## W5 — Bar incomplete authoring
 
@@ -48,12 +48,12 @@ Phase 전체는 구현 중이며 V/X는 아직 승인되지 않았다. 아래 �
   Grouped Bar 둘이 동일 y를 공유할 때 두 번째 Bar가 color 전에 position을 작성하여 생기는 기존
   layout-policy 충돌은 `guides:false`에서도 발생한다. W1 guide 재사용으로 이를 해결했다고 하지 않는다.
   이 grain/layout owner는 D03의 Phase 4 작업에 남긴다. Derived facade의 기존 source 추론도 유지한다.
-- 검증: 최종 전체 tests **2,371/2,371**, guide owners 집중 **291/291**, cards/catalog/navigation **22/22**,
-  대표 PNG **19/19**. 최종 installed package는 full gzip **231,731 > 230,000**으로 **exit 1**이다.
+- W1 checkpoint 검증: 전체 tests **2,371/2,371**, guide owners 집중 **291/291**, cards/catalog/navigation
+  **22/22**, 대표 PNG **19/19**. 당시 installed package는 full gzip **231,731 > 230,000**으로 **exit 1**이었다.
   Basic **124,174 / 125,000**, SVG **6,418 / 25,000**. [예산 결정안](BUNDLE_REVIEW.md)을 분리했다.
-- 처분: W1 기능 구현·회귀 검증은 끝났지만 package ceiling이 미해결이므로 W1 전체 완료 표시는 보류한다.
-  D05도 전체 verified로 닫지 않는다. D04의 Box/Gradient metadata 교정은 반영했으며 Phase 11 전수
-  metadata 검사를 대신하지 않는다. 새 public series/appearance/temporal flow는 아직 구현하지 않았다.
+- 현재 처분: [B 승인·적용 뒤 installed package 검증](#b--browser-bundle-budget-acceptance)이 **exit 0**으로
+  통과하여 W1과 D05를 implemented-verified로 기록했다. D04의 Box/Gradient metadata 교정도 반영했지만
+  Phase 11 전수 metadata 검사는 남아 있다. 새 public series/appearance/temporal flow는 아직 구현하지 않았다.
 
 ## V1 / V2 — Primitive review package
 
@@ -64,5 +64,32 @@ Phase 전체는 구현 중이며 V/X는 아직 승인되지 않았다. 아래 �
   [hash·plot ink 결과](visual-results.json)와 [이미지·호출 검토](VISUAL_REVIEW.md)를 생성하고 실제 이미지를 확인했다.
 - V는 ready-for-review이며 승인되지 않았다. Primitive/reference만 실행했고 새 public grouping/opacity/
   temporalUnit의 성공이나 실패를 검증했다고 하지 않는다. Public semantic/trace/pixel parity는 다음 작업이다.
-- B도 ready-for-review이며 현행 ceiling은 유지했다. W1 package의 full 231,731 > 230,000 실패는 그대로다.
-  전체 Phase의 X 완료를 요청하지 않는다.
+- 이 review package 시점에는 B도 ready-for-review였고 full 231,731 > 230,000으로 package 검증이 실패했다.
+  이후 B의 별도 승인과 적용 결과는 아래와 같다. 전체 Phase의 X 완료를 요청하지 않는다.
+
+## B — Browser bundle budget acceptance
+
+- 기준 commit: `06d12042ee239ca2a84f4625b7956fb79e457a76`. 사용자 “조정한다”에 따라 R6-P2-B를
+  먼저 approved로 기록한 뒤 full gzip 상한을 **230,000 → 235,000 bytes**로 변경했다.
+  검토 package는 `ca820fa941f4359e814ee6f65a01e574512f5c08`이며 원격 branch에 push된 상태였다.
+- Canonical numeric owner `scripts/browser-bundle-size.js`와 Current architecture의 상한 표를 동기화했다.
+  README의 Basic 125,000 상한은 그대로 유효하다. Runtime source tree는
+  `f85fa1f71e28364c5d6b6998dcb9410334935219`로 동일하며 public API·dependency·생성 문서 변경은 없다.
+- 실제 실행: `npm run test:package` **exit 0**. Packed `ggaction@0.0.12`를 새 consumer에 설치하여
+  Node/extension, PNG/PDF/SVG, strict TypeScript, Basic runtime/types, tutorial consumers, private exports,
+  local MCP와 세 production Vite bundle을 검증했다.
+- 검증한 tarball SHA-256: `200ce1f8d7e8c406e1489a665b9347bad81558c049a5a55b44ff1673c17ab745`.
+
+| 엔트리 | Gzip 실측 | 적용 상한 | 여유 |
+| --- | ---: | ---: | ---: |
+| ggaction | 231,731 | 235,000 | 3,269 |
+| ggaction/basic | 124,174 | 125,000 | 826 |
+| ggaction/svg | 6,418 | 25,000 | 18,582 |
+
+- 관련 계약: `node --test test/contracts/documentation-truth.test.js test/contracts/agent-docs-navigation.test.js`
+  **10/10, exit 0**. 실행 상한·architecture·README 숫자 일치와 내부 문서 연결을 검사했다.
+- 로그: `.artifacts/roadmap6-authoring/bundle-approved-{package,contracts}.log`.
+  Runtime·test source가 그대로이므로 기존 전체 **2,381/2,381**과 기존 PNG **19/19**, V PNG **6/6**을
+  이 숫자 변경 때문에 다시 실행하지 않았다. 이 수치는 앞선 실행 결과이며 이번 재검증 결과와 구분한다.
+- W1 package 대기를 해제했다. D05는 구현·검증 완료, D04는 Phase 11 metadata audit가 남아 부분 완료다.
+  V는 ready-for-review이고 W2/W3/W4 public 구현과 전체 Phase의 X는 아직 완료되지 않았다.

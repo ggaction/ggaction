@@ -3,9 +3,9 @@
 ## 공통 상태
 
 R6-P2-A는 approved다. 2026-09-05 사용자가 “ㄱㄱ”로 아래 계약의 구현을 승인했다.
-B/V는 ready-for-review, X는 planned다. 새 시각 target과 bundle 예산은 각각 독립 결정이다.
+B는 approved, V는 ready-for-review, X는 planned다. 새 시각 target과 bundle 예산은 각각 독립 결정이다.
 허용 상태는 planned | ready-for-review | approved | changes-requested다.
-현재 검토 대상은 [VISUAL_REVIEW.md](VISUAL_REVIEW.md)의 6개 target과 [BUNDLE_REVIEW.md](BUNDLE_REVIEW.md)의 full 상한 결정이다.
+현재 검토 대상은 [VISUAL_REVIEW.md](VISUAL_REVIEW.md)의 6개 target이다. [BUNDLE_REVIEW.md](BUNDLE_REVIEW.md)의 full 상한 조정은 승인·적용·재검증을 마쳤다.
 
 ## R6-P2-A — Contract and scope
 
@@ -25,11 +25,15 @@ B/V는 ready-for-review, X는 planned다. 새 시각 target과 bundle 예산은 
 
 ## R6-P2-B — Browser bundle budget
 
-- 상태: ready-for-review
+- 상태: approved
 - 검토 대상: [BUNDLE_REVIEW.md](BUNDLE_REVIEW.md)의 실제 full 231,731 bytes 및 235,000 상한 제안.
-- 독립적인 추가 결정이며 기존 A 승인에 포함하지 않는다. 현행 230,000 상한은 유지 중이다.
-- 승인 전 차단: full 상한 변경과 W1 package 완료 선언. V primitive 준비는 독립적으로 가능하다.
-- 승인 효과: 선택한 예산 처분을 구현·문서화하고 실제 installed package를 재검증한다.
+- 사용자 승인 근거: full 상한 조정안에 사용자가 “조정한다”라고 답했다. Review commit은
+  `ca820fa941f4359e814ee6f65a01e574512f5c08`이며 아래 원격 검토 지점에 push되어 있다.
+- 승인 범위: full 상한 230,000 → 235,000 bytes. Basic 125,000 및 SVG 25,000은 유지한다.
+- 승인 기록을 먼저 갱신한 뒤 executable owner·architecture 수치를 적용했다. Installed package exit 0,
+  관련 documentation/navigation contracts 10/10. Full 231,731 / 235,000이며 W1 package 검증도 완료했다.
+- 실제 측정·artifact identity·명령은 [B 적용 결과](RESULTS.md#b--browser-bundle-budget-acceptance)에 있다.
+  이 승인은 V의 6개 시각 target이나 X 승인에 포함하지 않는다.
 
 ## R6-P2-V — Visual target
 
@@ -51,10 +55,11 @@ B/V는 ready-for-review, X는 planned다. 새 시각 target과 bundle 예산은 
 - Review package commit: [`ca820fa941f4359e814ee6f65a01e574512f5c08`](https://github.com/ggaction/ggaction/commit/ca820fa941f4359e814ee6f65a01e574512f5c08).
 - Remote: `origin/codex/roadmap6-hierarchical-actions` push 완료를 확인했다.
 - Scope: W1 구현 checkpoint와 full budget 결정안, V1/V2의 6개 primitive·reference·manifest·tests·render evidence.
-- 실제 결과: npm test 2,381/2,381, V focused 10/10, V PNG 6/6, 기존 대표 PNG 19/19.
-  Installed package는 full gzip 231,731 > 230,000으로 실패한다. B 결정 뒤 해소할 조건이다.
-- B/V 사용자 승인: **없음**. 현재 상태는 ready-for-review다. A의 “ㄱㄱ”를 이 추가 결정이나
-  새 시각 target 승인으로 재사용하지 않는다. 예산 처분·새 public flow·X 완료는 남아 있다.
+- 검토 당시 결과: npm test 2,381/2,381, V focused 10/10, V PNG 6/6, 기존 대표 PNG 19/19.
+  Installed package는 full gzip 231,731 > 230,000으로 실패했다.
+- B 사용자 승인: **“조정한다”로 full 235,000 상한 승인**. 적용과 installed package 재검증을 통과했다.
+- V 사용자 승인: **없음**, ready-for-review다. A 또는 B 승인을 새 시각 target 승인으로 재사용하지 않는다.
+  새 public flow와 전체 Phase의 X 완료는 남아 있다.
 
 ## R6-P2-X — Result and closeout
 

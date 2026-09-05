@@ -6,19 +6,19 @@
 - [x] 현재 동작 43건·관련 기존 테스트 100건 확인 — [VALIDATION.md](VALIDATION.md)
 - [x] A Gate 증거 commit/push 및 review ref 기록 — `e06b57db5624a5b0d66cea425cff4aa5f5f4caad`
 - [x] A Gate의 명시적 사용자 승인 기록 — 2026-09-05 “ㄱㄱ”
-- [ ] R6-P2-W1 Complete facade와 guide 확보 — 기능·회귀 통과, [full bundle 예산 결정](BUNDLE_REVIEW.md) 대기
+- [x] R6-P2-W1 Complete facade와 guide 확보 — 기능·회귀·installed package 통과, [결과](RESULTS.md#w1--facade-guide-reuse)
 - [ ] R6-P2-W2 Series와 appearance 분리
 - [ ] R6-P2-W3 Style mode와 shorthand 정합성
 - [ ] R6-P2-W4 Inference·JSON opt-out·분석 defaults
 - [x] R6-P2-W5 유효한 incomplete intent 보존 — [결과](RESULTS.md#w5--bar-incomplete-authoring)
 - [x] 모든 시각 variant의 primitive target 작성·표시 — [6개 검토안](VISUAL_REVIEW.md)
 - [ ] V의 명시적 사용자 승인
-- [ ] B의 full bundle 예산 결정과 installed package 재검증
+- [x] B의 full bundle 예산 결정과 installed package 재검증 — “조정한다”, full 235,000 bytes, [결과](RESULTS.md#b--browser-bundle-budget-acceptance)
 - [ ] 승인된 variant의 public 구현과 같은 실행의 primitive/public render 비교
 - [ ] 누적 검증·migration·문서·원장 동기화
 - [ ] X Gate의 증거 commit/push와 명시적 사용자 승인 기록
 
-체크한 항목의 실제 검증은 [결과](RESULTS.md)에 기록한다. A 승인을 기록했고 구현 중이다. V/X 승인과 미실행 결과를 완료로 표시하지 않는다.
+체크한 항목의 실제 검증은 [결과](RESULTS.md)에 기록한다. A/B 승인을 기록했고 W1/W5를 검증했다. V/X 승인과 미실행 결과를 완료로 표시하지 않는다.
 
 ## 순서
 

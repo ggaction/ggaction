@@ -51,8 +51,8 @@ node agent_docs/impl/roadmap6/phase2/render-review.mjs
 ## 이번에 확인할 결정
 
 1. **R6-P2-V**: 위 6개 target의 시각·분할·단위 의미. 승인 후 W2/W3/W4의 해당 public 흐름을 구현한다.
-2. **R6-P2-B**: [full browser budget 결정](BUNDLE_REVIEW.md). 현재 231,731 bytes가 230,000 상한을
-   초과한다. Full 상한만 235,000으로 조정하는 안을 별도로 제안한다. 현재 package 검증은 실패이며
-   Basic 124,174와 SVG 6,418은 기존 상한 안이다. V 승인이 예산 승인이나 X 완료 승인을 대신하지 않는다.
+2. **R6-P2-B — 승인·적용 완료**: [full browser budget 결정](BUNDLE_REVIEW.md)은 사용자 “조정한다”에
+   따라 full 상한 235,000으로 조정했다. Installed package 검증은 exit 0이며 full 231,731,
+   Basic 124,174, SVG 6,418 모두 적용 상한 안이다. 이 예산 승인은 V의 6개 target 승인과 별개다.
 
 Phase 3와 후속 API·배포·PR 작성은 이번 검토의 승인 범위가 아니다.

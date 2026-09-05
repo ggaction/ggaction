@@ -18,7 +18,8 @@
       "R6-P0-A",
       "R6-P1-A",
       "R6-P1-X",
-      "R6-P2-A"
+      "R6-P2-A",
+      "R6-P2-B"
     ],
     "implementationStarted": true,
     "reviewCommit": "cf13920ed517cfc6c333b04ec55a724826960228",
@@ -169,7 +170,7 @@
         "R6-P2-A": "approved",
         "R6-P2-V": "ready-for-review",
         "R6-P2-X": "planned",
-        "R6-P2-B": "ready-for-review"
+        "R6-P2-B": "approved"
       },
       "workPackages": [
         {
@@ -183,7 +184,7 @@
           "scope": "Box/Gradient deferred 역할을 metadata에 명시한다. H0는 compatible guide를 재사용하고 missing만 생성한다. Low-level create strictness는 유지한다. Box guides default는 초기에는 유지하는 안을 확정한다.",
           "acceptance": "Scatter→Line 기본 조합 성공, incompatible scale guide는 atomic conflict. omitted/{} /false matrix가 facade와 child별로 명시됨.",
           "contractEvidence": "phase2/CONTRACT_REVIEW.md",
-          "implementationStatus": "implemented-package-pending",
+          "implementationStatus": "implemented-verified",
           "resultEvidence": "phase2/RESULTS.md#w1--facade-guide-reuse"
         },
         {
@@ -236,7 +237,7 @@
           "resultEvidence": "phase2/RESULTS.md#w5--bar-incomplete-authoring"
         }
       ],
-      "activity": "visual-and-bundle-review",
+      "activity": "visual-review",
       "contractReview": {
         "file": "phase2/CONTRACT_REVIEW.md",
         "baselineCommit": "bbc8a3fc256c9afa877f696ed6ade1f51ffb7522",
@@ -262,10 +263,18 @@
       "bundleReview": {
         "file": "phase2/BUNDLE_REVIEW.md",
         "fullGzipBytes": 231731,
-        "currentFullLimit": 230000,
+        "previousFullLimit": 230000,
+        "currentFullLimit": 235000,
         "proposedFullLimit": 235000,
-        "packageStatus": "failed-full-ceiling",
-        "reviewPackageCommit": "ca820fa941f4359e814ee6f65a01e574512f5c08"
+        "packageStatus": "passed",
+        "resultEvidence": "phase2/RESULTS.md#b--browser-bundle-budget-acceptance",
+        "reviewPackageCommit": "ca820fa941f4359e814ee6f65a01e574512f5c08",
+        "approval": {
+          "userDirection": "조정한다",
+          "approvedFullLimit": 235000,
+          "scope": "Full browser gzip 상한 230,000 → 235,000 bytes. Basic/SVG 상한 유지. V 시각 target과 X 승인은 포함하지 않는다.",
+          "reviewCommit": "ca820fa941f4359e814ee6f65a01e574512f5c08"
+        }
       }
     },
     {
@@ -973,14 +982,14 @@
       "recommended": "Box/Gradient deferred 역할을 metadata에 명시한다. H0는 compatible guide를 재사용하고 missing만 생성한다. Low-level create strictness는 유지한다. Box guides default는 초기에는 유지하는 안을 확정한다.",
       "acceptance": "Scatter→Line 기본 조합 성공, incompatible scale guide는 atomic conflict. omitted/{} /false matrix가 facade와 child별로 명시됨.",
       "evidence": "audit/REPORT.md: D04",
-      "disposition": "W1 runtime and regression verified; full browser bundle ceiling pending R6-P2-B. Full metadata audit remains in Phase 11.",
+      "disposition": "W1 deferred metadata and guide reuse verified, including the installed package after R6-P2-B approval. Full metadata audit remains in Phase 11.",
       "resultEvidence": "phase2/RESULTS.md#w1--facade-guide-reuse"
     },
     {
       "id": "D05",
       "title": "Guide default와 facade 중첩 비대칭",
       "kind": "design-issue",
-      "status": "partially-implemented",
+      "status": "implemented-verified",
       "primaryPhase": 2,
       "primaryWorkPackage": "R6-P2-W1",
       "relatedWorkPackages": [
@@ -993,7 +1002,7 @@
       "recommended": "Box/Gradient deferred 역할을 metadata에 명시한다. H0는 compatible guide를 재사용하고 missing만 생성한다. Low-level create strictness는 유지한다. Box guides default는 초기에는 유지하는 안을 확정한다.",
       "acceptance": "Scatter→Line 기본 조합 성공, incompatible scale guide는 atomic conflict. omitted/{} /false matrix가 facade와 child별로 명시됨.",
       "evidence": "audit/REPORT.md: D05",
-      "disposition": "W1 runtime and regression verified; full browser bundle ceiling pending R6-P2-B. Full metadata audit remains in Phase 11.",
+      "disposition": "W1 guide reuse and compatibility matrix verified, including the installed package after R6-P2-B approval. Phase 2 result Gate X remains pending.",
       "resultEvidence": "phase2/RESULTS.md#w1--facade-guide-reuse"
     },
     {
