@@ -14,6 +14,15 @@ function sourceProgram() {
   return chart().createData({ id: "source", values: rows });
 }
 
+test("rejects an unrepresentable bucket without changing source data or trace", () => {
+  const source = chart().createData({ values: [{ date: -8640000000000000 }] });
+  const before = JSON.stringify(source);
+  assert.throws(() => source.createTimeUnitData({
+    id: "bucketed", field: "date", unit: "year", as: "bucket"
+  }), /bucket start is outside/);
+  assert.equal(JSON.stringify(source), before);
+});
+
 test("creates immutable UTC time-unit provenance and materialized values", () => {
   const source = sourceProgram();
   const program = source.createTimeUnitData({

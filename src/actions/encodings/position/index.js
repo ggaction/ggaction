@@ -7,6 +7,7 @@ import { findLayer } from "../../../selectors/layers.js";
 import { applyPositionSemantics } from "./apply.js";
 import {
   applyEncodingScale,
+  applyDetachedScaleRematerialization,
   rebindPositionGuides
 } from "../shared.js";
 
@@ -68,9 +69,10 @@ function encodePosition(program, channel, args, operation) {
     const updated = findLayer(next, target);
     const pendingBox = next.markConfigs[target]?.boxPlot;
     if (pendingBox !== undefined && !pendingBox.materialized) {
-      return updated.encoding?.x !== undefined && updated.encoding?.y !== undefined
+      const materialized = updated.encoding?.x !== undefined && updated.encoding?.y !== undefined
         ? next.materializeBoxPlot({ id: target })
         : next;
+      return applyDetachedScaleRematerialization(materialized, [layer]);
     }
   }
 
@@ -78,9 +80,10 @@ function encodePosition(program, channel, args, operation) {
     const updated = findLayer(next, target);
     const pendingGradient = next.markConfigs[target]?.gradientPlot;
     if (pendingGradient !== undefined && !pendingGradient.materialized) {
-      return updated.encoding?.x !== undefined && updated.encoding?.y !== undefined
+      const materialized = updated.encoding?.x !== undefined && updated.encoding?.y !== undefined
         ? next.materializeGradientPlot({ id: target })
         : next;
+      return applyDetachedScaleRematerialization(materialized, [layer]);
     }
   }
 
@@ -92,7 +95,7 @@ function encodePosition(program, channel, args, operation) {
   )) {
     next = next[step.op](step.args);
   }
-  return next;
+  return applyDetachedScaleRematerialization(next, [layer]);
 }
 
 const encodeX = action(

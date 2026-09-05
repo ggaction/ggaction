@@ -89,9 +89,7 @@ const encodeStrokeDash = action(
         value: args.value
       });
       next = reconcileLegendAfterDashRemoval(next, target);
-      return layer.mark.type === "rule"
-        ? next.rematerializeRuleMark({ id: target })
-        : next.rematerializeLineMark({ id: target });
+      return rematerializeEncoding(next, target, "strokeDash", undefined, layer);
     }
 
     const fieldType = validateNominalFieldType(args.fieldType ?? "nominal");
@@ -120,7 +118,7 @@ const encodeStrokeDash = action(
       reassignment: previous?.scale === scale.id
     });
 
-    return rematerializeEncoding(next, target, "strokeDash", scale.id);
+    return rematerializeEncoding(next, target, "strokeDash", scale.id, layer);
   }
 );
 

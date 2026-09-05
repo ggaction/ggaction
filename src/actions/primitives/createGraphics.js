@@ -129,7 +129,9 @@ const createGraphics = action(
       id, type: validatedType, parent, before, after
     });
 
-    const existing = this.graphicSpec.objects[id];
+    const existing = Object.hasOwn(this.graphicSpec.objects, id)
+      ? this.graphicSpec.objects[id]
+      : undefined;
     if (existing !== undefined) {
       if (
         sameDefinition(existing, { type: validatedType, length }) &&

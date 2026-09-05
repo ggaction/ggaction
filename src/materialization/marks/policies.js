@@ -41,6 +41,7 @@ const MARK_MATERIALIZATION_POLICIES = Object.freeze({
     canMaterialize: canMaterializeLine,
     op: "rematerializeLineMark",
     positionEncoding: Object.freeze({ incomplete: "scale", scaleFirst: false }),
+    encoding: Object.freeze({ scaleFirst: true, completeOnly: true }),
     scaleApplication: Object.freeze({ default: "defer" })
   }),
   area: Object.freeze({

@@ -4,7 +4,7 @@ function encodedGraphicId(namespace, localId) {
   const encode = value => [...value]
     .map(character => character.codePointAt(0).toString(16).padStart(6, "0"))
     .join("");
-  return `g${encode(namespace)}_${encode(localId)}`;
+  return `g${encode(namespace)}_${localId}`;
 }
 
 const mainCanvas = encodedGraphicId("dashboard-main", "canvas");

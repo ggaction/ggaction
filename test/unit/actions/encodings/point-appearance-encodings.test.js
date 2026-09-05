@@ -28,6 +28,27 @@ function encoded(program) {
     .encodeOpacity({ value: 0.4 });
 }
 
+test("constant opacity removes only the target owner's opacity legend", () => {
+  const source = base()
+    .editCanvas({ width: 400, height: 300, margin: { left: 20, right: 150, top: 20, bottom: 20 } })
+    .encodeX({ field: "x" })
+    .encodeY({ field: "y" })
+    .encodeOpacity({ field: "amount" })
+    .createOpacityLegend();
+  for (const shared of [false, true]) {
+    let other = source.createPointMark({ id: "other", data: "data" })
+      .encodeX({ field: "x" }).encodeY({ field: "y" });
+    if (shared) other = other.encodeOpacity({ field: "amount" });
+    const snapshot = JSON.stringify(other);
+    const after = other.encodeOpacity({ target: "other", value: 0.5 });
+    assert.equal(after.guideConfigs.legend.opacity.target, "points");
+    assert.deepEqual(after.guideConfigs.legend.opacity, source.guideConfigs.legend.opacity);
+    assert.equal(after.graphicSpec.objects.other.items[0].properties.opacity, 0.5);
+    assert.equal(after.encodeOpacity({ target: "points", value: 0.5 }).guideConfigs.legend?.opacity, undefined);
+    assert.equal(JSON.stringify(other), snapshot);
+  }
+});
+
 test("combines point size, shape, color, and opacity in one collection", () => {
   const program = encoded(base());
   const children = program.graphicSpec.objects.points.items;

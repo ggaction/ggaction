@@ -12,7 +12,8 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - `lineWidth`: non-negative finite number, 기본 `1`.
 - `strokeDash`: even-length non-negative finite number array, 기본 `[]`.
 - Effect: semantic guide에는 scale/coordinate, graphical config에는 tick policy/style, concrete line
-  collection에는 endpoints를 저장한다. 관련 mark보다 앞에 graphic을 배치한다.
+  collection에는 endpoints를 저장한다. 관련 mark와 label leader보다 앞에 graphic을 배치한다.
+  Creation order, same-value Canvas edits, and scale rematerialization preserve that drawing order and pixels.
 
 ## Shared formal types
 

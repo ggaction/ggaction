@@ -1,5 +1,9 @@
 # Current program composition actions
 
+Nested snapshots preserve complete child ancestry with collision-free graphic IDs. Each composition adds only its
+own namespace prefix; existing identifiers are not encoded again. Identifier length grows linearly with ancestry.
+Exact internal graphic ID spelling is not a public authoring option.
+
 ## `facet`
 
 - Signature: `facet({ id?, field, data?, columns?, gap?, align?, padding?, scales?, guides? })`.
@@ -136,7 +140,9 @@
 - Requires an existing facet composition and at least one supplied guide policy. Omitted policy preserves current
   intent. `axes` accepts `"each" | "outer"`; `legend` accepts `false | "shared"`.
 - Every child is rederived from the retained canonical unit state under the current scale policy before parent guide
-  ownership is reconciled. `"outer"` keeps only occupied-edge axes for the current columns topology. `"shared"`
+  ownership is reconciled. Child guide configs come from retained unit children; parent-inferred shared legends never become
+  child-owned guides. Removing a shared inferred legend also removes its parent-only config before recomposition.
+  `"outer"` keeps only occupied-edge axes for the current columns topology. `"shared"`
   promotes one concretely compatible legend; incompatible independent child scales reject the complete call.
 - Facet field/data/value order, child IDs, scale and layout policy, headers, title, selections and highlights are
   preserved. Earlier parent and child programs remain immutable.

@@ -20,6 +20,8 @@ Ordinary mark creation may omit `id` for the first mark of that semantic type. T
   deterministic role ID `"point" | "line" | "bar" | "area" | "arc" | "rule" | "tick" | "text"`. A second mark of the same type requires an
 explicit user ID; the library never invents numbered public-resource IDs. Explicit IDs retain the existing
 validation and uniqueness contract.
+Prototype property names such as constructor, toString and __proto__ are ordinary explicit IDs. Only an
+own resource with the same ID is a collision.
 
 When `data` is omitted, every ordinary mark family uses one shared layered-inference policy. The current eligible
 layer, otherwise one unique layer on the current dataset, may contribute its coordinate and compatible field-based
@@ -212,6 +214,9 @@ independent assembly and does not inherit position encodings.
 - Evidence: `test/unit/actions/marks/point-jitter.test.js`.
 
 ## `removeMark`
+
+제거한 owner와 owned child가 사용하던 scale에 다른 consumer가 남으면 domain과 그 consumer의
+mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named scale은 보존한다.
 
 - Signature: `removeMark({ target? } = {})`.
 - Resolves one stable user-authored mark owner. Generated composite children cannot be removed directly; their

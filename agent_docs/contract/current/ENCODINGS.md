@@ -7,6 +7,9 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 공유 scale의 domain/range를 갱신하면 변경한 target뿐 아니라 모든 compatible consumer와
 그 consumer에 붙은 source-dependent mark를 같은 완료 상태로 rematerialize한다. Data filtering과
 appearance encoding도 이 규칙을 따른다. 근거: test/contracts/shared-scale-refresh.test.js.
+Encoding 제거, 새 scale ID로의 재연결, field-driven appearance의 상수 전환은 이전 scale의
+남은 consumer도 다시 계산한다. Automatic domain은 이탈한 consumer의 값을 제외하고 explicit domain은
+보존한다. Consumer가 없는 named scale은 유지하며 해석을 강제하지 않는다.
 
 Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
 
@@ -48,6 +51,7 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
   ambiguous ownership requires an explicit mark ID. A direct missing assignment is an error.
 - The action removes the semantic assignment and starts rematerialization from an empty concrete mark baseline.
   Complete marks are rebuilt; incomplete marks remain as empty collections until a later encoding completes them.
+  Canvas, surviving-scale and appearance edits preserve that empty state; they cannot recreate partial row graphics.
 - Primary `x`/`y` removal also removes the same-mark secondary endpoint and directional offset. Grouped-bar color
   removal removes its generated offset. Removing an area group also removes a same-field dependent color assignment.
   A normalized bar color layout returns to the ordinary zero baseline.
@@ -949,6 +953,8 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 - Grouped-bar reassignment는 color semantic을 먼저 교체한 뒤 wrapped directional offset action으로 matching
   field와 domain을 원자적으로 교체하고 measure policy, bars와 existing legend를 rematerialize한다. Direct offset field
   mismatch나 layout transition은 earlier program을 바꾸지 않고 거부한다.
+- Line color and stroke-dash assignments may precede complete positions. Field scales resolve immediately, while
+  line graphics stay empty until position prerequisites are complete. Compatible encoding orders converge.
 - Coverage: 모든 대표 chart와 legend tests가 mark별 materialization을 검증한다. Five-layout bar matrix,
   four-layout area matrix, normalized/signed domains, primitive/public equivalence와 transition rejection을 포함한다.
 
@@ -1000,6 +1006,8 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
   inferred title/domain/symbol을 갱신하고 custom config는 유지한다. Constant mode 전환은 legend의
   strokeDash component를 제거하고 남은 channel이 없으면 legend 전체를 제거한다.
 - Compatibility: line의 group 또는 color field가 이미 있으면 field mode의 field와 같아야 한다.
+- Field and constant stroke dash may be assigned before either line position; completing positions materializes
+  the stored appearance without requiring another appearance call.
 - Coverage: named/direct vocabulary, field/constant 전환, field/group reassignment, legend cleanup,
   Canvas rematerialization과 invalid option matrix를 검증한다.
 
@@ -1119,12 +1127,13 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 ## `encodeOpacity`
 
 - Signature: `encodeOpacity({ value, target? } | { field, target?, fieldType?, scale? })`
+- 상수로 전환할 때 target이 소유한 opacity legend만 제거하며 다른 layer의 범례는 보존한다.
 - `value`: field와 mutually exclusive인 finite `[0, 1]` number.
-- `field`: value와 mutually exclusive인 quantitative point field. auto linear range는 `[0.2, 1]`이다.
-- `target`: optional point ID.
+- `field`: value와 mutually exclusive인 quantitative point/rule field. auto linear range는 `[0.2, 1]`이다.
+- `target`: optional point 또는 rule ID.
 - Effect: constant는 graphical config, field는 semantic encoding과 linear scale을 저장한다. 같은 target에
-  다시 호출하면 constant↔field 또는 field↔field를 structural copy로 교체하고 point/legend를 rematerialize한다.
-- Coverage: point/regression tests와 validation이 representative, reassignment 및 invalid range를 검증한다.
+  다시 호출하면 constant↔field 또는 field↔field를 structural copy로 교체하고 target mark/legend를 rematerialize한다.
+- Coverage: point/rule/regression tests와 validation이 representative, reassignment 및 invalid range를 검증한다.
 
 ### Formal values — `encodeOpacity`
 
@@ -1137,17 +1146,18 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 - `value`
   - ✅ Covered: representative value, 0, 1, below/above range와 non-finite rejection.
 - `target`
-  - ✅ Covered: inferred/explicit point, unknown/incompatible target.
+  - ✅ Covered: inferred/explicit point and rule, unknown/incompatible target.
 - Reassignment
   - ✅ Covered: constant↔constant, field↔field and constant↔field immutable replacement.
 - ✅ Covered: auto/explicit descending range, clamp/reverse, continuous sample legend and constant-mode cleanup.
-- Evidence: point appearance, continuous legend, regression and Phase 1 integration tests.
+- Evidence: `test/unit/actions/encodings/point-appearance-encodings.test.js`,
+  `test/unit/actions/encodings/rule-appearance-encodings.test.js`, continuous legend and regression tests.
 
 ## `encodeRadius`
 
 - Signature: `encodeRadius({ value, target? })`
-- `value`: 필수 non-negative finite number. 0은 보이지 않는 point, 양수는 circle radius 또는 square
-  half-side가 된다.
+- `value`: 필수 non-negative finite number. 0은 보이지 않는 point다. 양수 `r`은 circle radius이며
+  모든 point shape에 같은 면적 `πr²`을 적용한다. Square의 한 변 길이는 `sqrt(π) * r`이다.
 - `target`: optional point ID.
 - Effect: graphical mark config와 concrete size만 바꾸며 semanticSpec에는 기록하지 않는다.
   field-driven `encodeSize`와 동시에 사용할 수 없다. 같은 target에 다시 호출하면 기존 radius를

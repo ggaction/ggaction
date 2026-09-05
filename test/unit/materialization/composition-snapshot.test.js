@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { namespaceGraphicSnapshot } from
+import { namespaceGraphicId, namespaceGraphicSnapshot } from
   "../../../src/materialization/compositionSnapshot.js";
 import { walkGraphicTreeEvents } from
   "../../../src/grammar/schemas/graphicTree.js";
@@ -35,11 +35,26 @@ function childGraphicSpec() {
   };
 }
 
+test("namespace encoding is unambiguous and adds only one prefix at each depth", () => {
+  const pairs = [
+    ["a", "b_c"], ["a_b", "c"], ["a", "g000062_c"], ["a", "b"],
+    ["a_", "b"], ["é", "b"], ["e\u0301", "b"], ["😀", "b"], ["a", "b:0"]
+  ];
+  const ids = pairs.map(([namespace, id]) => namespaceGraphicId(namespace, id));
+  assert.equal(new Set(ids).size, pairs.length);
+  assert.equal(namespaceGraphicId("a", "b"), "g000061_b");
+  let id = "leaf";
+  for (let depth = 1; depth <= 100; depth++) {
+    id = namespaceGraphicId("node", id);
+    assert.equal(id.length, 4 + 26 * depth);
+  }
+});
+
 function snapshotId(namespace, id) {
   const encode = value => Array.from(value, character =>
     character.codePointAt(0).toString(16).padStart(6, "0")
   ).join("");
-  return `g${encode(namespace)}_${encode(id)}`;
+  return `g${encode(namespace)}_${id}`;
 }
 
 test("namespaces every object, item, attachment, and root", () => {

@@ -15,6 +15,7 @@ import {
 } from "../../selectors/layers.js";
 import {
   applyEncodingScale,
+  applyDetachedScaleRematerialization,
   clearMarkGraphic,
   rematerializeEncoding,
   resolveReassignmentScaleOptions,
@@ -73,7 +74,7 @@ function encodeAppearanceField(program, channel, args, operation) {
   next = applyEncodingScale(next, scale, requestedScale, {
     reassignment: previous?.scale === scale.id
   });
-  return rematerializeEncoding(next, target, channel, scale.id);
+  return rematerializeEncoding(next, target, channel, scale.id, layer);
 }
 
 const encodeRadius = action(
@@ -200,16 +201,17 @@ const encodeOpacity = action(
       validateOpacityValue(args.value, "encodeOpacity");
       const { opacity, ...config } = this.markConfigs[target] ?? {};
       void opacity;
-      const withoutLegend = this.guideConfigs.legend?.opacity === undefined
-        ? this
-        : this.removeOpacityLegend();
+      const withoutLegend = this.guideConfigs.legend?.opacity?.target === target
+        ? this.removeOpacityLegend()
+        : this;
       const next = withoutLegend
         .clearOpacityEncoding({ target })
         ._withoutMaterializationConfig(["marks", target, "opacity"])
         ._withMarkConfig(target, { ...config, opacity: args.value });
-      return layer.mark.type === "rule"
+      const materialized = layer.mark.type === "rule"
         ? next.rematerializeRuleMark({ id: target })
         : next.rematerializePointMark({ id: target });
+      return applyDetachedScaleRematerialization(materialized, [layer]);
     }
     const fieldType = args.fieldType ?? "quantitative";
     if (fieldType !== "quantitative") {
@@ -239,7 +241,7 @@ const encodeOpacity = action(
     next = applyEncodingScale(next, scale, requestedScale, {
       reassignment: previous?.scale === scale.id
     });
-    return rematerializeEncoding(next, target, "opacity", scale.id);
+    return rematerializeEncoding(next, target, "opacity", scale.id, layer);
   }
 );
 

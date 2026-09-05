@@ -17,6 +17,7 @@ import {
 import { findLayer } from "../../selectors/layers.js";
 import { removeLegendKinds } from "../guides/legends/remove.js";
 import { clearMarkGraphic } from "./shared.js";
+import { applyDetachedScaleRematerialization } from "../../materialization/dependencies.js";
 
 const OPTIONS = Object.freeze(["target", "channel"]);
 const REMOVABLE_CHANNELS = Object.freeze([
@@ -249,7 +250,7 @@ export const removeEncoding = action(
     next = restoreBarBaseline(next, layer, channels);
     next = cleanupLegends(next, layer.id, channels);
     next = cleanupPositionGuides(next, removedPositions);
-    return rematerializeTarget(next, layer.id);
+    return applyDetachedScaleRematerialization(rematerializeTarget(next, layer.id), [layer]);
   }
 );
 

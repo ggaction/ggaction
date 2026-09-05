@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import { chart } from "../../../../src/ChartProgram.js";
+import { renderToSVG } from "../../../../src/renderers/svg.js";
 
 function createCanvas() {
   return chart().createCanvas({
@@ -11,6 +12,38 @@ function createCanvas() {
     margin: { top: 80, right: 20, bottom: 20, left: 20 }
   });
 }
+
+test("wrapped titles and subtitles remain editable beside a top categorical legend", () => {
+  const base = chart().createCanvas({
+    width: 600, height: 900,
+    margin: { top: 320, right: 40, bottom: 300, left: 50 }
+  }).createData({ values: [{ x: 1, y: 2, g: "A" }, { x: 2, y: 3, g: "B" }] })
+    .createScatterPlot({ id: "points", x: "x", y: "y", color: "g", guides: false });
+  const options = {
+    text: "A chart title with several words that wraps",
+    subtitle: "A subtitle with several words that also wraps",
+    wrap: "word", maxWidth: 160
+  };
+  for (const position of ["top", "bottom"]) {
+    for (const titleFirst of [true, false]) {
+      const title = { ...options, position };
+      const legend = { target: "points", position: "top" };
+      const before = titleFirst
+        ? base.createTitle(title).createLegend(legend)
+        : base.createLegend(legend).createTitle(title);
+      assert.ok(before.graphicSpec.objects.chartTitle.items.length > 1);
+      assert.ok(before.graphicSpec.objects.chartSubtitle.items.length > 1);
+      const edited = before.editCanvas({ width: 600 })
+        .editScale({ id: "x", domain: before.resolvedScales.x.domain });
+      assert.deepEqual(edited.graphicSpec, before.graphicSpec);
+      assert.doesNotThrow(() => renderToSVG(edited));
+    }
+  }
+  const overlappingLegend = { target: "points", position: "top", offset: 190 };
+  const overlappingTitle = { ...options, align: "center" };
+  assert.throws(() => base.createTitle(overlappingTitle).createLegend(overlappingLegend), /margin space/);
+  assert.throws(() => base.createLegend(overlappingLegend).createTitle(overlappingTitle), /margin space/);
+});
 
 test("creates semantic title state and concrete title graphics", () => {
   const before = createCanvas();

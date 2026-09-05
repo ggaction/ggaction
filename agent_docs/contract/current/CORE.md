@@ -313,6 +313,9 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 
 ## `createTimeUnitData`
 
+유효한 input timestamp라도 요청한 bucket 시작이 Date의 표현 범위 밖이면 RangeError로 거절한다.
+NaN bucket을 저장하지 않으며 실패 시 source program과 trace는 유지된다.
+
 - Signature: `createTimeUnitData({ id, source?, field, unit, as })`
 - Lifecycle: immutable create-only다. `id`는 필수 새 derived dataset ID이며 existing dataset을 수정하거나 consumer를
   rebind하지 않는다.
@@ -352,6 +355,9 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
   `test/unit/actions/data/derived-data.test.js`, `scripts/package-consumer.js`.
 
 ## `createWindowData`
+
+결과 field 이름은 일반 own data property로 저장한다. __proto__, constructor, toString도 허용하며
+source row의 prototype을 바꾸거나 결과를 누락하지 않는다. 뒤 operation은 앞의 해당 결과를 field로 읽을 수 있다.
 
 - Signature: `createWindowData({ id, source?, partitionBy?, sortBy?, operations })`
 - Lifecycle: immutable create-only다. `id`는 새 derived dataset ID여야 하며 동일 ID를 다시 만들면 오류다.

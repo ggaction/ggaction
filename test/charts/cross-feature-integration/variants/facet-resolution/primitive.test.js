@@ -47,10 +47,7 @@ test("keeps one cell regression band, line, and point collection in draw order",
 });
 
 function decodeLocalGraphicId(id) {
-  const encoded = id.split("_").at(-1);
-  return [...encoded.matchAll(/.{6}/g)]
-    .map(match => String.fromCodePoint(Number.parseInt(match[0], 16)))
-    .join("");
+  return id.slice(id.indexOf("_") + 1);
 }
 
 test("keeps outer axes on occupied edges and one parent population legend", () => {

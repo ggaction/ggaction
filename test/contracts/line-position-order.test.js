@@ -42,6 +42,59 @@ function orderedScales(program) {
   );
 }
 
+function permutations(values) {
+  return values.length === 0 ? [[]] : values.flatMap((value, index) =>
+    permutations(values.filter((_, other) => other !== index)).map(rest => [value, ...rest])
+  );
+}
+
+test("converges across all position, color, and stroke-dash authoring orders", () => {
+  const initial = base();
+  const before = JSON.stringify(initial);
+  const encoders = {
+    x: program => program.encodeX({ field: "x", target: "line" }),
+    y: program => program.encodeY({ field: "y", target: "line" }),
+    color: program => program.encodeColor({ field: "series", target: "line" }),
+    dash: program => program.encodeStrokeDash({ field: "series", target: "line" })
+  };
+  const reference = Object.values(encoders).reduce((program, encode) => encode(program), initial);
+  assert.equal(reference.graphicSpec.objects.line.items.length, 2);
+  for (const order of permutations(Object.keys(encoders))) {
+    let program = initial;
+    const applied = new Set();
+    for (const key of order) {
+      program = encoders[key](program);
+      applied.add(key);
+      if (!applied.has("x") || !applied.has("y")) {
+        assert.deepEqual(program.graphicSpec.objects.line.items, [], order.join(","));
+      }
+    }
+    assert.deepEqual(program.semanticSpec.layers, reference.semanticSpec.layers, order.join(","));
+    assert.deepEqual(orderedScales(program), orderedScales(reference));
+    assert.deepEqual(program.resolvedScales, reference.resolvedScales);
+    assert.deepEqual(program.graphicSpec, reference.graphicSpec);
+  }
+  assert.equal(JSON.stringify(initial), before);
+});
+
+test("preserves constant stroke dash before, between, and after position assignments", () => {
+  const initial = base().encodeGroup({ field: "series" });
+  const before = JSON.stringify(initial);
+  const steps = [
+    program => program.encodeX({ field: "x" }),
+    program => program.encodeY({ field: "y" }),
+    program => program.encodeStrokeDash({ value: [6, 2] })
+  ];
+  const reference = steps.reduce((program, encode) => encode(program), initial);
+  for (const order of permutations(steps)) {
+    const result = order.reduce((program, encode) => encode(program), initial);
+    assert.deepEqual(result.semanticSpec.layers, reference.semanticSpec.layers);
+    assert.deepEqual(result.graphicSpec, reference.graphicSpec);
+    assert.equal(result.graphicSpec.objects.line.items.length, 2);
+  }
+  assert.equal(JSON.stringify(initial), before);
+});
+
 test("converges for quantitative x then y and y then x", () => {
   const initial = base();
   const xPartial = initial.encodeX({ field: "x", target: "line" });

@@ -60,3 +60,53 @@ test("shared color refresh crosses compatible mark families", () => {
     .encodeColor({ target: "highPoints", field: "c", fieldType: "nominal", scale: { id: "categories" } });
   assert.deepEqual(program.graphicSpec, program.editCanvas({ width: 400 }).graphicSpec);
 });
+
+for (const channel of ["x", "y", "color", "size", "opacity"]) {
+  for (const operation of ["removeMark", "removeEncoding", "reassign"]) {
+    test(operation + " removes the departed " + channel + " scale contribution", () => {
+      const method = { x: "encodeX", y: "encodeY", color: "encodeColor", size: "encodeSize", opacity: "encodeOpacity" }[channel];
+      const options = {
+        field: ["x", "y"].includes(channel) ? channel : "c",
+        ...(channel === "color" ? { fieldType: "quantitative" } : {})
+      };
+      let before = base();
+      if (!["x", "y"].includes(channel)) {
+        before = before[method]({ target: "lowPoints", ...options })
+          [method]({ target: "highPoints", ...options });
+      }
+      const snapshot = JSON.stringify(before);
+      const after = operation === "removeMark"
+        ? before.removeMark({ target: "highPoints" })
+        : operation === "removeEncoding"
+          ? before.removeEncoding({ target: "highPoints", channel })
+          : before[method]({ target: "highPoints", ...options, scale: { id: "separate" } });
+      assert.deepEqual(after.resolvedScales[channel].domain, [0, 50]);
+      const point = after.graphicSpec.objects.lowPoints.items[1].properties;
+      if (channel === "x") assert.equal(point.x, 380);
+      if (channel === "y") assert.equal(point.y, 20);
+      if (channel === "color") assert.equal(point.fill, "#fde725");
+      if (channel === "size") assert.ok(Math.abs(point.radius - Math.sqrt(196 / Math.PI)) < 1e-12);
+      if (channel === "opacity") assert.equal(point.opacity, 1);
+      assert.equal(JSON.stringify(before), snapshot);
+    });
+  }
+}
+
+test("detaching the last consumer preserves the named scale without trying to resolve it", () => {
+  const before = base().removeMark({ target: "highPoints" });
+  const after = before.removeMark({ target: "lowPoints" });
+  assert.equal(after.semanticSpec.scales.length, 2);
+  assert.equal(after.semanticSpec.layers.length, 0);
+});
+
+test("detachment preserves explicit domains and refreshes the remaining opacity after constant assignment", () => {
+  const explicit = base().editScale({ id: "x", domain: [0, 400] });
+  const removed = explicit.removeMark({ target: "highPoints" });
+  assert.deepEqual(removed.resolvedScales.x.domain, [0, 400]);
+  assert.equal(removed.graphicSpec.objects.lowPoints.items[1].properties.x, 65);
+  const opacity = base().encodeOpacity({ target: "lowPoints", field: "c" })
+    .encodeOpacity({ target: "highPoints", field: "c" })
+    .encodeOpacity({ target: "highPoints", value: 0.5 });
+  assert.deepEqual(opacity.resolvedScales.opacity.domain, [0, 50]);
+  assert.equal(opacity.graphicSpec.objects.lowPoints.items[1].properties.opacity, 1);
+});

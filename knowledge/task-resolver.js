@@ -73,6 +73,26 @@ function normalize(value) {
     .replace(/\s+/g, " ");
 }
 
+const negationPattern = /\b(?:no|not|without|exclude|excluding|omit|omitting|avoid|avoiding|don['’]t|doesn['’]t|isn['’]t|aren['’]t|never|neither|nor)\b/i;
+
+function hasUnresolvedNegation(query) {
+  // Quoted field names are data, not clauses. Contractions such as "don't"
+  // are not opening quotes because their apostrophe follows a letter.
+  let clauses = query.normalize("NFKC").replace(
+    /(^|[\s=:(,])("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*')/g,
+    (_match, prefix, quoted) => prefix + " ".repeat(quoted.length)
+  );
+  // Known positive idioms (for example "avoid label overlap") have an
+  // explicit taxonomy owner and do not need a general negation inference.
+  for (const constraint of taxonomy.constraints) {
+    for (const phrase of constraint.phrases.filter(value => negationPattern.test(value))) {
+      const words = normalize(phrase).split(" ").join("\\s+");
+      clauses = clauses.replace(new RegExp(`\\b${words}\\b`, "gi"), " ");
+    }
+  }
+  return negationPattern.test(clauses);
+}
+
 function phraseOccurrences(query, phrase) {
   const normalizedPhrase = normalize(phrase);
   const paddedQuery = ` ${query} `;
@@ -1077,7 +1097,7 @@ function requestedText(match, ...indexes) {
 const requestStopWords = new Set([
   "and", "as", "at", "axes", "axis", "coordinate", "coordinates",
   "encoding", "field", "for", "is", "legend", "on", "option", "options",
-  "palette", "scale", "then", "to", "using", "with"
+  "palette", "scale", "then", "to", "using", "with", "without", "no", "not"
 ]);
 
 function fieldRequest(query, channel) {
@@ -1087,7 +1107,7 @@ function fieldRequest(query, channel) {
   ));
   if (!match) return undefined;
   const value = requestedText(match, 1, 2, 3);
-  return requestStopWords.has(value.toLowerCase())
+  return match[3] !== undefined && requestStopWords.has(value.toLowerCase())
     ? undefined
     : { value, source: match[0] };
 }
@@ -1099,7 +1119,7 @@ function appearanceFieldRequest(query, channel) {
   ));
   if (!match) return undefined;
   const value = requestedText(match, 1, 2, 3);
-  if (requestStopWords.has(value.toLowerCase())) return undefined;
+  if (match[3] !== undefined && requestStopWords.has(value.toLowerCase())) return undefined;
   return { value, source: match[0] };
 }
 
@@ -1900,8 +1920,12 @@ export function searchGgaction(query) {
     throw new RangeError("searchGgaction query must be at most 500 characters.");
   }
   validateResolverKnowledge();
-  const normalizedQuery = normalize(query);
-  const exactNames = exactActionNames(query);
+  const negation = hasUnresolvedNegation(query);
+  // Do not partially close a negative request: even an otherwise positive
+  // facade can introduce an excluded feature through its defaults.
+  const planningQuery = negation ? "" : query;
+  const normalizedQuery = normalize(planningQuery);
+  const exactNames = exactActionNames(planningQuery);
   const { matched, positions } = semanticMatchResult(normalizedQuery);
   for (const name of exactNames) {
     const [occurrence] = phraseOccurrences(normalizedQuery, normalize(name));
@@ -1914,7 +1938,10 @@ export function searchGgaction(query) {
   const unsupported = matched
     .filter(constraint => constraint.unsupported !== undefined)
     .map(constraint => ({ constraint: constraint.id, reason: constraint.unsupported }));
-  const unresolved = [];
+  const unresolved = negation ? [unresolvedDecision(
+    "request.negation",
+    "Negation or exclusion requires explicit interpretation. No authoring steps are proposed; preserve the restriction when choosing action options."
+  )] : [];
   const { blocked, unresolved: conflicts } = conflictResult(matched);
   unresolved.push(...conflicts);
 
@@ -1943,7 +1970,7 @@ export function searchGgaction(query) {
     providerRequestPosition(left, positions) - providerRequestPosition(right, positions) ||
     left.provider.id.localeCompare(right.provider.id)
   ));
-  const requested = applyRequestedOptions(ordered, query);
+  const requested = applyRequestedOptions(ordered, planningQuery);
   ordered = requested.entries;
   unresolved.push(...requested.unresolved);
   const closure = runtimeClosureDecisions(ordered);
@@ -1962,7 +1989,11 @@ export function searchGgaction(query) {
     exactCalls: entries.map(entry => entry.call),
     appliedOptions: requested.appliedOptions,
     placeholderBindings: placeholderBindings(entries, requested.appliedOptions),
-    unmatchedRequirements: requested.unmatchedRequirements,
+    unmatchedRequirements: negation
+      ? (query.trim().length <= 180
+          ? [query.trim()]
+          : query.trim().match(/[\s\S]{1,176}/g).map((part, index) => `${index + 1}. ${part}`))
+      : requested.unmatchedRequirements,
     authoring: authoringBlock(entries),
     unsupported,
     unresolved: unique(unresolved.map(entry => JSON.stringify(entry))).map(JSON.parse),

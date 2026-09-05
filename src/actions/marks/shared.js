@@ -60,7 +60,7 @@ export function assertMarkAvailable(program, id) {
     throw new Error(`Mark "${id}" already exists.`);
   }
 
-  if (program.graphicSpec.objects[id] !== undefined) {
+  if (Object.hasOwn(program.graphicSpec.objects, id)) {
     throw new Error(`Graphic "${id}" already exists.`);
   }
 }

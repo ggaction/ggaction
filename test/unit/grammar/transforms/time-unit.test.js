@@ -9,6 +9,26 @@ import {
 
 const timestamp = Date.UTC(2024, 4, 17, 13, 45, 56, 789);
 
+test("rejects unrepresentable bucket starts for valid dates near the lower limit", () => {
+  for (const value of [-8640000000000000, -8639999999999999, -8639999913600000]) {
+    assert.ok(Number.isFinite(new Date(value).getTime()));
+    for (const unit of ["year", "quarter", "month"]) {
+      assert.throws(() => floorUtcTimeUnit(value, unit), {
+        name: "RangeError", message: /bucket start is outside/
+      });
+    }
+    for (const unit of ["day", "hour", "minute", "second"]) {
+      const bucket = floorUtcTimeUnit(value, unit);
+      assert.ok(Number.isFinite(bucket));
+      assert.ok(bucket <= value);
+      assert.ok(bucket >= -8640000000000000);
+    }
+  }
+  for (const unit of ["year", "quarter", "month", "day", "hour", "minute", "second"]) {
+    assert.ok(Number.isFinite(floorUtcTimeUnit(8640000000000000, unit)));
+  }
+});
+
 test("floors every accepted unit at an exact UTC calendar boundary", () => {
   const expected = {
     year: Date.UTC(2024, 0, 1),

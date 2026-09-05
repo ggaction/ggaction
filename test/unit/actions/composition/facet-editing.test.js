@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import { chart, hconcat } from "../../../../src/index.js";
+import { renderToSVG } from "../../../../src/renderers/svg.js";
 import { namespaceGraphicId } from
   "../../../../src/materialization/compositionSnapshot.js";
 
@@ -26,6 +27,41 @@ function pointBase(values = rows) {
     .encodeColor({ field: "category" })
     .createGuides();
 }
+
+test("parent-inferred facet legends stay outside child rederivation", () => {
+  for (const fieldType of ["quantitative", "nominal"]) {
+    const base = chart().createCanvas({
+      width: 280, height: 320,
+      margin: { top: 36, right: 18, bottom: 50, left: 58 }
+    }).createData({ values: [
+      { g: "A", x: 1, y: 1, c: 10 }, { g: "A", x: 2, y: 2, c: 20 },
+      { g: "B", x: 3, y: 3, c: 30 }, { g: "B", x: 4, y: 4, c: 40 }
+    ] }).createScatterPlot({
+      id: "points", x: "x", y: "y", color: { field: "c", fieldType }, guides: false
+    });
+    const options = { field: "g", columns: 2, gap: 20 };
+    const before = base.facet({ ...options, guides: { axes: "outer", legend: "shared" } });
+    const snapshot = JSON.stringify(before);
+    const unchanged = before.editFacetGuides({ axes: "outer", legend: "shared" });
+    assert.deepEqual(unchanged.graphicSpec, before.graphicSpec);
+    const independent = before.editFacetScales({ x: "independent" });
+    assert.deepEqual(Object.values(independent.children).map(child => child.resolvedScales.x.domain), [[1, 2], [3, 4]]);
+    const without = before.editFacetGuides({ legend: false });
+    assert.deepEqual(without.graphicSpec, base.facet({
+      ...options, guides: { axes: "outer", legend: false }
+    }).graphicSpec);
+    assert.equal(without.guideConfigs.legend, undefined);
+    const restored = without.editFacetGuides({ axes: "each", legend: "shared" })
+      .editFacetGuides({ axes: "outer" });
+    assert.deepEqual(restored.graphicSpec, before.graphicSpec);
+    for (const child of Object.values(restored.children)) {
+      assert.equal(child.materializationConfigs.canvas.margin.right, 18);
+      assert.equal(child.guideConfigs.legend, undefined);
+    }
+    assert.doesNotThrow(() => renderToSVG(restored));
+    assert.equal(JSON.stringify(before), snapshot);
+  }
+});
 
 function snapshotId(child, graphic) {
   return namespaceGraphicId(`facet-${child}`, graphic);

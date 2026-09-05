@@ -62,13 +62,16 @@ function facetUnitTemplate(program) {
   if (seed === undefined) {
     throw new Error(`Facet "${program.compositionSpec.id}" requires a retained child.`);
   }
-  const { facets: _facets, ...unitConfigs } = program.materializationConfigs;
+  const { facets: _facets, guides: _guides, ...unitConfigs } = program.materializationConfigs;
   return new program.constructor({
     semanticSpec: program.semanticSpec,
     graphicSpec: seed.graphicSpec,
     resolvedScales: program.resolvedScales,
     materializationConfigs: freezeOwned({
       ...unitConfigs,
+      ...(seed.materializationConfigs.guides === undefined
+        ? {}
+        : { guides: seed.materializationConfigs.guides }),
       canvas: seed.materializationConfigs.canvas
     }),
     children: {},
@@ -93,7 +96,8 @@ function rederiveFacet(program, { scales, guides }) {
     ) ? [[channel, scales[channel]]] : []
   ));
   const normalized = normalizeFacetScalePolicies(program.semanticSpec, request);
-  const derived = deriveFacetChildren(facetUnitTemplate(program), definition, {
+  const template = facetUnitTemplate(program);
+  const derived = deriveFacetChildren(template, definition, {
     closeInheritedAction: true,
     stripTitle: true,
     scales: request
@@ -106,7 +110,11 @@ function rederiveFacet(program, { scales, guides }) {
       guides
     }
   };
-  return applyCompositionState(program, {
+  let parent = program._withoutMaterializationConfig(["guides", "legend"]);
+  for (const [kind, config] of Object.entries(template.guideConfigs.legend ?? {})) {
+    parent = parent._withLegendConfig(kind, config);
+  }
+  return applyCompositionState(parent, {
     children: derived.children,
     compositionSpec
   }, compositionSpec.children);

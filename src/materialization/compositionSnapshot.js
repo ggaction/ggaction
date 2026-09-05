@@ -32,7 +32,7 @@ export function namespaceGraphicId(namespace, id) {
   const encode = value => Array.from(value, character =>
     character.codePointAt(0).toString(16).padStart(6, "0")
   ).join("");
-  return `g${encode(namespace)}_${encode(id)}`;
+  return `g${encode(namespace)}_${id}`;
 }
 
 function rewriteItem(item, namespace) {

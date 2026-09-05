@@ -20,7 +20,10 @@ import {
   resolveReassignmentScaleOptions,
   resolveTarget
 } from "../shared.js";
-import { applyMaterializationPlan } from "../../../materialization/dependencies.js";
+import {
+  applyDetachedScaleRematerialization,
+  applyMaterializationPlan
+} from "../../../materialization/dependencies.js";
 import {
   planEncodingRematerialization
 } from "../../../materialization/encodings.js";
@@ -126,12 +129,12 @@ export function encodeContinuousColor(program, args) {
         value: aggregate
       });
   const scaled = encoded.setQuantitativeColorScale(scale);
-  return applyMaterializationPlan(
+  return applyDetachedScaleRematerialization(applyMaterializationPlan(
     scaled,
     planEncodingRematerialization(scaled, {
       target,
       channel: "color",
       scale: scale.id
     })
-  );
+  ), [layer]);
 }
