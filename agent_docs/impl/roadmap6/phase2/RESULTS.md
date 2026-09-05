@@ -1,6 +1,6 @@
 # Phase 2 구현 결과
 
-Phase 전체의 A/B/V는 승인되었다. X는 아직 승인되지 않았다. 아래 W별 초기 실행 기록을 보존하며,
+Phase 전체의 A/B/V/X를 승인받았다. 2026-09-05 “승인한다”로 X 결과를 승인했다. 아래 W별 초기 실행 기록을 보존하며,
 가장 최근 source의 누적 검증과 package 상태는 마지막 통합 검증 기록을 따른다.
 
 ## W5 — Bar incomplete authoring
@@ -207,4 +207,4 @@ Phase 전체의 A/B/V는 승인되었다. X는 아직 승인되지 않았다. �
   Browser는 두 stable public example의 Canvas 크기·접근 가능한 이름·실제 상태·실행 오류를 검사했다.
 - 최종 실행 로그: `.artifacts/roadmap6-authoring/phase2-final-{all,contracts,realistic,render,browser,package,coverage}.log`.
   모든 명령이 exit 0이다. Verified source는 `3a4ca3b59cd604cd2456b2d196e3edd73d24e303`이며
-  [여섯 public 시각 증거](public-visual-results.json)와 [X 결과 검토](REVIEW.md)를 commit/push했다. X는 미승인이다.
+  [여섯 public 시각 증거](public-visual-results.json)와 [X 결과 검토](REVIEW.md)를 commit/push했고 사용자 “승인한다”로 X를 승인받았다.

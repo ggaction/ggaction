@@ -1,7 +1,7 @@
 # R6-P2-X — Shared authoring semantics 결과 검토
 
-상태: **ready-for-review, 미승인**. 사용자가 승인한 A/B/V 범위의 W1–W5 구현과 여섯 public 시각 흐름을
-검증했다. 이 문서는 Phase 2 결과의 승인 대상이며 Phase 3 구현은 아직 시작하지 않았다.
+상태: **approved**. 2026-09-05 사용자가 Phase 2 X 승인 질문에 “승인한다”라고 답했다. 사용자가 승인한 A/B/V 범위의 W1–W5 구현과 여섯 public 시각 흐름을
+검증했다. 이 문서의 결과와 명시적 후속 범위를 승인했으며 Phase 3 A 계약 검토 준비로 이동한다. Phase 3 구현은 아직 시작하지 않았다.
 
 ## 검증한 코드
 
@@ -140,4 +140,4 @@ PNG의 native text 차이는 환경에 영향을 받으므로 frozen 타 환경 
 - D03의 여러 grouped Bar가 scale을 공유할 때의 grain/layout 전환, D08의 interval/edge legend 확장,
   D20의 전체 discovery schema는 각각 지정된 후속 owner에 남는다. 이 Phase에서 항목 전체를 닫지 않는다.
 - F01–F19의 새 chart/authoring action군과 Phase 3 이후 구현은 아직 별도 Gate를 따른다. F20은 계속 제외한다.
-- X 승인 후 Phase 3의 계약 검토 package를 준비한다. 후속 API·시각 target을 자동 승인하지 않는다.
+- X를 승인받아 Phase 3의 계약 검토 package를 준비한다. 후속 API·시각 target을 자동 승인하지 않는다.

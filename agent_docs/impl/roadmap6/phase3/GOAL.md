@@ -2,7 +2,7 @@
 
 ## 상태와 목표
 
-상태: planned. 구현·사용자 승인 기록 없음.
+상태: in-progress — Phase 2 X 사용자 승인을 기록하고 A 계약 검토를 준비한다. Phase 3의 A/V/X는 아직 승인되지 않았으며 API 구현은 미착수다.
 
 가장 직접적인 상위 계층 공백을 기존 domain owner 위에서 메운다. Pie를 우선 납품하고 Density·Horizon도 같은 기준으로 완성한다.
 

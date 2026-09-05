@@ -51,7 +51,7 @@ node agent_docs/impl/roadmap6/phase2/render-review.mjs
 
 ## 남은 결정
 
-V와 B는 승인되었고 적용·검증을 마쳤다. 현재 검토 대상은 [R6-P2-X 전체 결과](REVIEW.md)다.
+V와 B는 승인되었고 적용·검증을 마쳤다. [R6-P2-X 전체 결과](REVIEW.md)도 사용자 “승인한다”로 승인되었다.
 최종 bundle은 full 234,258, Basic 124,897, SVG 6,418 bytes로 각각 승인된 상한 안이다.
 
 Phase 3와 후속 API·배포·PR 작성은 이번 검토의 승인 범위가 아니다.

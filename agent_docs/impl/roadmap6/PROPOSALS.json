@@ -20,7 +20,8 @@
       "R6-P1-X",
       "R6-P2-A",
       "R6-P2-B",
-      "R6-P2-V"
+      "R6-P2-V",
+      "R6-P2-X"
     ],
     "implementationStarted": true,
     "reviewCommit": "cf13920ed517cfc6c333b04ec55a724826960228",
@@ -163,14 +164,14 @@
     {
       "id": 2,
       "title": "Shared authoring semantics",
-      "status": "in-progress",
+      "status": "completed",
       "dependencies": [
         1
       ],
       "gateStates": {
         "R6-P2-A": "approved",
         "R6-P2-V": "approved",
-        "R6-P2-X": "ready-for-review",
+        "R6-P2-X": "approved",
         "R6-P2-B": "approved"
       },
       "workPackages": [
@@ -244,7 +245,7 @@
           "resultEvidence": "phase2/RESULTS.md#w5--bar-incomplete-authoring"
         }
       ],
-      "activity": "result-review",
+      "activity": "completed",
       "contractReview": {
         "file": "phase2/CONTRACT_REVIEW.md",
         "baselineCommit": "bbc8a3fc256c9afa877f696ed6ade1f51ffb7522",
@@ -308,12 +309,19 @@
       },
       "verifiedSourceCommit": "3a4ca3b59cd604cd2456b2d196e3edd73d24e303",
       "resultEvidence": "phase2/REVIEW.md",
-      "reviewPackageCommit": "afba77772dc7a985bbed4767b40379b3763071f4"
+      "reviewPackageCommit": "afba77772dc7a985bbed4767b40379b3763071f4",
+      "resultApproval": {
+        "date": "2026-09-05",
+        "userDirection": "승인한다",
+        "reviewCommit": "afba77772dc7a985bbed4767b40379b3763071f4",
+        "approvalBaselineCommit": "aa5dcec3742173d493d299c57d829eddec602015",
+        "scope": "Phase 2 W1–W5와 6개 public 시각 흐름의 결과 및 명시적 후속 범위. Phase 3 A 계약 검토 준비로 이동하며 후속 API·시각 target 승인은 별도다."
+      }
     },
     {
       "id": 3,
       "title": "First complete chart facades",
-      "status": "planned",
+      "status": "in-progress",
       "dependencies": [
         2
       ],
@@ -353,7 +361,8 @@
           "scope": "Area→encodeHorizon→x guide를 연결한다. Baseline, bands, grouping, negative amplitude의 의미를 기존 folded owner에 위임한다.",
           "acceptance": "signed data와 editHorizon의 revision 검증. Folded y를 원래 양적 축처럼 표시하거나 internal band color legend를 자동 생성하지 않음."
         }
-      ]
+      ],
+      "activity": "contract-review-preparation"
     },
     {
       "id": 4,
@@ -798,7 +807,7 @@
       "recommended": "Facade에서 x/y category·measure를 함께 preflight하고 기존 position owner를 호출한다. 수평 temporal category type을 공통 role union으로 표현한다. Mean default는 유지한다.",
       "acceptance": "가로/세로 shorthand, explicit aggregate, temporal category가 runtime와 strict TS에서 일치. 잘못된 양쪽 category/measure 조합은 명확히 거부.",
       "evidence": "audit/probe-results.json: P35–P37",
-      "disposition": "Facade and lower measure-first paths corrected and verified; Phase 2 X approval remains.",
+      "disposition": "Facade and lower measure-first paths corrected and verified; Phase 2 X approved by the user.",
       "resultEvidence": "phase2/RESULTS.md#w5--bar-incomplete-authoring"
     },
     {
@@ -977,7 +986,7 @@
       "recommended": "encodeGroup의 identity와 color/dash/width의 final-series appearance를 분리한다. Multi-key group을 충돌 없는 구조로 다룬다. Existing inferred grouping의 호환 경로를 유지한다.",
       "acceptance": "country group+continent color 성공; 한 series의 모호한 appearance 거부; field 작성 순서와 group edit 뒤 수렴.",
       "evidence": "audit/REPORT.md: D02",
-      "disposition": "Approved Phase 2 scope implemented and consumer-verified; result Gate X remains unapproved.",
+      "disposition": "Approved Phase 2 scope implemented and consumer-verified; result Gate X approved by the user.",
       "resultEvidence": "phase2/RESULTS.md#integration--verified-consumers-and-compatibility"
     },
     {
@@ -1036,7 +1045,7 @@
       "recommended": "Box/Gradient deferred 역할을 metadata에 명시한다. H0는 compatible guide를 재사용하고 missing만 생성한다. Low-level create strictness는 유지한다. Box guides default는 초기에는 유지하는 안을 확정한다.",
       "acceptance": "Scatter→Line 기본 조합 성공, incompatible scale guide는 atomic conflict. omitted/{} /false matrix가 facade와 child별로 명시됨.",
       "evidence": "audit/REPORT.md: D05",
-      "disposition": "W1 guide reuse and compatibility matrix verified, including the installed package after R6-P2-B approval. Phase 2 result Gate X remains pending.",
+      "disposition": "W1 guide reuse and compatibility matrix verified, including the installed package after R6-P2-B approval. Phase 2 result Gate X approved by the user.",
       "resultEvidence": "phase2/RESULTS.md#w1--facade-guide-reuse"
     },
     {
@@ -1056,7 +1065,7 @@
       "recommended": "Line constant width/opacity, Scatter point radius, Rule style 경로를 공통 owner로 연결한다. ErrorBand fill의 semantic color/legend 충돌을 명시적 assignment 교체로 정리한다.",
       "acceptance": "create/edit/field/constant 지원 matrix 일치. Override 뒤 scale·legend가 거짓 의미를 설명하지 않음. Local highlight override 별도 유지.",
       "evidence": "audit/REPORT.md: D06",
-      "disposition": "Approved Phase 2 scope implemented and consumer-verified; result Gate X remains unapproved.",
+      "disposition": "Approved Phase 2 scope implemented and consumer-verified; result Gate X approved by the user.",
       "additionalEvidence": "phase2/baseline-results.json",
       "additionalProbeIds": [
         "S13",
@@ -1121,7 +1130,7 @@
       "recommended": "Explicit type/schema/temporal unit/aggregate를 우선하는 선택표를 확정한다. groupBy:false의 JSON round trip을 제공하고 create omission과 edit preservation을 구분한다.",
       "acceptance": "numeric nominal color, mean Bar, year/timestamp 기존 결과 비교. 생략·false·undefined·auto의 source/trace/serialization 의미를 검사.",
       "evidence": "audit/REPORT.md: D09",
-      "disposition": "Approved Phase 2 scope implemented and consumer-verified; result Gate X remains unapproved.",
+      "disposition": "Approved Phase 2 scope implemented and consumer-verified; result Gate X approved by the user.",
       "resultEvidence": "phase2/RESULTS.md#integration--verified-consumers-and-compatibility"
     },
     {
@@ -1145,7 +1154,7 @@
       "recommended": "Explicit type/schema/temporal unit/aggregate를 우선하는 선택표를 확정한다. groupBy:false의 JSON round trip을 제공하고 create omission과 edit preservation을 구분한다.",
       "acceptance": "numeric nominal color, mean Bar, year/timestamp 기존 결과 비교. 생략·false·undefined·auto의 source/trace/serialization 의미를 검사.",
       "evidence": "audit/REPORT.md: D10",
-      "disposition": "Approved Phase 2 scope implemented and consumer-verified; result Gate X remains unapproved.",
+      "disposition": "Approved Phase 2 scope implemented and consumer-verified; result Gate X approved by the user.",
       "resultEvidence": "phase2/RESULTS.md#integration--verified-consumers-and-compatibility"
     },
     {

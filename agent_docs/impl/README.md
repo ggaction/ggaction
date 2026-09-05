@@ -4,10 +4,10 @@
 
 ## 현재 작업
 
-- **현재 활성 계획은 Roadmap 6 Phase 2**이다. [`roadmap6/ROADMAP.md`](roadmap6/ROADMAP.md)는
+- **현재 활성 계획은 Roadmap 6 Phase 3**이다. [`roadmap6/ROADMAP.md`](roadmap6/ROADMAP.md)는
   173개 액션 감사에서 나온 오류 8건·설계 문제 20건·사용자가 선택한 추가 액션군 19개를 12단계로 연결한다.
-  Phase 1 [결과](roadmap6/phase1/REVIEW.md)를 사용자 승인으로 닫고 Phase 2 계약도 승인받아 구현에 착수했다. 후속 신규 API의 구체 설계는 Proposed다.
-- [`roadmap6/phase2/CONTRACT_REVIEW.md`](roadmap6/phase2/CONTRACT_REVIEW.md) — 승인된 R6-P2-A API·호환성 계약, baseline 43건·기존 tests 100개
+  Phase 2 [결과](roadmap6/phase2/REVIEW.md)를 사용자 승인으로 닫고 Phase 3 계약 검토를 준비한다. Phase 3 API 구현은 아직 승인되지 않았다.
+- [`roadmap6/phase3/GOAL.md`](roadmap6/phase3/GOAL.md) — Pie/Donut·Density·Horizon의 다음 계약 검토 범위
 - [`roadmap6/TRACEABILITY.md`](roadmap6/TRACEABILITY.md) — 실행 대상 47개 항목과 작업·검증 조건
 - [`roadmap6/DESIGN_DECISIONS.md`](roadmap6/DESIGN_DECISIONS.md) — 공통 결정과 migration
 - 마지막 완료 owner는 [Roadmap 5.4 Phase 6](roadmap5.4/ROADMAP.md)이다.

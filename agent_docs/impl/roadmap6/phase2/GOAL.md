@@ -2,7 +2,7 @@
 
 ## 상태와 목표
 
-상태: in-progress — [R6-P2-A 계약 검토](CONTRACT_REVIEW.md) approved. 2026-09-05 “ㄱㄱ” 승인을 반영해 구현에 착수한다. 기준 동작 43건과 관련 기존 테스트 100건은 계약 검토 증거이며 실제 구현 결과는 별도로 기록한다.
+상태: completed. 2026-09-05 사용자가 [R6-P2-X 결과](REVIEW.md)를 “승인한다”로 승인했다. W1–W5와 여섯 public 흐름의 구현·검증을 마쳤으며 남은 D04/D14 등의 후속 owner는 결과 문서에 명시했다.
 
 새 facade가 물려받을 guide, group, appearance, inference, incomplete-state 계약을 정리한다. 같은 결정을 여러 owner가 다르게 수행하지 않게 한다.
 

@@ -3,7 +3,7 @@
 ## 공통 상태
 
 R6-P2-A는 approved다. 2026-09-05 사용자가 “ㄱㄱ”로 아래 계약의 구현을 승인했다.
-B/V는 approved, X는 ready-for-review이며 미승인이다. 새 시각 target과 bundle 예산은 각각 독립 결정이다.
+A/B/V/X는 모두 approved다. 새 시각 target과 bundle 예산은 각각 독립 결정이다.
 허용 상태는 planned | ready-for-review | approved | changes-requested다.
 [VISUAL_REVIEW.md](VISUAL_REVIEW.md)의 6개 target을 사용자가 “승인한다”로 승인했다. 해당 public 흐름을 구현·검증했다.
 [BUNDLE_REVIEW.md](BUNDLE_REVIEW.md)의 full 상한 조정은 승인·적용·재검증을 마쳤다.
@@ -70,7 +70,10 @@ B/V는 approved, X는 ready-for-review이며 미승인이다. 새 시각 target�
 
 ## R6-P2-X — Result and closeout
 
-- 상태: ready-for-review — 미승인
+- 상태: approved
+- 사용자 승인: 2026-09-05 Phase 2 X 결과 승인 질문에 “승인한다”라고 답했다.
+  승인 대상은 review commit `afba77772dc7a985bbed4767b40379b3763071f4`, 승인 직전 HEAD는 `aa5dcec3742173d493d299c57d829eddec602015`다.
+  W1–W5 및 6개 public 흐름의 결과와 명시적 후속 범위를 승인했다. 이 기록 뒤 Phase 3 A 검토 준비로 이동한다.
 - Review package commit: [`afba77772dc7a985bbed4767b40379b3763071f4`](https://github.com/ggaction/ggaction/commit/afba77772dc7a985bbed4767b40379b3763071f4),
   `origin/codex/roadmap6-hierarchical-actions` push 완료 확인. 이 기록을 추가하는 후속 commit은 실행 source를 바꾸지 않는다.
 - 검토 대상: [REVIEW.md](REVIEW.md)의 W1–W5, 6개 public 시각 쌍, 호환성·consumer 검증과 후속 범위.
@@ -91,6 +94,6 @@ B/V는 approved, X는 ready-for-review이며 미승인이다. 새 시각 target�
 - Review commit / remote ref: `e06b57db5624a5b0d66cea425cff4aa5f5f4caad` / `origin/codex/roadmap6-hierarchical-actions`
 - 검증 명령과 실제 결과: [VALIDATION.md](VALIDATION.md)의 baseline 43/43와 관련 기존 테스트 100/100. 새 API 구현 검증은 미실행.
 - 사용자 승인 근거: 2026-09-05 사용자가 Phase 2 계약 구현 질문에 “ㄱㄱ”라고 답했다. 위 remote package의 계약을 승인한 것으로 기록한다. Phase 1 X는 이전 “승인한다”로 이미 승인되었다.
-- 이후 작업: W1–W5와 public flow·전체 consumer 검증을 마쳤다. 현재 남은 Gate는 위 X 결과 승인이다.
+- 이후 작업: W1–W5와 public flow·전체 consumer 검증을 마쳤다. 위 X도 사용자 승인으로 닫았고 Phase 3 A 검토 준비로 이동한다.
 
 실행 시 실제 증거를 채운다. 문서 작성 날짜나 이전 로드맵 승인을 이 Gate의 승인으로 재사용하지 않는다.
