@@ -28,7 +28,8 @@
 - [x] W2 C2 hidden categorical title 공간과 legacy 복원 #101 — [검증](RESULTS_W2_HIDDEN_CATEGORICAL.md)
 - [x] W2 C2 single horizontal occupied alignment/offset #102 — [검증](RESULTS_W2_OCCUPIED_ALIGNMENT.md)
 - [x] W2 C2 side alignment·title style·gradient title 편집 option parity #103 — [검증](RESULTS_W2_OPTION_PARITY.md)
-- [ ] W2 C2 큰 sample/font 내부 간격과 통합 matrix
+- [x] W2 C2 opacity stroke/sample/font 간격과 mirrored side lane #104 — [검증](RESULTS_W2_OPACITY_SPACING.md)
+- [ ] W2 C2 나머지 categorical/item sample extent와 통합 matrix
 - [ ] R6-P5-W3 Final-item labels·reference·common format
 - [ ] R6-P5-W4 Program theme와 local override
 - [ ] R6-P5-W5 Opt-in fitting과 guide label layout

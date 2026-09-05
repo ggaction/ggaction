@@ -260,6 +260,17 @@ test.before(async () => {
           nearEdge === (position === "top" ? 260 : 740) && renderToSVG(program).startsWith("<svg "));
         render(program, document.getElementById("legend-content").getContext("2d"));
       }
+      const opacitySampleGaps = [];
+      for (const position of ["left", "right", "top", "bottom"]) {
+        const p = guideSource.createLegend({ channels: ["opacity"], position, count: 3, offset: 40,
+          symbol: { radius: 30, stroke: "black", strokeWidth: 20 }, labels: { fontSize: 30 }, titleStyle: { fontSize: 40 } });
+        const symbol = p.graphicSpec.objects.opacityLegendSymbols.items[0].properties;
+        const label = p.graphicSpec.objects.opacityLegendLabels.items[0].properties;
+        opacitySampleGaps.push(position === "right" ? label.x - symbol.x - 40
+          : position === "left" ? symbol.x - 40 - label.x : label.y - label.fontSize / 2 - symbol.y - 40);
+        render(p, document.getElementById("legend-content").getContext("2d"));
+        if (!renderToSVG(p).startsWith("<svg ")) throw new Error("Opacity SVG missing");
+      }
       const guideTitle = { text: "Chart", position: "top" };
       let guideRejects = 0;
       const guideOrder = [];
@@ -359,6 +370,7 @@ test.before(async () => {
         guideOrder,
         transitionEdges,
         occupiedAlignment,
+        opacitySampleGaps,
         ignoredOptionRejects,
         gradientTitleParity,
         hiddenCategorical: [hiddenStyled.graphicSpec.objects.colorLegendBackground.properties.height,
@@ -501,6 +513,7 @@ test("imports and renders the packed browser entries", async () => {
     transitionEdges: ["left", "right", "top", "bottom"].map(position => [position, position, true, true, true]),
     hiddenCategorical: [36, true],
     occupiedAlignment: [true, true, true, true, true, true],
+    opacitySampleGaps: [12, 12, 12, 12],
     ignoredOptionRejects: 18,
     gradientTitleParity: [true, true, true, true, true, true],
     combinedSVG: true,

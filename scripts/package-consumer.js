@@ -577,6 +577,24 @@ async function testNodeConsumer(directory) {
       assert.equal(Object.hasOwn(forward.context, "deferGuideLayoutValidation"), false);
       assert.deepEqual(forward.editLegend({ border: false }).editLegend({ border: true }).graphicSpec, forward.graphicSpec);
       const opacity = source.encodeOpacity({ field: "m" });
+      for (const position of ["left", "right", "top", "bottom"]) {
+        const options = { channels: ["opacity"], position, count: 3, offset: 40,
+          symbol: { radius: 30, stroke: "black", strokeWidth: 20 }, labels: { fontSize: 30 }, titleStyle: { fontSize: 40 } };
+        const p = opacity.createLegend(options);
+        const symbol = p.graphicSpec.objects.opacityLegendSymbols.items[0].properties;
+        const label = p.graphicSpec.objects.opacityLegendLabels.items[0].properties;
+        const gap = position === "right" ? label.x - symbol.x - 40
+          : position === "left" ? symbol.x - 40 - label.x : label.y - label.fontSize / 2 - symbol.y - 40;
+        assert.equal(gap, 12);
+        assert.deepEqual(p.editLegendSymbols({ symbol: options.symbol }).graphicSpec, p.graphicSpec);
+        assert.match(renderToSVG(p), /<svg /);
+        if (position === "left") {
+          const shared = p.createLegend({ channels: ["color"], position, offset: 40 });
+          const s = shared.graphicSpec.objects.opacityLegendSymbols.items[0].properties;
+          const l = shared.graphicSpec.objects.opacityLegendLabels.items[0].properties;
+          assert.ok(l.x - s.x - 40 >= 12);
+        }
+      }
       const options = { ...legend, channels: ["opacity"] };
       const opacityTitle = opacity.createTitle(title).createLegend(options);
       assert.deepEqual(opacityTitle.graphicSpec, opacity.createLegend(options).createTitle(title).graphicSpec);

@@ -36,6 +36,16 @@ For a top or bottom sampled-opacity legend, `titlePosition: "left"` places the
 title, every sample circle, and its numeric label on one reading line. The
 inline defaults use 8 logical pixels from a circle to its label and 20 pixels
 before the next sample. `labels.offset` and `itemGap` override those distances.
+All sample spacing includes half the stroke width around the circle. Label
+offset measures the visible edge-to-edge gap; its non-inline default is 12.
+
+At either side, `itemGap` is a minimum center pitch and grows to fit the largest
+sample or label. A visible title keeps at least 12 pixels before the first item.
+Top/bottom legends with a top title use equal center spacing of at least 56
+pixels and twice `itemGap`, enlarged when needed to keep `itemGap` between
+neighbouring sample or label bounds. Inline legends keep `itemGap` between
+complete sample-label pairs. Large fonts and strokes require sufficient Canvas
+space; overflow is an error.
 
 ~~~javascript
 program.createLegend({

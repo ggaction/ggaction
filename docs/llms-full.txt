@@ -10615,6 +10615,16 @@ For a top or bottom sampled-opacity legend, `titlePosition: "left"` places the
 title, every sample circle, and its numeric label on one reading line. The
 inline defaults use 8 logical pixels from a circle to its label and 20 pixels
 before the next sample. `labels.offset` and `itemGap` override those distances.
+All sample spacing includes half the stroke width around the circle. Label
+offset measures the visible edge-to-edge gap; its non-inline default is 12.
+
+At either side, `itemGap` is a minimum center pitch and grows to fit the largest
+sample or label. A visible title keeps at least 12 pixels before the first item.
+Top/bottom legends with a top title use equal center spacing of at least 56
+pixels and twice `itemGap`, enlarged when needed to keep `itemGap` between
+neighbouring sample or label bounds. Inline legends keep `itemGap` between
+complete sample-label pairs. Large fonts and strokes require sufficient Canvas
+space; overflow is an error.
 
 ~~~javascript
 program.createLegend({
@@ -10833,6 +10843,11 @@ the new edge; explicitly stored columns/alignment/title placement remain and
 must be made compatible in the same edit. A horizontal opacity legend can switch to
 `titlePosition: "left"`; unless spacing is supplied in the same edit, the
 inline mode selects its 8-pixel symbol-label and 20-pixel sample defaults.
+Editing an opacity sample radius, stroke width or text size recomputes item
+spacing from its visible bounds. `labels.offset` remains the gap outside the
+circle stroke. Hidden titles use no space; restoring a title checks the newly
+occupied bounds before returning a program.
+
 Standalone size legends support `title`, `count`, `labels`, `titleStyle`, border,
 and four-edge layout through the same editing actions. On a Full program
 with an existing standalone size legend, this fragment edits its sampled content:

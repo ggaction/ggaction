@@ -111,7 +111,7 @@ export function resolveSideLegendLane({
   const blocks = groups.flatMap(group => group.blocks);
   if (blocks.length < 2) return undefined;
   const labelStart = Math.max(SIDE_LEGEND_LABEL_START, ...blocks.map(
-    block => SIDE_LEGEND_SYMBOL_CENTER + block.labels.x - block.symbol.centerX
+    block => SIDE_LEGEND_SYMBOL_CENTER + Math.abs(block.labels.x - block.symbol.centerX)
   ));
   const laneExtent = horizontalExtent(blocks, labelStart);
   const offset = blocks.reduce(

@@ -250,3 +250,14 @@ test("combined horizontal groups reject intersecting reserved bounds but permit 
       collisionBounds: [{ left, right: left + 1, top, bottom }] }), /require more margin space/);
   }
 });
+
+
+test("side lanes preserve large mirrored symbol-to-label distances", () => {
+  const normal = block({ id: "color", x: 100, y: 100 });
+  const mirrored = { ...block({ id: "opacity", x: 200, y: 100 }),
+    symbol: { centerX: 300, left: 260, right: 340 }, labels: { x: 248, width: 61 } };
+  const result = resolveSideLegendLane({ side: "left", plot: { x: 400, y: 100, width: 200, height: 300 },
+    canvas: { width: 800, height: 800 }, groups: [{ blocks: [normal], border: false }, { blocks: [mirrored], border: false }] });
+  assert.equal(result.labelStartX - result.symbolCenterX, 52);
+  assert.equal(result.labelStartX - (result.symbolCenterX + 40), 12);
+});

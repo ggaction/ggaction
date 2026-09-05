@@ -445,7 +445,7 @@ export function createFieldOpacityPrimitiveValues(cars) {
         opacity: mapLinear(value, domain, range)
       }))),
       labels: Object.freeze(legendValues.map((value, index) => ({
-        x: CONTINUOUS_LEGEND.x + 24,
+        x: CONTINUOUS_LEGEND.x + 14 + 12,
         y: legendStartY + index * legendGap,
         text: Number(value.toFixed(1)).toString()
       })))

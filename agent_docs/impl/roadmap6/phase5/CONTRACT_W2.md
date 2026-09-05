@@ -55,3 +55,5 @@ Hidden categorical title 공간과 legacy visible-title 복원 #101은 [RESULTS_
 Single horizontal occupied alignment/offset #102는 [RESULTS_W2_OCCUPIED_ALIGNMENT.md](RESULTS_W2_OCCUPIED_ALIGNMENT.md)에 기록한다. 큰 sample/font 내부 간격·side option과 전체 통합 matrix는 남아 있다.
 
 Side alignment/title style/gradient title-position의 생성·편집 parity #103은 [RESULTS_W2_OPTION_PARITY.md](RESULTS_W2_OPTION_PARITY.md)에 기록한다. 큰 sample/font 내부 간격과 전체 통합 matrix는 남아 있다.
+
+Opacity sample/stroke/font 간격과 mirrored side lane #104는 [RESULTS_W2_OPACITY_SPACING.md](RESULTS_W2_OPACITY_SPACING.md)에 기록한다. 나머지 categorical/item sample extent와 전체 통합은 남아 있다.

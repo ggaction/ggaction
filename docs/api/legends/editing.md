@@ -58,6 +58,11 @@ the new edge; explicitly stored columns/alignment/title placement remain and
 must be made compatible in the same edit. A horizontal opacity legend can switch to
 `titlePosition: "left"`; unless spacing is supplied in the same edit, the
 inline mode selects its 8-pixel symbol-label and 20-pixel sample defaults.
+Editing an opacity sample radius, stroke width or text size recomputes item
+spacing from its visible bounds. `labels.offset` remains the gap outside the
+circle stroke. Hidden titles use no space; restoring a title checks the newly
+occupied bounds before returning a program.
+
 Standalone size legends support `title`, `count`, `labels`, `titleStyle`, border,
 and four-edge layout through the same editing actions. On a Full program
 with an existing standalone size legend, this fragment edits its sampled content:
