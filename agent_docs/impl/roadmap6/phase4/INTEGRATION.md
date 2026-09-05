@@ -47,3 +47,10 @@ Measured radial의 label/filter/highlight/composition 소비자 대조에서 두
 [라벨 수정 후 동일 tarball 설치 결과](package-labels-results.json)가 앞선 개발 패키지를 대체한다. SHA-256 `4eaa9a4a34cecc7b4bb40529324b70d03dfdb9f1a22aa697f86f8a362ca1abcf`, entries 443, packed 496,519, unpacked 2,369,885 bytes. Full/Basic/SVG gzip **247,052/136,936/6,437**로 승인된 249,000/138,000/25,000 한도 안이다. Node·types·MCP·tutorial·bundle 검사와 **이 파일 그대로** 설치한 Chromium 1/1을 통과했다. 실제 registry release는 아직 수행하지 않았다.
 
 현재 실행 중인 full realistic은 라벨 수정 전에 시작했으므로 그 결과만으로 수정 후 전체 검증이라고 기록하지 않는다. 종료 후 수정된 source를 고정해 최종 검증한다. Built docs browser와 Phase X 대조도 완료 후 별도로 기록한다.
+
+## 마지막 소비자 대조
+
+- 라벨 수정 전에 시작한 full realistic은 최종 **242/242**로 종료했다. 이어서 runtime commit `7d5982aa`를 고정한 `phase4-labels-realistic.log` 실행을 시작했다. 이후 변경은 내부 기록과 아래 테스트뿐이며 runtime/types는 그대로다.
+- 라벨 수정 후 built docs browser도 exit 0으로 완료했다. Desktop 검색·keyboard·Axe·no-JS와 125개 문서의 320/390/768px 검사를 통과했다.
+- Area facade의 남은 composition 셀을 실제 실행으로 확인했다. Tuple group의 stacked Area를 site별 facet으로 나누면 독립 도메인이 `[0,6]`/`[0,12]`이며 columns/gap 변경 뒤에도 유지된다. Baseline 1과 crossing ribbon의 concat은 child semantic/graphic snapshot을 그대로 보존한다. `area-facade.test.js` **5/5**, 새 사례 2개이며 runtime 수정은 없었다.
+- #80/#81은 원격 `7d5982aa` 수정과 검증 근거를 연결해 닫았다. Release 완료로 표시하지 않았다.

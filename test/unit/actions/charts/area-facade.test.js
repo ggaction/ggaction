@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { chart } from "../../../../src/index.js";
+import { chart, hconcat } from "../../../../src/index.js";
 import { assertAtomicFailures } from "../../../support/program-state.js";
 const rows = [{ time: 1, value: 2, lo: 1, hi: 3 }, { time: 2, value: 4, lo: 6, hi: 2 }, { time: 3, value: 3, lo: 1, hi: 5 }];
 const base = () => chart().createCanvas({ width: 1000, height: 700, margin: 150 }).createData({ id: "data", values: rows });
@@ -49,4 +49,39 @@ test("invalid nested roles, constants, guides and ambiguous resources fail atomi
   ];
   assertAtomicFailures(before, invalid.map(options => ({ operation: () => before.createAreaPlot({ x: "time", y: "value", ...options }), inputs: [options] })));
   assert.throws(() => chart().createCanvas().createAreaPlot({ x: "time", y: "value" }), /data/);
+});
+
+test("stacked Area facets retain tuple groups and independent final bounds", () => {
+  const values = ["A", "B"].flatMap((site, siteIndex) => ["one", "two"].flatMap((series, seriesIndex) =>
+    [0, 1].map(time => ({ site, series, time, value: (siteIndex + 1) * (seriesIndex + 1) * (time + 1) }))));
+  const p = chart().createCanvas({ width: 700, height: 500, margin: 100 }).createData({ values })
+    .createAreaPlot({ x: "time", y: { field: "value", scale: { nice: false } },
+      groupBy: ["site", "series"], layout: "stack", color: "series", guides: false });
+  const before = JSON.stringify(p);
+  const faceted = p.facet({ field: "site", columns: 2, scales: { y: "independent" } });
+  const edited = faceted.editCompositionLayout({ columns: 1, gap: 24 });
+  for (const current of [faceted, edited]) {
+    const children = Object.values(current.children);
+    assert.equal(children.length, 2);
+    assert.deepEqual(children.map(child => child.resolvedScales.y.domain), [[0, 6], [0, 12]]);
+    for (const child of children) {
+      assert.equal(child.semanticSpec.layers[0].layout.mode, "stack");
+      assert.equal(child.semanticSpec.layers[0].encoding.y2.datum, 0);
+      assert.equal(child.graphicSpec.objects.areaPlot.items.length, 2);
+    }
+  }
+  assert.equal(JSON.stringify(p), before);
+});
+
+test("Area baseline and range roles survive concat layout changes", () => {
+  const baseline = base().createAreaPlot({ x: "time", y: "value", baseline: 1, guides: false });
+  const ribbon = base().createAreaPlot({ x: "time", y: { lower: "lo", upper: "hi" }, guides: false });
+  const before = JSON.stringify([baseline, ribbon]);
+  const composed = hconcat({ programs: [{ id: "baseline", program: baseline }, { id: "ribbon", program: ribbon }] });
+  const edited = composed.editCompositionLayout({ gap: 32 });
+  assert.deepEqual(edited.children.baseline.semanticSpec, baseline.semanticSpec);
+  assert.deepEqual(edited.children.ribbon.semanticSpec, ribbon.semanticSpec);
+  assert.deepEqual(edited.children.baseline.graphicSpec, baseline.graphicSpec);
+  assert.deepEqual(edited.children.ribbon.graphicSpec, ribbon.graphicSpec);
+  assert.equal(JSON.stringify([baseline, ribbon]), before);
 });
