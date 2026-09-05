@@ -73,6 +73,7 @@ test("keeps the basic entry focused on common Cartesian charts", () => {
     assert.equal(typeof program[method], "function", method);
   }
   for (const method of [
+    "createMarkLabels",
     "createRegression",
     "encodeTheta",
     "facet",

@@ -64,6 +64,11 @@
     "layer": "user-facing",
     "domain": "marks"
   },
+  "createMarkLabels": {
+    "operation": "create",
+    "layer": "user-facing",
+    "domain": "marks"
+  },
   "createTextMark": {
     "operation": "create",
     "layer": "user-facing",

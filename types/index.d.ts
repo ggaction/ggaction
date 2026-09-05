@@ -249,6 +249,7 @@ export type {
   TextEncodingOptions,
   TextFormat,
   TextMarkOptions,
+  CreateMarkLabelsOptions,
   XAxisPosition,
   YAxisPosition,
   WindowDataOptions,

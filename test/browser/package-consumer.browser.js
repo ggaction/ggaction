@@ -391,8 +391,7 @@ test.before(async () => {
       const semanticLabels = chart().createCanvas({ width: 480, height: 360, margin: 50 })
         .createData({ values: [{ category: "A", value: 1 }, { category: "A", value: 1 }, { category: "B", value: 6 }] })
         .createPiePlot({ category: "category", value: "value", aggregate: "sum", guides: false })
-        .createTextMark({ source: "piePlot", align: "center", baseline: "middle" })
-        .encodeText({ content: "share", format: ".1%" });
+        .createMarkLabels({ id: "text", source: "piePlot", content: "share", format: ".1%", layout: {} });
       render(semanticLabels, document.getElementById("semantic-labels").getContext("2d"));
       const semanticLabelSVG = renderToSVG(semanticLabels);
       document.querySelector("#status").textContent = "complete";

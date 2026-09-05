@@ -5461,6 +5461,45 @@ Text marks turn data values into visible labels. Add one after a compatible poin
 bar, rect, rule, or arc layer and ggaction persists that layer as the annotation
 source.
 
+## `createMarkLabels(options?)`
+
+Create final-item labels in one call, then use the lower text actions to refine them:
+
+```javascript
+import { chart } from "ggaction";
+
+const labeled = chart()
+  .createCanvas({ width: 480, height: 360, margin: 50 })
+  .createData({ values: [{ category: "A", value: 2 }, { category: "B", value: 6 }] })
+  .createPiePlot({ category: "category", value: "value", aggregate: "sum", guides: false })
+  .createMarkLabels({ content: "share", format: ".0%", fontSize: 20 });
+// Labels: 25%, 75%; the created layer is "piePlot-labels".
+const refined = labeled.editTextMark({ target: "piePlot-labels", fontWeight: "bold" });
+```
+
+The current compatible mark, then one unique compatible mark, supplies the source.
+Use `source` to choose explicitly. The default ID is `<source>-labels`; additional
+label layers on the same source require explicit IDs. Each label uses the source's
+final visual item, so aggregated marks do not get duplicate labels for input rows.
+
+Omitting `field`, `value`, and `content` selects `content: "value"` for a supported
+Bar or Arc. Use `content: "category"` or `"share"` for other semantic content, `field`
+for raw/common fields, or `value` for a constant. These choices are exclusive.
+Point, Rule, and Rect labels require a field or constant. Format defaults to
+`"auto"`; shares need an explicit percent format to display percentages.
+
+Text is centered horizontally and vertically at the existing source anchor. Use
+`baseline: "bottom", dy: -4` to place labels above an endpoint, or other ordinary
+text style options. `layout: {}` enables collision avoidance, and a layout object
+accepts `layoutLabels` options except `target`. Omission or `false` preserves source
+anchors without collision layout. An incomplete explicit source is supported when
+layout is disabled; call `layoutLabels` after completing it.
+
+The result is an ordinary text layer: edit it with `encodeText`, `editTextMark`,
+`layoutLabels`, or `removeLabelLayout`. Source changes replay the labels. The existing
+mark ownership rule removes attached labels when their source is removed; it does
+not support removing an attached label layer alone.
+
 ## `createTextMark(options?)`
 
 ```javascript
@@ -12521,6 +12560,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createLegend`](./reference/actions/guides/#createlegend) | user-facing | legend_and_title |
 | [`createLineMark`](./reference/actions/marks/#createlinemark) | user-facing | marks |
 | [`createLinePlot`](./reference/actions/charts-data/#createlineplot) | user-facing | charts |
+| [`createMarkLabels`](./reference/actions/marks/#createmarklabels) | user-facing | marks |
 | [`createParallelAxes`](./reference/actions/advanced/#createparallelaxes-createparallelaxis-editparallelaxis-removeparallelaxis-removeparallelaxes) | user-facing | axes |
 | [`createParallelAxis`](./reference/actions/advanced/#createparallelaxes-createparallelaxis-editparallelaxis-removeparallelaxis-removeparallelaxes) | user-facing | axes |
 | [`createParallelCoordinates`](./reference/actions/charts-data/#createparallelcoordinates) | user-facing | charts |
@@ -13229,10 +13269,21 @@ Edit rect appearance and rematerialize complete cells. Constant fill conflicts
 with field-driven color. `stroke: false` disables the outline.
 [Rect marks](./api/marks/rect/)
 
+## `createMarkLabels`
+
+```javascript
+createMarkLabels({ id?, source?, field?, value?, content?, normalizeBy?, format?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy?, layout? } = {})
+```
+
+Create final-item labels on an existing mark through text creation, encoding, and
+optional collision layout. The default content is the source's semantic value;
+Point/Rule/Rect require a field or constant. The default ID is `<source>-labels`.
+[Text marks](./api/marks/text/)
+
 ## `createTextMark`
 
 ```javascript
-createTextMark({ id?, data?, text?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy? } = {})
+createTextMark({ id?, data?, source?, text?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy? } = {})
 ```
 
 Create a semantic text layer. Omitted data and position attach to the current
@@ -14776,6 +14827,7 @@ interface ChartProgramActions {
   createRuleMark(options?: { id?: string; data?: string } & RuleStyleOptions): ChartProgram;
   editRuleMark(options: { target?: string } & RuleStyleOptions): ChartProgram;
   createTextMark(options?: TextMarkOptions): ChartProgram;
+  createMarkLabels(options?: CreateMarkLabelsOptions): ChartProgram;
   editTextMark(options: EditTextMarkOptions): ChartProgram;
   layoutLabels(options?: LabelLayoutOptions): ChartProgram;
   removeLabelLayout(options?: RemoveLabelLayoutOptions): ChartProgram;

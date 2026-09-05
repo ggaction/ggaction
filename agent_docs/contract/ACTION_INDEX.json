@@ -274,6 +274,24 @@
       }
     },
     {
+      "name": "createMarkLabels",
+      "layer": "user-facing",
+      "domain": "marks",
+      "status": "implemented",
+      "lifecycle": "Aggregate create-only",
+      "update": "`encodeText`, `editTextMark`, `layoutLabels`, `removeLabelLayout`; source-owner removal cleans up labels",
+      "audit": "Intentional",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/MARKS.md",
+        "anchor": "createmarklabels"
+      }
+    },
+    {
       "name": "createTextMark",
       "layer": "user-facing",
       "domain": "marks",

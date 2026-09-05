@@ -45,6 +45,7 @@
     "IntervalData": ["confidence interval data", "summary interval"],
     "PointMark": ["point mark", "scatter point"],
     "TickMark": ["tick mark", "one-dimensional distribution"],
+    "MarkLabels": ["mark labels", "final-item values", "pie percentages", "bar value labels"],
     "TextMark": ["text label", "annotation mark"],
     "Text": ["text content", "data-driven labels"],
     "LineMark": ["line mark", "path"],
@@ -287,6 +288,7 @@
     "encodeText": { "field": "label" }
   },
   "callPatternOverrides": {
+    "createMarkLabels": ["createMarkLabels()", "createMarkLabels({ source?, content: \"share\", format: \".0%\", layout? })"],
     "createAreaPlot": ["createAreaPlot({ x, y })", "createAreaPlot({ x, y, groupBy, layout })"],
     "layoutSeries": ["layoutSeries({ mode })"],
     "createHorizonPlot": ["createHorizonPlot({ x, y })", "createHorizonPlot({ x, y, bands?, baseline?, palette?, area? })"],

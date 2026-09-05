@@ -594,6 +594,44 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
   rematerialization, and earlier-program immutability.
 - Evidence: `test/unit/actions/marks/rect-mark.test.js`.
 
+## `createMarkLabels`
+
+- Signature: `createMarkLabels({ id?, source?, field?, value?, content?, normalizeBy?, format?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy?, layout? } = {})`.
+- Aggregate create-only facade: wrapped `createTextMark`, `encodeText`, then optional `layoutLabels` remain visible children.
+  Subsequent edits use those child resources through `editTextMark`, `encodeText`, `layoutLabels`, and `removeLabelLayout`.
+- The source uses exactly the explicit/current/unique inference of `createTextMark`; no eligible source is an error.
+  Explicit incomplete sources are supported. Independent `data`, the lower-level `text` alias, and `target` are not options.
+- The omitted ID is `<source>-labels`; an existing semantic or graphical resource at that ID is an error. Use an explicit
+  ID for an additional label layer on the same source. Different sources have independent default label IDs.
+- `field`, `value`, and `content` are mutually exclusive with the same semantics, supported marks, formatting and validation
+  as `encodeText`. Omitting all three means `content: "value"`; this requires a Bar or Arc with a supported semantic measure.
+  Point/Rule/Rect require an explicit field or constant rather than guessing one position channel as the value.
+  `format` defaults to `"auto"`, including fractional shares; specify `".0%"` or another percent token for percentages.
+- Appearance defaults to centered/middle text at the source's existing final-item anchor. Other appearance defaults and
+  source-fill contrast use `createTextMark`. No sign-dependent offsets are inferred; use explicit baseline/dx/dy for endpoint
+  placement. Explicit appearance overrides the facade defaults.
+- Omitted/false `layout` creates no collision policy. `{}` enables `layoutLabels` defaults; an object accepts its options
+  except `target`, which the facade owns. Enabled layout requires complete text. For incomplete sources, create labels
+  without layout, complete the source, then call `layoutLabels`. Best-effort layout warnings retain the lower action contract.
+- Complete child effects are preflighted on a discarded immutable branch. Invalid source/content/appearance/layout or ID
+  collisions leave the input program and trace unchanged. No additional facade registry or semantic resource is created.
+- Source filtering/encoding/scale/Canvas edits replay content, appearance and optional layout through existing text dependencies.
+  Existing `removeMark` ownership applies: attached text cannot be removed alone; removing its source owner cleans up labels.
+
+### Formal values — `createMarkLabels`
+
+- Implemented: `createMarkLabels(options?: CreateMarkLabelsOptions)`; ID/source and appearance use `TextMarkOptions`, content uses
+  the exclusive `TextEncodingOptions` branches plus omission, and `layout?: false | Omit<LabelLayoutOptions, "target">`.
+- Proposed (NOT IMPLEMENTED): automatic point measure selection and layout assignment before source completion.
+
+### Value coverage — `createMarkLabels`
+
+- ✅ Covered: shortest call, source-owned IDs, explicit/inferred sources, all text content branches, appearance overrides,
+  incomplete source completion, optional layout and lower edits, resize/filter replay, source removal, nested trace,
+  invalid-state atomicity, literal primitive/public graphics and Canvas/PNG equality, public types and installed package/browser discovery.
+- Evidence: `test/unit/actions/marks/mark-labels.test.js`, `test/contracts/mark-label-content.test.js`,
+  `test/contracts/text-content-types.test.js`, `scripts/package-consumer.js`, `test/browser/package-consumer.browser.js`.
+
 ## `createTextMark`
 
 - Signature: `createTextMark({ id?, data?, source?, text?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy? } = {})`.

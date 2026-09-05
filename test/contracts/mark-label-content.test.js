@@ -33,3 +33,19 @@ for (const fixture of cases) test(`semantic label ${fixture.name} matches indepe
   const b = await assertRenderedPNG(actual, { ...opts, artifact: { ...artifact, kind: "user-facing" } });
   assert.equal(a.pixelHash, b.pixelHash);
 });
+
+for (const fixture of cases) test(`mark label facade ${fixture.name} matches literal primitives`, async () => {
+  const source = fixture.source();
+  const id = `${fixture.style.source}-labels`;
+  const primitive = source.createTextMark({ id, ...fixture.style, text: "pending" })
+    .editGraphics({ target: id, property: "text", value: fixture.expected });
+  const actual = source.createMarkLabels({ ...fixture.style, ...fixture.content });
+  assertChartProgramsEquivalent({ publicProgram: actual, primitiveProgram: primitive, compareSemanticSpec: false });
+  const artifact = { scope: "charts", capability: "labels", chart: "mark-labels", variant: fixture.name,
+    title: `Mark label facade: ${fixture.name}`,
+    userFacingCallChain: `source.createMarkLabels(${JSON.stringify({ ...fixture.style, ...fixture.content })})` };
+  const opts = { width: 480, height: 360, regions: [{ name: "marks", x: 40, y: 40, width: 400, height: 280, minimumInkPixels: 1000 }] };
+  const a = await assertRenderedPNG(primitive, { ...opts, artifact: { ...artifact, kind: "primitive" } });
+  const b = await assertRenderedPNG(actual, { ...opts, artifact: { ...artifact, kind: "user-facing" } });
+  assert.equal(a.pixelHash, b.pixelHash);
+});

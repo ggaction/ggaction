@@ -16,7 +16,7 @@ import { resolveTextGraphicEntries } from "../../../materialization/text.js";
 import { findLayer, resolveEligibleLayer } from "../../../selectors/layers.js";
 import { editMarkGraphic } from "../shared.js";
 
-const LAYOUT_OPTIONS = Object.freeze([
+export const TEXT_LABEL_LAYOUT_OPTIONS = Object.freeze([
   "target", "axis", "padding", "maxDisplacement", "bounds", "leader"
 ]);
 const REMOVE_OPTIONS = Object.freeze(["target"]);
@@ -252,7 +252,7 @@ const layoutLabels = action(
     description: "Assign deterministic collision-aware layout to a text mark."
   },
   function (args = {}) {
-    validateOptionObject(args, LAYOUT_OPTIONS, "layoutLabels");
+    validateOptionObject(args, TEXT_LABEL_LAYOUT_OPTIONS, "layoutLabels");
     const layer = requireCompleteText(this, args.target, "layoutLabels");
     const policy = normalizePolicy(args);
     const generatedId = leaderId(layer.id);

@@ -53,6 +53,7 @@ interface ChartProgramActions {
   createRuleMark(options?: { id?: string; data?: string } & RuleStyleOptions): ChartProgram;
   editRuleMark(options: { target?: string } & RuleStyleOptions): ChartProgram;
   createTextMark(options?: TextMarkOptions): ChartProgram;
+  createMarkLabels(options?: CreateMarkLabelsOptions): ChartProgram;
   editTextMark(options: EditTextMarkOptions): ChartProgram;
   layoutLabels(options?: LabelLayoutOptions): ChartProgram;
   removeLabelLayout(options?: RemoveLabelLayoutOptions): ChartProgram;

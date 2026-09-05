@@ -247,7 +247,7 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Gzip ceiling |
 | --- | ---: |
-| `ggaction` | 255,000 bytes |
+| `ggaction` | 256,000 bytes |
 | `ggaction/basic` | 141,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 
@@ -1671,6 +1671,10 @@ source encoding을 받아 `grammar/markLabels.js`에서 category/value/share를 
 Text encoding action과 source dependency plan이 내용과 anchor의 재계산을 명시적으로 실행한다.
 Typography, alignment, rotation과 `dx`/`dy`는 materialization config가 소유한다. Canvas 또는 scale edit은
 registered text policy를 통해 concrete label을 다시 만든다.
+
+`createMarkLabels`는 source-owned text 생성·content encoding·optional collision layout을
+기존 wrapped child action으로 조합하는 create-only facade다. 독립 facade registry 없이
+text/source relation과 하위 config가 결과와 후속 편집을 소유한다.
 
 Collision-aware label layout은 semantic text position을 다시 author하지 않는다.
 `materializationConfigs.labelLayouts[target]`이 requested axis/padding/distance/bounds/leader policy와 latest

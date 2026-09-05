@@ -937,7 +937,7 @@ async function testNodeConsumer(directory) {
     const semanticLabels = chart().createCanvas({ width: 480, height: 360, margin: 50 })
       .createData({ values: [{ category: "A", value: 1 }, { category: "A", value: 1 }, { category: "B", value: 6 }] })
       .createPiePlot({ category: "category", value: "value", aggregate: "sum", guides: false })
-      .createTextMark().encodeText({ content: "share", format: ".1%" });
+      .createMarkLabels({ id: "text", content: "share", format: ".1%", layout: {} });
     assert.deepEqual(semanticLabels.graphicSpec.objects.text.items.map(i => i.properties.text), ["25.0%", "75.0%"]);
     assert.deepEqual(semanticLabels.filterMarks({ target: "piePlot", field: "category", op: "eq", value: "B" })
       .graphicSpec.objects.text.items.map(i => i.properties.text), ["100.0%"]);
@@ -2191,6 +2191,12 @@ async function testTypeScriptConsumer(directory) {
     void withoutXAxis;
     void invalidTransform;
 
+    chart().createMarkLabels();
+    chart().createMarkLabels({ source: "bars", content: "share", format: ".0%", layout: { axis: "y" } });
+    // @ts-expect-error The facade retains exclusive text branches.
+    chart().createMarkLabels({ field: "x", content: "value" });
+    // @ts-expect-error Layout target is facade-owned.
+    chart().createMarkLabels({ layout: { target: "other" } });
     chart().encodeText({ content: "share", normalizeBy: "category", format: ".12%" });
     chart().encodeText({ content: "category" });
     chart().encodeText({ value: 0.5, format: ".01%" });

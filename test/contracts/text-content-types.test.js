@@ -16,10 +16,27 @@ test("text content and precision types match their runtime vocabularies", async 
     const paddedCalls = [...Array(10).keys()].flatMap(precision => ["f", "%"].map(suffix =>
       `p.encodeText({ value: 0.125, format: ".0${precision}${suffix}" });`));
     await writeFile(file, `
-import type { ChartProgram, TextEncodingOptions } from ${JSON.stringify(path.join(root, "types/index.js"))};
+import type { ChartProgram, TextEncodingOptions, CreateMarkLabelsOptions } from ${JSON.stringify(path.join(root, "types/index.js"))};
 declare const p: ChartProgram;
 const shared: TextEncodingOptions = { content: "share", normalizeBy: "category", format: ".1%" };
 p.encodeText(shared);
+const labels: CreateMarkLabelsOptions = { source: "bars", content: "share", normalizeBy: "category", layout: { axis: "y" } };
+p.createMarkLabels(labels);
+p.createMarkLabels();
+p.createMarkLabels({});
+p.createMarkLabels({ field: "value", layout: false });
+p.createMarkLabels({ value: "constant", fontSize: 18 });
+p.createMarkLabels({ format: ".1f", baseline: "bottom", dy: -4 });
+// @ts-expect-error Facade must preserve exclusive encoding branches.
+p.createMarkLabels({ field: "value", content: "value" });
+// @ts-expect-error No independent dataset in attached-label facade.
+p.createMarkLabels({ data: "data" });
+// @ts-expect-error Layout targets its own label layer.
+p.createMarkLabels({ layout: { target: "other" } });
+// @ts-expect-error Normalize requires an explicit share branch.
+p.createMarkLabels({ normalizeBy: "source" });
+// @ts-expect-error Invalid text format is rejected in facade too.
+p.createMarkLabels({ format: ".13f" });
 p.encodeText({ content: "value" });
 p.encodeText({ content: "category" });
 p.encodeText({ field: "value" });

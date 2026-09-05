@@ -63,6 +63,7 @@ interface ChartProgramActions {
   createRuleMark(options?: { id?: string; data?: string } & RuleStyleOptions): ChartProgram;
   editRuleMark(options: { target?: string } & RuleStyleOptions): ChartProgram;
   createTextMark(options?: TextMarkOptions): ChartProgram;
+  createMarkLabels(options?: CreateMarkLabelsOptions): ChartProgram;
   editTextMark(options: EditTextMarkOptions): ChartProgram;
   editAreaMark(options: { target?: string; fill?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; curve?: CurveInterpolation; }): ChartProgram;
   encodeX(options: PositionEncodingOptions | RulePositionEncodingOptions): ChartProgram;
@@ -790,10 +791,21 @@ Edit rect appearance and rematerialize complete cells. Constant fill conflicts
 with field-driven color. `stroke: false` disables the outline.
 [Rect marks](../api/marks/rect.md)
 
+### `createMarkLabels`
+
+```javascript
+createMarkLabels({ id?, source?, field?, value?, content?, normalizeBy?, format?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy?, layout? } = {})
+```
+
+Create final-item labels on an existing mark through text creation, encoding, and
+optional collision layout. The default content is the source's semantic value;
+Point/Rule/Rect require a field or constant. The default ID is `<source>-labels`.
+[Text marks](../api/marks/text.md)
+
 ### `createTextMark`
 
 ```javascript
-createTextMark({ id?, data?, text?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy? } = {})
+createTextMark({ id?, data?, source?, text?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy? } = {})
 ```
 
 Create a semantic text layer. Omitted data and position attach to the current

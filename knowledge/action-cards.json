@@ -3,7 +3,7 @@
   "packageVersion": "0.0.12",
   "typeSource": "types/program.d.ts",
   "errorPolicy": "An empty errors array means the compact card has no curated error override; consult the canonical route for validation, inference, and recovery behavior.",
-  "count": 194,
+  "count": 195,
   "cards": [
     {
       "schemaVersion": 2,
@@ -919,6 +919,135 @@
       "snippet": "program.createTickMark({})",
       "errors": [],
       "route": "/reference/actions/marks/#createtickmark"
+    },
+    {
+      "schemaVersion": 2,
+      "name": "createMarkLabels",
+      "layer": "user-facing",
+      "domain": "marks",
+      "summary": "Create final-item labels on an existing mark through text creation, encoding, and optional collision layout.",
+      "signature": "createMarkLabels(options?: CreateMarkLabelsOptions): ChartProgram;",
+      "intents": [
+        "create mark labels",
+        "create",
+        "add",
+        "graphical mark",
+        "mark appearance",
+        "mark labels",
+        "final-item values"
+      ],
+      "lifecycle": "Aggregate create-only",
+      "resources": {
+        "prerequisites": [
+          "dataset and coordinate context"
+        ],
+        "owns": [
+          "mark labels"
+        ],
+        "idOptions": [
+          "id",
+          "source"
+        ]
+      },
+      "options": [
+        {
+          "name": "id",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "source",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "fill",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "opacity",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "fontSize",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "fontFamily",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "fontWeight",
+          "required": false,
+          "type": "string | number | undefined"
+        },
+        {
+          "name": "align",
+          "required": false,
+          "type": "\"center\" | \"end\" | \"left\" | \"right\" | \"start\" | undefined"
+        },
+        {
+          "name": "baseline",
+          "required": false,
+          "type": "\"alphabetic\" | \"bottom\" | \"hanging\" | \"ideographic\" | \"middle\" | \"top\" | undefined"
+        },
+        {
+          "name": "rotation",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "dx",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "dy",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "layout",
+          "required": false,
+          "type": "false | Omit<LabelLayoutOptions, \"target\"> | undefined"
+        },
+        {
+          "name": "format",
+          "required": false,
+          "type": "TextFormat | undefined"
+        },
+        {
+          "name": "field",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "value",
+          "required": false,
+          "type": "unknown"
+        },
+        {
+          "name": "content",
+          "required": false,
+          "type": "\"category\" | \"share\" | \"value\" | undefined"
+        },
+        {
+          "name": "normalizeBy",
+          "required": false,
+          "type": "\"category\" | \"source\" | undefined"
+        }
+      ],
+      "callPatterns": [
+        "createMarkLabels()",
+        "createMarkLabels({ source?, content: \"share\", format: \".0%\", layout? })"
+      ],
+      "snippet": "program.createMarkLabels({})",
+      "errors": [],
+      "route": "/reference/actions/marks/#createmarklabels"
     },
     {
       "schemaVersion": 2,

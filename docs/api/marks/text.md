@@ -11,6 +11,45 @@ Text marks turn data values into visible labels. Add one after a compatible poin
 bar, rect, rule, or arc layer and ggaction persists that layer as the annotation
 source.
 
+## `createMarkLabels(options?)`
+
+Create final-item labels in one call, then use the lower text actions to refine them:
+
+```javascript
+import { chart } from "ggaction";
+
+const labeled = chart()
+  .createCanvas({ width: 480, height: 360, margin: 50 })
+  .createData({ values: [{ category: "A", value: 2 }, { category: "B", value: 6 }] })
+  .createPiePlot({ category: "category", value: "value", aggregate: "sum", guides: false })
+  .createMarkLabels({ content: "share", format: ".0%", fontSize: 20 });
+// Labels: 25%, 75%; the created layer is "piePlot-labels".
+const refined = labeled.editTextMark({ target: "piePlot-labels", fontWeight: "bold" });
+```
+
+The current compatible mark, then one unique compatible mark, supplies the source.
+Use `source` to choose explicitly. The default ID is `<source>-labels`; additional
+label layers on the same source require explicit IDs. Each label uses the source's
+final visual item, so aggregated marks do not get duplicate labels for input rows.
+
+Omitting `field`, `value`, and `content` selects `content: "value"` for a supported
+Bar or Arc. Use `content: "category"` or `"share"` for other semantic content, `field`
+for raw/common fields, or `value` for a constant. These choices are exclusive.
+Point, Rule, and Rect labels require a field or constant. Format defaults to
+`"auto"`; shares need an explicit percent format to display percentages.
+
+Text is centered horizontally and vertically at the existing source anchor. Use
+`baseline: "bottom", dy: -4` to place labels above an endpoint, or other ordinary
+text style options. `layout: {}` enables collision avoidance, and a layout object
+accepts `layoutLabels` options except `target`. Omission or `false` preserves source
+anchors without collision layout. An incomplete explicit source is supported when
+layout is disabled; call `layoutLabels` after completing it.
+
+The result is an ordinary text layer: edit it with `encodeText`, `editTextMark`,
+`layoutLabels`, or `removeLabelLayout`. Source changes replay the labels. The existing
+mark ownership rule removes attached labels when their source is removed; it does
+not support removing an attached label layer alone.
+
 ## `createTextMark(options?)`
 
 ```javascript

@@ -2399,6 +2399,16 @@ export type TextEncodingOptions = {
   | { field?: never; value?: never; content: "share"; normalizeBy?: "source" | "category" }
 );
 
+/** Attached final-item labels; lower text actions own subsequent edits. */
+export type CreateMarkLabelsOptions = Omit<TextMarkOptions, "data" | "text"> & {
+  layout?: false | Omit<LabelLayoutOptions, "target">;
+} & (
+  | (TextEncodingOptions extends infer Options
+      ? Options extends TextEncodingOptions ? Omit<Options, "target"> : never
+      : never)
+  | { field?: never; value?: never; content?: never; normalizeBy?: never; format?: TextFormat }
+);
+
 export type BarWidthOptions = { target?: string } & (
   | { band?: number; pixels?: never }
   | { band?: never; pixels: number }
@@ -3007,6 +3017,7 @@ export class ChartProgram {
   createRuleMark(options?: { id?: string; data?: string } & RuleStyleOptions): ChartProgram;
   editRuleMark(options: { target?: string } & RuleStyleOptions): ChartProgram;
   createTextMark(options?: TextMarkOptions): ChartProgram;
+  createMarkLabels(options?: CreateMarkLabelsOptions): ChartProgram;
   editTextMark(options: EditTextMarkOptions): ChartProgram;
   layoutLabels(options?: LabelLayoutOptions): ChartProgram;
   removeLabelLayout(options?: RemoveLabelLayoutOptions): ChartProgram;

@@ -60,6 +60,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createLegend`](./actions/guides.md#createlegend) | user-facing | legend_and_title |
 | [`createLineMark`](./actions/marks.md#createlinemark) | user-facing | marks |
 | [`createLinePlot`](./actions/charts-data.md#createlineplot) | user-facing | charts |
+| [`createMarkLabels`](./actions/marks.md#createmarklabels) | user-facing | marks |
 | [`createParallelAxes`](./actions/advanced.md#createparallelaxes-createparallelaxis-editparallelaxis-removeparallelaxis-removeparallelaxes) | user-facing | axes |
 | [`createParallelAxis`](./actions/advanced.md#createparallelaxes-createparallelaxis-editparallelaxis-removeparallelaxis-removeparallelaxes) | user-facing | axes |
 | [`createParallelCoordinates`](./actions/charts-data.md#createparallelcoordinates) | user-facing | charts |

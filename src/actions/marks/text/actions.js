@@ -1,3 +1,4 @@
+import { TEXT_LABEL_LAYOUT_OPTIONS } from "./layout.js";
 import { action } from "../../../core/action.js";
 import { validateUserId } from "../../../core/identifiers.js";
 import {
@@ -149,6 +150,56 @@ const createTextMark = action(
   }
 );
 
+const LABEL_OPTIONS = Object.freeze([
+  "id", "source", "field", "value", "content", "normalizeBy", "format", "layout",
+  ...STYLE_OPTIONS
+]);
+
+const createMarkLabels = action(
+  {
+    op: "createMarkLabels",
+    description: "Create final-item text labels attached to an existing mark."
+  },
+  function (args = {}) {
+    validateMarkOptions(args, LABEL_OPTIONS, "createMarkLabels");
+    const inherited = resolveTextInheritance(this, args);
+    if (inherited === undefined) {
+      throw new Error("createMarkLabels requires an eligible source mark; provide source explicitly.");
+    }
+    const id = validateUserId(args.id === undefined ? `${inherited.source}-labels` : args.id, "Text mark id");
+    assertMarkAvailable(this, id);
+    const style = Object.fromEntries(STYLE_OPTIONS
+      .filter(option => Object.hasOwn(args, option))
+      .map(option => [option, args[option]]));
+    normalizeTextMarkConfig(style);
+    const encoding = Object.fromEntries(
+      ["field", "value", "content", "normalizeBy", "format"]
+        .filter(option => Object.hasOwn(args, option))
+        .map(option => [option, args[option]])
+    );
+    if (!["field", "value", "content"].some(option => Object.hasOwn(args, option))) {
+      encoding.content = "value";
+    }
+    const layout = args.layout === undefined || args.layout === false ? undefined : args.layout;
+    if (layout !== undefined && Object.hasOwn(layout ?? {}, "target")) {
+      throw new Error("createMarkLabels layout target is owned by the created label layer.");
+    }
+    const apply = program => {
+      const next = program.createTextMark({
+        id, source: inherited.source, align: "center", baseline: "middle", ...style
+      }).encodeText({ target: id, ...encoding });
+      return layout === undefined ? next : next.layoutLabels({ ...layout, target: id });
+    };
+    if (layout !== undefined) {
+      // Validate object shape before spreading it into the child action's options.
+      validateMarkOptions(layout, TEXT_LABEL_LAYOUT_OPTIONS, "createMarkLabels layout");
+    }
+    // Validate all child effects on a discarded immutable branch, as scale edits do.
+    apply(this);
+    return apply(this);
+  }
+);
+
 const rematerializeTextMark = action(
   {
     op: "rematerializeTextMark",
@@ -222,6 +273,7 @@ const editTextMark = action(
 export function registerTextMarkActions(ProgramClass) {
   Object.assign(ProgramClass.prototype, {
     createTextMark,
+    createMarkLabels,
     editTextMark,
     rematerializeTextMark
   });
