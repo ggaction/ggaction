@@ -1,10 +1,10 @@
-# Phase 3 — A 검증과 구현 acceptance
+# Phase 3 — A/V 검증과 구현 acceptance
 
-상태: 계약 검토용 기준 증거. 새 API 구현 결과는 아니다.
+상태: A 승인 기준과 V primitive 검증 증거. 새 API 구현 결과는 아니다.
 공개 결정은 [CONTRACT_REVIEW.md](CONTRACT_REVIEW.md), 승인 경계는 [GATES.md](GATES.md)가 소유한다.
 검토 package [`bd18718a9c1aed5f91b485bc1aeab54616e9e5a3`](https://github.com/ggaction/ggaction/commit/bd18718a9c1aed5f91b485bc1aeab54616e9e5a3)을 원격 branch에 push했다.
 
-## 실제 실행한 검증
+## A 준비 당시 실행한 검증
 
 기준 commit `9625e71c374868756652fb8dff8153dc61500c6e`, source tree
 `9d3bd5e26b67634851e6009faac4b8c7c9e15002`, types tree `25e66ad6bb83ea1481194255e3521d5f2911dbea`.
@@ -73,6 +73,34 @@ A 준비 중 Arc scalar fill→color는 이미 오류였고, Horizon의 explicit
 probe와 계약을 교정했다. 최종 관측은 성공 여부뿐 아니라 error message, actual encoding/provenance,
 count/guide/trace를 보존한다. Source 수정은 없었다.
 
+## A 승인 이후 실제 검증
+
+세 계약을 Planned에 등록했다(Current 174, Planned 3). Public facade와 declarations는 미구현이다.
+Primitive source는 `fa603c29e820014caae7b8c0d9d205b34e2cc241`이며 원격 branch에 push했다.
+
+| 검증 | 결과 |
+| --- | --- |
+| Planned registry / contracts | 260/260, fail/skip 0 |
+| 새 active slice의 normal tests | 19/19; sector commands, KDE samples, Horizon folded rows와 guides·정확한 target calls |
+| 전체 normal suite | 2,451/2,451, fail/cancelled/skipped 0. 이전 2,432에 새 19개 추가 |
+| 세 slice의 PNG render tests | 9/9, 2000×1400 PNG, 12개 plot 영역의 ink와 필요한 색 확인 |
+| Commit에 고정한 review generator | 9개 primitive 재생성, source/input/semantic/graphics/order/Canvas/PNG/decoded pixel hash 기록 |
+| Generated HTML의 실제 브라우저 확인 | 9개 image 로드, 9개 표시 호출이 manifest와 일치, page error·viewport overflow 0 |
+| 최종 navigation/documentation truth·기존 baseline 재현 | 10/10, 기존 52/52 관측 일치; 원래 program/trace 불변 |
+| 검토 원장·source/artifact 정합성 | 9 variants, source 파일 hash 54회·PNG hash 9개·metadata 호출 9개 일치. 47 findings / 46 work packages / 12 phases, F20 제외 |
+| 변경 Markdown local links | 16 files의 481개 경로/heading 확인. 기존 navigation test와 같은 case-insensitive fragment 정책; 기존 mixed-case 21개 포함 |
+| 새 public flow와 parity | 미실행. V 승인 뒤 구현 범위 |
+
+독립 oracle와 실제 PNG·call은 [VISUAL_REVIEW.md](VISUAL_REVIEW.md),
+기계 판독 결과는 [visual-results.json](visual-results.json)을 따른다.
+Density grid의 잘못된 테스트 가정을 y축 기준으로 고쳤고, Horizon 시각 fixture는 7개 관측값으로 구체화했다.
+API/options/default/source/types는 바꾸지 않았다. 기존 2점 baseline은 보존한다.
+
+Local logs: `.artifacts/roadmap6-authoring/phase3-planned-contracts.log`, `phase3-normal.log`,
+`phase3-visual-normal.log`, `phase3-final-focused.log`, `phase3-visual-render.log`,
+`phase3-review-generation.log`, `phase3-review-html.log`, `phase3-navigation.log`,
+`phase3-baseline-replay.log`, `phase3-review-integrity.json`, `phase3-links.json`. 재현 명령은 시각 검토 문서에 있다.
+
 ## 동일 source의 누적 기준
 
 [Phase 2 결과](../phase2/REVIEW.md)의 normal suite **2,432/2,432**, realistic **167/167**,
@@ -91,7 +119,7 @@ Full/Basic/SVG gzip은 234,258 / 124,897 / 6,418 bytes다. 이 package를 Phase 
 | H0 completion | 필수 category, count/sum, theta만으로 sectors | 필수 field, baseline KDE+area | 필수 x/y, signed bands; all-baseline만 정당한 empty |
 | Lower parity | Same source/arc/theta/color/guide chain | Same source/KDE params/orientation/color/guide | Same source/folding/coordinate/opacity/guide |
 | Numeric oracle | count 2:1, weight 5:5, sum of sweep, ratio .55 | 고정 Gaussian/grid 수치, group N과 count/unit 비율 | sign별 band clipping, extent·bandHeight, folded [0,1], timestamp |
-| Guide defaults | axes/grid 0, category color legend 1 | value/density axes, 방향별 grid, explicit group color legend | x axis/vertical grid만 |
+| Guide defaults | axes/grid 0, category color legend 1 | value/density axes, 두 방향 모두 현행 y축 기준 horizontal grid, explicit group color legend | x axis/vertical grid만 |
 | Guide conflicts | axes/grid object, 없는 color의 explicit legend, foreign target | foreign coordinate/scale/legend·unsupported gradient | y/horizontal/legend false 외 요청, foreign x scale |
 | Reuse | Compatible Arc categorical recipe reuse, missing parts completion | Existing compatible axes/grid/color legend | Existing compatible x guides; explicit tick/style 충돌 |
 | Scalar style | color+fill 오류, color:false+fill, padAngle/radius/opacity | color+fill 오류, explicit area style, lower stroke 제한 | palette ownership, explicit opacity가 encode 뒤 적용 |
@@ -129,7 +157,7 @@ Full/Basic/SVG gzip은 234,258 / 124,897 / 6,418 bytes다. 이 package를 Phase 
 
 ## V evidence와 closeout
 
-A 뒤 9개 primitive targets를 source/manifest/dimensions/values/public call과 함께 작성하고 렌더링한다.
+승인된 A에 따라 9개 primitive targets를 source/manifest/dimensions/values/public call과 함께 작성·렌더링했다.
 `.artifacts/test/png/review/<chart>/<variant>/`와 git의 source를 함께 제공한다.
 V에서는 plot-region ink와 independent numeric oracle를 확인하고, 새 public API를 실행했다고 표기하지 않는다.
 

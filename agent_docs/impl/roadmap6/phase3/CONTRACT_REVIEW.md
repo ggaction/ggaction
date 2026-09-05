@@ -122,9 +122,10 @@ filtered data와의 조합은 현재 consumer가 지원하는 범위를 검증�
 ## V와 X에 남기는 작업
 
 V 대상은 Pie count/weighted/donut 3종, Density vertical/grouped/horizontal 3종,
-Horizon signed/temporal/baseline+style edit 3종의 **9개 target 계획**이다.
-정확한 values·dimensions·public call chain은 각 chart 계약이 제안하고, 실제 primitive source/manifest/images는
-A 승인 뒤 작성하여 V에서 확인받는다. 이번 package에는 새 primitive render나 미래 public API 실행 결과가 없다.
+Horizon signed/temporal/baseline+style edit 3종의 **9개 target**이다.
+A 검토 package에는 새 primitive render나 미래 public API 실행 결과가 없었다.
+A 승인 뒤 실제 source/manifest/images를 작성·검증했으며 [V 검토](VISUAL_REVIEW.md)에 정확한 values·dimensions·public call과
+기존 Density grid의 명확화·Horizon 7점 fixture를 기록했다. 새 public API는 아직 미구현이다.
 
 V 승인 뒤 public flow를 연결하고, 같은 실행의 concrete graphicSpec·draw order·Canvas calls·decoded PNG pixels와
 독립 numeric oracle를 비교한다. 유효한 Horizon empty는 별도 numeric acceptance로 검증해 plot-ink 판정을 우회하지 않는다.

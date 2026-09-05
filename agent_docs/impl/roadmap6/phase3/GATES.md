@@ -3,8 +3,8 @@
 ## 공통 상태
 
 Phase 2 X 결과 승인은 기록했다. **R6-P3-A는 2026-09-05 사용자 “승인한다”로 approved**다.
-V/X는 planned다. 허용 상태: planned | ready-for-review | approved | changes-requested.
-승인된 비시각 계약 준비와 primitive target 작성을 진행한다. 신규 public 시각 flow는 V 승인 전까지 구현하지 않는다.
+V는 ready-for-review, X는 planned다. 허용 상태: planned | ready-for-review | approved | changes-requested.
+세 Planned 등록과 9개 primitive target 작성을 완료했다. 신규 public 시각 flow는 V 승인 전까지 구현하지 않는다.
 
 ## R6-P3-A — Contract and scope
 
@@ -25,13 +25,19 @@ V/X는 planned다. 허용 상태: planned | ready-for-review | approved | change
 
 ## R6-P3-V — Visual target
 
-- 상태: planned
-- 제안 target: Pie count/weighted/donut, Density vertical/grouped/horizontal,
-  Horizon signed/temporal/baseline-style의 총 9개. Exact input/call은 chart 계약에 있다.
-- 필요 증거: git의 executable primitive source, target public call, semantic 결과, single manifest의
-  values/dimensions/identity, 실제 image와 plot-region ink·독립 numeric oracle.
+- 상태: ready-for-review
+- 검토: [VISUAL_REVIEW.md](VISUAL_REVIEW.md). Pie count/weighted/donut, Density vertical/grouped/horizontal,
+  Horizon signed/temporal/baseline-style의 총 9개. Exact input/call은 single manifests와 generated 화면에 있다.
+- Primitive source commit: [`fa603c29e820014caae7b8c0d9d205b34e2cc241`](https://github.com/ggaction/ggaction/commit/fa603c29e820014caae7b8c0d9d205b34e2cc241), 원격 push 완료.
+- 증거: [source·input·semantic·PNG·pixel 결과](visual-results.json), [generator](render-review.mjs),
+  [실제 이미지와 정확한 public call](../../../../.artifacts/roadmap6-authoring/phase3-visual-review.html),
+  [9개 이미지 개요](../../../../.artifacts/roadmap6-authoring/phase3-visual-overview.png).
+- 검증: normal 2,451/2,451(새 slice 19 포함), PNG 9/9, 12개 plot 영역의 ink와 필요한 색·독립 numeric oracle.
+- A 이후 명확화: Density 자동 grid는 두 orientation 모두 현행 y축 기준 horizontal.
+  Horizon V 입력은 band 구분을 위해 2점에서 7개 관측값으로 구체화했다. 기존 2점 baseline과 production 의미는 유지했다.
 - Artifact: `.artifacts/test/png/review/<chart>/<variant>/`와 generated variant.json.
-- 현재: 새 source/manifest/image는 미작성. 기존 baseline lower rendering을 새 V 승인으로 재사용하지 않는다.
+- 현재: accepted Planned 3개 / Current 174개, 신규 public API 미구현. Public parity 미실행.
+- Source/types: A에서 검증한 tree와 동일. Full/Basic/SVG ceilings 변경 없음.
 - 승인 효과: 확인한 variant의 public action flow 구현만 연다.
 - 승인 전 차단: 새 public flow와 primitive/public equality 완료 선언. 독립 target 수정은 별도 V 검토한다.
 
@@ -61,4 +67,4 @@ V/X는 planned다. 허용 상태: planned | ready-for-review | approved | change
 - 효과: Planned 등록·비시각 준비·primitive target 작성 가능. V/X와 조건부 bundle B는 승인하지 않았다.
 - 실제 검증: baseline 52/52, related existing tests 176/176, 문서 lower calls 3/3, 최종 navigation 10/10, local links 214개. 재현 명령은 [VALIDATION.md](VALIDATION.md).
 - Planned 등록: accepted 3개, Current 174개 유지. `npm run test:contracts` 260/260, fail/skip 0.
-- 남은 작업: primitive targets와 V 승인, public implementation·누적 acceptance·X 승인.
+- 남은 작업: V 승인, public implementation·누적 acceptance·X 승인.

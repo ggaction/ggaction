@@ -10,15 +10,16 @@
 - [x] A 명시적 사용자 승인 기록
 - [x] 승인된 새 계약의 Planned 등록과 비시각 준비
 - [x] 9개 primitive targets 작성·수치 검증·렌더링
-- [ ] 검토 package·정확한 호출·이미지 표시와 V 승인
+- [x] V 검토 문서·정확한 호출·이미지와 source 증거 작성
+- [ ] V package 원격 ref 고정과 명시적 사용자 승인
 - [ ] R6-P3-W1 Pie/Donut public flow와 lower lifecycle
 - [ ] R6-P3-W2 Density public flow와 lower lifecycle
 - [ ] R6-P3-W3 Horizon public flow와 lower lifecycle
 - [ ] Same-run public/primitive parity·누적 검증·문서·원장 동기화
 - [ ] X package commit/push와 명시적 사용자 승인 기록
 
-A 계약 준비·원격 고정과 사용자 승인까지 완료했다. V/X 승인이나 새 API의 구현 완료를 뜻하지 않는다.
-[계약 검토](CONTRACT_REVIEW.md), [Gate](GATES.md), [검증](VALIDATION.md)가 현재 evidence를 소유한다.
+A 승인과 primitive 작성·검증을 완료했다. V/X 승인이나 새 API의 구현 완료를 뜻하지 않는다.
+[계약 검토](CONTRACT_REVIEW.md), [시각 검토](VISUAL_REVIEW.md), [Gate](GATES.md), [검증](VALIDATION.md)가 현재 evidence를 소유한다.
 
 ## 실행 순서와 경계
 

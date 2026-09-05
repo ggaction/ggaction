@@ -1,0 +1,2148 @@
+{
+  "version": 1,
+  "sourceCommit": "fa603c29e820014caae7b8c0d9d205b34e2cc241",
+  "runtimeSourceTree": "9d3bd5e26b67634851e6009faac4b8c7c9e15002",
+  "typesTree": "25e66ad6bb83ea1481194255e3521d5f2911dbea",
+  "environment": {
+    "node": "v22.23.1",
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "newPublicApisImplemented": 0,
+  "publicParity": "not-run",
+  "output": ".artifacts/roadmap6-authoring/phase3-visual-review.html",
+  "overview": ".artifacts/roadmap6-authoring/phase3-visual-overview.png",
+  "variants": [
+    {
+      "chart": "pie-plot",
+      "variant": "count",
+      "title": "Pie: category count",
+      "publicImplementation": "not-implemented",
+      "publicParity": "pending-visual-approval-and-implementation",
+      "userFacingCallChain": "chart()\n  .createCanvas({\"width\":1000,\"height\":700,\"margin\":150})\n  .createData({\"id\":\"source\",\"values\":[{\"category\":\"A\",\"value\":2},{\"category\":\"A\",\"value\":3},{\"category\":\"B\",\"value\":5}]})\n  .createPiePlot({\"id\":\"pie\",\"category\":\"category\"});",
+      "inputSha256": "6b61b0b6980f41820b8386b08c87d2051461b0b850908f2611a9afd524f4f040",
+      "callChainSha256": "b0a532df8273575f79420c4aafc70018d49dcf720771da89253b11407cb86222",
+      "sources": [
+        {
+          "path": "test/gates/pie-plot/reference-values.js",
+          "sha256": "86e8ab189989cfc79e34e320b80ba608bcd253af2fe1d43b91048b53740fe263"
+        },
+        {
+          "path": "test/gates/pie-plot/primitive.program.js",
+          "sha256": "dd7e67c0550aad0f492baf86cf0462cd771c6da0616e4ff0ff7a7df0d93128b7"
+        },
+        {
+          "path": "test/gates/pie-plot/primitive.test.js",
+          "sha256": "78f995f578405d1dd4864c023b661eb0905c3513c26f95897ee75db0c8e91907"
+        },
+        {
+          "path": "test/gates/pie-plot/manifest.js",
+          "sha256": "42171ce7fcdaf439e7a2d43e11b3ccc5143c8294dbda3c08649f8cbead978b9e"
+        },
+        {
+          "path": "test/gates/pie-plot/png.render.js",
+          "sha256": "b42ce85c9e6419fca704b46ed9c99c01bd9bb7d03528a9e58165bbb2f90bd38d"
+        },
+        {
+          "path": "test/charts/polar-arcs/reference-values.js",
+          "sha256": "b0061cb30663eae54a98f8926349e7444793db3464a7fa5ae6b184b2f8956767"
+        }
+      ],
+      "logicalWidth": 1000,
+      "logicalHeight": 700,
+      "pixelWidth": 2000,
+      "pixelHeight": 1400,
+      "pixelRatio": 2,
+      "semanticSha256": "f367812d1031647d6ed3b2ce4e1b2cc7a6683a13e43e05c0643c67452225cc4f",
+      "graphicSha256": "a441d48fc39f555deefd02a2c11ec9570007f223c8e74177c1e066f0bdf6ed0b",
+      "drawingOrderSha256": "2f975674a3dcd0b5a7159b11e3db7fdcaf1808739ced5706404e70b19f2658d8",
+      "canvasCallsSha256": "aef107b138c188db1b9081b4ef67d53099b0659bbfd0c909fc7e6bc4b419f026",
+      "primitiveTopLevelTrace": [
+        {
+          "op": "createCanvas",
+          "args": {
+            "width": 1000,
+            "height": 700,
+            "margin": 150
+          }
+        },
+        {
+          "op": "createData",
+          "args": {
+            "id": "source",
+            "valuesCount": 3
+          }
+        },
+        {
+          "op": "createArcMark",
+          "args": {
+            "id": "pie",
+            "data": "source"
+          }
+        },
+        {
+          "op": "encodeTheta",
+          "args": {
+            "target": "pie",
+            "field": "category",
+            "fieldType": "nominal",
+            "aggregate": "count"
+          }
+        },
+        {
+          "op": "encodeColor",
+          "args": {
+            "target": "pie",
+            "field": "category"
+          }
+        },
+        {
+          "op": "createGuides",
+          "args": {
+            "axes": false,
+            "grid": false,
+            "legend": {
+              "target": "pie"
+            }
+          }
+        }
+      ],
+      "semanticResult": {
+        "layer": {
+          "id": "pie",
+          "mark": {
+            "type": "arc"
+          },
+          "data": "source",
+          "coordinate": "polar",
+          "encoding": {
+            "theta": {
+              "field": "category",
+              "fieldType": "nominal",
+              "aggregate": "count",
+              "scale": "theta"
+            },
+            "color": {
+              "field": "category",
+              "fieldType": "nominal",
+              "scale": "color"
+            }
+          }
+        },
+        "datasets": [
+          {
+            "id": "source",
+            "rowCount": 3
+          }
+        ],
+        "guides": {
+          "legend": {
+            "color": {
+              "scale": "color",
+              "title": "category"
+            }
+          }
+        },
+        "resolvedScales": {
+          "theta": {
+            "type": "band",
+            "domain": [
+              "A",
+              "B"
+            ],
+            "range": [
+              0,
+              360
+            ],
+            "step": 180,
+            "start": 0,
+            "bandwidth": 180,
+            "align": 0.5,
+            "paddingInner": 0,
+            "paddingOuter": 0
+          },
+          "color": {
+            "type": "ordinal",
+            "domain": [
+              "A",
+              "B"
+            ],
+            "range": [
+              "#4c78a8",
+              "#f58518",
+              "#e45756",
+              "#72b7b2",
+              "#54a24b",
+              "#eeca3b",
+              "#b279a2",
+              "#ff9da6",
+              "#9d755d",
+              "#bab0ac"
+            ]
+          }
+        },
+        "markConfig": {
+          "innerRadius": 0,
+          "padAngle": 0,
+          "opacity": 1,
+          "stroke": "#ffffff",
+          "strokeWidth": 1
+        },
+        "pathCount": 2
+      },
+      "meaning": "Category count A:B = 2:1; 240° and 120°; category legend only.",
+      "render": {
+        "png": ".artifacts/test/png/review/pie-plot/count/primitive.png",
+        "pngSha256": "774ed61b2728045d3dafacbef787d386758f8e2dfef3ea9dbe84dd9df1013cb3",
+        "pixelSha256": "e19c77e54f1d59f85318702e838c5144018cd73b30d5002932e8780d53a888fe",
+        "plotRegions": [
+          {
+            "name": "sectors",
+            "inkPixels": 500131,
+            "colorCounts": {
+              "#4c78a8": 331461,
+              "#f58518": 165223
+            }
+          }
+        ]
+      }
+    },
+    {
+      "chart": "pie-plot",
+      "variant": "weighted",
+      "title": "Pie: explicit weighted sum",
+      "publicImplementation": "not-implemented",
+      "publicParity": "pending-visual-approval-and-implementation",
+      "userFacingCallChain": "chart()\n  .createCanvas({\"width\":1000,\"height\":700,\"margin\":150})\n  .createData({\"id\":\"source\",\"values\":[{\"category\":\"A\",\"value\":2},{\"category\":\"A\",\"value\":3},{\"category\":\"B\",\"value\":5}]})\n  .createPiePlot({\"id\":\"pie\",\"category\":\"category\",\"value\":\"value\",\"aggregate\":\"sum\"});",
+      "inputSha256": "6b61b0b6980f41820b8386b08c87d2051461b0b850908f2611a9afd524f4f040",
+      "callChainSha256": "40efbee500c88f96a2f044b13ef0cbfef8b0721781d20b8db1a1e349f6bcb6c3",
+      "sources": [
+        {
+          "path": "test/gates/pie-plot/reference-values.js",
+          "sha256": "86e8ab189989cfc79e34e320b80ba608bcd253af2fe1d43b91048b53740fe263"
+        },
+        {
+          "path": "test/gates/pie-plot/primitive.program.js",
+          "sha256": "dd7e67c0550aad0f492baf86cf0462cd771c6da0616e4ff0ff7a7df0d93128b7"
+        },
+        {
+          "path": "test/gates/pie-plot/primitive.test.js",
+          "sha256": "78f995f578405d1dd4864c023b661eb0905c3513c26f95897ee75db0c8e91907"
+        },
+        {
+          "path": "test/gates/pie-plot/manifest.js",
+          "sha256": "42171ce7fcdaf439e7a2d43e11b3ccc5143c8294dbda3c08649f8cbead978b9e"
+        },
+        {
+          "path": "test/gates/pie-plot/png.render.js",
+          "sha256": "b42ce85c9e6419fca704b46ed9c99c01bd9bb7d03528a9e58165bbb2f90bd38d"
+        },
+        {
+          "path": "test/charts/polar-arcs/reference-values.js",
+          "sha256": "b0061cb30663eae54a98f8926349e7444793db3464a7fa5ae6b184b2f8956767"
+        }
+      ],
+      "logicalWidth": 1000,
+      "logicalHeight": 700,
+      "pixelWidth": 2000,
+      "pixelHeight": 1400,
+      "pixelRatio": 2,
+      "semanticSha256": "a930c4ce1d148a9b2a9d4d2ffbd6983c00c47e04d4188a635dbfcf11e07d017b",
+      "graphicSha256": "6a1473ddb1b3f1076c8aeda776eeda8a4bdef4d43ec85c708e09c6a85cfc9f41",
+      "drawingOrderSha256": "2f975674a3dcd0b5a7159b11e3db7fdcaf1808739ced5706404e70b19f2658d8",
+      "canvasCallsSha256": "e79a523d92019245f40423dc3c6310bda4141c2c518f4204db796071107df2d3",
+      "primitiveTopLevelTrace": [
+        {
+          "op": "createCanvas",
+          "args": {
+            "width": 1000,
+            "height": 700,
+            "margin": 150
+          }
+        },
+        {
+          "op": "createData",
+          "args": {
+            "id": "source",
+            "valuesCount": 3
+          }
+        },
+        {
+          "op": "createArcMark",
+          "args": {
+            "id": "pie",
+            "data": "source"
+          }
+        },
+        {
+          "op": "encodeTheta",
+          "args": {
+            "target": "pie",
+            "field": "category",
+            "fieldType": "nominal",
+            "aggregate": "sum",
+            "weight": "value"
+          }
+        },
+        {
+          "op": "encodeColor",
+          "args": {
+            "target": "pie",
+            "field": "category"
+          }
+        },
+        {
+          "op": "createGuides",
+          "args": {
+            "axes": false,
+            "grid": false,
+            "legend": {
+              "target": "pie"
+            }
+          }
+        }
+      ],
+      "semanticResult": {
+        "layer": {
+          "id": "pie",
+          "mark": {
+            "type": "arc"
+          },
+          "data": "source",
+          "coordinate": "polar",
+          "encoding": {
+            "theta": {
+              "field": "category",
+              "fieldType": "nominal",
+              "aggregate": "sum",
+              "weight": "value",
+              "scale": "theta"
+            },
+            "color": {
+              "field": "category",
+              "fieldType": "nominal",
+              "scale": "color"
+            }
+          }
+        },
+        "datasets": [
+          {
+            "id": "source",
+            "rowCount": 3
+          }
+        ],
+        "guides": {
+          "legend": {
+            "color": {
+              "scale": "color",
+              "title": "category"
+            }
+          }
+        },
+        "resolvedScales": {
+          "theta": {
+            "type": "band",
+            "domain": [
+              "A",
+              "B"
+            ],
+            "range": [
+              0,
+              360
+            ],
+            "step": 180,
+            "start": 0,
+            "bandwidth": 180,
+            "align": 0.5,
+            "paddingInner": 0,
+            "paddingOuter": 0
+          },
+          "color": {
+            "type": "ordinal",
+            "domain": [
+              "A",
+              "B"
+            ],
+            "range": [
+              "#4c78a8",
+              "#f58518",
+              "#e45756",
+              "#72b7b2",
+              "#54a24b",
+              "#eeca3b",
+              "#b279a2",
+              "#ff9da6",
+              "#9d755d",
+              "#bab0ac"
+            ]
+          }
+        },
+        "markConfig": {
+          "innerRadius": 0,
+          "padAngle": 0,
+          "opacity": 1,
+          "stroke": "#ffffff",
+          "strokeWidth": 1
+        },
+        "pathCount": 2
+      },
+      "meaning": "Explicit sum A:B = 5:5; 180° per sector; no axes or grid.",
+      "render": {
+        "png": ".artifacts/test/png/review/pie-plot/weighted/primitive.png",
+        "pngSha256": "32db3de077c692777353052871e144993d53229f747b0d7fc2507d4ccb1aa055",
+        "pixelSha256": "96c582a03bf01acc29333e359c45f681978d97845d2ac8bb950437dff3d0c7c9",
+        "plotRegions": [
+          {
+            "name": "sectors",
+            "inkPixels": 499859,
+            "colorCounts": {
+              "#4c78a8": 248596,
+              "#f58518": 248611
+            }
+          }
+        ]
+      }
+    },
+    {
+      "chart": "pie-plot",
+      "variant": "donut",
+      "title": "Donut: ratio and padding",
+      "publicImplementation": "not-implemented",
+      "publicParity": "pending-visual-approval-and-implementation",
+      "userFacingCallChain": "chart()\n  .createCanvas({\"width\":1000,\"height\":700,\"margin\":150})\n  .createData({\"id\":\"source\",\"values\":[{\"category\":\"A\",\"value\":2},{\"category\":\"A\",\"value\":3},{\"category\":\"B\",\"value\":5}]})\n  .createPiePlot({\"id\":\"pie\",\"category\":\"category\",\"value\":\"value\",\"aggregate\":\"sum\",\"arc\":{\"innerRadius\":0.55,\"padAngle\":2}});",
+      "inputSha256": "6b61b0b6980f41820b8386b08c87d2051461b0b850908f2611a9afd524f4f040",
+      "callChainSha256": "a83f787d3a3124237fae22462a705db8a5434a396a054cefbd8531ad3891a80a",
+      "sources": [
+        {
+          "path": "test/gates/pie-plot/reference-values.js",
+          "sha256": "86e8ab189989cfc79e34e320b80ba608bcd253af2fe1d43b91048b53740fe263"
+        },
+        {
+          "path": "test/gates/pie-plot/primitive.program.js",
+          "sha256": "dd7e67c0550aad0f492baf86cf0462cd771c6da0616e4ff0ff7a7df0d93128b7"
+        },
+        {
+          "path": "test/gates/pie-plot/primitive.test.js",
+          "sha256": "78f995f578405d1dd4864c023b661eb0905c3513c26f95897ee75db0c8e91907"
+        },
+        {
+          "path": "test/gates/pie-plot/manifest.js",
+          "sha256": "42171ce7fcdaf439e7a2d43e11b3ccc5143c8294dbda3c08649f8cbead978b9e"
+        },
+        {
+          "path": "test/gates/pie-plot/png.render.js",
+          "sha256": "b42ce85c9e6419fca704b46ed9c99c01bd9bb7d03528a9e58165bbb2f90bd38d"
+        },
+        {
+          "path": "test/charts/polar-arcs/reference-values.js",
+          "sha256": "b0061cb30663eae54a98f8926349e7444793db3464a7fa5ae6b184b2f8956767"
+        }
+      ],
+      "logicalWidth": 1000,
+      "logicalHeight": 700,
+      "pixelWidth": 2000,
+      "pixelHeight": 1400,
+      "pixelRatio": 2,
+      "semanticSha256": "a930c4ce1d148a9b2a9d4d2ffbd6983c00c47e04d4188a635dbfcf11e07d017b",
+      "graphicSha256": "17e3efe4b9f0b5476c381d259ec598927e54f6dcd8e7ae9ac0a07372ca322844",
+      "drawingOrderSha256": "2f975674a3dcd0b5a7159b11e3db7fdcaf1808739ced5706404e70b19f2658d8",
+      "canvasCallsSha256": "0bd2dbb58bf50c2f00645d781290ef2d208aa2ae8812df9708e13edb03c69dd2",
+      "primitiveTopLevelTrace": [
+        {
+          "op": "createCanvas",
+          "args": {
+            "width": 1000,
+            "height": 700,
+            "margin": 150
+          }
+        },
+        {
+          "op": "createData",
+          "args": {
+            "id": "source",
+            "valuesCount": 3
+          }
+        },
+        {
+          "op": "createArcMark",
+          "args": {
+            "id": "pie",
+            "data": "source",
+            "innerRadius": 0.55,
+            "padAngle": 2
+          }
+        },
+        {
+          "op": "encodeTheta",
+          "args": {
+            "target": "pie",
+            "field": "category",
+            "fieldType": "nominal",
+            "aggregate": "sum",
+            "weight": "value"
+          }
+        },
+        {
+          "op": "encodeColor",
+          "args": {
+            "target": "pie",
+            "field": "category"
+          }
+        },
+        {
+          "op": "createGuides",
+          "args": {
+            "axes": false,
+            "grid": false,
+            "legend": {
+              "target": "pie"
+            }
+          }
+        }
+      ],
+      "semanticResult": {
+        "layer": {
+          "id": "pie",
+          "mark": {
+            "type": "arc"
+          },
+          "data": "source",
+          "coordinate": "polar",
+          "encoding": {
+            "theta": {
+              "field": "category",
+              "fieldType": "nominal",
+              "aggregate": "sum",
+              "weight": "value",
+              "scale": "theta"
+            },
+            "color": {
+              "field": "category",
+              "fieldType": "nominal",
+              "scale": "color"
+            }
+          }
+        },
+        "datasets": [
+          {
+            "id": "source",
+            "rowCount": 3
+          }
+        ],
+        "guides": {
+          "legend": {
+            "color": {
+              "scale": "color",
+              "title": "category"
+            }
+          }
+        },
+        "resolvedScales": {
+          "theta": {
+            "type": "band",
+            "domain": [
+              "A",
+              "B"
+            ],
+            "range": [
+              0,
+              360
+            ],
+            "step": 180,
+            "start": 0,
+            "bandwidth": 180,
+            "align": 0.5,
+            "paddingInner": 0,
+            "paddingOuter": 0
+          },
+          "color": {
+            "type": "ordinal",
+            "domain": [
+              "A",
+              "B"
+            ],
+            "range": [
+              "#4c78a8",
+              "#f58518",
+              "#e45756",
+              "#72b7b2",
+              "#54a24b",
+              "#eeca3b",
+              "#b279a2",
+              "#ff9da6",
+              "#9d755d",
+              "#bab0ac"
+            ]
+          }
+        },
+        "markConfig": {
+          "innerRadius": 0.55,
+          "padAngle": 2,
+          "opacity": 1,
+          "stroke": "#ffffff",
+          "strokeWidth": 1
+        },
+        "pathCount": 2
+      },
+      "meaning": "The same 5:5 partition; inner-radius ratio 0.55 and 2° padding.",
+      "render": {
+        "png": ".artifacts/test/png/review/pie-plot/donut/primitive.png",
+        "pngSha256": "54fee5df69eaccb7a6bd7eb8a5cc9bac91e61d166ec97d6879f5a10cf4e3bb1b",
+        "pixelSha256": "4188ad7456dcbbf53e472d5d8d3b89ea8128723861974c29c0e9e58830556fa1",
+        "plotRegions": [
+          {
+            "name": "sectors",
+            "inkPixels": 344386,
+            "colorCounts": {
+              "#4c78a8": 169787,
+              "#f58518": 169792
+            }
+          }
+        ]
+      }
+    },
+    {
+      "chart": "density-plot",
+      "variant": "vertical",
+      "title": "Density: one quantitative variable",
+      "publicImplementation": "not-implemented",
+      "publicParity": "pending-visual-approval-and-implementation",
+      "userFacingCallChain": "chart()\n  .createCanvas({\"width\":1000,\"height\":700,\"margin\":150})\n  .createData({\"id\":\"source\",\"values\":[{\"value\":1,\"group\":\"A\"},{\"value\":2,\"group\":\"A\"},{\"value\":3,\"group\":\"B\"},{\"value\":5,\"group\":\"B\"}]})\n  .createDensityPlot({\"id\":\"density\",\"field\":\"value\",\"bandwidth\":1,\"extent\":[0,6],\"steps\":61});",
+      "inputSha256": "b1f32858b7fed0bae8073e943422034fa5516057629c92932568c338e3bd47a3",
+      "callChainSha256": "e2ea0c63adf87c8612e6a419d7d5c0987aa3a079fccf13c4199957c3d9c8232a",
+      "sources": [
+        {
+          "path": "test/gates/density-plot/reference-values.js",
+          "sha256": "90331e00a58bee39e5ea8745de38ebd4ef288609bbf08833856ebe1379426380"
+        },
+        {
+          "path": "test/gates/density-plot/primitive.program.js",
+          "sha256": "3201973b4a8da4981520539739260854d17c876a1284e33310d1610a9f6e62d7"
+        },
+        {
+          "path": "test/gates/density-plot/primitive.test.js",
+          "sha256": "78310d8cc378751414c10fc74bf76024a9f8354d2deacc2346d27aab4eb60df9"
+        },
+        {
+          "path": "test/gates/density-plot/manifest.js",
+          "sha256": "bf6f7f04fc71d275b44da4e427993b9d3b92068254487222dd67f59d5f3aee32"
+        },
+        {
+          "path": "test/gates/density-plot/png.render.js",
+          "sha256": "b42ce85c9e6419fca704b46ed9c99c01bd9bb7d03528a9e58165bbb2f90bd38d"
+        },
+        {
+          "path": "test/oracles/gaussian-profile.js",
+          "sha256": "7ee2ea8f0f7e61b1bd842230a1c507d15ef3856c01624eebd5f399bb32b47088"
+        }
+      ],
+      "logicalWidth": 1000,
+      "logicalHeight": 700,
+      "pixelWidth": 2000,
+      "pixelHeight": 1400,
+      "pixelRatio": 2,
+      "semanticSha256": "329f30776be365bd38399dddc80c34e03a64fa2294712738c6e0db2f634af63a",
+      "graphicSha256": "ad0b0ed1761e37d021590e7054ac3a8080a40b8dae16d6450dd131fb15c95979",
+      "drawingOrderSha256": "2f975674a3dcd0b5a7159b11e3db7fdcaf1808739ced5706404e70b19f2658d8",
+      "canvasCallsSha256": "13179787a8659b23f165495feff827302bfc37d0adf6ce948af0a0305e3c3831",
+      "primitiveTopLevelTrace": [
+        {
+          "op": "createCanvas",
+          "args": {
+            "width": 1000,
+            "height": 700,
+            "margin": 150
+          }
+        },
+        {
+          "op": "createData",
+          "args": {
+            "id": "source",
+            "valuesCount": 4
+          }
+        },
+        {
+          "op": "createAreaMark",
+          "args": {
+            "id": "density",
+            "data": "source"
+          }
+        },
+        {
+          "op": "encodeDensity",
+          "args": {
+            "target": "density",
+            "field": "value",
+            "bandwidth": 1,
+            "extentCount": 2,
+            "steps": 61
+          }
+        },
+        {
+          "op": "createGuides",
+          "args": {}
+        }
+      ],
+      "semanticResult": {
+        "layer": {
+          "id": "density",
+          "mark": {
+            "type": "area"
+          },
+          "data": "densityDensityData",
+          "coordinate": "main",
+          "encoding": {
+            "x": {
+              "field": "value_value",
+              "fieldType": "quantitative",
+              "scale": "x"
+            },
+            "y": {
+              "field": "value_density",
+              "fieldType": "quantitative",
+              "scale": "y"
+            }
+          }
+        },
+        "datasets": [
+          {
+            "id": "source",
+            "rowCount": 4
+          },
+          {
+            "id": "densityDensityData",
+            "source": "source",
+            "rowCount": 61,
+            "transform": [
+              {
+                "type": "density",
+                "field": "value",
+                "bandwidth": 1,
+                "extent": [
+                  0,
+                  6
+                ],
+                "steps": 61,
+                "kernel": "gaussian",
+                "normalization": "unit",
+                "as": [
+                  "value_value",
+                  "value_density"
+                ],
+                "resolve": "shared",
+                "resolved": {
+                  "bandwidth": 1,
+                  "extent": [
+                    0,
+                    6
+                  ]
+                }
+              }
+            ]
+          }
+        ],
+        "guides": {
+          "axis": {
+            "x": {
+              "coordinate": "main",
+              "scale": "x",
+              "title": "value"
+            },
+            "y": {
+              "coordinate": "main",
+              "scale": "y",
+              "title": "Density"
+            }
+          },
+          "grid": {
+            "horizontal": {
+              "scale": "y",
+              "coordinate": "main"
+            }
+          }
+        },
+        "resolvedScales": {
+          "x": {
+            "type": "linear",
+            "domain": [
+              0,
+              6
+            ],
+            "range": [
+              150,
+              850
+            ]
+          },
+          "y": {
+            "type": "linear",
+            "domain": [
+              0,
+              0.25
+            ],
+            "range": [
+              550,
+              150
+            ]
+          }
+        },
+        "markConfig": {
+          "fill": "#4c78a8",
+          "opacity": 0.2
+        },
+        "pathCount": 1
+      },
+      "meaning": "One Gaussian KDE profile, 61 samples; x = value, y = density; no inferred group color.",
+      "render": {
+        "png": ".artifacts/test/png/review/density-plot/vertical/primitive.png",
+        "pngSha256": "02d7f86887e4fc49fac9494cccf1b6984865095bc4395090baaa3768b7f3def1",
+        "pixelSha256": "8ab6ffe79bc616020ea127c0f661e7be266bf73b260f0ca9bf8bb6570d29b1cd",
+        "plotRegions": [
+          {
+            "name": "density-profiles",
+            "inkPixels": 650496,
+            "colorCounts": {
+              "#dbe4ee": 638358
+            }
+          }
+        ]
+      }
+    },
+    {
+      "chart": "density-plot",
+      "variant": "grouped",
+      "title": "Density: explicit groups and color",
+      "publicImplementation": "not-implemented",
+      "publicParity": "pending-visual-approval-and-implementation",
+      "userFacingCallChain": "chart()\n  .createCanvas({\"width\":1000,\"height\":700,\"margin\":150})\n  .createData({\"id\":\"source\",\"values\":[{\"value\":1,\"group\":\"A\"},{\"value\":2,\"group\":\"A\"},{\"value\":3,\"group\":\"B\"},{\"value\":5,\"group\":\"B\"}]})\n  .createDensityPlot({\"id\":\"density\",\"field\":\"value\",\"groupBy\":\"group\",\"color\":\"group\",\"bandwidth\":1,\"extent\":[0,6],\"steps\":61});",
+      "inputSha256": "b1f32858b7fed0bae8073e943422034fa5516057629c92932568c338e3bd47a3",
+      "callChainSha256": "cb5ed8ca588f4bf0546d9d8a6a02b0bdcc17c03827edba442bceb1d116b0ca19",
+      "sources": [
+        {
+          "path": "test/gates/density-plot/reference-values.js",
+          "sha256": "90331e00a58bee39e5ea8745de38ebd4ef288609bbf08833856ebe1379426380"
+        },
+        {
+          "path": "test/gates/density-plot/primitive.program.js",
+          "sha256": "3201973b4a8da4981520539739260854d17c876a1284e33310d1610a9f6e62d7"
+        },
+        {
+          "path": "test/gates/density-plot/primitive.test.js",
+          "sha256": "78310d8cc378751414c10fc74bf76024a9f8354d2deacc2346d27aab4eb60df9"
+        },
+        {
+          "path": "test/gates/density-plot/manifest.js",
+          "sha256": "bf6f7f04fc71d275b44da4e427993b9d3b92068254487222dd67f59d5f3aee32"
+        },
+        {
+          "path": "test/gates/density-plot/png.render.js",
+          "sha256": "b42ce85c9e6419fca704b46ed9c99c01bd9bb7d03528a9e58165bbb2f90bd38d"
+        },
+        {
+          "path": "test/oracles/gaussian-profile.js",
+          "sha256": "7ee2ea8f0f7e61b1bd842230a1c507d15ef3856c01624eebd5f399bb32b47088"
+        }
+      ],
+      "logicalWidth": 1000,
+      "logicalHeight": 700,
+      "pixelWidth": 2000,
+      "pixelHeight": 1400,
+      "pixelRatio": 2,
+      "semanticSha256": "83d5063c9e27f3a31c8b59cd8f21e5220ca55d946eeb7e538a25bcd329d89924",
+      "graphicSha256": "1bec98f30974c875b8c7d8eadb739c4d59a93444a59f6a0703474f90ec318c88",
+      "drawingOrderSha256": "2f975674a3dcd0b5a7159b11e3db7fdcaf1808739ced5706404e70b19f2658d8",
+      "canvasCallsSha256": "f4e27813e66e06dfdd9b807fa24076226b23614308cb013a06f5a032821c1699",
+      "primitiveTopLevelTrace": [
+        {
+          "op": "createCanvas",
+          "args": {
+            "width": 1000,
+            "height": 700,
+            "margin": 150
+          }
+        },
+        {
+          "op": "createData",
+          "args": {
+            "id": "source",
+            "valuesCount": 4
+          }
+        },
+        {
+          "op": "createAreaMark",
+          "args": {
+            "id": "density",
+            "data": "source"
+          }
+        },
+        {
+          "op": "encodeDensity",
+          "args": {
+            "target": "density",
+            "field": "value",
+            "groupBy": "group",
+            "bandwidth": 1,
+            "extentCount": 2,
+            "steps": 61
+          }
+        },
+        {
+          "op": "encodeColor",
+          "args": {
+            "target": "density",
+            "field": "group"
+          }
+        },
+        {
+          "op": "createGuides",
+          "args": {
+            "legend": {
+              "target": "density"
+            }
+          }
+        }
+      ],
+      "semanticResult": {
+        "layer": {
+          "id": "density",
+          "mark": {
+            "type": "area"
+          },
+          "data": "densityDensityData",
+          "coordinate": "main",
+          "encoding": {
+            "x": {
+              "field": "value_value",
+              "fieldType": "quantitative",
+              "scale": "x"
+            },
+            "y": {
+              "field": "value_density",
+              "fieldType": "quantitative",
+              "scale": "y",
+              "stack": null
+            },
+            "group": {
+              "field": "group",
+              "fieldType": "nominal"
+            },
+            "color": {
+              "field": "group",
+              "fieldType": "nominal",
+              "scale": "color",
+              "layout": "overlay"
+            }
+          }
+        },
+        "datasets": [
+          {
+            "id": "source",
+            "rowCount": 4
+          },
+          {
+            "id": "densityDensityData",
+            "source": "source",
+            "rowCount": 122,
+            "transform": [
+              {
+                "type": "density",
+                "field": "value",
+                "groupBy": "group",
+                "bandwidth": 1,
+                "extent": [
+                  0,
+                  6
+                ],
+                "steps": 61,
+                "kernel": "gaussian",
+                "normalization": "unit",
+                "as": [
+                  "value_value",
+                  "value_density"
+                ],
+                "resolve": "shared",
+                "resolved": {
+                  "bandwidth": 1,
+                  "extent": [
+                    0,
+                    6
+                  ]
+                }
+              }
+            ]
+          }
+        ],
+        "guides": {
+          "axis": {
+            "x": {
+              "coordinate": "main",
+              "scale": "x",
+              "title": "value"
+            },
+            "y": {
+              "coordinate": "main",
+              "scale": "y",
+              "title": "Density"
+            }
+          },
+          "grid": {
+            "horizontal": {
+              "scale": "y",
+              "coordinate": "main"
+            }
+          },
+          "legend": {
+            "color": {
+              "scale": "color",
+              "title": "group"
+            }
+          }
+        },
+        "resolvedScales": {
+          "x": {
+            "type": "linear",
+            "domain": [
+              0,
+              6
+            ],
+            "range": [
+              150,
+              850
+            ]
+          },
+          "y": {
+            "type": "linear",
+            "domain": [
+              0,
+              0.4
+            ],
+            "range": [
+              550,
+              150
+            ]
+          },
+          "color": {
+            "type": "ordinal",
+            "domain": [
+              "A",
+              "B"
+            ],
+            "range": [
+              "#4c78a8",
+              "#f58518",
+              "#e45756",
+              "#72b7b2",
+              "#54a24b",
+              "#eeca3b",
+              "#b279a2",
+              "#ff9da6",
+              "#9d755d",
+              "#bab0ac"
+            ]
+          }
+        },
+        "markConfig": {
+          "fill": "#4c78a8",
+          "opacity": 0.2
+        },
+        "pathCount": 2
+      },
+      "meaning": "Two Gaussian KDE profiles, 122 samples; group identity and group color are explicit.",
+      "render": {
+        "png": ".artifacts/test/png/review/density-plot/grouped/primitive.png",
+        "pngSha256": "8d9943b8fb652c4f7f0a39cc578a7a733cd1d0e4f67526e830d3b1b53affd6ce",
+        "pixelSha256": "bf8c5e3881ea4bb82b5e55b4a5c17319b5c234376ef73015a8cdda345b44da71",
+        "plotRegions": [
+          {
+            "name": "density-profiles",
+            "inkPixels": 659392,
+            "colorCounts": {
+              "#dbe4ee": 255727,
+              "#fde7d2": 257435
+            }
+          }
+        ]
+      }
+    },
+    {
+      "chart": "density-plot",
+      "variant": "horizontal",
+      "title": "Density: horizontal orientation",
+      "publicImplementation": "not-implemented",
+      "publicParity": "pending-visual-approval-and-implementation",
+      "userFacingCallChain": "chart()\n  .createCanvas({\"width\":1000,\"height\":700,\"margin\":150})\n  .createData({\"id\":\"source\",\"values\":[{\"value\":1,\"group\":\"A\"},{\"value\":2,\"group\":\"A\"},{\"value\":3,\"group\":\"B\"},{\"value\":5,\"group\":\"B\"}]})\n  .createDensityPlot({\"id\":\"density\",\"field\":\"value\",\"groupBy\":\"group\",\"color\":\"group\",\"densityChannel\":\"x\",\"bandwidth\":1,\"extent\":[0,6],\"steps\":61});",
+      "inputSha256": "b1f32858b7fed0bae8073e943422034fa5516057629c92932568c338e3bd47a3",
+      "callChainSha256": "a128341948fb1d9583a753cd25e03ff8de3dc584e8d3b9f4c839128900da53cf",
+      "sources": [
+        {
+          "path": "test/gates/density-plot/reference-values.js",
+          "sha256": "90331e00a58bee39e5ea8745de38ebd4ef288609bbf08833856ebe1379426380"
+        },
+        {
+          "path": "test/gates/density-plot/primitive.program.js",
+          "sha256": "3201973b4a8da4981520539739260854d17c876a1284e33310d1610a9f6e62d7"
+        },
+        {
+          "path": "test/gates/density-plot/primitive.test.js",
+          "sha256": "78310d8cc378751414c10fc74bf76024a9f8354d2deacc2346d27aab4eb60df9"
+        },
+        {
+          "path": "test/gates/density-plot/manifest.js",
+          "sha256": "bf6f7f04fc71d275b44da4e427993b9d3b92068254487222dd67f59d5f3aee32"
+        },
+        {
+          "path": "test/gates/density-plot/png.render.js",
+          "sha256": "b42ce85c9e6419fca704b46ed9c99c01bd9bb7d03528a9e58165bbb2f90bd38d"
+        },
+        {
+          "path": "test/oracles/gaussian-profile.js",
+          "sha256": "7ee2ea8f0f7e61b1bd842230a1c507d15ef3856c01624eebd5f399bb32b47088"
+        }
+      ],
+      "logicalWidth": 1000,
+      "logicalHeight": 700,
+      "pixelWidth": 2000,
+      "pixelHeight": 1400,
+      "pixelRatio": 2,
+      "semanticSha256": "bdc0765d7a19305b6434139a56d088083a48049eadbc216e3179fba0f748adc5",
+      "graphicSha256": "7b8132d936613f311087b777ab5230f5480adc87de8e37cbdd3f4ba6de8b2c06",
+      "drawingOrderSha256": "2f975674a3dcd0b5a7159b11e3db7fdcaf1808739ced5706404e70b19f2658d8",
+      "canvasCallsSha256": "dfde59a610c7c8f420ba18ca9de681704bb460ddd4c3723a28161ce5963bb72c",
+      "primitiveTopLevelTrace": [
+        {
+          "op": "createCanvas",
+          "args": {
+            "width": 1000,
+            "height": 700,
+            "margin": 150
+          }
+        },
+        {
+          "op": "createData",
+          "args": {
+            "id": "source",
+            "valuesCount": 4
+          }
+        },
+        {
+          "op": "createAreaMark",
+          "args": {
+            "id": "density",
+            "data": "source"
+          }
+        },
+        {
+          "op": "encodeDensity",
+          "args": {
+            "target": "density",
+            "field": "value",
+            "groupBy": "group",
+            "densityChannel": "x",
+            "bandwidth": 1,
+            "extentCount": 2,
+            "steps": 61
+          }
+        },
+        {
+          "op": "encodeColor",
+          "args": {
+            "target": "density",
+            "field": "group"
+          }
+        },
+        {
+          "op": "createGuides",
+          "args": {
+            "legend": {
+              "target": "density"
+            }
+          }
+        }
+      ],
+      "semanticResult": {
+        "layer": {
+          "id": "density",
+          "mark": {
+            "type": "area"
+          },
+          "data": "densityDensityData",
+          "coordinate": "main",
+          "encoding": {
+            "x": {
+              "field": "value_density",
+              "fieldType": "quantitative",
+              "scale": "x"
+            },
+            "y": {
+              "field": "value_value",
+              "fieldType": "quantitative",
+              "scale": "y",
+              "stack": null
+            },
+            "group": {
+              "field": "group",
+              "fieldType": "nominal"
+            },
+            "color": {
+              "field": "group",
+              "fieldType": "nominal",
+              "scale": "color",
+              "layout": "overlay"
+            }
+          }
+        },
+        "datasets": [
+          {
+            "id": "source",
+            "rowCount": 4
+          },
+          {
+            "id": "densityDensityData",
+            "source": "source",
+            "rowCount": 122,
+            "transform": [
+              {
+                "type": "density",
+                "field": "value",
+                "groupBy": "group",
+                "bandwidth": 1,
+                "extent": [
+                  0,
+                  6
+                ],
+                "steps": 61,
+                "kernel": "gaussian",
+                "normalization": "unit",
+                "as": [
+                  "value_value",
+                  "value_density"
+                ],
+                "resolve": "shared",
+                "resolved": {
+                  "bandwidth": 1,
+                  "extent": [
+                    0,
+                    6
+                  ]
+                }
+              }
+            ]
+          }
+        ],
+        "guides": {
+          "axis": {
+            "x": {
+              "coordinate": "main",
+              "scale": "x",
+              "title": "Density"
+            },
+            "y": {
+              "coordinate": "main",
+              "scale": "y",
+              "title": "value"
+            }
+          },
+          "grid": {
+            "horizontal": {
+              "scale": "y",
+              "coordinate": "main"
+            }
+          },
+          "legend": {
+            "color": {
+              "scale": "color",
+              "title": "group"
+            }
+          }
+        },
+        "resolvedScales": {
+          "x": {
+            "type": "linear",
+            "domain": [
+              0,
+              0.4
+            ],
+            "range": [
+              150,
+              850
+            ]
+          },
+          "y": {
+            "type": "linear",
+            "domain": [
+              0,
+              6
+            ],
+            "range": [
+              550,
+              150
+            ]
+          },
+          "color": {
+            "type": "ordinal",
+            "domain": [
+              "A",
+              "B"
+            ],
+            "range": [
+              "#4c78a8",
+              "#f58518",
+              "#e45756",
+              "#72b7b2",
+              "#54a24b",
+              "#eeca3b",
+              "#b279a2",
+              "#ff9da6",
+              "#9d755d",
+              "#bab0ac"
+            ]
+          }
+        },
+        "markConfig": {
+          "fill": "#4c78a8",
+          "opacity": 0.2
+        },
+        "pathCount": 2
+      },
+      "meaning": "The same two profiles; x = density, y = value; the current y-based horizontal grid remains.",
+      "render": {
+        "png": ".artifacts/test/png/review/density-plot/horizontal/primitive.png",
+        "pngSha256": "c11a115bdc35571e2ddfa6aae81335b298134b842c447317dcd07fda5c1c87f5",
+        "pixelSha256": "354ab4335f16fd1026e281e9ec47821282175e9fd556931c79aa3e8c57ea2cab",
+        "plotRegions": [
+          {
+            "name": "density-profiles",
+            "inkPixels": 662143,
+            "colorCounts": {
+              "#dbe4ee": 251822,
+              "#fde7d2": 256290
+            }
+          }
+        ]
+      }
+    },
+    {
+      "chart": "horizon-plot",
+      "variant": "signed",
+      "title": "Horizon: signed amplitude",
+      "publicImplementation": "not-implemented",
+      "publicParity": "pending-visual-approval-and-implementation",
+      "userFacingCallChain": "chart()\n  .createCanvas({\"width\":1000,\"height\":700,\"margin\":150})\n  .createData({\"id\":\"source\",\"values\":[{\"time\":0,\"value\":-4},{\"time\":1,\"value\":-3},{\"time\":2,\"value\":-1},{\"time\":3,\"value\":0},{\"time\":4,\"value\":1},{\"time\":5,\"value\":3},{\"time\":6,\"value\":4}]})\n  .createHorizonPlot({\"id\":\"horizon\",\"x\":\"time\",\"y\":\"value\"});",
+      "inputSha256": "a9ec4821321bc588e0599c70cc7491eed2cf3abf27d010451bd82cff754afb0d",
+      "callChainSha256": "a1b8791092c39c46dd95b9087db3c13f576446627bc819824980a6a86f6a8938",
+      "sources": [
+        {
+          "path": "test/gates/horizon-plot/reference-values.js",
+          "sha256": "78c72e8cf2360906794972eb742e1ba1df0a3d791cad3637698bc088a26f3cb1"
+        },
+        {
+          "path": "test/gates/horizon-plot/primitive.program.js",
+          "sha256": "8b92cb8f09633646ca01a82df6452a739d2f1ac1a878eda6bab65f42c9c0fedf"
+        },
+        {
+          "path": "test/gates/horizon-plot/primitive.test.js",
+          "sha256": "11ed52cc9fc5360f85dce1b724904be7a571be6b6a660164e8c752d9f342ef82"
+        },
+        {
+          "path": "test/gates/horizon-plot/manifest.js",
+          "sha256": "d8fd97cbe785ae14761a315f105cb822ed3849dd3b9ff1720c1cb2b145424297"
+        },
+        {
+          "path": "test/gates/horizon-plot/png.render.js",
+          "sha256": "b42ce85c9e6419fca704b46ed9c99c01bd9bb7d03528a9e58165bbb2f90bd38d"
+        },
+        {
+          "path": "test/oracles/horizon.js",
+          "sha256": "490c651e433e870cb9fece14f7be28ab68eaff1c290278de8d3093d59607d266"
+        }
+      ],
+      "logicalWidth": 1000,
+      "logicalHeight": 700,
+      "pixelWidth": 2000,
+      "pixelHeight": 1400,
+      "pixelRatio": 2,
+      "semanticSha256": "f5f5dcff9d793ac3eb1cd8860c2e5cbaa2e2c4036fd1288a858fb56c7e798eb9",
+      "graphicSha256": "2272c0212630e81837d9bd9dd60ae22c1bbb58e902131d67831bd6dab6222a6d",
+      "drawingOrderSha256": "2f975674a3dcd0b5a7159b11e3db7fdcaf1808739ced5706404e70b19f2658d8",
+      "canvasCallsSha256": "3bfc775579a2dd8526bc0ea9802d4e056060a86a71c5dd724e05cc011ee39c6a",
+      "primitiveTopLevelTrace": [
+        {
+          "op": "createCanvas",
+          "args": {
+            "width": 1000,
+            "height": 700,
+            "margin": 150
+          }
+        },
+        {
+          "op": "createData",
+          "args": {
+            "id": "source",
+            "valuesCount": 7
+          }
+        },
+        {
+          "op": "createAreaMark",
+          "args": {
+            "id": "horizon",
+            "data": "source"
+          }
+        },
+        {
+          "op": "encodeHorizon",
+          "args": {
+            "target": "horizon",
+            "x": "time",
+            "y": "value"
+          }
+        },
+        {
+          "op": "createGuides",
+          "args": {}
+        }
+      ],
+      "semanticResult": {
+        "layer": {
+          "id": "horizon",
+          "mark": {
+            "type": "area"
+          },
+          "data": "horizonHorizonData",
+          "coordinate": "main",
+          "encoding": {
+            "x": {
+              "field": "horizonHorizonX",
+              "fieldType": "quantitative",
+              "scale": "x",
+              "title": "Time"
+            },
+            "y": {
+              "field": "horizonHorizonLower",
+              "fieldType": "quantitative",
+              "scale": "horizonHorizonAmplitude"
+            },
+            "group": {
+              "field": "horizonHorizonGroup",
+              "fieldType": "nominal"
+            },
+            "y2": {
+              "field": "horizonHorizonUpper",
+              "fieldType": "quantitative",
+              "scale": "horizonHorizonAmplitude"
+            },
+            "color": {
+              "field": "horizonHorizonColor",
+              "fieldType": "nominal",
+              "scale": "horizonHorizonColor",
+              "layout": "overlay"
+            }
+          }
+        },
+        "datasets": [
+          {
+            "id": "source",
+            "rowCount": 7
+          },
+          {
+            "id": "horizonHorizonData",
+            "source": "source",
+            "rowCount": 24,
+            "transform": [
+              {
+                "type": "horizon",
+                "x": {
+                  "field": "time",
+                  "fieldType": "quantitative"
+                },
+                "y": {
+                  "field": "value",
+                  "fieldType": "quantitative"
+                },
+                "bands": 3,
+                "baseline": 0,
+                "extent": "auto",
+                "resolve": "shared",
+                "missing": "break",
+                "overflow": "clip",
+                "palette": {
+                  "positive": {
+                    "name": "blues"
+                  },
+                  "negative": {
+                    "name": "reds"
+                  }
+                },
+                "as": {
+                  "x": "horizonHorizonX",
+                  "lower": "horizonHorizonLower",
+                  "upper": "horizonHorizonUpper",
+                  "group": "horizonHorizonGroup",
+                  "color": "horizonHorizonColor",
+                  "sign": "horizonHorizonSign",
+                  "band": "horizonHorizonBand",
+                  "segment": "horizonHorizonSegment"
+                },
+                "resolved": {
+                  "extents": [
+                    {
+                      "extent": 4,
+                      "bandHeight": 1.3333333333333333
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ],
+        "guides": {
+          "axis": {
+            "x": {
+              "coordinate": "main",
+              "scale": "x",
+              "title": "Time"
+            }
+          },
+          "grid": {
+            "vertical": {
+              "scale": "x",
+              "coordinate": "main"
+            }
+          }
+        },
+        "resolvedScales": {
+          "x": {
+            "type": "linear",
+            "domain": [
+              0,
+              6
+            ],
+            "range": [
+              150,
+              850
+            ]
+          },
+          "horizonHorizonAmplitude": {
+            "type": "linear",
+            "domain": [
+              0,
+              1
+            ],
+            "range": [
+              550,
+              150
+            ]
+          },
+          "horizonHorizonColor": {
+            "type": "ordinal",
+            "domain": [
+              "negative:0",
+              "negative:1",
+              "negative:2",
+              "positive:0",
+              "positive:1",
+              "positive:2"
+            ],
+            "range": [
+              "#fdc9b4",
+              "#fa7051",
+              "#970b13",
+              "#cfe1f2",
+              "#74b2d7",
+              "#0a4a90"
+            ]
+          }
+        },
+        "markConfig": {
+          "fill": "#4c78a8",
+          "opacity": 1
+        },
+        "pathCount": 6
+      },
+      "meaning": "Seven samples, three bands per sign, six paths and 24 folded rows; x guides only.",
+      "render": {
+        "png": ".artifacts/test/png/review/horizon-plot/signed/primitive.png",
+        "pngSha256": "1977fe5826baf7d3936f03cf3e0addcc0e831ca7a31ca31f9450cd444a195eb9",
+        "pixelSha256": "bea129433aca32f2428a30ce154089b2f5d0c264ef2aafe9e8fc4ccb2594702a",
+        "plotRegions": [
+          {
+            "name": "negative-amplitude",
+            "inkPixels": 349718,
+            "colorCounts": {
+              "#fdc9b4": 123509,
+              "#fa7051": 123846,
+              "#970b13": 99383
+            }
+          },
+          {
+            "name": "positive-amplitude",
+            "inkPixels": 349681,
+            "colorCounts": {
+              "#cfe1f2": 123578,
+              "#74b2d7": 123843,
+              "#0a4a90": 99383
+            }
+          }
+        ]
+      }
+    },
+    {
+      "chart": "horizon-plot",
+      "variant": "temporal",
+      "title": "Horizon: explicit timestamps",
+      "publicImplementation": "not-implemented",
+      "publicParity": "pending-visual-approval-and-implementation",
+      "userFacingCallChain": "chart()\n  .createCanvas({\"width\":1000,\"height\":700,\"margin\":150})\n  .createData({\"id\":\"source\",\"values\":[{\"time\":1000,\"value\":-4},{\"time\":1100,\"value\":-3},{\"time\":1300,\"value\":-1},{\"time\":1500,\"value\":0},{\"time\":1700,\"value\":1},{\"time\":1900,\"value\":3},{\"time\":2000,\"value\":4}]})\n  .createHorizonPlot({\"id\":\"horizon\",\"x\":{\"field\":\"time\",\"fieldType\":\"temporal\",\"temporalUnit\":\"timestamp\",\"scale\":{\"nice\":false}},\"y\":\"value\"});",
+      "inputSha256": "56aa426fee4b7363452bdf3e821714db1011748b585599965f8c47a3ddadd44f",
+      "callChainSha256": "db7299da0927910f94b5f6672c754196c1cee3ea3b9ff3f7caa6b3d2aca3adb2",
+      "sources": [
+        {
+          "path": "test/gates/horizon-plot/reference-values.js",
+          "sha256": "78c72e8cf2360906794972eb742e1ba1df0a3d791cad3637698bc088a26f3cb1"
+        },
+        {
+          "path": "test/gates/horizon-plot/primitive.program.js",
+          "sha256": "8b92cb8f09633646ca01a82df6452a739d2f1ac1a878eda6bab65f42c9c0fedf"
+        },
+        {
+          "path": "test/gates/horizon-plot/primitive.test.js",
+          "sha256": "11ed52cc9fc5360f85dce1b724904be7a571be6b6a660164e8c752d9f342ef82"
+        },
+        {
+          "path": "test/gates/horizon-plot/manifest.js",
+          "sha256": "d8fd97cbe785ae14761a315f105cb822ed3849dd3b9ff1720c1cb2b145424297"
+        },
+        {
+          "path": "test/gates/horizon-plot/png.render.js",
+          "sha256": "b42ce85c9e6419fca704b46ed9c99c01bd9bb7d03528a9e58165bbb2f90bd38d"
+        },
+        {
+          "path": "test/oracles/horizon.js",
+          "sha256": "490c651e433e870cb9fece14f7be28ab68eaff1c290278de8d3093d59607d266"
+        }
+      ],
+      "logicalWidth": 1000,
+      "logicalHeight": 700,
+      "pixelWidth": 2000,
+      "pixelHeight": 1400,
+      "pixelRatio": 2,
+      "semanticSha256": "dfe99393e0015b0090792c3f77a65866e375d2a9dcea67062d6f169271755cbf",
+      "graphicSha256": "c7b79aba2ba647013e2ca98ba069318b357cb3ca0fdb79e4910cdc7d5245a800",
+      "drawingOrderSha256": "2f975674a3dcd0b5a7159b11e3db7fdcaf1808739ced5706404e70b19f2658d8",
+      "canvasCallsSha256": "b0ad93364a6f917bad260d79791b8a961586db004f4c57b7a47883b0c1464976",
+      "primitiveTopLevelTrace": [
+        {
+          "op": "createCanvas",
+          "args": {
+            "width": 1000,
+            "height": 700,
+            "margin": 150
+          }
+        },
+        {
+          "op": "createData",
+          "args": {
+            "id": "source",
+            "valuesCount": 7
+          }
+        },
+        {
+          "op": "createAreaMark",
+          "args": {
+            "id": "horizon",
+            "data": "source"
+          }
+        },
+        {
+          "op": "encodeHorizon",
+          "args": {
+            "target": "horizon",
+            "x": {
+              "field": "time",
+              "fieldType": "temporal",
+              "temporalUnit": "timestamp",
+              "scale": {
+                "nice": false
+              }
+            },
+            "y": "value"
+          }
+        },
+        {
+          "op": "createGuides",
+          "args": {}
+        }
+      ],
+      "semanticResult": {
+        "layer": {
+          "id": "horizon",
+          "mark": {
+            "type": "area"
+          },
+          "data": "horizonHorizonData",
+          "coordinate": "main",
+          "encoding": {
+            "x": {
+              "field": "horizonHorizonX",
+              "fieldType": "temporal",
+              "temporalUnit": "timestamp",
+              "scale": "x",
+              "title": "Time"
+            },
+            "y": {
+              "field": "horizonHorizonLower",
+              "fieldType": "quantitative",
+              "scale": "horizonHorizonAmplitude"
+            },
+            "group": {
+              "field": "horizonHorizonGroup",
+              "fieldType": "nominal"
+            },
+            "y2": {
+              "field": "horizonHorizonUpper",
+              "fieldType": "quantitative",
+              "scale": "horizonHorizonAmplitude"
+            },
+            "color": {
+              "field": "horizonHorizonColor",
+              "fieldType": "nominal",
+              "scale": "horizonHorizonColor",
+              "layout": "overlay"
+            }
+          }
+        },
+        "datasets": [
+          {
+            "id": "source",
+            "rowCount": 7
+          },
+          {
+            "id": "horizonHorizonData",
+            "source": "source",
+            "rowCount": 24,
+            "transform": [
+              {
+                "type": "horizon",
+                "x": {
+                  "field": "time",
+                  "fieldType": "temporal",
+                  "temporalUnit": "timestamp"
+                },
+                "y": {
+                  "field": "value",
+                  "fieldType": "quantitative"
+                },
+                "bands": 3,
+                "baseline": 0,
+                "extent": "auto",
+                "resolve": "shared",
+                "missing": "break",
+                "overflow": "clip",
+                "palette": {
+                  "positive": {
+                    "name": "blues"
+                  },
+                  "negative": {
+                    "name": "reds"
+                  }
+                },
+                "as": {
+                  "x": "horizonHorizonX",
+                  "lower": "horizonHorizonLower",
+                  "upper": "horizonHorizonUpper",
+                  "group": "horizonHorizonGroup",
+                  "color": "horizonHorizonColor",
+                  "sign": "horizonHorizonSign",
+                  "band": "horizonHorizonBand",
+                  "segment": "horizonHorizonSegment"
+                },
+                "resolved": {
+                  "extents": [
+                    {
+                      "extent": 4,
+                      "bandHeight": 1.3333333333333333
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ],
+        "guides": {
+          "axis": {
+            "x": {
+              "coordinate": "main",
+              "scale": "x",
+              "title": "Time"
+            }
+          },
+          "grid": {
+            "vertical": {
+              "scale": "x",
+              "coordinate": "main"
+            }
+          }
+        },
+        "resolvedScales": {
+          "x": {
+            "type": "time",
+            "domain": [
+              1000,
+              2000
+            ],
+            "range": [
+              150,
+              850
+            ]
+          },
+          "horizonHorizonAmplitude": {
+            "type": "linear",
+            "domain": [
+              0,
+              1
+            ],
+            "range": [
+              550,
+              150
+            ]
+          },
+          "horizonHorizonColor": {
+            "type": "ordinal",
+            "domain": [
+              "negative:0",
+              "negative:1",
+              "negative:2",
+              "positive:0",
+              "positive:1",
+              "positive:2"
+            ],
+            "range": [
+              "#fdc9b4",
+              "#fa7051",
+              "#970b13",
+              "#cfe1f2",
+              "#74b2d7",
+              "#0a4a90"
+            ]
+          }
+        },
+        "markConfig": {
+          "fill": "#4c78a8",
+          "opacity": 1
+        },
+        "pathCount": 6
+      },
+      "meaning": "Seven explicit timestamps; x domain [1000, 2000]; three bands per sign and six paths.",
+      "render": {
+        "png": ".artifacts/test/png/review/horizon-plot/temporal/primitive.png",
+        "pngSha256": "49adbe70e80e6a4124691f728cad0a99e8561f518712b16faa3133fb5319a410",
+        "pixelSha256": "bfb530fa0ebea47892b86c89408aa5546e95f057c7c148abd46638d902d20aea",
+        "plotRegions": [
+          {
+            "name": "negative-amplitude",
+            "inkPixels": 327444,
+            "colorCounts": {
+              "#fdc9b4": 148609,
+              "#fa7051": 114697,
+              "#970b13": 60994
+            }
+          },
+          {
+            "name": "positive-amplitude",
+            "inkPixels": 327410,
+            "colorCounts": {
+              "#cfe1f2": 148671,
+              "#74b2d7": 114697,
+              "#0a4a90": 60994
+            }
+          }
+        ]
+      }
+    },
+    {
+      "chart": "horizon-plot",
+      "variant": "baseline-style",
+      "title": "Horizon: baseline, bands and opacity revision",
+      "publicImplementation": "not-implemented",
+      "publicParity": "pending-visual-approval-and-implementation",
+      "userFacingCallChain": "chart()\n  .createCanvas({\"width\":1000,\"height\":700,\"margin\":150})\n  .createData({\"id\":\"source\",\"values\":[{\"time\":0,\"value\":-2},{\"time\":1,\"value\":-1},{\"time\":2,\"value\":1},{\"time\":3,\"value\":2},{\"time\":4,\"value\":3},{\"time\":5,\"value\":5},{\"time\":6,\"value\":6}]})\n  .createHorizonPlot({\"id\":\"horizon\",\"x\":\"time\",\"y\":\"value\",\"baseline\":2,\"bands\":2,\"area\":{\"opacity\":0.8}})\n  .editHorizon({\"target\":\"horizon\",\"bands\":3})\n  .editAreaMark({\"target\":\"horizon\",\"opacity\":0.6});",
+      "inputSha256": "7df411a9f3d187e186b459c7b3b4a6024c4f7e53cc19ffd5bdb6f981ebae8d02",
+      "callChainSha256": "1388a272206ffc669169bb8e3bfbd4651eda23995e6e738ac9dca14401e6d951",
+      "sources": [
+        {
+          "path": "test/gates/horizon-plot/reference-values.js",
+          "sha256": "78c72e8cf2360906794972eb742e1ba1df0a3d791cad3637698bc088a26f3cb1"
+        },
+        {
+          "path": "test/gates/horizon-plot/primitive.program.js",
+          "sha256": "8b92cb8f09633646ca01a82df6452a739d2f1ac1a878eda6bab65f42c9c0fedf"
+        },
+        {
+          "path": "test/gates/horizon-plot/primitive.test.js",
+          "sha256": "11ed52cc9fc5360f85dce1b724904be7a571be6b6a660164e8c752d9f342ef82"
+        },
+        {
+          "path": "test/gates/horizon-plot/manifest.js",
+          "sha256": "d8fd97cbe785ae14761a315f105cb822ed3849dd3b9ff1720c1cb2b145424297"
+        },
+        {
+          "path": "test/gates/horizon-plot/png.render.js",
+          "sha256": "b42ce85c9e6419fca704b46ed9c99c01bd9bb7d03528a9e58165bbb2f90bd38d"
+        },
+        {
+          "path": "test/oracles/horizon.js",
+          "sha256": "490c651e433e870cb9fece14f7be28ab68eaff1c290278de8d3093d59607d266"
+        }
+      ],
+      "logicalWidth": 1000,
+      "logicalHeight": 700,
+      "pixelWidth": 2000,
+      "pixelHeight": 1400,
+      "pixelRatio": 2,
+      "semanticSha256": "76cec03586b01451b1e136aa256ba0f017c053c80f89ac267195ff595cc9ccfd",
+      "graphicSha256": "25ef81a2ca73c6d5419f47253b1ac2a81c3f3300e4d24b32c4ae594dbff5ea88",
+      "drawingOrderSha256": "2f975674a3dcd0b5a7159b11e3db7fdcaf1808739ced5706404e70b19f2658d8",
+      "canvasCallsSha256": "6bc1035f8a1bcd5fbfec19d7a0163b1d73ecc449555939e995a47cb8101b3b34",
+      "primitiveTopLevelTrace": [
+        {
+          "op": "createCanvas",
+          "args": {
+            "width": 1000,
+            "height": 700,
+            "margin": 150
+          }
+        },
+        {
+          "op": "createData",
+          "args": {
+            "id": "source",
+            "valuesCount": 7
+          }
+        },
+        {
+          "op": "createAreaMark",
+          "args": {
+            "id": "horizon",
+            "data": "source"
+          }
+        },
+        {
+          "op": "encodeHorizon",
+          "args": {
+            "target": "horizon",
+            "x": "time",
+            "y": "value",
+            "baseline": 2,
+            "bands": 2
+          }
+        },
+        {
+          "op": "editAreaMark",
+          "args": {
+            "target": "horizon",
+            "opacity": 0.8
+          }
+        },
+        {
+          "op": "createGuides",
+          "args": {}
+        },
+        {
+          "op": "editHorizon",
+          "args": {
+            "target": "horizon",
+            "bands": 3
+          }
+        },
+        {
+          "op": "editAreaMark",
+          "args": {
+            "target": "horizon",
+            "opacity": 0.6
+          }
+        }
+      ],
+      "semanticResult": {
+        "layer": {
+          "id": "horizon",
+          "mark": {
+            "type": "area"
+          },
+          "data": "horizonHorizonDataRevision1",
+          "coordinate": "main",
+          "encoding": {
+            "x": {
+              "field": "horizonHorizonX",
+              "fieldType": "quantitative",
+              "scale": "x",
+              "title": "Time"
+            },
+            "y": {
+              "field": "horizonHorizonLower",
+              "fieldType": "quantitative",
+              "scale": "horizonHorizonAmplitude"
+            },
+            "group": {
+              "field": "horizonHorizonGroup",
+              "fieldType": "nominal"
+            },
+            "y2": {
+              "field": "horizonHorizonUpper",
+              "fieldType": "quantitative",
+              "scale": "horizonHorizonAmplitude"
+            },
+            "color": {
+              "field": "horizonHorizonColor",
+              "fieldType": "nominal",
+              "scale": "horizonHorizonColor",
+              "layout": "overlay"
+            }
+          }
+        },
+        "datasets": [
+          {
+            "id": "source",
+            "rowCount": 7
+          },
+          {
+            "id": "horizonHorizonDataRevision1",
+            "source": "source",
+            "rowCount": 24,
+            "transform": [
+              {
+                "type": "horizon",
+                "x": {
+                  "field": "time",
+                  "fieldType": "quantitative"
+                },
+                "y": {
+                  "field": "value",
+                  "fieldType": "quantitative"
+                },
+                "bands": 3,
+                "baseline": 2,
+                "extent": "auto",
+                "resolve": "shared",
+                "missing": "break",
+                "overflow": "clip",
+                "palette": {
+                  "positive": {
+                    "name": "blues"
+                  },
+                  "negative": {
+                    "name": "reds"
+                  }
+                },
+                "as": {
+                  "x": "horizonHorizonX",
+                  "lower": "horizonHorizonLower",
+                  "upper": "horizonHorizonUpper",
+                  "group": "horizonHorizonGroup",
+                  "color": "horizonHorizonColor",
+                  "sign": "horizonHorizonSign",
+                  "band": "horizonHorizonBand",
+                  "segment": "horizonHorizonSegment"
+                },
+                "resolved": {
+                  "extents": [
+                    {
+                      "extent": 4,
+                      "bandHeight": 1.3333333333333333
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ],
+        "guides": {
+          "axis": {
+            "x": {
+              "coordinate": "main",
+              "scale": "x",
+              "title": "Time"
+            }
+          },
+          "grid": {
+            "vertical": {
+              "scale": "x",
+              "coordinate": "main"
+            }
+          }
+        },
+        "resolvedScales": {
+          "x": {
+            "type": "linear",
+            "domain": [
+              0,
+              6
+            ],
+            "range": [
+              150,
+              850
+            ]
+          },
+          "horizonHorizonAmplitude": {
+            "type": "linear",
+            "domain": [
+              0,
+              1
+            ],
+            "range": [
+              550,
+              150
+            ]
+          },
+          "horizonHorizonColor": {
+            "type": "ordinal",
+            "domain": [
+              "negative:0",
+              "negative:1",
+              "negative:2",
+              "positive:0",
+              "positive:1",
+              "positive:2"
+            ],
+            "range": [
+              "#fdc9b4",
+              "#fa7051",
+              "#970b13",
+              "#cfe1f2",
+              "#74b2d7",
+              "#0a4a90"
+            ]
+          }
+        },
+        "markConfig": {
+          "fill": "#4c78a8",
+          "opacity": 0.6
+        },
+        "pathCount": 6
+      },
+      "meaning": "Baseline 2; bands edited from 2 to 3; final area opacity 0.6 after the initial 0.8.",
+      "render": {
+        "png": ".artifacts/test/png/review/horizon-plot/baseline-style/primitive.png",
+        "pngSha256": "ddc150d30f3b4065025b3adaba26d14bf7ed54592096f3929b7293fdea51fecf",
+        "pixelSha256": "0619d06a347d992e95ccdbe7bd4828b2128a2d603f0ca954a92541d073953384",
+        "plotRegions": [
+          {
+            "name": "negative-amplitude",
+            "inkPixels": 349637,
+            "colorCounts": {
+              "#fedfd2": 122766,
+              "#fc9c85": 122890,
+              "#bf4540": 99383
+            }
+          },
+          {
+            "name": "positive-amplitude",
+            "inkPixels": 349637,
+            "colorCounts": {
+              "#e2edf7": 122849,
+              "#a0cae4": 122887,
+              "#467db2": 99383
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
