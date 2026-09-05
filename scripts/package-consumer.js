@@ -570,6 +570,20 @@ async function testNodeConsumer(directory) {
         assert.match(renderToSVG(p), /<svg /);
       }
     }
+    for (const factory of [chart, basicChart]) for (const position of ["left", "right"]) {
+      const source = factory().createCanvas({ width: 1600, height: 1200, margin: 400 })
+        .createData({ values: [{ x: 0, y: 0, g: "A" }, { x: 1, y: 1, g: "B" }] })
+        .createPointMark().encodeX({ field: "x" }).encodeY({ field: "y" }).encodeColor({ field: "g" });
+      const p = source.createLegend({ position, columns: 1 });
+      assert.equal(p.guideConfigs.legend.color.direction, "vertical");
+      for (const patch of [{ direction: "horizontal" }, { columns: 2 }, { titlePosition: "left" }]) {
+        assert.throws(() => source.createLegend({ position, ...patch }), /Side legends require/);
+      }
+      if (factory === chart) {
+        assert.deepEqual(source.createLegend({ position: "top", columns: 2, itemGap: 28 })
+          .editLegendLayout({ position, columns: 1 }).graphicSpec, p.graphicSpec);
+      }
+    }
     const legendContentBase = chart().createCanvas({ width: 800, height: 700, margin: { right: 300 } })
       .createData({ values: [{ x: 1, y: 2, g: "A", m: 4 }, { x: 2, y: 3, g: "B", m: 9 }] })
       .createPointMark({ id: "contentPoints" }).encodeX({ field: "x" }).encodeY({ field: "y" })

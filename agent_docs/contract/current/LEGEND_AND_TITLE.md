@@ -76,7 +76,7 @@ type TitleWrap = "word" | "character";
   combined point-size legend도 네 방향 edge position을 사용한다. chart-independent default는 `"right"`다.
 - `align`: `"left" | "center" | "right"`, 기본 center. right와 left side position은
   모든 family에서 center만 허용한다. Gradient/opacity도 non-center side alignment를 거절한다. Horizontal non-center legend를 side로 옮길 때는 같은 edit에서 align center를 명시해야 한다.
-- `direction`: `"horizontal" | "vertical"`; top/bottom item-grid fill order를 결정하며 기본 horizontal이다.
+- `direction`: `"horizontal" | "vertical"`; top/bottom item-grid fill order는 기본 horizontal이다. Categorical left/right는 기본/필수 vertical이며 columns omission 또는1, titlePosition top만 허용한다. 무시되는 horizontal/여러 columns/left title은 오류다. 기존 horizontal grid를 side로 옮길 때 columns1/top title을 명시하여 호환 상태를 만든다. Evidence: `test/unit/actions/guides/categorical-side-options.test.js`.
 - `columns`: positive integer; top/bottom grid의 최대 열 수. 생략하면 한 row에 가능한 item을 둔다.
 - Categorical `layout`은 `"edge" | "legacy-bottom"`, default `"edge"`다. Bottom도 omission이면 reserved-margin grid다.
   기존 Canvas 하단 고정 single-row는 position bottom + layout legacy-bottom으로 명시한다. Labels y=height−28,

@@ -2735,7 +2735,9 @@ export interface LegendOptions {
   position?: "right" | "left" | "bottom" | "top";
   /** Single top/bottom edge: align complete occupied bounds, including border strokes, to the plot. Side positions require center. */
   align?: "left" | "center" | "right";
+  /** Categorical sides require vertical (the default); horizontal edges default to horizontal. */
   direction?: "horizontal" | "vertical";
+  /** Categorical sides allow omission or 1; multiple columns require a horizontal edge. */
   columns?: number;
   /** Single top/bottom edge: gap from the plot to the nearest occupied legend edge. */
   offset?: number;
@@ -2763,7 +2765,9 @@ export interface EditLegendLayoutOptions {
   position?: "right" | "left" | "bottom" | "top";
   /** Single top/bottom edge: align complete occupied bounds, including border strokes, to the plot. Side positions require center. */
   align?: "left" | "center" | "right";
+  /** Categorical sides require vertical (the default); horizontal edges default to horizontal. */
   direction?: "horizontal" | "vertical";
+  /** Categorical sides allow omission or 1; multiple columns require a horizontal edge. */
   columns?: number;
   /** Single top/bottom edge: gap from the plot to the nearest occupied legend edge. */
   offset?: number;

@@ -73,7 +73,7 @@ preserves its remaining shape legend.
 | `position` | `right/left/bottom/top` | `"right"` |
 | `layout` | categorical `"edge"` or `"legacy-bottom"` | `"edge"` |
 | `align` | `"left"`, `"center"`, or `"right"` | `"center"` |
-| `direction` | `"horizontal"` or `"vertical"` | `"horizontal"` |
+| `direction` | `"horizontal"` or `"vertical"` | `"vertical"` at either side; `"horizontal"` at top/bottom |
 | `columns` | positive integer | all items in one row at top |
 | `offset` | non-negative number | `8` |
 | `titlePosition` | `"top"` or `"left"` | `"top"` |
@@ -90,7 +90,11 @@ Pass `position: "bottom"` explicitly to place the legend below the plot.
 Bottom legends use the same item grid as top legends and can use left, center,
 or right alignment; side legends require center alignment. Left categorical,
 composite point, and size blocks use vertical flow and preserve symbol-to-label
-and resolved-domain order.
+and resolved-domain order. Both sides accept only vertical direction, one column
+(`columns` omitted or `1`), and a top title. Incompatible options produce an
+error. To move a multi-column horizontal legend to either side, set
+`columns: 1` and `titlePosition: "top"` in the layout edit; omitted settings
+otherwise remain unchanged.
 
 Categorical legends use `layout: "edge"` by default, including a bottom legend
 with no other layout options. To preserve the former compact single row anchored

@@ -116,7 +116,8 @@ export function normalizeOptions(args, kind) {
   };
   const position = args.position ?? defaults.position;
   const align = args.align ?? defaults.align;
-  const direction = args.direction ?? (position === "left" ? "vertical" : "horizontal");
+  const side = ["left", "right"].includes(position);
+  const direction = args.direction ?? (side ? "vertical" : "horizontal");
   const columns = args.columns;
   const offset = args.offset ?? 8;
   const titlePosition = args.titlePosition ?? "top";
@@ -148,11 +149,14 @@ export function normalizeOptions(args, kind) {
   if (!["horizontal", "vertical"].includes(direction)) {
     throw new Error(`Unsupported legend direction "${direction}".`);
   }
-  if (position === "left" && direction !== "vertical") {
-    throw new Error("Left legends currently require vertical direction.");
+  if (side && direction !== "vertical") {
+    throw new Error("Side legends require vertical direction.");
   }
-  if (position === "left" && columns !== undefined) {
-    throw new Error("Left legends do not accept columns.");
+  if (side && columns !== undefined && columns !== 1) {
+    throw new Error("Side legends require one column.");
+  }
+  if (side && titlePosition !== "top") {
+    throw new Error("Side legends require a top title.");
   }
   if (columns !== undefined && (!Number.isInteger(columns) || columns <= 0)) {
     throw new RangeError("Legend columns must be a positive integer.");

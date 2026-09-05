@@ -32,6 +32,8 @@
 - [x] W2 C2 interval/width 실제 stroke spacing #105 — [검증](RESULTS_W2_ITEM_STROKE_SPACING.md)
 - [x] W2 C2 categorical recipe/shape/font 실제 spacing #106 — [검증](RESULTS_W2_CATEGORICAL_SPACING.md)
 - [x] W2 opacity symbol TypeScript/runtime parity #107 — [검증](RESULTS_W2_OPACITY_SYMBOL_TYPES.md)
+- [x] W2 C2 categorical side option parity #108 — [검증](RESULTS_W2_CATEGORICAL_SIDE_OPTIONS.md)
+- [ ] W2 combined size의 edge-dependent default #109
 - [ ] W2 C2 전체 family×edge×lifecycle 통합 matrix
 - [ ] R6-P5-W3 Final-item labels·reference·common format
 - [ ] R6-P5-W4 Program theme와 local override

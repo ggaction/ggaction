@@ -277,6 +277,19 @@ test.before(async () => {
       if (!renderToSVG(p).startsWith("<svg ")) throw new Error("Item legend SVG missing");
       render(p, document.getElementById("legend-content").getContext("2d"));
     }
+      const categoricalSideOptions = [];
+      for (const factory of [chart, basicChart]) for (const position of ["left", "right"]) {
+        const source = factory().createCanvas({ width: 1600, height: 1200, margin: 400 })
+          .createData({ values: [{ x: 0, y: 0, g: "A" }, { x: 1, y: 1, g: "B" }] })
+          .createPointMark().encodeX({ field: "x" }).encodeY({ field: "y" }).encodeColor({ field: "g" });
+        const p = source.createLegend({ position, columns: 1 });
+        let rejected = 0;
+        for (const patch of [{ direction: "horizontal" }, { columns: 2 }, { titlePosition: "left" }]) {
+          try { source.createLegend({ position, ...patch }); } catch { rejected++; }
+        }
+        categoricalSideOptions.push([p.guideConfigs.legend.color.direction, rejected, renderToSVG(p).startsWith("<svg ")]);
+        render(p, document.getElementById("legend-content").getContext("2d"));
+      }
       const categoricalSampleGaps = [];
     for (const factory of [chart, basicChart]) for (const kind of ["color", "line"]) {
       for (const position of ["left", "right", "top", "bottom"]) {
@@ -408,6 +421,7 @@ test.before(async () => {
         occupiedAlignment,
         itemStrokeGaps,
         categoricalSampleGaps,
+        categoricalSideOptions,
         opacitySampleGaps,
         ignoredOptionRejects,
         gradientTitleParity,
@@ -552,6 +566,7 @@ test("imports and renders the packed browser entries", async () => {
     hiddenCategorical: [36.5, true],
     occupiedAlignment: [true, true, true, true, true, true],
     itemStrokeGaps: [8, 8, 8, 8, 12, 12, 12, 12],
+    categoricalSideOptions: Array.from({ length: 4 }, () => ["vertical", 3, true]),
     categoricalSampleGaps: [8, 8, 8, 8, 10, 10, 10, 10, 8, 8, 8, 8, 10, 10, 10, 10],
     opacitySampleGaps: [12, 12, 12, 12],
     ignoredOptionRejects: 18,
