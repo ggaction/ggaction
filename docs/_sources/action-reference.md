@@ -1711,7 +1711,9 @@ createLegend({
 ```
 
 Create categorical, point-size, continuous-color gradient, discretized-color
-interval, or field-opacity sample legends. Continuous legends support right, left, top, and bottom
+interval, or field-opacity sample legends. Explicit `channels` creates exactly
+the selected content; include `"size"` in a point categorical-and-size request.
+Continuous legends support right, left, top, and bottom
 placement. Categorical legends also support left side placement; composite
 point and size blocks remain in deterministic vertical order. Horizontal
 sampled-opacity legends accept `titlePosition: "left"` for one inline

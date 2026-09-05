@@ -30,6 +30,18 @@ infer the same block. Multiple size-encoded point marks require `target`.
 Standalone size legends currently use the right position; a size block paired
 with a categorical point legend may use either side.
 
+An explicit `channels` array selects exactly the content to create. On a point
+mark encoding all three channels, use `channels: ["color", "shape", "size"]`
+to include all three, or `["color", "size"]` to show color swatches and size
+samples without a shape explanation. Selecting just `["color"]` or `["shape"]`
+does not add a size block. Sample `count` requires size to be selected in a
+categorical request. Encodings and mark appearance remain unchanged.
+
+For point marks encoding only color, only shape, or color plus size, specify
+`channels` explicitly; their omitted-channel inference still uses the older
+line-series fallback. Inferred color-plus-shape with optional size retains its
+combined point legend.
+
 Every categorical legend uses the same right-side default:
 
 | Mark | Channels | Position | Symbol |

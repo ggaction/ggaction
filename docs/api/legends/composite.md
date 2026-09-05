@@ -65,6 +65,12 @@ and layers retain their declared rendering order. Recipes are private
 appearance configuration; the final `graphicSpec` contains only concrete line,
 circle, and rect primitives.
 
+Editing a recipe also preserves its declared drawing order, including a layer
+reversal or adding a border in the same edit. `symbol: "auto"` restores the
+recipe inferred from the selected channels and matching marks. An explicit
+recipe is retained when an encoding is removed; an inferred recipe is resolved
+again for the remaining channels.
+
 ## Items and semantics
 
 Items follow the resolved ordinal domain order. Color and dash appearance come
@@ -80,6 +86,8 @@ field and share an ordered domain. If a matching line layer uses that field and
 color scale, its line is layered behind each typed circle/square symbol. A
 separate `guide.legend.size` block samples five evenly spaced domain values by
 default and maps their areas through the resolved quantitative size scale.
+Include `"size"` in an explicit channel array to create that block. Omitting
+`channels` retains the inferred color-plus-shape-and-size combination.
 
 ## Optional border
 

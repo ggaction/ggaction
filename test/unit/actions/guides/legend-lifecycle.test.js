@@ -37,7 +37,7 @@ function compositeProgram() {
     .encodeOpacity({ field: "alpha" })
     .createLegend({
       target: "points",
-      channels: ["color", "shape"],
+      channels: ["color", "shape", "size"],
       count: 3,
       labels: { color: "#0f172a" },
       titleStyle: { color: "#111827" }

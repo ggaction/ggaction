@@ -25,6 +25,20 @@ const LAYER_OPTIONS = Object.freeze({
   ])
 });
 
+export function resolveLegendSymbol(program, layer, channels, requested) {
+  if (requested !== undefined && requested !== "auto") return requested;
+  if (layer.mark?.type !== "point" || !channels?.includes("shape")) return undefined;
+  const color = channels.includes("color") ? layer.encoding?.color : undefined;
+  const hasMatchingLine = color?.scale !== undefined && program.semanticSpec.layers.some(candidate =>
+    candidate.mark?.type === "line" && candidate.encoding?.color?.field === color.field &&
+    candidate.encoding?.color?.scale === color.scale
+  );
+  return { layers: [
+    ...(hasMatchingLine ? [{ type: "line", length: 32, lineWidth: 3 }] : []),
+    { type: "point", size: Math.sqrt(64 / Math.PI), stroke: "white", strokeWidth: 0 }
+  ] };
+}
+
 function defaultRecipe(kind) {
   return kind === "series"
     ? { layers: [{ type: "line", length: 32, lineWidth: 2 }] }

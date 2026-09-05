@@ -178,6 +178,7 @@ function reconcileCategoricalLegend(program, target, channels) {
   for (const property of LEGEND_OPTION_KEYS) {
     if (
       (property === "columns" && config[property] === undefined) ||
+      (property === "symbol" && config.inferredSymbol) ||
       (property === "title" && config.inferredTitle)
     ) continue;
     options[property] = config[property];

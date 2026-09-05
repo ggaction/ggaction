@@ -6,6 +6,7 @@ import {
   validateOptionObject
 } from "../../../core/validation.js";
 import { normalizeOptions } from "./categorical/options.js";
+import { resolveLegendSymbol } from "./categorical/recipes.js";
 import { symbolGraphic } from "./categorical/layout.js";
 import {
   normalizeLegendTextOptions,
@@ -282,7 +283,8 @@ function editCategorical(program, kind, previous, size, args) {
     offset: args.offset ?? previous.offset,
     titlePosition: args.titlePosition ?? previous.titlePosition,
     title,
-    symbol: args.symbol ?? previous.symbol,
+    symbol: args.symbol === undefined ? previous.symbol
+      : resolveLegendSymbol(program, findLayer(program, previous.target), previous.channels, args.symbol),
     labels: mergeObject(previous.labels, args.labels),
     titleStyle: mergeObject(previous.titleStyle, args.titleStyle),
     itemGap: args.itemGap ?? previous.itemGap,
@@ -292,6 +294,7 @@ function editCategorical(program, kind, previous, size, args) {
     ...previous,
     ...normalized,
     inferredTitle,
+    inferredSymbol: args.symbol === undefined ? previous.inferredSymbol : args.symbol === "auto",
     titleVisible
   };
   const order = args.order === undefined
@@ -301,6 +304,8 @@ function editCategorical(program, kind, previous, size, args) {
   resolveDefinition(program, findLayer(program, previous.target), previous.channels, title, order);
   const oldSymbols = categoricalSymbolIds(previous);
   const newSymbols = categoricalSymbolIds(config);
+  const sameSymbolOrder = oldSymbols.size === newSymbols.size &&
+    [...oldSymbols].every((id, index) => id === [...newSymbols][index]);
   let next = program;
   if (titleMode === "auto" || typeof titleMode === "string") {
     next = next.editSemantic({
@@ -319,15 +324,10 @@ function editCategorical(program, kind, previous, size, args) {
   }
   next = next._withLegendConfig(kind, config);
   for (const id of oldSymbols) {
-    if (!newSymbols.has(id) && next.graphicSpec.objects[id] !== undefined) {
+    if (!sameSymbolOrder && next.graphicSpec.objects[id] !== undefined) {
       next = next.editGraphics({ target: id, remove: true });
     }
   }
-  next = reconcileGraphic(next, `${kind === "series" ? "series" : "color"}LegendBackground`,
-    config.border !== false, {
-      type: "rect",
-      before: [...newSymbols][0]
-    });
   for (const layer of config.symbol.layers) {
     const id = symbolGraphic(config, layer.type);
     if (next.graphicSpec.objects[id] === undefined) {
@@ -335,6 +335,11 @@ function editCategorical(program, kind, previous, size, args) {
       next = next[`createLegendSymbol${suffix}`]();
     }
   }
+  next = reconcileGraphic(next, `${kind === "series" ? "series" : "color"}LegendBackground`,
+    config.border !== false, {
+      type: "rect",
+      before: [...newSymbols][0]
+    });
   const titleId = `${kind === "series" ? "series" : "color"}LegendTitle`;
   next = reconcileGraphic(next, titleId, titleVisible, {
     type: "text",

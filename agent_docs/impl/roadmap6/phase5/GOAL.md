@@ -8,6 +8,8 @@
 
 W2의 [shape-only crash #86](RESULTS_W2_SHAPE.md)과 [categorical bottom mode #87](RESULTS_W2_BOTTOM.md)도 수정·검증했다. B의 content 재작성과 C2의 전체 family×edge 통합은 계속 진행한다.
 
+[B1 explicit content 생성과 recipe provenance](RESULTS_W2_CONTENT_CREATE.md)의 #88/#89를 수정·검증했다. Inferred point #90과 B2 partial content lifecycle은 아직 남아 있다.
+
 ## 선행 조건
 
 - [Phase 3](../phase3/GOAL.md)의 R6-P3-X 승인과 필요한 결과.

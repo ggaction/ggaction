@@ -2,8 +2,7 @@ import { action } from "../../../core/action.js";
 import { validateKeys } from "../../../core/validation.js";
 import { legendGraphicIds, legendResourcePolicy } from
   "../../../materialization/guides/resources.js";
-import { LEGEND_CHANNELS } from "../../../core/vocabulary.js";
-import { resolveLegendTarget } from "./target.js";
+import { resolveLegendTarget, validateLegendChannels } from "./target.js";
 
 const OPTIONS = Object.freeze(["target", "channels"]);
 
@@ -18,27 +17,8 @@ function legendKindChannels(kind, config) {
   }[kind];
 }
 
-function validateRequestedChannels(channels) {
-  if (!Array.isArray(channels)) {
-    throw new TypeError("removeLegend channels must be an array.");
-  }
-  if (channels.length === 0) {
-    throw new Error("removeLegend channels must select at least one channel.");
-  }
-  const seen = new Set();
-  for (const channel of channels) {
-    if (!LEGEND_CHANNELS.includes(channel)) {
-      throw new Error(`Unsupported legend channel "${channel}".`);
-    }
-    if (seen.has(channel)) {
-      throw new Error(`removeLegend channels contains duplicate "${channel}".`);
-    }
-    seen.add(channel);
-  }
-}
-
 function resolveRequestedKinds(program, target, channels) {
-  validateRequestedChannels(channels);
+  validateLegendChannels(channels, "removeLegend");
   const requested = new Set(channels);
   const matched = new Set();
   const kinds = [];

@@ -488,6 +488,18 @@ async function testNodeConsumer(directory) {
     assert.equal(shapeLegend.graphicSpec.objects.seriesLegendSymbolPoints.items.length, 2);
     assert.match(renderToSVG(shapeLegend), /<svg /);
 
+    const legendContentBase = chart().createCanvas({ width: 800, height: 700, margin: { right: 300 } })
+      .createData({ values: [{ x: 1, y: 2, g: "A", m: 4 }, { x: 2, y: 3, g: "B", m: 9 }] })
+      .createPointMark({ id: "contentPoints" }).encodeX({ field: "x" }).encodeY({ field: "y" })
+      .encodeColor({ field: "g" }).encodeShape({ field: "g" }).encodeSize({ field: "m" });
+    const onlyColorContent = legendContentBase.createLegend({ channels: ["color"] });
+    assert.deepEqual(Object.keys(onlyColorContent.guideConfigs.legend), ["color"]);
+    assert.equal(onlyColorContent.graphicSpec.objects.colorLegendSymbols.type, "rect");
+    const colorSizeContent = legendContentBase.createLegend({ channels: ["color", "size"], count: 3 });
+    assert.deepEqual(Object.keys(colorSizeContent.guideConfigs.legend), ["color", "size"]);
+    assert.equal(colorSizeContent.graphicSpec.objects.sizeLegendSymbols.items.length, 3);
+    assert.match(renderToSVG(colorSizeContent), /<svg /);
+
     const bottomLegendBase = chart().createCanvas({ width: 640, height: 600,
       margin: { left: 60, right: 100, top: 40, bottom: 150 } })
       .createData({ values: [{ x: 1, y: 2, g: "A" }, { x: 2, y: 3, g: "B" }] })
@@ -1492,6 +1504,8 @@ async function testTypeScriptConsumer(directory) {
     program.editLegend({ order: { values: ["C", 1, false] } });
     program.editLegend({ count: 3, title: "Mass", labels: { offset: 28, fontWeight: 700 }, titleStyle: { color: "red" } })
       .editLegendTitle({ title: false }).editLegendTitle({ title: "auto" }).editLegendSymbols({ count: 4 });
+    program.createLegend({ channels: ["color", "shape", "size"], count: 3 });
+    basicChart().createLegend({ channels: ["color", "size"], count: 3 });
     program.createLegend({ position: "bottom", layout: "legacy-bottom" })
       .editLegend({ layout: "edge" }).editLegendLayout({ layout: "legacy-bottom" });
     basicChart().createGuides({ axes: false, grid: false,

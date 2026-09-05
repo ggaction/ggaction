@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "scope": "Phase 5 W2 B1 explicit legend content and symbol provenance",
+  "status": "passed",
+  "artifact": {
+    "filename": "ggaction-0.0.12.tgz",
+    "sha256": "54e4f6137cba8496ba5fc8452a14cbe59c1d72c91adc7cb6c9ada9b3056aea29",
+    "entries": 447,
+    "packedBytes": 503300,
+    "unpackedBytes": 2409765
+  },
+  "checks": [
+    "Node runtime and renderers",
+    "strict TypeScript",
+    "MCP",
+    "tutorials",
+    "browser bundle budgets",
+    "same-artifact Chromium Canvas and SVG"
+  ],
+  "browserBundles": {
+    "full": {
+      "specifier": "ggaction",
+      "chunks": 1,
+      "modules": 394,
+      "minifiedBytes": 942762,
+      "gzipBytes": 250034
+    },
+    "basic": {
+      "specifier": "ggaction/basic",
+      "chunks": 1,
+      "modules": 238,
+      "minifiedBytes": 503493,
+      "gzipBytes": 137938
+    },
+    "svg": {
+      "specifier": "ggaction/svg",
+      "chunks": 1,
+      "modules": 15,
+      "minifiedBytes": 19840,
+      "gzipBytes": 6437
+    }
+  }
+}

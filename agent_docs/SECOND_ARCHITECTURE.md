@@ -1767,6 +1767,10 @@ graphics           background + layered symbols + labels + title
 Line, point, rect/area symbol 차이는 complete legend implementation fork가 아니라 symbol
 recipe로 표현한다. Point quantitative size legend는 별도 quantitative recipe를 사용하지만
 `createLegend`와 `createGuides`의 public flow 안에서 함께 조정된다.
+Explicit channel selection은 정확한 content 경계이며 categorical+size의 요청을 두 기존 owner에 분리한다.
+Recipe inference와 정규화는 categorical recipe owner가 공통 처리하며 config.inferredSymbol이 automatic/caller
+provenance를 저장한다. Content 재생성은 automatic recipe를 다시 추론하고 explicit recipe를 유지한다.
+Editor는 recipe layer 집합이나 순서가 바뀌면 symbol components를 선언 순서로 재생성하여 drawing order를 보존한다.
 
 Encoding reassignment는 existing categorical legend의 inferred field/title/domain/symbol을
 갱신하되 explicit title과 appearance config를 보존한다. Field-driven strokeDash를 constant로

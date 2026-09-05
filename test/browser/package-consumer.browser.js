@@ -30,6 +30,7 @@ test.before(async () => {
     <canvas id="size-legend" aria-label="Edited standalone size legend"></canvas>
     <canvas id="shape-legend" aria-label="Shape legend after color removal"></canvas>
     <canvas id="bottom-legend" aria-label="Explicit bottom legend layout"></canvas>
+    <canvas id="legend-content" aria-label="Explicit color and size legend content"></canvas>
     <canvas id="parallel-reencoded" aria-label="Reordered Parallel dimension axes"></canvas>
     <div id="svg"></div><div id="svg-resources"></div><script type="importmap">
     {"imports":{"ggaction":"/node_modules/ggaction/src/index.js","ggaction/basic":"/node_modules/ggaction/src/basic.js","ggaction/svg":"/node_modules/ggaction/src/renderers/svg.js"}}
@@ -206,6 +207,13 @@ test.before(async () => {
         .createLineMark({ id: "unrelatedLine" }).encodeX({ field: "x" }).encodeY({ field: "y" })
         .removeEncoding({ target: "shapePoints", channel: "color" });
       render(shapeLegend, document.getElementById("shape-legend").getContext("2d"));
+      const legendContentBase = chart().createCanvas({ width: 800, height: 700, margin: { right: 300 } })
+        .createData({ values: [{ x: 1, y: 2, g: "A", m: 4 }, { x: 2, y: 3, g: "B", m: 9 }] })
+        .createPointMark({ id: "contentPoints" }).encodeX({ field: "x" }).encodeY({ field: "y" })
+        .encodeColor({ field: "g" }).encodeShape({ field: "g" }).encodeSize({ field: "m" });
+      const onlyColorContent = legendContentBase.createLegend({ channels: ["color"] });
+      const colorSizeContent = legendContentBase.createLegend({ channels: ["color", "size"], count: 3 });
+      render(colorSizeContent, document.getElementById("legend-content").getContext("2d"));
       const bottomLegendBase = chart().createCanvas({ width: 640, height: 600,
         margin: { left: 60, right: 100, top: 40, bottom: 150 } })
         .createData({ values: [{ x: 1, y: 2, g: "A" }, { x: 2, y: 3, g: "B" }] })
@@ -224,6 +232,11 @@ test.before(async () => {
       render(editedSizeLegend, document.getElementById("size-legend").getContext("2d"));
       document.querySelector("#status").textContent = "complete";
       window.__ggactionConsumer = {
+        onlyColorKinds: Object.keys(onlyColorContent.guideConfigs.legend),
+        onlyColorSymbol: onlyColorContent.graphicSpec.objects.colorLegendSymbols.type,
+        combinedContentKinds: Object.keys(colorSizeContent.guideConfigs.legend),
+        combinedContentCount: colorSizeContent.graphicSpec.objects.sizeLegendSymbols.items.length,
+        combinedContentSVG: renderToSVG(colorSizeContent).startsWith("<svg "),
         legacyBottomYs: legacyBottomLegend.graphicSpec.objects.colorLegendLabels.items.map(item => item.properties.y),
         edgeBottomYs: edgeBottomLegend.graphicSpec.objects.colorLegendLabels.items.map(item => item.properties.y),
         bottomLegendSVG: renderToSVG(edgeBottomLegend).startsWith("<svg "),
@@ -323,6 +336,11 @@ test("imports and renders the packed browser entries", async () => {
     waitFor: () => window.__ggactionConsumer !== undefined
   });
   assert.deepEqual(await windowValue(page, "__ggactionConsumer"), {
+    onlyColorKinds: ["color"],
+    onlyColorSymbol: "rect",
+    combinedContentKinds: ["color", "size"],
+    combinedContentCount: 3,
+    combinedContentSVG: true,
     legacyBottomYs: [572, 572],
     edgeBottomYs: [489, 489],
     bottomLegendSVG: true,

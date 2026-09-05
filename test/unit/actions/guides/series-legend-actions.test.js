@@ -415,7 +415,7 @@ test("validates combined fields, domains, targets, and appearance options", () =
   );
   assert.throws(
     () => createSeriesLine().createLegend({ channels: [] }),
-    /non-empty unique/
+    /at least one channel/
   );
   assert.throws(
     () => createSeriesLine().createLegend({ position: "middle" }),

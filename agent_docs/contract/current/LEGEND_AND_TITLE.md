@@ -46,6 +46,11 @@ type TitleWrap = "word" | "character";
   `"color" | "strokeDash" | "strokeWidth" | "shape" | "size" | "opacity"`. 생략하면
   target의 compatible channels를 추론한다. Sequential color는 gradient, field-driven opacity는 sampled
   point block을 선택한다. Opacity는 단독 channel만 지원한다.
+- Explicit channels는 생성할 content의 정확한 집합이다. Point의 `["color","shape","size"]`,
+  `["color","size"]`, `["shape","size"]`는 categorical와 size를 분리 생성한다. Size가 선택되지 않으면
+  이미 size encoding이 있어도 companion을 추가하지 않는다. Categorical-only에 count는 오류다.
+  Omitted channels의 기존 color+shape(+size) inference는 유지하며, color-only/shape-only/color+size point의
+  omitted inference는 아직 line-series fallback이므로 정확한 content에는 explicit channels가 필요하다.
 - Point의 explicit color-only selection은 color swatch legend를 만들고, shape 또는 composite channel
   선택은 typed point series legend를 만든다.
 - Shape-only point legend는 color binding 없이도 생성·재생성한다. 다른 line의 존재는 이 경로에 영향을 주지 않는다.
@@ -74,6 +79,9 @@ type TitleWrap = "word" | "character";
 - `symbol`: `"auto"`, mark-specific shorthand, 또는 `{ layers: [...] }`. layer type은 `line | point | swatch`;
   각 layer는 non-negative size/stroke parameters와 supported point shape를 사용한다. Layered recipe는
   type별 최대 하나, 전체 최대 세 layer다.
+- Point의 자동 typed recipe는 selected shape를 설명하며, selected color가 있을 때만 matching line을 합친다.
+  Config의 inferredSymbol이 omission/auto와 caller recipe를 구분한다. Edit symbol auto와 encoding 제거 후 재생성은
+  자동 recipe를 재추론하며 explicit recipe는 보존한다. Recipe의 layer 순서는 생성과 편집 모두 실제 drawing order다.
 - `labels`, `titleStyle`: color/fontSize/fontFamily/fontWeight style object.
 - `itemGap`: positive finite number; position별 default spacing을 override한다.
 - `border`: `false | true | { color?, lineWidth?, padding?, background? }`; false가 default이며 true는
@@ -126,6 +134,8 @@ type TitleWrap = "word" | "character";
     duplicates/incompatible combinations.
   - ✅ Covered: explicit/inferred standalone point size, createGuides inference, multiple-target ambiguity and
     unchanged composite point-series+size dispatch.
+  - ✅ Covered: exact explicit point color/shape/size subsets in Full/Basic and complete scatter facades;
+    selected count, unselected encoding isolation, color swatch stability and combined owner ambiguity.
   - ✅ Covered: explicit/inferred standalone line/rule stroke width, count, right-side placement and scale
     rematerialization.
   - ✅ Covered: opacity as one continuous guide channel; constant opacity and incompatible mixes rejected.
@@ -235,6 +245,8 @@ encoding removal/recreation, combined legend와 Polar 가이드를 검증한다.
   Full/Basic nested creation, Canvas/scale/encoding-removal replay and incompatible legacy grid controls.
 - Evidence: `test/unit/actions/guides/legend-bottom-layout.test.js` and bottom-mode pairs in
   `test/contracts/legend-lifecycle-render.test.js`.
+- Evidence: `test/unit/actions/guides/legend-channel-selection.test.js` and
+  `test/contracts/legend-content-render.test.js` prove selection, recipe provenance and ordered component replacement.
 - Evidence: `test/unit/actions/guides/size-legend-editing.test.js`, `test/contracts/legend-lifecycle-render.test.js`,
   `test/unit/actions/guides/legend-edit-actions.test.js`,
   `test/unit/actions/guides/stroke-width-legend.test.js`,

@@ -3,9 +3,11 @@ import { action } from "../../../../core/action.js";
 import { validateOptionObject } from "../../../../core/validation.js";
 import { noOptions, resolveLayout, activeConfig } from "./layout.js";
 import { normalizeOptions } from "./options.js";
+import { resolveLegendSymbol } from "./recipes.js";
+import { validateLegendChannels } from "../target.js";
 import { findLayer } from "../../../../selectors/layers.js";
 import { findSemanticScale } from "../../../../selectors/scales.js";
-import { isSizeLegendPoint } from "../size.js";
+import { isSizeLegendPoint, resolveSizeLegendConfig } from "../size.js";
 import { isStrokeWidthLegendLayer } from "../strokeWidth.js";
 import { isOpacityLegendLayer } from "../../../../materialization/legends.js";
 import { legendResourcePolicies } from
@@ -146,7 +148,9 @@ export const rematerializeLegend = action(
 export function resolveCategoricalLegendConfig(program, args = {}) {
   const layer = resolveTarget(program, args.target);
   const kind = resolveLegendKind(layer, args.channels);
-  const options = normalizeOptions(args, kind);
+  const options = normalizeOptions({ ...args,
+    symbol: resolveLegendSymbol(program, layer, args.channels, args.symbol)
+  }, kind);
   const definition = resolveDefinition(
     program,
     layer,
@@ -158,6 +162,7 @@ export function resolveCategoricalLegendConfig(program, args = {}) {
     target: layer.id,
     ...definition,
     inferredTitle: !Object.hasOwn(args, "title"),
+    inferredSymbol: args.symbol === undefined || args.symbol === "auto",
     position: options.position,
     align: options.align,
     direction: options.direction,
@@ -233,9 +238,7 @@ export function resolveLegendCreationPlan(program, args = {}, layers = program.s
   validateOptionObject(args, undefined, "createLegend");
   const candidates = args.target === undefined ? layers : layers.filter(layer => layer.id === args.target);
   const channels = args.channels;
-  if (channels !== undefined && !Array.isArray(channels)) {
-    throw new TypeError("createLegend channels must be an array.");
-  }
+  if (channels !== undefined) validateLegendChannels(channels, "createLegend");
   const standalone = [
     ["size", isSizeLegendPoint, ["color", "shape", "strokeDash", "opacity"]],
     ["strokeWidth", isStrokeWidthLegendLayer, args.target === undefined
@@ -283,16 +286,27 @@ export function resolveLegendCreationPlan(program, args = {}, layers = program.s
     return { steps: [{ op: "createIntervalLegend", args }], finish: "auto" };
   }
   const wantsShape = channels?.includes("shape") === true;
+  const wantsSize = channels?.includes("size") === true;
   const pointCandidates = candidates.filter(layer =>
     layer.mark?.type === "point" &&
-    layer.encoding?.shape?.scale !== undefined &&
-    (wantsShape || layer.encoding?.color?.scale !== undefined)
+    (channels === undefined
+      ? layer.encoding?.shape?.scale !== undefined && layer.encoding?.color?.scale !== undefined
+      : (wantsShape || wantsSize) && channels.every(channel =>
+        ["color", "shape", "size"].includes(channel) && layer.encoding?.[channel]?.scale !== undefined))
   );
   const requestedPoint = requestedCandidate(program, args.target, pointCandidates);
+  if (wantsSize && requestedPoint === undefined) {
+    throw new Error("Combined size legend requires one eligible point mark or an explicit target.");
+  }
   if (requestedPoint !== undefined) {
     const { count, ...categoricalArgs } = args;
+    const combined = requestedPoint.encoding?.size?.scale !== undefined &&
+      (channels === undefined || wantsSize);
+    if (count !== undefined && !combined) {
+      throw new Error("Legend count requires a selected size legend.");
+    }
     if (
-      requestedPoint.encoding?.size?.scale !== undefined &&
+      combined &&
       categoricalArgs.position !== undefined &&
       !["right", "left"].includes(categoricalArgs.position)
     ) {
@@ -300,42 +314,33 @@ export function resolveLegendCreationPlan(program, args = {}, layers = program.s
         "Combined point series and size legends currently require a side position."
       );
     }
-    const pointColor = requestedPoint.encoding?.color;
-    const hasMatchingLine = pointColor?.scale !== undefined && layers.some(candidate =>
-      candidate.mark?.type === "line" &&
-      candidate.encoding?.color?.field === pointColor.field &&
-      candidate.encoding?.color?.scale === pointColor.scale
-    );
-    const symbol = categoricalArgs.symbol ?? {
-      layers: [
-        ...(hasMatchingLine
-          ? [{ type: "line", length: 32, lineWidth: 3 }]
-          : []),
-        {
-          type: "point",
-          size: Math.sqrt(64 / Math.PI),
-          stroke: "white",
-          strokeWidth: 0
-        }
-      ]
-    };
     const inferredChannels = ["color", "shape"].filter(
       channel => requestedPoint.encoding?.[channel]?.scale !== undefined
     );
     const steps = [{ op: "createCategoricalLegend", args: {
       ...categoricalArgs,
       target: requestedPoint.id,
-      channels: categoricalArgs.channels ?? inferredChannels,
-      symbol
+      channels: channels?.filter(channel => channel !== "size") ?? inferredChannels
     } }];
-    const combined = requestedPoint.encoding?.size?.scale !== undefined;
     if (combined) steps.push({ op: "createSizeLegend", args: {
       target: requestedPoint.id,
       ...(count === undefined ? {} : { count }),
       inheritAppearance: categoricalArgs.position === "left" ||
         categoricalArgs.labels !== undefined || categoricalArgs.titleStyle !== undefined
     } });
-    return { steps, combined, finish: combined ? "always" : "never" };
+    // Validate both content owners before any component action starts.
+    resolveCategoricalLegendConfig(program, steps[0].args);
+    if (combined) {
+      const size = resolveSizeLegendConfig(program, steps[1].args);
+      const existing = program.guideConfigs.legend?.size;
+      if (existing !== undefined && existing.target !== size.target) {
+        throw new Error("Combined point series legend requires the active size legend to share its target.");
+      }
+      if (existing !== undefined && count !== undefined && existing.count !== count) {
+        throw new Error("Existing size legend count must be edited before recreating the categorical block.");
+      }
+    }
+    return { steps, combined, finish: combined ? "always" : "auto" };
   }
   return { steps: [{ op: "createCategoricalLegend", args }], finish: "auto" };
 }
@@ -345,14 +350,10 @@ export function applyLegendCreationPlan(program, plan) {
   let next = program;
   for (const step of plan.steps) {
     const existingSize = next.guideConfigs.legend?.size;
-    if (plan.combined && step.op === "createSizeLegend" && existingSize !== undefined) {
-      if (existingSize.target !== step.args.target) {
-        throw new Error("Combined point series legend requires the active size legend to share its target.");
-      }
-      if (step.args.count !== undefined && step.args.count !== existingSize.count) {
-        throw new Error("Existing size legend count must be edited before recreating the categorical block.");
-      }
-    } else next = next[step.op](step.args);
+    // The plan already validated that a retained size block is compatible.
+    if (!(plan.combined && step.op === "createSizeLegend" && existingSize !== undefined)) {
+      next = next[step.op](step.args);
+    }
   }
   return plan.finish === "always" ? next.rematerializeLegend()
     : plan.finish === "auto" ? finishLegend(next) : next;

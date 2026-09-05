@@ -13,7 +13,8 @@
 - [ ] R6-P5-W2 Legend content와 edge layout — [계약](CONTRACT_W2.md)
 - [x] W2 A standalone size editor/owner isolation — [검증](RESULTS_W2_SIZE.md)
 - [x] W2 B 선행 shape-only 오류 #86 — [검증](RESULTS_W2_SHAPE.md)
-- [ ] W2 B combined content 부분 제거·재작성과 recipe provenance
+- [x] W2 B1 explicit content 생성·recipe provenance와 layer order, #88/#89 — [검증](RESULTS_W2_CONTENT_CREATE.md)
+- [ ] W2 B2 inferred point #90, combined content 부분 제거·편집·재작성과 전체 replay
 - [x] W2 C1 명시적 categorical bottom mode, 오류 #87 — [검증](RESULTS_W2_BOTTOM.md)
 - [ ] W2 C2 전체 family×edge layout과 통합 matrix
 - [ ] R6-P5-W3 Final-item labels·reference·common format
