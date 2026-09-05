@@ -128,7 +128,9 @@
             "B04"
           ],
           "scope": "Area/Strip의 complete-chart provider를 실제 완성 경로 또는 unresolved로 바꾼다. Radial-bar가 generic bar를 shadow하게 한다. Raw mark 요청은 별도 provider로 유지한다.",
-          "acceptance": "7개 probe를 실행해 필수 encoding·item grain·coordinate·extra layer를 검사. 지원 안 된 요구를 unresolved=[]로 반환하지 않음. 비용 드는 모델 호출 불필요."
+          "acceptance": "7개 probe를 실행해 필수 encoding·item grain·coordinate·extra layer를 검사. 지원 안 된 요구를 unresolved=[]로 반환하지 않음. 비용 드는 모델 호출 불필요.",
+          "status": "implemented-and-verified",
+          "resultEvidence": "phase1/RESULTS.md#w4--mcp-chart-closure와-phrase-우선순위"
         },
         {
           "id": "R6-P1-W5",
@@ -706,7 +708,7 @@
       "id": "B02",
       "title": "MCP Area의 빈 chart 거짓 완료",
       "kind": "reproduced-bug-or-contract-mismatch",
-      "status": "proposed",
+      "status": "implemented-and-verified",
       "primaryPhase": 1,
       "primaryWorkPackage": "R6-P1-W4",
       "relatedWorkPackages": [
@@ -719,13 +721,14 @@
       "recommended": "Area/Strip의 complete-chart provider를 실제 완성 경로 또는 unresolved로 바꾼다. Radial-bar가 generic bar를 shadow하게 한다. Raw mark 요청은 별도 provider로 유지한다.",
       "acceptance": "7개 probe를 실행해 필수 encoding·item grain·coordinate·extra layer를 검사. 지원 안 된 요구를 unresolved=[]로 반환하지 않음. 비용 드는 모델 호출 불필요.",
       "evidence": "audit/mcp-execution.json: area chart",
-      "disposition": "implementation-or-explicit-contract-decision-proposed"
+      "disposition": "Incomplete chart decisions are explicitly unresolved; complete chart APIs remain with their later family owners.",
+      "resultEvidence": "phase1/RESULTS.md#w4--mcp-chart-closure와-phrase-우선순위"
     },
     {
       "id": "B03",
       "title": "MCP Strip의 unpositioned Tick 거짓 완료",
       "kind": "reproduced-bug-or-contract-mismatch",
-      "status": "proposed",
+      "status": "implemented-and-verified",
       "primaryPhase": 1,
       "primaryWorkPackage": "R6-P1-W4",
       "relatedWorkPackages": [
@@ -738,13 +741,14 @@
       "recommended": "Area/Strip의 complete-chart provider를 실제 완성 경로 또는 unresolved로 바꾼다. Radial-bar가 generic bar를 shadow하게 한다. Raw mark 요청은 별도 provider로 유지한다.",
       "acceptance": "7개 probe를 실행해 필수 encoding·item grain·coordinate·extra layer를 검사. 지원 안 된 요구를 unresolved=[]로 반환하지 않음. 비용 드는 모델 호출 불필요.",
       "evidence": "audit/mcp-execution.json: strip plot",
-      "disposition": "implementation-or-explicit-contract-decision-proposed"
+      "disposition": "Incomplete chart decisions are explicitly unresolved; complete chart APIs remain with their later family owners.",
+      "resultEvidence": "phase1/RESULTS.md#w4--mcp-chart-closure와-phrase-우선순위"
     },
     {
       "id": "B04",
       "title": "MCP Radial bar의 Cartesian layer 혼입",
       "kind": "reproduced-bug-or-contract-mismatch",
-      "status": "proposed",
+      "status": "implemented-and-verified",
       "primaryPhase": 1,
       "primaryWorkPackage": "R6-P1-W4",
       "relatedWorkPackages": [
@@ -757,7 +761,8 @@
       "recommended": "Area/Strip의 complete-chart provider를 실제 완성 경로 또는 unresolved로 바꾼다. Radial-bar가 generic bar를 shadow하게 한다. Raw mark 요청은 별도 provider로 유지한다.",
       "acceptance": "7개 probe를 실행해 필수 encoding·item grain·coordinate·extra layer를 검사. 지원 안 된 요구를 unresolved=[]로 반환하지 않음. 비용 드는 모델 호출 불필요.",
       "evidence": "audit/mcp-execution.json: radial bar chart",
-      "disposition": "implementation-or-explicit-contract-decision-proposed"
+      "disposition": "Overlapping generic chart phrases shadowed; separate requests retained. D01 remains for Phase 4.",
+      "resultEvidence": "phase1/RESULTS.md#w4--mcp-chart-closure와-phrase-우선순위"
     },
     {
       "id": "B05",

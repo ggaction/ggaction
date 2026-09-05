@@ -87,6 +87,73 @@ async function executeAuthoring(packet, { rows, renderer }) {
   )(chart, render, renderToSVG, context, rows);
 }
 
+test("chart packets either materialize their chart or expose the missing decision", async () => {
+  const rows = [
+    { x: 1, y: 2, value: 0, category: "A", series: "one" },
+    { x: 2, y: 3, value: 3, category: "B", series: "one" },
+    { x: 3, y: 4, value: 4, category: "C", series: "one" }
+  ];
+  for (const [query, kind, count, unresolved] of [
+    ["pie chart", "arc", 2, []],
+    ["density plot", "area", 1, []],
+    ["rose chart", "arc", 2, []],
+    ["radial bar chart", "arc", 2, []],
+    ["radar chart", "line", 1, []],
+    ["area chart", "area", 0, ["chart.area.baseline"]],
+    ["strip plot", "point", 3, ["chart.strip.placement"]]
+  ]) {
+    const packet = searchGgaction(query);
+    assert.deepEqual(packet.unresolved.map(entry => entry.constraint), unresolved, query);
+    const { program } = await executeAuthoring(packet, { rows });
+    assert.equal(program.semanticSpec.layers.length, 1, query);
+    const [layer] = program.semanticSpec.layers;
+    assert.equal(layer.mark.type, kind, query);
+    const items = program.graphicSpec.objects[layer.id].items;
+    assert.equal(items.length, count, query);
+    if (unresolved.length > 0) {
+      assert.ok(packet.unresolved.every(entry => entry.resources.length > 0), query);
+      assert.deepEqual(docsFallbackResources(packet).map(resource => resource.uri), [
+        "ggaction://docs/action-reference"
+      ], query);
+      continue;
+    }
+    assert.ok(Object.keys(layer.encoding).length >= 2, query);
+    assert.ok(items.every(item => Object.keys(item.properties).length > 0), query);
+    if (["arc", "line"].includes(kind)) {
+      const coordinate = program.semanticSpec.coordinates.find(entry => entry.id === layer.coordinate);
+      assert.equal(coordinate.type, "polar", query);
+      assert.ok(layer.encoding.theta && (layer.encoding.radius || kind === "arc"), query);
+    }
+  }
+});
+
+test("raw mark requests remain distinct from incomplete chart requests", () => {
+  for (const [query, action] of [["area mark", "createAreaMark"], ["tick mark", "createTickMark"]]) {
+    const packet = searchGgaction(query);
+    assert.deepEqual(packet.unresolved, [], query);
+    assert.deepEqual(packet.actionPlan.map(entry => entry.name), [action], query);
+  }
+  assert.match(searchGgaction("area chart").unresolved[0].reason, /baseline|secondary/u);
+  assert.match(searchGgaction("strip plot").unresolved[0].reason, /measure|placement/u);
+});
+
+test("specific polar phrases shadow only overlapping generic chart phrases", async () => {
+  for (const query of ["radial bar chart", "polar area chart"]) {
+    const packet = searchGgaction(query);
+    assert.deepEqual(packet.matchedConstraints, ["chart.rose"], query);
+    assert.equal(packet.actionPlan.some(entry => entry.name === "createBarPlot"), false, query);
+    assert.equal(packet.actionPlan.some(entry => entry.name === "createAreaMark"), false, query);
+  }
+  const separate = searchGgaction("radial bar chart and bar chart");
+  assert.ok(separate.matchedConstraints.includes("chart.rose"));
+  assert.ok(separate.matchedConstraints.includes("chart.bar"));
+  const { program } = await executeAuthoring(separate, { rows: [
+    { value: 2, category: "A", series: "one" },
+    { value: 3, category: "B", series: "one" }
+  ] });
+  assert.deepEqual(program.semanticSpec.layers.map(layer => layer.mark.type), ["arc", "bar"]);
+});
+
 test("intent taxonomy covers every supported constraint with exact owners", async () => {
   const [taxonomy, cards, schema] = await Promise.all([
     json("intent-taxonomy.json"),
@@ -97,9 +164,9 @@ test("intent taxonomy covers every supported constraint with exact owners", asyn
   assert.equal(validate(taxonomy), true, JSON.stringify(validate.errors));
   assert.deepEqual(validateResolverKnowledge(), {
     cards: 173,
-    constraints: 89,
-    providers: 83,
-    supported: 84,
+    constraints: 90,
+    providers: 84,
+    supported: 85,
     unsupported: 5
   });
   assert.equal(taxonomy.packageVersion, cards.packageVersion);

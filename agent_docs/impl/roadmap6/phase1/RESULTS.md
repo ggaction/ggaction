@@ -49,3 +49,23 @@
 - `npm run test:contracts`: 255/255 통과. Current BASIC_CHARTS/MARKS, public marks/action reference,
   generated cards/actions/signatures/types/search/LLM 동기화. 기존 render 동작만 검증하므로 V는 적용 대상 없음.
 - 원장: B06 구현·검증 완료, Phase 1 X 검토 대기. 로그는 `.artifacts/roadmap6-authoring/stroke-*.log`.
+
+## W4 — MCP chart closure와 phrase 우선순위
+
+- 기준 commit: `de1fd0ec` (W3). B02는 `chart.area.baseline`, B03는 `chart.strip.placement`를 unresolved로
+  명시한다. Strip chart intent를 raw Tick intent에서 분리해 Point scaffold를 선택한다. 새 public chart API를 만들지 않는다.
+- Area의 secondary position, Strip의 measure/category/constant placement는 이 generic template가 결정하지 않는다.
+  비어 있거나 위치 없는 scaffold는 완료 결과가 아니다. Raw Area/Tick mark 요청은 기존 lower operation으로 유지한다.
+- B04: `radial bar chart`와 `polar area chart`의 겹친 일반 Bar/Area phrase만 shadow한다.
+  `radial bar chart and bar chart`처럼 독립적으로 요청한 두 chart는 모두 생성한다.
+- 새 chart alias가 regression의 lower Point dependency를 대신 선택하지 않도록 기존 canonical dependency builder를 재사용했다.
+- 감사의 7개 query를 `node agent_docs/impl/roadmap6/audit/mcp-execution.mjs`로 재실행: Pie arc 3, Density area 1,
+  Rose arc 2, Radial arc 2, Radar line 1. Area 0과 Strip unpositioned points 3은 각각 위 unresolved를 보고한다.
+  Radial의 Cartesian layer는 1→0이다. 원본 감사 파일은 유지하고 replay artifact에 기록했다.
+- D01의 positive-minimum radius 문제는 여기서 고치지 않았다. Rose/Radial의 최소값 항목 누락은 Phase 4에 남는다.
+  영구 closure regression은 value 0을 포함한 데이터로 유효한 zero-radius/slice omission과 nonempty geometry를 확인한다.
+- `compact-task-resolver.test.js`: 20/20 통과. 7 packet 실행, mark grain·coordinate·필수 encoding·불필요 layer,
+  raw-mark 구분, bounded fallback, strict TypeScript template와 deterministic closure를 검증한다.
+- `npm run test:contracts`: 258/258 통과. `npm run test:package`: exit 0 (installed MCP/direct byte equality 포함).
+- 문서: architecture의 packet v4/의미 경계, MCP public 설명, generated taxonomy/search/LLM 동기화.
+  추가 모델 호출 없음. B02/B03/B04 교정·검증 완료, 새로운 완성 chart는 F05/F08/F04 owner에 남는다.

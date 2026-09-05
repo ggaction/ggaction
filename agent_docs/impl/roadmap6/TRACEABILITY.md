@@ -35,7 +35,7 @@ Primary owner는 누락 방지를 위한 책임 단위이며, 관련 작업이 �
 - 수정·추가 방향: Area/Strip의 complete-chart provider를 실제 완성 경로 또는 unresolved로 바꾼다. Radial-bar가 generic bar를 shadow하게 한다. Raw mark 요청은 별도 provider로 유지한다.
 - 완료 검증: 7개 probe를 실행해 필수 encoding·item grain·coordinate·extra layer를 검사. 지원 안 된 요구를 unresolved=[]로 반환하지 않음. 비용 드는 모델 호출 불필요.
 - 근거: audit/mcp-execution.json: area chart. [원래 조사](audit/REPORT.md)
-- 처분: 구현 또는 명시적인 계약 유지·migration 결정의 제안. 아직 완료·승인 상태가 아니다.
+- 처분: generic Area scaffold의 baseline을 unresolved로 표시해 거짓 완료를 교정했다. 완성 Area API는 F05에 남는다. [실행 증거](phase1/RESULTS.md#w4--mcp-chart-closure와-phrase-우선순위)
 
 ### B03 — MCP Strip의 unpositioned Tick 거짓 완료
 
@@ -43,7 +43,7 @@ Primary owner는 누락 방지를 위한 책임 단위이며, 관련 작업이 �
 - 수정·추가 방향: Area/Strip의 complete-chart provider를 실제 완성 경로 또는 unresolved로 바꾼다. Radial-bar가 generic bar를 shadow하게 한다. Raw mark 요청은 별도 provider로 유지한다.
 - 완료 검증: 7개 probe를 실행해 필수 encoding·item grain·coordinate·extra layer를 검사. 지원 안 된 요구를 unresolved=[]로 반환하지 않음. 비용 드는 모델 호출 불필요.
 - 근거: audit/mcp-execution.json: strip plot. [원래 조사](audit/REPORT.md)
-- 처분: 구현 또는 명시적인 계약 유지·migration 결정의 제안. 아직 완료·승인 상태가 아니다.
+- 처분: Strip chart를 raw Tick intent에서 분리하고 Point placement를 unresolved로 표시했다. 완성 Strip/Rug API는 F08에 남는다. [실행 증거](phase1/RESULTS.md#w4--mcp-chart-closure와-phrase-우선순위)
 
 ### B04 — MCP Radial bar의 Cartesian layer 혼입
 
@@ -51,7 +51,7 @@ Primary owner는 누락 방지를 위한 책임 단위이며, 관련 작업이 �
 - 수정·추가 방향: Area/Strip의 complete-chart provider를 실제 완성 경로 또는 unresolved로 바꾼다. Radial-bar가 generic bar를 shadow하게 한다. Raw mark 요청은 별도 provider로 유지한다.
 - 완료 검증: 7개 probe를 실행해 필수 encoding·item grain·coordinate·extra layer를 검사. 지원 안 된 요구를 unresolved=[]로 반환하지 않음. 비용 드는 모델 호출 불필요.
 - 근거: audit/mcp-execution.json: radial bar chart. [원래 조사](audit/REPORT.md)
-- 처분: 구현 또는 명시적인 계약 유지·migration 결정의 제안. 아직 완료·승인 상태가 아니다.
+- 처분: 겹친 일반 Bar/Area phrase만 shadow하며 별도 요청한 chart는 유지한다. D01 radius default와 Rose 의미 정리는 Phase 4에 남는다. [실행 증거](phase1/RESULTS.md#w4--mcp-chart-closure와-phrase-우선순위)
 
 ### B05 — 미완성 derived data 소비의 internal TypeError
 

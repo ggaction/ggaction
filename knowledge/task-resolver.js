@@ -283,9 +283,7 @@ function adaptProviderDependencies(selected) {
     ["createPointMark", "createScatterPlot"].includes(entry.provider.name)
   );
   if (hasRegression && !hasPointSource) {
-    const point = taxonomy.providers.find(provider => provider.name === "createPointMark");
-    if (!point) throw new Error("createRegression requires the createPointMark provider.");
-    adapted = [{ provider: point, coverage: [] }, ...adapted];
+    adapted = [dependencyEntry("createPointMark", {}), ...adapted];
   }
   const legendLayout = adapted.find(entry =>
     entry.provider.name === "editLegendLayout" &&
@@ -1723,6 +1721,19 @@ function runtimeClosureDecisions(entries) {
     .map(entry => entry.provider.name));
   const unresolved = [];
   const unsupported = [];
+  const chartConstraints = new Set(entries.flatMap(entry => entry.coverage));
+  if (chartConstraints.has("chart.area")) {
+    unresolved.push(unresolvedDecision(
+      "chart.area.baseline",
+      "This area-chart template leaves its baseline unresolved. Choose an explicit secondary-position, density, or stack recipe before treating it as a drawable chart."
+    ));
+  }
+  if (chartConstraints.has("chart.strip")) {
+    unresolved.push(unresolvedDecision(
+      "chart.strip.placement",
+      "A point strip needs a measure field and a categorical or constant placement. Resolve those positions before treating the point-mark scaffold as a chart; a tick mark alone is not a strip plot."
+    ));
+  }
   const markCreators = [...names].filter(name =>
     name.startsWith("create") && (name.endsWith("Mark") || name.endsWith("Plot"))
   );

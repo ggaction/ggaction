@@ -156,6 +156,17 @@ stable mark target. It does not invent a missing chart, label positions,
 legend channel, or composition children; those
 remain explicit `unresolved` decisions.
 
+Generic `area chart` requests leave `chart.area.baseline` unresolved because
+the x/y scaffold does not choose a baseline. Generic `strip plot` requests use
+a point-mark scaffold and leave `chart.strip.placement` unresolved until the
+measure and category or constant placement are specified. Raw `area mark` and
+`tick mark` requests remain lower-level mark operations.
+
+Specific phrases such as `radial bar chart` and `polar area chart` take
+precedence over their overlapping `bar chart` and `area chart` words. A
+separately requested chart, as in `radial bar chart and bar chart`, remains a
+separate requirement.
+
 Unsupported output and a missing supported renderer are separate decisions.
 For example, `render JPEG` reports terminal `unsupported.jpg` and open
 `renderer.format`, but recommends only the bounded renderer-choice section.
