@@ -41,3 +41,5 @@ Same-edge multi-block ordering, border grouping, title/axis collision과 bounded
 각 kind×edge×create/edit/remove/recreate/scale/Canvas/encoding replay를 literal geometry와 state로 검사한다. 대표 primitive/public pairs, same tarball Node/types/MCP/browser, generated API/type/card matrix와 real data recipes를 함께 검증한다. 일부 기능의 green tests를 전체 matrix 완료로 대체하지 않는다. D08 및 W2 완료는 A/B/C와 통합 증거 후 기록한다. W3–W5와 후속 Phase, 0.0.13 release는 별도로 남는다.
 
 C2의 stroke-width 네 방향 생성·편집·재배치와 Canvas overflow #95 수정은 [RESULTS_W2_WIDTH_EDGES.md](RESULTS_W2_WIDTH_EDGES.md)에서 검증했다. Size/combined 및 전체 collision/transition matrix는 계속 미완료다.
+
+Size standalone 네 방향과 독립 content owner, 큰 sample/label 간격 및 nested side border #96은 [RESULTS_W2_SIZE_EDGES.md](RESULTS_W2_SIZE_EDGES.md)에서 검증했다. Combined top/bottom group과 전체 collision/transition matrix는 계속 미완료다.

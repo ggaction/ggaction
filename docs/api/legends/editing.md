@@ -39,8 +39,8 @@ the new edge; explicitly stored columns/alignment/title placement remain and
 must be made compatible in the same edit. A horizontal opacity legend can switch to
 `titlePosition: "left"`; unless spacing is supplied in the same edit, the
 inline mode selects its 8-pixel symbol-label and 20-pixel sample defaults.
-Standalone size legends accept only `title`, `count`, `labels`,
-and `titleStyle` and keep their existing right-side placement. On a Full program
+Standalone size legends support `title`, `count`, `labels`, `titleStyle`, border,
+and four-edge layout through the same editing actions. On a Full program
 with an existing standalone size legend, this fragment edits its sampled content:
 
 ```javascript
@@ -55,9 +55,12 @@ const restored = edited.editLegendTitle({ title: false })
 ```
 
 Size samples retain the encoded area mapping. Count must be an integer from 2
-through 10,000. Size labels use a default offset of 28 pixels from the sample
-center, editable through `labels: { offset }`; title styles do not accept an
-offset. Defaults remain size 12/normal for labels and size 13/600 for titles.
+through 10,000. Size labels use a default gap of 12 pixels after the sample slot, editable through
+`labels: { offset }`; title styles do not accept an offset. The slot is at least
+32 pixels wide and expands to fit the largest circle. This replaces the previous
+center-relative offset of 28; explicit offsets now measure from the slot edge. Defaults remain size 12/normal for labels and size 13/600 for titles.
+Side size legends use title/item centers at plot top plus 20/52, an offset of 30,
+and item pitch of at least 40. Large circles or fonts expand the required spacing.
 Partial styles and title visibility survive Canvas, scale and data updates.
 
 Stroke-width legends additionally support four-edge layout and borders on creation

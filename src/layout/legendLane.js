@@ -25,24 +25,25 @@ function decoration(border) {
     : border.padding + border.lineWidth / 2;
 }
 
-function horizontalExtent(blocks) {
+function horizontalExtent(blocks, labelStart) {
   let left = 0;
   let right = 0;
   for (const block of blocks) {
-    if (block.title !== undefined) right = Math.max(right, block.title.width);
+    const inset = block.inset ?? 0;
+    if (block.title !== undefined) right = Math.max(right, block.title.width + inset);
     left = Math.min(left,
-      SIDE_LEGEND_SYMBOL_CENTER + block.symbol.left - block.symbol.centerX
+      SIDE_LEGEND_SYMBOL_CENTER + block.symbol.left - block.symbol.centerX - inset
     );
     right = Math.max(
       right,
-      SIDE_LEGEND_SYMBOL_CENTER + block.symbol.right - block.symbol.centerX,
-      SIDE_LEGEND_LABEL_START + block.labels.width
+      SIDE_LEGEND_SYMBOL_CENTER + block.symbol.right - block.symbol.centerX + inset,
+      labelStart + block.labels.width + inset
     );
   }
   return { left, right };
 }
 
-function placeBlock(block, cursor) {
+function placeBlock(block, cursor, labelStart) {
   let dy;
   if (block.title === undefined) {
     dy = cursor - block.bounds.top;
@@ -65,7 +66,7 @@ function placeBlock(block, cursor) {
       ? undefined
       : -block.title.x,
     symbolDx: SIDE_LEGEND_SYMBOL_CENTER - block.symbol.centerX,
-    labelDx: SIDE_LEGEND_LABEL_START - block.labels.x,
+    labelDx: labelStart - block.labels.x,
     bounds
   };
 }
@@ -87,7 +88,10 @@ export function resolveSideLegendLane({
   }
   const blocks = groups.flatMap(group => group.blocks);
   if (blocks.length < 2) return undefined;
-  const laneExtent = horizontalExtent(blocks);
+  const labelStart = Math.max(SIDE_LEGEND_LABEL_START, ...blocks.map(
+    block => SIDE_LEGEND_SYMBOL_CENTER + block.labels.x - block.symbol.centerX
+  ));
+  const laneExtent = horizontalExtent(blocks, labelStart);
   const offset = blocks.reduce(
     (maximum, block) => Math.max(maximum, block.offset),
     -Infinity
@@ -96,7 +100,7 @@ export function resolveSideLegendLane({
     ? plot.x + plot.width + offset
     : plot.x - offset - laneExtent.right;
   const symbolCenterX = titleStartX + SIDE_LEGEND_SYMBOL_CENTER;
-  const labelStartX = titleStartX + SIDE_LEGEND_LABEL_START;
+  const labelStartX = titleStartX + labelStart;
   const first = blocks[0];
   let cursor = first.title === undefined
     ? plot.y + 12
@@ -110,7 +114,7 @@ export function resolveSideLegendLane({
     if (occupiedGroups.length > 0) cursor += inset;
     const groupPlacements = [];
     for (const block of group.blocks) {
-      const placement = placeBlock(block, cursor);
+      const placement = placeBlock(block, cursor, labelStart);
       groupPlacements.push(placement);
       placements.push({
         ...placement,
@@ -123,7 +127,7 @@ export function resolveSideLegendLane({
       cursor = placement.bounds.bottom + SIDE_LEGEND_BLOCK_GAP;
     }
     const vertical = unionBounds(groupPlacements.map(item => item.bounds));
-    const groupExtent = horizontalExtent(group.blocks);
+    const groupExtent = horizontalExtent(group.blocks, labelStart);
     const foreground = {
       left: titleStartX + groupExtent.left,
       right: titleStartX + groupExtent.right,

@@ -60,8 +60,14 @@ export function resolveLegendItemLayout(plot, config, labels, symbol) {
   const bounds = [
     ...(titleVisible ? [textBounds(title.x, title.y, config.title, config.titleStyle, title.align)] : []),
     ...labels.map((label, index) => textBounds(labelX[index], itemY[index], label, config.labels)),
-    ...symbolX.map((x, index) => ({ left: x - strokes[index] / 2, right: x + symbol.width + strokes[index] / 2,
-      top: itemY[index] - symbol.height / 2 - strokes[index] / 2, bottom: itemY[index] + symbol.height / 2 + strokes[index] / 2 }))
+    ...symbolX.map((x, index) => {
+      const local = symbol.itemBounds?.[index] ?? {
+        left: -strokes[index] / 2, right: symbol.width + strokes[index] / 2,
+        top: -symbol.height / 2 - strokes[index] / 2, bottom: symbol.height / 2 + strokes[index] / 2
+      };
+      return { left: x + local.left, right: x + local.right,
+        top: itemY[index] + local.top, bottom: itemY[index] + local.bottom };
+    })
   ];
   return { symbolX, labelX, itemY, title, bounds };
 }

@@ -7,11 +7,9 @@ import { layoutBoundsIntersect } from "../../../../layout/title.js";
 import { formatVisibleText } from "../../../../core/textMetrics.js";
 import {
   assertLegendBoundsInsideCanvas,
-  formatContinuousValues,
   resolveContinuousBounds,
   resolveLegendBackgroundFromBounds,
-  resolveLegendTextBounds,
-  sampleContinuousValues
+  resolveLegendTextBounds
 } from "../continuous/common.js";
 import {
   alignLegendStart,
@@ -70,22 +68,7 @@ function textBounds(x, y, value, style, textAlign = "left") {
   );
 }
 
-function resolveLeftSizeMetrics(program, sizeConfig) {
-  if (sizeConfig === undefined) return undefined;
-  const scale = program.resolvedScales[sizeConfig.scale];
-  if (scale?.type !== "linear") {
-    throw new Error(`Legend requires resolved linear scale "${sizeConfig.scale}".`);
-  }
-  const values = sampleContinuousValues(scale.domain, sizeConfig.count);
-  const labels = formatContinuousValues(values, scale.domain, "quantitative");
-  const maximumRadius = Math.sqrt(Math.max(...scale.range) / Math.PI);
-  return { values, labels, maximumRadius };
-}
-
 function resolveLeftLayout(program, bounds, canvas, config, width, count) {
-  const storedSize = program.guideConfigs.legend?.size;
-  const sizeConfig = storedSize?.target === config.target ? storedSize : undefined;
-  const size = resolveLeftSizeMetrics(program, sizeConfig);
   const padding = config.border === false ? 0 : config.border.padding;
   const categoricalWidth = config.domain.reduce((maximum, value) => Math.max(
     maximum,
@@ -94,13 +77,7 @@ function resolveLeftLayout(program, bounds, canvas, config, width, count) {
   ), config.titleVisible === false
     ? 0
     : measureLegendTextWidth(config.title, config.titleStyle));
-  const sizeWidth = size === undefined
-    ? 0
-    : size.labels.reduce((maximum, label) => Math.max(
-        maximum,
-          44 + measureLegendTextWidth(label, config.labels)
-      ), measureLegendTextWidth(sizeConfig.title, config.titleStyle));
-  const contentWidth = Math.max(categoricalWidth, sizeWidth);
+  const contentWidth = categoricalWidth;
   const occupiedRight = bounds.x - config.offset;
   const contentRight = occupiedRight - padding;
   const start = contentRight - contentWidth;
@@ -118,23 +95,16 @@ function resolveLeftLayout(program, bounds, canvas, config, width, count) {
   const labelX = symbolX.map(value => value + width + config.labels.offset);
   const titleX = start;
   const titleY = bounds.y + 20;
-  const sizeTitleY = bounds.y + 56 + count * 34 + 22;
-  const sizeItemY = size?.values.map((_, index) => sizeTitleY + 34 + index * 40);
-  const sizeSymbolX = size?.values.map(() => start + 16);
-  const sizeLabelX = size?.values.map(() => start + 44);
   const categoricalTop = config.titleVisible === false
     ? itemY[0] - Math.max(
         config.labels.fontSize,
         measureLegendSymbolHeight(config)
       ) / 2
     : titleY - config.titleStyle.fontSize / 2;
-  const sizeBottom = size === undefined
-    ? -Infinity
-    : sizeItemY.at(-1) + Math.max(size.maximumRadius, config.labels.fontSize / 2);
   const categoricalBottom = itemY.at(-1) +
     Math.max(config.labels.fontSize, measureLegendSymbolHeight(config)) / 2;
-  const blockTop = Math.min(categoricalTop, sizeTitleY - config.titleStyle.fontSize / 2);
-  const blockBottom = Math.max(categoricalBottom, sizeBottom);
+  const blockTop = categoricalTop;
+  const blockBottom = categoricalBottom;
   if (blockTop < 0 || blockBottom > canvas.height) {
     throw new Error("Legend layout requires more vertical Canvas space.");
   }
@@ -166,14 +136,7 @@ function resolveLeftLayout(program, bounds, canvas, config, width, count) {
     titleY,
     background,
     blockTop,
-    blockBottom,
-    size: size === undefined ? undefined : {
-      titleX: start,
-      titleY: sizeTitleY,
-      itemY: sizeItemY,
-      symbolX: sizeSymbolX,
-      labelX: sizeLabelX
-    }
+    blockBottom
   };
 }
 

@@ -247,11 +247,11 @@ test.before(async () => {
         .editLegendLabels({ color: "red" });
       const edgeBottomLegend = legacyBottomLegend.editLegendLayout({ layout: "edge" });
       render(edgeBottomLegend, document.getElementById("bottom-legend").getContext("2d"));
-      const editedSizeLegend = chart().createCanvas({ width: 640, height: 420, margin: { right: 180 } })
+      const editedSizeLegend = chart().createCanvas({ width: 1000, height: 800, margin: 250 })
         .createData({ values: [{ x: 1, y: 2, m: 10 }, { x: 2, y: 3, m: 30 }] })
         .createPointMark().encodeX({ field: "x" }).encodeY({ field: "y" })
         .encodeSize({ field: "m", scale: { range: [4 * Math.PI, 36 * Math.PI] } })
-        .createLegend({ channels: ["size"] }).editLegendSymbols({ count: 3 })
+        .createLegend({ channels: ["size"], position: "top", columns: 2, border: true }).editLegendSymbols({ count: 3 })
         .editLegendTitle({ title: "Mass" }).editLegendLabels({ fontWeight: 700 });
       const hiddenSizeLegend = editedSizeLegend.editLegendTitle({ title: false });
       render(editedSizeLegend, document.getElementById("size-legend").getContext("2d"));
@@ -288,6 +288,8 @@ test.before(async () => {
         shapeLegendChannels: shapeLegend.semanticSpec.guides.legend.series.channels,
         shapeLegendItems: shapeLegend.graphicSpec.objects.seriesLegendSymbolPoints.items.length,
         shapeLegendSVG: renderToSVG(shapeLegend).startsWith("<svg "),
+        sizeLegendPosition: editedSizeLegend.guideConfigs.legend.size.position,
+        sizeLegendSVG: renderToSVG(editedSizeLegend).startsWith("<svg "),
         sizeLegendRadii: editedSizeLegend.graphicSpec.objects.sizeLegendSymbols.items.map(item => item.properties.radius),
         sizeLegendTitle: editedSizeLegend.graphicSpec.objects.sizeLegendTitle.properties.text,
         hiddenSizeTitle: !renderToSVG(hiddenSizeLegend).includes("Mass"),
@@ -413,6 +415,8 @@ test("imports and renders the packed browser entries", async () => {
     shapeLegendChannels: ["shape"],
     shapeLegendItems: 2,
     shapeLegendSVG: true,
+    sizeLegendPosition: "top",
+    sizeLegendSVG: true,
     sizeLegendRadii: [2, Math.sqrt(20), 6],
     sizeLegendTitle: "Mass",
     hiddenSizeTitle: true,

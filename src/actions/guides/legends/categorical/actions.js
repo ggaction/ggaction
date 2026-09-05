@@ -39,30 +39,9 @@ function requestedCandidate(program, target, candidates) {
 }
 
 function resolveStandaloneLegendStep(args, kind) {
-  if (kind === "strokeWidth") {
-    const { channels: _channels, ...options } = args;
-    return { op: "createStrokeWidthLegend", args: options };
-  }
-  const { target, count, position, channels: _channels, ...unsupported } = args;
-  const label = kind === "size" ? "size" : "stroke-width";
-  const unsupportedKeys = Object.keys(unsupported);
-  if (unsupportedKeys.length > 0) {
-    throw new Error(
-      `Standalone ${label} legend does not support option "${unsupportedKeys[0]}".`
-    );
-  }
-  if (position !== undefined && position !== "right") {
-    throw new Error(
-      `Standalone ${label} legends currently require position "right".`
-    );
-  }
-  return {
-    op: kind === "size" ? "createSizeLegend" : "createStrokeWidthLegend",
-    args: {
-      ...(target === undefined ? {} : { target }),
-      ...(count === undefined ? {} : { count })
-    }
-  };
+  if (Object.hasOwn(args, "inheritAppearance")) throw new Error("createLegend does not accept inheritAppearance.");
+  const { channels: _channels, ...options } = args;
+  return { op: kind === "size" ? "createSizeLegend" : "createStrokeWidthLegend", args: options };
 }
 
 export const rematerializeLegend = action(
@@ -301,6 +280,7 @@ export function resolveLegendCreationPlan(program, args = {}, layers = program.s
     if (combined) steps.push({ op: "createSizeLegend", args: {
       target: requestedPoint.id,
       ...(count === undefined ? {} : { count }),
+      ...(categoricalArgs.labels?.offset === undefined ? {} : { labels: { offset: categoricalArgs.labels.offset } }),
       inheritAppearance: categoricalArgs.position === "left" ||
         categoricalArgs.labels !== undefined || categoricalArgs.titleStyle !== undefined
     } });

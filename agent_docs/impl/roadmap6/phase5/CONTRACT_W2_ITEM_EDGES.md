@@ -21,3 +21,11 @@ Primitive target: Canvas1000×700, margins L/R240 T/B200, 두 interval <5/≥5, 
 Primitive를 public 구현 전에 `.artifacts/roadmap6-authoring/stroke-width-edge-targets.mjs`로 작성·렌더링한다. Canvas1000×700, margin L/R240 T/B200, width samples2/10 및 label0/10, title m이다. Explicit count2인 네 방향 목표와 create/edit/Canvas/scale/filter/content replacement의 동일 최종 결과를 검증한다.
 
 공통 side item 배치는 큰 sample/label/title이 기본 anchor 사이에 들어가지 않으면 첫 item을 내려 title 아래 gap12를 확보한다. Default dimensions의 기존 literal anchors는 유지한다. Width의 Basic 지원은 기존 registrar/encoding 경계상 해당 없음이며 이번 구현은 Full이다.
+
+## Size item owner와 standalone 네 방향
+
+Size materializer도 공통 item owner에 연결한다. 실제 maximum diameter를 측정하고, 최소 sample slot32에 circle을 중앙 정렬한다. Labels.offset은 다른 item family와 같은 sample slot 오른쪽 간격으로 통일하며 default12다(이전 center-relative28). 보통 radius≤16인 default는 기존 sample-label 상대좌표를 유지하고 큰 circle에서는 slot을 늘려 라벨이 원에 겹치지 않는다. Explicit offset의 기준 변경은 current/types/docs와 regression에 명시한다. Side title/item origin은 공통 +20/+52, default pitch40이다. Font/color/count5/area mapping/formatter를 유지한다.
+
+Full/Basic standalone create의 네 방향과 Full editing/border/grid 지원을 먼저 검증한다. Categorical+size side는 각 owner가 독립 content를 만든 뒤 기존 lane에서 결합하고, size가 categorical layout의 private `.size` 좌표를 읽던 의존성을 제거한다. Combined top/bottom은 뒤이은 group layout 통합으로 남기며 이 부분 결과만으로 C2를 완료하지 않는다. Shared appearance도 size label offset12를 기준으로 한다.
+
+Primitive target: Canvas1000×700, L/R240 T/B200, samples radius2/6, labels0/10, count2, title m. 네 edge를 public 구현 전에 렌더링한다. Size의 실제 circle bounds와 visible texts를 검증하고 숨긴 title은 제외한다. 기존 arbitrary standalone +78/+112 위치는 공통 anchor로 대체한다.

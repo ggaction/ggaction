@@ -21,16 +21,16 @@ test("edits standalone size content and replays exact equal-area samples and sty
   const args = { count: 3, title: "Mass", labels: { color: "#123456", fontWeight: 700 }, titleStyle: { color: "#654321" } };
   const q = p.editLegend(args);
   assert.deepEqual(props(q, "sizeLegendSymbols", "radius"), [2, Math.sqrt(20), 6]);
-  assert.deepEqual(props(q, "sizeLegendSymbols", "y"), [152, 192, 232]);
+  assert.deepEqual(props(q, "sizeLegendSymbols", "y"), [92, 132, 172]);
   assert.deepEqual(props(q, "sizeLegendLabels", "text"), ["10", "20", "30"]);
   assert.deepEqual(props(q, "sizeLegendLabels", "x"), [534, 534, 534]);
   assert.equal(q.semanticSpec.guides.legend.size.title, "Mass");
   assert.equal(q.graphicSpec.objects.sizeLegendTitle.properties.x, 490);
-  assert.equal(q.graphicSpec.objects.sizeLegendTitle.properties.y, 118);
+  assert.equal(q.graphicSpec.objects.sizeLegendTitle.properties.y, 60);
   const replay = q.editLegend({ labels: { offset: 32 } }).editCanvas({ width: 740 })
     .editScale({ id: "size", domain: [0, 40] });
   assert.deepEqual(props(replay, "sizeLegendLabels", "text"), ["0", "20", "40"]);
-  assert.deepEqual(props(replay, "sizeLegendLabels", "x"), [638, 638, 638]);
+  assert.deepEqual(props(replay, "sizeLegendLabels", "x"), [654, 654, 654]);
   assert.deepEqual(props(replay, "sizeLegendSymbols", "radius"), [2, Math.sqrt(20), 6]);
   assert.equal(replay.graphicSpec.objects.sizeLegendLabels.items[0].properties.fontWeight, 700);
   assert.equal(replay.graphicSpec.objects.sizeLegendLabels.items[0].properties.fill, "#123456");
@@ -63,7 +63,7 @@ test("keeps content edits through filtered data and independent categorical owne
     .encodeY({ field: "y", scale: { id: "otherY" } }).encodeColor({ field: "group" })
     .createLegend({ target: "other", channels: ["color"], position: "left", labels: { color: "red" } });
   const q = independent.editLegendLabels({ target: "points", color: "blue" });
-  assert.equal(q.graphicSpec.objects.sizeLegendTitle.properties.y, 118);
+  assert.equal(q.graphicSpec.objects.sizeLegendTitle.properties.y, 60);
   assert.equal(q.graphicSpec.objects.sizeLegendLabels.items[0].properties.fill, "blue");
   assert.equal(q.guideConfigs.legend.color.labels.color, "red");
   const resizedContent = independent.editLegend({ target: "points", count: 2, title: "Longer size title" });
@@ -78,12 +78,12 @@ test("rejects unsupported standalone size options and invalid proposals atomical
   const failures = [{}, { count: 1 }, { count: 3.5 }, { count: 10001 }, { title: "" },
     { count: 3, labels: { fontSize: 0 } }, { labels: { offset: -1 } },
     { titleStyle: { offset: 10 } }, { target: "other", count: 3 }, { target: null, count: 3 }];
-  for (const option of ["position", "align", "direction", "columns", "offset", "titlePosition", "itemGap", "symbol", "border", "gradient", "order"]) {
-    failures.push({ [option]: option === "position" ? "left" : {} });
+  for (const option of ["symbol", "gradient", "order"]) {
+    failures.push({ [option]: {} });
   }
   assertAtomicFailures(p, failures.map(args => ({ operation: () => p.editLegend(args), inputs: [args] })));
-  assert.throws(() => p.editLegendLayout({ position: "left" }), /size legend does not accept position/);
-  const basic = basicChart().createCanvas().createData({ values: [{ x: 1, y: 2, m: 3 }] })
+  assert.throws(() => p.editLegendLayout({ position: "left" }), /margin space/);
+  const basic = basicChart().createCanvas({ margin: { right: 180 } }).createData({ values: [{ x: 1, y: 2, m: 3 }] })
     .createPointMark().encodeX({ field: "x" }).encodeY({ field: "y" }).encodeSize({ field: "m" });
   const basicLegend = basic.createLegend({ channels: ["size"] });
   assert.equal(basicLegend.graphicSpec.objects.sizeLegendSymbols.items.length, 5);

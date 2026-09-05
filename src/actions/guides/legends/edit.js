@@ -25,7 +25,7 @@ import { findLayer } from "../../../selectors/layers.js";
 import { resolveLegendGraphicPlacement } from
   "../../../materialization/graphicHierarchy.js";
 import { resolveLegendTarget, validateLegendChannels } from "./target.js";
-import { SIZE_LEGEND_LABELS, SIZE_LEGEND_TITLE_STYLE, createSizeLegendFromConfig } from "./size.js";
+import { SIZE_LEGEND_LABELS, SIZE_LEGEND_TITLE_STYLE, resolveSizeLegendLayout, createSizeLegendFromConfig } from "./size.js";
 import {
   STROKE_WIDTH_LEGEND_LABELS,
   STROKE_WIDTH_LEGEND_TITLE_STYLE,
@@ -210,7 +210,7 @@ function resolveSampledLegendEdit(program, kind, previous, args) {
   const size = kind === "size";
   const label = size ? "size" : "stroke-width";
   const allowed = ["target", "title", "count", "labels", "titleStyle",
-    ...(!size ? ["position", "layout", "align", "direction", "columns", "titlePosition", "offset", "itemGap", "border"] : [])];
+    "position", "layout", "align", "direction", "columns", "titlePosition", "offset", "itemGap", "border"];
   for (const key of Object.keys(args)) {
     if (!allowed.includes(key)) {
       throw new Error(`${label} legend does not accept ${key}.`);
@@ -255,13 +255,11 @@ function resolveSampledLegendEdit(program, kind, previous, args) {
       previous.titleStyle ?? (size ? SIZE_LEGEND_TITLE_STYLE : STROKE_WIDTH_LEGEND_TITLE_STYLE)
     )
   };
-  if (!size) {
-    Object.assign(config, normalizeItemLegendLayout({ ...previous, ...args,
-      direction: args.direction ?? (args.position !== undefined && args.position !== previous.position
-        ? undefined : previous.direction) }));
-    config.border = normalizeLegendBorder(mergeBorder(previous.border, args.border));
-    resolveStrokeWidthLegendLayout(program, config);
-  }
+  Object.assign(config, normalizeItemLegendLayout({ ...previous, ...args,
+    direction: args.direction ?? (args.position !== undefined && args.position !== previous.position
+      ? undefined : previous.direction) }));
+  config.border = normalizeLegendBorder(mergeBorder(previous.border, args.border));
+  (size ? resolveSizeLegendLayout : resolveStrokeWidthLegendLayout)(program, config);
   return { config, titleMode, title, titleVisible };
 }
 
@@ -276,7 +274,7 @@ function editSampledLegend(program, kind, previous, args) {
     });
   }
   next = next._withLegendConfig(kind, config);
-  if (kind === "strokeWidth") next = reconcileGraphic(next, `${prefix}Background`, config.border !== false, {
+  next = reconcileGraphic(next, `${prefix}Background`, config.border !== false, {
     type: "rect", before: `${prefix}Symbols`
   });
   next = reconcileGraphic(next, `${prefix}Title`, titleVisible, {
@@ -290,7 +288,7 @@ function resolveCompanionSizeEdit(previous, size, args) {
   const config = { ...size, count: args.count ?? size.count };
   if (args.labels === undefined && args.titleStyle === undefined) return config;
   const labels = size.inheritAppearance
-    ? { ...previous.labels, offset: 28 } : size.labels ?? SIZE_LEGEND_LABELS;
+    ? { ...previous.labels, offset: size.labels.offset } : size.labels ?? SIZE_LEGEND_LABELS;
   const titleStyle = size.inheritAppearance
     ? previous.titleStyle : size.titleStyle ?? SIZE_LEGEND_TITLE_STYLE;
   return { ...config, inheritAppearance: false,

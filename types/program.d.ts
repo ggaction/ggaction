@@ -2668,6 +2668,7 @@ export interface RemoveMarkOptions {
 }
 
 export interface LegendTextOptions {
+  /** Size labels: gap after the sample slot (minimum width 32), default 12. */
   offset?: number;
   color?: string;
   fontSize?: number;
@@ -2719,7 +2720,7 @@ export type LegendOrder = LegendValueOrder |
   { channel: "x" | "y" | "theta"; values?: never };
 
 export interface LegendOptions {
-  /** Categorical, interval, or stroke-width layout. Defaults to edge; legacy-bottom is categorical and requires bottom position. */
+  /** Categorical, interval, size, or stroke-width layout. Defaults to edge; legacy-bottom is categorical and requires bottom position. */
   layout?: "edge" | "legacy-bottom";
   /** Categorical item order; preserves the appearance scale's assignments. */
   order?: LegendOrder;

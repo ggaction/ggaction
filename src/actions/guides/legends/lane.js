@@ -1,3 +1,4 @@
+import { editLegendBackground, resolveLegendBackgroundFromBounds } from "./continuous/common.js";
 import { action } from "../../../core/action.js";
 import { noOptions } from "../../../core/validation.js";
 import {
@@ -33,15 +34,13 @@ function categoricalFor(program, target) {
 
 function legendPosition(program, kind, config) {
   if (kind === "size") {
-    return categoricalFor(program, config.target)?.position ?? "right";
+    return categoricalFor(program, config.target)?.position ?? config.position;
   }
   return config.position;
 }
 
-function requestedOffset(kind, config) {
-  return kind === "size"
-    ? 30
-    : config.offset;
+function requestedOffset(config) {
+  return config.offset;
 }
 
 function existingIds(program, kind) {
@@ -116,7 +115,8 @@ function blockDescriptor(program, kind, config) {
     id: kind,
     kind,
     target: config.target,
-    offset: requestedOffset(kind, config),
+    border: borderFor(kind, config),
+    offset: requestedOffset(config),
     bounds,
     title,
     symbol: {
@@ -141,7 +141,7 @@ function blockDescriptor(program, kind, config) {
 }
 
 function borderFor(kind, config) {
-  return ["series", "color", "gradient", "opacity", "interval", "strokeWidth"].includes(kind)
+  return ["series", "color", "gradient", "opacity", "interval", "strokeWidth", "size"].includes(kind)
     ? config.border
     : false;
 }
@@ -158,7 +158,8 @@ function groupBlocks(blocks, configs) {
     ) {
       groups.push({
         id: `${block.kind}+size`,
-        blocks: [block, next],
+        blocks: [block, next.backgroundId === undefined ? next : { ...next,
+          bounds: next.occupiedBounds, inset: next.border.padding + next.border.lineWidth / 2 }],
         border: borderFor(block.kind, config),
         backgroundId: block.backgroundId
       });
@@ -385,6 +386,12 @@ export const rematerializeSideLegendLane = action(
           property: "textAlign",
           value: "left"
         });
+      }
+      for (const block of blocks) {
+        if (block.backgroundId === undefined || plan.backgrounds.some(item => item.id === block.backgroundId)) continue;
+        const bounds = unionConcreteGraphicBounds(next.graphicSpec, block.foregroundIds);
+        const background = resolveLegendBackgroundFromBounds([bounds], block.border, canvas, "Legend");
+        next = editLegendBackground(next, block.backgroundId, background, block.border);
       }
       for (const background of plan.backgrounds) {
         for (const property of ["x", "y", "width", "height"]) {

@@ -1,28 +1,36 @@
 import { action } from "../../../core/action.js";
 import {
   validateGeneratedItemLimit,
+  validateNonEmptyString,
+  validateOptionObject,
   validateKeys
 } from "../../../core/validation.js";
 import { mapLinearValues } from "../../../grammar/scales/index.js";
-import { resolveGraphicBounds } from "../../../layout/canvas.js";
+import { resolveLegendItemLayout } from "../../../layout/legendItems.js";
 import { DEFAULT_COLORS, DEFAULT_FONT_FAMILY } from
   "../../../theme/defaults.js";
-import { resolveLayout as resolveCategoricalLayout } from
-  "./categorical/layout.js";
 import { findLayer } from "../../../selectors/layers.js";
-import { findCanvasGraphic, resolveLegendGraphicPlacement } from
+import { resolveLegendGraphicPlacement } from
   "../../../materialization/graphicHierarchy.js";
 import {
+  assertLegendBoundsInsideCanvas,
+  editLegendBackground,
+  normalizeItemLegendLayout,
+  normalizeLegendBorder,
+  normalizeLegendTextOptions,
+  resolveContinuousBounds,
+  resolveLegendBackgroundFromBounds,
   formatContinuousValues,
   sampleContinuousValues,
   selectLegendLayer,
   styleContinuousText
 } from "./continuous/common.js";
 
-const SIZE_OPTIONS = Object.freeze(["target", "count"]);
+const SIZE_OPTIONS = Object.freeze(["target", "count", "position", "layout", "align",
+  "direction", "columns", "titlePosition", "offset", "itemGap", "title", "labels", "titleStyle", "border"]);
 
 export const SIZE_LEGEND_LABELS = Object.freeze({
-  offset: 28,
+  offset: 12,
   color: DEFAULT_COLORS.text,
   fontSize: 12,
   fontFamily: DEFAULT_FONT_FAMILY,
@@ -60,17 +68,28 @@ function requireScale(program, id, type) {
   return scale;
 }
 
-function bounds(program) {
-  const value = resolveGraphicBounds(program);
-  const canvas = findCanvasGraphic(program);
-  if (
-    value === undefined ||
-    ![value.x, value.y, value.width, value.height].every(Number.isFinite) ||
-    !Number.isFinite(canvas?.properties.width)
-  ) {
-    throw new Error("Legend layout requires Canvas bounds and width.");
-  }
-  return value;
+export function resolveSizeLegendLayout(program, config) {
+  const scale = requireScale(program, config.scale, "linear");
+  const categorical = [program.guideConfigs.legend?.series, program.guideConfigs.legend?.color]
+    .find(candidate => candidate?.target === config.target);
+  const inherit = config.inheritAppearance === true && categorical !== undefined;
+  const labels = inherit ? { ...categorical.labels, offset: config.labels.offset } : config.labels;
+  const titleStyle = inherit ? categorical.titleStyle : config.titleStyle;
+  const position = categorical?.position ?? config.position;
+  const values = sampleContinuousValues(scale.domain, config.count);
+  const areas = mapLinearValues(values, scale.domain, scale.range, { clamp: scale.clamp ?? false });
+  const radii = areas.map(area => Math.sqrt(area / Math.PI));
+  const radius = Math.max(...radii);
+  const width = Math.max(32, radius * 2);
+  const { plot, canvas } = resolveContinuousBounds(program);
+  const text = formatContinuousValues(values, scale.domain, "quantitative");
+  const layout = resolveLegendItemLayout(plot, { ...config, position, labels, titleStyle }, text, {
+    width, height: radius * 2,
+    itemBounds: radii.map(r => ({ left: width / 2 - r, right: width / 2 + r, top: -r, bottom: r }))
+  });
+  assertLegendBoundsInsideCanvas(layout.bounds, canvas, "Size legend layout");
+  const background = resolveLegendBackgroundFromBounds(layout.bounds, config.border, canvas, "Size legend");
+  return { ...layout, symbolX: layout.symbolX.map(x => x + width / 2), radii, text, labels, titleStyle, background };
 }
 
 export const rematerializeSizeLegend = action(
@@ -95,37 +114,19 @@ export const rematerializeSizeLegend = action(
       title,
       domain: scale.domain
     };
-    const plot = bounds(this);
-    const categorical = [this.guideConfigs.legend?.series, this.guideConfigs.legend?.color]
-      .find(candidate => candidate?.target === config.target);
-    const inherit = currentConfig.inheritAppearance === true && categorical !== undefined;
-    const labels = inherit ? categorical.labels : currentConfig.labels ?? SIZE_LEGEND_LABELS;
-    const titleStyle = inherit ? categorical.titleStyle : currentConfig.titleStyle ?? SIZE_LEGEND_TITLE_STYLE;
-    const leftLayout = categorical?.position === "left"
-      ? resolveCategoricalLayout(this, categorical).size
-      : undefined;
-    const originX = leftLayout?.titleX ?? plot.x + plot.width + 30;
-    const seriesCount = categorical?.domain.length ?? 0;
-    const titleY = leftLayout?.titleY ?? plot.y + 56 + seriesCount * 34 + 22;
-    const values = sampleContinuousValues(scale.domain, currentConfig.count);
-    const areas = mapLinearValues(values, scale.domain, scale.range, {
-      clamp: scale.clamp ?? false
-    });
-    const itemY = leftLayout?.itemY ??
-      values.map((_, index) => titleY + 34 + index * 40);
-    const symbolX = leftLayout?.symbolX ?? values.map(() => originX + 16);
-    const labelX = leftLayout?.labelX ?? values.map(() => originX + 16 + (inherit ? 28 : labels.offset));
+    const layout = resolveSizeLegendLayout(this, currentConfig);
+    const { itemY, symbolX, labelX, radii, labels, titleStyle } = layout;
     let next = this
       .editSemantic({ property: "guide.legend.size.scale", value: encoding.scale })
       .editSemantic({ property: "guide.legend.size.title", value: title })
       ._withLegendConfig("size", currentConfig)
-      .editGraphics({ target: "sizeLegendSymbols", property: "length", value: values.length })
+      .editGraphics({ target: "sizeLegendSymbols", property: "length", value: radii.length })
       .editGraphics({ target: "sizeLegendSymbols", property: "x", value: symbolX })
       .editGraphics({ target: "sizeLegendSymbols", property: "y", value: itemY })
       .editGraphics({
         target: "sizeLegendSymbols",
         property: "radius",
-        value: areas.map(area => Math.sqrt(area / Math.PI))
+        value: radii
       })
       .editGraphics({
         target: "sizeLegendSymbols",
@@ -133,27 +134,31 @@ export const rematerializeSizeLegend = action(
         value: DEFAULT_COLORS.sizeSymbol
       })
       .editGraphics({ target: "sizeLegendSymbols", property: "opacity", value: 0.7 })
-      .editGraphics({ target: "sizeLegendLabels", property: "length", value: values.length })
+      .editGraphics({ target: "sizeLegendLabels", property: "length", value: radii.length })
       .editGraphics({ target: "sizeLegendLabels", property: "x", value: labelX })
       .editGraphics({ target: "sizeLegendLabels", property: "y", value: itemY })
       .editGraphics({
         target: "sizeLegendLabels",
         property: "text",
-        value: formatContinuousValues(values, scale.domain, "quantitative")
+        value: layout.text
       });
+    next = editLegendBackground(next, "sizeLegendBackground", layout.background, currentConfig.border);
     next = styleContinuousText(next, "sizeLegendLabels", labels);
     if (currentConfig.titleVisible === false) return next;
     next = next
-      .editGraphics({ target: "sizeLegendTitle", property: "x", value: originX })
-      .editGraphics({ target: "sizeLegendTitle", property: "y", value: titleY })
+      .editGraphics({ target: "sizeLegendTitle", property: "x", value: layout.title.x })
+      .editGraphics({ target: "sizeLegendTitle", property: "y", value: layout.title.y })
       .editGraphics({ target: "sizeLegendTitle", property: "text", value: title });
-    return styleContinuousText(next, "sizeLegendTitle", titleStyle);
+    return styleContinuousText(next, "sizeLegendTitle", titleStyle, { align: layout.title.align });
   }
 );
 
 
 export function resolveSizeLegendConfig(program, args = {}) {
   validateKeys(args, [...SIZE_OPTIONS, "inheritAppearance"], "createSizeLegend");
+  if (args.title !== undefined) validateNonEmptyString(args.title, "Legend title");
+  if (args.titleStyle !== undefined) validateOptionObject(args.titleStyle,
+    ["color", "fontSize", "fontFamily", "fontWeight"], "createLegend.titleStyle");
   const layer = resolveSizeLegendPoint(program, args.target);
   const encoding = layer.encoding?.size;
   if (encoding?.scale === undefined) {
@@ -168,24 +173,31 @@ export function resolveSizeLegendConfig(program, args = {}) {
   return {
     target: layer.id,
     scale: encoding.scale,
-    title: encoding.field,
-    inferredTitle: true,
+    ...normalizeItemLegendLayout({ ...args, itemGap: args.itemGap ?? 40 }),
+    title: args.title ?? encoding.field,
+    inferredTitle: args.title === undefined,
     domain: scale.domain,
     count,
     inheritAppearance: args.inheritAppearance === true,
-    labels: { ...SIZE_LEGEND_LABELS },
-    titleStyle: { ...SIZE_LEGEND_TITLE_STYLE },
+    labels: normalizeLegendTextOptions(args.labels, "createLegend.labels", SIZE_LEGEND_LABELS),
+    titleStyle: normalizeLegendTextOptions(args.titleStyle, "createLegend.titleStyle", SIZE_LEGEND_TITLE_STYLE),
+    border: normalizeLegendBorder(args.border),
     titleVisible: true
   };
 }
 
 export function createSizeLegendFromConfig(program, config) {
+  resolveSizeLegendLayout(program, config);
   const { count } = config;
   let next = program
     .editSemantic({ property: "guide.legend.size.scale", value: config.scale })
     .editSemantic({ property: "guide.legend.size.title", value: config.title })
-    ._withLegendConfig("size", config)
-    .createGraphics({
+    ._withLegendConfig("size", config);
+  if (config.border !== false) {
+    next = next.createGraphics({ id: "sizeLegendBackground", type: "rect",
+      ...resolveLegendGraphicPlacement(program) });
+  }
+  next = next.createGraphics({
       id: "sizeLegendSymbols",
       type: "circle",
       length: count,

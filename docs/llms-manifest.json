@@ -1524,8 +1524,8 @@
         "item-order-without-changing-color",
         "related"
       ],
-      "bytes": 7871,
-      "sha256": "a2cf508673bedbcf93d290b3c572422636976c180d11e210e37f03f83b524318"
+      "bytes": 7941,
+      "sha256": "86ad522544461fc254a559dbfb8d6832b8c04c67f2b6407eaa8e1672b7eaf838"
     },
     {
       "order": 97,
@@ -1568,8 +1568,8 @@
         "removing-a-legend",
         "related"
       ],
-      "bytes": 8423,
-      "sha256": "d49afafd970422802743e1bd9c6b3adcfd70fad97e9e7382f25562080686c64f"
+      "bytes": 8775,
+      "sha256": "e13788913c46028e0626683b0c81f72e9ea882ff45920eefbeb86c7066037d34"
     },
     {
       "order": 100,

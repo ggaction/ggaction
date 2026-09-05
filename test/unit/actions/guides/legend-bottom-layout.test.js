@@ -79,5 +79,5 @@ test("Full and Basic nested guide creation use the same explicit modes", () => {
     }
   }
   const size = base().encodeSize({ field: "x" });
-  assert.throws(() => size.createLegend({ channels: ["size"], layout: "legacy-bottom" }), /does not support/);
+  assert.throws(() => size.createLegend({ channels: ["size"], layout: "legacy-bottom" }), /requires layout "edge"/);
 });

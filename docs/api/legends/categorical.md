@@ -27,8 +27,9 @@ program.createLegend({ channels: ["size"], position: "right", count: 4 });
 
 With one size-encoded point mark, both `createLegend()` and `createGuides()`
 infer the same block. Multiple size-encoded point marks require `target`.
-Standalone size legends currently use the right position; a size block paired
-with a categorical point legend may use either side.
+Standalone size legends support all four positions, edge layout, grid controls,
+text styles, and borders. A size block paired with a categorical point legend
+currently uses either side.
 
 An explicit `channels` array selects exactly the content to create. On a point
 mark encoding all three channels, use `channels: ["color", "shape", "size"]`
@@ -54,7 +55,7 @@ Every categorical legend uses the same right-side default:
 | point | inferred or selected `color` only | `right` | swatch |
 | point | inferred or selected `shape` only | `right` | typed point |
 | point + matching line | `color` + `shape` | `right` | line over typed point |
-| quantitative point size | `size` | `right`, standalone or below point series | five equal-area circles |
+| quantitative point size | `size` | all four edges standalone; either side with point series | five equal-area circles |
 | quantitative/temporal point color | `color` | `right` | continuous gradient with five labels |
 | discretized quantitative point color | `color` | `right/left/top/bottom` | ordered interval swatches |
 | quantitative point opacity | `opacity` | `right` | five constant-size circles with sampled opacity |

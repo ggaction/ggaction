@@ -125,7 +125,7 @@ test("categorical edits merge only requested companion style leaves", () => {
   }
   const inherited = points().createLegend({ labels: { color: "purple" } });
   const edited = inherited.editLegend({ titleStyle: { fontWeight: 900 } });
-  assert.equal(edited.guideConfigs.legend.size.labels.offset, 28);
+  assert.equal(edited.guideConfigs.legend.size.labels.offset, 12);
   assert.equal(edited.graphicSpec.objects.sizeLegendLabels.items[0].properties.fill, "purple");
   assert.equal(edited.graphicSpec.objects.sizeLegendTitle.properties.fontWeight, 900);
 });

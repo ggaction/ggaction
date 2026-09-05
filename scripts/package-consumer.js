@@ -587,6 +587,22 @@ async function testNodeConsumer(directory) {
     const hiddenSizeLegend = editedSizeLegend.editLegendTitle({ title: false }).editCanvas({ width: 740 });
     assert.equal(hiddenSizeLegend.graphicSpec.objects.sizeLegendTitle, undefined);
     assert.equal(hiddenSizeLegend.editLegendTitle({ title: "auto" }).graphicSpec.objects.sizeLegendTitle.properties.text, "m");
+    for (const create of [chart, basicChart]) for (const position of ["left", "right", "top", "bottom"]) {
+      const source = create().createCanvas({ width: 1000, height: 800, margin: 250 })
+        .createData({ values: [{ x: 1, y: 2, m: 10 }, { x: 2, y: 3, m: 30 }] })
+        .createPointMark().encodeX({ field: "x" }).encodeY({ field: "y" })
+        .encodeSize({ field: "m", scale: { range: [4 * Math.PI, 36 * Math.PI] } });
+      const edge = source.createLegend({ channels: ["size"], position, count: 3, border: true });
+      assert.equal(edge.guideConfigs.legend.size.position, position);
+      assert.equal(edge.guideConfigs.legend.size.labels.offset, 12);
+      assert.deepEqual(edge.graphicSpec.objects.sizeLegendSymbols.items.map(item => item.properties.radius), [2, Math.sqrt(20), 6]);
+      assert.ok(renderToSVG(edge).startsWith("<svg "));
+      if (create === chart) {
+        assert.deepEqual(edge.editLegend({ position: "top", columns: 2, title: false }).graphicSpec,
+          source.createLegend({ channels: ["size"], position: "top", columns: 2, count: 3, border: true })
+            .editLegend({ title: false }).graphicSpec);
+      }
+    }
     const gradientPlotFacade = chart()
       .createCanvas({ width: 180, height: 140, margin: 20 })
       .createData({ values: [
@@ -1579,7 +1595,7 @@ async function testTypeScriptConsumer(directory) {
     program.editLegend({ order: { values: ["C", 1, false] } });
     program.editLegend({ channels: ["color", "shape", "size"], count: 3 });
     program.editLegendLayout({ position: "top", layout: "edge", direction: "horizontal", columns: 2, titlePosition: "left" });
-    program.editLegend({ count: 3, title: "Mass", labels: { offset: 28, fontWeight: 700 }, titleStyle: { color: "red" } })
+    program.editLegend({ channels: ["size"], position: "top", columns: 2, border: true, count: 3, title: "Mass", labels: { offset: 12, fontWeight: 700 }, titleStyle: { color: "red" } })
       .editLegendTitle({ title: false }).editLegendTitle({ title: "auto" }).editLegendSymbols({ count: 4 });
     program.createLegend({ channels: ["color", "shape", "size"], count: 3 });
     basicChart().createLegend({ channels: ["color", "size"], count: 3 });
