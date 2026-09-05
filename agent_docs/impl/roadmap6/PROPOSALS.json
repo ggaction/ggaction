@@ -542,7 +542,7 @@
         "R6-P4-V1": "approved",
         "R6-P4-V2": "planned",
         "R6-P4-V3": "planned",
-        "R6-P4-B": "ready-for-review"
+        "R6-P4-B": "approved"
       },
       "workPackages": [
         {
@@ -555,8 +555,8 @@
           "scope": "Constant data endpoint를 lower owner에 추가하고 simple area, ranged ribbon, stacked area를 구분한다. Nonlinear scale과 missing path break를 명시한다.",
           "acceptance": "simple x/y 입력이 실제 area를 그림. Baseline/domain/zero/log·range edit 수렴. 가짜 source field와 renderer inference 없음.",
           "contractEvidence": "phase4/CONTRACT_REVIEW.md",
-          "status": "in-progress",
-          "implementationStatus": "implemented-consumer-verified-package-budget-pending",
+          "status": "completed",
+          "implementationStatus": "implemented-verified",
           "implementationEvidence": "phase4/RESULTS_V1.md"
         },
         {
@@ -569,8 +569,8 @@
           "scope": "Group/stack/fill/overlay/diverging을 atomic owner에 모은다. 기존 color.layout/measure.stack/offset 경로가 owner에 위임하도록 migration한다.",
           "acceptance": "group→stack→group에서 scale, offset, normalization, guides, selections에 stale 상태 없음. Negative/missing/group conflict atomic.",
           "contractEvidence": "phase4/CONTRACT_REVIEW.md",
-          "status": "in-progress",
-          "implementationStatus": "implemented-consumer-verified-package-budget-pending",
+          "status": "completed",
+          "implementationStatus": "implemented-verified",
           "implementationEvidence": "phase4/RESULTS_V1.md"
         },
         {
@@ -608,7 +608,7 @@
           "contractEvidence": "phase4/CONTRACT_REVIEW.md"
         }
       ],
-      "activity": "awaiting-area-layout-bundle-approval",
+      "activity": "area-layout-verified-awaiting-v2-v3",
       "contractEvidence": "phase4/CONTRACT_REVIEW.md",
       "baselineEvidence": "phase4/baseline-results.json",
       "baselineCommit": "93dceb3761e170207058e6a7280060fedd471244",
@@ -660,7 +660,7 @@
       },
       "implementationV1Evidence": "phase4/RESULTS_V1.md",
       "implementationV1Results": "phase4/implementation-v1-results.json",
-      "packageEvidence": "phase4/package-results.json",
+      "packageEvidence": "phase4/package-approved-results.json",
       "budgetReview": "phase4/BUNDLE_REVIEW.md",
       "implementationV1Validation": {
         "normalTests": 2646,
@@ -668,7 +668,7 @@
         "browserTests": 59,
         "approvedVisualPairs": 11,
         "criticalCoverageFloors": 74,
-        "packageStatus": "failed-bundle-budget",
+        "packageStatus": "passed-approved-budget",
         "realisticFullRun": {
           "tests": 212,
           "passed": 201,
@@ -676,10 +676,23 @@
         },
         "correctedRealisticModules": 6,
         "correctedRealisticTests": 38,
-        "additionalConsumerTests": 19
+        "additionalConsumerTests": 19,
+        "approvedBudgetContractTestsPassed": 6
       },
       "implementationSourceCommit": "9815917a971ee289363eb00d10f10ea4d4e22cb4",
-      "budgetReviewCommit": "97e7a60617eeb7d7a1a37ee4f0eecb413792feaf"
+      "budgetReviewCommit": "97e7a60617eeb7d7a1a37ee4f0eecb413792feaf",
+      "budgetApproval": {
+        "userDirection": "승인",
+        "reviewCommit": "97e7a60617eeb7d7a1a37ee4f0eecb413792feaf",
+        "approvalBaselineCommit": "6cac5928bc62924d3b5c962cc7bee8c9b2596428",
+        "scope": "Full gzip ceiling 237000 → 242000 and Basic 125000 → 130000; SVG 25000 unchanged. Update guard and architecture, reverify the same reviewed tarball, record and push. V2/V3/X, new APIs, PR, deployment and publishing remain unapproved.",
+        "browserBundleLimits": {
+          "ggaction": 242000,
+          "ggaction/basic": 130000,
+          "ggaction/svg": 25000
+        }
+      },
+      "packageFailureEvidence": "phase4/package-results.json"
     },
     {
       "id": 5,
@@ -1257,7 +1270,7 @@
       "recommended": "Group/stack/fill/overlay/diverging을 atomic owner에 모은다. 기존 color.layout/measure.stack/offset 경로가 owner에 위임하도록 migration한다.",
       "acceptance": "group→stack→group에서 scale, offset, normalization, guides, selections에 stale 상태 없음. Negative/missing/group conflict atomic.",
       "evidence": "audit/REPORT.md: D03",
-      "disposition": "Approved V1 public behavior, lifecycle and consumer checks implemented. Full/Basic package budget Gate B and Phase X remain pending.",
+      "disposition": "Approved V1 public behavior, lifecycle and consumer checks implemented. Budget Gate B approved and the same reviewed tarball passes all package checks. Phase X remains pending.",
       "implementationEvidence": "phase4/RESULTS_V1.md"
     },
     {
@@ -1711,7 +1724,7 @@
       "recommended": "Constant data endpoint를 lower owner에 추가하고 simple area, ranged ribbon, stacked area를 구분한다. Nonlinear scale과 missing path break를 명시한다.",
       "acceptance": "simple x/y 입력이 실제 area를 그림. Baseline/domain/zero/log·range edit 수렴. 가짜 source field와 renderer inference 없음.",
       "evidence": "audit/REPORT.md: F05",
-      "disposition": "Approved V1 public behavior, lifecycle and consumer checks implemented. Full/Basic package budget Gate B and Phase X remain pending.",
+      "disposition": "Approved V1 public behavior, lifecycle and consumer checks implemented. Budget Gate B approved and the same reviewed tarball passes all package checks. Phase X remains pending.",
       "implementationEvidence": "phase4/RESULTS_V1.md"
     },
     {

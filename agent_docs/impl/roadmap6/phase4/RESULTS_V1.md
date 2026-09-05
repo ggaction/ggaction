@@ -1,6 +1,6 @@
 # Phase 4 W1/W2 — Area와 독립적인 시리즈 배치
 
-V1에서 승인한 11개 표현의 공개 구현을 완료했다. Package gzip 상한은 그대로이며 B 검토가 남아 있다.
+V1에서 승인한 11개 표현의 공개 구현을 완료했다. B 상한 조정을 승인받아 같은 tarball의 전체 installed consumer도 통과했다.
 Phase 4 전체 완료나 X 승인을 뜻하지 않는다. Rose/Radial·theta order(V2), midpoint(V3)는 구현하지 않았다.
 
 ## 공개 결과와 계층
@@ -80,7 +80,7 @@ wrapped child를 합성한다. 별도 facade recipe, baseline용 가짜 행/fiel
 
 ## 검증 기록
 
-실행 명령·수치·남은 실패는 아래 최종 기록과 [B 검토](BUNDLE_REVIEW.md), [package 결과](package-results.json)에 기록한다.
+실행 명령·수치·남은 실패는 아래 최종 기록과 [B 검토](BUNDLE_REVIEW.md), [승인 후 package 결과](package-approved-results.json)에 기록한다. [기존 상한의 실패](package-results.json)는 보존한다.
 검증 로그는 `.artifacts/roadmap6-authoring/area-layout-*.log`에 있다.
 
 | 검사 | 최종 결과 |
@@ -93,7 +93,7 @@ wrapped child를 합성한다. 별도 facade recipe, baseline용 가짜 행/fiel
 | docs generate/build/built | generated freshness 정상 suite 통과, built 125페이지 검증 |
 | docs browser | desktop search와 전체 페이지 320/390/768px 검증 통과. 이후 문서 링크 교정은 재build/built 검사 |
 | approved V1 replay | 11개 public/primitive와 원본 승인 graphic/pixel hashes 모두 일치 |
-| installed package | Node/MCP/types/tutorial 통과, Full/Basic gzip guard 실패. 같은 tarball 세 엔트리 수치 별도 기록 |
+| installed package | B 승인 후 같은 tarball의 Node/MCP/types/tutorial 및 세 엔트리 gzip guard 통과. 이전 실패 기록 보존 |
 
 확장 `npm run test:realistic`의 전체 실행은 **201/212, 실패 11**이었다. 이를 전체 통과로 기록하지 않는다.
 실패 원인은 새 action/recipe/option 인벤토리 집계, Rule range preflight 누락, 새 Area recipe의 부정확한
@@ -119,13 +119,12 @@ lifecycle:edit 주장이다. 실행 가능한 Rule 범위와 datum coverage를 �
 - src tree: `2535f80d95c1e0ed0a60636efacc67f7a4cf0c1e`.
 - types tree: `c018ae44f997254e0cf3227dde4116b30e479659`.
 - knowledge tree: `32e938d5c31a88afd74566399b11ad5d354339b5`.
-- 이후 차이는 테스트 인벤토리/증거 강화와 검토 기록이다. Packaged runtime/types/knowledge와 tarball은 그대로다.
+- 이후 차이는 테스트 인벤토리/증거 강화, 승인된 bundle guard와 문서·검토 기록이다. Runtime/types/knowledge와 검증에 사용한 원본 tarball은 그대로다. README 상한 변경이 있으므로 새 pack의 동일 SHA를 주장하지 않는다.
 
 ## 남은 범위
 
-Full/Basic의 기존 gzip 상한 초과를 [R6-P4-B](BUNDLE_REVIEW.md)에서 별도로 검토한다.
-상한을 올리지 않았고 package 전체 통과로 기록하지 않는다. W3–W5와 V2/V3/X는 남아 있으며 F20은 제외 상태다.
+Full/Basic 상한 조정과 같은 tarball의 package 전체 통과를 [승인된 R6-P4-B](BUNDLE_REVIEW.md)에 기록했다. W3–W5와 V2/V3/X는 남아 있으며 F20은 제외 상태다.
 배포·publish·PR은 수행하지 않았다.
 
 최종 검토 package: [`97e7a606`](https://github.com/ggaction/ggaction/commit/97e7a60617eeb7d7a1a37ee4f0eecb413792feaf).
-`origin/codex/roadmap6-hierarchical-actions`에 push하고 ref 일치를 확인했다. B 승인은 아직 없다.
+`origin/codex/roadmap6-hierarchical-actions`에 push하고 ref 일치를 확인했다. 이후 사용자 B 승인과 재검증 결과는 위 별도 기록에 있다.

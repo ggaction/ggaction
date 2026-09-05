@@ -13,8 +13,8 @@
 - [x] V1 Area/layout primitive 11개 작성·수치·PNG 검증 및 검토 문서 준비
 - [x] V1의 명시적 시각 승인 — “승인한다”, 기준 102fbee9
 - [x] W1 lower endpoint/missing/range 구현 — focused 21/21, strict types 1/1, 정상 누적 2614/2614
-- [x] R6-P4-W1 Area baseline/range와 facade 기능·동등성 구현 — package B 대기
-- [x] R6-P4-W2 Color와 독립한 layout assignment 기능·호환 구현 — package B 대기
+- [x] R6-P4-W1 Area baseline/range와 facade 기능·동등성 구현 — package B 승인·같은 tarball 전체 검증 통과
+- [x] R6-P4-W2 Color와 독립한 layout assignment 기능·호환 구현 — package B 승인·같은 tarball 전체 검증 통과
 - [ ] R6-P4-W3 Rose와 Radial bar
 - [ ] R6-P4-W4 Theta와 legend domain order
 - [ ] R6-P4-W5 Diverging midpoint와 scale/legend transition
@@ -23,7 +23,7 @@
 - [ ] 누적 검증·migration·문서·원장 동기화
 - [ ] X Gate의 증거 commit/push와 명시적 사용자 승인 기록
 
-A/V1 승인과 W1/W2 공개 구현·11개 primitive/public 동등성은 완료했다. [package B](BUNDLE_REVIEW.md)와 V2/V3/X는 미완료다. 계획 문서를 만든 사실을 구현 완료나 Gate 승인으로 표시하지 않는다.
+A/V1 승인과 W1/W2 공개 구현·11개 primitive/public 동등성은 완료했다. [package B](BUNDLE_REVIEW.md) 승인과 재검증을 완료했다. V2/V3/X는 미완료다. 계획 문서를 만든 사실을 구현 완료나 Gate 승인으로 표시하지 않는다.
 
 ## 순서
 

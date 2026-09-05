@@ -1,7 +1,7 @@
 # Roadmap 6 — Area / ranged ribbon / stacked area
 
 **Phase 4 A/V1 승인 범위의 구현 계약. `createAreaPlot`과 `layoutSeries`는 Current다.**
-최종 Phase X와 용량 B 승인은 별도이며, [현재 실행 증거](../phase4/implementation-v1-results.json)에 11개 승인 이미지와의 동등성을 기록한다.
+용량 B 승인과 package 재검증을 완료했고 최종 Phase X는 남아 있다. [현재 실행 증거](../phase4/implementation-v1-results.json)에 11개 승인 이미지와의 동등성을 기록한다.
 [P4-C01–C03 계약](../phase4/CONTRACT_REVIEW.md), [Gate](../phase4/GATES.md),
 [재현과 acceptance](../phase4/VALIDATION.md)가 이 계약을 연결한다. 연결 항목은 F05·D03이다.
 

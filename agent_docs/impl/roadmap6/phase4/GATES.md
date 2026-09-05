@@ -2,9 +2,9 @@
 
 ## 공통 상태
 
-A/V1은 approved다. B는 ready-for-review이며 V/V2/V3/X는 planned다. V1 시각 목표만 승인되었고 Phase 결과 승인은 아직 없다.
+A/V1/B는 approved이며 V/V2/V3/X는 planned다. V1 시각 목표만 승인되었고 Phase 결과 승인은 아직 없다.
 허용 상태는 planned | ready-for-review | approved | changes-requested다.
-현재 검토 대상은 V1 구현 후의 [package 용량 B](BUNDLE_REVIEW.md)다. A 승인과 Phase 3 X 승인을 V1 승인으로 재사용하지 않는다.
+V1 구현 후의 [package 용량 B](BUNDLE_REVIEW.md)를 사용자 승인받아 같은 tarball 재검증까지 통과했다. A 승인과 Phase 3 X 승인을 V1 승인으로 재사용하지 않는다.
 
 ## R6-P4-A — Contract and scope
 
@@ -56,7 +56,7 @@ A/V1은 approved다. B는 ready-for-review이며 V/V2/V3/X는 planned다. V1 시
 - 승인 기준 HEAD: `b93acb55859dfd90028ffa91f1e6fc2ef4c356fc`.
 - 승인 delta: `encodeLayout` → `layoutSeries`. Bar/Area의 series 배치만 담당하며 canvas/facet/composition layout은 포함하지 않는다. 이전 이름의 alias를 만들지 않는다.
 - 승인 범위: P4-C01–C09의 위 이름 변경 포함, Planned 등록·비시각 준비·20개 primitive target 작성. 각 V 승인 전 public visual flow 구현 차단.
-- 남은 작업: package B, V2/V3 primitive 작성·승인, W3–W5 구현과 누적 검증, X 승인.
+- 남은 작업: V2/V3 primitive 작성·승인, W3–W5 구현과 누적 검증, X 승인.
 - Baseline commit: `93dceb3761e170207058e6a7280060fedd471244`.
 - Full/Basic/SVG 상한 237000/125000/25000 유지. 초과 시 별도 B가 필요하며 이번 A에는 상한 증가가 없다.
 
@@ -80,13 +80,22 @@ A/V1은 approved다. B는 ready-for-review이며 V/V2/V3/X는 planned다. V1 시
 
 ## R6-P4-B — Full/Basic package budget
 
-- 상태: ready-for-review. [구현 결과](RESULTS_V1.md)와 [용량 검토](BUNDLE_REVIEW.md)를 고정했다.
-- 범위: Full 237,000 → 242,000 / Basic 125,000 → 130,000 bytes 제안. SVG 25,000 유지.
-- 근거: 승인된 W1/W2를 구현했으나 [고정 tarball](package-results.json)의 gzip guard가 실패한다.
+- 상태: approved. [구현 결과](RESULTS_V1.md)와 [용량 검토](BUNDLE_REVIEW.md)를 고정했다.
+- 범위: Full 237,000 → 242,000 / Basic 125,000 → 130,000 bytes 승인. SVG 25,000 유지.
+- 승인 전 근거: 승인된 W1/W2를 구현했으나 [고정 tarball](package-results.json)의 당시 gzip guard가 실패했다.
 - 현재 검증: normal 2646, render 183, browser 59, coverage 74 critical floors, 11개 승인 시각 결과 동등성.
-- 승인 효과: 두 guard와 architecture 표만 변경하고 같은 tarball installed consumer를 재검증한다.
+- 승인 효과: 두 guard와 architecture 표를 변경하고 같은 tarball installed consumer를 재검증한다. README의 현재 상한도 같은 값으로 동기화한다.
 - 승인 전 차단: 상한 변경과 package 전체 통과 선언. V2/V3/X는 별도 Gate로 유지한다.
 - 검토 source: `9815917a971ee289363eb00d10f10ea4d4e22cb4` (runtime/types/knowledge), origin ref 일치 확인.
 - 확장 suite의 실패 11건은 해당 6개 모듈 38개 테스트로 교정·재검증했다. 상세 범위와 원본 실패는 결과 문서에 보존한다.
 - 최종 B 검토 묶음 commit: `97e7a60617eeb7d7a1a37ee4f0eecb413792feaf`. Origin에 push하고 ls-remote 일치를 확인했다.
-- 이 ref 고정은 B 승인이나 package 상한 변경을 포함하지 않는다.
+- 이 과거 ref 고정 자체에는 B 승인이나 package 상한 변경을 포함하지 않았다.
+
+### B 승인 기록
+
+- 사용자 답변: “승인”. 승인 기준 HEAD: `6cac5928bc62924d3b5c962cc7bee8c9b2596428`.
+- 승인 대상: `97e7a60617eeb7d7a1a37ee4f0eecb413792feaf`의 B 검토안.
+- 승인 범위: Full 242,000 / Basic 130,000 bytes로 guard와 architecture 표 변경, SVG 25,000 유지. 같은 SHA-256 tarball로 installed consumer 전체 재검증 후 기록·커밋·푸시.
+- V2/V3/X, 새 API, PR·배포·publish는 이 승인에 포함하지 않는다.
+
+- 승인 후 결과: [같은 tarball 전체 통과](package-approved-results.json), Full 240,319 / Basic 128,538 / SVG 6,418 bytes. Documentation/package artifact 계약 6/6 통과. README의 현재 Basic 상한도 동기화했다.
