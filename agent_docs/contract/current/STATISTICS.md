@@ -82,7 +82,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
   sources, orientation ambiguity rejection, point and line source marks, semantic group reuse and color exclusion.
 - ✅ Covered: vertical/horizontal statistical intervals, explicit rows without derivation, caps on/off, cap size,
   stroke/width/dash/opacity, statistical/explicit convergence, deterministic namespacing and complete child trace.
-- ✅ Covered: explicit intervals on a quantitative independent position and shared transformed-scale
+- ✅ Covered: explicit and statistical intervals on a quantitative independent position and shared transformed-scale
   rematerialization of the main rule and both caps.
 - ✅ Covered: inferred vertical xOffset and explicit horizontal yOffset, automatic inclusion in statistical grouping,
   shared point/main/cap centers, padding, Canvas resize, cap removal/restoration, orientation and parent-type rejection.

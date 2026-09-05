@@ -21,6 +21,30 @@ function encodedPoints() {
     .encodeRadius({ value: 3 });
 }
 
+test("groups statistical intervals on a quantitative independent axis in both orientations", () => {
+  const base = chart().createCanvas(canvas).createData({ values: [
+    { position: 1, value: 2 }, { position: 1, value: 4 },
+    { position: 2, value: 6 }, { position: 2, value: 10 }
+  ] });
+  const before = JSON.stringify(base);
+  for (const independent of ["x", "y"]) {
+    const interval = independent === "x" ? "y" : "x";
+    const program = base.createErrorBar({
+      [independent]: { field: "position", fieldType: "quantitative" },
+      [interval]: { field: "value", center: "mean", extent: "stderr" }
+    });
+    assert.deepEqual(program.semanticSpec.datasets[1].values, [
+      { position: 1, __errorBar_center: 3, __errorBar_lower: 2, __errorBar_upper: 4 },
+      { position: 2, __errorBar_center: 8, __errorBar_lower: 6, __errorBar_upper: 10 }
+    ]);
+    for (const layer of program.semanticSpec.layers) {
+      assert.equal(layer.encoding[independent].fieldType, "quantitative");
+      assert.equal(program.graphicSpec.objects[layer.id].items.length, 2);
+    }
+  }
+  assert.equal(JSON.stringify(base), before);
+});
+
 test("creates the canonical vertical interval and wrapped cap hierarchy", () => {
   const program = chart()
     .createCanvas(canvas)
