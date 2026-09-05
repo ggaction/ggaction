@@ -13,6 +13,45 @@ function sourceProgram() {
   return chart().createData({ id: "source", values: rows });
 }
 
+test("every window operation stores prototype-named output fields as ordinary data", () => {
+  const source = chart().createData({ values: [{ value: 10 }, { value: 10 }, { value: 20 }] });
+  const before = JSON.stringify(source);
+  const cases = [
+    [{ op: "rowNumber" }, [1, 2, 3]],
+    [{ op: "rank" }, [1, 1, 3]],
+    [{ op: "denseRank" }, [1, 1, 2]],
+    [{ op: "cumulativeSum", field: "value" }, [10, 20, 40]],
+    [{ op: "lag", field: "value" }, [null, 10, 10]],
+    [{ op: "lead", field: "value" }, [10, 20, null]],
+    [{ op: "movingSum", field: "value", frame: { preceding: 1 } }, [10, 20, 30]],
+    [{ op: "movingMean", field: "value", frame: { preceding: 1 } }, [10, 10, 15]]
+  ];
+  for (const as of ["__proto__", "constructor", "toString"]) {
+    for (const [operation, expected] of cases) {
+      const program = source.createWindowData({
+        id: "result", sortBy: [{ field: "value" }], operations: [{ ...operation, as }]
+      });
+      const output = program.semanticSpec.datasets[1].values;
+      assert.deepEqual(output.map(row => row[as]), expected);
+      for (const row of output) {
+        assert.ok(Object.hasOwn(row, as));
+        assert.equal(Object.getPrototypeOf(row), Object.prototype);
+        assert.ok(Object.isFrozen(row));
+      }
+      assert.deepEqual(JSON.parse(JSON.stringify(output)).map(row => row[as]), expected);
+    }
+  }
+  const chained = source.createWindowData({
+    id: "chained",
+    operations: [
+      { op: "rowNumber", as: "__proto__" },
+      { op: "cumulativeSum", field: "__proto__", as: "running" }
+    ]
+  });
+  assert.deepEqual(chained.semanticSpec.datasets[1].values.map(row => row.running), [1, 3, 6]);
+  assert.equal(JSON.stringify(source), before);
+});
+
 test("creates immutable window provenance and concrete source-ordered rows", () => {
   const source = sourceProgram();
   const program = source.createWindowData({

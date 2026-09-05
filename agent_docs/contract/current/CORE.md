@@ -356,6 +356,9 @@ NaN bucket을 저장하지 않으며 실패 시 source program과 trace는 유�
 
 ## `createWindowData`
 
+결과 field 이름은 일반 own data property로 저장한다. __proto__, constructor, toString도 허용하며
+source row의 prototype을 바꾸거나 결과를 누락하지 않는다. 뒤 operation은 앞의 해당 결과를 field로 읽을 수 있다.
+
 - Signature: `createWindowData({ id, source?, partitionBy?, sortBy?, operations })`
 - Lifecycle: immutable create-only다. `id`는 새 derived dataset ID여야 하며 동일 ID를 다시 만들면 오류다.
   기존 source나 consumer를 교체하거나 rebind하지 않는다.

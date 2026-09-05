@@ -336,10 +336,16 @@ function stableWindowOutput(operation, calculate) {
   }
 }
 
+function setWindowOutput(entry, field, value) {
+  Object.defineProperty(entry.row, field, {
+    value, enumerable: true, writable: true, configurable: true
+  });
+}
+
 function applyOperation(partition, operation, sortBy) {
   if (operation.op === "rowNumber") {
     partition.forEach((entry, index) => {
-      entry.row[operation.as] = index + 1;
+      setWindowOutput(entry, operation.as, index + 1);
     });
     return;
   }
@@ -354,7 +360,7 @@ function applyOperation(partition, operation, sortBy) {
         rank = index + 1;
         denseRank += 1;
       }
-      entry.row[operation.as] = operation.op === "rank" ? rank : denseRank;
+      setWindowOutput(entry, operation.as, operation.op === "rank" ? rank : denseRank);
     });
     return;
   }
@@ -364,7 +370,7 @@ function applyOperation(partition, operation, sortBy) {
       stableFinitePrefixSums(values, label)
     );
     partition.forEach((entry, index) => {
-      entry.row[operation.as] = totals[index];
+      setWindowOutput(entry, operation.as, totals[index]);
     });
     return;
   }
@@ -379,18 +385,18 @@ function applyOperation(partition, operation, sortBy) {
         index + operation.frame.following
       );
       const values = operationValues(partition, operation, first, last);
-      entry.row[operation.as] = stableWindowOutput(operation, label =>
+      setWindowOutput(entry, operation.as, stableWindowOutput(operation, label =>
         calculate(values, label)
-      );
+      ));
     });
     return;
   }
   const direction = operation.op === "lag" ? -1 : 1;
   partition.forEach((entry, index) => {
     const peer = partition[index + direction * operation.offset];
-    entry.row[operation.as] = peer === undefined
+    setWindowOutput(entry, operation.as, peer === undefined
       ? operation.default
-      : peer.row[operation.field];
+      : peer.row[operation.field]);
   });
 }
 
