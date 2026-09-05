@@ -189,19 +189,15 @@ test("reassigns dash and group fields without retaining stale bindings", () => {
   assert.equal(grouped.graphicSpec.objects.trends.items.length, 2);
 });
 
-test("rejects incompatible line series fields and invalid constant dash", () => {
+test("accepts explicit identity with unique appearance and rejects incompatible implicit fields", () => {
   const color = createMeanLine().encodeColor({ field: "origin" });
   const group = createMeanLine().encodeGroup({ field: "origin" });
   const dash = createMeanLine().encodeStrokeDash({ field: "origin" });
 
-  assert.throws(
-    () => color.encodeGroup({ field: "cylinders" }),
-    /must match color field/
-  );
-  assert.throws(
-    () => group.encodeStrokeDash({ field: "cylinders" }),
-    /must match group field/
-  );
+  assert.equal(color.encodeGroup({ field: "cylinders" })
+    .graphicSpec.objects.trends.items.length, 2);
+  assert.equal(group.encodeStrokeDash({ field: "cylinders" })
+    .graphicSpec.objects.trends.items.length, 2);
   assert.throws(
     () => dash.encodeColor({ field: "cylinders" }),
     /must match strokeDash field/

@@ -1,4 +1,5 @@
 import { createCarsBoxPlot } from "./cars-box-plot/program.js";
+import { createSeriesIdentity } from "./series-identity/program.js";
 import { createCarsGradientPlot } from "./cars-gradient-plot/program.js";
 import { createCarsOriginDonut } from "./cars-origin-donut/program.js";
 import { createCarsDensityArea } from "./cars-density-area/program.js";
@@ -92,6 +93,12 @@ function example({ id, data, width, height, createProgram, ...options }) {
 }
 
 export const PUBLIC_CHARTS = Object.freeze([
+  example({
+    id: "series-identity", data: {}, width: 760, height: 460,
+    createProgram: () => createSeriesIdentity(),
+    browser: { path: "browser-host/?chart=series-identity", canvas: "#chart",
+      state: { global: "__ggactionExample", expected: { id: "series-identity", width: 760, height: 460 } } }
+  }),
   example({
     id: "centered-area-stream",
     data: "jobs",

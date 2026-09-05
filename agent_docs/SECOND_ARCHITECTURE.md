@@ -1444,15 +1444,19 @@ planned contract이므로 시각 구현 승인을 받기 전에는 지원하지 
 - Parallel line은 ordered Parallel dimensions를 하나의 source row당 하나의 path로 투영한다. Dimension별
   scale mapping, missing-value policy, row key와 series appearance는 materializer가 final command/item identity로
   확정하며 renderer에는 Parallel-specific branch가 없다.
-- group/color/strokeDash에 따라 series를 나눈다.
-- group, color, field-driven strokeDash가 함께 series identity에 참여하면 같은 field여야 한다.
+- 명시적 group의 field 또는 fields tuple만 series identity를 결정한다. 색·점선·두께·opacity는 series 안에서
+  raw 값이 하나인 appearance field를 사용한다. Shared path-series grammar가 identity와 유일성 검증을 소유한다.
+- 명시적 group이 없으면 color 또는 strokeDash로 나누며 둘 다 있으면 같은 field여야 한다.
+  Width/opacity는 implicit identity에 참여하지 않는다. Ordinary ranged Area도 explicit tuple을 지원한다.
+  통계·layout owner의 group과 Parallel row identity는 별도 계약을 유지한다.
 - `encodeGroup`과 `encodeStrokeDash` 재호출은 기존 assignment를 원자적으로 교체한다.
   StrokeDash의 field/constant mode도 같은 action이 소유하며, 더 이상 참조하지 않는 named scale은
   resource identity를 보존하기 위해 자동 삭제하지 않는다.
 - series 하나당 backend-neutral path 하나를 만든다.
 - source first-appearance group order와 명시적 x sort를 사용한다.
 - curve는 mark materialization config이며 `linear`, step family와 네 cubic family를 final `M/L/C`
-  commands로 변환한다. `editLineMark`는 field/scale/group을 유지한 채 curve와 stroke width를 갱신한다.
+  commands로 변환한다. `editLineMark`는 curve를 갱신하며 scalar width/opacity는 같은 channel의 field encoding과 충돌한다.
+  encodeStrokeWidth/encodeOpacity가 field↔constant 교체와 scale/legend/highlight 재계산을 소유한다.
 - Polar series는 theta domain order로 stable sort한 뒤 shared Polar projection으로 final points를 만든다.
   현재 Polar curve는 `linear`만 지원한다. `closed`도 materialization config이며 true이면 첫 point를
   복제하지 않고 series마다 final `Z` 하나를 추가한다. `editLineMark`의 closed 변경과 scale/Canvas/data/

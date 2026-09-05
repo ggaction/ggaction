@@ -15,6 +15,8 @@ import {
   validateOptions
 } from "./shared.js";
 import { findLayer } from "../../selectors/layers.js";
+import { validatePathSeriesAppearance } from "../../grammar/pathSeries.js";
+import { assertEncodingSelectionCompatibility } from "../../materialization/selection/compatibility.js";
 
 const STROKE_OPTIONS = Object.freeze(["target", "value"]);
 const WIDTH_OPTIONS = Object.freeze([
@@ -41,7 +43,7 @@ const encodeStroke = action(
 const encodeStrokeWidth = action(
   {
     op: "encodeStrokeWidth",
-    description: "Set a constant graphical stroke width on a rule mark."
+    description: "Assign constant or field-driven line or rule stroke width."
   },
   function (args = {}) {
     validateOptions(args, WIDTH_OPTIONS, "encodeStrokeWidth");
@@ -51,9 +53,14 @@ const encodeStrokeWidth = action(
       throw new Error("encodeStrokeWidth requires exactly one of value or field.");
     }
     if (hasValue) {
-      const { id, layer } = resolveTarget(this, args.target, ["rule"], "rule mark");
+      if (args.fieldType !== undefined || args.scale !== undefined) {
+        throw new Error("Constant stroke width does not accept fieldType or scale.");
+      }
+      validateRuleStrokeWidth(args.value);
+      const { id, layer } = resolveTarget(this, args.target, ["rule", "line"], "rule or line mark");
+      assertEncodingSelectionCompatibility(this, id, ["strokeWidth"]);
       let next = this.guideConfigs.legend?.strokeWidth?.target === id
-        ? this.removeLegend({ target: id })
+        ? this.removeLegend({ target: id, channels: ["strokeWidth"] })
         : this;
       if (findLayer(next, id)?.encoding?.strokeWidth !== undefined) {
         next = next.editSemantic({
@@ -61,12 +68,14 @@ const encodeStrokeWidth = action(
           remove: true
         });
       }
-      next = next
-        ._withMarkConfig(id, {
+      next = next._withMarkConfig(id, {
           ...next.markConfigs[id],
-          strokeWidth: validateRuleStrokeWidth(args.value)
-        })
-        .rematerializeRuleMark({ id });
+          strokeWidth: args.value
+        });
+      if (layer.mark.type === "line") {
+        return rematerializeEncoding(next, id, "strokeWidth", undefined, layer);
+      }
+      next = next.rematerializeRuleMark({ id });
       return applyDetachedScaleRematerialization(next, [layer]);
     }
     const { id, dataset, layer } = resolveTarget(
@@ -85,6 +94,9 @@ const encodeStrokeWidth = action(
         `encodeStrokeWidth field "${args.field}" cannot contain negative values.`
       );
     }
+    validatePathSeriesAppearance(dataset.values, {
+      ...layer, encoding: { ...layer.encoding, strokeWidth: { field: args.field, fieldType } }
+    });
     const previous = layer.encoding?.strokeWidth;
     const requestedScale = resolveReassignmentScaleOptions(
       previous,

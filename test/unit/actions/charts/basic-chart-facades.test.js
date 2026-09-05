@@ -148,8 +148,8 @@ test("creates direct and grouped line plots through the approved hierarchy", () 
     "createLineMark",
     "encodeX",
     "encodeY",
-    "encodeColor",
     "encodeGroup",
+    "encodeColor",
     "encodeStrokeDash",
     "createGuides"
   ]);

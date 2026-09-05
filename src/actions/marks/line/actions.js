@@ -71,14 +71,14 @@ function validatePolarLineConfig(layer, config) {
   }
 }
 
-function applyLineMaterialization(program, id, materialization, opacity) {
+function applyLineMaterialization(program, id, materialization) {
   return editMarkGraphic(program, id, {
     length: materialization.commands.length,
     commands: materialization.commands,
     stroke: materialization.strokes,
     strokeWidth: materialization.strokeWidths,
     strokeDash: materialization.strokeDashes,
-    ...(opacity === undefined ? {} : { opacity })
+    ...(materialization.opacities === undefined ? {} : { opacity: materialization.opacities })
   });
 }
 
@@ -213,7 +213,7 @@ const rematerializeLineMark = action(
       }
       for (const channel of args.scales === false
         ? []
-        : ["color", "strokeDash", "strokeWidth"]) {
+        : ["color", "strokeDash", "strokeWidth", "opacity"]) {
         const scaleId = layer.encoding?.[channel]?.scale;
         if (scaleId !== undefined) {
           resolved = resolved.rematerializeScale({ id: scaleId });
@@ -232,8 +232,7 @@ const rematerializeLineMark = action(
       return applyLineMaterialization(
         resolved,
         id,
-        materialization,
-        config.opacity
+        materialization
       );
     }
 
@@ -259,7 +258,7 @@ const rematerializeLineMark = action(
             .rematerializeScale({ id: xScaleId })
             .rematerializeScale({ id: yScaleId });
 
-    for (const channel of args.scales === false ? [] : ["color", "strokeDash", "strokeWidth"]) {
+    for (const channel of args.scales === false ? [] : ["color", "strokeDash", "strokeWidth", "opacity"]) {
       const scaleId = layer.encoding?.[channel]?.scale;
       if (scaleId !== undefined) {
         resolved = resolved.rematerializeScale({ id: scaleId });
@@ -287,8 +286,7 @@ const rematerializeLineMark = action(
     return applyLineMaterialization(
       resolved,
       id,
-      materialization,
-      config.opacity
+      materialization
     );
   }
 );
@@ -300,16 +298,8 @@ const editLineMark = action(
   },
   function (args = {}) {
     validateMarkOptions(args, EDIT_OPTIONS, "editLineMark");
-    if (
-      !Object.hasOwn(args, "stroke") &&
-      !Object.hasOwn(args, "strokeWidth") &&
-      !Object.hasOwn(args, "opacity") &&
-      !Object.hasOwn(args, "curve") &&
-      !Object.hasOwn(args, "closed")
-    ) {
-      throw new Error(
-        "editLineMark requires stroke, strokeWidth, opacity, curve, or closed."
-      );
+    if (!EDIT_OPTIONS.slice(1).some(key => Object.hasOwn(args, key))) {
+      throw new Error("editLineMark requires stroke, strokeWidth, opacity, curve, or closed.");
     }
     const target = Object.hasOwn(args, "target")
       ? validateUserId(args.target, "Line mark id")
@@ -324,41 +314,26 @@ const editLineMark = action(
         "editLineMark stroke cannot be combined with a color encoding."
       );
     }
+    for (const channel of ["strokeWidth", "opacity"]) {
+      if (Object.hasOwn(args, channel) && layer.encoding?.[channel]?.field !== undefined) {
+        throw new Error(`editLineMark ${channel} conflicts with a field encoding; use its encoder with value to replace it.`);
+      }
+    }
     if (Object.hasOwn(args, "closed") && args.closed === true &&
         (layer.encoding?.x !== undefined || isParallelLine(layer))) {
       throw new Error("Line closed requires theta/radius Polar position encodings.");
     }
-    if (Object.hasOwn(args, "curve") && isPolarLine(layer) &&
-        args.curve !== "linear") {
-      throw new Error("Polar line position currently requires curve \"linear\".");
+    const config = { ...this.markConfigs[layer.id] };
+    for (const [key, validate] of Object.entries({
+      stroke: validateNonEmptyString,
+      strokeWidth: validateNonNegativeFinite,
+      opacity: validateUnitInterval,
+      curve: validateCurveInterpolation,
+      closed: validateClosed
+    })) {
+      if (Object.hasOwn(args, key)) config[key] = validate(args[key], `Line ${key}`);
     }
-    if (Object.hasOwn(args, "curve") && isParallelLine(layer) &&
-        args.curve !== "linear") {
-      throw new Error("Parallel lines require curve \"linear\".");
-    }
-    const config = {
-      ...this.markConfigs[layer.id],
-      ...(Object.hasOwn(args, "stroke")
-        ? { stroke: validateNonEmptyString(args.stroke, "Line stroke") }
-        : {}),
-      ...(Object.hasOwn(args, "strokeWidth")
-        ? {
-            strokeWidth: validateNonNegativeFinite(
-              args.strokeWidth,
-              "Line strokeWidth"
-            )
-          }
-        : {}),
-      ...(Object.hasOwn(args, "opacity")
-        ? { opacity: validateUnitInterval(args.opacity, "Line opacity") }
-        : {}),
-      ...(Object.hasOwn(args, "curve")
-        ? { curve: validateCurveInterpolation(args.curve) }
-        : {}),
-      ...(Object.hasOwn(args, "closed")
-        ? { closed: validateClosed(args.closed) }
-        : {})
-    };
+    validatePolarLineConfig(layer, config);
     const next = this._withMarkConfig(layer.id, config);
     return canMaterializeLine(next, layer)
       ? next.rematerializeLineMark({ id: layer.id })

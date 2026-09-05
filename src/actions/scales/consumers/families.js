@@ -5,9 +5,9 @@ import {
 } from "../../../grammar/bars/policy.js";
 import {
   deriveLineSeries,
-  deriveLineSeriesFieldValues,
   resolveLineBins
 } from "../../../grammar/lineSeries.js";
+import { derivePathSeriesFieldValues } from "../../../grammar/pathSeries.js";
 import { isAggregate } from "../../../grammar/aggregate.js";
 import {
   resolveRectConsumerValues
@@ -36,29 +36,35 @@ export function resolveMarkFamilyConsumerValues(program, consumer, dataset) {
       )
     };
   }
+  const { layer, channel } = consumer;
+  const encoding = layer.encoding ?? {};
+  const appearance = ["strokeWidth", "opacity"].includes(channel);
   if (
-    consumer.layer.mark?.type === "line" &&
-    ((consumer.layer.encoding?.x !== undefined &&
-      isAggregate(consumer.layer.encoding?.y?.aggregate) &&
-      !(consumer.channel === "x" &&
-        consumer.layer.encoding?.x?.bin !== undefined)) ||
-      consumer.channel === "strokeWidth")
+    layer.mark?.type === "line" &&
+    ((["x", "y"].includes(channel) && encoding.x !== undefined &&
+      isAggregate(encoding.y?.aggregate) &&
+      !(channel === "x" &&
+        encoding.x?.bin !== undefined)) ||
+      appearance) &&
+    encoding.parallel === undefined &&
+    ((encoding.x !== undefined && encoding.y !== undefined) ||
+      (encoding.theta !== undefined && encoding.radius !== undefined))
   ) {
     const derived = deriveLineSeries(
       dataset.values,
-      consumer.layer,
+      layer,
       lineDerivationOptions(program, consumer, dataset)
     );
     return {
       matched: true,
-      values: consumer.channel === "strokeWidth"
-        ? deriveLineSeriesFieldValues(
+      values: appearance
+        ? derivePathSeriesFieldValues(
             dataset.values,
-            consumer.layer,
-            derived,
-            consumer.encoding.field
+            derived.series,
+            consumer.encoding.field,
+            channel
           )
-        : consumer.channel === "x" ? derived.xValues : derived.yValues
+        : channel === "x" ? derived.xValues : derived.yValues
     };
   }
   if (resolveBarGrain(consumer.layer) === BAR_GRAINS.aggregate) {

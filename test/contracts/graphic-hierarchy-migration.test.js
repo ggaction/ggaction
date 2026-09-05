@@ -25,6 +25,13 @@ const LOADERS = Object.freeze({
 });
 
 const EXPECTED_DRAW_ORDER = Object.freeze({
+  "series-identity": [
+    "canvas", "horizontalGridLines", "series",
+    "xAxisLine", "xAxisTicks", "xAxisLabels", "xAxisTitle",
+    "yAxisLine", "yAxisTicks", "yAxisLabels", "yAxisTitle",
+    "seriesLegendSymbols", "seriesLegendLabels", "seriesLegendTitle",
+    "chartTitle", "chartSubtitle"
+  ],
   "cars-acceleration-violins": [
     "canvas", "horizontalGridLines", "violins",
     "xAxisLine", "xAxisTicks", "xAxisLabels", "xAxisTitle",

@@ -18,6 +18,9 @@ import { findLayer } from "../../selectors/layers.js";
 import { removeLegendKinds } from "../guides/legends/remove.js";
 import { clearMarkGraphic } from "./shared.js";
 import { applyDetachedScaleRematerialization } from "../../materialization/dependencies.js";
+import { findDataset } from "../../selectors/datasets.js";
+import { assertPathGroupCompatible, validatePathGroupAppearance } from "../../materialization/marks/grouping.js";
+import { assertEncodingSelectionCompatibility } from "../../materialization/selection/compatibility.js";
 
 const OPTIONS = Object.freeze(["target", "channel"]);
 const REMOVABLE_CHANNELS = Object.freeze([
@@ -92,21 +95,6 @@ function activeCascade(layer, channel) {
     channels.add("color");
   }
   return [...channels].filter(active => layer.encoding?.[active] !== undefined);
-}
-
-function assertSelectionCompatibility(program, target, channels) {
-  for (const [id, selection] of Object.entries(
-    program.materializationConfigs.selections ?? {}
-  )) {
-    if (
-      selection.target === target &&
-      channels.includes(selection.selector?.channel)
-    ) {
-      throw new Error(
-        `Cannot remove ${selection.selector.channel} encoding while selection "${id}" references that channel.`
-      );
-    }
-  }
 }
 
 function removeChannelConfigs(program, target, channels) {
@@ -230,7 +218,16 @@ export const removeEncoding = action(
     }
     const layer = resolveTarget(this, args.target, args.channel);
     const channels = activeCascade(layer, args.channel);
-    assertSelectionCompatibility(this, layer.id, channels);
+    assertEncodingSelectionCompatibility(this, layer.id, channels);
+    if (["line", "area"].includes(layer.mark?.type)) {
+      const dataset = findDataset(this, layer.data);
+      if (args.channel === "group") {
+        assertPathGroupCompatible(this, layer, dataset, undefined);
+      }
+      const encoding = { ...layer.encoding };
+      for (const channel of channels) delete encoding[channel];
+      validatePathGroupAppearance(this, { ...layer, encoding }, dataset);
+    }
     const removedPositions = channels
       .filter(channel => POSITION_ENCODING_CHANNELS.includes(channel))
       .map(channel => ({

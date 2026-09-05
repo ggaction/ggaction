@@ -7,8 +7,8 @@
 - [x] A Gate 증거 commit/push 및 review ref 기록 — `e06b57db5624a5b0d66cea425cff4aa5f5f4caad`
 - [x] A Gate의 명시적 사용자 승인 기록 — 2026-09-05 “ㄱㄱ”
 - [x] R6-P2-W1 Complete facade와 guide 확보 — 기능·회귀·installed package 통과, [결과](RESULTS.md#w1--facade-guide-reuse)
-- [ ] R6-P2-W2 Series와 appearance 분리
-- [ ] R6-P2-W3 Style mode와 shorthand 정합성
+- [x] R6-P2-W2 Series와 appearance 분리 — 기능·시각 검증 완료, Basic package 크기 통합 대기, [결과](RESULTS.md#w2--explicit-series-identity-and-line-appearance)
+- [ ] R6-P2-W3 Style mode와 shorthand 정합성 — Line width/opacity 부분 구현·검증
 - [ ] R6-P2-W4 Inference·JSON opt-out·분석 defaults
 - [x] R6-P2-W5 유효한 incomplete intent 보존 — [결과](RESULTS.md#w5--bar-incomplete-authoring)
 - [x] 모든 시각 variant의 primitive target 작성·표시 — [6개 검토안](VISUAL_REVIEW.md)

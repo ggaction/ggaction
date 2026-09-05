@@ -8,6 +8,7 @@ import {
 } from "../../core/vocabulary.js";
 import { findSemanticScale } from "../../selectors/scales.js";
 import { findDataset } from "../../selectors/datasets.js";
+import { isOpacityLegendLayer } from "../../materialization/legends.js";
 import { findUpstreamTransform } from
   "../../materialization/dataProvenance.js";
 
@@ -46,8 +47,7 @@ function positionalApplicability(program, layers, channels) {
 export function hasInferableLegend(program, layers = program.semanticSpec.layers) {
   return layers.some(layer =>
     !isHorizonLayer(program, layer) && (
-      (layer.mark?.type === "point" &&
-        layer.encoding?.opacity?.scale !== undefined) ||
+      isOpacityLegendLayer(layer) ||
       (layer.mark?.type === "point" &&
         layer.encoding?.size?.scale !== undefined) ||
       (layer.mark?.type === "point" &&

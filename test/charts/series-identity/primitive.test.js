@@ -25,7 +25,7 @@ for (const [index, variant] of cases.entries()) {
       assert.ok(item.properties.commands.every((command, j, commands) => j === 0 || command.x > commands[j - 1].x));
     });
     assert.deepEqual(program.guideConfigs.legend.series.domain, ["Europe", "Asia"]);
-    assert.equal(visualVariants[index].userFacing, undefined);
+    assert.equal(typeof visualVariants[index].userFacing, "function");
     assert.doesNotThrow(() => parseAst(visualVariants[index].callChain));
   });
 }

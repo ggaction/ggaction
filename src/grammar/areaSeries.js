@@ -10,6 +10,7 @@ import {
 } from "./seriesLayout.js";
 import { stableOrderPathValues } from "./pathOrder.js";
 import { deriveCategoricalDensitySeries } from "./categoricalDensity.js";
+import { validatePathSeriesAppearance } from "./pathSeries.js";
 
 function indexSegments(segments) {
   const indexed = [];
@@ -21,7 +22,7 @@ export function deriveAreaSeries(rows, layer) {
   if (layer?.mark?.type !== "area") {
     throw new Error("Area series derivation requires a semantic area mark.");
   }
-  const { x, y, x2, y2, group, color } = layer.encoding ?? {};
+  const { x, y, x2, y2 } = layer.encoding ?? {};
   const vertical =
     ["quantitative", "temporal"].includes(x?.fieldType) &&
     y?.fieldType === "quantitative" &&
@@ -37,9 +38,7 @@ export function deriveAreaSeries(rows, layer) {
       `Area mark "${layer.id}" requires exactly one quantitative x/x2 or y/y2 range and one quantitative or temporal independent position.`
     );
   }
-  if (group !== undefined && group.fieldType !== "nominal") {
-    throw new Error(`Area group encoding on mark "${layer.id}" must be nominal.`);
-  }
+  const grouping = validatePathSeriesAppearance(rows, layer);
   const orientation = vertical ? "vertical" : "horizontal";
   const independent = vertical ? x : y;
   const independentValues = independent.fieldType === "temporal"
@@ -51,12 +50,6 @@ export function deriveAreaSeries(rows, layer) {
   const upper = vertical
     ? readQuantitativeField(rows, y2.field)
     : readQuantitativeField(rows, x2.field);
-  const groupValues = group === undefined
-    ? rows.map(() => undefined)
-    : readNominalField(rows, group.field);
-  const colorValues = color === undefined
-    ? rows.map(() => undefined)
-    : readNominalField(rows, color.field);
   const pathOrder = layer.encoding?.pathOrder;
   const orderValues = pathOrder === undefined
     ? undefined
@@ -64,22 +57,12 @@ export function deriveAreaSeries(rows, layer) {
   const groups = new Map();
 
   for (let index = 0; index < rows.length; index += 1) {
-    const key = groupValues[index];
+    const tuple = grouping.map(field => rows[index][field]);
+    const key = JSON.stringify(tuple);
     const series = groups.get(key) ?? {
-      key: {
-        ...(group === undefined ? {} : { [group.field]: key }),
-        ...(color === undefined ? {} : { [color.field]: colorValues[index] })
-      },
+      key: Object.fromEntries(grouping.map((field, i) => [field, tuple[i]])),
       values: []
     };
-    if (
-      color !== undefined &&
-      !Object.is(series.key[color.field], colorValues[index])
-    ) {
-      throw new Error(
-        `Area series "${String(key)}" must have one color value.`
-      );
-    }
     series.values.push(vertical
       ? {
           x: independentValues[index],

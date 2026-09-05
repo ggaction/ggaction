@@ -14,8 +14,10 @@ bar fills, rect fills, or arc-sector fills. Ordinal fields may contain ordered n
 engine cylinder counts. Quantitative or temporal point and rect fields use continuous color
 scales; point fields also support discretized color. Aggregate bars additionally support one aggregate quantitative
 color value per final rectangle. Line and categorical bar materializers may use
-the field for grouping. Area color normally matches an existing `encodeGroup`
-field; `layout: "center"` creates that matching nominal group when absent.
+the field for grouping when no explicit group is present. With `encodeGroup`,
+Line and ordinary overlay Area color is an independent field with one raw value
+per series. Stacked Area layouts retain a matching single group field;
+`layout: "center"` creates that group when absent.
 
 <!-- action-capabilities:color:start -->
 | Mode | Supported marks | Field types | Important options |

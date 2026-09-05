@@ -58,19 +58,6 @@ export function clearMarkGraphic(program, target) {
 }
 
 
-export function validateLineSeriesCompatibility(layer, channel, field) {
-  if (layer.mark?.type !== "line") return;
-  for (const companion of ["group", "color", "strokeDash"]) {
-    if (companion === channel) continue;
-    const companionField = layer.encoding?.[companion]?.field;
-    if (companionField !== undefined && companionField !== field) {
-      throw new Error(
-        `Line ${channel} field "${field}" must match ${companion} field "${companionField}".`
-      );
-    }
-  }
-}
-
 export function resolveReassignmentScaleOptions(encoding, options) {
   if (encoding?.scale === undefined || options?.id !== undefined) return options;
   return { ...options, id: encoding.scale };

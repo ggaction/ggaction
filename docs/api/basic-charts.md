@@ -97,8 +97,11 @@ width belong in `point`; field-driven color, size, and shape remain top-level.
 createLinePlot(options: CreateLinePlotOptions): ChartProgram
 ```
 
-Required options are `x` and `y`. Use `color`, `groupBy`, or `strokeDash` for
-series identity and `line` for constant appearance.
+Required options are `x` and `y`. `groupBy` accepts a field name or a non-empty
+unique tuple such as `["country", "scenario"]`. Explicit groups define identity;
+`color` and `strokeDash` can use other fields with one value per series. Without
+`groupBy`, color/dash retain their shared-field grouping. Use `line` for constant
+appearance. See [independent series identity](./series-encodings.md).
 
 ```javascript
 const line = chart()

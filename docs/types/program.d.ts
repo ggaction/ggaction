@@ -502,7 +502,7 @@ export type MarkSelector = {
   grain?: "item" | "stack";
 } & (
   | { field: string; channel?: never; property?: never }
-  | { channel: "x" | "y" | "x2" | "y2" | "xOffset" | "yOffset" | "theta" | "radius" | "color" | "strokeDash" | "size" | "shape" | "group" | "opacity"; field?: never; property?: never }
+  | { channel: "x" | "y" | "x2" | "y2" | "xOffset" | "yOffset" | "theta" | "radius" | "color" | "strokeDash" | "strokeWidth" | "size" | "shape" | "group" | "opacity"; field?: never; property?: never }
   | { property: MarkGraphicProperty; field?: never; channel?: never }
 ) & (
   | { op: "eq" | "neq" | "gt" | "gte" | "lt" | "lte"; value: unknown }
@@ -1858,6 +1858,11 @@ export interface CreateScatterPlotOptions {
   guides?: false | CreateGuidesOptions;
 }
 
+export type GroupEncodingOptions = { target?: string; fieldType?: "nominal" } & (
+  | { field: string; fields?: never }
+  | { fields: readonly [string, ...string[]]; field?: never }
+);
+
 export interface CreateLinePlotOptions {
   id?: string;
   data?: string;
@@ -1865,7 +1870,7 @@ export interface CreateLinePlotOptions {
   x: LineXPositionChannel;
   y: LineYPositionChannel;
   color?: LineCategoricalColorChannel;
-  groupBy?: string;
+  groupBy?: string | readonly [string, ...string[]];
   strokeDash?: BasicStrokeDashChannel;
   line?: {
     strokeWidth?: number;
@@ -2261,7 +2266,7 @@ export type OpacityScaleOptions = ScaleFields<
 };
 
 export type OpacityEncodingOptions =
-  | { value: number; field?: never; target?: string }
+  | { value: number; field?: never; target?: string; fieldType?: never; scale?: never }
   | {
       field: string;
       value?: never;
@@ -2769,7 +2774,7 @@ export class ChartProgram {
     coordinate?: string;
     scale?: NonPointQuantitativePositionScaleOptions;
   }): ChartProgram;
-  encodeGroup(options: { field: string; target?: string; fieldType?: "nominal" }): ChartProgram;
+  encodeGroup(options: GroupEncodingOptions): ChartProgram;
   encodePathOrder(options: PathOrderEncodingOptions): ChartProgram;
   orderCategories(options: OrderCategoriesOptions): ChartProgram;
   encodeParallelCoordinates(options: ParallelCoordinatesEncodingOptions): ChartProgram;

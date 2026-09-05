@@ -12,7 +12,6 @@ import {
   applyEncodingScale,
   resolveReassignmentScaleOptions,
   resolveTarget,
-  validateLineSeriesCompatibility,
   validateOptions
 } from "../shared.js";
 import {
@@ -24,6 +23,7 @@ import {
 } from "../../../materialization/encodings.js";
 import { findUpstreamTransform } from
   "../../../materialization/dataProvenance.js";
+import { validatePathSeriesAppearance } from "../../../grammar/pathSeries.js";
 import { encodeContinuousColor } from "./continuous.js";
 import {
   applyColorLayoutCompanion,
@@ -81,10 +81,13 @@ const encodeColor = action(
     }
     const layout = resolveColorLayout(layer, args.layout, barGrain);
     const createsCenterGroup = layer.mark.type === "area" &&
-      layout === "center" && layer.encoding?.group?.field === undefined;
+      layout === "center" && layer.encoding?.group === undefined;
+    const ordinaryGroup = layer.encoding?.group !== undefined &&
+      layout === "overlay" && densityTransform === undefined && horizonTransform === undefined;
     if (
       layer.mark.type === "area" &&
       !createsCenterGroup &&
+      !ordinaryGroup &&
       (layer.encoding?.group?.field === undefined ||
         layer.encoding.group.field !== args.field) &&
       !densitySeriesFields.includes(args.field) &&
@@ -94,7 +97,11 @@ const encodeColor = action(
         "Area color encoding must match an existing group encoding."
       );
     }
-    validateLineSeriesCompatibility(layer, "color", args.field);
+    if (layer.mark.type === "line" || ordinaryGroup) {
+      validatePathSeriesAppearance(dataset.values, {
+        ...layer, encoding: { ...layer.encoding, color: { field: args.field, fieldType } }
+      });
+    }
     const requestedScale = resolveReassignmentScaleOptions(
       layer.encoding?.color,
       resolveColorScaleOptions(args)

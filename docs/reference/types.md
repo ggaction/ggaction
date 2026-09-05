@@ -75,7 +75,7 @@ interface ChartProgramActions {
   encodeY2(options: SecondaryPositionEncodingOptions): ChartProgram;
   encodeYRange(options: { lower: string; upper: string; target?: string; fieldType?: "quantitative"; coordinate?: string; scale?: NonPointQuantitativePositionScaleOptions; }): ChartProgram;
   encodeXRange(options: { lower: string; upper: string; target?: string; fieldType?: "quantitative"; coordinate?: string; scale?: NonPointQuantitativePositionScaleOptions; }): ChartProgram;
-  encodeGroup(options: { field: string; target?: string; fieldType?: "nominal" }): ChartProgram;
+  encodeGroup(options: GroupEncodingOptions): ChartProgram;
   encodePathOrder(options: PathOrderEncodingOptions): ChartProgram;
   orderCategories(options: OrderCategoriesOptions): ChartProgram;
   encodeParallelCoordinates(options: ParallelCoordinatesEncodingOptions): ChartProgram;

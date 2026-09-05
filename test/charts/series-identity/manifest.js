@@ -2,6 +2,7 @@ import { defineVisualVariant } from "../../support/visual-variants.js";
 import { cases, layout } from "./fixture.js";
 import { referenceFor } from "./reference-values.js";
 import { createSeriesIdentityPrimitive } from "./primitive.program.js";
+import { createSeriesIdentity } from "../../../examples/series-identity/program.js";
 
 export function targetCall(variant) {
   const plot = {
@@ -27,8 +28,9 @@ export function targetCall(variant) {
 export const visualVariants = Object.freeze(cases.map(variant => defineVisualVariant({
   chart: "series-identity", variant: variant.id, title: variant.title,
   callChain: targetCall(variant), primitive: () => createSeriesIdentityPrimitive(variant),
+  userFacing: () => createSeriesIdentity(variant),
   width: layout.width, height: layout.height, colors: layout.colors,
-  compareSemanticSpec: false, artifact: { scope: "review" },
+  compareSemanticSpec: false, artifact: { scope: "charts", capability: "series-identity" },
   regions: [{ name: "series-plot", ...referenceFor(variant).plot, minimumInkPixels: 1600,
     colors: variant.id === "series-appearance" ? undefined : layout.colors }]
 })));

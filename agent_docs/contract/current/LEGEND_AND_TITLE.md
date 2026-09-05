@@ -28,6 +28,9 @@ type TitleWrap = "word" | "character";
 
 ## `createLegend`
 
+- Sampled opacity legend는 active quantitative opacity scale이 있는 Point와 Line을 지원한다.
+  Line도 기존 circle sample recipe를 사용하며 constant assignment는 자신의 opacity block만 제거한다.
+
 - Signature: `createLegend({ target?, channels?, position?, align?, direction?, columns?, offset?, titlePosition?, title?, symbol?, labels?, titleStyle?, itemGap?, border?, count?, gradient? })`.
 - `target`: compatible mark ID; 생략하면 current 또는 유일한 eligible mark를 추론한다. Sequential gradient는
   point와 aggregate bar를 지원한다.

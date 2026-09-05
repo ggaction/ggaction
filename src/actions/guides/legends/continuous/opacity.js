@@ -11,7 +11,7 @@ import {
   normalizeContinuousLegend,
   requireResolvedLegendScale,
   resolveContinuousBounds,
-  resolveContinuousPoint,
+  resolveContinuousLegendLayer,
   resolveLegendBackgroundFromBounds,
   resolveLegendTextBounds,
   sampleContinuousValues,
@@ -62,7 +62,7 @@ export function normalizeOpacitySymbol(value) {
 }
 
 function resolveOpacityConfig(program, config) {
-  const layer = resolveContinuousPoint(program, config.target, "opacity");
+  const layer = resolveContinuousLegendLayer(program, config.target, "opacity");
   const encoding = layer.encoding.opacity;
   if (encoding.fieldType !== "quantitative") {
     throw new Error("Opacity legend requires quantitative field opacity.");

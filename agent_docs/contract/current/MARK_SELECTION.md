@@ -43,6 +43,8 @@ type MarkSelector =
   `channel: "y2"`, concrete pixel 높이는 `property: "height"`로 선택한다.
 - Stable key는 semantic item identity에서 만들며 collection child order를 selector identity로 사용하지 않는다.
   Multi-row path의 field/channel은 series grain에서 값이 하나로 unique할 때만 selectable하다.
+  Explicit tuple group의 각 field를 선택할 수 있으며 Line의 strokeWidth/opacity channel도 series grain이다.
+  해당 channel selection이 남아 있으면 constant encoding으로 교체할 수 없다.
 - Empty selection은 `selectMarks`/`highlightMarks`에서 성공이다. `filterMarks`는 empty retained dataset을
   거부한다. Ambiguous field/channel/property, target 또는 incompatible selector는 state와 trace를 만들기 전에
   실패한다.

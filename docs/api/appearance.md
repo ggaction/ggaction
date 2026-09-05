@@ -16,10 +16,10 @@ title: Appearance Encodings
 | `encodeSize` | `encodeSize({ field: "Acceleration" })` | Current point; linear scale; area range `[24, 196]` | Semantic size and concrete equal-area symbols |
 | `encodeShape` | `encodeShape({ field: "Origin" })` | Current point; 12-value ordinal shape range | Semantic shape and mixed concrete symbols |
 | `encodeAngle` | `encodeAngle({ field: "direction" })` | Current point or Tick; direct clockwise degrees | Rotated concrete paths or line endpoints |
-| `encodeOpacity` | `encodeOpacity({ value: 0.27 })` | Current point mark | Constant concrete opacity |
-| `encodeOpacity` | `encodeOpacity({ field: "Acceleration" })` | Current point; linear scale; range `[0.2, 1]` | Semantic field opacity and concrete values |
+| `encodeOpacity` | `encodeOpacity({ value: 0.27 })` | Current Point/Rule/Line | Constant concrete opacity |
+| `encodeOpacity` | `encodeOpacity({ field: "Acceleration" })` | Current Point/Rule/Line; linear scale; range `[0.2, 1]` | Semantic field opacity and concrete values |
 | `encodeStroke` | `encodeStroke({ value: "#334155" })` | Current rule mark | Constant concrete line color |
-| `encodeStrokeWidth` | `encodeStrokeWidth({ value: 3 })` | Current rule mark | Constant concrete line width |
+| `encodeStrokeWidth` | `encodeStrokeWidth({ value: 3 })` | Current Line/Rule | Constant concrete width |
 | `encodeStrokeWidth` | `encodeStrokeWidth({ field: "weight" })` | Current line/rule; quantitative scale; width range `[1, 8]` | Field-driven rule items or line series |
 | `encodeBarWidth` | `encodeBarWidth()` | Current bar; first assignment uses band `0.72` | Saved width; rectangles when positions are complete |
 | `selectMarks` | `selectMarks({ field: "Horsepower", op: "max" })` | Current or unique mark; deterministic selection ID | Reusable semantic final-item selection |

@@ -407,7 +407,7 @@ test("validates combined fields, domains, targets, and appearance options", () =
   assert.throws(
     () => createSeriesLine({ dash: false })
       .encodeStrokeDash({ field: "category" }),
-    /must match color field/
+    /unless encodeGroup/
   );
   assert.throws(
     () => differentDomains.createLegend(),

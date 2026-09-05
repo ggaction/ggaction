@@ -93,7 +93,7 @@ createLinePlot({
   x: FieldName | LinePositionOptions;
   y: FieldName | LinePositionOptions;
   color?: FieldName | ColorEncodingOptionsWithoutTarget;
-  groupBy?: FieldName;
+  groupBy?: FieldName | readonly [FieldName, ...FieldName[]];
   strokeDash?: StrokeDashEncodingOptionsWithoutTarget;
   line?: LineMarkAppearanceOptions;
   guides?: false | CreateGuidesOptions;
@@ -101,8 +101,10 @@ createLinePlot({
 ```
 
 - Stable default ID is `linePlot`.
-- Hierarchy: `createLineMark`, `encodeX`, `encodeY`, optional `encodeColor`/`encodeGroup`/`encodeStrokeDash`,
+- Hierarchy: `createLineMark`, `encodeX`, `encodeY`, optional `encodeGroup` then `encodeColor`/`encodeStrokeDash`,
   optional `createGuides`.
+- Explicit groupBy is a single field or non-empty unique tuple and exclusively defines path identity.
+  Color/dash may use different fields if each is unique within its final series. The facade assigns group first.
 - Plain strokeDash string is rejected because a field name and a named dash style are both strings.
 - Direct, grouped, temporal aggregate, and direct materialized window-output line policies remain child-owned.
   `closed: true` is rejected because this facade is Cartesian; Polar line authoring remains available through the

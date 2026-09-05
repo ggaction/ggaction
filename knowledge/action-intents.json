@@ -163,6 +163,7 @@
     "editGraphics": "Sets a concrete graphic property or removes a top-level graphic resource inside an extension action."
   },
   "sampleOverrides": {
+    "encodeGroup": { "field": "country" },
     "filterData": {
       "id": "filtered",
       "field": "value",
@@ -267,6 +268,7 @@
     "encodeText": { "field": "label" }
   },
   "callPatternOverrides": {
+    "encodeGroup": ["encodeGroup({ field, target?, fieldType? })", "encodeGroup({ fields: [first, ...rest], target?, fieldType? })"],
     "createBoxPlot": ["createBoxPlot({ x, y, guides? })", "createBoxPlot({ id?, data? })"],
     "createGradientPlot": ["createGradientPlot({ x, y, guides? })", "createGradientPlot({ id?, data? })"],
     "filterData": [

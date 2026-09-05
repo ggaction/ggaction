@@ -106,6 +106,7 @@ export type {
   GraphicObject,
   GraphicSpec,
   GraphicType,
+  GroupEncodingOptions,
   GradientPlotAppearanceOptions,
   GradientPlotCenterOptions,
   GradientPlotDensityOptions,

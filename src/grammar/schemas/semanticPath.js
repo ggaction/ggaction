@@ -20,6 +20,7 @@ const ENCODING_PATHS = Object.freeze([
   "encoding.x.bin.boundaries",
   "encoding.color.layout",
   "encoding.color.aggregate",
+  "encoding.group.fields",
   "encoding.pathOrder.field",
   "encoding.pathOrder.fieldType",
   "encoding.pathOrder.order",

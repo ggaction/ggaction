@@ -81,7 +81,7 @@ interface ChartProgramActions {
   encodeY2(options: SecondaryPositionEncodingOptions): ChartProgram;
   encodeYRange(options: { lower: string; upper: string; target?: string; fieldType?: "quantitative"; coordinate?: string; scale?: ScaleOptions; }): ChartProgram;
   encodeXRange(options: { lower: string; upper: string; target?: string; fieldType?: "quantitative"; coordinate?: string; scale?: ScaleOptions; }): ChartProgram;
-  encodeGroup(options: { field: string; target?: string; fieldType?: "nominal" }): ChartProgram;
+  encodeGroup(options: GroupEncodingOptions): ChartProgram;
   encodeText(options: TextEncodingOptions): ChartProgram;
   encodeHistogram(options: HistogramEncodingOptions): ChartProgram;
   encodeDensity(options: DensityEncodingOptions): ChartProgram;
@@ -297,8 +297,8 @@ appearance encodings. [Basic Charts](../api/basic-charts.md#createscatterplot)
 createLinePlot({ id?, data?, coordinate?, x, y, color?, groupBy?, strokeDash?, line?, guides? })
 ```
 
-Create a complete Cartesian line chart, including optional series grouping and
-appearance. [Basic Charts](../api/basic-charts.md#createlineplot)
+Create a complete Cartesian line chart. `groupBy` accepts one field or a
+non-empty tuple, assigned before independent series color and dash. [Basic Charts](../api/basic-charts.md#createlineplot)
 
 ### `createBarPlot`
 
@@ -780,9 +780,14 @@ Atomically compose area or ranged-bar `encodeX` and `encodeX2`.
 
 ```javascript
 encodeGroup({ field, target?, fieldType? })
+encodeGroup({ fields: [first, ...rest], target?, fieldType? })
 ```
 
-Split line or area paths by a nominal field without creating a scale or guide.
+Split Line or ordinary Area paths by one nominal field or a non-empty unique tuple.
+Explicit groups alone define identity; each appearance field must have one raw
+value within each series. Single-element tuples normalize to the scalar field form.
+Without explicit Line groups, color and dash retain their shared-field grouping.
+Statistical and stacked-layout groups remain owned by their existing actions.
 [Encodings](../api/encodings.md)
 
 ### `encodePathOrder`
@@ -1097,9 +1102,11 @@ encodeOpacity({ value, target? })
 encodeOpacity({ field, target?, fieldType?, scale? })
 ```
 
-Apply a constant point/rule opacity from `0` to `1`, or map a quantitative field
+Apply a constant point/rule/line opacity from `0` to `1`, or map a quantitative field
 through a linear opacity scale. The two modes are mutually exclusive and may
-replace each other through the same action.
+replace each other through the same action. Lines require one raw field value per
+series and support sampled opacity legends. Constant mode clears its field and
+owned opacity legend and rejects fieldType/scale or selections using that channel.
 [Appearance encodings](../api/appearance.md)
 
 ### `encodeStroke`
@@ -1115,9 +1122,13 @@ Assign a constant non-empty stroke string to a rule mark.
 
 ```javascript
 encodeStrokeWidth({ value, target? })
+encodeStrokeWidth({ field, target?, fieldType?, scale? })
 ```
 
-Assign a non-negative finite logical Canvas width to a rule mark.
+Assign a non-negative finite logical Canvas width to a Line or Rule. Field mode
+maps one quantitative value per rule row or complete line series. Constant mode
+clears the field and its own sampled width legend; fieldType/scale are invalid in
+constant mode. Active channel selections must be removed before replacement.
 [Appearance encodings](../api/appearance.md)
 
 ### `encodeBarWidth`

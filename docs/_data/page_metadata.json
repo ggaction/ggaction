@@ -365,7 +365,7 @@
   },
   "/api/series-encodings/": {
     "title": "Series Encodings",
-    "description": "Series appearance is authored through color, stroke dash, and stroke width families.",
+    "description": "Series appearance is authored through color, stroke dash, stroke width, and opacity.",
     "image": "/assets/images/cars-line-chart.png"
   },
   "/api/series/color/": {

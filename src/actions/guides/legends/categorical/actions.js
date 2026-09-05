@@ -6,6 +6,7 @@ import { findLayer } from "../../../../selectors/layers.js";
 import { findSemanticScale } from "../../../../selectors/scales.js";
 import { isSizeLegendPoint } from "../size.js";
 import { isStrokeWidthLegendLayer } from "../strokeWidth.js";
+import { isOpacityLegendLayer } from "../../../../materialization/legends.js";
 import { legendResourcePolicies } from
   "../../../../materialization/guides/resources.js";
 import {
@@ -232,7 +233,7 @@ export function resolveLegendCreationPlan(program, args = {}, layers = program.s
     ["strokeWidth", isStrokeWidthLegendLayer, args.target === undefined
       ? ["color", "shape", "strokeDash", "size", "opacity"]
       : ["color", "shape", "strokeDash", "opacity"]],
-    ["opacity", layer => layer.mark?.type === "point" && layer.encoding?.opacity?.scale !== undefined,
+    ["opacity", isOpacityLegendLayer,
       ["color", "shape", "strokeDash", "size"]]
   ];
   for (const [kind, eligible, otherChannels] of standalone) {

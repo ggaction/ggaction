@@ -1,6 +1,6 @@
 # Phase 2 구현 결과
 
-Phase 전체는 구현 중이며 V/X는 아직 승인되지 않았다. 아래 결과는 A/B 승인 범위의 검증된 개별 변경이다.
+Phase 전체는 구현 중이며 A/B/V는 승인되었다. X는 아직 승인되지 않았다. 아래 결과는 A/B 승인 범위의 검증된 개별 변경이다.
 
 ## W5 — Bar incomplete authoring
 
@@ -92,4 +92,34 @@ Phase 전체는 구현 중이며 V/X는 아직 승인되지 않았다. 아래 �
   Runtime·test source가 그대로이므로 기존 전체 **2,381/2,381**과 기존 PNG **19/19**, V PNG **6/6**을
   이 숫자 변경 때문에 다시 실행하지 않았다. 이 수치는 앞선 실행 결과이며 이번 재검증 결과와 구분한다.
 - W1 package 대기를 해제했다. D05는 구현·검증 완료, D04는 Phase 11 metadata audit가 남아 부분 완료다.
-  V는 ready-for-review이고 W2/W3/W4 public 구현과 전체 Phase의 X는 아직 완료되지 않았다.
+  이 B 검증 당시 V는 ready-for-review였다. 이후 V 승인과 W2 진행은 아래 기록이 소유한다.
+
+
+## W2 — Explicit series identity and Line appearance
+
+- 승인 기준은 `1005c816`의 R6-P2-V 기록이다. 새 public 프로그램과 3개 primitive pair는
+  `examples/series-identity/` 및 `test/charts/series-identity/`에 있다. 단일 group·tuple을 저장하고
+  색/점선/두께/opacity는 그 partition 안에서 유일한 raw 값으로 검증한다. Appearance를 identity key에 넣지 않는다.
+- 단일 배열은 scalar field state로 정규화하고 tuple 재할당 때 alternate field/fields를 제거한다.
+  Explicit group이 없는 기존 color/dash 추론, source group order, temporal aggregate/bin math,
+  Polar·ordinary Area, density split과 Horizon/Regression의 owned group을 보존했다.
+- W3 중 같은 series 검증을 사용하는 Line width/opacity constant·field 교체를 함께 구현했다.
+  Scalar editor의 무효한 field 덮어쓰기를 거부하고 constant assignment는 해당 field/own legend만 제거한다.
+  Shared scale의 남은 consumer와 highlight replay를 보존하며 incomplete assignment도 완료 시 수렴한다.
+- Line opacity legend는 기존 sampled circle recipe를 재사용한다. Default opacity를 불필요하게 graphic에
+  추가하지 않아 기존 primitive의 exact state를 보존한다. Parallel은 기존 row identity로 appearance를 읽는다.
+- 추가 발견: temporal aggregate Line의 ordinal color scale이 y aggregate 값을 도메인으로 읽었다.
+  Aggregate position consumer를 x/y로 한정해 ordinal appearance를 올바른 field reader로 보냈다.
+  StrokeWidth channel selector의 빠진 TS union도 runtime와 맞췄다.
+- Current·type·canonical reference·MCP action card·공개 tutorial을 갱신했다. Group 카드가 불완전한
+  `{ fieldType }` 예제를 만들지 않도록 scalar/tuple 두 call pattern과 runnable sample을 등록했다.
+- 검증: 최종 전체 normal suite **2,405/2,405**, exit 0; Horizon/Regression owner 경계까지 identity
+  focused **12/12**; Line appearance **9/9**; 실제 browser **1/1**; 대표 render **16/16**.
+  Render에는 승인된 series **3/3**의 graphicSpec·draw order·Canvas call·같은 실행 decoded pixel 비교가 포함된다.
+- Installed package는 Node·MCP·strict TS·tutorial consumer와 Vite bundle 생성을 통과한 뒤 **Basic 크기에서 실패**했다.
+  기능 통과를 package 전체 통과로 표시하지 않는다. 현재 gzip은 full **232,951**, Basic **125,223**, SVG **6,418** bytes다.
+  Basic 상한 **125,000**을 **223 bytes** 넘는다. 기존 상한은 변경하지 않았으며 남은 W3/W4 통합 후
+  package 크기 문제를 해소해야 X를 완성할 수 있다.
+- 로그: `.artifacts/roadmap6-authoring/series-{all,identity,appearance,owner,public,browser,render,package}.log`.
+- W2 runtime과 3개 public 시각 흐름은 구현되었다. D02는 package 통합 검증을 남긴다. D06은 Line 부분만
+  구현되었으며 Rule/Scatter/Point/ErrorBand는 다음 작업이다. D10의 JSON opt-out은 W4에 남는다.

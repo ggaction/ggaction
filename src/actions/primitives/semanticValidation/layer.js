@@ -11,6 +11,7 @@ import {
   validateHistogramBinStep
 } from "../../../grammar/histogram.js";
 import { validatePathOrderDirection } from "../../../grammar/pathOrder.js";
+import { normalizeGroupFields } from "../../../grammar/pathSeries.js";
 import { normalizeCategoryOrder } from "../../../grammar/categoryOrder.js";
 import { validateSemanticFieldType } from "../../../grammar/scales/index.js";
 import { findLayer } from "../../../selectors/layers.js";
@@ -58,6 +59,10 @@ export function validateLayerSemanticValue(
     throw new Error("Path order field type must be quantitative.");
   }
   if (property.endsWith(".fieldType")) validateSemanticFieldType(value);
+  if (property === "encoding.group.fields") {
+    if (!Array.isArray(value)) throw new TypeError("Group fields must be an array.");
+    normalizeGroupFields(value);
+  }
   if (property === "encoding.pathOrder.order") validatePathOrderDirection(value);
   if (property.endsWith(".categoryOrder")) normalizeCategoryOrder(value);
   if (property.startsWith("encoding.parallel.")) {

@@ -666,8 +666,8 @@
         "other-complete-chart-facades",
         "advanced-authoring"
       ],
-      "bytes": 10091,
-      "sha256": "5a24290c6dd62bec9be549d24e7b165e7bdff0d3a10b13fdfd15da2c85a20be2"
+      "bytes": 10357,
+      "sha256": "b8908be9747061de2eb40ea72069f1730b913981fda089a87121be71f837d11d"
     },
     {
       "order": 44,
@@ -1237,13 +1237,14 @@
       "headings": [
         "series-encodings",
         "at-a-glance",
+        "independent-series-identity",
         "explicit-path-topology",
         "focused-series-families",
         "errors-and-limitations",
         "related"
       ],
-      "bytes": 3018,
-      "sha256": "59de0b8cb15623c9dcf45925013a372b7c2ab26bd12c3e5d4b8cc04a23ea216c"
+      "bytes": 4679,
+      "sha256": "24d24deff86f01474ce6059b86e55a087401591cc9cca5a504480c342f81754e"
     },
     {
       "order": 79,
@@ -1257,8 +1258,8 @@
         "continuous-aggregate-bar-color",
         "related"
       ],
-      "bytes": 8810,
-      "sha256": "357ed7392218c8913903d1592244a832a4d11a35ce6874251fd8fa0783c64df0"
+      "bytes": 8937,
+      "sha256": "4a67692a4900f6006172df56a7e630fed58d4da633c8e0532d3504760abb51c3"
     },
     {
       "order": 80,
@@ -1270,8 +1271,8 @@
         "encodestrokedashoptions",
         "related"
       ],
-      "bytes": 2333,
-      "sha256": "07a69b6fd4d2887b62fccb4173693dd7143f54df012aaf0ce3d3d813df1224d9"
+      "bytes": 2431,
+      "sha256": "9edaa61082d7202a795cfa55d0d6d4ca172e0c254c078c10faf6f87534fab888"
     },
     {
       "order": 81,
@@ -1286,8 +1287,8 @@
         "errors-and-limitations",
         "related"
       ],
-      "bytes": 4356,
-      "sha256": "4748c678c3ab63505da2be286c87cfe94506c0eb6ff5493d35ad7b2eef7efe26"
+      "bytes": 4366,
+      "sha256": "643075fa9bc2587a0af5699b933a39fc75a3b606eb61e06665fd02f51a7e2ffb"
     },
     {
       "order": 82,
@@ -1325,12 +1326,12 @@
       "source": "api/appearance/mark-style.md",
       "headings": [
         "mark-style",
-        "rule-appearance",
+        "line-and-rule-appearance",
         "encodebarwidth-band-pixels-target",
         "related"
       ],
-      "bytes": 3573,
-      "sha256": "c8335d4b6e563ec7556e9e3664dd6519c856be65d9434f83021babfa318e2b3e"
+      "bytes": 4262,
+      "sha256": "5b5c0f1ddfc2818e372660ab315716b90fd5ba36db11799e714f315633664cee"
     },
     {
       "order": 85,
@@ -1807,8 +1808,8 @@
         "editbin2ddata",
         "related"
       ],
-      "bytes": 8876,
-      "sha256": "dca3f3109c992d4b52daafb1c2324dae7d4096f58527bf9b849c81fabb09d7f5"
+      "bytes": 8926,
+      "sha256": "c38e21f662989d707c0bd246de60dfcfd3ad7a404d5712f2481acc4b2d31c3b5"
     },
     {
       "order": 115,
@@ -1890,8 +1891,8 @@
         "encodebarwidth",
         "related"
       ],
-      "bytes": 14498,
-      "sha256": "eb039c12bac7e9077edeaf512b3ec654e26758cdc42ebb679b920b41692cae11"
+      "bytes": 15404,
+      "sha256": "2f9cf5946b409e8ba572f04a25e04b463fa7e70255af4be38fcbd74afd67d255"
     },
     {
       "order": 117,
@@ -2020,8 +2021,8 @@
         "exact-typescript-signatures",
         "related"
       ],
-      "bytes": 14456,
-      "sha256": "763b0ac9183fa1792eb4462095d1449c9ff80d2a69a69e3af58608615526fa38"
+      "bytes": 14419,
+      "sha256": "11603005e19f1d72446698aa137365668e5236d92d9827770814ec6098925771"
     },
     {
       "order": 123,

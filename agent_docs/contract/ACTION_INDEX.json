@@ -3169,17 +3169,6 @@
   ],
   "plannedCapabilities": [
     {
-      "id": "path-series-identity",
-      "name": "Explicit tuple identity and per-series appearance",
-      "kind": "behavior",
-      "status": "planned",
-      "readiness": "accepted",
-      "contract": {
-        "file": "agent_docs/contract/planned/SHARED_AUTHORING.md",
-        "anchor": "series-identity"
-      }
-    },
-    {
       "id": "appearance-assignment-consistency",
       "name": "Scalar style conflicts, assignment replacement and facade forwarding",
       "kind": "behavior",

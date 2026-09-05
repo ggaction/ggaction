@@ -9,6 +9,8 @@ import {
   validateSemanticFieldType
 } from "../../grammar/scales/index.js";
 import { normalizeRuleDatum } from "../../grammar/rules.js";
+import { normalizeGroupFields } from "../../grammar/pathSeries.js";
+import { assertPathGroupCompatible, validatePathGroupAppearance } from "../../materialization/marks/grouping.js";
 import {
   canMaterializeArea,
   canMaterializeLine,
@@ -18,7 +20,6 @@ import { findLayer } from "../../selectors/layers.js";
 import {
   resolveTarget,
   setEncodingProperties,
-  validateLineSeriesCompatibility,
   validateOptions
 } from "./shared.js";
 
@@ -28,7 +29,7 @@ const SECONDARY_OPTIONS = Object.freeze([
 const RANGE_OPTIONS = Object.freeze([
   "lower", "upper", "target", "fieldType", "coordinate", "scale"
 ]);
-const GROUP_OPTIONS = Object.freeze(["field", "target", "fieldType"]);
+const GROUP_OPTIONS = Object.freeze(["field", "fields", "target", "fieldType"]);
 
 function validateSecondaryScale(args, primaryScale, axisLabel) {
   if (args.scale === undefined) return;
@@ -238,7 +239,7 @@ const encodeXRange = action(
 const encodeGroup = action(
   {
     op: "encodeGroup",
-    description: "Split path geometry by a nominal field without a scale."
+    description: "Split path geometry by nominal identity fields without a scale."
   },
   function (args = {}) {
     validateOptions(args, GROUP_OPTIONS, "encodeGroup");
@@ -251,28 +252,30 @@ const encodeGroup = action(
     if ((args.fieldType ?? "nominal") !== "nominal") {
       throw new Error("encodeGroup requires a nominal field.");
     }
-    const densityTransform = dataset.transform?.length === 1 &&
-      dataset.transform[0].type === "density"
-      ? dataset.transform[0]
-      : undefined;
-    if (densityTransform !== undefined && densityTransform.groupBy !== args.field) {
-      throw new Error(
-        densityTransform.groupBy === undefined
-          ? `Ungrouped density area mark "${target}" cannot encode group.`
-          : `Density area mark "${target}" must group by "${densityTransform.groupBy}".`
-      );
+    const hasFields = Object.hasOwn(args, "fields");
+    if (hasFields === Object.hasOwn(args, "field")) {
+      throw new Error("encodeGroup requires exactly one of field or fields.");
     }
-    readNominalField(dataset.values, args.field);
-    validateLineSeriesCompatibility(layer, "group", args.field);
-    const next = this
-      .editSemantic({
-        property: `layer[${target}].encoding.group.field`,
-        value: args.field
-      })
-      .editSemantic({
-        property: `layer[${target}].encoding.group.fieldType`,
-        value: "nominal"
+    if (hasFields ? !Array.isArray(args.fields) : typeof args.field !== "string") {
+      throw new TypeError("encodeGroup field must be a string and fields must be an array.");
+    }
+    const fields = normalizeGroupFields(hasFields ? args.fields : args.field);
+    const group = {
+      ...(fields.length === 1 ? { field: fields[0] } : { fields }),
+      fieldType: "nominal"
+    };
+    assertPathGroupCompatible(this, layer, dataset, group);
+    validatePathGroupAppearance(this, {
+      ...layer, encoding: { ...layer.encoding, group }
+    }, dataset);
+    let next = this;
+    const alternate = fields.length === 1 ? "fields" : "field";
+    if (layer.encoding?.group?.[alternate] !== undefined) {
+      next = next.editSemantic({
+        property: `layer[${target}].encoding.group.${alternate}`, remove: true
       });
+    }
+    next = setEncodingProperties(next, target, "group", group);
     if (layer.mark.type === "area") {
       const updated = findLayer(next, target);
       return canMaterializeArea(next, updated)

@@ -198,7 +198,9 @@
           ],
           "scope": "encodeGroup의 identity와 color/dash/width의 final-series appearance를 분리한다. Multi-key group을 충돌 없는 구조로 다룬다. Existing inferred grouping의 호환 경로를 유지한다.",
           "acceptance": "country group+continent color 성공; 한 series의 모호한 appearance 거부; field 작성 순서와 group edit 뒤 수렴.",
-          "contractEvidence": "phase2/CONTRACT_REVIEW.md"
+          "contractEvidence": "phase2/CONTRACT_REVIEW.md",
+          "implementationStatus": "implemented-functional-package-size-pending",
+          "resultEvidence": "phase2/RESULTS.md#w2--explicit-series-identity-and-line-appearance"
         },
         {
           "id": "R6-P2-W3",
@@ -209,7 +211,9 @@
           ],
           "scope": "Line constant/field width·opacity, Scatter radius, Rule 생성·editRuleMark를 기존 owner로 연결한다. ErrorBand fill·Point opacity·Line width의 field 충돌과 명시적 교체/override 해제를 정리한다. Basic encodePointRadius child·공개 경로도 포함한다.",
           "acceptance": "create/edit/field/constant 지원 matrix 일치. Override 뒤 scale·legend가 거짓 의미를 설명하지 않음. Local highlight override 별도 유지.",
-          "contractEvidence": "phase2/CONTRACT_REVIEW.md"
+          "contractEvidence": "phase2/CONTRACT_REVIEW.md",
+          "implementationStatus": "line-appearance-implemented-remaining-owners-in-progress",
+          "resultEvidence": "phase2/RESULTS.md#w2--explicit-series-identity-and-line-appearance"
         },
         {
           "id": "R6-P2-W4",
@@ -265,7 +269,12 @@
           "scope": "country-color, tuple-color-dash, series-appearance, timestamp, year, auto의 6개 target. A의 W2/W3/W4 계약에 따른 public 구현과 consumer 검증. X 승인은 별도다.",
           "reviewCommit": "ca820fa941f4359e814ee6f65a01e574512f5c08",
           "approvalBaselineCommit": "1883d8b47a87a71c623edcb9158399ac88b3556d"
-        }
+        },
+        "implementedVariants": [
+          "country-color",
+          "tuple-color-dash",
+          "series-appearance"
+        ]
       },
       "bundleReview": {
         "file": "phase2/BUNDLE_REVIEW.md",
@@ -281,6 +290,13 @@
           "approvedFullLimit": 235000,
           "scope": "Full browser gzip 상한 230,000 → 235,000 bytes. Basic/SVG 상한 유지. V 시각 target과 X 승인은 포함하지 않는다.",
           "reviewCommit": "ca820fa941f4359e814ee6f65a01e574512f5c08"
+        },
+        "latestMeasurement": {
+          "full": 232951,
+          "basic": 125223,
+          "svg": 6418,
+          "packageStatus": "basic-size-failed",
+          "evidence": "phase2/RESULTS.md#w2--explicit-series-identity-and-line-appearance"
         }
       }
     },
@@ -951,7 +967,8 @@
       "recommended": "encodeGroup의 identity와 color/dash/width의 final-series appearance를 분리한다. Multi-key group을 충돌 없는 구조로 다룬다. Existing inferred grouping의 호환 경로를 유지한다.",
       "acceptance": "country group+continent color 성공; 한 series의 모호한 appearance 거부; field 작성 순서와 group edit 뒤 수렴.",
       "evidence": "audit/REPORT.md: D02",
-      "disposition": "implementation-or-explicit-contract-decision-proposed"
+      "disposition": "W2 runtime and visual pairs implemented; installed consumer passes until Basic bundle size. Phase 2 integration and X remain pending.",
+      "resultEvidence": "phase2/RESULTS.md#w2--explicit-series-identity-and-line-appearance"
     },
     {
       "id": "D03",

@@ -3676,8 +3676,11 @@ width belong in `point`; field-driven color, size, and shape remain top-level.
 createLinePlot(options: CreateLinePlotOptions): ChartProgram
 ```
 
-Required options are `x` and `y`. Use `color`, `groupBy`, or `strokeDash` for
-series identity and `line` for constant appearance.
+Required options are `x` and `y`. `groupBy` accepts a field name or a non-empty
+unique tuple such as `["country", "scenario"]`. Explicit groups define identity;
+`color` and `strokeDash` can use other fields with one value per series. Without
+`groupBy`, color/dash retain their shared-field grouping. Use `line` for constant
+appearance. See [independent series identity](./api/series-encodings/).
 
 ```javascript
 const line = chart()
@@ -8093,15 +8096,43 @@ shared offset scale must use the same padding policy and parent slot size.
 
 | Action | Shortest call | Inference/defaults | Result |
 | --- | --- | --- | --- |
+| `encodeGroup` | `encodeGroup({ field: "country" })` or `{ fields: ["country", "scenario"] }` | Current Line/Area; nominal fields | Explicit path identity without a scale |
+| `encodeOpacity` | `encodeOpacity({ field: "quality" })` | Current Point/Rule/Line; quantitative field | One opacity per item or series |
 | `encodeColor` | `encodeColor({ field: "group" })` | Current mark, nominal default or explicit ordinal field type, color scale | Semantic grouping and concrete color |
 | `encodeStrokeDash` | `encodeStrokeDash({ field: "group" })` | Current line/rule mark and dash scale | Field-driven or constant concrete dash |
 | `encodeStrokeWidth` | `encodeStrokeWidth({ field: "weight" })` | Current line/rule; independent quantitative scale | Rule-item or line-series widths |
 | `encodePathOrder` | `encodePathOrder({ field: "year" })` | Current or unique compatible Cartesian path; ascending default | Stable per-series vertex order without a scale |
 | `encodeParallelCoordinates` | `encodeParallelCoordinates({ dimensions: ["a", "b"] })` | Current line, Parallel coordinate, local scales, `break` missing policy | One row path across ordered dimension axes |
 
-Series appearance is authored through color, stroke-dash, and stroke-width families. Each
+Series appearance is authored through color, stroke dash, stroke width, and opacity. Each
 focused page owns the complete options, replacement behavior, and errors for
 that encoding.
+
+## Independent series identity
+
+For a line with positions already assigned, this fragment creates four country
+paths even when the countries share just two continent colors:
+
+```javascript
+program
+  .encodeGroup({ field: "country" })
+  .encodeColor({ field: "continent" });
+```
+
+Use `encodeGroup({ fields: ["country", "scenario"] })` for one path per tuple.
+Then color can represent continent and dash can represent scenario. Group fields
+must be unique, non-empty names with nominal scalar values. `{ fields: ["country"] }`
+normalizes to `{ field: "country" }`; providing both forms is an error.
+
+Appearance fields must have one raw value per complete series. Different values
+that happen to map to the same color still fail. Width and opacity never infer a
+group. Removing explicit grouping restores Line's color/dash grouping and fails
+if the remaining appearance would be ambiguous. Ordinary ranged Areas support
+the same explicit identity; statistical and stacked-layout groups keep their
+existing owner restrictions.
+
+The [runnable series tutorial](https://github.com/ggaction/ggaction/tree/main/examples/series-identity)
+uses one shared program for country colors, tuple color/dash, and field width/opacity.
 
 ## Explicit path topology
 
@@ -8136,8 +8167,10 @@ dimension scales, row identity, missing policies, and lifecycle behavior.
 ## Errors and limitations
 
 Stroke-dash and explicit group fields must be nominal. Color fields may be
-nominal or ordinal. Area color must match its group encoding. Line group,
-color, and field-driven stroke dash must use one compatible field.
+nominal or ordinal. Without an explicit Line group, color and field-driven dash
+must use the same field. Explicit identity allows different appearance fields
+when each is unique within the series. Center/stack/fill Area retains matching
+single-field color/group ownership.
 Combined line legends also require matching ordered domains.
 Stroke width is quantitative and independent of point size. A line series must
 have exactly one width value across all contributing rows; segment-local and
@@ -8159,8 +8192,10 @@ bar fills, rect fills, or arc-sector fills. Ordinal fields may contain ordered n
 engine cylinder counts. Quantitative or temporal point and rect fields use continuous color
 scales; point fields also support discretized color. Aggregate bars additionally support one aggregate quantitative
 color value per final rectangle. Line and categorical bar materializers may use
-the field for grouping. Area color normally matches an existing `encodeGroup`
-field; `layout: "center"` creates that matching nominal group when absent.
+the field for grouping when no explicit group is present. With `encodeGroup`,
+Line and ordinary overlay Area color is an independent field with one raw value
+per series. Stacked Area layouts retain a matching single group field;
+`layout: "center"` creates that group when absent.
 
 | Mode | Supported marks | Field types | Important options |
 | --- | --- | --- | --- |
@@ -8419,8 +8454,9 @@ and inferred titles update; custom legend settings remain unchanged.
 Constant mode accepts no scale or field type. It creates no legend, removes the
 stroke-dash part of an existing combined legend, and removes a dash-only legend.
 
-If color and stroke dash encode the same field, that field appears only once in
-the series key and can be represented by one combined legend. Canvas changes
+Without an explicit group, color and stroke dash must share one identity field.
+With `encodeGroup`, dash may use another field if it has one raw value per
+series. Compatible color and dash domains can be represented by one combined legend. Canvas changes
 explicitly rematerialize both styles.
 
 See [Scale options](./api/scales/) and [Legends](./api/legends/).
@@ -8442,10 +8478,10 @@ See [Scale options](./api/scales/) and [Legends](./api/legends/).
 | `encodeSize` | `encodeSize({ field: "Acceleration" })` | Current point; linear scale; area range `[24, 196]` | Semantic size and concrete equal-area symbols |
 | `encodeShape` | `encodeShape({ field: "Origin" })` | Current point; 12-value ordinal shape range | Semantic shape and mixed concrete symbols |
 | `encodeAngle` | `encodeAngle({ field: "direction" })` | Current point or Tick; direct clockwise degrees | Rotated concrete paths or line endpoints |
-| `encodeOpacity` | `encodeOpacity({ value: 0.27 })` | Current point mark | Constant concrete opacity |
-| `encodeOpacity` | `encodeOpacity({ field: "Acceleration" })` | Current point; linear scale; range `[0.2, 1]` | Semantic field opacity and concrete values |
+| `encodeOpacity` | `encodeOpacity({ value: 0.27 })` | Current Point/Rule/Line | Constant concrete opacity |
+| `encodeOpacity` | `encodeOpacity({ field: "Acceleration" })` | Current Point/Rule/Line; linear scale; range `[0.2, 1]` | Semantic field opacity and concrete values |
 | `encodeStroke` | `encodeStroke({ value: "#334155" })` | Current rule mark | Constant concrete line color |
-| `encodeStrokeWidth` | `encodeStrokeWidth({ value: 3 })` | Current rule mark | Constant concrete line width |
+| `encodeStrokeWidth` | `encodeStrokeWidth({ value: 3 })` | Current Line/Rule | Constant concrete width |
 | `encodeStrokeWidth` | `encodeStrokeWidth({ field: "weight" })` | Current line/rule; quantitative scale; width range `[1, 8]` | Field-driven rule items or line series |
 | `encodeBarWidth` | `encodeBarWidth()` | Current bar; first assignment uses band `0.72` | Saved width; rectangles when positions are complete |
 | `selectMarks` | `selectMarks({ field: "Horsepower", op: "max" })` | Current or unique mark; deterministic selection ID | Reusable semantic final-item selection |
@@ -8753,11 +8789,11 @@ titles and styles remain unchanged.
 
 # Mark Style
 
-## Rule appearance
+## Line and Rule appearance
 
 `encodeStroke({ value, target? })` assigns a required non-empty constant color
 string to a rule. `encodeStrokeWidth({ value, target? })` assigns a
-non-negative finite logical Canvas width to every child of the current rule.
+non-negative finite logical Canvas width to every child of the current Line or Rule.
 These constant modes create no scale or legend.
 
 `encodeStrokeWidth({ field, target?, fieldType?, scale? })` instead creates an
@@ -8777,7 +8813,16 @@ program
 
 Field values, domains, and ranges must be finite and non-negative. `value` and
 `field` are mutually exclusive. `editScale` rematerializes both marks and an
-active sampled stroke-width legend.
+active sampled stroke-width legend. Calling `{ value }` removes the field binding
+and only its own width legend; calling `{ field }` clears the constant override.
+Selections referring to the replaced channel must be removed first.
+
+Lines also support `encodeOpacity({ field: "quality" })` with one value per series,
+a default linear range of `[0.2, 1]`, and `createLegend({ channels: ["opacity"] })`.
+Use `{ value: 0.5 }` to return to constant opacity. Constant mode rejects
+`fieldType` and `scale`. Line field opacity has no missing-value fallback.
+`editLineMark` rejects scalar width/opacity while the same field encoding is
+active; use the corresponding encoder's explicit value assignment to replace it.
 
 Rules also reuse `encodeStrokeDash` in constant or nominal-field mode and
 `encodeOpacity` in constant or quantitative-field mode. Field modes produce
@@ -11818,8 +11863,8 @@ appearance encodings. [Basic Charts](./api/basic-charts/#createscatterplot)
 createLinePlot({ id?, data?, coordinate?, x, y, color?, groupBy?, strokeDash?, line?, guides? })
 ```
 
-Create a complete Cartesian line chart, including optional series grouping and
-appearance. [Basic Charts](./api/basic-charts/#createlineplot)
+Create a complete Cartesian line chart. `groupBy` accepts one field or a
+non-empty tuple, assigned before independent series color and dash. [Basic Charts](./api/basic-charts/#createlineplot)
 
 ## `createBarPlot`
 
@@ -12307,9 +12352,14 @@ Atomically compose area or ranged-bar `encodeX` and `encodeX2`.
 
 ```javascript
 encodeGroup({ field, target?, fieldType? })
+encodeGroup({ fields: [first, ...rest], target?, fieldType? })
 ```
 
-Split line or area paths by a nominal field without creating a scale or guide.
+Split Line or ordinary Area paths by one nominal field or a non-empty unique tuple.
+Explicit groups alone define identity; each appearance field must have one raw
+value within each series. Single-element tuples normalize to the scalar field form.
+Without explicit Line groups, color and dash retain their shared-field grouping.
+Statistical and stacked-layout groups remain owned by their existing actions.
 [Encodings](./api/encodings/)
 
 ## `encodePathOrder`
@@ -12622,9 +12672,11 @@ encodeOpacity({ value, target? })
 encodeOpacity({ field, target?, fieldType?, scale? })
 ```
 
-Apply a constant point/rule opacity from `0` to `1`, or map a quantitative field
+Apply a constant point/rule/line opacity from `0` to `1`, or map a quantitative field
 through a linear opacity scale. The two modes are mutually exclusive and may
-replace each other through the same action.
+replace each other through the same action. Lines require one raw field value per
+series and support sampled opacity legends. Constant mode clears its field and
+owned opacity legend and rejects fieldType/scale or selections using that channel.
 [Appearance encodings](./api/appearance/)
 
 ## `encodeStroke`
@@ -12640,9 +12692,13 @@ Assign a constant non-empty stroke string to a rule mark.
 
 ```javascript
 encodeStrokeWidth({ value, target? })
+encodeStrokeWidth({ field, target?, fieldType?, scale? })
 ```
 
-Assign a non-negative finite logical Canvas width to a rule mark.
+Assign a non-negative finite logical Canvas width to a Line or Rule. Field mode
+maps one quantitative value per rule row or complete line series. Constant mode
+clears the field and its own sampled width legend; fieldType/scale are invalid in
+constant mode. Active channel selections must be removed before replacement.
 [Appearance encodings](./api/appearance/)
 
 ## `encodeBarWidth`
@@ -13554,7 +13610,7 @@ interface ChartProgramActions {
   encodeY2(options: SecondaryPositionEncodingOptions): ChartProgram;
   encodeYRange(options: { lower: string; upper: string; target?: string; fieldType?: "quantitative"; coordinate?: string; scale?: NonPointQuantitativePositionScaleOptions; }): ChartProgram;
   encodeXRange(options: { lower: string; upper: string; target?: string; fieldType?: "quantitative"; coordinate?: string; scale?: NonPointQuantitativePositionScaleOptions; }): ChartProgram;
-  encodeGroup(options: { field: string; target?: string; fieldType?: "nominal" }): ChartProgram;
+  encodeGroup(options: GroupEncodingOptions): ChartProgram;
   encodePathOrder(options: PathOrderEncodingOptions): ChartProgram;
   orderCategories(options: OrderCategoriesOptions): ChartProgram;
   encodeParallelCoordinates(options: ParallelCoordinatesEncodingOptions): ChartProgram;

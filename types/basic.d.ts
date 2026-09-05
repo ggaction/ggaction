@@ -21,6 +21,7 @@ export type {
   CreateScatterPlotOptions,
   CreateScaleOptions,
   GraphicSpec,
+  GroupEncodingOptions,
   GridDirectionOptions,
   HistogramEncodingOptions,
   LegendOptions,

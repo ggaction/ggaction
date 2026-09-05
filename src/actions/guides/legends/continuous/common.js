@@ -17,6 +17,7 @@ import { resolveGraphicBounds } from "../../../../layout/canvas.js";
 import { DEFAULT_COLORS, DEFAULT_FONT_FAMILY } from
   "../../../../theme/defaults.js";
 import { findLayer } from "../../../../selectors/layers.js";
+import { isOpacityLegendLayer } from "../../../../materialization/legends.js";
 import { findCanvasGraphic } from
   "../../../../materialization/graphicHierarchy.js";
 
@@ -182,17 +183,17 @@ export function selectLegendLayer(program, requested, predicate) {
   return candidates.includes(candidate) ? candidate : undefined;
 }
 
-export function resolveContinuousPoint(program, requested, channel) {
+export function resolveContinuousLegendLayer(program, requested, channel) {
   const layer = selectLegendLayer(
     program,
     requested,
-    candidate => candidate.mark?.type === "point" &&
-      candidate.encoding?.[channel]?.scale !== undefined
+    channel === "opacity" ? isOpacityLegendLayer : candidate =>
+      candidate.mark?.type === "point" && candidate.encoding?.[channel]?.scale !== undefined
   );
   if (layer === undefined) {
     throw new Error(
       requested === undefined
-        ? `${channel} legend requires one eligible point mark.`
+        ? `${channel} legend requires one eligible ${channel === "opacity" ? "point or line" : "point"} mark.`
         : `Unknown ${channel} legend target "${requested}".`
     );
   }

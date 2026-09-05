@@ -2359,7 +2359,7 @@
       "name": "encodeStrokeWidth",
       "layer": "user-facing",
       "domain": "encodings",
-      "summary": "Assign a non-negative finite logical Canvas width to a rule mark.",
+      "summary": "Assign a non-negative finite logical Canvas width to a Line or Rule.",
       "signature": "encodeStrokeWidth(options: StrokeWidthEncodingOptions): ChartProgram;",
       "intents": [
         "encode stroke width",
@@ -2605,7 +2605,7 @@
       "name": "encodeOpacity",
       "layer": "user-facing",
       "domain": "encodings",
-      "summary": "Apply a constant point/rule opacity from 0 to 1, or map a quantitative field through a linear opacity scale.",
+      "summary": "Apply a constant point/rule/line opacity from 0 to 1, or map a quantitative field through a linear opacity scale.",
       "signature": "encodeOpacity(options: OpacityEncodingOptions): ChartProgram;",
       "intents": [
         "encode opacity",
@@ -3289,8 +3289,8 @@
       "name": "encodeGroup",
       "layer": "user-facing",
       "domain": "encodings",
-      "summary": "Split line or area paths by a nominal field without creating a scale or guide.",
-      "signature": "encodeGroup(options: { field: string; target?: string; fieldType?: \"nominal\" }): ChartProgram;",
+      "summary": "Split Line or ordinary Area paths by one nominal field or a non-empty unique tuple.",
+      "signature": "encodeGroup(options: GroupEncodingOptions): ChartProgram;",
       "intents": [
         "encode group",
         "encode",
@@ -3315,11 +3315,6 @@
       },
       "options": [
         {
-          "name": "field",
-          "required": true,
-          "type": "string"
-        },
-        {
           "name": "target",
           "required": false,
           "type": "string | undefined"
@@ -3328,12 +3323,23 @@
           "name": "fieldType",
           "required": false,
           "type": "\"nominal\" | undefined"
+        },
+        {
+          "name": "field",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "fields",
+          "required": false,
+          "type": "readonly [string, ...string[]] | undefined"
         }
       ],
       "callPatterns": [
-        "encodeGroup({ field, target?, fieldType? })"
+        "encodeGroup({ field, target?, fieldType? })",
+        "encodeGroup({ fields: [first, ...rest], target?, fieldType? })"
       ],
-      "snippet": "program.encodeGroup({ field: \"value\" })",
+      "snippet": "program.encodeGroup({ field: \"country\" })",
       "errors": [],
       "route": "/reference/actions/encodings/#encodegroup"
     },
@@ -9131,7 +9137,7 @@
         {
           "name": "channel",
           "required": false,
-          "type": "\"color\" | \"group\" | \"opacity\" | \"radius\" | \"shape\" | \"size\" | \"strokeDash\" | \"theta\" | \"x\" | \"x2\" | \"xOffset\" | \"y\" | \"y2\" | \"yOffset\" | undefined"
+          "type": "\"color\" | \"group\" | \"opacity\" | \"radius\" | \"shape\" | \"size\" | \"strokeDash\" | \"strokeWidth\" | \"theta\" | \"x\" | \"x2\" | \"xOffset\" | \"y\" | \"y2\" | \"yOffset\" | undefined"
         },
         {
           "name": "property",
@@ -9245,7 +9251,7 @@
         {
           "name": "channel",
           "required": false,
-          "type": "\"color\" | \"group\" | \"opacity\" | \"radius\" | \"shape\" | \"size\" | \"strokeDash\" | \"theta\" | \"x\" | \"x2\" | \"xOffset\" | \"y\" | \"y2\" | \"yOffset\" | undefined"
+          "type": "\"color\" | \"group\" | \"opacity\" | \"radius\" | \"shape\" | \"size\" | \"strokeDash\" | \"strokeWidth\" | \"theta\" | \"x\" | \"x2\" | \"xOffset\" | \"y\" | \"y2\" | \"yOffset\" | undefined"
         },
         {
           "name": "property",
@@ -9352,7 +9358,7 @@
         {
           "name": "channel",
           "required": false,
-          "type": "\"color\" | \"group\" | \"opacity\" | \"radius\" | \"shape\" | \"size\" | \"strokeDash\" | \"theta\" | \"x\" | \"x2\" | \"xOffset\" | \"y\" | \"y2\" | \"yOffset\" | undefined"
+          "type": "\"color\" | \"group\" | \"opacity\" | \"radius\" | \"shape\" | \"size\" | \"strokeDash\" | \"strokeWidth\" | \"theta\" | \"x\" | \"x2\" | \"xOffset\" | \"y\" | \"y2\" | \"yOffset\" | undefined"
         },
         {
           "name": "property",
@@ -11504,7 +11510,7 @@
       "name": "createLinePlot",
       "layer": "user-facing",
       "domain": "charts",
-      "summary": "Create a complete Cartesian line chart, including optional series grouping and appearance.",
+      "summary": "Create a complete Cartesian line chart.",
       "signature": "createLinePlot(options: CreateLinePlotOptions): ChartProgram;",
       "intents": [
         "create line plot",
@@ -11563,7 +11569,7 @@
         {
           "name": "groupBy",
           "required": false,
-          "type": "string | undefined"
+          "type": "string | readonly [string, ...string[]] | undefined"
         },
         {
           "name": "strokeDash",

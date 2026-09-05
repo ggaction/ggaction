@@ -230,11 +230,18 @@ async function testNodeConsumer(directory) {
     const lineFacade = chart()
       .createCanvas({ width: 160, height: 120, margin: 20 })
       .createData({ values: [
-        { x: 1, y: 2, group: "A" },
-        { x: 2, y: 4, group: "A" }
+        { x: 1, y: 2, group: "A", scenario: "observed", weight: 1 },
+        { x: 2, y: 4, group: "A", scenario: "observed", weight: 1 }
       ] })
       .createLinePlot({ x: "x", y: "y", groupBy: "group", guides: false });
     assert.equal(lineFacade.graphicSpec.objects.linePlot.items.length, 1);
+    const tupleSeries = lineFacade.encodeGroup({ fields: ["group", "scenario"] })
+      .encodeStrokeWidth({ field: "weight" })
+      .encodeOpacity({ field: "weight" });
+    assert.equal(tupleSeries.graphicSpec.objects.linePlot.items.length, 1);
+    assert.deepEqual(tupleSeries.semanticSpec.layers[0].encoding.group.fields, ["group", "scenario"]);
+    assert.equal(tupleSeries.encodeOpacity({ value: 0.5 })
+      .semanticSpec.layers[0].encoding.opacity, undefined);
     assert.deepEqual(
       lineFacade.trace.children.at(-1).children.map(node => node.op),
       ["createLineMark", "encodeX", "encodeY", "encodeGroup"]
@@ -1022,10 +1029,22 @@ async function testTypeScriptConsumer(directory) {
     const lineOptions: CreateLinePlotOptions = {
       x: "x",
       y: "y",
-      groupBy: "group",
+      groupBy: ["group", "scenario"],
       line: { curve: "linear", strokeWidth: 2 },
       guides: false
     };
+    const typedGroups = chart().createLineMark()
+      .encodeGroup({ field: "country" })
+      .encodeGroup({ fields: ["country", "scenario"] as const })
+      .encodeStrokeWidth({ value: 3 })
+      .encodeOpacity({ field: "quality" });
+    typedGroups.selectMarks({ channel: "strokeWidth", op: "eq", value: 2 });
+    // @ts-expect-error A tuple must contain at least one identity field.
+    typedGroups.encodeGroup({ fields: [] });
+    // @ts-expect-error Scalar and tuple identity are mutually exclusive.
+    typedGroups.encodeGroup({ field: "country", fields: ["scenario"] });
+    // @ts-expect-error Constant opacity has no field scale.
+    typedGroups.encodeOpacity({ value: 0.5, scale: { domain: [0, 1] } });
     const invalidClosedLineOptions: CreateLinePlotOptions = {
       x: "x",
       y: "y",

@@ -452,7 +452,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 
 - Signature: `encodeStrokeWidth({ target?, value })` or
   `encodeStrokeWidth({ target?, field, fieldType?, scale? })`.
-- Constant mode preserves the existing rule-only behavior: `value` is a non-negative finite logical Canvas
+- Constant mode targets Line or Rule: `value` is a non-negative finite logical Canvas
   width, creates no scale or legend, and rematerializes every rule child.
 - Field mode targets a line or rule, defaults `fieldType` to `"quantitative"`, creates an independent
   `strokeWidth` scale, and maps to concrete logical Canvas widths. Default range is `[1, 8]`; explicit range
@@ -463,7 +463,9 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 - Field values are finite and non-negative. Missing, non-finite, negative, ambiguous-target, and unequal
   within-series values fail atomically. Zero is valid.
 - `value` and `field` are mutually exclusive. Reassignment structurally replaces the semantic field binding;
-  returning a rule to constant mode removes the `strokeWidth` encoding and its standalone legend.
+  returning a Line or Rule to constant mode removes the `strokeWidth` encoding and only its own legend.
+  Constant mode rejects fieldType/scale and a selection bound to the replaced channel; detached shared scales
+  retain other consumers. Field mode removes the constant override. Line scalar editors reject active field width.
 - Field mode participates in `editScale`, `createLegend({ channels: ["strokeWidth"] })`, Canvas
   rematerialization, immutable state, and wrapped action trace. The scale is not shared with point `size`.
 
@@ -540,31 +542,40 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 
 ## `encodeGroup`
 
-- Signature: `encodeGroup({ field, target?, fieldType? })`
-- `field`: 필수 nominal field. density area에서는 density transform의 `groupBy`와 일치해야 한다.
-- `target`: line 또는 area ID; 생략 시 current/unique eligible target을 추론한다.
-- `fieldType`: 유일한 값 `"nominal"`, 기본값도 nominal이다.
-- Effect: series를 path별로 나누는 semantic group만 저장한다. scale이나 guide는 만들지 않으며
-  필요한 position encoding이 이미 완성됐을 때 path를 rematerialize한다.
-- Reassignment: 같은 target에 다시 호출하면 group field를 원자적으로 교체한다. Line의 color 또는
-  strokeDash field가 이미 있으면 반드시 같은 field여야 하며, 불일치하면 기존 program을 유지한 채
-  오류를 낸다.
-- Coverage: line, regression, density tests가 grouped/ungrouped, reassignment와 mismatch를 검증한다.
+- Signature: `encodeGroup({ field, target?, fieldType? } | { fields, target?, fieldType? })`.
+- `field` 또는 `fields` 중 정확히 하나가 필요하다. `fields`는 non-empty unique field-name tuple이고
+  각 값은 nominal scalar다. `[field]`는 기존 `{ field, fieldType: "nominal" }` state로 정규화한다.
+  복수 key는 `{ fields: [...], fieldType: "nominal" }`로 저장하며 field와 fields를 함께 남기지 않는다.
+- `target`: current/unique Line 또는 Area. `fieldType`은 nominal만 허용하며 생략 시 nominal이다.
+- 명시적 group만 path identity를 결정한다. Ordinary ranged Area와 Cartesian direct/aggregate/bin 및
+  Polar Line을 지원한다. Color/dash/width/opacity는 최종 series 안에서 raw field 값이 하나여야 한다.
+  같은 mapped appearance로 합쳐지더라도 서로 다른 raw 값은 오류다. Appearance가 경로를 추가 분할하지 않는다.
+- Group이 없는 Line은 기존 color 또는 strokeDash field로 나눈다. 둘 다 있으면 같은 field여야 한다.
+  Width/opacity는 implicit group을 만들지 않는다. Ordinary Area는 명시적 group 없이 하나의 path다.
+- Effect: scale-free semantic partition을 저장하고 position 완료 시 path·scale·guide·highlight를 재계산한다.
+  Source first-appearance group order와 기존 vertex order/aggregate/bin math를 유지한다. 같은 group을
+  지원하는 유효한 중간 상태에서는 appearance와 group assignment 순서가 결과에 영향을 주지 않는다.
+- Reassignment는 alternate field/fields를 제거한다. `removeEncoding({ channel: "group" })`은 implicit
+  identity로 돌아가며 남은 appearance가 모호하면 오류다. Field selector는 tuple의 각 field를 조회한다.
+- Parallel은 row identity를 소유하므로 encodeGroup을 거부한다. Density/Violin, Horizon, Regression,
+  ErrorBand의 owned group은 각 editor가 관리하며 tuple·잘못된 group·직접 removal을 거부한다.
+  Center/stack/fill Area는 기존 단일 color/group 결합을 유지한다.
 
 ### Formal values — `encodeGroup`
 
-- Implemented: `encodeGroup({ field: FieldName; target?: UserId; fieldType?: "nominal" })`
+- Implemented: `encodeGroup(options: GroupEncodingOptions)`.
+- `GroupEncodingOptions = { target?: UserId; fieldType?: "nominal" } & ({ field: FieldName; fields?: never } | { fields: readonly [FieldName, ...FieldName[]]; field?: never })`.
+- Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `encodeGroup`
 
-- `field`, `target`
-  - ✅ Covered: nominal line/area grouping, inferred/explicit target, density group match/mismatch,
-    line field reassignment와 immutable failure.
-- `fieldType`
-  - ✅ Covered: `"nominal"`와 invalid values.
-- No proposal: group은 scale-free path partition이라는 현재 역할을 유지한다.
-- Evidence: line-series, ranged-area and density-area tests.
+- ✅ Covered: singleton/tuple normalization, typed-key collisions, nominal zero equality, group/color
+  commutation, reassignment/removal, pending positions, scalar validation and immutable rejection.
+- ✅ Covered: direct/temporal aggregate/binned/Polar Line, ordinary Area, independent color/dash/width,
+  selection/filter/highlight, Canvas/scale refresh and specialized owner boundaries.
+- Evidence: `test/unit/actions/encodings/path-series-identity.test.js`,
+  `test/unit/actions/encodings/line-appearance-modes.test.js`, `test/charts/series-identity/`.
 
 ## `encodePathOrder`
 
@@ -1013,7 +1024,8 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
   ID를 생략하면 default `strokeDash` scale을 사용하고 이전 named scale은 보존한다. Existing legend는
   inferred title/domain/symbol을 갱신하고 custom config는 유지한다. Constant mode 전환은 legend의
   strokeDash component를 제거하고 남은 channel이 없으면 legend 전체를 제거한다.
-- Compatibility: line의 group 또는 color field가 이미 있으면 field mode의 field와 같아야 한다.
+- Compatibility: 명시적 Line group이 있으면 다른 appearance field를 허용하되 series 안에서 유일해야 한다.
+  명시적 group이 없으면 color와 strokeDash의 implicit identity field가 일치해야 한다.
 - Field and constant stroke dash may be assigned before either line position; completing positions materializes
   the stored appearance without requiring another appearance call.
 - Coverage: named/direct vocabulary, field/constant 전환, field/group reassignment, legend cleanup,
@@ -1137,11 +1149,15 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 - Signature: `encodeOpacity({ value, target? } | { field, target?, fieldType?, scale? })`
 - 상수로 전환할 때 target이 소유한 opacity legend만 제거하며 다른 layer의 범례는 보존한다.
 - `value`: field와 mutually exclusive인 finite `[0, 1]` number.
-- `field`: value와 mutually exclusive인 quantitative point/rule field. auto linear range는 `[0.2, 1]`이다.
-- `target`: optional point 또는 rule ID.
+- `field`: value와 mutually exclusive인 quantitative point/rule/line field. auto linear range는 `[0.2, 1]`이다.
+- `target`: optional point, rule 또는 line ID.
 - Effect: constant는 graphical config, field는 semantic encoding과 linear scale을 저장한다. 같은 target에
   다시 호출하면 constant↔field 또는 field↔field를 structural copy로 교체하고 target mark/legend를 rematerialize한다.
-- Coverage: point/rule/regression tests와 validation이 representative, reassignment 및 invalid range를 검증한다.
+- Line은 final-series grain이며 모든 source row의 field 값이 같아야 한다. Width처럼 implicit grouping을
+  만들지 않는다. Constant mode는 fieldType/scale 및 opacity-channel selection과 충돌하고 field/own legend만
+  정리한다. Field mode는 constant override를 제거한다. Line은 unknown fallback을 지원하지 않는다.
+- Field Line opacity는 scale/Canvas/filter/highlight replay와 sampled opacity legend를 지원한다.
+- Coverage: point/rule/regression 및 line-appearance-modes tests가 replacement와 invalid range를 검증한다.
 
 ### Formal values — `encodeOpacity`
 
@@ -1154,7 +1170,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 - `value`
   - ✅ Covered: representative value, 0, 1, below/above range와 non-finite rejection.
 - `target`
-  - ✅ Covered: inferred/explicit point and rule, unknown/incompatible target.
+  - ✅ Covered: inferred/explicit point, rule and line, unknown/incompatible target.
 - Reassignment
   - ✅ Covered: constant↔constant, field↔field and constant↔field immutable replacement.
 - ✅ Covered: auto/explicit descending range, clamp/reverse, continuous sample legend and constant-mode cleanup.

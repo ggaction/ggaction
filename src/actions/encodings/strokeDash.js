@@ -11,10 +11,10 @@ import {
   resolveReassignmentScaleOptions,
   resolveTarget,
   setEncodingProperties,
-  validateLineSeriesCompatibility,
   validateOptions
 } from "./shared.js";
 import { findLayer } from "../../selectors/layers.js";
+import { validatePathSeriesAppearance } from "../../grammar/pathSeries.js";
 
 const STROKE_DASH_ENCODING_OPTIONS = Object.freeze([
   "field", "value", "target", "fieldType", "scale"
@@ -81,6 +81,9 @@ const encodeStrokeDash = action(
     );
     if (hasValue) {
       normalizeStrokeDashPattern(args.value);
+      validatePathSeriesAppearance(dataset.values, {
+        ...layer, encoding: { ...layer.encoding, strokeDash: { datum: args.value } }
+      });
       let next = layer.encoding?.strokeDash === undefined
         ? this
         : this.clearStrokeDashEncoding({ target });
@@ -93,7 +96,9 @@ const encodeStrokeDash = action(
     }
 
     const fieldType = validateNominalFieldType(args.fieldType ?? "nominal");
-    validateLineSeriesCompatibility(layer, "strokeDash", args.field);
+    validatePathSeriesAppearance(dataset.values, {
+      ...layer, encoding: { ...layer.encoding, strokeDash: { field: args.field, fieldType } }
+    });
     const previous = layer.encoding?.strokeDash;
     const requestedScale = previous?.field === args.field
       ? resolveReassignmentScaleOptions(previous, args.scale ?? {})

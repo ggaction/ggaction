@@ -7,11 +7,11 @@ title: Mark Style
 
 {% include chart-example.html id="bar" %}
 
-## Rule appearance
+## Line and Rule appearance
 
 `encodeStroke({ value, target? })` assigns a required non-empty constant color
 string to a rule. `encodeStrokeWidth({ value, target? })` assigns a
-non-negative finite logical Canvas width to every child of the current rule.
+non-negative finite logical Canvas width to every child of the current Line or Rule.
 These constant modes create no scale or legend.
 
 `encodeStrokeWidth({ field, target?, fieldType?, scale? })` instead creates an
@@ -31,7 +31,16 @@ program
 
 Field values, domains, and ranges must be finite and non-negative. `value` and
 `field` are mutually exclusive. `editScale` rematerializes both marks and an
-active sampled stroke-width legend.
+active sampled stroke-width legend. Calling `{ value }` removes the field binding
+and only its own width legend; calling `{ field }` clears the constant override.
+Selections referring to the replaced channel must be removed first.
+
+Lines also support `encodeOpacity({ field: "quality" })` with one value per series,
+a default linear range of `[0.2, 1]`, and `createLegend({ channels: ["opacity"] })`.
+Use `{ value: 0.5 }` to return to constant opacity. Constant mode rejects
+`fieldType` and `scale`. Line field opacity has no missing-value fallback.
+`editLineMark` rejects scalar width/opacity while the same field encoding is
+active; use the corresponding encoder's explicit value assignment to replace it.
 
 Rules also reuse `encodeStrokeDash` in constant or nominal-field mode and
 `encodeOpacity` in constant or quantitative-field mode. Field modes produce

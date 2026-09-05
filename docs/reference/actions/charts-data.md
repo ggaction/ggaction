@@ -114,8 +114,8 @@ appearance encodings. [Basic Charts](../../api/basic-charts.md#createscatterplot
 createLinePlot({ id?, data?, coordinate?, x, y, color?, groupBy?, strokeDash?, line?, guides? })
 ```
 
-Create a complete Cartesian line chart, including optional series grouping and
-appearance. [Basic Charts](../../api/basic-charts.md#createlineplot)
+Create a complete Cartesian line chart. `groupBy` accepts one field or a
+non-empty tuple, assigned before independent series color and dash. [Basic Charts](../../api/basic-charts.md#createlineplot)
 
 ## `createBarPlot`
 

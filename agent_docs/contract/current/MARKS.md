@@ -299,7 +299,9 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 - Signature: `editLineMark({ target?, stroke?, strokeWidth?, opacity?, curve?, closed? })`.
 - `target`: existing line mark. Current compatible mark 또는 유일한 line mark로 infer하며 ambiguity는 explicit target을 요구한다.
-- `strokeWidth`: non-negative finite number. 전달되면 stored line config와 every concrete series path를 갱신한다.
+- `strokeWidth`: non-negative finite number. Active field width와 scalar edit는 충돌한다. Constant mode에서
+  전달되면 stored line config와 every concrete series path를 갱신한다. `opacity`도 active field와 scalar edit가
+  충돌한다. 명시적 mode replacement는 encodeStrokeWidth/encodeOpacity({ value })를 사용한다.
 - `curve`: shared `CurveInterpolation`. Field, grouping, coordinates와 scale semantics를 유지한 채 commands를 다시 만든다.
 - `stroke`: non-empty constant color이며 field-driven color encoding과 충돌한다. `opacity`는 `[0, 1]`이다.
 - `closed`: Polar line의 open/closed path를 전환하는 boolean이다. Cartesian line에는 적용할 수 없다.
