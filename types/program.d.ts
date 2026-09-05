@@ -2719,7 +2719,7 @@ export type LegendOrder = LegendValueOrder |
   { channel: "x" | "y" | "theta"; values?: never };
 
 export interface LegendOptions {
-  /** Categorical layout. Defaults to edge; legacy-bottom requires bottom position. */
+  /** Categorical or interval layout. Defaults to edge; legacy-bottom is categorical and requires bottom position. */
   layout?: "edge" | "legacy-bottom";
   /** Categorical item order; preserves the appearance scale's assignments. */
   order?: LegendOrder;

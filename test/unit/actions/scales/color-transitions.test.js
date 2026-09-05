@@ -57,7 +57,7 @@ for (const kind of ["point", "bar", "rect"]) {
   }
 }
 test("preserves common legend style, explicit hidden title, and later focused editors", () => {
-  const p = make("point").editLegend({ target: "m", title: "Measured value", labels: { color: "navy", fontSize: 11 }, titleStyle: { fontSize: 14 }, border: { color: "gray", padding: 5 }, offset: 24, align: "left" }).editLegend({ target: "m", title: false });
+  const p = make("point").editLegend({ target: "m", title: "Measured value", labels: { color: "navy", fontSize: 11 }, titleStyle: { fontSize: 14 }, border: { color: "gray", padding: 5 }, offset: 24, align: "center" }).editLegend({ target: "m", title: false });
   const q = p.editScale(definition("quantize"));
   for (const key of ["title", "titleVisible", "inferredTitle", "labels", "titleStyle", "border", "offset", "align"]) {
     assert.deepEqual(q.guideConfigs.legend.interval[key], p.guideConfigs.legend.gradient[key], key);
@@ -75,6 +75,7 @@ test("rejects custom family styles and unsupported placement without losing any 
     make("point").editLegend({ count: 3 }),
     make("point").editLegend({ gradient: { length: 130 } }),
     make("point").editLegend({ position: "left" }),
+    make("point").editLegend({ align: "left" }),
     make("point", { type: "quantize" }).editLegend({ symbol: { width: 18 } }),
     make("point", { type: "quantize" }).editLegend({ itemGap: 32 })
   ];

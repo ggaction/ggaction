@@ -28,7 +28,7 @@ B1은 [#88](https://github.com/ggaction/ggaction/issues/88)의 explicit selectio
 
 ## C — 명시적 layout과 family×edge 수렴
 
-C1 categorical mode와 #87은 [구현·검증](RESULTS_W2_BOTTOM.md)했다. C2 전체 family×edge 수렴은 남아 있다.
+C1 categorical mode와 #87은 [구현·검증](RESULTS_W2_BOTTOM.md)했다. C2의 [item layout·interval 네 방향](RESULTS_W2_INTERVAL_EDGES.md)을 구현·검증했다. [세부 계약](CONTRACT_W2_ITEM_EDGES.md)을 적용했으며 나머지 family×edge 수렴과 collision/transition 통합은 남아 있다.
 
 [#87](https://github.com/ggaction/ggaction/issues/87)처럼 style edit가 bottom mode를 바꾸면 안 된다. `layout: "edge" | "legacy-bottom"`를 createLegend/editLegend/editLegendLayout과 nested guides에 제공한다. Default는 edge이며 legacy-bottom은 categorical bottom의 기존 compact 모양을 명시적으로 선택하는 compatibility mode다. 기존 legacy 의도 examples/primitive/call chain은 명시 옵션을 사용하도록 migration한다. No-option edit는 stored mode를 보존하고 mode 전환은 explicit request다.
 

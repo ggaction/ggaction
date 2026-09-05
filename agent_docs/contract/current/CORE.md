@@ -635,7 +635,7 @@ type ScaleType =
   `quantize | quantile | threshold`를 사용한다. Complete definition과 every consumer를 먼저 검증하고 stale
   type-only properties를 제거한다.
 - Sequential↔quantize/quantile/threshold와 nested encodeColor type reassignment는 같은 전환 owner를 사용한다. Creation/edit/materialization은 공통 quantitative color consumer validator를 사용하여 Point/aggregate Bar/Rect의 fieldType·aggregate·unknown·grain을 검증한다. 모든 shared consumer와 guide를 포함한 immutable candidate를 먼저 실행 검증하고 반환할 branch에 적용한다.
-- Active gradient↔interval legend는 right/vertical 교집합에서 같은 transaction으로 교체한다. Target/channel, title·visibility·inferred mode, labels, titleStyle, border, align, offset을 보존한다. Count/gradient size 또는 interval symbol/itemGap이 해당 family default와 다르면 오류다. 새 family 고유 값은 새 default를 쓰며 source 스타일을 조용히 버리지 않는다. 다른 위치는 removeLegend→editScale→createLegend의 명시 경로를 사용한다.
+- Active gradient↔interval legend는 right/vertical/center-aligned 교집합에서 같은 transaction으로 교체한다. Target/channel, title·visibility·inferred mode, labels, titleStyle, border, align, offset을 보존한다. Count/gradient size 또는 interval symbol/itemGap이 해당 family default와 다르면 오류다. 새 family 고유 값은 새 default를 쓰며 source 스타일을 조용히 버리지 않는다. 다른 위치는 removeLegend→editScale→createLegend의 명시 경로를 사용한다.
 - Explicit domain의 의미가 extent, quantile sample, threshold 사이에 바뀌면 새 domain을 명시해야 한다. Sequential↔quantize의 compatible extent는 보존 가능하며 auto inference는 각 타입 계약을 따른다. Midpoint/interpolate 등 비호환 속성은 제거하고 돌아올 때 숨은 복구를 하지 않는다. 범례 overflow나 consumer 하나의 실패도 전체 상태·trace를 유지한다.
 - Structural type transition은 Full 범위다. Basic은 기존 typed quantitative color와 interval legend 생성을 지원하며, 다른 타입은 새 scale ID로 작성한다.
 - Evidence: `test/unit/actions/scales/color-transitions.test.js`, `test/charts/color-transitions/`.

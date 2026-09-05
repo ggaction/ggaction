@@ -56,7 +56,7 @@ Every categorical legend uses the same right-side default:
 | point + matching line | `color` + `shape` | `right` | line over typed point |
 | quantitative point size | `size` | `right`, standalone or below point series | five equal-area circles |
 | quantitative/temporal point color | `color` | `right` | continuous gradient with five labels |
-| discretized quantitative point color | `color` | `right` | ordered interval swatches |
+| discretized quantitative point color | `color` | `right/left/top/bottom` | ordered interval swatches |
 | quantitative point opacity | `opacity` | `right` | five constant-size circles with sampled opacity |
 
 A shape-only point legend also works when the chart contains unrelated lines.

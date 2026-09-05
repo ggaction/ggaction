@@ -1370,8 +1370,8 @@
         "errors-and-limitations",
         "related"
       ],
-      "bytes": 4881,
-      "sha256": "d557a4af74a3f00a3a02a96ae3e45bf615950e06916b08c22cc78524421b1eff"
+      "bytes": 4897,
+      "sha256": "b9916d69845d2e0f0f819606977558cf48599d48e458672002b6f8784744589c"
     },
     {
       "order": 87,
@@ -1524,8 +1524,8 @@
         "item-order-without-changing-color",
         "related"
       ],
-      "bytes": 7855,
-      "sha256": "08a5e6add7b396e0f4efacfbd255b6f79700d83ce9368ea7dfa88a5bab44c59d"
+      "bytes": 7871,
+      "sha256": "a2cf508673bedbcf93d290b3c572422636976c180d11e210e37f03f83b524318"
     },
     {
       "order": 97,
@@ -1537,8 +1537,8 @@
         "continuous-color-and-opacity",
         "related"
       ],
-      "bytes": 2283,
-      "sha256": "a6e9cb2fd07f7f0e3cfe867e05cc1a57367c1c81ef390a8e2639b9453a5a08a8"
+      "bytes": 2872,
+      "sha256": "91254d966546cde98e7a10ed8f2de235a5c16d283566ffbe5dd9f185375e26cb"
     },
     {
       "order": 98,
@@ -1568,8 +1568,8 @@
         "removing-a-legend",
         "related"
       ],
-      "bytes": 7278,
-      "sha256": "9005ebf5900f26fba1515785818eaaa944ab4d8b3a746a5dc639cb420d95db1f"
+      "bytes": 7675,
+      "sha256": "2c157414fe073d719811265c9c9ae8cb42dd1379f2c0d37018d3774517573874"
     },
     {
       "order": 100,
@@ -2003,8 +2003,8 @@
         "removetitle",
         "related"
       ],
-      "bytes": 12394,
-      "sha256": "fad6b9714a4aa5787b388676a88f53d2dbe5acf398cd393c92a9df5e83b9fb73"
+      "bytes": 12666,
+      "sha256": "844f907b0beba47dfc97cbc5fd30a67b7cc039827e7789461e290c680b0219f3"
     },
     {
       "order": 120,

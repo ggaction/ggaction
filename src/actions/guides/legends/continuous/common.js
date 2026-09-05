@@ -335,3 +335,27 @@ export function editLegendBackground(program, id, bounds, border) {
     strokeWidth: border.lineWidth
   });
 }
+
+export function normalizeItemLegendLayout(args) {
+  const position = args.position ?? "right";
+  if (!["right", "left", "top", "bottom"].includes(position)) throw new Error(`Unsupported legend position "${position}".`);
+  const side = ["left", "right"].includes(position);
+  const layout = args.layout === undefined ? "edge" : args.layout;
+  if (layout !== "edge") throw new Error('This legend requires layout "edge".');
+  const align = args.align ?? "center";
+  if (!["left", "center", "right"].includes(align)) throw new Error(`Unsupported legend alignment "${align}".`);
+  const direction = args.direction ?? (side ? "vertical" : "horizontal");
+  if (!["horizontal", "vertical"].includes(direction)) throw new Error(`Unsupported legend direction "${direction}".`);
+  const columns = args.columns;
+  if (columns !== undefined && (!Number.isInteger(columns) || columns < 1)) throw new RangeError("Legend columns must be a positive integer.");
+  const titlePosition = args.titlePosition ?? "top";
+  if (!["top", "left"].includes(titlePosition)) throw new Error(`Unsupported legend titlePosition "${titlePosition}".`);
+  if (side && (direction !== "vertical" || align !== "center" || (columns !== undefined && columns !== 1) || titlePosition !== "top")) {
+    throw new Error("Side item legends require vertical direction, center alignment, top title and one column.");
+  }
+  const offset = args.offset ?? 30;
+  const itemGap = args.itemGap ?? 28;
+  validateNonNegative(offset, "Legend offset");
+  validatePositive(itemGap, "Legend itemGap");
+  return { position, layout, align, direction, columns, titlePosition, offset, itemGap };
+}

@@ -53,9 +53,13 @@ Both forms require enough requested Canvas margin and never resize the Canvas.
 Their requested sample `count` is limited to the inclusive range `2`–`10,000`.
 
 For a `quantize`, `quantile`, or `threshold` point-color scale, the same call
-creates ordered swatches and concrete interval labels. The current interval
-layout is vertical at the right edge; `offset`, `itemGap`, `symbol`, `labels`,
-`titleStyle`, and title editing remain available.
+creates ordered swatches and concrete interval labels. Interval
+legends support all four positions with `layout: "edge"`. Side legends use a
+single vertical column, center alignment and a top title. At top/bottom, use
+`align`, `direction`, `columns` and `titlePosition` to arrange the item grid.
+`titlePosition: "left"` places the title beside the grid. The same controls
+are editable through `editLegend` and `editLegendLayout`. Symbol size, label
+style, spacing and borders remain editable.
 
 ~~~javascript
 program.createLegend({
@@ -69,3 +73,8 @@ program.createLegend({
 ## Related
 
 [Legend overview](../legends.md) · [Scale options](../scales.md) · [Editing legends](./editing.md)
+
+Hidden titles do not contribute to occupied bounds or borders. For horizontal
+inline opacity legends, hiding the title also removes its width and gap.
+The stored title remains available for later restoration; restoring a title
+that does not fit the Canvas fails without changing the earlier program.

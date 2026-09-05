@@ -1711,7 +1711,8 @@ createLegend({
 ```
 
 Create categorical, point-size, continuous-color gradient, discretized-color
-interval, or field-opacity sample legends. Explicit `channels` creates exactly
+interval, or field-opacity sample legends. Interval legends support all four
+edges with layout `"edge"`, side single columns and horizontal item grids. Explicit `channels` creates exactly
 the selected content; include `"size"` in a point categorical-and-size request.
 Automatic symbol recipes refresh when matching companion lines or their color
 bindings change; explicit recipes retain their layers and order.
@@ -1738,7 +1739,9 @@ editLegend({
 })
 ```
 
-Partially edit one existing legend. Omitted categorical `layout` preserves the
+Partially edit one existing legend. Interval legends accept four-edge placement
+and horizontal grid/inline-title controls. Hidden continuous titles are excluded
+from occupied bounds and backgrounds. Omitted categorical `layout` preserves the
 stored mode; style edits never switch modes. Categorical `order` can be reassigned or reset
 with `"scale"`; linked position changes also refresh its item order. `title` accepts a non-empty string,
 `"auto"`, or `false`. Explicit `channels` replaces the entire target's content

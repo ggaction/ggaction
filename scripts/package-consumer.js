@@ -507,6 +507,23 @@ async function testNodeConsumer(directory) {
         assert.equal(removedRecipe.graphicSpec.objects.seriesLegendSymbolLines, undefined);
       }
     }
+    for (const factory of [chart, basicChart]) {
+      const intervalEdgeBase = factory().createCanvas({ width: 1000, height: 800,
+        margin: { left: 250, right: 250, top: 250, bottom: 250 } })
+        .createData({ values: [{ x: 1, y: 1, m: 0 }, { x: 2, y: 2, m: 10 }] })
+        .createPointMark().encodeX({ field: "x" }).encodeY({ field: "y" })
+        .encodeColor({ field: "m", fieldType: "quantitative", scale: { type: "quantize", range: ["red", "blue"] } });
+      for (const position of ["left", "right", "top", "bottom"]) {
+        const intervalEdge = intervalEdgeBase.createLegend({ position, layout: "edge", border: true });
+        assert.equal(intervalEdge.guideConfigs.legend.interval.position, position);
+        assert.match(renderToSVG(intervalEdge), /<svg /);
+        if (factory === chart) {
+          const editedEdge = intervalEdge.editLegend({ position: "top", columns: 1, titlePosition: "left", title: false });
+          assert.equal(editedEdge.graphicSpec.objects.colorLegendTitle, undefined);
+          assert.equal(editedEdge.guideConfigs.legend.interval.columns, 1);
+        }
+      }
+    }
     const legendContentBase = chart().createCanvas({ width: 800, height: 700, margin: { right: 300 } })
       .createData({ values: [{ x: 1, y: 2, g: "A", m: 4 }, { x: 2, y: 3, g: "B", m: 9 }] })
       .createPointMark({ id: "contentPoints" }).encodeX({ field: "x" }).encodeY({ field: "y" })
@@ -1552,6 +1569,7 @@ async function testTypeScriptConsumer(directory) {
     program.createLegend({ order: { channel: "theta" } }).editLegend({ order: "scale" });
     program.editLegend({ order: { values: ["C", 1, false] } });
     program.editLegend({ channels: ["color", "shape", "size"], count: 3 });
+    program.editLegendLayout({ position: "top", layout: "edge", direction: "horizontal", columns: 2, titlePosition: "left" });
     program.editLegend({ count: 3, title: "Mass", labels: { offset: 28, fontWeight: 700 }, titleStyle: { color: "red" } })
       .editLegendTitle({ title: false }).editLegendTitle({ title: "auto" }).editLegendSymbols({ count: 4 });
     program.createLegend({ channels: ["color", "shape", "size"], count: 3 });

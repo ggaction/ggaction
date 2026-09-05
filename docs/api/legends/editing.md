@@ -31,7 +31,12 @@ legend does not move it into the edge grid. Switch explicitly with
 position also requires `layout: "edge"` in that edit. A string title becomes explicit, `title: "auto"` restores field-name
 inference, and `title: false` hides the concrete title without discarding the
 stored semantic title. Gradient and opacity legends accept only their
-kind-compatible options. A horizontal opacity legend can switch to
+kind-compatible options. Interval legends support all four positions and
+`layout: "edge"`; top/bottom grids also accept alignment, direction, columns
+and inline titles. Side positions require vertical flow, center alignment,
+a top title and one column. When changing position, omitted direction follows
+the new edge; explicitly stored columns/alignment/title placement remain and
+must be made compatible in the same edit. A horizontal opacity legend can switch to
 `titlePosition: "left"`; unless spacing is supplied in the same edit, the
 inline mode selects its 8-pixel symbol-label and 20-pixel sample defaults.
 Standalone size and stroke-width legends accept only `title`, `count`, `labels`,

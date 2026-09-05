@@ -247,7 +247,7 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Gzip ceiling |
 | --- | ---: |
-| `ggaction` | 252,000 bytes |
+| `ggaction` | 253,000 bytes |
 | `ggaction/basic` | 139,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 
@@ -1753,6 +1753,12 @@ descriptor와 persisted encoding/scale을 읽어 한 번 결정한다. `createGu
 axis와 grid만 선택하므로 theta-only count arc가 radial guide를 합성하지 않는다.
 
 ### Legend
+
+항목형 범례의 pure content→edge owner `layout/legendItems.js`는 formatted labels와 sample dimensions를 받아
+측정 후 single-edge 좌표를 반환한다. 기존 categorical grid 측정을 공유하며 interval이 첫 consumer다.
+Scale/format/appearance 검증은 family action에 남고 multi-block placement는 기존 lane owner가 final
+concrete bounds를 소비한다. Hidden continuous title은 실제 occupied bounds에 포함하지 않는다.
+Size/width/combined와 전체 collision/transition matrix의 수렴은 아직 진행 중이다.
 
 Categorical creation와 content revision의 공통 owner는 `actions/guides/legends/lifecycle.js`다.
 선택된 channels의 definition/automatic recipe를 재검증하고 기존 title visibility, styles, order와 caller recipe를

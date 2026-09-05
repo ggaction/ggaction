@@ -15,7 +15,7 @@ export function measureLegendTextWidth(value, style = { fontSize: 12 }) {
   return measureTextWidth(formatVisibleText(value), style);
 }
 
-export function resolveLegendGrid(config, width, count) {
+export function resolveLegendGrid(config, width, count, symbolHeight = measureLegendSymbolHeight(config)) {
   const labels = config.domain.map(formatVisibleText);
   const itemWidths = labels.map(
     label => width + config.labels.offset +
@@ -39,7 +39,7 @@ export function resolveLegendGrid(config, width, count) {
     config.itemGap * Math.max(0, actualColumns - 1);
   const rowHeight = Math.max(
     config.labels.fontSize,
-    measureLegendSymbolHeight(config)
+    symbolHeight
   );
   const gridHeight = rowHeight * rowCount +
     config.itemGap * Math.max(0, rowCount - 1);

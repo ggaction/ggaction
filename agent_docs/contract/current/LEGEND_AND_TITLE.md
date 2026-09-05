@@ -72,7 +72,7 @@ type TitleWrap = "word" | "character";
   기존 Canvas 하단 고정 single-row는 position bottom + layout legacy-bottom으로 명시한다. Labels y=height−28,
   title y=height−52이며 align/itemGap/recipe/styles/border를 지원한다. Columns, vertical direction, left title,
   offset≠8은 edge에서만 지원한다. Legacy mode에서 다른 edge로 옮길 때 layout edge도 같은 edit에 명시한다.
-  기존 compact examples는 legacy-bottom으로 migration한다. Continuous/size/width/interval layout option은 아직 지원하지 않는다.
+  기존 compact examples는 legacy-bottom으로 migration한다. Interval은 layout:"edge"를 지원하며 legacy-bottom은 거부한다. Gradient/opacity/size/width의 layout option은 아직 지원하지 않는다.
 - `offset`: non-negative finite number, 기본 `8`; plot과 legend block 간 거리다.
 - `titlePosition`: `"top" | "left"`, 기본 top. `"left"`는 horizontal categorical과 sampled opacity
   legend에서 title, symbol, label을 한 reading line으로 배치한다. Gradient와 side opacity는 `"top"`만 지원한다.
@@ -88,10 +88,12 @@ type TitleWrap = "word" | "character";
 - `border`: `false | true | { color?, lineWidth?, padding?, background? }`; false가 default이며 true는
   default bordered background를 만든다.
 - `count`: integer `2..10,000`; size, stroke-width, gradient tick-label 또는 opacity sample count이며 default `5`.
+- Interval item content는 공통 pure layout에서 text/swatch를 측정한 뒤 edge에 배치한다. Right 기본 origin은 plot.right+offset30, titleY=plot.y+20, itemY=plot.y+52+index*max(itemGap28,symbolHeight,labelFontSize)다. Left는 visible content 전체 폭을 빼고 label을 swatch 오른쪽에 둔다. Top/bottom은 plot 폭에 align하며 top title-grid gap12, inline title-grid gap20이다. Horizontal columns omission은 전 항목 한 row이며 direction은 cell fill 순서를 정한다. Hidden title은 grid/border 측정에서 제외한다. Interval background도 multi-block lane의 group bounds에 포함한다.
+- Gradient/opacity/interval의 hidden title은 occupied bounds와 background에 포함하지 않는다. Inline opacity는 숨긴 title의 width/gap도 제거한다. Long hidden title을 저장한 채 작은 Canvas로 resize할 수 있지만 보이는 content 또는 title 복원이 넘치면 실패한다.
 - Sequential midpoint가 있으면 gradient strip은 mark와 같은 mapper로 value를 색에 대응한다. Tick 위치는 value-linear이며 midpoint를 base count samples에 추가·deduplicate한다. Sample을 palette의 균등 위치로 오해하지 않는다. Evidence: `test/charts/color-midpoint/`, `test/unit/actions/scales/midpoint.test.js`.
-- Full의 scale family 전환은 compatible right/vertical gradient↔interval을 같은 transaction으로 재생성한다. 보존·오류·default 정책은 CORE editScale이 소유한다. Explicit hidden/auto title와 이후 focused editor도 정상 적용된다. Evidence: `test/unit/actions/scales/color-transitions.test.js`.
+- Full의 scale family 전환은 compatible right/vertical/center-aligned gradient↔interval을 같은 transaction으로 재생성한다. 보존·오류·default 정책은 CORE editScale이 소유한다. Explicit hidden/auto title와 이후 focused editor도 정상 적용된다. Evidence: `test/unit/actions/scales/color-transitions.test.js`.
 - `gradient`: sequential color 전용 `{ length?, thickness? }`, defaults `120`과 `12`.
-- Discretized quantitative Point/aggregate Bar/Rect color는 Full과 Basic에서 right/vertical interval swatches를 추론하고 `offset`, `itemGap`,
+- Discretized quantitative Point/aggregate Bar/Rect color는 Full과 Basic에서 기본 right/vertical interval swatches를 추론하고 `offset`, `itemGap`,
   swatch width/height/stroke, label/title style을 concrete graphics로 materialize한다.
 - Effect: categorical semantics에는 scale/channel/title와 선택적 order policy를 저장하고 placement, recipe, fonts, border는
   graphical config와 concrete collection으로 만든다. resolved appearance domain에 order policy를 적용한 순서를 item order로 사용하며
@@ -105,7 +107,7 @@ type TitleWrap = "word" | "character";
 - Same-target categorical and size blocks retain their shared border group. Independent categorical,
   gradient, interval, opacity, and stroke-width blocks keep their own group bounds while participating in
   the same lane. A lane that does not fit the requested margin or Canvas height fails atomically.
-- Two or more top- or bottom-positioned categorical, gradient, or opacity blocks share a horizontal-edge lane.
+- Two or more top- or bottom-positioned categorical, gradient, interval, or opacity blocks share a horizontal-edge lane.
   The lane starts at the plot's left edge and places blocks consecutively in stable layer/family order with
   40 logical pixels between occupied bounds. A block moves to the next outward row only when it does not fit
   the remaining plot width. Each row shares one title baseline, one graphical-element start line, and an exact
@@ -126,6 +128,9 @@ type TitleWrap = "word" | "character";
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `createLegend`
+
+- ✅ Covered: interval four edges in Full/Basic, all16 edge edits, columns/direction/inline title, content replacement, remove/recreate, multi-block lane and Canvas replay (`test/unit/actions/guides/interval-legend-edges.test.js`, `test/contracts/interval-legend-edges.test.js`).
+- ✅ Covered: hidden gradient/opacity/interval title bounds, borders, Canvas resize and atomic title restoration, inline opacity (`test/unit/actions/guides/hidden-legend-bounds.test.js`).
 
 - ✅ Covered: Full/Basic companion authoring-order convergence, mark removal, color removal/rebinding, caller recipe preservation and Canvas/scale/filter replay (`test/unit/actions/guides/legend-recipe-replay.test.js`); independent replay primitives in `test/contracts/legend-content-render.test.js`.
 
@@ -215,7 +220,7 @@ encoding removal/recreation, combined legend와 Polar 가이드를 검증한다.
 - Gradient edits own `count` and `gradient`; opacity edits own `count`, `itemGap`, and a single point symbol recipe.
   Horizontal opacity edits also own `titlePosition`; entering `"left"` without explicit spacing selects the inline
   8-pixel symbol-label and 20-pixel sample defaults.
-  Interval edits own right/vertical spacing, swatch recipe, text style와 title visibility.
+  Interval edits own all four positions, layout:"edge", horizontal align/direction/columns/titlePosition, swatch recipe, text style와 title visibility. Side는 vertical, center align, top title, single column이며 columns1은 허용한다. Position 변경 시 omitted direction은 새 edge에 맞춰 추론한다. 다른 명시된 layout controls는 유지하며 incompatible side controls는 오류다.
   Kind-incompatible options fail before the prior program changes.
 - Standalone size edits own `title`, `count`, `labels`, and `titleStyle`, including focused title/label/count actions. Count is 2..10,000; custom/auto/hidden title and partial styles survive Canvas/scale/filter replay. Labels default to font12/normal and offset28 from sample center; titles to font13/600. Existing right-side origin, equal-area scale mapping, formatter and symbol defaults remain. Unrelated categorical targets never supply inherited appearance or placement. Basic creates size legends but does not expose editors. Layout, symbol, border, gradient and order remain unsupported for standalone size in this contract.
 - Sampled size/stroke-width titleStyle accepts only color/fontSize/fontFamily/fontWeight; offset belongs to labels.

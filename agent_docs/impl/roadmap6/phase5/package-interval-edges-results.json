@@ -1,0 +1,40 @@
+{
+  "file": "/Users/hyeonjeon/Projects/ggaction-clean-20260905/.artifacts/roadmap6-authoring/package-interval-edges-final/ggaction-0.0.12.tgz",
+  "filename": "ggaction-0.0.12.tgz",
+  "sha256": "aaf1c9cd4d730319ad58c5b34e6ebdf44841b08d6df44158114736f273d1eddd",
+  "entryCount": 450,
+  "size": 506884,
+  "unpackedSize": 2425356,
+  "browserBundles": {
+    "full": {
+      "specifier": "ggaction",
+      "chunks": 1,
+      "modules": 397,
+      "minifiedBytes": 949530,
+      "gzipBytes": 252584
+    },
+    "basic": {
+      "specifier": "ggaction/basic",
+      "chunks": 1,
+      "modules": 241,
+      "minifiedBytes": 506942,
+      "gzipBytes": 138964
+    },
+    "svg": {
+      "specifier": "ggaction/svg",
+      "chunks": 1,
+      "modules": 15,
+      "minifiedBytes": 19840,
+      "gzipBytes": 6437
+    }
+  },
+  "checks": [
+    "Node",
+    "PNG/PDF/SVG",
+    "MCP",
+    "strict TypeScript",
+    "tutorials",
+    "bundle budgets",
+    "same-artifact Chromium Canvas/SVG"
+  ]
+}

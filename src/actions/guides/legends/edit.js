@@ -18,7 +18,7 @@ import {
   validatePositive
 } from "./continuous/common.js";
 import { normalizeOpacitySymbol, createOpacityLegendFromConfig } from "./continuous/opacity.js";
-import { normalizeIntervalLegend, createIntervalLegendFromConfig } from "./continuous/interval.js";
+import { normalizeIntervalLegend, resolveIntervalConfig, resolveIntervalLayout, createIntervalLegendFromConfig } from "./continuous/interval.js";
 import { findLayer } from "../../../selectors/layers.js";
 import { resolveLegendGraphicPlacement } from
   "../../../materialization/graphicHierarchy.js";
@@ -143,7 +143,7 @@ function resolveIntervalEdit(program, previous, args) {
   for (const key of Object.keys(args)) {
     if (![
       "target", "position", "align", "direction", "offset", "title",
-      "symbol", "labels", "titleStyle", "itemGap", "border"
+      "symbol", "labels", "titleStyle", "itemGap", "border", "layout", "columns", "titlePosition"
     ].includes(key)) {
       throw new Error(`interval legend does not accept ${key}.`);
     }
@@ -163,7 +163,11 @@ function resolveIntervalEdit(program, previous, args) {
     target: previous.target,
     position: args.position ?? previous.position,
     align: args.align ?? previous.align,
-    direction: args.direction ?? previous.direction,
+    direction: args.direction ?? (args.position !== undefined && args.position !== previous.position
+      ? undefined : previous.direction),
+    layout: args.layout === undefined ? previous.layout : args.layout,
+    columns: args.columns ?? previous.columns,
+    titlePosition: args.titlePosition ?? previous.titlePosition,
     offset: args.offset ?? previous.offset,
     title,
     symbol: mergeObject(previous.symbol, args.symbol),
@@ -172,7 +176,10 @@ function resolveIntervalEdit(program, previous, args) {
     itemGap: args.itemGap ?? previous.itemGap,
     border: mergeBorder(previous.border, args.border)
   });
-  return { normalized, config: { ...previous, ...normalized, inferredTitle, titleVisible }, titleMode, title, titleVisible };
+  const config = { ...previous, ...normalized, inferredTitle, titleVisible };
+  const resolved = resolveIntervalConfig(program, config);
+  resolveIntervalLayout(program, resolved.config, resolved.scale);
+  return { normalized, config, titleMode, title, titleVisible };
 }
 
 function editInterval(program, previous, args) {

@@ -220,6 +220,9 @@ test.before(async () => {
         .createData({ values: [{ x: 1, y: 2, g: "A", m: 4 }, { x: 2, y: 3, g: "B", m: 9 }] })
         .createPointMark({ id: "contentPoints" }).encodeX({ field: "x" }).encodeY({ field: "y" })
         .encodeColor({ field: "g" }).encodeShape({ field: "g" }).encodeSize({ field: "m" });
+      const intervalTop = legendContentBase.editCanvas({ margin: { left: 80, right: 80, top: 200, bottom: 200 } })
+        .encodeColor({ field: "m", fieldType: "quantitative", scale: { id: "intervalColor", type: "quantize", range: ["red", "blue"] } })
+        .createLegend({ channels: ["color"], position: "top", layout: "edge", columns: 2 });
       const onlyColorContent = legendContentBase.createLegend({ channels: ["color"] });
       const colorSizeContent = legendContentBase.createLegend({ channels: ["color", "size"], count: 3 });
       const inferredSizeBase = legendContentBase.removeEncoding({ channel: "shape" });
@@ -234,7 +237,7 @@ test.before(async () => {
         .editLegend({ labels: { fontWeight: 700 } });
       const hiddenContent = legendContentBase.createLegend({ count: 3 }).editLegend({ title: false });
       const partialContent = hiddenContent.removeLegend({ channels: ["shape"] });
-      render(editedContent, document.getElementById("legend-content").getContext("2d"));
+      render(intervalTop, document.getElementById("legend-content").getContext("2d"));
       const bottomLegendBase = chart().createCanvas({ width: 640, height: 600,
         margin: { left: 60, right: 100, top: 40, bottom: 150 } })
         .createData({ values: [{ x: 1, y: 2, g: "A" }, { x: 2, y: 3, g: "B" }] })
@@ -253,6 +256,9 @@ test.before(async () => {
       render(editedSizeLegend, document.getElementById("size-legend").getContext("2d"));
       document.querySelector("#status").textContent = "complete";
       window.__ggactionConsumer = {
+        intervalPosition: intervalTop.guideConfigs.legend.interval.position,
+        intervalColumns: intervalTop.guideConfigs.legend.interval.columns,
+        intervalSVG: renderToSVG(intervalTop).startsWith("<svg "),
         addedRecipeTypes: replayAdded.guideConfigs.legend.series.symbol.layers.map(layer => layer.type),
         removedRecipeTypes: replayRemoved.guideConfigs.legend.series.symbol.layers.map(layer => layer.type),
         replaySVG: renderToSVG(replayAdded).startsWith("<svg "),
@@ -374,6 +380,9 @@ test("imports and renders the packed browser entries", async () => {
     waitFor: () => window.__ggactionConsumer !== undefined
   });
   assert.deepEqual(await windowValue(page, "__ggactionConsumer"), {
+    intervalPosition: "top",
+    intervalColumns: 2,
+    intervalSVG: true,
     addedRecipeTypes: ["line", "point"],
     removedRecipeTypes: ["point"],
     replaySVG: true,

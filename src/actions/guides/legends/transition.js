@@ -28,6 +28,12 @@ export function planColorLegendTransition(program, scale, nextType) {
     align: stored.align, offset: stored.offset,
     ...(stored.inferredTitle ? {} : { title: stored.title })
   };
+  try {
+    if (to === "interval") normalizeIntervalLegend(args);
+    else normalizeContinuousLegend(args, "gradient");
+  } catch (error) {
+    throw new Error(`Color legend transition has incompatible layout or style: ${error.message}`);
+  }
   return { args, titleVisible: stored.titleVisible !== false };
 }
 

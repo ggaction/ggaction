@@ -38,6 +38,7 @@ export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
 });
 
 export const CRITICAL_COVERAGE_OVERRIDES = Object.freeze({
+  "layout/legendItems.js": Object.freeze({ lines: 90, branches: 80, functions: 100 }),
   "actions/guides/legends/creation.js": Object.freeze({ lines: 90, branches: 80, functions: 100 }),
   "actions/guides/legends/edit.js": Object.freeze({ lines: 90, branches: 80, functions: 100 }),
   "actions/guides/legends/lifecycle.js": Object.freeze({ lines: 90, branches: 80, functions: 100 }),

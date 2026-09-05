@@ -35,7 +35,7 @@ function legendPosition(program, kind, config) {
   if (kind === "size") {
     return categoricalFor(program, config.target)?.position ?? "right";
   }
-  if (kind === "strokeWidth" || kind === "interval") return "right";
+  if (kind === "strokeWidth") return "right";
   return config.position;
 }
 
@@ -142,7 +142,7 @@ function blockDescriptor(program, kind, config) {
 }
 
 function borderFor(kind, config) {
-  return ["series", "color", "gradient", "opacity"].includes(kind)
+  return ["series", "color", "gradient", "opacity", "interval"].includes(kind)
     ? config.border
     : false;
 }

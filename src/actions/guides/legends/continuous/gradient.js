@@ -46,7 +46,7 @@ function resolveGradientLayout(program, config, scale) {
       ? plot.y - config.offset - thickness - config.labels.offset -
         config.labels.fontSize
       : plot.y + plot.height + config.offset +
-        config.titleStyle.fontSize + 12;
+        (config.titleVisible === false ? 0 : config.titleStyle.fontSize + 12);
   }
   const title = vertical
     ? { x, y: plot.y + 20, align: "left" }
@@ -106,12 +106,13 @@ function resolveGradientLayout(program, config, scale) {
   const labelBounds = labels.map((label, index) =>
     resolveLegendTextBounds(label, texts[index], config.labels)
   );
-  const titleBounds = resolveLegendTextBounds(
+  const titleBounds = config.titleVisible === false ? undefined : resolveLegendTextBounds(
     title,
     config.title,
     config.titleStyle
   );
-  const occupiedBounds = [stripBounds, ...tickBounds, ...labelBounds, titleBounds];
+  const occupiedBounds = [stripBounds, ...tickBounds, ...labelBounds,
+    ...(config.titleVisible === false ? [] : [titleBounds])];
   assertLegendBoundsInsideCanvas(
     occupiedBounds,
     canvas,

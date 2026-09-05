@@ -113,7 +113,8 @@ function resolveOpacityLayout(program, config, scale) {
       align: config.position === "right" ? "left" : "right"
     };
   } else if (config.titlePosition === "left") {
-    const titleWidth = measureTextWidth(config.title, config.titleStyle);
+    const titleWidth = config.titleVisible === false ? 0 : measureTextWidth(config.title, config.titleStyle);
+    const titlePrefix = config.titleVisible === false ? 0 : titleWidth + 20;
     const labelWidths = texts.map(text =>
       measureTextWidth(text, config.labels)
     );
@@ -121,20 +122,20 @@ function resolveOpacityLayout(program, config, scale) {
       (sum, width) => sum + radius * 2 + config.labels.offset + width,
       0
     ) + config.itemGap * (values.length - 1);
-    const width = titleWidth + 20 + samplesWidth;
+    const width = titlePrefix + samplesWidth;
     const startX = config.align === "left" ? plot.x
       : config.align === "right" ? plot.x + plot.width - width
         : plot.x + (plot.width - width) / 2;
     const height = Math.max(
       radius * 2,
       config.labels.fontSize,
-      config.titleStyle.fontSize
+      config.titleVisible === false ? 0 : config.titleStyle.fontSize
     );
     const centerY = config.position === "top"
       ? plot.y - config.offset - height / 2
       : plot.y + plot.height + config.offset + height / 2;
     title = { x: startX, y: centerY, align: "left" };
-    let cursor = startX + titleWidth + 20;
+    let cursor = startX + titlePrefix;
     symbols = [];
     labels = [];
     for (let index = 0; index < values.length; index += 1) {
@@ -155,7 +156,7 @@ function resolveOpacityLayout(program, config, scale) {
       ? plot.y - config.offset - config.labels.fontSize -
         config.labels.offset - radius
       : plot.y + plot.height + config.offset +
-        config.titleStyle.fontSize + 12 + radius;
+        (config.titleVisible === false ? 0 : config.titleStyle.fontSize + 12) + radius;
     symbols = values.map((_, index) => ({
       x: startX + index * width / (values.length - 1),
       y
@@ -173,7 +174,7 @@ function resolveOpacityLayout(program, config, scale) {
   }
   const strokeExtent = (config.symbol.strokeWidth ?? 0) / 2;
   const symbolExtent = radius + strokeExtent;
-  const titleBounds = resolveLegendTextBounds(
+  const titleBounds = config.titleVisible === false ? undefined : resolveLegendTextBounds(
     title,
     config.title,
     config.titleStyle
@@ -187,7 +188,7 @@ function resolveOpacityLayout(program, config, scale) {
     top: symbol.y - symbolExtent,
     bottom: symbol.y + symbolExtent
   }));
-  const occupiedBounds = [titleBounds, ...labelBounds, ...symbolBounds];
+  const occupiedBounds = [...(config.titleVisible === false ? [] : [titleBounds]), ...labelBounds, ...symbolBounds];
   assertLegendBoundsInsideCanvas(
     occupiedBounds,
     canvas,
