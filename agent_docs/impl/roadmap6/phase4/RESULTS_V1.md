@@ -126,3 +126,6 @@ lifecycle:edit 주장이다. 실행 가능한 Rule 범위와 datum coverage를 �
 Full/Basic의 기존 gzip 상한 초과를 [R6-P4-B](BUNDLE_REVIEW.md)에서 별도로 검토한다.
 상한을 올리지 않았고 package 전체 통과로 기록하지 않는다. W3–W5와 V2/V3/X는 남아 있으며 F20은 제외 상태다.
 배포·publish·PR은 수행하지 않았다.
+
+최종 검토 package: [`97e7a606`](https://github.com/ggaction/ggaction/commit/97e7a60617eeb7d7a1a37ee4f0eecb413792feaf).
+`origin/codex/roadmap6-hierarchical-actions`에 push하고 ref 일치를 확인했다. B 승인은 아직 없다.

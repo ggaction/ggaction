@@ -88,4 +88,5 @@ A/V1은 approved다. B는 ready-for-review이며 V/V2/V3/X는 planned다. V1 시
 - 승인 전 차단: 상한 변경과 package 전체 통과 선언. V2/V3/X는 별도 Gate로 유지한다.
 - 검토 source: `9815917a971ee289363eb00d10f10ea4d4e22cb4` (runtime/types/knowledge), origin ref 일치 확인.
 - 확장 suite의 실패 11건은 해당 6개 모듈 38개 테스트로 교정·재검증했다. 상세 범위와 원본 실패는 결과 문서에 보존한다.
-- 최종 검토 묶음 commit은 아래 고정 기록에 추가한다.
+- 최종 B 검토 묶음 commit: `97e7a60617eeb7d7a1a37ee4f0eecb413792feaf`. Origin에 push하고 ls-remote 일치를 확인했다.
+- 이 ref 고정은 B 승인이나 package 상한 변경을 포함하지 않는다.

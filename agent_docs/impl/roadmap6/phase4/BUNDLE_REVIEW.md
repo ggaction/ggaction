@@ -77,3 +77,6 @@ Normal 2,646, render 183, browser 59, 74 critical coverage floors가 통과했�
 재실행해 통과한 수치로 표기하지 않는다. 상세 실행 범위와 호환성은 [RESULTS_V1](RESULTS_V1.md)에 있다.
 Runtime source는 `9815917a971ee289363eb00d10f10ea4d4e22cb4`이며 origin에 push/ref 일치를 확인했다.
 현재 저장소를 다시 pack한 결과도 검증 tarball SHA와 정확히 같다.
+
+최종 검토 package: [`97e7a606`](https://github.com/ggaction/ggaction/commit/97e7a60617eeb7d7a1a37ee4f0eecb413792feaf).
+`origin/codex/roadmap6-hierarchical-actions`에 push하고 ref 일치를 확인했다. B 승인은 아직 없다.
