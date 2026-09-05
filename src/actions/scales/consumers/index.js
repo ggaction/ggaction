@@ -17,6 +17,7 @@ export {
 
 export function resolveConsumerValues(program, consumer) {
   const dataset = requireConsumerDataset(program, consumer);
+  if (consumer.layer.mark.type === "rect") return resolveMarkFamilyConsumerValues(program, consumer, dataset).values;
   if (Object.hasOwn(consumer.encoding, "datum")) {
     if (consumer.layer.mark.type === "area") {
       readAreaEndpoint(dataset.values, consumer.encoding, consumer.layer.mark.missing);

@@ -27,6 +27,8 @@ p.createMarkLabels({});
 p.createMarkLabels({ field: "value", layout: false });
 p.createMarkLabels({ value: "constant", fontSize: 18 });
 p.createMarkLabels({ format: ".1f", baseline: "bottom", dy: -4 });
+p.createRectMark().encodeX({ datum: 2 }).encodeX2({ datum: 6 });
+p.createRectMark().encodeY({ datum: "2020-01-01", fieldType: "temporal" }).encodeY2({ datum: "2020-01-03" });
 // @ts-expect-error Facade must preserve exclusive encoding branches.
 p.createMarkLabels({ field: "value", content: "value" });
 // @ts-expect-error No independent dataset in attached-label facade.

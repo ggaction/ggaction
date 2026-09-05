@@ -554,12 +554,21 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 - Signature: `createRectMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth? } = {})`.
 - The first omitted ID resolves to `"rect"`. Data is explicit or inferred from the current dataset; a newly layered
   rect may inherit one unique compatible Cartesian source's data, coordinate, and position encodings.
-- Rect is a distinct semantic mark. It materializes either two discrete band positions (`x` and `y`) or two complete
-  continuous endpoint pairs (`x`/`x2` and `y`/`y2`). It never receives bar aggregation, baseline, stacking, or width
+- Rect is a distinct semantic mark. It materializes two discrete band positions (`x` and `y`), two complete
+  continuous endpoint pairs (`x`/`x2` and `y`/`y2`), or one continuous/temporal endpoint pair with the other axis absent.
+  A sole x/x2 pair spans the plot height; a sole y/y2 pair spans the plot width. A partly specified orthogonal pair is incomplete. It never receives bar aggregation, baseline, stacking, or width
   semantics implicitly. Incomplete position intent remains an empty concrete rect collection.
 - Discrete mode creates one full-band cell for every complete observed row. Ranged mode maps both endpoint pairs and
   normalizes them into positive concrete bounds. Missing values omit only their own cell and do not extend automatic
   scale domains. Continuous or categorical `encodeColor` owns field-driven fill.
+- Rect positions accept exactly one field or datum. Numeric primary datum infers quantitative, other supported scalars
+  nominal; temporal is explicit. Secondary fieldType defaults to the primary type and must match. Constant-only positions
+  yield one final Rect regardless of dataset length; any position/color field restores row grain and constant broadcast.
+  Missing mixed rows do not contribute constants to automatic domains. Empty field data needs an explicit domain or another
+  consumer. Constant-only selection membership is the whole dataset, with common fields only, like constant Rules.
+- Full plot spans use current plot bounds and replay after margin/Canvas and scale edits. Text attaches to final centers;
+  selections/highlights share the same Rect row resolution. Temporal selection channels use normalized epoch milliseconds
+  for both fields and constants, while raw fields preserve the original strings/units. Zero extents are omitted.
 - Defaults are theme mark fill, opacity `1`, white stroke, and stroke width `1`. Explicit creation styles delegate to
   `editRectMark` and are preserved through scale, Canvas, data, selection, and highlight rematerialization.
 
@@ -572,7 +581,7 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 - ✅ Covered: deterministic ID/data, discrete and ranged topology, encoding order independence, missing rows, continuous
   color, rect-source text, selection/highlight, Canvas rendering, exact approved primitive/public/PNG equivalence.
-- Evidence: `test/unit/actions/marks/rect-mark.test.js` and
+- Evidence: `test/unit/actions/marks/rect-span.test.js`, `test/contracts/rect-span.test.js`, `test/unit/actions/marks/rect-mark.test.js` and
   `test/charts/gapminder-life-expectancy-heatmap/`.
 
 ## `editRectMark`

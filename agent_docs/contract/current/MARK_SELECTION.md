@@ -30,7 +30,9 @@ type MarkSelector =
 
 - `field`, `channel`, `property` 중 정확히 하나를 사용한다. `field`는 member data에서 item 전체에 unique한
   값, `channel`은 scale 적용 전 resolved semantic encoding 값, `property`는 final `graphicSpec`의 concrete
-  scalar 값만 읽는다. 값 비교는 strict하며 coercion하지 않는다.
+  scalar 값만 읽는다. 값 비교는 strict하며 coercion하지 않는다. Rect도 공통 channel resolver를 사용하여
+  temporal field/datum과 color를 epoch milliseconds로 정규화하며 field 값은 원본을 유지한다.
+  근거: `test/unit/actions/marks/rect-span.test.js`.
 - `range`의 `inclusive` 기본값은 `true`다. Ordered comparison은 같은 type의 finite number 또는 string만
   비교하고 missing/incompatible item은 제외한다.
 - `min | max`의 `count` 기본값은 `1`, `ties` 기본값은 `"first"`다. `"first"`는 stable source order로

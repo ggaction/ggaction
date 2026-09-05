@@ -3,7 +3,7 @@ import { action } from "../../core/action.js";
 import { validateUserId } from "../../core/identifiers.js";
 import { isPlainObject } from "../../core/immutable.js";
 import { readNominalField, readQuantitativeField, readScaleField, readTemporalField, resolveTemporalUnit, validateSemanticFieldType } from "../../grammar/scales/index.js";
-import { normalizeRuleDatum } from "../../grammar/rules.js";
+import { normalizePositionDatum } from "../../grammar/positionDatum.js";
 import { normalizeGroupFields } from "../../grammar/pathSeries.js";
 import { assertPathGroupCompatible, validatePathGroupAppearance } from "../../materialization/marks/grouping.js";
 import { canMaterializeArea, canMaterializeLine, getPositionEncodingMaterializationSteps } from "../../materialization/marks/index.js";
@@ -69,12 +69,13 @@ function encodeSecondaryPosition(program, channel, args, operation, types) {
 
   const rule = layer.mark.type === "rule";
   const area = layer.mark.type === "area";
+  const rect = layer.mark.type === "rect";
   const hasField = Object.hasOwn(args, "field");
   const hasDatum = Object.hasOwn(args, "datum");
-  if ((rule || area) && hasField === hasDatum) {
-    throw new Error(`${operation} requires exactly one of field or datum for a rule mark.`);
+  if ((rule || area || rect) && hasField === hasDatum) {
+    throw new Error(`${operation} requires exactly one of field or datum for a ${layer.mark.type} mark.`);
   }
-  if (!rule && !area && (!hasField || hasDatum)) {
+  if (!rule && !area && !rect && (!hasField || hasDatum)) {
     throw new Error(`${operation} requires a field for a ranged mark.`);
   }
   if (rule && args.fieldType === undefined) {
@@ -117,7 +118,7 @@ function encodeSecondaryPosition(program, channel, args, operation, types) {
   } else if (hasField && layer.mark.type === "rect") {
     readScaleField(dataset.values, args.field, fieldType, { allowUnknown: true, temporalUnit });
   } else if (hasField) validateSecondaryField(dataset, args.field, fieldType, temporalUnit);
-  else normalizeRuleDatum(args.datum, fieldType, channel, temporalUnit);
+  else normalizePositionDatum(args.datum, fieldType, channel, temporalUnit, rule ? "Rule" : "Rect");
 
   let next = program;
   if (layer.mark.type === "bar") {

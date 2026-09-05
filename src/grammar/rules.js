@@ -1,11 +1,9 @@
+import { normalizePositionDatum } from "./positionDatum.js";
 import { cloneAndFreeze } from "../core/immutable.js";
 import {
-  isNominalValue,
-  normalizeTemporalValue,
   readNominalField,
   readQuantitativeField,
-  readTemporalField,
-  validateSemanticFieldType
+  readTemporalField
 } from "./scales/index.js";
 
 const ENDPOINT_CHANNELS = Object.freeze(["x", "y", "x2", "y2"]);
@@ -45,20 +43,7 @@ function readField(rows, encoding) {
 }
 
 export function normalizeRuleDatum(value, fieldType, channel, temporalUnit) {
-  validateSemanticFieldType(fieldType);
-  if (fieldType === "quantitative") {
-    if (!Number.isFinite(value)) {
-      throw new TypeError(`Rule ${channel} datum must be a finite number.`);
-    }
-    return value;
-  }
-  if (fieldType === "temporal") {
-    return normalizeTemporalValue(value, `${channel} datum`, 0, temporalUnit);
-  }
-  if (!isNominalValue(value)) {
-    throw new TypeError(`Rule ${channel} datum must be a nominal value.`);
-  }
-  return value;
+  return normalizePositionDatum(value, fieldType, channel, temporalUnit, "Rule");
 }
 
 export function deriveRuleValues(rows, layer) {

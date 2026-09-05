@@ -24,7 +24,7 @@ import {
   validateAggregateFieldType,
   validateAggregateFieldValues,
 } from "../../../grammar/aggregate.js";
-import { normalizeRuleDatum } from "../../../grammar/rules.js";
+import { normalizePositionDatum } from "../../../grammar/positionDatum.js";
 import {
   readArcThetaValues,
   readArcThetaWeights
@@ -40,7 +40,7 @@ const POSITION_ENCODING_OPTIONS = Object.freeze([
   "aggregate", "bin", "stack", "weight", "temporalUnit", "mapping"
 ]);
 
-function inferRuleDatumFieldType(datum, operation) {
+function inferDatumFieldType(datum, operation) {
   if (Number.isFinite(datum)) return "quantitative";
   if (isNominalValue(datum)) return "nominal";
   throw new Error(`${operation} datum requires an explicit fieldType.`);
@@ -108,11 +108,11 @@ export function resolvePositionEncoding(program, channel, args, operation) {
   validateCoordinateFamily(layer, channel, operation);
   const hasField = Object.hasOwn(args, "field");
   const hasDatum = Object.hasOwn(args, "datum");
-  if (layer.mark.type === "rule") {
+  if (["rule", "rect"].includes(layer.mark.type)) {
     if (hasField === hasDatum) {
-      throw new Error(`${operation} requires exactly one of field or datum for a rule mark.`);
+      throw new Error(`${operation} requires exactly one of field or datum for a ${layer.mark.type} mark.`);
     }
-    if (hasField && args.fieldType === undefined) {
+    if (layer.mark.type === "rule" && hasField && args.fieldType === undefined) {
       throw new Error(`${operation} requires fieldType for a rule mark.`);
     }
   } else if (layer.mark.type === "area") {
@@ -130,8 +130,8 @@ export function resolvePositionEncoding(program, channel, args, operation) {
     : undefined;
   const countRadius = mapping !== undefined && (args.aggregate ?? previous?.aggregate) === "count";
   const requestedFieldType = args.fieldType ?? previous?.fieldType ?? (
-    layer.mark.type === "rule" && hasDatum
-      ? inferRuleDatumFieldType(args.datum, operation)
+    ["rule", "rect"].includes(layer.mark.type) && hasDatum
+      ? inferDatumFieldType(args.datum, operation)
       : layer.mark.type === "arc" && channel === "theta" &&
           ["count", "sum"].includes(args.aggregate)
         ? "nominal"
@@ -147,7 +147,7 @@ export function resolvePositionEncoding(program, channel, args, operation) {
     : args.field;
   const datum = args.datum;
   const temporalUnit = resolveTemporalUnit({ ...args, ...(hasDatum ? {} : { field }) }, fieldType, previous);
-  const usesField = !countRadius && (!["rule", "area"].includes(layer.mark.type) || hasField);
+  const usesField = !countRadius && (!["rule", "area", "rect"].includes(layer.mark.type) || hasField);
   if (usesField && (typeof field !== "string" || field.length === 0)) {
     throw new TypeError(`${operation} field must be a non-empty string.`);
   }
@@ -248,8 +248,8 @@ export function resolvePositionEncoding(program, channel, args, operation) {
   }
   if (layer.mark.type === "area" && fieldType === "quantitative") {
     readAreaEndpoint(dataset.values, { ...(hasDatum ? { datum } : { field }), fieldType }, layer.mark.missing);
-  } else if (layer.mark.type === "rule" && hasDatum) {
-    normalizeRuleDatum(datum, fieldType, channel, temporalUnit);
+  } else if (["rule", "rect"].includes(layer.mark.type) && hasDatum) {
+    normalizePositionDatum(datum, fieldType, channel, temporalUnit, layer.mark.type === "rule" ? "Rule" : "Rect");
   } else if (countRadius) {
     // Count has no source measure field. Category-grain validation runs once theta exists.
   } else if (aggregateOutput) {

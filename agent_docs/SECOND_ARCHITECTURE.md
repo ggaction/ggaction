@@ -1648,7 +1648,10 @@ declaration order로 rematerialize한다. 따라서 error band, interval boundar
 그려진 source mark가 이전 scale domain의 concrete 좌표를 유지하지 않는다.
 
 Rect는 bar와 별도 semantic owner다. 두 categorical band position은 observed row마다 full-band cell을 만들고,
-continuous/temporal x/x2 및 y/y2 pair는 두 endpoint를 normalized concrete bounds로 만든다. Aggregate, baseline,
+continuous/temporal x/x2 및 y/y2 pair는 두 endpoint를 normalized concrete bounds로 만든다.
+한 pair만 있고 반대 축이 없으면 그 방향은 현재 plot bounds를 채운다. Datum은 shared positionDatum grammar로
+정규화하며 field/color 없이 상수만 있으면 dataset 길이와 무관한 한 항목이다. Mixed binding은 row grain과
+유효 행 검사를 유지한다. Constant-only selection membership은 원래 dataset 전체이고 common field만 노출한다. Aggregate, baseline,
 stack과 bar width는 적용하지 않는다. Missing field는 placeholder 없이 그 row만 생략하고 automatic domain에서도
 제외한다. Rect의 materialization/selection owner는 같은 resolved row grain을 공유하므로 cell identity와 graphic
 index가 rematerialization 뒤에도 source-index 기준으로 안정적이다.

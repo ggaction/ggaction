@@ -7,6 +7,7 @@ import {
 } from "../../../grammar/text.js";
 import {
   canMaterializeArc,
+  canMaterializeRect,
   canMaterializeText,
   isTextSource
 } from "../../../materialization/marks/index.js";
@@ -42,6 +43,8 @@ function eligibleSource(program, layer, requestedData) {
     !sourceMatchesData(program, layer, requestedData)
   ) return false;
   if (layer.mark.type === "arc") return canMaterializeArc(program, layer);
+  if (layer.mark.type === "rect" && (canMaterializeRect(program, layer) ||
+    program.markConfigs[layer.id]?.gradientPlot?.materialized === true)) return true;
   const encodings = resolveCompatibleEncodings(program, layer, "text");
   return encodings.x !== undefined && encodings.y !== undefined;
 }

@@ -936,8 +936,8 @@
         "cell-labels-and-selection",
         "related"
       ],
-      "bytes": 2338,
-      "sha256": "dca83f7b8dacd9ebdb86f0817ef5bb6364627c015b7dbe2751dfd702bd192263"
+      "bytes": 4618,
+      "sha256": "58bf14d2d903ee7c90ee80ebcfddbe795b4d4b215f63104821875edafcd8f6aa"
     },
     {
       "order": 61,
@@ -961,8 +961,8 @@
         "related",
         "explicit-grouping-and-time-inputs"
       ],
-      "bytes": 10526,
-      "sha256": "f6426d5e3fa3a0a74d9ce520acb52faa73fb500d4cd2104ba939513d11b0e521"
+      "bytes": 10547,
+      "sha256": "f263dc2dba0e974d6f7c7ebf5e26e8c2716d8e3ea1861e50aad1698849b59bd8"
     },
     {
       "order": 62,
@@ -1157,8 +1157,8 @@
         "related",
         "area-bounds"
       ],
-      "bytes": 9677,
-      "sha256": "5bc043de4a317a6eadc417b7a3a503625d1294810135811dd32d880804a79552"
+      "bytes": 9708,
+      "sha256": "23e31be8a2e63c81b6e7674fa1ab64c9c3fd1b2a1472d2ab31f13ad3efb5b501"
     },
     {
       "order": 73,
@@ -1883,8 +1883,8 @@
         "position-capability-matrix",
         "related"
       ],
-      "bytes": 9816,
-      "sha256": "54b62e67757d6e0e99c6607ce88fd7c614b145cccfccec82b88228a5b728a12e"
+      "bytes": 9837,
+      "sha256": "78cd2f4f5ad182f5afdcb11e6256905985703c3e601b0baefbfac0cb702a7bbf"
     },
     {
       "order": 117,

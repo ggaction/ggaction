@@ -1274,7 +1274,7 @@ type SecondaryRulePositionEncodingOptions = RulePositionEncodingBase & {
 
 export type SecondaryPositionEncodingOptions =
   | SecondaryRulePositionEncodingOptions
-  | { datum: number; field?: never; fieldType?: "quantitative"; target?: string; scale?: { id?: string }; coordinate?: string }
+  | { datum: unknown; field?: never; fieldType?: "quantitative"; target?: string; scale?: { id?: string }; coordinate?: string }
   | ({ field: string; datum?: never; target?: string; scale?: { id?: string }; coordinate?: string } & TemporalBindingBranch);
 
 type AreaRangePositionEncodingOptions = {

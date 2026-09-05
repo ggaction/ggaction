@@ -16,9 +16,9 @@ resolve a channel scale, and explicitly materialize the affected graphics.
 <!-- action-capabilities:position:start -->
 | Action | Supported marks | Field types | Important modes |
 | --- | --- | --- | --- |
-| `encodeX` | point, line, area, bar, rect, rule, tick, text | point/bar/rect/rule/tick/text: quantitative, temporal, ordinal, nominal; line/area: quantitative, temporal | field; rule and area also accept datum; bar accepts aggregate or bin |
-| `encodeY` | point, line, area, bar, rect, rule, tick, text | point/line/bar/rect/rule/tick/text: quantitative, temporal, ordinal, nominal; area: quantitative, temporal | field; rule and area also accept datum; bar accepts aggregate or count |
-| `encodeX2` / `encodeY2` | area, ranged bar, rect, rule | area/ranged bar/rect/rule: matching primary | secondary field; rule and area also accept datum |
+| `encodeX` | point, line, area, bar, rect, rule, tick, text | point/bar/rect/rule/tick/text: quantitative, temporal, ordinal, nominal; line/area: quantitative, temporal | field; rule, area, and rect also accept datum; bar accepts aggregate or bin |
+| `encodeY` | point, line, area, bar, rect, rule, tick, text | point/line/bar/rect/rule/tick/text: quantitative, temporal, ordinal, nominal; area: quantitative, temporal | field; rule, area, and rect also accept datum; bar accepts aggregate or count |
+| `encodeX2` / `encodeY2` | area, ranged bar, rect, rule | area/ranged bar/rect/rule: matching primary | secondary field; rule, area, and rect also accept datum |
 | `encodeTheta` | point, line, arc | point/line: quantitative, temporal, ordinal, nominal; arc: quantitative, ordinal, nominal | arc maps direct quantitative values, category counts, or category-weighted sums to proportional sectors |
 | `encodeR` | point, line, arc | point/line/arc: quantitative | radial position; arc combines it with a categorical theta band |
 | `encodeParallelCoordinates` | line | line: quantitative, ordinal | atomic ordered dimensions; one namespaced scale and axis per dimension |
@@ -32,7 +32,7 @@ resolve a channel scale, and explicitly materialize the affected graphics.
 | Position Polar points | point mark, angle field and quantitative radius field | `encodeTheta`, `encodeR` | [Polar point tutorial](../tutorials/polar-points.md) |
 | Draw Polar lines or radar paths | line mark, angle field and quantitative radius field | `encodeTheta`, `encodeR` | [Polar line tutorial](../tutorials/polar-lines.md) |
 | Draw pies, donuts, rose charts, or radial bars | arc mark, direct quantitative theta, categorical count/weighted-sum theta, or quantitative radius | `encodeTheta`, optional `encodeR` | [Polar arc tutorial](../tutorials/polar-arcs.md) |
-| Draw discrete or ranged cells | rect mark, two discrete positions or complete x/x2 and y/y2 pairs | `encodeX`, `encodeY`, optional `encodeX2`, `encodeY2` | [Rect marks](./marks/rect.md) |
+| Draw cells or interval shading | rect mark, band positions, paired endpoints, or one plot-spanning interval | `encodeX`, `encodeY`, optional `encodeX2`, `encodeY2` | [Rect marks](./marks/rect.md) |
 | Draw an aggregate time series | line mark, temporal x and quantitative y | `encodeX`, `encodeY` | [Temporal lines](./position/temporal.md) |
 | Build vertical aggregate bars | bar mark, ordinal/temporal x and quantitative y | `encodeX`, `encodeY` | [Bar positions](./position/ordinal-bars.md) |
 | Build horizontal aggregate bars | bar mark, quantitative x and ordinal/temporal y | `encodeX`, `encodeY` | [Bar positions](./position/ordinal-bars.md) |

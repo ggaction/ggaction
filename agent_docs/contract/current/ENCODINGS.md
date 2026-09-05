@@ -114,8 +114,8 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
 - Layered rule datum: inherited position provenance가 있는 rule에 datum x를 작성하면 secondary endpoint가
   없는 경우 inherited y branch만 제거해 vertical full-span을 만든다. Explicit data나 field x는 이 정리를
   적용하지 않는다.
-- Rule datum inference: finite number datum은 quantitative, 다른 supported scalar datum은 nominal로 추론한다.
-  Temporal 또는 ambiguous datum은 `fieldType`을 명시해야 하며 rule field mode는 계속 explicit `fieldType`을 요구한다.
+- Rule/Rect datum inference: finite number datum은 quantitative, 다른 supported scalar datum은 nominal로 추론한다.
+  Temporal 또는 ambiguous datum은 `fieldType`을 명시해야 하며 rule field mode는 계속 explicit `fieldType`을 요구한다. Rect field mode는 기존 기본값을 유지한다.
 - Reassignment: 같은 target에 다시 호출하면 compatible field와 scale binding을 교체한다. scale ID를
   생략하면 현재 x scale을 재사용하고, explicit new ID는 이전 scale을 남긴 채 axis/vertical grid를
   새 scale에 rebind한다. inferred title은 새 field로 바뀌고 custom title/style은 유지된다.
@@ -127,7 +127,7 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
 - Implemented: `encodeX({ field: FieldName; target?: UserId; fieldType?: "quantitative" | "temporal" | "ordinal"; scale?: PositionScale; coordinate?: UserId; aggregate?: AggregateOperation; bin?: BinDefinition; stack?: "zero" | "normalize" | null })`; 실제 조합은 canonical matrix와 mark grain policy가 제한한다.
 - Implemented quantitative extension: `{ scale?: { type?: "log" | "pow" | "sqrt" | "symlog"; base?: PositiveFiniteExceptOne; exponent?: PositiveFinite; constant?: PositiveFinite; clamp?: boolean; reverse?: boolean } }` for compatible point, line, area, bar and rule materializers.
 - Implemented point fallback: `{ scale?: { unknown?: Finite } }`; temporal `time` remains UTC-only.
-- Implemented rule datum shorthand: `encodeX({ datum, target?, fieldType?, scale?, coordinate? })`; omitted
+- Implemented Rule/Rect datum shorthand: `encodeX({ datum, target?, fieldType?, scale?, coordinate? })`; omitted
   `fieldType` infers finite numbers as quantitative and other supported scalars as nominal.
 - Proposed (NOT IMPLEMENTED): Polar positional action.
 
@@ -192,7 +192,7 @@ type AggregateOperation =
 ```
 
 - Signature: `encodeY({ field?, target?, fieldType?, scale?, coordinate?, aggregate?, stack? })`
-- `field`: point/area/line/rect/ordinal-bar에서는 필수 field다. histogram count y는 x field에서 추론한다.
+- `field`: point/line/ordinal-bar에서는 필수 field다. Rect는 field/datum 중 정확히 하나이며 area datum은 별도 endpoint 계약을 따른다. histogram count y는 x field에서 추론한다.
 - `target`, `fieldType`, `scale`, `coordinate`: x와 같은 selection/storage contract이다. Continuous y
   auto range는 bottom-to-top, ordinal y band는 top-to-bottom이다.
 - `aggregate`: line과 ordinal bar는 `"count" | "sum" | "mean" | "median" | "min" | "max" |
@@ -396,7 +396,7 @@ type AggregateOperation =
 
 ## `encodeY2`
 
-- Signature: area, ranged bar와 ranged rect는 `encodeY2({ field, target?, fieldType?, scale? })`; rule은
+- Signature: area, ranged bar는 `encodeY2({ field, target?, fieldType?, scale? })`; Rect는 `field | datum`과 primary에서 추론하는 fieldType을 받는다. Rule은
   `encodeY2({ field | datum, target?, fieldType, scale?, coordinate? })`다.
 - Area/ranged-bar `field`는 quantitative upper-bound field다. Bar는 stale aggregate/stack intent를 제거해
   lower/upper endpoints를 one range grain으로 저장한다. Rule은 field/datum 중 정확히 하나를 요구하고 primary y의
@@ -408,7 +408,7 @@ type AggregateOperation =
 
 ### Formal values — `encodeY2`
 
-- Implemented: area/bar `encodeY2({ field: FieldName; target?: UserId; fieldType?: "quantitative"; scale?: { id?: UserId } })`; rect additionally accepts matching `"quantitative" | "temporal"`; rule `encodeY2(RulePositionAssignment)`.
+- Implemented: area/bar `encodeY2({ field: FieldName; target?: UserId; fieldType?: "quantitative"; scale?: { id?: UserId } })`; rect accepts field or datum and inherits matching `"quantitative" | "temporal"`; rule `encodeY2(RulePositionAssignment)`.
 - Proposed (NOT IMPLEMENTED): —; y2는 y scale 공유를 유지한다.
 
 ### Value coverage — `encodeY2`
@@ -420,7 +420,7 @@ type AggregateOperation =
 - `scale.id`
   - ✅ Covered: omission/shared y ID, same explicit ID, conflicting ID rejection.
   - No proposal: y2는 y scale 공유가 semantic invariant다.
-- Evidence: ranged-area, ranged-bar and regression semantic/materialization tests.
+- Evidence: `test/unit/actions/marks/rect-span.test.js`, ranged-area, ranged-bar and regression semantic/materialization tests.
 
 ## `encodeX2`
 
@@ -440,7 +440,7 @@ type AreaSecondaryXAssignment = {
 encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgram;
 ```
 
-- Rule `encodeX`/`encodeY`와 `encodeX2`/`encodeY2`는 field 또는 datum 중 정확히 하나를 저장한다.
+- Rule/Rect `encodeX`/`encodeY`와 `encodeX2`/`encodeY2`는 field 또는 datum 중 정확히 하나를 저장한다. Rect secondary는 primary fieldType을 기본으로 사용한다.
   Secondary endpoint는 primary channel 없이는 생성할 수 없고 같은 scale, coordinate와 field type을 공유한다.
 - x-only/y-only는 plot-bound full span, `x+y+y2`/`y+x+x2`는 vertical/horizontal interval,
   `x+y+x2+y2`는 diagonal interval이다. Field mode는 row당 line 하나, datum-only mode는 line 하나다.
@@ -459,7 +459,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 
 - ✅ Covered: rule field/datum exclusivity, quantitative/nominal position, full span, bounded and diagonal geometry,
   plus area quantitative x2, shared endpoint scale, endpoint reassignment and invalid/incomplete prerequisites.
-- Evidence: `test/unit/actions/encodings/rule-position-encodings.test.js`,
+- Evidence: `test/unit/actions/marks/rect-span.test.js`, `test/unit/actions/encodings/rule-position-encodings.test.js`,
   `test/charts/cars-error-bar/primitive.test.js`.
 
 ## `encodeStroke`

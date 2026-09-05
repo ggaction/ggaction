@@ -31,6 +31,7 @@ test.before(async () => {
     <canvas id="shape-legend" aria-label="Shape legend after color removal"></canvas>
     <canvas id="bottom-legend" aria-label="Explicit bottom legend layout"></canvas>
     <canvas id="legend-content" aria-label="Explicit color and size legend content"></canvas>
+    <canvas id="reference-rect" aria-label="Constant interval shading"></canvas>
     <canvas id="semantic-labels" aria-label="Pie shares from final source items"></canvas>
     <canvas id="parallel-reencoded" aria-label="Reordered Parallel dimension axes"></canvas>
     <div id="svg"></div><div id="svg-resources"></div><script type="importmap">
@@ -388,6 +389,14 @@ test.before(async () => {
         .editLegendTitle({ title: "Mass" }).editLegendLabels({ fontWeight: 700 });
       const hiddenSizeLegend = editedSizeLegend.editLegendTitle({ title: false });
       render(editedSizeLegend, document.getElementById("size-legend").getContext("2d"));
+      const temporalRect = chart().createCanvas().createData({ values: [{ start: "2020-01-01", end: "2020-01-03" }] })
+        .createRectMark({ data: "data" }).encodeX({ field: "start", fieldType: "temporal" })
+        .encodeX2({ field: "end", fieldType: "temporal" })
+        .filterMarks({ channel: "x", op: "gte", value: Date.UTC(2020, 0, 1) });
+      const referenceRect = chart().createCanvas({ width: 480, height: 320, margin: 40 })
+        .createData({ values: [] }).createRectMark({ data: "data", fill: "#93c5fd", opacity: 0.5, stroke: false })
+        .encodeX({ datum: 2, scale: { domain: [0, 10] } }).encodeX2({ datum: 6 });
+      render(referenceRect, document.getElementById("reference-rect").getContext("2d"));
       const semanticLabels = chart().createCanvas({ width: 480, height: 360, margin: 50 })
         .createData({ values: [{ category: "A", value: 1 }, { category: "A", value: 1 }, { category: "B", value: 6 }] })
         .createPiePlot({ category: "category", value: "value", aggregate: "sum", guides: false })
@@ -397,6 +406,9 @@ test.before(async () => {
       document.querySelector("#status").textContent = "complete";
       window.__ggactionGuideComparisons = guideComparisons;
       window.__ggactionConsumer = {
+        temporalRectCount: temporalRect.graphicSpec.objects.rect.items.length,
+        referenceRect: referenceRect.graphicSpec.objects.rect.items[0].properties.width,
+        referenceRectSVG: renderToSVG(referenceRect).includes("#93c5fd"),
         semanticTexts: semanticLabels.graphicSpec.objects.text.items.map(i => i.properties.text),
         semanticTextSVG: semanticLabelSVG.includes("25.0%") && semanticLabelSVG.includes("75.0%"),
         semanticFiltered: semanticLabels.filterMarks({ target: "piePlot", field: "category", op: "eq", value: "B" })
@@ -548,6 +560,9 @@ test("imports and renders the packed browser entries", async () => {
   assert.equal(guideComparisons.length, 4);
   for (const [actual, expected] of guideComparisons) assert.deepEqual(actual, expected);
   assert.deepEqual(await windowValue(page, "__ggactionConsumer"), {
+    temporalRectCount: 1,
+    referenceRect: 160,
+    referenceRectSVG: true,
     semanticTexts: ["25.0%", "75.0%"],
     semanticTextSVG: true,
     semanticFiltered: ["100.0%"],

@@ -934,6 +934,17 @@ async function testNodeConsumer(directory) {
     const filteredHistogramLabels = histogramLabels.filterMarks({ target: "bar", channel: "x", op: "lt", value: 50 });
     assert.ok(filteredHistogramLabels.editCanvas({ width: 600 }).graphicSpec.objects.text.items.length > 0);
 
+    const temporalRect = chart().createCanvas().createData({ values: [{ start: "2020-01-01", end: "2020-01-03" }] })
+      .createRectMark({ data: "data" }).encodeX({ field: "start", fieldType: "temporal" })
+      .encodeX2({ field: "end", fieldType: "temporal" });
+    assert.equal(temporalRect.filterMarks({ channel: "x", op: "gte", value: Date.UTC(2020, 0, 1) }).graphicSpec.objects.rect.items.length, 1);
+    const referenceRect = chart().createCanvas({ width: 480, height: 320, margin: 40 })
+      .createData({ values: [] }).createRectMark({ data: "data" })
+      .encodeX({ datum: 2, scale: { domain: [0, 10] } }).encodeX2({ datum: 6 });
+    assert.equal(referenceRect.graphicSpec.objects.rect.items.length, 1);
+    assert.equal(referenceRect.editCanvas({ height: 400 }).graphicSpec.objects.rect.items[0].properties.height, 320);
+    assert.equal(referenceRect.createMarkLabels({ value: "Range" }).graphicSpec.objects["rect-labels"].items[0].properties.text, "Range");
+
     const semanticLabels = chart().createCanvas({ width: 480, height: 360, margin: 50 })
       .createData({ values: [{ category: "A", value: 1 }, { category: "A", value: 1 }, { category: "B", value: 6 }] })
       .createPiePlot({ category: "category", value: "value", aggregate: "sum", guides: false })
@@ -2191,6 +2202,8 @@ async function testTypeScriptConsumer(directory) {
     void withoutXAxis;
     void invalidTransform;
 
+    chart().createRectMark().encodeX({ datum: 2 }).encodeX2({ datum: 6 });
+    chart().createRectMark().encodeY({ datum: "2020-01-01", fieldType: "temporal" }).encodeY2({ datum: "2020-01-03" });
     chart().createMarkLabels();
     chart().createMarkLabels({ source: "bars", content: "share", format: ".0%", layout: { axis: "y" } });
     // @ts-expect-error The facade retains exclusive text branches.

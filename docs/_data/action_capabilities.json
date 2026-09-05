@@ -49,7 +49,7 @@
           "nominal"
         ]
       },
-      "modes": "field; rule and area also accept datum; bar accepts aggregate or bin"
+      "modes": "field; rule, area, and rect also accept datum; bar accepts aggregate or bin"
     },
     {
       "action": "encodeY",
@@ -101,7 +101,7 @@
           "nominal"
         ]
       },
-      "modes": "field; rule and area also accept datum; bar accepts aggregate or count"
+      "modes": "field; rule, area, and rect also accept datum; bar accepts aggregate or count"
     },
     {
       "action": "encodeX2 / encodeY2",
@@ -119,7 +119,7 @@
           "matching primary"
         ]
       },
-      "modes": "secondary field; rule and area also accept datum"
+      "modes": "secondary field; rule, area, and rect also accept datum"
     },
     {
       "action": "encodeTheta",
