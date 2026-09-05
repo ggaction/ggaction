@@ -21,6 +21,7 @@ import {
 } from "../../../theme/defaults.js";
 import { findDataset } from "../../../selectors/datasets.js";
 import { findLayer } from "../../../selectors/layers.js";
+import { canMaterializePoint } from "../../../materialization/marks/capabilities.js";
 import { rematerializeHighlightBaseline } from "../lifecycle.js";
 import {
   resolveRowEncodingValues,
@@ -249,6 +250,10 @@ export const rematerializePointMark = action(
     const dataset = findDataset(resolved, layer.data);
     if (dataset === undefined) {
       throw new Error(`Point mark "${id}" requires an existing dataset.`);
+    }
+
+    if (graphic.items.length === 0 && !canMaterializePoint(resolved, layer)) {
+      return resolved;
     }
 
     const positions = resolvePointPositions(resolved, layer, dataset);

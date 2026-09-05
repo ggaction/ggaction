@@ -6,6 +6,7 @@ import test from "node:test";
 
 import { chart, render } from "../../src/index.js";
 import { renderToPNG } from "../../src/renderers/png.js";
+import { renderToSVG } from "../../src/renderers/svg.js";
 import {
   createMockCanvasContext,
   findCanvasCalls
@@ -52,3 +53,29 @@ test("renders encoding and outline teardown through Canvas and Node PNG", async 
     await rm(directory, { recursive: true, force: true });
   }
 });
+
+for (const shape of ["circle", "square", "diamond"]) {
+  for (const channel of ["x", "y"]) {
+    test("keeps an incomplete " + shape + " empty after removing " + channel, () => {
+      const before = chart()
+        .createCanvas({ width: 160, height: 120, margin: 20 })
+        .createData({ values: [{ x: 1, y: 2 }, { x: 2, y: 4 }] })
+        .createPointMark({ shape })
+        .encodeX({ field: "x" })
+        .encodeY({ field: "y" });
+      const incomplete = before.removeEncoding({ channel });
+      const snapshot = JSON.stringify(incomplete);
+      const remaining = channel === "x" ? "y" : "x";
+      const edited = incomplete.editCanvas({ width: 160 })
+        .editScale({ id: remaining, domain: before.resolvedScales[remaining].domain })
+        .encodeOpacity({ value: 0.5 });
+      assert.deepEqual(edited.graphicSpec.objects.point.items, []);
+      assert.doesNotThrow(() => renderToSVG(edited));
+      assert.doesNotThrow(() => render(edited, createMockCanvasContext()));
+      const recovered = edited[channel === "x" ? "encodeX" : "encodeY"]({ field: channel });
+      assert.equal(recovered.graphicSpec.objects.point.items.length, 2);
+      assert.doesNotThrow(() => renderToSVG(recovered));
+      assert.equal(JSON.stringify(incomplete), snapshot);
+    });
+  }
+}

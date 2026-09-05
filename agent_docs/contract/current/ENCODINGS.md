@@ -51,6 +51,7 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
   ambiguous ownership requires an explicit mark ID. A direct missing assignment is an error.
 - The action removes the semantic assignment and starts rematerialization from an empty concrete mark baseline.
   Complete marks are rebuilt; incomplete marks remain as empty collections until a later encoding completes them.
+  Canvas, surviving-scale and appearance edits preserve that empty state; they cannot recreate partial row graphics.
 - Primary `x`/`y` removal also removes the same-mark secondary endpoint and directional offset. Grouped-bar color
   removal removes its generated offset. Removing an area group also removes a same-field dependent color assignment.
   A normalized bar color layout returns to the ordinary zero baseline.
