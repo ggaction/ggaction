@@ -2151,7 +2151,7 @@
       "domain": "legend_and_title",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edits categorical, continuous, interval, size, and bounded stroke-width legend appearance",
+      "update": "Replaces whole-target legend content and edits categorical, continuous, interval, size, and bounded stroke-width appearance",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",

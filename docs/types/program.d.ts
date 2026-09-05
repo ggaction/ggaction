@@ -2743,7 +2743,9 @@ export interface LegendOptions {
 }
 
 export interface EditLegendOptions
-  extends Omit<LegendOptions, "channels" | "title"> {
+  extends Omit<LegendOptions, "title"> {
+  /** Exact final content set for the whole target; omission preserves content. */
+  channels?: LegendOptions["channels"];
   title?: string | "auto" | false;
 }
 

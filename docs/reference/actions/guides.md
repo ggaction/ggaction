@@ -278,7 +278,7 @@ or `{ channel: "x" | "y" | "theta" }` while preserving each category's color/sha
 
 ```javascript
 editLegend({
-  target?, position?, layout?, align?, direction?, columns?, offset?, titlePosition?,
+  target?, channels?, position?, layout?, align?, direction?, columns?, offset?, titlePosition?,
   title?, symbol?, labels?, titleStyle?, itemGap?, border?, count?, gradient?, order?
 })
 ```
@@ -286,7 +286,12 @@ editLegend({
 Partially edit one existing legend. Omitted categorical `layout` preserves the
 stored mode; style edits never switch modes. Categorical `order` can be reassigned or reset
 with `"scale"`; linked position changes also refresh its item order. `title` accepts a non-empty string,
-`"auto"`, or `false`; semantic channel bindings cannot be edited. A
+`"auto"`, or `false`. Explicit `channels` replaces the entire target's content
+with the exact supported non-empty set; mark encodings and scales remain.
+Retained blocks preserve configuration; new blocks use creation defaults and
+removed blocks lose their settings. Categorical revisions preserve compatible
+recipes and order. Shared text patches merge only requested style leaves into
+each block. A
 horizontal sampled-opacity legend accepts `titlePosition: "left"` and inline
 spacing edits. A
 standalone size or stroke-width legend accepts the bounded `title`, `count`,

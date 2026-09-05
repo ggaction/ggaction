@@ -499,6 +499,15 @@ async function testNodeConsumer(directory) {
     assert.deepEqual(Object.keys(colorSizeContent.guideConfigs.legend), ["color", "size"]);
     assert.equal(colorSizeContent.graphicSpec.objects.sizeLegendSymbols.items.length, 3);
     assert.match(renderToSVG(colorSizeContent), /<svg /);
+    const editedContent = legendContentBase.createLegend({ channels: ["size"] })
+      .editLegend({ labels: { color: "red" }, titleStyle: { fontWeight: 900 } })
+      .editLegend({ channels: ["color", "shape", "size"], count: 3 })
+      .editLegend({ labels: { fontWeight: 700 } }).editCanvas({ width: 900 });
+    assert.equal(editedContent.graphicSpec.objects.sizeLegendLabels.items[0].properties.fill, "red");
+    assert.equal(editedContent.graphicSpec.objects.sizeLegendTitle.properties.fontWeight, 900);
+    assert.equal(editedContent.graphicSpec.objects.sizeLegendLabels.items[0].properties.fontWeight, 700);
+    assert.deepEqual(editedContent.editLegend({ channels: ["shape"] }).guideConfigs.legend.series.channels, ["shape"]);
+    assert.match(renderToSVG(editedContent), /<svg /);
     const hiddenContent = legendContentBase.createLegend({ count: 3 }).editLegend({ title: false });
     const partialContent = hiddenContent.removeLegend({ channels: ["shape"] });
     assert.deepEqual(partialContent.guideConfigs.legend.color.channels, ["color"]);
@@ -1523,6 +1532,7 @@ async function testTypeScriptConsumer(directory) {
     program.orderCategories({ channel: "theta", values: ["C"] }).removeCategoryOrder({ channel: "theta" });
     program.createLegend({ order: { channel: "theta" } }).editLegend({ order: "scale" });
     program.editLegend({ order: { values: ["C", 1, false] } });
+    program.editLegend({ channels: ["color", "shape", "size"], count: 3 });
     program.editLegend({ count: 3, title: "Mass", labels: { offset: 28, fontWeight: 700 }, titleStyle: { color: "red" } })
       .editLegendTitle({ title: false }).editLegendTitle({ title: "auto" }).editLegendSymbols({ count: 4 });
     program.createLegend({ channels: ["color", "shape", "size"], count: 3 });

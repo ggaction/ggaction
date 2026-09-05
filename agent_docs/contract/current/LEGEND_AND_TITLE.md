@@ -198,10 +198,12 @@ encoding removal/recreation, combined legend와 Polar 가이드를 검증한다.
 
 ## `editLegend`
 
-- Signature: `editLegend({ target?, position?, layout?, align?, direction?, columns?, offset?, titlePosition?, title?, symbol?, labels?, titleStyle?, itemGap?, border?, count?, gradient?, order? })`.
+- Signature: `editLegend({ target?, channels?, position?, layout?, align?, direction?, columns?, offset?, titlePosition?, title?, symbol?, labels?, titleStyle?, itemGap?, border?, count?, gradient?, order? })`.
 - `target` selects an existing logical legend by mark ID. It may be omitted only when exactly one target owns all
   active blocks; independent targets are ambiguous.
-- At least one non-target change is required. Semantic `channels` and scale binding are intentionally not editable.
+- At least one non-target change is required. Mark encodings and scale bindings remain unchanged.
+- Explicit `channels`는 target 전체의 최종 non-empty content 집합이다. 기존 createLegend의 compatible subset만 허용하며 child selector가 아니다. Omission은 기존 content를 유지한다. 같은 kind의 config/count/title visibility를 보존하고 categorical color↔series revision은 styles/order/compatible explicit recipe를 보존한다. 새 block은 생성 기본값을 사용하고 제외된 block과 그 설정은 제거한다. 같은 호출의 style/layout patch는 최종 content에 적용한다. 다른 target의 occupied resource나 unsupported combination은 오류다.
+- Categorical+size의 labels/titleStyle patch는 각 block의 유효 스타일에 요청한 leaf만 병합한다. Title/count만 바꾸면 size의 자체 스타일과 inheritance를 보존한다. Inherited size label offset은 28이다.
 - Omitted values remain unchanged. Nested `labels`, `titleStyle`, `border`, and `gradient` objects merge supplied
   leaves. `title` accepts a custom non-empty string, `"auto"` for field inference, or `false` to hide its graphic.
 - Categorical `layout` omission은 stored edge/legacy-bottom을 보존한다. Style/title/border edit나 Canvas/scale/encoding replay가
@@ -227,11 +229,14 @@ encoding removal/recreation, combined legend와 Polar 가이드를 검증한다.
 
 ### Formal values — `editLegend`
 
-- Implemented: the signature above with `title?: NonEmptyString | "auto" | false` and without `channels`.
+- Implemented: the signature above with `title?: NonEmptyString | "auto" | false` and `channels?: readonly LegendChannel[]` for whole-target replacement.
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `editLegend`
+
+- ✅ Covered: point 7×7 content replacement, continuous/interval/size/opacity replacement, independent width owner, hidden titles, styles/order/recipe preservation, invalid/occupied content atomicity and Canvas replay.
+- Evidence: `test/unit/actions/guides/legend-content-editing.test.js` and content-editing pairs in `test/contracts/legend-content-render.test.js`.
 
 - ✅ Covered: inferred/explicit target and ambiguity/missing-target errors.
 - ✅ Covered: left combined categorical/size position, partial nested style/border/count edits, and exact primitive

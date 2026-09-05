@@ -8154,6 +8154,11 @@
       },
       "options": [
         {
+          "name": "channels",
+          "required": false,
+          "type": "readonly (\"color\" | \"opacity\" | \"shape\" | \"size\" | \"strokeDash\" | \"strokeWidth\")[] | undefined"
+        },
+        {
           "name": "title",
           "required": false,
           "type": "string | false | undefined"
@@ -8240,9 +8245,9 @@
         }
       ],
       "callPatterns": [
-        "editLegend({ target?, title?, layout?, order?, position?, align?, direction?, columns? })"
+        "editLegend({ target?, channels?, title?, layout?, order?, position?, align?, direction? })"
       ],
-      "snippet": "program.editLegend({ title: \"title\" })",
+      "snippet": "program.editLegend({ channels: [\"color\", \"size\"], count: 3 })",
       "errors": [],
       "route": "/reference/actions/guides/#editlegend"
     },

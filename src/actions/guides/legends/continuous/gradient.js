@@ -321,6 +321,58 @@ export function resolveGradientLegendCreation(program, args = {}) {
   return resolved;
 }
 
+export function createGradientLegendFromConfig(program, config) {
+  const resolved = resolveGradientConfig(program, config);
+  resolveGradientLayout(program, resolved.config, resolved.scale);
+  let next = program
+    .editSemantic({
+      property: "guide.legend.color.scale",
+      value: resolved.encoding.scale
+    })
+    .editSemantic({
+      property: "guide.legend.color.title",
+      value: resolved.config.title
+    })
+    ._withLegendConfig("gradient", resolved.config);
+  if (resolved.config.border !== false) {
+    next = next.createGraphics({
+      id: "colorGradientBackground",
+      type: "rect",
+      ...resolveLegendGraphicPlacement(next)
+    });
+  }
+  next = next
+    .createGraphics({
+      id: "colorGradientStrips",
+      type: "rect",
+      length: 0,
+      ...resolveLegendGraphicPlacement(next),
+      ...(resolved.config.border === false
+        ? {}
+        : { after: "colorGradientBackground" })
+    })
+    .createGraphics({
+      id: "colorGradientTicks",
+      type: "line",
+      length: 0,
+      ...resolveLegendGraphicPlacement(next)
+    })
+    .createGraphics({
+      id: "colorGradientLabels",
+      type: "text",
+      length: 0,
+      ...resolveLegendGraphicPlacement(next)
+    });
+  if (resolved.config.titleVisible !== false) {
+    next = next.createGraphics({
+      id: "colorGradientTitle",
+      type: "text",
+      ...resolveLegendGraphicPlacement(next)
+    });
+  }
+  return next.rematerializeGradientLegend();
+}
+
 export const createGradientLegend = action(
   {
     op: "createGradientLegend",
@@ -334,50 +386,6 @@ export const createGradientLegend = action(
         "createGradientLegend requires a missing gradient legend."
       );
     }
-    let next = this
-      .editSemantic({
-        property: "guide.legend.color.scale",
-        value: resolved.encoding.scale
-      })
-      .editSemantic({
-        property: "guide.legend.color.title",
-        value: resolved.config.title
-      })
-      ._withLegendConfig("gradient", resolved.config);
-    if (resolved.config.border !== false) {
-      next = next.createGraphics({
-        id: "colorGradientBackground",
-        type: "rect",
-        ...resolveLegendGraphicPlacement(next)
-      });
-    }
-    return next
-      .createGraphics({
-        id: "colorGradientStrips",
-        type: "rect",
-        length: 0,
-        ...resolveLegendGraphicPlacement(next),
-        ...(resolved.config.border === false
-          ? {}
-          : { after: "colorGradientBackground" })
-      })
-      .createGraphics({
-        id: "colorGradientTicks",
-        type: "line",
-        length: 0,
-        ...resolveLegendGraphicPlacement(next)
-      })
-      .createGraphics({
-        id: "colorGradientLabels",
-        type: "text",
-        length: 0,
-        ...resolveLegendGraphicPlacement(next)
-      })
-      .createGraphics({
-        id: "colorGradientTitle",
-        type: "text",
-        ...resolveLegendGraphicPlacement(next)
-      })
-      .rematerializeGradientLegend();
+    return createGradientLegendFromConfig(this, resolved.config);
   }
 );

@@ -1563,12 +1563,13 @@
       "headings": [
         "editing-legends",
         "updates-and-trace",
+        "replacing-legend-content",
         "focused-edits",
         "removing-a-legend",
         "related"
       ],
-      "bytes": 5972,
-      "sha256": "e23611f976c5984ab39d28729706f271c02e7b77150aee3df0ae01774fce4a8c"
+      "bytes": 7278,
+      "sha256": "9005ebf5900f26fba1515785818eaaa944ab4d8b3a746a5dc639cb420d95db1f"
     },
     {
       "order": 100,
@@ -2002,8 +2003,8 @@
         "removetitle",
         "related"
       ],
-      "bytes": 11908,
-      "sha256": "0807cc4cd83c0c5286952b3b7d757de9394fc2b5fbee4ff51e6d2979914e8c60"
+      "bytes": 12251,
+      "sha256": "6cc644c0f7d4d0679e5cbce0932fbf267958bfa3e047cea530b5371e852991b9"
     },
     {
       "order": 120,

@@ -175,3 +175,23 @@ test("matches partial point legend removal to independent graphic primitives", a
     assert.equal(actual.pixelHash, expected.pixelHash);
   }
 });
+
+test("matches point content replacement to the existing independent graphic targets", async () => {
+  for (const variant of ["color-only", "color-size", "shape-only"]) {
+    const base = contentBase();
+    const size = variant === "color-size";
+    const channels = size ? ["color", "size"] : variant === "shape-only" ? ["shape"] : ["color"];
+    const primitive = variant === "shape-only" ? shapePrimitive(base) : colorPrimitive(base, size);
+    const options = { channels, ...(size ? { count: 3 } : {}) };
+    const artifact = { scope: "charts", capability: "legend-layout", chart: "legend-content-editing",
+      variant, title: `Revised ${variant} content`,
+      userFacingCallChain: `base.createLegend({ channels: ["size"], count: 3 }).editLegend(${JSON.stringify(options)})` };
+    const png = { width: 800, height: 700, colors: ["#4c78a8", "#f58518"],
+      regions: [{ name: "plot", x: 60, y: 20, width: 450, height: 630, minimumInkPixels: 150 }] };
+    const expected = await assertRenderedPNG(primitive, { ...png, artifact: { ...artifact, kind: "primitive" } });
+    const publicProgram = base.createLegend({ channels: ["size"], count: 3 }).editLegend(options);
+    assertChartProgramsEquivalent({ primitiveProgram: primitive, publicProgram, compareSemanticSpec: false });
+    const actual = await assertRenderedPNG(publicProgram, { ...png, artifact: { ...artifact, kind: "user-facing" } });
+    assert.equal(actual.pixelHash, expected.pixelHash);
+  }
+});

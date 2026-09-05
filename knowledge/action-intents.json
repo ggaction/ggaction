@@ -172,6 +172,7 @@
     "editGraphics": "Sets a concrete graphic property or removes a top-level graphic resource inside an extension action."
   },
   "sampleOverrides": {
+    "editLegend": { "channels": ["color", "size"], "count": 3 },
     "encodeR": { "field": "value" },
     "createAreaPlot": { "x": "time", "y": "value" },
     "layoutSeries": { "mode": "stack" },

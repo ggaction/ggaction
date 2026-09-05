@@ -10,8 +10,8 @@ title: Editing Legends
 ## Updates and trace
 
 `editLegend()` updates one existing stable legend. Omit `target` when exactly
-one legend target exists; otherwise pass its mark ID. It accepts layout and
-appearance options from `createLegend` except semantic `channels`.
+one legend target exists; otherwise pass its mark ID. It accepts content, layout and appearance changes supported by the resulting
+legend kind. Mark encodings and scales stay unchanged.
 
 ~~~javascript
 program.editLegend({
@@ -55,6 +55,37 @@ center, editable through `labels: { offset }`; title styles do not accept an
 offset. Defaults remain size 12/normal for labels and size 13/600 for titles.
 Partial styles and title visibility survive Canvas, scale and data updates.
 Basic supports size legend creation; these editing actions require Full.
+
+## Replacing legend content
+
+Pass `channels` as the exact final content set for the entire target. This
+fragment requires a Full program with an existing legend and color, shape and
+size encodings on `points`:
+
+```javascript
+const colorAndSize = program.editLegend({
+  target: "points",
+  channels: ["color", "size"],
+  count: 3
+});
+const shapeOnly = colorAndSize.editLegend({
+  target: "points",
+  channels: ["shape"]
+});
+```
+
+The first edit removes shape content and retains or adds color and size. The
+second removes color and size and shows only shape. Supported combinations
+match `createLegend`; an empty set is invalid. Use `removeLegend()` to remove
+all content. Omitting `channels` preserves existing content.
+
+Retained blocks keep their configuration, sample count and title visibility.
+Categorical color/shape/dash revisions also retain compatible explicit symbol
+recipes, text styles and order. Newly added blocks use creation defaults;
+removed blocks lose their settings. A style patch in the same edit applies to
+the final content. In categorical-size legends, shared label/title-style edits
+merge only the supplied leaves into each block's effective style; changing a
+title or count preserves independent size styles. Other targets remain intact.
 
 ## Focused edits
 

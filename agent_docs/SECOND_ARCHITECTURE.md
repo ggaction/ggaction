@@ -247,7 +247,7 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Gzip ceiling |
 | --- | ---: |
-| `ggaction` | 251,000 bytes |
+| `ggaction` | 252,000 bytes |
 | `ggaction/basic` | 139,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 
@@ -1756,7 +1756,7 @@ axis와 grid만 선택하므로 theta-only count arc가 radial guide를 합성�
 
 Categorical creation와 content revision의 공통 owner는 `actions/guides/legends/lifecycle.js`다.
 선택된 channels의 definition/automatic recipe를 재검증하고 기존 title visibility, styles, order와 caller recipe를
-보존한다. createLegend, partial removeLegend, removeEncoding이 이 owner를 공유하며 semantic/graphic 변경은
+보존한다. createLegend, editLegend content replacement, partial removeLegend, removeEncoding이 이 owner를 공유하며 semantic/graphic 변경은
 기존 wrapped primitives와 component materializers로 명시적으로 수행한다. Resource-kind cleanup도 같은 owner가
 관리한다. Renderer에는 content 추론·복원 로직을 추가하지 않는다.
 
@@ -1806,8 +1806,11 @@ x-axis guide collision과 final Canvas bounds를 검증한다. Gradient와 opaci
 element 뒤에 놓인다. Horizontal categorical과 sampled opacity의 `titlePosition: "left"`는 이 stacked-title
 grammar 대신 하나의 graphical center line을 공유한다. Opacity sample은 symbol 뒤 8 pixels에 label을 두고 다음
 sample 전 20 pixels를 유지한다.
-`editLegend`는 channel/scale binding을 바꾸지 않고 nested appearance/layout config만 부분 merge한 뒤
-kind별 wrapped rematerialization을 호출한다.
+`editLegend`는 mark channel/scale binding을 유지한다. Optional channels는 target 전체의 최종 content이며
+creation.js의 공통 step descriptor와 기존 creation planner로 kind를 정하고 editor의 pure normalizer로
+보존 config와 요청 style을 병합한다. Kind별 config factory가 wrapped primitives/materializers를 명시적으로
+호출한다. 동일 normalizer를 일반 편집과 content 교체가 공유한다. Companion size의 유효 text style에는
+요청한 leaf만 병합하며 title/count edit가 자체 스타일을 덮어쓰지 않는다.
 
 ### Title
 

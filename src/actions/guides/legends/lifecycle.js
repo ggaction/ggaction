@@ -40,9 +40,10 @@ export function removeLegendKinds(program, kinds) {
   return next;
 }
 
-export function resolveCategoricalLegendRevision(program, kind, previous, channels) {
+export function resolveCategoricalLegendRevision(program, kind, previous, channels, {
+  order = program.semanticSpec.guides.legend?.[kind]?.order, validateLayout = true
+} = {}) {
   const layer = findLayer(program, previous.target);
-  const order = program.semanticSpec.guides.legend?.[kind]?.order;
   const definition = resolveDefinition(program, layer, channels,
     previous.inferredTitle ? undefined : previous.title, order);
   const config = {
@@ -51,7 +52,7 @@ export function resolveCategoricalLegendRevision(program, kind, previous, channe
     symbol: normalizeRecipe(resolveLegendSymbol(program, layer, channels,
       previous.inferredSymbol ? undefined : previous.symbol), definition.kind)
   };
-  resolveLayout(program, config);
+  if (validateLayout) resolveLayout(program, config);
   return { kind, config, order };
 }
 

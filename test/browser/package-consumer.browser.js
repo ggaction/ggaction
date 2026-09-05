@@ -219,9 +219,13 @@ test.before(async () => {
       const inferredColor = inferredColorBase.createLegend();
       const inferredShape = legendContentBase.removeEncoding({ channel: "color" })
         .removeEncoding({ channel: "size" }).createLegend();
+      const editedContent = legendContentBase.createLegend({ channels: ["size"] })
+        .editLegend({ labels: { color: "red" }, titleStyle: { fontWeight: 900 } })
+        .editLegend({ channels: ["color", "size"], count: 3 })
+        .editLegend({ labels: { fontWeight: 700 } });
       const hiddenContent = legendContentBase.createLegend({ count: 3 }).editLegend({ title: false });
       const partialContent = hiddenContent.removeLegend({ channels: ["shape"] });
-      render(partialContent, document.getElementById("legend-content").getContext("2d"));
+      render(editedContent, document.getElementById("legend-content").getContext("2d"));
       const bottomLegendBase = chart().createCanvas({ width: 640, height: 600,
         margin: { left: 60, right: 100, top: 40, bottom: 150 } })
         .createData({ values: [{ x: 1, y: 2, g: "A" }, { x: 2, y: 3, g: "B" }] })
@@ -240,6 +244,10 @@ test.before(async () => {
       render(editedSizeLegend, document.getElementById("size-legend").getContext("2d"));
       document.querySelector("#status").textContent = "complete";
       window.__ggactionConsumer = {
+        editedKinds: Object.keys(editedContent.guideConfigs.legend),
+        editedSizeFill: editedContent.graphicSpec.objects.sizeLegendLabels.items[0].properties.fill,
+        editedSizeWeight: editedContent.graphicSpec.objects.sizeLegendTitle.properties.fontWeight,
+        editedSVG: renderToSVG(editedContent).startsWith("<svg "),
         partialChannels: partialContent.guideConfigs.legend.color.channels,
         partialTitleHidden: partialContent.graphicSpec.objects.colorLegendTitle === undefined,
         encodingTitleHidden: hiddenContent.removeEncoding({ channel: "shape" }).graphicSpec.objects.colorLegendTitle === undefined,
@@ -354,6 +362,10 @@ test("imports and renders the packed browser entries", async () => {
     waitFor: () => window.__ggactionConsumer !== undefined
   });
   assert.deepEqual(await windowValue(page, "__ggactionConsumer"), {
+    editedKinds: ["color", "size"],
+    editedSizeFill: "red",
+    editedSizeWeight: 900,
+    editedSVG: true,
     partialChannels: ["color"],
     partialTitleHidden: true,
     encodingTitleHidden: true,

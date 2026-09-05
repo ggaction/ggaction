@@ -179,6 +179,34 @@ export function resolveSizeLegendConfig(program, args = {}) {
   };
 }
 
+export function createSizeLegendFromConfig(program, config) {
+  const { count } = config;
+  let next = program
+    .editSemantic({ property: "guide.legend.size.scale", value: config.scale })
+    .editSemantic({ property: "guide.legend.size.title", value: config.title })
+    ._withLegendConfig("size", config)
+    .createGraphics({
+      id: "sizeLegendSymbols",
+      type: "circle",
+      length: count,
+      ...resolveLegendGraphicPlacement(program)
+    })
+    .createGraphics({
+      id: "sizeLegendLabels",
+      type: "text",
+      length: count,
+      ...resolveLegendGraphicPlacement(program)
+    });
+  if (config.titleVisible !== false) {
+    next = next.createGraphics({
+      id: "sizeLegendTitle",
+      type: "text",
+      ...resolveLegendGraphicPlacement(program)
+    });
+  }
+  return next.rematerializeSizeLegend();
+}
+
 export const createSizeLegend = action(
   {
     op: "createSizeLegend",
@@ -186,29 +214,7 @@ export const createSizeLegend = action(
   },
   function (args = {}) {
     const config = resolveSizeLegendConfig(this, args);
-    const { count } = config;
-    return this
-      .editSemantic({ property: "guide.legend.size.scale", value: config.scale })
-      .editSemantic({ property: "guide.legend.size.title", value: config.title })
-      ._withLegendConfig("size", config)
-      .createGraphics({
-        id: "sizeLegendSymbols",
-        type: "circle",
-        length: count,
-        ...resolveLegendGraphicPlacement(this)
-      })
-      .createGraphics({
-        id: "sizeLegendLabels",
-        type: "text",
-        length: count,
-        ...resolveLegendGraphicPlacement(this)
-      })
-      .createGraphics({
-        id: "sizeLegendTitle",
-        type: "text",
-        ...resolveLegendGraphicPlacement(this)
-      })
-      .rematerializeSizeLegend();
+    return createSizeLegendFromConfig(this, config);
   }
 );
 

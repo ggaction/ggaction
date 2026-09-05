@@ -346,6 +346,52 @@ export function resolveOpacityLegendCreation(program, args = {}) {
   return resolved;
 }
 
+export function createOpacityLegendFromConfig(program, config) {
+  const resolved = resolveOpacityConfig(program, config);
+  resolveOpacityLayout(program, resolved.config, resolved.scale);
+  let next = program
+    .editSemantic({
+      property: "guide.legend.opacity.scale",
+      value: resolved.encoding.scale
+    })
+    .editSemantic({
+      property: "guide.legend.opacity.title",
+      value: resolved.config.title
+    })
+    ._withLegendConfig("opacity", resolved.config);
+  if (resolved.config.border !== false) {
+    next = next.createGraphics({
+      id: "opacityLegendBackground",
+      type: "rect",
+      ...resolveLegendGraphicPlacement(next)
+    });
+  }
+  next = next
+    .createGraphics({
+      id: "opacityLegendSymbols",
+      type: "circle",
+      length: 0,
+      ...resolveLegendGraphicPlacement(next),
+      ...(resolved.config.border === false
+        ? {}
+        : { after: "opacityLegendBackground" })
+    })
+    .createGraphics({
+      id: "opacityLegendLabels",
+      type: "text",
+      length: 0,
+      ...resolveLegendGraphicPlacement(next)
+    });
+  if (resolved.config.titleVisible !== false) {
+    next = next.createGraphics({
+      id: "opacityLegendTitle",
+      type: "text",
+      ...resolveLegendGraphicPlacement(next)
+    });
+  }
+  return next.rematerializeOpacityLegend();
+}
+
 export const createOpacityLegend = /* @__PURE__ */ action(
   {
     op: "createOpacityLegend",
@@ -359,45 +405,7 @@ export const createOpacityLegend = /* @__PURE__ */ action(
         "createOpacityLegend requires a missing opacity legend."
       );
     }
-    let next = this
-      .editSemantic({
-        property: "guide.legend.opacity.scale",
-        value: resolved.encoding.scale
-      })
-      .editSemantic({
-        property: "guide.legend.opacity.title",
-        value: resolved.config.title
-      })
-      ._withLegendConfig("opacity", resolved.config);
-    if (resolved.config.border !== false) {
-      next = next.createGraphics({
-        id: "opacityLegendBackground",
-        type: "rect",
-        ...resolveLegendGraphicPlacement(next)
-      });
-    }
-    return next
-      .createGraphics({
-        id: "opacityLegendSymbols",
-        type: "circle",
-        length: 0,
-        ...resolveLegendGraphicPlacement(next),
-        ...(resolved.config.border === false
-          ? {}
-          : { after: "opacityLegendBackground" })
-      })
-      .createGraphics({
-        id: "opacityLegendLabels",
-        type: "text",
-        length: 0,
-        ...resolveLegendGraphicPlacement(next)
-      })
-      .createGraphics({
-        id: "opacityLegendTitle",
-        type: "text",
-        ...resolveLegendGraphicPlacement(next)
-      })
-      .rematerializeOpacityLegend();
+    return createOpacityLegendFromConfig(this, resolved.config);
   }
 );
 

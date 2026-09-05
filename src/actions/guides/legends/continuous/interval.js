@@ -200,6 +200,52 @@ export const rematerializeIntervalLegend = /* @__PURE__ */ action(
   }
 );
 
+export function createIntervalLegendFromConfig(program, config) {
+  const resolved = resolveIntervalConfig(program, config);
+  resolveIntervalLayout(program, resolved.config, resolved.scale);
+  let next = program
+    .editSemantic({
+      property: "guide.legend.color.scale",
+      value: resolved.encoding.scale
+    })
+    .editSemantic({
+      property: "guide.legend.color.title",
+      value: resolved.config.title
+    })
+    ._withLegendConfig("interval", resolved.config);
+  const placement = resolveLegendGraphicPlacement(next);
+  if (resolved.config.border !== false) {
+    next = next.createGraphics({
+      id: "colorLegendBackground",
+      type: "rect",
+      ...placement
+    });
+  }
+  next = next
+    .createGraphics({
+      id: "colorLegendSymbols",
+      type: "rect",
+      length: 0,
+      ...resolveLegendGraphicPlacement(next, resolved.config.border === false
+        ? {}
+        : { after: "colorLegendBackground" })
+    })
+    .createGraphics({
+      id: "colorLegendLabels",
+      type: "text",
+      length: 0,
+      ...placement
+    });
+  if (resolved.config.titleVisible !== false) {
+    next = next.createGraphics({
+      id: "colorLegendTitle",
+      type: "text",
+      ...placement
+    });
+  }
+  return next.rematerializeIntervalLegend();
+}
+
 export const createIntervalLegend = /* @__PURE__ */ action(
   {
     op: "createIntervalLegend",
@@ -212,44 +258,6 @@ export const createIntervalLegend = /* @__PURE__ */ action(
     if (this.graphicSpec.objects.colorLegendSymbols !== undefined) {
       throw new Error("createIntervalLegend requires a missing interval legend.");
     }
-    let next = this
-      .editSemantic({
-        property: "guide.legend.color.scale",
-        value: resolved.encoding.scale
-      })
-      .editSemantic({
-        property: "guide.legend.color.title",
-        value: resolved.config.title
-      })
-      ._withLegendConfig("interval", resolved.config);
-    const placement = resolveLegendGraphicPlacement(next);
-    if (resolved.config.border !== false) {
-      next = next.createGraphics({
-        id: "colorLegendBackground",
-        type: "rect",
-        ...placement
-      });
-    }
-    return next
-      .createGraphics({
-        id: "colorLegendSymbols",
-        type: "rect",
-        length: 0,
-        ...resolveLegendGraphicPlacement(next, resolved.config.border === false
-          ? {}
-          : { after: "colorLegendBackground" })
-      })
-      .createGraphics({
-        id: "colorLegendLabels",
-        type: "text",
-        length: 0,
-        ...placement
-      })
-      .createGraphics({
-        id: "colorLegendTitle",
-        type: "text",
-        ...placement
-      })
-      .rematerializeIntervalLegend();
+    return createIntervalLegendFromConfig(this, resolved.config);
   }
 );

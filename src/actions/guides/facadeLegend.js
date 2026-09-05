@@ -1,34 +1,7 @@
-import {
-  resolveCategoricalLegendConfig,
-  resolveLegendCreationPlan
-} from "./legends/categorical/actions.js";
-import { resolveGradientLegendCreation } from "./legends/continuous/gradient.js";
-import { resolveOpacityLegendCreation } from "./legends/continuous/opacity.js";
-import { normalizeIntervalLegend, resolveIntervalConfig } from "./legends/continuous/interval.js";
-import { resolveSizeLegendConfig } from "./legends/size.js";
-import { resolveStrokeWidthLegendConfig } from "./legends/strokeWidth.js";
+import { resolveLegendCreationPlan } from "./legends/categorical/actions.js";
+import { resolveLegendStepConfig } from "./legends/creation.js";
 import { legendResourcePolicy } from "../../materialization/guides/resources.js";
 import { assertGuideOptions, guideConflict, sameGuideValue } from "./reuse.js";
-
-function descriptor(program, step) {
-  switch (step.op) {
-    case "createCategoricalLegend": {
-      const config = resolveCategoricalLegendConfig(program, step.args);
-      return { kind: config.kind, config };
-    }
-    case "createGradientLegend":
-      return { kind: "gradient", config: resolveGradientLegendCreation(program, step.args).config };
-    case "createOpacityLegend":
-      return { kind: "opacity", config: resolveOpacityLegendCreation(program, step.args).config };
-    case "createIntervalLegend":
-      return { kind: "interval", config: resolveIntervalConfig(program, normalizeIntervalLegend(step.args)).config };
-    case "createSizeLegend":
-      return { kind: "size", config: resolveSizeLegendConfig(program, step.args) };
-    case "createStrokeWidthLegend":
-      return { kind: "strokeWidth", config: resolveStrokeWidthLegendConfig(program, step.args) };
-    default: throw new Error(`Unsupported facade legend owner "${step.op}".`);
-  }
-}
 
 function compatibleLegend(program, kind, requested, existing, explicit) {
   const expectedScales = requested.scales ?? [requested.scale];
@@ -63,7 +36,7 @@ export function planFacadeLegend(program, layer, args, explicit = args) {
   const plan = resolveLegendCreationPlan(program, args, [layer]);
   const steps = [];
   for (const step of plan.steps) {
-    const { kind, config } = descriptor(program, step);
+    const { kind, config } = resolveLegendStepConfig(program, step);
     const stored = program.guideConfigs.legend?.[kind];
     const policy = legendResourcePolicy(kind);
     const occupied = program.semanticSpec.guides.legend?.[policy.semanticKind];

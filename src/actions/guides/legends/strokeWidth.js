@@ -159,6 +159,34 @@ export function resolveStrokeWidthLegendConfig(program, args = {}) {
   };
 }
 
+export function createStrokeWidthLegendFromConfig(program, config) {
+  const { count } = config;
+  let next = program
+    .editSemantic({ property: "guide.legend.strokeWidth.scale", value: config.scale })
+    .editSemantic({ property: "guide.legend.strokeWidth.title", value: config.title })
+    ._withLegendConfig("strokeWidth", config)
+    .createGraphics({
+      id: "strokeWidthLegendSymbols",
+      type: "line",
+      length: count,
+      ...resolveLegendGraphicPlacement(program)
+    })
+    .createGraphics({
+      id: "strokeWidthLegendLabels",
+      type: "text",
+      length: count,
+      ...resolveLegendGraphicPlacement(program)
+    });
+  if (config.titleVisible !== false) {
+    next = next.createGraphics({
+      id: "strokeWidthLegendTitle",
+      type: "text",
+      ...resolveLegendGraphicPlacement(program)
+    });
+  }
+  return next.rematerializeStrokeWidthLegend();
+}
+
 export const createStrokeWidthLegend = /* @__PURE__ */ action(
   {
     op: "createStrokeWidthLegend",
@@ -166,29 +194,7 @@ export const createStrokeWidthLegend = /* @__PURE__ */ action(
   },
   function (args = {}) {
     const config = resolveStrokeWidthLegendConfig(this, args);
-    const { count } = config;
-    return this
-      .editSemantic({ property: "guide.legend.strokeWidth.scale", value: config.scale })
-      .editSemantic({ property: "guide.legend.strokeWidth.title", value: config.title })
-      ._withLegendConfig("strokeWidth", config)
-      .createGraphics({
-        id: "strokeWidthLegendSymbols",
-        type: "line",
-        length: count,
-        ...resolveLegendGraphicPlacement(this)
-      })
-      .createGraphics({
-        id: "strokeWidthLegendLabels",
-        type: "text",
-        length: count,
-        ...resolveLegendGraphicPlacement(this)
-      })
-      .createGraphics({
-        id: "strokeWidthLegendTitle",
-        type: "text",
-        ...resolveLegendGraphicPlacement(this)
-      })
-      .rematerializeStrokeWidthLegend();
+    return createStrokeWidthLegendFromConfig(this, config);
   }
 );
 

@@ -10713,8 +10713,8 @@ The background is rendered before every symbol layer, label, and title.
 ## Updates and trace
 
 `editLegend()` updates one existing stable legend. Omit `target` when exactly
-one legend target exists; otherwise pass its mark ID. It accepts layout and
-appearance options from `createLegend` except semantic `channels`.
+one legend target exists; otherwise pass its mark ID. It accepts content, layout and appearance changes supported by the resulting
+legend kind. Mark encodings and scales stay unchanged.
 
 ~~~javascript
 program.editLegend({
@@ -10758,6 +10758,37 @@ center, editable through `labels: { offset }`; title styles do not accept an
 offset. Defaults remain size 12/normal for labels and size 13/600 for titles.
 Partial styles and title visibility survive Canvas, scale and data updates.
 Basic supports size legend creation; these editing actions require Full.
+
+## Replacing legend content
+
+Pass `channels` as the exact final content set for the entire target. This
+fragment requires a Full program with an existing legend and color, shape and
+size encodings on `points`:
+
+```javascript
+const colorAndSize = program.editLegend({
+  target: "points",
+  channels: ["color", "size"],
+  count: 3
+});
+const shapeOnly = colorAndSize.editLegend({
+  target: "points",
+  channels: ["shape"]
+});
+```
+
+The first edit removes shape content and retains or adds color and size. The
+second removes color and size and shows only shape. Supported combinations
+match `createLegend`; an empty set is invalid. Use `removeLegend()` to remove
+all content. Omitting `channels` preserves existing content.
+
+Retained blocks keep their configuration, sample count and title visibility.
+Categorical color/shape/dash revisions also retain compatible explicit symbol
+recipes, text styles and order. Newly added blocks use creation defaults;
+removed blocks lose their settings. A style patch in the same edit applies to
+the final content. In categorical-size legends, shared label/title-style edits
+merge only the supplied leaves into each block's effective style; changing a
+title or count preserves independent size styles. Other targets remain intact.
 
 ## Focused edits
 
@@ -14007,7 +14038,7 @@ or `{ channel: "x" | "y" | "theta" }` while preserving each category's color/sha
 
 ```javascript
 editLegend({
-  target?, position?, layout?, align?, direction?, columns?, offset?, titlePosition?,
+  target?, channels?, position?, layout?, align?, direction?, columns?, offset?, titlePosition?,
   title?, symbol?, labels?, titleStyle?, itemGap?, border?, count?, gradient?, order?
 })
 ```
@@ -14015,7 +14046,12 @@ editLegend({
 Partially edit one existing legend. Omitted categorical `layout` preserves the
 stored mode; style edits never switch modes. Categorical `order` can be reassigned or reset
 with `"scale"`; linked position changes also refresh its item order. `title` accepts a non-empty string,
-`"auto"`, or `false`; semantic channel bindings cannot be edited. A
+`"auto"`, or `false`. Explicit `channels` replaces the entire target's content
+with the exact supported non-empty set; mark encodings and scales remain.
+Retained blocks preserve configuration; new blocks use creation defaults and
+removed blocks lose their settings. Categorical revisions preserve compatible
+recipes and order. Shared text patches merge only requested style leaves into
+each block. A
 horizontal sampled-opacity legend accepts `titlePosition: "left"` and inline
 spacing edits. A
 standalone size or stroke-width legend accepts the bounded `title`, `count`,
