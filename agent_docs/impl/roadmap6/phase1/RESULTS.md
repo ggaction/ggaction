@@ -21,3 +21,18 @@
   incomplete-authoring 계약에 남긴다. B01 전체와 Phase 1 X를 완료로 표시하지 않는다.
 - 재현 환경: Node 22.23.1 / npm 10.9.8 / macOS arm64. Temp/cache/browser 경로는 이 저장소의
   `.artifacts/repository-study/` 하위로 고정했다. 실행 로그는 `.artifacts/roadmap6-authoring/bar-*.log`에 있다.
+
+## W2 — Definition-only data 소비
+
+- 기준 commit: `89ba9824` (W1), remote branch `codex/roadmap6-hierarchical-actions`.
+- 변경: 공통 `requireMaterializedDataset` selector를 facade/ordinary mark data 선택에 적용했다.
+  Explicit/current ID의 값이 없으면 해당 ID, materialized values, value-producing data action을 설명하는 Error를 낸다.
+- B05 before: Scatter/Point가 `undefined.length` TypeError, 일부 lower mark는 빈 collection을 만들고 후속 소비까지 지연했다.
+  After: chart 8종·mark 9종의 explicit/current 선택에서 같은 precondition을 적용하며 원래 program 전체와 trace를 보존한다.
+- 유지: `createDerivedData`의 provenance-only 정의, internal rebind, 명시한 materialized source의 우선순위,
+  `filterData` 결과 소비, materialized empty array. 자동 실행과 임의 source fallback을 추가하지 않았다.
+- 새 regression 변경 전: 2 실패 / 1 통과. 변경 후 `npm run test:unit`: 1,567/1,567 통과.
+- `npm run test:contracts`: 255/255 통과.
+- 문서: Current CORE/MARKS/BASIC_CHARTS, source-and-derived/action-reference와 generated reference/search/LLM 동기화.
+  Runtime definition-only 경계를 변경하지 않아 public declaration 변경과 새 visual target은 없다.
+- 원장: B05 구현·검증 완료, Phase 1 X 검토 대기. 로그는 `.artifacts/roadmap6-authoring/derived-*.log`.

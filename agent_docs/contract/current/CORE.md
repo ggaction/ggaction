@@ -291,7 +291,10 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
   box outlier, mark filter provenance는 composite action이 생성하는 internal transform으로 public union에 넣지 않는다.
 - Effect: source와 transform provenance만 저장하고 values는 만들지 않는다.
 - 오류: duplicate ID, unknown source, invalid/empty/multiple transform schema를 거부한다.
-- Coverage: `test/unit/actions/data/derived-data.test.js`가 다섯 public branch의 direct call, 배열 cardinality,
+- Consumer precondition: chart facade와 ordinary mark의 공통 data selection은 `values`가 있는 dataset을 요구한다.
+  Definition-only ID를 explicit/current data로 소비하면 dataset ID와 materialized values의 필요성을 설명하는
+  domain error를 낸다. 정의 생성·internal rebind는 유지하며 자동 실행하거나 다른 dataset으로 fallback하지 않는다.
+- Coverage: `test/unit/actions/data/derived-data.test.js`가 일곱 public branch의 direct call, 배열 cardinality,
   invalid discriminant와 caller-owned input immutability를 검증한다. Package consumer는 documented filter call과
   closed union을 strict TypeScript로 compile한다.
 
@@ -309,7 +312,8 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
   - ✅ Covered: filter/regression/density/interval/time-unit/window/bin2d direct schema, object/empty/multiple/unknown rejection,
     one-element tuple acceptance와 deep immutable ownership.
   - Built-in value materializer는 owning high-level action이 만든 single-transform resource만 받는다.
-- Evidence: `test/unit/actions/data/derived-data.test.js`, `scripts/package-consumer.js`, 각 high-level data action test.
+- Evidence: `test/unit/actions/data/derived-data.test.js`, `test/unit/actions/data/derived-consumers.test.js`,
+  `scripts/package-consumer.js`, 각 high-level data action test.
 
 ## `createTimeUnitData`
 

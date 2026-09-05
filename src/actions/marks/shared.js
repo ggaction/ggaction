@@ -2,7 +2,7 @@ import {
   resolveOptionalUserId,
   validateUserId
 } from "../../core/identifiers.js";
-import { findDataset } from "../../selectors/datasets.js";
+import { findDataset, requireMaterializedDataset } from "../../selectors/datasets.js";
 import { findLayer, hasLayer } from "../../selectors/layers.js";
 import { findSemanticScale } from "../../selectors/scales.js";
 import { resolveMarkPositionPolicy } from "../encodings/position/policies/index.js";
@@ -27,12 +27,7 @@ export function resolveMarkData(program, requested) {
     throw new Error("Mark creation requires data or a current dataset.");
   }
 
-  const dataset = findDataset(program, data);
-
-  if (dataset === undefined) {
-    throw new Error(`Unknown dataset "${data}".`);
-  }
-
+  const dataset = requireMaterializedDataset(program, data);
   return { data, dataset };
 }
 

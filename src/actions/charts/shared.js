@@ -1,7 +1,7 @@
 import { resolveOptionalUserId, validateUserId } from "../../core/identifiers.js";
 import { isPlainObject } from "../../core/immutable.js";
 import { validateOptionObject } from "../../core/validation.js";
-import { findDataset } from "../../selectors/datasets.js";
+import { findDataset, requireMaterializedDataset } from "../../selectors/datasets.js";
 import { isNominalValue } from "../../grammar/scales/fields.js";
 import { hasLayer } from "../../selectors/layers.js";
 
@@ -12,18 +12,17 @@ export function validateFacadeOptions(args, supported, operation) {
 export function resolveFacadeData(program, requested, operation) {
   if (requested !== undefined) {
     const id = validateUserId(requested, `${operation} dataset id`);
-    if (findDataset(program, id) === undefined) {
-      throw new Error(`Unknown dataset "${id}".`);
-    }
-    return id;
+    return requireMaterializedDataset(program, id).id;
   }
 
   const current = program.context.currentData;
   if (current !== undefined && findDataset(program, current) !== undefined) {
-    return current;
+    return requireMaterializedDataset(program, current).id;
   }
   const datasets = program.semanticSpec.datasets;
-  if (datasets.length === 1) return datasets[0].id;
+  if (datasets.length === 1) {
+    return requireMaterializedDataset(program, datasets[0].id).id;
+  }
   if (datasets.length > 1) {
     throw new Error(
       `${operation} requires data when multiple datasets are available.`

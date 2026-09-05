@@ -76,6 +76,12 @@ corresponding higher-level action when the library should materialize values:
 | `"timeUnit"` | `{ type, field, unit, as }` | `createTimeUnitData` |
 | `"window"` | `{ type, partitionBy, sortBy, operations }` | `createWindowData` |
 
+Chart facades and mark creation require materialized `values` on the selected
+dataset. Passing a definition-only dataset produces an error naming the dataset
+and explaining this requirement. Choosing it as the current dataset has the same
+result. Use a value-producing action from the table above to create data for the
+chart; consumers do not run transform definitions automatically.
+
 For regression, linear and polynomial transforms require `confidence` and
 `interval`; polynomial also requires `degree`. LOESS requires `span` and does
 not accept interval properties. Density `as` is a two-field tuple. Interval

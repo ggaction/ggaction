@@ -73,8 +73,10 @@ Parallel coordinates normally create their resource through
 `encodeParallelCoordinates` or `createParallelCoordinates`.
 
 `createDerivedData` stores immutable source and transform provenance only; it
-does not materialize values. Its public `DatasetTransform` union supports
-`filter`, `regression`, `density`, and `interval` objects. A bare object, empty
+does not materialize values. Chart facades and mark creation reject definition-only
+datasets with an error explaining that materialized values are required.
+Its public `DatasetTransform` union supports `filter`, `regression`, `density`,
+`interval`, `timeUnit`, `window`, and `bin2d` objects. A bare object, empty
 array, or multi-transform pipeline is invalid. See the runnable filter example and exact transform
 requirements in [Source and derived data](../../api/data/source-and-derived.md#create-derived-data).
 

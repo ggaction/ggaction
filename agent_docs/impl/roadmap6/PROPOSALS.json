@@ -102,7 +102,9 @@
             "B05"
           ],
           "scope": "Definition-only dataset과 materialized dataset을 구별한다. Scatter뿐 아니라 같은 consumer selection owner를 쓰는 진입점에 domain precondition을 적용한다.",
-          "acceptance": "createDerivedData 자체 계약 유지. 후속 action이 internal TypeError 대신 필요한 materialized data를 설명하고 원래 program/trace는 보존."
+          "acceptance": "createDerivedData 자체 계약 유지. 후속 action이 internal TypeError 대신 필요한 materialized data를 설명하고 원래 program/trace는 보존.",
+          "status": "implemented-and-verified",
+          "resultEvidence": "phase1/RESULTS.md#w2--definition-only-data-소비"
         },
         {
           "id": "R6-P1-W3",
@@ -759,7 +761,7 @@
       "id": "B05",
       "title": "미완성 derived data 소비의 internal TypeError",
       "kind": "reproduced-bug-or-contract-mismatch",
-      "status": "proposed",
+      "status": "implemented-and-verified",
       "primaryPhase": 1,
       "primaryWorkPackage": "R6-P1-W2",
       "relatedWorkPackages": [
@@ -772,7 +774,8 @@
       "recommended": "Definition-only dataset과 materialized dataset을 구별한다. Scatter뿐 아니라 같은 consumer selection owner를 쓰는 진입점에 domain precondition을 적용한다.",
       "acceptance": "createDerivedData 자체 계약 유지. 후속 action이 internal TypeError 대신 필요한 materialized data를 설명하고 원래 program/trace는 보존.",
       "evidence": "audit/probe-results.json: P18–P19",
-      "disposition": "implementation-or-explicit-contract-decision-proposed"
+      "disposition": "Shared chart and mark data consumer precondition verified; definition registration and internal rebinding preserved. Phase 1 X review pending.",
+      "resultEvidence": "phase1/RESULTS.md#w2--definition-only-data-소비"
     },
     {
       "id": "B06",

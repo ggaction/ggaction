@@ -31,6 +31,10 @@ bar may inherit `mean`, while bin, stack, offset and grouped color layout are no
 Incompatible field/scale pairs remain absent, and ambiguity is an error. Passing `data` explicitly opts into
 independent assembly and does not inherit position encodings.
 
+Every ordinary mark requires materialized `values` on its selected dataset, including an empty array. A definition-only
+dataset from `createDerivedData` is rejected with an error explaining the required value-producing data action.
+Definition registration and internal layer rebinding remain available without automatic transform execution.
+
 ## `createPointMark`
 
 - Signature: `createPointMark({ id?, data?, shape?, fill?, opacity?, stroke?, strokeWidth? } = {})`

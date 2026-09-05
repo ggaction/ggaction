@@ -59,7 +59,7 @@ Primary owner는 누락 방지를 위한 책임 단위이며, 관련 작업이 �
 - 수정·추가 방향: Definition-only dataset과 materialized dataset을 구별한다. Scatter뿐 아니라 같은 consumer selection owner를 쓰는 진입점에 domain precondition을 적용한다.
 - 완료 검증: createDerivedData 자체 계약 유지. 후속 action이 internal TypeError 대신 필요한 materialized data를 설명하고 원래 program/trace는 보존.
 - 근거: audit/probe-results.json: P18–P19. [원래 조사](audit/REPORT.md)
-- 처분: 구현 또는 명시적인 계약 유지·migration 결정의 제안. 아직 완료·승인 상태가 아니다.
+- 처분: 공통 selector에서 chart/mark의 materialized values를 검증하도록 교정했다. 정의·internal rebind·빈 배열·불변성을 검증했고 Phase 1 X 검토를 기다린다. [실행 증거](phase1/RESULTS.md#w2--definition-only-data-소비)
 
 ### B06 — Point/Bar stroke:false의 runtime·type·prose 불일치
 

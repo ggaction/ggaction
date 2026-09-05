@@ -7,6 +7,8 @@ Basic Chart facade는 existing domain action을 wrapped child로 조합하는 us
 ## Shared contract
 
 - Data resolution: explicit existing ID → valid current dataset → one unique dataset. Ambiguity is an error.
+- The selected dataset must have materialized `values`. A definition-only derived dataset raises a domain error;
+  the facade does not execute its transform or fall back to a different dataset.
 - Omitted ID uses one stable facade role. Occupied default requires an explicit ID and never creates a numbered ID.
 - Field strings normalize to `{ field }`; objects reuse the corresponding child encoding vocabulary.
 - Position target and coordinate are facade-owned. A nested channel cannot override them.
