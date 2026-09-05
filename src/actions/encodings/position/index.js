@@ -4,6 +4,7 @@ import {
 } from "../../../materialization/marks/index.js";
 import { resolvePositionEncoding } from "./resolve.js";
 import { findLayer } from "../../../selectors/layers.js";
+import { findSemanticScale } from "../../../selectors/scales.js";
 import { applyPositionSemantics } from "./apply.js";
 import {
   applyEncodingScale,
@@ -26,7 +27,8 @@ function encodePosition(program, channel, args, operation) {
     bin,
     aggregate,
     stack,
-    weight
+    weight,
+    companion
   } = resolvePositionEncoding(program, channel, args, operation);
 
   let next = program
@@ -64,6 +66,22 @@ function encodePosition(program, channel, args, operation) {
     scale.id,
     target
   );
+
+  if (companion !== undefined) {
+    const encoding = companion.encoding;
+    const storedScale = findSemanticScale(next, encoding.scale);
+    next = next[companion.channel === "x" ? "encodeX" : "encodeY"]({
+      target,
+      field: encoding.field,
+      fieldType: encoding.fieldType,
+      aggregate: encoding.aggregate,
+      stack: encoding.stack,
+      scale: {
+        id: encoding.scale,
+        ...(storedScale?.zero === undefined ? { zero: encoding.stack !== null } : {})
+      }
+    });
+  }
 
   if (layer.mark.type === "bar") {
     const updated = findLayer(next, target);

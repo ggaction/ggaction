@@ -1126,9 +1126,10 @@ Assign a non-negative finite logical Canvas width to a rule mark.
 encodeBarWidth({ band?, pixels?, target? })
 ```
 
-Set aggregate-bar band occupancy or a fixed logical-pixel width and materialize
-concrete rectangles. The modes are mutually exclusive. The first omitted mode
-defaults to `band: 0.72`; later omission retains the current mode.
+Set aggregate or ranged bar width before or after its positions are complete.
+Incomplete bars retain the width without creating items; histogram bins do not
+accept it. The modes are mutually exclusive. The first omitted mode defaults to
+`band: 0.72`; later omission retains the current mode.
 [Constant appearance](../api/appearance.md)
 
 ### `createRegression`

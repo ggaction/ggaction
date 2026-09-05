@@ -31,6 +31,14 @@ const encodeBarWidth = action(
     const grouped = layout === "group";
     const offsetChannel = resolveBarOffsetChannel(layer);
     const grain = resolveBarGrain(layer);
+    if (grain === undefined && this.markConfigs[target]?.boxPlot === undefined && (
+      layer.encoding?.x === undefined || layer.encoding?.y === undefined
+    )) {
+      return this._withMarkConfig(target, { ...this.markConfigs[target], barWidth: width });
+    }
+    if (grain === BAR_GRAINS.histogram) {
+      throw new Error("encodeBarWidth requires an aggregate or ranged category slot, not histogram bins.");
+    }
     if (grain === BAR_GRAINS.ranged) {
       return this._withMarkConfig(target, { ...this.markConfigs[target], barWidth: width })
         .rematerializeBarMark({ id: target });

@@ -43,6 +43,5 @@ Source schema API는 이번 계약에 포함하지 않는다. Temporal consumer�
 
 ## Incomplete bars
 
-Bar width-first와 measure-first를 유효한 partial state로 보존한다. Missing field/invalid value는 즉시 거부하고
-geometry는 필요한 role pair가 완성될 때 기존 owner가 생성한다. Width·aggregate 기본값과 histogram/Box 전용
-grain 제약은 유지한다. 최종 의미와 graphics는 반대 작성 순서와 같고 trace는 실제 순서를 기록한다.
+구현되어 Planned inventory에서 제거했다. 현재 동작과 검증은
+[position 순서 계약](../current/ENCODINGS.md#encodex)과 [width 계약](../current/ENCODINGS.md#encodebarwidth)이 소유한다.

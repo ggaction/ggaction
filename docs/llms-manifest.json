@@ -1181,8 +1181,8 @@
         "errors-and-limitations",
         "related"
       ],
-      "bytes": 4171,
-      "sha256": "90079069edbad258558639168075b660bd49e650007a5dfbd4b2123f20c49b5a"
+      "bytes": 4845,
+      "sha256": "7a9fc14e0c8a21788a8bc3e2686344747177c7ac71853d4ebc4285a36df6dcef"
     },
     {
       "order": 75,
@@ -1286,8 +1286,8 @@
         "errors-and-limitations",
         "related"
       ],
-      "bytes": 4246,
-      "sha256": "ca37b9500669eabe5b0aa79a008a307ae4af0caae4d6d51cc91520d2253c6eba"
+      "bytes": 4356,
+      "sha256": "4748c678c3ab63505da2be286c87cfe94506c0eb6ff5493d35ad7b2eef7efe26"
     },
     {
       "order": 82,
@@ -1329,8 +1329,8 @@
         "encodebarwidth-band-pixels-target",
         "related"
       ],
-      "bytes": 3173,
-      "sha256": "c92fb4f05cea0e156c23faffaa5520065cdb89715710c060a858645b2cd9de00"
+      "bytes": 3573,
+      "sha256": "c8335d4b6e563ec7556e9e3664dd6519c856be65d9434f83021babfa318e2b3e"
     },
     {
       "order": 85,
@@ -1890,8 +1890,8 @@
         "encodebarwidth",
         "related"
       ],
-      "bytes": 14431,
-      "sha256": "6beb0b0cf114488e06963b7de7cd30831535a9c0702443cc6c346ea7e62ecd78"
+      "bytes": 14498,
+      "sha256": "eb039c12bac7e9077edeaf512b3ec654e26758cdc42ebb679b920b41692cae11"
     },
     {
       "order": 117,

@@ -28,7 +28,8 @@ Primary owner는 누락 방지를 위한 책임 단위이며, 관련 작업이 �
 - 수정·추가 방향: Facade에서 x/y category·measure를 함께 preflight하고 기존 position owner를 호출한다. 수평 temporal category type을 공통 role union으로 표현한다. Mean default는 유지한다.
 - 완료 검증: 가로/세로 shorthand, explicit aggregate, temporal category가 runtime와 strict TS에서 일치. 잘못된 양쪽 category/measure 조합은 명확히 거부.
 - 근거: audit/probe-results.json: P35–P37. [원래 조사](audit/REPORT.md)
-- 처분: W1에서 facade의 양방향 shorthand를 교정하고 검증했다. P37의 lower measure-first 작성은 D14 / R6-P2-W5에 남아 있으므로 B01 전체는 아직 닫지 않는다. [실행 증거](phase1/RESULTS.md#w1--bar-pair-role와-temporal-선언)
+- 처분: Phase 1 W1의 facade 교정과 Phase 2 W5의 lower measure-first 교정을 모두 구현·검증했다.
+  [현재 실행 증거](phase2/RESULTS.md#w5--bar-incomplete-authoring). Phase 2 X 승인은 남아 있다.
 
 ### B02 — MCP Area의 빈 chart 거짓 완료
 

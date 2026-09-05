@@ -97,6 +97,12 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
   category x에서는 거부된다.
 - Effect: x encoding과 scale을 semantic state에 저장하고 scale 및 compatible mark/guide consumers를
   rematerialize한다.
+- Bar order independence: quantitative measure를 category보다 먼저 쓰면 field/type/scale과 명시적
+  aggregate/stack만 저장한다. 생략한 aggregate/stack은 아직 결정하지 않으며 graphic items는 비어 있다.
+  반대 category가 완성되면 같은 Bar policy와 wrapped position action으로 mean/null을 적용한다.
+  Histogram의 y-first는 같은 field의 binned x가 완성될 때 count/zero로 결정한다. 명시적 집계·stack·scale
+  설정은 보존하며 잘못된 field/type/value는 미완성 상태에서도 즉시 거부한다. 두 위치가 모두 있는
+  지원 불가 pair는 거부한다. Scale의 자동 zero 결정도 role이 완성될 때 적용한다.
 - Line order independence: direct quantitative line은 y가 아직 없어도 x semantic과 scale을 저장한다.
   `encodeY`가 compatible quantitative pair를 완성할 때 materialize하며 y→x와 동일한 final
   layer/resolved scale/graphic을 만든다. Aggregate y line은 temporal x 또는 binned quantitative x를
@@ -215,6 +221,8 @@ type AggregateOperation =
 - `bin`: 현재 y에서는 지원되지 않는다.
 - Effect: y semantic, scale, final bar/line aggregate grain을 저장하고 mark geometry와
   existing guides를 rematerialize한다.
+- Bar의 measure-first·histogram y-first는 위 `encodeX`의 공통 order contract를 따른다. 생략 field는
+  binned x가 이미 있을 때만 추론하며, 위치가 없으면 field를 명시해야 한다.
 - Line order independence: direct quantitative line은 x가 아직 없어도 y semantic과 scale을 저장하고,
   compatible x가 완성되면 x→y와 동일한 final line을 materialize한다. Complete direct quantitative pair는
   row grain을 보존하고 x ascending/source-order tie로 정렬하며 같은 x의 y를 암묵적으로 합계 내지 않는다.
@@ -1293,13 +1301,18 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 - Complete aggregate/ranged bar는 action 호출 전에도 implicit `{ band: 0.72 }`로 즉시 materialize된다.
   첫 assignment에서 width mode를 생략하면 그 기본값을 config에 저장하고, reassignment에서 생략하면 current
   mode와 value를 유지한다. Group slot spacing은 directional offset action이 소유한다.
-- `target`: optional complete ordinal aggregate 또는 categorical ranged bar ID. Group layout은 matching offset를
+- `target`: optional Bar ID. 위치가 없는 valid partial Bar도 받는다. 완성된 group layout은 matching offset를
   추가로 요구한다.
 - Effect: graphical mark config에 exactly one width mode를 저장하고 centered rect x/width를
   rematerialize한다. Band width는 Canvas resize에 반응하고 pixel width는 고정된다. Slot보다 큰 explicit
   pixel width와 overlap은 허용한다.
-- 오류: aggregate 또는 ranged category/measure pair가 완성되지 않으면 거부한다. Group layout은 matching
-  color/directional offset이 완성되지 않으면 거부한다.
+- 위치가 미완성일 때는 기존 barWidth config만 저장하고 items를 생성하지 않는다. 나중에 category/measure
+  또는 ranged pair가 완성되면 저장된 width를 적용한다. 위치 제거는 items를 비우고 width를 보존한다.
+- Deferred Box는 전용 `createBoxPlot({ width })` owner를 사용하며, 기존처럼 range가 완성된 뒤에만
+  lower `encodeBarWidth`를 받는다. Box의 미완성 measure에 자동 aggregate를 추가하지 않는다.
+- 오류: 잘못된 width는 즉시 거부한다. Histogram bin은 category slot width를 지원하지 않으며 width를 먼저
+  저장한 뒤 histogram을 완성하는 마지막 position action도 거부한다. 완성된 group layout은 matching
+  color/directional offset이 없으면 거부한다.
 - Coverage: aggregate/grouped/ranged bar tests가 implicit default, explicit value, invalid range, both orientations와
   resize geometry를 검증한다.
 
@@ -1322,7 +1335,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
   - ✅ Covered: explicit mode switching, omitted-mode retention와 immutable concrete rematerialization.
 - Resize/order
   - ✅ Covered: band responsive, pixels fixed, width/padding action-order convergence와 2× PNG parity.
-- Evidence: grouped-bar width and chart reference tests.
+- Evidence: grouped-bar width and chart reference tests, `test/unit/actions/encodings/bar-authoring-order.test.js`.
 
 ## `encodeText`
 

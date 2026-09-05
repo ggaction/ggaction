@@ -130,6 +130,20 @@ export function resolvePositionEncoding(program, channel, args, operation) {
     ? xEncoding.field
     : args.field;
   const datum = args.datum;
+  const usesField = layer.mark.type !== "rule" || hasField;
+  if (usesField && (typeof field !== "string" || field.length === 0)) {
+    throw new TypeError(`${operation} field must be a non-empty string.`);
+  }
+  // A missing field is invalid even before the Bar's measure/category role is known.
+  if (layer.mark.type === "bar" && program.markConfigs[target]?.boxPlot === undefined) {
+    if (fieldType === "quantitative" && dataset.values.length > 0 &&
+      !dataset.values.some(row => Object.hasOwn(row, field))) {
+      throw new Error(`${operation} field "${field}" does not exist in the dataset.`);
+    }
+    if (fieldType === "quantitative") {
+      validateAggregateFieldValues(dataset.values, field, fieldType);
+    } else readScaleField(dataset.values, field, fieldType);
+  }
   const effectiveArgs = { ...args };
   const directQuantitativeArcTheta =
     layer.mark.type === "arc" &&
@@ -159,11 +173,6 @@ export function resolvePositionEncoding(program, channel, args, operation) {
     fieldType,
     field
   });
-  const usesField = layer.mark.type !== "rule" || hasField;
-  if (usesField && (typeof field !== "string" || field.length === 0)) {
-    throw new TypeError(`${operation} field must be a non-empty string.`);
-  }
-
   const aggregateOutput = isAggregate(policy.aggregate) && !(
     layer.mark.type === "arc" && channel === "theta"
   );
@@ -180,7 +189,9 @@ export function resolvePositionEncoding(program, channel, args, operation) {
       ? program.markConfigs[target]?.boxPlot !== undefined && fieldType === "quantitative"
         ? { nice: true, zero: false }
         : fieldType === "quantitative"
-        ? policy.bin !== undefined || policy.stack === null
+        ? policy.bin === undefined && policy.stack === undefined
+          ? { nice: true }
+          : policy.bin !== undefined || policy.stack === null
           ? { nice: true, zero: false }
           : { nice: true, zero: true }
         : fieldType === "temporal"

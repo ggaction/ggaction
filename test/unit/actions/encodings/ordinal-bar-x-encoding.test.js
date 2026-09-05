@@ -100,10 +100,9 @@ test("supports explicit ordinal scale identity, order, and reversed range", () =
 test("validates ordinal bar x options before changing the program", () => {
   const program = barProgram();
 
-  assert.throws(
-    () => program.encodeX({ field: "year" }),
-    /requires bin/
-  );
+  const pending = program.encodeX({ field: "year" });
+  assert.equal(pending.semanticSpec.layers[0].encoding.x.aggregate, undefined);
+  assert.equal(pending.graphicSpec.objects.bars.items.length, 0);
   assert.throws(
     () => program.encodeX({ field: "year", fieldType: "ordinal", bin: {} }),
     /does not support bin/

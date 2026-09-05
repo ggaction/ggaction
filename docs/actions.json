@@ -4198,7 +4198,7 @@
       "name": "encodeBarWidth",
       "layer": "user-facing",
       "domain": "encodings",
-      "summary": "Set aggregate-bar band occupancy or a fixed logical-pixel width and materialize concrete rectangles.",
+      "summary": "Set aggregate or ranged bar width before or after its positions are complete.",
       "signature": "encodeBarWidth(options?: BarWidthOptions): ChartProgram;",
       "intents": [
         "encode bar width",

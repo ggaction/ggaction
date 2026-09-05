@@ -114,10 +114,9 @@ test("supports a non-nice automatic binned domain", () => {
 test("validates bar bin and x scale options before changing the program", () => {
   const program = barProgram();
 
-  assert.throws(
-    () => program.encodeX({ field: "Displacement" }),
-    /requires bin/
-  );
+  const pending = program.encodeX({ field: "Displacement" });
+  assert.equal(pending.semanticSpec.layers[0].encoding.x.aggregate, undefined);
+  assert.equal(pending.graphicSpec.objects.bars.items.length, 0);
   assert.throws(
     () => program.encodeX({ field: "Displacement", bin: true }),
     /plain object/

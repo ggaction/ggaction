@@ -51,7 +51,7 @@ program.encodeBarWidth({ band: 0.72 });
 | --- | --- | --- |
 | `band` | finite number greater than `0` and at most `1` | first assignment: `0.72` |
 | `pixels` | positive finite logical Canvas pixels | none |
-| `target` | aggregate or ranged bar mark ID | current mark |
+| `target` | bar mark ID, including an incomplete bar | current mark |
 
 `band` and `pixels` are mutually exclusive. Before this action is called,
 complete aggregate and ranged bars already use the same implicit `0.72` band
@@ -60,11 +60,17 @@ current mode and value. Band widths respond to Canvas resizing; pixel widths
 remain fixed in logical coordinates and do not change with PNG `pixelRatio`.
 An explicit pixel width may be wider than its slot, allowing intentional overlap.
 
-The action requires a complete category/measure aggregate bar or a complete
-categorical ranged bar. Group layout also requires matching color and directional
+Before positions are complete, the action saves the width without creating items.
+A later position assignment applies it to the completed aggregate or ranged bar.
+Removing a required position clears items and retains the width for reauthoring.
+Histogram bins do not accept category-slot width; completing a histogram with a
+saved width fails. Group layout requires matching color and directional
 offset semantics. Thickness is the category bandwidth times `band` for stack, fill,
 overlay, diverging, and ranged bars, or offset bandwidth times `band` for
 group. Each bar is centered in its slot; missing cells are omitted.
+
+A deferred Box plot keeps its dedicated `createBoxPlot({ width })` option.
+Its lower `encodeBarWidth` override requires the Box's range to be complete.
 
 `band` is graphical layout rather than chart meaning, so it is not added to
 `semanticSpec`. The action stores immutable materialization config and writes

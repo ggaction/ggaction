@@ -21,7 +21,7 @@ title: Appearance Encodings
 | `encodeStroke` | `encodeStroke({ value: "#334155" })` | Current rule mark | Constant concrete line color |
 | `encodeStrokeWidth` | `encodeStrokeWidth({ value: 3 })` | Current rule mark | Constant concrete line width |
 | `encodeStrokeWidth` | `encodeStrokeWidth({ field: "weight" })` | Current line/rule; quantitative scale; width range `[1, 8]` | Field-driven rule items or line series |
-| `encodeBarWidth` | `encodeBarWidth()` | Current aggregate bar; first assignment uses band `0.72` | Concrete rectangles |
+| `encodeBarWidth` | `encodeBarWidth()` | Current bar; first assignment uses band `0.72` | Saved width; rectangles when positions are complete |
 | `selectMarks` | `selectMarks({ field: "Horsepower", op: "max" })` | Current or unique mark; deterministic selection ID | Reusable semantic final-item selection |
 | `editMarkSelection` | `editMarkSelection({ field: "Horsepower", op: "min" })` | Current or unique stored selection | Same ID/target with a replaced selector |
 | `highlightMarks` | `highlightMarks({ select: { field: "Horsepower", op: "max" } })` | Current point/bar/path/rule; red accent; selected-last | Concrete selected-item emphasis |
@@ -55,9 +55,10 @@ Angle is a scale-free semantic encoding for point and Tick glyphs; circles
 accept it as a visual no-op.
 Size cannot be combined with a constant radius. Remove that assignment with
 `removePointRadius()` before encoding size. A constant `editPointMark`
-shape cannot be combined with field-driven `encodeShape`. Bar width
-requires complete ordinal x, aggregate y, and color semantics; group additionally
-requires matching xOffset semantics.
+shape cannot be combined with field-driven `encodeShape`. Bar width can be
+assigned before positions. Completed aggregate or ranged bars use that width;
+group layout requires matching color and directional offset semantics.
+Histogram bins reject a saved category-slot width.
 Ambiguous targets, duplicate inferred selection IDs, incompatible item-grain
 selectors, and point-inapplicable highlight options fail before creating partial
 selection or appearance state. Each supported mark accepts only the style

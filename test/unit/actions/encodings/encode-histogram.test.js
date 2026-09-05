@@ -113,7 +113,7 @@ test("delegates validation to aggregate and child actions", () => {
   assert.deepEqual(normalized.resolvedScales.y.domain, [0, 1]);
   assert.throws(
     () => program.encodeHistogram({ field: "missing" }),
-    /finite number/
+    /field "missing" does not exist/
   );
   assert.throws(
     () => program.encodeHistogram({ field: "Displacement", xScale: null }),

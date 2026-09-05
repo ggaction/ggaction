@@ -1179,7 +1179,7 @@
       "domain": "encodings",
       "status": "implemented",
       "lifecycle": "Assignment",
-      "update": "Same action replaces the band fraction",
+      "update": "Same action replaces band or pixel width; valid incomplete bars retain the assignment",
       "audit": "Reassignment — Implemented",
       "coverage": {
         "contract": "complete",
@@ -3210,17 +3210,6 @@
       "contract": {
         "file": "agent_docs/contract/planned/SHARED_AUTHORING.md",
         "anchor": "inference"
-      }
-    },
-    {
-      "id": "incomplete-bar-authoring",
-      "name": "Bar width and measure-first incomplete intent",
-      "kind": "behavior",
-      "status": "planned",
-      "readiness": "accepted",
-      "contract": {
-        "file": "agent_docs/contract/planned/SHARED_AUTHORING.md",
-        "anchor": "incomplete-bars"
       }
     }
   ],

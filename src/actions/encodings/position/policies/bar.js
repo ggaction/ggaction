@@ -4,12 +4,14 @@ import {
 } from "../../../../grammar/aggregate.js";
 import {
   BAR_ORIENTATIONS,
+  BAR_GRAINS,
+  resolveBarGrain,
   resolveBarOffsetChannel,
   resolveBarOrientation
 } from "../../../../grammar/bars/policy.js";
 import { resolveBin, validateStack } from "./common.js";
 
-export function resolveBarPositionPolicy({
+function resolveBarChannelPolicy({
   program,
   layer,
   channel,
@@ -72,17 +74,12 @@ export function resolveBarPositionPolicy({
     if (pendingBoxRange && args.aggregate === undefined) {
       return { bin, aggregate, stack };
     }
-    if (aggregate === undefined) {
-      throw new Error(
-        channel === "x"
-          ? "Quantitative bar x encoding requires bin or aggregate."
-          : "Bar y encoding requires a binned quantitative or ordinal x category, temporal x category, or aggregate."
-      );
+    stack = Object.hasOwn(args, "stack") ? args.stack : opposite === undefined ? undefined : null;
+    if (aggregate !== undefined) {
+      aggregate = validateAggregate(aggregate);
+      validateAggregateFieldType(aggregate, fieldType);
     }
-    stack = Object.hasOwn(args, "stack") ? args.stack : null;
-    aggregate = validateAggregate(aggregate);
-    validateAggregateFieldType(aggregate, fieldType);
-    stack = validateStack(stack, `Bar ${channel} encoding`);
+    if (stack !== undefined) stack = validateStack(stack, `Bar ${channel} encoding`);
     if (stack === "center") {
       throw new Error("Centered bars are not supported.");
     }
@@ -92,13 +89,45 @@ export function resolveBarPositionPolicy({
     );
   }
 
+  return { bin, aggregate, stack };
+}
+
+export function resolveBarPositionPolicy(context) {
+  const { program, layer, channel, field, fieldType } = context;
+  const policy = resolveBarChannelPolicy(context);
+  const oppositeChannel = channel === "x" ? "y" : "x";
+  const opposite = layer.encoding?.[oppositeChannel];
+  const pendingBoxRange = program.markConfigs[layer.id]?.boxPlot !== undefined;
   const candidate = {
     ...layer,
     encoding: {
       ...layer.encoding,
-      [channel]: { field, fieldType, bin, aggregate, stack }
+      [channel]: { field, fieldType, ...policy }
     }
   };
+  // The same channel policy owns a measure whether it is authored first or last.
+  // Absence of an aggregate/stack is sufficient to represent an unresolved role.
+  let companion;
+  if (
+    !pendingBoxRange && resolveBarGrain(layer) === undefined &&
+    opposite?.fieldType === "quantitative" && opposite.bin === undefined
+  ) {
+    const resolved = resolveBarChannelPolicy({
+      ...context,
+      layer: candidate,
+      channel: oppositeChannel,
+      field: opposite.field,
+      fieldType: opposite.fieldType,
+      args: opposite
+    });
+    candidate.encoding[oppositeChannel] = { ...opposite, ...resolved };
+    if (
+      (opposite.aggregate === undefined && resolved.aggregate !== undefined) ||
+      opposite.stack !== resolved.stack
+    ) {
+      companion = { channel: oppositeChannel, encoding: candidate.encoding[oppositeChannel] };
+    }
+  }
   const orientation = resolveBarOrientation(candidate);
   if (opposite !== undefined && orientation === undefined && !pendingBoxRange) {
     throw new Error(
@@ -116,5 +145,11 @@ export function resolveBarPositionPolicy({
       `${orientation} bars require ${expectedOffset}; remove the incompatible ${incompatibleOffset} encoding.`
     );
   }
-  return { bin, aggregate, stack };
+  if (
+    program.markConfigs[layer.id]?.barWidth !== undefined &&
+    resolveBarGrain(candidate) === BAR_GRAINS.histogram
+  ) {
+    throw new Error("A saved Bar width requires an aggregate or ranged category slot and cannot be applied to histogram bins.");
+  }
+  return companion === undefined ? policy : { ...policy, companion };
 }

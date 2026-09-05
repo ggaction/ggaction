@@ -196,7 +196,6 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | behavior | Explicit tuple identity and per-series appearance | accepted | [Open](planned/SHARED_AUTHORING.md#series-identity) |
 | behavior | Scalar style conflicts, assignment replacement and facade forwarding | accepted | [Open](planned/SHARED_AUTHORING.md#appearance) |
 | behavior | Explicit temporal input units and serializable group opt-out | accepted | [Open](planned/SHARED_AUTHORING.md#inference) |
-| behavior | Bar width and measure-first incomplete intent | accepted | [Open](planned/SHARED_AUTHORING.md#incomplete-bars) |
 
 ## Internal inventories
 

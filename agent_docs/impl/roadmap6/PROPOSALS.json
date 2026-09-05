@@ -228,7 +228,9 @@
           ],
           "scope": "Bar width와 measure-first encoding 중 geometry 없이 검증 가능한 intent를 보존한다. Missing positions 완료 시 원래 requested width와 role을 적용한다.",
           "acceptance": "width-first/last, category-first/measure-first의 semantic/graphic 동등성. Invalid field/width는 즉시 거부, placeholder graphics 없음.",
-          "contractEvidence": "phase2/CONTRACT_REVIEW.md"
+          "contractEvidence": "phase2/CONTRACT_REVIEW.md",
+          "implementationStatus": "implemented-verified",
+          "resultEvidence": "phase2/RESULTS.md#w5--bar-incomplete-authoring"
         }
       ],
       "activity": "implementation",
@@ -718,7 +720,7 @@
       "id": "B01",
       "title": "가로 Bar shorthand의 순서 의존 실패",
       "kind": "reproduced-bug-or-contract-mismatch",
-      "status": "partially-implemented",
+      "status": "implemented-verified",
       "primaryPhase": 1,
       "primaryWorkPackage": "R6-P1-W1",
       "relatedWorkPackages": [
@@ -735,8 +737,8 @@
       "recommended": "Facade에서 x/y category·measure를 함께 preflight하고 기존 position owner를 호출한다. 수평 temporal category type을 공통 role union으로 표현한다. Mean default는 유지한다.",
       "acceptance": "가로/세로 shorthand, explicit aggregate, temporal category가 runtime와 strict TS에서 일치. 잘못된 양쪽 category/measure 조합은 명확히 거부.",
       "evidence": "audit/probe-results.json: P35–P37",
-      "disposition": "Facade corrected and verified; lower measure-first P37 remains with D14 / R6-P2-W5.",
-      "resultEvidence": "phase1/RESULTS.md#w1--bar-pair-role와-temporal-선언"
+      "disposition": "Facade and lower measure-first paths corrected and verified; Phase 2 X approval remains.",
+      "resultEvidence": "phase2/RESULTS.md#w5--bar-incomplete-authoring"
     },
     {
       "id": "B02",
@@ -1140,7 +1142,7 @@
       "id": "D14",
       "title": "Order와 incomplete width의 부분 지원",
       "kind": "design-issue",
-      "status": "proposed",
+      "status": "partially-implemented",
       "primaryPhase": 2,
       "primaryWorkPackage": "R6-P2-W5",
       "relatedWorkPackages": [
@@ -1157,7 +1159,8 @@
       "recommended": "Bar width와 measure-first encoding 중 geometry 없이 검증 가능한 intent를 보존한다. Missing positions 완료 시 원래 requested width와 role을 적용한다.",
       "acceptance": "width-first/last, category-first/measure-first의 semantic/graphic 동등성. Invalid field/width는 즉시 거부, placeholder graphics 없음.",
       "evidence": "audit/REPORT.md: D14",
-      "disposition": "implementation-or-explicit-contract-decision-proposed"
+      "disposition": "Bar incomplete width and measure authoring verified in Phase 2 W5; non-Cartesian ordering remains in Phase 4 W4.",
+      "resultEvidence": "phase2/RESULTS.md#w5--bar-incomplete-authoring"
     },
     {
       "id": "D15",

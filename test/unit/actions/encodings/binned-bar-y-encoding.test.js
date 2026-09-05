@@ -147,13 +147,13 @@ test("validates histogram y prerequisites and policies", () => {
 
   assert.throws(
     () => withoutX.encodeY(),
-    /ordinal x category, temporal x category, or aggregate/
+    /field must be a non-empty string/
   );
 
   const program = histogramProgram();
   assert.throws(
     () => program.encodeY({ field: "Other" }),
-    /must match the binned x field/
+    /field "Other" does not exist/
   );
   assert.throws(
     () => program.encodeY({ fieldType: "temporal" }),

@@ -45,7 +45,7 @@
 ### R6-P2-W5 — 유효한 incomplete intent 보존
 
 - 상대 규모: M. 시간 약속이 아닌 변경 구조 비교다.
-- 연결: D14, B01의 lower measure-first 관측 P37. Phase 1에서 facade 실패만 교정했고 이 관측은 아직 미완료다.
+- 연결: D14, B01의 lower measure-first 관측 P37. [W5 구현·검증 결과](RESULTS.md#w5--bar-incomplete-authoring)를 기록했다.
 - 작업: Bar width와 measure-first encoding 중 geometry 없이 검증 가능한 intent를 보존한다. Missing positions 완료 시 원래 requested width와 role을 적용한다.
 - 완료 조건: width-first/last, category-first/measure-first의 semantic/graphic 동등성. Invalid field/width는 즉시 거부, placeholder graphics 없음.
 
