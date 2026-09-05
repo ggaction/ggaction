@@ -21,6 +21,7 @@ const ENCODING_PATHS = Object.freeze([
   "encoding.color.layout",
   "encoding.color.aggregate",
   "encoding.group.fields",
+  "encoding.group.inferredFrom",
   ...["x", "y", "x2", "y2", "theta", "color"].map(channel =>
     `encoding.${channel}.temporalUnit`
   ),
@@ -49,7 +50,7 @@ const ENTITY_PATHS = Object.freeze({
     collection: "layers",
     removableContainers: new Set(
       [...ENCODING_CHANNELS.map(channel => `encoding.${channel}`),
-        "encoding.parallel"]
+        "encoding.parallel", "layout"]
     ),
     properties: new Set([
       "data",
@@ -57,6 +58,8 @@ const ENTITY_PATHS = Object.freeze({
       "coordinate",
       "transform",
       "mark.type",
+      "mark.missing",
+      "layout.mode",
       ...ENCODING_PATHS
     ])
   },

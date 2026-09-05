@@ -14210,6 +14210,13 @@ also support `encoding.y2`, field-driven `encoding.shape`, and scale-free
 extension-level building blocks; the corresponding chart-authoring actions are
 introduced separately when their complete materialization behavior is ready.
 
+Series policy leaves are `layer[id].layout.mode` (`group`, `stack`, `fill`,
+`overlay`, `diverging`, or `center`), `layer[id].mark.missing` (`error` or `break`),
+and `layer[id].encoding.group.inferredFrom` (`color` or `offset`). These leaves
+record decisions only: they do not lay out marks or split paths. Extension
+authors must materialize concrete graphics explicitly. Removing `layer[id].layout`
+removes its policy container without changing graphics.
+
 ## `createGraphics({ id, type, length?, parent?, before?, after? })`
 
 Creates one concrete object, a homogeneous drawable collection, or an empty

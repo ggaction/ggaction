@@ -181,3 +181,14 @@ D14는 Phase 2의 width/order 교정과 이번 theta/legend 부분을 함께 대
 
 사용자가 `encodeLayout`을 `layoutSeries`로 바꾸는 결정까지 포함해 P4-C01–C09를 승인했다.
 Baseline source/JSON은 당시 이름의 부재 관측을 그대로 보존한다. 현재 계약·후보·미래 target calls만 새 이름을 사용한다.
+
+## 승인 후 비시각 primitive 준비
+
+layoutSeries 이름 변경을 승인 기록과 Planned에 반영했다. 신규 direct 4개와 기존 capability 5개를 등록했고
+catalog/contract/navigation 검증 22/22를 통과했다. Public method와 high-level 옵션은 아직 미구현이다.
+
+시각 target에 정확한 의미 상태를 기록하기 위해 editSemantic의 layer.layout.mode, layer.mark.missing,
+encoding.group.inferredFrom leaves와 layout container 제거를 추가했다. Closed vocabulary·immutable 저장만 수행하며
+그래픽 배치와 segmentation은 실행하지 않는다. Current primitive 계약·typed state·architecture·공개 extension 문서와
+생성 산출물을 함께 갱신했다. Focused 44/44, 정상 누적 **2588/2588**, fail/skip 0을 통과했다.
+이는 V 승인 전 허용된 비시각 준비이며 layoutSeries/createAreaPlot의 구현 완료가 아니다.

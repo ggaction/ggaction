@@ -49,6 +49,15 @@ export function validateLayerSemanticValue(
   if (property === "mark.type" && !MARK_TYPES.includes(value)) {
     throw new Error(`Unknown mark type "${value}".`);
   }
+  if (property === "mark.missing" && !["error", "break"].includes(value)) {
+    throw new Error(`Unsupported area missing policy "${value}".`);
+  }
+  if (property === "layout.mode" && !COLOR_LAYOUTS.includes(value)) {
+    throw new Error(`Unsupported series layout "${value}".`);
+  }
+  if (property === "encoding.group.inferredFrom" && !["color", "offset"].includes(value)) {
+    throw new Error(`Unsupported group inference origin "${value}".`);
+  }
   if (property === "source") {
     validateLayerSource(program, parsed, value, sourceMarkTypes);
   }

@@ -114,9 +114,9 @@ type DashScale = {
 type DatasetProperty = "source" | "transform" | "values";
 type ScaledEncodingChannel = "x" | "y" | "y2" | "xOffset" | "theta" | "radius" | "color" | "strokeDash" | "size" | "shape" | "opacity";
 type LayerProperty =
-  | "data" | "coordinate" | "transform" | "mark.type"
+  | "data" | "coordinate" | "transform" | "mark.type" | "mark.missing" | "layout.mode"
   | `encoding.${ScaledEncodingChannel}.${"field" | "datum" | "fieldType" | "scale"}`
-  | `encoding.group.${"field" | "datum" | "fieldType"}`
+  | `encoding.group.${"field" | "datum" | "fieldType" | "inferredFrom"}`
   | "encoding.x.bin.maxBins" | "encoding.y.aggregate" | "encoding.y.stack";
 type ScaleProperty = "type" | "domain" | "range" | "nice" | "zero";
 type GuideProperty =

@@ -254,6 +254,13 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 이 값은 current executable regression ceiling이며 측정 결과 자체가 아니다. Canonical numeric owner는
 `scripts/browser-bundle-size.js`이고 package consumer와 documentation contract가 같은 값을 검증한다.
 
+## Series policy primitive state
+
+Semantic primitive는 layer.layout.mode, layer.mark.missing, encoding.group.inferredFrom을
+각각 배치 결정·결측 정책·legacy 추론 origin의 단일 위치로 저장하고 vocabulary를 검사한다.
+저장과 제거는 immutable하며 graphics를 바꾸지 않는다. 배치 materializer와 public layoutSeries,
+Area facade 연결은 아직 Planned다. Primitive target은 별도 수치 oracle와 explicit graphic edits를 사용한다.
+
 ## `ChartProgram`의 canonical state
 
 현재 `ChartProgram`은 다음 상태를 소유한다.
