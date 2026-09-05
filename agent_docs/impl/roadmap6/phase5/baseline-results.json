@@ -1,0 +1,6448 @@
+{
+  "baselineCommit": "7d5982aaa472c234182de917251ff973ff913f1c",
+  "sourceTree": "1e5a95d028132ffaaf6464b95760ea916b85e155",
+  "typesTree": "2028a79cd493f64f3a739414e20491b5dd783f7a",
+  "immutableChecks": 260,
+  "classification": [
+    {
+      "name": "createThetaAxisTitle",
+      "runtime": true,
+      "direct": false
+    },
+    {
+      "name": "createThetaAxisLine",
+      "runtime": true,
+      "direct": false
+    },
+    {
+      "name": "createThetaAxisTicks",
+      "runtime": true,
+      "direct": false
+    },
+    {
+      "name": "createThetaAxisLabels",
+      "runtime": true,
+      "direct": false
+    },
+    {
+      "name": "createRadialAxisTitle",
+      "runtime": true,
+      "direct": false
+    },
+    {
+      "name": "createRadialAxisLine",
+      "runtime": true,
+      "direct": false
+    },
+    {
+      "name": "createRadialAxisTicks",
+      "runtime": true,
+      "direct": false
+    },
+    {
+      "name": "createRadialAxisLabels",
+      "runtime": true,
+      "direct": false
+    }
+  ],
+  "observations": [
+    {
+      "id": "Theta-title-omitted-edit",
+      "calls": [
+        {
+          "op": "createPointMark",
+          "args": {}
+        },
+        {
+          "op": "encodeTheta",
+          "args": {
+            "field": "x"
+          }
+        },
+        {
+          "op": "encodeR",
+          "args": {
+            "field": "y",
+            "scale": {
+              "zero": true
+            }
+          }
+        },
+        {
+          "op": "createThetaAxis",
+          "args": {
+            "title": false
+          }
+        },
+        {
+          "op": "editThetaAxisTitle",
+          "args": {
+            "text": "Restored"
+          }
+        }
+      ],
+      "outcome": "error",
+      "failure": {
+        "op": "editThetaAxisTitle",
+        "message": "editThetaAxisTitle requires an existing axis title."
+      },
+      "result": {
+        "guides": {
+          "axis": {
+            "theta": {
+              "scale": "theta",
+              "coordinate": "polar"
+            }
+          }
+        },
+        "configs": {
+          "axis": {
+            "theta": {
+              "line": {
+                "scale": "theta",
+                "coordinate": "polar",
+                "color": "#475569",
+                "lineWidth": 1.25
+              },
+              "ticks": {
+                "scale": "theta",
+                "coordinate": "polar",
+                "mode": "count",
+                "count": 6,
+                "inferredValues": true,
+                "length": 6,
+                "color": "#475569",
+                "lineWidth": 1
+              },
+              "labels": {
+                "scale": "theta",
+                "coordinate": "polar",
+                "mode": "count",
+                "count": 6,
+                "inferredValues": true,
+                "offset": 18,
+                "format": "auto",
+                "color": "#334155",
+                "fontSize": 11,
+                "fontFamily": "sans-serif",
+                "fontWeight": "normal"
+              }
+            }
+          }
+        },
+        "objects": {
+          "thetaAxisLine": {
+            "type": "path",
+            "properties": {
+              "commands": [
+                {
+                  "op": "M",
+                  "x": 400,
+                  "y": 140
+                },
+                {
+                  "op": "C",
+                  "x1": 488.365559972927,
+                  "y1": 140,
+                  "x2": 560,
+                  "y2": 211.63444002707303,
+                  "x": 560,
+                  "y": 300
+                },
+                {
+                  "op": "C",
+                  "x1": 560,
+                  "y1": 388.365559972927,
+                  "x2": 488.365559972927,
+                  "y2": 460,
+                  "x": 400,
+                  "y": 460
+                },
+                {
+                  "op": "C",
+                  "x1": 311.634440027073,
+                  "y1": 460,
+                  "x2": 240,
+                  "y2": 388.365559972927,
+                  "x": 240,
+                  "y": 300
+                },
+                {
+                  "op": "C",
+                  "x1": 240,
+                  "y1": 211.63444002707303,
+                  "x2": 311.634440027073,
+                  "y2": 140,
+                  "x": 400,
+                  "y": 140
+                },
+                {
+                  "op": "Z"
+                }
+              ],
+              "stroke": "#475569",
+              "strokeWidth": 1.25
+            }
+          },
+          "thetaAxisTicks": {
+            "type": "line",
+            "count": 6,
+            "first": {
+              "x1": 400,
+              "y1": 140,
+              "x2": 400,
+              "y2": 134,
+              "stroke": "#475569",
+              "strokeWidth": 1
+            }
+          },
+          "thetaAxisLabels": {
+            "type": "text",
+            "count": 6,
+            "first": {
+              "x": 400,
+              "y": 122,
+              "text": "0",
+              "textAlign": "center",
+              "textBaseline": "bottom",
+              "fill": "#334155",
+              "fontSize": 11,
+              "fontFamily": "sans-serif",
+              "fontWeight": "normal"
+            }
+          }
+        },
+        "trace": [
+          "createCanvas",
+          "createData",
+          "createPointMark",
+          "encodeTheta",
+          "encodeR",
+          "createThetaAxis"
+        ]
+      }
+    },
+    {
+      "id": "Theta-internal-title-restore",
+      "internal": true,
+      "calls": [
+        {
+          "op": "createPointMark",
+          "args": {}
+        },
+        {
+          "op": "encodeTheta",
+          "args": {
+            "field": "x"
+          }
+        },
+        {
+          "op": "encodeR",
+          "args": {
+            "field": "y",
+            "scale": {
+              "zero": true
+            }
+          }
+        },
+        {
+          "op": "createThetaAxis",
+          "args": {
+            "title": false
+          }
+        },
+        {
+          "op": "createThetaAxisTitle",
+          "args": {
+            "text": "Restored"
+          }
+        }
+      ],
+      "outcome": "success",
+      "result": {
+        "guides": {
+          "axis": {
+            "theta": {
+              "scale": "theta",
+              "coordinate": "polar",
+              "title": "Restored"
+            }
+          }
+        },
+        "configs": {
+          "axis": {
+            "theta": {
+              "line": {
+                "scale": "theta",
+                "coordinate": "polar",
+                "color": "#475569",
+                "lineWidth": 1.25
+              },
+              "ticks": {
+                "scale": "theta",
+                "coordinate": "polar",
+                "mode": "count",
+                "count": 6,
+                "inferredValues": true,
+                "length": 6,
+                "color": "#475569",
+                "lineWidth": 1
+              },
+              "labels": {
+                "scale": "theta",
+                "coordinate": "polar",
+                "mode": "count",
+                "count": 6,
+                "inferredValues": true,
+                "offset": 18,
+                "format": "auto",
+                "color": "#334155",
+                "fontSize": 11,
+                "fontFamily": "sans-serif",
+                "fontWeight": "normal"
+              },
+              "title": {
+                "scale": "theta",
+                "coordinate": "polar",
+                "inferredText": false,
+                "offset": 42,
+                "color": "#0f172a",
+                "fontSize": 13,
+                "fontFamily": "sans-serif",
+                "fontWeight": 600
+              }
+            }
+          }
+        },
+        "objects": {
+          "thetaAxisLine": {
+            "type": "path",
+            "properties": {
+              "commands": [
+                {
+                  "op": "M",
+                  "x": 400,
+                  "y": 140
+                },
+                {
+                  "op": "C",
+                  "x1": 488.365559972927,
+                  "y1": 140,
+                  "x2": 560,
+                  "y2": 211.63444002707303,
+                  "x": 560,
+                  "y": 300
+                },
+                {
+                  "op": "C",
+                  "x1": 560,
+                  "y1": 388.365559972927,
+                  "x2": 488.365559972927,
+                  "y2": 460,
+                  "x": 400,
+                  "y": 460
+                },
+                {
+                  "op": "C",
+                  "x1": 311.634440027073,
+                  "y1": 460,
+                  "x2": 240,
+                  "y2": 388.365559972927,
+                  "x": 240,
+                  "y": 300
+                },
+                {
+                  "op": "C",
+                  "x1": 240,
+                  "y1": 211.63444002707303,
+                  "x2": 311.634440027073,
+                  "y2": 140,
+                  "x": 400,
+                  "y": 140
+                },
+                {
+                  "op": "Z"
+                }
+              ],
+              "stroke": "#475569",
+              "strokeWidth": 1.25
+            }
+          },
+          "thetaAxisTicks": {
+            "type": "line",
+            "count": 6,
+            "first": {
+              "x1": 400,
+              "y1": 140,
+              "x2": 400,
+              "y2": 134,
+              "stroke": "#475569",
+              "strokeWidth": 1
+            }
+          },
+          "thetaAxisLabels": {
+            "type": "text",
+            "count": 6,
+            "first": {
+              "x": 400,
+              "y": 122,
+              "text": "0",
+              "textAlign": "center",
+              "textBaseline": "bottom",
+              "fill": "#334155",
+              "fontSize": 11,
+              "fontFamily": "sans-serif",
+              "fontWeight": "normal"
+            }
+          },
+          "thetaAxisTitle": {
+            "type": "text",
+            "properties": {
+              "x": 400,
+              "y": 502,
+              "textAlign": "center",
+              "textBaseline": "middle",
+              "text": "Restored",
+              "fill": "#0f172a",
+              "fontSize": 13,
+              "fontFamily": "sans-serif",
+              "fontWeight": 600
+            }
+          }
+        },
+        "trace": [
+          "createCanvas",
+          "createData",
+          "createPointMark",
+          "encodeTheta",
+          "encodeR",
+          "createThetaAxis",
+          "createThetaAxisTitle"
+        ]
+      }
+    },
+    {
+      "id": "Theta-remove-title",
+      "calls": [
+        {
+          "op": "createPointMark",
+          "args": {}
+        },
+        {
+          "op": "encodeTheta",
+          "args": {
+            "field": "x"
+          }
+        },
+        {
+          "op": "encodeR",
+          "args": {
+            "field": "y",
+            "scale": {
+              "zero": true
+            }
+          }
+        },
+        {
+          "op": "createThetaAxis",
+          "args": {}
+        },
+        {
+          "op": "editThetaAxis",
+          "args": {
+            "title": false
+          }
+        }
+      ],
+      "outcome": "error",
+      "failure": {
+        "op": "editThetaAxis",
+        "message": "editThetaAxis.title options must be a plain object."
+      },
+      "result": {
+        "guides": {
+          "axis": {
+            "theta": {
+              "scale": "theta",
+              "coordinate": "polar",
+              "title": "x"
+            }
+          }
+        },
+        "configs": {
+          "axis": {
+            "theta": {
+              "line": {
+                "scale": "theta",
+                "coordinate": "polar",
+                "color": "#475569",
+                "lineWidth": 1.25
+              },
+              "ticks": {
+                "scale": "theta",
+                "coordinate": "polar",
+                "mode": "count",
+                "count": 6,
+                "inferredValues": true,
+                "length": 6,
+                "color": "#475569",
+                "lineWidth": 1
+              },
+              "labels": {
+                "scale": "theta",
+                "coordinate": "polar",
+                "mode": "count",
+                "count": 6,
+                "inferredValues": true,
+                "offset": 18,
+                "format": "auto",
+                "color": "#334155",
+                "fontSize": 11,
+                "fontFamily": "sans-serif",
+                "fontWeight": "normal"
+              },
+              "title": {
+                "scale": "theta",
+                "coordinate": "polar",
+                "inferredText": true,
+                "offset": 42,
+                "color": "#0f172a",
+                "fontSize": 13,
+                "fontFamily": "sans-serif",
+                "fontWeight": 600
+              }
+            }
+          }
+        },
+        "objects": {
+          "thetaAxisLine": {
+            "type": "path",
+            "properties": {
+              "commands": [
+                {
+                  "op": "M",
+                  "x": 400,
+                  "y": 140
+                },
+                {
+                  "op": "C",
+                  "x1": 488.365559972927,
+                  "y1": 140,
+                  "x2": 560,
+                  "y2": 211.63444002707303,
+                  "x": 560,
+                  "y": 300
+                },
+                {
+                  "op": "C",
+                  "x1": 560,
+                  "y1": 388.365559972927,
+                  "x2": 488.365559972927,
+                  "y2": 460,
+                  "x": 400,
+                  "y": 460
+                },
+                {
+                  "op": "C",
+                  "x1": 311.634440027073,
+                  "y1": 460,
+                  "x2": 240,
+                  "y2": 388.365559972927,
+                  "x": 240,
+                  "y": 300
+                },
+                {
+                  "op": "C",
+                  "x1": 240,
+                  "y1": 211.63444002707303,
+                  "x2": 311.634440027073,
+                  "y2": 140,
+                  "x": 400,
+                  "y": 140
+                },
+                {
+                  "op": "Z"
+                }
+              ],
+              "stroke": "#475569",
+              "strokeWidth": 1.25
+            }
+          },
+          "thetaAxisTicks": {
+            "type": "line",
+            "count": 6,
+            "first": {
+              "x1": 400,
+              "y1": 140,
+              "x2": 400,
+              "y2": 134,
+              "stroke": "#475569",
+              "strokeWidth": 1
+            }
+          },
+          "thetaAxisLabels": {
+            "type": "text",
+            "count": 6,
+            "first": {
+              "x": 400,
+              "y": 122,
+              "text": "0",
+              "textAlign": "center",
+              "textBaseline": "bottom",
+              "fill": "#334155",
+              "fontSize": 11,
+              "fontFamily": "sans-serif",
+              "fontWeight": "normal"
+            }
+          },
+          "thetaAxisTitle": {
+            "type": "text",
+            "properties": {
+              "x": 400,
+              "y": 502,
+              "textAlign": "center",
+              "textBaseline": "middle",
+              "text": "x",
+              "fill": "#0f172a",
+              "fontSize": 13,
+              "fontFamily": "sans-serif",
+              "fontWeight": 600
+            }
+          }
+        },
+        "trace": [
+          "createCanvas",
+          "createData",
+          "createPointMark",
+          "encodeTheta",
+          "encodeR",
+          "createThetaAxis"
+        ]
+      }
+    },
+    {
+      "id": "Theta-remove-line",
+      "calls": [
+        {
+          "op": "createPointMark",
+          "args": {}
+        },
+        {
+          "op": "encodeTheta",
+          "args": {
+            "field": "x"
+          }
+        },
+        {
+          "op": "encodeR",
+          "args": {
+            "field": "y",
+            "scale": {
+              "zero": true
+            }
+          }
+        },
+        {
+          "op": "createThetaAxis",
+          "args": {}
+        },
+        {
+          "op": "editThetaAxis",
+          "args": {
+            "line": false
+          }
+        }
+      ],
+      "outcome": "error",
+      "failure": {
+        "op": "editThetaAxis",
+        "message": "editThetaAxis.line options must be a plain object."
+      },
+      "result": {
+        "guides": {
+          "axis": {
+            "theta": {
+              "scale": "theta",
+              "coordinate": "polar",
+              "title": "x"
+            }
+          }
+        },
+        "configs": {
+          "axis": {
+            "theta": {
+              "line": {
+                "scale": "theta",
+                "coordinate": "polar",
+                "color": "#475569",
+                "lineWidth": 1.25
+              },
+              "ticks": {
+                "scale": "theta",
+                "coordinate": "polar",
+                "mode": "count",
+                "count": 6,
+                "inferredValues": true,
+                "length": 6,
+                "color": "#475569",
+                "lineWidth": 1
+              },
+              "labels": {
+                "scale": "theta",
+                "coordinate": "polar",
+                "mode": "count",
+                "count": 6,
+                "inferredValues": true,
+                "offset": 18,
+                "format": "auto",
+                "color": "#334155",
+                "fontSize": 11,
+                "fontFamily": "sans-serif",
+                "fontWeight": "normal"
+              },
+              "title": {
+                "scale": "theta",
+                "coordinate": "polar",
+                "inferredText": true,
+                "offset": 42,
+                "color": "#0f172a",
+                "fontSize": 13,
+                "fontFamily": "sans-serif",
+                "fontWeight": 600
+              }
+            }
+          }
+        },
+        "objects": {
+          "thetaAxisLine": {
+            "type": "path",
+            "properties": {
+              "commands": [
+                {
+                  "op": "M",
+                  "x": 400,
+                  "y": 140
+                },
+                {
+                  "op": "C",
+                  "x1": 488.365559972927,
+                  "y1": 140,
+                  "x2": 560,
+                  "y2": 211.63444002707303,
+                  "x": 560,
+                  "y": 300
+                },
+                {
+                  "op": "C",
+                  "x1": 560,
+                  "y1": 388.365559972927,
+                  "x2": 488.365559972927,
+                  "y2": 460,
+                  "x": 400,
+                  "y": 460
+                },
+                {
+                  "op": "C",
+                  "x1": 311.634440027073,
+                  "y1": 460,
+                  "x2": 240,
+                  "y2": 388.365559972927,
+                  "x": 240,
+                  "y": 300
+                },
+                {
+                  "op": "C",
+                  "x1": 240,
+                  "y1": 211.63444002707303,
+                  "x2": 311.634440027073,
+                  "y2": 140,
+                  "x": 400,
+                  "y": 140
+                },
+                {
+                  "op": "Z"
+                }
+              ],
+              "stroke": "#475569",
+              "strokeWidth": 1.25
+            }
+          },
+          "thetaAxisTicks": {
+            "type": "line",
+            "count": 6,
+            "first": {
+              "x1": 400,
+              "y1": 140,
+              "x2": 400,
+              "y2": 134,
+              "stroke": "#475569",
+              "strokeWidth": 1
+            }
+          },
+          "thetaAxisLabels": {
+            "type": "text",
+            "count": 6,
+            "first": {
+              "x": 400,
+              "y": 122,
+              "text": "0",
+              "textAlign": "center",
+              "textBaseline": "bottom",
+              "fill": "#334155",
+              "fontSize": 11,
+              "fontFamily": "sans-serif",
+              "fontWeight": "normal"
+            }
+          },
+          "thetaAxisTitle": {
+            "type": "text",
+            "properties": {
+              "x": 400,
+              "y": 502,
+              "textAlign": "center",
+              "textBaseline": "middle",
+              "text": "x",
+              "fill": "#0f172a",
+              "fontSize": 13,
+              "fontFamily": "sans-serif",
+              "fontWeight": 600
+            }
+          }
+        },
+        "trace": [
+          "createCanvas",
+          "createData",
+          "createPointMark",
+          "encodeTheta",
+          "encodeR",
+          "createThetaAxis"
+        ]
+      }
+    },
+    {
+      "id": "Theta-remove-ticks-labels",
+      "calls": [
+        {
+          "op": "createPointMark",
+          "args": {}
+        },
+        {
+          "op": "encodeTheta",
+          "args": {
+            "field": "x"
+          }
+        },
+        {
+          "op": "encodeR",
+          "args": {
+            "field": "y",
+            "scale": {
+              "zero": true
+            }
+          }
+        },
+        {
+          "op": "createThetaAxis",
+          "args": {}
+        },
+        {
+          "op": "editThetaAxis",
+          "args": {
+            "ticksAndLabels": false
+          }
+        }
+      ],
+      "outcome": "error",
+      "failure": {
+        "op": "editThetaAxis",
+        "message": "editThetaAxis.ticksAndLabels options must be a plain object."
+      },
+      "result": {
+        "guides": {
+          "axis": {
+            "theta": {
+              "scale": "theta",
+              "coordinate": "polar",
+              "title": "x"
+            }
+          }
+        },
+        "configs": {
+          "axis": {
+            "theta": {
+              "line": {
+                "scale": "theta",
+                "coordinate": "polar",
+                "color": "#475569",
+                "lineWidth": 1.25
+              },
+              "ticks": {
+                "scale": "theta",
+                "coordinate": "polar",
+                "mode": "count",
+                "count": 6,
+                "inferredValues": true,
+                "length": 6,
+                "color": "#475569",
+                "lineWidth": 1
+              },
+              "labels": {
+                "scale": "theta",
+                "coordinate": "polar",
+                "mode": "count",
+                "count": 6,
+                "inferredValues": true,
+                "offset": 18,
+                "format": "auto",
+                "color": "#334155",
+                "fontSize": 11,
+                "fontFamily": "sans-serif",
+                "fontWeight": "normal"
+              },
+              "title": {
+                "scale": "theta",
+                "coordinate": "polar",
+                "inferredText": true,
+                "offset": 42,
+                "color": "#0f172a",
+                "fontSize": 13,
+                "fontFamily": "sans-serif",
+                "fontWeight": 600
+              }
+            }
+          }
+        },
+        "objects": {
+          "thetaAxisLine": {
+            "type": "path",
+            "properties": {
+              "commands": [
+                {
+                  "op": "M",
+                  "x": 400,
+                  "y": 140
+                },
+                {
+                  "op": "C",
+                  "x1": 488.365559972927,
+                  "y1": 140,
+                  "x2": 560,
+                  "y2": 211.63444002707303,
+                  "x": 560,
+                  "y": 300
+                },
+                {
+                  "op": "C",
+                  "x1": 560,
+                  "y1": 388.365559972927,
+                  "x2": 488.365559972927,
+                  "y2": 460,
+                  "x": 400,
+                  "y": 460
+                },
+                {
+                  "op": "C",
+                  "x1": 311.634440027073,
+                  "y1": 460,
+                  "x2": 240,
+                  "y2": 388.365559972927,
+                  "x": 240,
+                  "y": 300
+                },
+                {
+                  "op": "C",
+                  "x1": 240,
+                  "y1": 211.63444002707303,
+                  "x2": 311.634440027073,
+                  "y2": 140,
+                  "x": 400,
+                  "y": 140
+                },
+                {
+                  "op": "Z"
+                }
+              ],
+              "stroke": "#475569",
+              "strokeWidth": 1.25
+            }
+          },
+          "thetaAxisTicks": {
+            "type": "line",
+            "count": 6,
+            "first": {
+              "x1": 400,
+              "y1": 140,
+              "x2": 400,
+              "y2": 134,
+              "stroke": "#475569",
+              "strokeWidth": 1
+            }
+          },
+          "thetaAxisLabels": {
+            "type": "text",
+            "count": 6,
+            "first": {
+              "x": 400,
+              "y": 122,
+              "text": "0",
+              "textAlign": "center",
+              "textBaseline": "bottom",
+              "fill": "#334155",
+              "fontSize": 11,
+              "fontFamily": "sans-serif",
+              "fontWeight": "normal"
+            }
+          },
+          "thetaAxisTitle": {
+            "type": "text",
+            "properties": {
+              "x": 400,
+              "y": 502,
+              "textAlign": "center",
+              "textBaseline": "middle",
+              "text": "x",
+              "fill": "#0f172a",
+              "fontSize": 13,
+              "fontFamily": "sans-serif",
+              "fontWeight": 600
+            }
+          }
+        },
+        "trace": [
+          "createCanvas",
+          "createData",
+          "createPointMark",
+          "encodeTheta",
+          "encodeR",
+          "createThetaAxis"
+        ]
+      }
+    },
+    {
+      "id": "Theta-remove-recreate",
+      "calls": [
+        {
+          "op": "createPointMark",
+          "args": {}
+        },
+        {
+          "op": "encodeTheta",
+          "args": {
+            "field": "x"
+          }
+        },
+        {
+          "op": "encodeR",
+          "args": {
+            "field": "y",
+            "scale": {
+              "zero": true
+            }
+          }
+        },
+        {
+          "op": "createThetaAxis",
+          "args": {}
+        },
+        {
+          "op": "removeThetaAxis",
+          "args": {}
+        },
+        {
+          "op": "createThetaAxis",
+          "args": {}
+        }
+      ],
+      "outcome": "success",
+      "result": {
+        "guides": {
+          "axis": {
+            "theta": {
+              "scale": "theta",
+              "coordinate": "polar",
+              "title": "x"
+            }
+          }
+        },
+        "configs": {
+          "axis": {
+            "theta": {
+              "line": {
+                "scale": "theta",
+                "coordinate": "polar",
+                "color": "#475569",
+                "lineWidth": 1.25
+              },
+              "ticks": {
+                "scale": "theta",
+                "coordinate": "polar",
+                "mode": "count",
+                "count": 6,
+                "inferredValues": true,
+                "length": 6,
+                "color": "#475569",
+                "lineWidth": 1
+              },
+              "labels": {
+                "scale": "theta",
+                "coordinate": "polar",
+                "mode": "count",
+                "count": 6,
+                "inferredValues": true,
+                "offset": 18,
+                "format": "auto",
+                "color": "#334155",
+                "fontSize": 11,
+                "fontFamily": "sans-serif",
+                "fontWeight": "normal"
+              },
+              "title": {
+                "scale": "theta",
+                "coordinate": "polar",
+                "inferredText": true,
+                "offset": 42,
+                "color": "#0f172a",
+                "fontSize": 13,
+                "fontFamily": "sans-serif",
+                "fontWeight": 600
+              }
+            }
+          }
+        },
+        "objects": {
+          "thetaAxisLine": {
+            "type": "path",
+            "properties": {
+              "commands": [
+                {
+                  "op": "M",
+                  "x": 400,
+                  "y": 140
+                },
+                {
+                  "op": "C",
+                  "x1": 488.365559972927,
+                  "y1": 140,
+                  "x2": 560,
+                  "y2": 211.63444002707303,
+                  "x": 560,
+                  "y": 300
+                },
+                {
+                  "op": "C",
+                  "x1": 560,
+                  "y1": 388.365559972927,
+                  "x2": 488.365559972927,
+                  "y2": 460,
+                  "x": 400,
+                  "y": 460
+                },
+                {
+                  "op": "C",
+                  "x1": 311.634440027073,
+                  "y1": 460,
+                  "x2": 240,
+                  "y2": 388.365559972927,
+                  "x": 240,
+                  "y": 300
+                },
+                {
+                  "op": "C",
+                  "x1": 240,
+                  "y1": 211.63444002707303,
+                  "x2": 311.634440027073,
+                  "y2": 140,
+                  "x": 400,
+                  "y": 140
+                },
+                {
+                  "op": "Z"
+                }
+              ],
+              "stroke": "#475569",
+              "strokeWidth": 1.25
+            }
+          },
+          "thetaAxisTicks": {
+            "type": "line",
+            "count": 6,
+            "first": {
+              "x1": 400,
+              "y1": 140,
+              "x2": 400,
+              "y2": 134,
+              "stroke": "#475569",
+              "strokeWidth": 1
+            }
+          },
+          "thetaAxisLabels": {
+            "type": "text",
+            "count": 6,
+            "first": {
+              "x": 400,
+              "y": 122,
+              "text": "0",
+              "textAlign": "center",
+              "textBaseline": "bottom",
+              "fill": "#334155",
+              "fontSize": 11,
+              "fontFamily": "sans-serif",
+              "fontWeight": "normal"
+            }
+          },
+          "thetaAxisTitle": {
+            "type": "text",
+            "properties": {
+              "x": 400,
+              "y": 502,
+              "textAlign": "center",
+              "textBaseline": "middle",
+              "text": "x",
+              "fill": "#0f172a",
+              "fontSize": 13,
+              "fontFamily": "sans-serif",
+              "fontWeight": 600
+            }
+          }
+        },
+        "trace": [
+          "createCanvas",
+          "createData",
+          "createPointMark",
+          "encodeTheta",
+          "encodeR",
+          "createThetaAxis",
+          "removeThetaAxis",
+          "createThetaAxis"
+        ]
+      }
+    },
+    {
+      "id": "Theta-style-replay",
+      "calls": [
+        {
+          "op": "createPointMark",
+          "args": {}
+        },
+        {
+          "op": "encodeTheta",
+          "args": {
+            "field": "x"
+          }
+        },
+        {
+          "op": "encodeR",
+          "args": {
+            "field": "y",
+            "scale": {
+              "zero": true
+            }
+          }
+        },
+        {
+          "op": "createThetaAxis",
+          "args": {}
+        },
+        {
+          "op": "editThetaAxisLabels",
+          "args": {
+            "fontSize": 14,
+            "fontWeight": 600,
+            "values": [
+              0,
+              10
+            ]
+          }
+        },
+        {
+          "op": "editCanvas",
+          "args": {
+            "width": 900
+          }
+        },
+        {
+          "op": "editScale",
+          "args": {
+            "id": "theta",
+            "domain": [
+              0,
+              30
+            ]
+          }
+        }
+      ],
+      "outcome": "success",
+      "result": {
+        "guides": {
+          "axis": {
+            "theta": {
+              "scale": "theta",
+              "coordinate": "polar",
+              "title": "x"
+            }
+          }
+        },
+        "configs": {
+          "axis": {
+            "theta": {
+              "line": {
+                "scale": "theta",
+                "coordinate": "polar",
+                "color": "#475569",
+                "lineWidth": 1.25
+              },
+              "ticks": {
+                "scale": "theta",
+                "coordinate": "polar",
+                "mode": "count",
+                "count": 6,
+                "inferredValues": true,
+                "length": 6,
+                "color": "#475569",
+                "lineWidth": 1
+              },
+              "labels": {
+                "scale": "theta",
+                "coordinate": "polar",
+                "mode": "count",
+                "count": 6,
+                "inferredValues": true,
+                "offset": 18,
+                "format": "auto",
+                "color": "#334155",
+                "fontSize": 14,
+                "fontFamily": "sans-serif",
+                "fontWeight": 600,
+                "values": [
+                  0,
+                  10
+                ]
+              },
+              "title": {
+                "scale": "theta",
+                "coordinate": "polar",
+                "inferredText": true,
+                "offset": 42,
+                "color": "#0f172a",
+                "fontSize": 13,
+                "fontFamily": "sans-serif",
+                "fontWeight": 600
+              }
+            }
+          }
+        },
+        "objects": {
+          "thetaAxisLine": {
+            "type": "path",
+            "properties": {
+              "commands": [
+                {
+                  "op": "M",
+                  "x": 450,
+                  "y": 140
+                },
+                {
+                  "op": "C",
+                  "x1": 538.365559972927,
+                  "y1": 140,
+                  "x2": 610,
+                  "y2": 211.63444002707303,
+                  "x": 610,
+                  "y": 300
+                },
+                {
+                  "op": "C",
+                  "x1": 610,
+                  "y1": 388.365559972927,
+                  "x2": 538.365559972927,
+                  "y2": 460,
+                  "x": 450,
+                  "y": 460
+                },
+                {
+                  "op": "C",
+                  "x1": 361.634440027073,
+                  "y1": 460,
+                  "x2": 290,
+                  "y2": 388.365559972927,
+                  "x": 290,
+                  "y": 300
+                },
+                {
+                  "op": "C",
+                  "x1": 290,
+                  "y1": 211.63444002707303,
+                  "x2": 361.634440027073,
+                  "y2": 140,
+                  "x": 450,
+                  "y": 140
+                },
+                {
+                  "op": "Z"
+                }
+              ],
+              "stroke": "#475569",
+              "strokeWidth": 1.25
+            }
+          },
+          "thetaAxisTicks": {
+            "type": "line",
+            "count": 7,
+            "first": {
+              "x1": 450,
+              "y1": 140,
+              "x2": 450,
+              "y2": 134,
+              "stroke": "#475569",
+              "strokeWidth": 1
+            }
+          },
+          "thetaAxisLabels": {
+            "type": "text",
+            "count": 7,
+            "first": {
+              "x": 450,
+              "y": 122,
+              "text": "0",
+              "textAlign": "center",
+              "textBaseline": "bottom",
+              "fill": "#334155",
+              "fontSize": 14,
+              "fontFamily": "sans-serif",
+              "fontWeight": 600
+            }
+          },
+          "thetaAxisTitle": {
+            "type": "text",
+            "properties": {
+              "x": 450,
+              "y": 502,
+              "textAlign": "center",
+              "textBaseline": "middle",
+              "text": "x",
+              "fill": "#0f172a",
+              "fontSize": 13,
+              "fontFamily": "sans-serif",
+              "fontWeight": 600
+            }
+          }
+        },
+        "trace": [
+          "createCanvas",
+          "createData",
+          "createPointMark",
+          "encodeTheta",
+          "encodeR",
+          "createThetaAxis",
+          "editThetaAxisLabels",
+          "editCanvas",
+          "editScale"
+        ]
+      }
+    },
+    {
+      "id": "Theta-internal-Line",
+      "internal": true,
+      "calls": [
+        {
+          "op": "createPointMark",
+          "args": {}
+        },
+        {
+          "op": "encodeTheta",
+          "args": {
+            "field": "x"
+          }
+        },
+        {
+          "op": "encodeR",
+          "args": {
+            "field": "y",
+            "scale": {
+              "zero": true
+            }
+          }
+        },
+        {
+          "op": "createThetaAxisLine",
+          "args": {}
+        }
+      ],
+      "outcome": "success",
+      "result": {
+        "guides": {
+          "axis": {
+            "theta": {
+              "scale": "theta",
+              "coordinate": "polar"
+            }
+          }
+        },
+        "configs": {
+          "axis": {
+            "theta": {
+              "line": {
+                "scale": "theta",
+                "coordinate": "polar",
+                "color": "#475569",
+                "lineWidth": 1.25
+              }
+            }
+          }
+        },
+        "objects": {
+          "thetaAxisLine": {
+            "type": "path",
+            "properties": {
+              "commands": [
+                {
+                  "op": "M",
+                  "x": 400,
+                  "y": 140
+                },
+                {
+                  "op": "C",
+                  "x1": 488.365559972927,
+                  "y1": 140,
+                  "x2": 560,
+                  "y2": 211.63444002707303,
+                  "x": 560,
+                  "y": 300
+                },
+                {
+                  "op": "C",
+                  "x1": 560,
+                  "y1": 388.365559972927,
+                  "x2": 488.365559972927,
+                  "y2": 460,
+                  "x": 400,
+                  "y": 460
+                },
+                {
+                  "op": "C",
+                  "x1": 311.634440027073,
+                  "y1": 460,
+                  "x2": 240,
+                  "y2": 388.365559972927,
+                  "x": 240,
+                  "y": 300
+                },
+                {
+                  "op": "C",
+                  "x1": 240,
+                  "y1": 211.63444002707303,
+                  "x2": 311.634440027073,
+                  "y2": 140,
+                  "x": 400,
+                  "y": 140
+                },
+                {
+                  "op": "Z"
+                }
+              ],
+              "stroke": "#475569",
+              "strokeWidth": 1.25
+            }
+          }
+        },
+        "trace": [
+          "createCanvas",
+          "createData",
+          "createPointMark",
+          "encodeTheta",
+          "encodeR",
+          "createThetaAxisLine"
+        ]
+      }
+    },
+    {
+      "id": "Theta-internal-Ticks",
+      "internal": true,
+      "calls": [
+        {
+          "op": "createPointMark",
+          "args": {}
+        },
+        {
+          "op": "encodeTheta",
+          "args": {
+            "field": "x"
+          }
+        },
+        {
+          "op": "encodeR",
+          "args": {
+            "field": "y",
+            "scale": {
+              "zero": true
+            }
+          }
+        },
+        {
+          "op": "createThetaAxisTicks",
+          "args": {}
+        }
+      ],
+      "outcome": "success",
+      "result": {
+        "guides": {
+          "axis": {
+            "theta": {
+              "scale": "theta",
+              "coordinate": "polar"
+            }
+          }
+        },
+        "configs": {
+          "axis": {
+            "theta": {
+              "ticks": {
+                "scale": "theta",
+                "coordinate": "polar",
+                "mode": "count",
+                "count": 6,
+                "inferredValues": true,
+                "length": 6,
+                "color": "#475569",
+                "lineWidth": 1
+              }
+            }
+          }
+        },
+        "objects": {
+          "thetaAxisTicks": {
+            "type": "line",
+            "count": 6,
+            "first": {
+              "x1": 400,
+              "y1": 140,
+              "x2": 400,
+              "y2": 134,
+              "stroke": "#475569",
+              "strokeWidth": 1
+            }
+          }
+        },
+        "trace": [
+          "createCanvas",
+          "createData",
+          "createPointMark",
+          "encodeTheta",
+          "encodeR",
+          "createThetaAxisTicks"
+        ]
+      }
+    },
+    {
+      "id": "Theta-internal-Labels",
+      "internal": true,
+      "calls": [
+        {
+          "op": "createPointMark",
+          "args": {}
+        },
+        {
+          "op": "encodeTheta",
+          "args": {
+            "field": "x"
+          }
+        },
+        {
+          "op": "encodeR",
+          "args": {
+            "field": "y",
+            "scale": {
+              "zero": true
+            }
+          }
+        },
+        {
+          "op": "createThetaAxisLabels",
+          "args": {}
+        }
+      ],
+      "outcome": "success",
+      "result": {
+        "guides": {
+          "axis": {
+            "theta": {
+              "scale": "theta",
+              "coordinate": "polar"
+            }
+          }
+        },
+        "configs": {
+          "axis": {
+            "theta": {
+              "labels": {
+                "scale": "theta",
+                "coordinate": "polar",
+                "mode": "count",
+                "count": 6,
+                "inferredValues": true,
+                "offset": 18,
+                "format": "auto",
+                "color": "#334155",
+                "fontSize": 11,
+                "fontFamily": "sans-serif",
+                "fontWeight": "normal"
+              }
+            }
+          }
+        },
+        "objects": {
+          "thetaAxisLabels": {
+            "type": "text",
+            "count": 6,
+            "first": {
+              "x": 400,
+              "y": 122,
+              "text": "0",
+              "textAlign": "center",
+              "textBaseline": "bottom",
+              "fill": "#334155",
+              "fontSize": 11,
+              "fontFamily": "sans-serif",
+              "fontWeight": "normal"
+            }
+          }
+        },
+        "trace": [
+          "createCanvas",
+          "createData",
+          "createPointMark",
+          "encodeTheta",
+          "encodeR",
+          "createThetaAxisLabels"
+        ]
+      }
+    },
+    {
+      "id": "Theta-internal-Title",
+      "internal": true,
+      "calls": [
+        {
+          "op": "createPointMark",
+          "args": {}
+        },
+        {
+          "op": "encodeTheta",
+          "args": {
+            "field": "x"
+          }
+        },
+        {
+          "op": "encodeR",
+          "args": {
+            "field": "y",
+            "scale": {
+              "zero": true
+            }
+          }
+        },
+        {
+          "op": "createThetaAxisTitle",
+          "args": {}
+        }
+      ],
+      "outcome": "success",
+      "result": {
+        "guides": {
+          "axis": {
+            "theta": {
+              "scale": "theta",
+              "coordinate": "polar",
+              "title": "x"
+            }
+          }
+        },
+        "configs": {
+          "axis": {
+            "theta": {
+              "title": {
+                "scale": "theta",
+                "coordinate": "polar",
+                "inferredText": true,
+                "offset": 42,
+                "color": "#0f172a",
+                "fontSize": 13,
+                "fontFamily": "sans-serif",
+                "fontWeight": 600
+              }
+            }
+          }
+        },
+        "objects": {
+          "thetaAxisTitle": {
+            "type": "text",
+            "properties": {
+              "x": 400,
+              "y": 502,
+              "textAlign": "center",
+              "textBaseline": "middle",
+              "text": "x",
+              "fill": "#0f172a",
+              "fontSize": 13,
+              "fontFamily": "sans-serif",
+              "fontWeight": 600
+            }
+          }
+        },
+        "trace": [
+          "createCanvas",
+          "createData",
+          "createPointMark",
+          "encodeTheta",
+          "encodeR",
+          "createThetaAxisTitle"
+        ]
+      }
+    },
+    {
+      "id": "Radial-title-omitted-edit",
+      "calls": [
+        {
+          "op": "createPointMark",
+          "args": {}
+        },
+        {
+          "op": "encodeTheta",
+          "args": {
+            "field": "x"
+          }
+        },
+        {
+          "op": "encodeR",
+          "args": {
+            "field": "y",
+            "scale": {
+              "zero": true
+            }
+          }
+        },
+        {
+          "op": "createRadialAxis",
+          "args": {
+            "title": false
+          }
+        },
+        {
+          "op": "editRadialAxisTitle",
+          "args": {
+            "text": "Restored"
+          }
+        }
+      ],
+      "outcome": "error",
+      "failure": {
+        "op": "editRadialAxisTitle",
+        "message": "editRadialAxisTitle requires an existing axis title."
+      },
+      "result": {
+        "guides": {
+          "axis": {
+            "radius": {
+              "scale": "radius",
+              "coordinate": "polar"
+            }
+          }
+        },
+        "configs": {
+          "axis": {
+            "radius": {
+              "layout": {
+                "angle": 90
+              },
+              "line": {
+                "scale": "radius",
+                "coordinate": "polar",
+                "color": "#475569",
+                "lineWidth": 1.25
+              },
+              "ticks": {
+                "scale": "radius",
+                "coordinate": "polar",
+                "mode": "count",
+                "count": 5,
+                "inferredValues": true,
+                "length": 8,
+                "color": "#475569",
+                "lineWidth": 1
+              },
+              "labels": {
+                "scale": "radius",
+                "coordinate": "polar",
+                "mode": "count",
+                "count": 5,
+                "inferredValues": true,
+                "offset": 10,
+                "format": "auto",
+                "color": "#334155",
+                "fontSize": 11,
+                "fontFamily": "sans-serif",
+                "fontWeight": "normal"
+              }
+            }
+          }
+        },
+        "objects": {
+          "radialAxisLine": {
+            "type": "line",
+            "properties": {
+              "x1": 400,
+              "y1": 300,
+              "x2": 560,
+              "y2": 300,
+              "stroke": "#475569",
+              "strokeWidth": 1.25
+            }
+          },
+          "radialAxisTicks": {
+            "type": "line",
+            "count": 5,
+            "first": {
+              "x1": 400,
+              "y1": 296,
+              "x2": 400,
+              "y2": 304,
+              "stroke": "#475569",
+              "strokeWidth": 1
+            }
+          },
+          "radialAxisLabels": {
+            "type": "text",
+            "count": 5,
+            "first": {
+              "x": 400,
+              "y": 290,
+              "text": "0",
+              "textAlign": "center",
+              "textBaseline": "bottom",
+              "fill": "#334155",
+              "fontSize": 11,
+              "fontFamily": "sans-serif",
+              "fontWeight": "normal"
+            }
+          }
+        },
+        "trace": [
+          "createCanvas",
+          "createData",
+          "createPointMark",
+          "encodeTheta",
+          "encodeR",
+          "createRadialAxis"
+        ]
+      }
+    },
+    {
+      "id": "Radial-internal-title-restore",
+      "internal": true,
+      "calls": [
+        {
+          "op": "createPointMark",
+          "args": {}
+        },
+        {
+          "op": "encodeTheta",
+          "args": {
+            "field": "x"
+          }
+        },
+        {
+          "op": "encodeR",
+          "args": {
+            "field": "y",
+            "scale": {
+              "zero": true
+            }
+          }
+        },
+        {
+          "op": "createRadialAxis",
+          "args": {
+            "title": false
+          }
+        },
+        {
+          "op": "createRadialAxisTitle",
+          "args": {
+            "text": "Restored"
+          }
+        }
+      ],
+      "outcome": "success",
+      "result": {
+        "guides": {
+          "axis": {
+            "radius": {
+              "scale": "radius",
+              "coordinate": "polar",
+              "title": "Restored"
+            }
+          }
+        },
+        "configs": {
+          "axis": {
+            "radius": {
+              "layout": {
+                "angle": 90
+              },
+              "line": {
+                "scale": "radius",
+                "coordinate": "polar",
+                "color": "#475569",
+                "lineWidth": 1.25
+              },
+              "ticks": {
+                "scale": "radius",
+                "coordinate": "polar",
+                "mode": "count",
+                "count": 5,
+                "inferredValues": true,
+                "length": 8,
+                "color": "#475569",
+                "lineWidth": 1
+              },
+              "labels": {
+                "scale": "radius",
+                "coordinate": "polar",
+                "mode": "count",
+                "count": 5,
+                "inferredValues": true,
+                "offset": 10,
+                "format": "auto",
+                "color": "#334155",
+                "fontSize": 11,
+                "fontFamily": "sans-serif",
+                "fontWeight": "normal"
+              },
+              "title": {
+                "scale": "radius",
+                "coordinate": "polar",
+                "inferredText": false,
+                "offset": 8,
+                "color": "#0f172a",
+                "fontSize": 13,
+                "fontFamily": "sans-serif",
+                "fontWeight": 600,
+                "position": "inside"
+              }
+            }
+          }
+        },
+        "objects": {
+          "radialAxisLine": {
+            "type": "line",
+            "properties": {
+              "x1": 400,
+              "y1": 300,
+              "x2": 560,
+              "y2": 300,
+              "stroke": "#475569",
+              "strokeWidth": 1.25
+            }
+          },
+          "radialAxisTicks": {
+            "type": "line",
+            "count": 5,
+            "first": {
+              "x1": 400,
+              "y1": 296,
+              "x2": 400,
+              "y2": 304,
+              "stroke": "#475569",
+              "strokeWidth": 1
+            }
+          },
+          "radialAxisLabels": {
+            "type": "text",
+            "count": 5,
+            "first": {
+              "x": 400,
+              "y": 290,
+              "text": "0",
+              "textAlign": "center",
+              "textBaseline": "bottom",
+              "fill": "#334155",
+              "fontSize": 11,
+              "fontFamily": "sans-serif",
+              "fontWeight": "normal"
+            }
+          },
+          "radialAxisTitle": {
+            "type": "text",
+            "properties": {
+              "x": 480,
+              "y": 308,
+              "textAlign": "center",
+              "textBaseline": "top",
+              "text": "Restored",
+              "fill": "#0f172a",
+              "fontSize": 13,
+              "fontFamily": "sans-serif",
+              "fontWeight": 600
+            }
+          }
+        },
+        "trace": [
+          "createCanvas",
+          "createData",
+          "createPointMark",
+          "encodeTheta",
+          "encodeR",
+          "createRadialAxis",
+          "createRadialAxisTitle"
+        ]
+      }
+    },
+    {
+      "id": "Radial-remove-title",
+      "calls": [
+        {
+          "op": "createPointMark",
+          "args": {}
+        },
+        {
+          "op": "encodeTheta",
+          "args": {
+            "field": "x"
+          }
+        },
+        {
+          "op": "encodeR",
+          "args": {
+            "field": "y",
+            "scale": {
+              "zero": true
+            }
+          }
+        },
+        {
+          "op": "createRadialAxis",
+          "args": {}
+        },
+        {
+          "op": "editRadialAxis",
+          "args": {
+            "title": false
+          }
+        }
+      ],
+      "outcome": "error",
+      "failure": {
+        "op": "editRadialAxis",
+        "message": "editRadialAxis.title options must be a plain object."
+      },
+      "result": {
+        "guides": {
+          "axis": {
+            "radius": {
+              "scale": "radius",
+              "coordinate": "polar",
+              "title": "y"
+            }
+          }
+        },
+        "configs": {
+          "axis": {
+            "radius": {
+              "layout": {
+                "angle": 90
+              },
+              "line": {
+                "scale": "radius",
+                "coordinate": "polar",
+                "color": "#475569",
+                "lineWidth": 1.25
+              },
+              "ticks": {
+                "scale": "radius",
+                "coordinate": "polar",
+                "mode": "count",
+                "count": 5,
+                "inferredValues": true,
+                "length": 8,
+                "color": "#475569",
+                "lineWidth": 1
+              },
+              "labels": {
+                "scale": "radius",
+                "coordinate": "polar",
+                "mode": "count",
+                "count": 5,
+                "inferredValues": true,
+                "offset": 10,
+                "format": "auto",
+                "color": "#334155",
+                "fontSize": 11,
+                "fontFamily": "sans-serif",
+                "fontWeight": "normal"
+              },
+              "title": {
+                "scale": "radius",
+                "coordinate": "polar",
+                "inferredText": true,
+                "offset": 8,
+                "color": "#0f172a",
+                "fontSize": 13,
+                "fontFamily": "sans-serif",
+                "fontWeight": 600,
+                "position": "inside"
+              }
+            }
+          }
+        },
+        "objects": {
+          "radialAxisLine": {
+            "type": "line",
+            "properties": {
+              "x1": 400,
+              "y1": 300,
+              "x2": 560,
+              "y2": 300,
+              "stroke": "#475569",
+              "strokeWidth": 1.25
+            }
+          },
+          "radialAxisTicks": {
+            "type": "line",
+            "count": 5,
+            "first": {
+              "x1": 400,
+              "y1": 296,
+              "x2": 400,
+              "y2": 304,
+              "stroke": "#475569",
+              "strokeWidth": 1
+            }
+          },
+          "radialAxisLabels": {
+            "type": "text",
+            "count": 5,
+            "first": {
+              "x": 400,
+              "y": 290,
+              "text": "0",
+              "textAlign": "center",
+              "textBaseline": "bottom",
+              "fill": "#334155",
+              "fontSize": 11,
+              "fontFamily": "sans-serif",
+              "fontWeight": "normal"
+            }
+          },
+          "radialAxisTitle": {
+            "type": "text",
+            "properties": {
+              "x": 480,
+              "y": 308,
+              "textAlign": "center",
+              "textBaseline": "top",
+              "text": "y",
+              "fill": "#0f172a",
+              "fontSize": 13,
+              "fontFamily": "sans-serif",
+              "fontWeight": 600
+            }
+          }
+        },
+        "trace": [
+          "createCanvas",
+          "createData",
+          "createPointMark",
+          "encodeTheta",
+          "encodeR",
+          "createRadialAxis"
+        ]
+      }
+    },
+    {
+      "id": "Radial-remove-line",
+      "calls": [
+        {
+          "op": "createPointMark",
+          "args": {}
+        },
+        {
+          "op": "encodeTheta",
+          "args": {
+            "field": "x"
+          }
+        },
+        {
+          "op": "encodeR",
+          "args": {
+            "field": "y",
+            "scale": {
+              "zero": true
+            }
+          }
+        },
+        {
+          "op": "createRadialAxis",
+          "args": {}
+        },
+        {
+          "op": "editRadialAxis",
+          "args": {
+            "line": false
+          }
+        }
+      ],
+      "outcome": "error",
+      "failure": {
+        "op": "editRadialAxis",
+        "message": "editRadialAxis.line options must be a plain object."
+      },
+      "result": {
+        "guides": {
+          "axis": {
+            "radius": {
+              "scale": "radius",
+              "coordinate": "polar",
+              "title": "y"
+            }
+          }
+        },
+        "configs": {
+          "axis": {
+            "radius": {
+              "layout": {
+                "angle": 90
+              },
+              "line": {
+                "scale": "radius",
+                "coordinate": "polar",
+                "color": "#475569",
+                "lineWidth": 1.25
+              },
+              "ticks": {
+                "scale": "radius",
+                "coordinate": "polar",
+                "mode": "count",
+                "count": 5,
+                "inferredValues": true,
+                "length": 8,
+                "color": "#475569",
+                "lineWidth": 1
+              },
+              "labels": {
+                "scale": "radius",
+                "coordinate": "polar",
+                "mode": "count",
+                "count": 5,
+                "inferredValues": true,
+                "offset": 10,
+                "format": "auto",
+                "color": "#334155",
+                "fontSize": 11,
+                "fontFamily": "sans-serif",
+                "fontWeight": "normal"
+              },
+              "title": {
+                "scale": "radius",
+                "coordinate": "polar",
+                "inferredText": true,
+                "offset": 8,
+                "color": "#0f172a",
+                "fontSize": 13,
+                "fontFamily": "sans-serif",
+                "fontWeight": 600,
+                "position": "inside"
+              }
+            }
+          }
+        },
+        "objects": {
+          "radialAxisLine": {
+            "type": "line",
+            "properties": {
+              "x1": 400,
+              "y1": 300,
+              "x2": 560,
+              "y2": 300,
+              "stroke": "#475569",
+              "strokeWidth": 1.25
+            }
+          },
+          "radialAxisTicks": {
+            "type": "line",
+            "count": 5,
+            "first": {
+              "x1": 400,
+              "y1": 296,
+              "x2": 400,
+              "y2": 304,
+              "stroke": "#475569",
+              "strokeWidth": 1
+            }
+          },
+          "radialAxisLabels": {
+            "type": "text",
+            "count": 5,
+            "first": {
+              "x": 400,
+              "y": 290,
+              "text": "0",
+              "textAlign": "center",
+              "textBaseline": "bottom",
+              "fill": "#334155",
+              "fontSize": 11,
+              "fontFamily": "sans-serif",
+              "fontWeight": "normal"
+            }
+          },
+          "radialAxisTitle": {
+            "type": "text",
+            "properties": {
+              "x": 480,
+              "y": 308,
+              "textAlign": "center",
+              "textBaseline": "top",
+              "text": "y",
+              "fill": "#0f172a",
+              "fontSize": 13,
+              "fontFamily": "sans-serif",
+              "fontWeight": 600
+            }
+          }
+        },
+        "trace": [
+          "createCanvas",
+          "createData",
+          "createPointMark",
+          "encodeTheta",
+          "encodeR",
+          "createRadialAxis"
+        ]
+      }
+    },
+    {
+      "id": "Radial-remove-ticks-labels",
+      "calls": [
+        {
+          "op": "createPointMark",
+          "args": {}
+        },
+        {
+          "op": "encodeTheta",
+          "args": {
+            "field": "x"
+          }
+        },
+        {
+          "op": "encodeR",
+          "args": {
+            "field": "y",
+            "scale": {
+              "zero": true
+            }
+          }
+        },
+        {
+          "op": "createRadialAxis",
+          "args": {}
+        },
+        {
+          "op": "editRadialAxis",
+          "args": {
+            "ticksAndLabels": false
+          }
+        }
+      ],
+      "outcome": "error",
+      "failure": {
+        "op": "editRadialAxis",
+        "message": "editRadialAxis.ticksAndLabels options must be a plain object."
+      },
+      "result": {
+        "guides": {
+          "axis": {
+            "radius": {
+              "scale": "radius",
+              "coordinate": "polar",
+              "title": "y"
+            }
+          }
+        },
+        "configs": {
+          "axis": {
+            "radius": {
+              "layout": {
+                "angle": 90
+              },
+              "line": {
+                "scale": "radius",
+                "coordinate": "polar",
+                "color": "#475569",
+                "lineWidth": 1.25
+              },
+              "ticks": {
+                "scale": "radius",
+                "coordinate": "polar",
+                "mode": "count",
+                "count": 5,
+                "inferredValues": true,
+                "length": 8,
+                "color": "#475569",
+                "lineWidth": 1
+              },
+              "labels": {
+                "scale": "radius",
+                "coordinate": "polar",
+                "mode": "count",
+                "count": 5,
+                "inferredValues": true,
+                "offset": 10,
+                "format": "auto",
+                "color": "#334155",
+                "fontSize": 11,
+                "fontFamily": "sans-serif",
+                "fontWeight": "normal"
+              },
+              "title": {
+                "scale": "radius",
+                "coordinate": "polar",
+                "inferredText": true,
+                "offset": 8,
+                "color": "#0f172a",
+                "fontSize": 13,
+                "fontFamily": "sans-serif",
+                "fontWeight": 600,
+                "position": "inside"
+              }
+            }
+          }
+        },
+        "objects": {
+          "radialAxisLine": {
+            "type": "line",
+            "properties": {
+              "x1": 400,
+              "y1": 300,
+              "x2": 560,
+              "y2": 300,
+              "stroke": "#475569",
+              "strokeWidth": 1.25
+            }
+          },
+          "radialAxisTicks": {
+            "type": "line",
+            "count": 5,
+            "first": {
+              "x1": 400,
+              "y1": 296,
+              "x2": 400,
+              "y2": 304,
+              "stroke": "#475569",
+              "strokeWidth": 1
+            }
+          },
+          "radialAxisLabels": {
+            "type": "text",
+            "count": 5,
+            "first": {
+              "x": 400,
+              "y": 290,
+              "text": "0",
+              "textAlign": "center",
+              "textBaseline": "bottom",
+              "fill": "#334155",
+              "fontSize": 11,
+              "fontFamily": "sans-serif",
+              "fontWeight": "normal"
+            }
+          },
+          "radialAxisTitle": {
+            "type": "text",
+            "properties": {
+              "x": 480,
+              "y": 308,
+              "textAlign": "center",
+              "textBaseline": "top",
+              "text": "y",
+              "fill": "#0f172a",
+              "fontSize": 13,
+              "fontFamily": "sans-serif",
+              "fontWeight": 600
+            }
+          }
+        },
+        "trace": [
+          "createCanvas",
+          "createData",
+          "createPointMark",
+          "encodeTheta",
+          "encodeR",
+          "createRadialAxis"
+        ]
+      }
+    },
+    {
+      "id": "Radial-remove-recreate",
+      "calls": [
+        {
+          "op": "createPointMark",
+          "args": {}
+        },
+        {
+          "op": "encodeTheta",
+          "args": {
+            "field": "x"
+          }
+        },
+        {
+          "op": "encodeR",
+          "args": {
+            "field": "y",
+            "scale": {
+              "zero": true
+            }
+          }
+        },
+        {
+          "op": "createRadialAxis",
+          "args": {}
+        },
+        {
+          "op": "removeRadialAxis",
+          "args": {}
+        },
+        {
+          "op": "createRadialAxis",
+          "args": {}
+        }
+      ],
+      "outcome": "success",
+      "result": {
+        "guides": {
+          "axis": {
+            "radius": {
+              "scale": "radius",
+              "coordinate": "polar",
+              "title": "y"
+            }
+          }
+        },
+        "configs": {
+          "axis": {
+            "radius": {
+              "layout": {
+                "angle": 90
+              },
+              "line": {
+                "scale": "radius",
+                "coordinate": "polar",
+                "color": "#475569",
+                "lineWidth": 1.25
+              },
+              "ticks": {
+                "scale": "radius",
+                "coordinate": "polar",
+                "mode": "count",
+                "count": 5,
+                "inferredValues": true,
+                "length": 8,
+                "color": "#475569",
+                "lineWidth": 1
+              },
+              "labels": {
+                "scale": "radius",
+                "coordinate": "polar",
+                "mode": "count",
+                "count": 5,
+                "inferredValues": true,
+                "offset": 10,
+                "format": "auto",
+                "color": "#334155",
+                "fontSize": 11,
+                "fontFamily": "sans-serif",
+                "fontWeight": "normal"
+              },
+              "title": {
+                "scale": "radius",
+                "coordinate": "polar",
+                "inferredText": true,
+                "offset": 8,
+                "color": "#0f172a",
+                "fontSize": 13,
+                "fontFamily": "sans-serif",
+                "fontWeight": 600,
+                "position": "inside"
+              }
+            }
+          }
+        },
+        "objects": {
+          "radialAxisLine": {
+            "type": "line",
+            "properties": {
+              "x1": 400,
+              "y1": 300,
+              "x2": 560,
+              "y2": 300,
+              "stroke": "#475569",
+              "strokeWidth": 1.25
+            }
+          },
+          "radialAxisTicks": {
+            "type": "line",
+            "count": 5,
+            "first": {
+              "x1": 400,
+              "y1": 296,
+              "x2": 400,
+              "y2": 304,
+              "stroke": "#475569",
+              "strokeWidth": 1
+            }
+          },
+          "radialAxisLabels": {
+            "type": "text",
+            "count": 5,
+            "first": {
+              "x": 400,
+              "y": 290,
+              "text": "0",
+              "textAlign": "center",
+              "textBaseline": "bottom",
+              "fill": "#334155",
+              "fontSize": 11,
+              "fontFamily": "sans-serif",
+              "fontWeight": "normal"
+            }
+          },
+          "radialAxisTitle": {
+            "type": "text",
+            "properties": {
+              "x": 480,
+              "y": 308,
+              "textAlign": "center",
+              "textBaseline": "top",
+              "text": "y",
+              "fill": "#0f172a",
+              "fontSize": 13,
+              "fontFamily": "sans-serif",
+              "fontWeight": 600
+            }
+          }
+        },
+        "trace": [
+          "createCanvas",
+          "createData",
+          "createPointMark",
+          "encodeTheta",
+          "encodeR",
+          "createRadialAxis",
+          "removeRadialAxis",
+          "createRadialAxis"
+        ]
+      }
+    },
+    {
+      "id": "Radial-style-replay",
+      "calls": [
+        {
+          "op": "createPointMark",
+          "args": {}
+        },
+        {
+          "op": "encodeTheta",
+          "args": {
+            "field": "x"
+          }
+        },
+        {
+          "op": "encodeR",
+          "args": {
+            "field": "y",
+            "scale": {
+              "zero": true
+            }
+          }
+        },
+        {
+          "op": "createRadialAxis",
+          "args": {}
+        },
+        {
+          "op": "editRadialAxisLabels",
+          "args": {
+            "fontSize": 14,
+            "fontWeight": 600,
+            "values": [
+              0,
+              10
+            ]
+          }
+        },
+        {
+          "op": "editCanvas",
+          "args": {
+            "width": 900
+          }
+        },
+        {
+          "op": "editScale",
+          "args": {
+            "id": "radius",
+            "domain": [
+              0,
+              30
+            ]
+          }
+        }
+      ],
+      "outcome": "success",
+      "result": {
+        "guides": {
+          "axis": {
+            "radius": {
+              "scale": "radius",
+              "coordinate": "polar",
+              "title": "y"
+            }
+          }
+        },
+        "configs": {
+          "axis": {
+            "radius": {
+              "layout": {
+                "angle": 90
+              },
+              "line": {
+                "scale": "radius",
+                "coordinate": "polar",
+                "color": "#475569",
+                "lineWidth": 1.25
+              },
+              "ticks": {
+                "scale": "radius",
+                "coordinate": "polar",
+                "mode": "count",
+                "count": 5,
+                "inferredValues": true,
+                "length": 8,
+                "color": "#475569",
+                "lineWidth": 1
+              },
+              "labels": {
+                "scale": "radius",
+                "coordinate": "polar",
+                "mode": "count",
+                "count": 5,
+                "inferredValues": true,
+                "offset": 10,
+                "format": "auto",
+                "color": "#334155",
+                "fontSize": 14,
+                "fontFamily": "sans-serif",
+                "fontWeight": 600,
+                "values": [
+                  0,
+                  10
+                ]
+              },
+              "title": {
+                "scale": "radius",
+                "coordinate": "polar",
+                "inferredText": true,
+                "offset": 8,
+                "color": "#0f172a",
+                "fontSize": 13,
+                "fontFamily": "sans-serif",
+                "fontWeight": 600,
+                "position": "inside"
+              }
+            }
+          }
+        },
+        "objects": {
+          "radialAxisLine": {
+            "type": "line",
+            "properties": {
+              "x1": 450,
+              "y1": 300,
+              "x2": 610,
+              "y2": 300,
+              "stroke": "#475569",
+              "strokeWidth": 1.25
+            }
+          },
+          "radialAxisTicks": {
+            "type": "line",
+            "count": 4,
+            "first": {
+              "x1": 450,
+              "y1": 296,
+              "x2": 450,
+              "y2": 304,
+              "stroke": "#475569",
+              "strokeWidth": 1
+            }
+          },
+          "radialAxisLabels": {
+            "type": "text",
+            "count": 4,
+            "first": {
+              "x": 450,
+              "y": 290,
+              "text": "0",
+              "textAlign": "center",
+              "textBaseline": "bottom",
+              "fill": "#334155",
+              "fontSize": 14,
+              "fontFamily": "sans-serif",
+              "fontWeight": 600
+            }
+          },
+          "radialAxisTitle": {
+            "type": "text",
+            "properties": {
+              "x": 530,
+              "y": 308,
+              "textAlign": "center",
+              "textBaseline": "top",
+              "text": "y",
+              "fill": "#0f172a",
+              "fontSize": 13,
+              "fontFamily": "sans-serif",
+              "fontWeight": 600
+            }
+          }
+        },
+        "trace": [
+          "createCanvas",
+          "createData",
+          "createPointMark",
+          "encodeTheta",
+          "encodeR",
+          "createRadialAxis",
+          "editRadialAxisLabels",
+          "editCanvas",
+          "editScale"
+        ]
+      }
+    },
+    {
+      "id": "Radial-internal-Line",
+      "internal": true,
+      "calls": [
+        {
+          "op": "createPointMark",
+          "args": {}
+        },
+        {
+          "op": "encodeTheta",
+          "args": {
+            "field": "x"
+          }
+        },
+        {
+          "op": "encodeR",
+          "args": {
+            "field": "y",
+            "scale": {
+              "zero": true
+            }
+          }
+        },
+        {
+          "op": "createRadialAxisLine",
+          "args": {}
+        }
+      ],
+      "outcome": "success",
+      "result": {
+        "guides": {
+          "axis": {
+            "radius": {
+              "scale": "radius",
+              "coordinate": "polar"
+            }
+          }
+        },
+        "configs": {
+          "axis": {
+            "radius": {
+              "layout": {
+                "angle": 90
+              },
+              "line": {
+                "scale": "radius",
+                "coordinate": "polar",
+                "color": "#475569",
+                "lineWidth": 1.25
+              }
+            }
+          }
+        },
+        "objects": {
+          "radialAxisLine": {
+            "type": "line",
+            "properties": {
+              "x1": 400,
+              "y1": 300,
+              "x2": 560,
+              "y2": 300,
+              "stroke": "#475569",
+              "strokeWidth": 1.25
+            }
+          }
+        },
+        "trace": [
+          "createCanvas",
+          "createData",
+          "createPointMark",
+          "encodeTheta",
+          "encodeR",
+          "createRadialAxisLine"
+        ]
+      }
+    },
+    {
+      "id": "Radial-internal-Ticks",
+      "internal": true,
+      "calls": [
+        {
+          "op": "createPointMark",
+          "args": {}
+        },
+        {
+          "op": "encodeTheta",
+          "args": {
+            "field": "x"
+          }
+        },
+        {
+          "op": "encodeR",
+          "args": {
+            "field": "y",
+            "scale": {
+              "zero": true
+            }
+          }
+        },
+        {
+          "op": "createRadialAxisTicks",
+          "args": {}
+        }
+      ],
+      "outcome": "success",
+      "result": {
+        "guides": {
+          "axis": {
+            "radius": {
+              "scale": "radius",
+              "coordinate": "polar"
+            }
+          }
+        },
+        "configs": {
+          "axis": {
+            "radius": {
+              "layout": {
+                "angle": 90
+              },
+              "ticks": {
+                "scale": "radius",
+                "coordinate": "polar",
+                "mode": "count",
+                "count": 5,
+                "inferredValues": true,
+                "length": 8,
+                "color": "#475569",
+                "lineWidth": 1
+              }
+            }
+          }
+        },
+        "objects": {
+          "radialAxisTicks": {
+            "type": "line",
+            "count": 5,
+            "first": {
+              "x1": 400,
+              "y1": 296,
+              "x2": 400,
+              "y2": 304,
+              "stroke": "#475569",
+              "strokeWidth": 1
+            }
+          }
+        },
+        "trace": [
+          "createCanvas",
+          "createData",
+          "createPointMark",
+          "encodeTheta",
+          "encodeR",
+          "createRadialAxisTicks"
+        ]
+      }
+    },
+    {
+      "id": "Radial-internal-Labels",
+      "internal": true,
+      "calls": [
+        {
+          "op": "createPointMark",
+          "args": {}
+        },
+        {
+          "op": "encodeTheta",
+          "args": {
+            "field": "x"
+          }
+        },
+        {
+          "op": "encodeR",
+          "args": {
+            "field": "y",
+            "scale": {
+              "zero": true
+            }
+          }
+        },
+        {
+          "op": "createRadialAxisLabels",
+          "args": {}
+        }
+      ],
+      "outcome": "success",
+      "result": {
+        "guides": {
+          "axis": {
+            "radius": {
+              "scale": "radius",
+              "coordinate": "polar"
+            }
+          }
+        },
+        "configs": {
+          "axis": {
+            "radius": {
+              "layout": {
+                "angle": 90
+              },
+              "labels": {
+                "scale": "radius",
+                "coordinate": "polar",
+                "mode": "count",
+                "count": 5,
+                "inferredValues": true,
+                "offset": 10,
+                "format": "auto",
+                "color": "#334155",
+                "fontSize": 11,
+                "fontFamily": "sans-serif",
+                "fontWeight": "normal"
+              }
+            }
+          }
+        },
+        "objects": {
+          "radialAxisLabels": {
+            "type": "text",
+            "count": 5,
+            "first": {
+              "x": 400,
+              "y": 290,
+              "text": "0",
+              "textAlign": "center",
+              "textBaseline": "bottom",
+              "fill": "#334155",
+              "fontSize": 11,
+              "fontFamily": "sans-serif",
+              "fontWeight": "normal"
+            }
+          }
+        },
+        "trace": [
+          "createCanvas",
+          "createData",
+          "createPointMark",
+          "encodeTheta",
+          "encodeR",
+          "createRadialAxisLabels"
+        ]
+      }
+    },
+    {
+      "id": "Radial-internal-Title",
+      "internal": true,
+      "calls": [
+        {
+          "op": "createPointMark",
+          "args": {}
+        },
+        {
+          "op": "encodeTheta",
+          "args": {
+            "field": "x"
+          }
+        },
+        {
+          "op": "encodeR",
+          "args": {
+            "field": "y",
+            "scale": {
+              "zero": true
+            }
+          }
+        },
+        {
+          "op": "createRadialAxisTitle",
+          "args": {}
+        }
+      ],
+      "outcome": "success",
+      "result": {
+        "guides": {
+          "axis": {
+            "radius": {
+              "scale": "radius",
+              "coordinate": "polar",
+              "title": "y"
+            }
+          }
+        },
+        "configs": {
+          "axis": {
+            "radius": {
+              "layout": {
+                "angle": 90
+              },
+              "title": {
+                "scale": "radius",
+                "coordinate": "polar",
+                "inferredText": true,
+                "offset": 8,
+                "color": "#0f172a",
+                "fontSize": 13,
+                "fontFamily": "sans-serif",
+                "fontWeight": 600,
+                "position": "inside"
+              }
+            }
+          }
+        },
+        "objects": {
+          "radialAxisTitle": {
+            "type": "text",
+            "properties": {
+              "x": 480,
+              "y": 308,
+              "textAlign": "center",
+              "textBaseline": "top",
+              "text": "y",
+              "fill": "#0f172a",
+              "fontSize": 13,
+              "fontFamily": "sans-serif",
+              "fontWeight": 600
+            }
+          }
+        },
+        "trace": [
+          "createCanvas",
+          "createData",
+          "createPointMark",
+          "encodeTheta",
+          "encodeR",
+          "createRadialAxisTitle"
+        ]
+      }
+    },
+    {
+      "id": "cartesian-create-title-false",
+      "calls": [
+        {
+          "op": "createPointMark",
+          "args": {}
+        },
+        {
+          "op": "encodeX",
+          "args": {
+            "field": "x"
+          }
+        },
+        {
+          "op": "encodeY",
+          "args": {
+            "field": "y"
+          }
+        },
+        {
+          "op": "createXAxis",
+          "args": {
+            "title": false
+          }
+        }
+      ],
+      "outcome": "error",
+      "failure": {
+        "op": "createXAxis",
+        "message": "createXAxis.title must be a plain object."
+      },
+      "result": {
+        "guides": {},
+        "configs": {},
+        "objects": {},
+        "trace": [
+          "createCanvas",
+          "createData",
+          "createPointMark",
+          "encodeX",
+          "encodeY"
+        ]
+      }
+    },
+    {
+      "id": "cartesian-remove-recreate-title",
+      "calls": [
+        {
+          "op": "createPointMark",
+          "args": {}
+        },
+        {
+          "op": "encodeX",
+          "args": {
+            "field": "x"
+          }
+        },
+        {
+          "op": "encodeY",
+          "args": {
+            "field": "y"
+          }
+        },
+        {
+          "op": "createXAxis",
+          "args": {}
+        },
+        {
+          "op": "editXAxis",
+          "args": {
+            "title": false
+          }
+        },
+        {
+          "op": "createXAxisTitle",
+          "args": {
+            "text": "Restored"
+          }
+        }
+      ],
+      "outcome": "success",
+      "result": {
+        "guides": {
+          "axis": {
+            "x": {
+              "scale": "x",
+              "title": "Restored"
+            }
+          }
+        },
+        "configs": {
+          "axis": {
+            "x": {
+              "line": {
+                "position": "bottom",
+                "color": "#334155",
+                "lineWidth": 1
+              },
+              "ticks": {
+                "scale": "x",
+                "position": "bottom",
+                "length": 6,
+                "color": "#64748b",
+                "lineWidth": 1,
+                "inferredValues": false,
+                "mode": "count",
+                "count": 5
+              },
+              "labels": {
+                "scale": "x",
+                "position": "bottom",
+                "offset": 18,
+                "format": "auto",
+                "color": "#334155",
+                "fontSize": 12,
+                "fontFamily": "sans-serif",
+                "fontWeight": "normal",
+                "inferredValues": false,
+                "mode": "count",
+                "count": 5
+              },
+              "title": {
+                "scale": "x",
+                "inferredText": false,
+                "position": "bottom",
+                "at": "center",
+                "offset": 42,
+                "rotation": 0,
+                "inferredRotation": true,
+                "inferredOffset": true,
+                "color": "#334155",
+                "fontSize": 13,
+                "fontFamily": "sans-serif",
+                "fontWeight": 600
+              }
+            }
+          }
+        },
+        "objects": {
+          "xAxisLine": {
+            "type": "line",
+            "properties": {
+              "x1": 140,
+              "y1": 460,
+              "x2": 660,
+              "y2": 460,
+              "stroke": "#334155",
+              "strokeWidth": 1
+            }
+          },
+          "xAxisTicks": {
+            "type": "line",
+            "count": 6,
+            "first": {
+              "x1": 140,
+              "y1": 460,
+              "x2": 140,
+              "y2": 466,
+              "stroke": "#64748b",
+              "strokeWidth": 1
+            }
+          },
+          "xAxisLabels": {
+            "type": "text",
+            "count": 6,
+            "first": {
+              "x": 140,
+              "y": 478,
+              "text": "0",
+              "fill": "#334155",
+              "fontSize": 12,
+              "fontFamily": "sans-serif",
+              "fontWeight": "normal",
+              "textAlign": "center",
+              "textBaseline": "top"
+            }
+          },
+          "xAxisTitle": {
+            "type": "text",
+            "properties": {
+              "x": 400,
+              "y": 502,
+              "text": "Restored",
+              "fill": "#334155",
+              "fontSize": 13,
+              "fontFamily": "sans-serif",
+              "fontWeight": 600,
+              "textAlign": "center",
+              "textBaseline": "middle",
+              "rotation": 0
+            }
+          }
+        },
+        "trace": [
+          "createCanvas",
+          "createData",
+          "createPointMark",
+          "encodeX",
+          "encodeY",
+          "createXAxis",
+          "editXAxis",
+          "createXAxisTitle"
+        ]
+      }
+    },
+    {
+      "id": "parallel-default-replay",
+      "calls": [
+        {
+          "op": "createParallelCoordinates",
+          "args": {
+            "dimensions": [
+              "x",
+              "y"
+            ]
+          }
+        },
+        {
+          "op": "editCanvas",
+          "args": {
+            "width": 900
+          }
+        }
+      ],
+      "outcome": "success",
+      "result": {
+        "guides": {
+          "axis": {
+            "parallel": {
+              "target": "parallelCoordinates",
+              "coordinate": "parallel",
+              "scales": [
+                "parallelCoordinates-parallel-0",
+                "parallelCoordinates-parallel-1"
+              ]
+            }
+          }
+        },
+        "configs": {
+          "axis": {
+            "parallel": {
+              "axes": {
+                "target": "parallelCoordinates",
+                "scales": [
+                  "parallelCoordinates-parallel-0",
+                  "parallelCoordinates-parallel-1"
+                ]
+              }
+            }
+          }
+        },
+        "objects": {
+          "parallelAxisLines": {
+            "type": "line",
+            "count": 2,
+            "first": {
+              "x1": 140,
+              "y1": 140,
+              "x2": 140,
+              "y2": 460,
+              "stroke": "#475569",
+              "strokeWidth": 1.25
+            }
+          },
+          "parallelAxisTicks": {
+            "type": "line",
+            "count": 11,
+            "first": {
+              "x1": 136,
+              "y1": 460,
+              "x2": 144,
+              "y2": 460,
+              "stroke": "#64748b",
+              "strokeWidth": 1
+            }
+          },
+          "parallelAxisLabels": {
+            "type": "text",
+            "count": 11,
+            "first": {
+              "x": 131,
+              "y": 460,
+              "text": "0",
+              "fill": "#475569",
+              "fontSize": 11,
+              "fontFamily": "sans-serif",
+              "fontWeight": "normal",
+              "textAlign": "right",
+              "textBaseline": "middle"
+            }
+          },
+          "parallelAxisTitles": {
+            "type": "text",
+            "count": 2,
+            "first": {
+              "x": 140,
+              "y": 120,
+              "text": "x",
+              "fill": "#1e293b",
+              "fontSize": 13,
+              "fontFamily": "sans-serif",
+              "fontWeight": 600,
+              "textAlign": "center",
+              "textBaseline": "middle"
+            }
+          }
+        },
+        "trace": [
+          "createCanvas",
+          "createData",
+          "createParallelCoordinates",
+          "editCanvas"
+        ]
+      }
+    },
+    {
+      "id": "parallel-style-edit",
+      "calls": [
+        {
+          "op": "createParallelCoordinates",
+          "args": {
+            "dimensions": [
+              "x",
+              "y"
+            ]
+          }
+        },
+        {
+          "op": "editParallelAxis",
+          "args": {
+            "field": "x",
+            "labels": {
+              "fontSize": 14
+            }
+          }
+        }
+      ],
+      "outcome": "error",
+      "failure": {
+        "op": "editParallelAxis",
+        "message": "Missing method editParallelAxis."
+      },
+      "result": {
+        "guides": {
+          "axis": {
+            "parallel": {
+              "target": "parallelCoordinates",
+              "coordinate": "parallel",
+              "scales": [
+                "parallelCoordinates-parallel-0",
+                "parallelCoordinates-parallel-1"
+              ]
+            }
+          }
+        },
+        "configs": {
+          "axis": {
+            "parallel": {
+              "axes": {
+                "target": "parallelCoordinates",
+                "scales": [
+                  "parallelCoordinates-parallel-0",
+                  "parallelCoordinates-parallel-1"
+                ]
+              }
+            }
+          }
+        },
+        "objects": {
+          "parallelAxisLines": {
+            "type": "line",
+            "count": 2,
+            "first": {
+              "x1": 140,
+              "y1": 140,
+              "x2": 140,
+              "y2": 460,
+              "stroke": "#475569",
+              "strokeWidth": 1.25
+            }
+          },
+          "parallelAxisTicks": {
+            "type": "line",
+            "count": 11,
+            "first": {
+              "x1": 136,
+              "y1": 460,
+              "x2": 144,
+              "y2": 460,
+              "stroke": "#64748b",
+              "strokeWidth": 1
+            }
+          },
+          "parallelAxisLabels": {
+            "type": "text",
+            "count": 11,
+            "first": {
+              "x": 131,
+              "y": 460,
+              "text": "0",
+              "fill": "#475569",
+              "fontSize": 11,
+              "fontFamily": "sans-serif",
+              "fontWeight": "normal",
+              "textAlign": "right",
+              "textBaseline": "middle"
+            }
+          },
+          "parallelAxisTitles": {
+            "type": "text",
+            "count": 2,
+            "first": {
+              "x": 140,
+              "y": 120,
+              "text": "x",
+              "fill": "#1e293b",
+              "fontSize": 13,
+              "fontFamily": "sans-serif",
+              "fontWeight": 600,
+              "textAlign": "center",
+              "textBaseline": "middle"
+            }
+          }
+        },
+        "trace": [
+          "createCanvas",
+          "createData",
+          "createParallelCoordinates"
+        ]
+      }
+    },
+    {
+      "id": "legend-categorical-top",
+      "calls": [
+        {
+          "op": "createPointMark",
+          "args": {}
+        },
+        {
+          "op": "encodeX",
+          "args": {
+            "field": "x"
+          }
+        },
+        {
+          "op": "encodeY",
+          "args": {
+            "field": "y"
+          }
+        },
+        {
+          "op": "encodeColor",
+          "args": {
+            "field": "category"
+          }
+        },
+        {
+          "op": "createLegend",
+          "args": {
+            "position": "top"
+          }
+        }
+      ],
+      "outcome": "success",
+      "result": {
+        "guides": {
+          "legend": {
+            "series": {
+              "channels": [
+                "color"
+              ],
+              "scales": [
+                "color"
+              ],
+              "title": "category"
+            }
+          }
+        },
+        "configs": {
+          "legend": {
+            "series": {
+              "target": "point",
+              "kind": "series",
+              "channels": [
+                "color"
+              ],
+              "scales": [
+                "color"
+              ],
+              "field": "category",
+              "title": "category",
+              "domain": [
+                "A",
+                "B",
+                "C"
+              ],
+              "inferredTitle": true,
+              "position": "top",
+              "align": "center",
+              "direction": "horizontal",
+              "offset": 8,
+              "titlePosition": "top",
+              "symbol": {
+                "layers": [
+                  {
+                    "type": "line",
+                    "length": 32,
+                    "lineWidth": 2
+                  }
+                ]
+              },
+              "labels": {
+                "color": "#334155",
+                "fontSize": 12,
+                "fontFamily": "sans-serif",
+                "fontWeight": "normal",
+                "offset": 10
+              },
+              "titleStyle": {
+                "color": "#334155",
+                "fontSize": 13,
+                "fontFamily": "sans-serif",
+                "fontWeight": 600
+              },
+              "itemGap": 24,
+              "bottomGrid": true,
+              "border": false,
+              "titleVisible": true
+            }
+          }
+        },
+        "objects": {
+          "seriesLegendSymbols": {
+            "type": "line",
+            "count": 3,
+            "first": {
+              "x1": 302.02,
+              "y1": 126,
+              "x2": 334.02,
+              "y2": 126,
+              "stroke": "#4c78a8",
+              "strokeWidth": 2,
+              "strokeDash": []
+            }
+          },
+          "seriesLegendLabels": {
+            "type": "text",
+            "count": 3,
+            "first": {
+              "x": 344.02,
+              "y": 126,
+              "text": "A",
+              "fill": "#334155",
+              "fontSize": 12,
+              "fontFamily": "sans-serif",
+              "fontWeight": "normal",
+              "textAlign": "left",
+              "textBaseline": "middle"
+            }
+          },
+          "seriesLegendTitle": {
+            "type": "text",
+            "properties": {
+              "x": 400,
+              "y": 101.5,
+              "text": "category",
+              "fill": "#334155",
+              "fontSize": 13,
+              "fontFamily": "sans-serif",
+              "fontWeight": 600,
+              "textAlign": "center",
+              "textBaseline": "middle"
+            }
+          }
+        },
+        "trace": [
+          "createCanvas",
+          "createData",
+          "createPointMark",
+          "encodeX",
+          "encodeY",
+          "encodeColor",
+          "createLegend"
+        ]
+      }
+    },
+    {
+      "id": "legend-categorical-right",
+      "calls": [
+        {
+          "op": "createPointMark",
+          "args": {}
+        },
+        {
+          "op": "encodeX",
+          "args": {
+            "field": "x"
+          }
+        },
+        {
+          "op": "encodeY",
+          "args": {
+            "field": "y"
+          }
+        },
+        {
+          "op": "encodeColor",
+          "args": {
+            "field": "category"
+          }
+        },
+        {
+          "op": "createLegend",
+          "args": {
+            "position": "right"
+          }
+        }
+      ],
+      "outcome": "success",
+      "result": {
+        "guides": {
+          "legend": {
+            "series": {
+              "channels": [
+                "color"
+              ],
+              "scales": [
+                "color"
+              ],
+              "title": "category"
+            }
+          }
+        },
+        "configs": {
+          "legend": {
+            "series": {
+              "target": "point",
+              "kind": "series",
+              "channels": [
+                "color"
+              ],
+              "scales": [
+                "color"
+              ],
+              "field": "category",
+              "title": "category",
+              "domain": [
+                "A",
+                "B",
+                "C"
+              ],
+              "inferredTitle": true,
+              "position": "right",
+              "align": "center",
+              "direction": "horizontal",
+              "offset": 8,
+              "titlePosition": "top",
+              "symbol": {
+                "layers": [
+                  {
+                    "type": "line",
+                    "length": 32,
+                    "lineWidth": 2
+                  }
+                ]
+              },
+              "labels": {
+                "color": "#334155",
+                "fontSize": 12,
+                "fontFamily": "sans-serif",
+                "fontWeight": "normal",
+                "offset": 10
+              },
+              "titleStyle": {
+                "color": "#334155",
+                "fontSize": 13,
+                "fontFamily": "sans-serif",
+                "fontWeight": 600
+              },
+              "itemGap": 28,
+              "bottomGrid": true,
+              "border": false,
+              "titleVisible": true
+            }
+          }
+        },
+        "objects": {
+          "seriesLegendSymbols": {
+            "type": "line",
+            "count": 3,
+            "first": {
+              "x1": 668,
+              "y1": 192,
+              "x2": 700,
+              "y2": 192,
+              "stroke": "#4c78a8",
+              "strokeWidth": 2,
+              "strokeDash": []
+            }
+          },
+          "seriesLegendLabels": {
+            "type": "text",
+            "count": 3,
+            "first": {
+              "x": 710,
+              "y": 192,
+              "text": "A",
+              "fill": "#334155",
+              "fontSize": 12,
+              "fontFamily": "sans-serif",
+              "fontWeight": "normal",
+              "textAlign": "left",
+              "textBaseline": "middle"
+            }
+          },
+          "seriesLegendTitle": {
+            "type": "text",
+            "properties": {
+              "x": 668,
+              "y": 160,
+              "text": "category",
+              "fill": "#334155",
+              "fontSize": 13,
+              "fontFamily": "sans-serif",
+              "fontWeight": 600,
+              "textAlign": "left",
+              "textBaseline": "middle"
+            }
+          }
+        },
+        "trace": [
+          "createCanvas",
+          "createData",
+          "createPointMark",
+          "encodeX",
+          "encodeY",
+          "encodeColor",
+          "createLegend"
+        ]
+      }
+    },
+    {
+      "id": "legend-categorical-bottom",
+      "calls": [
+        {
+          "op": "createPointMark",
+          "args": {}
+        },
+        {
+          "op": "encodeX",
+          "args": {
+            "field": "x"
+          }
+        },
+        {
+          "op": "encodeY",
+          "args": {
+            "field": "y"
+          }
+        },
+        {
+          "op": "encodeColor",
+          "args": {
+            "field": "category"
+          }
+        },
+        {
+          "op": "createLegend",
+          "args": {
+            "position": "bottom"
+          }
+        }
+      ],
+      "outcome": "success",
+      "result": {
+        "guides": {
+          "legend": {
+            "series": {
+              "channels": [
+                "color"
+              ],
+              "scales": [
+                "color"
+              ],
+              "title": "category"
+            }
+          }
+        },
+        "configs": {
+          "legend": {
+            "series": {
+              "target": "point",
+              "kind": "series",
+              "channels": [
+                "color"
+              ],
+              "scales": [
+                "color"
+              ],
+              "field": "category",
+              "title": "category",
+              "domain": [
+                "A",
+                "B",
+                "C"
+              ],
+              "inferredTitle": true,
+              "position": "bottom",
+              "align": "center",
+              "direction": "horizontal",
+              "offset": 8,
+              "titlePosition": "top",
+              "symbol": {
+                "layers": [
+                  {
+                    "type": "line",
+                    "length": 32,
+                    "lineWidth": 2
+                  }
+                ]
+              },
+              "labels": {
+                "color": "#334155",
+                "fontSize": 12,
+                "fontFamily": "sans-serif",
+                "fontWeight": "normal",
+                "offset": 10
+              },
+              "titleStyle": {
+                "color": "#334155",
+                "fontSize": 13,
+                "fontFamily": "sans-serif",
+                "fontWeight": 600
+              },
+              "itemGap": 20,
+              "bottomGrid": false,
+              "border": false,
+              "titleVisible": true
+            }
+          }
+        },
+        "objects": {
+          "seriesLegendSymbols": {
+            "type": "line",
+            "count": 3,
+            "first": {
+              "x1": 306.02,
+              "y1": 572,
+              "x2": 338.02,
+              "y2": 572,
+              "stroke": "#4c78a8",
+              "strokeWidth": 2,
+              "strokeDash": []
+            }
+          },
+          "seriesLegendLabels": {
+            "type": "text",
+            "count": 3,
+            "first": {
+              "x": 348.02,
+              "y": 572,
+              "text": "A",
+              "fill": "#334155",
+              "fontSize": 12,
+              "fontFamily": "sans-serif",
+              "fontWeight": "normal",
+              "textAlign": "left",
+              "textBaseline": "middle"
+            }
+          },
+          "seriesLegendTitle": {
+            "type": "text",
+            "properties": {
+              "x": 400,
+              "y": 548,
+              "text": "category",
+              "fill": "#334155",
+              "fontSize": 13,
+              "fontFamily": "sans-serif",
+              "fontWeight": 600,
+              "textAlign": "center",
+              "textBaseline": "middle"
+            }
+          }
+        },
+        "trace": [
+          "createCanvas",
+          "createData",
+          "createPointMark",
+          "encodeX",
+          "encodeY",
+          "encodeColor",
+          "createLegend"
+        ]
+      }
+    },
+    {
+      "id": "legend-categorical-left",
+      "calls": [
+        {
+          "op": "createPointMark",
+          "args": {}
+        },
+        {
+          "op": "encodeX",
+          "args": {
+            "field": "x"
+          }
+        },
+        {
+          "op": "encodeY",
+          "args": {
+            "field": "y"
+          }
+        },
+        {
+          "op": "encodeColor",
+          "args": {
+            "field": "category"
+          }
+        },
+        {
+          "op": "createLegend",
+          "args": {
+            "position": "left"
+          }
+        }
+      ],
+      "outcome": "success",
+      "result": {
+        "guides": {
+          "legend": {
+            "series": {
+              "channels": [
+                "color"
+              ],
+              "scales": [
+                "color"
+              ],
+              "title": "category"
+            }
+          }
+        },
+        "configs": {
+          "legend": {
+            "series": {
+              "target": "point",
+              "kind": "series",
+              "channels": [
+                "color"
+              ],
+              "scales": [
+                "color"
+              ],
+              "field": "category",
+              "title": "category",
+              "domain": [
+                "A",
+                "B",
+                "C"
+              ],
+              "inferredTitle": true,
+              "position": "left",
+              "align": "center",
+              "direction": "vertical",
+              "offset": 8,
+              "titlePosition": "top",
+              "symbol": {
+                "layers": [
+                  {
+                    "type": "line",
+                    "length": 32,
+                    "lineWidth": 2
+                  }
+                ]
+              },
+              "labels": {
+                "color": "#334155",
+                "fontSize": 12,
+                "fontFamily": "sans-serif",
+                "fontWeight": "normal",
+                "offset": 10
+              },
+              "titleStyle": {
+                "color": "#334155",
+                "fontSize": 13,
+                "fontFamily": "sans-serif",
+                "fontWeight": 600
+              },
+              "itemGap": 28,
+              "bottomGrid": true,
+              "border": false,
+              "titleVisible": true
+            }
+          }
+        },
+        "objects": {
+          "seriesLegendSymbols": {
+            "type": "line",
+            "count": 3,
+            "first": {
+              "x1": 81.1648,
+              "y1": 192,
+              "x2": 113.1648,
+              "y2": 192,
+              "stroke": "#4c78a8",
+              "strokeWidth": 2,
+              "strokeDash": []
+            }
+          },
+          "seriesLegendLabels": {
+            "type": "text",
+            "count": 3,
+            "first": {
+              "x": 123.1648,
+              "y": 192,
+              "text": "A",
+              "fill": "#334155",
+              "fontSize": 12,
+              "fontFamily": "sans-serif",
+              "fontWeight": "normal",
+              "textAlign": "left",
+              "textBaseline": "middle"
+            }
+          },
+          "seriesLegendTitle": {
+            "type": "text",
+            "properties": {
+              "x": 81.1648,
+              "y": 160,
+              "text": "category",
+              "fill": "#334155",
+              "fontSize": 13,
+              "fontFamily": "sans-serif",
+              "fontWeight": 600,
+              "textAlign": "left",
+              "textBaseline": "middle"
+            }
+          }
+        },
+        "trace": [
+          "createCanvas",
+          "createData",
+          "createPointMark",
+          "encodeX",
+          "encodeY",
+          "encodeColor",
+          "createLegend"
+        ]
+      }
+    },
+    {
+      "id": "legend-continuous-top",
+      "calls": [
+        {
+          "op": "createPointMark",
+          "args": {}
+        },
+        {
+          "op": "encodeX",
+          "args": {
+            "field": "x"
+          }
+        },
+        {
+          "op": "encodeY",
+          "args": {
+            "field": "y"
+          }
+        },
+        {
+          "op": "encodeColor",
+          "args": {
+            "field": "amount",
+            "fieldType": "quantitative"
+          }
+        },
+        {
+          "op": "createLegend",
+          "args": {
+            "position": "top"
+          }
+        }
+      ],
+      "outcome": "success",
+      "result": {
+        "guides": {
+          "legend": {
+            "color": {
+              "scale": "color",
+              "title": "amount"
+            }
+          }
+        },
+        "configs": {
+          "legend": {
+            "gradient": {
+              "target": "point",
+              "position": "top",
+              "align": "center",
+              "offset": 30,
+              "count": 5,
+              "title": "amount",
+              "inferredTitle": true,
+              "labels": {
+                "offset": 12,
+                "color": "#334155",
+                "fontSize": 12,
+                "fontFamily": "sans-serif",
+                "fontWeight": "normal"
+              },
+              "titleStyle": {
+                "color": "#334155",
+                "fontSize": 13,
+                "fontFamily": "sans-serif",
+                "fontWeight": 600
+              },
+              "itemGap": 28,
+              "titlePosition": "top",
+              "border": false,
+              "gradient": {
+                "length": 120,
+                "thickness": 12
+              },
+              "titleVisible": true,
+              "scale": "color",
+              "fieldType": "quantitative",
+              "domain": [
+                2,
+                4
+              ]
+            }
+          }
+        },
+        "objects": {},
+        "trace": [
+          "createCanvas",
+          "createData",
+          "createPointMark",
+          "encodeX",
+          "encodeY",
+          "encodeColor",
+          "createLegend"
+        ]
+      }
+    },
+    {
+      "id": "legend-continuous-right",
+      "calls": [
+        {
+          "op": "createPointMark",
+          "args": {}
+        },
+        {
+          "op": "encodeX",
+          "args": {
+            "field": "x"
+          }
+        },
+        {
+          "op": "encodeY",
+          "args": {
+            "field": "y"
+          }
+        },
+        {
+          "op": "encodeColor",
+          "args": {
+            "field": "amount",
+            "fieldType": "quantitative"
+          }
+        },
+        {
+          "op": "createLegend",
+          "args": {
+            "position": "right"
+          }
+        }
+      ],
+      "outcome": "success",
+      "result": {
+        "guides": {
+          "legend": {
+            "color": {
+              "scale": "color",
+              "title": "amount"
+            }
+          }
+        },
+        "configs": {
+          "legend": {
+            "gradient": {
+              "target": "point",
+              "position": "right",
+              "align": "center",
+              "offset": 30,
+              "count": 5,
+              "title": "amount",
+              "inferredTitle": true,
+              "labels": {
+                "offset": 12,
+                "color": "#334155",
+                "fontSize": 12,
+                "fontFamily": "sans-serif",
+                "fontWeight": "normal"
+              },
+              "titleStyle": {
+                "color": "#334155",
+                "fontSize": 13,
+                "fontFamily": "sans-serif",
+                "fontWeight": 600
+              },
+              "itemGap": 28,
+              "titlePosition": "top",
+              "border": false,
+              "gradient": {
+                "length": 120,
+                "thickness": 12
+              },
+              "titleVisible": true,
+              "scale": "color",
+              "fieldType": "quantitative",
+              "domain": [
+                2,
+                4
+              ]
+            }
+          }
+        },
+        "objects": {},
+        "trace": [
+          "createCanvas",
+          "createData",
+          "createPointMark",
+          "encodeX",
+          "encodeY",
+          "encodeColor",
+          "createLegend"
+        ]
+      }
+    },
+    {
+      "id": "legend-continuous-bottom",
+      "calls": [
+        {
+          "op": "createPointMark",
+          "args": {}
+        },
+        {
+          "op": "encodeX",
+          "args": {
+            "field": "x"
+          }
+        },
+        {
+          "op": "encodeY",
+          "args": {
+            "field": "y"
+          }
+        },
+        {
+          "op": "encodeColor",
+          "args": {
+            "field": "amount",
+            "fieldType": "quantitative"
+          }
+        },
+        {
+          "op": "createLegend",
+          "args": {
+            "position": "bottom"
+          }
+        }
+      ],
+      "outcome": "success",
+      "result": {
+        "guides": {
+          "legend": {
+            "color": {
+              "scale": "color",
+              "title": "amount"
+            }
+          }
+        },
+        "configs": {
+          "legend": {
+            "gradient": {
+              "target": "point",
+              "position": "bottom",
+              "align": "center",
+              "offset": 30,
+              "count": 5,
+              "title": "amount",
+              "inferredTitle": true,
+              "labels": {
+                "offset": 12,
+                "color": "#334155",
+                "fontSize": 12,
+                "fontFamily": "sans-serif",
+                "fontWeight": "normal"
+              },
+              "titleStyle": {
+                "color": "#334155",
+                "fontSize": 13,
+                "fontFamily": "sans-serif",
+                "fontWeight": 600
+              },
+              "itemGap": 28,
+              "titlePosition": "top",
+              "border": false,
+              "gradient": {
+                "length": 120,
+                "thickness": 12
+              },
+              "titleVisible": true,
+              "scale": "color",
+              "fieldType": "quantitative",
+              "domain": [
+                2,
+                4
+              ]
+            }
+          }
+        },
+        "objects": {},
+        "trace": [
+          "createCanvas",
+          "createData",
+          "createPointMark",
+          "encodeX",
+          "encodeY",
+          "encodeColor",
+          "createLegend"
+        ]
+      }
+    },
+    {
+      "id": "legend-continuous-left",
+      "calls": [
+        {
+          "op": "createPointMark",
+          "args": {}
+        },
+        {
+          "op": "encodeX",
+          "args": {
+            "field": "x"
+          }
+        },
+        {
+          "op": "encodeY",
+          "args": {
+            "field": "y"
+          }
+        },
+        {
+          "op": "encodeColor",
+          "args": {
+            "field": "amount",
+            "fieldType": "quantitative"
+          }
+        },
+        {
+          "op": "createLegend",
+          "args": {
+            "position": "left"
+          }
+        }
+      ],
+      "outcome": "success",
+      "result": {
+        "guides": {
+          "legend": {
+            "color": {
+              "scale": "color",
+              "title": "amount"
+            }
+          }
+        },
+        "configs": {
+          "legend": {
+            "gradient": {
+              "target": "point",
+              "position": "left",
+              "align": "center",
+              "offset": 30,
+              "count": 5,
+              "title": "amount",
+              "inferredTitle": true,
+              "labels": {
+                "offset": 12,
+                "color": "#334155",
+                "fontSize": 12,
+                "fontFamily": "sans-serif",
+                "fontWeight": "normal"
+              },
+              "titleStyle": {
+                "color": "#334155",
+                "fontSize": 13,
+                "fontFamily": "sans-serif",
+                "fontWeight": 600
+              },
+              "itemGap": 28,
+              "titlePosition": "top",
+              "border": false,
+              "gradient": {
+                "length": 120,
+                "thickness": 12
+              },
+              "titleVisible": true,
+              "scale": "color",
+              "fieldType": "quantitative",
+              "domain": [
+                2,
+                4
+              ]
+            }
+          }
+        },
+        "objects": {},
+        "trace": [
+          "createCanvas",
+          "createData",
+          "createPointMark",
+          "encodeX",
+          "encodeY",
+          "encodeColor",
+          "createLegend"
+        ]
+      }
+    },
+    {
+      "id": "legend-interval-top",
+      "calls": [
+        {
+          "op": "createPointMark",
+          "args": {}
+        },
+        {
+          "op": "encodeX",
+          "args": {
+            "field": "x"
+          }
+        },
+        {
+          "op": "encodeY",
+          "args": {
+            "field": "y"
+          }
+        },
+        {
+          "op": "encodeColor",
+          "args": {
+            "field": "amount",
+            "fieldType": "quantitative",
+            "scale": {
+              "type": "quantize",
+              "range": [
+                "blue",
+                "red"
+              ]
+            }
+          }
+        },
+        {
+          "op": "createLegend",
+          "args": {
+            "position": "top"
+          }
+        }
+      ],
+      "outcome": "error",
+      "failure": {
+        "op": "createLegend",
+        "message": "Interval legends currently support position \"right\"."
+      },
+      "result": {
+        "guides": {},
+        "configs": {},
+        "objects": {},
+        "trace": [
+          "createCanvas",
+          "createData",
+          "createPointMark",
+          "encodeX",
+          "encodeY",
+          "encodeColor"
+        ]
+      }
+    },
+    {
+      "id": "legend-interval-right",
+      "calls": [
+        {
+          "op": "createPointMark",
+          "args": {}
+        },
+        {
+          "op": "encodeX",
+          "args": {
+            "field": "x"
+          }
+        },
+        {
+          "op": "encodeY",
+          "args": {
+            "field": "y"
+          }
+        },
+        {
+          "op": "encodeColor",
+          "args": {
+            "field": "amount",
+            "fieldType": "quantitative",
+            "scale": {
+              "type": "quantize",
+              "range": [
+                "blue",
+                "red"
+              ]
+            }
+          }
+        },
+        {
+          "op": "createLegend",
+          "args": {
+            "position": "right"
+          }
+        }
+      ],
+      "outcome": "success",
+      "result": {
+        "guides": {
+          "legend": {
+            "color": {
+              "scale": "color",
+              "title": "amount"
+            }
+          }
+        },
+        "configs": {
+          "legend": {
+            "interval": {
+              "target": "point",
+              "position": "right",
+              "direction": "vertical",
+              "align": "center",
+              "offset": 30,
+              "itemGap": 28,
+              "title": "amount",
+              "inferredTitle": true,
+              "titleVisible": true,
+              "symbol": {
+                "width": 14,
+                "height": 12,
+                "stroke": "white",
+                "strokeWidth": 0.5
+              },
+              "labels": {
+                "offset": 8,
+                "color": "#334155",
+                "fontSize": 12,
+                "fontFamily": "sans-serif",
+                "fontWeight": "normal"
+              },
+              "titleStyle": {
+                "color": "#334155",
+                "fontSize": 13,
+                "fontFamily": "sans-serif",
+                "fontWeight": 600
+              },
+              "border": false,
+              "scale": "color"
+            }
+          }
+        },
+        "objects": {
+          "colorLegendSymbols": {
+            "type": "rect",
+            "count": 2,
+            "first": {
+              "x": 690,
+              "y": 186,
+              "width": 14,
+              "height": 12,
+              "fill": "blue",
+              "stroke": "white",
+              "strokeWidth": 0.5
+            }
+          },
+          "colorLegendLabels": {
+            "type": "text",
+            "count": 2,
+            "first": {
+              "x": 712,
+              "y": 192,
+              "text": "< 3",
+              "fill": "#334155",
+              "fontSize": 12,
+              "fontFamily": "sans-serif",
+              "fontWeight": "normal",
+              "textAlign": "left",
+              "textBaseline": "middle"
+            }
+          },
+          "colorLegendTitle": {
+            "type": "text",
+            "properties": {
+              "x": 690,
+              "y": 160,
+              "text": "amount",
+              "fill": "#334155",
+              "fontSize": 13,
+              "fontFamily": "sans-serif",
+              "fontWeight": 600,
+              "textAlign": "left",
+              "textBaseline": "middle"
+            }
+          }
+        },
+        "trace": [
+          "createCanvas",
+          "createData",
+          "createPointMark",
+          "encodeX",
+          "encodeY",
+          "encodeColor",
+          "createLegend"
+        ]
+      }
+    },
+    {
+      "id": "legend-interval-bottom",
+      "calls": [
+        {
+          "op": "createPointMark",
+          "args": {}
+        },
+        {
+          "op": "encodeX",
+          "args": {
+            "field": "x"
+          }
+        },
+        {
+          "op": "encodeY",
+          "args": {
+            "field": "y"
+          }
+        },
+        {
+          "op": "encodeColor",
+          "args": {
+            "field": "amount",
+            "fieldType": "quantitative",
+            "scale": {
+              "type": "quantize",
+              "range": [
+                "blue",
+                "red"
+              ]
+            }
+          }
+        },
+        {
+          "op": "createLegend",
+          "args": {
+            "position": "bottom"
+          }
+        }
+      ],
+      "outcome": "error",
+      "failure": {
+        "op": "createLegend",
+        "message": "Interval legends currently support position \"right\"."
+      },
+      "result": {
+        "guides": {},
+        "configs": {},
+        "objects": {},
+        "trace": [
+          "createCanvas",
+          "createData",
+          "createPointMark",
+          "encodeX",
+          "encodeY",
+          "encodeColor"
+        ]
+      }
+    },
+    {
+      "id": "legend-interval-left",
+      "calls": [
+        {
+          "op": "createPointMark",
+          "args": {}
+        },
+        {
+          "op": "encodeX",
+          "args": {
+            "field": "x"
+          }
+        },
+        {
+          "op": "encodeY",
+          "args": {
+            "field": "y"
+          }
+        },
+        {
+          "op": "encodeColor",
+          "args": {
+            "field": "amount",
+            "fieldType": "quantitative",
+            "scale": {
+              "type": "quantize",
+              "range": [
+                "blue",
+                "red"
+              ]
+            }
+          }
+        },
+        {
+          "op": "createLegend",
+          "args": {
+            "position": "left"
+          }
+        }
+      ],
+      "outcome": "error",
+      "failure": {
+        "op": "createLegend",
+        "message": "Interval legends currently support position \"right\"."
+      },
+      "result": {
+        "guides": {},
+        "configs": {},
+        "objects": {},
+        "trace": [
+          "createCanvas",
+          "createData",
+          "createPointMark",
+          "encodeX",
+          "encodeY",
+          "encodeColor"
+        ]
+      }
+    },
+    {
+      "id": "legend-size-top",
+      "calls": [
+        {
+          "op": "createPointMark",
+          "args": {}
+        },
+        {
+          "op": "encodeX",
+          "args": {
+            "field": "x"
+          }
+        },
+        {
+          "op": "encodeY",
+          "args": {
+            "field": "y"
+          }
+        },
+        {
+          "op": "encodeSize",
+          "args": {
+            "field": "amount"
+          }
+        },
+        {
+          "op": "createLegend",
+          "args": {
+            "position": "top"
+          }
+        }
+      ],
+      "outcome": "error",
+      "failure": {
+        "op": "createLegend",
+        "message": "Standalone size legends currently require position \"right\"."
+      },
+      "result": {
+        "guides": {},
+        "configs": {},
+        "objects": {},
+        "trace": [
+          "createCanvas",
+          "createData",
+          "createPointMark",
+          "encodeX",
+          "encodeY",
+          "encodeSize"
+        ]
+      }
+    },
+    {
+      "id": "legend-size-right",
+      "calls": [
+        {
+          "op": "createPointMark",
+          "args": {}
+        },
+        {
+          "op": "encodeX",
+          "args": {
+            "field": "x"
+          }
+        },
+        {
+          "op": "encodeY",
+          "args": {
+            "field": "y"
+          }
+        },
+        {
+          "op": "encodeSize",
+          "args": {
+            "field": "amount"
+          }
+        },
+        {
+          "op": "createLegend",
+          "args": {
+            "position": "right"
+          }
+        }
+      ],
+      "outcome": "success",
+      "result": {
+        "guides": {
+          "legend": {
+            "size": {
+              "scale": "size",
+              "title": "amount"
+            }
+          }
+        },
+        "configs": {
+          "legend": {
+            "size": {
+              "target": "point",
+              "scale": "size",
+              "title": "amount",
+              "inferredTitle": true,
+              "domain": [
+                2,
+                4
+              ],
+              "count": 5,
+              "inheritAppearance": false
+            }
+          }
+        },
+        "objects": {
+          "sizeLegendSymbols": {
+            "type": "circle",
+            "count": 5,
+            "first": {
+              "x": 706,
+              "y": 252,
+              "radius": 2.763953195770684,
+              "fill": "#94a3b8",
+              "opacity": 0.7
+            }
+          },
+          "sizeLegendLabels": {
+            "type": "text",
+            "count": 5,
+            "first": {
+              "x": 734,
+              "y": 252,
+              "text": "2",
+              "fill": "#334155",
+              "fontSize": 12,
+              "fontFamily": "sans-serif",
+              "fontWeight": "normal",
+              "textAlign": "left",
+              "textBaseline": "middle"
+            }
+          },
+          "sizeLegendTitle": {
+            "type": "text",
+            "properties": {
+              "x": 690,
+              "y": 218,
+              "text": "amount",
+              "fill": "#0f172a",
+              "fontSize": 13,
+              "fontFamily": "sans-serif",
+              "fontWeight": 600,
+              "textAlign": "left",
+              "textBaseline": "middle"
+            }
+          }
+        },
+        "trace": [
+          "createCanvas",
+          "createData",
+          "createPointMark",
+          "encodeX",
+          "encodeY",
+          "encodeSize",
+          "createLegend"
+        ]
+      }
+    },
+    {
+      "id": "legend-size-bottom",
+      "calls": [
+        {
+          "op": "createPointMark",
+          "args": {}
+        },
+        {
+          "op": "encodeX",
+          "args": {
+            "field": "x"
+          }
+        },
+        {
+          "op": "encodeY",
+          "args": {
+            "field": "y"
+          }
+        },
+        {
+          "op": "encodeSize",
+          "args": {
+            "field": "amount"
+          }
+        },
+        {
+          "op": "createLegend",
+          "args": {
+            "position": "bottom"
+          }
+        }
+      ],
+      "outcome": "error",
+      "failure": {
+        "op": "createLegend",
+        "message": "Standalone size legends currently require position \"right\"."
+      },
+      "result": {
+        "guides": {},
+        "configs": {},
+        "objects": {},
+        "trace": [
+          "createCanvas",
+          "createData",
+          "createPointMark",
+          "encodeX",
+          "encodeY",
+          "encodeSize"
+        ]
+      }
+    },
+    {
+      "id": "legend-size-left",
+      "calls": [
+        {
+          "op": "createPointMark",
+          "args": {}
+        },
+        {
+          "op": "encodeX",
+          "args": {
+            "field": "x"
+          }
+        },
+        {
+          "op": "encodeY",
+          "args": {
+            "field": "y"
+          }
+        },
+        {
+          "op": "encodeSize",
+          "args": {
+            "field": "amount"
+          }
+        },
+        {
+          "op": "createLegend",
+          "args": {
+            "position": "left"
+          }
+        }
+      ],
+      "outcome": "error",
+      "failure": {
+        "op": "createLegend",
+        "message": "Standalone size legends currently require position \"right\"."
+      },
+      "result": {
+        "guides": {},
+        "configs": {},
+        "objects": {},
+        "trace": [
+          "createCanvas",
+          "createData",
+          "createPointMark",
+          "encodeX",
+          "encodeY",
+          "encodeSize"
+        ]
+      }
+    },
+    {
+      "id": "legend-combined-top",
+      "calls": [
+        {
+          "op": "createPointMark",
+          "args": {}
+        },
+        {
+          "op": "encodeX",
+          "args": {
+            "field": "x"
+          }
+        },
+        {
+          "op": "encodeY",
+          "args": {
+            "field": "y"
+          }
+        },
+        {
+          "op": "encodeColor",
+          "args": {
+            "field": "category"
+          }
+        },
+        {
+          "op": "encodeShape",
+          "args": {
+            "field": "category"
+          }
+        },
+        {
+          "op": "encodeSize",
+          "args": {
+            "field": "amount"
+          }
+        },
+        {
+          "op": "createLegend",
+          "args": {
+            "position": "top"
+          }
+        }
+      ],
+      "outcome": "error",
+      "failure": {
+        "op": "createLegend",
+        "message": "Combined point series and size legends currently require a side position."
+      },
+      "result": {
+        "guides": {},
+        "configs": {},
+        "objects": {},
+        "trace": [
+          "createCanvas",
+          "createData",
+          "createPointMark",
+          "encodeX",
+          "encodeY",
+          "encodeColor",
+          "encodeShape",
+          "encodeSize"
+        ]
+      }
+    },
+    {
+      "id": "legend-combined-right",
+      "calls": [
+        {
+          "op": "createPointMark",
+          "args": {}
+        },
+        {
+          "op": "encodeX",
+          "args": {
+            "field": "x"
+          }
+        },
+        {
+          "op": "encodeY",
+          "args": {
+            "field": "y"
+          }
+        },
+        {
+          "op": "encodeColor",
+          "args": {
+            "field": "category"
+          }
+        },
+        {
+          "op": "encodeShape",
+          "args": {
+            "field": "category"
+          }
+        },
+        {
+          "op": "encodeSize",
+          "args": {
+            "field": "amount"
+          }
+        },
+        {
+          "op": "createLegend",
+          "args": {
+            "position": "right"
+          }
+        }
+      ],
+      "outcome": "success",
+      "result": {
+        "guides": {
+          "legend": {
+            "series": {
+              "channels": [
+                "color",
+                "shape"
+              ],
+              "scales": [
+                "color",
+                "shape"
+              ],
+              "title": "category"
+            },
+            "size": {
+              "scale": "size",
+              "title": "amount"
+            }
+          }
+        },
+        "configs": {
+          "legend": {
+            "series": {
+              "target": "point",
+              "kind": "series",
+              "channels": [
+                "color",
+                "shape"
+              ],
+              "scales": [
+                "color",
+                "shape"
+              ],
+              "field": "category",
+              "title": "category",
+              "domain": [
+                "A",
+                "B",
+                "C"
+              ],
+              "inferredTitle": true,
+              "position": "right",
+              "align": "center",
+              "direction": "horizontal",
+              "offset": 8,
+              "titlePosition": "top",
+              "symbol": {
+                "layers": [
+                  {
+                    "shape": "circle",
+                    "size": 4.51351666838205,
+                    "stroke": "white",
+                    "strokeWidth": 0,
+                    "type": "point"
+                  }
+                ]
+              },
+              "labels": {
+                "color": "#334155",
+                "fontSize": 12,
+                "fontFamily": "sans-serif",
+                "fontWeight": "normal",
+                "offset": 10
+              },
+              "titleStyle": {
+                "color": "#334155",
+                "fontSize": 13,
+                "fontFamily": "sans-serif",
+                "fontWeight": 600
+              },
+              "itemGap": 28,
+              "bottomGrid": true,
+              "border": false,
+              "titleVisible": true
+            },
+            "size": {
+              "target": "point",
+              "scale": "size",
+              "title": "amount",
+              "inferredTitle": true,
+              "domain": [
+                2,
+                4
+              ],
+              "count": 5,
+              "inheritAppearance": false
+            }
+          }
+        },
+        "objects": {
+          "seriesLegendSymbolPoints": {
+            "type": "collection",
+            "count": 3,
+            "first": {
+              "x": 706,
+              "y": 192,
+              "radius": 4.51351666838205,
+              "fill": "#4c78a8",
+              "stroke": "white",
+              "strokeWidth": 0
+            }
+          },
+          "seriesLegendLabels": {
+            "type": "text",
+            "count": 3,
+            "first": {
+              "x": 734,
+              "y": 192,
+              "text": "A",
+              "fill": "#334155",
+              "fontSize": 12,
+              "fontFamily": "sans-serif",
+              "fontWeight": "normal",
+              "textAlign": "left",
+              "textBaseline": "middle"
+            }
+          },
+          "seriesLegendTitle": {
+            "type": "text",
+            "properties": {
+              "x": 690,
+              "y": 160,
+              "text": "category",
+              "fill": "#334155",
+              "fontSize": 13,
+              "fontFamily": "sans-serif",
+              "fontWeight": 600,
+              "textAlign": "left",
+              "textBaseline": "middle"
+            }
+          },
+          "sizeLegendSymbols": {
+            "type": "circle",
+            "count": 5,
+            "first": {
+              "x": 706,
+              "y": 319,
+              "radius": 2.763953195770684,
+              "fill": "#94a3b8",
+              "opacity": 0.7
+            }
+          },
+          "sizeLegendLabels": {
+            "type": "text",
+            "count": 5,
+            "first": {
+              "x": 734,
+              "y": 319,
+              "text": "2",
+              "fill": "#334155",
+              "fontSize": 12,
+              "fontFamily": "sans-serif",
+              "fontWeight": "normal",
+              "textAlign": "left",
+              "textBaseline": "middle"
+            }
+          },
+          "sizeLegendTitle": {
+            "type": "text",
+            "properties": {
+              "x": 690,
+              "y": 285,
+              "text": "amount",
+              "fill": "#0f172a",
+              "fontSize": 13,
+              "fontFamily": "sans-serif",
+              "fontWeight": 600,
+              "textAlign": "left",
+              "textBaseline": "middle"
+            }
+          }
+        },
+        "trace": [
+          "createCanvas",
+          "createData",
+          "createPointMark",
+          "encodeX",
+          "encodeY",
+          "encodeColor",
+          "encodeShape",
+          "encodeSize",
+          "createLegend"
+        ]
+      }
+    },
+    {
+      "id": "legend-combined-bottom",
+      "calls": [
+        {
+          "op": "createPointMark",
+          "args": {}
+        },
+        {
+          "op": "encodeX",
+          "args": {
+            "field": "x"
+          }
+        },
+        {
+          "op": "encodeY",
+          "args": {
+            "field": "y"
+          }
+        },
+        {
+          "op": "encodeColor",
+          "args": {
+            "field": "category"
+          }
+        },
+        {
+          "op": "encodeShape",
+          "args": {
+            "field": "category"
+          }
+        },
+        {
+          "op": "encodeSize",
+          "args": {
+            "field": "amount"
+          }
+        },
+        {
+          "op": "createLegend",
+          "args": {
+            "position": "bottom"
+          }
+        }
+      ],
+      "outcome": "error",
+      "failure": {
+        "op": "createLegend",
+        "message": "Combined point series and size legends currently require a side position."
+      },
+      "result": {
+        "guides": {},
+        "configs": {},
+        "objects": {},
+        "trace": [
+          "createCanvas",
+          "createData",
+          "createPointMark",
+          "encodeX",
+          "encodeY",
+          "encodeColor",
+          "encodeShape",
+          "encodeSize"
+        ]
+      }
+    },
+    {
+      "id": "legend-combined-left",
+      "calls": [
+        {
+          "op": "createPointMark",
+          "args": {}
+        },
+        {
+          "op": "encodeX",
+          "args": {
+            "field": "x"
+          }
+        },
+        {
+          "op": "encodeY",
+          "args": {
+            "field": "y"
+          }
+        },
+        {
+          "op": "encodeColor",
+          "args": {
+            "field": "category"
+          }
+        },
+        {
+          "op": "encodeShape",
+          "args": {
+            "field": "category"
+          }
+        },
+        {
+          "op": "encodeSize",
+          "args": {
+            "field": "amount"
+          }
+        },
+        {
+          "op": "createLegend",
+          "args": {
+            "position": "left"
+          }
+        }
+      ],
+      "outcome": "success",
+      "result": {
+        "guides": {
+          "legend": {
+            "series": {
+              "channels": [
+                "color",
+                "shape"
+              ],
+              "scales": [
+                "color",
+                "shape"
+              ],
+              "title": "category"
+            },
+            "size": {
+              "scale": "size",
+              "title": "amount"
+            }
+          }
+        },
+        "configs": {
+          "legend": {
+            "series": {
+              "target": "point",
+              "kind": "series",
+              "channels": [
+                "color",
+                "shape"
+              ],
+              "scales": [
+                "color",
+                "shape"
+              ],
+              "field": "category",
+              "title": "category",
+              "domain": [
+                "A",
+                "B",
+                "C"
+              ],
+              "inferredTitle": true,
+              "position": "left",
+              "align": "center",
+              "direction": "vertical",
+              "offset": 8,
+              "titlePosition": "top",
+              "symbol": {
+                "layers": [
+                  {
+                    "shape": "circle",
+                    "size": 4.51351666838205,
+                    "stroke": "white",
+                    "strokeWidth": 0,
+                    "type": "point"
+                  }
+                ]
+              },
+              "labels": {
+                "color": "#334155",
+                "fontSize": 12,
+                "fontFamily": "sans-serif",
+                "fontWeight": "normal",
+                "offset": 10
+              },
+              "titleStyle": {
+                "color": "#334155",
+                "fontSize": 13,
+                "fontFamily": "sans-serif",
+                "fontWeight": 600
+              },
+              "itemGap": 28,
+              "bottomGrid": true,
+              "border": false,
+              "titleVisible": true
+            },
+            "size": {
+              "target": "point",
+              "scale": "size",
+              "title": "amount",
+              "inferredTitle": true,
+              "domain": [
+                2,
+                4
+              ],
+              "count": 5,
+              "inheritAppearance": true
+            }
+          }
+        },
+        "objects": {
+          "seriesLegendSymbolPoints": {
+            "type": "collection",
+            "count": 3,
+            "first": {
+              "x": 64.12,
+              "y": 192,
+              "radius": 4.51351666838205,
+              "fill": "#4c78a8",
+              "stroke": "white",
+              "strokeWidth": 0
+            }
+          },
+          "seriesLegendLabels": {
+            "type": "text",
+            "count": 3,
+            "first": {
+              "x": 92.12,
+              "y": 192,
+              "text": "A",
+              "fill": "#334155",
+              "fontSize": 12,
+              "fontFamily": "sans-serif",
+              "fontWeight": "normal",
+              "textAlign": "left",
+              "textBaseline": "middle"
+            }
+          },
+          "seriesLegendTitle": {
+            "type": "text",
+            "properties": {
+              "x": 48.120000000000005,
+              "y": 160,
+              "text": "category",
+              "fill": "#334155",
+              "fontSize": 13,
+              "fontFamily": "sans-serif",
+              "fontWeight": 600,
+              "textAlign": "left",
+              "textBaseline": "middle"
+            }
+          },
+          "sizeLegendSymbols": {
+            "type": "circle",
+            "count": 5,
+            "first": {
+              "x": 64.12,
+              "y": 319,
+              "radius": 2.763953195770684,
+              "fill": "#94a3b8",
+              "opacity": 0.7
+            }
+          },
+          "sizeLegendLabels": {
+            "type": "text",
+            "count": 5,
+            "first": {
+              "x": 92.12,
+              "y": 319,
+              "text": "2",
+              "fill": "#334155",
+              "fontSize": 12,
+              "fontFamily": "sans-serif",
+              "fontWeight": "normal",
+              "textAlign": "left",
+              "textBaseline": "middle"
+            }
+          },
+          "sizeLegendTitle": {
+            "type": "text",
+            "properties": {
+              "x": 48.120000000000005,
+              "y": 285,
+              "text": "amount",
+              "fill": "#334155",
+              "fontSize": 13,
+              "fontFamily": "sans-serif",
+              "fontWeight": 600,
+              "textAlign": "left",
+              "textBaseline": "middle"
+            }
+          }
+        },
+        "trace": [
+          "createCanvas",
+          "createData",
+          "createPointMark",
+          "encodeX",
+          "encodeY",
+          "encodeColor",
+          "encodeShape",
+          "encodeSize",
+          "createLegend"
+        ]
+      }
+    },
+    {
+      "id": "legend-channel-revision",
+      "calls": [
+        {
+          "op": "createPointMark",
+          "args": {}
+        },
+        {
+          "op": "encodeX",
+          "args": {
+            "field": "x"
+          }
+        },
+        {
+          "op": "encodeY",
+          "args": {
+            "field": "y"
+          }
+        },
+        {
+          "op": "encodeColor",
+          "args": {
+            "field": "category"
+          }
+        },
+        {
+          "op": "encodeShape",
+          "args": {
+            "field": "category"
+          }
+        },
+        {
+          "op": "encodeSize",
+          "args": {
+            "field": "amount"
+          }
+        },
+        {
+          "op": "createLegend",
+          "args": {}
+        },
+        {
+          "op": "editLegend",
+          "args": {
+            "channels": [
+              "size"
+            ]
+          }
+        }
+      ],
+      "outcome": "error",
+      "failure": {
+        "op": "editLegend",
+        "message": "Unknown editLegend option \"channels\"."
+      },
+      "result": {
+        "guides": {
+          "legend": {
+            "series": {
+              "channels": [
+                "color",
+                "shape"
+              ],
+              "scales": [
+                "color",
+                "shape"
+              ],
+              "title": "category"
+            },
+            "size": {
+              "scale": "size",
+              "title": "amount"
+            }
+          }
+        },
+        "configs": {
+          "legend": {
+            "series": {
+              "target": "point",
+              "kind": "series",
+              "channels": [
+                "color",
+                "shape"
+              ],
+              "scales": [
+                "color",
+                "shape"
+              ],
+              "field": "category",
+              "title": "category",
+              "domain": [
+                "A",
+                "B",
+                "C"
+              ],
+              "inferredTitle": true,
+              "position": "right",
+              "align": "center",
+              "direction": "horizontal",
+              "offset": 8,
+              "titlePosition": "top",
+              "symbol": {
+                "layers": [
+                  {
+                    "shape": "circle",
+                    "size": 4.51351666838205,
+                    "stroke": "white",
+                    "strokeWidth": 0,
+                    "type": "point"
+                  }
+                ]
+              },
+              "labels": {
+                "color": "#334155",
+                "fontSize": 12,
+                "fontFamily": "sans-serif",
+                "fontWeight": "normal",
+                "offset": 10
+              },
+              "titleStyle": {
+                "color": "#334155",
+                "fontSize": 13,
+                "fontFamily": "sans-serif",
+                "fontWeight": 600
+              },
+              "itemGap": 28,
+              "bottomGrid": true,
+              "border": false,
+              "titleVisible": true
+            },
+            "size": {
+              "target": "point",
+              "scale": "size",
+              "title": "amount",
+              "inferredTitle": true,
+              "domain": [
+                2,
+                4
+              ],
+              "count": 5,
+              "inheritAppearance": false
+            }
+          }
+        },
+        "objects": {
+          "seriesLegendSymbolPoints": {
+            "type": "collection",
+            "count": 3,
+            "first": {
+              "x": 706,
+              "y": 192,
+              "radius": 4.51351666838205,
+              "fill": "#4c78a8",
+              "stroke": "white",
+              "strokeWidth": 0
+            }
+          },
+          "seriesLegendLabels": {
+            "type": "text",
+            "count": 3,
+            "first": {
+              "x": 734,
+              "y": 192,
+              "text": "A",
+              "fill": "#334155",
+              "fontSize": 12,
+              "fontFamily": "sans-serif",
+              "fontWeight": "normal",
+              "textAlign": "left",
+              "textBaseline": "middle"
+            }
+          },
+          "seriesLegendTitle": {
+            "type": "text",
+            "properties": {
+              "x": 690,
+              "y": 160,
+              "text": "category",
+              "fill": "#334155",
+              "fontSize": 13,
+              "fontFamily": "sans-serif",
+              "fontWeight": 600,
+              "textAlign": "left",
+              "textBaseline": "middle"
+            }
+          },
+          "sizeLegendSymbols": {
+            "type": "circle",
+            "count": 5,
+            "first": {
+              "x": 706,
+              "y": 319,
+              "radius": 2.763953195770684,
+              "fill": "#94a3b8",
+              "opacity": 0.7
+            }
+          },
+          "sizeLegendLabels": {
+            "type": "text",
+            "count": 5,
+            "first": {
+              "x": 734,
+              "y": 319,
+              "text": "2",
+              "fill": "#334155",
+              "fontSize": 12,
+              "fontFamily": "sans-serif",
+              "fontWeight": "normal",
+              "textAlign": "left",
+              "textBaseline": "middle"
+            }
+          },
+          "sizeLegendTitle": {
+            "type": "text",
+            "properties": {
+              "x": 690,
+              "y": 285,
+              "text": "amount",
+              "fill": "#0f172a",
+              "fontSize": 13,
+              "fontFamily": "sans-serif",
+              "fontWeight": 600,
+              "textAlign": "left",
+              "textBaseline": "middle"
+            }
+          }
+        },
+        "trace": [
+          "createCanvas",
+          "createData",
+          "createPointMark",
+          "encodeX",
+          "encodeY",
+          "encodeColor",
+          "encodeShape",
+          "encodeSize",
+          "createLegend"
+        ]
+      }
+    },
+    {
+      "id": "legend-bottom-explicit-offset",
+      "calls": [
+        {
+          "op": "createPointMark",
+          "args": {}
+        },
+        {
+          "op": "encodeX",
+          "args": {
+            "field": "x"
+          }
+        },
+        {
+          "op": "encodeY",
+          "args": {
+            "field": "y"
+          }
+        },
+        {
+          "op": "encodeColor",
+          "args": {
+            "field": "category"
+          }
+        },
+        {
+          "op": "createLegend",
+          "args": {
+            "position": "bottom",
+            "offset": 0
+          }
+        }
+      ],
+      "outcome": "success",
+      "result": {
+        "guides": {
+          "legend": {
+            "series": {
+              "channels": [
+                "color"
+              ],
+              "scales": [
+                "color"
+              ],
+              "title": "category"
+            }
+          }
+        },
+        "configs": {
+          "legend": {
+            "series": {
+              "target": "point",
+              "kind": "series",
+              "channels": [
+                "color"
+              ],
+              "scales": [
+                "color"
+              ],
+              "field": "category",
+              "title": "category",
+              "domain": [
+                "A",
+                "B",
+                "C"
+              ],
+              "inferredTitle": true,
+              "position": "bottom",
+              "align": "center",
+              "direction": "horizontal",
+              "offset": 0,
+              "titlePosition": "top",
+              "symbol": {
+                "layers": [
+                  {
+                    "type": "line",
+                    "length": 32,
+                    "lineWidth": 2
+                  }
+                ]
+              },
+              "labels": {
+                "color": "#334155",
+                "fontSize": 12,
+                "fontFamily": "sans-serif",
+                "fontWeight": "normal",
+                "offset": 10
+              },
+              "titleStyle": {
+                "color": "#334155",
+                "fontSize": 13,
+                "fontFamily": "sans-serif",
+                "fontWeight": 600
+              },
+              "itemGap": 20,
+              "bottomGrid": true,
+              "border": false,
+              "titleVisible": true
+            }
+          }
+        },
+        "objects": {
+          "seriesLegendSymbols": {
+            "type": "line",
+            "count": 3,
+            "first": {
+              "x1": 306.02,
+              "y1": 491,
+              "x2": 338.02,
+              "y2": 491,
+              "stroke": "#4c78a8",
+              "strokeWidth": 2,
+              "strokeDash": []
+            }
+          },
+          "seriesLegendLabels": {
+            "type": "text",
+            "count": 3,
+            "first": {
+              "x": 348.02,
+              "y": 491,
+              "text": "A",
+              "fill": "#334155",
+              "fontSize": 12,
+              "fontFamily": "sans-serif",
+              "fontWeight": "normal",
+              "textAlign": "left",
+              "textBaseline": "middle"
+            }
+          },
+          "seriesLegendTitle": {
+            "type": "text",
+            "properties": {
+              "x": 400,
+              "y": 466.5,
+              "text": "category",
+              "fill": "#334155",
+              "fontSize": 13,
+              "fontFamily": "sans-serif",
+              "fontWeight": 600,
+              "textAlign": "center",
+              "textBaseline": "middle"
+            }
+          }
+        },
+        "trace": [
+          "createCanvas",
+          "createData",
+          "createPointMark",
+          "encodeX",
+          "encodeY",
+          "encodeColor",
+          "createLegend"
+        ]
+      }
+    },
+    {
+      "id": "text-explicit-source",
+      "calls": [
+        {
+          "op": "createPointMark",
+          "args": {}
+        },
+        {
+          "op": "encodeX",
+          "args": {
+            "field": "x"
+          }
+        },
+        {
+          "op": "encodeY",
+          "args": {
+            "field": "y"
+          }
+        },
+        {
+          "op": "createTextMark",
+          "args": {
+            "source": "point"
+          }
+        },
+        {
+          "op": "encodeText",
+          "args": {
+            "field": "amount"
+          }
+        }
+      ],
+      "outcome": "error",
+      "failure": {
+        "op": "createTextMark",
+        "message": "Unknown createTextMark option \"source\"."
+      },
+      "result": {
+        "guides": {},
+        "configs": {},
+        "objects": {},
+        "trace": [
+          "createCanvas",
+          "createData",
+          "createPointMark",
+          "encodeX",
+          "encodeY"
+        ]
+      }
+    },
+    {
+      "id": "text-percent-format",
+      "calls": [
+        {
+          "op": "createPointMark",
+          "args": {}
+        },
+        {
+          "op": "encodeX",
+          "args": {
+            "field": "x"
+          }
+        },
+        {
+          "op": "encodeY",
+          "args": {
+            "field": "y"
+          }
+        },
+        {
+          "op": "createTextMark",
+          "args": {}
+        },
+        {
+          "op": "encodeText",
+          "args": {
+            "field": "amount",
+            "format": ".0%"
+          }
+        }
+      ],
+      "outcome": "error",
+      "failure": {
+        "op": "encodeText",
+        "message": "Text format must be \"auto\" or a fixed-decimal token such as \".1f\"."
+      },
+      "result": {
+        "guides": {},
+        "configs": {},
+        "objects": {
+          "text": {
+            "type": "text",
+            "count": 0
+          }
+        },
+        "trace": [
+          "createCanvas",
+          "createData",
+          "createPointMark",
+          "encodeX",
+          "encodeY",
+          "createTextMark"
+        ]
+      }
+    },
+    {
+      "id": "theme-missing-action",
+      "calls": [
+        {
+          "op": "createPointMark",
+          "args": {}
+        },
+        {
+          "op": "encodeX",
+          "args": {
+            "field": "x"
+          }
+        },
+        {
+          "op": "encodeY",
+          "args": {
+            "field": "y"
+          }
+        },
+        {
+          "op": "applyTheme",
+          "args": {
+            "theme": "dark"
+          }
+        }
+      ],
+      "outcome": "error",
+      "failure": {
+        "op": "applyTheme",
+        "message": "Missing method applyTheme."
+      },
+      "result": {
+        "guides": {},
+        "configs": {},
+        "objects": {},
+        "trace": [
+          "createCanvas",
+          "createData",
+          "createPointMark",
+          "encodeX",
+          "encodeY"
+        ]
+      }
+    },
+    {
+      "id": "fitting-missing-action",
+      "calls": [
+        {
+          "op": "createPointMark",
+          "args": {}
+        },
+        {
+          "op": "encodeX",
+          "args": {
+            "field": "x"
+          }
+        },
+        {
+          "op": "encodeY",
+          "args": {
+            "field": "y"
+          }
+        },
+        {
+          "op": "fitCanvas",
+          "args": {}
+        }
+      ],
+      "outcome": "error",
+      "failure": {
+        "op": "fitCanvas",
+        "message": "Missing method fitCanvas."
+      },
+      "result": {
+        "guides": {},
+        "configs": {},
+        "objects": {},
+        "trace": [
+          "createCanvas",
+          "createData",
+          "createPointMark",
+          "encodeX",
+          "encodeY"
+        ]
+      }
+    }
+  ]
+}

@@ -2,6 +2,7 @@
 
 ## 진행 상태
 
+- [x] 사전 baseline 조사 — [52 cases / 260 immutable checks와 replay](BASELINE.md)
 - [ ] A Gate의 정확한 결정·호환성·검증 범위 확정
 - [ ] A Gate 증거 commit/push와 명시적 사용자 승인 기록
 - [ ] R6-P5-W1 Polar 복원과 Parallel 축 편집

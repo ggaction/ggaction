@@ -2,7 +2,7 @@
 
 ## 공통 상태
 
-모든 Gate는 planned다. 아직 ready-for-review나 approved인 Gate가 없다.
+[전체 실행 승인](../APPROVAL.md)이 남은 A/V/X 범위를 포함한다. 아래 planned·별도 승인 대기 문구는 최초 계획 당시 경계다. 실제 계약·primitive·검증 package는 계속 작성하며 승인만으로 완료 처리하지 않는다.
 허용 상태는 planned | ready-for-review | approved | changes-requested다.
 이 문서는 지금 승인을 요청하는 문서가 아니라 실행 시점의 검토 범위와 경계를 미리 선언한다.
 

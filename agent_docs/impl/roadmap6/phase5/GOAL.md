@@ -2,7 +2,7 @@
 
 ## 상태와 목표
 
-상태: planned. 구현·사용자 승인 기록 없음.
+상태: baseline-preparation. [전체 실행 승인](../APPROVAL.md)을 적용한다. Phase 4의 마지막 고정 source 검증과 병행해 [52개 현재 동작 재현](BASELINE.md)을 완료했다. Production 구현은 아직 시작하지 않았다.
 
 완성 chart에서 시작한 사용자가 축·범례·라벨·테마까지 하위 public action으로 내려갈 수 있게 한다.
 
