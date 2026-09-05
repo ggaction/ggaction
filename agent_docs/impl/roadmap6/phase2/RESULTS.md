@@ -206,4 +206,5 @@ Phase 전체의 A/B/V는 승인되었다. X는 아직 승인되지 않았다. �
 - Coverage는 **95.03% lines / 91.15% branches / 98.75% functions**, critical floor **72개 모두 통과**다.
   Browser는 두 stable public example의 Canvas 크기·접근 가능한 이름·실제 상태·실행 오류를 검사했다.
 - 최종 실행 로그: `.artifacts/roadmap6-authoring/phase2-final-{all,contracts,realistic,render,browser,package,coverage}.log`.
-  모든 명령이 exit 0이며 source commit에 연결한 시각 증거와 X 검토 package를 준비한다. X는 미승인이다.
+  모든 명령이 exit 0이다. Verified source는 `3a4ca3b59cd604cd2456b2d196e3edd73d24e303`이며
+  [여섯 public 시각 증거](public-visual-results.json)와 [X 결과 검토](REVIEW.md)를 commit/push했다. X는 미승인이다.

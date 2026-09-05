@@ -6,7 +6,8 @@
 ## 검증한 코드
 
 - Source commit: [`3a4ca3b59cd604cd2456b2d196e3edd73d24e303`](https://github.com/ggaction/ggaction/commit/3a4ca3b59cd604cd2456b2d196e3edd73d24e303); source tree: `9d3bd5e26b67634851e6009faac4b8c7c9e15002`.
-- Remote branch: `origin/codex/roadmap6-hierarchical-actions`. 정확한 검토 package ref는 [GATES.md](GATES.md)에 기록한다.
+- Review package commit: [`afba77772dc7a985bbed4767b40379b3763071f4`](https://github.com/ggaction/ggaction/commit/afba77772dc7a985bbed4767b40379b3763071f4), 원격 push 확인.
+- Remote branch: `origin/codex/roadmap6-hierarchical-actions`. 승인 기록의 owner는 [GATES.md](GATES.md)다.
 - A 승인: `e06b57db5624a5b0d66cea425cff4aa5f5f4caad`의 계약에 대한 “ㄱㄱ”.
 - B 승인: `ca820fa941f4359e814ee6f65a01e574512f5c08`의 full 235,000-byte 제안에 대한 “조정한다”.
 - V 승인: 같은 review package의 여섯 target에 대한 “승인한다”. 승인 기록을 먼저 저장하고 구현했다.

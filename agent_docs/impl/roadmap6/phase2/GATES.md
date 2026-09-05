@@ -71,6 +71,8 @@ B/V는 approved, X는 ready-for-review이며 미승인이다. 새 시각 target�
 ## R6-P2-X — Result and closeout
 
 - 상태: ready-for-review — 미승인
+- Review package commit: [`afba77772dc7a985bbed4767b40379b3763071f4`](https://github.com/ggaction/ggaction/commit/afba77772dc7a985bbed4767b40379b3763071f4),
+  `origin/codex/roadmap6-hierarchical-actions` push 완료 확인. 이 기록을 추가하는 후속 commit은 실행 source를 바꾸지 않는다.
 - 검토 대상: [REVIEW.md](REVIEW.md)의 W1–W5, 6개 public 시각 쌍, 호환성·consumer 검증과 후속 범위.
 - Verified source: [`3a4ca3b59cd604cd2456b2d196e3edd73d24e303`](https://github.com/ggaction/ggaction/commit/3a4ca3b59cd604cd2456b2d196e3edd73d24e303),
   source tree `9d3bd5e26b67634851e6009faac4b8c7c9e15002`, `origin/codex/roadmap6-hierarchical-actions` push 확인.

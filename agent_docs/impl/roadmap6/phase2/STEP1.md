@@ -16,11 +16,11 @@
 - [x] B의 full bundle 예산 결정과 installed package 재검증 — “조정한다”, full 235,000 bytes, [결과](RESULTS.md#b--browser-bundle-budget-acceptance)
 - [x] 승인된 variant의 public 구현과 같은 실행의 primitive/public render 비교 — 6개 쌍
 - [x] 누적 검증·migration·문서·원장 동기화 — normal 2,432, realistic 167, contracts 260, PNG 22, browser 2, package·coverage 통과
-- [ ] X Gate의 증거 commit/push와 review ref 기록
+- [x] X Gate의 증거 commit/push와 review ref 기록 — `afba77772dc7a985bbed4767b40379b3763071f4`
 - [ ] X Gate의 명시적 사용자 승인 기록
 
 체크한 항목의 실제 검증은 [결과](RESULTS.md)에 기록한다. W1–W5와 승인된 6개 public 흐름을 검증했다.
-누적 realistic 검사까지 통과했다. Review package의 commit/push를 준비하며 X는 미승인이다.
+누적 realistic 검사까지 통과했다. Review package의 commit/push를 마쳤으며 X 사용자 승인을 기다린다.
 
 ## 순서
 

@@ -307,7 +307,8 @@
         }
       },
       "verifiedSourceCommit": "3a4ca3b59cd604cd2456b2d196e3edd73d24e303",
-      "resultEvidence": "phase2/REVIEW.md"
+      "resultEvidence": "phase2/REVIEW.md",
+      "reviewPackageCommit": "afba77772dc7a985bbed4767b40379b3763071f4"
     },
     {
       "id": 3,
