@@ -3,19 +3,11 @@ import {
   measureTextWidth
 } from "../core/textMetrics.js";
 
-export function measureLegendSymbolHeight(config) {
-  return Math.max(...config.symbol.layers.map(layer => {
-    if (layer.type === "swatch") return layer.height;
-    if (layer.type === "point") return layer.size * 2;
-    return layer.lineWidth;
-  }));
-}
-
 export function measureLegendTextWidth(value, style = { fontSize: 12 }) {
   return measureTextWidth(formatVisibleText(value), style);
 }
 
-export function resolveLegendGrid(config, width, count, symbolHeight = measureLegendSymbolHeight(config)) {
+export function resolveLegendGrid(config, width, count, symbolHeight) {
   const labels = config.domain.map(formatVisibleText);
   const itemWidths = labels.map(
     label => width + config.labels.offset +

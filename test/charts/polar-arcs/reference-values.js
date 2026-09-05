@@ -242,11 +242,11 @@ function legendLayout(target, domain, colors, title) {
     domain,
     colors,
     title,
-    symbolX: domain.map(() => symbolX),
+    symbolX: domain.map(() => symbolX + 0.25),
     symbolY: itemY.map(value => value - 6),
     symbolWidth: domain.map(() => 14),
     symbolHeight: domain.map(() => 12),
-    labelX: domain.map(() => symbolX + 22),
+    labelX: domain.map(() => symbolX + 22.5),
     itemY: Object.freeze(itemY),
     titleX: symbolX,
     titleY

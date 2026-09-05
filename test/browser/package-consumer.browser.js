@@ -277,6 +277,25 @@ test.before(async () => {
       if (!renderToSVG(p).startsWith("<svg ")) throw new Error("Item legend SVG missing");
       render(p, document.getElementById("legend-content").getContext("2d"));
     }
+      const categoricalSampleGaps = [];
+    for (const factory of [chart, basicChart]) for (const kind of ["color", "line"]) {
+      for (const position of ["left", "right", "top", "bottom"]) {
+        let source = factory().createCanvas({ width: 2400, height: 2000, margin: 600 })
+          .createData({ values: [{ x: 0, y: 0, g: "A" }, { x: 1, y: 1, g: "A" },
+            { x: 2, y: 2, g: "B" }, { x: 3, y: 3, g: "B" }] });
+        source = kind === "color" ? source.createPointMark() : source.createLineMark().encodeGroup({ field: "g" });
+        source = source.encodeX({ field: "x" }).encodeY({ field: "y" }).encodeColor({ field: "g" });
+        const p = source.createLegend({ position, labels: { fontSize: 80 }, titleStyle: { fontSize: 80 },
+          symbol: kind === "color" ? { stroke: "black", strokeWidth: 40 } : { lineWidth: 60 } });
+        const prefix = kind === "color" ? "colorLegend" : "seriesLegend";
+        const sample = p.graphicSpec.objects[prefix + "Symbols"].items[0].properties;
+        const label = p.graphicSpec.objects[prefix + "Labels"].items[0].properties;
+        const gap = label.x - (kind === "color" ? sample.x + sample.width : sample.x2) - sample.strokeWidth / 2;
+        categoricalSampleGaps.push(Math.round(gap * 1e8) / 1e8);
+        if (!renderToSVG(p).startsWith("<svg ")) throw new Error("Categorical SVG missing");
+        render(p, document.getElementById("legend-content").getContext("2d"));
+      }
+    }
       const opacitySampleGaps = [];
       for (const position of ["left", "right", "top", "bottom"]) {
         const p = guideSource.createLegend({ channels: ["opacity"], position, count: 3, offset: 40,
@@ -388,6 +407,7 @@ test.before(async () => {
         transitionEdges,
         occupiedAlignment,
         itemStrokeGaps,
+        categoricalSampleGaps,
         opacitySampleGaps,
         ignoredOptionRejects,
         gradientTitleParity,
@@ -529,9 +549,10 @@ test("imports and renders the packed browser entries", async () => {
     guideRejects: 4,
     guideOrder: [true, true],
     transitionEdges: ["left", "right", "top", "bottom"].map(position => [position, position, true, true, true]),
-    hiddenCategorical: [36, true],
+    hiddenCategorical: [36.5, true],
     occupiedAlignment: [true, true, true, true, true, true],
     itemStrokeGaps: [8, 8, 8, 8, 12, 12, 12, 12],
+    categoricalSampleGaps: [8, 8, 8, 8, 10, 10, 10, 10, 8, 8, 8, 8, 10, 10, 10, 10],
     opacitySampleGaps: [12, 12, 12, 12],
     ignoredOptionRejects: 18,
     gradientTitleParity: [true, true, true, true, true, true],
@@ -539,7 +560,7 @@ test("imports and renders the packed browser entries", async () => {
     combinedTitlesAligned: true,
     combinedContentSVG: true,
     legacyBottomYs: [572, 572],
-    edgeBottomYs: [489, 489],
+    edgeBottomYs: [489.25, 489.25],
     bottomLegendSVG: true,
     shapeLegendChannels: ["shape"],
     shapeLegendItems: 2,

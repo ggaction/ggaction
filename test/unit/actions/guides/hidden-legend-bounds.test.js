@@ -19,7 +19,7 @@ test("hidden continuous titles do not reject fitting Canvas sizes or enlarge bor
     assert.deepEqual(hidden.graphicSpec, short.graphicSpec);
     assert.equal(hidden.guideConfigs.legend[kind].titleVisible, false);
     const before = JSON.stringify(hidden);
-    assert.throws(() => hidden.editLegend({ title: "Long legend title ".repeat(6) }), /margin|Canvas/);
+    assert.throws(() => hidden.editLegend({ title: "Long legend title ".repeat(6) }), /margin|Canvas|fixed title and item rows/);
     assert.equal(JSON.stringify(hidden), before);
   }
 });
@@ -48,7 +48,7 @@ test("hidden categorical titles contribute no height, inline gap or legacy borde
       assert.deepEqual(styled.graphicSpec, hidden.graphicSpec);
       assert.equal(styled.guideConfigs.legend[kind].titleStyle.fontSize, 1000);
       const before = JSON.stringify(styled);
-      assert.throws(() => styled.editLegend({ title: "auto" }), /margin|Canvas/, `${kind}/${position}/border:${border}`);
+      assert.throws(() => styled.editLegend({ title: "auto" }), /margin|Canvas|fixed title and item rows/, `${kind}/${position}/border:${border}`);
       assert.equal(JSON.stringify(styled), before);
       assert.deepEqual(hidden.editLegend({ title: "auto" }).graphicSpec, visible.graphicSpec);
       assert.deepEqual(styled.editCanvas({ width: 1100 }).graphicSpec, hidden.editCanvas({ width: 1100 }).graphicSpec);

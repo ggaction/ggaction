@@ -164,30 +164,32 @@ function buildLegend(
     ) * fontSize, 0) * weightFactor;
   const titleWidth = textWidth(titleText, 13, 1.04);
   const itemWidths = groupDomain.map(
-    group => symbolWidth + labelOffset + textWidth(group, 12)
+    group => symbolWidth + 0.5 + labelOffset + textWidth(group, 12)
   );
   const itemsWidth = itemWidths.reduce((sum, value) => sum + value, 0) +
     itemGap * Math.max(0, groupDomain.length - 1);
   const totalWidth = titlePosition === "left"
     ? titleWidth + titleGap + itemsWidth
     : itemsWidth;
-  // The swatch stroke adds .25 on the left; an inline 13px title adds .5 below the 12px row.
-  const dx = titlePosition === "left" ? 0 : 0.125;
+  // Swatch occupied size is 14.5 by 12.5; an inline title makes the row 13px tall.
+  const dx = 0;
   const dy = titlePosition === "left" ? -0.5 : -0.25;
   const start = bounds.x + (bounds.width - totalWidth) / 2 + dx;
-  let cursor = titlePosition === "left"
+  const gridStart = titlePosition === "left"
     ? start + titleWidth + titleGap
     : start;
+  let cursor = 0;
   const itemY = bounds.y - offset - symbolHeight / 2 + dy;
   const items = groupDomain.map((group, index) => {
+    const symbolX = gridStart + cursor + 0.25;
     const item = {
       group,
       color: colors[index % colors.length],
-      x: cursor,
+      x: symbolX,
       y: itemY - symbolHeight / 2,
       width: symbolWidth,
       height: symbolHeight,
-      labelX: cursor + symbolWidth + labelOffset,
+      labelX: symbolX + symbolWidth + 0.25 + labelOffset,
       labelY: itemY
     };
     cursor += itemWidths[index] + itemGap;
@@ -201,7 +203,7 @@ function buildLegend(
     offset,
     title: {
       x: titlePosition === "left" ? start : bounds.x + bounds.width / 2 + dx,
-      y: titlePosition === "left" ? itemY : itemY - 12 / 2 - 12 - 13 / 2,
+      y: titlePosition === "left" ? itemY : itemY - 12.5 / 2 - 12 - 13 / 2,
       text: titleText,
       textAlign: titlePosition === "left" ? "left" : "center"
     },

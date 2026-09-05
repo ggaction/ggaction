@@ -3,7 +3,6 @@ import test from "node:test";
 
 import {
   alignLegendStart,
-  measureLegendSymbolHeight,
   measureLegendTextWidth,
   resolveLegendGrid
 } from "../../../src/layout/legend.js";
@@ -13,20 +12,13 @@ const config = Object.freeze({
   columns: 2,
   direction: "horizontal",
   itemGap: 8,
-  labels: Object.freeze({ offset: 4, fontSize: 12 }),
-  symbol: Object.freeze({
-    layers: Object.freeze([
-      Object.freeze({ type: "swatch", height: 10 }),
-      Object.freeze({ type: "point", size: 7 }),
-      Object.freeze({ type: "line", lineWidth: 3 })
-    ])
-  })
+  labels: Object.freeze({ offset: 4, fontSize: 12 })
+
 });
 
 test("measures legend symbols, text, grids, and alignment deterministically", () => {
-  assert.equal(measureLegendSymbolHeight(config), 14);
   assert.ok(Math.abs(measureLegendTextWidth("Long") - 24.24) < 1e-12);
-  assert.deepEqual(resolveLegendGrid(config, 12, 2), {
+  assert.deepEqual(resolveLegendGrid(config, 12, 2, 14), {
     cells: [{ column: 0, row: 0 }, { column: 1, row: 0 }],
     columnWidths: [23.32, 40.24],
     gridWidth: 71.56,
@@ -41,7 +33,7 @@ test("measures legend symbols, text, grids, and alignment deterministically", ()
 
 test("lays out vertical legend direction by rows first", () => {
   assert.deepEqual(
-    resolveLegendGrid({ ...config, direction: "vertical", columns: 1 }, 12, 2)
+    resolveLegendGrid({ ...config, direction: "vertical", columns: 1 }, 12, 2, 14)
       .cells,
     [{ column: 0, row: 0 }, { column: 0, row: 1 }]
   );

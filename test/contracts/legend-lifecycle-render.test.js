@@ -129,7 +129,7 @@ test("preserves explicit bottom placement through focused styling and exact pixe
     const publicProgram = original.editLegendLabels({ color: "#b91c1c" });
     assertChartProgramsEquivalent({ primitiveProgram: primitive, publicProgram });
     assert.deepEqual(publicProgram.graphicSpec.objects.colorLegendLabels.items.map(item => item.properties.y),
-      layout === "edge" ? [489, 489] : [572, 572]);
+      layout === "edge" ? [489.25, 489.25] : [572, 572]);
     const artifact = { scope: "charts", capability: "legend-layout", chart: "legend-lifecycle", variant: layout,
       title: `Bottom legend ${layout}`, userFacingCallChain: `base.createLegend({ channels: ["color"], position: "bottom", layout: "${layout}" }).editLegendLabels({ color: "#b91c1c" })` };
     const options = { width: 640, height: 600, colors: ["#b91c1c", "#4c78a8"],

@@ -141,7 +141,7 @@ test("authors and renders the complete primitive density area chart", () => {
     ["#4c78a8", "#f58518", "#e45756"]
   );
   assert.deepEqual(program.graphicSpec.objects.colorLegendTitle.properties, {
-    x: 252.0144,
+    x: 251.2644,
     y: 115.5,
     text: "Origin",
     fill: "#334155",

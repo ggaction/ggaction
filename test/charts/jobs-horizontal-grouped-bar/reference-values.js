@@ -224,11 +224,11 @@ export function createHorizontalGroupedBarValues(
       items: groups.map((group, index) => ({
         label: group,
         color: COLORS[index % COLORS.length],
-        x: legendX,
+        x: legendX + 0.25,
         y: bounds.y + 46 + index * 28,
         width: 14,
         height: 12,
-        labelX: legendX + 22,
+        labelX: legendX + 22.5,
         labelY: bounds.y + 52 + index * 28
       }))
     },

@@ -30,7 +30,8 @@
 - [x] W2 C2 side alignment·title style·gradient title 편집 option parity #103 — [검증](RESULTS_W2_OPTION_PARITY.md)
 - [x] W2 C2 opacity stroke/sample/font 간격과 mirrored side lane #104 — [검증](RESULTS_W2_OPACITY_SPACING.md)
 - [x] W2 C2 interval/width 실제 stroke spacing #105 — [검증](RESULTS_W2_ITEM_STROKE_SPACING.md)
-- [ ] W2 C2 categorical sample/font #106과 통합 matrix
+- [x] W2 C2 categorical recipe/shape/font 실제 spacing #106 — [검증](RESULTS_W2_CATEGORICAL_SPACING.md)
+- [ ] W2 C2 opacity symbol type/runtime parity와 전체 통합 matrix
 - [ ] R6-P5-W3 Final-item labels·reference·common format
 - [ ] R6-P5-W4 Program theme와 local override
 - [ ] R6-P5-W5 Opt-in fitting과 guide label layout

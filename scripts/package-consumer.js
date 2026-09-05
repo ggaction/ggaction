@@ -553,6 +553,23 @@ async function testNodeConsumer(directory) {
       assert.ok(Math.abs(gap - (kind === "interval" ? 8 : 12)) < 1e-8);
       assert.match(renderToSVG(p), /<svg /);
     }
+    for (const factory of [chart, basicChart]) for (const kind of ["color", "line"]) {
+      for (const position of ["left", "right", "top", "bottom"]) {
+        let source = factory().createCanvas({ width: 2400, height: 2000, margin: 600 })
+          .createData({ values: [{ x: 0, y: 0, g: "A" }, { x: 1, y: 1, g: "A" },
+            { x: 2, y: 2, g: "B" }, { x: 3, y: 3, g: "B" }] });
+        source = kind === "color" ? source.createPointMark() : source.createLineMark().encodeGroup({ field: "g" });
+        source = source.encodeX({ field: "x" }).encodeY({ field: "y" }).encodeColor({ field: "g" });
+        const p = source.createLegend({ position, labels: { fontSize: 80 }, titleStyle: { fontSize: 80 },
+          symbol: kind === "color" ? { stroke: "black", strokeWidth: 40 } : { lineWidth: 60 } });
+        const prefix = kind === "color" ? "colorLegend" : "seriesLegend";
+        const sample = p.graphicSpec.objects[prefix + "Symbols"].items[0].properties;
+        const label = p.graphicSpec.objects[prefix + "Labels"].items[0].properties;
+        const gap = label.x - (kind === "color" ? sample.x + sample.width : sample.x2) - sample.strokeWidth / 2;
+        assert.ok(Math.abs(gap - (kind === "color" ? 8 : 10)) < 1e-8);
+        assert.match(renderToSVG(p), /<svg /);
+      }
+    }
     const legendContentBase = chart().createCanvas({ width: 800, height: 700, margin: { right: 300 } })
       .createData({ values: [{ x: 1, y: 2, g: "A", m: 4 }, { x: 2, y: 3, g: "B", m: 9 }] })
       .createPointMark({ id: "contentPoints" }).encodeX({ field: "x" }).encodeY({ field: "y" })
@@ -656,7 +673,7 @@ async function testNodeConsumer(directory) {
       .createLegend({ channels: ["color"], position: "bottom", border: true }).editLegend({ title: false });
     assert.deepEqual(hiddenCategorical.editLegend({ titleStyle: { fontSize: 1000 }, titlePosition: "left" }).graphicSpec,
       hiddenCategorical.graphicSpec);
-    assert.equal(hiddenCategorical.graphicSpec.objects.colorLegendBackground.properties.height, 36);
+    assert.equal(hiddenCategorical.graphicSpec.objects.colorLegendBackground.properties.height, 36.5);
     const partialContent = hiddenContent.removeLegend({ channels: ["shape"] });
     assert.deepEqual(partialContent.guideConfigs.legend.color.channels, ["color"]);
     assert.equal(partialContent.guideConfigs.legend.color.titleVisible, false);
@@ -686,7 +703,7 @@ async function testNodeConsumer(directory) {
       .editLegendLabels({ color: "red" });
     assert.deepEqual(legacyBottomLegend.graphicSpec.objects.colorLegendLabels.items.map(item => item.properties.y), [572, 572]);
     const edgeBottomLegend = legacyBottomLegend.editLegendLayout({ layout: "edge" });
-    assert.deepEqual(edgeBottomLegend.graphicSpec.objects.colorLegendLabels.items.map(item => item.properties.y), [489, 489]);
+    assert.deepEqual(edgeBottomLegend.graphicSpec.objects.colorLegendLabels.items.map(item => item.properties.y), [489.25, 489.25]);
     assert.match(renderToSVG(edgeBottomLegend), /<svg /);
 
     const editedSizeLegend = chart().createCanvas({ width: 640, height: 420, margin: { right: 180 } })

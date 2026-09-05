@@ -2668,7 +2668,8 @@ export interface RemoveMarkOptions {
 }
 
 export interface LegendTextOptions {
-  /** Gap after the occupied sample slot: interval default 8; size/width default 12.
+  /** Gap after the occupied sample slot: categorical color/interval default 8; series 10; size/width 12.
+   * Categorical slots include all recipe strokes and mapped shape extents.
    * Size retains a minimum 32px slot. Width includes the widest line stroke.
    * Opacity: visible circle-stroke gap, default 12 (inline 8). */
   offset?: number;

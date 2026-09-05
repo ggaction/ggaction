@@ -18,7 +18,7 @@ test("bottom categorical legends default to the edge grid", () => {
   const explicit = base().createLegend({ channels: ["color"], position: "bottom", layout: "edge" });
   assert.deepEqual(implicit.graphicSpec, explicit.graphicSpec);
   assert.equal(implicit.guideConfigs.legend.color.layout, "edge");
-  assert.deepEqual(ys(implicit), [489, 489]);
+  assert.deepEqual(ys(implicit), [489.25, 489.25]);
 });
 
 test("focused styles preserve both explicit bottom modes", () => {
@@ -29,7 +29,7 @@ test("focused styles preserve both explicit bottom modes", () => {
     const primitive = original.editGraphics({ target: "colorLegendLabels", property: "fill", value: options.color });
     assert.deepEqual(edited.graphicSpec, primitive.graphicSpec);
     assert.equal(edited.guideConfigs.legend.color.layout, layout);
-    assert.deepEqual(ys(edited), layout === "edge" ? [489, 489] : [572, 572]);
+    assert.deepEqual(ys(edited), layout === "edge" ? [489.25, 489.25] : [572, 572]);
     assert.notEqual(original.graphicSpec.objects.colorLegendLabels.items[0].properties.fill, options.color);
     const title = edited.editLegendTitle({ color: "#123456" });
     assert.deepEqual(ys(title), ys(original));
@@ -75,7 +75,7 @@ test("Full and Basic nested guide creation use the same explicit modes", () => {
       const nested = base(create).createGuides({ axes: false, grid: false,
         legend: { channels: ["color"], position: "bottom", layout } });
       assert.equal(nested.guideConfigs.legend.color.layout, layout);
-      assert.deepEqual(ys(nested), layout === "edge" ? [489, 489] : [572, 572]);
+      assert.deepEqual(ys(nested), layout === "edge" ? [489.25, 489.25] : [572, 572]);
     }
   }
   const size = base().encodeSize({ field: "x" });

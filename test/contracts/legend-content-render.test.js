@@ -16,7 +16,7 @@ function contentBase() {
 function colorPrimitive(base, size) {
   const color = base
     .createGraphics({ id: "colorLegendSymbols", type: "rect", length: 2, parent: "canvas" })
-    .editGraphics({ target: "colorLegendSymbols", property: "x", value: 508 })
+    .editGraphics({ target: "colorLegendSymbols", property: "x", value: 508.25 })
     .editGraphics({ target: "colorLegendSymbols", property: "y", value: [76, 104] })
     .editGraphics({ target: "colorLegendSymbols", property: "width", value: 14 })
     .editGraphics({ target: "colorLegendSymbols", property: "height", value: 12 })
@@ -24,7 +24,7 @@ function colorPrimitive(base, size) {
     .editGraphics({ target: "colorLegendSymbols", property: "stroke", value: "white" })
     .editGraphics({ target: "colorLegendSymbols", property: "strokeWidth", value: 0.5 })
     .createGraphics({ id: "colorLegendLabels", type: "text", length: 2, parent: "canvas" })
-    .editGraphics({ target: "colorLegendLabels", property: "x", value: 530 })
+    .editGraphics({ target: "colorLegendLabels", property: "x", value: 530.5 })
     .editGraphics({ target: "colorLegendLabels", property: "y", value: [82, 110] })
     .editGraphics({ target: "colorLegendLabels", property: "text", value: ["A", "B"] })
     .editGraphics({ target: "colorLegendLabels", property: "fill", value: "#334155" })
@@ -158,7 +158,7 @@ test("matches partial point legend removal to independent graphic primitives", a
     const size = variant === "color-size";
     let primitive = variant === "shape-only" ? shapePrimitive(base) : colorPrimitive(base, size);
     // A content edit preserves the former series label offset of 10 pixels.
-    if (variant === "color-only") primitive = primitive.editGraphics({ target: "colorLegendLabels", property: "x", value: 532 });
+    if (variant === "color-only") primitive = primitive.editGraphics({ target: "colorLegendLabels", property: "x", value: 532.5 });
     const channels = variant === "shape-only" ? ["color", "size"] : size ? ["shape"] : ["shape", "size"];
     const artifact = { scope: "charts", capability: "legend-layout", chart: "legend-partial-removal",
       variant, title: `Retained ${variant} content`,
@@ -199,17 +199,17 @@ test("matches point content replacement to the existing independent graphic targ
 function colorShapePrimitive(base, withLine) {
   let primitive = shapePrimitive(base)
     .editGraphics({ target: "seriesLegendSymbolPoints", property: "items", value: [
-      { type: "circle", properties: { x: withLine ? 524 : 512.5135166683821, y: 82, radius: 4.51351666838205,
+      { type: "circle", properties: { x: withLine ? 525.5 : 512.5135166683821, y: 82, radius: 4.51351666838205,
         fill: "#4c78a8", stroke: "white", strokeWidth: 0 } },
-      { type: "rect", properties: { x: withLine ? 520 : 508.51351666838207, y: 106, width: 7.999999999999999,
+      { type: "rect", properties: { x: withLine ? 521.5 : 508.51351666838207, y: 106, width: 7.999999999999999,
         height: 7.999999999999999, fill: "#f58518", stroke: "white", strokeWidth: 0 } }
     ] });
   if (!withLine) return primitive;
   return primitive
-    .editGraphics({ target: "seriesLegendLabels", property: "x", value: 550 })
+    .editGraphics({ target: "seriesLegendLabels", property: "x", value: 553 })
     .createGraphics({ id: "seriesLegendSymbolLines", type: "line", length: 2, parent: "canvas", before: "seriesLegendSymbolPoints" })
-    .editGraphics({ target: "seriesLegendSymbolLines", property: "x1", value: 508 })
-    .editGraphics({ target: "seriesLegendSymbolLines", property: "x2", value: 540 })
+    .editGraphics({ target: "seriesLegendSymbolLines", property: "x1", value: 509.5 })
+    .editGraphics({ target: "seriesLegendSymbolLines", property: "x2", value: 541.5 })
     .editGraphics({ target: "seriesLegendSymbolLines", property: "y1", value: [82, 110] })
     .editGraphics({ target: "seriesLegendSymbolLines", property: "y2", value: [82, 110] })
     .editGraphics({ target: "seriesLegendSymbolLines", property: "stroke", value: ["#4c78a8", "#f58518"] })

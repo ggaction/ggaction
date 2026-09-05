@@ -52,8 +52,8 @@ editing page when changing an existing guide.
 
 Continuous color legends support point, aggregate-bar, and rect marks. Field
 Opacity legends support Point and Line; discretized color legends support Point, aggregate Bar, and Rect. Interactive legends are unsupported.
-Combined point-series and quantitative-size legends require a right or left
-side position so both blocks remain in one vertical stack. A left block must
+Combined point-series and quantitative-size legends support every edge.
+Side positions stack the blocks; horizontal positions place them in rows. A left block must
 fit outside any left y-axis guides; use sufficient margin and offset.
 Stroke-width legends support all four edges through `createLegend` and
 `editLegendLayout`. Use `layout: "edge"`, `offset`, `itemGap`, and horizontal

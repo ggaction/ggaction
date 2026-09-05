@@ -171,7 +171,7 @@ test("authors and renders the complete primitive cars histogram", () => {
     "center"
   );
   assert.equal(
-    values.legend.items[0].x + values.legend.width / 2,
+    values.legend.items[0].x - 0.25 + values.legend.width / 2,
     layout.width / 2
   );
   assert.equal(program.graphicSpec.objects.chartTitle.properties.x, 226);

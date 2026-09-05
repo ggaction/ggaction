@@ -3,7 +3,7 @@ import { alignLegendStart, resolveLegendGrid } from "./legend.js";
 
 // Measure item content before choosing its edge. Family owners supply the
 // sample dimensions and formatted labels; this module does not inspect scales.
-export function resolveLegendItemLayout(plot, config, labels, symbol) {
+export function resolveLegendItemLayout(plot, config, labels, symbol, canvas) {
   const strokes = labels.map((_, index) => Array.isArray(symbol.strokeWidth)
     ? symbol.strokeWidth[index] : symbol.strokeWidth ?? 0);
   const sampleBounds = labels.map((_, index) => symbol.itemBounds?.[index] ?? {
@@ -28,7 +28,20 @@ export function resolveLegendItemLayout(plot, config, labels, symbol) {
   let labelX;
   let itemY;
   let title;
-  if (side) {
+  if (config.layout === "legacy-bottom") {
+    const widths = labels.map(text => sampleWidth + config.labels.offset + measureTextWidth(text, config.labels));
+    const width = widths.reduce((sum, value) => sum + value, 0) + config.itemGap * (labels.length - 1);
+    const x = config.align === "center" ? (canvas.width - width) / 2 : alignLegendStart(plot, width, config.align);
+    let cursor = x;
+    symbolX = widths.map(width => {
+      const start = cursor - sampleLeft;
+      cursor += width + config.itemGap;
+      return start;
+    });
+    labelX = symbolX.map(value => value + sampleRight + config.labels.offset);
+    itemY = labels.map(() => canvas.height - 28);
+    title = { x: x + width / 2, y: canvas.height - 52, align: "center" };
+  } else if (side) {
     const width = Math.max(itemWidth, titleWidth);
     const x = config.position === "right" ? plot.x + plot.width + config.offset
       : plot.x - config.offset - width;
@@ -76,5 +89,14 @@ export function resolveLegendItemLayout(plot, config, labels, symbol) {
         top: itemY[index] + local.top, bottom: itemY[index] + local.bottom };
     })
   ];
+  if (config.layout === "legacy-bottom") {
+    const itemBounds = titleVisible ? bounds.slice(1) : bounds;
+    if (titleVisible && itemBounds.some(bound => bound.top < bounds[0].bottom)) {
+      throw new Error("Legacy bottom legend requires more space between its fixed title and item rows.");
+    }
+    if (bounds.some(bound => bound.top <= plot.y + plot.height)) {
+      throw new Error("Legacy bottom legend requires more bottom-margin space.");
+    }
+  }
   return { symbolX, labelX, itemY, title, bounds };
 }

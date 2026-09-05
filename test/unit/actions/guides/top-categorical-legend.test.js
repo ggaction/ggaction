@@ -79,7 +79,7 @@ test("creates the density top legend with a left title and area swatches", () =>
       text: item.group
     }))
   );
-  assert.equal(program.graphicSpec.objects.colorLegendTitle.properties.x, 252.0144);
+  assert.equal(program.graphicSpec.objects.colorLegendTitle.properties.x, 251.2644);
   assert.equal(program.graphicSpec.objects.colorLegendTitle.properties.y, 115.5);
   assert.equal(program.graphicSpec.objects.colorLegendTitle.properties.textAlign, "left");
 });

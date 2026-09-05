@@ -265,7 +265,7 @@ export function createCarsHistogramValues(
   const legendLabelGap = 8;
   const legendItemGap = 20;
   const legendItemWidths = origins.map(
-    origin => legendSymbolWidth + legendLabelGap + legendTextWidth(origin)
+    origin => legendSymbolWidth + 0.5 + legendLabelGap + legendTextWidth(origin)
   );
   const legendWidth =
     legendItemWidths.reduce((sum, itemWidth) => sum + itemWidth, 0) +
@@ -273,7 +273,7 @@ export function createCarsHistogramValues(
   let legendItemX = (width - legendWidth) / 2;
   const legendY = height - 28;
   const legendItems = origins.map((origin, index) => {
-    const x = legendItemX;
+    const x = legendItemX + 0.25;
     legendItemX += legendItemWidths[index] + legendItemGap;
     return {
       origin,
@@ -282,7 +282,7 @@ export function createCarsHistogramValues(
       y: legendY - 6,
       width: legendSymbolWidth,
       height: 12,
-      labelX: x + legendSymbolWidth + legendLabelGap,
+      labelX: x + legendSymbolWidth + 0.25 + legendLabelGap,
       labelY: legendY,
       itemWidth: legendItemWidths[index]
     };

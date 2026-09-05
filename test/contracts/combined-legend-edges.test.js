@@ -9,27 +9,30 @@ export function combinedBase(){return chart().createCanvas({width:1000,height:80
   .encodeSize({field:'m',scale:{range:[4*Math.PI,36*Math.PI]}});}
 export function combinedPrimitive(edge){
   const top=edge==='top';
+  // Two occupied 14.5px slots widen the old painted block by .75px.
+  // Centering moves the group left .375px; the size block moves right .375px.
+  // Labels sit 8px beyond the swatch's right half-stroke (.25px).
   const label={fill:'#334155',fontSize:12,fontFamily:'sans-serif',fontWeight:'normal',textAlign:'left',textBaseline:'middle'};
   const title={fill:'#334155',fontSize:13,fontFamily:'sans-serif',fontWeight:600,textAlign:'center',textBaseline:'middle'};
   const y=top?201.25:623.75, sy=top?201:623.5, ty=top?176.5:599;
   return combinedBase()
     .createGraphics({id:'colorLegendBackground',type:'rect',parent:'canvas'})
-    .editGraphics({target:'colorLegendBackground',property:'x',value:370.57500000000005})
+    .editGraphics({target:'colorLegendBackground',property:'x',value:370.20000000000005})
     .editGraphics({target:'colorLegendBackground',property:'y',value:top?158:580.5})
-    .editGraphics({target:'colorLegendBackground',property:'width',value:258.84999999999997})
+    .editGraphics({target:'colorLegendBackground',property:'width',value:259.59999999999997})
     .editGraphics({target:'colorLegendBackground',property:'height',value:61.5})
     .editGraphics({target:'colorLegendBackground',property:'fill',value:'transparent'})
     .editGraphics({target:'colorLegendBackground',property:'stroke',value:'#cbd5e1'})
     .editGraphics({target:'colorLegendBackground',property:'strokeWidth',value:1})
     .createGraphics({id:'colorLegendSymbols',type:'rect',length:2,parent:'canvas'})
     .editGraphics({target:'colorLegendSymbols',property:'items',value:[
-      {type:'rect',properties:{x:382.82500000000005,y:y-6,width:14,height:12,fill:'#4c78a8',stroke:'white',strokeWidth:0.5}},
-      {type:'rect',properties:{x:432.14500000000004,y:y-6,width:14,height:12,fill:'#f58518',stroke:'white',strokeWidth:0.5}}]})
+      {type:'rect',properties:{x:382.45000000000005,y:y-6,width:14,height:12,fill:'#4c78a8',stroke:'white',strokeWidth:0.5}},
+      {type:'rect',properties:{x:432.27000000000004,y:y-6,width:14,height:12,fill:'#f58518',stroke:'white',strokeWidth:0.5}}]})
     .createGraphics({id:'colorLegendLabels',type:'text',length:2,parent:'canvas'})
     .editGraphics({target:'colorLegendLabels',property:'items',value:[
-      {type:'text',properties:{x:404.82500000000005,y,text:'A',...label}},{type:'text',properties:{x:454.14500000000004,y,text:'B',...label}}]})
+      {type:'text',properties:{x:404.70000000000005,y,text:'A',...label}},{type:'text',properties:{x:454.52000000000004,y,text:'B',...label}}]})
     .createGraphics({id:'colorLegendTitle',type:'text',parent:'canvas'})
-    .editGraphics({target:'colorLegendTitle',property:'x',value:422.14500000000004})
+    .editGraphics({target:'colorLegendTitle',property:'x',value:422.02000000000004})
     .editGraphics({target:'colorLegendTitle',property:'y',value:ty})
     .editGraphics({target:'colorLegendTitle',property:'text',value:'g'})
     .editGraphics({target:'colorLegendTitle',property:'fill',value:title.fill})
@@ -40,13 +43,13 @@ export function combinedPrimitive(edge){
     .editGraphics({target:'colorLegendTitle',property:'textBaseline',value:'middle'})
     .createGraphics({id:'sizeLegendSymbols',type:'circle',length:2,parent:'canvas'})
     .editGraphics({target:'sizeLegendSymbols',property:'items',value:[
-      {type:'circle',properties:{x:503.4650000000001,y:sy,radius:2,fill:'#94a3b8',opacity:0.7}},
-      {type:'circle',properties:{x:574.7850000000001,y:sy,radius:6,fill:'#94a3b8',opacity:0.7}}]})
+      {type:'circle',properties:{x:503.8400000000001,y:sy,radius:2,fill:'#94a3b8',opacity:0.7}},
+      {type:'circle',properties:{x:575.1600000000001,y:sy,radius:6,fill:'#94a3b8',opacity:0.7}}]})
     .createGraphics({id:'sizeLegendLabels',type:'text',length:2,parent:'canvas'})
     .editGraphics({target:'sizeLegendLabels',property:'items',value:[
-      {type:'text',properties:{x:531.4650000000001,y:sy,text:'0',...label}},{type:'text',properties:{x:602.7850000000001,y:sy,text:'10',...label}}]})
+      {type:'text',properties:{x:531.8400000000001,y:sy,text:'0',...label}},{type:'text',properties:{x:603.1600000000001,y:sy,text:'10',...label}}]})
     .createGraphics({id:'sizeLegendTitle',type:'text',parent:'canvas'})
-    .editGraphics({target:'sizeLegendTitle',property:'x',value:552.4450000000002})
+    .editGraphics({target:'sizeLegendTitle',property:'x',value:552.8200000000002})
     .editGraphics({target:'sizeLegendTitle',property:'y',value:ty})
     .editGraphics({target:'sizeLegendTitle',property:'text',value:'m'})
     .editGraphics({target:'sizeLegendTitle',property:'fill',value:'#0f172a'})

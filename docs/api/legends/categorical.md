@@ -29,7 +29,7 @@ With one size-encoded point mark, both `createLegend()` and `createGuides()`
 infer the same block. Multiple size-encoded point marks require `target`.
 Standalone size legends support all four positions, edge layout, grid controls,
 text styles, and borders. A size block paired with a categorical point legend
-currently uses either side.
+supports every edge.
 
 An explicit `channels` array selects exactly the content to create. On a point
 mark encoding all three channels, use `channels: ["color", "shape", "size"]`
@@ -81,7 +81,7 @@ preserves its remaining shape legend.
 | `symbol` | `"auto"`, shorthand object, or layered recipe | inferred from mark |
 | `labels` | label style object | default sans-serif label style |
 | `titleStyle` | title style object | default sans-serif title style |
-| `itemGap` | positive number | `28` at either side, `20` at top/bottom |
+| `itemGap` | positive number | `28` at either side, `24` at top, `20` at bottom |
 | `border` | boolean or border style object | `false` |
 | `count` | size-legend symbol count from `2` through `10,000` | `5` for point legends |
 | `gradient` | `{ length?, thickness? }` with positive values | `{ length: 120, thickness: 12 }` |
@@ -99,6 +99,8 @@ near the Canvas bottom edge, specify both `position: "bottom"` and
 the title at height minus 52. It supports alignment, item gap, symbols, styles,
 and borders; columns, vertical direction, a left title, or a custom plot offset
 require `layout: "edge"`. Layout mode is preserved by edits and replay.
+Large text or symbols that overlap the fixed title row, cross the plot, or
+exceed the Canvas produce an error; the fixed anchors do not move.
 
 Top and bottom legends use a general item grid. `columns` caps the column count;
 `direction: "horizontal"` fills rows first and `"vertical"` fills columns
@@ -108,6 +110,14 @@ edge. Strokes and label extents count toward these bounds. `offset` measures
 the gap from the plot to the nearest outer legend edge. The final block must
 fit the requested Canvas. The title appears above the grid by default, or beside it with
 `titlePosition: "left"`.
+
+Each item reserves the actual extent of every symbol layer, including strokes
+and mapped shapes. Labels start after this shared sample slot plus
+`labels.offset` (8 for color, 10 for series). Narrower shapes retain the same
+label column. Side rows expand for large labels or symbols, with at least
+12 pixels between the visible title and item content. Horizontal grids and
+borders use the same extents; inline titles are vertically centered beside
+the complete grid. Hidden titles reserve no space.
 
 A categorical legend resolves at most 10,000 domain items. A layered symbol
 recipe contains at most one line, one point, and one swatch layer.

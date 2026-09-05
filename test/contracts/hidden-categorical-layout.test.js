@@ -6,12 +6,17 @@ import { assertRenderedPNG } from "../support/png.js";
 export function base() {return chart().createCanvas({width:1000,height:800,margin:250})
 .createData({values:[{x:0,y:0,g:'A'},{x:10,y:10,g:'B'}]}).createPointMark().encodeX({field:'x'}).encodeY({field:'y'}).encodeColor({field:'g'});}
 export function primitive(position){
- const top=position==='top',x=top?[458.68,512]:[460.68,510], y=top?217.5:570.5;
+ const top=position==='top';
+ // Each slot includes the swatch's half-pixel stroke on both sides.
+ const gap=top?24:20, column=14.5+8+7.32, width=2*column+gap;
+ const start=250+(500-width)/2, x=[start+.25,start+column+gap+.25];
+ const labels=x.map(value=>value+14.25+8), y=top?217.25:570.75;
+ const left=x[0]-.25-12, right=labels[1]+7.32+12;
  return base().createGraphics({id:'colorLegendBackground',type:'rect',parent:'canvas'})
- .editGraphics({target:'colorLegendBackground',property:'x',value:top?446.68:448.68})
- .editGraphics({target:'colorLegendBackground',property:'y',value:top?205.5:558.5})
- .editGraphics({target:'colorLegendBackground',property:'width',value:top?106.64:102.64})
- .editGraphics({target:'colorLegendBackground',property:'height',value:36})
+ .editGraphics({target:'colorLegendBackground',property:'x',value:left})
+ .editGraphics({target:'colorLegendBackground',property:'y',value:top?205:558.5})
+ .editGraphics({target:'colorLegendBackground',property:'width',value:right-left})
+ .editGraphics({target:'colorLegendBackground',property:'height',value:36.5})
  .editGraphics({target:'colorLegendBackground',property:'fill',value:'transparent'})
  .editGraphics({target:'colorLegendBackground',property:'stroke',value:'#cbd5e1'})
  .editGraphics({target:'colorLegendBackground',property:'strokeWidth',value:1})
@@ -24,7 +29,7 @@ export function primitive(position){
  .editGraphics({target:'colorLegendSymbols',property:'stroke',value:'white'})
  .editGraphics({target:'colorLegendSymbols',property:'strokeWidth',value:0.5})
  .createGraphics({id:'colorLegendLabels',type:'text',length:2,parent:'canvas'})
- .editGraphics({target:'colorLegendLabels',property:'x',value:top?[480.68,534]:[482.68,532]})
+ .editGraphics({target:'colorLegendLabels',property:'x',value:labels})
  .editGraphics({target:'colorLegendLabels',property:'y',value:y+6})
  .editGraphics({target:'colorLegendLabels',property:'text',value:['A','B']})
  .editGraphics({target:'colorLegendLabels',property:'fill',value:'#334155'})

@@ -272,9 +272,9 @@ function createSeriesValues(
       y: Object.freeze({ domain: yDomain, range: yRange })
     }),
     legend: Object.freeze({
-      x1: 558,
-      x2: 590,
-      labelX: 600,
+      x1: 559,
+      x2: 591,
+      labelX: 602,
       titleX: 558,
       titleY: 100,
       itemY: legendY
@@ -508,7 +508,7 @@ function createCompositeLegendLayout(baseline, canvas, config) {
   const columnCount = Math.max(...cells.map(cell => cell.column)) + 1;
   const rowCount = Math.max(...cells.map(cell => cell.row)) + 1;
   const itemWidths = labels.map(label =>
-    COMPOSITE_SYMBOL.lineLength + COMPOSITE_SYMBOL.labelOffset +
+    COMPOSITE_SYMBOL.lineLength + COMPOSITE_SYMBOL.lineWidth + COMPOSITE_SYMBOL.labelOffset +
       compositeLegendTextWidth(label, 12)
   );
   const columnWidths = Array.from({ length: columnCount }, (_, column) =>
@@ -562,7 +562,7 @@ function createCompositeLegendLayout(baseline, canvas, config) {
     cursor += width + COMPOSITE_SYMBOL.itemGap;
   }
   const items = cells.map((cell, index) => {
-    const x1 = columnX[cell.column];
+    const x1 = columnX[cell.column] + COMPOSITE_SYMBOL.lineWidth / 2;
     const y = gridTop + rowHeight / 2 +
       cell.row * (rowHeight + COMPOSITE_SYMBOL.itemGap) + dy;
     return Object.freeze({
@@ -573,14 +573,14 @@ function createCompositeLegendLayout(baseline, canvas, config) {
       x2: x1 + COMPOSITE_SYMBOL.lineLength,
       pointX: x1 + COMPOSITE_SYMBOL.lineLength / 2,
       y,
-      labelX: x1 + COMPOSITE_SYMBOL.lineLength +
+      labelX: x1 + COMPOSITE_SYMBOL.lineLength + COMPOSITE_SYMBOL.lineWidth / 2 +
         COMPOSITE_SYMBOL.labelOffset
     });
   });
   const background = Object.freeze({
     x: start - padding + dx,
     y: blockTop - padding + dy,
-    width: totalWidth + padding * 2,
+    width: (start + totalWidth + padding) - (start - padding),
     height: blockBottom - blockTop + padding * 2,
     fill: config.position === "top" ? "white" : "#f8fafc",
     stroke: "#94a3b8",

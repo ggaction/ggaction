@@ -561,3 +561,11 @@ Canvas overflow 또는 최종 chart title/x-axis guide와 교차하면 immutable
 Side pitch와 첫 item/title gap12, horizontal row/column/inline 배치, border와 Canvas fit이 같은 actual extent를 사용한다. Default stroke도 포함하므로 interval의 기존 actual label gap7.75를8로 교정한다. Width의32px line length는 유지되며 stroke extent만큼 slot과 label column이 확장된다. 공간 부족은 earlier program을 변경하지 않는 오류다.
 
 Evidence: `test/unit/actions/guides/item-legend-stroke-spacing.test.js`의72case matrix/lifecycle, `test/contracts/item-legend-stroke-spacing.test.js`의독립 literal primitive/graphics/order/PNG, existing interval/width/size paired references 및 package/browser probes.
+
+### 범주형 recipe·shape·font의 실제 sample spacing
+
+Categorical color/series는 모든 line/point/swatch layer의 실제 bounds와 nominal minimum slot의 union을 예약한다. Mapped point shape의 path miter와 stroke도 포함한다. Labels.offset은 공통 occupied slot 오른쪽 뒤 minimum gap(default color8/series10)이며 좁은 sample도 같은 label column을 사용한다. Side pitch는 max(itemGap,actual symmetric sample height,label font height), 첫 centerY는 plot.y+52 이상이며 visible title 아래12px를 확보한다. Top/bottom grid와 inline title은 실제 sample/label/title 높이를 사용하고 border는 visible bounds+padding이다. Default stroke0.5와 line2도 반영한다.
+
+Legacy-bottom은 labels centerY=Canvas.height−28, title centerY=height−52를 유지하며 actual slot width로 row를 배치한다. Fixed title와 item이 겹치거나 visible content가 plot bottom을 침범하면 오류다. Content와 border의 Canvas fit도 검사한다. Hidden title은 제외한다.
+
+Evidence: `test/unit/actions/guides/categorical-legend-spacing.test.js`의240case와96mapped-shape matrix, lifecycle/shared/legacy; `test/contracts/categorical-legend-spacing.test.js`의4독립 primitive/graphics/order/PNG; existing chart references와installed package/browser probes.
