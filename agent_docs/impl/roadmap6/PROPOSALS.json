@@ -14,17 +14,24 @@
     "typeCalls": 4
   },
   "approval": {
-    "approvedGates": [],
-    "implementationStarted": false
+    "approvedGates": [
+      "R6-P0-A",
+      "R6-P1-A"
+    ],
+    "implementationStarted": true,
+    "reviewCommit": "cf13920ed517cfc6c333b04ec55a724826960228",
+    "userDirection": "밀자",
+    "date": "2026-09-05",
+    "scope": "Phase 1의 문서화된 B01–B08 교정. 후속 신규 API·시각 target은 별도 검토."
   },
   "phases": [
     {
       "id": 0,
       "title": "Baseline and decisions",
-      "status": "planned",
+      "status": "completed",
       "dependencies": [],
       "gateStates": {
-        "R6-P0-A": "planned"
+        "R6-P0-A": "approved"
       },
       "workPackages": [
         {
@@ -64,12 +71,12 @@
     {
       "id": 1,
       "title": "Reproduced correctness and contract repairs",
-      "status": "planned",
+      "status": "in-progress",
       "dependencies": [
         0
       ],
       "gateStates": {
-        "R6-P1-A": "planned",
+        "R6-P1-A": "approved",
         "R6-P1-V": "planned",
         "R6-P1-X": "planned"
       },
@@ -127,7 +134,8 @@
           "scope": "등록 wrapped method = direct ∪ internal, 교집합 없음, manifest orphan 없음의 전체 집합 대조를 만든다. 누락 16개를 internal에 기록한다.",
           "acceptance": "현재 기준 direct173/internal111/registered284와 일치하며 임의 internal method 누락을 탐지한다. Public promotion 없음."
         }
-      ]
+      ],
+      "visualGateApplicability": "not-applicable-to-current-correction-scope"
     },
     {
       "id": 2,

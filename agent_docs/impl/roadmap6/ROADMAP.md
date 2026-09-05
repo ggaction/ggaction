@@ -1,6 +1,6 @@
 # Roadmap 6 — Hierarchical Chart Authoring and Action Consistency
 
-> **문서 상태 — 현재 실행 계획.** 현재 작업은 Phase 0의 상세 계획 작성이다. 구현은 시작하지 않았다.
+> **문서 상태 — 현재 실행 계획.** 현재 작업은 Phase 1의 재현 오류 교정이다. 2026-09-05 사용자의 진행 승인으로 착수했다.
 > 액션군 범위는 사용자 선택에 따라 F01–F19로 구성했다. 구체적인 새 API와 행동 변경은 Proposed다.
 > 이 문서를 작성해 달라는 요청은 모든 설계안·구현·배포의 일괄 승인을 뜻하지 않는다.
 > 실행 위치는 [ROADMAP_INDEX.json](../ROADMAP_INDEX.json), 현재 제품 계약은
@@ -111,8 +111,8 @@ S는 기존 owner 위의 교정·연결, M은 여러 consumer의 lifecycle 변�
 
 | Phase | 상태 | 범위 |
 | --- | --- | --- |
-| 0 | planned | 감사 기준, 우선순위, 결정 원장, 검증·Gate 정의 |
-| 1 | planned | B01–B08 재현 오류와 계약 불일치 |
+| 0 | completed | 감사 기준, 우선순위, 결정 원장, 검증·Gate 정의 |
+| 1 | in-progress | B01–B08 재현 오류와 계약 불일치 |
 | 2 | planned | 계층 공통 규칙, guide 재사용, grouping·appearance·추론 정리 |
 | 3 | planned | Pie/Donut, Density, Horizon의 얇은 완성 facade |
 | 4 | planned | Baseline, layout, order, 중심색과 Area·Rose/Radial |
@@ -232,7 +232,7 @@ insert/remove/reorder와 shared guide 소유권을 확장한다. Polar/Parallel�
 
 ## Approval Gates
 
-모든 Gate의 초기 상태는 planned다. 승인된 것으로 표시한 항목은 없다.
+2026-09-05 진행 승인으로 R6-P0-A와 R6-P1-A를 approved로 기록했다. 나머지 Gate는 각 단계의 실제 검토·증거를 기다린다.
 단계별 문서에서 exact scope, 필요한 source/public chain·검증·시각 증거, 다음 차단 작업을 선언한다.
 
 - A: 해당 단계의 public contract·호환성·작업 범위.

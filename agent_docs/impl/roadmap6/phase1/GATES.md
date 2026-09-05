@@ -2,13 +2,13 @@
 
 ## 공통 상태
 
-모든 Gate는 planned다. 아직 ready-for-review나 approved인 Gate가 없다.
+R6-P1-A는 approved다. R6-P1-X는 planned이며 구현 결과를 기다린다. R6-P1-V 적용 여부는 아래에 명시한다.
 허용 상태는 planned | ready-for-review | approved | changes-requested다.
 이 문서는 지금 승인을 요청하는 문서가 아니라 실행 시점의 검토 범위와 경계를 미리 선언한다.
 
 ## R6-P1-A — Contract and scope
 
-- 상태: planned
+- 상태: approved
 - 검토 대상: B01–B08의 기존 동작, 기대 동작, 최소 교정 범위와 분석 default 보존.
 - 필요 증거: exact baseline commit, 구현할 public signature 또는 before/after call, [GOAL.md](GOAL.md)의 작업별 의미·owner·지원/오류 matrix, [DESIGN_DECISIONS.md](../DESIGN_DECISIONS.md)의 해당 migration 결정.
 - 추가 증거: focused 재현 결과와 실행 가능한 public/primitive target 계획, Current/type/card/package 영향, 남은 불확실성.
@@ -17,6 +17,8 @@
 - 승인 전 차단: 이 단계의 production 의미·API 구현 및 해당 결과에 의존하는 후속 단계.
 
 ## R6-P1-V — Visual target
+
+현재 승인 범위는 기존 명시적 public call로 표현 가능한 결과와의 정합성 교정이다. 새로운 geometry·style target을 설계하지 않는다. B01은 기존 explicit-aggregate Bar와 동일 출력, B06/B07은 runtime을 유지하는 type 교정, B05/B08은 validation/inventory, B02–B04는 잘못된 completion을 unresolved로 표시하거나 기존 지원 chain만 선택하는 변경이다. 따라서 현재 범위의 V는 적용 대상 없음으로 기록한다. 새로운 appearance 목표가 발견되면 planned V를 구체화하고 public 구현 전에 검토한다.
 
 - 상태: planned
 - 검토 대상: 이 단계에서 모양이 변하는 각 primitive variant. 서로 독립인 target은 V1/V2로 분리한다.
@@ -39,9 +41,9 @@
 
 ## 승인 기록
 
-- Review commit / remote ref: 미정
-- 검증 명령과 실제 결과: 미실행
-- 사용자 승인 근거: 없음
-- 남은 작업: 해당 GOAL/STEP 전 범위
+- Review commit / remote ref: cf13920ed517cfc6c333b04ec55a724826960228 / codex/roadmap6-hierarchical-actions
+- 검증 명령과 실제 결과: 기준 감사의 43개 API·7개 MCP 관측·4개 type 호출과 255개 contract tests. 새 구현 결과는 작업별로 추가한다.
+- 사용자 승인 근거: 2026-09-05 사용자가 F01–F19 범위를 선택한 뒤 “밀자”라고 지시했다. 이미 commit/push된 계획을 실행하라는 승인으로 기록하며, 아직 검토하지 않은 새 API·시각 target의 승인을 대신하지 않는다.
+- 남은 작업: R6-P1-W1–W5 구현과 X evidence.
 
 실행 시 실제 증거를 채운다. 문서 작성 날짜나 이전 로드맵 승인을 이 Gate의 승인으로 재사용하지 않는다.
