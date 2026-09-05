@@ -194,6 +194,8 @@ encoding removal/recreation, combined legend와 Polar 가이드를 검증한다.
   8-pixel symbol-label and 20-pixel sample defaults.
   Interval edits own right/vertical spacing, swatch recipe, text style와 title visibility.
   Kind-incompatible options fail before the prior program changes.
+- Standalone size edits own `title`, `count`, `labels`, and `titleStyle`, including focused title/label/count actions. Count is 2..10,000; custom/auto/hidden title and partial styles survive Canvas/scale/filter replay. Labels default to font12/normal and offset28 from sample center; titles to font13/600. Existing right-side origin, equal-area scale mapping, formatter and symbol defaults remain. Unrelated categorical targets never supply inherited appearance or placement. Basic creates size legends but does not expose editors. Layout, symbol, border, gradient and order remain unsupported for standalone size in this contract.
+- Sampled size/stroke-width titleStyle accepts only color/fontSize/fontFamily/fontWeight; offset belongs to labels.
 - Stroke-width edits own `title`, `count`, `labels`, and `titleStyle`. The block remains in its current right-side
   placement; layout, symbol, border, gradient and item-gap options are rejected before state changes. Label `offset`
   controls the distance after the fixed 32-pixel line sample. Custom/hidden/auto title transitions and partial text-style
@@ -217,10 +219,12 @@ encoding removal/recreation, combined legend와 Polar 가이드를 검증한다.
   equivalence.
 - ✅ Covered: custom/hidden/auto title transitions and symbol recipe reconciliation.
 - ✅ Covered: gradient count/extent and opacity count/gap/symbol edits with incompatible-kind rejection.
+- ✅ Covered: standalone size count, exact equal-area radii, labels/titleStyle/offset, custom/hidden/auto title, focused editors, invalid/missing/ambiguous options, independent owners and Canvas/scale/filter replay.
 - ✅ Covered: stroke-width count, labels/titleStyle, custom/hidden/auto title, right-side bounded option rejection and
   scale/Canvas rematerialization.
 - ✅ Covered: Canvas/edit action-order convergence, insufficient margin, immutability, trace, browser/PNG parity.
-- Evidence: `test/unit/actions/guides/legend-edit-actions.test.js`,
+- Evidence: `test/unit/actions/guides/size-legend-editing.test.js`, `test/contracts/legend-lifecycle-render.test.js`,
+  `test/unit/actions/guides/legend-edit-actions.test.js`,
   `test/unit/actions/guides/stroke-width-legend.test.js`,
   `test/unit/actions/guides/legend-lifecycle.test.js`, and regression-scatterplot left-legend variant.
 

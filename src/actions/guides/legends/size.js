@@ -21,6 +21,20 @@ import {
 
 const SIZE_OPTIONS = Object.freeze(["target", "count"]);
 
+export const SIZE_LEGEND_LABELS = Object.freeze({
+  offset: 28,
+  color: DEFAULT_COLORS.text,
+  fontSize: 12,
+  fontFamily: DEFAULT_FONT_FAMILY,
+  fontWeight: "normal"
+});
+export const SIZE_LEGEND_TITLE_STYLE = Object.freeze({
+  color: DEFAULT_COLORS.strongText,
+  fontSize: 13,
+  fontFamily: DEFAULT_FONT_FAMILY,
+  fontWeight: 600
+});
+
 export function isSizeLegendPoint(layer) {
   return layer?.mark?.type === "point" &&
     layer.encoding?.size?.scale !== undefined;
@@ -82,8 +96,11 @@ export const rematerializeSizeLegend = action(
       domain: scale.domain
     };
     const plot = bounds(this);
-    const categorical = this.guideConfigs.legend?.series ??
-      this.guideConfigs.legend?.color;
+    const categorical = [this.guideConfigs.legend?.series, this.guideConfigs.legend?.color]
+      .find(candidate => candidate?.target === config.target);
+    const inherit = currentConfig.inheritAppearance === true && categorical !== undefined;
+    const labels = inherit ? categorical.labels : currentConfig.labels ?? SIZE_LEGEND_LABELS;
+    const titleStyle = inherit ? categorical.titleStyle : currentConfig.titleStyle ?? SIZE_LEGEND_TITLE_STYLE;
     const leftLayout = categorical?.position === "left"
       ? resolveCategoricalLayout(this, categorical).size
       : undefined;
@@ -97,7 +114,7 @@ export const rematerializeSizeLegend = action(
     const itemY = leftLayout?.itemY ??
       values.map((_, index) => titleY + 34 + index * 40);
     const symbolX = leftLayout?.symbolX ?? values.map(() => originX + 16);
-    const labelX = leftLayout?.labelX ?? values.map(() => originX + 44);
+    const labelX = leftLayout?.labelX ?? values.map(() => originX + 16 + (inherit ? 28 : labels.offset));
     let next = this
       .editSemantic({ property: "guide.legend.size.scale", value: encoding.scale })
       .editSemantic({ property: "guide.legend.size.title", value: title })
@@ -123,34 +140,14 @@ export const rematerializeSizeLegend = action(
         target: "sizeLegendLabels",
         property: "text",
         value: formatContinuousValues(values, scale.domain, "quantitative")
-      })
+      });
+    next = styleContinuousText(next, "sizeLegendLabels", labels);
+    if (currentConfig.titleVisible === false) return next;
+    next = next
       .editGraphics({ target: "sizeLegendTitle", property: "x", value: originX })
       .editGraphics({ target: "sizeLegendTitle", property: "y", value: titleY })
       .editGraphics({ target: "sizeLegendTitle", property: "text", value: title });
-    next = styleContinuousText(
-      next,
-      "sizeLegendLabels",
-      currentConfig.inheritAppearance === true
-        ? categorical.labels
-        : {
-            color: DEFAULT_COLORS.text,
-            fontSize: 12,
-            fontFamily: DEFAULT_FONT_FAMILY,
-            fontWeight: "normal"
-          }
-    );
-    return styleContinuousText(
-      next,
-      "sizeLegendTitle",
-      currentConfig.inheritAppearance === true
-        ? categorical.titleStyle
-        : {
-            color: DEFAULT_COLORS.strongText,
-            fontSize: 13,
-            fontFamily: DEFAULT_FONT_FAMILY,
-            fontWeight: 600
-          }
-    );
+    return styleContinuousText(next, "sizeLegendTitle", titleStyle);
   }
 );
 
@@ -175,7 +172,10 @@ export function resolveSizeLegendConfig(program, args = {}) {
     inferredTitle: true,
     domain: scale.domain,
     count,
-    inheritAppearance: args.inheritAppearance === true
+    inheritAppearance: args.inheritAppearance === true,
+    labels: { ...SIZE_LEGEND_LABELS },
+    titleStyle: { ...SIZE_LEGEND_TITLE_STYLE },
+    titleVisible: true
   };
 }
 

@@ -83,7 +83,8 @@ function resolveLeftSizeMetrics(program, sizeConfig) {
 }
 
 function resolveLeftLayout(program, bounds, canvas, config, width, count) {
-  const sizeConfig = program.guideConfigs.legend?.size;
+  const storedSize = program.guideConfigs.legend?.size;
+  const sizeConfig = storedSize?.target === config.target ? storedSize : undefined;
   const size = resolveLeftSizeMetrics(program, sizeConfig);
   const padding = config.border === false ? 0 : config.border.padding;
   const categoricalWidth = config.domain.reduce((maximum, value) => Math.max(

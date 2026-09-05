@@ -31,8 +31,27 @@ stored semantic title. Gradient and opacity legends accept only their
 kind-compatible options. A horizontal opacity legend can switch to
 `titlePosition: "left"`; unless spacing is supplied in the same edit, the
 inline mode selects its 8-pixel symbol-label and 20-pixel sample defaults.
-Right-side stroke-width legends accept only `title`,
-`count`, `labels`, and `titleStyle`.
+Standalone size and stroke-width legends accept only `title`, `count`, `labels`,
+and `titleStyle` and keep their existing right-side placement. On a Full program
+with an existing standalone size legend, this fragment edits its sampled content:
+
+```javascript
+const edited = program.editLegend({
+  count: 3,
+  title: "Mass",
+  labels: { color: "#123456", fontWeight: 700 },
+  titleStyle: { color: "#654321" }
+});
+const restored = edited.editLegendTitle({ title: false })
+  .editLegendTitle({ title: "auto" });
+```
+
+Size samples retain the encoded area mapping. Count must be an integer from 2
+through 10,000. Size labels use a default offset of 28 pixels from the sample
+center, editable through `labels: { offset }`; title styles do not accept an
+offset. Defaults remain size 12/normal for labels and size 13/600 for titles.
+Partial styles and title visibility survive Canvas, scale and data updates.
+Basic supports size legend creation; these editing actions require Full.
 
 ## Focused edits
 

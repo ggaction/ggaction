@@ -1734,8 +1734,10 @@ with `"scale"`; linked position changes also refresh its item order. `title` acc
 `"auto"`, or `false`; semantic channel bindings cannot be edited. A
 horizontal sampled-opacity legend accepts `titlePosition: "left"` and inline
 spacing edits. A
-stroke-width legend accepts the bounded `title`, `count`, `labels`, and
-`titleStyle` subset and remains right-positioned.
+standalone size or stroke-width legend accepts the bounded `title`, `count`,
+`labels`, and `titleStyle` subset and remains right-positioned. Count and text
+styles persist through Canvas/scale/data replay; `false` hides a title and
+`"auto"` restores it from the encoded field.
 [Legends](../api/legends.md)
 
 ### Focused legend edits

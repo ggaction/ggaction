@@ -1567,8 +1567,8 @@
         "removing-a-legend",
         "related"
       ],
-      "bytes": 4416,
-      "sha256": "28089c100baff594872f6bc509c24f0f43740e8b93c6cd03815570dd3713f22a"
+      "bytes": 5300,
+      "sha256": "b8eb5338b5655ceec8740322ef1a4f0eddbdd32e1fb77eedbbd608f7b3be14a5"
     },
     {
       "order": 100,
@@ -2002,8 +2002,8 @@
         "removetitle",
         "related"
       ],
-      "bytes": 11090,
-      "sha256": "812d98bb56fc33d17b22e6a69a20bd0a5610c7511008f28cb21fdd396d458608"
+      "bytes": 11244,
+      "sha256": "175689426d8f2f4d73a7f6117e9b3971ed95b08dd92e6431723ca68c6c587eed"
     },
     {
       "order": 120,

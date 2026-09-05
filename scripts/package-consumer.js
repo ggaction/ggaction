@@ -476,6 +476,16 @@ async function testNodeConsumer(directory) {
         "encodeColor"
       ]
     );
+    const editedSizeLegend = chart().createCanvas({ width: 640, height: 420, margin: { right: 180 } })
+      .createData({ values: [{ x: 1, y: 2, m: 10 }, { x: 2, y: 3, m: 30 }] })
+      .createPointMark().encodeX({ field: "x" }).encodeY({ field: "y" })
+      .encodeSize({ field: "m", scale: { range: [4 * Math.PI, 36 * Math.PI] } })
+      .createLegend({ channels: ["size"] }).editLegend({ count: 3, title: "Mass", labels: { fontWeight: 700 } });
+    assert.deepEqual(editedSizeLegend.graphicSpec.objects.sizeLegendSymbols.items.map(item => item.properties.radius),
+      [2, Math.sqrt(20), 6]);
+    const hiddenSizeLegend = editedSizeLegend.editLegendTitle({ title: false }).editCanvas({ width: 740 });
+    assert.equal(hiddenSizeLegend.graphicSpec.objects.sizeLegendTitle, undefined);
+    assert.equal(hiddenSizeLegend.editLegendTitle({ title: "auto" }).graphicSpec.objects.sizeLegendTitle.properties.text, "m");
     const gradientPlotFacade = chart()
       .createCanvas({ width: 180, height: 140, margin: 20 })
       .createData({ values: [
@@ -1457,6 +1467,11 @@ async function testTypeScriptConsumer(directory) {
     program.orderCategories({ channel: "theta", values: ["C"] }).removeCategoryOrder({ channel: "theta" });
     program.createLegend({ order: { channel: "theta" } }).editLegend({ order: "scale" });
     program.editLegend({ order: { values: ["C", 1, false] } });
+    program.editLegend({ count: 3, title: "Mass", labels: { offset: 28, fontWeight: 700 }, titleStyle: { color: "red" } })
+      .editLegendTitle({ title: false }).editLegendTitle({ title: "auto" }).editLegendSymbols({ count: 4 });
+    // @ts-expect-error sampled title style has no label offset
+    program.editLegend({ titleStyle: { offset: 20 } });
+
     // @ts-expect-error legend order policies are exclusive
     program.editLegend({ order: { channel: "theta", values: ["C"] } });
     // @ts-expect-error radius is not a categorical order channel

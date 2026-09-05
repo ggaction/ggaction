@@ -18,6 +18,7 @@ import { findLayer } from "../../../selectors/layers.js";
 import { resolveLegendGraphicPlacement } from
   "../../../materialization/graphicHierarchy.js";
 import { resolveLegendTarget } from "./target.js";
+import { SIZE_LEGEND_LABELS, SIZE_LEGEND_TITLE_STYLE } from "./size.js";
 import {
   STROKE_WIDTH_LEGEND_LABELS,
   STROKE_WIDTH_LEGEND_TITLE_STYLE
@@ -184,20 +185,26 @@ function editInterval(program, previous, args) {
   return next.rematerializeLegend();
 }
 
-function editStrokeWidth(program, previous, args) {
+function editSampledLegend(program, kind, previous, args) {
+  const size = kind === "size";
+  const label = size ? "size" : "stroke-width";
+  const prefix = size ? "sizeLegend" : "strokeWidthLegend";
   const allowed = ["target", "title", "count", "labels", "titleStyle"];
   for (const key of Object.keys(args)) {
     if (!allowed.includes(key)) {
-      throw new Error(`stroke-width legend does not accept ${key}.`);
+      throw new Error(`${label} legend does not accept ${key}.`);
     }
+  }
+  if (args.titleStyle !== undefined) {
+    validateOptionObject(args.titleStyle, ["color", "fontSize", "fontFamily", "fontWeight"], "editLegend.titleStyle");
   }
   const count = args.count ?? previous.count;
   if (!Number.isInteger(count) || count < 2) {
     throw new RangeError(
-      "Stroke-width legend count must be an integer of at least 2."
+      `${label} legend count must be an integer of at least 2.`
     );
   }
-  validateGeneratedItemLimit(count, "Stroke-width legend count");
+  validateGeneratedItemLimit(count, `${label} legend count`);
   const layer = findLayer(program, previous.target);
   const titleMode = args.title;
   const inferredTitle = titleMode === "auto"
@@ -207,7 +214,7 @@ function editStrokeWidth(program, previous, args) {
     ? false
     : titleMode === undefined ? previous.titleVisible !== false : true;
   const title = titleMode === "auto"
-    ? layer?.encoding?.strokeWidth?.field
+    ? layer?.encoding?.[kind]?.field
     : typeof titleMode === "string" ? titleMode : previous.title;
   const config = {
     ...previous,
@@ -215,26 +222,27 @@ function editStrokeWidth(program, previous, args) {
     inferredTitle,
     titleVisible,
     count,
+    ...(size ? { inheritAppearance: false } : {}),
     labels: normalizeLegendTextOptions(
       args.labels,
       "editLegend.labels",
-      previous.labels ?? STROKE_WIDTH_LEGEND_LABELS
+      previous.labels ?? (size ? SIZE_LEGEND_LABELS : STROKE_WIDTH_LEGEND_LABELS)
     ),
     titleStyle: normalizeLegendTextOptions(
       args.titleStyle,
       "editLegend.titleStyle",
-      previous.titleStyle ?? STROKE_WIDTH_LEGEND_TITLE_STYLE
+      previous.titleStyle ?? (size ? SIZE_LEGEND_TITLE_STYLE : STROKE_WIDTH_LEGEND_TITLE_STYLE)
     )
   };
   let next = program;
   if (titleMode === "auto" || typeof titleMode === "string") {
     next = next.editSemantic({
-      property: "guide.legend.strokeWidth.title",
+      property: `guide.legend.${kind}.title`,
       value: title
     });
   }
-  next = next._withLegendConfig("strokeWidth", config);
-  next = reconcileGraphic(next, "strokeWidthLegendTitle", titleVisible, {
+  next = next._withLegendConfig(kind, config);
+  next = reconcileGraphic(next, `${prefix}Title`, titleVisible, {
     type: "text"
   });
   return next.rematerializeLegend();
@@ -379,7 +387,10 @@ export const editLegend = action(
       return editInterval(this, configs.interval, args);
     }
     if (configs.strokeWidth?.target === target) {
-      return editStrokeWidth(this, configs.strokeWidth, args);
+      return editSampledLegend(this, "strokeWidth", configs.strokeWidth, args);
+    }
+    if (configs.size?.target === target) {
+      return editSampledLegend(this, "size", configs.size, args);
     }
     const continuousKind = ["gradient", "opacity"].find(
       kind => configs[kind]?.target === target

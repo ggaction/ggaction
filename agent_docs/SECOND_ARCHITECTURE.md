@@ -1729,6 +1729,8 @@ current Canvas/scale dependency plan에 남긴다. 마지막 component가 사라
 semantic/config branch까지 정리한다. Scale, coordinate, mark encoding과 source data는 component lifecycle의 소유물이
 아니므로 보존한다.
 
+Standalone size/stroke-width의 sampled content editor는 count·title mode·partial typography를 공통 검증하고 각 family의 immutable guide config에 저장한다. Size materializer는 같은 target의 categorical block만 상속하며 다른 target에서 style/geometry를 읽지 않는다. Family별 size-area/line-width geometry와 scale mapping은 각 materializer에 유지한다. 정확한 범위는 `contract/current/LEGEND_AND_TITLE.md`를 따른다.
+
 Parallel axis의 semantic owner는 target/coordinate/scales와 explicit field/title 배열을 저장한다. Field별 component style/tick/visibility recipe와 all/selected 생성 범위는 private guide config가 소유한다. Field 이름은 object key로 쓰지 않는다. Public field lifecycle은 `actions/guides/axes/parallel/lifecycle.js`, 순수 옵션 정책은 `policy.js`, geometry는 `resolve.js`, wrapped concrete reconciliation은 `parallel.js`가 소유한다. 정확한 옵션과 lifecycle은 `contract/current/AXES.md`를 따른다. Layer-data plan은 모든 소비 scale을 먼저 해결한 line에 `scales:false`를 전달하여 guide 재계산이 mark 내부와 guide stage에서 중복되지 않도록 한다.
 
 Parallel axis는 dimension마다 axis line, ticks, labels와 title을 만들고 dimension scale을 독립적으로
