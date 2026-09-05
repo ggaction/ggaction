@@ -47,6 +47,8 @@
   "editRuleMark": "/reference/actions/marks/#editrulemark",
   "createRectMark": "/reference/actions/marks/#createrectmark",
   "editRectMark": "/reference/actions/marks/#editrectmark",
+  "createReferenceLine": "/reference/actions/marks/#createreferenceline",
+  "createReferenceBand": "/reference/actions/marks/#createreferenceband",
   "createMarkLabels": "/reference/actions/marks/#createmarklabels",
   "createTextMark": "/reference/actions/marks/#createtextmark",
   "editTextMark": "/reference/actions/marks/#edittextmark",

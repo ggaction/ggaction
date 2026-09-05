@@ -74,6 +74,8 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createRadialBarPlot`](./actions/charts-data.md#createradialbarplot) | user-facing | charts |
 | [`createRadialGrid`](./actions/guides.md#createradialgrid) | user-facing | grid |
 | [`createRectMark`](./actions/marks.md#createrectmark) | user-facing | marks |
+| [`createReferenceBand`](./actions/marks.md#createreferenceband) | user-facing | marks |
+| [`createReferenceLine`](./actions/marks.md#createreferenceline) | user-facing | marks |
 | [`createRegression`](./actions/statistics.md#createregression) | user-facing | statistics |
 | [`createRegressionBand`](./actions/advanced.md#semantic-resources-and-regression-layers) | user-facing | statistics |
 | [`createRegressionData`](./actions/charts-data.md#createregressiondata) | user-facing | core |

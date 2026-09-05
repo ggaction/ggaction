@@ -45,6 +45,8 @@
     "IntervalData": ["confidence interval data", "summary interval"],
     "PointMark": ["point mark", "scatter point"],
     "TickMark": ["tick mark", "one-dimensional distribution"],
+    "ReferenceLine": ["reference line", "threshold", "target line", "constant line"],
+    "ReferenceBand": ["reference band", "target interval", "shaded range", "plot fraction"],
     "MarkLabels": ["mark labels", "final-item values", "pie percentages", "bar value labels"],
     "TextMark": ["text label", "annotation mark"],
     "Text": ["text content", "data-driven labels"],
@@ -173,6 +175,8 @@
     "editGraphics": "Sets a concrete graphic property or removes a top-level graphic resource inside an extension action."
   },
   "sampleOverrides": {
+    "createReferenceLine": { "y": 5 },
+    "createReferenceBand": { "x": [2, 6] },
     "editLegend": { "channels": ["color", "size"], "count": 3 },
     "encodeR": { "field": "value" },
     "createAreaPlot": { "x": "time", "y": "value" },
@@ -288,6 +292,8 @@
     "encodeText": { "field": "label" }
   },
   "callPatternOverrides": {
+    "createReferenceLine": ["createReferenceLine({ y: 5 })", "createReferenceLine({ space: \"plot\", x: 0.5 })"],
+    "createReferenceBand": ["createReferenceBand({ x: [2, 6] })", "createReferenceBand({ space: \"plot\", y: [0.2, 0.8] })"],
     "createMarkLabels": ["createMarkLabels()", "createMarkLabels({ source?, content: \"share\", format: \".0%\", layout? })"],
     "createAreaPlot": ["createAreaPlot({ x, y })", "createAreaPlot({ x, y, groupBy, layout })"],
     "layoutSeries": ["layoutSeries({ mode })"],

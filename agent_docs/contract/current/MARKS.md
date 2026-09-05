@@ -603,6 +603,66 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
   rematerialization, and earlier-program immutability.
 - Evidence: `test/unit/actions/marks/rect-mark.test.js`.
 
+## `createReferenceLine`
+
+- Signature: `createReferenceLine({ id?, x?, y?, space?, source?, data?, coordinate?, temporalUnit?, stroke?, strokeWidth?, strokeDash?, opacity? })`.
+- Aggregate create-only. 정확히 한 x/y 상수로 한 Rule을 만들고 반대 축 전체 plot bounds를 잇는다.
+  문자열은 field 이름이 아닌 literal datum이다. Source의 선택 축 scale/coordinate/data/fieldType/temporalUnit을
+  사용한다. Data space가 기본이며 explicit source → current eligible → unique eligible Cartesian layer 순이다.
+  선택 축 encoding/scale이 없는 source와 polar/parallel source는 제외한다. 모호하면 명시적 source가 필요하다.
+- `space: "plot"`는 finite [0,1]만 허용한다. x=0은 왼쪽, y=0은 아래쪽. 기존 data는 explicit/current/unique
+  규칙을 사용하고 빈 data도 허용한다. Coordinate는 하위 Cartesian encoder의 추론을 따른다.
+  `<id>-<axis>` linear scale, domain=[0,1], range=auto를 기존 createScale로 만든다. 동일 definition 재사용,
+  다른 definition 충돌 규칙도 그대로 따른다. Plot space의 source/temporalUnit과 data space의 data/coordinate는 오류다.
+- Data space의 temporalUnit은 source 기본값을 명시적으로 override할 수 있다. 참조 datum도 자동 도메인에
+  기여한다. Source 도메인을 동결하거나 복제하지 않으며 explicit domain을 사용하면 범위를 고정할 수 있다.
+- 기본 ID=`referenceLine`, stroke=#64748b, strokeWidth=1, strokeDash=dashed, opacity=1. 추가 unnamed role은 오류다.
+  스타일은 RuleStyleOptions의 기존 검증과 하위 appearance encoders를 따른다.
+- 전체 하위 chain 사전 검증 후 createScale(plot only), createRuleMark, encodeX 또는 encodeY를 wrapped children으로 실행한다.
+  새 dataset·종속 source link·전용 registry를 만들지 않는다. Source를 나중에 다른 scale로 rebind하거나 제거해도
+  참조는 유지된다. 기존 공유 scale의 편집은 참조를 rematerialize한다. Canvas/margin 편집도 span을 다시 계산한다.
+- 편집은 encodeX/Y/X2/Y2, editRuleMark, editScale, removeMark. 라벨은 createMarkLabels의 explicit value/field로 붙인다.
+  removeMark는 label children을 제거하지만 일반 named scale은 유지한다. 편집한 plot scale이 원래 정의와 달라지면
+  같은 ID로 재생성할 때 충돌한다. Full API 전용이며 Basic에는 없다.
+
+### Formal values — `createReferenceLine`
+
+- Implemented: `createReferenceLine(options: CreateReferenceLineOptions)`; exclusive axis, data datum은 lower position datum,
+  plot datum은 UnitInterval, IDs는 UserId, temporalUnit은 auto/year/timestamp, style은 RuleStyleOptions.
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `createReferenceLine`
+
+- ✅ Covered: source inference/ambiguity, empty data, scalar/category/year/timestamp, domain contribution, log/reverse,
+  lower-chain trace, immutable errors, resize, labels, removal/recreation, styles, types, Full/Basic boundaries and PNG parity.
+- Evidence: `test/unit/actions/marks/references.test.js`, `test/contracts/reference-marks.test.js`,
+  `test/contracts/text-content-types.test.js`, `test/browser/package-consumer.browser.js`.
+
+## `createReferenceBand`
+
+- Signature: `createReferenceBand({ id?, x?, y?, space?, source?, data?, coordinate?, temporalUnit?, fill?, opacity?, stroke?, strokeWidth? })`.
+- createReferenceLine의 coordinate/data/source/scale/ID 충돌과 생명주기 규칙을 공유한다. 정확히 하나의
+  x:[lower,upper] 또는 y:[lower,upper]를 받으며 data source는 quantitative/temporal 축만 가능하다.
+  Plot endpoints는 각각 finite [0,1]. 뒤집힌 endpoint는 양의 Rect bounds, 같은 endpoint는 빈 collection이다.
+- 기본 ID=`referenceBand`, fill=#94a3b8, opacity=.15, stroke=false. strokeWidth만 주면 false와 충돌하므로 색도 명시한다.
+  스타일은 RectMarkOptions를 따른다. createScale(plot only), createRectMark, primary encodeX/Y, secondary encodeX2/Y2로
+  내려간다. 하위 primary/secondary 전부 사전 검증하므로 두 번째 endpoint가 잘못되어도 partial trace가 없다.
+- 위치/스타일/스케일/삭제는 기존 하위 액션이 소유한다. 한 쌍은 반대 축의 현재 plot bounds를 가득 채운다.
+  상수-only Rect grain, selection membership, labels, highlights, resize 및 scale replay는 Rect와 같다.
+
+### Formal values — `createReferenceBand`
+
+- Implemented: `createReferenceBand(options: CreateReferenceBandOptions)`; exclusive two-value axis tuple,
+  data는 quantitative/temporal datum pair, plot은 UnitInterval pair. Style은 RectMarkOptions, binding은 위 shared rules.
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `createReferenceBand`
+
+- ✅ Covered: both axes, data/plot, zero/reversed extent, exact two endpoints, invalid second endpoint atomicity,
+  categorical rejection, time/log/reverse, row independence, resize, lower-chain parity, highlighting, styles and PNG.
+- Evidence: `test/unit/actions/marks/references.test.js`, `test/contracts/reference-marks.test.js`,
+  `test/contracts/text-content-types.test.js`, `test/browser/package-consumer.browser.js`.
+
 ## `createMarkLabels`
 
 - Signature: `createMarkLabels({ id?, source?, field?, value?, content?, normalizeBy?, format?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy?, layout? } = {})`.

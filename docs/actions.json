@@ -3,7 +3,7 @@
   "packageVersion": "0.0.12",
   "typeSource": "types/program.d.ts",
   "errorPolicy": "An empty errors array means the compact card has no curated error override; consult the canonical route for validation, inference, and recovery behavior.",
-  "count": 195,
+  "count": 197,
   "cards": [
     {
       "schemaVersion": 2,
@@ -919,6 +919,208 @@
       "snippet": "program.createTickMark({})",
       "errors": [],
       "route": "/reference/actions/marks/#createtickmark"
+    },
+    {
+      "schemaVersion": 2,
+      "name": "createReferenceLine",
+      "layer": "user-facing",
+      "domain": "marks",
+      "summary": "Create one constant Rule spanning the other plot axis.",
+      "signature": "createReferenceLine(options: CreateReferenceLineOptions): ChartProgram;",
+      "intents": [
+        "create reference line",
+        "create",
+        "add",
+        "graphical mark",
+        "mark appearance",
+        "reference line",
+        "threshold"
+      ],
+      "lifecycle": "Aggregate create-only",
+      "resources": {
+        "prerequisites": [
+          "dataset and coordinate context"
+        ],
+        "owns": [
+          "reference line"
+        ],
+        "idOptions": [
+          "id",
+          "source",
+          "data",
+          "coordinate"
+        ]
+      },
+      "options": [
+        {
+          "name": "id",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "stroke",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "strokeWidth",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "strokeDash",
+          "required": false,
+          "type": "DashPattern | DashStyle | undefined"
+        },
+        {
+          "name": "opacity",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "space",
+          "required": false,
+          "type": "\"data\" | \"plot\" | undefined"
+        },
+        {
+          "name": "source",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "temporalUnit",
+          "required": false,
+          "type": "TemporalInputUnit | undefined"
+        },
+        {
+          "name": "data",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "coordinate",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "x",
+          "required": false,
+          "type": "unknown"
+        },
+        {
+          "name": "y",
+          "required": false,
+          "type": "unknown"
+        }
+      ],
+      "callPatterns": [
+        "createReferenceLine({ y: 5 })",
+        "createReferenceLine({ space: \"plot\", x: 0.5 })"
+      ],
+      "snippet": "program.createReferenceLine({ y: 5 })",
+      "errors": [],
+      "route": "/reference/actions/marks/#createreferenceline"
+    },
+    {
+      "schemaVersion": 2,
+      "name": "createReferenceBand",
+      "layer": "user-facing",
+      "domain": "marks",
+      "summary": "Create one constant Rect spanning the other plot axis.",
+      "signature": "createReferenceBand(options: CreateReferenceBandOptions): ChartProgram;",
+      "intents": [
+        "create reference band",
+        "create",
+        "add",
+        "graphical mark",
+        "mark appearance",
+        "reference band",
+        "target interval"
+      ],
+      "lifecycle": "Aggregate create-only",
+      "resources": {
+        "prerequisites": [
+          "dataset and coordinate context"
+        ],
+        "owns": [
+          "reference band"
+        ],
+        "idOptions": [
+          "id",
+          "source",
+          "data",
+          "coordinate"
+        ]
+      },
+      "options": [
+        {
+          "name": "id",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "fill",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "opacity",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "stroke",
+          "required": false,
+          "type": "string | false | undefined"
+        },
+        {
+          "name": "strokeWidth",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "space",
+          "required": false,
+          "type": "\"data\" | \"plot\" | undefined"
+        },
+        {
+          "name": "source",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "temporalUnit",
+          "required": false,
+          "type": "TemporalInputUnit | undefined"
+        },
+        {
+          "name": "data",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "coordinate",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "x",
+          "required": false,
+          "type": "readonly [unknown, unknown] | readonly [number, number] | undefined"
+        },
+        {
+          "name": "y",
+          "required": false,
+          "type": "readonly [unknown, unknown] | readonly [number, number] | undefined"
+        }
+      ],
+      "callPatterns": [
+        "createReferenceBand({ x: [2, 6] })",
+        "createReferenceBand({ space: \"plot\", y: [0.2, 0.8] })"
+      ],
+      "snippet": "program.createReferenceBand({ x: [2, 6] })",
+      "errors": [],
+      "route": "/reference/actions/marks/#createreferenceband"
     },
     {
       "schemaVersion": 2,

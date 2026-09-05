@@ -1,4 +1,5 @@
 import { removeMark } from "./remove.js";
+import { createReferenceLine, createReferenceBand } from "./references.js";
 import { registerRuleMarkActions } from "./rule/index.js";
 import { registerAreaMarkActions } from "./area/index.js";
 import { registerTickMarkActions } from "./tick/index.js";
@@ -24,4 +25,6 @@ export function registerMarkActions(ProgramClass) {
   registerTextMarkActions(ProgramClass);
   registerTickMarkActions(ProgramClass);
   ProgramClass.prototype.removeMark = removeMark;
+  ProgramClass.prototype.createReferenceLine = createReferenceLine;
+  ProgramClass.prototype.createReferenceBand = createReferenceBand;
 }

@@ -943,6 +943,13 @@ async function testNodeConsumer(directory) {
       .encodeX({ datum: 2, scale: { domain: [0, 10] } }).encodeX2({ datum: 6 });
     assert.equal(referenceRect.graphicSpec.objects.rect.items.length, 1);
     assert.equal(referenceRect.editCanvas({ height: 400 }).graphicSpec.objects.rect.items[0].properties.height, 320);
+    const referenceFacades = chart().createCanvas({ width: 480, height: 320, margin: 40 })
+      .createData({ values: [] }).createReferenceBand({ space: "plot", x: [0.2, 0.6] })
+      .createReferenceLine({ space: "plot", y: 0.5 });
+    assert.equal(referenceFacades.graphicSpec.objects.referenceBand.items[0].properties.width, 160);
+    assert.equal(referenceFacades.graphicSpec.objects.referenceLine.items[0].properties.y1, 160);
+    assert.equal(referenceFacades.semanticSpec.datasets.length, 1);
+    assert.equal(referenceFacades.semanticSpec.datasets[0].values.length, 0);
     assert.equal(referenceRect.createMarkLabels({ value: "Range" }).graphicSpec.objects["rect-labels"].items[0].properties.text, "Range");
 
     const semanticLabels = chart().createCanvas({ width: 480, height: 360, margin: 50 })
@@ -2204,6 +2211,10 @@ async function testTypeScriptConsumer(directory) {
 
     chart().createRectMark().encodeX({ datum: 2 }).encodeX2({ datum: 6 });
     chart().createRectMark().encodeY({ datum: "2020-01-01", fieldType: "temporal" }).encodeY2({ datum: "2020-01-03" });
+    chart().createReferenceLine({ y: 5 });
+    chart().createReferenceBand({ space: "plot", x: [0.2, 0.6] });
+    // @ts-expect-error Plot reference coordinates are numeric.
+    chart().createReferenceLine({ space: "plot", x: "0.5" });
     chart().createMarkLabels();
     chart().createMarkLabels({ source: "bars", content: "share", format: ".0%", layout: { axis: "y" } });
     // @ts-expect-error The facade retains exclusive text branches.

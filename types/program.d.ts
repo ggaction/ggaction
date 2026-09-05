@@ -2537,6 +2537,18 @@ export interface RuleStyleOptions {
   opacity?: number;
 }
 
+type ReferenceAxis<Value> = { x: Value; y?: never } | { y: Value; x?: never };
+type ReferenceBinding<DataValue, PlotValue> =
+  | ({ space?: "data"; source?: string; temporalUnit?: TemporalInputUnit;
+       data?: never; coordinate?: never } & ReferenceAxis<DataValue>)
+  | ({ space: "plot"; data?: string; coordinate?: string;
+       source?: never; temporalUnit?: never } & ReferenceAxis<PlotValue>);
+
+export type CreateReferenceLineOptions = { id?: string } & RuleStyleOptions &
+  ReferenceBinding<unknown, number>;
+export type CreateReferenceBandOptions = Omit<RectMarkOptions, "data"> &
+  ReferenceBinding<readonly [unknown, unknown], readonly [number, number]>;
+
 export type StrokeWidthEncodingOptions =
   | {
       value: number;
@@ -3018,6 +3030,8 @@ export class ChartProgram {
   editRuleMark(options: { target?: string } & RuleStyleOptions): ChartProgram;
   createTextMark(options?: TextMarkOptions): ChartProgram;
   createMarkLabels(options?: CreateMarkLabelsOptions): ChartProgram;
+  createReferenceLine(options: CreateReferenceLineOptions): ChartProgram;
+  createReferenceBand(options: CreateReferenceBandOptions): ChartProgram;
   editTextMark(options: EditTextMarkOptions): ChartProgram;
   layoutLabels(options?: LabelLayoutOptions): ChartProgram;
   removeLabelLayout(options?: RemoveLabelLayoutOptions): ChartProgram;

@@ -250,6 +250,8 @@ export type {
   TextFormat,
   TextMarkOptions,
   CreateMarkLabelsOptions,
+  CreateReferenceLineOptions,
+  CreateReferenceBandOptions,
   XAxisPosition,
   YAxisPosition,
   WindowDataOptions,

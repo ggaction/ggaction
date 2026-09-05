@@ -836,8 +836,8 @@
         "tick-marks",
         "related"
       ],
-      "bytes": 5019,
-      "sha256": "19c02cff3a57f5d0f06f3f77bc3213bd040f9c7441c34ddf9a5d3d49b452d1a7"
+      "bytes": 5151,
+      "sha256": "7659dfbb1800d3d3d66a59d7da08ed5fda4cca28d6fa7aa42730a4c2860694f5"
     },
     {
       "order": 55,
@@ -900,10 +900,11 @@
       "headings": [
         "rule-marks",
         "createrulemark-id-data",
+        "reference-lines-and-bands",
         "related"
       ],
-      "bytes": 2436,
-      "sha256": "238ab7298184480bf050881e2d9e6d6de58082e32287b5fd3efa672161184afb"
+      "bytes": 4020,
+      "sha256": "ca111b5001f07b8548e6a9845d77fe6c2331ee2879fae491f1cbaac895f93d48"
     },
     {
       "order": 59,
@@ -1805,8 +1806,8 @@
         "action-reference",
         "exact-action-lookup"
       ],
-      "bytes": 21070,
-      "sha256": "21a9f0f76b68f419803d497ea7be72631459f989556c6e7efee567685feba764"
+      "bytes": 21266,
+      "sha256": "e335f186337d4f308f35d74887bc16a742b5249ab81a100604ee7adbe9aaac69"
     },
     {
       "order": 115,
@@ -1875,6 +1876,8 @@
         "editrulemark",
         "createrectmark",
         "editrectmark",
+        "createreferenceline",
+        "createreferenceband",
         "createmarklabels",
         "createtextmark",
         "edittextmark",
@@ -1883,8 +1886,8 @@
         "position-capability-matrix",
         "related"
       ],
-      "bytes": 9837,
-      "sha256": "78cd2f4f5ad182f5afdcb11e6256905985703c3e601b0baefbfac0cb702a7bbf"
+      "bytes": 12530,
+      "sha256": "7060e14d900cdb3a1b43890c19b6423ae325fb6f2c0a4106a4a46057595f09b6"
     },
     {
       "order": 117,
@@ -2073,8 +2076,8 @@
         "exact-typescript-signatures",
         "related"
       ],
-      "bytes": 15836,
-      "sha256": "5d66ac054a701c31d53688e3705b9a6f70610022760defae2cb882c2b432d0e6"
+      "bytes": 15984,
+      "sha256": "57d69189025ce04641bdfb0c6b8fd81d9d849b9815c48b1b42bc192b541499fb"
     },
     {
       "order": 124,

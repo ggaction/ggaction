@@ -16,13 +16,33 @@ test("text content and precision types match their runtime vocabularies", async 
     const paddedCalls = [...Array(10).keys()].flatMap(precision => ["f", "%"].map(suffix =>
       `p.encodeText({ value: 0.125, format: ".0${precision}${suffix}" });`));
     await writeFile(file, `
-import type { ChartProgram, TextEncodingOptions, CreateMarkLabelsOptions } from ${JSON.stringify(path.join(root, "types/index.js"))};
+import type { ChartProgram, TextEncodingOptions, CreateMarkLabelsOptions, CreateReferenceLineOptions, CreateReferenceBandOptions } from ${JSON.stringify(path.join(root, "types/index.js"))};
 declare const p: ChartProgram;
 const shared: TextEncodingOptions = { content: "share", normalizeBy: "category", format: ".1%" };
 p.encodeText(shared);
 const labels: CreateMarkLabelsOptions = { source: "bars", content: "share", normalizeBy: "category", layout: { axis: "y" } };
 p.createMarkLabels(labels);
 p.createMarkLabels();
+const referenceLine: CreateReferenceLineOptions = { y: 5, source: "bars" };
+const referenceBand: CreateReferenceBandOptions = { space: "plot", x: [0.2, 0.6] };
+p.createReferenceLine(referenceLine);
+p.createReferenceBand(referenceBand);
+p.createReferenceLine({ x: "2021-01-01", temporalUnit: "timestamp" });
+// @ts-expect-error Exactly one position is required.
+p.createReferenceLine({});
+// @ts-expect-error Axes are exclusive.
+p.createReferenceLine({ x: 1, y: 2 });
+// @ts-expect-error Plot fractions are numeric.
+p.createReferenceLine({ space: "plot", x: "0.5" });
+// @ts-expect-error Plot coordinates do not bind a source.
+p.createReferenceBand({ space: "plot", x: [0.2, 0.6], source: "bars" });
+// @ts-expect-error Data coordinates inherit data from source.
+p.createReferenceLine({ y: 5, data: "data" });
+// @ts-expect-error An interval has exactly two values.
+p.createReferenceBand({ y: [1, 2, 3] });
+// @ts-expect-error Plot intervals are numeric.
+p.createReferenceBand({ space: "plot", y: ["1", 2] });
+
 p.createMarkLabels({});
 p.createMarkLabels({ field: "value", layout: false });
 p.createMarkLabels({ value: "constant", fontSize: 18 });

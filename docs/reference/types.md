@@ -54,6 +54,8 @@ interface ChartProgramActions {
   editRuleMark(options: { target?: string } & RuleStyleOptions): ChartProgram;
   createTextMark(options?: TextMarkOptions): ChartProgram;
   createMarkLabels(options?: CreateMarkLabelsOptions): ChartProgram;
+  createReferenceLine(options: CreateReferenceLineOptions): ChartProgram;
+  createReferenceBand(options: CreateReferenceBandOptions): ChartProgram;
   editTextMark(options: EditTextMarkOptions): ChartProgram;
   layoutLabels(options?: LabelLayoutOptions): ChartProgram;
   removeLabelLayout(options?: RemoveLabelLayoutOptions): ChartProgram;

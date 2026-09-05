@@ -64,6 +64,16 @@
     "layer": "user-facing",
     "domain": "marks"
   },
+  "createReferenceLine": {
+    "operation": "create",
+    "layer": "user-facing",
+    "domain": "marks"
+  },
+  "createReferenceBand": {
+    "operation": "create",
+    "layer": "user-facing",
+    "domain": "marks"
+  },
   "createMarkLabels": {
     "operation": "create",
     "layer": "user-facing",

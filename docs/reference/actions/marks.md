@@ -197,6 +197,45 @@ Edit rect appearance and rematerialize complete cells. Constant fill conflicts
 with field-driven color. `stroke: false` disables the outline.
 [Rect marks](../../api/marks/rect.md)
 
+## `createReferenceLine`
+
+```javascript
+createReferenceLine({ id?, x?, y?, space?, source?, data?, coordinate?, temporalUnit?, stroke?, strokeWidth?, strokeDash?, opacity? })
+```
+
+Create one constant Rule spanning the other plot axis. Exactly one `x` or `y` is required.
+Data space is the default: `source` resolves explicit, current eligible, then unique eligible Cartesian layer.
+It supplies data, coordinate, scale, field type, and temporal input unit. Strings are literal values.
+Reference constants participate in automatic domains; explicit domains preserve the requested extent.
+`temporalUnit` may override the source unit. `data` and `coordinate` are plot-space options only.
+
+With `space: "plot"`, the value must be a finite fraction in `[0,1]`: x runs left to right and y bottom to top.
+Existing `data` is explicit or inferred; empty data is supported. `coordinate` follows Cartesian encoding inference.
+Plot space rejects `source` and `temporalUnit`. A named `<id>-<axis>` linear scale has domain `[0,1]` and automatic range.
+An equivalent scale is reused; a conflicting definition fails. Named scales remain after mark removal.
+
+The default ID is `referenceLine`; a second line needs an explicit ID. Defaults: stroke `#64748b`, width `1`,
+dash `"dashed"`, opacity `1`. Lower `encodeX/Y`, `editRuleMark`, `editScale`, and `removeMark` own later changes.
+Source binding is selected at creation, so rebinding or removing the source does not rebind or remove the reference.
+The shared scale still drives both marks. Add text with `createMarkLabels({ source: id, value: "Target" })`.
+[Reference marks](../../api/marks/rule.md#reference-lines-and-bands)
+
+## `createReferenceBand`
+
+```javascript
+createReferenceBand({ id?, x?, y?, space?, source?, data?, coordinate?, temporalUnit?, fill?, opacity?, stroke?, strokeWidth? })
+```
+
+Create one constant Rect spanning the other plot axis. Exactly one `x: [lower, upper]` or `y: [lower, upper]`
+is required. Reversed endpoints produce positive bounds; equal endpoints produce no rectangle.
+It uses the same data/plot binding rules as `createReferenceLine`, but data-space bands require quantitative
+or temporal source positions. Plot endpoints must both be finite fractions in `[0,1]`.
+The default ID is `referenceBand`, fill `#94a3b8`, opacity `0.15`, and stroke `false`.
+To set `strokeWidth`, also provide a stroke color. Positions, appearance, scale, and removal remain editable through
+`encodeX/Y/X2/Y2`, `editRectMark`, `editScale`, and `removeMark`. No extra dataset is created, and no `editReferenceBand`
+is needed. Both reference facades are available in the full entry point.
+[Reference marks](../../api/marks/rule.md#reference-lines-and-bands)
+
 ## `createMarkLabels`
 
 ```javascript

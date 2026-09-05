@@ -247,7 +247,7 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Gzip ceiling |
 | --- | ---: |
-| `ggaction` | 256,000 bytes |
+| `ggaction` | 257,000 bytes |
 | `ggaction/basic` | 141,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 
@@ -1678,6 +1678,11 @@ registered text policy를 통해 concrete label을 다시 만든다.
 `createMarkLabels`는 source-owned text 생성·content encoding·optional collision layout을
 기존 wrapped child action으로 조합하는 create-only facade다. 독립 facade registry 없이
 text/source relation과 하위 config가 결과와 후속 편집을 소유한다.
+
+참조선·참조 구간 facade는 `actions/marks/references.js`에서 source binding을 선택한 뒤
+기존 Rule/Rect 생성과 position encoding을 조합한다. Data 좌표는 선택한 named scale을 공유하며,
+plot 비율은 명시적 [0,1] domain과 automatic range를 갖는 일반 named scale을 사용한다.
+별도 reference registry나 source-owned child 관계를 만들지 않고 기존 scale·mark lifecycle을 따른다.
 
 Collision-aware label layout은 semantic text position을 다시 author하지 않는다.
 `materializationConfigs.labelLayouts[target]`이 requested axis/padding/distance/bounds/leader policy와 latest

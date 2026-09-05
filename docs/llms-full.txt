@@ -4952,6 +4952,7 @@ each type infers its ID and current dataset when those choices are unambiguous.
 | Area | `createAreaMark` | `editAreaMark` | Closed path collection |
 | Arc | `createArcMark` | `editArcMark` | Closed sector path collection |
 | Bar | `createBarMark` | `editBarMark` | Rect collection |
+| Reference line / band | `createReferenceLine` / `createReferenceBand` | Rule/Rect and position encodings | Line/Rect collection |
 | Rule | `createRuleMark` | Encoding actions | Line collection |
 | Tick | `createTickMark` | `editTickMark` | Centered line collection |
 | Text | `createTextMark` | `editTextMark`, `layoutLabels`, `removeLabelLayout` | Text collection |
@@ -5404,16 +5405,19 @@ primitives without exposing a renderer-specific path format.
 ## `createRuleMark({ id?, data? } = {})`
 
 ```javascript
+import { chart } from "ggaction";
+
 const threshold = chart()
+  .createCanvas({ width: 480, height: 320, margin: 40 })
   .createData({ values: [{ limit: 25 }] })
   .createRuleMark()
-  .encodeY({ field: "limit" })
+  .encodeY({ field: "limit", fieldType: "quantitative" })
   .encodeStroke({ value: "#dc2626" })
   .encodeStrokeWidth({ value: 2 });
 ```
 
 The first ID is `"rule"`, data defaults to current data, and creation assigns no
-position or style. A single x or y encoding creates a full plot-span rule. Add
+position; the default appearance uses the theme mark color, width 2, a solid stroke, and opacity 1. A single x or y encoding creates a full plot-span rule. Add
 `encodeY2` for a bounded vertical interval, `encodeX2` for a bounded horizontal
 interval, or both secondary endpoints for a diagonal rule. Every endpoint may
 use a field or constant datum.
@@ -5447,6 +5451,35 @@ to one concrete width per rule item. Use `createLegend({ channels:
 Every complete rule stores concrete `x1`, `y1`, `x2`, and `y2` values. An
 incomplete endpoint combination remains empty until another encoding completes
 it. Canvas and scale changes recompute all endpoints.
+
+## Reference lines and bands
+
+Use reference facades to add a constant threshold or interval to a chart. This example uses the scatterplot's
+x scale for the band and y scale for the line:
+
+```javascript
+import { chart } from "ggaction";
+
+const program = chart()
+  .createCanvas({ width: 480, height: 320, margin: 40 })
+  .createData({ values: [{ x: 0, y: 0 }, { x: 10, y: 10 }] })
+  .createPointMark()
+  .encodeX({ field: "x" })
+  .encodeY({ field: "y" })
+  .createReferenceBand({ x: [2, 6] })
+  .createReferenceLine({ y: 5 })
+  .createMarkLabels({ source: "referenceLine", value: "Target", dy: -8 });
+```
+
+Data values share the source scale and contribute to its automatic domain. Set an explicit scale domain if
+the chart extent must stay fixed. For a position independent of the data range, use
+`createReferenceLine({ space: "plot", y: 0.5 })`; this places a line halfway up the plot.
+Plot y fractions increase from bottom to top. A plot band can use `x: [0.2, 0.6]` for 20%–60% of the width.
+Both resize with the Canvas. Existing data is required, but may be empty for plot references.
+
+Reference marks remain editable with ordinary mark, encoding, and scale actions. Refer to the
+[reference-line contract](./reference/actions/marks/#createreferenceline) and
+[reference-band contract](./reference/actions/marks/#createreferenceband) for binding, defaults, and removal behavior.
 
 ## Related
 
@@ -12617,6 +12650,8 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createRadialBarPlot`](./reference/actions/charts-data/#createradialbarplot) | user-facing | charts |
 | [`createRadialGrid`](./reference/actions/guides/#createradialgrid) | user-facing | grid |
 | [`createRectMark`](./reference/actions/marks/#createrectmark) | user-facing | marks |
+| [`createReferenceBand`](./reference/actions/marks/#createreferenceband) | user-facing | marks |
+| [`createReferenceLine`](./reference/actions/marks/#createreferenceline) | user-facing | marks |
 | [`createRegression`](./reference/actions/statistics/#createregression) | user-facing | statistics |
 | [`createRegressionBand`](./reference/actions/advanced/#semantic-resources-and-regression-layers) | user-facing | statistics |
 | [`createRegressionData`](./reference/actions/charts-data/#createregressiondata) | user-facing | core |
@@ -13311,6 +13346,45 @@ editRectMark({ target?, fill?, opacity?, stroke?, strokeWidth? })
 Edit rect appearance and rematerialize complete cells. Constant fill conflicts
 with field-driven color. `stroke: false` disables the outline.
 [Rect marks](./api/marks/rect/)
+
+## `createReferenceLine`
+
+```javascript
+createReferenceLine({ id?, x?, y?, space?, source?, data?, coordinate?, temporalUnit?, stroke?, strokeWidth?, strokeDash?, opacity? })
+```
+
+Create one constant Rule spanning the other plot axis. Exactly one `x` or `y` is required.
+Data space is the default: `source` resolves explicit, current eligible, then unique eligible Cartesian layer.
+It supplies data, coordinate, scale, field type, and temporal input unit. Strings are literal values.
+Reference constants participate in automatic domains; explicit domains preserve the requested extent.
+`temporalUnit` may override the source unit. `data` and `coordinate` are plot-space options only.
+
+With `space: "plot"`, the value must be a finite fraction in `[0,1]`: x runs left to right and y bottom to top.
+Existing `data` is explicit or inferred; empty data is supported. `coordinate` follows Cartesian encoding inference.
+Plot space rejects `source` and `temporalUnit`. A named `<id>-<axis>` linear scale has domain `[0,1]` and automatic range.
+An equivalent scale is reused; a conflicting definition fails. Named scales remain after mark removal.
+
+The default ID is `referenceLine`; a second line needs an explicit ID. Defaults: stroke `#64748b`, width `1`,
+dash `"dashed"`, opacity `1`. Lower `encodeX/Y`, `editRuleMark`, `editScale`, and `removeMark` own later changes.
+Source binding is selected at creation, so rebinding or removing the source does not rebind or remove the reference.
+The shared scale still drives both marks. Add text with `createMarkLabels({ source: id, value: "Target" })`.
+[Reference marks](./api/marks/rule/#reference-lines-and-bands)
+
+## `createReferenceBand`
+
+```javascript
+createReferenceBand({ id?, x?, y?, space?, source?, data?, coordinate?, temporalUnit?, fill?, opacity?, stroke?, strokeWidth? })
+```
+
+Create one constant Rect spanning the other plot axis. Exactly one `x: [lower, upper]` or `y: [lower, upper]`
+is required. Reversed endpoints produce positive bounds; equal endpoints produce no rectangle.
+It uses the same data/plot binding rules as `createReferenceLine`, but data-space bands require quantitative
+or temporal source positions. Plot endpoints must both be finite fractions in `[0,1]`.
+The default ID is `referenceBand`, fill `#94a3b8`, opacity `0.15`, and stroke `false`.
+To set `strokeWidth`, also provide a stroke color. Positions, appearance, scale, and removal remain editable through
+`encodeX/Y/X2/Y2`, `editRectMark`, `editScale`, and `removeMark`. No extra dataset is created, and no `editReferenceBand`
+is needed. Both reference facades are available in the full entry point.
+[Reference marks](./api/marks/rule/#reference-lines-and-bands)
 
 ## `createMarkLabels`
 
@@ -14871,6 +14945,8 @@ interface ChartProgramActions {
   editRuleMark(options: { target?: string } & RuleStyleOptions): ChartProgram;
   createTextMark(options?: TextMarkOptions): ChartProgram;
   createMarkLabels(options?: CreateMarkLabelsOptions): ChartProgram;
+  createReferenceLine(options: CreateReferenceLineOptions): ChartProgram;
+  createReferenceBand(options: CreateReferenceBandOptions): ChartProgram;
   editTextMark(options: EditTextMarkOptions): ChartProgram;
   layoutLabels(options?: LabelLayoutOptions): ChartProgram;
   removeLabelLayout(options?: RemoveLabelLayoutOptions): ChartProgram;

@@ -31,6 +31,7 @@ test.before(async () => {
     <canvas id="shape-legend" aria-label="Shape legend after color removal"></canvas>
     <canvas id="bottom-legend" aria-label="Explicit bottom legend layout"></canvas>
     <canvas id="legend-content" aria-label="Explicit color and size legend content"></canvas>
+    <canvas id="reference-facades" aria-label="Reference line and shaded plot interval"></canvas>
     <canvas id="reference-rect" aria-label="Constant interval shading"></canvas>
     <canvas id="semantic-labels" aria-label="Pie shares from final source items"></canvas>
     <canvas id="parallel-reencoded" aria-label="Reordered Parallel dimension axes"></canvas>
@@ -389,6 +390,10 @@ test.before(async () => {
         .editLegendTitle({ title: "Mass" }).editLegendLabels({ fontWeight: 700 });
       const hiddenSizeLegend = editedSizeLegend.editLegendTitle({ title: false });
       render(editedSizeLegend, document.getElementById("size-legend").getContext("2d"));
+      const referenceFacades = chart().createCanvas({ width: 480, height: 320, margin: 40 })
+        .createData({ values: [] }).createReferenceBand({ space: "plot", x: [0.2, 0.6] })
+        .createReferenceLine({ space: "plot", y: 0.5 });
+      render(referenceFacades, document.getElementById("reference-facades").getContext("2d"));
       const temporalRect = chart().createCanvas().createData({ values: [{ start: "2020-01-01", end: "2020-01-03" }] })
         .createRectMark({ data: "data" }).encodeX({ field: "start", fieldType: "temporal" })
         .encodeX2({ field: "end", fieldType: "temporal" })
@@ -406,6 +411,9 @@ test.before(async () => {
       document.querySelector("#status").textContent = "complete";
       window.__ggactionGuideComparisons = guideComparisons;
       window.__ggactionConsumer = {
+        referenceFacades: [referenceFacades.graphicSpec.objects.referenceBand.items[0].properties.width,
+          referenceFacades.graphicSpec.objects.referenceLine.items[0].properties.y1,
+          renderToSVG(referenceFacades).includes("#64748b")],
         temporalRectCount: temporalRect.graphicSpec.objects.rect.items.length,
         referenceRect: referenceRect.graphicSpec.objects.rect.items[0].properties.width,
         referenceRectSVG: renderToSVG(referenceRect).includes("#93c5fd"),
@@ -560,6 +568,7 @@ test("imports and renders the packed browser entries", async () => {
   assert.equal(guideComparisons.length, 4);
   for (const [actual, expected] of guideComparisons) assert.deepEqual(actual, expected);
   assert.deepEqual(await windowValue(page, "__ggactionConsumer"), {
+    referenceFacades: [160, 160, true],
     temporalRectCount: 1,
     referenceRect: 160,
     referenceRectSVG: true,
