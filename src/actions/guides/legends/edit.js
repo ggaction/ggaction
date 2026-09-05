@@ -17,6 +17,7 @@ import {
   normalizeItemLegendLayout,
   normalizeLegendBorder,
   normalizeLegendTextOptions,
+  normalizeLegendTitleOptions,
   normalizeContinuousLegend,
   validatePositive
 } from "./continuous/common.js";
@@ -71,7 +72,7 @@ function reconcileGraphic(program, id, shouldExist, definition) {
 function resolveContinuousEdit(program, kind, previous, args) {
   const allowed = kind === "gradient"
     ? ["target", "position", "align", "offset", "title", "labels",
-      "titleStyle", "border", "count", "gradient"]
+      "titleStyle", "titlePosition", "border", "count", "gradient"]
     : ["target", "position", "align", "offset", "title", "symbol", "labels",
       "titleStyle", "titlePosition", "itemGap", "border", "count"];
   for (const key of Object.keys(args)) {
@@ -220,9 +221,6 @@ function resolveSampledLegendEdit(program, kind, previous, args) {
       throw new Error(`${label} legend does not accept ${key}.`);
     }
   }
-  if (args.titleStyle !== undefined) {
-    validateOptionObject(args.titleStyle, ["color", "fontSize", "fontFamily", "fontWeight"], "editLegend.titleStyle");
-  }
   const count = args.count ?? previous.count;
   if (!Number.isInteger(count) || count < 2) {
     throw new RangeError(
@@ -253,7 +251,7 @@ function resolveSampledLegendEdit(program, kind, previous, args) {
       "editLegend.labels",
       previous.labels ?? (size ? SIZE_LEGEND_LABELS : STROKE_WIDTH_LEGEND_LABELS)
     ),
-    titleStyle: normalizeLegendTextOptions(
+    titleStyle: normalizeLegendTitleOptions(
       args.titleStyle,
       "editLegend.titleStyle",
       previous.titleStyle ?? (size ? SIZE_LEGEND_TITLE_STYLE : STROKE_WIDTH_LEGEND_TITLE_STYLE)
@@ -297,7 +295,7 @@ function resolveCompanionSizeEdit(previous, size, args) {
     ? previous.titleStyle : size.titleStyle ?? SIZE_LEGEND_TITLE_STYLE;
   return { ...config, inheritAppearance: false,
     labels: normalizeLegendTextOptions(args.labels, "editLegend.labels", labels),
-    titleStyle: normalizeLegendTextOptions(args.titleStyle, "editLegend.titleStyle", titleStyle) };
+    titleStyle: normalizeLegendTitleOptions(args.titleStyle, "editLegend.titleStyle", titleStyle) };
 }
 
 function resolveCategoricalEdit(program, kind, previous, size, args, storedOrder = program.semanticSpec.guides.legend?.[kind]?.order) {

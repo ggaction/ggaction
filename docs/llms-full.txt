@@ -10633,6 +10633,12 @@ bounds, including endpoint labels, symbol strokes and any border. `offset` is
 the gap between the plot and the nearest outer legend edge. This rule also
 applies to interval, size and stroke-width legends. Both forms require enough
 requested Canvas margin and never resize the Canvas.
+Side gradient and opacity legends accept only `align: "center"`. When moving
+a non-centered horizontal legend to a side, set `align: "center"` in the same
+edit. Title styles accept color and typography; `offset` belongs to `labels`.
+Gradient `titlePosition: "top"` is accepted by both creation and editing,
+including `editLegendLayout`; `"left"` is unsupported.
+
 Their requested sample `count` is limited to the inclusive range `2`–`10,000`.
 
 For a `quantize`, `quantile`, or `threshold` point-color scale, the same call
@@ -10816,7 +10822,10 @@ stored semantic title. A hidden categorical title contributes no height or inlin
 gap to the grid or border. Changing its stored text style leaves the visible
 legend unchanged; restoration checks that the visible title fits. Legacy-bottom
 sample positions stay fixed, with a border around the visible items. Gradient and opacity legends accept only their
-kind-compatible options. Interval legends support all four positions and
+kind-compatible options. Both require center alignment at the left or right
+side. Gradient title placement accepts `titlePosition: "top"` through creation,
+`editLegend` and `editLegendLayout`. Every legend title style accepts only
+color and typography; use `labels.offset` for label spacing. Interval legends support all four positions and
 `layout: "edge"`; top/bottom grids also accept alignment, direction, columns
 and inline titles. Side positions require vertical flow, center alignment,
 a top title and one column. When changing position, omitted direction follows

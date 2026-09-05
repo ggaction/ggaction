@@ -2728,7 +2728,7 @@ export interface LegendOptions {
   /** Exact requested content; omission infers encoded point color/shape/size. Explicit subsets include size only when listed. */
   channels?: readonly ("color" | "strokeDash" | "strokeWidth" | "shape" | "size" | "opacity")[];
   position?: "right" | "left" | "bottom" | "top";
-  /** Single top/bottom edge: align complete occupied bounds, including border strokes, to the plot. */
+  /** Single top/bottom edge: align complete occupied bounds, including border strokes, to the plot. Side positions require center. */
   align?: "left" | "center" | "right";
   direction?: "horizontal" | "vertical";
   columns?: number;
@@ -2756,7 +2756,7 @@ export interface EditLegendLayoutOptions {
   target?: string;
   layout?: "edge" | "legacy-bottom";
   position?: "right" | "left" | "bottom" | "top";
-  /** Single top/bottom edge: align complete occupied bounds, including border strokes, to the plot. */
+  /** Single top/bottom edge: align complete occupied bounds, including border strokes, to the plot. Side positions require center. */
   align?: "left" | "center" | "right";
   direction?: "horizontal" | "vertical";
   columns?: number;

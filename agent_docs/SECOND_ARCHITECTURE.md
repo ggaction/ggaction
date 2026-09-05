@@ -247,7 +247,7 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Gzip ceiling |
 | --- | ---: |
-| `ggaction` | 254,000 bytes |
+| `ggaction` | 255,000 bytes |
 | `ggaction/basic` | 141,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 
@@ -1758,7 +1758,7 @@ axis와 grid만 선택하므로 theta-only count arc가 radial guide를 합성�
 측정 후 single-edge 좌표를 반환한다. 기존 categorical grid 측정을 공유하며 interval, size와 stroke-width가 소비한다.
 Scale/format/appearance 검증은 family action에 남고 horizontal single/multi-block placement는 lane owner가 final
 concrete bounds를 소비한다. Hidden title은 실제 occupied bounds에 포함하지 않는다. Categorical grid도 hidden title의 높이와 inline gap을 제외하고 legacy-bottom border는 visible item bounds를 사용한다.
-Size는 categorical 내부 좌표 계산에 의존하지 않고 실제 circle bounds와 sample slot을 제공한다. Side lane은 각 block의 요구 간격을 포함한 공통 label column과 nested border bounds를 소유한다. Horizontal 결합은 pure group layout이 independent block을 먼저 pack하고 outer lane이 그 결과를 atomic block으로 배치한다. Nested border와 두 title을 함께 이동하며 size 자체 layout config는 보존한다. Same-edge collision은 공통 최종 상태 검증으로 수렴한다. Single horizontal legend도 wrapped rematerializeHorizontalLegendLane으로 수렴한다. Pure layout/legendLane.js가 foreground와 background union을 align/offset에 맞춰 translation하고 최종 Canvas fit을 검사한다. Family의 intrinsic horizontal 좌표 fit은 이 단계까지 유예하며 side/legacy fit은 기존 owner에 남는다. Same-target size는 categorical의 effective edge를 사용하고 explicit legacy-bottom은 horizontal lane에서 제외한다. 큰 sample/font 내부 간격과 전체 통합 matrix는 아직 진행 중이다.
+Size는 categorical 내부 좌표 계산에 의존하지 않고 실제 circle bounds와 sample slot을 제공한다. Side lane은 각 block의 요구 간격을 포함한 공통 label column과 nested border bounds를 소유한다. Horizontal 결합은 pure group layout이 independent block을 먼저 pack하고 outer lane이 그 결과를 atomic block으로 배치한다. Nested border와 두 title을 함께 이동하며 size 자체 layout config는 보존한다. Same-edge collision은 공통 최종 상태 검증으로 수렴한다. Single horizontal legend도 wrapped rematerializeHorizontalLegendLane으로 수렴한다. Pure layout/legendLane.js가 foreground와 background union을 align/offset에 맞춰 translation하고 최종 Canvas fit을 검사한다. Family의 intrinsic horizontal 좌표 fit은 이 단계까지 유예하며 side/legacy fit은 기존 owner에 남는다. Same-target size는 categorical의 effective edge를 사용하고 explicit legacy-bottom은 horizontal lane에서 제외한다. Continuous common normalizer가 side alignment를 검증하고 gradient/opacity/interval/size/width의 title-style normalizer를 공유한다. TitleStyle에는 label offset을 허용하지 않으며 gradient의 create/edit는 동일한 top title-position 계약을 사용한다. 큰 sample/font 내부 간격과 전체 통합 matrix는 아직 진행 중이다.
 
 Categorical creation와 content revision의 공통 owner는 `actions/guides/legends/lifecycle.js`다.
 선택된 channels의 definition/automatic recipe를 재검증하고 기존 title visibility, styles, order와 caller recipe를

@@ -54,6 +54,12 @@ bounds, including endpoint labels, symbol strokes and any border. `offset` is
 the gap between the plot and the nearest outer legend edge. This rule also
 applies to interval, size and stroke-width legends. Both forms require enough
 requested Canvas margin and never resize the Canvas.
+Side gradient and opacity legends accept only `align: "center"`. When moving
+a non-centered horizontal legend to a side, set `align: "center"` in the same
+edit. Title styles accept color and typography; `offset` belongs to `labels`.
+Gradient `titlePosition: "top"` is accepted by both creation and editing,
+including `editLegendLayout`; `"left"` is unsupported.
+
 Their requested sample `count` is limited to the inclusive range `2`–`10,000`.
 
 For a `quantize`, `quantile`, or `threshold` point-color scale, the same call

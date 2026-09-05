@@ -47,7 +47,10 @@ stored semantic title. A hidden categorical title contributes no height or inlin
 gap to the grid or border. Changing its stored text style leaves the visible
 legend unchanged; restoration checks that the visible title fits. Legacy-bottom
 sample positions stay fixed, with a border around the visible items. Gradient and opacity legends accept only their
-kind-compatible options. Interval legends support all four positions and
+kind-compatible options. Both require center alignment at the left or right
+side. Gradient title placement accepts `titlePosition: "top"` through creation,
+`editLegend` and `editLegendLayout`. Every legend title style accepts only
+color and typography; use `labels.offset` for label spacing. Interval legends support all four positions and
 `layout: "edge"`; top/bottom grids also accept alignment, direction, columns
 and inline titles. Side positions require vertical flow, center alignment,
 a top title and one column. When changing position, omitted direction follows

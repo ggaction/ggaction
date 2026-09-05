@@ -87,6 +87,13 @@ export function normalizeLegendTextOptions(value, label, defaults) {
   return result;
 }
 
+export function normalizeLegendTitleOptions(value, label, defaults) {
+  if (value !== undefined) {
+    validateOptionObject(value, ["color", "fontSize", "fontFamily", "fontWeight"], label);
+  }
+  return normalizeLegendTextOptions(value, label, defaults);
+}
+
 export function normalizeLegendBorder(value) {
   if (value === undefined || value === false) return false;
   if (value !== true && !isPlainObject(value)) {
@@ -111,6 +118,9 @@ export function normalizeContinuousLegend(args, kind) {
   const align = args.align ?? "center";
   if (!["left", "center", "right"].includes(align)) {
     throw new Error(`Unsupported legend alignment "${align}".`);
+  }
+  if (["left", "right"].includes(position) && align !== "center") {
+    throw new Error("Side continuous legends require center alignment.");
   }
   const count = args.count ?? 5;
   if (!Number.isInteger(count) || count < 2) {
@@ -164,7 +174,7 @@ export function normalizeContinuousLegend(args, kind) {
         ? { ...DEFAULT_LABELS, offset: 8 }
         : DEFAULT_LABELS
     ),
-    titleStyle: normalizeLegendTextOptions(
+    titleStyle: normalizeLegendTitleOptions(
       args.titleStyle,
       "createLegend.titleStyle",
       DEFAULT_TITLE

@@ -53,3 +53,5 @@ Compatible gradient↔interval 네 edge transition #100은 [RESULTS_W2_COLOR_TRA
 Hidden categorical title 공간과 legacy visible-title 복원 #101은 [RESULTS_W2_HIDDEN_CATEGORICAL.md](RESULTS_W2_HIDDEN_CATEGORICAL.md)에 기록한다. 전체 occupied alignment 통합은 남아 있다.
 
 Single horizontal occupied alignment/offset #102는 [RESULTS_W2_OCCUPIED_ALIGNMENT.md](RESULTS_W2_OCCUPIED_ALIGNMENT.md)에 기록한다. 큰 sample/font 내부 간격·side option과 전체 통합 matrix는 남아 있다.
+
+Side alignment/title style/gradient title-position의 생성·편집 parity #103은 [RESULTS_W2_OPTION_PARITY.md](RESULTS_W2_OPTION_PARITY.md)에 기록한다. 큰 sample/font 내부 간격과 전체 통합 matrix는 남아 있다.

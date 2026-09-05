@@ -589,7 +589,13 @@ async function testNodeConsumer(directory) {
           .createData({ values: [{ x: 0, y: 0 }, { x: 10, y: 10 }] })
           .createPointMark().encodeX({ field: "x" }).encodeY({ field: "y" })
           .encodeColor({ field: "x", fieldType: "quantitative" });
+        assert.throws(() => source.createLegend({ position: "left", align: "right" }), /center alignment/);
+        assert.throws(() => source.createLegend({ titleStyle: { offset: 10 } }), /titleStyle.*offset/);
         const program = source.createLegend({ position, align, offset: 40, border: true });
+        if (create === chart) {
+          assert.deepEqual(program.editLegendLayout({ titlePosition: "top" }).graphicSpec, program.graphicSpec);
+          assert.throws(() => program.editLegend({ titleStyle: { offset: 10 } }), /titleStyle.*offset/);
+        }
         const border = program.graphicSpec.objects.colorGradientBackground.properties;
         const left = border.x - border.strokeWidth / 2;
         const right = border.x + border.width + border.strokeWidth / 2;

@@ -16,6 +16,7 @@ import {
   normalizeLegendBorder,
   normalizeItemLegendLayout,
   normalizeLegendTextOptions,
+  normalizeLegendTitleOptions,
   resolveContinuousBounds,
   resolveContinuousColorLayer,
   resolveLegendBackgroundFromBounds,
@@ -74,7 +75,7 @@ export function normalizeIntervalLegend(args) {
       fontFamily: DEFAULT_FONT_FAMILY,
       fontWeight: "normal"
     }),
-    titleStyle: normalizeLegendTextOptions(args.titleStyle, "createLegend.titleStyle", {
+    titleStyle: normalizeLegendTitleOptions(args.titleStyle, "createLegend.titleStyle", {
       color: DEFAULT_COLORS.text,
       fontSize: 13,
       fontFamily: DEFAULT_FONT_FAMILY,

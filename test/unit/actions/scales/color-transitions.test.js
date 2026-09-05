@@ -71,10 +71,13 @@ test("preserves common legend style, explicit hidden title, and later focused ed
   assert.equal(back.guideConfigs.legend.gradient.inferredTitle, true);
 });
 test("rejects custom family styles and unsupported placement without losing any state", () => {
+  const side = make("point");
+  const sideBefore = snapshot(side);
+  assert.throws(() => side.editLegend({ align: "left" }), /center alignment/);
+  assert.equal(snapshot(side), sideBefore);
   const sources = [
     make("point").editLegend({ count: 3 }),
     make("point").editLegend({ gradient: { length: 130 } }),
-    make("point").editLegend({ align: "left" }),
     make("point", { type: "quantize" }).editLegend({ position: "top", columns: 2 }),
     make("point", { type: "quantize" }).editLegend({ position: "top", direction: "vertical" }),
     make("point", { type: "quantize" }).editLegend({ position: "top", titlePosition: "left" }),

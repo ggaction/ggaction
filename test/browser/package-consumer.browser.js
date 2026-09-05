@@ -235,8 +235,21 @@ test.before(async () => {
         .createPointMark().encodeX({ field: "x" }).encodeY({ field: "y" })
         .encodeColor({ field: "m", fieldType: "quantitative" }).encodeOpacity({ field: "m" });
       const occupiedAlignment = [];
+      let ignoredOptionRejects = 0;
+      const gradientTitleParity = [];
       for (const position of ["top", "bottom"]) for (const align of ["left", "center", "right"]) {
         const program = guideSource.createLegend({ channels: ["color"], position, align, offset: 40, border: true });
+        for (const attempt of [
+          () => guideSource.createLegend({ channels: ["color"], position: "left", align: "right" }),
+          () => guideSource.createLegend({ channels: ["opacity"], position: "right", align: "left" }),
+          () => program.editLegend({ titleStyle: { offset: 10 } })
+        ]) {
+          try { attempt(); } catch (error) {
+            if (/center alignment|titleStyle.*offset/.test(error.message)) ignoredOptionRejects += 1;
+            else throw error;
+          }
+        }
+        gradientTitleParity.push(renderToSVG(program.editLegendLayout({ titlePosition: "top" })) === renderToSVG(program));
         const border = program.graphicSpec.objects.colorGradientBackground.properties;
         const left = border.x - border.strokeWidth / 2;
         const right = border.x + border.width + border.strokeWidth / 2;
@@ -346,6 +359,8 @@ test.before(async () => {
         guideOrder,
         transitionEdges,
         occupiedAlignment,
+        ignoredOptionRejects,
+        gradientTitleParity,
         hiddenCategorical: [hiddenStyled.graphicSpec.objects.colorLegendBackground.properties.height,
           renderToSVG(hiddenStyled) === renderToSVG(hiddenCategorical)],
         combinedSVG: renderToSVG(horizontalCombined).startsWith("<svg "),
@@ -486,6 +501,8 @@ test("imports and renders the packed browser entries", async () => {
     transitionEdges: ["left", "right", "top", "bottom"].map(position => [position, position, true, true, true]),
     hiddenCategorical: [36, true],
     occupiedAlignment: [true, true, true, true, true, true],
+    ignoredOptionRejects: 18,
+    gradientTitleParity: [true, true, true, true, true, true],
     combinedSVG: true,
     combinedTitlesAligned: true,
     combinedContentSVG: true,

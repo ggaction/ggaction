@@ -2,7 +2,6 @@ import { action } from "../../../core/action.js";
 import {
   validateGeneratedItemLimit,
   validateNonEmptyString,
-  validateOptionObject,
   validateKeys
 } from "../../../core/validation.js";
 import { mapContinuousScaleValues } from "../../../grammar/scales/index.js";
@@ -18,6 +17,7 @@ import {
   normalizeItemLegendLayout,
   normalizeLegendBorder,
   normalizeLegendTextOptions,
+  normalizeLegendTitleOptions,
   resolveContinuousBounds,
   resolveLegendBackgroundFromBounds,
   formatContinuousValues,
@@ -154,8 +154,6 @@ export const rematerializeStrokeWidthLegend = /* @__PURE__ */ action(
 export function resolveStrokeWidthLegendConfig(program, args = {}) {
   validateKeys(args, OPTIONS, "createStrokeWidthLegend");
   if (args.title !== undefined) validateNonEmptyString(args.title, "Legend title");
-  if (args.titleStyle !== undefined) validateOptionObject(args.titleStyle,
-    ["color", "fontSize", "fontFamily", "fontWeight"], "createLegend.titleStyle");
   const layer = resolveLayer(program, args.target);
   const encoding = layer.encoding.strokeWidth;
   requireScale(program, encoding.scale);
@@ -174,7 +172,7 @@ export function resolveStrokeWidthLegendConfig(program, args = {}) {
     inferredTitle: args.title === undefined,
     count,
     labels: normalizeLegendTextOptions(args.labels, "createLegend.labels", STROKE_WIDTH_LEGEND_LABELS),
-    titleStyle: normalizeLegendTextOptions(args.titleStyle, "createLegend.titleStyle", STROKE_WIDTH_LEGEND_TITLE_STYLE),
+    titleStyle: normalizeLegendTitleOptions(args.titleStyle, "createLegend.titleStyle", STROKE_WIDTH_LEGEND_TITLE_STYLE),
     border: normalizeLegendBorder(args.border),
     titleVisible: true
   };

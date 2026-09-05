@@ -75,7 +75,7 @@ type TitleWrap = "word" | "character";
 - `position`: categorical과 continuous color/opacity는 left를 포함한 네 방향을 지원한다.
   combined point-size legend도 네 방향 edge position을 사용한다. chart-independent default는 `"right"`다.
 - `align`: `"left" | "center" | "right"`, 기본 center. right와 left side position은
-  첫 계약에서 center만 허용한다.
+  모든 family에서 center만 허용한다. Gradient/opacity도 non-center side alignment를 거절한다. Horizontal non-center legend를 side로 옮길 때는 같은 edit에서 align center를 명시해야 한다.
 - `direction`: `"horizontal" | "vertical"`; top/bottom item-grid fill order를 결정하며 기본 horizontal이다.
 - `columns`: positive integer; top/bottom grid의 최대 열 수. 생략하면 한 row에 가능한 item을 둔다.
 - Categorical `layout`은 `"edge" | "legacy-bottom"`, default `"edge"`다. Bottom도 omission이면 reserved-margin grid다.
@@ -93,7 +93,7 @@ type TitleWrap = "word" | "character";
 - Point의 자동 typed recipe는 selected shape를 설명하며, selected color가 있을 때만 matching line을 합친다.
   Config의 inferredSymbol이 omission/auto와 caller recipe를 구분한다. Edit symbol auto, encoding 제거·재연결, matching companion mark 추가·제거와 Canvas/scale/data dependency replay는
   자동 recipe를 재추론하고 concrete symbol type·순서를 reconcile한다. Explicit recipe는 보존한다. Recipe의 layer 순서는 생성과 편집 모두 실제 drawing order다.
-- `labels`, `titleStyle`: color/fontSize/fontFamily/fontWeight style object.
+- `labels`, `titleStyle`: color/fontSize/fontFamily/fontWeight style object. Labels만 offset을 받으며 모든 family의 titleStyle.offset은 거절한다.
 - `itemGap`: positive finite number; position별 default spacing을 override한다.
 - `border`: `false | true | { color?, lineWidth?, padding?, background? }`; false가 default이며 true는
   default bordered background를 만든다.
@@ -228,6 +228,7 @@ encoding removal/recreation, combined legend와 Polar 가이드를 검증한다.
 - Categorical `layout` omission은 stored edge/legacy-bottom을 보존한다. Style/title/border edit나 Canvas/scale/encoding replay가
   mode를 바꾸지 않는다. Explicit editLegend/editLegendLayout({layout})만 mode를 전환한다.
 - Categorical and combined point-size legends accept all four edges. Left requires center alignment and vertical flow. Edge 변경 시 omitted direction은 새 edge의 default로 추론한다. `count` rematerializes an existing size block.
+- Gradient의 titlePosition top은 createLegend/editLegend/editLegendLayout 모두 허용하고 left는 모두 거절한다. Side alignment와 titleStyle의 동일 validation/immutable rejection evidence는 `test/unit/actions/guides/legend-option-parity.test.js`다.
 - Gradient edits own `count` and `gradient`; opacity edits own `count`, `itemGap`, and a single point symbol recipe.
   Horizontal opacity edits also own `titlePosition`; entering `"left"` without explicit spacing selects the inline
   8-pixel symbol-label and 20-pixel sample defaults.
