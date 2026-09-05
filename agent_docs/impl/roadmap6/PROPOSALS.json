@@ -90,7 +90,9 @@
             "B07"
           ],
           "scope": "Facade에서 x/y category·measure를 함께 preflight하고 기존 position owner를 호출한다. 수평 temporal category type을 공통 role union으로 표현한다. Mean default는 유지한다.",
-          "acceptance": "가로/세로 shorthand, explicit aggregate, temporal category가 runtime와 strict TS에서 일치. 잘못된 양쪽 category/measure 조합은 명확히 거부."
+          "acceptance": "가로/세로 shorthand, explicit aggregate, temporal category가 runtime와 strict TS에서 일치. 잘못된 양쪽 category/measure 조합은 명확히 거부.",
+          "status": "implemented-and-verified",
+          "resultEvidence": "phase1/RESULTS.md#w1--bar-pair-role와-temporal-선언"
         },
         {
           "id": "R6-P1-W2",
@@ -676,20 +678,25 @@
       "id": "B01",
       "title": "가로 Bar shorthand의 순서 의존 실패",
       "kind": "reproduced-bug-or-contract-mismatch",
-      "status": "proposed",
+      "status": "partially-implemented",
       "primaryPhase": 1,
       "primaryWorkPackage": "R6-P1-W1",
       "relatedWorkPackages": [
         {
           "phase": 1,
           "workPackage": "R6-P1-W1"
+        },
+        {
+          "phase": 2,
+          "workPackage": "R6-P2-W5"
         }
       ],
       "rationale": "동일한 category/measure 의미는 x/y 방향이나 child 작성 순서에 따라 성공 여부가 달라져서는 안 된다.",
       "recommended": "Facade에서 x/y category·measure를 함께 preflight하고 기존 position owner를 호출한다. 수평 temporal category type을 공통 role union으로 표현한다. Mean default는 유지한다.",
       "acceptance": "가로/세로 shorthand, explicit aggregate, temporal category가 runtime와 strict TS에서 일치. 잘못된 양쪽 category/measure 조합은 명확히 거부.",
       "evidence": "audit/probe-results.json: P35–P37",
-      "disposition": "implementation-or-explicit-contract-decision-proposed"
+      "disposition": "Facade corrected and verified; lower measure-first P37 remains with D14 / R6-P2-W5.",
+      "resultEvidence": "phase1/RESULTS.md#w1--bar-pair-role와-temporal-선언"
     },
     {
       "id": "B02",
@@ -790,7 +797,7 @@
       "id": "B07",
       "title": "가로 temporal Bar의 type 누락",
       "kind": "reproduced-bug-or-contract-mismatch",
-      "status": "proposed",
+      "status": "implemented-and-verified",
       "primaryPhase": 1,
       "primaryWorkPackage": "R6-P1-W1",
       "relatedWorkPackages": [
@@ -803,7 +810,8 @@
       "recommended": "Facade에서 x/y category·measure를 함께 preflight하고 기존 position owner를 호출한다. 수평 temporal category type을 공통 role union으로 표현한다. Mean default는 유지한다.",
       "acceptance": "가로/세로 shorthand, explicit aggregate, temporal category가 runtime와 strict TS에서 일치. 잘못된 양쪽 category/measure 조합은 명확히 거부.",
       "evidence": "audit/probe-results.json: P38; audit/type-results.txt",
-      "disposition": "implementation-or-explicit-contract-decision-proposed"
+      "disposition": "Temporal y declaration aligned with runtime; Phase 1 X review pending.",
+      "resultEvidence": "phase1/RESULTS.md#w1--bar-pair-role와-temporal-선언"
     },
     {
       "id": "B08",

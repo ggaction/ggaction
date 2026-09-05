@@ -49,6 +49,62 @@ test("infers bar position field types for string shorthand", () => {
   assert.equal(program.graphicSpec.objects.barPlot.items.length, 2);
 });
 
+test("infers horizontal shorthand through category-first child actions", () => {
+  const source = base();
+  const options = { x: "value", y: "category" };
+  const program = source.createBarPlot(options);
+  const explicit = source
+    .createBarMark({ id: "barPlot" })
+    .encodeY({ target: "barPlot", field: "category", fieldType: "nominal" })
+    .encodeX({ target: "barPlot", field: "value", fieldType: "quantitative" })
+    .createGuides();
+
+  assert.equal(program.semanticSpec.layers[0].encoding.x.aggregate, "mean");
+  assert.deepEqual(program.resolvedScales.x.domain, [0, 4]);
+  assert.equal(program.graphicSpec.objects.barPlot.items.length, 2);
+  assert.deepEqual(program.semanticSpec, explicit.semanticSpec);
+  assert.deepEqual(program.graphicSpec, explicit.graphicSpec);
+  assert.deepEqual(program.trace.children.at(-1).children.map(child => child.op), [
+    "createBarMark", "encodeY", "encodeX", "createGuides"
+  ]);
+  assert.deepEqual(
+    program.editCanvas({ width: 500 }).editBarMark({ opacity: 0.5 }).graphicSpec,
+    explicit.editCanvas({ width: 500 }).editBarMark({ opacity: 0.5 }).graphicSpec
+  );
+  assert.equal(source.semanticSpec.layers.length, 0);
+  assert.deepEqual(options, { x: "value", y: "category" });
+});
+
+test("infers horizontal measures opposite explicit ordinal and temporal categories", () => {
+  for (const [fieldType, categories] of [
+    ["ordinal", [1, 1, 2, 2]],
+    ["temporal", ["2025-01-01", "2025-01-01", "2025-02-01", "2025-02-01"]]
+  ]) {
+    const source = base(rows.map((row, index) => ({ ...row, category: categories[index] })));
+    const category = { field: "category", fieldType };
+    const inferred = source.createBarPlot({ x: "value", y: category, guides: false });
+    const explicit = source.createBarPlot({
+      x: { field: "value", aggregate: "mean" }, y: category, guides: false
+    });
+    assert.equal(inferred.semanticSpec.layers[0].encoding.x.aggregate, "mean");
+    assert.equal(inferred.semanticSpec.layers[0].encoding.y.fieldType, fieldType);
+    assert.deepEqual(inferred.semanticSpec, explicit.semanticSpec);
+    assert.deepEqual(inferred.graphicSpec, explicit.graphicSpec);
+    assert.equal(inferred.graphicSpec.objects.barPlot.items.length, 2);
+  }
+});
+
+test("rejects invalid horizontal role pairs without changing the source", () => {
+  const source = base();
+  const before = structuredClone({ semantic: source.semanticSpec, trace: source.trace });
+  assert.throws(() => source.createBarPlot({ x: "category", y: "group" }),
+    /requires a quantitative field opposite a categorical position/);
+  assert.throws(() => source.createBarPlot({
+    x: "value", y: { field: "category", fieldType: "nominal", aggregate: "sum" }
+  }), /Categorical bar position does not support bin or aggregate/);
+  assert.deepEqual({ semantic: source.semanticSpec, trace: source.trace }, before);
+});
+
 test("forwards grouped bar layout, width, and appearance without retaining input", () => {
   const options = {
     id: "bars",

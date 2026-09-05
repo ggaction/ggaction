@@ -11,7 +11,7 @@ export const BAR_ORIENTATIONS = Object.freeze({
   horizontal: "horizontal"
 });
 
-function isCategory(encoding) {
+export function isBarCategoryEncoding(encoding) {
   return ["nominal", "ordinal", "temporal"].includes(encoding?.fieldType);
 }
 
@@ -27,14 +27,14 @@ export function resolveBarOrientation(layer) {
   if (x?.bin !== undefined && y?.aggregate === "count") {
     return BAR_ORIENTATIONS.vertical;
   }
-  if (isCategory(x) && y?.fieldType === "quantitative" && layer.encoding?.y2?.fieldType === "quantitative") {
+  if (isBarCategoryEncoding(x) && y?.fieldType === "quantitative" && layer.encoding?.y2?.fieldType === "quantitative") {
     return BAR_ORIENTATIONS.vertical;
   }
-  if (isCategory(y) && x?.fieldType === "quantitative" && layer.encoding?.x2?.fieldType === "quantitative") {
+  if (isBarCategoryEncoding(y) && x?.fieldType === "quantitative" && layer.encoding?.x2?.fieldType === "quantitative") {
     return BAR_ORIENTATIONS.horizontal;
   }
-  if (isCategory(x) && isMeasure(y)) return BAR_ORIENTATIONS.vertical;
-  if (isMeasure(x) && isCategory(y)) return BAR_ORIENTATIONS.horizontal;
+  if (isBarCategoryEncoding(x) && isMeasure(y)) return BAR_ORIENTATIONS.vertical;
+  if (isMeasure(x) && isBarCategoryEncoding(y)) return BAR_ORIENTATIONS.horizontal;
   return undefined;
 }
 
@@ -63,8 +63,8 @@ export function resolveBarGrain(layer) {
     return BAR_GRAINS.histogram;
   }
   if (
-    (isCategory(x) && y?.fieldType === "quantitative" && layer.encoding?.y2?.fieldType === "quantitative") ||
-    (isCategory(y) && x?.fieldType === "quantitative" && layer.encoding?.x2?.fieldType === "quantitative")
+    (isBarCategoryEncoding(x) && y?.fieldType === "quantitative" && layer.encoding?.y2?.fieldType === "quantitative") ||
+    (isBarCategoryEncoding(y) && x?.fieldType === "quantitative" && layer.encoding?.x2?.fieldType === "quantitative")
   ) return BAR_GRAINS.ranged;
   if (resolveBarOrientation(layer) !== undefined) {
     return BAR_GRAINS.aggregate;

@@ -1,4 +1,5 @@
 import { action } from "../../core/action.js";
+import { isBarCategoryEncoding } from "../../grammar/bars/policy.js";
 import {
   applyFacadeGuides,
   inferFacadeFieldType,
@@ -42,10 +43,15 @@ export const createBarPlot = action(
     const width = normalizeTargetOptions(args.width, "createBarPlot width");
     const guides = normalizeGuides(args.guides, "createBarPlot");
 
-    let next = this
-      .createBarMark({ id, data, ...bar })
-      .encodeX(positionArgs(x, { target: id, coordinate: args.coordinate }))
-      .encodeY(positionArgs(y, { target: id, coordinate: args.coordinate }));
+    const positions = isBarCategoryEncoding(y)
+      ? [["encodeY", y], ["encodeX", x]]
+      : [["encodeX", x], ["encodeY", y]];
+    let next = this.createBarMark({ id, data, ...bar });
+    for (const [operation, encoding] of positions) {
+      next = next[operation](positionArgs(encoding, {
+        target: id, coordinate: args.coordinate
+      }));
+    }
     if (color !== undefined) next = next.encodeColor(targetArgs(color, id));
     if (width !== undefined) next = next.encodeBarWidth(targetArgs(width, id));
     return applyFacadeGuides(next, guides);

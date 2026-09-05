@@ -1669,6 +1669,13 @@ type BandPositionChannel = FacadePositionChannel<
 >;
 type BarYPositionChannel =
   | string
+  | {
+      field: string;
+      fieldType: "temporal";
+      aggregate?: never;
+      stack?: never;
+      scale?: NonPointTemporalPositionScaleOptions;
+    }
   | ({ field: string; stack?: StackMode } & (
       | {
           fieldType?: "quantitative";

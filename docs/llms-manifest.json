@@ -666,8 +666,8 @@
         "other-complete-chart-facades",
         "advanced-authoring"
       ],
-      "bytes": 9423,
-      "sha256": "3bc90e3d75380c16603f0554d3bbb8288b2cdc5578e7f1d9bd08b3a95aa55eba"
+      "bytes": 9684,
+      "sha256": "68bd7ac6433a908712b9f1444d8d600b47db063f02a6389a248d581ff1fd2ac7"
     },
     {
       "order": 44,
@@ -1807,8 +1807,8 @@
         "editbin2ddata",
         "related"
       ],
-      "bytes": 8753,
-      "sha256": "7c0f0861b7e4e65ab337cef6149f71b8408d1fe9c998d9ca61fa7fb51057a803"
+      "bytes": 8876,
+      "sha256": "dca3f3109c992d4b52daafb1c2324dae7d4096f58527bf9b849c81fabb09d7f5"
     },
     {
       "order": 115,

@@ -130,6 +130,11 @@ quantitative positions and other supported scalar fields infer nominal
 positions. Use an option object with `fieldType` when a numeric field is an
 ordinal category or when a field is temporal.
 
+Both `{ x: "product", y: "units_sold" }` and the horizontal
+`{ x: "units_sold", y: "product" }` infer the measure's mean per category.
+Set `aggregate` explicitly for another statistic. Temporal categories work
+on either axis and accept temporal scale options.
+
 ```javascript
 const bars = chart()
   .createCanvas()

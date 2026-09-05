@@ -1,6 +1,7 @@
 # Roadmap 6 — 전체 항목 추적 원장
 
-이번 범위의 B01–B08, D01–D20, F01–F19 총 47개 항목을 추적한다. 모든 작업 상태는 **Proposed / 미구현**이다.
+이번 범위의 B01–B08, D01–D20, F01–F19 총 47개 항목을 추적한다. Phase 1의 실행 상태와 검증 결과는
+[실행 증거](phase1/RESULTS.md)에 기록하며, 나머지 항목은 별도 표시가 없으면 Proposed / 미구현이다.
 사용자는 2026-09-05 F20 제외와 나머지 19개 액션군 구성을 선택했다. F20은 실행·연구·완료 대상이 아니며
 원래 관측은 고정된 감사 기록에만 남긴다.
 Primary owner는 누락 방지를 위한 책임 단위이며, 관련 작업이 여러 단계에 있으면 함께 닫아야 한다.
@@ -11,7 +12,7 @@ Primary owner는 누락 방지를 위한 책임 단위이며, 관련 작업이 �
 
 | ID | 항목 | Primary owner | 관련 작업 |
 | --- | --- | --- | --- |
-| B01 | 가로 Bar shorthand의 순서 의존 실패 | [R6-P1-W1](phase1/GOAL.md) | R6-P1-W1 |
+| B01 | 가로 Bar shorthand의 순서 의존 실패 | [R6-P1-W1](phase1/GOAL.md) | R6-P1-W1, R6-P2-W5 |
 | B02 | MCP Area의 빈 chart 거짓 완료 | [R6-P1-W4](phase1/GOAL.md) | R6-P1-W4 |
 | B03 | MCP Strip의 unpositioned Tick 거짓 완료 | [R6-P1-W4](phase1/GOAL.md) | R6-P1-W4 |
 | B04 | MCP Radial bar의 Cartesian layer 혼입 | [R6-P1-W4](phase1/GOAL.md) | R6-P1-W4 |
@@ -26,7 +27,7 @@ Primary owner는 누락 방지를 위한 책임 단위이며, 관련 작업이 �
 - 수정·추가 방향: Facade에서 x/y category·measure를 함께 preflight하고 기존 position owner를 호출한다. 수평 temporal category type을 공통 role union으로 표현한다. Mean default는 유지한다.
 - 완료 검증: 가로/세로 shorthand, explicit aggregate, temporal category가 runtime와 strict TS에서 일치. 잘못된 양쪽 category/measure 조합은 명확히 거부.
 - 근거: audit/probe-results.json: P35–P37. [원래 조사](audit/REPORT.md)
-- 처분: 구현 또는 명시적인 계약 유지·migration 결정의 제안. 아직 완료·승인 상태가 아니다.
+- 처분: W1에서 facade의 양방향 shorthand를 교정하고 검증했다. P37의 lower measure-first 작성은 D14 / R6-P2-W5에 남아 있으므로 B01 전체는 아직 닫지 않는다. [실행 증거](phase1/RESULTS.md#w1--bar-pair-role와-temporal-선언)
 
 ### B02 — MCP Area의 빈 chart 거짓 완료
 
@@ -74,7 +75,7 @@ Primary owner는 누락 방지를 위한 책임 단위이며, 관련 작업이 �
 - 수정·추가 방향: Facade에서 x/y category·measure를 함께 preflight하고 기존 position owner를 호출한다. 수평 temporal category type을 공통 role union으로 표현한다. Mean default는 유지한다.
 - 완료 검증: 가로/세로 shorthand, explicit aggregate, temporal category가 runtime와 strict TS에서 일치. 잘못된 양쪽 category/measure 조합은 명확히 거부.
 - 근거: audit/probe-results.json: P38; audit/type-results.txt. [원래 조사](audit/REPORT.md)
-- 처분: 구현 또는 명시적인 계약 유지·migration 결정의 제안. 아직 완료·승인 상태가 아니다.
+- 처분: runtime에 이미 있던 temporal y 지원을 선언에 반영했고 strict positive/negative와 모든 nested scale 경로 실행이 통과했다. 구현·검증 완료, Phase 1 X 검토 대기. [실행 증거](phase1/RESULTS.md#w1--bar-pair-role와-temporal-선언)
 
 ### B08 — Internal wrapped inventory 16개 누락
 

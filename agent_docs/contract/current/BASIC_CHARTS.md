@@ -115,10 +115,14 @@ createBarPlot({
 ```
 
 - Stable default ID is `barPlot`.
-- Hierarchy: `createBarMark`, `encodeX`, `encodeY`, optional `encodeColor`/`encodeBarWidth`, optional `createGuides`.
+- Hierarchy: `createBarMark`, category-first position actions (`encodeX`→`encodeY` vertically,
+  `encodeY`→`encodeX` horizontally), optional `encodeColor`/`encodeBarWidth`, optional `createGuides`.
 - `x`/`y` field strings and option objects without `fieldType` infer finite numeric data as quantitative and
   other supported scalar data as nominal. Explicit `fieldType` remains authoritative for ordinal numeric categories
   and temporal fields.
+- The positional owner infers `mean` for an omitted quantitative measure aggregate opposite a categorical position
+  in either direction. Horizontal temporal categories accept the same temporal scale vocabulary as vertical ones.
+  Temporal categories do not aggregate or stack; the quantitative measure owns those options.
 - Aggregate, ranged, vertical/horizontal, group/stack/fill/overlay/diverging behavior stays owned by the existing bar
   position and `color.layout` policies. The facade does not introduce a second layout option.
 - Constant appearance belongs to `bar`; field-driven color stays top-level. Width reuses the exact `encodeBarWidth`
@@ -134,7 +138,8 @@ createBarPlot({
 
 ### Value coverage — `createBarPlot`
 
-- ✅ Covered: shortest aggregate call, stable/explicit ID and explicit/current data.
+- ✅ Covered: shortest vertical/horizontal shorthand, ordinal/temporal horizontal category, preserved mean inference,
+  category-first child equivalence after Canvas/style edits, stable/explicit ID and explicit/current data.
 - ✅ Covered: vertical grouped, horizontal stacked, color layout, band width and constant appearance.
 - ✅ Covered: guide default/disable, caller ownership, invalid nested target/layout and immutable failure.
 - ✅ Covered: Browser Canvas, Node PNG and approved primitive equality.

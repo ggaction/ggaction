@@ -935,14 +935,20 @@ async function testTypeScriptConsumer(directory) {
         bin: { maxBins: 10 }
       }
     };
-    const invalidBarHorizontalTime: CreateBarPlotOptions = {
+    const horizontalTemporalBar: CreateBarPlotOptions = {
       x: { field: "value", aggregate: "sum" },
       y: {
         field: "time",
-        // @ts-expect-error Horizontal bar categories cannot use temporal scales.
-        fieldType: "temporal"
+        fieldType: "temporal",
+        scale: { type: "time", nice: true }
       }
     };
+    const invalidTemporalBarCategory: CreateBarPlotOptions = {
+      x: { field: "value", aggregate: "sum" },
+      // @ts-expect-error Temporal categories cannot aggregate or use band scales.
+      y: { field: "time", fieldType: "temporal", aggregate: "sum", scale: { type: "band" } }
+    };
+    void invalidTemporalBarCategory;
     const invalidCenteredBars: CreateBarPlotOptions = {
       x: { field: "category", fieldType: "nominal" },
       y: { field: "value", aggregate: "sum" },
@@ -964,7 +970,7 @@ async function testTypeScriptConsumer(directory) {
       invalidSizeNice,
       invalidZeroSupportingLog,
       invalidBarYBin,
-      invalidBarHorizontalTime,
+      horizontalTemporalBar,
       invalidCenteredBars,
       invalidHorizonYScale
     ];
