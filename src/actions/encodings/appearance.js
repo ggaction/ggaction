@@ -201,9 +201,9 @@ const encodeOpacity = action(
       validateOpacityValue(args.value, "encodeOpacity");
       const { opacity, ...config } = this.markConfigs[target] ?? {};
       void opacity;
-      const withoutLegend = this.guideConfigs.legend?.opacity === undefined
-        ? this
-        : this.removeOpacityLegend();
+      const withoutLegend = this.guideConfigs.legend?.opacity?.target === target
+        ? this.removeOpacityLegend()
+        : this;
       const next = withoutLegend
         .clearOpacityEncoding({ target })
         ._withoutMaterializationConfig(["marks", target, "opacity"])

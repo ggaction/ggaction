@@ -1123,6 +1123,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 ## `encodeOpacity`
 
 - Signature: `encodeOpacity({ value, target? } | { field, target?, fieldType?, scale? })`
+- 상수로 전환할 때 target이 소유한 opacity legend만 제거하며 다른 layer의 범례는 보존한다.
 - `value`: field와 mutually exclusive인 finite `[0, 1]` number.
 - `field`: value와 mutually exclusive인 quantitative point field. auto linear range는 `[0.2, 1]`이다.
 - `target`: optional point ID.
