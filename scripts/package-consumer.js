@@ -926,6 +926,19 @@ async function testNodeConsumer(directory) {
     assert.match(svg, /<title>Package consumer chart<\\/title>/);
     assert.match(svg, /<circle /);
 
+    const textSource = chart().createCanvas({ width: 400, height: 300, margin: 40 })
+      .createData({ values: [{ x: 1, y: 2, label: "Alpha" }, { x: 2, y: 4, label: "Beta" }] })
+      .createPointMark().createTextMark({ source: "point" }).encodeText({ field: "label" });
+    assert.deepEqual(textSource.graphicSpec.objects.text.items, []);
+    const sourceReady = textSource.encodeX({ target: "point", field: "x" })
+      .encodeY({ target: "point", field: "y" });
+    assert.deepEqual(sourceReady.graphicSpec.objects.text.items.map(i => i.properties.text), ["Alpha", "Beta"]);
+    const reboundText = sourceReady.encodeX({ target: "point", field: "x", scale: { id: "rebound", domain: [0, 5] } })
+      .editScale({ id: "rebound", domain: [0, 10] });
+    assert.deepEqual(reboundText.graphicSpec.objects.text.items.map(i => i.properties.x),
+      reboundText.graphicSpec.objects.point.items.map(i => i.properties.x));
+    assert.throws(() => sourceReady.createTextMark({ id: "invalid", source: "point", data: "data" }), /mutually exclusive/);
+
     const fontWeightProgram = chart()
       .createCanvas({ width: 160, height: 80, margin: 12 })
       .createData({ id: "labels", values: [{ x: 0.5, y: 0.5 }] })
@@ -2160,6 +2173,12 @@ async function testTypeScriptConsumer(directory) {
     void lastAction;
     void withoutXAxis;
     void invalidTransform;
+
+    chart().createTextMark({ source: "points", text: "Label" }).editTextMark({ dx: 2 });
+    // @ts-expect-error Source is a mark ID.
+    chart().createTextMark({ source: 1 });
+    // @ts-expect-error Source is a creation option, not an appearance edit.
+    chart().editTextMark({ source: "points", dx: 2 });
 
     const opacityLegendTypes = chart().createCanvas({ width: 1200, height: 1000, margin: 300 })
       .createData({ values: [{ x: 0, y: 0, m: 0 }, { x: 1, y: 1, m: 1 }] })

@@ -596,10 +596,17 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 ## `createTextMark`
 
-- Signature: `createTextMark({ id?, data?, text?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy? } = {})`.
+- Signature: `createTextMark({ id?, data?, source?, text?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy? } = {})`.
 - The first omitted ID resolves to `"text"`. Passing `data` explicitly creates an independent text layer; otherwise
   the current compatible point, bar, rect, rule, or complete arc layer, then one unique compatible layer, supplies data,
   coordinate, compatible position encodings, and a persisted semantic `source` relation.
+- Explicit `source` selects an existing point/bar/rule/rect/arc with data, regardless of current mark or dataset.
+  It is mutually exclusive with `data`. Invalid IDs, missing layers and unsupported source kinds reject before creation.
+  An explicit source may be incomplete: content and appearance persist, no text items are created until its position is
+  complete, and later source encoding actions materialize the labels. Automatic inference retains its existing eligibility.
+  Source position reassignment, scale edits and position removal/restoration refresh attached labels through the persisted
+  source relation, including when inherited encoding scale IDs differ from the source's current scale IDs.
+  `source` is creation-only; `editTextMark` remains an appearance editor.
 - `text` is a constant-content shorthand for wrapped `encodeText({ value: text })`. Appearance options use wrapped
   `editTextMark`; defaults are theme text fill, opacity `1`, 12px sans-serif normal text, left/alphabetic alignment,
   zero rotation, and zero offsets.
@@ -614,14 +621,14 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 ### Formal values — `createTextMark`
 
-- Implemented: `createTextMark({ id?: UserId; data?: UserId; text?: unknown; fill?: NonEmptyString; opacity?: UnitInterval; fontSize?: PositiveFinite; fontFamily?: NonEmptyString; fontWeight?: NonEmptyString | Finite; align?: "left" | "right" | "center" | "start" | "end"; baseline?: "top" | "hanging" | "middle" | "alphabetic" | "ideographic" | "bottom"; rotation?: Finite; dx?: Finite; dy?: Finite } = {})`.
+- Implemented: `createTextMark({ id?: UserId; data?: UserId; source?: UserId; text?: unknown; fill?: NonEmptyString; opacity?: UnitInterval; fontSize?: PositiveFinite; fontFamily?: NonEmptyString; fontWeight?: NonEmptyString | Finite; align?: "left" | "right" | "center" | "start" | "end"; baseline?: "top" | "hanging" | "middle" | "alphabetic" | "ideographic" | "bottom"; rotation?: Finite; dx?: Finite; dy?: Finite } = {})`.
 - Proposed (NOT IMPLEMENTED): interactive tooltips.
 
 ### Value coverage — `createTextMark`
 
 - ✅ Covered: deterministic ID, explicit/inferred data, point/bar/rule/arc source inference, incomplete creation, constant
   content shorthand, explicit typography, offsets, ambiguity and invalid options.
-- Evidence: `test/unit/actions/marks/text-mark.test.js` and the annotated IMDb Gate pair.
+- Evidence: `test/unit/actions/marks/text-mark.test.js`, `test/unit/actions/marks/text-source.test.js`, installed package runtime/type probes, and the annotated IMDb chart pair.
 
 ## `editTextMark`
 

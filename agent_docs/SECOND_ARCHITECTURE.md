@@ -1653,7 +1653,10 @@ stack과 bar width는 적용하지 않는다. Missing field는 placeholder 없�
 제외한다. Rect의 materialization/selection owner는 같은 resolved row grain을 공유하므로 cell identity와 graphic
 index가 rematerialization 뒤에도 source-index 기준으로 안정적이다.
 
-Text annotation은 current 또는 unique compatible point/bar/rect/rule layer를 semantic `source`로 저장한다.
+Text annotation은 explicit source 또는 current/unique compatible point/bar/rect/rule/arc layer를 semantic `source`로 저장한다.
+Explicit source는 미완성이어도 관계를 저장하며 capability owner가 source readiness를 검사한다. Position encoding plan과
+scale edit은 직접 scale consumer 뒤에 source-dependent label을 재계산한다. 미완성으로 돌아가면 기존 label을 지우고
+완성 시 복구한다. 새 scale binding도 inherited text scale ID가 아닌 source relation을 통해 추적한다.
 Position encoding과 coordinate도 새 text layer에 명시적으로 복사하지만 concrete anchor는 source의 final
 visual item grain에서 결정한다. 따라서 aggregate bar는 source row가 아니라 final bar마다 하나의 label을
 만들고 rect는 cell center, rule은 final endpoint에 붙는다. Rect source에서 text fill을 생략하면 realized cell

@@ -647,6 +647,7 @@ type ScaleType =
   rule, xOffset와 strokeDash grains는 topology가 달라질 수 있어 명시적으로 거부한다.
 - Complete patch와 shared-consumer channel compatibility를 먼저 검증한 뒤 semantic scale을 수정하고,
   scale, mark, axes, grids와 legend consumer를 wrapped materialization plan으로 갱신한다.
+- Source-attached text는 source의 current scale consumer에서 dependency를 따라 갱신한다. Text의 inherited scale ID가 이전 binding을 유지해도 라벨이 이전 위치에 남지 않는다. Evidence: `test/unit/actions/marks/text-source.test.js`.
 - 실패하면 이전 program의 semantic, graphic, context와 trace는 변하지 않는다.
 
 - `radialMapping` 변경은 기존 모든 measured Arc 및 radius axis/grid를 갱신한다. 생략하면 보존한다. Explicit undefined는 제거지만 aggregate radius consumer가 남아 있으면 오류다. 해당 encoding을 제거한 orphan scale에서만 ordinary radius로 명시적으로 전환한다. Type 변경으로 mapping을 암묵적으로 제거하지 않는다.

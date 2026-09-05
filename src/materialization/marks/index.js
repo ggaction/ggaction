@@ -4,6 +4,7 @@ import {
   POSITION_ENCODING_CHANNELS
 } from "../../core/vocabulary.js";
 import { getMarkMaterializationPolicy } from "./policies.js";
+import { buildMaterializationPlan } from "../planner.js";
 
 export {
   canMaterializeArc,
@@ -14,7 +15,8 @@ export {
   canMaterializeRect,
   canMaterializeRule,
   canMaterializeText,
-  canMaterializeTick
+  canMaterializeTick,
+  isTextSource
 } from "./capabilities.js";
 
 export function getLayerScaleIds(layer) {
@@ -47,10 +49,11 @@ export function getMarkMaterializationStep(program, layer) {
 }
 
 export function getSourceDependentMarkSteps(program, sourceId) {
-  return program.semanticSpec.layers.flatMap(layer =>
+  return (program.semanticSpec.layers ?? []).flatMap(layer =>
     layer.source === sourceId &&
     getMarkMaterializationPolicy(layer)?.sourceDependent === true
-      ? [getMarkMaterializationStep(program, layer)].filter(
+      ? [getMarkMaterializationStep(program, layer) ??
+          getExistingMarkRematerializationStep(program, layer)].filter(
           step => step !== undefined
         )
       : []
@@ -71,23 +74,20 @@ export function getPositionEncodingMaterializationSteps(program, layer, scaleId)
     )
     .map(candidate => getMarkMaterializationStep(program, candidate))
     .filter(step => step !== undefined);
+  const dependentMarks = [mark, ...sharedConsumerMarks]
+    .flatMap(step => getSourceDependentMarkSteps(program, step.args.id));
   const scale = {
     op: "rematerializeScale",
     args: sharedConsumerMarks.length === 0
       ? { id: scaleId }
       : { id: scaleId, marks: false }
   };
-  if (!complete) {
-    if (policy.positionEncoding.incomplete === "scale") {
-      return [scale, ...sharedConsumerMarks];
-    }
-    return policy.positionEncoding.scaleFirst
+  const direct = !complete && policy.positionEncoding.incomplete === "scale"
+    ? [scale, ...sharedConsumerMarks]
+    : policy.positionEncoding.scaleFirst
       ? [scale, mark, ...sharedConsumerMarks]
       : [mark, ...sharedConsumerMarks];
-  }
-  return policy.positionEncoding.scaleFirst
-    ? [scale, mark, ...sharedConsumerMarks]
-    : [mark, ...sharedConsumerMarks];
+  return buildMaterializationPlan({ marks: [...direct, ...dependentMarks] });
 }
 
 export function getScaleConsumerMaterializationMode(layer, channel) {

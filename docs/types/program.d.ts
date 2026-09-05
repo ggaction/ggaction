@@ -2332,6 +2332,8 @@ export type TextFormat = "auto" | `.${number}f`;
 export interface TextMarkOptions {
   id?: string;
   data?: string;
+  /** Explicit source mark. Mutually exclusive with data; may be incomplete. */
+  source?: string;
   text?: unknown;
   fill?: string;
   opacity?: number;
@@ -2345,7 +2347,7 @@ export interface TextMarkOptions {
   dy?: number;
 }
 
-export interface EditTextMarkOptions extends Omit<TextMarkOptions, "id" | "data" | "text"> {
+export interface EditTextMarkOptions extends Omit<TextMarkOptions, "id" | "data" | "source" | "text"> {
   target?: string;
 }
 

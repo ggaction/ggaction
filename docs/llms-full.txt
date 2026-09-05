@@ -5483,6 +5483,23 @@ labels anchor at cell centers, and arc labels anchor at sector centers. Pass
 `data` explicitly to assemble an independent text layer with `encodeX` and
 `encodeY`.
 
+Use `source` to select a particular mark when a chart has several layers:
+
+```javascript
+// Fragment: layeredChart contains a mark named "bars".
+const labels = layeredChart
+  .createTextMark({ id: "bar-labels", source: "bars", dy: -4, align: "center" })
+  .encodeText({ field: "value" });
+```
+
+An explicit source wins over the current mark and dataset. Use either `source`
+or `data`; supplying both is an error. The source must be an existing point,
+bar, rect, rule, or arc, but its position encodings may still be incomplete.
+Labels appear when the source becomes complete. They follow later source
+position and scale changes, disappear when a required position is removed, and
+return when it is restored. `source` is a creation option; `editTextMark` edits
+appearance.
+
 For an aggregate Bar or a measured Rose/Radial Bar, labeling the measure field
 uses its final aggregate value, even when every contributing row has the same
 value. For example, two values of 1 in one category produce a sum label of 2.
@@ -5490,7 +5507,7 @@ Category labels continue to show the category itself.
 These source-owned labels follow the source's scale domain; adding them or
 resizing does not expand a normalized stack domain with raw source values.
 
-Creation options are `id`, `data`, `text`, `fill`, `opacity`, `fontSize`,
+Creation options are `id`, `data`, `source`, `text`, `fill`, `opacity`, `fontSize`,
 `fontFamily`, `fontWeight`, `align`, `baseline`, `rotation`, `dx`, and `dy`.
 The `text` option is constant-content shorthand.
 

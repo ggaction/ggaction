@@ -36,6 +36,7 @@
 - [x] W2 combined size의 edge-dependent default #109 — [검증](RESULTS_W2_COMBINED_SIZE_APPEARANCE.md)
 - [x] W2 C2 전체 family×edge×lifecycle 통합 matrix — [결과](RESULTS_W2_INTEGRATION.md)
 - [ ] R6-P5-W3 Final-item labels·reference·common format
+- [x] W3 A explicit text source와 source dependency replay, #110 — [계약](CONTRACT_W3_TEXT_SOURCE.md), [결과](RESULTS_W3_TEXT_SOURCE.md)
 - [ ] R6-P5-W4 Program theme와 local override
 - [ ] R6-P5-W5 Opt-in fitting과 guide label layout
 - [ ] 모든 시각 variant의 primitive target 작성·표시·V 승인

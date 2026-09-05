@@ -6,7 +6,8 @@ import {
 } from "../../../grammar/text.js";
 import {
   canMaterializeArc,
-  canMaterializeText
+  canMaterializeText,
+  isTextSource
 } from "../../../materialization/marks/index.js";
 import { resolveTextGraphicItems } from "../../../materialization/text.js";
 import { findLayer, resolveEligibleLayer } from "../../../selectors/layers.js";
@@ -25,10 +26,9 @@ const STYLE_OPTIONS = Object.freeze([
   "fill", "opacity", "fontSize", "fontFamily", "fontWeight",
   "align", "baseline", "rotation", "dx", "dy"
 ]);
-const CREATE_OPTIONS = Object.freeze(["id", "data", "text", ...STYLE_OPTIONS]);
+const CREATE_OPTIONS = Object.freeze(["id", "data", "source", "text", ...STYLE_OPTIONS]);
 const EDIT_OPTIONS = Object.freeze(["target", ...STYLE_OPTIONS]);
 const REMATERIALIZE_OPTIONS = Object.freeze(["id", "replayLayout"]);
-const SOURCE_TYPES = new Set(["point", "bar", "rule", "rect", "arc"]);
 
 function sourceMatchesData(program, layer, requestedData) {
   if (requestedData === undefined || layer?.data === requestedData) return true;
@@ -37,8 +37,7 @@ function sourceMatchesData(program, layer, requestedData) {
 
 function eligibleSource(program, layer, requestedData) {
   if (
-    !SOURCE_TYPES.has(layer?.mark?.type) ||
-    layer.data === undefined ||
+    !isTextSource(layer) ||
     !sourceMatchesData(program, layer, requestedData)
   ) return false;
   if (layer.mark.type === "arc") return canMaterializeArc(program, layer);
@@ -47,6 +46,16 @@ function eligibleSource(program, layer, requestedData) {
 }
 
 function resolveTextInheritance(program, args) {
+  if (Object.hasOwn(args, "source")) {
+    if (Object.hasOwn(args, "data")) {
+      throw new Error("createTextMark source and data are mutually exclusive.");
+    }
+    return textInheritance(program, resolveEligibleLayer(program, {
+      target: validateUserId(args.source, "Text source id"),
+      predicate: isTextSource,
+      label: "text source"
+    }));
+  }
   if (Object.hasOwn(args, "data")) return undefined;
   const requestedData = program.context.currentData;
   const candidates = program.semanticSpec.layers.filter(layer =>
@@ -60,10 +69,14 @@ function resolveTextInheritance(program, args) {
       : undefined;
   if (source === undefined && candidates.length > 1) {
     throw new Error(
-      "Text source inference is ambiguous; provide data and encode its position explicitly."
+      "Text source inference is ambiguous; provide source, or data and encode its position explicitly."
     );
   }
   if (source === undefined) return undefined;
+  return textInheritance(program, source);
+}
+
+function textInheritance(program, source) {
   return {
     source: source.id,
     data: source.data,

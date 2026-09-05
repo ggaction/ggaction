@@ -3,7 +3,7 @@ import { planColorLegendTransition, applyColorLegendTransition } from "../guides
 import { action } from "../../core/action.js";
 import { validateUserId } from "../../core/identifiers.js";
 import { validateOptionObject } from "../../core/validation.js";
-import { getMarkMaterializationStep } from "../../materialization/marks/index.js";
+import { getMarkMaterializationStep, getSourceDependentMarkSteps } from "../../materialization/marks/index.js";
 import {
   applyMaterializationPlan
 } from "../../materialization/dependencies.js";
@@ -65,7 +65,10 @@ function planMarkRematerialization(program, consumers) {
     seen.add(consumer.layer.id);
     plan.push(step);
   }
-  return plan;
+  return [
+    ...plan,
+    ...consumers.flatMap(consumer => getSourceDependentMarkSteps(program, consumer.layer.id))
+  ];
 }
 
 function applyScaleEdit(program, { id, scale, consumers, definition, legendTransition }) {
