@@ -6,6 +6,7 @@ import {
 import { resolveOffsetScaleDefinition } from "../scales/definitions.js";
 import {
   applyEncodingScale,
+  applyDetachedScaleRematerialization,
   rematerializeEncoding,
   resolveReassignmentScaleOptions,
   resolveTarget,
@@ -100,11 +101,11 @@ function createOffsetEncoding(channel) {
         reassignment: layer.encoding?.[channel]?.scale === scale.id
       });
       if (layer.mark.type === "bar" && layer.encoding?.color === undefined) {
-        return next
+        return applyDetachedScaleRematerialization(next
           .rematerializeScale({ id: scale.id })
-          .editGraphics({ target, property: "length", value: 0 });
+          .editGraphics({ target, property: "length", value: 0 }), [layer]);
       }
-      return rematerializeEncoding(next, target, channel, scale.id);
+      return rematerializeEncoding(next, target, channel, scale.id, layer);
     }
   );
 }

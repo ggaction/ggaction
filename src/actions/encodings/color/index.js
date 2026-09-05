@@ -15,7 +15,10 @@ import {
   validateLineSeriesCompatibility,
   validateOptions
 } from "../shared.js";
-import { applyMaterializationPlan } from "../../../materialization/dependencies.js";
+import {
+  applyDetachedScaleRematerialization,
+  applyMaterializationPlan
+} from "../../../materialization/dependencies.js";
 import {
   planEncodingRematerialization
 } from "../../../materialization/encodings.js";
@@ -155,14 +158,14 @@ const encodeColor = action(
       field: args.field
     });
 
-    return applyMaterializationPlan(
+    return applyDetachedScaleRematerialization(applyMaterializationPlan(
       next,
       planEncodingRematerialization(next, {
         target,
         channel: "color",
         scale: scale.id
       })
-    );
+    ), [layer]);
   }
 );
 

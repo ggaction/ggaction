@@ -7,6 +7,7 @@ import {
 import { resolveStrokeDashScaleDefinition } from "../scales/definitions.js";
 import {
   applyEncodingScale,
+  applyDetachedScaleRematerialization,
   rematerializeEncoding,
   resolveReassignmentScaleOptions,
   resolveTarget,
@@ -89,9 +90,10 @@ const encodeStrokeDash = action(
         value: args.value
       });
       next = reconcileLegendAfterDashRemoval(next, target);
-      return layer.mark.type === "rule"
+      const materialized = layer.mark.type === "rule"
         ? next.rematerializeRuleMark({ id: target })
         : next.rematerializeLineMark({ id: target });
+      return applyDetachedScaleRematerialization(materialized, [layer]);
     }
 
     const fieldType = validateNominalFieldType(args.fieldType ?? "nominal");
@@ -120,7 +122,7 @@ const encodeStrokeDash = action(
       reassignment: previous?.scale === scale.id
     });
 
-    return rematerializeEncoding(next, target, "strokeDash", scale.id);
+    return rematerializeEncoding(next, target, "strokeDash", scale.id, layer);
   }
 );
 

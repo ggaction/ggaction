@@ -213,6 +213,9 @@ independent assembly and does not inherit position encodings.
 
 ## `removeMark`
 
+제거한 owner와 owned child가 사용하던 scale에 다른 consumer가 남으면 domain과 그 consumer의
+mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named scale은 보존한다.
+
 - Signature: `removeMark({ target? } = {})`.
 - Resolves one stable user-authored mark owner. Generated composite children cannot be removed directly; their
   owner must be selected. The action removes the owner, recursively owned layers and graphics, mark configs,

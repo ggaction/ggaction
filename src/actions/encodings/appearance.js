@@ -15,6 +15,7 @@ import {
 } from "../../selectors/layers.js";
 import {
   applyEncodingScale,
+  applyDetachedScaleRematerialization,
   clearMarkGraphic,
   rematerializeEncoding,
   resolveReassignmentScaleOptions,
@@ -73,7 +74,7 @@ function encodeAppearanceField(program, channel, args, operation) {
   next = applyEncodingScale(next, scale, requestedScale, {
     reassignment: previous?.scale === scale.id
   });
-  return rematerializeEncoding(next, target, channel, scale.id);
+  return rematerializeEncoding(next, target, channel, scale.id, layer);
 }
 
 const encodeRadius = action(
@@ -207,9 +208,10 @@ const encodeOpacity = action(
         .clearOpacityEncoding({ target })
         ._withoutMaterializationConfig(["marks", target, "opacity"])
         ._withMarkConfig(target, { ...config, opacity: args.value });
-      return layer.mark.type === "rule"
+      const materialized = layer.mark.type === "rule"
         ? next.rematerializeRuleMark({ id: target })
         : next.rematerializePointMark({ id: target });
+      return applyDetachedScaleRematerialization(materialized, [layer]);
     }
     const fieldType = args.fieldType ?? "quantitative";
     if (fieldType !== "quantitative") {
@@ -239,7 +241,7 @@ const encodeOpacity = action(
     next = applyEncodingScale(next, scale, requestedScale, {
       reassignment: previous?.scale === scale.id
     });
-    return rematerializeEncoding(next, target, "opacity", scale.id);
+    return rematerializeEncoding(next, target, "opacity", scale.id, layer);
   }
 );
 

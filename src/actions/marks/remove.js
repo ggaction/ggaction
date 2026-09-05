@@ -3,6 +3,7 @@ import { validateUserId } from "../../core/identifiers.js";
 import { validateKeys } from "../../core/validation.js";
 import { findDataset } from "../../selectors/datasets.js";
 import { findLayer } from "../../selectors/layers.js";
+import { applyDetachedScaleRematerialization } from "../../materialization/dependencies.js";
 import {
   getPositionChannelDefinition,
   POSITION_CHANNELS
@@ -198,6 +199,7 @@ export const removeMark = action(
     validateKeys(args, OPTIONS, "removeMark");
     const owner = resolveOwner(this, args.target);
     const ids = collectClosure(this, owner.id);
+    const previousLayers = ids.map(id => findLayer(this, id));
     const derived = ownedDerivedData(this, ids);
     const positionScales = usedPositionScales(this, ids);
     let next = this;
@@ -236,6 +238,7 @@ export const removeMark = action(
         next = next.releaseDerivedData({ id });
       }
     }
+    next = applyDetachedScaleRematerialization(next, previousLayers);
     return next._withContext({
       ...(ids.includes(this.context.currentMark) ? { currentMark: undefined } : {}),
       ...(selectionCleanup.selectionIds.includes(this.context.currentSelection)

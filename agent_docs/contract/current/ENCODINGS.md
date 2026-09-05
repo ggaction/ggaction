@@ -7,6 +7,9 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 공유 scale의 domain/range를 갱신하면 변경한 target뿐 아니라 모든 compatible consumer와
 그 consumer에 붙은 source-dependent mark를 같은 완료 상태로 rematerialize한다. Data filtering과
 appearance encoding도 이 규칙을 따른다. 근거: test/contracts/shared-scale-refresh.test.js.
+Encoding 제거, 새 scale ID로의 재연결, field-driven appearance의 상수 전환은 이전 scale의
+남은 consumer도 다시 계산한다. Automatic domain은 이탈한 consumer의 값을 제외하고 explicit domain은
+보존한다. Consumer가 없는 named scale은 유지하며 해석을 강제하지 않는다.
 
 Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
 

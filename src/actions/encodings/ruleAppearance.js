@@ -7,6 +7,7 @@ import { readQuantitativeField } from "../../grammar/scales/index.js";
 import { resolveStrokeWidthScaleDefinition } from "../scales/definitions.js";
 import {
   applyEncodingScale,
+  applyDetachedScaleRematerialization,
   rematerializeEncoding,
   resolveReassignmentScaleOptions,
   resolveTarget,
@@ -50,7 +51,7 @@ const encodeStrokeWidth = action(
       throw new Error("encodeStrokeWidth requires exactly one of value or field.");
     }
     if (hasValue) {
-      const { id } = resolveTarget(this, args.target, ["rule"], "rule mark");
+      const { id, layer } = resolveTarget(this, args.target, ["rule"], "rule mark");
       let next = this.guideConfigs.legend?.strokeWidth?.target === id
         ? this.removeLegend({ target: id })
         : this;
@@ -60,12 +61,13 @@ const encodeStrokeWidth = action(
           remove: true
         });
       }
-      return next
+      next = next
         ._withMarkConfig(id, {
           ...next.markConfigs[id],
           strokeWidth: validateRuleStrokeWidth(args.value)
         })
         .rematerializeRuleMark({ id });
+      return applyDetachedScaleRematerialization(next, [layer]);
     }
     const { id, dataset, layer } = resolveTarget(
       this,
@@ -100,7 +102,7 @@ const encodeStrokeWidth = action(
     next = applyEncodingScale(next, scale, requestedScale, {
       reassignment: previous?.scale === scale.id
     });
-    return rematerializeEncoding(next, id, "strokeWidth", scale.id);
+    return rematerializeEncoding(next, id, "strokeWidth", scale.id, layer);
   }
 );
 

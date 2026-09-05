@@ -6,7 +6,7 @@ import {
   getScaleConsumerMarkSteps,
   getSourceDependentMarkSteps
 } from "./marks/index.js";
-import { requireLayer } from "../selectors/layers.js";
+import { findLayer, requireLayer } from "../selectors/layers.js";
 import {
   applyMaterializationPlan,
   buildMaterializationPlan
@@ -96,6 +96,27 @@ export function applyLayerDataRematerialization(program, id) {
     program,
     planLayerDataRematerialization(program, id)
   );
+}
+
+export function applyDetachedScaleRematerialization(program, previousLayers) {
+  const retained = new Set(program.semanticSpec.layers.flatMap(getLayerScaleIds));
+  const scaleIds = [...new Set(previousLayers.flatMap(layer => {
+    const current = findLayer(program, layer.id);
+    const currentIds = current === undefined ? [] : getLayerScaleIds(current);
+    return getLayerScaleIds(layer).filter(id => !currentIds.includes(id) && retained.has(id));
+  }))];
+  if (scaleIds.length === 0) return program;
+  const directMarks = getScaleConsumerMarkSteps(program, scaleIds);
+  return applyMaterializationPlan(program, buildMaterializationPlan({
+    scales: scaleIds.map(id => ({
+      op: "rematerializeScale", args: { id, guides: false, marks: false }
+    })),
+    marks: [
+      ...directMarks,
+      ...directMarks.flatMap(step => getSourceDependentMarkSteps(program, step.args.id))
+    ],
+    guides: scaleIds.flatMap(id => planScaleGuideRematerialization(program, id))
+  }));
 }
 
 export { applyMaterializationPlan } from "./planner.js";

@@ -2,7 +2,10 @@ import { validateUserId } from "../../core/identifiers.js";
 import { findDataset } from "../../selectors/datasets.js";
 import { resolveEligibleLayer } from "../../selectors/layers.js";
 import { hasMaterializedLegend } from "../../materialization/legends.js";
-import { applyMaterializationPlan } from "../../materialization/dependencies.js";
+import {
+  applyDetachedScaleRematerialization,
+  applyMaterializationPlan
+} from "../../materialization/dependencies.js";
 import { planEncodingRematerialization } from "../../materialization/encodings.js";
 import { findSemanticScale } from "../../selectors/scales.js";
 import { validateOptionObject } from "../../core/validation.js";
@@ -31,11 +34,16 @@ export function setEncodingProperties(
   return next;
 }
 
-export function rematerializeEncoding(program, target, channel, scale) {
-  return applyMaterializationPlan(
+export { applyDetachedScaleRematerialization };
+
+export function rematerializeEncoding(program, target, channel, scale, previousLayer) {
+  const next = applyMaterializationPlan(
     program,
     planEncodingRematerialization(program, { target, channel, scale })
   );
+  return previousLayer === undefined
+    ? next
+    : applyDetachedScaleRematerialization(next, [previousLayer]);
 }
 
 export function clearMarkGraphic(program, target) {
