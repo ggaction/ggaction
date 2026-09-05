@@ -46,6 +46,16 @@ B/V는 ready-for-review, X는 planned다. 새 시각 target과 bundle 예산은 
 - 승인 전 차단: 해당 variant의 public flow 구현과 public-render 동등성 완료 선언.
 - 예외 처리: 출력이 바뀌지 않는 교정은 영향 없음을 A에서 입증하고 V 범위를 명시적으로 N/A 처리한다. 자동 승인으로 표기하지 않는다.
 
+## B/V 원격 검토 지점
+
+- Review package commit: [`ca820fa941f4359e814ee6f65a01e574512f5c08`](https://github.com/ggaction/ggaction/commit/ca820fa941f4359e814ee6f65a01e574512f5c08).
+- Remote: `origin/codex/roadmap6-hierarchical-actions` push 완료를 확인했다.
+- Scope: W1 구현 checkpoint와 full budget 결정안, V1/V2의 6개 primitive·reference·manifest·tests·render evidence.
+- 실제 결과: npm test 2,381/2,381, V focused 10/10, V PNG 6/6, 기존 대표 PNG 19/19.
+  Installed package는 full gzip 231,731 > 230,000으로 실패한다. B 결정 뒤 해소할 조건이다.
+- B/V 사용자 승인: **없음**. 현재 상태는 ready-for-review다. A의 “ㄱㄱ”를 이 추가 결정이나
+  새 시각 target 승인으로 재사용하지 않는다. 예산 처분·새 public flow·X 완료는 남아 있다.
+
 ## R6-P2-X — Result and closeout
 
 - 상태: planned

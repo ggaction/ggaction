@@ -256,14 +256,16 @@
         "evidence": "phase2/visual-results.json",
         "primitiveVariants": 6,
         "focusedTests": 10,
-        "renderTests": 6
+        "renderTests": 6,
+        "reviewPackageCommit": "ca820fa941f4359e814ee6f65a01e574512f5c08"
       },
       "bundleReview": {
         "file": "phase2/BUNDLE_REVIEW.md",
         "fullGzipBytes": 231731,
         "currentFullLimit": 230000,
         "proposedFullLimit": 235000,
-        "packageStatus": "failed-full-ceiling"
+        "packageStatus": "failed-full-ceiling",
+        "reviewPackageCommit": "ca820fa941f4359e814ee6f65a01e574512f5c08"
       }
     },
     {
