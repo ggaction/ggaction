@@ -18,6 +18,12 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - Series policy leaves: `layer[id].layout.mode`는 group/stack/fill/overlay/diverging/center,
   `layer[id].mark.missing`은 error/break, `layer[id].encoding.group.inferredFrom`은 color/offset이다.
   `layer[id].layout` container 제거를 지원한다. 이 primitive 저장은 layout·path segmentation을 실행하지 않는다.
+- Measured radial primitive leaves: `scale[id].radialMapping`은 `area | radius-length`,
+  `layer[id].encoding.radius.aggregate`는 기존 aggregate vocabulary를 저장한다. Materialization은
+  measured Arc에서 count/sum, equal-angle categorical theta, nonnegative finite aggregate와 positive maximum,
+  zero-based linear domain, increasing radius range 및 padAngle 0을 요구한다. Count는 field를 저장하지 않는다.
+  이 leaves의 저장 자체는 graphics를 바꾸지 않으며 후속 scale/Arc materialization이 같은 mapper를 사용한다.
+  일반 `encodeR` mapping 옵션과 Rose/Radial facade는 아직 Planned다.
 - Effect: 해당 path만 structural copy하고 기존 program을 보존한다. path가 dataset/layer/scale/coordinate를
   가리키면 current context를 내부적으로 갱신할 수 있다. graphic rematerialization은 자동으로 하지 않는다.
 - 오류: unknown path, closed vocabulary 위반, invalid transform/scale/guide value, existing source dataset
@@ -48,6 +54,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
   - ✅ Covered: structural copy and context inference without automatic graphic compilation.
   - ✅ Covered: encoding/legend branch와 complete layer removal, empty-parent pruning, idempotence와 dataset
     immutability.
+- Radial evidence: `test/unit/grammar/measured-radius.test.js`, `test/unit/actions/marks/measured-arc-primitives.test.js`.
 - Evidence: `test/unit/actions/primitives/edit-semantic.test.js`, `test/unit/actions/primitives/series-policy-state.test.js`.
 
 ## `createGraphics`
@@ -150,3 +157,5 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - Evidence: `test/unit/actions/primitives/edit-graphics.test.js`,
   `test/contracts/shared-graphic-validation.test.js`, and
   `test/unit/grammar/path-commands.test.js`.
+
+Measured radius의 양수 값이 수치 정밀도 때문에 inner radius와 구별되지 않으면 오류다. 양수 sector를 조용히 생략하거나 epsilon 값으로 대체하지 않는다.

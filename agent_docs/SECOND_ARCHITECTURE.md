@@ -745,6 +745,13 @@ Categorical legend의 선택적 `guide.legend.color/series.order`는 위치 orde
 보존한 item permutation을 계산한다. Linked positional scale은 guide dependency planner의 legend dependency에
 포함하며 reset은 order leaf를 제거한다. Invalid link나 연결 encoding 제거는 public action을 거부한다.
 
+Measured radius의 lower semantic state는 scale.radialMapping과 radius encoding.aggregate가 각각 mapping과
+category grain을 소유한다. Arc grammar는 합산값과 원본 sourceIndices를 함께 계산하고, scale consumer는 같은
+aggregate에서 [0,max] domain을 결정한다. 공통 continuous mapper가 area/length 의미를 적용하므로 Arc와 Polar
+axis/grid는 별도의 보정식을 갖지 않는다. Math는 outer radius로 정규화한 뒤 제곱하여 overflow를 피한다.
+명시적 Arc innerRadius provenance는 private mark config에서만 추적하여 explicit range와의 충돌을 검사하며,
+기본 innerRadius 0을 사용자가 선택한 ratio라고 추측하지 않는다. Public measured encoder와 facade는 아직 Planned다.
+
 ### Semantic scale
 
 Scale은 named semantic resource다.

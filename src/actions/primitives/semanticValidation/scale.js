@@ -1,3 +1,4 @@
+import { validateRadialMapping } from "../../../grammar/scales/radial.js";
 import {
   validateContinuousColorInterpolation,
   validateScalePropertyForType,
@@ -16,6 +17,7 @@ function validateOwnedProperty(existing, property) {
 export function validateScaleSemanticValue(program, parsed, value) {
   const property = parsed.path.join(".");
   const existing = findSemanticScale(program, parsed.id);
+  if (property === "radialMapping") return validateRadialMapping(value);
   if (property === "type") {
     validateSemanticScaleType(value);
     for (const owned of [

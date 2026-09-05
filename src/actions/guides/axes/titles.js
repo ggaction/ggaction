@@ -105,6 +105,11 @@ export function inferAxisTitleText(program, channel, scaleId) {
     const primary = layer.encoding?.[channel];
     const encoding = layer.mark?.type === "area" && Object.hasOwn(primary ?? {}, "datum")
       ? layer.encoding?.[`${channel}2`] : primary;
+    if (channel === "radius" && layer.mark?.type === "arc" &&
+      encoding?.scale === scaleId && encoding.aggregate === "count" && encoding.field === undefined) {
+      titles.add(encoding.title ?? "count");
+      continue;
+    }
     if (
       encoding?.scale === scaleId &&
       typeof encoding.field === "string" &&

@@ -26,7 +26,7 @@ import {
   validateScaleTypeForRole,
   validateTimeScaleType
 } from "../../grammar/scales/index.js";
-import { resolveArcAutoPositionRange } from "./policies/arc.js";
+import { resolveArcAutoPositionRange, resolveMeasuredRadiusDomain, validateMeasuredRadiusConsumers } from "./policies/arc.js";
 import { resolveTemporalBarBand } from "./policies/bar.js";
 import { resolveOffsetScalePolicy } from "./policies/offset.js";
 import { resolveBinnedPositionDomain } from "./policies/binnedPosition.js";
@@ -140,6 +140,7 @@ function resolveContinuousScale({
     domain,
     range,
     ...(scale.clamp === undefined ? {} : { clamp: scale.clamp }),
+    ...(scale.radialMapping === undefined ? {} : { radialMapping: scale.radialMapping }),
     ...(scale.type === "log"
       ? {
           base: normalizeTransformParameters("log", {
@@ -190,7 +191,8 @@ export function resolveScaleMaterialization({
   valuesByConsumer,
   bounds,
   resolvedScales,
-  markConfigs
+  markConfigs,
+  thetaScales
 }) {
   const allValues = valuesByConsumer
     .flatMap(item => item.values)
@@ -247,7 +249,7 @@ export function resolveScaleMaterialization({
   }
   const domain = isDiscretizedColor
     ? discretizedScale.domain
-    : categoryOrderDomain ?? binnedDomain ?? seriesDomain ?? resolveDefaultDomain({
+    : resolveMeasuredRadiusDomain({ scale, channel, allValues }) ?? categoryOrderDomain ?? binnedDomain ?? seriesDomain ?? resolveDefaultDomain({
         scale,
         allValues,
         isOrdinalAppearance,
@@ -267,6 +269,7 @@ export function resolveScaleMaterialization({
     isOrdinalOffset,
     discretizedScale
   });
+  validateMeasuredRadiusConsumers({ scale, domain, range, consumers, markConfigs, thetaScales });
   if (channel === "shape" && domain.length > range.length) {
     throw new Error(
       `Shape scale "${id}" requires at least one distinct shape per domain value.`

@@ -1,3 +1,4 @@
+import { mapMeasuredRadiusValues } from "./radial.js";
 import { mapLinearValues } from "./continuous.js";
 import { mapTransformedValues } from "./transformed.js";
 import { SCALE_ROLES, validateScaleTypeForRole } from "./types.js";
@@ -9,6 +10,7 @@ export function isTransformedScaleType(type) {
 }
 
 export function mapContinuousScaleValues(values, scale) {
+  if (scale?.radialMapping !== undefined) return mapMeasuredRadiusValues(values, scale);
   if (isTransformedScaleType(scale?.type)) {
     validateScaleTypeForRole(scale.type, SCALE_ROLES.quantitativePosition);
     return mapTransformedValues(values, scale.domain, scale.range, {

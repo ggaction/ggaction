@@ -30,6 +30,7 @@ const ENCODING_PATHS = Object.freeze([
   "encoding.pathOrder.order",
   "encoding.theta.aggregate",
   "encoding.theta.weight",
+  "encoding.radius.aggregate",
   "encoding.theta.categoryOrder",
   "encoding.text.format",
   "encoding.parallel.dimensions",
@@ -68,7 +69,7 @@ const ENTITY_PATHS = Object.freeze({
     collection: "scales",
     properties: new Set([
       "type", "domain", "range", "nice", "zero", "clamp", "reverse",
-      "unknown", "base", "exponent", "constant", "interpolate",
+      "unknown", "base", "exponent", "constant", "interpolate", "radialMapping",
       "paddingInner", "paddingOuter", "padding", "align"
     ])
   },

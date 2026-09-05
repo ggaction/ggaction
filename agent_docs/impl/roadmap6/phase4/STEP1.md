@@ -17,7 +17,7 @@
 - [x] W1 lower endpoint/missing/range 구현 — focused 21/21, strict types 1/1, 정상 누적 2614/2614
 - [x] R6-P4-W1 Area baseline/range와 facade 기능·동등성 구현 — package B 승인·같은 tarball 전체 검증 통과
 - [x] R6-P4-W2 Color와 독립한 layout assignment 기능·호환 구현 — package B 승인·같은 tarball 전체 검증 통과
-- [ ] R6-P4-W3 Rose와 Radial bar
+- [ ] R6-P4-W3 Rose와 Radial bar — [하위 계산·primitive 기반 검증 완료](RESULTS_RADIAL_CORE.md), 공개 액션·시각 동등성 진행 중
 - [x] R6-P4-W4 Theta와 legend domain order — [구현·검증](RESULTS_W4.md)
 - [ ] R6-P4-W5 Diverging midpoint와 scale/legend transition
 - [ ] 모든 시각 variant의 primitive target 작성·표시·V 승인

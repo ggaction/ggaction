@@ -1,3 +1,4 @@
+import { findSemanticScale } from "../../selectors/scales.js";
 import { normalizePositionScaleChannel } from "../../core/vocabulary.js";
 import { resolveGraphicBounds } from "../../layout/canvas.js";
 import { resolveScaleMaterialization } from "../../materialization/scales/resolve.js";
@@ -18,6 +19,7 @@ export function resolveScalePreview(program, id) {
   const resolvedScale = resolveScaleMaterialization({ id, scale, channel, consumers, valuesByConsumer,
     bounds: ["color", "strokeDash", "strokeWidth", "shape", "size", "opacity", "xOffset", "yOffset"].includes(channel)
       ? undefined : resolveGraphicBounds(program),
-    resolvedScales: program.resolvedScales, markConfigs: program.markConfigs });
+    resolvedScales: program.resolvedScales, markConfigs: program.markConfigs, thetaScales: scale.radialMapping === undefined ? undefined : Object.fromEntries(consumers.map(({ layer }) =>
+      [layer.id, findSemanticScale(program, layer.encoding?.theta?.scale)])) });
   return { channel, consumers, valuesByConsumer, resolvedScale };
 }
