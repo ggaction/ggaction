@@ -79,6 +79,14 @@ export function createGapminderCountryLabelPrimitiveResult(gapminder) {
       target: "countryLabels",
       property: "y",
       value: resolution.items.map(item => item.y)
+    })
+    .createGuides({
+      axes: {
+        x: { title: { text: "Fertility" } },
+        y: { title: { text: "Life expectancy" } }
+      },
+      grid: { horizontal: true, vertical: true },
+      legend: false
     });
   if (leaders.length > 0) {
     program = program
@@ -131,14 +139,6 @@ export function createGapminderCountryLabelPrimitiveResult(gapminder) {
       });
   }
   program = program
-    .createGuides({
-      axes: {
-        x: { title: { text: "Fertility" } },
-        y: { title: { text: "Life expectancy" } }
-      },
-      grid: { horizontal: true, vertical: true },
-      legend: false
-    })
     .createTitle({
       text: "Fertility and Life Expectancy",
       subtitle: "Selected countries in 2005"

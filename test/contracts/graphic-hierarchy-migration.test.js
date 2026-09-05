@@ -96,8 +96,8 @@ const EXPECTED_DRAW_ORDER = Object.freeze({
     "chartTitle", "chartSubtitle"
   ],
   "gapminder-country-labels": [
-    "canvas", "countryLabels-label-leaders", "horizontalGridLines",
-    "verticalGridLines", "countries", "countryLabels",
+    "canvas", "horizontalGridLines", "verticalGridLines",
+    "countryLabels-label-leaders", "countries", "countryLabels",
     "xAxisLine", "xAxisTicks", "xAxisLabels", "xAxisTitle",
     "yAxisLine", "yAxisTicks", "yAxisLabels", "yAxisTitle",
     "chartTitle", "chartSubtitle"
