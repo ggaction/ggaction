@@ -167,7 +167,10 @@ export function resolveGridResources(program, direction, args) {
   ) {
     throw new Error(`${direction} grid requires resolved continuous scale "${scale}".`);
   }
-  const related = new Set(layers.map(layer => layer.id));
+  const related = new Set(layers.flatMap(layer => {
+    const leader = program.materializationConfigs.labelLayouts?.[layer.id]?.leaderId;
+    return leader === undefined ? [layer.id] : [leader, layer.id];
+  }));
   let before;
   walkGraphicDrawOrder(program.graphicSpec, ({ id }) => {
     if (before === undefined && related.has(id)) before = id;
