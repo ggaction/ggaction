@@ -1,7 +1,7 @@
 # Phase 3 구현 결과
 
 A와 9개 V target은 승인되었다. 아래는 구현 checkpoint다. Phase 전체의 X는 아직 승인 전이며
-Density/Horizon과 누적 consumer acceptance를 남긴다.
+Horizon과 누적 consumer acceptance·bundle 크기 해결을 남긴다.
 
 ## W1 — Pie and Donut
 
@@ -33,3 +33,26 @@ Full 여유는 30 bytes다. 나머지 facades를 추가한 뒤 실제 installed 
 상한 증가를 승인받거나 적용하지 않았다. Phase 전체 coverage/realistic 결과는 아직 아니다. Installed tarball SHA-256은 `971a123d15126dcdae456355faffa6f36899c3d728bdd92885674af711a5a164`다.
 
 로그: `.artifacts/roadmap6-authoring/pie-{focused,contracts,render,browser,package,bundle,docs-verify,docs-built,docs-browser}.log`.
+
+## W2 — Baseline density
+
+- 기준 commit: `955b1acf` (Pie/Donut checkpoint). Full-only `createDensityPlot`이 기존 Area와 encodeDensity,
+  optional explicit group color, owned guides를 조합한다. KDE 계산·derived fields·zero baseline·기본 grid는 바꾸지 않는다.
+- GroupBy와 color를 별도 선택한다. Color는 retained group field와 같아야 하며 overlay만 지원한다.
+  Optional undefined는 생략, 잘못된 역할·statistics·scale·appearance·guide는 atomic error다.
+  Pie/Density의 categorical color와 guide 검증을 공유해 기존 의미를 보존하면서 중복을 줄였다.
+- Three variants의 semantic/graphic/Canvas parity와 PNG·SVG·PDF를 확인했다. 통계·scale·appearance·Canvas
+  revision, explicit coordinate, 다른 mark의 역할 비상속, singleton, invalid-row filtering, custom outputs,
+  네 kernel과 두 normalization을 검증했다. Source-field revision 뒤 selection highlight를 유지한다.
+  Group 해제 시 group-owned color와 legend를 제거하는 기존 lower lifecycle을 그대로 사용한다.
+- Current 176 / Planned 1. 새 declarations·types consumer·reference/cards/search/LLM와 같은 public example을
+  사용하는 browser/tutorial/image를 연결했다. MCP의 density-axis 요청은 H0가 소유하는 기본 축을 중복 생성하지 않는다.
+- 검증: Pie regression 포함 focused **86/86** (Density 50), PNG **3/3**, SVG/PDF **3/3**, actual example browser **1/1**.
+  자동차·국가·영화의 세 pinned datasets에서 두 facades 각 다섯 변형, 총 **30/30** realistic cases를 검증했다.
+  Graphic/analytic/SVG integrity, source immutability, sector/profile counts와 density revision을 확인했다.
+- Installed package의 Node·MCP·strict TypeScript·tutorial consumer는 통과했지만 **전체 package 검증은 exit 1**이다.
+  Full gzip **235,428 > 235,000**으로 **428 bytes 초과**한다. 독립 installed measurement의 Basic은 **124,897 / 125,000**이다.
+  상한은 그대로이며 package 전체 통과나 Phase 완료로 표시하지 않는다. 승인된 Horizon을 포함한 통합에서 해결한다.
+- Source docs 47/47, Jekyll build와 built 124-page links/assets 검사는 통과했다. Desktop/keyboard/접근성/no-JS와 320/390/768px 전체 browser 검사가 통과했다. 최종 누적 normal은 **2,537/2,537**, fail/skip 0이다.
+
+로그: `.artifacts/roadmap6-authoring/density-{focused,render,docs-contracts,browser,realistic,all,package,bundle,docs-verify}.log`.

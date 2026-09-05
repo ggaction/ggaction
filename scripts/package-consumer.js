@@ -905,6 +905,26 @@ async function testTypeScriptConsumer(directory) {
     program.createPiePlot({ category: "category", guides: { legend: { channels: ["size"] } } });
     // @ts-expect-error Pie color has no area layout option.
     program.createPiePlot({ category: "category", color: { field: "category", layout: "stack" } });
+    const densityOptions: import("ggaction").CreateDensityPlotOptions = { field: "value", groupBy: false, guides: false };
+    program.createDensityPlot(densityOptions).editDensity({ target: "densityPlot", bandwidth: 1 });
+    program.createDensityPlot({ field: "value", groupBy: "group", color: { field: "group", layout: "overlay" },
+      densityChannel: "x", valueScale: { type: "log" }, densityScale: { type: "linear", domain: [0, 1] } });
+    // @ts-expect-error Density is full-only.
+    basicChart().createDensityPlot({ field: "value" });
+    // @ts-expect-error Density requires its field.
+    program.createDensityPlot({});
+    // @ts-expect-error Density placement belongs to its lower encoding action.
+    program.createDensityPlot({ field: "value", placement: { type: "category" } });
+    // @ts-expect-error Density only supports scalar group fields.
+    program.createDensityPlot({ field: "value", groupBy: ["group"] });
+    // @ts-expect-error Density color is an explicit field, not an opt-out sentinel.
+    program.createDensityPlot({ field: "value", color: false });
+    // @ts-expect-error Density paths overlay instead of stacking.
+    program.createDensityPlot({ field: "value", color: { field: "group", layout: "stack" } });
+    // @ts-expect-error Density baseline scale must support zero.
+    program.createDensityPlot({ field: "value", densityScale: { type: "log" } });
+    // @ts-expect-error Density cannot create a continuous color legend.
+    program.createDensityPlot({ field: "value", guides: { legend: { gradient: {} } } });
     program.createPointMark({ stroke: false });
     program.createBarMark({ stroke: false });
     program.createRectMark({ stroke: false });

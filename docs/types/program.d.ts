@@ -1965,6 +1965,36 @@ export type CreateHistogramOptions = BasicHistogramEncoding & {
   guides?: false | CartesianCategoricalGuideOptions;
 };
 
+export type DensityPlotLegendOptions = PieLegendOptions;
+export type DensityPlotGuideOptions = Omit<CartesianCategoricalGuideOptions, "legend"> & {
+  legend?: false | DensityPlotLegendOptions;
+};
+export interface CreateDensityPlotOptions {
+  id?: string;
+  data?: string;
+  coordinate?: string;
+  field: string;
+  groupBy?: string | false;
+  bandwidth?: "auto" | number;
+  extent?: "auto" | readonly [number, number];
+  steps?: number;
+  kernel?: DensityKernel;
+  normalization?: DensityNormalization;
+  as?: readonly [string, string];
+  densityChannel?: "x" | "y";
+  valueScale?: NonPointQuantitativePositionScaleOptions;
+  densityScale?: NonPointZeroSupportingPositionScaleOptions;
+  color?: string | {
+    field: string;
+    fieldType?: "nominal" | "ordinal";
+    scale?: NonPointCategoricalColorScaleOptions;
+    palette?: Palette;
+    layout?: "overlay";
+  };
+  area?: { fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation };
+  guides?: false | DensityPlotGuideOptions;
+}
+
 export type PieCategory = string | {
   field: string;
   fieldType?: "nominal" | "ordinal";
@@ -2876,6 +2906,7 @@ export class ChartProgram {
   createBarPlot(options: CreateBarPlotOptions): ChartProgram;
   createHistogram(options: CreateHistogramOptions): ChartProgram;
   createPiePlot(options: CreatePiePlotOptions): ChartProgram;
+  createDensityPlot(options: CreateDensityPlotOptions): ChartProgram;
   createHeatmap(options: CreateHeatmapOptions): ChartProgram;
   createParallelCoordinates(options: CreateParallelCoordinatesOptions): ChartProgram;
   removeMark(options?: RemoveMarkOptions): ChartProgram;

@@ -45,3 +45,41 @@ Default id는 `piePlot`, lifecycle은 Aggregate create-only다.
 - ✅ Covered: 세 canonical public/primitive의 semanticSpec·graphicSpec·draw order·Canvas calls·decoded PNG pixels.
 - Evidence: `test/unit/actions/charts/pie-plot.test.js`, `test/charts/pie-plot/{primitive,public}.test.js`,
   `test/charts/pie-plot/{png,vector}.render.js`, `examples/pie-plot/program.js`, `scripts/package-consumer.js`.
+
+## `createDensityPlot`
+
+`createDensityPlot({ id?, data?, coordinate?, field, groupBy?, bandwidth?, extent?, steps?, kernel?, normalization?, as?, densityChannel?, valueScale?, densityScale?, color?, area?, guides? })`.
+Default id는 `densityPlot`, lifecycle은 Aggregate create-only다.
+
+- Field는 필수 quantitative source field다. GroupBy 생략/false는 ungrouped, string은 explicit group이다.
+  새 Area에 resolved data를 명시하며 다른 mark의 group/position을 상속하지 않는다.
+- 기존 kernel vocabulary, gaussian default, bandwidth/extent auto, steps 100, unit normalization을 유지한다.
+  유효 numeric rows만 사용한다. Constant/singleton은 explicit positive bandwidth와 increasing extent로 작성한다.
+  As는 distinct output field pair다. Derived snapshot은 group(있을 때), value와 density만 유지한다.
+- DensityChannel y는 x=value/y=density, x는 x=density/y=value다. Baseline만 지원하고 category placement는 Violin owner다.
+  Value/density scale는 기존 quantitative position vocabulary며 density는 zero를 포함해야 한다.
+- Color는 생략하면 없음. String/object field를 지정하면 groupBy와 같아야 하며 fieldType nominal/ordinal,
+  categorical scale/palette와 overlay layout만 지원한다. Raw metadata join·stack/center·auto group color는 없다.
+- Area는 fill/opacity/stroke/strokeWidth/curve다. 기본 opacity .2. Explicit field color와 scalar fill은 충돌한다.
+  StrokeWidth는 stroke가 필요하며 create stroke:false는 미지원이다. Optional undefined는 생략과 같다.
+- Guides는 Cartesian axes, horizontal/vertical grid, categorical color legend만 지원한다.
+  두 orientation의 자동 grid는 현행 y축 기준 horizontal이다. Explicit color가 없는데 legend를 요구하면 오류다.
+- Effects: `createAreaMark → encodeDensity → encodeColor? → guide fulfillment`의 실제 wrapped trace다.
+  KDE·derived revision·area closure는 lower owner가 수행한다. Source/statistical provenance는 dataset,
+  final position/group/color/coordinate는 semantic layer, concrete closed paths는 graphicSpec에 저장한다.
+- Editing: `editDensity`, `editAreaMark`, scale/guide editors와 현재 selection/resize를 그대로 사용한다.
+  Color/selection과 충돌하는 group/source revision은 immutable failure다. Orientation edit는 신규 지원하지 않는다.
+
+### Formal values — `createDensityPlot`
+
+- Implemented: `createDensityPlot(options: CreateDensityPlotOptions): ChartProgram`.
+- Required: field. Unknown key, invalid statistical/scale/appearance option, conflicting source/group/color/guide는 오류다.
+- Proposed (NOT IMPLEMENTED): No proposal in this action contract. Metadata joins and new orientation editing are separate capabilities.
+
+### Value coverage — `createDensityPlot`
+
+- ✅ Covered: shortest defaults, explicit group/no-color/opt-out, invalid/missing rows, singleton, custom output names,
+  role/option/style/guide errors, shared guides, optional undefined, selected profile membership, immutable failures.
+- ✅ Covered: three public/primitive semantic/graphic/order/Canvas pairs and lower statistics/style/scale/resize revisions.
+- Evidence: `test/unit/actions/charts/density-plot.test.js`, `test/charts/density-plot/{primitive,public}.test.js`,
+  `test/charts/density-plot/{png,vector}.render.js`, `examples/density-plot/program.js`, `scripts/package-consumer.js`.

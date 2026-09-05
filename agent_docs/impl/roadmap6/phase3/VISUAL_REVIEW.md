@@ -44,7 +44,7 @@ folded [0,1] y축이나 internal band color legend를 생성하지 않는다.
 | Chart | 단일 manifest와 정확한 public call | 실제 primitive | 독립 reference / normal test |
 | --- | --- | --- | --- |
 | Pie/Donut | [manifest.js](../../../../test/charts/pie-plot/manifest.js) | [primitive.program.js](../../../../test/charts/pie-plot/primitive.program.js) | [reference](../../../../test/charts/pie-plot/reference-values.js) · [tests](../../../../test/charts/pie-plot/primitive.test.js) |
-| Density | [manifest.js](../../../../test/gates/density-plot/manifest.js) | [primitive.program.js](../../../../test/gates/density-plot/primitive.program.js) | [reference](../../../../test/gates/density-plot/reference-values.js) · [tests](../../../../test/gates/density-plot/primitive.test.js) |
+| Density | [manifest.js](../../../../test/charts/density-plot/manifest.js) | [primitive.program.js](../../../../test/charts/density-plot/primitive.program.js) | [reference](../../../../test/charts/density-plot/reference-values.js) · [tests](../../../../test/charts/density-plot/primitive.test.js) |
 | Horizon | [manifest.js](../../../../test/gates/horizon-plot/manifest.js) | [primitive.program.js](../../../../test/gates/horizon-plot/primitive.program.js) | [reference](../../../../test/gates/horizon-plot/reference-values.js) · [tests](../../../../test/gates/horizon-plot/primitive.test.js) |
 
 각 manifest가 dimensions, values를 사용한 target call, primitive 함수, color/region 기대와 artifact identity를 묶는다.
@@ -95,7 +95,7 @@ semantic/graphic/Canvas/pixel equality, strict declaration, installed consumer�
 PNG의 text rasterization은 native 환경에 의존한다. JSON에 Node/platform/arch를 기록했고
 같은 실행의 public/primitive decoded pixel equality는 구현 뒤 별도로 확인한다.
 
-Pie 실행 소스 링크는 승인 후 이전한 stable owner를 가리킨다. 승인 당시의 정확한 파일과 hash는 위 primitive commit과 `visual-results.json`에 보존했다.
+Pie와 Density 실행 소스 링크는 승인 후 이전한 stable owner를 가리킨다. 승인 당시의 정확한 파일과 hash는 위 primitive commit과 `visual-results.json`에 보존했다.
 
 ## 재현
 

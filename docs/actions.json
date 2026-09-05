@@ -3,7 +3,7 @@
   "packageVersion": "0.0.12",
   "typeSource": "types/program.d.ts",
   "errorPolicy": "An empty errors array means the compact card has no curated error override; consult the canonical route for validation, inference, and recovery behavior.",
-  "count": 175,
+  "count": 176,
   "cards": [
     {
       "schemaVersion": 2,
@@ -12302,6 +12302,131 @@
       "snippet": "program.createPiePlot({ category: \"category\" })",
       "errors": [],
       "route": "/reference/actions/charts-data/#createpieplot"
+    },
+    {
+      "schemaVersion": 2,
+      "name": "createDensityPlot",
+      "layer": "user-facing",
+      "domain": "statistics",
+      "summary": "Creates density plot for kernel density estimate.",
+      "signature": "createDensityPlot(options: CreateDensityPlotOptions): ChartProgram;",
+      "intents": [
+        "create density plot",
+        "create",
+        "add",
+        "statistical layer",
+        "statistical transform",
+        "density plot",
+        "kernel density estimate"
+      ],
+      "lifecycle": "Aggregate create-only",
+      "resources": {
+        "prerequisites": [
+          "statistical source and coordinate context"
+        ],
+        "owns": [
+          "density plot"
+        ],
+        "idOptions": [
+          "id",
+          "data",
+          "coordinate"
+        ]
+      },
+      "options": [
+        {
+          "name": "id",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "data",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "coordinate",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "field",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "groupBy",
+          "required": false,
+          "type": "string | false | undefined"
+        },
+        {
+          "name": "bandwidth",
+          "required": false,
+          "type": "number | \"auto\" | undefined"
+        },
+        {
+          "name": "extent",
+          "required": false,
+          "type": "\"auto\" | readonly [number, number] | undefined"
+        },
+        {
+          "name": "steps",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "kernel",
+          "required": false,
+          "type": "DensityKernel | undefined"
+        },
+        {
+          "name": "normalization",
+          "required": false,
+          "type": "DensityNormalization | undefined"
+        },
+        {
+          "name": "as",
+          "required": false,
+          "type": "readonly [string, string] | undefined"
+        },
+        {
+          "name": "densityChannel",
+          "required": false,
+          "type": "\"x\" | \"y\" | undefined"
+        },
+        {
+          "name": "valueScale",
+          "required": false,
+          "type": "NonPointQuantitativePositionScaleOptions | undefined"
+        },
+        {
+          "name": "densityScale",
+          "required": false,
+          "type": "NonPointZeroSupportingPositionScaleOptions | undefined"
+        },
+        {
+          "name": "color",
+          "required": false,
+          "type": "string | { field: string; fieldType?: \"nominal\" | \"ordinal\" | undefined; scale?: NonPointCategoricalColorScaleOptions | undefined; palette?: Palette | undefined; layout?: \"overlay\" | undefined; } | undefined"
+        },
+        {
+          "name": "area",
+          "required": false,
+          "type": "{ fill?: string | undefined; opacity?: number | undefined; stroke?: string | undefined; strokeWidth?: number | undefined; curve?: CurveInterpolation | undefined; } | undefined"
+        },
+        {
+          "name": "guides",
+          "required": false,
+          "type": "false | DensityPlotGuideOptions | undefined"
+        }
+      ],
+      "callPatterns": [
+        "createDensityPlot({ field })",
+        "createDensityPlot({ field, groupBy, color, densityChannel? })"
+      ],
+      "snippet": "program.createDensityPlot({ field: \"value\" })",
+      "errors": [],
+      "route": "/reference/actions/statistics/#createdensityplot"
     }
   ]
 }

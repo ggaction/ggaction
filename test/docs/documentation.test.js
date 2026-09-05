@@ -535,7 +535,8 @@ test("keeps tutorial action flows aligned with public examples", () => {
       "examples/cars-regression-scatterplot/program.js",
       "return chart()"
     ],
-    ["density-area", "examples/cars-density-area/program.js", "return chart()"],
+    ["density-area", "examples/cars-density-area/program.js", "return chart()", "## Complete program"],
+    ["density-area", "examples/density-plot/program.js", "return chart()"],
     ["horizon", "examples/gapminder-horizon/program.js", "return chart()"],
     [
       "error-bar",
@@ -549,11 +550,12 @@ test("keeps tutorial action flows aligned with public examples", () => {
     ]
   ];
 
-  for (const [tutorial, example, exampleStart] of cases) {
+  for (const [tutorial, example, exampleStart, section] of cases) {
     const tutorialSource = read(`docs/tutorials/${tutorial}.md`);
     const exampleSource = read(example);
+    if (section !== undefined) assert.equal(tutorialSource.includes(section), true, tutorial);
     assert.deepEqual(
-      actionFlow(tutorialSource, "const program = chart()"),
+      actionFlow(section === undefined ? tutorialSource : tutorialSource.slice(tutorialSource.indexOf(section)), "const program = chart()"),
       actionFlow(exampleSource, exampleStart),
       tutorial
     );

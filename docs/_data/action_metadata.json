@@ -873,5 +873,10 @@
     "operation": "create",
     "layer": "user-facing",
     "domain": "charts"
+  },
+  "createDensityPlot": {
+    "operation": "create",
+    "layer": "user-facing",
+    "domain": "statistics"
   }
 }

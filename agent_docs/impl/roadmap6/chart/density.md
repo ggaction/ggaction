@@ -1,6 +1,6 @@
 # Roadmap 6 — Density
 
-**상태: R6-P3-A approved / Planned·미구현.** 새 `createDensityPlot`은 아직 Current API가 아니다.
+**상태: A/V approved / Density public flow 구현.** 정확한 현재 계약은 [Current owner](../../../contract/current/COMPLETE_CHARTS.md#createdensityplot)를 따른다. Phase 3 X는 아직 승인 전이다.
 [Phase 3 계약 검토](../phase3/CONTRACT_REVIEW.md)의 P3-C01·C04·C06–C07이 이 chart의 승인 제안이다.
 연결 F06·D02·D04, owner [Phase 3 W2](../phase3/GOAL.md).
 
@@ -10,7 +10,7 @@
 Baseline density의 기존 통계·orientation owner를 재사용한다. Violin의 category placement와 Raincloud composition은 별도다.
 
 ~~~typescript
-// Planned; existing referenced option types keep their current meaning.
+// Full ggaction entry; existing option types keep their current meaning.
 type DensityPlotLegendOptions = Omit<FilledMarkLegendOptions, "count" | "gradient" | "channels"> & {
   channels?: readonly ["color"];
 };
@@ -76,7 +76,7 @@ const lower = base
   .encodeColor({ target: 'density', field: 'group' })
   .createGuides({ legend: { target: 'density' } });
 
-// Proposed equivalent; not executable yet.
+// Equivalent complete facade.
 const proposed = base.createDensityPlot({
   id: 'density', data: 'source', field: 'value',
   groupBy: 'group', color: 'group', bandwidth: 1, extent: [0, 6], steps: 61
@@ -141,8 +141,8 @@ Current lower chain과 semantic/graphic 동등성, 실제 facade child trace, fa
 
 ## V target 계획과 수치 oracle
 
-위 values와 1000×700, margin 150을 [단일 manifest](../../../../test/gates/density-plot/manifest.js)에 고정했다.
-[실행한 primitive](../../../../test/gates/density-plot/primitive.program.js)는 기존 lower chain이며 신규 facade는 아직 미구현이다.
+위 values와 1000×700, margin 150을 [단일 manifest](../../../../test/charts/density-plot/manifest.js)에 고정했다.
+[실행한 primitive](../../../../test/charts/density-plot/primitive.program.js)는 기존 lower chain이며 구현한 facade의 same-run parity는 stable public/render tests가 검증한다.
 
 | Variant | 제안 public call (base 뒤) | 의미 oracle |
 | --- | --- | --- |

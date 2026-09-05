@@ -204,6 +204,14 @@ test("intent taxonomy covers every supported constraint with exact owners", asyn
   }
 });
 
+test("completes density axis requests through the facade without creating duplicate guides", async () => {
+  const packet = searchGgaction("density plot with x axis");
+  assert.deepEqual(packet.exactCalls, ['program.createDensityPlot({ field: "value" })']);
+  const { program } = await executeAuthoring(packet, { rows: [{ value: 1 }, { value: 2 }, { value: 4 }] });
+  assert.ok(program.semanticSpec.guides.axis.x);
+  assert.equal(program.graphicSpec.objects.densityPlot.items.length, 1);
+});
+
 test("every exact action name resolves to its compact card without gaps", async () => {
   const cards = await json("action-cards.json");
   for (const card of cards.cards) {

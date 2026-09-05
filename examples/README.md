@@ -210,6 +210,12 @@ Select, filter, and emphasize final point, bar, and line items.
 
 Representative actions: `selectMarks`, `highlightMarks`. [Documentation](https://ggaction.github.io/ggaction/tutorials/mark-selection/).
 
+### [Density profile](./density-plot/)
+
+Estimate one variable, then add explicit groups and color.
+
+Representative actions: `createDensityPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/density-area/#complete-density-facade).
+
 ### [Category pie chart](./pie-plot/)
 
 Create a complete category pie or explicitly weighted donut with one action.

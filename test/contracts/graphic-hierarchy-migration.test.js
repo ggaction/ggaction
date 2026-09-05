@@ -25,6 +25,9 @@ const LOADERS = Object.freeze({
 });
 
 const EXPECTED_DRAW_ORDER = Object.freeze({
+  "density-plot": ["canvas", "horizontalGridLines", "density",
+    "xAxisLine", "xAxisTicks", "xAxisLabels", "xAxisTitle",
+    "yAxisLine", "yAxisTicks", "yAxisLabels", "yAxisTitle"],
   "pie-plot": ["canvas", "pie", "colorLegendSymbols", "colorLegendLabels", "colorLegendTitle"],
   "temporal-input": [
     "canvas", "horizontalGridLines", "events",

@@ -1,3 +1,4 @@
+import { createDensityExample } from "./density-plot/program.js";
 import { createPieExample } from "./pie-plot/program.js";
 import { createTemporalInput } from "./temporal-input/program.js";
 import { createCarsBoxPlot } from "./cars-box-plot/program.js";
@@ -95,6 +96,12 @@ function example({ id, data, width, height, createProgram, ...options }) {
 }
 
 export const PUBLIC_CHARTS = Object.freeze([
+  example({
+    id: "density-plot", data: {}, width: 1000, height: 700, docsGroup: "tutorials",
+    createProgram: () => createDensityExample(),
+    browser: { path: "density-plot/", canvas: "#chart",
+      state: { global: "__ggactionExample", expected: { id: "density-plot", width: 1000, height: 700 } } }
+  }),
   example({
     id: "pie-plot", data: {}, width: 1000, height: 700, docsGroup: "tutorials",
     createProgram: () => createPieExample(),

@@ -119,9 +119,7 @@
       "query": "density plot with x axis",
       "constraints": ["chart.density", "guide.xAxis"],
       "plan": [
-        { "id": "action.createAreaMark", "options": ["id"] },
-        { "id": "action.encodeDensity", "options": ["field", "target"] },
-        { "id": "action.createXAxis", "options": [] }
+        { "id": "action.createDensityPlot", "options": ["field"] }
       ],
       "unresolved": []
     },

@@ -43,6 +43,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createCoordinate`](./actions/advanced.md#semantic-resources-and-regression-layers) | user-facing | core |
 | [`createData`](./actions/charts-data.md#createdata) | user-facing | core |
 | [`createDensityData`](./actions/charts-data.md#createdensitydata) | user-facing | core |
+| [`createDensityPlot`](./actions/statistics.md#createdensityplot) | user-facing | statistics |
 | [`createDerivedData`](./actions/advanced.md#semantic-resources-and-regression-layers) | user-facing | core |
 | [`createErrorBand`](./actions/statistics.md#createerrorband) | user-facing | statistics |
 | [`createErrorBar`](./actions/statistics.md#createerrorbar) | user-facing | statistics |

@@ -1,6 +1,6 @@
 import { resolveOptionalUserId, validateUserId } from "../../core/identifiers.js";
 import { isPlainObject } from "../../core/immutable.js";
-import { validateOptionObject } from "../../core/validation.js";
+import { validateNonEmptyString, validateOptionObject } from "../../core/validation.js";
 import { findDataset, requireMaterializedDataset } from "../../selectors/datasets.js";
 import { isNominalValue } from "../../grammar/scales/fields.js";
 import { hasLayer } from "../../selectors/layers.js";
@@ -106,6 +106,35 @@ export function normalizeAppearance(value, supported, label) {
 
 export function omitUndefinedOptions(value) {
   return Object.fromEntries(Object.entries(value).filter(([, option]) => option !== undefined));
+}
+
+export function normalizeCategoricalColor(value, label, supported = ["field", "fieldType", "scale", "palette"]) {
+  const color = normalizeFieldEncoding(value, label);
+  validateOptionObject(color, supported, label);
+  validateNonEmptyString(color.field, `${label} field`);
+  if (color.fieldType !== undefined && !["nominal", "ordinal"].includes(color.fieldType)) {
+    throw new TypeError(`${label} must be nominal or ordinal.`);
+  }
+  if (color.scale !== undefined) validateOptionObject(color.scale, undefined, `${label}.scale`);
+  return { ...omitUndefinedOptions(color),
+    ...(color.scale === undefined ? {} : { scale: omitUndefinedOptions(color.scale) }) };
+}
+
+export function normalizeCategoricalGuides(value, operation, color) {
+  const guides = normalizeGuides(value, operation);
+  if (guides === false) return false;
+  validateOptionObject(guides, ["axes", "grid", "legend"], `${operation} guides`);
+  const legend = guides.legend;
+  if (legend !== undefined && legend !== false) {
+    validateOptionObject(legend, undefined, `${operation} guides.legend`);
+    if (color === undefined) throw new Error(`${operation} legend requires color.`);
+    if (Object.hasOwn(legend, "gradient") || Object.hasOwn(legend, "count") ||
+      legend.channels !== undefined && (!Array.isArray(legend.channels) ||
+        legend.channels.length !== 1 || legend.channels[0] !== "color")) {
+      throw new Error(`${operation} only supports a categorical color legend.`);
+    }
+  }
+  return guides;
 }
 
 export function normalizeTargetOptions(value, label) {

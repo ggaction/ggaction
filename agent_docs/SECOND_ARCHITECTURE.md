@@ -1825,6 +1825,11 @@ domain action을 제공한다.
 
 ### Density
 
+Full-only `createDensityPlot`은 `createAreaMark → encodeDensity → encodeColor? → guide fulfillment`를
+조합한다. GroupBy와 color를 독립적으로 작성하며 color는 derived profile이 보존하는 group field만
+소비한다. Facade가 KDE 계산·source metadata join·orientation state를 추가하지 않는다.
+정확한 계약은 [Complete chart facades](contract/current/COMPLETE_CHARTS.md#createdensityplot)를 따른다.
+
 ```text
 encodeDensity
 ├─ createDensityData | createCategoricalDensityData

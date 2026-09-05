@@ -14,12 +14,12 @@
 - [x] V package 원격 ref 고정
 - [x] V 명시적 사용자 승인
 - [x] R6-P3-W1 Pie/Donut public flow와 lower lifecycle
-- [ ] R6-P3-W2 Density public flow와 lower lifecycle
+- [x] R6-P3-W2 Density public flow와 lower lifecycle
 - [ ] R6-P3-W3 Horizon public flow와 lower lifecycle
 - [ ] Same-run public/primitive parity·누적 검증·문서·원장 동기화
 - [ ] X package commit/push와 명시적 사용자 승인 기록
 
-A/V 승인 뒤 Pie/Donut의 public flow·lower lifecycle·package·문서 검증을 완료했다. Density/Horizon 구현과 전체 X 승인은 남아 있다. [구현 결과](RESULTS.md)를 따른다.
+A/V 승인 뒤 Pie/Donut의 public flow·lower lifecycle·package·문서 검증을 완료했다. Density public flow도 구현했으며 Horizon과 bundle 통합·전체 X 승인을 남긴다. [구현 결과](RESULTS.md)를 따른다.
 [계약 검토](CONTRACT_REVIEW.md), [시각 검토](VISUAL_REVIEW.md), [Gate](GATES.md), [검증](VALIDATION.md)가 현재 evidence를 소유한다.
 
 ## 실행 순서와 경계
@@ -55,3 +55,6 @@ A/V 승인 뒤 Pie/Donut의 public flow·lower lifecycle·package·문서 검증
 - V package `1f7debaab66856597deaf8a039648ce23b123e41`를 원격 branch에 push했다. 2026-09-05 사용자가 V를 승인했다. 신규 public flow 구현을 시작한다.
 
 - W1 구현: Current 175 / Planned 2. Pie 48/48, contracts 260/260, PNG 3/3와 SVG/PDF 3/3, example browser 1/1, installed package exit 0. Source docs 47/47, built 124 pages, desktop/320/390/768px browser 검사 통과. Full gzip 234,970 / Basic 124,897 / SVG 6,418 bytes.
+
+- W2 구현: Current 176 / Planned 1. Focused 86/86, PNG·SVG/PDF 각 3/3, browser 1/1, 새 realistic 30/30. Package는 Full 235,428 > 235,000으로 실패하며 상한은 유지한다. 기능 구현과 package 완료를 구분한다.
+- W2 누적 normal 2,537/2,537과 docs browser 전체 검사가 통과했다. Package 상한 초과는 통합 미해결 항목으로 유지한다.

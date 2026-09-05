@@ -1754,6 +1754,31 @@ program
 
 # Density Area Chart Tutorial
 
+## Complete density facade
+
+Use `createDensityPlot` to complete a density chart in one action:
+
+```javascript
+import { chart } from "ggaction";
+
+const program = chart()
+  .createCanvas({ width: 1000, height: 700, margin: 150 })
+  .createData({ id: "source", values: [
+    { value: 1, group: "A" }, { value: 2, group: "A" },
+    { value: 3, group: "B" }, { value: 5, group: "B" }
+  ] })
+  .createDensityPlot({ id: "density", field: "value", bandwidth: 1, extent: [0, 6], steps: 61 });
+```
+
+Add `groupBy: "group", color: "group"` for two colored profiles. Grouping alone does not add color.
+Use `densityChannel: "x"` for horizontal density. Both orientations keep the existing horizontal grid;
+explicit grid options can choose a direction. `editDensity` changes the statistical estimate, while
+`editAreaMark` changes its appearance. The source remains immutable, and derived profiles retain only
+the group and the two generated value/density fields.
+
+The [runnable example](https://github.com/ggaction/ggaction/tree/main/examples/density-plot) includes all three variants.
+The workflow below shows the same lower-level owners on car data.
+
 ![Acceleration density by origin](./assets/images/cars-density-area.png)
 
 This chart estimates the distribution of car acceleration separately for each
@@ -11696,6 +11721,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createCoordinate`](./reference/actions/advanced/#semantic-resources-and-regression-layers) | user-facing | core |
 | [`createData`](./reference/actions/charts-data/#createdata) | user-facing | core |
 | [`createDensityData`](./reference/actions/charts-data/#createdensitydata) | user-facing | core |
+| [`createDensityPlot`](./reference/actions/statistics/#createdensityplot) | user-facing | statistics |
 | [`createDerivedData`](./reference/actions/advanced/#semantic-resources-and-regression-layers) | user-facing | core |
 | [`createErrorBand`](./reference/actions/statistics/#createerrorband) | user-facing | statistics |
 | [`createErrorBar`](./reference/actions/statistics/#createerrorbar) | user-facing | statistics |
@@ -12873,6 +12899,25 @@ accept it. The modes are mutually exclusive. The first omitted mode defaults to
 
 These are direct immutable `ChartProgram` actions. Each accepts one option object and returns a new program.
 
+## `createDensityPlot`
+
+```js
+createDensityPlot({ id?, data?, coordinate?, field, groupBy?, bandwidth?, extent?, steps?, kernel?, normalization?, as?, densityChannel?, valueScale?, densityScale?, color?, area?, guides? })
+```
+
+Creates a complete baseline density area from a required quantitative `field`. The default ID is `densityPlot`.
+Existing KDE defaults apply: automatic bandwidth and extent, 100 steps, Gaussian kernel, unit normalization.
+`groupBy` is an explicit field or `false`; omission is ungrouped. Color is optional and must use that same group field,
+with a nominal/ordinal categorical scale and optional `layout: "overlay"`. Raw metadata is not copied into density profiles.
+`densityChannel: "y"` places values on x; `"x"` exchanges those roles. The density scale must include zero.
+`area` accepts `fill`, `opacity`, `stroke`, `strokeWidth`, and `curve`; opacity defaults to 0.2. Scalar fill conflicts
+with field color, and stroke width requires a stroke. Guides default to both axes and the existing horizontal grid
+in either orientation; an explicit group color enables a categorical legend. `guides: false` skips guide creation.
+Use `editDensity`, `editAreaMark`, and scale/guide editors for revisions. Category placement and orientation edits
+are outside this facade. This action is available from `ggaction` and is absent from `ggaction/basic`.
+
+See the [complete density workflow](./tutorials/density-area/#complete-density-facade).
+
 ## `createIntervalData`
 
 ```javascript
@@ -13797,6 +13842,7 @@ interface ChartProgramActions {
   createBarPlot(options: CreateBarPlotOptions): ChartProgram;
   createHistogram(options: CreateHistogramOptions): ChartProgram;
   createPiePlot(options: CreatePiePlotOptions): ChartProgram;
+  createDensityPlot(options: CreateDensityPlotOptions): ChartProgram;
   createHeatmap(options: CreateHeatmapOptions): ChartProgram;
   createParallelCoordinates(options: CreateParallelCoordinatesOptions): ChartProgram;
   removeMark(options?: RemoveMarkOptions): ChartProgram;

@@ -1,7 +1,8 @@
 import { action } from "../../core/action.js";
 import { validateNonEmptyString, validateOptionObject } from "../../core/validation.js";
 import {
-  applyFacadeGuides, normalizeAppearance, normalizeFieldEncoding, normalizeGuides, omitUndefinedOptions,
+  applyFacadeGuides, normalizeAppearance, normalizeCategoricalColor, normalizeCategoricalGuides,
+  normalizeFieldEncoding, omitUndefinedOptions,
   resolveFacadeData, resolveFacadeId, validateFacadeOptions
 } from "./shared.js";
 
@@ -28,35 +29,12 @@ function categoryOptions(value) {
     ...(category.scale === undefined ? {} : { scale: omitUndefinedOptions(category.scale) }) };
 }
 
-function colorOptions(value) {
-  const color = normalizeFieldEncoding(value, `${OPERATION} color`);
-  validateOptionObject(color, ["field", "fieldType", "scale", "palette"], `${OPERATION} color`);
-  validateNonEmptyString(color.field, `${OPERATION} color field`);
-  if (color.fieldType !== undefined && !["nominal", "ordinal"].includes(color.fieldType)) {
-    throw new TypeError(`${OPERATION} color must be nominal or ordinal.`);
-  }
-  if (color.scale !== undefined) validateOptionObject(color.scale, undefined, `${OPERATION} color.scale`);
-  return { ...omitUndefinedOptions(color),
-    ...(color.scale === undefined ? {} : { scale: omitUndefinedOptions(color.scale) }) };
-}
-
 function guideOptions(value, color) {
-  const guides = normalizeGuides(value, OPERATION);
+  const guides = normalizeCategoricalGuides(value, OPERATION, color);
   if (guides === false) return false;
-  validateOptionObject(guides, ["axes", "grid", "legend"], `${OPERATION} guides`);
   for (const key of ["axes", "grid"]) {
     if (guides[key] !== undefined && guides[key] !== false) {
       throw new TypeError(`${OPERATION} guides.${key} only accepts false.`);
-    }
-  }
-  const legend = guides.legend;
-  if (legend !== undefined && legend !== false) {
-    validateOptionObject(legend, undefined, `${OPERATION} guides.legend`);
-    if (color === undefined) throw new Error(`${OPERATION} legend requires color.`);
-    if (Object.hasOwn(legend, "gradient") || Object.hasOwn(legend, "count") ||
-      legend.channels !== undefined && (!Array.isArray(legend.channels) ||
-        legend.channels.length !== 1 || legend.channels[0] !== "color")) {
-      throw new Error(`${OPERATION} only supports a categorical color legend.`);
     }
   }
   return { ...guides, axes: false, grid: false };
@@ -77,7 +55,7 @@ export const createPiePlot = action({
   if (args.value !== undefined) validateNonEmptyString(args.value, `${OPERATION} value`);
   const arc = omitUndefinedOptions(normalizeAppearance(args.arc, ARC_OPTIONS, `${OPERATION} arc`));
   const color = args.color === false ? undefined
-    : colorOptions(args.color === undefined ? category.field : args.color);
+    : normalizeCategoricalColor(args.color === undefined ? category.field : args.color, `${OPERATION} color`);
   if (color !== undefined && arc.fill !== undefined) {
     throw new Error(`${OPERATION} arc.fill cannot be combined with color; use color:false.`);
   }

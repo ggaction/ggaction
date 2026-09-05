@@ -5,6 +5,34 @@ title: Density Area Chart Tutorial
 
 # Density Area Chart Tutorial
 
+## Complete density facade
+
+{% include chart-example.html id="density-plot" %}
+
+Use `createDensityPlot` to complete a density chart in one action:
+
+```javascript
+import { chart } from "ggaction";
+
+const program = chart()
+  .createCanvas({ width: 1000, height: 700, margin: 150 })
+  .createData({ id: "source", values: [
+    { value: 1, group: "A" }, { value: 2, group: "A" },
+    { value: 3, group: "B" }, { value: 5, group: "B" }
+  ] })
+  .createDensityPlot({ id: "density", field: "value", bandwidth: 1, extent: [0, 6], steps: 61 });
+```
+
+Add `groupBy: "group", color: "group"` for two colored profiles. Grouping alone does not add color.
+Use `densityChannel: "x"` for horizontal density. Both orientations keep the existing horizontal grid;
+explicit grid options can choose a direction. `editDensity` changes the statistical estimate, while
+`editAreaMark` changes its appearance. The source remains immutable, and derived profiles retain only
+the group and the two generated value/density fields.
+
+The [runnable example](https://github.com/ggaction/ggaction/tree/main/examples/density-plot) includes all three variants.
+The workflow below shows the same lower-level owners on car data.
+
+
 ![Acceleration density by origin](../assets/images/cars-density-area.png)
 
 This chart estimates the distribution of car acceleration separately for each

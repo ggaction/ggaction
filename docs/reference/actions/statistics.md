@@ -8,6 +8,25 @@ description: Create and edit regression, density, interval, error, and box-plot 
 
 These are direct immutable `ChartProgram` actions. Each accepts one option object and returns a new program.
 
+## `createDensityPlot`
+
+```js
+createDensityPlot({ id?, data?, coordinate?, field, groupBy?, bandwidth?, extent?, steps?, kernel?, normalization?, as?, densityChannel?, valueScale?, densityScale?, color?, area?, guides? })
+```
+
+Creates a complete baseline density area from a required quantitative `field`. The default ID is `densityPlot`.
+Existing KDE defaults apply: automatic bandwidth and extent, 100 steps, Gaussian kernel, unit normalization.
+`groupBy` is an explicit field or `false`; omission is ungrouped. Color is optional and must use that same group field,
+with a nominal/ordinal categorical scale and optional `layout: "overlay"`. Raw metadata is not copied into density profiles.
+`densityChannel: "y"` places values on x; `"x"` exchanges those roles. The density scale must include zero.
+`area` accepts `fill`, `opacity`, `stroke`, `strokeWidth`, and `curve`; opacity defaults to 0.2. Scalar fill conflicts
+with field color, and stroke width requires a stroke. Guides default to both axes and the existing horizontal grid
+in either orientation; an explicit group color enables a categorical legend. `guides: false` skips guide creation.
+Use `editDensity`, `editAreaMark`, and scale/guide editors for revisions. Category placement and orientation edits
+are outside this facade. This action is available from `ggaction` and is absent from `ggaction/basic`.
+
+See the [complete density workflow](../../tutorials/density-area.md#complete-density-facade).
+
 ## `createIntervalData`
 
 ```javascript

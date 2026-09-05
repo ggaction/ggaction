@@ -57,7 +57,8 @@
   },
   "/tutorials/density-area/": {
     "title": "Density Area Tutorial",
-    "description": "This chart estimates the distribution of car acceleration separately for each Origin."
+    "description": "Use createDensityPlot to complete a density chart in one action:",
+    "image": "/assets/images/density-plot.png"
   },
   "/tutorials/horizon/": {
     "title": "Horizon Chart Tutorial",

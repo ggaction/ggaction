@@ -619,6 +619,22 @@
   url: /tutorials/mark-selection/
   tutorial_order: 130
 
+- id: density-plot
+  example: /examples/density-plot/
+  title: Density profile
+  image: /assets/images/density-plot.png
+  alt: Translucent density area estimated from four quantitative observations
+  width: 2000
+  height: 1400
+  thumbnail: /assets/images/density-plot-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 448
+  caption: A density estimate with 61 samples closes at the zero baseline.
+  summary: Estimate one variable, then add explicit groups and color.
+  actions: createDensityPlot
+  tasks: distribution comparison
+  url: /tutorials/density-area/#complete-density-facade
+
 - id: pie-plot
   example: /examples/pie-plot/
   title: Category pie chart

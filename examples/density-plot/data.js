@@ -1,5 +1,3 @@
-import { gaussianProfile } from "../../oracles/gaussian-profile.js";
-
 export const layout = Object.freeze({ width: 1000, height: 700, margin: 150 });
 export const rows = Object.freeze([
   Object.freeze({ value: 1, group: "A" }), Object.freeze({ value: 2, group: "A" }),
@@ -12,9 +10,3 @@ export const targets = Object.freeze({
   horizontal: Object.freeze({ id: "density", field: "value", groupBy: "group", color: "group", densityChannel: "x", ...statistics })
 });
 
-export function referenceProfiles(variant) {
-  const groups = variant === "vertical" ? [undefined] : ["A", "B"];
-  return groups.map(group => ({ group, points: gaussianProfile(
-    rows.filter(row => group === undefined || row.group === group).map(row => row.value), statistics
-  ) }));
-}

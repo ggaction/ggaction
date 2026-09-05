@@ -356,7 +356,8 @@
           "scope": "Baseline-only createDensityPlot을 제안한다. 기존 KDE와 densityChannel을 재사용하고 groupBy와 color는 별도 명시하며 color는 retained group field만 지원한다. Orientation edit와 raw metadata join은 추가하지 않는다.",
           "acceptance": "세로/가로·grouped density의 값과 영역이 기존 chain과 동일. editDensity/editAreaMark/editScale 후 owner 유지.",
           "contractEvidence": "phase3/CONTRACT_REVIEW.md",
-          "status": "visual-approved-awaiting-implementation"
+          "status": "implemented-awaiting-integration",
+          "resultEvidence": "phase3/RESULTS.md#w2--baseline-density"
         },
         {
           "id": "R6-P3-W3",
@@ -1536,8 +1537,9 @@
       "recommended": "Baseline-only createDensityPlot을 제안한다. 기존 KDE와 densityChannel을 재사용하고 groupBy와 color는 별도 명시하며 color는 retained group field만 지원한다. Orientation edit와 raw metadata join은 추가하지 않는다.",
       "acceptance": "세로/가로·grouped density의 값과 영역이 기존 chain과 동일. editDensity/editAreaMark/editScale 후 owner 유지.",
       "evidence": "audit/REPORT.md: F06",
-      "disposition": "phase3-contract-approved-awaiting-visual-target",
-      "contractEvidence": "phase3/CONTRACT_REVIEW.md"
+      "disposition": "implemented-awaiting-bundle-integration-and-phase-exit",
+      "contractEvidence": "phase3/CONTRACT_REVIEW.md",
+      "resultEvidence": "phase3/RESULTS.md#w2--baseline-density"
     },
     {
       "id": "F07",

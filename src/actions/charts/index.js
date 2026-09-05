@@ -5,6 +5,7 @@ import { createLinePlot } from "./line.js";
 import { createScatterPlot } from "./scatter.js";
 import { createParallelCoordinates } from "./parallel.js";
 import { createPiePlot } from "./pie.js";
+import { createDensityPlot } from "./density.js";
 
 export function registerChartActions(ProgramClass) {
   ProgramClass.prototype.createBarPlot = createBarPlot;
@@ -14,4 +15,5 @@ export function registerChartActions(ProgramClass) {
   ProgramClass.prototype.createLinePlot = createLinePlot;
   ProgramClass.prototype.createParallelCoordinates = createParallelCoordinates;
   ProgramClass.prototype.createPiePlot = createPiePlot;
+  ProgramClass.prototype.createDensityPlot = createDensityPlot;
 }

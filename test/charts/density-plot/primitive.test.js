@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { visualVariants } from "./manifest.js";
 import { referenceProfiles, rows, targets } from "./reference-values.js";
-import { displayedActionCalls } from "../../support/visual-variants.js";
+import { displayedActionCalls, assertDisplayedProgram } from "../../support/visual-variants.js";
 
 test("anchors the Gaussian profile oracle in literal point values", () => {
   const profiles = referenceProfiles("grouped");
@@ -39,10 +39,10 @@ for (const variant of visualVariants) {
     assert.equal(dataset.source, "source");
     assert.ok(p.graphicSpec.objects.density.items.every(item => item.properties.commands.at(-1).op === "Z"));
   });
-  test(`records the exact future ${variant.variant} density facade call`, () => {
+  test(`records the exact displayed ${variant.variant} density facade call`, () => {
     const calls = displayedActionCalls(variant.callChain);
     assert.deepEqual(calls.map(c => c.op), ["createCanvas", "createData", "createDensityPlot"]);
     assert.deepEqual(calls.at(-1).args, targets[variant.variant]);
-    assert.equal(variant.userFacing, undefined);
+    assertDisplayedProgram(variant, variant.userFacing());
   });
 }

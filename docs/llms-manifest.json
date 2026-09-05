@@ -220,14 +220,15 @@
       "source": "tutorials/density-area.md",
       "headings": [
         "density-area-chart-tutorial",
+        "complete-density-facade",
         "complete-program",
         "what-the-actions-establish",
         "move-and-wrap-the-title",
         "key-action-trace",
         "run-and-continue"
       ],
-      "bytes": 4949,
-      "sha256": "95faa370bf46a9b7bbdc28371a27638243c79616e8b4c2847b966d01ba5f21dd"
+      "bytes": 6087,
+      "sha256": "c256e9bc757ca655a63e6bad6e88c65bd0090a91f8c071c3dc2bfc4b046a853b"
     },
     {
       "order": 15,
@@ -1774,8 +1775,8 @@
         "action-reference",
         "exact-action-lookup"
       ],
-      "bytes": 18717,
-      "sha256": "f7036d5a83966dc31fd2440e0c5660b888de53e156e582a7a0a75b35797cc5cf"
+      "bytes": 18821,
+      "sha256": "364fe668a5672dda1dca89ba7d0f811325a17ea7265057f80e86d03ff0d2c302"
     },
     {
       "order": 114,
@@ -1906,6 +1907,7 @@
       "source": "reference/actions/statistics.md",
       "headings": [
         "statistical-layer-actions",
+        "createdensityplot",
         "createintervaldata",
         "createregression",
         "editregression",
@@ -1920,8 +1922,8 @@
         "createviolinplot",
         "related"
       ],
-      "bytes": 6667,
-      "sha256": "cda1581808b5bd4d0c362c1a512977cb001b7809f0dafe13321d1d8946bf704d"
+      "bytes": 8125,
+      "sha256": "edbe4b65c638e8c56786827c6e499df25062a7ae5bcc6017e813e9b706b3198a"
     },
     {
       "order": 118,
@@ -2026,8 +2028,8 @@
         "exact-typescript-signatures",
         "related"
       ],
-      "bytes": 14337,
-      "sha256": "9c7502891de26825c835639e8e1471772e6b7d5369e40cb3be9d46c7c9967bec"
+      "bytes": 14407,
+      "sha256": "6776f304c3c35a59f8dd363ab12515f07928fb8a2df9da1c9d6b5e362b062c2a"
     },
     {
       "order": 123,
