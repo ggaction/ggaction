@@ -1,6 +1,6 @@
 # Roadmap 6 — Horizon
 
-**상태: R6-P3-A approved / Planned·미구현.** `createHorizonPlot`은 Current API가 아니다.
+**상태: A/V/B approved / Horizon public flow 구현.** 정확한 현재 계약은 [Current owner](../../../contract/current/COMPLETE_CHARTS.md#createhorizonplot)를 따른다. Phase 3 X는 아직 승인 전이다.
 [Phase 3 계약 검토](../phase3/CONTRACT_REVIEW.md)의 P3-C01·C05–C07을 적용한다.
 연결 F07·D04, owner [Phase 3 W3](../phase3/GOAL.md).
 
@@ -10,7 +10,7 @@
 Folded y의 0..1은 원본 amplitude 축이 아니다. 여러 group은 같은 panel에 overlay하며 small multiples를 만들지 않는다.
 
 ~~~typescript
-// Planned; referenced Horizon types preserve their current meaning.
+// Full ggaction entry; existing Horizon types retain their meaning.
 type HorizonPlotGuideOptions = {
   axes?: false | (Omit<CartesianAxesOptions, "y"> & { y?: false });
   grid?: false | (Pick<CartesianGridOptions, "vertical"> & { horizontal?: false });
@@ -69,14 +69,14 @@ const lower = base
   .editAreaMark({ target: 'horizon', opacity: 0.8 })
   .createGuides();
 
-// Proposed equivalent; not executable yet.
-const proposed = base.createHorizonPlot({
+// Equivalent complete facade.
+const complete = base.createHorizonPlot({
   id: 'horizon', data: 'source', coordinate: 'timeline',
   x: 'time', y: 'value', area: { opacity: 0.8 }
 });
 ~~~
 
-최단 제안은 `base.createHorizonPlot({x:'time',y:'value'})`, default id horizonPlot이다.
+최단 호출은 `base.createHorizonPlot({x:'time',y:'value'})`, default id horizonPlot이다.
 원본 x/y inference를 지원하는 기존 `encodeHorizon()`는 유지하지만 새 H0는 두 역할을 명시해야 한다.
 모든 facade가 사용하는 data/coordinate ambiguity와 immutability 규칙을 따른다.
 
@@ -134,9 +134,9 @@ Default x/y scale id와 generated field/revision identity는 lower owner가 소�
 
 ## V target 계획과 독립 oracle
 
-공통 Canvas 1000×700, margin 150. [단일 manifest](../../../../test/gates/horizon-plot/manifest.js)에
-[values](../../../../test/gates/horizon-plot/reference-values.js)와 call을 고정했고
-[primitive](../../../../test/gates/horizon-plot/primitive.program.js)를 실행·렌더링했다. 신규 facade는 아직 미구현이다.
+공통 Canvas 1000×700, margin 150. [단일 manifest](../../../../test/charts/horizon-plot/manifest.js)에
+[values](../../../../test/charts/horizon-plot/reference-values.js)와 call을 고정했고
+[primitive](../../../../test/charts/horizon-plot/primitive.program.js)를 실행·렌더링했다. 구현한 facade와 같은 실행의 semanticSpec·graphics·Canvas calls·decoded PNG·SVG·PDF streams가 일치한다.
 
 | Variant | Values / 제안 public chain | 의미 oracle |
 | --- | --- | --- |

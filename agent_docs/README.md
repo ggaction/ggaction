@@ -18,7 +18,7 @@
 
 **현재 활성 계획은 Roadmap 6 Phase 3**이다. 계층적 chart authoring과 action consistency의 상세 계획을
 [`impl/roadmap6/ROADMAP.md`](impl/roadmap6/ROADMAP.md)에서 관리한다. 사용자 선택에 따라 새 액션군 F01–F19를
-범위로 삼았다. Phase 2 X와 Phase 3 A/V 승인을 기록했다. Pie/Donut·Density·Horizon 구현과 9개 public 시각 동등성 검증을 완료했다(Current 177 / Planned 0). [결과](impl/roadmap6/phase3/RESULTS.md)와 Full 923-byte 초과의 [B 검토](impl/roadmap6/phase3/BUNDLE_REVIEW.md)를 준비했으며 기존 상한은 유지한다. B 결정·package 통과·X 승인을 남긴다.
+범위로 삼았다. Phase 2 X와 Phase 3 A/V/B 승인을 기록했다. Pie/Donut·Density·Horizon과 9개 public 시각 동등성을 구현·검증했다(Current 177 / Planned 0). 승인된 Full 상한 237,000 bytes에서 같은 tarball 검증이 통과했고 [Phase 3 X 결과](impl/roadmap6/phase3/REVIEW.md)가 ready-for-review다.
 후속 신규 API의 구체 설계는 Proposed다. 마지막 완료 owner는 Roadmap 5.4 Phase 6이다.
 Nullable active pointer와 마지막 완료 owner의 machine-readable source는
 [`impl/ROADMAP_INDEX.json`](impl/ROADMAP_INDEX.json)이다.

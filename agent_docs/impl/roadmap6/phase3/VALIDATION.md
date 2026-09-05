@@ -2,7 +2,7 @@
 
 이 문서의 A/V 절은 승인 당시 baseline과 acceptance 계획을 보존한다.
 현재 새 API 구현 결과는 [RESULTS.md의 최종 통합 검증](RESULTS.md#최종-통합-검증),
-미해결 package 상한은 [BUNDLE_REVIEW.md](BUNDLE_REVIEW.md)를 따른다.
+B 승인 상한 적용과 현재 package 판정은 [REVIEW.md](REVIEW.md)를 따른다.
 공개 결정은 [CONTRACT_REVIEW.md](CONTRACT_REVIEW.md), 승인 경계는 [GATES.md](GATES.md)가 소유한다.
 검토 package [`bd18718a9c1aed5f91b485bc1aeab54616e9e5a3`](https://github.com/ggaction/ggaction/commit/bd18718a9c1aed5f91b485bc1aeab54616e9e5a3)을 원격 branch에 push했다.
 
@@ -186,5 +186,6 @@ node agent_docs/impl/roadmap6/phase3/render-public-review.mjs
 node agent_docs/impl/roadmap6/phase3/verify-package.mjs
 ```
 
-마지막 명령의 현재 기대 결과는 Full 923-byte 초과의 **exit 1**이다. 승인되지 않은 상한을 변경하거나
-예상 실패를 성공으로 치환하지 않는다. 문서 browser 검증에는 repository-local locked gems와 Ruby 3.3.12를 사용했다.
+마지막 명령은 위 B 이전 source commit에서 Full 923-byte 초과의 **exit 1**을 반환했다.
+승인 후 현재 consumer 재현은 REVIEW의 기존 tarball 설치 명령을 사용하며 과거 package-results.json을 덮어쓰지 않는다.
+문서 browser 검증에는 repository-local locked gems와 Ruby 3.3.12를 사용했다.

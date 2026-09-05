@@ -81,16 +81,16 @@ const lower = base
   .encodeColor({ target: 'pie', field: 'category' })
   .createGuides({ axes: false, grid: false, legend: { target: 'pie' } });
 
-// Proposed equivalent; do not execute before implementation.
-const proposed = base.createPiePlot({
+// Equivalent complete facade.
+const complete = base.createPiePlot({
   id: 'pie', data: 'source', category: 'category',
   value: 'value', aggregate: 'sum', arc: { innerRadius: 0.55 }
 });
 ~~~
 
-Count의 최단 제안은 `base.createPiePlot({ category:'category' })`다.
+Count의 최단 호출은 `base.createPiePlot({ category:'category' })`다.
 Default id는 piePlot, data/coordinate 선택과 duplicate 오류는 [공통 계약](../phase3/CONTRACT_REVIEW.md)을 따른다.
-순수 scalar fill 제안은 `{ category:'category', color:false, arc:{ fill:'#4c78a8' } }`다.
+순수 scalar fill 호출은 `{ category:'category', color:false, arc:{ fill:'#4c78a8' } }`다.
 
 ## Default·지원·오류
 

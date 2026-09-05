@@ -1,9 +1,8 @@
 # Phase 3 구현 결과
 
-A와 9개 V target은 승인되었다. 세 public flow의 구현과 기능 검증을 완료했다.
-Full bundle이 기존 상한을 923 bytes 초과하므로 package 전체는 실패 상태다.
-[B 검토](BUNDLE_REVIEW.md)와 이후 Phase 전체 X 승인을 남긴다. 아래의 W1–W3는 각 구현 시점의 checkpoint이고,
-현재 누적 판정은 마지막 통합 검증 절이 소유한다.
+A/V/B를 승인받아 세 public flow와 누적 기능 검증을 완료했다. 승인된 Full 상한 237,000 bytes를 적용하고
+같은 tarball의 package와 실제 browser 검증이 통과했다. [X 결과 검토](REVIEW.md)는 ready-for-review다.
+아래 W1–W3와 B 이전 통합은 당시 checkpoint이며 현재 package 판정은 마지막 B 적용 결과 절이 소유한다.
 
 ## W1 — Pie and Donut
 
@@ -110,6 +109,9 @@ Density 두 방향과 explicit group/color, temporal Horizon bands/baseline, 각
 
 ## 최종 통합 검증
 
+이 절은 B 승인 전 측정·기능 통합 기록이다. 당시 package 실패와 원래 ceilings를 보존한다.
+승인 후 현재 package 판정은 아래 B 적용 결과와 REVIEW를 따른다.
+
 Runtime·declarations·knowledge 구현 commit은
 [`80999264535b312d82ca3f58928b4428bf749ac5`](https://github.com/ggaction/ggaction/commit/80999264535b312d82ca3f58928b4428bf749ac5),
 generated scenario 교정 commit은
@@ -152,3 +154,29 @@ Stable tests와 manifests는 `test/charts/{pie-plot,density-plot,horizon-plot}/`
 원장 47 findings / 46 work packages / 12 phases와 F20 제외를 확인했다. Source hashes 90개·PNG hashes 18개를
 다시 확인했고 package source와 기존 bundle limits가 변경되지 않았다. 로그는 `phase3-final-navigation.log`,
 `phase3-final-record-check.json`이다. 마지막 원격 review commit 고정은 문서 ref만 바꾼다.
+
+## B 승인 상한 적용 결과
+
+2026-09-05 사용자가 Full 상한 235,000 → 237,000 bytes 조정 질문에 “승인한다”라고 답했다.
+승인 기준 HEAD `d2b1f7bf05d11357b9b9b6ed5520f442ef3d07f4`, review package `c7ff0309d19729251b569e61498d52ca714f80bc`다.
+승인 기록을 먼저 push한 뒤 `81225436461eec0e0298a29f98ca42cc569e6201`에서 canonical guard와 architecture 표 두 줄을 바꿨다.
+
+검토했던 `ggaction-0.0.12.tgz`를 다시 pack하지 않고 동일 SHA-256으로 재사용했다.
+전체 Node/MCP/strict TypeScript/tutorial/renderer/Vite 소비자는 **exit 0**, 같은 package의 실제 Chromium 소비자는 **1/1**,
+승인 상한을 적용한 contracts는 **263/263** 통과했다. Full/Basic/SVG gzip bytes는 기존과 같은 **235,923 / 124,897 / 6,418**이다.
+새 상한 **237,000 / 125,000 / 25,000**에서 모두 통과한다. [기계 판독 결과](package-approved-results.json)에 기록했다.
+이전 실패 snapshot `package-results.json`은 보존하며 현재 package 전체 실패로 표기하지 않는다.
+
+최초 consumer CLI 호출에서 상대 tarball 경로를 전달해 임시 설치 디렉터리 기준으로 파일을 찾지 못했다.
+절대 경로로 다시 실행해 통과했으며 package 내용이나 설치 검사를 바꾸지 않았다.
+원격 재현에는 `node scripts/package-consumer.js "$PWD/.artifacts/release/ggaction-0.0.12.tgz"`를 사용한다.
+
+최종 chart 계약에서 Horizon의 옛 미구현 표기·제거된 Gate 경로와 세 예제의 proposal 변수명을 현재 실행 형태로 맞췄다.
+과거 A/V snapshot은 그대로다. Runtime/types/knowledge·bundle bytes가 같으므로 이미 통과한 normal·coverage·realistic·렌더링은
+이 두 줄의 상한 변경 때문에 반복하지 않았다. 전체 Phase 3 결과와 한계는 [X 검토](REVIEW.md)를 따른다.
+
+로그: `.artifacts/roadmap6-authoring/phase3-approved-{package,package-browser,contracts}.log`.
+
+X 기록 정리 후 navigation/documentation-truth **10/10**, 세 chart 문서의 실제 lower/public calls **3/3** semantic·graphic parity,
+Markdown 14개 local links **306개**를 확인했다. Source hashes 90개·PNG hashes 18개와 동일 tarball SHA-256,
+Current 177 / Planned 0·F20 제외를 재확인했다. `phase3-exit-{navigation.log,document-calls.json,integrity.json}`에 기록했다.

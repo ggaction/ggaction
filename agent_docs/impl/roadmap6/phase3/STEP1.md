@@ -19,11 +19,14 @@
 - [x] Same-run public/primitive parity·누적 검증 결과·문서·원장 동기화
 - [x] 조건부 B 용량 검토안과 같은 tarball 측정 evidence 준비
 - [x] B 명시적 사용자 승인 기록 (Full 237,000 bytes)
-- [ ] 승인 상한 적용과 같은 tarball package 전체 exit 0 확인
-- [ ] X package commit/push와 명시적 사용자 승인 기록
+- [x] 승인 상한 적용과 같은 tarball package 전체 exit 0 확인
+- [x] X 결과 문서·검증 evidence 준비
+- [ ] X package 원격 ref 고정
+- [ ] X 명시적 사용자 승인 기록
 
 A/V 승인 뒤 세 public flow·lower lifecycle·시각 동등성·문서와 누적 기능 검증을 완료했다.
-Full 923-byte 상한 초과의 [B 결정](BUNDLE_REVIEW.md)과 package 통과·전체 X 승인을 남긴다. [구현 결과](RESULTS.md)를 따른다.
+[B 결정](BUNDLE_REVIEW.md)을 승인받아 Full 상한을 적용했고 같은 tarball의 package와 실제 browser 검증이 통과했다.
+[X 최종 결과](REVIEW.md)의 사용자 승인을 남긴다. [구현 결과](RESULTS.md)를 따른다.
 [계약 검토](CONTRACT_REVIEW.md), [시각 검토](VISUAL_REVIEW.md), [Gate](GATES.md), [검증](VALIDATION.md)가 현재 evidence를 소유한다.
 
 ## 실행 순서와 경계
@@ -65,3 +68,4 @@ Full 923-byte 상한 초과의 [B 결정](BUNDLE_REVIEW.md)과 package 통과·�
 
 - W3 구현: Current 177 / Planned 0. Signed/temporal/baseline-style, shared x title regression, strict guide/color boundaries, 실제 데이터 45건을 검증했다. 누적 coverage는 normal 2,585건을 포함하며 lines 95.09% / branches 91.31% / functions 98.76%, critical floors 72개 통과다. Installed Full 235,923 > 235,000으로 package 전체는 실패한다.
 - 통합: 9개 public/primitive와 기존 승인 V pixel이 일치한다. Realistic 전체 210/212의 두 inventory 실패를 교정한 뒤 관련 모듈 13/13이 통과했다. Runtime source `80999264`, test 교정 `39b082d6`; package bytes는 같다. 정확한 범위는 [최종 통합 검증](RESULTS.md#최종-통합-검증)을 따른다.
+- B 적용: 승인 기준 HEAD `d2b1f7bf`, 적용 commit `81225436`. Full 237,000-byte 상한에서 같은 tarball package exit 0, installed browser 1/1, contracts 263/263. 마지막 navigation 10/10, 문서 lower/public 3쌍·local links 306개도 확인했다. X 결과를 별도 원격 검토 package로 고정한다.

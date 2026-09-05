@@ -77,13 +77,13 @@ const lower = base
   .createGuides({ legend: { target: 'density' } });
 
 // Equivalent complete facade.
-const proposed = base.createDensityPlot({
+const complete = base.createDensityPlot({
   id: 'density', data: 'source', field: 'value',
   groupBy: 'group', color: 'group', bandwidth: 1, extent: [0, 6], steps: 61
 });
 ~~~
 
-최단 제안은 `base.createDensityPlot({ field:'value' })`다. Default id densityPlot.
+최단 호출은 `base.createDensityPlot({ field:'value' })`다. Default id densityPlot.
 `densityChannel:'y'`는 x=value/y=density이며 `'x'`는 x=density/y=value다.
 `horizontal:true` 같은 두 번째 orientation vocabulary는 추가하지 않는다.
 

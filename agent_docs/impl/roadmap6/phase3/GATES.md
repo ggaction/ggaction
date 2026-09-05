@@ -3,10 +3,10 @@
 ## 공통 상태
 
 Phase 2 X 결과 승인은 기록했다. **R6-P3-A는 2026-09-05 사용자 “승인한다”로 approved**다.
-V는 2026-09-05 사용자 “승인한다”로 approved, B는 2026-09-05 사용자 “승인한다”로 approved, X는 planned다.
+V와 B는 2026-09-05 사용자 “승인한다”로 approved, X는 ready-for-review다.
 허용 상태: planned | ready-for-review | approved | changes-requested.
 세 public flow와 9개 same-run public/primitive 검증을 완료했다(Current 177 / Planned 0).
-Full 923-byte 초과를 기록하고 기존 상한을 유지한 채 B 검토를 준비했다.
+B 승인 뒤 Full 상한 237,000 bytes를 적용했다. 같은 tarball의 package와 실제 browser 검증이 통과했다.
 
 ## R6-P3-A — Contract and scope
 
@@ -51,7 +51,8 @@ Full 923-byte 초과를 기록하고 기존 상한을 유지한 채 B 검토를 
 - 상태: approved. 2026-09-05 사용자가 Full 235,000 → 237,000 bytes 조정 질문에 “승인한다”라고 답했다.
 - 승인 기준 HEAD: `d2b1f7bf05d11357b9b9b6ed5520f442ef3d07f4`. Review package `c7ff0309d19729251b569e61498d52ca714f80bc`의 Full 상한 변경·같은 tarball 재검증·X 준비만 승인했다.
 - 범위: [BUNDLE_REVIEW.md](BUNDLE_REVIEW.md)의 Full gzip 상한 235,000 → 237,000 bytes 제안.
-  Basic 125,000 / SVG 25,000, 측정 방식과 fixture는 유지한다. 상한 변경은 아직 적용하지 않았다.
+  Basic 125,000 / SVG 25,000, 측정 방식과 fixture는 유지한다.
+  적용 commit `81225436461eec0e0298a29f98ca42cc569e6201`의 변경은 canonical guard와 architecture 표 두 줄이다.
 - 근거: 같은 installed tarball에서 Full 235,923 bytes로 923 bytes 초과. Basic 124,897 / SVG 6,418 통과.
   Node/MCP/strict TypeScript/tutorial 기능 검증은 통과했지만 package 전체는 exit 1이다.
 - Runtime source commit: `80999264535b312d82ca3f58928b4428bf749ac5`.
@@ -62,14 +63,23 @@ Full 923-byte 초과를 기록하고 기존 상한을 유지한 채 B 검토를 
 - 승인 효과: canonical guard와 architecture 표의 Full 상한만 수정하고 installed package를 재검증한다.
   이후 X 검토 준비를 연다. 새 API·다음 Phase·PR·배포·publish 승인은 아니다.
 - 승인 전 차단: bundle 상한 변경과 package 통과 선언. X는 package 실패가 남아 있는 동안 planned로 유지한다.
+- 승인 후 결과: [package-approved-results.json](package-approved-results.json). 같은 SHA-256의 tarball을 재사용해
+  Node/MCP/strict types/tutorial/Vite 전체 exit 0, installed browser 1/1, contracts 263/263을 확인했다.
 
 ## R6-P3-X — Result and closeout
 
-- 상태: planned
+- 상태: ready-for-review. 사용자 승인 없음.
+- 검토 문서: [REVIEW.md](REVIEW.md). Runtime source `80999264`, scenario 교정 `39b082d6`,
+  승인 상한 적용 `81225436461eec0e0298a29f98ca42cc569e6201`. 세 commit의 packaged runtime/types/knowledge는 같다.
+- Review package commit: 검증 결과와 문서를 push한 뒤 별도 ref 기록으로 고정한다. 그 기록 전 승인 요청하지 않는다.
 - 범위: W1–W3의 승인 결과, exact source/ref, 누적 tests·strict types·실제 trace·immutable failure,
   Current/discovery/generated docs·package 동기화.
 - 시각 증거: 승인된 9개 targets의 same-run graphicSpec·draw order·Canvas calls·decoded pixels 일치,
   numeric oracle와 renderer consumer coverage.
+- 실행 결과: normal 2,585, coverage 72 critical floors, 계약 263/263, realistic 전체 210/212 후 관련 교정 모듈 13/13,
+  9개 public 시각 동등성·V pixel 보존, 새 실제 데이터 사례 45/45, 문서 124페이지·browser,
+  같은 tarball package exit 0·installed browser 1/1. Realistic 전체를 새로 212/212 실행했다고 표시하지 않는다.
+- 범위 처분: F01/F06/F07 Current, 전체 Current 177 / Planned 0, F20 제외. Stable evidence는 test/charts로 이관했다.
 - 후속 범위: labels/theta order/Density orientation edit/new amplitude guides/composition을 이 단계에 섞어 완료로 세지 않는다.
 - 승인 효과: 이 결과를 전제로 하는 후속 Gate 준비. 다음 API의 자동 승인은 아님.
 - 승인 전 차단: Phase 3 completed 표시와 dependent implementation.
@@ -79,7 +89,7 @@ Full 923-byte 초과를 기록하고 기존 상한을 유지한 채 B 검토를 
 A P3-C07은 Full 235,000 / Basic 125,000 / SVG 25,000 bytes를 유지하도록 승인되었다.
 실제 installed 측정은 공통 helper 중복 정리 뒤에도 Full이 923 bytes 초과한다. 이를 근거로 위 R6-P3-B를
 구체 delta·artifact·검증과 함께 별도 선언했다. A/V와 사용자의 “계속해”를 새 상한 승인으로 기록하지 않는다.
-B 승인 없이 상한을 올리지 않는다. 추가 최적화 또는 일부 범위 보류의 대안도 B 문서에 명시했다.
+B에 대한 별도 “승인한다”를 기록한 뒤 상한을 적용했다. 당시 대안과 이전 실패 evidence는 B 문서에 보존했다.
 
 ## 승인 기록
 
@@ -90,4 +100,4 @@ B 승인 없이 상한을 올리지 않는다. 추가 최적화 또는 일부 �
 - 효과: Planned 등록·비시각 준비·primitive target 작성 가능. V/X와 조건부 bundle B는 승인하지 않았다.
 - 실제 검증: baseline 52/52, related existing tests 176/176, 문서 lower calls 3/3, 최종 navigation 10/10, local links 214개. 재현 명령은 [VALIDATION.md](VALIDATION.md).
 - Planned 등록: accepted 3개, Current 174개 유지. `npm run test:contracts` 260/260, fail/skip 0.
-- 현재 남은 작업: B 사용자 결정·package 전체 통과·X 검토와 승인. Public 구현·시각 검증·기능 회귀 결과는 위 B evidence에 기록했다.
+- 현재 남은 작업: X 사용자 승인. B 적용과 package 전체 통과, public 구현·시각 검증·기능 회귀 결과를 X 검토 문서에 기록했다.

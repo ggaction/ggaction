@@ -1,0 +1,105 @@
+{
+  "version": 1,
+  "sourceCommit": "81225436461eec0e0298a29f98ca42cc569e6201",
+  "runtimeSourceTree": "6d5a80e311cabdc67dff5da739dcce3346e3841d",
+  "typesTree": "38cbb7b6d7feaa5b044a56189ea874b8bde5d581",
+  "knowledgeTree": "b99ae751113696eab7492999f2180ed1dd5c9d60",
+  "environment": {
+    "node": "v22.23.1",
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "approval": {
+    "gate": "R6-P3-B",
+    "date": "2026-09-05",
+    "approvalBaselineCommit": "d2b1f7bf05d11357b9b9b6ed5520f442ef3d07f4",
+    "reviewPackageCommit": "c7ff0309d19729251b569e61498d52ca714f80bc"
+  },
+  "previousEvidence": "package-results.json",
+  "reusedExactReviewedTarball": true,
+  "package": {
+    "name": "ggaction",
+    "version": "0.0.12",
+    "filename": "ggaction-0.0.12.tgz",
+    "sha256": "436bc7ba0475f78ddeb5040193b61c15325869240a4f05c5c03cf7663d301314",
+    "packedBytes": 481057,
+    "unpackedBytes": 2300288,
+    "entries": 436
+  },
+  "installedNodeMCPTypesAndTutorials": "passed",
+  "packagePassed": true,
+  "exitCode": 0,
+  "packageError": null,
+  "bundles": [
+    {
+      "specifier": "ggaction",
+      "chunks": 1,
+      "modules": 383,
+      "minifiedBytes": 900260,
+      "gzipBytes": 235923,
+      "limit": 237000,
+      "delta": -1077,
+      "passed": true
+    },
+    {
+      "specifier": "ggaction/basic",
+      "chunks": 1,
+      "modules": 225,
+      "minifiedBytes": 452295,
+      "gzipBytes": 124897,
+      "limit": 125000,
+      "delta": -103,
+      "passed": true
+    },
+    {
+      "specifier": "ggaction/svg",
+      "chunks": 1,
+      "modules": 15,
+      "minifiedBytes": 19840,
+      "gzipBytes": 6418,
+      "limit": 25000,
+      "delta": -18582,
+      "passed": true
+    }
+  ],
+  "checks": [
+    "node",
+    "extension",
+    "pdf",
+    "png",
+    "svg",
+    "numeric-font-weight",
+    "point-jitter",
+    "path-order",
+    "time-unit-data",
+    "window-data",
+    "bin2d-data",
+    "binned-heatmap",
+    "parallel-coordinates",
+    "horizon",
+    "violin-plot",
+    "right-categorical-legend-offset",
+    "sequential-palette-count",
+    "typescript",
+    "basic-entry-runtime-and-types",
+    "tutorial-consumers",
+    "minimal-browser-bundle-measurement",
+    "private-export-rejection",
+    "installed-local-mcp",
+    "direct-mcp-byte-equality",
+    "task-packet-v4-authoring-execution",
+    "explicit-unresolved-docs-fallback",
+    "terminal-unsupported-no-fallback"
+  ],
+  "mcp": {
+    "coldStartMilliseconds": 469
+  },
+  "command": "node scripts/package-consumer.js \"$PWD/.artifacts/release/ggaction-0.0.12.tgz\"",
+  "installedBrowser": {
+    "tests": 1,
+    "passed": 1,
+    "failed": 0,
+    "exactReviewedTarball": true,
+    "command": "GGACTION_PACKAGE_SPEC=\"$PWD/.artifacts/release/ggaction-0.0.12.tgz\" node --test test/browser/package-consumer.browser.js"
+  }
+}

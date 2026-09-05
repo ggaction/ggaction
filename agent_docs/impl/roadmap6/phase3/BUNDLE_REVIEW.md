@@ -2,7 +2,8 @@
 
 상태: **approved**. 2026-09-05 사용자가 Full 235,000 → 237,000 bytes 조정 질문에 “승인한다”라고 답했다. 승인 기준 HEAD는 `d2b1f7bf05d11357b9b9b6ed5520f442ef3d07f4`다. 아래는 결정 당시의 제안·측정 기록이며 승인 후 적용 결과는 RESULTS에 별도로 기록한다.
 Full bundle 상한 변경은 A/V 승인에 포함되지 않았으며, 이 문서는 그 별도 결정을 구체화한다.
-상한 변경은 아직 적용하지 않았다. X와 다음 Phase 구현도 승인 전이다.
+승인 후 Full 상한을 적용했고 [같은 tarball 결과](package-approved-results.json)는 exit 0이다.
+아래의 235,000-byte 실패는 B 검토 당시 기록이다. [X 최종 결과](REVIEW.md)는 별도 검토 상태다.
 
 ## 요청할 결정
 
@@ -93,8 +94,9 @@ node agent_docs/impl/roadmap6/phase3/render-public-review.mjs
 node agent_docs/impl/roadmap6/phase3/verify-package.mjs
 ```
 
-두 script는 executable source가 dirty하면 evidence 생성을 거부한다. Package script는 현재 상한에서
-923-byte 초과를 기록하고 exit 1을 반환한다. 원격 재현에는 기록된 source ref와 lockfile을 사용한다.
+두 script는 executable source가 dirty하면 evidence 생성을 거부한다. B 이전 package source ref에서 script는
+923-byte 초과를 기록하고 exit 1을 반환했다. 이 과거 snapshot을 새 상한 결과로 덮어쓰지 않는다.
+승인 후 재현 명령은 REVIEW를 따르며 원격 재현에는 기록된 source ref와 lockfile을 사용한다.
 실행 환경은 Node 22.23.1 / macOS arm64다.
 
 ## 별도 승인이 필요한 근거
@@ -104,6 +106,6 @@ node agent_docs/impl/roadmap6/phase3/verify-package.mjs
 [구현 기록 지침](../../AGENTS.md#approval-gates)의 원문은
 “Treat Gates as hard execution boundaries. Add intermediate Gates for independent public decisions, findings, or visual targets and stop at the first unapproved Gate.”다.
 
-V 승인 범위의 구현과 기능 검증을 마쳤다. 사용자의 “계속해”는 이 작업을 이어가는 지시이며,
-아직 제시하지 않은 새 bundle 상한의 승인으로 기록하지 않는다. 현재 상한은 그대로다.
+V 이후 “계속해”는 당시 미제시한 상한 승인으로 취급하지 않았다. 이후 구체 B 제안을 제시했고
+2026-09-05 사용자의 “승인한다”로 승인받은 뒤 상한을 적용했다. 승인 근거는 GATES에 기록했다.
 원격 review package commit: [`c7ff0309d19729251b569e61498d52ca714f80bc`](https://github.com/ggaction/ggaction/commit/c7ff0309d19729251b569e61498d52ca714f80bc). `origin/codex/roadmap6-hierarchical-actions`에 push했으며 원격 ref와 일치를 확인했다. 이 문서의 최종 ref 기록은 source나 측정 evidence를 변경하지 않는다.

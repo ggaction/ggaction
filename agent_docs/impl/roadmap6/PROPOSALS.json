@@ -332,7 +332,7 @@
         "R6-P3-A": "approved",
         "R6-P3-V": "approved",
         "R6-P3-B": "approved",
-        "R6-P3-X": "planned"
+        "R6-P3-X": "ready-for-review"
       },
       "workPackages": [
         {
@@ -345,7 +345,7 @@
           "scope": "Category count와 explicit weighted sum의 createPiePlot을 제안한다. Donut은 arc.innerRadius로 작성하고 별도 alias는 추가하지 않는 방향이다. Color는 category 기본, guide는 legend만이며 labels/theta order는 후속 단계다.",
           "acceptance": "category count·중복 category sum·donut hole·no axes/grid·하위 edit chain이 chart 계약과 일치. Facade-child semantic/graphic 동등성.",
           "contractEvidence": "phase3/CONTRACT_REVIEW.md",
-          "status": "implemented-verified-awaiting-package-budget",
+          "status": "implemented-and-verified",
           "resultEvidence": "phase3/RESULTS.md#w1--pie-and-donut"
         },
         {
@@ -358,7 +358,7 @@
           "scope": "Baseline-only createDensityPlot을 제안한다. 기존 KDE와 densityChannel을 재사용하고 groupBy와 color는 별도 명시하며 color는 retained group field만 지원한다. Orientation edit와 raw metadata join은 추가하지 않는다.",
           "acceptance": "세로/가로·grouped density의 값과 영역이 기존 chain과 동일. editDensity/editAreaMark/editScale 후 owner 유지.",
           "contractEvidence": "phase3/CONTRACT_REVIEW.md",
-          "status": "implemented-verified-awaiting-package-budget",
+          "status": "implemented-and-verified",
           "resultEvidence": "phase3/RESULTS.md#w2--baseline-density"
         },
         {
@@ -371,11 +371,11 @@
           "scope": "필수 x/y를 받는 createHorizonPlot을 제안한다. 기존 createCoordinate로 좌표를 연결하고 encodeHorizon 뒤 explicit opacity를 적용한다. H0는 x guide만 허용하며 기존 lower guide escape는 유지한다.",
           "acceptance": "signed data와 editHorizon의 revision 검증. Folded y를 원래 양적 축처럼 표시하거나 internal band color legend를 자동 생성하지 않음.",
           "contractEvidence": "phase3/CONTRACT_REVIEW.md",
-          "status": "implemented-verified-awaiting-package-budget",
+          "status": "implemented-and-verified",
           "resultEvidence": "phase3/RESULTS.md#w3--horizon"
         }
       ],
-      "activity": "applying-approved-bundle-budget",
+      "activity": "awaiting-phase-exit-review",
       "contractEvidence": "phase3/CONTRACT_REVIEW.md",
       "baselineEvidence": "phase3/baseline-results.json",
       "baselineCommit": "9625e71c374868756652fb8dff8153dc61500c6e",
@@ -432,9 +432,9 @@
         "typesTree": "38cbb7b6d7feaa5b044a56189ea874b8bde5d581",
         "currentActions": 177,
         "plannedActions": 0,
-        "resultEvidence": "phase3/RESULTS.md#최종-통합-검증",
+        "resultEvidence": "phase3/REVIEW.md",
         "visualEvidence": "phase3/public-visual-results.json",
-        "packageEvidence": "phase3/package-results.json",
+        "packageEvidence": "phase3/package-approved-results.json",
         "validation": {
           "normalTestsPassed": 2585,
           "coverage": {
@@ -460,14 +460,17 @@
           "exactPublicPrimitivePairs": 9,
           "sourceDocsTestsPassed": 47,
           "builtDocsPages": 124,
-          "packagePassed": false
-        }
+          "packagePassed": true,
+          "approvedBudgetContractTestsPassed": 263,
+          "installedPackageBrowserTestsPassed": 1
+        },
+        "previousPackageEvidence": "phase3/package-results.json"
       },
       "bundleReview": {
         "file": "phase3/BUNDLE_REVIEW.md",
         "state": "approved",
         "currentLimits": {
-          "ggaction": 235000,
+          "ggaction": 237000,
           "ggaction/basic": 125000,
           "ggaction/svg": 25000
         },
@@ -482,7 +485,7 @@
           "ggaction/svg": 6418
         },
         "fullExcessBytes": 923,
-        "limitChangeApplied": false,
+        "limitChangeApplied": true,
         "scope": "Full ceiling only; preserve Basic/SVG limits and measurement. Reverify installed package before X review. No next Phase, PR, deployment, or publishing approval.",
         "reviewPackageCommit": "c7ff0309d19729251b569e61498d52ca714f80bc",
         "approval": {
@@ -491,6 +494,27 @@
           "reviewCommit": "c7ff0309d19729251b569e61498d52ca714f80bc",
           "approvalBaselineCommit": "d2b1f7bf05d11357b9b9b6ed5520f442ef3d07f4",
           "scope": "Full gzip ceiling 235000 → 237000 only; Basic 125000 and SVG 25000 unchanged. Reverify the reviewed tarball and prepare X. X, next Phase, PR, deployment, and publishing are not approved."
+        },
+        "appliedCommit": "81225436461eec0e0298a29f98ca42cc569e6201",
+        "resultEvidence": "phase3/package-approved-results.json",
+        "previousLimits": {
+          "ggaction": 235000,
+          "ggaction/basic": 125000,
+          "ggaction/svg": 25000
+        }
+      },
+      "resultReview": {
+        "state": "ready-for-review",
+        "file": "phase3/REVIEW.md",
+        "sourceCommit": "81225436461eec0e0298a29f98ca42cc569e6201",
+        "scope": "W1–W3 complete chart facades, nine approved targets, fixes and documented limits; same reviewed tarball passes approved budgets. X approval permits Phase 3 closeout and next contract Gate preparation, not new API implementation or release.",
+        "finalVerification": {
+          "navigationTestsPassed": 10,
+          "documentCallPairs": 3,
+          "markdownFiles": 14,
+          "localLinks": 306,
+          "sourceHashes": 90,
+          "pngHashes": 18
         }
       }
     },
@@ -1511,7 +1535,7 @@
       "recommended": "Category count와 explicit weighted sum의 createPiePlot을 제안한다. Donut은 arc.innerRadius로 작성하고 별도 alias는 추가하지 않는 방향이다. Color는 category 기본, guide는 legend만이며 labels/theta order는 후속 단계다.",
       "acceptance": "category count·중복 category sum·donut hole·no axes/grid·하위 edit chain이 chart 계약과 일치. Facade-child semantic/graphic 동등성.",
       "evidence": "audit/REPORT.md: F01",
-      "disposition": "implemented-verified-awaiting-package-budget-and-phase-exit",
+      "disposition": "implemented-verified-awaiting-phase-exit",
       "contractEvidence": "phase3/CONTRACT_REVIEW.md",
       "resultEvidence": "phase3/RESULTS.md#w1--pie-and-donut"
     },
@@ -1608,7 +1632,7 @@
       "recommended": "Baseline-only createDensityPlot을 제안한다. 기존 KDE와 densityChannel을 재사용하고 groupBy와 color는 별도 명시하며 color는 retained group field만 지원한다. Orientation edit와 raw metadata join은 추가하지 않는다.",
       "acceptance": "세로/가로·grouped density의 값과 영역이 기존 chain과 동일. editDensity/editAreaMark/editScale 후 owner 유지.",
       "evidence": "audit/REPORT.md: F06",
-      "disposition": "implemented-verified-awaiting-package-budget-and-phase-exit",
+      "disposition": "implemented-verified-awaiting-phase-exit",
       "contractEvidence": "phase3/CONTRACT_REVIEW.md",
       "resultEvidence": "phase3/RESULTS.md#w2--baseline-density"
     },
@@ -1629,7 +1653,7 @@
       "recommended": "필수 x/y를 받는 createHorizonPlot을 제안한다. 기존 createCoordinate로 좌표를 연결하고 encodeHorizon 뒤 explicit opacity를 적용한다. H0는 x guide만 허용하며 기존 lower guide escape는 유지한다.",
       "acceptance": "signed data와 editHorizon의 revision 검증. Folded y를 원래 양적 축처럼 표시하거나 internal band color legend를 자동 생성하지 않음.",
       "evidence": "audit/REPORT.md: F07",
-      "disposition": "implemented-verified-awaiting-package-budget-and-phase-exit",
+      "disposition": "implemented-verified-awaiting-phase-exit",
       "contractEvidence": "phase3/CONTRACT_REVIEW.md",
       "resultEvidence": "phase3/RESULTS.md#w3--horizon"
     },
