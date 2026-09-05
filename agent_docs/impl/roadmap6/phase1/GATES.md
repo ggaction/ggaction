@@ -32,6 +32,7 @@ R6-P1-A는 approved다. R6-P1-X는 ready-for-review이며 [구체적인 결과 p
 ## R6-P1-X — Result and closeout
 
 - 상태: ready-for-review
+- Review package commit: [`a7d2ec5afc450b46d7b9a4caf96c6f42e54d5641`](https://github.com/ggaction/ggaction/commit/a7d2ec5afc450b46d7b9a4caf96c6f42e54d5641), 위 remote branch에 push 확인.
 - 검증한 source commit / remote ref: `d72e7062fd2e0fb378b2b93843eeeb84baa2e28e` / `origin/codex/roadmap6-hierarchical-actions`.
 - 결과 package: [REVIEW.md](REVIEW.md), 작업별 [RESULTS.md](RESULTS.md). 전체 기본 테스트 2,329/2,329,
   contracts 259/259, focused render 2/2, installed package consumer exit 0.

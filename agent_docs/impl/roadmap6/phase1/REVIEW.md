@@ -7,6 +7,7 @@
 
 - 검증한 source commit: [`d72e7062fd2e0fb378b2b93843eeeb84baa2e28e`](https://github.com/ggaction/ggaction/commit/d72e7062fd2e0fb378b2b93843eeeb84baa2e28e).
 - Remote: `origin`, branch `codex/roadmap6-hierarchical-actions`.
+- 검토 package commit: `a7d2ec5afc450b46d7b9a4caf96c6f42e54d5641`, remote push 확인.
 - 기준 구현 전 commit: `064ef4ff8c22ce2c083dde5f5dd908464c8e6304`.
 - 범위: Bar facade 추론·temporal 타입, definition-only data 소비 오류, Point/Bar stroke 타입,
   MCP의 미완성 chart 안내와 phrase 중첩, internal action inventory.

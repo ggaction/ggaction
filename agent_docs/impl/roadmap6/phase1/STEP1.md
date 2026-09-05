@@ -12,7 +12,8 @@
 - [x] V 적용성 확인 — 새 시각 target 없음, 기존 출력과의 정합성 교정으로 N/A
 - [x] 기존 가로 Bar·temporal chart의 primitive/public render 비교 2/2 통과
 - [x] 누적 검증·migration·문서·원장 동기화 — [검토 package](REVIEW.md)
-- [ ] X Gate의 증거 commit/push와 명시적 사용자 승인 기록
+- [x] X Gate 증거 commit/push — `a7d2ec5afc450b46d7b9a4caf96c6f42e54d5641`
+- [ ] X Gate의 명시적 사용자 승인 기록
 
 체크된 항목은 실제 실행 증거를 갖춘 결과다. 사용자 승인이 없는 X Gate와 후속 Proposed API는 완료로 표시하지 않는다.
 

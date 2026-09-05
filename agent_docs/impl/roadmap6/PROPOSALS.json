@@ -147,7 +147,8 @@
       ],
       "visualGateApplicability": "not-applicable-to-current-correction-scope",
       "resultEvidence": "phase1/REVIEW.md",
-      "verifiedSourceCommit": "d72e7062fd2e0fb378b2b93843eeeb84baa2e28e"
+      "verifiedSourceCommit": "d72e7062fd2e0fb378b2b93843eeeb84baa2e28e",
+      "reviewPackageCommit": "a7d2ec5afc450b46d7b9a4caf96c6f42e54d5641"
     },
     {
       "id": 2,
