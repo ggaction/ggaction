@@ -11,7 +11,7 @@
 - [x] 승인된 신규 direct 4개와 기존 capability 5개 Planned 등록
 - [x] Primitive target용 비시각 semantic leaves와 closed vocabulary 검증
 - [x] V1 Area/layout primitive 11개 작성·수치·PNG 검증 및 검토 문서 준비
-- [ ] V1의 명시적 시각 승인
+- [x] V1의 명시적 시각 승인 — “승인한다”, 기준 102fbee9
 - [ ] R6-P4-W1 Area baseline/range와 facade
 - [ ] R6-P4-W2 Color와 독립한 layout assignment
 - [ ] R6-P4-W3 Rose와 Radial bar

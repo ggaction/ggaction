@@ -539,7 +539,7 @@
         "R6-P4-A": "approved",
         "R6-P4-V": "planned",
         "R6-P4-X": "planned",
-        "R6-P4-V1": "ready-for-review",
+        "R6-P4-V1": "approved",
         "R6-P4-V2": "planned",
         "R6-P4-V3": "planned"
       },
@@ -601,7 +601,7 @@
           "contractEvidence": "phase4/CONTRACT_REVIEW.md"
         }
       ],
-      "activity": "awaiting-area-layout-visual-review",
+      "activity": "implementing-area-and-series-layout",
       "contractEvidence": "phase4/CONTRACT_REVIEW.md",
       "baselineEvidence": "phase4/baseline-results.json",
       "baselineCommit": "93dceb3761e170207058e6a7280060fedd471244",
@@ -644,7 +644,13 @@
         "discoveryAndFocusedTests": 33,
         "replayedPrimitiveTargets": 11
       },
-      "visualV1ReviewCommit": "ee9daf0c58eb682a09ab0dddc3af9ff241bb76a1"
+      "visualV1ReviewCommit": "ee9daf0c58eb682a09ab0dddc3af9ff241bb76a1",
+      "visualV1Approval": {
+        "userDirection": "승인한다",
+        "reviewCommit": "ee9daf0c58eb682a09ab0dddc3af9ff241bb76a1",
+        "approvalBaselineCommit": "102fbee9cc76dd6ec31fef9d39680d8501dba839",
+        "scope": "V1 Area/layout 11 primitive targets; implement W1/W2 public flows and validate transitions and consumers. V2/V3/X remain unapproved."
+      }
     },
     {
       "id": 5,

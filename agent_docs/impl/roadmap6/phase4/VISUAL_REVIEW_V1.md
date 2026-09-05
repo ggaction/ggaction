@@ -3,7 +3,7 @@
 ## 현재 상태와 승인 범위
 
 검토 package commit은 `ee9daf0c58eb682a09ab0dddc3af9ff241bb76a1`이며 원격 push와 ref 일치를 확인했다.
-상태는 ready-for-review다. 사용자는 A와 `encodeLayout` → `layoutSeries` 이름 변경을 승인했다.
+상태는 approved다. 사용자는 A와 `encodeLayout` → `layoutSeries` 이름 변경을 승인했다.
 이 문서는 그 계약에 따른 **Area 9개와 Bar 2개, 총 11개 primitive 표현**을 검토한다.
 새 이름은 Bar/Area의 series 배치이며 canvas/facet 배치가 아니다. 옛 이름 alias는 만들지 않는다.
 

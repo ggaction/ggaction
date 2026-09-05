@@ -2,7 +2,7 @@
 
 ## 공통 상태
 
-A는 approved다. V1은 ready-for-review이며 V/V2/V3/X는 planned다. 시각 목표와 결과 승인은 아직 없다.
+A는 approved다. V1은 approved이며 V/V2/V3/X는 planned다. 시각 목표와 결과 승인은 아직 없다.
 허용 상태는 planned | ready-for-review | approved | changes-requested다.
 현재 검토 대상은 [V1 검토 묶음](VISUAL_REVIEW_V1.md)의 11개 Area/layout primitive다. A 승인과 Phase 3 X 승인을 V1 승인으로 재사용하지 않는다.
 
@@ -29,7 +29,7 @@ A는 approved다. V1은 ready-for-review이며 V/V2/V3/X는 planned다. 시각 �
 
 ### 독립 V 범위
 
-- R6-P4-V1: ready-for-review. [Area/baseline/range/missing/layout 11 variants](VISUAL_REVIEW_V1.md).
+- R6-P4-V1: approved. [Area/baseline/range/missing/layout 11 variants](VISUAL_REVIEW_V1.md).
 - R6-P4-V2: planned. Rose/Radial mapping·theta/legend order 5 variants.
 - R6-P4-V3: planned. Midpoint·scale/legend transition 4 variants.
 - V1의 입력·미래 호출은 [실행 fixture](../../../../test/gates/area-layout/targets.json), source·표현은 [manifest](../../../../test/gates/area-layout/manifest.js)가 소유한다. [수치·렌더 결과](visual-v1-results.json)를 기록했다. V2/V3 9개는 [target plan](visual-target-plan.json)에 남아 있다.
@@ -70,3 +70,9 @@ A는 approved다. V1은 ready-for-review이며 V/V2/V3/X는 planned다. 시각 �
 - V1 승인 효과: W1/W2의 해당 public flow 구현·전환/실패/소비자 검증을 연다. V2/V3와 X는 별도 미승인으로 유지한다.
 - V1 review package commit: `ee9daf0c58eb682a09ab0dddc3af9ff241bb76a1`. 원격 origin/codex/roadmap6-hierarchical-actions에 push하고 ls-remote 일치를 확인했다.
 - 이후 ref 고정 기록은 시각 승인이나 공개 구현을 포함하지 않는다.
+
+## V1 승인 기록
+
+- 사용자 답변: “승인한다”. 기준 HEAD: `102fbee9cc76dd6ec31fef9d39680d8501dba839`.
+- 승인 대상: `ee9daf0c58eb682a09ab0dddc3af9ff241bb76a1`의 11개 Area/layout primitive 목표와 표시된 public calls.
+- W1/W2 public 구현·전환·실패·소비자 검증을 시작한다. V2/V3/X는 미승인이다.
