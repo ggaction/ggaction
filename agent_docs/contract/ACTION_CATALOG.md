@@ -190,11 +190,20 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 
 | Action | Readiness | Contract |
 | --- | --- | --- |
+| `createAreaPlot` | accepted | [Open](planned/QUANTITATIVE_AUTHORING.md#createareaplot) |
+| `layoutSeries` | accepted | [Open](planned/QUANTITATIVE_AUTHORING.md#layoutseries) |
+| `createRosePlot` | accepted | [Open](planned/QUANTITATIVE_AUTHORING.md#createroseplot) |
+| `createRadialBarPlot` | accepted | [Open](planned/QUANTITATIVE_AUTHORING.md#createradialbarplot) |
 
 ## Planned capabilities
 
 | Kind | Capability | Readiness | Contract |
 | --- | --- | --- | --- |
+| parameter | Area datum endpoints | accepted | [Open](planned/QUANTITATIVE_AUTHORING.md#area-datum-endpoints) |
+| behavior | Series layout ownership | accepted | [Open](planned/QUANTITATIVE_AUTHORING.md#series-layout-ownership) |
+| parameter | Measured radial mapping | accepted | [Open](planned/QUANTITATIVE_AUTHORING.md#measured-radial-mapping) |
+| parameter | Theta and legend order | accepted | [Open](planned/QUANTITATIVE_AUTHORING.md#theta-and-legend-order) |
+| parameter | Sequential midpoint and transitions | accepted | [Open](planned/QUANTITATIVE_AUTHORING.md#sequential-midpoint-and-transitions) |
 
 ## Internal inventories
 

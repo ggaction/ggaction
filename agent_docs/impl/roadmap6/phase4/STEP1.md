@@ -8,6 +8,7 @@
 - [x] A Gate 검토안의 정확한 결정·호환성·검증 범위 작성 — P4-C01–C09 / 새 4 actions / 20 V targets
 - [x] A Gate 증거 commit/push — `f229fa003d5de81f7131d4c23811b834bd36d50e`
 - [x] A Gate의 명시적 사용자 승인 기록 — layoutSeries 이름 변경 포함
+- [x] 승인된 신규 direct 4개와 기존 capability 5개 Planned 등록
 - [ ] R6-P4-W1 Area baseline/range와 facade
 - [ ] R6-P4-W2 Color와 독립한 layout assignment
 - [ ] R6-P4-W3 Rose와 Radial bar

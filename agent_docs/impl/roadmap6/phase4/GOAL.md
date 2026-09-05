@@ -66,4 +66,4 @@
 - [P4-C01–C09 결정·signature·migration](CONTRACT_REVIEW.md)과 [4개 후보](candidates.json).
 - [현재 API 49건 재현](baseline-results.json), [수치·소비자 matrix](VALIDATION.md).
 - [20개 V target 계획](visual-target-plan.json): 입력·dimensions·publicCalls 고정, primitive/public 모두 미구현.
-- Current 177 / Planned 0 유지. 새 3 H0는 full 전용, layoutSeries은 full/basic Bar에 제안한다.
+- Current 177 / Planned actions 4, capabilities 5. 새 3 H0는 full 전용, layoutSeries은 full/basic Bar에 제안한다.

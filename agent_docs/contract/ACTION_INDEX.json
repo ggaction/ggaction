@@ -3226,8 +3226,109 @@
       }
     }
   ],
-  "plannedActions": [],
-  "plannedCapabilities": [],
+  "plannedActions": [
+    {
+      "name": "createAreaPlot",
+      "status": "planned",
+      "readiness": "accepted",
+      "layer": "user-facing",
+      "domain": "charts",
+      "contract": {
+        "file": "agent_docs/contract/planned/QUANTITATIVE_AUTHORING.md",
+        "anchor": "createareaplot"
+      }
+    },
+    {
+      "name": "layoutSeries",
+      "status": "planned",
+      "readiness": "accepted",
+      "layer": "user-facing",
+      "domain": "encodings",
+      "contract": {
+        "file": "agent_docs/contract/planned/QUANTITATIVE_AUTHORING.md",
+        "anchor": "layoutseries"
+      }
+    },
+    {
+      "name": "createRosePlot",
+      "status": "planned",
+      "readiness": "accepted",
+      "layer": "user-facing",
+      "domain": "charts",
+      "contract": {
+        "file": "agent_docs/contract/planned/QUANTITATIVE_AUTHORING.md",
+        "anchor": "createroseplot"
+      }
+    },
+    {
+      "name": "createRadialBarPlot",
+      "status": "planned",
+      "readiness": "accepted",
+      "layer": "user-facing",
+      "domain": "charts",
+      "contract": {
+        "file": "agent_docs/contract/planned/QUANTITATIVE_AUTHORING.md",
+        "anchor": "createradialbarplot"
+      }
+    }
+  ],
+  "plannedCapabilities": [
+    {
+      "id": "area-datum-endpoints",
+      "name": "Area datum endpoints",
+      "kind": "parameter",
+      "status": "planned",
+      "readiness": "accepted",
+      "contract": {
+        "file": "agent_docs/contract/planned/QUANTITATIVE_AUTHORING.md",
+        "anchor": "area-datum-endpoints"
+      }
+    },
+    {
+      "id": "series-layout-ownership",
+      "name": "Series layout ownership",
+      "kind": "behavior",
+      "status": "planned",
+      "readiness": "accepted",
+      "contract": {
+        "file": "agent_docs/contract/planned/QUANTITATIVE_AUTHORING.md",
+        "anchor": "series-layout-ownership"
+      }
+    },
+    {
+      "id": "measured-radial-mapping",
+      "name": "Measured radial mapping",
+      "kind": "parameter",
+      "status": "planned",
+      "readiness": "accepted",
+      "contract": {
+        "file": "agent_docs/contract/planned/QUANTITATIVE_AUTHORING.md",
+        "anchor": "measured-radial-mapping"
+      }
+    },
+    {
+      "id": "theta-and-legend-order",
+      "name": "Theta and legend order",
+      "kind": "parameter",
+      "status": "planned",
+      "readiness": "accepted",
+      "contract": {
+        "file": "agent_docs/contract/planned/QUANTITATIVE_AUTHORING.md",
+        "anchor": "theta-and-legend-order"
+      }
+    },
+    {
+      "id": "sequential-midpoint-and-transitions",
+      "name": "Sequential midpoint and transitions",
+      "kind": "parameter",
+      "status": "planned",
+      "readiness": "accepted",
+      "contract": {
+        "file": "agent_docs/contract/planned/QUANTITATIVE_AUTHORING.md",
+        "anchor": "sequential-midpoint-and-transitions"
+      }
+    }
+  ],
   "internal": {
     "materialization": [
       "materializeBoxOutlierData",
