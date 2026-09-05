@@ -1,11 +1,12 @@
+import { sameGuideValue } from "../../reuse.js";
 import { normalizeLegendOrder } from "../../../../grammar/categoryOrder.js";
 import { action } from "../../../../core/action.js";
 import { validateOptionObject } from "../../../../core/validation.js";
 import { noOptions, resolveLayout, activeConfig } from "./layout.js";
 import { normalizeOptions } from "./options.js";
-import { resolveLegendSymbol } from "./recipes.js";
+import { normalizeRecipe, resolveLegendSymbol } from "./recipes.js";
 import { validateLegendChannels } from "../target.js";
-import { createCategoricalLegendFromConfig } from "../lifecycle.js";
+import { createCategoricalLegendFromConfig, reconcileCategoricalSymbols } from "../lifecycle.js";
 import { findLayer } from "../../../../selectors/layers.js";
 import { findSemanticScale } from "../../../../selectors/scales.js";
 import { isSizeLegendPoint, resolveSizeLegendConfig } from "../size.js";
@@ -71,7 +72,11 @@ export const rematerializeLegend = action(
     if (hasCategorical) {
       const { kind, config } = activeConfig(this);
       const definition = resolveCurrentDefinition(this, config);
-      const changed =
+      const symbol = config.inferredSymbol
+        ? normalizeRecipe(resolveLegendSymbol(this, findLayer(this, config.target), definition.channels), kind)
+        : config.symbol;
+      const symbolChanged = !sameGuideValue(symbol, config.symbol);
+      const changed = symbolChanged ||
         !sameValues(config.channels, definition.channels) ||
         !sameValues(config.domain, definition.domain) ||
         !sameValues(config.scales, definition.scales) ||
@@ -80,6 +85,7 @@ export const rematerializeLegend = action(
       next = changed
         ? this._withLegendConfig(kind, {
             ...config,
+            symbol,
             channels: definition.channels,
             scales: definition.scales,
             field: definition.field,
@@ -116,6 +122,10 @@ export const rematerializeLegend = action(
             value: definition.title
           });
         }
+      }
+      if (symbolChanged) {
+        resolveLayout(next, next.guideConfigs.legend[kind]);
+        next = reconcileCategoricalSymbols(next, config, next.guideConfigs.legend[kind]);
       }
       if (config.border !== false) next = next.rematerializeLegendBackground();
       next = next

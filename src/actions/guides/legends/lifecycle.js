@@ -4,7 +4,7 @@ import {
 import { findLayer } from "../../../selectors/layers.js";
 import { resolveDefinition } from "./categorical/resolve.js";
 import { normalizeRecipe, resolveLegendSymbol } from "./categorical/recipes.js";
-import { resolveLayout } from "./categorical/layout.js";
+import { resolveLayout, symbolGraphic } from "./categorical/layout.js";
 import { resolveLegendGraphicPlacement } from "../../../materialization/graphicHierarchy.js";
 
 export function removeLegendKinds(program, kinds) {
@@ -103,4 +103,30 @@ export function resolveCategoricalLegendPlacement(program) {
     .flatMap(policy => legendGraphicIds(policy.kind)));
   const before = program.graphicSpec.objects.canvas?.children?.find(id => companions.has(id));
   return resolveLegendGraphicPlacement(program, before === undefined ? {} : { before });
+}
+
+export function categoricalSymbolIds(config) {
+  return new Set(config.symbol.layers.map(layer => symbolGraphic(config, layer.type)));
+}
+
+export function reconcileCategoricalSymbols(program, previous, config) {
+  const oldSymbols = categoricalSymbolIds(previous);
+  const newSymbols = categoricalSymbolIds(config);
+  const sameOrder = oldSymbols.size === newSymbols.size &&
+    [...oldSymbols].every((id, index) => id === [...newSymbols][index]);
+  let next = program;
+  if (!sameOrder) {
+    for (const id of oldSymbols) {
+      if (next.graphicSpec.objects[id] !== undefined) {
+        next = next.editGraphics({ target: id, remove: true });
+      }
+    }
+  }
+  for (const layer of config.symbol.layers) {
+    if (next.graphicSpec.objects[symbolGraphic(config, layer.type)] === undefined) {
+      const suffix = { line: "Lines", point: "Points", swatch: "Swatches" }[layer.type];
+      next = next[`createLegendSymbol${suffix}`]();
+    }
+  }
+  return next;
 }

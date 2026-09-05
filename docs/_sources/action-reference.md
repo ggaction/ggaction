@@ -1713,6 +1713,8 @@ createLegend({
 Create categorical, point-size, continuous-color gradient, discretized-color
 interval, or field-opacity sample legends. Explicit `channels` creates exactly
 the selected content; include `"size"` in a point categorical-and-size request.
+Automatic symbol recipes refresh when matching companion lines or their color
+bindings change; explicit recipes retain their layers and order.
 Omitted point channels infer the available categorical color, shape, and
 quantitative size with the same result as explicit selection. Color-only uses
 swatches; shape uses typed symbols; a size encoding adds its own sample block.

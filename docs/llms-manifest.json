@@ -1524,8 +1524,8 @@
         "item-order-without-changing-color",
         "related"
       ],
-      "bytes": 7494,
-      "sha256": "bd04c41b079ce976184a562a933c649babab92e09c49d83091c34f72b3780202"
+      "bytes": 7855,
+      "sha256": "08a5e6add7b396e0f4efacfbd255b6f79700d83ce9368ea7dfa88a5bab44c59d"
     },
     {
       "order": 97,
@@ -2003,8 +2003,8 @@
         "removetitle",
         "related"
       ],
-      "bytes": 12251,
-      "sha256": "6cc644c0f7d4d0679e5cbce0932fbf267958bfa3e047cea530b5371e852991b9"
+      "bytes": 12394,
+      "sha256": "fad6b9714a4aa5787b388676a88f53d2dbe5acf398cd393c92a9df5e83b9fb73"
     },
     {
       "order": 120,

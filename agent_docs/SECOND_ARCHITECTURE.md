@@ -1758,7 +1758,9 @@ Categorical creation와 content revision의 공통 owner는 `actions/guides/lege
 선택된 channels의 definition/automatic recipe를 재검증하고 기존 title visibility, styles, order와 caller recipe를
 보존한다. createLegend, editLegend content replacement, partial removeLegend, removeEncoding이 이 owner를 공유하며 semantic/graphic 변경은
 기존 wrapped primitives와 component materializers로 명시적으로 수행한다. Resource-kind cleanup도 같은 owner가
-관리한다. Renderer에는 content 추론·복원 로직을 추가하지 않는다.
+관리한다. Symbol component type/order reconciliation도 같은 lifecycle owner에서 editor와 rematerializeLegend가 공유한다.
+Dependency replay는 inferredSymbol인 recipe만 현재 companion context로 다시 resolve하며 explicit recipe는 보존한다.
+Renderer에는 content 추론·복원 로직을 추가하지 않는다.
 
 Categorical legend는 color, strokeDash, shape와 mark recipe를 하나의 generic legend
 layout/materialization pipeline으로 조립한다.

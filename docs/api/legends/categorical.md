@@ -123,6 +123,12 @@ densityArea.createLegend({
 });
 ~~~
 
+Automatic recipes refresh when a matching companion line is added, removed,
+or rebound to another color scale. Creating the legend before or after the
+line produces the same result. Explicit symbol recipes retain their layers
+and order through those changes; `editLegend({ symbol: "auto" })` restores
+inference. Title visibility and text styles remain intact.
+
 ## Item order without changing color
 
 `createLegend` and `editLegend` accept the same categorical `order` policy.

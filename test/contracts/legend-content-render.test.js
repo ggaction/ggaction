@@ -195,3 +195,45 @@ test("matches point content replacement to the existing independent graphic targ
     assert.equal(actual.pixelHash, expected.pixelHash);
   }
 });
+
+function colorShapePrimitive(base, withLine) {
+  let primitive = shapePrimitive(base)
+    .editGraphics({ target: "seriesLegendSymbolPoints", property: "items", value: [
+      { type: "circle", properties: { x: withLine ? 524 : 512.5135166683821, y: 82, radius: 4.51351666838205,
+        fill: "#4c78a8", stroke: "white", strokeWidth: 0 } },
+      { type: "rect", properties: { x: withLine ? 520 : 508.51351666838207, y: 106, width: 7.999999999999999,
+        height: 7.999999999999999, fill: "#f58518", stroke: "white", strokeWidth: 0 } }
+    ] });
+  if (!withLine) return primitive;
+  return primitive
+    .editGraphics({ target: "seriesLegendLabels", property: "x", value: 550 })
+    .createGraphics({ id: "seriesLegendSymbolLines", type: "line", length: 2, parent: "canvas", before: "seriesLegendSymbolPoints" })
+    .editGraphics({ target: "seriesLegendSymbolLines", property: "x1", value: 508 })
+    .editGraphics({ target: "seriesLegendSymbolLines", property: "x2", value: 540 })
+    .editGraphics({ target: "seriesLegendSymbolLines", property: "y1", value: [82, 110] })
+    .editGraphics({ target: "seriesLegendSymbolLines", property: "y2", value: [82, 110] })
+    .editGraphics({ target: "seriesLegendSymbolLines", property: "stroke", value: ["#4c78a8", "#f58518"] })
+    .editGraphics({ target: "seriesLegendSymbolLines", property: "strokeWidth", value: 3 })
+    .editGraphics({ target: "seriesLegendSymbolLines", property: "strokeDash", value: [[], []] });
+}
+
+test("replays automatic companion symbols against independent graphic primitives", async () => {
+  const addLine = program => program.createLineMark({ id: "lines" }).encodeX({ field: "x" })
+    .encodeY({ field: "y" }).encodeGroup({ field: "g" }).encodeColor({ field: "g" });
+  for (const withLine of [true, false]) {
+    const base = contentBase();
+    const primitive = colorShapePrimitive(withLine ? addLine(base) : base, withLine);
+    const created = addLine(base.createLegend({ target: "points", channels: ["color", "shape"] }));
+    const publicProgram = withLine ? created : created.removeMark({ target: "lines" });
+    assertChartProgramsEquivalent({ primitiveProgram: primitive, publicProgram, compareSemanticSpec: false });
+    const artifact = { scope: "charts", capability: "legend-layout", chart: "legend-recipe-replay",
+      variant: withLine ? "companion-added" : "companion-removed", title: "Automatic legend companion replay",
+      userFacingCallChain: 'addLine(base.createLegend({ target: "points", channels: ["color", "shape"] }))' +
+        (withLine ? '' : '.removeMark({ target: "lines" })') };
+    const options = { width: 800, height: 700, colors: ["#4c78a8", "#f58518"],
+      regions: [{ name: "plot", x: 50, y: 40, width: 455, height: 610, minimumInkPixels: 100 }] };
+    const expected = await assertRenderedPNG(primitive, { ...options, artifact: { ...artifact, kind: "primitive" } });
+    const actual = await assertRenderedPNG(publicProgram, { ...options, artifact: { ...artifact, kind: "user-facing" } });
+    assert.equal(actual.pixelHash, expected.pixelHash);
+  }
+});

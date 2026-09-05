@@ -8,9 +8,9 @@ import {
 } from "../../../core/validation.js";
 import { normalizeOptions } from "./categorical/options.js";
 import { resolveLegendSymbol } from "./categorical/recipes.js";
-import { symbolGraphic, resolveLayout } from "./categorical/layout.js";
+import { resolveLayout } from "./categorical/layout.js";
 import { resolveLegendCreationPlan } from "./categorical/actions.js";
-import { createCategoricalLegendFromConfig, resolveCategoricalLegendRevision, removeLegendKinds } from "./lifecycle.js";
+import { categoricalSymbolIds, reconcileCategoricalSymbols, createCategoricalLegendFromConfig, resolveCategoricalLegendRevision, removeLegendKinds } from "./lifecycle.js";
 import { createGradientLegendFromConfig } from "./continuous/gradient.js";
 import {
   normalizeLegendTextOptions,
@@ -264,10 +264,6 @@ function editSampledLegend(program, kind, previous, args) {
   return next.rematerializeLegend();
 }
 
-function categoricalSymbolIds(config) {
-  return new Set(config.symbol.layers.map(layer => symbolGraphic(config, layer.type)));
-}
-
 function resolveCompanionSizeEdit(previous, size, args) {
   if (size === undefined) return undefined;
   const config = { ...size, count: args.count ?? size.count };
@@ -341,10 +337,7 @@ function resolveCategoricalEdit(program, kind, previous, size, args, storedOrder
 
 function editCategorical(program, kind, previous, size, args) {
   const { config, order, titleMode, title, titleVisible, sizeConfig } = resolveCategoricalEdit(program, kind, previous, size, args);
-  const oldSymbols = categoricalSymbolIds(previous);
   const newSymbols = categoricalSymbolIds(config);
-  const sameSymbolOrder = oldSymbols.size === newSymbols.size &&
-    [...oldSymbols].every((id, index) => id === [...newSymbols][index]);
   let next = program;
   if (titleMode === "auto" || typeof titleMode === "string") {
     next = next.editSemantic({
@@ -362,18 +355,7 @@ function editCategorical(program, kind, previous, size, args) {
     }
   }
   next = next._withLegendConfig(kind, config);
-  for (const id of oldSymbols) {
-    if (!sameSymbolOrder && next.graphicSpec.objects[id] !== undefined) {
-      next = next.editGraphics({ target: id, remove: true });
-    }
-  }
-  for (const layer of config.symbol.layers) {
-    const id = symbolGraphic(config, layer.type);
-    if (next.graphicSpec.objects[id] === undefined) {
-      const suffix = { line: "Lines", point: "Points", swatch: "Swatches" }[layer.type];
-      next = next[`createLegendSymbol${suffix}`]();
-    }
-  }
+  next = reconcileCategoricalSymbols(next, previous, config);
   next = reconcileGraphic(next, `${kind === "series" ? "series" : "color"}LegendBackground`,
     config.border !== false, {
       type: "rect",

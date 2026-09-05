@@ -207,6 +207,15 @@ test.before(async () => {
         .createLineMark({ id: "unrelatedLine" }).encodeX({ field: "x" }).encodeY({ field: "y" })
         .removeEncoding({ target: "shapePoints", channel: "color" });
       render(shapeLegend, document.getElementById("shape-legend").getContext("2d"));
+      const replayBase = chart().createCanvas({ width: 800, height: 700, margin: { right: 300 } })
+        .createData({ values: [{ x: 1, y: 2, g: "A" }, { x: 2, y: 3, g: "A" },
+          { x: 1, y: 3, g: "B" }, { x: 2, y: 4, g: "B" }] })
+        .createPointMark({ id: "replayPoints" }).encodeX({ field: "x" }).encodeY({ field: "y" })
+        .encodeColor({ field: "g" }).encodeShape({ field: "g" }).createLegend({ target: "replayPoints" });
+      const replayAdded = replayBase.createLineMark({ id: "replayLine" }).encodeX({ field: "x" })
+        .encodeY({ field: "y" }).encodeGroup({ field: "g" }).encodeColor({ field: "g" });
+      const replayRemoved = replayAdded.removeMark({ target: "replayLine" });
+      render(replayAdded, document.getElementById("shape-legend").getContext("2d"));
       const legendContentBase = chart().createCanvas({ width: 800, height: 700, margin: { right: 300 } })
         .createData({ values: [{ x: 1, y: 2, g: "A", m: 4 }, { x: 2, y: 3, g: "B", m: 9 }] })
         .createPointMark({ id: "contentPoints" }).encodeX({ field: "x" }).encodeY({ field: "y" })
@@ -244,6 +253,9 @@ test.before(async () => {
       render(editedSizeLegend, document.getElementById("size-legend").getContext("2d"));
       document.querySelector("#status").textContent = "complete";
       window.__ggactionConsumer = {
+        addedRecipeTypes: replayAdded.guideConfigs.legend.series.symbol.layers.map(layer => layer.type),
+        removedRecipeTypes: replayRemoved.guideConfigs.legend.series.symbol.layers.map(layer => layer.type),
+        replaySVG: renderToSVG(replayAdded).startsWith("<svg "),
         editedKinds: Object.keys(editedContent.guideConfigs.legend),
         editedSizeFill: editedContent.graphicSpec.objects.sizeLegendLabels.items[0].properties.fill,
         editedSizeWeight: editedContent.graphicSpec.objects.sizeLegendTitle.properties.fontWeight,
@@ -362,6 +374,9 @@ test("imports and renders the packed browser entries", async () => {
     waitFor: () => window.__ggactionConsumer !== undefined
   });
   assert.deepEqual(await windowValue(page, "__ggactionConsumer"), {
+    addedRecipeTypes: ["line", "point"],
+    removedRecipeTypes: ["point"],
+    replaySVG: true,
     editedKinds: ["color", "size"],
     editedSizeFill: "red",
     editedSizeWeight: 900,

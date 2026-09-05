@@ -10503,6 +10503,12 @@ densityArea.createLegend({
 });
 ~~~
 
+Automatic recipes refresh when a matching companion line is added, removed,
+or rebound to another color scale. Creating the legend before or after the
+line produces the same result. Explicit symbol recipes retain their layers
+and order through those changes; `editLegend({ symbol: "auto" })` restores
+inference. Title visibility and text styles remain intact.
+
 ## Item order without changing color
 
 `createLegend` and `editLegend` accept the same categorical `order` policy.
@@ -14020,6 +14026,8 @@ createLegend({
 Create categorical, point-size, continuous-color gradient, discretized-color
 interval, or field-opacity sample legends. Explicit `channels` creates exactly
 the selected content; include `"size"` in a point categorical-and-size request.
+Automatic symbol recipes refresh when matching companion lines or their color
+bindings change; explicit recipes retain their layers and order.
 Omitted point channels infer the available categorical color, shape, and
 quantitative size with the same result as explicit selection. Color-only uses
 swatches; shape uses typed symbols; a size encoding adds its own sample block.

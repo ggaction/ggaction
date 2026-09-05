@@ -488,6 +488,25 @@ async function testNodeConsumer(directory) {
     assert.equal(shapeLegend.graphicSpec.objects.seriesLegendSymbolPoints.items.length, 2);
     assert.match(renderToSVG(shapeLegend), /<svg /);
 
+    for (const factory of [chart, basicChart]) {
+      const recipeBase = factory().createCanvas({ width: 800, height: 700, margin: { right: 300 } })
+        .createData({ values: [{ x: 1, y: 2, g: "A" }, { x: 2, y: 3, g: "A" },
+          { x: 1, y: 3, g: "B" }, { x: 2, y: 4, g: "B" }] })
+        .createPointMark({ id: "recipePoints" }).encodeX({ field: "x" }).encodeY({ field: "y" })
+        .encodeColor({ field: "g" }).encodeShape({ field: "g" });
+      const addRecipeLine = p => p.createLineMark({ id: "recipeLine" }).encodeX({ field: "x" })
+        .encodeY({ field: "y" }).encodeGroup({ field: "g" }).encodeColor({ field: "g" });
+      const earlyRecipe = addRecipeLine(recipeBase.createLegend({ target: "recipePoints" }));
+      const lateRecipe = addRecipeLine(recipeBase).createLegend({ target: "recipePoints" });
+      assert.deepEqual(earlyRecipe.graphicSpec, lateRecipe.graphicSpec);
+      assert.deepEqual(earlyRecipe.guideConfigs.legend.series.symbol.layers.map(layer => layer.type), ["line", "point"]);
+      assert.match(renderToSVG(earlyRecipe), /<svg /);
+      if (factory === chart) {
+        const removedRecipe = earlyRecipe.removeMark({ target: "recipeLine" });
+        assert.deepEqual(removedRecipe.guideConfigs.legend.series.symbol.layers.map(layer => layer.type), ["point"]);
+        assert.equal(removedRecipe.graphicSpec.objects.seriesLegendSymbolLines, undefined);
+      }
+    }
     const legendContentBase = chart().createCanvas({ width: 800, height: 700, margin: { right: 300 } })
       .createData({ values: [{ x: 1, y: 2, g: "A", m: 4 }, { x: 2, y: 3, g: "B", m: 9 }] })
       .createPointMark({ id: "contentPoints" }).encodeX({ field: "x" }).encodeY({ field: "y" })

@@ -81,8 +81,8 @@ type TitleWrap = "word" | "character";
   각 layer는 non-negative size/stroke parameters와 supported point shape를 사용한다. Layered recipe는
   type별 최대 하나, 전체 최대 세 layer다.
 - Point의 자동 typed recipe는 selected shape를 설명하며, selected color가 있을 때만 matching line을 합친다.
-  Config의 inferredSymbol이 omission/auto와 caller recipe를 구분한다. Edit symbol auto와 encoding 제거 후 재생성은
-  자동 recipe를 재추론하며 explicit recipe는 보존한다. Recipe의 layer 순서는 생성과 편집 모두 실제 drawing order다.
+  Config의 inferredSymbol이 omission/auto와 caller recipe를 구분한다. Edit symbol auto, encoding 제거·재연결, matching companion mark 추가·제거와 Canvas/scale/data dependency replay는
+  자동 recipe를 재추론하고 concrete symbol type·순서를 reconcile한다. Explicit recipe는 보존한다. Recipe의 layer 순서는 생성과 편집 모두 실제 drawing order다.
 - `labels`, `titleStyle`: color/fontSize/fontFamily/fontWeight style object.
 - `itemGap`: positive finite number; position별 default spacing을 override한다.
 - `border`: `false | true | { color?, lineWidth?, padding?, background? }`; false가 default이며 true는
@@ -126,6 +126,8 @@ type TitleWrap = "word" | "character";
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `createLegend`
+
+- ✅ Covered: Full/Basic companion authoring-order convergence, mark removal, color removal/rebinding, caller recipe preservation and Canvas/scale/filter replay (`test/unit/actions/guides/legend-recipe-replay.test.js`); independent replay primitives in `test/contracts/legend-content-render.test.js`.
 
 - `target`
   - ✅ Covered: inferred/explicit line, bar, area and compatible point; sequential point/aggregate-bar gradient;

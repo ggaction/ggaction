@@ -17,7 +17,7 @@
 - [x] W2 B2 선행 point omission inference #90 — [검증](RESULTS_W2_INFERENCE.md)
 - [x] W2 B2 partial channel 제거·공통 재작성과 hidden title #91 — [검증](RESULTS_W2_REMOVAL.md)
 - [x] W2 B2 editLegend content 교체와 companion style #92 — [검증](RESULTS_W2_CONTENT_EDIT.md)
-- [ ] W2 B2 전체 automatic recipe replay
+- [x] W2 B2 automatic recipe의 companion/data/scale replay와 #93 — [검증](RESULTS_W2_RECIPE_REPLAY.md)
 - [x] W2 C1 명시적 categorical bottom mode, 오류 #87 — [검증](RESULTS_W2_BOTTOM.md)
 - [ ] W2 C2 전체 family×edge layout과 통합 matrix
 - [ ] R6-P5-W3 Final-item labels·reference·common format
