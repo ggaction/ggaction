@@ -308,7 +308,7 @@ const guideRemovalCallChain = `chart()
     xScale: { nice: true, zero: false }
   })
   .encodeColor({ field: "Origin", scale: { palette: "tableau10" } })
-  .createGuides({ legend: { position: "bottom" } })
+  .createGuides({ legend: { position: "bottom", layout: "legacy-bottom" } })
   .createTitle({
     text: "Displacement distribution",
     subtitle: "by country",

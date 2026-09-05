@@ -308,13 +308,15 @@ function adaptProviderDependencies(selected) {
       );
       adapted = adapted.filter(entry => entry !== legendLayout).map(entry => {
         if (entry !== owner) return entry;
-      const provider = entry.provider.name === "createLegend"
+        const offset = position === '"left"' ? "96"
+          : position === '"bottom"' ? BOTTOM_LEGEND_OFFSET : undefined;
+        const provider = entry.provider.name === "createLegend"
           ? {
               ...entry.provider,
               baseOptions: {
                 ...(entry.provider.baseOptions ?? {}),
                 position,
-                ...(position === `"left"` ? { offset: "96" } : {})
+                ...(offset === undefined ? {} : { offset })
               }
             }
           : {
@@ -323,7 +325,7 @@ function adaptProviderDependencies(selected) {
                 ...(entry.provider.optionsByConstraint ?? {}),
                 "guide.legend": {
                   ...(entry.provider.optionsByConstraint?.["guide.legend"] ?? {}),
-                  guides: `{ legend: { position: ${position}${position === `"left"` ? ", offset: 96" : ""} } }`
+                  guides: `{ legend: { position: ${position}${offset === undefined ? "" : `, offset: ${offset}`} } }`
                 }
               }
             };
@@ -1065,6 +1067,9 @@ function entryWithRequestedOptions(entry, options) {
   };
 }
 
+// Explicit spacing for the executable authoring bootstrap's default x-axis title.
+const BOTTOM_LEGEND_OFFSET = "70";
+
 function requestedText(match, ...indexes) {
   return indexes.map(index => match?.[index]).find(value => value !== undefined)?.trim();
 }
@@ -1241,6 +1246,9 @@ function applyRequestedOptions(entries, query) {
       "direction",
       codeString(requestedText(direction, 1, 2, 3, 4, 5).toLowerCase())
     );
+  }
+  if (position?.[1].toLowerCase() === "bottom") {
+    legendOptions.set("offset", BOTTOM_LEGEND_OFFSET);
   }
   if (unscopedColumns) {
     unmatchedRequirements.push(unscopedColumns[0]);

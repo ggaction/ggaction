@@ -50,7 +50,7 @@ const program = chart()
     maxBins: 10,
     xScale: { nice: true, zero: false },
     color: { field: "Origin", scale: { palette: "tableau10" } },
-    guides: { legend: { position: "bottom" } }
+    guides: { legend: { position: "bottom", layout: "legacy-bottom" } }
   })
   .createTitle({
     text: "Displacement distribution",
@@ -87,7 +87,9 @@ program.encodeColor({ field: "Origin", layout: "fill" });
 ```
 
 Legends default to the right for every supported chart. This example passes
-`position: "bottom"` because its horizontal layout is intentional.
+`position: "bottom", layout: "legacy-bottom"` to retain its compact row near
+the Canvas bottom. The default `layout: "edge"` uses the plot margin instead;
+reserve enough space and set an offset below any x-axis title.
 
 ## Key action trace
 

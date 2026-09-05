@@ -57,6 +57,7 @@ preserves its remaining shape legend.
 | `channels` | compatible channel array; continuous guides use one `color` or `opacity` | compatible encoded channels |
 | `order` | `"scale"`, `{ values: [...] }`, or `{ channel: "x"/"y"/"theta" }`; categorical only | `"scale"` |
 | `position` | `right/left/bottom/top`; combined point-size guides use a side | `"right"` |
+| `layout` | categorical `"edge"` or `"legacy-bottom"` | `"edge"` |
 | `align` | `"left"`, `"center"`, or `"right"` | `"center"` |
 | `direction` | `"horizontal"` or `"vertical"` | `"horizontal"` |
 | `columns` | positive integer | all items in one row at top |
@@ -77,10 +78,13 @@ or right alignment; side legends require center alignment. Left categorical,
 composite point, and size blocks use vertical flow and preserve symbol-to-label
 and resolved-domain order.
 
-For compatibility, `createLegend({ position: "bottom" })` keeps the compact
-single-row layout anchored near the Canvas bottom edge. Supplying any grid
-control such as `columns`, `direction`, `offset`, `titlePosition`, or `itemGap`
-selects the general reserved-margin grid.
+Categorical legends use `layout: "edge"` by default, including a bottom legend
+with no other layout options. To preserve the former compact single row anchored
+near the Canvas bottom edge, specify both `position: "bottom"` and
+`layout: "legacy-bottom"`. This mode keeps labels at Canvas height minus 28 and
+the title at height minus 52. It supports alignment, item gap, symbols, styles,
+and borders; columns, vertical direction, a left title, or a custom plot offset
+require `layout: "edge"`. Layout mode is preserved by edits and replay.
 
 Top and bottom legends use a general item grid. `columns` caps the column count;
 `direction: "horizontal"` fills rows first and `"vertical"` fills columns

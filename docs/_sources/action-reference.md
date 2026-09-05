@@ -1704,7 +1704,7 @@ Edit the existing radial grid. [Grids](../api/grids.md#editing-grids)
 
 ```javascript
 createLegend({
-  target?, channels?, position?, align?, direction?, columns?, offset?,
+  target?, channels?, position?, layout?, align?, direction?, columns?, offset?,
   titlePosition?, title?, symbol?, labels?, titleStyle?, itemGap?, border?, count?,
   gradient?, order?
 })
@@ -1716,20 +1716,23 @@ placement. Categorical legends also support left side placement; composite
 point and size blocks remain in deterministic vertical order. Horizontal
 sampled-opacity legends accept `titlePosition: "left"` for one inline
 title-symbol-label reading line. Same-edge top/bottom blocks are left-packed
-with a 40-pixel occupied-bound gap. Categorical `order` accepts `"scale"`,
-`{ values: [...] }`, or `{ channel: "x" | "y" | "theta" }` while preserving each category's color/shape/dash.
+with a 40-pixel occupied-bound gap. Categorical `layout` defaults to `"edge"`;
+`"legacy-bottom"` explicitly selects the former Canvas-bottom compact row and
+requires bottom position. Categorical `order` accepts `"scale"`, `{ values: [...] }`,
+or `{ channel: "x" | "y" | "theta" }` while preserving each category's color/shape/dash.
 [Legends](../api/legends.md)
 
 ### `editLegend`
 
 ```javascript
 editLegend({
-  target?, position?, align?, direction?, columns?, offset?, titlePosition?,
+  target?, position?, layout?, align?, direction?, columns?, offset?, titlePosition?,
   title?, symbol?, labels?, titleStyle?, itemGap?, border?, count?, gradient?, order?
 })
 ```
 
-Partially edit one existing legend. Categorical `order` can be reassigned or reset
+Partially edit one existing legend. Omitted categorical `layout` preserves the
+stored mode; style edits never switch modes. Categorical `order` can be reassigned or reset
 with `"scale"`; linked position changes also refresh its item order. `title` accepts a non-empty string,
 `"auto"`, or `false`; semantic channel bindings cannot be edited. A
 horizontal sampled-opacity legend accepts `titlePosition: "left"` and inline
@@ -1744,7 +1747,7 @@ styles persist through Canvas/scale/data replay; `false` hides a title and
 
 ```javascript
 editLegendLayout({
-  target?, position?, align?, direction?, columns?, offset?,
+  target?, position?, layout?, align?, direction?, columns?, offset?,
   titlePosition?, itemGap?
 })
 editLegendLabels({ target?, color?, fontSize?, fontFamily?, fontWeight? })

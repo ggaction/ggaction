@@ -397,7 +397,7 @@ export function resolveLayout(program, config) {
     return resolveGridLayout(program, bounds, canvas, config, width, count, true);
   }
 
-  if (config.bottomGrid !== true) {
+  if (config.layout === "legacy-bottom") {
     return resolveCompactBottomLayout(bounds, canvas, config, width, count);
   }
   return resolveGridLayout(program, bounds, canvas, config, width, count, false);

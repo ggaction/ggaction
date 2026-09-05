@@ -25,7 +25,10 @@ program.editLegend({
 ~~~
 
 Nested label, title, border, and gradient objects merge only the supplied
-leaves. A string title becomes explicit, `title: "auto"` restores field-name
+leaves. Categorical layout mode is also preserved: styling a `legacy-bottom`
+legend does not move it into the edge grid. Switch explicitly with
+`editLegendLayout({ layout: "edge" })`; changing a legacy legend to another
+position also requires `layout: "edge"` in that edit. A string title becomes explicit, `title: "auto"` restores field-name
 inference, and `title: false` hides the concrete title without discarding the
 stored semantic title. Gradient and opacity legends accept only their
 kind-compatible options. A horizontal opacity legend can switch to
@@ -71,7 +74,7 @@ program
 
 | Action | Accepted component options |
 | --- | --- |
-| `editLegendLayout` | `position`, `align`, `direction`, `columns`, `offset`, `titlePosition`, `itemGap` |
+| `editLegendLayout` | `position`, `layout`, `align`, `direction`, `columns`, `offset`, `titlePosition`, `itemGap` |
 | `editLegendLabels` | `color`, `fontSize`, `fontFamily`, `fontWeight` |
 | `editLegendTitle` | `title`, `color`, `fontSize`, `fontFamily`, `fontWeight` |
 | `editLegendSymbols` | `symbol`, `count`, `gradient` |

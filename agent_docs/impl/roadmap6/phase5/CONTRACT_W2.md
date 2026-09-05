@@ -24,6 +24,8 @@
 
 ## C — 명시적 layout과 family×edge 수렴
 
+C1 categorical mode와 #87은 [구현·검증](RESULTS_W2_BOTTOM.md)했다. C2 전체 family×edge 수렴은 남아 있다.
+
 [#87](https://github.com/ggaction/ggaction/issues/87)처럼 style edit가 bottom mode를 바꾸면 안 된다. `layout: "edge" | "legacy-bottom"`를 createLegend/editLegend/editLegendLayout과 nested guides에 제공한다. Default는 edge이며 legacy-bottom은 categorical bottom의 기존 compact 모양을 명시적으로 선택하는 compatibility mode다. 기존 legacy 의도 examples/primitive/call chain은 명시 옵션을 사용하도록 migration한다. No-option edit는 stored mode를 보존하고 mode 전환은 explicit request다.
 
 Categorical, gradient, opacity, standalone size, standalone stroke-width, interval, combined point-series+size를 top/bottom/left/right에서 지원한다. Shared content bounds → single block edge placement → multi-block lane이 geometry 책임을 나눈다. Text/recipe 검증은 content owner에 둔다. Side flow는 vertical, horizontal edge는 direction/columns 정책을 가진다. Side alignment·title position·kind-inapplicable options는 실제 meaningful support만 공개하고 matrix에 이유를 적는다. Gradient의 continuous strip과 sampled/interval/categorical item grid의 차이는 유지한다.

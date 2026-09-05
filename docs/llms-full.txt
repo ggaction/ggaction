@@ -1460,7 +1460,7 @@ const program = chart()
     maxBins: 10,
     xScale: { nice: true, zero: false },
     color: { field: "Origin", scale: { palette: "tableau10" } },
-    guides: { legend: { position: "bottom" } }
+    guides: { legend: { position: "bottom", layout: "legacy-bottom" } }
   })
   .createTitle({
     text: "Displacement distribution",
@@ -1497,7 +1497,9 @@ program.encodeColor({ field: "Origin", layout: "fill" });
 ```
 
 Legends default to the right for every supported chart. This example passes
-`position: "bottom"` because its horizontal layout is intentional.
+`position: "bottom", layout: "legacy-bottom"` to retain its compact row near
+the Canvas bottom. The default `layout: "edge"` uses the plot margin instead;
+reserve enough space and set an offset below any x-axis title.
 
 ## Key action trace
 
@@ -2592,7 +2594,9 @@ For multiple series, add `color: "group"`, `groupBy: "group"`, or
 - Axes, horizontal grid, and a right-side categorical legend when applicable
 
 Every materialized series needs at least two points. Reserve right margin for a
-legend or pass `createLegend({ position: "bottom" })` with bottom margin.
+legend or pass `createLegend({ position: "bottom", offset: 70 })` with enough
+bottom margin for the x-axis title and legend. Adjust that explicit offset to
+the authored axis labels and title.
 
 Use `line: { curve: "step" }` during creation for midpoint steps, or edit an existing
 line without changing its encodings:
@@ -2663,7 +2667,7 @@ matches the chart.
 - Bin-aligned axes, horizontal grid, and categorical legend when applicable
 
 Legends default to the right. Pass
-`guides: { legend: { position: "bottom" } }` for the horizontal layout used by
+`guides: { legend: { position: "bottom", layout: "legacy-bottom" } }` for the horizontal layout used by
 the public tutorial.
 
 ## Continue
@@ -10433,6 +10437,7 @@ preserves its remaining shape legend.
 | `channels` | compatible channel array; continuous guides use one `color` or `opacity` | compatible encoded channels |
 | `order` | `"scale"`, `{ values: [...] }`, or `{ channel: "x"/"y"/"theta" }`; categorical only | `"scale"` |
 | `position` | `right/left/bottom/top`; combined point-size guides use a side | `"right"` |
+| `layout` | categorical `"edge"` or `"legacy-bottom"` | `"edge"` |
 | `align` | `"left"`, `"center"`, or `"right"` | `"center"` |
 | `direction` | `"horizontal"` or `"vertical"` | `"horizontal"` |
 | `columns` | positive integer | all items in one row at top |
@@ -10453,10 +10458,13 @@ or right alignment; side legends require center alignment. Left categorical,
 composite point, and size blocks use vertical flow and preserve symbol-to-label
 and resolved-domain order.
 
-For compatibility, `createLegend({ position: "bottom" })` keeps the compact
-single-row layout anchored near the Canvas bottom edge. Supplying any grid
-control such as `columns`, `direction`, `offset`, `titlePosition`, or `itemGap`
-selects the general reserved-margin grid.
+Categorical legends use `layout: "edge"` by default, including a bottom legend
+with no other layout options. To preserve the former compact single row anchored
+near the Canvas bottom edge, specify both `position: "bottom"` and
+`layout: "legacy-bottom"`. This mode keeps labels at Canvas height minus 28 and
+the title at height minus 52. It supports alignment, item gap, symbols, styles,
+and borders; columns, vertical direction, a left title, or a custom plot offset
+require `layout: "edge"`. Layout mode is preserved by edits and replay.
 
 Top and bottom legends use a general item grid. `columns` caps the column count;
 `direction: "horizontal"` fills rows first and `"vertical"` fills columns
@@ -10697,7 +10705,10 @@ program.editLegend({
 ~~~
 
 Nested label, title, border, and gradient objects merge only the supplied
-leaves. A string title becomes explicit, `title: "auto"` restores field-name
+leaves. Categorical layout mode is also preserved: styling a `legacy-bottom`
+legend does not move it into the edge grid. Switch explicitly with
+`editLegendLayout({ layout: "edge" })`; changing a legacy legend to another
+position also requires `layout: "edge"` in that edit. A string title becomes explicit, `title: "auto"` restores field-name
 inference, and `title: false` hides the concrete title without discarding the
 stored semantic title. Gradient and opacity legends accept only their
 kind-compatible options. A horizontal opacity legend can switch to
@@ -10743,7 +10754,7 @@ program
 
 | Action | Accepted component options |
 | --- | --- |
-| `editLegendLayout` | `position`, `align`, `direction`, `columns`, `offset`, `titlePosition`, `itemGap` |
+| `editLegendLayout` | `position`, `layout`, `align`, `direction`, `columns`, `offset`, `titlePosition`, `itemGap` |
 | `editLegendLabels` | `color`, `fontSize`, `fontFamily`, `fontWeight` |
 | `editLegendTitle` | `title`, `color`, `fontSize`, `fontFamily`, `fontWeight` |
 | `editLegendSymbols` | `symbol`, `count`, `gradient` |
@@ -13940,7 +13951,7 @@ Edit the existing radial grid. [Grids](./api/grids/#editing-grids)
 
 ```javascript
 createLegend({
-  target?, channels?, position?, align?, direction?, columns?, offset?,
+  target?, channels?, position?, layout?, align?, direction?, columns?, offset?,
   titlePosition?, title?, symbol?, labels?, titleStyle?, itemGap?, border?, count?,
   gradient?, order?
 })
@@ -13952,20 +13963,23 @@ placement. Categorical legends also support left side placement; composite
 point and size blocks remain in deterministic vertical order. Horizontal
 sampled-opacity legends accept `titlePosition: "left"` for one inline
 title-symbol-label reading line. Same-edge top/bottom blocks are left-packed
-with a 40-pixel occupied-bound gap. Categorical `order` accepts `"scale"`,
-`{ values: [...] }`, or `{ channel: "x" | "y" | "theta" }` while preserving each category's color/shape/dash.
+with a 40-pixel occupied-bound gap. Categorical `layout` defaults to `"edge"`;
+`"legacy-bottom"` explicitly selects the former Canvas-bottom compact row and
+requires bottom position. Categorical `order` accepts `"scale"`, `{ values: [...] }`,
+or `{ channel: "x" | "y" | "theta" }` while preserving each category's color/shape/dash.
 [Legends](./api/legends/)
 
 ## `editLegend`
 
 ```javascript
 editLegend({
-  target?, position?, align?, direction?, columns?, offset?, titlePosition?,
+  target?, position?, layout?, align?, direction?, columns?, offset?, titlePosition?,
   title?, symbol?, labels?, titleStyle?, itemGap?, border?, count?, gradient?, order?
 })
 ```
 
-Partially edit one existing legend. Categorical `order` can be reassigned or reset
+Partially edit one existing legend. Omitted categorical `layout` preserves the
+stored mode; style edits never switch modes. Categorical `order` can be reassigned or reset
 with `"scale"`; linked position changes also refresh its item order. `title` accepts a non-empty string,
 `"auto"`, or `false`; semantic channel bindings cannot be edited. A
 horizontal sampled-opacity legend accepts `titlePosition: "left"` and inline
@@ -13980,7 +13994,7 @@ styles persist through Canvas/scale/data replay; `false` hides a title and
 
 ```javascript
 editLegendLayout({
-  target?, position?, align?, direction?, columns?, offset?,
+  target?, position?, layout?, align?, direction?, columns?, offset?,
   titlePosition?, itemGap?
 })
 editLegendLabels({ target?, color?, fontSize?, fontFamily?, fontWeight? })

@@ -14,7 +14,8 @@
 - [x] W2 A standalone size editor/owner isolation — [검증](RESULTS_W2_SIZE.md)
 - [x] W2 B 선행 shape-only 오류 #86 — [검증](RESULTS_W2_SHAPE.md)
 - [ ] W2 B combined content 부분 제거·재작성과 recipe provenance
-- [ ] W2 C 명시적 bottom mode와 four-edge layout, 오류 #87
+- [x] W2 C1 명시적 categorical bottom mode, 오류 #87 — [검증](RESULTS_W2_BOTTOM.md)
+- [ ] W2 C2 전체 family×edge layout과 통합 matrix
 - [ ] R6-P5-W3 Final-item labels·reference·common format
 - [ ] R6-P5-W4 Program theme와 local override
 - [ ] R6-P5-W5 Opt-in fitting과 guide label layout

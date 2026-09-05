@@ -18,6 +18,7 @@ const OPTIONS = Object.freeze([
   "channels",
   "order",
   "position",
+  "layout",
   "align",
   "direction",
   "columns",
@@ -122,13 +123,18 @@ export function normalizeOptions(args, kind) {
   const itemGap = args.itemGap ?? (["right", "left"].includes(position)
     ? 28
     : position === "top" ? 24 : 20);
-  const bottomGrid = position !== "bottom" || [
-    "columns",
-    "direction",
-    "offset",
-    "titlePosition",
-    "itemGap"
-  ].some(key => Object.hasOwn(args, key));
+  const layout = args.layout === undefined ? "edge" : args.layout;
+  if (!["edge", "legacy-bottom"].includes(layout)) {
+    throw new Error(`Unsupported legend layout "${layout}".`);
+  }
+  if (layout === "legacy-bottom" && position !== "bottom") {
+    throw new Error('Legend layout "legacy-bottom" requires position "bottom".');
+  }
+  if (layout === "legacy-bottom" && (
+    columns !== undefined || direction !== "horizontal" || titlePosition !== "top" || offset !== 8
+  )) {
+    throw new Error('Legend columns, vertical direction, left title and custom offset require layout "edge".');
+  }
 
   if (!["right", "left", "bottom", "top"].includes(position)) {
     throw new Error(`Unsupported legend position "${position}".`);
@@ -180,7 +186,7 @@ export function normalizeOptions(args, kind) {
     labels,
     titleStyle,
     itemGap,
-    bottomGrid,
+    layout,
     border: normalizeBorder(args.border)
   };
 }

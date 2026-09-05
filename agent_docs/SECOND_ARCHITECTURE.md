@@ -1775,6 +1775,9 @@ Encoding reassignment는 existing categorical legend의 inferred field/title/dom
 
 Chart-independent legend default는 right다. Top/bottom, horizontal/vertical direction,
 columns, alignment, title position, border 등은 explicit option이다.
+Categorical placement mode는 config.layout 한 곳에 edge 또는 legacy-bottom으로 저장한다. Option 존재 여부로
+mode를 추론하지 않는다. 생성 default는 edge이며 편집 omission과 encoding/Canvas/scale replay는 저장한 mode를
+보존한다. Legacy-bottom은 Canvas 하단 고정 single-row를 명시하는 compatibility mode다.
 Right/left에 둘 이상의 legend block이 있으면 각 family materializer가 intrinsic concrete graphics를 먼저
 만들고 `layout/legendLane.js`의 pure lane grammar가 공통 title-start, symbol-center, label-start 열과
 top-to-bottom block placement를 계산한다. `rematerializeSideLegendLane`은 이 결과를 concrete graphics에

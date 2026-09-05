@@ -93,7 +93,7 @@ test("supports grouped legend appearance and explicit bottom placement", () => {
       graphicDrawOrder(bordered).indexOf("colorLegendSymbols"),
     true
   );
-  const bottom = groupedBars().createLegend({ position: "bottom" });
+  const bottom = groupedBars().createLegend({ position: "bottom", layout: "legacy-bottom" });
   assert.equal(
     bottom.graphicSpec.objects.colorLegendTitle.properties.y,
     408

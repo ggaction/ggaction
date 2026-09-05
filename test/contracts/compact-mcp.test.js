@@ -113,11 +113,11 @@ test("keeps resource discovery bounded and reads exact cards and recipes", async
   assert.equal(JSON.parse(overview.text).packageVersion, "0.0.12");
   assert.equal(JSON.parse(recipe.text).packageVersion, "0.0.12");
   assert.deepEqual(JSON.parse(recipe.text).packet.exactCalls, [
-    "program.createScatterPlot({ x: { field: \"x\", fieldType: \"quantitative\" }, y: { field: \"y\", fieldType: \"quantitative\" }, color: \"category\", guides: { legend: { position: \"bottom\" } } })",
+    "program.createScatterPlot({ x: { field: \"x\", fieldType: \"quantitative\" }, y: { field: \"y\", fieldType: \"quantitative\" }, color: \"category\", guides: { legend: { position: \"bottom\", offset: 70 } } })",
     "renderToSVG(program)"
   ]);
   assert.deepEqual(JSON.parse(recipe.text).packet.authoring.steps, [
-    'program = program.createScatterPlot({ x: { field: "x", fieldType: "quantitative" }, y: { field: "y", fieldType: "quantitative" }, color: "category", guides: { legend: { position: "bottom" } } })',
+    'program = program.createScatterPlot({ x: { field: "x", fieldType: "quantitative" }, y: { field: "y", fieldType: "quantitative" }, color: "category", guides: { legend: { position: "bottom", offset: 70 } } })',
     "const output = renderToSVG(program)"
   ]);
   for (const resource of [overview, card, recipe]) {

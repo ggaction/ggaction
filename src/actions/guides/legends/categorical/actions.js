@@ -168,7 +168,7 @@ export function resolveCategoricalLegendConfig(program, args = {}) {
     labels: options.labels,
     titleStyle: options.titleStyle,
     itemGap: options.itemGap,
-    bottomGrid: options.bottomGrid,
+    layout: options.layout,
     border: options.border,
     titleVisible: true
   };

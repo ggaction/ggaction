@@ -25,7 +25,7 @@ import {
 } from "./strokeWidth.js";
 
 const OPTIONS = Object.freeze([
-  "target", "position", "align", "direction", "columns", "offset",
+  "target", "position", "layout", "align", "direction", "columns", "offset",
   "titlePosition", "title", "symbol", "labels", "titleStyle", "itemGap",
   "border", "count", "gradient", "order"
 ]);
@@ -271,6 +271,7 @@ function editCategorical(program, kind, previous, size, args) {
   const normalized = normalizeOptions({
     target: previous.target,
     channels: previous.channels,
+    layout: args.layout === undefined ? previous.layout : args.layout,
     position: args.position ?? previous.position,
     align: args.align ?? previous.align,
     direction: args.direction ?? (args.position === "left"

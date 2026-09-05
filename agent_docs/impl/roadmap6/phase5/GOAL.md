@@ -6,6 +6,8 @@
 
 완성 chart에서 시작한 사용자가 축·범례·라벨·테마까지 하위 public action으로 내려갈 수 있게 한다.
 
+W2의 [shape-only crash #86](RESULTS_W2_SHAPE.md)과 [categorical bottom mode #87](RESULTS_W2_BOTTOM.md)도 수정·검증했다. B의 content 재작성과 C2의 전체 family×edge 통합은 계속 진행한다.
+
 ## 선행 조건
 
 - [Phase 3](../phase3/GOAL.md)의 R6-P3-X 승인과 필요한 결과.

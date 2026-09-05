@@ -31,7 +31,7 @@ type TitleWrap = "word" | "character";
 - Sampled opacity legend는 active quantitative opacity scale이 있는 Point와 Line을 지원한다.
   Line도 기존 circle sample recipe를 사용하며 constant assignment는 자신의 opacity block만 제거한다.
 
-- Signature: `createLegend({ target?, channels?, position?, align?, direction?, columns?, offset?, titlePosition?, title?, symbol?, labels?, titleStyle?, itemGap?, border?, count?, gradient?, order? })`.
+- Signature: `createLegend({ target?, channels?, position?, layout?, align?, direction?, columns?, offset?, titlePosition?, title?, symbol?, labels?, titleStyle?, itemGap?, border?, count?, gradient?, order? })`.
 - `target`: compatible mark ID; 생략하면 current 또는 유일한 eligible mark를 추론한다. Sequential gradient는
   point와 aggregate bar를 지원한다.
 - `order`: categorical 전용 `"scale" | { values: readonly CategoryValue[] } | { channel: "x"|"y"|"theta" }`.
@@ -62,8 +62,11 @@ type TitleWrap = "word" | "character";
   첫 계약에서 center만 허용한다.
 - `direction`: `"horizontal" | "vertical"`; top/bottom item-grid fill order를 결정하며 기본 horizontal이다.
 - `columns`: positive integer; top/bottom grid의 최대 열 수. 생략하면 한 row에 가능한 item을 둔다.
-- `position: "bottom"`만 지정한 기존 호출은 Canvas bottom에 고정된 compact single-row layout을 유지한다.
-  `columns`, `direction`, `offset`, `titlePosition`, `itemGap` 중 하나를 명시하면 reserved-margin grid를 사용한다.
+- Categorical `layout`은 `"edge" | "legacy-bottom"`, default `"edge"`다. Bottom도 omission이면 reserved-margin grid다.
+  기존 Canvas 하단 고정 single-row는 position bottom + layout legacy-bottom으로 명시한다. Labels y=height−28,
+  title y=height−52이며 align/itemGap/recipe/styles/border를 지원한다. Columns, vertical direction, left title,
+  offset≠8은 edge에서만 지원한다. Legacy mode에서 다른 edge로 옮길 때 layout edge도 같은 edit에 명시한다.
+  기존 compact examples는 legacy-bottom으로 migration한다. Continuous/size/width/interval layout option은 아직 지원하지 않는다.
 - `offset`: non-negative finite number, 기본 `8`; plot과 legend block 간 거리다.
 - `titlePosition`: `"top" | "left"`, 기본 top. `"left"`는 horizontal categorical과 sampled opacity
   legend에서 title, symbol, label을 한 reading line으로 배치한다. Gradient와 side opacity는 `"top"`만 지원한다.
@@ -109,7 +112,7 @@ type TitleWrap = "word" | "character";
 
 ### Formal values — `createLegend`
 
-- Implemented: `createLegend({ target?: UserId; channels?: readonly LegendChannel[]; position?: LegendPosition; align?: LegendAlign; direction?: LegendDirection; columns?: PositiveInteger; offset?: NonNegativeFinite; titlePosition?: "top" | "left"; title?: NonEmptyString; symbol?: "auto" | LegendSymbolLayer | { layers: readonly LegendSymbolLayer[] }; labels?: TextStyle; titleStyle?: TextStyle; itemGap?: PositiveFinite; border?: LegendBorder; count?: IntegerAtLeast2; gradient?: { length?: PositiveFinite; thickness?: PositiveFinite }; order?: "scale" | { values: readonly CategoryValue[] } | { channel: "x"|"y"|"theta" } } = {})`
+- Implemented: `createLegend({ target?: UserId; channels?: readonly LegendChannel[]; position?: LegendPosition; layout?: "edge" | "legacy-bottom"; align?: LegendAlign; direction?: LegendDirection; columns?: PositiveInteger; offset?: NonNegativeFinite; titlePosition?: "top" | "left"; title?: NonEmptyString; symbol?: "auto" | LegendSymbolLayer | { layers: readonly LegendSymbolLayer[] }; labels?: TextStyle; titleStyle?: TextStyle; itemGap?: PositiveFinite; border?: LegendBorder; count?: IntegerAtLeast2; gradient?: { length?: PositiveFinite; thickness?: PositiveFinite }; order?: "scale" | { values: readonly CategoryValue[] } | { channel: "x"|"y"|"theta" } } = {})`
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
@@ -184,12 +187,14 @@ encoding removal/recreation, combined legend와 Polar 가이드를 검증한다.
 
 ## `editLegend`
 
-- Signature: `editLegend({ target?, position?, align?, direction?, columns?, offset?, titlePosition?, title?, symbol?, labels?, titleStyle?, itemGap?, border?, count?, gradient?, order? })`.
+- Signature: `editLegend({ target?, position?, layout?, align?, direction?, columns?, offset?, titlePosition?, title?, symbol?, labels?, titleStyle?, itemGap?, border?, count?, gradient?, order? })`.
 - `target` selects an existing logical legend by mark ID. It may be omitted only when exactly one target owns all
   active blocks; independent targets are ambiguous.
 - At least one non-target change is required. Semantic `channels` and scale binding are intentionally not editable.
 - Omitted values remain unchanged. Nested `labels`, `titleStyle`, `border`, and `gradient` objects merge supplied
   leaves. `title` accepts a custom non-empty string, `"auto"` for field inference, or `false` to hide its graphic.
+- Categorical `layout` omission은 stored edge/legacy-bottom을 보존한다. Style/title/border edit나 Canvas/scale/encoding replay가
+  mode를 바꾸지 않는다. Explicit editLegend/editLegendLayout({layout})만 mode를 전환한다.
 - Categorical and combined point-size legends accept left/right side layout; the first left contract requires
   center alignment and vertical flow. `count` rematerializes an existing size block.
 - Gradient edits own `count` and `gradient`; opacity edits own `count`, `itemGap`, and a single point symbol recipe.
@@ -226,6 +231,10 @@ encoding removal/recreation, combined legend와 Polar 가이드를 검증한다.
 - ✅ Covered: stroke-width count, labels/titleStyle, custom/hidden/auto title, right-side bounded option rejection and
   scale/Canvas rematerialization.
 - ✅ Covered: Canvas/edit action-order convergence, insufficient margin, immutability, trace, browser/PNG parity.
+- ✅ Covered: explicit edge/legacy-bottom default, mode transitions, focused color/title style preservation,
+  Full/Basic nested creation, Canvas/scale/encoding-removal replay and incompatible legacy grid controls.
+- Evidence: `test/unit/actions/guides/legend-bottom-layout.test.js` and bottom-mode pairs in
+  `test/contracts/legend-lifecycle-render.test.js`.
 - Evidence: `test/unit/actions/guides/size-legend-editing.test.js`, `test/contracts/legend-lifecycle-render.test.js`,
   `test/unit/actions/guides/legend-edit-actions.test.js`,
   `test/unit/actions/guides/stroke-width-legend.test.js`,
@@ -233,7 +242,7 @@ encoding removal/recreation, combined legend와 Polar 가이드를 검증한다.
 
 ## `editLegendLayout`
 
-- Signature: `editLegendLayout({ target?, position?, align?, direction?, columns?, offset?, titlePosition?, itemGap? })`.
+- Signature: `editLegendLayout({ target?, position?, layout?, align?, direction?, columns?, offset?, titlePosition?, itemGap? })`.
 - Layout-only facade이며 최소 한 layout change를 요구하고 wrapped `editLegend`를 호출한다.
 
 ### Formal values — `editLegendLayout`

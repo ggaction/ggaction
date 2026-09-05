@@ -180,8 +180,8 @@
         "key-action-trace",
         "run-and-continue"
       ],
-      "bytes": 4060,
-      "sha256": "9ece358b13d8989d25e29cd9bf1842feda2f4417dd2de22c392efe3fc4b2bc57"
+      "bytes": 4236,
+      "sha256": "f1d77be1bfde947ee8519ecf9a0843975969e0688f28e57437be1048dfe99dc1"
     },
     {
       "order": 12,
@@ -348,8 +348,8 @@
         "the-library-infers",
         "continue"
       ],
-      "bytes": 2084,
-      "sha256": "aecb9bb8a72444d256107588ffa4dc1ba249b8ca4554dd45aabca8840d1ee0ef"
+      "bytes": 2202,
+      "sha256": "2c5109d5e7b1907e125f8a64d76780adbad0a78d3e07a83890443876d9ad6f05"
     },
     {
       "order": 23,
@@ -363,8 +363,8 @@
         "the-library-infers",
         "continue"
       ],
-      "bytes": 1082,
-      "sha256": "951cb574bc48af881accdd2fbcb86004a9f203dea46a18fbb4a7d2ac5f87a3a1"
+      "bytes": 1107,
+      "sha256": "b75f08aabb5b4ca2282cedc0c40e25f4ee5bc8d5b5c552c1f7e4b34496fde624"
     },
     {
       "order": 24,
@@ -1524,8 +1524,8 @@
         "item-order-without-changing-color",
         "related"
       ],
-      "bytes": 6336,
-      "sha256": "1c89b71d3c4d995017688dd7ef2327afd65301404bfa6ac66c51f3cc643d8dc9"
+      "bytes": 6670,
+      "sha256": "996184130bf758c29ef4cc5ccbd0f378b045de41de614ea7081e7c651cb7acbc"
     },
     {
       "order": 97,
@@ -1567,8 +1567,8 @@
         "removing-a-legend",
         "related"
       ],
-      "bytes": 5300,
-      "sha256": "b8eb5338b5655ceec8740322ef1a4f0eddbdd32e1fb77eedbbd608f7b3be14a5"
+      "bytes": 5576,
+      "sha256": "f5be647fed564f12aa06af92ae2ce1a3d0d2e50adf1f20442bc060219f8dc1ab"
     },
     {
       "order": 100,
@@ -2002,8 +2002,8 @@
         "removetitle",
         "related"
       ],
-      "bytes": 11244,
-      "sha256": "175689426d8f2f4d73a7f6117e9b3971ed95b08dd92e6431723ca68c6c587eed"
+      "bytes": 11506,
+      "sha256": "31f72bbabfddf160bc2e1b5563ba848e926f0ea74e7d8f726d23f6a5c3663894"
     },
     {
       "order": 120,

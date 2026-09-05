@@ -116,3 +116,26 @@ test("matches standalone size content edits to explicit primitive styling and ex
   const actual = await assertRenderedPNG(publicProgram, { ...options, artifact: { ...artifact, kind: "user-facing" } });
   assert.equal(actual.pixelHash, expected.pixelHash);
 });
+
+test("preserves explicit bottom placement through focused styling and exact pixels", async () => {
+  const base = chart().createCanvas({ width: 640, height: 600,
+    margin: { left: 60, right: 100, top: 40, bottom: 150 } })
+    .createData({ values: [{ x: 1, y: 2, g: "A" }, { x: 2, y: 3, g: "B" }] })
+    .createPointMark({ id: "points" }).encodeX({ field: "x" }).encodeY({ field: "y" })
+    .encodeColor({ field: "g" });
+  for (const layout of ["edge", "legacy-bottom"]) {
+    const original = base.createLegend({ channels: ["color"], position: "bottom", layout });
+    const primitive = original.editGraphics({ target: "colorLegendLabels", property: "fill", value: "#b91c1c" });
+    const publicProgram = original.editLegendLabels({ color: "#b91c1c" });
+    assertChartProgramsEquivalent({ primitiveProgram: primitive, publicProgram });
+    assert.deepEqual(publicProgram.graphicSpec.objects.colorLegendLabels.items.map(item => item.properties.y),
+      layout === "edge" ? [489, 489] : [572, 572]);
+    const artifact = { scope: "charts", capability: "legend-layout", chart: "legend-lifecycle", variant: layout,
+      title: `Bottom legend ${layout}`, userFacingCallChain: `base.createLegend({ channels: ["color"], position: "bottom", layout: "${layout}" }).editLegendLabels({ color: "#b91c1c" })` };
+    const options = { width: 640, height: 600, colors: ["#b91c1c", "#4c78a8"],
+      regions: [{ name: "plot", x: 55, y: 35, width: 490, height: 420, minimumInkPixels: 40 }] };
+    const expected = await assertRenderedPNG(primitive, { ...options, artifact: { ...artifact, kind: "primitive" } });
+    const actual = await assertRenderedPNG(publicProgram, { ...options, artifact: { ...artifact, kind: "user-facing" } });
+    assert.equal(actual.pixelHash, expected.pixelHash);
+  }
+});

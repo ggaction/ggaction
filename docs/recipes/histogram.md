@@ -40,7 +40,7 @@ matches the chart.
 - Bin-aligned axes, horizontal grid, and categorical legend when applicable
 
 Legends default to the right. Pass
-`guides: { legend: { position: "bottom" } }` for the horizontal layout used by
+`guides: { legend: { position: "bottom", layout: "legacy-bottom" } }` for the horizontal layout used by
 the public tutorial.
 
 ## Continue

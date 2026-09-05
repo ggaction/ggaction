@@ -488,6 +488,17 @@ async function testNodeConsumer(directory) {
     assert.equal(shapeLegend.graphicSpec.objects.seriesLegendSymbolPoints.items.length, 2);
     assert.match(renderToSVG(shapeLegend), /<svg /);
 
+    const bottomLegendBase = chart().createCanvas({ width: 640, height: 600,
+      margin: { left: 60, right: 100, top: 40, bottom: 150 } })
+      .createData({ values: [{ x: 1, y: 2, g: "A" }, { x: 2, y: 3, g: "B" }] })
+      .createPointMark().encodeX({ field: "x" }).encodeY({ field: "y" }).encodeColor({ field: "g" });
+    const legacyBottomLegend = bottomLegendBase.createLegend({ channels: ["color"], position: "bottom", layout: "legacy-bottom" })
+      .editLegendLabels({ color: "red" });
+    assert.deepEqual(legacyBottomLegend.graphicSpec.objects.colorLegendLabels.items.map(item => item.properties.y), [572, 572]);
+    const edgeBottomLegend = legacyBottomLegend.editLegendLayout({ layout: "edge" });
+    assert.deepEqual(edgeBottomLegend.graphicSpec.objects.colorLegendLabels.items.map(item => item.properties.y), [489, 489]);
+    assert.match(renderToSVG(edgeBottomLegend), /<svg /);
+
     const editedSizeLegend = chart().createCanvas({ width: 640, height: 420, margin: { right: 180 } })
       .createData({ values: [{ x: 1, y: 2, m: 10 }, { x: 2, y: 3, m: 30 }] })
       .createPointMark().encodeX({ field: "x" }).encodeY({ field: "y" })
@@ -1481,6 +1492,12 @@ async function testTypeScriptConsumer(directory) {
     program.editLegend({ order: { values: ["C", 1, false] } });
     program.editLegend({ count: 3, title: "Mass", labels: { offset: 28, fontWeight: 700 }, titleStyle: { color: "red" } })
       .editLegendTitle({ title: false }).editLegendTitle({ title: "auto" }).editLegendSymbols({ count: 4 });
+    program.createLegend({ position: "bottom", layout: "legacy-bottom" })
+      .editLegend({ layout: "edge" }).editLegendLayout({ layout: "legacy-bottom" });
+    basicChart().createGuides({ axes: false, grid: false,
+      legend: { position: "bottom", layout: "legacy-bottom" } });
+    // @ts-expect-error Closed categorical layout vocabulary.
+    program.editLegendLayout({ layout: "automatic" });
     // @ts-expect-error sampled title style has no label offset
     program.editLegend({ titleStyle: { offset: 20 } });
 

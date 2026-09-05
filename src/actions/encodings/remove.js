@@ -41,7 +41,7 @@ const SPECIALIZED_LEGEND_KIND = Object.freeze({
   strokeWidth: Object.freeze(["strokeWidth"])
 });
 const LEGEND_OPTION_KEYS = Object.freeze([
-  "position", "align", "direction", "columns", "offset", "titlePosition",
+  "position", "layout", "align", "direction", "columns", "offset", "titlePosition",
   "title", "symbol", "labels", "titleStyle", "itemGap", "border"
 ]);
 

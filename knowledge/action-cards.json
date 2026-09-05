@@ -8028,6 +8028,11 @@
       },
       "options": [
         {
+          "name": "layout",
+          "required": false,
+          "type": "\"edge\" | \"legacy-bottom\" | undefined"
+        },
+        {
           "name": "order",
           "required": false,
           "type": "LegendOrder | undefined"
@@ -8114,7 +8119,7 @@
         }
       ],
       "callPatterns": [
-        "createLegend({ target?, order?, channels?, position?, align?, direction?, columns?, offset? })"
+        "createLegend({ target?, layout?, order?, channels?, position?, align?, direction?, columns? })"
       ],
       "snippet": "program.createLegend({})",
       "errors": [],
@@ -8152,6 +8157,11 @@
           "name": "title",
           "required": false,
           "type": "string | false | undefined"
+        },
+        {
+          "name": "layout",
+          "required": false,
+          "type": "\"edge\" | \"legacy-bottom\" | undefined"
         },
         {
           "name": "order",
@@ -8230,7 +8240,7 @@
         }
       ],
       "callPatterns": [
-        "editLegend({ target?, title?, order?, position?, align?, direction?, columns?, offset? })"
+        "editLegend({ target?, title?, layout?, order?, position?, align?, direction?, columns? })"
       ],
       "snippet": "program.editLegend({ title: \"title\" })",
       "errors": [],
@@ -8270,6 +8280,11 @@
           "type": "string | undefined"
         },
         {
+          "name": "layout",
+          "required": false,
+          "type": "\"edge\" | \"legacy-bottom\" | undefined"
+        },
+        {
           "name": "position",
           "required": false,
           "type": "\"bottom\" | \"left\" | \"right\" | \"top\" | undefined"
@@ -8306,9 +8321,9 @@
         }
       ],
       "callPatterns": [
-        "editLegendLayout({ target?, position?, align?, direction?, columns?, offset?, titlePosition?, itemGap? })"
+        "editLegendLayout({ target?, layout?, position?, align?, direction?, columns?, offset?, titlePosition? })"
       ],
-      "snippet": "program.editLegendLayout({ position: \"bottom\" })",
+      "snippet": "program.editLegendLayout({ layout: \"edge\" })",
       "errors": [],
       "route": "/reference/actions/guides/#focused-legend-edits"
     },
