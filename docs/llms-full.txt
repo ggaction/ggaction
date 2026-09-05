@@ -357,6 +357,14 @@ reported field placeholders. Replace or confirm every
 program. If `unmatchedRequirements` or `unresolved` is non-empty, do not claim
 that the request is fully implemented.
 
+The bounded parser does not interpret negation or exclusion clauses such as
+`no legend`, `without axes`, or `do not add regression`. These requests return
+`request.negation` in `unresolved`, retain the request in
+`unmatchedRequirements`, and provide no authoring steps. Interpret the
+restriction explicitly before selecting action options; chart defaults can
+otherwise reintroduce an excluded feature. Quoted field names such as
+`color by "without"` remain literal field names.
+
 The resolver closes only deterministic runtime dependencies. It can add a
 required mark owner for density or a named Horizon/polar chart family, pass a
 derived dataset to its consumer, bind a unique compatible scale, or name a
