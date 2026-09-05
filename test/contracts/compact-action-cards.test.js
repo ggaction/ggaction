@@ -21,6 +21,16 @@ const intentFile = path.join(root, "knowledge/action-intents.json");
 const declarationFile = path.join(root, "types/program.d.ts");
 const tscFile = path.join(root, "node_modules/.bin/tsc");
 
+test("deferred chart owner cards distinguish creation from completed geometry", async () => {
+  const { cards } = JSON.parse(await readFile(cardFile, "utf8"));
+  for (const name of ["createBoxPlot", "createGradientPlot"]) {
+    const card = cards.find(candidate => candidate.name === name);
+    assert.match(card.summary, /owner.*defers geometry and guides/);
+    assert.ok(card.resources.prerequisites.includes("compatible x/y roles before materialization"));
+    assert.equal(card.callPatterns.length, 2);
+  }
+});
+
 test("compact action cards are generated from the current action contract", async () => {
   const [{ artifact, context, stats }, currentSource] = await Promise.all([
     buildActionCards(),

@@ -37,7 +37,7 @@ function validateNested(value, supported, label) {
   validateKeys(value, supported, label);
 }
 
-function validateArgs(args, operation, create) {
+export function validateAxisTickGroupArgs(args, operation, create) {
   validateOptionObject(
     args,
     create ? CREATE_OPTIONS : EDIT_OPTIONS,
@@ -90,7 +90,7 @@ function makeCreate(channel) {
       description: `Create ${channel}-axis ticks and labels.`
     },
     function (args = {}) {
-      validateArgs(args, operation.create, true);
+      validateAxisTickGroupArgs(args, operation.create, true);
       const shared = select(args, SHARED_CREATE);
       const tickArgs = { ...shared, ...(args.ticks ?? {}) };
       const labelArgs = {
@@ -114,7 +114,7 @@ function makeEdit(channel) {
       description: `Edit ${channel}-axis ticks and labels.`
     },
     function (args = {}) {
-      validateArgs(args, operation.edit, false);
+      validateAxisTickGroupArgs(args, operation.edit, false);
       const shared = select(args, SHARED_EDIT);
       const hasShared = Object.keys(shared).length > 0;
       let next = this;

@@ -93,7 +93,7 @@ export function normalizeIntervalLegend(args) {
   };
 }
 
-function resolveIntervalConfig(program, stored) {
+export function resolveIntervalConfig(program, stored) {
   const layer = resolveContinuousPoint(program, stored.target, "color");
   const encoding = layer.encoding.color;
   if (encoding.fieldType !== "quantitative") {
@@ -151,7 +151,7 @@ function resolveIntervalLayout(program, config, scale) {
   return { labels, symbolX, labelX, itemY, title, background };
 }
 
-export const rematerializeIntervalLegend = action(
+export const rematerializeIntervalLegend = /* @__PURE__ */ action(
   {
     op: "rematerializeIntervalLegend",
     description: "Rematerialize a discretized color interval legend."
@@ -200,7 +200,7 @@ export const rematerializeIntervalLegend = action(
   }
 );
 
-export const createIntervalLegend = action(
+export const createIntervalLegend = /* @__PURE__ */ action(
   {
     op: "createIntervalLegend",
     description: "Create a discretized color interval legend."

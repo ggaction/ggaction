@@ -36,6 +36,8 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - `values`: scale domain 안의 finite number/timestamp 또는 ordinal scalar array. histogram x는 둘 다
   생략하면 bin boundaries, ordinal x는 domain 전체를 사용한다. 생성 전 resolved cardinality는 최대
   `10,000`이다.
+- Shared histogram scale의 자동 boundaries는 모든 binned consumer가 같은 boundary array를 계산할 때만
+  유일한 결과로 재사용한다. 서로 다른 boundaries면 explicit values 또는 독립 scale이 필요하다.
 - `length`: non-negative finite number, 기본 `6`.
 - `color`: non-empty string, 기본 `"#64748b"`.
 - `lineWidth`: non-negative finite number, 기본 `1`.

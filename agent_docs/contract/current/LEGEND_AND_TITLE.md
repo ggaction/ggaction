@@ -331,6 +331,8 @@ config normalization과 rematerialization을 공유한다. Evidence:
   아니므로 포함하지 않는다.
 - Lifecycle: aggregate create-only다. 생성 뒤 변경과 제거는 axis, grid와 legend child action이 소유한다.
   Generic `editGuides`는 의도적으로 없으며 aggregate에 별도 edit gap은 없다.
+- Direct 호출은 계속 strict create다. Chart facade의 missing-only 보완과 호환성 검사는
+  [공통 facade guide 계약](BASIC_CHARTS.md#facade-guide-reuse)이 소유하며 이 action을 idempotent edit로 바꾸지 않는다.
 - Polar omission은 실제 저장된 theta/radius channel별 axis와 grid만 선택한다. Arc color encoding은
   categorical legend applicability에 포함되며 theta-only count arc는 radial guide를 합성하지 않는다.
 - 오류: explicit/automatic selection 결과가 하나도 없거나 child resource inference가 ambiguous하면 거부한다.

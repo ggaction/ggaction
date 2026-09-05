@@ -19,7 +19,7 @@ function validateAxisOption(value, channel) {
   }
 }
 
-function validateArgs(args) {
+export function validateAxesArgs(args) {
   validateOptionObject(args, TOP_OPTIONS, "createAxes");
   validateAxisOption(args.x, "x");
   validateAxisOption(args.y, "y");
@@ -189,7 +189,7 @@ const createAxes = action(
     description: "Read a semantic coordinate and create its Cartesian axes."
   },
   function (args = {}) {
-    const coordinateDescriptor = validateArgs(args);
+    const coordinateDescriptor = validateAxesArgs(args);
     const { cartesianLayers, polarLayers, parallelLayers } = inspectChannels(
       this.semanticSpec.layers
     );

@@ -4,6 +4,7 @@ import { validateOptionObject } from "../../core/validation.js";
 import { findDataset, requireMaterializedDataset } from "../../selectors/datasets.js";
 import { isNominalValue } from "../../grammar/scales/fields.js";
 import { hasLayer } from "../../selectors/layers.js";
+import { fulfillFacadeGuides } from "../guides/facade.js";
 
 export function validateFacadeOptions(args, supported, operation) {
   return validateOptionObject(args, supported, operation);
@@ -135,6 +136,6 @@ export function targetArgs(encoding, target) {
   return { ...encoding, target };
 }
 
-export function applyFacadeGuides(program, guides) {
-  return guides === false ? program : program.createGuides(guides);
+export function applyFacadeGuides(program, guides, target, explicitGuides = guides) {
+  return fulfillFacadeGuides(program, guides, target, explicitGuides);
 }

@@ -12,12 +12,35 @@ Basic Chart facade는 existing domain action을 wrapped child로 조합하는 us
 - Omitted ID uses one stable facade role. Occupied default requires an explicit ID and never creates a numbered ID.
 - Field strings normalize to `{ field }`; objects reuse the corresponding child encoding vocabulary.
 - Position target and coordinate are facade-owned. A nested channel cannot override them.
-- Omitted or `{}` guides call `createGuides`; `false` leaves the guide branch absent.
+- Omitted or `{}` guides는 아래 공통 확보 계약을 사용한다. `false`는 이번 facade의 guide 요청을 생략한다.
 - Outer/nested option shape and resource ownership are resolved before the first child. Any later child validation failure
   returns no partial program because every transition and trace branch is immutable.
 - Optional encodings appear in state and trace only when requested.
 - Scatter `point.stroke`, Bar/Histogram `bar.stroke` accept a non-empty color string or `false`, matching their
   child mark creation/edit owners. `false` disables the outline and its width; incompatible width edits remain errors.
+
+## Facade guide reuse
+
+- Scatter, Line, Bar, Histogram, Heatmap, Parallel, Violin과 Box/Gradient completion의 공통 계약이다.
+  Automatic applicability와 target은 해당 facade의 layer/coordinate에서만 추론한다.
+- Compatible 축·격자·범례를 재사용하고 없는 구성요소만 기존 wrapped owner로 만든다. 처음 생성할 때는
+  가능한 경우 createGuides를 사용하며, 부분 보완은 실제 필요한 axis/tick/label/title/grid/legend child만 호출한다.
+  별도 public ensureGuides나 observer는 없다. Direct createGuides/createAxes/leaf create의 strict 생성 계약은 유지한다.
+- 축·격자는 channel·coordinate ID·scale ID가 일치해야 한다. 같은 domain만으로 합치지 않는다. Legacy 축에
+  coordinate가 없으면 같은 channel/scale consumer의 coordinate가 유일할 때만 결정하여 저장한다.
+  Partial line/ticks/labels/title은 기존 placement와 tick mode를 보존하며 부족한 component만 채운다.
+- 자동 기본값은 기존 제목·스타일을 덮어쓰지 않는다. 명시한 nested style이 기존값과 다르면 editor 또는
+  해당 guide branch의 false opt-out을 안내하는 conflict다. Facade가 source field에서 보충한 title은 explicit style이 아니다.
+- 범례는 kind·channels·scale IDs·domain/order·symbol layer 구성이 호환돼야 한다. Point/Line의 다른 symbol
+  recipe는 자동 병합하지 않는다. 재사용한 범례는 원래 target을 유지한다. 명시한 layout/style 차이는 conflict다.
+- Histogram의 shared x scale은 각 consumer가 계산한 bin boundaries가 모두 같을 때만 자동 ticks를 재사용한다.
+  Parallel의 별도 facade는 각자 dimension scale IDs를 만들므로 다른 owner의 축을 자동 공유하지 않는다.
+  Gradient density legend도 owner별 density scale ID가 달라 다른 owner/family의 color legend를 덮어쓰지 않는다.
+- `guides:false` 또는 nested branch false는 기존 guide를 삭제하지 않는다. 세 branch 모두 false인 facade는
+  guide action을 실행하지 않는다. Box omission=false와 Box/Gradient의 deferred completion은 유지한다.
+- 이 계약은 하위 데이터·grain·scale compatibility를 확장하지 않는다. 예를 들어 grouped Bar의 서로 다른
+  중간 layout policy는 별도 position scale이 필요할 수 있다. Derived facade를 연속 작성할 때 source data도 명시한다.
+- 증거: `test/unit/actions/charts/facade-guide-reuse.test.js`, guide owner regressions, 기존 chart primitive/public render.
 
 ## `createScatterPlot`
 

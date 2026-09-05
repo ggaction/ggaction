@@ -54,6 +54,6 @@ export const createBarPlot = action(
     }
     if (color !== undefined) next = next.encodeColor(targetArgs(color, id));
     if (width !== undefined) next = next.encodeBarWidth(targetArgs(width, id));
-    return applyFacadeGuides(next, guides);
+    return applyFacadeGuides(next, guides, id);
   }
 );

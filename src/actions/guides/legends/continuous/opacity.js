@@ -202,7 +202,7 @@ function resolveOpacityLayout(program, config, scale) {
   return { values, texts, symbols, labels, title, background };
 }
 
-export const rematerializeOpacityLegend = action(
+export const rematerializeOpacityLegend = /* @__PURE__ */ action(
   {
     op: "rematerializeOpacityLegend",
     description: "Rematerialize a field-opacity sample legend."
@@ -330,23 +330,29 @@ export const rematerializeOpacityLegend = action(
   }
 );
 
-export const createOpacityLegend = action(
+
+export function resolveOpacityLegendCreation(program, args = {}) {
+  const config = normalizeContinuousLegend(args, "opacity");
+  if (args.channels !== undefined && (
+    !Array.isArray(args.channels) ||
+    args.channels.length !== 1 ||
+    args.channels[0] !== "opacity"
+  )) {
+    throw new Error('Opacity legend requires channels: ["opacity"].');
+  }
+  config.symbol = normalizeOpacitySymbol(args.symbol);
+  config.titleVisible = true;
+  const resolved = resolveOpacityConfig(program, config);
+  return resolved;
+}
+
+export const createOpacityLegend = /* @__PURE__ */ action(
   {
     op: "createOpacityLegend",
     description: "Create a field-opacity sample legend."
   },
   function (args = {}) {
-    const config = normalizeContinuousLegend(args, "opacity");
-    if (args.channels !== undefined && (
-      !Array.isArray(args.channels) ||
-      args.channels.length !== 1 ||
-      args.channels[0] !== "opacity"
-    )) {
-      throw new Error('Opacity legend requires channels: ["opacity"].');
-    }
-    config.symbol = normalizeOpacitySymbol(args.symbol);
-    config.titleVisible = true;
-    const resolved = resolveOpacityConfig(this, config);
+    const resolved = resolveOpacityLegendCreation(this, args);
     resolveOpacityLayout(this, resolved.config, resolved.scale);
     if (this.graphicSpec.objects.opacityLegendSymbols !== undefined) {
       throw new Error(
@@ -395,7 +401,7 @@ export const createOpacityLegend = action(
   }
 );
 
-export const removeOpacityLegend = action(
+export const removeOpacityLegend = /* @__PURE__ */ action(
   {
     op: "removeOpacityLegend",
     description: "Remove a field-opacity legend after switching to constant opacity."

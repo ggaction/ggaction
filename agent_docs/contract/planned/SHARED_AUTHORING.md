@@ -15,9 +15,8 @@ opacity는 [0,1], stroke는 non-empty color, dash는 기존 DashStyle/DashPatter
 
 ## Guide reuse
 
-Complete facade는 자기 layer의 compatible axes/grid/legend를 재사용하고 없는 component만 생성한다.
-Coordinate/scale/channel·legend recipe·명시적 style 충돌은 atomic error다. Low-level create strictness,
-Box의 guides omitted=false, Box/Gradient의 deferred completion은 유지한다. 생성은 기존 wrapped guide owner가 담당한다.
+구현되어 Planned inventory에서 제거했다. 현재 동작과 검증은
+[공통 facade guide 계약](../current/BASIC_CHARTS.md#facade-guide-reuse)이 소유한다.
 
 ## Series identity
 

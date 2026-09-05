@@ -38,7 +38,7 @@ function validateNested(value, supported, label) {
   validateKeys(value, supported, label);
 }
 
-function validateArgs(args, operation) {
+export function validateAxisArgs(args, operation) {
   validateKeys(args, TOP_OPTIONS, operation);
 
   if (Object.hasOwn(args, "line")) {
@@ -77,7 +77,7 @@ function makeCreateAxis(channel) {
       description: `Create the complete ${channel}-axis.`
     },
     function (args = {}) {
-      validateArgs(args, operation.create);
+      validateAxisArgs(args, operation.create);
       const shared = {};
       if (Object.hasOwn(args, "scale")) shared.scale = args.scale;
       if (Object.hasOwn(args, "position")) shared.position = args.position;

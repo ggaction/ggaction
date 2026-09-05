@@ -158,7 +158,7 @@ export const createHeatmap = action(
         .encodeX(positionArgs(x, { target: id, coordinate: args.coordinate }))
         .encodeY(positionArgs(y, { target: id, coordinate: args.coordinate }))
         .encodeColor(targetArgs(color, id));
-      return applyFacadeGuides(next, guides);
+      return applyFacadeGuides(next, guides, id);
     }
 
     const x = normalizePosition(args.x, "x");
@@ -190,6 +190,6 @@ export const createHeatmap = action(
         fieldType: "quantitative",
         ...color
       });
-    return applyFacadeGuides(next, resolvedGuides);
+    return applyFacadeGuides(next, resolvedGuides, id, guides);
   }
 );

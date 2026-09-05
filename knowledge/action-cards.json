@@ -4863,7 +4863,7 @@
       "name": "createBoxPlot",
       "layer": "user-facing",
       "domain": "statistics",
-      "summary": "Create a vertical or horizontal Tukey/min–max box plot from one categorical and one quantitative field.",
+      "summary": "Creates a Box plot owner that defers geometry and guides until compatible x/y roles are available.",
       "signature": "createBoxPlot(options?: BoxPlotOptions): ChartProgram;",
       "intents": [
         "create box plot",
@@ -4877,7 +4877,8 @@
       "lifecycle": "Mutable resource",
       "resources": {
         "prerequisites": [
-          "statistical source and coordinate context"
+          "canvas and source dataset",
+          "compatible x/y roles before materialization"
         ],
         "owns": [
           "box plot"
@@ -4957,7 +4958,8 @@
         }
       ],
       "callPatterns": [
-        "createBoxPlot({ id?, target?, data?, coordinate?, x?, y?, whisker?, width? })"
+        "createBoxPlot({ x, y, guides? })",
+        "createBoxPlot({ id?, data? })"
       ],
       "snippet": "program.createBoxPlot({})",
       "errors": [],
@@ -5055,7 +5057,7 @@
       "name": "createGradientPlot",
       "layer": "user-facing",
       "domain": "statistics",
-      "summary": "Create one density-gradient strip per category from categorical and quantitative x/y roles.",
+      "summary": "Creates a Gradient plot owner that defers geometry and guides until compatible x/y roles are available.",
       "signature": "createGradientPlot(options?: GradientPlotOptions): ChartProgram;",
       "intents": [
         "create gradient plot",
@@ -5069,7 +5071,8 @@
       "lifecycle": "Mutable resource",
       "resources": {
         "prerequisites": [
-          "statistical source and coordinate context"
+          "canvas and source dataset",
+          "compatible x/y roles before materialization"
         ],
         "owns": [
           "gradient plot"
@@ -5139,7 +5142,8 @@
         }
       ],
       "callPatterns": [
-        "createGradientPlot({ id?, target?, data?, coordinate?, x?, y?, density?, width? })"
+        "createGradientPlot({ x, y, guides? })",
+        "createGradientPlot({ id?, data? })"
       ],
       "snippet": "program.createGradientPlot({})",
       "errors": [],

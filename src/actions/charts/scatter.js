@@ -51,6 +51,6 @@ export const createScatterPlot = action(
     if (color !== undefined) next = next.encodeColor(targetArgs(color, id));
     if (size !== undefined) next = next.encodeSize(targetArgs(size, id));
     if (shape !== undefined) next = next.encodeShape(targetArgs(shape, id));
-    return applyFacadeGuides(next, guides);
+    return applyFacadeGuides(next, guides, id);
   }
 );

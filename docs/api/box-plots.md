@@ -65,6 +65,9 @@ createBoxPlot({
 graphical state is the same as supplying both channels at creation time.
 Stored explicit guide options are applied when those deferred positions become
 complete. Omission and `guides: false` preserve the historical no-guide result.
+Completion reuses compatible guides, preserves their titles and styles, and
+creates only missing components. Creating the deferred owner alone does not
+produce a finished chart.
 
 The category/measure pairing determines orientation. This horizontal min–max
 example creates no outlier resources:

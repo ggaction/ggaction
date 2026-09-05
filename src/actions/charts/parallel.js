@@ -105,6 +105,6 @@ export const createParallelCoordinates = action(
     if (strokeDash !== undefined) {
       next = next.encodeStrokeDash(targetArgs(strokeDash, id));
     }
-    return applyFacadeGuides(next, guides);
+    return applyFacadeGuides(next, guides, id);
   }
 );

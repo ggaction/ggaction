@@ -1,3 +1,5 @@
+import { applyFacadeGuides } from "../charts/shared.js";
+import { fulfillGradientPlotLegend } from "./components.js";
 import { action } from "../../core/action.js";
 import { validateUserId } from "../../core/identifiers.js";
 import { isPlainObject } from "../../core/immutable.js";
@@ -253,19 +255,15 @@ export const materializeGradientPlot = action(
     if (guides !== false) {
       const wantsStandard = guides.axes !== false || guides.grid !== false;
       if (wantsStandard) {
-        next = next.createGuides({
+        next = applyFacadeGuides(next, {
           axes: gradientAxesOptions(next.markConfigs[owner].gradientPlot),
           grid: guides.grid,
           legend: false
-        });
+        }, owner, guides);
       }
       if (guides.legend !== false) {
         const legend = isPlainObject(guides.legend) ? guides.legend : {};
-        next = next.createGradientPlotLegend({
-          owner,
-          title: legend.title ?? "Relative density",
-          position: legend.position ?? "right"
-        });
+        next = fulfillGradientPlotLegend(next, { owner, ...legend });
       }
     }
     return next._withContext({ currentMark: owner, currentData: layer.data });

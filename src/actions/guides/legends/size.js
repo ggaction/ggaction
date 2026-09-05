@@ -154,36 +154,43 @@ export const rematerializeSizeLegend = action(
   }
 );
 
+
+export function resolveSizeLegendConfig(program, args = {}) {
+  validateKeys(args, [...SIZE_OPTIONS, "inheritAppearance"], "createSizeLegend");
+  const layer = resolveSizeLegendPoint(program, args.target);
+  const encoding = layer.encoding?.size;
+  if (encoding?.scale === undefined) {
+    throw new Error(`Point mark "${layer.id}" requires a size encoding.`);
+  }
+  const scale = requireScale(program, encoding.scale, "linear");
+  const count = args.count ?? 5;
+  if (!Number.isInteger(count) || count < 2) {
+    throw new RangeError("Size legend count must be an integer of at least 2.");
+  }
+  validateGeneratedItemLimit(count, "Size legend count");
+  return {
+    target: layer.id,
+    scale: encoding.scale,
+    title: encoding.field,
+    inferredTitle: true,
+    domain: scale.domain,
+    count,
+    inheritAppearance: args.inheritAppearance === true
+  };
+}
+
 export const createSizeLegend = action(
   {
     op: "createSizeLegend",
     description: "Create a quantitative equal-area point-size legend."
   },
   function (args = {}) {
-    validateKeys(args, [...SIZE_OPTIONS, "inheritAppearance"], "createSizeLegend");
-    const layer = resolveSizeLegendPoint(this, args.target);
-    const encoding = layer.encoding?.size;
-    if (encoding?.scale === undefined) {
-      throw new Error(`Point mark "${layer.id}" requires a size encoding.`);
-    }
-    const scale = requireScale(this, encoding.scale, "linear");
-    const count = args.count ?? 5;
-    if (!Number.isInteger(count) || count < 2) {
-      throw new RangeError("Size legend count must be an integer of at least 2.");
-    }
-    validateGeneratedItemLimit(count, "Size legend count");
+    const config = resolveSizeLegendConfig(this, args);
+    const { count } = config;
     return this
-      .editSemantic({ property: "guide.legend.size.scale", value: encoding.scale })
-      .editSemantic({ property: "guide.legend.size.title", value: encoding.field })
-      ._withLegendConfig("size", {
-        target: layer.id,
-        scale: encoding.scale,
-        title: encoding.field,
-        inferredTitle: true,
-        domain: scale.domain,
-        count,
-        inheritAppearance: args.inheritAppearance === true
-      })
+      .editSemantic({ property: "guide.legend.size.scale", value: config.scale })
+      .editSemantic({ property: "guide.legend.size.title", value: config.title })
+      ._withLegendConfig("size", config)
       .createGraphics({
         id: "sizeLegendSymbols",
         type: "circle",

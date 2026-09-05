@@ -3169,17 +3169,6 @@
   ],
   "plannedCapabilities": [
     {
-      "id": "facade-guide-reuse",
-      "name": "Compatible facade guide reuse and deferred completion",
-      "kind": "behavior",
-      "status": "planned",
-      "readiness": "accepted",
-      "contract": {
-        "file": "agent_docs/contract/planned/SHARED_AUTHORING.md",
-        "anchor": "guide-reuse"
-      }
-    },
-    {
       "id": "path-series-identity",
       "name": "Explicit tuple identity and per-series appearance",
       "kind": "behavior",

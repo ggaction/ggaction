@@ -146,6 +146,8 @@
     "Graphics": ["graphic state", "concrete graphic resource"]
   },
   "summaryOverrides": {
+    "createBoxPlot": "Creates a Box plot owner that defers geometry and guides until compatible x/y roles are available.",
+    "createGradientPlot": "Creates a Gradient plot owner that defers geometry and guides until compatible x/y roles are available.",
     "createScatterPlot": "Draws a complete scatter plot that shows the relationship between two fields as points.",
     "createTickMark": "Creates short tick glyphs for compact one-dimensional distributions or aligned value marks.",
     "encodeAngle": "Maps a constant or quantitative field to point or tick rotation angle.",
@@ -265,6 +267,8 @@
     "encodeText": { "field": "label" }
   },
   "callPatternOverrides": {
+    "createBoxPlot": ["createBoxPlot({ x, y, guides? })", "createBoxPlot({ id?, data? })"],
+    "createGradientPlot": ["createGradientPlot({ x, y, guides? })", "createGradientPlot({ id?, data? })"],
     "filterData": [
       "filterData({ id, field, predicate })",
       "filterData({ id, field, oneOf | range })"

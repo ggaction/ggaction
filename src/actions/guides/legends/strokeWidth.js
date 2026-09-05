@@ -63,7 +63,7 @@ function requireScale(program, id) {
   return scale;
 }
 
-export const rematerializeStrokeWidthLegend = action(
+export const rematerializeStrokeWidthLegend = /* @__PURE__ */ action(
   {
     op: "rematerializeStrokeWidthLegend",
     description: "Rematerialize a quantitative stroke-width legend."
@@ -134,36 +134,43 @@ export const rematerializeStrokeWidthLegend = action(
   }
 );
 
-export const createStrokeWidthLegend = action(
+
+export function resolveStrokeWidthLegendConfig(program, args = {}) {
+  validateKeys(args, OPTIONS, "createStrokeWidthLegend");
+  const layer = resolveLayer(program, args.target);
+  const encoding = layer.encoding.strokeWidth;
+  requireScale(program, encoding.scale);
+  const count = args.count ?? 5;
+  if (!Number.isInteger(count) || count < 2) {
+    throw new RangeError(
+      "Stroke-width legend count must be an integer of at least 2."
+    );
+  }
+  validateGeneratedItemLimit(count, "Stroke-width legend count");
+  return {
+    target: layer.id,
+    scale: encoding.scale,
+    title: encoding.field,
+    inferredTitle: true,
+    count,
+    labels: { ...STROKE_WIDTH_LEGEND_LABELS },
+    titleStyle: { ...STROKE_WIDTH_LEGEND_TITLE_STYLE },
+    titleVisible: true
+  };
+}
+
+export const createStrokeWidthLegend = /* @__PURE__ */ action(
   {
     op: "createStrokeWidthLegend",
     description: "Create a quantitative stroke-width legend."
   },
   function (args = {}) {
-    validateKeys(args, OPTIONS, "createStrokeWidthLegend");
-    const layer = resolveLayer(this, args.target);
-    const encoding = layer.encoding.strokeWidth;
-    requireScale(this, encoding.scale);
-    const count = args.count ?? 5;
-    if (!Number.isInteger(count) || count < 2) {
-      throw new RangeError(
-        "Stroke-width legend count must be an integer of at least 2."
-      );
-    }
-    validateGeneratedItemLimit(count, "Stroke-width legend count");
+    const config = resolveStrokeWidthLegendConfig(this, args);
+    const { count } = config;
     return this
-      .editSemantic({ property: "guide.legend.strokeWidth.scale", value: encoding.scale })
-      .editSemantic({ property: "guide.legend.strokeWidth.title", value: encoding.field })
-      ._withLegendConfig("strokeWidth", {
-        target: layer.id,
-        scale: encoding.scale,
-        title: encoding.field,
-        inferredTitle: true,
-        count,
-        labels: { ...STROKE_WIDTH_LEGEND_LABELS },
-        titleStyle: { ...STROKE_WIDTH_LEGEND_TITLE_STYLE },
-        titleVisible: true
-      })
+      .editSemantic({ property: "guide.legend.strokeWidth.scale", value: config.scale })
+      .editSemantic({ property: "guide.legend.strokeWidth.title", value: config.title })
+      ._withLegendConfig("strokeWidth", config)
       .createGraphics({
         id: "strokeWidthLegendSymbols",
         type: "line",

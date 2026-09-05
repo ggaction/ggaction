@@ -1,3 +1,4 @@
+import { assertGuideOptions, guideConflict } from "../guides/reuse.js";
 import { action } from "../../core/action.js";
 import { validateKeys } from "../../core/validation.js";
 import { GRADIENT_PROFILE_FIELDS } from "../../grammar/gradientProfile.js";
@@ -120,23 +121,44 @@ export const rematerializeGradientPlotLegend = action(
   }
 );
 
+function resolveDensityLegend(program, args) {
+  validateKeys(args, LEGEND_OPTIONS, "createGradientPlotLegend");
+  requireLegendOwner(program, args.owner);
+  if (args.position !== undefined && args.position !== "right") {
+    throw new Error('Gradient plot density legend currently requires position "right".');
+  }
+  if (args.title !== undefined && (typeof args.title !== "string" || args.title.length === 0)) {
+    throw new TypeError("Gradient plot density legend title must be a non-empty string.");
+  }
+  const ids = legendIds(args.owner);
+  const densityScale = `${args.owner}Density`;
+  const title = args.title ?? "Relative density";
+  return { ids, densityScale, title };
+}
+
+export function fulfillGradientPlotLegend(program, args) {
+  const { ids, densityScale } = resolveDensityLegend(program, args);
+  const occupied = program.semanticSpec.guides.legend?.color;
+  if (occupied !== undefined && occupied.scale !== densityScale) {
+    guideConflict("Gradient plot density legend uses a different scale or family");
+  }
+  const existing = Object.values(ids).filter(id => program.graphicSpec.objects[id] !== undefined);
+  if (existing.length === 0) return program.createGradientPlotLegend(args);
+  if (existing.length !== Object.keys(ids).length || occupied?.scale !== densityScale) {
+    guideConflict("Gradient plot density legend has incomplete ownership");
+  }
+  const { owner, ...explicit } = args;
+  assertGuideOptions(explicit, program.markConfigs[owner].gradientPlot.guides.legend, "Gradient plot density legend");
+  return program;
+}
+
 export const createGradientPlotLegend = action(
   {
     op: "createGradientPlotLegend",
     description: "Create the neutral density legend owned by one gradient plot."
   },
   function (args = {}) {
-    validateKeys(args, LEGEND_OPTIONS, "createGradientPlotLegend");
-    requireLegendOwner(this, args.owner);
-    if (args.position !== undefined && args.position !== "right") {
-      throw new Error('Gradient plot density legend currently requires position "right".');
-    }
-    if (args.title !== undefined && (typeof args.title !== "string" || args.title.length === 0)) {
-      throw new TypeError("Gradient plot density legend title must be a non-empty string.");
-    }
-    const ids = legendIds(args.owner);
-    const densityScale = `${args.owner}Density`;
-    const title = args.title ?? "Relative density";
+    const { ids, densityScale, title } = resolveDensityLegend(this, args);
     let next = this;
     for (const [property, value] of [
       [`scale[${densityScale}].type`, "sequential"],

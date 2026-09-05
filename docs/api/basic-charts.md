@@ -45,8 +45,13 @@ facade editor.
   used; a conflicting role requires an explicit ID.
 - A field may be a string or an encoding option object. Use the object form for
   field types, scales, aggregates, and other channel-specific options.
-- `guides` is optional. Omission or `{}` creates applicable axes, horizontal
-  grid, and legends. Pass `guides: false` to create no guides.
+- `guides` is optional. Omission or `{}` reuses compatible guides and creates
+  missing components for this facade's layer. Axes and grids must use the same
+  coordinate and scale IDs; legends must also match channels, domain order, and
+  symbol recipe. Existing titles and styles are retained. Conflicting explicit
+  guide styles require the owning editor or a disabled guide branch.
+- `guides: false` and nested `false` skip this call's requests; they do not delete
+  existing guides. Direct `createGuides` and guide creation actions remain strict.
 - A facade validates its complete option object before changing the program.
 - To revise the result, use the resource action that owns the decision, such as
   `encodeX`, `editScale`, `editPointMark`, or `editLegend`. Aggregate

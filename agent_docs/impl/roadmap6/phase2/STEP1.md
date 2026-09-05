@@ -6,7 +6,7 @@
 - [x] 현재 동작 43건·관련 기존 테스트 100건 확인 — [VALIDATION.md](VALIDATION.md)
 - [x] A Gate 증거 commit/push 및 review ref 기록 — `e06b57db5624a5b0d66cea425cff4aa5f5f4caad`
 - [x] A Gate의 명시적 사용자 승인 기록 — 2026-09-05 “ㄱㄱ”
-- [ ] R6-P2-W1 Complete facade와 guide 확보
+- [ ] R6-P2-W1 Complete facade와 guide 확보 — 기능·회귀 통과, [full bundle 예산 결정](BUNDLE_REVIEW.md) 대기
 - [ ] R6-P2-W2 Series와 appearance 분리
 - [ ] R6-P2-W3 Style mode와 shorthand 정합성
 - [ ] R6-P2-W4 Inference·JSON opt-out·분석 defaults

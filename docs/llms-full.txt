@@ -3624,8 +3624,13 @@ facade editor.
  used; a conflicting role requires an explicit ID.
 - A field may be a string or an encoding option object. Use the object form for
  field types, scales, aggregates, and other channel-specific options.
-- `guides` is optional. Omission or `{}` creates applicable axes, horizontal
- grid, and legends. Pass `guides: false` to create no guides.
+- `guides` is optional. Omission or `{}` reuses compatible guides and creates
+ missing components for this facade's layer. Axes and grids must use the same
+ coordinate and scale IDs; legends must also match channels, domain order, and
+ symbol recipe. Existing titles and styles are retained. Conflicting explicit
+ guide styles require the owning editor or a disabled guide branch.
+- `guides: false` and nested `false` skip this call's requests; they do not delete
+ existing guides. Direct `createGuides` and guide creation actions remain strict.
 - A facade validates its complete option object before changing the program.
 - To revise the result, use the resource action that owns the decision, such as
  `encodeX`, `editScale`, `editPointMark`, or `editLegend`. Aggregate
@@ -6335,6 +6340,9 @@ createBoxPlot({
 graphical state is the same as supplying both channels at creation time.
 Stored explicit guide options are applied when those deferred positions become
 complete. Omission and `guides: false` preserve the historical no-guide result.
+Completion reuses compatible guides, preserves their titles and styles, and
+creates only missing components. Creating the deferred owner alone does not
+produce a finished chart.
 
 The category/measure pairing determines orientation. This horizontal min–max
 example creates no outlier resources:
@@ -12771,13 +12779,13 @@ createBoxPlot({
 } = {})
 ```
 
-Create a vertical or horizontal Tukey/min–max box plot from one categorical
-and one quantitative field. The action infers an encoded source when possible
+Create a Box plot owner that defers geometry and guides until compatible x/y
+roles are available. The action infers an encoded source when possible
 and composes immutable box summary data, error-bar whiskers, ranged-bar bodies,
 median rules, and optional point outliers. Tukey factor, band width, component
 appearance, and outlier creation are configurable. [Box plots](./api/box-plots/)
 Guides remain opt-in for compatibility: pass `guides: {}` or nested options to
-create them inside the facade; omission and `false` create none.
+ensure compatible guides inside the facade; omission and `false` create none.
 
 ## `editBoxPlot`
 
@@ -12798,8 +12806,8 @@ createGradientPlot({
 } = {})
 ```
 
-Create one density-gradient strip per category from categorical and
-quantitative x/y roles. Positions can be explicit, inferred from one eligible
+Create a Gradient plot owner that defers geometry and guides until compatible
+x/y roles are available. Positions can be explicit, inferred from one eligible
 encoded layer, or completed later. Defaults are Gaussian auto density, 64
 samples, width band `0.7`, no outline, a median center rule, and applicable
 guides. A categorical `encodeColor` owns strip hue while density continues to

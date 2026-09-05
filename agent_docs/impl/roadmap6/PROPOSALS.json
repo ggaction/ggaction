@@ -168,7 +168,8 @@
       "gateStates": {
         "R6-P2-A": "approved",
         "R6-P2-V": "planned",
-        "R6-P2-X": "planned"
+        "R6-P2-X": "planned",
+        "R6-P2-B": "planned"
       },
       "workPackages": [
         {
@@ -181,7 +182,9 @@
           ],
           "scope": "Box/Gradient deferred 역할을 metadata에 명시한다. H0는 compatible guide를 재사용하고 missing만 생성한다. Low-level create strictness는 유지한다. Box guides default는 초기에는 유지하는 안을 확정한다.",
           "acceptance": "Scatter→Line 기본 조합 성공, incompatible scale guide는 atomic conflict. omitted/{} /false matrix가 facade와 child별로 명시됨.",
-          "contractEvidence": "phase2/CONTRACT_REVIEW.md"
+          "contractEvidence": "phase2/CONTRACT_REVIEW.md",
+          "implementationStatus": "implemented-package-pending",
+          "resultEvidence": "phase2/RESULTS.md#w1--facade-guide-reuse"
         },
         {
           "id": "R6-P2-W2",
@@ -941,7 +944,7 @@
       "id": "D04",
       "title": "Complete facade와 deferred composite의 역할 혼합",
       "kind": "design-issue",
-      "status": "proposed",
+      "status": "partially-implemented",
       "primaryPhase": 2,
       "primaryWorkPackage": "R6-P2-W1",
       "relatedWorkPackages": [
@@ -954,13 +957,14 @@
       "recommended": "Box/Gradient deferred 역할을 metadata에 명시한다. H0는 compatible guide를 재사용하고 missing만 생성한다. Low-level create strictness는 유지한다. Box guides default는 초기에는 유지하는 안을 확정한다.",
       "acceptance": "Scatter→Line 기본 조합 성공, incompatible scale guide는 atomic conflict. omitted/{} /false matrix가 facade와 child별로 명시됨.",
       "evidence": "audit/REPORT.md: D04",
-      "disposition": "implementation-or-explicit-contract-decision-proposed"
+      "disposition": "W1 runtime and regression verified; full browser bundle ceiling pending R6-P2-B. Full metadata audit remains in Phase 11.",
+      "resultEvidence": "phase2/RESULTS.md#w1--facade-guide-reuse"
     },
     {
       "id": "D05",
       "title": "Guide default와 facade 중첩 비대칭",
       "kind": "design-issue",
-      "status": "proposed",
+      "status": "partially-implemented",
       "primaryPhase": 2,
       "primaryWorkPackage": "R6-P2-W1",
       "relatedWorkPackages": [
@@ -973,7 +977,8 @@
       "recommended": "Box/Gradient deferred 역할을 metadata에 명시한다. H0는 compatible guide를 재사용하고 missing만 생성한다. Low-level create strictness는 유지한다. Box guides default는 초기에는 유지하는 안을 확정한다.",
       "acceptance": "Scatter→Line 기본 조합 성공, incompatible scale guide는 atomic conflict. omitted/{} /false matrix가 facade와 child별로 명시됨.",
       "evidence": "audit/REPORT.md: D05",
-      "disposition": "implementation-or-explicit-contract-decision-proposed"
+      "disposition": "W1 runtime and regression verified; full browser bundle ceiling pending R6-P2-B. Full metadata audit remains in Phase 11.",
+      "resultEvidence": "phase2/RESULTS.md#w1--facade-guide-reuse"
     },
     {
       "id": "D06",

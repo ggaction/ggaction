@@ -19,29 +19,27 @@ export function inferHistogramBoundaries(program, channel, scaleId) {
       layer.encoding.x.bin !== undefined
   );
   if (consumers.length === 0) return undefined;
-  if (consumers.length > 1) {
-    throw new Error(
-      `Guide values cannot infer shared histogram bins for scale "${scaleId}".`
-    );
-  }
-
-  const [layer] = consumers;
-  const encoding = layer.encoding.x;
-  const dataset = findDataset(program, layer.data);
   const scale = findSemanticScale(program, scaleId);
-  if (dataset === undefined || scale === undefined) {
-    throw new Error(
-      `Guide values require histogram data and scale "${scaleId}".`
-    );
+  const boundaries = consumers.map(layer => {
+    const encoding = layer.encoding.x;
+    const dataset = findDataset(program, layer.data);
+    if (dataset === undefined || scale === undefined) {
+      throw new Error(`Guide values require histogram data and scale "${scaleId}".`);
+    }
+    return resolveHistogramBins({
+      values: readQuantitativeField(dataset.values, encoding.field),
+      bin: encoding.bin,
+      domain: scale.domain,
+      nice: scale.nice ?? true,
+      zero: scale.zero ?? false
+    }).boundaries;
+  });
+  const [unique] = boundaries;
+  if (boundaries.some(values => values.length !== unique.length ||
+    values.some((value, index) => value !== unique[index]))) {
+    throw new Error(`Guide values cannot infer shared histogram bins for scale "${scaleId}".`);
   }
-
-  return resolveHistogramBins({
-    values: readQuantitativeField(dataset.values, encoding.field),
-    bin: encoding.bin,
-    domain: scale.domain,
-    nice: scale.nice ?? true,
-    zero: scale.zero ?? false
-  }).boundaries;
+  return unique;
 }
 
 export function valuesFromTickConfig(program, config) {

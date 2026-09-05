@@ -185,7 +185,10 @@ function actionResources(action, optionNames, intentSource) {
   ) {
     prerequisites.push("source dataset");
   }
-  if (action.domain === "statistics" && !action.name.endsWith("Data")) {
+  const deferredChart = ["createBoxPlot", "createGradientPlot"].includes(action.name);
+  if (deferredChart) {
+    prerequisites.push("canvas and source dataset", "compatible x/y roles before materialization");
+  } else if (action.domain === "statistics" && !action.name.endsWith("Data")) {
     prerequisites.push("statistical source and coordinate context");
   }
   if (action.domain === "composition") prerequisites.push("complete child chart program");

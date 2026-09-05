@@ -1232,13 +1232,13 @@ createBoxPlot({
 } = {})
 ```
 
-Create a vertical or horizontal Tukey/min–max box plot from one categorical
-and one quantitative field. The action infers an encoded source when possible
+Create a Box plot owner that defers geometry and guides until compatible x/y
+roles are available. The action infers an encoded source when possible
 and composes immutable box summary data, error-bar whiskers, ranged-bar bodies,
 median rules, and optional point outliers. Tukey factor, band width, component
 appearance, and outlier creation are configurable. [Box plots](../api/box-plots.md)
 Guides remain opt-in for compatibility: pass `guides: {}` or nested options to
-create them inside the facade; omission and `false` create none.
+ensure compatible guides inside the facade; omission and `false` create none.
 
 ### `editBoxPlot`
 
@@ -1259,8 +1259,8 @@ createGradientPlot({
 } = {})
 ```
 
-Create one density-gradient strip per category from categorical and
-quantitative x/y roles. Positions can be explicit, inferred from one eligible
+Create a Gradient plot owner that defers geometry and guides until compatible
+x/y roles are available. Positions can be explicit, inferred from one eligible
 encoded layer, or completed later. Defaults are Gaussian auto density, 64
 samples, width band `0.7`, no outline, a median center rule, and applicable
 guides. A categorical `encodeColor` owns strip hue while density continues to

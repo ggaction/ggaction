@@ -23,6 +23,14 @@ V/X는 planned이며 새 시각 target의 검토는 해당 Gate에서 진행한�
 - 승인 효과: 이 단계의 확정된 비시각 작업과 primitive target 작성을 열며, V 대상 public 구현은 V 승인 전까지 차단한다.
 - 승인 전 차단: 이 단계의 production 의미·API 구현 및 해당 결과에 의존하는 후속 단계.
 
+## R6-P2-B — Browser bundle budget
+
+- 상태: planned
+- 검토 대상: [BUNDLE_REVIEW.md](BUNDLE_REVIEW.md)의 실제 full 231,731 bytes 및 235,000 상한 제안.
+- 독립적인 추가 결정이며 기존 A 승인에 포함하지 않는다. 현행 230,000 상한은 유지 중이다.
+- 승인 전 차단: full 상한 변경과 W1 package 완료 선언. V primitive 준비는 독립적으로 가능하다.
+- 승인 효과: 선택한 예산 처분을 구현·문서화하고 실제 installed package를 재검증한다.
+
 ## R6-P2-V — Visual target
 
 - 상태: planned

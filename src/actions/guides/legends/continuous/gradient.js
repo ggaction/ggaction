@@ -283,36 +283,42 @@ export const rematerializeGradientLegend = action(
   }
 );
 
+
+export function resolveGradientLegendCreation(program, args = {}) {
+  const config = normalizeContinuousLegend(args, "gradient");
+  if (args.channels !== undefined && (
+    !Array.isArray(args.channels) ||
+    args.channels.length !== 1 ||
+    args.channels[0] !== "color"
+  )) {
+    throw new Error('Gradient legend requires channels: ["color"].');
+  }
+  if (args.gradient !== undefined && !isPlainObject(args.gradient)) {
+    throw new TypeError("createLegend.gradient must be a plain object.");
+  }
+  validateKeys(
+    args.gradient ?? {},
+    GRADIENT_OPTIONS,
+    "createLegend.gradient"
+  );
+  config.gradient = {
+    length: args.gradient?.length ?? 120,
+    thickness: args.gradient?.thickness ?? 12
+  };
+  config.titleVisible = true;
+  validatePositive(config.gradient.length, "Gradient length");
+  validatePositive(config.gradient.thickness, "Gradient thickness");
+  const resolved = resolveGradientConfig(program, config);
+  return resolved;
+}
+
 export const createGradientLegend = action(
   {
     op: "createGradientLegend",
     description: "Create a continuous color gradient legend."
   },
   function (args = {}) {
-    const config = normalizeContinuousLegend(args, "gradient");
-    if (args.channels !== undefined && (
-      !Array.isArray(args.channels) ||
-      args.channels.length !== 1 ||
-      args.channels[0] !== "color"
-    )) {
-      throw new Error('Gradient legend requires channels: ["color"].');
-    }
-    if (args.gradient !== undefined && !isPlainObject(args.gradient)) {
-      throw new TypeError("createLegend.gradient must be a plain object.");
-    }
-    validateKeys(
-      args.gradient ?? {},
-      GRADIENT_OPTIONS,
-      "createLegend.gradient"
-    );
-    config.gradient = {
-      length: args.gradient?.length ?? 120,
-      thickness: args.gradient?.thickness ?? 12
-    };
-    config.titleVisible = true;
-    validatePositive(config.gradient.length, "Gradient length");
-    validatePositive(config.gradient.thickness, "Gradient thickness");
-    const resolved = resolveGradientConfig(this, config);
+    const resolved = resolveGradientLegendCreation(this, args);
     resolveGradientLayout(this, resolved.config, resolved.scale);
     if (this.graphicSpec.objects.colorGradientStrips !== undefined) {
       throw new Error(

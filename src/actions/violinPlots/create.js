@@ -186,6 +186,6 @@ export const createViolinPlot = action(
       }
     });
     if (color !== undefined) next = next.encodeColor(targetArgs(color, id));
-    return applyFacadeGuides(next, guides);
+    return applyFacadeGuides(next, guides, id, args.guides ?? {});
   }
 );

@@ -666,8 +666,8 @@
         "other-complete-chart-facades",
         "advanced-authoring"
       ],
-      "bytes": 9684,
-      "sha256": "68bd7ac6433a908712b9f1444d8d600b47db063f02a6389a248d581ff1fd2ac7"
+      "bytes": 10091,
+      "sha256": "5a24290c6dd62bec9be549d24e7b165e7bdff0d3a10b13fdfd15da2c85a20be2"
     },
     {
       "order": 44,
@@ -1010,8 +1010,8 @@
         "current-limitations",
         "related"
       ],
-      "bytes": 6265,
-      "sha256": "575a15b1ce0a615a27fa0c738f9412ecb172646d2884dc9238d72080782681f1"
+      "bytes": 6443,
+      "sha256": "06e320f8ec9d5b036d514dca84acec858b27f9b4892e3304f1d77cd47dad14a4"
     },
     {
       "order": 65,
@@ -1914,8 +1914,8 @@
         "createviolinplot",
         "related"
       ],
-      "bytes": 6487,
-      "sha256": "46b4e72db18c26a1a63718a5cdedc20e8406ae9afcd7cacdf8d094656094ce2b"
+      "bytes": 6503,
+      "sha256": "e2bfa24fd4c7f93a60fd9f5bf7753d899aedae35c422f2156ea05390e409947e"
     },
     {
       "order": 118,
