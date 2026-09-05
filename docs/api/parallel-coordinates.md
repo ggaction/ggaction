@@ -112,6 +112,11 @@ const advanced = chart()
 atomically. It cannot mix with x/y or theta/radius position encodings on the
 same layer.
 
+Reordering, adding, or removing dimensions also refreshes existing axis titles,
+ticks, labels, and positions in the same action. Axes omitted with
+`guides: false` stay absent. Axes owned by another independent Parallel layer
+keep their own dimension assignment.
+
 ## Appearance, guides, and revisions
 
 - `color` and `strokeDash` reuse the line-series encoding vocabulary.

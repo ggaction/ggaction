@@ -27,6 +27,7 @@ test.before(async () => {
     <canvas id="bin2d" aria-label="2D bin lifecycle chart"></canvas>
     <canvas id="basic" aria-label="Basic entry scatterplot"></canvas>
     <canvas id="polar-components" aria-label="Polar axis component creation"></canvas>
+    <canvas id="parallel-reencoded" aria-label="Reordered Parallel dimension axes"></canvas>
     <div id="svg"></div><div id="svg-resources"></div><script type="importmap">
     {"imports":{"ggaction":"/node_modules/ggaction/src/index.js","ggaction/basic":"/node_modules/ggaction/src/basic.js","ggaction/svg":"/node_modules/ggaction/src/renderers/svg.js"}}
     </script><script type="module">
@@ -185,10 +186,17 @@ test.before(async () => {
       const partialPolar = polarComponents.editRadialAxis({ angle: 45, title: false, ticksAndLabels: false });
       render(partialPolar, polarCanvas.getContext("2d"));
       const emptyPolar = partialPolar.editRadialAxis({ line: false });
+      const revisedParallel = chart().createCanvas({ width: 320, height: 260, margin: 50 })
+        .createData({ values: [{ first: 1, second: 4 }, { first: 2, second: 3 }] })
+        .createParallelCoordinates({ dimensions: ["first", "second"], guides: { legend: false } })
+        .encodeParallelCoordinates({ dimensions: ["second", "first"] });
+      render(revisedParallel, document.getElementById("parallel-reencoded").getContext("2d"));
       document.querySelector("#status").textContent = "complete";
       window.__ggactionConsumer = {
         polarCanvas: [polarCanvas.width, polarCanvas.height],
         polarRemovedTitle: !renderToSVG(partialPolar).includes("Long radial title"),
+        parallelTitles: revisedParallel.graphicSpec.objects.parallelAxisTitles.items.map(item => item.properties.text),
+        parallelFirstLabel: revisedParallel.graphicSpec.objects.parallelAxisLabels.items[0].properties.text,
         polarRemovedAxis: emptyPolar.semanticSpec.guides.axis?.radius === undefined &&
           emptyPolar.guideConfigs.axis?.radius === undefined,
         polarTitleY: polarComponents.graphicSpec.objects.radialAxisTitle.properties.y,
@@ -273,6 +281,8 @@ test("imports and renders the packed browser entries", async () => {
   assert.deepEqual(await windowValue(page, "__ggactionConsumer"), {
     polarCanvas: [300, 500],
     polarRemovedTitle: true,
+    parallelTitles: ["second", "first"],
+    parallelFirstLabel: "3",
     polarRemovedAxis: true,
     polarTitleY: 358,
     polarSharedAngle: 180,

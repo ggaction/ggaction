@@ -9,6 +9,7 @@
 - [x] W1 A1 Polar focused 생성 8개 공개 — [계약](CONTRACT_W1.md), [검증](RESULTS_W1_CREATE.md)
 - [x] W1 A2 Cartesian/Polar optional component 정렬 — [검증](RESULTS_W1_OPTIONAL.md)
 - [ ] W1 A3 Parallel field 기반 축 편집·생성·제거
+- [x] W1 A3 선행 오류: dimension 재배치 뒤 stale axis 수정 — [검증](RESULTS_PARALLEL_REPLAY.md)
 - [ ] R6-P5-W2 Legend content와 edge layout
 - [ ] R6-P5-W3 Final-item labels·reference·common format
 - [ ] R6-P5-W4 Program theme와 local override

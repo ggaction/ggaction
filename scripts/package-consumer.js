@@ -451,6 +451,14 @@ async function testNodeConsumer(directory) {
         guides: false
       });
     assert.equal(parallelFacade.graphicSpec.objects.parallelCoordinates.items.length, 2);
+    const revisedParallel = parallelFacade.editCanvas({ width: 520, height: 400, margin: 70 })
+      .createAxes().encodeParallelCoordinates({
+        target: "parallelCoordinates", dimensions: ["second", "first"], key: "key"
+      });
+    assert.deepEqual(revisedParallel.graphicSpec.objects.parallelAxisTitles.items.map(item => item.properties.text),
+      ["second", "first"]);
+    assert.equal(revisedParallel.graphicSpec.objects.parallelAxisLabels.items[0].properties.text, "3");
+    assert.equal(parallelFacade.graphicSpec.objects.parallelAxisTitles, undefined);
     assert.deepEqual(
       parallelFacade.trace.children.at(-1).children.map(node => node.op),
       [

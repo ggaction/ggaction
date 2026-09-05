@@ -657,6 +657,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
   Cartesian/Polar position encoding과 섞거나 ambiguous target/coordinate를 임의 선택하지 않는다.
 - Consumer lifecycle: Canvas/data/filter/scale edits가 paths와 dimension axes를 함께 replay한다. 한 source row가
   selection/highlight/filter의 한 semantic item이다.
+- Dimension reassignment도 기존 materialization planner로 scales→marks→guides를 갱신한다. 축의 title/tick/label/개수와 semantic/runtime scale dependency 목록이 최종 dimension 순서를 따른다. 생략된 축은 만들지 않고 다른 owner의 독립 축은 보존한다.
 
 ### Formal values — `encodeParallelCoordinates`
 
@@ -672,6 +673,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 - ✅ Covered: selection/highlight/filter, color/strokeDash appearance, ordinary axes and Browser/Node rendering.
 - Evidence: `test/unit/actions/encodings/parallel-coordinates.test.js` and
   `test/charts/cars-parallel-coordinates/`.
+- Reassignment guide evidence: `test/unit/actions/guides/parallel-axis-reencoding.test.js`.
 
 ## `removePathOrder`
 

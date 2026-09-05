@@ -65,4 +65,6 @@ const restored = polarProgram
 
 ## A3 — 이후 W1 범위
 
+선행 검증에서 dimension 재배치 뒤 axis title/tick/scale binding이 남는 오류를 확인했다. [기존 재계산 교정](RESULTS_PARALLEL_REPLAY.md)을 먼저 검증하며 새 공개 field lifecycle과 구분한다.
+
 Parallel에는 field로 선택하는 persistent dimension axis 편집과 생성·제거 경로를 제공한다. Exact signature와 visual target은 구현 전에 덧붙인다. A1/A2만으로 D07/F17이나 W1 전체를 완료 처리하지 않는다.

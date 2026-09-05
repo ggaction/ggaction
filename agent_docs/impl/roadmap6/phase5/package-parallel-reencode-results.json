@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "scope": "parallel-axis-reencoding",
+  "artifact": {
+    "filename": "ggaction-0.0.12.tgz",
+    "sha256": "8026b90b83c3cfd47a592ec982409479884c3538df5e9ad4fb529d3393c251d1",
+    "entries": 444,
+    "packedBytes": 498040,
+    "unpackedBytes": 2385339
+  },
+  "status": "passed",
+  "checks": [
+    "node-runtime-and-renderers",
+    "mcp",
+    "strict-typescript-root-exports",
+    "installed-tutorials",
+    "browser-bundle-limits"
+  ],
+  "browserBundles": {
+    "full": {
+      "specifier": "ggaction",
+      "chunks": 1,
+      "modules": 391,
+      "minifiedBytes": 934332,
+      "gzipBytes": 247342
+    },
+    "basic": {
+      "specifier": "ggaction/basic",
+      "chunks": 1,
+      "modules": 236,
+      "minifiedBytes": 501299,
+      "gzipBytes": 137356
+    },
+    "svg": {
+      "specifier": "ggaction/svg",
+      "chunks": 1,
+      "modules": 15,
+      "minifiedBytes": 19840,
+      "gzipBytes": 6437
+    }
+  }
+}

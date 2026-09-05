@@ -155,10 +155,13 @@ export const rematerializeParallelAxes = action(
       .editGraphics({ target: "parallelAxisTitles", property: "fontWeight", value: 600 })
       .editGraphics({ target: "parallelAxisTitles", property: "textAlign", value: "center" })
       .editGraphics({ target: "parallelAxisTitles", property: "textBaseline", value: "middle" });
-    return next._withGuideConfig("parallel", "axes", {
-      target,
-      scales: dimensions.map(dimension => dimension.scale)
-    });
+    const scales = dimensions.map(dimension => dimension.scale);
+    const storedScales = next.semanticSpec.guides.axis?.parallel?.scales;
+    if (storedScales?.length !== scales.length ||
+        scales.some((scale, index) => scale !== storedScales[index])) {
+      next = next.editSemantic({ property: "guide.axis.parallel.scales", value: scales });
+    }
+    return next._withGuideConfig("parallel", "axes", { target, scales });
   }
 );
 

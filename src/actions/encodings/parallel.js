@@ -13,6 +13,7 @@ import {
   setEncodingProperties
 } from "./shared.js";
 import { resolveParallelCoordinate } from "../coordinates/parallel.js";
+import { applyLayerDataRematerialization } from "../../materialization/dependencies.js";
 
 const OPTIONS = Object.freeze([
   "target", "coordinate", "dimensions", "key", "missing"
@@ -98,14 +99,7 @@ export const encodeParallelCoordinates = action(
     for (let index = 0; index < definitions.length; index += 1) {
       next = applyEncodingScale(next, definitions[index], dimensions[index].scaleOptions);
     }
-    for (const definition of definitions) {
-      next = next.rematerializeScale({
-        id: definition.id,
-        guides: false,
-        marks: false
-      });
-    }
-    return next.rematerializeLineMark({ id: target, scales: false });
+    return applyLayerDataRematerialization(next, target);
   }
 );
 
