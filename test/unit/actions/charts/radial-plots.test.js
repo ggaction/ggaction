@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { chart } from "../../../../src/index.js";
+import { chart, hconcat } from "../../../../src/index.js";
 import { chart as basicChart } from "../../../../src/basic.js";
 import { resolveArcItems } from "../../../../src/materialization/selection/items/arc.js";
 const rows = [{ category: "A", value: 1 }, { category: "A", value: 1 }, { category: "B", value: 3 }, { category: "C", value: 4 }, { category: "Z", value: 0 }];
@@ -31,6 +31,41 @@ for (const [operation, id, mapping] of [["createRosePlot", "rosePlot", "area"], 
     assert.equal(p.graphicSpec.objects.radialAxisTitle.properties.text, "sum(value)");
     const lower = p.trace.children.at(-1).children.map(child => child.op);
     for (const expected of ["createArcMark", "encodeTheta", "encodeR", "encodeColor", "createGuides"]) assert.ok(lower.includes(expected));
+  });
+  test(`${operation} replays aggregate labels, filtering and highlights through existing consumers`, () => {
+    const p = base()[operation]({ ...options })
+      .createTextMark({ id: "labels" }).encodeText({ target: "labels", field: "value" });
+    const before = JSON.stringify(p);
+    assert.deepEqual(p.graphicSpec.objects.labels.items.map(item => item.properties.text), ["2", "3", "4"]);
+    const highlighted = p.highlightMarks({ target: id,
+      select: { field: "category", op: "eq", value: "A" }, fill: "#123456", bringToFront: false })
+      .editScale({ id: "radius", domain: [0, 8] }).editCanvas({ width: 1100 });
+    assert.equal(highlighted.graphicSpec.objects[id].items.find(item => item.id === `${id}:0`).properties.fill, "#123456");
+    assert.deepEqual(highlighted.graphicSpec.objects.labels.items.map(item => item.properties.text), ["2", "3", "4"]);
+    const filtered = p.filterMarks({ target: id, field: "category", op: "oneOf", values: ["A", "B"] });
+    assert.deepEqual(filtered.resolvedScales.radius.domain, [0, 3]);
+    assert.equal(filtered.resolvedScales.radius.radialMapping, mapping);
+    assert.deepEqual(filtered.graphicSpec.objects.labels.items.map(item => item.properties.text), ["2", "3"]);
+    assert.deepEqual(filtered.graphicSpec.objects.colorLegendLabels.items.map(item => item.properties.text), ["A", "B"]);
+    assert.equal(filtered.graphicSpec.objects[id].items.length, 2);
+    assert.equal(JSON.stringify(p), before);
+  });
+  test(`${operation} retains measured child state in composition and rejects unsupported Arc facets`, () => {
+    const p = base()[operation]({ ...options });
+    const before = JSON.stringify(p);
+    const smaller = p.editScale({ id: "radius", domain: [0, 8] });
+    const composed = hconcat({ programs: [{ id: "original", program: p }, { id: "smaller", program: smaller }] });
+    const edited = composed.editCompositionLayout({ gap: 32 });
+    for (const current of [composed, edited]) {
+      assert.equal(current.children.original.resolvedScales.radius.radialMapping, mapping);
+      assert.equal(current.children.smaller.resolvedScales.radius.radialMapping, mapping);
+      assert.deepEqual(current.children.original.resolvedScales.radius.domain, [0, 4]);
+      assert.deepEqual(current.children.smaller.resolvedScales.radius.domain, [0, 8]);
+      assert.equal(Object.values(current.graphicSpec.objects).filter(object =>
+        object.type === "path" && object.items?.length === 3).length, 2);
+    }
+    reject(p, q => q.facet({ field: "category" }), /does not support.*arc/);
+    assert.equal(JSON.stringify(p), before);
   });
   test(`${operation} validates its closed options and measurement constraints atomically`, () => {
     for (const args of [{}, {category:"category",value:"value"}, {...options,aggregate:"count"},

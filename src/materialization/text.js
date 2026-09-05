@@ -7,6 +7,14 @@ import { mapScaleConsumerValues } from "./scales/map.js";
 import { resolveRowEncodingValues } from "./rowEncoding.js";
 
 function sourceValue(item, source, field) {
+  const measure = source.mark.type === "bar" ? resolveBarChannels(source).measure
+    : source.mark.type === "arc" ? "radius" : undefined;
+  const encoding = source.encoding?.[measure];
+  if (encoding?.field === field && encoding.aggregate != null && item.channels[measure] !== undefined) {
+    return source.mark.type === "bar"
+      ? item.channels[`${measure}2`] ?? item.channels[measure]
+      : item.channels[measure];
+  }
   if (Object.hasOwn(item.fields, field)) return item.fields[field];
   for (const [channel, encoding] of Object.entries(source.encoding ?? {})) {
     if (encoding?.field !== field || item.channels[channel] === undefined) continue;

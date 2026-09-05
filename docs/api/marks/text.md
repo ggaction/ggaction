@@ -33,6 +33,13 @@ labels anchor at cell centers, and arc labels anchor at sector centers. Pass
 `data` explicitly to assemble an independent text layer with `encodeX` and
 `encodeY`.
 
+For an aggregate Bar or a measured Rose/Radial Bar, labeling the measure field
+uses its final aggregate value, even when every contributing row has the same
+value. For example, two values of 1 in one category produce a sum label of 2.
+Category labels continue to show the category itself.
+These source-owned labels follow the source's scale domain; adding them or
+resizing does not expand a normalized stack domain with raw source values.
+
 Creation options are `id`, `data`, `text`, `fill`, `opacity`, `fontSize`,
 `fontFamily`, `fontWeight`, `align`, `baseline`, `rotation`, `dx`, and `dy`.
 The `text` option is constant-content shorthand.

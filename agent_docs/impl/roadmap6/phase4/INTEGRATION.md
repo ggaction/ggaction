@@ -32,3 +32,18 @@ W1–W5 구현 기준은 `082e6cc7`이다. [전체 실행·0.0.13 릴리즈 승�
 초기 fixture 초안의 잘못된 radialMapping:auto와 sqrt type, 겹친 기본 theta/coordinate ID를 실제 계약에 맞춰 수정했다. 검사 목적으로 runtime 계약을 느슨하게 바꾸지 않았다. 최종 전체 realistic 재실행과 X 대조가 남아 있으므로 아직 Phase 완료가 아니다.
 
 마지막 focused 검사에서 inventory 7/7, facade scale 2/2, guide/scale 2/2를 통과했다. Guide projection의 모든 required createScale/editScale paths와 literals가 최소 5회·3개 실제 데이터셋 기준을 충족한다. 앞선 corrected 실행의 Cartesian 720개 projection·75개 facade·direct encoding 검사와 final 실행의 statistical 460개 projection도 통과했다. 모든 초기 실패의 수정 확인 후 전체 realistic을 다시 실행한다.
+
+## Source-owned 라벨 통합 수정
+
+Measured radial의 label/filter/highlight/composition 소비자 대조에서 두 runtime 버그를 발견했다.
+
+1. [#80](https://github.com/ggaction/ggaction/issues/80): 같은 측정값 두 개가 있는 category의 label이 합계보다 공통 raw field를 먼저 읽었다. `[1,1]`의 sum이 2 대신 1로 표시되고, singleton count도 원본 값으로 표시될 수 있었다. Bar의 최종 measure endpoint와 measured Arc의 radius aggregate를 우선한다. Category label의 의미는 그대로다.
+2. [#81](https://github.com/ggaction/ggaction/issues/81): source-owned Bar text를 독립적인 raw scale consumer로 계산했다. Count Bar resize가 policy 충돌로 실패하고 fill stack의 domain에 원본 값이 섞일 수 있었다. 해당 layout mark가 소유한 text는 독립 consumer에서 제외하며 다른 mark의 compatibility 검사는 유지한다.
+
+`radial-plots.test.js`, `text-mark.test.js`, `series-layout.test.js`의 집중 검사는 **40/40**이다. 앞선 진행 메시지의 51은 집계 오류이며 실제 로그의 40으로 정정했다. 두 radial facade의 aggregate label·filter·highlight·scale/Canvas edit와 concat child layout을 검사한다. Arc facet은 현재 미지원이며 atomic error를 검사한다. Generic data revision·새 percent/source label API·facet 확장을 이번 수정으로 구현했다고 주장하지 않는다.
+
+마지막 문서 편집 뒤 generated LLM 문서가 늦게 갱신되어 첫 normal은 2,753/2,754였다. 재생성 후 **2,754/2,754**, coverage **95.16/91.70/98.79%와 critical floors 74개**, renderer **205/205**, browser **63/63**을 통과했다. 새 source 기준 Jekyll build와 built pages **125개**도 통과했다. 실행 로그는 `.artifacts/roadmap6-authoring/phase4-labels-*.log`다.
+
+[라벨 수정 후 동일 tarball 설치 결과](package-labels-results.json)가 앞선 개발 패키지를 대체한다. SHA-256 `4eaa9a4a34cecc7b4bb40529324b70d03dfdb9f1a22aa697f86f8a362ca1abcf`, entries 443, packed 496,519, unpacked 2,369,885 bytes. Full/Basic/SVG gzip **247,052/136,936/6,437**로 승인된 249,000/138,000/25,000 한도 안이다. Node·types·MCP·tutorial·bundle 검사와 **이 파일 그대로** 설치한 Chromium 1/1을 통과했다. 실제 registry release는 아직 수행하지 않았다.
+
+현재 실행 중인 full realistic은 라벨 수정 전에 시작했으므로 그 결과만으로 수정 후 전체 검증이라고 기록하지 않는다. 종료 후 수정된 source를 고정해 최종 검증한다. Built docs browser와 Phase X 대조도 완료 후 별도로 기록한다.

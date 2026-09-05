@@ -77,6 +77,20 @@ test("keeps text authoring order-independent", () => {
   assert.equal(program.graphicSpec.objects.text.items[0].properties.text, "A");
 });
 
+test("labels repeated bar measurements with their aggregate, including singleton counts", () => {
+  for (const [aggregate, expected] of [["sum", ["2", "5"]], ["count", ["2", "1"]], ["mean", ["1", "5"]]]) {
+    const p = chart().createCanvas({ width: 360, height: 240, margin: 30 })
+      .createData({ values: [{ category: "A", value: 1 }, { category: "A", value: 1 }, { category: "B", value: 5 }] })
+      .createBarMark().encodeX({ field: "category", fieldType: "nominal" })
+      .encodeY({ field: "value", aggregate, stack: null })
+      .createTextMark().encodeText({ field: "value" });
+    assert.deepEqual(p.graphicSpec.objects.text.items.map(item => item.properties.text), expected);
+    assert.deepEqual(p.editCanvas({ width: 420 }).graphicSpec.objects.text.items.map(item => item.properties.text), expected);
+    assert.deepEqual(p.editCanvas({ width: 420 }).resolvedScales.y.domain, p.resolvedScales.y.domain);
+    assert.deepEqual(p.encodeText({ field: "category" }).graphicSpec.objects.text.items.map(item => item.properties.text), ["A", "B"]);
+  }
+});
+
 test("anchors aggregate bar labels and rule labels to final visual items", () => {
   const bars = chart()
     .createCanvas({ width: 360, height: 240, margin: 30 })
@@ -109,6 +123,21 @@ test("anchors aggregate bar labels and rule labels to final visual items", () =>
   const rule = rules.graphicSpec.objects.rule.items[0].properties;
   const text = rules.graphicSpec.objects.text.items[0].properties;
   assert.deepEqual([text.x, text.y], [rule.x2 + 3, rule.y2]);
+});
+
+test("source-owned labels preserve the normalized stack domain after resize", () => {
+  const p = chart().createCanvas({ width: 500, height: 350, margin: 50 })
+    .createData({ values: [
+      { category: "A", series: "x", value: 10 }, { category: "A", series: "y", value: 30 },
+      { category: "B", series: "x", value: 20 }, { category: "B", series: "y", value: 20 }
+    ] })
+    .createBarPlot({ x: "category", y: { field: "value", aggregate: "sum" },
+      color: { field: "series", layout: "fill" }, guides: false })
+    .createTextMark().encodeText({ field: "value" });
+  const q = p.editCanvas({ width: 600 });
+  assert.deepEqual(p.resolvedScales.y.domain, [0, 1]);
+  assert.deepEqual(q.resolvedScales.y.domain, [0, 1]);
+  assert.deepEqual(q.graphicSpec.objects.text.items.map(item => Number(item.properties.text)).sort(), [0.25, 0.5, 1, 1]);
 });
 
 test("attaches text to arc-sector centers and rematerializes with the arc", () => {

@@ -1408,6 +1408,9 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 - `target`: current compatible text mark, otherwise one unique text mark; ambiguity requires an explicit ID.
 - `field`: a field present on the text dataset. For a source-owned aggregate bar annotation, a matching measure field
   resolves to the final aggregate endpoint rather than an arbitrary source row.
+  The same priority applies to a measured Arc's radius field: its final category aggregate supplies the label.
+  Identical member values and singleton groups do not override sum/count with a raw value. Category and other common
+  fields retain their common-item content.
 - `value`: constant content repeated at every final text anchor.
 - `format`: `"auto"` or a fixed-decimal token `.0f` through `.12f`. Auto uses deterministic string conversion;
   fixed format requires finite numeric content. Null, undefined, and empty content do not create placeholder children.
