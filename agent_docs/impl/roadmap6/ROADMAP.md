@@ -1,6 +1,6 @@
 # Roadmap 6 — Hierarchical Chart Authoring and Action Consistency
 
-> **문서 상태 — 현재 실행 계획.** 2026-09-05 사용자의 “승인한다”로 [R6-P1-X 결과](phase1/REVIEW.md)를 승인했고 Phase 2 계약 검토를 준비한다.
+> **문서 상태 — 현재 실행 계획.** 2026-09-05 사용자의 “승인한다”로 [R6-P1-X 결과](phase1/REVIEW.md)를 승인했고 [Phase 2 계약 검토](phase2/CONTRACT_REVIEW.md)를 준비했다.
 > 액션군 범위는 사용자 선택에 따라 F01–F19로 구성했다. 구체적인 새 API와 행동 변경은 Proposed다.
 > 이 문서를 작성해 달라는 요청은 모든 설계안·구현·배포의 일괄 승인을 뜻하지 않는다.
 > 실행 위치는 [ROADMAP_INDEX.json](../ROADMAP_INDEX.json), 현재 제품 계약은
@@ -113,7 +113,7 @@ S는 기존 owner 위의 교정·연결, M은 여러 consumer의 lifecycle 변�
 | --- | --- | --- |
 | 0 | completed | 감사 기준, 우선순위, 결정 원장, 검증·Gate 정의 |
 | 1 | completed | W1–W5 구현·검증과 R6-P1-X 사용자 승인. B01 lower 작성 순서는 Phase 2에 남음 |
-| 2 | in-progress | A 계약 검토 준비: 계층 공통 규칙, guide 재사용, grouping·appearance·추론 정리 |
+| 2 | in-progress | R6-P2-A ready-for-review: 43건 재현, 100개 기존 테스트, 구체 API·호환성·consumer 계약 |
 | 3 | planned | Pie/Donut, Density, Horizon의 얇은 완성 facade |
 | 4 | planned | Baseline, layout, order, 중심색과 Area·Rose/Radial |
 | 5 | planned | 축·범례 lifecycle, label·format·theme·명시적 fitting |
@@ -173,6 +173,8 @@ MCP는 complete-chart 의도를 실제 drawable 결과로 닫거나 unresolved�
 [상세 목표](phase2/GOAL.md). H0 guide 확보와 H2 create strictness를 구분하고, group identity와
 appearance grain을 분리한다. Constant/field style의 지원 표, incomplete width, omission/false/auto,
 통계 grouping의 JSON round trip을 정리한다. Box/Gradient의 deferred 호출을 유지하면서 role metadata를 보완한다.
+[구체 계약 검토](phase2/CONTRACT_REVIEW.md)에 W1–W5의 signature, migration, owner와 기본값 보존 결정을,
+[검증 기록](phase2/VALIDATION.md)에 baseline 43건·기존 테스트 100개와 미래 acceptance를 기록했다.
 
 ## Phase 3 — First complete chart facades
 

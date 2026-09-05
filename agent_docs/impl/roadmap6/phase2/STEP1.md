@@ -2,8 +2,10 @@
 
 ## 진행 상태
 
-- [ ] A Gate의 정확한 결정·호환성·검증 범위 확정
-- [ ] A Gate 증거 commit/push와 명시적 사용자 승인 기록
+- [x] A Gate의 정확한 결정·호환성·검증 범위 검토안 작성 — [CONTRACT_REVIEW.md](CONTRACT_REVIEW.md)
+- [x] 현재 동작 43건·관련 기존 테스트 100건 확인 — [VALIDATION.md](VALIDATION.md)
+- [ ] A Gate 증거 commit/push 및 review ref 기록
+- [ ] A Gate의 명시적 사용자 승인 기록
 - [ ] R6-P2-W1 Complete facade와 guide 확보
 - [ ] R6-P2-W2 Series와 appearance 분리
 - [ ] R6-P2-W3 Style mode와 shorthand 정합성
@@ -14,7 +16,7 @@
 - [ ] 누적 검증·migration·문서·원장 동기화
 - [ ] X Gate의 증거 commit/push와 명시적 사용자 승인 기록
 
-위 체크는 미래 실행용이다. 계획 문서를 만든 사실을 구현 완료나 Gate 승인으로 표시하지 않는다.
+체크한 항목은 계약 검토 준비와 baseline 검증이다. 구현·A/V/X 승인은 아직 없으며 문서 작성 사실을 구현 완료로 표시하지 않는다.
 
 ## 순서
 

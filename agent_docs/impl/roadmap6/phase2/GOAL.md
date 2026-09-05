@@ -2,9 +2,11 @@
 
 ## 상태와 목표
 
-상태: in-progress — 계약 검토 준비. 2026-09-05 R6-P1-X 사용자 승인을 반영해 착수했다. R6-P2-A는 미승인이며 production 의미·API 구현은 아직 시작하지 않았다.
+상태: in-progress — [R6-P2-A 계약 검토](CONTRACT_REVIEW.md) ready-for-review. 2026-09-05 R6-P1-X 사용자 승인을 반영해 준비했다. 43개 현재 동작과 관련 기존 테스트 100개를 확인했으며 production 의미·API 구현은 아직 시작하지 않았다.
 
 새 facade가 물려받을 guide, group, appearance, inference, incomplete-state 계약을 정리한다. 같은 결정을 여러 owner가 다르게 수행하지 않게 한다.
+
+정확한 signature·오류/migration·owner·entry 범위는 [CONTRACT_REVIEW.md](CONTRACT_REVIEW.md), 실제 baseline 및 미래 acceptance는 [VALIDATION.md](VALIDATION.md)가 소유한다.
 
 ## 선행 조건
 
@@ -30,14 +32,14 @@
 
 - 상대 규모: M. 시간 약속이 아닌 변경 구조 비교다.
 - 연결: D06.
-- 작업: Line constant width/opacity, Scatter point radius, Rule style 경로를 공통 owner로 연결한다. ErrorBand fill의 semantic color/legend 충돌을 명시적 assignment 교체로 정리한다.
+- 작업: Line constant/field width·opacity, Scatter point radius와 basic child, Rule 생성·편집을 공통 owner로 연결한다. ErrorBand fill·Point opacity·Line width의 field 충돌과 명시적 assignment 교체, ErrorBand override 해제를 정리한다.
 - 완료 조건: create/edit/field/constant 지원 matrix 일치. Override 뒤 scale·legend가 거짓 의미를 설명하지 않음. Local highlight override 별도 유지.
 
 ### R6-P2-W4 — Inference·JSON opt-out·분석 defaults
 
 - 상대 규모: M. 시간 약속이 아닌 변경 구조 비교다.
 - 연결: D09, D10.
-- 작업: Explicit type/schema/temporal unit/aggregate를 우선하는 선택표를 확정한다. groupBy:false의 JSON round trip을 제공하고 create omission과 edit preservation을 구분한다.
+- 작업: Explicit type/temporalUnit/aggregate를 우선하는 선택표를 검토한다. 현재 owner가 없는 source schema API는 이번 단계에 추가하지 않는다. Create-side groupBy:false의 JSON round trip을 제공하고 create omission과 edit preservation을 구분한다.
 - 완료 조건: numeric nominal color, mean Bar, year/timestamp 기존 결과 비교. 생략·false·undefined·auto의 source/trace/serialization 의미를 검사.
 
 ### R6-P2-W5 — 유효한 incomplete intent 보존

@@ -5,6 +5,9 @@
 같은 API의 모든 default 숫자를 통일하는 것이 목적이 아니다. 같은 의도인데 분석 결과나 작성 가능성이
 달라지는 차이를 우선 해결한다.
 
+K01–K06과 K08의 Phase 2 적용 범위를 [구체 계약 검토](phase2/CONTRACT_REVIEW.md)에서 상세화했다.
+아직 Proposed이며 후속 metadata schema·layout·chart API를 함께 승인하거나 Current로 승격하지 않는다.
+
 ## 결정 원칙
 
 - Explicit → current 또는 unique compatible resource → 문서화된 default → 명확한 오류 순서를 따른다.

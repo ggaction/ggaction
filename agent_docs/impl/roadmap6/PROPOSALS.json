@@ -165,7 +165,7 @@
         1
       ],
       "gateStates": {
-        "R6-P2-A": "planned",
+        "R6-P2-A": "ready-for-review",
         "R6-P2-V": "planned",
         "R6-P2-X": "planned"
       },
@@ -179,7 +179,8 @@
             "D05"
           ],
           "scope": "Box/Gradient deferred 역할을 metadata에 명시한다. H0는 compatible guide를 재사용하고 missing만 생성한다. Low-level create strictness는 유지한다. Box guides default는 초기에는 유지하는 안을 확정한다.",
-          "acceptance": "Scatter→Line 기본 조합 성공, incompatible scale guide는 atomic conflict. omitted/{} /false matrix가 facade와 child별로 명시됨."
+          "acceptance": "Scatter→Line 기본 조합 성공, incompatible scale guide는 atomic conflict. omitted/{} /false matrix가 facade와 child별로 명시됨.",
+          "contractEvidence": "phase2/CONTRACT_REVIEW.md"
         },
         {
           "id": "R6-P2-W2",
@@ -190,7 +191,8 @@
             "D10"
           ],
           "scope": "encodeGroup의 identity와 color/dash/width의 final-series appearance를 분리한다. Multi-key group을 충돌 없는 구조로 다룬다. Existing inferred grouping의 호환 경로를 유지한다.",
-          "acceptance": "country group+continent color 성공; 한 series의 모호한 appearance 거부; field 작성 순서와 group edit 뒤 수렴."
+          "acceptance": "country group+continent color 성공; 한 series의 모호한 appearance 거부; field 작성 순서와 group edit 뒤 수렴.",
+          "contractEvidence": "phase2/CONTRACT_REVIEW.md"
         },
         {
           "id": "R6-P2-W3",
@@ -199,8 +201,9 @@
           "findingIds": [
             "D06"
           ],
-          "scope": "Line constant width/opacity, Scatter point radius, Rule style 경로를 공통 owner로 연결한다. ErrorBand fill의 semantic color/legend 충돌을 명시적 assignment 교체로 정리한다.",
-          "acceptance": "create/edit/field/constant 지원 matrix 일치. Override 뒤 scale·legend가 거짓 의미를 설명하지 않음. Local highlight override 별도 유지."
+          "scope": "Line constant/field width·opacity, Scatter radius, Rule 생성·editRuleMark를 기존 owner로 연결한다. ErrorBand fill·Point opacity·Line width의 field 충돌과 명시적 교체/override 해제를 정리한다. Basic encodePointRadius child·공개 경로도 포함한다.",
+          "acceptance": "create/edit/field/constant 지원 matrix 일치. Override 뒤 scale·legend가 거짓 의미를 설명하지 않음. Local highlight override 별도 유지.",
+          "contractEvidence": "phase2/CONTRACT_REVIEW.md"
         },
         {
           "id": "R6-P2-W4",
@@ -210,8 +213,9 @@
             "D09",
             "D10"
           ],
-          "scope": "Explicit type/schema/temporal unit/aggregate를 우선하는 선택표를 확정한다. groupBy:false의 JSON round trip을 제공하고 create omission과 edit preservation을 구분한다.",
-          "acceptance": "numeric nominal color, mean Bar, year/timestamp 기존 결과 비교. 생략·false·undefined·auto의 source/trace/serialization 의미를 검사."
+          "scope": "명시적 fieldType/aggregate/temporalUnit을 우선하고 기존 분석 defaults를 유지한다. createRegression/encodeDensity/encodeHorizon의 groupBy:false와 editor preservation을 정리한다. Source schema API 추가는 이번 단계에서 제외한다.",
+          "acceptance": "numeric nominal color, mean Bar, year/timestamp 기존 결과 비교. 생략·false·undefined·auto의 source/trace/serialization 의미를 검사.",
+          "contractEvidence": "phase2/CONTRACT_REVIEW.md"
         },
         {
           "id": "R6-P2-W5",
@@ -222,10 +226,19 @@
             "D14"
           ],
           "scope": "Bar width와 measure-first encoding 중 geometry 없이 검증 가능한 intent를 보존한다. Missing positions 완료 시 원래 requested width와 role을 적용한다.",
-          "acceptance": "width-first/last, category-first/measure-first의 semantic/graphic 동등성. Invalid field/width는 즉시 거부, placeholder graphics 없음."
+          "acceptance": "width-first/last, category-first/measure-first의 semantic/graphic 동등성. Invalid field/width는 즉시 거부, placeholder graphics 없음.",
+          "contractEvidence": "phase2/CONTRACT_REVIEW.md"
         }
       ],
-      "activity": "contract-review-preparation"
+      "activity": "contract-review-awaiting-approval",
+      "contractReview": {
+        "file": "phase2/CONTRACT_REVIEW.md",
+        "baselineCommit": "bbc8a3fc256c9afa877f696ed6ade1f51ffb7522",
+        "evidence": "phase2/VALIDATION.md",
+        "baselineProbes": 43,
+        "focusedBaselineTests": 100,
+        "approval": null
+      }
     },
     {
       "id": 3,
@@ -970,7 +983,14 @@
       "recommended": "Line constant width/opacity, Scatter point radius, Rule style 경로를 공통 owner로 연결한다. ErrorBand fill의 semantic color/legend 충돌을 명시적 assignment 교체로 정리한다.",
       "acceptance": "create/edit/field/constant 지원 matrix 일치. Override 뒤 scale·legend가 거짓 의미를 설명하지 않음. Local highlight override 별도 유지.",
       "evidence": "audit/REPORT.md: D06",
-      "disposition": "implementation-or-explicit-contract-decision-proposed"
+      "disposition": "implementation-or-explicit-contract-decision-proposed",
+      "additionalEvidence": "phase2/baseline-results.json",
+      "additionalProbeIds": [
+        "S13",
+        "S15",
+        "S16",
+        "S18"
+      ]
     },
     {
       "id": "D07",
