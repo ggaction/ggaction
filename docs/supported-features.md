@@ -24,7 +24,7 @@ remain available for custom layering and editing.
 | Capability | Scatterplot | Line | Histogram | Bar | Heatmap / ranged rect |
 | --- | --- | --- | --- | --- | --- |
 | Semantic mark | point | line | bar | bar | rect |
-| Position | quantitative x/y | temporal x, aggregate y | binned x, count y | vertical or horizontal category/aggregate pair | two discrete bands or x/x2 + y/y2 ranges |
+| Position | quantitative x/y | direct quantitative x/y; temporal or binned x with aggregate y | binned x, count y | vertical or horizontal category/aggregate pair | two discrete bands or x/x2 + y/y2 ranges |
 | Nominal color | point fill | series stroke | five bar layouts | five bar layouts | cell fill |
 | Stroke dash | — | nominal or constant; 4 named styles | — | — | — |
 | Appearance | radius, deterministic bounded x/y jitter | stroke width, 8 curves | default bar geometry | band or logical-pixel width | encoded fill, opacity, outline |
@@ -49,7 +49,7 @@ remain available for custom layering and editing.
 | Capability | Error bar | Error band | Box plot | Gradient plot | Violin plot |
 | --- | --- | --- | --- | --- | --- |
 | Semantic marks | rule | area | bar + rule + point | rect + rule | area |
-| Position | categorical/temporal independent axis; interval on the other | quantitative/temporal independent axis; x/x2 or y/y2 interval | categorical axis; quantitative interval axis | categorical axis; sampled quantitative profile | categorical center; quantitative density profile |
+| Position | categorical/temporal independent axis, also quantitative for explicit intervals; interval on the other | quantitative/temporal independent axis; x/x2 or y/y2 interval | categorical axis; quantitative interval axis | categorical axis; sampled quantitative profile | categorical center; quantitative density profile |
 | Nominal color | — | grouped area fill | body fill through ranged-bar color | category hue with density modulation | category or two-value split fill |
 | Appearance | stroke, width, dash, opacity, optional caps | fill, opacity, 8 curves, styled boundaries | fixed defaults; 1.5px median/whiskers | structured gradient fill, width, optional center rule | fill, opacity, outline, 8 curves, shared/independent width |
 | Automatic guides | interval and independent axes; perpendicular grid | interval and independent axes; perpendicular grid | opt-in categorical/linear axes and horizontal grid | categorical/linear axes, grid, density legend | categorical/linear axes; horizontal grid |

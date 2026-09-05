@@ -1129,11 +1129,11 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 - Signature: `encodeOpacity({ value, target? } | { field, target?, fieldType?, scale? })`
 - 상수로 전환할 때 target이 소유한 opacity legend만 제거하며 다른 layer의 범례는 보존한다.
 - `value`: field와 mutually exclusive인 finite `[0, 1]` number.
-- `field`: value와 mutually exclusive인 quantitative point field. auto linear range는 `[0.2, 1]`이다.
-- `target`: optional point ID.
+- `field`: value와 mutually exclusive인 quantitative point/rule field. auto linear range는 `[0.2, 1]`이다.
+- `target`: optional point 또는 rule ID.
 - Effect: constant는 graphical config, field는 semantic encoding과 linear scale을 저장한다. 같은 target에
-  다시 호출하면 constant↔field 또는 field↔field를 structural copy로 교체하고 point/legend를 rematerialize한다.
-- Coverage: point/regression tests와 validation이 representative, reassignment 및 invalid range를 검증한다.
+  다시 호출하면 constant↔field 또는 field↔field를 structural copy로 교체하고 target mark/legend를 rematerialize한다.
+- Coverage: point/rule/regression tests와 validation이 representative, reassignment 및 invalid range를 검증한다.
 
 ### Formal values — `encodeOpacity`
 
@@ -1146,17 +1146,18 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 - `value`
   - ✅ Covered: representative value, 0, 1, below/above range와 non-finite rejection.
 - `target`
-  - ✅ Covered: inferred/explicit point, unknown/incompatible target.
+  - ✅ Covered: inferred/explicit point and rule, unknown/incompatible target.
 - Reassignment
   - ✅ Covered: constant↔constant, field↔field and constant↔field immutable replacement.
 - ✅ Covered: auto/explicit descending range, clamp/reverse, continuous sample legend and constant-mode cleanup.
-- Evidence: point appearance, continuous legend, regression and Phase 1 integration tests.
+- Evidence: `test/unit/actions/encodings/point-appearance-encodings.test.js`,
+  `test/unit/actions/encodings/rule-appearance-encodings.test.js`, continuous legend and regression tests.
 
 ## `encodeRadius`
 
 - Signature: `encodeRadius({ value, target? })`
-- `value`: 필수 non-negative finite number. 0은 보이지 않는 point, 양수는 circle radius 또는 square
-  half-side가 된다.
+- `value`: 필수 non-negative finite number. 0은 보이지 않는 point다. 양수 `r`은 circle radius이며
+  모든 point shape에 같은 면적 `πr²`을 적용한다. Square의 한 변 길이는 `sqrt(π) * r`이다.
 - `target`: optional point ID.
 - Effect: graphical mark config와 concrete size만 바꾸며 semanticSpec에는 기록하지 않는다.
   field-driven `encodeSize`와 동시에 사용할 수 없다. 같은 target에 다시 호출하면 기존 radius를
