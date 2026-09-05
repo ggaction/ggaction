@@ -210,16 +210,23 @@ test("plans point encoding scale, mark, and existing legend in order", () => {
 test("plans every area consumer of one shared color scale", () => {
   const program = {
     semanticSpec: {
+      datasets: [],
       layers: [
         {
           id: "first",
           mark: { type: "area" },
-          encoding: { color: { scale: "color" } }
+          encoding: {
+            x: { scale: "x" }, y: { scale: "y" }, y2: { scale: "y" },
+            color: { scale: "color" }
+          }
         },
         {
           id: "second",
           mark: { type: "area" },
-          encoding: { color: { scale: "color" } }
+          encoding: {
+            x: { scale: "x" }, y: { scale: "y" }, y2: { scale: "y" },
+            color: { scale: "color" }
+          }
         },
         {
           id: "other",

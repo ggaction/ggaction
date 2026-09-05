@@ -4,6 +4,10 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 
 ## Shared scale option contract
 
+공유 scale의 domain/range를 갱신하면 변경한 target뿐 아니라 모든 compatible consumer와
+그 consumer에 붙은 source-dependent mark를 같은 완료 상태로 rematerialize한다. Data filtering과
+appearance encoding도 이 규칙을 따른다. 근거: test/contracts/shared-scale-refresh.test.js.
+
 Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
 
 - `id`: Implemented. user-defined scale ID; 생략하면 channel 이름(`x`, `y`, `color`, `size`,

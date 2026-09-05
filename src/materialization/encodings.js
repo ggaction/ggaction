@@ -25,7 +25,7 @@ export function planEncodingRematerialization(program, {
   );
   const marks = [
     ...directMarks,
-    ...getSourceDependentMarkSteps(program, target)
+    ...directMarks.flatMap(step => getSourceDependentMarkSteps(program, step.args.id))
   ];
 
   const guides = [];

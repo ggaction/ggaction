@@ -16,6 +16,20 @@ export {
   canMaterializeTick
 } from "./capabilities.js";
 
+export function getLayerScaleIds(layer) {
+  return [
+    ...Object.values(layer.encoding ?? {}).map(encoding => encoding?.scale),
+    ...(layer.encoding?.parallel?.dimensions ?? []).map(dimension => dimension.scale)
+  ].filter(scale => scale !== undefined);
+}
+
+export function getScaleConsumerMarkSteps(program, scaleIds) {
+  return program.semanticSpec.layers
+    .filter(layer => getLayerScaleIds(layer).some(id => scaleIds.includes(id)))
+    .map(layer => getMarkMaterializationStep(program, layer))
+    .filter(step => step !== undefined);
+}
+
 export function getMarkRematerializationStep(layer) {
   const policy = getMarkMaterializationPolicy(layer);
   return policy === undefined
@@ -111,19 +125,20 @@ export function getEncodingMaterializationStages(program, layer, channel, scale)
         args: { id: scale, guides: false, marks: false }
       }]
     : [];
-  const shared = policy.encoding?.sharedChannels?.includes(channel) === true &&
-    scale !== undefined;
+  const shared = scale !== undefined && (
+    scales.length > 0 || policy.encoding?.sharedChannels?.includes(channel) === true
+  );
   const candidates = shared
     ? program.semanticSpec.layers.filter(candidate =>
-        candidate.mark?.type === layer.mark?.type &&
-        candidate.encoding?.[channel]?.scale === scale
+        candidate.id === layer.id || candidate.encoding?.[channel]?.scale === scale
       )
     : [layer];
   const marks = candidates.flatMap(candidate => {
-    if (policy.encoding?.skipRematerialization?.(program, candidate) === true) {
+    const candidatePolicy = getMarkMaterializationPolicy(candidate);
+    if (candidatePolicy?.encoding?.skipRematerialization?.(program, candidate) === true) {
       return [];
     }
-    const step = policy.encoding?.completeOnly === true
+    const step = candidate.id !== layer.id || candidatePolicy?.encoding?.completeOnly === true
       ? getMarkMaterializationStep(program, candidate)
       : getMarkRematerializationStep(candidate);
     return step === undefined ? [] : [step];

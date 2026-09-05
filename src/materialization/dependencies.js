@@ -1,7 +1,9 @@
 import {
   canDeferScaleConsumerApplication,
+  getLayerScaleIds,
   getExistingMarkRematerializationStep,
   getMarkMaterializationStep,
+  getScaleConsumerMarkSteps,
   getSourceDependentMarkSteps
 } from "./marks/index.js";
 import { requireLayer } from "../selectors/layers.js";
@@ -15,13 +17,6 @@ import {
   planScaleGuideRematerialization
 } from "./scaleGuideDependencies.js";
 import { planLayoutRematerialization } from "./layout.js";
-
-function layerScaleIds(layer) {
-  return [
-    ...Object.values(layer.encoding ?? {}).map(encoding => encoding?.scale),
-    ...(layer.encoding?.parallel?.dimensions ?? []).map(dimension => dimension.scale)
-  ].filter(scale => scale !== undefined);
-}
 
 export function planCanvasRematerialization(program) {
   const marks = [];
@@ -38,7 +33,7 @@ export function planCanvasRematerialization(program) {
     if (needsCanvasScaleRematerialization(program, scale)) {
       const deferredConsumers = program.semanticSpec.layers.filter(layer =>
         canDeferScaleConsumerApplication(layer) &&
-        layerScaleIds(layer).includes(scale.id)
+        getLayerScaleIds(layer).includes(scale.id)
       );
       const canDeferMarks = deferredConsumers.length === 0 ||
         deferredConsumers.every(layer => deferredMarkIds.has(layer.id));
@@ -66,7 +61,7 @@ export function planCanvasRematerialization(program) {
 
 export function planLayerDataRematerialization(program, id) {
   const layer = requireLayer(program, id);
-  const scaleIds = [...new Set(layerScaleIds(layer))];
+  const scaleIds = [...new Set(getLayerScaleIds(layer))];
   const markStep = getMarkMaterializationStep(program, layer);
   const scales = scaleIds.map(scale => ({
       op: "rematerializeScale",
@@ -76,9 +71,13 @@ export function planLayerDataRematerialization(program, id) {
         ...(markStep === undefined ? {} : { marks: false })
       }
     }));
-  const marks = [
+  const directMarks = [
     ...(markStep === undefined ? [] : [markStep]),
-    ...getSourceDependentMarkSteps(program, id)
+    ...getScaleConsumerMarkSteps(program, scaleIds)
+  ];
+  const marks = [
+    ...directMarks,
+    ...directMarks.flatMap(step => getSourceDependentMarkSteps(program, step.args.id))
   ];
   if (scales.length > 0 || marks.length > 0) {
     const guides = scaleIds.flatMap(scale =>
