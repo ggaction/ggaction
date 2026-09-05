@@ -714,3 +714,19 @@
   actions: createScatterPlot · encodeColor · editScale
   tasks: quantitative color comparison
   url: /api/scales/continuous-color/#explicit-color-midpoint
+
+- id: color-transitions
+  example: /examples/color-transitions/
+  title: Color scale and legend transitions
+  image: /assets/images/color-transitions.png
+  alt: Aggregate bars colored blue below three and red from three upward with a matching interval legend
+  width: 2000
+  height: 1400
+  thumbnail: /assets/images/color-transitions-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 448
+  caption: One scale edit updates aggregate colors and replaces the gradient legend with intervals.
+  summary: Switch between continuous color and numeric classes without stale guides.
+  actions: createBarPlot · editScale · createLegend
+  tasks: color scale transitions
+  url: /api/scales/discretized-color/#changing-color-scale-families

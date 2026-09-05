@@ -14,7 +14,7 @@ import {
   normalizeLegendBorder,
   normalizeLegendTextOptions,
   resolveContinuousBounds,
-  resolveContinuousLegendLayer,
+  resolveContinuousColorLayer,
   resolveLegendBackgroundFromBounds,
   resolveLegendTextBounds,
   styleContinuousText,
@@ -94,7 +94,7 @@ export function normalizeIntervalLegend(args) {
 }
 
 export function resolveIntervalConfig(program, stored) {
-  const layer = resolveContinuousLegendLayer(program, stored.target, "color");
+  const layer = resolveContinuousColorLayer(program, stored.target);
   const encoding = layer.encoding.color;
   if (encoding.fieldType !== "quantitative") {
     throw new Error("Interval legend requires quantitative color.");

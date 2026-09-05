@@ -24,7 +24,7 @@ per series. Raw Area supports an independent group field or tuple. Color must be
 | --- | --- | --- | --- |
 | Categorical | point, line, area, bar, rect, arc | point/line/area/bar/rect/arc: nominal, ordinal | bar/area layout; arc overlay; palette and ordinal scale |
 | Continuous | point, aggregate bar, rect | point/rect: quantitative, temporal; aggregate bar: quantitative | sequential scale; aggregate required for a different bar measure |
-| Discretized continuous | point | point: quantitative | quantize, quantile, or threshold scale |
+| Discretized continuous | point, aggregate bar, rect | point/aggregate bar/rect: quantitative | quantize, quantile, or threshold scale |
 <!-- action-capabilities:color:end -->
 
 | Option | Type | Default |

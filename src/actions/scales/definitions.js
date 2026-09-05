@@ -1,3 +1,4 @@
+import { prepareScaleEdit } from "./editPolicy.js";
 import { validateUserId } from "../../core/identifiers.js";
 import { isPlainObject } from "../../core/immutable.js";
 import { validateKeys } from "../../core/validation.js";
@@ -237,6 +238,12 @@ export function resolveQuantitativeColorScaleDefinition(
     program,
     options.id ?? "color"
   )?.type ?? "sequential";
+  const existing = findSemanticScale(program, options.id ?? "color");
+  if (existing !== undefined && existing.type !== type) {
+    validateKeys(options, type === "sequential" ? SEQUENTIAL_COLOR_OPTIONS : [...COLOR_OPTIONS, ...CLAMP_REVERSE], "scale");
+    if (fieldType !== "quantitative") throw new Error("Color scale type transition requires quantitative color.");
+    return { id: existing.id, ...prepareScaleEdit(program, existing, "color", [], options) };
+  }
   if (type === "sequential") {
     return resolveSequentialColorScaleDefinition(program, fieldType, options);
   }
@@ -248,7 +255,6 @@ export function resolveQuantitativeColorScaleDefinition(
   validatePaletteRange(options);
   validateBooleanOptions(options, CLAMP_REVERSE, type);
   const id = validateUserId(options.id ?? "color", "Scale id");
-  const existing = findSemanticScale(program, id);
   const previous = existing?.type === type ? existing : undefined;
   const requestedRange = options.palette === undefined
     ? options.range

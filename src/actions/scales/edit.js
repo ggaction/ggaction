@@ -1,3 +1,4 @@
+import { planColorLegendTransition, applyColorLegendTransition } from "../guides/legends/transition.js";
 import { action } from "../../core/action.js";
 import { validateUserId } from "../../core/identifiers.js";
 import { validateOptionObject } from "../../core/validation.js";
@@ -66,6 +67,37 @@ function planMarkRematerialization(program, consumers) {
   return plan;
 }
 
+function applyScaleEdit(program, { id, scale, consumers, definition, legendTransition }) {
+  let next = legendTransition === undefined ? program
+    : program.removeLegend({ target: legendTransition.args.target, channels: ["color"] });
+  for (const property of EDITABLE) {
+    if (
+      Object.hasOwn(scale, property) &&
+      !Object.hasOwn(definition, property)
+    ) {
+      next = next.editSemantic({
+        property: `scale[${id}].${property}`,
+        remove: true
+      });
+    }
+  }
+  for (const property of EDITABLE) {
+    if (
+      !Object.hasOwn(definition, property) ||
+      sameValue(scale[property], definition[property])
+    ) continue;
+    next = next.editSemantic({
+      property: `scale[${id}].${property}`,
+      value: definition[property]
+    });
+  }
+  if (consumers.length === 0) return next;
+
+  next = next.rematerializeScale({ id });
+  next = applyMaterializationPlan(next, planMarkRematerialization(next, consumers));
+  return legendTransition === undefined ? next : applyColorLegendTransition(next, legendTransition);
+}
+
 export const editScale = action(
   {
     op: "editScale",
@@ -82,34 +114,10 @@ export const editScale = action(
     const channel = resolveScaleConsumerChannel(consumers, id);
     const definition = prepareScaleEdit(this, scale, channel, consumers, args);
 
-    let next = this;
-    for (const property of EDITABLE) {
-      if (
-        Object.hasOwn(scale, property) &&
-        !Object.hasOwn(definition, property)
-      ) {
-        next = next.editSemantic({
-          property: `scale[${id}].${property}`,
-          remove: true
-        });
-      }
-    }
-    for (const property of EDITABLE) {
-      if (
-        !Object.hasOwn(definition, property) ||
-        sameValue(scale[property], definition[property])
-      ) continue;
-      next = next.editSemantic({
-        property: `scale[${id}].${property}`,
-        value: definition[property]
-      });
-    }
-    if (consumers.length === 0) return next;
-
-    next = next.rematerializeScale({ id });
-    return applyMaterializationPlan(
-      next,
-      planMarkRematerialization(next, consumers)
-    );
+    const legendTransition = planColorLegendTransition(this, scale, definition.type);
+    const proposal = { id, scale, consumers, definition, legendTransition };
+    // Preflight every dependent mark and guide on a discarded immutable branch.
+    if (scale.type !== definition.type) applyScaleEdit(this, proposal);
+    return applyScaleEdit(this, proposal);
   }
 );

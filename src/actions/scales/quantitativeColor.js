@@ -25,9 +25,10 @@ export const setQuantitativeColorScale = action(
     }
     const existing = findSemanticScale(this, args.id);
     if (existing !== undefined && existing.type !== args.type) {
-      throw new Error(
-        `Scale "${args.id}" cannot change type from "${existing.type}" to "${args.type}".`
-      );
+      if (typeof this.editScale !== "function") {
+        throw new Error("Color scale type transitions require the Full ChartProgram; use a new scale id in Basic.");
+      }
+      return this.editScale(args);
     }
     let next = this;
     if (existing?.midpoint !== undefined && args.midpoint === undefined) {

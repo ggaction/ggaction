@@ -246,6 +246,12 @@ Set an explicit reference value for continuous color.
 
 Representative actions: `createScatterPlot`, `encodeColor`, `editScale`. [Documentation](https://ggaction.github.io/ggaction/api/scales/continuous-color/#explicit-color-midpoint).
 
+### [Color scale and legend transitions](./color-transitions/)
+
+Switch between continuous color and numeric classes without stale guides.
+
+Representative actions: `createBarPlot`, `editScale`, `createLegend`. [Documentation](https://ggaction.github.io/ggaction/api/scales/discretized-color/#changing-color-scale-families).
+
 ## Development fixtures
 
 Other directories under `examples/` support focused browser, package, and

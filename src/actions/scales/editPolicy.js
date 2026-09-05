@@ -1,3 +1,4 @@
+import { validateContinuousColorConsumer } from "../../grammar/scales/colorConsumers.js";
 import {
   hasOrdinalDomain,
   isDiscretizedColorScaleType,
@@ -61,18 +62,11 @@ function validateTypeTransition(scale, nextType, channel, consumers) {
   validateScaleType(nextType);
   if (consumers.length === 0) return;
   if (nextType === "sequential" || isDiscretizedColorScaleType(nextType)) {
-    const discretized = isDiscretizedColorScaleType(nextType);
-    if (channel !== "color" || consumers.some(consumer =>
-      ["nominal", "ordinal"].includes(consumer.encoding.fieldType) ||
-      (discretized && (
-        consumer.encoding.fieldType !== "quantitative" ||
-        consumer.layer.mark?.type !== "point"
-      )) ||
-      (!discretized && !["point", "bar"].includes(consumer.layer.mark?.type))
-    )) {
-      throw new Error(
-        `Scale "${scale.id}" has a consumer incompatible with type "${nextType}".`
-      );
+    if (channel !== "color") {
+      throw new Error(`Scale "${scale.id}" has a consumer incompatible with type "${nextType}".`);
+    }
+    for (const consumer of consumers) {
+      validateContinuousColorConsumer(consumer.layer, consumer.encoding, { type: nextType });
     }
     return;
   }
@@ -133,24 +127,6 @@ function validateTypeTransition(scale, nextType, channel, consumers) {
   }
 }
 
-function validateLegendTypeTransition(program, scale, nextType) {
-  if (nextType === scale.type) return;
-  const legends = program.guideConfigs.legend ?? {};
-  if (legends.gradient?.scale === scale.id && nextType !== "sequential") {
-    throw new Error(
-      `Scale "${scale.id}" cannot change type while its gradient legend is active.`
-    );
-  }
-  if (
-    legends.interval?.scale === scale.id &&
-    !isDiscretizedColorScaleType(nextType)
-  ) {
-    throw new Error(
-      `Scale "${scale.id}" cannot change type while its interval legend is active.`
-    );
-  }
-}
-
 function normalizeDefinition(scale, channel, consumers, patch) {
   if (scale.radialMapping !== undefined && Object.hasOwn(patch, "radialMapping") &&
     patch.radialMapping === undefined && consumers.some(consumer => consumer.encoding.aggregate !== undefined)) {
@@ -158,6 +134,10 @@ function normalizeDefinition(scale, channel, consumers, patch) {
   }
   const type = patch.type ?? scale.type;
   validateTypeTransition(scale, type, channel, consumers);
+  if (type !== scale.type && scale.domain !== "auto" && !Object.hasOwn(patch, "domain") &&
+    (["quantile", "threshold"].includes(type) || ["quantile", "threshold"].includes(scale.type))) {
+    throw new Error("Color scale type transition requires an explicit domain when its meaning changes.");
+  }
   const definition = normalizeScaleDefinition({
     type,
     previous: scale,
@@ -220,6 +200,5 @@ export function prepareScaleEdit(program, scale, channel, consumers, args) {
         ...Object.entries(args).filter(([key]) => key !== "palette"),
         ["range", { palette: args.palette }]
       ]);
-  validateLegendTypeTransition(program, scale, args.type ?? scale.type);
   return normalizeDefinition(scale, channel, consumers, patch);
 }

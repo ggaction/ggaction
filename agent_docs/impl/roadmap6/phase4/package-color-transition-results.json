@@ -1,0 +1,51 @@
+{
+  "scope": "color-scale-and-legend-transitions",
+  "status": "passed",
+  "artifact": {
+    "file": ".artifacts/roadmap6-authoring/color-transitions-package-verified/ggaction-0.0.12.tgz",
+    "sha256": "51d15921c3d82dcf6a65cb322132884483741418bd176d136fc0035dde6b0d75",
+    "packedBytes": 496258,
+    "unpackedBytes": 2368693,
+    "entryCount": 443
+  },
+  "checks": [
+    "installed-node-runtime-and-renderers",
+    "full-color-scale-and-legend-transitions",
+    "basic-interval-legend-creation",
+    "strict-positive-negative-types",
+    "installed-tutorial-consumers",
+    "MCP-server",
+    "minimal-browser-bundles"
+  ],
+  "browserBundles": {
+    "full": {
+      "specifier": "ggaction",
+      "chunks": 1,
+      "modules": 390,
+      "minifiedBytes": 933286,
+      "gzipBytes": 246966
+    },
+    "basic": {
+      "specifier": "ggaction/basic",
+      "chunks": 1,
+      "modules": 235,
+      "minifiedBytes": 499618,
+      "gzipBytes": 136900
+    },
+    "svg": {
+      "specifier": "ggaction/svg",
+      "chunks": 1,
+      "modules": 15,
+      "minifiedBytes": 19840,
+      "gzipBytes": 6437
+    }
+  },
+  "budgets": {
+    "ggaction": 249000,
+    "ggaction/basic": 138000,
+    "ggaction/svg": 25000
+  },
+  "mcp": {
+    "coldStartMilliseconds": 471.98962500000016
+  }
+}

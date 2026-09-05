@@ -73,8 +73,9 @@ type TitleWrap = "word" | "character";
   default bordered background를 만든다.
 - `count`: integer `2..10,000`; size, stroke-width, gradient tick-label 또는 opacity sample count이며 default `5`.
 - Sequential midpoint가 있으면 gradient strip은 mark와 같은 mapper로 value를 색에 대응한다. Tick 위치는 value-linear이며 midpoint를 base count samples에 추가·deduplicate한다. Sample을 palette의 균등 위치로 오해하지 않는다. Evidence: `test/charts/color-midpoint/`, `test/unit/actions/scales/midpoint.test.js`.
+- Full의 scale family 전환은 compatible right/vertical gradient↔interval을 같은 transaction으로 재생성한다. 보존·오류·default 정책은 CORE editScale이 소유한다. Explicit hidden/auto title와 이후 focused editor도 정상 적용된다. Evidence: `test/unit/actions/scales/color-transitions.test.js`.
 - `gradient`: sequential color 전용 `{ length?, thickness? }`, defaults `120`과 `12`.
-- Discretized quantitative color는 right/vertical interval swatches를 추론하고 `offset`, `itemGap`,
+- Discretized quantitative Point/aggregate Bar/Rect color는 Full과 Basic에서 right/vertical interval swatches를 추론하고 `offset`, `itemGap`,
   swatch width/height/stroke, label/title style을 concrete graphics로 materialize한다.
 - Effect: categorical semantics에는 scale/channel/title와 선택적 order policy를 저장하고 placement, recipe, fonts, border는
   graphical config와 concrete collection으로 만든다. resolved appearance domain에 order policy를 적용한 순서를 item order로 사용하며

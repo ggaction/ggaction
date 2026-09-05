@@ -959,8 +959,8 @@
         "related",
         "explicit-grouping-and-time-inputs"
       ],
-      "bytes": 10333,
-      "sha256": "ad537e92f47b74b377056d3c9ecf8b91c7a82a424e865be31f0fce5c716f53c6"
+      "bytes": 10394,
+      "sha256": "76dd5aa3447be4107d3cc38703d01be7a05ee975089fae3b2335061020621197"
     },
     {
       "order": 62,
@@ -1282,8 +1282,8 @@
         "continuous-aggregate-bar-color",
         "related"
       ],
-      "bytes": 9173,
-      "sha256": "fbd06e2904dfe204ed618bfaad185e7a155a16cc1c4826d72d2afccb73e078af"
+      "bytes": 9213,
+      "sha256": "141f382bf0cd830cba4eac0b17f048d92fcb3e2d319014857b765cb9a6935cdc"
     },
     {
       "order": 81,
@@ -1369,8 +1369,8 @@
         "errors-and-limitations",
         "related"
       ],
-      "bytes": 4802,
-      "sha256": "d44d684c2c1df8590e11c6b957c8e9b5b5328019cfef9186ffd007b7a49df5c5"
+      "bytes": 4881,
+      "sha256": "d557a4af74a3f00a3a02a96ae3e45bf615950e06916b08c22cc78524421b1eff"
     },
     {
       "order": 87,
@@ -1415,8 +1415,8 @@
         "explicit-color-midpoint",
         "related"
       ],
-      "bytes": 5577,
-      "sha256": "36e3939971aa34c823d5e4fc5e6e7addd393385ef123f5a0b3fbdd109d2eab42"
+      "bytes": 5657,
+      "sha256": "1867628453400f09e67fdd72ed109adfe8429b753e2fbe5c1492b3b2fa21ff23"
     },
     {
       "order": 90,
@@ -1425,11 +1425,12 @@
       "source": "api/scales/discretized-color.md",
       "headings": [
         "discretized-color-scales",
-        "discretized-point-color",
+        "discretized-quantitative-color",
+        "changing-color-scale-families",
         "related"
       ],
-      "bytes": 1559,
-      "sha256": "9c0ee621cdb9920795bc26f9e67d035b0105670d9558188c7df475887b9b3fca"
+      "bytes": 4080,
+      "sha256": "fbe32714af1fcaa44ecab8ad61539242618360ac3d967a33a994e602d7526574"
     },
     {
       "order": 91,
@@ -1506,8 +1507,8 @@
         "errors-and-limitations",
         "related"
       ],
-      "bytes": 3050,
-      "sha256": "64467f712a50b86fafc711e96adecfb5a6211b85134e8de36ae9332c5821e6d4"
+      "bytes": 3115,
+      "sha256": "0426e9fb00394840928267b0055c14ca91e1c1d769005edfea045156806f3688"
     },
     {
       "order": 96,
@@ -1924,8 +1925,8 @@
         "encodebarwidth",
         "related"
       ],
-      "bytes": 17154,
-      "sha256": "b4c1a9f376f1058b779661129d6138094fb77354abc01e7c3b57c2acbad9732d"
+      "bytes": 17234,
+      "sha256": "6005bf7b3596fdf54b8484412d5f7c2a9366f2d39a35a608c1750072c4f10bbf"
     },
     {
       "order": 118,

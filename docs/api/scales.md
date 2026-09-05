@@ -112,11 +112,11 @@ rematerializes connected marks and guides; a failed edit leaves the earlier
 immutable program unchanged.
 
 Scale type transitions reject incompatible field types, channels, or mark
-grains before changing the immutable program. Discretized color transitions
-currently require quantitative point color; sequential color supports points
-and aggregate bars. An active gradient or interval legend also fixes its
-current recipe family, so a transition between sequential and discretized
-color is rejected instead of silently replacing the guide.
+grains before changing the immutable program. Quantitative Point, aggregate Bar,
+and Rect color can transition between sequential and discretized scales. A
+right/vertical gradient or interval legend changes family in the same action,
+retaining common text and layout settings. Custom family-specific settings
+require explicit removal and recreation; see [color transitions](./scales/discretized-color.md#changing-color-scale-families).
 
 ## Related
 

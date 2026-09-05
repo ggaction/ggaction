@@ -620,21 +620,19 @@
           "scope": "명시적 semantic midpoint를 추가하고 sequential/discretized/diverging recipe transition을 shared consumers 전체와 함께 preflight한다.",
           "acceptance": "비대칭 domain에서 midpoint의 neutral color 검증. Legend 유무·복수 mark에서 전환 동일. Incompatible consumer 하나면 전부 rollback.",
           "contractEvidence": "phase4/CONTRACT_REVIEW.md",
-          "implementationStatus": "in-progress",
-          "implementationEvidence": "phase4/RESULTS_MIDPOINT.md",
+          "implementationStatus": "implemented-verified",
+          "implementationEvidence": "phase4/RESULTS_W5.md",
           "completedScope": [
             "sequential-midpoint-grammar-create-edit-encode",
             "value-linear-gradient-midpoint-and-reset",
-            "V3-midpoint-public-primitive-parity"
-          ],
-          "remainingScope": [
+            "V3-midpoint-public-primitive-parity",
             "atomic-color-scale-and-legend-family-transitions",
-            "V3-point-bar-transition-parity",
-            "phase-integration"
-          ]
+            "V3-point-bar-transition-parity"
+          ],
+          "status": "completed"
         }
       ],
-      "activity": "implementing-color-scale-and-legend-transitions",
+      "activity": "phase-integration-validation",
       "contractEvidence": "phase4/CONTRACT_REVIEW.md",
       "baselineEvidence": "phase4/baseline-results.json",
       "baselineCommit": "93dceb3761e170207058e6a7280060fedd471244",
@@ -727,9 +725,7 @@
         "finalFocusedBrowserTests": 1,
         "packageEvidence": "phase4/package-order-results.json"
       },
-      "remainingWorkPackages": [
-        "R6-P4-W5"
-      ],
+      "remainingWorkPackages": [],
       "remainingExecutionApproval": "APPROVAL.md",
       "implementationW3Validation": {
         "normalTests": 2706,
@@ -738,6 +734,21 @@
         "strictTypeTests": 1,
         "browserTests": 61,
         "packageEvidence": "phase4/package-radial-facade-results.json"
+      },
+      "remainingIntegration": [
+        "coverage-and-critical-floors",
+        "realistic-generated-scenarios",
+        "full-renderer-validation",
+        "built-docs-validation",
+        "phase-exit-traceability"
+      ],
+      "implementationW5Validation": {
+        "normalTests": 2748,
+        "browserTests": 63,
+        "visualVariants": 4,
+        "midpointEvidence": "phase4/RESULTS_MIDPOINT.md",
+        "transitionEvidence": "phase4/RESULTS_W5.md",
+        "packageEvidence": "phase4/package-color-transition-results.json"
       }
     },
     {
@@ -1616,7 +1627,7 @@
       "id": "D18",
       "title": "Diverging midpoint와 scale/legend 전환",
       "kind": "design-issue",
-      "status": "partially-implemented",
+      "status": "implemented-verified",
       "primaryPhase": 4,
       "primaryWorkPackage": "R6-P4-W5",
       "relatedWorkPackages": [
@@ -1629,8 +1640,8 @@
       "recommended": "명시적 semantic midpoint를 추가하고 sequential/discretized/diverging recipe transition을 shared consumers 전체와 함께 preflight한다.",
       "acceptance": "비대칭 domain에서 midpoint의 neutral color 검증. Legend 유무·복수 mark에서 전환 동일. Incompatible consumer 하나면 전부 rollback.",
       "evidence": "audit/REPORT.md: D18",
-      "disposition": "Quantitative midpoint and value-linear gradient consumers are implemented; atomic color scale and legend family transitions remain.",
-      "implementationEvidence": "phase4/RESULTS_MIDPOINT.md"
+      "disposition": "Quantitative midpoint and atomic color scale/legend family transitions are implemented and verified; full Phase 4 integration remains.",
+      "implementationEvidence": "phase4/RESULTS_W5.md"
     },
     {
       "id": "D19",

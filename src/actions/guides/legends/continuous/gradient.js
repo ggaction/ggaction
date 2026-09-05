@@ -21,6 +21,8 @@ import {
 import { resolveLegendGraphicPlacement } from
   "../../../../materialization/graphicHierarchy.js";
 
+export const DEFAULT_GRADIENT_SIZE = Object.freeze({ length: 120, thickness: 12 });
+
 const GRADIENT_OPTIONS = Object.freeze(["length", "thickness"]);
 
 function resolveGradientLayout(program, config, scale) {
@@ -309,8 +311,8 @@ export function resolveGradientLegendCreation(program, args = {}) {
     "createLegend.gradient"
   );
   config.gradient = {
-    length: args.gradient?.length ?? 120,
-    thickness: args.gradient?.thickness ?? 12
+    length: args.gradient?.length ?? DEFAULT_GRADIENT_SIZE.length,
+    thickness: args.gradient?.thickness ?? DEFAULT_GRADIENT_SIZE.thickness
   };
   config.titleVisible = true;
   validatePositive(config.gradient.length, "Gradient length");

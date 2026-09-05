@@ -19,13 +19,13 @@
 - [x] R6-P4-W2 Color와 독립한 layout assignment 기능·호환 구현 — package B 승인·같은 tarball 전체 검증 통과
 - [x] R6-P4-W3 Rose와 Radial bar — [하위·facade·V2 5개 동등성 검증 완료](RESULTS_W3.md)
 - [x] R6-P4-W4 Theta와 legend domain order — [구현·검증](RESULTS_W4.md)
-- [ ] R6-P4-W5 Diverging midpoint와 scale/legend transition — [midpoint·V3 2개 변형 완료](RESULTS_MIDPOINT.md), family transition은 남음
-- [ ] 모든 시각 variant의 primitive target 작성·표시·V 승인
+- [x] R6-P4-W5 Diverging midpoint와 scale/legend transition — [전체 구현·V3 4개 변형 검증](RESULTS_W5.md)
+- [x] 모든 시각 variant의 primitive target 작성·표시·전체 실행 승인 적용 — V1 11 + V2 5 + V3 4
 - [x] V1에서 승인된 11개 variant의 public 구현과 같은 실행의 primitive/public render 비교
 - [ ] 누적 검증·migration·문서·원장 동기화
 - [ ] X Gate의 증거 commit/push와 명시적 사용자 승인 기록
 
-A/V1 승인과 W1/W2 공개 구현·11개 primitive/public 동등성은 완료했다. [package B](BUNDLE_REVIEW.md) 승인과 재검증을 완료했다. V2 5개 변형의 구현·검증도 완료했다. V3/W5 및 Phase 전체 통합 검증은 미완료다. 계획 문서를 만든 사실을 구현 완료나 Gate 승인으로 표시하지 않는다.
+A/V1 승인과 W1/W2 공개 구현·11개 primitive/public 동등성은 완료했다. [package B](BUNDLE_REVIEW.md) 승인과 재검증을 완료했다. V2 5개 변형의 구현·검증도 완료했다. V3/W5 구현·검증도 완료했다. Phase 전체 통합 검증은 미완료다. 계획 문서를 만든 사실을 구현 완료나 Gate 승인으로 표시하지 않는다.
 
 ## 순서
 

@@ -313,7 +313,7 @@ removes grouping.
 | --- | --- | --- | --- |
 | Categorical | point, line, area, bar, rect, arc | point/line/area/bar/rect/arc: nominal, ordinal | bar/area layout; arc overlay; palette and ordinal scale |
 | Continuous | point, aggregate bar, rect | point/rect: quantitative, temporal; aggregate bar: quantitative | sequential scale; aggregate required for a different bar measure |
-| Discretized continuous | point | point: quantitative | quantize, quantile, or threshold scale |
+| Discretized continuous | point, aggregate bar, rect | point/aggregate bar/rect: quantitative | quantize, quantile, or threshold scale |
 <!-- action-capabilities:color:end -->
 
 ```javascript
@@ -325,12 +325,12 @@ bar color, rect fill, or arc-sector fill. Nominal and ordinal categories share a
 ordinal fields may contain ordered numeric categories. Categorical bar layout accepts `stack`, `fill`, `group`, `overlay`,
 and `diverging`; area also accepts `center` and rejects only `group` from the
 shared layout vocabulary. Quantitative and temporal
-point fields use a sequential scale; quantitative point fields also accept
+point fields use a sequential scale; quantitative Point, aggregate Bar, and Rect fields also accept
 `quantize`, `quantile`, and `threshold` color classes. Categorical
 grouped bars record `encodeXOffset` or `encodeYOffset` as a child according to
 orientation. Reassigning grouped color also atomically reassigns its offset and
 rematerializes an existing legend. Aggregate
-bars accept quantitative sequential color: a matching measure field inherits
+bars accept quantitative sequential or discretized color: a matching measure field inherits
 its aggregate, while a different field requires `aggregate`.
 Area `layout: "center"` creates a matching nominal group when needed and records
 wrapped `encodeY({ stack: "center" })`. It requires non-negative values aligned

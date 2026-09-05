@@ -16,7 +16,7 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
 - `id`: Implemented. user-defined scale ID; 생략하면 channel 이름(`x`, `y`, `color`, `size`,
   `shape`, `strokeDash`, `xOffset`, `yOffset`)을 사용한다.
 - `type`: Implemented. compatible quantitative position은 `linear | log | pow | sqrt | symlog`, temporal position은 `time`, discrete position은 `band | point`; nominal color/shape/dash/offset은
-  `ordinal`, continuous point/aggregate-bar color는 `sequential`, quantitative point color는 추가로
+  `ordinal`, continuous point/aggregate-bar/rect color는 `sequential`, quantitative point/aggregate-bar/rect color는 추가로
   `quantize | quantile | threshold`, size는 `linear`만 허용한다.
 - `domain`: Implemented. `"auto"` 또는 type에 맞는 explicit array. explicit domain은 data inference,
   `zero`, `nice`보다 우선한다. Quantitative transformed auto domain이 finite constant로 축약되면 log는
@@ -985,7 +985,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
   aggregate를 상속하고, 다른 field는 compatible aggregate를 명시해야 한다. 집계는 최종 category rect
   grain에서 독립적으로 계산한다.
 - Quantitative sequential nested scale은 `midpoint:number|"auto"`를 지원한다. Omission은 기존 scale policy를 보존하고 auto는 제거한다. 값은 최종 domain 내부에 있어야 하며 공통 mapper를 통해 mark/gradient legend에 적용한다. Temporal encoding은 numeric midpoint를 거부한다. Exact policy: CORE createScale/editScale. Evidence: `test/unit/actions/scales/midpoint.test.js`, `test/charts/color-midpoint/`.
-- `scale`: nominal은 ordinal, continuous point/bar/rect color는 internal sequential scale이다. Quantitative point는
+- `scale`: nominal은 ordinal, continuous point/bar/rect color는 internal sequential scale이다. Quantitative point/aggregate bar/rect는
   `quantize | quantile | threshold`도 지원한다. `palette` 또는
   explicit `range` 중 하나를 사용할 수 있다. Palette는
   [`PALETTES.md`](PALETTES.md)의 frozen 68-name vocabulary와 `{ name, count?, extent? }` object를 받는다.
@@ -1003,6 +1003,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
   Mode는 layer.layout.mode 한 곳에 저장하며 group→offset→scale→mark/guide 하위 owner를 합성한다.
   Legacy inferred group은 inferredFrom으로 추적하고 explicit group/color는 독립적이다. Center도 같은 owner를 사용한다.
   Bar 시작 endpoint는 0이며 concrete rect, Area는 concrete closed path다.
+- Quantitative color의 type-changing nested scale도 CORE editScale의 shared consumer·legend transaction을 사용한다. Aggregate bar와 Rect의 grain은 유지한다. Basic의 구조 변경은 Full로 안내하는 명시 오류이며 다른 type 생성은 새 ID 경로를 사용한다.
 - Reassignment: 같은 target의 categorical color field를 교체한다. omitted scale ID는 current color scale을
   재사용하고 explicit new ID는 새 scale을 만든다. Existing compatible legend의 domain, symbols,
   labels와 inferred title을 갱신하며 custom title/layout/style은 보존한다.

@@ -35,7 +35,7 @@ editing page when changing an existing guide.
 | --- | --- | --- |
 | Categorical | point, line, area, bar, rect, arc | color, shape, strokeDash, or compatible composites |
 | Continuous gradient | point, aggregate bar, rect | sequential color |
-| Discretized interval | point | quantize, quantile, or threshold color |
+| Discretized interval | point, aggregate bar, rect | quantize, quantile, or threshold color |
 | Sampled | point, line, rule | field opacity, size, or strokeWidth |
 <!-- action-capabilities:legends:end -->
 
@@ -51,7 +51,7 @@ editing page when changing an existing guide.
 ## Errors and limitations
 
 Continuous color legends support point, aggregate-bar, and rect marks. Field
-opacity and discretized continuous legends remain point-only. Interactive legends are unsupported.
+Opacity legends support Point and Line; discretized color legends support Point, aggregate Bar, and Rect. Interactive legends are unsupported.
 Combined point-series and quantitative-size legends require a right or left
 side position so both blocks remain in one vertical stack. A left block must
 fit outside any left y-axis guides; use sufficient margin and offset.

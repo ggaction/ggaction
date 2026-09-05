@@ -44,7 +44,7 @@ The tables below are generated from the same reviewed capability registry used b
 | --- | --- | --- | --- |
 | Categorical | point, line, area, bar, rect, arc | point/line/area/bar/rect/arc: nominal, ordinal | bar/area layout; arc overlay; palette and ordinal scale |
 | Continuous | point, aggregate bar, rect | point/rect: quantitative, temporal; aggregate bar: quantitative | sequential scale; aggregate required for a different bar measure |
-| Discretized continuous | point | point: quantitative | quantize, quantile, or threshold scale |
+| Discretized continuous | point, aggregate bar, rect | point/aggregate bar/rect: quantitative | quantize, quantile, or threshold scale |
 
 ### Selection and guides
 
@@ -56,7 +56,7 @@ The tables below are generated from the same reviewed capability registry used b
 | --- | --- | --- |
 | Categorical | point, line, area, bar, rect, arc | color, shape, strokeDash, or compatible composites |
 | Continuous gradient | point, aggregate bar, rect | sequential color |
-| Discretized interval | point | quantize, quantile, or threshold color |
+| Discretized interval | point, aggregate bar, rect | quantize, quantile, or threshold color |
 | Sampled | point, line, rule | field opacity, size, or strokeWidth |
 
 | Axis family | Create | Edit | Editable components |

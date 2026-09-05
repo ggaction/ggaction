@@ -1,3 +1,4 @@
+import { validateContinuousColorConsumer } from "../../grammar/scales/colorConsumers.js";
 import {
   isContinuousColorScaleType,
   isDiscretePositionScaleType,
@@ -214,6 +215,9 @@ export function resolveScaleMaterialization({
     !isOrdinalOffset &&
     isDiscretePositionScaleType(scale.type);
 
+  if (isSequentialColor || isDiscretizedColor) {
+    for (const consumer of consumers) validateContinuousColorConsumer(consumer.layer, consumer.encoding, scale);
+  }
   let discretizedScale;
   if (isDiscretizedColor) {
     discretizedScale = resolveDiscretizedColorScale({

@@ -1,3 +1,4 @@
+import { createBarTransition } from "./color-transitions/program.js";
 import { createMidpoint } from "./color-midpoint/program.js";
 import { createRoseHole } from "./radial-sectors/program.js";
 import { createLinkedThetaLegend } from "./theta-legend-order/program.js";
@@ -101,6 +102,12 @@ function example({ id, data, width, height, createProgram, ...options }) {
 }
 
 export const PUBLIC_CHARTS = Object.freeze([
+  example({
+    id: "color-transitions", data: {}, width: 1000, height: 700, docsGroup: "tutorials",
+    createProgram: () => createBarTransition(),
+    browser: { path: "color-transitions/", canvas: "#chart",
+      state: { global: "__ggactionExample", expected: { id: "color-transitions", width: 1000, height: 700 } } }
+  }),
   example({
     id: "color-midpoint", data: {}, width: 1000, height: 700, docsGroup: "tutorials",
     createProgram: () => createMidpoint(),

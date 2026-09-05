@@ -3299,19 +3299,7 @@
     }
   ],
   "plannedActions": [],
-  "plannedCapabilities": [
-    {
-      "id": "color-scale-and-legend-transitions",
-      "name": "Color scale and legend transitions",
-      "kind": "parameter",
-      "status": "planned",
-      "readiness": "accepted",
-      "contract": {
-        "file": "agent_docs/contract/planned/QUANTITATIVE_AUTHORING.md",
-        "anchor": "color-scale-and-legend-transitions"
-      }
-    }
-  ],
+  "plannedCapabilities": [],
   "internal": {
     "materialization": [
       "materializeBoxOutlierData",

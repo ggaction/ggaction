@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "status": "partially-authored",
-  "executed": false,
+  "status": "implemented-verified",
+  "executed": true,
   "sourceBaseline": "93dceb3761e170207058e6a7280060fedd471244",
   "targets": [
     {
@@ -685,8 +685,11 @@
         }
       ],
       "independentOracle": "Two intervals split at 3; right vertical legend rebuilt; midpoint removed; marks agree with legend.",
-      "primitiveStatus": "not-authored",
-      "publicStatus": "not-implemented"
+      "primitiveStatus": "rendered",
+      "publicStatus": "implemented-verified",
+      "fixtureSource": "examples/color-transitions/program.js",
+      "manifestSource": "test/charts/color-transitions/manifest.js",
+      "resultEvidence": "RESULTS_W5.md"
     },
     {
       "id": "bar-gradient-to-interval",
@@ -780,8 +783,11 @@
         }
       ],
       "independentOracle": "Same quantize mapping as direct Bar creation; default right gradient legend becomes interval legend atomically.",
-      "primitiveStatus": "not-authored",
-      "publicStatus": "not-implemented"
+      "primitiveStatus": "rendered",
+      "publicStatus": "implemented-verified",
+      "fixtureSource": "examples/color-transitions/program.js",
+      "manifestSource": "test/charts/color-transitions/manifest.js",
+      "resultEvidence": "RESULTS_W5.md"
     }
   ],
   "execution": {

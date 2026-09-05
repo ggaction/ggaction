@@ -427,7 +427,7 @@
   },
   "/api/scales/discretized-color/": {
     "title": "Discretized Color Scales",
-    "description": "Quantitative point color can create concrete color classes instead of a continuous gradient:",
+    "description": "Quantitative Point, aggregate Bar, and Rect color can create concrete color classes instead of a continuous gradient:",
     "image": "/assets/images/cars-scatterplot.png"
   },
   "/api/scales/missing-values/": {

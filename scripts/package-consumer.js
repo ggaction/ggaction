@@ -350,6 +350,17 @@ async function testNodeConsumer(directory) {
         .resolvedScales.x.domain,
       ["Beta", "Alpha"]
     );
+    const transitionRows = [-2, 0, 4, 8].map((value, x) => ({ value, x, category: String(x) }));
+    const transitionBase = chart().createCanvas({ width: 1000, height: 700, margin: 150 }).createData({ values: transitionRows })
+      .createBarPlot({ id: "transition", x: "category", y: { field: "value", aggregate: "sum" }, color: { field: "value", fieldType: "quantitative", scale: { id: "transitionColor", midpoint: 0, range: ["blue", "white", "red"] } } });
+    const intervalTransition = transitionBase.editScale({ id: "transitionColor", type: "quantize", domain: [-2, 8], range: ["blue", "red"] });
+    assert.deepEqual(intervalTransition.graphicSpec.objects.transition.items.map(item => item.properties.fill), ["blue", "red", "red"]);
+    assert.equal(intervalTransition.guideConfigs.legend.gradient, undefined);
+    assert.equal(intervalTransition.guideConfigs.legend.interval.scale, "transitionColor");
+    assert.equal(intervalTransition.encodeColor({ target: "transition", field: "value", fieldType: "quantitative", scale: { type: "sequential", domain: [-2, 8], range: ["blue", "white", "red"] } }).guideConfigs.legend.interval, undefined);
+    const basicInterval = basicChart().createCanvas({ width: 1000, height: 700, margin: 150 }).createData({ values: transitionRows })
+      .createBarPlot({ id: "interval", x: "category", y: { field: "value", aggregate: "sum" }, color: { field: "value", fieldType: "quantitative", scale: { type: "quantize", range: ["blue", "red"] } } });
+    assert.equal(basicInterval.guideConfigs.legend.interval.target, "interval");
     const midpointPlot = chart().createCanvas({ width: 1000, height: 700, margin: 150 })
       .createData({ values: [-2, 0, 4, 8].map((value, x) => ({ value, x })) })
       .createScatterPlot({ id: "midpoint", x: "x", y: "value", color: { field: "value", fieldType: "quantitative", scale: { id: "midpointColor", midpoint: 0, range: ["blue", "white", "red"] } } });
