@@ -68,3 +68,5 @@ A는 approved다. V1은 ready-for-review이며 V/V2/V3/X는 planned다. 시각 �
 - 범위: Area 9개, 색상 없는 Bar layout 2개. 원본 데이터 유지, endpoint datum, closed segment, layout.mode 저장과 실제 PNG.
 - Focused 20/20, discovery 포함 33/33, 정상 누적 2608/2608, PNG 11/11. 실제 renderer는 graphicSpec만 소비한다. Public action flow와 roundtrip 실행은 아직 없다.
 - V1 승인 효과: W1/W2의 해당 public flow 구현·전환/실패/소비자 검증을 연다. V2/V3와 X는 별도 미승인으로 유지한다.
+- V1 review package commit: `ee9daf0c58eb682a09ab0dddc3af9ff241bb76a1`. 원격 origin/codex/roadmap6-hierarchical-actions에 push하고 ls-remote 일치를 확인했다.
+- 이후 ref 고정 기록은 시각 승인이나 공개 구현을 포함하지 않는다.
