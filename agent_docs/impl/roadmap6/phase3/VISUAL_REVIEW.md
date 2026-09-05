@@ -2,7 +2,7 @@
 
 ## 검토 상태와 승인 범위
 
-**R6-P3-A는 승인되었고 R6-P3-V는 ready-for-review다.** 승인된 세 계약을 Planned에 등록했으며
+**R6-P3-A와 R6-P3-V는 승인되었다.** 2026-09-05 사용자가 “승인한다”로 아래 9개 target과 호출을 승인했다. 승인된 세 계약을 Planned에 등록했으며
 Current는 174개, Planned는 3개다. 신규 `createPiePlot`·`createDensityPlot`·`createHorizonPlot`은 아직 구현하지 않았다.
 
 [전체 검토 화면](../../../../.artifacts/roadmap6-authoring/phase3-visual-review.html)은 9개 이미지마다

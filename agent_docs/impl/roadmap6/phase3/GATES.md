@@ -3,8 +3,8 @@
 ## 공통 상태
 
 Phase 2 X 결과 승인은 기록했다. **R6-P3-A는 2026-09-05 사용자 “승인한다”로 approved**다.
-V는 ready-for-review, X는 planned다. 허용 상태: planned | ready-for-review | approved | changes-requested.
-세 Planned 등록과 9개 primitive target 작성을 완료했다. 신규 public 시각 flow는 V 승인 전까지 구현하지 않는다.
+V는 2026-09-05 사용자 “승인한다”로 approved, X는 planned다. 허용 상태: planned | ready-for-review | approved | changes-requested.
+세 Planned 등록과 9개 primitive target 작성을 완료했다. 승인된 9개 시각 목표에 맞는 public flow 구현과 consumer 검증을 진행한다.
 
 ## R6-P3-A — Contract and scope
 
@@ -25,12 +25,13 @@ V는 ready-for-review, X는 planned다. 허용 상태: planned | ready-for-revie
 
 ## R6-P3-V — Visual target
 
-- 상태: ready-for-review
+- 상태: approved
 - 검토: [VISUAL_REVIEW.md](VISUAL_REVIEW.md). Pie count/weighted/donut, Density vertical/grouped/horizontal,
   Horizon signed/temporal/baseline-style의 총 9개. Exact input/call은 single manifests와 generated 화면에 있다.
 - Primitive source commit: [`fa603c29e820014caae7b8c0d9d205b34e2cc241`](https://github.com/ggaction/ggaction/commit/fa603c29e820014caae7b8c0d9d205b34e2cc241), 원격 push 완료.
 - Review package commit: [`1f7debaab66856597deaf8a039648ce23b123e41`](https://github.com/ggaction/ggaction/commit/1f7debaab66856597deaf8a039648ce23b123e41), `origin/codex/roadmap6-hierarchical-actions` push 확인.
-- 사용자 V 승인: 아직 없음. 이 package의 9개 이미지와 정확한 호출을 검토 대상으로 제시한다.
+- 사용자 V 승인: 2026-09-05 “승인한다”. 승인 기준 HEAD `73790eacb2afcaaf71e925332e9f6d9baf2bdd50`.
+- 승인 범위: 위 package의 9개 target/call, Density y축 기준 grid 유지와 Horizon 7개 관측값 포함. A의 세 full-only facade 구현과 consumer 검증을 연다. X·조건부 bundle B·배포·PR 승인은 포함하지 않는다.
 - 증거: [source·input·semantic·PNG·pixel 결과](visual-results.json), [generator](render-review.mjs),
   [실제 이미지와 정확한 public call](../../../../.artifacts/roadmap6-authoring/phase3-visual-review.html),
   [9개 이미지 개요](../../../../.artifacts/roadmap6-authoring/phase3-visual-overview.png).
@@ -69,4 +70,4 @@ V는 ready-for-review, X는 planned다. 허용 상태: planned | ready-for-revie
 - 효과: Planned 등록·비시각 준비·primitive target 작성 가능. V/X와 조건부 bundle B는 승인하지 않았다.
 - 실제 검증: baseline 52/52, related existing tests 176/176, 문서 lower calls 3/3, 최종 navigation 10/10, local links 214개. 재현 명령은 [VALIDATION.md](VALIDATION.md).
 - Planned 등록: accepted 3개, Current 174개 유지. `npm run test:contracts` 260/260, fail/skip 0.
-- 남은 작업: V 승인, public implementation·누적 acceptance·X 승인.
+- 남은 작업: public implementation·누적 acceptance·X 승인.

@@ -12,14 +12,14 @@
 - [x] 9개 primitive targets 작성·수치 검증·렌더링
 - [x] V 검토 문서·정확한 호출·이미지와 source 증거 작성
 - [x] V package 원격 ref 고정
-- [ ] V 명시적 사용자 승인
+- [x] V 명시적 사용자 승인
 - [ ] R6-P3-W1 Pie/Donut public flow와 lower lifecycle
 - [ ] R6-P3-W2 Density public flow와 lower lifecycle
 - [ ] R6-P3-W3 Horizon public flow와 lower lifecycle
 - [ ] Same-run public/primitive parity·누적 검증·문서·원장 동기화
 - [ ] X package commit/push와 명시적 사용자 승인 기록
 
-A 승인과 primitive 작성·검증을 완료했다. V/X 승인이나 새 API의 구현 완료를 뜻하지 않는다.
+A 승인과 primitive 작성·검증을 완료했다. V를 승인받았으며 새 API 구현·X 승인은 아직 남아 있다.
 [계약 검토](CONTRACT_REVIEW.md), [시각 검토](VISUAL_REVIEW.md), [Gate](GATES.md), [검증](VALIDATION.md)가 현재 evidence를 소유한다.
 
 ## 실행 순서와 경계
@@ -52,4 +52,4 @@ A 승인과 primitive 작성·검증을 완료했다. V/X 승인이나 새 API�
 - A 승인 기준 HEAD는 `0f3531ae9c242190df9457b1ed4289491963ba77`이며 사용자 답은 “승인한다”다.
 - 승인된 세 계약은 Planned에 등록했다. 9개 primitive의 normal 19건·PNG 9건이 통과했고 public flow는 V 승인 뒤 구현한다.
 - Density grid는 현행 y축 기준임을 명시했다. Horizon V fixture는 band가 구분되도록 2점에서 7점으로 구체화했고 기존 baseline은 보존했다.
-- V package `1f7debaab66856597deaf8a039648ce23b123e41`를 원격 branch에 push했다. V 승인과 신규 public flow는 아직 없다.
+- V package `1f7debaab66856597deaf8a039648ce23b123e41`를 원격 branch에 push했다. 2026-09-05 사용자가 V를 승인했다. 신규 public flow 구현을 시작한다.
