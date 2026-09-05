@@ -518,6 +518,18 @@ async function testNodeConsumer(directory) {
     assert.equal(polarComponents.graphicSpec.objects.thetaAxisLabels.items.length, 2);
     assert.equal(polarComponents.graphicSpec.objects.radialAxisTitle.properties.text, "Distance");
     assert.match(renderToSVG(polarComponents), /Distance/);
+    const polarRemoved = polarComponents.editRadialAxis({ angle: 45, title: false, ticksAndLabels: false });
+    assert.equal(polarRemoved.graphicSpec.objects.radialAxisTitle, undefined);
+    assert.equal(polarRemoved.graphicSpec.objects.radialAxisLabels, undefined);
+    assert.equal(polarRemoved.guideConfigs.axis.radius.layout.angle, 45);
+    const polarEmpty = polarRemoved.editRadialAxis({ line: false });
+    assert.equal(polarEmpty.semanticSpec.guides.axis?.radius, undefined);
+    assert.equal(polarEmpty.guideConfigs.axis?.radius, undefined);
+    const titleOnly = polarEmpty.createRadialAxis({ angle: 180, line: false, ticksAndLabels: false, title: { text: "Restored" } });
+    assert.equal(titleOnly.graphicSpec.objects.radialAxisTitle.properties.text, "Restored");
+    assert.equal(titleOnly.graphicSpec.objects.radialAxisLine, undefined);
+    assert.throws(() => polarEmpty.editRadialAxis({ angle: 90 }), /existing/);
+    assert.throws(() => polarEmpty.createThetaAxis({ angle: 90 }), /Unknown/);
     assert.equal(polar.graphicSpec.objects.thetaAxisTitle, undefined);
 
     const arcs = chart()
@@ -1703,6 +1715,12 @@ async function testTypeScriptConsumer(directory) {
       .createThetaAxisLabels({ values: [0, 1] }).createThetaAxisTitle({ text: "Angle" });
     polar.createRadialAxisLine({ angle: 135 }).createRadialAxisTicks({ count: 3 })
       .createRadialAxisLabels(componentOptions).createRadialAxisTitle({ position: "outside" });
+    program.createXAxis({ title: false, ticksAndLabels: false });
+    polar.createRadialAxis({ angle: 180, line: false, ticksAndLabels: false });
+    polar.editRadialAxis({ angle: 45, title: false, ticksAndLabels: false });
+    polar.editThetaAxis({ line: false, ticks: false, labels: false, title: false });
+    // @ts-expect-error Theta complete creation has no radial angle
+    polar.createThetaAxis({ angle: 90 });
     // @ts-expect-error Theta component has no radial angle
     polar.createThetaAxisTitle({ angle: 90 });
     // @ts-expect-error Tick selection policies are exclusive

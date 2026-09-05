@@ -62,7 +62,7 @@ The tables below are generated from the same reviewed capability registry used b
 | Axis family | Create | Edit | Editable components |
 | --- | --- | --- | --- |
 | Cartesian complete axis | `createXAxis` / `createYAxis` / `createAxes` | `editXAxis` / `editYAxis` | line, ticks, labels, ticksAndLabels, title, position |
-| Polar complete axis | `createThetaAxis` / `createRadialAxis` / `createAxes` | `editThetaAxis` / `editRadialAxis` | line, ticks, labels, ticksAndLabels, title, angle or position |
+| Polar complete axis | `createThetaAxis` / `createRadialAxis` / `createAxes` | `editThetaAxis` / `editRadialAxis` | line, ticks, labels, ticksAndLabels, title, radial angle and radial title position |
 | Parallel dimension axes | `createAxes` |  | line, ticks, labels, title from each stored dimension |
 <!-- action-capabilities:summary:end -->
 

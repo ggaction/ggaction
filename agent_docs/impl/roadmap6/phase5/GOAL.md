@@ -2,7 +2,7 @@
 
 ## 상태와 목표
 
-상태: W1 구현 진행. [전체 실행 승인](../APPROVAL.md)을 적용한다. [Phase 4 X](../phase4/REVIEW.md)와 [52개 현재 동작 재현](BASELINE.md)을 바탕으로 [W1 계약](CONTRACT_W1.md)의 A1 Polar 생성 8개를 공개했다. [A1 결과](RESULTS_W1_CREATE.md) 이후 A2 optional component 정렬과 A3 Parallel 축 lifecycle을 이어간다.
+상태: W1 구현 진행. [전체 실행 승인](../APPROVAL.md)을 적용한다. [Phase 4 X](../phase4/REVIEW.md)와 [52개 현재 동작 재현](BASELINE.md)을 바탕으로 [W1 계약](CONTRACT_W1.md)의 [A1 Polar 생성 8개](RESULTS_W1_CREATE.md)와 [A2 optional component 정렬](RESULTS_W1_OPTIONAL.md)을 구현했다. A3 Parallel 축 lifecycle을 이어간다.
 
 완성 chart에서 시작한 사용자가 축·범례·라벨·테마까지 하위 public action으로 내려갈 수 있게 한다.
 

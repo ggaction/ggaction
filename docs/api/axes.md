@@ -67,6 +67,32 @@ components do not accept `angle`. Only radial titles accept
 Omitted title text follows the encoded field or its explicit title. Component
 styles and bindings survive Canvas, scale, and compatible encoding edits.
 
+## Omit, remove, and restore components
+
+All four complete axis creators accept `false` for `line`, `ticksAndLabels`,
+and `title`. Omission or `{}` creates the component with inferred defaults.
+At least one component must remain enabled. To disable an entire axis, use
+the outer `createAxes({ x: false, ... })` selection.
+
+The corresponding complete editors accept `false` for `line`, `ticks`,
+`labels`, `ticksAndLabels`, and `title` to remove existing components.
+An object edits an existing component; an omitted option preserves it.
+Restore a missing component with its focused create action.
+
+`ticksAndLabels: false` removes both existing components. If only one remains,
+remove it with `ticks: false` or `labels: false`. Do not combine the group with
+individual tick/label options. The group's nested `ticks` and `labels` still
+accept style objects, not `false`.
+
+Removing the last component cleans up the axis state and preserves grids,
+marks, and scales. Removed components stay absent after Canvas or scale edits.
+`editRadialAxis({ angle })` requires an existing axis component.
+
+When a chart facade reuses guides, a component declared `false` must be absent.
+If it already exists, remove it explicitly before requesting that declaration.
+Theta creation rejects `angle`, which was previously ignored; angle belongs
+to radial axes.
+
 ## `createAxes(options?)`
 
 Creates complete axes for encoded Cartesian x/y, Polar theta/radius, or Parallel dimension channels. This is the recommended axis
@@ -95,9 +121,9 @@ Each x/y axis option supports:
 | --- | --- |
 | `scale` | scale ID; inferred when one scale is used on the channel |
 | `position` | x: `"bottom"` or `"top"`; y: `"left"` or `"right"` |
-| `line` | `{ color?, lineWidth? }` |
-| `ticksAndLabels` | `{ count?, values?, ticks?, labels? }` |
-| `title` | title options including `text`, `at`, `offset`, and font styling |
+| `line` | `false` or `{ color?, lineWidth? }` |
+| `ticksAndLabels` | `false` or `{ count?, values?, ticks?, labels? }` |
+| `title` | `false` or title options including `text`, `at`, `offset`, and font styling |
 
 Use either `count` or exact data-space `values` for ticks. Ambiguous coordinates
 or scales must be selected explicitly. `createAxes` reads stored coordinates;
@@ -187,7 +213,7 @@ createAxes
 perimeter labels, and an inferred title. `createRadialAxis()` creates one
 center-to-edge baseline; its `angle` defaults to `90` degrees (right). Both
 support `ticksAndLabels: { count?, values?, ticks?, labels? }` and title style.
-Set `title: false` on either Polar axis to omit that title at creation.
+Use `line: false`, `ticksAndLabels: false`, or `title: false` to omit components.
 The radial title defaults to `position: "inside"` at the baseline midpoint.
 Use `title: { position: "outside" }` to place it beyond the radial endpoint;
 `offset` is measured from the midpoint normal when inside and from the endpoint

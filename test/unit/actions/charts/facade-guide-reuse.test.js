@@ -29,6 +29,34 @@ function expectAtomic(program, operation, message) {
   assert.equal(program.trace, trace);
 }
 
+for (const [option, parts] of [["line", ["Line"]], ["ticksAndLabels", ["Ticks", "Labels"]], ["title", ["Title"]]]) {
+  test(`Cartesian facade reuse preserves explicitly omitted axis ${option}`, () => {
+    const guides = { axes: { x: { [option]: false }, y: false }, grid: false, legend: false };
+    const before = scatter(base(), guides);
+    const reused = line(before, guides);
+    for (const part of parts) assert.equal(reused.graphicSpec.objects[`xAxis${part}`], undefined);
+    assert.deepEqual(state(reused), state(line(before, false)));
+    const complete = scatter(base());
+    expectAtomic(complete, p => line(p, guides), /Facade guide conflict/);
+  });
+
+  test(`Polar facade reuse preserves explicitly omitted axis ${option}`, () => {
+    const guides = { axes: { theta: { [option]: false }, radius: { [option]: false } }, grid: false, legend: false };
+    const make = (p, id, options) => p.createRadialBarPlot({
+      id, category: "group", value: "y", aggregate: "sum", guides: options
+    });
+    const p = base().editCanvas({ width: 1000, height: 700, margin: 150 });
+    const before = make(p, "first", guides);
+    const reused = make(before, "second", guides);
+    for (const prefix of ["theta", "radial"]) for (const part of parts) {
+      assert.equal(reused.graphicSpec.objects[`${prefix}Axis${part}`], undefined);
+    }
+    assert.deepEqual(state(reused), state(make(before, "second", false)));
+    const complete = make(p, "first", undefined);
+    expectAtomic(complete, q => make(q, "second", guides), /Facade guide conflict/);
+  });
+}
+
 test("Scatter and Line defaults reuse their compatible axes and grid", () => {
   const before = scatter(base());
   const expected = line(before, false);

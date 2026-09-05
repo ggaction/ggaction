@@ -5577,17 +5577,17 @@
         {
           "name": "line",
           "required": false,
-          "type": "AxisLineStyleOptions | undefined"
+          "type": "false | AxisLineStyleOptions | undefined"
         },
         {
           "name": "ticksAndLabels",
           "required": false,
-          "type": "Omit<AxisTicksAndLabelsOptions<XAxisPosition>, \"position\" | \"scale\"> | undefined"
+          "type": "false | Omit<AxisTicksAndLabelsOptions<XAxisPosition>, \"position\" | \"scale\"> | undefined"
         },
         {
           "name": "title",
           "required": false,
-          "type": "Omit<AxisTitleOptions<XAxisPosition>, \"position\" | \"scale\"> | undefined"
+          "type": "false | Omit<AxisTitleOptions<XAxisPosition>, \"position\" | \"scale\"> | undefined"
         }
       ],
       "callPatterns": [
@@ -5645,17 +5645,17 @@
         {
           "name": "line",
           "required": false,
-          "type": "AxisLineStyleOptions | undefined"
+          "type": "false | AxisLineStyleOptions | undefined"
         },
         {
           "name": "ticksAndLabels",
           "required": false,
-          "type": "Omit<AxisTicksAndLabelsOptions<YAxisPosition>, \"position\" | \"scale\"> | undefined"
+          "type": "false | Omit<AxisTicksAndLabelsOptions<YAxisPosition>, \"position\" | \"scale\"> | undefined"
         },
         {
           "name": "title",
           "required": false,
-          "type": "Omit<AxisTitleOptions<YAxisPosition>, \"position\" | \"scale\"> | undefined"
+          "type": "false | Omit<AxisTitleOptions<YAxisPosition>, \"position\" | \"scale\"> | undefined"
         }
       ],
       "callPatterns": [
@@ -10157,12 +10157,12 @@
         {
           "name": "line",
           "required": false,
-          "type": "AxisLineStyleOptions | undefined"
+          "type": "false | AxisLineStyleOptions | undefined"
         },
         {
           "name": "ticksAndLabels",
           "required": false,
-          "type": "PolarTicksAndLabelsOptions | undefined"
+          "type": "false | PolarTicksAndLabelsOptions | undefined"
         },
         {
           "name": "title",
@@ -10178,15 +10178,10 @@
           "name": "coordinate",
           "required": false,
           "type": "string | undefined"
-        },
-        {
-          "name": "angle",
-          "required": false,
-          "type": "number | undefined"
         }
       ],
       "callPatterns": [
-        "createThetaAxis({ scale?, coordinate?, line?, ticksAndLabels?, title?, angle? })"
+        "createThetaAxis({ scale?, coordinate?, line?, ticksAndLabels?, title? })"
       ],
       "snippet": "program.createThetaAxis({})",
       "errors": [],
@@ -10223,6 +10218,11 @@
       },
       "options": [
         {
+          "name": "angle",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
           "name": "title",
           "required": false,
           "type": "false | RadialTitleOptions | undefined"
@@ -10238,23 +10238,18 @@
           "type": "string | undefined"
         },
         {
-          "name": "angle",
-          "required": false,
-          "type": "number | undefined"
-        },
-        {
           "name": "line",
           "required": false,
-          "type": "AxisLineStyleOptions | undefined"
+          "type": "false | AxisLineStyleOptions | undefined"
         },
         {
           "name": "ticksAndLabels",
           "required": false,
-          "type": "PolarTicksAndLabelsOptions | undefined"
+          "type": "false | PolarTicksAndLabelsOptions | undefined"
         }
       ],
       "callPatterns": [
-        "createRadialAxis({ scale?, coordinate?, title?, angle?, line?, ticksAndLabels? })"
+        "createRadialAxis({ scale?, coordinate?, angle?, title?, line?, ticksAndLabels? })"
       ],
       "snippet": "program.createRadialAxis({})",
       "errors": [],
@@ -10289,27 +10284,27 @@
         {
           "name": "line",
           "required": false,
-          "type": "AxisLineStyleOptions | undefined"
+          "type": "false | AxisLineStyleOptions | undefined"
         },
         {
           "name": "ticks",
           "required": false,
-          "type": "PolarTickOptions | undefined"
+          "type": "false | PolarTickOptions | undefined"
         },
         {
           "name": "labels",
           "required": false,
-          "type": "PolarLabelOptions | undefined"
+          "type": "false | PolarLabelOptions | undefined"
         },
         {
           "name": "ticksAndLabels",
           "required": false,
-          "type": "PolarTicksAndLabelsOptions | undefined"
+          "type": "false | PolarTicksAndLabelsOptions | undefined"
         },
         {
           "name": "title",
           "required": false,
-          "type": "PolarTitleOptions | undefined"
+          "type": "false | PolarTitleOptions | undefined"
         }
       ],
       "callPatterns": [
@@ -10348,7 +10343,7 @@
         {
           "name": "title",
           "required": false,
-          "type": "RadialTitleOptions | undefined"
+          "type": "false | RadialTitleOptions | undefined"
         },
         {
           "name": "angle",
@@ -10358,22 +10353,22 @@
         {
           "name": "line",
           "required": false,
-          "type": "AxisLineStyleOptions | undefined"
+          "type": "false | AxisLineStyleOptions | undefined"
         },
         {
           "name": "ticks",
           "required": false,
-          "type": "PolarTickOptions | undefined"
+          "type": "false | PolarTickOptions | undefined"
         },
         {
           "name": "labels",
           "required": false,
-          "type": "PolarLabelOptions | undefined"
+          "type": "false | PolarLabelOptions | undefined"
         },
         {
           "name": "ticksAndLabels",
           "required": false,
-          "type": "PolarTicksAndLabelsOptions | undefined"
+          "type": "false | PolarTicksAndLabelsOptions | undefined"
         }
       ],
       "callPatterns": [

@@ -182,9 +182,15 @@ test.before(async () => {
         .createThetaAxisLabels({ values: [0, 0.5] }).createThetaAxisTitle({ text: "Direction" });
       const polarCanvas = document.querySelector("#polar-components");
       render(polarComponents, polarCanvas.getContext("2d"));
+      const partialPolar = polarComponents.editRadialAxis({ angle: 45, title: false, ticksAndLabels: false });
+      render(partialPolar, polarCanvas.getContext("2d"));
+      const emptyPolar = partialPolar.editRadialAxis({ line: false });
       document.querySelector("#status").textContent = "complete";
       window.__ggactionConsumer = {
         polarCanvas: [polarCanvas.width, polarCanvas.height],
+        polarRemovedTitle: !renderToSVG(partialPolar).includes("Long radial title"),
+        polarRemovedAxis: emptyPolar.semanticSpec.guides.axis?.radius === undefined &&
+          emptyPolar.guideConfigs.axis?.radius === undefined,
         polarTitleY: polarComponents.graphicSpec.objects.radialAxisTitle.properties.y,
         polarSharedAngle: polarComponents.guideConfigs.axis.radius.layout.angle,
         polarSVGTitle: renderToSVG(polarComponents).includes("Long radial title"),
@@ -266,6 +272,8 @@ test("imports and renders the packed browser entries", async () => {
   });
   assert.deepEqual(await windowValue(page, "__ggactionConsumer"), {
     polarCanvas: [300, 500],
+    polarRemovedTitle: true,
+    polarRemovedAxis: true,
     polarTitleY: 358,
     polarSharedAngle: 180,
     polarSVGTitle: true,

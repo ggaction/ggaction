@@ -1887,7 +1887,9 @@ editYAxis({ position?, line?: false | {...}, ticks?: false | {...},
   labels?: false | {...}, ticksAndLabels?: false | {...}, title?: false | {...} })
 ```
 
-Complete-axis edits update only the selected components of an existing axis.
+Cartesian and Polar complete-axis creators accept `false` for `line`,
+`ticksAndLabels`, or `title` to omit those components; at least one must remain
+enabled. Complete-axis edits update only the selected components of an existing axis.
 Each component accepts its edit object or `false` for removal. Use
 `ticksAndLabels` for a coordinated tick/label edit or removal, or `ticks` and
 `labels` for independent edits/removals; do not combine both forms. Removal

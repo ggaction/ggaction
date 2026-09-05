@@ -2,6 +2,7 @@ import { validatePolarAxisArgs } from "./polar/axes/facade.js";
 import { prefix as polarPrefix, resolveAngle } from "./polar/axes/shared.js";
 import { validateAxesArgs } from "./axes/axes.js";
 import { validateAxisArgs } from "./axes/axis.js";
+import { axisComponentDisabled, hasAxisComponent } from "./axes/components.js";
 import { validateAxisTickGroupArgs } from "./axes/tickGroups.js";
 import { findCoordinate } from "../../selectors/coordinates.js";
 import {
@@ -61,7 +62,9 @@ export function scopeFacadeAxes(program, layer, args) {
     }
     scoped[channel] = { ...option, scale, coordinate: coordinate.id };
     validateAxisArgs(scoped[channel], `create${channel.toUpperCase()}Axis`);
-    validateAxisTickGroupArgs(scoped[channel].ticksAndLabels ?? {}, "createAxisTicksAndLabels", true);
+    if (scoped[channel].ticksAndLabels !== false) {
+      validateAxisTickGroupArgs(scoped[channel].ticksAndLabels ?? {}, "createAxisTicksAndLabels", true);
+    }
   }
   return scoped;
 }
@@ -102,6 +105,10 @@ function planAxis(program, channel, args, explicit) {
   };
   for (const component of ["line", "ticks", "labels", "title"]) {
     const config = configs[component];
+    if (axisComponentDisabled(args, component)) {
+      if (hasAxisComponent(program, channel, component)) guideConflict(`${channel} axis already has ${component}`);
+      continue;
+    }
     if (config === undefined) continue;
     if (config.scale !== undefined && config.scale !== args.scale) {
       guideConflict(`${channel} ${component} uses a different scale`);
@@ -109,20 +116,22 @@ function planAxis(program, channel, args, explicit) {
     assertGuideOptions(requested[component], component === "title"
       ? { ...config, text: guide.title } : config, `${channel} axis ${component}`);
   }
-  if (configs.line === undefined) {
+  if (args.line !== false && configs.line === undefined) {
     steps.push({ op: `create${prefix}AxisLine`, args: { ...shared, ...args.line } });
   }
-  if (configs.ticks === undefined && configs.labels === undefined) {
-    steps.push({ op: `create${prefix}AxisTicksAndLabels`, args: { ...shared, ...group } });
-  } else {
-    if (configs.ticks === undefined) {
-      steps.push({ op: `create${prefix}AxisTicks`, args: { ...shared, ...tickMode(configs.labels), ...explicitMode, ...group.ticks } });
-    }
-    if (configs.labels === undefined) {
-      steps.push({ op: `create${prefix}AxisLabels`, args: { ...shared, ...group.labels } });
+  if (args.ticksAndLabels !== false) {
+    if (configs.ticks === undefined && configs.labels === undefined) {
+      steps.push({ op: `create${prefix}AxisTicksAndLabels`, args: { ...shared, ...group } });
+    } else {
+      if (configs.ticks === undefined) {
+        steps.push({ op: `create${prefix}AxisTicks`, args: { ...shared, ...tickMode(configs.labels), ...explicitMode, ...group.ticks } });
+      }
+      if (configs.labels === undefined) {
+        steps.push({ op: `create${prefix}AxisLabels`, args: { ...shared, ...group.labels } });
+      }
     }
   }
-  if (configs.title === undefined) {
+  if (args.title !== false && configs.title === undefined) {
     steps.push({ op: `create${prefix}AxisTitle`, args: { ...shared, ...args.title } });
   }
   return steps;
@@ -156,7 +165,6 @@ function planPolarAxis(program, channel, args, explicit) {
   if (guide?.scale !== args.scale || resolveStoredGuideCoordinate(program, guide, channel) !== args.coordinate) {
     guideConflict(`${channel} axis uses a different coordinate or scale`);
   }
-  if (explicit.title === false && configs.title !== undefined) guideConflict(`${channel} axis already has a title`);
   const shared = { scale: args.scale, coordinate: args.coordinate,
     ...(channel === "radius" ? { angle: resolveAngle(program, channel, args) } : {}) };
   const group = args.ticksAndLabels ?? {};
@@ -172,13 +180,16 @@ function planPolarAxis(program, channel, args, explicit) {
   const steps = [];
   for (const component of ["line", "ticks", "labels", "title"]) {
     const config = configs[component];
+    if (axisComponentDisabled(args, component)) {
+      if (hasAxisComponent(program, channel, component)) guideConflict(`${channel} axis already has ${component}`);
+      continue;
+    }
     if (config !== undefined) {
       if (config.scale !== args.scale || config.coordinate !== args.coordinate) guideConflict(`${channel} ${component} uses different resources`);
       assertGuideOptions(requested[component], component === "title" ? { ...config, text: guide.title } : config,
         `${channel} axis ${component}`);
       continue;
     }
-    if (component === "title" && args.title === false) continue;
     const options = component === "line" ? args.line ?? {} : component === "title" ? args.title ?? {}
       : { ...tickMode(configs[component === "ticks" ? "labels" : "ticks"]),
           ...Object.fromEntries(["count", "values"].filter(key => Object.hasOwn(group, key)).map(key => [key, group[key]])),

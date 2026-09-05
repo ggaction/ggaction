@@ -94,6 +94,16 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - Effect: semantic guide에는 scale/coordinate, graphical config에는 tick policy/style, concrete line
   collection에는 endpoints를 저장한다. 관련 mark보다 앞에 graphic을 배치한다.
 
+## Optional component lifecycle
+
+Cartesian/Polar complete 생성은 `line`, `ticksAndLabels`, `title`의 false를 해당 component 생략으로 처리한다. 생략/{}는 기본 생성이며 셋 모두 false는 no-enabled-component 오류다. Group 내부 ticks/labels는 스타일 객체만 받는다. 원하는 한 component만 추가할 때는 focused create를 사용한다.
+
+네 family의 complete edit는 line/ticks/labels/ticksAndLabels/title false로 existing component를 제거한다. Missing component 제거·편집은 오류이고 group false는 ticks와 labels 둘 다 요구한다. Group과 개별 ticks/labels를 동시에 지시할 수 없다. 마지막 component 제거는 전체 axis remove owner로 semantic/config/layout을 정리하고 grid·mark·scale은 유지한다. 삭제한 component는 replay에서 다시 생기지 않으며 복원은 focused create가 소유한다.
+
+Radial angle edit는 existing component가 최소 하나 있어야 한다. Angle과 false를 함께 지정하면 유지되는 component만 새 각도로 갱신한다. Theta complete/focused create에는 angle이 없으며 과거 무시되던 complete angle도 이제 오류다. Facade 재사용은 disabled component를 만들지 않고 기존 component를 false로 선언하면 conflict로 거부한다.
+
+Evidence: `test/unit/actions/guides/axis-optional-components.test.js`, `test/unit/actions/charts/facade-guide-reuse.test.js`, `test/contracts/polar-component-types.test.js`. 4 families × 7 nonempty creation combinations, component removal/restore/replay, empty/all-false/conflicting/late-invalid atomic errors.
+
 ## Shared formal types
 
 ```typescript
@@ -136,9 +146,9 @@ type CompleteAxisOptions<P extends string> = {
   scale?: UserId;
   coordinate?: UserId;
   position?: P;
-  line?: { color?: NonEmptyString; lineWidth?: NonNegativeFinite };
-  ticksAndLabels?: TickAndLabelOptions;
-  title?: AxisTitleOptions<P>;
+  line?: false | { color?: NonEmptyString; lineWidth?: NonNegativeFinite };
+  ticksAndLabels?: false | TickAndLabelOptions;
+  title?: false | AxisTitleOptions<P>;
 };
 ```
 
@@ -171,7 +181,7 @@ type CompleteAxisOptions<P extends string> = {
   - ✅ Covered: bounded multi-layer/shared-coordinate cases prove opt-out, explicit scale resolution and ambiguity
     rejection without an exhaustive layer × scale cross-product.
   - ✅ Covered: x top/y right complete-axis forwarding while preserving channel defaults.
-- Proposed: future Polar axes should use coordinate channels rather than force x/y objects into Polar semantics.
+- Polar axes use theta/radius channel options rather than x/y objects.
 - Evidence: `test/unit/actions/guides/create-axes.test.js`.
 
 ## Polar guide actions
@@ -192,8 +202,8 @@ editRadialAxis(options: EditPolarAxisOptions & { angle?: number }): ChartProgram
 
 - `scale`, `coordinate`는 unique stored encoding에서 추론한다.
 - `ticksAndLabels.count` 기본값은 theta `6`, radius `5`이며 `values`와 mutually exclusive다.
-- `angle`은 public Polar degree convention을 사용하며 radial aggregate create/edit만 소유한다.
-- `title: false` omits the title at creation. Other title objects keep the inferred or explicit text contract.
+- `angle`은 public Polar degree convention을 사용하며 radial component/aggregate create와 aggregate edit가 소유한다. Theta는 받지 않는다.
+- `line`/`ticksAndLabels`/`title: false`는 생성 시 생략하고 편집 시 existing component를 제거한다. Optional component lifecycle을 따른다.
 - Focused line/ticks/labels/title actions는 raw graphic target 없이 같은 stored resource를 변경한다.
 - Inferred title은 encoding field/title을 읽는다. Canvas, scale, encoding revision은 모든 component를
   deterministic하게 rematerialize한다.

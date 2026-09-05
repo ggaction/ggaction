@@ -28,6 +28,23 @@ p.createThetaAxisTitle({ text: "Direction", fontFamily: "sans-serif" });
 p.createRadialAxisTitle({ text: "Distance", angle: 135, position: "outside" });
 p.createThetaAxisLine().createThetaAxisTicks().createThetaAxisLabels().createThetaAxisTitle();
 p.createRadialAxisLine().createRadialAxisTicks().createRadialAxisLabels().createRadialAxisTitle();
+p.createXAxis({ title: false, ticksAndLabels: false });
+p.createYAxis({ line: false });
+p.createThetaAxis({ line: false, title: false });
+p.createRadialAxis({ angle: 180, ticksAndLabels: false });
+p.editThetaAxis({ line: false, ticks: false, labels: false, title: false });
+p.editRadialAxis({ angle: 45, ticksAndLabels: false, title: false });
+basic.createXAxis({ title: false });
+basic.createYAxis({ line: false });
+p.createAxes({ x: { title: false }, y: { ticksAndLabels: false } });
+// @ts-expect-error Theta complete creation has no radial-axis angle
+p.createThetaAxis({ angle: 45 });
+// @ts-expect-error Nested Theta also rejects radial-axis angle
+p.createAxes({ theta: { angle: 45 } });
+// @ts-expect-error Nested group labels remain style options
+p.createXAxis({ ticksAndLabels: { labels: false } });
+// @ts-expect-error false disables, true does not enable
+p.createRadialAxis({ line: true });
 // @ts-expect-error Theta has no radial-axis angle
 p.createThetaAxisLine({ angle: 90 });
 // @ts-expect-error Theta has no radial-axis angle

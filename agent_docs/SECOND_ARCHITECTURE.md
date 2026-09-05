@@ -854,6 +854,7 @@ style은 materialization config가 소유한다. `graphicSpec`에는 최종 path
 Polar scale, tick, coordinate를 추론하지 않는다. Grid는 관련 mark보다 먼저, axis는 mark보다 나중에 그려지며
 action call order가 drawing order를 결정하지 않는다.
 Complete Polar axis와 공개 focused component 생성은 같은 wrapped guide owner를 호출한다.
+Cartesian/Polar optional component 삭제는 axes/components의 공통 primitive cleanup을 사용하고 마지막 component는 기존 전체 remove owner로 정리한다.
 독립적인 component 작성에서도 binding·angle·style의 기존 저장 위치를 공유하며, 별도의 facade cache나 renderer 추론을 만들지 않는다. 세부 lifecycle은 [Current axes 계약](contract/current/AXES.md)이 소유한다.
 
 Radial-axis title의 default `position: "inside"`는 resolved radial baseline midpoint 아래에 놓인다. Explicit
@@ -1721,7 +1722,7 @@ Y도 같은 구조를 가진다. Tick value, label text, title text는 scale과 
 infer하고 concrete line/text collection을 만든다. Axis는 missing coordinate를 생성하거나
 encoding을 수리하지 않는다.
 
-Cartesian complete-axis edit는 component object와 `false`를 구분한다. Object는 existing wrapped leaf edit를,
+Cartesian/Polar complete-axis edit는 component object와 `false`를 구분한다. Object는 existing wrapped leaf edit를,
 `false`는 matching materialization config와 concrete graphic removal을 조합하고 title이면 semantic title leaf도
 제거한다. Aggregate는 selected edit/removal 전체를 immutable speculative branch에서 preflight하고 retained component만
 current Canvas/scale dependency plan에 남긴다. 마지막 component가 사라지면 existing complete-axis removal이 empty

@@ -760,9 +760,9 @@ export interface CompleteAxisOptions<P extends string> {
   scale?: string;
   coordinate?: string;
   position?: P;
-  line?: AxisLineStyleOptions;
-  ticksAndLabels?: Omit<AxisTicksAndLabelsOptions<P>, "scale" | "position">;
-  title?: Omit<AxisTitleOptions<P>, "scale" | "position">;
+  line?: false | AxisLineStyleOptions;
+  ticksAndLabels?: false | Omit<AxisTicksAndLabelsOptions<P>, "scale" | "position">;
+  title?: false | Omit<AxisTitleOptions<P>, "scale" | "position">;
 }
 export interface CreateAxesOptions {
   coordinate?: {
@@ -836,26 +836,27 @@ export type CreateRadialAxisLabelsOptions = Omit<PolarLabelOptions, "count" | "v
 export type CreateThetaAxisTitleOptions = PolarTitleOptions &
   Omit<PolarGuideResourceOptions, "angle">;
 export type CreateRadialAxisTitleOptions = RadialTitleOptions & PolarGuideResourceOptions;
-export interface CompletePolarAxisOptions extends PolarGuideResourceOptions {
-  line?: AxisLineStyleOptions;
-  ticksAndLabels?: PolarTicksAndLabelsOptions;
+export interface CompletePolarAxisOptions extends Omit<PolarGuideResourceOptions, "angle"> {
+  line?: false | AxisLineStyleOptions;
+  ticksAndLabels?: false | PolarTicksAndLabelsOptions;
   title?: false | PolarTitleOptions;
 }
 export interface CompleteRadialAxisOptions
   extends Omit<CompletePolarAxisOptions, "title"> {
+  angle?: number;
   title?: false | RadialTitleOptions;
 }
 export interface EditPolarAxisOptions {
   angle?: number;
-  line?: AxisLineStyleOptions;
-  ticks?: PolarTickOptions;
-  labels?: PolarLabelOptions;
-  ticksAndLabels?: PolarTicksAndLabelsOptions;
-  title?: PolarTitleOptions;
+  line?: false | AxisLineStyleOptions;
+  ticks?: false | PolarTickOptions;
+  labels?: false | PolarLabelOptions;
+  ticksAndLabels?: false | PolarTicksAndLabelsOptions;
+  title?: false | PolarTitleOptions;
 }
 export interface EditRadialAxisOptions
   extends Omit<EditPolarAxisOptions, "title"> {
-  title?: RadialTitleOptions;
+  title?: false | RadialTitleOptions;
 }
 
 export interface GridDirectionOptions {

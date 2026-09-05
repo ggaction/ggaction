@@ -215,15 +215,15 @@ test("derives a bounded public option inventory without runtime prototype paths"
   const inventory = await buildPublicOptionInventory(actionCards);
 
   assert.equal(inventory.counts.publicActions, 183);
-  assert.equal(inventory.counts.topLevelOptionPaths, 1264);
-  assert.equal(inventory.counts.nestedOptionPaths, 4338);
-  assert.equal(inventory.counts.optionPaths, 5602);
-  assert.equal(inventory.counts.requiredOptionPaths, 4827);
+  assert.equal(inventory.counts.topLevelOptionPaths, 1263);
+  assert.equal(inventory.counts.nestedOptionPaths, 4334);
+  assert.equal(inventory.counts.optionPaths, 5597);
+  assert.equal(inventory.counts.requiredOptionPaths, 4822);
   assert.equal(inventory.counts.excludedOptionPaths, 775);
-  assert.equal(inventory.counts.topLevelCategoricalPaths, 319);
-  assert.equal(inventory.counts.topLevelLiteralValues, 1109);
+  assert.equal(inventory.counts.topLevelCategoricalPaths, 339);
+  assert.equal(inventory.counts.topLevelLiteralValues, 1129);
   assert.equal(inventory.counts.literalFamilies, 98);
-  assert.equal(inventory.counts.pathLiteralRequirements, 2569);
+  assert.equal(inventory.counts.pathLiteralRequirements, 2680);
   assert.equal(inventory.counts.familyLiteralRequirements, 174);
   assert.equal(inventory.counts.pathDiversityRequirements, 154);
   assert.equal(inventory.optionPaths.some(option => option.id ===
@@ -322,7 +322,7 @@ test("derives a bounded public option inventory without runtime prototype paths"
     "option-path:createData.values[]"), false);
   assert.equal(ledger.requirements.some(requirement => requirement.id ===
     "option-path:createDerivedData.transform[].type"), false);
-  assert.equal(ledger.requirements.length, 7758);
+  assert.equal(ledger.requirements.length, 7864);
   assert.throws(() => createScenarioCoverageLedger({
     publicInventory: inventory,
     rendererFeatures: [],

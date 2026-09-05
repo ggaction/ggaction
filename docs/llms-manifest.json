@@ -959,8 +959,8 @@
         "related",
         "explicit-grouping-and-time-inputs"
       ],
-      "bytes": 10394,
-      "sha256": "76dd5aa3447be4107d3cc38703d01be7a05ee975089fae3b2335061020621197"
+      "bytes": 10415,
+      "sha256": "7f72718296c2e7742816c7109ca5ccdda1713fb2ad847af5b845a11bf832468a"
     },
     {
       "order": 62,
@@ -1469,14 +1469,15 @@
         "axes",
         "at-a-glance",
         "polar-component-creation",
+        "omit-remove-and-restore-components",
         "createaxesoptions",
         "editing-a-complete-axis",
         "removing-an-axis",
         "errors-and-limitations",
         "related"
       ],
-      "bytes": 12248,
-      "sha256": "673a9a671b259ad886a3ae40b04cea9435b940a1da748924c3ebb8e16f4790e2"
+      "bytes": 13631,
+      "sha256": "01f798f5dd27a2383ca2d07890ccbb594cfb51bfd31c595c24e08f99eb103d12"
     },
     {
       "order": 94,
@@ -1764,8 +1765,8 @@
         "ticks-and-labels-together",
         "titles"
       ],
-      "bytes": 5975,
-      "sha256": "80f28dd33c51a14bffa365ed299ac591263c07f411d9f4c8fe65d5a240aeec0f"
+      "bytes": 6116,
+      "sha256": "c9dfb8f46f86a88a82ca35827ed5bc3f00bb680a1fa53605483be5f63a38c697"
     },
     {
       "order": 113,
@@ -2021,8 +2022,8 @@
         "directional-grids",
         "related"
       ],
-      "bytes": 7567,
-      "sha256": "975bb8ba4798e6d740903a6ed7acd19d9daeaae33b6d5b7ca76fbc6449fc23e0"
+      "bytes": 7726,
+      "sha256": "25d286a5a86e35cdc271f69d294833c9dde4ac07fec63ee426570fc54dcd8873"
     },
     {
       "order": 121,

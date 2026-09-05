@@ -330,7 +330,7 @@
         "labels",
         "ticksAndLabels",
         "title",
-        "angle or position"
+        "radial angle and radial title position"
       ]
     },
     {
