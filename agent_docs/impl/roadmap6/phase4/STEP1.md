@@ -19,7 +19,7 @@
 - [x] R6-P4-W2 Color와 독립한 layout assignment 기능·호환 구현 — package B 승인·같은 tarball 전체 검증 통과
 - [x] R6-P4-W3 Rose와 Radial bar — [하위·facade·V2 5개 동등성 검증 완료](RESULTS_W3.md)
 - [x] R6-P4-W4 Theta와 legend domain order — [구현·검증](RESULTS_W4.md)
-- [ ] R6-P4-W5 Diverging midpoint와 scale/legend transition
+- [ ] R6-P4-W5 Diverging midpoint와 scale/legend transition — [midpoint·V3 2개 변형 완료](RESULTS_MIDPOINT.md), family transition은 남음
 - [ ] 모든 시각 variant의 primitive target 작성·표시·V 승인
 - [x] V1에서 승인된 11개 variant의 public 구현과 같은 실행의 primitive/public render 비교
 - [ ] 누적 검증·migration·문서·원장 동기화

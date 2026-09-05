@@ -2328,7 +2328,7 @@
         {
           "name": "scale",
           "required": false,
-          "type": "DiscretizedColorScaleOptions | CategoricalColorScaleOptions | ContinuousColorScaleOptions | undefined"
+          "type": "DiscretizedColorScaleOptions | CategoricalColorScaleOptions | ContinuousColorScaleOptions | (Omit<...> & { ...; }) | undefined"
         },
         {
           "name": "palette",
@@ -8731,6 +8731,11 @@
           "type": "ContinuousColorInterpolation | undefined"
         },
         {
+          "name": "midpoint",
+          "required": false,
+          "type": "number | \"auto\" | undefined"
+        },
+        {
           "name": "unknown",
           "required": false,
           "type": "unknown"
@@ -8859,6 +8864,11 @@
           "name": "interpolate",
           "required": false,
           "type": "ContinuousColorInterpolation | undefined"
+        },
+        {
+          "name": "midpoint",
+          "required": false,
+          "type": "number | \"auto\" | undefined"
         },
         {
           "name": "unknown",

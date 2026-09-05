@@ -984,6 +984,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 - `aggregate`: aggregate bar continuous color에서만 사용한다. Color field가 measure field와 같으면 measure
   aggregate를 상속하고, 다른 field는 compatible aggregate를 명시해야 한다. 집계는 최종 category rect
   grain에서 독립적으로 계산한다.
+- Quantitative sequential nested scale은 `midpoint:number|"auto"`를 지원한다. Omission은 기존 scale policy를 보존하고 auto는 제거한다. 값은 최종 domain 내부에 있어야 하며 공통 mapper를 통해 mark/gradient legend에 적용한다. Temporal encoding은 numeric midpoint를 거부한다. Exact policy: CORE createScale/editScale. Evidence: `test/unit/actions/scales/midpoint.test.js`, `test/charts/color-midpoint/`.
 - `scale`: nominal은 ordinal, continuous point/bar/rect color는 internal sequential scale이다. Quantitative point는
   `quantize | quantile | threshold`도 지원한다. `palette` 또는
   explicit `range` 중 하나를 사용할 수 있다. Palette는

@@ -962,6 +962,7 @@ export interface ScaleOptions {
   align?: number;
   palette?: Palette;
   interpolate?: ContinuousColorInterpolation;
+  midpoint?: number | "auto";
   unknown?: unknown;
 }
 
@@ -1059,6 +1060,7 @@ export interface EditScaleOptions {
   align?: number;
   palette?: Palette;
   interpolate?: ContinuousColorInterpolation;
+  midpoint?: number | "auto";
   unknown?: unknown;
 }
 
@@ -1777,7 +1779,7 @@ type BasicColorChannel =
       field: string;
       fieldType: "temporal";
       temporalUnit?: TemporalInputUnit;
-      scale?: ContinuousColorScaleOptions;
+      scale?: Omit<ContinuousColorScaleOptions, "midpoint"> & { midpoint?: "auto" };
       palette?: Palette;
     };
 type NonPointCategoricalColorChannel =
@@ -1842,7 +1844,7 @@ type RectColorChannel =
       field: string;
       fieldType: "temporal";
       temporalUnit?: TemporalInputUnit;
-      scale?: NonPointContinuousColorScaleOptions;
+      scale?: Omit<NonPointContinuousColorScaleOptions, "midpoint"> & { midpoint?: "auto" };
       palette?: Palette;
     };
 export type BasicSizeChannel = string | {
@@ -2371,7 +2373,7 @@ export type StrokeDashEncodingOptions =
     };
 
 export type NonPointContinuousColorScaleOptions = ScaleFields<
-  "id" | "interpolate" | "clamp" | "reverse"
+  "id" | "interpolate" | "midpoint" | "clamp" | "reverse"
 > & {
   type?: "sequential";
   domain?: "auto" | readonly [unknown, unknown];
@@ -2437,7 +2439,7 @@ export type ColorEncodingOptions =
       fieldType: "temporal";
       temporalUnit?: TemporalInputUnit;
       aggregate?: never;
-      scale?: ContinuousColorScaleOptions;
+      scale?: Omit<ContinuousColorScaleOptions, "midpoint"> & { midpoint?: "auto" };
       palette?: Palette;
       layout?: never;
     };

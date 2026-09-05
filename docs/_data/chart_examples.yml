@@ -698,3 +698,19 @@
   actions: createRosePlot · createRadialBarPlot · encodeR
   tasks: polar category comparison
   url: /tutorials/polar-arcs/#measured-rose-and-radial-bar-plots
+
+- id: color-midpoint
+  example: /examples/color-midpoint/
+  title: A meaningful color midpoint
+  image: /assets/images/color-midpoint.png
+  alt: Four points colored blue, white, pale red, and red with zero centered in the color palette
+  width: 2000
+  height: 1400
+  thumbnail: /assets/images/color-midpoint-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 448
+  caption: Zero uses the palette center while the legend keeps a linear value axis.
+  summary: Set an explicit reference value for continuous color.
+  actions: createScatterPlot · encodeColor · editScale
+  tasks: quantitative color comparison
+  url: /api/scales/continuous-color/#explicit-color-midpoint

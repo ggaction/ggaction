@@ -538,7 +538,7 @@ source row의 prototype을 바꾸거나 결과를 누락하지 않는다. 뒤 op
 
 ## `createScale`
 
-- Signature: `createScale({ id, type?, domain?, range?, nice?, zero?, clamp?, reverse?, base?, exponent?, constant?, paddingInner?, paddingOuter?, padding?, align?, palette?, interpolate?, radialMapping?, unknown? })`.
+- Signature: `createScale({ id, type?, domain?, range?, nice?, zero?, clamp?, reverse?, base?, exponent?, constant?, paddingInner?, paddingOuter?, padding?, align?, palette?, interpolate?, midpoint?, radialMapping?, unknown? })`.
 - `id`: 필수 user-defined scale ID.
 - `type`: `"linear" | "log" | "pow" | "sqrt" | "symlog" | "time" | "band" | "point" | "ordinal" | "sequential" | "quantize" | "quantile" | "threshold"`, 기본 linear.
 - `domain`: `"auto"` 또는 type-valid array. Direct continuous/time scale은 두 finite numeric values를
@@ -561,6 +561,7 @@ source row의 prototype을 바꾸거나 결과를 누락하지 않는다. 뒤 op
   `range.palette`가 같은 validation과 resolution을 사용한다. `interpolate`는 sequential 전용이고
   기본은 `"rgb"`다. Public palette `count`, sequential explicit range와 discretized explicit color
   range cardinality는 최대 `10,000`이다.
+- `midpoint`: sequential quantitative color의 finite 기준값 또는 `"auto"`. Numeric 값은 최종 domain의 두 끝 사이에 엄격히 있어야 한다. Auto domain은 consumer resolution 때 검증한다. 생성 생략은 endpoint-linear mapping, 편집 생략은 보존이며 `"auto"`는 semantic leaf를 제거한다. Temporal/position/ordinal/discretized numeric midpoint는 오류다. 양쪽 domain 구간을 color parameter [0,.5]/[.5,1]로 나누고 reverse/clamp/interpolation을 기존 mapper에서 적용한다. Palette 중앙색이 항상 neutral/white라고 추론하지 않는다.
 - `unknown`은 direct unattached scale에서는 channel을 알 수 없으므로 그대로 저장한다. Consumer가 attach될 때
   concrete channel fallback validation과 supported item-grain policy를 적용한다.
 - Standalone `createScale`/`editScale`은 위의 전체 vocabulary를 유지하지만 action 안의 nested scale은
@@ -586,7 +587,7 @@ type ScaleType =
   | "sequential" | "quantize" | "quantile" | "threshold";
 ```
 
-- Implemented: `createScale({ id: UserId; type?: ScaleType; domain?: ContinuousDomain | OrdinalDomain; range?: "auto" | readonly unknown[]; nice?: boolean; zero?: boolean; clamp?: boolean; reverse?: boolean; base?: PositiveFiniteExceptOne; exponent?: PositiveFinite; constant?: PositiveFinite; paddingInner?: UnitIntervalLessThan1; paddingOuter?: NonNegativeFinite; padding?: NonNegativeFinite; align?: UnitInterval; palette?: Palette; interpolate?: ContinuousColorInterpolation; radialMapping?: "area" | "radius-length"; unknown?: unknown })`; type별 validation이 값을 제한한다. `time`은 유일한 UTC temporal token이다.
+- Implemented: `createScale({ id: UserId; type?: ScaleType; domain?: ContinuousDomain | OrdinalDomain; range?: "auto" | readonly unknown[]; nice?: boolean; zero?: boolean; clamp?: boolean; reverse?: boolean; base?: PositiveFiniteExceptOne; exponent?: PositiveFinite; constant?: PositiveFinite; paddingInner?: UnitIntervalLessThan1; paddingOuter?: NonNegativeFinite; padding?: NonNegativeFinite; align?: UnitInterval; palette?: Palette; interpolate?: ContinuousColorInterpolation; midpoint?: number | "auto"; radialMapping?: "area" | "radius-length"; unknown?: unknown })`; type별 validation이 값을 제한한다. `time`은 유일한 UTC temporal token이다.
 - Maybe Future (NOT IMPLEMENTED): `{ type?: "identity" | "bin-ordinal" }`.
 - Proposed (NOT IMPLEMENTED): —
 
@@ -620,9 +621,10 @@ type ScaleType =
 ## `editScale`
 
 - Implemented: immutable edits for every current `ScaleType`.
-- Signature: `editScale({ id?, type?, domain?, range?, nice?, zero?, clamp?, reverse?, base?, exponent?, constant?, paddingInner?, paddingOuter?, padding?, align?, palette?, interpolate?, radialMapping?, unknown? })`.
+- Signature: `editScale({ id?, type?, domain?, range?, nice?, zero?, clamp?, reverse?, base?, exponent?, constant?, paddingInner?, paddingOuter?, padding?, align?, palette?, interpolate?, midpoint?, radialMapping?, unknown? })`.
 - `id`는 existing scale을 선택한다. 생략하면 current scale, 그렇지 않으면 유일한 scale을 사용하며
   안전하게 하나를 정할 수 없으면 explicit ID를 요구한다.
+- `midpoint`는 create contract의 동일한 검증·mapping·reset을 따르며 연결된 모든 mark와 gradient legend를 갱신한다. Type이 바뀌면 이전 midpoint를 제거하고 돌아올 때 복구하지 않는다. Evidence: `test/unit/actions/scales/midpoint.test.js`, `test/unit/grammar/scales/midpoint.test.js`, `test/charts/color-midpoint/`.
 - 최소 한 editable property가 필요하다. `unknown: undefined`는 existing fallback을 제거한다.
 - `domain`/`range`의 `"auto"`는 reset이고 omission은 기존 값을 보존한다. Explicit domain은
   `nice`/`zero`보다 우선하며 `reverse`는 auto 또는 explicit 최종 range에 적용된다.
@@ -667,7 +669,7 @@ type EditableCurrentScale = {
   padding?: NonNegativeFinite;
   align?: UnitInterval;
   palette?: Palette;
-  interpolate?: ContinuousColorInterpolation;
+  interpolate?: ContinuousColorInterpolation; midpoint?: number | "auto";
   unknown?: unknown;
 };
 ```

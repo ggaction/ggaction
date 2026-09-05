@@ -19,6 +19,7 @@ export function mapScaleConsumerValues(values, resolvedScale, channel) {
       resolvedScale.range,
       {
         interpolation: resolvedScale.interpolate,
+        midpoint: resolvedScale.midpoint,
         clamp: resolvedScale.clamp ?? false,
         ...(Object.hasOwn(resolvedScale, "unknown")
           ? { unknown: resolvedScale.unknown }

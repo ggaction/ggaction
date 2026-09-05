@@ -1935,7 +1935,7 @@ extension actions.
 | Semantic primitive | `editSemantic({ property, value })` or `editSemantic({ property, remove: true })` |
 | Graphic primitive | `createGraphics({ id, type, length?, parent?, before?, after? })` |
 | Graphic primitive | `editGraphics({ target, property, value })` or `editGraphics({ target, remove: true })` |
-| Scale actions | `createScale({ id, type?, domain?, range?, nice?, zero?, clamp?, reverse?, base?, exponent?, constant?, paddingInner?, paddingOuter?, padding?, align?, palette?, interpolate?, unknown? })`, `editScale({ id?, type?, domain?, range?, nice?, zero?, clamp?, reverse?, base?, exponent?, constant?, paddingInner?, paddingOuter?, padding?, align?, palette?, interpolate?, unknown? })` |
+| Scale actions | `createScale({ id, type?, domain?, range?, nice?, zero?, clamp?, reverse?, base?, exponent?, constant?, paddingInner?, paddingOuter?, padding?, align?, palette?, interpolate?, midpoint?, radialMapping?, unknown? })`, `editScale({ id?, type?, domain?, range?, nice?, zero?, clamp?, reverse?, base?, exponent?, constant?, paddingInner?, paddingOuter?, padding?, align?, palette?, interpolate?, midpoint?, radialMapping?, unknown? })` |
 
 Importing an extension package may register one validated batch of wrapped
 actions on the complete `chart()` program. Registration does not affect

@@ -72,4 +72,4 @@
 
 [결과](RESULTS_V1.md), [11개 승인 표현과의 비교](implementation-v1-results.json), [B 검토](BUNDLE_REVIEW.md).
 Current direct 179 / Planned actions 2, capabilities 2이다. W1/W2의 공개 동작은 구현했으며
-B 승인 후 같은 tarball의 Full/Basic/SVG gzip guard와 전체 installed consumer는 통과했다. W4는 [별도 결과](RESULTS_W4.md)처럼 구현·검증했다. W3는 [별도 결과](RESULTS_W3.md)처럼 구현·검증했다. 현재 Current direct 181 / Planned actions 0, capability 1이다. W5 및 Phase 전체 통합 검증은 미완료다.
+B 승인 후 같은 tarball의 Full/Basic/SVG gzip guard와 전체 installed consumer는 통과했다. W4는 [별도 결과](RESULTS_W4.md)처럼 구현·검증했다. W3는 [별도 결과](RESULTS_W3.md)처럼 구현·검증했다. 현재 Current direct 181 / Planned actions 0, capability 1이다. W5는 [midpoint·V3 2개 변형](RESULTS_MIDPOINT.md)을 구현·검증했고 family transition 및 Phase 전체 통합 검증은 미완료다.

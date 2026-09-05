@@ -442,23 +442,19 @@
             "values": [
               {
                 "x": 0,
-                "value": -2,
-                "category": "0"
+                "value": -2
               },
               {
                 "x": 1,
-                "value": 0,
-                "category": "1"
+                "value": 0
               },
               {
                 "x": 2,
-                "value": 4,
-                "category": "2"
+                "value": 4
               },
               {
                 "x": 3,
-                "value": 8,
-                "category": "3"
+                "value": 8
               }
             ]
           }
@@ -469,6 +465,11 @@
             "id": "m",
             "x": "x",
             "y": "value",
+            "point": {
+              "radius": 7,
+              "stroke": "#334155",
+              "strokeWidth": 1
+            },
             "color": {
               "field": "value",
               "fieldType": "quantitative",
@@ -486,13 +487,21 @@
                 ],
                 "midpoint": 0
               }
+            },
+            "guides": {
+              "legend": {
+                "count": 3
+              }
             }
           }
         }
       ],
       "independentOracle": "At values -2,0,4,8 colors blue,white,#ff8080,red; neutral at 20 percent of value-linear legend, not 50 percent.",
-      "primitiveStatus": "not-authored",
-      "publicStatus": "not-implemented"
+      "primitiveStatus": "rendered",
+      "publicStatus": "implemented-verified",
+      "fixtureSource": "examples/color-midpoint/program.js",
+      "manifestSource": "test/charts/color-midpoint/manifest.js",
+      "resultEvidence": "RESULTS_MIDPOINT.md"
     },
     {
       "id": "color-midpoint-clear",
@@ -519,23 +528,19 @@
             "values": [
               {
                 "x": 0,
-                "value": -2,
-                "category": "0"
+                "value": -2
               },
               {
                 "x": 1,
-                "value": 0,
-                "category": "1"
+                "value": 0
               },
               {
                 "x": 2,
-                "value": 4,
-                "category": "2"
+                "value": 4
               },
               {
                 "x": 3,
-                "value": 8,
-                "category": "3"
+                "value": 8
               }
             ]
           }
@@ -546,6 +551,11 @@
             "id": "m",
             "x": "x",
             "y": "value",
+            "point": {
+              "radius": 7,
+              "stroke": "#334155",
+              "strokeWidth": 1
+            },
             "color": {
               "field": "value",
               "fieldType": "quantitative",
@@ -563,6 +573,11 @@
                 ],
                 "midpoint": 0
               }
+            },
+            "guides": {
+              "legend": {
+                "count": 3
+              }
             }
           }
         },
@@ -575,8 +590,11 @@
         }
       ],
       "independentOracle": "Same endpoint-linear mapping as legacy sequential; no stored midpoint remains.",
-      "primitiveStatus": "not-authored",
-      "publicStatus": "not-implemented"
+      "primitiveStatus": "rendered",
+      "publicStatus": "implemented-verified",
+      "fixtureSource": "examples/color-midpoint/program.js",
+      "manifestSource": "test/charts/color-midpoint/manifest.js",
+      "resultEvidence": "RESULTS_MIDPOINT.md"
     },
     {
       "id": "point-gradient-to-interval",

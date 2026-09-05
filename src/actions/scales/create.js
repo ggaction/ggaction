@@ -35,7 +35,7 @@ const CREATE_SCALE_OPTIONS = Object.freeze([
   "padding",
   "align",
   "palette",
-  "interpolate",
+  "interpolate", "midpoint",
   "radialMapping", "unknown"
 ]);
 
@@ -133,7 +133,7 @@ export const createScale = action(
 
     for (const property of [
       "nice", "zero", "clamp", "reverse", "base", "exponent", "constant",
-      "paddingInner", "paddingOuter", "padding", "align", "interpolate",
+      "paddingInner", "paddingOuter", "padding", "align", "interpolate", "midpoint",
       "radialMapping", "unknown"
     ]) {
       if (definition[property] === undefined) continue;

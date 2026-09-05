@@ -1,3 +1,4 @@
+import { createMidpoint } from "./color-midpoint/program.js";
 import { createRoseHole } from "./radial-sectors/program.js";
 import { createLinkedThetaLegend } from "./theta-legend-order/program.js";
 import { createAreaSimple } from "./area-layout/program.js";
@@ -100,6 +101,12 @@ function example({ id, data, width, height, createProgram, ...options }) {
 }
 
 export const PUBLIC_CHARTS = Object.freeze([
+  example({
+    id: "color-midpoint", data: {}, width: 1000, height: 700, docsGroup: "tutorials",
+    createProgram: () => createMidpoint(),
+    browser: { path: "color-midpoint/", canvas: "#chart",
+      state: { global: "__ggactionExample", expected: { id: "color-midpoint", width: 1000, height: 700 } } }
+  }),
   example({
     id: "radial-sectors", data: {}, width: 1000, height: 700, docsGroup: "tutorials",
     createProgram: () => createRoseHole(),

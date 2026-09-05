@@ -14,6 +14,7 @@ import {
   validateScaleType,
   validateScaleTypeForRole,
   validateScaleUnknown,
+  validateSequentialMidpoint,
   validateSequentialColorRange,
   validateShapeRange,
   validateSizeRange,
@@ -178,6 +179,12 @@ function normalizeDefinition(scale, channel, consumers, patch) {
     definition.domain.some(value => value < 0)
   ) {
     throw new RangeError("StrokeWidth scale domain cannot contain negative values.");
+  }
+  validateSequentialMidpoint(definition.midpoint, type, definition.domain);
+  if (definition.midpoint !== undefined && consumers.some(
+    consumer => consumer.channel !== "color" || consumer.encoding.fieldType !== "quantitative"
+  )) {
+    throw new Error("Scale midpoint requires quantitative color consumers.");
   }
   const typeChanged = type !== scale.type;
   const unknown = Object.hasOwn(patch, "unknown")

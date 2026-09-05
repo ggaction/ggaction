@@ -1,5 +1,5 @@
 import { validateMeasuredRadiusScale } from "./radial.js";
-import { validateContinuousColorInterpolation } from "./color.js";
+import { validateContinuousColorInterpolation, validateSequentialMidpoint } from "./color.js";
 import { isTransformedScaleType } from "./mapping.js";
 import {
   normalizeTransformParameters,
@@ -137,6 +137,11 @@ export function normalizeScaleDefinition({
   } else if (interpolate !== undefined) {
     throw new Error(`Scale type "${type}" does not support interpolate.`);
   }
+
+  const midpoint = validateSequentialMidpoint(
+    retainedValue(previous, patch, defaults, "midpoint", typeChanged), type, definition.domain
+  );
+  if (midpoint !== undefined) definition.midpoint = midpoint;
 
   if (type === "band") {
     validateBandParameters(definition, previous, patch, defaults, typeChanged);

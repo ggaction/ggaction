@@ -21,6 +21,7 @@ import {
   resolveStrokeWidthRange,
   resolveTransformedDomain,
   SCALE_ROLES,
+  validateSequentialMidpoint,
   validateLinearScaleType,
   validateOrdinalScaleType,
   validateScaleTypeForRole,
@@ -139,6 +140,7 @@ function resolveContinuousScale({
             : validateLinearScaleType(scale.type),
     domain,
     range,
+    ...(scale.midpoint === undefined ? {} : { midpoint: scale.midpoint }),
     ...(scale.clamp === undefined ? {} : { clamp: scale.clamp }),
     ...(scale.radialMapping === undefined ? {} : { radialMapping: scale.radialMapping }),
     ...(scale.type === "log"
@@ -269,6 +271,12 @@ export function resolveScaleMaterialization({
     isOrdinalOffset,
     discretizedScale
   });
+  validateSequentialMidpoint(scale.midpoint, scale.type, domain);
+  if (scale.midpoint !== undefined && (channel !== "color" || consumers.some(
+    consumer => consumer.encoding.fieldType !== "quantitative"
+  ))) {
+    throw new Error("Scale midpoint requires quantitative color consumers.");
+  }
   validateMeasuredRadiusConsumers({ scale, domain, range, consumers, markConfigs, thetaScales });
   if (channel === "shape" && domain.length > range.length) {
     throw new Error(

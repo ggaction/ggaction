@@ -4,6 +4,7 @@ import { validateKeys } from "../../core/validation.js";
 import {
   validateColorRange,
   validateContinuousColorInterpolation,
+  validateSequentialMidpoint,
   validateLinearScaleType,
   validateOpacityRange,
   validateOrdinalDomain,
@@ -49,7 +50,7 @@ const POSITION_OPTIONS = [
 const COLOR_OPTIONS = [...BASE_OPTIONS, "palette", "unknown"];
 const SEQUENTIAL_COLOR_OPTIONS = [
   ...COLOR_OPTIONS,
-  "interpolate",
+  "interpolate", "midpoint",
   ...CLAMP_REVERSE
 ];
 const OPACITY_OPTIONS = [...BASE_OPTIONS, ...BOOLEAN_OPTIONS, "unknown"];
@@ -210,6 +211,15 @@ export function resolveSequentialColorScaleDefinition(
       options.interpolate ?? existing?.interpolate ?? "rgb"
     )
   };
+  const midpoint = validateSequentialMidpoint(
+    Object.hasOwn(options, "midpoint") ? options.midpoint : existing?.midpoint, type, scale.domain
+  );
+  if (midpoint !== undefined) {
+    if (fieldType !== "quantitative") {
+      throw new Error("Scale midpoint requires quantitative color consumers.");
+    }
+    scale.midpoint = midpoint;
+  }
   return withScaleUnknown(
     assignOptions(scale, options, existing, CLAMP_REVERSE),
     { ...existing, ...options },

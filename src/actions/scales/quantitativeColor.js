@@ -7,7 +7,7 @@ const OPTIONS = Object.freeze([
   "type",
   "domain",
   "range",
-  "interpolate",
+  "interpolate", "midpoint",
   "clamp",
   "reverse",
   "unknown"
@@ -30,8 +30,11 @@ export const setQuantitativeColorScale = action(
       );
     }
     let next = this;
+    if (existing?.midpoint !== undefined && args.midpoint === undefined) {
+      next = next.editSemantic({ property: `scale[${args.id}].midpoint`, remove: true });
+    }
     for (const property of [
-      "type", "domain", "range", "interpolate", "clamp", "reverse", "unknown"
+      "type", "domain", "range", "interpolate", "midpoint", "clamp", "reverse", "unknown"
     ]) {
       if (!Object.hasOwn(args, property)) continue;
       if (existing?.[property] === args[property]) continue;

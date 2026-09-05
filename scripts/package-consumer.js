@@ -350,6 +350,11 @@ async function testNodeConsumer(directory) {
         .resolvedScales.x.domain,
       ["Beta", "Alpha"]
     );
+    const midpointPlot = chart().createCanvas({ width: 1000, height: 700, margin: 150 })
+      .createData({ values: [-2, 0, 4, 8].map((value, x) => ({ value, x })) })
+      .createScatterPlot({ id: "midpoint", x: "x", y: "value", color: { field: "value", fieldType: "quantitative", scale: { id: "midpointColor", midpoint: 0, range: ["blue", "white", "red"] } } });
+    assert.deepEqual(midpointPlot.graphicSpec.objects.midpoint.items.map(item => item.properties.fill), ["#0000ff", "#ffffff", "#ff8080", "#ff0000"]);
+    assert.equal(midpointPlot.editScale({ id: "midpointColor", midpoint: "auto" }).resolvedScales.midpointColor.midpoint, undefined);
     const orderedPie = chart().createCanvas({ width: 1000, height: 700, margin: 150 })
       .createData({ values: [{ category: "A", value: 2 }, { category: "B", value: 3 }, { category: "C", value: 4 }] })
       .createPiePlot({ category: "category", value: "value", aggregate: "sum" })
@@ -932,6 +937,11 @@ async function testTypeScriptConsumer(directory) {
 
     const program: ChartProgram = chart().createCanvas({ width: 100, height: 100 });
     const roseOptions: import("ggaction").CreateRosePlotOptions = { category: "category", radiusScale: { range: [70, 140] } };
+    program.createScale({ id: "midpoint", type: "sequential", midpoint: 0 });
+    program.editScale({ id: "midpoint", midpoint: "auto" });
+    program.encodeColor({ field: "value", fieldType: "quantitative", scale: { midpoint: 0 } });
+    // @ts-expect-error temporal color cannot carry a numeric midpoint
+    program.encodeColor({ field: "date", fieldType: "temporal", scale: { midpoint: 0 } });
     program.createRosePlot(roseOptions);
     const radialOptions: import("ggaction").CreateRadialBarPlotOptions = { category: "category", value: "value", aggregate: "sum" };
     program.createRadialBarPlot(radialOptions);

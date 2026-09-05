@@ -3301,14 +3301,14 @@
   "plannedActions": [],
   "plannedCapabilities": [
     {
-      "id": "sequential-midpoint-and-transitions",
-      "name": "Sequential midpoint and transitions",
+      "id": "color-scale-and-legend-transitions",
+      "name": "Color scale and legend transitions",
       "kind": "parameter",
       "status": "planned",
       "readiness": "accepted",
       "contract": {
         "file": "agent_docs/contract/planned/QUANTITATIVE_AUTHORING.md",
-        "anchor": "sequential-midpoint-and-transitions"
+        "anchor": "color-scale-and-legend-transitions"
       }
     }
   ],

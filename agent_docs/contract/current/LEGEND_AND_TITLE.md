@@ -72,6 +72,7 @@ type TitleWrap = "word" | "character";
 - `border`: `false | true | { color?, lineWidth?, padding?, background? }`; false가 default이며 true는
   default bordered background를 만든다.
 - `count`: integer `2..10,000`; size, stroke-width, gradient tick-label 또는 opacity sample count이며 default `5`.
+- Sequential midpoint가 있으면 gradient strip은 mark와 같은 mapper로 value를 색에 대응한다. Tick 위치는 value-linear이며 midpoint를 base count samples에 추가·deduplicate한다. Sample을 palette의 균등 위치로 오해하지 않는다. Evidence: `test/charts/color-midpoint/`, `test/unit/actions/scales/midpoint.test.js`.
 - `gradient`: sequential color 전용 `{ length?, thickness? }`, defaults `120`과 `12`.
 - Discretized quantitative color는 right/vertical interval swatches를 추론하고 `offset`, `itemGap`,
   swatch width/height/stroke, label/title style을 concrete graphics로 materialize한다.

@@ -240,6 +240,12 @@ Compare category sums with proportional area or radial length.
 
 Representative actions: `createRosePlot`, `createRadialBarPlot`, `encodeR`. [Documentation](https://ggaction.github.io/ggaction/tutorials/polar-arcs/#measured-rose-and-radial-bar-plots).
 
+### [A meaningful color midpoint](./color-midpoint/)
+
+Set an explicit reference value for continuous color.
+
+Representative actions: `createScatterPlot`, `encodeColor`, `editScale`. [Documentation](https://ggaction.github.io/ggaction/api/scales/continuous-color/#explicit-color-midpoint).
+
 ## Development fixtures
 
 Other directories under `examples/` support focused browser, package, and

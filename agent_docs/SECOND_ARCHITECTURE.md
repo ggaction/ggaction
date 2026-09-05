@@ -1404,6 +1404,7 @@ Consumer resolution은 mark policy를 고려한다.
 - grouped bar scalar aggregation은 final x/category cell grain에서 domain을 계산한다.
 - histogram x는 shared bin policy를, y는 final stacked count를 사용한다.
 - appearance scale은 deterministic ordinal domain과 palette/range를 사용한다.
+- quantitative sequential midpoint는 semantic scale 한 곳에 저장한다. Color grammar가 두 구간 mapping과 범위 검증을 소유하며 mark와 gradient strip은 같은 mapper를 사용한다. Legend의 값 위치와 midpoint tick은 value-linear다. Exact policy는 Current CORE/ENCODINGS/LEGEND_AND_TITLE을 따른다.
 - point-item `unknown`이 있으면 invalid inputs를 domain inference에서 제외하고 final mapping에서 channel-valid
   fallback을 적용한다.
 - palette registry는 accepted name, family, sampling을 소유하고 concrete CSS color array만

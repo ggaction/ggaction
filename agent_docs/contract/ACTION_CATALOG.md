@@ -199,7 +199,7 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 
 | Kind | Capability | Readiness | Contract |
 | --- | --- | --- | --- |
-| parameter | Sequential midpoint and transitions | accepted | [Open](planned/QUANTITATIVE_AUTHORING.md#sequential-midpoint-and-transitions) |
+| parameter | Color scale and legend transitions | accepted | [Open](planned/QUANTITATIVE_AUTHORING.md#color-scale-and-legend-transitions) |
 
 ## Internal inventories
 

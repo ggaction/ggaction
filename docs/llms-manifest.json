@@ -1412,10 +1412,11 @@
         "continuous-color-scales",
         "named-palettes",
         "continuous-point-and-aggregate-bar-color",
+        "explicit-color-midpoint",
         "related"
       ],
-      "bytes": 3507,
-      "sha256": "607d73aa1935dc7091c6bd5dd13af93efa1c6177a0eb947fe3ab8499e66eede1"
+      "bytes": 5577,
+      "sha256": "36e3939971aa34c823d5e4fc5e6e7addd393385ef123f5a0b3fbdd109d2eab42"
     },
     {
       "order": 90,
@@ -2022,8 +2023,8 @@
         "extension-actions",
         "related"
       ],
-      "bytes": 1710,
-      "sha256": "4310217f38cc2c124545f4d628fd8db6711fad1286a21023233fe8936bbf99fa"
+      "bytes": 1764,
+      "sha256": "065b2ffd4b7883994d7fe3f19ae5d67a3cc4375e6e8b18274aae2f4b245ee61c"
     },
     {
       "order": 122,

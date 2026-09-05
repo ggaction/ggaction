@@ -619,10 +619,22 @@
           ],
           "scope": "명시적 semantic midpoint를 추가하고 sequential/discretized/diverging recipe transition을 shared consumers 전체와 함께 preflight한다.",
           "acceptance": "비대칭 domain에서 midpoint의 neutral color 검증. Legend 유무·복수 mark에서 전환 동일. Incompatible consumer 하나면 전부 rollback.",
-          "contractEvidence": "phase4/CONTRACT_REVIEW.md"
+          "contractEvidence": "phase4/CONTRACT_REVIEW.md",
+          "implementationStatus": "in-progress",
+          "implementationEvidence": "phase4/RESULTS_MIDPOINT.md",
+          "completedScope": [
+            "sequential-midpoint-grammar-create-edit-encode",
+            "value-linear-gradient-midpoint-and-reset",
+            "V3-midpoint-public-primitive-parity"
+          ],
+          "remainingScope": [
+            "atomic-color-scale-and-legend-family-transitions",
+            "V3-point-bar-transition-parity",
+            "phase-integration"
+          ]
         }
       ],
-      "activity": "implementing-midpoint-and-scale-transitions",
+      "activity": "implementing-color-scale-and-legend-transitions",
       "contractEvidence": "phase4/CONTRACT_REVIEW.md",
       "baselineEvidence": "phase4/baseline-results.json",
       "baselineCommit": "93dceb3761e170207058e6a7280060fedd471244",
@@ -1604,7 +1616,7 @@
       "id": "D18",
       "title": "Diverging midpoint와 scale/legend 전환",
       "kind": "design-issue",
-      "status": "proposed",
+      "status": "partially-implemented",
       "primaryPhase": 4,
       "primaryWorkPackage": "R6-P4-W5",
       "relatedWorkPackages": [
@@ -1617,7 +1629,8 @@
       "recommended": "명시적 semantic midpoint를 추가하고 sequential/discretized/diverging recipe transition을 shared consumers 전체와 함께 preflight한다.",
       "acceptance": "비대칭 domain에서 midpoint의 neutral color 검증. Legend 유무·복수 mark에서 전환 동일. Incompatible consumer 하나면 전부 rollback.",
       "evidence": "audit/REPORT.md: D18",
-      "disposition": "implementation-or-explicit-contract-decision-proposed"
+      "disposition": "Quantitative midpoint and value-linear gradient consumers are implemented; atomic color scale and legend family transitions remain.",
+      "implementationEvidence": "phase4/RESULTS_MIDPOINT.md"
     },
     {
       "id": "D19",

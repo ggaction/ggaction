@@ -9554,6 +9554,49 @@ aggregate. A different quantitative field requires an explicit `aggregate`.
 The automatic domain is derived from those final aggregate values, not from
 the unaggregated source rows.
 
+## Explicit color midpoint
+
+A quantitative sequential scale can use `midpoint` to assign the palette's center
+sample to a meaningful value. In this complete example, zero is white even though
+the domain runs from -2 to 8:
+
+```javascript
+import { chart } from "ggaction";
+const layout = { width: 1000, height: 700, margin: 150 };
+const rows = [-2, 0, 4, 8].map((value, x) => ({ x, value }));
+const program = chart().createCanvas(layout)
+  .createData({ id: "data", values: rows })
+  .createScatterPlot({
+    id: "m", x: "x", y: "value",
+    point: { radius: 7, stroke: "#334155", strokeWidth: 1 },
+    color: { field: "value", fieldType: "quantitative", scale: {
+      id: "colors", type: "sequential", domain: [-2, 8],
+      range: ["blue", "white", "red"], midpoint: 0
+    } },
+    guides: { legend: { count: 3 } }
+  });
+```
+
+The executable example shown above is shared with the
+render and browser checks. Values -2, 0, 4, and 8 receive blue, white, `#ff8080`,
+and red. A palette with a different center sample uses that color instead.
+The legend keeps value-linear positions: zero appears 20% of the way from -2
+to 8. Its ticks include the midpoint once; `count` controls the base samples.
+This example uses three base samples so the added zero label remains readable.
+
+`midpoint` must be finite and strictly inside the resolved domain. Numeric
+midpoints are supported only for quantitative sequential color, including Point,
+aggregate Bar, and Rect. Temporal, positional, categorical, and discretized scales
+do not accept a numeric midpoint. Automatic domains are checked when their
+consumers resolve. `clamp`, `reverse`, and all supported interpolation methods
+use the same mapping for marks and legends.
+
+Use `program.editScale({ id: "colors", midpoint: "auto" })` to remove the policy
+and restore interpolation across the domain endpoints. Omitting midpoint in an
+edit or encoding reassignment preserves it. Direct `createScale` accepts the
+same option. Scale-family changes still follow the existing legend compatibility
+rules described in the scale reference.
+
 ## Related
 
 [Scale overview](./api/scales/) · [Encodings](./api/encodings/) · [Troubleshooting](./troubleshooting/)
@@ -13916,7 +13959,7 @@ extension actions.
 | Semantic primitive | `editSemantic({ property, value })` or `editSemantic({ property, remove: true })` |
 | Graphic primitive | `createGraphics({ id, type, length?, parent?, before?, after? })` |
 | Graphic primitive | `editGraphics({ target, property, value })` or `editGraphics({ target, remove: true })` |
-| Scale actions | `createScale({ id, type?, domain?, range?, nice?, zero?, clamp?, reverse?, base?, exponent?, constant?, paddingInner?, paddingOuter?, padding?, align?, palette?, interpolate?, unknown? })`, `editScale({ id?, type?, domain?, range?, nice?, zero?, clamp?, reverse?, base?, exponent?, constant?, paddingInner?, paddingOuter?, padding?, align?, palette?, interpolate?, unknown? })` |
+| Scale actions | `createScale({ id, type?, domain?, range?, nice?, zero?, clamp?, reverse?, base?, exponent?, constant?, paddingInner?, paddingOuter?, padding?, align?, palette?, interpolate?, midpoint?, radialMapping?, unknown? })`, `editScale({ id?, type?, domain?, range?, nice?, zero?, clamp?, reverse?, base?, exponent?, constant?, paddingInner?, paddingOuter?, padding?, align?, palette?, interpolate?, midpoint?, radialMapping?, unknown? })` |
 
 Importing an extension package may register one validated batch of wrapped
 actions on the complete `chart()` program. Registration does not affect
