@@ -3,7 +3,7 @@
   "packageVersion": "0.0.12",
   "typeSource": "types/program.d.ts",
   "errorPolicy": "An empty errors array means the compact card has no curated error override; consult the canonical route for validation, inference, and recovery behavior.",
-  "count": 189,
+  "count": 194,
   "cards": [
     {
       "schemaVersion": 2,
@@ -5466,6 +5466,290 @@
       "snippet": "program.createViolinPlot({ x: \"x\", y: \"y\" })",
       "errors": [],
       "route": "/reference/actions/statistics/#createviolinplot"
+    },
+    {
+      "schemaVersion": 2,
+      "name": "createParallelAxes",
+      "layer": "user-facing",
+      "domain": "axes",
+      "summary": "Full-only field-selected Parallel guides.",
+      "signature": "createParallelAxes(options?: ParallelAxesOptions): ChartProgram;",
+      "intents": [
+        "create parallel axes",
+        "create",
+        "add",
+        "axis guide",
+        "scale annotation",
+        "parallel axes",
+        "dimension axes"
+      ],
+      "lifecycle": "Aggregate create-only",
+      "resources": {
+        "prerequisites": [
+          "compatible scale or encoding context"
+        ],
+        "owns": [
+          "parallel axes"
+        ],
+        "idOptions": [
+          "target",
+          "coordinate"
+        ]
+      },
+      "options": [
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "coordinate",
+          "required": false,
+          "type": "string | undefined"
+        }
+      ],
+      "callPatterns": [
+        "createParallelAxes({ target?, coordinate? })"
+      ],
+      "snippet": "program.createParallelAxes({})",
+      "errors": [],
+      "route": "/reference/actions/advanced/#createparallelaxes-createparallelaxis-editparallelaxis-removeparallelaxis-removeparallelaxes"
+    },
+    {
+      "schemaVersion": 2,
+      "name": "createParallelAxis",
+      "layer": "user-facing",
+      "domain": "axes",
+      "summary": "Full-only field-selected Parallel guides.",
+      "signature": "createParallelAxis(options: CreateParallelAxisOptions): ChartProgram;",
+      "intents": [
+        "create parallel axis",
+        "create",
+        "add",
+        "axis guide",
+        "scale annotation",
+        "parallel dimension axis",
+        "field axis"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "compatible scale or encoding context"
+        ],
+        "owns": [
+          "parallel dimension axis"
+        ],
+        "idOptions": [
+          "target"
+        ]
+      },
+      "options": [
+        {
+          "name": "field",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "line",
+          "required": false,
+          "type": "false | AxisLineStyleOptions | undefined"
+        },
+        {
+          "name": "title",
+          "required": false,
+          "type": "false | ParallelAxisTitleOptions | undefined"
+        },
+        {
+          "name": "ticksAndLabels",
+          "required": false,
+          "type": "false | (ParallelAxisTickSelection & { ticks?: AxisTickStyleOptions | undefined; labels?: AxisLabelStyleOptions | undefined; }) | undefined"
+        },
+        {
+          "name": "ticks",
+          "required": false,
+          "type": "false | ParallelAxisTicksOptions | undefined"
+        },
+        {
+          "name": "labels",
+          "required": false,
+          "type": "false | ParallelAxisLabelsOptions | undefined"
+        }
+      ],
+      "callPatterns": [
+        "createParallelAxis({ field, target?, line?, title?, ticksAndLabels?, ticks?, labels? })"
+      ],
+      "snippet": "program.createParallelAxis({ field: \"value\" })",
+      "errors": [],
+      "route": "/reference/actions/advanced/#createparallelaxes-createparallelaxis-editparallelaxis-removeparallelaxis-removeparallelaxes"
+    },
+    {
+      "schemaVersion": 2,
+      "name": "editParallelAxis",
+      "layer": "user-facing",
+      "domain": "axes",
+      "summary": "Full-only field-selected Parallel guides.",
+      "signature": "editParallelAxis(options: EditParallelAxisOptions): ChartProgram;",
+      "intents": [
+        "edit parallel axis",
+        "edit",
+        "change",
+        "axis guide",
+        "scale annotation",
+        "parallel dimension axis",
+        "field axis"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing parallel dimension axis",
+          "compatible scale or encoding context"
+        ],
+        "owns": [],
+        "idOptions": [
+          "target"
+        ]
+      },
+      "options": [
+        {
+          "name": "field",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "line",
+          "required": false,
+          "type": "false | AxisLineStyleOptions | undefined"
+        },
+        {
+          "name": "title",
+          "required": false,
+          "type": "false | ParallelAxisTitleOptions | undefined"
+        },
+        {
+          "name": "ticksAndLabels",
+          "required": false,
+          "type": "false | (ParallelAxisTickSelection & { ticks?: AxisTickStyleOptions | undefined; labels?: AxisLabelStyleOptions | undefined; }) | undefined"
+        },
+        {
+          "name": "ticks",
+          "required": false,
+          "type": "false | ParallelAxisTicksOptions | undefined"
+        },
+        {
+          "name": "labels",
+          "required": false,
+          "type": "false | ParallelAxisLabelsOptions | undefined"
+        }
+      ],
+      "callPatterns": [
+        "editParallelAxis({ field, target?, line?, title?, ticksAndLabels?, ticks?, labels? })"
+      ],
+      "snippet": "program.editParallelAxis({ field: \"value\" })",
+      "errors": [],
+      "route": "/reference/actions/advanced/#createparallelaxes-createparallelaxis-editparallelaxis-removeparallelaxis-removeparallelaxes"
+    },
+    {
+      "schemaVersion": 2,
+      "name": "removeParallelAxis",
+      "layer": "user-facing",
+      "domain": "axes",
+      "summary": "Full-only field-selected Parallel guides.",
+      "signature": "removeParallelAxis(options: RemoveParallelAxisOptions): ChartProgram;",
+      "intents": [
+        "remove parallel axis",
+        "remove",
+        "delete",
+        "axis guide",
+        "scale annotation",
+        "parallel dimension axis",
+        "field axis"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing parallel dimension axis",
+          "compatible scale or encoding context"
+        ],
+        "owns": [],
+        "idOptions": [
+          "target"
+        ]
+      },
+      "options": [
+        {
+          "name": "field",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | undefined"
+        }
+      ],
+      "callPatterns": [
+        "removeParallelAxis({ field, target? })"
+      ],
+      "snippet": "program.removeParallelAxis({ field: \"value\" })",
+      "errors": [],
+      "route": "/reference/actions/advanced/#createparallelaxes-createparallelaxis-editparallelaxis-removeparallelaxis-removeparallelaxes"
+    },
+    {
+      "schemaVersion": 2,
+      "name": "removeParallelAxes",
+      "layer": "user-facing",
+      "domain": "axes",
+      "summary": "Full-only field-selected Parallel guides.",
+      "signature": "removeParallelAxes(options?: ParallelAxesOptions): ChartProgram;",
+      "intents": [
+        "remove parallel axes",
+        "remove",
+        "delete",
+        "axis guide",
+        "scale annotation",
+        "parallel axes",
+        "dimension axes"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing parallel axes",
+          "compatible scale or encoding context"
+        ],
+        "owns": [],
+        "idOptions": [
+          "target",
+          "coordinate"
+        ]
+      },
+      "options": [
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "coordinate",
+          "required": false,
+          "type": "string | undefined"
+        }
+      ],
+      "callPatterns": [
+        "removeParallelAxes({ target?, coordinate? })"
+      ],
+      "snippet": "program.removeParallelAxes({})",
+      "errors": [],
+      "route": "/reference/actions/advanced/#createparallelaxes-createparallelaxis-editparallelaxis-removeparallelaxis-removeparallelaxes"
     },
     {
       "schemaVersion": 2,

@@ -384,6 +384,31 @@
     "layer": "user-facing",
     "domain": "statistics"
   },
+  "createParallelAxes": {
+    "operation": "create",
+    "layer": "user-facing",
+    "domain": "axes"
+  },
+  "createParallelAxis": {
+    "operation": "create",
+    "layer": "user-facing",
+    "domain": "axes"
+  },
+  "editParallelAxis": {
+    "operation": "edit",
+    "layer": "user-facing",
+    "domain": "axes"
+  },
+  "removeParallelAxis": {
+    "operation": "remove",
+    "layer": "user-facing",
+    "domain": "axes"
+  },
+  "removeParallelAxes": {
+    "operation": "remove",
+    "layer": "user-facing",
+    "domain": "axes"
+  },
   "createAxes": {
     "operation": "create",
     "layer": "user-facing",

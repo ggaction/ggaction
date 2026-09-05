@@ -190,12 +190,19 @@ test.before(async () => {
         .createData({ values: [{ first: 1, second: 4 }, { first: 2, second: 3 }] })
         .createParallelCoordinates({ dimensions: ["first", "second"], guides: { legend: false } })
         .encodeParallelCoordinates({ dimensions: ["second", "first"] });
-      render(revisedParallel, document.getElementById("parallel-reencoded").getContext("2d"));
+      const styledParallel = revisedParallel.removeParallelAxes().createParallelAxes()
+        .editParallelAxis({ field: "first", title: { text: "Primary" }, line: { color: "#7c3aed", lineWidth: 3 }, ticks: false })
+        .createParallelAxis({ field: "first", line: false, labels: false, title: false, ticks: {} })
+        .removeParallelAxis({ field: "second" });
+      render(styledParallel, document.getElementById("parallel-reencoded").getContext("2d"));
       document.querySelector("#status").textContent = "complete";
       window.__ggactionConsumer = {
         polarCanvas: [polarCanvas.width, polarCanvas.height],
         polarRemovedTitle: !renderToSVG(partialPolar).includes("Long radial title"),
         parallelTitles: revisedParallel.graphicSpec.objects.parallelAxisTitles.items.map(item => item.properties.text),
+        parallelStyledTitle: styledParallel.graphicSpec.objects.parallelAxisTitles.items[0].properties.text,
+        parallelStyledWidth: styledParallel.graphicSpec.objects.parallelAxisLines.items[0].properties.strokeWidth,
+        parallelStyledSVG: renderToSVG(styledParallel).includes("Primary"),
         parallelFirstLabel: revisedParallel.graphicSpec.objects.parallelAxisLabels.items[0].properties.text,
         polarRemovedAxis: emptyPolar.semanticSpec.guides.axis?.radius === undefined &&
           emptyPolar.guideConfigs.axis?.radius === undefined,
@@ -283,6 +290,9 @@ test("imports and renders the packed browser entries", async () => {
     polarRemovedTitle: true,
     parallelTitles: ["second", "first"],
     parallelFirstLabel: "3",
+    parallelStyledTitle: "Primary",
+    parallelStyledWidth: 3,
+    parallelStyledSVG: true,
     polarRemovedAxis: true,
     polarTitleY: 358,
     polarSharedAngle: 180,

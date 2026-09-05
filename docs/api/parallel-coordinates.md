@@ -140,3 +140,13 @@ programs are not implemented.
 
 [Basic Charts](./basic-charts.md) · [Coordinates](./coordinates.md) ·
 [Series encodings](./series-encodings.md) · [Selection and Highlighting](./appearance/selection-and-highlighting.md)
+
+## Edit a dimension axis
+
+Use `editParallelAxis({ field, line?, ticks?, labels?, ticksAndLabels?, title? })`
+to style or remove existing field components. For example, on an existing
+Parallel program, `program.editParallelAxis({ field: "Horsepower", title: { text: "Engine power" } })`
+preserves the other dimensions. Create missing components with `createParallelAxis`,
+remove a field with `removeParallelAxis`, or remove the complete guide with
+`removeParallelAxes`. See [Parallel axis lifecycle](axes.md) for exact options,
+defaults, restoration and dimension-reordering behavior.

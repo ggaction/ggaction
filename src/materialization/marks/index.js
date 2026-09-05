@@ -1,3 +1,4 @@
+import { findLayer } from "../../selectors/layers.js";
 import {
   POSITION_CHANNELS,
   POSITION_ENCODING_CHANNELS
@@ -144,4 +145,15 @@ export function getEncodingMaterializationStages(program, layer, channel, scale)
     return step === undefined ? [] : [step];
   });
   return { scales, marks };
+}
+
+// Reuse a plan's scale stage only when it covers every scale consumed by the mark.
+export function reusePlannedMarkScales(program, steps, scaleIds) {
+  const resolved = new Set(scaleIds);
+  return steps.map(step => {
+    const layer = findLayer(program, step.args?.id);
+    if (layer === undefined || getMarkMaterializationPolicy(layer)?.acceptsResolvedScales !== true ||
+        !getLayerScaleIds(layer).every(id => resolved.has(id))) return step;
+    return { ...step, args: { ...step.args, scales: false } };
+  });
 }

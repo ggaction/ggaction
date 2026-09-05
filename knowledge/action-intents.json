@@ -28,6 +28,8 @@
     "primitives": ["extension primitive", "low-level authoring"]
   },
   "termAliases": {
+    "ParallelAxis": ["parallel dimension axis", "field axis", "multivariate axis"],
+    "ParallelAxes": ["parallel axes", "dimension axes"],
     "AreaPlot": ["area chart", "ribbon", "stacked area"],
     "Series": ["series placement", "grouped bars", "stacked series"],
     "RosePlot": ["rose chart", "coxcomb chart", "polar area chart", "proportional sector area"],

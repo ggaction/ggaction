@@ -247,7 +247,7 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Gzip ceiling |
 | --- | ---: |
-| `ggaction` | 249,000 bytes |
+| `ggaction` | 251,000 bytes |
 | `ggaction/basic` | 138,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 
@@ -1728,6 +1728,8 @@ Cartesian/Polar complete-axis edit는 component object와 `false`를 구분한�
 current Canvas/scale dependency plan에 남긴다. 마지막 component가 사라지면 existing complete-axis removal이 empty
 semantic/config branch까지 정리한다. Scale, coordinate, mark encoding과 source data는 component lifecycle의 소유물이
 아니므로 보존한다.
+
+Parallel axis의 semantic owner는 target/coordinate/scales와 explicit field/title 배열을 저장한다. Field별 component style/tick/visibility recipe와 all/selected 생성 범위는 private guide config가 소유한다. Field 이름은 object key로 쓰지 않는다. Public field lifecycle은 `actions/guides/axes/parallel/lifecycle.js`, 순수 옵션 정책은 `policy.js`, geometry는 `resolve.js`, wrapped concrete reconciliation은 `parallel.js`가 소유한다. 정확한 옵션과 lifecycle은 `contract/current/AXES.md`를 따른다. Layer-data plan은 모든 소비 scale을 먼저 해결한 line에 `scales:false`를 전달하여 guide 재계산이 mark 내부와 guide stage에서 중복되지 않도록 한다.
 
 Parallel axis는 dimension마다 axis line, ticks, labels와 title을 만들고 dimension scale을 독립적으로
 설명한다. 현재 aggregate `createAxes`가 이 family를 dispatch하며 Cartesian channel별 axis option을 Parallel에

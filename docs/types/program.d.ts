@@ -789,6 +789,36 @@ export interface AxisLabelOptions<P extends string>
   values?: readonly AxisValue[];
 }
 
+export type ParallelAxisTickSelection =
+  | { count?: number; values?: never }
+  | { values: readonly AxisValue[]; count?: never };
+export type ParallelAxisTicksOptions = AxisTickStyleOptions & ParallelAxisTickSelection;
+export type ParallelAxisLabelsOptions = AxisLabelStyleOptions & ParallelAxisTickSelection;
+export interface ParallelAxisTitleOptions {
+  text?: string;
+  offset?: number;
+  color?: string;
+  fontSize?: number;
+  fontFamily?: string;
+  fontWeight?: string | number;
+}
+export type ParallelAxisComponentsOptions = {
+  field: string;
+  target?: string;
+  line?: false | AxisLineStyleOptions;
+  title?: false | ParallelAxisTitleOptions;
+} & (
+  | { ticksAndLabels?: false | (ParallelAxisTickSelection & {
+      ticks?: AxisTickStyleOptions; labels?: AxisLabelStyleOptions;
+    }); ticks?: never; labels?: never }
+  | { ticks?: false | ParallelAxisTicksOptions; labels?: false | ParallelAxisLabelsOptions;
+      ticksAndLabels?: never }
+);
+export type CreateParallelAxisOptions = ParallelAxisComponentsOptions;
+export type EditParallelAxisOptions = ParallelAxisComponentsOptions;
+export interface ParallelAxesOptions { target?: string; coordinate?: string; }
+export interface RemoveParallelAxisOptions { field: string; target?: string; }
+
 export interface PolarGuideResourceOptions {
   scale?: string;
   coordinate?: string;
@@ -3033,6 +3063,11 @@ export class ChartProgram {
   createHeatmap(options: CreateHeatmapOptions): ChartProgram;
   createParallelCoordinates(options: CreateParallelCoordinatesOptions): ChartProgram;
   removeMark(options?: RemoveMarkOptions): ChartProgram;
+  createParallelAxes(options?: ParallelAxesOptions): ChartProgram;
+  createParallelAxis(options: CreateParallelAxisOptions): ChartProgram;
+  editParallelAxis(options: EditParallelAxisOptions): ChartProgram;
+  removeParallelAxis(options: RemoveParallelAxisOptions): ChartProgram;
+  removeParallelAxes(options?: ParallelAxesOptions): ChartProgram;
   createAxes(options?: CreateAxesOptions): ChartProgram;
   createXAxis(options?: CompleteAxisOptions<XAxisPosition>): ChartProgram;
   createYAxis(options?: CompleteAxisOptions<YAxisPosition>): ChartProgram;

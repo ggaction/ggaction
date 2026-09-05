@@ -5,10 +5,10 @@
 - [x] 사전 baseline 조사 — [52 cases / 260 immutable checks와 replay](BASELINE.md)
 - [ ] A Gate의 정확한 결정·호환성·검증 범위 확정
 - [ ] A Gate 증거 commit/push와 명시적 사용자 승인 기록
-- [ ] R6-P5-W1 Polar 복원과 Parallel 축 편집
+- [x] R6-P5-W1 Polar 복원과 Parallel 축 편집 — A1/A2/A3 검증 완료
 - [x] W1 A1 Polar focused 생성 8개 공개 — [계약](CONTRACT_W1.md), [검증](RESULTS_W1_CREATE.md)
 - [x] W1 A2 Cartesian/Polar optional component 정렬 — [검증](RESULTS_W1_OPTIONAL.md)
-- [ ] W1 A3 Parallel field 기반 축 편집·생성·제거
+- [x] W1 A3 Parallel field 기반 축 편집·생성·제거 — [검증](RESULTS_W1_PARALLEL.md)
 - [x] W1 A3 선행 오류: dimension 재배치 뒤 stale axis 수정 — [검증](RESULTS_PARALLEL_REPLAY.md)
 - [ ] R6-P5-W2 Legend content와 edge layout
 - [ ] R6-P5-W3 Final-item labels·reference·common format

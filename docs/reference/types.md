@@ -118,6 +118,11 @@ interface ChartProgramActions {
   createHeatmap(options: CreateHeatmapOptions): ChartProgram;
   createParallelCoordinates(options: CreateParallelCoordinatesOptions): ChartProgram;
   removeMark(options?: RemoveMarkOptions): ChartProgram;
+  createParallelAxes(options?: ParallelAxesOptions): ChartProgram;
+  createParallelAxis(options: CreateParallelAxisOptions): ChartProgram;
+  editParallelAxis(options: EditParallelAxisOptions): ChartProgram;
+  removeParallelAxis(options: RemoveParallelAxisOptions): ChartProgram;
+  removeParallelAxes(options?: ParallelAxesOptions): ChartProgram;
   createAxes(options?: CreateAxesOptions): ChartProgram;
   createXAxis(options?: CompleteAxisOptions<XAxisPosition>): ChartProgram;
   createYAxis(options?: CompleteAxisOptions<YAxisPosition>): ChartProgram;

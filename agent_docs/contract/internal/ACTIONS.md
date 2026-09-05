@@ -93,7 +93,6 @@ type과 direct action 계약에서는 제외되지만 hierarchy는 `trace`에 �
 
 | Internal action | Public owner | Role |
 | --- | --- | --- |
-| `createParallelAxes` | `createAxes`, `createParallelCoordinates` | dimension lines, ticks, labels, and titles for a Parallel layer |
 | `createCategoricalLegend` | `createLegend` | categorical color/shape/stroke-dash block |
 | `createGradientLegend` | `createLegend` | continuous color gradient block |
 | `createIntervalLegend` | `createLegend` | discretized color interval swatch block |

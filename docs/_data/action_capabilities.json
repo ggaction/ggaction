@@ -336,9 +336,9 @@
     {
       "family": "Parallel dimension axes",
       "create": [
-        "createAxes"
+        "createAxes", "createParallelAxes", "createParallelAxis"
       ],
-      "edit": [],
+      "edit": ["editParallelAxis", "removeParallelAxis", "removeParallelAxes"],
       "components": [
         "line",
         "ticks",

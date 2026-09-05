@@ -4,7 +4,8 @@ import {
   getExistingMarkRematerializationStep,
   getMarkMaterializationStep,
   getScaleConsumerMarkSteps,
-  getSourceDependentMarkSteps
+  getSourceDependentMarkSteps,
+  reusePlannedMarkScales
 } from "./marks/index.js";
 import { findLayer, requireLayer } from "../selectors/layers.js";
 import {
@@ -83,7 +84,7 @@ export function planLayerDataRematerialization(program, id) {
     const guides = scaleIds.flatMap(scale =>
       planScaleGuideRematerialization(program, scale)
     );
-    return buildMaterializationPlan({ scales, marks, guides });
+    return buildMaterializationPlan({ scales, marks: reusePlannedMarkScales(program, marks, scaleIds), guides });
   }
   const existingStep = getExistingMarkRematerializationStep(program, layer);
   return buildMaterializationPlan({

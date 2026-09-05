@@ -1148,6 +1148,12 @@ function buildDirectParallel(factors) {
       key: "id",
       missing: factors.missing
     })
+    .createParallelAxes()
+    .editParallelAxis({ field: "x", title: { text: "Primary dimension" }, line: { lineWidth: 2 } })
+    .removeParallelAxis({ field: "positive" })
+    .createParallelAxis({ field: "positive" })
+    .removeParallelAxes()
+    .createParallelAxes()
     .createTitle({ text: lifecycleTitle(factors, "Parallel multivariate profile") });
 }
 
@@ -1611,7 +1617,8 @@ function lifecycleSignature(base, factors) {
     ],
     "action-direct-histogram": ["createBarMark", "encodeHistogram", "editBarMark"],
     "action-direct-parallel": [
-      "createCoordinate", "createLineMark", "encodeParallelCoordinates"
+      "createCoordinate", "createLineMark", "encodeParallelCoordinates",
+      "createParallelAxes", "createParallelAxis", "editParallelAxis", "removeParallelAxis", "removeParallelAxes"
     ],
     "action-direct-regression-components": [
       "createRegressionData", "createRegressionBand", "createRegressionLine"

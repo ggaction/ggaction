@@ -459,6 +459,16 @@ async function testNodeConsumer(directory) {
       ["second", "first"]);
     assert.equal(revisedParallel.graphicSpec.objects.parallelAxisLabels.items[0].properties.text, "3");
     assert.equal(parallelFacade.graphicSpec.objects.parallelAxisTitles, undefined);
+    const selectedParallel = revisedParallel.removeParallelAxes()
+      .createParallelAxis({ field: "first", title: { text: "Primary" } })
+      .editParallelAxis({ field: "first", line: { color: "#7c3aed", lineWidth: 3 }, ticks: false })
+      .createParallelAxis({ field: "first", line: false, title: false, labels: false, ticks: {} });
+    assert.equal(selectedParallel.graphicSpec.objects.parallelAxisTitles.items[0].properties.text, "Primary");
+    assert.equal(selectedParallel.graphicSpec.objects.parallelAxisLines.items[0].properties.strokeWidth, 3);
+    const noParallelAxes = selectedParallel.removeParallelAxis({ field: "first" });
+    assert.equal(noParallelAxes.semanticSpec.guides.axis?.parallel, undefined);
+    assert.equal(noParallelAxes.createParallelAxes().graphicSpec.objects.parallelAxisLines.items.length, 2);
+
     assert.deepEqual(
       parallelFacade.trace.children.at(-1).children.map(node => node.op),
       [
@@ -1402,6 +1412,16 @@ async function testTypeScriptConsumer(directory) {
         { "row key": "b", first: 2, second: 3, group: "B" }
       ] })
       .createParallelCoordinates(parallelOptions);
+    const parallelAxisOptions: import("ggaction").CreateParallelAxisOptions = {
+      field: "first", line: false, labels: false, title: false, ticks: { values: [1, 2] }
+    };
+    parallelFacade.removeParallelAxes().createParallelAxes()
+      .editParallelAxis({ field: "first", ticks: false }).createParallelAxis(parallelAxisOptions)
+      .removeParallelAxis({ field: "first" });
+    // @ts-expect-error field is required
+    parallelFacade.createParallelAxis({});
+    // @ts-expect-error grouped and independent tick modes conflict
+    parallelFacade.editParallelAxis({ field: "first", ticksAndLabels: {}, labels: {} });
     const parallelAdvanced: ChartProgram = chart()
       .createCanvas()
       .createData({ values: [{ first: 1, second: 2 }] })

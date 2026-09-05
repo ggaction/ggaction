@@ -60,6 +60,8 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createLegend`](./actions/guides.md#createlegend) | user-facing | legend_and_title |
 | [`createLineMark`](./actions/marks.md#createlinemark) | user-facing | marks |
 | [`createLinePlot`](./actions/charts-data.md#createlineplot) | user-facing | charts |
+| [`createParallelAxes`](./actions/advanced.md#createparallelaxes-createparallelaxis-editparallelaxis-removeparallelaxis-removeparallelaxes) | user-facing | axes |
+| [`createParallelAxis`](./actions/advanced.md#createparallelaxes-createparallelaxis-editparallelaxis-removeparallelaxis-removeparallelaxes) | user-facing | axes |
 | [`createParallelCoordinates`](./actions/charts-data.md#createparallelcoordinates) | user-facing | charts |
 | [`createPiePlot`](./actions/charts-data.md#createpieplot) | user-facing | charts |
 | [`createPointMark`](./actions/marks.md#createpointmark) | user-facing | marks |
@@ -131,6 +133,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editLegendTitle`](./actions/guides.md#focused-legend-edits) | user-facing | legend_and_title |
 | [`editLineMark`](./actions/marks.md#editlinemark) | user-facing | marks |
 | [`editMarkSelection`](./actions/advanced.md#editmarkselection) | advanced | mark-selection |
+| [`editParallelAxis`](./actions/advanced.md#createparallelaxes-createparallelaxis-editparallelaxis-removeparallelaxis-removeparallelaxes) | user-facing | axes |
 | [`editPointMark`](./actions/marks.md#editpointmark) | user-facing | marks |
 | [`editRadialAxis`](./actions/guides.md#editradialaxis) | user-facing | axes |
 | [`editRadialAxisLabels`](./actions/guides.md#editradialaxislabels) | user-facing | axes |
@@ -212,6 +215,8 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`removeMark`](./actions/marks.md#removemark) | user-facing | marks |
 | [`removeMarkHighlight`](./actions/charts-data.md#removemarkhighlight) | user-facing | mark-selection |
 | [`removeMarkSelection`](./actions/advanced.md#removemarkselection) | advanced | mark-selection |
+| [`removeParallelAxes`](./actions/advanced.md#createparallelaxes-createparallelaxis-editparallelaxis-removeparallelaxis-removeparallelaxes) | user-facing | axes |
+| [`removeParallelAxis`](./actions/advanced.md#createparallelaxes-createparallelaxis-editparallelaxis-removeparallelaxis-removeparallelaxes) | user-facing | axes |
 | [`removePathOrder`](./actions/encodings.md#removepathorder) | user-facing | encodings |
 | [`removePointRadius`](./actions/encodings.md#removepointradius) | user-facing | encodings |
 | [`removeRadialAxis`](./actions/guides.md#removeradialaxis) | user-facing | axes |

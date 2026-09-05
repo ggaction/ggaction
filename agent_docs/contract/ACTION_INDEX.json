@@ -1426,6 +1426,96 @@
       }
     },
     {
+      "name": "createParallelAxes",
+      "layer": "user-facing",
+      "domain": "axes",
+      "status": "implemented",
+      "lifecycle": "Aggregate create-only",
+      "update": "`editParallelAxis`, `removeParallelAxes`",
+      "audit": "Intentional",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/AXES.md",
+        "anchor": "createparallelaxes"
+      }
+    },
+    {
+      "name": "createParallelAxis",
+      "layer": "user-facing",
+      "domain": "axes",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`editParallelAxis`, `removeParallelAxis`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/AXES.md",
+        "anchor": "createparallelaxis"
+      }
+    },
+    {
+      "name": "editParallelAxis",
+      "layer": "user-facing",
+      "domain": "axes",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Self",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/AXES.md",
+        "anchor": "editparallelaxis"
+      }
+    },
+    {
+      "name": "removeParallelAxis",
+      "layer": "user-facing",
+      "domain": "axes",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`createParallelAxis`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/AXES.md",
+        "anchor": "removeparallelaxis"
+      }
+    },
+    {
+      "name": "removeParallelAxes",
+      "layer": "user-facing",
+      "domain": "axes",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`createParallelAxes`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/AXES.md",
+        "anchor": "removeparallelaxes"
+      }
+    },
+    {
       "name": "createAxes",
       "layer": "user-facing",
       "domain": "axes",
@@ -3503,7 +3593,6 @@
       "rematerializeVerticalGrid"
     ],
     "guideComponents": [
-      "createParallelAxes",
       "createLegendBackground",
       "createLegendSymbols",
       "createLegendSymbolLines",

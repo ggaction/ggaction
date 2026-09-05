@@ -219,11 +219,55 @@ Use `title: { position: "outside" }` to place it beyond the radial endpoint;
 `offset` is measured from the midpoint normal when inside and from the endpoint
 when outside.
 
-For a Parallel coordinate, `createAxes()` delegates to an internal wrapped
-dimension-axis action. It creates one ordinary baseline, tick/label set, and
-title for each stored dimension. Channel-specific x/y/theta/radius options do
-not apply; revise dimension mapping with `encodeParallelCoordinates` and
-individual mappings with `editScale`.
+For a Parallel coordinate, `createAxes()` delegates to public `createParallelAxes()`.
+Each encoded field gets a baseline, ticks, labels, and a title. Use
+`createParallelAxis({ field })` to create one missing field axis and
+`editParallelAxis({ field, ... })` to edit its components. These actions are Full-only.
+
+The following fragment assumes `program` has a Parallel dimension named
+`Miles_per_Gallon` with existing axes:
+
+```javascript
+const styled = program.editParallelAxis({
+  field: "Miles_per_Gallon",
+  line: { color: "#7c3aed", lineWidth: 3 },
+  title: { text: "Fuel economy", fontWeight: 700 }
+});
+const restored = styled
+  .editParallelAxis({ field: "Miles_per_Gallon", ticks: false })
+  .createParallelAxis({
+    field: "Miles_per_Gallon", line: false, labels: false, title: false,
+    ticks: { length: 10 }
+  });
+```
+
+`field` is required and must match an encoded dimension. `target` uses the stored
+axis owner or the unique encoded Parallel line. A different owner is an error.
+Create requires missing components: omitted components get defaults, `false`
+skips them, and all-disabled creation is invalid. Edit requires existing components:
+objects patch, `false` removes, and omissions preserve. To remove a field's entire
+axis, use `removeParallelAxis({ field })`; use `removeParallelAxes()` for all axes.
+Removing the final component also clears the empty owner while preserving marks and scales.
+
+Ticks and labels accept independent `count` or exact `values`, or share them through
+`ticksAndLabels`. Do not combine the grouped and independent forms. Count is
+quantitative-only; ordinal values must be domain members. Count and values are
+mutually exclusive. Group members accept styles, not nested `false`.
+Counts, value arrays, and each rendered collection are limited to 10,000 items.
+Values must be distinct and inside the scale domain; an empty values array retains
+an empty component. Label `format` follows [axis components](../advanced/axis-components.md).
+
+Defaults preserve the original Parallel appearance: line width 1.25, tick length 8,
+automatic count 5, labels 9 pixels left at size 11, and titles 20 pixels above at size
+13 and weight 600. Titles accept `text`, `offset`, color and font styles; labels
+accept `offset`, format and font styles. Parallel axes do not accept Cartesian
+positions, radial angles or title rotation, and do not fit the Canvas automatically.
+
+Field styles and explicit titles survive resizing, scale edits and dimension
+reordering. Removed fields lose their recipes. An owner created by `createParallelAxes`
+also creates defaults for newly encoded fields; one started by `createParallelAxis`
+keeps new fields hidden. Explicitly removed field axes stay hidden while their field
+remains encoded. Recreate missing components through `createParallelAxis`.
 
 For individual lines, ticks, labels, and titles, see
 [Advanced axis components](../advanced/axis-components.md).

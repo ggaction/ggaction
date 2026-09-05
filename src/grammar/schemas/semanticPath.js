@@ -95,6 +95,7 @@ const GUIDE_PATHS = new Set([
   "axis.parallel.target",
   "axis.parallel.coordinate",
   "axis.parallel.scales",
+  "axis.parallel.titles",
   "legend.color.scale",
   "legend.color.title",
   "legend.color.order",

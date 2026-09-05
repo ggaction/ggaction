@@ -1479,3 +1479,5 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
   legacy adapters, automatic/user offset ownership, invalid topology and immutable failures, Basic boundary.
 - Evidence: `test/unit/actions/encodings/series-layout.test.js`, `test/unit/actions/encodings/bar-authoring-order.test.js`,
   `test/charts/area-layout/`, `test/contracts/area-endpoint-types.test.js`.
+
+Parallel reencoding은 field identity로 axis component recipe와 explicit title을 보존하며 removed field를 정리한다. 전체/선택 생성 범위와 cleanup은 [Parallel field-axis contract](AXES.md#shared-parallel-field-axis-contract)를 따른다.

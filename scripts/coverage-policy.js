@@ -5,6 +5,11 @@ import { fileURLToPath } from "node:url";
 const sourceRoot = fileURLToPath(new URL("../src/", import.meta.url));
 
 export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
+  "parallel-axis-policies": Object.freeze({
+    prefix: "actions/guides/axes/parallel/",
+    floor: Object.freeze({ lines: 90, branches: 80, functions: 100 }),
+    rationale: "Field recipes, component lifecycle and scale replay must preserve Parallel axis ownership."
+  }),
   "coordinate-policies": Object.freeze({
     prefix: "actions/coordinates/",
     floor: Object.freeze({ lines: 85, branches: 75, functions: 85 }),
@@ -33,6 +38,7 @@ export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
 });
 
 export const CRITICAL_COVERAGE_OVERRIDES = Object.freeze({
+  "grammar/parallelAxisTitles.js": Object.freeze({ lines: 95, branches: 85, functions: 100 }),
   "actions/encodings/seriesLayout.js": Object.freeze({ lines: 95, branches: 85, functions: 100 }),
   "actions/charts/area.js": Object.freeze({ lines: 95, branches: 90, functions: 100 }),
   "actions/encodings/density/resolve.js": Object.freeze({

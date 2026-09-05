@@ -2,6 +2,7 @@ import { normalizeLegendOrder } from "../../../grammar/categoryOrder.js";
 import { validateUserId } from "../../../core/identifiers.js";
 import { CATEGORICAL_LEGEND_CHANNELS } from "../../../core/vocabulary.js";
 import { validateNonEmptySemanticString } from "./shared.js";
+import { validateParallelAxisTitles } from "../../../grammar/parallelAxisTitles.js";
 
 function validateLegend(property, value) {
   if (property === "title") {
@@ -25,6 +26,10 @@ function validateLegend(property, value) {
 
 export function validateGuideSemanticValue(_program, parsed, value) {
   const property = parsed.path.at(-1);
+  if (parsed.id === "axis.parallel" && property === "titles") {
+    validateParallelAxisTitles(value);
+    return;
+  }
   if (["legend.series", "legend.color"].includes(parsed.id) && property === "order") {
     normalizeLegendOrder(value);
     return;

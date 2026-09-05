@@ -214,18 +214,18 @@ function smallPolicy(overrides = {}) {
 test("derives a bounded public option inventory without runtime prototype paths", async () => {
   const inventory = await buildPublicOptionInventory(actionCards);
 
-  assert.equal(inventory.counts.publicActions, 183);
-  assert.equal(inventory.counts.topLevelOptionPaths, 1263);
-  assert.equal(inventory.counts.nestedOptionPaths, 4334);
-  assert.equal(inventory.counts.optionPaths, 5597);
-  assert.equal(inventory.counts.requiredOptionPaths, 4822);
-  assert.equal(inventory.counts.excludedOptionPaths, 775);
-  assert.equal(inventory.counts.topLevelCategoricalPaths, 339);
-  assert.equal(inventory.counts.topLevelLiteralValues, 1129);
+  assert.equal(inventory.counts.publicActions, 188);
+  assert.equal(inventory.counts.topLevelOptionPaths, 1283);
+  assert.equal(inventory.counts.nestedOptionPaths, 4412);
+  assert.equal(inventory.counts.optionPaths, 5695);
+  assert.equal(inventory.counts.requiredOptionPaths, 4914);
+  assert.equal(inventory.counts.excludedOptionPaths, 781);
+  assert.equal(inventory.counts.topLevelCategoricalPaths, 349);
+  assert.equal(inventory.counts.topLevelLiteralValues, 1139);
   assert.equal(inventory.counts.literalFamilies, 98);
-  assert.equal(inventory.counts.pathLiteralRequirements, 2680);
+  assert.equal(inventory.counts.pathLiteralRequirements, 2690);
   assert.equal(inventory.counts.familyLiteralRequirements, 174);
-  assert.equal(inventory.counts.pathDiversityRequirements, 154);
+  assert.equal(inventory.counts.pathDiversityRequirements, 158);
   assert.equal(inventory.optionPaths.some(option => option.id ===
     "option-path:createCanvas.margin.top"), true);
   assert.equal(inventory.optionPaths.some(option => option.id ===

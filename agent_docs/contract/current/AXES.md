@@ -104,6 +104,97 @@ Radial angle edit는 existing component가 최소 하나 있어야 한다. Angle
 
 Evidence: `test/unit/actions/guides/axis-optional-components.test.js`, `test/unit/actions/charts/facade-guide-reuse.test.js`, `test/contracts/polar-component-types.test.js`. 4 families × 7 nonempty creation combinations, component removal/restore/replay, empty/all-false/conflicting/late-invalid atomic errors.
 
+## Shared Parallel field-axis contract
+
+Full-only Parallel axes는 encoded field별로 line/ticks/labels/title을 소유한다. `field`는 실제 encoded name이며 필수다. `target`은 existing guide owner, 없으면 unique encoded Parallel line에서 추론한다. 다른 owner를 덮어쓰지 않는다. 전체 생성은 missing owner, field 생성은 선택한 missing components, 편집/제거는 existing components를 요구한다.
+
+- `line`: `{color?,lineWidth?}`; defaults theme axis/1.25.
+- `ticks`: `{count?,values?,length?,color?,lineWidth?}`; auto count5, length8, theme mutedText/1.
+- `labels`: `{count?,values?,offset?,format?,color?,fontSize?,fontFamily?,fontWeight?}`; offset9 (left), auto format, theme axis/font family, font11/normal.
+- `title`: `{text?,offset?,color?,fontSize?,fontFamily?,fontWeight?}`; dimension title inference, offset20 (above), theme axisTitle/font family, font13/600. No x/y position, angle, rotation or automatic fitting.
+- `ticksAndLabels`: shared `{count?,values?,ticks?:tickStyle,labels?:labelStyle}`. Count/values and group/individual forms are mutually exclusive. Nested group components accept style objects only. Count is positive integer ≤10,000 and quantitative-only; values are distinct domain members, ≤10,000. Quantitative values must be finite; ordinal uses exact domain members. Empty values hide items while retaining the component recipe. Total items per concrete collection ≤10,000.
+- Color/fontFamily/text are nonempty strings; fontSize positive finite; fontWeight string or finite number; widths/length/offset nonnegative finite. Explicit label format uses the shared axis formatter; auto preserves the existing `k` labels. Ordinal supports auto only.
+- Create omission/{} creates defaults; false skips a component. Independent tick/label restoration uses the other components' false values. All-disabled create rejects. Edit omission preserves; object patches; false removes. Empty edits reject; group edit/removal requires both components.
+- Semantic `guide.axis.parallel` owns target/coordinate/scales and optional `titles: [{field,text}]` explicit text overrides. Runtime guide config owns mode and ordered field/component recipes, without duplicating title text. Renderer consumes four ordinary concrete collections only.
+- Canvas/scale/data/reencoding replay preserves field-owned recipes and overrides. Reordered dimensions move their axis; removed fields lose their recipes and title override. Aggregate creation's `all` mode creates axes for new fields; individual creation's `selected` mode keeps new fields hidden. Explicitly removed fields stay hidden while encoded. Last visible component removal cleans the whole owner; mark/scale remain.
+- Reencoding resolves all target scales before marks and refreshes the guide once. Line materialization reuses that plan's scale stage only when it covers every scale the line consumes; direct line editing still resolves its own scales.
+- Errors include missing/ambiguous/incompatible owner, unknown field, duplicate creation, missing edit/removal, conflicting modes, unsupported/invalid values and styles. Whole proposals fail immutably without changing the input program or caller options.
+
+## `createParallelAxes`
+
+- Signature: `createParallelAxes(options?: ParallelAxesOptions): ChartProgram`.
+- Behavior, defaults, inference, errors and effects follow the shared Parallel field-axis contract above.
+
+### Formal values — `createParallelAxes`
+
+- Implemented: Creates default axes for all encoded fields; optional target/coordinate must match the resolved owner.
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `createParallelAxes`
+
+- ✅ Covered: Full/Basic boundary, field/owner selection, component lifecycle, defaults/style/format, count/values and error atomicity, immutable replay, primitive/public geometry and renderer parity, installed consumer.
+- Evidence: `test/unit/actions/guides/parallel-axis-lifecycle.test.js`, `test/unit/actions/guides/parallel-axis-reencoding.test.js`, `test/contracts/parallel-axis-types.test.js`, `test/charts/cars-parallel-coordinates/public.test.js`, `test/charts/cars-parallel-coordinates/png.render.js`.
+
+## `createParallelAxis`
+
+- Signature: `createParallelAxis(options: CreateParallelAxisOptions): ChartProgram`.
+- Behavior, defaults, inference, errors and effects follow the shared Parallel field-axis contract above.
+
+### Formal values — `createParallelAxis`
+
+- Implemented: Creates missing components of the required encoded field; defaults to all four, false skips selected components.
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `createParallelAxis`
+
+- ✅ Covered: Full/Basic boundary, field/owner selection, component lifecycle, defaults/style/format, count/values and error atomicity, immutable replay, primitive/public geometry and renderer parity, installed consumer.
+- Evidence: `test/unit/actions/guides/parallel-axis-lifecycle.test.js`, `test/unit/actions/guides/parallel-axis-reencoding.test.js`, `test/contracts/parallel-axis-types.test.js`, `test/charts/cars-parallel-coordinates/public.test.js`, `test/charts/cars-parallel-coordinates/png.render.js`.
+
+## `editParallelAxis`
+
+- Signature: `editParallelAxis(options: EditParallelAxisOptions): ChartProgram`.
+- Behavior, defaults, inference, errors and effects follow the shared Parallel field-axis contract above.
+
+### Formal values — `editParallelAxis`
+
+- Implemented: Patches or removes selected existing field components; preserves unselected recipes.
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `editParallelAxis`
+
+- ✅ Covered: Full/Basic boundary, field/owner selection, component lifecycle, defaults/style/format, count/values and error atomicity, immutable replay, primitive/public geometry and renderer parity, installed consumer.
+- Evidence: `test/unit/actions/guides/parallel-axis-lifecycle.test.js`, `test/unit/actions/guides/parallel-axis-reencoding.test.js`, `test/contracts/parallel-axis-types.test.js`, `test/charts/cars-parallel-coordinates/public.test.js`, `test/charts/cars-parallel-coordinates/png.render.js`.
+
+## `removeParallelAxis`
+
+- Signature: `removeParallelAxis(options: RemoveParallelAxisOptions): ChartProgram`.
+- Behavior, defaults, inference, errors and effects follow the shared Parallel field-axis contract above.
+
+### Formal values — `removeParallelAxis`
+
+- Implemented: Removes all existing components and explicit title of the required field.
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `removeParallelAxis`
+
+- ✅ Covered: Full/Basic boundary, field/owner selection, component lifecycle, defaults/style/format, count/values and error atomicity, immutable replay, primitive/public geometry and renderer parity, installed consumer.
+- Evidence: `test/unit/actions/guides/parallel-axis-lifecycle.test.js`, `test/unit/actions/guides/parallel-axis-reencoding.test.js`, `test/contracts/parallel-axis-types.test.js`, `test/charts/cars-parallel-coordinates/public.test.js`, `test/charts/cars-parallel-coordinates/png.render.js`.
+
+## `removeParallelAxes`
+
+- Signature: `removeParallelAxes(options?: ParallelAxesOptions): ChartProgram`.
+- Behavior, defaults, inference, errors and effects follow the shared Parallel field-axis contract above.
+
+### Formal values — `removeParallelAxes`
+
+- Implemented: Removes the complete owner, semantic overrides, recipes and graphics; optional selectors assert the stored owner.
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `removeParallelAxes`
+
+- ✅ Covered: Full/Basic boundary, field/owner selection, component lifecycle, defaults/style/format, count/values and error atomicity, immutable replay, primitive/public geometry and renderer parity, installed consumer.
+- Evidence: `test/unit/actions/guides/parallel-axis-lifecycle.test.js`, `test/unit/actions/guides/parallel-axis-reencoding.test.js`, `test/contracts/parallel-axis-types.test.js`, `test/charts/cars-parallel-coordinates/public.test.js`, `test/charts/cars-parallel-coordinates/png.render.js`.
+
 ## Shared formal types
 
 ```typescript

@@ -701,10 +701,11 @@
         "advanced-encoding",
         "appearance-guides-and-revisions",
         "limitations",
-        "related"
+        "related",
+        "edit-a-dimension-axis"
       ],
-      "bytes": 4508,
-      "sha256": "83acac1f2f6127aeefa0c8448455a5e41458edeaf3cfc8416408ee7820f63188"
+      "bytes": 5097,
+      "sha256": "09dc32642c053e79f8a41d5fce892d80ccda94aa78b85d453ac55afe16a26276"
     },
     {
       "order": 46,
@@ -959,8 +960,8 @@
         "related",
         "explicit-grouping-and-time-inputs"
       ],
-      "bytes": 10415,
-      "sha256": "7f72718296c2e7742816c7109ca5ccdda1713fb2ad847af5b845a11bf832468a"
+      "bytes": 10526,
+      "sha256": "f6426d5e3fa3a0a74d9ce520acb52faa73fb500d4cd2104ba939513d11b0e521"
     },
     {
       "order": 62,
@@ -1476,8 +1477,8 @@
         "errors-and-limitations",
         "related"
       ],
-      "bytes": 13631,
-      "sha256": "01f798f5dd27a2383ca2d07890ccbb594cfb51bfd31c595c24e08f99eb103d12"
+      "bytes": 16095,
+      "sha256": "c9cb762e91fce1b88699db41a63f099884b259f72738e41cf5fab57057336641"
     },
     {
       "order": 94,
@@ -1765,8 +1766,8 @@
         "ticks-and-labels-together",
         "titles"
       ],
-      "bytes": 6116,
-      "sha256": "c9dfb8f46f86a88a82ca35827ed5bc3f00bb680a1fa53605483be5f63a38c697"
+      "bytes": 6227,
+      "sha256": "a181a0cf25d36789b90c470a8224379693e557cbc463acdae03665f107a944e6"
     },
     {
       "order": 113,
@@ -1801,8 +1802,8 @@
         "action-reference",
         "exact-action-lookup"
       ],
-      "bytes": 20120,
-      "sha256": "689d8c6e8bb691c736c8b29f21b1a6728d7b9d9b10913d63419fd573947d7250"
+      "bytes": 20978,
+      "sha256": "b2cb291dc8f30162bb7ea77f8d51cde44289801ddd089b434bc507937bfa355c"
     },
     {
       "order": 115,
@@ -2015,6 +2016,7 @@
         "editmarkselection",
         "removemarkselection",
         "semantic-resources-and-regression-layers",
+        "createparallelaxes-createparallelaxis-editparallelaxis-removeparallelaxis-removeparallelaxes",
         "complete-single-channel-axes",
         "complete-axis-removal",
         "axis-lines-ticks-and-labels",
@@ -2022,8 +2024,8 @@
         "directional-grids",
         "related"
       ],
-      "bytes": 7726,
-      "sha256": "25d286a5a86e35cdc271f69d294833c9dde4ac07fec63ee426570fc54dcd8873"
+      "bytes": 8608,
+      "sha256": "a106c796724068c28ddb5934e106be9e84dab93ebe664aaef4c798b25e7228af"
     },
     {
       "order": 121,
@@ -2067,8 +2069,8 @@
         "exact-typescript-signatures",
         "related"
       ],
-      "bytes": 15421,
-      "sha256": "bf11dba640c9dd64d25c92aaece51bf7f381db7c9d24961f64b49c75c4778417"
+      "bytes": 15767,
+      "sha256": "97b9aeeb3488ab1cbc8222a0c2a73ef97f8c801d872f9c58ea04c34e21cb6cfa"
     },
     {
       "order": 124,

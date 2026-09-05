@@ -1876,6 +1876,23 @@ Its public `DatasetTransform` union supports `filter`, `regression`, `density`,
 array, or multi-transform pipeline is invalid. See the runnable filter example and exact transform
 requirements in [Source and derived data](../api/data/source-and-derived.md#create-derived-data).
 
+### `createParallelAxes`, `createParallelAxis`, `editParallelAxis`, `removeParallelAxis`, `removeParallelAxes`
+
+```javascript
+createParallelAxes({ target?, coordinate? })
+createParallelAxis({ field, target?, line?, ticks?, labels?, ticksAndLabels?, title? })
+editParallelAxis({ field, target?, line?, ticks?, labels?, ticksAndLabels?, title? })
+removeParallelAxis({ field, target? })
+removeParallelAxes({ target?, coordinate? })
+```
+
+Full-only field-selected Parallel guides. Create requires missing resources;
+edit/removal requires existing resources. Component `false` skips creation or
+removes an existing component. Group and individual tick/label options are
+exclusive. Field recipes and explicit titles survive dimension reordering.
+The last component removal clears the guide owner. [Axes](../api/axes.md) owns
+exact styles, defaults, inference, validation and replay behavior.
+
 ### Complete single-channel axes
 
 ```javascript

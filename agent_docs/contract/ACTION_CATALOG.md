@@ -85,6 +85,11 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`createGradientPlot`](current/GRADIENT_PLOTS.md#creategradientplot) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editGradientPlot`](current/GRADIENT_PLOTS.md#editgradientplot) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createViolinPlot`](current/VIOLIN_PLOTS.md#createviolinplot) | statistics | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
+| user-facing | [`createParallelAxes`](current/AXES.md#createparallelaxes) | axes | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
+| user-facing | [`createParallelAxis`](current/AXES.md#createparallelaxis) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editParallelAxis`](current/AXES.md#editparallelaxis) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`removeParallelAxis`](current/AXES.md#removeparallelaxis) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`removeParallelAxes`](current/AXES.md#removeparallelaxes) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createAxes`](current/AXES.md#createaxes) | axes | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createXAxis`](current/AXES.md#createxaxis) | axes | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createYAxis`](current/AXES.md#createyaxis) | axes | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |

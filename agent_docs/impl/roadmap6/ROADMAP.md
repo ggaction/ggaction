@@ -114,8 +114,8 @@ S는 기존 owner 위의 교정·연결, M은 여러 consumer의 lifecycle 변�
 | 1 | completed | W1–W5 구현·검증과 R6-P1-X 사용자 승인. B01 lower 작성 순서는 Phase 2 W5에서 교정 |
 | 2 | completed | W1–W5와 6개 public 흐름 구현·검증, A/B/V/X 사용자 승인 |
 | 3 | completed | Pie/Donut·Density·Horizon, A/V/B/X approved; Current 177 / Planned 0 |
-| 4 | in-progress | Baseline, layout, order, 중심색과 Area·Rose/Radial의 A 승인; layoutSeries와 primitive 시각 목표 준비 |
-| 5 | planned | 축·범례 lifecycle, label·format·theme·명시적 fitting |
+| 4 | completed | W1–W5와 20개 시각 target, 소비자·고정 source 통합 검증 완료 — [Phase 4 X](phase4/REVIEW.md) |
+| 5 | in-progress | W1 A1/A2/A3 축 lifecycle 완료 — [결과](phase5/RESULTS_W1_PARALLEL.md); 범례 W2·label/format/theme/fitting W3–W5 진행 예정 |
 | 6 | planned | Data·transform·통계·filter·composite role 편집 |
 | 7 | planned | Polar Scatter/Line, Radar, Rug/Strip |
 | 8 | planned | Interval/Regression, Dot/Lollipop/Dumbbell, ECDF |

@@ -163,6 +163,8 @@ Combined color+shape에서 color 제거는 남은 shape의 recipe를 재작성�
 Legacy bottom placement는 명시적 compatibility mode로 보존하거나 versioned migration한다.
 Unrelated option 하나의 유무로 layout mode가 바뀌는 새 API는 만들지 않는다.
 
+현재 축 범위는 [Phase 5 W1 결과](phase5/RESULTS_W1_PARALLEL.md)에서 A1/A2/A3로 구현·검증했다. Polar focused 생성 8개와 Parallel field lifecycle 5개가 Current다. Legend W2와 후속 guide format/theme/fitting 검증은 남아 있으므로 K09·D07/D08/F17 전체 closeout으로 표시하지 않는다.
+
 ## K10 — Final-item labels, references, format와 unit
 
 연결: D13, F14. Owner: Phase 5.

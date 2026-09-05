@@ -63,8 +63,32 @@ const restored = polarProgram
 - Geometry/default/renderer는 유지한다. Visual 목표는 기존 axis에서 선택한 graphic을 제거한 결과이며 새로운 모양은 N/A다. Default render 회귀와 각 family의 partial/restore/replay 및 facade chain을 검증한다.
 - Cartesian/Polar component 제거의 primitive/state cleanup은 같은 작은 owner를 사용한다. Root·nested type, Current/docs/cards, trace·atomicity·installed consumer를 함께 갱신한다.
 
-## A3 — 이후 W1 범위
+## A3 — Parallel field 축 lifecycle
+
+구현·검증 결과: [RESULTS_W1_PARALLEL.md](RESULTS_W1_PARALLEL.md).
 
 선행 검증에서 dimension 재배치 뒤 axis title/tick/scale binding이 남는 오류를 확인했다. [기존 재계산 교정](RESULTS_PARALLEL_REPLAY.md)을 먼저 검증하며 새 공개 field lifecycle과 구분한다.
 
-Parallel에는 field로 선택하는 persistent dimension axis 편집과 생성·제거 경로를 제공한다. Exact signature와 visual target은 구현 전에 덧붙인다. A1/A2만으로 D07/F17이나 W1 전체를 완료 처리하지 않는다.
+기준은 선행 수정 `0ecb462d`다. Full에 다음 다섯 public entry를 제공한다. Basic에는 추가하지 않는다.
+
+| API | 정확한 범위 |
+| --- | --- |
+| `createParallelAxes({target?, coordinate?}?)` | 기존 internal owner 공개. Stored Parallel line이 유일하면 target 추론. 전체 guide owner가 없어야 하며 모든 dimension의 기본 축을 생성 |
+| `createParallelAxis({field, target?, line?, ticks?, labels?, ticksAndLabels?, title?})` | Existing encoded field의 missing component 생성. line/group/title은 false로 생략 가능. 최소 하나를 생성하며 existing selected component는 오류 |
+| `editParallelAxis({field, target?, line?, ticks?, labels?, ticksAndLabels?, title?})` | 해당 field의 existing component를 편집. false는 제거, 객체는 편집, 생략은 보존. Group과 개별 ticks/labels 혼합 금지 |
+| `removeParallelAxis({field, target?})` | 해당 field의 모든 existing component 제거. 다른 dimension·mark·scale 보존 |
+| `removeParallelAxes({target?, coordinate?}?)` | 전체 axis semantic/config/4개 graphic collection 제거. Selector는 stored owner와 일치해야 함 |
+
+Field는 실제 encoded dimension name이며 최소 두 dimension 중 하나를 골라야 하므로 항상 필수다. 공백·점·`__proto__` 같은 field 이름을 resource ID로 취급하지 않는다. Target 생략은 existing guide owner를 우선하고 없으면 unique encoded Parallel line을 추론한다. 다른 owner를 덮어쓰지 않는다.
+
+Line은 `{color?,lineWidth?}`, ticks는 `{count?,values?,length?,color?,lineWidth?}`, labels는 `{count?,values?,offset?,format?,color?,fontSize?,fontFamily?,fontWeight?}`, title은 `{text?,offset?,color?,fontSize?,fontFamily?,fontWeight?}`다. Group은 `{count?,values?,ticks?:tickStyle,labels?:labelStyle}`이며 count/values는 배타적이다. Edit group false는 둘 다 existing이어야 한다. Group 안의 false는 받지 않는다. Create도 group과 개별 ticks/labels 혼합을 금지한다. Individual component 복원은 createParallelAxis에서 나머지 세 component를 false로 지정하므로 sibling style을 보존한다.
+
+현재 defaults를 유지한다: line width1.25, ticks count5/length8, labels left offset9/font11, title above offset20/font13/weight600. Quantitative/ordinal local scale과 기존 mapping을 재사용한다. Auto formatter는 기존 1000단위 k 표기를 유지하고 explicit format은 공통 axis formatter의 지원 값과 검증을 사용한다. Ordinal values는 scale domain member여야 하며 explicit count는 quantitative에서만 지원한다. 값 배열·count는 기존 10,000 item 한도를 적용한다.
+
+`guide.axis.parallel`은 target/coordinate/전체 encoded scales를 유지한다. 새 `titles` 배열에는 explicit field/text override만 저장하고 스타일에는 text를 중복 저장하지 않는다. Materialization config의 field별 component recipe는 style/tick/visibility를 소유한다. 외부 field를 object property key로 쓰지 않는다.
+
+Reencoding에서 field가 유지되면 style/explicit title을 보존하고 순서만 encoded dimension 순서로 재배치한다. 사라진 field의 recipe/title은 제거한다. 전체 생성으로 시작한 axes는 새 dimension도 기본 생성하고, 개별 생성으로 시작한 axes는 선택한 field만 유지한다. 이 생성 범위는 guide config에 한 번 저장한다. 마지막 visible component 제거는 전체 remove owner로 정리하므로 빈 축 상태가 남지 않는다.
+
+Materializer는 기존 네 ordinary collection을 사용하고 field별로 필요한 item만 생성한다. Renderer는 field/axis 의미를 읽지 않는다. Default chart는 기존 primitive/public equality를 유지한다. 새 style 목표는 기존 Cars Parallel chart에서 첫 field의 line color/width와 title text/weight를 변경한 primitive이며, API 구현 전에 작성·render한다. 나머지 lifecycle/count/value/format/ordinal/overflow·오류는 concrete geometry와 state tests로 검증한다.
+
+W1 전체 완료는 A3의 public/type/card/docs/discovery·기본/새 시각 목표·replay/consumer 검증까지 필요하다. 이 계약 작성만으로 D07/F17이나 W1 완료를 표시하지 않는다.

@@ -39,7 +39,7 @@ with their focused create actions. See the
 | --- | --- | --- | --- |
 | Cartesian complete axis | `createXAxis` / `createYAxis` / `createAxes` | `editXAxis` / `editYAxis` | line, ticks, labels, ticksAndLabels, title, position |
 | Polar complete axis | `createThetaAxis` / `createRadialAxis` / `createAxes` | `editThetaAxis` / `editRadialAxis` | line, ticks, labels, ticksAndLabels, title, radial angle and radial title position |
-| Parallel dimension axes | `createAxes` |  | line, ticks, labels, title from each stored dimension |
+| Parallel dimension axes | `createAxes` / `createParallelAxes` / `createParallelAxis` | `editParallelAxis` / `removeParallelAxis` / `removeParallelAxes` | line, ticks, labels, title from each stored dimension |
 <!-- action-capabilities:axes:end -->
 
 Create also accepts `coordinate`, an existing coordinate ID consumed by the
