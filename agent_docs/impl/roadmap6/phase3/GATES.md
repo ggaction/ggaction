@@ -71,7 +71,7 @@ B 승인 뒤 Full 상한 237,000 bytes를 적용했다. 같은 tarball의 packag
 - 상태: ready-for-review. 사용자 승인 없음.
 - 검토 문서: [REVIEW.md](REVIEW.md). Runtime source `80999264`, scenario 교정 `39b082d6`,
   승인 상한 적용 `81225436461eec0e0298a29f98ca42cc569e6201`. 세 commit의 packaged runtime/types/knowledge는 같다.
-- Review package commit: 검증 결과와 문서를 push한 뒤 별도 ref 기록으로 고정한다. 그 기록 전 승인 요청하지 않는다.
+- Review package commit: [`80fd495dc30d128eebd9d395e41c84964d4a4fa4`](https://github.com/ggaction/ggaction/commit/80fd495dc30d128eebd9d395e41c84964d4a4fa4). 원격 `origin/codex/roadmap6-hierarchical-actions` push와 ref 일치를 확인했다.
 - 범위: W1–W3의 승인 결과, exact source/ref, 누적 tests·strict types·실제 trace·immutable failure,
   Current/discovery/generated docs·package 동기화.
 - 시각 증거: 승인된 9개 targets의 same-run graphicSpec·draw order·Canvas calls·decoded pixels 일치,

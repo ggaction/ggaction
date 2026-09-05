@@ -21,7 +21,7 @@
 - [x] B 명시적 사용자 승인 기록 (Full 237,000 bytes)
 - [x] 승인 상한 적용과 같은 tarball package 전체 exit 0 확인
 - [x] X 결과 문서·검증 evidence 준비
-- [ ] X package 원격 ref 고정
+- [x] X package 원격 ref 고정 (`80fd495dc30d128eebd9d395e41c84964d4a4fa4`)
 - [ ] X 명시적 사용자 승인 기록
 
 A/V 승인 뒤 세 public flow·lower lifecycle·시각 동등성·문서와 누적 기능 검증을 완료했다.

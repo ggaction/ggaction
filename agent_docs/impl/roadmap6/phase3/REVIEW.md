@@ -14,8 +14,8 @@ Full bundle 상한 237,000 bytes를 적용하고 검토 당시와 같은 tarball
 - A는 P3-C01–C07, V는 9개 primitive targets와 정확한 public 호출을 승인했다.
   B는 2026-09-05 “승인한다”로 Full 235,000 → 237,000 bytes만 승인했다.
   B 승인 기준은 `d2b1f7bf05d11357b9b9b6ed5520f442ef3d07f4`, 제안 package는 `c7ff0309d19729251b569e61498d52ca714f80bc`다.
-- Review package commit은 이 결과 package를 검증·push한 뒤 [GATES.md](GATES.md)에 고정한다.
-  A/V/B 승인과 X의 경계는 해당 Gate 문서가 소유한다.
+- Review package commit: [`80fd495dc30d128eebd9d395e41c84964d4a4fa4`](https://github.com/ggaction/ggaction/commit/80fd495dc30d128eebd9d395e41c84964d4a4fa4). 원격 `origin/codex/roadmap6-hierarchical-actions` push와 ref 일치를 확인했다.
+  A/V/B 승인과 X의 경계는 [GATES.md](GATES.md)가 소유한다.
 
 ## 완성한 액션과 계층
 
