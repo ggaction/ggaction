@@ -1,0 +1,104 @@
+{
+  "direct": 173,
+  "registeredWrapped": 284,
+  "internalListed": 95,
+  "unlistedWrapped": [
+    {
+      "name": "createCategoricalDensityData",
+      "op": "createCategoricalDensityData",
+      "description": "Create category-placed kernel-density values.",
+      "scope": "unit"
+    },
+    {
+      "name": "configureAreaStrokeFromFill",
+      "op": "configureAreaStrokeFromFill",
+      "description": "Use each area path fill as its outline color.",
+      "scope": "unit"
+    },
+    {
+      "name": "clearStrokeDashEncoding",
+      "op": "clearStrokeDashEncoding",
+      "description": "Remove the current semantic stroke-dash assignment.",
+      "scope": "unit"
+    },
+    {
+      "name": "clearOpacityEncoding",
+      "op": "clearOpacityEncoding",
+      "description": "Remove the semantic field-driven opacity assignment.",
+      "scope": "unit"
+    },
+    {
+      "name": "createParallelAxes",
+      "op": "createParallelAxes",
+      "description": "Create ordinary line and text graphics for Parallel dimensions.",
+      "scope": "unit"
+    },
+    {
+      "name": "createLegendBackground",
+      "op": "createLegendBackground",
+      "description": "Create the legend background rect.",
+      "scope": "unit"
+    },
+    {
+      "name": "createLegendSymbols",
+      "op": "createLegendSymbols",
+      "description": "Create layered legend symbols.",
+      "scope": "unit"
+    },
+    {
+      "name": "createLegendSymbolLines",
+      "op": "createLegendSymbolLines",
+      "description": "Create categorical legend line symbols.",
+      "scope": "unit"
+    },
+    {
+      "name": "createLegendSymbolPoints",
+      "op": "createLegendSymbolPoints",
+      "description": "Create categorical legend point symbols.",
+      "scope": "unit"
+    },
+    {
+      "name": "createLegendSymbolSwatches",
+      "op": "createLegendSymbolSwatches",
+      "description": "Create categorical legend swatch symbols.",
+      "scope": "unit"
+    },
+    {
+      "name": "createLegendLabels",
+      "op": "createLegendLabels",
+      "description": "Create categorical legend labels.",
+      "scope": "unit"
+    },
+    {
+      "name": "createLegendTitle",
+      "op": "createLegendTitle",
+      "description": "Create the categorical legend title.",
+      "scope": "unit"
+    },
+    {
+      "name": "createTitleText",
+      "op": "createTitleText",
+      "description": "Create chart title text.",
+      "scope": "unit"
+    },
+    {
+      "name": "editTitleText",
+      "op": "editTitleText",
+      "description": "Rematerialize chart title text.",
+      "scope": "unit"
+    },
+    {
+      "name": "createSubtitleText",
+      "op": "createSubtitleText",
+      "description": "Create chart subtitle text.",
+      "scope": "unit"
+    },
+    {
+      "name": "editSubtitleText",
+      "op": "editSubtitleText",
+      "description": "Rematerialize chart subtitle text.",
+      "scope": "unit"
+    }
+  ],
+  "listedWithoutMethod": []
+}

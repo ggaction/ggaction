@@ -1,7 +1,7 @@
 {
   "version": 2,
-  "activeRoadmap": null,
-  "activePhase": null,
+  "activeRoadmap": "roadmap6",
+  "activePhase": 0,
   "lastCompletedRoadmap": "roadmap5.4",
   "lastCompletedPhase": 6,
   "roadmaps": [
@@ -98,7 +98,15 @@
       "title": "Compact Knowledge Delivery and Intent Resolution",
       "status": "completed",
       "role": "historical-execution-record",
-      "file": "agent_docs/impl/roadmap5.4/ROADMAP.md"
+      "file": "agent_docs/impl/roadmap5.4/ROADMAP.md",
+      "successor": "roadmap6"
+    },
+    {
+      "id": "roadmap6",
+      "title": "Hierarchical Chart Authoring and Action Consistency",
+      "status": "active",
+      "role": "current-execution-plan",
+      "file": "agent_docs/impl/roadmap6/ROADMAP.md"
     }
   ]
 }

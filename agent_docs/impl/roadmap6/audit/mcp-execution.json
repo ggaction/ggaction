@@ -1,0 +1,273 @@
+[
+  {
+    "query": "pie chart",
+    "calls": [
+      "program.createArcMark({ innerRadius: 0 })",
+      "program.encodeTheta({ field: \"value\", fieldType: \"quantitative\" })",
+      "program.encodeColor({ field: \"category\" })"
+    ],
+    "unresolved": [],
+    "layers": [
+      {
+        "id": "arc",
+        "mark": "arc",
+        "coordinate": "polar",
+        "encoding": {
+          "theta": {
+            "field": "value",
+            "fieldType": "quantitative",
+            "scale": "theta"
+          },
+          "color": {
+            "field": "category",
+            "fieldType": "nominal",
+            "scale": "color"
+          }
+        }
+      }
+    ],
+    "items": [
+      {
+        "id": "arc",
+        "items": 3
+      }
+    ]
+  },
+  {
+    "query": "density plot",
+    "calls": [
+      "program.createAreaMark({ id: \"densityArea\" })",
+      "program.encodeDensity({ field: \"value\", target: \"densityArea\" })"
+    ],
+    "unresolved": [],
+    "layers": [
+      {
+        "id": "densityArea",
+        "mark": "area",
+        "coordinate": "main",
+        "encoding": {
+          "x": {
+            "field": "value_value",
+            "fieldType": "quantitative",
+            "scale": "x"
+          },
+          "y": {
+            "field": "value_density",
+            "fieldType": "quantitative",
+            "scale": "y"
+          }
+        }
+      }
+    ],
+    "items": [
+      {
+        "id": "densityArea",
+        "items": 1
+      }
+    ]
+  },
+  {
+    "query": "rose chart",
+    "calls": [
+      "program.createArcMark({ padAngle: 1, opacity: 0.9 })",
+      "program.encodeTheta({ field: \"category\", fieldType: \"ordinal\" })",
+      "program.encodeR({ field: \"value\", fieldType: \"quantitative\" })",
+      "program.encodeColor({ field: \"series\", layout: \"overlay\" })"
+    ],
+    "unresolved": [],
+    "layers": [
+      {
+        "id": "arc",
+        "mark": "arc",
+        "coordinate": "polar",
+        "encoding": {
+          "theta": {
+            "field": "category",
+            "fieldType": "ordinal",
+            "scale": "theta"
+          },
+          "radius": {
+            "field": "value",
+            "fieldType": "quantitative",
+            "scale": "radius"
+          },
+          "color": {
+            "field": "series",
+            "fieldType": "nominal",
+            "scale": "color",
+            "layout": "overlay"
+          }
+        }
+      }
+    ],
+    "items": [
+      {
+        "id": "arc",
+        "items": 2
+      }
+    ]
+  },
+  {
+    "query": "radial bar chart",
+    "calls": [
+      "program.createArcMark({ padAngle: 1, opacity: 0.9 })",
+      "program.encodeTheta({ field: \"category\", fieldType: \"ordinal\" })",
+      "program.encodeR({ field: \"value\", fieldType: \"quantitative\" })",
+      "program.encodeColor({ field: \"series\", layout: \"overlay\" })",
+      "program.createBarPlot({ x: { field: \"category\", fieldType: \"nominal\" }, y: { field: \"value\", fieldType: \"quantitative\" } })"
+    ],
+    "unresolved": [],
+    "layers": [
+      {
+        "id": "arc",
+        "mark": "arc",
+        "coordinate": "polar",
+        "encoding": {
+          "theta": {
+            "field": "category",
+            "fieldType": "ordinal",
+            "scale": "theta"
+          },
+          "radius": {
+            "field": "value",
+            "fieldType": "quantitative",
+            "scale": "radius"
+          },
+          "color": {
+            "field": "series",
+            "fieldType": "nominal",
+            "scale": "color",
+            "layout": "overlay"
+          }
+        }
+      },
+      {
+        "id": "barPlot",
+        "mark": "bar",
+        "coordinate": "main",
+        "encoding": {
+          "x": {
+            "field": "category",
+            "fieldType": "nominal",
+            "scale": "x"
+          },
+          "y": {
+            "field": "value",
+            "fieldType": "quantitative",
+            "aggregate": "mean",
+            "stack": null,
+            "scale": "y"
+          }
+        }
+      }
+    ],
+    "items": [
+      {
+        "id": "arc",
+        "items": 2
+      },
+      {
+        "id": "barPlot",
+        "items": 3
+      }
+    ]
+  },
+  {
+    "query": "radar chart",
+    "calls": [
+      "program.createLineMark({ closed: true })",
+      "program.encodeTheta({ field: \"category\", fieldType: \"nominal\" })",
+      "program.encodeR({ field: \"value\", fieldType: \"quantitative\" })",
+      "program.encodeGroup({ field: \"series\" })",
+      "program.encodeColor({ field: \"series\" })"
+    ],
+    "unresolved": [],
+    "layers": [
+      {
+        "id": "line",
+        "mark": "line",
+        "coordinate": "polar",
+        "encoding": {
+          "theta": {
+            "field": "category",
+            "fieldType": "nominal",
+            "scale": "theta"
+          },
+          "radius": {
+            "field": "value",
+            "fieldType": "quantitative",
+            "scale": "radius"
+          },
+          "group": {
+            "field": "series",
+            "fieldType": "nominal"
+          },
+          "color": {
+            "field": "series",
+            "fieldType": "nominal",
+            "scale": "color"
+          }
+        }
+      }
+    ],
+    "items": [
+      {
+        "id": "line",
+        "items": 1
+      }
+    ]
+  },
+  {
+    "query": "area chart",
+    "calls": [
+      "program.createAreaMark({})",
+      "program.encodeX({ field: \"x\", fieldType: \"quantitative\" })",
+      "program.encodeY({ field: \"y\", fieldType: \"quantitative\" })"
+    ],
+    "unresolved": [],
+    "layers": [
+      {
+        "id": "area",
+        "mark": "area",
+        "coordinate": "main",
+        "encoding": {
+          "x": {
+            "field": "x",
+            "fieldType": "quantitative",
+            "scale": "x"
+          },
+          "y": {
+            "field": "y",
+            "fieldType": "quantitative",
+            "scale": "y"
+          }
+        }
+      }
+    ],
+    "items": [
+      {
+        "id": "area",
+        "items": 0
+      }
+    ]
+  },
+  {
+    "query": "strip plot",
+    "calls": [
+      "program.createTickMark({})"
+    ],
+    "unresolved": [],
+    "layers": [
+      {
+        "id": "tick",
+        "mark": "tick"
+      }
+    ],
+    "items": [
+      {
+        "id": "tick",
+        "items": 0
+      }
+    ]
+  }
+]

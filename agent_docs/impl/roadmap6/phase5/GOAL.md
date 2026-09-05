@@ -1,0 +1,57 @@
+# Roadmap 6 Phase 5 — Guides labels and appearance
+
+## 상태와 목표
+
+상태: planned. 구현·사용자 승인 기록 없음.
+
+완성 chart에서 시작한 사용자가 축·범례·라벨·테마까지 하위 public action으로 내려갈 수 있게 한다.
+
+## 선행 조건
+
+- [Phase 3](../phase3/GOAL.md)의 R6-P3-X 승인과 필요한 결과.
+- [Phase 4](../phase4/GOAL.md)의 R6-P4-X 승인과 필요한 결과.
+
+## 구체적인 작업 묶음
+
+### R6-P5-W1 — Polar 복원과 Parallel 축 편집
+
+- 상대 규모: M. 시간 약속이 아닌 변경 구조 비교다.
+- 연결: D07, F17.
+- 작업: Cartesian/Polar/Parallel component create/edit/remove/recreate matrix를 완성한다. Polar focused 생성의 공개 경계를 정리하고 dimension-key 기반 editParallelAxis를 설계한다.
+- 완료 조건: title:false→create title→edit→remove→recreate가 public chain으로 가능. Font/format/tick count가 resize·scale edit 뒤 유지.
+
+### R6-P5-W2 — Legend content와 edge layout
+
+- 상대 규모: L. 시간 약속이 아닌 변경 구조 비교다.
+- 연결: D08.
+- 작업: Standalone/combined size, categorical/continuous/interval/width legend의 edge 지원과 recipe 편집을 공통 layout owner로 연결한다. Legacy bottom mode를 명시한다.
+- 완료 조건: 지원하는 각 kind×edge×lifecycle 검증, unsupported 셀 이유 명시. Combined color/shape 일부 제거 뒤 설명과 graphics가 일치.
+
+### R6-P5-W3 — Final-item labels·reference·common format
+
+- 상대 규모: L. 시간 약속이 아닌 변경 구조 비교다.
+- 연결: D13, F14, F18.
+- 작업: 명시적 source mark와 category/aggregate/share content, data/plot anchor reference, annotation을 text/rule/rect owner 위에 제공한다. Axis/legend/text formatter·rotation unit을 정리한다.
+- 완료 조건: 집계 Bar/Pie에 final item당 label 하나, percent 분모 검증. Multiple eligible marks에서 explicit source가 작동. Scale/data/filter 후 label과 anchor 수렴.
+
+### R6-P5-W4 — Program theme와 local override
+
+- 상대 규모: M. 시간 약속이 아닌 변경 구조 비교다.
+- 연결: D17, F18.
+- 작업: Theme owner를 추가하고 기존 font/color token과 mark·guide default를 연결한다. Explicit local/inherited 구분과 reset을 저장한다.
+- 완료 조건: Light/dark와 override/reset에서 axes·legend·text·Parallel까지 갱신. Theme 변경 전후 statistical values/group/domain/order 동일.
+
+### R6-P5-W5 — Opt-in fitting과 guide label layout
+
+- 상대 규모: M. 시간 약속이 아닌 변경 구조 비교다.
+- 연결: D17, F18.
+- 작업: Bounded deterministic text fitting과 guide wrap/rotation/overlap 정책을 기존 text metrics 위에 추가한다. Fixed Canvas default와 분리한다.
+- 완료 조건: 긴 title/legend/axis label 사례에서 bounds와 최소 plot을 만족하거나 explicit overflow. 반복 호출 수렴, 무한 layout loop 없음.
+
+## 검증과 종료
+
+- [VALIDATION.md](../VALIDATION.md)의 공통 matrix와 각 작업의 acceptance를 적용한다.
+- Runtime/type/contract/card/docs 변경은 각 conceptual change와 함께 완료한다.
+- [STEP1.md](STEP1.md)의 실행 체크를 갱신하고 [GATES.md](GATES.md)에 실제 증거만 기록한다.
+- R6-P5-X 승인 전 이 결과를 전제로 하는 다음 단계 구현을 시작하지 않는다.
+- 구현하지 않은 후보는 완료로 표시하지 않고 [추적 원장](../TRACEABILITY.md)에 처분을 남긴다.
