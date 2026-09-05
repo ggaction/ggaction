@@ -244,6 +244,9 @@ try {
     await results.first().evaluate(link => new URL(link.href).pathname),
     "/ggaction/recipes/rose-chart/"
   );
+  await search.fill("createRosePlot");
+  await results.first().waitFor({ state: "visible" });
+  assert.match(await results.first().getAttribute("href"), /#createroseplot$/);
   await search.fill("polar points");
   await results.first().waitFor({ state: "visible" });
   assert.match(await results.first().getAttribute("href"), /\/tutorials\/polar-points\/$/);

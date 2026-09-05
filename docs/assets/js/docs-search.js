@@ -122,11 +122,14 @@
                     : allTokens || compact.includes(queryCompact)
                       ? 2
                       : 0;
-        return { ...section, score };
+        // Prefer a named topic over an equally ranked action intent alias.
+        const titleMatch = pageTitle.includes(query) || sectionTitle.includes(query);
+        return { ...section, score, titleMatch };
       })
       .filter(section => section.score > 0)
       .sort((left, right) =>
         right.score - left.score ||
+        Number(right.titleMatch) - Number(left.titleMatch) ||
         left.pageTitle.localeCompare(right.pageTitle) ||
         (left.sectionTitle ?? "").localeCompare(right.sectionTitle ?? "")
       );
