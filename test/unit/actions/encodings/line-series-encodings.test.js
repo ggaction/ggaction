@@ -275,6 +275,7 @@ test("records line series encodings through wrapped materialization actions", ()
     "editSemantic",
     "editSemantic",
     "createScale",
+    "rematerializeScale",
     "rematerializeLineMark"
   ]);
   assert.deepEqual(
@@ -289,6 +290,7 @@ test("records line series encodings through wrapped materialization actions", ()
     "editSemantic",
     "editSemantic",
     "createScale",
+    "rematerializeScale",
     "rematerializeLineMark"
   ]);
   assert.deepEqual(

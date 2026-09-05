@@ -953,6 +953,8 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 - Grouped-bar reassignment는 color semantic을 먼저 교체한 뒤 wrapped directional offset action으로 matching
   field와 domain을 원자적으로 교체하고 measure policy, bars와 existing legend를 rematerialize한다. Direct offset field
   mismatch나 layout transition은 earlier program을 바꾸지 않고 거부한다.
+- Line color and stroke-dash assignments may precede complete positions. Field scales resolve immediately, while
+  line graphics stay empty until position prerequisites are complete. Compatible encoding orders converge.
 - Coverage: 모든 대표 chart와 legend tests가 mark별 materialization을 검증한다. Five-layout bar matrix,
   four-layout area matrix, normalized/signed domains, primitive/public equivalence와 transition rejection을 포함한다.
 
@@ -1004,6 +1006,8 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
   inferred title/domain/symbol을 갱신하고 custom config는 유지한다. Constant mode 전환은 legend의
   strokeDash component를 제거하고 남은 channel이 없으면 legend 전체를 제거한다.
 - Compatibility: line의 group 또는 color field가 이미 있으면 field mode의 field와 같아야 한다.
+- Field and constant stroke dash may be assigned before either line position; completing positions materializes
+  the stored appearance without requiring another appearance call.
 - Coverage: named/direct vocabulary, field/constant 전환, field/group reassignment, legend cleanup,
   Canvas rematerialization과 invalid option matrix를 검증한다.
 
