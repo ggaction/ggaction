@@ -29,6 +29,8 @@ V는 ready-for-review, X는 planned다. 허용 상태: planned | ready-for-revie
 - 검토: [VISUAL_REVIEW.md](VISUAL_REVIEW.md). Pie count/weighted/donut, Density vertical/grouped/horizontal,
   Horizon signed/temporal/baseline-style의 총 9개. Exact input/call은 single manifests와 generated 화면에 있다.
 - Primitive source commit: [`fa603c29e820014caae7b8c0d9d205b34e2cc241`](https://github.com/ggaction/ggaction/commit/fa603c29e820014caae7b8c0d9d205b34e2cc241), 원격 push 완료.
+- Review package commit: [`1f7debaab66856597deaf8a039648ce23b123e41`](https://github.com/ggaction/ggaction/commit/1f7debaab66856597deaf8a039648ce23b123e41), `origin/codex/roadmap6-hierarchical-actions` push 확인.
+- 사용자 V 승인: 아직 없음. 이 package의 9개 이미지와 정확한 호출을 검토 대상으로 제시한다.
 - 증거: [source·input·semantic·PNG·pixel 결과](visual-results.json), [generator](render-review.mjs),
   [실제 이미지와 정확한 public call](../../../../.artifacts/roadmap6-authoring/phase3-visual-review.html),
   [9개 이미지 개요](../../../../.artifacts/roadmap6-authoring/phase3-visual-overview.png).

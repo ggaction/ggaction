@@ -12,7 +12,8 @@ Current는 174개, Planned는 3개다. 신규 `createPiePlot`·`createDensityPlo
 이미지와 HTML은 gitignored 산출물이며 아래 명령으로 재생성한다.
 
 Primitive source commit은 [`fa603c29e820014caae7b8c0d9d205b34e2cc241`](https://github.com/ggaction/ggaction/commit/fa603c29e820014caae7b8c0d9d205b34e2cc241)이다.
-검토 package의 원격 ref와 승인 기록은 [GATES.md](GATES.md#r6-p3-v--visual-target)가 소유한다.
+검토 package [`1f7debaab66856597deaf8a039648ce23b123e41`](https://github.com/ggaction/ggaction/commit/1f7debaab66856597deaf8a039648ce23b123e41)를 원격 branch에 push했다.
+승인 기록은 [GATES.md](GATES.md#r6-p3-v--visual-target)가 소유한다.
 
 이번 V는 아래 9개 결과와 공개 호출의 대응을 승인하는 단계다. 승인되면 A의 P3-C01–C07에 따라
 세 facade를 구현하고 하위 편집·trace·types·discovery·package 및 렌더링 동등성을 검증한다.

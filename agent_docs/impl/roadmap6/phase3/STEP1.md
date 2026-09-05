@@ -11,7 +11,8 @@
 - [x] 승인된 새 계약의 Planned 등록과 비시각 준비
 - [x] 9개 primitive targets 작성·수치 검증·렌더링
 - [x] V 검토 문서·정확한 호출·이미지와 source 증거 작성
-- [ ] V package 원격 ref 고정과 명시적 사용자 승인
+- [x] V package 원격 ref 고정
+- [ ] V 명시적 사용자 승인
 - [ ] R6-P3-W1 Pie/Donut public flow와 lower lifecycle
 - [ ] R6-P3-W2 Density public flow와 lower lifecycle
 - [ ] R6-P3-W3 Horizon public flow와 lower lifecycle
@@ -51,3 +52,4 @@ A 승인과 primitive 작성·검증을 완료했다. V/X 승인이나 새 API�
 - A 승인 기준 HEAD는 `0f3531ae9c242190df9457b1ed4289491963ba77`이며 사용자 답은 “승인한다”다.
 - 승인된 세 계약은 Planned에 등록했다. 9개 primitive의 normal 19건·PNG 9건이 통과했고 public flow는 V 승인 뒤 구현한다.
 - Density grid는 현행 y축 기준임을 명시했다. Horizon V fixture는 band가 구분되도록 2점에서 7점으로 구체화했고 기존 baseline은 보존했다.
+- V package `1f7debaab66856597deaf8a039648ce23b123e41`를 원격 branch에 push했다. V 승인과 신규 public flow는 아직 없다.

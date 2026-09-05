@@ -409,7 +409,8 @@
         "refinements": [
           "Current density automatic grids remain y-based in both orientations.",
           "Horizon visual inputs use seven observed samples to expose all three bands; the two-point baseline remains unchanged."
-        ]
+        ],
+        "reviewPackageCommit": "1f7debaab66856597deaf8a039648ce23b123e41"
       }
     },
     {
