@@ -1,3 +1,4 @@
+import { withGuideLayoutValidation } from "../../materialization/guides/layout.js";
 import { planColorLegendTransition, applyColorLegendTransition } from "../guides/legends/transition.js";
 import { action } from "../../core/action.js";
 import { validateUserId } from "../../core/identifiers.js";
@@ -103,7 +104,7 @@ export const editScale = action(
     op: "editScale",
     description: "Edit an existing scale and rematerialize its consumers."
   },
-  function (args = {}) {
+  withGuideLayoutValidation(function (args = {}) {
     validateOptionObject(args, OPTIONS, "editScale");
     if (!REQUESTED_CHANGES.some(property => Object.hasOwn(args, property))) {
       throw new Error("editScale requires at least one editable property.");
@@ -119,5 +120,5 @@ export const editScale = action(
     // Preflight every dependent mark and guide on a discarded immutable branch.
     if (scale.type !== definition.type) applyScaleEdit(this, proposal);
     return applyScaleEdit(this, proposal);
-  }
+  })
 );

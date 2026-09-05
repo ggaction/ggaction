@@ -5,6 +5,11 @@ import { fileURLToPath } from "node:url";
 const sourceRoot = fileURLToPath(new URL("../src/", import.meta.url));
 
 export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
+  "guide-layout-validation": Object.freeze({
+    prefix: "materialization/guides/",
+    floor: Object.freeze({ lines: 90, branches: 80, functions: 100 }),
+    rationale: "Guide ownership and final-state collision validation must remain symmetric across domain actions."
+  }),
   "parallel-axis-policies": Object.freeze({
     prefix: "actions/guides/axes/parallel/",
     floor: Object.freeze({ lines: 90, branches: 80, functions: 100 }),
@@ -38,6 +43,7 @@ export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
 });
 
 export const CRITICAL_COVERAGE_OVERRIDES = Object.freeze({
+  "layout/guideCollisions.js": Object.freeze({ lines: 95, branches: 85, functions: 100 }),
   "layout/legendItems.js": Object.freeze({ lines: 90, branches: 80, functions: 100 }),
   "actions/guides/legends/creation.js": Object.freeze({ lines: 90, branches: 80, functions: 100 }),
   "actions/guides/legends/edit.js": Object.freeze({ lines: 90, branches: 80, functions: 100 }),

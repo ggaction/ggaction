@@ -1,9 +1,7 @@
 import { isPlainObject } from "../../../../core/immutable.js";
 import { noOptions } from "../../../../core/validation.js";
 import { mapOrdinalValues } from "../../../../grammar/scales/index.js";
-import { unionConcreteGraphicBounds } from "../../../../grammar/schemas/graphicBounds.js";
 import { DEFAULT_COLORS } from "../../../../theme/defaults.js";
-import { layoutBoundsIntersect } from "../../../../layout/title.js";
 import { formatVisibleText } from "../../../../core/textMetrics.js";
 import {
   assertLegendBoundsInsideCanvas,
@@ -53,13 +51,6 @@ export function symbolWidth(config) {
   }));
 }
 
-function leftGuideBoundary(program, bounds) {
-  const ids = ["yAxisLine", "yAxisTicks", "yAxisLabels", "yAxisTitle"]
-    .filter(id => program.graphicSpec.objects[id] !== undefined);
-  const occupied = unionConcreteGraphicBounds(program.graphicSpec, ids);
-  return occupied === undefined ? bounds.x : Math.min(bounds.x, occupied.left);
-}
-
 function textBounds(x, y, value, style, textAlign = "left") {
   return resolveLegendTextBounds(
     { x, y, align: textAlign },
@@ -68,7 +59,7 @@ function textBounds(x, y, value, style, textAlign = "left") {
   );
 }
 
-function resolveLeftLayout(program, bounds, canvas, config, width, count) {
+function resolveLeftLayout(bounds, canvas, config, width, count) {
   const padding = config.border === false ? 0 : config.border.padding;
   const categoricalWidth = config.domain.reduce((maximum, value) => Math.max(
     maximum,
@@ -83,9 +74,6 @@ function resolveLeftLayout(program, bounds, canvas, config, width, count) {
   const start = contentRight - contentWidth;
   if (start < padding) {
     throw new Error("Legend layout requires more left-margin space.");
-  }
-  if (occupiedRight >= leftGuideBoundary(program, bounds)) {
-    throw new Error("Left legend and y-axis guides require more left-margin space.");
   }
   const symbolX = Array(count).fill(start);
   const itemY = Array.from(
@@ -140,7 +128,7 @@ function resolveLeftLayout(program, bounds, canvas, config, width, count) {
   };
 }
 
-function resolveGridLayout(program, bounds, canvas, config, width, count, top) {
+function resolveGridLayout(bounds, canvas, config, width, count, top) {
   const { cells, columnWidths, gridWidth, gridHeight, rowHeight } =
     resolveLegendGrid(config, width, count);
   const inlineTitle = config.titlePosition === "left";
@@ -177,25 +165,10 @@ function resolveGridLayout(program, bounds, canvas, config, width, count, top) {
     if (blockTop < 0) {
       throw new Error("Legend layout requires more top-margin space.");
     }
-    const titleIds = ["chartTitle", "chartSubtitle"]
-      .filter(id => program.graphicSpec.objects[id] !== undefined);
-    const titleBounds = unionConcreteGraphicBounds(program.graphicSpec, titleIds);
-    const padding = config.border === false ? 0 : config.border.padding;
-    if (titleBounds !== undefined && layoutBoundsIntersect(titleBounds, {
-      left: start - padding, right: start + totalWidth + padding,
-      top: blockTop - padding, bottom: blockBottom + padding
-    })) {
-      throw new Error("Top legend and chart title require more top-margin space.");
-    }
   } else {
     const occupiedTop = config.border === false
       ? blockTop
       : blockTop - config.border.padding;
-    const axisTitle = program.graphicSpec.objects.xAxisTitle;
-    if (axisTitle?.type === "text" &&
-      axisTitle.properties.y + axisTitle.properties.fontSize / 2 >= occupiedTop) {
-      throw new Error("Bottom legend and x-axis title require more bottom-margin space.");
-    }
     const occupiedBottom = config.border === false
       ? blockBottom
       : blockBottom + config.border.padding;
@@ -353,17 +326,17 @@ export function resolveLayout(program, config) {
   }
 
   if (config.position === "left") {
-    return resolveLeftLayout(program, bounds, canvas, config, width, count);
+    return resolveLeftLayout(bounds, canvas, config, width, count);
   }
 
   if (config.position === "top") {
-    return resolveGridLayout(program, bounds, canvas, config, width, count, true);
+    return resolveGridLayout(bounds, canvas, config, width, count, true);
   }
 
   if (config.layout === "legacy-bottom") {
     return resolveCompactBottomLayout(bounds, canvas, config, width, count);
   }
-  return resolveGridLayout(program, bounds, canvas, config, width, count, false);
+  return resolveGridLayout(bounds, canvas, config, width, count, false);
 }
 
 export function resolveAppearance(program, config) {

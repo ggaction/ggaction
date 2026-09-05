@@ -178,7 +178,7 @@ test("validates selectors, edits, kind options, and left margin atomically", () 
   assert.throws(() => gradient.editLegend({ columns: 2 }),
     /does not accept columns/);
   assert.throws(() => right.editLegend({ position: "left" }),
-    /left-margin space/);
+    /Size legend layout requires more Canvas margin space/);
   assert.ok(right.graphicSpec.objects.seriesLegendTitle);
 });
 

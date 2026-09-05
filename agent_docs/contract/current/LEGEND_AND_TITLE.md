@@ -1,7 +1,17 @@
 # Legend and title action contracts
 
 제목과 범례의 충돌 검사는 단일 text와 줄바꿈 text collection의 실제 occupied bounds를 사용한다.
-서로 다른 margin의 제목·범례는 재배치 후에도 유효하며 실제 겹침은 작성 순서와 무관하게 거절한다.
+같은 edge의 chart title/subtitle, Cartesian axis component와 legend group 사이 실제 겹침은 작성 순서와 무관하게 거절한다. 서로 다른 edge의 block은 이 검사에서 비교하지 않는다.
+
+## Shared guide collision contract
+
+- Color/series/gradient/interval/size/opacity/strokeWidth의 네 edge에 같은 검증을 적용한다. 같은 target의 categorical+size는 하나의 group이며 retained border도 bounds에 포함한다.
+- Axis line/ticks/labels/title는 각자의 position과 실제 stroke·rotation·collection bounds를 사용한다. Axis 내부 component 제약은 axis owner가 별도로 담당한다.
+- 서로 독립적인 legend group과 title↔axis, title↔legend, axis↔legend의 strict intersection은 오류다. 경계가 닿는 것만으로는 오류가 아니다.
+- Create/edit와 Canvas/scale/dependent replay는 해당 aggregate의 최종 guide geometry를 검증한다. 실패 시 이전 program의 semantic/graphic/config/context/trace는 변하지 않는다.
+- 공간이 부족하면 margin 또는 offset을 명시적으로 바꿔야 한다. Canvas 자동 확대나 임의 재배치는 없다. Public extension primitive의 의도된 overlay는 이 domain 검증에 포함하지 않는다.
+- Chart title을 먼저 만들어도 bordered gradient/opacity를 생성·편집·재생성할 수 있으며, 동등한 최종 옵션은 title-last와 같은 graphicSpec/drawing order가 된다.
+- Evidence: `test/unit/actions/guides/guide-collisions.test.js`, packed Node consumer와 동일 artifact browser Canvas/SVG.
 
 Current direct-action contracts for this domain. Shared notation and lifecycle rules live in [`../README.md`](../README.md).
 
@@ -527,7 +537,7 @@ Size는 실제 최대 diameter와 minimum slot width32를 측정하고 circle을
 
 Full/Basic의 standalone create는 네 방향과 layout edge, horizontal align/direction/columns/titlePosition, offset/itemGap, text styles 및 border를 지원한다. Full edits와 Canvas/scale/filter/content replay가 같은 owner를 사용한다. Side item controls는 interval/width와 같은 vertical/center/one column/top title 계약이다. Visible circle/text/background가 Canvas를 벗어나면 실패하고 hidden title은 제외한다.
 
-Combined categorical+size side는 각 owner의 content를 먼저 materialize한 뒤 lane이 결합한다. Size는 categorical의 private size 좌표를 읽지 않는다. Shared label start44는 최소값이며 각 block의 symbol center와 requested label 간격을 수용하도록 확장한다. Retained size 자체 border는 content와 함께 재배치하고 outer categorical group border가 그 occupied bounds를 포함한다. Top/bottom 결합도 지원하며 아래 group 계약을 따른다. 전체 family collision 대칭성은 계속 별도 검증 범위다.
+Combined categorical+size side는 각 owner의 content를 먼저 materialize한 뒤 lane이 결합한다. Size는 categorical의 private size 좌표를 읽지 않는다. Shared label start44는 최소값이며 각 block의 symbol center와 requested label 간격을 수용하도록 확장한다. Retained size 자체 border는 content와 함께 재배치하고 outer categorical group border가 그 occupied bounds를 포함한다. Top/bottom 결합도 지원하며 아래 group 계약을 따른다. 전체 family의 same-edge collision은 이 문서의 공통 최종 상태 검증을 따른다.
 
 Evidence: `test/unit/actions/guides/size-legend-edges.test.js`, `test/contracts/size-legend-edges.test.js`, 기존 size content/editor/lane 및 Cars regression primitive pairs.
 

@@ -7222,6 +7222,10 @@ Canvas size and margin changes explicitly rematerialize their positions.
 The library supports one title and one optional subtitle. `wrap` and
 `lineHeight` require `maxWidth`; explicit `lineHeight` must cover every visible
 font size. Missing margin space and same-edge guide collisions are errors.
+The collision check includes Cartesian axis components and every legend family,
+including borders and combined categorical/size groups. Creating the title first
+or last follows the same rule. Canvas and scale updates check the final positions
+of dependent guides; rejected changes leave the earlier program unchanged.
 
 ## Related
 
@@ -9840,6 +9844,12 @@ Polar grid.
 | `editYAxis` | `editYAxis({ position: "right" })` | Existing y-axis components | Retained components moved together |
 | `removeXAxis` / `removeYAxis` | `removeXAxis()` | Existing complete axis | Semantic, graphic, and stored axis state removed |
 
+Cartesian axis lines, ticks, labels and titles must not overlap a chart title or
+legend on the same edge. This applies to creation, focused and whole-axis edits,
+and Canvas or scale updates, regardless of authoring order. Increase the margin
+or change offsets when space is insufficient; a failed action preserves the
+earlier program.
+
 ## Polar component creation
 
 Create a missing Polar axis component without rebuilding the other components.
@@ -10756,6 +10766,14 @@ The background is rendered before every symbol layer, label, and title.
 # Editing Legends
 
 ## Updates and trace
+
+Legend creation and editing check the final occupied bounds against chart titles,
+Cartesian axis components and independent legend groups on the same edge.
+The check includes borders, strokes and rotated text. A categorical legend with
+its size companion counts as one group. Overlap is an error in either authoring
+order; provide more margin space or different offsets. Canvas and scale updates
+apply the same check after dependent guides have moved. A failed action leaves
+the earlier program unchanged.
 
 `editLegend()` updates one existing stable legend. Omit `target` when exactly
 one legend target exists; otherwise pass its mark ID. It accepts content, layout and appearance changes supported by the resulting

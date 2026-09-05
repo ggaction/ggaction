@@ -4,6 +4,8 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 
 ## Shared complete-axis contract
 
+Cartesian line/ticks/labels/title의 실제 occupied bounds는 각 component position에서 chart title과 legend group의 bounds를 검사한다. 작성 순서, focused/whole-axis edit와 Canvas/scale replay에 공통인 최종 상태 검증이며 이전 program은 immutable하다. 정확한 cross-guide policy는 [공통 guide collision 계약](LEGEND_AND_TITLE.md#shared-guide-collision-contract)이 소유한다. 내부 axis component 간 검증은 기존 axis 계약을 따른다.
+
 `createXAxis`와 `createYAxis`는 같은 option shape를 사용한다.
 
 - `scale`: optional scale ID. 생략하면 channel ID를 사용하거나 parent `createAxes`가 유일한 scale을 전달한다.

@@ -1,3 +1,4 @@
+import { withGuideLayoutValidation } from "../../../materialization/guides/layout.js";
 import { action } from "../../../core/action.js";
 import { isPlainObject } from "../../../core/immutable.js";
 import { validateKeys, validateOptionObject } from "../../../core/validation.js";
@@ -149,7 +150,7 @@ function makeEditAxis(channel) {
       op: operation.operation,
       description: `Edit selected existing ${channel}-axis components.`
     },
-    function (args = {}) {
+    withGuideLayoutValidation(function (args = {}) {
       validateArgs(args, operation.operation);
       const plan = buildPlan(this, channel, args, operation);
 
@@ -157,7 +158,7 @@ function makeEditAxis(channel) {
       // later leaf failure cannot begin the returned action trace or state.
       applyPlan(this, channel, plan, operation);
       return applyPlan(this, channel, plan, operation);
-    }
+    })
   );
 }
 

@@ -1,3 +1,4 @@
+import { withGuideLayoutValidation } from "../../materialization/guides/layout.js";
 import { action } from "../../core/action.js";
 import { noOptions } from "../../core/validation.js";
 import {
@@ -92,7 +93,7 @@ function titleTextAction(kind, create) {
   return action({
     op,
     description: `${create ? "Create" : "Rematerialize"} chart ${kind} text.`
-  }, function (args = {}) {
+  }, withGuideLayoutValidation(function (args = {}) {
     noOptions(args, op);
     const config = requireTitleConfig(this);
     if (create && this.graphicSpec.objects[id] !== undefined) {
@@ -111,7 +112,7 @@ function titleTextAction(kind, create) {
       ...(component.lines.length > 1 ? { length: component.lines.length } : {}),
       ...resolveCanvasGraphicPlacement(this)
     })[`edit${suffix}`]();
-  });
+  }));
 }
 
 export const editTitleText = titleTextAction("title", false);
@@ -121,7 +122,7 @@ export const createSubtitleText = titleTextAction("subtitle", true);
 
 export const rematerializeTitle = action(
   { op: "rematerializeTitle", description: "Rematerialize chart title graphics." },
-  function (args = {}) {
+  withGuideLayoutValidation(function (args = {}) {
     noOptions(args, "rematerializeTitle");
     requireTitleConfig(this);
     if (this.graphicSpec.objects.chartTitle?.type !== "text") {
@@ -138,7 +139,7 @@ export const rematerializeTitle = action(
       next = next.editGraphics({ target: "chartSubtitle", remove: true });
     }
     return next;
-  }
+  })
 );
 
 export const createTitle = action(
@@ -147,7 +148,7 @@ export const createTitle = action(
     description: "Create a chart title and optional subtitle.",
     scope: "any"
   },
-  function (args = {}) {
+  withGuideLayoutValidation(function (args = {}) {
     assertTitleScope(this, "createTitle");
     const options = normalizeTitleOptions(args);
     if (Object.keys(this.semanticSpec.title).length > 0) {
@@ -172,7 +173,7 @@ export const createTitle = action(
     next = next.createTitleText();
     if (subtitle !== undefined) next = next.createSubtitleText();
     return next;
-  }
+  })
 );
 
 export const editTitle = action(
@@ -181,7 +182,7 @@ export const editTitle = action(
     description: "Edit one stable chart title resource.",
     scope: "any"
   },
-  function (args = {}) {
+  withGuideLayoutValidation(function (args = {}) {
     assertTitleScope(this, "editTitle");
     if (this.semanticSpec.title.text === undefined) {
       throw new Error("editTitle requires an existing chart title.");
@@ -210,7 +211,7 @@ export const editTitle = action(
     }
     resolveTitleLayout(next, normalized.config);
     return next.rematerializeTitle();
-  }
+  })
 );
 
 export const removeTitle = action(
@@ -219,7 +220,7 @@ export const removeTitle = action(
     description: "Remove the complete chart title resource.",
     scope: "any"
   },
-  function (args = {}) {
+  withGuideLayoutValidation(function (args = {}) {
     assertTitleScope(this, "removeTitle");
     noOptions(args, "removeTitle");
     if (
@@ -246,5 +247,5 @@ export const removeTitle = action(
     return next.compositionSpec?.type === "facet"
       ? next.materializeComposition()
       : next;
-  }
+  })
 );

@@ -1,3 +1,4 @@
+import { withGuideLayoutValidation } from "../../../../materialization/guides/layout.js";
 import { sameGuideValue } from "../../reuse.js";
 import { normalizeLegendOrder } from "../../../../grammar/categoryOrder.js";
 import { action } from "../../../../core/action.js";
@@ -46,7 +47,7 @@ function resolveStandaloneLegendStep(args, kind) {
 
 export const rematerializeLegend = action(
   { op: "rematerializeLegend", description: "Rematerialize every existing legend component." },
-  function (args = {}) {
+  withGuideLayoutValidation(function (args = {}) {
     noOptions(args, "rematerializeLegend");
     let next = this;
     const hasCategorical =
@@ -135,7 +136,7 @@ export const rematerializeLegend = action(
       next = next.rematerializeHorizontalLegendLane();
     }
     return next;
-  }
+  })
 );
 
 export function resolveCategoricalLegendConfig(program, args = {}) {
@@ -174,7 +175,7 @@ export function resolveCategoricalLegendConfig(program, args = {}) {
 
 export const createCategoricalLegend = action(
   { op: "createCategoricalLegend", description: "Create one categorical legend block." },
-  function (args = {}) {
+  withGuideLayoutValidation(function (args = {}) {
     const config = resolveCategoricalLegendConfig(this, args);
     if (
       this.semanticSpec.guides.legend?.series !== undefined ||
@@ -185,7 +186,7 @@ export const createCategoricalLegend = action(
     resolveLayout(this, config);
     return createCategoricalLegendFromConfig(this, config,
       args.order === undefined ? undefined : normalizeLegendOrder(args.order));
-  }
+  })
 );
 
 export function resolveLegendCreationPlan(program, args = {}, layers = program.semanticSpec.layers) {
@@ -311,9 +312,9 @@ export function applyLegendCreationPlan(program, plan) {
 
 export const createLegend = action(
   { op: "createLegend", description: "Create an inferred legend for selected channels." },
-  function (args = {}) {
+  withGuideLayoutValidation(function (args = {}) {
     return applyLegendCreationPlan(this, resolveLegendCreationPlan(this, args));
-  }
+  })
 );
 
 export const removeCategoricalLegend = action(
@@ -321,7 +322,7 @@ export const removeCategoricalLegend = action(
     op: "removeCategoricalLegend",
     description: "Remove the active categorical legend and its concrete components."
   },
-  function (args = {}) {
+  withGuideLayoutValidation(function (args = {}) {
     noOptions(args, "removeCategoricalLegend");
     const entries = ["series", "color"]
       .filter(kind => this.guideConfigs.legend?.[kind] !== undefined);
@@ -341,5 +342,5 @@ export const removeCategoricalLegend = action(
       next = next.editGraphics({ target, remove: true });
     }
     return next._withoutMaterializationConfig(["guides", "legend", kind]);
-  }
+  })
 );

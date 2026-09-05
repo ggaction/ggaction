@@ -270,24 +270,6 @@ function translateGraphic(program, id, dx, dy) {
   return next;
 }
 
-function yAxisBounds(program) {
-  const ids = ["yAxisLine", "yAxisTicks", "yAxisLabels", "yAxisTitle"]
-    .filter(id => program.graphicSpec.objects[id] !== undefined);
-  return ids.length === 0
-    ? undefined
-    : unionConcreteGraphicBounds(program.graphicSpec, ids);
-}
-
-function horizontalCollisionBounds(program, edge) {
-  const ids = edge === "top"
-    ? ["chartTitle", "chartSubtitle"]
-    : ["xAxisLine", "xAxisTicks", "xAxisLabels", "xAxisTitle"];
-  return ids
-    .filter(id => program.graphicSpec.objects[id] !== undefined)
-    .map(id => resolveConcreteGraphicBounds(program.graphicSpec, id))
-    .filter(bounds => bounds !== undefined);
-}
-
 function horizontalGroups(program, groups) {
   return groups.map(group => {
     const representative = group.blocks[0];
@@ -378,8 +360,7 @@ export const rematerializeSideLegendLane = action(
         side,
         plot,
         canvas,
-        groups: groupBlocks(blocks, configs),
-        axisBounds: yAxisBounds(this)
+        groups: groupBlocks(blocks, configs)
       });
       return [{ plan, blocks }];
     });
@@ -466,8 +447,7 @@ export const rematerializeHorizontalLegendLane = action(
         }))).map(child => ({ ...child, element: child.content }));
         const plan = resolveHorizontalLegendGroup({ edge, plot, canvas, groups: children,
           align: config.align, offset: config.offset, border: group.border,
-          backgroundId: group.backgroundId,
-          collisionBounds: groups.length === 1 ? horizontalCollisionBounds(next, edge) : [] });
+          backgroundId: group.backgroundId });
         next = applyHorizontalPlan(next, children, plan);
       }
       if (groups.length < 2) continue;
@@ -478,8 +458,7 @@ export const rematerializeHorizontalLegendLane = action(
         edge,
         plot,
         canvas,
-        groups: horizontal,
-        collisionBounds: horizontalCollisionBounds(next, edge)
+        groups: horizontal
       });
       next = applyHorizontalPlan(next, horizontal, plan);
     }

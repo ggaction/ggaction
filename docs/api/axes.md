@@ -16,6 +16,12 @@ title: Axes
 | `editYAxis` | `editYAxis({ position: "right" })` | Existing y-axis components | Retained components moved together |
 | `removeXAxis` / `removeYAxis` | `removeXAxis()` | Existing complete axis | Semantic, graphic, and stored axis state removed |
 
+Cartesian axis lines, ticks, labels and titles must not overlap a chart title or
+legend on the same edge. This applies to creation, focused and whole-axis edits,
+and Canvas or scale updates, regardless of authoring order. Increase the margin
+or change offsets when space is insufficient; a failed action preserves the
+earlier program.
+
 ## Polar component creation
 
 Create a missing Polar axis component without rebuilding the other components.

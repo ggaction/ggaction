@@ -7,12 +7,10 @@ import {
   validatePositiveFinite
 } from "../../core/validation.js";
 import { resolveGraphicBounds } from "../../layout/canvas.js";
-import { resolveConcreteGraphicBounds } from "../../grammar/schemas/graphicBounds.js";
 import {
   alignedTextAnchor,
   alignedTitleAnchor,
   buildTitleReadingBlock,
-  layoutBoundsIntersect,
   resolveTitleComponentBounds,
   unionTitleBounds
 } from "../../layout/title.js";
@@ -176,35 +174,7 @@ export function requireTitleConfig(program) {
   return program.titleConfig;
 }
 
-function reservedGraphicIds(program, position) {
-  const ids = [];
-  const axisChannel = ["top", "bottom"].includes(position) ? "x" : "y";
-  const axis = program.guideConfigs.axis?.[axisChannel];
-  if (axis && Object.values(axis).some(config => config?.position === position)) {
-    const prefix = axisChannel === "x" ? "xAxis" : "yAxis";
-    ids.push(`${prefix}Line`, `${prefix}Ticks`, `${prefix}Labels`, `${prefix}Title`);
-  }
-  const prefixes = {
-    series: "seriesLegend",
-    color: "colorLegend",
-    gradient: "colorGradient",
-    opacity: "opacityLegend"
-  };
-  for (const [kind, config] of Object.entries(program.guideConfigs.legend ?? {})) {
-    if (config?.position !== position || prefixes[kind] === undefined) continue;
-    ids.push(...Object.keys(program.graphicSpec.objects).filter(
-      id => id.startsWith(prefixes[kind])
-    ));
-    if (kind === "series" && program.guideConfigs.legend?.size !== undefined) {
-      ids.push(...Object.keys(program.graphicSpec.objects).filter(
-        id => id.startsWith("sizeLegend")
-      ));
-    }
-  }
-  return [...new Set(ids)];
-}
-
-function validateLayout(program, position, titleBounds, plot, canvas) {
+function validateLayout(position, titleBounds, plot, canvas) {
   if (
     titleBounds.left < 0 || titleBounds.top < 0 ||
     titleBounds.right > canvas.width || titleBounds.bottom > canvas.height
@@ -219,14 +189,6 @@ function validateLayout(program, position, titleBounds, plot, canvas) {
   }[position];
   if (!outsidePlot) {
     throw new Error(`Chart title requires more ${position}-margin space.`);
-  }
-  for (const id of reservedGraphicIds(program, position)) {
-    const bounds = program.graphicSpec.objects[id] === undefined
-      ? undefined
-      : resolveConcreteGraphicBounds(program.graphicSpec, id);
-    if (bounds !== undefined && layoutBoundsIntersect(titleBounds, bounds)) {
-      throw new Error(`Chart title and ${position} guides require more margin space.`);
-    }
   }
 }
 
@@ -293,7 +255,6 @@ export function resolveTitleLayout(program, config) {
       : [resolveTitleComponentBounds(subtitle, config.subtitleStyle)])
   ]);
   validateLayout(
-    program,
     config.position,
     titleBounds,
     plot,

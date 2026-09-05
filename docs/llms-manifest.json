@@ -1099,8 +1099,8 @@
         "errors-and-limitations",
         "related"
       ],
-      "bytes": 4629,
-      "sha256": "ac6589cb22770fa7a72a6d267b14d7af520391bf40af097e3211569ac1defa6a"
+      "bytes": 4947,
+      "sha256": "ae201ec05fa083f6397b14038faaf8381ebf58c0046b678c251f38251e0b2db6"
     },
     {
       "order": 70,
@@ -1477,8 +1477,8 @@
         "errors-and-limitations",
         "related"
       ],
-      "bytes": 16095,
-      "sha256": "c9cb762e91fce1b88699db41a63f099884b259f72738e41cf5fab57057336641"
+      "bytes": 16431,
+      "sha256": "244bb1d19288b1710581f00e9dc46a2992f3f4562d63c25e099f7748d23da4fb"
     },
     {
       "order": 94,
@@ -1569,8 +1569,8 @@
         "removing-a-legend",
         "related"
       ],
-      "bytes": 9325,
-      "sha256": "f2747b8d5379aecb920be34796f20ccdec8875b2d6790d46bfe108ff251aed71"
+      "bytes": 9832,
+      "sha256": "7d63e313cd3a2e7d1f839c06fe2edad653c78d9bc2b53f9ba440df2e22b847ee"
     },
     {
       "order": 100,

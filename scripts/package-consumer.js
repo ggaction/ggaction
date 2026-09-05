@@ -547,6 +547,28 @@ async function testNodeConsumer(directory) {
       assert.match(renderToSVG(combined), /<svg /);
       if (create === chart) assert.deepEqual(combined.editLegend({ channels: ["color", "size"] }).graphicSpec, combined.graphicSpec);
     }
+    {
+      const source = chart().createCanvas({ width: 1200, height: 1000, margin: 300 })
+        .createData({ values: [{ x: 0, y: 0, m: 0 }, { x: 10, y: 10, m: 10 }] })
+        .createPointMark().encodeX({ field: "x" }).encodeY({ field: "y" })
+        .encodeColor({ field: "m", fieldType: "quantitative" });
+      const title = { text: "Chart", position: "top" };
+      const legend = { channels: ["color"], position: "top", offset: 40, border: true };
+      const forward = source.createTitle(title).createLegend(legend);
+      assert.deepEqual(forward.graphicSpec, source.createLegend(legend).createTitle(title).graphicSpec);
+      assert.match(renderToSVG(forward), /<svg /);
+      const overlap = { position: "top", text: "AXIS", offset: 40, fontSize: 24 };
+      assert.throws(() => forward.createXAxisTitle(overlap), /overlap.*margin space/);
+      assert.throws(() => source.createXAxisTitle(overlap).createLegend(legend), /overlap.*margin space/);
+      assert.equal(Object.hasOwn(forward.context, "deferGuideLayoutValidation"), false);
+      assert.deepEqual(forward.editLegend({ border: false }).editLegend({ border: true }).graphicSpec, forward.graphicSpec);
+      const opacity = source.encodeOpacity({ field: "m" });
+      const options = { ...legend, channels: ["opacity"] };
+      const opacityTitle = opacity.createTitle(title).createLegend(options);
+      assert.deepEqual(opacityTitle.graphicSpec, opacity.createLegend(options).createTitle(title).graphicSpec);
+      assert.deepEqual(opacityTitle.editCanvas({ width: 1240 }).graphicSpec,
+        opacity.editCanvas({ width: 1240 }).createTitle(title).createLegend(options).graphicSpec);
+    }
     const editedContent = legendContentBase.createLegend({ channels: ["size"] })
       .editLegend({ labels: { color: "red" }, titleStyle: { fontWeight: 900 } })
       .editLegend({ channels: ["color", "shape", "size"], count: 3 })

@@ -1,3 +1,4 @@
+import { withGuideLayoutValidation } from "../../../materialization/guides/layout.js";
 import { action } from "../../../core/action.js";
 import { validateUserId } from "../../../core/identifiers.js";
 import {
@@ -84,7 +85,7 @@ function createEditAxisLine(channel) {
 
   return action(
     { op: operation, description: `Edit the concrete ${channel}-axis line.` },
-    function (args = {}) {
+    withGuideLayoutValidation(function (args = {}) {
       validateKeys(args, EDIT_OPTIONS, operation);
       const { graphic } = axisIds(channel);
       const line = this.graphicSpec.objects[graphic];
@@ -116,7 +117,7 @@ function createEditAxisLine(channel) {
       return next
         .editGraphics({ target: graphic, property: "stroke", value: color })
         .editGraphics({ target: graphic, property: "strokeWidth", value: lineWidth });
-    }
+    })
   );
 }
 
@@ -129,7 +130,7 @@ function createAxisLine(channel) {
 
   return action(
     { op: operation, description: `Create the concrete ${channel}-axis line.` },
-    function (args = {}) {
+    withGuideLayoutValidation(function (args = {}) {
       validateKeys(args, CREATE_OPTIONS, operation);
       const scale = validateUserId(args.scale ?? channel, "Scale id");
       const position = validateAxisPosition(
@@ -154,7 +155,7 @@ function createAxisLine(channel) {
           ...resolvePlotGraphicPlacement(this)
         })
         [editOperation]({ position, color, lineWidth });
-    }
+    })
   );
 }
 

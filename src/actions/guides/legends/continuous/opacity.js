@@ -372,8 +372,7 @@ export function createOpacityLegendFromConfig(program, config) {
       id: "opacityLegendSymbols",
       type: "circle",
       length: 0,
-      ...resolveLegendGraphicPlacement(next),
-      ...(resolved.config.border === false
+      ...resolveLegendGraphicPlacement(next, resolved.config.border === false
         ? {}
         : { after: "opacityLegendBackground" })
     })

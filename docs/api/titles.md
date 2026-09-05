@@ -126,6 +126,10 @@ Canvas size and margin changes explicitly rematerialize their positions.
 The library supports one title and one optional subtitle. `wrap` and
 `lineHeight` require `maxWidth`; explicit `lineHeight` must cover every visible
 font size. Missing margin space and same-edge guide collisions are errors.
+The collision check includes Cartesian axis components and every legend family,
+including borders and combined categorical/size groups. Creating the title first
+or last follows the same rule. Canvas and scale updates check the final positions
+of dependent guides; rejected changes leave the earlier program unchanged.
 
 ## Related
 

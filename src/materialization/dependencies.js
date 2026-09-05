@@ -1,3 +1,4 @@
+import { withGuideLayoutTransaction } from "./guides/layout.js";
 import {
   canDeferScaleConsumerApplication,
   getLayerScaleIds,
@@ -9,7 +10,7 @@ import {
 } from "./marks/index.js";
 import { findLayer, requireLayer } from "../selectors/layers.js";
 import {
-  applyMaterializationPlan,
+  applyMaterializationPlan as executeMaterializationPlan,
   buildMaterializationPlan
 } from "./planner.js";
 import { hasMaterializedLegend } from "./legends.js";
@@ -120,5 +121,7 @@ export function applyDetachedScaleRematerialization(program, previousLayers) {
   }));
 }
 
-export { applyMaterializationPlan } from "./planner.js";
+export function applyMaterializationPlan(program, plan) {
+  return withGuideLayoutTransaction(program, next => executeMaterializationPlan(next, plan));
+}
 export { planScaleGuideRematerialization };

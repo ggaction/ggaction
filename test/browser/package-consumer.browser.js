@@ -230,6 +230,30 @@ test.before(async () => {
         .createLegend({ channels: ["color", "size"], position: "top", count: 3, offset: 30, itemGap: 20, border: true })
         .editLegendLayout({ position: "bottom" });
       render(horizontalCombined, document.getElementById("legend-content").getContext("2d"));
+      const guideSource = chart().createCanvas({ width: 1200, height: 1000, margin: 300 })
+        .createData({ values: [{ x: 0, y: 0, m: 0 }, { x: 10, y: 10, m: 10 }] })
+        .createPointMark().encodeX({ field: "x" }).encodeY({ field: "y" })
+        .encodeColor({ field: "m", fieldType: "quantitative" }).encodeOpacity({ field: "m" });
+      const guideTitle = { text: "Chart", position: "top" };
+      let guideRejects = 0;
+      const guideOrder = [];
+      const guideComparisons = [];
+      for (const channel of ["color", "opacity"]) {
+        const options = { channels: [channel], position: "top", offset: 40, border: true };
+        const program = guideSource.createTitle(guideTitle).createLegend(options);
+        guideComparisons.push([program.graphicSpec,
+          guideSource.createLegend(options).createTitle(guideTitle).graphicSpec]);
+        const overlap = { position: "top", text: "AXIS", offset: 40, fontSize: 24 };
+        for (const attempt of [() => program.createXAxisTitle(overlap),
+          () => guideSource.createXAxisTitle(overlap).createLegend(options)]) {
+          try { attempt(); } catch (error) { if (/overlap.*margin space/.test(error.message)) guideRejects += 1; else throw error; }
+        }
+        const edited = program.editLegend({ border: false }).editLegend({ border: true }).editCanvas({ width: 1240 });
+        guideComparisons.push([edited.graphicSpec,
+          guideSource.editCanvas({ width: 1240 }).createTitle(guideTitle).createLegend(options).graphicSpec]);
+        guideOrder.push(renderToSVG(edited).startsWith("<svg "));
+        render(edited, document.getElementById("legend-content").getContext("2d"));
+      }
       const inferredSizeBase = legendContentBase.removeEncoding({ channel: "shape" });
       const inferredColorSize = inferredSizeBase.createLegend({ count: 3 });
       const inferredColorBase = inferredSizeBase.removeEncoding({ channel: "size" });
@@ -260,6 +284,7 @@ test.before(async () => {
       const hiddenSizeLegend = editedSizeLegend.editLegendTitle({ title: false });
       render(editedSizeLegend, document.getElementById("size-legend").getContext("2d"));
       document.querySelector("#status").textContent = "complete";
+      window.__ggactionGuideComparisons = guideComparisons;
       window.__ggactionConsumer = {
         intervalPosition: intervalTop.guideConfigs.legend.interval.position,
         intervalColumns: intervalTop.guideConfigs.legend.interval.columns,
@@ -286,6 +311,8 @@ test.before(async () => {
         combinedContentKinds: Object.keys(colorSizeContent.guideConfigs.legend),
         combinedContentCount: colorSizeContent.graphicSpec.objects.sizeLegendSymbols.items.length,
         combinedPosition: horizontalCombined.guideConfigs.legend.color.position,
+        guideRejects,
+        guideOrder,
         combinedSVG: renderToSVG(horizontalCombined).startsWith("<svg "),
         combinedTitlesAligned: horizontalCombined.graphicSpec.objects.colorLegendTitle.properties.y === horizontalCombined.graphicSpec.objects.sizeLegendTitle.properties.y,
         combinedContentSVG: renderToSVG(colorSizeContent).startsWith("<svg "),
@@ -391,6 +418,9 @@ test("imports and renders the packed browser entries", async () => {
   const { page, errors } = await openBrowserPage(browser, server.baseUrl, {
     waitFor: () => window.__ggactionConsumer !== undefined
   });
+  const guideComparisons = await windowValue(page, "__ggactionGuideComparisons");
+  assert.equal(guideComparisons.length, 4);
+  for (const [actual, expected] of guideComparisons) assert.deepEqual(actual, expected);
   assert.deepEqual(await windowValue(page, "__ggactionConsumer"), {
     intervalPosition: "top",
     intervalColumns: 2,
@@ -416,6 +446,8 @@ test("imports and renders the packed browser entries", async () => {
     combinedContentKinds: ["color", "size"],
     combinedContentCount: 3,
     combinedPosition: "bottom",
+    guideRejects: 4,
+    guideOrder: [true, true],
     combinedSVG: true,
     combinedTitlesAligned: true,
     combinedContentSVG: true,

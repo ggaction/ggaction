@@ -1758,7 +1758,7 @@ axis와 grid만 선택하므로 theta-only count arc가 radial guide를 합성�
 측정 후 single-edge 좌표를 반환한다. 기존 categorical grid 측정을 공유하며 interval, size와 stroke-width가 소비한다.
 Scale/format/appearance 검증은 family action에 남고 multi-block placement는 기존 lane owner가 final
 concrete bounds를 소비한다. Hidden continuous title은 실제 occupied bounds에 포함하지 않는다.
-Size는 categorical 내부 좌표 계산에 의존하지 않고 실제 circle bounds와 sample slot을 제공한다. Side lane은 각 block의 요구 간격을 포함한 공통 label column과 nested border bounds를 소유한다. Horizontal 결합은 pure group layout이 independent block을 먼저 pack하고 outer lane이 그 결과를 atomic block으로 배치한다. Nested border와 두 title을 함께 이동하며 size 자체 layout config는 보존한다. 전체 collision/transition matrix의 수렴은 아직 진행 중이다.
+Size는 categorical 내부 좌표 계산에 의존하지 않고 실제 circle bounds와 sample slot을 제공한다. Side lane은 각 block의 요구 간격을 포함한 공통 label column과 nested border bounds를 소유한다. Horizontal 결합은 pure group layout이 independent block을 먼저 pack하고 outer lane이 그 결과를 atomic block으로 배치한다. Nested border와 두 title을 함께 이동하며 size 자체 layout config는 보존한다. Same-edge collision은 공통 최종 상태 검증으로 수렴한다. 전체 occupied alignment/transition matrix는 아직 진행 중이다.
 
 Categorical creation와 content revision의 공통 owner는 `actions/guides/legends/lifecycle.js`다.
 선택된 channels의 definition/automatic recipe를 재검증하고 기존 title visibility, styles, order와 caller recipe를
@@ -2255,6 +2255,15 @@ Legend kind별 semantic guide ownership, family, rematerialization action과 con
 resource ids는 `materialization/guides/resources.js`의 resource policy registry가 소유한다.
 Legend removal, whole-legend rematerialization과 composition cleanup은 자체 kind switch를
 복제하지 않고 이 registry를 조회한다.
+
+`materialization/guides/layout.js`는 같은 registry와 canonical Cartesian axis IDs로 domain-owned
+guide의 concrete occupied bounds를 투영한다. Pure `layout/guideCollisions.js`는 같은 edge의
+독립 block intersection만 계산한다. Categorical+size는 하나의 block이다. Domain action wrapper와
+dependent materialization-plan boundary는 transient nested transaction으로 sibling guide가 모두
+갱신된 최종 상태에서 검증하며 반환 program에서 private scope를 제거한다. Core `action()`과
+renderer는 이 policy를 모르고 extension primitive의 의도된 overlay에도 적용하지 않는다.
+기존 family별 부분 cross-guide check는 이 공통 owner로 대체하고 family 내부 배치와 Canvas
+bounds는 기존 owner가 계속 담당한다.
 
 Facet의 `legacyCategorical` path는 이미 materialized된 child legend를 승격하는 일반 경로와
 동일하지 않다. Legend 없이 작성된 direct-source unit chart의 compact point/rect recipe와

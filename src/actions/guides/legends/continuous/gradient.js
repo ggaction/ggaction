@@ -347,8 +347,7 @@ export function createGradientLegendFromConfig(program, config) {
       id: "colorGradientStrips",
       type: "rect",
       length: 0,
-      ...resolveLegendGraphicPlacement(next),
-      ...(resolved.config.border === false
+      ...resolveLegendGraphicPlacement(next, resolved.config.border === false
         ? {}
         : { after: "colorGradientBackground" })
     })

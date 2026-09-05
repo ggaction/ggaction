@@ -1,3 +1,4 @@
+import { withGuideLayoutValidation } from "../../../materialization/guides/layout.js";
 import { action } from "../../../core/action.js";
 import { isPlainObject } from "../../../core/immutable.js";
 import { validateKeys, validateOptionObject } from "../../../core/validation.js";
@@ -89,7 +90,7 @@ function makeCreate(channel) {
       op: operation.create,
       description: `Create ${channel}-axis ticks and labels.`
     },
-    function (args = {}) {
+    withGuideLayoutValidation(function (args = {}) {
       validateAxisTickGroupArgs(args, operation.create, true);
       const shared = select(args, SHARED_CREATE);
       const tickArgs = { ...shared, ...(args.ticks ?? {}) };
@@ -101,7 +102,7 @@ function makeCreate(channel) {
       return this[operation.createTicks](tickArgs)[operation.createLabels](
         labelArgs
       );
-    }
+    })
   );
 }
 
@@ -113,7 +114,7 @@ function makeEdit(channel) {
       op: operation.edit,
       description: `Edit ${channel}-axis ticks and labels.`
     },
-    function (args = {}) {
+    withGuideLayoutValidation(function (args = {}) {
       validateAxisTickGroupArgs(args, operation.edit, false);
       const shared = select(args, SHARED_EDIT);
       const hasShared = Object.keys(shared).length > 0;
@@ -134,7 +135,7 @@ function makeEdit(channel) {
       }
 
       return next;
-    }
+    })
   );
 }
 

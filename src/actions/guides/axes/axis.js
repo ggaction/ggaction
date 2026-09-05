@@ -1,3 +1,4 @@
+import { withGuideLayoutValidation } from "../../../materialization/guides/layout.js";
 import { action } from "../../../core/action.js";
 import { isPlainObject } from "../../../core/immutable.js";
 import { validateUserId } from "../../../core/identifiers.js";
@@ -78,7 +79,7 @@ function makeCreateAxis(channel) {
       op: operation.create,
       description: `Create the complete ${channel}-axis.`
     },
-    function (args = {}) {
+    withGuideLayoutValidation(function (args = {}) {
       validateAxisArgs(args, operation.create);
       const shared = {};
       if (Object.hasOwn(args, "scale")) shared.scale = args.scale;
@@ -116,7 +117,7 @@ function makeCreateAxis(channel) {
         }
       }
       return next;
-    }
+    })
   );
 }
 

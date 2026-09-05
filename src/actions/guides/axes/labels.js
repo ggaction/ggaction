@@ -1,3 +1,4 @@
+import { withGuideLayoutValidation } from "../../../materialization/guides/layout.js";
 import { action } from "../../../core/action.js";
 import { validateUserId } from "../../../core/identifiers.js";
 import {
@@ -177,7 +178,7 @@ function resolve(program, channel, config) {
 
 function makeEdit(channel) {
   const op = channel === "x" ? "editXAxisLabels" : "editYAxisLabels";
-  return action({ op, description: `Edit concrete ${channel}-axis labels.` }, function (args = {}) {
+  return action({ op, description: `Edit concrete ${channel}-axis labels.` }, withGuideLayoutValidation(function (args = {}) {
     validateOptions(args, op, false);
     const id = `${channel}AxisLabels`;
     if (this.graphicSpec.objects[id]?.type !== "text") throw new Error(`${op} requires existing axis labels.`);
@@ -222,7 +223,7 @@ function makeEdit(channel) {
       next = next[editTitle]();
     }
     return next;
-  });
+  }));
 }
 
 const editXAxisLabels = makeEdit("x");
@@ -231,7 +232,7 @@ const editYAxisLabels = makeEdit("y");
 function makeCreate(channel) {
   const op = channel === "x" ? "createXAxisLabels" : "createYAxisLabels";
   const edit = channel === "x" ? "editXAxisLabels" : "editYAxisLabels";
-  return action({ op, description: `Create concrete ${channel}-axis labels.` }, function (args = {}) {
+  return action({ op, description: `Create concrete ${channel}-axis labels.` }, withGuideLayoutValidation(function (args = {}) {
     validateOptions(args, op, true);
     const scale = validateUserId(args.scale ?? channel, "Scale id");
     const guideScale = this.semanticSpec.guides.axis?.[channel]?.scale;
@@ -267,7 +268,7 @@ function makeCreate(channel) {
         ...resolvePlotGraphicPlacement(this)
       })
       ._withGuideConfig(channel, "labels", config)[edit]();
-  });
+  }));
 }
 
 const createXAxisLabels = makeCreate("x");

@@ -442,7 +442,7 @@
   },
   "/api/axes/": {
     "title": "Axes",
-    "description": "Create a missing Polar axis component without rebuilding the other components. These actions are available from ggaction.",
+    "description": "Cartesian axis lines, ticks, labels and titles must not overlap a chart title or legend on the same edge.",
     "image": "/assets/images/cars-scatterplot.png"
   },
   "/api/grids/": {
@@ -472,7 +472,7 @@
   },
   "/api/legends/editing/": {
     "title": "Editing Legends",
-    "description": "editLegend() updates one existing stable legend. Omit target when exactly one legend target exists; otherwise pass its mark ID.",
+    "description": "Legend creation and editing check the final occupied bounds against chart titles, Cartesian axis components and independent legend groups on the same edge.",
     "image": "/assets/images/cars-density-area.png"
   },
   "/concepts/chart-program/": {

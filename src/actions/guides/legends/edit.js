@@ -1,3 +1,4 @@
+import { withGuideLayoutValidation } from "../../../materialization/guides/layout.js";
 import { resolveLegendStepConfig } from "./creation.js";
 import { normalizeLegendOrder } from "../../../grammar/categoryOrder.js";
 import { resolveDefinition } from "./categorical/resolve.js";
@@ -58,7 +59,10 @@ function reconcileGraphic(program, id, shouldExist, definition) {
     return program.createGraphics({
       id,
       ...definition,
-      ...resolveLegendGraphicPlacement(program)
+      ...resolveLegendGraphicPlacement(program, {
+        ...(definition.before === undefined ? {} : { before: definition.before }),
+        ...(definition.after === undefined ? {} : { after: definition.after })
+      })
     });
   }
   return program;
@@ -455,7 +459,7 @@ function editLegendContent(program, target, args) {
 
 export const editLegend = action(
   { op: "editLegend", description: "Edit one stable legend content, layout or appearance." },
-  function (args = {}) {
+  withGuideLayoutValidation(function (args = {}) {
     validateOptionObject(args, OPTIONS, "editLegend");
     const changes = Object.keys(args).filter(key => key !== "target");
     if (changes.length === 0) {
@@ -494,5 +498,5 @@ export const editLegend = action(
       kind => configs[kind]?.target === target
     );
     return editContinuous(this, continuousKind, configs[continuousKind], args);
-  }
+  })
 );

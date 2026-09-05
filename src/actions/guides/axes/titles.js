@@ -1,3 +1,4 @@
+import { withGuideLayoutValidation } from "../../../materialization/guides/layout.js";
 import { action } from "../../../core/action.js";
 import { validateUserId } from "../../../core/identifiers.js";
 import {
@@ -200,7 +201,7 @@ function names(channel) {
 
 function makeEdit(channel) {
   const operation = names(channel);
-  return action({ op: operation.edit, description: `Edit the ${channel}-axis title.` }, function (args = {}) {
+  return action({ op: operation.edit, description: `Edit the ${channel}-axis title.` }, withGuideLayoutValidation(function (args = {}) {
       validateKeys(args, EDIT_OPTIONS, operation.edit);
     if (this.graphicSpec.objects[operation.graphic]?.type !== "text") throw new Error(`${operation.edit} requires an existing axis title.`);
     const previous = this.guideConfigs.axis?.[channel]?.title;
@@ -252,7 +253,7 @@ function makeEdit(channel) {
     };
     for (const [property, value] of Object.entries(properties)) next = next.editGraphics({ target: operation.graphic, property, value });
     return next;
-  });
+  }));
 }
 
 const editXAxisTitle = makeEdit("x");
@@ -260,7 +261,7 @@ const editYAxisTitle = makeEdit("y");
 
 function makeCreate(channel) {
   const operation = names(channel);
-  return action({ op: operation.create, description: `Create the ${channel}-axis title.` }, function (args = {}) {
+  return action({ op: operation.create, description: `Create the ${channel}-axis title.` }, withGuideLayoutValidation(function (args = {}) {
       validateKeys(args, CREATE_OPTIONS, operation.create);
     const {
       text: requestedText,
@@ -310,7 +311,7 @@ function makeCreate(channel) {
         ...resolvePlotGraphicPlacement(this)
       })
       ._withGuideConfig(channel, "title", config)[operation.edit]();
-  });
+  }));
 }
 
 const createXAxisTitle = makeCreate("x");

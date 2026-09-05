@@ -9,6 +9,14 @@ title: Editing Legends
 
 ## Updates and trace
 
+Legend creation and editing check the final occupied bounds against chart titles,
+Cartesian axis components and independent legend groups on the same edge.
+The check includes borders, strokes and rotated text. A categorical legend with
+its size companion counts as one group. Overlap is an error in either authoring
+order; provide more margin space or different offsets. Canvas and scale updates
+apply the same check after dependent guides have moved. A failed action leaves
+the earlier program unchanged.
+
 `editLegend()` updates one existing stable legend. Omit `target` when exactly
 one legend target exists; otherwise pass its mark ID. It accepts content, layout and appearance changes supported by the resulting
 legend kind. Mark encodings and scales stay unchanged.

@@ -23,7 +23,8 @@
 - [x] W2 C2 stroke-width 네 방향과 Canvas overflow #95 — [검증](RESULTS_W2_WIDTH_EDGES.md)
 - [x] W2 C2 size item owner·standalone 네 방향·large sample/border #96 — [검증](RESULTS_W2_SIZE_EDGES.md)
 - [x] W2 C2 combined categorical+size 네 방향 group·큰 label/title gap·creation order #97 — [검증](RESULTS_W2_COMBINED_EDGES.md)
-- [ ] W2 C2 나머지 family×edge layout과 collision/transition 통합 matrix
+- [x] W2 C2 공통 same-edge collision과 title-first bordered legend #98/#99 — [검증](RESULTS_W2_GUIDE_COLLISIONS.md)
+- [ ] W2 C2 나머지 occupied alignment와 transition 통합 matrix
 - [ ] R6-P5-W3 Final-item labels·reference·common format
 - [ ] R6-P5-W4 Program theme와 local override
 - [ ] R6-P5-W5 Opt-in fitting과 guide label layout
