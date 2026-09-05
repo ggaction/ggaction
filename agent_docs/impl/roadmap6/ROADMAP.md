@@ -1,8 +1,7 @@
 # Roadmap 6 — Hierarchical Chart Authoring and Action Consistency
 
-> **문서 상태 — 현재 실행 계획.** Phase 1–3 결과를 사용자 승인으로 완료했다. [Phase 3 X 결과](phase3/REVIEW.md)의 Pie/Donut·Density·Horizon과 9개 시각 결과, 같은 tarball 소비자 검증을 확정했다. 현재는 [Phase 4 A 계약](phase4/CONTRACT_REVIEW.md)이 layoutSeries 이름 변경까지 포함해 승인되었다. Baseline·layout·radial mapping·order·midpoint의 구체 계약과 49건 재현을 정리했다. Phase 4 A는 승인되었고 V/X는 아직 미승인이다.
-> 액션군 범위는 사용자 선택에 따라 F01–F19로 구성했다. 후속 액션군의 구체적인 API와 행동 변경은 각 Phase Gate에서 확정한다.
-> 이 문서를 작성해 달라는 요청은 모든 설계안·구현·배포의 일괄 승인을 뜻하지 않는다.
+> **문서 상태 — 현재 실행 계획.** Phase 1–3 완료, Phase 4 W1–W5 구현과 최종 통합 검증을 진행 중이다. 새 Area·Rose·Radial Bar와 layoutSeries, theta/legend order, midpoint/legend 전환의 현재 결과는 [통합 기록](phase4/INTEGRATION.md)을 따른다.
+> [사용자의 전체 실행·0.0.13 릴리즈 승인](APPROVAL.md)은 F20을 제외한 남은 계약·시각 목표·구현·검증과 필요한 한도 조정을 포함한다. 승인과 검증 완료를 구분하며 Phase 5–11은 아직 구현 완료가 아니다.
 > 실행 위치는 [ROADMAP_INDEX.json](../ROADMAP_INDEX.json), 현재 제품 계약은
 > [ACTION_INDEX.json](../../contract/ACTION_INDEX.json)이 소유한다.
 

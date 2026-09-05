@@ -537,11 +537,11 @@
       ],
       "gateStates": {
         "R6-P4-A": "approved",
-        "R6-P4-V": "planned",
-        "R6-P4-X": "planned",
+        "R6-P4-V": "approved",
+        "R6-P4-X": "approved",
         "R6-P4-V1": "approved",
-        "R6-P4-V2": "planned",
-        "R6-P4-V3": "planned",
+        "R6-P4-V2": "approved",
+        "R6-P4-V3": "approved",
         "R6-P4-B": "approved"
       },
       "workPackages": [
@@ -736,10 +736,8 @@
         "packageEvidence": "phase4/package-radial-facade-results.json"
       },
       "remainingIntegration": [
-        "coverage-and-critical-floors",
-        "realistic-generated-scenarios",
-        "full-renderer-validation",
-        "built-docs-validation",
+        "fixed-commit-realistic-scenarios",
+        "built-docs-browser",
         "phase-exit-traceability"
       ],
       "implementationW5Validation": {
@@ -749,7 +747,8 @@
         "midpointEvidence": "phase4/RESULTS_MIDPOINT.md",
         "transitionEvidence": "phase4/RESULTS_W5.md",
         "packageEvidence": "phase4/package-color-transition-results.json"
-      }
+      },
+      "integrationEvidence": "phase4/INTEGRATION.md"
     },
     {
       "id": 5,

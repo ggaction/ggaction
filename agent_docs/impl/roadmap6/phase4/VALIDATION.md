@@ -1,5 +1,7 @@
 # Phase 4 — A 검증과 V/X acceptance
 
+이 문서는 A/V 준비 당시의 baseline과 acceptance를 보존한다. 현재 W1–W5는 구현되었으며 최신 실행 결과·승인 상한·남은 통합 검사는 [INTEGRATION.md](INTEGRATION.md)를 따른다. 아래의 미구현·미승인·옛 package 한도는 해당 기록 시점의 상태다.
+
 A는 layoutSeries 이름 변경을 포함해 승인되었다. V는 아직 미승인이다. 이 문서 앞부분은 **실제로 실행한 현재 baseline 검증**, 뒷부분은 **미래 구현 acceptance**다.
 [계약 검토](CONTRACT_REVIEW.md), [후보 원장](candidates.json), [승인 상태](GATES.md)를 함께 읽는다.
 

@@ -1,9 +1,9 @@
 {
   "version": 1,
-  "status": "accepted",
+  "status": "implemented-verified",
   "gate": "R6-P4-A",
-  "implemented": false,
-  "currentDirectActions": 177,
+  "implemented": true,
+  "currentDirectActions": 181,
   "currentPlannedActions": 0,
   "projectedFullDirectActions": 181,
   "newActions": [
@@ -82,7 +82,6 @@
     {
       "actions": [
         "encodeR",
-        "encodeRadius",
         "editArcMark",
         "editScale"
       ],
@@ -115,8 +114,8 @@
     "orientationEditor": "Phase 6"
   },
   "approvedBundleLimits": {
-    "ggaction": 237000,
-    "ggaction/basic": 125000,
+    "ggaction": 249000,
+    "ggaction/basic": 138000,
     "ggaction/svg": 25000
   },
   "approvalRequestedForBudgetIncrease": false,
@@ -124,5 +123,16 @@
     "previousName": "encodeLayout",
     "acceptedName": "layoutSeries",
     "alias": false
-  }
+  },
+  "acceptedBaseline": {
+    "currentDirectActions": 177,
+    "currentPlannedActions": 0,
+    "approvedBundleLimits": {
+      "ggaction": 237000,
+      "ggaction/basic": 125000,
+      "ggaction/svg": 25000
+    }
+  },
+  "implementationEvidence": "INTEGRATION.md",
+  "phaseIntegrationComplete": false
 }

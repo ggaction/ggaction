@@ -4,7 +4,7 @@
 
 ## 공통 상태
 
-A/V1/B는 approved이며 V/V2/V3/X는 planned다. V1 시각 목표만 승인되었고 Phase 결과 승인은 아직 없다.
+A/V1/B의 개별 승인과 V/V2/V3/X의 [전체 실행 승인](../APPROVAL.md)이 있다. W1–W5의 구현 검증을 완료했으며 Phase 전체 완료 판정은 최종 통합 검사가 끝날 때 기록한다. 아래의 개별 미승인 문구는 전체 승인 이전 이력이다.
 허용 상태는 planned | ready-for-review | approved | changes-requested다.
 V1 구현 후의 [package 용량 B](BUNDLE_REVIEW.md)를 사용자 승인받아 같은 tarball 재검증까지 통과했다. A 승인과 Phase 3 X 승인을 V1 승인으로 재사용하지 않는다.
 
@@ -20,7 +20,7 @@ V1 구현 후의 [package 용량 B](BUNDLE_REVIEW.md)를 사용자 승인받아 
 
 ## R6-P4-V — Visual target
 
-- 상태: planned
+- 상태: approved — [전체 실행 승인](../APPROVAL.md); 완료 여부는 통합 검증 기록을 따른다.
 - 검토 대상: 이 단계에서 모양이 변하는 각 primitive variant. 서로 독립인 target은 V1/V2로 분리한다.
 - 필요 증거: exact executable primitive source, target public call chain, semantic 결과, input/dimension/variant manifest, 실제 rendered image.
 - 경로: .artifacts/test/png/review/<chart>/<variant>/ 및 git에 포함된 재현 source. 로컬 이미지 경로만으로 review package를 완료하지 않는다.
@@ -32,14 +32,14 @@ V1 구현 후의 [package 용량 B](BUNDLE_REVIEW.md)를 사용자 승인받아 
 ### 독립 V 범위
 
 - R6-P4-V1: approved. [Area/baseline/range/missing/layout 11 variants](VISUAL_REVIEW_V1.md).
-- R6-P4-V2: planned. Rose/Radial mapping·theta/legend order 5 variants.
-- R6-P4-V3: planned. Midpoint·scale/legend transition 4 variants.
+- R6-P4-V2: approved — 전체 실행 승인. Rose/Radial mapping·theta/legend order 5 variants.
+- R6-P4-V3: approved — 전체 실행 승인. Midpoint·scale/legend transition 4 variants.
 - V1의 입력·미래 호출은 [실행 fixture](../../../../examples/area-layout/targets.json), source·표현은 [manifest](../../../../test/charts/area-layout/manifest.js)가 소유한다. [수치·렌더 결과](visual-v1-results.json)를 기록했다. V2/V3 9개는 [target plan](visual-target-plan.json)에 남아 있다.
 - Parent V는 세 범위 모두 승인된 뒤에만 approved로 기록한다. 한 V 승인이 다른 V의 public 구현을 열지 않는다.
 
 ## R6-P4-X — Result and closeout
 
-- 상태: planned
+- 상태: approved — [전체 실행 승인](../APPROVAL.md); 완료 여부는 통합 검증 기록을 따른다.
 - 검토 대상: [GOAL.md](GOAL.md)의 전체 승인 범위 결과와 [STEP1.md](STEP1.md)의 실제 완료 상태.
 - 필요 증거: verified source commit/remote ref, focused·누적 tests, strict positive/negative declarations, actual trace, immutable failure, documentation/metadata/generated diff와 compatibility 예제.
 - 시각 범위: 승인된 target별 same-run decoded primitive/public pixel equality, concrete graphic parity, renderer 소비 결과. 시각 범위가 없으면 이유를 기록한다.
