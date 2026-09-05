@@ -26,6 +26,8 @@ test("Area facade preserves explicit range roles and horizontal log baselines", 
   const ribbon = base().createAreaPlot({ x: "time", y: { lower: "lo", upper: "hi" }, guides: false });
   assert.equal(ribbon.semanticSpec.layers[0].encoding.y.field, "lo");
   assert.equal(ribbon.semanticSpec.layers[0].encoding.y2.field, "hi");
+  const primaryDatum = base().createAreaPlot({ x: "time", y: { lower: { datum: 0 }, upper: "value" } });
+  assert.equal(primaryDatum.graphicSpec.objects.yAxisTitle.properties.text, "value");
   const horizontal = base().createAreaPlot({ x: { field: "value", scale: { type: "log", nice: false } }, y: "time", valueChannel: "x", baseline: 1, guides: false });
   assert.deepEqual(horizontal.resolvedScales.x.domain, [1, 4]);
   assert.equal(horizontal.semanticSpec.layers[0].encoding.x2.datum, 1);

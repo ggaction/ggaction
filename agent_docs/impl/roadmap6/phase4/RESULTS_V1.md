@@ -95,9 +95,31 @@ wrapped child를 합성한다. 별도 facade recipe, baseline용 가짜 행/fiel
 | approved V1 replay | 11개 public/primitive와 원본 승인 graphic/pixel hashes 모두 일치 |
 | installed package | Node/MCP/types/tutorial 통과, Full/Basic gzip guard 실패. 같은 tarball 세 엔트리 수치 별도 기록 |
 
-확장 `test:realistic` 전체는 아직 실행 중이다. 현재까지 기존 inventory count/hash 2건과 Rule range 1건 실패를
-교정했다. 해당 generated lifecycle/option/selection/type 집중 검사 53/53, Rule/datum range 집중 검사 18/18이
-통과했다. 전체 확장 suite 재실행 완료로 표기하지 않는다.
+확장 `npm run test:realistic`의 전체 실행은 **201/212, 실패 11**이었다. 이를 전체 통과로 기록하지 않는다.
+실패 원인은 새 action/recipe/option 인벤토리 집계, Rule range preflight 누락, 새 Area recipe의 부정확한
+lifecycle:edit 주장이다. 실행 가능한 Rule 범위와 datum coverage를 복구하고, 생성만 한 예제의 메타데이터를
+관측된 create로 맞췄다. 다음 **실패가 있었던 6개 모듈의 38개 테스트**는 교정 후 해당 실행에서 모두 통과했다.
+
+| 재검증 모듈 | 통과 |
+| --- | ---: |
+| generated-lifecycle-scenarios | 3/3 |
+| generated-scenario-feature-coverage | 7/7 |
+| realistic-encoding-coverage-recipes | 2/2 |
+| realistic-lifecycle-factor-effects | 2/2 |
+| realistic-scenario-generation-isolation | 3/3 — strict 216/360의 descriptor/state/process parity와 RSS 한도 포함 |
+| realistic-scenario-generator | 21/21 — 마지막 실행 84.7초, rejectedCandidates=0 유지 |
+
+전체 확장 suite를 다시 실행한 수치로 합산하지 않았다. 이후 shared automatic offset의 다른 Point consumer
+보존과 datum-primary axis title 증거를 강화한 Area/series unit 두 모듈은 19/19로 재검증했다.
+[시각 검토 화면](../../../../.artifacts/roadmap6-authoring/area-layout-review.html)에서 11개 결과와 실제 호출을 볼 수 있다.
+
+## 고정 source
+
+- 구현·초기 검증 commit: `9815917a971ee289363eb00d10f10ea4d4e22cb4`, 원격 push/ref 일치 확인.
+- src tree: `2535f80d95c1e0ed0a60636efacc67f7a4cf0c1e`.
+- types tree: `c018ae44f997254e0cf3227dde4116b30e479659`.
+- knowledge tree: `32e938d5c31a88afd74566399b11ad5d354339b5`.
+- 이후 차이는 테스트 인벤토리/증거 강화와 검토 기록이다. Packaged runtime/types/knowledge와 tarball은 그대로다.
 
 ## 남은 범위
 

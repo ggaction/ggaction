@@ -1491,7 +1491,7 @@ function realisticLifecycleMetadata(base, factors) {
     "action-derived-data": ["create", "filter"],
     "action-scatter-facade": ["create", "remove"],
     "action-line-facade": ["create"],
-    "action-area-facade": ["create", "edit"],
+    "action-area-facade": ["create"],
     "action-bar-facade": ["create"],
     "action-parallel-facade": ["create"],
     "action-mark-lifecycle": ["create", "edit", "remove"],

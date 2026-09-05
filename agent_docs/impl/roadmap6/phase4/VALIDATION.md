@@ -104,7 +104,7 @@ Rose의 gap/stroke/outline 장식과 값에 의한 sector 측정은 구분하고
 
 ## V target 계획과 현재 작성 상태
 
-전체 계획은 **20 variants**이며 F20 제외와는 무관한 시각 사례 수다. V1의 11개는 [실행 fixture](../../../../test/gates/area-layout/targets.json)로 이전하고 [계획 원장](visual-target-plan.json)은 그 owner만 참조한다. 나머지 V2/V3 9개는 미작성 계획이다.
+전체 계획은 **20 variants**이며 F20 제외와는 무관한 시각 사례 수다. V1의 11개는 [실행 fixture](../../../../examples/area-layout/targets.json)로 이전하고 [계획 원장](visual-target-plan.json)은 그 owner만 참조한다. 나머지 V2/V3 9개는 미작성 계획이다.
 V1 primitive는 실제 렌더했으며 전체 publicCalls 실행은 여전히 0개다. [V1 검토](VISUAL_REVIEW_V1.md)와 [기록 결과](visual-v1-results.json)가 현재 증거다.
 
 | Gate | targets | 검토하는 차이 |
@@ -193,7 +193,7 @@ encoding.group.inferredFrom leaves와 layout container 제거를 추가했다. C
 
 ## V1 실제 검증 결과
 
-- Active slice: test/gates/area-layout. Source 추가 이후 runtime/types는 fda8671e와 동일하다.
+- 승인 당시 slice: test/gates/area-layout. 현재 승인 pair는 test/charts/area-layout으로 승격했다. Source 추가 이후 runtime/types는 fda8671e와 동일하다.
 - 독립 수학·primitive 의미·원본 불변·graphicSpec-only Canvas 동등성: **20/20**.
 - Test discovery와 위 focused tests 합계: **33/33**. 새 area-layout capability selector를 등록했다.
 - PNG render entry: **11/11**, 모든 plot-region ink/color 조건 통과.

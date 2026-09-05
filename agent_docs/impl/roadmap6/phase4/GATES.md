@@ -2,7 +2,7 @@
 
 ## 공통 상태
 
-A는 approved다. V1은 approved이며 V/V2/V3/X는 planned다. V1 시각 목표만 승인되었고 Phase 결과 승인은 아직 없다.
+A/V1은 approved다. B는 ready-for-review이며 V/V2/V3/X는 planned다. V1 시각 목표만 승인되었고 Phase 결과 승인은 아직 없다.
 허용 상태는 planned | ready-for-review | approved | changes-requested다.
 현재 검토 대상은 V1 구현 후의 [package 용량 B](BUNDLE_REVIEW.md)다. A 승인과 Phase 3 X 승인을 V1 승인으로 재사용하지 않는다.
 
@@ -80,10 +80,12 @@ A는 approved다. V1은 approved이며 V/V2/V3/X는 planned다. V1 시각 목표
 
 ## R6-P4-B — Full/Basic package budget
 
-- 상태: planned. [구현 결과](RESULTS_V1.md)와 [용량 검토](BUNDLE_REVIEW.md)를 고정한다.
+- 상태: ready-for-review. [구현 결과](RESULTS_V1.md)와 [용량 검토](BUNDLE_REVIEW.md)를 고정했다.
 - 범위: Full 237,000 → 242,000 / Basic 125,000 → 130,000 bytes 제안. SVG 25,000 유지.
 - 근거: 승인된 W1/W2를 구현했으나 [고정 tarball](package-results.json)의 gzip guard가 실패한다.
 - 현재 검증: normal 2646, render 183, browser 59, coverage 74 critical floors, 11개 승인 시각 결과 동등성.
 - 승인 효과: 두 guard와 architecture 표만 변경하고 같은 tarball installed consumer를 재검증한다.
 - 승인 전 차단: 상한 변경과 package 전체 통과 선언. V2/V3/X는 별도 Gate로 유지한다.
-- 준비 완료 조건: 전체 검토 묶음을 검증·commit/push하고 실제 source/remote ref를 아래 기록한다.
+- 검토 source: `9815917a971ee289363eb00d10f10ea4d4e22cb4` (runtime/types/knowledge), origin ref 일치 확인.
+- 확장 suite의 실패 11건은 해당 6개 모듈 38개 테스트로 교정·재검증했다. 상세 범위와 원본 실패는 결과 문서에 보존한다.
+- 최종 검토 묶음 commit은 아래 고정 기록에 추가한다.

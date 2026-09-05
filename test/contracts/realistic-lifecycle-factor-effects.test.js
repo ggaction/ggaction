@@ -62,7 +62,7 @@ test("schedules every two-way chart-family lifecycle at five TT witnesses per fa
 });
 
 test("every realistic lifecycle factor has a final or explicit transient effect", () => {
-  assert.equal(REALISTIC_LIFECYCLE_SCENARIO_RECIPES.length, 28);
+  assert.equal(REALISTIC_LIFECYCLE_SCENARIO_RECIPES.length, 29);
   for (const recipe of REALISTIC_LIFECYCLE_SCENARIO_RECIPES) {
     assert.equal(recipe.enforceFactorEffects, true, recipe.id);
     assert.equal(typeof recipe.observeFactors, "function", recipe.id);

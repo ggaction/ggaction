@@ -542,7 +542,7 @@
         "R6-P4-V1": "approved",
         "R6-P4-V2": "planned",
         "R6-P4-V3": "planned",
-        "R6-P4-B": "planned"
+        "R6-P4-B": "ready-for-review"
       },
       "workPackages": [
         {
@@ -608,7 +608,7 @@
           "contractEvidence": "phase4/CONTRACT_REVIEW.md"
         }
       ],
-      "activity": "area-layout-implemented-awaiting-package-budget",
+      "activity": "awaiting-area-layout-bundle-approval",
       "contractEvidence": "phase4/CONTRACT_REVIEW.md",
       "baselineEvidence": "phase4/baseline-results.json",
       "baselineCommit": "93dceb3761e170207058e6a7280060fedd471244",
@@ -668,8 +668,17 @@
         "browserTests": 59,
         "approvedVisualPairs": 11,
         "criticalCoverageFloors": 74,
-        "packageStatus": "failed-bundle-budget"
-      }
+        "packageStatus": "failed-bundle-budget",
+        "realisticFullRun": {
+          "tests": 212,
+          "passed": 201,
+          "failed": 11
+        },
+        "correctedRealisticModules": 6,
+        "correctedRealisticTests": 38,
+        "additionalConsumerTests": 19
+      },
+      "implementationSourceCommit": "9815917a971ee289363eb00d10f10ea4d4e22cb4"
     },
     {
       "id": 5,

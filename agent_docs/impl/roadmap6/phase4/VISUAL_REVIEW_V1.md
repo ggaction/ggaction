@@ -49,7 +49,7 @@ Ribbon 축 제목은 첫 endpoint field인 low다. 새 range 제목 합성 정�
 부호가 전환되는 구간에서 다른 series와 겹쳐 보일 수 있다. Zero-crossing 교차점을 삽입하거나
 중간 표본을 추가하지 않은 목표다. Ribbon의 교차도 의도적으로 보존한다.
 
-## 지금 검증한 것과 남은 것
+## V1 승인 당시 검증과 남은 작업 기록
 
 Focused **20/20**, discovery 포함 **33/33**, 정상 누적 **2608/2608**, PNG **11/11**, fail/cancelled/skip 0. 실제 모든 plot 영역이 최소 1000 ink pixels와
 각 기대색 최소 100 pixels 조건을 통과했다. 11개 원본 이미지를 3개의 contact sheet로 함께 확인했다.
@@ -68,7 +68,7 @@ immutable failure, public trace·graphicSpec·decoded pixels의 primitive/public
 현재 결과를 API 완료나 해당 버그 해결로 기록하지 않는다. 새 public docs/example/type method도 아직 추가하지 않았다.
 기존 bundle 상한 237000/125000/25000은 유지한다. 이전 Phase의 packed artifact/coverage 결과를 새 소스의 검증으로 재사용하지 않는다.
 
-## 재현 명령
+## 현재 구현으로 승인 목표 재현
 
 저장소 root에서 실행한다. Node와 의존성 버전은 lockfile을 따른다.
 
@@ -82,8 +82,8 @@ node agent_docs/impl/roadmap6/phase4/verify-visual-v1.mjs
 npm test
 ```
 
-검증 runner는 11개 PNG와 contact sheet를 다시 만들고 source/geometry/pixel hash와 ink 결과를
-기록 JSON에 대조한다. `--record`는 의도적으로 목표를 변경할 때만 쓴다. OS/font에 따른 픽셀 차이는
+현재 검증 runner는 11개 public/primitive PNG를 만들고 source/geometry/pixel hash와 ink 조건을
+검사한다. `--record`도 원본 승인 hash와의 일치를 강제하며 구현 기록만 갱신한다. 원본 시각 승인 JSON은 수정하지 않는다. OS/font에 따른 픽셀 차이는
 동일 환경의 재현 여부와 구분해야 하며 새 hash로 자동 승인하지 않는다.
 이미지는 gitignored artifact이고 재현 source·fixture·수치/hash 기록은 git에 포함한다.
 
@@ -93,7 +93,7 @@ npm test
 
 ### area-simple
 
-[실제 primitive PNG](../../../../.artifacts/test/png/review/area-layout/area-simple/primitive.png)
+[실제 primitive PNG](../../../../.artifacts/test/png/charts/series-layout/area-layout/area-simple/primitive.png)
 
 ```js
 chart()
@@ -104,7 +104,7 @@ chart()
 
 ### area-signed-baseline
 
-[실제 primitive PNG](../../../../.artifacts/test/png/review/area-layout/area-signed-baseline/primitive.png)
+[실제 primitive PNG](../../../../.artifacts/test/png/charts/series-layout/area-layout/area-signed-baseline/primitive.png)
 
 ```js
 chart()
@@ -115,7 +115,7 @@ chart()
 
 ### area-horizontal-log
 
-[실제 primitive PNG](../../../../.artifacts/test/png/review/area-layout/area-horizontal-log/primitive.png)
+[실제 primitive PNG](../../../../.artifacts/test/png/charts/series-layout/area-layout/area-horizontal-log/primitive.png)
 
 ```js
 chart()
@@ -126,7 +126,7 @@ chart()
 
 ### ribbon-crossing
 
-[실제 primitive PNG](../../../../.artifacts/test/png/review/area-layout/ribbon-crossing/primitive.png)
+[실제 primitive PNG](../../../../.artifacts/test/png/charts/series-layout/area-layout/ribbon-crossing/primitive.png)
 
 ```js
 chart()
@@ -137,7 +137,7 @@ chart()
 
 ### area-missing-break
 
-[실제 primitive PNG](../../../../.artifacts/test/png/review/area-layout/area-missing-break/primitive.png)
+[실제 primitive PNG](../../../../.artifacts/test/png/charts/series-layout/area-layout/area-missing-break/primitive.png)
 
 ```js
 chart()
@@ -148,7 +148,7 @@ chart()
 
 ### area-stack
 
-[실제 primitive PNG](../../../../.artifacts/test/png/review/area-layout/area-stack/primitive.png)
+[실제 primitive PNG](../../../../.artifacts/test/png/charts/series-layout/area-layout/area-stack/primitive.png)
 
 ```js
 chart()
@@ -159,7 +159,7 @@ chart()
 
 ### area-fill
 
-[실제 primitive PNG](../../../../.artifacts/test/png/review/area-layout/area-fill/primitive.png)
+[실제 primitive PNG](../../../../.artifacts/test/png/charts/series-layout/area-layout/area-fill/primitive.png)
 
 ```js
 chart()
@@ -170,7 +170,7 @@ chart()
 
 ### area-diverging
 
-[실제 primitive PNG](../../../../.artifacts/test/png/review/area-layout/area-diverging/primitive.png)
+[실제 primitive PNG](../../../../.artifacts/test/png/charts/series-layout/area-layout/area-diverging/primitive.png)
 
 ```js
 chart()
@@ -181,7 +181,7 @@ chart()
 
 ### area-center
 
-[실제 primitive PNG](../../../../.artifacts/test/png/review/area-layout/area-center/primitive.png)
+[실제 primitive PNG](../../../../.artifacts/test/png/charts/series-layout/area-layout/area-center/primitive.png)
 
 ```js
 chart()
@@ -192,7 +192,7 @@ chart()
 
 ### bar-independent-stack
 
-[실제 primitive PNG](../../../../.artifacts/test/png/review/area-layout/bar-independent-stack/primitive.png)
+[실제 primitive PNG](../../../../.artifacts/test/png/charts/series-layout/area-layout/bar-independent-stack/primitive.png)
 
 ```js
 chart()
@@ -205,7 +205,7 @@ chart()
 
 ### bar-layout-roundtrip
 
-[실제 primitive PNG](../../../../.artifacts/test/png/review/area-layout/bar-layout-roundtrip/primitive.png)
+[실제 primitive PNG](../../../../.artifacts/test/png/charts/series-layout/area-layout/bar-layout-roundtrip/primitive.png)
 
 ```js
 chart()

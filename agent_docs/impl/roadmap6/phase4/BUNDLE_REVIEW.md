@@ -1,7 +1,7 @@
 # R6-P4-B — Area/layout browser bundle budget
 
-상태: **planned**. 구현은 V1에서 승인되었지만 bundle 상한 증가는 승인되지 않았다.
-[구현과 검증 결과](RESULTS_V1.md)를 갖춘 뒤 commit/push하고 ready-for-review로 전환한다.
+상태: **ready-for-review**. 구현은 V1에서 승인되었지만 bundle 상한 증가는 승인되지 않았다.
+[구현과 검증 결과](RESULTS_V1.md), 고정 tarball과 실패를 포함한 검증 결과가 검토 대상이다.
 
 ## 요청할 결정
 
@@ -68,3 +68,12 @@ Packed 486,775 bytes / unpacked 2,327,235 bytes / 439 entries.
 Node runtime/renderers, MCP, strict TypeScript, installed tutorial consumer는 통과했다.
 Package 전체는 gzip guard에서 **실패(exit 1)**다. 이 실패를 숨기거나 상한을 바꾸지 않았다.
 현재 source/types/knowledge를 같은 packaging 규칙으로 다시 pack한 SHA도 위 tarball과 정확히 일치한다.
+
+
+## 검토 증거
+
+Normal 2,646, render 183, browser 59, 74 critical coverage floors가 통과했다.
+확장 suite 최초 201/212의 실패는 교정 후 해당 6개 모듈 38개 테스트로 재검증했다. 전체 확장 suite를
+재실행해 통과한 수치로 표기하지 않는다. 상세 실행 범위와 호환성은 [RESULTS_V1](RESULTS_V1.md)에 있다.
+Runtime source는 `9815917a971ee289363eb00d10f10ea4d4e22cb4`이며 origin에 push/ref 일치를 확인했다.
+현재 저장소를 다시 pack한 결과도 검증 tarball SHA와 정확히 같다.
