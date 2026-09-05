@@ -3,6 +3,7 @@ import { noOptions } from "../../../../core/validation.js";
 import { mapOrdinalValues } from "../../../../grammar/scales/index.js";
 import { unionConcreteGraphicBounds } from "../../../../grammar/schemas/graphicBounds.js";
 import { DEFAULT_COLORS } from "../../../../theme/defaults.js";
+import { layoutBoundsIntersect } from "../../../../layout/title.js";
 import { formatVisibleText } from "../../../../core/textMetrics.js";
 import {
   assertLegendBoundsInsideCanvas,
@@ -212,10 +213,14 @@ function resolveGridLayout(program, bounds, canvas, config, width, count, top) {
     if (blockTop < 0) {
       throw new Error("Legend layout requires more top-margin space.");
     }
-    const titleGraphic = program.graphicSpec.objects.chartSubtitle ??
-      program.graphicSpec.objects.chartTitle;
-    if (titleGraphic?.type === "text" &&
-      titleGraphic.properties.y + titleGraphic.properties.fontSize / 2 >= blockTop) {
+    const titleIds = ["chartTitle", "chartSubtitle"]
+      .filter(id => program.graphicSpec.objects[id] !== undefined);
+    const titleBounds = unionConcreteGraphicBounds(program.graphicSpec, titleIds);
+    const padding = config.border === false ? 0 : config.border.padding;
+    if (titleBounds !== undefined && layoutBoundsIntersect(titleBounds, {
+      left: start - padding, right: start + totalWidth + padding,
+      top: blockTop - padding, bottom: blockBottom + padding
+    })) {
       throw new Error("Top legend and chart title require more top-margin space.");
     }
   } else {

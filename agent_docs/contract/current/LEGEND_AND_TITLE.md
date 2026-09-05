@@ -1,5 +1,8 @@
 # Legend and title action contracts
 
+제목과 범례의 충돌 검사는 단일 text와 줄바꿈 text collection의 실제 occupied bounds를 사용한다.
+서로 다른 margin의 제목·범례는 재배치 후에도 유효하며 실제 겹침은 작성 순서와 무관하게 거절한다.
+
 Current direct-action contracts for this domain. Shared notation and lifecycle rules live in [`../README.md`](../README.md).
 
 ## Shared formal types
