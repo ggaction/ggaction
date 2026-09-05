@@ -3,7 +3,7 @@
 ## 공통 상태
 
 Phase 2 X 결과 승인은 기록했다. **R6-P3-A는 2026-09-05 사용자 “승인한다”로 approved**다.
-V와 B는 2026-09-05 사용자 “승인한다”로 approved, X는 ready-for-review다.
+V/B/X는 2026-09-05 사용자 “승인한다”로 approved다. Phase 3은 completed이며 Phase 4 A 계약 검토 준비로 이동한다.
 허용 상태: planned | ready-for-review | approved | changes-requested.
 세 public flow와 9개 same-run public/primitive 검증을 완료했다(Current 177 / Planned 0).
 B 승인 뒤 Full 상한 237,000 bytes를 적용했다. 같은 tarball의 package와 실제 browser 검증이 통과했다.
@@ -68,7 +68,8 @@ B 승인 뒤 Full 상한 237,000 bytes를 적용했다. 같은 tarball의 packag
 
 ## R6-P3-X — Result and closeout
 
-- 상태: ready-for-review. 사용자 승인 없음.
+- 상태: approved. 2026-09-05 사용자가 Phase 3 결과 확정과 다음 계약 검토 질문에 “승인한다”라고 답했다.
+- 승인 기준 HEAD: `b128c5536c899f06821b815a81265ea345b94558`. Review package `80fd495dc30d128eebd9d395e41c84964d4a4fa4`의 결과·한계·후속 범위를 승인했다.
 - 검토 문서: [REVIEW.md](REVIEW.md). Runtime source `80999264`, scenario 교정 `39b082d6`,
   승인 상한 적용 `81225436461eec0e0298a29f98ca42cc569e6201`. 세 commit의 packaged runtime/types/knowledge는 같다.
 - Review package commit: [`80fd495dc30d128eebd9d395e41c84964d4a4fa4`](https://github.com/ggaction/ggaction/commit/80fd495dc30d128eebd9d395e41c84964d4a4fa4). 원격 `origin/codex/roadmap6-hierarchical-actions` push와 ref 일치를 확인했다.
@@ -100,4 +101,4 @@ B에 대한 별도 “승인한다”를 기록한 뒤 상한을 적용했다. �
 - 효과: Planned 등록·비시각 준비·primitive target 작성 가능. V/X와 조건부 bundle B는 승인하지 않았다.
 - 실제 검증: baseline 52/52, related existing tests 176/176, 문서 lower calls 3/3, 최종 navigation 10/10, local links 214개. 재현 명령은 [VALIDATION.md](VALIDATION.md).
 - Planned 등록: accepted 3개, Current 174개 유지. `npm run test:contracts` 260/260, fail/skip 0.
-- 현재 남은 작업: X 사용자 승인. B 적용과 package 전체 통과, public 구현·시각 검증·기능 회귀 결과를 X 검토 문서에 기록했다.
+- 현재 상태: X 사용자 승인으로 Phase 3을 완료했다. F01/F06/F07 Current와 결과를 확정하고 Phase 4 A 준비로 이동한다.

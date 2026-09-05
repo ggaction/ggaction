@@ -1,6 +1,6 @@
 # Roadmap 6 — Pie / Donut
 
-**상태: A/V approved / Pie public flow 구현.** 현재 API의 canonical owner는 [Current 계약](../../../contract/current/COMPLETE_CHARTS.md#createpieplot)이다. Phase 3 X는 아직 승인 전이다.
+**상태: A/V approved / Pie public flow 구현.** 현재 API의 canonical owner는 [Current 계약](../../../contract/current/COMPLETE_CHARTS.md#createpieplot)이다. Phase 3 X는 사용자 승인으로 완료했다.
 [Phase 3 계약 검토](../phase3/CONTRACT_REVIEW.md)의 P3-C01–C03·C06–C07을 적용한다.
 연결 항목 F01·D05·D13·D14, owner [Phase 3 W1](../phase3/GOAL.md).
 

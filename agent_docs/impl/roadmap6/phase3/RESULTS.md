@@ -1,7 +1,7 @@
 # Phase 3 구현 결과
 
 A/V/B를 승인받아 세 public flow와 누적 기능 검증을 완료했다. 승인된 Full 상한 237,000 bytes를 적용하고
-같은 tarball의 package와 실제 browser 검증이 통과했다. [X 결과 검토](REVIEW.md)는 ready-for-review다.
+같은 tarball의 package와 실제 browser 검증이 통과했다. [X 결과 검토](REVIEW.md)는 2026-09-05 사용자 “승인한다”로 approved이며 Phase 3을 완료했다.
 아래 W1–W3와 B 이전 통합은 당시 checkpoint이며 현재 package 판정은 마지막 B 적용 결과 절이 소유한다.
 
 ## W1 — Pie and Donut

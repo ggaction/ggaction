@@ -24,7 +24,8 @@
       "R6-P2-X",
       "R6-P3-A",
       "R6-P3-V",
-      "R6-P3-B"
+      "R6-P3-B",
+      "R6-P3-X"
     ],
     "implementationStarted": true,
     "reviewCommit": "cf13920ed517cfc6c333b04ec55a724826960228",
@@ -324,7 +325,7 @@
     {
       "id": 3,
       "title": "First complete chart facades",
-      "status": "in-progress",
+      "status": "completed",
       "dependencies": [
         2
       ],
@@ -332,7 +333,7 @@
         "R6-P3-A": "approved",
         "R6-P3-V": "approved",
         "R6-P3-B": "approved",
-        "R6-P3-X": "ready-for-review"
+        "R6-P3-X": "approved"
       },
       "workPackages": [
         {
@@ -345,7 +346,7 @@
           "scope": "Category count와 explicit weighted sum의 createPiePlot을 제안한다. Donut은 arc.innerRadius로 작성하고 별도 alias는 추가하지 않는 방향이다. Color는 category 기본, guide는 legend만이며 labels/theta order는 후속 단계다.",
           "acceptance": "category count·중복 category sum·donut hole·no axes/grid·하위 edit chain이 chart 계약과 일치. Facade-child semantic/graphic 동등성.",
           "contractEvidence": "phase3/CONTRACT_REVIEW.md",
-          "status": "implemented-and-verified",
+          "status": "completed",
           "resultEvidence": "phase3/RESULTS.md#w1--pie-and-donut"
         },
         {
@@ -358,7 +359,7 @@
           "scope": "Baseline-only createDensityPlot을 제안한다. 기존 KDE와 densityChannel을 재사용하고 groupBy와 color는 별도 명시하며 color는 retained group field만 지원한다. Orientation edit와 raw metadata join은 추가하지 않는다.",
           "acceptance": "세로/가로·grouped density의 값과 영역이 기존 chain과 동일. editDensity/editAreaMark/editScale 후 owner 유지.",
           "contractEvidence": "phase3/CONTRACT_REVIEW.md",
-          "status": "implemented-and-verified",
+          "status": "completed",
           "resultEvidence": "phase3/RESULTS.md#w2--baseline-density"
         },
         {
@@ -371,11 +372,11 @@
           "scope": "필수 x/y를 받는 createHorizonPlot을 제안한다. 기존 createCoordinate로 좌표를 연결하고 encodeHorizon 뒤 explicit opacity를 적용한다. H0는 x guide만 허용하며 기존 lower guide escape는 유지한다.",
           "acceptance": "signed data와 editHorizon의 revision 검증. Folded y를 원래 양적 축처럼 표시하거나 internal band color legend를 자동 생성하지 않음.",
           "contractEvidence": "phase3/CONTRACT_REVIEW.md",
-          "status": "implemented-and-verified",
+          "status": "completed",
           "resultEvidence": "phase3/RESULTS.md#w3--horizon"
         }
       ],
-      "activity": "awaiting-phase-exit-review",
+      "activity": "completed",
       "contractEvidence": "phase3/CONTRACT_REVIEW.md",
       "baselineEvidence": "phase3/baseline-results.json",
       "baselineCommit": "9625e71c374868756652fb8dff8153dc61500c6e",
@@ -504,7 +505,7 @@
         }
       },
       "resultReview": {
-        "state": "ready-for-review",
+        "state": "approved",
         "file": "phase3/REVIEW.md",
         "sourceCommit": "81225436461eec0e0298a29f98ca42cc569e6201",
         "scope": "W1–W3 complete chart facades, nine approved targets, fixes and documented limits; same reviewed tarball passes approved budgets. X approval permits Phase 3 closeout and next contract Gate preparation, not new API implementation or release.",
@@ -517,12 +518,19 @@
           "pngHashes": 18
         },
         "reviewPackageCommit": "80fd495dc30d128eebd9d395e41c84964d4a4fa4"
+      },
+      "resultApproval": {
+        "date": "2026-09-05",
+        "userDirection": "승인한다",
+        "reviewCommit": "80fd495dc30d128eebd9d395e41c84964d4a4fa4",
+        "approvalBaselineCommit": "b128c5536c899f06821b815a81265ea345b94558",
+        "scope": "Phase 3 W1–W3, nine public visual results, fixes, installed package under approved budgets, and explicit remaining scope. Close Phase 3 and prepare Phase 4 contract review; no automatic approval of new APIs, visual targets, PR, deployment, or publishing."
       }
     },
     {
       "id": 4,
       "title": "Baselines layouts and quantitative meaning",
-      "status": "planned",
+      "status": "in-progress",
       "dependencies": [
         2
       ],
@@ -583,7 +591,8 @@
           "scope": "명시적 semantic midpoint를 추가하고 sequential/discretized/diverging recipe transition을 shared consumers 전체와 함께 preflight한다.",
           "acceptance": "비대칭 domain에서 midpoint의 neutral color 검증. Legend 유무·복수 mark에서 전환 동일. Incompatible consumer 하나면 전부 rollback."
         }
-      ]
+      ],
+      "activity": "preparing-contract-review"
     },
     {
       "id": 5,
@@ -1523,7 +1532,7 @@
       "id": "F01",
       "title": "Pie / Donut",
       "kind": "proposed-family",
-      "status": "in-progress",
+      "status": "completed",
       "primaryPhase": 3,
       "primaryWorkPackage": "R6-P3-W1",
       "relatedWorkPackages": [
@@ -1536,7 +1545,7 @@
       "recommended": "Category count와 explicit weighted sum의 createPiePlot을 제안한다. Donut은 arc.innerRadius로 작성하고 별도 alias는 추가하지 않는 방향이다. Color는 category 기본, guide는 legend만이며 labels/theta order는 후속 단계다.",
       "acceptance": "category count·중복 category sum·donut hole·no axes/grid·하위 edit chain이 chart 계약과 일치. Facade-child semantic/graphic 동등성.",
       "evidence": "audit/REPORT.md: F01",
-      "disposition": "implemented-verified-awaiting-phase-exit",
+      "disposition": "implemented-and-approved",
       "contractEvidence": "phase3/CONTRACT_REVIEW.md",
       "resultEvidence": "phase3/RESULTS.md#w1--pie-and-donut"
     },
@@ -1620,7 +1629,7 @@
       "id": "F06",
       "title": "Density",
       "kind": "proposed-family",
-      "status": "in-progress",
+      "status": "completed",
       "primaryPhase": 3,
       "primaryWorkPackage": "R6-P3-W2",
       "relatedWorkPackages": [
@@ -1633,7 +1642,7 @@
       "recommended": "Baseline-only createDensityPlot을 제안한다. 기존 KDE와 densityChannel을 재사용하고 groupBy와 color는 별도 명시하며 color는 retained group field만 지원한다. Orientation edit와 raw metadata join은 추가하지 않는다.",
       "acceptance": "세로/가로·grouped density의 값과 영역이 기존 chain과 동일. editDensity/editAreaMark/editScale 후 owner 유지.",
       "evidence": "audit/REPORT.md: F06",
-      "disposition": "implemented-verified-awaiting-phase-exit",
+      "disposition": "implemented-and-approved",
       "contractEvidence": "phase3/CONTRACT_REVIEW.md",
       "resultEvidence": "phase3/RESULTS.md#w2--baseline-density"
     },
@@ -1641,7 +1650,7 @@
       "id": "F07",
       "title": "Horizon",
       "kind": "proposed-family",
-      "status": "in-progress",
+      "status": "completed",
       "primaryPhase": 3,
       "primaryWorkPackage": "R6-P3-W3",
       "relatedWorkPackages": [
@@ -1654,7 +1663,7 @@
       "recommended": "필수 x/y를 받는 createHorizonPlot을 제안한다. 기존 createCoordinate로 좌표를 연결하고 encodeHorizon 뒤 explicit opacity를 적용한다. H0는 x guide만 허용하며 기존 lower guide escape는 유지한다.",
       "acceptance": "signed data와 editHorizon의 revision 검증. Folded y를 원래 양적 축처럼 표시하거나 internal band color legend를 자동 생성하지 않음.",
       "evidence": "audit/REPORT.md: F07",
-      "disposition": "implemented-verified-awaiting-phase-exit",
+      "disposition": "implemented-and-approved",
       "contractEvidence": "phase3/CONTRACT_REVIEW.md",
       "resultEvidence": "phase3/RESULTS.md#w3--horizon"
     },

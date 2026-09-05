@@ -1,8 +1,8 @@
 # R6-P3-X — Complete chart facades 결과 검토
 
-상태: **ready-for-review**. 승인된 A/V/B 범위의 Pie/Donut·Density·Horizon 구현과 소비자 검증을 완료했다.
+상태: **approved**. 2026-09-05 사용자가 “승인한다”로 Phase 3 결과와 후속 범위를 승인했다. 승인 기준 HEAD는 `b128c5536c899f06821b815a81265ea345b94558`다. Pie/Donut·Density·Horizon 구현과 소비자 검증을 완료했다.
 Full bundle 상한 237,000 bytes를 적용하고 검토 당시와 같은 tarball의 package 검증을 exit 0으로 확인했다.
-이 문서는 Phase 3 결과와 후속 범위의 검토안이다. X 사용자 승인은 아직 없으며 Phase는 in-progress다.
+Phase 3은 completed다. 다음 단계인 Phase 4의 구체 계약 검토를 준비하며 신규 API·시각 target은 해당 Gate를 따른다.
 
 ## 검증한 코드와 승인 범위
 
@@ -150,4 +150,4 @@ Tarball이 없는 원격 checkout은 `npm run package:pack`으로 생성하고 �
 - 기존 guide·encoding·statistical owner를 조합하는 이번 범위를 완료했으며 새 mark family나 저장 schema를 추가하지 않았다.
 - X 승인 효과는 Phase 3 결과·명시한 한계·후속 범위의 수용과 다음 계약 Gate 준비다.
   다음 단계의 구체 API·시각 target은 해당 계약과 시각 검토를 따른다.
-- PR 생성·배포·publish는 이 검토의 승인 범위가 아니다. X 사용자 승인 전 Phase 3 completed로 기록하지 않는다.
+- X 사용자 승인으로 Phase 3을 completed로 기록했다. PR 생성·배포·publish는 승인 범위가 아니다.

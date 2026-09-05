@@ -1,6 +1,6 @@
 # Roadmap 6 — Hierarchical Chart Authoring and Action Consistency
 
-> **문서 상태 — 현재 실행 계획.** Phase 1/2 X와 Phase 3 A/V/B 승인을 기록했다. Pie/Donut·Density·Horizon 세 facade와 9개 public 시각 동등성 검증을 완료했다(Current 177 / Planned 0). 승인된 Full 상한 237,000 bytes에서 같은 tarball의 package 검증이 통과했고 [Phase 3 X 결과](phase3/REVIEW.md)를 준비했다. X는 ready-for-review이며 Phase는 in-progress다.
+> **문서 상태 — 현재 실행 계획.** Phase 1–3 결과를 사용자 승인으로 완료했다. [Phase 3 X 결과](phase3/REVIEW.md)의 Pie/Donut·Density·Horizon과 9개 시각 결과, 같은 tarball 소비자 검증을 확정했다. 현재는 [Phase 4](phase4/GOAL.md)의 baseline·layout·radial mapping·order·midpoint 계약을 준비한다. Phase 4 A/V/X는 아직 미승인이다.
 > 액션군 범위는 사용자 선택에 따라 F01–F19로 구성했다. 후속 액션군의 구체적인 API와 행동 변경은 각 Phase Gate에서 확정한다.
 > 이 문서를 작성해 달라는 요청은 모든 설계안·구현·배포의 일괄 승인을 뜻하지 않는다.
 > 실행 위치는 [ROADMAP_INDEX.json](../ROADMAP_INDEX.json), 현재 제품 계약은
@@ -114,8 +114,8 @@ S는 기존 owner 위의 교정·연결, M은 여러 consumer의 lifecycle 변�
 | 0 | completed | 감사 기준, 우선순위, 결정 원장, 검증·Gate 정의 |
 | 1 | completed | W1–W5 구현·검증과 R6-P1-X 사용자 승인. B01 lower 작성 순서는 Phase 2 W5에서 교정 |
 | 2 | completed | W1–W5와 6개 public 흐름 구현·검증, A/B/V/X 사용자 승인 |
-| 3 | in-progress | Pie/Donut, Density, Horizon 계약 검토 준비; A 미승인, 구현 미착수 |
-| 4 | planned | Baseline, layout, order, 중심색과 Area·Rose/Radial |
+| 3 | completed | Pie/Donut·Density·Horizon, A/V/B/X approved; Current 177 / Planned 0 |
+| 4 | in-progress | Baseline, layout, order, 중심색과 Area·Rose/Radial의 A 계약 준비; API 미승인 |
 | 5 | planned | 축·범례 lifecycle, label·format·theme·명시적 fitting |
 | 6 | planned | Data·transform·통계·filter·composite role 편집 |
 | 7 | planned | Polar Scatter/Line, Radar, Rug/Strip |
@@ -186,7 +186,7 @@ Horizon은 folded y의 guide 제한을 명시한다. 하위 edit 경로까지 �
 Density의 explicit group color, Horizon의 기존 coordinate child와 opacity 적용을 승인했다.
 [V 검토](phase3/VISUAL_REVIEW.md)를 승인받아 세 public flow를 구현했고 9개 public/primitive 동등성과
 누적 normal 2,585건을 검증했다. Realistic 전체 실행과 교정 재검증의 정확한 범위는 [결과](phase3/RESULTS.md)를 따른다.
-Full 237,000-byte [B 결정](phase3/BUNDLE_REVIEW.md)을 승인받아 같은 tarball 검증이 통과했다. [X 결과](phase3/REVIEW.md)의 사용자 승인을 남긴다.
+Full 237,000-byte B와 [X 결과](phase3/REVIEW.md)를 승인받아 Phase 3을 완료했다. 같은 tarball 검증이 통과했고 후속 Phase 4 계약 검토로 이동한다.
 
 ## Phase 4 — Baselines, layouts and quantitative meaning
 

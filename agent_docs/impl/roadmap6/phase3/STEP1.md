@@ -22,11 +22,11 @@
 - [x] 승인 상한 적용과 같은 tarball package 전체 exit 0 확인
 - [x] X 결과 문서·검증 evidence 준비
 - [x] X package 원격 ref 고정 (`80fd495dc30d128eebd9d395e41c84964d4a4fa4`)
-- [ ] X 명시적 사용자 승인 기록
+- [x] X 명시적 사용자 승인 기록 (`b128c5536c899f06821b815a81265ea345b94558` 기준)
 
 A/V 승인 뒤 세 public flow·lower lifecycle·시각 동등성·문서와 누적 기능 검증을 완료했다.
 [B 결정](BUNDLE_REVIEW.md)을 승인받아 Full 상한을 적용했고 같은 tarball의 package와 실제 browser 검증이 통과했다.
-[X 최종 결과](REVIEW.md)의 사용자 승인을 남긴다. [구현 결과](RESULTS.md)를 따른다.
+[X 최종 결과](REVIEW.md)를 사용자 승인으로 확정했다. Phase 3은 완료했으며 Phase 4 A 준비로 이동한다. [구현 결과](RESULTS.md)를 따른다.
 [계약 검토](CONTRACT_REVIEW.md), [시각 검토](VISUAL_REVIEW.md), [Gate](GATES.md), [검증](VALIDATION.md)가 현재 evidence를 소유한다.
 
 ## 실행 순서와 경계

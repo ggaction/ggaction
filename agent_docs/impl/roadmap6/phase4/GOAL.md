@@ -2,7 +2,7 @@
 
 ## 상태와 목표
 
-상태: planned. 구현·사용자 승인 기록 없음.
+상태: in-progress — Phase 3 X 사용자 승인 뒤 A 계약 검토를 준비한다. Phase 4 A/V/X는 미승인이며 production 구현은 시작하지 않았다.
 
 차트 이름보다 먼저 baseline·layout·mapping의 의미를 완성한다. Area, Rose와 Radial bar를 정확한 측정 계약 위에 제공한다.
 

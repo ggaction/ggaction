@@ -2,9 +2,9 @@
 
 ## 상태와 목표
 
-상태: in-progress — A/V 사용자 승인 범위의 세 facades를 구현했다(Current 177 / Planned 0).
+상태: completed — A/V/B/X를 사용자 승인으로 확정했다. 세 facades는 Current이며 전체 Current 177 / Planned 0이다.
 9개 same-run 시각 비교와 누적 기능 검증을 완료했다. [B 용량 결정](BUNDLE_REVIEW.md)을 사용자 승인으로 기록하고
-Full 상한 237,000 bytes를 적용했다. 같은 tarball의 package 검증은 exit 0이며 [X 최종 결과](REVIEW.md)는 ready-for-review다.
+Full 상한 237,000 bytes를 적용했다. 같은 tarball의 package 검증은 exit 0이며 [X 최종 결과](REVIEW.md)는 approved다.
 [구현 결과](RESULTS.md)를 따르며 [구체 계약](CONTRACT_REVIEW.md)의 P3-C01–C07과
 [검증·consumer matrix](VALIDATION.md)를 적용한다.
 

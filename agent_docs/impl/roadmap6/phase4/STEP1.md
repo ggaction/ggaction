@@ -2,6 +2,9 @@
 
 ## 진행 상태
 
+- [x] Phase 3 X 사용자 승인과 완료 기록 확인
+- [ ] Current baseline·owner·existing defaults·실패 경계 재현
+
 - [ ] A Gate의 정확한 결정·호환성·검증 범위 확정
 - [ ] A Gate 증거 commit/push와 명시적 사용자 승인 기록
 - [ ] R6-P4-W1 Area baseline/range와 facade

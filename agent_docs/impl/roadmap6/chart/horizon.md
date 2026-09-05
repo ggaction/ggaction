@@ -1,6 +1,6 @@
 # Roadmap 6 — Horizon
 
-**상태: A/V/B approved / Horizon public flow 구현.** 정확한 현재 계약은 [Current owner](../../../contract/current/COMPLETE_CHARTS.md#createhorizonplot)를 따른다. Phase 3 X는 아직 승인 전이다.
+**상태: A/V/B approved / Horizon public flow 구현.** 정확한 현재 계약은 [Current owner](../../../contract/current/COMPLETE_CHARTS.md#createhorizonplot)를 따른다. Phase 3 X는 사용자 승인으로 완료했다.
 [Phase 3 계약 검토](../phase3/CONTRACT_REVIEW.md)의 P3-C01·C05–C07을 적용한다.
 연결 F07·D04, owner [Phase 3 W3](../phase3/GOAL.md).
 
