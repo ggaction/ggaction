@@ -482,7 +482,8 @@
         },
         "fullExcessBytes": 923,
         "limitChangeApplied": false,
-        "scope": "Full ceiling only; preserve Basic/SVG limits and measurement. Reverify installed package before X review. No next Phase, PR, deployment, or publishing approval."
+        "scope": "Full ceiling only; preserve Basic/SVG limits and measurement. Reverify installed package before X review. No next Phase, PR, deployment, or publishing approval.",
+        "reviewPackageCommit": "c7ff0309d19729251b569e61498d52ca714f80bc"
       }
     },
     {

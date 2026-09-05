@@ -57,7 +57,7 @@ Full 923-byte 초과를 기록하고 기존 상한을 유지한 채 B 검토를 
   Test 교정 commit: `39b082d643412c5190c3ca51f180d10c2c7efa72`, packaged source와 같은 bytes.
 - 증거: [같은 tarball 소비자와 bundle](package-results.json), [9개 public 시각 결과](public-visual-results.json),
   [구현과 누적 검증](RESULTS.md#최종-통합-검증). 전체 realistic 210/212의 두 inventory 실패는 관련 모듈 13/13 재검증으로 교정했다.
-- Review package commit: push 후 별도 ref 기록으로 고정한다. 그 기록 전 승인 요청하지 않는다.
+- Review package commit: [`c7ff0309d19729251b569e61498d52ca714f80bc`](https://github.com/ggaction/ggaction/commit/c7ff0309d19729251b569e61498d52ca714f80bc). 원격 `origin/codex/roadmap6-hierarchical-actions` push 확인. 이 ref의 기능·검증·용량 제안만 B 검토 범위다.
 - 승인 효과: canonical guard와 architecture 표의 Full 상한만 수정하고 installed package를 재검증한다.
   이후 X 검토 준비를 연다. 새 API·다음 Phase·PR·배포·publish 승인은 아니다.
 - 승인 전 차단: bundle 상한 변경과 package 통과 선언. X는 package 실패가 남아 있는 동안 planned로 유지한다.

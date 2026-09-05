@@ -106,4 +106,4 @@ node agent_docs/impl/roadmap6/phase3/verify-package.mjs
 
 V 승인 범위의 구현과 기능 검증을 마쳤다. 사용자의 “계속해”는 이 작업을 이어가는 지시이며,
 아직 제시하지 않은 새 bundle 상한의 승인으로 기록하지 않는다. 현재 상한은 그대로다.
-원격 review package commit은 이 검토 package를 push한 뒤 별도 ref 기록으로 고정한다.
+원격 review package commit: [`c7ff0309d19729251b569e61498d52ca714f80bc`](https://github.com/ggaction/ggaction/commit/c7ff0309d19729251b569e61498d52ca714f80bc). `origin/codex/roadmap6-hierarchical-actions`에 push했으며 원격 ref와 일치를 확인했다. 이 문서의 최종 ref 기록은 source나 측정 evidence를 변경하지 않는다.
