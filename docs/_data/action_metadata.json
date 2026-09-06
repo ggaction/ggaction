@@ -29,6 +29,11 @@
     "layer": "user-facing",
     "domain": "core"
   },
+  "bindMarkData": {
+    "operation": "edit",
+    "layer": "user-facing",
+    "domain": "core"
+  },
   "filterData": {
     "operation": "filter",
     "layer": "user-facing",

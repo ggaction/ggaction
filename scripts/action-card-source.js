@@ -18,6 +18,7 @@ const packageFile = path.join(root, "package.json");
 
 const operationPrefixes = Object.freeze([
   "create",
+  "bind",
   "apply",
   "edit",
   "encode",
@@ -134,6 +135,7 @@ function generatedSummary(action, intentSource) {
   const purpose = aliases[1] ?? intentSource.domainIntents[action.domain][0];
   switch (operation) {
     case "create": return `Creates ${resource} for ${purpose}.`;
+    case "bind": return `Binds ${resource} and rematerializes every compatible consumer.`;
     case "apply": return `Applies ${resource} defaults to existing and later chart resources.`;
     case "edit": return `Edits ${resource}, including settings for ${purpose}.`;
     case "encode": return `Maps data or a constant to ${resource} for ${purpose}.`;

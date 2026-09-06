@@ -33,6 +33,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | Action | API layer | Domain |
 | --- | --- | --- |
 | [`applyTheme`](./actions/charts-data.md#applytheme) | user-facing | core |
+| [`bindMarkData`](./actions/charts-data.md#bindmarkdata) | user-facing | core |
 | [`createAnnotation`](./actions/marks.md#createannotation) | user-facing | marks |
 | [`createArcMark`](./actions/marks.md#createarcmark) | user-facing | marks |
 | [`createAreaMark`](./actions/marks.md#createareamark) | user-facing | marks |

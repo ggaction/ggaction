@@ -148,6 +148,24 @@
       }
     },
     {
+      "name": "bindMarkData",
+      "layer": "user-facing",
+      "domain": "core",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Atomically rebinds one independent mark and all registered consumers",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/CORE.md",
+        "anchor": "bindmarkdata"
+      }
+    },
+    {
       "name": "filterData",
       "layer": "user-facing",
       "domain": "core",

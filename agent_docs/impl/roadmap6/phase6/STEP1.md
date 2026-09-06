@@ -2,9 +2,9 @@
 
 ## 진행 상태
 
-- [ ] A Gate의 정확한 결정·호환성·검증 범위 확정
-- [ ] A Gate 증거 commit/push와 명시적 사용자 승인 기록
-- [ ] R6-P6-W1 Dataset lifecycle와 안전한 bind
+- [x] A Gate의 정확한 결정·호환성·검증 범위 확정
+- [x] A Gate 증거와 전체 실행 사용자 승인 기록
+- [x] R6-P6-W1 Dataset lifecycle와 안전한 bind
 - [ ] R6-P6-W2 Summary·bin·fold·computed·stack data
 - [ ] R6-P6-W3 공통 interval method·level
 - [ ] R6-P6-W4 Filter replace·compose·remove·empty

@@ -216,6 +216,38 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
     completion 정책이 먼저 필요하다.
 - Evidence: `test/unit/actions/data/create-data.test.js`.
 
+## `bindMarkData`
+
+- Signature: `bindMarkData({ target, data })`
+- 목적과 필수 state: 기존 independent mark를 이미 materialize된 다른 dataset에 원자적으로 연결하고
+  해당 mark가 소비하는 scale, guide, label, selection/highlight와 concrete graphic을 dependency 순서로
+  다시 만든다.
+- `target`: 필수 mark ID다. Composite owner나 그 child, density/horizon/final-item filter처럼 자체
+  source lifecycle을 가진 mark는 해당 resource의 edit/filter action을 사용해야 하며 이 action은 거부한다.
+- `data`: 필수 existing dataset ID다. `values`가 없는 definition-only `createDerivedData` 결과는 mark가
+  소비할 수 없으므로 거부한다.
+- preflight와 atomicity: immutable speculative branch에서 전체 rebind와 rematerialization plan을 먼저
+  실행한다. 새 row가 encoding field/type/grain, coordinate placement, shared scale domain, guide, label,
+  selection/highlight의 기존 계약을 충족하지 못하면 첫 public 상태 변경 전에 전체 action이 실패한다.
+- Effect: wrapped `rebindLayerData`가 semantic consumer transition을 trace에 남기고, 기존 registered
+  rematerializer가 새 dataset을 기준으로 concrete state를 수렴시킨다. Source program과 이전 dataset은
+  그대로 유지하며 같은 dataset으로의 빈 변경은 거부한다.
+- Coverage: `test/unit/actions/data/bind-mark-data.test.js`가 호환 data 재연결, field/type/definition-only
+  rejection, composite lifecycle, full trace와 이전 program 불변성을 검증한다.
+
+### Formal values — `bindMarkData`
+
+- Implemented: `bindMarkData({ target: UserId; data: UserId }): ChartProgram`
+- Proposed (NOT IMPLEMENTED): composite 전체 역할 변경. 각 composite owner의 aggregate edit가 담당한다.
+
+### Value coverage — `bindMarkData`
+
+- ✅ Covered: explicit target/data, existing materialized data, scale+mark rematerialization과 item cardinality 변경.
+- ✅ Covered: missing field, incompatible quantitative type, definition-only dataset, missing IDs, empty/same bind,
+  unknown option과 immutable atomic rejection.
+- ✅ Covered: Box와 owned transform consumer가 generic single-layer bind를 우회하지 못함.
+- Evidence: `test/unit/actions/data/bind-mark-data.test.js`.
+
 ## `filterData`
 
 - Signature: `filterData({ id, source?, field, oneOf?, predicate?, range? })`

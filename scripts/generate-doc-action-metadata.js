@@ -15,6 +15,7 @@ function operation(name) {
   }
   if (name === "facet") return "compose";
   if (
+    name === "bindMarkData" ||
     name === "jitterPoints" ||
     name === "fitCanvas" ||
     name === "layoutLabels" ||

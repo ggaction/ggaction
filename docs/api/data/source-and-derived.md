@@ -103,6 +103,29 @@ this direct-authoring union. The public tuple contains exactly one transform;
 multi-transform pipelines are rejected. Built-in value materializers each own
 and normalize that single transform.
 
+## `bindMarkData({ target, data })`
+
+Use `bindMarkData` to move an existing independent mark to another materialized
+dataset while preserving its encoding and visual configuration:
+
+```javascript
+const revised = program.bindMarkData({
+  target: "points",
+  data: "selectedCars"
+});
+```
+
+The action first validates the complete result, including encoding fields and
+types, coordinate placement, shared scales, guides, labels, selections, and
+highlights. It then records the semantic rebind and rematerializes every
+registered consumer. A failure returns no partial program; the earlier program
+remains usable.
+
+`data` must contain concrete `values`. A definition-only `createDerivedData`
+result is rejected. Composite marks and marks backed by an owned density,
+horizon, or final-item filter recipe must use their documented edit or filter
+lifecycle because changing only one layer would break the resource.
+
 ## Related
 
 [Data overview](../data.md) · [Chart API](../index.md) · [Action reference](../../reference/actions.md)

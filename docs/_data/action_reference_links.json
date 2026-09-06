@@ -11,6 +11,7 @@
   "editFacetScales": "/reference/actions/charts-data/#editfacetscales",
   "editFacetGuides": "/reference/actions/charts-data/#editfacetguides",
   "createData": "/reference/actions/charts-data/#createdata",
+  "bindMarkData": "/reference/actions/charts-data/#bindmarkdata",
   "createScatterPlot": "/reference/actions/charts-data/#createscatterplot",
   "createLinePlot": "/reference/actions/charts-data/#createlineplot",
   "createBarPlot": "/reference/actions/charts-data/#createbarplot",

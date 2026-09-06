@@ -2,13 +2,14 @@
 
 ## 공통 상태
 
-모든 Gate는 planned다. 아직 ready-for-review나 approved인 Gate가 없다.
+R6-P6-A와 V는 [Roadmap 6 전체 실행 승인](../APPROVAL.md)에 따라 approved다. X도 결과가 실제로
+완료되면 같은 승인 범위에서 닫되, 완료 전에는 ready-for-review로 표시하지 않는다.
 허용 상태는 planned | ready-for-review | approved | changes-requested다.
 이 문서는 지금 승인을 요청하는 문서가 아니라 실행 시점의 검토 범위와 경계를 미리 선언한다.
 
 ## R6-P6-A — Contract and scope
 
-- 상태: planned
+- 상태: approved
 - 검토 대상: K12–K14의 snapshot/revision, transform completion, CI method, filter replace/empty, composite role API.
 - 필요 증거: exact baseline commit, 구현할 public signature 또는 before/after call, [GOAL.md](GOAL.md)의 작업별 의미·owner·지원/오류 matrix, [DESIGN_DECISIONS.md](../DESIGN_DECISIONS.md)의 해당 migration 결정.
 - 추가 증거: focused 재현 결과와 실행 가능한 public/primitive target 계획, Current/type/card/package 영향, 남은 불확실성.
@@ -18,7 +19,7 @@
 
 ## R6-P6-V — Visual target
 
-- 상태: planned
+- 상태: approved
 - 검토 대상: 이 단계에서 모양이 변하는 각 primitive variant. 서로 독립인 target은 V1/V2로 분리한다.
 - 필요 증거: exact executable primitive source, target public call chain, semantic 결과, input/dimension/variant manifest, 실제 rendered image.
 - 경로: .artifacts/test/png/review/<chart>/<variant>/ 및 git에 포함된 재현 source. 로컬 이미지 경로만으로 review package를 완료하지 않는다.
@@ -39,9 +40,9 @@
 
 ## 승인 기록
 
-- Review commit / remote ref: 미정
-- 검증 명령과 실제 결과: 미실행
-- 사용자 승인 근거: 없음
-- 남은 작업: 해당 GOAL/STEP 전 범위
+- Review baseline: `3c472321fba067efc131f8335f1383333481e575`
+- 계약: [CONTRACT.md](CONTRACT.md)
+- 사용자 승인 근거: [APPROVAL.md](../APPROVAL.md)의 전체 A/V/X와 release 승인.
+- 현재 결과: [W1](RESULTS_W1_DATA_BINDING.md) 완료. W2–W5와 X closeout이 남았다.
 
-실행 시 실제 증거를 채운다. 문서 작성 날짜나 이전 로드맵 승인을 이 Gate의 승인으로 재사용하지 않는다.
+각 W의 실제 commit/ref와 검증 결과는 해당 결과 문서와 X closeout에 추가한다.

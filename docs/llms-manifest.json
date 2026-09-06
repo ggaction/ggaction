@@ -748,10 +748,11 @@
         "source-and-derived-data",
         "createdata-id-values",
         "create-derived-data",
+        "bindmarkdata-target-data",
         "related"
       ],
-      "bytes": 4730,
-      "sha256": "70d3ce8a8a9e445852233fe4a1858cf9c897064fcff64ae93b5ccb8a632b9d71"
+      "bytes": 5638,
+      "sha256": "dc29541c65dc1f09a3011fc3b91706aa9a22d489ef0f8eb42a2bde089a422296"
     },
     {
       "order": 49,
@@ -1691,8 +1692,8 @@
         "derived-data",
         "related"
       ],
-      "bytes": 3121,
-      "sha256": "8ab4a39d0af44b360f50bf887f489be63f21c0af6149099c794dc7022ffec131"
+      "bytes": 3472,
+      "sha256": "e20b4ae78420e3c139da8b3da24dd50df3c6165b7122062a33974eeb9f492b26"
     },
     {
       "order": 108,
@@ -1808,8 +1809,8 @@
         "action-reference",
         "exact-action-lookup"
       ],
-      "bytes": 21613,
-      "sha256": "bb4a30163a9fb1d1fbfd852aec761a35b8971755b1a05e73ec41c96912f07ba8"
+      "bytes": 21702,
+      "sha256": "11decce3fb1bd8f5c3cbc7e230a1aa6b72bce1d7631fbfe71e9e2d5ac08dd170"
     },
     {
       "order": 115,
@@ -1830,6 +1831,7 @@
         "editfacetscales",
         "editfacetguides",
         "createdata",
+        "bindmarkdata",
         "createscatterplot",
         "createlineplot",
         "createbarplot",
@@ -1852,8 +1854,8 @@
         "editbin2ddata",
         "related"
       ],
-      "bytes": 14901,
-      "sha256": "e02e901d69195396315031068d20c0943b4b1de529b47b1fbb45ebce61980732"
+      "bytes": 15268,
+      "sha256": "81836f83f97472da32c0d65cfea383c810a7d996771fdeb233d85a4d2db5d22d"
     },
     {
       "order": 116,
@@ -2082,8 +2084,8 @@
         "exact-typescript-signatures",
         "related"
       ],
-      "bytes": 16196,
-      "sha256": "8c3fdd56f94642257d4c6df4807934c3fc6ba3144c0ba564702afe5aee15d40f"
+      "bytes": 16256,
+      "sha256": "d376e2a296ff7b5841b0035bdc1a6c3e75028ff4e0eedf4735e00a482d54895b"
     },
     {
       "order": 124,

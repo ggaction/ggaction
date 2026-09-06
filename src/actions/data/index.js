@@ -4,6 +4,7 @@ import {
 } from "./timeUnit.js";
 import {
   createDerivedData,
+  bindMarkData,
   rebindLayerData,
   releaseDerivedData
 } from "./derived.js";
@@ -37,6 +38,7 @@ import { createBoxSummaryData, createBoxOutlierData, materializeBoxSummaryData, 
 export function registerDataActions(ProgramClass) {
   ProgramClass.prototype.createData = createData;
   ProgramClass.prototype.createDerivedData = createDerivedData;
+  ProgramClass.prototype.bindMarkData = bindMarkData;
   ProgramClass.prototype.releaseDerivedData = releaseDerivedData;
   ProgramClass.prototype.rebindLayerData = rebindLayerData;
   ProgramClass.prototype.createDensityData = createDensityData;

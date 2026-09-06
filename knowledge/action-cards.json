@@ -3,7 +3,7 @@
   "packageVersion": "0.0.12",
   "typeSource": "types/program.d.ts",
   "errorPolicy": "An empty errors array means the compact card has no curated error override; consult the canonical route for validation, inference, and recovery behavior.",
-  "count": 201,
+  "count": 202,
   "cards": [
     {
       "schemaVersion": 2,
@@ -285,6 +285,52 @@
       "snippet": "program.createData({ values: [{ category: \"A\", value: 1 }] })",
       "errors": [],
       "route": "/reference/actions/charts-data/#createdata"
+    },
+    {
+      "schemaVersion": 2,
+      "name": "bindMarkData",
+      "layer": "user-facing",
+      "domain": "core",
+      "summary": "Atomically connect one independent mark to an existing materialized dataset.",
+      "signature": "bindMarkData(options: BindMarkDataOptions): ChartProgram;",
+      "intents": [
+        "bind mark data",
+        "bind",
+        "connect data",
+        "chart setup",
+        "data and scales",
+        "mark data binding",
+        "change mark dataset"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "source dataset"
+        ],
+        "owns": [],
+        "idOptions": [
+          "target",
+          "data"
+        ]
+      },
+      "options": [
+        {
+          "name": "target",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "data",
+          "required": true,
+          "type": "string"
+        }
+      ],
+      "callPatterns": [
+        "bindMarkData({ target, data })"
+      ],
+      "snippet": "program.bindMarkData({ target: \"mark-1\", data: \"data-1\" })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#bindmarkdata"
     },
     {
       "schemaVersion": 2,

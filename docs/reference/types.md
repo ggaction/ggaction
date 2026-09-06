@@ -24,6 +24,7 @@ interface ChartProgramActions {
   applyTheme(options: ApplyThemeOptions): ChartProgram;
   removeTheme(): ChartProgram;
   createData(options: { id?: string; values: readonly unknown[] }): ChartProgram;
+  bindMarkData(options: BindMarkDataOptions): ChartProgram;
   filterData(options: FilterDataOptions): ChartProgram;
   filterMarks(options: FilterMarksOptions): ChartProgram;
   selectMarks(options: SelectMarksOptions): ChartProgram;

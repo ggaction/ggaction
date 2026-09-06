@@ -4433,6 +4433,29 @@ this direct-authoring union. The public tuple contains exactly one transform;
 multi-transform pipelines are rejected. Built-in value materializers each own
 and normalize that single transform.
 
+## `bindMarkData({ target, data })`
+
+Use `bindMarkData` to move an existing independent mark to another materialized
+dataset while preserving its encoding and visual configuration:
+
+```javascript
+const revised = program.bindMarkData({
+  target: "points",
+  data: "selectedCars"
+});
+```
+
+The action first validates the complete result, including encoding fields and
+types, coordinate placement, shared scales, guides, labels, selections, and
+highlights. It then records the semantic rebind and rematerializes every
+registered consumer. A failure returns no partial program; the earlier program
+remains usable.
+
+`data` must contain concrete `values`. A definition-only `createDerivedData`
+result is rejected. Composite marks and marks backed by an owned density,
+horizon, or final-item filter recipe must use their documented edit or filter
+lifecycle because changing only one layer would break the resource.
+
 ## Related
 
 [Data overview](./api/data/) · [Chart API](./api/) · [Action reference](./reference/actions/)
@@ -12023,6 +12046,12 @@ previous `rows` and `program` remain valid and can stay on screen.
 revise existing semantic resources and rematerialize their consumers. They do
 not replace the rows of a source dataset.
 
+`bindMarkData({ target, data })` can move one independent mark to another
+existing materialized dataset. It preflights the mark's fields, scales, guides,
+labels, selections, and highlights before returning the revised program.
+Composite charts keep their source changes in the corresponding aggregate edit
+action so all owned layers change together.
+
 Use a revision action when the source snapshot is unchanged and the user is
 changing chart intent. Rebuild from source when row identity, values, schema,
 or source-dataset membership changes.
@@ -12760,6 +12789,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | Action | API layer | Domain |
 | --- | --- | --- |
 | [`applyTheme`](./reference/actions/charts-data/#applytheme) | user-facing | core |
+| [`bindMarkData`](./reference/actions/charts-data/#bindmarkdata) | user-facing | core |
 | [`createAnnotation`](./reference/actions/marks/#createannotation) | user-facing | marks |
 | [`createArcMark`](./reference/actions/marks/#createarcmark) | user-facing | marks |
 | [`createAreaMark`](./reference/actions/marks/#createareamark) | user-facing | marks |
@@ -13090,6 +13120,17 @@ createData({ id?, values })
 ```
 
 Create one immutable named dataset. [Data](./api/data/)
+
+## `bindMarkData`
+
+```javascript
+bindMarkData({ target, data })
+```
+
+Atomically connect one independent mark to an existing materialized dataset.
+The action preflights its fields, scales, guides, labels, selections, and
+highlights before it rematerializes every registered consumer.
+[Source and Derived Data](./api/data/source-and-derived/#bindmarkdata-target-data)
 
 ## `createScatterPlot`
 
@@ -15141,6 +15182,7 @@ interface ChartProgramActions {
   applyTheme(options: ApplyThemeOptions): ChartProgram;
   removeTheme(): ChartProgram;
   createData(options: { id?: string; values: readonly unknown[] }): ChartProgram;
+  bindMarkData(options: BindMarkDataOptions): ChartProgram;
   filterData(options: FilterDataOptions): ChartProgram;
   filterMarks(options: FilterMarksOptions): ChartProgram;
   selectMarks(options: SelectMarksOptions): ChartProgram;

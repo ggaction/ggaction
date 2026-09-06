@@ -2,7 +2,7 @@
 
 ## 상태와 목표
 
-상태: planned. 구현·사용자 승인 기록 없음.
+상태: in-progress. 전체 실행 승인을 적용했고 W1을 구현·검증했다.
 
 일반 사용자가 재사용 가능한 derived data를 만들고 안전하게 source·통계·composite 역할을 교체하도록 한다.
 
@@ -19,6 +19,8 @@
 - 연결: D12, F16.
 - 작업: Definition-only와 materializing transform을 구분한다. create/edit-owner/snapshot 관계와 Bin2D legacy reauthor를 정리하고 public bindMarkData의 full preflight를 만든다.
 - 완료 조건: Immutable 이전 program 유지. Field/type/grain/coordinate/scale/guide/selection incompatibility에 atomic failure, compatible revision은 orphan cleanup.
+- 결과: [W1 결과](RESULTS_W1_DATA_BINDING.md). Independent mark의 public binding과 snapshot/owner 경계를
+  구현했다. Owned revision cleanup은 각 W2/W4/W5 owner의 실제 revision과 함께 계속 검증한다.
 
 ### R6-P6-W2 — Summary·bin·fold·computed·stack data
 

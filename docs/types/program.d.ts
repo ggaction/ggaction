@@ -500,6 +500,10 @@ export interface CreateDerivedDataOptions {
   source: string;
   transform: readonly [DatasetTransform];
 }
+export interface BindMarkDataOptions {
+  target: string;
+  data: string;
+}
 export type MarkGraphicProperty =
   | "x" | "y" | "width" | "height" | "radius"
   | "x1" | "y1" | "x2" | "y2"
@@ -2985,6 +2989,7 @@ export class ChartProgram {
   applyTheme(options: ApplyThemeOptions): ChartProgram;
   removeTheme(): ChartProgram;
   createData(options: { id?: string; values: readonly unknown[] }): ChartProgram;
+  bindMarkData(options: BindMarkDataOptions): ChartProgram;
   filterData(options: FilterDataOptions): ChartProgram;
   filterMarks(options: FilterMarksOptions): ChartProgram;
   selectMarks(options: SelectMarksOptions): ChartProgram;

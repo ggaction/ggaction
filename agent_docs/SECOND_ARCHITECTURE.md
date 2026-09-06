@@ -479,6 +479,10 @@ caller-owned rows         → 이후 수정해도 program1에 영향 없음
 - Derived transform parameter edit은 새 deterministic namespaced dataset revision을 만들고 consumer를
   explicit rebind한다. 새 program에서 참조되지 않는 이전 revision만 wrapped state-transition action으로
   제거할 수 있으며 earlier program은 기존 revision을 계속 보존한다.
+- Independent mark의 public data 전환은 `bindMarkData`가 소유한다. Definition-only dataset을 거부하고
+  immutable speculative branch에서 scale→mark→guide→layout→highlight dependency plan을 끝까지 검증한 뒤
+  wrapped `rebindLayerData` transition을 반환한다. Composite와 owned transform은 해당 aggregate owner가
+  전체 sibling과 role을 함께 수정한다.
 - context, resolved scale, materialization config, trace도 같은 원칙을 따른다.
 
 `_clone()`은 현재 runtime class의 constructor를 사용하므로 `ChartProgram` subclass에서도

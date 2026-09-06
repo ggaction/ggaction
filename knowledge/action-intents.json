@@ -2,6 +2,7 @@
   "schemaVersion": 1,
   "operationIntents": {
     "create": ["create", "add"],
+    "bind": ["bind", "connect data"],
     "apply": ["apply", "set defaults"],
     "edit": ["edit", "change"],
     "encode": ["encode", "map field"],
@@ -39,6 +40,7 @@
     "PiePlot": ["pie plot", "pie chart", "donut chart", "doughnut chart", "category proportions"],
     "Canvas": ["canvas", "chart size", "plot bounds"],
     "Data": ["dataset", "rows"],
+    "MarkData": ["mark data binding", "change mark dataset", "connect mark to rows"],
     "DensityData": ["kernel density data", "KDE"],
     "RegressionData": ["fitted values", "regression transform"],
     "WindowData": ["moving window", "rank", "lag"],

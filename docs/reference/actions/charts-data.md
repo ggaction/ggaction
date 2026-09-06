@@ -132,6 +132,17 @@ createData({ id?, values })
 
 Create one immutable named dataset. [Data](../../api/data.md)
 
+## `bindMarkData`
+
+```javascript
+bindMarkData({ target, data })
+```
+
+Atomically connect one independent mark to an existing materialized dataset.
+The action preflights its fields, scales, guides, labels, selections, and
+highlights before it rematerializes every registered consumer.
+[Source and Derived Data](../../api/data/source-and-derived.md#bindmarkdata-target-data)
+
 ## `createScatterPlot`
 
 ```javascript
