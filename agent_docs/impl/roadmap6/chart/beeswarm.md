@@ -1,8 +1,9 @@
 # Roadmap 6 — Beeswarm / point packing
 
-**상태: Approved contract, implementation pending.** Phase 9 A에서 `packPoints`,
-`removePointPacking`, `createBeeswarmPlot`의 경계를 확정했다. 현행 API는 아니며 구현·검증 전까지
-실행 가능한 예제로 주장하지 않는다. 정확한 signature는 [Phase 9 계약](../phase9/CONTRACT.md)이 소유한다.
+**상태: Implemented and verified.** Phase 9 W1에서 `packPoints`,
+`removePointPacking`, `createBeeswarmPlot`을 구현했다. 정확한 signature와 오류 정책은
+[Phase 9 계약](../phase9/CONTRACT.md)이 소유하고, 실행 증거는
+[W1 결과](../phase9/RESULTS_W1_BEESWARM.md)에 기록한다.
 
 ## 목적과 범위
 
@@ -15,10 +16,9 @@ Quantitative 위치를 유지하면서 category slot 안에서 point 간 충돌�
 ## 데이터와 최종 public chain 초안
 
 아래 synthetic rows를 수치 oracle와 최소 visual target의 출발점으로 쓴다.
-A에서 실제 public signature를 확정하고, primitive/public 두 프로그램이 같은 manifest의 values와 dimensions를 사용한다.
+A에서 확정한 public signature를 사용하며 primitive/public 두 프로그램은 같은 manifest의 values와 dimensions를 사용한다.
 
 ~~~javascript
-// Proposed API design — not a Current executable example.
 import { chart } from 'ggaction';
 
 const values = [{ value: 2, category: 'A' }, { value: 2, category: 'A' }, { value: 2.01, category: 'A' }, { value: 3, category: 'A' }];
@@ -40,7 +40,7 @@ Id/data/coordinate의 생략은 공통 current/unique 규칙을 따른다. 같�
 | Position | Measure coordinate는 고정하고 categorical/orthogonal displacement만 허용한다. | 원래 데이터 값을 움직이지 않는다. |
 | Bounds | Radius뿐 아니라 실제 shape·stroke bounds와 slot padding을 고려한다. | Circle-only 거리 기준을 모든 glyph에 적용하지 않는다. |
 | Determinism | Stable row/item identity와 명시적 tie-break를 사용한다. | 랜덤 실행마다 다른 배치를 만들지 않는다. |
-| Overflow | Feasible collision-free와 infeasible 결과를 구분한다. Error 또는 structured best-effort mode는 A에서 선택한다. | 겹친 결과를 성공처럼 숨기지 않는다. |
+| Overflow | Feasible collision-free와 infeasible 결과를 구분한다. 기본 `error`와 structured `overlap` mode를 제공한다. | 겹친 결과를 성공처럼 숨기지 않는다. |
 | Lifecycle | Stored policy의 replay와 remove를 제공한다. | Resize마다 displacement가 누적되지 않는다. |
 
 ## 중요한 action hierarchy
@@ -51,7 +51,7 @@ Id/data/coordinate의 생략은 공통 current/unique 규칙을 따른다. 같�
 ~~~text
 createBeeswarmPlot
 ├─ createStripPlot (base semantic positions)
-├─ packPoints (proposed stored layout owner)
+├─ packPoints (stored layout owner)
 │  ├─ actual glyph bounds + category slot constraints
 │  ├─ deterministic packing grammar
 │  └─ editGraphics (concrete displacement)
@@ -70,7 +70,7 @@ Facade가 child의 inference·validation·aggregation·geometry를 복제해서�
 **Config/context/trace:** Persistent style·layout policy는 해당 config owner에, 분석 의미와 resource relation은
 semantic owner에 둔다. Context는 다음 호출의 convenience만 저장하며 새 canonical state로 사용하지 않는다.
 Trace에는 실제 child 호출을 보존하되 큰 derived values 배열을 반복 복제하지 않는다.
-새 schema의 정확한 경로는 A Gate에서 architecture와 함께 결정한다.
+Packing policy와 resolution은 `materializationConfigs.pointPacking[layerId]`에 저장한다.
 
 ## 아래층 편집과 lifecycle
 

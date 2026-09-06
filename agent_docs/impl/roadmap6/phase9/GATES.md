@@ -42,6 +42,8 @@
 - Review baseline: `ad1e0f41c8c4558fc52e78d1e33d6c9b55877716`
 - 계약: [CONTRACT.md](CONTRACT.md)
 - 사용자 승인 근거: [APPROVAL.md](../APPROVAL.md)의 전체 A/V/X와 release 승인.
-- 남은 작업: W1, W2 구현과 X 검증.
+- W1 source/remote ref: `c818f8f407288c18c288e31492f66b261444c6b6`
+- W1 evidence: [RESULTS_W1_BEESWARM.md](RESULTS_W1_BEESWARM.md)
+- 남은 작업: W2 구현과 X 검증.
 
 실행 시 실제 증거를 채운다. 문서 작성 날짜나 이전 로드맵 승인을 이 Gate의 승인으로 재사용하지 않는다.

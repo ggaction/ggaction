@@ -4,7 +4,7 @@
 
 - [x] A Gate의 정확한 결정·호환성·검증 범위 확정 — [계약](CONTRACT.md)
 - [x] 전체 실행 사용자 승인과 기준 ref 기록
-- [ ] R6-P9-W1 Point packing과 Beeswarm
+- [x] R6-P9-W1 Point packing과 Beeswarm — [결과](RESULTS_W1_BEESWARM.md)
 - [ ] R6-P9-W2 Raincloud composite
 - [ ] 모든 시각 variant의 primitive target 작성·표시·V 승인
 - [ ] 승인된 variant의 public 구현과 같은 실행의 primitive/public render 비교
