@@ -2372,7 +2372,7 @@
       "layer": "user-facing",
       "domain": "encodings",
       "summary": "Create or compatibly replace an x encoding for the supported mark/type pairs in the matrix above.",
-      "signature": "encodeX(options: PositionEncodingOptions | RulePositionEncodingOptions): ChartProgram;",
+      "signature": "encodeX(options: PositionEncodingOptions | DatumPositionEncodingOptions): ChartProgram;",
       "intents": [
         "encode x",
         "encode",
@@ -2462,7 +2462,7 @@
       "layer": "user-facing",
       "domain": "encodings",
       "summary": "Create or compatibly replace a y encoding.",
-      "signature": "encodeY(options: YPositionEncodingOptions | RulePositionEncodingOptions): ChartProgram;",
+      "signature": "encodeY(options: YPositionEncodingOptions | DatumPositionEncodingOptions): ChartProgram;",
       "intents": [
         "encode y",
         "encode",

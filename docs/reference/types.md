@@ -60,8 +60,8 @@ interface ChartProgramActions {
   layoutLabels(options?: LabelLayoutOptions): ChartProgram;
   removeLabelLayout(options?: RemoveLabelLayoutOptions): ChartProgram;
   editAreaMark(options: { target?: string; fill?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }): ChartProgram;
-  encodeX(options: PositionEncodingOptions | RulePositionEncodingOptions): ChartProgram;
-  encodeY(options: YPositionEncodingOptions | RulePositionEncodingOptions): ChartProgram;
+  encodeX(options: PositionEncodingOptions | DatumPositionEncodingOptions): ChartProgram;
+  encodeY(options: YPositionEncodingOptions | DatumPositionEncodingOptions): ChartProgram;
   encodeTheta(options: ThetaEncodingOptions): ChartProgram;
   encodeR(options: RadialEncodingOptions): ChartProgram;
   encodeX2(options: SecondaryPositionEncodingOptions): ChartProgram;

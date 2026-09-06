@@ -1,6 +1,8 @@
 import { resolveBarChannels } from "../grammar/bars/policy.js";
 import { resolveMarkLabelValues } from "../grammar/markLabels.js";
 import { formatTextValue } from "../grammar/text.js";
+import { normalizePositionDatum } from "../grammar/positionDatum.js";
+import { mapOrdinalPositionValues } from "../grammar/scales/index.js";
 import { findDataset } from "../selectors/datasets.js";
 import { findLayer } from "../selectors/layers.js";
 import { resolveMarkItems } from "./selection/policies/index.js";
@@ -150,10 +152,41 @@ function resolveRowTextItems(program, layer, config) {
   if (dataset === undefined) {
     throw new Error(`Text mark "${layer.id}" requires an existing dataset.`);
   }
-  const x = resolveRowEncodingValues(program, layer, dataset, "x");
-  const y = resolveRowEncodingValues(program, layer, dataset, "y");
+  const encodings = [layer.encoding?.x, layer.encoding?.y, layer.encoding?.text];
+  const length = encodings.some(encoding => encoding !== undefined && Object.hasOwn(encoding, "field"))
+    ? dataset.values.length
+    : 1;
+  const positionValues = channel => {
+    const encoding = layer.encoding?.[channel];
+    if (encoding === undefined) return undefined;
+    if (Object.hasOwn(encoding, "field")) {
+      return resolveRowEncodingValues(program, layer, dataset, channel);
+    }
+    const scale = program.resolvedScales[encoding.scale];
+    if (scale === undefined) {
+      throw new Error(
+        `text mark "${layer.id}" requires resolved ${channel} scale "${encoding.scale}".`
+      );
+    }
+    const datum = normalizePositionDatum(
+      encoding.datum,
+      encoding.fieldType,
+      channel,
+      encoding.temporalUnit,
+      "Text"
+    );
+    const mapped = ["nominal", "ordinal"].includes(encoding.fieldType)
+      ? mapOrdinalPositionValues([datum], scale)
+      : mapScaleConsumerValues([datum], scale, channel);
+    return Array.from({ length }, () => mapped[0]);
+  };
+  const x = positionValues("x");
+  const y = positionValues("y");
   if (x === undefined || y === undefined) return [];
-  return dataset.values.flatMap((row, index) => {
+  const rows = length === 1 && dataset.values.length === 0
+    ? [undefined]
+    : dataset.values.slice(0, length);
+  return rows.flatMap((row, index) => {
     const concrete = concreteItem(
       config,
       { x: x[index], y: y[index] },

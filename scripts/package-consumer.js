@@ -951,6 +951,14 @@ async function testNodeConsumer(directory) {
     assert.deepEqual(sourceTextScale.resolvedScales["next-y"].domain, [100, 1000]);
     assert.equal(sourceTextScale.semanticSpec.guides.axis.y.scale, "next-y");
     assert.throws(() => sourceTextScale.encodeY({ target: "text", field: "y" }), /source-owned Text positions/);
+    const textDatum = chart().createCanvas({ width: 480, height: 320, margin: 40 })
+      .createData({ values: [] })
+      .createTextMark({ id: "note", data: "data", text: "Peak · 9.0", dx: 8, dy: -16 })
+      .encodeX({ target: "note", datum: 8, scale: { domain: [0, 10] } })
+      .encodeY({ target: "note", datum: 9, scale: { domain: [0, 10] } });
+    assert.deepEqual(textDatum.graphicSpec.objects.note.items.map(item =>
+      [item.properties.x, item.properties.y, item.properties.text]), [[368, 48, "Peak · 9.0"]]);
+    assert.equal(textDatum.editCanvas({ width: 580 }).graphicSpec.objects.note.items[0].properties.x, 448);
     const referenceFacades = chart().createCanvas({ width: 480, height: 320, margin: 40 })
       .createData({ values: [] }).createReferenceBand({ space: "plot", x: [0.2, 0.6] })
       .createReferenceLine({ space: "plot", y: 0.5 });
@@ -2219,6 +2227,7 @@ async function testTypeScriptConsumer(directory) {
 
     chart().createRectMark().encodeX({ datum: 2 }).encodeX2({ datum: 6 });
     chart().createRectMark().encodeY({ datum: "2020-01-01", fieldType: "temporal" }).encodeY2({ datum: "2020-01-03" });
+    chart().createTextMark({ data: "data", text: "note" }).encodeX({ datum: 8 }).encodeY({ datum: "B", fieldType: "nominal" });
     chart().createReferenceLine({ y: 5 });
     chart().createReferenceBand({ space: "plot", x: [0.2, 0.6] });
     // @ts-expect-error Plot reference coordinates are numeric.

@@ -249,6 +249,7 @@ export type {
   TextEncodingOptions,
   TextFormat,
   TextMarkOptions,
+  DatumPositionEncodingOptions,
   CreateMarkLabelsOptions,
   CreateReferenceLineOptions,
   CreateReferenceBandOptions,

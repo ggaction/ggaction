@@ -1243,7 +1243,7 @@ type InferredRuleDatumPositionEncodingOptions = {
     | NonPointCategoricalPositionScaleOptions;
 };
 
-export type RulePositionEncodingOptions =
+export type DatumPositionEncodingOptions =
   | InferredRuleDatumPositionEncodingOptions
   | RulePositionEncodingBase & (
     | {
@@ -1260,6 +1260,9 @@ export type RulePositionEncodingOptions =
         scale?: NonPointCategoricalPositionScaleOptions;
       }
     );
+
+/** Constant primary position accepted by Rule, Rect, Area, and independent Text policies. */
+export type RulePositionEncodingOptions = DatumPositionEncodingOptions;
 
 type TemporalBindingBranch =
   | { fieldType?: "quantitative"; temporalUnit?: never }
@@ -3045,8 +3048,8 @@ export class ChartProgram {
     missing?: "error" | "break";
   }): ChartProgram;
 
-  encodeX(options: PositionEncodingOptions | RulePositionEncodingOptions): ChartProgram;
-  encodeY(options: YPositionEncodingOptions | RulePositionEncodingOptions): ChartProgram;
+  encodeX(options: PositionEncodingOptions | DatumPositionEncodingOptions): ChartProgram;
+  encodeY(options: YPositionEncodingOptions | DatumPositionEncodingOptions): ChartProgram;
   encodeTheta(options: ThetaEncodingOptions): ChartProgram;
   encodeR(options: RadialEncodingOptions): ChartProgram;
   encodeX2(options: SecondaryPositionEncodingOptions): ChartProgram;

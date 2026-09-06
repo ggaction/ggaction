@@ -112,7 +112,7 @@ export function resolvePositionEncoding(program, channel, args, operation) {
   validateCoordinateFamily(layer, channel, operation);
   const hasField = Object.hasOwn(args, "field");
   const hasDatum = Object.hasOwn(args, "datum");
-  if (["rule", "rect"].includes(layer.mark.type)) {
+  if (["rule", "rect", "text"].includes(layer.mark.type)) {
     if (hasField === hasDatum) {
       throw new Error(`${operation} requires exactly one of field or datum for a ${layer.mark.type} mark.`);
     }
@@ -134,7 +134,7 @@ export function resolvePositionEncoding(program, channel, args, operation) {
     : undefined;
   const countRadius = mapping !== undefined && (args.aggregate ?? previous?.aggregate) === "count";
   const requestedFieldType = args.fieldType ?? previous?.fieldType ?? (
-    ["rule", "rect"].includes(layer.mark.type) && hasDatum
+    ["rule", "rect", "text"].includes(layer.mark.type) && hasDatum
       ? inferDatumFieldType(args.datum, operation)
       : layer.mark.type === "arc" && channel === "theta" &&
           ["count", "sum"].includes(args.aggregate)
@@ -151,7 +151,7 @@ export function resolvePositionEncoding(program, channel, args, operation) {
     : args.field;
   const datum = args.datum;
   const temporalUnit = resolveTemporalUnit({ ...args, ...(hasDatum ? {} : { field }) }, fieldType, previous);
-  const usesField = !countRadius && (!["rule", "area", "rect"].includes(layer.mark.type) || hasField);
+  const usesField = !countRadius && (!["rule", "area", "rect", "text"].includes(layer.mark.type) || hasField);
   if (usesField && (typeof field !== "string" || field.length === 0)) {
     throw new TypeError(`${operation} field must be a non-empty string.`);
   }
@@ -252,8 +252,9 @@ export function resolvePositionEncoding(program, channel, args, operation) {
   }
   if (layer.mark.type === "area" && fieldType === "quantitative") {
     readAreaEndpoint(dataset.values, { ...(hasDatum ? { datum } : { field }), fieldType }, layer.mark.missing);
-  } else if (["rule", "rect"].includes(layer.mark.type) && hasDatum) {
-    normalizePositionDatum(datum, fieldType, channel, temporalUnit, layer.mark.type === "rule" ? "Rule" : "Rect");
+  } else if (["rule", "rect", "text"].includes(layer.mark.type) && hasDatum) {
+    const mark = layer.mark.type[0].toUpperCase() + layer.mark.type.slice(1);
+    normalizePositionDatum(datum, fieldType, channel, temporalUnit, mark);
   } else if (countRadius) {
     // Count has no source measure field. Category-grain validation runs once theta exists.
   } else if (aggregateOutput) {

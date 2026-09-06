@@ -1,5 +1,6 @@
 import { readAreaEndpoint } from "../../../grammar/areaEndpoints.js";
 import { normalizeRuleDatum } from "../../../grammar/rules.js";
+import { normalizePositionDatum } from "../../../grammar/positionDatum.js";
 import {
   findScale,
   isDirectCategoricalConsumer,
@@ -22,6 +23,15 @@ export function resolveConsumerValues(program, consumer) {
     if (consumer.layer.mark.type === "area") {
       readAreaEndpoint(dataset.values, consumer.encoding, consumer.layer.mark.missing);
       return [consumer.encoding.datum];
+    }
+    if (consumer.layer.mark.type === "text") {
+      return [normalizePositionDatum(
+        consumer.encoding.datum,
+        consumer.encoding.fieldType,
+        consumer.channel,
+        consumer.encoding.temporalUnit,
+        "Text"
+      )];
     }
     return [normalizeRuleDatum(
       consumer.encoding.datum,

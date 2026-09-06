@@ -854,7 +854,8 @@ or unique compatible point, bar, rect, rule, or arc layer. Arc text anchors at
 sector centers. `text` is constant-content shorthand. Source-owned text follows final source positions and never
 contributes independent scale-domain values. Source field or scale changes also drive its labels and guides.
 Direct `encodeX/Y` on attached Text is rejected: edit the source, use `editTextMark({ dx, dy })`, or create
-independent Text with explicit `data` to author its positions.
+independent Text with explicit `data` to author its positions. Independent Text accepts field or datum positions;
+all-constant x/y/text produces one item, while any field-bound encoding uses row grain.
 [Text marks](../api/marks/text.md)
 
 ### `editTextMark`
@@ -892,8 +893,8 @@ semantic base positions. [Text marks](../api/marks/text.md)
 <!-- action-capabilities:position:start -->
 | Action | Supported marks | Field types | Important modes |
 | --- | --- | --- | --- |
-| `encodeX` | point, line, area, bar, rect, rule, tick, text | point/bar/rect/rule/tick/text: quantitative, temporal, ordinal, nominal; line/area: quantitative, temporal | field; rule, area, and rect also accept datum; bar accepts aggregate or bin |
-| `encodeY` | point, line, area, bar, rect, rule, tick, text | point/line/bar/rect/rule/tick/text: quantitative, temporal, ordinal, nominal; area: quantitative, temporal | field; rule, area, and rect also accept datum; bar accepts aggregate or count |
+| `encodeX` | point, line, area, bar, rect, rule, tick, text | point/bar/rect/rule/tick/text: quantitative, temporal, ordinal, nominal; line/area: quantitative, temporal | field; rule, area, rect, and independent text also accept datum; bar accepts aggregate or bin |
+| `encodeY` | point, line, area, bar, rect, rule, tick, text | point/line/bar/rect/rule/tick/text: quantitative, temporal, ordinal, nominal; area: quantitative, temporal | field; rule, area, rect, and independent text also accept datum; bar accepts aggregate or count |
 | `encodeX2` / `encodeY2` | area, ranged bar, rect, rule | area/ranged bar/rect/rule: matching primary | secondary field; rule, area, and rect also accept datum |
 | `encodeTheta` | point, line, arc | point/line: quantitative, temporal, ordinal, nominal; arc: quantitative, ordinal, nominal | arc maps direct quantitative values, category counts, or category-weighted sums to proportional sectors |
 | `encodeR` | point, line, arc | point/line/arc: quantitative | radial position; arc combines it with a categorical theta band |
@@ -910,22 +911,23 @@ binding clears it. Domains and tick values are already normalized timestamps.
 
 ```javascript
 encodeX({ field, target?, fieldType?, aggregate?, stack?, coordinate?, bin?, scale? })
-encodeX({ datum, target?, fieldType?, coordinate?, scale? }) // rule
+encodeX({ datum, target?, fieldType?, coordinate?, scale? }) // rule, rect, area, independent text
 ```
 
 Create or compatibly replace an x encoding for the supported mark/type pairs in
 the matrix above. Rects accept a discrete x band or the primary x edge of a
 complete x/x2 range. Bars accept binned x, vertical categories, or a horizontal
-aggregate measure. Rules accept exactly one field or datum. Datum rules infer
+aggregate measure. Rules, Rects, and independent Text accept exactly one field or datum. Datum positions infer
 finite numbers as quantitative and other supported scalars as nominal; field
-rules require an explicit field type.
+rules require an explicit field type. All-constant independent Text materializes
+once; any field-bound x, y, or text encoding selects row grain.
 [Position encodings](../api/position-encodings.md)
 
 ### `encodeY`
 
 ```javascript
 encodeY({ field?, target?, fieldType?, aggregate?, stack?, coordinate?, scale? })
-encodeY({ datum, target?, fieldType?, coordinate?, scale? }) // rule
+encodeY({ datum, target?, fieldType?, coordinate?, scale? }) // rule, rect, area, independent text
 ```
 
 Create or compatibly replace a y encoding. With bar marks, a quantitative y
@@ -936,7 +938,8 @@ from the complete pair and is not stored separately. Bar stack accepts
 Aggregate values may be scalar names or parameterized quantile
 and ordered first/last objects. A complete histogram x/y pair materializes concrete rects.
 Rects accept a discrete y band or the primary y edge of a complete y/y2 range.
-Rules use the same datum inference and explicit field-mode type contract as x.
+Rules, Rects, and independent Text use the same datum inference as x. Attached
+source-owned Text continues to reject direct position replacement.
 [Position encodings](../api/position-encodings.md)
 
 ### `encodeY2`

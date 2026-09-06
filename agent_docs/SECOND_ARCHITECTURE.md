@@ -247,7 +247,7 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Gzip ceiling |
 | --- | ---: |
-| `ggaction` | 257,000 bytes |
+| `ggaction` | 258,000 bytes |
 | `ggaction/basic` | 141,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 
@@ -1665,6 +1665,9 @@ Canvas/detach plan, guide inference/rebinding과 orphan cleanup이 공유한다.
 provenance로 보존하지만 실제 source만 domain 값을 제공한다. 직접 attached Text position encoding은 사전 거부하고
 source 편집 또는 dx/dy를 사용한다. Position scale refresh는 attached text를 유예하며 source geometry 완료 뒤
 source-dependent plan이 실행한다. Explicit-data independent Text는 기존 scale consumer다.
+Independent Text의 x/y는 field와 shared position datum을 모두 받는다. x/y/text 중 field가 하나라도 있으면
+dataset row grain이며 상수 위치를 broadcast하고, 모두 상수면 빈 데이터에서도 한 항목이다. 이 규칙은
+임시 singleton dataset이나 annotation 전용 semantic schema 없이 일반 Text materializer가 소유한다.
 Position encoding과 coordinate도 새 text layer에 명시적으로 복사하지만 concrete anchor는 source의 final
 visual item grain에서 결정한다. 따라서 aggregate bar는 source row가 아니라 final bar마다 하나의 label을
 만들고 rect는 cell center, rule은 final endpoint에 붙는다. Rect source에서 text fill을 생략하면 realized cell

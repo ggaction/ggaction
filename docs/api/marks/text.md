@@ -72,6 +72,13 @@ labels anchor at cell centers, and arc labels anchor at sector centers. Pass
 `data` explicitly to assemble an independent text layer with `encodeX` and
 `encodeY`.
 
+Independent Text accepts either a field or a constant `datum` on each position.
+When x, y, and text are all constants, it creates exactly one label even if the
+selected dataset is empty or has many rows. If any of them uses a field, constants
+are repeated at that field's row grain. Datum positions use the same quantitative,
+temporal, and nominal scale rules as other Cartesian marks and contribute to
+automatic domains.
+
 Use `source` to select a particular mark when a chart has several layers:
 
 ```javascript

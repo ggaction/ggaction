@@ -32,6 +32,7 @@ test.before(async () => {
     <canvas id="bottom-legend" aria-label="Explicit bottom legend layout"></canvas>
     <canvas id="legend-content" aria-label="Explicit color and size legend content"></canvas>
     <canvas id="source-text-scale" aria-label="Labels follow updated source scale"></canvas>
+    <canvas id="text-datum" aria-label="Constant text in data coordinates"></canvas>
     <canvas id="reference-facades" aria-label="Reference line and shaded plot interval"></canvas>
     <canvas id="reference-rect" aria-label="Constant interval shading"></canvas>
     <canvas id="semantic-labels" aria-label="Pie shares from final source items"></canvas>
@@ -398,6 +399,12 @@ test.before(async () => {
         .encodeY({ target: "point", field: "next", scale: { id: "next-y" } }).createAxes().createGrid()
         .editCanvas({ width: 600 });
       render(sourceTextScale, document.getElementById("source-text-scale").getContext("2d"));
+      const textDatum = chart().createCanvas({ width: 480, height: 320, margin: 40 })
+        .createData({ values: [] })
+        .createTextMark({ id: "note", data: "data", text: "Peak · 9.0", dx: 8, dy: -16 })
+        .encodeX({ target: "note", datum: 8, scale: { domain: [0, 10] } })
+        .encodeY({ target: "note", datum: 9, scale: { domain: [0, 10] } });
+      render(textDatum, document.getElementById("text-datum").getContext("2d"));
       const referenceFacades = chart().createCanvas({ width: 480, height: 320, margin: 40 })
         .createData({ values: [] }).createReferenceBand({ space: "plot", x: [0.2, 0.6] })
         .createReferenceLine({ space: "plot", y: 0.5 });
@@ -422,6 +429,9 @@ test.before(async () => {
         sourceTextDomain: sourceTextScale.resolvedScales["next-y"].domain,
         sourceTextPositions: sourceTextScale.graphicSpec.objects.text.items.map(i => i.properties.y),
         sourceTextSVG: renderToSVG(sourceTextScale).includes("label"),
+        textDatum: [textDatum.graphicSpec.objects.note.items[0].properties.x,
+          textDatum.graphicSpec.objects.note.items[0].properties.y,
+          renderToSVG(textDatum).includes("Peak · 9.0")],
         referenceFacades: [referenceFacades.graphicSpec.objects.referenceBand.items[0].properties.width,
           referenceFacades.graphicSpec.objects.referenceLine.items[0].properties.y1,
           renderToSVG(referenceFacades).includes("#64748b")],
@@ -582,6 +592,7 @@ test("imports and renders the packed browser entries", async () => {
     sourceTextDomain: [100, 1000],
     sourceTextPositions: [260, 60],
     sourceTextSVG: true,
+    textDatum: [368, 48, true],
     referenceFacades: [160, 160, true],
     temporalRectCount: 1,
     referenceRect: 160,

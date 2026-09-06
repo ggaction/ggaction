@@ -49,7 +49,7 @@
           "nominal"
         ]
       },
-      "modes": "field; rule, area, and rect also accept datum; bar accepts aggregate or bin"
+      "modes": "field; rule, area, rect, and independent text also accept datum; bar accepts aggregate or bin"
     },
     {
       "action": "encodeY",
@@ -101,7 +101,7 @@
           "nominal"
         ]
       },
-      "modes": "field; rule, area, and rect also accept datum; bar accepts aggregate or count"
+      "modes": "field; rule, area, rect, and independent text also accept datum; bar accepts aggregate or count"
     },
     {
       "action": "encodeX2 / encodeY2",

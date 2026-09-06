@@ -82,7 +82,9 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
 ## `encodeX`
 
 Source-owned Text는 독립 position consumer가 아니므로 encodeX/Y를 직접 적용하면 사전 오류다.
-Source 위치를 편집하거나 editTextMark의 dx/dy를 사용한다. Explicit data로 만든 independent Text는 기존 위치 encoding을 지원한다.
+Source 위치를 편집하거나 editTextMark의 dx/dy를 사용한다. Explicit data로 만든 independent Text는 field 또는 datum 위치 encoding을 지원한다.
+Independent Text의 x/y와 text가 모두 상수면 dataset 행 수나 빈 dataset과 무관하게 하나의 항목을 만든다. 어느 하나라도
+field이면 dataset row grain을 사용하고 상수 위치를 각 행에 broadcast한다.
 Source-owned Text의 inherited aliases는 domain, guide inference/rebinding, scale/Canvas dependency에서 제외한다.
 근거: `test/unit/actions/marks/text-scale-ownership.test.js`, `test/contracts/source-text-scale.test.js`.
 
@@ -119,7 +121,7 @@ Source-owned Text의 inherited aliases는 domain, guide inference/rebinding, sca
 - Layered rule datum: inherited position provenance가 있는 rule에 datum x를 작성하면 secondary endpoint가
   없는 경우 inherited y branch만 제거해 vertical full-span을 만든다. Explicit data나 field x는 이 정리를
   적용하지 않는다.
-- Rule/Rect datum inference: finite number datum은 quantitative, 다른 supported scalar datum은 nominal로 추론한다.
+- Rule/Rect/independent Text datum inference: finite number datum은 quantitative, 다른 supported scalar datum은 nominal로 추론한다.
   Temporal 또는 ambiguous datum은 `fieldType`을 명시해야 하며 rule field mode는 계속 explicit `fieldType`을 요구한다. Rect field mode는 기존 기본값을 유지한다.
 - Reassignment: 같은 target에 다시 호출하면 compatible field와 scale binding을 교체한다. scale ID를
   생략하면 현재 x scale을 재사용하고, explicit new ID는 이전 scale을 남긴 채 axis/vertical grid를
@@ -132,14 +134,14 @@ Source-owned Text의 inherited aliases는 domain, guide inference/rebinding, sca
 - Implemented: `encodeX({ field: FieldName; target?: UserId; fieldType?: "quantitative" | "temporal" | "ordinal"; scale?: PositionScale; coordinate?: UserId; aggregate?: AggregateOperation; bin?: BinDefinition; stack?: "zero" | "normalize" | null })`; 실제 조합은 canonical matrix와 mark grain policy가 제한한다.
 - Implemented quantitative extension: `{ scale?: { type?: "log" | "pow" | "sqrt" | "symlog"; base?: PositiveFiniteExceptOne; exponent?: PositiveFinite; constant?: PositiveFinite; clamp?: boolean; reverse?: boolean } }` for compatible point, line, area, bar and rule materializers.
 - Implemented point fallback: `{ scale?: { unknown?: Finite } }`; temporal `time` remains UTC-only.
-- Implemented Rule/Rect datum shorthand: `encodeX({ datum, target?, fieldType?, scale?, coordinate? })`; omitted
+- Implemented Rule/Rect/independent Text datum shorthand: `encodeX({ datum, target?, fieldType?, scale?, coordinate? })`; omitted
   `fieldType` infers finite numbers as quantitative and other supported scalars as nominal.
 - Proposed (NOT IMPLEMENTED): Polar positional action.
 
 ### Value coverage — `encodeX`
 
 - `field`, `target`
-  - ✅ Covered: inferred/explicit point, line, bar, rect, area targets; missing field, ambiguous/invalid target.
+  - ✅ Covered: inferred/explicit point, line, bar, rect, area and independent text targets; missing field, ambiguous/invalid target.
 - `fieldType`
   - ✅ Covered: point quantitative/temporal/ordinal, line/area current matrix, vertical ordinal/temporal bar,
     horizontal ordinal/temporal bar와 unsupported pair rejection.
@@ -253,6 +255,8 @@ type AggregateOperation =
 - Implemented: `encodeY({ field?: FieldName; target?: UserId; fieldType?: "quantitative" | "temporal" | "ordinal" | "nominal"; scale?: PositionScale; coordinate?: UserId; aggregate?: AggregateOperation; stack?: "zero" | "normalize" | "center" | null })`; `"center"`는 aligned non-negative grouped area y 전용이고, nominal은 compatible count-style aggregate에만 허용되며 mark/pair policy가 조합을 제한한다.
 - Implemented quantitative extension: `{ scale?: { type?: "log" | "pow" | "sqrt" | "symlog"; base?: PositiveFiniteExceptOne; exponent?: PositiveFinite; constant?: PositiveFinite; clamp?: boolean; reverse?: boolean } }` for compatible point, line, area, bar and rule materializers.
 - Implemented point fallback: `{ scale?: { unknown?: Finite } }`; temporal `time` remains UTC-only.
+- Implemented Rule/Rect/independent Text datum shorthand: `encodeY({ datum, target?, fieldType?, scale?, coordinate? })`;
+  independent Text uses one item when x/y/text are all constant and row grain when any is field-bound.
 - Proposed (NOT IMPLEMENTED): full-item extreme selection은 Planned `selectMarks`가 소유한다.
 
 ### Value coverage — `encodeY`

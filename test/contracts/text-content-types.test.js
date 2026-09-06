@@ -16,7 +16,7 @@ test("text content and precision types match their runtime vocabularies", async 
     const paddedCalls = [...Array(10).keys()].flatMap(precision => ["f", "%"].map(suffix =>
       `p.encodeText({ value: 0.125, format: ".0${precision}${suffix}" });`));
     await writeFile(file, `
-import type { ChartProgram, TextEncodingOptions, CreateMarkLabelsOptions, CreateReferenceLineOptions, CreateReferenceBandOptions } from ${JSON.stringify(path.join(root, "types/index.js"))};
+import type { ChartProgram, TextEncodingOptions, DatumPositionEncodingOptions, CreateMarkLabelsOptions, CreateReferenceLineOptions, CreateReferenceBandOptions } from ${JSON.stringify(path.join(root, "types/index.js"))};
 declare const p: ChartProgram;
 const shared: TextEncodingOptions = { content: "share", normalizeBy: "category", format: ".1%" };
 p.encodeText(shared);
@@ -28,6 +28,8 @@ const referenceBand: CreateReferenceBandOptions = { space: "plot", x: [0.2, 0.6]
 p.createReferenceLine(referenceLine);
 p.createReferenceBand(referenceBand);
 p.createReferenceLine({ x: "2021-01-01", temporalUnit: "timestamp" });
+const textDatum: DatumPositionEncodingOptions = { datum: 8, scale: { domain: [0, 10] } };
+p.createTextMark({ data: "data", text: "note" }).encodeX(textDatum).encodeY({ datum: "B", fieldType: "nominal" });
 // @ts-expect-error Exactly one position is required.
 p.createReferenceLine({});
 // @ts-expect-error Axes are exclusive.

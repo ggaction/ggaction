@@ -728,6 +728,10 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
   Canvas/detach plans and guide inference/rebinding ignore inherited label aliases and follow the actual source instead.
   Count, normalized and histogram domains therefore remain unchanged by labels. Position scale refresh defers attached
   labels until source geometry completes. Independent Text retains its own scale values and shared-guide constraints.
+- Independent Text created with explicit data accepts field or datum on each x/y encoding. When x, y, and text are
+  all constants, it materializes exactly one text item even for an empty or multi-row dataset. If any of those three
+  encodings is field-bound, constant positions broadcast across that row grain. Datum values are normalized by the
+  shared quantitative/temporal/nominal position grammar and participate in automatic scale domains.
 - Collision avoidance is not automatic. Authors may preserve explicit placement or assign it afterward with
   `layoutLabels()`.
 
@@ -739,9 +743,10 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 ### Value coverage — `createTextMark`
 
 - ✅ Covered: deterministic ID, explicit/inferred data, point/bar/rule/arc source inference, incomplete creation, constant
-  content shorthand, explicit typography, offsets, ambiguity and invalid options.
+  content shorthand, independent field/datum position grain, explicit typography, offsets, ambiguity and invalid options.
 - Evidence: `test/unit/actions/marks/text-mark.test.js`, `test/unit/actions/marks/text-source.test.js`, `test/unit/actions/marks/text-scale-ownership.test.js`,
-  `test/contracts/source-text-scale.test.js`, installed package runtime/type probes, and the annotated IMDb chart pair.
+  `test/unit/actions/marks/text-datum-position.test.js`, `test/contracts/source-text-scale.test.js`,
+  `test/contracts/text-datum-position.test.js`, installed package runtime/type probes, and the annotated IMDb chart pair.
 
 ## `editTextMark`
 

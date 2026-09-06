@@ -42,7 +42,8 @@
 - [x] W3 C1 reference 기반: Rect datum·plot span·temporal selection #113 — [계약](CONTRACT_W3_REFERENCE_RECT.md), [결과](RESULTS_W3_REFERENCE_RECT.md)
 - [x] W3 C2 createReferenceLine/createReferenceBand와 Rule guide #114 — [계약](CONTRACT_W3_REFERENCES.md), [결과](RESULTS_W3_REFERENCES.md)
 - [x] W3 annotation 선행 source-owned Text scale/domain/guide ownership #115 — [계약](CONTRACT_W3_TEXT_SCALE_OWNERSHIP.md), [결과](RESULTS_W3_TEXT_SCALE_OWNERSHIP.md)
-- [ ] W3 후속 Text datum 좌표와 annotation/common format
+- [x] W3 annotation 기반 independent Text datum 좌표 — [계약](CONTRACT_W3_TEXT_DATUM.md), [결과](RESULTS_W3_TEXT_DATUM.md)
+- [ ] W3 후속 createAnnotation과 common format/rotation
 - [ ] R6-P5-W4 Program theme와 local override
 - [ ] R6-P5-W5 Opt-in fitting과 guide label layout
 - [ ] 모든 시각 variant의 primitive target 작성·표시·V 승인
