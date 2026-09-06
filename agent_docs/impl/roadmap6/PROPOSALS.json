@@ -783,7 +783,7 @@
     {
       "id": 5,
       "title": "Guides labels and appearance",
-      "status": "in-progress",
+      "status": "completed",
       "dependencies": [
         3,
         4
@@ -850,10 +850,11 @@
           "acceptance": "긴 title/legend/axis label 사례에서 bounds와 최소 plot을 만족하거나 explicit overflow. 반복 호출 수렴, 무한 layout loop 없음."
         }
       ],
-      "activity": "W1-A1-A2-verified-Parallel-lifecycle-next",
+      "activity": "W1-W5-verified-phase-complete",
       "baselineEvidence": "phase5/baseline-results.json",
       "executionApproval": "APPROVAL.md",
-      "partialEvidence": "phase5/RESULTS_W1_OPTIONAL.md"
+      "partialEvidence": "phase5/RESULTS_W1_OPTIONAL.md",
+      "completionEvidence": "phase5/REVIEW.md"
     },
     {
       "id": 6,
@@ -1436,7 +1437,7 @@
       "id": "D07",
       "title": "Cartesian/Polar/Parallel 축 lifecycle 공백",
       "kind": "design-issue",
-      "status": "proposed",
+      "status": "implemented-verified",
       "primaryPhase": 5,
       "primaryWorkPackage": "R6-P5-W1",
       "relatedWorkPackages": [
@@ -1449,13 +1450,13 @@
       "recommended": "Cartesian/Polar/Parallel component create/edit/remove/recreate matrix를 완성한다. Polar focused 생성의 공개 경계를 정리하고 dimension-key 기반 editParallelAxis를 설계한다.",
       "acceptance": "title:false→create title→edit→remove→recreate가 public chain으로 가능. Font/format/tick count가 resize·scale edit 뒤 유지.",
       "evidence": "audit/REPORT.md: D07",
-      "disposition": "implementation-or-explicit-contract-decision-proposed"
+      "disposition": "implemented-verified-phase5"
     },
     {
       "id": "D08",
       "title": "Legend kind별 edge·recipe·편집 차이",
       "kind": "design-issue",
-      "status": "proposed",
+      "status": "implemented-verified",
       "primaryPhase": 5,
       "primaryWorkPackage": "R6-P5-W2",
       "relatedWorkPackages": [
@@ -1468,7 +1469,7 @@
       "recommended": "Standalone/combined size, categorical/continuous/interval/width legend의 edge 지원과 recipe 편집을 공통 layout owner로 연결한다. Legacy bottom mode를 명시한다.",
       "acceptance": "지원하는 각 kind×edge×lifecycle 검증, unsupported 셀 이유 명시. Combined color/shape 일부 제거 뒤 설명과 graphics가 일치.",
       "evidence": "audit/REPORT.md: D08",
-      "disposition": "implementation-or-explicit-contract-decision-proposed"
+      "disposition": "implemented-verified-phase5"
     },
     {
       "id": "D09",
@@ -1556,7 +1557,7 @@
       "id": "D13",
       "title": "Label source·content·format·angle 단위",
       "kind": "design-issue",
-      "status": "proposed",
+      "status": "implemented-verified",
       "primaryPhase": 5,
       "primaryWorkPackage": "R6-P5-W3",
       "relatedWorkPackages": [
@@ -1569,7 +1570,7 @@
       "recommended": "명시적 source mark와 category/aggregate/share content, data/plot anchor reference, annotation을 text/rule/rect owner 위에 제공한다. Axis/legend/text formatter·rotation unit을 정리한다.",
       "acceptance": "집계 Bar/Pie에 final item당 label 하나, percent 분모 검증. Multiple eligible marks에서 explicit source가 작동. Scale/data/filter 후 label과 anchor 수렴.",
       "evidence": "audit/REPORT.md: D13",
-      "disposition": "implementation-or-explicit-contract-decision-proposed"
+      "disposition": "implemented-verified-phase5"
     },
     {
       "id": "D14",
@@ -1638,7 +1639,7 @@
       "id": "D17",
       "title": "Program theme와 명시적 fitting 부재",
       "kind": "design-issue",
-      "status": "proposed",
+      "status": "implemented-verified",
       "primaryPhase": 5,
       "primaryWorkPackage": "R6-P5-W4",
       "relatedWorkPackages": [
@@ -1655,7 +1656,7 @@
       "recommended": "Theme owner를 추가하고 기존 font/color token과 mark·guide default를 연결한다. Explicit local/inherited 구분과 reset을 저장한다.",
       "acceptance": "Light/dark와 override/reset에서 axes·legend·text·Parallel까지 갱신. Theme 변경 전후 statistical values/group/domain/order 동일.",
       "evidence": "audit/REPORT.md: D17",
-      "disposition": "implementation-or-explicit-contract-decision-proposed"
+      "disposition": "implemented-verified-phase5"
     },
     {
       "id": "D18",
@@ -1984,7 +1985,7 @@
       "id": "F14",
       "title": "Mark labels / reference / annotation",
       "kind": "proposed-family",
-      "status": "proposed",
+      "status": "implemented-verified",
       "primaryPhase": 5,
       "primaryWorkPackage": "R6-P5-W3",
       "relatedWorkPackages": [
@@ -1997,7 +1998,7 @@
       "recommended": "명시적 source mark와 category/aggregate/share content, data/plot anchor reference, annotation을 text/rule/rect owner 위에 제공한다. Axis/legend/text formatter·rotation unit을 정리한다.",
       "acceptance": "집계 Bar/Pie에 final item당 label 하나, percent 분모 검증. Multiple eligible marks에서 explicit source가 작동. Scale/data/filter 후 label과 anchor 수렴.",
       "evidence": "audit/REPORT.md: F14",
-      "disposition": "implementation-or-explicit-contract-decision-proposed"
+      "disposition": "implemented-verified-phase5"
     },
     {
       "id": "F15",
@@ -2049,7 +2050,7 @@
       "id": "F17",
       "title": "Polar component / Parallel axis / guide edit",
       "kind": "proposed-family",
-      "status": "proposed",
+      "status": "implemented-verified",
       "primaryPhase": 5,
       "primaryWorkPackage": "R6-P5-W1",
       "relatedWorkPackages": [
@@ -2062,13 +2063,13 @@
       "recommended": "Cartesian/Polar/Parallel component create/edit/remove/recreate matrix를 완성한다. Polar focused 생성의 공개 경계를 정리하고 dimension-key 기반 editParallelAxis를 설계한다.",
       "acceptance": "title:false→create title→edit→remove→recreate가 public chain으로 가능. Font/format/tick count가 resize·scale edit 뒤 유지.",
       "evidence": "audit/REPORT.md: F17",
-      "disposition": "implementation-or-explicit-contract-decision-proposed"
+      "disposition": "implemented-verified-phase5"
     },
     {
       "id": "F18",
       "title": "Theme / typography / format / fitting",
       "kind": "proposed-family",
-      "status": "proposed",
+      "status": "implemented-verified",
       "primaryPhase": 5,
       "primaryWorkPackage": "R6-P5-W4",
       "relatedWorkPackages": [
@@ -2089,7 +2090,7 @@
       "recommended": "Theme owner를 추가하고 기존 font/color token과 mark·guide default를 연결한다. Explicit local/inherited 구분과 reset을 저장한다.",
       "acceptance": "Light/dark와 override/reset에서 axes·legend·text·Parallel까지 갱신. Theme 변경 전후 statistical values/group/domain/order 동일.",
       "evidence": "audit/REPORT.md: F18",
-      "disposition": "implementation-or-explicit-contract-decision-proposed"
+      "disposition": "implemented-verified-phase5"
     },
     {
       "id": "F19",

@@ -2,7 +2,9 @@
 
 ## 상태와 목표
 
-상태: W1·W2·W3·W4 구현·검증 완료, W5 진행 예정. [W4 Program theme와 local override](RESULTS_W4_THEME.md)는 light/dark lifecycle, 이후 action 자동 수렴, 동일 기본값을 포함한 explicit local 보존, 51개 unit chart 의미 불변성, 170개 render gallery와 canonical package consumer를 검증했다. [W3 A explicit text source와 #110](RESULTS_W3_TEXT_SOURCE.md), [W3 B1 semantic label content와 #111/#112](RESULTS_W3_LABEL_CONTENT.md), [W3 B2 createMarkLabels](RESULTS_W3_MARK_LABELS.md), [W3 C1 Rect datum/span 기반과 #113](RESULTS_W3_REFERENCE_RECT.md), [W3 C2 reference line/band와 #114](RESULTS_W3_REFERENCES.md)을 구현·검증했다. Annotation 선행으로 [source-owned Text scale ownership #115](RESULTS_W3_TEXT_SCALE_OWNERSHIP.md)를 수정하고 [independent Text datum position](RESULTS_W3_TEXT_DATUM.md)을 완성한 뒤 [createAnnotation의 mark/data/plot anchor](RESULTS_W3_ANNOTATION.md)를 구현·검증했다. [공통 value formatter](RESULTS_W3_COMMON_FORMAT.md)를 Axis/Text/continuous legend에 연결하고 [명시적 rotation unit](RESULTS_W3_ROTATION_UNITS.md)을 Text와 Cartesian axis title에 추가했다. [W2 통합 결과](RESULTS_W2_INTEGRATION.md)를 따른다. [전체 실행 승인](../APPROVAL.md)을 적용한다. [Phase 4 X](../phase4/REVIEW.md)와 [52개 현재 동작 재현](BASELINE.md)을 바탕으로 [W1 계약](CONTRACT_W1.md)의 [A1 Polar 생성 8개](RESULTS_W1_CREATE.md)와 [A2 optional component 정렬](RESULTS_W1_OPTIONAL.md)을 구현했다. [A3 Parallel field 축 lifecycle](RESULTS_W1_PARALLEL.md)까지 완료했다. [W2 A standalone size 편집](RESULTS_W2_SIZE.md)도 완료했다. W2 B/C content·edge layout까지 통합 검증했다. W5는 남아 있다.
+상태: W1–W5 구현·검증과 X closeout 완료. [Phase 5 X](REVIEW.md)와
+[W5 fitting 결과](RESULTS_W5_FITTING.md)가 최종 누적 증거를 소유한다. 앞선 W1–W4의
+세부 계약·결과 링크는 아래 작업 묶음과 [STEP1.md](STEP1.md)를 따른다.
 
 완성 chart에서 시작한 사용자가 축·범례·라벨·테마까지 하위 public action으로 내려갈 수 있게 한다.
 

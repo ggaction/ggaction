@@ -73,6 +73,38 @@ test("reports or rejects an unsatisfied minimum plot without partial state", () 
     reported.materializationConfigs.fitting.result.issues[0],
     /^plot width .* is smaller than minPlotWidth 1000$/u
   );
+
+  const bounded = source.fitCanvas({ iterationLimit: 1, overflow: "report" });
+  assert.equal(bounded.materializationConfigs.fitting.result.status, "overflow");
+  assert.ok(bounded.materializationConfigs.fitting.result.issues.some(
+    issue => /reached iterationLimit 1$/u.test(issue)
+  ));
+});
+
+test("fits wrapped titles and long legends while preserving explicit ranges", () => {
+  const source = chart()
+    .createCanvas({ width: 900, height: 700, margin: 220 })
+    .createData({ values: [
+      { x: 1, y: 2, group: "North America Enterprise Accounts" },
+      { x: 2, y: 4, group: "Asia Pacific Consumer Markets" }
+    ] })
+    .createPointMark()
+    .encodeX({ field: "x", scale: { range: [240, 600] } })
+    .encodeY({ field: "y" })
+    .encodeColor({ field: "group" })
+    .createAxes()
+    .createLegend({ position: "right" })
+    .createTitle({
+      text: "A deliberately long quarterly performance title",
+      subtitle: "Wrapped before deterministic Canvas fitting",
+      maxWidth: 320
+    });
+  const fitted = source.fitCanvas({ padding: 8 });
+
+  assert.equal(fitted.materializationConfigs.fitting.result.status, "fit");
+  assert.deepEqual(fitted.resolvedScales.x.range, [240, 600]);
+  assert.ok(fitted.materializationConfigs.canvas.margin.top >= 8);
+  assert.ok(fitted.materializationConfigs.canvas.margin.right >= 8);
 });
 
 test("validates fitting policy and keeps fitCanvas out of Basic", () => {

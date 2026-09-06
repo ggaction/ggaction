@@ -253,8 +253,8 @@ Primary owner는 누락 방지를 위한 책임 단위이며, 관련 작업이 �
 - 근거: audit/REPORT.md: D17. [원래 조사](audit/REPORT.md)
 - 처분: [Phase 5 W4 결과](phase5/RESULTS_W4_THEME.md)로 persistent light/dark
   theme, explicit local 우선순위, 이후 action 수렴, 51개 unit chart 의미 불변성과
-  canonical package consumer를 완료했다. 명시적 fitting은 W5에 남아 있으므로 D17
-  전체는 아직 완료 상태가 아니다.
+  canonical package consumer를 완료했다. [W5 결과](phase5/RESULTS_W5_FITTING.md)에서
+  fixed-Canvas bounded fitting, overflow report와 label layout을 구현·검증해 D17을 닫았다.
 
 ### D18 — Diverging midpoint와 scale/legend 전환
 
@@ -438,7 +438,9 @@ Primary owner는 누락 방지를 위한 책임 단위이며, 관련 작업이 �
 - 수정·추가 방향: Cartesian/Polar/Parallel component create/edit/remove/recreate matrix를 완성한다. Polar focused 생성의 공개 경계를 정리하고 dimension-key 기반 editParallelAxis를 설계한다.
 - 완료 검증: title:false→create title→edit→remove→recreate가 public chain으로 가능. Font/format/tick count가 resize·scale edit 뒤 유지.
 - 근거: audit/REPORT.md: F17. [원래 조사](audit/REPORT.md)
-- 처분: 구현 또는 명시적인 계약 유지·migration 결정의 제안. 아직 완료·승인 상태가 아니다.
+- 처분: [Phase 5 W1](phase5/RESULTS_W1_CREATE.md),
+  [optional component](phase5/RESULTS_W1_OPTIONAL.md),
+  [Parallel lifecycle](phase5/RESULTS_W1_PARALLEL.md) 결과로 implemented-verified.
 
 ### F18 — Theme / typography / format / fitting
 
@@ -447,8 +449,8 @@ Primary owner는 누락 방지를 위한 책임 단위이며, 관련 작업이 �
 - 완료 검증: Light/dark와 override/reset에서 axes·legend·text·Parallel까지 갱신. Theme 변경 전후 statistical values/group/domain/order 동일.
 - 근거: audit/REPORT.md: F18. [원래 조사](audit/REPORT.md)
 - 처분: W3에서 typography format/rotation을 정리했고 [W4 결과](phase5/RESULTS_W4_THEME.md)로
-  theme과 local override를 구현·검증했다. Bounded fitting과 guide label layout은
-  R6-P5-W5에 남아 있으므로 F18 전체는 아직 완료 상태가 아니다.
+  theme과 local override를 구현·검증했다. [W5 결과](phase5/RESULTS_W5_FITTING.md)로
+  bounded fitting과 Cartesian guide label layout을 완료해 F18 전체를 implemented-verified로 닫았다.
 
 ### F19 — Facet grid / repeat / child structure
 

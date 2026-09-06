@@ -1,6 +1,6 @@
 # Roadmap 6 — Hierarchical Chart Authoring and Action Consistency
 
-> **문서 상태 — 현재 실행 계획.** Phase 1–4와 Phase 5 W1–W4를 완료했고 Phase 5 W5 fitting을 진행한다. Program theme의 최종 증거는 [W4 결과](phase5/RESULTS_W4_THEME.md), Area·Rose·Radial Bar와 layoutSeries, theta/legend order, midpoint/legend 전환의 최종 결과는 [Phase 4 X](phase4/REVIEW.md)를 따른다.
+> **문서 상태 — 현재 실행 계획.** Phase 1–5를 완료했고 Phase 6 data/statistics/composite lifecycle로 이동한다. Phase 5의 최종 증거는 [Phase 5 X](phase5/REVIEW.md), Area·Rose·Radial Bar와 layoutSeries, theta/legend order, midpoint/legend 전환의 최종 결과는 [Phase 4 X](phase4/REVIEW.md)를 따른다.
 > [사용자의 전체 실행·0.0.13 릴리즈 승인](APPROVAL.md)은 F20을 제외한 남은 계약·시각 목표·구현·검증과 필요한 한도 조정을 포함한다. 승인과 검증 완료를 구분하며 Phase 5–11은 아직 구현 완료가 아니다.
 > 실행 위치는 [ROADMAP_INDEX.json](../ROADMAP_INDEX.json), 현재 제품 계약은
 > [ACTION_INDEX.json](../../contract/ACTION_INDEX.json)이 소유한다.
@@ -115,8 +115,8 @@ S는 기존 owner 위의 교정·연결, M은 여러 consumer의 lifecycle 변�
 | 2 | completed | W1–W5와 6개 public 흐름 구현·검증, A/B/V/X 사용자 승인 |
 | 3 | completed | Pie/Donut·Density·Horizon, A/V/B/X approved; Current 177 / Planned 0 |
 | 4 | completed | W1–W5와 20개 시각 target, 소비자·고정 source 통합 검증 완료 — [Phase 4 X](phase4/REVIEW.md) |
-| 5 | in-progress | W1 축 lifecycle·W2 범례·W3 label/format·W4 theme 완료 — [W4 결과](phase5/RESULTS_W4_THEME.md); W5 opt-in fitting 진행 예정 |
-| 6 | planned | Data·transform·통계·filter·composite role 편집 |
+| 5 | completed | W1–W5 축·범례·label/reference·theme·fitting 구현과 누적 검증 완료 — [Phase 5 X](phase5/REVIEW.md) |
+| 6 | in-progress | Data·transform·통계·filter·composite role 편집 |
 | 7 | planned | Polar Scatter/Line, Radar, Rug/Strip |
 | 8 | planned | Interval/Regression, Dot/Lollipop/Dumbbell, ECDF |
 | 9 | planned | Deterministic point packing과 Raincloud |

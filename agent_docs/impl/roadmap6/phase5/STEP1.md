@@ -3,8 +3,8 @@
 ## 진행 상태
 
 - [x] 사전 baseline 조사 — [52 cases / 260 immutable checks와 replay](BASELINE.md)
-- [ ] A Gate의 정확한 결정·호환성·검증 범위 확정
-- [ ] A Gate 증거 commit/push와 명시적 사용자 승인 기록
+- [x] A Gate의 정확한 결정·호환성·검증 범위 확정
+- [x] A Gate 증거 commit/push와 전체 실행 승인 기록
 - [x] R6-P5-W1 Polar 복원과 Parallel 축 편집 — A1/A2/A3 검증 완료
 - [x] W1 A1 Polar focused 생성 8개 공개 — [계약](CONTRACT_W1.md), [검증](RESULTS_W1_CREATE.md)
 - [x] W1 A2 Cartesian/Polar optional component 정렬 — [검증](RESULTS_W1_OPTIONAL.md)
@@ -51,11 +51,11 @@
 - [x] W4 explicit local·field palette·통계 의미 불변성 전수 검증
 - [x] W4 dark-theme-scatterplot primitive/public state·render parity
 - [x] W4 Full/Basic/types/docs/canonical package·browser consumer 검증
-- [ ] R6-P5-W5 Opt-in fitting과 guide label layout
-- [ ] 모든 시각 variant의 primitive target 작성·표시·V 승인
-- [ ] 승인된 variant의 public 구현과 같은 실행의 primitive/public render 비교
-- [ ] 누적 검증·migration·문서·원장 동기화
-- [ ] X Gate의 증거 commit/push와 명시적 사용자 승인 기록
+- [x] R6-P5-W5 Opt-in fitting과 guide label layout — [계약](CONTRACT_W5_FITTING.md), [결과](RESULTS_W5_FITTING.md)
+- [x] 모든 시각 variant의 primitive target 작성·표시·V 승인 — `fitted-long-labels`
+- [x] 승인된 variant의 public 구현과 같은 실행의 primitive/public render 비교
+- [x] 누적 검증·migration·문서·원장 동기화
+- [x] X Gate의 증거 commit/push와 전체 실행 승인 기록 — [검토](REVIEW.md)
 
 위 체크는 미래 실행용이다. 계획 문서를 만든 사실을 구현 완료나 Gate 승인으로 표시하지 않는다.
 
