@@ -16,6 +16,7 @@
   "createLinePlot": "/reference/actions/charts-data/#createlineplot",
   "createPolarScatterPlot": "/reference/actions/charts-data/#createpolarscatterplot",
   "createPolarLinePlot": "/reference/actions/charts-data/#createpolarlineplot",
+  "createRadarPlot": "/reference/actions/charts-data/#createradarplot",
   "createBarPlot": "/reference/actions/charts-data/#createbarplot",
   "createHistogram": "/reference/actions/charts-data/#createhistogram",
   "createAreaPlot": "/reference/actions/charts-data/#createareaplot",

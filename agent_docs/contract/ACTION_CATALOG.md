@@ -206,6 +206,7 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`createLinePlot`](current/BASIC_CHARTS.md#createlineplot) | charts | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createPolarScatterPlot`](current/COMPLETE_CHARTS.md#createpolarscatterplot) | charts | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createPolarLinePlot`](current/COMPLETE_CHARTS.md#createpolarlineplot) | charts | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
+| user-facing | [`createRadarPlot`](current/COMPLETE_CHARTS.md#createradarplot) | charts | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createBarPlot`](current/BASIC_CHARTS.md#createbarplot) | charts | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createHistogram`](current/BASIC_CHARTS.md#createhistogram) | charts | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createHeatmap`](current/BASIC_CHARTS.md#createheatmap) | charts | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |

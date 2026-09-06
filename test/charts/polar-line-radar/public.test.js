@@ -48,3 +48,17 @@ test("records Polar line materialization under the facade action hierarchy", () 
   assert.equal(theta.children.some(node => node.op === "rematerializeLineMark"), false);
   assert.equal(radius.children.some(node => node.op === "rematerializeLineMark"), true);
 });
+
+test("records Radar Fold and Polar line ownership under one facade", () => {
+  const program = createJobsRadarChart(loadJobs());
+  const radar = program.trace.children.find(node => node.op === "createRadarPlot");
+  const polar = radar.children.find(node => node.op === "createPolarLinePlot");
+
+  assert.ok(polar);
+  assert.equal(radar.children.some(node => node.op === "createFoldData"), false);
+  assert.deepEqual(polar.children.map(node => node.op), [
+    "createLineMark", "encodeTheta", "encodeR", "encodeGroup", "encodeColor",
+    "createGuides"
+  ]);
+  assert.equal(polar.children[0].args.closed, true);
+});

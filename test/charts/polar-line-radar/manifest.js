@@ -59,38 +59,36 @@ export const radarTargetCallChain = `chart()
     margin: { top: 90, right: 190, bottom: 90, left: 90 }
   })
   .createData({ values: radarRows })
-  .createLineMark({ closed: true, strokeWidth: 2.5, opacity: 0.9 })
-  .encodeTheta({
-    field: "role",
-    fieldType: "nominal",
-    scale: {
-      domain: [
-        "Accounting", "Architecture", "Engineering", "Law",
-        "Management", "Nursing", "Secretarial", "Teaching"
-      ]
-    }
-  })
-  .encodeR({ field: "share", scale: { domain: [0, 1], zero: true } })
-  .encodeGroup({ field: "sex" })
-  .encodeColor({ field: "sex", palette: "tableau10" })
-  .createGuides({
-    axes: {
-      theta: { title: { text: "Occupation" } },
-      radius: {
-        ticksAndLabels: { values: [0, 0.25, 0.5, 0.75, 1] },
-        title: { text: "Share" }
-      }
-    },
-    grid: {
-      theta: {
-        values: [
-          "Accounting", "Architecture", "Engineering", "Law",
-          "Management", "Nursing", "Secretarial", "Teaching"
-        ]
+  .createRadarPlot({
+    id: "line",
+    category: "role",
+    value: { field: "share", scale: { domain: [0, 1], zero: true } },
+    groupBy: "sex",
+    order: [
+      "Accounting", "Architecture", "Engineering", "Law",
+      "Management", "Nursing", "Secretarial", "Teaching"
+    ],
+    color: { field: "sex", palette: "tableau10" },
+    line: { strokeWidth: 2.5, opacity: 0.9 },
+    guides: {
+      axes: {
+        theta: { title: { text: "Occupation" } },
+        radius: {
+          ticksAndLabels: { values: [0, 0.25, 0.5, 0.75, 1] },
+          title: { text: "Share" }
+        }
       },
-      radial: { values: [0, 0.25, 0.5, 0.75, 1] }
-    },
-    legend: { position: "right", title: "Sex" }
+      grid: {
+        theta: {
+          values: [
+            "Accounting", "Architecture", "Engineering", "Law",
+            "Management", "Nursing", "Secretarial", "Teaching"
+          ]
+        },
+        radial: { values: [0, 0.25, 0.5, 0.75, 1] }
+      }
+      legend: { position: "right", title: "Sex" }
+    }
   });`;
 
 export const visualVariants = Object.freeze([

@@ -165,7 +165,7 @@ test("specific polar phrases shadow only overlapping generic chart phrases", asy
   assert.deepEqual(program.semanticSpec.layers.map(layer => layer.mark.type), ["arc", "bar"]);
 });
 
-test("polar point and line discovery select the complete facade and keep radar distinct", async () => {
+test("polar point, line, and Radar discovery select distinct complete facades", async () => {
   for (const [query, action, mark] of [
     ["polar scatter plot with size encoding", "createPolarScatterPlot", "point"],
     ["polar line chart with a color legend", "createPolarLinePlot", "line"]
@@ -181,7 +181,17 @@ test("polar point and line discovery select the complete facade and keep radar d
     assert.equal(program.semanticSpec.layers[0].mark.type, mark);
     assert.equal(program.semanticSpec.coordinates[0].type, "polar");
   }
-  assert.deepEqual(searchGgaction("radar chart").matchedConstraints, ["chart.radar"]);
+  const radar = searchGgaction("radar chart");
+  assert.deepEqual(radar.matchedConstraints, ["chart.radar"]);
+  assert.deepEqual(radar.actionPlan.map(entry => entry.name), ["createRadarPlot"]);
+  assert.deepEqual(radar.unresolved, []);
+  const { program } = await executeAuthoring(radar, { rows: [
+    { category: "Speed", value: 0.7 },
+    { category: "Quality", value: 0.9 },
+    { category: "Cost", value: 0.5 }
+  ] });
+  assert.equal(program.trace.children.at(-1).op, "createRadarPlot");
+  assert.equal(program.graphicSpec.objects.radarPlot.items[0].properties.commands.at(-1).op, "Z");
   assert.deepEqual(searchGgaction("polar line chart").matchedConstraints, ["chart.polarLine"]);
 });
 

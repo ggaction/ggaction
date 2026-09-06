@@ -44,16 +44,15 @@ export function createJobsRadarChart(jobs) {
       margin: { top: 90, right: 190, bottom: 90, left: 90 }
     })
     .createData({ values: radarRows })
-    .createLineMark({ closed: true, strokeWidth: 2.5, opacity: 0.9 })
-    .encodeTheta({
-      field: "role",
-      fieldType: "nominal",
-      scale: { domain: ROLE_ORDER }
-    })
-    .encodeR({ field: "share", scale: { domain: [0, 1], zero: true } })
-    .encodeGroup({ field: "sex" })
-    .encodeColor({ field: "sex", palette: "tableau10" })
-    .createGuides({
+    .createRadarPlot({
+      id: "line",
+      category: "role",
+      value: { field: "share", scale: { domain: [0, 1], zero: true } },
+      groupBy: "sex",
+      order: ROLE_ORDER,
+      color: { field: "sex", palette: "tableau10" },
+      line: { strokeWidth: 2.5, opacity: 0.9 },
+      guides: {
       axes: {
         theta: { title: { text: "Occupation" } },
         radius: {
@@ -66,5 +65,6 @@ export function createJobsRadarChart(jobs) {
         radial: { values: [0, 0.25, 0.5, 0.75, 1] }
       },
       legend: { position: "right", title: "Sex" }
+      }
     });
 }

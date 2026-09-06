@@ -13056,6 +13056,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createPointMark`](./reference/actions/marks/#createpointmark) | user-facing | marks |
 | [`createPolarLinePlot`](./reference/actions/charts-data/#createpolarlineplot) | user-facing | charts |
 | [`createPolarScatterPlot`](./reference/actions/charts-data/#createpolarscatterplot) | user-facing | charts |
+| [`createRadarPlot`](./reference/actions/charts-data/#createradarplot) | user-facing | charts |
 | [`createRadialAxis`](./reference/actions/guides/#createradialaxis) | user-facing | axes |
 | [`createRadialAxisLabels`](./reference/actions/guides/#createradialaxislabels) | user-facing | axes |
 | [`createRadialAxisLine`](./reference/actions/guides/#createradialaxisline) | user-facing | axes |
@@ -13403,6 +13404,17 @@ createPolarLinePlot({ id?, data?, coordinate?, theta, radius, groupBy?, color?, 
 
 Create grouped Polar paths from required angular and radial fields. Paths stay
 open unless `line.closed: true` is explicit. [Polar positions](./api/position-encodings/#polar-positions)
+
+## `createRadarPlot`
+
+```javascript
+createRadarPlot({ id?, data?, coordinate?, category, value, groupBy?, order?, color?, strokeDash?, line?, guides? })
+createRadarPlot({ id?, data?, coordinate?, wide: { fields, as? }, groupBy?, order?, color?, strokeDash?, line?, guides? })
+```
+
+Create closed Radar paths from validated long rows or an explicit wide-to-long
+Fold. Every series must contain the same ordered dimensions exactly once. Values
+are used as supplied; the facade does not infer normalization. [Polar positions](./api/position-encodings/#polar-positions)
 
 ## `createBarPlot`
 
@@ -15610,6 +15622,7 @@ interface ChartProgramActions {
   createLinePlot(options: CreateLinePlotOptions): ChartProgram;
   createPolarScatterPlot(options: CreatePolarScatterPlotOptions): ChartProgram;
   createPolarLinePlot(options: CreatePolarLinePlotOptions): ChartProgram;
+  createRadarPlot(options: CreateRadarPlotOptions): ChartProgram;
   createAreaPlot(options: CreateAreaPlotOptions): ChartProgram;
   createBarPlot(options: CreateBarPlotOptions): ChartProgram;
   createHistogram(options: CreateHistogramOptions): ChartProgram;

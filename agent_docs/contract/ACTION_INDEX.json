@@ -3604,6 +3604,24 @@
       }
     },
     {
+      "name": "createRadarPlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "status": "implemented",
+      "lifecycle": "Aggregate create-only",
+      "audit": "Intentional",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "update": "Explicit Fold plus existing Polar line, category order, group, appearance, scale and guide actions",
+      "contract": {
+        "file": "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "anchor": "createradarplot"
+      }
+    },
+    {
       "name": "createBarPlot",
       "layer": "user-facing",
       "domain": "charts",

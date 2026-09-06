@@ -117,6 +117,7 @@
     "LinePlot": ["line chart", "ordered trend"],
     "PolarScatterPlot": ["polar scatter plot", "angular and radial relationship", "radial scatter plot"],
     "PolarLinePlot": ["polar line plot", "angular and radial trend", "radial line chart"],
+    "RadarPlot": ["radar plot", "radar chart", "spider chart", "closed multivariate profile"],
     "BarPlot": ["bar chart", "category comparison"],
     "Heatmap": ["heatmap", "two-dimensional distribution"],
     "Axes": ["x and y axes", "Cartesian guides"],
@@ -176,6 +177,7 @@
     "createScatterPlot": "Draws a complete scatter plot that shows the relationship between two fields as points.",
     "createPolarScatterPlot": "Draws a complete Polar scatter plot that maps observations to angular and radial position while keeping glyph size independent.",
     "createPolarLinePlot": "Draws a complete Polar line plot that connects angular and radial observations as open or explicitly closed paths.",
+    "createRadarPlot": "Draws a complete Radar plot from long category-value rows or explicitly selected wide fields as closed Polar profiles.",
     "createTickMark": "Creates short tick glyphs for compact one-dimensional distributions or aligned value marks.",
     "encodeAngle": "Maps a constant or quantitative field to point or tick rotation angle.",
     "editLegendLayout": "Edits one legend's position, alignment, direction, columns, title placement, and item spacing.",
@@ -279,6 +281,10 @@
     "createPolarLinePlot": {
       "theta": "angle",
       "radius": "distance"
+    },
+    "createRadarPlot": {
+      "category": "category",
+      "value": "value"
     },
     "createParallelCoordinates": {
       "dimensions": ["a", "b"]
@@ -391,6 +397,10 @@
     "createPolarLinePlot": [
       "createPolarLinePlot({ theta, radius })",
       "createPolarLinePlot({ theta, radius, groupBy?, color?, strokeDash?, guides? })"
+    ],
+    "createRadarPlot": [
+      "createRadarPlot({ category, value, groupBy?, order? })",
+      "createRadarPlot({ wide: { fields, as? }, groupBy?, order?, color?, strokeDash?, guides? })"
     ],
     "createViolinPlot": [
       "createViolinPlot({ x, y, density?, area? })",

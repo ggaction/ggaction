@@ -59,6 +59,39 @@ Default id는 `polarLinePlot`, lifecycle은 Aggregate create-only다.
 - Evidence: `test/unit/actions/charts/polar-facades.test.js`, `test/contracts/polar-facade-types.test.js`,
   `test/charts/polar-line-radar/`.
 
+## `createRadarPlot`
+
+`createRadarPlot({ id?, data?, coordinate?, category, value, groupBy?, order?, color?, strokeDash?, line?,
+guides? })` 또는 `createRadarPlot({ id?, data?, coordinate?, wide, groupBy?, order?, color?, strokeDash?,
+line?, guides? })`. Default id는 `radarPlot`, lifecycle은 Aggregate create-only다.
+
+- Long form은 nominal/ordinal category와 quantitative value를 요구한다. Wide form은 최소 세 개의 명시적
+  field를 `createFoldData`로 펼치며 기본 output은 `${id}Dimension`/`${id}Value`, dataset id는
+  `${id}FoldData`다. 원본 wide row가 둘 이상이면 `groupBy`를 반드시 지정한다.
+- 모든 series는 같은 최소 세 category를 정확히 한 번씩 가져야 한다. `order`는 전체 category 또는 wide
+  field를 빠짐·중복 없이 한 번씩 포함하며 theta scale domain이 된다. Missing dimension, duplicate
+  series/category와 nonfinite value는 전체 facade를 거부한다.
+- Value는 caller가 같은 단위로 준비하거나 명시적으로 정규화한 결과다. Facade는 dimension별 min-max,
+  z-score 또는 identifier field를 추론하지 않는다.
+- Path는 항상 closed다. `line.closed:false`는 Radar 의미와 충돌하므로 거부하며 다른 line appearance는
+  기존 owner가 처리한다.
+- Effects: `createFoldData? → createPolarLinePlot(closed:true)`. Polar child는 다시 line mark, categorical
+  theta, quantitative radius, group/appearance와 scoped guides를 소유한다.
+
+### Formal values — `createRadarPlot`
+
+- Implemented: `createRadarPlot(options: CreateRadarPlotOptions): ChartProgram`.
+- Required: long form의 category/value 또는 wide form의 `wide.fields` 중 정확히 하나.
+- Proposed (NOT IMPLEMENTED): automatic per-dimension normalization과 inferred wide identifier.
+
+### Value coverage — `createRadarPlot`
+
+- ✅ Covered: long/lower parity, explicit wide Fold parity와 provenance, stable order, closed paths, incomplete,
+  duplicate/nonfinite/ambiguous input의 immutable failure와 strict declarations.
+- ✅ Covered: Jobs primitive/public semantic·graphic·Canvas와 decoded PNG pixel parity.
+- Evidence: `test/unit/actions/charts/radar-facade.test.js`, `test/contracts/radar-facade-types.test.js`,
+  `test/charts/polar-line-radar/`, `examples/jobs-radar-chart/`.
+
 ## `createRosePlot`
 
 `createRosePlot({ id?, data?, coordinate?, category, value?, aggregate?, radiusScale?, color?, arc?, guides? })`.

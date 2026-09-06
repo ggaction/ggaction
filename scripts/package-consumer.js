@@ -133,14 +133,37 @@ async function testNodeConsumer(directory) {
       theta: "angle", radius: "distance", groupBy: "group",
       line: { closed: true }, guides: false
     });
+    const radar = polarBase.createRadarPlot({
+      category: "angle", value: "distance", groupBy: "group",
+      order: [0, 120, 240], guides: false
+    });
+    const radarWide = chart()
+      .createCanvas({ width: 240, height: 240, margin: 40 })
+      .createData({ values: [{ speed: 2, quality: 4, cost: 3 }] })
+      .createRadarPlot({
+        id: "radarWide", wide: { fields: ["speed", "quality", "cost"] },
+        guides: false
+      });
     assert.equal(polarScatter.semanticSpec.layers[0].mark.type, "point");
     assert.equal(polarScatter.semanticSpec.coordinates[0].type, "polar");
     assert.equal(
       polarLine.graphicSpec.objects.polarLinePlot.items[0].properties.commands.at(-1).op,
       "Z"
     );
+    assert.equal(
+      radar.graphicSpec.objects.radarPlot.items[0].properties.commands.at(-1).op,
+      "Z"
+    );
+    assert.ok(radarWide.semanticSpec.datasets.some(dataset =>
+      dataset.id === "radarWideFoldData"
+    ));
+    assert.equal(
+      radarWide.graphicSpec.objects.radarWide.items[0].properties.commands.at(-1).op,
+      "Z"
+    );
     assert.equal(basicChart().createPolarScatterPlot, undefined);
     assert.equal(basicChart().createPolarLinePlot, undefined);
+    assert.equal(basicChart().createRadarPlot, undefined);
     const axisLifecycle = chart()
       .createCanvas({ width: 240, height: 180, margin: 50 })
       .createData({ values: [{ x: 1, y: 2 }, { x: 2, y: 4 }] })
@@ -1515,6 +1538,7 @@ async function testTypeScriptConsumer(directory) {
       type CreateLinePlotOptions,
       type CreatePolarLinePlotOptions,
       type CreatePolarScatterPlotOptions,
+      type CreateRadarPlotOptions,
       type ColorLayout,
       type ComputedDataOptions,
       type ComputedExpression,
@@ -1578,12 +1602,25 @@ async function testTypeScriptConsumer(directory) {
       theta: "angle", radius: "distance", groupBy: "series",
       line: { closed: true }, guides: false
     };
+    const radarOptions: CreateRadarPlotOptions = {
+      category: "category", value: "value", groupBy: "series",
+      order: ["speed", "quality", "cost"], guides: false
+    };
+    const radarWideOptions: CreateRadarPlotOptions = {
+      wide: { fields: ["speed", "quality", "cost"] }, guides: false
+    };
     program.createPolarScatterPlot(polarScatterOptions);
     program.createPolarLinePlot(polarLineOptions);
+    program.createRadarPlot(radarOptions);
+    program.createRadarPlot(radarWideOptions);
     // @ts-expect-error Polar facades are Full only.
     basicChart().createPolarScatterPlot(polarScatterOptions);
     // @ts-expect-error Polar facades are Full only.
     basicChart().createPolarLinePlot(polarLineOptions);
+    // @ts-expect-error Radar facade is Full only.
+    basicChart().createRadarPlot(radarOptions);
+    // @ts-expect-error Radar facade is Full only.
+    basicChart().createRadarPlot(radarWideOptions);
     const fitOptions: FitCanvasOptions = { padding: 4, overflow: "report" };
     const labelLayout: AxisLabelLayoutOptions = {
       rotation: { value: -30, unit: "degrees" },
@@ -2726,7 +2763,7 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.a
       "parallel-coordinates",
       "horizon",
       "violin-plot",
-      "polar-scatter-line-facades",
+      "polar-and-radar-facades",
       "right-categorical-legend-offset",
       "sequential-palette-count",
       "typescript",

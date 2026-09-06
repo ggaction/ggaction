@@ -2231,6 +2231,42 @@ export interface CreatePolarLinePlotOptions {
   };
   guides?: false | PolarChartGuideOptions;
 }
+export type RadarCategoryValue = string | number | boolean;
+export type RadarCategoryScaleOptions = Pick<
+  ThetaScaleOptions,
+  "id" | "domain" | "range" | "reverse" | "paddingInner" | "paddingOuter" |
+  "padding" | "align"
+> & { type?: "band" | "point" };
+export type RadarCategoryChannel = string | {
+  field: string;
+  fieldType?: "nominal" | "ordinal";
+  scale?: RadarCategoryScaleOptions;
+};
+export interface RadarWideOptions {
+  fields: readonly [string, string, string, ...string[]];
+  as?: { key?: string; value?: string };
+}
+export type CreateRadarPlotOptions = {
+  id?: string;
+  data?: string;
+  coordinate?: string;
+  groupBy?: string | readonly [string, ...string[]];
+  order?: readonly [
+    RadarCategoryValue,
+    RadarCategoryValue,
+    RadarCategoryValue,
+    ...RadarCategoryValue[]
+  ];
+  color?: LineCategoricalColorChannel;
+  strokeDash?: BasicStrokeDashChannel;
+  line?: Omit<NonNullable<CreateLinePlotOptions["line"]>, "closed"> & {
+    closed?: true;
+  };
+  guides?: false | PolarChartGuideOptions;
+} & (
+  | { category: RadarCategoryChannel; value: PolarRadiusChannel; wide?: never }
+  | { wide: RadarWideOptions; category?: never; value?: never }
+);
 
 export type GroupEncodingOptions = { target?: string; fieldType?: "nominal" } & (
   | { field: string; fields?: never }
@@ -3426,6 +3462,7 @@ export class ChartProgram {
   createLinePlot(options: CreateLinePlotOptions): ChartProgram;
   createPolarScatterPlot(options: CreatePolarScatterPlotOptions): ChartProgram;
   createPolarLinePlot(options: CreatePolarLinePlotOptions): ChartProgram;
+  createRadarPlot(options: CreateRadarPlotOptions): ChartProgram;
   createAreaPlot(options: CreateAreaPlotOptions): ChartProgram;
   createBarPlot(options: CreateBarPlotOptions): ChartProgram;
   createHistogram(options: CreateHistogramOptions): ChartProgram;

@@ -380,6 +380,7 @@ function addFacadeMarkOverrides(overrides, op, args) {
     createLinePlot: ["linePlot", "line", ["stroke"]],
     createPolarScatterPlot: ["polarScatterPlot", "point", ["fill", "stroke"]],
     createPolarLinePlot: ["polarLinePlot", "line", ["stroke"]],
+    createRadarPlot: ["radarPlot", "line", ["stroke"]],
     createBarPlot: ["barPlot", "bar", ["fill", "stroke"]],
     createAreaPlot: ["areaPlot", "area", ["fill", "stroke"]],
     createPiePlot: ["piePlot", "arc", ["fill", "stroke"]],

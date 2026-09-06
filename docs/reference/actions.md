@@ -74,6 +74,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createPointMark`](./actions/marks.md#createpointmark) | user-facing | marks |
 | [`createPolarLinePlot`](./actions/charts-data.md#createpolarlineplot) | user-facing | charts |
 | [`createPolarScatterPlot`](./actions/charts-data.md#createpolarscatterplot) | user-facing | charts |
+| [`createRadarPlot`](./actions/charts-data.md#createradarplot) | user-facing | charts |
 | [`createRadialAxis`](./actions/guides.md#createradialaxis) | user-facing | axes |
 | [`createRadialAxisLabels`](./actions/guides.md#createradialaxislabels) | user-facing | axes |
 | [`createRadialAxisLine`](./actions/guides.md#createradialaxisline) | user-facing | axes |

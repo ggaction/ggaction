@@ -3,7 +3,7 @@
   "packageVersion": "0.0.12",
   "typeSource": "types/program.d.ts",
   "errorPolicy": "An empty errors array means the compact card has no curated error override; consult the canonical route for validation, inference, and recovery behavior.",
-  "count": 211,
+  "count": 212,
   "cards": [
     {
       "schemaVersion": 2,
@@ -14200,6 +14200,106 @@
       "snippet": "program.createPolarLinePlot({ theta: \"angle\", radius: \"distance\" })",
       "errors": [],
       "route": "/reference/actions/charts-data/#createpolarlineplot"
+    },
+    {
+      "schemaVersion": 2,
+      "name": "createRadarPlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "summary": "Draws a complete Radar plot from long category-value rows or explicitly selected wide fields as closed Polar profiles.",
+      "signature": "createRadarPlot(options: CreateRadarPlotOptions): ChartProgram;",
+      "intents": [
+        "create radar plot",
+        "create",
+        "add",
+        "complete chart",
+        "chart facade",
+        "radar plot",
+        "radar chart"
+      ],
+      "lifecycle": "Aggregate create-only",
+      "resources": {
+        "prerequisites": [
+          "canvas and dataset context"
+        ],
+        "owns": [
+          "radar plot"
+        ],
+        "idOptions": [
+          "id",
+          "data",
+          "coordinate"
+        ]
+      },
+      "options": [
+        {
+          "name": "id",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "data",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "coordinate",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "groupBy",
+          "required": false,
+          "type": "string | readonly [string, ...string[]] | undefined"
+        },
+        {
+          "name": "order",
+          "required": false,
+          "type": "readonly [RadarCategoryValue, RadarCategoryValue, RadarCategoryValue, ...RadarCategoryValue[]] | undefined"
+        },
+        {
+          "name": "color",
+          "required": false,
+          "type": "LineCategoricalColorChannel | undefined"
+        },
+        {
+          "name": "strokeDash",
+          "required": false,
+          "type": "Omit<{ field: string; value?: undefined; target?: string | undefined; fieldType?: \"nominal\" | undefined; scale?: DashScaleOptions | undefined; }, \"target\"> | Omit<...> | undefined"
+        },
+        {
+          "name": "line",
+          "required": false,
+          "type": "(Omit<{ strokeWidth?: number | undefined; curve?: CurveInterpolation | undefined; stroke?: string | undefined; opacity?: number | undefined; closed?: false | undefined; }, \"closed\"> & { ...; }) | undefined"
+        },
+        {
+          "name": "guides",
+          "required": false,
+          "type": "false | PolarChartGuideOptions | undefined"
+        },
+        {
+          "name": "category",
+          "required": false,
+          "type": "RadarCategoryChannel | undefined"
+        },
+        {
+          "name": "value",
+          "required": false,
+          "type": "PolarRadiusChannel | undefined"
+        },
+        {
+          "name": "wide",
+          "required": false,
+          "type": "RadarWideOptions | undefined"
+        }
+      ],
+      "callPatterns": [
+        "createRadarPlot({ category, value, groupBy?, order? })",
+        "createRadarPlot({ wide: { fields, as? }, groupBy?, order?, color?, strokeDash?, guides? })"
+      ],
+      "snippet": "program.createRadarPlot({ category: \"category\", value: \"value\" })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#createradarplot"
     },
     {
       "schemaVersion": 2,

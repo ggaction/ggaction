@@ -1815,8 +1815,8 @@
         "action-reference",
         "exact-action-lookup"
       ],
-      "bytes": 22627,
-      "sha256": "c52b013716ea5112244acd464dd251955797b414749a0fe486ee261aa05cde94"
+      "bytes": 22724,
+      "sha256": "4b8244059baacdb16a5889cd47feacc060f78d7958334fe932a074a43cdc423c"
     },
     {
       "order": 115,
@@ -1842,6 +1842,7 @@
         "createlineplot",
         "createpolarscatterplot",
         "createpolarlineplot",
+        "createradarplot",
         "createbarplot",
         "createhistogram",
         "createareaplot",
@@ -1863,8 +1864,8 @@
         "editbin2ddata",
         "related"
       ],
-      "bytes": 16291,
-      "sha256": "056297a4cd0ecff5cca04c24603b9662cbc81701016bb5cd8c2b35665af1e40b"
+      "bytes": 16857,
+      "sha256": "ed012ecc27f0266ff09081bbfd1685fe37182a031543f8e2461b1f78d41ab7f5"
     },
     {
       "order": 116,
@@ -2099,8 +2100,8 @@
         "exact-typescript-signatures",
         "related"
       ],
-      "bytes": 16847,
-      "sha256": "007dbee460e36d01d083406c75980eaffa49a9c2d8ec4fc758edbc059b529ebc"
+      "bytes": 16913,
+      "sha256": "c04c4ea60fc2bdf3d74efa4f219a2221c8072399e799d809d001f91ae1baf729"
     },
     {
       "order": 124,

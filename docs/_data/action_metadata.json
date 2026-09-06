@@ -989,6 +989,11 @@
     "layer": "user-facing",
     "domain": "charts"
   },
+  "createRadarPlot": {
+    "operation": "create",
+    "layer": "user-facing",
+    "domain": "charts"
+  },
   "createBarPlot": {
     "operation": "create",
     "layer": "user-facing",

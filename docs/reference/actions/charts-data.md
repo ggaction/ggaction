@@ -180,6 +180,17 @@ createPolarLinePlot({ id?, data?, coordinate?, theta, radius, groupBy?, color?, 
 Create grouped Polar paths from required angular and radial fields. Paths stay
 open unless `line.closed: true` is explicit. [Polar positions](../../api/position-encodings.md#polar-positions)
 
+## `createRadarPlot`
+
+```javascript
+createRadarPlot({ id?, data?, coordinate?, category, value, groupBy?, order?, color?, strokeDash?, line?, guides? })
+createRadarPlot({ id?, data?, coordinate?, wide: { fields, as? }, groupBy?, order?, color?, strokeDash?, line?, guides? })
+```
+
+Create closed Radar paths from validated long rows or an explicit wide-to-long
+Fold. Every series must contain the same ordered dimensions exactly once. Values
+are used as supplied; the facade does not infer normalization. [Polar positions](../../api/position-encodings.md#polar-positions)
+
 ## `createBarPlot`
 
 ```javascript

@@ -1342,6 +1342,17 @@ function buildDirectPolarParts(factors) {
       radius: { field: "radius", scale: { id: "radius", zero: true } },
       line: { strokeWidth: 1.5 },
       guides: false
+    })
+    .createCoordinate({ id: "directRadarCoordinate", type: "polar" })
+    .createRadarPlot({
+      id: "directRadar",
+      data: "directPolarRows",
+      coordinate: "directRadarCoordinate",
+      category: { field: "angle", scale: { id: "directRadarTheta" } },
+      value: { field: "radius", scale: { id: "directRadarRadius" } },
+      order: [...new Set(rows.map(row => row.angle))],
+      line: { strokeWidth: 1.5 },
+      guides: false
     });
 }
 
@@ -1654,7 +1665,7 @@ function lifecycleSignature(base, factors) {
       "createXAxis", "createYAxis", "createHorizontalGrid", "createVerticalGrid"
     ],
     "action-direct-polar-parts": [
-      "createPolarScatterPlot", "createPolarLinePlot",
+      "createPolarScatterPlot", "createPolarLinePlot", "createRadarPlot",
       "createThetaAxisLine", "createThetaAxisTicks", "createThetaAxisLabels", "createThetaAxisTitle",
       "createRadialAxisLine", "createRadialAxisTicks", "createRadialAxisLabels", "createRadialAxisTitle",
       "createThetaAxis", "createRadialAxis", "editThetaAxisLine", "editRadialAxisLine",

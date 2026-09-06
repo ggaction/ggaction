@@ -35,7 +35,8 @@ const facadeGuideOwners = new Set([
   "createGradientPlot",
   "createViolinPlot",
   "createPolarScatterPlot",
-  "createPolarLinePlot"
+  "createPolarLinePlot",
+  "createRadarPlot"
 ]);
 const standaloneGuideNames = new Set([
   "createAxes",
@@ -527,20 +528,7 @@ function closeRuntimeDependencies(entries) {
       })
     ]
   }));
-  expandChartConstraint("chart.radar", () => ({
-    after: [
-      chartDependency("encodeTheta", {
-        field: `"category"`,
-        fieldType: `"nominal"`
-      }),
-      chartDependency("encodeR", {
-        field: `"value"`,
-        fieldType: `"quantitative"`
-      }),
-      chartDependency("encodeGroup", { field: `"series"` }),
-      chartDependency("encodeColor", { field: `"series"` })
-    ]
-  }));
+  expandChartConstraint("chart.radar", () => ({}));
 
   const explicitData = semantic("createData");
   if (explicitData) {
@@ -797,6 +785,7 @@ function closeRuntimeDependencies(entries) {
     createLinePlot: "linePlot",
     createPolarScatterPlot: "polarScatterPlot",
     createPolarLinePlot: "polarLinePlot",
+    createRadarPlot: "radarPlot",
     createAreaPlot: "areaPlot",
     createBarPlot: "barPlot",
     createBoxPlot: "boxPlot",
@@ -821,6 +810,7 @@ function closeRuntimeDependencies(entries) {
     createLinePlot: "line",
     createPolarScatterPlot: "point",
     createPolarLinePlot: "line",
+    createRadarPlot: "line",
     createAreaPlot: "area",
     createBarPlot: "bar",
     createBoxPlot: "bar",
@@ -1430,7 +1420,7 @@ function applyRequestedOptions(entries, query) {
   }
 
   const appearanceOwners = Object.freeze({
-    color: ["createScatterPlot", "createLinePlot", "createAreaPlot", "createBarPlot", "createViolinPlot", "createPiePlot", "createRosePlot", "createRadialBarPlot", "createPolarScatterPlot", "createPolarLinePlot"],
+    color: ["createScatterPlot", "createLinePlot", "createAreaPlot", "createBarPlot", "createViolinPlot", "createPiePlot", "createRosePlot", "createRadialBarPlot", "createPolarScatterPlot", "createPolarLinePlot", "createRadarPlot"],
     size: ["createScatterPlot", "createPolarScatterPlot"],
     shape: ["createScatterPlot", "createPolarScatterPlot"]
   });
