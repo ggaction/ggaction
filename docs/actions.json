@@ -3,7 +3,7 @@
   "packageVersion": "0.0.12",
   "typeSource": "types/program.d.ts",
   "errorPolicy": "An empty errors array means the compact card has no curated error override; consult the canonical route for validation, inference, and recovery behavior.",
-  "count": 209,
+  "count": 211,
   "cards": [
     {
       "schemaVersion": 2,
@@ -14020,6 +14020,186 @@
       "snippet": "program.createLinePlot({ x: \"x\", y: \"y\" })",
       "errors": [],
       "route": "/reference/actions/charts-data/#createlineplot"
+    },
+    {
+      "schemaVersion": 2,
+      "name": "createPolarScatterPlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "summary": "Draws a complete Polar scatter plot that maps observations to angular and radial position while keeping glyph size independent.",
+      "signature": "createPolarScatterPlot(options: CreatePolarScatterPlotOptions): ChartProgram;",
+      "intents": [
+        "create polar scatter plot",
+        "create",
+        "add",
+        "complete chart",
+        "chart facade",
+        "polar scatter plot",
+        "angular and radial relationship"
+      ],
+      "lifecycle": "Aggregate create-only",
+      "resources": {
+        "prerequisites": [
+          "canvas and dataset context"
+        ],
+        "owns": [
+          "polar scatter plot"
+        ],
+        "idOptions": [
+          "id",
+          "data",
+          "coordinate"
+        ]
+      },
+      "options": [
+        {
+          "name": "id",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "data",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "coordinate",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "theta",
+          "required": true,
+          "type": "PolarThetaChannel"
+        },
+        {
+          "name": "radius",
+          "required": true,
+          "type": "PolarRadiusChannel"
+        },
+        {
+          "name": "color",
+          "required": false,
+          "type": "BasicColorChannel | undefined"
+        },
+        {
+          "name": "size",
+          "required": false,
+          "type": "BasicSizeChannel | undefined"
+        },
+        {
+          "name": "shape",
+          "required": false,
+          "type": "BasicShapeChannel | undefined"
+        },
+        {
+          "name": "point",
+          "required": false,
+          "type": "{ radius?: number | undefined; shape?: PointShape | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; } | undefined"
+        },
+        {
+          "name": "guides",
+          "required": false,
+          "type": "false | PolarChartGuideOptions | undefined"
+        }
+      ],
+      "callPatterns": [
+        "createPolarScatterPlot({ theta, radius })",
+        "createPolarScatterPlot({ theta, radius, color?, size?, shape?, guides? })"
+      ],
+      "snippet": "program.createPolarScatterPlot({ theta: \"angle\", radius: \"distance\" })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#createpolarscatterplot"
+    },
+    {
+      "schemaVersion": 2,
+      "name": "createPolarLinePlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "summary": "Draws a complete Polar line plot that connects angular and radial observations as open or explicitly closed paths.",
+      "signature": "createPolarLinePlot(options: CreatePolarLinePlotOptions): ChartProgram;",
+      "intents": [
+        "create polar line plot",
+        "create",
+        "add",
+        "complete chart",
+        "chart facade",
+        "polar line plot",
+        "angular and radial trend"
+      ],
+      "lifecycle": "Aggregate create-only",
+      "resources": {
+        "prerequisites": [
+          "canvas and dataset context"
+        ],
+        "owns": [
+          "polar line plot"
+        ],
+        "idOptions": [
+          "id",
+          "data",
+          "coordinate"
+        ]
+      },
+      "options": [
+        {
+          "name": "id",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "data",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "coordinate",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "theta",
+          "required": true,
+          "type": "PolarThetaChannel"
+        },
+        {
+          "name": "radius",
+          "required": true,
+          "type": "PolarRadiusChannel"
+        },
+        {
+          "name": "color",
+          "required": false,
+          "type": "LineCategoricalColorChannel | undefined"
+        },
+        {
+          "name": "groupBy",
+          "required": false,
+          "type": "string | readonly [string, ...string[]] | undefined"
+        },
+        {
+          "name": "strokeDash",
+          "required": false,
+          "type": "Omit<{ field: string; value?: undefined; target?: string | undefined; fieldType?: \"nominal\" | undefined; scale?: DashScaleOptions | undefined; }, \"target\"> | Omit<...> | undefined"
+        },
+        {
+          "name": "line",
+          "required": false,
+          "type": "(Omit<{ strokeWidth?: number | undefined; curve?: CurveInterpolation | undefined; stroke?: string | undefined; opacity?: number | undefined; closed?: false | undefined; }, \"closed\"> & { ...; }) | undefined"
+        },
+        {
+          "name": "guides",
+          "required": false,
+          "type": "false | PolarChartGuideOptions | undefined"
+        }
+      ],
+      "callPatterns": [
+        "createPolarLinePlot({ theta, radius })",
+        "createPolarLinePlot({ theta, radius, groupBy?, color?, strokeDash?, guides? })"
+      ],
+      "snippet": "program.createPolarLinePlot({ theta: \"angle\", radius: \"distance\" })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#createpolarlineplot"
     },
     {
       "schemaVersion": 2,

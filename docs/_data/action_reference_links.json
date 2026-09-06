@@ -14,6 +14,8 @@
   "bindMarkData": "/reference/actions/charts-data/#bindmarkdata",
   "createScatterPlot": "/reference/actions/charts-data/#createscatterplot",
   "createLinePlot": "/reference/actions/charts-data/#createlineplot",
+  "createPolarScatterPlot": "/reference/actions/charts-data/#createpolarscatterplot",
+  "createPolarLinePlot": "/reference/actions/charts-data/#createpolarlineplot",
   "createBarPlot": "/reference/actions/charts-data/#createbarplot",
   "createHistogram": "/reference/actions/charts-data/#createhistogram",
   "createAreaPlot": "/reference/actions/charts-data/#createareaplot",

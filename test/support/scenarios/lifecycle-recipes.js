@@ -152,6 +152,15 @@ function temporalRows(dataset = "zoo-temporal-boundaries") {
   }));
 }
 
+function temporalPathRows(dataset = "zoo-temporal-boundaries") {
+  const rows = temporalRows(dataset);
+  const counts = new Map();
+  for (const row of rows) counts.set(row.group, (counts.get(row.group) ?? 0) + 1);
+  const grouped = rows.filter(row => counts.get(row.group) >= 2);
+  if (grouped.length >= 2) return grouped;
+  return rows.map(row => ({ ...row, group: "All" }));
+}
+
 function styleRows(dataset = "zoo-multi-encoding-styles") {
   if (dataset.startsWith("tt-")) return realisticLifecycleRows(dataset, "style").rows;
   return loadZooDataset("zoo-multi-encoding-styles").map((row, index) => ({
@@ -261,7 +270,7 @@ function buildScatterFacade(factors) {
 
 function buildAreaFacade(factors) {
   return chart().createCanvas(cartesianCanvas(factors))
-    .createData({ id: "areaRows", values: temporalRows(factors.dataset) })
+    .createData({ id: "areaRows", values: temporalPathRows(factors.dataset) })
     .createAreaPlot({ id: "areaFacade", x: { field: "time", fieldType: "temporal" },
       y: "value", groupBy: "group", baseline: factors.baseline,
       color: { field: "group", scale: { palette: factors.palette } },
@@ -271,7 +280,7 @@ function buildAreaFacade(factors) {
 }
 
 function buildLineFacade(factors) {
-  const rows = temporalRows(factors.dataset);
+  const rows = temporalPathRows(factors.dataset);
   const times = [...new Set(rows.map(row => Date.parse(row.time)))]
     .sort((left, right) => left - right);
   const timeTicks = times.length < 2 ? times : [times[0], times.at(-1)];
@@ -1295,12 +1304,12 @@ function buildDirectPolarParts(factors) {
   return chart()
     .createCanvas(polarCanvas(factors, true))
     .createData({ id: "directPolarRows", values: rows })
-    .createPointMark({ id: "directPolarPoints" })
-    .encodeTheta({ target: "directPolarPoints", field: "angle" })
-    .encodeR({
-      target: "directPolarPoints",
-      field: "radius",
-      scale: { zero: true }
+    .createPolarScatterPlot({
+      id: "directPolarPoints",
+      theta: "angle",
+      radius: { field: "radius", scale: { zero: true } },
+      point: { radius: 3 },
+      guides: false
     })
     .createThetaAxis()
     .createRadialAxis({ angle: factors.angle })
@@ -1324,7 +1333,16 @@ function buildDirectPolarParts(factors) {
     .editRadialAxisTitle({ text: "Direct radius", position: "outside" })
     .createThetaGrid({ count: factors.count, strokeDash: [3, 3] })
     .createRadialGrid({ count: factors.count, lineWidth: 1.25 })
-    .createTitle({ text: lifecycleTitle(factors, "Polar guide components") });
+    .createTitle({ text: lifecycleTitle(factors, "Polar guide components") })
+    .createPolarLinePlot({
+      id: "directPolarLine",
+      data: "directPolarRows",
+      coordinate: "polar",
+      theta: { field: "angle", scale: { id: "theta" } },
+      radius: { field: "radius", scale: { id: "radius", zero: true } },
+      line: { strokeWidth: 1.5 },
+      guides: false
+    });
 }
 
 export const LIFECYCLE_SCENARIO_RECIPES = Object.freeze([
@@ -1636,6 +1654,7 @@ function lifecycleSignature(base, factors) {
       "createXAxis", "createYAxis", "createHorizontalGrid", "createVerticalGrid"
     ],
     "action-direct-polar-parts": [
+      "createPolarScatterPlot", "createPolarLinePlot",
       "createThetaAxisLine", "createThetaAxisTicks", "createThetaAxisLabels", "createThetaAxisTitle",
       "createRadialAxisLine", "createRadialAxisTicks", "createRadialAxisLabels", "createRadialAxisTitle",
       "createThetaAxis", "createRadialAxis", "editThetaAxisLine", "editRadialAxisLine",

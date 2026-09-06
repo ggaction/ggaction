@@ -13054,6 +13054,8 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createParallelCoordinates`](./reference/actions/charts-data/#createparallelcoordinates) | user-facing | charts |
 | [`createPiePlot`](./reference/actions/charts-data/#createpieplot) | user-facing | charts |
 | [`createPointMark`](./reference/actions/marks/#createpointmark) | user-facing | marks |
+| [`createPolarLinePlot`](./reference/actions/charts-data/#createpolarlineplot) | user-facing | charts |
+| [`createPolarScatterPlot`](./reference/actions/charts-data/#createpolarscatterplot) | user-facing | charts |
 | [`createRadialAxis`](./reference/actions/guides/#createradialaxis) | user-facing | axes |
 | [`createRadialAxisLabels`](./reference/actions/guides/#createradialaxislabels) | user-facing | axes |
 | [`createRadialAxisLine`](./reference/actions/guides/#createradialaxisline) | user-facing | axes |
@@ -13382,6 +13384,25 @@ createLinePlot({ id?, data?, coordinate?, x, y, color?, groupBy?, strokeDash?, l
 
 Create a complete Cartesian line chart. `groupBy` accepts one field or a
 non-empty tuple, assigned before independent series color and dash. [Basic Charts](./api/basic-charts/#createlineplot)
+
+## `createPolarScatterPlot`
+
+```javascript
+createPolarScatterPlot({ id?, data?, coordinate?, theta, radius, color?, size?, shape?, point?, guides? })
+```
+
+Create a complete Polar point chart from required angular and radial fields.
+Radial position remains independent from `size` and constant `point.radius`.
+[Polar positions](./api/position-encodings/#polar-positions)
+
+## `createPolarLinePlot`
+
+```javascript
+createPolarLinePlot({ id?, data?, coordinate?, theta, radius, groupBy?, color?, strokeDash?, line?, guides? })
+```
+
+Create grouped Polar paths from required angular and radial fields. Paths stay
+open unless `line.closed: true` is explicit. [Polar positions](./api/position-encodings/#polar-positions)
 
 ## `createBarPlot`
 
@@ -15587,6 +15608,8 @@ interface ChartProgramActions {
   editViolinPlot(options: EditViolinPlotOptions): ChartProgram;
   createScatterPlot(options: CreateScatterPlotOptions): ChartProgram;
   createLinePlot(options: CreateLinePlotOptions): ChartProgram;
+  createPolarScatterPlot(options: CreatePolarScatterPlotOptions): ChartProgram;
+  createPolarLinePlot(options: CreatePolarLinePlotOptions): ChartProgram;
   createAreaPlot(options: CreateAreaPlotOptions): ChartProgram;
   createBarPlot(options: CreateBarPlotOptions): ChartProgram;
   createHistogram(options: CreateHistogramOptions): ChartProgram;

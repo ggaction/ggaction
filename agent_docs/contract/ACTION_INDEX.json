@@ -3568,6 +3568,42 @@
       }
     },
     {
+      "name": "createPolarScatterPlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "status": "implemented",
+      "lifecycle": "Aggregate create-only",
+      "audit": "Intentional",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "update": "Existing point, Polar position, appearance, scale and guide actions",
+      "contract": {
+        "file": "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "anchor": "createpolarscatterplot"
+      }
+    },
+    {
+      "name": "createPolarLinePlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "status": "implemented",
+      "lifecycle": "Aggregate create-only",
+      "audit": "Intentional",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "update": "Existing line, Polar position, group, appearance, scale and guide actions",
+      "contract": {
+        "file": "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "anchor": "createpolarlineplot"
+      }
+    },
+    {
       "name": "createBarPlot",
       "layer": "user-facing",
       "domain": "charts",
@@ -3813,9 +3849,9 @@
       "materializeBin2DData",
       "materializeComposition",
       "materializeComputedData",
-    "materializeDensityData",
-    "materializeEmptyMark",
-    "materializeGradientProfileData",
+      "materializeDensityData",
+      "materializeEmptyMark",
+      "materializeGradientProfileData",
       "materializeHorizonData",
       "materializeGradientPlot",
       "materializeGradientPlotFill",

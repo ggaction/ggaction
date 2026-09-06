@@ -7,6 +7,58 @@ Data는 explicit/current/unique, coordinate는 explicit/bound/unique/family defa
 Guide 생략/{}는 자기 layer의 compatible guide를 확보하고 false는 이번 확보만 생략한다.
 기존 guide를 삭제하거나 충돌하는 resource를 덮지 않는다. 모든 실패는 caller와 이전 program/trace를 보존한다.
 
+## `createPolarScatterPlot`
+
+`createPolarScatterPlot({ id?, data?, coordinate?, theta, radius, color?, size?, shape?, point?, guides? })`.
+Default id는 `polarScatterPlot`, lifecycle은 Aggregate create-only다.
+
+- Theta와 radius는 각각 Polar angle과 radial position이다. Theta는 quantitative clockwise degrees,
+  temporal 또는 nominal/ordinal이며 radius는 quantitative다. Explicit field type/unit/scale은 lower
+  `encodeTheta`/`encodeR` 계약을 따른다.
+- `point.radius`는 constant glyph radius, `size`는 glyph size encoding이다. 둘은 함께 쓸 수 없고 radial
+  position scale과 독립이다.
+- Effects: `createPointMark → encodeTheta → encodeR → encodePointRadius? → encodeColor? → encodeSize? →
+  encodeShape? → scoped guide fulfillment`. Cartesian position/guide와 foreign coordinate를 거부한다.
+- Editing은 position/appearance encoding, point/scale/Polar guide action이 소유한다. 별도 edit facade는 없다.
+
+### Formal values — `createPolarScatterPlot`
+
+- Implemented: `createPolarScatterPlot(options: CreatePolarScatterPlotOptions): ChartProgram`.
+- Required: theta, radius.
+- Proposed (NOT IMPLEMENTED): radian inference와 geographic projection.
+
+### Value coverage — `createPolarScatterPlot`
+
+- ✅ Covered: lower semantic/graphic parity, position/glyph-size separation, coordinate/guide rejection,
+  scale edit convergence, previous-program immutability와 strict declarations.
+- Evidence: `test/unit/actions/charts/polar-facades.test.js`, `test/contracts/polar-facade-types.test.js`,
+  `test/charts/polar-points/`.
+
+## `createPolarLinePlot`
+
+`createPolarLinePlot({ id?, data?, coordinate?, theta, radius, groupBy?, color?, strokeDash?, line?, guides? })`.
+Default id는 `polarLinePlot`, lifecycle은 Aggregate create-only다.
+
+- Theta/radius와 guide scope는 Polar Scatter와 같다. `groupBy`는 path identity이고 color/strokeDash는
+  appearance다.
+- `line.closed` omission은 false다. True만 seam을 마지막 점에서 첫 점으로 닫는다. Facade가 데이터의
+  0/360 값만 보고 closure를 추론하지 않는다.
+- Effects: `createLineMark → encodeTheta → encodeR → encodeGroup? → encodeColor? → encodeStrokeDash? →
+  scoped guide fulfillment`. Style, scale, order와 guide는 lower owner가 편집한다.
+
+### Formal values — `createPolarLinePlot`
+
+- Implemented: `createPolarLinePlot(options: CreatePolarLinePlotOptions): ChartProgram`.
+- Required: theta, radius.
+- Proposed (NOT IMPLEMENTED): automatic closure와 direction inference.
+
+### Value coverage — `createPolarLinePlot`
+
+- ✅ Covered: grouped open/closed commands, semantic roles, Polar guides, invalid mixed family와 immutable failure,
+  strict positive/negative declarations.
+- Evidence: `test/unit/actions/charts/polar-facades.test.js`, `test/contracts/polar-facade-types.test.js`,
+  `test/charts/polar-line-radar/`.
+
 ## `createRosePlot`
 
 `createRosePlot({ id?, data?, coordinate?, category, value?, aggregate?, radiusScale?, color?, arc?, guides? })`.

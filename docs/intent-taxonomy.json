@@ -23,7 +23,9 @@
     { "id": "chart.donut", "phrases": ["donut chart", "doughnut chart", "donut plot"], "exclusiveGroup": "polar.partition-chart" },
     { "id": "chart.rose", "phrases": ["rose chart", "rose plot", "coxcomb chart", "polar area chart"], "shadows": ["chart.bar", "chart.area"] },
     { "id": "chart.radialBar", "phrases": ["radial bar chart", "radial bar plot"], "shadows": ["chart.bar"] },
-    { "id": "chart.radar", "phrases": ["radar chart", "spider chart", "polar line chart"] },
+    { "id": "chart.polarScatter", "phrases": ["polar scatter plot", "polar scatter chart", "radial scatter plot"], "shadows": ["chart.scatter"] },
+    { "id": "chart.polarLine", "phrases": ["polar line plot", "polar line chart", "radial line chart"], "shadows": ["chart.line"] },
+    { "id": "chart.radar", "phrases": ["radar chart", "spider chart"] },
 
     { "id": "mark.point", "phrases": ["point mark", "circle marks"] },
     { "id": "mark.tick", "phrases": ["tick mark", "tick plot"] },
@@ -128,6 +130,8 @@
     { "id": "action.createDonutChart", "kind": "action", "name": "createPiePlot", "order": 40, "anchors": ["chart.donut"], "covers": ["chart.donut", "encoding.color", "guide.legend", "guide.all"], "baseOptions": { "category": "\"category\"", "arc": "{ innerRadius: 0.55, padAngle: 2 }" } },
     { "id": "action.createRoseChart", "kind": "action", "name": "createRosePlot", "order": 40, "anchors": ["chart.rose"], "covers": ["chart.rose", "encoding.theta", "encoding.radius", "encoding.color", "guide.axes", "guide.grid", "guide.legend", "guide.all"], "baseOptions": { "category": "\"category\"" } },
     { "id": "action.createRadialBarChart", "kind": "action", "name": "createRadialBarPlot", "order": 40, "anchors": ["chart.radialBar"], "covers": ["chart.radialBar", "encoding.theta", "encoding.radius", "encoding.color", "guide.axes", "guide.grid", "guide.legend", "guide.all"], "baseOptions": { "category": "\"category\"" } },
+    { "id": "action.createPolarScatterPlot", "kind": "action", "name": "createPolarScatterPlot", "order": 40, "anchors": ["chart.polarScatter"], "covers": ["chart.polarScatter", "encoding.theta", "encoding.radius", "encoding.color", "encoding.size", "encoding.shape", "guide.axes", "guide.grid", "guide.legend", "guide.all"], "baseOptions": { "theta": "\"angle\"", "radius": "\"distance\"" }, "optionsByConstraint": { "encoding.color": { "color": "\"category\"" }, "encoding.size": { "size": "\"value\"" }, "encoding.shape": { "shape": "\"category\"" }, "guide.axes": { "guides": "{}" }, "guide.grid": { "guides": "{}" }, "guide.legend": { "guides": "{ legend: {} }" }, "guide.all": { "guides": "{}" } } },
+    { "id": "action.createPolarLinePlot", "kind": "action", "name": "createPolarLinePlot", "order": 40, "anchors": ["chart.polarLine"], "covers": ["chart.polarLine", "encoding.theta", "encoding.radius", "encoding.color", "encoding.group", "encoding.strokeDash", "guide.axes", "guide.grid", "guide.legend", "guide.all"], "baseOptions": { "theta": "\"angle\"", "radius": "\"distance\"" }, "optionsByConstraint": { "encoding.color": { "color": "\"category\"" }, "encoding.group": { "groupBy": "\"category\"" }, "encoding.strokeDash": { "strokeDash": "{ field: \"category\" }" }, "guide.axes": { "guides": "{}" }, "guide.grid": { "guides": "{}" }, "guide.legend": { "guides": "{ legend: {} }" }, "guide.all": { "guides": "{}" } } },
     { "id": "action.createRadarChart", "kind": "action", "name": "createLineMark", "order": 40, "anchors": ["chart.radar"], "covers": ["chart.radar"], "baseOptions": { "closed": "true" } },
 
     { "id": "action.createPointMark", "kind": "action", "name": "createPointMark", "order": 40, "anchors": ["mark.point"], "covers": ["mark.point"], "baseOptions": {} },

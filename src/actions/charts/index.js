@@ -9,6 +9,7 @@ import { createParallelCoordinates } from "./parallel.js";
 import { createPiePlot } from "./pie.js";
 import { createDensityPlot } from "./density.js";
 import { createHorizonPlot } from "./horizon.js";
+import { createPolarLinePlot, createPolarScatterPlot } from "./polar.js";
 
 export function registerChartActions(ProgramClass) {
   ProgramClass.prototype.createRosePlot = createRosePlot;
@@ -23,4 +24,6 @@ export function registerChartActions(ProgramClass) {
   ProgramClass.prototype.createPiePlot = createPiePlot;
   ProgramClass.prototype.createDensityPlot = createDensityPlot;
   ProgramClass.prototype.createHorizonPlot = createHorizonPlot;
+  ProgramClass.prototype.createPolarScatterPlot = createPolarScatterPlot;
+  ProgramClass.prototype.createPolarLinePlot = createPolarLinePlot;
 }

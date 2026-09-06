@@ -106,6 +106,8 @@ interface ChartProgramActions {
   editBoxPlot(options: EditBoxPlotOptions): ChartProgram;
   createScatterPlot(options: CreateScatterPlotOptions): ChartProgram;
   createLinePlot(options: CreateLinePlotOptions): ChartProgram;
+  createPolarScatterPlot(options: CreatePolarScatterPlotOptions): ChartProgram;
+  createPolarLinePlot(options: CreatePolarLinePlotOptions): ChartProgram;
   createBarPlot(options: CreateBarPlotOptions): ChartProgram;
   createHistogram(options: CreateHistogramOptions): ChartProgram;
   createHeatmap(options: CreateHeatmapOptions): ChartProgram;
@@ -403,6 +405,25 @@ createLinePlot({ id?, data?, coordinate?, x, y, color?, groupBy?, strokeDash?, l
 
 Create a complete Cartesian line chart. `groupBy` accepts one field or a
 non-empty tuple, assigned before independent series color and dash. [Basic Charts](../api/basic-charts.md#createlineplot)
+
+### `createPolarScatterPlot`
+
+```javascript
+createPolarScatterPlot({ id?, data?, coordinate?, theta, radius, color?, size?, shape?, point?, guides? })
+```
+
+Create a complete Polar point chart from required angular and radial fields.
+Radial position remains independent from `size` and constant `point.radius`.
+[Polar positions](../api/position-encodings.md#polar-positions)
+
+### `createPolarLinePlot`
+
+```javascript
+createPolarLinePlot({ id?, data?, coordinate?, theta, radius, groupBy?, color?, strokeDash?, line?, guides? })
+```
+
+Create grouped Polar paths from required angular and radial fields. Paths stay
+open unless `line.closed: true` is explicit. [Polar positions](../api/position-encodings.md#polar-positions)
 
 ### `createBarPlot`
 

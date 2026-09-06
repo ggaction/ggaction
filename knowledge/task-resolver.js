@@ -33,7 +33,9 @@ const facadeGuideOwners = new Set([
   "createBarPlot",
   "createBoxPlot",
   "createGradientPlot",
-  "createViolinPlot"
+  "createViolinPlot",
+  "createPolarScatterPlot",
+  "createPolarLinePlot"
 ]);
 const standaloneGuideNames = new Set([
   "createAxes",
@@ -281,7 +283,9 @@ function adaptProviderDependencies(selected) {
     entry.provider.name === "createRegression" && !entry.provider.id.startsWith("exact.")
   );
   const hasPointSource = adapted.some(entry =>
-    ["createPointMark", "createScatterPlot"].includes(entry.provider.name)
+    ["createPointMark", "createScatterPlot", "createPolarScatterPlot"].includes(
+      entry.provider.name
+    )
   );
   if (hasRegression && !hasPointSource) {
     adapted = [dependencyEntry("createPointMark", {}), ...adapted];
@@ -791,6 +795,8 @@ function closeRuntimeDependencies(entries) {
     createTextMark: "text",
     createScatterPlot: "scatterPlot",
     createLinePlot: "linePlot",
+    createPolarScatterPlot: "polarScatterPlot",
+    createPolarLinePlot: "polarLinePlot",
     createAreaPlot: "areaPlot",
     createBarPlot: "barPlot",
     createBoxPlot: "boxPlot",
@@ -813,6 +819,8 @@ function closeRuntimeDependencies(entries) {
     createTextMark: "text",
     createScatterPlot: "point",
     createLinePlot: "line",
+    createPolarScatterPlot: "point",
+    createPolarLinePlot: "line",
     createAreaPlot: "area",
     createBarPlot: "bar",
     createBoxPlot: "bar",
@@ -1422,9 +1430,9 @@ function applyRequestedOptions(entries, query) {
   }
 
   const appearanceOwners = Object.freeze({
-    color: ["createScatterPlot", "createLinePlot", "createAreaPlot", "createBarPlot", "createViolinPlot", "createPiePlot", "createRosePlot", "createRadialBarPlot"],
-    size: ["createScatterPlot"],
-    shape: ["createScatterPlot"]
+    color: ["createScatterPlot", "createLinePlot", "createAreaPlot", "createBarPlot", "createViolinPlot", "createPiePlot", "createRosePlot", "createRadialBarPlot", "createPolarScatterPlot", "createPolarLinePlot"],
+    size: ["createScatterPlot", "createPolarScatterPlot"],
+    shape: ["createScatterPlot", "createPolarScatterPlot"]
   });
   for (const channel of ["color", "size", "shape"]) {
     const request = appearanceFieldRequest(query, channel);
@@ -1599,7 +1607,7 @@ function placeholderBindings(entries, appliedOptions = []) {
       );
     }
     const fieldMatches = entry.call.matchAll(
-      /\b(?:field|x|y|color|size|shape|groupBy|weight):\s*"(x|y|value|category|label|angle|date|a|b|series)"/g
+      /\b(?:field|x|y|theta|radius|color|size|shape|groupBy|weight):\s*"(x|y|value|category|label|angle|distance|date|a|b|series)"/g
     );
     for (const match of fieldMatches) {
       add(
@@ -1631,7 +1639,7 @@ function placeholderBindings(entries, appliedOptions = []) {
   }
   for (const applied of appliedOptions) {
     if (
-      !new Set(["color", "field", "groupBy", "shape", "size", "weight", "x", "y"])
+      !new Set(["color", "field", "groupBy", "shape", "size", "weight", "x", "y", "theta", "radius"])
         .has(applied.option)
     ) continue;
     let field;

@@ -2189,6 +2189,49 @@ export interface CreateScatterPlotOptions {
   guides?: false | CartesianGuideOptions;
 }
 
+export type PolarThetaChannel = string | ({ field: string; scale?: ThetaScaleOptions } & (
+  | { fieldType?: "quantitative" | "nominal" | "ordinal"; temporalUnit?: never }
+  | { fieldType: "temporal"; temporalUnit?: TemporalInputUnit }
+));
+export type PolarRadiusChannel = string | {
+  field: string;
+  fieldType?: "quantitative";
+  scale?: RadiusScaleOptions;
+};
+export type PolarChartGuideOptions = {
+  axes?: false | Pick<CreateAxesOptions, "theta" | "radius"> & {
+    coordinate?: { id?: string; type?: "auto" | "polar" };
+  };
+  grid?: false | Pick<CreateGridOptions, "theta" | "radial">;
+  legend?: false | LegendOptions;
+};
+export interface CreatePolarScatterPlotOptions {
+  id?: string;
+  data?: string;
+  coordinate?: string;
+  theta: PolarThetaChannel;
+  radius: PolarRadiusChannel;
+  color?: BasicColorChannel;
+  size?: BasicSizeChannel;
+  shape?: BasicShapeChannel;
+  point?: CreateScatterPlotOptions["point"];
+  guides?: false | PolarChartGuideOptions;
+}
+export interface CreatePolarLinePlotOptions {
+  id?: string;
+  data?: string;
+  coordinate?: string;
+  theta: PolarThetaChannel;
+  radius: PolarRadiusChannel;
+  color?: LineCategoricalColorChannel;
+  groupBy?: string | readonly [string, ...string[]];
+  strokeDash?: BasicStrokeDashChannel;
+  line?: Omit<NonNullable<CreateLinePlotOptions["line"]>, "closed"> & {
+    closed?: boolean;
+  };
+  guides?: false | PolarChartGuideOptions;
+}
+
 export type GroupEncodingOptions = { target?: string; fieldType?: "nominal" } & (
   | { field: string; fields?: never }
   | { fields: readonly [string, ...string[]]; field?: never }
@@ -3381,6 +3424,8 @@ export class ChartProgram {
   editViolinPlot(options: EditViolinPlotOptions): ChartProgram;
   createScatterPlot(options: CreateScatterPlotOptions): ChartProgram;
   createLinePlot(options: CreateLinePlotOptions): ChartProgram;
+  createPolarScatterPlot(options: CreatePolarScatterPlotOptions): ChartProgram;
+  createPolarLinePlot(options: CreatePolarLinePlotOptions): ChartProgram;
   createAreaPlot(options: CreateAreaPlotOptions): ChartProgram;
   createBarPlot(options: CreateBarPlotOptions): ChartProgram;
   createHistogram(options: CreateHistogramOptions): ChartProgram;

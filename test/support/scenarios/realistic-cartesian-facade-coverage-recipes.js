@@ -635,7 +635,7 @@ function titleStyle(text, at, index) {
   return {
     text,
     ...(at === undefined ? {} : { at }),
-    offset: text.includes("secondary") ? 170 : 82,
+    offset: text.includes("secondary") ? 360 : 82,
     rotation: {
       value: text.includes("secondary")
         ? index % 2 === 0 ? -90 : -Math.PI / 2

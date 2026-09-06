@@ -378,6 +378,8 @@ function addFacadeMarkOverrides(overrides, op, args) {
   const facades = {
     createScatterPlot: ["scatterPlot", "point", ["fill", "stroke"]],
     createLinePlot: ["linePlot", "line", ["stroke"]],
+    createPolarScatterPlot: ["polarScatterPlot", "point", ["fill", "stroke"]],
+    createPolarLinePlot: ["polarLinePlot", "line", ["stroke"]],
     createBarPlot: ["barPlot", "bar", ["fill", "stroke"]],
     createAreaPlot: ["areaPlot", "area", ["fill", "stroke"]],
     createPiePlot: ["piePlot", "arc", ["fill", "stroke"]],

@@ -979,6 +979,16 @@
     "layer": "user-facing",
     "domain": "charts"
   },
+  "createPolarScatterPlot": {
+    "operation": "create",
+    "layer": "user-facing",
+    "domain": "charts"
+  },
+  "createPolarLinePlot": {
+    "operation": "create",
+    "layer": "user-facing",
+    "domain": "charts"
+  },
   "createBarPlot": {
     "operation": "create",
     "layer": "user-facing",

@@ -23,21 +23,22 @@ test("builds both Polar point charts with the approved public chains", () => {
   assert.deepEqual(carsProgram.trace.children.map(node => node.op), [
     "createCanvas",
     "createData",
-    "createPointMark",
-    "encodeTheta",
-    "encodeR",
-    "encodeColor",
-    "encodePointRadius"
+    "createPolarScatterPlot"
   ]);
   assert.deepEqual(fashionProgram.trace.children.map(node => node.op), [
     "createCanvas",
     "createData",
-    "createPointMark",
-    "encodeTheta",
-    "encodeR",
-    "encodeColor",
-    "encodePointRadius"
+    "createPolarScatterPlot"
   ]);
+  for (const program of [carsProgram, fashionProgram]) {
+    assert.deepEqual(program.trace.children.at(-1).children.map(node => node.op), [
+      "createPointMark",
+      "encodeTheta",
+      "encodeR",
+      "encodePointRadius",
+      "encodeColor"
+    ]);
+  }
   assert.equal(carsProgram.semanticSpec.layers[0].coordinate, "polar");
   assert.equal(fashionProgram.semanticSpec.scales.find(
     scale => scale.id === "radius"

@@ -118,6 +118,29 @@ async function testNodeConsumer(directory) {
       .encodeX({ field: "x" })
       .encodeY({ field: "y" });
     assert.equal(basicThemed.graphicSpec.objects.point.items[0].properties.fill, "#60a5fa");
+    const polarBase = chart()
+      .createCanvas({ width: 240, height: 240, margin: 40 })
+      .createData({ values: [
+        { angle: 0, distance: 2, group: "A" },
+        { angle: 120, distance: 4, group: "A" },
+        { angle: 240, distance: 3, group: "A" }
+      ] });
+    const polarScatter = polarBase.createPolarScatterPlot({
+      theta: "angle", radius: "distance", color: "group",
+      point: { radius: 4 }, guides: false
+    });
+    const polarLine = polarBase.createPolarLinePlot({
+      theta: "angle", radius: "distance", groupBy: "group",
+      line: { closed: true }, guides: false
+    });
+    assert.equal(polarScatter.semanticSpec.layers[0].mark.type, "point");
+    assert.equal(polarScatter.semanticSpec.coordinates[0].type, "polar");
+    assert.equal(
+      polarLine.graphicSpec.objects.polarLinePlot.items[0].properties.commands.at(-1).op,
+      "Z"
+    );
+    assert.equal(basicChart().createPolarScatterPlot, undefined);
+    assert.equal(basicChart().createPolarLinePlot, undefined);
     const axisLifecycle = chart()
       .createCanvas({ width: 240, height: 180, margin: 50 })
       .createData({ values: [{ x: 1, y: 2 }, { x: 2, y: 4 }] })
@@ -1490,6 +1513,8 @@ async function testTypeScriptConsumer(directory) {
       type CreateHeatmapOptions,
       type CreateHistogramOptions,
       type CreateLinePlotOptions,
+      type CreatePolarLinePlotOptions,
+      type CreatePolarScatterPlotOptions,
       type ColorLayout,
       type ComputedDataOptions,
       type ComputedExpression,
@@ -1546,6 +1571,19 @@ async function testTypeScriptConsumer(directory) {
     const themeOptions: ApplyThemeOptions = { theme: themeName };
     const themedProgram: ChartProgram = program.applyTheme(themeOptions).removeTheme();
     const basicThemedProgram: BasicChartProgram = basicChart().applyTheme(themeOptions);
+    const polarScatterOptions: CreatePolarScatterPlotOptions = {
+      theta: "angle", radius: "distance", point: { radius: 4 }, guides: false
+    };
+    const polarLineOptions: CreatePolarLinePlotOptions = {
+      theta: "angle", radius: "distance", groupBy: "series",
+      line: { closed: true }, guides: false
+    };
+    program.createPolarScatterPlot(polarScatterOptions);
+    program.createPolarLinePlot(polarLineOptions);
+    // @ts-expect-error Polar facades are Full only.
+    basicChart().createPolarScatterPlot(polarScatterOptions);
+    // @ts-expect-error Polar facades are Full only.
+    basicChart().createPolarLinePlot(polarLineOptions);
     const fitOptions: FitCanvasOptions = { padding: 4, overflow: "report" };
     const labelLayout: AxisLabelLayoutOptions = {
       rotation: { value: -30, unit: "degrees" },
@@ -2688,6 +2726,7 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.a
       "parallel-coordinates",
       "horizon",
       "violin-plot",
+      "polar-scatter-line-facades",
       "right-categorical-legend-offset",
       "sequential-palette-count",
       "typescript",

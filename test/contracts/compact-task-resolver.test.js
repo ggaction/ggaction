@@ -89,9 +89,9 @@ async function executeAuthoring(packet, { rows, renderer }) {
 
 test("chart packets either materialize their chart or expose the missing decision", async () => {
   const rows = [
-    { x: 1, y: 2, value: 0, category: "A", series: "one" },
-    { x: 2, y: 3, value: 3, category: "B", series: "one" },
-    { x: 3, y: 4, value: 4, category: "C", series: "one" }
+    { x: 1, y: 2, angle: 0, distance: 2, value: 0, category: "A", series: "one" },
+    { x: 2, y: 3, angle: 120, distance: 3, value: 3, category: "B", series: "one" },
+    { x: 3, y: 4, angle: 240, distance: 4, value: 4, category: "C", series: "one" }
   ];
   for (const [query, kind, count, unresolved] of [
     ["pie chart", "arc", 3, []],
@@ -99,6 +99,8 @@ test("chart packets either materialize their chart or expose the missing decisio
     ["density plot", "area", 1, []],
     ["rose chart", "arc", 3, []],
     ["radial bar chart", "arc", 3, []],
+    ["polar scatter plot", "point", 3, []],
+    ["polar line chart", "line", 1, []],
     ["radar chart", "line", 1, []],
     ["area chart", "area", 1, []],
     ["strip plot", "point", 3, ["chart.strip.placement"]]
@@ -139,11 +141,19 @@ test("raw mark requests remain distinct from incomplete chart requests", () => {
 });
 
 test("specific polar phrases shadow only overlapping generic chart phrases", async () => {
-  for (const query of ["radial bar chart", "polar area chart"]) {
+  for (const query of ["radial bar chart", "polar area chart", "polar scatter plot", "polar line chart"]) {
     const packet = searchGgaction(query);
-    assert.deepEqual(packet.matchedConstraints, [query === "radial bar chart" ? "chart.radialBar" : "chart.rose"], query);
+    const constraint = {
+      "radial bar chart": "chart.radialBar",
+      "polar area chart": "chart.rose",
+      "polar scatter plot": "chart.polarScatter",
+      "polar line chart": "chart.polarLine"
+    }[query];
+    assert.deepEqual(packet.matchedConstraints, [constraint], query);
     assert.equal(packet.actionPlan.some(entry => entry.name === "createBarPlot"), false, query);
     assert.equal(packet.actionPlan.some(entry => entry.name === "createAreaMark"), false, query);
+    assert.equal(packet.actionPlan.some(entry => entry.name === "createScatterPlot"), false, query);
+    assert.equal(packet.actionPlan.some(entry => entry.name === "createLinePlot"), false, query);
   }
   const separate = searchGgaction("radial bar chart and bar chart");
   assert.ok(separate.matchedConstraints.includes("chart.radialBar"));
@@ -153,6 +163,26 @@ test("specific polar phrases shadow only overlapping generic chart phrases", asy
     { value: 3, category: "B", series: "one" }
   ] });
   assert.deepEqual(program.semanticSpec.layers.map(layer => layer.mark.type), ["arc", "bar"]);
+});
+
+test("polar point and line discovery select the complete facade and keep radar distinct", async () => {
+  for (const [query, action, mark] of [
+    ["polar scatter plot with size encoding", "createPolarScatterPlot", "point"],
+    ["polar line chart with a color legend", "createPolarLinePlot", "line"]
+  ]) {
+    const packet = searchGgaction(query);
+    assert.deepEqual(packet.actionPlan.map(entry => entry.name), [action]);
+    assert.deepEqual(packet.unresolved, []);
+    const { program } = await executeAuthoring(packet, { rows: [
+      { angle: 0, distance: 2, value: 1, category: "A" },
+      { angle: 120, distance: 3, value: 2, category: "B" },
+      { angle: 240, distance: 4, value: 3, category: "A" }
+    ] });
+    assert.equal(program.semanticSpec.layers[0].mark.type, mark);
+    assert.equal(program.semanticSpec.coordinates[0].type, "polar");
+  }
+  assert.deepEqual(searchGgaction("radar chart").matchedConstraints, ["chart.radar"]);
+  assert.deepEqual(searchGgaction("polar line chart").matchedConstraints, ["chart.polarLine"]);
 });
 
 test("rose and radial bar discovery select distinct complete measurement owners", async () => {
@@ -178,9 +208,9 @@ test("intent taxonomy covers every supported constraint with exact owners", asyn
   assert.equal(validate(taxonomy), true, JSON.stringify(validate.errors));
   assert.deepEqual(validateResolverKnowledge(), {
     cards: cards.count,
-    constraints: 91,
-    providers: 85,
-    supported: 86,
+    constraints: 93,
+    providers: 87,
+    supported: 88,
     unsupported: 5
   });
   assert.equal(taxonomy.packageVersion, cards.packageVersion);

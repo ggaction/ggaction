@@ -115,6 +115,8 @@
     "ViolinPlot": ["violin plot", "mirrored density distribution"],
     "ScatterPlot": ["scatter plot", "two-field relationship"],
     "LinePlot": ["line chart", "ordered trend"],
+    "PolarScatterPlot": ["polar scatter plot", "angular and radial relationship", "radial scatter plot"],
+    "PolarLinePlot": ["polar line plot", "angular and radial trend", "radial line chart"],
     "BarPlot": ["bar chart", "category comparison"],
     "Heatmap": ["heatmap", "two-dimensional distribution"],
     "Axes": ["x and y axes", "Cartesian guides"],
@@ -172,6 +174,8 @@
     "createBoxPlot": "Creates a Box plot owner that defers geometry and guides until compatible x/y roles are available.",
     "createGradientPlot": "Creates a Gradient plot owner that defers geometry and guides until compatible x/y roles are available.",
     "createScatterPlot": "Draws a complete scatter plot that shows the relationship between two fields as points.",
+    "createPolarScatterPlot": "Draws a complete Polar scatter plot that maps observations to angular and radial position while keeping glyph size independent.",
+    "createPolarLinePlot": "Draws a complete Polar line plot that connects angular and radial observations as open or explicitly closed paths.",
     "createTickMark": "Creates short tick glyphs for compact one-dimensional distributions or aligned value marks.",
     "encodeAngle": "Maps a constant or quantitative field to point or tick rotation angle.",
     "editLegendLayout": "Edits one legend's position, alignment, direction, columns, title placement, and item spacing.",
@@ -267,6 +271,14 @@
       "x": "x",
       "y": "y",
       "color": "value"
+    },
+    "createPolarScatterPlot": {
+      "theta": "angle",
+      "radius": "distance"
+    },
+    "createPolarLinePlot": {
+      "theta": "angle",
+      "radius": "distance"
     },
     "createParallelCoordinates": {
       "dimensions": ["a", "b"]
@@ -371,6 +383,14 @@
     "createBarPlot": [
       "createBarPlot({ x, y, width?, color? })",
       "createBarPlot({ x, y, stack?, groupBy?, guides? })"
+    ],
+    "createPolarScatterPlot": [
+      "createPolarScatterPlot({ theta, radius })",
+      "createPolarScatterPlot({ theta, radius, color?, size?, shape?, guides? })"
+    ],
+    "createPolarLinePlot": [
+      "createPolarLinePlot({ theta, radius })",
+      "createPolarLinePlot({ theta, radius, groupBy?, color?, strokeDash?, guides? })"
     ],
     "createViolinPlot": [
       "createViolinPlot({ x, y, density?, area? })",

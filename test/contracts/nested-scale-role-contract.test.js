@@ -353,6 +353,52 @@ function buildScaleWitness(action, path, type) {
           : { x: "x", y: positionChannel(type, "y") }),
         guides: false
       });
+    case "createPolarScatterPlot":
+      if (path === "color.scale.type") {
+        return source().createPolarScatterPlot({
+          theta: { field: "category", fieldType: "nominal" },
+          radius: "value", color: colorChannel(type), guides: false
+        });
+      }
+      if (path === "size.scale.type") {
+        return source().createPolarScatterPlot({
+          theta: { field: "category", fieldType: "nominal" }, radius: "value",
+          size: { field: "size", scale: { type } }, guides: false
+        });
+      }
+      if (path === "shape.scale.type") {
+        return source().createPolarScatterPlot({
+          theta: { field: "category", fieldType: "nominal" }, radius: "value",
+          shape: { field: "category", scale: { type } }, guides: false
+        });
+      }
+      return source().createPolarScatterPlot({
+        theta: path.startsWith("theta.")
+          ? positionChannel(type)
+          : { field: "category", fieldType: "nominal" },
+        radius: path.startsWith("radius.") ? positionChannel(type) : "value",
+        guides: false
+      });
+    case "createPolarLinePlot":
+      if (path === "color.scale.type") {
+        return source().createPolarLinePlot({
+          theta: { field: "category", fieldType: "nominal" },
+          radius: "value", color: colorChannel(type), guides: false
+        });
+      }
+      if (path === "strokeDash.scale.type") {
+        return source().createPolarLinePlot({
+          theta: { field: "category", fieldType: "nominal" }, radius: "value",
+          strokeDash: { field: "category", scale: { type } }, guides: false
+        });
+      }
+      return source().createPolarLinePlot({
+        theta: path.startsWith("theta.")
+          ? positionChannel(type)
+          : { field: "category", fieldType: "nominal" },
+        radius: path.startsWith("radius.") ? positionChannel(type) : "value",
+        guides: false
+      });
     case "createBarPlot":
       return source().createBarPlot({
         ...(path === "color.scale.type"
@@ -506,8 +552,8 @@ test("derives only role-reachable nested scale type paths", async () => {
     /(?:^|\.)(?:xScale|yScale|valueScale|densityScale|radiusScale|scale)\.type$/u.test(option.path)
   );
 
-  assert.equal(scaleTypes.length, 86);
-  assert.equal(scaleTypes.reduce((sum, option) => sum + option.values.length, 0), 346);
+  assert.equal(scaleTypes.length, 95);
+  assert.equal(scaleTypes.reduce((sum, option) => sum + option.values.length, 0), 373);
   assert.doesNotMatch(declarations, /scale\?: ScaleOptions/u);
   assert.equal(options.has("option-path:createScatterPlot.x.scale.palette"), false);
   assert.equal(options.has("option-path:createScatterPlot.x.scale.interpolate"), false);
@@ -557,7 +603,7 @@ test("executes every strict nested scale type path and literal", async () => {
       witnesses += 1;
     }
   }
-  assert.equal(witnesses, 346);
+  assert.equal(witnesses, 373);
 });
 
 test("materializes every role-specific nested scale type vocabulary", () => {

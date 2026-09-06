@@ -102,6 +102,8 @@ export type {
   CreateRegressionBandOptions,
   CreateRegressionLineOptions,
   CreateLinePlotOptions,
+  CreatePolarLinePlotOptions,
+  CreatePolarScatterPlotOptions,
   CreateParallelCoordinatesOptions,
   CreateScatterPlotOptions,
   CreateScaleOptions,
