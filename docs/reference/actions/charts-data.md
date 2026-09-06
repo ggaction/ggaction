@@ -191,6 +191,28 @@ Create closed Radar paths from validated long rows or an explicit wide-to-long
 Fold. Every series must contain the same ordered dimensions exactly once. Values
 are used as supplied; the facade does not infer normalization. [Polar positions](../../api/position-encodings.md#polar-positions)
 
+## `createRugPlot`
+
+```javascript
+createRugPlot({ id?, data?, x, edge: "top" | "bottom", tick?, guides? })
+createRugPlot({ id?, data?, y, edge: "left" | "right", tick?, guides? })
+```
+
+Create a one-dimensional distribution from quantitative or temporal observations.
+Ticks use an explicit plot edge as their constant position, so no dummy field is
+needed. The default guide contains only the measure axis.
+
+## `createStripPlot`
+
+```javascript
+createStripPlot({ id?, data?, x, y?, color?, size?, shape?, point?, jitter?, guides? })
+```
+
+Create a point strip from one measure or from one measure plus one categorical
+slot. Optional deterministic jitter moves only the category or constant slot and
+preserves the measured coordinate. Category jitter uses band units; a centered
+one-measure strip uses pixel units.
+
 ## `createBarPlot`
 
 ```javascript

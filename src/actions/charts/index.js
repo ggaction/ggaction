@@ -11,6 +11,7 @@ import { createDensityPlot } from "./density.js";
 import { createHorizonPlot } from "./horizon.js";
 import { createPolarLinePlot, createPolarScatterPlot } from "./polar.js";
 import { createRadarPlot } from "./radar.js";
+import { createRugPlot, createStripPlot } from "./rug-strip.js";
 
 export function registerChartActions(ProgramClass) {
   ProgramClass.prototype.createRosePlot = createRosePlot;
@@ -28,4 +29,6 @@ export function registerChartActions(ProgramClass) {
   ProgramClass.prototype.createPolarScatterPlot = createPolarScatterPlot;
   ProgramClass.prototype.createPolarLinePlot = createPolarLinePlot;
   ProgramClass.prototype.createRadarPlot = createRadarPlot;
+  ProgramClass.prototype.createRugPlot = createRugPlot;
+  ProgramClass.prototype.createStripPlot = createStripPlot;
 }

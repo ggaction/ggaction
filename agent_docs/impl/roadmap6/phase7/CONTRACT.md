@@ -81,7 +81,7 @@ createStripPlot({
 ```
 
 - Rug는 quantitative/temporal measure 하나와 plot-edge constant datum을 결합한다. x measure는 top/bottom,
-  y measure는 left/right만 허용한다. Bottom/top tick은 90도, left/right는 0도로 기존 `encodeAngle`을
+  y measure는 left/right만 허용한다. Bottom/top tick은 0도, left/right는 90도로 기존 `encodeAngle`을
   호출한다. Dummy source field나 hidden dataset을 만들지 않는다.
 - Strip은 하나 또는 두 position을 받는다. 하나면 그 field가 measure이고 반대 축의 center datum을 쓴다.
   둘이면 정확히 하나가 quantitative/temporal measure이고 다른 하나가 nominal/ordinal slot이어야 한다.

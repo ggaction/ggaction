@@ -118,6 +118,8 @@
     "PolarScatterPlot": ["polar scatter plot", "angular and radial relationship", "radial scatter plot"],
     "PolarLinePlot": ["polar line plot", "angular and radial trend", "radial line chart"],
     "RadarPlot": ["radar plot", "radar chart", "spider chart", "closed multivariate profile"],
+    "RugPlot": ["rug plot", "one-dimensional tick distribution", "edge-aligned observations"],
+    "StripPlot": ["strip plot", "jittered observations", "one-dimensional point distribution"],
     "BarPlot": ["bar chart", "category comparison"],
     "Heatmap": ["heatmap", "two-dimensional distribution"],
     "Axes": ["x and y axes", "Cartesian guides"],
@@ -286,6 +288,13 @@
       "category": "category",
       "value": "value"
     },
+    "createRugPlot": {
+      "x": "value",
+      "edge": "bottom"
+    },
+    "createStripPlot": {
+      "x": "value"
+    },
     "createParallelCoordinates": {
       "dimensions": ["a", "b"]
     },
@@ -401,6 +410,14 @@
     "createRadarPlot": [
       "createRadarPlot({ category, value, groupBy?, order? })",
       "createRadarPlot({ wide: { fields, as? }, groupBy?, order?, color?, strokeDash?, guides? })"
+    ],
+    "createRugPlot": [
+      "createRugPlot({ x, edge: \"top\" | \"bottom\", tick?, guides? })",
+      "createRugPlot({ y, edge: \"left\" | \"right\", tick?, guides? })"
+    ],
+    "createStripPlot": [
+      "createStripPlot({ x, point?, jitter?, guides? })",
+      "createStripPlot({ x, y, color?, size?, shape?, point?, jitter?, guides? })"
     ],
     "createViolinPlot": [
       "createViolinPlot({ x, y, density?, area? })",

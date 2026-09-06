@@ -11,6 +11,7 @@ import {
   finiteMidpoint,
   requireFiniteResult
 } from "../grammar/numeric.js";
+import { normalizePositionDatum } from "../grammar/positionDatum.js";
 import { mapScaleConsumerValues } from "./scales/map.js";
 
 export function resolveRowEncodingValues(program, layer, dataset, channel) {
@@ -23,9 +24,17 @@ export function resolveRowEncodingValues(program, layer, dataset, channel) {
     );
   }
   const categorical = ["nominal", "ordinal"].includes(encoding.fieldType);
-  const values = readScaleField(dataset.values, encoding.field, encoding.fieldType, {
-    allowUnknown: Object.hasOwn(scale, "unknown"), temporalUnit: encoding.temporalUnit
-  });
+  const values = Object.hasOwn(encoding, "datum")
+    ? Array(dataset.values.length).fill(normalizePositionDatum(
+        encoding.datum,
+        encoding.fieldType,
+        channel,
+        encoding.temporalUnit,
+        layer.mark.type[0].toUpperCase() + layer.mark.type.slice(1)
+      ))
+    : readScaleField(dataset.values, encoding.field, encoding.fieldType, {
+        allowUnknown: Object.hasOwn(scale, "unknown"), temporalUnit: encoding.temporalUnit
+      });
   if (categorical && OFFSET_POSITION_CHANNELS.includes(channel)) {
     return mapOrdinalOffsetValues(values, scale);
   }

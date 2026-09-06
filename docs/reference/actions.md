@@ -90,10 +90,12 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createRegressionData`](./actions/charts-data.md#createregressiondata) | user-facing | core |
 | [`createRegressionLine`](./actions/advanced.md#semantic-resources-and-regression-layers) | user-facing | statistics |
 | [`createRosePlot`](./actions/charts-data.md#createroseplot) | user-facing | charts |
+| [`createRugPlot`](./actions/charts-data.md#createrugplot) | user-facing | charts |
 | [`createRuleMark`](./actions/marks.md#createrulemark) | user-facing | marks |
 | [`createScale`](./actions/extension.md#extension-actions) | user-facing | core |
 | [`createScatterPlot`](./actions/charts-data.md#createscatterplot) | user-facing | charts |
 | [`createStackData`](./actions/statistics.md#createstackdata) | user-facing | statistics |
+| [`createStripPlot`](./actions/charts-data.md#createstripplot) | user-facing | charts |
 | [`createSummaryData`](./actions/statistics.md#createsummarydata) | user-facing | statistics |
 | [`createTextMark`](./actions/marks.md#createtextmark) | user-facing | marks |
 | [`createThetaAxis`](./actions/guides.md#createthetaaxis) | user-facing | axes |

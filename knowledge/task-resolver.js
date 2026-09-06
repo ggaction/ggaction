@@ -36,7 +36,9 @@ const facadeGuideOwners = new Set([
   "createViolinPlot",
   "createPolarScatterPlot",
   "createPolarLinePlot",
-  "createRadarPlot"
+  "createRadarPlot",
+  "createRugPlot",
+  "createStripPlot"
 ]);
 const standaloneGuideNames = new Set([
   "createAxes",
@@ -786,6 +788,8 @@ function closeRuntimeDependencies(entries) {
     createPolarScatterPlot: "polarScatterPlot",
     createPolarLinePlot: "polarLinePlot",
     createRadarPlot: "radarPlot",
+    createRugPlot: "rugPlot",
+    createStripPlot: "stripPlot",
     createAreaPlot: "areaPlot",
     createBarPlot: "barPlot",
     createBoxPlot: "boxPlot",
@@ -811,6 +815,8 @@ function closeRuntimeDependencies(entries) {
     createPolarScatterPlot: "point",
     createPolarLinePlot: "line",
     createRadarPlot: "line",
+    createRugPlot: "tick",
+    createStripPlot: "point",
     createAreaPlot: "area",
     createBarPlot: "bar",
     createBoxPlot: "bar",
@@ -1706,12 +1712,6 @@ function runtimeClosureDecisions(entries) {
   const unresolved = [];
   const unsupported = [];
   const chartConstraints = new Set(entries.flatMap(entry => entry.coverage));
-  if (chartConstraints.has("chart.strip")) {
-    unresolved.push(unresolvedDecision(
-      "chart.strip.placement",
-      "A point strip needs a measure field and a categorical or constant placement. Resolve those positions before treating the point-mark scaffold as a chart; a tick mark alone is not a strip plot."
-    ));
-  }
   const markCreators = [...names].filter(name =>
     name.startsWith("create") && (name.endsWith("Mark") || name.endsWith("Plot"))
   );

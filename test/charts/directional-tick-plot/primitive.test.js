@@ -46,7 +46,7 @@ test("authors an actual-data one-dimensional distribution without x-only inferen
   assert.equal(new Set(tickItems.map(item => item.properties.y2)).size, 1);
   assert.deepEqual(
     [tickItems[0].properties.y1, tickItems[0].properties.y2],
-    [146, 118]
+    [164, 136]
   );
   assert.deepEqual(
     program.graphicSpec.objects.canvas.properties,
@@ -54,6 +54,10 @@ test("authors an actual-data one-dimensional distribution without x-only inferen
   );
   assert.equal(
     program.trace.children.some(node => node.op === "createTickMark"),
+    false
+  );
+  assert.equal(
+    program.trace.children.some(node => node.op === "createRugPlot"),
     false
   );
 });

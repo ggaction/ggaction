@@ -103,7 +103,8 @@ test("chart packets either materialize their chart or expose the missing decisio
     ["polar line chart", "line", 1, []],
     ["radar chart", "line", 1, []],
     ["area chart", "area", 1, []],
-    ["strip plot", "point", 3, ["chart.strip.placement"]]
+    ["rug plot", "tick", 3, []],
+    ["strip plot", "point", 3, []]
   ]) {
     const packet = searchGgaction(query);
     assert.deepEqual(packet.unresolved.map(entry => entry.constraint), unresolved, query);
@@ -137,7 +138,8 @@ test("raw mark requests remain distinct from incomplete chart requests", () => {
     assert.deepEqual(packet.actionPlan.map(entry => entry.name), [action], query);
   }
   assert.deepEqual(searchGgaction("area chart").actionPlan.map(entry => entry.name), ["createAreaPlot"]);
-  assert.match(searchGgaction("strip plot").unresolved[0].reason, /measure|placement/u);
+  assert.deepEqual(searchGgaction("rug plot").actionPlan.map(entry => entry.name), ["createRugPlot"]);
+  assert.deepEqual(searchGgaction("strip plot").actionPlan.map(entry => entry.name), ["createStripPlot"]);
 });
 
 test("specific polar phrases shadow only overlapping generic chart phrases", async () => {
@@ -218,9 +220,9 @@ test("intent taxonomy covers every supported constraint with exact owners", asyn
   assert.equal(validate(taxonomy), true, JSON.stringify(validate.errors));
   assert.deepEqual(validateResolverKnowledge(), {
     cards: cards.count,
-    constraints: 93,
-    providers: 87,
-    supported: 88,
+    constraints: 94,
+    providers: 88,
+    supported: 89,
     unsupported: 5
   });
   assert.equal(taxonomy.packageVersion, cards.packageVersion);

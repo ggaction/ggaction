@@ -144,6 +144,15 @@ async function testNodeConsumer(directory) {
         id: "radarWide", wide: { fields: ["speed", "quality", "cost"] },
         guides: false
       });
+    const rug = polarBase.createRugPlot({
+      x: "distance", edge: "bottom", tick: { length: 10 }, guides: false
+    });
+    const strip = polarBase.createStripPlot({
+      x: "distance",
+      y: { field: "group", fieldType: "nominal" },
+      jitter: { maxOffset: { band: 0.1 }, seed: "package-strip", key: "angle" },
+      guides: false
+    });
     assert.equal(polarScatter.semanticSpec.layers[0].mark.type, "point");
     assert.equal(polarScatter.semanticSpec.coordinates[0].type, "polar");
     assert.equal(
@@ -161,9 +170,15 @@ async function testNodeConsumer(directory) {
       radarWide.graphicSpec.objects.radarWide.items[0].properties.commands.at(-1).op,
       "Z"
     );
+    assert.equal(rug.graphicSpec.objects.rugPlot.items.length, 3);
+    assert.equal(strip.graphicSpec.objects.stripPlot.items.length, 3);
+    assert.equal(rug.trace.children.at(-1).op, "createRugPlot");
+    assert.equal(strip.trace.children.at(-1).op, "createStripPlot");
     assert.equal(basicChart().createPolarScatterPlot, undefined);
     assert.equal(basicChart().createPolarLinePlot, undefined);
     assert.equal(basicChart().createRadarPlot, undefined);
+    assert.equal(basicChart().createRugPlot, undefined);
+    assert.equal(basicChart().createStripPlot, undefined);
     const axisLifecycle = chart()
       .createCanvas({ width: 240, height: 180, margin: 50 })
       .createData({ values: [{ x: 1, y: 2 }, { x: 2, y: 4 }] })
@@ -1539,6 +1554,8 @@ async function testTypeScriptConsumer(directory) {
       type CreatePolarLinePlotOptions,
       type CreatePolarScatterPlotOptions,
       type CreateRadarPlotOptions,
+      type CreateRugPlotOptions,
+      type CreateStripPlotOptions,
       type ColorLayout,
       type ComputedDataOptions,
       type ComputedExpression,
@@ -1609,10 +1626,19 @@ async function testTypeScriptConsumer(directory) {
     const radarWideOptions: CreateRadarPlotOptions = {
       wide: { fields: ["speed", "quality", "cost"] }, guides: false
     };
+    const rugOptions: CreateRugPlotOptions = {
+      x: "value", edge: "bottom", tick: { length: 10 }, guides: false
+    };
+    const stripOptions: CreateStripPlotOptions = {
+      x: "value", y: { field: "category", fieldType: "nominal" },
+      jitter: { maxOffset: { band: 0.1 }, seed: "typed-strip" }, guides: false
+    };
     program.createPolarScatterPlot(polarScatterOptions);
     program.createPolarLinePlot(polarLineOptions);
     program.createRadarPlot(radarOptions);
     program.createRadarPlot(radarWideOptions);
+    program.createRugPlot(rugOptions);
+    program.createStripPlot(stripOptions);
     // @ts-expect-error Polar facades are Full only.
     basicChart().createPolarScatterPlot(polarScatterOptions);
     // @ts-expect-error Polar facades are Full only.
@@ -1621,6 +1647,10 @@ async function testTypeScriptConsumer(directory) {
     basicChart().createRadarPlot(radarOptions);
     // @ts-expect-error Radar facade is Full only.
     basicChart().createRadarPlot(radarWideOptions);
+    // @ts-expect-error Rug facade is Full only.
+    basicChart().createRugPlot(rugOptions);
+    // @ts-expect-error Strip facade is Full only.
+    basicChart().createStripPlot(stripOptions);
     const fitOptions: FitCanvasOptions = { padding: 4, overflow: "report" };
     const labelLayout: AxisLabelLayoutOptions = {
       rotation: { value: -30, unit: "degrees" },
@@ -2763,7 +2793,7 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.a
       "parallel-coordinates",
       "horizon",
       "violin-plot",
-      "polar-and-radar-facades",
+      "polar-radar-rug-strip-facades",
       "right-categorical-legend-offset",
       "sequential-palette-count",
       "typescript",

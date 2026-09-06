@@ -13072,10 +13072,12 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createRegressionData`](./reference/actions/charts-data/#createregressiondata) | user-facing | core |
 | [`createRegressionLine`](./reference/actions/advanced/#semantic-resources-and-regression-layers) | user-facing | statistics |
 | [`createRosePlot`](./reference/actions/charts-data/#createroseplot) | user-facing | charts |
+| [`createRugPlot`](./reference/actions/charts-data/#createrugplot) | user-facing | charts |
 | [`createRuleMark`](./reference/actions/marks/#createrulemark) | user-facing | marks |
 | [`createScale`](./reference/actions/extension/#extension-actions) | user-facing | core |
 | [`createScatterPlot`](./reference/actions/charts-data/#createscatterplot) | user-facing | charts |
 | [`createStackData`](./reference/actions/statistics/#createstackdata) | user-facing | statistics |
+| [`createStripPlot`](./reference/actions/charts-data/#createstripplot) | user-facing | charts |
 | [`createSummaryData`](./reference/actions/statistics/#createsummarydata) | user-facing | statistics |
 | [`createTextMark`](./reference/actions/marks/#createtextmark) | user-facing | marks |
 | [`createThetaAxis`](./reference/actions/guides/#createthetaaxis) | user-facing | axes |
@@ -13415,6 +13417,28 @@ createRadarPlot({ id?, data?, coordinate?, wide: { fields, as? }, groupBy?, orde
 Create closed Radar paths from validated long rows or an explicit wide-to-long
 Fold. Every series must contain the same ordered dimensions exactly once. Values
 are used as supplied; the facade does not infer normalization. [Polar positions](./api/position-encodings/#polar-positions)
+
+## `createRugPlot`
+
+```javascript
+createRugPlot({ id?, data?, x, edge: "top" | "bottom", tick?, guides? })
+createRugPlot({ id?, data?, y, edge: "left" | "right", tick?, guides? })
+```
+
+Create a one-dimensional distribution from quantitative or temporal observations.
+Ticks use an explicit plot edge as their constant position, so no dummy field is
+needed. The default guide contains only the measure axis.
+
+## `createStripPlot`
+
+```javascript
+createStripPlot({ id?, data?, x, y?, color?, size?, shape?, point?, jitter?, guides? })
+```
+
+Create a point strip from one measure or from one measure plus one categorical
+slot. Optional deterministic jitter moves only the category or constant slot and
+preserves the measured coordinate. Category jitter uses band units; a centered
+one-measure strip uses pixel units.
 
 ## `createBarPlot`
 
@@ -15623,6 +15647,8 @@ interface ChartProgramActions {
   createPolarScatterPlot(options: CreatePolarScatterPlotOptions): ChartProgram;
   createPolarLinePlot(options: CreatePolarLinePlotOptions): ChartProgram;
   createRadarPlot(options: CreateRadarPlotOptions): ChartProgram;
+  createRugPlot(options: CreateRugPlotOptions): ChartProgram;
+  createStripPlot(options: CreateStripPlotOptions): ChartProgram;
   createAreaPlot(options: CreateAreaPlotOptions): ChartProgram;
   createBarPlot(options: CreateBarPlotOptions): ChartProgram;
   createHistogram(options: CreateHistogramOptions): ChartProgram;

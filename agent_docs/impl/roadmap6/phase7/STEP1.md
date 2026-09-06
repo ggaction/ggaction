@@ -6,9 +6,9 @@
 - [x] 전체 실행 사용자 승인과 기준 ref 기록
 - [x] R6-P7-W1 Polar Scatter와 Line facade
 - [x] R6-P7-W2 Radar long-form과 explicit fold
-- [ ] R6-P7-W3 Rug와 Strip placement
-- [ ] 모든 시각 variant의 primitive target 작성·표시·V 승인
-- [ ] 승인된 variant의 public 구현과 같은 실행의 primitive/public render 비교
+- [x] R6-P7-W3 Rug와 Strip placement
+- [x] 모든 시각 variant의 primitive target 작성·표시·V 승인
+- [x] 승인된 variant의 public 구현과 같은 실행의 primitive/public render 비교
 - [ ] 누적 검증·migration·문서·원장 동기화
 - [ ] X Gate의 증거 commit/push와 명시적 사용자 승인 기록
 

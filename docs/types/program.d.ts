@@ -1401,7 +1401,7 @@ export type DatumPositionEncodingOptions =
       }
     );
 
-/** Constant primary position accepted by Rule, Rect, Area, and independent Text policies. */
+/** Constant primary position accepted by Rule, Rect, Area, Point, Tick, and independent Text policies. */
 export type RulePositionEncodingOptions = DatumPositionEncodingOptions;
 
 type TemporalBindingBranch =
@@ -2266,6 +2266,74 @@ export type CreateRadarPlotOptions = {
 } & (
   | { category: RadarCategoryChannel; value: PolarRadiusChannel; wide?: never }
   | { wide: RadarWideOptions; category?: never; value?: never }
+);
+export type RugMeasureChannel = string | (
+  | {
+      field: string;
+      fieldType?: "quantitative";
+      temporalUnit?: never;
+      scale?: NonPointQuantitativePositionScaleOptions;
+    }
+  | {
+      field: string;
+      fieldType: "temporal";
+      temporalUnit?: TemporalInputUnit;
+      scale?: NonPointTemporalPositionScaleOptions;
+    }
+);
+export interface RugTickOptions {
+  length?: number;
+  stroke?: string;
+  strokeWidth?: number;
+  opacity?: number;
+}
+export type RugGuideOptions = Omit<CartesianGuideOptions, "legend"> & {
+  legend?: false;
+};
+export type CreateRugPlotOptions = {
+  id?: string;
+  data?: string;
+  tick?: RugTickOptions;
+  guides?: false | RugGuideOptions;
+} & (
+  | { x: RugMeasureChannel; y?: never; edge: "top" | "bottom" }
+  | { y: RugMeasureChannel; x?: never; edge: "left" | "right" }
+);
+export type StripCategoryChannel = string | {
+  field: string;
+  fieldType?: "nominal" | "ordinal";
+  scale?: CategoricalPositionScaleOptions;
+};
+export interface StripPixelJitterOptions {
+  maxOffset: { pixels: number; band?: never };
+  seed?: string | number;
+  key?: string;
+}
+export interface StripBandJitterOptions {
+  maxOffset: { pixels?: never; band: number };
+  seed?: string | number;
+  key?: string;
+}
+export type StripJitterOptions = StripPixelJitterOptions | StripBandJitterOptions;
+export type CreateStripPlotOptions = {
+  id?: string;
+  data?: string;
+  color?: BasicColorChannel;
+  size?: BasicSizeChannel;
+  shape?: BasicShapeChannel;
+  point?: {
+    radius?: number;
+    shape?: PointShape;
+    fill?: string;
+    opacity?: number;
+    stroke?: FilledMarkStroke;
+    strokeWidth?: number;
+  };
+  guides?: false | CartesianGuideOptions;
+} & (
+  | { x: RugMeasureChannel; y?: never; jitter?: false | StripPixelJitterOptions }
+  | { x: RugMeasureChannel; y: StripCategoryChannel; jitter?: false | StripBandJitterOptions }
+  | { x: StripCategoryChannel; y: RugMeasureChannel; jitter?: false | StripBandJitterOptions }
 );
 
 export type GroupEncodingOptions = { target?: string; fieldType?: "nominal" } & (
@@ -3463,6 +3531,8 @@ export class ChartProgram {
   createPolarScatterPlot(options: CreatePolarScatterPlotOptions): ChartProgram;
   createPolarLinePlot(options: CreatePolarLinePlotOptions): ChartProgram;
   createRadarPlot(options: CreateRadarPlotOptions): ChartProgram;
+  createRugPlot(options: CreateRugPlotOptions): ChartProgram;
+  createStripPlot(options: CreateStripPlotOptions): ChartProgram;
   createAreaPlot(options: CreateAreaPlotOptions): ChartProgram;
   createBarPlot(options: CreateBarPlotOptions): ChartProgram;
   createHistogram(options: CreateHistogramOptions): ChartProgram;

@@ -3,7 +3,7 @@
   "packageVersion": "0.0.12",
   "typeSource": "types/program.d.ts",
   "errorPolicy": "An empty errors array means the compact card has no curated error override; consult the canonical route for validation, inference, and recovery behavior.",
-  "count": 212,
+  "count": 214,
   "cards": [
     {
       "schemaVersion": 2,
@@ -14300,6 +14300,169 @@
       "snippet": "program.createRadarPlot({ category: \"category\", value: \"value\" })",
       "errors": [],
       "route": "/reference/actions/charts-data/#createradarplot"
+    },
+    {
+      "schemaVersion": 2,
+      "name": "createRugPlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "summary": "Create a one-dimensional distribution from quantitative or temporal observations.",
+      "signature": "createRugPlot(options: CreateRugPlotOptions): ChartProgram;",
+      "intents": [
+        "create rug plot",
+        "create",
+        "add",
+        "complete chart",
+        "chart facade",
+        "rug plot",
+        "one-dimensional tick distribution"
+      ],
+      "lifecycle": "Aggregate create-only",
+      "resources": {
+        "prerequisites": [
+          "canvas and dataset context"
+        ],
+        "owns": [
+          "rug plot"
+        ],
+        "idOptions": [
+          "id",
+          "data"
+        ]
+      },
+      "options": [
+        {
+          "name": "id",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "data",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "tick",
+          "required": false,
+          "type": "RugTickOptions | undefined"
+        },
+        {
+          "name": "guides",
+          "required": false,
+          "type": "false | RugGuideOptions | undefined"
+        },
+        {
+          "name": "x",
+          "required": false,
+          "type": "RugMeasureChannel | undefined"
+        },
+        {
+          "name": "y",
+          "required": false,
+          "type": "RugMeasureChannel | undefined"
+        },
+        {
+          "name": "edge",
+          "required": true,
+          "type": "\"bottom\" | \"left\" | \"right\" | \"top\""
+        }
+      ],
+      "callPatterns": [
+        "createRugPlot({ x, edge: \"top\" | \"bottom\", tick?, guides? })",
+        "createRugPlot({ y, edge: \"left\" | \"right\", tick?, guides? })"
+      ],
+      "snippet": "program.createRugPlot({ x: \"value\", edge: \"bottom\" })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#createrugplot"
+    },
+    {
+      "schemaVersion": 2,
+      "name": "createStripPlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "summary": "Create a point strip from one measure or from one measure plus one categorical slot.",
+      "signature": "createStripPlot(options: CreateStripPlotOptions): ChartProgram;",
+      "intents": [
+        "create strip plot",
+        "create",
+        "add",
+        "complete chart",
+        "chart facade",
+        "strip plot",
+        "jittered observations"
+      ],
+      "lifecycle": "Aggregate create-only",
+      "resources": {
+        "prerequisites": [
+          "canvas and dataset context"
+        ],
+        "owns": [
+          "strip plot"
+        ],
+        "idOptions": [
+          "id",
+          "data"
+        ]
+      },
+      "options": [
+        {
+          "name": "id",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "data",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "color",
+          "required": false,
+          "type": "BasicColorChannel | undefined"
+        },
+        {
+          "name": "size",
+          "required": false,
+          "type": "BasicSizeChannel | undefined"
+        },
+        {
+          "name": "shape",
+          "required": false,
+          "type": "BasicShapeChannel | undefined"
+        },
+        {
+          "name": "point",
+          "required": false,
+          "type": "{ radius?: number | undefined; shape?: PointShape | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; } | undefined"
+        },
+        {
+          "name": "guides",
+          "required": false,
+          "type": "false | CartesianGuideOptions | undefined"
+        },
+        {
+          "name": "x",
+          "required": true,
+          "type": "string | { field: string; fieldType?: \"quantitative\" | undefined; temporalUnit?: undefined; scale?: NonPointQuantitativePositionScaleOptions | undefined; } | { ...; } | { ...; }"
+        },
+        {
+          "name": "y",
+          "required": false,
+          "type": "string | { field: string; fieldType?: \"quantitative\" | undefined; temporalUnit?: undefined; scale?: NonPointQuantitativePositionScaleOptions | undefined; } | { ...; } | { ...; } | undefined"
+        },
+        {
+          "name": "jitter",
+          "required": false,
+          "type": "false | StripBandJitterOptions | StripPixelJitterOptions | undefined"
+        }
+      ],
+      "callPatterns": [
+        "createStripPlot({ x, point?, jitter?, guides? })",
+        "createStripPlot({ x, y, color?, size?, shape?, point?, jitter?, guides? })"
+      ],
+      "snippet": "program.createStripPlot({ x: \"value\" })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#createstripplot"
     },
     {
       "schemaVersion": 2,

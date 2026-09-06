@@ -92,6 +92,65 @@ line?, guides? })`. Default id는 `radarPlot`, lifecycle은 Aggregate create-onl
 - Evidence: `test/unit/actions/charts/radar-facade.test.js`, `test/contracts/radar-facade-types.test.js`,
   `test/charts/polar-line-radar/`, `examples/jobs-radar-chart/`.
 
+## `createRugPlot`
+
+`createRugPlot({ id?, data?, x, edge: "top" | "bottom", tick?, guides? })` 또는
+`createRugPlot({ id?, data?, y, edge: "left" | "right", tick?, guides? })`. Default id는 `rugPlot`,
+lifecycle은 Aggregate create-only다.
+
+- 정확히 하나의 quantitative/temporal measure를 받는다. x measure는 top/bottom, y measure는 left/right
+  edge만 허용한다.
+- 반대 위치는 `[0, 1]` anchor scale의 constant datum이다. Bottom/left는 0, top/right는 1이며 source에
+  dummy field나 hidden dataset을 만들지 않는다.
+- x measure Tick은 0도 세로선, y measure Tick은 90도 가로선이다. Tick 모양은 기존 Tick owner가 맡는다.
+- 기본 guide는 measure axis 하나다. Constant anchor axis/grid와 legend는 허용하지 않는다.
+- Effects: `createTickMark → measure position → constant position → encodeAngle → scoped guide fulfillment`.
+  Scale, Canvas와 Tick appearance 편집은 기존 lower owner가 재물질화한다.
+
+### Formal values — `createRugPlot`
+
+- Implemented: `createRugPlot(options: CreateRugPlotOptions): ChartProgram`.
+- Required: x/edge 또는 y/edge의 방향 호환 조합 하나.
+- Proposed (NOT IMPLEMENTED): inferred edge와 stacked/mirrored rugs.
+
+### Value coverage — `createRugPlot`
+
+- ✅ Covered: 양방향 edge와 Tick 방향, constant datum materialization, measure-only guide, invalid ambiguity와
+  immutable failure, strict declarations.
+- ✅ Covered: Cars Horsepower primitive/public graphic·Canvas parity와 dummy-field 부재.
+- Evidence: `test/unit/actions/charts/rug-facade.test.js`, `test/contracts/rug-facade-types.test.js`,
+  `test/charts/directional-tick-plot/`, `examples/directional-tick-plot/`.
+
+## `createStripPlot`
+
+`createStripPlot({ id?, data?, x, y?, color?, size?, shape?, point?, jitter?, guides? })`. Default id는
+`stripPlot`, lifecycle은 Aggregate create-only다.
+
+- x만 주면 x가 quantitative/temporal measure이고 y는 `[0, 1]` anchor scale의 center datum 0.5다.
+  x와 y를 함께 주면 정확히 하나는 measure, 다른 하나는 nominal/ordinal category여야 한다.
+- `jitter` 생략/false는 off다. Category slot은 `maxOffset.band`, constant slot은 `maxOffset.pixels`만 받으며
+  기존 `jitterPoints`에 `seed`와 `key`를 그대로 전달한다. Measure 좌표는 바꾸지 않는다.
+- `point.radius`는 constant glyph radius이고 `size` encoding과 함께 쓸 수 없다. Color/size/shape는 기존
+  appearance encoding owner를 쓴다.
+- 기본 guide는 실제 position axis만 만들고 grid는 만들지 않는다. Constant slot axis/grid를 거부하며
+  legend는 color/size/shape가 명시된 경우에만 가능하다.
+- Effects: `createPointMark → x position → y position|constant center → radius? → appearance? → jitter? →
+  scoped guide fulfillment`. Scale, Canvas, filter, jitter 제거와 appearance 편집은 lower owner가 맡는다.
+
+### Formal values — `createStripPlot`
+
+- Implemented: `createStripPlot(options: CreateStripPlotOptions): ChartProgram`.
+- Required: x measure 또는 category/measure x/y 조합.
+- Proposed (NOT IMPLEMENTED): inferred category field와 automatic jitter magnitude.
+
+### Value coverage — `createStripPlot`
+
+- ✅ Covered: 단일 measure, 양방향 category/measure, band/pixel jitter, appearance, 실제-axis-only guide,
+  ambiguous role/unit/radius conflict의 immutable failure와 strict declarations.
+- ✅ Covered: Cars/Gapminder keyed jitter primitive/public semantic·graphic·Canvas parity.
+- Evidence: `test/unit/actions/charts/strip-facade.test.js`, `test/contracts/strip-facade-types.test.js`,
+  `test/charts/point-jitter/`, `examples/point-jitter/`.
+
 ## `createRosePlot`
 
 `createRosePlot({ id?, data?, coordinate?, category, value?, aggregate?, radiusScale?, color?, arc?, guides? })`.

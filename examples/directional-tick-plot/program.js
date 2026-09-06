@@ -194,22 +194,21 @@ export function createHorsepowerRug(cars) {
     .editGraphics({ target: "axis", property: "y2", value: RUG_LAYOUT.axisY })
     .editGraphics({ target: "axis", property: "stroke", value: "#94a3b8" })
     .editGraphics({ target: "axis", property: "strokeWidth", value: 1 })
-    .createTickMark({
+    .createRugPlot({
       id: "ticks",
-      length: RUG_LAYOUT.tickLength,
-      stroke: "#2563eb",
-      strokeWidth: 1.4,
-      opacity: 0.28
-    })
-    .encodeX({
-      target: "ticks",
-      field: "Horsepower",
-      scale: { domain: RUG_LAYOUT.domain }
-    })
-    .encodeY({
-      target: "ticks",
-      field: "Baseline",
-      scale: { domain: [-1, 1], range: [RUG_LAYOUT.rugY, RUG_LAYOUT.rugY] }
+      data: "cars",
+      x: {
+        field: "Horsepower",
+        scale: { domain: RUG_LAYOUT.domain }
+      },
+      edge: "bottom",
+      tick: {
+        length: RUG_LAYOUT.tickLength,
+        stroke: "#2563eb",
+        strokeWidth: 1.4,
+        opacity: 0.28
+      },
+      guides: false
     })
     .createGraphics({
       id: "axisLabels",

@@ -79,6 +79,6 @@ test("anchors the actual Cars horsepower rug to one Tick per valid row", () => {
   assert.deepEqual(values.labels, ["50", "100", "150", "200"]);
   close(Math.min(...values.x), 81);
   close(Math.max(...values.x), 725);
-  assert.deepEqual([values.y1, values.y2], [146, 118]);
+  assert.deepEqual([values.y1, values.y2], [164, 136]);
   assert.equal(Math.abs(values.y2 - values.y1), RUG_LAYOUT.tickLength);
 });

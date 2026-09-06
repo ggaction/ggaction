@@ -3622,6 +3622,42 @@
       }
     },
     {
+      "name": "createRugPlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "status": "implemented",
+      "lifecycle": "Aggregate create-only",
+      "audit": "Intentional",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "update": "Existing tick, Cartesian position, scale, angle and guide actions",
+      "contract": {
+        "file": "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "anchor": "createrugplot"
+      }
+    },
+    {
+      "name": "createStripPlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "status": "implemented",
+      "lifecycle": "Aggregate create-only",
+      "audit": "Intentional",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "update": "Existing point, Cartesian position, appearance, jitter, scale and guide actions",
+      "contract": {
+        "file": "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "anchor": "createstripplot"
+      }
+    },
+    {
       "name": "createBarPlot",
       "layer": "user-facing",
       "domain": "charts",

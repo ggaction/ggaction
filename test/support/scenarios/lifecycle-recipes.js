@@ -1353,6 +1353,26 @@ function buildDirectPolarParts(factors) {
       order: [...new Set(rows.map(row => row.angle))],
       line: { strokeWidth: 1.5 },
       guides: false
+    })
+    .createRugPlot({
+      id: "directRug",
+      data: "directPolarRows",
+      x: { field: "radius", scale: { id: "directRugX", zero: true } },
+      edge: "bottom",
+      tick: { length: 12, strokeWidth: 1.25 },
+      guides: false
+    })
+    .createStripPlot({
+      id: "directStrip",
+      data: "directPolarRows",
+      x: { field: "radius", scale: { id: "directStripX", zero: true } },
+      y: {
+        field: "angle",
+        fieldType: "nominal",
+        scale: { id: "directStripY", type: "band" }
+      },
+      point: { radius: 3, opacity: 0.6 },
+      guides: false
     });
 }
 
@@ -1666,6 +1686,7 @@ function lifecycleSignature(base, factors) {
     ],
     "action-direct-polar-parts": [
       "createPolarScatterPlot", "createPolarLinePlot", "createRadarPlot",
+      "createRugPlot", "createStripPlot",
       "createThetaAxisLine", "createThetaAxisTicks", "createThetaAxisLabels", "createThetaAxisTitle",
       "createRadialAxisLine", "createRadialAxisTicks", "createRadialAxisLabels", "createRadialAxisTitle",
       "createThetaAxis", "createRadialAxis", "editThetaAxisLine", "editRadialAxisLine",
@@ -1892,5 +1913,6 @@ export const LIFECYCLE_EXPECTED_ACTIONS = Object.freeze([
   "createRegressionLine", "editRegressionLine", "filterMarks",
   "removeMarkHighlight", "highlightMarks", "editThetaAxis", "editRadialAxis",
   "editThetaGrid", "editRadialGrid", "replaceCompositionChild", "editFacetScales",
-  "createScatterPlot", "createLinePlot", "createAreaPlot", "layoutSeries", "createBarPlot", "createParallelCoordinates"
+  "createScatterPlot", "createLinePlot", "createAreaPlot", "layoutSeries", "createBarPlot", "createParallelCoordinates",
+  "createRugPlot", "createStripPlot"
 ]);

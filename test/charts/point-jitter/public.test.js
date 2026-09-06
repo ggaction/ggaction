@@ -19,8 +19,16 @@ test("matches the approved vertical jitter primitive exactly", () => {
     primitiveProgram: createCarsOriginJitterPrimitives(cars),
     publicProgram
   });
+  const facade = publicProgram.trace.children.find(
+    node => node.op === "createStripPlot"
+  );
+  assert.ok(facade);
+  assert.deepEqual(facade.children.map(node => node.op), [
+    "createPointMark", "encodeX", "encodeY", "encodePointRadius",
+    "jitterPoints", "createGuides"
+  ]);
   assert.deepEqual(
-    publicProgram.trace.children.find(node => node.op === "jitterPoints")
+    facade.children.find(node => node.op === "jitterPoints")
       .children.map(node => node.op),
     ["rematerializePointMark"]
   );
@@ -28,8 +36,13 @@ test("matches the approved vertical jitter primitive exactly", () => {
 
 test("matches the approved horizontal jitter primitive exactly", () => {
   const gapminder = loadGapminder();
+  const publicProgram = createGapminderClusterJitterProgram(gapminder);
   assertChartProgramsEquivalent({
     primitiveProgram: createGapminderClusterJitterPrimitives(gapminder),
-    publicProgram: createGapminderClusterJitterProgram(gapminder)
+    publicProgram
   });
+  assert.equal(
+    publicProgram.trace.children.at(-1).op,
+    "createStripPlot"
+  );
 });

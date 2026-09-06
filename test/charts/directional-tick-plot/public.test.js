@@ -39,7 +39,7 @@ test("matches the approved direction comparison through public actions", () => {
   );
 });
 
-test("matches the approved Cars rug through the public Tick lifecycle", () => {
+test("matches the approved Cars rug through the public Rug facade", () => {
   const cars = loadCars();
   const primitive = createHorsepowerRugPrimitives(cars);
   const publicProgram = createHorsepowerRug(cars);
@@ -51,4 +51,11 @@ test("matches the approved Cars rug through the public Tick lifecycle", () => {
   });
   assert.equal(publicProgram.semanticSpec.layers[0].mark.type, "tick");
   assert.equal(publicProgram.graphicSpec.objects.ticks.items.length, 400);
+  const facade = publicProgram.trace.children.find(
+    node => node.op === "createRugPlot"
+  );
+  assert.ok(facade);
+  assert.deepEqual(facade.children.map(node => node.op), [
+    "createTickMark", "encodeX", "encodeY", "encodeAngle"
+  ]);
 });

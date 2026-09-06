@@ -78,7 +78,9 @@ test("keeps the basic entry focused on common Cartesian charts", () => {
     "encodeTheta",
     "facet",
     "selectMarks",
-    "createParallelCoordinates"
+    "createParallelCoordinates",
+    "createRugPlot",
+    "createStripPlot"
   ]) {
     assert.equal(program[method], undefined, method);
   }
