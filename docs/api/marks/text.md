@@ -153,6 +153,14 @@ Creation options are `id`, `data`, `source`, `text`, `fill`, `opacity`, `fontSiz
 `fontFamily`, `fontWeight`, `align`, `baseline`, `rotation`, `dx`, and `dy`.
 The `text` option is constant-content shorthand.
 
+`rotation` accepts the existing finite numeric form, interpreted as radians, or
+an explicit unit object: `{ value: 90, unit: "degrees" }` and
+`{ value: Math.PI / 2, unit: "radians" }` are equivalent. Structured values
+must contain exactly `value` and `unit`; the unit is either `"degrees"` or
+`"radians"`. The public boundary normalizes both forms to radians, so later
+Canvas, scale, source, and layout replay preserve one concrete meaning.
+`editTextMark`, `createMarkLabels`, and `createAnnotation` use the same rule.
+
 ## Font weights
 
 `fontWeight` accepts a non-empty CSS weight string or a finite number. To keep

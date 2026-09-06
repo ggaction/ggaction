@@ -16,7 +16,7 @@ test("text content and precision types match their runtime vocabularies", async 
     const paddedCalls = [...Array(10).keys()].flatMap(precision => ["f", "%", "e"].map(suffix =>
       `p.encodeText({ value: 0.125, format: ".0${precision}${suffix}" });`));
     await writeFile(file, `
-import type { ChartProgram, TextEncodingOptions, DatumPositionEncodingOptions, CreateMarkLabelsOptions, CreateAnnotationOptions, CreateReferenceLineOptions, CreateReferenceBandOptions } from ${JSON.stringify(path.join(root, "types/index.js"))};
+import type { ChartProgram, TextEncodingOptions, DatumPositionEncodingOptions, CreateMarkLabelsOptions, CreateAnnotationOptions, CreateReferenceLineOptions, CreateReferenceBandOptions, RotationInput } from ${JSON.stringify(path.join(root, "types/index.js"))};
 declare const p: ChartProgram;
 const shared: TextEncodingOptions = { content: "share", normalizeBy: "category", format: ".1%" };
 p.encodeText(shared);
@@ -46,6 +46,15 @@ p.createReferenceBand(referenceBand);
 p.createReferenceLine({ x: "2021-01-01", temporalUnit: "timestamp" });
 const textDatum: DatumPositionEncodingOptions = { datum: 8, scale: { domain: [0, 10] } };
 p.createTextMark({ data: "data", text: "note" }).encodeX(textDatum).encodeY({ datum: "B", fieldType: "nominal" });
+const explicitRotation: RotationInput = { value: 90, unit: "degrees" };
+p.createTextMark({ data: "data", text: "degree", rotation: explicitRotation });
+p.editTextMark({ rotation: { value: Math.PI / 4, unit: "radians" } });
+p.createYAxisTitle({ rotation: { value: -90, unit: "degrees" } });
+p.editYAxisTitle({ rotation: { value: 0, unit: "radians" } });
+// @ts-expect-error Rotation units are closed.
+p.createTextMark({ rotation: { value: 90, unit: "turns" } });
+// @ts-expect-error Explicit rotations require a value.
+p.createYAxisTitle({ rotation: { unit: "degrees" } });
 // @ts-expect-error Exactly one position is required.
 p.createReferenceLine({});
 // @ts-expect-error Axes are exclusive.

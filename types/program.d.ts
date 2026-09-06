@@ -711,6 +711,8 @@ export interface CanvasOptions {
 
 export type XAxisPosition = "bottom" | "top";
 export type YAxisPosition = "left" | "right";
+export type RotationUnit = "radians" | "degrees";
+export type RotationInput = number | { value: number; unit: RotationUnit };
 type ValueFormatDigit = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
 type ValueFormatPrecision = ValueFormatDigit | 10 | 11 | 12 | `0${ValueFormatDigit}`;
 type TimeAxisDirective = "Y" | "m" | "d" | "b";
@@ -751,7 +753,7 @@ export interface AxisTitleOptions<P extends string> {
   position?: P;
   at?: "start" | "center" | "end" | number;
   offset?: number;
-  rotation?: number;
+  rotation?: RotationInput;
   color?: string;
   fontSize?: number;
   fontFamily?: string;
@@ -2346,7 +2348,7 @@ export interface TextMarkOptions {
   fontWeight?: string | number;
   align?: "left" | "right" | "center" | "start" | "end";
   baseline?: "top" | "hanging" | "middle" | "alphabetic" | "ideographic" | "bottom";
-  rotation?: number;
+  rotation?: RotationInput;
   dx?: number;
   dy?: number;
 }

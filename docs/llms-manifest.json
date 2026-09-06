@@ -923,8 +923,8 @@
         "removelabellayoutoptions",
         "related"
       ],
-      "bytes": 12914,
-      "sha256": "0a2ee6b6ee7a7fa70972fff856d400dc25d7c18c57542bb51e49f051def4b01a"
+      "bytes": 13434,
+      "sha256": "f3649fac759a8645121199a90ab81715118573d13b43aab81c369fb44faa5cc7"
     },
     {
       "order": 60,
@@ -1480,8 +1480,8 @@
         "errors-and-limitations",
         "related"
       ],
-      "bytes": 16600,
-      "sha256": "d8c4e6e7f611aeceda7f113b06ebe83313ec4938a282a7ac016df10f95d70de3"
+      "bytes": 16875,
+      "sha256": "1efd8aa78a799f68cda63d12c52a7545d1ecd54d4a74a613c20843d9d4f78af0"
     },
     {
       "order": 94,
@@ -1771,8 +1771,8 @@
         "ticks-and-labels-together",
         "titles"
       ],
-      "bytes": 6227,
-      "sha256": "a181a0cf25d36789b90c470a8224379693e557cbc463acdae03665f107a944e6"
+      "bytes": 6559,
+      "sha256": "5f197387dd238576aa723007322a9d3f05e20b4cf94f1ddc46ed6f9ec851ed74"
     },
     {
       "order": 113,
@@ -1888,8 +1888,8 @@
         "position-capability-matrix",
         "related"
       ],
-      "bytes": 14377,
-      "sha256": "f371cc745f935e78d0ca3e327b21154306807ea6d7dbd6bb11fc129af308ca40"
+      "bytes": 14616,
+      "sha256": "40ec24b8f02eac62355a0bffb7b2f7efa76b8e36b11278db7e981aef1c3dd025"
     },
     {
       "order": 117,
@@ -2033,8 +2033,8 @@
         "directional-grids",
         "related"
       ],
-      "bytes": 8619,
-      "sha256": "1b70fcbefdaeecec49de35a00abc52d0881f379ead69fdc8f4fdd799406c7318"
+      "bytes": 8833,
+      "sha256": "439ca688fbc911ae281d526d092ce6ab1f76e9370394e58aa0ecf1099bcd4eff"
     },
     {
       "order": 121,

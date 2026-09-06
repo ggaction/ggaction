@@ -414,6 +414,11 @@ test.before(async () => {
         text: "Peak · 9.0", x: 8, y: 9, dx: 8, dy: -16
       });
       render(annotation, document.getElementById("annotation").getContext("2d"));
+      const explicitRotations = chart().createCanvas({ width: 320, height: 240, margin: 80 })
+        .createData({ values: [{ x: 1, y: 2 }] })
+        .createPointMark().encodeX({ field: "x" }).encodeY({ field: "y" })
+        .createTextMark({ id: "rotationText", source: "point", text: "R", rotation: { value: 90, unit: "degrees" } })
+        .createXAxisTitle({ text: "X", rotation: { value: -90, unit: "degrees" } });
       const referenceFacades = chart().createCanvas({ width: 480, height: 320, margin: 40 })
         .createData({ values: [] }).createReferenceBand({ space: "plot", x: [0.2, 0.6] })
         .createReferenceLine({ space: "plot", y: 0.5 });
@@ -449,6 +454,10 @@ test.before(async () => {
         annotation: [annotation.graphicSpec.objects.annotation.items[0].properties.x,
           annotation.graphicSpec.objects.annotation.items[0].properties.y,
           renderToSVG(annotation).includes("Peak · 9.0")],
+        explicitRotations: [
+          explicitRotations.graphicSpec.objects.rotationText.items[0].properties.rotation,
+          explicitRotations.graphicSpec.objects.xAxisTitle.properties.rotation
+        ],
         referenceFacades: [referenceFacades.graphicSpec.objects.referenceBand.items[0].properties.width,
           referenceFacades.graphicSpec.objects.referenceLine.items[0].properties.y1,
           renderToSVG(referenceFacades).includes("#64748b")],
@@ -618,6 +627,7 @@ test("imports and renders the packed browser entries", async () => {
     sourceTextSVG: true,
     textDatum: [368, 48, true],
     annotation: [368, 48, true],
+    explicitRotations: [Math.PI / 2, -Math.PI / 2],
     referenceFacades: [160, 160, true],
     temporalRectCount: 1,
     referenceRect: 160,

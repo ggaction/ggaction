@@ -5,6 +5,7 @@ import {
   isUtcValueFormat,
   validateValueFormat
 } from "./valueFormat.js";
+import { resolveRotation } from "./rotation.js";
 
 export function isSourceOwnedText(layer) {
   return layer?.mark?.type === "text" && layer.source !== undefined;
@@ -55,13 +56,15 @@ export function normalizeTextMarkConfig(options, base = DEFAULT_TEXT_MARK) {
     fontFamily: "fontFamily",
     fontWeight: "fontWeight",
     align: "textAlign",
-    baseline: "textBaseline",
-    rotation: "rotation"
+    baseline: "textBaseline"
   };
   for (const [option, property] of Object.entries(mapping)) {
     if (!Object.hasOwn(options, option)) continue;
     validateConcreteGraphicValue("text", property, options[option]);
     config[option] = options[option];
+  }
+  if (Object.hasOwn(options, "rotation")) {
+    config.rotation = resolveRotation(options.rotation, "Text rotation");
   }
   for (const property of ["dx", "dy"]) {
     if (!Object.hasOwn(options, property)) continue;

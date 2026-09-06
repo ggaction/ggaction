@@ -35,7 +35,7 @@
 - [x] W2 C2 categorical side option parity #108 — [검증](RESULTS_W2_CATEGORICAL_SIDE_OPTIONS.md)
 - [x] W2 combined size의 edge-dependent default #109 — [검증](RESULTS_W2_COMBINED_SIZE_APPEARANCE.md)
 - [x] W2 C2 전체 family×edge×lifecycle 통합 matrix — [결과](RESULTS_W2_INTEGRATION.md)
-- [ ] R6-P5-W3 Final-item labels·reference·common format
+- [x] R6-P5-W3 Final-item labels·reference·common format
 - [x] W3 A explicit text source와 source dependency replay, #110 — [계약](CONTRACT_W3_TEXT_SOURCE.md), [결과](RESULTS_W3_TEXT_SOURCE.md)
 - [x] W3 B1 category/value/share content·percent·Histogram replay·precision types, #111/#112 — [계약](CONTRACT_W3_LABEL_CONTENT.md), [결과](RESULTS_W3_LABEL_CONTENT.md)
 - [x] W3 B2 createMarkLabels facade — [계약](CONTRACT_W3_MARK_LABELS.md), [결과](RESULTS_W3_MARK_LABELS.md)
@@ -45,7 +45,7 @@
 - [x] W3 annotation 기반 independent Text datum 좌표 — [계약](CONTRACT_W3_TEXT_DATUM.md), [결과](RESULTS_W3_TEXT_DATUM.md)
 - [x] W3 D createAnnotation mark/data/plot anchor — [계약](CONTRACT_W3_ANNOTATION.md), [결과](RESULTS_W3_ANNOTATION.md)
 - [x] W3 후속 common value formatter — [계약](CONTRACT_W3_COMMON_FORMAT.md), [결과](RESULTS_W3_COMMON_FORMAT.md)
-- [ ] W3 후속 rotation unit
+- [x] W3 후속 rotation unit — [계약](CONTRACT_W3_ROTATION_UNITS.md), [결과](RESULTS_W3_ROTATION_UNITS.md)
 - [ ] R6-P5-W4 Program theme와 local override
 - [ ] R6-P5-W5 Opt-in fitting과 guide label layout
 - [ ] 모든 시각 variant의 primitive target 작성·표시·V 승인

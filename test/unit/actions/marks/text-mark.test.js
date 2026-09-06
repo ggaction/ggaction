@@ -78,6 +78,18 @@ test("formats Text with the shared scientific and UTC vocabulary", () => {
   );
 });
 
+test("accepts explicit Text rotation units while preserving numeric radians", () => {
+  const base = chart().createCanvas().createData({ values: [{ x: 1, y: 2 }] })
+    .createPointMark().encodeX({ field: "x" }).encodeY({ field: "y" });
+  const degrees = base.createTextMark({ source: "point", text: "degree", rotation: { value: 90, unit: "degrees" } });
+  const radians = base.createTextMark({ id: "radians", source: "point", text: "radian", rotation: Math.PI / 2 });
+  assert.equal(degrees.graphicSpec.objects.text.items[0].properties.rotation, Math.PI / 2);
+  assert.equal(radians.graphicSpec.objects.radians.items[0].properties.rotation, Math.PI / 2);
+  const edited = degrees.editTextMark({ rotation: { value: -45, unit: "degrees" } });
+  assert.equal(edited.graphicSpec.objects.text.items[0].properties.rotation, -Math.PI / 4);
+  assert.equal(degrees.graphicSpec.objects.text.items[0].properties.rotation, Math.PI / 2);
+});
+
 test("keeps text authoring order-independent", () => {
   const data = chart()
     .createCanvas({ width: 300, height: 200, margin: 20 })

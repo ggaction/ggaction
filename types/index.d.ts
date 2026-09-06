@@ -4,6 +4,8 @@ export type {
   ActionOptions,
   AxisFormat,
   AxisFormatString,
+  RotationInput,
+  RotationUnit,
   NumericFormatString,
   UtcFormatString,
   ValueFormat,

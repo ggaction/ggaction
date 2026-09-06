@@ -79,8 +79,10 @@ Cartesian line/ticks/labels/title의 실제 occupied bounds는 각 component pos
 - `text`: non-empty string. 생략하면 unique connected field/aggregate 또는 density provenance에서 추론한다.
 - `at`: `"start" | "center" | "end"` 또는 continuous scale domain 안의 finite number; 기본 center.
 - `offset`: non-negative finite; x default `42`, y default `52`.
-- `rotation`: finite radians; x bottom/top default `0`, y left default `-Math.PI / 2`, y right default
-  `Math.PI / 2`. Explicit rotation은 position default보다 우선한다.
+- `rotation`: `RotationInput = Finite | { value: Finite; unit: "degrees" | "radians" }`. 기존 finite 숫자는
+  radians 의미를 유지하고 구조형 입력은 단위를 명시한다. 둘 다 stored materialization config에서 radians로
+  정규화한다. x bottom/top default `0`, y left default `-Math.PI / 2`, y right default `Math.PI / 2`이며
+  explicit rotation은 position default보다 우선한다.
 - font/color contract는 labels와 같고 default font size는 `13`, weight는 `600`이다.
 - Effect: semantic axis title text와 graphical layout/style을 분리 저장한다.
 
@@ -233,7 +235,7 @@ type AxisTitleOptions<P extends string> = TextStyle & {
   position?: P;
   at?: "start" | "center" | "end" | Finite;
   offset?: NonNegativeFinite;
-  rotation?: Finite;
+  rotation?: RotationInput;
 };
 type CompleteAxisOptions<P extends string> = {
   scale?: UserId;

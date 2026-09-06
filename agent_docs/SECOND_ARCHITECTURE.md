@@ -1679,7 +1679,10 @@ source encoding을 받아 `grammar/markLabels.js`에서 category/value/share를 
 누적 끝점을 분모·구간 값으로 잘못 사용하지 않는다. Empty final set은 empty text이며 renderer는 share 의미를 모른다.
 Text encoding action과 source dependency plan이 내용과 anchor의 재계산을 명시적으로 실행한다.
 Typography, alignment, rotation과 `dx`/`dy`는 materialization config가 소유한다. Canvas 또는 scale edit은
-registered text policy를 통해 concrete label을 다시 만든다.
+registered text policy를 통해 concrete label을 다시 만든다. Public Text/Mark Labels/Annotation의 legacy
+numeric rotation은 radians 의미를 유지하고 `{ value, unit: "degrees" | "radians" }` 입력은 action 경계에서
+radians로 정규화한다. Cartesian axis title도 같은 경계를 공유한다. Polar placement angle과 encodeAngle의
+기존 degree 의미는 별도 grammar로 유지한다.
 
 `createMarkLabels`는 source-owned text 생성·content encoding·optional collision layout을
 기존 wrapped child action으로 조합하는 create-only facade다. 독립 facade registry 없이

@@ -149,7 +149,7 @@ program.editXAxisTitle({ text: "Engine horsepower", at: "start" });
 | `position` | x: `bottom/top`; y: `left/right` |
 | `at` | `start`, `center`, `end`, or an in-domain finite number |
 | `offset` | Non-negative distance from the plot |
-| `rotation` | Finite radians |
+| `rotation` | Finite radians, or `{ value, unit: "degrees" | "radians" }` |
 | `color` | Text fill |
 | `fontSize` | Positive size |
 | `fontFamily` | Non-empty family |
@@ -158,6 +158,10 @@ program.editXAxisTitle({ text: "Engine horsepower", at: "start" });
 Default title placement is centered. x uses offset 42 and rotation 0. y uses
 offset 52 with rotation `-Math.PI / 2` on the left or `Math.PI / 2` on the
 right. An explicit rotation remains unchanged when the position is edited.
+The legacy numeric form remains radians. For a unit-visible call, use for
+example `rotation: { value: -90, unit: "degrees" }`; the stored concrete title
+rotation is normalized to radians. Radial-axis `angle` remains a separate
+degree-valued placement option rather than a text rotation.
 
 Cartesian and Polar axis typography follows the shared
 [Canvas font-weight policy](../api/marks/text.md#font-weights).

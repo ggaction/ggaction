@@ -283,6 +283,10 @@ contributes independent scale-domain values. Source field or scale changes also 
 Direct `encodeX/Y` on attached Text is rejected: edit the source, use `editTextMark({ dx, dy })`, or create
 independent Text with explicit `data` to author its positions. Independent Text accepts field or datum positions;
 all-constant x/y/text produces one item, while any field-bound encoding uses row grain.
+`rotation` accepts a finite legacy number in radians or an explicit
+`{ value, unit: "degrees" | "radians" }` object; both normalize to concrete
+radians. `createMarkLabels`, `createAnnotation`, and `editTextMark` share this
+input contract.
 [Text marks](../../api/marks/text.md)
 
 ## `editTextMark`

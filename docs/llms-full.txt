@@ -5636,6 +5636,14 @@ Creation options are `id`, `data`, `source`, `text`, `fill`, `opacity`, `fontSiz
 `fontFamily`, `fontWeight`, `align`, `baseline`, `rotation`, `dx`, and `dy`.
 The `text` option is constant-content shorthand.
 
+`rotation` accepts the existing finite numeric form, interpreted as radians, or
+an explicit unit object: `{ value: 90, unit: "degrees" }` and
+`{ value: Math.PI / 2, unit: "radians" }` are equivalent. Structured values
+must contain exactly `value` and `unit`; the unit is either `"degrees"` or
+`"radians"`. The public boundary normalizes both forms to radians, so later
+Canvas, scale, source, and layout replay preserve one concrete meaning.
+`editTextMark`, `createMarkLabels`, and `createAnnotation` use the same rule.
+
 ## Font weights
 
 `fontWeight` accepts a non-empty CSS weight string or a finite number. To keep
@@ -10242,6 +10250,11 @@ Top ticks point upward and right ticks point right. Labels and titles are
 placed outward from the selected edge. The Canvas margin must already be large
 enough; guide creation does not resize it.
 
+Cartesian title `rotation` accepts a finite legacy number in radians or an
+explicit `{ value, unit: "degrees" | "radians" }` object. Both forms normalize
+to radians before materialization. This does not change the degree-valued
+`angle` used to place radial-axis components.
+
 Numeric label formats use `.0f` through `.12f` for fixed decimals, `.0%`
 through `.12%` for percentages, and `.0e` through `.12e` for scientific
 notation. A leading zero in a one-digit precision, such as `.01f`, is accepted
@@ -12466,7 +12479,7 @@ program.editXAxisTitle({ text: "Engine horsepower", at: "start" });
 | `position` | x: `bottom/top`; y: `left/right` |
 | `at` | `start`, `center`, `end`, or an in-domain finite number |
 | `offset` | Non-negative distance from the plot |
-| `rotation` | Finite radians |
+| `rotation` | Finite radians, or `{ value, unit: "degrees" | "radians" }` |
 | `color` | Text fill |
 | `fontSize` | Positive size |
 | `fontFamily` | Non-empty family |
@@ -12475,6 +12488,10 @@ program.editXAxisTitle({ text: "Engine horsepower", at: "start" });
 Default title placement is centered. x uses offset 42 and rotation 0. y uses
 offset 52 with rotation `-Math.PI / 2` on the left or `Math.PI / 2` on the
 right. An explicit rotation remains unchanged when the position is edited.
+The legacy numeric form remains radians. For a unit-visible call, use for
+example `rotation: { value: -90, unit: "degrees" }`; the stored concrete title
+rotation is normalized to radians. Radial-axis `angle` remains a separate
+degree-valued placement option rather than a text rotation.
 
 Cartesian and Polar axis typography follows the shared
 [Canvas font-weight policy](./api/marks/text/#font-weights).
@@ -13505,6 +13522,10 @@ contributes independent scale-domain values. Source field or scale changes also 
 Direct `encodeX/Y` on attached Text is rejected: edit the source, use `editTextMark({ dx, dy })`, or create
 independent Text with explicit `data` to author its positions. Independent Text accepts field or datum positions;
 all-constant x/y/text produces one item, while any field-bound encoding uses row grain.
+`rotation` accepts a finite legacy number in radians or an explicit
+`{ value, unit: "degrees" | "radians" }` object; both normalize to concrete
+radians. `createMarkLabels`, `createAnnotation`, and `editTextMark` share this
+input contract.
 [Text marks](./api/marks/text/)
 
 ## `editTextMark`
@@ -14813,6 +14834,10 @@ editYAxisTitle({
   fontSize?, fontFamily?, fontWeight?
 })
 ```
+
+Cartesian title `rotation` accepts a finite legacy number in radians or
+`{ value, unit: "degrees" | "radians" }`. Both forms normalize to concrete
+radians. Polar component `angle` remains degree-valued placement.
 
 ## Directional grids
 

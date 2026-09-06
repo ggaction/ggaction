@@ -179,6 +179,11 @@ Top ticks point upward and right ticks point right. Labels and titles are
 placed outward from the selected edge. The Canvas margin must already be large
 enough; guide creation does not resize it.
 
+Cartesian title `rotation` accepts a finite legacy number in radians or an
+explicit `{ value, unit: "degrees" | "radians" }` object. Both forms normalize
+to radians before materialization. This does not change the degree-valued
+`angle` used to place radial-axis components.
+
 Numeric label formats use `.0f` through `.12f` for fixed decimals, `.0%`
 through `.12%` for percentages, and `.0e` through `.12e` for scientific
 notation. A leading zero in a one-digit precision, such as `.01f`, is accepted

@@ -1200,7 +1200,7 @@
         {
           "name": "rotation",
           "required": false,
-          "type": "number | undefined"
+          "type": "RotationInput | undefined"
         },
         {
           "name": "dx",
@@ -1321,7 +1321,7 @@
         {
           "name": "rotation",
           "required": false,
-          "type": "number | undefined"
+          "type": "RotationInput | undefined"
         },
         {
           "name": "dx",
@@ -1481,7 +1481,7 @@
         {
           "name": "rotation",
           "required": false,
-          "type": "number | undefined"
+          "type": "RotationInput | undefined"
         },
         {
           "name": "dx",
@@ -1571,7 +1571,7 @@
         {
           "name": "rotation",
           "required": false,
-          "type": "number | undefined"
+          "type": "RotationInput | undefined"
         },
         {
           "name": "dx",
@@ -7562,7 +7562,7 @@
         {
           "name": "rotation",
           "required": false,
-          "type": "number | undefined"
+          "type": "RotationInput | undefined"
         },
         {
           "name": "color",
@@ -7649,7 +7649,7 @@
         {
           "name": "rotation",
           "required": false,
-          "type": "number | undefined"
+          "type": "RotationInput | undefined"
         },
         {
           "name": "color",
@@ -7728,7 +7728,7 @@
         {
           "name": "rotation",
           "required": false,
-          "type": "number | undefined"
+          "type": "RotationInput | undefined"
         },
         {
           "name": "color",
@@ -7807,7 +7807,7 @@
         {
           "name": "rotation",
           "required": false,
-          "type": "number | undefined"
+          "type": "RotationInput | undefined"
         },
         {
           "name": "color",

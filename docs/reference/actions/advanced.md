@@ -190,6 +190,10 @@ editYAxisTitle({
 })
 ```
 
+Cartesian title `rotation` accepts a finite legacy number in radians or
+`{ value, unit: "degrees" | "radians" }`. Both forms normalize to concrete
+radians. Polar component `angle` remains degree-valued placement.
+
 ## Directional grids
 
 ```javascript

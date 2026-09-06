@@ -34,6 +34,7 @@ import {
 import { resolveConcreteGraphicBounds } from
   "../../../grammar/schemas/graphicBounds.js";
 import { validateAxisTextStyle } from "./labels.js";
+import { resolveRotation } from "../../../grammar/rotation.js";
 
 function titleBounds(geometry, config, text) {
   return resolveTextBounds({
@@ -208,7 +209,7 @@ function makeEdit(channel) {
     if (this.graphicSpec.objects[operation.graphic]?.type !== "text") throw new Error(`${operation.edit} requires an existing axis title.`);
     const previous = this.guideConfigs.axis?.[channel]?.title;
     if (!previous) throw new Error(`${operation.edit} requires title configuration.`);
-    const { text, ...appearance } = args;
+    const { text, rotation: requestedRotation, ...appearance } = args;
     const explicitText = Object.hasOwn(args, "text");
     const explicitRotation = Object.hasOwn(args, "rotation");
     const position = appearance.position ?? previous.position;
@@ -221,7 +222,9 @@ function makeEdit(channel) {
       position,
       rotation: inferredRotation
         ? defaultAxisTitleRotation(channel, position)
-        : appearance.rotation ?? previous.rotation,
+        : explicitRotation
+          ? resolveRotation(requestedRotation, "Axis title rotation")
+          : previous.rotation,
       inferredRotation,
       inferredOffset: Object.hasOwn(args, "offset")
         ? false
@@ -291,7 +294,7 @@ function makeCreate(channel) {
       offset: channel === "x" ? 42 : 52,
       rotation: inferredRotation
         ? defaultAxisTitleRotation(channel, position)
-        : requestedRotation,
+        : resolveRotation(requestedRotation, "Axis title rotation"),
       inferredRotation,
       inferredOffset,
       color: DEFAULTS.color,

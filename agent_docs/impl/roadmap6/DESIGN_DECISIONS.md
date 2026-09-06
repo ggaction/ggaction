@@ -181,6 +181,11 @@ Formatter는 number/percent/scientific/UTC 지원을 label/axis/legend에서 공
 Rotation은 기존 radians/degrees 사용처를 inventory에 적고 새 API에서 unit을 드러낸다.
 기존 rotation 수치의 의미를 일괄 바꾸지 않는다. Guide wrap/overlap과 mark-label layout owner도 분리한다.
 
+구현 결정: Text·Mark Labels·Annotation·Cartesian axis title의 legacy numeric `rotation`은 radians를
+유지한다. 같은 위치에 exact `{ value, unit: "degrees" | "radians" }` 입력을 추가해 public 경계에서
+radians로 정규화한다. `encodeAngle`과 Polar axis/component placement의 numeric angle은 기존 degrees를
+유지하며 rotation 객체를 받지 않는다.
+
 ## K11 — Theme과 fitting
 
 연결: D17, F18. Owner: Phase 5.

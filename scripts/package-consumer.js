@@ -984,6 +984,15 @@ async function testNodeConsumer(directory) {
     assert.equal(chart().createCanvas().createData({ values: [] })
       .createAnnotation({ text: "Plot", space: "plot", x: 0.5, y: 0.5 })
       .graphicSpec.objects.annotation.items.length, 1);
+    const explicitRotations = chart().createCanvas({ width: 320, height: 240, margin: 80 })
+      .createData({ values: [{ x: 1, y: 2 }] })
+      .createPointMark().encodeX({ field: "x" }).encodeY({ field: "y" })
+      .createTextMark({ id: "rotationText", source: "point", text: "R", rotation: { value: 90, unit: "degrees" } })
+      .createXAxisTitle({ text: "X", rotation: { value: -90, unit: "degrees" } });
+    assert.deepEqual([
+      explicitRotations.graphicSpec.objects.rotationText.items[0].properties.rotation,
+      explicitRotations.graphicSpec.objects.xAxisTitle.properties.rotation
+    ], [Math.PI / 2, -Math.PI / 2]);
     const referenceFacades = chart().createCanvas({ width: 480, height: 320, margin: 40 })
       .createData({ values: [] }).createReferenceBand({ space: "plot", x: [0.2, 0.6] })
       .createReferenceLine({ space: "plot", y: 0.5 });
@@ -2258,10 +2267,18 @@ async function testTypeScriptConsumer(directory) {
 
     chart().createRectMark().encodeX({ datum: 2 }).encodeX2({ datum: 6 });
     chart().createRectMark().encodeY({ datum: "2020-01-01", fieldType: "temporal" }).encodeY2({ datum: "2020-01-03" });
-    chart().createTextMark({ data: "data", text: "note" }).encodeX({ datum: 8 }).encodeY({ datum: "B", fieldType: "nominal" });
-    chart().createAnnotation({ text: "Peak", x: 8, y: 9 });
+    chart().createTextMark({ data: "data", text: "note", rotation: { value: 90, unit: "degrees" } })
+      .encodeX({ datum: 8 }).encodeY({ datum: "B", fieldType: "nominal" })
+      .editTextMark({ rotation: { value: Math.PI / 4, unit: "radians" } });
+    chart().createAnnotation({ text: "Peak", x: 8, y: 9, rotation: { value: -45, unit: "degrees" } });
     chart().createAnnotation({ text: "Point", source: "points" });
     chart().createAnnotation({ text: "Plot", space: "plot", x: 0.5, y: 0.75, data: "data" });
+    chart().createXAxisTitle({ text: "X", rotation: { value: 180, unit: "degrees" } })
+      .editXAxisTitle({ rotation: { value: Math.PI, unit: "radians" } });
+    // @ts-expect-error Rotation units are a closed vocabulary.
+    chart().createTextMark({ rotation: { value: 1, unit: "turns" } });
+    // @ts-expect-error Structured rotation requires a finite value.
+    chart().createXAxisTitle({ rotation: { unit: "degrees" } });
     // @ts-expect-error Annotation coordinate anchors require both axes.
     chart().createAnnotation({ text: "x only", x: 1 });
     // @ts-expect-error Plot annotation fractions are numeric.

@@ -679,6 +679,8 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 - Appearance defaults to centered/middle text at the source's existing final-item anchor. Other appearance defaults and
   source-fill contrast use `createTextMark`. No sign-dependent offsets are inferred; use explicit baseline/dx/dy for endpoint
   placement. Explicit appearance overrides the facade defaults.
+- `rotation` inherits the shared Text `RotationInput`: a legacy finite number means radians, while an exact
+  `{ value: finite, unit: "degrees" | "radians" }` object makes the unit explicit and normalizes to radians.
 - Omitted/false `layout` creates no collision policy. `{}` enables `layoutLabels` defaults; an object accepts its options
   except `target`, which the facade owns. Enabled layout requires complete text. For incomplete sources, create labels
   without layout, complete the source, then call `layoutLabels`. Best-effort layout warnings retain the lower action contract.
@@ -710,6 +712,7 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
   existing data/coordinate, and ordinary `<id>-x`/`<id>-y` linear [0,1] scales. x=0 is left; y=0 is bottom.
 - `text` is required constant content. Text style and format delegate to createTextMark/encodeText. Omitted/false layout
   preserves the anchor; a target-free layout object delegates to layoutLabels. Default ID is `annotation`.
+- `rotation` uses the same `RotationInput` and radians normalization as Text and Mark Labels.
 - Data datum contributes to automatic domains and is independent after creation. Mark anchor retains source-owned
   final-item lifecycle. Plot named scales remain ordinary editable resources. No nearest-mark search, hidden dataset,
   annotation registry, or editAnnotation action exists.
@@ -752,6 +755,9 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 - `text` is a constant-content shorthand for wrapped `encodeText({ value: text })`. Appearance options use wrapped
   `editTextMark`; defaults are theme text fill, opacity `1`, 12px sans-serif normal text, left/alphabetic alignment,
   zero rotation, and zero offsets.
+- `rotation` accepts `RotationInput = Finite | { value: Finite; unit: "degrees" | "radians" }`. The legacy numeric
+  form remains radians. Structured input must contain exactly `value` and `unit`; both forms normalize to radians in
+  the stored materialization config.
 - Concrete children are backend-neutral text primitives. A source-owned annotation anchors to final point centers,
   bar measure endpoints, rect centers, rule endpoints, or arc-sector radial/angular midpoints, so aggregate bars and arcs
   produce one label per final visual item rather than one per row. Arc anchors derive from concrete sector paths and replay
@@ -770,7 +776,7 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 ### Formal values — `createTextMark`
 
-- Implemented: `createTextMark({ id?: UserId; data?: UserId; source?: UserId; text?: unknown; fill?: NonEmptyString; opacity?: UnitInterval; fontSize?: PositiveFinite; fontFamily?: NonEmptyString; fontWeight?: NonEmptyString | Finite; align?: "left" | "right" | "center" | "start" | "end"; baseline?: "top" | "hanging" | "middle" | "alphabetic" | "ideographic" | "bottom"; rotation?: Finite; dx?: Finite; dy?: Finite } = {})`.
+- Implemented: `createTextMark({ id?: UserId; data?: UserId; source?: UserId; text?: unknown; fill?: NonEmptyString; opacity?: UnitInterval; fontSize?: PositiveFinite; fontFamily?: NonEmptyString; fontWeight?: NonEmptyString | Finite; align?: "left" | "right" | "center" | "start" | "end"; baseline?: "top" | "hanging" | "middle" | "alphabetic" | "ideographic" | "bottom"; rotation?: RotationInput; dx?: Finite; dy?: Finite } = {})`.
 - Proposed (NOT IMPLEMENTED): interactive tooltips.
 
 ### Value coverage — `createTextMark`
@@ -787,6 +793,7 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 - At least one property is required. Omitted properties preserve current immutable materialization config.
 - Complete text rematerializes immediately; incomplete text retains the edit until position and content complete.
 - `dx` and `dy` are final graphical offsets and never alter inherited semantic position or source geometry.
+- `rotation` uses `RotationInput`; numeric input remains radians and explicit degree/radian objects normalize to radians.
 
 ### Formal values — `editTextMark`
 

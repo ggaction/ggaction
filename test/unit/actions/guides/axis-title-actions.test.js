@@ -122,6 +122,23 @@ test("preserves explicit y-title rotation through repeated data-space locations"
   assert.equal(created.guideConfigs.axis.y.title.at, 5);
 });
 
+test("accepts explicit axis-title rotation units while preserving numeric radians", () => {
+  const degrees = program().createYAxisTitle({
+    rotation: { value: 90, unit: "degrees" }
+  });
+  assert.equal(degrees.graphicSpec.objects.yAxisTitle.properties.rotation, Math.PI / 2);
+  const edited = degrees.editYAxisTitle({
+    rotation: { value: -45, unit: "degrees" }
+  });
+  assert.equal(edited.graphicSpec.objects.yAxisTitle.properties.rotation, -Math.PI / 4);
+  assert.equal(degrees.graphicSpec.objects.yAxisTitle.properties.rotation, Math.PI / 2);
+  const radians = program().createYAxisTitle({ rotation: Math.PI / 4 });
+  assert.equal(radians.graphicSpec.objects.yAxisTitle.properties.rotation, Math.PI / 4);
+  assert.throws(() => program().createYAxisTitle({
+    rotation: { value: 90, unit: "turns" }
+  }), /radians.*degrees/);
+});
+
 test("rejects mirrored titles when the requested margin is too small", () => {
   const cramped = program().editCanvas({
     width: 200,
