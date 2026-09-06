@@ -913,6 +913,7 @@
       "source": "api/marks/text.md",
       "headings": [
         "text-marks",
+        "createannotationoptions",
         "createmarklabelsoptions",
         "createtextmarkoptions",
         "font-weights",
@@ -922,8 +923,8 @@
         "removelabellayoutoptions",
         "related"
       ],
-      "bytes": 11119,
-      "sha256": "d1b474cbb169983fd8422f06c50c1e244f858e66a2b54623ffc46adcdb0592b0"
+      "bytes": 12708,
+      "sha256": "240038c0e7d492f83c1e18628987f073c2e9dbc66d224d962b17f7743a5ea7e3"
     },
     {
       "order": 60,
@@ -1806,8 +1807,8 @@
         "action-reference",
         "exact-action-lookup"
       ],
-      "bytes": 21266,
-      "sha256": "e335f186337d4f308f35d74887bc16a742b5249ab81a100604ee7adbe9aaac69"
+      "bytes": 21358,
+      "sha256": "faa6d1462d6fabf16760deb4be82b13ab2e78c995cb218867ae2bc76e552b3d2"
     },
     {
       "order": 115,
@@ -1879,6 +1880,7 @@
         "createreferenceline",
         "createreferenceband",
         "createmarklabels",
+        "createannotation",
         "createtextmark",
         "edittextmark",
         "layoutlabels",
@@ -1886,8 +1888,8 @@
         "position-capability-matrix",
         "related"
       ],
-      "bytes": 13106,
-      "sha256": "6cd6fa439f300b557206a2c091e755eb46e59ca93f00957696b2d5b4e0036415"
+      "bytes": 14377,
+      "sha256": "f371cc745f935e78d0ca3e327b21154306807ea6d7dbd6bb11fc129af308ca40"
     },
     {
       "order": 117,
@@ -2076,8 +2078,8 @@
         "exact-typescript-signatures",
         "related"
       ],
-      "bytes": 15986,
-      "sha256": "a5945d33b6a532ebd741a55c44b8868f76523f72e70a3eda2fe8e26c662e50fb"
+      "bytes": 16054,
+      "sha256": "3e6f77bb69b60b2d2d6784559aaba8af0bf0c4c0c8da9d6e62f5fafa541bf97b"
     },
     {
       "order": 124,

@@ -16,13 +16,29 @@ test("text content and precision types match their runtime vocabularies", async 
     const paddedCalls = [...Array(10).keys()].flatMap(precision => ["f", "%"].map(suffix =>
       `p.encodeText({ value: 0.125, format: ".0${precision}${suffix}" });`));
     await writeFile(file, `
-import type { ChartProgram, TextEncodingOptions, DatumPositionEncodingOptions, CreateMarkLabelsOptions, CreateReferenceLineOptions, CreateReferenceBandOptions } from ${JSON.stringify(path.join(root, "types/index.js"))};
+import type { ChartProgram, TextEncodingOptions, DatumPositionEncodingOptions, CreateMarkLabelsOptions, CreateAnnotationOptions, CreateReferenceLineOptions, CreateReferenceBandOptions } from ${JSON.stringify(path.join(root, "types/index.js"))};
 declare const p: ChartProgram;
 const shared: TextEncodingOptions = { content: "share", normalizeBy: "category", format: ".1%" };
 p.encodeText(shared);
 const labels: CreateMarkLabelsOptions = { source: "bars", content: "share", normalizeBy: "category", layout: { axis: "y" } };
 p.createMarkLabels(labels);
 p.createMarkLabels();
+const annotation: CreateAnnotationOptions = { text: "Peak", x: 8, y: 9, dx: 4 };
+p.createAnnotation(annotation);
+p.createAnnotation({ text: "mark", source: "points", layout: false });
+p.createAnnotation({ text: "plot", space: "plot", x: 0.5, y: 0.75, data: "data" });
+// @ts-expect-error Annotation requires text.
+p.createAnnotation({ x: 1, y: 2 });
+// @ts-expect-error Coordinate anchors require both axes.
+p.createAnnotation({ text: "x only", x: 1 });
+// @ts-expect-error Plot coordinates are numeric.
+p.createAnnotation({ text: "plot", space: "plot", x: "0.5", y: 0.5 });
+// @ts-expect-error Plot anchors do not bind a source.
+p.createAnnotation({ text: "plot", space: "plot", x: 0.5, y: 0.5, source: "points" });
+// @ts-expect-error Data anchors inherit their dataset.
+p.createAnnotation({ text: "data", x: 1, y: 2, data: "data" });
+// @ts-expect-error Layout target is facade-owned.
+p.createAnnotation({ text: "mark", layout: { target: "other" } });
 const referenceLine: CreateReferenceLineOptions = { y: 5, source: "bars" };
 const referenceBand: CreateReferenceBandOptions = { space: "plot", x: [0.2, 0.6] };
 p.createReferenceLine(referenceLine);

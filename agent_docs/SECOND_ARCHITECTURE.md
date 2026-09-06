@@ -247,7 +247,7 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Gzip ceiling |
 | --- | ---: |
-| `ggaction` | 258,000 bytes |
+| `ggaction` | 259,000 bytes |
 | `ggaction/basic` | 141,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 
@@ -1684,6 +1684,13 @@ registered text policy를 통해 concrete label을 다시 만든다.
 `createMarkLabels`는 source-owned text 생성·content encoding·optional collision layout을
 기존 wrapped child action으로 조합하는 create-only facade다. 독립 facade registry 없이
 text/source relation과 하위 config가 결과와 후속 편집을 소유한다.
+
+`createAnnotation`도 별도 registry를 만들지 않는 create-only facade다. Mark anchor는 `createMarkLabels`로
+final-item source lifecycle을 유지한다. Data anchor는 complete Cartesian source가 가진 data, coordinate,
+x/y scale/type/unit을 독립 Text datum encoding에 복사하므로 datum이 automatic domain에 참여하고 이후 하위
+encoding/scale 편집을 따른다. Plot anchor는 x/y [0,1] fraction과 `<id>-x`/`<id>-y` ordinary linear scale을
+만든다. 세 branch의 전체 wrapped child chain은 discarded immutable program에서 먼저 검증하며, 후속 편집·layout·제거는
+기존 Text, position, scale, label-layout, mark owner가 수행한다.
 
 참조선·참조 구간 facade는 `actions/marks/references.js`에서 source binding을 선택한 뒤
 기존 Rule/Rect 생성과 position encoding을 조합한다. Data 좌표는 선택한 named scale을 공유하며,

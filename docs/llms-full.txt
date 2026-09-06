@@ -5494,6 +5494,49 @@ Text marks turn data values into visible labels. Add one after a compatible poin
 bar, rect, rule, or arc layer and ggaction persists that layer as the annotation
 source.
 
+## `createAnnotation(options)`
+
+Create constant text at a final mark, data coordinate, or plot fraction:
+
+```javascript
+const dataNote = points.createAnnotation({
+  text: "Peak · 9.0",
+  x: 8,
+  y: 9,
+  dx: 8,
+  dy: -16,
+  fontWeight: 600
+});
+
+const plotNote = points.createAnnotation({
+  id: "forecast",
+  text: "Forecast",
+  space: "plot",
+  x: 0.75,
+  y: 0.8
+});
+```
+
+For a mark anchor, omit x, y, and space. `source` selects an existing compatible
+mark, or the current/unique mark is inferred. The constant text appears once per
+final source item, including aggregate bars and arc sectors.
+
+For a data anchor, provide both x and y and optionally `source`. The selected
+complete Cartesian layer supplies its dataset, coordinate, x/y scales, field types,
+and temporal units. Values participate in automatic domains. This binding is chosen
+at creation and remains an independent Text layer, so later `encodeX` and `encodeY`
+can move it.
+
+For a plot anchor, set `space: "plot"` and pass x/y fractions in `[0,1]`. x=0 is
+the plot's left edge and y=0 its bottom edge. Supply or make inferable an existing
+dataset; an empty dataset works. Plot anchors reject `source` and use named
+`<id>-x` and `<id>-y` fraction scales. The default ID is `"annotation"`.
+
+`text` is required. All ordinary Text appearance options and `format` are accepted.
+Omitting `layout`, or passing `false`, preserves the exact anchor. A layout object
+enables collision placement and accepts `layoutLabels` options except `target`.
+After creation, use the lower Text, position, scale, layout, and mark-removal actions.
+
 ## `createMarkLabels(options?)`
 
 Create final-item labels in one call, then use the lower text actions to refine them:
@@ -12618,6 +12661,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 
 | Action | API layer | Domain |
 | --- | --- | --- |
+| [`createAnnotation`](./reference/actions/marks/#createannotation) | user-facing | marks |
 | [`createArcMark`](./reference/actions/marks/#createarcmark) | user-facing | marks |
 | [`createAreaMark`](./reference/actions/marks/#createareamark) | user-facing | marks |
 | [`createAreaPlot`](./reference/actions/charts-data/#createareaplot) | user-facing | charts |
@@ -13406,6 +13450,29 @@ Create final-item labels on an existing mark through text creation, encoding, an
 optional collision layout. The default content is the source's semantic value;
 Point/Rule/Rect require a field or constant. The default ID is `<source>-labels`.
 [Text marks](./api/marks/text/)
+
+## `createAnnotation`
+
+```javascript
+createAnnotation({ id?, text, format?, source?, x?, y?, space?, data?, coordinate?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy?, layout? })
+```
+
+Create constant text through one explicit anchor branch. Omit x/y/space for a
+final-item mark anchor; `source` selects the mark, otherwise current/unique mark
+inference applies. Provide both x and y for a data anchor; `source` selects one
+complete Cartesian layer whose data, coordinate, scales, field types, and temporal
+units are reused. The annotation participates in automatic domains without becoming
+a source-owned label.
+
+With `space: "plot"`, x and y are finite fractions in `[0,1]`, where x=0 is left
+and y=0 is bottom. Existing `data` is explicit or inferred, and `coordinate` is
+optional. Plot anchors reject `source` and use ordinary `<id>-x`/`<id>-y` linear
+scales with domain `[0,1]`. The default ID is `annotation`.
+
+Omit `layout` or pass `false` to retain the exact anchor. A layout object accepts
+`layoutLabels` options except `target`. Later changes use `encodeText`, `encodeX/Y`,
+`editTextMark`, `layoutLabels`, `removeLabelLayout`, `editScale`, and `removeMark`.
+[Text marks](./api/marks/text/#createannotationoptions)
 
 ## `createTextMark`
 
@@ -14961,6 +15028,7 @@ interface ChartProgramActions {
   editRuleMark(options: { target?: string } & RuleStyleOptions): ChartProgram;
   createTextMark(options?: TextMarkOptions): ChartProgram;
   createMarkLabels(options?: CreateMarkLabelsOptions): ChartProgram;
+  createAnnotation(options: CreateAnnotationOptions): ChartProgram;
   createReferenceLine(options: CreateReferenceLineOptions): ChartProgram;
   createReferenceBand(options: CreateReferenceBandOptions): ChartProgram;
   editTextMark(options: EditTextMarkOptions): ChartProgram;

@@ -3,7 +3,7 @@
   "packageVersion": "0.0.12",
   "typeSource": "types/program.d.ts",
   "errorPolicy": "An empty errors array means the compact card has no curated error override; consult the canonical route for validation, inference, and recovery behavior.",
-  "count": 197,
+  "count": 198,
   "cards": [
     {
       "schemaVersion": 2,
@@ -1250,6 +1250,147 @@
       "snippet": "program.createMarkLabels({})",
       "errors": [],
       "route": "/reference/actions/marks/#createmarklabels"
+    },
+    {
+      "schemaVersion": 2,
+      "name": "createAnnotation",
+      "layer": "user-facing",
+      "domain": "marks",
+      "summary": "Create constant text through one explicit anchor branch.",
+      "signature": "createAnnotation(options: CreateAnnotationOptions): ChartProgram;",
+      "intents": [
+        "create annotation",
+        "create",
+        "add",
+        "graphical mark",
+        "mark appearance",
+        "annotation",
+        "anchored note"
+      ],
+      "lifecycle": "Aggregate create-only",
+      "resources": {
+        "prerequisites": [
+          "dataset and coordinate context"
+        ],
+        "owns": [
+          "annotation"
+        ],
+        "idOptions": [
+          "id",
+          "source",
+          "data",
+          "coordinate"
+        ]
+      },
+      "options": [
+        {
+          "name": "fill",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "opacity",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "fontSize",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "fontFamily",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "fontWeight",
+          "required": false,
+          "type": "string | number | undefined"
+        },
+        {
+          "name": "align",
+          "required": false,
+          "type": "\"center\" | \"end\" | \"left\" | \"right\" | \"start\" | undefined"
+        },
+        {
+          "name": "baseline",
+          "required": false,
+          "type": "\"alphabetic\" | \"bottom\" | \"hanging\" | \"ideographic\" | \"middle\" | \"top\" | undefined"
+        },
+        {
+          "name": "rotation",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "dx",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "dy",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "id",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "text",
+          "required": true,
+          "type": "unknown"
+        },
+        {
+          "name": "format",
+          "required": false,
+          "type": "TextFormat | undefined"
+        },
+        {
+          "name": "layout",
+          "required": false,
+          "type": "false | Omit<LabelLayoutOptions, \"target\"> | undefined"
+        },
+        {
+          "name": "x",
+          "required": false,
+          "type": "unknown"
+        },
+        {
+          "name": "y",
+          "required": false,
+          "type": "unknown"
+        },
+        {
+          "name": "space",
+          "required": false,
+          "type": "\"data\" | \"plot\" | undefined"
+        },
+        {
+          "name": "source",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "data",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "coordinate",
+          "required": false,
+          "type": "string | undefined"
+        }
+      ],
+      "callPatterns": [
+        "createAnnotation({ text, source? })",
+        "createAnnotation({ text, x, y, space?: \"data\" | \"plot\" })"
+      ],
+      "snippet": "program.createAnnotation({ text: \"Peak\", x: 8, y: 9 })",
+      "errors": [],
+      "route": "/reference/actions/marks/#createannotation"
     },
     {
       "schemaVersion": 2,

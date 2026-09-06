@@ -251,6 +251,7 @@ export type {
   TextMarkOptions,
   DatumPositionEncodingOptions,
   CreateMarkLabelsOptions,
+  CreateAnnotationOptions,
   CreateReferenceLineOptions,
   CreateReferenceBandOptions,
   XAxisPosition,

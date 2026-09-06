@@ -701,6 +701,39 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 - Evidence: `test/unit/actions/marks/mark-labels.test.js`, `test/contracts/mark-label-content.test.js`,
   `test/contracts/text-content-types.test.js`, `scripts/package-consumer.js`, `test/browser/package-consumer.browser.js`.
 
+## `createAnnotation`
+
+- Signature: `createAnnotation({ id?, text, format?, source?, x?, y?, space?, data?, coordinate?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy?, layout? })`.
+- Exactly one anchor branch is selected. Mark anchor omits x/y/space and uses explicit/current/unique final-item source.
+  Data anchor requires x and y and selects one explicit/current/unique complete Cartesian layer for data, coordinate,
+  both scales, field types and temporal units. Plot anchor requires `space:"plot"`, finite x/y in [0,1], optional
+  existing data/coordinate, and ordinary `<id>-x`/`<id>-y` linear [0,1] scales. x=0 is left; y=0 is bottom.
+- `text` is required constant content. Text style and format delegate to createTextMark/encodeText. Omitted/false layout
+  preserves the anchor; a target-free layout object delegates to layoutLabels. Default ID is `annotation`.
+- Data datum contributes to automatic domains and is independent after creation. Mark anchor retains source-owned
+  final-item lifecycle. Plot named scales remain ordinary editable resources. No nearest-mark search, hidden dataset,
+  annotation registry, or editAnnotation action exists.
+- The full lower chain is preflighted on a discarded immutable branch. Branch conflicts, ambiguous/incomplete source,
+  missing axis, plot bounds, content/style/layout errors fail before child effects. Source-owned Text aliases are excluded
+  from data-source inference.
+- Later edits use encodeText, encodeX/Y, editTextMark, layoutLabels/removeLabelLayout, editScale and removeMark.
+
+### Formal values — `createAnnotation`
+
+- Implemented: `CreateAnnotationOptions = TextStyle & { id?: UserId; text: unknown; format?: TextFormat;
+  layout?: false | Omit<LabelLayoutOptions,"target"> } & (MarkAnchor | DataAnchor | PlotAnchor)`.
+- MarkAnchor: `{ source?: UserId; x?: never; y?: never; space?: never; data?: never; coordinate?: never }`.
+- DataAnchor: `{ x: unknown; y: unknown; space?: "data"; source?: UserId; data?: never; coordinate?: never }`.
+- PlotAnchor: `{ x: UnitInterval; y: UnitInterval; space: "plot"; source?: never; data?: UserId; coordinate?: UserId }`.
+- Proposed (NOT IMPLEMENTED): nearest-mark search, a dedicated annotation registry, and an `editAnnotation` facade.
+
+### Value coverage — `createAnnotation`
+
+- ✅ Covered: explicit/inferred mark source and aggregate final grain; quantitative/category/time data binding;
+  plot fractions, empty data, domain/reverse/Canvas replay, layout displacement/leader cleanup, lower edits/removal,
+  option/type exclusivity, ambiguity, invalid child inputs, previous/caller immutability, lower/literal graphic and PNG parity.
+- Evidence: `test/unit/actions/marks/annotation.test.js`, `test/contracts/annotation.test.js`, installed package/browser probes.
+
 ## `createTextMark`
 
 - Signature: `createTextMark({ id?, data?, source?, text?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy? } = {})`.

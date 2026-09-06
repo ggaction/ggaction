@@ -959,6 +959,20 @@ async function testNodeConsumer(directory) {
     assert.deepEqual(textDatum.graphicSpec.objects.note.items.map(item =>
       [item.properties.x, item.properties.y, item.properties.text]), [[368, 48, "Peak · 9.0"]]);
     assert.equal(textDatum.editCanvas({ width: 580 }).graphicSpec.objects.note.items[0].properties.x, 448);
+    const annotationSource = chart().createCanvas({ width: 480, height: 320, margin: 40 })
+      .createData({ values: [{ x: 1, y: 2 }, { x: 8, y: 9 }] })
+      .createPointMark().encodeX({ field: "x", scale: { domain: [0, 10] } })
+      .encodeY({ field: "y", scale: { domain: [0, 10] } });
+    const annotation = annotationSource.createAnnotation({
+      text: "Peak · 9.0", x: 8, y: 9, dx: 8, dy: -16
+    });
+    assert.deepEqual(annotation.graphicSpec.objects.annotation.items.map(item =>
+      [item.properties.x, item.properties.y, item.properties.text]), [[368, 48, "Peak · 9.0"]]);
+    assert.equal(annotationSource.createAnnotation({ id: "markNote", text: "Point" })
+      .graphicSpec.objects.markNote.items.length, 2);
+    assert.equal(chart().createCanvas().createData({ values: [] })
+      .createAnnotation({ text: "Plot", space: "plot", x: 0.5, y: 0.5 })
+      .graphicSpec.objects.annotation.items.length, 1);
     const referenceFacades = chart().createCanvas({ width: 480, height: 320, margin: 40 })
       .createData({ values: [] }).createReferenceBand({ space: "plot", x: [0.2, 0.6] })
       .createReferenceLine({ space: "plot", y: 0.5 });
@@ -2228,6 +2242,13 @@ async function testTypeScriptConsumer(directory) {
     chart().createRectMark().encodeX({ datum: 2 }).encodeX2({ datum: 6 });
     chart().createRectMark().encodeY({ datum: "2020-01-01", fieldType: "temporal" }).encodeY2({ datum: "2020-01-03" });
     chart().createTextMark({ data: "data", text: "note" }).encodeX({ datum: 8 }).encodeY({ datum: "B", fieldType: "nominal" });
+    chart().createAnnotation({ text: "Peak", x: 8, y: 9 });
+    chart().createAnnotation({ text: "Point", source: "points" });
+    chart().createAnnotation({ text: "Plot", space: "plot", x: 0.5, y: 0.75, data: "data" });
+    // @ts-expect-error Annotation coordinate anchors require both axes.
+    chart().createAnnotation({ text: "x only", x: 1 });
+    // @ts-expect-error Plot annotation fractions are numeric.
+    chart().createAnnotation({ text: "plot", space: "plot", x: "0.5", y: 0.5 });
     chart().createReferenceLine({ y: 5 });
     chart().createReferenceBand({ space: "plot", x: [0.2, 0.6] });
     // @ts-expect-error Plot reference coordinates are numeric.

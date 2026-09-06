@@ -79,6 +79,11 @@
     "layer": "user-facing",
     "domain": "marks"
   },
+  "createAnnotation": {
+    "operation": "create",
+    "layer": "user-facing",
+    "domain": "marks"
+  },
   "createTextMark": {
     "operation": "create",
     "layer": "user-facing",

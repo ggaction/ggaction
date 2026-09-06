@@ -11,6 +11,49 @@ Text marks turn data values into visible labels. Add one after a compatible poin
 bar, rect, rule, or arc layer and ggaction persists that layer as the annotation
 source.
 
+## `createAnnotation(options)`
+
+Create constant text at a final mark, data coordinate, or plot fraction:
+
+```javascript
+const dataNote = points.createAnnotation({
+  text: "Peak · 9.0",
+  x: 8,
+  y: 9,
+  dx: 8,
+  dy: -16,
+  fontWeight: 600
+});
+
+const plotNote = points.createAnnotation({
+  id: "forecast",
+  text: "Forecast",
+  space: "plot",
+  x: 0.75,
+  y: 0.8
+});
+```
+
+For a mark anchor, omit x, y, and space. `source` selects an existing compatible
+mark, or the current/unique mark is inferred. The constant text appears once per
+final source item, including aggregate bars and arc sectors.
+
+For a data anchor, provide both x and y and optionally `source`. The selected
+complete Cartesian layer supplies its dataset, coordinate, x/y scales, field types,
+and temporal units. Values participate in automatic domains. This binding is chosen
+at creation and remains an independent Text layer, so later `encodeX` and `encodeY`
+can move it.
+
+For a plot anchor, set `space: "plot"` and pass x/y fractions in `[0,1]`. x=0 is
+the plot's left edge and y=0 its bottom edge. Supply or make inferable an existing
+dataset; an empty dataset works. Plot anchors reject `source` and use named
+`<id>-x` and `<id>-y` fraction scales. The default ID is `"annotation"`.
+
+`text` is required. All ordinary Text appearance options and `format` are accepted.
+Omitting `layout`, or passing `false`, preserves the exact anchor. A layout object
+enables collision placement and accepts `layoutLabels` options except `target`.
+After creation, use the lower Text, position, scale, layout, and mark-removal actions.
+
 ## `createMarkLabels(options?)`
 
 Create final-item labels in one call, then use the lower text actions to refine them:

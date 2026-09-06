@@ -32,6 +32,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 
 | Action | API layer | Domain |
 | --- | --- | --- |
+| [`createAnnotation`](./actions/marks.md#createannotation) | user-facing | marks |
 | [`createArcMark`](./actions/marks.md#createarcmark) | user-facing | marks |
 | [`createAreaMark`](./actions/marks.md#createareamark) | user-facing | marks |
 | [`createAreaPlot`](./actions/charts-data.md#createareaplot) | user-facing | charts |

@@ -328,6 +328,24 @@
       }
     },
     {
+      "name": "createAnnotation",
+      "layer": "user-facing",
+      "domain": "marks",
+      "status": "implemented",
+      "lifecycle": "Aggregate create-only",
+      "update": "`encodeText`, `encodeX/Y`, `editTextMark`, `layoutLabels`, `removeLabelLayout`, `editScale`, and `removeMark`",
+      "audit": "Intentional",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/MARKS.md",
+        "anchor": "createannotation"
+      }
+    },
+    {
       "name": "createTextMark",
       "layer": "user-facing",
       "domain": "marks",

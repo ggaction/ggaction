@@ -50,6 +50,7 @@
   "createReferenceLine": "/reference/actions/marks/#createreferenceline",
   "createReferenceBand": "/reference/actions/marks/#createreferenceband",
   "createMarkLabels": "/reference/actions/marks/#createmarklabels",
+  "createAnnotation": "/reference/actions/marks/#createannotation",
   "createTextMark": "/reference/actions/marks/#createtextmark",
   "editTextMark": "/reference/actions/marks/#edittextmark",
   "layoutLabels": "/reference/actions/marks/#layoutlabels",

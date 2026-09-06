@@ -48,6 +48,7 @@
     "ReferenceLine": ["reference line", "threshold", "target line", "constant line"],
     "ReferenceBand": ["reference band", "target interval", "shaded range", "plot fraction"],
     "MarkLabels": ["mark labels", "final-item values", "pie percentages", "bar value labels"],
+    "Annotation": ["annotation", "anchored note", "data callout", "plot note"],
     "TextMark": ["text label", "annotation mark"],
     "Text": ["text content", "data-driven labels"],
     "LineMark": ["line mark", "path"],
@@ -177,6 +178,7 @@
   "sampleOverrides": {
     "createReferenceLine": { "y": 5 },
     "createReferenceBand": { "x": [2, 6] },
+    "createAnnotation": { "text": "Peak", "x": 8, "y": 9 },
     "editLegend": { "channels": ["color", "size"], "count": 3 },
     "encodeR": { "field": "value" },
     "createAreaPlot": { "x": "time", "y": "value" },
@@ -295,6 +297,7 @@
     "createReferenceLine": ["createReferenceLine({ y: 5 })", "createReferenceLine({ space: \"plot\", x: 0.5 })"],
     "createReferenceBand": ["createReferenceBand({ x: [2, 6] })", "createReferenceBand({ space: \"plot\", y: [0.2, 0.8] })"],
     "createMarkLabels": ["createMarkLabels()", "createMarkLabels({ source?, content: \"share\", format: \".0%\", layout? })"],
+    "createAnnotation": ["createAnnotation({ text, source? })", "createAnnotation({ text, x, y, space?: \"data\" | \"plot\" })"],
     "createAreaPlot": ["createAreaPlot({ x, y })", "createAreaPlot({ x, y, groupBy, layout })"],
     "layoutSeries": ["layoutSeries({ mode })"],
     "createHorizonPlot": ["createHorizonPlot({ x, y })", "createHorizonPlot({ x, y, bands?, baseline?, palette?, area? })"],

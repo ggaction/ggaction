@@ -247,6 +247,29 @@ optional collision layout. The default content is the source's semantic value;
 Point/Rule/Rect require a field or constant. The default ID is `<source>-labels`.
 [Text marks](../../api/marks/text.md)
 
+## `createAnnotation`
+
+```javascript
+createAnnotation({ id?, text, format?, source?, x?, y?, space?, data?, coordinate?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy?, layout? })
+```
+
+Create constant text through one explicit anchor branch. Omit x/y/space for a
+final-item mark anchor; `source` selects the mark, otherwise current/unique mark
+inference applies. Provide both x and y for a data anchor; `source` selects one
+complete Cartesian layer whose data, coordinate, scales, field types, and temporal
+units are reused. The annotation participates in automatic domains without becoming
+a source-owned label.
+
+With `space: "plot"`, x and y are finite fractions in `[0,1]`, where x=0 is left
+and y=0 is bottom. Existing `data` is explicit or inferred, and `coordinate` is
+optional. Plot anchors reject `source` and use ordinary `<id>-x`/`<id>-y` linear
+scales with domain `[0,1]`. The default ID is `annotation`.
+
+Omit `layout` or pass `false` to retain the exact anchor. A layout object accepts
+`layoutLabels` options except `target`. Later changes use `encodeText`, `encodeX/Y`,
+`editTextMark`, `layoutLabels`, `removeLabelLayout`, `editScale`, and `removeMark`.
+[Text marks](../../api/marks/text.md#createannotationoptions)
+
 ## `createTextMark`
 
 ```javascript
