@@ -1,8 +1,8 @@
 # Roadmap 6 — Raincloud
 
-**상태: Proposed, 미구현·미승인.** 아래 새 이름과 option 구조는 추천 계약 초안이다.
-현행 API가 아니며 그대로 실행 가능한 예제로 주장하지 않는다. Phase 9 A에서 signature를 확정하고
-V에서 primitive 목표를 확인한 뒤 public flow를 구현한다.
+**상태: Approved contract, implementation pending.** Phase 9 A에서 `createRaincloudPlot`과
+`editRaincloudPlot`의 source/statistical role 경계를 확정했다. 현행 API는 아니며 구현·검증 전까지
+실행 가능한 예제로 주장하지 않는다. 정확한 signature는 [Phase 9 계약](../phase9/CONTRACT.md)이 소유한다.
 
 ## 목적과 범위
 
