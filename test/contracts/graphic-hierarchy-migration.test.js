@@ -98,6 +98,12 @@ const EXPECTED_DRAW_ORDER = Object.freeze({
     "colorLegendSymbols", "colorLegendLabels", "colorLegendTitle",
     "chartTitle", "chartSubtitle"
   ],
+  "fitted-long-labels": [
+    "canvas", "scatterPlot",
+    "xAxisLine", "xAxisTicks", "xAxisLabels", "xAxisTitle",
+    "yAxisLine", "yAxisTicks", "yAxisLabels", "yAxisTitle",
+    "chartTitle", "chartSubtitle"
+  ],
   "gapminder-life-expectancy-heatmap": [
     "canvas", "rect", "text",
     "xAxisLine", "xAxisTicks", "xAxisLabels", "xAxisTitle",

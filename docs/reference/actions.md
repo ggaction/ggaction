@@ -206,6 +206,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`facet`](./actions/charts-data.md#facet) | user-facing | composition |
 | [`filterData`](./actions/charts-data.md#filterdata) | user-facing | core |
 | [`filterMarks`](./actions/charts-data.md#filtermarks) | user-facing | mark-selection |
+| [`fitCanvas`](./actions/charts-data.md#fitcanvas) | user-facing | core |
 | [`highlightMarks`](./actions/charts-data.md#highlightmarks) | user-facing | mark-selection |
 | [`jitterPoints`](./actions/marks.md#jitterpoints) | user-facing | marks |
 | [`layoutLabels`](./actions/marks.md#layoutlabels) | user-facing | marks |

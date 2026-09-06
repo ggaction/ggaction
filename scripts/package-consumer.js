@@ -133,6 +133,32 @@ async function testNodeConsumer(directory) {
     assert.equal(axisLifecycle.graphicSpec.objects.yAxisTitle, undefined);
     assert.ok(axisLifecycle.semanticSpec.layers[0].encoding.x);
     assert.ok(axisLifecycle.resolvedScales.y);
+    const fittedLabels = chart()
+      .createCanvas({ width: 520, height: 320, margin: 100 })
+      .createData({ values: [
+        { category: "North America Enterprise", value: 2 },
+        { category: "European Mid Market", value: 4 },
+        { category: "Asia Pacific Consumer", value: 3 }
+      ] })
+      .createPointMark()
+      .encodeX({ field: "category", fieldType: "nominal" })
+      .encodeY({ field: "value" })
+      .createXAxis({
+        ticksAndLabels: {
+          labels: {
+            maxWidth: 64,
+            wrap: "word",
+            rotation: { value: -25, unit: "degrees" }
+          }
+        },
+        title: false
+      })
+      .fitCanvas({ padding: 4 });
+    assert.equal(fittedLabels.graphicSpec.objects.canvas.properties.width, 520);
+    assert.equal(fittedLabels.graphicSpec.objects.canvas.properties.height, 320);
+    assert.equal(fittedLabels.materializationConfigs.fitting.result.status, "fit");
+    assert.ok(fittedLabels.graphicSpec.objects.xAxisLabels.items.length > 3);
+    assert.equal(basicChart().fitCanvas, undefined);
     const monthly = chart()
       .createData({
         id: "datedEvents",
@@ -1346,6 +1372,7 @@ async function testTypeScriptConsumer(directory) {
       vconcat,
       type ChartProgram,
       type ApplyThemeOptions,
+      type AxisLabelLayoutOptions,
       type Bin2DDataOptions,
       type EditBin2DDataOptions,
       type CreateBarPlotOptions,
@@ -1359,6 +1386,7 @@ async function testTypeScriptConsumer(directory) {
       type HorizonEncodingOptions,
       type HistogramEncodingOptions,
       type EditHorizonOptions,
+      type FitCanvasOptions,
       type EditAxisOptions,
       type CreateDerivedDataOptions,
       type CreateScatterPlotOptions,
@@ -1402,6 +1430,17 @@ async function testTypeScriptConsumer(directory) {
     const themeOptions: ApplyThemeOptions = { theme: themeName };
     const themedProgram: ChartProgram = program.applyTheme(themeOptions).removeTheme();
     const basicThemedProgram: BasicChartProgram = basicChart().applyTheme(themeOptions);
+    const fitOptions: FitCanvasOptions = { padding: 4, overflow: "report" };
+    const labelLayout: AxisLabelLayoutOptions = {
+      rotation: { value: -30, unit: "degrees" },
+      maxWidth: 60,
+      wrap: "word",
+      overlap: "error"
+    };
+    program.fitCanvas(fitOptions);
+    program.createXAxisLabels(labelLayout);
+    // @ts-expect-error Canvas fitting is Full only
+    basicChart().fitCanvas(fitOptions);
     const roseOptions: import("ggaction").CreateRosePlotOptions = { category: "category", radiusScale: { range: [70, 140] } };
     program.createScale({ id: "midpoint", type: "sequential", midpoint: 0 });
     program.editScale({ id: "midpoint", midpoint: "auto" });

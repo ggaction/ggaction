@@ -177,7 +177,35 @@ program.createAxes({
 
 Top ticks point upward and right ticks point right. Labels and titles are
 placed outward from the selected edge. The Canvas margin must already be large
-enough; guide creation does not resize it.
+enough; guide creation does not resize it. A later explicit `fitCanvas()` call
+can shrink excess margin on a Full unit chart.
+
+Cartesian label styles accept `rotation`, `maxWidth`, `wrap`, `lineHeight`, and
+`overlap` in focused label actions, ticks-and-labels groups, and complete axis
+facades. Numeric rotations are radians; `{ value, unit }` accepts radians or
+degrees. Setting a positive `maxWidth` stores deterministic word or character
+wrapping as concrete text lines. Word wrapping is the default, and an oversized
+word is split by Unicode code point. `lineHeight` defaults to `fontSize * 1.2`
+and cannot be smaller than the font size.
+
+```javascript
+program.createXAxis({
+  ticksAndLabels: {
+    labels: {
+      maxWidth: 72,
+      wrap: "word",
+      rotation: { value: -24, unit: "degrees" }
+    }
+  }
+});
+```
+
+`overlap` defaults to `"error"`. Explicit `"allow"` permits label-to-label
+intersection while Canvas overflow and axis-title collisions still fail.
+`editXAxisLabels({ maxWidth: false })` or its y counterpart removes wrapping;
+that reset cannot include `wrap` or `lineHeight` in the same call. Canvas and
+scale replay rebuild the same lines from the stored policy. The 10,000-item
+limit applies after wrapping.
 
 Cartesian title `rotation` accepts a finite legacy number in radians or an
 explicit `{ value, unit: "degrees" | "radians" }` object. Both forms normalize
@@ -346,7 +374,7 @@ axis throws before anything changes.
 | `position` | x: `"bottom"/"top"`; y: `"left"/"right"` |
 | `line` | `false` or `{ color?, lineWidth? }` |
 | `ticks` | `false` or `{ count?, values?, length?, color?, lineWidth? }` |
-| `labels` | `false` or `{ count?, values?, offset?, format?, color?, fontSize?, fontFamily?, fontWeight? }` |
+| `labels` | `false` or `{ count?, values?, offset?, format?, color?, fontSize?, fontFamily?, fontWeight?, rotation?, maxWidth?, wrap?, lineHeight?, overlap? }` |
 | `ticksAndLabels` | `false` or `{ count?, values?, ticks?, labels? }` |
 | `title` | `false` or `{ text?, at?, offset?, rotation?, color?, fontSize?, fontFamily?, fontWeight? }` |
 

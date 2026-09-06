@@ -1,6 +1,7 @@
 {
   "createCanvas": "/reference/actions/charts-data/#createcanvas",
   "editCanvas": "/reference/actions/charts-data/#editcanvas",
+  "fitCanvas": "/reference/actions/charts-data/#fitcanvas",
   "applyTheme": "/reference/actions/charts-data/#applytheme",
   "removeTheme": "/reference/actions/charts-data/#removetheme",
   "editCompositionLayout": "/reference/actions/charts-data/#editcompositionlayout",

@@ -36,6 +36,12 @@ Compare two quantitative fields and encode a category with color.
 
 Representative actions: `createScatterPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/scatterplot/).
 
+### [Fitted long axis labels](./fitted-long-labels/)
+
+Fit chart margins after laying out long Cartesian axis labels.
+
+Representative actions: `createXAxis`, `fitCanvas`. [Documentation](https://ggaction.github.io/ggaction/api/canvas/#fitcanvasoptions).
+
 ### [Multi-legend layout](./cars-multi-legend-layout/)
 
 Place categorical and sampled opacity legends on one aligned horizontal reading line.

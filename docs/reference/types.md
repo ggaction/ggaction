@@ -20,6 +20,7 @@ The action entries below provide the readable form, behavior, defaults, and rout
 interface ChartProgramActions {
   createCanvas(options?: CanvasOptions): ChartProgram;
   editCanvas(options: CanvasOptions): ChartProgram;
+  fitCanvas(options?: FitCanvasOptions): ChartProgram;
   applyTheme(options: ApplyThemeOptions): ChartProgram;
   removeTheme(): ChartProgram;
   createData(options: { id?: string; values: readonly unknown[] }): ChartProgram;

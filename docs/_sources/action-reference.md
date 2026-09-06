@@ -221,6 +221,19 @@ editCanvas({ width?, height?, background?, margin? })
 Edit Canvas properties and rematerialize connected consumers.
 [Canvas options](../api/canvas.md)
 
+### `fitCanvas`
+
+```javascript
+fitCanvas({ padding?, minPlotWidth?, minPlotHeight?, iterationLimit?, overflow? })
+```
+
+Fit an existing Full unit chart by shrinking its margins on a fixed Canvas.
+The action uses deterministic 0.25px probes and preserves semantic state,
+explicit scale ranges, guide policies, Canvas width, and Canvas height. The
+default overflow policy rejects an unsatisfied minimum plot atomically;
+`overflow: "report"` stores a structured result on
+`materializationConfigs.fitting`.
+
 ### `applyTheme`
 
 ```javascript

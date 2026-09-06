@@ -713,6 +713,19 @@ export interface CanvasOptions {
   margin?: number | Partial<Record<"top" | "right" | "bottom" | "left", number>>;
 }
 
+export interface FitCanvasOptions {
+  /** Minimum fitted margin on every Canvas edge. Defaults to 0. */
+  padding?: number;
+  /** Required final plot width. Defaults to 160. */
+  minPlotWidth?: number;
+  /** Required final plot height. Defaults to 120. */
+  minPlotHeight?: number;
+  /** Maximum binary-search probes per edge. Defaults to 32; maximum 64. */
+  iterationLimit?: number;
+  /** Reject an unsatisfied fit or preserve it with a structured overflow result. */
+  overflow?: "error" | "report";
+}
+
 export type XAxisPosition = "bottom" | "top";
 export type YAxisPosition = "left" | "right";
 export type RotationUnit = "radians" | "degrees";
@@ -743,13 +756,23 @@ export interface AxisLabelStyleOptions {
   fontFamily?: string;
   fontWeight?: string | number;
 }
+export interface AxisLabelLayoutOptions {
+  /** Legacy numbers are radians; structured values make radians or degrees explicit. */
+  rotation?: RotationInput;
+  /** Wrap each label to this measured width; false removes an existing wrap policy. */
+  maxWidth?: number | false;
+  wrap?: "word" | "character";
+  lineHeight?: number;
+  /** Defaults to error; allow stores an intentional label-label overlap policy. */
+  overlap?: "error" | "allow";
+}
 export interface AxisTicksAndLabelsOptions<P extends string> {
   scale?: string;
   position?: P;
   count?: number;
   values?: readonly AxisValue[];
   ticks?: AxisTickStyleOptions;
-  labels?: AxisLabelStyleOptions;
+  labels?: AxisLabelStyleOptions & AxisLabelLayoutOptions;
 }
 export interface AxisTitleOptions<P extends string> {
   text?: string;
@@ -789,7 +812,7 @@ export interface AxisTickOptions<P extends string>
   values?: readonly AxisValue[];
 }
 export interface AxisLabelOptions<P extends string>
-  extends AxisLabelStyleOptions {
+  extends AxisLabelStyleOptions, AxisLabelLayoutOptions {
   scale?: string;
   position?: P;
   count?: number;
@@ -2958,6 +2981,7 @@ export class ChartProgram {
 
   createCanvas(options?: CanvasOptions): ChartProgram;
   editCanvas(options: CanvasOptions): ChartProgram;
+  fitCanvas(options?: FitCanvasOptions): ChartProgram;
   applyTheme(options: ApplyThemeOptions): ChartProgram;
   removeTheme(): ChartProgram;
   createData(options: { id?: string; values: readonly unknown[] }): ChartProgram;

@@ -9,6 +9,11 @@
     "layer": "user-facing",
     "domain": "core"
   },
+  "fitCanvas": {
+    "operation": "edit",
+    "layer": "user-facing",
+    "domain": "core"
+  },
   "applyTheme": {
     "operation": "apply",
     "layer": "user-facing",

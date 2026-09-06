@@ -46,6 +46,8 @@ import { createAnnotatedImdbScatterplot } from
   "./annotated-imdb-scatterplot/program.js";
 import { createDarkThemeScatterplot } from
   "./dark-theme-scatterplot/program.js";
+import { createFittedLongLabels } from
+  "./fitted-long-labels/program.js";
 import { createGapminderLifeExpectancyHeatmap } from
   "./gapminder-life-expectancy-heatmap/program.js";
 import { createCarsOriginScatterplotFacet } from
@@ -385,6 +387,22 @@ export const PUBLIC_CHARTS = Object.freeze([
       state: {
         global: "__ggactionExample",
         expected: { id: "dark-theme-scatterplot", width: 640, height: 400 }
+      }
+    }
+  }),
+  example({
+    id: "fitted-long-labels",
+    data: {},
+    width: 680,
+    height: 420,
+    createProgram: () => createFittedLongLabels(),
+    docsGroup: "charts",
+    browser: {
+      path: "fitted-long-labels/",
+      canvas: "#chart",
+      state: {
+        global: "__ggactionExample",
+        expected: { id: "fitted-long-labels", width: 680, height: 420 }
       }
     }
   }),

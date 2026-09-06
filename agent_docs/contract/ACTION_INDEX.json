@@ -76,6 +76,24 @@
       }
     },
     {
+      "name": "fitCanvas",
+      "layer": "user-facing",
+      "domain": "core",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Repeat `fitCanvas` after layout changes",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/CORE.md",
+        "anchor": "fitcanvas"
+      }
+    },
+    {
       "name": "applyTheme",
       "layer": "user-facing",
       "domain": "core",

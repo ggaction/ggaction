@@ -67,6 +67,7 @@ function unique(values) {
 
 function operationAndSubject(name) {
   if (name === "facet") return { operation: "compose", subject: "facet" };
+  if (name === "fitCanvas") return { operation: "layout", subject: "Canvas" };
   const operation = operationPrefixes.find(prefix => name.startsWith(prefix));
   if (!operation) throw new Error(`Compact card operation is missing for ${name}.`);
   return { operation, subject: name.slice(operation.length) };

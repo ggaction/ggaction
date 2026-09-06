@@ -78,6 +78,42 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - Proposed values는 `createCanvas`의 responsive/auto 후보와 동일하다.
 - Evidence: `test/unit/actions/canvas/edit-canvas.test.js`.
 
+## `fitCanvas`
+
+- Signature: `fitCanvas({ padding?, minPlotWidth?, minPlotHeight?, iterationLimit?, overflow? } = {})`
+- 목적과 필수 state: Full unit program의 기존 Canvas와 현재 layout resource를 기준으로 네 margin을
+  줄여 plot 영역을 확장한다. Canvas `width`/`height`, semantic state와 explicit resource option은
+  유지한다. Basic에는 노출하지 않으며 composition 호출은 명시적 scope 오류로 거부한다.
+- `padding`: 각 edge가 가질 최소 margin인 non-negative finite number이며 기본값은 `0`이다.
+- `minPlotWidth`, `minPlotHeight`: 최종 plot의 양의 finite 최소 크기이며 기본값은 각각 `160`, `120`이다.
+- `iterationLimit`: edge별 probe 상한인 `1..64` 정수이며 기본값은 `32`다.
+- `overflow`: `"error" | "report"`, 기본값은 `"error"`다. Error는 원자적으로 거부한다. Report는
+  마지막 유효 margin을 적용하고 `materializationConfigs.fitting.result`에 `"overflow"` 상태와 issue를 저장한다.
+- Effect: top→right→bottom→left 순서로 0.25px 격자의 bounded binary search를 수행한다. 각 probe는
+  `editCanvas({ margin })`의 기존 consumer rematerialization과 guide collision 검증을 사용한다.
+  성공 결과는 normalized policy, final margin/plot, probe 수, status, issue, layout signature를 저장한다.
+- 결정성과 lifecycle: 같은 layout과 policy의 반복 호출은 graphic/config가 정확히 같은 상태로 수렴한다.
+  이후 resource가 바뀌면 다음 명시적 `fitCanvas` 호출이 새 signature로 다시 계산한다. 저장된 결과는
+  마지막 호출의 기록이며 자동 resize observer나 지속 compiler가 아니다.
+- 오류: Canvas 부재, unknown/invalid option, minimum plot 또는 iteration bound 미충족을 정책에 따라
+  거부하거나 보고한다. 어떤 경우에도 Canvas를 확대하거나 guide를 임의 이동하지 않는다.
+
+### Formal values — `fitCanvas`
+
+- Implemented: `fitCanvas({ padding?: NonNegativeFinite; minPlotWidth?: PositiveFinite; minPlotHeight?: PositiveFinite; iterationLimit?: Integer<1,64>; overflow?: "error" | "report" } = {}): ChartProgram`
+- Proposed (NOT IMPLEMENTED): automatic/persistent fitting, Canvas dimension expansion, composition-wide fitting.
+
+### Value coverage — `fitCanvas`
+
+- ✅ Covered: fixed Canvas, margin-only child edit, 0.25px output, bounded probes, exact repeated convergence.
+- ✅ Covered: invalid policy, Canvas absence, Full/Basic boundary, minimum plot error/report와 input immutability.
+- ✅ Covered: semantic/scale-domain/order invariance, explicit-range preservation, Current catalog,
+  package와 browser consumer. Auto range는 fitted plot bounds로 재계산한다.
+- Visual boundary는 `fitted-long-labels`에서 explicit final margin primitive와 public fitting 결과의
+  graphic/renderer/PNG equivalence로 검증한다.
+- Evidence: `test/unit/actions/canvas/fit-canvas.test.js`, `test/contracts/fitting.test.js`,
+  `test/charts/fitted-long-labels/`.
+
 ## `applyTheme`
 
 - Signature: `applyTheme({ theme })`

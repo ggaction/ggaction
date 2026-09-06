@@ -24,6 +24,7 @@ test.before(async () => {
     <canvas id="chart" aria-label="Encoding removal lifecycle chart"></canvas>
     <canvas id="legend" aria-label="Legend lifecycle chart"></canvas>
     <canvas id="axis" aria-label="Axis component lifecycle chart"></canvas>
+    <canvas id="fitting" aria-label="Fitted wrapped axis labels"></canvas>
     <canvas id="bin2d" aria-label="2D bin lifecycle chart"></canvas>
     <canvas id="basic" aria-label="Basic entry scatterplot"></canvas>
     <canvas id="polar-components" aria-label="Polar axis component creation"></canvas>
@@ -102,6 +103,25 @@ test.before(async () => {
         .createAxes()
         .editXAxis({ ticksAndLabels: false })
         .editYAxis({ line: false, title: false });
+      const fittedLabels = chart()
+        .createCanvas({ width: 520, height: 320, margin: 100 })
+        .createData({ values: [
+          { category: "North America Enterprise", value: 2 },
+          { category: "European Mid Market", value: 4 },
+          { category: "Asia Pacific Consumer", value: 3 }
+        ] })
+        .createPointMark()
+        .encodeX({ field: "category", fieldType: "nominal" })
+        .encodeY({ field: "value" })
+        .createXAxis({
+          ticksAndLabels: { labels: {
+            maxWidth: 64,
+            wrap: "word",
+            rotation: { value: -25, unit: "degrees" }
+          } },
+          title: false
+        })
+        .fitCanvas({ padding: 4 });
       const editedBins = chart()
         .createCanvas({ width: 200, height: 140, margin: 30 })
         .createData({ id: "samples", values: [
@@ -135,6 +155,7 @@ test.before(async () => {
       render(editedLegend, legendCanvas.getContext("2d"));
       const axisCanvas = document.querySelector("#axis");
       render(editedAxes, axisCanvas.getContext("2d"));
+      render(fittedLabels, document.querySelector("#fitting").getContext("2d"));
       const bin2dCanvas = document.querySelector("#bin2d");
       render(editedBins, bin2dCanvas.getContext("2d"));
       const basicCanvas = document.querySelector("#basic");
@@ -453,6 +474,14 @@ test.before(async () => {
           themedProgram.removeTheme().graphicSpec.objects.canvas.properties.background,
           basicThemedProgram.graphicSpec.objects.scatterPlot.items[0].properties.fill
         ],
+        fitting: {
+          margin: fittedLabels.materializationConfigs.canvas.margin,
+          status: fittedLabels.materializationConfigs.fitting.result.status,
+          lines: fittedLabels.graphicSpec.objects.xAxisLabels.items.length,
+          rotation: fittedLabels.graphicSpec.objects.xAxisLabels.items[0].properties.rotation,
+          svg: renderToSVG(fittedLabels).startsWith("<svg "),
+          basicExcluded: basicChart().fitCanvas === undefined
+        },
         sourceTextDomain: sourceTextScale.resolvedScales["next-y"].domain,
         sourceTextPositions: sourceTextScale.graphicSpec.objects.text.items.map(i => i.properties.y),
         sourceTextSVG: renderToSVG(sourceTextScale).includes("label"),
@@ -631,6 +660,14 @@ test("imports and renders the packed browser entries", async () => {
   for (const [actual, expected] of guideComparisons) assert.deepEqual(actual, expected);
   assert.deepEqual(await windowValue(page, "__ggactionConsumer"), {
     theme: ["#0f172a", "#60a5fa", "white", "#60a5fa"],
+    fitting: {
+      margin: { top: 4, right: 4, bottom: 69.5, left: 4 },
+      status: "fit",
+      lines: 7,
+      rotation: -25 * Math.PI / 180,
+      svg: true,
+      basicExcluded: true
+    },
     sourceTextDomain: [100, 1000],
     sourceTextPositions: [260, 60],
     sourceTextSVG: true,

@@ -25,7 +25,12 @@ const LABEL_OPTIONS = Object.freeze([
   "color",
   "fontSize",
   "fontFamily",
-  "fontWeight"
+  "fontWeight",
+  "rotation",
+  "maxWidth",
+  "wrap",
+  "lineHeight",
+  "overlap"
 ]);
 const SHARED_CREATE = Object.freeze(["scale", "position", "count", "values"]);
 const SHARED_EDIT = Object.freeze(["position", "count", "values"]);

@@ -59,6 +59,23 @@
   recipe_order: 10
   featured: true
   gallery_featured: true
+- id: canvas-fitting
+  example: /examples/fitted-long-labels/
+  title: Fitted long axis labels
+  image: /assets/images/fitted-long-labels.png
+  alt: Market score scatterplot with wrapped rotated category labels and fitted margins
+  width: 1360
+  height: 840
+  thumbnail: /assets/images/fitted-long-labels-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 395
+  caption: Deterministic label wrapping and rotation preserve a larger plot inside a fixed Canvas.
+  summary: Fit chart margins after laying out long Cartesian axis labels.
+  actions: createXAxis · fitCanvas
+  tasks: relationship guides layout
+  url: /api/canvas/#fitcanvasoptions
+  home_group: essentials
+  home_order: 12
 - id: multi-legend-layout
   example: /examples/cars-multi-legend-layout/
   title: Multi-legend layout

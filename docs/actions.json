@@ -3,7 +3,7 @@
   "packageVersion": "0.0.12",
   "typeSource": "types/program.d.ts",
   "errorPolicy": "An empty errors array means the compact card has no curated error override; consult the canonical route for validation, inference, and recovery behavior.",
-  "count": 200,
+  "count": 201,
   "cards": [
     {
       "schemaVersion": 2,
@@ -110,6 +110,66 @@
       "snippet": "program.editCanvas({ width: 640 })",
       "errors": [],
       "route": "/reference/actions/charts-data/#editcanvas"
+    },
+    {
+      "schemaVersion": 2,
+      "name": "fitCanvas",
+      "layer": "user-facing",
+      "domain": "core",
+      "summary": "Fit an existing Full unit chart by shrinking its margins on a fixed Canvas.",
+      "signature": "fitCanvas(options?: FitCanvasOptions): ChartProgram;",
+      "intents": [
+        "fit canvas",
+        "layout",
+        "avoid overlap",
+        "chart setup",
+        "data and scales",
+        "canvas",
+        "chart size"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing canvas"
+        ],
+        "owns": [
+          "canvas"
+        ],
+        "idOptions": []
+      },
+      "options": [
+        {
+          "name": "padding",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "minPlotWidth",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "minPlotHeight",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "iterationLimit",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "overflow",
+          "required": false,
+          "type": "\"error\" | \"report\" | undefined"
+        }
+      ],
+      "callPatterns": [
+        "fitCanvas({ padding?, minPlotWidth?, minPlotHeight?, iterationLimit?, overflow? })"
+      ],
+      "snippet": "program.fitCanvas({ padding: 1 })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#fitcanvas"
     },
     {
       "schemaVersion": 2,
@@ -7069,6 +7129,31 @@
           "name": "fontWeight",
           "required": false,
           "type": "string | number | undefined"
+        },
+        {
+          "name": "rotation",
+          "required": false,
+          "type": "RotationInput | undefined"
+        },
+        {
+          "name": "maxWidth",
+          "required": false,
+          "type": "number | false | undefined"
+        },
+        {
+          "name": "wrap",
+          "required": false,
+          "type": "\"character\" | \"word\" | undefined"
+        },
+        {
+          "name": "lineHeight",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "overlap",
+          "required": false,
+          "type": "\"allow\" | \"error\" | undefined"
         }
       ],
       "callPatterns": [
@@ -7156,6 +7241,31 @@
           "name": "fontWeight",
           "required": false,
           "type": "string | number | undefined"
+        },
+        {
+          "name": "rotation",
+          "required": false,
+          "type": "RotationInput | undefined"
+        },
+        {
+          "name": "maxWidth",
+          "required": false,
+          "type": "number | false | undefined"
+        },
+        {
+          "name": "wrap",
+          "required": false,
+          "type": "\"character\" | \"word\" | undefined"
+        },
+        {
+          "name": "lineHeight",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "overlap",
+          "required": false,
+          "type": "\"allow\" | \"error\" | undefined"
         }
       ],
       "callPatterns": [
@@ -7222,6 +7332,31 @@
           "type": "string | number | undefined"
         },
         {
+          "name": "rotation",
+          "required": false,
+          "type": "RotationInput | undefined"
+        },
+        {
+          "name": "maxWidth",
+          "required": false,
+          "type": "number | false | undefined"
+        },
+        {
+          "name": "wrap",
+          "required": false,
+          "type": "\"character\" | \"word\" | undefined"
+        },
+        {
+          "name": "lineHeight",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "overlap",
+          "required": false,
+          "type": "\"allow\" | \"error\" | undefined"
+        },
+        {
           "name": "position",
           "required": false,
           "type": "XAxisPosition | undefined"
@@ -7238,7 +7373,7 @@
         }
       ],
       "callPatterns": [
-        "editXAxisLabels({ offset?, format?, color?, fontSize?, fontFamily?, fontWeight?, position?, count? })"
+        "editXAxisLabels({ offset?, format?, color?, fontSize?, fontFamily?, fontWeight?, rotation?, maxWidth? })"
       ],
       "snippet": "program.editXAxisLabels({ offset: 1 })",
       "errors": [],
@@ -7301,6 +7436,31 @@
           "type": "string | number | undefined"
         },
         {
+          "name": "rotation",
+          "required": false,
+          "type": "RotationInput | undefined"
+        },
+        {
+          "name": "maxWidth",
+          "required": false,
+          "type": "number | false | undefined"
+        },
+        {
+          "name": "wrap",
+          "required": false,
+          "type": "\"character\" | \"word\" | undefined"
+        },
+        {
+          "name": "lineHeight",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "overlap",
+          "required": false,
+          "type": "\"allow\" | \"error\" | undefined"
+        },
+        {
           "name": "position",
           "required": false,
           "type": "YAxisPosition | undefined"
@@ -7317,7 +7477,7 @@
         }
       ],
       "callPatterns": [
-        "editYAxisLabels({ offset?, format?, color?, fontSize?, fontFamily?, fontWeight?, position?, count? })"
+        "editYAxisLabels({ offset?, format?, color?, fontSize?, fontFamily?, fontWeight?, rotation?, maxWidth? })"
       ],
       "snippet": "program.editYAxisLabels({ offset: 1 })",
       "errors": [],
@@ -7380,7 +7540,7 @@
         {
           "name": "labels",
           "required": false,
-          "type": "AxisLabelStyleOptions | undefined"
+          "type": "(AxisLabelStyleOptions & AxisLabelLayoutOptions) | undefined"
         }
       ],
       "callPatterns": [
@@ -7447,7 +7607,7 @@
         {
           "name": "labels",
           "required": false,
-          "type": "AxisLabelStyleOptions | undefined"
+          "type": "(AxisLabelStyleOptions & AxisLabelLayoutOptions) | undefined"
         }
       ],
       "callPatterns": [
@@ -7506,7 +7666,7 @@
         {
           "name": "labels",
           "required": false,
-          "type": "AxisLabelStyleOptions | undefined"
+          "type": "(AxisLabelStyleOptions & AxisLabelLayoutOptions) | undefined"
         }
       ],
       "callPatterns": [
@@ -7565,7 +7725,7 @@
         {
           "name": "labels",
           "required": false,
-          "type": "AxisLabelStyleOptions | undefined"
+          "type": "(AxisLabelStyleOptions & AxisLabelLayoutOptions) | undefined"
         }
       ],
       "callPatterns": [

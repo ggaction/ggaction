@@ -10,6 +10,7 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | --- | --- | --- | --- | --- | --- |
 | user-facing | [`createCanvas`](current/CORE.md#createcanvas) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editCanvas`](current/CORE.md#editcanvas) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`fitCanvas`](current/CORE.md#fitcanvas) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`applyTheme`](current/CORE.md#applytheme) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`removeTheme`](current/CORE.md#removetheme) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createData`](current/CORE.md#createdata) | core | Immutable create-only | Intentional | ✅ / ✅ / ✅ |
