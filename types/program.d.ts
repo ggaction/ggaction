@@ -244,22 +244,28 @@ export type DatasetRegressionTransform = {
 } & (
   | {
       method: "linear";
-      confidence: number;
       interval: "mean" | "prediction";
       degree?: never;
       span?: never;
-    }
+    } & (
+      | { confidenceMethod: ConfidenceIntervalMethod; level: number; confidence?: never }
+      | { confidence: number; confidenceMethod?: never; level?: never }
+    )
   | {
       method: "polynomial";
       degree: number;
-      confidence: number;
       interval: "mean" | "prediction";
       span?: never;
-    }
+    } & (
+      | { confidenceMethod: ConfidenceIntervalMethod; level: number; confidence?: never }
+      | { confidence: number; confidenceMethod?: never; level?: never }
+    )
   | {
       method: "loess";
       span: number;
       degree?: never;
+      confidenceMethod?: never;
+      level?: never;
       confidence?: never;
       interval?: never;
     }
@@ -352,16 +358,19 @@ export type DatasetIntervalTransform = {
   | {
       center: "mean";
       extent: "stderr" | "stdev";
+      method?: never;
       level?: never;
     }
   | {
       center: "mean";
       extent: "ci";
+      method?: ConfidenceIntervalMethod;
       level: number;
     }
   | {
       center: "median";
       extent: "iqr";
+      method?: never;
       level?: never;
     }
 );
@@ -659,12 +668,18 @@ export type ScalarAggregateOperation =
   | "distinct" | "valid" | "missing"
   | "variance" | "varianceP" | "stdev" | "stdevP" | "stderr"
   | "q1" | "q3" | "ciLower" | "ciUpper";
+export type ConfidenceIntervalMethod = "normal" | "student-t";
 export type ParameterizedAggregateOperation =
   | { op: "quantile"; probability: number }
   | {
       op: "first" | "last";
       orderBy: string;
       order?: "ascending" | "descending";
+    }
+  | {
+      op: "ciLower" | "ciUpper";
+      method?: ConfidenceIntervalMethod;
+      level?: number;
     };
 export type AggregateOperation =
   | ScalarAggregateOperation
@@ -1551,6 +1566,7 @@ export interface IntervalDataOptions {
   groupBy?: string | readonly string[];
   center?: IntervalCenter;
   extent?: IntervalExtent;
+  method?: ConfidenceIntervalMethod;
   level?: number;
   as?: IntervalOutputFields;
 }
@@ -1668,6 +1684,7 @@ export interface ErrorBarStatisticalIntervalChannel {
   field?: string;
   center?: IntervalCenter;
   extent?: IntervalExtent;
+  method?: ConfidenceIntervalMethod;
   level?: number;
   scale?: NonPointQuantitativePositionScaleOptions;
 }
@@ -1720,6 +1737,7 @@ export interface EditErrorBarOptions {
   statistics?: {
     center?: IntervalCenter;
     extent?: IntervalExtent;
+    method?: ConfidenceIntervalMethod;
     level?: number;
   };
 }
@@ -2407,6 +2425,7 @@ export interface ErrorBandStatisticalIntervalChannel {
   field?: string;
   center?: IntervalCenter;
   extent?: IntervalExtent;
+  method?: ConfidenceIntervalMethod;
   level?: number;
   scale?: NonPointQuantitativePositionScaleOptions;
 }
@@ -2450,6 +2469,7 @@ export interface EditErrorBandOptions {
   statistics?: {
     center?: IntervalCenter;
     extent?: IntervalExtent;
+    method?: ConfidenceIntervalMethod;
     level?: number;
   };
   boundaries?: false | {
@@ -2821,6 +2841,8 @@ type RegressionParameterOptions =
       method?: "linear";
       degree?: never;
       span?: never;
+      confidenceMethod?: ConfidenceIntervalMethod;
+      level?: number;
       confidence?: number;
       interval?: RegressionInterval;
     }
@@ -2828,6 +2850,8 @@ type RegressionParameterOptions =
       method: "polynomial";
       degree?: number;
       span?: never;
+      confidenceMethod?: ConfidenceIntervalMethod;
+      level?: number;
       confidence?: number;
       interval?: RegressionInterval;
     }
@@ -2835,6 +2859,8 @@ type RegressionParameterOptions =
       method: "loess";
       degree?: never;
       span?: number;
+      confidenceMethod?: never;
+      level?: never;
       confidence?: never;
       interval?: never;
     };
@@ -2876,6 +2902,8 @@ export interface EditRegressionOptions {
   method?: RegressionMethod;
   degree?: number;
   span?: number;
+  confidenceMethod?: ConfidenceIntervalMethod;
+  level?: number;
   confidence?: number;
   interval?: RegressionInterval;
   band?: false | RegressionBandOptions;

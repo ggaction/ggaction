@@ -37,12 +37,19 @@ type ScalarAggregateOperation =
   | "variance" | "varianceP" | "stdev" | "stdevP" | "stderr"
   | "q1" | "q3" | "ciLower" | "ciUpper";
 
+type ConfidenceIntervalMethod = "normal" | "student-t";
+
 type ParameterizedAggregateOperation =
   | { op: "quantile"; probability: UnitInterval }
   | {
       op: "first" | "last";
       orderBy: FieldName;
       order?: "ascending" | "descending";
+    }
+  | {
+      op: "ciLower" | "ciUpper";
+      method?: ConfidenceIntervalMethod;
+      level?: UnitIntervalExclusive;
     };
 
 type AggregateOperation =
@@ -70,7 +77,8 @@ type LinearRegressionTransform = {
   x: FieldName;
   y: FieldName;
   groupBy?: FieldName;
-  confidence: UnitIntervalExclusive;
+  confidenceMethod: ConfidenceIntervalMethod;
+  level: UnitIntervalExclusive;
   interval: "mean";
 };
 type GaussianDensityTransform = {

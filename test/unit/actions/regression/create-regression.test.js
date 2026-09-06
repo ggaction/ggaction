@@ -59,7 +59,8 @@ test("infers a complete grouped regression from the current point mark", () => {
 test("matches primitive band and line graphics exactly", () => {
   const expected = createCarsRegressionScatterplotValues(loadCars());
   const program = pointProgram().createRegression({
-    confidence: 0.95,
+    confidenceMethod: "student-t",
+    level: 0.95,
     band: { color: "#111111", opacity: 0.18 },
     line: { strokeWidth: 3 }
   });
@@ -135,7 +136,8 @@ test("orchestrates polynomial, LOESS, prediction, and band opt-out", () => {
     y: "Acceleration",
     groupBy: "Origin",
     degree: 2,
-    confidence: 0.95,
+    confidenceMethod: "student-t",
+    level: 0.95,
     interval: "mean"
   });
   assert.deepEqual(

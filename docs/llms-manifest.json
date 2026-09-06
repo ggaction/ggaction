@@ -780,13 +780,13 @@
       "source": "api/data/statistical-transforms.md",
       "headings": [
         "statistical-data-transforms",
-        "createregressiondata-id-source-x-y-groupby-method-degree-span-confidence-interval",
+        "createregressiondata-id-source-x-y-groupby-method-degree-span-confidencemethod-level-confidence-interval",
         "create-interval-data",
         "createdensitydata-id-source-field-groupby-bandwidth-extent-steps-kernel-normalization-as",
         "related"
       ],
-      "bytes": 4890,
-      "sha256": "6e0daabedd90eb3dc6d51a3eb1b358950dd690fd825764d2d692e88c62d851bb"
+      "bytes": 5182,
+      "sha256": "3fdc1b6185286f46a97f47324048462ceb467f04bc1be04e7bc8782de6bc3ad0"
     },
     {
       "order": 51,
@@ -987,8 +987,8 @@
         "errors-and-limitations",
         "related"
       ],
-      "bytes": 6378,
-      "sha256": "93fd7004cdebfadd9db5002dd3d8e04c7f88857bb2e6ead58fcf4fb38a8a1e4e"
+      "bytes": 6621,
+      "sha256": "c0a6b114b8790e44da4f10c2f937d8830ec531d52133f3a831d279c6ef25b1ae"
     },
     {
       "order": 63,
@@ -1009,8 +1009,8 @@
         "errors-and-current-limitations",
         "related"
       ],
-      "bytes": 9788,
-      "sha256": "0c5d5c7c4cb29e62225ddad27ec783a71dfd7bd8690d234734c01475ea02baa7"
+      "bytes": 9884,
+      "sha256": "e119a0569ff8a9f463913907d1bfccd367c3e9268de7b12073bdfb0ddd315cbd"
     },
     {
       "order": 64,
@@ -1024,8 +1024,8 @@
         "inference-and-ownership",
         "editing-the-band"
       ],
-      "bytes": 7036,
-      "sha256": "d9acbe988d39f30f8ee2583ca27666648bf76de441f762f5b7587d5c2a6f0881"
+      "bytes": 7071,
+      "sha256": "e41e7d81b26cc9a7360692b2a189d1cc0a215771902f7ab0e67f0a7d0425345d"
     },
     {
       "order": 65,
@@ -1859,8 +1859,8 @@
         "editbin2ddata",
         "related"
       ],
-      "bytes": 15268,
-      "sha256": "81836f83f97472da32c0d65cfea383c810a7d996771fdeb233d85a4d2db5d22d"
+      "bytes": 15307,
+      "sha256": "42275532c0db9f0714ec9779883be3b5e2621a35dc739a3e53a107b53f30b082"
     },
     {
       "order": 116,
@@ -1979,8 +1979,8 @@
         "createviolinplot",
         "related"
       ],
-      "bytes": 10607,
-      "sha256": "e3dc1dbf31441ff4950d0256b49778bf099e73b39959ae4e40e6d41155dfe971"
+      "bytes": 10680,
+      "sha256": "111f656d15effc74342a96686b79ef26be5a403810572ab55cb37f45e8849117"
     },
     {
       "order": 119,

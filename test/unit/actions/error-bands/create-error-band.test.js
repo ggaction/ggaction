@@ -45,6 +45,7 @@ test("creates one grouped statistical area through wrapped interval actions", ()
     groupBy: ["year", "cluster"],
     center: "mean",
     extent: "ci",
+    method: "student-t",
     level: 0.95,
     as: {
       center: "__errorBand_center",

@@ -7,6 +7,10 @@ import {
   stableFiniteMean,
   stableFiniteSum
 } from "./numeric.js";
+import {
+  confidenceCriticalValue,
+  normalizeConfidenceInterval
+} from "./statistics/confidenceInterval.js";
 
 export const SCALAR_AGGREGATE_OPERATIONS = Object.freeze([
   "count", "sum", "mean", "median", "min", "max",
@@ -17,7 +21,9 @@ export const SCALAR_AGGREGATE_OPERATIONS = Object.freeze([
 
 const SCALAR_OPERATIONS = new Set(SCALAR_AGGREGATE_OPERATIONS);
 const NOMINAL_OPERATIONS = ["count", "distinct", "valid", "missing"];
-const PARAMETERIZED_OPERATIONS = ["quantile", "first", "last"];
+const PARAMETERIZED_OPERATIONS = [
+  "quantile", "first", "last", "ciLower", "ciUpper"
+];
 
 function nonEmptyString(value, label) {
   if (typeof value !== "string" || value.length === 0) {
@@ -81,6 +87,21 @@ export function validateAggregate(value) {
       op: value.op,
       orderBy: value.orderBy,
       order: value.order ?? "ascending"
+    };
+  }
+  if (value.op === "ciLower" || value.op === "ciUpper") {
+    const unknown = Object.keys(value).find(
+      key => !["op", "method", "level"].includes(key)
+    );
+    if (unknown !== undefined) {
+      throw new Error(`Unknown confidence aggregate property "${unknown}".`);
+    }
+    return {
+      op: value.op,
+      ...normalizeConfidenceInterval(value, {
+        defaultMethod: "normal",
+        label: "Aggregate confidence interval"
+      })
     };
   }
   throw new Error(`Unsupported aggregate "${value.op}".`);
@@ -194,39 +215,44 @@ export function aggregateScalarValues(values, operation) {
   if (!Array.isArray(values)) {
     throw new TypeError("Aggregate values must be an array.");
   }
-  validateAggregate(operation);
-  if (!isScalarAggregate(operation)) {
+  const aggregate = validateAggregate(operation);
+  const scalarOperation = isScalarAggregate(aggregate)
+    ? aggregate
+    : ["ciLower", "ciUpper"].includes(aggregate.op)
+      ? aggregate.op
+      : undefined;
+  if (scalarOperation === undefined) {
     throw new Error("Scalar aggregate calculation requires a scalar operation.");
   }
 
-  if (operation === "count") return values.length;
+  if (scalarOperation === "count") return values.length;
   const valid = values.filter(value => !isMissing(value));
-  if (operation === "valid") return valid.length;
-  if (operation === "missing") return values.length - valid.length;
-  if (operation === "distinct") return new Set(valid).size;
+  if (scalarOperation === "valid") return valid.length;
+  if (scalarOperation === "missing") return values.length - valid.length;
+  if (scalarOperation === "distinct") return new Set(valid).size;
 
   const finite = finiteValues(values);
   if (finite.length === 0) return undefined;
-  if (operation === "sum") {
+  if (scalarOperation === "sum") {
     return stableFiniteSum(finite, "Aggregate sum");
   }
-  if (operation === "min") return numericExtent(finite)[0];
-  if (operation === "max") return numericExtent(finite)[1];
-  if (operation === "median") return quantile(finite, 0.5);
-  if (operation === "q1") return quantile(finite, 0.25);
-  if (operation === "q3") return quantile(finite, 0.75);
+  if (scalarOperation === "min") return numericExtent(finite)[0];
+  if (scalarOperation === "max") return numericExtent(finite)[1];
+  if (scalarOperation === "median") return quantile(finite, 0.5);
+  if (scalarOperation === "q1") return quantile(finite, 0.25);
+  if (scalarOperation === "q3") return quantile(finite, 0.75);
 
   const mean = stableFiniteMean(finite, "Aggregate mean");
-  if (operation === "mean") return mean;
-  if (["variance", "varianceP", "stdev", "stdevP"].includes(operation)) {
-    const population = operation.endsWith("P");
+  if (scalarOperation === "mean") return mean;
+  if (["variance", "varianceP", "stdev", "stdevP"].includes(scalarOperation)) {
+    const population = scalarOperation.endsWith("P");
     if (!population && finite.length < 2) return undefined;
     const kind = population ? "population" : "sample";
     const deviation = stableFiniteDeviation(finite, {
       sample: !population,
       label: `Aggregate ${kind} deviation`
     });
-    if (operation.startsWith("stdev")) return deviation.deviation;
+    if (scalarOperation.startsWith("stdev")) return deviation.deviation;
     return deviation.squared === undefined
       ? requireFiniteResult(
           deviation.deviation ** 2,
@@ -240,14 +266,25 @@ export function aggregateScalarValues(values, operation) {
     divisor: Math.sqrt(finite.length),
     label: "Aggregate standard error"
   }).deviation;
-  if (operation === "stderr") return stderr;
-  if (operation === "ciLower") {
-    return requireFiniteResult(mean - 1.96 * stderr, "Aggregate lower CI");
+  if (scalarOperation === "stderr") return stderr;
+  const confidence = isScalarAggregate(aggregate)
+    ? normalizeConfidenceInterval({}, {
+        defaultMethod: "normal",
+        label: "Aggregate confidence interval"
+      })
+    : aggregate;
+  const critical = confidenceCriticalValue({
+    method: confidence.method,
+    level: confidence.level,
+    degreesOfFreedom: finite.length - 1
+  });
+  if (scalarOperation === "ciLower") {
+    return requireFiniteResult(mean - critical * stderr, "Aggregate lower CI");
   }
-  if (operation === "ciUpper") {
-    return requireFiniteResult(mean + 1.96 * stderr, "Aggregate upper CI");
+  if (scalarOperation === "ciUpper") {
+    return requireFiniteResult(mean + critical * stderr, "Aggregate upper CI");
   }
-  throw new Error(`Unsupported scalar aggregate "${operation}".`);
+  throw new Error(`Unsupported scalar aggregate "${scalarOperation}".`);
 }
 
 export function aggregateRows(rows, field, operation) {
@@ -265,6 +302,9 @@ export function aggregateRows(rows, field, operation) {
       ? undefined
       : quantile(values, aggregate.probability);
   }
+  if (aggregate.op === "ciLower" || aggregate.op === "ciUpper") {
+    return aggregateScalarValues(rows.map(row => row[field]), aggregate);
+  }
   return aggregateOrderedRows(rows, field, aggregate);
 }
 
@@ -274,6 +314,9 @@ export function formatAggregateTitle(operation, field) {
   if (isScalarAggregate(aggregate)) return `${aggregate}(${field})`;
   if (aggregate.op === "quantile") {
     return `quantile(${field}, ${aggregate.probability})`;
+  }
+  if (aggregate.op === "ciLower" || aggregate.op === "ciUpper") {
+    return `${aggregate.op}(${field}, ${aggregate.method}, ${aggregate.level})`;
   }
   return `${aggregate.op}(${field}, ${aggregate.orderBy} ${aggregate.order})`;
 }

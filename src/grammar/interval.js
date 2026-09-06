@@ -1,7 +1,10 @@
 import { cloneAndFreeze, isPlainObject } from "../core/immutable.js";
 import { aggregateScalarValues } from "./aggregate.js";
 import { requireFiniteResult, stableDecimal } from "./numeric.js";
-import { studentTCriticalValue } from "./statistics/studentT.js";
+import {
+  confidenceCriticalValue,
+  normalizeConfidenceInterval
+} from "./statistics/confidenceInterval.js";
 
 const CENTER_VALUES = ["mean", "median"];
 const EXTENT_VALUES = ["stderr", "stdev", "ci", "iqr"];
@@ -11,6 +14,7 @@ const TRANSFORM_KEYS = [
   "groupBy",
   "center",
   "extent",
+  "method",
   "level",
   "as"
 ];
@@ -84,13 +88,12 @@ export function validateIntervalTransform(transform) {
     throw new Error("Median intervals require iqr, and iqr requires median.");
   }
   if (transform.extent === "ci") {
-    if (
-      !Number.isFinite(transform.level) ||
-      transform.level <= 0 ||
-      transform.level >= 1
-    ) {
-      throw new RangeError("Interval CI level must be between 0 and 1.");
-    }
+    normalizeConfidenceInterval(transform, {
+      defaultMethod: "student-t",
+      label: "Interval CI"
+    });
+  } else if (transform.method !== undefined) {
+    throw new Error("Interval method is supported only for ci extent.");
   } else if (transform.level !== undefined) {
     throw new Error("Interval level is supported only for ci extent.");
   }
@@ -111,16 +114,27 @@ function normalizeGrouping(groupBy) {
 export function normalizeIntervalParameters({
   center = "mean",
   extent = "ci",
+  method,
   level
 } = {}) {
-  const resolvedLevel = extent === "ci" ? level ?? 0.95 : level;
+  const confidence = extent === "ci"
+    ? normalizeConfidenceInterval({ method, level }, {
+        defaultMethod: "student-t",
+        label: "Interval CI"
+      })
+    : undefined;
   const candidate = {
     type: "interval",
     field: "__interval_input",
     groupBy: [],
     center,
     extent,
-    ...(resolvedLevel === undefined ? {} : { level: resolvedLevel }),
+    ...(confidence === undefined
+      ? {
+          ...(method === undefined ? {} : { method }),
+          ...(level === undefined ? {} : { level })
+        }
+      : confidence),
     as: {
       center: "__interval_center",
       lower: "__interval_lower",
@@ -131,18 +145,16 @@ export function normalizeIntervalParameters({
   return cloneAndFreeze({
     center,
     extent,
-    ...(resolvedLevel === undefined ? {} : { level: resolvedLevel })
+    ...(confidence === undefined ? {} : confidence)
   });
 }
 
 export function studentTCritical(degreesOfFreedom, level) {
-  if (!Number.isInteger(degreesOfFreedom) || degreesOfFreedom < 1) {
-    throw new RangeError("Student-t degreesOfFreedom must be a positive integer.");
-  }
-  if (!Number.isFinite(level) || level <= 0 || level >= 1) {
-    throw new RangeError("Student-t level must be between 0 and 1.");
-  }
-  return studentTCriticalValue(level, degreesOfFreedom);
+  return confidenceCriticalValue({
+    method: "student-t",
+    level,
+    degreesOfFreedom
+  });
 }
 
 function isMissing(value) {
@@ -170,7 +182,11 @@ function deriveGroup(values, transform) {
     ? aggregateScalarValues(values, "stdev")
     : transform.extent === "stderr"
       ? aggregateScalarValues(values, "stderr")
-      : studentTCritical(values.length - 1, transform.level) *
+      : confidenceCriticalValue({
+          method: transform.method,
+          level: transform.level,
+          degreesOfFreedom: values.length - 1
+        }) *
         aggregateScalarValues(values, "stderr");
   return {
     center,
@@ -232,12 +248,13 @@ export function normalizeIntervalTransform({
   groupBy,
   center,
   extent,
+  method,
   level,
   as
 }) {
   nonEmptyString(field, "Interval field");
   const grouping = normalizeGrouping(groupBy);
-  const parameters = normalizeIntervalParameters({ center, extent, level });
+  const parameters = normalizeIntervalParameters({ center, extent, method, level });
   const transform = {
     type: "interval",
     field,

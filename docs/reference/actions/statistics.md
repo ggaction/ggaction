@@ -92,12 +92,12 @@ See the [complete density workflow](../../tutorials/density-area.md#complete-den
 
 ```javascript
 createIntervalData({
-  id, source?, field, groupBy?, center?, extent?, level?, as?
+  id, source?, field, groupBy?, center?, extent?, method?, level?, as?
 })
 ```
 
 Create immutable grouped center/lower/upper summary rows. Mean supports
-standard error, sample standard deviation, and Student-t confidence intervals;
+standard error, sample standard deviation, and normal or Student-t confidence intervals;
 median supports interquartile range. [Data](../../api/data.md)
 
 ## `createRegression`
@@ -105,7 +105,7 @@ median supports interquartile range. [Data](../../api/data.md)
 ```javascript
 createRegression({
   target?, x?, y?, groupBy?, method?, degree?, span?,
-  confidence?, interval?, band?, line?
+  confidenceMethod?, level?, confidence?, interval?, band?, line?
 })
 ```
 
@@ -118,8 +118,8 @@ polynomial degree to `2`; LOESS span to `0.75`.
 
 ```javascript
 editRegression({
-  target?, data?, x?, y?, groupBy?, method?, degree?, span?, confidence?,
-  interval?, band?, line?
+  target?, data?, x?, y?, groupBy?, method?, degree?, span?,
+  confidenceMethod?, level?, confidence?, interval?, band?, line?
 })
 ```
 

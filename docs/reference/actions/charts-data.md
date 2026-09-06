@@ -316,12 +316,13 @@ legend baseline, and retain the reusable selection.
 
 ```javascript
 createRegressionData({
-  id, source?, x, y, groupBy?, method?, degree?, span?, confidence?, interval?
+  id, source?, x, y, groupBy?, method?, degree?, span?,
+  confidenceMethod?, level?, confidence?, interval?
 })
 ```
 
 Create immutable linear, polynomial, or LOESS fitted rows at observed unique x
-values. Linear and polynomial fits support Student-t mean or prediction bounds;
+values. Linear and polynomial fits support normal or Student-t mean or prediction bounds;
 LOESS is line-only.
 [Data](../../api/data.md)
 

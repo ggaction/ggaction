@@ -277,7 +277,8 @@ test("locks grouped quadratic coefficients and fitted rows independently", () =>
     y: "Acceleration",
     groupBy: "Origin",
     degree: 2,
-    confidence: 0.95,
+    confidenceMethod: "student-t",
+    level: 0.95,
     interval: "mean"
   });
   assert.equal(usa.degreesOfFreedom, 251);

@@ -1,4 +1,5 @@
-import { studentTCriticalValue } from "../statistics/studentT.js";
+import { confidenceCriticalValue } from
+  "../statistics/confidenceInterval.js";
 
 export {
   REGRESSION_LOWER_FIELD,
@@ -18,5 +19,9 @@ export function studentTCritical(confidence, degreesOfFreedom) {
   if (!Number.isInteger(degreesOfFreedom) || degreesOfFreedom <= 0) {
     throw new RangeError("Student-t degrees of freedom must be positive.");
   }
-  return studentTCriticalValue(confidence, degreesOfFreedom);
+  return confidenceCriticalValue({
+    method: "student-t",
+    level: confidence,
+    degreesOfFreedom
+  });
 }

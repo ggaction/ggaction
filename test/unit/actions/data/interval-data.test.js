@@ -100,3 +100,70 @@ test("rejects unrepresentable interval endpoints atomically", () => {
   );
   assert.equal(base.semanticSpec.datasets.length, 1);
 });
+
+test("stores the CI method and handles grouped sample boundaries", () => {
+  const source = chart().createData({
+    values: [
+      { group: "A", value: 1 },
+      { group: "A", value: 2 },
+      { group: "A", value: 3 },
+      { group: "A", value: null },
+      { group: "B", value: 5 },
+      { group: "B", value: 5 },
+      { group: "C", value: 1 },
+      { group: "D", value: null }
+    ]
+  });
+  const student = source.createIntervalData({
+    id: "student",
+    field: "value",
+    groupBy: "group"
+  }).semanticSpec.datasets[1];
+  const normal = source.createIntervalData({
+    id: "normal",
+    field: "value",
+    groupBy: "group",
+    method: "normal"
+  }).semanticSpec.datasets[1];
+
+  assert.deepEqual(student.transform[0], {
+    type: "interval",
+    field: "value",
+    groupBy: ["group"],
+    center: "mean",
+    extent: "ci",
+    method: "student-t",
+    level: 0.95,
+    as: {
+      center: "__student_center",
+      lower: "__student_lower",
+      upper: "__student_upper"
+    }
+  });
+  assert.deepEqual(student.values.map(row => row.group), ["A", "B"]);
+  assert.ok(Math.abs(student.values[0].__student_upper - 4.48413771175) < 1e-12);
+  assert.equal(student.values[1].__student_upper, 5);
+  assert.ok(Math.abs(normal.values[0].__normal_upper - 3.131606527612) < 1e-12);
+  assert.equal(normal.transform[0].method, "normal");
+});
+
+test("validates CI method and level independently", () => {
+  const source = chart().createData({ values: [{ value: 1 }, { value: 2 }] });
+  assert.throws(
+    () => source.createIntervalData({
+      id: "badMethod", field: "value", method: "bootstrap"
+    }),
+    /Unsupported Interval CI method/
+  );
+  assert.throws(
+    () => source.createIntervalData({ id: "badLevel", field: "value", level: 0 }),
+    /Interval CI level must be between 0 and 1/
+  );
+  assert.throws(
+    () => source.createIntervalData({
+      id: "notCi", field: "value", extent: "stderr", method: "normal"
+    }),
+    /supported only for ci extent/
+  );
+  assert.equal(source.semanticSpec.datasets.length, 1);
+});

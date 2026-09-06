@@ -38,6 +38,8 @@
 - 연결: D11.
 - 작업: Normal approximation과 Student-t를 method로 구분한다. ciLower/Upper와 Interval/Regression 어휘·계산 owner·provenance를 정리하되 기존 결과를 migration 없이 바꾸지 않는다.
 - 완료 조건: [1,2,3]의 두 기존 upper를 각각 재현. n0/n1/constant/grouped/missing과 method·level 오류를 독립 oracle로 검사.
+- 결과: [W3 결과](RESULTS_W3_CONFIDENCE.md). 공통 `normal`/`student-t` 계산 owner와 `level`
+  provenance를 Aggregate, Interval, ErrorBar, ErrorBand, Regression에 연결하고 기존 기본 수치를 보존했다.
 
 ### R6-P6-W4 — Filter replace·compose·remove·empty
 

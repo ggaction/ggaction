@@ -450,7 +450,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 
 ## `createRegressionData`
 
-- Signature: `createRegressionData({ id, source?, x, y, groupBy?, method?, degree?, span?, confidence?, interval? })`
+- Signature: `createRegressionData({ id, source?, x, y, groupBy?, method?, degree?, span?, confidenceMethod?, level?, confidence?, interval? })`
 - `id`, `source`: Implemented. 새 derived ID와 existing source ID이며 source는 current data로 추론된다.
 - `x`, `y`: Implemented. 필수 quantitative field 이름이다. finite numeric values가 필요하다.
 - `groupBy`: Implemented. optional field 이름이며 생략 시 하나의 regression을 만든다. 값의 first
@@ -458,8 +458,10 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - `method`: Implemented `"linear" | "polynomial" | "loess"`. 기본값은 `"linear"`다.
 - `degree`, `span`: Implemented method-specific parameter다. polynomial degree 기본값은 `2`, LOESS
   span 기본값은 `0.75`이며 다른 method와 함께 주면 오류다. Degree는 `1..32`다.
-- `confidence`: Implemented. `(0, 1)`의 finite number이며 기본값은 `0.95`다. Student-t
-  mean-response confidence bounds의 폭을 바꾼다.
+- `confidenceMethod`, `level`: Implemented. method는 `"normal" | "student-t"`, level은 `(0, 1)`의
+  finite number다. 기본은 Student-t와 `0.95`이며 둘 다 transform provenance에 저장된다.
+- `confidence`: Implemented compatibility alias for `level`. 둘을 함께 주면 값이 같아야 하며 새 코드에는
+  `level`을 권장한다.
 - `interval`: Implemented `"mean" | "prediction"`이며 linear/polynomial에서만 허용한다.
   기본값은 `"mean"`이다. 첫 LOESS 계약에서는 confidence/interval output을 만들지 않는다.
 - Effect: source, fields, grouping과 resolved method defaults를 transform provenance에 저장하고 observed
@@ -476,7 +478,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 
 ### Formal values — `createRegressionData`
 
-- Implemented: `createRegressionData({ id: UserId; source?: UserId; x: FieldName; y: FieldName; groupBy?: FieldName } & ({ method?: "linear"; confidence?: UnitIntervalExclusive; interval?: "mean" | "prediction" } | { method: "polynomial"; degree?: PositiveInteger; confidence?: UnitIntervalExclusive; interval?: "mean" | "prediction" } | { method: "loess"; span?: UnitIntervalExclusiveZero }))`
+- Implemented: `createRegressionData({ id: UserId; source?: UserId; x: FieldName; y: FieldName; groupBy?: FieldName } & ({ method?: "linear"; confidenceMethod?: ConfidenceIntervalMethod; level?: UnitIntervalExclusive; confidence?: UnitIntervalExclusive; interval?: "mean" | "prediction" } | { method: "polynomial"; degree?: PositiveInteger; confidenceMethod?: ConfidenceIntervalMethod; level?: UnitIntervalExclusive; confidence?: UnitIntervalExclusive; interval?: "mean" | "prediction" } | { method: "loess"; span?: UnitIntervalExclusiveZero }))`
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
@@ -486,9 +488,9 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
   - ✅ Covered: inferred/explicit source, grouped/ungrouped, missing fields, non-finite data와 degenerate groups.
 - `method`
   - ✅ Covered: all three methods, unknown rejection, degree/span defaults and boundaries, deterministic provenance/output ordering.
-- `confidence`
-  - ✅ Covered: default `0.95`, representative explicit value, 0/1/out-of-range rejection.
-  - ✅ Covered: near-zero positive confidence normalization과 invalid 0/1 boundaries; numerical kernels have
+- `confidenceMethod`, `level`, `confidence`
+  - ✅ Covered: Student-t/normal, default `0.95`, compatibility alias, alias conflict, invalid method와 0/1 boundaries.
+  - ✅ Covered: near-zero positive level normalization과 numerical kernels have
     independent finite-bound invariants.
 - `interval`
   - ✅ Covered: `"mean"`과 unknown value rejection.

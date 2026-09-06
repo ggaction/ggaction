@@ -63,6 +63,7 @@ type StatisticalIntervalChannel = {
   field?: string;
   center?: "mean" | "median";
   extent?: "stderr" | "stdev" | "ci" | "iqr";
+  method?: "normal" | "student-t";
   level?: number;
   scale?: ScaleOptions;
 };
@@ -87,7 +88,7 @@ Exactly one channel is positional and the other is quantitative. Putting the
 interval on y creates vertical rules; putting it on x creates horizontal rules.
 No orientation flag is required. Statistical mean defaults to a two-sided
 `0.95` Student-t confidence interval. Median is supported only with
-`extent: "iqr"`; `level` is valid only for `extent: "ci"`.
+`extent: "iqr"`; `method` and `level` are valid only for `extent: "ci"`.
 
 The independent position field is always part of statistical grouping.
 `groupBy` can add one more grouping field. Group order follows first appearance
@@ -235,6 +236,7 @@ layers fail instead of selecting one arbitrarily.
 | --- | --- |
 | ID | `"errorBar"` when available |
 | Center and extent | mean, confidence interval |
+| Confidence method | `"student-t"` |
 | Confidence level | `0.95` |
 | Coordinate | inferred, otherwise `"main"` Cartesian |
 | Main rule and caps | `#4c78a8`, width `1.5`, solid, opacity `1` |
@@ -283,7 +285,7 @@ The options are `target`, `caps`, `capSize`, `stroke`, `strokeWidth`,
 `strokeDash`, `opacity`, and `statistics`. Omitted values retain their current setting.
 Omit `target` when the current or unique error bar is unambiguous.
 
-`statistics` is a partial `{ center?, extent?, level? }` patch for statistical
+`statistics` is a partial `{ center?, extent?, method?, level? }` patch for statistical
 owners. It creates one immutable interval revision and rebinds the main rule
 and enabled caps. Median and IQR must be selected together; `level` is valid
 only for confidence intervals. Explicit center/lower/upper owners reject a

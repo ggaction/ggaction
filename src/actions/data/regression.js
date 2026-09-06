@@ -9,7 +9,7 @@ import { derivedMaterializer } from "./shared.js";
 
 const OPTIONS = Object.freeze([
   "id", "source", "x", "y", "groupBy", "method", "degree", "span",
-  "confidence", "interval"
+  "confidenceMethod", "level", "confidence", "interval"
 ]);
 
 export const materializeRegressionData = derivedMaterializer(
@@ -23,6 +23,8 @@ export const materializeRegressionData = derivedMaterializer(
       method: transform.method,
       degree: transform.degree,
       span: transform.span,
+      confidenceMethod: transform.confidenceMethod,
+      level: transform.level,
       confidence: transform.confidence,
       interval: transform.interval
     })
@@ -50,7 +52,8 @@ export const createRegressionData = action(
       ...(parameters.method === "loess"
         ? { span: parameters.span }
         : {
-            confidence: parameters.confidence,
+            confidenceMethod: parameters.confidenceMethod,
+            level: parameters.level,
             interval: parameters.interval
           })
     };

@@ -13,9 +13,9 @@ import { hasLayer, resolveEligibleLayer } from "../../selectors/layers.js";
 import { findSemanticScale } from "../../selectors/scales.js";
 
 const CHANNEL_OPTIONS = [
-  "field", "fieldType", "scale", "center", "extent", "level", "lower", "upper", "temporalUnit"
+  "field", "fieldType", "scale", "center", "extent", "method", "level", "lower", "upper", "temporalUnit"
 ];
-const INTERVAL_PARAMETER_KEYS = ["center", "extent", "level", "lower", "upper"];
+const INTERVAL_PARAMETER_KEYS = ["center", "extent", "method", "level", "lower", "upper"];
 const POSITION_CHANNELS = ["x", "y"];
 const FIELD_TYPES = [
   "quantitative", "temporal", "ordinal", "nominal"
@@ -71,7 +71,7 @@ function resolveIntervalChannel(channels, sourceLayer, {
 }) {
   for (const hints of [
     ["lower", "upper"],
-    ["center", "extent", "level"]
+    ["center", "extent", "method", "level"]
   ]) {
     const hinted = POSITION_CHANNELS.filter(channel =>
       hasAny(channels[channel], hints)
@@ -172,10 +172,11 @@ function resolveInterval(program, channel, explicit, inferred, dataset, {
     if (
       explicit.field !== undefined ||
       explicit.extent !== undefined ||
+      explicit.method !== undefined ||
       explicit.level !== undefined
     ) {
       throw new Error(
-        `Explicit ${operation} ${channel} interval cannot combine field, extent, or level.`
+        `Explicit ${operation} ${channel} interval cannot combine field, extent, method, or level.`
       );
     }
     const fields = {
@@ -201,6 +202,7 @@ function resolveInterval(program, channel, explicit, inferred, dataset, {
     ),
     center: explicit?.center,
     extent: explicit?.extent,
+    method: explicit?.method,
     level: explicit?.level,
     scale
   };

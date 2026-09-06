@@ -200,6 +200,7 @@ export function createGapminderErrorBandReferenceValues(gapminder, {
     groupBy: Object.freeze(["year", "cluster"]),
     center: "mean",
     extent: "ci",
+    method: "student-t",
     level: 0.95,
     as: ERROR_BAND_FIELDS
   });

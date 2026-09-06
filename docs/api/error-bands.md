@@ -82,6 +82,7 @@ type StatisticalIntervalChannel = {
   field?: string;
   center?: "mean" | "median";
   extent?: "stderr" | "stdev" | "ci" | "iqr";
+  method?: "normal" | "student-t";
   level?: number;
   scale?: ScaleOptions;
 };

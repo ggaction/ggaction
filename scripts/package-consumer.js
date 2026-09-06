@@ -376,6 +376,19 @@ async function testNodeConsumer(directory) {
     ] }).createScatterPlot({ x: "x", y: "y", color: "group", guides: false })
       .createRegression(JSON.parse(JSON.stringify({ groupBy: false, band: false })));
     assert.equal(regressionOptOut.semanticSpec.datasets.at(-1).transform[0].groupBy, undefined);
+    const normalInterval = chart().createData({ values: [
+      { value: 1 }, { value: 2 }, { value: 3 }
+    ] }).createIntervalData({ id: "normalInterval", field: "value", method: "normal" });
+    assert.equal(normalInterval.semanticSpec.datasets.at(-1).transform[0].method, "normal");
+    assert.equal(normalInterval.semanticSpec.datasets.at(-1).values[0].__normalInterval_upper, 3.131606527612);
+    const normalRegression = chart().createData({ values: [
+      { x: 0, y: 1 }, { x: 1, y: 2 }, { x: 2, y: 4 }
+    ] }).createRegressionData({
+      id: "normalRegression", x: "x", y: "y",
+      confidenceMethod: "normal", level: 0.9
+    });
+    assert.equal(normalRegression.semanticSpec.datasets.at(-1).transform[0].confidenceMethod, "normal");
+    assert.equal(normalRegression.semanticSpec.datasets.at(-1).transform[0].level, 0.9);
     assert.equal(basicScatter.createRegression, undefined);
     assert.equal(typeof basicRender, "function");
     const horizon = chart()
@@ -1634,7 +1647,10 @@ async function testTypeScriptConsumer(directory) {
     program.encodeColor({ field: "time", fieldType: "temporal", temporalUnit: inputUnit });
     program.encodeYRange({ lower: "start", upper: "end", fieldType: "temporal", temporalUnit: inputUnit });
     program.createTimeUnitData({ id: "seconds", field: "time", unit: "second", as: "bucket", temporalUnit: inputUnit });
-    program.createRegression({ groupBy: false });
+    program.createRegression({ groupBy: false, confidenceMethod: "normal", level: 0.9 });
+    program.createRegressionData({ id: "typedFit", x: "x", y: "y", confidenceMethod: "normal", level: 0.9 });
+    program.createIntervalData({ id: "typedInterval", field: "y", method: "normal", level: 0.9 });
+    program.encodeY({ field: "y", aggregate: { op: "ciUpper", method: "student-t", level: 0.95 } });
     program.encodeDensity({ field: "y", groupBy: false });
     program.encodeHorizon({ groupBy: false, x: { field: "time", fieldType: "temporal", temporalUnit: inputUnit } });
     basicChart().createScatterPlot({ x: { field: "time", fieldType: "temporal", temporalUnit: basicUnit }, y: "y" });
@@ -1663,6 +1679,10 @@ async function testTypeScriptConsumer(directory) {
     program.encodeColor({ field: "time", fieldType: "nominal", temporalUnit: inputUnit });
     // @ts-expect-error Data-only Regression grouping did not gain the opt-out sentinel.
     program.createRegressionData({ id: "fit", x: "x", y: "y", groupBy: false });
+    // @ts-expect-error Confidence methods use a closed vocabulary.
+    program.createIntervalData({ id: "badInterval", field: "y", method: "bootstrap" });
+    // @ts-expect-error Regression confidence methods use a closed vocabulary.
+    program.createRegression({ confidenceMethod: "bootstrap" });
     // @ts-expect-error Data-only Density grouping did not gain the opt-out sentinel.
     program.createDensityData({ id: "kde", field: "y", groupBy: false });
     // @ts-expect-error Rule constant stroke does not accept false.

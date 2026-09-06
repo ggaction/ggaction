@@ -7,6 +7,7 @@ import {
   deriveLinearRegression,
   normalizeRegressionParameters,
   REGRESSION_LOWER_FIELD,
+  REGRESSION_UPPER_FIELD,
   studentTCritical
 } from "../../../../src/grammar/regression/index.js";
 import { createCarsRegressionScatterplotValues } from
@@ -70,7 +71,8 @@ test("creates immutable regression provenance and concrete values", () => {
       x: "Displacement",
       y: "Acceleration",
       groupBy: "Origin",
-      confidence: 0.95,
+      confidenceMethod: "student-t",
+      level: 0.95,
       interval: "mean"
     }],
     values: expected.regressionRows
@@ -151,7 +153,8 @@ test("derives polynomial, LOESS, and prediction rows from resolved parameters", 
   assert.deepEqual(polynomial.parameters, {
     method: "polynomial",
     degree: 2,
-    confidence: 0.95,
+    confidenceMethod: "student-t",
+    level: 0.95,
     interval: "mean"
   });
   assert.deepEqual(
@@ -222,7 +225,8 @@ test("stores method defaults in immutable regression provenance", () => {
     x: "x",
     y: "y",
     degree: 2,
-    confidence: 0.95,
+    confidenceMethod: "student-t",
+    level: 0.95,
     interval: "mean"
   });
   assert.deepEqual(loess.semanticSpec.datasets[1].transform[0], {
@@ -247,7 +251,8 @@ test("validates method-specific regression boundaries and singular groups", () =
   assert.deepEqual(normalizeRegressionParameters({ method: "polynomial" }), {
     method: "polynomial",
     degree: 2,
-    confidence: 0.95,
+    confidenceMethod: "student-t",
+    level: 0.95,
     interval: "mean"
   });
   assert.deepEqual(normalizeRegressionParameters({ method: "loess" }), {
@@ -282,7 +287,12 @@ test("validates method-specific regression boundaries and singular groups", () =
   );
   assert.deepEqual(
     normalizeRegressionParameters({ confidence: 1e-6 }),
-    { method: "linear", confidence: 1e-6, interval: "mean" }
+    {
+      method: "linear",
+      confidenceMethod: "student-t",
+      level: 1e-6,
+      interval: "mean"
+    }
   );
   assert.throws(
     () => deriveRegression([
@@ -346,4 +356,72 @@ test("keeps polynomial degree one equivalent to linear and supports prediction b
       mean.values[index].__regression_ci_upper
     );
   }
+});
+
+test("supports explicit regression confidence methods and the confidence alias", () => {
+  const rows = [
+    { x: 0, y: 1 },
+    { x: 1, y: 2 },
+    { x: 2, y: 4 },
+    { x: 3, y: 8 }
+  ];
+  const student = deriveRegression(rows, { x: "x", y: "y" });
+  const normal = deriveRegression(rows, {
+    x: "x",
+    y: "y",
+    confidenceMethod: "normal",
+    level: 0.95
+  });
+
+  assert.deepEqual(student.parameters, {
+    method: "linear",
+    confidenceMethod: "student-t",
+    level: 0.95,
+    interval: "mean"
+  });
+  assert.equal(normal.parameters.confidenceMethod, "normal");
+  assert.ok(
+    normal.values[0][REGRESSION_UPPER_FIELD] <
+      student.values[0][REGRESSION_UPPER_FIELD]
+  );
+  assert.deepEqual(normalizeRegressionParameters({ confidence: 0.9 }), {
+    method: "linear",
+    confidenceMethod: "student-t",
+    level: 0.9,
+    interval: "mean"
+  });
+  assert.throws(
+    () => normalizeRegressionParameters({
+      confidenceMethod: "bootstrap"
+    }),
+    /Unsupported Regression confidence interval method/
+  );
+  assert.throws(
+    () => normalizeRegressionParameters({ level: 0 }),
+    /Regression confidence interval level must be between 0 and 1/
+  );
+  assert.throws(
+    () => normalizeRegressionParameters({ level: 0.9, confidence: 0.95 }),
+    /level and confidence alias must match/
+  );
+  assert.throws(
+    () => chart().createData({
+      id: "source",
+      values: rows
+    }).createDerivedData({
+      id: "invalidRegressionProvenance",
+      source: "source",
+      transform: [{
+        type: "regression",
+        method: "linear",
+        x: "x",
+        y: "y",
+        confidenceMethod: "student-t",
+        level: 0.95,
+        confidence: 0.95,
+        interval: "mean"
+      }]
+    }),
+    /either the legacy confidence field or method and level/
+  );
 });

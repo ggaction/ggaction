@@ -135,6 +135,45 @@ test("computes parameterized quantiles at inclusive boundaries", () => {
   );
 });
 
+test("distinguishes normal and Student-t confidence aggregate provenance", () => {
+  const rows = [{ value: 1 }, { value: 2 }, { value: 3 }];
+  const normal = { op: "ciUpper", method: "normal", level: 0.95 };
+  const student = { op: "ciUpper", method: "student-t", level: 0.95 };
+
+  assert.equal(aggregateRows(rows, "value", "ciUpper"), 3.131606527611667);
+  assert.equal(aggregateRows(rows, "value", normal), 3.131606527611667);
+  assert.ok(
+    Math.abs(aggregateRows(rows, "value", student) - 4.484137711750334) < 1e-12
+  );
+  assert.deepEqual(validateAggregate({ op: "ciLower" }), {
+    op: "ciLower",
+    method: "normal",
+    level: 0.95
+  });
+  assert.equal(
+    formatAggregateTitle(student, "value"),
+    "ciUpper(value, student-t, 0.95)"
+  );
+  assert.equal(aggregateRows([], "value", student), undefined);
+  assert.equal(aggregateRows([{ value: 1 }], "value", student), undefined);
+  assert.equal(
+    aggregateRows([{ value: 5 }, { value: 5 }], "value", student),
+    5
+  );
+  assert.throws(
+    () => validateAggregate({ op: "ciUpper", method: "bootstrap" }),
+    /Unsupported Aggregate confidence interval method/
+  );
+  assert.throws(
+    () => validateAggregate({ op: "ciUpper", level: 1 }),
+    /level must be between 0 and 1/
+  );
+  assert.throws(
+    () => validateAggregate({ op: "ciUpper", extra: true }),
+    /Unknown confidence aggregate property/
+  );
+});
+
 test("selects ordered values with stable source-order ties", () => {
   const rows = [
     { value: 10, rank: 2 },

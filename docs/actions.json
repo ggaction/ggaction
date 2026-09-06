@@ -915,6 +915,16 @@
           "type": "number | undefined"
         },
         {
+          "name": "confidenceMethod",
+          "required": false,
+          "type": "ConfidenceIntervalMethod | undefined"
+        },
+        {
+          "name": "level",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
           "name": "confidence",
           "required": false,
           "type": "number | undefined"
@@ -1288,6 +1298,11 @@
           "type": "IntervalExtent | undefined"
         },
         {
+          "name": "method",
+          "required": false,
+          "type": "ConfidenceIntervalMethod | undefined"
+        },
+        {
           "name": "level",
           "required": false,
           "type": "number | undefined"
@@ -1299,7 +1314,7 @@
         }
       ],
       "callPatterns": [
-        "createIntervalData({ id, field, source?, groupBy?, center?, extent?, level?, as? })"
+        "createIntervalData({ id, field, source?, groupBy?, center?, extent?, method?, level? })"
       ],
       "snippet": "program.createIntervalData({ id: \"interval-data-1\", field: \"value\" })",
       "errors": [],
@@ -5480,6 +5495,16 @@
           "type": "number | undefined"
         },
         {
+          "name": "confidenceMethod",
+          "required": false,
+          "type": "ConfidenceIntervalMethod | undefined"
+        },
+        {
+          "name": "level",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
           "name": "confidence",
           "required": false,
           "type": "number | undefined"
@@ -5569,6 +5594,16 @@
         },
         {
           "name": "span",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "confidenceMethod",
+          "required": false,
+          "type": "ConfidenceIntervalMethod | undefined"
+        },
+        {
+          "name": "level",
           "required": false,
           "type": "number | undefined"
         },
@@ -5781,7 +5816,7 @@
         {
           "name": "statistics",
           "required": false,
-          "type": "{ center?: IntervalCenter | undefined; extent?: IntervalExtent | undefined; level?: number | undefined; } | undefined"
+          "type": "{ center?: IntervalCenter | undefined; extent?: IntervalExtent | undefined; method?: ConfidenceIntervalMethod | undefined; level?: number | undefined; } | undefined"
         }
       ],
       "callPatterns": [
@@ -5937,7 +5972,7 @@
         {
           "name": "statistics",
           "required": false,
-          "type": "{ center?: IntervalCenter | undefined; extent?: IntervalExtent | undefined; level?: number | undefined; } | undefined"
+          "type": "{ center?: IntervalCenter | undefined; extent?: IntervalExtent | undefined; method?: ConfidenceIntervalMethod | undefined; level?: number | undefined; } | undefined"
         },
         {
           "name": "boundaries",

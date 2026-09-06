@@ -203,7 +203,10 @@ Primary owner는 누락 방지를 위한 책임 단위이며, 관련 작업이 �
 - 수정·추가 방향: Normal approximation과 Student-t를 method로 구분한다. ciLower/Upper와 Interval/Regression 어휘·계산 owner·provenance를 정리하되 기존 결과를 migration 없이 바꾸지 않는다.
 - 완료 검증: [1,2,3]의 두 기존 upper를 각각 재현. n0/n1/constant/grouped/missing과 method·level 오류를 독립 oracle로 검사.
 - 근거: audit/REPORT.md: D11. [원래 조사](audit/REPORT.md)
-- 처분: 구현 또는 명시적인 계약 유지·migration 결정의 제안. 아직 완료·승인 상태가 아니다.
+- 처분: 완료. [Phase 6 W3](phase6/RESULTS_W3_CONFIDENCE.md)에서 공통
+  `normal`/`student-t` method와 `level` provenance를 Aggregate·Interval·ErrorBar·ErrorBand·Regression에
+  연결했다. 기존 scalar aggregate는 normal 95%, 기존 interval/regression은 Student-t 95% 결과를
+  유지하며 명시적 method 선택, 경계 입력, strict type과 installed consumer를 검증했다.
 
 ### D12 — Data snapshot·revision·소비 lifecycle
 

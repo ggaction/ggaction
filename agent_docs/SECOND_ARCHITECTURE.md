@@ -247,8 +247,8 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Gzip ceiling |
 | --- | ---: |
-| `ggaction` | 271,000 bytes |
-| `ggaction/basic` | 148,000 bytes |
+| `ggaction` | 272,000 bytes |
+| `ggaction/basic` | 150,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 
 이 값은 current executable regression ceiling이며 측정 결과 자체가 아니다. Canonical numeric owner는
@@ -571,7 +571,8 @@ Derived dataset은 source와 정확히 하나의 transform provenance를 먼저 
       x: "Displacement",
       y: "Acceleration",
       groupBy: "Origin",
-      confidence: 0.95,
+      confidenceMethod: "student-t",
+      level: 0.95,
       interval: "mean"
     }
   ],
@@ -589,7 +590,7 @@ Derived dataset은 source와 정확히 하나의 transform provenance를 먼저 
 - partitioned ordered window calculation with row number, rank, dense rank, cumulative sum, lag, and lead
 
 Transform은 source, input/output field, group, method 및 resolved parameter를 보존한다.
-Regression의 degree/span/confidence/interval과 density의 automatic bandwidth, kernel/normalization처럼 계산
+Regression의 degree/span/confidenceMethod/level/interval과 density의 automatic bandwidth, kernel/normalization처럼 계산
 결과에 영향을 주는 resolved default도 provenance에 다시 저장한다.
 
 Filter transform은 `oneOf | predicate | range` 중 정확히 하나를 소유한다. Equality는 strict하고
@@ -616,8 +617,9 @@ row-preserving이므로 facet의 latest common partition anchor가 될 수 있�
 time-unit materializer를 child별로 replay한다.
 
 Interval transform은 input field, ordered `groupBy`, `mean | median` center,
-`stderr | stdev | ci | iqr` extent, CI level과 distinct center/lower/upper output fields를 기록한다.
-Median은 IQR과만, CI level은 CI extent와만 호환된다. `createIntervalData`는 이 provenance와 immutable
+`stderr | stdev | ci | iqr` extent, CI method/level과 distinct center/lower/upper output fields를 기록한다.
+Aggregate·Interval·Regression의 CI critical value는 `grammar/statistics/confidenceInterval`이 한 번만 소유한다.
+Median은 IQR과만, CI method/level은 CI extent와만 호환된다. `createIntervalData`는 이 provenance와 immutable
 summary rows를 함께 저장한다. `createErrorBar`의 statistical mode는 이 action을 호출하고 explicit mode는
 이미 center/lower/upper field를 가진 source dataset을 직접 사용한다.
 

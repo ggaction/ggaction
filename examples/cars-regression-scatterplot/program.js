@@ -10,7 +10,8 @@ function createCarsRegressionScatterplotWithFilter(
   cars,
   filter,
   regression = {
-    confidence: 0.95,
+    confidenceMethod: "student-t",
+    level: 0.95,
     band: { color: "#111111", opacity: 0.18 },
     line: { strokeWidth: 3 }
   },
@@ -108,7 +109,8 @@ export function createLeftLegendCarsRegressionScatterplot(cars) {
     cars,
     originFilter,
     {
-      confidence: 0.95,
+      confidenceMethod: "student-t",
+      level: 0.95,
       band: { color: "#111111", opacity: 0.18 },
       line: { strokeWidth: 3 }
     },

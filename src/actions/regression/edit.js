@@ -18,7 +18,7 @@ import { requireRegressionField } from "./resolve.js";
 
 const OPTIONS = Object.freeze([
   "target", "data", "x", "y", "groupBy", "method", "degree", "span",
-  "confidence", "interval", "band", "line"
+  "confidenceMethod", "level", "confidence", "interval", "band", "line"
 ]);
 const BAND_OPTIONS = Object.freeze([
   "color", "opacity", "stroke", "strokeWidth", "curve"
@@ -100,17 +100,21 @@ function validateLinePatch(value) {
 function resolveParameters(previous, args) {
   const method = args.method ?? previous.method;
   const raw = { method };
-  for (const key of ["degree", "span", "confidence", "interval"]) {
+  for (const key of [
+    "degree", "span", "confidenceMethod", "level", "confidence", "interval"
+  ]) {
     if (Object.hasOwn(args, key)) raw[key] = args[key];
   }
   if (method === previous.method) {
-    for (const key of ["degree", "span", "confidence", "interval"]) {
+    for (const key of [
+      "degree", "span", "confidenceMethod", "level", "interval"
+    ]) {
       if (!Object.hasOwn(raw, key) && Object.hasOwn(previous, key)) {
         raw[key] = previous[key];
       }
     }
   } else if (method !== "loess" && previous.method !== "loess") {
-    for (const key of ["confidence", "interval"]) {
+    for (const key of ["confidenceMethod", "level", "interval"]) {
       if (!Object.hasOwn(raw, key) && Object.hasOwn(previous, key)) {
         raw[key] = previous[key];
       }

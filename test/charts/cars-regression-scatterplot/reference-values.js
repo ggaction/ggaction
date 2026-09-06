@@ -679,7 +679,11 @@ export function createCarsRegressionScatterplotValues(
       y: yField,
       groupBy: groupField,
       ...(method === "polynomial" ? { degree } : {}),
-      ...(method === "loess" ? { span } : { confidence, interval })
+      ...(method === "loess" ? { span } : {
+        confidenceMethod: "student-t",
+        level: confidence,
+        interval
+      })
     },
     filter: structuredClone(resolvedFilter),
     fields: {

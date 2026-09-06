@@ -6,7 +6,7 @@
 - [x] A Gate 증거와 전체 실행 사용자 승인 기록
 - [x] R6-P6-W1 Dataset lifecycle와 안전한 bind
 - [x] R6-P6-W2 Summary·bin·fold·computed·stack data
-- [ ] R6-P6-W3 공통 interval method·level
+- [x] R6-P6-W3 공통 interval method·level
 - [ ] R6-P6-W4 Filter replace·compose·remove·empty
 - [ ] R6-P6-W5 Violin·interval·composite role revision
 - [ ] 모든 시각 variant의 primitive target 작성·표시·V 승인

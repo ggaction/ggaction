@@ -7,7 +7,7 @@ import { planDerivedDataRevision } from
 import { findDataset } from "../../selectors/datasets.js";
 import { resolveEligibleLayer } from "../../selectors/layers.js";
 
-const STATISTICS_OPTIONS = Object.freeze(["center", "extent", "level"]);
+const STATISTICS_OPTIONS = Object.freeze(["center", "extent", "method", "level"]);
 
 export function ownOptions(value, options) {
   return Object.fromEntries(
@@ -42,6 +42,7 @@ export function createResolvedIntervalData(program, resolved) {
     groupBy: resolved.groupBy,
     center: resolved.interval.center,
     extent: resolved.interval.extent,
+    method: resolved.interval.method,
     level: resolved.interval.level,
     as: resolved.fields
   });
@@ -75,7 +76,7 @@ export function planIntervalEdit(program, {
   validateKeys(statistics, STATISTICS_OPTIONS, `${operation} statistics`);
   if (!STATISTICS_OPTIONS.some(key => Object.hasOwn(statistics, key))) {
     throw new Error(
-      `${operation} statistics requires center, extent, or level.`
+      `${operation} statistics requires center, extent, method, or level.`
     );
   }
   const previous = findDataset(program, data);
@@ -95,6 +96,11 @@ export function planIntervalEdit(program, {
     ? statistics.extent
     : transform.extent;
   const raw = { center, extent };
+  if (Object.hasOwn(statistics, "method")) {
+    raw.method = statistics.method;
+  } else if (extent === "ci" && transform.extent === "ci") {
+    raw.method = transform.method;
+  }
   if (Object.hasOwn(statistics, "level")) {
     raw.level = statistics.level;
   } else if (extent === "ci" && transform.extent === "ci") {
@@ -104,6 +110,7 @@ export function planIntervalEdit(program, {
   const current = {
     center: transform.center,
     extent: transform.extent,
+    ...(transform.method === undefined ? {} : { method: transform.method }),
     ...(transform.level === undefined ? {} : { level: transform.level })
   };
   const changed = JSON.stringify(parameters) !== JSON.stringify(current);

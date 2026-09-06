@@ -187,12 +187,19 @@ type ScalarAggregateOperation =
   | "variance" | "varianceP" | "stdev" | "stdevP" | "stderr"
   | "q1" | "q3" | "ciLower" | "ciUpper";
 
+type ConfidenceIntervalMethod = "normal" | "student-t";
+
 type ParameterizedAggregateOperation =
   | { op: "quantile"; probability: UnitInterval }
   | {
       op: "first" | "last";
       orderBy: FieldName;
       order?: "ascending" | "descending";
+    }
+  | {
+      op: "ciLower" | "ciUpper";
+      method?: ConfidenceIntervalMethod;
+      level?: UnitIntervalExclusive;
     };
 
 type AggregateOperation =
@@ -212,7 +219,8 @@ type AggregateOperation =
   SameValueZero distinct count를 반환한다. 이 네 연산은 nominal input도 허용하되 output scale은 linear다.
 - 나머지 연산은 finite quantitative sample만 사용한다. Sample variance/stdev/stderr와 CI는 `n < 2`,
   다른 quantitative 연산은 finite sample이 없으면 해당 final group을 생략한다. Quartile은 linear
-  interpolation, CI endpoint는 `mean ± 1.96 * stderr`다. Sum, mean, quantile과 moments는 scaled finite
+  interpolation이다. 문자열 CI endpoint는 호환 기본인 95% normal approximation
+  `mean ± 1.96 * stderr`다. Sum, mean, quantile과 moments는 scaled finite
   arithmetic을 사용하며 최종 statistic 자체가 finite number로 표현될 수 없으면 action을 원자적으로 거부한다.
 - `{ op: "quantile", probability }`는 finite quantitative sample을 정렬해 linear interpolation한다.
   Probability는 필수 `[0, 1]` 값이며 `0`/`1`은 min/max다.
@@ -220,6 +228,9 @@ type AggregateOperation =
   source order fallback으로 정렬한 뒤 encoded finite quantitative value를 선택한다. `order`는
   `"ascending"`으로 normalize되어 semantic state에 저장된다. 유효한 candidate가 없거나 order-key
   type이 한 group 안에서 섞이면 해당 group을 생략한다.
+- `{ op: "ciLower" | "ciUpper", method?, level? }`는 method를 `"normal" | "student-t"`, level을
+  `(0, 1)`로 명시한다. 기본은 문자열 축약형과 같은 `{ method: "normal", level: 0.95 }`이며 resolved
+  method와 level을 semantic aggregate provenance에 저장한다.
 - `stack`: Implemented values `"zero" | "normalize" | "center" | null`. `"normalize"`은 각 non-negative
   partition을 합계 1로 정규화하고 automatic y domain을 `[0, 1]`로 고정한다. 합계가 0인 partition은
   graphic을 만들지 않는다. Aggregate bar의 group/overlay는 `stack: null`이어도 semantic start endpoint

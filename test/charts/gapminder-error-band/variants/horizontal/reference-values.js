@@ -181,6 +181,7 @@ export function createCarsHorizontalErrorBandReferenceValues(cars, {
     groupBy: Object.freeze(["Year"]),
     center: "mean",
     extent: "ci",
+    method: "student-t",
     level: 0.95,
     as: CARS_HORIZONTAL_FIELDS
   });
