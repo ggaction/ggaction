@@ -2,8 +2,8 @@
 
 ## 진행 상태
 
-- [ ] A Gate의 정확한 결정·호환성·검증 범위 확정
-- [ ] A Gate 증거 commit/push와 명시적 사용자 승인 기록
+- [x] A Gate의 정확한 결정·호환성·검증 범위 확정 — [계약](CONTRACT.md)
+- [x] A Gate 증거 commit/push와 전체 실행 사용자 승인 기록
 - [ ] R6-P11-W1 계층·card·discovery 전체 대조
 - [ ] R6-P11-W2 Cross-layer 검증과 installed consumer
 - [ ] R6-P11-W4 Contract·문서·이력 closeout

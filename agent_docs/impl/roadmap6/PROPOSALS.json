@@ -26,7 +26,8 @@
       "R6-P3-V",
       "R6-P3-B",
       "R6-P3-X",
-      "R6-P4-A"
+      "R6-P4-A",
+      "R6-P11-A"
     ],
     "implementationStarted": true,
     "reviewCommit": "cf13920ed517cfc6c333b04ec55a724826960228",
@@ -1102,12 +1103,12 @@
     {
       "id": 11,
       "title": "Integration discovery and closeout",
-      "status": "planned",
+      "status": "in-progress",
       "dependencies": [
         10
       ],
       "gateStates": {
-        "R6-P11-A": "planned",
+        "R6-P11-A": "approved",
         "R6-P11-X": "planned"
       },
       "workPackages": [
@@ -1137,7 +1138,9 @@
           "scope": "승인 범위의 Planned를 Current 또는 승인된 장기 처분으로 정리한다. Durable executable evidence를 capability owner로 옮기고 README/index/history를 갱신한다.",
           "acceptance": "승인 범위 Planned0, unresolved hidden deferral0. 현재 source/type/docs/architecture/generated output 일치. 원격 검증 commit과 명시적 Exit 승인 후에만 completed."
         }
-      ]
+      ],
+      "contract": "phase11/CONTRACT.md",
+      "baselineCommit": "d012d6a1f6714254aaa9f96761d4e2f0654026e6"
     }
   ],
   "findings": [
