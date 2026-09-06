@@ -68,6 +68,7 @@ corresponding higher-level action when the library should materialize values:
 | `type` | Public transform shape | Value-producing action |
 | --- | --- | --- |
 | `"bin2d"` | `{ type, x, y, bins, extent, includeEmpty, members, as, resolved? }` | `createBin2DData` |
+| `"bin"` | `{ type, field, bin, extent, nice, zero, includeEmpty, members, as, resolved? }` | `createBinData` |
 | `"filter"` | `{ type, field, oneOf }`, `{ type, field, predicate }`, or `{ type, field, range }` | `filterData` |
 | `"regression"` | `{ type, method, x, y, groupBy?, ...methodParameters }` | `createRegressionData` |
 | `"density"` | `{ type, field, groupBy?, bandwidth, extent, steps, kernel?, normalization?, as, resolve: "shared", resolved? }` | `createDensityData` |
@@ -154,6 +155,32 @@ marks or `bindMarkData`.
 An ungrouped empty input produces one aggregate row, so a row count is `0`.
 A grouped empty input produces no observed groups. The action does not synthesize
 unobserved categorical combinations.
+
+## `createBinData({ id, source?, field, ...binOptions })`
+
+Materialize one-dimensional bin bounds and counts for reuse by ranged marks,
+labels, or several charts:
+
+```javascript
+const bins = program.createBinData({
+  id: "ageBins",
+  source: "people",
+  field: "age",
+  boundaries: [0, 18, 35, 65, 100],
+  members: true,
+  as: { lower: "age0", upper: "age1", count: "people", members: "rows" }
+});
+```
+
+Choose one of `maxBins`, `step`, or `boundaries`. The defaults are
+`maxBins: 10`, `extent: "auto"`, `nice: true`, `zero: false`, and
+`includeEmpty: true`. Bins include their lower endpoint and exclude the upper
+endpoint, except that the final bin includes its upper endpoint. Explicit
+extent or boundaries must contain every source value.
+
+The normalized transform stores resolved boundaries, so consumers share the
+same bin decisions. Set `includeEmpty: false` to omit zero-count bins and
+`members: true` to retain each bin's original source rows.
 
 ## Related
 

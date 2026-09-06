@@ -486,7 +486,32 @@ export interface DatasetBin2DTransform {
     readonly occupiedCount: number;
   };
 }
+export interface DatasetBinTransform {
+  readonly type: "bin";
+  readonly field: string;
+  readonly bin:
+    | { readonly maxBins: number }
+    | { readonly step: number }
+    | { readonly boundaries: readonly [number, number, ...number[]] };
+  readonly extent: "auto" | readonly [number, number];
+  readonly nice: boolean;
+  readonly zero: boolean;
+  readonly includeEmpty: boolean;
+  readonly members: boolean;
+  readonly as: {
+    readonly lower: string;
+    readonly upper: string;
+    readonly count: string;
+    readonly members?: string;
+  };
+  readonly resolved?: {
+    readonly domain: readonly [number, number];
+    readonly step?: number;
+    readonly boundaries: readonly [number, number, ...number[]];
+  };
+}
 export type DatasetTransform =
+  | DatasetBinTransform
   | DatasetBin2DTransform
   | DatasetFilterTransform
   | DatasetRegressionTransform
@@ -1503,6 +1528,32 @@ export interface TimeUnitDataOptions {
   temporalUnit?: TemporalInputUnit;
   as: string;
 }
+
+export interface BinDataOutputFields {
+  lower?: string;
+  upper?: string;
+  count?: string;
+  members?: string;
+}
+type BinDataMode =
+  | { maxBins?: number; step?: never; boundaries?: never }
+  | { maxBins?: never; step: number; boundaries?: never }
+  | {
+      maxBins?: never;
+      step?: never;
+      boundaries: readonly [number, number, ...number[]];
+    };
+export type BinDataOptions = {
+  id: string;
+  source?: string;
+  field: string;
+  extent?: "auto" | readonly [number, number];
+  nice?: boolean;
+  zero?: boolean;
+  includeEmpty?: boolean;
+  members?: boolean;
+  as?: BinDataOutputFields;
+} & BinDataMode;
 
 export interface Bin2DDataOptions {
   id: string;
@@ -3018,6 +3069,7 @@ export class ChartProgram {
   highlightMarks(options: HighlightMarksOptions): ChartProgram;
   createDensityData(options: DensityDataOptions): ChartProgram;
   createSummaryData(options: SummaryDataOptions): ChartProgram;
+  createBinData(options: BinDataOptions): ChartProgram;
   createRegressionData(options: RegressionDataOptions): ChartProgram;
   createIntervalData(options: IntervalDataOptions): ChartProgram;
   createTimeUnitData(options: TimeUnitDataOptions): ChartProgram;

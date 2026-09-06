@@ -736,8 +736,8 @@
         "errors-and-limitations",
         "related"
       ],
-      "bytes": 2058,
-      "sha256": "7888cab1bf973a13b3c34042a383f8ca9b94adde3d269db40311981d2c0ce48a"
+      "bytes": 2243,
+      "sha256": "a405b00579f691639cb31122f89cd0b66eb7e6ba08d95efa31eb76effe8f2a56"
     },
     {
       "order": 48,
@@ -750,10 +750,11 @@
         "create-derived-data",
         "bindmarkdata-target-data",
         "createsummarydata-id-source-groupby-aggregates-members",
+        "createbindata-id-source-field-binoptions",
         "related"
       ],
-      "bytes": 6730,
-      "sha256": "dc0eec74613912f1b0cde24a318a57e08fea1116122088041fffdf86723df5f2"
+      "bytes": 7796,
+      "sha256": "a328ca002efd3eb9d3a462c739a0b7ba4e813917b90533300f517916726cdfa6"
     },
     {
       "order": 49,
@@ -1810,8 +1811,8 @@
         "action-reference",
         "exact-action-lookup"
       ],
-      "bytes": 21806,
-      "sha256": "cce72b1c810ff3c5f338894637f63abb6036866c41f97da5205e04a2737dcc06"
+      "bytes": 21902,
+      "sha256": "8b2a4e4f0bf036053dfadc02239aabf22155cc2d93afdebf6987b715b1a95cbd"
     },
     {
       "order": 115,
@@ -1955,6 +1956,7 @@
       "headings": [
         "statistical-layer-actions",
         "createsummarydata",
+        "createbindata",
         "createhorizonplot",
         "createdensityplot",
         "createintervaldata",
@@ -1971,8 +1973,8 @@
         "createviolinplot",
         "related"
       ],
-      "bytes": 9340,
-      "sha256": "29d927d843d80d370b7b6b7bd973f7b3d70f973f00cbafb64b406cf3af2655ff"
+      "bytes": 9721,
+      "sha256": "035893511d376e1f1b2c84ca30b829166ec2d1cf44de57b83e60b928d394b887"
     },
     {
       "order": 119,
@@ -2086,8 +2088,8 @@
         "exact-typescript-signatures",
         "related"
       ],
-      "bytes": 16320,
-      "sha256": "a6c98c1dd0caaf9fbcae4afe534f6cd92e4667d7301914a3f03a85710632392f"
+      "bytes": 16376,
+      "sha256": "9900d48f138a57126cdd44b3e2e83269ec160522e2b9a2e4bd7542ba82ad701a"
     },
     {
       "order": 124,

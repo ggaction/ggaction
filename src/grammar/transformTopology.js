@@ -1,4 +1,5 @@
 const TRANSFORM_TOPOLOGY = Object.freeze({
+  bin: Object.freeze({ facetTopology: "statistical" }),
   bin2d: Object.freeze({ facetTopology: "statistical" }),
   boxOutlier: Object.freeze({ facetTopology: "statistical" }),
   boxSummary: Object.freeze({ facetTopology: "statistical" }),

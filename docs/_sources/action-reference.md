@@ -337,6 +337,16 @@ createSummaryData({ id, source?, groupBy?, aggregates, members? })
 Materialize reusable, first-appearance-ordered summary rows from one or more
 shared aggregate operations. [Source and Derived Data](../api/data/source-and-derived.md#createsummarydata-id-source-groupby-aggregates-members)
 
+### `createBinData`
+
+```javascript
+createBinData({ id, source?, field, maxBins? | step | boundaries, extent?, nice?, zero?, includeEmpty?, members?, as? })
+```
+
+Materialize reusable one-dimensional bounds, counts, and optional source
+members using the same edge rules as Histogram.
+[Source and Derived Data](../api/data/source-and-derived.md#createbindata-id-source-field-binoptions)
+
 ### `bindMarkData`
 
 ```javascript

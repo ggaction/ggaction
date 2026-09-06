@@ -4309,6 +4309,7 @@ operation; marks and renderers never mutate source values.
 | --- | --- | --- |
 | [Source and derived data](./api/data/source-and-derived/) | `createData`, `createDerivedData` | Store source rows or explicit transform provenance |
 | [Reusable summaries](./api/data/source-and-derived/#createsummarydata-id-source-groupby-aggregates-members) | `createSummaryData` | Materialize grouped multi-aggregate rows with optional members |
+| [Reusable bins](./api/data/source-and-derived/#createbindata-id-source-field-binoptions) | `createBinData` | Materialize shared one-dimensional bounds, counts, and optional members |
 | [Filtering](./api/data/filtering/) | `filterData`, `filterMarks` | Derive rows or rebind one visual layer from a selector |
 | [Statistical transforms](./api/data/statistical-transforms/) | `createRegressionData`, `createIntervalData`, `createDensityData` | Materialize fitted, interval, or density rows |
 | [Time-unit transforms](./api/data/time-units/) | `createTimeUnitData` | Add reproducible UTC calendar bucket fields |
@@ -4399,6 +4400,7 @@ corresponding higher-level action when the library should materialize values:
 | `type` | Public transform shape | Value-producing action |
 | --- | --- | --- |
 | `"bin2d"` | `{ type, x, y, bins, extent, includeEmpty, members, as, resolved? }` | `createBin2DData` |
+| `"bin"` | `{ type, field, bin, extent, nice, zero, includeEmpty, members, as, resolved? }` | `createBinData` |
 | `"filter"` | `{ type, field, oneOf }`, `{ type, field, predicate }`, or `{ type, field, range }` | `filterData` |
 | `"regression"` | `{ type, method, x, y, groupBy?, ...methodParameters }` | `createRegressionData` |
 | `"density"` | `{ type, field, groupBy?, bandwidth, extent, steps, kernel?, normalization?, as, resolve: "shared", resolved? }` | `createDensityData` |
@@ -4485,6 +4487,32 @@ marks or `bindMarkData`.
 An ungrouped empty input produces one aggregate row, so a row count is `0`.
 A grouped empty input produces no observed groups. The action does not synthesize
 unobserved categorical combinations.
+
+## `createBinData({ id, source?, field, ...binOptions })`
+
+Materialize one-dimensional bin bounds and counts for reuse by ranged marks,
+labels, or several charts:
+
+```javascript
+const bins = program.createBinData({
+  id: "ageBins",
+  source: "people",
+  field: "age",
+  boundaries: [0, 18, 35, 65, 100],
+  members: true,
+  as: { lower: "age0", upper: "age1", count: "people", members: "rows" }
+});
+```
+
+Choose one of `maxBins`, `step`, or `boundaries`. The defaults are
+`maxBins: 10`, `extent: "auto"`, `nice: true`, `zero: false`, and
+`includeEmpty: true`. Bins include their lower endpoint and exclude the upper
+endpoint, except that the final bin includes its upper endpoint. Explicit
+extent or boundaries must contain every source value.
+
+The normalized transform stores resolved boundaries, so consumers share the
+same bin decisions. Set `includeEmpty: false` to omit zero-count bins and
+`members: true` to retain each bin's original source rows.
 
 ## Related
 
@@ -12828,6 +12856,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createBarMark`](./reference/actions/marks/#createbarmark) | user-facing | marks |
 | [`createBarPlot`](./reference/actions/charts-data/#createbarplot) | user-facing | charts |
 | [`createBin2DData`](./reference/actions/charts-data/#createbin2ddata) | user-facing | core |
+| [`createBinData`](./reference/actions/statistics/#createbindata) | user-facing | statistics |
 | [`createBoxPlot`](./reference/actions/statistics/#createboxplot) | user-facing | statistics |
 | [`createCanvas`](./reference/actions/charts-data/#createcanvas) | user-facing | core |
 | [`createCoordinate`](./reference/actions/advanced/#semantic-resources-and-regression-layers) | user-facing | core |
@@ -14240,6 +14269,16 @@ createSummaryData({ id, source?, groupBy?, aggregates, members? })
 Materialize reusable, first-appearance-ordered summary rows from one or more
 shared aggregate operations. [Source and Derived Data](./api/data/source-and-derived/#createsummarydata-id-source-groupby-aggregates-members)
 
+## `createBinData`
+
+```javascript
+createBinData({ id, source?, field, maxBins? | step | boundaries, extent?, nice?, zero?, includeEmpty?, members?, as? })
+```
+
+Materialize reusable one-dimensional bounds, counts, and optional source
+members using the same edge rules as Histogram.
+[Source and Derived Data](./api/data/source-and-derived/#createbindata-id-source-field-binoptions)
+
 ## `createHorizonPlot`
 
 ```js
@@ -15232,6 +15271,7 @@ interface ChartProgramActions {
   highlightMarks(options: HighlightMarksOptions): ChartProgram;
   createDensityData(options: DensityDataOptions): ChartProgram;
   createSummaryData(options: SummaryDataOptions): ChartProgram;
+  createBinData(options: BinDataOptions): ChartProgram;
   createRegressionData(options: RegressionDataOptions): ChartProgram;
   createIntervalData(options: IntervalDataOptions): ChartProgram;
   createTimeUnitData(options: TimeUnitDataOptions): ChartProgram;

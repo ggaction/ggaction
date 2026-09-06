@@ -199,6 +199,20 @@ async function testNodeConsumer(directory) {
         { region: "West", total: 4, records: 1 }
       ]
     );
+    const reusableBins = chart()
+      .createData({ id: "binValues", values: [{ value: 0 }, { value: 2 }, { value: 4 }] })
+      .createBinData({
+        id: "valueBins",
+        field: "value",
+        boundaries: [0, 2, 4]
+      });
+    assert.deepEqual(
+      reusableBins.semanticSpec.datasets.find(dataset => dataset.id === "valueBins").values,
+      [
+        { value_start: 0, value_end: 2, count: 1 },
+        { value_start: 2, value_end: 4, count: 2 }
+      ]
+    );
     const windowed = chart()
       .createData({
         id: "events",
@@ -1398,6 +1412,7 @@ async function testTypeScriptConsumer(directory) {
       type ApplyThemeOptions,
       type AxisLabelLayoutOptions,
       type Bin2DDataOptions,
+      type BinDataOptions,
       type EditBin2DDataOptions,
       type CreateBarPlotOptions,
       type CreateHeatmapOptions,
@@ -2148,6 +2163,26 @@ async function testTypeScriptConsumer(directory) {
     const summary: ChartProgram = chart()
       .createData({ id: "summarySource", values: [{ group: "A", value: 2 }] })
       .createSummaryData(summaryOptions);
+    const reusableBinOptions: BinDataOptions = {
+      id: "bins",
+      field: "value",
+      boundaries: [0, 1, 2],
+      includeEmpty: false
+    };
+    const reusableBins: ChartProgram = chart()
+      .createData({ id: "reusableBinSource", values: [{ value: 1 }] })
+      .createBinData(reusableBinOptions);
+    const reusableBinTransform: DatasetTransform = {
+      type: "bin",
+      field: "value",
+      bin: { boundaries: [0, 1, 2] },
+      extent: "auto",
+      nice: true,
+      zero: false,
+      includeEmpty: true,
+      members: false,
+      as: { lower: "value_start", upper: "value_end", count: "count" }
+    };
     const summaryTransform: DatasetTransform = {
       type: "summary",
       groupBy: ["group"],
@@ -2498,6 +2533,7 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.a
       "path-order",
       "time-unit-data",
       "summary-data",
+      "bin-data",
       "window-data",
       "bin2d-data",
       "binned-heatmap",

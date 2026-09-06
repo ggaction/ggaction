@@ -1,5 +1,6 @@
 import { isPlainObject } from "../core/immutable.js";
 import { validateBoxTransform } from "./boxPlot.js";
+import { validateBinTransform } from "./bin.js";
 import {
   requestedBin2DTransform,
   validateBin2DTransform
@@ -45,6 +46,11 @@ function facetHorizonTransform(transform, { scales = {} } = {}) {
 }
 
 const TRANSFORM_POLICIES = Object.freeze({
+  bin: Object.freeze({
+    ...findTransformTopology("bin"),
+    validate: validateBinTransform,
+    materializeOp: "materializeBinData"
+  }),
   bin2d: Object.freeze({
     ...findTransformTopology("bin2d"),
     validate: validateBin2DTransform,

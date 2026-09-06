@@ -27,6 +27,8 @@ export type {
   Bin2DDataOptions,
   Bin2DExtent,
   Bin2DOutputFields,
+  BinDataOptions,
+  BinDataOutputFields,
   BindMarkDataOptions,
   CanvasOptions,
   FitCanvasOptions,

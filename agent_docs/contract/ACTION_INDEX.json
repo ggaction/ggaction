@@ -202,6 +202,24 @@
       }
     },
     {
+      "name": "createBinData",
+      "layer": "user-facing",
+      "domain": "statistics",
+      "status": "implemented",
+      "lifecycle": "Immutable create-only",
+      "update": "Create reusable materialized one-dimensional bins",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/CORE.md",
+        "anchor": "createbindata"
+      }
+    },
+    {
       "name": "createDensityData",
       "layer": "user-facing",
       "domain": "core",
@@ -3701,6 +3719,7 @@
       "materializeBoxOutlierData",
       "materializeBoxPlot",
       "materializeBoxSummaryData",
+      "materializeBinData",
       "materializeBin2DData",
       "materializeComposition",
       "materializeDensityData",

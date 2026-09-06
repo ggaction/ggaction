@@ -34,6 +34,7 @@ import {
 import { createData } from "./create.js";
 import { createWindowData, materializeWindowData } from "./window.js";
 import { createSummaryData, materializeSummaryData } from "./summary.js";
+import { createBinData, materializeBinData } from "./bin.js";
 import { createBoxSummaryData, createBoxOutlierData, materializeBoxSummaryData, materializeBoxOutlierData } from "./box.js";
 
 export function registerDataActions(ProgramClass) {
@@ -63,6 +64,8 @@ export function registerDataActions(ProgramClass) {
   ProgramClass.prototype.materializeWindowData = materializeWindowData;
   ProgramClass.prototype.createSummaryData = createSummaryData;
   ProgramClass.prototype.materializeSummaryData = materializeSummaryData;
+  ProgramClass.prototype.createBinData = createBinData;
+  ProgramClass.prototype.materializeBinData = materializeBinData;
   ProgramClass.prototype.createTimeUnitData = createTimeUnitData;
   ProgramClass.prototype.materializeTimeUnitData = materializeTimeUnitData;
   ProgramClass.prototype.createBin2DData = createBin2DData;

@@ -324,6 +324,38 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - ✅ Covered: field/type/alias/shape/unknown option and immutable rejection.
 - Evidence: `test/unit/actions/data/summary-data.test.js`.
 
+## `createBinData`
+
+- Signature: `createBinData({ id, source?, field, maxBins? | step | boundaries, extent?, nice?, zero?, includeEmpty?, members?, as? })`
+- `id`, `source`, `field`: 새 immutable derived ID, materialized source와 필수 quantitative field다.
+- Bin mode: `maxBins`(기본 10), positive `step`, 또는 strictly increasing finite `boundaries` 중 하나다.
+  기존 Histogram의 `resolveHistogramBins`와 `findHistogramBinIndex`를 그대로 사용한다.
+- `extent`: 기본 `"auto"` 또는 ascending finite pair다. Explicit extent/boundaries는 모든 source value를
+  포함해야 하며 out-of-range row를 조용히 버리지 않는다.
+- `nice`, `zero`: Histogram boundary policy와 같은 boolean이며 기본값은 `true`, `false`다.
+- `includeEmpty`: 기본 `true`로 resolved boundary의 모든 bin을 보존한다. `false`는 count 0 bin만 제거한다.
+- `members`: 기본 `false`. `true`면 각 bin의 original source rows를 output에 저장한다.
+- `as`: `{ lower?, upper?, count?, members? }`; 기본은 `${field}_start`, `${field}_end`, `count`, `members`다.
+  모든 enabled output은 고유해야 하며 `as.members`는 `members:true`에서만 허용한다.
+- Edge: `[lower, upper)`이고 마지막 bin만 upper endpoint를 포함한다. Resolved domain, step와 boundaries를
+  transform provenance의 `resolved`에 저장한다. Output은 lower/upper/count/member로 즉시 소비 가능하다.
+- 오류: non-finite source, mixed modes, invalid/alignment/coverage boundary, alias collision, invalid boolean과
+  generated-bin bound를 첫 state change 전에 거부한다.
+- Coverage: `test/unit/actions/data/bin-data.test.js`가 boundary edge, max/step/explicit mode, empty omission,
+  resolved provenance, ranged Rect consumption과 invalid matrix를 검증한다.
+
+### Formal values — `createBinData`
+
+- Implemented: `createBinData({ id: UserId; source?: UserId; field: FieldName; maxBins?: PositiveInteger; step?: PositiveFinite; boundaries?: readonly [Finite, Finite, ...Finite[]]; extent?: "auto" | OrderedFinitePair; nice?: boolean; zero?: boolean; includeEmpty?: boolean; members?: boolean; as?: BinDataOutputFields }): ChartProgram`; bin mode는 상호 배타다.
+- Proposed (NOT IMPLEMENTED): out-of-range drop/clamp policy와 weighted count.
+
+### Value coverage — `createBinData`
+
+- ✅ Covered: explicit boundaries와 마지막 endpoint, equal max bins, zero-anchored step, auto/explicit extent.
+- ✅ Covered: include/omit empty, members, custom/default outputs, concrete ranged mark consumption.
+- ✅ Covered: out-of-range, non-finite/missing field, invalid mode/boundary/boolean/alias와 immutable rejection.
+- Evidence: `test/unit/actions/data/bin-data.test.js`.
+
 ## `createRegressionData`
 
 - Signature: `createRegressionData({ id, source?, x, y, groupBy?, method?, degree?, span?, confidence?, interval? })`

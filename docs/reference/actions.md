@@ -42,6 +42,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createBarMark`](./actions/marks.md#createbarmark) | user-facing | marks |
 | [`createBarPlot`](./actions/charts-data.md#createbarplot) | user-facing | charts |
 | [`createBin2DData`](./actions/charts-data.md#createbin2ddata) | user-facing | core |
+| [`createBinData`](./actions/statistics.md#createbindata) | user-facing | statistics |
 | [`createBoxPlot`](./actions/statistics.md#createboxplot) | user-facing | statistics |
 | [`createCanvas`](./actions/charts-data.md#createcanvas) | user-facing | core |
 | [`createCoordinate`](./actions/advanced.md#semantic-resources-and-regression-layers) | user-facing | core |

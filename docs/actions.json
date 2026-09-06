@@ -3,7 +3,7 @@
   "packageVersion": "0.0.12",
   "typeSource": "types/program.d.ts",
   "errorPolicy": "An empty errors array means the compact card has no curated error override; consult the canonical route for validation, inference, and recovery behavior.",
-  "count": 203,
+  "count": 204,
   "cards": [
     {
       "schemaVersion": 2,
@@ -468,6 +468,104 @@
       "snippet": "program.createSummaryData({ id: \"summary-data-1\", aggregates: [] })",
       "errors": [],
       "route": "/reference/actions/statistics/#createsummarydata"
+    },
+    {
+      "schemaVersion": 2,
+      "name": "createBinData",
+      "layer": "user-facing",
+      "domain": "statistics",
+      "summary": "Materialize reusable one-dimensional bounds, counts, and optional source members using the same edge rules as Histogram.",
+      "signature": "createBinData(options: BinDataOptions): ChartProgram;",
+      "intents": [
+        "create bin data",
+        "create",
+        "add",
+        "statistical layer",
+        "statistical transform",
+        "one-dimensional bins",
+        "reusable histogram bounds and counts"
+      ],
+      "lifecycle": "Immutable create-only",
+      "resources": {
+        "prerequisites": [
+          "source dataset"
+        ],
+        "owns": [
+          "one-dimensional bins"
+        ],
+        "idOptions": [
+          "id",
+          "source"
+        ]
+      },
+      "options": [
+        {
+          "name": "id",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "source",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "field",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "extent",
+          "required": false,
+          "type": "\"auto\" | readonly [number, number] | undefined"
+        },
+        {
+          "name": "nice",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "zero",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "includeEmpty",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "members",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "as",
+          "required": false,
+          "type": "BinDataOutputFields | undefined"
+        },
+        {
+          "name": "maxBins",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "step",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "boundaries",
+          "required": false,
+          "type": "readonly [number, number, ...number[]] | undefined"
+        }
+      ],
+      "callPatterns": [
+        "createBinData({ id, field, source?, extent?, nice?, zero?, includeEmpty?, members? })"
+      ],
+      "snippet": "program.createBinData({ id: \"bin-data-1\", field: \"value\" })",
+      "errors": [],
+      "route": "/reference/actions/statistics/#createbindata"
     },
     {
       "schemaVersion": 2,

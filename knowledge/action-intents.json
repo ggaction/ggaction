@@ -47,6 +47,7 @@
     "WindowData": ["moving window", "rank", "lag"],
     "TimeUnitData": ["date bucket", "UTC time unit"],
     "Bin2DData": ["two-dimensional bins", "rectangular aggregation"],
+    "BinData": ["one-dimensional bins", "reusable histogram bounds and counts"],
     "IntervalData": ["confidence interval data", "summary interval"],
     "PointMark": ["point mark", "scatter point"],
     "TickMark": ["tick mark", "one-dimensional distribution"],
