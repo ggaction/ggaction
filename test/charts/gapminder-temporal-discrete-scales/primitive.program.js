@@ -356,8 +356,8 @@ export function createGapminderTimePrimitives(gapminder) {
 
   program = program
     .createGraphics({ id: "seriesLegendSymbols", parent: "canvas", type: "line", length: countries.length })
-    .editGraphics({ target: "seriesLegendSymbols", property: "x1", value: 338 })
-    .editGraphics({ target: "seriesLegendSymbols", property: "x2", value: 370 })
+    .editGraphics({ target: "seriesLegendSymbols", property: "x1", value: 339 })
+    .editGraphics({ target: "seriesLegendSymbols", property: "x2", value: 371 })
     .editGraphics({ target: "seriesLegendSymbols", property: "y1", value: [110, 138, 166] })
     .editGraphics({ target: "seriesLegendSymbols", property: "y2", value: [110, 138, 166] })
     .editGraphics({ target: "seriesLegendSymbols", property: "stroke", value: colors })
@@ -368,7 +368,7 @@ export function createGapminderTimePrimitives(gapminder) {
       value: countries.map(() => [])
     })
     .createGraphics({ id: "seriesLegendLabels", parent: "canvas", type: "text", length: countries.length })
-    .editGraphics({ target: "seriesLegendLabels", property: "x", value: 380 })
+    .editGraphics({ target: "seriesLegendLabels", property: "x", value: 382 })
     .editGraphics({ target: "seriesLegendLabels", property: "y", value: [110, 138, 166] })
     .editGraphics({ target: "seriesLegendLabels", property: "text", value: countries })
     .createGraphics({ id: "seriesLegendTitle", parent: "canvas", type: "text" })

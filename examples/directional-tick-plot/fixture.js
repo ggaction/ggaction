@@ -107,7 +107,7 @@ export const RUG_LAYOUT = Object.freeze({
   height: 240,
   left: 60,
   right: 760,
-  rugY: 132,
+  rugY: 150,
   axisY: 150,
   tickLength: 28,
   domain: Object.freeze([40, 240]),
@@ -127,8 +127,7 @@ export function prepareHorsepowerRug(cars) {
     .filter(car => Number.isFinite(car?.Horsepower))
     .map((car, index) => Object.freeze({
       id: index,
-      Horsepower: car.Horsepower,
-      Baseline: 0
+      Horsepower: car.Horsepower
     }));
   return Object.freeze({
     rows: Object.freeze(rows),

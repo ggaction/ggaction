@@ -1,0 +1,53 @@
+{
+  "version": 1,
+  "scope": "area-and-series-layout-approved-budget",
+  "reviewCommit": "97e7a60617eeb7d7a1a37ee4f0eecb413792feaf",
+  "approvalBaselineCommit": "6cac5928bc62924d3b5c962cc7bee8c9b2596428",
+  "artifact": {
+    "filename": "ggaction-0.0.12.tgz",
+    "sha256": "9707de4005b534c56b1f07bc0e9ed6283df905c03e2416050b1dd27542170ee6",
+    "packedBytes": 486775,
+    "unpackedBytes": 2327235,
+    "entries": 439
+  },
+  "status": "passed",
+  "checks": [
+    "node-runtime-and-renderers",
+    "mcp",
+    "strict-typescript",
+    "installed-tutorials",
+    "minimal-browser-bundles-and-approved-gzip-guards"
+  ],
+  "browserBundles": {
+    "ggaction": {
+      "specifier": "ggaction",
+      "chunks": 1,
+      "modules": 386,
+      "minifiedBytes": 914505,
+      "gzipBytes": 240319,
+      "limit": 242000,
+      "headroomBytes": 1681
+    },
+    "ggaction/basic": {
+      "specifier": "ggaction/basic",
+      "chunks": 1,
+      "modules": 227,
+      "minifiedBytes": 467022,
+      "gzipBytes": 128538,
+      "limit": 130000,
+      "headroomBytes": 1462
+    },
+    "ggaction/svg": {
+      "specifier": "ggaction/svg",
+      "chunks": 1,
+      "modules": 15,
+      "minifiedBytes": 19840,
+      "gzipBytes": 6418,
+      "limit": 25000,
+      "headroomBytes": 18582
+    }
+  },
+  "mcp": {
+    "coldStartMilliseconds": 476
+  }
+}

@@ -1,3 +1,4 @@
+import { normalizeTemporalValue } from "../../../grammar/scales/fields.js";
 import { cloneAndFreeze, isPlainObject } from "../../../core/immutable.js";
 import {
   MARK_GRAPHIC_PROPERTIES,
@@ -16,8 +17,13 @@ function graphicId(layer, index) {
 
 function encodingValue(row, encoding) {
   if (encoding === undefined) return undefined;
-  if (Object.hasOwn(encoding, "field")) return row?.[encoding.field];
-  return encoding.datum;
+  const value = Object.hasOwn(encoding, "field") ? row?.[encoding.field] : encoding.datum;
+  if (encoding.fieldType !== "temporal") return value;
+  try {
+    return normalizeTemporalValue(value, encoding.field, 0, encoding.temporalUnit);
+  } catch {
+    return undefined;
+  }
 }
 
 export function channelMapFromRow(row, layer) {

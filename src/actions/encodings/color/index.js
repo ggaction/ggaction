@@ -1,7 +1,9 @@
+import { inferSeriesGroup } from "../shared.js";
 import { action } from "../../../core/action.js";
 import {
   readNominalField,
   readScaleField,
+  resolveTemporalUnit,
   validateCategoricalFieldType
 } from "../../../grammar/scales/index.js";
 import {
@@ -12,7 +14,6 @@ import {
   applyEncodingScale,
   resolveReassignmentScaleOptions,
   resolveTarget,
-  validateLineSeriesCompatibility,
   validateOptions
 } from "../shared.js";
 import {
@@ -24,10 +25,10 @@ import {
 } from "../../../materialization/encodings.js";
 import { findUpstreamTransform } from
   "../../../materialization/dataProvenance.js";
+import { validatePathSeriesAppearance } from "../../../grammar/pathSeries.js";
 import { encodeContinuousColor } from "./continuous.js";
 import {
-  applyColorLayoutCompanion,
-  preSynchronizeGroupedOffset
+  applyColorLayoutCompanion
 } from "./layout.js";
 import {
   assertNoConstantColor,
@@ -35,6 +36,8 @@ import {
   resolveColorLayout,
   resolveColorScaleOptions
 } from "./policy.js";
+
+import { applyTemporalUnit } from "../temporal.js";
 
 const encodeColor = action(
   {
@@ -54,6 +57,7 @@ const encodeColor = action(
       throw new Error("Categorical color does not support aggregate.");
     }
     const fieldType = validateCategoricalFieldType(requestedFieldType);
+    resolveTemporalUnit(args, fieldType);
     const { id: target, dataset, layer } = resolveTarget(
       this,
       args.target,
@@ -81,10 +85,13 @@ const encodeColor = action(
     }
     const layout = resolveColorLayout(layer, args.layout, barGrain);
     const createsCenterGroup = layer.mark.type === "area" &&
-      layout === "center" && layer.encoding?.group?.field === undefined;
+      layout === "center" && layer.encoding?.group === undefined;
+    const ordinaryGroup = layer.mark.type === "area" && !createsCenterGroup &&
+      densityTransform === undefined && horizonTransform === undefined;
     if (
       layer.mark.type === "area" &&
       !createsCenterGroup &&
+      !ordinaryGroup &&
       (layer.encoding?.group?.field === undefined ||
         layer.encoding.group.field !== args.field) &&
       !densitySeriesFields.includes(args.field) &&
@@ -94,7 +101,11 @@ const encodeColor = action(
         "Area color encoding must match an existing group encoding."
       );
     }
-    validateLineSeriesCompatibility(layer, "color", args.field);
+    if (layer.mark.type === "line" || ordinaryGroup) {
+      validatePathSeriesAppearance(dataset.values, {
+        ...layer, encoding: { ...layer.encoding, color: { field: args.field, fieldType } }
+      });
+    }
     const requestedScale = resolveReassignmentScaleOptions(
       layer.encoding?.color,
       resolveColorScaleOptions(args)
@@ -117,10 +128,10 @@ const encodeColor = action(
       readNominalField(dataset.values, args.field);
     }
 
-    let next = createsCenterGroup
-      ? this.encodeGroup({ target, field: args.field })
+    let next = layer.mark.type === "bar" || createsCenterGroup
+      ? inferSeriesGroup(this, layer, args.field, "color")
       : this;
-    next = next.editSemantic({
+    next = applyTemporalUnit(next, target, "color", undefined, layer.encoding?.color).editSemantic({
       property: `layer[${target}].encoding.color.field`,
       value: args.field
     })
@@ -132,21 +143,12 @@ const encodeColor = action(
         property: `layer[${target}].encoding.color.scale`,
         value: scale.id
       });
-    if (layout !== undefined) {
+    if (layout !== undefined && (layer.mark.type === "arc" || horizonTransform !== undefined)) {
       next = next.editSemantic({
         property: `layer[${target}].encoding.color.layout`,
         value: layout
       });
     }
-    next = preSynchronizeGroupedOffset(next, {
-      target,
-      layer,
-      layout,
-      field: args.field,
-      fieldType,
-      scale,
-      requestedScale
-    });
     next = applyEncodingScale(next, scale, requestedScale, {
       reassignment: layer.encoding?.color?.scale === scale.id
     });
@@ -155,7 +157,8 @@ const encodeColor = action(
       layer,
       layout,
       scale,
-      field: args.field
+      field: args.field,
+      horizon: horizonTransform !== undefined
     });
 
     return applyDetachedScaleRematerialization(applyMaterializationPlan(

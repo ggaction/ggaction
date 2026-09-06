@@ -136,7 +136,7 @@ export function createGuideRemovalActions(rows) {
       xScale: { nice: true, zero: false }
     })
     .encodeColor({ field: "Origin", scale: { palette: "tableau10" } })
-    .createGuides({ legend: { position: "bottom" } })
+    .createGuides({ legend: { position: "bottom", layout: "legacy-bottom" } })
     .createTitle({
       text: "Displacement distribution",
       subtitle: "by country",
@@ -305,7 +305,6 @@ export function createErrorBandEditActions(rows) {
     })
     .editErrorBand({
       target: "errorBand",
-      fill: "#7dd3fc",
       opacity: 0.34,
       curve: "cardinal"
     })
@@ -317,7 +316,8 @@ export function createErrorBandEditActions(rows) {
       strokeDash: [6, 3],
       opacity: 0.8,
       curve: "cardinal"
-    });
+    })
+    .editGraphics({ target: "errorBand", property: "fill", value: "#7dd3fc" });
 }
 
 export function createRegressionEditActions(rows) {

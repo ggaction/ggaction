@@ -4,6 +4,7 @@ import { validateOptionObject } from "../../../core/validation.js";
 import { resolvePalette } from "../../../grammar/palettes.js";
 import {
   normalizeTemporalValue,
+  resolveTemporalUnit,
   readNominalField
 } from "../../../grammar/scales/index.js";
 import {
@@ -42,7 +43,7 @@ function fieldOption(value, role) {
   }
   validateOptionObject(
     value,
-    ["field", "fieldType", "scale"],
+    ["field", "fieldType", "scale", "temporalUnit"],
     `Horizon ${role}`
   );
   return value;
@@ -80,6 +81,7 @@ function uniqueStoredEncoding(program, dataset, role) {
     JSON.stringify([
       encoding.field,
       encoding.fieldType,
+      encoding.temporalUnit,
       encoding.scale,
       encoding.title
     ]),
@@ -103,6 +105,7 @@ export function resolveHorizonField(program, layer, dataset, requested, role) {
     return {
       field: inferred.field,
       fieldType: inferred.fieldType,
+      ...(inferred.temporalUnit === undefined ? {} : { temporalUnit: inferred.temporalUnit }),
       ...(role === "x" && inferred.scale !== undefined
         ? { scale: { id: inferred.scale } }
         : {}),
@@ -127,7 +130,9 @@ export function resolveHorizonField(program, layer, dataset, requested, role) {
       `Horizon ${role} fieldType must be ${role === "x" ? "quantitative or temporal" : "quantitative"}.`
     );
   }
+  const temporalUnit = resolveTemporalUnit(option, fieldType, matching);
   return {
+    ...(temporalUnit === undefined ? {} : { temporalUnit }),
     field: option.field,
     fieldType,
     ...(option.scale !== undefined
@@ -140,9 +145,7 @@ export function resolveHorizonField(program, layer, dataset, requested, role) {
 }
 
 export function resolveHorizonGroupBy(layer, dataset, requested) {
-  if (requested === false) {
-    throw new Error("encodeHorizon groupBy must be a field string when provided.");
-  }
+  if (requested === false) return undefined;
   const value = requested ?? layer.encoding?.group?.field;
   if (value === undefined) return undefined;
   if (typeof value !== "string" || value.length === 0) {
@@ -262,6 +265,7 @@ export function resolveEditedHorizonField(
       [role]: {
         field: prior.field,
         fieldType: prior.fieldType,
+        ...(prior.temporalUnit === undefined ? {} : { temporalUnit: prior.temporalUnit }),
         scale: layer.encoding[role].scale,
         ...(role === "x" && layer.encoding.x.title !== undefined
           ? { title: layer.encoding.x.title }

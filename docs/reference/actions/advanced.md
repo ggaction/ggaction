@@ -55,14 +55,14 @@ createDerivedData({
 })
 createRegressionBand({
   id, data, x, lower, upper, groupBy?, coordinate, xScale, yScale,
-  color?, opacity?, stroke?, strokeWidth?, curve?
+  color?, opacity?, stroke?, strokeWidth?, curve?, missing?
 })
-editRegressionBand({ target?, color?, opacity?, stroke?, strokeWidth?, curve? })
+editRegressionBand({ target?, color?, opacity?, stroke?, strokeWidth?, curve?, missing? })
 createRegressionLine({
   id, data, x, y, groupBy?, coordinate, xScale, yScale,
-  colorScale?, strokeWidth?, curve?
+  colorScale?, strokeWidth?, curve?, missing?
 })
-editRegressionLine({ target?, strokeWidth?, curve? })
+editRegressionLine({ target?, strokeWidth?, curve?, missing? })
 ```
 
 These actions explicitly author named semantic resources or the component
@@ -73,10 +73,29 @@ Parallel coordinates normally create their resource through
 `encodeParallelCoordinates` or `createParallelCoordinates`.
 
 `createDerivedData` stores immutable source and transform provenance only; it
-does not materialize values. Its public `DatasetTransform` union supports
-`filter`, `regression`, `density`, and `interval` objects. A bare object, empty
+does not materialize values. Chart facades and mark creation reject definition-only
+datasets with an error explaining that materialized values are required.
+Its public `DatasetTransform` union supports `filter`, `regression`, `density`,
+`interval`, `timeUnit`, `window`, and `bin2d` objects. A bare object, empty
 array, or multi-transform pipeline is invalid. See the runnable filter example and exact transform
 requirements in [Source and derived data](../../api/data/source-and-derived.md#create-derived-data).
+
+## `createParallelAxes`, `createParallelAxis`, `editParallelAxis`, `removeParallelAxis`, `removeParallelAxes`
+
+```javascript
+createParallelAxes({ target?, coordinate? })
+createParallelAxis({ field, target?, line?, ticks?, labels?, ticksAndLabels?, title? })
+editParallelAxis({ field, target?, line?, ticks?, labels?, ticksAndLabels?, title? })
+removeParallelAxis({ field, target? })
+removeParallelAxes({ target?, coordinate? })
+```
+
+Full-only field-selected Parallel guides. Create requires missing resources;
+edit/removal requires existing resources. Component `false` skips creation or
+removes an existing component. Group and individual tick/label options are
+exclusive. Field recipes and explicit titles survive dimension reordering.
+The last component removal clears the guide owner. [Axes](../../api/axes.md) owns
+exact styles, defaults, inference, validation and replay behavior.
 
 ## Complete single-channel axes
 
@@ -89,7 +108,9 @@ editYAxis({ position?, line?: false | {...}, ticks?: false | {...},
   labels?: false | {...}, ticksAndLabels?: false | {...}, title?: false | {...} })
 ```
 
-Complete-axis edits update only the selected components of an existing axis.
+Cartesian and Polar complete-axis creators accept `false` for `line`,
+`ticksAndLabels`, or `title` to omit those components; at least one must remain
+enabled. Complete-axis edits update only the selected components of an existing axis.
 Each component accepts its edit object or `false` for removal. Use
 `ticksAndLabels` for a coordinated tick/label edit or removal, or `ticks` and
 `labels` for independent edits/removals; do not combine both forms. Removal
@@ -138,10 +159,10 @@ editYAxisLabels({
 ```
 
 Axis `position` is `"bottom" | "top"` for x and `"left" | "right"` for y.
-Label `format` accepts `"auto"`, `{ decimals }`, numeric `.0f/.1f/.2f/.0%/.1%/.2e`,
-or a UTC sequence of `%Y/%m/%d/%b` directives and literals when compatible with
-the resolved scale. Use `%%` for a literal percent; unknown or dangling
-directives reject.
+Label `format` accepts `"auto"`, `{ decimals }`, `.0`–`.12` precision with
+`f`, `%`, or `e`, or a UTC sequence of `%Y/%m/%d/%b` directives and literals
+when compatible with the resolved scale. Use `%%` for a literal percent;
+unknown or dangling directives reject.
 
 ## Tick/label groups and axis titles
 
@@ -168,6 +189,10 @@ editYAxisTitle({
   fontSize?, fontFamily?, fontWeight?
 })
 ```
+
+Cartesian title `rotation` accepts a finite legacy number in radians or
+`{ value, unit: "degrees" | "radians" }`. Both forms normalize to concrete
+radians. Polar component `angle` remains degree-valued placement.
 
 ## Directional grids
 

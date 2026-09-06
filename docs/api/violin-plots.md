@@ -89,8 +89,23 @@ the categorical axis already identifies the same field; request
 
 ## Editing
 
-`createViolinPlot` is an aggregate create action. Edit the resource owned by
-the decision you want to change:
+`createViolinPlot` creates a stable owner. Revise its data and statistical
+roles together:
+
+```javascript
+const revised = program.editViolinPlot({
+  target: "violins",
+  data: "revised",
+  x: "value",
+  y: "category",
+  split: false,
+  density: { bandwidth: 1.1 }
+});
+```
+
+The owner ID stays stable while the action creates a new immutable density-data
+revision and reconciles orientation, scales, axes, grid, selections, and
+highlights. Use the lower actions for a single resource decision:
 
 ```javascript
 const revised = program
@@ -104,10 +119,9 @@ const revised = program
   .editAreaMark({ opacity: 0.55 });
 ```
 
-Use `{ type: "baseline" }` as the placement edit to return the area to the
-ordinary zero-baseline density layout. Canvas, scale, data, filtering,
-selection, highlighting, and facet changes rematerialize the complete density
-paths.
+`editAreaMark` continues to own path appearance. Canvas, scale, data,
+filtering, selection, highlighting, and facet changes rematerialize the
+complete density paths.
 
 ## Current boundary
 

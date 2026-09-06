@@ -231,6 +231,10 @@ test("supports split and horizontal categorical-density placement", () => {
   });
 
   assert.equal(split.graphicSpec.objects.violins.items.length, 6);
+  const colored = split.encodeColor({ field: "era" });
+  assert.deepEqual(colored.encodeGroup({ field: "Origin" }).graphicSpec, colored.graphicSpec);
+  assert.equal(colored.removeEncoding({ channel: "x" }).graphicSpec.objects.violins.items.length, 0);
+  assert.throws(() => colored.encodeGroup({ fields: ["Origin", "era"] }), /editDensity/);
   assert.deepEqual(
     split.semanticSpec.datasets[1].transform[0].resolved.splitDomain,
     ["1970–1976", "1977–1982"]

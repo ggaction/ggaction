@@ -134,9 +134,9 @@ export function createDiscretizedColorReference(gapminder, type) {
     title: titleFor(type),
     legend: Object.freeze({
       labels: intervalLabels(thresholds),
-      symbolX,
+      symbolX: symbolX + 0.25,
       itemY,
-      labelX: symbolX + 14 + 8,
+      labelX: symbolX + 14 + 0.5 + 8,
       titleX: symbolX,
       titleY: base.bounds.top + 20
     })

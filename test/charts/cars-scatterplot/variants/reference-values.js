@@ -263,7 +263,17 @@ export function createShapeVocabularyPrimitiveValues(cars) {
   const selected = selectShapeRows(baseline);
   const pointArea = Math.PI * 7 ** 2;
   const legendArea = Math.PI * 5 ** 2;
-  const legendX = 623;
+  // Independently measure the zero-stroke reference polygons around a 10px nominal slot.
+  const coordinates = POINT_SHAPES.flatMap(shape => {
+    const item = createShapeGraphic(shape, {x:5,y:0,area:legendArea,fill:"#4c78a8"});
+    const p = item.properties;
+    return item.type === "circle" ? [p.x-p.radius,p.x+p.radius]
+      : item.type === "rect" ? [p.x,p.x+p.width]
+      : p.commands.filter(command=>command.x!==undefined).map(command=>command.x);
+  });
+  const sampleLeft = Math.min(0,...coordinates), sampleRight = Math.max(10,...coordinates);
+  const legendX = 618 - sampleLeft + 5;
+  const legendLabelX = 618 + (sampleRight - sampleLeft) + 10;
   const legendStartY = 82;
   const legendGap = 24;
   return Object.freeze({
@@ -291,7 +301,7 @@ export function createShapeVocabularyPrimitiveValues(cars) {
         })
       )),
       labels: Object.freeze(POINT_SHAPES.map((shape, index) => ({
-        x: 638,
+        x: legendLabelX,
         y: legendStartY + index * legendGap,
         text: shape
       })))
@@ -315,7 +325,7 @@ export function createCategoricalPalettePrimitiveValues(cars) {
     legend: Object.freeze({
       title: Object.freeze({ x: 618, y: 50, text: "Origin" }),
       symbols: Object.freeze(domain.map((value, index) => ({
-        x: 618,
+        x: 618.25,
         y: itemStartY + index * itemGap,
         width: 14,
         height: 12,
@@ -324,7 +334,7 @@ export function createCategoricalPalettePrimitiveValues(cars) {
         strokeWidth: 0.5
       }))),
       labels: Object.freeze(domain.map((value, index) => ({
-        x: 640,
+        x: 640.5,
         y: itemStartY + 6 + index * itemGap,
         text: value
       })))
@@ -445,7 +455,7 @@ export function createFieldOpacityPrimitiveValues(cars) {
         opacity: mapLinear(value, domain, range)
       }))),
       labels: Object.freeze(legendValues.map((value, index) => ({
-        x: CONTINUOUS_LEGEND.x + 24,
+        x: CONTINUOUS_LEGEND.x + 14 + 12,
         y: legendStartY + index * legendGap,
         text: Number(value.toFixed(1)).toString()
       })))

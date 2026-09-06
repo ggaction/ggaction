@@ -643,7 +643,9 @@ function legendOptions(variant, title, { target = "points", channels = ["color"]
     direction,
     ...(direction === "horizontal" ? { columns: 4 } : {}),
     offset: 48,
-    titlePosition: ordinal % 2 === 0 ? "top" : "left",
+    titlePosition: ["right", "left"].includes(position)
+      ? "top"
+      : ordinal % 2 === 0 ? "top" : "left",
     title,
     symbol: channels.includes("shape") ? "auto" : symbolModes[ordinal % symbolModes.length],
     labels: {
@@ -845,7 +847,8 @@ function exerciseCartesianGuides(factors, base) {
     position: yPosition === "left" ? "right" : "left",
     align: "center",
     direction: "vertical",
-    offset: 48
+    offset: 48,
+    titlePosition: "top"
   };
   const movedAxesLegend = {
     ...initialAxesLegend,
@@ -1008,7 +1011,9 @@ function exerciseCartesianGuides(factors, base) {
       align: "center",
       direction: "vertical",
       offset: 48,
-      titlePosition: "left",
+      titlePosition: ["right", "left"].includes(movedAxesLegend.position)
+        ? "top"
+        : "left",
       itemGap: 16
     })
     .editLegendLabels({
@@ -1495,6 +1500,7 @@ function colorScaleOptions(variant, {
         id,
         type: "sequential",
         domain: "auto",
+        midpoint: "auto",
         palette: sequentialPalette(variant, createObjectPalette),
         interpolate: variant.interpolate,
         clamp: initial,
@@ -1505,6 +1511,7 @@ function colorScaleOptions(variant, {
         id,
         type: "sequential",
         domain: [0, 1],
+        midpoint: initial ? "auto" : 0.4,
         palette: sequentialPalette(variant, !createObjectPalette, true),
         interpolate: variant.interpolate,
         clamp: !initial,
@@ -1751,7 +1758,8 @@ function buildScaleVocabulary(factors) {
       position: "right",
       align: "center",
       direction: "vertical",
-      offset: 180
+      offset: 180,
+      titlePosition: "top"
     });
   }
   return program.createTitle(titleOptions(context, variant, { final: true }));
@@ -1800,7 +1808,7 @@ function polarCompleteAxis({
   return {
     scale,
     coordinate,
-    angle,
+    ...(angle === undefined ? {} : { angle }),
     line: { color: "#475569", lineWidth: 1.25 },
     ticksAndLabels: {
       ...tickPolicy(policy, values, 5),
@@ -1822,7 +1830,21 @@ function buildPolar(factors) {
   const angle = variant.id === "values-outside" ? 180 : variant.id === "title-opt-out" ? 270 : 90;
   let program = chart()
     .createCanvas(canvas())
-    .createData({ id: "analysisRows", values: view.rows })
+    .createData({ id: "analysisRows", values: view.rows });
+  // Exercise measured scale creation and revision before the point guide flow.
+  // Category counts use the actual summary rows, with no fabricated measure.
+  for (const radialMapping of ["area", "radius-length"]) {
+    const id = `measured-${radialMapping}`;
+    program = program.createScale({ id, type: "linear", radialMapping,
+      domain: [0, 1], range: "auto", zero: true, nice: false })
+      .createArcMark({ id, data: "analysisRows", innerRadius: 0.3 })
+      .encodeTheta({ target: id, coordinate: `${id}-coordinate`, field: "category", fieldType: "nominal",
+        scale: { id: `${id}-theta` } })
+      .encodeR({ target: id, aggregate: "count", mapping: radialMapping, scale: { id } })
+      .editScale({ id, radialMapping, domain: [0, 2] })
+      .removeMark({ target: id });
+  }
+  program = program
     .createPointMark({
       id: "points",
       shape: "circle",
@@ -1832,6 +1854,7 @@ function buildPolar(factors) {
     })
     .encodeTheta({
       target: "points",
+      coordinate: "polar",
       field: "rank",
       fieldType: "quantitative",
       scale: { id: "theta", type: "linear", nice: true, zero: false }
@@ -1855,7 +1878,6 @@ function buildPolar(factors) {
   const radiusValues = endpointValues(radiusDomain);
   const thetaAxis = polarCompleteAxis({
     scale: "theta",
-    angle: 0,
     policy,
     values: thetaValues,
     title: `${context.dimensionText} rank`,

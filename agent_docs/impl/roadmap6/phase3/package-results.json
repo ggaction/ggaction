@@ -1,0 +1,56 @@
+{
+  "version": 1,
+  "sourceCommit": "80999264535b312d82ca3f58928b4428bf749ac5",
+  "runtimeSourceTree": "6d5a80e311cabdc67dff5da739dcce3346e3841d",
+  "typesTree": "38cbb7b6d7feaa5b044a56189ea874b8bde5d581",
+  "knowledgeTree": "b99ae751113696eab7492999f2180ed1dd5c9d60",
+  "environment": {
+    "node": "v22.23.1",
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "package": {
+    "name": "ggaction",
+    "version": "0.0.12",
+    "filename": "ggaction-0.0.12.tgz",
+    "sha256": "436bc7ba0475f78ddeb5040193b61c15325869240a4f05c5c03cf7663d301314",
+    "packedBytes": 481057,
+    "unpackedBytes": 2300288,
+    "entries": 436
+  },
+  "installedNodeMCPTypesAndTutorials": "passed",
+  "packagePassed": false,
+  "packageError": "ggaction gzip bundle 235923 exceeds 235000.",
+  "bundles": [
+    {
+      "specifier": "ggaction",
+      "chunks": 1,
+      "modules": 383,
+      "minifiedBytes": 900260,
+      "gzipBytes": 235923,
+      "limit": 235000,
+      "delta": 923,
+      "passed": false
+    },
+    {
+      "specifier": "ggaction/basic",
+      "chunks": 1,
+      "modules": 225,
+      "minifiedBytes": 452295,
+      "gzipBytes": 124897,
+      "limit": 125000,
+      "delta": -103,
+      "passed": true
+    },
+    {
+      "specifier": "ggaction/svg",
+      "chunks": 1,
+      "modules": 15,
+      "minifiedBytes": 19840,
+      "gzipBytes": 6418,
+      "limit": 25000,
+      "delta": -18582,
+      "passed": true
+    }
+  ]
+}

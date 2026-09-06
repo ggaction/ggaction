@@ -57,7 +57,7 @@ test("preserves every Unicode label and all 257 long legend categories", () => {
   });
   assert.equal(unicode.semanticSpec.datasets[0].values.length, 12);
   assert.equal(unicode.graphicSpec.objects.unicodeText.items.length, 12);
-  assert.equal(unicode.graphicSpec.objects.seriesLegendLabels.items.length, 12);
+  assert.equal(unicode.graphicSpec.objects.colorLegendLabels.items.length, 12);
   const unicodeSvg = verifyProgram(unicode, "full-unicode-stress").svg;
   for (const row of unicodeRows) assert.ok(unicodeSvg.includes(row.category));
 
@@ -76,9 +76,9 @@ test("preserves every Unicode label and all 257 long legend categories", () => {
   });
   assert.equal(cardinality.semanticSpec.datasets[0].values.length, 257);
   assert.equal(cardinality.graphicSpec.objects.cardinalityPoints.items.length, 257);
-  assert.equal(cardinality.graphicSpec.objects.seriesLegendLabels.items.length, 257);
+  assert.equal(cardinality.graphicSpec.objects.colorLegendLabels.items.length, 257);
   assert.equal(
-    cardinality.graphicSpec.objects.seriesLegendLabels.items.at(-1).properties.text,
+    cardinality.graphicSpec.objects.colorLegendLabels.items.at(-1).properties.text,
     cardinalityRows.at(-1).category
   );
   const cardinalitySvg = verifyProgram(cardinality, "257-category-stress").svg;

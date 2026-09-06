@@ -1,9 +1,12 @@
+import { stackLayoutMode } from "../seriesLayout.js";
+import { resolveBarGrain } from "../../../grammar/bars/policy.js";
 import { action } from "../../../core/action.js";
 import {
   getPositionEncodingMaterializationSteps
 } from "../../../materialization/marks/index.js";
 import { resolvePositionEncoding } from "./resolve.js";
 import { findLayer } from "../../../selectors/layers.js";
+import { findSemanticScale } from "../../../selectors/scales.js";
 import { applyPositionSemantics } from "./apply.js";
 import {
   applyEncodingScale,
@@ -21,12 +24,14 @@ function encodePosition(program, channel, args, operation) {
     datum,
     hasField,
     fieldType,
+    temporalUnit,
     scale,
     coordinate,
     bin,
     aggregate,
     stack,
-    weight
+    weight,
+    companion
   } = resolvePositionEncoding(program, channel, args, operation);
 
   let next = program
@@ -44,6 +49,7 @@ function encodePosition(program, channel, args, operation) {
     datum,
     hasField,
     fieldType,
+    temporalUnit,
     bin,
     aggregate,
     stack,
@@ -55,8 +61,12 @@ function encodePosition(program, channel, args, operation) {
       value: scale.id
     });
   next = applyEncodingScale(next, scale, requestedScale, {
-    reassignment: previous?.scale === scale.id
+    reassignment: previous?.scale === scale.id,
+    allowTypeChange: layer.mark.type === "area"
   });
+  if (["bar", "area"].includes(layer.mark.type) && Object.hasOwn(args, "stack") && args.stack !== undefined) {
+    next = next.editSemantic({ property: `layer[${target}].layout.mode`, value: stackLayoutMode(args.stack) });
+  }
   next = rebindPositionGuides(
     next,
     channel,
@@ -64,6 +74,22 @@ function encodePosition(program, channel, args, operation) {
     scale.id,
     target
   );
+
+  if (companion !== undefined) {
+    const encoding = companion.encoding;
+    const storedScale = findSemanticScale(next, encoding.scale);
+    next = next[companion.channel === "x" ? "encodeX" : "encodeY"]({
+      target,
+      field: encoding.field,
+      fieldType: encoding.fieldType,
+      aggregate: encoding.aggregate,
+      ...(layer.layout?.mode === undefined ? {} : { stack: encoding.stack }),
+      scale: {
+        id: encoding.scale,
+        ...(storedScale?.zero === undefined ? { zero: encoding.stack !== null } : {})
+      }
+    });
+  }
 
   if (layer.mark.type === "bar") {
     const updated = findLayer(next, target);
@@ -88,6 +114,15 @@ function encodePosition(program, channel, args, operation) {
   }
 
   const updated = findLayer(next, target);
+  if (["bar", "area"].includes(layer.mark.type) && next.markConfigs[target]?.boxPlot === undefined &&
+      updated.encoding?.x?.scale !== undefined && updated.encoding?.y?.scale !== undefined) {
+    const requested = Object.hasOwn(args, "stack") ? args.stack : undefined;
+    const mode = requested !== undefined ? stackLayoutMode(requested) : updated.layout?.mode ??
+      (layer.mark.type === "bar" && resolveBarGrain(updated) === "histogram" ? stackLayoutMode(updated.encoding.y.stack) : undefined);
+    if (mode !== undefined && (layer.mark.type === "area" || resolveBarGrain(updated) !== undefined)) {
+      return applyDetachedScaleRematerialization(next.layoutSeries({ target, mode }), [layer]);
+    }
+  }
   for (const step of getPositionEncodingMaterializationSteps(
     next,
     updated,

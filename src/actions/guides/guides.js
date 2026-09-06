@@ -25,8 +25,9 @@ function validateOptions(args) {
   validateGuideOption(args.legend, "createGuides legend");
 }
 
-function inferAxesOptions(program, applicability) {
-  const horizontalInterval = program.semanticSpec.layers.some(layer =>
+function inferAxesOptions(program, applicability, layers) {
+  const horizontalInterval = layers.some(layer =>
+    program.markConfigs[layer.id]?.boxPlot?.orientation === "horizontal" ||
     layer.mark?.type === "rule" &&
     layer.encoding?.x?.fieldType === "quantitative" &&
     layer.encoding?.x2?.fieldType === "quantitative" &&
@@ -36,11 +37,11 @@ function inferAxesOptions(program, applicability) {
     ? { x: { ticksAndLabels: { count: 7 } } }
     : {};
   const directions = applicability.axes.directions;
-  const hasStoredY = program.semanticSpec.layers.some(
+  const hasStoredY = layers.some(
     layer => layer.encoding?.y !== undefined
   );
   if (!directions.y && hasStoredY) inferred.y = false;
-  const horizonLayers = program.semanticSpec.layers.filter(layer =>
+  const horizonLayers = layers.filter(layer =>
     findUpstreamTransform(
       program,
       findDataset(program, layer.data),
@@ -83,7 +84,36 @@ function mergeInferredOptions(inferred, explicit) {
       ? mergeInferredOptions(inferred[key], value)
       : value;
   }
+  if (Object.hasOwn(explicit, "count")) delete merged.values;
+  if (Object.hasOwn(explicit, "values")) delete merged.count;
   return merged;
+}
+
+export function resolveGuideOptions(program, args = {}, layers = program.semanticSpec.layers) {
+  validateOptions(args);
+  const applicability = resolveGuideApplicability(program, layers);
+  const hasAxes = applicability.axes.cartesian || applicability.axes.polar ||
+    applicability.axes.parallel;
+  const inferredAxes = applicability.axes.cartesian
+    ? inferAxesOptions(program, applicability, layers)
+    : {};
+  const axes = args.axes === undefined && applicability.axes.cartesian
+    ? inferredAxes
+    : args.axes !== undefined && args.axes !== false && hasAxes
+      ? mergeInferredOptions(inferredAxes, args.axes)
+      : selectOption(args.axes, hasAxes);
+  const grid = args.grid === undefined &&
+      (applicability.grid.cartesian || applicability.grid.polar)
+    ? resolveAutomaticGridOptions(program, layers)
+    : selectOption(
+        args.grid,
+        applicability.grid.cartesian || applicability.grid.polar
+      );
+  const legend = selectOption(
+    args.legend,
+    applicability.legend
+  );
+  return { axes, grid, legend };
 }
 
 const createGuides = action(
@@ -92,30 +122,7 @@ const createGuides = action(
     description: "Create applicable axes, grid, and legend."
   },
   function (args = {}) {
-    validateOptions(args);
-    const applicability = resolveGuideApplicability(this);
-    const hasAxes = applicability.axes.cartesian || applicability.axes.polar ||
-      applicability.axes.parallel;
-    const inferredAxes = applicability.axes.cartesian
-      ? inferAxesOptions(this, applicability)
-      : {};
-    const axes = args.axes === undefined && applicability.axes.cartesian
-      ? inferredAxes
-      : args.axes !== undefined && args.axes !== false && hasAxes
-        ? mergeInferredOptions(inferredAxes, args.axes)
-        : selectOption(args.axes, hasAxes);
-    const grid = args.grid === undefined &&
-        (applicability.grid.cartesian || applicability.grid.polar)
-      ? resolveAutomaticGridOptions(this)
-      : selectOption(
-          args.grid,
-          applicability.grid.cartesian || applicability.grid.polar
-        );
-    const legend = selectOption(
-      args.legend,
-      applicability.legend
-    );
-
+    const { axes, grid, legend } = resolveGuideOptions(this, args);
     if (axes === undefined && grid === undefined && legend === undefined) {
       throw new Error("createGuides requires at least one selected guide.");
     }

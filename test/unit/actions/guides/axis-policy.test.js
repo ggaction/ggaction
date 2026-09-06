@@ -91,7 +91,8 @@ test("formats numeric boundaries and UTC calendar boundaries deterministically",
 test("rejects unknown and scale-incompatible axis formats", () => {
   const auto = value => String(value);
 
-  assert.throws(() => validateAxisFormat(".3f"), /supported format string/);
+  assert.equal(validateAxisFormat(".3f"), ".3f");
+  assert.throws(() => validateAxisFormat(".13f"), /at most 12/);
   assert.throws(() => validateAxisFormat("%Y-%q"), /supported format string/);
   assert.throws(() => validateAxisFormat("%Y-%"), /supported format string/);
   assert.throws(() => validateAxisFormat("calendar"), /supported format string/);

@@ -11,7 +11,7 @@ import {
   normalizeContinuousLegend,
   requireResolvedLegendScale,
   resolveContinuousBounds,
-  resolveContinuousPoint,
+  resolveContinuousLegendLayer,
   resolveLegendBackgroundFromBounds,
   resolveLegendTextBounds,
   sampleContinuousValues,
@@ -62,7 +62,7 @@ export function normalizeOpacitySymbol(value) {
 }
 
 function resolveOpacityConfig(program, config) {
-  const layer = resolveContinuousPoint(program, config.target, "opacity");
+  const layer = resolveContinuousLegendLayer(program, config.target, "opacity");
   const encoding = layer.encoding.opacity;
   if (encoding.fieldType !== "quantitative") {
     throw new Error("Opacity legend requires quantitative field opacity.");
@@ -86,8 +86,14 @@ function resolveOpacityLayout(program, config, scale) {
   const { plot, canvas } = resolveContinuousBounds(program);
   const vertical = ["right", "left"].includes(config.position);
   const values = sampleContinuousValues(scale.domain, config.count);
-  const texts = formatContinuousValues(values, scale.domain, "quantitative");
-  const radius = config.symbol.radius;
+  const texts = formatContinuousValues(
+    values,
+    scale.domain,
+    "quantitative",
+    config.labels.format
+  );
+  const symbolExtent = config.symbol.radius + (config.symbol.strokeWidth ?? 0) / 2;
+  const labelWidths = texts.map(text => measureTextWidth(text, config.labels));
   let symbols;
   let labels;
   let title;
@@ -95,57 +101,61 @@ function resolveOpacityLayout(program, config, scale) {
     const baseX = config.position === "right"
       ? plot.x + plot.width + config.offset
       : plot.x - config.offset;
-    const y = values.map((_, index) => plot.y + 46 + index * config.itemGap);
+    const itemHeight = Math.max(symbolExtent * 2, config.labels.fontSize);
+    const pitch = Math.max(config.itemGap, itemHeight);
+    const firstY = Math.max(plot.y + 46, config.titleVisible === false ? plot.y + 46
+      : plot.y + 20 + config.titleStyle.fontSize / 2 + 12 + itemHeight / 2);
+    const y = values.map((_, index) => firstY + index * pitch);
     symbols = y.map(itemY => ({
-      x: config.position === "right" ? baseX + radius : baseX - radius,
+      x: config.position === "right" ? baseX + symbolExtent : baseX - symbolExtent,
       y: itemY
     }));
     labels = y.map(itemY => ({
       x: config.position === "right"
-        ? baseX + radius * 2 + config.labels.offset - 2
-        : baseX - radius * 2 - config.labels.offset + 2,
+        ? baseX + symbolExtent * 2 + config.labels.offset
+        : baseX - symbolExtent * 2 - config.labels.offset,
       y: itemY,
       align: config.position === "right" ? "left" : "right"
     }));
     title = {
-      x: config.position === "right" ? baseX : baseX - radius * 2,
+      x: config.position === "right" ? baseX : baseX - symbolExtent * 2,
       y: plot.y + 20,
       align: config.position === "right" ? "left" : "right"
     };
   } else if (config.titlePosition === "left") {
-    const titleWidth = measureTextWidth(config.title, config.titleStyle);
-    const labelWidths = texts.map(text =>
-      measureTextWidth(text, config.labels)
-    );
+    const titleWidth = config.titleVisible === false ? 0 : measureTextWidth(config.title, config.titleStyle);
+    const titlePrefix = config.titleVisible === false ? 0 : titleWidth + 20;
     const samplesWidth = labelWidths.reduce(
-      (sum, width) => sum + radius * 2 + config.labels.offset + width,
+      (sum, width) => sum + symbolExtent * 2 + config.labels.offset + width,
       0
     ) + config.itemGap * (values.length - 1);
-    const width = titleWidth + 20 + samplesWidth;
+    const width = titlePrefix + samplesWidth;
     const startX = config.align === "left" ? plot.x
       : config.align === "right" ? plot.x + plot.width - width
         : plot.x + (plot.width - width) / 2;
     const height = Math.max(
-      radius * 2,
+      symbolExtent * 2,
       config.labels.fontSize,
-      config.titleStyle.fontSize
+      config.titleVisible === false ? 0 : config.titleStyle.fontSize
     );
     const centerY = config.position === "top"
       ? plot.y - config.offset - height / 2
       : plot.y + plot.height + config.offset + height / 2;
     title = { x: startX, y: centerY, align: "left" };
-    let cursor = startX + titleWidth + 20;
+    let cursor = startX + titlePrefix;
     symbols = [];
     labels = [];
     for (let index = 0; index < values.length; index += 1) {
-      const symbolX = cursor + radius;
+      const symbolX = cursor + symbolExtent;
       symbols.push({ x: symbolX, y: centerY });
-      const labelX = symbolX + radius + config.labels.offset;
+      const labelX = symbolX + symbolExtent + config.labels.offset;
       labels.push({ x: labelX, y: centerY, align: "left" });
       cursor = labelX + labelWidths[index] + config.itemGap;
     }
   } else {
-    const width = (values.length - 1) * Math.max(56, config.itemGap * 2);
+    const pitch = Math.max(56, config.itemGap * 2,
+      symbolExtent * 2 + config.itemGap, Math.max(...labelWidths) + config.itemGap);
+    const width = (values.length - 1) * pitch;
     const startX = config.align === "left" ? plot.x
       : config.align === "right" ? plot.x + plot.width - width
         : plot.x + (plot.width - width) / 2;
@@ -153,27 +163,25 @@ function resolveOpacityLayout(program, config, scale) {
     const labelHalf = config.labels.fontSize / 2;
     const y = config.position === "top"
       ? plot.y - config.offset - config.labels.fontSize -
-        config.labels.offset - radius
+        config.labels.offset - symbolExtent
       : plot.y + plot.height + config.offset +
-        config.titleStyle.fontSize + 12 + radius;
+        (config.titleVisible === false ? 0 : config.titleStyle.fontSize + 12) + symbolExtent;
     symbols = values.map((_, index) => ({
       x: startX + index * width / (values.length - 1),
       y
     }));
     labels = symbols.map(symbol => ({
       x: symbol.x,
-      y: symbol.y + radius + config.labels.offset + labelHalf,
+      y: symbol.y + symbolExtent + config.labels.offset + labelHalf,
       align: "center"
     }));
     title = {
       x: startX + width / 2,
-      y: y - radius - 12 - titleHalf,
+      y: y - symbolExtent - 12 - titleHalf,
       align: "center"
     };
   }
-  const strokeExtent = (config.symbol.strokeWidth ?? 0) / 2;
-  const symbolExtent = radius + strokeExtent;
-  const titleBounds = resolveLegendTextBounds(
+  const titleBounds = config.titleVisible === false ? undefined : resolveLegendTextBounds(
     title,
     config.title,
     config.titleStyle
@@ -187,22 +195,22 @@ function resolveOpacityLayout(program, config, scale) {
     top: symbol.y - symbolExtent,
     bottom: symbol.y + symbolExtent
   }));
-  const occupiedBounds = [titleBounds, ...labelBounds, ...symbolBounds];
+  const occupiedBounds = [...(config.titleVisible === false ? [] : [titleBounds]), ...labelBounds, ...symbolBounds];
   assertLegendBoundsInsideCanvas(
     occupiedBounds,
     canvas,
-    "Opacity legend layout"
+    "Opacity legend layout", config
   );
   const background = resolveLegendBackgroundFromBounds(
     occupiedBounds,
     config.border,
     canvas,
-    "Opacity legend"
+    "Opacity legend", config
   );
   return { values, texts, symbols, labels, title, background };
 }
 
-export const rematerializeOpacityLegend = action(
+export const rematerializeOpacityLegend = /* @__PURE__ */ action(
   {
     op: "rematerializeOpacityLegend",
     description: "Rematerialize a field-opacity sample legend."
@@ -330,72 +338,85 @@ export const rematerializeOpacityLegend = action(
   }
 );
 
-export const createOpacityLegend = action(
+
+export function resolveOpacityLegendCreation(program, args = {}) {
+  const config = normalizeContinuousLegend(args, "opacity");
+  if (args.channels !== undefined && (
+    !Array.isArray(args.channels) ||
+    args.channels.length !== 1 ||
+    args.channels[0] !== "opacity"
+  )) {
+    throw new Error('Opacity legend requires channels: ["opacity"].');
+  }
+  config.symbol = normalizeOpacitySymbol(args.symbol);
+  config.titleVisible = true;
+  const resolved = resolveOpacityConfig(program, config);
+  return resolved;
+}
+
+export function createOpacityLegendFromConfig(program, config) {
+  const resolved = resolveOpacityConfig(program, config);
+  resolveOpacityLayout(program, resolved.config, resolved.scale);
+  let next = program
+    .editSemantic({
+      property: "guide.legend.opacity.scale",
+      value: resolved.encoding.scale
+    })
+    .editSemantic({
+      property: "guide.legend.opacity.title",
+      value: resolved.config.title
+    })
+    ._withLegendConfig("opacity", resolved.config);
+  if (resolved.config.border !== false) {
+    next = next.createGraphics({
+      id: "opacityLegendBackground",
+      type: "rect",
+      ...resolveLegendGraphicPlacement(next)
+    });
+  }
+  next = next
+    .createGraphics({
+      id: "opacityLegendSymbols",
+      type: "circle",
+      length: 0,
+      ...resolveLegendGraphicPlacement(next, resolved.config.border === false
+        ? {}
+        : { after: "opacityLegendBackground" })
+    })
+    .createGraphics({
+      id: "opacityLegendLabels",
+      type: "text",
+      length: 0,
+      ...resolveLegendGraphicPlacement(next)
+    });
+  if (resolved.config.titleVisible !== false) {
+    next = next.createGraphics({
+      id: "opacityLegendTitle",
+      type: "text",
+      ...resolveLegendGraphicPlacement(next)
+    });
+  }
+  return next.rematerializeOpacityLegend();
+}
+
+export const createOpacityLegend = /* @__PURE__ */ action(
   {
     op: "createOpacityLegend",
     description: "Create a field-opacity sample legend."
   },
   function (args = {}) {
-    const config = normalizeContinuousLegend(args, "opacity");
-    if (args.channels !== undefined && (
-      !Array.isArray(args.channels) ||
-      args.channels.length !== 1 ||
-      args.channels[0] !== "opacity"
-    )) {
-      throw new Error('Opacity legend requires channels: ["opacity"].');
-    }
-    config.symbol = normalizeOpacitySymbol(args.symbol);
-    config.titleVisible = true;
-    const resolved = resolveOpacityConfig(this, config);
+    const resolved = resolveOpacityLegendCreation(this, args);
     resolveOpacityLayout(this, resolved.config, resolved.scale);
     if (this.graphicSpec.objects.opacityLegendSymbols !== undefined) {
       throw new Error(
         "createOpacityLegend requires a missing opacity legend."
       );
     }
-    let next = this
-      .editSemantic({
-        property: "guide.legend.opacity.scale",
-        value: resolved.encoding.scale
-      })
-      .editSemantic({
-        property: "guide.legend.opacity.title",
-        value: resolved.config.title
-      })
-      ._withLegendConfig("opacity", resolved.config);
-    if (resolved.config.border !== false) {
-      next = next.createGraphics({
-        id: "opacityLegendBackground",
-        type: "rect",
-        ...resolveLegendGraphicPlacement(next)
-      });
-    }
-    return next
-      .createGraphics({
-        id: "opacityLegendSymbols",
-        type: "circle",
-        length: 0,
-        ...resolveLegendGraphicPlacement(next),
-        ...(resolved.config.border === false
-          ? {}
-          : { after: "opacityLegendBackground" })
-      })
-      .createGraphics({
-        id: "opacityLegendLabels",
-        type: "text",
-        length: 0,
-        ...resolveLegendGraphicPlacement(next)
-      })
-      .createGraphics({
-        id: "opacityLegendTitle",
-        type: "text",
-        ...resolveLegendGraphicPlacement(next)
-      })
-      .rematerializeOpacityLegend();
+    return createOpacityLegendFromConfig(this, resolved.config);
   }
 );
 
-export const removeOpacityLegend = action(
+export const removeOpacityLegend = /* @__PURE__ */ action(
   {
     op: "removeOpacityLegend",
     description: "Remove a field-opacity legend after switching to constant opacity."

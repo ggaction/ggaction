@@ -31,6 +31,10 @@ bar may inherit `mean`, while bin, stack, offset and grouped color layout are no
 Incompatible field/scale pairs remain absent, and ambiguity is an error. Passing `data` explicitly opts into
 independent assembly and does not inherit position encodings.
 
+Every ordinary mark requires materialized `values` on its selected dataset, including an empty array. A definition-only
+dataset from `createDerivedData` is rejected with an error explaining the required value-producing data action.
+Definition registration and internal layer rebinding remain available without automatic transform execution.
+
 ## `createPointMark`
 
 - Signature: `createPointMark({ id?, data?, shape?, fill?, opacity?, stroke?, strokeWidth? } = {})`
@@ -41,7 +45,7 @@ independent assembly and does not inherit position encodings.
   - Effect: semantic mark는 항상 `point`지만 concrete child는 circle, rect 또는 normalized path가 된다.
 - `fill`, `opacity`, `stroke`, `strokeWidth`: Implemented creation-time appearance shorthand. 각각
   `editPointMark`와 같은 validation/config persistence를 사용하며 wrapped `editPointMark`로 적용한다.
-  Field-driven color와 constant fill은 충돌한다.
+  `stroke: false`는 outline과 width를 끈다. Field-driven color와 constant fill은 충돌한다.
 - Effect: dataset cardinality와 같은 길이의 point graphic collection을 만들며 아직 위치 property가
   없으므로 encoding 전에는 보이지 않을 수 있다.
 - Default glyph size: compatible Cartesian x/y 또는 Polar theta/r position이 완성되면 materializer가
@@ -57,7 +61,7 @@ independent assembly and does not inherit position encodings.
 
 ### Formal values — `createPointMark`
 
-- Implemented: `createPointMark({ id?: UserId; data?: UserId; shape?: PointShape; fill?: NonEmptyString; opacity?: UnitInterval; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite } = {})`
+- Implemented: `createPointMark({ id?: UserId; data?: UserId; shape?: PointShape; fill?: NonEmptyString; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite } = {})`
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
@@ -88,6 +92,7 @@ independent assembly and does not inherit position encodings.
 - `opacity`는 `[0, 1]`, `stroke`는 non-empty color string 또는 edit-time `false`, `strokeWidth`는 non-negative
   finite logical pixel이다. `stroke: false`는 outline과 stored width를 함께 비활성화하며 simultaneous
   `strokeWidth`는 오류다. 이후 string stroke는 point default width `1`로 복원한다.
+- Scalar opacity conflicts with active field opacity; use `encodeOpacity({ value })` for explicit replacement.
 - 최소 한 appearance property가 필요하며 omitted properties는 기존 stored config를 보존한다.
 - Effect: mark materialization config를 갱신하고 wrapped `rematerializePointMark`로 concrete items를
   equal-area circle, rect 또는 path recipe로 교체한다. Semantic mark/data/encoding은 바꾸지 않는다.
@@ -179,7 +184,8 @@ independent assembly and does not inherit position encodings.
   metadata에 unavailable 상태가 남는다.
 - Rematerialization: Canvas, scale, data/filter, point radius/shape/stroke, selection/highlight와 facet replay가
   같은 stored assignment를 다시 적용한다. Highlight offset은 jitter 이후 final concrete geometry에 적용된다.
-- Non-goals: collision-free packing/beeswarm, density-aware displacement와 Polar point jitter는 구현하지 않는다.
+- Non-goals: density-aware displacement와 Polar point jitter는 구현하지 않는다. Collision-free category
+  packing은 별도 `packPoints` owner가 담당한다.
 
 ### Formal values — `jitterPoints`
 
@@ -212,6 +218,55 @@ independent assembly and does not inherit position encodings.
 
 - ✅ Covered: inferred/explicit target, base-position restoration, config cleanup, nested trace and earlier-program immutability.
 - Evidence: `test/unit/actions/marks/point-jitter.test.js`.
+
+## `packPoints`
+
+- Signature: `packPoints({ target?, channel, maxOffset?, padding?, key?, overflow? })`.
+- Lifecycle: Assignment. 같은 target에 다시 호출하면 semantic position에서 policy 전체를 교체하며
+  `removePointPacking`이 제거를 소유한다. 한 point에서 jitter와 packing은 동시에 활성화할 수 없다.
+- Target은 complete Cartesian Point다. `channel`은 nominal/ordinal category position이어야 하고 반대
+  position은 quantitative/temporal measure여야 한다. Measure coordinate는 그대로 유지한다.
+- `maxOffset`은 `{ pixels: PositiveFinite }` 또는 `{ band: PositiveFiniteAtMostHalf }`이고 생략하면
+  category slot half-width다. Point의 실제 shape, area/radius, rotation과 stroke extent를 plot/slot bounds에
+  포함하며 `padding`의 기본은 1 logical pixel이다.
+- Placement는 measure coordinate와 stable source index 또는 unique `key` identity 순서의
+  `point-pack-greedy-v1` 문법이다. 같은 input/state는 환경과 호출 순서에 관계없이 같은 concrete position을 낸다.
+- `overflow` 기본 `"error"`는 충돌 없는 위치가 없으면 program 전체를 보존하고 실패한다.
+  `"overlap"`은 충돌 수, displacement 순으로 best-effort 위치를 선택하고 `resolved.unresolvedItemCount`와
+  item별 `collisionCount`를 기록한다.
+- State는 `materializationConfigs.pointPacking[target]`이 policy와 resolution을 소유한다. Canvas, scale,
+  data/filter, point radius/shape/stroke와 facet replay에서 매번 semantic base position부터 다시 계산한다.
+
+### Formal values — `packPoints`
+
+- Implemented: `packPoints(options: PackPointsOptions): ChartProgram`.
+- Required: category `channel`; target은 current/unique eligible Point로 infer할 수 있다.
+- Proposed (NOT IMPLEMENTED): global force simulation, arbitrary 2D packing과 implicit scale expansion.
+
+### Value coverage — `packPoints`
+
+- ✅ Covered: literal zero-overlap oracle, measure invariance, slot/plot bounds, mixed glyph extents와 keyed reorder.
+- ✅ Covered: malformed/duplicate identity, infeasible error/overlap, jitter conflict와 immutable rollback.
+- ✅ Covered: Canvas/style replay, exact removal, mark cleanup, public Beeswarm primitive/render parity.
+- Evidence: `test/unit/grammar/layout/point-packing.test.js`,
+  `test/unit/actions/marks/point-packing.test.js`, and `test/charts/beeswarm-plot/`.
+
+## `removePointPacking`
+
+- Signature: `removePointPacking({ target? } = {})`.
+- Stored packing이 있는 current/unique point target을 찾아 assignment를 제거하고 wrapped point
+  rematerialization으로 현재 semantic scale position을 복구한다. 다른 semantic/config state는 보존한다.
+- Evidence: `test/unit/actions/marks/point-packing.test.js`.
+
+### Formal values — `removePointPacking`
+
+- Implemented: `removePointPacking(options?: RemovePointPackingOptions): ChartProgram`.
+- Proposed (NOT IMPLEMENTED): batch removal across unrelated marks.
+
+### Value coverage — `removePointPacking`
+
+- ✅ Covered: inferred/explicit target, exact semantic-position restoration, config cleanup and immutable prior state.
+- Evidence: `test/unit/actions/marks/point-packing.test.js`.
 
 ## `removeMark`
 
@@ -295,7 +350,9 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 - Signature: `editLineMark({ target?, stroke?, strokeWidth?, opacity?, curve?, closed? })`.
 - `target`: existing line mark. Current compatible mark 또는 유일한 line mark로 infer하며 ambiguity는 explicit target을 요구한다.
-- `strokeWidth`: non-negative finite number. 전달되면 stored line config와 every concrete series path를 갱신한다.
+- `strokeWidth`: non-negative finite number. Active field width와 scalar edit는 충돌한다. Constant mode에서
+  전달되면 stored line config와 every concrete series path를 갱신한다. `opacity`도 active field와 scalar edit가
+  충돌한다. 명시적 mode replacement는 encodeStrokeWidth/encodeOpacity({ value })를 사용한다.
 - `curve`: shared `CurveInterpolation`. Field, grouping, coordinates와 scale semantics를 유지한 채 commands를 다시 만든다.
 - `stroke`: non-empty constant color이며 field-driven color encoding과 충돌한다. `opacity`는 `[0, 1]`이다.
 - `closed`: Polar line의 open/closed path를 전환하는 boolean이다. Cartesian line에는 적용할 수 없다.
@@ -325,13 +382,13 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 - Effect: semantic `bar` layer와 길이 0의 rect collection을 만든다. 관련 x/y/grouping semantics가
   완성될 때 rect가 materialize된다.
 - `fill`, `opacity`, `stroke`, `strokeWidth`: Implemented creation-time appearance shorthand. Wrapped
-  `editBarMark`와 동일한 validation/config persistence를 사용한다. Creation에서는 `stroke: false`를 받지 않는다.
+  `editBarMark`와 동일한 validation/config persistence를 사용한다. `stroke: false`는 outline과 width를 끈다.
 - Coverage: `test/unit/actions/marks/create-bar-mark.test.js`가 inference, empty data,
   invalid options와 conflicts를 검증한다.
 
 ### Formal values — `createBarMark`
 
-- Implemented: `createBarMark({ id?: UserId; data?: UserId; fill?: NonEmptyString; opacity?: UnitInterval; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite } = {})`
+- Implemented: `createBarMark({ id?: UserId; data?: UserId; fill?: NonEmptyString; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite } = {})`
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `createBarMark`
@@ -340,6 +397,8 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
   - ✅ Covered: omission→`"bar"`, current/explicit/empty dataset, second unnamed ambiguity, invalid options와 conflicts.
 - `fill`, `opacity`, `stroke`, `strokeWidth`
   - ✅ Covered: representative combined creation, validation reuse, config persistence and grouped-bar rematerialization.
+  - ✅ Covered: false outline opt-out, create/edit convergence, facade forwarding, strict declaration positive/negative
+    and existing Rect comparison in `test/unit/actions/marks/filled-mark-stroke.test.js` and `scripts/package-consumer.js`.
 - No proposal: orientation/group/stack/width는 mark parameter가 아니라 encoding action이 소유한다.
 - Evidence: `test/unit/actions/marks/create-bar-mark.test.js`.
 
@@ -370,7 +429,7 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 ## `createAreaMark`
 
-- Signature: `createAreaMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth?, curve? } = {})`
+- Signature: `createAreaMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth?, curve?, missing? } = {})`
 - `id`, `data`: 첫 unnamed area의 deterministic `"area"` 또는 explicit 새 ID와 optional existing/current dataset이다.
 - `fill`: Implemented, non-empty color string. 기본값은 theme mark color `"#4c78a8"`다.
 - `opacity`: Implemented, `[0, 1]` finite number. 기본값은 `0.2`다.
@@ -385,7 +444,7 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 ### Formal values — `createAreaMark`
 
-- Implemented: `createAreaMark({ id?: UserId; data?: UserId; fill?: NonEmptyString; opacity?: UnitInterval; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; curve?: CurveInterpolation } = {})`
+- Implemented: `createAreaMark({ id?: UserId; data?: UserId; fill?: NonEmptyString; opacity?: UnitInterval; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; curve?: CurveInterpolation; missing?: "error" | "break" } = {})`
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
@@ -406,9 +465,12 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 - Evidence: `test/unit/actions/marks/create-area-mark.test.js`, area materialization,
   `test/unit/actions/marks/edit-area-mark.test.js`, density and regression chart tests.
 
+- `missing`: Implemented `"error"|"break"`, 기본 error. Semantic mark.missing에만 저장한다. Break는 raw Area 측정 endpoint의 null/undefined에서 2점 이상 segment로 나누며 density/horizon 재해석을 거부한다.
+- Evidence: test/unit/actions/encodings/area-endpoints.test.js.
+
 ## `editAreaMark`
 
-- Signature: `editAreaMark({ target?, fill?, opacity?, stroke?, strokeWidth?, curve? })`.
+- Signature: `editAreaMark({ target?, fill?, opacity?, stroke?, strokeWidth?, curve?, missing? })`.
 - `target`: existing area mark. Current compatible mark 또는 유일한 area mark를 infer하고 ambiguity는
   explicit target을 요구한다.
 - `fill`, `opacity`: constant graphical appearance다. Field-driven color encoding이 있으면 fill edit는
@@ -416,12 +478,13 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 - `stroke`: non-empty string은 outline을 생성/교체하고 `false`는 outline과 stored width를 제거한다.
 - `strokeWidth`: non-negative finite number. Width-only edit은 active outline을 요구한다.
 - `curve`: shared 8-value interpolation. Complete area는 즉시 concrete commands를 다시 만든다.
-- Effect: private mark config를 immutable하게 갱신하고 complete mark는 wrapped `rematerializeAreaMark`를
-  호출한다. Data, encodings, scales와 coordinates는 바꾸지 않는다.
+- `missing`: createAreaMark와 같은 semantic 정책을 재할당한다. 실패는 이전 program을 보존한다.
+- Effect: private mark config 또는 missing semantic 정책을 immutable하게 갱신하고 complete mark는 wrapped `rematerializeAreaMark`를
+  호출한다. Data와 coordinates는 바꾸지 않으며 missing 변경은 scales와 closed paths를 다시 계산한다.
 
 ### Formal values — `editAreaMark`
 
-- Implemented: `editAreaMark({ target?: UserId; fill?: NonEmptyString; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite; curve?: CurveInterpolation })`.
+- Implemented: `editAreaMark({ target?: UserId; fill?: NonEmptyString; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite; curve?: CurveInterpolation; missing?: "error" | "break" })`.
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
@@ -485,24 +548,24 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 ## `createRuleMark`
 
-- Signature: `createRuleMark({ id?, data? } = {})`.
+- Signature: `createRuleMark({ id?, data?, stroke?, strokeWidth?, strokeDash?, opacity? } = {})`.
 - `id`: 첫 unnamed rule은 deterministic `"rule"`을 사용한다. 동일 type의 두 번째 rule은 explicit ID가
   필요하며 numbered public ID를 만들지 않는다.
 - `data`: existing dataset ID. 생략하면 current dataset을 사용하며 안전한 current source가 없으면 오류다.
-- Effect: semantic `rule` layer와 길이 0의 backend-neutral `line` collection을 만든다. 위치와 appearance는
-  create parameter가 아니라 `encodeX/Y/X2/Y2`, `encodeStroke`, `encodeStrokeWidth`, `encodeStrokeDash`,
-  `encodeOpacity`가 독립적으로 소유한다.
+- Effect: semantic `rule` layer와 길이 0의 backend-neutral `line` collection을 만든다. Position은
+  `encodeX/Y/X2/Y2`가 소유한다. 생성 style은 모든 옵션을 먼저 검증한 뒤 요청된 순서대로
+  `encodeStroke`, `encodeStrokeWidth`, `encodeStrokeDash`, `encodeOpacity` wrapped child에 위임한다.
 - Layered position provenance: omitted `data`로 compatible layer의 position을 상속하면 source와 inherited
   channel을 internal mark config에 기록한다. 이후 datum x 또는 y를 작성할 때 반대 primary channel만
   inherited이고 secondary endpoint가 없으면 그 inherited branch를 제거해 full-span rule을 만든다.
   Field endpoint는 orthogonal inherited channel을 보존해 interval을 구성하며, explicit `data`로 만든 rule은
   이 provenance 기반 정리를 적용하지 않는다.
-- Lifecycle: immutable create-only. `editRuleMark`는 없으며 endpoint/style 변경은 owning encode action을
-  다시 호출한다.
+- Lifecycle: immutable resource editing. Scalar style은 `editRuleMark`, field appearance와 endpoint는
+  corresponding encoding action으로 편집한다. 위치가 불완전하면 style을 저장하고 빈 collection을 유지한다.
 
 ### Formal values — `createRuleMark`
 
-- Implemented: `createRuleMark({ id?: UserId; data?: UserId } = {})`.
+- Implemented: `createRuleMark({ id?: UserId; data?: UserId; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; strokeDash?: DashStyle | DashPattern; opacity?: UnitInterval } = {})`.
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `createRuleMark`
@@ -513,17 +576,49 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 - Evidence: `test/unit/actions/marks/create-rule-mark.test.js`,
   `test/contracts/rule-inherited-datum-span.test.js`, and `test/charts/cars-error-bar/primitive.test.js`.
 
+## `editRuleMark`
+
+- Signature: `editRuleMark({ target?, stroke?, strokeWidth?, strokeDash?, opacity? })`.
+- Target resolution is explicit Rule → current Rule → unique Rule. Missing, non-Rule and ambiguous targets fail.
+- At least one style is required. Full closed-option and value validation happens before the first child action.
+- Requested children run in stroke → strokeWidth → strokeDash → opacity order and reuse their encoding owners.
+  Active field appearance conflicts with a scalar edit; call that encoder with `{ value }` to replace the binding.
+- Width accepts zero; opacity is in `[0,1]`; stroke is a non-empty color string; dash uses shared names/patterns.
+- Endpoint, data, cap, and statistical ownership remain unchanged. ErrorBar appearance uses `editErrorBar`.
+- Complete rules rematerialize immediately; incomplete rules retain appearance until completion. Canvas changes,
+  legends and stored highlights replay through the same lower owners.
+
+### Formal values — `editRuleMark`
+
+- Implemented: `editRuleMark({ target?: UserId; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; strokeDash?: DashStyle | DashPattern; opacity?: UnitInterval })`.
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `editRuleMark`
+
+- ✅ Covered: creation/editor/lower-chain exact graphic, draw-order and Canvas call parity; child order, pending
+  style, full preflight, field conflicts, target inference, invalid values, resize and immutable failure.
+- Evidence: `test/unit/actions/marks/rule-style-authoring.test.js`.
+
 ## `createRectMark`
 
 - Signature: `createRectMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth? } = {})`.
 - The first omitted ID resolves to `"rect"`. Data is explicit or inferred from the current dataset; a newly layered
   rect may inherit one unique compatible Cartesian source's data, coordinate, and position encodings.
-- Rect is a distinct semantic mark. It materializes either two discrete band positions (`x` and `y`) or two complete
-  continuous endpoint pairs (`x`/`x2` and `y`/`y2`). It never receives bar aggregation, baseline, stacking, or width
+- Rect is a distinct semantic mark. It materializes two discrete band positions (`x` and `y`), two complete
+  continuous endpoint pairs (`x`/`x2` and `y`/`y2`), or one continuous/temporal endpoint pair with the other axis absent.
+  A sole x/x2 pair spans the plot height; a sole y/y2 pair spans the plot width. A partly specified orthogonal pair is incomplete. It never receives bar aggregation, baseline, stacking, or width
   semantics implicitly. Incomplete position intent remains an empty concrete rect collection.
 - Discrete mode creates one full-band cell for every complete observed row. Ranged mode maps both endpoint pairs and
   normalizes them into positive concrete bounds. Missing values omit only their own cell and do not extend automatic
   scale domains. Continuous or categorical `encodeColor` owns field-driven fill.
+- Rect positions accept exactly one field or datum. Numeric primary datum infers quantitative, other supported scalars
+  nominal; temporal is explicit. Secondary fieldType defaults to the primary type and must match. Constant-only positions
+  yield one final Rect regardless of dataset length; any position/color field restores row grain and constant broadcast.
+  Missing mixed rows do not contribute constants to automatic domains. Empty field data needs an explicit domain or another
+  consumer. Constant-only selection membership is the whole dataset, with common fields only, like constant Rules.
+- Full plot spans use current plot bounds and replay after margin/Canvas and scale edits. Text attaches to final centers;
+  selections/highlights share the same Rect row resolution. Temporal selection channels use normalized epoch milliseconds
+  for both fields and constants, while raw fields preserve the original strings/units. Zero extents are omitted.
 - Defaults are theme mark fill, opacity `1`, white stroke, and stroke width `1`. Explicit creation styles delegate to
   `editRectMark` and are preserved through scale, Canvas, data, selection, and highlight rematerialization.
 
@@ -536,7 +631,7 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 - ✅ Covered: deterministic ID/data, discrete and ranged topology, encoding order independence, missing rows, continuous
   color, rect-source text, selection/highlight, Canvas rendering, exact approved primitive/public/PNG equivalence.
-- Evidence: `test/unit/actions/marks/rect-mark.test.js` and
+- Evidence: `test/unit/actions/marks/rect-span.test.js`, `test/contracts/rect-span.test.js`, `test/unit/actions/marks/rect-mark.test.js` and
   `test/charts/gapminder-life-expectancy-heatmap/`.
 
 ## `editRectMark`
@@ -558,32 +653,191 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
   rematerialization, and earlier-program immutability.
 - Evidence: `test/unit/actions/marks/rect-mark.test.js`.
 
+## `createReferenceLine`
+
+- Signature: `createReferenceLine({ id?, x?, y?, space?, source?, data?, coordinate?, temporalUnit?, stroke?, strokeWidth?, strokeDash?, opacity? })`.
+- Aggregate create-only. 정확히 한 x/y 상수로 한 Rule을 만들고 반대 축 전체 plot bounds를 잇는다.
+  문자열은 field 이름이 아닌 literal datum이다. Source의 선택 축 scale/coordinate/data/fieldType/temporalUnit을
+  사용한다. Data space가 기본이며 explicit source → current eligible → unique eligible Cartesian layer 순이다.
+  선택 축 encoding/scale이 없는 source, source-owned Text와 polar/parallel source는 제외한다. 모호하면 명시적 source가 필요하다.
+- `space: "plot"`는 finite [0,1]만 허용한다. x=0은 왼쪽, y=0은 아래쪽. 기존 data는 explicit/current/unique
+  규칙을 사용하고 빈 data도 허용한다. Coordinate는 하위 Cartesian encoder의 추론을 따른다.
+  `<id>-<axis>` linear scale, domain=[0,1], range=auto를 기존 createScale로 만든다. 동일 definition 재사용,
+  다른 definition 충돌 규칙도 그대로 따른다. Plot space의 source/temporalUnit과 data space의 data/coordinate는 오류다.
+- Data space의 temporalUnit은 source 기본값을 명시적으로 override할 수 있다. 참조 datum도 자동 도메인에
+  기여한다. Source 도메인을 동결하거나 복제하지 않으며 explicit domain을 사용하면 범위를 고정할 수 있다.
+- 기본 ID=`referenceLine`, stroke=#64748b, strokeWidth=1, strokeDash=dashed, opacity=1. 추가 unnamed role은 오류다.
+  스타일은 RuleStyleOptions의 기존 검증과 하위 appearance encoders를 따른다.
+- 전체 하위 chain 사전 검증 후 createScale(plot only), createRuleMark, encodeX 또는 encodeY를 wrapped children으로 실행한다.
+  새 dataset·종속 source link·전용 registry를 만들지 않는다. Source를 나중에 다른 scale로 rebind하거나 제거해도
+  참조는 유지된다. 기존 공유 scale의 편집은 참조를 rematerialize한다. Canvas/margin 편집도 span을 다시 계산한다.
+- 편집은 encodeX/Y/X2/Y2, editRuleMark, editScale, removeMark. 라벨은 createMarkLabels의 explicit value/field로 붙인다.
+  removeMark는 label children을 제거하지만 일반 named scale은 유지한다. 편집한 plot scale이 원래 정의와 달라지면
+  같은 ID로 재생성할 때 충돌한다. Full API 전용이며 Basic에는 없다.
+
+### Formal values — `createReferenceLine`
+
+- Implemented: `createReferenceLine(options: CreateReferenceLineOptions)`; exclusive axis, data datum은 lower position datum,
+  plot datum은 UnitInterval, IDs는 UserId, temporalUnit은 auto/year/timestamp, style은 RuleStyleOptions.
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `createReferenceLine`
+
+- ✅ Covered: source inference/ambiguity, empty data, scalar/category/year/timestamp, domain contribution, log/reverse,
+  lower-chain trace, immutable errors, resize, labels, removal/recreation, styles, types, Full/Basic boundaries and PNG parity.
+- Evidence: `test/unit/actions/marks/references.test.js`, `test/contracts/reference-marks.test.js`,
+  `test/contracts/text-content-types.test.js`, `test/browser/package-consumer.browser.js`.
+
+## `createReferenceBand`
+
+- Signature: `createReferenceBand({ id?, x?, y?, space?, source?, data?, coordinate?, temporalUnit?, fill?, opacity?, stroke?, strokeWidth? })`.
+- createReferenceLine의 coordinate/data/source/scale/ID 충돌과 생명주기 규칙을 공유한다. 정확히 하나의
+  x:[lower,upper] 또는 y:[lower,upper]를 받으며 data source는 quantitative/temporal 축만 가능하다.
+  Plot endpoints는 각각 finite [0,1]. 뒤집힌 endpoint는 양의 Rect bounds, 같은 endpoint는 빈 collection이다.
+- 기본 ID=`referenceBand`, fill=#94a3b8, opacity=.15, stroke=false. strokeWidth만 주면 false와 충돌하므로 색도 명시한다.
+  스타일은 RectMarkOptions를 따른다. createScale(plot only), createRectMark, primary encodeX/Y, secondary encodeX2/Y2로
+  내려간다. 하위 primary/secondary 전부 사전 검증하므로 두 번째 endpoint가 잘못되어도 partial trace가 없다.
+- 위치/스타일/스케일/삭제는 기존 하위 액션이 소유한다. 한 쌍은 반대 축의 현재 plot bounds를 가득 채운다.
+  상수-only Rect grain, selection membership, labels, highlights, resize 및 scale replay는 Rect와 같다.
+
+### Formal values — `createReferenceBand`
+
+- Implemented: `createReferenceBand(options: CreateReferenceBandOptions)`; exclusive two-value axis tuple,
+  data는 quantitative/temporal datum pair, plot은 UnitInterval pair. Style은 RectMarkOptions, binding은 위 shared rules.
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `createReferenceBand`
+
+- ✅ Covered: both axes, data/plot, zero/reversed extent, exact two endpoints, invalid second endpoint atomicity,
+  categorical rejection, time/log/reverse, row independence, resize, lower-chain parity, highlighting, styles and PNG.
+- Evidence: `test/unit/actions/marks/references.test.js`, `test/contracts/reference-marks.test.js`,
+  `test/contracts/text-content-types.test.js`, `test/browser/package-consumer.browser.js`.
+
+## `createMarkLabels`
+
+- Signature: `createMarkLabels({ id?, source?, field?, value?, content?, normalizeBy?, format?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy?, layout? } = {})`.
+- Aggregate create-only facade: wrapped `createTextMark`, `encodeText`, then optional `layoutLabels` remain visible children.
+  Subsequent edits use those child resources through `editTextMark`, `encodeText`, `layoutLabels`, and `removeLabelLayout`.
+- The source uses exactly the explicit/current/unique inference of `createTextMark`; no eligible source is an error.
+  Explicit incomplete sources are supported. Independent `data`, the lower-level `text` alias, and `target` are not options.
+- The omitted ID is `<source>-labels`; an existing semantic or graphical resource at that ID is an error. Use an explicit
+  ID for an additional label layer on the same source. Different sources have independent default label IDs.
+- `field`, `value`, and `content` are mutually exclusive with the same semantics, supported marks, formatting and validation
+  as `encodeText`. Omitting all three means `content: "value"`; this requires a Bar or Arc with a supported semantic measure.
+  Point/Line/Rule/Rect require an explicit field or constant rather than guessing one position channel as the value.
+  `format` defaults to `"auto"`, including fractional shares; specify `".0%"` or another percent token for percentages.
+- Appearance defaults to centered/middle text at the source's existing final-item anchor. Other appearance defaults and
+  source-fill contrast use `createTextMark`. No sign-dependent offsets are inferred; use explicit baseline/dx/dy for endpoint
+  placement. Explicit appearance overrides the facade defaults.
+- A Line source creates one label per final series item. Its anchor is the last concrete path coordinate and an explicit
+  field reads the final ordered member row. This supports endpoint labels without changing Line path or selection grain.
+- `rotation` inherits the shared Text `RotationInput`: a legacy finite number means radians, while an exact
+  `{ value: finite, unit: "degrees" | "radians" }` object makes the unit explicit and normalizes to radians.
+- Omitted/false `layout` creates no collision policy. `{}` enables `layoutLabels` defaults; an object accepts its options
+  except `target`, which the facade owns. Enabled layout requires complete text. For incomplete sources, create labels
+  without layout, complete the source, then call `layoutLabels`. Best-effort layout warnings retain the lower action contract.
+- Complete child effects are preflighted on a discarded immutable branch. Invalid source/content/appearance/layout or ID
+  collisions leave the input program and trace unchanged. No additional facade registry or semantic resource is created.
+- Source filtering/encoding/scale/Canvas edits replay content, appearance and optional layout through existing text dependencies.
+  Existing `removeMark` ownership applies: attached text cannot be removed alone; removing its source owner cleans up labels.
+
+### Formal values — `createMarkLabels`
+
+- Implemented: `createMarkLabels(options?: CreateMarkLabelsOptions)`; ID/source and appearance use `TextMarkOptions`, content uses
+  the exclusive `TextEncodingOptions` branches plus omission, and `layout?: false | Omit<LabelLayoutOptions, "target">`.
+- Proposed (NOT IMPLEMENTED): automatic point measure selection and layout assignment before source completion.
+
+### Value coverage — `createMarkLabels`
+
+- ✅ Covered: shortest call, source-owned IDs, explicit/inferred Point/Bar/Line/Rule/Rect/Arc sources, all text content branches, appearance overrides,
+  incomplete source completion, optional layout and lower edits, resize/filter replay, source removal, nested trace,
+  invalid-state atomicity, literal primitive/public graphics and Canvas/PNG equality, public types and installed package/browser discovery.
+- Evidence: `test/unit/actions/marks/mark-labels.test.js`, `test/contracts/mark-label-content.test.js`,
+  `test/contracts/text-content-types.test.js`, `scripts/package-consumer.js`, `test/browser/package-consumer.browser.js`.
+
+## `createAnnotation`
+
+- Signature: `createAnnotation({ id?, text, format?, source?, x?, y?, space?, data?, coordinate?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy?, layout? })`.
+- Exactly one anchor branch is selected. Mark anchor omits x/y/space and uses explicit/current/unique final-item source.
+  Data anchor requires x and y and selects one explicit/current/unique complete Cartesian layer for data, coordinate,
+  both scales, field types and temporal units. Plot anchor requires `space:"plot"`, finite x/y in [0,1], optional
+  existing data/coordinate, and ordinary `<id>-x`/`<id>-y` linear [0,1] scales. x=0 is left; y=0 is bottom.
+- `text` is required constant content. Text style and format delegate to createTextMark/encodeText. Omitted/false layout
+  preserves the anchor; a target-free layout object delegates to layoutLabels. Default ID is `annotation`.
+- `rotation` uses the same `RotationInput` and radians normalization as Text and Mark Labels.
+- Data datum contributes to automatic domains and is independent after creation. Mark anchor retains source-owned
+  final-item lifecycle. Plot named scales remain ordinary editable resources. No nearest-mark search, hidden dataset,
+  annotation registry, or editAnnotation action exists.
+- The full lower chain is preflighted on a discarded immutable branch. Branch conflicts, ambiguous/incomplete source,
+  missing axis, plot bounds, content/style/layout errors fail before child effects. Source-owned Text aliases are excluded
+  from data-source inference.
+- Later edits use encodeText, encodeX/Y, editTextMark, layoutLabels/removeLabelLayout, editScale and removeMark.
+
+### Formal values — `createAnnotation`
+
+- Implemented: `CreateAnnotationOptions = TextStyle & { id?: UserId; text: unknown; format?: TextFormat;
+  layout?: false | Omit<LabelLayoutOptions,"target"> } & (MarkAnchor | DataAnchor | PlotAnchor)`.
+- MarkAnchor: `{ source?: UserId; x?: never; y?: never; space?: never; data?: never; coordinate?: never }`.
+- DataAnchor: `{ x: unknown; y: unknown; space?: "data"; source?: UserId; data?: never; coordinate?: never }`.
+- PlotAnchor: `{ x: UnitInterval; y: UnitInterval; space: "plot"; source?: never; data?: UserId; coordinate?: UserId }`.
+- Proposed (NOT IMPLEMENTED): nearest-mark search, a dedicated annotation registry, and an `editAnnotation` facade.
+
+### Value coverage — `createAnnotation`
+
+- ✅ Covered: explicit/inferred mark source and aggregate final grain; quantitative/category/time data binding;
+  plot fractions, empty data, domain/reverse/Canvas replay, layout displacement/leader cleanup, lower edits/removal,
+  option/type exclusivity, ambiguity, invalid child inputs, previous/caller immutability, lower/literal graphic and PNG parity.
+- Evidence: `test/unit/actions/marks/annotation.test.js`, `test/contracts/annotation.test.js`, installed package/browser probes.
+
 ## `createTextMark`
 
-- Signature: `createTextMark({ id?, data?, text?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy? } = {})`.
+- Signature: `createTextMark({ id?, data?, source?, text?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy? } = {})`.
 - The first omitted ID resolves to `"text"`. Passing `data` explicitly creates an independent text layer; otherwise
   the current compatible point, bar, rect, rule, or complete arc layer, then one unique compatible layer, supplies data,
   coordinate, compatible position encodings, and a persisted semantic `source` relation.
+- Explicit `source` selects an existing point/bar/rule/rect/arc with data, regardless of current mark or dataset.
+  It is mutually exclusive with `data`. Invalid IDs, missing layers and unsupported source kinds reject before creation.
+  An explicit source may be incomplete: content and appearance persist, no text items are created until its position is
+  complete, and later source encoding actions materialize the labels. Automatic inference retains its existing eligibility.
+  Source position reassignment, scale edits and position removal/restoration refresh attached labels through the persisted
+  source relation, including when inherited encoding scale IDs differ from the source's current scale IDs.
+  `source` is creation-only; `editTextMark` remains an appearance editor.
+  Direct encodeX/Y on source-owned Text rejects before child effects: edit the source positions, use dx/dy, or create
+  independent Text with explicit data. Inherited encodings are provenance, not independent position assignments.
 - `text` is a constant-content shorthand for wrapped `encodeText({ value: text })`. Appearance options use wrapped
   `editTextMark`; defaults are theme text fill, opacity `1`, 12px sans-serif normal text, left/alphabetic alignment,
   zero rotation, and zero offsets.
+- `rotation` accepts `RotationInput = Finite | { value: Finite; unit: "degrees" | "radians" }`. The legacy numeric
+  form remains radians. Structured input must contain exactly `value` and `unit`; both forms normalize to radians in
+  the stored materialization config.
 - Concrete children are backend-neutral text primitives. A source-owned annotation anchors to final point centers,
   bar measure endpoints, rect centers, rule endpoints, or arc-sector radial/angular midpoints, so aggregate bars and arcs
   produce one label per final visual item rather than one per row. Arc anchors derive from concrete sector paths and replay
   after Canvas, scale, padding, and inner-radius changes.
+  Layered mark/reference inference also excludes inherited source-owned Text aliases; the independent source supplies fresh bindings.
+  Source-owned text never contributes independent scale values. Source field/category/time changes, scale rebinding,
+  Canvas/detach plans and guide inference/rebinding ignore inherited label aliases and follow the actual source instead.
+  Count, normalized and histogram domains therefore remain unchanged by labels. Position scale refresh defers attached
+  labels until source geometry completes. Independent Text retains its own scale values and shared-guide constraints.
+- Independent Text created with explicit data accepts field or datum on each x/y encoding. When x, y, and text are
+  all constants, it materializes exactly one text item even for an empty or multi-row dataset. If any of those three
+  encodings is field-bound, constant positions broadcast across that row grain. Datum values are normalized by the
+  shared quantitative/temporal/nominal position grammar and participate in automatic scale domains.
 - Collision avoidance is not automatic. Authors may preserve explicit placement or assign it afterward with
   `layoutLabels()`.
 
 ### Formal values — `createTextMark`
 
-- Implemented: `createTextMark({ id?: UserId; data?: UserId; text?: unknown; fill?: NonEmptyString; opacity?: UnitInterval; fontSize?: PositiveFinite; fontFamily?: NonEmptyString; fontWeight?: NonEmptyString | Finite; align?: "left" | "right" | "center" | "start" | "end"; baseline?: "top" | "hanging" | "middle" | "alphabetic" | "ideographic" | "bottom"; rotation?: Finite; dx?: Finite; dy?: Finite } = {})`.
+- Implemented: `createTextMark({ id?: UserId; data?: UserId; source?: UserId; text?: unknown; fill?: NonEmptyString; opacity?: UnitInterval; fontSize?: PositiveFinite; fontFamily?: NonEmptyString; fontWeight?: NonEmptyString | Finite; align?: "left" | "right" | "center" | "start" | "end"; baseline?: "top" | "hanging" | "middle" | "alphabetic" | "ideographic" | "bottom"; rotation?: RotationInput; dx?: Finite; dy?: Finite } = {})`.
 - Proposed (NOT IMPLEMENTED): interactive tooltips.
 
 ### Value coverage — `createTextMark`
 
 - ✅ Covered: deterministic ID, explicit/inferred data, point/bar/rule/arc source inference, incomplete creation, constant
-  content shorthand, explicit typography, offsets, ambiguity and invalid options.
-- Evidence: `test/unit/actions/marks/text-mark.test.js` and the annotated IMDb Gate pair.
+  content shorthand, independent field/datum position grain, explicit typography, offsets, ambiguity and invalid options.
+- Evidence: `test/unit/actions/marks/text-mark.test.js`, `test/unit/actions/marks/text-source.test.js`, `test/unit/actions/marks/text-scale-ownership.test.js`,
+  `test/unit/actions/marks/text-datum-position.test.js`, `test/contracts/source-text-scale.test.js`,
+  `test/contracts/text-datum-position.test.js`, installed package runtime/type probes, and the annotated IMDb chart pair.
 
 ## `editTextMark`
 
@@ -591,6 +845,7 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 - At least one property is required. Omitted properties preserve current immutable materialization config.
 - Complete text rematerializes immediately; incomplete text retains the edit until position and content complete.
 - `dx` and `dy` are final graphical offsets and never alter inherited semantic position or source geometry.
+- `rotation` uses `RotationInput`; numeric input remains radians and explicit degree/radian objects normalize to radians.
 
 ### Formal values — `editTextMark`
 

@@ -1,4 +1,4 @@
-import type { ChartProgram } from "./program.js";
+import type { ChartProgram, BasicSeriesLayoutOptions } from "./program.js";
 
 export type {
   AxisLabelOptions,
@@ -6,7 +6,9 @@ export type {
   AxisTickOptions,
   AxisTicksAndLabelsOptions,
   AxisTitleOptions,
+  ApplyThemeOptions,
   BarWidthOptions,
+  BasicSeriesLayoutOptions,
   Bin2DDataOptions,
   CanvasOptions,
   ColorEncodingOptions,
@@ -21,6 +23,7 @@ export type {
   CreateScatterPlotOptions,
   CreateScaleOptions,
   GraphicSpec,
+  GroupEncodingOptions,
   GridDirectionOptions,
   HistogramEncodingOptions,
   LegendOptions,
@@ -30,6 +33,8 @@ export type {
   SecondaryPositionEncodingOptions,
   SemanticSpec,
   StrokeDashEncodingOptions,
+  TemporalInputUnit,
+  ThemeName,
   TraceNode,
   XAxisPosition,
   XOffsetEncodingOptions,
@@ -47,6 +52,8 @@ type BasicStateKey =
 
 type BasicMethodKey =
   | "createCanvas"
+  | "applyTheme"
+  | "removeTheme"
   | "createData"
   | "createPointMark"
   | "createLineMark"
@@ -57,6 +64,7 @@ type BasicMethodKey =
   | "encodeX2"
   | "encodeY2"
   | "encodeGroup"
+  | "encodePointRadius"
   | "encodeColor"
   | "encodeStrokeDash"
   | "encodeSize"
@@ -97,7 +105,8 @@ type RebindMethod<T> = T extends (...args: infer Args) => ChartProgram
 
 export type BasicChartProgram =
   Pick<ChartProgram, BasicStateKey> &
-  { readonly [Key in BasicMethodKey]: RebindMethod<ChartProgram[Key]> };
+  { readonly [Key in BasicMethodKey]: RebindMethod<ChartProgram[Key]> } &
+  { readonly layoutSeries: (options: BasicSeriesLayoutOptions) => BasicChartProgram };
 
 export function chart(): BasicChartProgram;
 export function render(

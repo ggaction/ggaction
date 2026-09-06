@@ -71,14 +71,14 @@ function validatePolarLineConfig(layer, config) {
   }
 }
 
-function applyLineMaterialization(program, id, materialization, opacity) {
+function applyLineMaterialization(program, id, materialization) {
   return editMarkGraphic(program, id, {
     length: materialization.commands.length,
     commands: materialization.commands,
     stroke: materialization.strokes,
     strokeWidth: materialization.strokeWidths,
     strokeDash: materialization.strokeDashes,
-    ...(opacity === undefined ? {} : { opacity })
+    ...(materialization.opacities === undefined ? {} : { opacity: materialization.opacities })
   });
 }
 
@@ -205,71 +205,34 @@ const rematerializeLineMark = action(
 
     if (parallel !== undefined) {
       validateParallelRows(dataset.values, parallel.dimensions, parallel);
-      let resolved = this;
-      if (args.scales !== false) {
-        for (const dimension of parallel.dimensions) {
-          resolved = resolved.rematerializeScale({ id: dimension.scale });
-        }
-      }
-      for (const channel of args.scales === false
-        ? []
-        : ["color", "strokeDash", "strokeWidth"]) {
-        const scaleId = layer.encoding?.[channel]?.scale;
-        if (scaleId !== undefined) {
-          resolved = resolved.rematerializeScale({ id: scaleId });
-        }
-      }
-      const materialization = resolveParallelLineMaterialization({
-        rows: dataset.values,
-        parallel,
-        layer,
-        resolvedScales: resolved.resolvedScales,
-        bounds: resolveGraphicBounds(resolved),
-        config,
-        existingChildren,
-        defaults: { stroke: DEFAULT_LINE_STROKE, strokeWidth: DEFAULT_LINE_WIDTH }
-      });
-      return applyLineMaterialization(
-        resolved,
-        id,
-        materialization,
-        config.opacity
-      );
     }
-
-    if (
-      polar
-        ? thetaScaleId === undefined || radiusScaleId === undefined
-        : xScaleId === undefined || yScaleId === undefined
-    ) {
-      throw new Error(
-        polar
-          ? `Line mark "${id}" requires theta and radius scales.`
-          : `Line mark "${id}" requires x and y scales.`
-      );
+    const positions = parallel !== undefined
+      ? parallel.dimensions.map(dimension => dimension.scale)
+      : polar ? [thetaScaleId, radiusScaleId] : [xScaleId, yScaleId];
+    if (positions.some(scale => scale === undefined)) {
+      throw new Error(`Line mark "${id}" requires ${polar ? "theta and radius" : "x and y"} scales.`);
     }
-
-    let resolved = args.scales === false
-      ? this
-      : polar
-        ? this
-            .rematerializeScale({ id: thetaScaleId })
-            .rematerializeScale({ id: radiusScaleId })
-        : this
-            .rematerializeScale({ id: xScaleId })
-            .rematerializeScale({ id: yScaleId });
-
-    for (const channel of args.scales === false ? [] : ["color", "strokeDash", "strokeWidth"]) {
-      const scaleId = layer.encoding?.[channel]?.scale;
-      if (scaleId !== undefined) {
-        resolved = resolved.rematerializeScale({ id: scaleId });
+    let resolved = this;
+    if (args.scales !== false) {
+      const appearance = ["color", "strokeDash", "strokeWidth", "opacity"]
+        .map(channel => layer.encoding?.[channel]?.scale).filter(scale => scale !== undefined);
+      for (const scale of [...positions, ...appearance]) {
+        resolved = resolved.rematerializeScale({ id: scale });
       }
+    }
+    const shared = {
+      rows: dataset.values, layer, config, existingChildren,
+      resolvedScales: resolved.resolvedScales,
+      bounds: resolveGraphicBounds(resolved),
+      defaults: { stroke: DEFAULT_LINE_STROKE, strokeWidth: DEFAULT_LINE_WIDTH }
+    };
+    if (parallel !== undefined) {
+      return applyLineMaterialization(resolved, id,
+        resolveParallelLineMaterialization({ ...shared, parallel }));
     }
 
     const materialization = resolvePositionedLineMaterialization({
-      rows: dataset.values,
-      layer,
-      resolvedScales: resolved.resolvedScales,
+      ...shared,
       xBinBoundaries: layer.encoding?.x?.bin === undefined
         ? undefined
         : resolveLineBins(
@@ -277,18 +240,13 @@ const rematerializeLineMark = action(
             layer,
             requireSemanticScale(resolved, xScaleId)
           ).boundaries,
-      bounds: resolveGraphicBounds(resolved),
-      config,
-      existingChildren,
-      polar,
-      defaults: { stroke: DEFAULT_LINE_STROKE, strokeWidth: DEFAULT_LINE_WIDTH }
+      polar
     });
 
     return applyLineMaterialization(
       resolved,
       id,
-      materialization,
-      config.opacity
+      materialization
     );
   }
 );
@@ -300,16 +258,8 @@ const editLineMark = action(
   },
   function (args = {}) {
     validateMarkOptions(args, EDIT_OPTIONS, "editLineMark");
-    if (
-      !Object.hasOwn(args, "stroke") &&
-      !Object.hasOwn(args, "strokeWidth") &&
-      !Object.hasOwn(args, "opacity") &&
-      !Object.hasOwn(args, "curve") &&
-      !Object.hasOwn(args, "closed")
-    ) {
-      throw new Error(
-        "editLineMark requires stroke, strokeWidth, opacity, curve, or closed."
-      );
+    if (!EDIT_OPTIONS.slice(1).some(key => Object.hasOwn(args, key))) {
+      throw new Error("editLineMark requires stroke, strokeWidth, opacity, curve, or closed.");
     }
     const target = Object.hasOwn(args, "target")
       ? validateUserId(args.target, "Line mark id")
@@ -324,41 +274,26 @@ const editLineMark = action(
         "editLineMark stroke cannot be combined with a color encoding."
       );
     }
+    for (const channel of ["strokeWidth", "opacity"]) {
+      if (Object.hasOwn(args, channel) && layer.encoding?.[channel]?.field !== undefined) {
+        throw new Error(`editLineMark ${channel} conflicts with a field encoding; use its encoder with value to replace it.`);
+      }
+    }
     if (Object.hasOwn(args, "closed") && args.closed === true &&
         (layer.encoding?.x !== undefined || isParallelLine(layer))) {
       throw new Error("Line closed requires theta/radius Polar position encodings.");
     }
-    if (Object.hasOwn(args, "curve") && isPolarLine(layer) &&
-        args.curve !== "linear") {
-      throw new Error("Polar line position currently requires curve \"linear\".");
+    const config = { ...this.markConfigs[layer.id] };
+    for (const [key, validate] of Object.entries({
+      stroke: validateNonEmptyString,
+      strokeWidth: validateNonNegativeFinite,
+      opacity: validateUnitInterval,
+      curve: validateCurveInterpolation,
+      closed: validateClosed
+    })) {
+      if (Object.hasOwn(args, key)) config[key] = validate(args[key], `Line ${key}`);
     }
-    if (Object.hasOwn(args, "curve") && isParallelLine(layer) &&
-        args.curve !== "linear") {
-      throw new Error("Parallel lines require curve \"linear\".");
-    }
-    const config = {
-      ...this.markConfigs[layer.id],
-      ...(Object.hasOwn(args, "stroke")
-        ? { stroke: validateNonEmptyString(args.stroke, "Line stroke") }
-        : {}),
-      ...(Object.hasOwn(args, "strokeWidth")
-        ? {
-            strokeWidth: validateNonNegativeFinite(
-              args.strokeWidth,
-              "Line strokeWidth"
-            )
-          }
-        : {}),
-      ...(Object.hasOwn(args, "opacity")
-        ? { opacity: validateUnitInterval(args.opacity, "Line opacity") }
-        : {}),
-      ...(Object.hasOwn(args, "curve")
-        ? { curve: validateCurveInterpolation(args.curve) }
-        : {}),
-      ...(Object.hasOwn(args, "closed")
-        ? { closed: validateClosed(args.closed) }
-        : {})
-    };
+    validatePolarLineConfig(layer, config);
     const next = this._withMarkConfig(layer.id, config);
     return canMaterializeLine(next, layer)
       ? next.rematerializeLineMark({ id: layer.id })

@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import { render } from "../../../src/index.js";
-import { createCarsParallelCoordinates } from
+import { createCarsParallelCoordinates, createStyledCarsParallelCoordinates } from
   "../../../examples/cars-parallel-coordinates/program.js";
 import { resolveMarkSelection } from
   "../../../src/materialization/selection/state.js";
@@ -177,4 +177,20 @@ test("supports existing line appearance actions and rejects facade errors atomic
     /explicit createparallelcoordinates id|at least two dimensions/i
   );
   assert.equal(JSON.stringify(before), serialized);
+});
+
+
+test("matches styled field axes to primitive geometry, drawing order and renderer calls", async () => {
+  const { createStyledCarsParallelPrimitives } = await import("./axis-style.primitive.js");
+  const primitive = createStyledCarsParallelPrimitives(cars);
+  const styled = createStyledCarsParallelCoordinates(cars);
+  assertChartProgramsEquivalent({ primitiveProgram: primitive, publicProgram: styled, compareSemanticSpec: false });
+  const expected = createMockCanvasContext();
+  const actual = createMockCanvasContext();
+  render(primitive, expected);
+  render(styled, actual);
+  assert.deepEqual(actual.calls, expected.calls);
+  assert.equal(styled.trace.children.at(-1).op, "editParallelAxis");
+  assert.deepEqual(styled.semanticSpec.guides.axis.parallel.titles,
+    [{ field: "Miles_per_Gallon", text: "Fuel economy" }]);
 });

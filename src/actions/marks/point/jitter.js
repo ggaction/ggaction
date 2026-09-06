@@ -37,6 +37,9 @@ export const jitterPoints = action(
     validateKeys(args, JITTER_OPTIONS, "jitterPoints");
     const policy = normalizePointJitterPolicy(args);
     const layer = resolveJitterTarget(this, args.target, policy.channel);
+    if (this.materializationConfigs.pointPacking?.[layer.id] !== undefined) {
+      throw new Error(`Point jitter on "${layer.id}" conflicts with point packing.`);
+    }
     return this
       ._withMaterializationConfig(["jitters", layer.id], policy)
       .rematerializePointMark({ id: layer.id });

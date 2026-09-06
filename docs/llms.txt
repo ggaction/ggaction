@@ -92,8 +92,11 @@ are internal operations.
 - Tutorials: ./tutorials/
 - Polar Line and Radar Tutorial: ./tutorials/polar-lines/
 - Polar Arc Tutorial: ./tutorials/polar-arcs/
+- Area and Series Layout: ./tutorials/area-layout/
 - Horizon Chart Tutorial: ./tutorials/horizon/
 - Error Band Tutorial: ./tutorials/error-band/
+- Dot, Lollipop, and Dumbbell Plots: ./tutorials/endpoint-plots/
+- Empirical Cumulative Distribution Plots: ./tutorials/ecdf/
 - Horizon Chart Recipe: ./recipes/horizon/
 - Error Band Recipe: ./recipes/error-band/
 - Box Plot Recipe: ./recipes/box-plot/

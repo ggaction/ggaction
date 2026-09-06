@@ -1,0 +1,3 @@
+.artifacts/action-design-audit/type-probes.ts(2,27): error TS2322: Type 'boolean' is not assignable to type 'string'.
+.artifacts/action-design-audit/type-probes.ts(3,25): error TS2322: Type 'boolean' is not assignable to type 'string'.
+.artifacts/action-design-audit/type-probes.ts(5,87): error TS2322: Type '"temporal"' is not assignable to type '"nominal" | "ordinal" | "quantitative" | undefined'.

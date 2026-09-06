@@ -1,4 +1,5 @@
 import { removeMark } from "./remove.js";
+import { createReferenceLine, createReferenceBand } from "./references.js";
 import { registerRuleMarkActions } from "./rule/index.js";
 import { registerAreaMarkActions } from "./area/index.js";
 import { registerTickMarkActions } from "./tick/index.js";
@@ -8,6 +9,7 @@ import { registerArcMarkActions } from "./arc/index.js";
 import { registerRectMarkActions } from "./rect/index.js";
 import {
   registerPointJitterActions,
+  registerPointPackingActions,
   registerPointMarkActions
 } from "./point/index.js";
 import { registerTextMarkActions } from "./text/index.js";
@@ -15,6 +17,7 @@ import { registerTextMarkActions } from "./text/index.js";
 export function registerMarkActions(ProgramClass) {
   registerPointMarkActions(ProgramClass);
   registerPointJitterActions(ProgramClass);
+  registerPointPackingActions(ProgramClass);
   registerRectMarkActions(ProgramClass);
   registerAreaMarkActions(ProgramClass);
   registerArcMarkActions(ProgramClass);
@@ -24,4 +27,6 @@ export function registerMarkActions(ProgramClass) {
   registerTextMarkActions(ProgramClass);
   registerTickMarkActions(ProgramClass);
   ProgramClass.prototype.removeMark = removeMark;
+  ProgramClass.prototype.createReferenceLine = createReferenceLine;
+  ProgramClass.prototype.createReferenceBand = createReferenceBand;
 }

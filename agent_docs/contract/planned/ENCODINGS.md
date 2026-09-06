@@ -37,8 +37,9 @@ encodeStroke({ target?: UserId; value: NonEmptyString }): ChartProgram;
 - `encodeStrokeDash`와 `encodeOpacity`는 existing field/value contracts를 그대로 재사용한다.
   Constant assignment는 scale이나 legend를 만들지 않고, field assignment는 해당 action의 scale 및
   guide contract를 따른다.
-- Rule create action은 position/style을 받지 않으며 `editRuleMark`도 만들지 않는다. 위치 또는 style
-  변경은 owning encode action의 reassignment다.
+- 이 구현 기록에서 Rule create action은 position/style을 받지 않았으며 `editRuleMark`도 만들지 않았다.
+  위치 또는 style 변경은 owning encode action의 reassignment였다. 새로 승인된 style facade는
+  [Shared authoring](SHARED_AUTHORING.md#editrulemark)의 Planned 계약이며 endpoint assignment는 그대로 유지한다.
 - Status: Implemented. The canonical contract moved to
   [`../current/ENCODINGS.md`](../current/ENCODINGS.md#encodex2).
 

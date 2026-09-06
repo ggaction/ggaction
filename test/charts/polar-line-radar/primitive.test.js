@@ -90,7 +90,7 @@ test("authors two closed Jobs radar paths without duplicating the first point", 
   assert.deepEqual(drawOrder(program), EXPECTED_DRAW_ORDER);
 });
 
-test("keeps new Polar line actions out of both primitive traces", () => {
+test("keeps Polar line and Radar facade actions out of both primitive traces", () => {
   const programs = [
     createGapminderPolarLinePrimitives(loadGapminder()),
     createJobsRadarPrimitives(loadJobs())
@@ -99,6 +99,8 @@ test("keeps new Polar line actions out of both primitive traces", () => {
   for (const program of programs) {
     const trace = operations(program.trace);
     for (const operation of [
+      "createPolarLinePlot",
+      "createRadarPlot",
       "encodeTheta",
       "encodeR",
       "encodeGroup",

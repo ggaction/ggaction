@@ -43,6 +43,9 @@
 - title: Regression Scatterplot Tutorial
   url: /tutorials/regression-scatterplot/
   parent: /tutorials/
+- title: Area and Series Layout
+  url: /tutorials/area-layout/
+  parent: /tutorials/
 - title: Density Area Tutorial
   url: /tutorials/density-area/
   parent: /tutorials/
@@ -57,6 +60,12 @@
   parent: /tutorials/
 - title: Mark Selection Tutorial
   url: /tutorials/mark-selection/
+  parent: /tutorials/
+- title: Dot, Lollipop, and Dumbbell Plots
+  url: /tutorials/endpoint-plots/
+  parent: /tutorials/
+- title: Empirical Cumulative Distribution Plots
+  url: /tutorials/ecdf/
   parent: /tutorials/
 - title: Chart Recipes
   url: /recipes/

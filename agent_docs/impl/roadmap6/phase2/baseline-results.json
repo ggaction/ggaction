@@ -1,0 +1,598 @@
+{
+  "baselineCommit": "bbc8a3fc256c9afa877f696ed6ade1f51ffb7522",
+  "sourceTree": "bd17aeb7d38e1d184bc714a182e13feea5923279",
+  "command": "node agent_docs/impl/roadmap6/phase2/baseline.probes.mjs",
+  "cases": [
+    {
+      "id": "G01",
+      "claim": "Omitted guides on Scatter then Line",
+      "outcome": "rejected",
+      "inputUnchanged": true,
+      "error": "createXAxisLine requires a missing x-axis line."
+    },
+    {
+      "id": "G02",
+      "claim": "Existing explicit composition with second guides:false",
+      "outcome": "accepted",
+      "inputUnchanged": true,
+      "details": {
+        "guides": {
+          "axis": {
+            "x": {
+              "coordinate": "main",
+              "scale": "x",
+              "title": "x"
+            },
+            "y": {
+              "coordinate": "main",
+              "scale": "y",
+              "title": "y"
+            }
+          },
+          "grid": {
+            "horizontal": {
+              "scale": "y",
+              "coordinate": "main"
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "G03",
+      "claim": "Repeated lower createXAxis remains strict",
+      "outcome": "rejected",
+      "inputUnchanged": true,
+      "error": "createXAxisLine requires a missing x-axis line."
+    },
+    {
+      "id": "G04",
+      "claim": "Box can remain deferred",
+      "outcome": "accepted",
+      "inputUnchanged": true,
+      "details": {
+        "count": 0
+      }
+    },
+    {
+      "id": "G05",
+      "claim": "Gradient can remain deferred",
+      "outcome": "accepted",
+      "inputUnchanged": true,
+      "details": {
+        "count": 0
+      }
+    },
+    {
+      "id": "G06",
+      "claim": "Complete Box guides omitted",
+      "outcome": "accepted",
+      "inputUnchanged": true,
+      "details": {
+        "guides": {}
+      }
+    },
+    {
+      "id": "G07",
+      "claim": "Complete Box guides {}",
+      "outcome": "accepted",
+      "inputUnchanged": true,
+      "details": {
+        "guides": {
+          "axis": {
+            "x": {
+              "coordinate": "main",
+              "scale": "x",
+              "title": "category"
+            },
+            "y": {
+              "coordinate": "main",
+              "scale": "y",
+              "title": "y"
+            }
+          },
+          "grid": {
+            "horizontal": {
+              "scale": "y",
+              "coordinate": "main"
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "G08",
+      "claim": "Only x axis line authored before chart composition",
+      "outcome": "accepted",
+      "inputUnchanged": true,
+      "details": {
+        "guides": {
+          "axis": {
+            "x": {
+              "scale": "x"
+            }
+          }
+        }
+      }
+    },
+    {
+      "id": "S01",
+      "claim": "Country series with one continent color each",
+      "outcome": "rejected",
+      "inputUnchanged": true,
+      "error": "Line color field \"continent\" must match group field \"country\"."
+    },
+    {
+      "id": "S02",
+      "claim": "Line constant width encoder",
+      "outcome": "rejected",
+      "inputUnchanged": true,
+      "error": "rule mark requires an eligible layer."
+    },
+    {
+      "id": "S03",
+      "claim": "Line series field width encoder",
+      "outcome": "accepted",
+      "inputUnchanged": true,
+      "details": {
+        "encoding": {
+          "x": {
+            "field": "x",
+            "fieldType": "quantitative",
+            "scale": "x"
+          },
+          "y": {
+            "field": "y",
+            "fieldType": "quantitative",
+            "scale": "y"
+          },
+          "group": {
+            "field": "country",
+            "fieldType": "nominal"
+          },
+          "strokeWidth": {
+            "field": "width",
+            "fieldType": "quantitative",
+            "scale": "strokeWidth"
+          }
+        },
+        "count": 4
+      }
+    },
+    {
+      "id": "S04",
+      "claim": "Line constant opacity encoder",
+      "outcome": "rejected",
+      "inputUnchanged": true,
+      "error": "point or rule mark requires an eligible layer."
+    },
+    {
+      "id": "S05",
+      "claim": "Existing Line constant style editor reference",
+      "outcome": "accepted",
+      "inputUnchanged": true,
+      "details": {
+        "styles": [
+          {
+            "width": 4,
+            "opacity": 0.5
+          },
+          {
+            "width": 4,
+            "opacity": 0.5
+          },
+          {
+            "width": 4,
+            "opacity": 0.5
+          },
+          {
+            "width": 4,
+            "opacity": 0.5
+          }
+        ]
+      }
+    },
+    {
+      "id": "S06",
+      "claim": "Scatter point.radius shorthand",
+      "outcome": "rejected",
+      "inputUnchanged": true,
+      "error": "Unknown createScatterPlot point option \"radius\"."
+    },
+    {
+      "id": "S07",
+      "claim": "Existing explicit point radius reference",
+      "outcome": "accepted",
+      "inputUnchanged": true,
+      "details": {
+        "radius": 5
+      }
+    },
+    {
+      "id": "S08",
+      "claim": "Tuple group fields",
+      "outcome": "rejected",
+      "inputUnchanged": true,
+      "error": "Unknown encodeGroup option \"fields\"."
+    },
+    {
+      "id": "S09",
+      "claim": "Area group and distinct constant-within-series color",
+      "outcome": "rejected",
+      "inputUnchanged": true,
+      "error": "Area color encoding must match an existing group encoding."
+    },
+    {
+      "id": "S10",
+      "claim": "Existing Rule style owner chain",
+      "outcome": "accepted",
+      "inputUnchanged": true,
+      "details": {
+        "config": {
+          "stroke": "black",
+          "strokeWidth": 4,
+          "strokeDash": [],
+          "opacity": 0.5
+        },
+        "encoding": {
+          "x": {
+            "field": "x",
+            "fieldType": "quantitative",
+            "scale": "x"
+          },
+          "y": {
+            "field": "y",
+            "fieldType": "quantitative",
+            "scale": "y"
+          },
+          "strokeDash": {
+            "datum": "dashed"
+          }
+        }
+      }
+    },
+    {
+      "id": "S11",
+      "claim": "ErrorBand fill overrides graphics but leaves field legend",
+      "outcome": "accepted",
+      "inputUnchanged": true,
+      "details": {
+        "color": {
+          "field": "country",
+          "fieldType": "nominal",
+          "scale": "color",
+          "layout": "overlay"
+        },
+        "legend": {
+          "color": {
+            "scale": "color",
+            "title": "country"
+          }
+        },
+        "fills": [
+          "black",
+          "black",
+          "black",
+          "black"
+        ]
+      }
+    },
+    {
+      "id": "S12",
+      "claim": "Existing explicit removeEncoding then ErrorBand fill reference",
+      "outcome": "accepted",
+      "inputUnchanged": true,
+      "details": {
+        "color": null,
+        "fills": [
+          "black",
+          "black",
+          "black",
+          "black"
+        ]
+      }
+    },
+    {
+      "id": "S13",
+      "claim": "Line scalar edit while width field is active",
+      "outcome": "accepted",
+      "inputUnchanged": true,
+      "details": {
+        "requested": 9,
+        "actual": [
+          1,
+          3.333333333333333,
+          5.666666666666666,
+          8
+        ],
+        "encoding": {
+          "field": "width",
+          "fieldType": "quantitative",
+          "scale": "strokeWidth"
+        }
+      }
+    },
+    {
+      "id": "S14",
+      "claim": "Line width with ambiguous values inside a series",
+      "outcome": "rejected",
+      "inputUnchanged": true,
+      "error": "Line strokeWidth field \"varying\" must have one value within each series."
+    },
+    {
+      "id": "S15",
+      "claim": "Point scalar opacity leaves field encoding and its legend active",
+      "outcome": "accepted",
+      "inputUnchanged": true,
+      "details": {
+        "opacity": 0.1,
+        "encoding": {
+          "field": "width",
+          "fieldType": "quantitative",
+          "scale": "opacity"
+        },
+        "legend": {
+          "opacity": {
+            "scale": "opacity",
+            "title": "width"
+          }
+        }
+      }
+    },
+    {
+      "id": "S16",
+      "claim": "ErrorBand field color after constant fill still paints the constant",
+      "outcome": "accepted",
+      "inputUnchanged": true,
+      "details": {
+        "color": {
+          "field": "country",
+          "fieldType": "nominal",
+          "scale": "color",
+          "layout": "overlay"
+        },
+        "fills": [
+          "black",
+          "black",
+          "black",
+          "black"
+        ]
+      }
+    },
+    {
+      "id": "S17",
+      "claim": "Existing Point constant opacity assignment removes field and opacity legend",
+      "outcome": "accepted",
+      "inputUnchanged": true,
+      "details": {
+        "encoding": null
+      }
+    },
+    {
+      "id": "S18",
+      "claim": "Basic entry has no point-radius child registered",
+      "outcome": "accepted",
+      "inputUnchanged": true,
+      "details": {
+        "encodePointRadius": "undefined",
+        "encodeRadius": "undefined",
+        "encodeOpacity": "undefined"
+      }
+    },
+    {
+      "id": "I01",
+      "claim": "Regression omitted group infers country",
+      "outcome": "accepted",
+      "inputUnchanged": true,
+      "details": {
+        "transforms": [
+          {
+            "type": "regression",
+            "groupBy": "country"
+          }
+        ]
+      }
+    },
+    {
+      "id": "I02",
+      "claim": "Regression explicit undefined disables grouping",
+      "outcome": "accepted",
+      "inputUnchanged": true,
+      "details": {
+        "transforms": [
+          {
+            "type": "regression",
+            "groupBy": null
+          }
+        ]
+      }
+    },
+    {
+      "id": "I03",
+      "claim": "JSON erases Regression undefined and restores inference",
+      "outcome": "accepted",
+      "inputUnchanged": true,
+      "details": {
+        "transforms": [
+          {
+            "type": "regression",
+            "groupBy": "country"
+          }
+        ]
+      }
+    },
+    {
+      "id": "I04",
+      "claim": "Regression JSON-safe false opt-out",
+      "outcome": "rejected",
+      "inputUnchanged": true,
+      "error": "Regression groupBy must be a non-empty string."
+    },
+    {
+      "id": "I05",
+      "claim": "createData has no source schema option",
+      "outcome": "rejected",
+      "inputUnchanged": true,
+      "error": "Unknown createData option \"schema\"."
+    },
+    {
+      "id": "I06",
+      "claim": "Existing numeric temporal four-digit year heuristic",
+      "outcome": "accepted",
+      "inputUnchanged": true,
+      "details": {
+        "domain": [
+          -30610224000000,
+          946684800000
+        ]
+      }
+    },
+    {
+      "id": "I07",
+      "claim": "Explicit temporalUnit timestamp is currently unsupported",
+      "outcome": "rejected",
+      "inputUnchanged": true,
+      "error": "Unknown encodeX option \"temporalUnit\"."
+    },
+    {
+      "id": "I08",
+      "claim": "Numeric color shorthand stays nominal",
+      "outcome": "accepted",
+      "inputUnchanged": true,
+      "details": {
+        "encoding": {
+          "x": {
+            "field": "x",
+            "fieldType": "quantitative",
+            "scale": "x"
+          },
+          "y": {
+            "field": "y",
+            "fieldType": "quantitative",
+            "scale": "y"
+          },
+          "color": {
+            "field": "width",
+            "fieldType": "nominal",
+            "scale": "color"
+          }
+        },
+        "count": 16
+      }
+    },
+    {
+      "id": "I09",
+      "claim": "Bar omitted aggregate stays mean",
+      "outcome": "accepted",
+      "inputUnchanged": true,
+      "details": {
+        "encoding": {
+          "x": {
+            "field": "country",
+            "fieldType": "nominal",
+            "scale": "x"
+          },
+          "y": {
+            "field": "y",
+            "fieldType": "quantitative",
+            "aggregate": "mean",
+            "stack": null,
+            "scale": "y"
+          }
+        },
+        "count": 4
+      }
+    },
+    {
+      "id": "I10",
+      "claim": "Density create-side false opt-out is rejected",
+      "outcome": "rejected",
+      "inputUnchanged": true,
+      "error": "Density groupBy must be a non-empty string."
+    },
+    {
+      "id": "I11",
+      "claim": "Horizon create-side false opt-out is rejected",
+      "outcome": "rejected",
+      "inputUnchanged": true,
+      "error": "encodeHorizon groupBy must be a field string when provided."
+    },
+    {
+      "id": "O01",
+      "claim": "Bar width before positions",
+      "outcome": "rejected",
+      "inputUnchanged": true,
+      "error": "encodeBarWidth requires complete aggregate bar x and y encodings."
+    },
+    {
+      "id": "O02",
+      "claim": "Existing completed Bar width reference",
+      "outcome": "accepted",
+      "inputUnchanged": true,
+      "details": {
+        "encoding": {
+          "x": {
+            "field": "country",
+            "fieldType": "nominal",
+            "scale": "x"
+          },
+          "y": {
+            "field": "y",
+            "fieldType": "quantitative",
+            "aggregate": "mean",
+            "stack": null,
+            "scale": "y"
+          }
+        },
+        "count": 4,
+        "width": {
+          "band": 0.5
+        }
+      }
+    },
+    {
+      "id": "O03",
+      "claim": "Bar measure before category without aggregate",
+      "outcome": "rejected",
+      "inputUnchanged": true,
+      "error": "Bar y encoding requires a binned quantitative or ordinal x category, temporal x category, or aggregate."
+    },
+    {
+      "id": "O04",
+      "claim": "Existing category-first lower Bar reference",
+      "outcome": "accepted",
+      "inputUnchanged": true,
+      "details": {
+        "encoding": {
+          "x": {
+            "field": "country",
+            "fieldType": "nominal",
+            "scale": "x"
+          },
+          "y": {
+            "field": "y",
+            "fieldType": "quantitative",
+            "aggregate": "mean",
+            "stack": null,
+            "scale": "y"
+          }
+        },
+        "count": 4
+      }
+    },
+    {
+      "id": "O05",
+      "claim": "Missing measure field fails before completion",
+      "outcome": "rejected",
+      "inputUnchanged": true,
+      "error": "Bar y encoding requires a binned quantitative or ordinal x category, temporal x category, or aggregate."
+    },
+    {
+      "id": "O06",
+      "claim": "Invalid pending width still fails immediately",
+      "outcome": "rejected",
+      "inputUnchanged": true,
+      "error": "Bar width pixels must be a positive finite number."
+    }
+  ]
+}

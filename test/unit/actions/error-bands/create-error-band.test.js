@@ -36,7 +36,7 @@ test("creates one grouped statistical area through wrapped interval actions", ()
   ]);
   assert.deepEqual(
     action.children.find(child => child.op === "encodeYRange")
-      .children.map(child => child.op),
+      .children.filter(child => child.op !== "editSemantic").map(child => child.op),
     ["encodeY", "encodeY2"]
   );
   assert.deepEqual(interval.transform[0], {
@@ -45,6 +45,7 @@ test("creates one grouped statistical area through wrapped interval actions", ()
     groupBy: ["year", "cluster"],
     center: "mean",
     extent: "ci",
+    method: "student-t",
     level: 0.95,
     as: {
       center: "__errorBand_center",
@@ -178,7 +179,7 @@ test("reassigns both vertical bounds atomically without mutating earlier program
   assert.equal(after.semanticSpec.layers[0].encoding.y2.field, "nextHigh");
   assert.notDeepEqual(after.graphicSpec.objects.area, before.graphicSpec.objects.area);
   assert.deepEqual(
-    after.trace.children.at(-1).children.map(child => child.op),
+    after.trace.children.at(-1).children.filter(child => child.op !== "editSemantic").map(child => child.op),
     ["encodeY", "encodeY2"]
   );
 });
@@ -249,7 +250,7 @@ test("creates a horizontal Cars band with ordered boundary components", () => {
   ]);
   assert.deepEqual(
     action.children.find(child => child.op === "encodeXRange")
-      .children.map(child => child.op),
+      .children.filter(child => child.op !== "editSemantic").map(child => child.op),
     ["encodeX", "encodeX2"]
   );
   assert.equal(area.encoding.y.field, "Year");
@@ -343,7 +344,7 @@ test("colors statistical and explicit horizontal bands without stack dispatch", 
     const layer = program.semanticSpec.layers.find(
       candidate => candidate.id === "errorBand"
     );
-    assert.equal(layer.encoding.color.layout, "overlay");
+    assert.equal(layer.layout.mode, "overlay");
     assert.equal(layer.encoding.x.stack, undefined);
     assert.equal(layer.encoding.y.stack, undefined);
     assert.equal(

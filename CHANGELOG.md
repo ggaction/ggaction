@@ -4,6 +4,54 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+## [0.0.13] - 2026-09-07
+
+### Added
+
+- Added complete Pie/Donut, Area, Density, Horizon, Polar scatter and line,
+  Radar, Rug, Strip, Beeswarm, Raincloud, Interval, Regression, Dot,
+  Lollipop, Dumbbell, ECDF, Rose, and Radial Bar authoring families. Each
+  facade composes the same public data, mark, encoding, scale, guide, and
+  primitive actions available for lower-level authoring.
+- Added reusable summary, bin, fold, computed, stack, interval, and ECDF data
+  actions, plus immutable mark-data binding, filter removal, statistical-role
+  editing, deterministic point packing, and composite owner revision.
+- Added complete Cartesian, Polar, and Parallel component lifecycles; focused
+  legend content and layout editing; final-item labels; reference lines and
+  bands; annotations; shared formatting and explicit rotation units; program
+  themes; and opt-in Canvas fitting.
+- Added row-by-column facet grids, field repetition, whole-facet source
+  revision, and stable named-child insertion, removal, and reordering for
+  compositions.
+- Added action-card schema v3 for all 234 direct actions, with H0-H4 authoring
+  roles, observed direct-child relationships, direct editors, package entry
+  support, units, inference rules, and completion requirements.
+
+### Changed
+
+- Made complete-chart defaults and guide reuse compose predictably with
+  existing data, scales, coordinates, and explicitly authored guides while
+  retaining atomic errors for incompatible resources.
+- Separated series identity from color and other appearance, made temporal
+  input units explicit, preserved JSON group opt-outs, and exposed persistent
+  source, role, order, layout, theme, and guide recipes for rematerialization.
+- Expanded generated discovery, documentation, browser examples, renderer
+  evidence, installed-package checks, and the realistic corpus to cover the
+  complete 234-action hierarchy and its supported lifecycle combinations.
+
+### Fixed
+
+- Corrected horizontal Bar role inference and temporal declarations,
+  definition-only dataset diagnostics, Point and Bar stroke declarations,
+  internal action inventory coverage, and false-complete MCP chart results.
+- Prevented unrelated scales, guides, coordinates, or ambiguous resources from
+  being selected by authoring order, and preserved immutable rollback when a
+  data, role, scale, guide, selection, or composition revision is invalid.
+- Corrected Polar and radial measurement semantics, categorical and continuous
+  legend layout, hidden-title bounds, scale-family transitions, midpoint
+  mapping, text ownership, datum spans, numeric formatting, and replay after
+  Canvas, data, scale, filter, or theme changes.
+
 ## [0.0.12] - 2026-09-03
 
 ### Added
@@ -309,6 +357,7 @@ All notable changes to `ggaction` are recorded in this file.
 - Cartesian charts are the complete current path. Polar semantic tokens exist only where explicitly documented and do
   not imply complete polar rendering.
 
+[0.0.13]: https://github.com/ggaction/ggaction/releases/tag/v0.0.13
 [0.0.12]: https://github.com/ggaction/ggaction/releases/tag/v0.0.12
 [0.0.11]: https://github.com/ggaction/ggaction/releases/tag/v0.0.11
 [0.0.10]: https://github.com/ggaction/ggaction/releases/tag/v0.0.10

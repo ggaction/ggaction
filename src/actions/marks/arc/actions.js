@@ -51,7 +51,7 @@ function normalizeConfig(args, previous = {}, { allowStrokeRemoval = false } = {
   let config = {
     ...previous,
     ...(Object.hasOwn(args, "innerRadius")
-      ? { innerRadius: validateInnerRadius(args.innerRadius) }
+      ? { innerRadius: validateInnerRadius(args.innerRadius), innerRadiusExplicit: true }
       : {}),
     ...(Object.hasOwn(args, "padAngle")
       ? { padAngle: validateNonNegativeFinite(args.padAngle, "Arc padAngle") }

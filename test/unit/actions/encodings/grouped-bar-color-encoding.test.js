@@ -32,15 +32,14 @@ test("encodes grouped bar color through a nested xOffset action", () => {
   assert.deepEqual(program.semanticSpec.layers[0].encoding.color, {
     field: "sex",
     fieldType: "nominal",
-    scale: "color",
-    layout: "group"
+    scale: "color"
   });
   assert.deepEqual(program.semanticSpec.layers[0].encoding.xOffset, {
     field: "sex",
     fieldType: "nominal",
     scale: "xOffset"
   });
-  assert.equal(program.semanticSpec.layers[0].encoding.y.stack, null);
+  assert.equal(program.semanticSpec.layers[0].layout.mode, "group");
   assert.deepEqual(program.resolvedScales.color.domain, ["men", "women"]);
   assert.deepEqual(program.resolvedScales.xOffset.range, [0, 160]);
   assert.deepEqual(program.resolvedScales.y.domain, [0, 10]);
@@ -48,16 +47,9 @@ test("encodes grouped bar color through a nested xOffset action", () => {
 
   const node = program.trace.children.at(-1);
   assert.equal(node.op, "encodeColor");
-  assert.deepEqual(node.children.map(child => child.op), [
-    "editSemantic",
-    "editSemantic",
-    "editSemantic",
-    "editSemantic",
-    "createScale",
-    "encodeXOffset",
-    "encodeY",
-    "rematerializeBarMark"
-  ]);
+  const layout = node.children.find(child => child.op === "layoutSeries");
+  assert.equal(layout.args.mode, "group");
+  assert.ok(layout.children.some(child => child.op === "encodeXOffset"));
   assert.deepEqual(node.children.at(-1).children.map(child => child.op), [
     "rematerializeScale",
     "rematerializeScale",
@@ -92,7 +84,7 @@ test("atomically reassigns grouped color, xOffset, bars, and an existing legend"
   const encoding = program.semanticSpec.layers[0].encoding;
 
   assert.equal(encoding.color.field, "job");
-  assert.equal(encoding.color.layout, "group");
+  assert.equal(program.semanticSpec.layers[0].layout.mode, "group");
   assert.equal(encoding.xOffset.field, "job");
   assert.deepEqual(program.resolvedScales.color.domain, ["Actor", "Agent"]);
   assert.deepEqual(program.resolvedScales.xOffset.domain, ["Actor", "Agent"]);
@@ -105,11 +97,9 @@ test("atomically reassigns grouped color, xOffset, bars, and an existing legend"
   );
   const node = program.trace.children.at(-1);
   assert.equal(node.op, "encodeColor");
-  assert.equal(
-    node.children.findIndex(child => child.op === "encodeXOffset") <
-      node.children.findIndex(child => child.op === "encodeY"),
-    true
-  );
+  const layout = node.children.find(child => child.op === "layoutSeries");
+  assert.ok(layout.children.some(child => child.op === "encodeXOffset"));
+  assert.ok(layout.children.some(child => child.op === "rematerializeBarMark"));
   assert.equal(before.semanticSpec.layers[0].encoding.color.field, "sex");
   assert.deepEqual(before.resolvedScales.color.domain, ["men", "women"]);
 });
@@ -131,18 +121,15 @@ test("supports explicit grouped color order and palette", () => {
   ]);
 });
 
-test("supports the complete bar layout vocabulary and rejects transitions", () => {
+test("supports the complete bar layout vocabulary and transitions", () => {
   const program = aggregateBarProgram();
 
   for (const layout of ["group", "stack", "fill", "overlay", "diverging"]) {
     const encoded = program.encodeColor({ field: "sex", layout });
-    assert.equal(encoded.semanticSpec.layers[0].encoding.color.layout, layout);
+    assert.equal(encoded.semanticSpec.layers[0].layout.mode, layout);
   }
   const grouped = program.encodeColor({ field: "sex", layout: "group" });
-  assert.throws(
-    () => grouped.encodeColor({ field: "sex", layout: "stack" }),
-    /transition from "group" to "stack"/
-  );
+  assert.equal(grouped.encodeColor({ field: "sex", layout: "stack" }).semanticSpec.layers[0].layout.mode, "stack");
 
   const point = chart()
     .createData({ id: "jobs", values })

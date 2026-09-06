@@ -53,6 +53,6 @@ export const createHistogram = action(
         ...histogram
       });
     if (color !== undefined) next = next.encodeColor(targetArgs(color, id));
-    return applyFacadeGuides(next, guides);
+    return applyFacadeGuides(next, guides, id);
   }
 );

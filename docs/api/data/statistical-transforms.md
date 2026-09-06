@@ -7,7 +7,7 @@ title: Statistical Data Transforms
 
 {% include chart-example.html id="regression" %}
 
-## `createRegressionData({ id, source?, x, y, groupBy?, method?, degree?, span?, confidence?, interval? })`
+## `createRegressionData({ id, source?, x, y, groupBy?, method?, degree?, span?, confidenceMethod?, level?, confidence?, interval? })`
 
 Create deterministic regression predictions from an existing dataset. This is
 an advanced data action used by higher-level regression chart actions.
@@ -30,7 +30,9 @@ program.createRegressionData({
 | `method` | `"linear"`, `"polynomial"`, or `"loess"` | `"linear"` |
 | `degree` | integer from `1` through `32` for polynomial | `2` |
 | `span` | number greater than `0` and at most `1` for LOESS | `0.75` |
-| `confidence` | number strictly between `0` and `1`; not accepted by LOESS | `0.95` |
+| `confidenceMethod` | `"normal"` or `"student-t"`; not accepted by LOESS | `"student-t"` |
+| `level` | number strictly between `0` and `1`; not accepted by LOESS | `0.95` |
+| `confidence` | compatibility alias for `level`; must match it when both appear | omitted |
 | `interval` | `"mean"` or `"prediction"`; not accepted by LOESS | `"mean"` |
 
 Linear and polynomial fits use stable least squares. Polynomial groups require
@@ -45,7 +47,7 @@ Regression output is limited to 10,000 unique group/x rows. Polynomial and
 LOESS fitting reject inputs whose estimated work exceeds 10,000,000 units,
 before allocating or entering the expensive fit.
 
-## `createIntervalData({ id, source?, field, groupBy?, center?, extent?, level?, as? })` {#create-interval-data}
+## `createIntervalData({ id, source?, field, groupBy?, center?, extent?, method?, level?, as? })` {#create-interval-data}
 
 Create immutable grouped interval-summary rows independently from an error-bar
 mark.
@@ -66,11 +68,12 @@ program.createIntervalData({
 | `groupBy` | field name or array of field names | one ungrouped interval |
 | `center` | `"mean"` or `"median"` | `"mean"` |
 | `extent` | `"stderr"`, `"stdev"`, `"ci"`, or `"iqr"` | `"ci"` |
+| `method` | `"normal"` or `"student-t"` | `"student-t"` for CI |
 | `level` | number strictly between `0` and `1` | `0.95` for CI |
 | `as` | `{ center, lower, upper }` distinct field names | ID-namespaced fields |
 
-Mean supports standard error, sample standard deviation, and two-sided
-Student-t confidence intervals. Median requires interquartile range, and IQR
+Mean supports standard error, sample standard deviation, and two-sided normal
+or Student-t confidence intervals. Median requires interquartile range, and IQR
 requires median. Group order follows first appearance. Missing group values,
 non-finite measures, and undersized mean groups are omitted; valid source rows
 and the source dataset remain unchanged. A summary whose derived finite center

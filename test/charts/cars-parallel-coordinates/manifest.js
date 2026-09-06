@@ -2,8 +2,9 @@ import { loadCars } from "../../support/data.js";
 import { defineVisualVariant } from "../../support/visual-variants.js";
 
 import { createCarsParallelPrimitives } from "./primitive.program.js";
-import { createCarsParallelCoordinates } from
+import { createCarsParallelCoordinates, createStyledCarsParallelCoordinates } from
   "../../../examples/cars-parallel-coordinates/program.js";
+import { createStyledCarsParallelPrimitives } from "./axis-style.primitive.js";
 import {
   PARALLEL_COLORS,
   PARALLEL_LAYOUT
@@ -56,6 +57,19 @@ export const parallelTargetCallChain = `chart()
   });`;
 
 export const visualVariants = Object.freeze([
+  defineVisualVariant({
+    chart: "cars-parallel-coordinates",
+    variant: "axis-style",
+    title: "Field-selected Parallel axis styling",
+    callChain: `${parallelTargetCallChain.replace(/;$/, "")}\n  .editParallelAxis({\n    field: "Miles_per_Gallon",\n    line: { color: "#7c3aed", lineWidth: 3 },\n    title: { text: "Fuel economy", fontWeight: 700 }\n  });`,
+    compareSemanticSpec: false,
+    primitive: () => createStyledCarsParallelPrimitives(cars),
+    userFacing: () => createStyledCarsParallelCoordinates(cars),
+    width: PARALLEL_LAYOUT.width,
+    height: PARALLEL_LAYOUT.height,
+    colors: [...Object.values(PARALLEL_COLORS), "#7c3aed"],
+    regions: [{ name: "parallel paths", x: 78, y: 110, width: 622, height: 325, minimumInkPixels: 1400 }]
+  }),
   defineVisualVariant({
     chart: "cars-parallel-coordinates",
     variant: "cars-1970",

@@ -1,4 +1,20 @@
+import { createBarTransition } from "./color-transitions/program.js";
+import { createMidpoint } from "./color-midpoint/program.js";
+import { createRoseHole } from "./radial-sectors/program.js";
+import { createLinkedThetaLegend } from "./theta-legend-order/program.js";
+import { createAreaSimple } from "./area-layout/program.js";
+import { createDotPlotExample } from "./dot-plot/program.js";
+import { createLollipopPlotExample } from "./lollipop-plot/program.js";
+import { createDumbbellPlotExample } from "./dumbbell-plot/program.js";
+import { createECDFExample } from "./ecdf-plot/program.js";
+import { createBeeswarmExample } from "./beeswarm-plot/program.js";
+import { createRaincloudExample } from "./raincloud-plot/program.js";
+import { createHorizonExample } from "./horizon-plot/program.js";
+import { createDensityExample } from "./density-plot/program.js";
+import { createPieExample } from "./pie-plot/program.js";
+import { createTemporalInput } from "./temporal-input/program.js";
 import { createCarsBoxPlot } from "./cars-box-plot/program.js";
+import { createSeriesIdentity } from "./series-identity/program.js";
 import { createCarsGradientPlot } from "./cars-gradient-plot/program.js";
 import { createCarsOriginDonut } from "./cars-origin-donut/program.js";
 import { createCarsDensityArea } from "./cars-density-area/program.js";
@@ -34,6 +50,10 @@ import {
 } from "./point-jitter/program.js";
 import { createAnnotatedImdbScatterplot } from
   "./annotated-imdb-scatterplot/program.js";
+import { createDarkThemeScatterplot } from
+  "./dark-theme-scatterplot/program.js";
+import { createFittedLongLabels } from
+  "./fitted-long-labels/program.js";
 import { createGapminderLifeExpectancyHeatmap } from
   "./gapminder-life-expectancy-heatmap/program.js";
 import { createCarsOriginScatterplotFacet } from
@@ -71,6 +91,8 @@ import { createCrossFeatureDashboard } from
   "./cross-feature-dashboard/program.js";
 import { createProgramCompositionExample } from
   "./program-composition/program.js";
+import { createFacetGridExample } from "./facet-grid/program.js";
+import { createRepeatChartsExample } from "./repeat-charts/program.js";
 import {
   createGroupedMaximumPointHighlight,
   createJapanLineSeriesHighlight,
@@ -92,6 +114,98 @@ function example({ id, data, width, height, createProgram, ...options }) {
 }
 
 export const PUBLIC_CHARTS = Object.freeze([
+  example({
+    id: "raincloud-plot", data: {}, width: 680, height: 420,
+    createProgram: () => createRaincloudExample(), testDirectory: "raincloud-plot",
+    docsGroup: "tutorials",
+    browser: { path: "raincloud-plot/", canvas: "#chart" }
+  }),
+  example({
+    id: "beeswarm-plot", data: {}, width: 520, height: 340,
+    createProgram: () => createBeeswarmExample(), testDirectory: "beeswarm-plot",
+    docsGroup: "tutorials",
+    browser: { path: "beeswarm-plot/", canvas: "#chart" }
+  }),
+  example({
+    id: "dot-plot", data: {}, width: 480, height: 320,
+    createProgram: () => createDotPlotExample(), testDirectory: "endpoint-plots",
+    browser: { path: "dot-plot/", canvas: "#chart" }
+  }),
+  example({
+    id: "lollipop-plot", data: {}, width: 480, height: 320,
+    createProgram: () => createLollipopPlotExample(), testDirectory: "endpoint-plots",
+    browser: { path: "lollipop-plot/", canvas: "#chart" }
+  }),
+  example({
+    id: "dumbbell-plot", data: {}, width: 480, height: 320,
+    createProgram: () => createDumbbellPlotExample(), testDirectory: "endpoint-plots",
+    browser: { path: "dumbbell-plot/", canvas: "#chart" }
+  }),
+  example({
+    id: "ecdf-plot", data: {}, width: 520, height: 340,
+    createProgram: () => createECDFExample(), testDirectory: "ecdf-plot", docsGroup: "tutorials",
+    browser: { path: "ecdf-plot/", canvas: "#chart" }
+  }),
+  example({
+    id: "color-transitions", data: {}, width: 1000, height: 700, docsGroup: "tutorials",
+    createProgram: () => createBarTransition(),
+    browser: { path: "color-transitions/", canvas: "#chart",
+      state: { global: "__ggactionExample", expected: { id: "color-transitions", width: 1000, height: 700 } } }
+  }),
+  example({
+    id: "color-midpoint", data: {}, width: 1000, height: 700, docsGroup: "tutorials",
+    createProgram: () => createMidpoint(),
+    browser: { path: "color-midpoint/", canvas: "#chart",
+      state: { global: "__ggactionExample", expected: { id: "color-midpoint", width: 1000, height: 700 } } }
+  }),
+  example({
+    id: "radial-sectors", data: {}, width: 1000, height: 700, docsGroup: "tutorials",
+    createProgram: () => createRoseHole(),
+    browser: { path: "radial-sectors/", canvas: "#chart",
+      state: { global: "__ggactionExample", expected: { id: "radial-sectors", width: 1000, height: 700 } } }
+  }),
+  example({
+    id: "theta-legend-order", data: {}, width: 1000, height: 700,
+    createProgram: () => createLinkedThetaLegend(),
+    browser: { path: "browser-host/?chart=theta-legend-order", canvas: "#chart",
+      state: { global: "__ggactionExample", expected: { id: "theta-legend-order", width: 1000, height: 700 } } }
+  }),
+  example({
+    id: "area-layout", data: {}, width: 1000, height: 700, docsGroup: "tutorials",
+    createProgram: () => createAreaSimple(),
+    browser: { path: "area-layout/", canvas: "#chart",
+      state: { global: "__ggactionExample", expected: { id: "area-layout", width: 1000, height: 700 } } }
+  }),
+  example({
+    id: "horizon-plot", data: {}, width: 1000, height: 700, docsGroup: "tutorials",
+    createProgram: () => createHorizonExample(),
+    browser: { path: "horizon-plot/", canvas: "#chart",
+      state: { global: "__ggactionExample", expected: { id: "horizon-plot", width: 1000, height: 700 } } }
+  }),
+  example({
+    id: "density-plot", data: {}, width: 1000, height: 700, docsGroup: "tutorials",
+    createProgram: () => createDensityExample(),
+    browser: { path: "density-plot/", canvas: "#chart",
+      state: { global: "__ggactionExample", expected: { id: "density-plot", width: 1000, height: 700 } } }
+  }),
+  example({
+    id: "pie-plot", data: {}, width: 1000, height: 700, docsGroup: "tutorials",
+    createProgram: () => createPieExample(),
+    browser: { path: "pie-plot/", canvas: "#chart",
+      state: { global: "__ggactionExample", expected: { id: "pie-plot", width: 1000, height: 700 } } }
+  }),
+  example({
+    id: "temporal-input", data: {}, width: 760, height: 420,
+    createProgram: () => createTemporalInput(),
+    browser: { path: "browser-host/?chart=temporal-input", canvas: "#chart",
+      state: { global: "__ggactionExample", expected: { id: "temporal-input", width: 760, height: 420 } } }
+  }),
+  example({
+    id: "series-identity", data: {}, width: 760, height: 460,
+    createProgram: () => createSeriesIdentity(),
+    browser: { path: "browser-host/?chart=series-identity", canvas: "#chart",
+      state: { global: "__ggactionExample", expected: { id: "series-identity", width: 760, height: 460 } } }
+  }),
   example({
     id: "centered-area-stream",
     data: "jobs",
@@ -233,6 +347,24 @@ export const PUBLIC_CHARTS = Object.freeze([
     browser: { path: "program-composition/", canvas: "#chart" }
   }),
   example({
+    id: "facet-grid",
+    data: {},
+    width: 504,
+    height: 272,
+    createProgram: () => createFacetGridExample(),
+    docsGroup: "charts",
+    browser: { path: "facet-grid/", canvas: "#chart" }
+  }),
+  example({
+    id: "repeat-charts",
+    data: {},
+    width: 838,
+    height: 150,
+    createProgram: () => createRepeatChartsExample(),
+    docsGroup: "charts",
+    browser: { path: "repeat-charts/", canvas: "#chart" }
+  }),
+  example({
     id: "cars-origin-scatterplot-facet",
     data: "cars",
     width: 932,
@@ -300,6 +432,37 @@ export const PUBLIC_CHARTS = Object.freeze([
     createProgram: createAnnotatedImdbScatterplot,
     docsGroup: "charts",
     browser: { path: "annotated-imdb-scatterplot/", canvas: "#chart" }
+  }),
+  example({
+    id: "dark-theme-scatterplot",
+    data: {},
+    width: 640,
+    height: 400,
+    createProgram: () => createDarkThemeScatterplot(),
+    browser: {
+      path: "browser-host/?chart=dark-theme-scatterplot",
+      canvas: "#chart",
+      state: {
+        global: "__ggactionExample",
+        expected: { id: "dark-theme-scatterplot", width: 640, height: 400 }
+      }
+    }
+  }),
+  example({
+    id: "fitted-long-labels",
+    data: {},
+    width: 680,
+    height: 420,
+    createProgram: () => createFittedLongLabels(),
+    docsGroup: "charts",
+    browser: {
+      path: "fitted-long-labels/",
+      canvas: "#chart",
+      state: {
+        global: "__ggactionExample",
+        expected: { id: "fitted-long-labels", width: 680, height: 420 }
+      }
+    }
   }),
   example({
     id: "gapminder-life-expectancy-heatmap",

@@ -8,26 +8,46 @@ description: Map fields and constants to position, grouping, color, shape, size,
 
 These are direct immutable `ChartProgram` actions. Each accepts one option object and returns a new program.
 
+## `layoutSeries`
+
+```javascript
+layoutSeries({ target?, mode })
+```
+
+Assign group, stack, fill, overlay, diverging, or center placement independently of color. Full supports Bar
+and Area; Basic supports Bar and excludes center. Aggregate/histogram bars support all modes except center,
+ranged bars only overlay, and areas reject group. Ribbons support overlay only; raw accumulation requires
+aligned rows and a zero baseline. Stack/fill/center require nonnegative values; diverging separates signs.
+A zero-total fill has zero thickness and a [0,1] domain. Density retains its statistical orientation limits.
+
+`encodeGroup` owns identity and source first-appearance order; color owns appearance. Reassign this action to
+change placement. Leaving group removes its active offset and unused automatic offset scale; user/shared
+scales survive. Removing color preserves identity and placement. Switch to overlay before removing a required
+group. Legacy color.layout, measure.stack and Bar offsets delegate to this action; the last explicit layout
+request wins. Color reassignment without layout preserves the stored mode. Stack aliases zero/normalize/null/
+center mean stack/fill/overlay/center. Failed topology, shared-scale or guide validation preserves the previous program.
+
 ## `encodeX`
 
 ```javascript
 encodeX({ field, target?, fieldType?, aggregate?, stack?, coordinate?, bin?, scale? })
-encodeX({ datum, target?, fieldType?, coordinate?, scale? }) // rule
+encodeX({ datum, target?, fieldType?, coordinate?, scale? }) // rule, rect, area, independent text
 ```
 
 Create or compatibly replace an x encoding for the supported mark/type pairs in
 the matrix above. Rects accept a discrete x band or the primary x edge of a
 complete x/x2 range. Bars accept binned x, vertical categories, or a horizontal
-aggregate measure. Rules accept exactly one field or datum. Datum rules infer
+aggregate measure. Rules, Rects, and independent Text accept exactly one field or datum. Datum positions infer
 finite numbers as quantitative and other supported scalars as nominal; field
-rules require an explicit field type.
+rules require an explicit field type. All-constant independent Text materializes
+once; any field-bound x, y, or text encoding selects row grain.
 [Position encodings](../../api/position-encodings.md)
 
 ## `encodeY`
 
 ```javascript
 encodeY({ field?, target?, fieldType?, aggregate?, stack?, coordinate?, scale? })
-encodeY({ datum, target?, fieldType?, coordinate?, scale? }) // rule
+encodeY({ datum, target?, fieldType?, coordinate?, scale? }) // rule, rect, area, independent text
 ```
 
 Create or compatibly replace a y encoding. With bar marks, a quantitative y
@@ -38,7 +58,8 @@ from the complete pair and is not stored separately. Bar stack accepts
 Aggregate values may be scalar names or parameterized quantile
 and ordered first/last objects. A complete histogram x/y pair materializes concrete rects.
 Rects accept a discrete y band or the primary y edge of a complete y/y2 range.
-Rules use the same datum inference and explicit field-mode type contract as x.
+Rules, Rects, and independent Text use the same datum inference as x. Attached
+source-owned Text continues to reject direct position replacement.
 [Position encodings](../../api/position-encodings.md)
 
 ## `encodeY2`
@@ -69,7 +90,7 @@ It requires an existing x and shares its scale and coordinate.
 encodeYRange({ lower, upper, target?, fieldType?, coordinate?, scale? })
 ```
 
-Atomically compose area or ranged-bar `encodeY` and `encodeY2`.
+Atomically compose area or ranged-bar `encodeY` and `encodeY2`. Area bounds accept field strings or `{ datum: number }`, with at least one field. Final endpoints and scale are validated together.
 [Encodings](../../api/encodings.md)
 
 ## `encodeXRange`
@@ -78,16 +99,21 @@ Atomically compose area or ranged-bar `encodeY` and `encodeY2`.
 encodeXRange({ lower, upper, target?, fieldType?, coordinate?, scale? })
 ```
 
-Atomically compose area or ranged-bar `encodeX` and `encodeX2`.
+Atomically compose area or ranged-bar `encodeX` and `encodeX2`. Area bounds accept field strings or `{ datum: number }`, with at least one field.
 [Encodings](../../api/encodings.md)
 
 ## `encodeGroup`
 
 ```javascript
 encodeGroup({ field, target?, fieldType? })
+encodeGroup({ fields: [first, ...rest], target?, fieldType? })
 ```
 
-Split line or area paths by a nominal field without creating a scale or guide.
+Split Line or ordinary Area paths by one nominal field or a non-empty unique tuple.
+Explicit groups alone define identity; each appearance field must have one raw
+value within each series. Single-element tuples normalize to the scalar field form.
+Without explicit Line groups, color and dash retain their shared-field grouping.
+Statistical and stacked-layout groups remain owned by their existing actions.
 [Encodings](../../api/encodings.md)
 
 ## `encodePathOrder`
@@ -127,8 +153,8 @@ orderCategories({ target?, channel, values })
 orderCategories({ target?, channel, by, direction? })
 ```
 
-Assign explicit or computed semantic order to a nominal/ordinal Cartesian x or
-y position. Omitted explicit values and computed ties preserve source
+Assign explicit or computed semantic order to a nominal/ordinal Cartesian x/y or
+Polar theta position. Omitted explicit values and computed ties preserve source
 first-appearance order. The scale, connected marks, axis, and selection-item
 order are updated together. [Category ordering](../../api/position/category-ordering.md)
 
@@ -170,8 +196,9 @@ branch; remove it with `removeEncoding({ channel: "angle" })`.
 encodeText({ target?, field?, value?, format? })
 ```
 
-Assign exactly one field or constant value to a text mark. `format` accepts
-`"auto"` or fixed-decimal tokens from `".0f"` through `".12f"`. Reassignment
+Assign exactly one field, constant value, or semantic content to a text mark.
+`format` accepts `"auto"`, `.0`–`.12` precision with `f`, `%`, or `e`, or a UTC
+pattern composed from `%Y`, `%m`, `%d`, `%b`, `%%`, and literals. Reassignment
 replaces the previous content branch. [Text marks](../../api/marks/text.md)
 
 ## `encodeXOffset`
@@ -216,6 +243,11 @@ histogram action. Choose at most one of `maxBins`, `binStep`, and
 `binBoundaries`. `maxBins` defaults to `10`; `stack` defaults to `"zero"`.
 Use `stack: "normalize"` for a unit-height partition.
 [Encodings](../../api/encodings.md)
+
+Creation `groupBy:false` explicitly requests ungrouped Regression, Density or
+Horizon and survives JSON serialization. Editors preserve omission, reject
+explicit undefined and clear with false. Data-only transform groupBy options
+remain unchanged.
 
 ## `encodeDensity`
 
@@ -284,7 +316,7 @@ removes grouping.
 | --- | --- | --- | --- |
 | Categorical | point, line, area, bar, rect, arc | point/line/area/bar/rect/arc: nominal, ordinal | bar/area layout; arc overlay; palette and ordinal scale |
 | Continuous | point, aggregate bar, rect | point/rect: quantitative, temporal; aggregate bar: quantitative | sequential scale; aggregate required for a different bar measure |
-| Discretized continuous | point | point: quantitative | quantize, quantile, or threshold scale |
+| Discretized continuous | point, aggregate bar, rect | point/aggregate bar/rect: quantitative | quantize, quantile, or threshold scale |
 <!-- action-capabilities:color:end -->
 
 ```javascript
@@ -296,12 +328,12 @@ bar color, rect fill, or arc-sector fill. Nominal and ordinal categories share a
 ordinal fields may contain ordered numeric categories. Categorical bar layout accepts `stack`, `fill`, `group`, `overlay`,
 and `diverging`; area also accepts `center` and rejects only `group` from the
 shared layout vocabulary. Quantitative and temporal
-point fields use a sequential scale; quantitative point fields also accept
+point fields use a sequential scale; quantitative Point, aggregate Bar, and Rect fields also accept
 `quantize`, `quantile`, and `threshold` color classes. Categorical
 grouped bars record `encodeXOffset` or `encodeYOffset` as a child according to
 orientation. Reassigning grouped color also atomically reassigns its offset and
 rematerializes an existing legend. Aggregate
-bars accept quantitative sequential color: a matching measure field inherits
+bars accept quantitative sequential or discretized color: a matching measure field inherits
 its aggregate, while a different field requires `aggregate`.
 Area `layout: "center"` creates a matching nominal group when needed and records
 wrapped `encodeY({ stack: "center" })`. It requires non-negative values aligned
@@ -402,9 +434,11 @@ encodeOpacity({ value, target? })
 encodeOpacity({ field, target?, fieldType?, scale? })
 ```
 
-Apply a constant point/rule opacity from `0` to `1`, or map a quantitative field
+Apply a constant point/rule/line opacity from `0` to `1`, or map a quantitative field
 through a linear opacity scale. The two modes are mutually exclusive and may
-replace each other through the same action.
+replace each other through the same action. Lines require one raw field value per
+series and support sampled opacity legends. Constant mode clears its field and
+owned opacity legend and rejects fieldType/scale or selections using that channel.
 [Appearance encodings](../../api/appearance.md)
 
 ## `encodeStroke`
@@ -420,9 +454,13 @@ Assign a constant non-empty stroke string to a rule mark.
 
 ```javascript
 encodeStrokeWidth({ value, target? })
+encodeStrokeWidth({ field, target?, fieldType?, scale? })
 ```
 
-Assign a non-negative finite logical Canvas width to a rule mark.
+Assign a non-negative finite logical Canvas width to a Line or Rule. Field mode
+maps one quantitative value per rule row or complete line series. Constant mode
+clears the field and its own sampled width legend; fieldType/scale are invalid in
+constant mode. Active channel selections must be removed before replacement.
 [Appearance encodings](../../api/appearance.md)
 
 ## `encodeBarWidth`
@@ -431,9 +469,10 @@ Assign a non-negative finite logical Canvas width to a rule mark.
 encodeBarWidth({ band?, pixels?, target? })
 ```
 
-Set aggregate-bar band occupancy or a fixed logical-pixel width and materialize
-concrete rectangles. The modes are mutually exclusive. The first omitted mode
-defaults to `band: 0.72`; later omission retains the current mode.
+Set aggregate or ranged bar width before or after its positions are complete.
+Incomplete bars retain the width without creating items; histogram bins do not
+accept it. The modes are mutually exclusive. The first omitted mode defaults to
+`band: 0.72`; later omission retains the current mode.
 [Constant appearance](../../api/appearance.md)
 
 ## Related

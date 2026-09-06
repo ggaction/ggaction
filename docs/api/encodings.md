@@ -31,9 +31,9 @@ The tables below are generated from the same reviewed capability registry used b
 
 | Action | Supported marks | Field types | Important modes |
 | --- | --- | --- | --- |
-| `encodeX` | point, line, area, bar, rect, rule, tick, text | point/bar/rect/rule/tick/text: quantitative, temporal, ordinal, nominal; line/area: quantitative, temporal | field; rule also accepts datum; bar accepts aggregate or bin |
-| `encodeY` | point, line, area, bar, rect, rule, tick, text | point/line/bar/rect/rule/tick/text: quantitative, temporal, ordinal, nominal; area: quantitative, temporal | field; rule also accepts datum; bar accepts aggregate or count |
-| `encodeX2` / `encodeY2` | area, ranged bar, rect, rule | area/ranged bar/rect/rule: matching primary | secondary field; rule also accepts datum |
+| `encodeX` | point, line, area, bar, rect, rule, tick, text | point/bar/rect/rule/tick/text: quantitative, temporal, ordinal, nominal; line/area: quantitative, temporal | field; rule, area, rect, and independent text also accept datum; bar accepts aggregate or bin |
+| `encodeY` | point, line, area, bar, rect, rule, tick, text | point/line/bar/rect/rule/tick/text: quantitative, temporal, ordinal, nominal; area: quantitative, temporal | field; rule, area, rect, and independent text also accept datum; bar accepts aggregate or count |
+| `encodeX2` / `encodeY2` | area, ranged bar, rect, rule | area/ranged bar/rect/rule: matching primary | secondary field; rule, area, and rect also accept datum |
 | `encodeTheta` | point, line, arc | point/line: quantitative, temporal, ordinal, nominal; arc: quantitative, ordinal, nominal | arc maps direct quantitative values, category counts, or category-weighted sums to proportional sectors |
 | `encodeR` | point, line, arc | point/line/arc: quantitative | radial position; arc combines it with a categorical theta band |
 | `encodeParallelCoordinates` | line | line: quantitative, ordinal | atomic ordered dimensions; one namespaced scale and axis per dimension |
@@ -44,7 +44,7 @@ The tables below are generated from the same reviewed capability registry used b
 | --- | --- | --- | --- |
 | Categorical | point, line, area, bar, rect, arc | point/line/area/bar/rect/arc: nominal, ordinal | bar/area layout; arc overlay; palette and ordinal scale |
 | Continuous | point, aggregate bar, rect | point/rect: quantitative, temporal; aggregate bar: quantitative | sequential scale; aggregate required for a different bar measure |
-| Discretized continuous | point | point: quantitative | quantize, quantile, or threshold scale |
+| Discretized continuous | point, aggregate bar, rect | point/aggregate bar/rect: quantitative | quantize, quantile, or threshold scale |
 
 ### Selection and guides
 
@@ -56,14 +56,14 @@ The tables below are generated from the same reviewed capability registry used b
 | --- | --- | --- |
 | Categorical | point, line, area, bar, rect, arc | color, shape, strokeDash, or compatible composites |
 | Continuous gradient | point, aggregate bar, rect | sequential color |
-| Discretized interval | point | quantize, quantile, or threshold color |
+| Discretized interval | point, aggregate bar, rect | quantize, quantile, or threshold color |
 | Sampled | point, line, rule | field opacity, size, or strokeWidth |
 
 | Axis family | Create | Edit | Editable components |
 | --- | --- | --- | --- |
 | Cartesian complete axis | `createXAxis` / `createYAxis` / `createAxes` | `editXAxis` / `editYAxis` | line, ticks, labels, ticksAndLabels, title, position |
-| Polar complete axis | `createThetaAxis` / `createRadialAxis` / `createAxes` | `editThetaAxis` / `editRadialAxis` | line, ticks, labels, ticksAndLabels, title, angle or position |
-| Parallel dimension axes | `createAxes` |  | line, ticks, labels, title from each stored dimension |
+| Polar complete axis | `createThetaAxis` / `createRadialAxis` / `createAxes` | `editThetaAxis` / `editRadialAxis` | line, ticks, labels, ticksAndLabels, title, radial angle and radial title position |
+| Parallel dimension axes | `createAxes` / `createParallelAxes` / `createParallelAxis` | `editParallelAxis` / `removeParallelAxis` / `removeParallelAxes` | line, ticks, labels, title from each stored dimension |
 <!-- action-capabilities:summary:end -->
 
 ## Direction
@@ -175,3 +175,17 @@ nothing, see [Troubleshooting](../troubleshooting.md#a-target-cannot-be-inferred
 [Position Encodings](./position-encodings.md) ·
 [Series Encodings](./series-encodings.md) ·
 [Appearance](./appearance.md) · [Scale Options](./scales.md)
+
+
+## Explicit grouping and time inputs
+
+`createRegression`, `encodeDensity` and `encodeHorizon` accept `groupBy: false`
+for a JSON-safe ungrouped result. Regression omission infers one color/shape
+field; Density omission stays ungrouped; Horizon omission infers stored group.
+Their editors preserve omitted grouping, reject explicit undefined and clear it
+with false. `"auto"` remains a literal field name.
+
+Temporal bindings accept `temporalUnit: "auto" | "year" | "timestamp"`; see
+[temporal inputs](./position/temporal.md#explicit-input-units). The option changes
+input interpretation without modifying raw rows or the existing mean Bar and
+nominal numeric color defaults.

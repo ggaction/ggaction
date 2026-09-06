@@ -11,6 +11,10 @@ import {
   normalizePointJitterPolicy,
   resolvePointJitter
 } from "../../../grammar/jitter.js";
+import {
+  normalizePointPackingPolicy,
+  resolvePointPacking
+} from "../../../grammar/pointPacking.js";
 import { polarToCartesian, resolvePolarFrame } from "../../../grammar/polar.js";
 import { resolveDirectionValues } from "../../../grammar/direction.js";
 import { resolveGraphicBounds } from "../../../layout/canvas.js";
@@ -28,6 +32,8 @@ import {
   resolveRowPositionValues
 } from
   "../../../materialization/rowEncoding.js";
+import { offsetCategoryPositions } from
+  "../../../materialization/categorySlotOffset.js";
 
 const REMATERIALIZE_OPTIONS = Object.freeze(["id"]);
 const DEFAULT_POINT_FILL = DEFAULT_COLORS.mark;
@@ -211,6 +217,80 @@ function applyPointJitter(program, {
   };
 }
 
+function applyPointPacking(program, {
+  id,
+  layer,
+  dataset,
+  x,
+  y,
+  area,
+  shapes,
+  angles,
+  config,
+  graphic,
+  existingChildren
+}) {
+  const stored = program.materializationConfigs.pointPacking?.[id];
+  if (stored === undefined) return { program, x, y };
+  const policy = normalizePointPackingPolicy(stored);
+  const encoding = layer.encoding?.[policy.channel];
+  const scale = program.resolvedScales[encoding?.scale];
+  if (scale === undefined) {
+    throw new Error(`Point packing on "${id}" requires a resolved ${policy.channel} scale.`);
+  }
+  const seen = new Set();
+  const entries = dataset.values.flatMap((row, index) => {
+    if (!Number.isFinite(x?.[index]) || !Number.isFinite(y?.[index])) return [];
+    const rawIdentity = policy.key === undefined ? index : row[policy.key];
+    const identity = canonicalJitterScalar(
+      rawIdentity,
+      policy.key === undefined
+        ? "Point packing source index"
+        : `Point packing key field "${policy.key}"`
+    );
+    if (seen.has(identity)) {
+      throw new Error(`Point packing key field "${policy.key}" must be unique for materialized items.`);
+    }
+    seen.add(identity);
+    const resolvedArea = resolvedPointArea(
+      area, index, config, existingChildren, graphic.type
+    );
+    const extent = resolvePointShapeExtent({
+      shape: shapes[index],
+      area: resolvedArea,
+      strokeWidth: typeof config.stroke === "string" ? config.strokeWidth ?? 1 : 0,
+      angle: angles?.[index]
+    });
+    return [{
+      index,
+      identity,
+      base: policy.channel === "x" ? x[index] : y[index],
+      fixed: policy.channel === "x" ? y[index] : x[index],
+      halfExtent: extent[policy.channel],
+      fixedHalfExtent: extent[policy.channel === "x" ? "y" : "x"]
+    }];
+  });
+  const bounds = resolveGraphicBounds(program);
+  const resolution = resolvePointPacking({
+    target: id,
+    policy,
+    scale,
+    entries,
+    plotMinimum: policy.channel === "x" ? bounds.x : bounds.y,
+    plotMaximum: policy.channel === "x" ? bounds.x + bounds.width : bounds.y + bounds.height
+  });
+  const values = [...(policy.channel === "x" ? x : y)];
+  for (const item of resolution.items) values[item.index] = item.final;
+  return {
+    program: program._withMaterializationConfig(["pointPacking", id], {
+      ...policy,
+      resolved: resolution
+    }),
+    x: policy.channel === "x" ? values : x,
+    y: policy.channel === "y" ? values : y
+  };
+}
+
 export const rematerializePointMark = action(
   {
     op: "rematerializePointMark",
@@ -277,7 +357,13 @@ export const rematerializePointMark = action(
       angles !== undefined ||
       graphic.type === "collection" ||
       getPointGraphicType(constantShape) !== graphic.type;
-    const jittered = applyPointJitter(resolved, {
+    if (
+      resolved.materializationConfigs.jitters?.[id] !== undefined &&
+      resolved.materializationConfigs.pointPacking?.[id] !== undefined
+    ) {
+      throw new Error(`Point mark "${id}" cannot combine jitter and packing.`);
+    }
+    const packed = applyPointPacking(resolved, {
       id,
       layer,
       dataset,
@@ -290,7 +376,20 @@ export const rematerializePointMark = action(
       graphic,
       existingChildren
     });
-    const { x, y } = jittered;
+    const jittered = applyPointJitter(packed.program, {
+      id,
+      layer,
+      dataset,
+      x: packed.x,
+      y: packed.y,
+      area,
+      shapes,
+      angles,
+      config,
+      graphic,
+      existingChildren
+    });
+    const { x, y } = offsetCategoryPositions(jittered.program, layer, jittered);
 
     if (requiresMixedCollection) {
       const items = dataset.values.map((_, index) => {

@@ -162,10 +162,17 @@ export function resolveFacetProgramLayout(program, preparedLegend) {
   }
   const title = titleLayout(program);
   const spec = program.compositionSpec;
+  const gridCells = new Map(
+    (spec.facet.grid?.cells ?? []).map(cell => [cell.id, cell])
+  );
   const layout = resolveFacetLayout({
     children: spec.children.map((id, index) => ({
       ...compositionChildDescriptor(id, program.children[id]),
-      value: spec.facet.values[index]
+      value: spec.facet.values[index],
+      ...(gridCells.has(id) ? {
+        row: gridCells.get(id).row,
+        column: gridCells.get(id).column
+      } : {})
     })),
     columns: spec.columns,
     gap: spec.gap,

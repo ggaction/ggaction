@@ -1,0 +1,138 @@
+{
+  "version": 1,
+  "status": "implemented-verified",
+  "gate": "R6-P4-A",
+  "implemented": true,
+  "currentDirectActions": 181,
+  "currentPlannedActions": 0,
+  "projectedFullDirectActions": 181,
+  "newActions": [
+    {
+      "name": "createAreaPlot",
+      "level": "H0",
+      "entryPoints": [
+        "ggaction"
+      ],
+      "contract": "../chart/area.md",
+      "workPackage": "R6-P4-W1"
+    },
+    {
+      "name": "layoutSeries",
+      "level": "H2",
+      "entryPoints": [
+        "ggaction",
+        "ggaction/basic"
+      ],
+      "contract": "CONTRACT_REVIEW.md",
+      "workPackage": "R6-P4-W2"
+    },
+    {
+      "name": "createRosePlot",
+      "level": "H0",
+      "entryPoints": [
+        "ggaction"
+      ],
+      "contract": "../chart/rose-radial-bar.md",
+      "workPackage": "R6-P4-W3"
+    },
+    {
+      "name": "createRadialBarPlot",
+      "level": "H0",
+      "entryPoints": [
+        "ggaction"
+      ],
+      "contract": "../chart/rose-radial-bar.md",
+      "workPackage": "R6-P4-W3"
+    }
+  ],
+  "existingActionChanges": [
+    {
+      "actions": [
+        "encodeX",
+        "encodeY",
+        "encodeX2",
+        "encodeY2",
+        "encodeXRange",
+        "encodeYRange"
+      ],
+      "decision": "P4-C01",
+      "change": "Area finite datum endpoints; atomic final pair preflight"
+    },
+    {
+      "actions": [
+        "createAreaMark",
+        "editAreaMark"
+      ],
+      "decision": "P4-C02",
+      "change": "Semantic missing error/break policy"
+    },
+    {
+      "actions": [
+        "encodeGroup",
+        "encodeColor",
+        "encodeXOffset",
+        "encodeYOffset",
+        "encodeX",
+        "encodeY",
+        "removeEncoding"
+      ],
+      "decision": "P4-C03",
+      "change": "Canonical grouping/layout; legacy aliases; remove color preserves layout"
+    },
+    {
+      "actions": [
+        "encodeR",
+        "editArcMark",
+        "editScale"
+      ],
+      "decision": "P4-C04",
+      "change": "Opt-in category aggregate and radial mapping; hole/domain/shared-consumer checks"
+    },
+    {
+      "actions": [
+        "orderCategories",
+        "removeCategoryOrder",
+        "createLegend",
+        "editLegend"
+      ],
+      "decision": "P4-C05",
+      "change": "Theta category order and independent categorical legend item order"
+    },
+    {
+      "actions": [
+        "createScale",
+        "editScale",
+        "encodeColor"
+      ],
+      "decision": "P4-C06–C07",
+      "change": "Sequential midpoint, compatible scale/legend family transitions"
+    }
+  ],
+  "deferred": {
+    "F20": "excluded by user",
+    "D08": "four-side interval legend placement remains Phase 5",
+    "orientationEditor": "Phase 6"
+  },
+  "approvedBundleLimits": {
+    "ggaction": 249000,
+    "ggaction/basic": 138000,
+    "ggaction/svg": 25000
+  },
+  "approvalRequestedForBudgetIncrease": false,
+  "namingDecision": {
+    "previousName": "encodeLayout",
+    "acceptedName": "layoutSeries",
+    "alias": false
+  },
+  "acceptedBaseline": {
+    "currentDirectActions": 177,
+    "currentPlannedActions": 0,
+    "approvedBundleLimits": {
+      "ggaction": 237000,
+      "ggaction/basic": 125000,
+      "ggaction/svg": 25000
+    }
+  },
+  "implementationEvidence": "REVIEW.md",
+  "phaseIntegrationComplete": true
+}

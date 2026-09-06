@@ -152,6 +152,7 @@ export function createErrorBarReferenceValues(cars) {
     groupBy: Object.freeze(["Origin"]),
     center: "mean",
     extent: "ci",
+    method: "student-t",
     level: 0.95,
     as: ERROR_BAR_FIELDS
   });
@@ -406,6 +407,7 @@ export function createHorizontalErrorBarReferenceValues(cars) {
       groupBy: Object.freeze(["Origin"]),
       center: "mean",
       extent: "ci",
+      method: "student-t",
       level: 0.95,
       as: ERROR_BAR_FIELDS
     }),

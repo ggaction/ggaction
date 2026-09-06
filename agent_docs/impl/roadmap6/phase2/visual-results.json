@@ -1,0 +1,245 @@
+{
+  "version": 1,
+  "runtimeSourceTree": "f85fa1f71e28364c5d6b6998dcb9410334935219",
+  "environment": {
+    "node": "v22.23.1",
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "variants": [
+    {
+      "chart": "series-identity",
+      "variant": "country-color",
+      "logicalWidth": 760,
+      "logicalHeight": 460,
+      "pixelWidth": 1520,
+      "pixelHeight": 920,
+      "pixelRatio": 2,
+      "inputSha256": "a8e746fe496e35c8104b61cae76df77e2a2c10e21577fc3776cab5d1418369cc",
+      "callChainSha256": "d7ef0720273adcdb463ddfb314698fd88c82bc9de4a1bf3e265d5514d6cc9af2",
+      "sources": [
+        {
+          "path": "test/gates/series-identity/fixture.js",
+          "sha256": "2283df8c756a02273f353ca4bc8c9378a079995db4cc3f5b90ce4ccbfb874de0"
+        },
+        {
+          "path": "test/gates/series-identity/reference-values.js",
+          "sha256": "6543f4b5fdb135568a1e229a37b17036d27437fbdb05ff357b402ab03247b8bb"
+        },
+        {
+          "path": "test/gates/series-identity/primitive.program.js",
+          "sha256": "3e60b324a59d7e76f3974a31bdca6ffed317c4c4a545b29fff64306f99944db9"
+        },
+        {
+          "path": "test/gates/series-identity/manifest.js",
+          "sha256": "35ba931b9530f998555ff07cfd3ef4079a83c4bbd26690bd4557a9cd25c19a93"
+        }
+      ],
+      "png": ".artifacts/test/png/review/series-identity/country-color/primitive.png",
+      "pngSha256": "578769409bfe0ee10398a4bf976187c3d91b2686afc92f03ca9d3afb6c7e3207",
+      "pixelSha256": "6803752efb893b40bdec812327cb622f122ba437b604a091df2b81e6ea57a2d9",
+      "plotRegions": [
+        {
+          "name": "series-plot",
+          "inkPixels": 37222
+        }
+      ],
+      "publicImplementation": "pending-visual-approval"
+    },
+    {
+      "chart": "series-identity",
+      "variant": "tuple-color-dash",
+      "logicalWidth": 760,
+      "logicalHeight": 460,
+      "pixelWidth": 1520,
+      "pixelHeight": 920,
+      "pixelRatio": 2,
+      "inputSha256": "1698786379b7f005b5d91e5f992cd6fe898e0657eb406762b86e2e9f057352c9",
+      "callChainSha256": "7c28c0a73e45c5860ccb35192cd4fbde801ca94855a03fd5131061c786bf34c8",
+      "sources": [
+        {
+          "path": "test/gates/series-identity/fixture.js",
+          "sha256": "2283df8c756a02273f353ca4bc8c9378a079995db4cc3f5b90ce4ccbfb874de0"
+        },
+        {
+          "path": "test/gates/series-identity/reference-values.js",
+          "sha256": "6543f4b5fdb135568a1e229a37b17036d27437fbdb05ff357b402ab03247b8bb"
+        },
+        {
+          "path": "test/gates/series-identity/primitive.program.js",
+          "sha256": "3e60b324a59d7e76f3974a31bdca6ffed317c4c4a545b29fff64306f99944db9"
+        },
+        {
+          "path": "test/gates/series-identity/manifest.js",
+          "sha256": "35ba931b9530f998555ff07cfd3ef4079a83c4bbd26690bd4557a9cd25c19a93"
+        }
+      ],
+      "png": ".artifacts/test/png/review/series-identity/tuple-color-dash/primitive.png",
+      "pngSha256": "1d29ba788b89d1bbbd1b22d998d27f96c28cd83682c26cf818942348a8bf5d9a",
+      "pixelSha256": "6bee15ef195a4c7d7314e5729ff5fca39bbde4c83da4300d905e47417de5042f",
+      "plotRegions": [
+        {
+          "name": "series-plot",
+          "inkPixels": 54853
+        }
+      ],
+      "publicImplementation": "pending-visual-approval"
+    },
+    {
+      "chart": "series-identity",
+      "variant": "series-appearance",
+      "logicalWidth": 760,
+      "logicalHeight": 460,
+      "pixelWidth": 1520,
+      "pixelHeight": 920,
+      "pixelRatio": 2,
+      "inputSha256": "9d4036fd5504899eeee55c9036ac2d31d83d74be20e353814c07b3d694e0bcb8",
+      "callChainSha256": "a2d3ee3ae41d7831382462f73366bb6d4441af2d1176212f17e0357bc7ea5002",
+      "sources": [
+        {
+          "path": "test/gates/series-identity/fixture.js",
+          "sha256": "2283df8c756a02273f353ca4bc8c9378a079995db4cc3f5b90ce4ccbfb874de0"
+        },
+        {
+          "path": "test/gates/series-identity/reference-values.js",
+          "sha256": "6543f4b5fdb135568a1e229a37b17036d27437fbdb05ff357b402ab03247b8bb"
+        },
+        {
+          "path": "test/gates/series-identity/primitive.program.js",
+          "sha256": "3e60b324a59d7e76f3974a31bdca6ffed317c4c4a545b29fff64306f99944db9"
+        },
+        {
+          "path": "test/gates/series-identity/manifest.js",
+          "sha256": "35ba931b9530f998555ff07cfd3ef4079a83c4bbd26690bd4557a9cd25c19a93"
+        }
+      ],
+      "png": ".artifacts/test/png/review/series-identity/series-appearance/primitive.png",
+      "pngSha256": "51ab60eb8591c61ff218d657d0cc494c06bf3d59ad4be9290d42eea648ed3267",
+      "pixelSha256": "e8d8f707f12442012bb8ca54d6f78ecbb69bfe10c42e67fe3739af2d2035f598",
+      "plotRegions": [
+        {
+          "name": "series-plot",
+          "inkPixels": 53519
+        }
+      ],
+      "publicImplementation": "pending-visual-approval"
+    },
+    {
+      "chart": "temporal-input",
+      "variant": "timestamp",
+      "logicalWidth": 760,
+      "logicalHeight": 420,
+      "pixelWidth": 1520,
+      "pixelHeight": 840,
+      "pixelRatio": 2,
+      "inputSha256": "71af39b3cc53c3a6a6e30eb97e5f9e3e92cbe6266c445db0d1006765fe573672",
+      "callChainSha256": "14e0dab322c77f6da4e4fccd7b24dd91e4cdecf7345c5e3c09920e192de88726",
+      "sources": [
+        {
+          "path": "test/gates/temporal-input/fixture.js",
+          "sha256": "7ef386027cebb3b73321cfc2f35475df25687addbcb6804c33fc6cc87b1cd0ce"
+        },
+        {
+          "path": "test/gates/temporal-input/reference-values.js",
+          "sha256": "1e9128437f5807b29d4bced2b231d1a22412d9a7aea7c0d3ba89686024852e28"
+        },
+        {
+          "path": "test/gates/temporal-input/primitive.program.js",
+          "sha256": "ba11ec015806e61c718d11adccdd70f58791f7b7eb076c2c479062a63161cf48"
+        },
+        {
+          "path": "test/gates/temporal-input/manifest.js",
+          "sha256": "69088ced0951c359d9ded95a56287b863e97ec175be74e2012a67fc493243578"
+        }
+      ],
+      "png": ".artifacts/test/png/review/temporal-input/timestamp/primitive.png",
+      "pngSha256": "111c1f51cdd36b6440c71770c604195e13766a2606b237dc257e57020adbcc5e",
+      "pixelSha256": "fbd50f6a55a0cd6d6c074b3d33df50d4ed6d58bc824b6f0108efcbaea5a0e91f",
+      "plotRegions": [
+        {
+          "name": "time-plot",
+          "inkPixels": 9528
+        }
+      ],
+      "publicImplementation": "pending-visual-approval"
+    },
+    {
+      "chart": "temporal-input",
+      "variant": "year",
+      "logicalWidth": 760,
+      "logicalHeight": 420,
+      "pixelWidth": 1520,
+      "pixelHeight": 840,
+      "pixelRatio": 2,
+      "inputSha256": "43fbe7a00990a5531dc8ddbdb9848d90d50dfac146812badd9ca7a410e274e88",
+      "callChainSha256": "2cf8377962d32e32511302695ac174613d94fd39a6a6dd9e7900b262c151134f",
+      "sources": [
+        {
+          "path": "test/gates/temporal-input/fixture.js",
+          "sha256": "7ef386027cebb3b73321cfc2f35475df25687addbcb6804c33fc6cc87b1cd0ce"
+        },
+        {
+          "path": "test/gates/temporal-input/reference-values.js",
+          "sha256": "1e9128437f5807b29d4bced2b231d1a22412d9a7aea7c0d3ba89686024852e28"
+        },
+        {
+          "path": "test/gates/temporal-input/primitive.program.js",
+          "sha256": "ba11ec015806e61c718d11adccdd70f58791f7b7eb076c2c479062a63161cf48"
+        },
+        {
+          "path": "test/gates/temporal-input/manifest.js",
+          "sha256": "69088ced0951c359d9ded95a56287b863e97ec175be74e2012a67fc493243578"
+        }
+      ],
+      "png": ".artifacts/test/png/review/temporal-input/year/primitive.png",
+      "pngSha256": "5fcf2dc5e39a95f10d7242f7f05583ff948565788c9b53b8c0139f731c37d294",
+      "pixelSha256": "4bf6c3ea3a10435d665c74b9c2b837e243c6f9e04a22df0362b59778aef0935a",
+      "plotRegions": [
+        {
+          "name": "time-plot",
+          "inkPixels": 9528
+        }
+      ],
+      "publicImplementation": "pending-visual-approval"
+    },
+    {
+      "chart": "temporal-input",
+      "variant": "auto",
+      "logicalWidth": 760,
+      "logicalHeight": 420,
+      "pixelWidth": 1520,
+      "pixelHeight": 840,
+      "pixelRatio": 2,
+      "inputSha256": "4aba6446fc8de57e7b2e7e0fb370ea3998a1f78f0ac3aff71351afaf26fee3d8",
+      "callChainSha256": "742db013b8a4a454525023d58757aebf7dc968a3c09a33feebe6bd4d68111b7c",
+      "sources": [
+        {
+          "path": "test/gates/temporal-input/fixture.js",
+          "sha256": "7ef386027cebb3b73321cfc2f35475df25687addbcb6804c33fc6cc87b1cd0ce"
+        },
+        {
+          "path": "test/gates/temporal-input/reference-values.js",
+          "sha256": "1e9128437f5807b29d4bced2b231d1a22412d9a7aea7c0d3ba89686024852e28"
+        },
+        {
+          "path": "test/gates/temporal-input/primitive.program.js",
+          "sha256": "ba11ec015806e61c718d11adccdd70f58791f7b7eb076c2c479062a63161cf48"
+        },
+        {
+          "path": "test/gates/temporal-input/manifest.js",
+          "sha256": "69088ced0951c359d9ded95a56287b863e97ec175be74e2012a67fc493243578"
+        }
+      ],
+      "png": ".artifacts/test/png/review/temporal-input/auto/primitive.png",
+      "pngSha256": "62a1c08ad35f6aade88e1b12dd2503931962b17b7ce963d4a4f4a75157ba60af",
+      "pixelSha256": "12901bc2585e245b6df54ffe8cfeacb94e3fbb580e3c8a4d1d206d98e5c034f7",
+      "plotRegions": [
+        {
+          "name": "time-plot",
+          "inkPixels": 9528
+        }
+      ],
+      "publicImplementation": "pending-visual-approval"
+    }
+  ]
+}

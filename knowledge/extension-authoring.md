@@ -20,7 +20,8 @@ Before proposing or implementing an extension action:
    [`src/extension.js`](../src/extension.js) to confirm the installed public
    extension entry point.
 2. Search [`action-cards.json`](./action-cards.json) for actions whose names,
-   intents, owned resources, or prerequisites overlap the requested feature.
+   intents, authoring roles, direct wrappers, lifecycle editors, owned
+   resources, or prerequisites overlap the requested feature.
    Read only relevant cards instead of loading the complete catalog into the
    working context.
 3. Inspect the installed declaration and source for each reuse candidate when

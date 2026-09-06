@@ -2,15 +2,45 @@
 
 Current direct-action contracts for this domain. Shared notation and lifecycle rules live in [`../README.md`](../README.md).
 
+## `createECDFData`
+
+- Signature: `createECDFData({ id, source?, field, groupBy?, weight?, missing?, as? })`.
+- `id` is a required new immutable derived-dataset ID. `source` defaults to current data. `field` must contain
+  finite quantitative observations. `groupBy` accepts one field or a non-empty unique field array and preserves
+  groups by first source appearance.
+- The output sorts support within each group and aggregates ties into one jump. It prepends one probability-zero
+  row at the minimum support, then emits one row per distinct support with the cumulative count or weight and
+  `F(x)=P(X<=x)`. This shape is consumed by a `step-after` line to make the visible function right-continuous.
+- `weight` is optional. Omission uses valid sample count; a field uses the sum of finite non-negative weights.
+  Zero-weight rows contribute no support. Negative weights and a zero denominator are errors.
+- `missing` defaults to `"drop"`; `"error"` rejects the first non-finite value/weight or invalid group value.
+  It never changes the negative-weight or zero-denominator errors.
+- `as` optionally supplies distinct `{ value, cumulative, probability }` output names. Omission namespaces all
+  names from `id`. Stored transform provenance includes the source field, grouping, weight/missing policy,
+  outputs, each resolved group denominator and its positive-weight valid-row count.
+
+### Formal values — `createECDFData`
+
+- Implemented: `createECDFData(options: ECDFDataOptions): ChartProgram` (Full only).
+- Planned (NOT IMPLEMENTED): —
+- Proposed (NOT IMPLEMENTED): survival/censoring and uncertainty intervals.
+
+### Value coverage — `createECDFData`
+
+- ✅ Covered: ties, sorting, right-continuous seed row, grouped first-appearance order, weights, missing policy,
+  zero/negative weight, zero denominator, custom outputs, provenance, immutability and child trace.
+- Evidence: `test/unit/grammar/transforms/ecdf.test.js`, `test/unit/actions/data/ecdf-data.test.js`.
+
 ## `createIntervalData`
 
-- Signature: `createIntervalData({ id, source?, field, groupBy?, center?, extent?, level?, as? })`.
+- Signature: `createIntervalData({ id, source?, field, groupBy?, center?, extent?, method?, level?, as? })`.
 - `id`: required new immutable derived-dataset ID. `source` defaults to current data.
 - `field`: finite quantitative input field. Missing and non-finite rows are omitted.
 - `groupBy`: one field, a unique field array, or omission for one ungrouped summary. Group output follows
   source first appearance.
-- Defaults: `center: "mean"`, `extent: "ci"`, `level: 0.95`. Mean supports `stderr`, sample `stdev`, and
-  two-sided Student-t `ci`; median supports only `iqr` and does not accept `level`.
+- Defaults: `center: "mean"`, `extent: "ci"`, `method: "student-t"`, `level: 0.95`. Mean supports
+  `stderr`, sample `stdev`, and two-sided `ci` with `"normal" | "student-t"`; median supports only `iqr`
+  and does not accept `method` or `level`.
 - `as`: optional distinct `{ center, lower, upper }` output fields. Omission namespaces all three from `id`.
 - Effect: wrapped `createDerivedData` records complete interval provenance and wrapped
   `materializeIntervalData` stores owned concrete rows at a deterministic 12-decimal boundary. Values below
@@ -20,13 +50,13 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 
 ### Formal values — `createIntervalData`
 
-- Implemented: `createIntervalData({ id: UserId; source?: UserId; field: FieldName; groupBy?: FieldName | readonly FieldName[]; center?: "mean" | "median"; extent?: "stderr" | "stdev" | "ci" | "iqr"; level?: UnitIntervalExclusive; as?: { center: FieldName; lower: FieldName; upper: FieldName } })`.
+- Implemented: `createIntervalData({ id: UserId; source?: UserId; field: FieldName; groupBy?: FieldName | readonly FieldName[]; center?: "mean" | "median"; extent?: "stderr" | "stdev" | "ci" | "iqr"; method?: "normal" | "student-t"; level?: UnitIntervalExclusive; as?: { center: FieldName; lower: FieldName; upper: FieldName } })`.
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `createIntervalData`
 
-- ✅ Covered: grouped/ungrouped output, first-appearance order, default mean/CI/0.95, stderr, sample stdev,
+- ✅ Covered: grouped/ungrouped output, first-appearance order, normal/Student-t, default mean/CI/0.95, stderr, sample stdev,
   IQR, custom output fields, missing values, undersized groups, ownership, trace and invalid combinations.
 - ✅ Covered: independent cars Student-t fixtures, interval containment invariants, and sub-picounit ordering.
 - Evidence: `test/unit/actions/data/interval-data.test.js`,
@@ -35,12 +65,15 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 
 ## `createErrorBar`
 
+- Temporal independent position options forward `temporalUnit` to the body and every cap, including later
+  cap recreation. The interval itself remains quantitative; input-unit options are invalid on that interval.
+
 - Current signature: `createErrorBar({ id?, target?, data?, x?, y?, xOffset?, yOffset?, groupBy?, coordinate?, caps?, capSize?, stroke?, strokeWidth?, strokeDash?, opacity? } = {})`.
 - Exactly one of x/y is an identifiable quantitative interval channel and the other is a quantitative, nominal,
   ordinal, or temporal position channel. Interval options such as `lower`/`upper` disambiguate a quantitative
   position from a quantitative interval. This supports vertical or horizontal orientation without a separate
   orientation flag.
-- Statistical intervals accept `{ field, center?, extent?, level?, scale? }` and default to
+- Statistical intervals accept `{ field, center?, extent?, method?, level?, scale? }` and default to
   mean/Student-t CI/0.95. Explicit intervals accept `{ center, lower, upper, scale? }`, use existing rows,
   and never create derived data.
 - With explicit x/y, `data` defaults to current or unique data, `coordinate` to `"main"`, position scales to
@@ -72,7 +105,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 
 ### Formal values — `createErrorBar`
 
-- Implemented: `createErrorBar({ id?: UserId; target?: UserId; data?: UserId; x?: PositionChannel | StatisticalIntervalChannel | ExplicitIntervalChannel; y?: PositionChannel | StatisticalIntervalChannel | ExplicitIntervalChannel; xOffset?: OffsetChannel; yOffset?: OffsetChannel; groupBy?: FieldName; coordinate?: UserId; caps?: boolean; capSize?: PositiveFinite; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; strokeDash?: DashStyle | DashPattern; opacity?: UnitInterval } = {})`, where `PositionChannel = { field?: FieldName; fieldType?: "quantitative" | "nominal" | "ordinal" | "temporal"; scale?: PositionScale }`, `OffsetChannel = { field?: FieldName; fieldType?: "nominal" | "ordinal"; scale?: OffsetScale; paddingInner?: UnitIntervalLessThan1; paddingOuter?: NonNegativeFinite }`, `StatisticalIntervalChannel = { field?: FieldName; center?: "mean" | "median"; extent?: "stderr" | "stdev" | "ci" | "iqr"; level?: UnitIntervalExclusive; scale?: PositionScale }`, and `ExplicitIntervalChannel = { center: FieldName; lower: FieldName; upper: FieldName; scale?: PositionScale }`.
+- Implemented: `createErrorBar({ id?: UserId; target?: UserId; data?: UserId; x?: PositionChannel | StatisticalIntervalChannel | ExplicitIntervalChannel; y?: PositionChannel | StatisticalIntervalChannel | ExplicitIntervalChannel; xOffset?: OffsetChannel; yOffset?: OffsetChannel; groupBy?: FieldName; coordinate?: UserId; caps?: boolean; capSize?: PositiveFinite; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; strokeDash?: DashStyle | DashPattern; opacity?: UnitInterval } = {})`, where `PositionChannel = { field?: FieldName; fieldType?: "quantitative" | "nominal" | "ordinal" | "temporal"; scale?: PositionScale }`, `OffsetChannel = { field?: FieldName; fieldType?: "nominal" | "ordinal"; scale?: OffsetScale; paddingInner?: UnitIntervalLessThan1; paddingOuter?: NonNegativeFinite }`, `StatisticalIntervalChannel = { field?: FieldName; center?: "mean" | "median"; extent?: "stderr" | "stdev" | "ci" | "iqr"; method?: ConfidenceIntervalMethod; level?: UnitIntervalExclusive; scale?: PositionScale }`, and `ExplicitIntervalChannel = { center: FieldName; lower: FieldName; upper: FieldName; scale?: PositionScale }`.
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
@@ -95,20 +128,28 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 
 ## `editErrorBar`
 
-- Signature: `editErrorBar({ target?, caps?, capSize?, stroke?, strokeWidth?, strokeDash?, opacity?, statistics? })`.
+- Signature: `editErrorBar({ target?, data?, x?, y?, xOffset?, yOffset?, groupBy?, caps?, capSize?, stroke?, strokeWidth?, strokeDash?, opacity?, statistics? })`.
 - `target` selects the stable main error-bar layer; omission uses current/unique eligible owner inference.
+- `data`, `x`, and `y` replace source and channel roles in one preflighted owner edit. The edit may change
+  orientation or convert statistical `{ field, center?, extent?, method?, level? }` intervals to explicit
+  `{ center, lower, upper }` intervals and back. The main rule and enabled caps keep their stable IDs; statistical
+  changes create a namespaced immutable interval revision and explicit changes release an unreferenced old revision.
+- `xOffset`/`yOffset` follows the categorical independent axis; `false` removes it. A preserved offset moves with
+  that axis when orientation changes and remains part of statistical grouping. `groupBy: false` removes explicit
+  grouping when the resulting interval roles permit it.
 - Omitted appearance leaves the stored value unchanged. `caps: false` removes both owned cap layers and graphics;
   `caps: true` restores missing caps from the owner's stored data, fields, coordinate, position/offset scales and padding.
-- `statistics: { center?, extent?, level? }` is valid only for a statistical interval owner. It partially merges with
-  stored interval provenance, validates the complete center/extent/level combination, creates one namespaced immutable
+- `statistics: { center?, extent?, method?, level? }` is valid only for a statistical interval owner. It partially merges with
+  stored interval provenance, validates the complete center/extent/method/level combination, creates one namespaced immutable
   interval revision, explicitly rebinds the main rule and enabled caps, rematerializes them, and safely releases the
   old unreferenced dataset. Explicit center/lower/upper owners reject this option rather than changing modes.
-- Without `statistics`, the edit retains the existing source or interval dataset. Main and cap appearance is
-  reconciled through one wrapped `rematerializeErrorBar` action; generated cap IDs are not public parameters.
+- Without data-role options or `statistics`, the edit retains the existing interval dataset. Main and cap
+  appearance is reconciled through one wrapped `rematerializeErrorBar` action; generated cap IDs are not public
+  parameters. Attached mark labels are rebound with interval revisions, and stored selections/highlights replay.
 
 ### Formal values — `editErrorBar`
 
-- Implemented: `editErrorBar({ target?: UserId; caps?: boolean; capSize?: PositiveFinite; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; strokeDash?: DashStyle | DashPattern; opacity?: UnitInterval; statistics?: { center?: "mean" | "median"; extent?: "stderr" | "stdev" | "ci" | "iqr"; level?: UnitIntervalExclusive } })`.
+- Implemented: `editErrorBar({ target?: UserId; data?: UserId; x?: PositionChannel | StatisticalIntervalChannel | ExplicitIntervalChannel; y?: PositionChannel | StatisticalIntervalChannel | ExplicitIntervalChannel; xOffset?: OffsetChannel | false; yOffset?: OffsetChannel | false; groupBy?: FieldName | false; caps?: boolean; capSize?: PositiveFinite; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; strokeDash?: DashStyle | DashPattern; opacity?: UnitInterval; statistics?: { center?: "mean" | "median"; extent?: "stderr" | "stdev" | "ci" | "iqr"; method?: ConfidenceIntervalMethod; level?: UnitIntervalExclusive } })`.
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
@@ -117,15 +158,20 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - ✅ Covered: inferred/explicit target, complete appearance patch, cap removal/restoration, cap-size geometry,
   named/explicit dash, retained data for appearance edits, statistical revision/rebind/release, explicit-owner
   rejection, nested trace, immutability and atomic validation.
+- ✅ Covered: source and role replacement, orientation change, statistical/explicit conversion, stable cap IDs,
+  offset migration, attached-label rebinding, highlight replay, and invalid combined-role atomic rejection.
 - ✅ Covered: approved primitive/public semantic, graphic and pixel parity.
 - Evidence: `test/unit/actions/error-bars/edit-error-bar.test.js` and Roadmap 3 focused-editing Gate.
 
 ## `createErrorBand`
 
+- Temporal independent position options forward `temporalUnit` to the area and both boundary lines. Stored
+  unit survives boundary removal/recreation and interval revision; the quantitative interval rejects input units.
+
 - Current signature: `createErrorBand({ id?, target?, data?, x?, y?, groupBy?, coordinate?, fill?, opacity?, curve?, boundaries? } = {})`.
 - Exactly one of x/y is a quantitative statistical or explicit interval; the other is a quantitative or temporal
   independent position. Vertical uses y/y2 and horizontal uses x/x2 on ordinary area layers.
-- A statistical interval accepts `{ field, center?, extent?, level?, scale? }` and defaults to
+- A statistical interval accepts `{ field, center?, extent?, method?, level?, scale? }` and defaults to
   mean/Student-t CI/0.95. It calls wrapped `createIntervalData` grouped by x and optional `groupBy`.
 - Explicit y accepts `{ center, lower, upper, scale? }`, consumes existing rows, and may still use `groupBy`
   to split one closed path per series. The center field is kept as title/provenance while geometry uses lower/upper.
@@ -189,10 +235,15 @@ without naming generated child layers.
 
 ## `editErrorBand`
 
-- Signature: `editErrorBand({ target?, fill?, opacity?, curve?, statistics?, boundaries? })`.
+- Signature: `editErrorBand({ target?, data?, x?, y?, groupBy?, fill?, opacity?, curve?, statistics?, boundaries? })`.
 - The stable owner is an error-band area created by `createErrorBand`; omission uses current/unique inference.
-- A focused fill is an explicit owner override and therefore remains constant even when the band retains a color
-  encoding. Opacity and curve update the existing area materialization without replacing interval data.
+- `data`, `x`, and `y` revise the source and interval/position roles together. The edit may change orientation or
+  convert between statistical and explicit center/lower/upper intervals while retaining the body and enabled
+  boundary IDs. `groupBy` replaces the path grouping field and `groupBy: false` removes it.
+- Constant fill conflicts with an active color encoding. Remove color with `removeEncoding({ channel: "color" })`
+  first; this also updates the owned legend. Conversely, encodeColor rejects an explicit ErrorBand fill.
+- Edit-only `fill: false` removes the constant override, restoring active encoded color or the theme default.
+  It is not transparency and is invalid at creation. Opacity and curve preserve interval data.
 - `statistics` follows `editErrorBar`: it is statistical-owner-only, validates the complete partial merge, revisions
   immutable interval data, and rebinds/rematerializes the body and every enabled boundary.
 - `boundaries: false` is a desired-state disable and succeeds when both are already absent. A boundary appearance
@@ -200,15 +251,19 @@ without naming generated child layers.
 
 ### Formal values — `editErrorBand`
 
-- Implemented: `editErrorBand({ target?: UserId; fill?: NonEmptyString; opacity?: UnitInterval; curve?: CurveInterpolation; statistics?: { center?: "mean" | "median"; extent?: "stderr" | "stdev" | "ci" | "iqr"; level?: UnitIntervalExclusive }; boundaries?: false | ErrorBandBoundaryAppearance })`.
+- Implemented: `editErrorBand({ target?: UserId; data?: UserId; x?: PositionChannel | StatisticalIntervalChannel | ExplicitIntervalChannel; y?: PositionChannel | StatisticalIntervalChannel | ExplicitIntervalChannel; groupBy?: FieldName | false; fill?: NonEmptyString | false; opacity?: UnitInterval; curve?: CurveInterpolation; statistics?: { center?: "mean" | "median"; extent?: "stderr" | "stdev" | "ci" | "iqr"; method?: ConfidenceIntervalMethod; level?: UnitIntervalExclusive }; boundaries?: false | ErrorBandBoundaryAppearance })`.
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `editErrorBand`
 
-- ✅ Covered: inferred/explicit owner, constant fill over encoded color, opacity/curve, statistical revision,
+- ✅ Covered: inferred/explicit owner, explicit color removal before constant fill, opacity/curve, statistical revision,
   both-boundary enable/edit/disable including repeated disable, Canvas persistence, immutability, empty/invalid edit
   rejection and exact Gate parity.
+- ✅ Covered: both-direction color conflicts, reset to theme/field mode, selection/highlight and boundary/statistical
+  replay; `test/unit/actions/encodings/style-assignment-lifecycle.test.js`.
+- ✅ Covered: source/role/group replacement, orientation change, statistical/explicit conversion, stable boundary
+  ownership, highlight replay and atomic rejection of invalid combined role edits.
 - Evidence: `test/unit/actions/error-bands/edit-error-band.test.js` and Roadmap 3 focused-editing Gate.
 
 ## `editErrorBandBoundary`
@@ -228,18 +283,23 @@ without naming generated child layers.
 - ✅ Covered: both/default, lower and upper selection, missing-component creation, existing-component edit,
   independent appearance, child trace, invalid selection/style and immutable failure.
 - ✅ Covered: approved absent-to-both boundary primitive/public and pixel parity.
+- ✅ Covered: both-direction color conflicts, reset to theme/field mode, selection/highlight and boundary/statistical
+  replay; `test/unit/actions/encodings/style-assignment-lifecycle.test.js`.
 - Evidence: `test/unit/actions/error-bands/edit-error-band.test.js` and Roadmap 3 focused-editing Gate.
 
 ## `createRegression`
 
-- Signature: `createRegression({ target?, x?, y?, groupBy?, method?, degree?, span?, confidence?, interval?, band?, line? })`
+- Signature: `createRegression({ target?, x?, y?, groupBy?, method?, degree?, span?, confidenceMethod?, level?, confidence?, interval?, band?, line? })`
 - `target`: quantitative x/y point mark ID. 생략하면 current mark, 아니면 유일한 eligible point를 추론한다.
 - `x`, `y`: non-empty field names. 생략하면 target의 x/y encoding field를 사용한다.
-- `groupBy`: nominal field 또는 explicit `undefined`. 생략하면 matching color/shape field가 하나일 때
-  추론한다. 후보가 둘 이상이면 오류이며 explicit undefined는 ungrouped regression을 요청한다.
+- `groupBy`: nominal field, false, or legacy explicit undefined. Omission infers one matching color/shape field;
+  ambiguous candidates fail. False requests one ungrouped model and survives JSON serialization. Explicit undefined
+  keeps its existing JavaScript opt-out. Editors preserve omission, reject undefined and clear with false.
 - `method`, `degree`, `span`: Implemented regression method contract를 child `createRegressionData`에 전달한다.
   Polynomial degree는 `1..32`이며 derived output/work limits도 child data contract와 동일하다.
-- `confidence`: `(0, 1)` finite number, 기본값 `0.95`.
+- `confidenceMethod`, `level`: `"normal" | "student-t"`와 `(0, 1)` finite number. 기본은
+  Student-t와 `0.95`. 회귀 모델 선택의 `method`와 이름 충돌을 피하기 위해 CI method는
+  `confidenceMethod`로 드러낸다. `confidence`는 `level`의 compatibility alias이며 함께 주면 같아야 한다.
 - `interval`: Implemented `"mean" | "prediction"`; 기본값은 `"mean"`이며 LOESS에서는 생략해야 한다.
 - `band`: style object 또는 `false`. linear/polynomial은 생략 시 band를 만들고,
   LOESS는 생략/false일 때 band child를 만들지 않으며 object는 오류다.
@@ -257,7 +317,7 @@ without naming generated child layers.
 
 ### Formal values — `createRegression`
 
-- Implemented: `createRegression({ target?: UserId; x?: FieldName; y?: FieldName; groupBy?: FieldName; line?: { strokeWidth?: NonNegativeFinite; curve?: CurveInterpolation } } & ({ method?: "linear"; confidence?: UnitIntervalExclusive; interval?: "mean" | "prediction"; band?: false | RegressionBandOptions } | { method: "polynomial"; degree?: PositiveInteger; confidence?: UnitIntervalExclusive; interval?: "mean" | "prediction"; band?: false | RegressionBandOptions } | { method: "loess"; span?: UnitIntervalExclusiveZero; band?: false }))`
+- Implemented: `createRegression({ target?: UserId; x?: FieldName; y?: FieldName; groupBy?: FieldName | false; line?: { strokeWidth?: NonNegativeFinite; curve?: CurveInterpolation } } & ({ method?: "linear"; confidenceMethod?: ConfidenceIntervalMethod; level?: UnitIntervalExclusive; confidence?: UnitIntervalExclusive; interval?: "mean" | "prediction"; band?: false | RegressionBandOptions } | { method: "polynomial"; degree?: PositiveInteger; confidenceMethod?: ConfidenceIntervalMethod; level?: UnitIntervalExclusive; confidence?: UnitIntervalExclusive; interval?: "mean" | "prediction"; band?: false | RegressionBandOptions } | { method: "loess"; span?: UnitIntervalExclusiveZero; band?: false }))`
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
@@ -267,8 +327,8 @@ without naming generated child layers.
   - ✅ Covered: current/unique inference, explicit values, ambiguous/invalid target와 field override.
 - `groupBy`
   - ✅ Covered: color/shape inference, explicit field, explicit ungrouped `undefined`, ambiguous candidates.
-- `confidence`
-  - ✅ Covered: omission→`0.95`, representative explicit and invalid via child data action.
+- `confidenceMethod`, `level`, `confidence`
+  - ✅ Covered: omission→Student-t/`0.95`, normal opt-in, alias/conflict and invalid values via child data action.
 - `band.color`, `band.opacity`, `line.strokeWidth`
   - ✅ Covered: defaults and representative explicit styles.
   - ✅ Covered: executable child actions own color/type and numeric endpoint validation while aggregate tests verify
@@ -280,7 +340,7 @@ without naming generated child layers.
 
 ## `editRegression`
 
-- Signature: `editRegression({ target?, data?, x?, y?, groupBy?, method?, degree?, span?, confidence?, interval?, band?, line? })`.
+- Signature: `editRegression({ target?, data?, x?, y?, groupBy?, method?, degree?, span?, confidenceMethod?, level?, confidence?, interval?, band?, line? })`.
 - `target` is the stable point owner passed to or inferred by `createRegression`; generated band and line IDs are not
   ordinary targets. Omission resolves the current owner, then one unique regression owner, and rejects ambiguity.
 - `data`, `x`, and `y` partially replace fitted-data provenance. `groupBy` accepts a field or `false` to remove
@@ -288,7 +348,8 @@ without naming generated child layers.
   line/band encodings and band provenance are reconciled to the complete candidate.
 - Method-specific values follow `createRegression`. A data-role or statistical change creates one deterministic
   immutable derived dataset revision, rebinds the owned band and line to it, rematerializes them, and releases the old
-  unreferenced revision. Appearance-only `band`/`line` patches retain the current derived dataset.
+  unreferenced revision. An explicit legacy `confidence` value replaces the stored normalized `level`; supplying both
+  aliases still requires equal values. Appearance-only `band`/`line` patches retain the current derived dataset.
 - `band: false` removes the owned band. Switching to LOESS also removes it; switching back to linear/polynomial or
   passing a band object recreates it under the same stable owner role. `line` is always retained.
 - The complete patch is validated before any returned program state changes. Earlier programs and source data remain
@@ -296,7 +357,7 @@ without naming generated child layers.
 
 ### Formal values — `editRegression`
 
-- Implemented: `editRegression({ target?: UserId; data?: UserId; x?: FieldName; y?: FieldName; groupBy?: FieldName | false; method?: "linear" | "polynomial" | "loess"; degree?: PositiveInteger; span?: UnitIntervalExclusiveZero; confidence?: UnitIntervalExclusive; interval?: "mean" | "prediction"; band?: false | RegressionBandOptions; line?: { strokeWidth?: NonNegativeFinite; curve?: CurveInterpolation } })` with method-specific runtime validation.
+- Implemented: `editRegression({ target?: UserId; data?: UserId; x?: FieldName; y?: FieldName; groupBy?: FieldName | false; method?: "linear" | "polynomial" | "loess"; degree?: PositiveInteger; span?: UnitIntervalExclusiveZero; confidenceMethod?: ConfidenceIntervalMethod; level?: UnitIntervalExclusive; confidence?: UnitIntervalExclusive; interval?: "mean" | "prediction"; band?: false | RegressionBandOptions; line?: { strokeWidth?: NonNegativeFinite; curve?: CurveInterpolation } })` with method-specific runtime validation.
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
@@ -304,7 +365,8 @@ without naming generated child layers.
 
 - ✅ Covered: linear→polynomial and data/x/y/group revisions, exact derived rows and band/line graphics,
   group removal/addition, stable component/position identities, appearance-only data retention, LOESS band removal,
-  later band restoration, owner inference, invalid data/fields/nested options and immutable failure.
+  later band restoration, legacy-confidence replacement, owner inference, invalid data/fields/nested options and
+  immutable failure.
 - ✅ Covered: approved regression owner-edit primitive/public and PNG parity.
 - Evidence: `test/unit/actions/regression/edit-regression.test.js` and Roadmap 3 focused-editing Gate.
 

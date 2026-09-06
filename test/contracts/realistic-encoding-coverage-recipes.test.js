@@ -24,10 +24,10 @@ const actionCards = JSON.parse(readFileSync(
 ));
 const inventoryPromise = buildPublicOptionInventory(actionCards);
 const EXPECTED = Object.freeze({
-  paths: 254,
-  pathSha256: "fcae969c9f8930fb962935062bc144e9cbd887022c50b886f75e01d9c9aac68b",
-  literals: 224,
-  literalSha256: "6aa7dc9c58fd41530352598010c688cc7914c960a5350caa588a62affed4bb8b",
+  paths: 277,
+  pathSha256: "2bb07b118bfc3ac75f09751ccd082023d3de12de7f225034432e0a7670f27b7e",
+  literals: 274,
+  literalSha256: "42165504466318a124484d254d7c8b3e8ae82d52fa0286a26b26fd3677fd54f6",
   diversity: 9,
   diversitySha256: "bd6a602f3ed8ec4c3b838ea75503e7bc1c3a7005962add809467c01190c57906"
 });
@@ -185,12 +185,14 @@ async function projection() {
           if (recipe.id === "realistic-direct-polar-encoding-options") {
             assert.deepEqual(
               program.semanticSpec.layers.map(layer => layer.id),
-              ["theta-aggregate-count", "theta-aggregate-sum"],
+              ["theta-aggregate-count", "theta-aggregate-sum",
+                "measured-area-count", "measured-area-sum",
+                "measured-radius-length-count", "measured-radius-length-sum"],
               `${label} final polar-only presentation`
             );
             assert.equal(
               directEntries(program, "removeMark").length,
-              9,
+              12,
               `${label} transient polar point witnesses removed`
             );
           }

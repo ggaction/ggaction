@@ -1,3 +1,4 @@
+import { withGuideLayoutValidation } from "../../../materialization/guides/layout.js";
 import { action } from "../../../core/action.js";
 import { validateUserId } from "../../../core/identifiers.js";
 import {
@@ -126,7 +127,7 @@ function geometry(program, channel, config) {
 
 function makeEdit(channel) {
   const op = channel === "x" ? "editXAxisTicks" : "editYAxisTicks";
-  return action({ op, description: `Edit concrete ${channel}-axis ticks.` }, function (args = {}) {
+  return action({ op, description: `Edit concrete ${channel}-axis ticks.` }, withGuideLayoutValidation(function (args = {}) {
     validateOptions(args, op, false);
     const id = `${channel}AxisTicks`;
     if (this.graphicSpec.objects[id]?.type !== "line") throw new Error(`${op} requires existing axis ticks.`);
@@ -157,7 +158,7 @@ function makeEdit(channel) {
     let next = this._withGuideConfig(channel, config).editGraphics({ target: id, property: "length", value: resolved.values.length });
     for (const property of ["x1", "y1", "x2", "y2"]) next = next.editGraphics({ target: id, property, value: resolved[property] });
     return next.editGraphics({ target: id, property: "stroke", value: config.color }).editGraphics({ target: id, property: "strokeWidth", value: config.lineWidth });
-  });
+  }));
 }
 
 const editXAxisTicks = makeEdit("x"), editYAxisTicks = makeEdit("y");
@@ -165,7 +166,7 @@ const editXAxisTicks = makeEdit("x"), editYAxisTicks = makeEdit("y");
 function makeCreate(channel) {
   const op = channel === "x" ? "createXAxisTicks" : "createYAxisTicks";
   const edit = channel === "x" ? "editXAxisTicks" : "editYAxisTicks";
-  return action({ op, description: `Create concrete ${channel}-axis ticks.` }, function (args = {}) {
+  return action({ op, description: `Create concrete ${channel}-axis ticks.` }, withGuideLayoutValidation(function (args = {}) {
     validateOptions(args, op, true);
     const scale = validateUserId(args.scale ?? channel, "Scale id");
     const existingGuide = this.semanticSpec.guides.axis?.[channel]?.scale;
@@ -192,7 +193,7 @@ function makeCreate(channel) {
         ...resolvePlotGraphicPlacement(this)
       })
       ._withGuideConfig(channel, config)[edit]();
-  });
+  }));
 }
 
 const createXAxisTicks = makeCreate("x"), createYAxisTicks = makeCreate("y");

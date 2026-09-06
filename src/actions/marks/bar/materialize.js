@@ -10,6 +10,8 @@ import {
   resolveBarOffsetChannel
 } from "../../../grammar/bars/policy.js";
 import { rematerializeHighlightBaseline } from "../lifecycle.js";
+import { offsetCategoryRectangles } from
+  "../../../materialization/categorySlotOffset.js";
 
 const REMATERIALIZE_OPTIONS = Object.freeze(["id", "scales"]);
 
@@ -103,22 +105,24 @@ export const rematerializeBarMark = action(
         resolved = resolved.rematerializeScale({ id: offsetScaleId });
       }
       const width = resolved.markConfigs[id]?.barWidth;
-      return editRectangles(
-        resolved,
-        id,
-        deriveAggregateRectangles(required, resolved, width)
-      );
+      return editRectangles(resolved, id, offsetCategoryRectangles(
+        resolved, required.layer, deriveAggregateRectangles(required, resolved, width)
+      ));
     }
 
     if (required.materialization === BAR_GRAINS.ranged) {
       const width = resolved.markConfigs[id]?.barWidth;
-      return editRectangles(resolved, id, deriveRangedRectangles(required, resolved, width));
+      return editRectangles(resolved, id, offsetCategoryRectangles(
+        resolved, required.layer, deriveRangedRectangles(required, resolved, width)
+      ));
     }
 
     return editRectangles(
       resolved,
       id,
-      deriveHistogramRectangles(required, resolved)
+      offsetCategoryRectangles(
+        resolved, required.layer, deriveHistogramRectangles(required, resolved)
+      )
     );
   }
 );

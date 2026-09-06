@@ -25,6 +25,50 @@ const LOADERS = Object.freeze({
 });
 
 const EXPECTED_DRAW_ORDER = Object.freeze({
+  "facet-grid": [],
+  "repeat-charts": [],
+  "beeswarm-plot": [
+    "canvas", "horizontalGridLines", "swarm",
+    "xAxisLine", "xAxisTicks", "xAxisLabels", "xAxisTitle",
+    "yAxisLine", "yAxisTicks", "yAxisLabels", "yAxisTitle"
+  ],
+  "raincloud-plot": [
+    "canvas", "horizontalGridLines", "distributionCloud",
+    "distributionSummaryWhisker", "distributionSummaryWhiskerLowerCap",
+    "distributionSummaryWhiskerUpperCap", "distributionSummary",
+    "distributionSummaryMedian", "distributionPoints",
+    "xAxisLine", "xAxisTicks", "xAxisLabels", "xAxisTitle",
+    "yAxisLine", "yAxisTicks", "yAxisLabels", "yAxisTitle"
+  ],
+  "dot-plot": ["canvas", "dot"],
+  "lollipop-plot": ["canvas", "lollipopStem", "lollipop"],
+  "dumbbell-plot": ["canvas", "dumbbellConnector", "dumbbellStart", "dumbbell"],
+  "ecdf-plot": ["canvas", "ecdf", "ecdfLabel"],
+  "color-transitions": ["canvas","horizontalGridLines","m","xAxisLine","xAxisTicks","xAxisLabels","xAxisTitle","yAxisLine","yAxisTicks","yAxisLabels","yAxisTitle","colorLegendSymbols","colorLegendLabels","colorLegendTitle"],
+  "color-midpoint": ["canvas","horizontalGridLines","m","xAxisLine","xAxisTicks","xAxisLabels","xAxisTitle","yAxisLine","yAxisTicks","yAxisLabels","yAxisTitle","colorGradientStrips","colorGradientTicks","colorGradientLabels","colorGradientTitle"],
+  "radial-sectors": ["canvas", "radialGridCircles", "thetaGridLines", "sectors", "thetaAxisLine", "thetaAxisTicks", "thetaAxisLabels", "thetaAxisTitle", "radialAxisLine", "radialAxisTicks", "radialAxisLabels", "radialAxisTitle", "colorLegendSymbols", "colorLegendLabels", "colorLegendTitle"],
+  "theta-legend-order": ["canvas", "pie", "colorLegendSymbols", "colorLegendLabels", "colorLegendTitle"],
+  "area-layout": ["canvas", "horizontalGridLines", "m", "xAxisLine", "xAxisTicks", "xAxisLabels", "xAxisTitle",
+    "yAxisLine", "yAxisTicks", "yAxisLabels", "yAxisTitle"],
+  "horizon-plot": ["canvas", "verticalGridLines", "horizon",
+    "xAxisLine", "xAxisTicks", "xAxisLabels", "xAxisTitle"],
+  "density-plot": ["canvas", "horizontalGridLines", "density",
+    "xAxisLine", "xAxisTicks", "xAxisLabels", "xAxisTitle",
+    "yAxisLine", "yAxisTicks", "yAxisLabels", "yAxisTitle"],
+  "pie-plot": ["canvas", "pie", "colorLegendSymbols", "colorLegendLabels", "colorLegendTitle"],
+  "temporal-input": [
+    "canvas", "horizontalGridLines", "events",
+    "xAxisLine", "xAxisTicks", "xAxisLabels", "xAxisTitle",
+    "yAxisLine", "yAxisTicks", "yAxisLabels", "yAxisTitle",
+    "chartTitle", "chartSubtitle"
+  ],
+  "series-identity": [
+    "canvas", "horizontalGridLines", "series",
+    "xAxisLine", "xAxisTicks", "xAxisLabels", "xAxisTitle",
+    "yAxisLine", "yAxisTicks", "yAxisLabels", "yAxisTitle",
+    "seriesLegendSymbols", "seriesLegendLabels", "seriesLegendTitle",
+    "chartTitle", "chartSubtitle"
+  ],
   "cars-acceleration-violins": [
     "canvas", "horizontalGridLines", "violins",
     "xAxisLine", "xAxisTicks", "xAxisLabels", "xAxisTitle",
@@ -42,7 +86,7 @@ const EXPECTED_DRAW_ORDER = Object.freeze({
     "canvas", "horizontalGridLines", "rankedCarsPlot",
     "xAxisLine", "xAxisTicks", "xAxisLabels", "xAxisTitle",
     "yAxisLine", "yAxisTicks", "yAxisLabels", "yAxisTitle",
-    "seriesLegendSymbolPoints", "seriesLegendLabels", "seriesLegendTitle",
+    "colorLegendSymbolPoints", "colorLegendLabels", "colorLegendTitle",
     "chartTitle", "chartSubtitle"
   ],
   "cars-origin-jitter": [
@@ -65,6 +109,19 @@ const EXPECTED_DRAW_ORDER = Object.freeze({
     "xAxisLine", "xAxisTicks", "xAxisLabels", "xAxisTitle",
     "yAxisLine", "yAxisTicks", "yAxisLabels", "yAxisTitle",
     "chartTitle"
+  ],
+  "dark-theme-scatterplot": [
+    "canvas", "horizontalGridLines", "point",
+    "xAxisLine", "xAxisTicks", "xAxisLabels", "xAxisTitle",
+    "yAxisLine", "yAxisTicks", "yAxisLabels", "yAxisTitle",
+    "colorLegendSymbols", "colorLegendLabels", "colorLegendTitle",
+    "chartTitle", "chartSubtitle"
+  ],
+  "fitted-long-labels": [
+    "canvas", "scatterPlot",
+    "xAxisLine", "xAxisTicks", "xAxisLabels", "xAxisTitle",
+    "yAxisLine", "yAxisTicks", "yAxisLabels", "yAxisTitle",
+    "chartTitle", "chartSubtitle"
   ],
   "gapminder-life-expectancy-heatmap": [
     "canvas", "rect", "text",
@@ -350,18 +407,27 @@ test("locks the complete public graphic hierarchy inventory", () => {
     if (program.compositionSpec?.type === "facet") {
       assert.deepEqual(program.graphicSpec.order, ["canvas"]);
       const rootChildren = program.graphicSpec.objects.canvas.children;
-      assert.equal(rootChildren.length, 7);
-      assert.equal(rootChildren.slice(0, 3).every(id =>
+      const childCount = program.compositionSpec.children.length;
+      assert.equal(rootChildren.slice(0, childCount).every(id =>
         program.graphicSpec.objects[id].type === "canvas"
       ), true);
-      assert.deepEqual(rootChildren.slice(3), [
-        "facet-headers", "facet-legend", "chartTitle", "chartSubtitle"
-      ]);
+      const expectedParentChildren = chart.id === "facet-grid"
+        ? ["matrix-headers"]
+        : chart.id === "repeat-charts"
+          ? ["metrics-headers", "metrics-shared-legend"]
+          : ["facet-headers", "facet-legend", "chartTitle", "chartSubtitle"];
+      assert.deepEqual(rootChildren.slice(childCount), expectedParentChildren);
       for (const childId of rootChildren) {
         assert.equal(findGraphicParent(program.graphicSpec, childId).id, "canvas");
       }
       assert.equal(drawOrder[0], "canvas");
-      assert.ok(drawOrder.length > 20);
+      const expectedDrawLength = chart.id === "facet-grid"
+        ? 19
+        : chart.id === "repeat-charts"
+          ? 15
+          : undefined;
+      if (expectedDrawLength === undefined) assert.ok(drawOrder.length > 20);
+      else assert.equal(drawOrder.length, expectedDrawLength);
       continue;
     }
     const descendants = expected.slice(1);

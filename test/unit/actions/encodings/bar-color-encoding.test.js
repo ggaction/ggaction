@@ -32,8 +32,7 @@ test("encodes bar color and materializes zero-stacked category rects", () => {
   assert.deepEqual(program.semanticSpec.layers[0].encoding.color, {
     field: "Origin",
     fieldType: "nominal",
-    scale: "color",
-    layout: "stack"
+    scale: "color"
   });
   assert.deepEqual(program.semanticSpec.scales[2], {
     id: "color",
@@ -62,21 +61,13 @@ test("encodes bar color and materializes zero-stacked category rects", () => {
 
   const node = program.trace.children.at(-1);
   assert.equal(node.op, "encodeColor");
-  assert.deepEqual(node.children.map(child => child.op), [
-    "editSemantic",
-    "editSemantic",
-    "editSemantic",
-    "editSemantic",
-    "createScale",
-    "encodeY",
-    "rematerializeBarMark"
-  ]);
+  assert.equal(node.children.find(child => child.op === "layoutSeries").args.mode, "stack");
   assert.deepEqual(node.children.at(-1).children.slice(0, 3).map(
     child => child.op
   ), ["rematerializeScale", "rematerializeScale", "rematerializeScale"]);
 });
 
-test("uses explicit color domain order for stacking and fill", () => {
+test("keeps source series order independent of the color domain", () => {
   const values = [
     { Displacement: 100, Origin: "A" },
     { Displacement: 100, Origin: "B" },
@@ -94,9 +85,9 @@ test("uses explicit color domain order for stacking and fill", () => {
   assert.equal(bars.length, 2);
   assert.deepEqual(
     bars.map(child => child.properties.fill),
-    ["orange", "blue"]
+    ["blue", "orange"]
   );
-  assert.equal(bars[0].properties.height > bars[1].properties.height, true);
+  assert.equal(bars[0].properties.height < bars[1].properties.height, true);
   assert.equal(
     bars[0].properties.y,
     bars[1].properties.y + bars[1].properties.height

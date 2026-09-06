@@ -1,3 +1,4 @@
+import { validateAreaMissing } from "../../../grammar/areaEndpoints.js";
 import { action } from "../../../core/action.js";
 import { validateUserId } from "../../../core/identifiers.js";
 import {
@@ -30,8 +31,8 @@ import { resolveAreaMaterialization } from "./materialize.js";
 const AREA_OPTIONS = Object.freeze([
   "fill", "opacity", "stroke", "strokeWidth", "curve"
 ]);
-const CREATE_OPTIONS = Object.freeze(["id", "data", ...AREA_OPTIONS]);
-const EDIT_OPTIONS = Object.freeze(["target", ...AREA_OPTIONS]);
+const CREATE_OPTIONS = Object.freeze(["id", "data", "missing", ...AREA_OPTIONS]);
+const EDIT_OPTIONS = Object.freeze(["target", "missing", ...AREA_OPTIONS]);
 const REMATERIALIZE_OPTIONS = Object.freeze(["id", "scales"]);
 const STROKE_FROM_FILL_OPTIONS = Object.freeze(["id", "strokeWidth"]);
 
@@ -69,6 +70,10 @@ const createAreaMark = action(
       ...(args.data === undefined && this.context.currentData === undefined &&
         inherited?.data !== undefined ? { data: inherited.data } : {})
     });
+    const missing = validateAreaMissing(args.missing);
+    if (missing === "break" && ["density", "horizon"].some(type => findUpstreamTransform(this, findDataset(this, data), type))) {
+      throw new Error("Area missing:break does not reinterpret density or horizon data.");
+    }
     const fill = validateNonEmptyString(args.fill ?? DEFAULT_COLORS.mark, "Area fill");
     const opacity = validateUnitInterval(args.opacity ?? 0.2, "Area opacity");
     const curve = validateCurveInterpolation(args.curve ?? "linear");
@@ -77,6 +82,7 @@ const createAreaMark = action(
     let created = this
       .editSemantic({ property: `layer[${id}].mark.type`, value: "area" })
       .editSemantic({ property: `layer[${id}].data`, value: data });
+    if (Object.hasOwn(args, "missing")) created = created.editSemantic({ property: `layer[${id}].mark.missing`, value: missing });
     created = applyLayeredMarkInheritance(created, id, inherited);
     created = created
       .createGraphics({
@@ -218,7 +224,7 @@ const editAreaMark = action(
   },
   function (args = {}) {
     validateMarkOptions(args, EDIT_OPTIONS, "editAreaMark");
-    const changes = ["fill", "opacity", "stroke", "strokeWidth", "curve"];
+    const changes = ["fill", "opacity", "stroke", "strokeWidth", "curve", "missing"];
     if (!changes.some(key => Object.hasOwn(args, key))) {
       throw new Error(
         "editAreaMark requires fill, opacity, stroke, strokeWidth, or curve."
@@ -244,6 +250,7 @@ const editAreaMark = action(
     let config = { ...this.markConfigs[layer.id] };
     if (Object.hasOwn(args, "fill")) {
       config.fill = validateNonEmptyString(args.fill, "Area fill");
+      if (config.errorBand !== undefined) config.errorBand = { ...config.errorBand, fill: config.fill };
     }
     if (Object.hasOwn(args, "opacity")) {
       config.opacity = validateUnitInterval(args.opacity, "Area opacity");
@@ -283,7 +290,14 @@ const editAreaMark = action(
       );
     }
 
-    const next = this._withMarkConfig(layer.id, config);
+    let next = this._withMarkConfig(layer.id, config);
+    if (Object.hasOwn(args, "missing")) {
+      const missing = validateAreaMissing(args.missing);
+      if (missing === "break" && ["density", "horizon"].some(type => findUpstreamTransform(this, findDataset(this, layer.data), type))) {
+        throw new Error("Area missing:break does not reinterpret density or horizon data.");
+      }
+      next = next.editSemantic({ property: `layer[${layer.id}].mark.missing`, value: missing });
+    }
     return canMaterializeArea(next, layer)
       ? next.rematerializeAreaMark({ id: layer.id })
       : next;

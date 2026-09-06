@@ -4,9 +4,12 @@
 
 ## 현재 작업
 
-- **현재 활성 Roadmap은 없다.** 마지막 완료 owner는 Roadmap 5.4 Phase 6이며 compact knowledge delivery와
-  local MCP 통합을 R54-Exit에서 닫았다. 기록은
-  [`roadmap5.4/ROADMAP.md`](roadmap5.4/ROADMAP.md)가 소유한다.
+- **현재 활성 Roadmap은 없다.** Roadmap 6 Phase 0–11을 완료했다.
+- [`roadmap6/phase11/REVIEW.md`](roadmap6/phase11/REVIEW.md) — 234개 action의 계층·card·MCP·package
+  통합 검증과 최종 closeout
+- [`roadmap6/TRACEABILITY.md`](roadmap6/TRACEABILITY.md) — 실행 대상 47개 항목과 작업·검증 조건
+- [`roadmap6/DESIGN_DECISIONS.md`](roadmap6/DESIGN_DECISIONS.md) — 공통 결정과 migration
+- 마지막 완료 owner는 [Roadmap 6 Phase 11](roadmap6/phase11/REVIEW.md)이다.
 - [`ROADMAP_INDEX.json`](ROADMAP_INDEX.json) — nullable active Roadmap/Phase와 마지막 완료 owner의 machine-readable source
 
 ## 개발 이력
@@ -24,6 +27,7 @@
 - [`roadmap5.2/ROADMAP.md`](roadmap5.2/ROADMAP.md) — completed, repository integrity와 maintainer hardening
 - [`roadmap5.3/ROADMAP.md`](roadmap5.3/ROADMAP.md) — completed, LLM knowledge/MCP 실험과 non-integration 결과
 - [`roadmap5.4/ROADMAP.md`](roadmap5.4/ROADMAP.md) — completed, compact knowledge delivery와 local MCP integration
+- [`roadmap6/ROADMAP.md`](roadmap6/ROADMAP.md) — completed, hierarchical chart authoring과 action consistency
 
 ## 재사용하는 개발 절차
 

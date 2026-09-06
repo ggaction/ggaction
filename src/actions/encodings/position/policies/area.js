@@ -1,6 +1,4 @@
 import { validateStack, emptyPositionPolicy } from "./common.js";
-import { deriveCenteredAreaSeries } from "../../../../grammar/areaSeries.js";
-import { readQuantitativeField } from "../../../../grammar/scales/index.js";
 
 export function isCategoricalDensityPosition({
   layer,
@@ -50,44 +48,8 @@ export function resolveAreaPositionPolicy({
     throw new Error("Area position encoding does not support aggregate or bin.");
   }
   if (args.stack === undefined) return emptyPositionPolicy();
-  const stack = validateStack(args.stack, "Area y encoding");
-  if (stack === "center") {
-    if (channel !== "y") {
-      throw new Error("Area center stack requires a y encoding.");
-    }
-    if (layer.encoding?.group?.fieldType !== "nominal") {
-      throw new Error("Area center stack requires a nominal group encoding.");
-    }
-    if (
-      layer.encoding?.color?.layout !== undefined &&
-      layer.encoding.color.layout !== "center"
-    ) {
-      throw new Error("Area center stack requires a matching center color layout.");
-    }
-    const values = readQuantitativeField(dataset.values, field);
-    if (values.some(value => value < 0)) {
-      throw new RangeError("Area center stack requires non-negative values.");
-    }
-    if (layer.encoding?.x !== undefined) {
-      deriveCenteredAreaSeries(dataset.values, {
-        ...layer,
-        encoding: {
-          ...layer.encoding,
-          y: { field, fieldType, stack: "center" }
-        }
-      });
-    }
-    return { bin: undefined, aggregate: undefined, stack };
-  }
-  if (
-    channel !== "y" ||
-    density === undefined
-  ) {
-    throw new Error("Area stack currently requires a density y encoding.");
-  }
-  return {
-    bin: undefined,
-    aggregate: undefined,
-    stack
-  };
+  const stack = validateStack(args.stack, "Area position encoding");
+  if (fieldType !== "quantitative") throw new Error("Area stack requires a quantitative measure.");
+  if (stack === "center" && channel !== "y") throw new Error("Area center stack requires a y encoding.");
+  return { bin: undefined, aggregate: undefined, stack };
 }

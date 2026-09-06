@@ -1,9 +1,7 @@
-import {
-  readNominalField,
-  readQuantitativeField,
-  readScaleField,
-  readTemporalField
-} from "../../../grammar/scales/index.js";
+import { isSourceOwnedText } from "../../../grammar/text.js";
+import { readSeriesIdentity } from "../../../grammar/pathSeries.js";
+import { readAreaEndpoint } from "../../../grammar/areaEndpoints.js";
+import { readScaleField } from "../../../grammar/scales/index.js";
 import { findDataset } from "../../../selectors/datasets.js";
 import { requireSemanticScale } from "../../../selectors/scales.js";
 import { SCALED_ENCODING_CHANNELS } from "../../../core/vocabulary.js";
@@ -15,6 +13,7 @@ export function findScale(program, id) {
 export function findScaleConsumers(program, id) {
   const consumers = [];
   for (const layer of program.semanticSpec.layers) {
+    if (isSourceOwnedText(layer)) continue;
     for (const channel of SCALED_ENCODING_CHANNELS) {
       const encoding = layer.encoding?.[channel];
       if (encoding?.scale === id) consumers.push({ layer, channel, encoding });
@@ -46,7 +45,7 @@ export function requireConsumerDataset(program, consumer) {
 export function isDirectCategoricalConsumer(consumer) {
   return ["color", "strokeDash", "xOffset", "yOffset", "shape"].includes(
     consumer.channel
-  ) && consumer.encoding.fieldType === "nominal";
+  ) && ["nominal", "ordinal"].includes(consumer.encoding.fieldType);
 }
 
 export function readConsumerFieldValues(
@@ -55,55 +54,23 @@ export function readConsumerFieldValues(
   dataset,
   scale = findScale(program, consumer.encoding.scale)
 ) {
-  const allowUnknown = Object.hasOwn(scale, "unknown");
-  if (consumer.role === "parallelDimension") {
-    return readScaleField(
-      dataset.values,
-      consumer.encoding.field,
-      consumer.encoding.fieldType,
-      { allowUnknown: true }
-    );
+  const { field, fieldType, temporalUnit } = consumer.encoding;
+  if (consumer.layer.mark.type === "bar" && consumer.layer.encoding?.group !== undefined && ["xOffset", "yOffset"].includes(consumer.channel)) {
+    return readSeriesIdentity(dataset.values, consumer.layer).values;
   }
-  if (isDirectCategoricalConsumer(consumer)) {
-    return allowUnknown
-      ? readScaleField(
-          dataset.values,
-          consumer.encoding.field,
-          consumer.encoding.fieldType,
-          { allowUnknown: true }
-        )
-      : readNominalField(dataset.values, consumer.encoding.field);
-  }
-  if (consumer.encoding.fieldType === "temporal") {
-    return allowUnknown
-      ? readScaleField(dataset.values, consumer.encoding.field, "temporal", {
-          allowUnknown: true
-        })
-      : readTemporalField(dataset.values, consumer.encoding.field);
-  }
-  if (["nominal", "ordinal"].includes(consumer.encoding.fieldType)) {
-    if (!["ordinal", "band", "point"].includes(scale.type)) {
-      throw new Error(
-        `Scale materialization requires a quantitative encoding on mark "${consumer.layer.id}".`
-      );
-    }
-    return allowUnknown
-      ? readScaleField(
-          dataset.values,
-          consumer.encoding.field,
-          consumer.encoding.fieldType,
-          { allowUnknown: true }
-        )
-      : readNominalField(dataset.values, consumer.encoding.field);
-  }
-  if (consumer.encoding.fieldType !== "quantitative") {
+  const parallel = consumer.role === "parallelDimension";
+  if (!parallel && !isDirectCategoricalConsumer(consumer) &&
+    fieldType !== "quantitative" && fieldType !== "temporal" &&
+    (!["nominal", "ordinal"].includes(fieldType) ||
+      !["ordinal", "band", "point"].includes(scale.type))) {
     throw new Error(
       `Scale materialization requires a quantitative encoding on mark "${consumer.layer.id}".`
     );
   }
-  return allowUnknown
-    ? readScaleField(dataset.values, consumer.encoding.field, "quantitative", {
-        allowUnknown: true
-      })
-    : readQuantitativeField(dataset.values, consumer.encoding.field);
+  if (consumer.layer.mark.type === "area" && ["x", "y", "x2", "y2"].includes(consumer.channel) && fieldType === "quantitative") {
+    return readAreaEndpoint(dataset.values, consumer.encoding, consumer.layer.mark.missing).filter(value => value != null);
+  }
+  return readScaleField(dataset.values, field, fieldType, {
+    allowUnknown: parallel || Object.hasOwn(scale, "unknown"), temporalUnit
+  });
 }

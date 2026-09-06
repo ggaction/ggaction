@@ -424,7 +424,7 @@ test("rejects same-edge axis collisions and accepts reserved spacing", () => {
     position: "bottom",
     align: "center",
     offset: 30
-  }), /bottom guides/);
+  }), /bottom chart title and x-axis title overlap/);
   const spaced = chartWithAxes.createTitle({
     text: "Spaced",
     position: "bottom",

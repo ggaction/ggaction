@@ -30,11 +30,29 @@ Repeat a complete point or bar chart by field value.
 
 Representative actions: `facet`, `editFacetHeaders`, `editCompositionLayout`. [Documentation](https://ggaction.github.io/ggaction/recipes/facet/).
 
+### [Row and column facet grid](./facet-grid/)
+
+Cross two fields into an observed or complete grid with stable cell coordinates.
+
+Representative actions: `facetGrid`, `editFacetSource`, `editCompositionLayout`. [Documentation](https://ggaction.github.io/ggaction/api/composition/#build-a-row-and-column-facet-grid).
+
+### [Repeated metric charts](./repeat-charts/)
+
+Repeat one positional encoding across fields with explicit scale and guide policies.
+
+Representative actions: `repeatCharts`, `editFacetSource`, `editCompositionLayout`. [Documentation](https://ggaction.github.io/ggaction/api/composition/#repeat-a-positional-encoding-across-fields).
+
 ### [Scatterplot](./cars-scatterplot/)
 
 Compare two quantitative fields and encode a category with color.
 
 Representative actions: `createScatterPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/scatterplot/).
+
+### [Fitted long axis labels](./fitted-long-labels/)
+
+Fit chart margins after laying out long Cartesian axis labels.
+
+Representative actions: `createXAxis`, `fitCanvas`. [Documentation](https://ggaction.github.io/ggaction/api/canvas/#fitcanvasoptions).
 
 ### [Multi-legend layout](./cars-multi-legend-layout/)
 
@@ -209,6 +227,48 @@ Representative actions: `createArcMark`, `encodeTheta`, `encodeR`. [Documentatio
 Select, filter, and emphasize final point, bar, and line items.
 
 Representative actions: `selectMarks`, `highlightMarks`. [Documentation](https://ggaction.github.io/ggaction/tutorials/mark-selection/).
+
+### [Signed Horizon chart](./horizon-plot/)
+
+Define explicit source roles, then revise bands, baseline, palette, and appearance.
+
+Representative actions: `createHorizonPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/horizon/#complete-horizon-facade).
+
+### [Density profile](./density-plot/)
+
+Estimate one variable, then add explicit groups and color.
+
+Representative actions: `createDensityPlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/density-area/#complete-density-facade).
+
+### [Category pie chart](./pie-plot/)
+
+Create a complete category pie or explicitly weighted donut with one action.
+
+Representative actions: `createPiePlot`. [Documentation](https://ggaction.github.io/ggaction/tutorials/polar-arcs/#complete-pie-and-donut-plots).
+
+### [Area with an explicit baseline](./area-layout/)
+
+Define bounds and independently revise series identity, placement, and color.
+
+Representative actions: `createAreaPlot layoutSeries encodeGroup`. [Documentation](https://ggaction.github.io/ggaction/tutorials/area-layout/).
+
+### [Measured rose sectors](./radial-sectors/)
+
+Compare category sums with proportional area or radial length.
+
+Representative actions: `createRosePlot`, `createRadialBarPlot`, `encodeR`. [Documentation](https://ggaction.github.io/ggaction/tutorials/polar-arcs/#measured-rose-and-radial-bar-plots).
+
+### [A meaningful color midpoint](./color-midpoint/)
+
+Set an explicit reference value for continuous color.
+
+Representative actions: `createScatterPlot`, `encodeColor`, `editScale`. [Documentation](https://ggaction.github.io/ggaction/api/scales/continuous-color/#explicit-color-midpoint).
+
+### [Color scale and legend transitions](./color-transitions/)
+
+Switch between continuous color and numeric classes without stale guides.
+
+Representative actions: `createBarPlot`, `editScale`, `createLegend`. [Documentation](https://ggaction.github.io/ggaction/api/scales/discretized-color/#changing-color-scale-families).
 
 ## Development fixtures
 

@@ -1,0 +1,95 @@
+# R6-P4-B — Area/layout browser bundle budget
+
+상태: **approved**. 사용자 “승인”으로 Full/Basic 상한 조정을 승인받았다. 승인 기준 HEAD는 `6cac5928bc62924d3b5c962cc7bee8c9b2596428`이다.
+[구현과 검증 결과](RESULTS_V1.md), 고정 tarball과 실패를 포함한 검증 결과가 검토 대상이다.
+
+## 승인된 결정
+
+Full gzip 상한 **237,000 → 242,000 bytes**, Basic **125,000 → 130,000 bytes** 조정을 승인받았다.
+각각 5,000 bytes(2.11%, 4.00%) 증가다. SVG 25,000 bytes, package 파일/전체 크기 상한,
+minifier·압축·측정 fixture·검증 방식은 유지한다.
+
+두 새 API와 stricter endpoint/layout 검증을 유지하면서 용량을 명시적으로 수용하는 안이다.
+새 액션군·시각 목표·Phase X·배포 승인을 포함하지 않는다.
+
+## 설치와 측정
+
+[기계 판독 결과](package-results.json)는 고정한 tarball을 Node·MCP·strict TypeScript·튜토리얼 consumer에
+설치한 뒤, 같은 tarball을 다시 설치해 Full/Basic/SVG Vite production bundle을 측정한 결과다.
+[당시 runner](verify-package.mjs)는 검토 commit의 상한 검사를 실행하고 초과로 exit 1을 반환했다. 승인 후 원본 artifact 재검증에는 아래 별도 runner를 사용한다.
+최종 gzip·tarball SHA와 검증 결과는 아래 고정 기록에 있다.
+
+## 증가 원인과 정리한 중복
+
+`createAreaPlot`의 closed option/role 검사, datum endpoints·missing segments·aligned raw Area layout,
+독립적인 Bar series identity와 color, atomic transition/scale cleanup을 추가했다.
+Basic에도 Bar용 `layoutSeries`와 series/group/scale consumer가 필요하다. Full 전용 facade는 Basic에 노출하지 않는다.
+Browser 측정은 Node MCP/knowledge가 browser bundle에 들어가지 않는지도 검사한다.
+
+기존 aggregate/grouped Bar geometry와 selection에 중복되던 layout 계산을 같은 grammar owner로 통합했다.
+작은 새 파일은 기존 책임 owner에 합쳤고 삭제된 grouped renderer를 남기지 않았다.
+검증·오류·trace를 줄이거나 승인된 기능을 삭제해서 용량을 맞추지는 않았다.
+
+| 선택 | 결과 |
+| --- | --- |
+| Full 242,000 / Basic 130,000 (권장) | 승인된 동작과 엄격한 검증을 유지하면서 현재 초과분을 수용하고 guard를 계속 사용한다. |
+| 현재 상한 유지 | 추가적인 bundle 절감 작업과 회귀 검증이 필요하다. 그동안 package는 실패 상태다. |
+| 기능/엔트리 범위 축소 | 이미 승인한 Area/Bar 계약을 변경해야 한다. 이번 제안에는 포함하지 않는다. |
+
+## 적용한 변경
+
+```diff
+--- scripts/browser-bundle-size.js
++++ scripts/browser-bundle-size.js
+@@
+-  ggaction: 237_000,
+-  "ggaction/basic": 125_000,
++  ggaction: 242_000,
++  "ggaction/basic": 130_000,
+```
+
+`agent_docs/SECOND_ARCHITECTURE.md`의 같은 표와 README의 Basic 상한을 맞추고, 고정한 같은 tarball로 installed consumer 전체를
+재검증했다. Package 검증 성공 뒤에도 V2/V3/X는 각 Gate의 승인 절차를 유지한다.
+
+승인 필요 근거: [구현 기록 지침](../../AGENTS.md)의 “Treat Gates as hard execution boundaries”와
+[Phase 4 A 승인 조건](GATES.md)의 “Full/Basic/SVG 상한 237000/125000/25000 유지. 초과 시 별도 B가 필요”다.
+이번 승인된 V1 범위를 구현·검증한 사실을 상한 증가 승인으로 재사용하지 않는다.
+
+## 승인 전 고정 측정
+
+| 엔트리 | gzip bytes | 승인 전 상한 | 당시 초과 | 승인 상한 | 승인 후 여유 |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Full | 240,319 | 237,000 | 3,319 | 242,000 | 1,681 |
+| Basic | 128,538 | 125,000 | 3,538 | 130,000 | 1,462 |
+| SVG | 6,418 | 25,000 | 0 | 25,000 | 18,582 |
+
+Tarball `ggaction-0.0.12.tgz` — SHA-256 `9707de4005b534c56b1f07bc0e9ed6283df905c03e2416050b1dd27542170ee6`.
+Packed 486,775 bytes / unpacked 2,327,235 bytes / 439 entries.
+Node runtime/renderers, MCP, strict TypeScript, installed tutorial consumer는 통과했다.
+승인 전 Package 전체는 gzip guard에서 **실패(exit 1)**했다. 이 실패를 숨기거나 상한을 바꾸지 않았다.
+승인 전 source/types/knowledge를 같은 packaging 규칙으로 다시 pack한 SHA도 위 tarball과 정확히 일치했다.
+
+
+## 검토 증거
+
+Normal 2,646, render 183, browser 59, 74 critical coverage floors가 통과했다.
+확장 suite 최초 201/212의 실패는 교정 후 해당 6개 모듈 38개 테스트로 재검증했다. 전체 확장 suite를
+재실행해 통과한 수치로 표기하지 않는다. 상세 실행 범위와 호환성은 [RESULTS_V1](RESULTS_V1.md)에 있다.
+Runtime source는 `9815917a971ee289363eb00d10f10ea4d4e22cb4`이며 origin에 push/ref 일치를 확인했다.
+승인 전 저장소를 다시 pack한 결과도 검증 tarball SHA와 정확히 같았다.
+
+최종 검토 package: [`97e7a606`](https://github.com/ggaction/ggaction/commit/97e7a60617eeb7d7a1a37ee4f0eecb413792feaf).
+`origin/codex/roadmap6-hierarchical-actions`에 push하고 ref 일치를 확인했다. 이 검토 묶음에 대한 사용자 B 승인은 위에 기록했다.
+
+
+## 승인 후 재검증
+
+[승인 후 결과](package-approved-results.json)는 [재실행 runner](verify-package-approved.mjs)가 기존 tarball의 SHA-256과 크기를 확인한 뒤 전체 installed consumer를 실행한 기록이다. 기존 [실패 기록](package-results.json)은 보존했다.
+
+- 실행: `node agent_docs/impl/roadmap6/phase4/verify-package-approved.mjs` — exit 0.
+- Node runtime/renderers, MCP, strict TypeScript, installed tutorials, Full/Basic/SVG browser bundle guard 모두 통과.
+- Full 240,319 / 242,000 bytes, Basic 128,538 / 130,000 bytes, SVG 6,418 / 25,000 bytes. 측정값은 이전과 같다.
+- `node --test test/contracts/documentation-truth.test.js test/contracts/package-artifact.test.js` — 6/6 통과.
+- 로그: `.artifacts/roadmap6-authoring/area-layout-package-approved.log`, `area-layout-budget-contracts.log`.
+
+Runtime/types/knowledge는 변경하지 않았다. 이번 README 상한 문구 변경으로 새로 pack한 파일의 SHA는 달라질 수 있으므로, 새 pack을 기존 검증 artifact로 간주하지 않는다. 이번 검증은 위 원본 SHA의 tarball에 대한 결과다. W1/W2의 package 검증은 완료했고 V2/V3/X는 남아 있다.

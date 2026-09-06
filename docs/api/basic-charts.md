@@ -45,8 +45,18 @@ facade editor.
   used; a conflicting role requires an explicit ID.
 - A field may be a string or an encoding option object. Use the object form for
   field types, scales, aggregates, and other channel-specific options.
-- `guides` is optional. Omission or `{}` creates applicable axes, horizontal
-  grid, and legends. Pass `guides: false` to create no guides.
+- `guides` is optional. Omission or `{}` reuses compatible guides and creates
+  missing components for this facade's layer. Axes and grids must use the same
+  coordinate and scale IDs; legends must also match channels, domain order, and
+  symbol recipe. Existing titles and styles are retained. Conflicting explicit
+  guide styles require the owning editor or a disabled guide branch.
+- `guides: false` and nested `false` skip this call's requests; they do not delete
+  existing guides. Direct `createGuides` and guide creation actions remain strict.
+- Facade guides describe the facade's own layer and coordinate. Cartesian facades
+  accept Cartesian axes and grids. Line and Parallel legends accept line symbols
+  or explicit symbol layers; Histogram and Violin legends are categorical. Box
+  plots have no owned appearance legend. Use the lower guide actions to describe
+  another layer. Heatmap interval-color legends are currently unsupported.
 - A facade validates its complete option object before changing the program.
 - To revise the result, use the resource action that owns the decision, such as
   `encodeX`, `editScale`, `editPointMark`, or `editLegend`. Aggregate
@@ -83,8 +93,11 @@ const scatter = chart()
 ```
 
 The stable default mark ID is `scatterPlot`. Omitted size materializes the
-default point radius of `3`. Constant fill, shape, opacity, stroke, and stroke
-width belong in `point`; field-driven color, size, and shape remain top-level.
+default point radius of `3`. `point.radius` accepts a non-negative finite logical
+radius, including zero, and conflicts with `size`. It delegates to
+`encodePointRadius` → `encodeRadius` in default and Basic entries. Constant fill,
+shape, opacity, stroke, and stroke width belong in `point`; field-driven color,
+size, and shape remain top-level.
 
 ## `createLinePlot`
 
@@ -92,8 +105,11 @@ width belong in `point`; field-driven color, size, and shape remain top-level.
 createLinePlot(options: CreateLinePlotOptions): ChartProgram
 ```
 
-Required options are `x` and `y`. Use `color`, `groupBy`, or `strokeDash` for
-series identity and `line` for constant appearance.
+Required options are `x` and `y`. `groupBy` accepts a field name or a non-empty
+unique tuple such as `["country", "scenario"]`. Explicit groups define identity;
+`color` and `strokeDash` can use other fields with one value per series. Without
+`groupBy`, color/dash retain their shared-field grouping. Use `line` for constant
+appearance. See [independent series identity](./series-encodings.md).
 
 ```javascript
 const line = chart()
@@ -129,6 +145,11 @@ Field strings use data-driven shorthand: finite numeric fields infer
 quantitative positions and other supported scalar fields infer nominal
 positions. Use an option object with `fieldType` when a numeric field is an
 ordinal category or when a field is temporal.
+
+Both `{ x: "product", y: "units_sold" }` and the horizontal
+`{ x: "units_sold", y: "product" }` infer the measure's mean per category.
+Set `aggregate` explicitly for another statistic. Temporal categories work
+on either axis and accept temporal scale options.
 
 ```javascript
 const bars = chart()

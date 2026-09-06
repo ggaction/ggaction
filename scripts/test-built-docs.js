@@ -244,6 +244,9 @@ try {
     await results.first().evaluate(link => new URL(link.href).pathname),
     "/ggaction/recipes/rose-chart/"
   );
+  await search.fill("createRosePlot");
+  await results.first().waitFor({ state: "visible" });
+  assert.match(await results.first().getAttribute("href"), /#createroseplot$/);
   await search.fill("polar points");
   await results.first().waitFor({ state: "visible" });
   assert.match(await results.first().getAttribute("href"), /\/tutorials\/polar-points\/$/);
@@ -264,7 +267,7 @@ try {
       "/ggaction/accessibility/",
       "/ggaction/reference/runtime/"
     ]],
-    ["pie chart", ["/ggaction/tutorials/polar-arcs/"]]
+    ["pie chart", ["/ggaction/tutorials/polar-arcs/", "/ggaction/reference/actions/charts-data/"]]
   ]) {
     await search.fill(query);
     await results.first().waitFor({ state: "visible" });

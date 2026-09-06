@@ -16,6 +16,89 @@ title: Axes
 | `editYAxis` | `editYAxis({ position: "right" })` | Existing y-axis components | Retained components moved together |
 | `removeXAxis` / `removeYAxis` | `removeXAxis()` | Existing complete axis | Semantic, graphic, and stored axis state removed |
 
+Cartesian axis lines, ticks, labels and titles must not overlap a chart title or
+legend on the same edge. This applies to creation, focused and whole-axis edits,
+and Canvas or scale updates, regardless of authoring order. Increase the margin
+or change offsets when space is insufficient; a failed action preserves the
+earlier program.
+
+## Polar component creation
+
+Create a missing Polar axis component without rebuilding the other components.
+These actions are available from `ggaction`.
+
+| Component | Theta action | Radial action |
+| --- | --- | --- |
+| Baseline | `createThetaAxisLine` | `createRadialAxisLine` |
+| Tick marks | `createThetaAxisTicks` | `createRadialAxisTicks` |
+| Tick text | `createThetaAxisLabels` | `createRadialAxisLabels` |
+| Title | `createThetaAxisTitle` | `createRadialAxisTitle` |
+
+```javascript
+import { chart } from "ggaction";
+
+const program = chart()
+  .createCanvas({ width: 480, height: 480, margin: 80 })
+  .createData({ values: [
+    { direction: 0, distance: 2 },
+    { direction: 120, distance: 4 },
+    { direction: 240, distance: 6 }
+  ] })
+  .createPointMark()
+  .encodeTheta({ field: "direction", scale: { domain: [0, 360] } })
+  .encodeR({ field: "distance", scale: { zero: true } })
+  .createThetaAxis({ title: false })
+  .createThetaAxisTitle({ text: "Direction" })
+  .editThetaAxisTitle({ fontWeight: 600 })
+  .createRadialAxisLine({ angle: 45 })
+  .createRadialAxisTicks({ values: [0, 3, 6] })
+  .createRadialAxisLabels({ values: [0, 3, 6] })
+  .createRadialAxisTitle({ text: "Distance" });
+```
+
+All eight actions accept optional `scale` and `coordinate` IDs. Existing axis
+bindings take precedence over inference; otherwise exactly one compatible Polar
+encoding must identify the resources. Use the matching focused editor to change
+an existing component. Duplicate creation fails. After `removeThetaAxis()` or
+`removeRadialAxis()`, the same create actions can rebuild selected components.
+
+Tick and label creation accepts either `count` or exact data-space `values`.
+Other style options match the corresponding focused editor below. Radial
+creation also accepts `angle` in degrees: the first component establishes it
+(default `90`), and later components share it. Change the angle with
+`editRadialAxis({ angle })`; conflicting component angles are rejected. Theta
+components do not accept `angle`. Only radial titles accept
+`position: "inside" | "outside"`.
+
+Omitted title text follows the encoded field or its explicit title. Component
+styles and bindings survive Canvas, scale, and compatible encoding edits.
+
+## Omit, remove, and restore components
+
+All four complete axis creators accept `false` for `line`, `ticksAndLabels`,
+and `title`. Omission or `{}` creates the component with inferred defaults.
+At least one component must remain enabled. To disable an entire axis, use
+the outer `createAxes({ x: false, ... })` selection.
+
+The corresponding complete editors accept `false` for `line`, `ticks`,
+`labels`, `ticksAndLabels`, and `title` to remove existing components.
+An object edits an existing component; an omitted option preserves it.
+Restore a missing component with its focused create action.
+
+`ticksAndLabels: false` removes both existing components. If only one remains,
+remove it with `ticks: false` or `labels: false`. Do not combine the group with
+individual tick/label options. The group's nested `ticks` and `labels` still
+accept style objects, not `false`.
+
+Removing the last component cleans up the axis state and preserves grids,
+marks, and scales. Removed components stay absent after Canvas or scale edits.
+`editRadialAxis({ angle })` requires an existing axis component.
+
+When a chart facade reuses guides, a component declared `false` must be absent.
+If it already exists, remove it explicitly before requesting that declaration.
+Theta creation rejects `angle`, which was previously ignored; angle belongs
+to radial axes.
+
 ## `createAxes(options?)`
 
 Creates complete axes for encoded Cartesian x/y, Polar theta/radius, or Parallel dimension channels. This is the recommended axis
@@ -44,9 +127,9 @@ Each x/y axis option supports:
 | --- | --- |
 | `scale` | scale ID; inferred when one scale is used on the channel |
 | `position` | x: `"bottom"` or `"top"`; y: `"left"` or `"right"` |
-| `line` | `{ color?, lineWidth? }` |
-| `ticksAndLabels` | `{ count?, values?, ticks?, labels? }` |
-| `title` | title options including `text`, `at`, `offset`, and font styling |
+| `line` | `false` or `{ color?, lineWidth? }` |
+| `ticksAndLabels` | `false` or `{ count?, values?, ticks?, labels? }` |
+| `title` | `false` or title options including `text`, `at`, `offset`, and font styling |
 
 Use either `count` or exact data-space `values` for ticks. Ambiguous coordinates
 or scales must be selected explicitly. `createAxes` reads stored coordinates;
@@ -94,9 +177,45 @@ program.createAxes({
 
 Top ticks point upward and right ticks point right. Labels and titles are
 placed outward from the selected edge. The Canvas margin must already be large
-enough; guide creation does not resize it.
+enough; guide creation does not resize it. A later explicit `fitCanvas()` call
+can shrink excess margin on a Full unit chart.
 
-Numeric label formats are `.0f`, `.1f`, `.2f`, `.0%`, `.1%`, and `.2e`.
+Cartesian label styles accept `rotation`, `maxWidth`, `wrap`, `lineHeight`, and
+`overlap` in focused label actions, ticks-and-labels groups, and complete axis
+facades. Numeric rotations are radians; `{ value, unit }` accepts radians or
+degrees. Setting a positive `maxWidth` stores deterministic word or character
+wrapping as concrete text lines. Word wrapping is the default, and an oversized
+word is split by Unicode code point. `lineHeight` defaults to `fontSize * 1.2`
+and cannot be smaller than the font size.
+
+```javascript
+program.createXAxis({
+  ticksAndLabels: {
+    labels: {
+      maxWidth: 72,
+      wrap: "word",
+      rotation: { value: -24, unit: "degrees" }
+    }
+  }
+});
+```
+
+`overlap` defaults to `"error"`. Explicit `"allow"` permits label-to-label
+intersection while Canvas overflow and axis-title collisions still fail.
+`editXAxisLabels({ maxWidth: false })` or its y counterpart removes wrapping;
+that reset cannot include `wrap` or `lineHeight` in the same call. Canvas and
+scale replay rebuild the same lines from the stored policy. The 10,000-item
+limit applies after wrapping.
+
+Cartesian title `rotation` accepts a finite legacy number in radians or an
+explicit `{ value, unit: "degrees" | "radians" }` object. Both forms normalize
+to radians before materialization. This does not change the degree-valued
+`angle` used to place radial-axis components.
+
+Numeric label formats use `.0f` through `.12f` for fixed decimals, `.0%`
+through `.12%` for percentages, and `.0e` through `.12e` for scientific
+notation. A leading zero in a one-digit precision, such as `.01f`, is accepted
+and means `.1f`.
 UTC time formats compose `%Y` (year), `%m` (two-digit month), `%d` (two-digit
 day), and `%b` (English abbreviated month) with literals, for example `%b %Y`,
 `%Y-%m`, or `%Y/%m/%d`; use `%%` for a literal percent sign. Every time format
@@ -136,17 +255,61 @@ createAxes
 perimeter labels, and an inferred title. `createRadialAxis()` creates one
 center-to-edge baseline; its `angle` defaults to `90` degrees (right). Both
 support `ticksAndLabels: { count?, values?, ticks?, labels? }` and title style.
-Set `title: false` on either Polar axis to omit that title at creation.
+Use `line: false`, `ticksAndLabels: false`, or `title: false` to omit components.
 The radial title defaults to `position: "inside"` at the baseline midpoint.
 Use `title: { position: "outside" }` to place it beyond the radial endpoint;
 `offset` is measured from the midpoint normal when inside and from the endpoint
 when outside.
 
-For a Parallel coordinate, `createAxes()` delegates to an internal wrapped
-dimension-axis action. It creates one ordinary baseline, tick/label set, and
-title for each stored dimension. Channel-specific x/y/theta/radius options do
-not apply; revise dimension mapping with `encodeParallelCoordinates` and
-individual mappings with `editScale`.
+For a Parallel coordinate, `createAxes()` delegates to public `createParallelAxes()`.
+Each encoded field gets a baseline, ticks, labels, and a title. Use
+`createParallelAxis({ field })` to create one missing field axis and
+`editParallelAxis({ field, ... })` to edit its components. These actions are Full-only.
+
+The following fragment assumes `program` has a Parallel dimension named
+`Miles_per_Gallon` with existing axes:
+
+```javascript
+const styled = program.editParallelAxis({
+  field: "Miles_per_Gallon",
+  line: { color: "#7c3aed", lineWidth: 3 },
+  title: { text: "Fuel economy", fontWeight: 700 }
+});
+const restored = styled
+  .editParallelAxis({ field: "Miles_per_Gallon", ticks: false })
+  .createParallelAxis({
+    field: "Miles_per_Gallon", line: false, labels: false, title: false,
+    ticks: { length: 10 }
+  });
+```
+
+`field` is required and must match an encoded dimension. `target` uses the stored
+axis owner or the unique encoded Parallel line. A different owner is an error.
+Create requires missing components: omitted components get defaults, `false`
+skips them, and all-disabled creation is invalid. Edit requires existing components:
+objects patch, `false` removes, and omissions preserve. To remove a field's entire
+axis, use `removeParallelAxis({ field })`; use `removeParallelAxes()` for all axes.
+Removing the final component also clears the empty owner while preserving marks and scales.
+
+Ticks and labels accept independent `count` or exact `values`, or share them through
+`ticksAndLabels`. Do not combine the grouped and independent forms. Count is
+quantitative-only; ordinal values must be domain members. Count and values are
+mutually exclusive. Group members accept styles, not nested `false`.
+Counts, value arrays, and each rendered collection are limited to 10,000 items.
+Values must be distinct and inside the scale domain; an empty values array retains
+an empty component. Label `format` follows [axis components](../advanced/axis-components.md).
+
+Defaults preserve the original Parallel appearance: line width 1.25, tick length 8,
+automatic count 5, labels 9 pixels left at size 11, and titles 20 pixels above at size
+13 and weight 600. Titles accept `text`, `offset`, color and font styles; labels
+accept `offset`, format and font styles. Parallel axes do not accept Cartesian
+positions, radial angles or title rotation, and do not fit the Canvas automatically.
+
+Field styles and explicit titles survive resizing, scale edits and dimension
+reordering. Removed fields lose their recipes. An owner created by `createParallelAxes`
+also creates defaults for newly encoded fields; one started by `createParallelAxis`
+keeps new fields hidden. Explicitly removed field axes stay hidden while their field
+remains encoded. Recreate missing components through `createParallelAxis`.
 
 For individual lines, ticks, labels, and titles, see
 [Advanced axis components](../advanced/axis-components.md).
@@ -211,7 +374,7 @@ axis throws before anything changes.
 | `position` | x: `"bottom"/"top"`; y: `"left"/"right"` |
 | `line` | `false` or `{ color?, lineWidth? }` |
 | `ticks` | `false` or `{ count?, values?, length?, color?, lineWidth? }` |
-| `labels` | `false` or `{ count?, values?, offset?, format?, color?, fontSize?, fontFamily?, fontWeight? }` |
+| `labels` | `false` or `{ count?, values?, offset?, format?, color?, fontSize?, fontFamily?, fontWeight?, rotation?, maxWidth?, wrap?, lineHeight?, overlap? }` |
 | `ticksAndLabels` | `false` or `{ count?, values?, ticks?, labels? }` |
 | `title` | `false` or `{ text?, at?, offset?, rotation?, color?, fontSize?, fontFamily?, fontWeight? }` |
 

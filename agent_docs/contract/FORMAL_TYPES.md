@@ -37,12 +37,19 @@ type ScalarAggregateOperation =
   | "variance" | "varianceP" | "stdev" | "stdevP" | "stderr"
   | "q1" | "q3" | "ciLower" | "ciUpper";
 
+type ConfidenceIntervalMethod = "normal" | "student-t";
+
 type ParameterizedAggregateOperation =
   | { op: "quantile"; probability: UnitInterval }
   | {
       op: "first" | "last";
       orderBy: FieldName;
       order?: "ascending" | "descending";
+    }
+  | {
+      op: "ciLower" | "ciUpper";
+      method?: ConfidenceIntervalMethod;
+      level?: UnitIntervalExclusive;
     };
 
 type AggregateOperation =
@@ -70,7 +77,8 @@ type LinearRegressionTransform = {
   x: FieldName;
   y: FieldName;
   groupBy?: FieldName;
-  confidence: UnitIntervalExclusive;
+  confidenceMethod: ConfidenceIntervalMethod;
+  level: UnitIntervalExclusive;
   interval: "mean";
 };
 type GaussianDensityTransform = {
@@ -114,9 +122,9 @@ type DashScale = {
 type DatasetProperty = "source" | "transform" | "values";
 type ScaledEncodingChannel = "x" | "y" | "y2" | "xOffset" | "theta" | "radius" | "color" | "strokeDash" | "size" | "shape" | "opacity";
 type LayerProperty =
-  | "data" | "coordinate" | "transform" | "mark.type"
+  | "data" | "coordinate" | "transform" | "mark.type" | "mark.missing" | "layout.mode"
   | `encoding.${ScaledEncodingChannel}.${"field" | "datum" | "fieldType" | "scale"}`
-  | `encoding.group.${"field" | "datum" | "fieldType"}`
+  | `encoding.group.${"field" | "datum" | "fieldType" | "inferredFrom"}`
   | "encoding.x.bin.maxBins" | "encoding.y.aggregate" | "encoding.y.stack";
 type ScaleProperty = "type" | "domain" | "range" | "nice" | "zero";
 type GuideProperty =

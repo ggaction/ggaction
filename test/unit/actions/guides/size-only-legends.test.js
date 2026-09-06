@@ -71,7 +71,7 @@ test("creates an explicit standalone size legend for a point mark", () => {
 test("keeps extreme size legend samples and close-value labels distinct", () => {
   for (const domain of [[-1e308, 1e308], [1e15, 1e15 + 1]]) {
     const extreme = chart()
-      .createCanvas({ width: 760, height: 460, margin: { right: 200 } })
+      .createCanvas({ width: 760, height: 460, margin: { right: 260 } })
       .createData({
         values: domain.map((magnitude, index) => ({ x: index, y: index, magnitude }))
       })
@@ -129,8 +129,6 @@ test("keeps composite point series and size legend dispatch unchanged", () => {
 
   assert.ok(program.semanticSpec.guides.legend.series);
   assertSizeLegend(program, 4);
-  assert.throws(
-    () => sizeBase().createLegend({ channels: ["size"], position: "left" }),
-    /position "right"/
-  );
+  assert.equal(sizeBase().editCanvas({ margin: { left: 180 } })
+    .createLegend({ channels: ["size"], position: "left" }).guideConfigs.legend.size.position, "left");
 });

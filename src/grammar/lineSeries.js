@@ -16,8 +16,9 @@ import {
   findHistogramBinIndex,
   resolveHistogramBins
 } from "./histogram.js";
-
-const SERIES_CHANNELS = ["group", "color", "strokeDash"];
+import {
+  validatePathSeriesAppearance
+} from "./pathSeries.js";
 
 function requireLineEncoding(layer) {
   if (layer?.mark?.type !== "line") {
@@ -68,32 +69,6 @@ function requireLineEncoding(layer) {
     directRows: directTemporal || directQuantitative,
     directTemporal
   };
-}
-
-function readSeriesFields(rows, layer) {
-  const fields = [];
-  const values = new Map();
-
-  for (const channel of SERIES_CHANNELS) {
-    const encoding = layer.encoding?.[channel];
-
-    if (encoding?.field === undefined) continue;
-    const categorical = channel === "color"
-      ? ["nominal", "ordinal"].includes(encoding.fieldType)
-      : encoding.fieldType === "nominal";
-    if (!categorical) {
-      throw new Error(
-        `Line ${channel} encoding on mark "${layer.id}" must be categorical.`
-      );
-    }
-
-    if (!values.has(encoding.field)) {
-      fields.push(encoding.field);
-      values.set(encoding.field, readNominalField(rows, encoding.field));
-    }
-  }
-
-  return { fields, values };
 }
 
 function groupKey(values) {
@@ -148,14 +123,14 @@ function deriveCartesianLineSeries(rows, layer, options = {}) {
     validateAggregateFieldValues(rows, y.field, y.fieldType);
   }
   const xValues = x.fieldType === "temporal"
-    ? readTemporalField(rows, x.field)
+    ? readTemporalField(rows, x.field, x.temporalUnit)
     : readQuantitativeField(rows, x.field);
   const yValues = isAggregate
     ? undefined
     : y.fieldType === "temporal"
-      ? readTemporalField(rows, y.field)
+      ? readTemporalField(rows, y.field, y.temporalUnit)
       : readQuantitativeField(rows, y.field);
-  const seriesFields = readSeriesFields(rows, layer);
+  const seriesFields = validatePathSeriesAppearance(rows, layer);
   const binBoundaries = binnedAggregate
     ? options.xBinBoundaries ?? resolveLineBins(rows, layer).boundaries
     : undefined;
@@ -170,10 +145,10 @@ function deriveCartesianLineSeries(rows, layer, options = {}) {
     const orderValues = readQuantitativeField(rows, pathOrder.field);
     const groups = new Map();
     for (let index = 0; index < rows.length; index += 1) {
-      const dimensions = seriesFields.fields.map(
-        field => seriesFields.values.get(field)[index]
+      const dimensions = seriesFields.map(
+        field => rows[index][field]
       );
-      const series = groupedSeries(groups, seriesFields.fields, dimensions);
+      const series = groupedSeries(groups, seriesFields, dimensions);
       series.values.push({ x: xValues[index], y: yValues[index] });
       series.orderValues ??= [];
       series.orderValues.push(orderValues[index]);
@@ -197,10 +172,10 @@ function deriveCartesianLineSeries(rows, layer, options = {}) {
   if (directRows) {
     const groups = new Map();
     for (let index = 0; index < rows.length; index += 1) {
-      const dimensions = seriesFields.fields.map(
-        field => seriesFields.values.get(field)[index]
+      const dimensions = seriesFields.map(
+        field => rows[index][field]
       );
-      const series = groupedSeries(groups, seriesFields.fields, dimensions);
+      const series = groupedSeries(groups, seriesFields, dimensions);
       series.values.push({ x: xValues[index], y: yValues[index] });
     }
     const orderBy = directTemporal && y.fieldType === "temporal" ? "y" : "x";
@@ -220,8 +195,8 @@ function deriveCartesianLineSeries(rows, layer, options = {}) {
   const aggregateGroups = new Map();
 
   for (let index = 0; index < rows.length; index += 1) {
-    const dimensions = seriesFields.fields.map(
-      field => seriesFields.values.get(field)[index]
+    const dimensions = seriesFields.map(
+      field => rows[index][field]
     );
     const binIndex = binnedAggregate
       ? findHistogramBinIndex(xValues[index], binBoundaries)
@@ -255,7 +230,7 @@ function deriveCartesianLineSeries(rows, layer, options = {}) {
     if (value === undefined) continue;
     const series = groupedSeries(
       seriesGroups,
-      seriesFields.fields,
+      seriesFields,
       group.dimensions
     );
 
@@ -315,7 +290,7 @@ function readThetaValues(rows, encoding) {
     return readNominalField(rows, encoding.field);
   }
   return encoding.fieldType === "temporal"
-    ? readTemporalField(rows, encoding.field)
+    ? readTemporalField(rows, encoding.field, encoding.temporalUnit)
     : readQuantitativeField(rows, encoding.field);
 }
 
@@ -341,14 +316,14 @@ export function derivePolarLineSeries(rows, layer, { thetaDomain } = {}) {
   const thetaValues = readThetaValues(rows, theta);
   const radiusValues = readQuantitativeField(rows, radius.field);
   const sortValues = thetaOrder(thetaValues, theta.fieldType, thetaDomain);
-  const seriesFields = readSeriesFields(rows, layer);
+  const seriesFields = validatePathSeriesAppearance(rows, layer);
   const groups = new Map();
 
   for (let index = 0; index < rows.length; index += 1) {
-    const dimensions = seriesFields.fields.map(
-      field => seriesFields.values.get(field)[index]
+    const dimensions = seriesFields.map(
+      field => rows[index][field]
     );
-    const series = groupedSeries(groups, seriesFields.fields, dimensions);
+    const series = groupedSeries(groups, seriesFields, dimensions);
     series.values.push({
       theta: thetaValues[index],
       radius: radiusValues[index],
@@ -383,22 +358,4 @@ export function deriveLineSeries(rows, layer, options) {
   return polar
     ? derivePolarLineSeries(rows, layer, options)
     : deriveCartesianLineSeries(rows, layer, options);
-}
-
-export function deriveLineSeriesFieldValues(rows, layer, derived, field) {
-  const values = readQuantitativeField(rows, field);
-  if (values.some(value => value < 0)) {
-    throw new RangeError(`Line strokeWidth field "${field}" cannot contain negative values.`);
-  }
-  return cloneAndFreeze(derived.series.map(series => {
-    const matching = values.filter((_, index) => Object.entries(series.key)
-      .every(([key, value]) => rows[index]?.[key] === value));
-    const unique = [...new Set(matching)];
-    if (unique.length !== 1) {
-      throw new Error(
-        `Line strokeWidth field "${field}" must have one value within each series.`
-      );
-    }
-    return unique[0];
-  }));
 }

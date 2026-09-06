@@ -38,7 +38,7 @@ test("creates an inferred right-side grouped bar legend", () => {
   });
   assert.deepEqual(symbols.map(child => child.properties), [
     {
-      x: 588,
+      x: 588.25,
       y: 86,
       width: 14,
       height: 12,
@@ -47,7 +47,7 @@ test("creates an inferred right-side grouped bar legend", () => {
       strokeWidth: 0.5
     },
     {
-      x: 588,
+      x: 588.25,
       y: 114,
       width: 14,
       height: 12,
@@ -57,7 +57,7 @@ test("creates an inferred right-side grouped bar legend", () => {
     }
   ]);
   assert.deepEqual(labels.map(child => child.properties.text), ["men", "women"]);
-  assert.deepEqual(labels.map(child => child.properties.x), [610, 610]);
+  assert.deepEqual(labels.map(child => child.properties.x), [610.5, 610.5]);
   assert.deepEqual(labels.map(child => child.properties.y), [92, 120]);
   assert.equal(program.graphicSpec.objects.colorLegendTitle.properties.x, 588);
   assert.equal(program.graphicSpec.objects.colorLegendTitle.properties.y, 60);
@@ -70,11 +70,11 @@ test("rematerializes grouped legend layout after Canvas edits", () => {
 
   assert.equal(
     after.graphicSpec.objects.colorLegendSymbols.items[0].properties.x,
-    688
+    688.25
   );
   assert.equal(
     before.graphicSpec.objects.colorLegendSymbols.items[0].properties.x,
-    588
+    588.25
   );
 });
 
@@ -93,7 +93,7 @@ test("supports grouped legend appearance and explicit bottom placement", () => {
       graphicDrawOrder(bordered).indexOf("colorLegendSymbols"),
     true
   );
-  const bottom = groupedBars().createLegend({ position: "bottom" });
+  const bottom = groupedBars().createLegend({ position: "bottom", layout: "legacy-bottom" });
   assert.equal(
     bottom.graphicSpec.objects.colorLegendTitle.properties.y,
     408

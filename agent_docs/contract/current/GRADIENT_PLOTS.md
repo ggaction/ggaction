@@ -45,6 +45,9 @@ createGradientPlot({
   opacity `[0, 1]`, no strip outline, and an enabled median center rule with dark `1.5` pixel stroke.
 - Omitted guides create applicable axes, the default Cartesian grid, and a right-side neutral density legend. `false` omits
   the complete guide branch; nested `false` values omit their component.
+- Discovery 역할은 deferred owner다. 위치가 미완성이면 geometry와 guides를 만들지 않고 완료 시 기존 owner를
+  호출한다. 축·격자는 [공통 확보 계약](BASIC_CHARTS.md#facade-guide-reuse)으로 보완하며 density legend는
+  다른 owner/family의 color legend를 덮어쓰지 않는다. 별도 density scale ID는 equal-domain 재사용 근거가 아니다.
 - The wrapped hierarchy owns `createGradientProfileData`, `createRectMark`, position encodings,
   `materializeGradientPlotFill`, optional `createGradientPlotCenter`, and guide components.
 - A profile revision always reads the raw source dataset directly. Requested automatic parameters remain in provenance beside

@@ -1,3 +1,4 @@
+import { isSourceOwnedText } from "../../../grammar/text.js";
 import {
   isTransformedScaleType,
   resolveContinuousDomain,
@@ -21,7 +22,7 @@ export function resolveSeriesLayoutDomain({
     (_, index) => seriesLayouts[index] !== undefined
   );
   const directConsumers = valuesByConsumer.filter(
-    (_, index) => seriesLayouts[index] === undefined
+    ({ consumer }, index) => seriesLayouts[index] === undefined && !isSourceOwnedText(consumer.layer)
   );
   const compatibleDirect = directConsumers.every(({ consumer }) =>
     layoutConsumers.every(({ consumer: layoutConsumer }) => {

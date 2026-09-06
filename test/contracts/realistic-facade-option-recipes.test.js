@@ -36,7 +36,7 @@ const EXPECTED_INVENTORY_BY_ACTION = Object.freeze({
   createBoxPlot: Object.freeze({ paths: 30, literals: 32, typeLiterals: 12, diversity: 0 }),
   createGradientPlot: Object.freeze({ paths: 30, literals: 32, typeLiterals: 12, diversity: 0 }),
   createViolinPlot: Object.freeze({ paths: 39, literals: 35, typeLiterals: 13, diversity: 2 }),
-  createHeatmap: Object.freeze({ paths: 42, literals: 51, typeLiterals: 17, diversity: 2 }),
+  createHeatmap: Object.freeze({ paths: 43, literals: 52, typeLiterals: 17, diversity: 2 }),
   createHistogram: Object.freeze({ paths: 32, literals: 32, typeLiterals: 10, diversity: 2 })
 });
 
@@ -609,10 +609,10 @@ test("fits baseline and longest authentic titles across every eligible TT facade
   assert.equal(chartCount, 470);
 });
 
-test("locks the role-valid facade scale inventory at 173 paths and 182 literals", async () => {
+test("locks the role-valid facade scale inventory at 174 paths and 183 literals", async () => {
   const target = targetInventory(await inventoryPromise);
-  assert.equal(target.options.length, 173);
-  assert.equal(target.literals.length, 182);
+  assert.equal(target.options.length, 174);
+  assert.equal(target.literals.length, 183);
   assert.equal(target.diversity.length, 6);
   assert.equal(target.options.filter(option => option.path.endsWith(".unknown")).length, 0);
   assert.equal(target.literals.filter(requirement => {

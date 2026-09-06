@@ -115,8 +115,8 @@ test("requires an explicit id after the facade default is occupied", () => {
 test("rejects invalid scatter facade options atomically", () => {
   const source = base();
   assert.throws(
-    () => source.createScatterPlot({ x: "x", y: "y", point: { radius: 4 } }),
-    /Unknown createScatterPlot point option "radius"/
+    () => source.createScatterPlot({ x: "x", y: "y", point: { radius: -1 } }),
+    /radius/
   );
   assert.throws(
     () => source.createScatterPlot({
@@ -148,8 +148,8 @@ test("creates direct and grouped line plots through the approved hierarchy", () 
     "createLineMark",
     "encodeX",
     "encodeY",
-    "encodeColor",
     "encodeGroup",
+    "encodeColor",
     "encodeStrokeDash",
     "createGuides"
   ]);

@@ -85,11 +85,11 @@ function legend(groups, bounds, title = "sex") {
     items: groups.map((group, index) => ({
       label: group,
       color: COLORS[index % COLORS.length],
-      x,
+      x: x + 0.25,
       y: bounds.y + 46 + index * 28,
       width: 14,
       height: 12,
-      labelX: x + 22,
+      labelX: x + 22.5,
       labelY: bounds.y + 52 + index * 28
     }))
   };

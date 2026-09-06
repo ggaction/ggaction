@@ -37,13 +37,28 @@ test("matches the approved closed radar primitive exactly", () => {
   ), true);
 });
 
-test("records Polar line materialization under the public action hierarchy", () => {
-  const program = createJobsRadarChart(loadJobs());
-  const create = program.trace.children.find(node => node.op === "createLineMark");
-  const theta = program.trace.children.find(node => node.op === "encodeTheta");
-  const radius = program.trace.children.find(node => node.op === "encodeR");
+test("records Polar line materialization under the facade action hierarchy", () => {
+  const program = createGapminderPolarTrends(loadGapminder());
+  const facade = program.trace.children.find(node => node.op === "createPolarLinePlot");
+  const create = facade.children.find(node => node.op === "createLineMark");
+  const theta = facade.children.find(node => node.op === "encodeTheta");
+  const radius = facade.children.find(node => node.op === "encodeR");
 
-  assert.equal(create.args.closed, true);
+  assert.equal(create.args.closed, undefined);
   assert.equal(theta.children.some(node => node.op === "rematerializeLineMark"), false);
   assert.equal(radius.children.some(node => node.op === "rematerializeLineMark"), true);
+});
+
+test("records Radar Fold and Polar line ownership under one facade", () => {
+  const program = createJobsRadarChart(loadJobs());
+  const radar = program.trace.children.find(node => node.op === "createRadarPlot");
+  const polar = radar.children.find(node => node.op === "createPolarLinePlot");
+
+  assert.ok(polar);
+  assert.equal(radar.children.some(node => node.op === "createFoldData"), false);
+  assert.deepEqual(polar.children.map(node => node.op), [
+    "createLineMark", "encodeTheta", "encodeR", "encodeGroup", "encodeColor",
+    "createGuides"
+  ]);
+  assert.equal(polar.children[0].args.closed, true);
 });

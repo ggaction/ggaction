@@ -1,0 +1,33 @@
+{
+  "status": "passed",
+  "runtimeCommit": "7d5982aaa472c234182de917251ff973ff913f1c",
+  "sourceTree": "1e5a95d028132ffaaf6464b95760ea916b85e155",
+  "typesTree": "2028a79cd493f64f3a739414e20491b5dd783f7a",
+  "additionalTestCommit": "42531150",
+  "normal": 2756,
+  "realistic": 242,
+  "render": 205,
+  "browser": 63,
+  "packageBrowser": 1,
+  "builtDocPages": 125,
+  "coverage": {
+    "lines": 95.16,
+    "branches": 91.7,
+    "functions": 98.79,
+    "criticalFloors": 74
+  },
+  "packageEvidence": "package-labels-results.json",
+  "packageSha256": "4eaa9a4a34cecc7b4bb40529324b70d03dfdb9f1a22aa697f86f8a362ca1abcf",
+  "currentDirectActions": 181,
+  "plannedActions": 0,
+  "plannedCapabilities": 0,
+  "phaseVisualTargets": 20,
+  "galleryVariants": 168,
+  "activeReviewVariants": 0,
+  "closedIssues": [
+    80,
+    81
+  ],
+  "releaseStatus": "not-released",
+  "remainingScope": "Roadmap 6 phases 5–11 and the authorized 0.0.13 release; F20 excluded"
+}

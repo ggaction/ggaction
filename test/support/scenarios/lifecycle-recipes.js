@@ -92,6 +92,7 @@ function lifecyclePurpose(recipeId, factors) {
     "action-derived-data": "Derived-data analysis",
     "action-scatter-facade": "Multivariate relationship",
     "action-line-facade": "Temporal trend",
+    "action-area-facade": "Temporal baseline area",
     "action-bar-facade": "Grouped comparison",
     "action-parallel-facade": "Multivariate profile",
     "action-mark-lifecycle": "Ranged observations",
@@ -105,6 +106,8 @@ function lifecyclePurpose(recipeId, factors) {
     "action-selection-lifecycle": "Selected observations",
     "action-composition-lifecycle": "Composition comparison",
     "action-facet-scale-lifecycle": "Faceted comparison",
+    "action-facet-grid-lifecycle": "Row and column comparison",
+    "action-repeat-charts-lifecycle": "Repeated metric comparison",
     "action-direct-data-resources": "Derived resource analysis",
     "action-direct-point-text": "Annotated observations",
     "action-direct-ranged-marks": "Ranged comparison",
@@ -149,6 +152,15 @@ function temporalRows(dataset = "zoo-temporal-boundaries") {
     order: index,
     value: row.value + (index % 3) * 0.25
   }));
+}
+
+function temporalPathRows(dataset = "zoo-temporal-boundaries") {
+  const rows = temporalRows(dataset);
+  const counts = new Map();
+  for (const row of rows) counts.set(row.group, (counts.get(row.group) ?? 0) + 1);
+  const grouped = rows.filter(row => counts.get(row.group) >= 2);
+  if (grouped.length >= 2) return grouped;
+  return rows.map(row => ({ ...row, group: "All" }));
 }
 
 function styleRows(dataset = "zoo-multi-encoding-styles") {
@@ -258,8 +270,19 @@ function buildScatterFacade(factors) {
     .createTitle({ text: lifecycleTitle(factors, "Multivariate relationship") });
 }
 
+function buildAreaFacade(factors) {
+  return chart().createCanvas(cartesianCanvas(factors))
+    .createData({ id: "areaRows", values: temporalPathRows(factors.dataset) })
+    .createAreaPlot({ id: "areaFacade", x: { field: "time", fieldType: "temporal" },
+      y: "value", groupBy: "group", baseline: factors.baseline,
+      color: { field: "group", scale: { palette: factors.palette } },
+      area: { curve: factors.curve }, guides: { legend: { position: "right" } } })
+    .layoutSeries({ target: "areaFacade", mode: "overlay" })
+    .createTitle({ text: lifecycleTitle(factors, "Temporal baseline area") });
+}
+
 function buildLineFacade(factors) {
-  const rows = temporalRows(factors.dataset);
+  const rows = temporalPathRows(factors.dataset);
   const times = [...new Set(rows.map(row => Date.parse(row.time)))]
     .sort((left, right) => left - right);
   const timeTicks = times.length < 2 ? times : [times[0], times.at(-1)];
@@ -620,11 +643,15 @@ function buildViolinLifecycle(factors) {
 function buildCartesianGuideLifecycle(factors) {
   let program = chart()
     .createCanvas(factors.dataset.startsWith("tt-")
-      ? cartesianCanvas(factors)
+      ? {
+          ...cartesianCanvas(factors),
+          width: 4400,
+          margin: { top: 460, right: 1000, bottom: 520, left: 1000 }
+        }
       : {
           width: 1220,
-          height: 680,
-          margin: { top: 150, right: 310, bottom: 170, left: 230 }
+          height: 820,
+          margin: { top: 150, right: 310, bottom: 310, left: 230 }
         })
     .createData({ id: "styles", values: styleRows(factors.dataset) })
     .createPointMark({ id: "guidePoints", opacity: 0.68 })
@@ -854,6 +881,9 @@ function buildCompositionLifecycle(factors) {
       padding: factors.padding,
       align: factors.align
     })
+    .insertCompositionChild({ id: "temporary", program: replacement, after: "left" })
+    .reorderCompositionChildren({ order: ["right", "left", "temporary"] })
+    .removeCompositionChild({ target: "temporary" })
     .replaceCompositionChild({ target: "right", program: replacement });
 }
 
@@ -896,8 +926,58 @@ function buildFacetScaleLifecycle(factors) {
     .editFacetGuides({ axes: factors.axes });
 }
 
-function buildDirectDataResources(factors) {
+function facetGridUnit(factors) {
+  const rows = lifecycleSourceRows(factors.dataset, "facet", "zoo-facet-imbalance");
+  return chart()
+    .createCanvas(facetLifecycleCanvas({ ...factors, columns: 2 }))
+    .createData({ id: "gridRows", values: rows })
+    .createPointMark({ id: "gridPoints" })
+    .encodeX({ target: "gridPoints", field: "x", scale: { zero: false } })
+    .encodeY({ target: "gridPoints", field: "y", scale: { zero: false } })
+    .encodeColor({ target: "gridPoints", field: "category" });
+}
+
+function buildFacetGridLifecycle(factors) {
+  const source = facetGridUnit(factors)
+    .createTitle({ text: lifecycleTitle(factors, "Row and column comparison") });
+  return source
+    .facetGrid({
+      id: "lifecycleGrid",
+      rows: { field: "facet" },
+      columns: { field: "category" },
+      combinations: factors.combinations,
+      guides: { legend: false }
+    })
+    .editFacetSource({ program: source });
+}
+
+function buildRepeatChartsLifecycle(factors) {
   const rows = styleRows(factors.dataset);
+  return chart()
+    .createCanvas(cartesianCanvas(factors))
+    .createData({ id: "repeatRows", values: rows })
+    .createPointMark({ id: "repeatPoints" })
+    .encodeX({ target: "repeatPoints", field: "x", scale: { zero: false } })
+    .encodeY({ target: "repeatPoints", field: "positive", scale: { zero: false } })
+    .createTitle({ text: lifecycleTitle(factors, "Repeated metric comparison") })
+    .repeatCharts({
+      id: "lifecycleRepeat",
+      target: "repeatPoints",
+      channel: "x",
+      fields: ["x", "positive"],
+      columns: factors.columns,
+      scales: { x: factors.xScale }
+    });
+}
+
+function buildDirectDataResources(factors) {
+  const rows = styleRows(factors.dataset).map(row => ({
+    ...row,
+    endpointStart: row.positive - 1,
+    intervalLower: row.x - 1,
+    intervalCenter: row.x,
+    intervalUpper: row.x + 1
+  }));
   const xValues = rows.map(row => row.x);
   const width = factors.dataset.startsWith("tt-") ? factors.width * 2 : factors.width;
   const ordered = [...xValues].sort((left, right) => left - right);
@@ -930,6 +1010,12 @@ function buildDirectDataResources(factors) {
       bins: factors.bins,
       includeEmpty: factors.includeEmpty
     })
+    .createECDFData({
+      id: "directECDFData",
+      source: "directSource",
+      field: "x",
+      groupBy: "color"
+    })
     .createDerivedData({
       id: "declaredFilter",
       source: "directSource",
@@ -946,6 +1032,61 @@ function buildDirectDataResources(factors) {
     .createPointMark({ id: "resourcePoints", data: "directSource" })
     .encodeX({ target: "resourcePoints", field: "x" })
     .encodeY({ target: "resourcePoints", field: "positive" })
+    .createDotPlot({
+      id: "directDot",
+      data: "directSource",
+      category: "category",
+      value: "x",
+      summary: "mean",
+      guides: false
+    })
+    .createLollipopPlot({
+      id: "directLollipop",
+      data: "directSource",
+      category: "category",
+      value: "positive",
+      summary: "mean",
+      guides: false
+    })
+    .createDumbbellPlot({
+      id: "directDumbbell",
+      data: "directSource",
+      category: "category",
+      start: "x",
+      end: "positive",
+      summary: "mean",
+      guides: false
+    })
+    .editEndpointPlot({
+      target: "directDumbbell",
+      start: "endpointStart"
+    })
+    .createIntervalPlot({
+      id: "directIntervalPlot",
+      data: "directSource",
+      x: { field: "category", fieldType: "nominal" },
+      y: {
+        center: "intervalCenter",
+        lower: "intervalLower",
+        upper: "intervalUpper"
+      },
+      guides: false
+    })
+    .createRegressionPlot({
+      id: "directRegressionPlot",
+      data: "directSource",
+      x: "x",
+      y: "positive",
+      guides: false
+    })
+    .createECDFPlot({
+      id: "directECDFPlot",
+      data: "directSource",
+      field: "x",
+      groupBy: "color",
+      guides: false
+    })
+    .editECDFPlot({ target: "directECDFPlot", groupBy: false })
     .createTitle({ text: lifecycleTitle(factors, "Derived resource analysis") });
 }
 
@@ -1022,6 +1163,7 @@ function buildDirectRangedMarks(factors) {
     .encodeStroke({ target: "directRules", value: factors.stroke })
     .encodeStrokeWidth({ target: "directRules", field: "position" })
     .encodeOpacity({ target: "directRules", value: factors.opacity })
+    .editRuleMark({ target: "directRules", stroke: factors.stroke, opacity: factors.opacity })
     .createRectMark({ id: "directRects", data: "directRanges", opacity: 0.12 })
     .encodeX({ target: "directRects", field: "lower", scale: { id: "x" } })
     .encodeX2({ target: "directRects", field: "upper" })
@@ -1135,6 +1277,12 @@ function buildDirectParallel(factors) {
       key: "id",
       missing: factors.missing
     })
+    .createParallelAxes()
+    .editParallelAxis({ field: "x", title: { text: "Primary dimension" }, line: { lineWidth: 2 } })
+    .removeParallelAxis({ field: "positive" })
+    .createParallelAxis({ field: "positive" })
+    .removeParallelAxes()
+    .createParallelAxes()
     .createTitle({ text: lifecycleTitle(factors, "Parallel multivariate profile") });
 }
 
@@ -1259,19 +1407,39 @@ function buildDirectAxisParts(factors) {
 }
 
 function buildDirectPolarParts(factors) {
-  const rows = lifecycleSourceRows(factors.dataset, "polar", "zoo-polar-wrap");
+  const rows = lifecycleSourceRows(factors.dataset, "polar", "zoo-polar-wrap")
+    .map(row => ({ ...row, raincloudGroup: "All" }));
+  const binding = { coordinate: "polar" };
+  const theta = { ...binding, scale: "theta" };
+  const radial = { ...binding, scale: "radius", angle: factors.angle };
+  const tickMode = field => factors.count === 4 ? { count: factors.count } : {
+    values: [Math.min(...rows.map(row => row[field])), Math.max(...rows.map(row => row[field]))]
+  };
+  const labels = { color: "#334155", offset: 12, fontSize: 11, fontFamily: "sans-serif", fontWeight: 600,
+    format: factors.count === 4 ? "auto" : { decimals: 1 } };
+  const title = { color: "#0f172a", fontSize: 13, fontFamily: "sans-serif", fontWeight: 600 };
   return chart()
     .createCanvas(polarCanvas(factors, true))
     .createData({ id: "directPolarRows", values: rows })
-    .createPointMark({ id: "directPolarPoints" })
-    .encodeTheta({ target: "directPolarPoints", field: "angle" })
-    .encodeR({
-      target: "directPolarPoints",
-      field: "radius",
-      scale: { zero: true }
+    .createPolarScatterPlot({
+      id: "directPolarPoints",
+      theta: "angle",
+      radius: { field: "radius", scale: { zero: true } },
+      point: { radius: 3 },
+      guides: false
     })
     .createThetaAxis()
     .createRadialAxis({ angle: factors.angle })
+    .removeThetaAxis()
+    .removeRadialAxis()
+    .createThetaAxisLine({ ...theta, color: "#334155", lineWidth: 2 })
+    .createThetaAxisTicks({ ...theta, ...tickMode("angle"), length: 7, color: "#334155", lineWidth: 1 })
+    .createThetaAxisLabels({ ...theta, ...tickMode("angle"), ...labels })
+    .createThetaAxisTitle({ ...theta, ...title, text: "Direct angle", offset: 28 })
+    .createRadialAxisLine({ ...radial, color: "#334155", lineWidth: 2 })
+    .createRadialAxisTicks({ ...radial, ...tickMode("radius"), length: 7, color: "#334155", lineWidth: 1 })
+    .createRadialAxisLabels({ ...radial, ...tickMode("radius"), ...labels })
+    .createRadialAxisTitle({ ...radial, ...title, text: "Direct radius", offset: 8, position: factors.angle === 45 ? "inside" : "outside" })
     .editThetaAxisLine({ lineWidth: 2 })
     .editRadialAxisLine({ color: "#334155" })
     .editThetaAxisTicks({ count: factors.count, length: 7 })
@@ -1282,7 +1450,77 @@ function buildDirectPolarParts(factors) {
     .editRadialAxisTitle({ text: "Direct radius", position: "outside" })
     .createThetaGrid({ count: factors.count, strokeDash: [3, 3] })
     .createRadialGrid({ count: factors.count, lineWidth: 1.25 })
-    .createTitle({ text: lifecycleTitle(factors, "Polar guide components") });
+    .createTitle({ text: lifecycleTitle(factors, "Polar guide components") })
+    .createPolarLinePlot({
+      id: "directPolarLine",
+      data: "directPolarRows",
+      coordinate: "polar",
+      theta: { field: "angle", scale: { id: "theta" } },
+      radius: { field: "radius", scale: { id: "radius", zero: true } },
+      line: { strokeWidth: 1.5 },
+      guides: false
+    })
+    .createCoordinate({ id: "directRadarCoordinate", type: "polar" })
+    .createRadarPlot({
+      id: "directRadar",
+      data: "directPolarRows",
+      coordinate: "directRadarCoordinate",
+      category: { field: "angle", scale: { id: "directRadarTheta" } },
+      value: { field: "radius", scale: { id: "directRadarRadius" } },
+      order: [...new Set(rows.map(row => row.angle))],
+      line: { strokeWidth: 1.5 },
+      guides: false
+    })
+    .createRugPlot({
+      id: "directRug",
+      data: "directPolarRows",
+      x: { field: "radius", scale: { id: "directRugX", zero: true } },
+      edge: "bottom",
+      tick: { length: 12, strokeWidth: 1.25 },
+      guides: false
+    })
+    .createStripPlot({
+      id: "directStrip",
+      data: "directPolarRows",
+      x: { field: "radius", scale: { id: "directStripX", zero: true } },
+      y: {
+        field: "angle",
+        fieldType: "nominal",
+        scale: { id: "directStripY", type: "band" }
+      },
+      point: { radius: 3, opacity: 0.6 },
+      guides: false
+    })
+    .packPoints({ target: "directStrip", channel: "y", overflow: "overlap" })
+    .removePointPacking({ target: "directStrip" })
+    .createBeeswarmPlot({
+      id: "directBeeswarm",
+      data: "directPolarRows",
+      x: { field: "radius", scale: { id: "directBeeswarmX", zero: true } },
+      y: {
+        field: "angle",
+        fieldType: "nominal",
+        scale: { id: "directBeeswarmY", type: "band" }
+      },
+      point: { radius: 3, opacity: 0.6 },
+      packing: { overflow: "overlap" },
+      guides: false
+    })
+    .createRaincloudPlot({
+      id: "directRaincloud",
+      data: "directPolarRows",
+      category: { field: "raincloudGroup", fieldType: "nominal" },
+      value: { field: "radius", fieldType: "quantitative" },
+      density: { steps: 24 },
+      points: { type: "beeswarm", packing: { overflow: "overlap" } },
+      guides: false
+    })
+    .editRaincloudPlot({
+      target: "directRaincloud",
+      side: "after",
+      summary: { type: "interval", center: "mean", extent: "stderr" },
+      points: { type: "strip", jitter: false }
+    });
 }
 
 export const LIFECYCLE_SCENARIO_RECIPES = Object.freeze([
@@ -1297,6 +1535,9 @@ export const LIFECYCLE_SCENARIO_RECIPES = Object.freeze([
   recipe("action-scatter-facade", ["zoo-multi-encoding-styles"], {
     nice: [false, true], palette: ["tableau10", "set2"], radius: [3, 6]
   }, buildScatterFacade),
+  recipe("action-area-facade", ["zoo-temporal-boundaries"], {
+    baseline: [0, 1], palette: ["tableau10", "dark2"], curve: ["linear", "step"]
+  }, buildAreaFacade),
   recipe("action-line-facade", ["zoo-temporal-boundaries"], {
     reverse: [false, true], palette: ["tableau10", "dark2"],
     curve: ["linear", "step"]
@@ -1345,6 +1586,12 @@ export const LIFECYCLE_SCENARIO_RECIPES = Object.freeze([
   recipe("action-facet-scale-lifecycle", ["zoo-facet-imbalance"], {
     columns: [2, 3], yScale: ["shared", "independent"], axes: ["each", "outer"]
   }, buildFacetScaleLifecycle),
+  recipe("action-facet-grid-lifecycle", ["zoo-facet-imbalance"], {
+    combinations: ["observed", "full"]
+  }, buildFacetGridLifecycle),
+  recipe("action-repeat-charts-lifecycle", ["zoo-multi-encoding-styles"], {
+    columns: [1, 2], xScale: ["independent", "shared"]
+  }, buildRepeatChartsLifecycle),
   recipe("action-direct-data-resources", ["zoo-multi-encoding-styles"], {
     width: [920, 1040], background: ["#ffffff", "#f8fafc"],
     bandwidth: [0.35, 0.7], steps: [24, 48], bins: [3, 5],
@@ -1389,6 +1636,7 @@ const REALISTIC_LIFECYCLE_KINDS = Object.freeze({
   "action-derived-data": "temporal",
   "action-scatter-facade": "style",
   "action-line-facade": "temporal",
+  "action-area-facade": "temporal",
   "action-bar-facade": "bar",
   "action-parallel-facade": "parallel",
   "action-mark-lifecycle": "path",
@@ -1403,6 +1651,8 @@ const REALISTIC_LIFECYCLE_KINDS = Object.freeze({
   "action-selection-lifecycle": "style",
   "action-composition-lifecycle": "style",
   "action-facet-scale-lifecycle": "facet",
+  "action-facet-grid-lifecycle": "facet",
+  "action-repeat-charts-lifecycle": "style",
   "action-direct-data-resources": "style",
   "action-direct-point-text": "style",
   "action-direct-ranged-marks": "interval",
@@ -1423,6 +1673,8 @@ const COMPOSITE_LIFECYCLES = new Set([
   "action-selection-lifecycle",
   "action-composition-lifecycle",
   "action-facet-scale-lifecycle",
+  "action-facet-grid-lifecycle",
+  "action-repeat-charts-lifecycle",
   "action-direct-data-resources"
 ]);
 
@@ -1474,6 +1726,7 @@ function realisticLifecycleMetadata(base, factors) {
     "action-derived-data": ["create", "filter"],
     "action-scatter-facade": ["create", "remove"],
     "action-line-facade": ["create"],
+    "action-area-facade": ["create"],
     "action-bar-facade": ["create"],
     "action-parallel-facade": ["create"],
     "action-mark-lifecycle": ["create", "edit", "remove"],
@@ -1486,19 +1739,21 @@ function realisticLifecycleMetadata(base, factors) {
     "action-cartesian-guides": ["create", "edit", "remove"],
     "action-polar-guides": ["create", "edit"],
     "action-selection-lifecycle": ["create", "remove", "filter", "select", "highlight"],
-    "action-composition-lifecycle": ["edit", "compose", "reassign"],
+    "action-composition-lifecycle": ["edit", "remove", "compose", "reassign"],
     "action-facet-scale-lifecycle": ["create", "edit", "compose"],
+    "action-facet-grid-lifecycle": ["create", "edit", "compose"],
+    "action-repeat-charts-lifecycle": ["create", "compose"],
     "action-direct-data-resources": ["create", "edit"],
     "action-direct-point-text": ["create", "edit"],
     "action-direct-ranged-marks": ["create", "edit"],
     "action-direct-bar-offsets": ["create", "edit"],
     "action-direct-histogram": ["create", "edit"],
-    "action-direct-parallel": ["create"],
+    "action-direct-parallel": ["create", "edit", "remove"],
     "action-direct-regression-components": ["create"],
     "action-direct-guide-aggregates": ["create", "edit"],
     "action-direct-axis-facades": ["create"],
     "action-direct-axis-parts": ["create"],
-    "action-direct-polar-parts": ["create", "edit"]
+    "action-direct-polar-parts": ["create", "edit", "remove"]
   }[base.id];
   const unit = measure?.unit === undefined ? "" : ` (${measure.unit})`;
   const sampleText = view.sample === undefined
@@ -1535,6 +1790,7 @@ function lifecycleSignature(base, factors) {
       "createScatterPlot", "encodePointRadius", "removePointRadius", "removeEncoding"
     ],
     "action-line-facade": ["createLinePlot"],
+    "action-area-facade": ["createAreaPlot", "layoutSeries"],
     "action-bar-facade": ["createBarPlot"],
     "action-parallel-facade": ["createParallelCoordinates"],
     "action-mark-lifecycle": [
@@ -1558,9 +1814,12 @@ function lifecycleSignature(base, factors) {
       "filterMarks", "highlightMarks", "removeMarkHighlight"
     ],
     "action-composition-lifecycle": [
-      "hconcat", "editCompositionLayout", "replaceCompositionChild"
+      "hconcat", "editCompositionLayout", "insertCompositionChild",
+      "reorderCompositionChildren", "removeCompositionChild", "replaceCompositionChild"
     ],
     "action-facet-scale-lifecycle": ["facet", "editFacetScales", "editFacetGuides"],
+    "action-facet-grid-lifecycle": ["facetGrid", "editFacetSource"],
+    "action-repeat-charts-lifecycle": ["repeatCharts"],
     "action-direct-data-resources": [
       "editCanvas", "createDensityData", "createBin2DData", "createDerivedData", "createScale"
     ],
@@ -1568,12 +1827,13 @@ function lifecycleSignature(base, factors) {
       "encodeRadius", "encodeOpacity", "createTextMark", "encodeText", "editTextMark"
     ],
     "action-direct-ranged-marks": [
-      "createRuleMark", "encodeX2", "encodeY2", "createRectMark", "editRectMark",
+      "createRuleMark", "editRuleMark", "encodeX2", "encodeY2", "createRectMark", "editRectMark",
       "createAreaMark", "encodeXRange"
     ],
     "action-direct-histogram": ["createBarMark", "encodeHistogram", "editBarMark"],
     "action-direct-parallel": [
-      "createCoordinate", "createLineMark", "encodeParallelCoordinates"
+      "createCoordinate", "createLineMark", "encodeParallelCoordinates",
+      "createParallelAxes", "createParallelAxis", "editParallelAxis", "removeParallelAxis", "removeParallelAxes"
     ],
     "action-direct-regression-components": [
       "createRegressionData", "createRegressionBand", "createRegressionLine"
@@ -1587,6 +1847,11 @@ function lifecycleSignature(base, factors) {
       "createXAxis", "createYAxis", "createHorizontalGrid", "createVerticalGrid"
     ],
     "action-direct-polar-parts": [
+      "createPolarScatterPlot", "createPolarLinePlot", "createRadarPlot",
+      "createRugPlot", "createStripPlot", "packPoints", "removePointPacking",
+      "createBeeswarmPlot", "createRaincloudPlot", "editRaincloudPlot",
+      "createThetaAxisLine", "createThetaAxisTicks", "createThetaAxisLabels", "createThetaAxisTitle",
+      "createRadialAxisLine", "createRadialAxisTicks", "createRadialAxisLabels", "createRadialAxisTitle",
       "createThetaAxis", "createRadialAxis", "editThetaAxisLine", "editRadialAxisLine",
       "editThetaAxisTicks", "editRadialAxisTicks", "editThetaAxisLabels",
       "editRadialAxisLabels", "editThetaAxisTitle", "editRadialAxisTitle",
@@ -1631,7 +1896,8 @@ function observeLifecycleFeatures(base, program, factors) {
     features.push("lifecycle:create");
   }
   if ([...operations].some(value =>
-    value.startsWith("edit") || value === "jitterPoints" || value === "orderCategories"
+    value.startsWith("edit") || value === "jitterPoints" || value === "packPoints" ||
+      value === "orderCategories"
   )) features.push("lifecycle:edit");
   if ([...operations].some(value => value.startsWith("remove"))) {
     features.push("lifecycle:remove");
@@ -1643,7 +1909,11 @@ function observeLifecycleFeatures(base, program, factors) {
   if (operations.has("highlightMarks") || operations.has("removeMarkHighlight")) {
     features.push("lifecycle:highlight");
   }
-  if (["facet", "hconcat", "vconcat", "replaceCompositionChild", "editFacetScales"]
+  if ([
+    "facet", "facetGrid", "repeatCharts", "hconcat", "vconcat",
+    "replaceCompositionChild", "insertCompositionChild", "removeCompositionChild",
+    "reorderCompositionChildren", "editFacetScales"
+  ]
     .some(value => operations.has(value))) {
     features.push("lifecycle:compose");
   }
@@ -1798,7 +2068,7 @@ export const REALISTIC_LIFECYCLE_REQUIRED_FEATURES = Object.freeze([
 export const LIFECYCLE_EXPECTED_ACTIONS = Object.freeze([
   "filterData", "createRegressionData", "createWindowData", "createTimeUnitData",
   "createIntervalData", "createTickMark", "editTickMark", "removeMark",
-  "editAreaMark", "encodeShape", "encodeAngle", "removePointRadius",
+  "editAreaMark", "editRuleMark", "encodeShape", "encodeAngle", "removePointRadius",
   "encodeYOffset", "encodeParallelCoordinates", "removeEncoding", "encodeHorizon",
   "editHorizon", "createRegression", "editRegression", "editErrorBar",
   "editErrorBand", "editErrorBandBoundary", "editBoxPlot", "createGradientPlot",
@@ -1811,5 +2081,12 @@ export const LIFECYCLE_EXPECTED_ACTIONS = Object.freeze([
   "createRegressionLine", "editRegressionLine", "filterMarks",
   "removeMarkHighlight", "highlightMarks", "editThetaAxis", "editRadialAxis",
   "editThetaGrid", "editRadialGrid", "replaceCompositionChild", "editFacetScales",
-  "createScatterPlot", "createLinePlot", "createBarPlot", "createParallelCoordinates"
+  "facetGrid", "repeatCharts", "editFacetSource", "insertCompositionChild",
+  "removeCompositionChild", "reorderCompositionChildren",
+  "createScatterPlot", "createLinePlot", "createAreaPlot", "layoutSeries", "createBarPlot", "createParallelCoordinates",
+  "createRugPlot", "createStripPlot", "packPoints", "removePointPacking",
+  "createBeeswarmPlot", "createRaincloudPlot", "editRaincloudPlot",
+  "createECDFData", "createDotPlot",
+  "createLollipopPlot", "createDumbbellPlot", "editEndpointPlot",
+  "createECDFPlot", "editECDFPlot", "createIntervalPlot", "createRegressionPlot"
 ]);

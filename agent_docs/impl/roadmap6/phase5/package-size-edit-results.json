@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "scope": "standalone-size-legend-editing",
+  "artifact": {
+    "filename": "ggaction-0.0.12.tgz",
+    "sha256": "6066f782ee5e3eaccfa82a5e8dc638e0f0c13cd8c337baf5b258565d9740e9ce",
+    "entries": 447,
+    "packedBytes": 502536,
+    "unpackedBytes": 2406784
+  },
+  "status": "passed",
+  "checks": [
+    "node-runtime-and-renderers",
+    "mcp",
+    "strict-typescript-root-exports",
+    "installed-tutorials",
+    "browser-bundle-limits"
+  ],
+  "browserBundles": {
+    "full": {
+      "specifier": "ggaction",
+      "chunks": 1,
+      "modules": 394,
+      "minifiedBytes": 941428,
+      "gzipBytes": 249699
+    },
+    "basic": {
+      "specifier": "ggaction/basic",
+      "chunks": 1,
+      "modules": 237,
+      "minifiedBytes": 502055,
+      "gzipBytes": 137576
+    },
+    "svg": {
+      "specifier": "ggaction/svg",
+      "chunks": 1,
+      "modules": 15,
+      "minifiedBytes": 19840,
+      "gzipBytes": 6437
+    }
+  }
+}

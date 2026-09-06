@@ -1,3 +1,4 @@
+import { isSourceOwnedText } from "../../../grammar/text.js";
 import { validateUserId } from "../../../core/identifiers.js";
 import {
   validateGeneratedItemLimit,
@@ -126,7 +127,7 @@ export function validateGridEditArgs(args, operation) {
 export function resolveGridResources(program, direction, args) {
   const { channel } = gridNames(direction);
   let layers = program.semanticSpec.layers.filter(
-    layer => layer.encoding?.[channel]?.scale !== undefined
+    layer => !isSourceOwnedText(layer) && layer.encoding?.[channel]?.scale !== undefined
   );
   if (layers.length === 0) throw new Error(`${direction} grid requires a ${channel} encoding.`);
   const requestedCoordinate = args.coordinate === undefined
@@ -167,7 +168,11 @@ export function resolveGridResources(program, direction, args) {
   ) {
     throw new Error(`${direction} grid requires resolved continuous scale "${scale}".`);
   }
-  const related = new Set(layers.flatMap(layer => {
+  const sourceIds = new Set(layers.map(layer => layer.id));
+  const relatedLayers = [...layers, ...program.semanticSpec.layers.filter(layer =>
+    isSourceOwnedText(layer) && sourceIds.has(layer.source)
+  )];
+  const related = new Set(relatedLayers.flatMap(layer => {
     const leader = program.materializationConfigs.labelLayouts?.[layer.id]?.leaderId;
     return leader === undefined ? [layer.id] : [leader, layer.id];
   }));

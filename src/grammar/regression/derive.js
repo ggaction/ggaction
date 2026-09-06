@@ -24,6 +24,8 @@ export function deriveRegression(values, {
   method,
   degree,
   span,
+  confidenceMethod,
+  level,
   confidence,
   interval
 } = {}) {
@@ -39,6 +41,8 @@ export function deriveRegression(values, {
     method,
     degree,
     span,
+    confidenceMethod,
+    level,
     confidence,
     interval
   });

@@ -1,0 +1,64 @@
+{
+  "version": 1,
+  "sourceCommit": "6064c8c17ac49bbc873659dbfe68ff837c0132ad",
+  "runtimeSourceTree": "738c96ce0bc4e9dc4dfa3301a2ef2087f7045a02",
+  "typesTree": "1ab95e7b2706f9c13de9e553b446283664130274",
+  "knowledgeTree": "928b05ed2338692c5f01d4d798d26f938d8b8efd",
+  "environment": {
+    "node": "v22.23.2",
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "package": {
+    "name": "ggaction",
+    "version": "0.0.12",
+    "filename": "ggaction-0.0.12.tgz",
+    "sha1": "71900213d27ba90133b94fe134153ecc8112943b",
+    "sha256": "22852f2b09f6c857e141ab7606c12740f8da92f619788f457fd7fe3f209978f2",
+    "packedBytes": 529516,
+    "unpackedBytes": 2524769,
+    "entries": 461
+  },
+  "installedNodeMCPTypesAndTutorials": "passed",
+  "bundles": [
+    {
+      "specifier": "ggaction",
+      "chunks": 1,
+      "modules": 408,
+      "minifiedBytes": 992548,
+      "gzipBytes": 265859,
+      "limit": 267000,
+      "passed": true
+    },
+    {
+      "specifier": "ggaction/basic",
+      "chunks": 1,
+      "modules": 251,
+      "minifiedBytes": 536238,
+      "gzipBytes": 147407,
+      "limit": 148000,
+      "passed": true
+    },
+    {
+      "specifier": "ggaction/svg",
+      "chunks": 1,
+      "modules": 15,
+      "minifiedBytes": 19840,
+      "gzipBytes": 6437,
+      "limit": 25000,
+      "passed": true
+    }
+  ],
+  "installedBrowser": {
+    "tests": 1,
+    "passed": 1,
+    "failed": 0,
+    "exactTarball": true
+  },
+  "validation": {
+    "tests": { "total": 3062, "passed": 3062, "failed": 0 },
+    "render": { "total": 208, "passed": 208, "failed": 0, "galleryVariants": 171 },
+    "coverage": { "lines": 95.54, "branches": 92.56, "functions": 98.98, "criticalFloors": 88 },
+    "docs": { "sourceTests": 47, "builtPages": 125, "viewports": [320, 390, 768] }
+  }
+}

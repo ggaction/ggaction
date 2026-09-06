@@ -71,7 +71,7 @@ test("locks overlay bars to one shared band without automatic opacity", () => {
     assert.equal(partition[0].x, partition[1].x);
     assert.equal(partition[0].width, partition[1].width);
   }
-  assert.equal(encoding.color.layout, "overlay");
+  assert.equal(program.semanticSpec.layers[0].layout.mode, "overlay");
   assert.equal(encoding.xOffset, undefined);
   assert.equal(program.semanticSpec.scales.some(scale => scale.id === "xOffset"), false);
   assert.equal(
@@ -103,8 +103,8 @@ test("locks diverging bars to separate positive and negative accumulation", () =
   assert.equal(values.scales.y.domain[0] < 0, true);
   assert.equal(values.scales.y.domain[1] > 0, true);
   assert.equal(encoding.y.field, "signedPerc");
-  assert.equal(encoding.y.stack, "zero");
-  assert.equal(encoding.color.layout, "diverging");
+  assert.equal(encoding.y.stack, undefined);
+  assert.equal(program.semanticSpec.layers[0].layout.mode, "diverging");
   for (const year of values.years) {
     const partition = values.rects.filter(rect => rect.year === year);
     assert.deepEqual(partition.map(rect => rect.sex), ["men", "women"]);
@@ -359,7 +359,7 @@ test("locks temporal x spacing and grouped vertical bar geometry", () => {
   assert.equal(layer.encoding.x.field, "year");
   assert.equal(layer.encoding.x.fieldType, "temporal");
   assert.equal(layer.encoding.y.fieldType, "quantitative");
-  assert.equal(layer.encoding.color.layout, "group");
+  assert.equal(layer.layout.mode, "group");
   assert.equal(layer.mark.orientation, undefined);
   assert.deepEqual(graphicProperties(program), expectedProperties(values));
 });
@@ -390,7 +390,7 @@ test("locks horizontal stacked bar geometry and directional guides", () => {
   }
   assert.equal(layer.encoding.x.fieldType, "quantitative");
   assert.equal(layer.encoding.x.aggregate, "mean");
-  assert.equal(layer.encoding.x.stack, "zero");
+  assert.equal(layer.layout.mode, "stack");
   assert.equal(layer.encoding.y.fieldType, "ordinal");
   assert.equal(layer.mark.orientation, undefined);
   assert.equal(program.semanticSpec.guides.grid.horizontal, undefined);

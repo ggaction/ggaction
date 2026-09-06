@@ -4,6 +4,28 @@ export const SIDE_LEGEND_SYMBOL_CENTER = 16;
 export const SIDE_LEGEND_LABEL_START = 44;
 export const HORIZONTAL_LEGEND_TITLE_ELEMENT_GAP = 12;
 
+export function isHorizontalEdgeLegend(config) {
+  return config !== undefined &&
+    ["top", "bottom"].includes(config.position) &&
+    config.layout !== "legacy-bottom";
+}
+
+export function resolveSingleHorizontalLegendPlacement({ plot, canvas, config, bounds }) {
+  if (!isHorizontalEdgeLegend(config)) {
+    throw new Error("Single legend placement requires a horizontal edge layout.");
+  }
+  const dx = config.align === "left" ? plot.x - bounds.left
+    : config.align === "right" ? plot.x + plot.width - bounds.right
+      : plot.x + plot.width / 2 - midpoint(bounds.left, bounds.right);
+  const dy = config.position === "top" ? plot.y - config.offset - bounds.bottom
+    : plot.y + plot.height + config.offset - bounds.top;
+  const occupied = translateBounds(bounds, dx, dy);
+  if (occupied.left < 0 || occupied.right > canvas.width || occupied.top < 0 || occupied.bottom > canvas.height) {
+    throw new Error(`Legend layout requires more ${config.position}-margin or Canvas space.`);
+  }
+  return { dx, dy, occupied };
+}
+
 function midpoint(start, end) {
   const sum = start + end;
   const result = Number.isFinite(sum) ? sum / 2 : start / 2 + end / 2;
@@ -25,24 +47,25 @@ function decoration(border) {
     : border.padding + border.lineWidth / 2;
 }
 
-function horizontalExtent(blocks) {
+function horizontalExtent(blocks, labelStart) {
   let left = 0;
   let right = 0;
   for (const block of blocks) {
-    if (block.title !== undefined) right = Math.max(right, block.title.width);
+    const inset = block.inset ?? 0;
+    if (block.title !== undefined) right = Math.max(right, block.title.width + inset);
     left = Math.min(left,
-      SIDE_LEGEND_SYMBOL_CENTER + block.symbol.left - block.symbol.centerX
+      SIDE_LEGEND_SYMBOL_CENTER + block.symbol.left - block.symbol.centerX - inset
     );
     right = Math.max(
       right,
-      SIDE_LEGEND_SYMBOL_CENTER + block.symbol.right - block.symbol.centerX,
-      SIDE_LEGEND_LABEL_START + block.labels.width
+      SIDE_LEGEND_SYMBOL_CENTER + block.symbol.right - block.symbol.centerX + inset,
+      labelStart + block.labels.width + inset
     );
   }
   return { left, right };
 }
 
-function placeBlock(block, cursor) {
+function placeBlock(block, cursor, labelStart) {
   let dy;
   if (block.title === undefined) {
     dy = cursor - block.bounds.top;
@@ -65,7 +88,7 @@ function placeBlock(block, cursor) {
       ? undefined
       : -block.title.x,
     symbolDx: SIDE_LEGEND_SYMBOL_CENTER - block.symbol.centerX,
-    labelDx: SIDE_LEGEND_LABEL_START - block.labels.x,
+    labelDx: labelStart - block.labels.x,
     bounds
   };
 }
@@ -87,7 +110,10 @@ export function resolveSideLegendLane({
   }
   const blocks = groups.flatMap(group => group.blocks);
   if (blocks.length < 2) return undefined;
-  const laneExtent = horizontalExtent(blocks);
+  const labelStart = Math.max(SIDE_LEGEND_LABEL_START, ...blocks.map(
+    block => SIDE_LEGEND_SYMBOL_CENTER + Math.abs(block.labels.x - block.symbol.centerX)
+  ));
+  const laneExtent = horizontalExtent(blocks, labelStart);
   const offset = blocks.reduce(
     (maximum, block) => Math.max(maximum, block.offset),
     -Infinity
@@ -96,7 +122,7 @@ export function resolveSideLegendLane({
     ? plot.x + plot.width + offset
     : plot.x - offset - laneExtent.right;
   const symbolCenterX = titleStartX + SIDE_LEGEND_SYMBOL_CENTER;
-  const labelStartX = titleStartX + SIDE_LEGEND_LABEL_START;
+  const labelStartX = titleStartX + labelStart;
   const first = blocks[0];
   let cursor = first.title === undefined
     ? plot.y + 12
@@ -110,7 +136,7 @@ export function resolveSideLegendLane({
     if (occupiedGroups.length > 0) cursor += inset;
     const groupPlacements = [];
     for (const block of group.blocks) {
-      const placement = placeBlock(block, cursor);
+      const placement = placeBlock(block, cursor, labelStart);
       groupPlacements.push(placement);
       placements.push({
         ...placement,
@@ -123,7 +149,7 @@ export function resolveSideLegendLane({
       cursor = placement.bounds.bottom + SIDE_LEGEND_BLOCK_GAP;
     }
     const vertical = unionBounds(groupPlacements.map(item => item.bounds));
-    const groupExtent = horizontalExtent(group.blocks);
+    const groupExtent = horizontalExtent(group.blocks, labelStart);
     const foreground = {
       left: titleStartX + groupExtent.left,
       right: titleStartX + groupExtent.right,
@@ -232,6 +258,13 @@ function normalizeHorizontalRow(entries) {
       )
     : commonTitleY + titleDescent + HORIZONTAL_LEGEND_TITLE_ELEMENT_GAP;
   return entries.map(({ group, dx }) => {
+    if (group.atomic) {
+      const contentDy = elementAnchor - group.element.top;
+      const foreground = translateBounds(group.content, dx, contentDy);
+      return { id: group.id, dx, titleDy: contentDy, contentDy, foreground,
+        occupied: expandBounds(foreground, group.inset), padding: group.padding,
+        backgroundId: group.backgroundId };
+    }
     const contentDy = commonTitleY === undefined
       ? elementAnchor - midpoint(
           group.element.top,
@@ -348,5 +381,61 @@ export function resolveHorizontalLegendLane({
     })),
     occupied,
     rowCount: packed.length
+  };
+}
+
+// Compose independently measured content blocks before the outer edge lane
+// treats the whole group as one indivisible item.
+export function resolveHorizontalLegendGroup({ edge, plot, canvas, groups,
+  align, offset, border, backgroundId, collisionBounds = [] }) {
+  const inset = decoration(border);
+  const innerPlot = { ...plot, x: plot.x + inset, width: plot.width - inset * 2 };
+  const packed = packHorizontalRows(groups, innerPlot);
+  const rows = packed.map(normalizeHorizontalRow);
+  let cursor = 0;
+  const placements = [];
+  for (const row of rows) {
+    const bounds = unionBounds(row.map(item => item.occupied));
+    const dy = edge === "top" ? cursor - bounds.bottom : cursor - bounds.top;
+    const translated = row.map(item => translateHorizontalPlacement(item, dy));
+    placements.push(...translated);
+    const occupied = unionBounds(translated.map(item => item.occupied));
+    cursor = edge === "top" ? occupied.top - HORIZONTAL_LEGEND_BLOCK_GAP
+      : occupied.bottom + HORIZONTAL_LEGEND_BLOCK_GAP;
+  }
+  const foreground = unionBounds(placements.map(item => item.occupied));
+  const occupied = expandBounds(foreground, inset);
+  const width = occupied.right - occupied.left;
+  const x = align === "left" ? plot.x : align === "right" ? plot.x + plot.width - width
+    : plot.x + (plot.width - width) / 2;
+  const dx = x - occupied.left;
+  const dy = edge === "top" ? plot.y - offset - occupied.bottom
+    : plot.y + plot.height + offset - occupied.top;
+  const finalBounds = translateBounds(occupied, dx, dy);
+  if (finalBounds.left < 0 || finalBounds.right > canvas.width ||
+    finalBounds.top < 0 || finalBounds.bottom > canvas.height) {
+    throw new Error(`Combined legend requires more ${edge}-margin or Canvas space.`);
+  }
+  if (collisionBounds.some(bounds => overlap(finalBounds, bounds))) {
+    throw new Error(`Combined ${edge} legend and ${edge === "top" ? "chart titles" : "x-axis guides"} require more margin space.`);
+  }
+  return {
+    placements: placements.map(item => ({ ...item, dx: item.dx + dx,
+      titleDy: item.titleDy + dy, contentDy: item.contentDy + dy,
+      ...(item.backgroundId === undefined ? {} : { background: {
+        id: item.backgroundId,
+        x: item.foreground.left + dx - item.padding,
+        y: item.foreground.top + dy - item.padding,
+        width: item.foreground.right - item.foreground.left + item.padding * 2,
+        height: item.foreground.bottom - item.foreground.top + item.padding * 2
+      } }) })),
+    occupied: finalBounds,
+    background: backgroundId === undefined ? undefined : {
+      id: backgroundId,
+      x: foreground.left + dx - border.padding,
+      y: foreground.top + dy - border.padding,
+      width: foreground.right - foreground.left + border.padding * 2,
+      height: foreground.bottom - foreground.top + border.padding * 2
+    }
   };
 }

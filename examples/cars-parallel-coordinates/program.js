@@ -53,3 +53,11 @@ export function createCarsParallelCoordinates(cars) {
       subtitleStyle: { fontSize: 13 }
     });
 }
+
+export function createStyledCarsParallelCoordinates(cars) {
+  return createCarsParallelCoordinates(cars).editParallelAxis({
+    field: "Miles_per_Gallon",
+    line: { color: "#7c3aed", lineWidth: 3 },
+    title: { text: "Fuel economy", fontWeight: 700 }
+  });
+}

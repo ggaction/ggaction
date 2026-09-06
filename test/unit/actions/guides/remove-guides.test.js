@@ -41,7 +41,7 @@ test("removes complete guide and title resources without changing the mark", () 
     "xAxisLine", "xAxisTicks", "xAxisLabels", "xAxisTitle",
     "yAxisLine", "yAxisTicks", "yAxisLabels", "yAxisTitle",
     "horizontalGridLines", "verticalGridLines",
-    "seriesLegendSymbols", "seriesLegendLabels", "seriesLegendTitle",
+    "colorLegendSymbols", "colorLegendLabels", "colorLegendTitle",
     "chartTitle", "chartSubtitle"
   ]) {
     assert.equal(after.graphicSpec.objects[id], undefined, id);
@@ -72,6 +72,6 @@ test("validates removal selectors before changing existing resources", () => {
   assert.throws(() => program.removeLegend({ target: "missing" }), /Unknown legend target/);
   assert.throws(() => program.removeTitle({ text: true }), /does not accept options/);
   assert.ok(program.graphicSpec.objects.xAxisLine);
-  assert.ok(program.graphicSpec.objects.seriesLegendLabels);
+  assert.ok(program.graphicSpec.objects.colorLegendLabels);
   assert.ok(program.graphicSpec.objects.chartTitle);
 });

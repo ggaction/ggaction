@@ -76,6 +76,7 @@ test("creates the canonical vertical interval and wrapped cap hierarchy", () => 
     groupBy: ["Origin"],
     center: "mean",
     extent: "ci",
+    method: "student-t",
     level: 0.95,
     as: {
       center: "__errorBar_center",

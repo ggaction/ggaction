@@ -1,4 +1,6 @@
 import { action } from "../../core/action.js";
+import { validatePathSeriesAppearance } from "../../grammar/pathSeries.js";
+import { assertEncodingSelectionCompatibility } from "../../materialization/selection/compatibility.js";
 import {
   readNominalField,
   readQuantitativeField,
@@ -120,7 +122,7 @@ const encodePointRadius = action(
   }
 );
 
-const removePointRadius = action(
+const removePointRadius = /* @__PURE__ */ action(
   {
     op: "removePointRadius",
     description: "Remove a constant point radius and restore the theme default."
@@ -164,7 +166,7 @@ const encodeShape = action(
   }
 );
 
-const clearOpacityEncoding = action(
+const clearOpacityEncoding = /* @__PURE__ */ action(
   {
     op: "clearOpacityEncoding",
     description: "Remove the semantic field-driven opacity assignment."
@@ -179,7 +181,7 @@ const clearOpacityEncoding = action(
   }
 );
 
-const encodeOpacity = action(
+const encodeOpacity = /* @__PURE__ */ action(
   {
     op: "encodeOpacity",
     description: "Assign constant or field-driven mark opacity."
@@ -191,14 +193,18 @@ const encodeOpacity = action(
     if (hasValue === hasField) {
       throw new Error("encodeOpacity requires exactly one of value or field.");
     }
+    if (hasValue && (args.fieldType !== undefined || args.scale !== undefined)) {
+      throw new Error("Constant opacity does not accept fieldType or scale.");
+    }
     const { id: target, dataset, layer } = resolveTarget(
       this,
       args.target,
-      ["point", "rule"],
-      "point or rule mark"
+      ["point", "rule", "line"],
+      "point, rule or line mark"
     );
     if (hasValue) {
       validateOpacityValue(args.value, "encodeOpacity");
+      assertEncodingSelectionCompatibility(this, target, ["opacity"]);
       const { opacity, ...config } = this.markConfigs[target] ?? {};
       void opacity;
       const withoutLegend = this.guideConfigs.legend?.opacity?.target === target
@@ -208,6 +214,9 @@ const encodeOpacity = action(
         .clearOpacityEncoding({ target })
         ._withoutMaterializationConfig(["marks", target, "opacity"])
         ._withMarkConfig(target, { ...config, opacity: args.value });
+      if (layer.mark.type === "line") {
+        return rematerializeEncoding(next, target, "opacity", undefined, layer);
+      }
       const materialized = layer.mark.type === "rule"
         ? next.rematerializeRuleMark({ id: target })
         : next.rematerializePointMark({ id: target });
@@ -223,6 +232,14 @@ const encodeOpacity = action(
       args.scale ?? {}
     );
     const scale = resolveOpacityScaleDefinition(this, requestedScale);
+    if (layer.mark.type === "line") {
+      if (Object.hasOwn(scale, "unknown")) {
+        throw new Error("Line opacity does not support unknown fallback.");
+      }
+      validatePathSeriesAppearance(dataset.values, {
+        ...layer, encoding: { ...layer.encoding, opacity: { field: args.field, fieldType } }
+      });
+    }
     if (Object.hasOwn(scale, "unknown")) {
       readScaleField(dataset.values, args.field, fieldType, {
         allowUnknown: true
@@ -248,12 +265,12 @@ const encodeOpacity = action(
 export function registerBasicAppearanceEncodingActions(ProgramClass) {
   ProgramClass.prototype.encodeSize = encodeSize;
   ProgramClass.prototype.encodeShape = encodeShape;
+  ProgramClass.prototype.encodeRadius = encodeRadius;
+  ProgramClass.prototype.encodePointRadius = encodePointRadius;
 }
 
 export function registerAppearanceEncodingAction(ProgramClass) {
   registerBasicAppearanceEncodingActions(ProgramClass);
-  ProgramClass.prototype.encodeRadius = encodeRadius;
-  ProgramClass.prototype.encodePointRadius = encodePointRadius;
   ProgramClass.prototype.removePointRadius = removePointRadius;
   ProgramClass.prototype.encodeOpacity = encodeOpacity;
   ProgramClass.prototype.clearOpacityEncoding = clearOpacityEncoding;

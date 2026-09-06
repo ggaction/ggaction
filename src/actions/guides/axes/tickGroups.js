@@ -1,3 +1,4 @@
+import { withGuideLayoutValidation } from "../../../materialization/guides/layout.js";
 import { action } from "../../../core/action.js";
 import { isPlainObject } from "../../../core/immutable.js";
 import { validateKeys, validateOptionObject } from "../../../core/validation.js";
@@ -24,7 +25,12 @@ const LABEL_OPTIONS = Object.freeze([
   "color",
   "fontSize",
   "fontFamily",
-  "fontWeight"
+  "fontWeight",
+  "rotation",
+  "maxWidth",
+  "wrap",
+  "lineHeight",
+  "overlap"
 ]);
 const SHARED_CREATE = Object.freeze(["scale", "position", "count", "values"]);
 const SHARED_EDIT = Object.freeze(["position", "count", "values"]);
@@ -37,7 +43,7 @@ function validateNested(value, supported, label) {
   validateKeys(value, supported, label);
 }
 
-function validateArgs(args, operation, create) {
+export function validateAxisTickGroupArgs(args, operation, create) {
   validateOptionObject(
     args,
     create ? CREATE_OPTIONS : EDIT_OPTIONS,
@@ -89,8 +95,8 @@ function makeCreate(channel) {
       op: operation.create,
       description: `Create ${channel}-axis ticks and labels.`
     },
-    function (args = {}) {
-      validateArgs(args, operation.create, true);
+    withGuideLayoutValidation(function (args = {}) {
+      validateAxisTickGroupArgs(args, operation.create, true);
       const shared = select(args, SHARED_CREATE);
       const tickArgs = { ...shared, ...(args.ticks ?? {}) };
       const labelArgs = {
@@ -101,7 +107,7 @@ function makeCreate(channel) {
       return this[operation.createTicks](tickArgs)[operation.createLabels](
         labelArgs
       );
-    }
+    })
   );
 }
 
@@ -113,8 +119,8 @@ function makeEdit(channel) {
       op: operation.edit,
       description: `Edit ${channel}-axis ticks and labels.`
     },
-    function (args = {}) {
-      validateArgs(args, operation.edit, false);
+    withGuideLayoutValidation(function (args = {}) {
+      validateAxisTickGroupArgs(args, operation.edit, false);
       const shared = select(args, SHARED_EDIT);
       const hasShared = Object.keys(shared).length > 0;
       let next = this;
@@ -134,7 +140,7 @@ function makeEdit(channel) {
       }
 
       return next;
-    }
+    })
   );
 }
 

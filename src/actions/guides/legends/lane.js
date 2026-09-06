@@ -1,3 +1,4 @@
+import { editLegendBackground, resolveLegendBackgroundFromBounds } from "./continuous/common.js";
 import { action } from "../../../core/action.js";
 import { noOptions } from "../../../core/validation.js";
 import {
@@ -8,6 +9,9 @@ import { finiteMidpoint } from "../../../grammar/numeric.js";
 import { resolveGraphicBounds } from "../../../layout/canvas.js";
 import {
   resolveHorizontalLegendLane,
+  resolveHorizontalLegendGroup,
+  resolveSingleHorizontalLegendPlacement,
+  isHorizontalEdgeLegend,
   resolveSideLegendLane
 } from "../../../layout/legendLane.js";
 import { findCanvasGraphic } from
@@ -33,16 +37,13 @@ function categoricalFor(program, target) {
 
 function legendPosition(program, kind, config) {
   if (kind === "size") {
-    return categoricalFor(program, config.target)?.position ?? "right";
+    return categoricalFor(program, config.target)?.position ?? config.position;
   }
-  if (kind === "strokeWidth" || kind === "interval") return "right";
   return config.position;
 }
 
-function requestedOffset(kind, config) {
-  return ["size", "strokeWidth"].includes(kind)
-    ? 30
-    : config.offset;
+function requestedOffset(config) {
+  return config.offset;
 }
 
 function existingIds(program, kind) {
@@ -117,7 +118,8 @@ function blockDescriptor(program, kind, config) {
     id: kind,
     kind,
     target: config.target,
-    offset: requestedOffset(kind, config),
+    border: borderFor(kind, config),
+    offset: requestedOffset(config),
     bounds,
     title,
     symbol: {
@@ -130,19 +132,17 @@ function blockDescriptor(program, kind, config) {
       x: textAnchor(program, components.labelId),
       width: labels.right - labels.left
     },
-    occupiedBounds: components.backgroundId === undefined
-      ? bounds
-      : resolveConcreteGraphicBounds(
-          program.graphicSpec,
-          components.backgroundId
-        ),
+    occupiedBounds: unionConcreteGraphicBounds(program.graphicSpec, [
+      ...foregroundIds,
+      ...(components.backgroundId === undefined ? [] : [components.backgroundId])
+    ]),
     ...components,
     foregroundIds
   };
 }
 
 function borderFor(kind, config) {
-  return ["series", "color", "gradient", "opacity"].includes(kind)
+  return ["series", "color", "gradient", "opacity", "interval", "strokeWidth", "size"].includes(kind)
     ? config.border
     : false;
 }
@@ -159,7 +159,8 @@ function groupBlocks(blocks, configs) {
     ) {
       groups.push({
         id: `${block.kind}+size`,
-        blocks: [block, next],
+        blocks: [block, next.backgroundId === undefined ? next : { ...next,
+          bounds: next.occupiedBounds, inset: next.border.padding + next.border.lineWidth / 2 }],
         border: borderFor(block.kind, config),
         backgroundId: block.backgroundId
       });
@@ -193,13 +194,15 @@ export function hasMultiSideLegendLane(program) {
   return ["right", "left"].some(side => edgeKinds(program, side).length > 1);
 }
 
-export function hasMultiHorizontalLegendLane(program) {
-  return ["top", "bottom"].some(edge => edgeKinds(program, edge).length > 1);
+export function hasHorizontalLegendLane(program) {
+  return ["top", "bottom"].some(edge => edgeKinds(program, edge).some(
+    ([, config]) => isHorizontalEdgeLegend({ ...config, position: edge })
+  ));
 }
 
-export function hasMultiLegendLane(program) {
+export function hasLegendLane(program) {
   return hasMultiSideLegendLane(program) ||
-    hasMultiHorizontalLegendLane(program);
+    hasHorizontalLegendLane(program);
 }
 
 function translateCommands(commands, dx, dy) {
@@ -269,35 +272,20 @@ function translateGraphic(program, id, dx, dy) {
   return next;
 }
 
-function yAxisBounds(program) {
-  const ids = ["yAxisLine", "yAxisTicks", "yAxisLabels", "yAxisTitle"]
-    .filter(id => program.graphicSpec.objects[id] !== undefined);
-  return ids.length === 0
-    ? undefined
-    : unionConcreteGraphicBounds(program.graphicSpec, ids);
-}
-
-function horizontalCollisionBounds(program, edge) {
-  const ids = edge === "top"
-    ? ["chartTitle", "chartSubtitle"]
-    : ["xAxisLine", "xAxisTicks", "xAxisLabels", "xAxisTitle"];
-  return ids
-    .filter(id => program.graphicSpec.objects[id] !== undefined)
-    .map(id => resolveConcreteGraphicBounds(program.graphicSpec, id))
-    .filter(bounds => bounds !== undefined);
-}
-
 function horizontalGroups(program, groups) {
   return groups.map(group => {
     const representative = group.blocks[0];
     const config = program.guideConfigs.legend?.[representative.kind];
-    const titleId = representative.titleId;
+    const atomic = group.blocks.length > 1;
+    const titleId = atomic ? undefined : representative.titleId;
     const contentIds = group.blocks.flatMap(block => block.foregroundIds)
       .filter(id => id !== titleId);
+    if (atomic) contentIds.push(...group.blocks.slice(1).flatMap(block =>
+      block.backgroundId === undefined ? [] : [block.backgroundId]));
     const content = unionConcreteGraphicBounds(program.graphicSpec, contentIds);
     const foreground = unionConcreteGraphicBounds(
       program.graphicSpec,
-      group.blocks.flatMap(block => block.foregroundIds)
+      [...contentIds, ...(titleId === undefined ? [] : [titleId])]
     );
     if (content === undefined || foreground === undefined) {
       throw new Error(`Legend lane could not measure ${group.id} content.`);
@@ -308,11 +296,12 @@ function horizontalGroups(program, groups) {
       : border.padding + border.lineWidth / 2;
     return {
       id: group.id,
+      atomic,
       titleId,
       contentIds,
-      title: representative.title,
+      title: atomic ? undefined : representative.title,
       inline: config?.titlePosition === "left",
-      element: representative.symbol.bounds,
+      element: atomic ? foreground : representative.symbol.bounds,
       content,
       horizontal: { left: foreground.left, right: foreground.right,
         top: foreground.top, bottom: foreground.bottom },
@@ -321,6 +310,33 @@ function horizontalGroups(program, groups) {
       backgroundId: group.backgroundId
     };
   });
+}
+
+function applyHorizontalPlan(program, groups, plan) {
+  let next = program;
+  const byId = new Map(groups.map(group => [group.id, group]));
+  for (const placement of plan.placements) {
+    const group = byId.get(placement.id);
+    if (group.titleId !== undefined) {
+      next = translateGraphic(next, group.titleId, placement.dx, placement.titleDy);
+    }
+    for (const id of group.contentIds) {
+      next = translateGraphic(next, id, placement.dx, placement.contentDy);
+    }
+    if (placement.background !== undefined) {
+      for (const property of ["x", "y", "width", "height"]) {
+        next = next.editGraphics({ target: placement.background.id, property,
+          value: placement.background[property] });
+      }
+    }
+  }
+  if (plan.background !== undefined) {
+    for (const property of ["x", "y", "width", "height"]) {
+      next = next.editGraphics({ target: plan.background.id, property,
+        value: plan.background[property] });
+    }
+  }
+  return next;
 }
 
 export const rematerializeSideLegendLane = action(
@@ -346,8 +362,7 @@ export const rematerializeSideLegendLane = action(
         side,
         plot,
         canvas,
-        groups: groupBlocks(blocks, configs),
-        axisBounds: yAxisBounds(this)
+        groups: groupBlocks(blocks, configs)
       });
       return [{ plan, blocks }];
     });
@@ -387,6 +402,12 @@ export const rematerializeSideLegendLane = action(
           value: "left"
         });
       }
+      for (const block of blocks) {
+        if (block.backgroundId === undefined || plan.backgrounds.some(item => item.id === block.backgroundId)) continue;
+        const bounds = unionConcreteGraphicBounds(next.graphicSpec, block.foregroundIds);
+        const background = resolveLegendBackgroundFromBounds([bounds], block.border, canvas, "Legend");
+        next = editLegendBackground(next, block.backgroundId, background, block.border);
+      }
       for (const background of plan.backgrounds) {
         for (const property of ["x", "y", "width", "height"]) {
           next = next.editGraphics({
@@ -414,55 +435,46 @@ export const rematerializeHorizontalLegendLane = action(
       throw new Error("Legend lane requires resolved Canvas and plot bounds.");
     }
     const configs = this.guideConfigs.legend ?? {};
-    const plans = ["top", "bottom"].flatMap(edge => {
-      const entries = edgeKinds(this, edge);
-      if (entries.length < 2) return [];
-      const blocks = entries.map(([kind, config]) =>
-        blockDescriptor(this, kind, config)
+    let next = this;
+    for (const edge of ["top", "bottom"]) {
+      const entries = edgeKinds(next, edge).filter(
+        ([, config]) => isHorizontalEdgeLegend({ ...config, position: edge })
       );
-      const groups = groupBlocks(blocks, configs);
-      if (groups.length < 2) return [];
-      const horizontal = horizontalGroups(this, groups);
+      if (entries.length === 0) continue;
+      if (entries.length === 1) {
+        const [kind, config] = entries[0];
+        const ids = existingIds(next, kind);
+        const bounds = unionConcreteGraphicBounds(next.graphicSpec, ids);
+        const { dx, dy } = resolveSingleHorizontalLegendPlacement({
+          plot, canvas, config, bounds
+        });
+        for (const id of ids) next = translateGraphic(next, id, dx, dy);
+        continue;
+      }
+      let groups = groupBlocks(entries.map(([kind, config]) =>
+        blockDescriptor(next, kind, config)), configs);
+      for (const group of groups.filter(group => group.blocks.length > 1)) {
+        const config = configs[group.blocks[0].kind];
+        const children = horizontalGroups(next, group.blocks.map((block, index) => ({
+          id: block.id, blocks: [block], border: index === 0 ? false : block.border,
+          backgroundId: index === 0 ? undefined : block.backgroundId
+        }))).map(child => ({ ...child, element: child.content }));
+        const plan = resolveHorizontalLegendGroup({ edge, plot, canvas, groups: children,
+          align: config.align, offset: config.offset, border: group.border,
+          backgroundId: group.backgroundId });
+        next = applyHorizontalPlan(next, children, plan);
+      }
+      if (groups.length < 2) continue;
+      groups = groupBlocks(entries.map(([kind, config]) =>
+        blockDescriptor(next, kind, config)), configs);
+      const horizontal = horizontalGroups(next, groups);
       const plan = resolveHorizontalLegendLane({
         edge,
         plot,
         canvas,
-        groups: horizontal,
-        collisionBounds: horizontalCollisionBounds(this, edge)
+        groups: horizontal
       });
-      return [{ plan, groups: horizontal }];
-    });
-    let next = this;
-    for (const { plan, groups } of plans) {
-      const byId = new Map(groups.map(group => [group.id, group]));
-      for (const placement of plan.placements) {
-        const group = byId.get(placement.id);
-        if (group.titleId !== undefined) {
-          next = translateGraphic(
-            next,
-            group.titleId,
-            placement.dx,
-            placement.titleDy
-          );
-        }
-        for (const id of group.contentIds) {
-          next = translateGraphic(
-            next,
-            id,
-            placement.dx,
-            placement.contentDy
-          );
-        }
-        if (placement.background !== undefined) {
-          for (const property of ["x", "y", "width", "height"]) {
-            next = next.editGraphics({
-              target: placement.background.id,
-              property,
-              value: placement.background[property]
-            });
-          }
-        }
-      }
+      next = applyHorizontalPlan(next, horizontal, plan);
     }
     return next;
   }

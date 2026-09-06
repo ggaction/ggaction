@@ -236,7 +236,7 @@ export function createCarsViolinPrimitiveResult(cars, { split = false } = {}) {
       .editGraphics({
         target: "colorLegendLabels",
         property: "x",
-        value: legend.items.map(item => item.x + 26)
+        value: legend.items.map(item => item.x + 26.375)
       })
       .editGraphics({
         target: "colorLegendLabels",

@@ -1,3 +1,4 @@
+import { isSourceOwnedText } from "../../grammar/text.js";
 import {
   BAR_ORIENTATIONS,
   resolveBarOrientation
@@ -8,6 +9,7 @@ import {
 } from "../../core/vocabulary.js";
 import { findSemanticScale } from "../../selectors/scales.js";
 import { findDataset } from "../../selectors/datasets.js";
+import { isOpacityLegendLayer } from "../../materialization/legends.js";
 import { findUpstreamTransform } from
   "../../materialization/dataProvenance.js";
 
@@ -19,8 +21,8 @@ function isHorizonLayer(program, layer) {
   ) !== undefined;
 }
 
-function hasEncoding(program, channel, { scaled = false, grid = false } = {}) {
-  return program.semanticSpec.layers.some(layer => {
+function hasEncoding(program, layers, channel, { scaled = false, grid = false } = {}) {
+  return layers.some(layer => {
     if (isHorizonLayer(program, layer) && channel !== "x") return false;
     const encoding = layer.encoding?.[channel];
     if (!scaled && !grid) return encoding !== undefined;
@@ -31,23 +33,22 @@ function hasEncoding(program, channel, { scaled = false, grid = false } = {}) {
   });
 }
 
-function positionalApplicability(program, channels) {
+function positionalApplicability(program, layers, channels) {
   return Object.freeze(Object.fromEntries(
     channels.map(channel => [
       channel,
       Object.freeze({
-        axis: hasEncoding(program, channel),
-        grid: hasEncoding(program, channel, { grid: true })
+        axis: hasEncoding(program, layers, channel),
+        grid: hasEncoding(program, layers, channel, { grid: true })
       })
     ])
   ));
 }
 
-export function hasInferableLegend(program) {
-  return program.semanticSpec.layers.some(layer =>
+export function hasInferableLegend(program, layers = program.semanticSpec.layers) {
+  return layers.some(layer =>
     !isHorizonLayer(program, layer) && (
-      (layer.mark?.type === "point" &&
-        layer.encoding?.opacity?.scale !== undefined) ||
+      isOpacityLegendLayer(layer) ||
       (layer.mark?.type === "point" &&
         layer.encoding?.size?.scale !== undefined) ||
       (layer.mark?.type === "point" &&
@@ -66,13 +67,14 @@ export function hasInferableLegend(program) {
   );
 }
 
-export function resolveGuideApplicability(program) {
+export function resolveGuideApplicability(program, layers = program.semanticSpec.layers) {
   const cartesian = positionalApplicability(
     program,
+    layers,
     CARTESIAN_POSITION_CHANNELS
   );
-  const polar = positionalApplicability(program, POLAR_POSITION_CHANNELS);
-  const parallel = program.semanticSpec.layers.some(layer =>
+  const polar = positionalApplicability(program, layers, POLAR_POSITION_CHANNELS);
+  const parallel = layers.some(layer =>
     layer.encoding?.parallel?.dimensions?.length >= 2
   );
   return Object.freeze({
@@ -101,12 +103,13 @@ export function resolveGuideApplicability(program) {
         radial: polar.radius.grid
       })
     }),
-    legend: hasInferableLegend(program)
+    legend: hasInferableLegend(program, layers)
   });
 }
 
-export function resolveAutomaticGridOptions(program) {
-  const applicability = resolveGuideApplicability(program);
+export function resolveAutomaticGridOptions(program, layers = program.semanticSpec.layers) {
+  layers = layers.filter(layer => !isSourceOwnedText(layer));
+  const applicability = resolveGuideApplicability(program, layers);
   const directions = applicability.grid.directions;
   if (applicability.grid.polar && !applicability.grid.cartesian) {
     return Object.freeze({
@@ -118,10 +121,10 @@ export function resolveAutomaticGridOptions(program) {
     return Object.freeze({ horizontal: false, vertical: {} });
   }
 
-  const barOrientations = program.semanticSpec.layers
+  const barOrientations = layers
     .map(resolveBarOrientation)
     .filter(Boolean);
-  const positionedLayers = program.semanticSpec.layers.filter(
+  const positionedLayers = layers.filter(
     layer => layer.encoding?.x !== undefined && layer.encoding?.y !== undefined
   );
   const horizontalQuantitative = positionedLayers.length > 0 &&

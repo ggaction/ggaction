@@ -1,11 +1,15 @@
 import { isPlainObject } from "../core/immutable.js";
 import { validateBoxTransform } from "./boxPlot.js";
+import { validateBinTransform } from "./bin.js";
 import {
   requestedBin2DTransform,
   validateBin2DTransform
 } from "./bin2d.js";
 import { validateDensityTransform } from "./density.js";
+import { validateECDFTransform } from "./ecdf.js";
+import { validateComputedTransform } from "./computed.js";
 import { validateFilterTransform } from "./filter.js";
+import { validateFoldTransform } from "./fold.js";
 import {
   requestedGradientProfileTransform,
   validateGradientProfileTransform
@@ -19,6 +23,8 @@ import { validateMarkFilterTransform } from "./markFilter.js";
 import { validateRegressionTransform } from "./regression/index.js";
 import { validateWindowTransform } from "./window.js";
 import { validateTimeUnitTransform } from "./timeUnit.js";
+import { validateSummaryTransform } from "./summary.js";
+import { validateStackTransform } from "./stack.js";
 import { findTransformTopology } from "./transformTopology.js";
 
 function requestedDensityTransform(transform) {
@@ -44,11 +50,21 @@ function facetHorizonTransform(transform, { scales = {} } = {}) {
 }
 
 const TRANSFORM_POLICIES = Object.freeze({
+  bin: Object.freeze({
+    ...findTransformTopology("bin"),
+    validate: validateBinTransform,
+    materializeOp: "materializeBinData"
+  }),
   bin2d: Object.freeze({
     ...findTransformTopology("bin2d"),
     validate: validateBin2DTransform,
     materializeOp: "materializeBin2DData",
     replayTransform: requestedBin2DTransform
+  }),
+  computed: Object.freeze({
+    ...findTransformTopology("computed"),
+    validate: validateComputedTransform,
+    materializeOp: "materializeComputedData"
   }),
   boxOutlier: Object.freeze({
     ...findTransformTopology("boxOutlier"),
@@ -66,10 +82,20 @@ const TRANSFORM_POLICIES = Object.freeze({
     materializeOp: "materializeDensityData",
     replayTransform: requestedDensityTransform
   }),
+  ecdf: Object.freeze({
+    ...findTransformTopology("ecdf"),
+    validate: validateECDFTransform,
+    materializeOp: "materializeECDFData"
+  }),
   filter: Object.freeze({
     ...findTransformTopology("filter"),
     validate: validateFilterTransform,
     materializeOp: "materializeFilteredData"
+  }),
+  fold: Object.freeze({
+    ...findTransformTopology("fold"),
+    validate: validateFoldTransform,
+    materializeOp: "materializeFoldData"
   }),
   gradientProfile: Object.freeze({
     ...findTransformTopology("gradientProfile"),
@@ -98,6 +124,16 @@ const TRANSFORM_POLICIES = Object.freeze({
     ...findTransformTopology("regression"),
     validate: validateRegressionTransform,
     materializeOp: "materializeRegressionData"
+  }),
+  summary: Object.freeze({
+    ...findTransformTopology("summary"),
+    validate: validateSummaryTransform,
+    materializeOp: "materializeSummaryData"
+  }),
+  stack: Object.freeze({
+    ...findTransformTopology("stack"),
+    validate: validateStackTransform,
+    materializeOp: "materializeStackData"
   }),
   timeUnit: Object.freeze({
     ...findTransformTopology("timeUnit"),

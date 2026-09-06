@@ -10,7 +10,7 @@ import {
 
 const REGRESSION_OPTIONS = Object.freeze([
   "target", "x", "y", "groupBy", "method", "degree", "span",
-  "confidence", "interval", "band", "line"
+  "confidenceMethod", "level", "confidence", "interval", "band", "line"
 ]);
 
 export const createRegression = action(

@@ -103,7 +103,7 @@ test("records atomic range and group action hierarchies", () => {
     upper: "__regression_ci_upper"
   });
   const rangeNode = ranged.trace.children.at(-1);
-  assert.deepEqual(rangeNode.children.map(child => child.op), ["encodeY", "encodeY2"]);
+  assert.deepEqual(rangeNode.children.filter(child => child.op !== "editSemantic").map(child => child.op), ["encodeY", "encodeY2"]);
   const grouped = ranged.encodeGroup({ field: "Origin" });
   assert.deepEqual(
     grouped.trace.children.at(-1).children.map(child => child.op),
@@ -139,7 +139,7 @@ test("stores and reassigns horizontal ranged areas atomically", () => {
   assert.equal(after.semanticSpec.layers[0].encoding.x.field, "nextLow");
   assert.equal(after.semanticSpec.layers[0].encoding.x2.field, "nextHigh");
   assert.deepEqual(
-    after.trace.children.at(-1).children.map(child => child.op),
+    after.trace.children.at(-1).children.filter(child => child.op !== "editSemantic").map(child => child.op),
     ["encodeX", "encodeX2"]
   );
   assert.notDeepEqual(after.graphicSpec.objects.area, before.graphicSpec.objects.area);

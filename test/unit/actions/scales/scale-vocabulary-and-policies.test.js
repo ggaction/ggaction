@@ -276,7 +276,7 @@ test("rejects unknown for compound mark grains instead of changing topology", ()
   assert.equal(line.semanticSpec.scales.length, 0);
 });
 
-test("rejects a color type edit that would change an active legend recipe", () => {
+test("rebuilds an active default color legend when its scale recipe changes", () => {
   const program = chart()
     .createCanvas({
       width: 500,
@@ -291,14 +291,9 @@ test("rejects a color type edit that would change an active legend recipe", () =
     .encodeRadius({ value: 3 })
     .createLegend();
 
-  assert.throws(
-    () => program.editScale({
-      id: "color",
-      type: "quantize",
-      range: ["red", "blue"]
-    }),
-    /gradient legend is active/
-  );
+  const transitioned = program.editScale({ id: "color", type: "quantize", range: ["red", "blue"] });
+  assert.equal(transitioned.guideConfigs.legend.gradient, undefined);
+  assert.equal(transitioned.guideConfigs.legend.interval.scale, "color");
   assert.equal(
     program.semanticSpec.scales.find(scale => scale.id === "color").type,
     "sequential"

@@ -173,6 +173,13 @@ export class ChartProgram {
     });
   }
 
+  _withoutResolvedScale(id) {
+    if (!Object.hasOwn(this.resolvedScales, id)) return this;
+    const { [id]: unused, ...remaining } = this.resolvedScales;
+    void unused;
+    return this._clone({ resolvedScales: freezeOwned(remaining) });
+  }
+
   _withMarkConfig(id, config) {
     if (typeof id !== "string" || id.length === 0) {
       throw new TypeError("Mark config id must be a non-empty string.");

@@ -1,9 +1,17 @@
 {
   "version": 2,
   "contractSchema": {
-    "actionStatuses": ["implemented"],
-    "plannedStatuses": ["planned"],
-    "layers": ["user-facing", "advanced", "primitive"],
+    "actionStatuses": [
+      "implemented"
+    ],
+    "plannedStatuses": [
+      "planned"
+    ],
+    "layers": [
+      "user-facing",
+      "advanced",
+      "primitive"
+    ],
     "lifecycles": [
       "Immutable create-only",
       "Mutable resource",
@@ -14,9 +22,21 @@
       "Stable resource, edit gap",
       "Primitive"
     ],
-    "coverageStates": ["complete", "partial", "missing", "not-applicable"],
-    "plannedKinds": ["composition", "behavior", "parameter"],
-    "plannedReadiness": ["accepted", "pending-parameter-review"]
+    "coverageStates": [
+      "complete",
+      "partial",
+      "missing",
+      "not-applicable"
+    ],
+    "plannedKinds": [
+      "composition",
+      "behavior",
+      "parameter"
+    ],
+    "plannedReadiness": [
+      "accepted",
+      "pending-parameter-review"
+    ]
   },
   "actions": [
     {
@@ -56,6 +76,60 @@
       }
     },
     {
+      "name": "fitCanvas",
+      "layer": "user-facing",
+      "domain": "core",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Repeat `fitCanvas` after layout changes",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/CORE.md",
+        "anchor": "fitcanvas"
+      }
+    },
+    {
+      "name": "applyTheme",
+      "layer": "user-facing",
+      "domain": "core",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Swap with `applyTheme` or reset with `removeTheme`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/CORE.md",
+        "anchor": "applytheme"
+      }
+    },
+    {
+      "name": "removeTheme",
+      "layer": "user-facing",
+      "domain": "core",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Removes the active program theme",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/CORE.md",
+        "anchor": "removetheme"
+      }
+    },
+    {
       "name": "createData",
       "layer": "user-facing",
       "domain": "core",
@@ -74,6 +148,24 @@
       }
     },
     {
+      "name": "bindMarkData",
+      "layer": "user-facing",
+      "domain": "core",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Atomically rebinds one independent mark and all registered consumers",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/CORE.md",
+        "anchor": "bindmarkdata"
+      }
+    },
+    {
       "name": "filterData",
       "layer": "user-facing",
       "domain": "core",
@@ -89,6 +181,96 @@
       "contract": {
         "file": "agent_docs/contract/current/CORE.md",
         "anchor": "filterdata"
+      }
+    },
+    {
+      "name": "createSummaryData",
+      "layer": "user-facing",
+      "domain": "statistics",
+      "status": "implemented",
+      "lifecycle": "Immutable create-only",
+      "update": "Create a materialized grouped summary dataset ID",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/CORE.md",
+        "anchor": "createsummarydata"
+      }
+    },
+    {
+      "name": "createBinData",
+      "layer": "user-facing",
+      "domain": "statistics",
+      "status": "implemented",
+      "lifecycle": "Immutable create-only",
+      "update": "Create reusable materialized one-dimensional bins",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/CORE.md",
+        "anchor": "createbindata"
+      }
+    },
+    {
+      "name": "createFoldData",
+      "layer": "user-facing",
+      "domain": "statistics",
+      "status": "implemented",
+      "lifecycle": "Immutable create-only",
+      "update": "Create reusable materialized wide-to-long rows",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/CORE.md",
+        "anchor": "createfolddata"
+      }
+    },
+    {
+      "name": "createComputedData",
+      "layer": "user-facing",
+      "domain": "statistics",
+      "status": "implemented",
+      "lifecycle": "Immutable create-only",
+      "update": "Create a finite row-level arithmetic field",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/CORE.md",
+        "anchor": "createcomputeddata"
+      }
+    },
+    {
+      "name": "createStackData",
+      "layer": "user-facing",
+      "domain": "statistics",
+      "status": "implemented",
+      "lifecycle": "Immutable create-only",
+      "update": "Create reusable stack endpoints and shares",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/CORE.md",
+        "anchor": "createstackdata"
       }
     },
     {
@@ -218,6 +400,24 @@
       }
     },
     {
+      "name": "createECDFData",
+      "layer": "user-facing",
+      "domain": "statistics",
+      "status": "implemented",
+      "lifecycle": "Immutable create-only",
+      "update": "Create a new derived dataset ID",
+      "audit": "Intentional",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/STATISTICS.md",
+        "anchor": "createecdfdata"
+      }
+    },
+    {
       "name": "createPointMark",
       "layer": "user-facing",
       "domain": "marks",
@@ -251,6 +451,78 @@
       "contract": {
         "file": "agent_docs/contract/current/MARKS.md",
         "anchor": "createtickmark"
+      }
+    },
+    {
+      "name": "createReferenceLine",
+      "layer": "user-facing",
+      "domain": "marks",
+      "status": "implemented",
+      "lifecycle": "Aggregate create-only",
+      "update": "`encodeX/Y/X2/Y2`, `editRuleMark`/`editRectMark`, `editScale`, and `removeMark`",
+      "audit": "Intentional",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/MARKS.md",
+        "anchor": "createreferenceline"
+      }
+    },
+    {
+      "name": "createReferenceBand",
+      "layer": "user-facing",
+      "domain": "marks",
+      "status": "implemented",
+      "lifecycle": "Aggregate create-only",
+      "update": "`encodeX/Y/X2/Y2`, `editRuleMark`/`editRectMark`, `editScale`, and `removeMark`",
+      "audit": "Intentional",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/MARKS.md",
+        "anchor": "createreferenceband"
+      }
+    },
+    {
+      "name": "createMarkLabels",
+      "layer": "user-facing",
+      "domain": "marks",
+      "status": "implemented",
+      "lifecycle": "Aggregate create-only",
+      "update": "`encodeText`, `editTextMark`, `layoutLabels`, `removeLabelLayout`; source-owner removal cleans up labels",
+      "audit": "Intentional",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/MARKS.md",
+        "anchor": "createmarklabels"
+      }
+    },
+    {
+      "name": "createAnnotation",
+      "layer": "user-facing",
+      "domain": "marks",
+      "status": "implemented",
+      "lifecycle": "Aggregate create-only",
+      "update": "`encodeText`, `encodeX/Y`, `editTextMark`, `layoutLabels`, `removeLabelLayout`, `editScale`, and `removeMark`",
+      "audit": "Intentional",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/MARKS.md",
+        "anchor": "createannotation"
       }
     },
     {
@@ -398,6 +670,42 @@
       }
     },
     {
+      "name": "packPoints",
+      "layer": "user-facing",
+      "domain": "marks",
+      "status": "implemented",
+      "lifecycle": "Assignment",
+      "update": "Same action replaces deterministic category-slot packing; `removePointPacking` removes it",
+      "audit": "Reassignment — Implemented",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/MARKS.md",
+        "anchor": "packpoints"
+      }
+    },
+    {
+      "name": "removePointPacking",
+      "layer": "user-facing",
+      "domain": "marks",
+      "status": "implemented",
+      "lifecycle": "Assignment",
+      "update": "Removes one packing assignment and restores semantic positions",
+      "audit": "Reassignment — Implemented",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/MARKS.md",
+        "anchor": "removepointpacking"
+      }
+    },
+    {
       "name": "removeMark",
       "layer": "user-facing",
       "domain": "marks",
@@ -510,8 +818,8 @@
       "layer": "user-facing",
       "domain": "marks",
       "status": "implemented",
-      "lifecycle": "Immutable create-only",
-      "update": "Endpoint and appearance assignments reauthor the existing rule",
+      "lifecycle": "Mutable resource",
+      "update": "`editRuleMark`; endpoint and field appearance assignments retain their encoding owners",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -521,6 +829,24 @@
       "contract": {
         "file": "agent_docs/contract/current/MARKS.md",
         "anchor": "createrulemark"
+      }
+    },
+    {
+      "name": "editRuleMark",
+      "layer": "user-facing",
+      "domain": "marks",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Edits constant rule appearance through existing encoding actions",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/MARKS.md",
+        "anchor": "editrulemark"
       }
     },
     {
@@ -1159,7 +1485,7 @@
       "domain": "encodings",
       "status": "implemented",
       "lifecycle": "Assignment",
-      "update": "Same action replaces the band fraction",
+      "update": "Same action replaces band or pixel width; valid incomplete bars retain the assignment",
       "audit": "Reassignment — Implemented",
       "coverage": {
         "contract": "complete",
@@ -1231,7 +1557,7 @@
       "domain": "statistics",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Revises interval statistics and edits main-rule and owned-cap appearance",
+      "update": "Revises source, channel roles, interval mode, statistics, offsets, and owned caps",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -1267,7 +1593,7 @@
       "domain": "statistics",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Revises interval statistics, boundary state, and body appearance",
+      "update": "Revises source, channel roles, grouping, interval mode, statistics, boundaries, and body appearance",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -1374,9 +1700,9 @@
       "layer": "user-facing",
       "domain": "statistics",
       "status": "implemented",
-      "lifecycle": "Aggregate create-only",
-      "update": "`editDensity`, `editAreaMark`, encoding, scale, and guide actions",
-      "audit": "Intentional",
+      "lifecycle": "Mutable resource",
+      "update": "`editViolinPlot`",
+      "audit": "Complete",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -1385,6 +1711,114 @@
       "contract": {
         "file": "agent_docs/contract/current/VIOLIN_PLOTS.md",
         "anchor": "createviolinplot"
+      }
+    },
+    {
+      "name": "editViolinPlot",
+      "layer": "user-facing",
+      "domain": "statistics",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Revises source/category/value/split/orientation through immutable density data",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/VIOLIN_PLOTS.md",
+        "anchor": "editviolinplot"
+      }
+    },
+    {
+      "name": "createParallelAxes",
+      "layer": "user-facing",
+      "domain": "axes",
+      "status": "implemented",
+      "lifecycle": "Aggregate create-only",
+      "update": "`editParallelAxis`, `removeParallelAxes`",
+      "audit": "Intentional",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/AXES.md",
+        "anchor": "createparallelaxes"
+      }
+    },
+    {
+      "name": "createParallelAxis",
+      "layer": "user-facing",
+      "domain": "axes",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`editParallelAxis`, `removeParallelAxis`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/AXES.md",
+        "anchor": "createparallelaxis"
+      }
+    },
+    {
+      "name": "editParallelAxis",
+      "layer": "user-facing",
+      "domain": "axes",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Self",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/AXES.md",
+        "anchor": "editparallelaxis"
+      }
+    },
+    {
+      "name": "removeParallelAxis",
+      "layer": "user-facing",
+      "domain": "axes",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`createParallelAxis`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/AXES.md",
+        "anchor": "removeparallelaxis"
+      }
+    },
+    {
+      "name": "removeParallelAxes",
+      "layer": "user-facing",
+      "domain": "axes",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`createParallelAxes`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/AXES.md",
+        "anchor": "removeparallelaxes"
       }
     },
     {
@@ -2023,7 +2457,7 @@
       "domain": "legend_and_title",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edits categorical, continuous, interval, size, and bounded stroke-width legend appearance",
+      "update": "Replaces whole-target legend content and edits categorical, continuous, interval, size, and bounded stroke-width appearance",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -2364,9 +2798,9 @@
       "layer": "user-facing",
       "domain": "mark-selection",
       "status": "implemented",
-      "lifecycle": "Aggregate create-only",
-      "update": "Create selected-item data and rebind one mark",
-      "audit": "Intentional",
+      "lifecycle": "Mutable resource",
+      "update": "Create, replace, or compose selected-item data and rebind one mark",
+      "audit": "Complete",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -2375,6 +2809,24 @@
       "contract": {
         "file": "agent_docs/contract/current/MARK_SELECTION.md",
         "anchor": "filtermarks"
+      }
+    },
+    {
+      "name": "removeMarkFilter",
+      "layer": "user-facing",
+      "domain": "mark-selection",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Remove an active mark filter and restore its canonical source",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/MARK_SELECTION.md",
+        "anchor": "removemarkfilter"
       }
     },
     {
@@ -2521,40 +2973,1284 @@
         "anchor": "editgraphics"
       }
     },
-    { "name": "createArcMark", "layer": "user-facing", "domain": "marks", "status": "implemented", "lifecycle": "Mutable resource", "update": "`editArcMark`", "audit": "Complete", "coverage": { "contract": "complete", "effects": "complete", "tests": "complete" }, "contract": { "file": "agent_docs/contract/current/MARKS.md", "anchor": "createarcmark" } },
-    { "name": "editArcMark", "layer": "user-facing", "domain": "marks", "status": "implemented", "lifecycle": "Mutable resource", "update": "Edits arc geometry and appearance", "audit": "Complete", "coverage": { "contract": "complete", "effects": "complete", "tests": "complete" }, "contract": { "file": "agent_docs/contract/current/MARKS.md", "anchor": "editarcmark" } },
-    { "name": "createThetaAxis", "layer": "user-facing", "domain": "axes", "status": "implemented", "lifecycle": "Aggregate create-only", "update": "Focused theta-axis edits", "audit": "Complete", "coverage": { "contract": "complete", "effects": "complete", "tests": "complete" }, "contract": { "file": "agent_docs/contract/current/AXES.md", "anchor": "createThetaAxis" } },
-    { "name": "createRadialAxis", "layer": "user-facing", "domain": "axes", "status": "implemented", "lifecycle": "Aggregate create-only", "update": "Focused radial-axis edits", "audit": "Complete", "coverage": { "contract": "complete", "effects": "complete", "tests": "complete" }, "contract": { "file": "agent_docs/contract/current/AXES.md", "anchor": "createRadialAxis" } },
-    { "name": "editThetaAxis", "layer": "user-facing", "domain": "axes", "status": "implemented", "lifecycle": "Mutable resource", "update": "Edits selected theta-axis components", "audit": "Complete", "coverage": { "contract": "complete", "effects": "complete", "tests": "complete" }, "contract": { "file": "agent_docs/contract/current/AXES.md", "anchor": "editThetaAxis" } },
-    { "name": "editRadialAxis", "layer": "user-facing", "domain": "axes", "status": "implemented", "lifecycle": "Mutable resource", "update": "Edits components and shared angle", "audit": "Complete", "coverage": { "contract": "complete", "effects": "complete", "tests": "complete" }, "contract": { "file": "agent_docs/contract/current/AXES.md", "anchor": "editRadialAxis" } },
-    { "name": "removeThetaAxis", "layer": "user-facing", "domain": "axes", "status": "implemented", "lifecycle": "Mutable resource", "update": "Removes the complete theta axis", "audit": "Complete", "coverage": { "contract": "complete", "effects": "complete", "tests": "complete" }, "contract": { "file": "agent_docs/contract/current/AXES.md", "anchor": "removeThetaAxis" } },
-    { "name": "removeRadialAxis", "layer": "user-facing", "domain": "axes", "status": "implemented", "lifecycle": "Mutable resource", "update": "Removes the complete radial axis", "audit": "Complete", "coverage": { "contract": "complete", "effects": "complete", "tests": "complete" }, "contract": { "file": "agent_docs/contract/current/AXES.md", "anchor": "removeRadialAxis" } },
-    { "name": "editThetaAxisLine", "layer": "user-facing", "domain": "axes", "status": "implemented", "lifecycle": "Mutable resource", "update": "Edits theta baseline style", "audit": "Complete", "coverage": { "contract": "complete", "effects": "complete", "tests": "complete" }, "contract": { "file": "agent_docs/contract/current/AXES.md", "anchor": "editThetaAxisLine" } },
-    { "name": "editRadialAxisLine", "layer": "user-facing", "domain": "axes", "status": "implemented", "lifecycle": "Mutable resource", "update": "Edits radial baseline style", "audit": "Complete", "coverage": { "contract": "complete", "effects": "complete", "tests": "complete" }, "contract": { "file": "agent_docs/contract/current/AXES.md", "anchor": "editRadialAxisLine" } },
-    { "name": "editThetaAxisTicks", "layer": "user-facing", "domain": "axes", "status": "implemented", "lifecycle": "Mutable resource", "update": "Edits theta ticks", "audit": "Complete", "coverage": { "contract": "complete", "effects": "complete", "tests": "complete" }, "contract": { "file": "agent_docs/contract/current/AXES.md", "anchor": "editThetaAxisTicks" } },
-    { "name": "editRadialAxisTicks", "layer": "user-facing", "domain": "axes", "status": "implemented", "lifecycle": "Mutable resource", "update": "Edits radial ticks", "audit": "Complete", "coverage": { "contract": "complete", "effects": "complete", "tests": "complete" }, "contract": { "file": "agent_docs/contract/current/AXES.md", "anchor": "editRadialAxisTicks" } },
-    { "name": "editThetaAxisLabels", "layer": "user-facing", "domain": "axes", "status": "implemented", "lifecycle": "Mutable resource", "update": "Edits theta labels", "audit": "Complete", "coverage": { "contract": "complete", "effects": "complete", "tests": "complete" }, "contract": { "file": "agent_docs/contract/current/AXES.md", "anchor": "editThetaAxisLabels" } },
-    { "name": "editRadialAxisLabels", "layer": "user-facing", "domain": "axes", "status": "implemented", "lifecycle": "Mutable resource", "update": "Edits radial labels", "audit": "Complete", "coverage": { "contract": "complete", "effects": "complete", "tests": "complete" }, "contract": { "file": "agent_docs/contract/current/AXES.md", "anchor": "editRadialAxisLabels" } },
-    { "name": "editThetaAxisTitle", "layer": "user-facing", "domain": "axes", "status": "implemented", "lifecycle": "Mutable resource", "update": "Edits theta title", "audit": "Complete", "coverage": { "contract": "complete", "effects": "complete", "tests": "complete" }, "contract": { "file": "agent_docs/contract/current/AXES.md", "anchor": "editThetaAxisTitle" } },
-    { "name": "editRadialAxisTitle", "layer": "user-facing", "domain": "axes", "status": "implemented", "lifecycle": "Mutable resource", "update": "Edits radial title", "audit": "Complete", "coverage": { "contract": "complete", "effects": "complete", "tests": "complete" }, "contract": { "file": "agent_docs/contract/current/AXES.md", "anchor": "editRadialAxisTitle" } },
-    { "name": "createThetaGrid", "layer": "user-facing", "domain": "grid", "status": "implemented", "lifecycle": "Mutable resource", "update": "`editThetaGrid`", "audit": "Complete", "coverage": { "contract": "complete", "effects": "complete", "tests": "complete" }, "contract": { "file": "agent_docs/contract/current/GRID.md", "anchor": "createThetaGrid" } },
-    { "name": "createRadialGrid", "layer": "user-facing", "domain": "grid", "status": "implemented", "lifecycle": "Mutable resource", "update": "`editRadialGrid`", "audit": "Complete", "coverage": { "contract": "complete", "effects": "complete", "tests": "complete" }, "contract": { "file": "agent_docs/contract/current/GRID.md", "anchor": "createRadialGrid" } },
-    { "name": "editThetaGrid", "layer": "user-facing", "domain": "grid", "status": "implemented", "lifecycle": "Mutable resource", "update": "Edits theta grid", "audit": "Complete", "coverage": { "contract": "complete", "effects": "complete", "tests": "complete" }, "contract": { "file": "agent_docs/contract/current/GRID.md", "anchor": "editThetaGrid" } },
-    { "name": "editRadialGrid", "layer": "user-facing", "domain": "grid", "status": "implemented", "lifecycle": "Mutable resource", "update": "Edits radial grid", "audit": "Complete", "coverage": { "contract": "complete", "effects": "complete", "tests": "complete" }, "contract": { "file": "agent_docs/contract/current/GRID.md", "anchor": "editRadialGrid" } },
-    { "name": "editCompositionLayout", "layer": "user-facing", "domain": "composition", "status": "implemented", "lifecycle": "Mutable resource", "update": "Edits concat layout or facet columns/layout", "audit": "Complete", "coverage": { "contract": "complete", "effects": "complete", "tests": "complete" }, "contract": { "file": "agent_docs/contract/current/COMPOSITION.md", "anchor": "editCompositionLayout" } },
-    { "name": "replaceCompositionChild", "layer": "user-facing", "domain": "composition", "status": "implemented", "lifecycle": "Mutable resource", "update": "Replaces one child slot", "audit": "Complete", "coverage": { "contract": "complete", "effects": "complete", "tests": "complete" }, "contract": { "file": "agent_docs/contract/current/COMPOSITION.md", "anchor": "replaceCompositionChild" } },
-    { "name": "facet", "layer": "user-facing", "domain": "composition", "status": "implemented", "lifecycle": "Aggregate create-only", "update": "Creates immutable derived child views", "audit": "Complete", "coverage": { "contract": "complete", "effects": "complete", "tests": "complete" }, "contract": { "file": "agent_docs/contract/current/COMPOSITION.md", "anchor": "facet" } },
-    { "name": "editFacetHeaders", "layer": "user-facing", "domain": "composition", "status": "implemented", "lifecycle": "Mutable resource", "update": "Edits parent-owned facet headers", "audit": "Complete", "coverage": { "contract": "complete", "effects": "complete", "tests": "complete" }, "contract": { "file": "agent_docs/contract/current/COMPOSITION.md", "anchor": "editFacetHeaders" } },
-    { "name": "editFacetScales", "layer": "user-facing", "domain": "composition", "status": "implemented", "lifecycle": "Mutable resource", "update": "Rederives facet children under edited scale policies", "audit": "Complete", "coverage": { "contract": "complete", "effects": "complete", "tests": "complete" }, "contract": { "file": "agent_docs/contract/current/COMPOSITION.md", "anchor": "editfacetscales" } },
-    { "name": "editFacetGuides", "layer": "user-facing", "domain": "composition", "status": "implemented", "lifecycle": "Mutable resource", "update": "Rederives facet children and edits guide ownership", "audit": "Complete", "coverage": { "contract": "complete", "effects": "complete", "tests": "complete" }, "contract": { "file": "agent_docs/contract/current/COMPOSITION.md", "anchor": "editfacetguides" } }
-    ,{ "name": "createScatterPlot", "layer": "user-facing", "domain": "charts", "status": "implemented", "lifecycle": "Aggregate create-only", "update": "Existing point, encoding, scale and guide actions", "audit": "Intentional", "coverage": { "contract": "complete", "effects": "complete", "tests": "complete" }, "contract": { "file": "agent_docs/contract/current/BASIC_CHARTS.md", "anchor": "createscatterplot" } }
-    ,{ "name": "createLinePlot", "layer": "user-facing", "domain": "charts", "status": "implemented", "lifecycle": "Aggregate create-only", "update": "Existing line, encoding, scale and guide actions", "audit": "Intentional", "coverage": { "contract": "complete", "effects": "complete", "tests": "complete" }, "contract": { "file": "agent_docs/contract/current/BASIC_CHARTS.md", "anchor": "createlineplot" } }
-    ,{ "name": "createBarPlot", "layer": "user-facing", "domain": "charts", "status": "implemented", "lifecycle": "Aggregate create-only", "update": "Existing bar, encoding, scale and guide actions", "audit": "Intentional", "coverage": { "contract": "complete", "effects": "complete", "tests": "complete" }, "contract": { "file": "agent_docs/contract/current/BASIC_CHARTS.md", "anchor": "createbarplot" } }
-    ,{ "name": "createHistogram", "layer": "user-facing", "domain": "charts", "status": "implemented", "lifecycle": "Aggregate create-only", "update": "Existing histogram, color, scale and guide actions", "audit": "Intentional", "coverage": { "contract": "complete", "effects": "complete", "tests": "complete" }, "contract": { "file": "agent_docs/contract/current/BASIC_CHARTS.md", "anchor": "createhistogram" } }
-    ,{ "name": "createHeatmap", "layer": "user-facing", "domain": "charts", "status": "implemented", "lifecycle": "Aggregate create-only", "update": "Existing rect, position, color, scale and guide actions", "audit": "Intentional", "coverage": { "contract": "complete", "effects": "complete", "tests": "complete" }, "contract": { "file": "agent_docs/contract/current/BASIC_CHARTS.md", "anchor": "createheatmap" } }
-    ,{ "name": "createParallelCoordinates", "layer": "user-facing", "domain": "charts", "status": "implemented", "lifecycle": "Aggregate create-only", "update": "Existing line, Parallel encoding, scale, appearance and guide actions", "audit": "Intentional", "coverage": { "contract": "complete", "effects": "complete", "tests": "complete" }, "contract": { "file": "agent_docs/contract/current/BASIC_CHARTS.md", "anchor": "createparallelcoordinates" } }
-    ,{ "name": "createRectMark", "layer": "user-facing", "domain": "marks", "status": "implemented", "lifecycle": "Mutable resource", "update": "`editRectMark` and position/color encodings", "audit": "Complete", "coverage": { "contract": "complete", "effects": "complete", "tests": "complete" }, "contract": { "file": "agent_docs/contract/current/MARKS.md", "anchor": "createrectmark" } }
-    ,{ "name": "editRectMark", "layer": "user-facing", "domain": "marks", "status": "implemented", "lifecycle": "Mutable resource", "update": "Edits rect appearance", "audit": "Complete", "coverage": { "contract": "complete", "effects": "complete", "tests": "complete" }, "contract": { "file": "agent_docs/contract/current/MARKS.md", "anchor": "editrectmark" } }
+    {
+      "name": "createArcMark",
+      "layer": "user-facing",
+      "domain": "marks",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`editArcMark`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/MARKS.md",
+        "anchor": "createarcmark"
+      }
+    },
+    {
+      "name": "editArcMark",
+      "layer": "user-facing",
+      "domain": "marks",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Edits arc geometry and appearance",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/MARKS.md",
+        "anchor": "editarcmark"
+      }
+    },
+    {
+      "name": "createThetaAxis",
+      "layer": "user-facing",
+      "domain": "axes",
+      "status": "implemented",
+      "lifecycle": "Aggregate create-only",
+      "update": "Focused theta-axis edits",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/AXES.md",
+        "anchor": "createThetaAxis"
+      }
+    },
+    {
+      "name": "createRadialAxis",
+      "layer": "user-facing",
+      "domain": "axes",
+      "status": "implemented",
+      "lifecycle": "Aggregate create-only",
+      "update": "Focused radial-axis edits",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/AXES.md",
+        "anchor": "createRadialAxis"
+      }
+    },
+    {
+      "name": "editThetaAxis",
+      "layer": "user-facing",
+      "domain": "axes",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Edits selected theta-axis components",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/AXES.md",
+        "anchor": "editThetaAxis"
+      }
+    },
+    {
+      "name": "editRadialAxis",
+      "layer": "user-facing",
+      "domain": "axes",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Edits components and shared angle",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/AXES.md",
+        "anchor": "editRadialAxis"
+      }
+    },
+    {
+      "name": "removeThetaAxis",
+      "layer": "user-facing",
+      "domain": "axes",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Removes the complete theta axis",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/AXES.md",
+        "anchor": "removeThetaAxis"
+      }
+    },
+    {
+      "name": "removeRadialAxis",
+      "layer": "user-facing",
+      "domain": "axes",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Removes the complete radial axis",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/AXES.md",
+        "anchor": "removeRadialAxis"
+      }
+    },
+    {
+      "name": "createThetaAxisLine",
+      "layer": "user-facing",
+      "domain": "axes",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Edited by editThetaAxisLine; removed with the owning complete axis",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/AXES.md",
+        "anchor": "createThetaAxisLine"
+      }
+    },
+    {
+      "name": "editThetaAxisLine",
+      "layer": "user-facing",
+      "domain": "axes",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Edits theta baseline style",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/AXES.md",
+        "anchor": "editThetaAxisLine"
+      }
+    },
+    {
+      "name": "createRadialAxisLine",
+      "layer": "user-facing",
+      "domain": "axes",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Edited by editRadialAxisLine; removed with the owning complete axis",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/AXES.md",
+        "anchor": "createRadialAxisLine"
+      }
+    },
+    {
+      "name": "editRadialAxisLine",
+      "layer": "user-facing",
+      "domain": "axes",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Edits radial baseline style",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/AXES.md",
+        "anchor": "editRadialAxisLine"
+      }
+    },
+    {
+      "name": "createThetaAxisTicks",
+      "layer": "user-facing",
+      "domain": "axes",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Edited by editThetaAxisTicks; removed with the owning complete axis",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/AXES.md",
+        "anchor": "createThetaAxisTicks"
+      }
+    },
+    {
+      "name": "editThetaAxisTicks",
+      "layer": "user-facing",
+      "domain": "axes",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Edits theta ticks",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/AXES.md",
+        "anchor": "editThetaAxisTicks"
+      }
+    },
+    {
+      "name": "createRadialAxisTicks",
+      "layer": "user-facing",
+      "domain": "axes",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Edited by editRadialAxisTicks; removed with the owning complete axis",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/AXES.md",
+        "anchor": "createRadialAxisTicks"
+      }
+    },
+    {
+      "name": "editRadialAxisTicks",
+      "layer": "user-facing",
+      "domain": "axes",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Edits radial ticks",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/AXES.md",
+        "anchor": "editRadialAxisTicks"
+      }
+    },
+    {
+      "name": "createThetaAxisLabels",
+      "layer": "user-facing",
+      "domain": "axes",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Edited by editThetaAxisLabels; removed with the owning complete axis",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/AXES.md",
+        "anchor": "createThetaAxisLabels"
+      }
+    },
+    {
+      "name": "editThetaAxisLabels",
+      "layer": "user-facing",
+      "domain": "axes",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Edits theta labels",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/AXES.md",
+        "anchor": "editThetaAxisLabels"
+      }
+    },
+    {
+      "name": "createRadialAxisLabels",
+      "layer": "user-facing",
+      "domain": "axes",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Edited by editRadialAxisLabels; removed with the owning complete axis",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/AXES.md",
+        "anchor": "createRadialAxisLabels"
+      }
+    },
+    {
+      "name": "editRadialAxisLabels",
+      "layer": "user-facing",
+      "domain": "axes",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Edits radial labels",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/AXES.md",
+        "anchor": "editRadialAxisLabels"
+      }
+    },
+    {
+      "name": "createThetaAxisTitle",
+      "layer": "user-facing",
+      "domain": "axes",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Edited by editThetaAxisTitle; removed with the owning complete axis",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/AXES.md",
+        "anchor": "createThetaAxisTitle"
+      }
+    },
+    {
+      "name": "editThetaAxisTitle",
+      "layer": "user-facing",
+      "domain": "axes",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Edits theta title",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/AXES.md",
+        "anchor": "editThetaAxisTitle"
+      }
+    },
+    {
+      "name": "createRadialAxisTitle",
+      "layer": "user-facing",
+      "domain": "axes",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Edited by editRadialAxisTitle; removed with the owning complete axis",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/AXES.md",
+        "anchor": "createRadialAxisTitle"
+      }
+    },
+    {
+      "name": "editRadialAxisTitle",
+      "layer": "user-facing",
+      "domain": "axes",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Edits radial title",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/AXES.md",
+        "anchor": "editRadialAxisTitle"
+      }
+    },
+    {
+      "name": "createThetaGrid",
+      "layer": "user-facing",
+      "domain": "grid",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`editThetaGrid`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/GRID.md",
+        "anchor": "createThetaGrid"
+      }
+    },
+    {
+      "name": "createRadialGrid",
+      "layer": "user-facing",
+      "domain": "grid",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`editRadialGrid`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/GRID.md",
+        "anchor": "createRadialGrid"
+      }
+    },
+    {
+      "name": "editThetaGrid",
+      "layer": "user-facing",
+      "domain": "grid",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Edits theta grid",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/GRID.md",
+        "anchor": "editThetaGrid"
+      }
+    },
+    {
+      "name": "editRadialGrid",
+      "layer": "user-facing",
+      "domain": "grid",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Edits radial grid",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/GRID.md",
+        "anchor": "editRadialGrid"
+      }
+    },
+    {
+      "name": "editCompositionLayout",
+      "layer": "user-facing",
+      "domain": "composition",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Edits concat layout or facet columns/layout",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/COMPOSITION.md",
+        "anchor": "editCompositionLayout"
+      }
+    },
+    {
+      "name": "replaceCompositionChild",
+      "layer": "user-facing",
+      "domain": "composition",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Replaces one child slot",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/COMPOSITION.md",
+        "anchor": "replaceCompositionChild"
+      }
+    },
+    {
+      "name": "insertCompositionChild",
+      "layer": "user-facing",
+      "domain": "composition",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Inserts one stable named concat child",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/COMPOSITION.md",
+        "anchor": "insertcompositionchild"
+      }
+    },
+    {
+      "name": "removeCompositionChild",
+      "layer": "user-facing",
+      "domain": "composition",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Removes one stable named concat child",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/COMPOSITION.md",
+        "anchor": "removecompositionchild"
+      }
+    },
+    {
+      "name": "reorderCompositionChildren",
+      "layer": "user-facing",
+      "domain": "composition",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Reorders every stable named concat child",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/COMPOSITION.md",
+        "anchor": "reordercompositionchildren"
+      }
+    },
+    {
+      "name": "facet",
+      "layer": "user-facing",
+      "domain": "composition",
+      "status": "implemented",
+      "lifecycle": "Aggregate create-only",
+      "update": "Creates immutable derived child views",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/COMPOSITION.md",
+        "anchor": "facet"
+      }
+    },
+    {
+      "name": "facetGrid",
+      "layer": "user-facing",
+      "domain": "composition",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Creates ordered row-column facet cells",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/COMPOSITION.md",
+        "anchor": "facetgrid"
+      }
+    },
+    {
+      "name": "repeatCharts",
+      "layer": "user-facing",
+      "domain": "composition",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Repeats one Cartesian position across fields",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/COMPOSITION.md",
+        "anchor": "repeatcharts"
+      }
+    },
+    {
+      "name": "editFacetSource",
+      "layer": "user-facing",
+      "domain": "composition",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Replays a facet or repeat recipe on a revised unit",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/COMPOSITION.md",
+        "anchor": "editfacetsource"
+      }
+    },
+    {
+      "name": "editFacetHeaders",
+      "layer": "user-facing",
+      "domain": "composition",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Edits parent-owned facet headers",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/COMPOSITION.md",
+        "anchor": "editFacetHeaders"
+      }
+    },
+    {
+      "name": "editFacetScales",
+      "layer": "user-facing",
+      "domain": "composition",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Rederives facet children under edited scale policies",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/COMPOSITION.md",
+        "anchor": "editfacetscales"
+      }
+    },
+    {
+      "name": "editFacetGuides",
+      "layer": "user-facing",
+      "domain": "composition",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Rederives facet children and edits guide ownership",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/COMPOSITION.md",
+        "anchor": "editfacetguides"
+      }
+    },
+    {
+      "name": "createScatterPlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "status": "implemented",
+      "lifecycle": "Aggregate create-only",
+      "update": "Existing point, encoding, scale and guide actions",
+      "audit": "Intentional",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/BASIC_CHARTS.md",
+        "anchor": "createscatterplot"
+      }
+    },
+    {
+      "name": "createDotPlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "editEndpointPlot plus existing point, encoding, label, scale and guide actions",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "anchor": "createdotplot"
+      }
+    },
+    {
+      "name": "createLollipopPlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "editEndpointPlot plus existing point, rule, encoding, label, scale and guide actions",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "anchor": "createlollipopplot"
+      }
+    },
+    {
+      "name": "createDumbbellPlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "editEndpointPlot plus existing point, rule, encoding, label, scale and guide actions",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "anchor": "createdumbbellplot"
+      }
+    },
+    {
+      "name": "editEndpointPlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Atomically rebuilds owned endpoint roles and derived summary data",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "anchor": "editendpointplot"
+      }
+    },
+    {
+      "name": "createECDFPlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "editECDFPlot plus existing line, encoding, label, scale and guide actions",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "anchor": "createecdfplot"
+      }
+    },
+    {
+      "name": "editECDFPlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Atomically rebuilds owned ECDF transform and line roles",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "anchor": "editecdfplot"
+      }
+    },
+    {
+      "name": "createIntervalPlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "status": "implemented",
+      "lifecycle": "Aggregate create-only",
+      "update": "Existing interval data, error bar, point, encoding, scale and guide actions",
+      "audit": "Intentional",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "anchor": "createintervalplot"
+      }
+    },
+    {
+      "name": "createRegressionPlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "status": "implemented",
+      "lifecycle": "Aggregate create-only",
+      "update": "Existing scatter, regression data, band, line, scale and guide actions",
+      "audit": "Intentional",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "anchor": "createregressionplot"
+      }
+    },
+    {
+      "name": "createLinePlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "status": "implemented",
+      "lifecycle": "Aggregate create-only",
+      "update": "Existing line, encoding, scale and guide actions",
+      "audit": "Intentional",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/BASIC_CHARTS.md",
+        "anchor": "createlineplot"
+      }
+    },
+    {
+      "name": "createPolarScatterPlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "status": "implemented",
+      "lifecycle": "Aggregate create-only",
+      "audit": "Intentional",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "update": "Existing point, Polar position, appearance, scale and guide actions",
+      "contract": {
+        "file": "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "anchor": "createpolarscatterplot"
+      }
+    },
+    {
+      "name": "createPolarLinePlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "status": "implemented",
+      "lifecycle": "Aggregate create-only",
+      "audit": "Intentional",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "update": "Existing line, Polar position, group, appearance, scale and guide actions",
+      "contract": {
+        "file": "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "anchor": "createpolarlineplot"
+      }
+    },
+    {
+      "name": "createRadarPlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "status": "implemented",
+      "lifecycle": "Aggregate create-only",
+      "audit": "Intentional",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "update": "Explicit Fold plus existing Polar line, category order, group, appearance, scale and guide actions",
+      "contract": {
+        "file": "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "anchor": "createradarplot"
+      }
+    },
+    {
+      "name": "createRugPlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "status": "implemented",
+      "lifecycle": "Aggregate create-only",
+      "audit": "Intentional",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "update": "Existing tick, Cartesian position, scale, angle and guide actions",
+      "contract": {
+        "file": "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "anchor": "createrugplot"
+      }
+    },
+    {
+      "name": "createStripPlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "status": "implemented",
+      "lifecycle": "Aggregate create-only",
+      "audit": "Intentional",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "update": "Existing point, Cartesian position, appearance, jitter, scale and guide actions",
+      "contract": {
+        "file": "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "anchor": "createstripplot"
+      }
+    },
+    {
+      "name": "createBeeswarmPlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "status": "implemented",
+      "lifecycle": "Aggregate create-only",
+      "audit": "Intentional",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "update": "Existing Strip, deterministic point packing, appearance, scale and guide actions",
+      "contract": {
+        "file": "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "anchor": "createbeeswarmplot"
+      }
+    },
+    {
+      "name": "createRaincloudPlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "audit": "Intentional",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "update": "`editRaincloudPlot` revises the shared source and statistical child roles; lower child actions own appearance",
+      "contract": {
+        "file": "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "anchor": "createraincloudplot"
+      }
+    },
+    {
+      "name": "editRaincloudPlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "audit": "Intentional",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "update": "Rebuilds the stable Cloud/Summary/Points roles atomically under the same Raincloud id",
+      "contract": {
+        "file": "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "anchor": "editraincloudplot"
+      }
+    },
+    {
+      "name": "createBarPlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "status": "implemented",
+      "lifecycle": "Aggregate create-only",
+      "update": "Existing bar, encoding, scale and guide actions",
+      "audit": "Intentional",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/BASIC_CHARTS.md",
+        "anchor": "createbarplot"
+      }
+    },
+    {
+      "name": "createHistogram",
+      "layer": "user-facing",
+      "domain": "charts",
+      "status": "implemented",
+      "lifecycle": "Aggregate create-only",
+      "update": "Existing histogram, color, scale and guide actions",
+      "audit": "Intentional",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/BASIC_CHARTS.md",
+        "anchor": "createhistogram"
+      }
+    },
+    {
+      "name": "createHeatmap",
+      "layer": "user-facing",
+      "domain": "charts",
+      "status": "implemented",
+      "lifecycle": "Aggregate create-only",
+      "update": "Existing rect, position, color, scale and guide actions",
+      "audit": "Intentional",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/BASIC_CHARTS.md",
+        "anchor": "createheatmap"
+      }
+    },
+    {
+      "name": "createParallelCoordinates",
+      "layer": "user-facing",
+      "domain": "charts",
+      "status": "implemented",
+      "lifecycle": "Aggregate create-only",
+      "update": "Existing line, Parallel encoding, scale, appearance and guide actions",
+      "audit": "Intentional",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/BASIC_CHARTS.md",
+        "anchor": "createparallelcoordinates"
+      }
+    },
+    {
+      "name": "createRectMark",
+      "layer": "user-facing",
+      "domain": "marks",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "`editRectMark` and position/color encodings",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/MARKS.md",
+        "anchor": "createrectmark"
+      }
+    },
+    {
+      "name": "editRectMark",
+      "layer": "user-facing",
+      "domain": "marks",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Edits rect appearance",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/MARKS.md",
+        "anchor": "editrectmark"
+      }
+    },
+    {
+      "name": "createPiePlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "status": "implemented",
+      "lifecycle": "Aggregate create-only",
+      "update": "`editArcMark`, theta/color encodings, scale and legend actions",
+      "audit": "Intentional",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "anchor": "createpieplot"
+      }
+    },
+    {
+      "name": "createRosePlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "status": "implemented",
+      "lifecycle": "Aggregate create-only",
+      "update": "`encodeR`, `editArcMark`, `editScale`, theta order and guide actions",
+      "audit": "Intentional",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "anchor": "createroseplot"
+      }
+    },
+    {
+      "name": "createRadialBarPlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "status": "implemented",
+      "lifecycle": "Aggregate create-only",
+      "update": "`encodeR`, `editArcMark`, `editScale`, theta order and guide actions",
+      "audit": "Intentional",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "anchor": "createradialbarplot"
+      }
+    },
+    {
+      "name": "createDensityPlot",
+      "layer": "user-facing",
+      "domain": "statistics",
+      "status": "implemented",
+      "lifecycle": "Aggregate create-only",
+      "update": "`editDensity`, `editAreaMark`, scale and guide actions",
+      "audit": "Intentional",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "anchor": "createdensityplot"
+      }
+    },
+    {
+      "name": "createHorizonPlot",
+      "layer": "user-facing",
+      "domain": "statistics",
+      "status": "implemented",
+      "lifecycle": "Aggregate create-only",
+      "update": "`editHorizon`, `editAreaMark`, x scale and guide actions",
+      "audit": "Intentional",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "anchor": "createhorizonplot"
+      }
+    },
+    {
+      "name": "createAreaPlot",
+      "status": "implemented",
+      "layer": "user-facing",
+      "domain": "charts",
+      "contract": {
+        "file": "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "anchor": "createareaplot"
+      },
+      "lifecycle": "Aggregate create-only",
+      "update": "Reassign layoutSeries; edit endpoints, group, appearance, scales and guides",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      }
+    },
+    {
+      "name": "layoutSeries",
+      "status": "implemented",
+      "layer": "user-facing",
+      "domain": "encodings",
+      "contract": {
+        "file": "agent_docs/contract/current/ENCODINGS.md",
+        "anchor": "layoutseries"
+      },
+      "lifecycle": "Assignment",
+      "update": "Reassign layoutSeries; edit endpoints, group, appearance, scales and guides",
+      "audit": "Reassignment — Implemented",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      }
+    }
   ],
   "plannedActions": [],
   "plannedCapabilities": [],
@@ -2563,17 +4259,24 @@
       "materializeBoxOutlierData",
       "materializeBoxPlot",
       "materializeBoxSummaryData",
+      "materializeBinData",
       "materializeBin2DData",
       "materializeComposition",
-    "materializeDensityData",
-    "materializeGradientProfileData",
-    "materializeHorizonData",
-    "materializeGradientPlot",
-    "materializeGradientPlotFill",
+      "materializeComputedData",
+      "materializeDensityData",
+      "materializeECDFData",
+      "materializeEmptyMark",
+      "materializeGradientProfileData",
+      "materializeHorizonData",
+      "materializeGradientPlot",
+      "materializeGradientPlotFill",
       "materializeFilteredData",
+      "materializeFoldData",
       "materializeMarkFilteredData",
       "materializeIntervalData",
       "materializeRegressionData",
+      "materializeSummaryData",
+      "materializeStackData",
       "materializeTimeUnitData",
       "materializeWindowData",
       "materializeRuleSpan",
@@ -2583,8 +4286,8 @@
       "rematerializeBarMark",
       "rematerializeErrorBandBoundary",
       "rematerializeErrorBar",
-    "rematerializeGradientLegend",
-    "rematerializeGradientPlotLegend",
+      "rematerializeGradientLegend",
+      "rematerializeGradientPlotLegend",
       "rematerializeIntervalLegend",
       "rematerializeGrid",
       "rematerializeHorizontalGrid",
@@ -2617,24 +4320,31 @@
       "rematerializeVerticalGrid"
     ],
     "guideComponents": [
-      "createThetaAxisLine",
-      "createRadialAxisLine",
-      "createThetaAxisTicks",
-      "createRadialAxisTicks",
-      "createThetaAxisLabels",
-      "createRadialAxisLabels",
-      "createThetaAxisTitle",
-      "createRadialAxisTitle",
+      "createLegendBackground",
+      "createLegendSymbols",
+      "createLegendSymbolLines",
+      "createLegendSymbolPoints",
+      "createLegendSymbolSwatches",
+      "createLegendLabels",
+      "createLegendTitle",
+      "createTitleText",
+      "editTitleText",
+      "createSubtitleText",
+      "editSubtitleText",
       "createCategoricalLegend",
       "createGradientLegend",
       "createIntervalLegend",
       "createOpacityLegend",
       "removeCategoricalLegend",
       "removeOpacityLegend",
-      "createSizeLegend"
-      ,"createStrokeWidthLegend"
+      "createSizeLegend",
+      "createStrokeWidthLegend"
     ],
     "stateTransitions": [
+      "createCategoricalDensityData",
+      "configureAreaStrokeFromFill",
+      "clearStrokeDashEncoding",
+      "clearOpacityEncoding",
       "composeFacetGuides",
       "rebindLayerData",
       "rebindGradientPlotProfile",
@@ -2647,11 +4357,11 @@
       "createBoxMedian",
       "createBoxOutlierData",
       "createBoxOutliers",
-    "createBoxSummaryData",
-    "createGradientProfileData",
-    "createHorizonData",
-    "createGradientPlotCenter",
-    "createGradientPlotLegend",
+      "createBoxSummaryData",
+      "createGradientProfileData",
+      "createHorizonData",
+      "createGradientPlotCenter",
+      "createGradientPlotLegend",
       "createErrorBarCap",
       "createErrorBandBoundary",
       "applyBarHighlight",

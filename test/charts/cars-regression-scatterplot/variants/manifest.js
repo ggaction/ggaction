@@ -70,7 +70,8 @@ const baselineCallChain = `chart()
     values: ["Japan", "USA"]
   })
   .createRegression({
-    confidence: 0.95,
+    confidenceMethod: "student-t",
+    level: 0.95,
     band: { color: "#111111", opacity: 0.18 },
     line: { strokeWidth: 3 }
   })
@@ -87,7 +88,8 @@ function withFilterCall(filterCall) {
 }
 
 const baselineRegressionCall = `  .createRegression({
-    confidence: 0.95,
+    confidenceMethod: "student-t",
+    level: 0.95,
     band: { color: "#111111", opacity: 0.18 },
     line: { strokeWidth: 3 }
   })`;
@@ -125,7 +127,8 @@ const leftLegendCallChain = `chart()
     values: ["Japan", "USA"]
   })
   .createRegression({
-    confidence: 0.95,
+    confidenceMethod: "student-t",
+    level: 0.95,
     band: { color: "#111111", opacity: 0.18 },
     line: { strokeWidth: 3 }
   })

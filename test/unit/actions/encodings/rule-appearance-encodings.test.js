@@ -107,7 +107,7 @@ test("reassigns rule stroke-width fields and restores the constant variant", () 
 });
 
 test("removes the standalone width legend when a rule returns to constant mode", () => {
-  const field = encodedRule()
+  const field = encodedRule().editCanvas({ width: 500, height: 350, margin: { right: 150 } })
     .encodeStrokeWidth({ field: "amount" })
     .createLegend({ channels: ["strokeWidth"] });
   const constant = field.encodeStrokeWidth({ value: 2 });

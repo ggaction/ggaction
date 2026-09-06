@@ -1,3 +1,5 @@
+import { inferSeriesGroup } from "./shared.js";
+import { findSemanticScale } from "../../selectors/scales.js";
 import { action } from "../../core/action.js";
 import {
   readNominalField,
@@ -6,7 +8,6 @@ import {
 import { resolveOffsetScaleDefinition } from "../scales/definitions.js";
 import {
   applyEncodingScale,
-  applyDetachedScaleRematerialization,
   rematerializeEncoding,
   resolveReassignmentScaleOptions,
   resolveTarget,
@@ -14,7 +15,6 @@ import {
   validateOptions
 } from "./shared.js";
 import {
-  resolveBarColorLayout,
   resolveBarChannels,
   resolveBarGrain
 } from "../../grammar/bars/policy.js";
@@ -51,15 +51,7 @@ function createOffsetEncoding(channel) {
             `${operation} requires a complete bar with a ${parentChannel} category encoding.`
           );
         }
-        if (
-          layer.encoding?.color !== undefined &&
-          (resolveBarColorLayout(layer) !== "group" ||
-            layer.encoding.color.field !== args.field)
-        ) {
-          throw new Error(
-            `${operation} field must match a grouped bar color field.`
-          );
-        }
+
       } else {
         const parent = layer.encoding?.[parentChannel];
         if (
@@ -89,7 +81,8 @@ function createOffsetEncoding(channel) {
         channel
       );
 
-      let next = setEncodingProperties(this, target, channel, {
+      const grouped = layer.mark.type === "bar" ? inferSeriesGroup(this, layer, args.field, "offset") : this;
+      let next = setEncodingProperties(grouped, target, channel, {
         field: args.field,
         fieldType,
         scale: scale.id
@@ -100,10 +93,10 @@ function createOffsetEncoding(channel) {
       next = applyEncodingScale(next, scale, requestedScale, {
         reassignment: layer.encoding?.[channel]?.scale === scale.id
       });
-      if (layer.mark.type === "bar" && layer.encoding?.color === undefined) {
-        return applyDetachedScaleRematerialization(next
-          .rematerializeScale({ id: scale.id })
-          .editGraphics({ target, property: "length", value: 0 }), [layer]);
+      if (layer.mark.type === "bar") {
+        if (findSemanticScale(this, scale.id) === undefined && args.scale?.id === undefined) next = next._withMarkConfig(target, { ...next.markConfigs[target], seriesOffsetScale: scale.id });
+        if (layer.layout?.mode !== "group" || layer.encoding?.group?.field !== args.field) return next.layoutSeries({ target, mode: "group" });
+        return rematerializeEncoding(next, target, channel, scale.id, layer);
       }
       return rematerializeEncoding(next, target, channel, scale.id, layer);
     }

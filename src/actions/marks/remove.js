@@ -1,3 +1,4 @@
+import { isSourceOwnedText } from "../../grammar/text.js";
 import { action } from "../../core/action.js";
 import { validateUserId } from "../../core/identifiers.js";
 import { validateKeys } from "../../core/validation.js";
@@ -29,12 +30,17 @@ function ownedChildren(program, id) {
     config.boxPlot?.whiskerId,
     config.boxPlot?.medianId,
     config.boxPlot?.outlierId,
-    config.gradientPlot?.centerId
+    config.gradientPlot?.centerId,
+    config.intervalPlot?.intervalId,
+    config.endpointPlot?.roles?.stemId,
+    config.endpointPlot?.roles?.startId,
+    config.endpointPlot?.roles?.connectorId,
+    ...(config.raincloudPlot?.ownedChildIds ?? [])
   ].concat(
     program.semanticSpec.layers
       .filter(layer => layer.source === id)
       .map(layer => layer.id)
-  ).filter(child => child !== undefined && findLayer(program, child) !== undefined);
+  ).filter(child => child !== undefined && child !== id && findLayer(program, child) !== undefined);
 }
 
 function ownership(program) {
@@ -91,7 +97,10 @@ function ownedDerivedData(program, ids) {
       config.regression?.dataId,
       config.boxPlot?.summaryId,
       config.boxPlot?.outlierDataId,
-      config.gradientPlot?.profileId
+      config.gradientPlot?.profileId,
+      config.violinPlot?.materialized === true ? layer?.data : undefined,
+      config.ecdfPlot?.data,
+      config.endpointPlot?.data
     ]) {
       if (candidate !== undefined) candidates.add(candidate);
     }
@@ -162,7 +171,7 @@ export function removeOwnedMark(program, id, partial = false) {
 
 function hasScaleConsumer(program, channel, scale) {
   return program.semanticSpec.layers.some(
-    layer => layer.encoding?.[channel]?.scale === scale
+    layer => !isSourceOwnedText(layer) && layer.encoding?.[channel]?.scale === scale
   );
 }
 
@@ -229,6 +238,7 @@ export const removeMark = action(
       }
       next = next._withoutMaterializationConfig(["marks", id]);
       next = next._withoutMaterializationConfig(["jitters", id]);
+      next = next._withoutMaterializationConfig(["pointPacking", id]);
       next = next._withoutMaterializationConfig(["labelLayouts", id]);
     }
 

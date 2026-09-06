@@ -23,6 +23,29 @@ function resolveColumns(columns, count) {
   return Math.min(value, count);
 }
 
+function resolveGridCoordinates(children, columns) {
+  const requested = children.some(child => child.row !== undefined || child.column !== undefined);
+  if (!requested) return undefined;
+  if (children.some(child => !(
+    Number.isInteger(child.row) && child.row >= 0 &&
+    Number.isInteger(child.column) && child.column >= 0
+  ))) {
+    throw new RangeError("Facet grid children require non-negative integer row and column coordinates.");
+  }
+  const keys = children.map(child => `${child.row}:${child.column}`);
+  if (new Set(keys).size !== keys.length) {
+    throw new Error("Facet grid children must occupy unique row and column coordinates.");
+  }
+  const requiredColumns = Math.max(...children.map(child => child.column)) + 1;
+  if (columns !== undefined && columns !== requiredColumns) {
+    throw new RangeError("Facet grid columns must match the declared column domain.");
+  }
+  return {
+    columns: requiredColumns,
+    rows: Math.max(...children.map(child => child.row)) + 1
+  };
+}
+
 function alignedOffset(remaining, align) {
   if (align === "start") return 0;
   if (align === "end") return remaining;
@@ -43,10 +66,12 @@ export function resolveFacetLayout({
   sharedLegendPosition = "right"
 } = {}) {
   const values = children?.map(child => child?.value);
+  const coordinates = resolveGridCoordinates(children ?? [], columns);
   const resolvedChildren = normalizeCompositionChildren(children?.map(
-    ({ value: _value, ...child }) => child
+    ({ value: _value, row: _row, column: _column, ...child }) => child
   ));
-  const resolvedColumns = resolveColumns(columns, resolvedChildren.length);
+  const resolvedColumns = coordinates?.columns ??
+    resolveColumns(columns, resolvedChildren.length);
   const resolvedGap = validateCompositionSpacing(gap, "Facet gap");
   const resolvedAlign = normalizeCompositionAlign(align);
   const resolvedPadding = normalizeCompositionPadding(padding);
@@ -79,12 +104,17 @@ export function resolveFacetLayout({
   const legendLane = sharedLegend
     ? legendGap + (sideLegend ? legendWidth : legendHeight)
     : 0;
-  const rowCount = Math.ceil(resolvedChildren.length / resolvedColumns);
+  const rowCount = coordinates?.rows ??
+    Math.ceil(resolvedChildren.length / resolvedColumns);
   const columnWidths = Array(resolvedColumns).fill(-Infinity);
   const rowHeights = Array(rowCount).fill(-Infinity);
   resolvedChildren.forEach((child, index) => {
-    const column = index % resolvedColumns;
-    const row = Math.floor(index / resolvedColumns);
+    const column = coordinates === undefined
+      ? index % resolvedColumns
+      : children[index].column;
+    const row = coordinates === undefined
+      ? Math.floor(index / resolvedColumns)
+      : children[index].row;
     columnWidths[column] = Math.max(columnWidths[column], child.width);
     rowHeights[row] = Math.max(rowHeights[row], child.height);
   });
@@ -97,8 +127,12 @@ export function resolveFacetLayout({
       .reduce((sum, height) => sum + height, 0) + resolvedGap * row
   );
   const placements = resolvedChildren.map((child, index) => {
-    const column = index % resolvedColumns;
-    const row = Math.floor(index / resolvedColumns);
+    const column = coordinates === undefined
+      ? index % resolvedColumns
+      : children[index].column;
+    const row = coordinates === undefined
+      ? Math.floor(index / resolvedColumns)
+      : children[index].row;
     return {
       id: child.id,
       value: values[index],

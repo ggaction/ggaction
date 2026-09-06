@@ -87,6 +87,7 @@ test("locks the canonical acceleration interval rows and resolved scales", () =>
     groupBy: ["Origin"],
     center: "mean",
     extent: "ci",
+    method: "student-t",
     level: 0.95,
     as: {
       center: "__errorBar_center",

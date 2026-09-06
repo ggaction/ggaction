@@ -203,8 +203,8 @@ export function readKnowledgeResource(uri, { allowedDocs = [] } = {}) {
   throw new KnowledgeResourceError(`Unknown knowledge resource URI: ${uri}`);
 }
 
-if (cardsArtifact.schemaVersion !== 2 || resourcesArtifact.schemaVersion !== 2) {
-  throw new Error("MCP action cards and resources must use schemaVersion 2.");
+if (cardsArtifact.schemaVersion !== 3 || resourcesArtifact.schemaVersion !== 2) {
+  throw new Error("MCP action cards must use schemaVersion 3 and resources must use schemaVersion 2.");
 }
 if (resourcesArtifact.packageVersion !== cardsArtifact.packageVersion) {
   throw new Error("MCP action cards and resources must use one packageVersion.");

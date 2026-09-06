@@ -1,0 +1,2036 @@
+{
+  "version": 1,
+  "gate": "R6-P4-V1",
+  "publicExecuted": false,
+  "sourceTree": "613bfdd55317084f4912a46fc395ea8f9044f4dd",
+  "sourceHashes": {
+    "test/oracles/series-area.js": "6c0b2fe903a6edade7d2724e20017679f846fbf22825d4d32cd6abdfd7cc6dde",
+    "test/gates/area-layout/targets.json": "6405fd8be8755ce02c70e01e9033680734ebb7bf1fdcf0961a5db478c1c344dc",
+    "test/gates/area-layout/reference-values.js": "6a2f6f38336425a69b862b35ce79cb9de9e9d994fb60754a6f449e640dbff957",
+    "test/gates/area-layout/primitive.program.js": "c93f429196caef8669ac504562aa253bbe116350860cf3943400934b766a1598",
+    "test/gates/area-layout/manifest.js": "0bf75b009aa0ae6d79d11e0200adf6cb83c105b883a1ddcfe75b3563e0efa88b",
+    "test/gates/area-layout/reference-values.test.js": "b5feddff3d950c01ca144c13e06b78a40e0dcdf02913ec7ac9a5754fac1e6ed5",
+    "test/gates/area-layout/primitive.test.js": "678078f2c7e9b2355061a3c883380f1907261960de2e02f4465ea2cd5e275393",
+    "test/gates/area-layout/png.render.js": "b42ce85c9e6419fca704b46ed9c99c01bd9bb7d03528a9e58165bbb2f90bd38d"
+  },
+  "variants": [
+    {
+      "id": "area-simple",
+      "targetPublicCallChain": "chart()\n  .createCanvas({\"width\":1000,\"height\":700,\"margin\":150})\n  .createData({\"id\":\"data\",\"values\":[{\"time\":1,\"value\":2,\"low\":1,\"high\":3},{\"time\":2,\"value\":4,\"low\":2,\"high\":6},{\"time\":3,\"value\":3,\"low\":1,\"high\":5}]})\n  .createAreaPlot({\"id\":\"m\",\"x\":\"time\",\"y\":\"value\"});",
+      "executedPrimitiveTopLevelOperations": [
+        "createCanvas",
+        "createData",
+        "createAreaMark",
+        "createCoordinate",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "createScale",
+        "createScale",
+        "rematerializeScale",
+        "rematerializeScale",
+        "editSemantic",
+        "editSemantic",
+        "editGraphics",
+        "editGraphics",
+        "editGraphics",
+        "editGraphics",
+        "createGuides"
+      ],
+      "layer": {
+        "id": "m",
+        "mark": {
+          "type": "area",
+          "missing": "error"
+        },
+        "data": "data",
+        "coordinate": "main",
+        "layout": {
+          "mode": "overlay"
+        },
+        "encoding": {
+          "x": {
+            "field": "time",
+            "fieldType": "quantitative",
+            "scale": "x"
+          },
+          "y": {
+            "field": "value",
+            "fieldType": "quantitative",
+            "scale": "y"
+          },
+          "y2": {
+            "datum": 0,
+            "fieldType": "quantitative",
+            "scale": "y"
+          }
+        }
+      },
+      "resolvedScales": {
+        "x": {
+          "type": "linear",
+          "domain": [
+            1,
+            3
+          ],
+          "range": [
+            150,
+            850
+          ]
+        },
+        "y": {
+          "type": "linear",
+          "domain": [
+            0,
+            4
+          ],
+          "range": [
+            550,
+            150
+          ]
+        }
+      },
+      "graphicItems": [
+        {
+          "id": "m:0",
+          "properties": {
+            "commands": [
+              {
+                "op": "M",
+                "x": 150,
+                "y": 350
+              },
+              {
+                "op": "L",
+                "x": 500,
+                "y": 150
+              },
+              {
+                "op": "L",
+                "x": 850,
+                "y": 250
+              },
+              {
+                "op": "L",
+                "x": 850,
+                "y": 550
+              },
+              {
+                "op": "L",
+                "x": 500,
+                "y": 550
+              },
+              {
+                "op": "L",
+                "x": 150,
+                "y": 550
+              },
+              {
+                "op": "Z"
+              }
+            ],
+            "fill": "#4c78a8",
+            "opacity": 0.2
+          }
+        }
+      ],
+      "graphicHash": "be16b0db069e1597bd16733fd659bff1d4f97b59b2a41a26b4e4a37446be8736",
+      "inputHash": "c262da13e9cf4e882e24a5d980877989d761bccc842e7950a63264066b37688c",
+      "pixelHash": "5f9f70eeba373c7acd6e58b484b06c399378000c8262cd160613640b206daaab",
+      "regions": [
+        {
+          "name": "plot-area",
+          "inkPixels": 887048,
+          "colorCounts": {
+            "#dbe4ee": 877633
+          }
+        }
+      ],
+      "image": ".artifacts/test/png/review/area-layout/area-simple/primitive.png"
+    },
+    {
+      "id": "area-signed-baseline",
+      "targetPublicCallChain": "chart()\n  .createCanvas({\"width\":1000,\"height\":700,\"margin\":150})\n  .createData({\"id\":\"data\",\"values\":[{\"time\":1,\"value\":2,\"low\":1,\"high\":3},{\"time\":2,\"value\":-2,\"low\":2,\"high\":6},{\"time\":3,\"value\":3,\"low\":1,\"high\":5}]})\n  .createAreaPlot({\"id\":\"m\",\"x\":\"time\",\"y\":{\"field\":\"value\",\"scale\":{\"nice\":false}},\"baseline\":1});",
+      "executedPrimitiveTopLevelOperations": [
+        "createCanvas",
+        "createData",
+        "createAreaMark",
+        "createCoordinate",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "createScale",
+        "createScale",
+        "rematerializeScale",
+        "rematerializeScale",
+        "editSemantic",
+        "editSemantic",
+        "editGraphics",
+        "editGraphics",
+        "editGraphics",
+        "editGraphics",
+        "createGuides"
+      ],
+      "layer": {
+        "id": "m",
+        "mark": {
+          "type": "area",
+          "missing": "error"
+        },
+        "data": "data",
+        "coordinate": "main",
+        "layout": {
+          "mode": "overlay"
+        },
+        "encoding": {
+          "x": {
+            "field": "time",
+            "fieldType": "quantitative",
+            "scale": "x"
+          },
+          "y": {
+            "field": "value",
+            "fieldType": "quantitative",
+            "scale": "y"
+          },
+          "y2": {
+            "datum": 1,
+            "fieldType": "quantitative",
+            "scale": "y"
+          }
+        }
+      },
+      "resolvedScales": {
+        "x": {
+          "type": "linear",
+          "domain": [
+            1,
+            3
+          ],
+          "range": [
+            150,
+            850
+          ]
+        },
+        "y": {
+          "type": "linear",
+          "domain": [
+            -2,
+            3
+          ],
+          "range": [
+            550,
+            150
+          ]
+        }
+      },
+      "graphicItems": [
+        {
+          "id": "m:0",
+          "properties": {
+            "commands": [
+              {
+                "op": "M",
+                "x": 150,
+                "y": 230
+              },
+              {
+                "op": "L",
+                "x": 500,
+                "y": 550
+              },
+              {
+                "op": "L",
+                "x": 850,
+                "y": 150
+              },
+              {
+                "op": "L",
+                "x": 850,
+                "y": 310
+              },
+              {
+                "op": "L",
+                "x": 500,
+                "y": 310
+              },
+              {
+                "op": "L",
+                "x": 150,
+                "y": 310
+              },
+              {
+                "op": "Z"
+              }
+            ],
+            "fill": "#4c78a8",
+            "opacity": 0.2
+          }
+        }
+      ],
+      "graphicHash": "1b09e426b3098b6fb86183cf80a42c8d658606ce6e65cdd085df1a54e0de931a",
+      "inputHash": "d37ed8acb98cc43ce0162da2fc70ec1652a1959682c5a6d84835c7eac20301a2",
+      "pixelHash": "b0bd36f7ba2c6b004d468e2e5b6ffdf2b90cd10e1dc4fda44cc0d8c90e56bb76",
+      "regions": [
+        {
+          "name": "plot-area",
+          "inkPixels": 288892,
+          "colorCounts": {
+            "#dbe4ee": 276389
+          }
+        }
+      ],
+      "image": ".artifacts/test/png/review/area-layout/area-signed-baseline/primitive.png"
+    },
+    {
+      "id": "area-horizontal-log",
+      "targetPublicCallChain": "chart()\n  .createCanvas({\"width\":1000,\"height\":700,\"margin\":150})\n  .createData({\"id\":\"data\",\"values\":[{\"time\":1,\"value\":2,\"low\":1,\"high\":3},{\"time\":2,\"value\":4,\"low\":2,\"high\":6},{\"time\":3,\"value\":3,\"low\":1,\"high\":5}]})\n  .createAreaPlot({\"id\":\"m\",\"x\":{\"field\":\"value\",\"scale\":{\"type\":\"log\",\"nice\":false}},\"y\":\"time\",\"valueChannel\":\"x\",\"baseline\":1});",
+      "executedPrimitiveTopLevelOperations": [
+        "createCanvas",
+        "createData",
+        "createAreaMark",
+        "createCoordinate",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "createScale",
+        "createScale",
+        "rematerializeScale",
+        "rematerializeScale",
+        "editSemantic",
+        "editSemantic",
+        "editGraphics",
+        "editGraphics",
+        "editGraphics",
+        "editGraphics",
+        "createGuides"
+      ],
+      "layer": {
+        "id": "m",
+        "mark": {
+          "type": "area",
+          "missing": "error"
+        },
+        "data": "data",
+        "coordinate": "main",
+        "layout": {
+          "mode": "overlay"
+        },
+        "encoding": {
+          "y": {
+            "field": "time",
+            "fieldType": "quantitative",
+            "scale": "y"
+          },
+          "x": {
+            "field": "value",
+            "fieldType": "quantitative",
+            "scale": "x"
+          },
+          "x2": {
+            "datum": 1,
+            "fieldType": "quantitative",
+            "scale": "x"
+          }
+        }
+      },
+      "resolvedScales": {
+        "x": {
+          "type": "log",
+          "domain": [
+            1,
+            4
+          ],
+          "range": [
+            150,
+            850
+          ],
+          "base": 10
+        },
+        "y": {
+          "type": "linear",
+          "domain": [
+            1,
+            3
+          ],
+          "range": [
+            550,
+            150
+          ]
+        }
+      },
+      "graphicItems": [
+        {
+          "id": "m:0",
+          "properties": {
+            "commands": [
+              {
+                "op": "M",
+                "x": 500,
+                "y": 550
+              },
+              {
+                "op": "L",
+                "x": 850,
+                "y": 350
+              },
+              {
+                "op": "L",
+                "x": 704.7368752524046,
+                "y": 150
+              },
+              {
+                "op": "L",
+                "x": 150,
+                "y": 150
+              },
+              {
+                "op": "L",
+                "x": 150,
+                "y": 350
+              },
+              {
+                "op": "L",
+                "x": 150,
+                "y": 550
+              },
+              {
+                "op": "Z"
+              }
+            ],
+            "fill": "#4c78a8",
+            "opacity": 0.2
+          }
+        }
+      ],
+      "graphicHash": "0cdeafbc73e9c446fbf28998355920eaf57fef43c8cbca5127961d5988b36b21",
+      "inputHash": "c262da13e9cf4e882e24a5d980877989d761bccc842e7950a63264066b37688c",
+      "pixelHash": "ab9a918343778b7137cc776b37bddbe5acd96911256288fd72917d672920fdca",
+      "regions": [
+        {
+          "name": "plot-area",
+          "inkPixels": 897160,
+          "colorCounts": {
+            "#dbe4ee": 887871
+          }
+        }
+      ],
+      "image": ".artifacts/test/png/review/area-layout/area-horizontal-log/primitive.png"
+    },
+    {
+      "id": "ribbon-crossing",
+      "targetPublicCallChain": "chart()\n  .createCanvas({\"width\":1000,\"height\":700,\"margin\":150})\n  .createData({\"id\":\"data\",\"values\":[{\"time\":1,\"value\":2,\"low\":1,\"high\":3},{\"time\":2,\"value\":4,\"low\":6,\"high\":2},{\"time\":3,\"value\":3,\"low\":1,\"high\":5}]})\n  .createAreaPlot({\"id\":\"m\",\"x\":\"time\",\"y\":{\"lower\":\"low\",\"upper\":\"high\"}});",
+      "executedPrimitiveTopLevelOperations": [
+        "createCanvas",
+        "createData",
+        "createAreaMark",
+        "createCoordinate",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "createScale",
+        "createScale",
+        "rematerializeScale",
+        "rematerializeScale",
+        "editSemantic",
+        "editSemantic",
+        "editGraphics",
+        "editGraphics",
+        "editGraphics",
+        "editGraphics",
+        "createGuides"
+      ],
+      "layer": {
+        "id": "m",
+        "mark": {
+          "type": "area",
+          "missing": "error"
+        },
+        "data": "data",
+        "coordinate": "main",
+        "layout": {
+          "mode": "overlay"
+        },
+        "encoding": {
+          "x": {
+            "field": "time",
+            "fieldType": "quantitative",
+            "scale": "x"
+          },
+          "y": {
+            "field": "low",
+            "fieldType": "quantitative",
+            "scale": "y"
+          },
+          "y2": {
+            "field": "high",
+            "fieldType": "quantitative",
+            "scale": "y"
+          }
+        }
+      },
+      "resolvedScales": {
+        "x": {
+          "type": "linear",
+          "domain": [
+            1,
+            3
+          ],
+          "range": [
+            150,
+            850
+          ]
+        },
+        "y": {
+          "type": "linear",
+          "domain": [
+            1,
+            6
+          ],
+          "range": [
+            550,
+            150
+          ]
+        }
+      },
+      "graphicItems": [
+        {
+          "id": "m:0",
+          "properties": {
+            "commands": [
+              {
+                "op": "M",
+                "x": 150,
+                "y": 550
+              },
+              {
+                "op": "L",
+                "x": 500,
+                "y": 150
+              },
+              {
+                "op": "L",
+                "x": 850,
+                "y": 550
+              },
+              {
+                "op": "L",
+                "x": 850,
+                "y": 230
+              },
+              {
+                "op": "L",
+                "x": 500,
+                "y": 470
+              },
+              {
+                "op": "L",
+                "x": 150,
+                "y": 390
+              },
+              {
+                "op": "Z"
+              }
+            ],
+            "fill": "#4c78a8",
+            "opacity": 0.2
+          }
+        }
+      ],
+      "graphicHash": "9482af21a4f9eaa9be7d260ce893cf34eb69f2fa7edb8e1035dc6f87f40c988a",
+      "inputHash": "4836917f10d7fb2b39396de98dea1c73bd7314f46af0a82ce5b3c91acf0ae580",
+      "pixelHash": "08281c91dbefd5125eba5d5707e6a8d13ab7b11d7e278266eb4b877453f22e21",
+      "regions": [
+        {
+          "name": "plot-area",
+          "inkPixels": 408744,
+          "colorCounts": {
+            "#dbe4ee": 395027
+          }
+        }
+      ],
+      "image": ".artifacts/test/png/review/area-layout/ribbon-crossing/primitive.png"
+    },
+    {
+      "id": "area-missing-break",
+      "targetPublicCallChain": "chart()\n  .createCanvas({\"width\":1000,\"height\":700,\"margin\":150})\n  .createData({\"id\":\"data\",\"values\":[{\"x\":0,\"value\":2},{\"x\":1,\"value\":3},{\"x\":2,\"value\":null},{\"x\":3,\"value\":4},{\"x\":4,\"value\":2}]})\n  .createAreaPlot({\"id\":\"m\",\"x\":\"x\",\"y\":\"value\",\"missing\":\"break\"});",
+      "executedPrimitiveTopLevelOperations": [
+        "createCanvas",
+        "createData",
+        "createAreaMark",
+        "createCoordinate",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "createScale",
+        "createScale",
+        "rematerializeScale",
+        "rematerializeScale",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editGraphics",
+        "editGraphics",
+        "editGraphics",
+        "editGraphics",
+        "createGuides"
+      ],
+      "layer": {
+        "id": "m",
+        "mark": {
+          "type": "area",
+          "missing": "break"
+        },
+        "data": "data",
+        "coordinate": "main",
+        "layout": {
+          "mode": "overlay"
+        },
+        "encoding": {
+          "x": {
+            "field": "x",
+            "fieldType": "quantitative",
+            "scale": "x"
+          },
+          "y": {
+            "field": "value",
+            "fieldType": "quantitative",
+            "scale": "y"
+          },
+          "y2": {
+            "datum": 0,
+            "fieldType": "quantitative",
+            "scale": "y"
+          }
+        }
+      },
+      "resolvedScales": {
+        "x": {
+          "type": "linear",
+          "domain": [
+            0,
+            4
+          ],
+          "range": [
+            150,
+            850
+          ]
+        },
+        "y": {
+          "type": "linear",
+          "domain": [
+            0,
+            4
+          ],
+          "range": [
+            550,
+            150
+          ]
+        }
+      },
+      "graphicItems": [
+        {
+          "id": "m:0",
+          "properties": {
+            "commands": [
+              {
+                "op": "M",
+                "x": 150,
+                "y": 350
+              },
+              {
+                "op": "L",
+                "x": 325,
+                "y": 250
+              },
+              {
+                "op": "L",
+                "x": 325,
+                "y": 550
+              },
+              {
+                "op": "L",
+                "x": 150,
+                "y": 550
+              },
+              {
+                "op": "Z"
+              }
+            ],
+            "fill": "#4c78a8",
+            "opacity": 0.2
+          }
+        },
+        {
+          "id": "m:1",
+          "properties": {
+            "commands": [
+              {
+                "op": "M",
+                "x": 675,
+                "y": 150
+              },
+              {
+                "op": "L",
+                "x": 850,
+                "y": 350
+              },
+              {
+                "op": "L",
+                "x": 850,
+                "y": 550
+              },
+              {
+                "op": "L",
+                "x": 675,
+                "y": 550
+              },
+              {
+                "op": "Z"
+              }
+            ],
+            "fill": "#4c78a8",
+            "opacity": 0.2
+          }
+        }
+      ],
+      "graphicHash": "970d055061d5017c38973c97db2fa43a49127d18e29822207b63ac6b3a983617",
+      "inputHash": "7dcd42082fa82a3df3528c7f6dd18664b8d98e6f47d0a1bcfdc27d3e7f56e74b",
+      "pixelHash": "154b1af2a691614d3344da6b12943d74704562879d117977bc2bdf509e742cac",
+      "regions": [
+        {
+          "name": "plot-area",
+          "inkPixels": 375565,
+          "colorCounts": {
+            "#dbe4ee": 366571
+          }
+        }
+      ],
+      "image": ".artifacts/test/png/review/area-layout/area-missing-break/primitive.png"
+    },
+    {
+      "id": "area-stack",
+      "targetPublicCallChain": "chart()\n  .createCanvas({\"width\":1000,\"height\":700,\"margin\":150})\n  .createData({\"id\":\"data\",\"values\":[{\"x\":0,\"value\":2,\"series\":\"a\",\"region\":\"north\",\"category\":\"0\"},{\"x\":1,\"value\":4,\"series\":\"a\",\"region\":\"north\",\"category\":\"1\"},{\"x\":2,\"value\":3,\"series\":\"a\",\"region\":\"north\",\"category\":\"2\"},{\"x\":0,\"value\":1,\"series\":\"b\",\"region\":\"south\",\"category\":\"0\"},{\"x\":1,\"value\":2,\"series\":\"b\",\"region\":\"south\",\"category\":\"1\"},{\"x\":2,\"value\":1,\"series\":\"b\",\"region\":\"south\",\"category\":\"2\"}]})\n  .createAreaPlot({\"id\":\"m\",\"x\":\"x\",\"y\":\"value\",\"groupBy\":\"series\",\"layout\":\"stack\",\"color\":\"region\"});",
+      "executedPrimitiveTopLevelOperations": [
+        "createCanvas",
+        "createData",
+        "createAreaMark",
+        "createCoordinate",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "createScale",
+        "createScale",
+        "rematerializeScale",
+        "rematerializeScale",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "createScale",
+        "rematerializeScale",
+        "editSemantic",
+        "editGraphics",
+        "editGraphics",
+        "editGraphics",
+        "editGraphics",
+        "createGuides"
+      ],
+      "layer": {
+        "id": "m",
+        "mark": {
+          "type": "area",
+          "missing": "error"
+        },
+        "data": "data",
+        "coordinate": "main",
+        "layout": {
+          "mode": "stack"
+        },
+        "encoding": {
+          "x": {
+            "field": "x",
+            "fieldType": "quantitative",
+            "scale": "x"
+          },
+          "y": {
+            "field": "value",
+            "fieldType": "quantitative",
+            "scale": "y"
+          },
+          "y2": {
+            "datum": 0,
+            "fieldType": "quantitative",
+            "scale": "y"
+          },
+          "group": {
+            "field": "series",
+            "fieldType": "nominal"
+          },
+          "color": {
+            "field": "region",
+            "fieldType": "nominal",
+            "scale": "color"
+          }
+        }
+      },
+      "resolvedScales": {
+        "x": {
+          "type": "linear",
+          "domain": [
+            0,
+            2
+          ],
+          "range": [
+            150,
+            850
+          ]
+        },
+        "y": {
+          "type": "linear",
+          "domain": [
+            0,
+            6
+          ],
+          "range": [
+            550,
+            150
+          ]
+        },
+        "color": {
+          "type": "ordinal",
+          "domain": [
+            "north",
+            "south"
+          ],
+          "range": [
+            "#4c78a8",
+            "#f58518",
+            "#e45756",
+            "#72b7b2",
+            "#54a24b",
+            "#eeca3b",
+            "#b279a2",
+            "#ff9da6",
+            "#9d755d",
+            "#bab0ac"
+          ]
+        }
+      },
+      "graphicItems": [
+        {
+          "id": "m:0",
+          "properties": {
+            "commands": [
+              {
+                "op": "M",
+                "x": 150,
+                "y": 550
+              },
+              {
+                "op": "L",
+                "x": 500,
+                "y": 550
+              },
+              {
+                "op": "L",
+                "x": 850,
+                "y": 550
+              },
+              {
+                "op": "L",
+                "x": 850,
+                "y": 350
+              },
+              {
+                "op": "L",
+                "x": 500,
+                "y": 283.33333333333337
+              },
+              {
+                "op": "L",
+                "x": 150,
+                "y": 416.6666666666667
+              },
+              {
+                "op": "Z"
+              }
+            ],
+            "fill": "#4c78a8",
+            "opacity": 0.2
+          }
+        },
+        {
+          "id": "m:1",
+          "properties": {
+            "commands": [
+              {
+                "op": "M",
+                "x": 150,
+                "y": 416.6666666666667
+              },
+              {
+                "op": "L",
+                "x": 500,
+                "y": 283.33333333333337
+              },
+              {
+                "op": "L",
+                "x": 850,
+                "y": 350
+              },
+              {
+                "op": "L",
+                "x": 850,
+                "y": 283.33333333333337
+              },
+              {
+                "op": "L",
+                "x": 500,
+                "y": 150
+              },
+              {
+                "op": "L",
+                "x": 150,
+                "y": 350
+              },
+              {
+                "op": "Z"
+              }
+            ],
+            "fill": "#f58518",
+            "opacity": 0.2
+          }
+        }
+      ],
+      "graphicHash": "c5828db49b03ef06b5263450880d357e8efe8621188a88bfe31628f6fe1eb450",
+      "inputHash": "ee3b53b4893802a6ac1479b2d2f2bc10fbc23b9099422e2ee9808ab877a46ea9",
+      "pixelHash": "2ee67e47b56f4c2a76ef346a307c541f7862caa203bca22d8b726741fa055553",
+      "regions": [
+        {
+          "name": "plot-area",
+          "inkPixels": 864440,
+          "colorCounts": {
+            "#dbe4ee": 581380,
+            "#fde7d2": 272388
+          }
+        }
+      ],
+      "image": ".artifacts/test/png/review/area-layout/area-stack/primitive.png"
+    },
+    {
+      "id": "area-fill",
+      "targetPublicCallChain": "chart()\n  .createCanvas({\"width\":1000,\"height\":700,\"margin\":150})\n  .createData({\"id\":\"data\",\"values\":[{\"x\":0,\"value\":2,\"series\":\"a\",\"region\":\"north\",\"category\":\"0\"},{\"x\":1,\"value\":4,\"series\":\"a\",\"region\":\"north\",\"category\":\"1\"},{\"x\":2,\"value\":3,\"series\":\"a\",\"region\":\"north\",\"category\":\"2\"},{\"x\":0,\"value\":1,\"series\":\"b\",\"region\":\"south\",\"category\":\"0\"},{\"x\":1,\"value\":2,\"series\":\"b\",\"region\":\"south\",\"category\":\"1\"},{\"x\":2,\"value\":1,\"series\":\"b\",\"region\":\"south\",\"category\":\"2\"}]})\n  .createAreaPlot({\"id\":\"m\",\"x\":\"x\",\"y\":\"value\",\"groupBy\":\"series\",\"layout\":\"fill\",\"color\":\"region\"});",
+      "executedPrimitiveTopLevelOperations": [
+        "createCanvas",
+        "createData",
+        "createAreaMark",
+        "createCoordinate",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "createScale",
+        "createScale",
+        "rematerializeScale",
+        "rematerializeScale",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "createScale",
+        "rematerializeScale",
+        "editSemantic",
+        "editGraphics",
+        "editGraphics",
+        "editGraphics",
+        "editGraphics",
+        "createGuides"
+      ],
+      "layer": {
+        "id": "m",
+        "mark": {
+          "type": "area",
+          "missing": "error"
+        },
+        "data": "data",
+        "coordinate": "main",
+        "layout": {
+          "mode": "fill"
+        },
+        "encoding": {
+          "x": {
+            "field": "x",
+            "fieldType": "quantitative",
+            "scale": "x"
+          },
+          "y": {
+            "field": "value",
+            "fieldType": "quantitative",
+            "scale": "y"
+          },
+          "y2": {
+            "datum": 0,
+            "fieldType": "quantitative",
+            "scale": "y"
+          },
+          "group": {
+            "field": "series",
+            "fieldType": "nominal"
+          },
+          "color": {
+            "field": "region",
+            "fieldType": "nominal",
+            "scale": "color"
+          }
+        }
+      },
+      "resolvedScales": {
+        "x": {
+          "type": "linear",
+          "domain": [
+            0,
+            2
+          ],
+          "range": [
+            150,
+            850
+          ]
+        },
+        "y": {
+          "type": "linear",
+          "domain": [
+            0,
+            1
+          ],
+          "range": [
+            550,
+            150
+          ]
+        },
+        "color": {
+          "type": "ordinal",
+          "domain": [
+            "north",
+            "south"
+          ],
+          "range": [
+            "#4c78a8",
+            "#f58518",
+            "#e45756",
+            "#72b7b2",
+            "#54a24b",
+            "#eeca3b",
+            "#b279a2",
+            "#ff9da6",
+            "#9d755d",
+            "#bab0ac"
+          ]
+        }
+      },
+      "graphicItems": [
+        {
+          "id": "m:0",
+          "properties": {
+            "commands": [
+              {
+                "op": "M",
+                "x": 150,
+                "y": 550
+              },
+              {
+                "op": "L",
+                "x": 500,
+                "y": 550
+              },
+              {
+                "op": "L",
+                "x": 850,
+                "y": 550
+              },
+              {
+                "op": "L",
+                "x": 850,
+                "y": 250
+              },
+              {
+                "op": "L",
+                "x": 500,
+                "y": 283.33333333333337
+              },
+              {
+                "op": "L",
+                "x": 150,
+                "y": 283.33333333333337
+              },
+              {
+                "op": "Z"
+              }
+            ],
+            "fill": "#4c78a8",
+            "opacity": 0.2
+          }
+        },
+        {
+          "id": "m:1",
+          "properties": {
+            "commands": [
+              {
+                "op": "M",
+                "x": 150,
+                "y": 283.33333333333337
+              },
+              {
+                "op": "L",
+                "x": 500,
+                "y": 283.33333333333337
+              },
+              {
+                "op": "L",
+                "x": 850,
+                "y": 250
+              },
+              {
+                "op": "L",
+                "x": 850,
+                "y": 150
+              },
+              {
+                "op": "L",
+                "x": 500,
+                "y": 150
+              },
+              {
+                "op": "L",
+                "x": 150,
+                "y": 150
+              },
+              {
+                "op": "Z"
+              }
+            ],
+            "fill": "#f58518",
+            "opacity": 0.2
+          }
+        }
+      ],
+      "graphicHash": "a9b3c3c1cbcd37734a9ae72ab303a9bd7f3e512256826dc62f3b509d194bce63",
+      "inputHash": "ee3b53b4893802a6ac1479b2d2f2bc10fbc23b9099422e2ee9808ab877a46ea9",
+      "pixelHash": "db4b85424fb483fc0a63a834c25368576eb5216131d41bd0b87223df5c57377c",
+      "regions": [
+        {
+          "name": "plot-area",
+          "inkPixels": 1076400,
+          "colorCounts": {
+            "#dbe4ee": 736033,
+            "#fde7d2": 328065
+          }
+        }
+      ],
+      "image": ".artifacts/test/png/review/area-layout/area-fill/primitive.png"
+    },
+    {
+      "id": "area-diverging",
+      "targetPublicCallChain": "chart()\n  .createCanvas({\"width\":1000,\"height\":700,\"margin\":150})\n  .createData({\"id\":\"data\",\"values\":[{\"x\":0,\"value\":2,\"series\":\"a\",\"region\":\"north\",\"category\":\"0\"},{\"x\":1,\"value\":4,\"series\":\"a\",\"region\":\"north\",\"category\":\"1\"},{\"x\":2,\"value\":3,\"series\":\"a\",\"region\":\"north\",\"category\":\"2\"},{\"x\":0,\"value\":-1,\"series\":\"b\",\"region\":\"south\",\"category\":\"0\"},{\"x\":1,\"value\":2,\"series\":\"b\",\"region\":\"south\",\"category\":\"1\"},{\"x\":2,\"value\":-1,\"series\":\"b\",\"region\":\"south\",\"category\":\"2\"}]})\n  .createAreaPlot({\"id\":\"m\",\"x\":\"x\",\"y\":\"value\",\"groupBy\":\"series\",\"layout\":\"diverging\",\"color\":\"region\"});",
+      "executedPrimitiveTopLevelOperations": [
+        "createCanvas",
+        "createData",
+        "createAreaMark",
+        "createCoordinate",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "createScale",
+        "createScale",
+        "rematerializeScale",
+        "rematerializeScale",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "createScale",
+        "rematerializeScale",
+        "editSemantic",
+        "editGraphics",
+        "editGraphics",
+        "editGraphics",
+        "editGraphics",
+        "createGuides"
+      ],
+      "layer": {
+        "id": "m",
+        "mark": {
+          "type": "area",
+          "missing": "error"
+        },
+        "data": "data",
+        "coordinate": "main",
+        "layout": {
+          "mode": "diverging"
+        },
+        "encoding": {
+          "x": {
+            "field": "x",
+            "fieldType": "quantitative",
+            "scale": "x"
+          },
+          "y": {
+            "field": "value",
+            "fieldType": "quantitative",
+            "scale": "y"
+          },
+          "y2": {
+            "datum": 0,
+            "fieldType": "quantitative",
+            "scale": "y"
+          },
+          "group": {
+            "field": "series",
+            "fieldType": "nominal"
+          },
+          "color": {
+            "field": "region",
+            "fieldType": "nominal",
+            "scale": "color"
+          }
+        }
+      },
+      "resolvedScales": {
+        "x": {
+          "type": "linear",
+          "domain": [
+            0,
+            2
+          ],
+          "range": [
+            150,
+            850
+          ]
+        },
+        "y": {
+          "type": "linear",
+          "domain": [
+            -1,
+            6
+          ],
+          "range": [
+            550,
+            150
+          ]
+        },
+        "color": {
+          "type": "ordinal",
+          "domain": [
+            "north",
+            "south"
+          ],
+          "range": [
+            "#4c78a8",
+            "#f58518",
+            "#e45756",
+            "#72b7b2",
+            "#54a24b",
+            "#eeca3b",
+            "#b279a2",
+            "#ff9da6",
+            "#9d755d",
+            "#bab0ac"
+          ]
+        }
+      },
+      "graphicItems": [
+        {
+          "id": "m:0",
+          "properties": {
+            "commands": [
+              {
+                "op": "M",
+                "x": 150,
+                "y": 492.8571428571429
+              },
+              {
+                "op": "L",
+                "x": 500,
+                "y": 492.8571428571429
+              },
+              {
+                "op": "L",
+                "x": 850,
+                "y": 492.8571428571429
+              },
+              {
+                "op": "L",
+                "x": 850,
+                "y": 321.42857142857144
+              },
+              {
+                "op": "L",
+                "x": 500,
+                "y": 264.2857142857143
+              },
+              {
+                "op": "L",
+                "x": 150,
+                "y": 378.57142857142856
+              },
+              {
+                "op": "Z"
+              }
+            ],
+            "fill": "#4c78a8",
+            "opacity": 0.2
+          }
+        },
+        {
+          "id": "m:1",
+          "properties": {
+            "commands": [
+              {
+                "op": "M",
+                "x": 150,
+                "y": 492.8571428571429
+              },
+              {
+                "op": "L",
+                "x": 500,
+                "y": 264.2857142857143
+              },
+              {
+                "op": "L",
+                "x": 850,
+                "y": 492.8571428571429
+              },
+              {
+                "op": "L",
+                "x": 850,
+                "y": 550
+              },
+              {
+                "op": "L",
+                "x": 500,
+                "y": 150
+              },
+              {
+                "op": "L",
+                "x": 150,
+                "y": 550
+              },
+              {
+                "op": "Z"
+              }
+            ],
+            "fill": "#f58518",
+            "opacity": 0.2
+          }
+        }
+      ],
+      "graphicHash": "283267cec8a3b4fc0772297f0a8cb5474c80b602214eb5b3d22f1553c26584af",
+      "inputHash": "19cd66c357e9e62e72d513f4ef99a50d066c23accfda75bd8b5f62411fdd850d",
+      "pixelHash": "dbefa4891ebf9e289d40849a398101ecfe69b965b14cff67ec185e79943b8d0d",
+      "regions": [
+        {
+          "name": "plot-area",
+          "inkPixels": 587288,
+          "colorCounts": {
+            "#dbe4ee": 443620,
+            "#fde7d2": 65704
+          }
+        }
+      ],
+      "image": ".artifacts/test/png/review/area-layout/area-diverging/primitive.png"
+    },
+    {
+      "id": "area-center",
+      "targetPublicCallChain": "chart()\n  .createCanvas({\"width\":1000,\"height\":700,\"margin\":150})\n  .createData({\"id\":\"data\",\"values\":[{\"x\":0,\"value\":2,\"series\":\"a\",\"region\":\"north\",\"category\":\"0\"},{\"x\":1,\"value\":4,\"series\":\"a\",\"region\":\"north\",\"category\":\"1\"},{\"x\":2,\"value\":3,\"series\":\"a\",\"region\":\"north\",\"category\":\"2\"},{\"x\":0,\"value\":1,\"series\":\"b\",\"region\":\"south\",\"category\":\"0\"},{\"x\":1,\"value\":2,\"series\":\"b\",\"region\":\"south\",\"category\":\"1\"},{\"x\":2,\"value\":1,\"series\":\"b\",\"region\":\"south\",\"category\":\"2\"}]})\n  .createAreaPlot({\"id\":\"m\",\"x\":\"x\",\"y\":\"value\",\"groupBy\":\"series\",\"layout\":\"center\",\"color\":\"region\"});",
+      "executedPrimitiveTopLevelOperations": [
+        "createCanvas",
+        "createData",
+        "createAreaMark",
+        "createCoordinate",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "createScale",
+        "createScale",
+        "rematerializeScale",
+        "rematerializeScale",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "createScale",
+        "rematerializeScale",
+        "editSemantic",
+        "editGraphics",
+        "editGraphics",
+        "editGraphics",
+        "editGraphics",
+        "createGuides"
+      ],
+      "layer": {
+        "id": "m",
+        "mark": {
+          "type": "area",
+          "missing": "error"
+        },
+        "data": "data",
+        "coordinate": "main",
+        "layout": {
+          "mode": "center"
+        },
+        "encoding": {
+          "x": {
+            "field": "x",
+            "fieldType": "quantitative",
+            "scale": "x"
+          },
+          "y": {
+            "field": "value",
+            "fieldType": "quantitative",
+            "scale": "y"
+          },
+          "y2": {
+            "datum": 0,
+            "fieldType": "quantitative",
+            "scale": "y"
+          },
+          "group": {
+            "field": "series",
+            "fieldType": "nominal"
+          },
+          "color": {
+            "field": "region",
+            "fieldType": "nominal",
+            "scale": "color"
+          }
+        }
+      },
+      "resolvedScales": {
+        "x": {
+          "type": "linear",
+          "domain": [
+            0,
+            2
+          ],
+          "range": [
+            150,
+            850
+          ]
+        },
+        "y": {
+          "type": "linear",
+          "domain": [
+            -3,
+            3
+          ],
+          "range": [
+            550,
+            150
+          ]
+        },
+        "color": {
+          "type": "ordinal",
+          "domain": [
+            "north",
+            "south"
+          ],
+          "range": [
+            "#4c78a8",
+            "#f58518",
+            "#e45756",
+            "#72b7b2",
+            "#54a24b",
+            "#eeca3b",
+            "#b279a2",
+            "#ff9da6",
+            "#9d755d",
+            "#bab0ac"
+          ]
+        }
+      },
+      "graphicItems": [
+        {
+          "id": "m:0",
+          "properties": {
+            "commands": [
+              {
+                "op": "M",
+                "x": 150,
+                "y": 450
+              },
+              {
+                "op": "L",
+                "x": 500,
+                "y": 550
+              },
+              {
+                "op": "L",
+                "x": 850,
+                "y": 483.33333333333337
+              },
+              {
+                "op": "L",
+                "x": 850,
+                "y": 283.33333333333337
+              },
+              {
+                "op": "L",
+                "x": 500,
+                "y": 283.33333333333337
+              },
+              {
+                "op": "L",
+                "x": 150,
+                "y": 316.66666666666663
+              },
+              {
+                "op": "Z"
+              }
+            ],
+            "fill": "#4c78a8",
+            "opacity": 0.2
+          }
+        },
+        {
+          "id": "m:1",
+          "properties": {
+            "commands": [
+              {
+                "op": "M",
+                "x": 150,
+                "y": 316.66666666666663
+              },
+              {
+                "op": "L",
+                "x": 500,
+                "y": 283.33333333333337
+              },
+              {
+                "op": "L",
+                "x": 850,
+                "y": 283.33333333333337
+              },
+              {
+                "op": "L",
+                "x": 850,
+                "y": 216.66666666666663
+              },
+              {
+                "op": "L",
+                "x": 500,
+                "y": 150
+              },
+              {
+                "op": "L",
+                "x": 150,
+                "y": 250
+              },
+              {
+                "op": "Z"
+              }
+            ],
+            "fill": "#f58518",
+            "opacity": 0.2
+          }
+        }
+      ],
+      "graphicHash": "add44cd4320d65f380e3f4b453ac2ac6ccf61ac71b7da526ce3230cef52f9814",
+      "inputHash": "ee3b53b4893802a6ac1479b2d2f2bc10fbc23b9099422e2ee9808ab877a46ea9",
+      "pixelHash": "572348175c4cc1e53c7cd0ef00a9b59342e113d7cfe9642092d105d357ce94e0",
+      "regions": [
+        {
+          "name": "plot-area",
+          "inkPixels": 878723,
+          "colorCounts": {
+            "#dbe4ee": 592249,
+            "#fde7d2": 272149
+          }
+        }
+      ],
+      "image": ".artifacts/test/png/review/area-layout/area-center/primitive.png"
+    },
+    {
+      "id": "bar-independent-stack",
+      "targetPublicCallChain": "chart()\n  .createCanvas({\"width\":1000,\"height\":700,\"margin\":150})\n  .createData({\"id\":\"data\",\"values\":[{\"x\":0,\"value\":2,\"series\":\"a\",\"region\":\"north\",\"category\":\"0\"},{\"x\":1,\"value\":4,\"series\":\"a\",\"region\":\"north\",\"category\":\"1\"},{\"x\":2,\"value\":3,\"series\":\"a\",\"region\":\"north\",\"category\":\"2\"},{\"x\":0,\"value\":1,\"series\":\"b\",\"region\":\"south\",\"category\":\"0\"},{\"x\":1,\"value\":2,\"series\":\"b\",\"region\":\"south\",\"category\":\"1\"},{\"x\":2,\"value\":1,\"series\":\"b\",\"region\":\"south\",\"category\":\"2\"}]})\n  .createBarPlot({\"id\":\"m\",\"x\":\"category\",\"y\":{\"field\":\"value\",\"aggregate\":\"sum\"}})\n  .encodeGroup({\"target\":\"m\",\"field\":\"series\"})\n  .layoutSeries({\"target\":\"m\",\"mode\":\"stack\"});",
+      "executedPrimitiveTopLevelOperations": [
+        "createCanvas",
+        "createData",
+        "createBarMark",
+        "createCoordinate",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "createScale",
+        "createScale",
+        "rematerializeScale",
+        "rematerializeScale",
+        "editSemantic",
+        "editSemantic",
+        "editGraphics",
+        "editGraphics",
+        "editGraphics",
+        "editGraphics",
+        "editGraphics",
+        "editGraphics",
+        "editGraphics",
+        "editGraphics",
+        "createGuides"
+      ],
+      "layer": {
+        "id": "m",
+        "mark": {
+          "type": "bar"
+        },
+        "data": "data",
+        "coordinate": "main",
+        "layout": {
+          "mode": "stack"
+        },
+        "encoding": {
+          "group": {
+            "field": "series",
+            "fieldType": "nominal"
+          },
+          "x": {
+            "field": "category",
+            "fieldType": "nominal",
+            "scale": "x"
+          },
+          "y": {
+            "field": "value",
+            "fieldType": "quantitative",
+            "aggregate": "sum",
+            "scale": "y"
+          }
+        }
+      },
+      "resolvedScales": {
+        "x": {
+          "type": "band",
+          "domain": [
+            "0",
+            "1",
+            "2"
+          ],
+          "range": [
+            150,
+            850
+          ],
+          "step": 233.33333333333334,
+          "start": 150,
+          "bandwidth": 233.33333333333334,
+          "align": 0.5,
+          "paddingInner": 0,
+          "paddingOuter": 0
+        },
+        "y": {
+          "type": "linear",
+          "domain": [
+            0,
+            6
+          ],
+          "range": [
+            550,
+            150
+          ]
+        }
+      },
+      "graphicItems": [
+        {
+          "id": "m:0",
+          "properties": {
+            "x": 182.66666666666669,
+            "y": 416.6666666666667,
+            "width": 168,
+            "height": 133.33333333333331,
+            "fill": "#4c78a8",
+            "stroke": "white",
+            "strokeWidth": 0.5
+          }
+        },
+        {
+          "id": "m:1",
+          "properties": {
+            "x": 182.66666666666669,
+            "y": 350,
+            "width": 168,
+            "height": 66.66666666666669,
+            "fill": "#4c78a8",
+            "stroke": "white",
+            "strokeWidth": 0.5
+          }
+        },
+        {
+          "id": "m:2",
+          "properties": {
+            "x": 416.00000000000006,
+            "y": 283.33333333333337,
+            "width": 168,
+            "height": 266.66666666666663,
+            "fill": "#4c78a8",
+            "stroke": "white",
+            "strokeWidth": 0.5
+          }
+        },
+        {
+          "id": "m:3",
+          "properties": {
+            "x": 416.00000000000006,
+            "y": 150,
+            "width": 168,
+            "height": 133.33333333333337,
+            "fill": "#4c78a8",
+            "stroke": "white",
+            "strokeWidth": 0.5
+          }
+        },
+        {
+          "id": "m:4",
+          "properties": {
+            "x": 649.3333333333334,
+            "y": 350,
+            "width": 168,
+            "height": 200,
+            "fill": "#4c78a8",
+            "stroke": "white",
+            "strokeWidth": 0.5
+          }
+        },
+        {
+          "id": "m:5",
+          "properties": {
+            "x": 649.3333333333334,
+            "y": 283.33333333333337,
+            "width": 168,
+            "height": 66.66666666666663,
+            "fill": "#4c78a8",
+            "stroke": "white",
+            "strokeWidth": 0.5
+          }
+        }
+      ],
+      "graphicHash": "246f701c38c0061579756feb28fd16d44a6ce294aed6c97018b772e9e9ad3974",
+      "inputHash": "ee3b53b4893802a6ac1479b2d2f2bc10fbc23b9099422e2ee9808ab877a46ea9",
+      "pixelHash": "90e617e7e096fbc541b0ff547cfb870237ae5e4d1e340fe6250746eb3800b8ff",
+      "regions": [
+        {
+          "name": "plot-area",
+          "inkPixels": 573662,
+          "colorCounts": {
+            "#4c78a8": 562790
+          }
+        }
+      ],
+      "image": ".artifacts/test/png/review/area-layout/bar-independent-stack/primitive.png"
+    },
+    {
+      "id": "bar-layout-roundtrip",
+      "targetPublicCallChain": "chart()\n  .createCanvas({\"width\":1000,\"height\":700,\"margin\":150})\n  .createData({\"id\":\"data\",\"values\":[{\"x\":0,\"value\":2,\"series\":\"a\",\"region\":\"north\",\"category\":\"0\"},{\"x\":1,\"value\":4,\"series\":\"a\",\"region\":\"north\",\"category\":\"1\"},{\"x\":2,\"value\":3,\"series\":\"a\",\"region\":\"north\",\"category\":\"2\"},{\"x\":0,\"value\":1,\"series\":\"b\",\"region\":\"south\",\"category\":\"0\"},{\"x\":1,\"value\":2,\"series\":\"b\",\"region\":\"south\",\"category\":\"1\"},{\"x\":2,\"value\":1,\"series\":\"b\",\"region\":\"south\",\"category\":\"2\"}]})\n  .createBarPlot({\"id\":\"m\",\"x\":\"category\",\"y\":{\"field\":\"value\",\"aggregate\":\"sum\"}})\n  .encodeGroup({\"target\":\"m\",\"field\":\"series\"})\n  .layoutSeries({\"target\":\"m\",\"mode\":\"group\"})\n  .layoutSeries({\"target\":\"m\",\"mode\":\"stack\"})\n  .layoutSeries({\"target\":\"m\",\"mode\":\"group\"});",
+      "executedPrimitiveTopLevelOperations": [
+        "createCanvas",
+        "createData",
+        "createBarMark",
+        "createCoordinate",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "createScale",
+        "createScale",
+        "rematerializeScale",
+        "rematerializeScale",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "editSemantic",
+        "createScale",
+        "rematerializeScale",
+        "editGraphics",
+        "editGraphics",
+        "editGraphics",
+        "editGraphics",
+        "editGraphics",
+        "editGraphics",
+        "editGraphics",
+        "editGraphics",
+        "createGuides"
+      ],
+      "layer": {
+        "id": "m",
+        "mark": {
+          "type": "bar"
+        },
+        "data": "data",
+        "coordinate": "main",
+        "layout": {
+          "mode": "group"
+        },
+        "encoding": {
+          "group": {
+            "field": "series",
+            "fieldType": "nominal"
+          },
+          "x": {
+            "field": "category",
+            "fieldType": "nominal",
+            "scale": "x"
+          },
+          "y": {
+            "field": "value",
+            "fieldType": "quantitative",
+            "aggregate": "sum",
+            "scale": "y"
+          },
+          "xOffset": {
+            "field": "series",
+            "fieldType": "nominal",
+            "scale": "xOffset"
+          }
+        }
+      },
+      "resolvedScales": {
+        "x": {
+          "type": "band",
+          "domain": [
+            "0",
+            "1",
+            "2"
+          ],
+          "range": [
+            150,
+            850
+          ],
+          "step": 233.33333333333334,
+          "start": 150,
+          "bandwidth": 233.33333333333334,
+          "align": 0.5,
+          "paddingInner": 0,
+          "paddingOuter": 0
+        },
+        "y": {
+          "type": "linear",
+          "domain": [
+            0,
+            4
+          ],
+          "range": [
+            550,
+            150
+          ]
+        },
+        "xOffset": {
+          "type": "ordinal",
+          "domain": [
+            "a",
+            "b"
+          ],
+          "range": [
+            0,
+            233.33333333333334
+          ],
+          "step": 116.66666666666667,
+          "start": 0,
+          "bandwidth": 116.66666666666667,
+          "paddingInner": 0,
+          "paddingOuter": 0
+        }
+      },
+      "graphicItems": [
+        {
+          "id": "m:0",
+          "properties": {
+            "x": 166.33333333333334,
+            "y": 350,
+            "width": 84,
+            "height": 200,
+            "fill": "#4c78a8",
+            "stroke": "white",
+            "strokeWidth": 0.5
+          }
+        },
+        {
+          "id": "m:1",
+          "properties": {
+            "x": 283,
+            "y": 450,
+            "width": 84,
+            "height": 100,
+            "fill": "#4c78a8",
+            "stroke": "white",
+            "strokeWidth": 0.5
+          }
+        },
+        {
+          "id": "m:2",
+          "properties": {
+            "x": 399.6666666666667,
+            "y": 150,
+            "width": 84,
+            "height": 400,
+            "fill": "#4c78a8",
+            "stroke": "white",
+            "strokeWidth": 0.5
+          }
+        },
+        {
+          "id": "m:3",
+          "properties": {
+            "x": 516.3333333333334,
+            "y": 350,
+            "width": 84,
+            "height": 200,
+            "fill": "#4c78a8",
+            "stroke": "white",
+            "strokeWidth": 0.5
+          }
+        },
+        {
+          "id": "m:4",
+          "properties": {
+            "x": 633.0000000000001,
+            "y": 250,
+            "width": 84,
+            "height": 300,
+            "fill": "#4c78a8",
+            "stroke": "white",
+            "strokeWidth": 0.5
+          }
+        },
+        {
+          "id": "m:5",
+          "properties": {
+            "x": 749.6666666666667,
+            "y": 450,
+            "width": 84,
+            "height": 100,
+            "fill": "#4c78a8",
+            "stroke": "white",
+            "strokeWidth": 0.5
+          }
+        }
+      ],
+      "graphicHash": "d72e52cfd4e0b7a2db97f1d4f3d58922456ee94c6a9a1d988aade9c239446163",
+      "inputHash": "ee3b53b4893802a6ac1479b2d2f2bc10fbc23b9099422e2ee9808ab877a46ea9",
+      "pixelHash": "cad2d25b6e00d233451b095bd02c010a663ac817e9c5e9406d34cdc49b6400ff",
+      "regions": [
+        {
+          "name": "plot-area",
+          "inkPixels": 431865,
+          "colorCounts": {
+            "#4c78a8": 419150
+          }
+        }
+      ],
+      "image": ".artifacts/test/png/review/area-layout/bar-layout-roundtrip/primitive.png"
+    }
+  ]
+}

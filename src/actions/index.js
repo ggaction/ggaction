@@ -18,8 +18,10 @@ import { registerRegressionActions } from "./regression/index.js";
 import { registerViolinPlotActions } from "./violinPlots/index.js";
 import { registerErrorBandActions } from "./errorBands/index.js";
 import { registerChartActions } from "./charts/index.js";
+import { registerThemeActions } from "./theme/index.js";
 
 export function registerActions(ProgramClass) {
+  registerThemeActions(ProgramClass);
   registerPrimitiveActions(ProgramClass);
   registerCompositionActions(ProgramClass);
   registerFacetActions(ProgramClass);

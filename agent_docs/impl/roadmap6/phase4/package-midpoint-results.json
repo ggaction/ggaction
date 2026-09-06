@@ -1,0 +1,50 @@
+{
+  "scope": "sequential-midpoint",
+  "status": "passed",
+  "artifact": {
+    "file": ".artifacts/roadmap6-authoring/midpoint-package-complete/ggaction-0.0.12.tgz",
+    "sha256": "dbf68ca918073b1d7a3899ccc4027e8dfdd64d8b14a32b7ac139898dad09a85e",
+    "packedBytes": 495106,
+    "unpackedBytes": 2364624,
+    "entryCount": 441
+  },
+  "checks": [
+    "installed-node-runtime-and-renderers",
+    "midpoint-create-and-reset",
+    "strict-positive-negative-types",
+    "installed-tutorial-consumers",
+    "MCP-server",
+    "minimal-browser-bundles"
+  ],
+  "browserBundles": {
+    "full": {
+      "specifier": "ggaction",
+      "chunks": 1,
+      "modules": 388,
+      "minifiedBytes": 931603,
+      "gzipBytes": 245606
+    },
+    "basic": {
+      "specifier": "ggaction/basic",
+      "chunks": 1,
+      "modules": 233,
+      "minifiedBytes": 493191,
+      "gzipBytes": 135206
+    },
+    "svg": {
+      "specifier": "ggaction/svg",
+      "chunks": 1,
+      "modules": 15,
+      "minifiedBytes": 19840,
+      "gzipBytes": 6437
+    }
+  },
+  "budgets": {
+    "ggaction": 247000,
+    "ggaction/basic": 136000,
+    "ggaction/svg": 25000
+  },
+  "mcp": {
+    "coldStartMilliseconds": 275.55862499999967
+  }
+}

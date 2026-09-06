@@ -2,6 +2,7 @@ import { action } from "../../core/action.js";
 import { isPlainObject } from "../../core/immutable.js";
 import {
   validateKeys,
+  validateNonEmptyString,
 } from "../../core/validation.js";
 import { DEFAULT_COLORS } from "../../theme/defaults.js";
 import { validateCurveInterpolation } from "../../grammar/curveCommands.js";
@@ -23,7 +24,7 @@ const OPTIONS = Object.freeze([
   "boundaries"
 ]);
 
-const ERROR_BAND_POLICY = Object.freeze({
+export const ERROR_BAND_POLICY = Object.freeze({
   operation: "createErrorBand",
   resourceLabel: "error-band",
   defaultId: "errorBand",
@@ -40,8 +41,8 @@ const ERROR_BAND_POLICY = Object.freeze({
     "createErrorBand cannot infer the interval axis when both positions are quantitative; provide an interval option."
 });
 
-function resolveErrorBand(program, args) {
-  const resolved = resolveIntervalComposite(program, args, ERROR_BAND_POLICY);
+export function resolveErrorBand(program, args, policy = ERROR_BAND_POLICY) {
+  const resolved = resolveIntervalComposite(program, args, policy);
   if (resolved.groupField === resolved.position.field) {
     throw new Error(
       "createErrorBand groupBy must differ from the independent position field."
@@ -71,8 +72,9 @@ function resolveBoundaries(value, areaCurve) {
   });
 }
 
-function positionOptions({ target, field, fieldType, coordinate, scale }) {
-  return { target, field, fieldType, coordinate, scale: { id: scale } };
+function positionOptions({ target, field, fieldType, coordinate, scale, temporalUnit }) {
+  return { target, field, fieldType, coordinate, scale: { id: scale },
+    ...(temporalUnit === undefined ? {} : { temporalUnit }) };
 }
 
 export const createErrorBandBoundary = action(
@@ -103,6 +105,7 @@ export const createErrorBandBoundary = action(
         target: id,
         field: vertical ? bound : position.field,
         fieldType: vertical ? "quantitative" : position.fieldType,
+        temporalUnit: vertical ? undefined : position.temporalUnit,
         coordinate,
         scale: vertical ? intervalScale : positionScale
       }))
@@ -110,6 +113,7 @@ export const createErrorBandBoundary = action(
         target: id,
         field: vertical ? position.field : bound,
         fieldType: vertical ? position.fieldType : "quantitative",
+        temporalUnit: vertical ? position.temporalUnit : undefined,
         coordinate,
         scale: vertical ? positionScale : intervalScale
       }));
@@ -132,6 +136,7 @@ function positionArgs(resolved) {
     target: resolved.id,
     field: resolved.position.field,
     fieldType: resolved.position.fieldType,
+    ...(resolved.position.temporalUnit === undefined ? {} : { temporalUnit: resolved.position.temporalUnit }),
     coordinate: resolved.coordinate,
     scale: resolved.position.scale
   };
@@ -158,6 +163,7 @@ export const createErrorBand = action(
     const resolved = resolveErrorBand(this, args);
     const curve = validateCurveInterpolation(args.curve ?? "linear");
     const boundaries = resolveBoundaries(args.boundaries, curve);
+    if (args.fill !== undefined) validateNonEmptyString(args.fill, "Error-band fill");
     let next = createResolvedIntervalData(this, resolved);
     next = next.createAreaMark({
       id: resolved.id,
@@ -216,6 +222,13 @@ export const createErrorBand = action(
     return next._withMarkConfig(resolved.id, {
       ...next.markConfigs[resolved.id],
       errorBand: {
+        ...(args.fill === undefined ? {} : { fill: args.fill }),
+        source: resolved.source,
+        intervalMode: resolved.interval.mode,
+        ...(resolved.interval.mode === "statistical"
+          ? { intervalField: resolved.interval.field }
+          : { centerField: resolved.fields.center }),
+        transformGroupBy: resolved.groupBy,
         data: resolved.dataId,
         orientation: resolved.orientation,
         position: resolved.position,

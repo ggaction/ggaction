@@ -46,10 +46,6 @@ export function createCenteredAreaStreamPrimitives(jobs) {
       value: "y"
     })
     .editSemantic({
-      property: "layer[occupations].encoding.y.stack",
-      value: "center"
-    })
-    .editSemantic({
       property: "layer[occupations].encoding.group.field",
       value: "job"
     })
@@ -69,8 +65,12 @@ export function createCenteredAreaStreamPrimitives(jobs) {
       property: "layer[occupations].encoding.color.scale",
       value: "color"
     })
+    .editSemantic({ property: "layer[occupations].encoding.group.inferredFrom", value: "color" })
+    .editSemantic({ property: "layer[occupations].encoding.y2.datum", value: 0 })
+    .editSemantic({ property: "layer[occupations].encoding.y2.fieldType", value: "quantitative" })
+    .editSemantic({ property: "layer[occupations].encoding.y2.scale", value: "y" })
     .editSemantic({
-      property: "layer[occupations].encoding.color.layout",
+      property: "layer[occupations].layout.mode",
       value: "center"
     })
     .editSemantic({ property: "scale[x].type", value: "linear" })

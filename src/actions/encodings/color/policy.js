@@ -5,7 +5,7 @@ import {
 import { validateColorLayout } from "../../../grammar/seriesLayout.js";
 
 export const COLOR_ENCODING_OPTIONS = Object.freeze([
-  "field", "target", "fieldType", "scale", "palette", "layout", "aggregate"
+  "field", "target", "fieldType", "scale", "palette", "layout", "aggregate", "temporalUnit"
 ]);
 
 export function resolveColorScaleOptions(args) {
@@ -24,6 +24,7 @@ export function assertNoConstantColor(program, layer) {
   const hasConstant = {
     point: config?.fill !== undefined,
     line: config?.stroke !== undefined,
+    area: config?.errorBand?.fill !== undefined,
     bar: config?.barAppearance?.fill !== undefined,
     arc: config?.fill !== undefined,
     rect: config?.fillExplicit === true
@@ -53,12 +54,7 @@ export function resolveColorLayout(layer, requested, barGrain) {
             : undefined
       );
   if (requested !== undefined) validateColorLayout(requested);
-  if (existing !== undefined && requested !== undefined && requested !== existing) {
-    throw new Error(
-      `Color layout transition from "${existing}" to "${requested}" is not supported.`
-    );
-  }
-  const layout = requested ?? existing ?? (
+  const layout = requested ?? layer.layout?.mode ?? existing ?? (
     layer.mark.type === "bar"
       ? barGrain === BAR_GRAINS.histogram
         ? "stack"
@@ -84,7 +80,8 @@ export function resolveColorLayout(layer, requested, barGrain) {
   ) {
     throw new Error('Arc color layout currently supports only "overlay".');
   }
-  if (isRangedArea(layer) && layout !== "overlay") {
+  if (isRangedArea(layer) && layer.encoding?.x2?.datum === undefined && layer.encoding?.y2?.datum === undefined &&
+    layer.encoding?.x?.datum === undefined && layer.encoding?.y?.datum === undefined && layout !== "overlay") {
     throw new Error('Ranged area color encoding supports only "overlay" layout.');
   }
   return layout;

@@ -70,7 +70,7 @@ test("creates an inferred right-side histogram color legend", () => {
 });
 
 test("supports explicit bottom layout, swatch style, and border", () => {
-  const program = histogram().createLegend({
+  const program = histogram().editCanvas({ margin: { bottom: 70 } }).createLegend({
     position: "bottom",
     align: "left",
     symbol: {
@@ -83,7 +83,7 @@ test("supports explicit bottom layout, swatch style, and border", () => {
   });
   const symbols = program.graphicSpec.objects.colorLegendSymbols.items;
 
-  assert.equal(symbols[0].properties.x, 80);
+  assert.equal(symbols[0].properties.x, 89);
   assert.equal(symbols[0].properties.width, 16);
   assert.equal(symbols[0].properties.height, 10);
   assert.equal(symbols[0].properties.stroke, "#0f172a");

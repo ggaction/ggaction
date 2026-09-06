@@ -75,6 +75,22 @@ Once the category and measure encodings are complete, concrete rectangles use
 an implicit `0.72` category-band width. Grouping recomputes them within directional offset
 slots, and `encodeBarWidth` is an optional graphical override.
 
+Positions and width can be authored in either order:
+
+```javascript
+program
+  .encodeBarWidth({ band: 0.5 })
+  .encodeY({ field: "perc" })
+  .encodeX({ field: "year", fieldType: "ordinal" });
+```
+
+Until the category is known, a measure without an explicit aggregate stores its
+field and scale without choosing an aggregate or creating rectangles. Completing
+the category applies the usual `mean` and `null` stack. Explicit aggregate, stack,
+and scale choices survive. Histogram y may also precede binned x; matching fields
+then resolve to `count` and `zero` stack. A saved bar width is incompatible with
+histogram bins. Invalid fields, values, and widths fail immediately.
+
 ## Temporal and horizontal bars
 
 Bar orientation is inferred from the completed position pair; it is not stored

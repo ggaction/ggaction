@@ -275,7 +275,7 @@ test("orders independent interval and stroke-width recipes by layer", () => {
   assert.equal(strokeTitle.x, 560);
   assert.ok(intervalTitle.y < strokeTitle.y);
   assert.equal(centers(program, "colorLegendSymbols").every(x => x === 576), true);
-  assert.equal(values(program, "strokeWidthLegendLabels", "x").every(x => x === 604), true);
+  assert.equal(values(program, "strokeWidthLegendLabels", "x").every(x => x === 608), true);
 });
 
 for (const position of ["top", "bottom"]) {
@@ -562,8 +562,11 @@ test("restores a retained horizontal block after removing its sibling target", (
   );
 });
 
-test("rejects horizontal lane overflow without changing the source", () => {
-  const program = horizontalBase("top", { margin: 80 })
+test("validates final horizontal lane space without premature intrinsic rejection", () => {
+  assert.doesNotThrow(() => horizontalBase("top", { margin: 80 })
+    .createLegend({ channels: ["color"], position: "top" })
+    .createLegend({ channels: ["opacity"], position: "top", count: 3 }));
+  const program = horizontalBase("top", { margin: 60 })
     .createLegend({ channels: ["color"], position: "top" });
   assert.throws(
     () => program.createLegend({
@@ -571,7 +574,7 @@ test("rejects horizontal lane overflow without changing the source", () => {
       position: "top",
       count: 3
     }),
-    /requires more (top-margin or )?Canvas margin space/
+    /requires more top-margin or Canvas space/
   );
   assert.equal(program.guideConfigs.legend.opacity, undefined);
   assert.equal(program.graphicSpec.objects.opacityLegendSymbols, undefined);

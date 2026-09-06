@@ -4,6 +4,8 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 
 ## Shared complete-axis contract
 
+Cartesian line/ticks/labels/title의 실제 occupied bounds는 각 component position에서 chart title과 legend group의 bounds를 검사한다. 작성 순서, focused/whole-axis edit와 Canvas/scale replay에 공통인 최종 상태 검증이며 이전 program은 immutable하다. 정확한 cross-guide policy는 [공통 guide collision 계약](LEGEND_AND_TITLE.md#shared-guide-collision-contract)이 소유한다. 내부 axis component 간 검증은 기존 axis 계약을 따른다.
+
 `createXAxis`와 `createYAxis`는 같은 option shape를 사용한다.
 
 - `scale`: optional scale ID. 생략하면 channel ID를 사용하거나 parent `createAxes`가 유일한 scale을 전달한다.
@@ -36,6 +38,8 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - `values`: scale domain 안의 finite number/timestamp 또는 ordinal scalar array. histogram x는 둘 다
   생략하면 bin boundaries, ordinal x는 domain 전체를 사용한다. 생성 전 resolved cardinality는 최대
   `10,000`이다.
+- Shared histogram scale의 자동 boundaries는 모든 binned consumer가 같은 boundary array를 계산할 때만
+  유일한 결과로 재사용한다. 서로 다른 boundaries면 explicit values 또는 독립 scale이 필요하다.
 - `length`: non-negative finite number, 기본 `6`.
 - `color`: non-empty string, 기본 `"#64748b"`.
 - `lineWidth`: non-negative finite number, 기본 `1`.
@@ -45,27 +49,40 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 ## Shared axis-label contract
 
 - Create parameters: `scale?`, `position?`, `count?`, `values?`, `offset?`, `format?`, `color?`,
-  `fontSize?`, `fontFamily?`, `fontWeight?`; edit에서는 scale을 제외한다.
+  `fontSize?`, `fontFamily?`, `fontWeight?`, `rotation?`, `maxWidth?`, `wrap?`, `lineHeight?`,
+  `overlap?`; edit에서는 scale을 제외한다.
 - `count`/`values`: tick contract와 같으며 existing ticks가 있으면 생략 시 그 정책을 재사용한다.
 - `offset`: non-negative finite number; x default `18`, y default `12`.
-- `format`: `"auto" | { decimals: nonNegativeInteger } | AxisFormatString`. Numeric tokens는
-  quantitative에서만 허용한다. Time format은 `%Y | %m | %d | %b` UTC directive 하나 이상과 literal의
+- `format`: `"auto" | { decimals: nonNegativeInteger } | AxisFormatString`. Numeric token은 `.0`–`.12`
+  precision과 `f | % | e` suffix이며 quantitative에서만 허용한다. Time format은 `%Y | %m | %d | %b` UTC directive 하나 이상과 literal의
   sequence이며 literal percent는 `%%`다. Unknown/dangling directive는 거부하고 ordinal은 auto만 허용한다.
 - `color`: non-empty string; `fontSize`: positive finite; `fontFamily`: non-empty string;
   `fontWeight`: string 또는 finite number.
+- `rotation`: `RotationInput`이며 숫자는 radians, 구조형 값은 radians/degrees를 명시한다. 기본값은 `0`이고
+  materialization config에는 radians로 정규화한다.
+- `maxWidth`: positive finite measured width다. 지정하면 각 tick text를 deterministic shared text metric으로
+  concrete line item에 줄바꿈한다. Edit의 `false`는 wrap policy를 제거하며 같은 호출에서 `wrap`이나
+  `lineHeight`와 함께 쓸 수 없다.
+- `wrap`: `"word" | "character"`, 기본값은 `"word"`다. 너무 긴 word는 Unicode code point 단위로 나눈다.
+- `lineHeight`: fontSize 이상의 finite number다. 생략하면 `fontSize * 1.2`다.
+- `overlap`: `"error" | "allow"`, 기본값은 `"error"`다. Allow는 label-label 교차만 허용하며 Canvas
+  overflow와 explicit axis-title collision은 계속 거부한다.
 - Effect: formatted text, aligned data-space coordinates와 font style을 text collection에 저장한다.
   Time `auto`는 domain-span precision에서 시작해 distinct resolved ticks가 같은 label이면 최소 한 단계씩
   precision을 높인다. Empty-string nominal values는 semantic domain에는 그대로 남고 visible label은
   deterministic `(empty)`로 표시한다. Explicit format은 그대로 유지한다. ticks와 count/values 정책이
   충돌하면 거부한다. 매우 긴 valid temporal domain은 legacy fixed interval이 requested count를 크게
-  초과할 때만 nice multi-year step으로 전환한다.
+  초과할 때만 nice multi-year step으로 전환한다. Wrapped line과 rotation-aware occupied bounds는
+  materialization에서 확정하므로 renderer는 text를 다시 측정하거나 줄바꿈하지 않는다. Canvas/scale replay는
+  stored policy와 원래 tick value text에서 같은 concrete line을 재생성한다. Total concrete label line은
+  `10,000`개를 넘을 수 없다.
 
 ## Shared ticks-and-labels contract
 
 - Create: `scale?`, `position?`, `count?`, `values?`, `ticks?`, `labels?`.
 - Edit: create option에서 scale을 제외하며 빈 edit는 오류다.
 - `ticks`: `{ length?, color?, lineWidth? }`.
-- `labels`: `{ offset?, format?, color?, fontSize?, fontFamily?, fontWeight? }`.
+- `labels`: `{ offset?, format?, color?, fontSize?, fontFamily?, fontWeight?, rotation?, maxWidth?, wrap?, lineHeight?, overlap? }`.
 - Effect: shared count/values를 tick과 label child에 원자적으로 전달한다. nested appearance는 해당 child만 바꾼다.
 
 ## Shared axis-title contract
@@ -75,8 +92,10 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - `text`: non-empty string. 생략하면 unique connected field/aggregate 또는 density provenance에서 추론한다.
 - `at`: `"start" | "center" | "end"` 또는 continuous scale domain 안의 finite number; 기본 center.
 - `offset`: non-negative finite; x default `42`, y default `52`.
-- `rotation`: finite radians; x bottom/top default `0`, y left default `-Math.PI / 2`, y right default
-  `Math.PI / 2`. Explicit rotation은 position default보다 우선한다.
+- `rotation`: `RotationInput = Finite | { value: Finite; unit: "degrees" | "radians" }`. 기존 finite 숫자는
+  radians 의미를 유지하고 구조형 입력은 단위를 명시한다. 둘 다 stored materialization config에서 radians로
+  정규화한다. x bottom/top default `0`, y left default `-Math.PI / 2`, y right default `Math.PI / 2`이며
+  explicit rotation은 position default보다 우선한다.
 - font/color contract는 labels와 같고 default font size는 `13`, weight는 `600`이다.
 - Effect: semantic axis title text와 graphical layout/style을 분리 저장한다.
 
@@ -92,6 +111,107 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - Effect: semantic guide에는 scale/coordinate, graphical config에는 tick policy/style, concrete line
   collection에는 endpoints를 저장한다. 관련 mark보다 앞에 graphic을 배치한다.
 
+## Optional component lifecycle
+
+Cartesian/Polar complete 생성은 `line`, `ticksAndLabels`, `title`의 false를 해당 component 생략으로 처리한다. 생략/{}는 기본 생성이며 셋 모두 false는 no-enabled-component 오류다. Group 내부 ticks/labels는 스타일 객체만 받는다. 원하는 한 component만 추가할 때는 focused create를 사용한다.
+
+네 family의 complete edit는 line/ticks/labels/ticksAndLabels/title false로 existing component를 제거한다. Missing component 제거·편집은 오류이고 group false는 ticks와 labels 둘 다 요구한다. Group과 개별 ticks/labels를 동시에 지시할 수 없다. 마지막 component 제거는 전체 axis remove owner로 semantic/config/layout을 정리하고 grid·mark·scale은 유지한다. 삭제한 component는 replay에서 다시 생기지 않으며 복원은 focused create가 소유한다.
+
+Radial angle edit는 existing component가 최소 하나 있어야 한다. Angle과 false를 함께 지정하면 유지되는 component만 새 각도로 갱신한다. Theta complete/focused create에는 angle이 없으며 과거 무시되던 complete angle도 이제 오류다. Facade 재사용은 disabled component를 만들지 않고 기존 component를 false로 선언하면 conflict로 거부한다.
+
+Evidence: `test/unit/actions/guides/axis-optional-components.test.js`, `test/unit/actions/charts/facade-guide-reuse.test.js`, `test/contracts/polar-component-types.test.js`. 4 families × 7 nonempty creation combinations, component removal/restore/replay, empty/all-false/conflicting/late-invalid atomic errors.
+
+## Shared Parallel field-axis contract
+
+Full-only Parallel axes는 encoded field별로 line/ticks/labels/title을 소유한다. `field`는 실제 encoded name이며 필수다. `target`은 existing guide owner, 없으면 unique encoded Parallel line에서 추론한다. 다른 owner를 덮어쓰지 않는다. 전체 생성은 missing owner, field 생성은 선택한 missing components, 편집/제거는 existing components를 요구한다.
+
+- `line`: `{color?,lineWidth?}`; defaults theme axis/1.25.
+- `ticks`: `{count?,values?,length?,color?,lineWidth?}`; auto count5, length8, theme mutedText/1.
+- `labels`: `{count?,values?,offset?,format?,color?,fontSize?,fontFamily?,fontWeight?}`; offset9 (left), auto format, theme axis/font family, font11/normal.
+- `title`: `{text?,offset?,color?,fontSize?,fontFamily?,fontWeight?}`; dimension title inference, offset20 (above), theme axisTitle/font family, font13/600. No x/y position, angle, rotation or automatic fitting.
+- `ticksAndLabels`: shared `{count?,values?,ticks?:tickStyle,labels?:labelStyle}`. Count/values and group/individual forms are mutually exclusive. Nested group components accept style objects only. Count is positive integer ≤10,000 and quantitative-only; values are distinct domain members, ≤10,000. Quantitative values must be finite; ordinal uses exact domain members. Empty values hide items while retaining the component recipe. Total items per concrete collection ≤10,000.
+- Color/fontFamily/text are nonempty strings; fontSize positive finite; fontWeight string or finite number; widths/length/offset nonnegative finite. Explicit label format uses the shared axis formatter; auto preserves the existing `k` labels. Ordinal supports auto only.
+- Create omission/{} creates defaults; false skips a component. Independent tick/label restoration uses the other components' false values. All-disabled create rejects. Edit omission preserves; object patches; false removes. Empty edits reject; group edit/removal requires both components.
+- Semantic `guide.axis.parallel` owns target/coordinate/scales and optional `titles: [{field,text}]` explicit text overrides. Runtime guide config owns mode and ordered field/component recipes, without duplicating title text. Renderer consumes four ordinary concrete collections only.
+- Canvas/scale/data/reencoding replay preserves field-owned recipes and overrides. Reordered dimensions move their axis; removed fields lose their recipes and title override. Aggregate creation's `all` mode creates axes for new fields; individual creation's `selected` mode keeps new fields hidden. Explicitly removed fields stay hidden while encoded. Last visible component removal cleans the whole owner; mark/scale remain.
+- Reencoding resolves all target scales before marks and refreshes the guide once. Line materialization reuses that plan's scale stage only when it covers every scale the line consumes; direct line editing still resolves its own scales.
+- Errors include missing/ambiguous/incompatible owner, unknown field, duplicate creation, missing edit/removal, conflicting modes, unsupported/invalid values and styles. Whole proposals fail immutably without changing the input program or caller options.
+
+## `createParallelAxes`
+
+- Signature: `createParallelAxes(options?: ParallelAxesOptions): ChartProgram`.
+- Behavior, defaults, inference, errors and effects follow the shared Parallel field-axis contract above.
+
+### Formal values — `createParallelAxes`
+
+- Implemented: Creates default axes for all encoded fields; optional target/coordinate must match the resolved owner.
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `createParallelAxes`
+
+- ✅ Covered: Full/Basic boundary, field/owner selection, component lifecycle, defaults/style/format, count/values and error atomicity, immutable replay, primitive/public geometry and renderer parity, installed consumer.
+- Evidence: `test/unit/actions/guides/parallel-axis-lifecycle.test.js`, `test/unit/actions/guides/parallel-axis-reencoding.test.js`, `test/contracts/parallel-axis-types.test.js`, `test/charts/cars-parallel-coordinates/public.test.js`, `test/charts/cars-parallel-coordinates/png.render.js`.
+
+## `createParallelAxis`
+
+- Signature: `createParallelAxis(options: CreateParallelAxisOptions): ChartProgram`.
+- Behavior, defaults, inference, errors and effects follow the shared Parallel field-axis contract above.
+
+### Formal values — `createParallelAxis`
+
+- Implemented: Creates missing components of the required encoded field; defaults to all four, false skips selected components.
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `createParallelAxis`
+
+- ✅ Covered: Full/Basic boundary, field/owner selection, component lifecycle, defaults/style/format, count/values and error atomicity, immutable replay, primitive/public geometry and renderer parity, installed consumer.
+- Evidence: `test/unit/actions/guides/parallel-axis-lifecycle.test.js`, `test/unit/actions/guides/parallel-axis-reencoding.test.js`, `test/contracts/parallel-axis-types.test.js`, `test/charts/cars-parallel-coordinates/public.test.js`, `test/charts/cars-parallel-coordinates/png.render.js`.
+
+## `editParallelAxis`
+
+- Signature: `editParallelAxis(options: EditParallelAxisOptions): ChartProgram`.
+- Behavior, defaults, inference, errors and effects follow the shared Parallel field-axis contract above.
+
+### Formal values — `editParallelAxis`
+
+- Implemented: Patches or removes selected existing field components; preserves unselected recipes.
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `editParallelAxis`
+
+- ✅ Covered: Full/Basic boundary, field/owner selection, component lifecycle, defaults/style/format, count/values and error atomicity, immutable replay, primitive/public geometry and renderer parity, installed consumer.
+- Evidence: `test/unit/actions/guides/parallel-axis-lifecycle.test.js`, `test/unit/actions/guides/parallel-axis-reencoding.test.js`, `test/contracts/parallel-axis-types.test.js`, `test/charts/cars-parallel-coordinates/public.test.js`, `test/charts/cars-parallel-coordinates/png.render.js`.
+
+## `removeParallelAxis`
+
+- Signature: `removeParallelAxis(options: RemoveParallelAxisOptions): ChartProgram`.
+- Behavior, defaults, inference, errors and effects follow the shared Parallel field-axis contract above.
+
+### Formal values — `removeParallelAxis`
+
+- Implemented: Removes all existing components and explicit title of the required field.
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `removeParallelAxis`
+
+- ✅ Covered: Full/Basic boundary, field/owner selection, component lifecycle, defaults/style/format, count/values and error atomicity, immutable replay, primitive/public geometry and renderer parity, installed consumer.
+- Evidence: `test/unit/actions/guides/parallel-axis-lifecycle.test.js`, `test/unit/actions/guides/parallel-axis-reencoding.test.js`, `test/contracts/parallel-axis-types.test.js`, `test/charts/cars-parallel-coordinates/public.test.js`, `test/charts/cars-parallel-coordinates/png.render.js`.
+
+## `removeParallelAxes`
+
+- Signature: `removeParallelAxes(options?: ParallelAxesOptions): ChartProgram`.
+- Behavior, defaults, inference, errors and effects follow the shared Parallel field-axis contract above.
+
+### Formal values — `removeParallelAxes`
+
+- Implemented: Removes the complete owner, semantic overrides, recipes and graphics; optional selectors assert the stored owner.
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `removeParallelAxes`
+
+- ✅ Covered: Full/Basic boundary, field/owner selection, component lifecycle, defaults/style/format, count/values and error atomicity, immutable replay, primitive/public geometry and renderer parity, installed consumer.
+- Evidence: `test/unit/actions/guides/parallel-axis-lifecycle.test.js`, `test/unit/actions/guides/parallel-axis-reencoding.test.js`, `test/contracts/parallel-axis-types.test.js`, `test/charts/cars-parallel-coordinates/public.test.js`, `test/charts/cars-parallel-coordinates/png.render.js`.
+
 ## Shared formal types
 
 ```typescript
@@ -99,10 +219,10 @@ type AxisPositionX = "bottom" | "top";
 type AxisPositionY = "left" | "right";
 type TimeAxisDirective = "Y" | "m" | "d" | "b";
 type TimeAxisFormatString = `${string}%${TimeAxisDirective}${string}`;
-type AxisFormatString =
-  | ".0f" | ".1f" | ".2f"
-  | ".0%" | ".1%" | ".2e"
-  | TimeAxisFormatString;
+type ValueFormatDigit = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
+type ValueFormatPrecision = ValueFormatDigit | 10 | 11 | 12 | `0${ValueFormatDigit}`;
+type NumericFormatString = `.${ValueFormatPrecision}${"f" | "%" | "e"}`;
+type AxisFormatString = NumericFormatString | TimeAxisFormatString;
 type TickValue = string | boolean | Finite;
 type TickOptions = {
   length?: NonNegativeFinite;
@@ -128,15 +248,15 @@ type AxisTitleOptions<P extends string> = TextStyle & {
   position?: P;
   at?: "start" | "center" | "end" | Finite;
   offset?: NonNegativeFinite;
-  rotation?: Finite;
+  rotation?: RotationInput;
 };
 type CompleteAxisOptions<P extends string> = {
   scale?: UserId;
   coordinate?: UserId;
   position?: P;
-  line?: { color?: NonEmptyString; lineWidth?: NonNegativeFinite };
-  ticksAndLabels?: TickAndLabelOptions;
-  title?: AxisTitleOptions<P>;
+  line?: false | { color?: NonEmptyString; lineWidth?: NonNegativeFinite };
+  ticksAndLabels?: false | TickAndLabelOptions;
+  title?: false | AxisTitleOptions<P>;
 };
 ```
 
@@ -169,7 +289,7 @@ type CompleteAxisOptions<P extends string> = {
   - ✅ Covered: bounded multi-layer/shared-coordinate cases prove opt-out, explicit scale resolution and ambiguity
     rejection without an exhaustive layer × scale cross-product.
   - ✅ Covered: x top/y right complete-axis forwarding while preserving channel defaults.
-- Proposed: future Polar axes should use coordinate channels rather than force x/y objects into Polar semantics.
+- Polar axes use theta/radius channel options rather than x/y objects.
 - Evidence: `test/unit/actions/guides/create-axes.test.js`.
 
 ## Polar guide actions
@@ -190,8 +310,8 @@ editRadialAxis(options: EditPolarAxisOptions & { angle?: number }): ChartProgram
 
 - `scale`, `coordinate`는 unique stored encoding에서 추론한다.
 - `ticksAndLabels.count` 기본값은 theta `6`, radius `5`이며 `values`와 mutually exclusive다.
-- `angle`은 public Polar degree convention을 사용하며 radial aggregate create/edit만 소유한다.
-- `title: false` omits the title at creation. Other title objects keep the inferred or explicit text contract.
+- `angle`은 public Polar degree convention을 사용하며 radial component/aggregate create와 aggregate edit가 소유한다. Theta는 받지 않는다.
+- `line`/`ticksAndLabels`/`title: false`는 생성 시 생략하고 편집 시 existing component를 제거한다. Optional component lifecycle을 따른다.
 - Focused line/ticks/labels/title actions는 raw graphic target 없이 같은 stored resource를 변경한다.
 - Inferred title은 encoding field/title을 읽는다. Canvas, scale, encoding revision은 모든 component를
   deterministic하게 rematerialize한다.
@@ -253,6 +373,134 @@ Edits selected radius-axis components; `angle` rematerializes every existing com
 
 - ✅ Covered: aggregate component routing and whole-axis angle movement.
 - No proposal; Evidence: `test/unit/actions/guides/polar-axis-actions.test.js`.
+
+## Polar focused component creation
+
+Full에서 theta/radial line·ticks·labels·title을 독립적으로 생성한다. Complete axis와 같은 wrapped owner·defaults·schema·materialization을 사용한다. Basic에는 노출하지 않는다. Existing component 생성은 오류이며 대응 focused edit는 existing component를 요구한다. 전체 remove 뒤 원하는 component만 다시 생성할 수 있다.
+
+기존 semantic axis binding이 있으면 scale/coordinate를 계승하고, 없으면 compatible Polar encoding에서 유일하게 추론한다. 모호한 resource는 explicit ID를 요구한다. Theta create는 angle과 radial-only position을 거부한다. Radial create의 angle은 유한 degrees, 생략 시 기존 aggregate angle 또는 기본 90이다. 이미 생성한 component와 다른 angle은 오류이며 변경은 editRadialAxis가 소유한다. Label/title을 첫 component로 생성해도 요청한 angle로 bounds와 geometry를 검증한다.
+
+Ticks/labels의 count와 values는 배타적이고 같은 existing mode/default owner를 사용한다. Title text는 stored field/title에서 추론한다. Typography·offset·line style은 대응 focused editor의 값과 검증을 재사용한다. Invalid options/bindings/style/space, duplicate resource는 이전 program과 입력을 보존하는 atomic failure다. Scale/Canvas/encoding 편집은 생성 순서와 무관하게 같은 owner를 rematerialize한다.
+
+## `createThetaAxisLine`
+
+- Signature: `createThetaAxisLine(options?: CreateThetaAxisLineOptions): ChartProgram`.
+- Behavior and defaults: Polar focused component creation above and the corresponding focused editor below.
+
+### Formal values — `createThetaAxisLine`
+
+- Implemented: missing theta line creation with inferred/explicit scale and coordinate and the corresponding style options; angle is not accepted.
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `createThetaAxisLine`
+
+- ✅ Covered: full/Basic classification, independent creation and aggregate equivalence, create order, restore, resource/style errors, angle ownership, scale/Canvas replay and immutability.
+- Evidence: `test/unit/actions/guides/polar-component-creation.test.js`, `test/contracts/polar-component-types.test.js`, `test/unit/actions/guides/polar-axis-actions.test.js`.
+
+## `createRadialAxisLine`
+
+- Signature: `createRadialAxisLine(options?: CreateRadialAxisLineOptions): ChartProgram`.
+- Behavior and defaults: Polar focused component creation above and the corresponding focused editor below.
+
+### Formal values — `createRadialAxisLine`
+
+- Implemented: missing radial line creation with inferred/explicit scale and coordinate and the corresponding style options, optional shared radial angle.
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `createRadialAxisLine`
+
+- ✅ Covered: full/Basic classification, independent creation and aggregate equivalence, create order, restore, resource/style errors, angle ownership, scale/Canvas replay and immutability.
+- Evidence: `test/unit/actions/guides/polar-component-creation.test.js`, `test/contracts/polar-component-types.test.js`, `test/unit/actions/guides/polar-axis-actions.test.js`.
+
+## `createThetaAxisTicks`
+
+- Signature: `createThetaAxisTicks(options?: CreateThetaAxisTicksOptions): ChartProgram`.
+- Behavior and defaults: Polar focused component creation above and the corresponding focused editor below.
+
+### Formal values — `createThetaAxisTicks`
+
+- Implemented: missing theta ticks creation with inferred/explicit scale and coordinate and the corresponding style options; angle is not accepted; count and values are exclusive.
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `createThetaAxisTicks`
+
+- ✅ Covered: full/Basic classification, independent creation and aggregate equivalence, create order, restore, resource/style errors, angle ownership, scale/Canvas replay and immutability.
+- Evidence: `test/unit/actions/guides/polar-component-creation.test.js`, `test/contracts/polar-component-types.test.js`, `test/unit/actions/guides/polar-axis-actions.test.js`.
+
+## `createRadialAxisTicks`
+
+- Signature: `createRadialAxisTicks(options?: CreateRadialAxisTicksOptions): ChartProgram`.
+- Behavior and defaults: Polar focused component creation above and the corresponding focused editor below.
+
+### Formal values — `createRadialAxisTicks`
+
+- Implemented: missing radial ticks creation with inferred/explicit scale and coordinate and the corresponding style options, optional shared radial angle; count and values are exclusive.
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `createRadialAxisTicks`
+
+- ✅ Covered: full/Basic classification, independent creation and aggregate equivalence, create order, restore, resource/style errors, angle ownership, scale/Canvas replay and immutability.
+- Evidence: `test/unit/actions/guides/polar-component-creation.test.js`, `test/contracts/polar-component-types.test.js`, `test/unit/actions/guides/polar-axis-actions.test.js`.
+
+## `createThetaAxisLabels`
+
+- Signature: `createThetaAxisLabels(options?: CreateThetaAxisLabelsOptions): ChartProgram`.
+- Behavior and defaults: Polar focused component creation above and the corresponding focused editor below.
+
+### Formal values — `createThetaAxisLabels`
+
+- Implemented: missing theta labels creation with inferred/explicit scale and coordinate and the corresponding style options; angle is not accepted; count and values are exclusive.
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `createThetaAxisLabels`
+
+- ✅ Covered: full/Basic classification, independent creation and aggregate equivalence, create order, restore, resource/style errors, angle ownership, scale/Canvas replay and immutability.
+- Evidence: `test/unit/actions/guides/polar-component-creation.test.js`, `test/contracts/polar-component-types.test.js`, `test/unit/actions/guides/polar-axis-actions.test.js`.
+
+## `createRadialAxisLabels`
+
+- Signature: `createRadialAxisLabels(options?: CreateRadialAxisLabelsOptions): ChartProgram`.
+- Behavior and defaults: Polar focused component creation above and the corresponding focused editor below.
+
+### Formal values — `createRadialAxisLabels`
+
+- Implemented: missing radial labels creation with inferred/explicit scale and coordinate and the corresponding style options, optional shared radial angle; count and values are exclusive.
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `createRadialAxisLabels`
+
+- ✅ Covered: full/Basic classification, independent creation and aggregate equivalence, create order, restore, resource/style errors, angle ownership, scale/Canvas replay and immutability.
+- Evidence: `test/unit/actions/guides/polar-component-creation.test.js`, `test/contracts/polar-component-types.test.js`, `test/unit/actions/guides/polar-axis-actions.test.js`.
+
+## `createThetaAxisTitle`
+
+- Signature: `createThetaAxisTitle(options?: CreateThetaAxisTitleOptions): ChartProgram`.
+- Behavior and defaults: Polar focused component creation above and the corresponding focused editor below.
+
+### Formal values — `createThetaAxisTitle`
+
+- Implemented: missing theta title creation with inferred/explicit scale and coordinate and the corresponding style options; angle is not accepted.
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `createThetaAxisTitle`
+
+- ✅ Covered: full/Basic classification, independent creation and aggregate equivalence, create order, restore, resource/style errors, angle ownership, scale/Canvas replay and immutability.
+- Evidence: `test/unit/actions/guides/polar-component-creation.test.js`, `test/contracts/polar-component-types.test.js`, `test/unit/actions/guides/polar-axis-actions.test.js`.
+
+## `createRadialAxisTitle`
+
+- Signature: `createRadialAxisTitle(options?: CreateRadialAxisTitleOptions): ChartProgram`.
+- Behavior and defaults: Polar focused component creation above and the corresponding focused editor below.
+
+### Formal values — `createRadialAxisTitle`
+
+- Implemented: missing radial title creation with inferred/explicit scale and coordinate and the corresponding style options, optional shared radial angle.
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `createRadialAxisTitle`
+
+- ✅ Covered: full/Basic classification, independent creation and aggregate equivalence, create order, restore, resource/style errors, angle ownership, scale/Canvas replay and immutability.
+- Evidence: `test/unit/actions/guides/polar-component-creation.test.js`, `test/contracts/polar-component-types.test.js`, `test/unit/actions/guides/polar-axis-actions.test.js`.
 
 ## `editThetaAxisLine`
 

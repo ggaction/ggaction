@@ -103,4 +103,17 @@ aggregate benchmark와 원본 provenance hash로 정리했다. PR #27의 strict 
 - 기록: [`roadmap5.4/ROADMAP.md`](roadmap5.4/ROADMAP.md)
 - Benchmark: [`../../benchmarks/llm-authoring-v1/`](../../benchmarks/llm-authoring-v1/)
 
+## Roadmap 6 — Hierarchical Chart Authoring and Action Consistency
+
+Phase 0~11을 완료했다. 액션 173개의 최초 감사 결과를 기반으로 오류 8건·설계 문제 20건·추가 액션군 19개를
+12단계, 46개 작업 묶음과 차트군 계약 13개로 연결했다. 2026-09-05 사용자 선택으로 F20은 범위에서 제외했다.
+공통 작성 계약, 데이터·guide·style 편집, 19개 액션군, facet/repeat/named-child composition을 구현·검증했다.
+Phase 11에서 234개 direct action을 H0–H4, direct child/editor, entry support, unit, inference와 completion으로
+재분류하고 card schema v3, MCP, renderer와 fresh installed package를 대조했다. 승인 범위의 Planned action과
+capability는 0이며 47개 항목은 모두 evidence에 연결됐다.
+
+- 계획: [`roadmap6/ROADMAP.md`](roadmap6/ROADMAP.md)
+- 전체 항목: [`roadmap6/TRACEABILITY.md`](roadmap6/TRACEABILITY.md)
+- Closeout: [`roadmap6/phase11/REVIEW.md`](roadmap6/phase11/REVIEW.md)
+
 Machine-readable 상태와 nullable active pointer는 [`ROADMAP_INDEX.json`](ROADMAP_INDEX.json)이 소유한다.

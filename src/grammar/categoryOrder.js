@@ -2,6 +2,8 @@ import { cloneAndFreeze, isPlainObject } from "../core/immutable.js";
 import { isNominalValue, readNominalField } from "./scales/fields.js";
 import { aggregateScalarValues } from "./aggregate.js";
 
+export const CATEGORY_ORDER_CHANNELS = Object.freeze(["x", "y", "theta"]);
+
 const DIRECTIONS = ["ascending", "descending"];
 const AGGREGATES = ["sum", "mean", "min", "max"];
 
@@ -129,4 +131,36 @@ export function resolveCategoryOrder(rows, categoryField, order) {
       : metrics.get(left) - metrics.get(right);
     return direction * comparison || first.get(left) - first.get(right);
   }));
+}
+
+
+export function normalizeLegendOrder(order) {
+  if (order === "scale") return order;
+  if (!isPlainObject(order)) {
+    throw new TypeError('Legend order must be "scale", { values }, or { channel }.');
+  }
+  const keys = Object.keys(order);
+  if (keys.length !== 1 || !["values", "channel"].includes(keys[0])) {
+    throw new Error("Legend order requires exactly one of values or channel.");
+  }
+  if (keys[0] === "values") return normalizeCategoryOrder({ values: order.values });
+  if (!CATEGORY_ORDER_CHANNELS.includes(order.channel)) {
+    throw new Error("Legend order channel must be x, y, or theta.");
+  }
+  return cloneAndFreeze({ channel: order.channel });
+}
+
+export function resolveLegendOrderDomain(domain, order, linked, observed = domain) {
+  if (order === undefined || order === "scale") return domain;
+  const normalized = normalizeLegendOrder(order);
+  if (normalized.values !== undefined) {
+    const seen = [...new Set(observed)].filter(value => domain.some(item => Object.is(item, value)));
+    const available = [...seen, ...domain.filter(value => !seen.some(item => Object.is(item, value)))];
+    return resolveCategoryOrder(available.map(value => ({ value })), "value", normalized);
+  }
+  if (!Array.isArray(linked) || linked.length !== domain.length ||
+    !domain.every(value => linked.some(other => Object.is(value, other)))) {
+    throw new Error("Linked legend order requires the same categorical domain.");
+  }
+  return cloneAndFreeze(linked);
 }

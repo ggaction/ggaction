@@ -58,6 +58,12 @@ previous `rows` and `program` remain valid and can stay on screen.
 revise existing semantic resources and rematerialize their consumers. They do
 not replace the rows of a source dataset.
 
+`bindMarkData({ target, data })` can move one independent mark to another
+existing materialized dataset. It preflights the mark's fields, scales, guides,
+labels, selections, and highlights before returning the revised program.
+Composite charts keep their source changes in the corresponding aggregate edit
+action so all owned layers change together.
+
 Use a revision action when the source snapshot is unchanged and the user is
 changing chart intent. Rebuild from source when row identity, values, schema,
 or source-dataset membership changes.

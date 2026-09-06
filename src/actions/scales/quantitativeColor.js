@@ -7,7 +7,7 @@ const OPTIONS = Object.freeze([
   "type",
   "domain",
   "range",
-  "interpolate",
+  "interpolate", "midpoint",
   "clamp",
   "reverse",
   "unknown"
@@ -25,13 +25,17 @@ export const setQuantitativeColorScale = action(
     }
     const existing = findSemanticScale(this, args.id);
     if (existing !== undefined && existing.type !== args.type) {
-      throw new Error(
-        `Scale "${args.id}" cannot change type from "${existing.type}" to "${args.type}".`
-      );
+      if (typeof this.editScale !== "function") {
+        throw new Error("Color scale type transitions require the Full ChartProgram; use a new scale id in Basic.");
+      }
+      return this.editScale(args);
     }
     let next = this;
+    if (existing?.midpoint !== undefined && args.midpoint === undefined) {
+      next = next.editSemantic({ property: `scale[${args.id}].midpoint`, remove: true });
+    }
     for (const property of [
-      "type", "domain", "range", "interpolate", "clamp", "reverse", "unknown"
+      "type", "domain", "range", "interpolate", "midpoint", "clamp", "reverse", "unknown"
     ]) {
       if (!Object.hasOwn(args, property)) continue;
       if (existing?.[property] === args[property]) continue;

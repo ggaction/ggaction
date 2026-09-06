@@ -217,45 +217,49 @@ const editGrid = action(
   }
 );
 
+export function resolveGridOptions(program, args = {}, layers = program.semanticSpec.layers) {
+  validateOptionObject(args, AGGREGATE_OPTIONS, "createGrid");
+  const automatic = Object.keys(args).length === 0
+    ? resolveAutomaticGridOptions(program, layers)
+    : undefined;
+  const hasExplicitPolar = Object.hasOwn(args, "theta") ||
+    Object.hasOwn(args, "radial");
+  const polarDefault = automatic !== undefined &&
+    (Object.hasOwn(automatic, "theta") || Object.hasOwn(automatic, "radial"));
+  const horizontal = automatic !== undefined
+    ? automatic.horizontal === false ? undefined : automatic.horizontal
+    : polarDefault ||
+    (hasExplicitPolar && args.horizontal === undefined)
+    ? undefined
+    : normalizeDirection(args.horizontal, "horizontal");
+  const vertical = automatic !== undefined
+    ? automatic.vertical === false ? undefined : automatic.vertical
+    : args.vertical === undefined
+    ? undefined
+    : normalizeDirection(args.vertical, "vertical");
+  const theta = automatic !== undefined
+    ? automatic.theta
+    : args.theta === undefined
+      ? undefined
+      : normalizeDirection(args.theta, "theta");
+  const radial = automatic !== undefined
+    ? automatic.radial
+    : args.radial === undefined
+      ? undefined
+      : normalizeDirection(args.radial, "radial");
+  if ([horizontal, vertical, theta, radial].every(value => value === undefined)) {
+    throw new Error("createGrid requires at least one selected direction.");
+  }
+  return { horizontal, vertical, theta, radial };
+}
+
 const createGrid = action(
   {
     op: "createGrid",
     description: "Create selected Cartesian grid directions."
   },
   function (args = {}) {
-    validateOptionObject(args, AGGREGATE_OPTIONS, "createGrid");
-    const automatic = Object.keys(args).length === 0
-      ? resolveAutomaticGridOptions(this)
-      : undefined;
-    const hasExplicitPolar = Object.hasOwn(args, "theta") ||
-      Object.hasOwn(args, "radial");
-    const polarDefault = automatic !== undefined &&
-      (Object.hasOwn(automatic, "theta") || Object.hasOwn(automatic, "radial"));
-    const horizontal = automatic !== undefined
-      ? automatic.horizontal === false ? undefined : automatic.horizontal
-      : polarDefault ||
-      (hasExplicitPolar && args.horizontal === undefined)
-      ? undefined
-      : normalizeDirection(args.horizontal, "horizontal");
-    const vertical = automatic !== undefined
-      ? automatic.vertical === false ? undefined : automatic.vertical
-      : args.vertical === undefined
-      ? undefined
-      : normalizeDirection(args.vertical, "vertical");
-    const theta = automatic !== undefined
-      ? automatic.theta
-      : args.theta === undefined
-        ? undefined
-        : normalizeDirection(args.theta, "theta");
-    const radial = automatic !== undefined
-      ? automatic.radial
-      : args.radial === undefined
-        ? undefined
-        : normalizeDirection(args.radial, "radial");
-    if ([horizontal, vertical, theta, radial].every(value => value === undefined)) {
-      throw new Error("createGrid requires at least one selected direction.");
-    }
-
+    const { horizontal, vertical, theta, radial } = resolveGridOptions(this, args);
     let next = this;
     if (horizontal !== undefined) {
       next = next.createHorizontalGrid(horizontal);

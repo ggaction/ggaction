@@ -648,7 +648,7 @@ export function createCarsRegressionScatterplotValues(
   const sizeLegendTitleY = bounds.y + 89 + (groupDomain.length - 1) * 28;
   const sizeLegendItems = sizeLegendValues.map((value, index) => {
     const area = mapValue(value, sizeDomain, sizeRange);
-    const y = sizeLegendTitleY + 34 + index * 40;
+    const y = sizeLegendTitleY + 32 + index * 40;
     return {
       value,
       symbol: {
@@ -679,7 +679,11 @@ export function createCarsRegressionScatterplotValues(
       y: yField,
       groupBy: groupField,
       ...(method === "polynomial" ? { degree } : {}),
-      ...(method === "loess" ? { span } : { confidence, interval })
+      ...(method === "loess" ? { span } : {
+        confidenceMethod: "student-t",
+        level: confidence,
+        interval
+      })
     },
     filter: structuredClone(resolvedFilter),
     fields: {

@@ -1,3 +1,5 @@
+import { isSourceOwnedText } from "../../../grammar/text.js";
+import { withGuideLayoutValidation } from "../../../materialization/guides/layout.js";
 import { action } from "../../../core/action.js";
 import { validateUserId } from "../../../core/identifiers.js";
 import {
@@ -32,6 +34,7 @@ import {
 import { resolveConcreteGraphicBounds } from
   "../../../grammar/schemas/graphicBounds.js";
 import { validateAxisTextStyle } from "./labels.js";
+import { resolveRotation } from "../../../grammar/rotation.js";
 
 function titleBounds(geometry, config, text) {
   return resolveTextBounds({
@@ -102,7 +105,15 @@ export function inferAxisTitleText(program, channel, scaleId) {
   const titles = new Set();
   const primaryTitles = new Set();
   for (const layer of program.semanticSpec.layers) {
-    const encoding = layer.encoding?.[channel];
+    if (isSourceOwnedText(layer)) continue;
+    const primary = layer.encoding?.[channel];
+    const encoding = layer.mark?.type === "area" && Object.hasOwn(primary ?? {}, "datum")
+      ? layer.encoding?.[`${channel}2`] : primary;
+    if (channel === "radius" && layer.mark?.type === "arc" &&
+      encoding?.scale === scaleId && encoding.aggregate === "count" && encoding.field === undefined) {
+      titles.add(encoding.title ?? "count");
+      continue;
+    }
     if (
       encoding?.scale === scaleId &&
       typeof encoding.field === "string" &&
@@ -193,12 +204,12 @@ function names(channel) {
 
 function makeEdit(channel) {
   const operation = names(channel);
-  return action({ op: operation.edit, description: `Edit the ${channel}-axis title.` }, function (args = {}) {
+  return action({ op: operation.edit, description: `Edit the ${channel}-axis title.` }, withGuideLayoutValidation(function (args = {}) {
       validateKeys(args, EDIT_OPTIONS, operation.edit);
     if (this.graphicSpec.objects[operation.graphic]?.type !== "text") throw new Error(`${operation.edit} requires an existing axis title.`);
     const previous = this.guideConfigs.axis?.[channel]?.title;
     if (!previous) throw new Error(`${operation.edit} requires title configuration.`);
-    const { text, ...appearance } = args;
+    const { text, rotation: requestedRotation, ...appearance } = args;
     const explicitText = Object.hasOwn(args, "text");
     const explicitRotation = Object.hasOwn(args, "rotation");
     const position = appearance.position ?? previous.position;
@@ -211,7 +222,9 @@ function makeEdit(channel) {
       position,
       rotation: inferredRotation
         ? defaultAxisTitleRotation(channel, position)
-        : appearance.rotation ?? previous.rotation,
+        : explicitRotation
+          ? resolveRotation(requestedRotation, "Axis title rotation")
+          : previous.rotation,
       inferredRotation,
       inferredOffset: Object.hasOwn(args, "offset")
         ? false
@@ -245,7 +258,7 @@ function makeEdit(channel) {
     };
     for (const [property, value] of Object.entries(properties)) next = next.editGraphics({ target: operation.graphic, property, value });
     return next;
-  });
+  }));
 }
 
 const editXAxisTitle = makeEdit("x");
@@ -253,7 +266,7 @@ const editYAxisTitle = makeEdit("y");
 
 function makeCreate(channel) {
   const operation = names(channel);
-  return action({ op: operation.create, description: `Create the ${channel}-axis title.` }, function (args = {}) {
+  return action({ op: operation.create, description: `Create the ${channel}-axis title.` }, withGuideLayoutValidation(function (args = {}) {
       validateKeys(args, CREATE_OPTIONS, operation.create);
     const {
       text: requestedText,
@@ -281,7 +294,7 @@ function makeCreate(channel) {
       offset: channel === "x" ? 42 : 52,
       rotation: inferredRotation
         ? defaultAxisTitleRotation(channel, position)
-        : requestedRotation,
+        : resolveRotation(requestedRotation, "Axis title rotation"),
       inferredRotation,
       inferredOffset,
       color: DEFAULTS.color,
@@ -303,7 +316,7 @@ function makeCreate(channel) {
         ...resolvePlotGraphicPlacement(this)
       })
       ._withGuideConfig(channel, "title", config)[operation.edit]();
-  });
+  }));
 }
 
 const createXAxisTitle = makeCreate("x");

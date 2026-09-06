@@ -22,7 +22,7 @@ test("owns every legend family resource contract in one registry", () => {
   );
   assert.deepEqual(
     legendGraphicIds("strokeWidth"),
-    ["strokeWidthLegendSymbols", "strokeWidthLegendLabels", "strokeWidthLegendTitle"]
+    ["strokeWidthLegendBackground", "strokeWidthLegendSymbols", "strokeWidthLegendLabels", "strokeWidthLegendTitle"]
   );
   assert.deepEqual(
     allLegendGraphicIds(["color", "interval"]),

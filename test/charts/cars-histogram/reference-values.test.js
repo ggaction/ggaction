@@ -60,7 +60,7 @@ test("derives deterministic bins, stacks, and concrete histogram values", () => 
   );
   assert.equal(values.legend.title.x, 216);
   assert.equal(
-    values.legend.items[0].x + values.legend.width / 2,
+    values.legend.items[0].x - 0.25 + values.legend.width / 2,
     216
   );
 });

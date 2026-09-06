@@ -8,24 +8,114 @@ description: Create and edit regression, density, interval, error, and box-plot 
 
 These are direct immutable `ChartProgram` actions. Each accepts one option object and returns a new program.
 
+## `createSummaryData`
+
+```javascript
+createSummaryData({ id, source?, groupBy?, aggregates, members? })
+```
+
+Materialize reusable, first-appearance-ordered summary rows from one or more
+shared aggregate operations. [Source and Derived Data](../../api/data/source-and-derived.md#createsummarydata-id-source-groupby-aggregates-members)
+
+## `createBinData`
+
+```javascript
+createBinData({ id, source?, field, maxBins? | step | boundaries, extent?, nice?, zero?, includeEmpty?, members?, as? })
+```
+
+Materialize reusable one-dimensional bounds, counts, and optional source
+members using the same edge rules as Histogram.
+[Source and Derived Data](../../api/data/source-and-derived.md#createbindata-id-source-field-binoptions)
+
+## `createFoldData`
+
+```javascript
+createFoldData({ id, source?, fields, as? })
+```
+
+Materialize selected wide fields as stable key/value rows while preserving
+every source cell. [Source and Derived Data](../../api/data/source-and-derived.md#createfolddata-id-source-fields-as)
+
+## `createComputedData`
+
+```javascript
+createComputedData({ id, source?, as, expression })
+```
+
+Materialize a finite row-level field from a serializable, closed arithmetic
+expression. [Source and Derived Data](../../api/data/source-and-derived.md#createcomputeddata-id-source-as-expression)
+
+## `createStackData`
+
+```javascript
+createStackData({ id, source?, category, group, value, mode?, as? })
+```
+
+Materialize reusable start/end/value/share rows with the same stack math used
+by Bar and Area layouts. [Source and Derived Data](../../api/data/source-and-derived.md#createstackdata-id-source-category-group-value-mode-as)
+
+## `createHorizonPlot`
+
+```js
+createHorizonPlot({ id?, data?, coordinate?, x, y, groupBy?, bands?, baseline?, extent?, resolve?, missing?, overflow?, palette?, area?, guides? })
+```
+
+Create a complete signed, folded area chart from explicit x and y source fields. Defaults use three bands,
+a zero baseline, automatic shared extent, blue positive bands and red negative bands. Temporal x fields
+support the existing temporal unit vocabulary. The full entry owns this facade; Basic does not expose it.
+
+The original x axis and vertical grid are the only automatic guides. Folded y/horizontal grid/internal
+band legend options accept only false. Palette owns fill; area appearance accepts opacity, stroke,
+strokeWidth and curve. Explicit opacity is applied after encoding. Revise statistics with editHorizon
+and style with editAreaMark. See the [Horizon tutorial](../../tutorials/horizon.md).
+
+## `createDensityPlot`
+
+```js
+createDensityPlot({ id?, data?, coordinate?, field, groupBy?, bandwidth?, extent?, steps?, kernel?, normalization?, as?, densityChannel?, valueScale?, densityScale?, color?, area?, guides? })
+```
+
+Creates a complete baseline density area from a required quantitative `field`. The default ID is `densityPlot`.
+Existing KDE defaults apply: automatic bandwidth and extent, 100 steps, Gaussian kernel, unit normalization.
+`groupBy` is an explicit field or `false`; omission is ungrouped. Color is optional and must use that same group field,
+with a nominal/ordinal categorical scale and optional `layout: "overlay"`. Raw metadata is not copied into density profiles.
+`densityChannel: "y"` places values on x; `"x"` exchanges those roles. The density scale must include zero.
+`area` accepts `fill`, `opacity`, `stroke`, `strokeWidth`, and `curve`; opacity defaults to 0.2. Scalar fill conflicts
+with field color, and stroke width requires a stroke. Guides default to both axes and the existing horizontal grid
+in either orientation; an explicit group color enables a categorical legend. `guides: false` skips guide creation.
+Use `editDensity`, `editAreaMark`, and scale/guide editors for revisions. Category placement and orientation edits
+are outside this facade. This action is available from `ggaction` and is absent from `ggaction/basic`.
+
+See the [complete density workflow](../../tutorials/density-area.md#complete-density-facade).
+
 ## `createIntervalData`
 
 ```javascript
 createIntervalData({
-  id, source?, field, groupBy?, center?, extent?, level?, as?
+  id, source?, field, groupBy?, center?, extent?, method?, level?, as?
 })
 ```
 
 Create immutable grouped center/lower/upper summary rows. Mean supports
-standard error, sample standard deviation, and Student-t confidence intervals;
+standard error, sample standard deviation, and normal or Student-t confidence intervals;
 median supports interquartile range. [Data](../../api/data.md)
+
+## `createECDFData`
+
+```javascript
+createECDFData({ id, source?, field, groupBy?, weight?, missing?, as? })
+```
+
+Create immutable sorted support, cumulative count or weight, and probability
+rows. Ties are aggregated, group order follows first source appearance, and
+resolved provenance stores every positive denominator. [Data](../../api/data.md)
 
 ## `createRegression`
 
 ```javascript
 createRegression({
   target?, x?, y?, groupBy?, method?, degree?, span?,
-  confidence?, interval?, band?, line?
+  confidenceMethod?, level?, confidence?, interval?, band?, line?
 })
 ```
 
@@ -38,8 +128,8 @@ polynomial degree to `2`; LOESS span to `0.75`.
 
 ```javascript
 editRegression({
-  target?, data?, x?, y?, groupBy?, method?, degree?, span?, confidence?,
-  interval?, band?, line?
+  target?, data?, x?, y?, groupBy?, method?, degree?, span?,
+  confidenceMethod?, level?, confidence?, interval?, band?, line?
 })
 ```
 
@@ -69,14 +159,15 @@ the main rule, and both caps on one shared sub-slot scale.
 
 ```javascript
 editErrorBar({
-  target?, caps?, capSize?, stroke?, strokeWidth?, strokeDash?, opacity?,
-  statistics?
+  target?, data?, x?, y?, xOffset?, yOffset?, groupBy?, caps?, capSize?,
+  stroke?, strokeWidth?, strokeDash?, opacity?, statistics?
 })
 ```
 
-Partially edit one error bar and its owned caps. `statistics` revises a
-statistical interval through immutable data; explicit interval owners reject
-that option. `caps: false` removes both caps and `caps: true` restores them.
+Revise one error bar's source, position/interval roles, optional categorical
+offset, statistics, and owned caps. Role changes can switch orientation or
+convert statistical and explicit intervals while preserving owner/cap IDs.
+`caps: false` removes both caps and `caps: true` restores them.
 [Error bars](../../api/error-bars.md#editing-error-bars)
 
 ## `createErrorBand`
@@ -99,14 +190,21 @@ is overridden.
 ## `editErrorBand` and `editErrorBandBoundary`
 
 ```javascript
-editErrorBand({ target?, fill?, opacity?, curve?, statistics?, boundaries? })
+editErrorBand({
+  target?, data?, x?, y?, groupBy?, fill?, opacity?, curve?, statistics?,
+  boundaries?
+})
 editErrorBandBoundary({
   target?, boundary?, stroke?, strokeWidth?, strokeDash?, opacity?, curve?
 })
 ```
 
-Edit the band body, statistical interval, or both owned boundary components
-without addressing generated line IDs. `boundaries: false` disables both;
+Constant band fill conflicts with active color. Remove that encoding first, or
+use edit-only `fill: false` to clear a constant fill and restore color eligibility.
+
+Edit the band source, position/interval roles, grouping, body, statistical
+interval, or both owned boundary components without addressing generated line
+IDs. Role changes may switch orientation or interval mode. `boundaries: false` disables both;
 an object creates or edits both. The focused boundary action still accepts
 `"both"`, `"lower"`, or `"upper"` and creates missing selected boundaries.
 [Error bands](../../api/error-bands.md#editing-the-band)
@@ -120,13 +218,13 @@ createBoxPlot({
 } = {})
 ```
 
-Create a vertical or horizontal Tukey/min–max box plot from one categorical
-and one quantitative field. The action infers an encoded source when possible
+Create a Box plot owner that defers geometry and guides until compatible x/y
+roles are available. The action infers an encoded source when possible
 and composes immutable box summary data, error-bar whiskers, ranged-bar bodies,
 median rules, and optional point outliers. Tukey factor, band width, component
 appearance, and outlier creation are configurable. [Box plots](../../api/box-plots.md)
 Guides remain opt-in for compatibility: pass `guides: {}` or nested options to
-create them inside the facade; omission and `false` create none.
+ensure compatible guides inside the facade; omission and `false` create none.
 
 ## `editBoxPlot`
 
@@ -147,8 +245,8 @@ createGradientPlot({
 } = {})
 ```
 
-Create one density-gradient strip per category from categorical and
-quantitative x/y roles. Positions can be explicit, inferred from one eligible
+Create a Gradient plot owner that defers geometry and guides until compatible
+x/y roles are available. Positions can be explicit, inferred from one eligible
 encoded layer, or completed later. Defaults are Gaussian auto density, 64
 samples, width band `0.7`, no outline, a median center rule, and applicable
 guides. A categorical `encodeColor` owns strip hue while density continues to
@@ -182,6 +280,18 @@ children. Density options own bandwidth, extent, kernel, normalization, and
 shared or independent band-relative width. An optional two-value split assigns
 one half to each side of the category center.
 [Violin plots](../../api/violin-plots.md)
+
+## `editViolinPlot`
+
+```javascript
+editViolinPlot({ target?, data?, x?, y?, split?, density? })
+```
+
+Revise source, category, quantitative value, split, orientation, and density
+parameters through one stable violin owner. The action creates an immutable
+density revision and reconciles axes, grid, selections, and highlights. Area
+appearance remains available through `editAreaMark`.
+[Violin plots](../../api/violin-plots.md#editing)
 
 ## Related
 

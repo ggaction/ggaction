@@ -87,6 +87,129 @@ async function executeAuthoring(packet, { rows, renderer }) {
   )(chart, render, renderToSVG, context, rows);
 }
 
+test("chart packets either materialize their chart or expose the missing decision", async () => {
+  const rows = [
+    { x: 1, y: 2, angle: 0, distance: 2, value: 0, category: "A", series: "one" },
+    { x: 2, y: 3, angle: 120, distance: 3, value: 3, category: "B", series: "one" },
+    { x: 3, y: 4, angle: 240, distance: 4, value: 4, category: "C", series: "one" }
+  ];
+  for (const [query, kind, count, unresolved] of [
+    ["pie chart", "arc", 3, []],
+    ["donut chart", "arc", 3, []],
+    ["density plot", "area", 1, []],
+    ["rose chart", "arc", 3, []],
+    ["radial bar chart", "arc", 3, []],
+    ["polar scatter plot", "point", 3, []],
+    ["polar line chart", "line", 1, []],
+    ["radar chart", "line", 1, []],
+    ["area chart", "area", 1, []],
+    ["rug plot", "tick", 3, []],
+    ["strip plot", "point", 3, []]
+  ]) {
+    const packet = searchGgaction(query);
+    assert.deepEqual(packet.unresolved.map(entry => entry.constraint), unresolved, query);
+    const { program } = await executeAuthoring(packet, { rows });
+    assert.equal(program.semanticSpec.layers.length, 1, query);
+    const [layer] = program.semanticSpec.layers;
+    assert.equal(layer.mark.type, kind, query);
+    const items = program.graphicSpec.objects[layer.id].items;
+    assert.equal(items.length, count, query);
+    if (unresolved.length > 0) {
+      assert.ok(packet.unresolved.every(entry => entry.resources.length > 0), query);
+      assert.deepEqual(docsFallbackResources(packet).map(resource => resource.uri), [
+        "ggaction://docs/action-reference"
+      ], query);
+      continue;
+    }
+    assert.ok(Object.keys(layer.encoding).length >= 2, query);
+    assert.ok(items.every(item => Object.keys(item.properties).length > 0), query);
+    if (["arc", "line"].includes(kind)) {
+      const coordinate = program.semanticSpec.coordinates.find(entry => entry.id === layer.coordinate);
+      assert.equal(coordinate.type, "polar", query);
+      assert.ok(layer.encoding.theta && (layer.encoding.radius || kind === "arc"), query);
+    }
+  }
+});
+
+test("raw mark requests remain distinct from incomplete chart requests", () => {
+  for (const [query, action] of [["area mark", "createAreaMark"], ["tick mark", "createTickMark"]]) {
+    const packet = searchGgaction(query);
+    assert.deepEqual(packet.unresolved, [], query);
+    assert.deepEqual(packet.actionPlan.map(entry => entry.name), [action], query);
+  }
+  assert.deepEqual(searchGgaction("area chart").actionPlan.map(entry => entry.name), ["createAreaPlot"]);
+  assert.deepEqual(searchGgaction("rug plot").actionPlan.map(entry => entry.name), ["createRugPlot"]);
+  assert.deepEqual(searchGgaction("strip plot").actionPlan.map(entry => entry.name), ["createStripPlot"]);
+});
+
+test("specific polar phrases shadow only overlapping generic chart phrases", async () => {
+  for (const query of ["radial bar chart", "polar area chart", "polar scatter plot", "polar line chart"]) {
+    const packet = searchGgaction(query);
+    const constraint = {
+      "radial bar chart": "chart.radialBar",
+      "polar area chart": "chart.rose",
+      "polar scatter plot": "chart.polarScatter",
+      "polar line chart": "chart.polarLine"
+    }[query];
+    assert.deepEqual(packet.matchedConstraints, [constraint], query);
+    assert.equal(packet.actionPlan.some(entry => entry.name === "createBarPlot"), false, query);
+    assert.equal(packet.actionPlan.some(entry => entry.name === "createAreaMark"), false, query);
+    assert.equal(packet.actionPlan.some(entry => entry.name === "createScatterPlot"), false, query);
+    assert.equal(packet.actionPlan.some(entry => entry.name === "createLinePlot"), false, query);
+  }
+  const separate = searchGgaction("radial bar chart and bar chart");
+  assert.ok(separate.matchedConstraints.includes("chart.radialBar"));
+  assert.ok(separate.matchedConstraints.includes("chart.bar"));
+  const { program } = await executeAuthoring(separate, { rows: [
+    { value: 2, category: "A", series: "one" },
+    { value: 3, category: "B", series: "one" }
+  ] });
+  assert.deepEqual(program.semanticSpec.layers.map(layer => layer.mark.type), ["arc", "bar"]);
+});
+
+test("polar point, line, and Radar discovery select distinct complete facades", async () => {
+  for (const [query, action, mark] of [
+    ["polar scatter plot with size encoding", "createPolarScatterPlot", "point"],
+    ["polar line chart with a color legend", "createPolarLinePlot", "line"]
+  ]) {
+    const packet = searchGgaction(query);
+    assert.deepEqual(packet.actionPlan.map(entry => entry.name), [action]);
+    assert.deepEqual(packet.unresolved, []);
+    const { program } = await executeAuthoring(packet, { rows: [
+      { angle: 0, distance: 2, value: 1, category: "A" },
+      { angle: 120, distance: 3, value: 2, category: "B" },
+      { angle: 240, distance: 4, value: 3, category: "A" }
+    ] });
+    assert.equal(program.semanticSpec.layers[0].mark.type, mark);
+    assert.equal(program.semanticSpec.coordinates[0].type, "polar");
+  }
+  const radar = searchGgaction("radar chart");
+  assert.deepEqual(radar.matchedConstraints, ["chart.radar"]);
+  assert.deepEqual(radar.actionPlan.map(entry => entry.name), ["createRadarPlot"]);
+  assert.deepEqual(radar.unresolved, []);
+  const { program } = await executeAuthoring(radar, { rows: [
+    { category: "Speed", value: 0.7 },
+    { category: "Quality", value: 0.9 },
+    { category: "Cost", value: 0.5 }
+  ] });
+  assert.equal(program.trace.children.at(-1).op, "createRadarPlot");
+  assert.equal(program.graphicSpec.objects.radarPlot.items[0].properties.commands.at(-1).op, "Z");
+  assert.deepEqual(searchGgaction("polar line chart").matchedConstraints, ["chart.polarLine"]);
+});
+
+test("rose and radial bar discovery select distinct complete measurement owners", async () => {
+  for (const [query, action, mapping] of [["rose chart", "createRosePlot", "area"], ["radial bar chart", "createRadialBarPlot", "radius-length"]]) {
+    const packet = searchGgaction(query);
+    assert.deepEqual(packet.actionPlan.map(entry => entry.name), [action]);
+    assert.deepEqual(packet.unresolved, []);
+    const { program } = await executeAuthoring(packet, { rows: [{ category: "A" }, { category: "A" }, { category: "B" }] });
+    assert.equal(program.semanticSpec.layers[0].encoding.radius.aggregate, "count");
+    assert.equal(program.resolvedScales.radius.radialMapping, mapping);
+    assert.deepEqual(program.resolvedScales.radius.domain, [0, 2]);
+    assert.ok(program.guideConfigs.axis.radius);
+  }
+});
+
 test("intent taxonomy covers every supported constraint with exact owners", async () => {
   const [taxonomy, cards, schema] = await Promise.all([
     json("intent-taxonomy.json"),
@@ -96,10 +219,10 @@ test("intent taxonomy covers every supported constraint with exact owners", asyn
   const validate = new Ajv2020({ strict: true }).compile(schema);
   assert.equal(validate(taxonomy), true, JSON.stringify(validate.errors));
   assert.deepEqual(validateResolverKnowledge(), {
-    cards: 173,
-    constraints: 89,
-    providers: 83,
-    supported: 84,
+    cards: cards.count,
+    constraints: 104,
+    providers: 98,
+    supported: 99,
     unsupported: 5
   });
   assert.equal(taxonomy.packageVersion, cards.packageVersion);
@@ -120,7 +243,7 @@ test("intent taxonomy covers every supported constraint with exact owners", asyn
       family
     );
   }
-  assert.equal(cards.count, 173);
+  assert.equal(cards.count, cards.cards.length);
 
   const declarationByRuntime = {
     hconcat: "index.d.ts",
@@ -134,6 +257,14 @@ test("intent taxonomy covers every supported constraint with exact owners", asyn
     const source = await readFile(path.join(typesRoot, declarationByRuntime[provider.name]), "utf8");
     assert.equal(provider.signature, runtimeSignature(source, provider.name), provider.id);
   }
+});
+
+test("completes density axis requests through the facade without creating duplicate guides", async () => {
+  const packet = searchGgaction("density plot with x axis");
+  assert.deepEqual(packet.exactCalls, ['program.createDensityPlot({ field: "value" })']);
+  const { program } = await executeAuthoring(packet, { rows: [{ value: 1 }, { value: 2 }, { value: 4 }] });
+  assert.ok(program.semanticSpec.guides.axis.x);
+  assert.equal(program.graphicSpec.objects.densityPlot.items.length, 1);
 });
 
 test("every exact action name resolves to its compact card without gaps", async () => {
@@ -207,7 +338,7 @@ test("provides exact executable Canvas and SVG authoring bootstraps", async () =
     rows: rows.map((row, index) => ({ ...row, category: index % 2 ? "B" : "A" })),
     renderer: "svg"
   });
-  assert.ok(legendResult.program.graphicSpec.objects.seriesLegendSymbols.items.length > 0);
+  assert.ok(legendResult.program.graphicSpec.objects.colorLegendSymbols.items.length > 0);
 
   const canvasPacket = searchGgaction("scatter plot as browser canvas");
   assert.deepEqual(canvasPacket.authoring.imports, [
@@ -479,11 +610,10 @@ test("keeps terminal unsupported output separate from open renderer decisions", 
 test("reports concrete options, placeholders, and unsupported requirements without silent partials", () => {
   const horizon = searchGgaction("horizon chart with three bands");
   assert.deepEqual(horizon.actionPlan.map(entry => entry.id), [
-    "action.createAreaMark",
-    "action.createHorizonChart"
+    "action.createHorizonPlot"
   ]);
   assert.deepEqual(horizon.appliedOptions, [{
-    owner: "encodeHorizon",
+    owner: "createHorizonPlot",
     option: "bands",
     value: "3",
     source: "three bands"
@@ -573,11 +703,7 @@ test("reports concrete options, placeholders, and unsupported requirements witho
     'program.encodeX({ field: "value", fieldType: "quantitative" })'
   ]);
   const pie = searchGgaction("pie chart");
-  assert.deepEqual(pie.exactCalls.slice(0, 3), [
-    'program.createArcMark({ innerRadius: 0 })',
-    'program.encodeTheta({ field: "value", fieldType: "quantitative" })',
-    'program.encodeColor({ field: "category" })'
-  ]);
+  assert.deepEqual(pie.exactCalls, ['program.createPiePlot({ category: "category" })']);
   const canvas = searchGgaction("scatter plot as canvas");
   assert.equal(canvas.exactCalls.at(-1), "render(program, context)");
   assert.equal(canvas.placeholderBindings.some(entry => entry.name === "context"), true);
@@ -624,6 +750,47 @@ test("reports concrete options, placeholders, and unsupported requirements witho
   assert.deepEqual(areaDash.unsupported.map(entry => entry.constraint), [
     "unsupported.areaStrokeDash"
   ]);
+});
+
+test("executes the complete Horizon facade with original field roles, bands and owned x guides", async () => {
+  const packet = searchGgaction('horizon chart with x="time", y="value", four bands and x axis');
+  assert.deepEqual(packet.actionPlan.map(entry => entry.name), ["createHorizonPlot"]);
+  assert.deepEqual(packet.unresolved, []);
+  const { program } = await executeAuthoring(packet, { rows: [
+    { time: 0, value: -4 }, { time: 1, value: 0 }, { time: 2, value: 4 }
+  ] });
+  const transform = program.semanticSpec.datasets[1].transform[0];
+  assert.equal(transform.x.field, "time");
+  assert.equal(transform.y.field, "value");
+  assert.equal(transform.bands, 4);
+  assert.equal(program.graphicSpec.objects.horizonPlot.items.length, 8);
+  assert.deepEqual(Object.keys(program.semanticSpec.guides.axis), ["x"]);
+});
+
+test("reports incompatible complete-chart guides and derived color as unresolved without invalid actions", async () => {
+  for (const [query, forbidden, decision] of [
+    ["pie chart with x axis", "createXAxis", "guide.xAxis"],
+    ["donut chart with grid", "createGrid", "guide.grid"],
+    ["horizon chart with y axis", "createYAxis", "guide.yAxis"],
+    ["horizon chart with color legend", "createLegend", "guide.legend"],
+    ["density plot with color encoding", "encodeColor", "encoding.color"],
+    ["density plot with color legend", "createLegend", "guide.legend"]
+  ]) {
+    const packet = searchGgaction(query);
+    assert.ok(packet.unresolved.some(entry => entry.constraint === decision), query);
+    assert.ok(!packet.actionPlan.some(entry => entry.name === forbidden), query);
+    await executeAuthoring(packet, { rows: [
+      { x: 0, y: -1, value: 1, category: "A" }, { x: 1, y: 0, value: 2, category: "A" },
+      { x: 2, y: 1, value: 4, category: "B" }
+    ] });
+  }
+  const pie = searchGgaction("pie chart with legend");
+  assert.deepEqual(pie.unresolved, []);
+  assert.deepEqual(pie.actionPlan.map(entry => entry.name), ["createPiePlot"]);
+  for (const action of ["createYAxis", "createLegend", "encodeColor"]) {
+    const lower = searchGgaction(action);
+    assert.ok(lower.actionPlan.some(entry => entry.name === action), action);
+  }
 });
 
 test("design fixtures prove bounded one-call task closure without silent partials", async () => {
@@ -797,4 +964,16 @@ test("task packets reject ambiguous, unsupported, empty, and oversized input exp
   ].join(" ");
   assert.equal(dense.length <= 500, true);
   assert.throws(() => searchGgaction(dense), /hard ceiling is 6144 bytes/);
+});
+
+
+test("area discovery uses the complete facade and preserves requested fields and guides", async () => {
+  const packet = searchGgaction('area chart with x="time", y="value" and x axis');
+  assert.deepEqual(packet.actionPlan.map(entry => entry.name), ["createAreaPlot"]);
+  assert.deepEqual(packet.unresolved, []);
+  const { program } = await executeAuthoring(packet, { rows: [{ time: 1, value: 2 }, { time: 2, value: 4 }] });
+  assert.equal(program.semanticSpec.layers[0].encoding.y2.datum, 0);
+  assert.equal(program.semanticSpec.layers[0].encoding.x.field, "time");
+  assert.equal(program.graphicSpec.objects.areaPlot.items.length, 1);
+  assert.deepEqual(Object.keys(program.semanticSpec.guides.axis), ["x", "y"]);
 });

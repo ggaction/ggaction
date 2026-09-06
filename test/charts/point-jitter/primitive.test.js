@@ -29,6 +29,10 @@ test("authors a keyed vertical Cars jitter primitive without changing y meaning"
   assert.equal(result.program.semanticSpec.layers[0].encoding.x.field, "Origin");
   assert.equal(result.program.semanticSpec.layers[0].encoding.y.field, "Acceleration");
   assert.equal(Math.max(...result.resolution.offsets.map(Math.abs)) <= result.maximum, true);
+  assert.equal(
+    result.program.trace.children.some(node => node.op === "createStripPlot"),
+    false
+  );
   const extent = CARS_JITTER_LAYOUT.radius;
   assert.equal(centers(result.program, "x").every(value =>
     value - extent >= CARS_JITTER_LAYOUT.plot.left &&

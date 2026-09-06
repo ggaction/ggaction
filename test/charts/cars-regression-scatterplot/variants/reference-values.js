@@ -14,7 +14,7 @@ const LEGEND = Object.freeze({
     x: 20.16720000000001,
     y: 43,
     width: 99.83279999999999,
-    height: 325.8986541696686,
+    height: 323.8986541696686,
     fill: "#f8fafc",
     stroke: "#94a3b8",
     strokeWidth: 1

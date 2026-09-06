@@ -37,6 +37,42 @@
   recipe_order: 140
   home_group: essentials
   home_order: 120
+- id: facet-grid
+  example: /examples/facet-grid/
+  title: Row and column facet grid
+  image: /assets/images/facet-grid.png
+  alt: Six panel grid crossing North and South regions with three periods and one intentionally empty cell
+  width: 1008
+  height: 544
+  thumbnail: /assets/images/facet-grid-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 345
+  caption: Explicit row and column values preserve the empty South Q2 position.
+  summary: Cross two fields into an observed or complete grid with stable cell coordinates.
+  actions: facetGrid · editFacetSource · editCompositionLayout
+  tasks: composition comparison
+  url: /api/composition/#build-a-row-and-column-facet-grid
+  gallery_featured: true
+  home_group: essentials
+  home_order: 130
+- id: repeat-charts
+  example: /examples/repeat-charts/
+  title: Repeated metric charts
+  image: /assets/images/repeat-charts.png
+  alt: Three aligned scatterplots comparing speed quality and cost against score with a shared group legend
+  width: 1676
+  height: 300
+  thumbnail: /assets/images/repeat-charts-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 115
+  caption: Three fields replace the x encoding while score and group remain comparable.
+  summary: Repeat one positional encoding across fields with explicit scale and guide policies.
+  actions: repeatCharts · editFacetSource · editCompositionLayout
+  tasks: composition comparison
+  url: /api/composition/#repeat-a-positional-encoding-across-fields
+  gallery_featured: true
+  home_group: essentials
+  home_order: 140
 - id: scatterplot
   example: /examples/cars-scatterplot/
   title: Scatterplot
@@ -59,6 +95,23 @@
   recipe_order: 10
   featured: true
   gallery_featured: true
+- id: canvas-fitting
+  example: /examples/fitted-long-labels/
+  title: Fitted long axis labels
+  image: /assets/images/fitted-long-labels.png
+  alt: Market score scatterplot with wrapped rotated category labels and fitted margins
+  width: 1360
+  height: 840
+  thumbnail: /assets/images/fitted-long-labels-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 395
+  caption: Deterministic label wrapping and rotation preserve a larger plot inside a fixed Canvas.
+  summary: Fit chart margins after laying out long Cartesian axis labels.
+  actions: createXAxis · fitCanvas
+  tasks: relationship guides layout
+  url: /api/canvas/#fitcanvasoptions
+  home_group: essentials
+  home_order: 12
 - id: multi-legend-layout
   example: /examples/cars-multi-legend-layout/
   title: Multi-legend layout
@@ -618,3 +671,115 @@
   gallery_featured: true
   url: /tutorials/mark-selection/
   tutorial_order: 130
+
+- id: horizon-plot
+  example: /examples/horizon-plot/
+  title: Signed Horizon chart
+  image: /assets/images/horizon-plot.png
+  alt: Red negative and blue positive values folded into three bands on each side of zero
+  width: 2000
+  height: 1400
+  thumbnail: /assets/images/horizon-plot-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 448
+  caption: Three signed folds preserve the original x positions.
+  summary: Define explicit source roles, then revise bands, baseline, palette, and appearance.
+  actions: createHorizonPlot
+  tasks: trend comparison
+  url: /tutorials/horizon/#complete-horizon-facade
+
+- id: density-plot
+  example: /examples/density-plot/
+  title: Density profile
+  image: /assets/images/density-plot.png
+  alt: Translucent density area estimated from four quantitative observations
+  width: 2000
+  height: 1400
+  thumbnail: /assets/images/density-plot-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 448
+  caption: A density estimate with 61 samples closes at the zero baseline.
+  summary: Estimate one variable, then add explicit groups and color.
+  actions: createDensityPlot
+  tasks: distribution comparison
+  url: /tutorials/density-area/#complete-density-facade
+
+- id: pie-plot
+  example: /examples/pie-plot/
+  title: Category pie chart
+  image: /assets/images/pie-plot.png
+  alt: Pie chart with category A occupying two thirds and category B one third
+  width: 2000
+  height: 1400
+  thumbnail: /assets/images/pie-plot-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 448
+  caption: Two rows in A and one in B produce 240 and 120 degree sectors.
+  summary: Create a complete category pie or explicitly weighted donut with one action.
+  actions: createPiePlot
+  tasks: part-to-whole
+  url: /tutorials/polar-arcs/#complete-pie-and-donut-plots
+
+- id: area-layout
+  example: /examples/area-layout/
+  title: Area with an explicit baseline
+  image: /assets/images/area-layout.png
+  alt: Three measured values form a translucent area closing to zero
+  width: 2000
+  height: 1400
+  thumbnail: /assets/images/area-layout-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 448
+  caption: The value field and a constant zero share the same automatic domain.
+  summary: Define bounds and independently revise series identity, placement, and color.
+  actions: createAreaPlot layoutSeries encodeGroup
+  tasks: trend comparison
+  url: /tutorials/area-layout/
+
+- id: radial-sectors
+  example: /examples/radial-sectors/
+  title: Measured rose sectors
+  image: /assets/images/radial-sectors.png
+  alt: Three equal-angle sectors with annular areas proportional to values two, three, and four
+  width: 2000
+  height: 1400
+  thumbnail: /assets/images/radial-sectors-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 448
+  caption: Rose sectors preserve proportional area after excluding the central hole.
+  summary: Compare category sums with proportional area or radial length.
+  actions: createRosePlot · createRadialBarPlot · encodeR
+  tasks: polar category comparison
+  url: /tutorials/polar-arcs/#measured-rose-and-radial-bar-plots
+
+- id: color-midpoint
+  example: /examples/color-midpoint/
+  title: A meaningful color midpoint
+  image: /assets/images/color-midpoint.png
+  alt: Four points colored blue, white, pale red, and red with zero centered in the color palette
+  width: 2000
+  height: 1400
+  thumbnail: /assets/images/color-midpoint-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 448
+  caption: Zero uses the palette center while the legend keeps a linear value axis.
+  summary: Set an explicit reference value for continuous color.
+  actions: createScatterPlot · encodeColor · editScale
+  tasks: quantitative color comparison
+  url: /api/scales/continuous-color/#explicit-color-midpoint
+
+- id: color-transitions
+  example: /examples/color-transitions/
+  title: Color scale and legend transitions
+  image: /assets/images/color-transitions.png
+  alt: Aggregate bars colored blue below three and red from three upward with a matching interval legend
+  width: 2000
+  height: 1400
+  thumbnail: /assets/images/color-transitions-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 448
+  caption: One scale edit updates aggregate colors and replaces the gradient legend with intervals.
+  summary: Switch between continuous color and numeric classes without stale guides.
+  actions: createBarPlot · editScale · createLegend
+  tasks: color scale transitions
+  url: /api/scales/discretized-color/#changing-color-scale-families

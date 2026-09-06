@@ -1,3 +1,4 @@
+import { withGuideLayoutValidation } from "../../../materialization/guides/layout.js";
 import { action } from "../../../core/action.js";
 import { validateUserId } from "../../../core/identifiers.js";
 import {
@@ -16,6 +17,7 @@ import {
   mapOrdinalPositionValues
 } from "../../../grammar/scales/index.js";
 import { formatTimeTick, formatTimeTicks } from "../../../grammar/ticks.js";
+import { resolveRotation } from "../../../grammar/rotation.js";
 import { valuesFromTickConfig } from "../tickValues.js";
 import { DEFAULT_COLORS, DEFAULT_FONT_FAMILY } from
   "../../../theme/defaults.js";
@@ -35,10 +37,12 @@ import {
 } from "../../../core/textMetrics.js";
 import { resolveConcreteGraphicBounds } from
   "../../../grammar/schemas/graphicBounds.js";
+import { wrapText } from "../../../layout/text.js";
 
 const OPTIONS = [
   "scale", "position", "count", "values", "offset", "format", "color",
-  "fontSize", "fontFamily", "fontWeight"
+  "fontSize", "fontFamily", "fontWeight", "rotation", "maxWidth", "wrap",
+  "lineHeight", "overlap"
 ];
 
 const DEFAULTS = {
@@ -46,8 +50,29 @@ const DEFAULTS = {
   color: DEFAULT_COLORS.text,
   fontSize: 12,
   fontFamily: DEFAULT_FONT_FAMILY,
-  fontWeight: "normal"
+  fontWeight: "normal",
+  rotation: 0,
+  overlap: "error"
 };
+
+function normalizeLabelLayout(config, args, operation) {
+  const next = { ...config };
+  next.rotation = Object.hasOwn(args, "rotation")
+    ? resolveRotation(args.rotation, `${operation} rotation`)
+    : next.rotation ?? 0;
+  next.overlap ??= "error";
+  if (args.maxWidth === false) {
+    if (Object.hasOwn(args, "wrap") || Object.hasOwn(args, "lineHeight")) {
+      throw new Error(`${operation} cannot combine maxWidth false with wrap or lineHeight.`);
+    }
+    delete next.maxWidth;
+    delete next.wrap;
+    delete next.lineHeight;
+  } else if (next.maxWidth !== undefined) {
+    next.wrap ??= "word";
+  }
+  return next;
+}
 
 export function validateAxisTextStyle(config, label) {
   validateNonEmptyString(config.color, `${label} color`);
@@ -90,6 +115,25 @@ function validateConfig(channel, config) {
   validateNonNegativeFinite(config.offset, "Label offset");
   validateAxisTextStyle(config, "Label");
   validateAxisFormat(config.format);
+  if (!Number.isFinite(config.rotation)) {
+    throw new TypeError("Label rotation must resolve to finite radians.");
+  }
+  if (config.maxWidth !== undefined) {
+    validatePositiveFinite(config.maxWidth, "Label maxWidth");
+    if (!["word", "character"].includes(config.wrap)) {
+      throw new Error(`Unsupported axis label wrap "${config.wrap}".`);
+    }
+  } else if (config.wrap !== undefined || config.lineHeight !== undefined) {
+    throw new Error("Axis label wrap and lineHeight require maxWidth.");
+  }
+  if (config.lineHeight !== undefined && (
+    !Number.isFinite(config.lineHeight) || config.lineHeight < config.fontSize
+  )) {
+    throw new RangeError("Axis label lineHeight must cover fontSize.");
+  }
+  if (!["error", "allow"].includes(config.overlap)) {
+    throw new Error(`Unsupported axis label overlap policy "${config.overlap}".`);
+  }
 }
 
 function assertTickCompatibility(ticks, config, operation) {
@@ -97,6 +141,59 @@ function assertTickCompatibility(ticks, config, operation) {
   if (ticks.scale !== config.scale || ticks.mode !== config.mode) throw new Error(`${operation} conflicts with axis ticks.`);
   if (config.mode === "count" && ticks.count !== config.count) throw new Error(`${operation} conflicts with axis ticks.`);
   if (config.mode === "values" && !sameOrderedValues(ticks.values, config.values)) throw new Error(`${operation} conflicts with axis ticks.`);
+}
+
+function expandWrappedLabels(resolved, text, config, channel) {
+  if (config.maxWidth === undefined) {
+    return {
+      ...resolved,
+      text,
+      groups: text.map((_, index) => index)
+    };
+  }
+  const style = {
+    fontSize: config.fontSize,
+    fontFamily: config.fontFamily,
+    fontWeight: config.fontWeight
+  };
+  const lineHeight = config.lineHeight ?? config.fontSize * 1.2;
+  const expanded = { text: [], x: [], y: [], groups: [] };
+  for (let index = 0; index < text.length; index += 1) {
+    const lines = wrapText(text[index], {
+      maxWidth: config.maxWidth,
+      mode: config.wrap,
+      style
+    });
+    validateGeneratedItemLimit(
+      expanded.text.length + lines.length,
+      "Axis label line count"
+    );
+    const baseX = Array.isArray(resolved.x) ? resolved.x[index] : resolved.x;
+    const baseY = Array.isArray(resolved.y) ? resolved.y[index] : resolved.y;
+    for (let line = 0; line < lines.length; line += 1) {
+      expanded.text.push(lines[line]);
+      expanded.x.push(baseX);
+      expanded.y.push(channel === "x"
+        ? baseY + (resolved.textBaseline === "top" ? line : -line) * lineHeight
+        : baseY + (line - (lines.length - 1) / 2) * lineHeight);
+      expanded.groups.push(index);
+    }
+  }
+  return { ...resolved, ...expanded };
+}
+
+function unionLabelBounds(records) {
+  const byGroup = new Map();
+  for (const { bounds, group } of records) {
+    const previous = byGroup.get(group);
+    byGroup.set(group, previous === undefined ? bounds : {
+      left: Math.min(previous.left, bounds.left),
+      right: Math.max(previous.right, bounds.right),
+      top: Math.min(previous.top, bounds.top),
+      bottom: Math.max(previous.bottom, bounds.bottom)
+    });
+  }
+  return [...byGroup.values()];
 }
 
 function resolve(program, channel, config) {
@@ -132,9 +229,8 @@ function resolve(program, channel, config) {
             ? formatTransformedTick(scale.type, item)
             : String(item)
       ));
-  const resolved = {
+  const geometry = {
     values,
-    text,
     ...resolveAxisLabelGeometry({
       bounds,
       channel,
@@ -143,8 +239,9 @@ function resolve(program, channel, config) {
       offset: config.offset
     })
   };
+  const resolved = expandWrappedLabels(geometry, text, config, channel);
   const canvas = findCanvasGraphic(program)?.properties;
-  const labelBounds = text.map((value, index) => resolveTextBounds({
+  const labelBounds = resolved.text.map((value, index) => resolveTextBounds({
     x: Array.isArray(resolved.x) ? resolved.x[index] : resolved.x,
     y: Array.isArray(resolved.y) ? resolved.y[index] : resolved.y,
     text: value,
@@ -152,15 +249,20 @@ function resolve(program, channel, config) {
     fontFamily: config.fontFamily,
     fontWeight: config.fontWeight,
     textAlign: resolved.textAlign,
-    textBaseline: resolved.textBaseline
+    textBaseline: resolved.textBaseline,
+    rotation: config.rotation
   }));
-  const orderedBounds = [...labelBounds].sort((left, right) => channel === "x"
+  const groupedBounds = unionLabelBounds(labelBounds.map((bounds, index) => ({
+    bounds,
+    group: resolved.groups[index]
+  })));
+  const orderedBounds = groupedBounds.sort((left, right) => channel === "x"
     ? left.left - right.left
     : left.top - right.top);
   if (!canvas || !labelBounds.every(item => textBoundsFitCanvas(item, canvas))) {
     throw new Error(`The ${channel}-axis labels do not fit the Canvas margin.`);
   }
-  if (orderedBounds.some((item, index) => index > 0 &&
+  if (config.overlap === "error" && orderedBounds.some((item, index) => index > 0 &&
     textBoundsIntersect(orderedBounds[index - 1], item))) {
     throw new Error(`The ${channel}-axis labels overlap each other.`);
   }
@@ -177,7 +279,7 @@ function resolve(program, channel, config) {
 
 function makeEdit(channel) {
   const op = channel === "x" ? "editXAxisLabels" : "editYAxisLabels";
-  return action({ op, description: `Edit concrete ${channel}-axis labels.` }, function (args = {}) {
+  return action({ op, description: `Edit concrete ${channel}-axis labels.` }, withGuideLayoutValidation(function (args = {}) {
     validateOptions(args, op, false);
     const id = `${channel}AxisLabels`;
     if (this.graphicSpec.objects[id]?.type !== "text") throw new Error(`${op} requires existing axis labels.`);
@@ -192,20 +294,20 @@ function makeEdit(channel) {
     const mode = Object.hasOwn(args, "values") || inferredValues !== undefined
       ? "values"
       : Object.hasOwn(args, "count") ? "count" : previous.mode;
-    const config = {
+    const config = normalizeLabelLayout({
       ...previous,
       ...args,
       ...(inferredValues === undefined ? {} : { values: inferredValues }),
       ...(explicitMode ? { inferredValues: false } : {}),
       mode
-    };
+    }, args, op);
     if (mode === "values") delete config.count; else delete config.values;
     validateConfig(channel, config);
     assertTickCompatibility(this.guideConfigs.axis?.[channel]?.ticks, config, op);
     const resolved = resolve(this, channel, config);
     let next = this._withGuideConfig(channel, "labels", config);
-    for (const [property, value] of Object.entries({
-      length: resolved.values.length,
+    const properties = {
+      length: resolved.text.length,
       x: resolved.x,
       y: resolved.y,
       text: resolved.text,
@@ -215,14 +317,20 @@ function makeEdit(channel) {
       fontWeight: config.fontWeight,
       textAlign: resolved.textAlign,
       textBaseline: resolved.textBaseline
-    })) next = next.editGraphics({ target: id, property, value });
+    };
+    if (config.rotation !== 0 || this.graphicSpec.objects[id].items.some(
+      item => Object.hasOwn(item.properties, "rotation")
+    )) properties.rotation = config.rotation;
+    for (const [property, value] of Object.entries(properties)) {
+      next = next.editGraphics({ target: id, property, value });
+    }
     const titleConfig = next.guideConfigs.axis?.[channel]?.title;
     if (titleConfig?.inferredOffset === true) {
       const editTitle = channel === "x" ? "editXAxisTitle" : "editYAxisTitle";
       next = next[editTitle]();
     }
     return next;
-  });
+  }));
 }
 
 const editXAxisLabels = makeEdit("x");
@@ -231,7 +339,7 @@ const editYAxisLabels = makeEdit("y");
 function makeCreate(channel) {
   const op = channel === "x" ? "createXAxisLabels" : "createYAxisLabels";
   const edit = channel === "x" ? "editXAxisLabels" : "editYAxisLabels";
-  return action({ op, description: `Create concrete ${channel}-axis labels.` }, function (args = {}) {
+  return action({ op, description: `Create concrete ${channel}-axis labels.` }, withGuideLayoutValidation(function (args = {}) {
     validateOptions(args, op, true);
     const scale = validateUserId(args.scale ?? channel, "Scale id");
     const guideScale = this.semanticSpec.guides.axis?.[channel]?.scale;
@@ -242,7 +350,7 @@ function makeCreate(channel) {
     const hasValues = Object.hasOwn(args, "values");
     const hasCount = Object.hasOwn(args, "count");
     const mode = hasValues ? "values" : hasCount ? "count" : ticks?.mode ?? "count";
-    const config = {
+    const config = normalizeLabelLayout({
       scale,
       position: defaultAxisPosition(channel),
       offset: channel === "x" ? 18 : 12,
@@ -251,10 +359,12 @@ function makeCreate(channel) {
       fontSize: DEFAULTS.fontSize,
       fontFamily: DEFAULTS.fontFamily,
       fontWeight: DEFAULTS.fontWeight,
+      rotation: DEFAULTS.rotation,
+      overlap: DEFAULTS.overlap,
       ...args,
       inferredValues: !hasValues && !hasCount && ticks?.inferredValues === true,
       mode
-    };
+    }, args, op);
     if (mode === "values") config.values ??= ticks?.values; else config.count ??= ticks?.count ?? DEFAULTS.count;
     validateConfig(channel, config);
     assertTickCompatibility(ticks, config, op);
@@ -267,7 +377,7 @@ function makeCreate(channel) {
         ...resolvePlotGraphicPlacement(this)
       })
       ._withGuideConfig(channel, "labels", config)[edit]();
-  });
+  }));
 }
 
 const createXAxisLabels = makeCreate("x");

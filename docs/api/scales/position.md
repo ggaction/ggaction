@@ -102,6 +102,22 @@ overlay domain must contain zero, while explicit range values remain authoritati
 The y action resolves the scale but leaves rectangles empty until grouping
 semantics are available.
 
+### Measured radius scales
+
+Arc `encodeR` with count/sum and `mapping: "area"` or `"radius-length"` uses
+category aggregates for its domain. The domain starts at zero and its upper
+bound must cover every aggregate. Marks and radial guides share the mapping.
+
+The lower scale actions expose the stored policy as `radialMapping`.
+`createScale({ id: "radius", radialMapping: "area" })` creates an unbound
+linear measured scale; `editScale({ id: "radius", radialMapping: "radius-length" })`
+updates all compatible consumers. Explicit domains use `[0, positiveMaximum]`
+and ranges use `[inner, outer]`, with `0 <= inner < outer`.
+
+To clear `radialMapping` with an explicit `undefined`, first remove its measured
+radius encodings. Reusing a generic scale must not silently change how existing
+sectors represent values. A separate scale id is usually simpler.
+
 ## Related
 
 [Scale overview](../scales.md) · [Encodings](../encodings.md) · [Troubleshooting](../../troubleshooting.md)

@@ -4,12 +4,13 @@ import test from "node:test";
 import {
   requireParallelAxisLayer,
   resolveParallelAxisTarget,
-  resolveParallelAxisValues
+  resolveStyledParallelAxes
 } from "../../../../src/actions/guides/axes/parallel/resolve.js";
 
 function program({ layers, coordinates, scales = {} }) {
   return {
-    semanticSpec: { layers, coordinates },
+    semanticSpec: { layers, coordinates, guides: {} },
+    guideConfigs: {},
     resolvedScales: scales,
     graphicSpec: {
       objects: {
@@ -80,16 +81,16 @@ test("resolves Parallel axis ownership and inferred targets", () => {
 
 test("resolves numeric, ordinal, and transformed ticks into concrete axes", () => {
   const current = encodedProgram();
-  const result = resolveParallelAxisValues(current, dimensions);
+  const result = resolveStyledParallelAxes(current, dimensions);
 
   assert.deepEqual(result.bounds, { x: 10, y: 10, width: 200, height: 120 });
   assert.deepEqual(result.axes.map(axis => axis.x), [10, 110, 210]);
-  assert.deepEqual(result.axes[1].values, ["low", "high"]);
-  assert.deepEqual(result.axes[1].labels, ["low", "high"]);
-  assert.equal(result.axes[0].labels.includes("2k"), true);
-  assert.equal(result.axes[2].values.includes(10), true);
+  assert.deepEqual(result.axes[1].ticks.values, ["low", "high"]);
+  assert.deepEqual(result.axes[1].labels.text, ["low", "high"]);
+  assert.equal(result.axes[0].labels.text.includes("2k"), true);
+  assert.equal(result.axes[2].ticks.values.includes(10), true);
 
-  assert.throws(() => resolveParallelAxisValues({
+  assert.throws(() => resolveStyledParallelAxes({
     ...current,
     resolvedScales: { ...current.resolvedScales, ratio: undefined }
   }, dimensions), /requires resolved scale "ratio"/);

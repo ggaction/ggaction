@@ -6,7 +6,7 @@ import {
   validateUnitInterval
 } from "../../../core/validation.js";
 import { validatePointShape } from "../../../grammar/pointShapes.js";
-import { findLayer } from "../../../selectors/layers.js";
+import { resolveEligibleLayer } from "../../../selectors/layers.js";
 import { rematerializeExistingLegend } from "../../encodings/shared.js";
 import { validateMarkOptions } from "../shared.js";
 
@@ -27,20 +27,13 @@ export const editPointMark = action(
         "editPointMark requires shape, fill, opacity, stroke, or strokeWidth."
       );
     }
-    const candidates = this.semanticSpec.layers.filter(
-      layer => layer.mark?.type === "point"
-    );
-    const current = findLayer(this, this.context.currentMark);
-    const requested = args.target ??
-      (current?.mark?.type === "point" ? current.id : undefined);
-    const inferred = requested ?? (candidates.length === 1
-      ? candidates[0].id
-      : undefined);
-    const id = validateUserId(inferred, "Point mark id");
-    const layer = findLayer(this, id);
-    if (layer?.mark?.type !== "point") {
-      throw new Error(`Unknown point mark "${id}".`);
-    }
+    if (args.target !== undefined) validateUserId(args.target, "Point mark id");
+    const layer = resolveEligibleLayer(this, {
+      target: args.target,
+      predicate: candidate => candidate.mark?.type === "point",
+      label: "point mark"
+    });
+    const id = layer.id;
     if (Object.hasOwn(args, "shape") && layer.encoding?.shape !== undefined) {
       throw new Error(
         "editPointMark shape cannot be combined with a shape encoding."
@@ -50,6 +43,9 @@ export const editPointMark = action(
       throw new Error(
         "editPointMark fill cannot be combined with a color encoding."
       );
+    }
+    if (Object.hasOwn(args, "opacity") && layer.encoding?.opacity?.field !== undefined) {
+      throw new Error("editPointMark opacity conflicts with a field encoding; use encodeOpacity with value to replace it.");
     }
     const config = { ...this.markConfigs[id] };
     if (Object.hasOwn(args, "shape")) {

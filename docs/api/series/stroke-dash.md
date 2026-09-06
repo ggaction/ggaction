@@ -59,8 +59,9 @@ and inferred titles update; custom legend settings remain unchanged.
 Constant mode accepts no scale or field type. It creates no legend, removes the
 stroke-dash part of an existing combined legend, and removes a dash-only legend.
 
-If color and stroke dash encode the same field, that field appears only once in
-the series key and can be represented by one combined legend. Canvas changes
+Without an explicit group, color and stroke dash must share one identity field.
+With `encodeGroup`, dash may use another field if it has one raw value per
+series. Compatible color and dash domains can be represented by one combined legend. Canvas changes
 explicitly rematerialize both styles.
 
 See [Scale options](../scales.md) and [Legends](../legends.md).

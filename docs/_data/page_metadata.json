@@ -37,7 +37,7 @@
   "/tutorials/polar-arcs/": {
     "title": "Polar Arc Tutorial",
     "description": "Arc marks turn Polar positions into closed sector paths. Map a quantitative theta field directly to proportional sectors, aggregate categorical theta by count or weighted sum, or…",
-    "image": "/assets/images/cars-origin-donut.png"
+    "image": "/assets/images/pie-plot.png"
   },
   "/tutorials/line-chart/": {
     "title": "Line Chart Tutorial",
@@ -55,13 +55,20 @@
     "title": "Regression Scatterplot Tutorial",
     "description": "This tutorial filters the cars dataset to Japan and the USA, maps point size to Acceleration and point color/shape to Origin, then adds one linear fit and 95% mean response…"
   },
+  "/tutorials/area-layout/": {
+    "title": "Area and Series Layout",
+    "description": "An area measures the space between a value and a baseline, or between two explicit bounds.",
+    "image": "/assets/images/area-layout.png"
+  },
   "/tutorials/density-area/": {
     "title": "Density Area Tutorial",
-    "description": "This chart estimates the distribution of car acceleration separately for each Origin."
+    "description": "Use createDensityPlot to complete a density chart in one action:",
+    "image": "/assets/images/density-plot.png"
   },
   "/tutorials/horizon/": {
     "title": "Horizon Chart Tutorial",
-    "description": "This chart folds Kenya's life expectancy above and below a 55 year baseline into three compact bands. The source rows stay immutable."
+    "description": "Use createHorizonPlot to author signed bands and the original x axis in one action:",
+    "image": "/assets/images/horizon-plot.png"
   },
   "/tutorials/error-bar/": {
     "title": "Error Bar Tutorial",
@@ -74,6 +81,14 @@
   "/tutorials/mark-selection/": {
     "title": "Mark Selection Tutorial",
     "description": "Select final visual items by data field, semantic channel, or concrete graphic property, then filter, reuse, or highlight that selection."
+  },
+  "/tutorials/endpoint-plots/": {
+    "title": "Dot, Lollipop, and Dumbbell Plots",
+    "description": "These three Full entry actions share one categorical endpoint model. Each starts from immutable rows and produces ordinary point and rule children, so existing mark, scale, label,…"
+  },
+  "/tutorials/ecdf/": {
+    "title": "Empirical Cumulative Distribution Plots",
+    "description": "An empirical cumulative distribution function answers: “What share of the observations is less than or equal to this value?” createECDFPlot owns that statistical definition and…"
   },
   "/recipes/": {
     "title": "Chart Recipes",
@@ -350,7 +365,7 @@
   },
   "/api/position/category-ordering/": {
     "title": "Category Ordering",
-    "description": "Use orderCategories when a nominal or ordinal x/y position should follow an explicit list or a data derived order.",
+    "description": "Use orderCategories when a nominal or ordinal x/y/theta position should follow an explicit list or a data derived order.",
     "image": "/assets/images/ordered-category-bar.png"
   },
   "/api/position/histogram/": {
@@ -365,7 +380,7 @@
   },
   "/api/series-encodings/": {
     "title": "Series Encodings",
-    "description": "Series appearance is authored through color, stroke dash, and stroke width families.",
+    "description": "Series appearance is authored through color, stroke dash, stroke width, and opacity.",
     "image": "/assets/images/cars-line-chart.png"
   },
   "/api/series/color/": {
@@ -420,7 +435,7 @@
   },
   "/api/scales/discretized-color/": {
     "title": "Discretized Color Scales",
-    "description": "Quantitative point color can create concrete color classes instead of a continuous gradient:",
+    "description": "Quantitative Point, aggregate Bar, and Rect color can create concrete color classes instead of a continuous gradient:",
     "image": "/assets/images/cars-scatterplot.png"
   },
   "/api/scales/missing-values/": {
@@ -435,7 +450,7 @@
   },
   "/api/axes/": {
     "title": "Axes",
-    "description": "Creates complete axes for encoded Cartesian x/y, Polar theta/radius, or Parallel dimension channels. This is the recommended axis action for ordinary chart authoring.",
+    "description": "Cartesian axis lines, ticks, labels and titles must not overlap a chart title or legend on the same edge.",
     "image": "/assets/images/cars-scatterplot.png"
   },
   "/api/grids/": {
@@ -465,7 +480,7 @@
   },
   "/api/legends/editing/": {
     "title": "Editing Legends",
-    "description": "editLegend() updates one existing stable legend. Omit target when exactly one legend target exists; otherwise pass its mark ID.",
+    "description": "Legend creation and editing check the final occupied bounds against chart titles, Cartesian axis components and independent legend groups on the same edge.",
     "image": "/assets/images/cars-density-area.png"
   },
   "/concepts/chart-program/": {

@@ -153,7 +153,7 @@ test("validates aggregate ordinal bar y requirements", () => {
   );
   assert.throws(
     () => program.encodeY({ field: "missing" }),
-    /no complete aggregate values/
+    /field "missing" does not exist/
   );
 
   const pointX = chart()
@@ -171,7 +171,7 @@ test("validates aggregate ordinal bar y requirements", () => {
 
   assert.throws(
     () => pointX.encodeY({ target: "bars", field: "perc" }),
-    /binned quantitative or ordinal x/
+    /quantitative field opposite a categorical position/
   );
   assert.equal(program.semanticSpec.layers[0].encoding.y, undefined);
 });

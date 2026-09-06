@@ -1,10 +1,8 @@
 import {
-  deriveLineSeries,
-  deriveLineSeriesFieldValues
+  deriveLineSeries
 } from "../../../grammar/lineSeries.js";
 import {
   mapContinuousScaleValues,
-  mapOrdinalValues,
   normalizeStrokeDashPattern
 } from "../../../grammar/scales/index.js";
 import { buildCurvePathCommands } from
@@ -12,6 +10,7 @@ import { buildCurvePathCommands } from
 import { buildPolarLinePathCommands } from
   "../../../grammar/polarLineCommands.js";
 import { resolvePolarFrame } from "../../../grammar/polar.js";
+import { derivePathSeriesFieldValues } from "../../../grammar/pathSeries.js";
 import { materializeParallelRows } from
   "../../../grammar/parallelCoordinates.js";
 import { mapScaleConsumerValues } from
@@ -19,6 +18,17 @@ import { mapScaleConsumerValues } from
 
 function existingValue(children, index, property, fallback) {
   return children[index]?.properties[property] ?? fallback;
+}
+
+function appearanceMapper(layer, scales, fieldValues) {
+  return (channel, fallback) => {
+    const encoding = layer.encoding?.[channel];
+    if (encoding?.datum !== undefined) {
+      return fallback.map(() => normalizeStrokeDashPattern(encoding.datum));
+    }
+    if (encoding?.scale === undefined) return fallback;
+    return mapScaleConsumerValues(fieldValues(encoding.field, channel), scales[encoding.scale], channel);
+  };
 }
 
 export function resolveParallelLineMaterialization({
@@ -39,36 +49,25 @@ export function resolveParallelLineMaterialization({
     parallel
   );
   const sourceRows = items.map(item => rows[item.sourceRowIndex]);
-  const mapAppearance = (channel, fallback) => {
-    const encoding = layer.encoding?.[channel];
-    if (encoding?.datum !== undefined) {
-      return items.map(() => channel === "strokeDash"
-        ? normalizeStrokeDashPattern(encoding.datum)
-        : encoding.datum);
-    }
-    if (encoding?.scale === undefined) return items.map(fallback);
-    return mapScaleConsumerValues(
-      sourceRows.map(row => row[encoding.field]),
-      resolvedScales[encoding.scale],
-      channel
-    );
-  };
+  const mapAppearance = appearanceMapper(layer, resolvedScales,
+    field => sourceRows.map(row => row[field]));
   return {
     commands: items.map(item => item.commands),
     strokes: mapAppearance(
       "color",
-      (_, index) => config.stroke ??
-        existingValue(existingChildren, index, "stroke", defaults.stroke)
+      items.map((_, index) => config.stroke ??
+        existingValue(existingChildren, index, "stroke", defaults.stroke))
     ),
     strokeWidths: mapAppearance(
       "strokeWidth",
-      (_, index) => config.strokeWidth ??
-        existingValue(existingChildren, index, "strokeWidth", defaults.strokeWidth)
+      items.map((_, index) => config.strokeWidth ??
+        existingValue(existingChildren, index, "strokeWidth", defaults.strokeWidth))
     ),
     strokeDashes: mapAppearance(
       "strokeDash",
-      (_, index) => existingValue(existingChildren, index, "strokeDash", [])
-    )
+      items.map((_, index) => existingValue(existingChildren, index, "strokeDash", []))
+    ),
+    opacities: mapAppearance("opacity", config.opacity)
   };
 }
 
@@ -116,33 +115,16 @@ export function resolvePositionedLineMaterialization({
           config.curve ?? "linear"
         );
       });
-  const colorEncoding = layer.encoding?.color;
-  const dashEncoding = layer.encoding?.strokeDash;
-  const widthEncoding = layer.encoding?.strokeWidth;
-  const strokes = colorEncoding?.scale === undefined
-    ? commands.map((_, index) => config.stroke ??
-        existingValue(existingChildren, index, "stroke", defaults.stroke))
-    : mapOrdinalValues(
-        derived.series.map(series => series.key[colorEncoding.field]),
-        resolvedScales[colorEncoding.scale].domain,
-        resolvedScales[colorEncoding.scale].range
-      );
-  const strokeWidths = widthEncoding?.scale === undefined
-    ? commands.map((_, index) => config.strokeWidth ??
-        existingValue(existingChildren, index, "strokeWidth", defaults.strokeWidth))
-    : mapContinuousScaleValues(
-        deriveLineSeriesFieldValues(rows, layer, derived, widthEncoding.field),
-        resolvedScales[widthEncoding.scale]
-      );
-  const strokeDashes = dashEncoding?.datum !== undefined
-    ? commands.map(() => normalizeStrokeDashPattern(dashEncoding.datum))
-    : dashEncoding?.scale === undefined
-      ? commands.map((_, index) =>
-          existingValue(existingChildren, index, "strokeDash", []))
-      : mapOrdinalValues(
-          derived.series.map(series => series.key[dashEncoding.field]),
-          resolvedScales[dashEncoding.scale].domain,
-          resolvedScales[dashEncoding.scale].range
-        );
-  return { commands, strokes, strokeWidths, strokeDashes };
+  const appearance = appearanceMapper(layer, resolvedScales,
+    (field, channel) => derivePathSeriesFieldValues(rows, derived.series, field, channel));
+  return {
+    commands,
+    strokes: appearance("color", commands.map((_, index) => config.stroke ??
+      existingValue(existingChildren, index, "stroke", defaults.stroke))),
+    strokeWidths: appearance("strokeWidth", commands.map((_, index) => config.strokeWidth ??
+      existingValue(existingChildren, index, "strokeWidth", defaults.strokeWidth))),
+    strokeDashes: appearance("strokeDash", commands.map((_, index) =>
+      existingValue(existingChildren, index, "strokeDash", []))),
+    opacities: appearance("opacity", config.opacity)
+  };
 }

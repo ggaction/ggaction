@@ -27,8 +27,22 @@ program.createLegend({ channels: ["size"], position: "right", count: 4 });
 
 With one size-encoded point mark, both `createLegend()` and `createGuides()`
 infer the same block. Multiple size-encoded point marks require `target`.
-Standalone size legends currently use the right position; a size block paired
-with a categorical point legend may use either side.
+Standalone size legends support all four positions, edge layout, grid controls,
+text styles, and borders. A size block paired with a categorical point legend
+supports every edge.
+
+An explicit `channels` array selects exactly the content to create. On a point
+mark encoding all three channels, use `channels: ["color", "shape", "size"]`
+to include all three, or `["color", "size"]` to show color swatches and size
+samples without a shape explanation. Selecting just `["color"]` or `["shape"]`
+does not add a size block. Sample `count` requires size to be selected in a
+categorical request. Encodings and mark appearance remain unchanged.
+
+Omitting `channels` on a point mark infers its encoded categorical color, shape,
+and quantitative size. Color alone uses swatches; shape uses typed symbols;
+color plus size and shape plus size each create both corresponding blocks.
+The result matches explicitly listing those channels. If several point marks
+can own an inferred size companion, specify `target`.
 
 Every categorical legend uses the same right-side default:
 
@@ -38,20 +52,28 @@ Every categorical legend uses the same right-side default:
 | bar histogram | `color` | `right` | swatch |
 | grouped ordinal bar | `color` | `right` | swatch |
 | grouped area | `color` | `right` | swatch |
-| point | explicitly selected `color` only | `right` | swatch |
+| point | inferred or selected `color` only | `right` | swatch |
+| point | inferred or selected `shape` only | `right` | typed point |
 | point + matching line | `color` + `shape` | `right` | line over typed point |
-| quantitative point size | `size` | `right`, standalone or below point series | five equal-area circles |
+| quantitative point size | `size` | all four edges, standalone or combined | five equal-area circles |
 | quantitative/temporal point color | `color` | `right` | continuous gradient with five labels |
-| discretized quantitative point color | `color` | `right` | ordered interval swatches |
+| discretized quantitative point color | `color` | `right/left/top/bottom` | ordered interval swatches |
 | quantitative point opacity | `opacity` | `right` | five constant-size circles with sampled opacity |
+
+A shape-only point legend also works when the chart contains unrelated lines.
+The automatic line-and-point symbol requires the point and line to share both
+the encoded color field and color scale. Removing the point's color encoding
+preserves its remaining shape legend.
 
 | Option | Type | Default |
 | --- | --- | --- |
 | `target` | compatible mark ID | current or unique compatible mark |
 | `channels` | compatible channel array; continuous guides use one `color` or `opacity` | compatible encoded channels |
-| `position` | `right/left/bottom/top`; combined point-size guides use a side | `"right"` |
+| `order` | `"scale"`, `{ values: [...] }`, or `{ channel: "x"/"y"/"theta" }`; categorical only | `"scale"` |
+| `position` | `right/left/bottom/top` | `"right"` |
+| `layout` | categorical `"edge"` or `"legacy-bottom"` | `"edge"` |
 | `align` | `"left"`, `"center"`, or `"right"` | `"center"` |
-| `direction` | `"horizontal"` or `"vertical"` | `"horizontal"` |
+| `direction` | `"horizontal"` or `"vertical"` | `"vertical"` at either side; `"horizontal"` at top/bottom |
 | `columns` | positive integer | all items in one row at top |
 | `offset` | non-negative number | `8` |
 | `titlePosition` | `"top"` or `"left"` | `"top"` |
@@ -59,7 +81,7 @@ Every categorical legend uses the same right-side default:
 | `symbol` | `"auto"`, shorthand object, or layered recipe | inferred from mark |
 | `labels` | label style object | default sans-serif label style |
 | `titleStyle` | title style object | default sans-serif title style |
-| `itemGap` | positive number | `28` at either side, `20` at top/bottom |
+| `itemGap` | positive number | `28` at either side, `24` at top, `20` at bottom |
 | `border` | boolean or border style object | `false` |
 | `count` | size-legend symbol count from `2` through `10,000` | `5` for point legends |
 | `gradient` | `{ length?, thickness? }` with positive values | `{ length: 120, thickness: 12 }` |
@@ -68,18 +90,38 @@ Pass `position: "bottom"` explicitly to place the legend below the plot.
 Bottom legends use the same item grid as top legends and can use left, center,
 or right alignment; side legends require center alignment. Left categorical,
 composite point, and size blocks use vertical flow and preserve symbol-to-label
-and resolved-domain order.
+and resolved-domain order. Both sides accept only vertical direction, one column
+(`columns` omitted or `1`), and a top title. Incompatible options produce an
+error. To move a multi-column horizontal legend to either side, set
+`columns: 1` and `titlePosition: "top"` in the layout edit; omitted settings
+otherwise remain unchanged.
 
-For compatibility, `createLegend({ position: "bottom" })` keeps the compact
-single-row layout anchored near the Canvas bottom edge. Supplying any grid
-control such as `columns`, `direction`, `offset`, `titlePosition`, or `itemGap`
-selects the general reserved-margin grid.
+Categorical legends use `layout: "edge"` by default, including a bottom legend
+with no other layout options. To preserve the former compact single row anchored
+near the Canvas bottom edge, specify both `position: "bottom"` and
+`layout: "legacy-bottom"`. This mode keeps labels at Canvas height minus 28 and
+the title at height minus 52. It supports alignment, item gap, symbols, styles,
+and borders; columns, vertical direction, a left title, or a custom plot offset
+require `layout: "edge"`. Layout mode is preserved by edits and replay.
+Large text or symbols that overlap the fixed title row, cross the plot, or
+exceed the Canvas produce an error; the fixed anchors do not move.
 
 Top and bottom legends use a general item grid. `columns` caps the column count;
 `direction: "horizontal"` fills rows first and `"vertical"` fills columns
-first. `align` positions the complete title-plus-items block within plot
-bounds. The title appears above the grid by default, or beside it with
+first. For a single edge legend, `align` positions the actual outer bounds of
+the complete title, items and border against the plot left edge, center or right
+edge. Strokes and label extents count toward these bounds. `offset` measures
+the gap from the plot to the nearest outer legend edge. The final block must
+fit the requested Canvas. The title appears above the grid by default, or beside it with
 `titlePosition: "left"`.
+
+Each item reserves the actual extent of every symbol layer, including strokes
+and mapped shapes. Labels start after this shared sample slot plus
+`labels.offset` (8 for color, 10 for series). Narrower shapes retain the same
+label column. Side rows expand for large labels or symbols, with at least
+12 pixels between the visible title and item content. Horizontal grids and
+borders use the same extents; inline titles are vertically centered beside
+the complete grid. Hidden titles reserve no space.
 
 A categorical legend resolves at most 10,000 domain items. A layered symbol
 recipe contains at most one line, one point, and one swatch layer.
@@ -99,6 +141,65 @@ densityArea.createLegend({
 });
 ~~~
 
+Automatic recipes refresh when a matching companion line is added, removed,
+or rebound to another color scale. Creating the legend before or after the
+line produces the same result. Explicit symbol recipes retain their layers
+and order through those changes; `editLegend({ symbol: "auto" })` restores
+inference. Title visibility and text styles remain intact.
+
+## Item order without changing color
+
+`createLegend` and `editLegend` accept the same categorical `order` policy.
+An explicit non-empty list puts those categories first and appends omitted
+categories in source first-appearance order. Explicit scale-domain entries absent
+from the source remain at the end. Unknown and duplicate categories are errors.
+Color, shape, and dash assignments remain attached to category values.
+
+To follow the same target's categorical x, y, or theta domain, use
+`order: { channel: "theta" }` (substitute x or y as needed). The linked encoding
+must use the same field and category set as the legend. Its later order/scale
+changes update the legend. Removing that encoding or changing it to an
+incompatible field/domain fails; first reset with `editLegend({ order: "scale" })`.
+Omitted `order` on an edit preserves the policy. Continuous and interval legends
+do not accept categorical ordering.
+
+Inside a complete chart's `guides.legend`, linked channels follow that chart's
+position roles: categorical Cartesian positions use `x` or `y`; Pie, Rose, and
+Radial Bar use `theta`. Line, Area, Density, and Parallel facade declarations
+offer `"scale"` or explicit `values`, since their declared positions do not
+provide a categorical axis to link.
+
 ## Related
 
 [Legend overview](../legends.md) · [Composite symbols](./composite.md) · [Editing legends](./editing.md)
+
+### Combined categorical and size layout
+
+Point legends can combine categorical color or shape with quantitative size on
+any edge. For a point chart with both encodings, this fragment places a bordered
+legend above the plot:
+
+```js
+program.createLegend({
+  channels: ["color", "size"],
+  position: "top",
+  count: 3,
+  offset: 30,
+  columns: 2,
+  border: true
+});
+```
+
+At top and bottom, categorical content precedes size content with 40 pixels
+between their occupied bounds. Blocks wrap to another row away from the plot
+when necessary. The whole group, including its border, follows `align` and
+`offset`. `direction`, `columns`, `titlePosition`, and `itemGap` apply to both
+item grids. Newly combined blocks share label and title typography at every
+edge, including the default title color `#334155`. Each block retains its own
+title text, sample sizes, and label gap. A size legend created independently
+keeps its stored styles when added to a categorical legend; its standalone
+default title color remains `#0f172a`.
+Title spacing also includes labels that are taller than the samples.
+A size border retained from an earlier standalone legend stays inside the
+shared outer border. Other legends place this complete group as one block.
+Combined legends require `layout: "edge"`; `"legacy-bottom"` is unsupported.

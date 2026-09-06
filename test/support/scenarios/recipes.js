@@ -137,8 +137,15 @@ function buildScatter(factors) {
       axes: {
         x: factors.dataset === "zoo-quantitative-extremes"
           ? false
-          : { ticksAndLabels: { count: 3 }, title: { text: "Positive X" } },
-        y: { title: { text: "Y" } }
+          : {
+              position: factors.legendPosition === "bottom" ? "top" : "bottom",
+              ticksAndLabels: { count: 3 },
+              title: { text: "Positive X" }
+            },
+        y: {
+          position: factors.legendPosition === "left" ? "right" : "left",
+          title: { text: "Y" }
+        }
       },
       grid: { horizontal: true, vertical: true },
       legend: {
@@ -195,7 +202,16 @@ function buildLine(factors) {
   }
   return program
     .createGuides({
-      axes: { x: { title: { text: "Time" } }, y: { title: { text: "Value" } } },
+      axes: {
+        x: {
+          position: factors.legendPosition === "bottom" ? "top" : "bottom",
+          title: { text: "Time" }
+        },
+        y: {
+          position: factors.legendPosition === "left" ? "right" : "left",
+          title: { text: "Value" }
+        }
+      },
       grid: { horizontal: {}, vertical: false },
       legend: { position: factors.legendPosition }
     })
@@ -252,8 +268,13 @@ function buildBar(factors) {
       program = program.removeCategoryOrder({ target: "bars", channel });
     }
   }
+  const axes = {};
+  if (factors.legendPosition === "bottom") axes.x = { position: "top" };
+  if (factors.legendPosition === "top") axes.x = { position: "bottom" };
+  if (factors.legendPosition === "left") axes.y = { position: "right" };
+  if (factors.legendPosition === "right") axes.y = { position: "left" };
   return program
-    .createGuides({ legend: { position: factors.legendPosition }, grid: false })
+    .createGuides({ axes, legend: { position: factors.legendPosition }, grid: false })
     .createTitle({ text: "Generated categorical bars", subtitle: factors.dataset });
 }
 
@@ -357,6 +378,15 @@ function histogramBinning(mode, rows) {
 }
 
 function buildHistogramProgram(factors, rows, binning, subtitle) {
+  const xAxis = {
+    ticksAndLabels: { count: 3 },
+    ...(factors.legendPosition === "bottom" ? { position: "top" } : {}),
+    ...(factors.legendPosition === "top" ? { position: "bottom" } : {})
+  };
+  const yAxis = {
+    ...(factors.legendPosition === "left" ? { position: "right" } : {}),
+    ...(factors.legendPosition === "right" ? { position: "left" } : {})
+  };
   return chart()
     .createCanvas(canvas())
     .createData({ id: "scenarioRows", values: rows })
@@ -372,7 +402,7 @@ function buildHistogramProgram(factors, rows, binning, subtitle) {
         scale: { palette: factors.palette }
       },
       guides: {
-        axes: { x: { ticksAndLabels: { count: 3 } } },
+        axes: { x: xAxis, y: yAxis },
         legend: { position: factors.legendPosition }
       }
     })
@@ -462,6 +492,11 @@ function buildBox(factors) {
 }
 
 function buildHeatmapGrid(factors) {
+  const axes = {};
+  if (factors.legendPosition === "bottom") axes.x = { position: "top" };
+  if (factors.legendPosition === "top") axes.x = { position: "bottom" };
+  if (factors.legendPosition === "left") axes.y = { position: "right" };
+  if (factors.legendPosition === "right") axes.y = { position: "left" };
   let program = chart()
     .createCanvas(canvas())
     .createData({ id: "scenarioRows", values: heatmapGridRows() })
@@ -475,11 +510,17 @@ function buildHeatmapGrid(factors) {
         scale: { type: "sequential", palette: factors.palette, reverse: factors.reverse }
       },
       rect: { stroke: factors.stroke ? "#ffffff" : "transparent", strokeWidth: factors.stroke ? 1 : 0 },
-      guides: { legend: { position: factors.legendPosition } }
+      guides: { axes, legend: { position: factors.legendPosition } }
     });
   if (factors.text) {
     program = program
-      .createTextMark({ id: "cellLabels", fontSize: 10, align: "center", baseline: "middle" })
+      .createTextMark({
+        id: "cellLabels",
+        data: "scenarioRows",
+        fontSize: 10,
+        align: "center",
+        baseline: "middle"
+      })
       .encodeX({ target: "cellLabels", field: "x", fieldType: "nominal" })
       .encodeY({ target: "cellLabels", field: "y", fieldType: "nominal" })
       .encodeText({ target: "cellLabels", field: "value", format: ".0f" });
@@ -736,7 +777,215 @@ function recipe(id, datasets, factors, build) {
   return Object.freeze({ id, datasets: Object.freeze(datasets), factors: Object.freeze(factors), build });
 }
 
+function buildCompletePie(factors) {
+  let program = chart().createCanvas(canvas({ square: true }))
+    .createData({ id: "source", values: polarRows(factors.dataset) })
+    .createPiePlot({ id: "pie", category: "category",
+      ...(factors.weighted ? { value: "value", aggregate: "sum" } : {}),
+      arc: { innerRadius: factors.innerRadius, padAngle: 1 } });
+  if (factors.edit) program = program.editArcMark({ target: "pie", opacity: 0.75 });
+  return program;
+}
+
+function buildCompleteDensity(factors) {
+  let program = chart().createCanvas(canvas())
+    .createData({ id: "source", values: densityRows(factors.dataset) })
+    .createDensityPlot({ id: "density", field: "value", densityChannel: factors.channel, steps: 32,
+      ...(factors.grouped ? { groupBy: "category", color: "category" } : {}) });
+  if (factors.edit) program = program.editDensity({ target: "density", steps: 48 });
+  return program;
+}
+
+function buildCompleteRadial(factors, operation) {
+  let program = chart().createCanvas(canvas({ square: true }))
+    .createData({ id: "source", values: polarRows(factors.dataset) })
+    [operation]({ id: "sectors", category: "category",
+      ...(factors.weighted ? { value: "value", aggregate: "sum" } : {}),
+      arc: { innerRadius: factors.innerRadius } });
+  if (factors.edit) program = program.editArcMark({ target: "sectors", opacity: 0.75 });
+  return program;
+}
+
+function buildCompleteHorizon(factors) {
+  let program = chart().createCanvas(canvas())
+    .createData({ id: "source", values: lineRows(factors.dataset) })
+    .createHorizonPlot({ id: "horizon", x: { field: "time", fieldType: "temporal" },
+      y: "value", groupBy: "category", bands: factors.bands, baseline: factors.baseline });
+  if (factors.edit) program = program.editHorizon({ target: "horizon", bands: factors.bands + 1 });
+  return program;
+}
+
+function buildHierarchicalAuthoringActions(factors) {
+  const sourceRows = [
+    { id: "a-one", category: "A", group: "one", value: 2, other: 4 },
+    { id: "a-two", category: "A", group: "two", value: 3, other: 5 },
+    { id: "b-one", category: "B", group: "one", value: 4, other: 6 },
+    { id: "b-two", category: "B", group: "two", value: 5, other: 7 }
+  ];
+  const replacementRows = sourceRows.map((row, index) => ({
+    ...row,
+    value: row.value + index + 1,
+    other: row.other + index + 1
+  }));
+  let program = chart()
+    .createCanvas({
+      width: 1_800,
+      height: 1_200,
+      margin: { top: 280, right: 380, bottom: 280, left: 320 }
+    })
+    .createData({ id: "authoringSource", values: sourceRows })
+    .createData({ id: "authoringReplacement", values: replacementRows })
+    .createSummaryData({
+      id: "authoringSummary",
+      source: "authoringSource",
+      groupBy: "category",
+      aggregates: [
+        { op: "count", as: "rows" },
+        { op: "mean", field: "value", as: "meanValue" }
+      ]
+    })
+    .createBinData({
+      id: "authoringBins",
+      source: "authoringSource",
+      field: "value",
+      boundaries: [2, 4, 6]
+    })
+    .createFoldData({
+      id: "authoringFold",
+      source: "authoringSource",
+      fields: ["value", "other"],
+      as: { key: "measure", value: "amount" }
+    })
+    .createComputedData({
+      id: "authoringComputed",
+      source: "authoringSource",
+      as: "total",
+      expression: {
+        op: "add",
+        left: { field: "value" },
+        right: { field: "other" }
+      }
+    })
+    .createStackData({
+      id: "authoringStack",
+      source: "authoringSource",
+      category: "category",
+      group: "group",
+      value: "value"
+    })
+    .createPointMark({ id: "authoringPoints", data: "authoringSource", opacity: 0.76 })
+    .encodeX({
+      target: "authoringPoints",
+      field: "value",
+      fieldType: "quantitative",
+      scale: { id: "authoringX", zero: false }
+    })
+    .encodeY({
+      target: "authoringPoints",
+      field: "other",
+      fieldType: "quantitative",
+      scale: { id: "authoringY", zero: false }
+    })
+    .encodeColor({ target: "authoringPoints", field: "category", fieldType: "nominal" })
+    .bindMarkData({ target: "authoringPoints", data: "authoringReplacement" })
+    .filterMarks({ target: "authoringPoints", field: "category", op: "eq", value: "A" })
+    .removeMarkFilter({ target: "authoringPoints" })
+    .createGuides({
+      axes: {
+        x: { title: { text: "Observed value" } },
+        y: { title: { text: "Comparison value" } }
+      },
+      grid: false,
+      legend: { position: "right", title: "Category" }
+    })
+    .createReferenceLine({
+      id: "authoringThreshold",
+      source: "authoringPoints",
+      y: 6,
+      stroke: "#64748b"
+    })
+    .createReferenceBand({
+      id: "authoringFocusBand",
+      source: "authoringPoints",
+      x: [3, 7],
+      fill: "#dbeafe",
+      opacity: 0.24
+    })
+    .createMarkLabels({
+      id: "authoringPointLabels",
+      source: "authoringPoints",
+      field: "category",
+      dx: 8,
+      dy: -8,
+      fontSize: 11
+    })
+    .createAnnotation({
+      id: "authoringAnnotation",
+      text: "Authoring review",
+      space: "plot",
+      x: 0.78,
+      y: 0.88,
+      fontWeight: 700
+    })
+    .createData({
+      id: "violinSource",
+      values: sourceRows.map(row => ({
+        category: row.category,
+        split: row.group,
+        value: row.value
+      }))
+    })
+    .createViolinPlot({
+      id: "authoringViolins",
+      data: "violinSource",
+      coordinate: "authoringViolinCoordinate",
+      x: {
+        field: "category",
+        fieldType: "nominal",
+        scale: { id: "authoringViolinX" }
+      },
+      y: {
+        field: "value",
+        fieldType: "quantitative",
+        scale: { id: "authoringViolinY", zero: false }
+      },
+      split: { field: "split" },
+      color: { field: "split" },
+      density: { bandwidth: 0.8, extent: [0, 10], steps: 24 },
+      guides: false
+    })
+    .editViolinPlot({
+      target: "authoringViolins",
+      density: { bandwidth: 0.65, extent: [0, 10], steps: 32 }
+    })
+    .createTitle({
+      text: "Hierarchical authoring action lifecycle",
+      subtitle: factors.theme
+    })
+    .applyTheme({ theme: factors.theme })
+    .removeTheme();
+  program = program.fitCanvas({ padding: 8, overflow: "report" });
+  return program;
+}
+
 export const SCENARIO_RECIPES = Object.freeze([
+  ...["createRosePlot", "createRadialBarPlot"].map(operation =>
+    recipe(operation === "createRosePlot" ? "complete-rose" : "complete-radial-bar",
+      ["zoo-polar-wrap"], {
+        weighted: [false, true], innerRadius: [0, 0.5], edit: [false, true]
+      }, factors => buildCompleteRadial(factors, operation))),
+  recipe("complete-pie", ["zoo-polar-wrap"], {
+    weighted: [false, true], innerRadius: [0, 0.5], edit: [false, true]
+  }, buildCompletePie),
+  recipe("complete-density", ["zoo-multimodal-density"], {
+    channel: ["x", "y"], grouped: [false, true], edit: [false, true]
+  }, buildCompleteDensity),
+  recipe("complete-horizon", ["zoo-temporal-irregular"], {
+    bands: [2, 3], baseline: [0, 2], edit: [false, true]
+  }, buildCompleteHorizon),
+  recipe("hierarchical-authoring-actions", ["zoo-multi-encoding-styles"], {
+    theme: ["light", "dark"]
+  }, buildHierarchicalAuthoringActions),
   recipe("scatter-transforms", [
     "zoo-positive-log-decades", "zoo-quantitative-extremes",
     "zoo-multi-encoding-styles", "zoo-constant-domain", "tt-penguins"

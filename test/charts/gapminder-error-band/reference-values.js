@@ -186,11 +186,11 @@ export function createGapminderErrorBandReferenceValues(gapminder, {
     return Object.freeze({
       cluster,
       color: ERROR_BAND_COLORS[index],
-      x: legendSymbolX,
+      x: legendSymbolX + 0.25,
       y: centerY - 6,
       width: 14,
       height: 12,
-      labelX: legendSymbolX + 22,
+      labelX: legendSymbolX + 22.5,
       labelY: centerY
     });
   }));
@@ -200,6 +200,7 @@ export function createGapminderErrorBandReferenceValues(gapminder, {
     groupBy: Object.freeze(["year", "cluster"]),
     center: "mean",
     extent: "ci",
+    method: "student-t",
     level: 0.95,
     as: ERROR_BAND_FIELDS
   });

@@ -1,0 +1,31 @@
+{
+  "file": "/Users/hyeonjeon/Projects/ggaction-clean-20260905/.artifacts/roadmap6-authoring/package-categorical-spacing/ggaction-0.0.12.tgz",
+  "filename": "ggaction-0.0.12.tgz",
+  "sha256": "722d79da3c8daa31a86e3ed03ab78e7e01aed9881b81961fbb20743dca104cb4",
+  "entryCount": 452,
+  "size": 509106,
+  "unpackedSize": 2432197,
+  "browserBundles": {
+    "full": {
+      "specifier": "ggaction",
+      "chunks": 1,
+      "modules": 399,
+      "minifiedBytes": 951777,
+      "gzipBytes": 253346
+    },
+    "basic": {
+      "specifier": "ggaction/basic",
+      "chunks": 1,
+      "modules": 242,
+      "minifiedBytes": 509170,
+      "gzipBytes": 139625
+    },
+    "svg": {
+      "specifier": "ggaction/svg",
+      "chunks": 1,
+      "modules": 15,
+      "minifiedBytes": 19840,
+      "gzipBytes": 6437
+    }
+  }
+}

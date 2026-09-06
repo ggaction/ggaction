@@ -20,12 +20,21 @@ const ENCODING_PATHS = Object.freeze([
   "encoding.x.bin.boundaries",
   "encoding.color.layout",
   "encoding.color.aggregate",
+  "encoding.group.fields",
+  "encoding.group.inferredFrom",
+  ...["x", "y", "x2", "y2", "theta", "color"].map(channel =>
+    `encoding.${channel}.temporalUnit`
+  ),
   "encoding.pathOrder.field",
   "encoding.pathOrder.fieldType",
   "encoding.pathOrder.order",
   "encoding.theta.aggregate",
   "encoding.theta.weight",
+  "encoding.radius.aggregate",
+  "encoding.theta.categoryOrder",
   "encoding.text.format",
+  "encoding.text.content",
+  "encoding.text.normalizeBy",
   "encoding.parallel.dimensions",
   "encoding.parallel.key",
   "encoding.parallel.missing",
@@ -45,7 +54,7 @@ const ENTITY_PATHS = Object.freeze({
     collection: "layers",
     removableContainers: new Set(
       [...ENCODING_CHANNELS.map(channel => `encoding.${channel}`),
-        "encoding.parallel"]
+        "encoding.parallel", "layout"]
     ),
     properties: new Set([
       "data",
@@ -53,6 +62,8 @@ const ENTITY_PATHS = Object.freeze({
       "coordinate",
       "transform",
       "mark.type",
+      "mark.missing",
+      "layout.mode",
       ...ENCODING_PATHS
     ])
   },
@@ -60,7 +71,7 @@ const ENTITY_PATHS = Object.freeze({
     collection: "scales",
     properties: new Set([
       "type", "domain", "range", "nice", "zero", "clamp", "reverse",
-      "unknown", "base", "exponent", "constant", "interpolate",
+      "unknown", "base", "exponent", "constant", "interpolate", "radialMapping", "midpoint",
       "paddingInner", "paddingOuter", "padding", "align"
     ])
   },
@@ -86,8 +97,10 @@ const GUIDE_PATHS = new Set([
   "axis.parallel.target",
   "axis.parallel.coordinate",
   "axis.parallel.scales",
+  "axis.parallel.titles",
   "legend.color.scale",
   "legend.color.title",
+  "legend.color.order",
   "legend.size.scale",
   "legend.size.title",
   "legend.strokeWidth.scale",
@@ -97,6 +110,7 @@ const GUIDE_PATHS = new Set([
   "legend.series.channels",
   "legend.series.scales",
   "legend.series.title",
+  "legend.series.order",
   "grid.horizontal.scale",
   "grid.horizontal.coordinate",
   "grid.vertical.scale",
@@ -137,7 +151,7 @@ export function parseSemanticPath(property, { allowContainer = false } = {}) {
 
   if (allowContainer) {
     const entityMatch = property.match(
-      new RegExp(`^(dataset|layer)\\[(${USER_ID_SOURCE})\\]$`)
+      new RegExp(`^(dataset|layer|scale)\\[(${USER_ID_SOURCE})\\]$`)
     );
     if (entityMatch) {
       const [, kind, id] = entityMatch;

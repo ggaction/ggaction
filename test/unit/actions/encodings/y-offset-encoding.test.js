@@ -57,7 +57,7 @@ test("encodes horizontal grouped color through a nested yOffset action", () => {
 
   const colorNode = program.trace.children.at(-2);
   assert.equal(colorNode.op, "encodeColor");
-  assert.equal(colorNode.children.some(child => child.op === "encodeYOffset"), true);
+  assert.equal(colorNode.children.find(child => child.op === "layoutSeries").children.some(child => child.op === "encodeYOffset"), true);
   assert.equal(colorNode.children.some(child => child.op === "encodeXOffset"), false);
 });
 
@@ -81,7 +81,7 @@ test("supports direct yOffset padding, categorical field types, and reversed ran
   });
   assert.deepEqual(direct.resolvedScales.yOffset.range, [110, 0]);
   assert.equal(direct.resolvedScales.yOffset.step < 0, true);
-  assert.equal(direct.graphicSpec.objects.bars.items.length, 0);
+  assert.equal(direct.graphicSpec.objects.bars.items.length, 4);
 
   const grouped = direct.encodeColor({ field: "sex", layout: "group" });
   assert.equal(grouped.graphicSpec.objects.bars.items.length, 4);
@@ -91,7 +91,7 @@ test("supports direct yOffset padding, categorical field types, and reversed ran
   });
 });
 
-test("rematerializes yOffset slots after Canvas and color-domain edits", () => {
+test("resizes yOffset slots while color-domain edits preserve series positions", () => {
   const before = horizontalBarProgram()
     .encodeColor({ field: "sex", layout: "group" })
     .encodeBarWidth();
@@ -107,10 +107,10 @@ test("rematerializes yOffset slots after Canvas and color-domain edits", () => {
     resized.graphicSpec.objects.bars.items[0].properties.height,
     before.graphicSpec.objects.bars.items[0].properties.height
   );
-  assert.deepEqual(reordered.resolvedScales.yOffset.domain, ["women", "men"]);
+  assert.deepEqual(reordered.resolvedScales.yOffset.domain, ["men", "women"]);
   assert.deepEqual(
     reordered.graphicSpec.objects.bars.items.slice(0, 2).map(item => item.properties.fill),
-    ["#4c78a8", "#f58518"]
+    ["#f58518", "#4c78a8"]
   );
 });
 

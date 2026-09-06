@@ -4,63 +4,168 @@
     {
       "action": "encodeX",
       "support": {
-        "point": ["quantitative", "temporal", "ordinal", "nominal"],
-        "line": ["quantitative", "temporal"],
-        "area": ["quantitative", "temporal"],
-        "bar": ["quantitative", "temporal", "ordinal", "nominal"],
-        "rect": ["quantitative", "temporal", "ordinal", "nominal"],
-        "rule": ["quantitative", "temporal", "ordinal", "nominal"],
-        "tick": ["quantitative", "temporal", "ordinal", "nominal"],
-        "text": ["quantitative", "temporal", "ordinal", "nominal"]
+        "point": [
+          "quantitative",
+          "temporal",
+          "ordinal",
+          "nominal"
+        ],
+        "line": [
+          "quantitative",
+          "temporal"
+        ],
+        "area": [
+          "quantitative",
+          "temporal"
+        ],
+        "bar": [
+          "quantitative",
+          "temporal",
+          "ordinal",
+          "nominal"
+        ],
+        "rect": [
+          "quantitative",
+          "temporal",
+          "ordinal",
+          "nominal"
+        ],
+        "rule": [
+          "quantitative",
+          "temporal",
+          "ordinal",
+          "nominal"
+        ],
+        "tick": [
+          "quantitative",
+          "temporal",
+          "ordinal",
+          "nominal"
+        ],
+        "text": [
+          "quantitative",
+          "temporal",
+          "ordinal",
+          "nominal"
+        ]
       },
-      "modes": "field; rule also accepts datum; bar accepts aggregate or bin"
+      "modes": "field; rule, area, rect, and independent text also accept datum; bar accepts aggregate or bin"
     },
     {
       "action": "encodeY",
       "support": {
-        "point": ["quantitative", "temporal", "ordinal", "nominal"],
-        "line": ["quantitative", "temporal", "ordinal", "nominal"],
-        "area": ["quantitative", "temporal"],
-        "bar": ["quantitative", "temporal", "ordinal", "nominal"],
-        "rect": ["quantitative", "temporal", "ordinal", "nominal"],
-        "rule": ["quantitative", "temporal", "ordinal", "nominal"],
-        "tick": ["quantitative", "temporal", "ordinal", "nominal"],
-        "text": ["quantitative", "temporal", "ordinal", "nominal"]
+        "point": [
+          "quantitative",
+          "temporal",
+          "ordinal",
+          "nominal"
+        ],
+        "line": [
+          "quantitative",
+          "temporal",
+          "ordinal",
+          "nominal"
+        ],
+        "area": [
+          "quantitative",
+          "temporal"
+        ],
+        "bar": [
+          "quantitative",
+          "temporal",
+          "ordinal",
+          "nominal"
+        ],
+        "rect": [
+          "quantitative",
+          "temporal",
+          "ordinal",
+          "nominal"
+        ],
+        "rule": [
+          "quantitative",
+          "temporal",
+          "ordinal",
+          "nominal"
+        ],
+        "tick": [
+          "quantitative",
+          "temporal",
+          "ordinal",
+          "nominal"
+        ],
+        "text": [
+          "quantitative",
+          "temporal",
+          "ordinal",
+          "nominal"
+        ]
       },
-      "modes": "field; rule also accepts datum; bar accepts aggregate or count"
+      "modes": "field; rule, area, rect, and independent text also accept datum; bar accepts aggregate or count"
     },
     {
       "action": "encodeX2 / encodeY2",
       "support": {
-        "area": ["matching primary"],
-        "ranged bar": ["matching primary"],
-        "rect": ["matching primary"],
-        "rule": ["matching primary"]
+        "area": [
+          "matching primary"
+        ],
+        "ranged bar": [
+          "matching primary"
+        ],
+        "rect": [
+          "matching primary"
+        ],
+        "rule": [
+          "matching primary"
+        ]
       },
-      "modes": "secondary field; rule also accepts datum"
+      "modes": "secondary field; rule, area, and rect also accept datum"
     },
     {
       "action": "encodeTheta",
       "support": {
-        "point": ["quantitative", "temporal", "ordinal", "nominal"],
-        "line": ["quantitative", "temporal", "ordinal", "nominal"],
-        "arc": ["quantitative", "ordinal", "nominal"]
+        "point": [
+          "quantitative",
+          "temporal",
+          "ordinal",
+          "nominal"
+        ],
+        "line": [
+          "quantitative",
+          "temporal",
+          "ordinal",
+          "nominal"
+        ],
+        "arc": [
+          "quantitative",
+          "ordinal",
+          "nominal"
+        ]
       },
       "modes": "arc maps direct quantitative values, category counts, or category-weighted sums to proportional sectors"
     },
     {
       "action": "encodeR",
       "support": {
-        "point": ["quantitative"],
-        "line": ["quantitative"],
-        "arc": ["quantitative"]
+        "point": [
+          "quantitative"
+        ],
+        "line": [
+          "quantitative"
+        ],
+        "arc": [
+          "quantitative"
+        ]
       },
       "modes": "radial position; arc combines it with a categorical theta band"
     },
     {
       "action": "encodeParallelCoordinates",
       "support": {
-        "line": ["quantitative", "ordinal"]
+        "line": [
+          "quantitative",
+          "ordinal"
+        ]
       },
       "modes": "atomic ordered dimensions; one namespaced scale and axis per dimension"
     }
@@ -69,28 +174,62 @@
     {
       "mode": "Categorical",
       "support": {
-        "point": ["nominal", "ordinal"],
-        "line": ["nominal", "ordinal"],
-        "area": ["nominal", "ordinal"],
-        "bar": ["nominal", "ordinal"],
-        "rect": ["nominal", "ordinal"],
-        "arc": ["nominal", "ordinal"]
+        "point": [
+          "nominal",
+          "ordinal"
+        ],
+        "line": [
+          "nominal",
+          "ordinal"
+        ],
+        "area": [
+          "nominal",
+          "ordinal"
+        ],
+        "bar": [
+          "nominal",
+          "ordinal"
+        ],
+        "rect": [
+          "nominal",
+          "ordinal"
+        ],
+        "arc": [
+          "nominal",
+          "ordinal"
+        ]
       },
       "options": "bar/area layout; arc overlay; palette and ordinal scale"
     },
     {
       "mode": "Continuous",
       "support": {
-        "point": ["quantitative", "temporal"],
-        "aggregate bar": ["quantitative"],
-        "rect": ["quantitative", "temporal"]
+        "point": [
+          "quantitative",
+          "temporal"
+        ],
+        "aggregate bar": [
+          "quantitative"
+        ],
+        "rect": [
+          "quantitative",
+          "temporal"
+        ]
       },
       "options": "sequential scale; aggregate required for a different bar measure"
     },
     {
       "mode": "Discretized continuous",
       "support": {
-        "point": ["quantitative"]
+        "point": [
+          "quantitative"
+        ],
+        "aggregate bar": [
+          "quantitative"
+        ],
+        "rect": [
+          "quantitative"
+        ]
       },
       "options": "quantize, quantile, or threshold scale"
     }
@@ -98,7 +237,16 @@
   "highlight": [
     {
       "action": "selectMarks / highlightMarks",
-      "marks": ["point", "bar", "line", "area", "rect", "arc", "rule", "tick"],
+      "marks": [
+        "point",
+        "bar",
+        "line",
+        "area",
+        "rect",
+        "arc",
+        "rule",
+        "tick"
+      ],
       "grain": "item; stacked bars also support stack",
       "result": "selection intent and mark-specific durable emphasis"
     }
@@ -106,43 +254,97 @@
   "legends": [
     {
       "family": "Categorical",
-      "marks": ["point", "line", "area", "bar", "rect", "arc"],
+      "marks": [
+        "point",
+        "line",
+        "area",
+        "bar",
+        "rect",
+        "arc"
+      ],
       "channels": "color, shape, strokeDash, or compatible composites"
     },
     {
       "family": "Continuous gradient",
-      "marks": ["point", "aggregate bar", "rect"],
+      "marks": [
+        "point",
+        "aggregate bar",
+        "rect"
+      ],
       "channels": "sequential color"
     },
     {
       "family": "Discretized interval",
-      "marks": ["point"],
+      "marks": [
+        "point",
+        "aggregate bar",
+        "rect"
+      ],
       "channels": "quantize, quantile, or threshold color"
     },
     {
       "family": "Sampled",
-      "marks": ["point", "line", "rule"],
+      "marks": [
+        "point",
+        "line",
+        "rule"
+      ],
       "channels": "field opacity, size, or strokeWidth"
     }
   ],
   "axes": [
     {
       "family": "Cartesian complete axis",
-      "create": ["createXAxis", "createYAxis", "createAxes"],
-      "edit": ["editXAxis", "editYAxis"],
-      "components": ["line", "ticks", "labels", "ticksAndLabels", "title", "position"]
+      "create": [
+        "createXAxis",
+        "createYAxis",
+        "createAxes"
+      ],
+      "edit": [
+        "editXAxis",
+        "editYAxis"
+      ],
+      "components": [
+        "line",
+        "ticks",
+        "labels",
+        "ticksAndLabels",
+        "title",
+        "position"
+      ]
     },
     {
       "family": "Polar complete axis",
-      "create": ["createThetaAxis", "createRadialAxis", "createAxes"],
-      "edit": ["editThetaAxis", "editRadialAxis"],
-      "components": ["line", "ticks", "labels", "ticksAndLabels", "title", "angle or position"]
+      "create": [
+        "createThetaAxis",
+        "createRadialAxis",
+        "createAxes"
+      ],
+      "edit": [
+        "editThetaAxis",
+        "editRadialAxis"
+      ],
+      "components": [
+        "line",
+        "ticks",
+        "labels",
+        "ticksAndLabels",
+        "title",
+        "radial angle and radial title position"
+      ]
     },
     {
       "family": "Parallel dimension axes",
-      "create": ["createAxes"],
-      "edit": [],
-      "components": ["line", "ticks", "labels", "title from each stored dimension"]
+      "create": [
+        "createAxes", "createParallelAxes", "createParallelAxis"
+      ],
+      "edit": ["editParallelAxis", "removeParallelAxis", "removeParallelAxes"],
+      "components": [
+        "line",
+        "ticks",
+        "labels",
+        "title from each stored dimension"
+      ]
     }
   ]
 }

@@ -1,5 +1,5 @@
 import { action } from "../../core/action.js";
-import { validateNonEmptyString } from "../../core/validation.js";
+import { normalizeGroupFields } from "../../grammar/pathSeries.js";
 import {
   applyFacadeGuides,
   normalizeAppearance,
@@ -50,20 +50,20 @@ export const createLinePlot = action(
     const strokeDash = normalizeStrokeDashEncoding(args.strokeDash);
     const groupBy = args.groupBy === undefined
       ? undefined
-      : validateNonEmptyString(args.groupBy, "createLinePlot groupBy");
+      : normalizeGroupFields(args.groupBy);
     const guides = normalizeGuides(args.guides, "createLinePlot");
 
     let next = this
       .createLineMark({ id, data, ...line })
       .encodeX(positionArgs(x, { target: id, coordinate: args.coordinate }))
       .encodeY(positionArgs(y, { target: id, coordinate: args.coordinate }));
-    if (color !== undefined) next = next.encodeColor(targetArgs(color, id));
     if (groupBy !== undefined) {
-      next = next.encodeGroup({ field: groupBy, target: id });
+      next = next.encodeGroup({ fields: groupBy, target: id });
     }
+    if (color !== undefined) next = next.encodeColor(targetArgs(color, id));
     if (strokeDash !== undefined) {
       next = next.encodeStrokeDash(targetArgs(strokeDash, id));
     }
-    return applyFacadeGuides(next, guides);
+    return applyFacadeGuides(next, guides, id);
   }
 );

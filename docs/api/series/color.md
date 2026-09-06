@@ -14,15 +14,17 @@ bar fills, rect fills, or arc-sector fills. Ordinal fields may contain ordered n
 engine cylinder counts. Quantitative or temporal point and rect fields use continuous color
 scales; point fields also support discretized color. Aggregate bars additionally support one aggregate quantitative
 color value per final rectangle. Line and categorical bar materializers may use
-the field for grouping. Area color normally matches an existing `encodeGroup`
-field; `layout: "center"` creates that matching nominal group when absent.
+the field for grouping when no explicit group is present. With `encodeGroup`,
+Line and ordinary overlay Area color is an independent field with one raw value
+per series. Raw Area supports an independent group field or tuple. Color must be constant within each group;
+`layout: "center"` can infer the initial group from color when no group is present.
 
 <!-- action-capabilities:color:start -->
 | Mode | Supported marks | Field types | Important options |
 | --- | --- | --- | --- |
 | Categorical | point, line, area, bar, rect, arc | point/line/area/bar/rect/arc: nominal, ordinal | bar/area layout; arc overlay; palette and ordinal scale |
 | Continuous | point, aggregate bar, rect | point/rect: quantitative, temporal; aggregate bar: quantitative | sequential scale; aggregate required for a different bar measure |
-| Discretized continuous | point | point: quantitative | quantize, quantile, or threshold scale |
+| Discretized continuous | point, aggregate bar, rect | point/aggregate bar/rect: quantitative | quantize, quantile, or threshold scale |
 <!-- action-capabilities:color:end -->
 
 | Option | Type | Default |
@@ -85,7 +87,7 @@ program.encodeColor({
 See [continuous color scales](../scales/continuous-color.md#named-palettes) for the complete vocabulary.
 
 For an ordinal-category mean bar, `layout: "group"` is the default. It keeps
-the measure stack null, invokes `encodeXOffset` for vertical bars or
+placement in `layoutSeries`, invokes `encodeXOffset` for vertical bars or
 `encodeYOffset` for horizontal bars, and recomputes the measure domain from
 zero and one mean per category/color cell. Negative and positive bars therefore
 extend in opposite directions from the same zero baseline. Color and offset
@@ -105,8 +107,8 @@ rematerialized; inferred titles follow the field while explicit titles and
 styles remain unchanged.
 
 On a complete histogram, `encodeColor` rematerializes each non-empty bin as
-zero-stacked category rects. Stack and fill order follow the resolved color
-domain. The y scale continues to use each bin's total count, and an explicit
+zero-stacked category rects. Stack and fill order follow source first appearance of each series,
+independently of the color domain. The y scale continues to use each bin's total count, and an explicit
 domain must contain every observed category.
 
 ```javascript
@@ -122,7 +124,7 @@ histogram.encodeColor({
 
 Histogram color defaults to `stack`. `fill` normalizes every non-negative bin
 partition to one and uses `[0, 1]` as the automatic y domain. `group` places
-series side by side within each bin, `overlay` draws them in color-domain order
+series side by side within each bin, `overlay` draws them in series order
 without changing opacity, and `diverging` accumulates positive and negative
 values independently around zero. Ordinal aggregate bars support the same five
 values; their group and overlay layouts use zero as each rectangle's start
@@ -146,16 +148,16 @@ densityArea.encodeColor({
 
 Area layouts support `stack`, `fill`, `overlay`, `diverging`, and `center`; `group` is
 bar-only. Each existing path receives the resolved color for its group. Path order,
-color domain order, and later legend order share the same ordered categories;
+color domain order, and legend order have separate roles;
 Canvas and shared-scale changes rematerialize every affected area fill.
-Once a color layout exists, changing it to another layout is rejected until a
-future companion-cleanup contract is implemented; the earlier program remains
-unchanged.
+Change placement with `layoutSeries({mode})` or an explicit color layout option. The last explicit
+request wins. A color edit that omits layout preserves placement. Removing color retains group and
+layout; group-to-stack transitions remove active offsets and only unused automatic offset scales.
 
 ### Center-stacked areas
 
 `layout: "center"` is the area-only shorthand for matching grouping, color, and
-`encodeY({ stack: "center" })` in one atomic call:
+`layoutSeries({ mode: "center" })` in one atomic call:
 
 ```javascript
 const stream = chart()
@@ -178,7 +180,7 @@ Every category must contribute exactly one finite non-negative value at every
 quantitative or temporal x position. First appearance determines stable series
 order. At each position, the total partition spans `[-total / 2, total / 2]`;
 each series keeps its original thickness. Missing positions, duplicate
-group/x rows, negative values, ranged areas, and centered bars are rejected
+group/x rows, negative values, two-field ribbons, and centered bars are rejected
 before semantic state changes. An explicit y domain must contain every resolved
 lower and upper bound. Wiggle baselines and automatic imputation are not part
 of this mode.

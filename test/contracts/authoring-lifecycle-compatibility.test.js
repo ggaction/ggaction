@@ -117,7 +117,8 @@ test("composes selective legends, encoding teardown, and selection release", () 
     undefined
   );
   assert.equal(withoutShape.graphicSpec.objects.seriesLegendSymbolPoints, undefined);
-  assert.ok(withoutShape.graphicSpec.objects.colorLegendSymbolPoints);
+  assert.ok(withoutShape.graphicSpec.objects.colorLegendSymbols);
+  assert.equal(withoutShape.graphicSpec.objects.colorLegendSymbols.type, "rect");
   assert.equal(
     editedSelection.materializationConfigs.selections.focus.selector.value,
     "B"

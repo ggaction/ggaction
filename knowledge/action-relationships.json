@@ -1,0 +1,1638 @@
+{
+  "schemaVersion": 1,
+  "source": "generated lifecycle smoke corpus plus selection lifecycle",
+  "actionCount": 234,
+  "relationships": [
+    {
+      "name": "createCanvas",
+      "wraps": [
+        "createGraphics",
+        "editCanvas"
+      ]
+    },
+    {
+      "name": "editCanvas",
+      "wraps": [
+        "editGraphics",
+        "editXAxisLine",
+        "editXAxisTicks",
+        "editXAxisLabels",
+        "editXAxisTitle",
+        "editYAxisLine",
+        "editYAxisTicks",
+        "editYAxisLabels",
+        "editYAxisTitle"
+      ]
+    },
+    {
+      "name": "fitCanvas",
+      "wraps": [
+        "editCanvas"
+      ]
+    },
+    {
+      "name": "applyTheme",
+      "wraps": [
+        "editGraphics"
+      ]
+    },
+    {
+      "name": "removeTheme",
+      "wraps": [
+        "editGraphics"
+      ]
+    },
+    {
+      "name": "createData",
+      "wraps": [
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "bindMarkData",
+      "wraps": []
+    },
+    {
+      "name": "filterData",
+      "wraps": [
+        "createDerivedData"
+      ]
+    },
+    {
+      "name": "createSummaryData",
+      "wraps": [
+        "createDerivedData"
+      ]
+    },
+    {
+      "name": "createBinData",
+      "wraps": [
+        "createDerivedData"
+      ]
+    },
+    {
+      "name": "createFoldData",
+      "wraps": [
+        "createDerivedData"
+      ]
+    },
+    {
+      "name": "createComputedData",
+      "wraps": [
+        "createDerivedData"
+      ]
+    },
+    {
+      "name": "createStackData",
+      "wraps": [
+        "createDerivedData"
+      ]
+    },
+    {
+      "name": "createDensityData",
+      "wraps": [
+        "createDerivedData"
+      ]
+    },
+    {
+      "name": "createRegressionData",
+      "wraps": [
+        "createDerivedData"
+      ]
+    },
+    {
+      "name": "createWindowData",
+      "wraps": [
+        "createDerivedData"
+      ]
+    },
+    {
+      "name": "createTimeUnitData",
+      "wraps": [
+        "createDerivedData"
+      ]
+    },
+    {
+      "name": "createBin2DData",
+      "wraps": [
+        "createDerivedData"
+      ]
+    },
+    {
+      "name": "editBin2DData",
+      "wraps": [
+        "createDerivedData",
+        "editXAxisLine",
+        "editXAxisTicks",
+        "editXAxisLabels",
+        "editXAxisTitle",
+        "editYAxisLine",
+        "editYAxisTicks",
+        "editYAxisLabels",
+        "editYAxisTitle"
+      ]
+    },
+    {
+      "name": "createIntervalData",
+      "wraps": [
+        "createDerivedData"
+      ]
+    },
+    {
+      "name": "createECDFData",
+      "wraps": [
+        "createDerivedData"
+      ]
+    },
+    {
+      "name": "createPointMark",
+      "wraps": [
+        "editSemantic",
+        "createGraphics",
+        "editPointMark"
+      ]
+    },
+    {
+      "name": "createTickMark",
+      "wraps": [
+        "editSemantic",
+        "createGraphics",
+        "editTickMark"
+      ]
+    },
+    {
+      "name": "createReferenceLine",
+      "wraps": [
+        "createRuleMark",
+        "encodeY"
+      ]
+    },
+    {
+      "name": "createReferenceBand",
+      "wraps": [
+        "createRectMark",
+        "encodeX",
+        "encodeX2"
+      ]
+    },
+    {
+      "name": "createMarkLabels",
+      "wraps": [
+        "createTextMark",
+        "encodeText"
+      ]
+    },
+    {
+      "name": "createAnnotation",
+      "wraps": [
+        "createScale",
+        "createTextMark",
+        "encodeText",
+        "encodeX",
+        "encodeY"
+      ]
+    },
+    {
+      "name": "createTextMark",
+      "wraps": [
+        "editSemantic",
+        "createGraphics",
+        "editTextMark"
+      ]
+    },
+    {
+      "name": "editTextMark",
+      "wraps": []
+    },
+    {
+      "name": "layoutLabels",
+      "wraps": []
+    },
+    {
+      "name": "removeLabelLayout",
+      "wraps": [
+        "editGraphics"
+      ]
+    },
+    {
+      "name": "editPointMark",
+      "wraps": []
+    },
+    {
+      "name": "editTickMark",
+      "wraps": []
+    },
+    {
+      "name": "jitterPoints",
+      "wraps": []
+    },
+    {
+      "name": "removeJitter",
+      "wraps": []
+    },
+    {
+      "name": "packPoints",
+      "wraps": []
+    },
+    {
+      "name": "removePointPacking",
+      "wraps": []
+    },
+    {
+      "name": "removeMark",
+      "wraps": [
+        "editSemantic",
+        "editGraphics"
+      ]
+    },
+    {
+      "name": "createLineMark",
+      "wraps": [
+        "editSemantic",
+        "createGraphics",
+        "editLineMark"
+      ]
+    },
+    {
+      "name": "editLineMark",
+      "wraps": []
+    },
+    {
+      "name": "createBarMark",
+      "wraps": [
+        "editSemantic",
+        "createGraphics",
+        "editBarMark"
+      ]
+    },
+    {
+      "name": "editBarMark",
+      "wraps": []
+    },
+    {
+      "name": "createAreaMark",
+      "wraps": [
+        "editSemantic",
+        "createGraphics"
+      ]
+    },
+    {
+      "name": "createRuleMark",
+      "wraps": [
+        "editSemantic",
+        "createGraphics",
+        "encodeStroke",
+        "encodeStrokeWidth",
+        "encodeStrokeDash"
+      ]
+    },
+    {
+      "name": "editRuleMark",
+      "wraps": [
+        "encodeStroke",
+        "encodeOpacity"
+      ]
+    },
+    {
+      "name": "editAreaMark",
+      "wraps": []
+    },
+    {
+      "name": "encodeX",
+      "wraps": [
+        "createCoordinate",
+        "editSemantic",
+        "createScale",
+        "editScale"
+      ]
+    },
+    {
+      "name": "encodeY",
+      "wraps": [
+        "createCoordinate",
+        "editSemantic",
+        "createScale",
+        "layoutSeries",
+        "encodeX"
+      ]
+    },
+    {
+      "name": "encodeX2",
+      "wraps": [
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "encodeColor",
+      "wraps": [
+        "editSemantic",
+        "createScale",
+        "layoutSeries"
+      ]
+    },
+    {
+      "name": "encodeStrokeDash",
+      "wraps": [
+        "editSemantic",
+        "createScale"
+      ]
+    },
+    {
+      "name": "encodeStroke",
+      "wraps": []
+    },
+    {
+      "name": "encodeStrokeWidth",
+      "wraps": [
+        "editSemantic",
+        "createScale"
+      ]
+    },
+    {
+      "name": "encodeSize",
+      "wraps": [
+        "editSemantic",
+        "createScale"
+      ]
+    },
+    {
+      "name": "encodeShape",
+      "wraps": [
+        "editSemantic",
+        "createScale"
+      ]
+    },
+    {
+      "name": "encodeAngle",
+      "wraps": [
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "encodeOpacity",
+      "wraps": [
+        "editSemantic",
+        "createScale"
+      ]
+    },
+    {
+      "name": "encodeRadius",
+      "wraps": []
+    },
+    {
+      "name": "encodeTheta",
+      "wraps": [
+        "createCoordinate",
+        "editSemantic",
+        "createScale"
+      ]
+    },
+    {
+      "name": "encodeR",
+      "wraps": [
+        "createCoordinate",
+        "editSemantic",
+        "createScale"
+      ]
+    },
+    {
+      "name": "encodePointRadius",
+      "wraps": [
+        "encodeRadius"
+      ]
+    },
+    {
+      "name": "removePointRadius",
+      "wraps": [
+        "editGraphics"
+      ]
+    },
+    {
+      "name": "encodeXOffset",
+      "wraps": [
+        "editSemantic",
+        "createScale",
+        "layoutSeries"
+      ]
+    },
+    {
+      "name": "encodeYOffset",
+      "wraps": [
+        "editSemantic",
+        "createScale",
+        "layoutSeries"
+      ]
+    },
+    {
+      "name": "encodeY2",
+      "wraps": [
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "encodeYRange",
+      "wraps": [
+        "encodeY",
+        "encodeY2",
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "encodeXRange",
+      "wraps": [
+        "encodeX",
+        "encodeX2",
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "encodeGroup",
+      "wraps": [
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "encodePathOrder",
+      "wraps": [
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "encodeParallelCoordinates",
+      "wraps": [
+        "editSemantic",
+        "createScale"
+      ]
+    },
+    {
+      "name": "removePathOrder",
+      "wraps": [
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "orderCategories",
+      "wraps": [
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "removeCategoryOrder",
+      "wraps": [
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "removeEncoding",
+      "wraps": [
+        "editSemantic",
+        "editGraphics"
+      ]
+    },
+    {
+      "name": "encodeText",
+      "wraps": [
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "encodeHistogram",
+      "wraps": [
+        "encodeX",
+        "encodeY"
+      ]
+    },
+    {
+      "name": "encodeDensity",
+      "wraps": [
+        "createDensityData",
+        "editSemantic",
+        "encodeX",
+        "encodeY",
+        "encodeGroup"
+      ]
+    },
+    {
+      "name": "editDensity",
+      "wraps": [
+        "createDensityData"
+      ]
+    },
+    {
+      "name": "encodeHorizon",
+      "wraps": [
+        "editSemantic",
+        "encodeX",
+        "encodeY",
+        "encodeGroup",
+        "encodeY2",
+        "encodeColor",
+        "editAreaMark"
+      ]
+    },
+    {
+      "name": "editHorizon",
+      "wraps": [
+        "editScale"
+      ]
+    },
+    {
+      "name": "encodeBarWidth",
+      "wraps": []
+    },
+    {
+      "name": "createRegression",
+      "wraps": [
+        "createRegressionData",
+        "createRegressionBand",
+        "createRegressionLine"
+      ]
+    },
+    {
+      "name": "editRegression",
+      "wraps": [
+        "createRegressionData",
+        "editRegressionBand",
+        "editRegressionLine"
+      ]
+    },
+    {
+      "name": "createErrorBar",
+      "wraps": [
+        "createRuleMark",
+        "encodeX",
+        "encodeY",
+        "editSemantic",
+        "encodeY2",
+        "encodeStroke",
+        "encodeStrokeWidth",
+        "encodeStrokeDash",
+        "encodeOpacity",
+        "encodeX2",
+        "createIntervalData"
+      ]
+    },
+    {
+      "name": "editErrorBar",
+      "wraps": []
+    },
+    {
+      "name": "createErrorBand",
+      "wraps": [
+        "createAreaMark",
+        "encodeX",
+        "encodeYRange",
+        "editSemantic",
+        "encodeGroup",
+        "encodeY",
+        "encodeXRange"
+      ]
+    },
+    {
+      "name": "editErrorBand",
+      "wraps": []
+    },
+    {
+      "name": "editErrorBandBoundary",
+      "wraps": []
+    },
+    {
+      "name": "createBoxPlot",
+      "wraps": [
+        "createBarMark",
+        "encodeX",
+        "encodeY"
+      ]
+    },
+    {
+      "name": "editBoxPlot",
+      "wraps": [
+        "editSemantic",
+        "encodeStroke",
+        "encodeStrokeWidth"
+      ]
+    },
+    {
+      "name": "createGradientPlot",
+      "wraps": [
+        "createRectMark",
+        "encodeX",
+        "encodeY"
+      ]
+    },
+    {
+      "name": "editGradientPlot",
+      "wraps": [
+        "editSemantic",
+        "editXAxisTicks",
+        "editXAxisLabels",
+        "editXAxisTitle",
+        "editYAxisTicks",
+        "editYAxisLabels",
+        "editYAxisTitle",
+        "encodeStroke",
+        "encodeStrokeWidth",
+        "editGraphics"
+      ]
+    },
+    {
+      "name": "createViolinPlot",
+      "wraps": [
+        "createAreaMark",
+        "encodeDensity",
+        "encodeColor",
+        "createGuides"
+      ]
+    },
+    {
+      "name": "editViolinPlot",
+      "wraps": [
+        "editDensity"
+      ]
+    },
+    {
+      "name": "createParallelAxes",
+      "wraps": [
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "createParallelAxis",
+      "wraps": []
+    },
+    {
+      "name": "editParallelAxis",
+      "wraps": [
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "removeParallelAxis",
+      "wraps": [
+        "editParallelAxis"
+      ]
+    },
+    {
+      "name": "removeParallelAxes",
+      "wraps": [
+        "editSemantic",
+        "editGraphics"
+      ]
+    },
+    {
+      "name": "createAxes",
+      "wraps": [
+        "createThetaAxis",
+        "createRadialAxis",
+        "createXAxis",
+        "createYAxis",
+        "createParallelAxes"
+      ]
+    },
+    {
+      "name": "createXAxis",
+      "wraps": [
+        "editSemantic",
+        "createXAxisLine",
+        "createXAxisTicksAndLabels",
+        "createXAxisTitle"
+      ]
+    },
+    {
+      "name": "createYAxis",
+      "wraps": [
+        "editSemantic",
+        "createYAxisLine",
+        "createYAxisTicksAndLabels",
+        "createYAxisTitle"
+      ]
+    },
+    {
+      "name": "createXAxisLine",
+      "wraps": [
+        "editSemantic",
+        "createGraphics",
+        "editXAxisLine"
+      ]
+    },
+    {
+      "name": "createYAxisLine",
+      "wraps": [
+        "editSemantic",
+        "createGraphics",
+        "editYAxisLine"
+      ]
+    },
+    {
+      "name": "editXAxisLine",
+      "wraps": [
+        "editGraphics"
+      ]
+    },
+    {
+      "name": "editYAxisLine",
+      "wraps": [
+        "editGraphics"
+      ]
+    },
+    {
+      "name": "createXAxisTicks",
+      "wraps": [
+        "editSemantic",
+        "createGraphics",
+        "editXAxisTicks"
+      ]
+    },
+    {
+      "name": "createYAxisTicks",
+      "wraps": [
+        "editSemantic",
+        "createGraphics",
+        "editYAxisTicks"
+      ]
+    },
+    {
+      "name": "editXAxisTicks",
+      "wraps": [
+        "editGraphics"
+      ]
+    },
+    {
+      "name": "editYAxisTicks",
+      "wraps": [
+        "editGraphics"
+      ]
+    },
+    {
+      "name": "createXAxisLabels",
+      "wraps": [
+        "editSemantic",
+        "createGraphics",
+        "editXAxisLabels"
+      ]
+    },
+    {
+      "name": "createYAxisLabels",
+      "wraps": [
+        "editSemantic",
+        "createGraphics",
+        "editYAxisLabels"
+      ]
+    },
+    {
+      "name": "editXAxisLabels",
+      "wraps": [
+        "editGraphics",
+        "editXAxisTitle"
+      ]
+    },
+    {
+      "name": "editYAxisLabels",
+      "wraps": [
+        "editGraphics",
+        "editYAxisTitle"
+      ]
+    },
+    {
+      "name": "createXAxisTicksAndLabels",
+      "wraps": [
+        "createXAxisTicks",
+        "createXAxisLabels"
+      ]
+    },
+    {
+      "name": "createYAxisTicksAndLabels",
+      "wraps": [
+        "createYAxisTicks",
+        "createYAxisLabels"
+      ]
+    },
+    {
+      "name": "editXAxisTicksAndLabels",
+      "wraps": [
+        "editXAxisTicks",
+        "editXAxisLabels"
+      ]
+    },
+    {
+      "name": "editYAxisTicksAndLabels",
+      "wraps": [
+        "editYAxisTicks",
+        "editYAxisLabels"
+      ]
+    },
+    {
+      "name": "createXAxisTitle",
+      "wraps": [
+        "editSemantic",
+        "createGraphics",
+        "editXAxisTitle"
+      ]
+    },
+    {
+      "name": "createYAxisTitle",
+      "wraps": [
+        "editSemantic",
+        "createGraphics",
+        "editYAxisTitle"
+      ]
+    },
+    {
+      "name": "editXAxisTitle",
+      "wraps": [
+        "editGraphics",
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "editYAxisTitle",
+      "wraps": [
+        "editGraphics",
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "editXAxis",
+      "wraps": [
+        "editXAxisLine",
+        "editXAxisTicks",
+        "editXAxisLabels",
+        "editXAxisTitle"
+      ]
+    },
+    {
+      "name": "editYAxis",
+      "wraps": [
+        "editYAxisLine",
+        "editYAxisTitle"
+      ]
+    },
+    {
+      "name": "removeXAxis",
+      "wraps": [
+        "editSemantic",
+        "editGraphics"
+      ]
+    },
+    {
+      "name": "removeYAxis",
+      "wraps": [
+        "editSemantic",
+        "editGraphics"
+      ]
+    },
+    {
+      "name": "createGrid",
+      "wraps": [
+        "createRadialGrid",
+        "createThetaGrid",
+        "createHorizontalGrid",
+        "createVerticalGrid"
+      ]
+    },
+    {
+      "name": "createHorizontalGrid",
+      "wraps": [
+        "editSemantic",
+        "createGraphics"
+      ]
+    },
+    {
+      "name": "createVerticalGrid",
+      "wraps": [
+        "editSemantic",
+        "createGraphics"
+      ]
+    },
+    {
+      "name": "editHorizontalGrid",
+      "wraps": []
+    },
+    {
+      "name": "editVerticalGrid",
+      "wraps": []
+    },
+    {
+      "name": "editGrid",
+      "wraps": [
+        "editHorizontalGrid",
+        "editVerticalGrid"
+      ]
+    },
+    {
+      "name": "removeGrid",
+      "wraps": [
+        "editSemantic",
+        "editGraphics"
+      ]
+    },
+    {
+      "name": "createLegend",
+      "wraps": []
+    },
+    {
+      "name": "editLegend",
+      "wraps": [
+        "createGraphics",
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "editLegendLayout",
+      "wraps": [
+        "editLegend"
+      ]
+    },
+    {
+      "name": "editLegendLabels",
+      "wraps": [
+        "editLegend"
+      ]
+    },
+    {
+      "name": "editLegendTitle",
+      "wraps": [
+        "editLegend"
+      ]
+    },
+    {
+      "name": "editLegendSymbols",
+      "wraps": [
+        "editLegend"
+      ]
+    },
+    {
+      "name": "editLegendBorder",
+      "wraps": [
+        "editLegend"
+      ]
+    },
+    {
+      "name": "createGuides",
+      "wraps": [
+        "createAxes",
+        "createGrid",
+        "createLegend"
+      ]
+    },
+    {
+      "name": "removeLegend",
+      "wraps": [
+        "editSemantic",
+        "editGraphics"
+      ]
+    },
+    {
+      "name": "createTitle",
+      "wraps": [
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "editTitle",
+      "wraps": [
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "removeTitle",
+      "wraps": [
+        "editSemantic",
+        "editGraphics"
+      ]
+    },
+    {
+      "name": "createCoordinate",
+      "wraps": [
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "createScale",
+      "wraps": [
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "editScale",
+      "wraps": [
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "createDerivedData",
+      "wraps": [
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "createRegressionBand",
+      "wraps": [
+        "createErrorBand",
+        "editSemantic",
+        "editAreaMark"
+      ]
+    },
+    {
+      "name": "editRegressionBand",
+      "wraps": [
+        "editAreaMark"
+      ]
+    },
+    {
+      "name": "createRegressionLine",
+      "wraps": [
+        "createLineMark",
+        "encodeX",
+        "encodeY",
+        "encodeColor",
+        "encodeGroup"
+      ]
+    },
+    {
+      "name": "editRegressionLine",
+      "wraps": [
+        "editLineMark"
+      ]
+    },
+    {
+      "name": "filterMarks",
+      "wraps": [
+        "createDerivedData"
+      ]
+    },
+    {
+      "name": "removeMarkFilter",
+      "wraps": [
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "selectMarks",
+      "wraps": []
+    },
+    {
+      "name": "editMarkSelection",
+      "wraps": [
+        "editGraphics"
+      ]
+    },
+    {
+      "name": "removeMarkHighlight",
+      "wraps": [
+        "editGraphics"
+      ]
+    },
+    {
+      "name": "removeMarkSelection",
+      "wraps": [
+        "removeMarkHighlight"
+      ]
+    },
+    {
+      "name": "highlightMarks",
+      "wraps": [
+        "selectMarks"
+      ]
+    },
+    {
+      "name": "editSemantic",
+      "wraps": []
+    },
+    {
+      "name": "createGraphics",
+      "wraps": []
+    },
+    {
+      "name": "editGraphics",
+      "wraps": []
+    },
+    {
+      "name": "createArcMark",
+      "wraps": [
+        "editSemantic",
+        "createGraphics"
+      ]
+    },
+    {
+      "name": "editArcMark",
+      "wraps": []
+    },
+    {
+      "name": "createThetaAxis",
+      "wraps": [
+        "createThetaAxisLine",
+        "createThetaAxisTicks",
+        "createThetaAxisLabels",
+        "createThetaAxisTitle"
+      ]
+    },
+    {
+      "name": "createRadialAxis",
+      "wraps": [
+        "createRadialAxisLine",
+        "createRadialAxisTicks",
+        "createRadialAxisLabels",
+        "createRadialAxisTitle"
+      ]
+    },
+    {
+      "name": "editThetaAxis",
+      "wraps": [
+        "editThetaAxisLine",
+        "editThetaAxisTicks",
+        "editThetaAxisLabels",
+        "editThetaAxisTitle"
+      ]
+    },
+    {
+      "name": "editRadialAxis",
+      "wraps": [
+        "editRadialAxisLine",
+        "editRadialAxisTicks",
+        "editRadialAxisLabels",
+        "editRadialAxisTitle"
+      ]
+    },
+    {
+      "name": "removeThetaAxis",
+      "wraps": [
+        "editSemantic",
+        "editGraphics"
+      ]
+    },
+    {
+      "name": "removeRadialAxis",
+      "wraps": [
+        "editSemantic",
+        "editGraphics"
+      ]
+    },
+    {
+      "name": "createThetaAxisLine",
+      "wraps": [
+        "editSemantic",
+        "createGraphics",
+        "editThetaAxisLine"
+      ]
+    },
+    {
+      "name": "editThetaAxisLine",
+      "wraps": [
+        "editGraphics"
+      ]
+    },
+    {
+      "name": "createRadialAxisLine",
+      "wraps": [
+        "editSemantic",
+        "createGraphics",
+        "editRadialAxisLine"
+      ]
+    },
+    {
+      "name": "editRadialAxisLine",
+      "wraps": [
+        "editGraphics"
+      ]
+    },
+    {
+      "name": "createThetaAxisTicks",
+      "wraps": [
+        "createGraphics",
+        "editThetaAxisTicks"
+      ]
+    },
+    {
+      "name": "editThetaAxisTicks",
+      "wraps": [
+        "editGraphics"
+      ]
+    },
+    {
+      "name": "createRadialAxisTicks",
+      "wraps": [
+        "createGraphics",
+        "editRadialAxisTicks"
+      ]
+    },
+    {
+      "name": "editRadialAxisTicks",
+      "wraps": [
+        "editGraphics"
+      ]
+    },
+    {
+      "name": "createThetaAxisLabels",
+      "wraps": [
+        "createGraphics",
+        "editThetaAxisLabels"
+      ]
+    },
+    {
+      "name": "editThetaAxisLabels",
+      "wraps": [
+        "editGraphics"
+      ]
+    },
+    {
+      "name": "createRadialAxisLabels",
+      "wraps": [
+        "createGraphics",
+        "editRadialAxisLabels"
+      ]
+    },
+    {
+      "name": "editRadialAxisLabels",
+      "wraps": [
+        "editGraphics"
+      ]
+    },
+    {
+      "name": "createThetaAxisTitle",
+      "wraps": [
+        "editSemantic",
+        "createGraphics",
+        "editThetaAxisTitle"
+      ]
+    },
+    {
+      "name": "editThetaAxisTitle",
+      "wraps": [
+        "editGraphics",
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "createRadialAxisTitle",
+      "wraps": [
+        "editSemantic",
+        "createGraphics",
+        "editRadialAxisTitle"
+      ]
+    },
+    {
+      "name": "editRadialAxisTitle",
+      "wraps": [
+        "editGraphics",
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "createThetaGrid",
+      "wraps": [
+        "editSemantic",
+        "createGraphics"
+      ]
+    },
+    {
+      "name": "createRadialGrid",
+      "wraps": [
+        "editSemantic",
+        "createGraphics"
+      ]
+    },
+    {
+      "name": "editThetaGrid",
+      "wraps": []
+    },
+    {
+      "name": "editRadialGrid",
+      "wraps": []
+    },
+    {
+      "name": "editCompositionLayout",
+      "wraps": []
+    },
+    {
+      "name": "replaceCompositionChild",
+      "wraps": []
+    },
+    {
+      "name": "insertCompositionChild",
+      "wraps": []
+    },
+    {
+      "name": "removeCompositionChild",
+      "wraps": []
+    },
+    {
+      "name": "reorderCompositionChildren",
+      "wraps": []
+    },
+    {
+      "name": "facet",
+      "wraps": []
+    },
+    {
+      "name": "facetGrid",
+      "wraps": []
+    },
+    {
+      "name": "repeatCharts",
+      "wraps": []
+    },
+    {
+      "name": "editFacetSource",
+      "wraps": [
+        "facetGrid",
+        "removeTitle",
+        "createTitle"
+      ]
+    },
+    {
+      "name": "editFacetHeaders",
+      "wraps": []
+    },
+    {
+      "name": "editFacetScales",
+      "wraps": []
+    },
+    {
+      "name": "editFacetGuides",
+      "wraps": []
+    },
+    {
+      "name": "createScatterPlot",
+      "wraps": [
+        "createPointMark",
+        "encodeX",
+        "encodeY",
+        "encodeColor",
+        "encodeShape",
+        "createGuides"
+      ]
+    },
+    {
+      "name": "createDotPlot",
+      "wraps": [
+        "createSummaryData",
+        "createPointMark",
+        "encodeX",
+        "encodeY"
+      ]
+    },
+    {
+      "name": "createLollipopPlot",
+      "wraps": [
+        "createSummaryData",
+        "createRuleMark",
+        "encodeX",
+        "encodeY",
+        "encodeX2",
+        "createPointMark"
+      ]
+    },
+    {
+      "name": "createDumbbellPlot",
+      "wraps": [
+        "createSummaryData",
+        "createRuleMark",
+        "encodeX",
+        "encodeY",
+        "encodeX2",
+        "createPointMark"
+      ]
+    },
+    {
+      "name": "editEndpointPlot",
+      "wraps": [
+        "removeMark",
+        "createDumbbellPlot"
+      ]
+    },
+    {
+      "name": "createECDFPlot",
+      "wraps": [
+        "createECDFData",
+        "createLineMark",
+        "encodeX",
+        "encodeY",
+        "encodeGroup"
+      ]
+    },
+    {
+      "name": "editECDFPlot",
+      "wraps": [
+        "removeMark",
+        "createECDFPlot"
+      ]
+    },
+    {
+      "name": "createIntervalPlot",
+      "wraps": [
+        "createErrorBar",
+        "createPointMark",
+        "encodeX",
+        "encodeY"
+      ]
+    },
+    {
+      "name": "createRegressionPlot",
+      "wraps": [
+        "createScatterPlot",
+        "createRegression"
+      ]
+    },
+    {
+      "name": "createLinePlot",
+      "wraps": [
+        "createLineMark",
+        "encodeX",
+        "encodeY",
+        "encodeGroup",
+        "encodeColor",
+        "encodeStrokeDash",
+        "createGuides"
+      ]
+    },
+    {
+      "name": "createPolarScatterPlot",
+      "wraps": [
+        "createPointMark",
+        "encodeTheta",
+        "encodeR",
+        "encodePointRadius"
+      ]
+    },
+    {
+      "name": "createPolarLinePlot",
+      "wraps": [
+        "createLineMark",
+        "encodeTheta",
+        "encodeR"
+      ]
+    },
+    {
+      "name": "createRadarPlot",
+      "wraps": [
+        "createPolarLinePlot"
+      ]
+    },
+    {
+      "name": "createRugPlot",
+      "wraps": [
+        "createTickMark",
+        "encodeX",
+        "encodeY",
+        "encodeAngle"
+      ]
+    },
+    {
+      "name": "createStripPlot",
+      "wraps": [
+        "createPointMark",
+        "encodeX",
+        "encodeY",
+        "encodePointRadius"
+      ]
+    },
+    {
+      "name": "createBeeswarmPlot",
+      "wraps": [
+        "createStripPlot",
+        "packPoints"
+      ]
+    },
+    {
+      "name": "createRaincloudPlot",
+      "wraps": [
+        "createViolinPlot",
+        "createBoxPlot",
+        "createBeeswarmPlot"
+      ]
+    },
+    {
+      "name": "editRaincloudPlot",
+      "wraps": [
+        "removeMark",
+        "editScale",
+        "createViolinPlot",
+        "createIntervalPlot",
+        "createStripPlot"
+      ]
+    },
+    {
+      "name": "createBarPlot",
+      "wraps": [
+        "createBarMark",
+        "encodeY",
+        "encodeX",
+        "encodeColor",
+        "encodeBarWidth",
+        "createGuides"
+      ]
+    },
+    {
+      "name": "createHistogram",
+      "wraps": [
+        "createBarMark",
+        "encodeHistogram",
+        "encodeColor",
+        "createGuides"
+      ]
+    },
+    {
+      "name": "createHeatmap",
+      "wraps": [
+        "createRectMark",
+        "encodeX",
+        "encodeY",
+        "encodeColor",
+        "createGuides",
+        "createBin2DData",
+        "encodeX2",
+        "encodeY2"
+      ]
+    },
+    {
+      "name": "createParallelCoordinates",
+      "wraps": [
+        "createCoordinate",
+        "createLineMark",
+        "encodeParallelCoordinates",
+        "encodeColor",
+        "encodeStrokeDash",
+        "createGuides"
+      ]
+    },
+    {
+      "name": "createRectMark",
+      "wraps": [
+        "editSemantic",
+        "createGraphics",
+        "editRectMark"
+      ]
+    },
+    {
+      "name": "editRectMark",
+      "wraps": []
+    },
+    {
+      "name": "createPiePlot",
+      "wraps": [
+        "createArcMark",
+        "encodeTheta",
+        "encodeColor",
+        "createGuides"
+      ]
+    },
+    {
+      "name": "createRosePlot",
+      "wraps": [
+        "createArcMark",
+        "encodeTheta",
+        "encodeR",
+        "encodeColor",
+        "createGuides"
+      ]
+    },
+    {
+      "name": "createRadialBarPlot",
+      "wraps": [
+        "createArcMark",
+        "encodeTheta",
+        "encodeR",
+        "encodeColor",
+        "createGuides"
+      ]
+    },
+    {
+      "name": "createDensityPlot",
+      "wraps": [
+        "createAreaMark",
+        "encodeDensity",
+        "createGuides",
+        "encodeColor"
+      ]
+    },
+    {
+      "name": "createHorizonPlot",
+      "wraps": [
+        "createAreaMark",
+        "encodeHorizon",
+        "createGuides"
+      ]
+    },
+    {
+      "name": "createAreaPlot",
+      "wraps": [
+        "createAreaMark",
+        "encodeGroup",
+        "encodeX",
+        "encodeYRange",
+        "layoutSeries",
+        "encodeColor",
+        "createGuides"
+      ]
+    },
+    {
+      "name": "layoutSeries",
+      "wraps": [
+        "editSemantic",
+        "encodeXOffset",
+        "encodeYOffset"
+      ]
+    }
+  ]
+}

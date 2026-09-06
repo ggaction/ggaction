@@ -13,7 +13,7 @@
     "cards"
   ],
   "properties": {
-    "schemaVersion": { "const": 2 },
+    "schemaVersion": { "const": 3 },
     "packageVersion": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$" },
     "typeSource": { "const": "types/program.d.ts" },
     "errorPolicy": { "type": "string", "minLength": 40, "maxLength": 300 },

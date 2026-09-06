@@ -54,7 +54,10 @@ createBoxPlot({
   override할 수 있다. `outliers: false`는 Tukey summary를 유지하면서 outlier dataset/layer/graphic을 만들지 않는다.
 - Guide lifecycle은 기존 opt-in behavior를 보존한다. `guides` omission과 `false`는 guide를 만들지 않고,
   explicit `{}` 또는 `CreateGuidesOptions`만 complete materialization 뒤 applicable guide를 wrapped child로 만든다.
-  Deferred x/y authoring도 stored guide intent를 completion 시 replay한다.
+  Deferred x/y authoring도 stored guide intent를 completion 시 replay한다. 호환 guide는 재사용하고 missing
+  component만 생성하며 [공통 확보 계약](BASIC_CHARTS.md#facade-guide-reuse)을 따른다.
+- Discovery 역할은 deferred owner다. 생성 성공만으로 complete chart를 뜻하지 않으며 compatible x/y가
+  완성돼야 geometry와 opt-in guide가 생긴다. 기존 mutable aggregate lifecycle은 유지한다.
 - Body는 ordinary bar with y/y2 or x/x2, whiskers는 explicit `createErrorBar`, median은 ordinary rule, outliers는
   ordinary point actions를 wrapped children으로 조합한다. Canvas/scale changes rematerialize every concrete consumer.
 - Lifecycle은 mutable aggregate다. `editBoxPlot`은 stable owner를 통해 statistics, topology와 component

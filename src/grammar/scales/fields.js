@@ -81,9 +81,37 @@ function validTimestamp(value) {
   return Number.isFinite(value) && Number.isFinite(new Date(value).getTime());
 }
 
-export function normalizeTemporalValue(value, field = "value", index = 0) {
+export function validateTemporalUnit(unit) {
+  if (unit !== undefined && !["auto", "year", "timestamp"].includes(unit)) {
+    throw new Error(`Unsupported temporalUnit "${unit}"; use auto, year, or timestamp.`);
+  }
+  return unit;
+}
+
+export function resolveTemporalUnit(options, fieldType, previous) {
+  if (fieldType !== "temporal") {
+    if (Object.hasOwn(options, "temporalUnit")) {
+      throw new Error("temporalUnit requires a temporal fieldType.");
+    }
+    return undefined;
+  }
+  validateTemporalUnit(options.temporalUnit);
+  const sameBinding = ["field", "datum"].some(key =>
+    Object.hasOwn(options, key) && Object.hasOwn(previous ?? {}, key) &&
+    options[key] === previous[key]);
+  return options.temporalUnit ?? (sameBinding && previous?.fieldType === "temporal"
+    ? previous.temporalUnit : undefined);
+}
+
+export function normalizeTemporalValue(value, field = "value", index = 0, temporalUnit = "auto") {
+  validateTemporalUnit(temporalUnit);
   let timestamp;
-  if (typeof value === "number") {
+  if (temporalUnit === "year") {
+    const year = typeof value === "string" && /^\d{4}$/.test(value) ? Number(value) : value;
+    if (Number.isInteger(year) && year >= 0 && year <= 9999) timestamp = utcDate(year);
+  } else if (temporalUnit === "timestamp") {
+    if (typeof value === "number") timestamp = value;
+  } else if (typeof value === "number") {
     timestamp = Number.isInteger(value) && value >= 1000 && value <= 9999
       ? utcDate(value)
       : value;
@@ -99,21 +127,22 @@ export function normalizeTemporalValue(value, field = "value", index = 0) {
   if (!validTimestamp(timestamp)) {
     throw new TypeError(
       `Field "${field}" must contain a temporal string or finite timestamp ` +
-      `(including a valid date or four-digit year) at row ${index}.`
+      `(including a valid date or four-digit year) at row ${index}; temporalUnit is ${temporalUnit}.`
     );
   }
   return timestamp;
 }
 
-export function readTemporalField(rows, field) {
+export function readTemporalField(rows, field, temporalUnit) {
   validateField(field);
+  validateTemporalUnit(temporalUnit);
   return cloneAndFreeze(rows.map((row, index) => {
     if (!Object.hasOwn(row, field)) {
       throw new TypeError(
         `Field "${field}" must contain a temporal string or finite timestamp at row ${index}.`
       );
     }
-    return normalizeTemporalValue(row[field], field, index);
+    return normalizeTemporalValue(row[field], field, index, temporalUnit);
   }));
 }
 
@@ -129,10 +158,11 @@ export function readNominalField(rows, field) {
   }));
 }
 
-export function readScaleField(rows, field, fieldType, { allowUnknown = false } = {}) {
+export function readScaleField(rows, field, fieldType, { allowUnknown = false, temporalUnit } = {}) {
   validateSemanticFieldType(fieldType);
+  validateTemporalUnit(temporalUnit);
   if (!allowUnknown) {
-    if (fieldType === "temporal") return readTemporalField(rows, field);
+    if (fieldType === "temporal") return readTemporalField(rows, field, temporalUnit);
     if (["nominal", "ordinal"].includes(fieldType)) {
       return readNominalField(rows, field);
     }
@@ -149,7 +179,7 @@ export function readScaleField(rows, field, fieldType, { allowUnknown = false } 
       return isNominalValue(value) ? value : undefined;
     }
     try {
-      return normalizeTemporalValue(value, field, index);
+      return normalizeTemporalValue(value, field, index, temporalUnit);
     } catch {
       return undefined;
     }

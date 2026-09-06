@@ -14,6 +14,8 @@ import {
   REALISTIC_GUIDE_SCALE_RECIPES,
   realisticGuideScaleWitnessFactors
 } from "./realistic-guide-scale-recipes.js";
+import { appendHierarchicalFacadeCoverage } from
+  "./realistic-hierarchical-facade-matrix.js";
 
 const PROFILES = Object.freeze([Object.freeze({ id: "maximal" })]);
 const REQUIRED_REPETITIONS = 5;
@@ -361,6 +363,9 @@ function extendedView(dataset, kind, {
       timeUnique: new Date(
         (Number.isFinite(Date.parse(row.time)) ? Date.parse(row.time) : Date.UTC(2000, 0, 1)) + index
       ).toISOString(),
+      timeTimestamp:
+        (Number.isFinite(Date.parse(row.time)) ? Date.parse(row.time) : Date.UTC(2000, 0, 1)) + index,
+      calendarYear: String(2000 + index),
       x: first,
       y: second,
       positiveX,
@@ -722,7 +727,8 @@ function buildDataAndMarkCoverage(factors) {
 
   program = program.createRuleMark({ id: "ranges", data: "directMaterialRows" })
     .encodeXRange({ target: "ranges", lower: "lower", upper: "upper" })
-    .encodeYRange({ target: "ranges", lower: "position", upper: "positionEnd" });
+    .encodeYRange({ target: "ranges", lower: "position", upper: "positionEnd" })
+    .editRuleMark({ target: "ranges", stroke: "#7c3aed", strokeWidth: 1.5, strokeDash: "dashed", opacity: 0.65 });
 
   return finish(program, factors.dataset, "Data, mark, and encoding lifecycle coverage");
 }
@@ -1667,17 +1673,17 @@ function buildDerivedEncodingCoverage(factors) {
     {
       type: "category", side: "left",
       width: { band: 0.68, resolve: "shared" },
-      scale: categoricalScale("density-category-left", "band")
+      scale: { type: "band", paddingInner: 0.16, paddingOuter: 0.08, align: 0.5 }
     },
     {
       type: "category", side: "right",
       width: { band: 0.74, resolve: "independent" },
-      scale: categoricalScale("density-category-left", "band")
+      scale: { type: "band", paddingInner: 0.16, paddingOuter: 0.08, align: 0.5 }
     },
     {
       type: "category", side: "both",
       width: { band: 0.82, resolve: "shared" },
-      scale: categoricalScale("density-category-left", "band")
+      scale: { type: "band", paddingInner: 0.16, paddingOuter: 0.08, align: 0.5 }
     }
   ];
   for (const [index, placement] of placements.entries()) {
@@ -1954,7 +1960,7 @@ function buildRegressionCoverage(factors) {
 }
 
 function buildMiscellaneousCoverage(factors) {
-  const { program: initial } = createBase(factors.dataset, "temporal");
+  const { view, program: initial } = createBase(factors.dataset, "temporal");
   let program = initial;
   for (const unit of ["day", "hour", "minute", "quarter", "second"]) {
     program = program.createTimeUnitData({
@@ -2000,6 +2006,177 @@ function buildMiscellaneousCoverage(factors) {
       direction: "descending"
     });
 
+  const positiveY = view.rows.map(row => row.positiveY);
+  const minimumY = Math.min(...positiveY);
+  const maximumY = Math.max(...positiveY);
+  const binStep = (maximumY - minimumY || 1) / 3;
+  program = program
+    .createData({ id: "bindingRows", values: view.rows })
+    .createSummaryData({
+      id: "directSummary",
+      source: "analysisRows",
+      groupBy: ["category", "group"],
+      aggregates: [
+        { op: "count", as: "rowCount" },
+        { op: "sum", field: "positiveY", as: "stackValue" }
+      ]
+    })
+    .createBinData({
+      id: "directBins",
+      source: "analysisRows",
+      field: "positiveY",
+      boundaries: [minimumY, minimumY + binStep, minimumY + binStep * 2, maximumY]
+    })
+    .createFoldData({
+      id: "directFold",
+      source: "analysisRows",
+      fields: ["positiveX", "positiveY"],
+      as: { key: "measure", value: "amount" }
+    })
+    .createComputedData({
+      id: "directComputed",
+      source: "analysisRows",
+      as: "combinedValue",
+      expression: {
+        op: "add",
+        left: { field: "positiveX" },
+        right: { field: "positiveY" }
+      }
+    })
+    .createStackData({
+      id: "directStack",
+      source: "directSummary",
+      category: "category",
+      group: "group",
+      value: "stackValue"
+    })
+    .createPointMark({ id: "bindingPoints", data: "analysisRows", opacity: 0.7 })
+    .encodeX({
+      target: "bindingPoints", field: "positiveX", fieldType: "quantitative",
+      scale: { id: "binding-x", zero: false }
+    })
+    .encodeY({
+      target: "bindingPoints", field: "positiveY", fieldType: "quantitative",
+      scale: { id: "binding-y", zero: false }
+    })
+    .bindMarkData({ target: "bindingPoints", data: "bindingRows" })
+    .filterMarks({
+      target: "bindingPoints", field: "positiveY", op: "gte", value: minimumY
+    })
+    .removeMarkFilter({ target: "bindingPoints" })
+    .createReferenceLine({
+      id: "directReferenceLine",
+      source: "bindingPoints",
+      y: minimumY,
+      stroke: "#64748b"
+    })
+    .createReferenceBand({
+      id: "directReferenceBand",
+      source: "bindingPoints",
+      x: [minimumY, maximumY],
+      fill: "#dbeafe",
+      opacity: 0.18
+    })
+    .createMarkLabels({
+      id: "directPointLabels",
+      source: "bindingPoints",
+      field: "label",
+      dx: 7,
+      dy: -7,
+      fontSize: 11
+    })
+    .createAnnotation({
+      id: "directAnnotation",
+      text: "Authentic source projection",
+      space: "plot",
+      x: 0.76,
+      y: 0.9,
+      fontWeight: 700
+    });
+
+  program = program
+    .createPiePlot({
+      id: "directPie",
+      data: "analysisRows",
+      coordinate: "directPieCoordinate",
+      category: {
+        field: "category",
+        scale: { id: "directPieTheta", type: "band" }
+      },
+      value: "positiveY",
+      aggregate: "sum",
+      guides: false
+    })
+    .createRosePlot({
+      id: "directRose",
+      data: "analysisRows",
+      coordinate: "directRoseCoordinate",
+      category: {
+        field: "category",
+        scale: { id: "directRoseTheta", type: "band" }
+      },
+      value: "positiveY",
+      aggregate: "sum",
+      radiusScale: { id: "directRoseRadius", zero: true },
+      guides: false
+    })
+    .createRadialBarPlot({
+      id: "directRadialBar",
+      data: "analysisRows",
+      coordinate: "directRadialBarCoordinate",
+      category: {
+        field: "category",
+        scale: { id: "directRadialBarTheta", type: "band" }
+      },
+      value: "positiveY",
+      aggregate: "sum",
+      radiusScale: { id: "directRadialBarRadius", zero: true },
+      guides: false
+    })
+    .createDensityPlot({
+      id: "directDensityPlot",
+      data: "analysisRows",
+      coordinate: "directDensityCoordinate",
+      field: "positiveY",
+      groupBy: "category",
+      valueScale: { id: "directDensityValue", zero: false },
+      densityScale: { id: "directDensityEstimate", zero: true },
+      color: "category",
+      guides: false
+    })
+    .createHorizonPlot({
+      id: "directHorizonPlot",
+      data: "analysisRows",
+      coordinate: "directHorizonCoordinate",
+      x: {
+        field: "timeUnique", fieldType: "temporal",
+        scale: { id: "directHorizonX", type: "time" }
+      },
+      y: {
+        field: "positiveY", fieldType: "quantitative",
+        scale: { id: "directHorizonY", type: "linear" }
+      },
+      groupBy: "group",
+      guides: false
+    })
+    .createViolinPlot({
+      id: "directViolinPlot",
+      data: "analysisRows",
+      coordinate: "directViolinCoordinate",
+      x: {
+        field: "category", fieldType: "nominal",
+        scale: { id: "directViolinX", type: "band" }
+      },
+      y: {
+        field: "positiveY", fieldType: "quantitative",
+        scale: { id: "directViolinY", zero: false }
+      },
+      guides: false
+    })
+    .editViolinPlot({ target: "directViolinPlot", density: { steps: 32 } });
+
+  program = appendHierarchicalFacadeCoverage(program);
+
   program = program.createCoordinate({ id: "parallelCoverage", type: "parallel" })
     .createLineMark({ id: "parallelCoverageLines", data: "analysisRows", opacity: 0.35 })
     .encodeParallelCoordinates({
@@ -2018,7 +2195,12 @@ function buildMiscellaneousCoverage(factors) {
       grid: false,
       legend: false
     });
-  return finish(program, factors.dataset, "Derived data, ordering, and parallel lifecycle coverage");
+  program = finish(
+    program,
+    factors.dataset,
+    "Derived data, ordering, and parallel lifecycle coverage"
+  ).applyTheme({ theme: "dark" }).removeTheme();
+  return program.fitCanvas({ padding: 8, overflow: "report" });
 }
 
 function facetCoverageLayout(rows) {
@@ -2321,7 +2503,7 @@ const DATA_MARK_RECIPE = makeRecipe({
     "editCanvas", "filterData", "createDensityData", "createBin2DData", "editBin2DData",
     "createTextMark", "editTextMark", "createTickMark", "editTickMark", "createRectMark",
     "editRectMark", "createAreaMark", "editAreaMark", "createLineMark", "editLineMark",
-    "createBarMark", "editBarMark"
+    "createBarMark", "editBarMark", "editRuleMark"
   ]
 });
 
@@ -2394,6 +2576,11 @@ const MISCELLANEOUS_RECIPE = makeRecipe({
   build: buildMiscellaneousCoverage,
   expectedDirectActions: [
     "createTimeUnitData", "createIntervalData", "orderCategories",
+    "createSummaryData", "createBinData", "createFoldData", "createComputedData",
+    "createStackData", "bindMarkData", "removeMarkFilter", "createReferenceLine",
+    "createReferenceBand", "createMarkLabels", "createAnnotation", "createPiePlot",
+    "createRosePlot", "createRadialBarPlot", "createDensityPlot", "createHorizonPlot",
+    "editViolinPlot", "applyTheme", "removeTheme", "fitCanvas",
     "encodeParallelCoordinates", "createGuides"
   ]
 });
@@ -2566,7 +2753,7 @@ function decimalPolarAxis(scaleId, angle = 0) {
   return {
     scale: scaleId,
     coordinate: "polar",
-    angle,
+    ...(scaleId === "radius" ? { angle } : {}),
     line: { color: "#475569", lineWidth: 1.2 },
     ticksAndLabels: decimalTicksAndLabels(),
     title: {

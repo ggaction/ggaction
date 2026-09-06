@@ -3,6 +3,7 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 
 import { buildRuntimeSignatureSection } from "./generate-doc-signatures.js";
+import { authoringRoles } from "./action-card-metadata.js";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 const docsRoot = path.join(root, "docs");
@@ -223,7 +224,8 @@ export async function buildDocActionReference() {
   const actionRows = [...locations].sort(([left], [right]) => left.localeCompare(right))
     .map(([name, url]) => {
       const markdownUrl = url.replace(/^\/reference\//, "./").replace(/\/#/, ".md#");
-      return `| [\`${name}\`](${markdownUrl}) | ${actionByName.get(name).layer} | ${actionByName.get(name).domain} |`;
+      const action = actionByName.get(name);
+      return `| [\`${name}\`](${markdownUrl}) | ${authoringRoles(action).join(", ")} | ${action.layer} | ${action.domain} |`;
     })
     .join("\n");
   outputs.set("reference/actions.md", [
@@ -235,7 +237,7 @@ export async function buildDocActionReference() {
     "",
     "# Action Reference",
     "",
-    "Every direct action accepts one option object and returns a new immutable `ChartProgram`. Choose a task family for readable behavior, defaults, inference, and errors; use the exact lookup when you already know the action name. The API-layer labels match the action catalog layers `user-facing`, `advanced`, and `primitive`, respectively.",
+    "Every direct action accepts one option object and returns a new immutable `ChartProgram`. Choose a task family for readable behavior, defaults, inference, and errors; use the exact lookup when you already know the action name. Authoring roles run from H0 complete charts through H4 extension primitives. The API-layer labels match the action catalog layers `user-facing`, `advanced`, and `primitive`, respectively, and independently describe exposure.",
     "",
     '<div class="docs-entry-grid docs-entry-grid--two">',
     cards,
@@ -251,8 +253,8 @@ export async function buildDocActionReference() {
     '  <span class="docs-action-filter__status" aria-live="polite"></span>',
     "</div>",
     "",
-    "| Action | API layer | Domain |",
-    "| --- | --- | --- |",
+    "| Action | Authoring role | API layer | Domain |",
+    "| --- | --- | --- | --- |",
     actionRows,
     ""
   ].join("\n"));

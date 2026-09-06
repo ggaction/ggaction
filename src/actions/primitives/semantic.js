@@ -21,7 +21,7 @@ export function registerSemanticPrimitiveAction(ProgramClass) {
   const validateSemanticValue = createSemanticValueValidator({
     validateDatasetTransforms,
     validateParallel,
-    sourceMarkTypes: ["point", "bar", "rule", "rect", "arc"]
+    sourceMarkTypes: ["point", "bar", "line", "rule", "rect", "arc"]
   });
   ProgramClass.prototype.editSemantic =
     createSemanticPrimitiveAction(validateSemanticValue);

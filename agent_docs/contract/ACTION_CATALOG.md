@@ -10,8 +10,17 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | --- | --- | --- | --- | --- | --- |
 | user-facing | [`createCanvas`](current/CORE.md#createcanvas) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editCanvas`](current/CORE.md#editcanvas) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`fitCanvas`](current/CORE.md#fitcanvas) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`applyTheme`](current/CORE.md#applytheme) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`removeTheme`](current/CORE.md#removetheme) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createData`](current/CORE.md#createdata) | core | Immutable create-only | Intentional | ✅ / ✅ / ✅ |
+| user-facing | [`bindMarkData`](current/CORE.md#bindmarkdata) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`filterData`](current/CORE.md#filterdata) | core | Immutable create-only | Intentional | ✅ / ✅ / ✅ |
+| user-facing | [`createSummaryData`](current/CORE.md#createsummarydata) | statistics | Immutable create-only | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`createBinData`](current/CORE.md#createbindata) | statistics | Immutable create-only | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`createFoldData`](current/CORE.md#createfolddata) | statistics | Immutable create-only | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`createComputedData`](current/CORE.md#createcomputeddata) | statistics | Immutable create-only | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`createStackData`](current/CORE.md#createstackdata) | statistics | Immutable create-only | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createDensityData`](current/CORE.md#createdensitydata) | core | Immutable create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createRegressionData`](current/CORE.md#createregressiondata) | core | Immutable create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createWindowData`](current/CORE.md#createwindowdata) | core | Immutable create-only | Intentional | ✅ / ✅ / ✅ |
@@ -19,8 +28,13 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`createBin2DData`](current/CORE.md#createbin2ddata) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editBin2DData`](current/CORE.md#editbin2ddata) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createIntervalData`](current/STATISTICS.md#createintervaldata) | statistics | Immutable create-only | Intentional | ✅ / ✅ / ✅ |
+| user-facing | [`createECDFData`](current/STATISTICS.md#createecdfdata) | statistics | Immutable create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createPointMark`](current/MARKS.md#createpointmark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createTickMark`](current/MARKS.md#createtickmark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`createReferenceLine`](current/MARKS.md#createreferenceline) | marks | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
+| user-facing | [`createReferenceBand`](current/MARKS.md#createreferenceband) | marks | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
+| user-facing | [`createMarkLabels`](current/MARKS.md#createmarklabels) | marks | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
+| user-facing | [`createAnnotation`](current/MARKS.md#createannotation) | marks | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createTextMark`](current/MARKS.md#createtextmark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editTextMark`](current/MARKS.md#edittextmark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`layoutLabels`](current/MARKS.md#layoutlabels) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
@@ -29,13 +43,16 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`editTickMark`](current/MARKS.md#edittickmark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`jitterPoints`](current/MARKS.md#jitterpoints) | marks | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
 | user-facing | [`removeJitter`](current/MARKS.md#removejitter) | marks | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
+| user-facing | [`packPoints`](current/MARKS.md#packpoints) | marks | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
+| user-facing | [`removePointPacking`](current/MARKS.md#removepointpacking) | marks | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
 | user-facing | [`removeMark`](current/MARKS.md#removemark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createLineMark`](current/MARKS.md#createlinemark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editLineMark`](current/MARKS.md#editlinemark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createBarMark`](current/MARKS.md#createbarmark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editBarMark`](current/MARKS.md#editbarmark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createAreaMark`](current/MARKS.md#createareamark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
-| user-facing | [`createRuleMark`](current/MARKS.md#createrulemark) | marks | Immutable create-only | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`createRuleMark`](current/MARKS.md#createrulemark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editRuleMark`](current/MARKS.md#editrulemark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editAreaMark`](current/MARKS.md#editareamark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`encodeX`](current/ENCODINGS.md#encodex) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
 | user-facing | [`encodeY`](current/ENCODINGS.md#encodey) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
@@ -83,7 +100,13 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`editBoxPlot`](current/COMPOSITE_MARKS.md#editboxplot) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createGradientPlot`](current/GRADIENT_PLOTS.md#creategradientplot) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editGradientPlot`](current/GRADIENT_PLOTS.md#editgradientplot) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
-| user-facing | [`createViolinPlot`](current/VIOLIN_PLOTS.md#createviolinplot) | statistics | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
+| user-facing | [`createViolinPlot`](current/VIOLIN_PLOTS.md#createviolinplot) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editViolinPlot`](current/VIOLIN_PLOTS.md#editviolinplot) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`createParallelAxes`](current/AXES.md#createparallelaxes) | axes | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
+| user-facing | [`createParallelAxis`](current/AXES.md#createparallelaxis) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editParallelAxis`](current/AXES.md#editparallelaxis) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`removeParallelAxis`](current/AXES.md#removeparallelaxis) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`removeParallelAxes`](current/AXES.md#removeparallelaxes) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createAxes`](current/AXES.md#createaxes) | axes | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createXAxis`](current/AXES.md#createxaxis) | axes | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createYAxis`](current/AXES.md#createyaxis) | axes | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
@@ -138,7 +161,8 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`editRegressionBand`](current/STATISTICS.md#editregressionband) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createRegressionLine`](current/STATISTICS.md#createregressionline) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editRegressionLine`](current/STATISTICS.md#editregressionline) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
-| user-facing | [`filterMarks`](current/MARK_SELECTION.md#filtermarks) | mark-selection | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
+| user-facing | [`filterMarks`](current/MARK_SELECTION.md#filtermarks) | mark-selection | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`removeMarkFilter`](current/MARK_SELECTION.md#removemarkfilter) | mark-selection | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | advanced | [`selectMarks`](current/MARK_SELECTION.md#selectmarks) | mark-selection | Stable create-only | Complete | ✅ / ✅ / ✅ |
 | advanced | [`editMarkSelection`](current/MARK_SELECTION.md#editmarkselection) | mark-selection | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`removeMarkHighlight`](current/MARK_SELECTION.md#removemarkhighlight) | mark-selection | Mutable resource | Complete | ✅ / ✅ / ✅ |
@@ -155,13 +179,21 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`editRadialAxis`](current/AXES.md#editRadialAxis) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`removeThetaAxis`](current/AXES.md#removeThetaAxis) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`removeRadialAxis`](current/AXES.md#removeRadialAxis) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`createThetaAxisLine`](current/AXES.md#createThetaAxisLine) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editThetaAxisLine`](current/AXES.md#editThetaAxisLine) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`createRadialAxisLine`](current/AXES.md#createRadialAxisLine) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editRadialAxisLine`](current/AXES.md#editRadialAxisLine) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`createThetaAxisTicks`](current/AXES.md#createThetaAxisTicks) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editThetaAxisTicks`](current/AXES.md#editThetaAxisTicks) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`createRadialAxisTicks`](current/AXES.md#createRadialAxisTicks) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editRadialAxisTicks`](current/AXES.md#editRadialAxisTicks) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`createThetaAxisLabels`](current/AXES.md#createThetaAxisLabels) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editThetaAxisLabels`](current/AXES.md#editThetaAxisLabels) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`createRadialAxisLabels`](current/AXES.md#createRadialAxisLabels) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editRadialAxisLabels`](current/AXES.md#editRadialAxisLabels) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`createThetaAxisTitle`](current/AXES.md#createThetaAxisTitle) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editThetaAxisTitle`](current/AXES.md#editThetaAxisTitle) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`createRadialAxisTitle`](current/AXES.md#createRadialAxisTitle) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editRadialAxisTitle`](current/AXES.md#editRadialAxisTitle) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createThetaGrid`](current/GRID.md#createThetaGrid) | grid | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createRadialGrid`](current/GRID.md#createRadialGrid) | grid | Mutable resource | Complete | ✅ / ✅ / ✅ |
@@ -169,18 +201,47 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`editRadialGrid`](current/GRID.md#editRadialGrid) | grid | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editCompositionLayout`](current/COMPOSITION.md#editCompositionLayout) | composition | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`replaceCompositionChild`](current/COMPOSITION.md#replaceCompositionChild) | composition | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`insertCompositionChild`](current/COMPOSITION.md#insertcompositionchild) | composition | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`removeCompositionChild`](current/COMPOSITION.md#removecompositionchild) | composition | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`reorderCompositionChildren`](current/COMPOSITION.md#reordercompositionchildren) | composition | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`facet`](current/COMPOSITION.md#facet) | composition | Aggregate create-only | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`facetGrid`](current/COMPOSITION.md#facetgrid) | composition | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`repeatCharts`](current/COMPOSITION.md#repeatcharts) | composition | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editFacetSource`](current/COMPOSITION.md#editfacetsource) | composition | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editFacetHeaders`](current/COMPOSITION.md#editFacetHeaders) | composition | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editFacetScales`](current/COMPOSITION.md#editfacetscales) | composition | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editFacetGuides`](current/COMPOSITION.md#editfacetguides) | composition | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createScatterPlot`](current/BASIC_CHARTS.md#createscatterplot) | charts | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
+| user-facing | [`createDotPlot`](current/COMPLETE_CHARTS.md#createdotplot) | charts | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`createLollipopPlot`](current/COMPLETE_CHARTS.md#createlollipopplot) | charts | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`createDumbbellPlot`](current/COMPLETE_CHARTS.md#createdumbbellplot) | charts | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editEndpointPlot`](current/COMPLETE_CHARTS.md#editendpointplot) | charts | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`createECDFPlot`](current/COMPLETE_CHARTS.md#createecdfplot) | charts | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editECDFPlot`](current/COMPLETE_CHARTS.md#editecdfplot) | charts | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`createIntervalPlot`](current/COMPLETE_CHARTS.md#createintervalplot) | charts | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
+| user-facing | [`createRegressionPlot`](current/COMPLETE_CHARTS.md#createregressionplot) | charts | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createLinePlot`](current/BASIC_CHARTS.md#createlineplot) | charts | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
+| user-facing | [`createPolarScatterPlot`](current/COMPLETE_CHARTS.md#createpolarscatterplot) | charts | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
+| user-facing | [`createPolarLinePlot`](current/COMPLETE_CHARTS.md#createpolarlineplot) | charts | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
+| user-facing | [`createRadarPlot`](current/COMPLETE_CHARTS.md#createradarplot) | charts | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
+| user-facing | [`createRugPlot`](current/COMPLETE_CHARTS.md#createrugplot) | charts | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
+| user-facing | [`createStripPlot`](current/COMPLETE_CHARTS.md#createstripplot) | charts | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
+| user-facing | [`createBeeswarmPlot`](current/COMPLETE_CHARTS.md#createbeeswarmplot) | charts | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
+| user-facing | [`createRaincloudPlot`](current/COMPLETE_CHARTS.md#createraincloudplot) | charts | Mutable resource | Intentional | ✅ / ✅ / ✅ |
+| user-facing | [`editRaincloudPlot`](current/COMPLETE_CHARTS.md#editraincloudplot) | charts | Mutable resource | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createBarPlot`](current/BASIC_CHARTS.md#createbarplot) | charts | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createHistogram`](current/BASIC_CHARTS.md#createhistogram) | charts | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createHeatmap`](current/BASIC_CHARTS.md#createheatmap) | charts | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createParallelCoordinates`](current/BASIC_CHARTS.md#createparallelcoordinates) | charts | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createRectMark`](current/MARKS.md#createrectmark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editRectMark`](current/MARKS.md#editrectmark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`createPiePlot`](current/COMPLETE_CHARTS.md#createpieplot) | charts | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
+| user-facing | [`createRosePlot`](current/COMPLETE_CHARTS.md#createroseplot) | charts | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
+| user-facing | [`createRadialBarPlot`](current/COMPLETE_CHARTS.md#createradialbarplot) | charts | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
+| user-facing | [`createDensityPlot`](current/COMPLETE_CHARTS.md#createdensityplot) | statistics | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
+| user-facing | [`createHorizonPlot`](current/COMPLETE_CHARTS.md#createhorizonplot) | statistics | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
+| user-facing | [`createAreaPlot`](current/COMPLETE_CHARTS.md#createareaplot) | charts | Aggregate create-only | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`layoutSeries`](current/ENCODINGS.md#layoutseries) | encodings | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
 
 ## Planned direct actions
 

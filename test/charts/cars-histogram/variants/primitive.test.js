@@ -110,8 +110,7 @@ test("locks complete histogram field reassignment while preserving grouping", ()
   assert.deepEqual(encoding.color, {
     field: "Origin",
     fieldType: "nominal",
-    scale: "color",
-    layout: "stack"
+    scale: "color"
   });
   assert.deepEqual(program.semanticSpec.guides.axis, {
     x: { scale: "x", coordinate: "main", title: "Horsepower" },
@@ -144,8 +143,8 @@ test("locks normalized histogram partitions and the unit y domain", () => {
       bin.total
     );
   }
-  assert.equal(encoding.y.stack, "normalize");
-  assert.equal(encoding.color.layout, "fill");
+  assert.equal(encoding.y.stack, undefined);
+  assert.equal(program.semanticSpec.layers[0].layout.mode, "fill");
   assert.deepEqual(
     program.graphicSpec.objects.yAxisLabels.items.map(
       child => Number(child.properties.text)

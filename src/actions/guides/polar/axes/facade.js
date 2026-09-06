@@ -1,5 +1,12 @@
 import { action } from "../../../../core/action.js";
-import { polarGuideNames, resolvePolarGuideResources } from "../resolve.js";
+import { resolvePolarGuideResources } from "../resolve.js";
+import {
+  AXIS_COMPONENTS,
+  assertRemovableAxisComponent,
+  hasAxisComponent,
+  removeAxisComponent,
+  validateEnabledAxisComponents
+} from "../../axes/components.js";
 import {
   LABEL_EDIT_OPTIONS,
   LINE_EDIT_OPTIONS,
@@ -22,12 +29,15 @@ const AXIS_EDIT_OPTIONS = Object.freeze([
   "angle", "line", "ticks", "labels", "ticksAndLabels", "title"
 ]);
 
-function validateAxisArgs(kind, args, operation) {
-  validateObject(args, AXIS_OPTIONS, operation);
-  if (Object.hasOwn(args, "line")) {
+export function validatePolarAxisArgs(kind, args, operation) {
+  validateObject(args, kind === "theta"
+    ? AXIS_OPTIONS.filter(option => option !== "angle")
+    : AXIS_OPTIONS, operation);
+  validateEnabledAxisComponents(args, operation);
+  if (Object.hasOwn(args, "line") && args.line !== false) {
     validateObject(args.line, LINE_EDIT_OPTIONS, `${operation}.line`);
   }
-  if (Object.hasOwn(args, "ticksAndLabels")) {
+  if (Object.hasOwn(args, "ticksAndLabels") && args.ticksAndLabels !== false) {
     validateObject(
       args.ticksAndLabels,
       TICK_GROUP_OPTIONS,
@@ -68,7 +78,7 @@ function makeCreateAxis(kind) {
     op: operation,
     description: `Create the complete Polar ${kind} axis.`
   }, function (args = {}) {
-    validateAxisArgs(kind, args, operation);
+    validatePolarAxisArgs(kind, args, operation);
     const resources = resolvePolarGuideResources(this, kind, args, operation);
     const angle = resolveAngle(this, kind, args);
     const shared = {
@@ -82,21 +92,16 @@ function makeCreateAxis(kind) {
       ...(Object.hasOwn(group, "values") ? { values: group.values } : {})
     };
     let next = this;
-    if (kind === "radius") {
-      next = next._withGuideConfig("radius", "layout", { angle });
+    if (args.line !== false) {
+      next = next[`create${prefix(kind)}AxisLine`]({ ...shared, ...(args.line ?? {}) });
     }
-    next = next
-      [`create${prefix(kind)}AxisLine`]({ ...shared, ...(args.line ?? {}) })
-      [`create${prefix(kind)}AxisTicks`]({
-        ...shared,
-        ...mode,
-        ...(group.ticks ?? {})
-      })
-      [`create${prefix(kind)}AxisLabels`]({
-        ...shared,
-        ...mode,
-        ...(group.labels ?? {})
+    if (args.ticksAndLabels !== false) {
+      next = next[`create${prefix(kind)}AxisTicks`]({
+        ...shared, ...mode, ...(group.ticks ?? {})
+      })[`create${prefix(kind)}AxisLabels`]({
+        ...shared, ...mode, ...(group.labels ?? {})
       });
+    }
     return args.title === false
       ? next
       : next[`create${prefix(kind)}AxisTitle`]({
@@ -118,29 +123,28 @@ function validateAxisEditArgs(kind, args, operation) {
     throw new Error(`${operation} requires at least one axis change.`);
   }
   if (Object.hasOwn(args, "angle")) validateAngle(args.angle);
-  if (Object.hasOwn(args, "line")) {
+  if (Object.hasOwn(args, "line") && args.line !== false) {
     validateObject(args.line, LINE_EDIT_OPTIONS, `${operation}.line`);
   }
-  if (Object.hasOwn(args, "ticks")) {
+  if (Object.hasOwn(args, "ticks") && args.ticks !== false) {
     validateObject(args.ticks, TICK_EDIT_OPTIONS, `${operation}.ticks`);
     validateModeOptions(args.ticks, `${operation}.ticks`);
   }
-  if (Object.hasOwn(args, "labels")) {
+  if (Object.hasOwn(args, "labels") && args.labels !== false) {
     validateObject(args.labels, LABEL_EDIT_OPTIONS, `${operation}.labels`);
     validateModeOptions(args.labels, `${operation}.labels`);
   }
-  if (Object.hasOwn(args, "ticksAndLabels")) {
+  if (args.ticksAndLabels !== undefined &&
+      (args.ticks !== undefined || args.labels !== undefined)) {
+    throw new Error(`${operation} cannot combine ticksAndLabels with ticks or labels.`);
+  }
+  if (Object.hasOwn(args, "ticksAndLabels") && args.ticksAndLabels !== false) {
     validateObject(
       args.ticksAndLabels,
       TICK_GROUP_OPTIONS,
       `${operation}.ticksAndLabels`
     );
     validateModeOptions(args.ticksAndLabels, `${operation}.ticksAndLabels`);
-    if (args.ticks !== undefined || args.labels !== undefined) {
-      throw new Error(
-        `${operation} cannot combine ticksAndLabels with ticks or labels.`
-      );
-    }
     if (args.ticksAndLabels.ticks !== undefined) {
       validateObject(
         args.ticksAndLabels.ticks,
@@ -156,7 +160,7 @@ function validateAxisEditArgs(kind, args, operation) {
       );
     }
   }
-  if (Object.hasOwn(args, "title")) {
+  if (Object.hasOwn(args, "title") && args.title !== false) {
     validateObject(
       args.title,
       kind === "theta"
@@ -167,6 +171,41 @@ function validateAxisEditArgs(kind, args, operation) {
   }
 }
 
+function applyAxisEdit(program, kind, args) {
+  const angleChanged = Object.hasOwn(args, "angle");
+  let next = angleChanged
+    ? program._withGuideConfig("radius", "layout", { angle: args.angle })
+    : program;
+  const edit = (component, options) => {
+    if (options === false) {
+      next = removeAxisComponent(next, kind, component);
+    } else if (options !== undefined || angleChanged && hasAxisComponent(next, kind, component)) {
+      next = next[`edit${prefix(kind)}Axis${component[0].toUpperCase() + component.slice(1)}`](options ?? {});
+    }
+  };
+  edit("line", args.line);
+  if (args.ticksAndLabels === false) {
+    edit("ticks", false);
+    edit("labels", false);
+  } else if (args.ticksAndLabels !== undefined) {
+    const group = args.ticksAndLabels;
+    const mode = {
+      ...(Object.hasOwn(group, "count") ? { count: group.count } : {}),
+      ...(Object.hasOwn(group, "values") ? { values: group.values } : {})
+    };
+    edit("ticks", { ...mode, ...(group.ticks ?? {}) });
+    edit("labels", { ...mode, ...(group.labels ?? {}) });
+  } else {
+    edit("ticks", args.ticks);
+    edit("labels", args.labels);
+  }
+  edit("title", args.title);
+  if (!AXIS_COMPONENTS.some(component => hasAxisComponent(next, kind, component))) {
+    next = next[`remove${prefix(kind)}Axis`]();
+  }
+  return next;
+}
+
 function makeEditAxis(kind) {
   const operation = `edit${prefix(kind)}Axis`;
   return action({
@@ -174,42 +213,18 @@ function makeEditAxis(kind) {
     description: `Edit selected Polar ${kind}-axis components.`
   }, function (args = {}) {
     validateAxisEditArgs(kind, args, operation);
-    const names = polarGuideNames(kind);
-    const angleChanged = Object.hasOwn(args, "angle");
-    let next = angleChanged
-      ? this._withGuideConfig("radius", "layout", { angle: args.angle })
-      : this;
-    const has = component =>
-      next.graphicSpec.objects[names[component]] !== undefined;
-    if (args.line !== undefined || (angleChanged && has("line"))) {
-      next = next[`edit${prefix(kind)}AxisLine`](args.line ?? {});
+    if (!AXIS_COMPONENTS.some(component => hasAxisComponent(this, kind, component))) {
+      throw new Error(`${operation} requires an existing ${kind}-axis component.`);
     }
-    if (args.ticksAndLabels !== undefined) {
-      const group = args.ticksAndLabels;
-      const mode = {
-        ...(Object.hasOwn(group, "count") ? { count: group.count } : {}),
-        ...(Object.hasOwn(group, "values") ? { values: group.values } : {})
-      };
-      next = next[`edit${prefix(kind)}AxisTicks`]({
-        ...mode,
-        ...(group.ticks ?? {})
-      });
-      next = next[`edit${prefix(kind)}AxisLabels`]({
-        ...mode,
-        ...(group.labels ?? {})
-      });
-    } else {
-      if (args.ticks !== undefined || (angleChanged && has("ticks"))) {
-        next = next[`edit${prefix(kind)}AxisTicks`](args.ticks ?? {});
-      }
-      if (args.labels !== undefined || (angleChanged && has("labels"))) {
-        next = next[`edit${prefix(kind)}AxisLabels`](args.labels ?? {});
+    for (const component of AXIS_COMPONENTS) {
+      if (args[component] === false ||
+          args.ticksAndLabels === false && ["ticks", "labels"].includes(component)) {
+        assertRemovableAxisComponent(this, kind, component, operation);
       }
     }
-    if (args.title !== undefined || (angleChanged && has("title"))) {
-      next = next[`edit${prefix(kind)}AxisTitle`](args.title ?? {});
-    }
-    return next;
+    // Validate the whole proposal on an immutable branch before returning changes.
+    applyAxisEdit(this, kind, args);
+    return applyAxisEdit(this, kind, args);
   });
 }
 

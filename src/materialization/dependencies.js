@@ -1,14 +1,16 @@
+import { withGuideLayoutTransaction } from "./guides/layout.js";
 import {
   canDeferScaleConsumerApplication,
   getLayerScaleIds,
   getExistingMarkRematerializationStep,
   getMarkMaterializationStep,
   getScaleConsumerMarkSteps,
-  getSourceDependentMarkSteps
+  getSourceDependentMarkSteps,
+  reusePlannedMarkScales
 } from "./marks/index.js";
 import { findLayer, requireLayer } from "../selectors/layers.js";
 import {
-  applyMaterializationPlan,
+  applyMaterializationPlan as executeMaterializationPlan,
   buildMaterializationPlan
 } from "./planner.js";
 import { hasMaterializedLegend } from "./legends.js";
@@ -83,7 +85,7 @@ export function planLayerDataRematerialization(program, id) {
     const guides = scaleIds.flatMap(scale =>
       planScaleGuideRematerialization(program, scale)
     );
-    return buildMaterializationPlan({ scales, marks, guides });
+    return buildMaterializationPlan({ scales, marks: reusePlannedMarkScales(program, marks, scaleIds), guides });
   }
   const existingStep = getExistingMarkRematerializationStep(program, layer);
   return buildMaterializationPlan({
@@ -96,6 +98,23 @@ export function applyLayerDataRematerialization(program, id) {
     program,
     planLayerDataRematerialization(program, id)
   );
+}
+
+export function applyLayerEmptyDataView(program, id) {
+  requireLayer(program, id);
+  const targets = [
+    id,
+    ...getSourceDependentMarkSteps(program, id).map(step => step.args.id)
+  ];
+  let next = program;
+  for (const target of new Set(targets)) {
+    const graphic = next.graphicSpec.objects[target];
+    if (graphic === undefined) continue;
+    next = graphic.type === "collection"
+      ? next.editGraphics({ target, property: "items", value: [] })
+      : next.editGraphics({ target, property: "length", value: 0 });
+  }
+  return next;
 }
 
 export function applyDetachedScaleRematerialization(program, previousLayers) {
@@ -119,5 +138,7 @@ export function applyDetachedScaleRematerialization(program, previousLayers) {
   }));
 }
 
-export { applyMaterializationPlan } from "./planner.js";
+export function applyMaterializationPlan(program, plan) {
+  return withGuideLayoutTransaction(program, next => executeMaterializationPlan(next, plan));
+}
 export { planScaleGuideRematerialization };

@@ -96,7 +96,7 @@ function materializedItems(owner) {
   return plainObject(owner.properties) ? [owner] : [];
 }
 
-function leafPrograms(program, path, issues, active = new Set()) {
+function leafPrograms(program, path, issues, active = new Set(), declaredEmpty = false) {
   if (!plainObject(program)) {
     issues.push(`${path} must be a program object.`);
     return [];
@@ -108,10 +108,24 @@ function leafPrograms(program, path, issues, active = new Set()) {
   const children = plainObject(program.children)
     ? Object.entries(program.children)
     : [];
-  if (children.length === 0) return [{ path, program }];
+  if (children.length === 0) return [{ path, program, declaredEmpty }];
+  const emptyChildren = new Set(
+    program.compositionSpec?.type === "facet" &&
+      Array.isArray(program.compositionSpec.facet?.grid?.cells)
+      ? program.compositionSpec.facet.grid.cells
+        .filter(cell => cell?.empty === true)
+        .map(cell => cell.id)
+      : []
+  );
   active.add(program);
   const leaves = children.flatMap(([id, child]) =>
-    leafPrograms(child, `${path}.children.${id}`, issues, active)
+    leafPrograms(
+      child,
+      `${path}.children.${id}`,
+      issues,
+      active,
+      emptyChildren.has(id)
+    )
   );
   active.delete(program);
   return leaves;
@@ -127,9 +141,10 @@ export function inspectAnalyticLayerIntegrity(program) {
   };
   const leaves = leafPrograms(program, "program", issues);
   metrics.leafProgramCount = leaves.length;
-  for (const { path, program: leaf } of leaves) {
+  for (const { path, program: leaf, declaredEmpty } of leaves) {
     const layers = leaf.semanticSpec?.layers;
     if (!Array.isArray(layers) || layers.length === 0) {
+      if (declaredEmpty && Array.isArray(layers)) continue;
       issues.push(`${path} must contain at least one semantic analytic layer.`);
       continue;
     }

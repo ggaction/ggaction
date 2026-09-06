@@ -1,3 +1,4 @@
+import { isSourceOwnedText } from "../../../grammar/text.js";
 import { action } from "../../../core/action.js";
 import { isPlainObject } from "../../../core/immutable.js";
 import { validateUserId } from "../../../core/identifiers.js";
@@ -19,7 +20,7 @@ function validateAxisOption(value, channel) {
   }
 }
 
-function validateArgs(args) {
+export function validateAxesArgs(args) {
   validateOptionObject(args, TOP_OPTIONS, "createAxes");
   validateAxisOption(args.x, "x");
   validateAxisOption(args.y, "y");
@@ -189,9 +190,9 @@ const createAxes = action(
     description: "Read a semantic coordinate and create its Cartesian axes."
   },
   function (args = {}) {
-    const coordinateDescriptor = validateArgs(args);
+    const coordinateDescriptor = validateAxesArgs(args);
     const { cartesianLayers, polarLayers, parallelLayers } = inspectChannels(
-      this.semanticSpec.layers
+      this.semanticSpec.layers.filter(layer => !isSourceOwnedText(layer))
     );
     const requestedCoordinateType = coordinateDescriptor.id === undefined
       ? undefined

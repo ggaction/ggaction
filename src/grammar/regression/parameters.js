@@ -1,5 +1,7 @@
 import { cloneAndFreeze } from "../../core/immutable.js";
 import { validateGeneratedItemLimit } from "../../core/validation.js";
+import { normalizeConfidenceInterval } from
+  "../statistics/confidenceInterval.js";
 
 const MAX_POLYNOMIAL_DEGREE = 32;
 
@@ -14,6 +16,8 @@ export function normalizeRegressionParameters({
   method = "linear",
   degree,
   span,
+  confidenceMethod,
+  level,
   confidence,
   interval
 } = {}) {
@@ -24,7 +28,10 @@ export function normalizeRegressionParameters({
     if (degree !== undefined) {
       throw new Error("Regression degree requires the polynomial method.");
     }
-    if (confidence !== undefined || interval !== undefined) {
+    if (
+      confidenceMethod !== undefined || level !== undefined ||
+      confidence !== undefined || interval !== undefined
+    ) {
       throw new Error("LOESS regression does not support confidence intervals.");
     }
     const resolvedSpan = span ?? 0.75;
@@ -38,14 +45,18 @@ export function normalizeRegressionParameters({
   if (span !== undefined) {
     throw new Error("Regression span requires the loess method.");
   }
-  const resolvedConfidence = confidence ?? 0.95;
-  if (
-    !Number.isFinite(resolvedConfidence) ||
-    resolvedConfidence <= 0 ||
-    resolvedConfidence >= 1
-  ) {
-    throw new RangeError("Regression confidence must be between 0 and 1.");
+  if (level !== undefined && confidence !== undefined && level !== confidence) {
+    throw new Error(
+      "Regression level and confidence alias must match when both are provided."
+    );
   }
+  const confidenceInterval = normalizeConfidenceInterval({
+    method: confidenceMethod,
+    level: level ?? confidence
+  }, {
+    defaultMethod: "student-t",
+    label: "Regression confidence interval"
+  });
   const resolvedInterval = interval ?? "mean";
   if (!["mean", "prediction"].includes(resolvedInterval)) {
     throw new Error(`Unsupported regression interval "${resolvedInterval}".`);
@@ -65,7 +76,8 @@ export function normalizeRegressionParameters({
     return cloneAndFreeze({
       method,
       degree: resolvedDegree,
-      confidence: resolvedConfidence,
+      confidenceMethod: confidenceInterval.method,
+      level: confidenceInterval.level,
       interval: resolvedInterval
     });
   }
@@ -74,14 +86,16 @@ export function normalizeRegressionParameters({
   }
   return cloneAndFreeze({
     method,
-    confidence: resolvedConfidence,
+    confidenceMethod: confidenceInterval.method,
+    level: confidenceInterval.level,
     interval: resolvedInterval
   });
 }
 
 export function validateRegressionTransform(transform) {
   const supported = [
-    "type", "method", "x", "y", "groupBy", "confidence", "interval",
+    "type", "method", "x", "y", "groupBy", "confidenceMethod", "level",
+    "confidence", "interval",
     "degree", "span"
   ];
   const unknown = Object.keys(transform).find(key => !supported.includes(key));
@@ -96,16 +110,29 @@ export function validateRegressionTransform(transform) {
   if (transform.groupBy !== undefined) {
     requireRegressionField(transform.groupBy, "Regression groupBy field");
   }
+  if (
+    transform.confidence !== undefined &&
+    (transform.confidenceMethod !== undefined || transform.level !== undefined)
+  ) {
+    throw new Error(
+      "Regression confidence provenance must use either the legacy confidence field or method and level."
+    );
+  }
   const normalized = normalizeRegressionParameters({
     method: transform.method,
     degree: transform.degree,
     span: transform.span,
+    confidenceMethod: transform.confidenceMethod,
+    level: transform.level,
     confidence: transform.confidence,
     interval: transform.interval
   });
   if (normalized.method === "loess") return transform;
-  if (!Number.isFinite(transform.confidence)) {
-    throw new RangeError("Regression confidence must be between 0 and 1.");
+  if (
+    transform.confidence === undefined &&
+    (transform.confidenceMethod === undefined || transform.level === undefined)
+  ) {
+    throw new Error("Regression confidence provenance requires method and level.");
   }
   if (transform.interval === undefined) {
     throw new Error(`Unsupported regression interval "${transform.interval}".`);

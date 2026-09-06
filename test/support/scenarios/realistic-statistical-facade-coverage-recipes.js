@@ -663,6 +663,9 @@ function legendBorder(profile) {
 
 function legendOptions(profile, context, action) {
   const ordinal = profile.legendProfile ?? 0;
+  const labelFormat = action === "createHeatmap"
+    ? ordinal % 2 === 0 ? ".1f" : ".2f"
+    : "auto";
   if (action === "createGradientPlot") {
     return {
       title: profile.legendKind === "continuous"
@@ -682,6 +685,7 @@ function legendOptions(profile, context, action) {
       count: 6,
       gradient: { length: 120, thickness: 14 },
       labels: {
+        format: labelFormat,
         offset: 5,
         color: "#334155",
         fontSize: 11,
@@ -705,10 +709,11 @@ function legendOptions(profile, context, action) {
     direction: ordinal < 2 ? "vertical" : "horizontal",
     ...(ordinal < 2 ? {} : { columns: 2 }),
     offset: 18 + ordinal,
-    titlePosition: ordinal % 2 === 0 ? "top" : "left",
+    titlePosition: ordinal < 2 ? "top" : ordinal % 2 === 0 ? "top" : "left",
     title: ordinal % 4 === 1 ? "Within-category rank half" : context.dimensionText,
     symbol: legendSymbol(ordinal),
     labels: {
+      format: labelFormat,
       offset: 5,
       color: "#334155",
       fontSize: 11,
@@ -763,6 +768,9 @@ function polarGrid(profile, resources) {
 }
 
 function guideOptions(profile, resources, context, ordinal, action) {
+  if (["polar", "parallel"].includes(profile.guideMode)) {
+    profile = { ...profile, guideMode: "cartesian", axisType: "cartesian", gridBoolean: undefined };
+  }
   if (profile.guideMode === "none") {
     return false;
   }
@@ -773,7 +781,7 @@ function guideOptions(profile, resources, context, ordinal, action) {
       legend: false
     };
   }
-  if (profile.guideMode === "polar") {
+  if (profile.guideMode === "polar" && action !== "createHistogram") {
     return {
       axes: {
         coordinate: { id: "polarContext", type: "polar" },
@@ -807,42 +815,60 @@ function guideOptions(profile, resources, context, ordinal, action) {
   };
 }
 
-function restoreCartesianHistogramPresentation(
-  program,
-  profile,
-  resources,
-  context,
-  ordinal
-) {
-  if (profile.guideMode !== "polar") return program;
-  const next = program
-    .removeMark({ target: "polarContextPoints" })
-    .removeLegend({
-      target: (profile.legendProfile ?? 0) % 4 === 1
-        ? "seriesContextLines"
-        : "contextPoints",
-      channels: ["color"]
-    })
-    .editCanvas({
-      width: 1_600,
-      height: 1_100,
-      margin: { top: 220, right: 400, bottom: 220, left: 400 }
-    });
-  const { legend: _legend, ...cartesianGuides } = guideOptions({
-    ...profile,
-    guideMode: "cartesian",
-    orientation: "vertical",
-    axisType: "cartesian"
-  }, resources, context, ordinal, "createHistogram");
-  return next.createGuides({
-    ...cartesianGuides,
-    legend: {
-      target: "contextPoints",
-      channels: ["color"],
-      position: "right",
-      title: context.dimensionText
+function createOwnedFacade(base, action, args) {
+  const candidate = base[action]({ ...args, guides: false });
+  if (args.guides === false) return candidate;
+  const layer = candidate.semanticSpec.layers.find(layer => layer.id === args.id);
+  const requested = args.guides ?? {};
+  const axes = { coordinate: { id: layer.coordinate,
+    type: requested.axes?.coordinate?.type === "auto" ? "auto" : "cartesian" } };
+  const grid = {};
+  for (const [channel, direction] of [["x", "vertical"], ["y", "horizontal"]]) {
+    const scaleId = layer.encoding[channel].scale;
+    const scale = candidate.resolvedScales[scaleId];
+    const categorical = ["band", "point"].includes(scale.type);
+    const previous = requested.axes?.[channel] ?? {};
+    const values = [...new Set([scale.domain[0], scale.domain.at(-1)])];
+    const tickOptions = previous.ticksAndLabels ?? {};
+    const mode = categorical || tickOptions.values !== undefined ? { values } : { count: tickOptions.count ?? 4 };
+    axes[channel] = previous === false ? false : {
+      ...previous, scale: scaleId, coordinate: layer.coordinate,
+      ticksAndLabels: { ...tickOptions, ...mode,
+        labels: { ...tickOptions.labels, ...(categorical || scale.type === "time" ? { format: "auto" } : {}) } }
+    };
+    if (Object.hasOwn(mode, "values")) delete axes[channel]?.ticksAndLabels?.count;
+    const directionOptions = requested.grid?.[direction];
+    grid[direction] = categorical || directionOptions === false ? false
+      : directionOptions === true ? true
+      : { ...directionOptions, scale: scaleId, coordinate: layer.coordinate,
+          ...(directionOptions?.values === undefined ? {} : { values }) };
+  }
+  let legend = false;
+  if (action === "createGradientPlot") legend = requested.legend ?? false;
+  else if (layer.encoding.color && requested.legend !== false &&
+    !["quantize", "quantile", "threshold"].includes(candidate.resolvedScales[layer.encoding.color.scale].type)) {
+    legend = { ...requested.legend, target: layer.id, channels: ["color"] };
+    if (["quantitative", "temporal"].includes(layer.encoding.color.fieldType)) {
+      const continuous = candidate.resolvedScales[layer.encoding.color.scale].type === "sequential";
+      const allowed = ["target", "channels", "title", "labels", "titleStyle", "border", "offset"];
+      legend = { ...Object.fromEntries(Object.entries(legend).filter(([key]) => allowed.includes(key))),
+        position: "right", ...(continuous ? { count: 6, gradient: { length: 120, thickness: 14 } } : { symbol: { width: 18, height: 14, stroke: "white", strokeWidth: 0.8 }, itemGap: 28, direction: "vertical" }) };
+    } else {
+      delete legend.gradient; delete legend.count;
+      if (typeof legend.symbol === "object" && legend.symbol?.length !== undefined) legend.symbol = { layers: [{ type: "line", ...legend.symbol }] };
     }
-  });
+    if (axes.x && ["top", "bottom"].includes(legend.position)) {
+      axes.x.position = legend.position === "bottom" ? "top" : "bottom";
+    }
+    if (axes.y && ["left", "right"].includes(legend.position)) {
+      axes.y.position = legend.position === "left" ? "right" : "left";
+    }
+  }
+  return base[action]({ ...args, guides: {
+    axes: requested.axes === false ? false : axes,
+    grid: requested.grid === false || Object.values(grid).every(value => value === false) ? false : grid,
+    legend
+  } });
 }
 
 function sourceProgram(view, profile, action) {
@@ -943,7 +969,7 @@ function sourceProgram(view, profile, action) {
         scale: { id: "seriesContextColor", type: "ordinal", palette: "tableau10" }
       });
   }
-  if (profile.guideMode === "polar") {
+  if (profile.guideMode === "polar" && action !== "createHistogram") {
     program = program
       .createCoordinate({ id: "polarContext", type: "polar" })
       .createPointMark({
@@ -1178,7 +1204,7 @@ function buildBox(factors) {
   const profile = factors.variant;
   const feature = profile.featureIndex;
   const resources = guideResources(view, context, profile.orientation);
-  let program = sourceProgram(view, profile, "createBoxPlot").createBoxPlot({
+  let program = createOwnedFacade(sourceProgram(view, profile, "createBoxPlot"), "createBoxPlot", {
     id: "facadeBoxes",
     target: "contextPoints",
     data: "analysisRows",
@@ -1247,7 +1273,7 @@ function buildGradient(factors) {
         stroke: "#0f172a",
         strokeWidth: 1.4
       };
-  let program = sourceProgram(view, profile, "createGradientPlot").createGradientPlot({
+  let program = createOwnedFacade(sourceProgram(view, profile, "createGradientPlot"), "createGradientPlot", {
     id: "facadeGradients",
     target: "contextPoints",
     data: "analysisRows",
@@ -1300,7 +1326,7 @@ function buildViolin(factors) {
     "basis", "cardinal", "linear", "monotone", "natural",
     "step", "step-after", "step-before"
   ];
-  const program = sourceProgram(view, profile, "createViolinPlot").createViolinPlot({
+  const program = createOwnedFacade(sourceProgram(view, profile, "createViolinPlot"), "createViolinPlot", {
     id: "facadeViolins",
     data: "analysisRows",
     coordinate: "main",
@@ -1373,6 +1399,7 @@ function heatmapBinnedColor(ordinal) {
       type: "sequential",
       domain: "auto",
       interpolate: COLOR_INTERPOLATIONS[index],
+      midpoint: "auto",
       clamp: index % 2 === 0,
       reverse: index % 3 === 0
     };
@@ -1472,7 +1499,7 @@ function buildHeatmap(factors) {
         title: "Observed subgroup"
       }
     });
-    program = sourceProgram(view, profile, "createHeatmap").createHeatmap({
+    program = createOwnedFacade(sourceProgram(view, profile, "createHeatmap"), "createHeatmap", {
       ...common,
       x: {
         field: "category",
@@ -1517,7 +1544,7 @@ function buildHeatmap(factors) {
         title: "Source selection order"
       }
     });
-    program = sourceProgram(view, profile, "createHeatmap").createHeatmap({
+    program = createOwnedFacade(sourceProgram(view, profile, "createHeatmap"), "createHeatmap", {
       ...common,
       x: {
         field: "positiveValue",
@@ -1599,7 +1626,7 @@ function buildHistogram(factors) {
       : feature === 4
           ? { binBoundaries: boundaries }
           : { maxBins: 14 };
-  let program = sourceProgram(view, profile, "createHistogram").createHistogram({
+  let program = createOwnedFacade(sourceProgram(view, profile, "createHistogram"), "createHistogram", {
     id: "facadeHistogram",
     data: "analysisRows",
     coordinate: "main",
@@ -1638,13 +1665,6 @@ function buildHistogram(factors) {
       "createHistogram"
     )
   });
-  program = restoreCartesianHistogramPresentation(
-    program,
-    profile,
-    histogramResources,
-    context,
-    ordinal
-  );
   return titleProgram(
     materializeGuideProxyGeometry(program, view),
     context,

@@ -57,6 +57,7 @@ each type infers its ID and current dataset when those choices are unambiguous.
 | Area | `createAreaMark` | `editAreaMark` | Closed path collection |
 | Arc | `createArcMark` | `editArcMark` | Closed sector path collection |
 | Bar | `createBarMark` | `editBarMark` | Rect collection |
+| Reference line / band | `createReferenceLine` / `createReferenceBand` | Rule/Rect and position encodings | Line/Rect collection |
 | Rule | `createRuleMark` | Encoding actions | Line collection |
 | Tick | `createTickMark` | `editTickMark` | Centered line collection |
 | Text | `createTextMark` | `editTextMark`, `layoutLabels`, `removeLabelLayout` | Text collection |
@@ -129,6 +130,11 @@ Add a direct constant or quantitative-field direction with `encodeAngle`.
 Zero degrees is vertical/up and positive values rotate clockwise; Tick length
 and center remain fixed. `removeEncoding({ channel: "angle" })` restores the
 unrotated baseline.
+
+Point, Bar, and Rect creation and editing accept `stroke: false` to disable the
+outline and set its width to zero. Scatter `point.stroke` and Bar/Histogram
+`bar.stroke` pass this option through to their mark owners. Restoring a color
+with the corresponding edit action enables an outline again.
 
 ## Related
 

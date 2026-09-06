@@ -49,7 +49,7 @@ export const visualVariants = Object.freeze([defineVisualVariant({
     maxBins: 10,
     xScale: { nice: true, zero: false },
     color: { field: "Origin", scale: { palette: "tableau10" } },
-    guides: { legend: { position: "bottom" } }
+    guides: { legend: { position: "bottom", layout: "legacy-bottom" } }
   })
   .createTitle({
     text: "Displacement distribution",
@@ -76,7 +76,7 @@ export const visualVariants = Object.freeze([defineVisualVariant({
     xScale: { nice: true, zero: false }
   })
   .encodeColor({ field: "Origin", scale: { palette: "tableau10" } })
-  .createGuides({ legend: { position: "bottom" } })
+  .createGuides({ legend: { position: "bottom", layout: "legacy-bottom" } })
   .createTitle({
     text: "Displacement distribution",
     subtitle: "by country",
@@ -102,7 +102,7 @@ export const visualVariants = Object.freeze([defineVisualVariant({
     xScale: { nice: true, zero: false }
   })
   .encodeColor({ field: "Origin", scale: { palette: "tableau10" } })
-  .createGuides({ legend: { position: "bottom" } })
+  .createGuides({ legend: { position: "bottom", layout: "legacy-bottom" } })
   .createTitle({
     text: "Displacement distribution",
     subtitle: "by country",
@@ -128,7 +128,7 @@ export const visualVariants = Object.freeze([defineVisualVariant({
     xScale: { nice: true, zero: false }
   })
   .encodeColor({ field: "Origin", scale: { palette: "tableau10" } })
-  .createGuides({ legend: { position: "bottom" } })
+  .createGuides({ legend: { position: "bottom", layout: "legacy-bottom" } })
   .createTitle({
     text: "Displacement distribution",
     subtitle: "by country",
@@ -163,7 +163,7 @@ export const visualVariants = Object.freeze([defineVisualVariant({
     layout: "fill",
     scale: { palette: "tableau10" }
   })
-  .createGuides({ legend: { position: "bottom" } })
+  .createGuides({ legend: { position: "bottom", layout: "legacy-bottom" } })
   .createTitle({
     text: "Displacement distribution",
     subtitle: "by country",

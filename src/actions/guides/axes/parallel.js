@@ -1,228 +1,104 @@
 import { action } from "../../../core/action.js";
-import { validateOptionObject } from "../../../core/validation.js";
-import { resolvePlotGraphicPlacement } from
-  "../../../materialization/graphicHierarchy.js";
-import { DEFAULT_COLORS, DEFAULT_FONT_FAMILY } from
-  "../../../theme/defaults.js";
-import {
-  requireParallelAxisLayer,
-  resolveParallelAxisTarget,
-  resolveParallelAxisValues
-} from "./parallel/resolve.js";
+import { validateGeneratedItemLimit, validateOptionObject } from "../../../core/validation.js";
+import { resolvePlotGraphicPlacement } from "../../../materialization/graphicHierarchy.js";
+import { requireParallelAxisLayer, resolveParallelAxisTarget, resolveStyledParallelAxes } from "./parallel/resolve.js";
+import { PARALLEL_AXIS_GRAPHICS, PARALLEL_AXIS_PARTS, hasParallelAxisParts } from "./parallel/policy.js";
+import { registerParallelAxisLifecycleActions } from "./parallel/lifecycle.js";
 
-const CREATE_OPTIONS = Object.freeze(["target", "coordinate"]);
-const REMATERIALIZE_OPTIONS = Object.freeze(["target"]);
+function uniform(values) {
+  return values.length > 0 && values.every(value => value === values[0]) ? values[0] : values;
+}
 
-export const rematerializeParallelAxes = action(
-  {
-    op: "rematerializeParallelAxes",
-    description: "Recompute concrete Parallel dimension axes."
-  },
-  function (args = {}) {
-    validateOptionObject(
-      args,
-      REMATERIALIZE_OPTIONS,
-      "rematerializeParallelAxes"
-    );
-    const target = resolveParallelAxisTarget(
-      this,
-      args.target ?? this.guideConfigs.axis?.parallel?.axes?.target
-    );
-    const { dimensions } = requireParallelAxisLayer(this, target);
-    const { axes, bounds } = resolveParallelAxisValues(this, dimensions);
-    const ticks = axes.flatMap(axis => axis.values.map((value, index) => ({
-      x: axis.x,
-      y: axis.y[index],
-      value,
-      text: axis.labels[index]
-    })));
-    let next = this
-      .editGraphics({
-        target: "parallelAxisLines",
-        property: "length",
-        value: axes.length
-      })
-      .editGraphics({
-        target: "parallelAxisLines",
-        property: "x1",
-        value: axes.map(axis => axis.x)
-      })
-      .editGraphics({ target: "parallelAxisLines", property: "y1", value: bounds.y })
-      .editGraphics({
-        target: "parallelAxisLines",
-        property: "x2",
-        value: axes.map(axis => axis.x)
-      })
-      .editGraphics({
-        target: "parallelAxisLines",
-        property: "y2",
-        value: bounds.y + bounds.height
-      })
-      .editGraphics({
-        target: "parallelAxisLines",
-        property: "stroke",
-        value: DEFAULT_COLORS.axis
-      })
-      .editGraphics({
-        target: "parallelAxisLines",
-        property: "strokeWidth",
-        value: 1.25
-      })
-      .editGraphics({
-        target: "parallelAxisTicks",
-        property: "length",
-        value: ticks.length
-      })
-      .editGraphics({
-        target: "parallelAxisTicks",
-        property: "x1",
-        value: ticks.map(tick => tick.x - 4)
-      })
-      .editGraphics({
-        target: "parallelAxisTicks",
-        property: "y1",
-        value: ticks.map(tick => tick.y)
-      })
-      .editGraphics({
-        target: "parallelAxisTicks",
-        property: "x2",
-        value: ticks.map(tick => tick.x + 4)
-      })
-      .editGraphics({
-        target: "parallelAxisTicks",
-        property: "y2",
-        value: ticks.map(tick => tick.y)
-      })
-      .editGraphics({
-        target: "parallelAxisTicks",
-        property: "stroke",
-        value: DEFAULT_COLORS.mutedText
-      })
-      .editGraphics({
-        target: "parallelAxisTicks",
-        property: "strokeWidth",
-        value: 1
-      })
-      .editGraphics({
-        target: "parallelAxisLabels",
-        property: "length",
-        value: ticks.length
-      })
-      .editGraphics({
-        target: "parallelAxisLabels",
-        property: "x",
-        value: ticks.map(tick => tick.x - 9)
-      })
-      .editGraphics({
-        target: "parallelAxisLabels",
-        property: "y",
-        value: ticks.map(tick => tick.y)
-      })
-      .editGraphics({
-        target: "parallelAxisLabels",
-        property: "text",
-        value: ticks.map(tick => tick.text)
-      })
-      .editGraphics({ target: "parallelAxisLabels", property: "fill", value: DEFAULT_COLORS.axis })
-      .editGraphics({ target: "parallelAxisLabels", property: "fontSize", value: 11 })
-      .editGraphics({ target: "parallelAxisLabels", property: "fontFamily", value: DEFAULT_FONT_FAMILY })
-      .editGraphics({ target: "parallelAxisLabels", property: "fontWeight", value: "normal" })
-      .editGraphics({ target: "parallelAxisLabels", property: "textAlign", value: "right" })
-      .editGraphics({ target: "parallelAxisLabels", property: "textBaseline", value: "middle" })
-      .editGraphics({
-        target: "parallelAxisTitles",
-        property: "length",
-        value: axes.length
-      })
-      .editGraphics({
-        target: "parallelAxisTitles",
-        property: "x",
-        value: axes.map(axis => axis.x)
-      })
-      .editGraphics({
-        target: "parallelAxisTitles",
-        property: "y",
-        value: bounds.y - 20
-      })
-      .editGraphics({
-        target: "parallelAxisTitles",
-        property: "text",
-        value: axes.map(axis => axis.title)
-      })
-      .editGraphics({ target: "parallelAxisTitles", property: "fill", value: DEFAULT_COLORS.axisTitle })
-      .editGraphics({ target: "parallelAxisTitles", property: "fontSize", value: 13 })
-      .editGraphics({ target: "parallelAxisTitles", property: "fontFamily", value: DEFAULT_FONT_FAMILY })
-      .editGraphics({ target: "parallelAxisTitles", property: "fontWeight", value: 600 })
-      .editGraphics({ target: "parallelAxisTitles", property: "textAlign", value: "center" })
-      .editGraphics({ target: "parallelAxisTitles", property: "textBaseline", value: "middle" });
-    return next._withGuideConfig("parallel", "axes", {
-      target,
-      scales: dimensions.map(dimension => dimension.scale)
-    });
+function collectionProperties(part, axes, bounds) {
+  if (part === "line") return {
+    length: axes.length,
+    x1: axes.map(axis => axis.x), y1: bounds.y,
+    x2: axes.map(axis => axis.x), y2: bounds.y + bounds.height,
+    stroke: uniform(axes.map(axis => axis.config.line.color)),
+    strokeWidth: uniform(axes.map(axis => axis.config.line.lineWidth))
+  };
+  if (part === "title") return {
+    length: axes.length, x: axes.map(axis => axis.x),
+    y: uniform(axes.map(axis => bounds.y - axis.config.title.offset)),
+    text: axes.map(axis => axis.title),
+    fill: uniform(axes.map(axis => axis.config.title.color)),
+    fontSize: uniform(axes.map(axis => axis.config.title.fontSize)),
+    fontFamily: uniform(axes.map(axis => axis.config.title.fontFamily)),
+    fontWeight: uniform(axes.map(axis => axis.config.title.fontWeight)),
+    textAlign: "center", textBaseline: "middle"
+  };
+  const rows = axes.flatMap(axis => axis[part].values.map((value, index) => ({
+    x: axis.x, y: axis[part].y[index], text: axis[part].text?.[index], config: axis.config[part]
+  })));
+  if (part === "ticks") return {
+    length: rows.length, x1: rows.map(row => row.x - row.config.length / 2),
+    y1: rows.map(row => row.y), x2: rows.map(row => row.x + row.config.length / 2),
+    y2: rows.map(row => row.y), stroke: uniform(rows.map(row => row.config.color)),
+    strokeWidth: uniform(rows.map(row => row.config.lineWidth))
+  };
+  return {
+    length: rows.length, x: rows.map(row => row.x - row.config.offset),
+    y: rows.map(row => row.y), text: rows.map(row => row.text),
+    fill: uniform(rows.map(row => row.config.color)),
+    fontSize: uniform(rows.map(row => row.config.fontSize)),
+    fontFamily: uniform(rows.map(row => row.config.fontFamily)),
+    fontWeight: uniform(rows.map(row => row.config.fontWeight)),
+    textAlign: "right", textBaseline: "middle"
+  };
+}
+
+export const rematerializeParallelAxes = action({
+  op: "rematerializeParallelAxes",
+  description: "Recompute concrete Parallel dimension axes."
+}, function (args = {}) {
+  validateOptionObject(args, ["target"], "rematerializeParallelAxes");
+  const stored = this.semanticSpec.guides.axis?.parallel;
+  if (stored === undefined) throw new Error("rematerializeParallelAxes requires existing Parallel axes.");
+  const target = resolveParallelAxisTarget(this, args.target ?? stored.target);
+  if (target !== stored.target) throw new Error("Parallel axes belong to another target.");
+  const { dimensions } = requireParallelAxisLayer(this, target);
+  const { axes, bounds, configs } = resolveStyledParallelAxes(this, dimensions);
+  if (!configs.dimensions.some(hasParallelAxisParts)) return this.removeParallelAxes({ target });
+
+  // Preflight every collection before authoring any concrete graphic.
+  const properties = Object.fromEntries(PARALLEL_AXIS_PARTS.map(part => {
+    const selected = axes.filter(axis => axis.config[part] !== undefined);
+    const value = collectionProperties(part, selected, bounds);
+    validateGeneratedItemLimit(value.length, "Parallel axis item count");
+    return [part, { enabled: selected.length > 0, value }];
+  }));
+  let next = this;
+  const scales = dimensions.map(dimension => dimension.scale);
+  if (stored.scales?.length !== scales.length || scales.some((scale, index) => scale !== stored.scales[index])) {
+    next = next.editSemantic({ property: "guide.axis.parallel.scales", value: scales });
   }
-);
-
-export const createParallelAxes = action(
-  {
-    op: "createParallelAxes",
-    description: "Create ordinary line and text graphics for Parallel dimensions."
-  },
-  function (args = {}) {
-    validateOptionObject(args, CREATE_OPTIONS, "createParallelAxes");
-    const target = resolveParallelAxisTarget(this, args.target);
-    const { coordinate, dimensions } = requireParallelAxisLayer(this, target);
-    if (args.coordinate !== undefined && args.coordinate !== coordinate.id) {
-      throw new Error(
-        `Parallel layer "${target}" uses coordinate "${coordinate.id}".`
-      );
-    }
-    for (const id of [
-      "parallelAxisLines", "parallelAxisTicks", "parallelAxisLabels",
-      "parallelAxisTitles"
-    ]) {
-      if (this.graphicSpec.objects[id] !== undefined) {
-        throw new Error("createParallelAxes requires missing Parallel axes.");
-      }
-    }
-    const placement = resolvePlotGraphicPlacement(this);
-    let next = this
-      .editSemantic({
-        property: "guide.axis.parallel.target",
-        value: target
-      })
-      .editSemantic({
-        property: "guide.axis.parallel.coordinate",
-        value: coordinate.id
-      })
-      .editSemantic({
-        property: "guide.axis.parallel.scales",
-        value: dimensions.map(dimension => dimension.scale)
-      })
-      .createGraphics({ id: "parallelAxisLines", type: "line", length: 0, ...placement })
-      .editGraphics({ target: "parallelAxisLines", property: "stroke", value: DEFAULT_COLORS.axis })
-      .editGraphics({ target: "parallelAxisLines", property: "strokeWidth", value: 1.25 })
-      .createGraphics({ id: "parallelAxisTicks", type: "line", length: 0, ...placement })
-      .editGraphics({ target: "parallelAxisTicks", property: "stroke", value: DEFAULT_COLORS.mutedText })
-      .editGraphics({ target: "parallelAxisTicks", property: "strokeWidth", value: 1 })
-      .createGraphics({ id: "parallelAxisLabels", type: "text", length: 0, ...placement })
-      .editGraphics({ target: "parallelAxisLabels", property: "fill", value: DEFAULT_COLORS.axis })
-      .editGraphics({ target: "parallelAxisLabels", property: "fontSize", value: 11 })
-      .editGraphics({ target: "parallelAxisLabels", property: "fontFamily", value: DEFAULT_FONT_FAMILY })
-      .editGraphics({ target: "parallelAxisLabels", property: "fontWeight", value: "normal" })
-      .editGraphics({ target: "parallelAxisLabels", property: "textAlign", value: "right" })
-      .editGraphics({ target: "parallelAxisLabels", property: "textBaseline", value: "middle" })
-      .createGraphics({ id: "parallelAxisTitles", type: "text", length: 0, ...placement })
-      .editGraphics({ target: "parallelAxisTitles", property: "fill", value: DEFAULT_COLORS.axisTitle })
-      .editGraphics({ target: "parallelAxisTitles", property: "fontSize", value: 13 })
-      .editGraphics({ target: "parallelAxisTitles", property: "fontFamily", value: DEFAULT_FONT_FAMILY })
-      .editGraphics({ target: "parallelAxisTitles", property: "fontWeight", value: 600 })
-      .editGraphics({ target: "parallelAxisTitles", property: "textAlign", value: "center" })
-      .editGraphics({ target: "parallelAxisTitles", property: "textBaseline", value: "middle" });
-    return next.rematerializeParallelAxes({ target });
+  const retainedTitles = stored.titles?.filter(title =>
+    configs.dimensions.some(config => config.field === title.field && config.title !== undefined));
+  if (retainedTitles !== undefined && retainedTitles.length !== stored.titles.length) {
+    next = next.editSemantic({ property: "guide.axis.parallel.titles",
+      ...(retainedTitles.length === 0 ? { remove: true } : { value: retainedTitles }) });
   }
-);
+  for (const [index, part] of PARALLEL_AXIS_PARTS.entries()) {
+    const id = PARALLEL_AXIS_GRAPHICS[part];
+    const { enabled, value } = properties[part];
+    if (!enabled) {
+      if (next.graphicSpec.objects[id] !== undefined) next = next.editGraphics({ target: id, remove: true });
+      continue;
+    }
+    if (next.graphicSpec.objects[id] === undefined) {
+      const before = PARALLEL_AXIS_PARTS.slice(index + 1).map(key => PARALLEL_AXIS_GRAPHICS[key])
+        .find(key => next.graphicSpec.objects[key] !== undefined);
+      next = next.createGraphics({ id, type: part === "line" || part === "ticks" ? "line" : "text", length: 0,
+        ...resolvePlotGraphicPlacement(next, before === undefined ? {} : { before }) });
+    }
+    for (const [property, item] of Object.entries(value)) {
+      next = next.editGraphics({ target: id, property, value: item });
+    }
+  }
+  return next._withGuideConfig("parallel", "axes", { target, scales, ...configs });
+});
 
 export function registerParallelAxisActions(ProgramClass) {
-  ProgramClass.prototype.createParallelAxes = createParallelAxes;
   ProgramClass.prototype.rematerializeParallelAxes = rematerializeParallelAxes;
+  registerParallelAxisLifecycleActions(ProgramClass);
 }

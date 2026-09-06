@@ -1,8 +1,9 @@
+import { isSourceOwnedText } from "../../grammar/text.js";
 import {
   resolveOptionalUserId,
   validateUserId
 } from "../../core/identifiers.js";
-import { findDataset } from "../../selectors/datasets.js";
+import { findDataset, requireMaterializedDataset } from "../../selectors/datasets.js";
 import { findLayer, hasLayer } from "../../selectors/layers.js";
 import { findSemanticScale } from "../../selectors/scales.js";
 import { resolveMarkPositionPolicy } from "../encodings/position/policies/index.js";
@@ -27,12 +28,7 @@ export function resolveMarkData(program, requested) {
     throw new Error("Mark creation requires data or a current dataset.");
   }
 
-  const dataset = findDataset(program, data);
-
-  if (dataset === undefined) {
-    throw new Error(`Unknown dataset "${data}".`);
-  }
-
+  const dataset = requireMaterializedDataset(program, data);
   return { data, dataset };
 }
 
@@ -78,9 +74,9 @@ const POSITION_POLICY_SUBSETS = Object.freeze([
 ]);
 
 function inheritedPositionEncodings(encoding) {
-  if (encoding?.field === undefined) return undefined;
+  if (encoding?.field === undefined && encoding?.aggregate !== "count") return undefined;
   const base = Object.fromEntries(
-    ["field", "fieldType", "scale", "title"]
+    ["field", "fieldType", "scale", "title", "temporalUnit"]
       .filter(property => Object.hasOwn(encoding, property))
       .map(property => [property, encoding[property]])
   );
@@ -104,6 +100,9 @@ function inheritedPositionEncodings(encoding) {
 function scaleSupportsEncoding(program, markType, channel, encoding) {
   const scale = findSemanticScale(program, encoding.scale);
   if (scale === undefined) return false;
+  if (scale.radialMapping !== undefined) {
+    return markType === "arc" && channel === "radius" && ["count", "sum"].includes(encoding.aggregate);
+  }
   const categorical = ["nominal", "ordinal"].includes(encoding.fieldType);
   if (categorical) {
     if (["bar", "rect"].includes(markType)) return scale.type === "band";
@@ -143,7 +142,8 @@ export function resolveCompatibleEncodings(program, source, markType) {
             layer: candidate,
             dataset,
             channel,
-            args: encoding,
+            args: { ...encoding, ...(channel === "radius" && findSemanticScale(program, encoding.scale)?.radialMapping !== undefined
+              ? { mapping: findSemanticScale(program, encoding.scale).radialMapping } : {}) },
             field: encoding.field,
             fieldType: encoding.fieldType
           });
@@ -163,7 +163,7 @@ export function resolveCompatibleEncodings(program, source, markType) {
 }
 
 function eligibleLayeredSource(program, layer, requestedData, markType) {
-  if (layer?.data === undefined) return false;
+  if (layer?.data === undefined || isSourceOwnedText(layer)) return false;
   if (requestedData !== undefined && layer.data !== requestedData) return false;
   return Object.keys(resolveCompatibleEncodings(program, layer, markType)).length > 0;
 }

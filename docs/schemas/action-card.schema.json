@@ -14,6 +14,13 @@
     "intents",
     "lifecycle",
     "resources",
+    "authoringRoles",
+    "wraps",
+    "editableVia",
+    "supports",
+    "units",
+    "inference",
+    "completionRequirements",
     "options",
     "callPatterns",
     "snippet",
@@ -21,7 +28,7 @@
     "route"
   ],
   "properties": {
-    "schemaVersion": { "const": 2 },
+    "schemaVersion": { "const": 3 },
     "name": { "type": "string", "pattern": "^[A-Za-z][A-Za-z0-9]*$" },
     "layer": { "enum": ["user-facing", "advanced", "primitive"] },
     "domain": { "type": "string", "minLength": 1 },
@@ -58,6 +65,101 @@
           "uniqueItems": true,
           "items": { "type": "string", "minLength": 2, "maxLength": 30 }
         }
+      }
+    },
+    "authoringRoles": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 5,
+      "uniqueItems": true,
+      "items": { "enum": ["H0", "H1", "H2", "H3", "H4"] }
+    },
+    "wraps": {
+      "type": "array",
+      "maxItems": 20,
+      "uniqueItems": true,
+      "items": { "type": "string", "pattern": "^[A-Za-z][A-Za-z0-9]*$" }
+    },
+    "editableVia": {
+      "type": "array",
+      "maxItems": 20,
+      "uniqueItems": true,
+      "items": { "type": "string", "pattern": "^[A-Za-z][A-Za-z0-9]*$" }
+    },
+    "supports": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["entryPoints"],
+      "properties": {
+        "entryPoints": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 2,
+          "uniqueItems": true,
+          "items": { "enum": ["default", "basic"] }
+        }
+      }
+    },
+    "units": {
+      "type": "array",
+      "maxItems": 16,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["path", "unit"],
+        "properties": {
+          "path": { "type": "string", "minLength": 1, "maxLength": 80 },
+          "unit": {
+            "enum": [
+              "logical-pixel",
+              "degree",
+              "angle",
+              "ratio",
+              "probability",
+              "count",
+              "calendar-unit",
+              "temporal-input",
+              "data-value",
+              "band-fraction"
+            ]
+          }
+        }
+      }
+    },
+    "inference": {
+      "type": "array",
+      "maxItems": 20,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["input", "strategy"],
+        "properties": {
+          "input": { "type": "string", "minLength": 1, "maxLength": 80 },
+          "strategy": {
+            "enum": [
+              "explicit",
+              "explicit-or-current",
+              "explicit-current-unique-or-error",
+              "documented-auto",
+              "documented-default"
+            ]
+          }
+        }
+      }
+    },
+    "completionRequirements": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["state", "requires", "allowsEmpty"],
+      "properties": {
+        "state": { "enum": ["complete", "deferred", "contextual", "not-applicable"] },
+        "requires": {
+          "type": "array",
+          "maxItems": 4,
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 2, "maxLength": 100 }
+        },
+        "allowsEmpty": { "type": "boolean" }
       }
     },
     "options": {

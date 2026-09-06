@@ -325,6 +325,23 @@ export function interpolateColorStops(stops, position, interpolation = "rgb") {
   return interpolateColors(colors, position, method, true);
 }
 
+export function validateSequentialMidpoint(value, type, domain = "auto") {
+  if (value === undefined || value === "auto") return undefined;
+  if (type !== "sequential") {
+    throw new Error(`Scale type "${type}" does not support midpoint.`);
+  }
+  if (!Number.isFinite(value)) {
+    throw new TypeError("Scale midpoint must be finite or auto.");
+  }
+  if (domain !== "auto" && (
+    !Array.isArray(domain) || domain.length !== 2 || !domain.every(Number.isFinite) ||
+    !(value > Math.min(...domain) && value < Math.max(...domain))
+  )) {
+    throw new RangeError("Scale midpoint must lie strictly inside its resolved domain.");
+  }
+  return value;
+}
+
 export function mapSequentialColors(
   values,
   domain,
@@ -342,6 +359,7 @@ export function mapSequentialColors(
   if (typeof shouldClamp !== "boolean") {
     throw new TypeError("Sequential color clamp must be a boolean.");
   }
+  const midpoint = validateSequentialMidpoint(options.midpoint, "sequential", domain);
   const [start, end] = domain;
   const constant = start === end;
   const method = validateContinuousColorInterpolation(interpolation);
@@ -354,7 +372,11 @@ export function mapSequentialColors(
       if (hasUnknown) return options.unknown;
       throw new TypeError("Sequential color values must be finite numbers.");
     }
-    const raw = constant ? 0.5 : inverseLerp(value, start, end);
+    const raw = midpoint === undefined
+      ? constant ? 0.5 : inverseLerp(value, start, end)
+      : (end > start ? value <= midpoint : value >= midpoint)
+        ? inverseLerp(value, start, midpoint) / 2
+        : 0.5 + inverseLerp(value, midpoint, end) / 2;
     return interpolateColors(colors, raw, method, shouldClamp);
   }));
 }

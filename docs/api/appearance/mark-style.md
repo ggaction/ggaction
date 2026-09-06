@@ -7,11 +7,11 @@ title: Mark Style
 
 {% include chart-example.html id="bar" %}
 
-## Rule appearance
+## Line and Rule appearance
 
 `encodeStroke({ value, target? })` assigns a required non-empty constant color
 string to a rule. `encodeStrokeWidth({ value, target? })` assigns a
-non-negative finite logical Canvas width to every child of the current rule.
+non-negative finite logical Canvas width to every child of the current Line or Rule.
 These constant modes create no scale or legend.
 
 `encodeStrokeWidth({ field, target?, fieldType?, scale? })` instead creates an
@@ -31,12 +31,26 @@ program
 
 Field values, domains, and ranges must be finite and non-negative. `value` and
 `field` are mutually exclusive. `editScale` rematerializes both marks and an
-active sampled stroke-width legend.
+active sampled stroke-width legend. Calling `{ value }` removes the field binding
+and only its own width legend; calling `{ field }` clears the constant override.
+Selections referring to the replaced channel must be removed first.
+
+Lines also support `encodeOpacity({ field: "quality" })` with one value per series,
+a default linear range of `[0.2, 1]`, and `createLegend({ channels: ["opacity"] })`.
+Use `{ value: 0.5 }` to return to constant opacity. Constant mode rejects
+`fieldType` and `scale`. Line field opacity has no missing-value fallback.
+`editLineMark` rejects scalar width/opacity while the same field encoding is
+active; use the corresponding encoder's explicit value assignment to replace it.
 
 Rules also reuse `encodeStrokeDash` in constant or nominal-field mode and
 `encodeOpacity` in constant or quantitative-field mode. Field modes produce
 one concrete value per rule line; constant modes remain scale-free. Recalling
 an owning action replaces that appearance assignment immutably.
+
+`createRuleMark` and `editRuleMark` accept scalar stroke, strokeWidth, strokeDash
+and opacity. Both delegate requested styles to these four encoding owners after
+full validation. Editing requires at least one style and rejects active field
+appearance. Endpoints and statistical component ownership remain separate.
 
 ## `encodeBarWidth({ band?, pixels?, target? })`
 
@@ -51,7 +65,7 @@ program.encodeBarWidth({ band: 0.72 });
 | --- | --- | --- |
 | `band` | finite number greater than `0` and at most `1` | first assignment: `0.72` |
 | `pixels` | positive finite logical Canvas pixels | none |
-| `target` | aggregate or ranged bar mark ID | current mark |
+| `target` | bar mark ID, including an incomplete bar | current mark |
 
 `band` and `pixels` are mutually exclusive. Before this action is called,
 complete aggregate and ranged bars already use the same implicit `0.72` band
@@ -60,11 +74,17 @@ current mode and value. Band widths respond to Canvas resizing; pixel widths
 remain fixed in logical coordinates and do not change with PNG `pixelRatio`.
 An explicit pixel width may be wider than its slot, allowing intentional overlap.
 
-The action requires a complete category/measure aggregate bar or a complete
-categorical ranged bar. Group layout also requires matching color and directional
+Before positions are complete, the action saves the width without creating items.
+A later position assignment applies it to the completed aggregate or ranged bar.
+Removing a required position clears items and retains the width for reauthoring.
+Histogram bins do not accept category-slot width; completing a histogram with a
+saved width fails. Group layout requires matching color and directional
 offset semantics. Thickness is the category bandwidth times `band` for stack, fill,
 overlay, diverging, and ranged bars, or offset bandwidth times `band` for
 group. Each bar is centered in its slot; missing cells are omitted.
+
+A deferred Box plot keeps its dedicated `createBoxPlot({ width })` option.
+Its lower `encodeBarWidth` override requires the Box's range to be complete.
 
 `band` is graphical layout rather than chart meaning, so it is not added to
 `semanticSpec`. The action stores immutable materialization config and writes

@@ -178,7 +178,7 @@ test("validates selectors, edits, kind options, and left margin atomically", () 
   assert.throws(() => gradient.editLegend({ columns: 2 }),
     /does not accept columns/);
   assert.throws(() => right.editLegend({ position: "left" }),
-    /left-margin space/);
+    /Categorical legend layout requires more Canvas margin space/);
   assert.ok(right.graphicSpec.objects.seriesLegendTitle);
 });
 
@@ -208,7 +208,7 @@ test("edits focused legend components through nested editLegend calls", () => {
   const beforeConfig = structuredClone(before.guideConfigs.legend);
   const edited = before
     .editLegendLayout({ target: "points", offset: 84, itemGap: 30 })
-    .editLegendLabels({ target: "points", color: "#475569", fontSize: 11 })
+    .editLegendLabels({ target: "points", offset: 14, color: "#475569", fontSize: 11 })
     .editLegendTitle({ target: "points", color: "#0f172a", fontWeight: 700 })
     .editLegendSymbols({ target: "points", count: 4 })
     .editLegendBorder({ target: "points", border: { padding: 9 } });
@@ -216,6 +216,7 @@ test("edits focused legend components through nested editLegend calls", () => {
   assert.equal(edited.guideConfigs.legend.series.offset, 84);
   assert.equal(edited.graphicSpec.objects.seriesLegendLabels.items[0].properties.fill,
     "#475569");
+  assert.equal(edited.guideConfigs.legend.series.labels.offset, 14);
   assert.equal(edited.graphicSpec.objects.seriesLegendTitle.properties.fontWeight, 700);
   assert.equal(edited.graphicSpec.objects.sizeLegendSymbols.items.length, 4);
   assert.equal(edited.guideConfigs.legend.series.border.padding, 9);
@@ -228,10 +229,11 @@ test("edits focused legend components through nested editLegend calls", () => {
 test("validates focused legend component boundaries", () => {
   const program = createLeftLegendCarsRegressionScatterplot(cars);
   assert.throws(() => program.editLegendLayout(), /at least one component change/);
-  assert.throws(
-    () => program.editLegendLabels({ offset: 4 }),
-    /Unknown editLegendLabels option/
-  );
+  assert.equal(program.editLegendLabels({ target: "points", offset: 4 })
+    .guideConfigs.legend.series.labels.offset, 4);
+  const formatted = program.editLegendLabels({ target: "points", format: ".1f" });
+  assert.equal(formatted.guideConfigs.legend.size.labels.format, ".1f");
+  assert.equal(formatted.guideConfigs.legend.series.labels.format, undefined);
   assert.throws(
     () => program.editLegendBorder({ border: { padding: -1 } }),
     /non-negative/

@@ -91,7 +91,7 @@ test("keeps close stroke-width legend labels distinct", () => {
     .createCanvas({
       width: 760,
       height: 460,
-      margin: { top: 30, right: 200, bottom: 60, left: 70 }
+      margin: { top: 30, right: 260, bottom: 60, left: 70 }
     })
     .createData({ values })
     .createLineMark({ id: "lines" })

@@ -207,7 +207,7 @@ test("rejects missing, invalid, ambiguous, and field-driven shape edits", () => 
     ._clone({ context: {} });
   assert.throws(
     () => ambiguous.editPointMark({ shape: "circle" }),
-    /Point mark id/
+    /ambiguous/
   );
   assert.equal(base.markConfigs.points.shape, "circle");
   assert.equal(base.graphicSpec.objects.points.type, "circle");

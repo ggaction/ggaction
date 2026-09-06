@@ -224,7 +224,6 @@ const errorBandCallChain = `chart()
   })
   .editErrorBand({
     target: "errorBand",
-    fill: "#7dd3fc",
     opacity: 0.34,
     curve: "cardinal"
   })
@@ -236,7 +235,8 @@ const errorBandCallChain = `chart()
     strokeDash: [6, 3],
     opacity: 0.8,
     curve: "cardinal"
-  });`;
+  })
+  .editGraphics({ target: "errorBand", property: "fill", value: "#7dd3fc" });`;
 
 const regressionCallChain = `chart()
   .createCanvas({
@@ -308,7 +308,7 @@ const guideRemovalCallChain = `chart()
     xScale: { nice: true, zero: false }
   })
   .encodeColor({ field: "Origin", scale: { palette: "tableau10" } })
-  .createGuides({ legend: { position: "bottom" } })
+  .createGuides({ legend: { position: "bottom", layout: "legacy-bottom" } })
   .createTitle({
     text: "Displacement distribution",
     subtitle: "by country",

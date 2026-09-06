@@ -1,7 +1,7 @@
 const SCALE_EDIT_PROPERTIES = Object.freeze([
   "type", "domain", "range", "nice", "zero", "clamp", "reverse",
   "base", "exponent", "constant", "paddingInner", "paddingOuter",
-  "padding", "align", "interpolate", "unknown"
+  "padding", "align", "interpolate", "midpoint", "unknown"
 ]);
 
 function sameValue(left, right) {

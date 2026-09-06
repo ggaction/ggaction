@@ -1,6 +1,15 @@
+import { withGuideLayoutValidation } from "../../../materialization/guides/layout.js";
 import { action } from "../../../core/action.js";
 import { isPlainObject } from "../../../core/immutable.js";
 import { validateKeys, validateOptionObject } from "../../../core/validation.js";
+
+import {
+  AXIS_COMPONENTS,
+  axisComponentId as graphicId,
+  hasAxisComponent as hasComponent,
+  assertRemovableAxisComponent as assertRemovable,
+  removeAxisComponent as removeComponent
+} from "./components.js";
 
 const OPTIONS = Object.freeze([
   "position", "line", "ticks", "labels", "ticksAndLabels", "title"
@@ -11,19 +20,14 @@ const TICK_OPTIONS = Object.freeze([
 ]);
 const LABEL_OPTIONS = Object.freeze([
   "count", "values", "offset", "format", "color", "fontSize",
-  "fontFamily", "fontWeight"
+  "fontFamily", "fontWeight", "rotation", "maxWidth", "wrap",
+  "lineHeight", "overlap"
 ]);
 const GROUP_OPTIONS = Object.freeze(["count", "values", "ticks", "labels"]);
 const TITLE_OPTIONS = Object.freeze([
   "text", "at", "offset", "rotation", "color", "fontSize",
   "fontFamily", "fontWeight"
 ]);
-const COMPONENTS = Object.freeze({
-  line: Object.freeze({ suffix: "Line", config: "line" }),
-  ticks: Object.freeze({ suffix: "Ticks", config: "ticks" }),
-  labels: Object.freeze({ suffix: "Labels", config: "labels" }),
-  title: Object.freeze({ suffix: "Title", config: "title" })
-});
 
 function validateNested(args, key, options, operation, { allowFalse = false } = {}) {
   if (!Object.hasOwn(args, key)) return;
@@ -59,7 +63,8 @@ function validateArgs(args, operation) {
   }
   if (args.ticksAndLabels !== false && args.ticksAndLabels?.labels !== undefined) {
     validateNested(args.ticksAndLabels, "labels", [
-      "offset", "format", "color", "fontSize", "fontFamily", "fontWeight"
+      "offset", "format", "color", "fontSize", "fontFamily", "fontWeight",
+      "rotation", "maxWidth", "wrap", "lineHeight", "overlap"
     ], `${operation}.ticksAndLabels`);
   }
 }
@@ -75,46 +80,6 @@ function names(channel) {
     title: `edit${prefix}AxisTitle`,
     remove: `remove${prefix}Axis`
   };
-}
-
-function graphicId(channel, component) {
-  return `${channel}Axis${COMPONENTS[component].suffix}`;
-}
-
-function hasComponent(program, channel, component) {
-  return program.graphicSpec.objects[graphicId(channel, component)] !== undefined ||
-    program.guideConfigs.axis?.[channel]?.[COMPONENTS[component].config] !== undefined ||
-    (component === "title" &&
-      program.semanticSpec.guides.axis?.[channel]?.title !== undefined);
-}
-
-function assertRemovable(program, channel, component, operation) {
-  if (!hasComponent(program, channel, component)) {
-    throw new Error(
-      `${operation}.${component} requires an existing ${channel}-axis ${component}.`
-    );
-  }
-}
-
-function removeComponent(program, channel, component) {
-  const id = graphicId(channel, component);
-  let next = program;
-
-  if (
-    component === "title" &&
-    next.semanticSpec.guides.axis?.[channel]?.title !== undefined
-  ) {
-    next = next.editSemantic({
-      property: `guide.axis.${channel}.title`,
-      remove: true
-    });
-  }
-  if (next.graphicSpec.objects[id] !== undefined) {
-    next = next.editGraphics({ target: id, remove: true });
-  }
-  return next._withoutMaterializationConfig([
-    "guides", "axis", channel, COMPONENTS[component].config
-  ]);
 }
 
 function buildPlan(program, channel, args, operation) {
@@ -168,7 +133,7 @@ function applyPlan(program, channel, plan, operation) {
       : next[step.operation](step.args);
   }
 
-  const hasRetainedGraphic = Object.keys(COMPONENTS).some(
+  const hasRetainedGraphic = AXIS_COMPONENTS.some(
     component => next.graphicSpec.objects[graphicId(channel, component)] !== undefined
   );
   if (!hasRetainedGraphic && (
@@ -187,7 +152,7 @@ function makeEditAxis(channel) {
       op: operation.operation,
       description: `Edit selected existing ${channel}-axis components.`
     },
-    function (args = {}) {
+    withGuideLayoutValidation(function (args = {}) {
       validateArgs(args, operation.operation);
       const plan = buildPlan(this, channel, args, operation);
 
@@ -195,7 +160,7 @@ function makeEditAxis(channel) {
       // later leaf failure cannot begin the returned action trace or state.
       applyPlan(this, channel, plan, operation);
       return applyPlan(this, channel, plan, operation);
-    }
+    })
   );
 }
 

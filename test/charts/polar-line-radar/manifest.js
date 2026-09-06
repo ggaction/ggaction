@@ -20,33 +20,36 @@ export const gapminderTargetCallChain = `chart()
     margin: { top: 70, right: 190, bottom: 70, left: 70 }
   })
   .createData({ values: trendRows })
-  .createLineMark({ strokeWidth: 2.5, opacity: 0.88 })
-  .encodeTheta({
-    field: "year",
-    scale: { domain: [1955, 2005], range: [0, 330] }
-  })
-  .encodeR({
-    field: "life_expect",
-    scale: { domain: [25, 85], zero: false }
-  })
-  .encodeGroup({ field: "country" })
-  .encodeColor({ field: "country", palette: "tableau10" })
-  .createGuides({
-    axes: {
-      theta: {
-        ticksAndLabels: { values: [1955, 1965, 1975, 1985, 1995, 2005] },
-        title: { text: "Year" }
+  .createPolarLinePlot({
+    id: "line",
+    theta: {
+      field: "year",
+      scale: { domain: [1955, 2005], range: [0, 330] }
+    },
+    radius: {
+      field: "life_expect",
+      scale: { domain: [25, 85], zero: false }
+    },
+    groupBy: "country",
+    color: { field: "country", palette: "tableau10" },
+    line: { strokeWidth: 2.5, opacity: 0.88 },
+    guides: {
+      axes: {
+        theta: {
+          ticksAndLabels: { values: [1955, 1965, 1975, 1985, 1995, 2005] },
+          title: { text: "Year" }
+        },
+        radius: {
+          ticksAndLabels: { values: [30, 40, 50, 60, 70, 80] },
+          title: { text: "Life expectancy" }
+        }
       },
-      radius: {
-        ticksAndLabels: { values: [30, 40, 50, 60, 70, 80] },
-        title: { text: "Life expectancy" }
-      }
-    },
-    grid: {
-      theta: { values: [1955, 1965, 1975, 1985, 1995, 2005] },
-      radial: { values: [30, 40, 50, 60, 70, 80] }
-    },
-    legend: { position: "right" }
+      grid: {
+        theta: { values: [1955, 1965, 1975, 1985, 1995, 2005] },
+        radial: { values: [30, 40, 50, 60, 70, 80] }
+      },
+      legend: { position: "right" }
+    }
   });`;
 
 export const radarTargetCallChain = `chart()
@@ -56,38 +59,36 @@ export const radarTargetCallChain = `chart()
     margin: { top: 90, right: 190, bottom: 90, left: 90 }
   })
   .createData({ values: radarRows })
-  .createLineMark({ closed: true, strokeWidth: 2.5, opacity: 0.9 })
-  .encodeTheta({
-    field: "role",
-    fieldType: "nominal",
-    scale: {
-      domain: [
-        "Accounting", "Architecture", "Engineering", "Law",
-        "Management", "Nursing", "Secretarial", "Teaching"
-      ]
-    }
-  })
-  .encodeR({ field: "share", scale: { domain: [0, 1], zero: true } })
-  .encodeGroup({ field: "sex" })
-  .encodeColor({ field: "sex", palette: "tableau10" })
-  .createGuides({
-    axes: {
-      theta: { title: { text: "Occupation" } },
-      radius: {
-        ticksAndLabels: { values: [0, 0.25, 0.5, 0.75, 1] },
-        title: { text: "Share" }
-      }
-    },
-    grid: {
-      theta: {
-        values: [
-          "Accounting", "Architecture", "Engineering", "Law",
-          "Management", "Nursing", "Secretarial", "Teaching"
-        ]
+  .createRadarPlot({
+    id: "line",
+    category: "role",
+    value: { field: "share", scale: { domain: [0, 1], zero: true } },
+    groupBy: "sex",
+    order: [
+      "Accounting", "Architecture", "Engineering", "Law",
+      "Management", "Nursing", "Secretarial", "Teaching"
+    ],
+    color: { field: "sex", palette: "tableau10" },
+    line: { strokeWidth: 2.5, opacity: 0.9 },
+    guides: {
+      axes: {
+        theta: { title: { text: "Occupation" } },
+        radius: {
+          ticksAndLabels: { values: [0, 0.25, 0.5, 0.75, 1] },
+          title: { text: "Share" }
+        }
       },
-      radial: { values: [0, 0.25, 0.5, 0.75, 1] }
-    },
-    legend: { position: "right", title: "Sex" }
+      grid: {
+        theta: {
+          values: [
+            "Accounting", "Architecture", "Engineering", "Law",
+            "Management", "Nursing", "Secretarial", "Teaching"
+          ]
+        },
+        radial: { values: [0, 0.25, 0.5, 0.75, 1] }
+      }
+      legend: { position: "right", title: "Sex" }
+    }
   });`;
 
 export const visualVariants = Object.freeze([

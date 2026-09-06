@@ -11,6 +11,90 @@ Text marks turn data values into visible labels. Add one after a compatible poin
 bar, rect, rule, or arc layer and ggaction persists that layer as the annotation
 source.
 
+## `createAnnotation(options)`
+
+Create constant text at a final mark, data coordinate, or plot fraction:
+
+```javascript
+const dataNote = points.createAnnotation({
+  text: "Peak · 9.0",
+  x: 8,
+  y: 9,
+  dx: 8,
+  dy: -16,
+  fontWeight: 600
+});
+
+const plotNote = points.createAnnotation({
+  id: "forecast",
+  text: "Forecast",
+  space: "plot",
+  x: 0.75,
+  y: 0.8
+});
+```
+
+For a mark anchor, omit x, y, and space. `source` selects an existing compatible
+mark, or the current/unique mark is inferred. The constant text appears once per
+final source item, including aggregate bars and arc sectors.
+
+For a data anchor, provide both x and y and optionally `source`. The selected
+complete Cartesian layer supplies its dataset, coordinate, x/y scales, field types,
+and temporal units. Values participate in automatic domains. This binding is chosen
+at creation and remains an independent Text layer, so later `encodeX` and `encodeY`
+can move it.
+
+For a plot anchor, set `space: "plot"` and pass x/y fractions in `[0,1]`. x=0 is
+the plot's left edge and y=0 its bottom edge. Supply or make inferable an existing
+dataset; an empty dataset works. Plot anchors reject `source` and use named
+`<id>-x` and `<id>-y` fraction scales. The default ID is `"annotation"`.
+
+`text` is required. All ordinary Text appearance options and `format` are accepted.
+Omitting `layout`, or passing `false`, preserves the exact anchor. A layout object
+enables collision placement and accepts `layoutLabels` options except `target`.
+After creation, use the lower Text, position, scale, layout, and mark-removal actions.
+
+## `createMarkLabels(options?)`
+
+Create final-item labels in one call, then use the lower text actions to refine them:
+
+```javascript
+import { chart } from "ggaction";
+
+const labeled = chart()
+  .createCanvas({ width: 480, height: 360, margin: 50 })
+  .createData({ values: [{ category: "A", value: 2 }, { category: "B", value: 6 }] })
+  .createPiePlot({ category: "category", value: "value", aggregate: "sum", guides: false })
+  .createMarkLabels({ content: "share", format: ".0%", fontSize: 20 });
+// Labels: 25%, 75%; the created layer is "piePlot-labels".
+const refined = labeled.editTextMark({ target: "piePlot-labels", fontWeight: "bold" });
+```
+
+The current compatible mark, then one unique compatible mark, supplies the source.
+Use `source` to choose explicitly. The default ID is `<source>-labels`; additional
+label layers on the same source require explicit IDs. Each label uses the source's
+final visual item, so aggregated marks do not get duplicate labels for input rows.
+
+Omitting `field`, `value`, and `content` selects `content: "value"` for a supported
+Bar or Arc. Use `content: "category"` or `"share"` for other semantic content, `field`
+for raw/common fields, or `value` for a constant. These choices are exclusive.
+Point, Line, Rule, and Rect labels require a field or constant. A Line source
+creates one label at the final coordinate of each series and reads explicit fields
+from that final ordered row. Format defaults to
+`"auto"`; shares need an explicit percent format to display percentages.
+
+Text is centered horizontally and vertically at the existing source anchor. Use
+`baseline: "bottom", dy: -4` to place labels above an endpoint, or other ordinary
+text style options. `layout: {}` enables collision avoidance, and a layout object
+accepts `layoutLabels` options except `target`. Omission or `false` preserves source
+anchors without collision layout. An incomplete explicit source is supported when
+layout is disabled; call `layoutLabels` after completing it.
+
+The result is an ordinary text layer: edit it with `encodeText`, `editTextMark`,
+`layoutLabels`, or `removeLabelLayout`. Source changes replay the labels. The existing
+mark ownership rule removes attached labels when their source is removed; it does
+not support removing an attached label layer alone.
+
 ## `createTextMark(options?)`
 
 ```javascript
@@ -33,9 +117,51 @@ labels anchor at cell centers, and arc labels anchor at sector centers. Pass
 `data` explicitly to assemble an independent text layer with `encodeX` and
 `encodeY`.
 
-Creation options are `id`, `data`, `text`, `fill`, `opacity`, `fontSize`,
+Independent Text accepts either a field or a constant `datum` on each position.
+When x, y, and text are all constants, it creates exactly one label even if the
+selected dataset is empty or has many rows. If any of them uses a field, constants
+are repeated at that field's row grain. Datum positions use the same quantitative,
+temporal, and nominal scale rules as other Cartesian marks and contribute to
+automatic domains.
+
+Use `source` to select a particular mark when a chart has several layers:
+
+```javascript
+// Fragment: layeredChart contains a mark named "bars".
+const labels = layeredChart
+  .createTextMark({ id: "bar-labels", source: "bars", dy: -4, align: "center" })
+  .encodeText({ field: "value" });
+```
+
+An explicit source wins over the current mark and dataset. Use either `source`
+or `data`; supplying both is an error. The source must be an existing point,
+bar, rect, rule, or arc, but its position encodings may still be incomplete.
+Labels appear when the source becomes complete. They follow later source
+position and scale changes, disappear when a required position is removed, and
+return when it is restored. `source` is a creation option; `editTextMark` edits
+appearance.
+
+For an aggregate Bar or a measured Rose/Radial Bar, labeling the measure field
+uses its final aggregate value, even when every contributing row has the same
+value. For example, two values of 1 in one category produce a sum label of 2.
+Category labels continue to show the category itself.
+These source-owned labels follow the source's scale domain. They never contribute independent domain values,
+including after source field changes, scale rebinding, filtering, and resizing. Axis/grid inference uses the source's
+current bindings instead of inherited label aliases. Direct `encodeX/Y` on an attached Text layer is rejected;
+edit the source positions or use `editTextMark({ dx, dy })` for an offset. For independent positions, create Text
+with explicit `data`. Independent Text still contributes its own scale values.
+
+Creation options are `id`, `data`, `source`, `text`, `fill`, `opacity`, `fontSize`,
 `fontFamily`, `fontWeight`, `align`, `baseline`, `rotation`, `dx`, and `dy`.
 The `text` option is constant-content shorthand.
+
+`rotation` accepts the existing finite numeric form, interpreted as radians, or
+an explicit unit object: `{ value: 90, unit: "degrees" }` and
+`{ value: Math.PI / 2, unit: "radians" }` are equivalent. Structured values
+must contain exactly `value` and `unit`; the unit is either `"degrees"` or
+`"radians"`. The public boundary normalizes both forms to radians, so later
+Canvas, scale, source, and layout replay preserve one concrete meaning.
+`editTextMark`, `createMarkLabels`, and `createAnnotation` use the same rule.
 
 ## Font weights
 
@@ -46,17 +172,63 @@ For example, `650` renders as `700`. The authored value remains unchanged in the
 program state. Titles, facet headers, legends, and Cartesian or Polar axis text
 use this same renderer policy.
 
-## `encodeText({ target?, field?, value?, format? })`
+## `encodeText({ target?, field?, value?, content?, normalizeBy?, format? })`
 
-Provide exactly one of `field` or `value`. `format` defaults to `"auto"`; fixed
-decimal formats from `".0f"` through `".12f"` are available for numeric content.
-Calling `encodeText` again replaces the previous field or constant assignment.
+Provide exactly one of `field`, constant `value`, or semantic `content`.
+`format` defaults to `"auto"`. Numeric formats are `".0f"`–`".12f"`,
+`".0%"`–`".12%"`, and `".0e"`–`".12e"`. UTC date formats compose `%Y`, `%m`,
+`%d`, and `%b`, such as `"%Y-%m-%d"`; `%%` emits a literal percent sign.
+Calling `encodeText` again replaces the previous content assignment and
+preserves the previous format unless you supply one. Precision is an integer
+from 0 through 12; two-digit zero-padded forms such as `".01f"` are also
+accepted and mean the same as `".1f"`.
 
 ```javascript
 bars
   .createTextMark({ dy: -4, align: "center" })
   .encodeText({ field: "value", format: ".1f" });
+
+events
+  .createTextMark()
+  .encodeText({ field: "date", format: "%b %Y" });
 ```
+
+Use semantic content when the label should describe the source's final items:
+
+```javascript
+// Fragment: pie contains a completed Pie mark.
+const percentages = pie
+  .createTextMark({ align: "center", baseline: "middle" })
+  .encodeText({ content: "share", format: ".1%" });
+
+// Fragment: stackedBars contains a completed Bar mark.
+const segmentValues = stackedBars
+  .createTextMark({ align: "center", dy: -4 })
+  .encodeText({ content: "value" });
+```
+
+`content: "value"` reads each Bar segment's aggregate before stacking or
+normalization, each histogram segment's count, each Pie sector's count or
+weighted sum, or an Arc's radial value. For two stacked values of 10 and 30,
+it labels them 10 and 30. `content: "category"` reads the category of an
+aggregate Bar or categorical Arc.
+
+`content: "share"` divides these values by their total across the current
+source's final items. Use `normalizeBy: "category"` for percentages within
+each Bar category or histogram bin. Arc shares use `normalizeBy: "source"`,
+the default. Filtering the source recalculates the denominator. Negative or
+undefined values and non-positive denominators are errors; an empty final
+item set produces no labels. Zero-height bars omitted from final items also
+have no labels. With `format: "auto"`, a share is a fraction; use a percent
+token to display a percentage.
+
+Semantic content requires an attached Bar or Arc. For Point, Rule, Rect,
+ranged Bar, or an independent text layer, choose a `field` or constant
+`value` explicitly. Histogram intervals and quantitative Arc theta have no
+inferred category label. Source completion, position changes, and scale
+edits replay the stored content alongside the label anchors. For existing facet
+child programs, add labels after faceting; the current facet template contract
+does not support pre-existing text layers.
 
 Arc-source text is anchored halfway between each sector's inner and outer radii
 at its angular midpoint. The anchor is derived from the materialized sector path,

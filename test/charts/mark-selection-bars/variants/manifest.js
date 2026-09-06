@@ -30,7 +30,7 @@ export const tallestStackHighlightCallChain = `chart()
     field: "Origin",
     scale: { palette: "tableau10" }
   })
-  .createGuides({ legend: { position: "bottom" } })
+  .createGuides({ legend: { position: "bottom", layout: "legacy-bottom" } })
   .createTitle({
     text: "Displacement distribution",
     subtitle: "by country",
@@ -63,7 +63,7 @@ export const topmostSegmentHighlightCallChain = `chart()
     field: "Origin",
     scale: { palette: "tableau10" }
   })
-  .createGuides({ legend: { position: "bottom" } })
+  .createGuides({ legend: { position: "bottom", layout: "legacy-bottom" } })
   .createTitle({
     text: "Displacement distribution",
     subtitle: "by country",

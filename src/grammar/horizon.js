@@ -8,14 +8,15 @@ import { interpolateNumber, inverseLerp } from "./numeric.js";
 import { requireFiniteResult } from "./numeric.js";
 import {
   isNominalValue,
-  normalizeTemporalValue
+  normalizeTemporalValue,
+  resolveTemporalUnit
 } from "./scales/index.js";
 
 export const HORIZON_RESOLUTIONS = Object.freeze(["shared", "independent"]);
 export const HORIZON_MISSING_POLICIES = Object.freeze(["break", "error"]);
 export const HORIZON_OVERFLOW_POLICIES = Object.freeze(["clip", "error"]);
 
-const ENCODING_PROPERTIES = Object.freeze(["field", "fieldType"]);
+const ENCODING_PROPERTIES = Object.freeze(["field", "fieldType", "temporalUnit"]);
 const OUTPUT_PROPERTIES = Object.freeze([
   "x", "lower", "upper", "group", "color", "sign", "band", "segment"
 ]);
@@ -41,7 +42,8 @@ function validateEncoding(value, role) {
       `Horizon ${role} fieldType must be quantitative${supportsTemporal ? " or temporal" : ""}.`
     );
   }
-  return { field, fieldType };
+  const temporalUnit = resolveTemporalUnit(value, fieldType);
+  return { field, fieldType, ...(temporalUnit === undefined ? {} : { temporalUnit }) };
 }
 
 function validateOutputFields(value) {
@@ -183,7 +185,7 @@ export function validateHorizonTransform(transform) {
 
 function orderedX(value, encoding, rowIndex) {
   if (encoding.fieldType === "temporal") {
-    return normalizeTemporalValue(value, encoding.field, rowIndex);
+    return normalizeTemporalValue(value, encoding.field, rowIndex, encoding.temporalUnit);
   }
   if (!Number.isFinite(value)) {
     throw new TypeError(

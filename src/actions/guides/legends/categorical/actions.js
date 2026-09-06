@@ -1,28 +1,34 @@
+import { withGuideLayoutValidation } from "../../../../materialization/guides/layout.js";
+import { sameGuideValue } from "../../reuse.js";
+import { normalizeLegendOrder } from "../../../../grammar/categoryOrder.js";
 import { action } from "../../../../core/action.js";
 import { validateOptionObject } from "../../../../core/validation.js";
 import { noOptions, resolveLayout, activeConfig } from "./layout.js";
 import { normalizeOptions } from "./options.js";
+import { normalizeRecipe, resolveLegendSymbol } from "./recipes.js";
+import { validateLegendChannels } from "../target.js";
+import { createCategoricalLegendFromConfig, reconcileCategoricalSymbols } from "../lifecycle.js";
 import { findLayer } from "../../../../selectors/layers.js";
 import { findSemanticScale } from "../../../../selectors/scales.js";
-import { isSizeLegendPoint } from "../size.js";
+import { isSizeLegendPoint, resolveSizeLegendConfig } from "../size.js";
 import { isStrokeWidthLegendLayer } from "../strokeWidth.js";
+import { isOpacityLegendLayer } from "../../../../materialization/legends.js";
 import { legendResourcePolicies } from
   "../../../../materialization/guides/resources.js";
 import {
-  hasMultiHorizontalLegendLane,
-  hasMultiLegendLane,
+  hasHorizontalLegendLane,
+  hasLegendLane,
   hasMultiSideLegendLane
 } from "../lane.js";
 import {
   resolveCurrentDefinition,
   resolveDefinition,
-  resolveLegendKind,
   resolveTarget,
   sameValues
 } from "./resolve.js";
 
 function finishLegend(program) {
-  return hasMultiLegendLane(program) ? program.rematerializeLegend() : program;
+  return hasLegendLane(program) ? program.rematerializeLegend() : program;
 }
 
 function requestedCandidate(program, target, candidates) {
@@ -33,31 +39,15 @@ function requestedCandidate(program, target, candidates) {
   return candidates.includes(layer) ? layer : undefined;
 }
 
-function createStandaloneLegend(program, args, kind) {
-  const { target, count, position, channels: _channels, ...unsupported } = args;
-  const label = kind === "size" ? "size" : "stroke-width";
-  const unsupportedKeys = Object.keys(unsupported);
-  if (unsupportedKeys.length > 0) {
-    throw new Error(
-      `Standalone ${label} legend does not support option "${unsupportedKeys[0]}".`
-    );
-  }
-  if (position !== undefined && position !== "right") {
-    throw new Error(
-      `Standalone ${label} legends currently require position "right".`
-    );
-  }
-  return finishLegend(program[kind === "size"
-    ? "createSizeLegend"
-    : "createStrokeWidthLegend"]({
-    ...(target === undefined ? {} : { target }),
-    ...(count === undefined ? {} : { count })
-  }));
+function resolveStandaloneLegendStep(args, kind) {
+  if (Object.hasOwn(args, "inheritAppearance")) throw new Error("createLegend does not accept inheritAppearance.");
+  const { channels: _channels, ...options } = args;
+  return { op: kind === "size" ? "createSizeLegend" : "createStrokeWidthLegend", args: options };
 }
 
 export const rematerializeLegend = action(
   { op: "rematerializeLegend", description: "Rematerialize every existing legend component." },
-  function (args = {}) {
+  withGuideLayoutValidation(function (args = {}) {
     noOptions(args, "rematerializeLegend");
     let next = this;
     const hasCategorical =
@@ -66,7 +56,11 @@ export const rematerializeLegend = action(
     if (hasCategorical) {
       const { kind, config } = activeConfig(this);
       const definition = resolveCurrentDefinition(this, config);
-      const changed =
+      const symbol = config.inferredSymbol
+        ? normalizeRecipe(resolveLegendSymbol(this, findLayer(this, config.target), definition.channels), kind)
+        : config.symbol;
+      const symbolChanged = !sameGuideValue(symbol, config.symbol);
+      const changed = symbolChanged ||
         !sameValues(config.channels, definition.channels) ||
         !sameValues(config.domain, definition.domain) ||
         !sameValues(config.scales, definition.scales) ||
@@ -75,6 +69,7 @@ export const rematerializeLegend = action(
       next = changed
         ? this._withLegendConfig(kind, {
             ...config,
+            symbol,
             channels: definition.channels,
             scales: definition.scales,
             field: definition.field,
@@ -112,6 +107,10 @@ export const rematerializeLegend = action(
           });
         }
       }
+      if (symbolChanged) {
+        resolveLayout(next, next.guideConfigs.legend[kind]);
+        next = reconcileCategoricalSymbols(next, config, next.guideConfigs.legend[kind]);
+      }
       if (config.border !== false) next = next.rematerializeLegendBackground();
       next = next
         .rematerializeLegendSymbols()
@@ -133,251 +132,196 @@ export const rematerializeLegend = action(
     if (hasMultiSideLegendLane(next)) {
       next = next.rematerializeSideLegendLane();
     }
-    if (hasMultiHorizontalLegendLane(next)) {
+    if (hasHorizontalLegendLane(next)) {
       next = next.rematerializeHorizontalLegendLane();
     }
     return next;
-  }
+  })
 );
+
+export function resolveCategoricalLegendConfig(program, args = {}) {
+  const layer = resolveTarget(program, args.target);
+  const definition = resolveDefinition(
+    program,
+    layer,
+    args.channels,
+    args.title,
+    args.order === undefined ? undefined : normalizeLegendOrder(args.order)
+  );
+  const options = normalizeOptions({ ...args,
+    symbol: resolveLegendSymbol(program, layer, definition.channels, args.symbol)
+  }, definition.kind);
+  const config = {
+    target: layer.id,
+    ...definition,
+    inferredTitle: !Object.hasOwn(args, "title"),
+    inferredSymbol: args.symbol === undefined || args.symbol === "auto",
+    position: options.position,
+    align: options.align,
+    direction: options.direction,
+    columns: options.columns,
+    offset: options.offset,
+    titlePosition: options.titlePosition,
+    symbol: options.symbol,
+    labels: options.labels,
+    titleStyle: options.titleStyle,
+    itemGap: options.itemGap,
+    layout: options.layout,
+    border: options.border,
+    titleVisible: true
+  };
+  return config;
+}
 
 export const createCategoricalLegend = action(
   { op: "createCategoricalLegend", description: "Create one categorical legend block." },
-  function (args = {}) {
-    const layer = resolveTarget(this, args.target);
-    const kind = resolveLegendKind(layer, args.channels);
-    const options = normalizeOptions(args, kind);
+  withGuideLayoutValidation(function (args = {}) {
+    const config = resolveCategoricalLegendConfig(this, args);
     if (
       this.semanticSpec.guides.legend?.series !== undefined ||
       this.semanticSpec.guides.legend?.color !== undefined
     ) {
       throw new Error("createCategoricalLegend requires a missing legend.");
     }
-    const definition = resolveDefinition(
-      this,
-      layer,
-      options.channels,
-      options.title
-    );
-    const config = {
-      target: layer.id,
-      ...definition,
-      inferredTitle: !Object.hasOwn(args, "title"),
-      position: options.position,
-      align: options.align,
-      direction: options.direction,
-      columns: options.columns,
-      offset: options.offset,
-      titlePosition: options.titlePosition,
-      symbol: options.symbol,
-      labels: options.labels,
-      titleStyle: options.titleStyle,
-      itemGap: options.itemGap,
-      bottomGrid: options.bottomGrid,
-      border: options.border,
-      titleVisible: true
-    };
     resolveLayout(this, config);
-    let next = this;
-    if (kind === "series") {
-      next = next
-        .editSemantic({
-          property: "guide.legend.series.channels",
-          value: definition.channels
-        })
-        .editSemantic({
-          property: "guide.legend.series.scales",
-          value: definition.scales
-        })
-        .editSemantic({
-          property: "guide.legend.series.title",
-          value: definition.title
-        });
-    } else {
-      next = next
-        .editSemantic({
-          property: "guide.legend.color.scale",
-          value: definition.scales[0]
-        })
-        .editSemantic({
-          property: "guide.legend.color.title",
-          value: definition.title
-        });
-    }
-    next = next._withLegendConfig(kind, config);
-    if (config.border !== false) next = next.createLegendBackground();
-    return next
-      .createLegendSymbols()
-      .createLegendLabels()
-      .createLegendTitle();
-  }
+    return createCategoricalLegendFromConfig(this, config,
+      args.order === undefined ? undefined : normalizeLegendOrder(args.order));
+  })
 );
+
+export function resolveLegendCreationPlan(program, args = {}, layers = program.semanticSpec.layers) {
+  validateOptionObject(args, undefined, "createLegend");
+  const candidates = args.target === undefined ? layers : layers.filter(layer => layer.id === args.target);
+  const channels = args.channels;
+  if (channels !== undefined) validateLegendChannels(channels, "createLegend");
+  const standalone = [
+    ["size", isSizeLegendPoint, ["color", "shape", "strokeDash", "opacity"]],
+    ["strokeWidth", isStrokeWidthLegendLayer, args.target === undefined
+      ? ["color", "shape", "strokeDash", "size", "opacity"]
+      : ["color", "shape", "strokeDash", "opacity"]],
+    ["opacity", isOpacityLegendLayer,
+      ["color", "shape", "strokeDash", "size"]]
+  ];
+  for (const [kind, eligible, otherChannels] of standalone) {
+    const explicit = channels?.length === 1 && channels[0] === kind;
+    const inferred = channels === undefined && candidates.filter(eligible).length === 1 &&
+      !candidates.some(layer => otherChannels.some(channel => layer.encoding?.[channel]?.scale !== undefined));
+    if (explicit || inferred) {
+      const step = kind === "opacity" ? { op: "createOpacityLegend", args }
+        : resolveStandaloneLegendStep(args, kind);
+      return { steps: [step], finish: "auto" };
+    }
+  }
+  const continuousColorCandidates = candidates.filter(layer => {
+    const encoding = ["point", "bar", "rect"].includes(layer.mark?.type)
+      ? layer.encoding?.color
+      : undefined;
+    const scale = findSemanticScale(program, encoding?.scale);
+    return scale?.type === "sequential";
+  });
+  const continuousColor = requestedCandidate(
+    program, args.target, continuousColorCandidates
+  );
+  if (
+    (channels?.length === 1 && channels[0] === "color" && continuousColor) ||
+    (channels === undefined && continuousColor)
+  ) {
+    return { steps: [{ op: "createGradientLegend", args }], finish: "auto" };
+  }
+  const intervalColorCandidates = candidates.filter(layer => {
+    const encoding = ["point", "bar", "rect"].includes(layer.mark?.type) ? layer.encoding?.color : undefined;
+    const scale = findSemanticScale(program, encoding?.scale);
+    return ["quantize", "quantile", "threshold"].includes(scale?.type);
+  });
+  if (
+    (channels?.length === 1 && channels[0] === "color" &&
+      intervalColorCandidates.length > 0) ||
+    (channels === undefined && intervalColorCandidates.length > 0)
+  ) {
+    return { steps: [{ op: "createIntervalLegend", args }], finish: "auto" };
+  }
+  const wantsShape = channels?.includes("shape") === true;
+  const wantsSize = channels?.includes("size") === true;
+  const pointCandidates = candidates.filter(layer =>
+    layer.mark?.type === "point" &&
+    (channels === undefined
+      ? ["color", "shape"].some(channel => layer.encoding?.[channel]?.scale !== undefined)
+      : (wantsShape || wantsSize) && channels.every(channel =>
+        ["color", "shape", "size"].includes(channel) && layer.encoding?.[channel]?.scale !== undefined))
+  );
+  const requestedPoint = requestedCandidate(program, args.target, pointCandidates);
+  const inferredSize = channels === undefined && pointCandidates.some(isSizeLegendPoint);
+  if ((wantsSize || inferredSize) && requestedPoint === undefined) {
+    throw new Error("Combined size legend requires one eligible point mark or an explicit target.");
+  }
+  if (requestedPoint !== undefined) {
+    const { count, ...categoricalArgs } = args;
+    const combined = requestedPoint.encoding?.size?.scale !== undefined &&
+      (channels === undefined || wantsSize);
+    if (count !== undefined && !combined) {
+      throw new Error("Legend count requires a selected size legend.");
+    }
+    if (combined && categoricalArgs.layout === "legacy-bottom") {
+      throw new Error('Combined size legends require layout "edge".');
+    }
+    const inferredChannels = ["color", "shape"].filter(
+      channel => requestedPoint.encoding?.[channel]?.scale !== undefined
+    );
+    const { format: sizeFormat, ...categoricalLabels } = categoricalArgs.labels ?? {};
+    if (!combined && sizeFormat !== undefined && sizeFormat !== "auto") {
+      throw new Error("Categorical legend labels do not accept format.");
+    }
+    const steps = [{ op: "createCategoricalLegend", args: {
+      ...categoricalArgs,
+      ...(categoricalArgs.labels === undefined ? {} : { labels: categoricalLabels }),
+      target: requestedPoint.id,
+      channels: channels?.filter(channel => channel !== "size") ?? inferredChannels
+    } }];
+    if (combined) steps.push({ op: "createSizeLegend", args: {
+      target: requestedPoint.id,
+      ...(count === undefined ? {} : { count }),
+      ...(categoricalArgs.labels === undefined ? {} : { labels: {
+        ...(categoricalArgs.labels.offset === undefined ? {} : { offset: categoricalArgs.labels.offset }),
+        ...(sizeFormat === undefined ? {} : { format: sizeFormat })
+      } }),
+      inheritAppearance: true
+    } });
+    // Validate both content owners before any component action starts.
+    resolveCategoricalLegendConfig(program, steps[0].args);
+    if (combined) {
+      const size = resolveSizeLegendConfig(program, steps[1].args);
+      const existing = program.guideConfigs.legend?.size;
+      if (existing !== undefined && existing.target !== size.target) {
+        throw new Error("Combined point series legend requires the active size legend to share its target.");
+      }
+      if (existing !== undefined && count !== undefined && existing.count !== count) {
+        throw new Error("Existing size legend count must be edited before recreating the categorical block.");
+      }
+    }
+    return { steps, combined, finish: combined ? "always" : "auto" };
+  }
+  return { steps: [{ op: "createCategoricalLegend", args }], finish: "auto" };
+}
+
+export function applyLegendCreationPlan(program, plan) {
+  if (plan.steps.length === 0) return program;
+  let next = program;
+  for (const step of plan.steps) {
+    const existingSize = next.guideConfigs.legend?.size;
+    // The plan already validated that a retained size block is compatible.
+    if (!(plan.combined && step.op === "createSizeLegend" && existingSize !== undefined)) {
+      next = next[step.op](step.args);
+    }
+  }
+  return plan.finish === "always" ? next.rematerializeLegend()
+    : plan.finish === "auto" ? finishLegend(next) : next;
+}
 
 export const createLegend = action(
   { op: "createLegend", description: "Create an inferred legend for selected channels." },
-  function (args = {}) {
-    validateOptionObject(args, undefined, "createLegend");
-    const channels = args.channels;
-    if (channels !== undefined && !Array.isArray(channels)) {
-      throw new TypeError("createLegend channels must be an array.");
-    }
-    const explicitSize = channels?.length === 1 && channels[0] === "size";
-    const explicitStrokeWidth = channels?.length === 1 &&
-      channels[0] === "strokeWidth";
-    const requestedSizeLayer = args.target === undefined
-      ? undefined
-      : findLayer(this, args.target);
-    const sizeCandidates = this.semanticSpec.layers.filter(isSizeLegendPoint);
-    const hasNonSizeLegendEncoding = layer =>
-      ["color", "shape", "strokeDash", "opacity"].some(channel =>
-        layer.encoding?.[channel]?.scale !== undefined
-      );
-    const hasNonSizeLegendCandidate = this.semanticSpec.layers.some(
-      hasNonSizeLegendEncoding
-    );
-    const inferredSize = channels === undefined && (
-      (args.target !== undefined && isSizeLegendPoint(requestedSizeLayer) &&
-        !hasNonSizeLegendEncoding(requestedSizeLayer)) ||
-      (args.target === undefined && sizeCandidates.length === 1 &&
-        !hasNonSizeLegendCandidate)
-    );
-    if (explicitSize || inferredSize) {
-      return createStandaloneLegend(this, args, "size");
-    }
-    const strokeWidthCandidates = this.semanticSpec.layers.filter(
-      isStrokeWidthLegendLayer
-    );
-    const requestedStrokeWidthLayer = args.target === undefined
-      ? undefined
-      : findLayer(this, args.target);
-    const hasOtherStrokeWidthLegendCandidate = this.semanticSpec.layers.some(
-      layer => ["color", "shape", "strokeDash", "size", "opacity"].some(
-        channel => layer.encoding?.[channel]?.scale !== undefined
-      )
-    );
-    const inferredStrokeWidth = channels === undefined && (
-      (args.target !== undefined &&
-        isStrokeWidthLegendLayer(requestedStrokeWidthLayer) &&
-        !hasNonSizeLegendEncoding(requestedStrokeWidthLayer)) ||
-      (args.target === undefined && strokeWidthCandidates.length === 1 &&
-        !hasOtherStrokeWidthLegendCandidate)
-    );
-    if (explicitStrokeWidth || inferredStrokeWidth) {
-      return createStandaloneLegend(this, args, "strokeWidth");
-    }
-    const opacityCandidates = this.semanticSpec.layers.filter(layer =>
-      layer.mark?.type === "point" && layer.encoding?.opacity?.scale !== undefined
-    );
-    const hasOtherLegendCandidate = this.semanticSpec.layers.some(layer =>
-      ["color", "shape", "strokeDash", "size"].some(channel =>
-        layer.encoding?.[channel]?.scale !== undefined
-      )
-    );
-    if (
-      (channels?.length === 1 && channels[0] === "opacity") ||
-      (channels === undefined && opacityCandidates.length === 1 &&
-        !hasOtherLegendCandidate)
-    ) {
-      return finishLegend(this.createOpacityLegend(args));
-    }
-    const continuousColorCandidates = this.semanticSpec.layers.filter(layer => {
-      const encoding = ["point", "bar", "rect"].includes(layer.mark?.type)
-        ? layer.encoding?.color
-        : undefined;
-      const scale = findSemanticScale(this, encoding?.scale);
-      return scale?.type === "sequential";
-    });
-    const continuousColor = requestedCandidate(
-      this, args.target, continuousColorCandidates
-    );
-    if (
-      (channels?.length === 1 && channels[0] === "color" && continuousColor) ||
-      (channels === undefined && continuousColor)
-    ) {
-      return finishLegend(this.createGradientLegend(args));
-    }
-    const intervalColorCandidates = this.semanticSpec.layers.filter(layer => {
-      const encoding = layer.mark?.type === "point" ? layer.encoding?.color : undefined;
-      const scale = findSemanticScale(this, encoding?.scale);
-      return ["quantize", "quantile", "threshold"].includes(scale?.type);
-    });
-    if (
-      (channels?.length === 1 && channels[0] === "color" &&
-        intervalColorCandidates.length > 0) ||
-      (channels === undefined && intervalColorCandidates.length > 0)
-    ) {
-      return finishLegend(this.createIntervalLegend(args));
-    }
-    const wantsShape = channels?.includes("shape") === true;
-    const pointCandidates = this.semanticSpec.layers.filter(layer =>
-      layer.mark?.type === "point" &&
-      layer.encoding?.shape?.scale !== undefined &&
-      (wantsShape || layer.encoding?.color?.scale !== undefined)
-    );
-    const requestedPoint = requestedCandidate(this, args.target, pointCandidates);
-    if (requestedPoint !== undefined) {
-      const { count, ...categoricalArgs } = args;
-      if (
-        requestedPoint.encoding?.size?.scale !== undefined &&
-        categoricalArgs.position !== undefined &&
-        !["right", "left"].includes(categoricalArgs.position)
-      ) {
-        throw new Error(
-          "Combined point series and size legends currently require a side position."
-        );
-      }
-      const hasMatchingLine = this.semanticSpec.layers.some(candidate =>
-        candidate.mark?.type === "line" &&
-        candidate.encoding?.color?.field === requestedPoint.encoding.color.field &&
-        candidate.encoding.color.scale === requestedPoint.encoding.color.scale
-      );
-      const symbol = categoricalArgs.symbol ?? {
-        layers: [
-          ...(hasMatchingLine
-            ? [{ type: "line", length: 32, lineWidth: 3 }]
-            : []),
-          {
-            type: "point",
-            size: Math.sqrt(64 / Math.PI),
-            stroke: "white",
-            strokeWidth: 0
-          }
-        ]
-      };
-      const inferredChannels = ["color", "shape"].filter(
-        channel => requestedPoint.encoding?.[channel]?.scale !== undefined
-      );
-      let next = this.createCategoricalLegend({
-        ...categoricalArgs,
-        target: requestedPoint.id,
-        channels: categoricalArgs.channels ?? inferredChannels,
-        symbol
-      });
-      if (requestedPoint.encoding?.size?.scale !== undefined) {
-        const existingSize = next.guideConfigs.legend?.size;
-        if (existingSize === undefined) {
-          next = next.createSizeLegend({
-            target: requestedPoint.id,
-            ...(count === undefined ? {} : { count }),
-            inheritAppearance:
-              categoricalArgs.position === "left" ||
-              categoricalArgs.labels !== undefined ||
-              categoricalArgs.titleStyle !== undefined
-          });
-        } else if (existingSize.target !== requestedPoint.id) {
-          throw new Error(
-            "Combined point series legend requires the active size legend to share its target."
-          );
-        } else if (count !== undefined && count !== existingSize.count) {
-          throw new Error(
-            "Existing size legend count must be edited before recreating the categorical block."
-          );
-        }
-        next = next.rematerializeLegend();
-      }
-      return next;
-    }
-    return finishLegend(this.createCategoricalLegend(args));
-  }
+  withGuideLayoutValidation(function (args = {}) {
+    return applyLegendCreationPlan(this, resolveLegendCreationPlan(this, args));
+  })
 );
 
 export const removeCategoricalLegend = action(
@@ -385,7 +329,7 @@ export const removeCategoricalLegend = action(
     op: "removeCategoricalLegend",
     description: "Remove the active categorical legend and its concrete components."
   },
-  function (args = {}) {
+  withGuideLayoutValidation(function (args = {}) {
     noOptions(args, "removeCategoricalLegend");
     const entries = ["series", "color"]
       .filter(kind => this.guideConfigs.legend?.[kind] !== undefined);
@@ -405,5 +349,5 @@ export const removeCategoricalLegend = action(
       next = next.editGraphics({ target, remove: true });
     }
     return next._withoutMaterializationConfig(["guides", "legend", kind]);
-  }
+  })
 );

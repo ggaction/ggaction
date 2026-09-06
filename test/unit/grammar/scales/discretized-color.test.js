@@ -58,6 +58,9 @@ test("places an exact boundary in the upper interval", () => {
   assert.deepEqual(formatDiscretizedIntervals(scale.thresholds), [
     "< 60", "60–70", "≥ 70"
   ]);
+  assert.deepEqual(formatDiscretizedIntervals(scale.thresholds, ".1f"), [
+    "< 60.0", "60.0–70.0", "≥ 70.0"
+  ]);
 });
 
 test("rejects invalid threshold contracts before mapping", () => {

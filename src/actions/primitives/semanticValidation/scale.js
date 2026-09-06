@@ -1,5 +1,7 @@
+import { validateRadialMapping } from "../../../grammar/scales/radial.js";
 import {
   validateContinuousColorInterpolation,
+  validateSequentialMidpoint,
   validateScalePropertyForType,
   validateSemanticScaleDomain,
   validateSemanticScaleRange,
@@ -16,10 +18,17 @@ function validateOwnedProperty(existing, property) {
 export function validateScaleSemanticValue(program, parsed, value) {
   const property = parsed.path.join(".");
   const existing = findSemanticScale(program, parsed.id);
+  if (property === "midpoint") {
+    if (value === "auto" || value === undefined) {
+      throw new TypeError("Semantic midpoint must be a finite number; remove the property to reset it.");
+    }
+    return validateSequentialMidpoint(value, existing?.type ?? "sequential");
+  }
+  if (property === "radialMapping") return validateRadialMapping(value);
   if (property === "type") {
     validateSemanticScaleType(value);
     for (const owned of [
-      "nice", "zero", "clamp", "base", "exponent", "constant",
+      "nice", "zero", "clamp", "base", "exponent", "constant", "midpoint",
       "paddingInner", "paddingOuter", "padding", "align"
     ]) {
       if (existing?.[owned] !== undefined) validateScalePropertyForType(value, owned);

@@ -36,10 +36,23 @@ test("encodes the shortest Horizon call with stable defaults", () => {
   ), true);
   assert.deepEqual(
     program.trace.children.at(-1).children.map(child => child.op),
-    ["createHorizonData", "rebindLayerData", "encodeX",
-      "editSemantic", "encodeY", "encodeGroup", "encodeY2", "encodeColor",
+    ["createHorizonData", "rebindLayerData", "editSemantic",
+      "encodeX", "encodeY", "encodeGroup", "encodeY2", "encodeColor",
       "editAreaMark"]
   );
+});
+
+test("exposes original x titles before a shared Horizon scale rematerializes its guide", () => {
+  const p = chart().createCanvas({ width: 1000, height: 700, margin: 150 })
+    .createData({ id: "source", values: [{ time: 0, value: -4 }, { time: 1, value: 4 }] })
+    .createAreaMark({ id: "first", data: "source" }).encodeHorizon({ x: "time", y: "value" })
+    .createGuides();
+  const before = structuredClone(p.semanticSpec);
+  const next = p.createAreaMark({ id: "second", data: "source" })
+    .encodeHorizon({ target: "second", x: "time", y: { field: "value", scale: { id: "secondFolded" } } });
+  assert.equal(next.semanticSpec.layers[1].encoding.x.title, "Time");
+  assert.deepEqual(next.guideConfigs, p.guideConfigs);
+  assert.deepEqual(p.semanticSpec, before);
 });
 
 test("infers stored x, y, group, and temporal field type", () => {

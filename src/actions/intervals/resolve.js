@@ -7,15 +7,15 @@ import {
   validateNonEmptyString as requireField,
   validateOptionObject
 } from "../../core/validation.js";
-import { readQuantitativeField } from "../../grammar/scales/index.js";
+import { readQuantitativeField, resolveTemporalUnit } from "../../grammar/scales/index.js";
 import { findDataset } from "../../selectors/datasets.js";
 import { hasLayer, resolveEligibleLayer } from "../../selectors/layers.js";
 import { findSemanticScale } from "../../selectors/scales.js";
 
 const CHANNEL_OPTIONS = [
-  "field", "fieldType", "scale", "center", "extent", "level", "lower", "upper"
+  "field", "fieldType", "scale", "center", "extent", "method", "level", "lower", "upper", "temporalUnit"
 ];
-const INTERVAL_PARAMETER_KEYS = CHANNEL_OPTIONS.slice(3);
+const INTERVAL_PARAMETER_KEYS = ["center", "extent", "method", "level", "lower", "upper"];
 const POSITION_CHANNELS = ["x", "y"];
 const FIELD_TYPES = [
   "quantitative", "temporal", "ordinal", "nominal"
@@ -71,7 +71,7 @@ function resolveIntervalChannel(channels, sourceLayer, {
 }) {
   for (const hints of [
     ["lower", "upper"],
-    ["center", "extent", "level"]
+    ["center", "extent", "method", "level"]
   ]) {
     const hinted = POSITION_CHANNELS.filter(channel =>
       hasAny(channels[channel], hints)
@@ -123,8 +123,10 @@ function resolvePosition(program, channel, explicit, inferred, {
       `${operation} ${channel} position requires ${positionTypes.join(", ")} field type.`
     );
   }
+  const temporalUnit = resolveTemporalUnit({ ...explicit, field: explicit?.field ?? inferred?.field }, fieldType, inferred);
   return {
     channel,
+    ...(temporalUnit === undefined ? {} : { temporalUnit }),
     field: requireField(
       explicit?.field ?? inferred?.field,
       `${operation} ${channel} field`
@@ -143,6 +145,9 @@ function resolveInterval(program, channel, explicit, inferred, dataset, {
   operation,
   intervalScaleDefaults
 }) {
+  if (Object.hasOwn(explicit ?? {}, "temporalUnit")) {
+    throw new Error(`${operation} ${channel} interval does not accept temporalUnit.`);
+  }
   if (explicit?.fieldType !== undefined) {
     throw new Error(`${operation} ${channel} interval does not accept fieldType.`);
   }
@@ -167,10 +172,11 @@ function resolveInterval(program, channel, explicit, inferred, dataset, {
     if (
       explicit.field !== undefined ||
       explicit.extent !== undefined ||
+      explicit.method !== undefined ||
       explicit.level !== undefined
     ) {
       throw new Error(
-        `Explicit ${operation} ${channel} interval cannot combine field, extent, or level.`
+        `Explicit ${operation} ${channel} interval cannot combine field, extent, method, or level.`
       );
     }
     const fields = {
@@ -187,15 +193,22 @@ function resolveInterval(program, channel, explicit, inferred, dataset, {
     }
     return { channel, mode: "explicit", fields, scale, title: fields.center };
   }
+  const field = requireField(
+    explicit?.field ?? inferred?.field,
+    `${operation} ${channel} field`
+  );
+  if (!dataset.values.some(row => Number.isFinite(row?.[field]))) {
+    throw new TypeError(
+      `Field "${field}" must contain at least one finite number.`
+    );
+  }
   return {
     channel,
     mode: "statistical",
-    field: requireField(
-      explicit?.field ?? inferred?.field,
-      `${operation} ${channel} field`
-    ),
+    field,
     center: explicit?.center,
     extent: explicit?.extent,
+    method: explicit?.method,
     level: explicit?.level,
     scale
   };
@@ -205,11 +218,16 @@ function resolveGrouping(args, sourceLayer, independentField, mode, {
   operation,
   allowExplicitGrouping
 }) {
-  if (mode === "explicit" && !allowExplicitGrouping && args.groupBy !== undefined) {
+  if (
+    mode === "explicit" &&
+    !allowExplicitGrouping &&
+    args.groupBy !== undefined &&
+    args.groupBy !== false
+  ) {
     throw new Error(`Explicit ${operation} intervals do not accept groupBy.`);
   }
   const inferred = sourceLayer?.encoding?.group?.field;
-  const groupField = args.groupBy ?? inferred;
+  const groupField = args.groupBy === false ? undefined : args.groupBy ?? inferred;
   const normalizedGroup = groupField === undefined
     ? undefined
     : requireField(groupField, `${operation} groupBy`);
@@ -234,7 +252,9 @@ export function resolveIntervalComposite(program, args, policy) {
       : requireObject(args.y, `${operation} y`)
   };
   let sourceLayer;
-  if (!(args.target === undefined && args.x !== undefined && args.y !== undefined)) {
+  if (policy.existingId === undefined && !(
+    args.target === undefined && args.x !== undefined && args.y !== undefined
+  )) {
     const target = args.target === undefined
       ? undefined
       : validateUserId(args.target, `${operation} source layer id`);
@@ -281,7 +301,7 @@ export function resolveIntervalComposite(program, args, policy) {
     policy
   );
   const defaultId = policy.defaultId;
-  const id = resolveOptionalUserId(args.id, {
+  const id = policy.existingId ?? resolveOptionalUserId(args.id, {
     defaultId,
     label: policy.ownerLabel,
     operation,
@@ -289,7 +309,7 @@ export function resolveIntervalComposite(program, args, policy) {
       program.graphicSpec.objects[defaultId] !== undefined ||
       findDataset(program, `${defaultId}IntervalData`) !== undefined
   });
-  const generatedFields = {
+  const generatedFields = policy.generatedFields ?? {
     center: `__${id}_center`,
     lower: `__${id}_lower`,
     upper: `__${id}_upper`
@@ -309,7 +329,7 @@ export function resolveIntervalComposite(program, args, policy) {
     source: dataset.id,
     dataId: interval.mode === "statistical" ? `${id}IntervalData` : dataset.id,
     coordinate: validateUserId(
-      args.coordinate ?? sourceLayer?.coordinate ?? "main",
+      args.coordinate ?? policy.coordinate ?? sourceLayer?.coordinate ?? "main",
       `${resourceLabel} coordinate id`
     ),
     orientation: intervalChannel === "y" ? "vertical" : "horizontal",

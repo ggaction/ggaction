@@ -31,7 +31,7 @@ export function createCarsWeightedRulePrimitives(cars) {
     (_, index) => WEIGHT_DOMAIN[0] + index / 4 *
       (WEIGHT_DOMAIN[1] - WEIGHT_DOMAIN[0])
   );
-  const legendY = legendValues.map((_, index) => MARGIN.top + 28 + 34 + index * 32);
+  const legendY = legendValues.map((_, index) => MARGIN.top + 52 + index * 32);
   const legendX = WIDTH - MARGIN.right + 30;
 
   return chart()
@@ -94,8 +94,8 @@ export function createCarsWeightedRulePrimitives(cars) {
     .editGraphics({ target: "cars", property: "strokeDash", value: rows.map(() => []) })
     .editGraphics({ target: "cars", property: "opacity", value: 1 })
     .createGraphics({ id: "strokeWidthLegendSymbols", parent: "canvas", type: "line", length: 5 })
-    .editGraphics({ target: "strokeWidthLegendSymbols", property: "x1", value: legendValues.map(() => legendX) })
-    .editGraphics({ target: "strokeWidthLegendSymbols", property: "x2", value: legendValues.map(() => legendX + 32) })
+    .editGraphics({ target: "strokeWidthLegendSymbols", property: "x1", value: legendValues.map(() => legendX + 4) })
+    .editGraphics({ target: "strokeWidthLegendSymbols", property: "x2", value: legendValues.map(() => legendX + 4 + 32) })
     .editGraphics({ target: "strokeWidthLegendSymbols", property: "y1", value: legendY })
     .editGraphics({ target: "strokeWidthLegendSymbols", property: "y2", value: legendY })
     .editGraphics({ target: "strokeWidthLegendSymbols", property: "stroke", value: "#4c78a8" })
@@ -105,7 +105,7 @@ export function createCarsWeightedRulePrimitives(cars) {
       value: legendValues.map(value => map(value, WEIGHT_DOMAIN, WEIGHT_RANGE))
     })
     .createGraphics({ id: "strokeWidthLegendLabels", parent: "canvas", type: "text", length: 5 })
-    .editGraphics({ target: "strokeWidthLegendLabels", property: "x", value: legendValues.map(() => legendX + 44) })
+    .editGraphics({ target: "strokeWidthLegendLabels", property: "x", value: legendValues.map(() => legendX + 32 + 8 + 12) })
     .editGraphics({ target: "strokeWidthLegendLabels", property: "y", value: legendY })
     .editGraphics({
       target: "strokeWidthLegendLabels",
@@ -120,7 +120,7 @@ export function createCarsWeightedRulePrimitives(cars) {
     .editGraphics({ target: "strokeWidthLegendLabels", property: "textBaseline", value: "middle" })
     .createGraphics({ id: "strokeWidthLegendTitle", parent: "canvas", type: "text" })
     .editGraphics({ target: "strokeWidthLegendTitle", property: "x", value: legendX })
-    .editGraphics({ target: "strokeWidthLegendTitle", property: "y", value: MARGIN.top + 28 })
+    .editGraphics({ target: "strokeWidthLegendTitle", property: "y", value: MARGIN.top + 20 })
     .editGraphics({ target: "strokeWidthLegendTitle", property: "text", value: "Weight_in_lbs" })
     .editGraphics({ target: "strokeWidthLegendTitle", property: "fill", value: "#0f172a" })
     .editGraphics({ target: "strokeWidthLegendTitle", property: "fontSize", value: 13 })

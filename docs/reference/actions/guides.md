@@ -60,6 +60,70 @@ editRadialAxis({ angle?, line?, ticks?, labels?, ticksAndLabels?, title? })
 Edit selected radial components; `angle` moves the whole axis.
 [Axes](../../api/axes.md#editing-a-complete-axis)
 
+## `createThetaAxisLine`
+
+```javascript
+createThetaAxisLine({ scale?, coordinate?, color?, lineWidth? } = {})
+```
+
+Create missing theta-axis line independently of the other components. Reuse stored axis bindings or infer one compatible Polar encoding. Existing components are edited with the matching `edit` action. [Axes](../../api/axes.md#polar-component-creation)
+
+## `createRadialAxisLine`
+
+```javascript
+createRadialAxisLine({ scale?, coordinate?, angle?, color?, lineWidth? } = {})
+```
+
+Create missing radial-axis line independently of the other components. Reuse stored axis bindings or infer one compatible Polar encoding. Existing components are edited with the matching `edit` action. [Axes](../../api/axes.md#polar-component-creation)
+
+## `createThetaAxisTicks`
+
+```javascript
+createThetaAxisTicks({ scale?, coordinate?, count?, values?, length?, color?, lineWidth? } = {})
+```
+
+Create missing theta-axis ticks independently of the other components. Use count or exact values, never both. Reuse stored axis bindings or infer one compatible Polar encoding. Existing components are edited with the matching `edit` action. [Axes](../../api/axes.md#polar-component-creation)
+
+## `createRadialAxisTicks`
+
+```javascript
+createRadialAxisTicks({ scale?, coordinate?, angle?, count?, values?, length?, color?, lineWidth? } = {})
+```
+
+Create missing radial-axis ticks independently of the other components. Use count or exact values, never both. Reuse stored axis bindings or infer one compatible Polar encoding. Existing components are edited with the matching `edit` action. [Axes](../../api/axes.md#polar-component-creation)
+
+## `createThetaAxisLabels`
+
+```javascript
+createThetaAxisLabels({ scale?, coordinate?, count?, values?, offset?, format?, color?, fontSize?, fontFamily?, fontWeight? } = {})
+```
+
+Create missing theta-axis labels independently of the other components. Use count or exact values, never both. Reuse stored axis bindings or infer one compatible Polar encoding. Existing components are edited with the matching `edit` action. [Axes](../../api/axes.md#polar-component-creation)
+
+## `createRadialAxisLabels`
+
+```javascript
+createRadialAxisLabels({ scale?, coordinate?, angle?, count?, values?, offset?, format?, color?, fontSize?, fontFamily?, fontWeight? } = {})
+```
+
+Create missing radial-axis labels independently of the other components. Use count or exact values, never both. Reuse stored axis bindings or infer one compatible Polar encoding. Existing components are edited with the matching `edit` action. [Axes](../../api/axes.md#polar-component-creation)
+
+## `createThetaAxisTitle`
+
+```javascript
+createThetaAxisTitle({ scale?, coordinate?, text?, offset?, color?, fontSize?, fontFamily?, fontWeight? } = {})
+```
+
+Create missing theta-axis title independently of the other components. Reuse stored axis bindings or infer one compatible Polar encoding. Existing components are edited with the matching `edit` action. [Axes](../../api/axes.md#polar-component-creation)
+
+## `createRadialAxisTitle`
+
+```javascript
+createRadialAxisTitle({ scale?, coordinate?, angle?, text?, offset?, color?, fontSize?, fontFamily?, fontWeight?, position? } = {})
+```
+
+Create missing radial-axis title independently of the other components. Reuse stored axis bindings or infer one compatible Polar encoding. Existing components are edited with the matching `edit` action. [Axes](../../api/axes.md#polar-component-creation)
+
 ## `editThetaAxisLine`
 
 ```javascript
@@ -187,46 +251,68 @@ Edit the existing radial grid. [Grids](../../api/grids.md#editing-grids)
 
 ```javascript
 createLegend({
-  target?, channels?, position?, align?, direction?, columns?, offset?,
+  target?, channels?, position?, layout?, align?, direction?, columns?, offset?,
   titlePosition?, title?, symbol?, labels?, titleStyle?, itemGap?, border?, count?,
-  gradient?
+  gradient?, order?
 })
 ```
 
 Create categorical, point-size, continuous-color gradient, discretized-color
-interval, or field-opacity sample legends. Continuous legends support right, left, top, and bottom
+interval, or field-opacity sample legends. Interval legends support all four
+edges with layout `"edge"`, side single columns and horizontal item grids. Explicit `channels` creates exactly
+the selected content; include `"size"` in a point categorical-and-size request.
+Automatic symbol recipes refresh when matching companion lines or their color
+bindings change; explicit recipes retain their layers and order.
+Omitted point channels infer the available categorical color, shape, and
+quantitative size with the same result as explicit selection. Color-only uses
+swatches; shape uses typed symbols; a size encoding adds its own sample block.
+Continuous legends support right, left, top, and bottom
 placement. Categorical legends also support left side placement; composite
 point and size blocks remain in deterministic vertical order. Horizontal
 sampled-opacity legends accept `titlePosition: "left"` for one inline
 title-symbol-label reading line. Same-edge top/bottom blocks are left-packed
-with a 40-pixel occupied-bound gap.
+with a 40-pixel occupied-bound gap. Categorical `layout` defaults to `"edge"`;
+`"legacy-bottom"` explicitly selects the former Canvas-bottom compact row and
+requires bottom position. Categorical `order` accepts `"scale"`, `{ values: [...] }`,
+or `{ channel: "x" | "y" | "theta" }` while preserving each category's color/shape/dash.
 [Legends](../../api/legends.md)
 
 ## `editLegend`
 
 ```javascript
 editLegend({
-  target?, position?, align?, direction?, columns?, offset?, titlePosition?,
-  title?, symbol?, labels?, titleStyle?, itemGap?, border?, count?, gradient?
+  target?, channels?, position?, layout?, align?, direction?, columns?, offset?, titlePosition?,
+  title?, symbol?, labels?, titleStyle?, itemGap?, border?, count?, gradient?, order?
 })
 ```
 
-Partially edit one existing legend. `title` accepts a non-empty string,
-`"auto"`, or `false`; semantic channel bindings cannot be edited. A
+Partially edit one existing legend. Interval legends accept four-edge placement
+and horizontal grid/inline-title controls. Hidden continuous titles are excluded
+from occupied bounds and backgrounds. Omitted categorical `layout` preserves the
+stored mode; style edits never switch modes. Categorical `order` can be reassigned or reset
+with `"scale"`; linked position changes also refresh its item order. `title` accepts a non-empty string,
+`"auto"`, or `false`. Explicit `channels` replaces the entire target's content
+with the exact supported non-empty set; mark encodings and scales remain.
+Retained blocks preserve configuration; new blocks use creation defaults and
+removed blocks lose their settings. Categorical revisions preserve compatible
+recipes and order. Shared text patches merge only requested style leaves into
+each block. A
 horizontal sampled-opacity legend accepts `titlePosition: "left"` and inline
 spacing edits. A
-stroke-width legend accepts the bounded `title`, `count`, `labels`, and
-`titleStyle` subset and remains right-positioned.
+standalone size or stroke-width legend accepts the bounded `title`, `count`,
+`labels`, and `titleStyle` subset and remains right-positioned. Count and text
+styles persist through Canvas/scale/data replay; `false` hides a title and
+`"auto"` restores it from the encoded field.
 [Legends](../../api/legends.md)
 
 ## Focused legend edits
 
 ```javascript
 editLegendLayout({
-  target?, position?, align?, direction?, columns?, offset?,
+  target?, position?, layout?, align?, direction?, columns?, offset?,
   titlePosition?, itemGap?
 })
-editLegendLabels({ target?, color?, fontSize?, fontFamily?, fontWeight? })
+editLegendLabels({ target?, offset?, color?, fontSize?, fontFamily?, fontWeight?, format? })
 editLegendTitle({
   target?, title?, color?, fontSize?, fontFamily?, fontWeight?
 })
@@ -246,9 +332,9 @@ removeLegend({ target?, channels? })
 ```
 
 Remove every legend block owned by one mark when `channels` is omitted, or
-remove selected complete channel blocks while preserving mark encodings,
-scales, and unrelated blocks. Combined categorical blocks require their full
-represented channel set. [Legends](../../api/legends.md)
+remove selected channels while preserving mark encodings, scales, and unrelated
+blocks. Partial categorical removal retains remaining channels, styles, title
+visibility, layout and item order; automatic symbols are inferred again. [Legends](../../api/legends.md)
 
 ## `createTitle`
 

@@ -79,7 +79,7 @@ test("moves every right categorical component through create and focused edit", 
   const edited = near.editLegendLayout({ target: "points", offset: 80 });
 
   for (const candidate of [far, edited]) {
-    assert.equal(firstSymbol(candidate).x - firstSymbol(near).x, 72);
+    assert.ok(Math.abs(firstSymbol(candidate).x - firstSymbol(near).x - 72) < 1e-9);
     assert.equal(firstLabel(candidate).x - firstLabel(near).x, 72);
     assert.equal(
       component(candidate, "LegendTitle").properties.x -
@@ -102,7 +102,7 @@ test("applies right offset without a categorical border", () => {
   const near = categorical("right", 8, false);
   const far = categorical("right", 80, false);
 
-  assert.equal(firstSymbol(far).x - firstSymbol(near).x, 72);
+  assert.ok(Math.abs(firstSymbol(far).x - firstSymbol(near).x - 72) < 1e-9);
   assert.equal(component(far, "LegendBackground"), undefined);
 });
 

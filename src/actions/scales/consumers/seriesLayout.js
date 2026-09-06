@@ -1,3 +1,5 @@
+import { readSeriesIdentity } from "../../../grammar/pathSeries.js";
+import { deriveAreaSeries } from "../../../grammar/areaSeries.js";
 import { deriveBarAggregates } from "../../../grammar/bars/aggregate.js";
 import { validateGeneratedItemLimit } from "../../../core/validation.js";
 import {
@@ -67,6 +69,15 @@ function resolveHistogramPartitions(program, consumer) {
     zero: xScale.zero ?? false
   });
   const colorEncoding = layer.encoding?.color;
+  if (layer.encoding?.group !== undefined) {
+    const identity = readSeriesIdentity(dataset.values, layer);
+    validateGeneratedItemLimit((bins.boundaries.length - 1) * identity.domain.length, "Histogram layout cell count");
+    const counts = bins.boundaries.slice(0, -1).map(() => identity.domain.map(() => 0));
+    const groups = new Map(identity.domain.map((value, index) => [value, index]));
+    xValues.forEach((value, index) => { const bin = findHistogramBinIndex(value, bins.boundaries);
+      if (bin !== -1) counts[bin][groups.get(identity.values[index])] += 1; });
+    return counts;
+  }
   if (colorEncoding?.scale === undefined) {
     return countHistogramBins(xValues, bins.boundaries).map(value => [value]);
   }
@@ -101,6 +112,12 @@ function resolveAggregatePartitions(program, consumer) {
     : derived.yValues;
   const categoryDomain = resolveOrdinalDomain(categoryScale.domain, categoryValues);
   const colorEncoding = layer.encoding?.color;
+  if (layer.encoding?.group !== undefined) {
+    const series = readSeriesIdentity(dataset.values, layer).domain;
+    validateGeneratedItemLimit(categoryDomain.length * series.length, "Aggregate layout cell count");
+    const cells = new Map(derived.values.map(value => [JSON.stringify([value[channels.category], value.series]), value[channels.measure]]));
+    return categoryDomain.map(category => series.map(key => cells.get(JSON.stringify([category, key])) ?? 0));
+  }
   if (
     colorEncoding?.scale === undefined ||
     colorEncoding.fieldType === "quantitative"
@@ -181,11 +198,25 @@ export function resolveSeriesLayoutScaleValues(program, consumer) {
       values: resolveSeriesLayoutDomainValues(partitions, layout)
     };
   }
+  if (consumer.layer.mark?.type === "area" && consumer.layer.layout?.mode !== undefined) {
+    const layer = consumer.layer;
+    const dataset = findDataset(program, layer.data);
+    const density = dataset.transform?.some(transform => transform.type === "density");
+    if (!density && (layer.encoding?.x === undefined || layer.encoding?.y === undefined || (layer.encoding?.x2 === undefined && layer.encoding?.y2 === undefined))) return undefined;
+    if (!density && layer.encoding?.x !== undefined && layer.encoding?.y !== undefined && (layer.encoding?.x2 !== undefined || layer.encoding?.y2 !== undefined)) {
+      const derived = deriveAreaSeries(dataset.values, layer);
+      const measure = derived.orientation === "vertical" ? "y" : "x";
+      if (![measure, `${measure}2`].includes(consumer.channel)) return undefined;
+      const layout = layer.layout.mode;
+      if (layout === "overlay") return undefined;
+      return { layout, values: layout === "fill" ? [0, 1] : derived[`${measure}Values`] };
+    }
+  }
   if (consumer.channel !== "y") return undefined;
   if (consumer.layer.mark?.type === "area") {
-    const layout = consumer.layer.encoding?.y?.stack === "center"
+    const layout = consumer.layer.layout?.mode ?? (consumer.layer.encoding?.y?.stack === "center"
       ? "center"
-      : consumer.layer.encoding?.color?.layout;
+      : consumer.layer.encoding?.color?.layout);
     if (layout === undefined || layout === "overlay") return undefined;
     const partitions = resolveAreaPartitions(program, consumer);
     if (partitions === undefined) {

@@ -80,8 +80,7 @@ test("keeps accepted planned capabilities linked and non-public", () => {
   assert.match(currentCorpus, /op: "first" \| "last"/);
   assert.match(currentCorpus, /mean ± 1\.96 \* stderr/);
   assert.match(currentCorpus, /layout\?: "stack" \| "fill" \| "group" \| "overlay" \| "diverging" \| "center"/);
-  assert.match(currentCorpus, /center는 wrapped `encodeY\(\{ stack: "center" \}\)`/);
-  assert.match(currentCorpus, /center의 wrapped `encodeGroup` ownership/);
+  assert.match(currentCorpus, /center의 wrapped `layoutSeries` ownership/);
   assert.doesNotMatch(plannedCorpus, /Status: Planned[\s\S]*center-stacked area/i);
   const paletteType = currentCorpus.match(
     /type PaletteName =([\s\S]*?);\n\ntype Palette =/
@@ -176,7 +175,8 @@ test("keeps accepted planned capabilities linked and non-public", () => {
   assert.match(currentCorpus, /"eq" \| "neq" \| "gt" \| "gte" \| "lt" \| "lte"/);
   assert.match(currentCorpus, /op: "min" \| "max"/);
   assert.match(currentCorpus, /ties\?: "first" \| "all"/);
-  assert.match(currentCorpus, /filterMarks\(\{ target\?, \.\.\.selector \}\)/);
+  assert.match(currentCorpus, /filterMarks\(\{ target\?, mode\?: "replace" \| "compose", \.\.\.selector \}\)/);
+  assert.match(currentCorpus, /removeMarkFilter\(\{ target\? \} = \{\}\)/);
   assert.match(currentCorpus, /selectMarks\(\{ id\?, target\?, \.\.\.selector \}\)/);
   assert.match(currentCorpus, /highlightMarks\(\{ id\?, target\?, select\?, selection\?/);
   assert.match(currentCorpus, /editBarMark\(\{/);
@@ -192,10 +192,12 @@ test("keeps accepted planned capabilities linked and non-public", () => {
   assert.match(currentCorpus, /x bottom\/top default `0`/);
   assert.match(currentCorpus, /y right default\s+`Math\.PI \/ 2`/);
   assert.match(currentCorpus, /type AxisFormatString =/);
-  assert.match(currentCorpus, /"\.0f" \| "\.1f" \| "\.2f"/);
+  assert.match(currentCorpus, /type NumericFormatString =/);
+  assert.match(currentCorpus, /ValueFormatPrecision/);
+  assert.match(currentCorpus, /"f" \| "%" \| "e"/);
   assert.doesNotMatch(plannedCorpus, /## mirrored Cartesian axis positions/);
   assert.doesNotMatch(plannedCorpus, /## axis label format strings/);
-  assert.match(currentCorpus, /combined point-size legend는 right\/left side position을 사용/);
+  // Combined edge behavior is exercised by combined-legend-edges.test.js.
   assert.match(currentCorpus, /point-composite symbols in top\/bottom item grids/);
   assert.match(currentCorpus, /Composite layers share one item-local origin/);
   assert.match(currentCorpus, /type LegendPosition = "right" \| "bottom" \| "top" \| "left"/);

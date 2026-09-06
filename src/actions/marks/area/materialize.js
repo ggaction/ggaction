@@ -14,6 +14,7 @@ import { buildLinearPathCommands } from
   "../../../grammar/pathCommands.js";
 import { buildCategoricalDensityPaths } from
   "../../../grammar/categoricalDensity.js";
+import { derivePathSeriesFieldValues } from "../../../grammar/pathSeries.js";
 
 function resolveAreaPaths({
   derived,
@@ -135,7 +136,7 @@ export function resolveAreaMaterialization({
       : deriveAreaSeries(rows, layer)
     : deriveDensityAreaSeries(rows, layer, densityTransform);
   const colorEncoding = layer.encoding?.color;
-  const layout = colorEncoding?.layout ?? "overlay";
+  const layout = layer.layout?.mode ?? colorEncoding?.layout ?? "overlay";
   const categoricalDensity = densityTransform?.placement?.type === "category";
   const derived = densityTransform === undefined || categoricalDensity
     ? rawDerived
@@ -164,7 +165,9 @@ export function resolveAreaMaterialization({
     : colorEncoding?.scale === undefined
       ? paths.map(() => config.fill)
       : mapOrdinalValues(
-          derived.series.map(series => series.key[colorEncoding.field]),
+          densityTransform !== undefined || centered
+            ? derived.series.map(series => series.key[colorEncoding.field])
+            : derivePathSeriesFieldValues(rows, derived.series, colorEncoding.field, "color"),
           resolvedScales[colorEncoding.scale].domain,
           resolvedScales[colorEncoding.scale].range
         );

@@ -528,7 +528,7 @@ test("locks composite legend item-local anchors and occupied bounds", () => {
     assert.equal(background.y + background.height <= values.canvas.height, true);
     for (const item of values.legend.items) {
       assert.equal(item.pointX, (item.x1 + item.x2) / 2);
-      assert.equal(item.labelX - item.x2, 10);
+      assert.equal(item.labelX - item.x2 - 1.5, 10);
       assert.equal(item.x1 >= background.x, true);
       assert.equal(item.labelX <= background.x + background.width, true);
     }

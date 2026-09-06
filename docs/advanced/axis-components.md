@@ -26,18 +26,20 @@ program.createXAxis({
 });
 ```
 
-`createXAxis` and `createYAxis` call the line, tick-and-label, and title actions
-as trace children. `editXAxis` and `editYAxis` update several existing
-components atomically. Pass `false` for line, ticks, labels, ticksAndLabels, or
-title to remove that existing component without removing its scale, coordinate,
-encoding, or data; use the focused edit actions below for one component.
+Complete Cartesian and Polar creators call the enabled component actions as
+trace children. Use `line: false`, `ticksAndLabels: false`, or `title: false`
+to omit components; at least one must remain enabled. The complete editors
+update existing components atomically and accept `false` for line, ticks,
+labels, ticksAndLabels, or title to remove them. Restore missing components
+with their focused create actions. See the
+[shared optional component rules](../api/axes.md#omit-remove-and-restore-components).
 
 <!-- action-capabilities:axes:start -->
 | Axis family | Create | Edit | Editable components |
 | --- | --- | --- | --- |
 | Cartesian complete axis | `createXAxis` / `createYAxis` / `createAxes` | `editXAxis` / `editYAxis` | line, ticks, labels, ticksAndLabels, title, position |
-| Polar complete axis | `createThetaAxis` / `createRadialAxis` / `createAxes` | `editThetaAxis` / `editRadialAxis` | line, ticks, labels, ticksAndLabels, title, angle or position |
-| Parallel dimension axes | `createAxes` |  | line, ticks, labels, title from each stored dimension |
+| Polar complete axis | `createThetaAxis` / `createRadialAxis` / `createAxes` | `editThetaAxis` / `editRadialAxis` | line, ticks, labels, ticksAndLabels, title, radial angle and radial title position |
+| Parallel dimension axes | `createAxes` / `createParallelAxes` / `createParallelAxis` | `editParallelAxis` / `removeParallelAxis` / `removeParallelAxes` | line, ticks, labels, title from each stored dimension |
 <!-- action-capabilities:axes:end -->
 
 Create also accepts `coordinate`, an existing coordinate ID consumed by the
@@ -147,7 +149,7 @@ program.editXAxisTitle({ text: "Engine horsepower", at: "start" });
 | `position` | x: `bottom/top`; y: `left/right` |
 | `at` | `start`, `center`, `end`, or an in-domain finite number |
 | `offset` | Non-negative distance from the plot |
-| `rotation` | Finite radians |
+| `rotation` | Finite radians, or `{ value, unit: "degrees" | "radians" }` |
 | `color` | Text fill |
 | `fontSize` | Positive size |
 | `fontFamily` | Non-empty family |
@@ -156,6 +158,10 @@ program.editXAxisTitle({ text: "Engine horsepower", at: "start" });
 Default title placement is centered. x uses offset 42 and rotation 0. y uses
 offset 52 with rotation `-Math.PI / 2` on the left or `Math.PI / 2` on the
 right. An explicit rotation remains unchanged when the position is edited.
+The legacy numeric form remains radians. For a unit-visible call, use for
+example `rotation: { value: -90, unit: "degrees" }`; the stored concrete title
+rotation is normalized to radians. Radial-axis `angle` remains a separate
+degree-valued placement option rather than a text rotation.
 
 Cartesian and Polar axis typography follows the shared
 [Canvas font-weight policy](../api/marks/text.md#font-weights).

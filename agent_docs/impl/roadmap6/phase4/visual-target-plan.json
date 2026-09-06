@@ -1,0 +1,798 @@
+{
+  "version": 1,
+  "status": "implemented-verified",
+  "executed": true,
+  "sourceBaseline": "93dceb3761e170207058e6a7280060fedd471244",
+  "targets": [
+    {
+      "id": "area-simple",
+      "gate": "R6-P4-V1",
+      "fixtureSource": "examples/area-layout/targets.json",
+      "primitiveStatus": "rendered",
+      "publicStatus": "implemented-verified",
+      "resultEvidence": "RESULTS_V1.md"
+    },
+    {
+      "id": "area-signed-baseline",
+      "gate": "R6-P4-V1",
+      "fixtureSource": "examples/area-layout/targets.json",
+      "primitiveStatus": "rendered",
+      "publicStatus": "implemented-verified",
+      "resultEvidence": "RESULTS_V1.md"
+    },
+    {
+      "id": "area-horizontal-log",
+      "gate": "R6-P4-V1",
+      "fixtureSource": "examples/area-layout/targets.json",
+      "primitiveStatus": "rendered",
+      "publicStatus": "implemented-verified",
+      "resultEvidence": "RESULTS_V1.md"
+    },
+    {
+      "id": "ribbon-crossing",
+      "gate": "R6-P4-V1",
+      "fixtureSource": "examples/area-layout/targets.json",
+      "primitiveStatus": "rendered",
+      "publicStatus": "implemented-verified",
+      "resultEvidence": "RESULTS_V1.md"
+    },
+    {
+      "id": "area-missing-break",
+      "gate": "R6-P4-V1",
+      "fixtureSource": "examples/area-layout/targets.json",
+      "primitiveStatus": "rendered",
+      "publicStatus": "implemented-verified",
+      "resultEvidence": "RESULTS_V1.md"
+    },
+    {
+      "id": "area-stack",
+      "gate": "R6-P4-V1",
+      "fixtureSource": "examples/area-layout/targets.json",
+      "primitiveStatus": "rendered",
+      "publicStatus": "implemented-verified",
+      "resultEvidence": "RESULTS_V1.md"
+    },
+    {
+      "id": "area-fill",
+      "gate": "R6-P4-V1",
+      "fixtureSource": "examples/area-layout/targets.json",
+      "primitiveStatus": "rendered",
+      "publicStatus": "implemented-verified",
+      "resultEvidence": "RESULTS_V1.md"
+    },
+    {
+      "id": "area-diverging",
+      "gate": "R6-P4-V1",
+      "fixtureSource": "examples/area-layout/targets.json",
+      "primitiveStatus": "rendered",
+      "publicStatus": "implemented-verified",
+      "resultEvidence": "RESULTS_V1.md"
+    },
+    {
+      "id": "area-center",
+      "gate": "R6-P4-V1",
+      "fixtureSource": "examples/area-layout/targets.json",
+      "primitiveStatus": "rendered",
+      "publicStatus": "implemented-verified",
+      "resultEvidence": "RESULTS_V1.md"
+    },
+    {
+      "id": "bar-independent-stack",
+      "gate": "R6-P4-V1",
+      "fixtureSource": "examples/area-layout/targets.json",
+      "primitiveStatus": "rendered",
+      "publicStatus": "implemented-verified",
+      "resultEvidence": "RESULTS_V1.md"
+    },
+    {
+      "id": "bar-layout-roundtrip",
+      "gate": "R6-P4-V1",
+      "fixtureSource": "examples/area-layout/targets.json",
+      "primitiveStatus": "rendered",
+      "publicStatus": "implemented-verified",
+      "resultEvidence": "RESULTS_V1.md"
+    },
+    {
+      "id": "rose-disk",
+      "gate": "R6-P4-V2",
+      "fixture": "radial",
+      "dimensions": {
+        "width": 1000,
+        "height": 700,
+        "margin": 150
+      },
+      "publicCalls": [
+        {
+          "op": "createCanvas",
+          "args": {
+            "width": 1000,
+            "height": 700,
+            "margin": 150
+          }
+        },
+        {
+          "op": "createData",
+          "args": {
+            "id": "data",
+            "values": [
+              {
+                "category": "A",
+                "value": 2
+              },
+              {
+                "category": "B",
+                "value": 3
+              },
+              {
+                "category": "C",
+                "value": 4
+              }
+            ]
+          }
+        },
+        {
+          "op": "createRosePlot",
+          "args": {
+            "id": "m",
+            "category": "category",
+            "value": "value",
+            "aggregate": "sum",
+            "radiusScale": {
+              "range": [
+                0,
+                140
+              ]
+            }
+          }
+        }
+      ],
+      "independentOracle": "Annulus area ratios 2:3:4; all three sectors; actual value radius guide.",
+      "primitiveStatus": "rendered",
+      "publicStatus": "implemented-verified",
+      "fixtureSource": "examples/radial-sectors/program.js",
+      "manifestSource": "test/charts/radial-sectors/manifest.js",
+      "resultEvidence": "RESULTS_W3.md"
+    },
+    {
+      "id": "rose-hole",
+      "gate": "R6-P4-V2",
+      "fixture": "radial",
+      "dimensions": {
+        "width": 1000,
+        "height": 700,
+        "margin": 150
+      },
+      "publicCalls": [
+        {
+          "op": "createCanvas",
+          "args": {
+            "width": 1000,
+            "height": 700,
+            "margin": 150
+          }
+        },
+        {
+          "op": "createData",
+          "args": {
+            "id": "data",
+            "values": [
+              {
+                "category": "A",
+                "value": 2
+              },
+              {
+                "category": "B",
+                "value": 3
+              },
+              {
+                "category": "C",
+                "value": 4
+              }
+            ]
+          }
+        },
+        {
+          "op": "createRosePlot",
+          "args": {
+            "id": "m",
+            "category": "category",
+            "value": "value",
+            "aggregate": "sum",
+            "radiusScale": {
+              "range": [
+                70,
+                140
+              ]
+            },
+            "arc": {
+              "innerRadius": 0.5
+            }
+          }
+        }
+      ],
+      "independentOracle": "Annulus area ratios 2:3:4; all three sectors; actual value radius guide.",
+      "primitiveStatus": "rendered",
+      "publicStatus": "implemented-verified",
+      "fixtureSource": "examples/radial-sectors/program.js",
+      "manifestSource": "test/charts/radial-sectors/manifest.js",
+      "resultEvidence": "RESULTS_W3.md"
+    },
+    {
+      "id": "radial-disk",
+      "gate": "R6-P4-V2",
+      "fixture": "radial",
+      "dimensions": {
+        "width": 1000,
+        "height": 700,
+        "margin": 150
+      },
+      "publicCalls": [
+        {
+          "op": "createCanvas",
+          "args": {
+            "width": 1000,
+            "height": 700,
+            "margin": 150
+          }
+        },
+        {
+          "op": "createData",
+          "args": {
+            "id": "data",
+            "values": [
+              {
+                "category": "A",
+                "value": 2
+              },
+              {
+                "category": "B",
+                "value": 3
+              },
+              {
+                "category": "C",
+                "value": 4
+              }
+            ]
+          }
+        },
+        {
+          "op": "createRadialBarPlot",
+          "args": {
+            "id": "m",
+            "category": "category",
+            "value": "value",
+            "aggregate": "sum",
+            "radiusScale": {
+              "range": [
+                0,
+                140
+              ]
+            }
+          }
+        }
+      ],
+      "independentOracle": "Outer minus inner radius ratios 2:3:4; all three sectors; actual value radius guide.",
+      "primitiveStatus": "rendered",
+      "publicStatus": "implemented-verified",
+      "fixtureSource": "examples/radial-sectors/program.js",
+      "manifestSource": "test/charts/radial-sectors/manifest.js",
+      "resultEvidence": "RESULTS_W3.md"
+    },
+    {
+      "id": "radial-hole",
+      "gate": "R6-P4-V2",
+      "fixture": "radial",
+      "dimensions": {
+        "width": 1000,
+        "height": 700,
+        "margin": 150
+      },
+      "publicCalls": [
+        {
+          "op": "createCanvas",
+          "args": {
+            "width": 1000,
+            "height": 700,
+            "margin": 150
+          }
+        },
+        {
+          "op": "createData",
+          "args": {
+            "id": "data",
+            "values": [
+              {
+                "category": "A",
+                "value": 2
+              },
+              {
+                "category": "B",
+                "value": 3
+              },
+              {
+                "category": "C",
+                "value": 4
+              }
+            ]
+          }
+        },
+        {
+          "op": "createRadialBarPlot",
+          "args": {
+            "id": "m",
+            "category": "category",
+            "value": "value",
+            "aggregate": "sum",
+            "radiusScale": {
+              "range": [
+                70,
+                140
+              ]
+            },
+            "arc": {
+              "innerRadius": 0.5
+            }
+          }
+        }
+      ],
+      "independentOracle": "Outer minus inner radius ratios 2:3:4; all three sectors; actual value radius guide.",
+      "primitiveStatus": "rendered",
+      "publicStatus": "implemented-verified",
+      "fixtureSource": "examples/radial-sectors/program.js",
+      "manifestSource": "test/charts/radial-sectors/manifest.js",
+      "resultEvidence": "RESULTS_W3.md"
+    },
+    {
+      "id": "radial-theta-legend-order",
+      "gate": "R6-P4-V2",
+      "fixture": "radial",
+      "dimensions": {
+        "width": 1000,
+        "height": 700,
+        "margin": 150
+      },
+      "publicCalls": [
+        {
+          "op": "createCanvas",
+          "args": {
+            "width": 1000,
+            "height": 700,
+            "margin": 150
+          }
+        },
+        {
+          "op": "createData",
+          "args": {
+            "id": "data",
+            "values": [
+              {
+                "category": "A",
+                "value": 2
+              },
+              {
+                "category": "B",
+                "value": 3
+              },
+              {
+                "category": "C",
+                "value": 4
+              }
+            ]
+          }
+        },
+        {
+          "op": "createRadialBarPlot",
+          "args": {
+            "id": "m",
+            "category": "category",
+            "value": "value",
+            "aggregate": "sum"
+          }
+        },
+        {
+          "op": "orderCategories",
+          "args": {
+            "target": "m",
+            "channel": "theta",
+            "values": [
+              "C",
+              "A"
+            ]
+          }
+        },
+        {
+          "op": "editLegend",
+          "args": {
+            "target": "m",
+            "order": {
+              "channel": "theta"
+            }
+          }
+        }
+      ],
+      "independentOracle": "Theta and legend C,A,B; per-category colors and lengths remain unchanged; path/draw order not overridden.",
+      "primitiveStatus": "rendered",
+      "publicStatus": "implemented-verified",
+      "fixtureSource": "examples/radial-sectors/program.js",
+      "manifestSource": "test/charts/radial-sectors/manifest.js",
+      "resultEvidence": "RESULTS_W3.md"
+    },
+    {
+      "id": "color-midpoint-asymmetric",
+      "gate": "R6-P4-V3",
+      "fixture": "color",
+      "dimensions": {
+        "width": 1000,
+        "height": 700,
+        "margin": 150
+      },
+      "publicCalls": [
+        {
+          "op": "createCanvas",
+          "args": {
+            "width": 1000,
+            "height": 700,
+            "margin": 150
+          }
+        },
+        {
+          "op": "createData",
+          "args": {
+            "id": "data",
+            "values": [
+              {
+                "x": 0,
+                "value": -2
+              },
+              {
+                "x": 1,
+                "value": 0
+              },
+              {
+                "x": 2,
+                "value": 4
+              },
+              {
+                "x": 3,
+                "value": 8
+              }
+            ]
+          }
+        },
+        {
+          "op": "createScatterPlot",
+          "args": {
+            "id": "m",
+            "x": "x",
+            "y": "value",
+            "point": {
+              "radius": 7,
+              "stroke": "#334155",
+              "strokeWidth": 1
+            },
+            "color": {
+              "field": "value",
+              "fieldType": "quantitative",
+              "scale": {
+                "id": "colors",
+                "type": "sequential",
+                "domain": [
+                  -2,
+                  8
+                ],
+                "range": [
+                  "blue",
+                  "white",
+                  "red"
+                ],
+                "midpoint": 0
+              }
+            },
+            "guides": {
+              "legend": {
+                "count": 3
+              }
+            }
+          }
+        }
+      ],
+      "independentOracle": "At values -2,0,4,8 colors blue,white,#ff8080,red; neutral at 20 percent of value-linear legend, not 50 percent.",
+      "primitiveStatus": "rendered",
+      "publicStatus": "implemented-verified",
+      "fixtureSource": "examples/color-midpoint/program.js",
+      "manifestSource": "test/charts/color-midpoint/manifest.js",
+      "resultEvidence": "RESULTS_MIDPOINT.md"
+    },
+    {
+      "id": "color-midpoint-clear",
+      "gate": "R6-P4-V3",
+      "fixture": "color",
+      "dimensions": {
+        "width": 1000,
+        "height": 700,
+        "margin": 150
+      },
+      "publicCalls": [
+        {
+          "op": "createCanvas",
+          "args": {
+            "width": 1000,
+            "height": 700,
+            "margin": 150
+          }
+        },
+        {
+          "op": "createData",
+          "args": {
+            "id": "data",
+            "values": [
+              {
+                "x": 0,
+                "value": -2
+              },
+              {
+                "x": 1,
+                "value": 0
+              },
+              {
+                "x": 2,
+                "value": 4
+              },
+              {
+                "x": 3,
+                "value": 8
+              }
+            ]
+          }
+        },
+        {
+          "op": "createScatterPlot",
+          "args": {
+            "id": "m",
+            "x": "x",
+            "y": "value",
+            "point": {
+              "radius": 7,
+              "stroke": "#334155",
+              "strokeWidth": 1
+            },
+            "color": {
+              "field": "value",
+              "fieldType": "quantitative",
+              "scale": {
+                "id": "colors",
+                "type": "sequential",
+                "domain": [
+                  -2,
+                  8
+                ],
+                "range": [
+                  "blue",
+                  "white",
+                  "red"
+                ],
+                "midpoint": 0
+              }
+            },
+            "guides": {
+              "legend": {
+                "count": 3
+              }
+            }
+          }
+        },
+        {
+          "op": "editScale",
+          "args": {
+            "id": "colors",
+            "midpoint": "auto"
+          }
+        }
+      ],
+      "independentOracle": "Same endpoint-linear mapping as legacy sequential; no stored midpoint remains.",
+      "primitiveStatus": "rendered",
+      "publicStatus": "implemented-verified",
+      "fixtureSource": "examples/color-midpoint/program.js",
+      "manifestSource": "test/charts/color-midpoint/manifest.js",
+      "resultEvidence": "RESULTS_MIDPOINT.md"
+    },
+    {
+      "id": "point-gradient-to-interval",
+      "gate": "R6-P4-V3",
+      "fixture": "color",
+      "dimensions": {
+        "width": 1000,
+        "height": 700,
+        "margin": 150
+      },
+      "publicCalls": [
+        {
+          "op": "createCanvas",
+          "args": {
+            "width": 1000,
+            "height": 700,
+            "margin": 150
+          }
+        },
+        {
+          "op": "createData",
+          "args": {
+            "id": "data",
+            "values": [
+              {
+                "x": 0,
+                "value": -2,
+                "category": "0"
+              },
+              {
+                "x": 1,
+                "value": 0,
+                "category": "1"
+              },
+              {
+                "x": 2,
+                "value": 4,
+                "category": "2"
+              },
+              {
+                "x": 3,
+                "value": 8,
+                "category": "3"
+              }
+            ]
+          }
+        },
+        {
+          "op": "createScatterPlot",
+          "args": {
+            "id": "m",
+            "x": "x",
+            "y": "value",
+            "color": {
+              "field": "value",
+              "fieldType": "quantitative",
+              "scale": {
+                "id": "colors",
+                "type": "sequential",
+                "domain": [
+                  -2,
+                  8
+                ],
+                "range": [
+                  "blue",
+                  "white",
+                  "red"
+                ],
+                "midpoint": 0
+              }
+            }
+          }
+        },
+        {
+          "op": "editScale",
+          "args": {
+            "id": "colors",
+            "type": "quantize",
+            "domain": [
+              -2,
+              8
+            ],
+            "range": [
+              "blue",
+              "red"
+            ]
+          }
+        }
+      ],
+      "independentOracle": "Two intervals split at 3; right vertical legend rebuilt; midpoint removed; marks agree with legend.",
+      "primitiveStatus": "rendered",
+      "publicStatus": "implemented-verified",
+      "fixtureSource": "examples/color-transitions/program.js",
+      "manifestSource": "test/charts/color-transitions/manifest.js",
+      "resultEvidence": "RESULTS_W5.md"
+    },
+    {
+      "id": "bar-gradient-to-interval",
+      "gate": "R6-P4-V3",
+      "fixture": "color",
+      "dimensions": {
+        "width": 1000,
+        "height": 700,
+        "margin": 150
+      },
+      "publicCalls": [
+        {
+          "op": "createCanvas",
+          "args": {
+            "width": 1000,
+            "height": 700,
+            "margin": 150
+          }
+        },
+        {
+          "op": "createData",
+          "args": {
+            "id": "data",
+            "values": [
+              {
+                "x": 0,
+                "value": -2,
+                "category": "0"
+              },
+              {
+                "x": 1,
+                "value": 0,
+                "category": "1"
+              },
+              {
+                "x": 2,
+                "value": 4,
+                "category": "2"
+              },
+              {
+                "x": 3,
+                "value": 8,
+                "category": "3"
+              }
+            ]
+          }
+        },
+        {
+          "op": "createBarPlot",
+          "args": {
+            "id": "m",
+            "x": "category",
+            "y": {
+              "field": "value",
+              "aggregate": "sum"
+            },
+            "color": {
+              "field": "value",
+              "fieldType": "quantitative",
+              "scale": {
+                "id": "colors",
+                "type": "sequential",
+                "domain": [
+                  -2,
+                  8
+                ],
+                "range": [
+                  "blue",
+                  "white",
+                  "red"
+                ],
+                "midpoint": 0
+              }
+            }
+          }
+        },
+        {
+          "op": "editScale",
+          "args": {
+            "id": "colors",
+            "type": "quantize",
+            "domain": [
+              -2,
+              8
+            ],
+            "range": [
+              "blue",
+              "red"
+            ]
+          }
+        }
+      ],
+      "independentOracle": "Same quantize mapping as direct Bar creation; default right gradient legend becomes interval legend atomically.",
+      "primitiveStatus": "rendered",
+      "publicStatus": "implemented-verified",
+      "fixtureSource": "examples/color-transitions/program.js",
+      "manifestSource": "test/charts/color-transitions/manifest.js",
+      "resultEvidence": "RESULTS_W5.md"
+    }
+  ],
+  "execution": {
+    "primitiveTargets": 11,
+    "publicTargets": 0,
+    "remainingPrimitiveTargets": 9
+  }
+}

@@ -112,6 +112,11 @@ const advanced = chart()
 atomically. It cannot mix with x/y or theta/radius position encodings on the
 same layer.
 
+Reordering, adding, or removing dimensions also refreshes existing axis titles,
+ticks, labels, and positions in the same action. Axes omitted with
+`guides: false` stay absent. Axes owned by another independent Parallel layer
+keep their own dimension assignment.
+
 ## Appearance, guides, and revisions
 
 - `color` and `strokeDash` reuse the line-series encoding vocabulary.
@@ -135,3 +140,13 @@ programs are not implemented.
 
 [Basic Charts](./basic-charts.md) · [Coordinates](./coordinates.md) ·
 [Series encodings](./series-encodings.md) · [Selection and Highlighting](./appearance/selection-and-highlighting.md)
+
+## Edit a dimension axis
+
+Use `editParallelAxis({ field, line?, ticks?, labels?, ticksAndLabels?, title? })`
+to style or remove existing field components. For example, on an existing
+Parallel program, `program.editParallelAxis({ field: "Horsepower", title: { text: "Engine power" } })`
+preserves the other dimensions. Create missing components with `createParallelAxis`,
+remove a field with `removeParallelAxis`, or remove the complete guide with
+`removeParallelAxes`. See [Parallel axis lifecycle](axes.md) for exact options,
+defaults, restoration and dimension-reordering behavior.

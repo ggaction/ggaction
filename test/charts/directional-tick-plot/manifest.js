@@ -32,24 +32,18 @@ export const rugCallChain = `chart()
     margin: { top: 76, right: 40, bottom: 90, left: 60 }
   })
   .createData({ id: "cars", values: rows })
-  .createTickMark({
+  .createRugPlot({
     id: "ticks",
-    length: 28,
-    stroke: "#2563eb",
-    strokeWidth: 1.4,
-    opacity: 0.28
-  })
-  .encodeX({
-    target: "ticks",
-    field: "Horsepower",
-    fieldType: "quantitative",
-    scale: { domain: [40, 240] }
-  })
-  .encodeY({
-    target: "ticks",
-    field: "Baseline",
-    fieldType: "quantitative",
-    scale: { domain: [-1, 1], range: [132, 132] }
+    data: "cars",
+    x: { field: "Horsepower", scale: { domain: [40, 240] } },
+    edge: "bottom",
+    tick: {
+      length: 28,
+      stroke: "#2563eb",
+      strokeWidth: 1.4,
+      opacity: 0.28
+    },
+    guides: false
   });`;
 
 export const visualVariants = Object.freeze([

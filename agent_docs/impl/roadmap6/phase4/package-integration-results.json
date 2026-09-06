@@ -1,0 +1,31 @@
+{
+  "sha256": "09b665efe60d178a8af18fcb75b147f3fa9146eef58878cd360d5ebfbd5b82f7",
+  "file": "/Users/hyeonjeon/Projects/ggaction-clean-20260905/.artifacts/roadmap6-authoring/phase4-integration-package/ggaction-0.0.12.tgz",
+  "entries": 443,
+  "packedBytes": 496324,
+  "unpackedBytes": 2369138,
+  "browserBundles": {
+    "full": {
+      "specifier": "ggaction",
+      "chunks": 1,
+      "modules": 390,
+      "minifiedBytes": 933286,
+      "gzipBytes": 246966
+    },
+    "basic": {
+      "specifier": "ggaction/basic",
+      "chunks": 1,
+      "modules": 235,
+      "minifiedBytes": 499618,
+      "gzipBytes": 136900
+    },
+    "svg": {
+      "specifier": "ggaction/svg",
+      "chunks": 1,
+      "modules": 15,
+      "minifiedBytes": 19840,
+      "gzipBytes": 6437
+    }
+  },
+  "status": "passed"
+}

@@ -41,7 +41,7 @@ export function findRegressionPoint(program, requested) {
 
 export function inferRegressionGroup(layer, args) {
   if (Object.hasOwn(args, "groupBy")) {
-    return args.groupBy === undefined
+    return args.groupBy === undefined || args.groupBy === false
       ? undefined
       : requireRegressionField(args.groupBy, "Regression groupBy");
   }

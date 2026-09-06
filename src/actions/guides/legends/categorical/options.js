@@ -16,7 +16,9 @@ export const CHANNELS = CATEGORICAL_LEGEND_CHANNELS;
 const OPTIONS = Object.freeze([
   "target",
   "channels",
+  "order",
   "position",
+  "layout",
   "align",
   "direction",
   "columns",
@@ -34,7 +36,8 @@ const TEXT_OPTIONS = Object.freeze([
   "color",
   "fontSize",
   "fontFamily",
-  "fontWeight"
+  "fontWeight",
+  "format"
 ]);
 const TITLE_OPTIONS = Object.freeze([
   "color",
@@ -89,6 +92,9 @@ export function normalizeOptions(args, kind) {
   validateOptionObject(args, OPTIONS, "createLegend");
   if (Object.hasOwn(args, "labels")) {
     validateObject(args.labels, TEXT_OPTIONS, "createLegend.labels");
+    if (args.labels.format !== undefined && args.labels.format !== "auto") {
+      throw new Error("Categorical legend labels do not accept format.");
+    }
   }
   if (Object.hasOwn(args, "titleStyle")) {
     validateObject(
@@ -108,26 +114,33 @@ export function normalizeOptions(args, kind) {
     offset: defaults.offset,
     ...(args.labels ?? {})
   };
+  delete labels.format;
   const titleStyle = {
     ...COMMON_DEFAULTS.titleStyle,
     ...(args.titleStyle ?? {})
   };
   const position = args.position ?? defaults.position;
   const align = args.align ?? defaults.align;
-  const direction = args.direction ?? (position === "left" ? "vertical" : "horizontal");
+  const side = ["left", "right"].includes(position);
+  const direction = args.direction ?? (side ? "vertical" : "horizontal");
   const columns = args.columns;
   const offset = args.offset ?? 8;
   const titlePosition = args.titlePosition ?? "top";
   const itemGap = args.itemGap ?? (["right", "left"].includes(position)
     ? 28
     : position === "top" ? 24 : 20);
-  const bottomGrid = position !== "bottom" || [
-    "columns",
-    "direction",
-    "offset",
-    "titlePosition",
-    "itemGap"
-  ].some(key => Object.hasOwn(args, key));
+  const layout = args.layout === undefined ? "edge" : args.layout;
+  if (!["edge", "legacy-bottom"].includes(layout)) {
+    throw new Error(`Unsupported legend layout "${layout}".`);
+  }
+  if (layout === "legacy-bottom" && position !== "bottom") {
+    throw new Error('Legend layout "legacy-bottom" requires position "bottom".');
+  }
+  if (layout === "legacy-bottom" && (
+    columns !== undefined || direction !== "horizontal" || titlePosition !== "top" || offset !== 8
+  )) {
+    throw new Error('Legend columns, vertical direction, left title and custom offset require layout "edge".');
+  }
 
   if (!["right", "left", "bottom", "top"].includes(position)) {
     throw new Error(`Unsupported legend position "${position}".`);
@@ -141,11 +154,14 @@ export function normalizeOptions(args, kind) {
   if (!["horizontal", "vertical"].includes(direction)) {
     throw new Error(`Unsupported legend direction "${direction}".`);
   }
-  if (position === "left" && direction !== "vertical") {
-    throw new Error("Left legends currently require vertical direction.");
+  if (side && direction !== "vertical") {
+    throw new Error("Side legends require vertical direction.");
   }
-  if (position === "left" && columns !== undefined) {
-    throw new Error("Left legends do not accept columns.");
+  if (side && columns !== undefined && columns !== 1) {
+    throw new Error("Side legends require one column.");
+  }
+  if (side && titlePosition !== "top") {
+    throw new Error("Side legends require a top title.");
   }
   if (columns !== undefined && (!Number.isInteger(columns) || columns <= 0)) {
     throw new RangeError("Legend columns must be a positive integer.");
@@ -179,7 +195,7 @@ export function normalizeOptions(args, kind) {
     labels,
     titleStyle,
     itemGap,
-    bottomGrid,
+    layout,
     border: normalizeBorder(args.border)
   };
 }

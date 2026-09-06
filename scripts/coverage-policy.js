@@ -5,6 +5,16 @@ import { fileURLToPath } from "node:url";
 const sourceRoot = fileURLToPath(new URL("../src/", import.meta.url));
 
 export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
+  "guide-layout-validation": Object.freeze({
+    prefix: "materialization/guides/",
+    floor: Object.freeze({ lines: 90, branches: 80, functions: 100 }),
+    rationale: "Guide ownership and final-state collision validation must remain symmetric across domain actions."
+  }),
+  "parallel-axis-policies": Object.freeze({
+    prefix: "actions/guides/axes/parallel/",
+    floor: Object.freeze({ lines: 90, branches: 80, functions: 100 }),
+    rationale: "Field recipes, component lifecycle and scale replay must preserve Parallel axis ownership."
+  }),
   "coordinate-policies": Object.freeze({
     prefix: "actions/coordinates/",
     floor: Object.freeze({ lines: 85, branches: 75, functions: 85 }),
@@ -33,6 +43,18 @@ export const CRITICAL_COVERAGE_FAMILIES = Object.freeze({
 });
 
 export const CRITICAL_COVERAGE_OVERRIDES = Object.freeze({
+  "grammar/positionDatum.js": Object.freeze({ lines: 95, branches: 90, functions: 100 }),
+  "grammar/markLabels.js": Object.freeze({ lines: 95, branches: 85, functions: 100 }),
+  "actions/guides/legends/transition.js": Object.freeze({ lines: 95, branches: 85, functions: 100 }),
+  "layout/guideCollisions.js": Object.freeze({ lines: 95, branches: 85, functions: 100 }),
+  "layout/legendLane.js": Object.freeze({ lines: 90, branches: 80, functions: 100 }),
+  "layout/legendItems.js": Object.freeze({ lines: 90, branches: 80, functions: 100 }),
+  "actions/guides/legends/creation.js": Object.freeze({ lines: 90, branches: 80, functions: 100 }),
+  "actions/guides/legends/edit.js": Object.freeze({ lines: 90, branches: 80, functions: 100 }),
+  "actions/guides/legends/lifecycle.js": Object.freeze({ lines: 90, branches: 80, functions: 100 }),
+  "grammar/parallelAxisTitles.js": Object.freeze({ lines: 95, branches: 85, functions: 100 }),
+  "actions/encodings/seriesLayout.js": Object.freeze({ lines: 95, branches: 85, functions: 100 }),
+  "actions/charts/area.js": Object.freeze({ lines: 95, branches: 90, functions: 100 }),
   "actions/encodings/density/resolve.js": Object.freeze({
     lines: 90,
     branches: 80,

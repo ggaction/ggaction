@@ -7,7 +7,7 @@ title: Source and Derived Data
 
 {% include chart-example.html id="scatterplot" %}
 
-## `createData({ id?, values })`
+## `createData({ id?, values })` {#createdata-id-values}
 
 | Option | Type | Required |
 | --- | --- | --- |
@@ -68,13 +68,24 @@ corresponding higher-level action when the library should materialize values:
 | `type` | Public transform shape | Value-producing action |
 | --- | --- | --- |
 | `"bin2d"` | `{ type, x, y, bins, extent, includeEmpty, members, as, resolved? }` | `createBin2DData` |
+| `"bin"` | `{ type, field, bin, extent, nice, zero, includeEmpty, members, as, resolved? }` | `createBinData` |
+| `"computed"` | `{ type, as, expression }` | `createComputedData` |
 | `"filter"` | `{ type, field, oneOf }`, `{ type, field, predicate }`, or `{ type, field, range }` | `filterData` |
+| `"fold"` | `{ type, fields, as }` | `createFoldData` |
 | `"regression"` | `{ type, method, x, y, groupBy?, ...methodParameters }` | `createRegressionData` |
 | `"density"` | `{ type, field, groupBy?, bandwidth, extent, steps, kernel?, normalization?, as, resolve: "shared", resolved? }` | `createDensityData` |
 | `"horizon"` | `{ type, x, y, groupBy?, bands, baseline, extent, resolve, missing, overflow, palette, ... }` | `encodeHorizon` |
 | `"interval"` | `{ type, field, groupBy, center, extent, level?, as }` | `createIntervalData` |
+| `"summary"` | `{ type, groupBy, aggregates, members? }` | `createSummaryData` |
+| `"stack"` | `{ type, category, group, value, mode, as }` | `createStackData` |
 | `"timeUnit"` | `{ type, field, unit, as }` | `createTimeUnitData` |
 | `"window"` | `{ type, partitionBy, sortBy, operations }` | `createWindowData` |
+
+Chart facades and mark creation require materialized `values` on the selected
+dataset. Passing a definition-only dataset produces an error naming the dataset
+and explaining this requirement. Choosing it as the current dataset has the same
+result. Use a value-producing action from the table above to create data for the
+chart; consumers do not run transform definitions automatically.
 
 For regression, linear and polynomial transforms require `confidence` and
 `interval`; polynomial also requires `degree`. LOESS requires `span` and does
@@ -96,6 +107,159 @@ box-plot and final-mark filtering provenance, are intentionally not part of
 this direct-authoring union. The public tuple contains exactly one transform;
 multi-transform pipelines are rejected. Built-in value materializers each own
 and normalize that single transform.
+
+## `bindMarkData({ target, data })` {#bindmarkdata-target-data}
+
+Use `bindMarkData` to move an existing independent mark to another materialized
+dataset while preserving its encoding and visual configuration:
+
+```javascript
+const revised = program.bindMarkData({
+  target: "points",
+  data: "selectedCars"
+});
+```
+
+The action first validates the complete result, including encoding fields and
+types, coordinate placement, shared scales, guides, labels, selections, and
+highlights. It then records the semantic rebind and rematerializes every
+registered consumer. A failure returns no partial program; the earlier program
+remains usable.
+
+`data` must contain concrete `values`. A definition-only `createDerivedData`
+result is rejected. Composite marks and marks backed by an owned density,
+horizon, or final-item filter recipe must use their documented edit or filter
+lifecycle because changing only one layer would break the resource.
+
+## `createSummaryData({ id, source?, groupBy?, aggregates, members? })` {#createsummarydata-id-source-groupby-aggregates-members}
+
+Create reusable aggregate rows without tying the calculation to a chart type:
+
+```javascript
+const totals = program.createSummaryData({
+  id: "regionalTotals",
+  source: "sales",
+  groupBy: "region",
+  aggregates: [
+    { op: "sum", field: "sales", as: "total" },
+    { op: "count", as: "records" }
+  ],
+  members: "sourceRows"
+});
+```
+
+Groups follow first source appearance. `aggregates` accepts the shared
+`AggregateOperation` vocabulary, including quantile and ordered first/last
+objects. `count` counts rows and omits `field`; every other operation requires
+one. Output aliases, group fields, and the optional `members` alias must be
+distinct. The result contains concrete values and can be used immediately by
+marks or `bindMarkData`.
+
+An ungrouped empty input produces one aggregate row, so a row count is `0`.
+A grouped empty input produces no observed groups. The action does not synthesize
+unobserved categorical combinations.
+
+## `createBinData({ id, source?, field, ...binOptions })` {#createbindata-id-source-field-binoptions}
+
+Materialize one-dimensional bin bounds and counts for reuse by ranged marks,
+labels, or several charts:
+
+```javascript
+const bins = program.createBinData({
+  id: "ageBins",
+  source: "people",
+  field: "age",
+  boundaries: [0, 18, 35, 65, 100],
+  members: true,
+  as: { lower: "age0", upper: "age1", count: "people", members: "rows" }
+});
+```
+
+Choose one of `maxBins`, `step`, or `boundaries`. The defaults are
+`maxBins: 10`, `extent: "auto"`, `nice: true`, `zero: false`, and
+`includeEmpty: true`. Bins include their lower endpoint and exclude the upper
+endpoint, except that the final bin includes its upper endpoint. Explicit
+extent or boundaries must contain every source value.
+
+The normalized transform stores resolved boundaries, so consumers share the
+same bin decisions. Set `includeEmpty: false` to omit zero-count bins and
+`members: true` to retain each bin's original source rows.
+
+## `createFoldData({ id, source?, fields, as? })` {#createfolddata-id-source-fields-as}
+
+Turn selected fields in a wide dataset into reusable key/value rows:
+
+```javascript
+const long = program.createFoldData({
+  id: "fruitLong",
+  source: "fruitWide",
+  fields: ["apples", "pears"],
+  as: { key: "fruit", value: "amount" }
+});
+```
+
+Output follows source row order and then the exact `fields` order. Every row
+retains all source cells and adds the selected field name and value, so its
+grain is `source row × selected field`. The default output names are `key` and
+`value`.
+
+Selected fields must contain one common primitive type: finite numbers,
+strings, or booleans. Missing cells and mixed types are rejected. Output names
+must be distinct and cannot overwrite a source field. The action accepts at
+most 64 selected fields and materializes at most 10,000 rows.
+
+## `createComputedData({ id, source?, as, expression })` {#createcomputeddata-id-source-as-expression}
+
+Add a finite quantitative field to every source row with a serializable formula:
+
+```javascript
+const shares = program.createComputedData({
+  id: "shares",
+  source: "sales",
+  as: "share",
+  expression: {
+    op: "divide",
+    left: { field: "part" },
+    right: { field: "whole" }
+  }
+});
+```
+
+Leaves are `{ field }` and `{ constant }`. Binary nodes support `add`,
+`subtract`, `multiply`, and `divide`; unary nodes support `negate` and
+`absolute`. The action stores this data AST as provenance and never evaluates
+callbacks, source strings, or arbitrary code.
+
+Every referenced cell, constant, intermediate result, and final result must be
+finite. Division by zero and output-field replacement are errors. Expressions
+are bounded to depth 16 and 128 nodes, with at most 10,000,000 evaluated
+row-nodes.
+
+## `createStackData({ id, source?, category, group, value, mode?, as? })` {#createstackdata-id-source-category-group-value-mode-as}
+
+Materialize stack geometry once and reuse it across ranged marks and labels:
+
+```javascript
+const stacked = program.createStackData({
+  id: "stackedSales",
+  source: "sales",
+  category: "quarter",
+  group: "region",
+  value: "sales",
+  mode: "fill"
+});
+```
+
+`stack`, `fill`, `center`, and `diverging` call the same shared stack math used
+by Bar and Area series layout. Category and group order follow first source
+appearance. Every category/group pair must have at most one row; missing cells
+are not synthesized. Output preserves each source row and adds lower/upper
+endpoints, the raw value, and its absolute-magnitude share in the category.
+
+The default fields are `<value>_start`, `<value>_end`, `<value>_value`, and
+`<value>_share`; use `as` to rename all four roles. Stack, fill, and center
+require non-negative values. Diverging accumulates positive and negative values
+separately from zero. Zero cells remain as zero-thickness rows with share 0.
 
 ## Related
 

@@ -535,8 +535,10 @@ test("keeps tutorial action flows aligned with public examples", () => {
       "examples/cars-regression-scatterplot/program.js",
       "return chart()"
     ],
-    ["density-area", "examples/cars-density-area/program.js", "return chart()"],
-    ["horizon", "examples/gapminder-horizon/program.js", "return chart()"],
+    ["density-area", "examples/cars-density-area/program.js", "return chart()", "## Complete program"],
+    ["density-area", "examples/density-plot/program.js", "return chart()"],
+    ["horizon", "examples/gapminder-horizon/program.js", "return chart()", "## Complete program"],
+    ["horizon", "examples/horizon-plot/program.js", "const program = chart()"],
     [
       "error-bar",
       "examples/cars-error-bar/program.js",
@@ -549,11 +551,12 @@ test("keeps tutorial action flows aligned with public examples", () => {
     ]
   ];
 
-  for (const [tutorial, example, exampleStart] of cases) {
+  for (const [tutorial, example, exampleStart, section] of cases) {
     const tutorialSource = read(`docs/tutorials/${tutorial}.md`);
     const exampleSource = read(example);
+    if (section !== undefined) assert.equal(tutorialSource.includes(section), true, tutorial);
     assert.deepEqual(
-      actionFlow(tutorialSource, "const program = chart()"),
+      actionFlow(section === undefined ? tutorialSource : tutorialSource.slice(tutorialSource.indexOf(section)), "const program = chart()"),
       actionFlow(exampleSource, exampleStart),
       tutorial
     );
@@ -850,11 +853,11 @@ test("publishes schemas, typed action cards, and declarations from canonical sou
     );
   }
   const cards = JSON.parse(read("docs/actions.json"));
-  assert.equal(cards.schemaVersion, 2);
+  assert.equal(cards.schemaVersion, 3);
   assert.equal(cards.packageVersion, JSON.parse(read("package.json")).version);
   assert.equal(cards.count, declaredProgramMethods().length);
   assert.equal(cards.cards.every(card =>
-    card.schemaVersion === 2 &&
+    card.schemaVersion === 3 &&
     card.options.every(option => typeof option.type === "string" && option.type.length > 0)
   ), true);
   for (const schema of [

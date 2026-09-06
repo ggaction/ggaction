@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "scope": "Phase 5 W2 point legend inference",
+  "status": "passed",
+  "artifact": {
+    "filename": "ggaction-0.0.12.tgz",
+    "sha256": "f3b712255735beb21e0f94ecfbeceba9625fe9143b1abe3a6b49b55a26733c94",
+    "entries": 447,
+    "packedBytes": 503310,
+    "unpackedBytes": 2409826
+  },
+  "checks": [
+    "Node runtime and renderers",
+    "strict TypeScript",
+    "MCP",
+    "tutorials",
+    "browser bundle budgets",
+    "same-artifact Chromium Canvas and SVG"
+  ],
+  "browserBundles": {
+    "full": {
+      "specifier": "ggaction",
+      "chunks": 1,
+      "modules": 394,
+      "minifiedBytes": 942766,
+      "gzipBytes": 250036
+    },
+    "basic": {
+      "specifier": "ggaction/basic",
+      "chunks": 1,
+      "modules": 238,
+      "minifiedBytes": 503495,
+      "gzipBytes": 137969
+    },
+    "svg": {
+      "specifier": "ggaction/svg",
+      "chunks": 1,
+      "modules": 15,
+      "minifiedBytes": 19840,
+      "gzipBytes": 6437
+    }
+  }
+}

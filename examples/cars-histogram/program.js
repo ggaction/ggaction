@@ -21,7 +21,7 @@ export function createCarsHistogram(cars) {
       maxBins: 10,
       xScale: { nice: true, zero: false },
       color: { field: "Origin", scale: { palette: "tableau10" } },
-      guides: { legend: { position: "bottom" } }
+      guides: { legend: { position: "bottom", layout: "legacy-bottom" } }
     })
     .createTitle({
       text: "Displacement distribution",
@@ -56,7 +56,7 @@ export function createNormalizedStackCarsHistogram(cars) {
       layout: "fill",
       scale: { palette: "tableau10" }
     })
-    .createGuides({ legend: { position: "bottom" } })
+    .createGuides({ legend: { position: "bottom", layout: "legacy-bottom" } })
     .createTitle({
       text: "Displacement distribution",
       subtitle: "by country",
@@ -89,7 +89,7 @@ export function createBinStepCarsHistogram(cars) {
       field: "Origin",
       scale: { palette: "tableau10" }
     })
-    .createGuides({ legend: { position: "bottom" } })
+    .createGuides({ legend: { position: "bottom", layout: "legacy-bottom" } })
     .createTitle({
       text: "Displacement distribution",
       subtitle: "by country",
@@ -122,7 +122,7 @@ export function createBinBoundariesCarsHistogram(cars) {
       field: "Origin",
       scale: { palette: "tableau10" }
     })
-    .createGuides({ legend: { position: "bottom" } })
+    .createGuides({ legend: { position: "bottom", layout: "legacy-bottom" } })
     .createTitle({
       text: "Displacement distribution",
       subtitle: "by country",
@@ -156,7 +156,7 @@ export function createFieldReassignmentCarsHistogram(cars) {
       field: "Origin",
       scale: { palette: "tableau10" }
     })
-    .createGuides({ legend: { position: "bottom" } })
+    .createGuides({ legend: { position: "bottom", layout: "legacy-bottom" } })
     .createTitle({
       text: "Displacement distribution",
       subtitle: "by country",

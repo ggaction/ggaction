@@ -61,20 +61,19 @@ test("authors and renders the complete primitive density area chart", () => {
     mark: { type: "area" },
     data: "densitiesDensityData",
     coordinate: "main",
+    layout: { mode: "overlay" },
     encoding: {
       x: { field: "Acceleration_value", fieldType: "quantitative", scale: "x" },
       y: {
         field: "Acceleration_density",
         fieldType: "quantitative",
         scale: "y",
-        stack: null
       },
       group: { field: "Origin", fieldType: "nominal" },
       color: {
         field: "Origin",
         fieldType: "nominal",
-        scale: "color",
-        layout: "overlay"
+        scale: "color"
       }
     }
   }]);
@@ -142,8 +141,8 @@ test("authors and renders the complete primitive density area chart", () => {
     ["#4c78a8", "#f58518", "#e45756"]
   );
   assert.deepEqual(program.graphicSpec.objects.colorLegendTitle.properties, {
-    x: 252.0144,
-    y: 116,
+    x: 251.2644,
+    y: 115.5,
     text: "Origin",
     fill: "#334155",
     fontSize: 13,

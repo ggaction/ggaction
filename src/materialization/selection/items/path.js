@@ -25,20 +25,10 @@ function rowsForSeries(rows, key) {
 
 function seriesDefinitions(layer, rows, series) {
   return series.map(item => {
-    const members = rowsForSeries(rows, item.key);
+    const members = item.sourceIndices === undefined ? rowsForSeries(rows, item.key)
+      : item.sourceIndices.map(index => rows[index]);
     const fields = { ...uniqueFields(members), ...item.key };
-    const channels = Object.fromEntries(
-      Object.entries(layer.encoding ?? {}).flatMap(([channel, encoding]) => {
-        if (encoding.field === undefined) {
-          return Object.hasOwn(encoding, "datum")
-            ? [[channel, encoding.datum]]
-            : [];
-        }
-        return Object.hasOwn(fields, encoding.field)
-          ? [[channel, fields[encoding.field]]]
-          : [];
-      })
-    );
+    const channels = channelMapFromRow(fields, layer);
     return { fields, channels, members };
   });
 }

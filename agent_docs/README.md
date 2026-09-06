@@ -16,8 +16,11 @@
 | 승인된 미래 계약 읽기 | [`contract/planned/`](contract/planned/) |
 | 현재 개발 순서 확인 | [`impl/README.md`](impl/README.md) |
 
-**현재 활성 Roadmap은 없다.** 마지막 완료 owner는 Roadmap 5.4 Phase 6이며 compact knowledge delivery와 local MCP
-통합을 R54-Exit에서 닫았다. 기록은 [`impl/roadmap5.4/ROADMAP.md`](impl/roadmap5.4/ROADMAP.md)가 소유한다.
+**현재 활성 Roadmap은 없다.** 계층적 chart authoring과 action consistency를 다룬
+[`impl/roadmap6/ROADMAP.md`](impl/roadmap6/ROADMAP.md)는 Phase 0–11을 완료했다. 사용자 선택에 따라 F20을
+제외한 새 액션군 F01–F19를 구현했고, [Phase 11 X 결과](impl/roadmap6/phase11/REVIEW.md)에 234개 action의
+계층·card·MCP·renderer·package 통합 검증과 원장 closeout을 기록했다. 마지막 완료 owner는 Roadmap 6
+Phase 11이다.
 Nullable active pointer와 마지막 완료 owner의 machine-readable source는
 [`impl/ROADMAP_INDEX.json`](impl/ROADMAP_INDEX.json)이다.
 

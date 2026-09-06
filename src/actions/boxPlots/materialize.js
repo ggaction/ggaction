@@ -1,3 +1,4 @@
+import { applyFacadeGuides } from "../charts/shared.js";
 import { action } from "../../core/action.js";
 import { validateUserId } from "../../core/identifiers.js";
 import {
@@ -190,7 +191,7 @@ export const materializeBoxPlot = action(
       }
     });
     if (config.guides !== false) {
-      next = next.createGuides(config.guides);
+      next = applyFacadeGuides(next, config.guides, ownerId);
     }
     return next._withContext({ currentMark: ownerId, currentData: source });
   }

@@ -169,10 +169,10 @@ export function createCarsLineChartValues(cars, { width, height, margin }) {
       origin: item.origin,
       color: item.color,
       strokeDash: item.strokeDash,
-      x1: width - margin.right + 8,
-      x2: width - margin.right + 40,
+      x1: width - margin.right + 9,
+      x2: width - margin.right + 41,
       y: bounds.y + 52 + index * 28,
-      labelX: width - margin.right + 50
+      labelX: width - margin.right + 52
     }))
   };
   const title = {

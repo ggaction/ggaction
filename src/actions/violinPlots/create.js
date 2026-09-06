@@ -1,6 +1,7 @@
 import { action } from "../../core/action.js";
 import { validateOptionObject } from "../../core/validation.js";
 import { findDataset } from "../../selectors/datasets.js";
+import { findLayer } from "../../selectors/layers.js";
 import {
   applyFacadeGuides,
   normalizeAppearance,
@@ -19,7 +20,7 @@ const OPTIONS = Object.freeze([
 ]);
 const POSITION_OPTIONS = Object.freeze(["field", "fieldType", "scale"]);
 const DENSITY_OPTIONS = Object.freeze([
-  "bandwidth", "extent", "steps", "kernel", "normalization", "width"
+  "bandwidth", "extent", "steps", "kernel", "normalization", "width", "side"
 ]);
 const WIDTH_OPTIONS = Object.freeze(["band", "resolve"]);
 const SPLIT_OPTIONS = Object.freeze(["field", "domain"]);
@@ -28,7 +29,6 @@ const AREA_OPTIONS = Object.freeze([
 ]);
 const CATEGORICAL_TYPES = Object.freeze(["nominal", "ordinal"]);
 const OPERATION = "createViolinPlot";
-const ROLE_ERROR = `${OPERATION} requires one categorical axis and one quantitative axis.`;
 
 function inferFieldType(dataset, encoding, label) {
   if (encoding.fieldType !== undefined) return encoding.fieldType;
@@ -44,13 +44,61 @@ function inferFieldType(dataset, encoding, label) {
   return values.every(Number.isFinite) ? "quantitative" : "nominal";
 }
 
-function normalizePosition(dataset, value, label) {
+export function normalizeViolinPosition(dataset, value, label) {
   const encoding = normalizeFieldEncoding(value, label);
   validateOptionObject(encoding, POSITION_OPTIONS, label);
   return {
     ...encoding,
     fieldType: inferFieldType(dataset, encoding, label)
   };
+}
+
+export function resolveViolinRoles(dataset, xValue, yValue, operation) {
+  const x = normalizeViolinPosition(dataset, xValue, `${operation} x`);
+  const y = normalizeViolinPosition(dataset, yValue, `${operation} y`);
+  const xCategorical = CATEGORICAL_TYPES.includes(x.fieldType);
+  const yCategorical = CATEGORICAL_TYPES.includes(y.fieldType);
+  const roleError = `${operation} requires one categorical axis and one quantitative axis.`;
+  if (xCategorical === yCategorical || (
+    x.fieldType !== "quantitative" && y.fieldType !== "quantitative"
+  )) {
+    throw new Error(roleError);
+  }
+  const category = xCategorical ? x : y;
+  const value = xCategorical ? y : x;
+  if (value.fieldType !== "quantitative") throw new Error(roleError);
+  return {
+    x,
+    y,
+    category,
+    value,
+    orientation: xCategorical ? "vertical" : "horizontal",
+    densityChannel: xCategorical ? "x" : "y"
+  };
+}
+
+export function resolveViolinSplit(value, category, operation, { removable = false } = {}) {
+  if (removable && value === false) return undefined;
+  if (value === undefined) return undefined;
+  validateOptionObject(value, SPLIT_OPTIONS, `${operation} split`);
+  if (typeof value.field !== "string" || value.field.length === 0) {
+    throw new TypeError(`${operation} split.field must be a non-empty string.`);
+  }
+  const split = { ...value };
+  if (split.field === category.field) {
+    throw new Error(`${operation} split field must differ from its category field.`);
+  }
+  return split;
+}
+
+export function resolveViolinDensity(value, current = {}, operation = OPERATION) {
+  if (value !== undefined) {
+    validateOptionObject(value, DENSITY_OPTIONS, `${operation} density`);
+    if (value.width !== undefined) {
+      validateOptionObject(value.width, WIDTH_OPTIONS, `${operation} density.width`);
+    }
+  }
+  return { ...current, ...(value ?? {}) };
 }
 
 function axisGuideOptions(value, field) {
@@ -95,31 +143,9 @@ export const createViolinPlot = action(
     });
     const data = resolveFacadeData(this, args.data, OPERATION);
     const dataset = findDataset(this, data);
-    const x = normalizePosition(dataset, args.x, `${OPERATION} x`);
-    const y = normalizePosition(dataset, args.y, `${OPERATION} y`);
-    const xCategorical = CATEGORICAL_TYPES.includes(x.fieldType);
-    const yCategorical = CATEGORICAL_TYPES.includes(y.fieldType);
-    if (xCategorical === yCategorical || (
-      x.fieldType !== "quantitative" && y.fieldType !== "quantitative"
-    )) {
-      throw new Error(ROLE_ERROR);
-    }
-    const category = xCategorical ? x : y;
-    const value = xCategorical ? y : x;
-    if (value.fieldType !== "quantitative") {
-      throw new Error(ROLE_ERROR);
-    }
-    let split = args.split;
-    if (split !== undefined) {
-      validateOptionObject(split, SPLIT_OPTIONS, `${OPERATION} split`);
-      if (typeof split.field !== "string" || split.field.length === 0) {
-        throw new TypeError(`${OPERATION} split.field must be a non-empty string.`);
-      }
-      split = { ...split };
-    }
-    if (split?.field === category.field) {
-      throw new Error(`${OPERATION} split field must differ from its category field.`);
-    }
+    const roles = resolveViolinRoles(dataset, args.x, args.y, OPERATION);
+    const { x, y, category, value } = roles;
+    const split = resolveViolinSplit(args.split, category, OPERATION);
     const color = normalizeEncoding(args.color, `${OPERATION} color`);
     if (
       color !== undefined &&
@@ -129,18 +155,8 @@ export const createViolinPlot = action(
         `${OPERATION} color must encode its category or split field.`
       );
     }
-    const density = args.density === undefined ? {} : args.density;
-    if (args.density !== undefined) {
-      validateOptionObject(density, DENSITY_OPTIONS, `${OPERATION} density`);
-      if (density.width !== undefined) {
-        validateOptionObject(
-          density.width,
-          WIDTH_OPTIONS,
-          `${OPERATION} density.width`
-        );
-      }
-    }
-    const { width: densityWidth, ...densityOptions } = density;
+    const density = resolveViolinDensity(args.density);
+    const { width: densityWidth, side: densitySide, ...densityOptions } = density;
     const area = normalizeAppearance(
       args.area,
       AREA_OPTIONS,
@@ -174,18 +190,46 @@ export const createViolinPlot = action(
       source: data,
       field: value.field,
       groupBy: category.field,
-      densityChannel: xCategorical ? "x" : "y",
+      densityChannel: roles.densityChannel,
       ...(args.coordinate === undefined ? {} : { coordinate: args.coordinate }),
       ...(value.scale === undefined ? {} : { valueScale: value.scale }),
       ...densityOptions,
       placement: {
         type: "category",
+        ...(densitySide === undefined ? {} : { side: densitySide }),
         ...(densityWidth === undefined ? {} : { width: densityWidth }),
         ...(split === undefined ? {} : { split }),
         ...(category.scale === undefined ? {} : { scale: category.scale })
       }
     });
     if (color !== undefined) next = next.encodeColor(targetArgs(color, id));
-    return applyFacadeGuides(next, guides);
+    next = applyFacadeGuides(next, guides, id, args.guides ?? {});
+    const transform = findDataset(next, findLayer(next, id).data).transform[0];
+    return next._withMarkConfig(id, {
+      ...next.markConfigs[id],
+      violinPlot: {
+        materialized: true,
+        source: data,
+        orientation: roles.orientation,
+        category: category.field,
+        categoryType: category.fieldType,
+        value: value.field,
+        split: transform.placement.split,
+        density: {
+          bandwidth: transform.bandwidth,
+          extent: transform.extent,
+          steps: transform.steps,
+          kernel: transform.kernel,
+          normalization: transform.normalization,
+          width: transform.placement.width,
+          side: transform.placement.side
+        },
+        colorRole: color === undefined
+          ? undefined
+          : color.field === category.field
+            ? "category"
+            : color.field === split?.field ? "split" : undefined
+      }
+    });
   }
 );

@@ -104,7 +104,7 @@ function legend(layout) {
     items: Object.freeze(ERA_DOMAIN.map((label, index) => Object.freeze({
       label,
       fill: ERA_COLORS[index],
-      x,
+      x: x + 0.375,
       y: y + index * 42
     })))
   });

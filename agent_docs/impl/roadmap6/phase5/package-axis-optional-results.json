@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "scope": "axis-optional-components",
+  "artifact": {
+    "filename": "ggaction-0.0.12.tgz",
+    "sha256": "fc925c8622b449e909f8757fd6ae18c45e9edeccd291d6186c65670a70203042",
+    "entries": 444,
+    "packedBytes": 497993,
+    "unpackedBytes": 2385136
+  },
+  "status": "passed",
+  "checks": [
+    "node-runtime-and-renderers",
+    "mcp",
+    "strict-typescript-root-exports",
+    "installed-tutorials",
+    "browser-bundle-limits"
+  ],
+  "browserBundles": {
+    "full": {
+      "specifier": "ggaction",
+      "chunks": 1,
+      "modules": 391,
+      "minifiedBytes": 934199,
+      "gzipBytes": 247314
+    },
+    "basic": {
+      "specifier": "ggaction/basic",
+      "chunks": 1,
+      "modules": 236,
+      "minifiedBytes": 501299,
+      "gzipBytes": 137356
+    },
+    "svg": {
+      "specifier": "ggaction/svg",
+      "chunks": 1,
+      "modules": 15,
+      "minifiedBytes": 19840,
+      "gzipBytes": 6437
+    }
+  }
+}

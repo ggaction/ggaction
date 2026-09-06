@@ -27,6 +27,7 @@ export const COMPLETE_SCALE_TYPES = Object.freeze([
 ]);
 
 const SCALE_PROPERTY_TYPES = Object.freeze({
+  midpoint: Object.freeze(["sequential"]),
   nice: Object.freeze(["linear", "log", "pow", "sqrt", "symlog", "time"]),
   zero: Object.freeze(["linear", "pow", "sqrt", "symlog"]),
   clamp: Object.freeze([

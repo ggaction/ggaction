@@ -1,18 +1,13 @@
+import { isSourceOwnedText } from "../../grammar/text.js";
 import { validateUserId } from "../../core/identifiers.js";
 import { findDataset } from "../../selectors/datasets.js";
 import { resolveEligibleLayer } from "../../selectors/layers.js";
 import { hasMaterializedLegend } from "../../materialization/legends.js";
-import {
-  applyDetachedScaleRematerialization,
-  applyMaterializationPlan
-} from "../../materialization/dependencies.js";
+import { applyDetachedScaleRematerialization, applyMaterializationPlan } from "../../materialization/dependencies.js";
 import { planEncodingRematerialization } from "../../materialization/encodings.js";
 import { findSemanticScale } from "../../selectors/scales.js";
 import { validateOptionObject } from "../../core/validation.js";
-import {
-  getMarkGraphicTypes,
-  getPositionChannelDefinition
-} from "../../core/vocabulary.js";
+import { getMarkGraphicTypes, getPositionChannelDefinition } from "../../core/vocabulary.js";
 
 export function validateOptions(args, supported, operation) {
   validateOptionObject(args, supported, operation);
@@ -58,19 +53,6 @@ export function clearMarkGraphic(program, target) {
 }
 
 
-export function validateLineSeriesCompatibility(layer, channel, field) {
-  if (layer.mark?.type !== "line") return;
-  for (const companion of ["group", "color", "strokeDash"]) {
-    if (companion === channel) continue;
-    const companionField = layer.encoding?.[companion]?.field;
-    if (companionField !== undefined && companionField !== field) {
-      throw new Error(
-        `Line ${channel} field "${field}" must match ${companion} field "${companionField}".`
-      );
-    }
-  }
-}
-
 export function resolveReassignmentScaleOptions(encoding, options) {
   if (encoding?.scale === undefined || options?.id !== undefined) return options;
   return { ...options, id: encoding.scale };
@@ -80,13 +62,14 @@ export function applyEncodingScale(
   program,
   definition,
   options = {},
-  { reassignment = false } = {}
+  { reassignment = false, allowTypeChange = false } = {}
 ) {
   const existing = findSemanticScale(program, definition.id);
   if (existing === undefined) {
     return program.createScale(definition);
   }
   if (existing.type !== definition.type) {
+    if (reassignment && allowTypeChange) return program.editScale({ ...definition });
     throw new Error(
       `Scale "${definition.id}" cannot change type from "${existing.type}" to "${definition.type}".`
     );
@@ -96,7 +79,7 @@ export function applyEncodingScale(
   for (const property of [
     "domain", "range", "nice", "zero", "clamp", "reverse",
     "base", "exponent", "constant", "paddingInner", "paddingOuter",
-    "padding", "align", "unknown", "interpolate"
+    "padding", "align", "unknown", "interpolate", "radialMapping"
   ]) {
     if (Object.hasOwn(options, property)) patch[property] = definition[property];
   }
@@ -126,7 +109,7 @@ export function rebindPositionGuides(
   if (!ownsAxis && !ownsGrid) return program;
 
   const remaining = program.semanticSpec.layers.some(layer =>
-    layer.id !== target && layer.encoding?.[channel]?.scale === previousScale
+    layer.id !== target && !isSourceOwnedText(layer) && layer.encoding?.[channel]?.scale === previousScale
   );
   if (remaining) {
     throw new Error(
@@ -202,4 +185,15 @@ export function resolveTarget(
   }
 
   return { id, dataset, layer };
+}
+
+export function inferSeriesGroup(program, layer, field, origin) {
+  const group = layer.encoding?.group;
+  if (group !== undefined && group.inferredFrom !== origin) {
+    if (origin === "offset" && (group.fields !== undefined || group.field !== field)) {
+      throw new Error("Offset field conflicts with the stored series group.");
+    }
+    return program;
+  }
+  return setEncodingProperties(program, layer.id, "group", { field, fieldType: "nominal", inferredFrom: origin });
 }

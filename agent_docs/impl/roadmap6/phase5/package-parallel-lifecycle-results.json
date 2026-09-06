@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "scope": "parallel-field-axis-lifecycle",
+  "artifact": {
+    "filename": "ggaction-0.0.12.tgz",
+    "sha256": "e799a5fdb197707c841a7ad537b6adce47598044d7b006695d9ad9f684065d9a",
+    "entries": 447,
+    "packedBytes": 502338,
+    "unpackedBytes": 2405709
+  },
+  "status": "passed",
+  "checks": [
+    "node-runtime-and-renderers",
+    "mcp",
+    "strict-typescript-root-exports",
+    "installed-tutorials",
+    "browser-bundle-limits"
+  ],
+  "browserBundles": {
+    "full": {
+      "specifier": "ggaction",
+      "chunks": 1,
+      "modules": 394,
+      "minifiedBytes": 940910,
+      "gzipBytes": 249616
+    },
+    "basic": {
+      "specifier": "ggaction/basic",
+      "chunks": 1,
+      "modules": 237,
+      "minifiedBytes": 501792,
+      "gzipBytes": 137476
+    },
+    "svg": {
+      "specifier": "ggaction/svg",
+      "chunks": 1,
+      "modules": 15,
+      "minifiedBytes": 19840,
+      "gzipBytes": 6437
+    }
+  }
+}

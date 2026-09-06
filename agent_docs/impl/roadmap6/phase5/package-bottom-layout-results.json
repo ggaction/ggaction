@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "scope": "Phase 5 W2 categorical layout mode",
+  "status": "passed",
+  "artifact": {
+    "filename": "ggaction-0.0.12.tgz",
+    "sha256": "eed7eec5c9b6905719fea27bddbefeeee9444509702ad0b6f1fdc058c378aa95",
+    "entries": 447,
+    "packedBytes": 502812,
+    "unpackedBytes": 2407909
+  },
+  "checks": [
+    "Node runtime and renderers",
+    "strict TypeScript",
+    "MCP",
+    "tutorials",
+    "browser bundle budgets",
+    "same-artifact Chromium Canvas and SVG"
+  ],
+  "browserBundles": {
+    "full": {
+      "specifier": "ggaction",
+      "chunks": 1,
+      "modules": 394,
+      "minifiedBytes": 941916,
+      "gzipBytes": 249852
+    },
+    "basic": {
+      "specifier": "ggaction/basic",
+      "chunks": 1,
+      "modules": 237,
+      "minifiedBytes": 502471,
+      "gzipBytes": 137713
+    },
+    "svg": {
+      "specifier": "ggaction/svg",
+      "chunks": 1,
+      "modules": 15,
+      "minifiedBytes": 19840,
+      "gzipBytes": 6437
+    }
+  }
+}

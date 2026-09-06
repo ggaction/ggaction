@@ -4,6 +4,7 @@ import path from "node:path";
 import test from "node:test";
 
 import { ChartProgram } from "../../src/ChartProgram.js";
+import { getWrappedActionMetadata } from "../../src/core/action.js";
 import { renderActionCatalog } from "../../scripts/generate-action-catalog.js";
 import {
   ACTION_CONTRACT_ROOT,
@@ -58,11 +59,8 @@ function runtimeActionMethods() {
   return Object.entries(
     Object.getOwnPropertyDescriptors(ChartProgram.prototype)
   )
-    .filter(([name, descriptor]) =>
-      !name.startsWith("_") && typeof descriptor.value === "function"
-    )
-    .map(([name]) => name)
-    .filter(name => name !== "constructor");
+    .filter(([, descriptor]) => getWrappedActionMetadata(descriptor.value) !== undefined)
+    .map(([name]) => name);
 }
 
 function assertContractTarget(contract) {
@@ -138,7 +136,7 @@ test("keeps lifecycle, coverage, and edit gaps machine-readable", () => {
     if (action.lifecycle === "Assignment") {
       assert.match(
         action.name,
-        /^(?:encode|jitterPoints$|orderCategories$|remove[A-Z])/,
+        /^(?:encode|layoutSeries$|jitterPoints$|packPoints$|orderCategories$|remove[A-Z])/,
         action.name
       );
       assert.match(action.audit, /Implemented|Planned|Proposed/, action.name);
@@ -186,68 +184,31 @@ test("keeps primitives and internal wrapped actions in separate layers", () => {
     .sort();
 
   assert.deepEqual([...index.internal.materialization].sort(), materialization);
-  assert.deepEqual(index.internal.guideComponents, [
-    "createThetaAxisLine",
-    "createRadialAxisLine",
-    "createThetaAxisTicks",
-    "createRadialAxisTicks",
-    "createThetaAxisLabels",
-    "createRadialAxisLabels",
-    "createThetaAxisTitle",
-    "createRadialAxisTitle",
-    "createCategoricalLegend",
-    "createGradientLegend",
-    "createIntervalLegend",
-    "createOpacityLegend",
-    "removeCategoricalLegend",
-    "removeOpacityLegend",
-    "createSizeLegend",
-    "createStrokeWidthLegend"
-  ]);
-  assert.deepEqual(index.internal.stateTransitions, [
-    "composeFacetGuides",
-    "rebindLayerData",
-    "rebindGradientPlotProfile",
-    "releaseDerivedData",
-    "replayDerivedData",
-    "setQuantitativeColorScale",
-    "useProgram"
-  ]);
-  assert.deepEqual(index.internal.aggregateComponents, [
-    "createBoxMedian",
-    "createBoxOutlierData",
-    "createBoxOutliers",
-    "createBoxSummaryData",
-    "createGradientProfileData",
-    "createHorizonData",
-    "createGradientPlotCenter",
-    "createGradientPlotLegend",
-    "createErrorBarCap",
-    "createErrorBandBoundary",
-    "applyBarHighlight",
-    "applyRectHighlight",
-    "applyPathHighlight",
-    "applyPointHighlight",
-    "applyRuleHighlight",
-    "dimUnselectedMarkItems",
-    "placeSelectedMarkItemsLast"
-  ]);
-  assert.equal(runtime.includes("createLegendSymbols"), true);
-  assert.equal(runtime.includes("createCategoricalLegend"), true);
-  assert.equal(runtime.includes("createSizeLegend"), true);
+  const internal = Object.values(index.internal).filter(Array.isArray).flat();
+  const direct = index.actions.map(action => action.name);
+  const all = [...direct, ...internal];
+  assert.equal(new Set(internal).size, internal.length, "Internal groups must be disjoint.");
+  assert.deepEqual(internal.filter(name => direct.includes(name)), [], "Direct/internal overlap.");
+  assert.deepEqual(runtime.filter(name => !all.includes(name)), [], "Unclassified wrapped actions.");
+  assert.deepEqual(all.filter(name => !runtime.includes(name)), [], "Orphan manifest actions.");
+  for (const name of runtime) {
+    assert.equal(getWrappedActionMetadata(ChartProgram.prototype[name]).op, name);
+  }
   assert.equal(
     existsSync(path.join(root, index.internal.contract)),
     true
   );
-  for (const name of [
-    ...index.internal.materialization,
-    ...index.internal.guideComponents,
-    ...index.internal.stateTransitions,
-    ...index.internal.aggregateComponents,
-    "createLegendSymbols"
-  ]) {
+  for (const name of internal) {
     assert.equal(declared.has(name), false, name);
   }
+});
+
+test("documents every internal wrapped owner exactly once", () => {
+  const source = readFileSync(path.join(root, index.internal.contract), "utf8");
+  const documented = [...source.matchAll(/^\| `([A-Za-z]\w*)` \|/gm)].map(match => match[1]);
+  const internal = Object.values(index.internal).filter(Array.isArray).flat();
+  assert.equal(new Set(documented).size, documented.length);
+  assert.deepEqual(documented.sort(), [...internal].sort());
 });
 
 test("keeps planned direct actions and reassignment gaps explicit", () => {
@@ -256,7 +217,11 @@ test("keeps planned direct actions and reassignment gaps explicit", () => {
   assert.equal(new Set(names).size, names.length);
   assert.equal(names.every(name => !current.has(name)), true);
   assert.equal(names.every(name => !maybeFutureActions.has(name)), true);
-  assert.equal(names.includes("editRuleMark"), false);
+  const declared = new Set(declaredProgramMethods());
+  for (const name of names) {
+    assert.equal(declared.has(name), false, `${name} is planned, not a public declaration`);
+    assert.equal(typeof ChartProgram.prototype[name], "undefined", `${name} is planned, not implemented`);
+  }
 
   for (const action of index.plannedActions) {
     assert.equal(

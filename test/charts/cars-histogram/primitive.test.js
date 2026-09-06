@@ -35,7 +35,9 @@ test("authors and renders the complete primitive cars histogram", () => {
       mark: { type: "bar" },
       data: "cars",
       coordinate: "main",
+      layout: { mode: "stack" },
       encoding: {
+        group: { field: "Origin", fieldType: "nominal", inferredFrom: "color" },
         x: {
           field: "Displacement",
           fieldType: "quantitative",
@@ -46,14 +48,12 @@ test("authors and renders the complete primitive cars histogram", () => {
           field: "Displacement",
           fieldType: "quantitative",
           aggregate: "count",
-          stack: "zero",
           scale: "y"
         },
         color: {
           field: "Origin",
           fieldType: "nominal",
-          scale: "color",
-          layout: "stack"
+          scale: "color"
         }
       }
     }
@@ -171,7 +171,7 @@ test("authors and renders the complete primitive cars histogram", () => {
     "center"
   );
   assert.equal(
-    values.legend.items[0].x + values.legend.width / 2,
+    values.legend.items[0].x - 0.25 + values.legend.width / 2,
     layout.width / 2
   );
   assert.equal(program.graphicSpec.objects.chartTitle.properties.x, 226);

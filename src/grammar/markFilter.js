@@ -1,7 +1,24 @@
 import { cloneAndFreeze, isPlainObject } from "../core/immutable.js";
 import { normalizeMarkSelector } from "./markSelection.js";
 
-const TRANSFORM_KEYS = Object.freeze(["type", "target", "selector"]);
+const TRANSFORM_KEYS = Object.freeze([
+  "type", "target", "selector", "selectors"
+]);
+
+export function markFilterSelectors(transform) {
+  const hasSelector = Object.hasOwn(transform, "selector");
+  const hasSelectors = Object.hasOwn(transform, "selectors");
+  if (hasSelector === hasSelectors) {
+    throw new Error(
+      "Mark filter transform requires exactly one of selector or selectors."
+    );
+  }
+  const selectors = hasSelector ? [transform.selector] : transform.selectors;
+  if (!Array.isArray(selectors) || selectors.length === 0) {
+    throw new TypeError("Mark filter selectors must be a non-empty array.");
+  }
+  return cloneAndFreeze(selectors.map(normalizeMarkSelector));
+}
 
 export function validateMarkFilterTransform(transform) {
   if (!isPlainObject(transform)) {
@@ -19,14 +36,15 @@ export function validateMarkFilterTransform(transform) {
   if (typeof transform.target !== "string" || transform.target.length === 0) {
     throw new TypeError("Mark filter target must be a non-empty string.");
   }
-  normalizeMarkSelector(transform.selector);
+  markFilterSelectors(transform);
 }
 
-export function normalizeMarkFilterTransform(target, selector) {
+export function normalizeMarkFilterTransform(target, selectors) {
   const transform = {
     type: "markFilter",
     target,
-    selector: normalizeMarkSelector(selector)
+    selectors: (Array.isArray(selectors) ? selectors : [selectors])
+      .map(normalizeMarkSelector)
   };
   validateMarkFilterTransform(transform);
   return cloneAndFreeze(transform);

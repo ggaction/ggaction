@@ -11,29 +11,151 @@ function validateFacetSpec(compositionSpec) {
   }
   if (
     !Number.isInteger(compositionSpec.columns) ||
-    compositionSpec.columns <= 0 ||
-    compositionSpec.columns > compositionSpec.children.length
+    compositionSpec.columns <= 0
   ) {
     throw new RangeError(
-      "Facet compositionSpec.columns must be a positive integer no larger than its children."
+      "Facet compositionSpec.columns must be a positive integer."
     );
   }
   if (!isPlainObject(compositionSpec.facet)) {
     throw new TypeError("Facet compositionSpec.facet must be a plain object.");
   }
-  const facetKeys = ["data", "field", "values", "scales", "guides"];
+  const facetKeys = ["data", "field", "values", "grid", "repeat", "scales", "guides"];
   const unknownFacet = Object.keys(compositionSpec.facet).find(
     key => !facetKeys.includes(key)
   );
   if (unknownFacet !== undefined) {
     throw new Error(`Unknown compositionSpec.facet property "${unknownFacet}".`);
   }
-  for (const property of ["data", "field"]) {
+  for (const property of ["data"]) {
     if (
       typeof compositionSpec.facet[property] !== "string" ||
       compositionSpec.facet[property].length === 0
     ) {
       throw new TypeError(`compositionSpec.facet.${property} must be a non-empty string.`);
+    }
+  }
+  const grid = compositionSpec.facet.grid;
+  const repeat = compositionSpec.facet.repeat;
+  if (grid !== undefined && repeat !== undefined) {
+    throw new Error("Facet compositionSpec cannot combine grid and repeat recipes.");
+  }
+  if (grid === undefined && repeat === undefined) {
+    if (compositionSpec.columns > compositionSpec.children.length) {
+      throw new RangeError(
+        "Facet compositionSpec.columns must be no larger than its children."
+      );
+    }
+    if (
+      typeof compositionSpec.facet.field !== "string" ||
+      compositionSpec.facet.field.length === 0
+    ) {
+      throw new TypeError("compositionSpec.facet.field must be a non-empty string.");
+    }
+  } else if (grid !== undefined) {
+    if (compositionSpec.columns !== grid.columns?.values?.length) {
+      throw new RangeError(
+        "Grid facet compositionSpec.columns must match its column domain."
+      );
+    }
+    if (compositionSpec.facet.field !== undefined) {
+      throw new Error("Grid facet compositionSpec does not use facet.field.");
+    }
+    if (!isPlainObject(grid)) {
+      throw new TypeError("compositionSpec.facet.grid must be a plain object.");
+    }
+    const gridKeys = ["rows", "columns", "combinations", "cells"];
+    const unknownGrid = Object.keys(grid).find(key => !gridKeys.includes(key));
+    if (unknownGrid !== undefined) {
+      throw new Error(`Unknown compositionSpec.facet.grid property "${unknownGrid}".`);
+    }
+    for (const role of ["rows", "columns"]) {
+      const value = grid[role];
+      if (!isPlainObject(value) || Object.keys(value).some(
+        key => !["field", "values"].includes(key)
+      )) {
+        throw new TypeError(
+          `compositionSpec.facet.grid.${role} requires field and values.`
+        );
+      }
+      if (typeof value.field !== "string" || value.field.length === 0) {
+        throw new TypeError(
+          `compositionSpec.facet.grid.${role}.field must be a non-empty string.`
+        );
+      }
+      if (
+        !Array.isArray(value.values) || value.values.length === 0 ||
+        value.values.some(item => !(
+          typeof item === "string" || typeof item === "boolean" ||
+          (typeof item === "number" && Number.isFinite(item))
+        )) || new Set(value.values).size !== value.values.length
+      ) {
+        throw new TypeError(
+          `compositionSpec.facet.grid.${role}.values must contain unique scalars.`
+        );
+      }
+    }
+    if (grid.rows.field === grid.columns.field) {
+      throw new Error("compositionSpec.facet.grid fields must be different.");
+    }
+    if (!["observed", "full"].includes(grid.combinations)) {
+      throw new Error(
+        'compositionSpec.facet.grid.combinations must be "observed" or "full".'
+      );
+    }
+    if (!Array.isArray(grid.cells) || grid.cells.length !== compositionSpec.children.length) {
+      throw new TypeError(
+        "compositionSpec.facet.grid.cells must contain one descriptor per child."
+      );
+    }
+    const cellKeys = ["id", "row", "column", "rowValue", "columnValue", "empty"];
+    const coordinates = new Set();
+    for (const cell of grid.cells) {
+      if (!isPlainObject(cell) || Object.keys(cell).some(key => !cellKeys.includes(key))) {
+        throw new TypeError("compositionSpec.facet.grid cells must be canonical objects.");
+      }
+      if (!compositionSpec.children.includes(cell.id)) {
+        throw new Error(`Unknown grid facet child "${cell.id}".`);
+      }
+      if (!Number.isInteger(cell.row) || cell.row < 0 || cell.row >= grid.rows.values.length ||
+          !Number.isInteger(cell.column) || cell.column < 0 || cell.column >= grid.columns.values.length) {
+        throw new RangeError("Grid facet cell coordinates must be inside their domains.");
+      }
+      if (cell.rowValue !== grid.rows.values[cell.row] ||
+          cell.columnValue !== grid.columns.values[cell.column]) {
+        throw new Error("Grid facet cell values must match their row and column coordinates.");
+      }
+      if (typeof cell.empty !== "boolean") {
+        throw new TypeError("Grid facet cell empty must be a boolean.");
+      }
+      const key = `${cell.row}:${cell.column}`;
+      if (coordinates.has(key)) {
+        throw new Error("Grid facet cells must occupy unique coordinates.");
+      }
+      coordinates.add(key);
+    }
+  } else {
+    if (compositionSpec.facet.field !== undefined) {
+      throw new Error("Repeat compositionSpec does not use facet.field.");
+    }
+    if (compositionSpec.columns > compositionSpec.children.length) {
+      throw new RangeError(
+        "Repeat compositionSpec.columns must be no larger than its children."
+      );
+    }
+    if (!isPlainObject(repeat) || Object.keys(repeat).some(
+      key => !["target", "channel", "fields"].includes(key)
+    )) {
+      throw new TypeError(
+        "compositionSpec.facet.repeat requires target, channel, and fields."
+      );
+    }
+    if (typeof repeat.target !== "string" || repeat.target.length === 0 ||
+        !["x", "y"].includes(repeat.channel) ||
+        !Array.isArray(repeat.fields) || repeat.fields.length === 0 ||
+        repeat.fields.some(field => typeof field !== "string" || field.length === 0) ||
+        new Set(repeat.fields).size !== repeat.fields.length) {
+      throw new TypeError("compositionSpec.facet.repeat is not canonical.");
     }
   }
   const values = compositionSpec.facet.values;
@@ -45,11 +167,17 @@ function validateFacetSpec(compositionSpec) {
       typeof value === "boolean" ||
       (typeof value === "number" && Number.isFinite(value))
     )) ||
-    new Set(values).size !== values.length
+    (grid === undefined && new Set(values).size !== values.length)
   ) {
     throw new TypeError(
       "compositionSpec.facet.values must contain one unique scalar per child."
     );
+  }
+  if (repeat !== undefined && (
+    values.length !== repeat.fields.length ||
+    values.some((value, index) => value !== repeat.fields[index])
+  )) {
+    throw new Error("compositionSpec.facet.values must match repeat fields.");
   }
   const scales = compositionSpec.facet.scales;
   if (
@@ -80,13 +208,13 @@ function validateFacetSpec(compositionSpec) {
 function validateCompositionChildren(compositionSpec, childIds, facet) {
   if (
     !Array.isArray(compositionSpec.children) ||
-    compositionSpec.children.length < (facet ? 1 : 2) ||
+    compositionSpec.children.length < 1 ||
     !compositionSpec.children.every(id => typeof id === "string" && id.length > 0)
   ) {
     throw new TypeError(
       facet
         ? "Facet compositionSpec.children requires at least one child ID."
-        : "compositionSpec.children requires at least two child IDs."
+        : "compositionSpec.children requires at least one child ID."
     );
   }
   if (new Set(compositionSpec.children).size !== compositionSpec.children.length) {

@@ -6,6 +6,10 @@ import { createCarsDensityArea } from "../../../../examples/cars-density-area/pr
 import { createCarsHistogram } from "../../../../examples/cars-histogram/program.js";
 import { createCarsLineChart } from "../../../../examples/cars-line-chart/program.js";
 import { loadCars } from "../../../support/data.js";
+import {
+  normalizeMarkFilterTransform,
+  validateMarkFilterTransform
+} from "../../../../src/grammar/markFilter.js";
 
 const rows = [
   { id: "a1", category: "A", x: 1, y: 10 },
@@ -46,10 +50,12 @@ test("supports the shortest call immediately after point creation", () => {
     program.trace.children.at(-1).children.map(node => node.op),
     [
       "createDerivedData",
-      "materializeMarkFilteredData",
-      "editSemantic",
-      "rematerializePointMark"
+      "materializeMarkFilteredData"
     ]
+  );
+  assert.deepEqual(
+    program.trace.children.at(-1).children[1].children.map(node => node.op),
+    ["editSemantic", "editSemantic", "rematerializePointMark"]
   );
 });
 
@@ -71,12 +77,12 @@ test("filters the current mark through an immutable derived dataset", () => {
     transform: [{
       type: "markFilter",
       target: "points",
-      selector: {
+      selectors: [{
         grain: "item",
         field: "category",
         op: "oneOf",
         values: ["A"]
-      }
+      }]
     }],
     values: [rows[0], rows[2]]
   });
@@ -90,13 +96,13 @@ test("filters the current mark through an immutable derived dataset", () => {
 
   assert.deepEqual(
     program.trace.children.at(-1).children.map(node => node.op),
+    ["createDerivedData", "materializeMarkFilteredData"]
+  );
+  assert.deepEqual(
+    program.trace.children.at(-1).children[1].children.map(node => node.op),
     [
-      "createDerivedData",
-      "materializeMarkFilteredData",
-      "editSemantic",
-      "rematerializeScale",
-      "rematerializeScale",
-      "rematerializePointMark"
+      "editSemantic", "editSemantic", "rematerializeScale",
+      "rematerializeScale", "rematerializePointMark"
     ]
   );
 });
@@ -267,10 +273,10 @@ test("validates mark selection and filter application atomically", () => {
     () => base.filterMarks({ field: "x", oneOf: [1] }),
     /Unknown filterMarks option "oneOf"/
   );
-  assert.throws(
-    () => base.filterMarks({ field: "x", op: "eq", value: 999 }),
-    /at least one matching mark item/
-  );
+  const empty = base.filterMarks({ field: "x", op: "eq", value: 999 });
+  assert.deepEqual(empty.semanticSpec.datasets.at(-1).values, []);
+  assert.equal(empty.graphicSpec.objects.points.items.length, 0);
+  assert.deepEqual(empty.resolvedScales.x.domain, base.resolvedScales.x.domain);
   const filtered = base.filterMarks({
     field: "category",
     op: "eq",
@@ -278,8 +284,252 @@ test("validates mark selection and filter application atomically", () => {
   });
   assert.throws(
     () => filtered.filterMarks({ field: "category", op: "eq", value: "B" }),
-    /already exists/
+    /requires mode "replace" or "compose"/
   );
   assert.equal(base.semanticSpec.datasets.length, 1);
   assert.equal(base.semanticSpec.layers[0].data, "rows");
+});
+
+test("replaces, composes, and idempotently repeats one active filter", () => {
+  const base = encodedPointProgram();
+  const first = base.filterMarks({
+    field: "category",
+    op: "eq",
+    value: "A"
+  });
+  const same = first.filterMarks({
+    field: "category",
+    op: "eq",
+    value: "A"
+  });
+  const replaced = first.filterMarks({
+    mode: "replace",
+    field: "category",
+    op: "eq",
+    value: "B"
+  });
+  const composed = first.filterMarks({
+    mode: "compose",
+    field: "x",
+    op: "gt",
+    value: 1
+  });
+
+  assert.deepEqual(same.semanticSpec, first.semanticSpec);
+  assert.deepEqual(same.graphicSpec, first.graphicSpec);
+  assert.deepEqual(
+    replaced.semanticSpec.datasets.at(-1).values.map(row => row.id),
+    ["b1", "b2"]
+  );
+  assert.deepEqual(
+    replaced.semanticSpec.datasets.at(-1).transform[0].selectors,
+    [{ grain: "item", field: "category", op: "eq", value: "B" }]
+  );
+  assert.deepEqual(
+    composed.semanticSpec.datasets.at(-1).values.map(row => row.id),
+    ["a2"]
+  );
+  assert.deepEqual(
+    composed.semanticSpec.datasets.at(-1).transform[0].selectors,
+    [
+      { grain: "item", field: "category", op: "eq", value: "A" },
+      { grain: "item", field: "x", op: "gt", value: 1 }
+    ]
+  );
+  assert.throws(
+    () => first.filterMarks({
+      mode: "append",
+      field: "x",
+      op: "gt",
+      value: 1
+    }),
+    /Unknown mark filter mode/
+  );
+});
+
+test("keeps an empty view on the preceding domain and removes stale graphics", () => {
+  const first = encodedPointProgram()
+    .createMarkLabels({ source: "points", field: "category" })
+    .highlightMarks({
+      target: "points",
+      select: { field: "category", op: "eq", value: "A" },
+      fill: "red"
+    })
+    .filterMarks({ field: "category", op: "eq", value: "A" });
+  const domains = {
+    x: first.resolvedScales.x.domain,
+    y: first.resolvedScales.y.domain
+  };
+  const empty = first.filterMarks({
+    mode: "compose",
+    field: "x",
+    op: "gt",
+    value: 99
+  });
+
+  assert.deepEqual(empty.semanticSpec.datasets.at(-1).values, []);
+  assert.deepEqual(empty.resolvedScales.x.domain, domains.x);
+  assert.deepEqual(empty.resolvedScales.y.domain, domains.y);
+  assert.equal(empty.graphicSpec.objects.points.items.length, 0);
+  assert.equal(empty.graphicSpec.objects["points-labels"].items.length, 0);
+});
+
+test("removes an active filter and restores source, domains, and histogram bins", () => {
+  const base = encodedPointProgram();
+  const filtered = base.filterMarks({
+    field: "category",
+    op: "eq",
+    value: "A"
+  });
+  const restored = filtered.removeMarkFilter();
+
+  assert.equal(restored.semanticSpec.layers[0].data, "rows");
+  assert.deepEqual(restored.semanticSpec.datasets, base.semanticSpec.datasets);
+  assert.deepEqual(restored.resolvedScales, base.resolvedScales);
+  assert.deepEqual(restored.graphicSpec, base.graphicSpec);
+  assert.equal(restored.context.currentData, "rows");
+  assert.equal(restored.markConfigs.points.markFilter, undefined);
+  assert.throws(() => base.removeMarkFilter(), /mark filter requires an eligible layer/);
+
+  const histogram = createCarsHistogram(loadCars());
+  const originalBin = histogram.semanticSpec.layers
+    .find(layer => layer.id === "bars").encoding.x.bin;
+  const histogramFiltered = histogram.filterMarks({
+    target: "bars",
+    grain: "stack",
+    channel: "y2",
+    op: "max"
+  });
+  const histogramRestored = histogramFiltered.removeMarkFilter({ target: "bars" });
+  assert.deepEqual(
+    histogramRestored.semanticSpec.layers
+      .find(layer => layer.id === "bars").encoding.x.bin,
+    originalBin
+  );
+  assert.deepEqual(histogramRestored.graphicSpec, histogram.graphicSpec);
+});
+
+test("preserves downstream snapshots when an active filter is revised", () => {
+  const first = encodedPointProgram().filterMarks({
+    field: "category",
+    op: "eq",
+    value: "A"
+  });
+  const dependent = first.filterData({
+    id: "highA",
+    source: "pointsFilteredData",
+    field: "x",
+    predicate: { op: "gt", value: 1 }
+  });
+  const revised = dependent.filterMarks({
+    target: "points",
+    mode: "replace",
+    field: "category",
+    op: "eq",
+    value: "B"
+  });
+
+  assert.equal(revised.semanticSpec.layers[0].data, "pointsFilteredData2");
+  assert.deepEqual(
+    revised.semanticSpec.datasets.find(dataset =>
+      dataset.id === "pointsFilteredData"
+    ).values.map(row => row.id),
+    ["a1", "a2"]
+  );
+  assert.deepEqual(
+    revised.semanticSpec.datasets.find(dataset => dataset.id === "highA")
+      .values.map(row => row.id),
+    ["a2"]
+  );
+  assert.deepEqual(
+    revised.semanticSpec.datasets.find(dataset =>
+      dataset.id === "pointsFilteredData2"
+    ).values.map(row => row.id),
+    ["b1", "b2"]
+  );
+});
+
+test("supports empty views for every current final-item mark family", () => {
+  const values = [
+    { category: "A", x: 1, y: 2 },
+    { category: "A", x: 2, y: 3 },
+    { category: "B", x: 3, y: 4 },
+    { category: "B", x: 4, y: 5 }
+  ];
+  const source = () => chart().createCanvas().createData({ values });
+  const cases = [
+    ["point", source().createPointMark().encodeX({ field: "x" }).encodeY({ field: "y" })],
+    ["barPlot", source().createBarPlot({ x: "category", y: "y", guides: false })],
+    ["linePlot", source().createLinePlot({ x: "x", y: "y", groupBy: "category", guides: false })],
+    ["areaPlot", source().createAreaPlot({ x: "x", y: "y", groupBy: "category", guides: false })],
+    ["piePlot", source().createPiePlot({ category: "category", value: "y", aggregate: "sum", guides: false })],
+    ["rule", source().createRuleMark().encodeX({ field: "x", fieldType: "quantitative" })],
+    ["tick", source().createTickMark().encodeX({ field: "x" }).encodeY({ field: "y" })],
+    ["rect", source().createRectMark().encodeX({ field: "x" }).encodeY({ field: "y" })]
+  ];
+
+  for (const [id, program] of cases) {
+    const empty = program.filterMarks({
+      field: "category",
+      op: "eq",
+      value: "missing"
+    });
+    assert.deepEqual(empty.semanticSpec.datasets.at(-1).values, [], id);
+    assert.equal(empty.graphicSpec.objects[id].items.length, 0, id);
+    const resized = empty.editCanvas({ width: 700 });
+    assert.equal(resized.graphicSpec.objects[id].items.length, 0, `${id} resize`);
+  }
+});
+
+test("keeps a shared scale domain stable while one filtered consumer is empty", () => {
+  const program = chart()
+    .createCanvas()
+    .createData({
+      id: "firstData",
+      values: [{ x: 1, category: "A" }, { x: 2, category: "A" }]
+    })
+    .createPointMark({ id: "first" })
+    .encodeX({ field: "x", scale: { id: "shared", nice: false, zero: false } })
+    .createData({
+      id: "secondData",
+      values: [{ x: 50, category: "B" }, { x: 100, category: "B" }]
+    })
+    .createPointMark({ id: "second" })
+    .encodeX({ target: "second", field: "x", scale: { id: "shared" } });
+  const domain = program.resolvedScales.shared.domain;
+  const empty = program.filterMarks({
+    target: "first",
+    field: "category",
+    op: "eq",
+    value: "missing"
+  });
+  const resized = empty.editCanvas({ width: 800 });
+
+  assert.deepEqual(domain, [1, 100]);
+  assert.deepEqual(empty.resolvedScales.shared.domain, domain);
+  assert.deepEqual(resized.resolvedScales.shared.domain, domain);
+  assert.equal(resized.graphicSpec.objects.first.items.length, 0);
+  assert.equal(resized.graphicSpec.objects.second.items.length, 2);
+});
+
+test("keeps legacy selector provenance readable and rejects mixed recipes", () => {
+  const selector = { field: "category", op: "eq", value: "A" };
+  assert.doesNotThrow(() => validateMarkFilterTransform({
+    type: "markFilter",
+    target: "points",
+    selector
+  }));
+  assert.deepEqual(
+    normalizeMarkFilterTransform("points", selector).selectors,
+    [{ grain: "item", field: "category", op: "eq", value: "A" }]
+  );
+  assert.throws(
+    () => validateMarkFilterTransform({
+      type: "markFilter",
+      target: "points",
+      selector,
+      selectors: [selector]
+    }),
+    /exactly one of selector or selectors/
+  );
 });

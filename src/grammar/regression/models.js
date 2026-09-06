@@ -1,4 +1,5 @@
-import { studentTCriticalValue } from "../statistics/studentT.js";
+import { confidenceCriticalValue } from
+  "../statistics/confidenceInterval.js";
 import {
   maximumMagnitude,
   requireFiniteResult,
@@ -56,7 +57,9 @@ function linearPrediction(model, xValue) {
   );
 }
 
-function fitLinearGroup(rows, { x, y, group, confidence }) {
+function fitLinearGroup(rows, {
+  x, y, group, confidenceMethod, level
+}) {
   const count = rows.length;
   const groupLabel = group === undefined ? "all" : String(group);
   const label = `Regression group "${groupLabel}"`;
@@ -152,7 +155,11 @@ function fitLinearGroup(rows, { x, y, group, confidence }) {
   return Object.assign(model, {
     residualSumSquares,
     residualStandardError: Math.sqrt(residualSumSquares / degreesOfFreedom),
-    critical: studentTCriticalValue(confidence, degreesOfFreedom)
+    critical: confidenceCriticalValue({
+      method: confidenceMethod,
+      level,
+      degreesOfFreedom
+    })
   });
 }
 
@@ -230,7 +237,9 @@ function polynomialResponse(design, values, size, scale = 1) {
   ));
 }
 
-function fitPolynomialGroup(rows, { x, y, group, confidence, degree }) {
+function fitPolynomialGroup(rows, {
+  x, y, group, confidenceMethod, level, degree
+}) {
   const count = rows.length;
   const parameterCount = degree + 1;
   const groupLabel = group === undefined ? "all" : String(group);
@@ -310,7 +319,11 @@ function fitPolynomialGroup(rows, { x, y, group, confidence, degree }) {
     inverse,
     residualSumSquares,
     residualStandardError: Math.sqrt(residualVariance),
-    critical: studentTCriticalValue(confidence, degreesOfFreedom)
+    critical: confidenceCriticalValue({
+      method: confidenceMethod,
+      level,
+      degreesOfFreedom
+    })
   };
   if (!normalizedXByDifference) model.normalizedXByDifference = false;
   if (stableResponse) Object.assign(model, { responseScale, scaledCoefficients });
@@ -416,7 +429,8 @@ export function fitRegressionGroup(rows, { x, y, group, parameters }) {
       x,
       y,
       group,
-      confidence: parameters.confidence
+      confidenceMethod: parameters.confidenceMethod,
+      level: parameters.level
     });
   }
   if (parameters.method === "polynomial") {
@@ -424,7 +438,8 @@ export function fitRegressionGroup(rows, { x, y, group, parameters }) {
       x,
       y,
       group,
-      confidence: parameters.confidence,
+      confidenceMethod: parameters.confidenceMethod,
+      level: parameters.level,
       degree: parameters.degree
     });
   }

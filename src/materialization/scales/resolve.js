@@ -1,3 +1,4 @@
+import { validateContinuousColorConsumer } from "../../grammar/scales/colorConsumers.js";
 import {
   isContinuousColorScaleType,
   isDiscretePositionScaleType,
@@ -21,12 +22,13 @@ import {
   resolveStrokeWidthRange,
   resolveTransformedDomain,
   SCALE_ROLES,
+  validateSequentialMidpoint,
   validateLinearScaleType,
   validateOrdinalScaleType,
   validateScaleTypeForRole,
   validateTimeScaleType
 } from "../../grammar/scales/index.js";
-import { resolveArcAutoPositionRange } from "./policies/arc.js";
+import { resolveArcAutoPositionRange, resolveMeasuredRadiusDomain, validateMeasuredRadiusConsumers } from "./policies/arc.js";
 import { resolveTemporalBarBand } from "./policies/bar.js";
 import { resolveOffsetScalePolicy } from "./policies/offset.js";
 import { resolveBinnedPositionDomain } from "./policies/binnedPosition.js";
@@ -139,7 +141,9 @@ function resolveContinuousScale({
             : validateLinearScaleType(scale.type),
     domain,
     range,
+    ...(scale.midpoint === undefined ? {} : { midpoint: scale.midpoint }),
     ...(scale.clamp === undefined ? {} : { clamp: scale.clamp }),
+    ...(scale.radialMapping === undefined ? {} : { radialMapping: scale.radialMapping }),
     ...(scale.type === "log"
       ? {
           base: normalizeTransformParameters("log", {
@@ -182,19 +186,38 @@ function reverseResolvedScale(scale) {
   };
 }
 
-export function resolveScaleMaterialization({
-  id,
-  scale,
-  channel,
-  consumers,
-  valuesByConsumer,
-  bounds,
-  resolvedScales,
-  markConfigs
-}) {
+export function resolveScaleMaterialization(options) {
+  const {
+    id,
+    scale,
+    channel,
+    consumers,
+    valuesByConsumer,
+    bounds,
+    resolvedScales,
+    markConfigs,
+    thetaScales
+  } = options;
   const allValues = valuesByConsumer
     .flatMap(item => item.values)
     .filter(value => value !== undefined);
+  const preserved = resolvedScales[id]?.domain;
+  if (
+    scale.domain === "auto" &&
+    Array.isArray(preserved) &&
+    consumers.some(({ layer }) =>
+      markConfigs?.[layer.id]?.markFilter?.empty === true
+    )
+  ) {
+    return resolveScaleMaterialization({
+      ...options,
+      scale: { ...scale, domain: preserved },
+      valuesByConsumer: valuesByConsumer.map(item => ({
+        ...item,
+        categoryOrder: undefined
+      }))
+    });
+  }
   const isSequentialColor = channel === "color" &&
     isContinuousColorScaleType(scale.type);
   const isDiscretizedColor = channel === "color" &&
@@ -210,6 +233,9 @@ export function resolveScaleMaterialization({
     !isOrdinalOffset &&
     isDiscretePositionScaleType(scale.type);
 
+  if (isSequentialColor || isDiscretizedColor) {
+    for (const consumer of consumers) validateContinuousColorConsumer(consumer.layer, consumer.encoding, scale);
+  }
   let discretizedScale;
   if (isDiscretizedColor) {
     discretizedScale = resolveDiscretizedColorScale({
@@ -225,8 +251,7 @@ export function resolveScaleMaterialization({
         valuesByConsumer,
         channel,
         scale,
-        id,
-        allValues
+        id
       });
   const seriesLayouts = valuesByConsumer.map(item => item.seriesLayout);
   const seriesDomain = isDiscretizedColor || binnedDomain !== undefined
@@ -247,7 +272,7 @@ export function resolveScaleMaterialization({
   }
   const domain = isDiscretizedColor
     ? discretizedScale.domain
-    : categoryOrderDomain ?? binnedDomain ?? seriesDomain ?? resolveDefaultDomain({
+    : resolveMeasuredRadiusDomain({ scale, channel, allValues }) ?? categoryOrderDomain ?? binnedDomain ?? seriesDomain ?? resolveDefaultDomain({
         scale,
         allValues,
         isOrdinalAppearance,
@@ -267,6 +292,13 @@ export function resolveScaleMaterialization({
     isOrdinalOffset,
     discretizedScale
   });
+  validateSequentialMidpoint(scale.midpoint, scale.type, domain);
+  if (scale.midpoint !== undefined && (channel !== "color" || consumers.some(
+    consumer => consumer.encoding.fieldType !== "quantitative"
+  ))) {
+    throw new Error("Scale midpoint requires quantitative color consumers.");
+  }
+  validateMeasuredRadiusConsumers({ scale, domain, range, consumers, markConfigs, thetaScales });
   if (channel === "shape" && domain.length > range.length) {
     throw new Error(
       `Shape scale "${id}" requires at least one distinct shape per domain value.`

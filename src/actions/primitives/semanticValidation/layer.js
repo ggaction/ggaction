@@ -4,6 +4,7 @@ import {
   MARK_TYPES,
   STACK_MODES
 } from "../../../core/vocabulary.js";
+import { validateMarkLabelContent, validateMarkLabelNormalization } from "../../../grammar/markLabels.js";
 import { validateAggregate } from "../../../grammar/aggregate.js";
 import {
   normalizeHistogramBin,
@@ -11,6 +12,7 @@ import {
   validateHistogramBinStep
 } from "../../../grammar/histogram.js";
 import { validatePathOrderDirection } from "../../../grammar/pathOrder.js";
+import { normalizeGroupFields } from "../../../grammar/pathSeries.js";
 import { normalizeCategoryOrder } from "../../../grammar/categoryOrder.js";
 import { validateSemanticFieldType } from "../../../grammar/scales/index.js";
 import { findLayer } from "../../../selectors/layers.js";
@@ -40,7 +42,7 @@ export function validateLayerSemanticValue(
   parsed,
   value,
   {
-    sourceMarkTypes = ["point", "bar", "rule", "rect", "arc"],
+    sourceMarkTypes = ["point", "bar", "line", "rule", "rect", "arc"],
     validateParallel
   } = {}
 ) {
@@ -48,6 +50,17 @@ export function validateLayerSemanticValue(
   if (property === "mark.type" && !MARK_TYPES.includes(value)) {
     throw new Error(`Unknown mark type "${value}".`);
   }
+  if (property === "mark.missing" && !["error", "break"].includes(value)) {
+    throw new Error(`Unsupported area missing policy "${value}".`);
+  }
+  if (property === "layout.mode" && !COLOR_LAYOUTS.includes(value)) {
+    throw new Error(`Unsupported series layout "${value}".`);
+  }
+  if (property === "encoding.group.inferredFrom" && !["color", "offset"].includes(value)) {
+    throw new Error(`Unsupported group inference origin "${value}".`);
+  }
+  if (property === "encoding.text.content") validateMarkLabelContent(value);
+  if (property === "encoding.text.normalizeBy") validateMarkLabelNormalization(value);
   if (property === "source") {
     validateLayerSource(program, parsed, value, sourceMarkTypes);
   }
@@ -58,6 +71,10 @@ export function validateLayerSemanticValue(
     throw new Error("Path order field type must be quantitative.");
   }
   if (property.endsWith(".fieldType")) validateSemanticFieldType(value);
+  if (property === "encoding.group.fields") {
+    if (!Array.isArray(value)) throw new TypeError("Group fields must be an array.");
+    normalizeGroupFields(value);
+  }
   if (property === "encoding.pathOrder.order") validatePathOrderDirection(value);
   if (property.endsWith(".categoryOrder")) normalizeCategoryOrder(value);
   if (property.startsWith("encoding.parallel.")) {

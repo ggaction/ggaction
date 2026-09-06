@@ -19,11 +19,15 @@ export function registerContinuousLegendActions(ProgramClass) {
   ProgramClass.prototype.createOpacityLegend = createOpacityLegend;
   ProgramClass.prototype.rematerializeOpacityLegend = rematerializeOpacityLegend;
   ProgramClass.prototype.removeOpacityLegend = removeOpacityLegend;
-  ProgramClass.prototype.createIntervalLegend = createIntervalLegend;
-  ProgramClass.prototype.rematerializeIntervalLegend = rematerializeIntervalLegend;
+  registerIntervalLegendActions(ProgramClass);
 }
 
 export function registerGradientLegendActions(ProgramClass) {
   ProgramClass.prototype.createGradientLegend = createGradientLegend;
   ProgramClass.prototype.rematerializeGradientLegend = rematerializeGradientLegend;
+}
+
+export function registerIntervalLegendActions(ProgramClass) {
+  ProgramClass.prototype.createIntervalLegend = createIntervalLegend;
+  ProgramClass.prototype.rematerializeIntervalLegend = rematerializeIntervalLegend;
 }

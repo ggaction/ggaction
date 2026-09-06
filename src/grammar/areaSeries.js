@@ -1,15 +1,11 @@
 import { cloneAndFreeze } from "../core/immutable.js";
-import {
-  readNominalField,
-  readQuantitativeField,
-  readTemporalField
-} from "./scales/index.js";
-import {
-  layoutSeriesPartition,
-  validateColorLayout
-} from "./seriesLayout.js";
+import { readNominalField, readQuantitativeField, readTemporalField } from "./scales/index.js";
+import { layoutSeriesPartition, validateColorLayout } from "./seriesLayout.js";
 import { stableOrderPathValues } from "./pathOrder.js";
 import { deriveCategoricalDensitySeries } from "./categoricalDensity.js";
+import { validatePathSeriesAppearance } from "./pathSeries.js";
+import { readAreaEndpoint, validateAreaEndpointPair } from "./areaEndpoints.js";
+import { validateGeneratedItemLimit } from "../core/validation.js";
 
 function indexSegments(segments) {
   const indexed = [];
@@ -21,7 +17,7 @@ export function deriveAreaSeries(rows, layer) {
   if (layer?.mark?.type !== "area") {
     throw new Error("Area series derivation requires a semantic area mark.");
   }
-  const { x, y, x2, y2, group, color } = layer.encoding ?? {};
+  const { x, y, x2, y2 } = layer.encoding ?? {};
   const vertical =
     ["quantitative", "temporal"].includes(x?.fieldType) &&
     y?.fieldType === "quantitative" &&
@@ -37,26 +33,19 @@ export function deriveAreaSeries(rows, layer) {
       `Area mark "${layer.id}" requires exactly one quantitative x/x2 or y/y2 range and one quantitative or temporal independent position.`
     );
   }
-  if (group !== undefined && group.fieldType !== "nominal") {
-    throw new Error(`Area group encoding on mark "${layer.id}" must be nominal.`);
-  }
+  const grouping = validatePathSeriesAppearance(rows, layer);
   const orientation = vertical ? "vertical" : "horizontal";
   const independent = vertical ? x : y;
   const independentValues = independent.fieldType === "temporal"
-    ? readTemporalField(rows, independent.field)
+    ? readTemporalField(rows, independent.field, independent.temporalUnit)
     : readQuantitativeField(rows, independent.field);
-  const lower = vertical
-    ? readQuantitativeField(rows, y.field)
-    : readQuantitativeField(rows, x.field);
-  const upper = vertical
-    ? readQuantitativeField(rows, y2.field)
-    : readQuantitativeField(rows, x2.field);
-  const groupValues = group === undefined
-    ? rows.map(() => undefined)
-    : readNominalField(rows, group.field);
-  const colorValues = color === undefined
-    ? rows.map(() => undefined)
-    : readNominalField(rows, color.field);
+  if (Object.hasOwn(independent, "datum")) throw new Error("Area independent position requires a field.");
+  const primary = vertical ? y : x;
+  const secondary = vertical ? y2 : x2;
+  validateAreaEndpointPair(primary, secondary);
+  const missing = layer.mark.missing ?? "error";
+  const lower = readAreaEndpoint(rows, primary, missing);
+  const upper = readAreaEndpoint(rows, secondary, missing);
   const pathOrder = layer.encoding?.pathOrder;
   const orderValues = pathOrder === undefined
     ? undefined
@@ -64,32 +53,24 @@ export function deriveAreaSeries(rows, layer) {
   const groups = new Map();
 
   for (let index = 0; index < rows.length; index += 1) {
-    const key = groupValues[index];
+    const tuple = grouping.map(field => rows[index][field]);
+    const key = JSON.stringify(tuple);
     const series = groups.get(key) ?? {
-      key: {
-        ...(group === undefined ? {} : { [group.field]: key }),
-        ...(color === undefined ? {} : { [color.field]: colorValues[index] })
-      },
+      key: Object.fromEntries(grouping.map((field, i) => [field, tuple[i]])),
       values: []
     };
-    if (
-      color !== undefined &&
-      !Object.is(series.key[color.field], colorValues[index])
-    ) {
-      throw new Error(
-        `Area series "${String(key)}" must have one color value.`
-      );
-    }
     series.values.push(vertical
       ? {
           x: independentValues[index],
           y: lower[index],
           y2: upper[index],
+          ...(missing === "break" ? { sourceIndex: index } : {}),
           ...(orderValues === undefined ? {} : { pathOrder: orderValues[index] })
         }
       : {
           x: lower[index],
           x2: upper[index],
+          ...(missing === "break" ? { sourceIndex: index } : {}),
           y: independentValues[index],
           ...(orderValues === undefined ? {} : { pathOrder: orderValues[index] })
         });
@@ -98,7 +79,8 @@ export function deriveAreaSeries(rows, layer) {
   if (groups.size === 0) {
     throw new Error(`Area mark "${layer.id}" has no values.`);
   }
-  const series = [...groups.values()].map(item => {
+  layoutRawAreaGroups(groups, { layer, vertical, primary, secondary });
+  const series = [...groups.values()].flatMap(item => {
     const key = vertical ? "x" : "y";
     const values = pathOrder === undefined
       ? item.values.sort((left, right) => left[key] - right[key])
@@ -107,6 +89,22 @@ export function deriveAreaSeries(rows, layer) {
           item.values.map(value => value.pathOrder),
           pathOrder.order
         );
+    if (missing === "break") {
+      const segments = [];
+      let segment = [];
+      const emit = () => {
+        if (segment.length >= 2) segments.push({ key: item.key,
+          sourceIndices: segment.map(value => value.sourceIndex),
+          values: segment.map(({ sourceIndex, ...value }) => value) });
+        segment = [];
+      };
+      for (const value of values) {
+        if ((vertical ? value.y == null || value.y2 == null : value.x == null || value.x2 == null)) emit();
+        else segment.push(value);
+      }
+      emit();
+      return segments;
+    }
     if (values.length < 2) {
       throw new Error(
         `Area series on mark "${layer.id}" requires at least two points.`
@@ -114,6 +112,7 @@ export function deriveAreaSeries(rows, layer) {
     }
     return { key: item.key, values };
   });
+  if (series.length === 0) throw new Error(`Area mark "${layer.id}" has no valid segment with at least two points.`);
   return cloneAndFreeze({
     orientation,
     xValues: series.flatMap(item => item.values.flatMap(value =>
@@ -151,7 +150,7 @@ export function deriveCenteredAreaSeries(rows, layer) {
     );
   }
   const xValues = x.fieldType === "temporal"
-    ? readTemporalField(rows, x.field)
+    ? readTemporalField(rows, x.field, x.temporalUnit)
     : readQuantitativeField(rows, x.field);
   const yValues = readQuantitativeField(rows, y.field);
   const groups = readNominalField(rows, group.field);
@@ -358,4 +357,51 @@ export function layoutDensityAreaSeries(derived, layout = "overlay") {
       values: valuesBySeries[index]
     }))
   });
+}
+
+export function layoutRawAreaGroups(groups, { layer, vertical, primary, secondary }) {
+  const mode = layer.layout?.mode ?? "overlay";
+  validateColorLayout(mode);
+  if (mode === "overlay") return;
+  if (mode === "group" || (mode === "center" && !vertical)) {
+    throw new Error(`Area layout "${mode}" is incompatible with this orientation.`);
+  }
+  const primaryDatum = Object.hasOwn(primary, "datum");
+  const secondaryDatum = Object.hasOwn(secondary, "datum");
+  if (primaryDatum === secondaryDatum || (primaryDatum ? primary.datum : secondary.datum) !== 0) {
+    throw new Error("Stacked area requires one value field and one zero datum endpoint.");
+  }
+  const position = vertical ? "x" : "y";
+  const lower = vertical ? "y" : "x", upper = `${lower}2`;
+  const measure = primaryDatum ? upper : lower;
+  const series = [...groups.values()];
+  const indices = series.map(item => {
+    const index = new Map();
+    for (const value of item.values) {
+      if (index.has(value[position])) throw new Error("Area layout requires unique group/position rows.");
+      index.set(value[position], value);
+    }
+    return index;
+  });
+  const positions = [...new Set(series.flatMap(item => item.values.map(value => value[position])))].sort((a, b) => a - b);
+  validateGeneratedItemLimit(positions.length * series.length, "Area layout cell count");
+  if (indices.some(index => index.size !== positions.length || positions.some(value => !index.has(value)))) {
+    throw new Error("Area layout requires an aligned row for every group and position.");
+  }
+  for (const position of positions) {
+    const points = indices.map(index => index.get(position));
+    if (points.some(point => point[measure] == null)) {
+      for (const point of points) { point[lower] = null; point[upper] = null; }
+      continue;
+    }
+    const segments = layoutSeriesPartition(points.map(point => point[measure]), mode);
+    const byIndex = new Map(segments.map(segment => [segment.index, segment]));
+    let endpoint = mode === "center" ? segments[0]?.start ?? 0 : 0;
+    points.forEach((point, index) => {
+      const segment = byIndex.get(index);
+      point[lower] = segment?.start ?? (mode === "diverging" ? 0 : endpoint);
+      point[upper] = segment?.end ?? (mode === "diverging" ? 0 : endpoint);
+      if (segment !== undefined && mode !== "diverging") endpoint = segment.end;
+    });
+  }
 }

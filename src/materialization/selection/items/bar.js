@@ -1,4 +1,5 @@
-import { deriveBarAggregates } from "../../../grammar/bars/aggregate.js";
+import { deriveSeriesBarCells } from "../../../grammar/bars/aggregate.js";
+import { readSeriesIdentity } from "../../../grammar/pathSeries.js";
 import {
   BAR_GRAINS,
   resolveBarChannels,
@@ -7,7 +8,6 @@ import {
   resolveBarGrain
 } from "../../../grammar/bars/policy.js";
 import { numericExtent } from "../../../grammar/numeric.js";
-import { layoutSeriesPartition } from "../../../grammar/seriesLayout.js";
 import {
   readNominalField,
   readTemporalField
@@ -24,7 +24,7 @@ import {
 
 function categoryValues(rows, encoding) {
   return encoding.fieldType === "temporal"
-    ? readTemporalField(rows, encoding.field)
+    ? readTemporalField(rows, encoding.field, encoding.temporalUnit)
     : readNominalField(rows, encoding.field);
 }
 
@@ -36,20 +36,17 @@ function aggregateMembers(rows, layer, cell, channels) {
   const colors = !["nominal", "ordinal"].includes(color?.fieldType)
     ? undefined
     : readNominalField(rows, color.field);
+  const identity = layer.encoding?.group === undefined ? undefined : readSeriesIdentity(rows, layer);
   return rows.filter((_, index) =>
     categories[index] === categoryValue &&
-    (colors === undefined || colors[index] === cell.color)
+    (identity === undefined ? colors === undefined || colors[index] === cell.color : identity.values[index] === cell.series)
   );
 }
 
 function aggregateCellDefinitions(program, layer, dataset) {
   const channels = resolveBarChannels(layer);
-  const derived = deriveBarAggregates(dataset.values, layer).values;
   const categoryEncoding = layer.encoding[channels.category];
   const categoryScale = program.resolvedScales[categoryEncoding.scale];
-  const measureScale = program.resolvedScales[
-    layer.encoding[channels.measure].scale
-  ];
   const colorEncoding = layer.encoding?.color;
   const colorScale = program.resolvedScales[colorEncoding?.scale];
   const offsetChannel = resolveBarOffsetChannel(layer);
@@ -67,70 +64,17 @@ function aggregateCellDefinitions(program, layer, dataset) {
         ...(cell.color === undefined ? {} : { color: cell.color }),
         ...(layer.encoding?.[offsetChannel] === undefined
           ? {}
-          : { [offsetChannel]: cell.color })
+          : { [offsetChannel]: cell.series ?? cell.color })
       },
       members
     };
   }
 
-  if (colorEncoding?.fieldType === "quantitative") {
-    const cells = new Map(derived.map(cell => [
-      cell[channels.category],
-      cell
-    ]));
-    const categories = ["ordinal", "band", "point"].includes(categoryScale.type)
-      ? categoryScale.domain
-      : [...new Set(derived.map(cell => cell[channels.category]))]
-          .sort((left, right) => left - right);
-    return categories.flatMap(category => {
-      const cell = cells.get(category);
-      return cell === undefined
-        ? []
-        : [definition(cell, measureScale.domain[0], cell[channels.measure])];
-    });
-  }
-
-  if (layout === "group" && offsetScale !== undefined) {
-    const categoryIndex = new Map(
-      categoryScale.domain.map((value, index) => [value, index])
-    );
-    const offsetIndex = new Map(
-      offsetScale.domain.map((value, index) => [value, index])
-    );
-    const cells = [...derived].sort((left, right) =>
-      categoryIndex.get(left[channels.category]) -
-        categoryIndex.get(right[channels.category]) ||
-      offsetIndex.get(left.color) - offsetIndex.get(right.color)
-    );
-    return cells.map(cell => definition(
-      cell,
-      measureScale.domain[0],
-      cell[channels.measure]
-    ));
-  }
-
-  const categories = ["ordinal", "band", "point"].includes(categoryScale.type)
-    ? categoryScale.domain
-    : [...new Set(derived.map(cell => cell[channels.category]))]
-        .sort((left, right) => left - right);
-  const series = colorScale?.domain ?? [undefined];
-  const lookup = new Map(derived.map(cell => [
-    JSON.stringify([cell[channels.category], cell.color]),
-    cell
-  ]));
-  const baseline = layout === "overlay" ? measureScale.domain[0] : 0;
-  return categories.flatMap(category => {
-    const cells = series.map(color =>
-      lookup.get(JSON.stringify([category, color]))
-    );
-    const values = cells.map(cell => cell?.[channels.measure] ?? 0);
-    return layoutSeriesPartition(values, layout, { baseline }).flatMap(segment => {
-      const cell = cells[segment.index];
-      return cell === undefined
-        ? []
-        : [definition(cell, segment.start, segment.end)];
-    });
-  });
+  const categories = categoryScale.type === "time" ? undefined : categoryScale.domain;
+  const series = layout === "group" ? offsetScale?.domain
+    : layer.encoding.group === undefined && colorEncoding?.fieldType !== "quantitative" ? colorScale?.domain : undefined;
+  return deriveSeriesBarCells(dataset.values, layer, categories, series)
+    .map(({ cell, start, end }) => definition(cell, start, end));
 }
 
 function histogramDefinitions(program, layer, dataset) {
@@ -145,7 +89,7 @@ function histogramDefinitions(program, layer, dataset) {
   });
   const colorScale = program.resolvedScales[colorEncoding?.scale];
   return segments.map(segment => {
-    const colorValue = colorScale?.domain[segment.category];
+    const colorValue = segment.colorValue ?? colorScale?.domain[segment.category];
     return {
       fields: uniqueFields(segment.members),
       channels: {

@@ -298,9 +298,9 @@ function buildLegend(target, domain, title, colors) {
     domain,
     title,
     strokes: colors.slice(0, domain.length),
-    x1: domain.map(() => x),
-    x2: domain.map(() => x + 32),
-    labelX: domain.map(() => x + 42),
+    x1: domain.map(() => x + 1),
+    x2: domain.map(() => x + 33),
+    labelX: domain.map(() => x + 44),
     itemY: domain.map((_, index) => target.margin.top + 52 + index * 28),
     titleX: x,
     titleY: target.margin.top + 20

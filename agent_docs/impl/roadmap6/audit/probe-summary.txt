@@ -1,0 +1,50 @@
+P01 rejected createXAxisLine requires a missing x-axis line.
+P02 accepted {"layers":[{"id":"scatterPlot","mark":"point","encoding":{"x":{"field":"x","fieldType":"quantitative","scale":"x"},"y":{"field":"y","fieldType":"quantitative","scale":"y"}}},{"id":"linePlot","mark":"line","encoding":{"x":{"field":"x","fieldType":"quantitative","scale":"x"},"y":{"field":"y","fieldType":"quantitative","scale":"y"}}}],"guides":{"axis":{"x":{"coordinate":"main","scale":"x","title":"x"},"y":{"coordinate":"main","scale":"y","title":"y"}},"grid":{"horizontal":{"scale":"y","coordinate":"main"}}}}
+P03 rejected Line color field "region" must match group field "series".
+P04 rejected rule mark requires an eligible layer.
+P05 accepted {"layers":[{"id":"linePlot","mark":"line","encoding":{"x":{"field":"x","fieldType":"quantitative","scale":"x"},"y":{"field":"y","fieldType":"quantitative","scale":"y"},"group":{"field":"series","fieldType":"nominal"},"strokeWidth":{"field":"size","fieldType":"quantitative","scale":"strokeWidth"}}}],"guides":{}}
+P06 rejected point or rule mark requires an eligible layer.
+P07 accepted {"layers":[{"id":"linePlot","mark":"line","encoding":{"x":{"field":"x","fieldType":"quantitative","scale":"x"},"y":{"field":"y","fieldType":"quantitative","scale":"y"},"group":{"field":"series","fieldType":"nominal"}}}],"guides":{}}
+P08-Point accepted {"layers":[{"id":"point","mark":"point"}],"guides":{}}
+P08-Bar accepted {"layers":[{"id":"bar","mark":"bar"}],"guides":{}}
+P08-Area rejected Area stroke must be a non-empty string.
+P08-Arc rejected Arc stroke must be a non-empty string.
+P08-Rect accepted {"layers":[{"id":"rect","mark":"rect"}],"guides":{}}
+P09 accepted {"layers":[{"id":"scatterPlot","mark":"point","encoding":{"x":{"field":"x","fieldType":"quantitative","scale":"x"},"y":{"field":"y","fieldType":"quantitative","scale":"y"},"color":{"field":"size","fieldType":"nominal","scale":"color"}}}],"guides":{}}
+P10 rejected Color layout transition from "group" to "stack" is not supported.
+P11 rejected encodeBarWidth requires complete aggregate bar x and y encodings.
+P12 rejected createXAxis.title must be a plain object.
+P13 accepted {"layers":[{"id":"point","mark":"point","encoding":{"theta":{"field":"x","fieldType":"quantitative","scale":"theta"},"radius":{"field":"y","fieldType":"quantitative","scale":"radius"}}}],"guides":{"axis":{"theta":{"scale":"theta","coordinate":"polar"}}}}
+P14 rejected editThetaAxisTitle requires an existing axis title.
+P15 rejected editThetaAxis.title options must be a plain object.
+P16 rejected editAreaMark fill cannot be combined with a color encoding.
+P17 accepted {"layers":[{"id":"band","mark":"area","encoding":{"x":{"field":"x","fieldType":"quantitative","scale":"x"},"y":{"field":"low","fieldType":"quantitative","scale":"y","title":"y"},"y2":{"field":"high","fieldType":"quantitative","scale":"y"},"group":{"field":"category","fieldType":"nominal"},"color":{"field":"category","fieldType":"nominal","scale":"color","layout":"overlay"}}}],"guides":{},"graphic":{"type":"path","items":[{"id":"band:0","properties":{"commands":[{"op":"M","x":150,"y":550},{"op":"L","x":850,"y":470},{"op":"L","x":850,"y":310},{"op":"L","x":150,"y":390},{"op":"Z"}],"fill":"black","opacity":0.2}},{"id":"band:1","properties":{"commands":[{"op":"M","x":150,"y":390},{"op":"L","x":850,"y":310},{"op":"L","x":850,"y":150},{"op":"L","x":150,"y":230},{"op":"Z"}],"fill":"black","opacity":0.2}}]}}
+P18 accepted {"dataset":{"id":"derived","source":"data","transform":[{"type":"filter","field":"x","predicate":{"op":"gt","value":1}}]}}
+P19 rejected Cannot read properties of undefined (reading 'length')
+P20 rejected Dataset "scatterPlotFilteredData" already exists.
+P21 rejected filterMarks requires at least one matching mark item.
+P22 accepted {"scales":{"x":{"type":"time","domain":[-30610224000000,946684800000],"range":[70,610]},"y":{"type":"linear","domain":[1,2],"range":[340,30]}}}
+P23 accepted {"layers":[{"id":"boxPlot","mark":"bar","encoding":{"x":{"field":"category","fieldType":"nominal","scale":"x"},"y":{"field":"__boxPlot_q1","fieldType":"quantitative","scale":"y","title":"y"},"y2":{"field":"__boxPlot_q3","fieldType":"quantitative","scale":"y"}}},{"id":"boxPlotWhisker","mark":"rule","encoding":{"x":{"field":"category","fieldType":"nominal","scale":"x"},"y":{"field":"__boxPlot_lowerWhisker","fieldType":"quantitative","scale":"y","title":"y"},"y2":{"field":"__boxPlot_upperWhisker","fieldType":"quantitative","scale":"y"},"strokeDash":{"datum":"solid"}}},{"id":"boxPlotWhiskerLowerCap","mark":"rule","encoding":{"x":{"field":"category","fieldType":"nominal","scale":"x"},"y":{"field":"__boxPlot_lowerWhisker","fieldType":"quantitative","scale":"y"},"strokeDash":{"datum":"solid"}}},{"id":"boxPlotWhiskerUpperCap","mark":"rule","encod
+P24 accepted {"layers":[{"id":"violinPlot","mark":"area","encoding":{"x":{"field":"category","fieldType":"nominal","scale":"x"},"y":{"field":"y_value","fieldType":"quantitative","scale":"y"},"group":{"field":"category","fieldType":"nominal"}}}],"guides":{"axis":{"x":{"coordinate":"main","scale":"x","title":"category"},"y":{"coordinate":"main","scale":"y","title":"y"}},"grid":{"horizontal":{"scale":"y","coordinate":"main"}}}}
+P25 rejected Unknown editDensity option "densityChannel".
+P26 rejected Unknown createScatterPlot point option "radius".
+P27 accepted {"layers":[{"id":"arc","mark":"arc","encoding":{"theta":{"field":"category","fieldType":"nominal","aggregate":"count","scale":"theta"},"color":{"field":"category","fieldType":"nominal","scale":"color"}}}],"guides":{"axis":{"theta":{"scale":"theta","coordinate":"polar","title":"count(category)"}},"grid":{"theta":{"scale":"theta","coordinate":"polar"}},"legend":{"color":{"scale":"color","title":"category"}}}}
+P28 rejected Standalone size legends currently require position "right".
+P29 rejected Legend channels "color", "shape" belong to one combined block and must be removed together.
+P30 accepted {"scale":{"type":"linear","domain":[2,4],"range":[0,155]},"itemCount":2}
+P31 accepted {"scale":{"type":"linear","domain":[0,4],"range":[0,155]},"itemCount":3}
+P32 accepted {"layers":[{"id":"barPlot","mark":"bar","encoding":{"x":{"field":"category","fieldType":"nominal","scale":"x"},"y":{"field":"y","fieldType":"quantitative","aggregate":"mean","stack":null,"scale":"y"}}}],"guides":{}}
+P33 rejected Unknown editXAxisLabels option "rotation".
+P34 rejected Text format must be "auto" or a fixed-decimal token such as ".1f".
+P35 rejected Quantitative bar x encoding requires bin or aggregate.
+P36 accepted {"layers":[{"id":"barPlot","mark":"bar","encoding":{"x":{"field":"y","fieldType":"quantitative","aggregate":"mean","stack":null,"scale":"x"},"y":{"field":"category","fieldType":"nominal","scale":"y"}}}],"guides":{}}
+P37 rejected Bar y encoding requires a binned quantitative or ordinal x category, temporal x category, or aggregate.
+P38 accepted {"layers":[{"id":"barPlot","mark":"bar","encoding":{"x":{"field":"amount","fieldType":"quantitative","aggregate":"sum","stack":null,"scale":"x"},"y":{"field":"when","fieldType":"temporal","scale":"y"}}}],"guides":{}}
+P39 accepted {"ciUpperLabels":["3.131606527612"],"interval":[{"center":2,"lower":-0.48413771175,"upper":4.48413771175}]}
+MCP-pie chart accepted {"calls":["program.createArcMark({ innerRadius: 0 })","program.encodeTheta({ field: \"value\", fieldType: \"quantitative\" })","program.encodeColor({ field: \"category\" })"],"unresolved":[]}
+MCP-density plot accepted {"calls":["program.createAreaMark({ id: \"densityArea\" })","program.encodeDensity({ field: \"value\", target: \"densityArea\" })"],"unresolved":[]}
+MCP-rose chart accepted {"calls":["program.createArcMark({ padAngle: 1, opacity: 0.9 })","program.encodeTheta({ field: \"category\", fieldType: \"ordinal\" })","program.encodeR({ field: \"value\", fieldType: \"quantitative\" })","program.encodeColor({ field: \"series\", layout: \"overlay\" })"],"unresolved":[]}
+MCP-radial bar chart accepted {"calls":["program.createArcMark({ padAngle: 1, opacity: 0.9 })","program.encodeTheta({ field: \"category\", fieldType: \"ordinal\" })","program.encodeR({ field: \"value\", fieldType: \"quantitative\" })","program.encodeColor({ field: \"series\", layout: \"overlay\" })","program.createBarPlot({ x: { field: \"category\", fieldType: \"nominal\" }, y: { field: \"value\", fieldType: \"quantitative\" } })"],"unresolved":[]}
+MCP-radar chart accepted {"calls":["program.createLineMark({ closed: true })","program.encodeTheta({ field: \"category\", fieldType: \"nominal\" })","program.encodeR({ field: \"value\", fieldType: \"quantitative\" })","program.encodeGroup({ field: \"series\" })","program.encodeColor({ field: \"series\" })"],"unresolved":[]}
+MCP-area chart accepted {"calls":["program.createAreaMark({})","program.encodeX({ field: \"x\", fieldType: \"quantitative\" })","program.encodeY({ field: \"y\", fieldType: \"quantitative\" })"],"unresolved":[]}
+MCP-strip plot accepted {"calls":["program.createTickMark({})"],"unresolved":[]}

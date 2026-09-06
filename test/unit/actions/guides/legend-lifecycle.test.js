@@ -37,7 +37,7 @@ function compositeProgram() {
     .encodeOpacity({ field: "alpha" })
     .createLegend({
       target: "points",
-      channels: ["color", "shape"],
+      channels: ["color", "shape", "size"],
       count: 3,
       labels: { color: "#0f172a" },
       titleStyle: { color: "#111827" }
@@ -88,9 +88,9 @@ test("validates stroke-width edits before changing stored state", () => {
   assert.equal(edited.guideConfigs.legend.strokeWidth.labels.color, "#123456");
 
   for (const invalid of [
-    { position: "right" },
+    { gradient: {} },
     { symbol: "auto" },
-    { border: true },
+    { order: "scale" },
     { count: 1 },
     { labels: { fontSize: 0 } },
     { titleStyle: { color: "" } }
@@ -118,10 +118,7 @@ test("routes compatible focused stroke-width edits through editLegend", () => {
     program.graphicSpec.objects.strokeWidthLegendTitle.properties.fontWeight,
     700
   );
-  assert.throws(
-    () => program.editLegendLayout({ offset: 10 }),
-    /stroke-width legend does not accept offset/
-  );
+  assert.equal(program.editLegendLayout({ offset: 10 }).guideConfigs.legend.strokeWidth.offset, 10);
 });
 
 test("removes one complete composite block and preserves retained blocks", () => {
@@ -173,9 +170,9 @@ test("removes size or opacity independently and rematerializes what remains", ()
   assert.ok(withoutOpacity.graphicSpec.objects.sizeLegendSymbols);
 });
 
-test("requires complete combined channel sets and validates selectors atomically", () => {
+test("validates legend content removal selectors atomically", () => {
   const program = compositeProgram();
-  const invalidChannels = Object.freeze(["color"]);
+  const invalidChannels = Object.freeze(["color", "strokeWidth"]);
   for (const channels of [
     invalidChannels,
     [],
@@ -189,7 +186,7 @@ test("requires complete combined channel sets and validates selectors atomically
       /combined block|at least one|duplicate|no complete block|Unsupported|must be an array/
     );
   }
-  assert.deepEqual(invalidChannels, ["color"]);
+  assert.deepEqual(invalidChannels, ["color", "strokeWidth"]);
   assert.ok(program.guideConfigs.legend.series);
   assert.ok(program.guideConfigs.legend.size);
   assert.ok(program.guideConfigs.legend.opacity);

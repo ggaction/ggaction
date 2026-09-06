@@ -1,0 +1,50 @@
+{
+  "scope": "measured-radius-encoding",
+  "status": "passed",
+  "artifact": {
+    "file": ".artifacts/roadmap6-authoring/measured-radius-package-verified/ggaction-0.0.12.tgz",
+    "sha256": "86331ef6d0da912d6c758c1ee745f3fb802f2febdb564b8b70d73a1571c3c12c",
+    "packedBytes": 492399,
+    "unpackedBytes": 2348177,
+    "entryCount": 440
+  },
+  "checks": [
+    "installed-node-runtime-and-renderers",
+    "measured-radius-sum-count-mapping-reassignment",
+    "strict-positive-negative-types",
+    "installed-tutorial-consumers",
+    "MCP-server",
+    "minimal-browser-bundles"
+  ],
+  "browserBundles": {
+    "full": {
+      "specifier": "ggaction",
+      "chunks": 1,
+      "modules": 387,
+      "minifiedBytes": 926052,
+      "gzipBytes": 243932
+    },
+    "basic": {
+      "specifier": "ggaction/basic",
+      "chunks": 1,
+      "modules": 228,
+      "minifiedBytes": 477180,
+      "gzipBytes": 131566
+    },
+    "svg": {
+      "specifier": "ggaction/svg",
+      "chunks": 1,
+      "modules": 15,
+      "minifiedBytes": 19840,
+      "gzipBytes": 6437
+    }
+  },
+  "budgets": {
+    "ggaction": 245000,
+    "ggaction/basic": 132000,
+    "ggaction/svg": 25000
+  },
+  "mcp": {
+    "coldStartMilliseconds": 309.67483300000004
+  }
+}

@@ -131,6 +131,6 @@ test("supports guide opt-outs and rejects title/legend overlap", () => {
       text: "Distribution of Acceleration",
       subtitle: "By Origin (cars dataset)"
     }),
-    /title and top guides require more margin space/
+    /top chart title and color legend overlap/
   );
 });

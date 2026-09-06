@@ -1,3 +1,5 @@
+import { applyTemporalUnit } from "../temporal.js";
+
 function replaceAlternateBinding(program, target, channel, previous, usesField) {
   if (previous === undefined) return program;
   const alternate = usesField ? "datum" : "field";
@@ -111,6 +113,7 @@ export function applyPositionSemantics(program, {
   datum,
   hasField,
   fieldType,
+  temporalUnit,
   bin,
   aggregate,
   stack,
@@ -128,16 +131,19 @@ export function applyPositionSemantics(program, {
     channel,
     previous,
     hasField
-  )
-    .editSemantic({
+  );
+  if (hasField || datum !== undefined) {
+    next = next.editSemantic({
       property: `layer[${target}].encoding.${channel}.${hasField ? "field" : "datum"}`,
       value: hasField ? field : datum
-    })
-    .editSemantic({
+    });
+  }
+  next = next.editSemantic({
       property: `layer[${target}].encoding.${channel}.fieldType`,
       value: fieldType
     });
 
+  next = applyTemporalUnit(next, target, channel, temporalUnit, previous);
   next = applyBin(next, target, channel, previous, bin);
   for (const [property, value] of Object.entries({ aggregate, stack })) {
     if (value === undefined) continue;

@@ -1,0 +1,31 @@
+{
+  "file": "/Users/hyeonjeon/Projects/ggaction-clean-20260905/.artifacts/roadmap6-authoring/package-item-stroke-spacing/ggaction-0.0.12.tgz",
+  "filename": "ggaction-0.0.12.tgz",
+  "sha256": "ea409de44021b4292e02f0695fed56d8e45b20a633d46a12ce11b159ec796818",
+  "entryCount": 452,
+  "size": 510254,
+  "unpackedSize": 2438513,
+  "browserBundles": {
+    "full": {
+      "specifier": "ggaction",
+      "chunks": 1,
+      "modules": 399,
+      "minifiedBytes": 954026,
+      "gzipBytes": 254192
+    },
+    "basic": {
+      "specifier": "ggaction/basic",
+      "chunks": 1,
+      "modules": 242,
+      "minifiedBytes": 511412,
+      "gzipBytes": 140339
+    },
+    "svg": {
+      "specifier": "ggaction/svg",
+      "chunks": 1,
+      "modules": 15,
+      "minifiedBytes": 19840,
+      "gzipBytes": 6437
+    }
+  }
+}

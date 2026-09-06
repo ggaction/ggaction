@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "scope": "area-and-series-layout",
+  "artifact": {
+    "filename": "ggaction-0.0.12.tgz",
+    "sha256": "9707de4005b534c56b1f07bc0e9ed6283df905c03e2416050b1dd27542170ee6",
+    "packedBytes": 486775,
+    "unpackedBytes": 2327235,
+    "entries": 439
+  },
+  "status": "failed",
+  "checks": [
+    "node-runtime-and-renderers",
+    "mcp",
+    "strict-typescript",
+    "installed-tutorials"
+  ],
+  "browserBundles": {
+    "ggaction": {
+      "specifier": "ggaction",
+      "chunks": 1,
+      "modules": 386,
+      "minifiedBytes": 914505,
+      "gzipBytes": 240319,
+      "limit": 237000,
+      "excessBytes": 3319
+    },
+    "ggaction/basic": {
+      "specifier": "ggaction/basic",
+      "chunks": 1,
+      "modules": 227,
+      "minifiedBytes": 467022,
+      "gzipBytes": 128538,
+      "limit": 125000,
+      "excessBytes": 3538
+    },
+    "ggaction/svg": {
+      "specifier": "ggaction/svg",
+      "chunks": 1,
+      "modules": 15,
+      "minifiedBytes": 19840,
+      "gzipBytes": 6418,
+      "limit": 25000,
+      "excessBytes": 0
+    }
+  },
+  "error": "ggaction gzip bundle 240319 exceeds 237000."
+}

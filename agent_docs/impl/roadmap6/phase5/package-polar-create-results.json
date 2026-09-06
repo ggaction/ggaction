@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "scope": "polar-focused-component-creation",
+  "artifact": {
+    "filename": "ggaction-0.0.12.tgz",
+    "sha256": "bc669465a657cce38962de08c9c6b3c40502186eae681b372e6243bb500f33b3",
+    "entries": 443,
+    "packedBytes": 497488,
+    "unpackedBytes": 2382889
+  },
+  "status": "passed",
+  "checks": [
+    "node-runtime-and-renderers",
+    "mcp",
+    "strict-typescript-root-exports",
+    "installed-tutorials",
+    "browser-bundle-limits"
+  ],
+  "browserBundles": {
+    "full": {
+      "specifier": "ggaction",
+      "chunks": 1,
+      "modules": 390,
+      "minifiedBytes": 933767,
+      "gzipBytes": 247108
+    },
+    "basic": {
+      "specifier": "ggaction/basic",
+      "chunks": 1,
+      "modules": 235,
+      "minifiedBytes": 499713,
+      "gzipBytes": 136936
+    },
+    "svg": {
+      "specifier": "ggaction/svg",
+      "chunks": 1,
+      "modules": 15,
+      "minifiedBytes": 19840,
+      "gzipBytes": 6437
+    }
+  }
+}

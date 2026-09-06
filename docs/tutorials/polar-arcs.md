@@ -10,6 +10,39 @@ theta field directly to proportional sectors, aggregate categorical theta by
 count or weighted sum, or combine categorical theta bands with a quantitative
 radius for rose charts and radial bars.
 
+## Complete pie and donut plots
+
+{% include chart-example.html id="pie-plot" %}
+
+Use `createPiePlot` for a complete category count or explicitly weighted pie.
+This is the count variant of the canonical `examples/pie-plot/program.js`:
+
+```javascript
+import { chart, render } from "ggaction";
+
+const program = chart()
+  .createCanvas({ width: 1000, height: 700, margin: 150 })
+  .createData({ id: "source", values: [
+    { category: "A", value: 2 }, { category: "A", value: 3 },
+    { category: "B", value: 5 }
+  ] })
+  .createPiePlot({ id: "pie", category: "category" });
+
+render(program, document.querySelector("canvas").getContext("2d"));
+```
+
+A occupies 240° and B 120° because count uses source rows. To sum the `value`
+field, replace the last chart action with
+`createPiePlot({ id: "pie", category: "category", value: "value", aggregate: "sum" })`;
+the totals are then 5 and 5. Add `arc: { innerRadius: 0.55, padAngle: 2 }` to that
+call for the canonical donut variant. The hole and padding do not change those totals.
+
+The facade requires a category even for numeric category labels. It defaults
+to a category color legend without axes or grid. For one fill color, set
+`color: false` and `arc: { fill: "#4c78a8" }`. The full package provides this
+action; it is not part of `ggaction/basic`. The lower actions below remain
+available for direct row weights, rose charts and independent editing.
+
 ## Map values directly into a pie
 
 When each row already contains one category and its final numeric value, pass
@@ -120,12 +153,44 @@ Repeated categories and fractional weights are valid. Every weight must be a
 non-negative finite number, and the total must be positive. Invalid input fails
 before semantic state or trace changes; source rows are never expanded.
 
+## Measured rose and radial bar plots
+
+{% include chart-example.html id="radial-sectors" %}
+
+`createRosePlot` makes annular area proportional to category count or sum.
+`createRadialBarPlot` makes length from the inner edge proportional to the same
+measure. This is the canonical `examples/radial-sectors/program.js` rose-hole variant:
+
+```javascript
+import { chart, render } from "ggaction";
+const program = chart()
+  .createCanvas({ width: 1000, height: 700, margin: 150 })
+  .createData({ id: "source", values: [
+    { category: "A", value: 2 }, { category: "B", value: 3 }, { category: "C", value: 4 }
+  ] })
+  .createRosePlot({ id: "sectors", category: "category", value: "value", aggregate: "sum", radiusScale: { range: [70, 140] } });
+render(program, document.querySelector("canvas").getContext("2d"));
+```
+
+The inner radius is 70 pixels. Outer radii are approximately 110.68, 126.19,
+and 140, preserving annular area ratios 2:3:4. Replacing the chart action with
+`createRadialBarPlot` gives radii 105, 122.5, and 140, preserving radial length
+ratios 2:3:4. Without value/aggregate, both actions count rows per category.
+
+The full package provides both actions. Zero categories stay in the domain and
+legend but draw no sector. Use `color:false` for one `arc.fill`, or `guides:false`
+to skip guides. These measured modes require `padAngle:0`, a zero-based linear
+scale, and non-negative finite values with at least one positive category.
+Edit the result through `encodeR`, `editArcMark`, `editScale`, category ordering,
+and guide actions. See the position encoding reference for the equivalent lower chain.
+
 ## Rose overlays
 
 {% include chart-example.html id="rose" %}
 
-A rose chart uses one equal theta band per month and overlays the three causes
-inside that band. The following fragment continues from an imported `chart`
+This lower-level overlay uses equal theta bands and maps each source row to radial length.
+For category sums represented by annular area, use createRosePlot above. The three causes
+share each month band. The following fragment continues from an imported `chart`
 function and a loaded `nightingaleRows` array containing one row per month and
 cause.
 

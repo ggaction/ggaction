@@ -74,18 +74,18 @@ test("creates a combined series legend from color and strokeDash", () => {
     child => child.properties
   ), [
     {
-      x1: 288,
+      x1: 289,
       y1: 72,
-      x2: 320,
+      x2: 321,
       y2: 72,
       stroke: "#4c78a8",
       strokeWidth: 2,
       strokeDash: []
     },
     {
-      x1: 288,
+      x1: 289,
       y1: 100,
-      x2: 320,
+      x2: 321,
       y2: 100,
       stroke: "#f58518",
       strokeWidth: 2,
@@ -215,7 +215,7 @@ test("lays out bordered bottom composite symbols in a deterministic grid", () =>
   );
   assert.deepEqual(
     labels.map((child, index) => child.properties.x - lines[index].properties.x2),
-    [10, 10]
+    [11.5, 11.5]
   );
   assert.deepEqual(graphicDrawOrder(program).slice(-5), [
     "seriesLegendBackground",
@@ -256,7 +256,7 @@ test("rematerializes bottom composite layout and fails atomically when cramped",
     () => createBottomSeriesLine()
       .editCanvas({ margin: { top: 30, right: 30, bottom: 40, left: 40 } })
       .createLegend({ position: "bottom", border: true }),
-    /bottom-margin space/
+    /bottom-margin.*space/
   );
   assert.equal(before.graphicSpec.objects.canvas.properties.width, 500);
 });
@@ -328,7 +328,7 @@ test("creates and renders an optional background before legend content", () => {
     properties: {
       x: 276,
       y: 21.5,
-      width: 73.32,
+      width: 75.32,
       height: 96.5,
       fill: "white",
       stroke: "#94a3b8",
@@ -353,7 +353,7 @@ test("rematerializes legend and border layout after Canvas edits", () => {
 
   assert.equal(
     program.graphicSpec.objects.seriesLegendSymbols.items[0].properties.x1,
-    388
+    389
   );
   assert.equal(
     program.graphicSpec.objects.seriesLegendBackground.properties.x,
@@ -361,7 +361,7 @@ test("rematerializes legend and border layout after Canvas edits", () => {
   );
   assert.equal(
     program.graphicSpec.objects.seriesLegendBackground.properties.width,
-    73.32
+    75.32
   );
   assert.equal(
     program.trace.children.at(-1).children.filter(
@@ -371,7 +371,7 @@ test("rematerializes legend and border layout after Canvas edits", () => {
   );
   assert.equal(
     before.graphicSpec.objects.seriesLegendSymbols.items[0].properties.x1,
-    288
+    289
   );
 });
 
@@ -407,7 +407,7 @@ test("validates combined fields, domains, targets, and appearance options", () =
   assert.throws(
     () => createSeriesLine({ dash: false })
       .encodeStrokeDash({ field: "category" }),
-    /must match color field/
+    /unless encodeGroup/
   );
   assert.throws(
     () => differentDomains.createLegend(),
@@ -415,7 +415,7 @@ test("validates combined fields, domains, targets, and appearance options", () =
   );
   assert.throws(
     () => createSeriesLine().createLegend({ channels: [] }),
-    /non-empty unique/
+    /at least one channel/
   );
   assert.throws(
     () => createSeriesLine().createLegend({ position: "middle" }),

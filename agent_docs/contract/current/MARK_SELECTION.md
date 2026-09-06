@@ -30,7 +30,9 @@ type MarkSelector =
 
 - `field`, `channel`, `property` 중 정확히 하나를 사용한다. `field`는 member data에서 item 전체에 unique한
   값, `channel`은 scale 적용 전 resolved semantic encoding 값, `property`는 final `graphicSpec`의 concrete
-  scalar 값만 읽는다. 값 비교는 strict하며 coercion하지 않는다.
+  scalar 값만 읽는다. 값 비교는 strict하며 coercion하지 않는다. Rect도 공통 channel resolver를 사용하여
+  temporal field/datum과 color를 epoch milliseconds로 정규화하며 field 값은 원본을 유지한다.
+  근거: `test/unit/actions/marks/rect-span.test.js`.
 - `range`의 `inclusive` 기본값은 `true`다. Ordered comparison은 같은 type의 finite number 또는 string만
   비교하고 missing/incompatible item은 제외한다.
 - `min | max`의 `count` 기본값은 `1`, `ties` 기본값은 `"first"`다. `"first"`는 stable source order로
@@ -43,20 +45,26 @@ type MarkSelector =
   `channel: "y2"`, concrete pixel 높이는 `property: "height"`로 선택한다.
 - Stable key는 semantic item identity에서 만들며 collection child order를 selector identity로 사용하지 않는다.
   Multi-row path의 field/channel은 series grain에서 값이 하나로 unique할 때만 selectable하다.
-- Empty selection은 `selectMarks`/`highlightMarks`에서 성공이다. `filterMarks`는 empty retained dataset을
-  거부한다. Ambiguous field/channel/property, target 또는 incompatible selector는 state와 trace를 만들기 전에
-  실패한다.
+  Explicit tuple group의 각 field를 선택할 수 있으며 Line의 strokeWidth/opacity channel도 series grain이다.
+  해당 channel selection이 남아 있으면 constant encoding으로 교체할 수 없다.
+- Empty selection은 `selectMarks`/`highlightMarks`와 `filterMarks`에서 성공이다. Mark filter의 empty view는
+  직전 resolved domain을 유지하며 mark items, source labels와 highlight graphics를 비운다. 처음부터 domain을
+  정할 수 없는 empty chart와 이미 materialized된 chart의 empty filter 결과는 구분한다. Ambiguous
+  field/channel/property, target 또는 incompatible selector는 state와 trace를 만들기 전에 실패한다.
 
 ## `filterMarks`
 
-- Signature: `filterMarks({ target?, ...selector })`
+- Signature: `filterMarks({ target?, mode?: "replace" | "compose", ...selector })`
 - Target and selection: `selectMarks`와 같은 target inference, selector normalization, native item/stack grain을
   사용한다. Point field selection은 position/size가 아직 없어도 row grain에서 동작하며 channel/property와
   non-point mark는 materialized final items를 요구한다.
 - Effect: selected final items의 source member rows를 원래 source order로 보존하는 immutable
   `${target}FilteredData`를 만들고 `layer[target].data`를 explicit `editSemantic` child로 rebind한다. Stored
-  `markFilter` transform은 target과 normalized selector를 기록한다. Existing derived ID와 repeat application은
-  거부한다.
+  owner와 `markFilter` transform은 canonical source와 ordered normalized selector recipe를 기록한다.
+- Repeated lifecycle: 같은 마지막 selector의 반복은 semantic/graphic idempotent다. 다른 selector를 반복하면
+  `mode`가 필요하다. `replace`는 canonical source에서 새 recipe를 시작하고 `compose`는 기존 recipe 결과에
+  다음 selector를 순서대로 적용한다. 이전 filtered dataset을 downstream dataset이 참조하면 그 snapshot은
+  보존하고 `${target}FilteredData2`, `3`, …의 첫 빈 revision ID를 사용한다.
 - Native grain: aggregate/ranged bar는 selected cell members, stacked bar는 complete selected stack members,
   line/area는 selected series members, arc는 selected sector members, rule/Tick은 selected line members를 보존한다. Histogram은 filtering 전 resolved
   boundaries를 explicit semantic boundaries로 고정해서 selected bins가 subset domain에서 다시 나뉘지 않게 한다.
@@ -64,26 +72,53 @@ type MarkSelector =
   complete mark 및 source-dependent mark를 다시 만든 뒤 connected axes,
   grids와 legends를 갱신한다. Coupled categorical legend scales는 intermediate mismatch를 노출하지 않고 final
   domains에서 한 번 다시 materialize한다. Density area는 upstream density provenance를 유지한다.
+- Empty와 removal: zero match는 직전 domain과 guide 설명을 유지하고 stale mark/label/highlight graphics를
+  제거한다. `removeMarkFilter`는 target을 canonical source로 rebind하고 active filtered dataset이 더 이상
+  참조되지 않을 때 해제한다. Histogram은 filter 전에 소유했던 bin policy를 복구한다.
 - Boundary: source dataset, unrelated marks와 earlier program은 바뀌지 않는다. Existing independent downstream
   statistical/composite layers를 암묵적으로 rebind하지 않으므로 filtered rows를 사용해야 하는 aggregate는
-  `filterMarks` 뒤에 생성한다. Automatic scales cannot resolve an empty retained dataset, so zero matching items fail
-  before state changes. Singular compatibility alias는 없다.
+  `filterMarks` 뒤에 생성한다. 이미 filtered snapshot을 명시적으로 소비하는 downstream dataset도 replace,
+  compose, remove 때 그대로 유지된다. Singular compatibility alias는 없다.
 
 ### Formal values — `filterMarks`
 
-- Implemented: `filterMarks({ target?: UserId } & MarkSelector)` for point/bar/rect/line/area/arc/rule/Tick item grain and stacked-bar
-  grain using field, channel or concrete property with comparison, set, range and grouped/ungrouped rank modes.
+- Implemented: `filterMarks({ target?: UserId; mode?: "replace" | "compose" } & MarkSelector)` for
+  point/bar/rect/line/area/arc/rule/Tick item grain and stacked-bar grain using field, channel or concrete property with
+  comparison, set, range and grouped/ungrouped rank modes.
 - Proposed (NOT IMPLEMENTED): —.
 
 ### Value coverage — `filterMarks`
 
 - ✅ Covered: omitted/explicit/invalid target, incomplete point field fallback, all shared selector families and value
-  sources, deterministic derived ID, repeat conflict, immutable source/earlier program and explicit layer rebind.
+  sources, deterministic revision IDs, repeated idempotence, replace/compose distinction, immutable source/earlier
+  program and explicit layer rebind.
 - ✅ Covered: point scale/axis/grid rematerialization, histogram boundary retention, stack grain, line/area series,
   density provenance, arc sectors, rule/Tick endpoints and categorical legend convergence.
+- ✅ Covered: empty domain preservation and stale graphic cleanup, removal/source restoration, histogram bin restoration,
+  dependent filtered snapshot preservation and invalid mode/missing owner failure.
 - ✅ Covered: regression scatterplot primitive/public equivalence when filtering before statistical layers.
 - Evidence: `test/unit/actions/data/filter-marks.test.js`,
   `test/charts/cars-regression-scatterplot/variants/primitive.test.js`.
+
+## `removeMarkFilter`
+
+- Signature: `removeMarkFilter({ target? } = {})`.
+- Resolves an active filter by explicit target, current eligible mark, or unique eligible mark. It restores the canonical
+  source and any captured Histogram bin policy, clears the active owner, rematerializes scales/marks/guides, and releases
+  the filtered dataset only when no downstream dataset still references that snapshot.
+- Missing/ambiguous owner and unknown options fail without changing the earlier program. Stored selections and highlights
+  remain as intent and are reevaluated against the restored source.
+
+### Formal values — `removeMarkFilter`
+
+- Implemented: `removeMarkFilter({ target?: UserId } = {})` for every mark supported by `filterMarks`.
+- Proposed (NOT IMPLEMENTED): —.
+
+### Value coverage — `removeMarkFilter`
+
+- ✅ Covered: inferred/explicit target, source/domain/graphic restoration, Histogram bin restoration, dependent snapshot
+  retention, owner/context cleanup and missing owner failure.
+- Evidence: `test/unit/actions/data/filter-marks.test.js`.
 
 ## `selectMarks`
 

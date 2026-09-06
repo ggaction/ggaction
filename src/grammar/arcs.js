@@ -241,6 +241,61 @@ function quantitativeSectors(rows, layer, thetaScale, frame, innerRadiusRatio) {
   }));
 }
 
+export function deriveMeasuredArcValues(rows, layer) {
+  const theta = requireArcLayer(layer);
+  const radius = layer.encoding?.radius;
+  if (!["nominal", "ordinal"].includes(theta.fieldType) || theta.aggregate !== undefined ||
+    !["count", "sum"].includes(radius?.aggregate) || radius.fieldType !== "quantitative") {
+    throw new Error("Measured Arc requires equal-angle categorical theta and count or sum radius.");
+  }
+  if (radius.aggregate === "count" && Object.hasOwn(radius, "field")) {
+    throw new Error("Measured count radius does not accept a field.");
+  }
+  const categories = readNominalField(rows, theta.field);
+  const measures = radius.aggregate === "count" ? rows.map(() => 1)
+    : readQuantitativeField(rows, radius.field);
+  if (measures.some(value => value < 0)) {
+    throw new RangeError("Measured Arc radius inputs must be non-negative.");
+  }
+  const colors = colorValues(rows, layer.encoding?.color);
+  const groups = new Map();
+  for (const [index, category] of categories.entries()) {
+    const group = groups.get(category) ?? { key: category, sourceIndices: [], values: [], colors: [] };
+    group.sourceIndices.push(index);
+    group.values.push(measures[index]);
+    group.colors.push(colors[index]);
+    groups.set(category, group);
+  }
+  const result = [...groups.values()].map(group => {
+    const distinctColors = [...new Set(group.colors)];
+    if (distinctColors.length > 1) {
+      throw new Error(`Measured Arc category "${group.key}" must resolve to one color value.`);
+    }
+    return { key: group.key, theta: group.key, count: group.sourceIndices.length,
+      radius: stableFiniteSum(group.values, "Measured Arc radius aggregate"),
+      color: distinctColors[0], sourceIndices: group.sourceIndices };
+  });
+  if (!result.some(group => group.radius > 0)) {
+    throw new Error("Measured Arc radius requires at least one positive category aggregate.");
+  }
+  return cloneAndFreeze(result);
+}
+
+function measuredRadialSectors(rows, layer, thetaScale, radiusScale) {
+  const items = deriveMeasuredArcValues(rows, layer);
+  const centers = mapOrdinalPositionValues(items.map(item => item.theta), thetaScale);
+  const radii = mapContinuousScaleValues(items.map(item => item.radius), radiusScale);
+  const halfBand = (Math.sign(thetaScale.step) || 1) * thetaScale.bandwidth / 2;
+  const byCategory = new Map(items.map((item, index) => [item.theta, {
+    ...item, startTheta: centers[index] - halfBand, endTheta: centers[index] + halfBand,
+    innerRadius: radiusScale.range[0], outerRadius: radii[index]
+  }]));
+  return thetaScale.domain.flatMap(category => {
+    const item = byCategory.get(category);
+    return item === undefined || item.radius === 0 ? [] : [item];
+  });
+}
+
 function radialSectors(rows, layer, thetaScale, radiusScale) {
   const theta = layer.encoding.theta;
   const radius = layer.encoding?.radius;
@@ -303,7 +358,9 @@ export function deriveArcSectors(rows, layer, {
   ) {
     throw new RangeError("Arc innerRadius must be from 0 (inclusive) to 1 (exclusive).");
   }
-  const sectors = theta.fieldType === "quantitative"
+  const sectors = radiusScale?.radialMapping !== undefined
+    ? measuredRadialSectors(rows, layer, requireBandScale(thetaScale, `Arc mark "${layer.id}" theta`), radiusScale)
+    : theta.fieldType === "quantitative"
     ? quantitativeSectors(
         rows,
         layer,

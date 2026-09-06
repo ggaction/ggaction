@@ -145,9 +145,9 @@ export function canMaterializeBar(program, layer) {
   ) {
     const offsetChannel = resolveBarOffsetChannel(layer);
     return (
-      layer.encoding?.color?.field !== undefined &&
-      layer.encoding?.[offsetChannel]?.field === layer.encoding.color.field &&
-      layer.encoding[offsetChannel].scale !== undefined
+      (layer.encoding?.group !== undefined || (layer.encoding?.color?.field !== undefined &&
+      layer.encoding?.[offsetChannel]?.field === layer.encoding.color.field)) &&
+      layer.encoding[offsetChannel]?.scale !== undefined
     );
   }
   return true;
@@ -163,14 +163,29 @@ export function canMaterializeRule(program, layer) {
   );
 }
 
+const TEXT_SOURCE_CAPABILITIES = Object.freeze({
+  point: canMaterializePoint,
+  line: canMaterializeLine,
+  bar: canMaterializeBar,
+  rule: canMaterializeRule,
+  rect: (program, layer) => canMaterializeRect(program, layer) ||
+    program.markConfigs[layer.id]?.gradientPlot?.materialized === true,
+  arc: canMaterializeArc
+});
+
+export function isTextSource(layer) {
+  return layer?.data !== undefined &&
+    Object.hasOwn(TEXT_SOURCE_CAPABILITIES, layer.mark?.type);
+}
+
 export function canMaterializeText(program, layer) {
   if (layer.mark?.type !== "text" || layer.encoding?.text === undefined) {
     return false;
   }
   if (layer.source !== undefined) {
     const source = findLayer(program, layer.source);
-    return source !== undefined &&
-      ["point", "bar", "rule", "rect", "arc"].includes(source.mark?.type) &&
+    return isTextSource(source) &&
+      TEXT_SOURCE_CAPABILITIES[source.mark.type](program, source) &&
       Array.isArray(program.graphicSpec.objects[source.id]?.items);
   }
   return hasCartesianPositionScales(layer);

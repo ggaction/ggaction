@@ -1,8 +1,11 @@
+import { isSourceOwnedText } from "../../grammar/text.js";
+import { findLayer } from "../../selectors/layers.js";
 import {
   POSITION_CHANNELS,
   POSITION_ENCODING_CHANNELS
 } from "../../core/vocabulary.js";
 import { getMarkMaterializationPolicy } from "./policies.js";
+import { buildMaterializationPlan } from "../planner.js";
 
 export {
   canMaterializeArc,
@@ -13,10 +16,12 @@ export {
   canMaterializeRect,
   canMaterializeRule,
   canMaterializeText,
-  canMaterializeTick
+  canMaterializeTick,
+  isTextSource
 } from "./capabilities.js";
 
 export function getLayerScaleIds(layer) {
+  if (isSourceOwnedText(layer)) return [];
   return [
     ...Object.values(layer.encoding ?? {}).map(encoding => encoding?.scale),
     ...(layer.encoding?.parallel?.dimensions ?? []).map(dimension => dimension.scale)
@@ -30,7 +35,10 @@ export function getScaleConsumerMarkSteps(program, scaleIds) {
     .filter(step => step !== undefined);
 }
 
-export function getMarkRematerializationStep(layer) {
+export function getMarkRematerializationStep(program, layer) {
+  if (program.markConfigs?.[layer.id]?.markFilter?.empty === true) {
+    return { op: "materializeEmptyMark", args: { id: layer.id } };
+  }
   const policy = getMarkMaterializationPolicy(layer);
   return policy === undefined
     ? undefined
@@ -42,14 +50,15 @@ export function getMarkMaterializationStep(program, layer) {
   if (policy === undefined || !policy.canMaterialize(program, layer)) {
     return undefined;
   }
-  return getMarkRematerializationStep(layer);
+  return getMarkRematerializationStep(program, layer);
 }
 
 export function getSourceDependentMarkSteps(program, sourceId) {
-  return program.semanticSpec.layers.flatMap(layer =>
+  return (program.semanticSpec.layers ?? []).flatMap(layer =>
     layer.source === sourceId &&
     getMarkMaterializationPolicy(layer)?.sourceDependent === true
-      ? [getMarkMaterializationStep(program, layer)].filter(
+      ? [getMarkMaterializationStep(program, layer) ??
+          getExistingMarkRematerializationStep(program, layer)].filter(
           step => step !== undefined
         )
       : []
@@ -60,39 +69,39 @@ export function getPositionEncodingMaterializationSteps(program, layer, scaleId)
   const policy = getMarkMaterializationPolicy(layer);
   if (policy === undefined) return [];
   const complete = policy.canMaterialize(program, layer);
-  const mark = getMarkRematerializationStep(layer);
+  const mark = getMarkRematerializationStep(program, layer);
   const sharedConsumerMarks = (program.semanticSpec.layers ?? [])
     .filter(candidate =>
       candidate.id !== layer.id &&
+      !isSourceOwnedText(candidate) &&
       POSITION_CHANNELS.some(channel =>
         candidate.encoding?.[channel]?.scale === scaleId
       )
     )
     .map(candidate => getMarkMaterializationStep(program, candidate))
     .filter(step => step !== undefined);
+  const dependentMarks = [mark, ...sharedConsumerMarks]
+    .flatMap(step => getSourceDependentMarkSteps(program, step.args.id));
   const scale = {
     op: "rematerializeScale",
     args: sharedConsumerMarks.length === 0
       ? { id: scaleId }
       : { id: scaleId, marks: false }
   };
-  if (!complete) {
-    if (policy.positionEncoding.incomplete === "scale") {
-      return [scale, ...sharedConsumerMarks];
-    }
-    return policy.positionEncoding.scaleFirst
+  const direct = !complete && policy.positionEncoding.incomplete === "scale"
+    ? [scale, ...sharedConsumerMarks]
+    : policy.positionEncoding.scaleFirst
       ? [scale, mark, ...sharedConsumerMarks]
       : [mark, ...sharedConsumerMarks];
-  }
-  return policy.positionEncoding.scaleFirst
-    ? [scale, mark, ...sharedConsumerMarks]
-    : [mark, ...sharedConsumerMarks];
+  return buildMaterializationPlan({ marks: [...direct, ...dependentMarks] });
 }
 
 export function getScaleConsumerMaterializationMode(layer, channel) {
   const policy = getMarkMaterializationPolicy(layer);
   if (policy === undefined) return "direct";
   if (POSITION_ENCODING_CHANNELS.includes(channel)) {
+    // Attached labels require their source's completed geometry, after scales.
+    if (layer.source !== undefined && policy.sourceDependent === true) return "defer";
     return policy.scaleApplication.position ?? policy.scaleApplication.default;
   }
   if (policy.scaleApplication.deferredChannels?.includes(channel)) {
@@ -113,7 +122,7 @@ export function getExistingMarkRematerializationStep(program, layer) {
   ) {
     return undefined;
   }
-  return getMarkRematerializationStep(layer);
+  return getMarkRematerializationStep(program, layer);
 }
 
 export function getEncodingMaterializationStages(program, layer, channel, scale) {
@@ -140,8 +149,19 @@ export function getEncodingMaterializationStages(program, layer, channel, scale)
     }
     const step = candidate.id !== layer.id || candidatePolicy?.encoding?.completeOnly === true
       ? getMarkMaterializationStep(program, candidate)
-      : getMarkRematerializationStep(candidate);
+      : getMarkRematerializationStep(program, candidate);
     return step === undefined ? [] : [step];
   });
   return { scales, marks };
+}
+
+// Reuse a plan's scale stage only when it covers every scale consumed by the mark.
+export function reusePlannedMarkScales(program, steps, scaleIds) {
+  const resolved = new Set(scaleIds);
+  return steps.map(step => {
+    const layer = findLayer(program, step.args?.id);
+    if (layer === undefined || getMarkMaterializationPolicy(layer)?.acceptsResolvedScales !== true ||
+        !getLayerScaleIds(layer).every(id => resolved.has(id))) return step;
+    return { ...step, args: { ...step.args, scales: false } };
+  });
 }

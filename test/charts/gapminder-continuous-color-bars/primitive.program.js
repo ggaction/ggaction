@@ -79,7 +79,7 @@ export function createGapminderContinuousColorBarPrimitives(gapminder, variant) 
       value: "quantitative"
     })
     .editSemantic({ property: "layer[bar].encoding.y.aggregate", value: "sum" })
-    .editSemantic({ property: "layer[bar].encoding.y.stack", value: null })
+    .editSemantic({ property: "layer[bar].layout.mode", value: "overlay" })
     .editSemantic({ property: "layer[bar].encoding.y.scale", value: "y" })
     .editSemantic({
       property: "layer[bar].encoding.color.field",

@@ -1,0 +1,72 @@
+import assert from "node:assert/strict";
+import test from "node:test";
+import { assertChartProgramsEquivalent } from "../support/chart-equivalence.js";
+import { chart } from "../../src/index.js";
+import { assertRenderedPNG } from "../support/png.js";
+// Stroke0.5 expands each14px swatch slot to14.5px; label gap remains8px.
+const edgeReferences = {
+  right: { x: [790.25,790.25], y: [252,280], labelX: [812.5,812.5], title: [790,220], align: "left" },
+  left: { x: [165.07,165.07], y: [252,280], labelX: [187.32,187.32], title: [164.82,220], align: "left" },
+};
+// Two occupied slots14.5, label widths16.32/22.68 and column gap28.
+for (const edge of ["top", "bottom"]) {
+  const first = 240 + (520 - (38.82 + 45.18 + 28)) / 2;
+  const x = [first + 0.25, first + (38.82 + 28) + 0.25];
+  const labelX = x.map(value => value + 14.25 + 8);
+  const dx = 500 - ((x[0] - 0.25) + (labelX[1] + 22.68)) / 2;
+  edgeReferences[edge] = { x: x.map(value => value + dx), labelX: labelX.map(value => value + dx),
+    y: edge === "top" ? [163.75,163.75] : [561.25,561.25],
+    title: [500 + dx, edge === "top" ? 139 : 536.5], align: "center" };
+}
+function intervalBase() {
+  return chart().createCanvas({width:1000,height:700,margin:{left:240,right:240,top:200,bottom:200}})
+    .createData({values:[{x:1,y:1,m:0},{x:2,y:2,m:10}]}).createPointMark()
+    .encodeX({field:"x"}).encodeY({field:"y"}).encodeColor({field:"m",fieldType:"quantitative",scale:{type:"quantize",range:["#4c78a8","#f58518"]}});
+}
+function intervalPrimitive(base, edge) {
+  const r=edgeReferences[edge];
+  return base.createGraphics({id:"colorLegendSymbols",type:"rect",length:2,parent:"canvas"})
+    .editGraphics({target:"colorLegendSymbols",property:"x",value:r.x})
+    .editGraphics({target:"colorLegendSymbols",property:"y",value:r.y.map(y=>y-6)})
+    .editGraphics({target:"colorLegendSymbols",property:"width",value:14})
+    .editGraphics({target:"colorLegendSymbols",property:"height",value:12})
+    .editGraphics({target:"colorLegendSymbols",property:"fill",value:["#4c78a8","#f58518"]})
+    .editGraphics({target:"colorLegendSymbols",property:"stroke",value:"white"})
+    .editGraphics({target:"colorLegendSymbols",property:"strokeWidth",value:0.5})
+    .createGraphics({id:"colorLegendLabels",type:"text",length:2,parent:"canvas"})
+    .editGraphics({target:"colorLegendLabels",property:"x",value:r.labelX})
+    .editGraphics({target:"colorLegendLabels",property:"y",value:r.y})
+    .editGraphics({target:"colorLegendLabels",property:"text",value:["< 5","≥ 5"]})
+    .editGraphics({target:"colorLegendLabels",property:"fill",value:"#334155"})
+    .editGraphics({target:"colorLegendLabels",property:"fontSize",value:12})
+    .editGraphics({target:"colorLegendLabels",property:"fontFamily",value:"sans-serif"})
+    .editGraphics({target:"colorLegendLabels",property:"fontWeight",value:"normal"})
+    .editGraphics({target:"colorLegendLabels",property:"textAlign",value:"left"})
+    .editGraphics({target:"colorLegendLabels",property:"textBaseline",value:"middle"})
+    .createGraphics({id:"colorLegendTitle",type:"text",parent:"canvas"})
+    .editGraphics({target:"colorLegendTitle",property:"x",value:r.title[0]})
+    .editGraphics({target:"colorLegendTitle",property:"y",value:r.title[1]})
+    .editGraphics({target:"colorLegendTitle",property:"text",value:"m"})
+    .editGraphics({target:"colorLegendTitle",property:"fill",value:"#334155"})
+    .editGraphics({target:"colorLegendTitle",property:"fontSize",value:13})
+    .editGraphics({target:"colorLegendTitle",property:"fontFamily",value:"sans-serif"})
+    .editGraphics({target:"colorLegendTitle",property:"fontWeight",value:600})
+    .editGraphics({target:"colorLegendTitle",property:"textAlign",value:r.align})
+    .editGraphics({target:"colorLegendTitle",property:"textBaseline",value:"middle"});
+}
+
+test("places interval legends at four edges with exact primitive graphics and pixels", async () => {
+  for (const edge of Object.keys(edgeReferences)) {
+    const base = intervalBase();
+    const primitive = intervalPrimitive(base, edge);
+    const publicProgram = base.createLegend({ channels: ["color"], position: edge });
+    assertChartProgramsEquivalent({ primitiveProgram: primitive, publicProgram, compareSemanticSpec: false });
+    const options = { width: 1000, height: 700, colors: ["#4c78a8", "#f58518"],
+      regions: [{ name: "plot", x: 235, y: 195, width: 535, height: 315, minimumInkPixels: 20 }] };
+    const artifact = { scope: "charts", capability: "legend-layout", chart: "interval-legend-edges", variant: edge,
+      title: `Interval legend at ${edge}`, userFacingCallChain: `base.createLegend({ channels: ["color"], position: "${edge}" })` };
+    const expected = await assertRenderedPNG(primitive, { ...options, artifact: { ...artifact, kind: "primitive" } });
+    const actual = await assertRenderedPNG(publicProgram, { ...options, artifact: { ...artifact, kind: "user-facing" } });
+    assert.equal(actual.pixelHash, expected.pixelHash);
+  }
+});

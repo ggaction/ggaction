@@ -41,7 +41,9 @@ For multiple series, add `color: "group"`, `groupBy: "group"`, or
 - Axes, horizontal grid, and a right-side categorical legend when applicable
 
 Every materialized series needs at least two points. Reserve right margin for a
-legend or pass `createLegend({ position: "bottom" })` with bottom margin.
+legend or pass `createLegend({ position: "bottom", offset: 70 })` with enough
+bottom margin for the x-axis title and legend. Adjust that explicit offset to
+the authored axis labels and title.
 
 Use `line: { curve: "step" }` during creation for midpoint steps, or edit an existing
 line without changing its encodings:

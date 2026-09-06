@@ -27,7 +27,7 @@ const LEGEND_RESOURCE_POLICIES = Object.freeze({
     family: "size",
     rematerializeOp: "rematerializeSizeLegend",
     graphicIds: Object.freeze([
-      "sizeLegendSymbols", "sizeLegendLabels", "sizeLegendTitle"
+      "sizeLegendBackground", "sizeLegendSymbols", "sizeLegendLabels", "sizeLegendTitle"
     ])
   }),
   gradient: Object.freeze({
@@ -62,7 +62,7 @@ const LEGEND_RESOURCE_POLICIES = Object.freeze({
     family: "strokeWidth",
     rematerializeOp: "rematerializeStrokeWidthLegend",
     graphicIds: Object.freeze([
-      "strokeWidthLegendSymbols", "strokeWidthLegendLabels",
+      "strokeWidthLegendBackground", "strokeWidthLegendSymbols", "strokeWidthLegendLabels",
       "strokeWidthLegendTitle"
     ])
   })

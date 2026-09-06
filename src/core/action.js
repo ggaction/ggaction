@@ -1,6 +1,14 @@
 import { cloneAndFreeze, freezeOwned, isPlainObject } from "./immutable.js";
 
 const metadataByWrappedAction = new WeakMap();
+let actionCompletionHook;
+
+export function setActionCompletionHook(hook) {
+  if (hook !== undefined && typeof hook !== "function") {
+    throw new TypeError("Action completion hook must be a function.");
+  }
+  actionCompletionHook = hook;
+}
 
 export function getWrappedActionMetadata(value) {
   return metadataByWrappedAction.get(value);
@@ -127,14 +135,26 @@ export function action(metadata, implementation) {
     if (scope === "unit") this._assertUnitProgram(ownedMetadata.op);
     if (scope === "composition") this._assertCompositionProgram(ownedMetadata.op);
 
+    const summarizedArgs = summarizeArgs(args);
     const entered = this._enterAction({
       ...ownedMetadata,
-      args: summarizeArgs(args)
+      args: summarizedArgs
     });
-    const result = implementation.call(entered, args);
+    let result = implementation.call(entered, args);
 
     if (!(result instanceof this.constructor)) {
       throw new TypeError(`${ownedMetadata.op} must return a ChartProgram.`);
+    }
+
+    if (this.actionStack.length === 0 && actionCompletionHook !== undefined) {
+      result = actionCompletionHook(result, {
+        source: this,
+        metadata: ownedMetadata,
+        args: summarizedArgs
+      });
+      if (!(result instanceof this.constructor)) {
+        throw new TypeError("Action completion hook must return a ChartProgram.");
+      }
     }
 
     return result._exitAction();

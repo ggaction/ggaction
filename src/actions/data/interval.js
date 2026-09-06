@@ -11,6 +11,7 @@ const OPTIONS = Object.freeze([
   "groupBy",
   "center",
   "extent",
+  "method",
   "level",
   "as"
 ]);
@@ -39,6 +40,7 @@ export const createIntervalData = derivedCreator(
       groupBy: args.groupBy,
       center: args.center,
       extent: args.extent,
+      method: args.method,
       level: args.level,
       as
     });

@@ -1,5 +1,10 @@
 import type { RegisteredExtensionActions } from "./extension.js";
 
+export type TemporalInputUnit = "auto" | "year" | "timestamp";
+export type ThemeName = "light" | "dark";
+export interface ApplyThemeOptions {
+  theme: ThemeName;
+}
 export type FieldType = "quantitative" | "temporal" | "ordinal" | "nominal";
 export type GraphicType =
   | "canvas"
@@ -41,6 +46,7 @@ export interface LinearGradientPaint {
   ];
 }
 export type FillPaint = string | LinearGradientPaint;
+type FilledMarkStroke = string | false;
 export type CurveInterpolation =
   | "linear"
   | "step"
@@ -63,6 +69,20 @@ export interface JitterPointsOptions {
   key?: string;
 }
 export interface RemoveJitterOptions {
+  target?: string;
+}
+export type PointPackingMaxOffset =
+  | { pixels: number; band?: never }
+  | { pixels?: never; band: number };
+export interface PackPointsOptions {
+  target?: string;
+  channel: "x" | "y";
+  maxOffset?: PointPackingMaxOffset;
+  padding?: number;
+  key?: string;
+  overflow?: "error" | "overlap";
+}
+export interface RemovePointPackingOptions {
   target?: string;
 }
 export type ScaleType =
@@ -108,6 +128,16 @@ export interface ReplaceCompositionChildOptions {
   target: string;
   program: ChartProgram;
 }
+export interface InsertCompositionChildOptions {
+  id: string;
+  program: ChartProgram;
+  before?: string;
+  after?: string;
+}
+export interface RemoveCompositionChildOptions { target: string; }
+export interface ReorderCompositionChildrenOptions {
+  order: readonly [string, ...string[]];
+}
 export type FacetScaleResolution = "shared" | "independent";
 export interface FacetScaleResolutions {
   x?: FacetScaleResolution;
@@ -128,6 +158,7 @@ export interface FacetOptions {
   id?: string;
   field: string;
   data?: string;
+  values?: readonly DatasetScalar[];
   columns?: number;
   gap?: number;
   align?: CompositionAlign;
@@ -135,6 +166,35 @@ export interface FacetOptions {
   scales?: FacetScaleResolutions;
   guides?: FacetGuideOptions;
 }
+export interface FacetGridRole {
+  field: string;
+  values?: readonly DatasetScalar[];
+}
+export interface FacetGridOptions {
+  id?: string;
+  data?: string;
+  rows: FacetGridRole;
+  columns: FacetGridRole;
+  combinations?: "observed" | "full";
+  gap?: number;
+  align?: CompositionAlign;
+  padding?: number | CompositionPadding;
+  scales?: FacetScaleResolutions;
+  guides?: FacetGuideOptions;
+}
+export interface RepeatChartsOptions {
+  id?: string;
+  target?: string;
+  channel: "x" | "y";
+  fields: readonly [string, ...string[]];
+  columns?: number;
+  gap?: number;
+  align?: CompositionAlign;
+  padding?: number | CompositionPadding;
+  scales?: FacetScaleResolutions;
+  guides?: FacetGuideOptions;
+}
+export interface EditFacetSourceOptions { program: ChartProgram; }
 export interface EditFacetHeadersOptions {
   fontSize?: number;
   fontFamily?: string;
@@ -160,8 +220,26 @@ export interface FacetCompositionSpec {
   readonly padding: Readonly<Required<CompositionPadding>>;
   readonly facet: {
     readonly data: string;
-    readonly field: string;
+    readonly field?: string;
     readonly values: readonly DatasetScalar[];
+    readonly grid?: {
+      readonly rows: { readonly field: string; readonly values: readonly DatasetScalar[] };
+      readonly columns: { readonly field: string; readonly values: readonly DatasetScalar[] };
+      readonly combinations: "observed" | "full";
+      readonly cells: readonly {
+        readonly id: string;
+        readonly row: number;
+        readonly column: number;
+        readonly rowValue: DatasetScalar;
+        readonly columnValue: DatasetScalar;
+        readonly empty: boolean;
+      }[];
+    };
+    readonly repeat?: {
+      readonly target: string;
+      readonly channel: "x" | "y";
+      readonly fields: readonly string[];
+    };
     readonly scales: Readonly<Required<FacetScaleResolutions>>;
     readonly guides: {
       readonly axes: "each" | "outer";
@@ -238,22 +316,28 @@ export type DatasetRegressionTransform = {
 } & (
   | {
       method: "linear";
-      confidence: number;
       interval: "mean" | "prediction";
       degree?: never;
       span?: never;
-    }
+    } & (
+      | { confidenceMethod: ConfidenceIntervalMethod; level: number; confidence?: never }
+      | { confidence: number; confidenceMethod?: never; level?: never }
+    )
   | {
       method: "polynomial";
       degree: number;
-      confidence: number;
       interval: "mean" | "prediction";
       span?: never;
-    }
+    } & (
+      | { confidenceMethod: ConfidenceIntervalMethod; level: number; confidence?: never }
+      | { confidence: number; confidenceMethod?: never; level?: never }
+    )
   | {
       method: "loess";
       span: number;
       degree?: never;
+      confidenceMethod?: never;
+      level?: never;
       confidence?: never;
       interval?: never;
     }
@@ -304,10 +388,10 @@ export interface HorizonOutputFields {
 }
 export interface DatasetHorizonTransform {
   readonly type: "horizon";
-  readonly x: {
-    readonly field: string;
-    readonly fieldType: "quantitative" | "temporal";
-  };
+  readonly x: { readonly field: string } & (
+    | { readonly fieldType: "quantitative"; readonly temporalUnit?: never }
+    | { readonly fieldType: "temporal"; readonly temporalUnit?: TemporalInputUnit }
+  );
   readonly y: {
     readonly field: string;
     readonly fieldType: "quantitative";
@@ -346,16 +430,19 @@ export type DatasetIntervalTransform = {
   | {
       center: "mean";
       extent: "stderr" | "stdev";
+      method?: never;
       level?: never;
     }
   | {
       center: "mean";
       extent: "ci";
+      method?: ConfidenceIntervalMethod;
       level: number;
     }
   | {
       center: "median";
       extent: "iqr";
+      method?: never;
       level?: never;
     }
 );
@@ -416,6 +503,27 @@ export interface DatasetWindowTransform {
   readonly sortBy: readonly DatasetWindowSort[];
   readonly operations: readonly DatasetWindowOperation[];
 }
+export interface ECDFOutputFields {
+  value: string;
+  cumulative: string;
+  probability: string;
+}
+export interface DatasetECDFResolvedGroup {
+  readonly keys: Readonly<Record<string, string | number | boolean>>;
+  readonly denominator: number;
+  readonly validCount: number;
+}
+export interface DatasetECDFTransform {
+  readonly type: "ecdf";
+  readonly field: string;
+  readonly groupBy: readonly string[];
+  readonly weight?: string;
+  readonly missing: "drop" | "error";
+  readonly as: Readonly<ECDFOutputFields>;
+  readonly resolved?: {
+    readonly groups: readonly DatasetECDFResolvedGroup[];
+  };
+}
 export type TimeUnit =
   | "year"
   | "quarter"
@@ -428,6 +536,7 @@ export interface DatasetTimeUnitTransform {
   readonly type: "timeUnit";
   readonly field: string;
   readonly unit: TimeUnit;
+  readonly temporalUnit?: TemporalInputUnit;
   readonly as: string;
 }
 export interface Bin2DCounts {
@@ -479,19 +588,111 @@ export interface DatasetBin2DTransform {
     readonly occupiedCount: number;
   };
 }
+export interface DatasetBinTransform {
+  readonly type: "bin";
+  readonly field: string;
+  readonly bin:
+    | { readonly maxBins: number }
+    | { readonly step: number }
+    | { readonly boundaries: readonly [number, number, ...number[]] };
+  readonly extent: "auto" | readonly [number, number];
+  readonly nice: boolean;
+  readonly zero: boolean;
+  readonly includeEmpty: boolean;
+  readonly members: boolean;
+  readonly as: {
+    readonly lower: string;
+    readonly upper: string;
+    readonly count: string;
+    readonly members?: string;
+  };
+  readonly resolved?: {
+    readonly domain: readonly [number, number];
+    readonly step?: number;
+    readonly boundaries: readonly [number, number, ...number[]];
+  };
+}
+export interface DatasetFoldTransform {
+  readonly type: "fold";
+  readonly fields: readonly string[];
+  readonly as: {
+    readonly key: string;
+    readonly value: string;
+  };
+}
+export type ComputedExpression =
+  | { readonly field: string }
+  | { readonly constant: number }
+  | {
+      readonly op: "negate" | "absolute";
+      readonly operand: ComputedExpression;
+    }
+  | {
+      readonly op: "add" | "subtract" | "multiply" | "divide";
+      readonly left: ComputedExpression;
+      readonly right: ComputedExpression;
+    };
+export interface DatasetComputedTransform {
+  readonly type: "computed";
+  readonly as: string;
+  readonly expression: ComputedExpression;
+}
+export type StackDataMode = "stack" | "fill" | "center" | "diverging";
+export interface StackDataOutputFields {
+  start?: string;
+  end?: string;
+  value?: string;
+  share?: string;
+}
+export interface DatasetStackTransform {
+  readonly type: "stack";
+  readonly category: string;
+  readonly group: string;
+  readonly value: string;
+  readonly mode: StackDataMode;
+  readonly as: Required<StackDataOutputFields>;
+}
 export type DatasetTransform =
+  | DatasetBinTransform
   | DatasetBin2DTransform
+  | DatasetComputedTransform
   | DatasetFilterTransform
+  | DatasetFoldTransform
   | DatasetRegressionTransform
   | DatasetDensityTransform
+  | DatasetECDFTransform
   | DatasetHorizonTransform
   | DatasetIntervalTransform
+  | DatasetSummaryTransform
+  | DatasetStackTransform
   | DatasetTimeUnitTransform
   | DatasetWindowTransform;
 export interface CreateDerivedDataOptions {
   id: string;
   source: string;
   transform: readonly [DatasetTransform];
+}
+export interface DatasetSummaryTransform {
+  type: "summary";
+  groupBy: readonly string[];
+  aggregates: readonly SummaryAggregateOptions[];
+  members?: string;
+}
+export interface SummaryAggregateOptions {
+  op: AggregateOperation;
+  field?: string;
+  as: string;
+}
+export interface SummaryDataOptions {
+  id: string;
+  source?: string;
+  groupBy?: string | readonly string[];
+  aggregates: readonly SummaryAggregateOptions[];
+  members?: string;
+}
+export interface BindMarkDataOptions {
+  target: string;
+  data: string;
 }
 export type MarkGraphicProperty =
   | "x" | "y" | "width" | "height" | "radius"
@@ -501,7 +702,7 @@ export type MarkSelector = {
   grain?: "item" | "stack";
 } & (
   | { field: string; channel?: never; property?: never }
-  | { channel: "x" | "y" | "x2" | "y2" | "xOffset" | "yOffset" | "theta" | "radius" | "color" | "strokeDash" | "size" | "shape" | "group" | "opacity"; field?: never; property?: never }
+  | { channel: "x" | "y" | "x2" | "y2" | "xOffset" | "yOffset" | "theta" | "radius" | "color" | "strokeDash" | "strokeWidth" | "size" | "shape" | "group" | "opacity"; field?: never; property?: never }
   | { property: MarkGraphicProperty; field?: never; channel?: never }
 ) & (
   | { op: "eq" | "neq" | "gt" | "gte" | "lt" | "lte"; value: unknown }
@@ -531,7 +732,11 @@ export interface RemoveMarkSelectionOptions {
 }
 export type FilterMarksOptions = {
   target?: string;
+  mode?: "replace" | "compose";
 } & MarkSelector;
+export interface RemoveMarkFilterOptions {
+  target?: string;
+}
 export interface HighlightMarksOptions {
   id?: string;
   target?: string;
@@ -561,12 +766,18 @@ export type ScalarAggregateOperation =
   | "distinct" | "valid" | "missing"
   | "variance" | "varianceP" | "stdev" | "stdevP" | "stderr"
   | "q1" | "q3" | "ciLower" | "ciUpper";
+export type ConfidenceIntervalMethod = "normal" | "student-t";
 export type ParameterizedAggregateOperation =
   | { op: "quantile"; probability: number }
   | {
       op: "first" | "last";
       orderBy: string;
       order?: "ascending" | "descending";
+    }
+  | {
+      op: "ciLower" | "ciUpper";
+      method?: ConfidenceIntervalMethod;
+      level?: number;
     };
 export type AggregateOperation =
   | ScalarAggregateOperation
@@ -651,7 +862,8 @@ export interface SemanticLayer {
   readonly data?: string;
   readonly source?: string;
   readonly coordinate?: string;
-  readonly mark?: Readonly<{ type?: string; [key: string]: unknown }>;
+  readonly mark?: Readonly<{ type?: string; missing?: "error" | "break"; [key: string]: unknown }>;
+  readonly layout?: Readonly<{ mode?: ColorLayout }>;
   readonly encoding?: Readonly<Record<string, Readonly<Record<string, unknown>>>>;
   readonly [key: string]: unknown;
 }
@@ -705,16 +917,32 @@ export interface CanvasOptions {
   margin?: number | Partial<Record<"top" | "right" | "bottom" | "left", number>>;
 }
 
+export interface FitCanvasOptions {
+  /** Minimum fitted margin on every Canvas edge. Defaults to 0. */
+  padding?: number;
+  /** Required final plot width. Defaults to 160. */
+  minPlotWidth?: number;
+  /** Required final plot height. Defaults to 120. */
+  minPlotHeight?: number;
+  /** Maximum binary-search probes per edge. Defaults to 32; maximum 64. */
+  iterationLimit?: number;
+  /** Reject an unsatisfied fit or preserve it with a structured overflow result. */
+  overflow?: "error" | "report";
+}
+
 export type XAxisPosition = "bottom" | "top";
 export type YAxisPosition = "left" | "right";
+export type RotationUnit = "radians" | "degrees";
+export type RotationInput = number | { value: number; unit: RotationUnit };
+type ValueFormatDigit = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
+type ValueFormatPrecision = ValueFormatDigit | 10 | 11 | 12 | `0${ValueFormatDigit}`;
 type TimeAxisDirective = "Y" | "m" | "d" | "b";
-export type AxisFormatString =
-  | ".0f" | ".1f" | ".2f"
-  | ".0%" | ".1%" | ".2e"
-  | `${string}%${TimeAxisDirective}${string}`;
+export type NumericFormatString = `.${ValueFormatPrecision}${"f" | "%" | "e"}`;
+export type UtcFormatString = `${string}%${TimeAxisDirective}${string}`;
+export type ValueFormat = "auto" | NumericFormatString | UtcFormatString;
+export type AxisFormatString = NumericFormatString | UtcFormatString;
 export type AxisFormat =
-  | "auto"
-  | AxisFormatString
+  | ValueFormat
   | { decimals: number };
 export type AxisValue = string | boolean | number;
 export interface AxisLineStyleOptions {
@@ -732,13 +960,23 @@ export interface AxisLabelStyleOptions {
   fontFamily?: string;
   fontWeight?: string | number;
 }
+export interface AxisLabelLayoutOptions {
+  /** Legacy numbers are radians; structured values make radians or degrees explicit. */
+  rotation?: RotationInput;
+  /** Wrap each label to this measured width; false removes an existing wrap policy. */
+  maxWidth?: number | false;
+  wrap?: "word" | "character";
+  lineHeight?: number;
+  /** Defaults to error; allow stores an intentional label-label overlap policy. */
+  overlap?: "error" | "allow";
+}
 export interface AxisTicksAndLabelsOptions<P extends string> {
   scale?: string;
   position?: P;
   count?: number;
   values?: readonly AxisValue[];
   ticks?: AxisTickStyleOptions;
-  labels?: AxisLabelStyleOptions;
+  labels?: AxisLabelStyleOptions & AxisLabelLayoutOptions;
 }
 export interface AxisTitleOptions<P extends string> {
   text?: string;
@@ -746,7 +984,7 @@ export interface AxisTitleOptions<P extends string> {
   position?: P;
   at?: "start" | "center" | "end" | number;
   offset?: number;
-  rotation?: number;
+  rotation?: RotationInput;
   color?: string;
   fontSize?: number;
   fontFamily?: string;
@@ -756,9 +994,9 @@ export interface CompleteAxisOptions<P extends string> {
   scale?: string;
   coordinate?: string;
   position?: P;
-  line?: AxisLineStyleOptions;
-  ticksAndLabels?: Omit<AxisTicksAndLabelsOptions<P>, "scale" | "position">;
-  title?: Omit<AxisTitleOptions<P>, "scale" | "position">;
+  line?: false | AxisLineStyleOptions;
+  ticksAndLabels?: false | Omit<AxisTicksAndLabelsOptions<P>, "scale" | "position">;
+  title?: false | Omit<AxisTitleOptions<P>, "scale" | "position">;
 }
 export interface CreateAxesOptions {
   coordinate?: {
@@ -778,12 +1016,42 @@ export interface AxisTickOptions<P extends string>
   values?: readonly AxisValue[];
 }
 export interface AxisLabelOptions<P extends string>
-  extends AxisLabelStyleOptions {
+  extends AxisLabelStyleOptions, AxisLabelLayoutOptions {
   scale?: string;
   position?: P;
   count?: number;
   values?: readonly AxisValue[];
 }
+
+export type ParallelAxisTickSelection =
+  | { count?: number; values?: never }
+  | { values: readonly AxisValue[]; count?: never };
+export type ParallelAxisTicksOptions = AxisTickStyleOptions & ParallelAxisTickSelection;
+export type ParallelAxisLabelsOptions = AxisLabelStyleOptions & ParallelAxisTickSelection;
+export interface ParallelAxisTitleOptions {
+  text?: string;
+  offset?: number;
+  color?: string;
+  fontSize?: number;
+  fontFamily?: string;
+  fontWeight?: string | number;
+}
+export type ParallelAxisComponentsOptions = {
+  field: string;
+  target?: string;
+  line?: false | AxisLineStyleOptions;
+  title?: false | ParallelAxisTitleOptions;
+} & (
+  | { ticksAndLabels?: false | (ParallelAxisTickSelection & {
+      ticks?: AxisTickStyleOptions; labels?: AxisLabelStyleOptions;
+    }); ticks?: never; labels?: never }
+  | { ticks?: false | ParallelAxisTicksOptions; labels?: false | ParallelAxisLabelsOptions;
+      ticksAndLabels?: never }
+);
+export type CreateParallelAxisOptions = ParallelAxisComponentsOptions;
+export type EditParallelAxisOptions = ParallelAxisComponentsOptions;
+export interface ParallelAxesOptions { target?: string; coordinate?: string; }
+export interface RemoveParallelAxisOptions { field: string; target?: string; }
 
 export interface PolarGuideResourceOptions {
   scale?: string;
@@ -815,26 +1083,44 @@ export interface PolarTitleOptions {
 export interface RadialTitleOptions extends PolarTitleOptions {
   position?: "inside" | "outside";
 }
-export interface CompletePolarAxisOptions extends PolarGuideResourceOptions {
-  line?: AxisLineStyleOptions;
-  ticksAndLabels?: PolarTicksAndLabelsOptions;
+export type PolarAxisTickSelection =
+  | { count?: number; values?: never }
+  | { values: readonly AxisValue[]; count?: never };
+export type CreateThetaAxisLineOptions = AxisLineStyleOptions &
+  Omit<PolarGuideResourceOptions, "angle">;
+export type CreateRadialAxisLineOptions = AxisLineStyleOptions & PolarGuideResourceOptions;
+export type CreateThetaAxisTicksOptions = Omit<PolarTickOptions, "count" | "values"> &
+  PolarAxisTickSelection & Omit<PolarGuideResourceOptions, "angle">;
+export type CreateRadialAxisTicksOptions = Omit<PolarTickOptions, "count" | "values"> &
+  PolarAxisTickSelection & PolarGuideResourceOptions;
+export type CreateThetaAxisLabelsOptions = Omit<PolarLabelOptions, "count" | "values"> &
+  PolarAxisTickSelection & Omit<PolarGuideResourceOptions, "angle">;
+export type CreateRadialAxisLabelsOptions = Omit<PolarLabelOptions, "count" | "values"> &
+  PolarAxisTickSelection & PolarGuideResourceOptions;
+export type CreateThetaAxisTitleOptions = PolarTitleOptions &
+  Omit<PolarGuideResourceOptions, "angle">;
+export type CreateRadialAxisTitleOptions = RadialTitleOptions & PolarGuideResourceOptions;
+export interface CompletePolarAxisOptions extends Omit<PolarGuideResourceOptions, "angle"> {
+  line?: false | AxisLineStyleOptions;
+  ticksAndLabels?: false | PolarTicksAndLabelsOptions;
   title?: false | PolarTitleOptions;
 }
 export interface CompleteRadialAxisOptions
   extends Omit<CompletePolarAxisOptions, "title"> {
+  angle?: number;
   title?: false | RadialTitleOptions;
 }
 export interface EditPolarAxisOptions {
   angle?: number;
-  line?: AxisLineStyleOptions;
-  ticks?: PolarTickOptions;
-  labels?: PolarLabelOptions;
-  ticksAndLabels?: PolarTicksAndLabelsOptions;
-  title?: PolarTitleOptions;
+  line?: false | AxisLineStyleOptions;
+  ticks?: false | PolarTickOptions;
+  labels?: false | PolarLabelOptions;
+  ticksAndLabels?: false | PolarTicksAndLabelsOptions;
+  title?: false | PolarTitleOptions;
 }
 export interface EditRadialAxisOptions
   extends Omit<EditPolarAxisOptions, "title"> {
-  title?: RadialTitleOptions;
+  title?: false | RadialTitleOptions;
 }
 
 export interface GridDirectionOptions {
@@ -895,11 +1181,42 @@ type CartesianAxesOptions = Omit<
   coordinate?: { id?: string; type?: "auto" | "cartesian" };
 };
 type CartesianGridOptions = Pick<CreateGridOptions, "horizontal" | "vertical">;
+type FilledMarkLegendOptions = Omit<LegendOptions, "symbol"> & {
+  symbol?: "auto"
+    | { width?: number; height?: number; stroke?: string; strokeWidth?: number }
+    | { layers: readonly LegendSymbolLayer[] };
+};
+type CategoricalLegendTextOptions = {
+  offset?: number;
+  color?: string;
+  fontSize?: number;
+  fontFamily?: string;
+  fontWeight?: string | number;
+  format?: "auto";
+};
+type PathLegendOptions = Omit<LegendOptions, "symbol" | "gradient" | "count" | "labels"> & {
+  symbol?: "auto" | { length?: number; lineWidth?: number }
+    | { layers: readonly LegendSymbolLayer[] };
+  labels?: CategoricalLegendTextOptions;
+};
 type CartesianGuideOptions = {
   axes?: false | CartesianAxesOptions;
   grid?: false | CartesianGridOptions;
-  legend?: false | LegendOptions;
+  legend?: false | (Omit<FilledMarkLegendOptions, "order"> & { order?: CartesianLegendOrder });
 };
+type CartesianPathGuideOptions = Omit<CartesianGuideOptions, "legend"> & {
+  legend?: false | (Omit<PathLegendOptions, "order"> & { order?: LegendValueOrder });
+};
+type CartesianCategoricalGuideOptions = Omit<CartesianGuideOptions, "legend"> & {
+  legend?: false | (Omit<
+    FilledMarkLegendOptions,
+    "count" | "gradient" | "labels" | "order"
+  > & {
+    labels?: CategoricalLegendTextOptions;
+    order?: CartesianLegendOrder;
+  });
+};
+type BoxPlotGuideOptions = Omit<CartesianGuideOptions, "legend"> & { legend?: false };
 type GradientPlotDensityLegendOptions = {
   title?: string;
   position?: "right";
@@ -912,7 +1229,7 @@ type ParallelGuideOptions = {
     coordinate?: { id?: string; type?: "auto" | "parallel" };
   };
   grid?: false;
-  legend?: false | LegendOptions;
+  legend?: false | (Omit<PathLegendOptions, "order"> & { order?: LegendValueOrder });
 };
 
 export interface CreateCoordinateOptions {
@@ -921,7 +1238,10 @@ export interface CreateCoordinateOptions {
   layers?: readonly string[];
 }
 
+export type RadialMapping = "area" | "radius-length";
+
 export interface ScaleOptions {
+  radialMapping?: RadialMapping;
   id?: string;
   type?: ScaleType;
   domain?: "auto" | readonly unknown[];
@@ -939,6 +1259,7 @@ export interface ScaleOptions {
   align?: number;
   palette?: Palette;
   interpolate?: ContinuousColorInterpolation;
+  midpoint?: number | "auto";
   unknown?: unknown;
 }
 
@@ -1018,6 +1339,7 @@ export type ShapeScaleOptions = ScaleFields<"id"> & {
 export type CreateScaleOptions = ScaleOptions & { id: string };
 
 export interface EditScaleOptions {
+  radialMapping?: RadialMapping;
   id?: string;
   type?: ScaleType;
   domain?: "auto" | readonly unknown[];
@@ -1035,6 +1357,7 @@ export interface EditScaleOptions {
   align?: number;
   palette?: Palette;
   interpolate?: ContinuousColorInterpolation;
+  midpoint?: number | "auto";
   unknown?: unknown;
 }
 
@@ -1061,6 +1384,7 @@ type PositionScaleBranches<Quantitative, Temporal, Categorical> =
     }
   | {
       fieldType: "temporal";
+      temporalUnit?: TemporalInputUnit;
       aggregate?: never;
       scale?: Temporal;
     }
@@ -1115,27 +1439,38 @@ export interface RadiusScaleOptions {
   constant?: number;
 }
 
-export interface ThetaEncodingOptions {
+export type ThetaEncodingOptions = {
   /**
    * Arc marks interpret an aggregate-free quantitative field as per-row sector
    * weights. Categorical arc theta retains the count and weighted-sum modes.
    */
   field: string;
   target?: string;
-  fieldType?: FieldType;
   scale?: ThetaScaleOptions;
   coordinate?: string;
   aggregate?: "count" | "sum";
   weight?: string;
-}
+} & (
+  | { fieldType?: Exclude<FieldType, "temporal">; temporalUnit?: never }
+  | { fieldType: "temporal"; temporalUnit?: TemporalInputUnit }
+);
 
-export interface RadialEncodingOptions {
-  field: string;
+export type MeasuredRadiusScaleOptions = Pick<RadiusScaleOptions, "id" | "domain" | "range" | "clamp"> & {
+  type?: "linear";
+  zero?: true;
+  nice?: false;
+  reverse?: false;
+};
+
+export type RadialEncodingOptions = {
   target?: string;
   fieldType?: "quantitative";
-  scale?: RadiusScaleOptions;
   coordinate?: string;
-}
+} & (
+  | { field: string; mapping?: never; aggregate?: never; scale?: RadiusScaleOptions }
+  | { field: string; mapping?: RadialMapping; aggregate: "sum"; scale?: MeasuredRadiusScaleOptions }
+  | { field?: never; mapping?: RadialMapping; aggregate: "count"; scale?: MeasuredRadiusScaleOptions }
+);
 
 type RulePositionValue =
   | { field: string; datum?: never }
@@ -1157,7 +1492,7 @@ type InferredRuleDatumPositionEncodingOptions = {
     | NonPointCategoricalPositionScaleOptions;
 };
 
-export type RulePositionEncodingOptions =
+export type DatumPositionEncodingOptions =
   | InferredRuleDatumPositionEncodingOptions
   | RulePositionEncodingBase & (
     | {
@@ -1166,6 +1501,7 @@ export type RulePositionEncodingOptions =
       }
     | {
         fieldType: "temporal";
+        temporalUnit?: TemporalInputUnit;
         scale?: NonPointTemporalPositionScaleOptions;
       }
     | {
@@ -1174,21 +1510,45 @@ export type RulePositionEncodingOptions =
       }
     );
 
+/** Constant primary position accepted by Rule, Rect, Area, Point, Tick, and independent Text policies. */
+export type RulePositionEncodingOptions = DatumPositionEncodingOptions;
+
+type TemporalBindingBranch =
+  | { fieldType?: "quantitative"; temporalUnit?: never }
+  | { fieldType: "temporal"; temporalUnit?: TemporalInputUnit };
+
 type SecondaryRulePositionEncodingOptions = RulePositionEncodingBase & {
-  fieldType: FieldType;
   scale?: { id?: string };
-};
+} & (
+  | { fieldType: Exclude<FieldType, "temporal">; temporalUnit?: never }
+  | { fieldType: "temporal"; temporalUnit?: TemporalInputUnit }
+);
 
 export type SecondaryPositionEncodingOptions =
   | SecondaryRulePositionEncodingOptions
-  | {
-      field: string;
-      datum?: never;
-      target?: string;
-      fieldType?: "quantitative" | "temporal";
-      scale?: { id?: string };
-      coordinate?: string;
-    };
+  | { datum: unknown; field?: never; fieldType?: "quantitative"; target?: string; scale?: { id?: string }; coordinate?: string }
+  | ({ field: string; datum?: never; target?: string; scale?: { id?: string }; coordinate?: string } & TemporalBindingBranch);
+
+type AreaRangePositionEncodingOptions = {
+  target?: string;
+  coordinate?: string;
+  fieldType?: "quantitative";
+  temporalUnit?: never;
+  scale?: NonPointQuantitativePositionScaleOptions;
+} & (
+  | { lower: string; upper: { datum: number } }
+  | { lower: { datum: number }; upper: string }
+);
+
+type RangePositionEncodingOptions = AreaRangePositionEncodingOptions | {
+  lower: string;
+  upper: string;
+  target?: string;
+  coordinate?: string;
+} & (
+  | { fieldType?: "quantitative"; temporalUnit?: never; scale?: NonPointQuantitativePositionScaleOptions }
+  | { fieldType: "temporal"; temporalUnit?: TemporalInputUnit; scale?: NonPointTemporalPositionScaleOptions }
+);
 
 export type HistogramEncodingOptions = {
   field: string;
@@ -1229,7 +1589,8 @@ export interface DensityDataOptions {
   as?: readonly [string, string];
 }
 
-type DensityEncodingBase = Omit<DensityDataOptions, "id"> & {
+type DensityEncodingBase = Omit<DensityDataOptions, "id" | "groupBy"> & {
+  groupBy?: string | false;
   target?: string;
   densityChannel?: "x" | "y";
   coordinate?: string;
@@ -1254,6 +1615,7 @@ export type HorizonXEncoding = { field: string } & (
     }
   | {
       fieldType: "temporal";
+      temporalUnit?: TemporalInputUnit;
       scale?: NonPointTemporalPositionScaleOptions;
     }
   | {
@@ -1286,7 +1648,7 @@ export interface HorizonEncodingOptions {
   source?: string;
   x?: string | HorizonXEncoding;
   y?: string | HorizonYEncoding;
-  groupBy?: string;
+  groupBy?: string | false;
   bands?: number;
   baseline?: number;
   extent?: "auto" | number;
@@ -1317,6 +1679,7 @@ export interface IntervalDataOptions {
   groupBy?: string | readonly string[];
   center?: IntervalCenter;
   extent?: IntervalExtent;
+  method?: ConfidenceIntervalMethod;
   level?: number;
   as?: IntervalOutputFields;
 }
@@ -1329,12 +1692,75 @@ export interface WindowDataOptions {
   operations: readonly WindowOperation[];
 }
 
+export interface ECDFDataOptions {
+  id: string;
+  source?: string;
+  field: string;
+  groupBy?: string | readonly [string, ...string[]];
+  weight?: string;
+  missing?: "drop" | "error";
+  as?: ECDFOutputFields;
+}
+
 export interface TimeUnitDataOptions {
   id: string;
   source?: string;
   field: string;
   unit: TimeUnit;
+  temporalUnit?: TemporalInputUnit;
   as: string;
+}
+
+export interface BinDataOutputFields {
+  lower?: string;
+  upper?: string;
+  count?: string;
+  members?: string;
+}
+type BinDataMode =
+  | { maxBins?: number; step?: never; boundaries?: never }
+  | { maxBins?: never; step: number; boundaries?: never }
+  | {
+      maxBins?: never;
+      step?: never;
+      boundaries: readonly [number, number, ...number[]];
+    };
+export type BinDataOptions = {
+  id: string;
+  source?: string;
+  field: string;
+  extent?: "auto" | readonly [number, number];
+  nice?: boolean;
+  zero?: boolean;
+  includeEmpty?: boolean;
+  members?: boolean;
+  as?: BinDataOutputFields;
+} & BinDataMode;
+
+export interface FoldDataOutputFields {
+  key?: string;
+  value?: string;
+}
+export interface FoldDataOptions {
+  id: string;
+  source?: string;
+  fields: readonly string[];
+  as?: FoldDataOutputFields;
+}
+export interface ComputedDataOptions {
+  id: string;
+  source?: string;
+  as: string;
+  expression: ComputedExpression;
+}
+export interface StackDataOptions {
+  id: string;
+  source?: string;
+  category: string;
+  group: string;
+  value: string;
+  mode?: StackDataMode;
+  as?: StackDataOutputFields;
 }
 
 export interface Bin2DDataOptions {
@@ -1368,6 +1794,7 @@ export type ErrorBarPositionChannel = { field?: string } & (
     }
   | {
       fieldType: "temporal";
+      temporalUnit?: TemporalInputUnit;
       scale?: NonPointTemporalPositionScaleOptions;
     }
   | {
@@ -1380,6 +1807,7 @@ export interface ErrorBarStatisticalIntervalChannel {
   field?: string;
   center?: IntervalCenter;
   extent?: IntervalExtent;
+  method?: ConfidenceIntervalMethod;
   level?: number;
   scale?: NonPointQuantitativePositionScaleOptions;
 }
@@ -1411,7 +1839,7 @@ export interface ErrorBarOptions {
   y?: ErrorBarPositionChannel | ErrorBarIntervalChannel;
   xOffset?: ErrorBarOffsetChannel;
   yOffset?: ErrorBarOffsetChannel;
-  groupBy?: string;
+  groupBy?: string | false;
   coordinate?: string;
   caps?: boolean;
   capSize?: number;
@@ -1423,6 +1851,12 @@ export interface ErrorBarOptions {
 
 export interface EditErrorBarOptions {
   target?: string;
+  data?: string;
+  x?: ErrorBarPositionChannel | ErrorBarIntervalChannel;
+  y?: ErrorBarPositionChannel | ErrorBarIntervalChannel;
+  xOffset?: ErrorBarOffsetChannel | false;
+  yOffset?: ErrorBarOffsetChannel | false;
+  groupBy?: string | false;
   caps?: boolean;
   capSize?: number;
   stroke?: string;
@@ -1432,6 +1866,7 @@ export interface EditErrorBarOptions {
   statistics?: {
     center?: IntervalCenter;
     extent?: IntervalExtent;
+    method?: ConfidenceIntervalMethod;
     level?: number;
   };
 }
@@ -1481,7 +1916,7 @@ export interface BoxPlotOptions {
     radius?: number;
     opacity?: number;
   };
-  guides?: false | CartesianGuideOptions;
+  guides?: false | BoxPlotGuideOptions;
 }
 
 export interface EditBoxPlotOptions {
@@ -1567,6 +2002,7 @@ export type ViolinPlotPositionChannel =
 export interface ViolinPlotDensityOptions
   extends GradientPlotDensityOptions {
   width?: DensityPlacementWidth;
+  side?: "both" | "left" | "right" | "top" | "bottom";
 }
 
 export interface ViolinPlotSplitOptions {
@@ -1602,7 +2038,16 @@ export interface ViolinPlotOptions {
   color?: ViolinPlotColorOptions;
   density?: ViolinPlotDensityOptions;
   area?: ViolinPlotAreaOptions;
-  guides?: false | CartesianGuideOptions;
+  guides?: false | CartesianCategoricalGuideOptions;
+}
+
+export interface EditViolinPlotOptions {
+  target?: string;
+  data?: string;
+  x?: ViolinPlotPositionChannel;
+  y?: ViolinPlotPositionChannel;
+  split?: false | ViolinPlotSplitOptions;
+  density?: ViolinPlotDensityOptions;
 }
 
 export interface EditGradientPlotOptions {
@@ -1629,6 +2074,7 @@ type PointFacadePositionChannel =
         }
       | {
           fieldType: "temporal";
+          temporalUnit?: TemporalInputUnit;
           scale?: TemporalPositionScaleOptions;
         }
       | {
@@ -1645,6 +2091,7 @@ type LineXPositionChannel =
         }
       | {
           fieldType: "temporal";
+          temporalUnit?: TemporalInputUnit;
           scale?: NonPointTemporalPositionScaleOptions;
         }
     ));
@@ -1658,6 +2105,7 @@ type LineYPositionChannel =
         }
       | {
           fieldType: "temporal";
+          temporalUnit?: TemporalInputUnit;
           aggregate?: never;
           scale?: NonPointTemporalPositionScaleOptions;
         }
@@ -1669,6 +2117,14 @@ type BandPositionChannel = FacadePositionChannel<
 >;
 type BarYPositionChannel =
   | string
+  | {
+      field: string;
+      fieldType: "temporal";
+      temporalUnit?: TemporalInputUnit;
+      aggregate?: never;
+      stack?: never;
+      scale?: NonPointTemporalPositionScaleOptions;
+    }
   | ({ field: string; stack?: StackMode } & (
       | {
           fieldType?: "quantitative";
@@ -1703,7 +2159,8 @@ type BasicColorChannel =
   | {
       field: string;
       fieldType: "temporal";
-      scale?: ContinuousColorScaleOptions;
+      temporalUnit?: TemporalInputUnit;
+      scale?: Omit<ContinuousColorScaleOptions, "midpoint"> & { midpoint?: "auto" };
       palette?: Palette;
     };
 type NonPointCategoricalColorChannel =
@@ -1767,7 +2224,8 @@ type RectColorChannel =
   | {
       field: string;
       fieldType: "temporal";
-      scale?: NonPointContinuousColorScaleOptions;
+      temporalUnit?: TemporalInputUnit;
+      scale?: Omit<NonPointContinuousColorScaleOptions, "midpoint"> & { midpoint?: "auto" };
       palette?: Palette;
     };
 export type BasicSizeChannel = string | {
@@ -1841,14 +2299,480 @@ export interface CreateScatterPlotOptions {
   size?: BasicSizeChannel;
   shape?: BasicShapeChannel;
   point?: {
+    radius?: number;
     shape?: PointShape;
     fill?: string;
     opacity?: number;
-    stroke?: string;
+    stroke?: FilledMarkStroke;
     strokeWidth?: number;
   };
-  guides?: false | CreateGuidesOptions;
+  guides?: false | CartesianGuideOptions;
 }
+
+export interface IntervalPlotErrorBarOptions {
+  caps?: boolean;
+  capSize?: number;
+  stroke?: string;
+  strokeWidth?: number;
+  strokeDash?: DashStyle | DashPattern;
+  opacity?: number;
+}
+type IntervalPlotBaseOptions = {
+  id?: string;
+  data?: string;
+  coordinate?: string;
+  xOffset?: ErrorBarOffsetChannel;
+  yOffset?: ErrorBarOffsetChannel;
+  groupBy?: string | false;
+  color?: BasicColorChannel;
+  point?: CreateScatterPlotOptions["point"];
+  errorBar?: IntervalPlotErrorBarOptions;
+  guides?: false | CartesianGuideOptions;
+};
+export type CreateIntervalPlotOptions = IntervalPlotBaseOptions & (
+  | {
+      x: string | ErrorBarPositionChannel;
+      y: string | ErrorBarIntervalChannel;
+    }
+  | {
+      x: string | ErrorBarIntervalChannel;
+      y: string | ErrorBarPositionChannel;
+    }
+);
+
+export type RegressionPlotPositionChannel = string | {
+  field: string;
+  fieldType?: "quantitative";
+  scale?: NonPointQuantitativePositionScaleOptions;
+};
+type RegressionPlotBaseOptions = {
+  id?: string;
+  data?: string;
+  coordinate?: string;
+  x: RegressionPlotPositionChannel;
+  y: RegressionPlotPositionChannel;
+  color?: BasicColorChannel;
+  size?: BasicSizeChannel;
+  shape?: BasicShapeChannel;
+  point?: CreateScatterPlotOptions["point"];
+  guides?: false | CartesianGuideOptions;
+};
+type RegressionPlotStatisticalOptions<T> = T extends unknown
+  ? Omit<T, "target" | "x" | "y">
+  : never;
+export type CreateRegressionPlotOptions = RegressionPlotBaseOptions &
+  RegressionPlotStatisticalOptions<RegressionOptions>;
+
+export type EndpointPlotSummary = false | "mean" | "median" | "sum" | "min" | "max";
+export type EndpointCategoryChannel = string | {
+  field: string;
+  fieldType?: "nominal" | "ordinal";
+  scale?: NonPointCategoricalPositionScaleOptions;
+};
+export type EndpointValueChannel = string | {
+  field: string;
+  fieldType?: "quantitative";
+  scale?: NonPointQuantitativePositionScaleOptions;
+};
+export type EndpointLabelOptions = Omit<
+  TextMarkOptions,
+  "id" | "data" | "source" | "text"
+> & {
+  format?: TextFormat;
+  layout?: false | Omit<LabelLayoutOptions, "target">;
+} & (
+  | { field?: string; value?: never }
+  | { field?: never; value: unknown }
+);
+type EndpointPlotBaseOptions = {
+  id?: string;
+  data?: string;
+  coordinate?: string;
+  category: EndpointCategoryChannel;
+  orientation?: "horizontal" | "vertical";
+  summary?: EndpointPlotSummary;
+  guides?: false | CartesianGuideOptions;
+};
+export interface CreateDotPlotOptions extends EndpointPlotBaseOptions {
+  value: EndpointValueChannel;
+  point?: CreateScatterPlotOptions["point"];
+  labels?: false | EndpointLabelOptions;
+}
+export interface CreateLollipopPlotOptions extends EndpointPlotBaseOptions {
+  value: EndpointValueChannel;
+  baseline?: number;
+  point?: CreateScatterPlotOptions["point"];
+  stem?: RuleStyleOptions;
+  labels?: false | EndpointLabelOptions;
+}
+export interface CreateDumbbellPlotOptions extends EndpointPlotBaseOptions {
+  start: EndpointValueChannel;
+  end: EndpointValueChannel;
+  startPoint?: CreateScatterPlotOptions["point"];
+  endPoint?: CreateScatterPlotOptions["point"];
+  connector?: RuleStyleOptions;
+  labels?: false | (EndpointLabelOptions & { endpoint?: "start" | "end" | "both" });
+}
+export type EditEndpointPlotOptions = { target?: string } & Partial<Pick<
+  CreateDumbbellPlotOptions,
+  "data" | "coordinate" | "category" | "start" | "end" | "orientation" | "summary"
+>> & {
+  value?: EndpointValueChannel;
+  baseline?: number;
+};
+
+export interface CreateECDFPlotOptions {
+  id?: string;
+  data?: string;
+  coordinate?: string;
+  field: string;
+  groupBy?: string | readonly [string, ...string[]];
+  weight?: string;
+  missing?: "drop" | "error";
+  as?: ECDFOutputFields;
+  color?: string | LineCategoricalColorChannel;
+  line?: { strokeWidth?: number; stroke?: string; opacity?: number };
+  labels?: false | EndpointLabelOptions;
+  guides?: false | CartesianPathGuideOptions;
+}
+export type EditECDFPlotOptions = { target?: string } & Partial<Pick<
+  CreateECDFPlotOptions,
+  "data" | "coordinate" | "field" | "missing" | "as"
+>> & {
+  groupBy?: CreateECDFPlotOptions["groupBy"] | false;
+  weight?: string | false;
+  color?: CreateECDFPlotOptions["color"] | false;
+};
+
+export type PolarThetaChannel = string | ({ field: string; scale?: ThetaScaleOptions } & (
+  | { fieldType?: "quantitative" | "nominal" | "ordinal"; temporalUnit?: never }
+  | { fieldType: "temporal"; temporalUnit?: TemporalInputUnit }
+));
+export type PolarRadiusChannel = string | {
+  field: string;
+  fieldType?: "quantitative";
+  scale?: RadiusScaleOptions;
+};
+export type PolarChartGuideOptions = {
+  axes?: false | Pick<CreateAxesOptions, "theta" | "radius"> & {
+    coordinate?: { id?: string; type?: "auto" | "polar" };
+  };
+  grid?: false | Pick<CreateGridOptions, "theta" | "radial">;
+  legend?: false | LegendOptions;
+};
+type PolarLegendOrder = LegendValueOrder | { channel: "theta"; values?: never };
+type PolarPathLegendOptions = Omit<PathLegendOptions, "order"> & {
+  order?: PolarLegendOrder;
+};
+type PolarPointLegendOptions = Omit<FilledMarkLegendOptions, "order"> & {
+  order?: PolarLegendOrder;
+};
+export type PolarPathGuideOptions = Omit<PolarChartGuideOptions, "legend"> & {
+  legend?: false | PolarPathLegendOptions;
+};
+export type PolarPointGuideOptions = Omit<PolarChartGuideOptions, "legend"> & {
+  legend?: false | PolarPointLegendOptions;
+};
+export interface CreatePolarScatterPlotOptions {
+  id?: string;
+  data?: string;
+  coordinate?: string;
+  theta: PolarThetaChannel;
+  radius: PolarRadiusChannel;
+  color?: BasicColorChannel;
+  size?: BasicSizeChannel;
+  shape?: BasicShapeChannel;
+  point?: CreateScatterPlotOptions["point"];
+  guides?: false | PolarPointGuideOptions;
+}
+export interface CreatePolarLinePlotOptions {
+  id?: string;
+  data?: string;
+  coordinate?: string;
+  theta: PolarThetaChannel;
+  radius: PolarRadiusChannel;
+  color?: LineCategoricalColorChannel;
+  groupBy?: string | readonly [string, ...string[]];
+  strokeDash?: BasicStrokeDashChannel;
+  line?: Omit<NonNullable<CreateLinePlotOptions["line"]>, "closed" | "curve"> & {
+    curve?: "linear";
+    closed?: boolean;
+  };
+  guides?: false | PolarPathGuideOptions;
+}
+export type RadarCategoryValue = string | number | boolean;
+export type RadarCategoryScaleOptions = Pick<
+  ThetaScaleOptions,
+  "id" | "domain" | "range" | "reverse" | "paddingInner" | "paddingOuter" |
+  "padding" | "align"
+> & { type?: "band" | "point" };
+export type RadarCategoryChannel = string | {
+  field: string;
+  fieldType?: "nominal" | "ordinal";
+  scale?: RadarCategoryScaleOptions;
+};
+type CategoricalThetaTicksAndLabelsOptions = Omit<
+  PolarTicksAndLabelsOptions,
+  "count" | "labels"
+> & {
+  count?: never;
+  labels?: Omit<AxisLabelStyleOptions, "format"> & { format?: "auto" };
+};
+type CategoricalThetaAxisOptions = Omit<CompletePolarAxisOptions, "ticksAndLabels"> & {
+  ticksAndLabels?: false | CategoricalThetaTicksAndLabelsOptions;
+};
+type CategoricalThetaGridOptions = Omit<PolarGridOptions, "count"> & {
+  count?: never;
+};
+type CategoricalPolarAxesOptions = Omit<
+  Pick<CreateAxesOptions, "theta" | "radius">,
+  "theta"
+> & {
+  coordinate?: { id?: string; type?: "auto" | "polar" };
+  theta?: false | CategoricalThetaAxisOptions;
+};
+type CategoricalPolarGridOptions = Omit<
+  Pick<CreateGridOptions, "theta" | "radial">,
+  "theta"
+> & {
+  theta?: boolean | CategoricalThetaGridOptions;
+};
+export type RadarGuideOptions = Omit<PolarPathGuideOptions, "axes" | "grid" | "legend"> & {
+  axes?: false | CategoricalPolarAxesOptions;
+  grid?: false | CategoricalPolarGridOptions;
+  legend?: false | (Omit<PathLegendOptions, "order"> & { order?: LegendValueOrder });
+};
+export interface RadarWideOptions {
+  fields: readonly [string, string, string, ...string[]];
+  as?: { key?: string; value?: string };
+}
+export type CreateRadarPlotOptions = {
+  id?: string;
+  data?: string;
+  coordinate?: string;
+  groupBy?: string | readonly [string, ...string[]];
+  order?: readonly [
+    RadarCategoryValue,
+    RadarCategoryValue,
+    RadarCategoryValue,
+    ...RadarCategoryValue[]
+  ];
+  color?: LineCategoricalColorChannel;
+  strokeDash?: BasicStrokeDashChannel;
+  line?: Omit<NonNullable<CreateLinePlotOptions["line"]>, "closed" | "curve"> & {
+    curve?: "linear";
+    closed?: true;
+  };
+  guides?: false | RadarGuideOptions;
+} & (
+  | { category: RadarCategoryChannel; value: PolarRadiusChannel; wide?: never }
+  | { wide: RadarWideOptions; category?: never; value?: never }
+);
+export type RugMeasureChannel = string | (
+  | {
+      field: string;
+      fieldType?: "quantitative";
+      temporalUnit?: never;
+      scale?: NonPointQuantitativePositionScaleOptions;
+    }
+  | {
+      field: string;
+      fieldType: "temporal";
+      temporalUnit?: TemporalInputUnit;
+      scale?: NonPointTemporalPositionScaleOptions;
+    }
+);
+export interface RugTickOptions {
+  length?: number;
+  stroke?: string;
+  strokeWidth?: number;
+  opacity?: number;
+}
+export type RugGuideOptions = Omit<CartesianGuideOptions, "legend"> & {
+  legend?: false;
+};
+export type CreateRugPlotOptions = {
+  id?: string;
+  data?: string;
+  coordinate?: string;
+  tick?: RugTickOptions;
+  guides?: false | RugGuideOptions;
+} & (
+  | { x: RugMeasureChannel; y?: never; edge: "top" | "bottom" }
+  | { y: RugMeasureChannel; x?: never; edge: "left" | "right" }
+);
+export type StripCategoryChannel = string | {
+  field: string;
+  fieldType?: "nominal" | "ordinal";
+  scale?: CategoricalPositionScaleOptions;
+};
+export interface StripPixelJitterOptions {
+  maxOffset: { pixels: number; band?: never };
+  seed?: string | number;
+  key?: string;
+}
+export interface StripBandJitterOptions {
+  maxOffset: { pixels?: never; band: number };
+  seed?: string | number;
+  key?: string;
+}
+export type StripJitterOptions = StripPixelJitterOptions | StripBandJitterOptions;
+export type CreateStripPlotOptions = {
+  id?: string;
+  data?: string;
+  coordinate?: string;
+  color?: BasicColorChannel;
+  size?: BasicSizeChannel;
+  shape?: BasicShapeChannel;
+  point?: {
+    radius?: number;
+    shape?: PointShape;
+    fill?: string;
+    opacity?: number;
+    stroke?: FilledMarkStroke;
+    strokeWidth?: number;
+  };
+  guides?: false | CartesianGuideOptions;
+} & (
+  | { x: RugMeasureChannel; y?: never; jitter?: false | StripPixelJitterOptions }
+  | { x: RugMeasureChannel; y: StripCategoryChannel; jitter?: false | StripBandJitterOptions }
+  | { x: StripCategoryChannel; y: RugMeasureChannel; jitter?: false | StripBandJitterOptions }
+);
+export interface BeeswarmPackingOptions {
+  maxOffset?: PointPackingMaxOffset;
+  padding?: number;
+  key?: string;
+  overflow?: "error" | "overlap";
+}
+export type CreateBeeswarmPlotOptions = {
+  id?: string;
+  data?: string;
+  coordinate?: string;
+  color?: BasicColorChannel;
+  size?: BasicSizeChannel;
+  shape?: BasicShapeChannel;
+  point?: {
+    radius?: number;
+    shape?: PointShape;
+    fill?: string;
+    opacity?: number;
+    stroke?: FilledMarkStroke;
+    strokeWidth?: number;
+  };
+  packing?: false | BeeswarmPackingOptions;
+  guides?: false | CartesianGuideOptions;
+} & (
+  | { x: RugMeasureChannel; y: StripCategoryChannel }
+  | { x: StripCategoryChannel; y: RugMeasureChannel }
+);
+
+export interface RaincloudDensityOptions extends GradientPlotDensityOptions {
+  width?: DensityPlacementWidth;
+  area?: ViolinPlotAreaOptions;
+}
+export interface RaincloudBoxSummaryOptions {
+  type?: "box";
+  whisker?: BoxPlotWhisker;
+  width?: { band?: number };
+  outliers?: boolean;
+  box?: BoxPlotOptions["box"];
+  median?: BoxPlotOptions["median"];
+  outlier?: BoxPlotOptions["outlier"];
+}
+export interface RaincloudIntervalSummaryOptions {
+  type: "interval";
+  center?: IntervalCenter;
+  extent?: IntervalExtent;
+  method?: ConfidenceIntervalMethod;
+  level?: number;
+  point?: CreateScatterPlotOptions["point"];
+  errorBar?: IntervalPlotErrorBarOptions;
+}
+export type RaincloudSummaryOptions =
+  | RaincloudBoxSummaryOptions
+  | RaincloudIntervalSummaryOptions;
+export interface RaincloudPointAppearanceOptions {
+  size?: BasicSizeChannel;
+  shape?: BasicShapeChannel;
+  point?: CreateScatterPlotOptions["point"];
+}
+export type RaincloudPointsOptions =
+  | (RaincloudPointAppearanceOptions & {
+      type: "strip";
+      jitter?: false | StripBandJitterOptions;
+      packing?: never;
+    })
+  | (RaincloudPointAppearanceOptions & {
+      type?: "beeswarm";
+      packing?: false | BeeswarmPackingOptions;
+      jitter?: never;
+    });
+export type RaincloudCategoryChannel = string | {
+  field: string;
+  fieldType?: "nominal" | "ordinal";
+  scale?: NonPointBandPositionScaleOptions;
+};
+export type RaincloudValueChannel = string | {
+  field: string;
+  fieldType?: "quantitative";
+  scale?: NonPointQuantitativePositionScaleOptions;
+};
+export interface CreateRaincloudPlotOptions {
+  id?: string;
+  data?: string;
+  coordinate?: string;
+  category: RaincloudCategoryChannel;
+  value: RaincloudValueChannel;
+  orientation?: "vertical" | "horizontal";
+  side?: "before" | "after";
+  density?: false | RaincloudDensityOptions;
+  summary?: false | RaincloudSummaryOptions;
+  points?: false | RaincloudPointsOptions;
+  color?: LineCategoricalColorChannel;
+  guides?: false | CartesianCategoricalGuideOptions;
+}
+export interface EditRaincloudPlotOptions {
+  target?: string;
+  data?: string;
+  category?: RaincloudCategoryChannel;
+  value?: RaincloudValueChannel;
+  orientation?: "vertical" | "horizontal";
+  side?: "before" | "after";
+  density?: false | RaincloudDensityOptions;
+  summary?: false | RaincloudSummaryOptions;
+  points?: false | RaincloudPointsOptions;
+  color?: false | LineCategoricalColorChannel;
+}
+
+export type GroupEncodingOptions = { target?: string; fieldType?: "nominal" } & (
+  | { field: string; fields?: never }
+  | { fields: readonly [string, ...string[]]; field?: never }
+);
+
+export interface SeriesLayoutOptions { target?: string; mode: ColorLayout; }
+export interface BasicSeriesLayoutOptions { target?: string; mode: Exclude<ColorLayout, "center">; }
+export type AreaPlotIndependentChannel = string | ({ field: string } & (
+  | { fieldType?: "quantitative"; scale?: NonPointQuantitativePositionScaleOptions }
+  | { fieldType: "temporal"; temporalUnit?: TemporalInputUnit; scale?: NonPointTemporalPositionScaleOptions }
+));
+export type AreaPlotMeasureChannel = string | { field: string; scale?: NonPointQuantitativePositionScaleOptions }
+  | ({ scale?: NonPointQuantitativePositionScaleOptions } & (
+    | { lower: string; upper: string | { datum: number } }
+    | { lower: { datum: number }; upper: string }
+  ));
+export type CreateAreaPlotOptions = {
+  id?: string; data?: string; coordinate?: string;
+  groupBy?: string | readonly [string, ...string[]];
+  layout?: Exclude<ColorLayout, "group">; missing?: "error" | "break";
+  color?: string | { field: string; fieldType?: "nominal" | "ordinal"; scale?: NonPointCategoricalColorScaleOptions; palette?: Palette };
+  area?: { fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation };
+  guides?: false | DensityPlotGuideOptions;
+} & (
+  | { valueChannel?: "y"; x: AreaPlotIndependentChannel; y: Exclude<AreaPlotMeasureChannel, { lower: unknown }>; baseline?: number }
+  | { valueChannel?: "y"; x: AreaPlotIndependentChannel; y: Extract<AreaPlotMeasureChannel, { lower: unknown }>; baseline?: never }
+  | { valueChannel: "x"; x: Exclude<AreaPlotMeasureChannel, { lower: unknown }>; y: AreaPlotIndependentChannel; baseline?: number }
+  | { valueChannel: "x"; x: Extract<AreaPlotMeasureChannel, { lower: unknown }>; y: AreaPlotIndependentChannel; baseline?: never }
+);
 
 export interface CreateLinePlotOptions {
   id?: string;
@@ -1857,7 +2781,7 @@ export interface CreateLinePlotOptions {
   x: LineXPositionChannel;
   y: LineYPositionChannel;
   color?: LineCategoricalColorChannel;
-  groupBy?: string;
+  groupBy?: string | readonly [string, ...string[]];
   strokeDash?: BasicStrokeDashChannel;
   line?: {
     strokeWidth?: number;
@@ -1866,7 +2790,7 @@ export interface CreateLinePlotOptions {
     opacity?: number;
     closed?: false;
   };
-  guides?: false | CreateGuidesOptions;
+  guides?: false | CartesianPathGuideOptions;
 }
 
 type BasicHistogramEncoding =
@@ -1889,10 +2813,10 @@ export interface CreateBarPlotOptions {
   bar?: {
     fill?: string;
     opacity?: number;
-    stroke?: string;
+    stroke?: FilledMarkStroke;
     strokeWidth?: number;
   };
-  guides?: false | CreateGuidesOptions;
+  guides?: false | CartesianGuideOptions;
 }
 
 export type CreateHistogramOptions = BasicHistogramEncoding & {
@@ -1904,11 +2828,105 @@ export type CreateHistogramOptions = BasicHistogramEncoding & {
   bar?: {
     fill?: string;
     opacity?: number;
-    stroke?: string;
+    stroke?: FilledMarkStroke;
     strokeWidth?: number;
   };
-  guides?: false | CreateGuidesOptions;
+  guides?: false | CartesianCategoricalGuideOptions;
 };
+
+export type HorizonPlotGuideOptions = {
+  axes?: false | (Omit<CartesianAxesOptions, "y"> & { y?: false });
+  grid?: false | (Pick<CartesianGridOptions, "vertical"> & { horizontal?: false });
+  legend?: false;
+};
+export interface CreateHorizonPlotOptions {
+  id?: string;
+  data?: string;
+  coordinate?: string;
+  x: string | HorizonXEncoding;
+  y: string | HorizonYEncoding;
+  groupBy?: string | false;
+  bands?: number;
+  baseline?: number;
+  extent?: "auto" | number;
+  resolve?: HorizonResolution;
+  missing?: HorizonMissingPolicy;
+  overflow?: HorizonOverflowPolicy;
+  palette?: HorizonPaletteOptions;
+  area?: { opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation };
+  guides?: false | HorizonPlotGuideOptions;
+}
+
+export type DensityPlotLegendOptions = Omit<PieLegendOptions, "order"> & { order?: LegendValueOrder };
+export type DensityPlotGuideOptions = Omit<CartesianCategoricalGuideOptions, "legend"> & {
+  legend?: false | DensityPlotLegendOptions;
+};
+export interface CreateDensityPlotOptions {
+  id?: string;
+  data?: string;
+  coordinate?: string;
+  field: string;
+  groupBy?: string | false;
+  bandwidth?: "auto" | number;
+  extent?: "auto" | readonly [number, number];
+  steps?: number;
+  kernel?: DensityKernel;
+  normalization?: DensityNormalization;
+  as?: readonly [string, string];
+  densityChannel?: "x" | "y";
+  valueScale?: NonPointQuantitativePositionScaleOptions;
+  densityScale?: NonPointZeroSupportingPositionScaleOptions;
+  color?: string | {
+    field: string;
+    fieldType?: "nominal" | "ordinal";
+    scale?: NonPointCategoricalColorScaleOptions;
+    palette?: Palette;
+    layout?: "overlay";
+  };
+  area?: { fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation };
+  guides?: false | DensityPlotGuideOptions;
+}
+
+export type PieCategory = string | {
+  field: string;
+  fieldType?: "nominal" | "ordinal";
+  scale?: Pick<ThetaScaleOptions, "id" | "domain" | "range" | "reverse"> & { type?: "band" };
+};
+export type PieColor = string | {
+  field: string;
+  fieldType?: "nominal" | "ordinal";
+  scale?: NonPointCategoricalColorScaleOptions;
+  palette?: Palette;
+};
+export type PieLegendOptions = Omit<
+  FilledMarkLegendOptions,
+  "count" | "gradient" | "channels" | "order" | "labels"
+> & {
+  channels?: readonly ["color"];
+  order?: LegendValueOrder | { channel: "theta"; values?: never };
+  labels?: CategoricalLegendTextOptions;
+};
+export type CreatePiePlotOptions = {
+  id?: string;
+  data?: string;
+  coordinate?: string;
+  category: PieCategory;
+  color?: false | PieColor;
+  arc?: { innerRadius?: number; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number };
+  guides?: false | { axes?: false; grid?: false; legend?: false | PieLegendOptions };
+} & ({ value?: never; aggregate?: "count" } | { value: string; aggregate: "sum" });
+
+export type MeasuredRadialGuideOptions = {
+  axes?: false | CategoricalPolarAxesOptions;
+  grid?: false | CategoricalPolarGridOptions;
+  legend?: false | PieLegendOptions;
+};
+export type CreateRosePlotOptions = Omit<CreatePiePlotOptions, "guides" | "arc" | "aggregate" | "value"> & {
+  radiusScale?: MeasuredRadiusScaleOptions;
+  arc?: { innerRadius?: number; padAngle?: 0; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number };
+  guides?: false | MeasuredRadialGuideOptions;
+} & ({ value?: never; aggregate?: "count" } | { value: string; aggregate: "sum" });
+export type CreateRadialBarPlotOptions = CreateRosePlotOptions;
 
 export interface HeatmapBaseOptions {
   id?: string;
@@ -1974,6 +2992,7 @@ export type ErrorBandPositionChannel = { field?: string } & (
     }
   | {
       fieldType: "temporal";
+      temporalUnit?: TemporalInputUnit;
       scale?: NonPointTemporalPositionScaleOptions;
     }
 );
@@ -1982,6 +3001,7 @@ export interface ErrorBandStatisticalIntervalChannel {
   field?: string;
   center?: IntervalCenter;
   extent?: IntervalExtent;
+  method?: ConfidenceIntervalMethod;
   level?: number;
   scale?: NonPointQuantitativePositionScaleOptions;
 }
@@ -2019,12 +3039,17 @@ export interface ErrorBandOptions {
 
 export interface EditErrorBandOptions {
   target?: string;
-  fill?: string;
+  data?: string;
+  x?: ErrorBandPositionChannel | ErrorBandIntervalChannel;
+  y?: ErrorBandPositionChannel | ErrorBandIntervalChannel;
+  groupBy?: string | false;
+  fill?: string | false;
   opacity?: number;
   curve?: CurveInterpolation;
   statistics?: {
     center?: IntervalCenter;
     extent?: IntervalExtent;
+    method?: ConfidenceIntervalMethod;
     level?: number;
   };
   boundaries?: false | {
@@ -2056,6 +3081,8 @@ export interface EditDensityOptions {
   steps?: number;
   kernel?: DensityKernel;
   normalization?: DensityNormalization;
+  densityChannel?: "x" | "y";
+  valueScale?: NonPointQuantitativePositionScaleOptions;
   placement?: DensityPlacement;
 }
 
@@ -2078,11 +3105,13 @@ export interface OffsetEncodingOptions {
 export interface XOffsetEncodingOptions extends OffsetEncodingOptions {}
 export interface YOffsetEncodingOptions extends OffsetEncodingOptions {}
 
-export type TextFormat = "auto" | `.${number}f`;
+export type TextFormat = ValueFormat;
 
 export interface TextMarkOptions {
   id?: string;
   data?: string;
+  /** Explicit source mark. Mutually exclusive with data; may be incomplete. */
+  source?: string;
   text?: unknown;
   fill?: string;
   opacity?: number;
@@ -2091,12 +3120,12 @@ export interface TextMarkOptions {
   fontWeight?: string | number;
   align?: "left" | "right" | "center" | "start" | "end";
   baseline?: "top" | "hanging" | "middle" | "alphabetic" | "ideographic" | "bottom";
-  rotation?: number;
+  rotation?: RotationInput;
   dx?: number;
   dy?: number;
 }
 
-export interface EditTextMarkOptions extends Omit<TextMarkOptions, "id" | "data" | "text"> {
+export interface EditTextMarkOptions extends Omit<TextMarkOptions, "id" | "data" | "source" | "text"> {
   target?: string;
 }
 
@@ -2140,9 +3169,56 @@ export type TextEncodingOptions = {
   target?: string;
   format?: TextFormat;
 } & (
-  | { field: string; value?: never }
-  | { field?: never; value: unknown }
+  | { field: string; value?: never; content?: never; normalizeBy?: never }
+  | { field?: never; value: unknown; content?: never; normalizeBy?: never }
+  | { field?: never; value?: never; content: "category" | "value"; normalizeBy?: never }
+  | { field?: never; value?: never; content: "share"; normalizeBy?: "source" | "category" }
 );
+
+/** Attached final-item labels; lower text actions own subsequent edits. */
+export type CreateMarkLabelsOptions = Omit<TextMarkOptions, "data" | "text"> & {
+  layout?: false | Omit<LabelLayoutOptions, "target">;
+} & (
+  | (TextEncodingOptions extends infer Options
+      ? Options extends TextEncodingOptions ? Omit<Options, "target"> : never
+      : never)
+  | { field?: never; value?: never; content?: never; normalizeBy?: never; format?: TextFormat }
+);
+
+type AnnotationBaseOptions = Omit<TextMarkOptions, "id" | "data" | "source" | "text"> & {
+  id?: string;
+  text: unknown;
+  format?: TextFormat;
+  layout?: false | Omit<LabelLayoutOptions, "target">;
+};
+
+type AnnotationAnchor =
+  | {
+      x?: never;
+      y?: never;
+      space?: never;
+      source?: string;
+      data?: never;
+      coordinate?: never;
+    }
+  | {
+      x: unknown;
+      y: unknown;
+      space?: "data";
+      source?: string;
+      data?: never;
+      coordinate?: never;
+    }
+  | {
+      x: number;
+      y: number;
+      space: "plot";
+      source?: never;
+      data?: string;
+      coordinate?: string;
+    };
+
+export type CreateAnnotationOptions = AnnotationBaseOptions & AnnotationAnchor;
 
 export type BarWidthOptions = { target?: string } & (
   | { band?: number; pixels?: never }
@@ -2173,7 +3249,7 @@ export type StrokeDashEncodingOptions =
     };
 
 export type NonPointContinuousColorScaleOptions = ScaleFields<
-  "id" | "interpolate" | "clamp" | "reverse"
+  "id" | "interpolate" | "midpoint" | "clamp" | "reverse"
 > & {
   type?: "sequential";
   domain?: "auto" | readonly [unknown, unknown];
@@ -2237,8 +3313,9 @@ export type ColorEncodingOptions =
       field: string;
       target?: string;
       fieldType: "temporal";
+      temporalUnit?: TemporalInputUnit;
       aggregate?: never;
-      scale?: ContinuousColorScaleOptions;
+      scale?: Omit<ContinuousColorScaleOptions, "midpoint"> & { midpoint?: "auto" };
       palette?: Palette;
       layout?: never;
     };
@@ -2253,7 +3330,7 @@ export type OpacityScaleOptions = ScaleFields<
 };
 
 export type OpacityEncodingOptions =
-  | { value: number; field?: never; target?: string }
+  | { value: number; field?: never; target?: string; fieldType?: never; scale?: never }
   | {
       field: string;
       value?: never;
@@ -2263,6 +3340,25 @@ export type OpacityEncodingOptions =
     };
 
 export type StrokeWidthScaleOptions = NonPointQuantitativePositionScaleOptions;
+
+export interface RuleStyleOptions {
+  stroke?: string;
+  strokeWidth?: number;
+  strokeDash?: DashStyle | DashPattern;
+  opacity?: number;
+}
+
+type ReferenceAxis<Value> = { x: Value; y?: never } | { y: Value; x?: never };
+type ReferenceBinding<DataValue, PlotValue> =
+  | ({ space?: "data"; source?: string; temporalUnit?: TemporalInputUnit;
+       data?: never; coordinate?: never } & ReferenceAxis<DataValue>)
+  | ({ space: "plot"; data?: string; coordinate?: string;
+       source?: never; temporalUnit?: never } & ReferenceAxis<PlotValue>);
+
+export type CreateReferenceLineOptions = { id?: string } & RuleStyleOptions &
+  ReferenceBinding<unknown, number>;
+export type CreateReferenceBandOptions = Omit<RectMarkOptions, "data"> &
+  ReferenceBinding<readonly [unknown, unknown], readonly [number, number]>;
 
 export type StrokeWidthEncodingOptions =
   | {
@@ -2327,6 +3423,8 @@ type RegressionParameterOptions =
       method?: "linear";
       degree?: never;
       span?: never;
+      confidenceMethod?: ConfidenceIntervalMethod;
+      level?: number;
       confidence?: number;
       interval?: RegressionInterval;
     }
@@ -2334,6 +3432,8 @@ type RegressionParameterOptions =
       method: "polynomial";
       degree?: number;
       span?: never;
+      confidenceMethod?: ConfidenceIntervalMethod;
+      level?: number;
       confidence?: number;
       interval?: RegressionInterval;
     }
@@ -2341,6 +3441,8 @@ type RegressionParameterOptions =
       method: "loess";
       degree?: never;
       span?: number;
+      confidenceMethod?: never;
+      level?: never;
       confidence?: never;
       interval?: never;
     };
@@ -2357,7 +3459,7 @@ type RegressionCommonOptions = {
   target?: string;
   x?: string;
   y?: string;
-  groupBy?: string;
+  groupBy?: string | false;
   line?: { strokeWidth?: number; curve?: CurveInterpolation };
 };
 
@@ -2382,6 +3484,8 @@ export interface EditRegressionOptions {
   method?: RegressionMethod;
   degree?: number;
   span?: number;
+  confidenceMethod?: ConfidenceIntervalMethod;
+  level?: number;
   confidence?: number;
   interval?: RegressionInterval;
   band?: false | RegressionBandOptions;
@@ -2402,6 +3506,7 @@ export interface RemoveGridOptions {
 
 export interface RemoveLegendOptions {
   target?: string;
+  /** Remove selected content, including part of a combined categorical legend; omission removes every owned block. */
   channels?: readonly ("color" | "strokeDash" | "strokeWidth" | "shape" | "size" | "opacity")[];
 }
 
@@ -2410,11 +3515,17 @@ export interface RemoveMarkOptions {
 }
 
 export interface LegendTextOptions {
+  /** Gap after the occupied sample slot: categorical color/interval default 8; series 10; size/width 12.
+   * Categorical slots include all recipe strokes and mapped shape extents.
+   * Size retains a minimum 32px slot. Width includes the widest line stroke.
+   * Opacity: visible circle-stroke gap, default 12 (inline 8). */
   offset?: number;
   color?: string;
   fontSize?: number;
   fontFamily?: string;
   fontWeight?: string | number;
+  /** Continuous numeric/temporal label format. Categorical legends accept auto only. */
+  format?: ValueFormat;
 }
 
 export interface LegendTitleStyleOptions {
@@ -2444,6 +3555,8 @@ export type LegendSymbolLayer =
 
 export type LegendSymbolRecipe =
   | "auto"
+  /** Sampled opacity uses a single point recipe; radius defaults to 7 and must be positive. */
+  | { type?: "point"; radius?: number; fill?: string; stroke?: string; strokeWidth?: number }
   | { length?: number; lineWidth?: number }
   | { width?: number; height?: number; stroke?: string; strokeWidth?: number }
   | { layers: readonly LegendSymbolLayer[] };
@@ -2455,13 +3568,27 @@ export interface LegendBorderOptions {
   background?: string;
 }
 
+type LegendValueOrder = "scale" | { values: readonly CategoryValue[]; channel?: never };
+type CartesianLegendOrder = LegendValueOrder | { channel: "x" | "y"; values?: never };
+export type LegendOrder = LegendValueOrder |
+  { channel: "x" | "y" | "theta"; values?: never };
+
 export interface LegendOptions {
+  /** Categorical, interval, size, or stroke-width layout. Defaults to edge; legacy-bottom is categorical and requires bottom position. */
+  layout?: "edge" | "legacy-bottom";
+  /** Categorical item order; preserves the appearance scale's assignments. */
+  order?: LegendOrder;
   target?: string;
+  /** Exact requested content; omission infers encoded point color/shape/size. Explicit subsets include size only when listed. */
   channels?: readonly ("color" | "strokeDash" | "strokeWidth" | "shape" | "size" | "opacity")[];
   position?: "right" | "left" | "bottom" | "top";
+  /** Single top/bottom edge: align complete occupied bounds, including border strokes, to the plot. Side positions require center. */
   align?: "left" | "center" | "right";
+  /** Categorical sides require vertical (the default); horizontal edges default to horizontal. */
   direction?: "horizontal" | "vertical";
+  /** Categorical sides allow omission or 1; multiple columns require a horizontal edge. */
   columns?: number;
+  /** Single top/bottom edge: gap from the plot to the nearest occupied legend edge. */
   offset?: number;
   titlePosition?: "top" | "left";
   title?: string;
@@ -2469,28 +3596,36 @@ export interface LegendOptions {
   gradient?: { length?: number; thickness?: number };
   symbol?: LegendSymbolRecipe;
   labels?: LegendTextOptions;
+  /** New categorical+size blocks share typography on every edge; retained standalone size styles remain independent. */
   titleStyle?: LegendTitleStyleOptions;
   itemGap?: number;
   border?: boolean | LegendBorderOptions;
 }
 
 export interface EditLegendOptions
-  extends Omit<LegendOptions, "channels" | "title"> {
+  extends Omit<LegendOptions, "title"> {
+  /** Exact final content set for the whole target; omission preserves content. */
+  channels?: LegendOptions["channels"];
   title?: string | "auto" | false;
 }
 
 export interface EditLegendLayoutOptions {
   target?: string;
+  layout?: "edge" | "legacy-bottom";
   position?: "right" | "left" | "bottom" | "top";
+  /** Single top/bottom edge: align complete occupied bounds, including border strokes, to the plot. Side positions require center. */
   align?: "left" | "center" | "right";
+  /** Categorical sides require vertical (the default); horizontal edges default to horizontal. */
   direction?: "horizontal" | "vertical";
+  /** Categorical sides allow omission or 1; multiple columns require a horizontal edge. */
   columns?: number;
+  /** Single top/bottom edge: gap from the plot to the nearest occupied legend edge. */
   offset?: number;
   titlePosition?: "top" | "left";
   itemGap?: number;
 }
 
-export interface EditLegendLabelsOptions extends LegendTitleStyleOptions {
+export interface EditLegendLabelsOptions extends LegendTextOptions {
   target?: string;
 }
 
@@ -2556,11 +3691,11 @@ export type CategoryOrder =
     };
 export type OrderCategoriesOptions = {
   target?: string;
-  channel: "x" | "y";
+  channel: "x" | "y" | "theta";
 } & CategoryOrder;
 export interface RemoveCategoryOrderOptions {
   target?: string;
-  channel: "x" | "y";
+  channel: "x" | "y" | "theta";
 }
 
 export interface TitleOptions {
@@ -2599,17 +3734,28 @@ export class ChartProgram {
 
   createCanvas(options?: CanvasOptions): ChartProgram;
   editCanvas(options: CanvasOptions): ChartProgram;
+  fitCanvas(options?: FitCanvasOptions): ChartProgram;
+  applyTheme(options: ApplyThemeOptions): ChartProgram;
+  removeTheme(): ChartProgram;
   createData(options: { id?: string; values: readonly unknown[] }): ChartProgram;
+  bindMarkData(options: BindMarkDataOptions): ChartProgram;
   filterData(options: FilterDataOptions): ChartProgram;
   filterMarks(options: FilterMarksOptions): ChartProgram;
+  removeMarkFilter(options?: RemoveMarkFilterOptions): ChartProgram;
   selectMarks(options: SelectMarksOptions): ChartProgram;
   editMarkSelection(options: EditMarkSelectionOptions): ChartProgram;
   removeMarkHighlight(options?: RemoveMarkSelectionOptions): ChartProgram;
   removeMarkSelection(options?: RemoveMarkSelectionOptions): ChartProgram;
   highlightMarks(options: HighlightMarksOptions): ChartProgram;
   createDensityData(options: DensityDataOptions): ChartProgram;
+  createSummaryData(options: SummaryDataOptions): ChartProgram;
+  createBinData(options: BinDataOptions): ChartProgram;
+  createFoldData(options: FoldDataOptions): ChartProgram;
+  createComputedData(options: ComputedDataOptions): ChartProgram;
+  createStackData(options: StackDataOptions): ChartProgram;
   createRegressionData(options: RegressionDataOptions): ChartProgram;
   createIntervalData(options: IntervalDataOptions): ChartProgram;
+  createECDFData(options: ECDFDataOptions): ChartProgram;
   createTimeUnitData(options: TimeUnitDataOptions): ChartProgram;
   createWindowData(options: WindowDataOptions): ChartProgram;
   createBin2DData(options: Bin2DDataOptions): ChartProgram;
@@ -2621,7 +3767,7 @@ export class ChartProgram {
     shape?: PointShape;
     fill?: string;
     opacity?: number;
-    stroke?: string;
+    stroke?: FilledMarkStroke;
     strokeWidth?: number;
   }): ChartProgram;
   editPointMark(options: {
@@ -2629,7 +3775,7 @@ export class ChartProgram {
     shape?: PointShape;
     fill?: string;
     opacity?: number;
-    stroke?: string | false;
+    stroke?: FilledMarkStroke;
     strokeWidth?: number;
   }): ChartProgram;
   createTickMark(options?: {
@@ -2649,6 +3795,8 @@ export class ChartProgram {
   }): ChartProgram;
   jitterPoints(options: JitterPointsOptions): ChartProgram;
   removeJitter(options?: RemoveJitterOptions): ChartProgram;
+  packPoints(options: PackPointsOptions): ChartProgram;
+  removePointPacking(options?: RemovePointPackingOptions): ChartProgram;
   createLineMark(options?: {
     id?: string;
     data?: string;
@@ -2671,14 +3819,14 @@ export class ChartProgram {
     data?: string;
     fill?: string;
     opacity?: number;
-    stroke?: string;
+    stroke?: FilledMarkStroke;
     strokeWidth?: number;
   }): ChartProgram;
   editBarMark(options: {
     target?: string;
     fill?: string;
     opacity?: number;
-    stroke?: string | false;
+    stroke?: FilledMarkStroke;
     strokeWidth?: number;
   }): ChartProgram;
   createAreaMark(options?: {
@@ -2689,6 +3837,7 @@ export class ChartProgram {
     stroke?: string;
     strokeWidth?: number;
     curve?: CurveInterpolation;
+    missing?: "error" | "break";
   }): ChartProgram;
   createArcMark(options?: {
     id?: string;
@@ -2711,8 +3860,13 @@ export class ChartProgram {
   }): ChartProgram;
   createRectMark(options?: RectMarkOptions): ChartProgram;
   editRectMark(options: EditRectMarkOptions): ChartProgram;
-  createRuleMark(options?: { id?: string; data?: string }): ChartProgram;
+  createRuleMark(options?: { id?: string; data?: string } & RuleStyleOptions): ChartProgram;
+  editRuleMark(options: { target?: string } & RuleStyleOptions): ChartProgram;
   createTextMark(options?: TextMarkOptions): ChartProgram;
+  createMarkLabels(options?: CreateMarkLabelsOptions): ChartProgram;
+  createAnnotation(options: CreateAnnotationOptions): ChartProgram;
+  createReferenceLine(options: CreateReferenceLineOptions): ChartProgram;
+  createReferenceBand(options: CreateReferenceBandOptions): ChartProgram;
   editTextMark(options: EditTextMarkOptions): ChartProgram;
   layoutLabels(options?: LabelLayoutOptions): ChartProgram;
   removeLabelLayout(options?: RemoveLabelLayoutOptions): ChartProgram;
@@ -2723,10 +3877,11 @@ export class ChartProgram {
     stroke?: string | false;
     strokeWidth?: number;
     curve?: CurveInterpolation;
+    missing?: "error" | "break";
   }): ChartProgram;
 
-  encodeX(options: PositionEncodingOptions | RulePositionEncodingOptions): ChartProgram;
-  encodeY(options: YPositionEncodingOptions | RulePositionEncodingOptions): ChartProgram;
+  encodeX(options: PositionEncodingOptions | DatumPositionEncodingOptions): ChartProgram;
+  encodeY(options: YPositionEncodingOptions | DatumPositionEncodingOptions): ChartProgram;
   encodeTheta(options: ThetaEncodingOptions): ChartProgram;
   encodeR(options: RadialEncodingOptions): ChartProgram;
   encodeX2(options: SecondaryPositionEncodingOptions): ChartProgram;
@@ -2745,23 +3900,10 @@ export class ChartProgram {
   encodeXOffset(options: XOffsetEncodingOptions): ChartProgram;
   encodeYOffset(options: YOffsetEncodingOptions): ChartProgram;
   encodeY2(options: SecondaryPositionEncodingOptions): ChartProgram;
-  encodeYRange(options: {
-    lower: string;
-    upper: string;
-    target?: string;
-    fieldType?: "quantitative";
-    coordinate?: string;
-    scale?: NonPointQuantitativePositionScaleOptions;
-  }): ChartProgram;
-  encodeXRange(options: {
-    lower: string;
-    upper: string;
-    target?: string;
-    fieldType?: "quantitative";
-    coordinate?: string;
-    scale?: NonPointQuantitativePositionScaleOptions;
-  }): ChartProgram;
-  encodeGroup(options: { field: string; target?: string; fieldType?: "nominal" }): ChartProgram;
+  encodeYRange(options: RangePositionEncodingOptions): ChartProgram;
+  encodeXRange(options: RangePositionEncodingOptions): ChartProgram;
+  encodeGroup(options: GroupEncodingOptions): ChartProgram;
+  layoutSeries(options: SeriesLayoutOptions): ChartProgram;
   encodePathOrder(options: PathOrderEncodingOptions): ChartProgram;
   orderCategories(options: OrderCategoriesOptions): ChartProgram;
   encodeParallelCoordinates(options: ParallelCoordinatesEncodingOptions): ChartProgram;
@@ -2796,18 +3938,54 @@ export class ChartProgram {
   createGradientPlot(options?: GradientPlotOptions): ChartProgram;
   editGradientPlot(options: EditGradientPlotOptions): ChartProgram;
   createViolinPlot(options: ViolinPlotOptions): ChartProgram;
+  editViolinPlot(options: EditViolinPlotOptions): ChartProgram;
   createScatterPlot(options: CreateScatterPlotOptions): ChartProgram;
+  createIntervalPlot(options: CreateIntervalPlotOptions): ChartProgram;
+  createRegressionPlot(options: CreateRegressionPlotOptions): ChartProgram;
+  createDotPlot(options: CreateDotPlotOptions): ChartProgram;
+  createLollipopPlot(options: CreateLollipopPlotOptions): ChartProgram;
+  createDumbbellPlot(options: CreateDumbbellPlotOptions): ChartProgram;
+  editEndpointPlot(options: EditEndpointPlotOptions): ChartProgram;
+  createECDFPlot(options: CreateECDFPlotOptions): ChartProgram;
+  editECDFPlot(options: EditECDFPlotOptions): ChartProgram;
   createLinePlot(options: CreateLinePlotOptions): ChartProgram;
+  createPolarScatterPlot(options: CreatePolarScatterPlotOptions): ChartProgram;
+  createPolarLinePlot(options: CreatePolarLinePlotOptions): ChartProgram;
+  createRadarPlot(options: CreateRadarPlotOptions): ChartProgram;
+  createRugPlot(options: CreateRugPlotOptions): ChartProgram;
+  createStripPlot(options: CreateStripPlotOptions): ChartProgram;
+  createBeeswarmPlot(options: CreateBeeswarmPlotOptions): ChartProgram;
+  createRaincloudPlot(options: CreateRaincloudPlotOptions): ChartProgram;
+  editRaincloudPlot(options: EditRaincloudPlotOptions): ChartProgram;
+  createAreaPlot(options: CreateAreaPlotOptions): ChartProgram;
   createBarPlot(options: CreateBarPlotOptions): ChartProgram;
   createHistogram(options: CreateHistogramOptions): ChartProgram;
+  createPiePlot(options: CreatePiePlotOptions): ChartProgram;
+  createRosePlot(options: CreateRosePlotOptions): ChartProgram;
+  createRadialBarPlot(options: CreateRadialBarPlotOptions): ChartProgram;
+  createDensityPlot(options: CreateDensityPlotOptions): ChartProgram;
+  createHorizonPlot(options: CreateHorizonPlotOptions): ChartProgram;
   createHeatmap(options: CreateHeatmapOptions): ChartProgram;
   createParallelCoordinates(options: CreateParallelCoordinatesOptions): ChartProgram;
   removeMark(options?: RemoveMarkOptions): ChartProgram;
+  createParallelAxes(options?: ParallelAxesOptions): ChartProgram;
+  createParallelAxis(options: CreateParallelAxisOptions): ChartProgram;
+  editParallelAxis(options: EditParallelAxisOptions): ChartProgram;
+  removeParallelAxis(options: RemoveParallelAxisOptions): ChartProgram;
+  removeParallelAxes(options?: ParallelAxesOptions): ChartProgram;
   createAxes(options?: CreateAxesOptions): ChartProgram;
   createXAxis(options?: CompleteAxisOptions<XAxisPosition>): ChartProgram;
   createYAxis(options?: CompleteAxisOptions<YAxisPosition>): ChartProgram;
   createThetaAxis(options?: CompletePolarAxisOptions): ChartProgram;
   createRadialAxis(options?: CompleteRadialAxisOptions): ChartProgram;
+  createThetaAxisLine(options?: CreateThetaAxisLineOptions): ChartProgram;
+  createRadialAxisLine(options?: CreateRadialAxisLineOptions): ChartProgram;
+  createThetaAxisTicks(options?: CreateThetaAxisTicksOptions): ChartProgram;
+  createRadialAxisTicks(options?: CreateRadialAxisTicksOptions): ChartProgram;
+  createThetaAxisLabels(options?: CreateThetaAxisLabelsOptions): ChartProgram;
+  createRadialAxisLabels(options?: CreateRadialAxisLabelsOptions): ChartProgram;
+  createThetaAxisTitle(options?: CreateThetaAxisTitleOptions): ChartProgram;
+  createRadialAxisTitle(options?: CreateRadialAxisTitleOptions): ChartProgram;
   editThetaAxisLine(options?: AxisLineStyleOptions): ChartProgram;
   editRadialAxisLine(options?: AxisLineStyleOptions): ChartProgram;
   editThetaAxisTicks(options?: PolarTickOptions): ChartProgram;
@@ -2855,6 +4033,7 @@ export class ChartProgram {
   editRadialGrid(options: EditPolarGridOptions): ChartProgram;
   editGrid(options: EditGridDirectionsOptions): ChartProgram;
   removeGrid(options?: RemoveGridOptions): ChartProgram;
+  /** Combined categorical and size legends support all four edges with layout "edge". */
   createLegend(options?: LegendOptions): ChartProgram;
   editLegend(options: EditLegendOptions): ChartProgram;
   editLegendLayout(options: EditLegendLayoutOptions): ChartProgram;
@@ -2890,7 +4069,13 @@ export class ChartProgram {
 
   editCompositionLayout(options: EditCompositionLayoutOptions): ChartProgram;
   replaceCompositionChild(options: ReplaceCompositionChildOptions): ChartProgram;
+  insertCompositionChild(options: InsertCompositionChildOptions): ChartProgram;
+  removeCompositionChild(options: RemoveCompositionChildOptions): ChartProgram;
+  reorderCompositionChildren(options: ReorderCompositionChildrenOptions): ChartProgram;
   facet(options: FacetOptions): ChartProgram;
+  facetGrid(options: FacetGridOptions): ChartProgram;
+  repeatCharts(options: RepeatChartsOptions): ChartProgram;
+  editFacetSource(options: EditFacetSourceOptions): ChartProgram;
   editFacetScales(options: FacetScaleResolutions): ChartProgram;
   editFacetGuides(options: FacetGuideOptions): ChartProgram;
   editFacetHeaders(options: EditFacetHeadersOptions): ChartProgram;

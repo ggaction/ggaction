@@ -16,17 +16,18 @@ export function resolveEligibleLayer(program, {
   target,
   predicate,
   label,
+  targetOption = "target",
   current = program.context.currentMark
 }) {
   const candidates = program.semanticSpec.layers.filter(predicate);
   if (target !== undefined) {
     const selected = candidates.find(layer => layer.id === target);
-    if (selected === undefined) throw new Error(`Unknown ${label} target "${target}".`);
+    if (selected === undefined) throw new Error(`Unknown ${label} ${targetOption} "${target}".`);
     return selected;
   }
   const selected = candidates.find(layer => layer.id === current);
   if (selected !== undefined) return selected;
   if (candidates.length === 1) return candidates[0];
   if (candidates.length === 0) throw new Error(`${label} requires an eligible layer.`);
-  throw new Error(`${label} target is ambiguous; provide target.`);
+  throw new Error(`${label} ${targetOption} is ambiguous; provide ${targetOption}.`);
 }

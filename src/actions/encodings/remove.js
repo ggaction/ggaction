@@ -15,9 +15,16 @@ import {
   getSourceDependentMarkSteps
 } from "../../materialization/marks/index.js";
 import { findLayer } from "../../selectors/layers.js";
-import { removeLegendKinds } from "../guides/legends/remove.js";
+import {
+  removeLegendKinds,
+  resolveCategoricalLegendRevision,
+  createCategoricalLegendFromConfig
+} from "../guides/legends/lifecycle.js";
 import { clearMarkGraphic } from "./shared.js";
 import { applyDetachedScaleRematerialization } from "../../materialization/dependencies.js";
+import { findDataset } from "../../selectors/datasets.js";
+import { assertPathGroupCompatible, validatePathGroupAppearance } from "../../materialization/marks/grouping.js";
+import { assertEncodingSelectionCompatibility } from "../../materialization/selection/compatibility.js";
 
 const OPTIONS = Object.freeze(["target", "channel"]);
 const REMOVABLE_CHANNELS = Object.freeze([
@@ -37,10 +44,6 @@ const SPECIALIZED_LEGEND_KIND = Object.freeze({
   opacity: Object.freeze(["opacity"]),
   strokeWidth: Object.freeze(["strokeWidth"])
 });
-const LEGEND_OPTION_KEYS = Object.freeze([
-  "position", "align", "direction", "columns", "offset", "titlePosition",
-  "title", "symbol", "labels", "titleStyle", "itemGap", "border"
-]);
 
 function resolveTarget(program, requested, channel) {
   const candidates = program.semanticSpec.layers.filter(
@@ -78,7 +81,7 @@ function activeCascade(layer, channel) {
     channels.add("y2");
     channels.add("yOffset");
   }
-  if (channel === "color" && layer.mark?.type === "bar") {
+  if (channel === "color" && layer.mark?.type === "bar" && layer.layout === undefined) {
     if (resolveBarColorLayout(layer) === "group") {
       channels.add(resolveBarOffsetChannel(layer));
     }
@@ -86,27 +89,13 @@ function activeCascade(layer, channel) {
   if (
     channel === "group" &&
     layer.mark?.type === "area" &&
+    layer.layout === undefined &&
     layer.encoding?.color?.field !== undefined &&
     layer.encoding.color.field === layer.encoding.group?.field
   ) {
     channels.add("color");
   }
   return [...channels].filter(active => layer.encoding?.[active] !== undefined);
-}
-
-function assertSelectionCompatibility(program, target, channels) {
-  for (const [id, selection] of Object.entries(
-    program.materializationConfigs.selections ?? {}
-  )) {
-    if (
-      selection.target === target &&
-      channels.includes(selection.selector?.channel)
-    ) {
-      throw new Error(
-        `Cannot remove ${selection.selector.channel} encoding while selection "${id}" references that channel.`
-      );
-    }
-  }
 }
 
 function removeChannelConfigs(program, target, channels) {
@@ -183,16 +172,9 @@ function reconcileCategoricalLegend(program, target, channels) {
   if (remaining.length === 0) {
     return removeLegendKinds(program, [kind]);
   }
+  const revision = resolveCategoricalLegendRevision(program, kind, config, remaining);
   const next = removeLegendKinds(program, [kind]);
-  const options = { target, channels: remaining };
-  for (const property of LEGEND_OPTION_KEYS) {
-    if (
-      (property === "columns" && config[property] === undefined) ||
-      (property === "title" && config.inferredTitle)
-    ) continue;
-    options[property] = config[property];
-  }
-  return next.createLegend(options);
+  return createCategoricalLegendFromConfig(next, revision.config, revision.order);
 }
 
 function cleanupLegends(program, target, channels) {
@@ -229,8 +211,30 @@ export const removeEncoding = action(
       );
     }
     const layer = resolveTarget(this, args.target, args.channel);
+    if (args.channel === "group" && layer.layout?.mode !== undefined && layer.layout.mode !== "overlay") throw new Error("Remove active series layout before removing its group.");
+    if (args.channel === "theta" && layer.mark.type === "arc" &&
+      ["count", "sum"].includes(layer.encoding?.radius?.aggregate)) {
+      throw new Error("Remove measured radius before removing its category theta encoding.");
+    }
     const channels = activeCascade(layer, args.channel);
-    assertSelectionCompatibility(this, layer.id, channels);
+    assertEncodingSelectionCompatibility(this, layer.id, channels);
+    for (const kind of ["series", "color"]) {
+      const config = this.guideConfigs.legend?.[kind];
+      const order = this.semanticSpec.guides.legend?.[kind]?.order;
+      if (config?.target === layer.id && channels.includes(order?.channel) &&
+        config.channels.some(channel => !channels.includes(channel))) {
+        throw new Error('Reset linked legend order to "scale" before removing its position encoding.');
+      }
+    }
+    if (["line", "area"].includes(layer.mark?.type)) {
+      const dataset = findDataset(this, layer.data);
+      if (args.channel === "group") {
+        assertPathGroupCompatible(this, layer, dataset, undefined);
+      }
+      const encoding = { ...layer.encoding };
+      for (const channel of channels) delete encoding[channel];
+      validatePathGroupAppearance(this, { ...layer, encoding }, dataset);
+    }
     const removedPositions = channels
       .filter(channel => POSITION_ENCODING_CHANNELS.includes(channel))
       .map(channel => ({

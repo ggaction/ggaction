@@ -51,6 +51,31 @@ test("encodes horizontal and vertical quantitative positions", () => {
   assert.deepEqual(before.semanticSpec.coordinates, []);
 });
 
+test("anchors Point and Tick rows to constant positions without dummy fields", () => {
+  for (const mark of ["createPointMark", "createTickMark"]) {
+    const program = chart()
+      .createCanvas({ width: 240, height: 160, margin: 20 })
+      .createData({ values: [{ value: 1 }, { value: 2 }] })
+      [mark]({ id: "marks" })
+      .encodeX({ target: "marks", field: "value" })
+      .encodeY({
+        target: "marks",
+        datum: 0,
+        scale: { id: "anchor", domain: [0, 1] }
+      });
+    assert.deepEqual(program.semanticSpec.layers[0].encoding.y, {
+      datum: 0,
+      fieldType: "quantitative",
+      scale: "anchor"
+    });
+    assert.equal(program.graphicSpec.objects.marks.items.every(item =>
+      mark === "createPointMark"
+        ? item.properties.y === 140
+        : item.properties.y1 + item.properties.y2 === 280
+    ), true);
+  }
+});
+
 test("records the explicit nested encoding action hierarchy", () => {
   const program = createPointProgram().encodeX({ field: "horsepower" });
   const node = program.trace.children.at(-1);
@@ -182,7 +207,7 @@ test("reuses an existing scale when omitted options are equivalent", () => {
 test("validates position encoding inputs before changing the program", () => {
   const program = createPointProgram();
 
-  assert.throws(() => program.encodeX(), /field must be a non-empty string/i);
+  assert.throws(() => program.encodeX(), /exactly one of field or datum/i);
   assert.throws(() => program.encodeX({ field: "missing" }), /finite number/);
   assert.equal(
     program.encodeX({ field: "horsepower", fieldType: "nominal" })

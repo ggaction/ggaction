@@ -1,8 +1,11 @@
+import { isSourceOwnedText } from "../../../grammar/text.js";
+import { withGuideLayoutValidation } from "../../../materialization/guides/layout.js";
 import { action } from "../../../core/action.js";
 import { isPlainObject } from "../../../core/immutable.js";
 import { validateUserId } from "../../../core/identifiers.js";
 import { validateKeys } from "../../../core/validation.js";
 import { hasCoordinate } from "../../../selectors/index.js";
+import { validateEnabledAxisComponents } from "./components.js";
 
 const TOP_OPTIONS = Object.freeze([
   "scale",
@@ -38,14 +41,15 @@ function validateNested(value, supported, label) {
   validateKeys(value, supported, label);
 }
 
-function validateArgs(args, operation) {
+export function validateAxisArgs(args, operation) {
   validateKeys(args, TOP_OPTIONS, operation);
 
-  if (Object.hasOwn(args, "line")) {
+  validateEnabledAxisComponents(args, operation);
+  if (Object.hasOwn(args, "line") && args.line !== false) {
     validateNested(args.line, LINE_OPTIONS, `${operation}.line`);
   }
 
-  if (Object.hasOwn(args, "ticksAndLabels")) {
+  if (Object.hasOwn(args, "ticksAndLabels") && args.ticksAndLabels !== false) {
     validateNested(
       args.ticksAndLabels,
       TICK_GROUP_OPTIONS,
@@ -53,7 +57,7 @@ function validateArgs(args, operation) {
     );
   }
 
-  if (Object.hasOwn(args, "title")) {
+  if (Object.hasOwn(args, "title") && args.title !== false) {
     validateNested(args.title, TITLE_OPTIONS, `${operation}.title`);
   }
 }
@@ -76,8 +80,8 @@ function makeCreateAxis(channel) {
       op: operation.create,
       description: `Create the complete ${channel}-axis.`
     },
-    function (args = {}) {
-      validateArgs(args, operation.create);
+    withGuideLayoutValidation(function (args = {}) {
+      validateAxisArgs(args, operation.create);
       const shared = {};
       if (Object.hasOwn(args, "scale")) shared.scale = args.scale;
       if (Object.hasOwn(args, "position")) shared.position = args.position;
@@ -89,7 +93,7 @@ function makeCreateAxis(channel) {
         const exists = hasCoordinate(next, coordinate);
         const hasConsumer = next.semanticSpec.layers.some(
           layer =>
-            layer.coordinate === coordinate &&
+            !isSourceOwnedText(layer) && layer.coordinate === coordinate &&
             layer.encoding?.[channel]?.scale === scale
         );
 
@@ -108,17 +112,13 @@ function makeCreateAxis(channel) {
         });
       }
 
-      return next[operation.line]({
-        ...shared,
-        ...(args.line ?? {})
-      })[operation.ticksAndLabels]({
-        ...shared,
-        ...(args.ticksAndLabels ?? {})
-      })[operation.title]({
-        ...shared,
-        ...(args.title ?? {})
-      });
-    }
+      for (const component of ["line", "ticksAndLabels", "title"]) {
+        if (args[component] !== false) {
+          next = next[operation[component]]({ ...shared, ...(args[component] ?? {}) });
+        }
+      }
+      return next;
+    })
   );
 }
 

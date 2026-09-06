@@ -63,7 +63,7 @@ test("validates rule creation without mutating the earlier program", () => {
     /Rule mark id/
   );
   assert.throws(
-    () => program.createRuleMark({ stroke: "red" }),
+    () => program.createRuleMark({ fill: "red" }),
     /Unknown createRuleMark option/
   );
 

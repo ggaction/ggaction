@@ -1,3 +1,4 @@
+import { isSourceOwnedText } from "../grammar/text.js";
 import { POSITION_ENCODING_CHANNELS } from "../core/vocabulary.js";
 import { materializedLegendUsesScale } from "./legends.js";
 import { buildMaterializationPlan } from "./planner.js";
@@ -19,10 +20,12 @@ const GRIDS = Object.freeze([
 
 function usesPositionalScale(program, id) {
   return program.semanticSpec.layers.some(layer =>
-    POSITION_ENCODING_CHANNELS.some(
-      channel => layer.encoding?.[channel]?.scale === id
-    ) || (layer.encoding?.parallel?.dimensions ?? []).some(
-      dimension => dimension.scale === id
+    !isSourceOwnedText(layer) && (
+      POSITION_ENCODING_CHANNELS.some(
+        channel => layer.encoding?.[channel]?.scale === id
+      ) || (layer.encoding?.parallel?.dimensions ?? []).some(
+        dimension => dimension.scale === id
+      )
     )
   );
 }
@@ -50,7 +53,7 @@ export function needsCanvasScaleRematerialization(program, scale) {
     (scale.range === "auto" ||
       usesRadialScale(program, scale.id) ||
       semanticGuideUsesScale(program, scale.id)) &&
-    program.resolvedScales[scale.id] !== undefined &&
+    (program.resolvedScales[scale.id] !== undefined || scale.radialMapping !== undefined) &&
     usesPositionalScale(program, scale.id)
   );
 }

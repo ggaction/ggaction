@@ -19,6 +19,64 @@ test("createDerivedData accepts each documented transform branch as an array", (
       transform: { type: "filter", field: "group", oneOf: ["A"] }
     },
     {
+      id: "folded",
+      transform: {
+        type: "fold",
+        fields: ["x", "y"],
+        as: { key: "measure", value: "amount" }
+      }
+    },
+    {
+      id: "computed",
+      transform: {
+        type: "computed",
+        as: "ratio",
+        expression: {
+          op: "divide",
+          left: { field: "x" },
+          right: { field: "y" }
+        }
+      }
+    },
+    {
+      id: "stack",
+      transform: {
+        type: "stack",
+        category: "group",
+        group: "x",
+        value: "y",
+        mode: "stack",
+        as: {
+          start: "y_start",
+          end: "y_end",
+          value: "y_value",
+          share: "y_share"
+        }
+      }
+    },
+    {
+      id: "summary",
+      transform: {
+        type: "summary",
+        groupBy: ["group"],
+        aggregates: [{ op: "count", as: "rows" }]
+      }
+    },
+    {
+      id: "bin",
+      transform: {
+        type: "bin",
+        field: "x",
+        bin: { maxBins: 10 },
+        extent: "auto",
+        nice: true,
+        zero: false,
+        includeEmpty: true,
+        members: false,
+        as: { lower: "x_start", upper: "x_end", count: "count" }
+      }
+    },
+    {
       id: "regression",
       transform: {
         type: "regression",

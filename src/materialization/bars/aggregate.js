@@ -1,161 +1,47 @@
-import { deriveBarAggregates } from "../../grammar/bars/aggregate.js";
-import {
-  BAR_ORIENTATIONS,
-  resolveBarChannels,
-  resolveBarColorLayout
-} from "../../grammar/bars/policy.js";
-import {
-  DEFAULT_SERIES_BASELINE,
-  layoutSeriesPartition
-} from "../../grammar/seriesLayout.js";
-import {
-  isDiscretePositionScaleType,
-  mapContinuousScaleValues,
-  mapOrdinalPositionValues
-} from "../../grammar/scales/index.js";
+import { deriveSeriesBarCells } from "../../grammar/bars/aggregate.js";
+import { resolveBarChannels, resolveBarColorLayout, resolveBarOffsetChannel } from "../../grammar/bars/policy.js";
+import { mapContinuousScaleValues, mapOrdinalPositionValues } from "../../grammar/scales/index.js";
 import { mapScaleConsumerValues } from "../scales/map.js";
-import {
-  DEFAULT_BAR_FILL,
-  resolveBarAppearance
-} from "./resolve.js";
-import { deriveGroupedRectangles } from "./grouped.js";
+import { DEFAULT_BAR_FILL, resolveBarAppearance } from "./resolve.js";
 import { resolveBarWidth } from "../../grammar/bars/geometry.js";
+import { finiteMidpoint } from "../../grammar/numeric.js";
 
 export function deriveAggregateRectangles(required, resolved, widthConfig) {
   const { dataset, layer } = required;
-  const layout = resolveBarColorLayout(layer);
-  if (layout === "group") {
-    return deriveGroupedRectangles(required, resolved, widthConfig);
-  }
-
-  const xScale = resolved.resolvedScales[required.xEncoding.scale];
-  const yScale = resolved.resolvedScales[required.yEncoding.scale];
-  const channels = resolveBarChannels(layer);
-  const vertical = channels.orientation === BAR_ORIENTATIONS.vertical;
-  const categoryScale = vertical ? xScale : yScale;
-  const measureScale = vertical ? yScale : xScale;
-  const colorEncoding = layer.encoding?.color;
-  const colorScale = resolved.resolvedScales[colorEncoding?.scale];
-  if (colorEncoding !== undefined && colorScale === undefined) {
-    throw new Error(
-      `Bar mark "${layer.id}" requires a resolved color scale.`
-    );
-  }
-
-  const seriesDomain = colorScale?.domain ?? [undefined];
-  const seriesIndex = new Map(
-    seriesDomain.map((value, index) => [value, index])
-  );
-  const colors = new Map(seriesDomain.map((value, index) => [
-    value,
-    colorScale?.range[index % colorScale.range.length] ?? DEFAULT_BAR_FILL
-  ]));
-  const cells = deriveBarAggregates(dataset.values, layer).values;
-  const discreteCategory = categoryScale.type === "ordinal" ||
-    isDiscretePositionScaleType(categoryScale.type);
-  const categoryDomain = discreteCategory
-    ? categoryScale.domain
-    : [...new Set(cells.map(cell => cell[channels.category]))]
-        .sort((left, right) => left - right);
-  const categoryIndex = new Map(
-    categoryDomain.map((value, index) => [value, index])
-  );
-  const cellMap = new Map(cells.map(cell => [
-    JSON.stringify([cell[channels.category], cell.color]),
-    cell
-  ]));
-  const thickness = resolveBarWidth(
-    widthConfig,
-    Math.abs(categoryScale.bandwidth ?? categoryScale.step)
-  );
-  const baseline = DEFAULT_SERIES_BASELINE;
-  const continuousColor = colorEncoding?.fieldType === "quantitative";
-  if (continuousColor) {
-    const mappedColors = mapScaleConsumerValues(
-      cells.map(cell => cell.color), colorScale, "color"
-    );
-    const cellByCategory = new Map(
-      cells.map((cell, index) => [cell[channels.category], { cell, index }])
-    );
-    const existing = resolved.graphicSpec.objects[layer.id].items;
-    const config = resolved.markConfigs[layer.id] ?? {};
-    const appearance = config.barAppearance ?? {};
-    return categoryDomain.flatMap(categoryValue => {
-      const entry = cellByCategory.get(categoryValue);
-      if (entry === undefined) return [];
-      const { cell, index } = entry;
-      const categoryCenter = discreteCategory
-        ? mapOrdinalPositionValues([categoryValue], categoryScale)[0]
-        : mapContinuousScaleValues(
-            [categoryValue],
-            categoryScale
-          )[0];
-      const [segment] = layoutSeriesPartition(
-        [cell[channels.measure]],
-        layout,
-        { baseline }
-      );
-      if (segment === undefined) return [];
-      const [start, end] = mapContinuousScaleValues(
-        [segment.start, segment.end],
-        measureScale
-      );
-      return [{
-        x: vertical ? categoryCenter - thickness / 2 : Math.min(start, end),
-        y: vertical ? Math.min(start, end) : categoryCenter - thickness / 2,
-        width: vertical ? thickness : Math.abs(start - end),
-        height: vertical ? Math.abs(start - end) : thickness,
-        fill: mappedColors[index],
-        ...resolveBarAppearance(config, existing[index]?.properties)
-      }];
-    });
-  }
-  const segments = [];
-
-  for (const category of categoryDomain) {
-    const partition = seriesDomain.map(color =>
-      cellMap.get(JSON.stringify([category, color]))?.[channels.measure] ?? 0
-    );
-    for (const segment of layoutSeriesPartition(partition, layout, { baseline })) {
-      const color = seriesDomain[segment.index];
-      const cell = cellMap.get(JSON.stringify([category, color]));
-      if (cell === undefined) continue;
-      segments.push({ category, color, ...segment });
-    }
-  }
-
-  const existing = resolved.graphicSpec.objects[layer.id].items;
+  const channels = resolveBarChannels(layer), vertical = channels.orientation === "vertical";
+  const categoryScale = resolved.resolvedScales[layer.encoding[channels.category].scale];
+  const measureScale = resolved.resolvedScales[layer.encoding[channels.measure].scale];
+  const color = layer.encoding.color, colorScale = resolved.resolvedScales[color?.scale];
+  const grouped = resolveBarColorLayout(layer) === "group";
+  const offsetScale = resolved.resolvedScales[layer.encoding[resolveBarOffsetChannel(layer)]?.scale];
+  if (grouped && offsetScale === undefined) throw new Error("Grouped bar requires a resolved offset scale.");
+  const temporal = categoryScale.type === "time";
+  const segments = deriveSeriesBarCells(dataset.values, layer, temporal ? undefined : categoryScale.domain,
+    grouped ? offsetScale.domain : layer.encoding.group === undefined && color?.fieldType !== "quantitative" ? colorScale?.domain : undefined);
+  const fills = color === undefined ? undefined : mapScaleConsumerValues(segments.map(segment => segment.cell.color), colorScale, "color");
   const config = resolved.markConfigs[layer.id] ?? {};
-  const appearance = config.barAppearance ?? {};
-  return segments.map((segment, index) => {
-    const category = categoryIndex.get(segment.category);
-    const color = seriesIndex.get(segment.color);
-    if (category === undefined || color === undefined) {
-      throw new Error("Bar value is outside a resolved ordinal domain.");
+  const existing = resolved.graphicSpec.objects[layer.id].items;
+  const width = resolveBarWidth(widthConfig, grouped ? offsetScale.bandwidth : Math.abs(categoryScale.bandwidth ?? categoryScale.step));
+  const indices = new Map(categoryScale.domain.map((value, index) => [value, index]));
+  return segments.map(({ cell, start, end, seriesIndex }, index) => {
+    const categoryValue = cell[channels.category];
+    const categoryCenter = (temporal ? mapContinuousScaleValues : mapOrdinalPositionValues)([categoryValue], categoryScale)[0];
+    let position = !grouped && layer.encoding.group !== undefined && layer.encoding.group.inferredFrom === undefined && !temporal && categoryScale.step > 0
+      ? (categoryScale.start ?? categoryScale.range[0]) + indices.get(categoryValue) * categoryScale.step + categoryScale.bandwidth / 2 - width / 2
+      : categoryCenter - width / 2;
+    if (grouped) {
+      const direction = Math.sign(categoryScale.step ?? categoryScale.range[1] - categoryScale.range[0]) || 1;
+      const offsetCenter = offsetScale.start + seriesIndex * offsetScale.step + (Math.sign(offsetScale.step) || 1) * offsetScale.bandwidth / 2;
+      if (vertical && direction > 0 && offsetScale.step > 0) {
+        const categoryStart = temporal ? categoryCenter - categoryScale.bandwidth / 2
+          : (categoryScale.start ?? categoryScale.range[0]) + indices.get(categoryValue) * categoryScale.step;
+        position = categoryStart + offsetScale.start + seriesIndex * offsetScale.step + (offsetScale.bandwidth - width) / 2;
+      } else position = categoryCenter + direction * (offsetCenter - finiteMidpoint(...offsetScale.range)) - width / 2;
     }
-    const categoryCenter = discreteCategory
-      ? mapOrdinalPositionValues([segment.category], categoryScale)[0]
-      : mapContinuousScaleValues(
-          [segment.category],
-          categoryScale
-        )[0];
-    const [start, end] = mapContinuousScaleValues(
-      [segment.start, segment.end],
-      measureScale
-    );
-    return {
-      x: vertical
-        ? categoryCenter - thickness / 2
-        : Math.min(start, end),
-      y: vertical
-        ? Math.min(start, end)
-        : categoryCenter - thickness / 2,
-      width: vertical ? thickness : Math.abs(start - end),
-      height: vertical ? Math.abs(start - end) : thickness,
-      fill: segment.color === undefined
-        ? appearance.fill ?? config.fill ?? colors.get(segment.color)
-        : colors.get(segment.color),
-      ...resolveBarAppearance(config, existing[index]?.properties)
-    };
+    const [a, b] = mapContinuousScaleValues([start, end], measureScale);
+    return { x: vertical ? position : Math.min(a, b), y: vertical ? Math.min(a, b) : position,
+      width: vertical ? width : Math.abs(a - b), height: vertical ? Math.abs(a - b) : width,
+      fill: fills?.[index] ?? config.barAppearance?.fill ?? config.fill ?? DEFAULT_BAR_FILL,
+      ...resolveBarAppearance(config, existing[index]?.properties) };
   });
 }

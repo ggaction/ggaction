@@ -1,10 +1,12 @@
+import { rectUsesFields } from "../../../grammar/rects.js";
 import { resolveRectRows } from "../../rect.js";
 import {
   channelMapFromRow,
   concreteProperties,
   finalizeItems,
   itemKey,
-  ownFields
+  ownFields,
+  uniqueFields
 } from "./common.js";
 
 function resolveGradientPlotItems(program, layer, dataset) {
@@ -33,12 +35,13 @@ export function resolveRectItems(program, layer, dataset) {
     return resolveGradientPlotItems(program, layer, dataset);
   }
   const rows = resolveRectRows(program, layer, dataset);
+  const hasField = rectUsesFields(layer);
   const definitions = rows.map((item, graphicIndex) => ({
     key: itemKey(layer, "rect", item.sourceIndex),
-    fields: ownFields(item.row),
-    channels: item.channels,
+    fields: hasField ? ownFields(item.row) : uniqueFields(dataset.values),
+    channels: channelMapFromRow(item.row, layer),
     properties: concreteProperties(graphic.items[graphicIndex]?.properties),
-    members: [item.row]
+    members: hasField ? [item.row] : dataset.values
   }));
   return finalizeItems(program, layer, "rect", definitions, "rect");
 }

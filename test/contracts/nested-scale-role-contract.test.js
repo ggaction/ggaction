@@ -44,6 +44,16 @@ function source() {
     .createData({ values: rows });
 }
 
+function radarSource() {
+  return chart()
+    .createCanvas({ width: 320, height: 220, margin: 20 })
+    .createData({ values: [
+      { category: "A", value: 3, series: "one", colorValue: 1 },
+      { category: "B", value: 5, series: "one", colorValue: 1 },
+      { category: "C", value: 9, series: "one", colorValue: 1 }
+    ] });
+}
+
 function positionScale(type) {
   return {
     type,
@@ -124,6 +134,33 @@ function distributionPositions(path, type) {
   return path.startsWith("x.")
     ? { x: requested, y: counterpart }
     : { x: counterpart, y: requested };
+}
+
+function raincloudScaleOptions(path, type) {
+  const options = {
+    category: positionChannel("band"),
+    value: positionChannel("linear"),
+    density: false,
+    summary: false,
+    points: { type: "beeswarm", packing: false },
+    guides: false
+  };
+  if (path.startsWith("category.")) options.category = positionChannel(type);
+  if (path.startsWith("value.")) options.value = positionChannel(type);
+  if (path === "color.scale.type") options.color = colorChannel(type);
+  if (path === "points.size.scale.type") {
+    options.points = {
+      ...options.points,
+      size: { field: "size", scale: { type } }
+    };
+  }
+  if (path === "points.shape.scale.type") {
+    options.points = {
+      ...options.points,
+      shape: { field: "category", scale: { type } }
+    };
+  }
+  return options;
 }
 
 function intervalPositions(path, type) {
@@ -240,10 +277,20 @@ function buildScaleWitness(action, path, type) {
         .encodeY({ field: "category", fieldType: "nominal" })
         .encodeYOffset({ field: "subgroup", scale: { type } });
     case "encodeXRange":
+      if (type === "time") {
+        return source().createRectMark()
+          .encodeYRange({ lower: "lower", upper: "upper" })
+          .encodeXRange({ lower: "time", upper: "time", fieldType: "temporal", scale: { type } });
+      }
       return source().createAreaMark().encodeY({ field: "y" }).encodeXRange({
         lower: "lower", upper: "upper", scale: positionScale(type)
       });
     case "encodeYRange":
+      if (type === "time") {
+        return source().createRectMark()
+          .encodeXRange({ lower: "lower", upper: "upper" })
+          .encodeYRange({ lower: "time", upper: "time", fieldType: "temporal", scale: { type } });
+      }
       return source().createAreaMark().encodeX({ field: "x" }).encodeYRange({
         lower: "lower", upper: "upper", scale: positionScale(type)
       });
@@ -267,9 +314,19 @@ function buildScaleWitness(action, path, type) {
               })
       });
     case "editDensity":
-      return source().createAreaMark().encodeDensity({ field: "value" }).editDensity({
-        groupBy: "category",
-        placement: { type: "category", scale: { type } }
+      return path === "valueScale.type"
+        ? source().createAreaMark().encodeDensity({ field: "value" }).editDensity({
+            valueScale: positionScale(type)
+          })
+        : source().createAreaMark().encodeDensity({ field: "value" }).editDensity({
+            groupBy: "category",
+            placement: { type: "category", scale: { type } }
+          });
+    case "createHorizonPlot":
+      return source().createHorizonPlot({
+        x: path.startsWith("x.") ? positionChannel(type, "x") : "x",
+        y: { field: "value", scale: { type: path.startsWith("y.") ? type : "linear" } },
+        guides: false
       });
     case "encodeHorizon":
       return source().createAreaMark().encodeHorizon({
@@ -312,6 +369,92 @@ function buildScaleWitness(action, path, type) {
           : { x: "x", y: positionChannel(type, "y") }),
         guides: false
       });
+    case "createIntervalPlot":
+      if (path === "color.scale.type") {
+        return source().createIntervalPlot({
+          x: { field: "category", fieldType: "nominal" },
+          y: { center: "center", lower: "lower", upper: "upper" },
+          color: colorChannel(type),
+          guides: false
+        });
+      }
+      return source().createIntervalPlot({
+        ...errorBarPositions(path, type),
+        guides: false
+      });
+    case "createRegressionPlot":
+      if (path === "color.scale.type") {
+        return source().createRegressionPlot({
+          x: "x", y: "y", color: colorChannel(type), groupBy: false,
+          band: false, guides: false
+        });
+      }
+      if (path === "size.scale.type") {
+        return source().createRegressionPlot({
+          x: "x", y: "y", size: { field: "size", scale: { type } },
+          band: false, guides: false
+        });
+      }
+      if (path === "shape.scale.type") {
+        return source().createRegressionPlot({
+          x: "x", y: "y", shape: { field: "category", scale: { type } },
+          groupBy: false, band: false, guides: false
+        });
+      }
+      return source().createRegressionPlot({
+        ...(path.startsWith("x.")
+          ? { x: positionChannel(type, "x"), y: "y" }
+          : { x: "x", y: positionChannel(type, "y") }),
+        groupBy: false,
+        band: false,
+        guides: false
+      });
+    case "createDotPlot":
+    case "createLollipopPlot":
+      return source()[action]({
+        category: path.startsWith("category.")
+          ? positionChannel(type)
+          : "category",
+        value: path.startsWith("value.")
+          ? positionChannel(type)
+          : "value",
+        ...(action === "createLollipopPlot" && type === "log" ? { baseline: 1 } : {}),
+        guides: false
+      });
+    case "createDumbbellPlot":
+      return source().createDumbbellPlot({
+        category: path.startsWith("category.")
+          ? positionChannel(type)
+          : "category",
+        start: path.startsWith("start.")
+          ? positionChannel(type, "x")
+          : "x",
+        end: path.startsWith("end.")
+          ? positionChannel(type, "y")
+          : "y",
+        guides: false
+      });
+    case "editEndpointPlot":
+      if (path.startsWith("category.") || path.startsWith("value.")) {
+        return source()
+          .createDotPlot({ category: "category", value: "value", guides: false })
+          .editEndpointPlot(path.startsWith("category.")
+            ? { category: positionChannel(type) }
+            : { value: positionChannel(type) });
+      }
+      return source()
+        .createDumbbellPlot({ category: "category", start: "x", end: "y", guides: false })
+        .editEndpointPlot(path.startsWith("start.")
+          ? { start: positionChannel(type, "x") }
+          : { end: positionChannel(type, "y") });
+    case "createECDFPlot":
+      return source().createECDFPlot({
+        field: "value", groupBy: "category", color: colorChannel(type), guides: false
+      });
+    case "editECDFPlot":
+      return source()
+        .createECDFPlot({ field: "value", groupBy: "category", color: "category", guides: false })
+        .editECDFPlot({ color: colorChannel(type) });
     case "createLinePlot":
       if (path === "color.scale.type") {
         return source().createLinePlot({
@@ -333,6 +476,173 @@ function buildScaleWitness(action, path, type) {
           : { x: "x", y: positionChannel(type, "y") }),
         guides: false
       });
+    case "createPolarScatterPlot":
+      if (path === "color.scale.type") {
+        return source().createPolarScatterPlot({
+          theta: { field: "category", fieldType: "nominal" },
+          radius: "value", color: colorChannel(type), guides: false
+        });
+      }
+      if (path === "size.scale.type") {
+        return source().createPolarScatterPlot({
+          theta: { field: "category", fieldType: "nominal" }, radius: "value",
+          size: { field: "size", scale: { type } }, guides: false
+        });
+      }
+      if (path === "shape.scale.type") {
+        return source().createPolarScatterPlot({
+          theta: { field: "category", fieldType: "nominal" }, radius: "value",
+          shape: { field: "category", scale: { type } }, guides: false
+        });
+      }
+      return source().createPolarScatterPlot({
+        theta: path.startsWith("theta.")
+          ? positionChannel(type)
+          : { field: "category", fieldType: "nominal" },
+        radius: path.startsWith("radius.") ? positionChannel(type) : "value",
+        guides: false
+      });
+    case "createPolarLinePlot":
+      if (path === "color.scale.type") {
+        return source().createPolarLinePlot({
+          theta: { field: "category", fieldType: "nominal" },
+          radius: "value", color: colorChannel(type), guides: false
+        });
+      }
+      if (path === "strokeDash.scale.type") {
+        return source().createPolarLinePlot({
+          theta: { field: "category", fieldType: "nominal" }, radius: "value",
+          strokeDash: { field: "category", scale: { type } }, guides: false
+        });
+      }
+      return source().createPolarLinePlot({
+        theta: path.startsWith("theta.")
+          ? positionChannel(type)
+          : { field: "category", fieldType: "nominal" },
+        radius: path.startsWith("radius.") ? positionChannel(type) : "value",
+        guides: false
+      });
+    case "createRadarPlot":
+      if (path === "color.scale.type") {
+        return radarSource().createRadarPlot({
+          category: "category", value: "value",
+          color: {
+            field: type === "ordinal" ? "series" : "colorValue",
+            fieldType: type === "ordinal" ? "nominal" : "quantitative",
+            scale: colorScale(type)
+          },
+          guides: false
+        });
+      }
+      if (path === "strokeDash.scale.type") {
+        return radarSource().createRadarPlot({
+          category: "category", value: "value",
+          strokeDash: { field: "series", scale: { type } }, guides: false
+        });
+      }
+      return radarSource().createRadarPlot({
+        category: path.startsWith("category.")
+          ? { field: "category", fieldType: "nominal", scale: { type } }
+          : "category",
+        value: path.startsWith("value.")
+          ? { field: "value", fieldType: "quantitative", scale: positionScale(type) }
+          : "value",
+        guides: false
+      });
+    case "createRugPlot":
+      return path.startsWith("x.")
+        ? source().createRugPlot({
+            x: positionChannel(type), edge: "bottom", guides: false
+          })
+        : source().createRugPlot({
+            y: positionChannel(type), edge: "left", guides: false
+          });
+    case "createStripPlot":
+      if (path === "color.scale.type") {
+        return source().createStripPlot({
+          x: "value", color: colorChannel(type), guides: false
+        });
+      }
+      if (path === "size.scale.type") {
+        return source().createStripPlot({
+          x: "value", size: { field: "size", scale: { type } }, guides: false
+        });
+      }
+      if (path === "shape.scale.type") {
+        return source().createStripPlot({
+          x: "value", shape: { field: "category", scale: { type } }, guides: false
+        });
+      }
+      if (path.startsWith("x.")) {
+        return ["band", "point"].includes(type)
+          ? source().createStripPlot({
+              x: positionChannel(type), y: "value", guides: false
+            })
+          : source().createStripPlot({
+              x: positionChannel(type), y: positionChannel("band"), guides: false
+            });
+      }
+      return ["band", "point"].includes(type)
+        ? source().createStripPlot({
+            x: "value", y: positionChannel(type), guides: false
+          })
+        : source().createStripPlot({
+            x: positionChannel("band"), y: positionChannel(type), guides: false
+          });
+    case "createBeeswarmPlot":
+      if (path === "color.scale.type") {
+        return source().createBeeswarmPlot({
+          x: positionChannel("band"), y: "value",
+          color: colorChannel(type), packing: false, guides: false
+        });
+      }
+      if (path === "size.scale.type") {
+        return source().createBeeswarmPlot({
+          x: positionChannel("band"), y: "value",
+          size: { field: "size", scale: { type } }, packing: false, guides: false
+        });
+      }
+      if (path === "shape.scale.type") {
+        return source().createBeeswarmPlot({
+          x: positionChannel("band"), y: "value",
+          shape: { field: "category", scale: { type } }, packing: false, guides: false
+        });
+      }
+      if (path.startsWith("x.")) {
+        return ["band", "point"].includes(type)
+          ? source().createBeeswarmPlot({
+              x: positionChannel(type), y: "value", packing: false, guides: false
+            })
+          : source().createBeeswarmPlot({
+              x: positionChannel(type), y: positionChannel("band"),
+              packing: false, guides: false
+            });
+      }
+      return ["band", "point"].includes(type)
+        ? source().createBeeswarmPlot({
+            x: "value", y: positionChannel(type), packing: false, guides: false
+          })
+        : source().createBeeswarmPlot({
+            x: positionChannel("band"), y: positionChannel(type),
+            packing: false, guides: false
+          });
+    case "createRaincloudPlot":
+      return source().createRaincloudPlot(raincloudScaleOptions(path, type));
+    case "editRaincloudPlot": {
+      const current = source().createRaincloudPlot({
+        category: "category", value: "value",
+        density: false, summary: false,
+        points: { type: "beeswarm", packing: false }, guides: false
+      });
+      const options = raincloudScaleOptions(path, type);
+      delete options.density;
+      delete options.summary;
+      delete options.guides;
+      if (!path.startsWith("category.")) delete options.category;
+      if (!path.startsWith("value.")) delete options.value;
+      if (!path.startsWith("points.")) delete options.points;
+      return current.editRaincloudPlot(options);
+    }
     case "createBarPlot":
       return source().createBarPlot({
         ...(path === "color.scale.type"
@@ -346,6 +656,33 @@ function buildScaleWitness(action, path, type) {
             }
           : barPositions(path, type)),
         guides: false
+      });
+    case "createAreaPlot":
+      if (path === "color.scale.type") return source().createAreaPlot({ x: "x", y: "value", groupBy: "category", color: colorChannel(type), guides: false });
+      if (type === "time") return source().createAreaPlot(path.startsWith("x.")
+        ? { x: positionChannel(type), y: "value", guides: false }
+        : { x: "value", y: positionChannel(type), valueChannel: "x", guides: false });
+      return source().createAreaPlot({
+        x: path.startsWith("x.") ? { field: "x", scale: positionScale(type) } : "x",
+        y: path.startsWith("y.") ? { field: "value", scale: positionScale(type) } : "value",
+        baseline: type === "log" && path.startsWith("y.") ? 1 : 0, guides: false
+      });
+    case "createDensityPlot":
+      return source().createDensityPlot({ field: "value", guides: false,
+        ...(path === "color.scale.type" ? { groupBy: "category", color: colorChannel(type) }
+          : path === "valueScale.type" ? { valueScale: positionScale(type) }
+            : { densityScale: positionScale(type) }) });
+    case "createRosePlot":
+    case "createRadialBarPlot":
+      return source()[action]({
+        category: path === "category.scale.type" ? { field: "category", scale: { type } } : "category",
+        ...(path === "color.scale.type" ? { color: colorChannel(type) } : {}),
+        ...(path === "radiusScale.type" ? { radiusScale: { type } } : {}), guides: false
+      });
+    case "createPiePlot":
+      return source().createPiePlot({
+        category: path === "category.scale.type" ? { field: "category", scale: { type } } : "category",
+        ...(path === "color.scale.type" ? { color: colorChannel(type) } : {}), guides: false
       });
     case "createHistogram":
       return source().createHistogram({
@@ -380,8 +717,29 @@ function buildScaleWitness(action, path, type) {
       return source().createErrorBar({
         ...errorBarPositions(path, type), caps: false
       });
+    case "editErrorBar":
+      return source()
+        .createErrorBar({
+          x: positionChannel("point"),
+          y: {
+            center: "center", lower: "lower", upper: "upper",
+            scale: positionScale("linear")
+          },
+          caps: false
+        })
+        .editErrorBar(errorBarPositions(path, type));
     case "createErrorBand":
       return source().createErrorBand(intervalPositions(path, type));
+    case "editErrorBand":
+      return source()
+        .createErrorBand({
+          x: positionChannel("time"),
+          y: {
+            center: "center", lower: "lower", upper: "upper",
+            scale: positionScale("linear")
+          }
+        })
+        .editErrorBand(intervalPositions(path, type));
     case "createBoxPlot":
       return source().createBoxPlot({ ...distributionPositions(path, type), guides: false });
     case "editBoxPlot": {
@@ -410,6 +768,10 @@ function buildScaleWitness(action, path, type) {
           : distributionPositions(path, type)),
         guides: false
       });
+    case "editViolinPlot":
+      return source()
+        .createViolinPlot({ x: "category", y: "value", guides: false })
+        .editViolinPlot(distributionPositions(path, type));
     case "createParallelCoordinates":
       return source().createParallelCoordinates({
         dimensions: [
@@ -431,11 +793,11 @@ test("derives only role-reachable nested scale type paths", async () => {
   const options = new Map(inventory.optionPaths.map(option => [option.id, option]));
   const scaleTypes = inventory.optionPaths.filter(option =>
     option.required &&
-    /(?:^|\.)(?:xScale|yScale|valueScale|densityScale|scale)\.type$/u.test(option.path)
+    /(?:^|\.)(?:xScale|yScale|valueScale|densityScale|radiusScale|scale)\.type$/u.test(option.path)
   );
 
-  assert.equal(scaleTypes.length, 61);
-  assert.equal(scaleTypes.reduce((sum, option) => sum + option.values.length, 0), 258);
+  assert.equal(scaleTypes.length, 144);
+  assert.equal(scaleTypes.reduce((sum, option) => sum + option.values.length, 0), 543);
   assert.doesNotMatch(declarations, /scale\?: ScaleOptions/u);
   assert.equal(options.has("option-path:createScatterPlot.x.scale.palette"), false);
   assert.equal(options.has("option-path:createScatterPlot.x.scale.interpolate"), false);
@@ -449,6 +811,10 @@ test("derives only role-reachable nested scale type paths", async () => {
     false
   );
   assert.equal(
+    options.get("option-path:createBarPlot.y.scale.type").values.includes("string:time"),
+    true
+  );
+  assert.equal(
     options.get("option-path:createBoxPlot.x.scale.type").values.includes("string:time"),
     false
   );
@@ -458,7 +824,7 @@ test("executes every strict nested scale type path and literal", async () => {
   const inventory = await inventoryPromise;
   const scaleTypes = inventory.optionPaths.filter(option =>
     option.required &&
-    /(?:^|\.)(?:xScale|yScale|valueScale|densityScale|scale)\.type$/u.test(option.path)
+    /(?:^|\.)(?:xScale|yScale|valueScale|densityScale|radiusScale|scale)\.type$/u.test(option.path)
   );
   let witnesses = 0;
   for (const option of scaleTypes) {
@@ -481,7 +847,7 @@ test("executes every strict nested scale type path and literal", async () => {
       witnesses += 1;
     }
   }
-  assert.equal(witnesses, 258);
+  assert.equal(witnesses, 543);
 });
 
 test("materializes every role-specific nested scale type vocabulary", () => {

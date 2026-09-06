@@ -2,28 +2,36 @@ import {
   mapOrdinalPositionValues,
   readScaleField
 } from "../grammar/scales/index.js";
-import { RECT_MODES, resolveRectMode } from "../grammar/rects.js";
+import { normalizePositionDatum } from "../grammar/positionDatum.js";
+import { resolveGraphicBounds } from "../layout/canvas.js";
+import { RECT_MODES, resolveRectMode, rectUsesFields } from "../grammar/rects.js";
 import { DEFAULT_RECT_MARK } from "./rectConfig.js";
 import { mapScaleConsumerValues } from "./scales/map.js";
 
-function optionalValues(rows, encoding) {
+function optionalValues(rows, encoding, length, channel) {
+  if (Object.hasOwn(encoding, "datum")) {
+    const value = normalizePositionDatum(encoding.datum, encoding.fieldType, channel, encoding.temporalUnit, "Rect");
+    return Array.from({ length }, () => value);
+  }
   return readScaleField(rows, encoding.field, encoding.fieldType, {
-    allowUnknown: true
+    allowUnknown: true, temporalUnit: encoding.temporalUnit
   });
 }
 
 function requiredChannels(layer, mode) {
-  return mode === RECT_MODES.ranged
-    ? ["x", "x2", "y", "y2", ...(layer.encoding?.color ? ["color"] : [])]
-    : ["x", "y", ...(layer.encoding?.color ? ["color"] : [])];
+  const position = mode === RECT_MODES.xSpan ? ["x", "x2"]
+    : mode === RECT_MODES.ySpan ? ["y", "y2"]
+    : mode === RECT_MODES.ranged ? ["x", "x2", "y", "y2"] : ["x", "y"];
+  return [...position, ...(layer.encoding?.color ? ["color"] : [])];
 }
 
 export function resolveRectConsumerValues(layer, dataset, channel) {
-  const requested = optionalValues(dataset.values, layer.encoding[channel]);
+  const length = rectUsesFields(layer) ? dataset.values.length : 1;
+  const requested = optionalValues(dataset.values, layer.encoding[channel], length, channel);
   const mode = resolveRectMode(layer);
   if (mode === undefined) return requested;
   const complete = requiredChannels(layer, mode).map(candidate =>
-    optionalValues(dataset.values, layer.encoding[candidate])
+    optionalValues(dataset.values, layer.encoding[candidate], length, candidate)
   );
   return requested.map((value, index) =>
     complete.every(values => values[index] !== undefined) ? value : undefined
@@ -68,24 +76,22 @@ function appearance(config, fill) {
 export function resolveRectRows(program, layer, dataset) {
   const mode = resolveRectMode(layer);
   if (mode === undefined) return [];
-  const x = mappedEncoding(program, layer, dataset, "x");
-  const y = mappedEncoding(program, layer, dataset, "y");
-  const x2 = mode === RECT_MODES.ranged
-    ? mappedEncoding(program, layer, dataset, "x2")
-    : undefined;
-  const y2 = mode === RECT_MODES.ranged
-    ? mappedEncoding(program, layer, dataset, "y2")
-    : undefined;
+  const bounds = resolveGraphicBounds(program);
+  const x = layer.encoding.x === undefined ? undefined : mappedEncoding(program, layer, dataset, "x");
+  const y = layer.encoding.y === undefined ? undefined : mappedEncoding(program, layer, dataset, "y");
+  const x2 = layer.encoding.x2 === undefined ? undefined : mappedEncoding(program, layer, dataset, "x2");
+  const y2 = layer.encoding.y2 === undefined ? undefined : mappedEncoding(program, layer, dataset, "y2");
   const color = layer.encoding?.color === undefined
     ? undefined
     : mappedEncoding(program, layer, dataset, "color").values;
   const config = program.markConfigs[layer.id] ?? DEFAULT_RECT_MARK;
 
-  return dataset.values.flatMap((row, index) => {
+  const rows = rectUsesFields(layer) ? dataset.values : [{}];
+  return rows.flatMap((row, index) => {
     const fill = color === undefined ? config.fill : color[index];
     if (
-      !Number.isFinite(x.values[index]) ||
-      !Number.isFinite(y.values[index]) ||
+      (x !== undefined && !Number.isFinite(x.values[index])) ||
+      (y !== undefined && !Number.isFinite(y.values[index])) ||
       typeof fill !== "string"
     ) return [];
 
@@ -103,28 +109,22 @@ export function resolveRectRows(program, layer, dataset) {
         height
       };
     } else {
-      const endX = x2.values[index];
-      const endY = y2.values[index];
+      const startX = x?.values[index] ?? bounds.x;
+      const startY = y?.values[index] ?? bounds.y;
+      const endX = x2?.values[index] ?? bounds.x + bounds.width;
+      const endY = y2?.values[index] ?? bounds.y + bounds.height;
       if (!Number.isFinite(endX) || !Number.isFinite(endY)) return [];
       geometry = {
-        x: Math.min(x.values[index], endX),
-        y: Math.min(y.values[index], endY),
-        width: Math.abs(endX - x.values[index]),
-        height: Math.abs(endY - y.values[index])
+        x: Math.min(startX, endX),
+        y: Math.min(startY, endY),
+        width: Math.abs(endX - startX),
+        height: Math.abs(endY - startY)
       };
       if (geometry.width <= 0 || geometry.height <= 0) return [];
     }
     return [{
       row,
       sourceIndex: index,
-      channels: Object.fromEntries(
-        ["x", "y", "x2", "y2", "color"].flatMap(channel => {
-          const encoding = layer.encoding?.[channel];
-          return encoding?.field === undefined
-            ? []
-            : [[channel, row[encoding.field]]];
-        })
-      ),
       properties: { ...geometry, ...appearance(config, fill) }
     }];
   });

@@ -7,13 +7,44 @@ Basic Chart facade는 existing domain action을 wrapped child로 조합하는 us
 ## Shared contract
 
 - Data resolution: explicit existing ID → valid current dataset → one unique dataset. Ambiguity is an error.
+- The selected dataset must have materialized `values`. A definition-only derived dataset raises a domain error;
+  the facade does not execute its transform or fall back to a different dataset.
 - Omitted ID uses one stable facade role. Occupied default requires an explicit ID and never creates a numbered ID.
 - Field strings normalize to `{ field }`; objects reuse the corresponding child encoding vocabulary.
 - Position target and coordinate are facade-owned. A nested channel cannot override them.
-- Omitted or `{}` guides call `createGuides`; `false` leaves the guide branch absent.
+- Omitted or `{}` guides는 아래 공통 확보 계약을 사용한다. `false`는 이번 facade의 guide 요청을 생략한다.
 - Outer/nested option shape and resource ownership are resolved before the first child. Any later child validation failure
   returns no partial program because every transition and trace branch is immutable.
 - Optional encodings appear in state and trace only when requested.
+- Scatter `point.stroke`, Bar/Histogram `bar.stroke` accept a non-empty color string or `false`, matching their
+  child mark creation/edit owners. `false` disables the outline and its width; incompatible width edits remain errors.
+
+## Facade guide reuse
+
+- Scatter, Line, Bar, Histogram, Heatmap, Parallel, Violin과 Box/Gradient completion의 공통 계약이다.
+  Automatic applicability와 target은 해당 facade의 layer/coordinate에서만 추론한다.
+- Cartesian facade의 타입은 Cartesian axes/grid만 제공한다. Line/Parallel 범례는 path symbol과 layered
+  symbol을 받고, Point/Bar/Rect/Violin의 shorthand는 swatch symbol이다. Box에는 범례를 소유할
+  appearance encoding이 없으므로 `guides.legend`는 false만 받는다. Histogram/Violin은 categorical
+  범례 옵션을 받는다. 다른 layer의 guide는 해당 lower guide action으로 작성한다.
+- Compatible 축·격자·범례를 재사용하고 없는 구성요소만 기존 wrapped owner로 만든다. 처음 생성할 때는
+  가능한 경우 createGuides를 사용하며, 부분 보완은 실제 필요한 axis/tick/label/title/grid/legend child만 호출한다.
+  별도 public ensureGuides나 observer는 없다. Direct createGuides/createAxes/leaf create의 strict 생성 계약은 유지한다.
+- 축·격자는 channel·coordinate ID·scale ID가 일치해야 한다. 같은 domain만으로 합치지 않는다. Legacy 축에
+  coordinate가 없으면 같은 channel/scale consumer의 coordinate가 유일할 때만 결정하여 저장한다.
+  Partial line/ticks/labels/title은 기존 placement와 tick mode를 보존하며 부족한 component만 채운다.
+- 자동 기본값은 기존 제목·스타일을 덮어쓰지 않는다. 명시한 nested style이 기존값과 다르면 editor 또는
+  해당 guide branch의 false opt-out을 안내하는 conflict다. Facade가 source field에서 보충한 title은 explicit style이 아니다.
+- 범례는 kind·channels·scale IDs·domain/order·symbol layer 구성이 호환돼야 한다. Point/Line의 다른 symbol
+  recipe는 자동 병합하지 않는다. 재사용한 범례는 원래 target을 유지한다. 명시한 layout/style 차이는 conflict다.
+- Histogram의 shared x scale은 각 consumer가 계산한 bin boundaries가 모두 같을 때만 자동 ticks를 재사용한다.
+  Parallel의 별도 facade는 각자 dimension scale IDs를 만들므로 다른 owner의 축을 자동 공유하지 않는다.
+  Gradient density legend도 owner별 density scale ID가 달라 다른 owner/family의 color legend를 덮어쓰지 않는다.
+- `guides:false` 또는 nested branch false는 기존 guide를 삭제하지 않는다. 세 branch 모두 false인 facade는
+  guide action을 실행하지 않는다. Box omission=false와 Box/Gradient의 deferred completion은 유지한다.
+- 이 계약은 하위 데이터·grain·scale compatibility를 확장하지 않는다. 예를 들어 grouped Bar의 서로 다른
+  중간 layout policy는 별도 position scale이 필요할 수 있다. Derived facade를 연속 작성할 때 source data도 명시한다.
+- 증거: `test/unit/actions/charts/facade-guide-reuse.test.js`, guide owner regressions, 기존 chart primitive/public render.
 
 ## `createScatterPlot`
 
@@ -27,7 +58,7 @@ createScatterPlot({
   color?: FieldName | ColorEncodingOptionsWithoutTarget;
   size?: FieldName | SizeEncodingOptionsWithoutTarget;
   shape?: FieldName | ShapeEncodingOptionsWithoutTarget;
-  point?: PointMarkAppearanceOptions;
+  point?: PointMarkAppearanceOptions & { radius?: NonNegativeFinite };
   guides?: false | CreateGuidesOptions;
 }): ChartProgram;
 ```
@@ -36,7 +67,11 @@ createScatterPlot({
 - Hierarchy: `createPointMark`, `encodeX`, `encodeY`, optional `encodeColor`/`encodeSize`/`encodeShape`,
   optional `createGuides`.
 - Constant appearance belongs to `point`; field-driven color/size/shape stays top-level. Child conflicts are preserved.
-- Omitted size uses the materialized point radius `3`; the facade does not author an explicit radius config.
+- `point.radius` is a non-negative finite logical radius; zero is valid. It calls `encodePointRadius` →
+  `encodeRadius` after x/y and before optional field appearance. It conflicts with top-level `size`.
+- Omitted radius and size use the materialized point radius `3`; no explicit radius config is authored.
+- Default and Basic entries share this chain. Basic exposes `encodePointRadius` and registers its internal
+  encodeRadius dependency; Basic types do not expose encodeRadius, removePointRadius, Rule or general opacity.
 - Semantic/graphic/render output exactly matches the equivalent explicit action chain and approved Cars primitive.
 
 ### Formal values — `createScatterPlot`
@@ -66,7 +101,7 @@ createLinePlot({
   x: FieldName | LinePositionOptions;
   y: FieldName | LinePositionOptions;
   color?: FieldName | ColorEncodingOptionsWithoutTarget;
-  groupBy?: FieldName;
+  groupBy?: FieldName | readonly [FieldName, ...FieldName[]];
   strokeDash?: StrokeDashEncodingOptionsWithoutTarget;
   line?: LineMarkAppearanceOptions;
   guides?: false | CreateGuidesOptions;
@@ -74,8 +109,10 @@ createLinePlot({
 ```
 
 - Stable default ID is `linePlot`.
-- Hierarchy: `createLineMark`, `encodeX`, `encodeY`, optional `encodeColor`/`encodeGroup`/`encodeStrokeDash`,
+- Hierarchy: `createLineMark`, `encodeX`, `encodeY`, optional `encodeGroup` then `encodeColor`/`encodeStrokeDash`,
   optional `createGuides`.
+- Explicit groupBy is a single field or non-empty unique tuple and exclusively defines path identity.
+  Color/dash may use different fields if each is unique within its final series. The facade assigns group first.
 - Plain strokeDash string is rejected because a field name and a named dash style are both strings.
 - Direct, grouped, temporal aggregate, and direct materialized window-output line policies remain child-owned.
   `closed: true` is rejected because this facade is Cartesian; Polar line authoring remains available through the
@@ -115,10 +152,14 @@ createBarPlot({
 ```
 
 - Stable default ID is `barPlot`.
-- Hierarchy: `createBarMark`, `encodeX`, `encodeY`, optional `encodeColor`/`encodeBarWidth`, optional `createGuides`.
+- Hierarchy: `createBarMark`, category-first position actions (`encodeX`→`encodeY` vertically,
+  `encodeY`→`encodeX` horizontally), optional `encodeColor`/`encodeBarWidth`, optional `createGuides`.
 - `x`/`y` field strings and option objects without `fieldType` infer finite numeric data as quantitative and
   other supported scalar data as nominal. Explicit `fieldType` remains authoritative for ordinal numeric categories
   and temporal fields.
+- The positional owner infers `mean` for an omitted quantitative measure aggregate opposite a categorical position
+  in either direction. Horizontal temporal categories accept the same temporal scale vocabulary as vertical ones.
+  Temporal categories do not aggregate or stack; the quantitative measure owns those options.
 - Aggregate, ranged, vertical/horizontal, group/stack/fill/overlay/diverging behavior stays owned by the existing bar
   position and `color.layout` policies. The facade does not introduce a second layout option.
 - Constant appearance belongs to `bar`; field-driven color stays top-level. Width reuses the exact `encodeBarWidth`
@@ -134,7 +175,8 @@ createBarPlot({
 
 ### Value coverage — `createBarPlot`
 
-- ✅ Covered: shortest aggregate call, stable/explicit ID and explicit/current data.
+- ✅ Covered: shortest vertical/horizontal shorthand, ordinal/temporal horizontal category, preserved mean inference,
+  category-first child equivalence after Canvas/style edits, stable/explicit ID and explicit/current data.
 - ✅ Covered: vertical grouped, horizontal stacked, color layout, band width and constant appearance.
 - ✅ Covered: guide default/disable, caller ownership, invalid nested target/layout and immutable failure.
 - ✅ Covered: Browser Canvas, Node PNG and approved primitive equality.

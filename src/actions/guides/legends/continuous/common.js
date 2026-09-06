@@ -10,13 +10,19 @@ import {
 } from "../../../../core/validation.js";
 import { formatTimeTick } from "../../../../grammar/ticks.js";
 import {
+  formatValue,
+  validateValueFormat
+} from "../../../../grammar/valueFormat.js";
+import {
   formatDistinctNumericSamples,
   sampleNumericRange
 } from "../../../../grammar/numeric.js";
 import { resolveGraphicBounds } from "../../../../layout/canvas.js";
+import { isHorizontalEdgeLegend } from "../../../../layout/legendLane.js";
 import { DEFAULT_COLORS, DEFAULT_FONT_FAMILY } from
   "../../../../theme/defaults.js";
 import { findLayer } from "../../../../selectors/layers.js";
+import { isOpacityLegendLayer } from "../../../../materialization/legends.js";
 import { findCanvasGraphic } from
   "../../../../materialization/graphicHierarchy.js";
 
@@ -26,7 +32,7 @@ const OPTIONS = [
   "direction", "columns", "titlePosition"
 ];
 const TEXT_OPTIONS = [
-  "offset", "color", "fontSize", "fontFamily", "fontWeight"
+  "offset", "color", "fontSize", "fontFamily", "fontWeight", "format"
 ];
 const BORDER_OPTIONS = [
   "color", "lineWidth", "padding", "background"
@@ -82,7 +88,17 @@ export function normalizeLegendTextOptions(value, label, defaults) {
   ) {
     throw new TypeError(`${label} fontWeight must be a string or finite number.`);
   }
+  if (Object.hasOwn(result, "format")) {
+    result.format = validateValueFormat(result.format, `${label} format`);
+  }
   return result;
+}
+
+export function normalizeLegendTitleOptions(value, label, defaults) {
+  if (value !== undefined) {
+    validateOptionObject(value, ["color", "fontSize", "fontFamily", "fontWeight"], label);
+  }
+  return normalizeLegendTextOptions(value, label, defaults);
 }
 
 export function normalizeLegendBorder(value) {
@@ -109,6 +125,9 @@ export function normalizeContinuousLegend(args, kind) {
   const align = args.align ?? "center";
   if (!["left", "center", "right"].includes(align)) {
     throw new Error(`Unsupported legend alignment "${align}".`);
+  }
+  if (["left", "right"].includes(position) && align !== "center") {
+    throw new Error("Side continuous legends require center alignment.");
   }
   const count = args.count ?? 5;
   if (!Number.isInteger(count) || count < 2) {
@@ -162,7 +181,7 @@ export function normalizeContinuousLegend(args, kind) {
         ? { ...DEFAULT_LABELS, offset: 8 }
         : DEFAULT_LABELS
     ),
-    titleStyle: normalizeLegendTextOptions(
+    titleStyle: normalizeLegendTitleOptions(
       args.titleStyle,
       "createLegend.titleStyle",
       DEFAULT_TITLE
@@ -182,17 +201,17 @@ export function selectLegendLayer(program, requested, predicate) {
   return candidates.includes(candidate) ? candidate : undefined;
 }
 
-export function resolveContinuousPoint(program, requested, channel) {
+export function resolveContinuousLegendLayer(program, requested, channel) {
   const layer = selectLegendLayer(
     program,
     requested,
-    candidate => candidate.mark?.type === "point" &&
-      candidate.encoding?.[channel]?.scale !== undefined
+    channel === "opacity" ? isOpacityLegendLayer : candidate =>
+      candidate.mark?.type === "point" && candidate.encoding?.[channel]?.scale !== undefined
   );
   if (layer === undefined) {
     throw new Error(
       requested === undefined
-        ? `${channel} legend requires one eligible point mark.`
+        ? `${channel} legend requires one eligible ${channel === "opacity" ? "point or line" : "point"} mark.`
         : `Unknown ${channel} legend target "${requested}".`
     );
   }
@@ -251,10 +270,18 @@ export function sampleContinuousValues(domain, count) {
   );
 }
 
-export function formatContinuousValues(values, domain, fieldType) {
-  return fieldType === "temporal"
-    ? values.map(value => formatTimeTick(value, domain))
-    : formatDistinctNumericSamples(values);
+export function formatContinuousValues(values, domain, fieldType, format = "auto") {
+  const resolved = validateValueFormat(format, "Legend label format");
+  if (resolved === "auto") {
+    return fieldType === "temporal"
+      ? values.map(value => formatTimeTick(value, domain))
+      : formatDistinctNumericSamples(values);
+  }
+  return values.map(value => formatValue(value, {
+    format: resolved,
+    valueType: fieldType === "temporal" ? "temporal" : "quantitative",
+    label: "Legend label format"
+  }));
 }
 
 export function styleContinuousText(
@@ -284,7 +311,10 @@ export function resolveLegendTextBounds(position, text, style) {
   });
 }
 
-export function assertLegendBoundsInsideCanvas(bounds, canvas, label) {
+export function assertLegendBoundsInsideCanvas(bounds, canvas, label, config) {
+  // Horizontal content is intrinsic until the shared lane places its actual
+  // concrete bounds. Only that final placement can determine Canvas fit.
+  if (isHorizontalEdgeLegend(config)) return;
   if (bounds.some(item =>
     item.left < 0 || item.right > canvas.width ||
     item.top < 0 || item.bottom > canvas.height
@@ -297,7 +327,8 @@ export function resolveLegendBackgroundFromBounds(
   bounds,
   border,
   canvas,
-  label
+  label,
+  config
 ) {
   if (border === false) return undefined;
   const strokeExtent = border.lineWidth / 2;
@@ -315,11 +346,11 @@ export function resolveLegendBackgroundFromBounds(
   y -= border.padding;
   right += border.padding;
   bottom += border.padding;
-  if (
+  if (!isHorizontalEdgeLegend(config) && (
     x - strokeExtent < 0 || y - strokeExtent < 0 ||
     right + strokeExtent > canvas.width ||
     bottom + strokeExtent > canvas.height
-  ) {
+  )) {
     throw new Error(`${label} background requires more Canvas margin space.`);
   }
   return { x, y, width: right - x, height: bottom - y };
@@ -333,4 +364,28 @@ export function editLegendBackground(program, id, bounds, border) {
     stroke: border.color,
     strokeWidth: border.lineWidth
   });
+}
+
+export function normalizeItemLegendLayout(args) {
+  const position = args.position ?? "right";
+  if (!["right", "left", "top", "bottom"].includes(position)) throw new Error(`Unsupported legend position "${position}".`);
+  const side = ["left", "right"].includes(position);
+  const layout = args.layout === undefined ? "edge" : args.layout;
+  if (layout !== "edge") throw new Error('This legend requires layout "edge".');
+  const align = args.align ?? "center";
+  if (!["left", "center", "right"].includes(align)) throw new Error(`Unsupported legend alignment "${align}".`);
+  const direction = args.direction ?? (side ? "vertical" : "horizontal");
+  if (!["horizontal", "vertical"].includes(direction)) throw new Error(`Unsupported legend direction "${direction}".`);
+  const columns = args.columns;
+  if (columns !== undefined && (!Number.isInteger(columns) || columns < 1)) throw new RangeError("Legend columns must be a positive integer.");
+  const titlePosition = args.titlePosition ?? "top";
+  if (!["top", "left"].includes(titlePosition)) throw new Error(`Unsupported legend titlePosition "${titlePosition}".`);
+  if (side && (direction !== "vertical" || align !== "center" || (columns !== undefined && columns !== 1) || titlePosition !== "top")) {
+    throw new Error("Side item legends require vertical direction, center alignment, top title and one column.");
+  }
+  const offset = args.offset ?? 30;
+  const itemGap = args.itemGap ?? 28;
+  validateNonNegative(offset, "Legend offset");
+  validatePositive(itemGap, "Legend itemGap");
+  return { position, layout, align, direction, columns, titlePosition, offset, itemGap };
 }

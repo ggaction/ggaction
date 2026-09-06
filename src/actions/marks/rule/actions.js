@@ -11,7 +11,8 @@ import {
 import { deriveRuleValues, resolveRuleMode } from "../../../grammar/rules.js";
 import { resolveGraphicBounds } from "../../../layout/canvas.js";
 import { findDataset } from "../../../selectors/datasets.js";
-import { findLayer } from "../../../selectors/layers.js";
+import { findLayer, resolveEligibleLayer } from "../../../selectors/layers.js";
+import { applyRuleAppearance, planRuleAppearance } from "./appearance.js";
 import { DEFAULT_COLORS } from "../../../theme/defaults.js";
 import {
   assertMarkAvailable,
@@ -28,8 +29,11 @@ import { resolveMarkGraphicPlacement } from
 import { rematerializeHighlightBaseline } from "../lifecycle.js";
 import { applyOffsetPositionValues } from
   "../../../materialization/rowEncoding.js";
+import { resolveCategorySlotOffset } from
+  "../../../materialization/categorySlotOffset.js";
 
-const CREATE_OPTIONS = Object.freeze(["id", "data"]);
+const CREATE_OPTIONS = Object.freeze(["id", "data", "stroke", "strokeWidth", "strokeDash", "opacity"]);
+const EDIT_OPTIONS = Object.freeze(["target", "stroke", "strokeWidth", "strokeDash", "opacity"]);
 const REMATERIALIZE_OPTIONS = Object.freeze(["id"]);
 const SPAN_OPTIONS = Object.freeze(["id", "orientation", "size"]);
 const DEFAULT_RULE_CONFIG = Object.freeze({
@@ -96,6 +100,7 @@ const createRuleMark = action(
         inherited?.data !== undefined ? { data: inherited.data } : {})
     });
     assertMarkAvailable(this, id);
+    const appearance = planRuleAppearance(args, inherited);
 
     let created = this
       .editSemantic({ property: `layer[${id}].mark.type`, value: "rule" })
@@ -119,7 +124,23 @@ const createRuleMark = action(
               }
             })
       });
-    return materializeInheritedMark(created, id);
+    return applyRuleAppearance(materializeInheritedMark(created, id), id, appearance);
+  }
+);
+
+const editRuleMark = action(
+  { op: "editRuleMark", description: "Edit constant rule appearance through its encoding owners." },
+  function (args = {}) {
+    validateMarkOptions(args, EDIT_OPTIONS, "editRuleMark");
+    if (args.target !== undefined) validateUserId(args.target, "Rule mark id");
+    const layer = resolveEligibleLayer(this, {
+      target: args.target,
+      predicate: candidate => candidate.mark?.type === "rule",
+      label: "rule mark"
+    });
+    const appearance = planRuleAppearance(args, layer);
+    if (appearance.length === 0) throw new Error("editRuleMark requires an appearance change.");
+    return applyRuleAppearance(this, layer.id, appearance);
   }
 );
 
@@ -263,6 +284,15 @@ const rematerializeRuleMark = action(
       x2.push(endX);
       y2.push(endY);
     }
+    const categoryOffset = resolveCategorySlotOffset(resolved, layer);
+    if (categoryOffset?.pixels) {
+      const targets = categoryOffset.channel === "x" ? [x1, x2] : [y1, y2];
+      for (const values of targets) {
+        for (let index = 0; index < values.length; index += 1) {
+          if (Number.isFinite(values[index])) values[index] += categoryOffset.pixels;
+        }
+      }
+    }
 
     const resolvedConfig = {
       ...DEFAULT_RULE_CONFIG,
@@ -337,6 +367,7 @@ export const materializeRuleSpan = action(
 export function registerRuleMarkActions(ProgramClass) {
   Object.assign(ProgramClass.prototype, {
     createRuleMark,
+    editRuleMark,
     rematerializeRuleMark,
     materializeRuleSpan
   });

@@ -1,0 +1,1874 @@
+[
+  {
+    "id": "P01",
+    "claim": "Two complete facades with omitted guides",
+    "outcome": "rejected",
+    "error": "createXAxisLine requires a missing x-axis line."
+  },
+  {
+    "id": "P02",
+    "claim": "Second facade with guides:false",
+    "outcome": "accepted",
+    "details": {
+      "layers": [
+        {
+          "id": "scatterPlot",
+          "mark": "point",
+          "encoding": {
+            "x": {
+              "field": "x",
+              "fieldType": "quantitative",
+              "scale": "x"
+            },
+            "y": {
+              "field": "y",
+              "fieldType": "quantitative",
+              "scale": "y"
+            }
+          }
+        },
+        {
+          "id": "linePlot",
+          "mark": "line",
+          "encoding": {
+            "x": {
+              "field": "x",
+              "fieldType": "quantitative",
+              "scale": "x"
+            },
+            "y": {
+              "field": "y",
+              "fieldType": "quantitative",
+              "scale": "y"
+            }
+          }
+        }
+      ],
+      "guides": {
+        "axis": {
+          "x": {
+            "coordinate": "main",
+            "scale": "x",
+            "title": "x"
+          },
+          "y": {
+            "coordinate": "main",
+            "scale": "y",
+            "title": "y"
+          }
+        },
+        "grid": {
+          "horizontal": {
+            "scale": "y",
+            "coordinate": "main"
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "P03",
+    "claim": "Group line by series, color by region (constant within each series)",
+    "outcome": "rejected",
+    "error": "Line color field \"region\" must match group field \"series\"."
+  },
+  {
+    "id": "P04",
+    "claim": "Constant line stroke width through encodeStrokeWidth",
+    "outcome": "rejected",
+    "error": "rule mark requires an eligible layer."
+  },
+  {
+    "id": "P05",
+    "claim": "Field line stroke width through encodeStrokeWidth",
+    "outcome": "accepted",
+    "details": {
+      "layers": [
+        {
+          "id": "linePlot",
+          "mark": "line",
+          "encoding": {
+            "x": {
+              "field": "x",
+              "fieldType": "quantitative",
+              "scale": "x"
+            },
+            "y": {
+              "field": "y",
+              "fieldType": "quantitative",
+              "scale": "y"
+            },
+            "group": {
+              "field": "series",
+              "fieldType": "nominal"
+            },
+            "strokeWidth": {
+              "field": "size",
+              "fieldType": "quantitative",
+              "scale": "strokeWidth"
+            }
+          }
+        }
+      ],
+      "guides": {}
+    }
+  },
+  {
+    "id": "P06",
+    "claim": "Constant line opacity through encodeOpacity",
+    "outcome": "rejected",
+    "error": "point or rule mark requires an eligible layer."
+  },
+  {
+    "id": "P07",
+    "claim": "Constant line opacity through editLineMark",
+    "outcome": "accepted",
+    "details": {
+      "layers": [
+        {
+          "id": "linePlot",
+          "mark": "line",
+          "encoding": {
+            "x": {
+              "field": "x",
+              "fieldType": "quantitative",
+              "scale": "x"
+            },
+            "y": {
+              "field": "y",
+              "fieldType": "quantitative",
+              "scale": "y"
+            },
+            "group": {
+              "field": "series",
+              "fieldType": "nominal"
+            }
+          }
+        }
+      ],
+      "guides": {}
+    }
+  },
+  {
+    "id": "P08-Point",
+    "claim": "Creation-time Point stroke:false",
+    "outcome": "accepted",
+    "details": {
+      "layers": [
+        {
+          "id": "point",
+          "mark": "point"
+        }
+      ],
+      "guides": {}
+    }
+  },
+  {
+    "id": "P08-Bar",
+    "claim": "Creation-time Bar stroke:false",
+    "outcome": "accepted",
+    "details": {
+      "layers": [
+        {
+          "id": "bar",
+          "mark": "bar"
+        }
+      ],
+      "guides": {}
+    }
+  },
+  {
+    "id": "P08-Area",
+    "claim": "Creation-time Area stroke:false",
+    "outcome": "rejected",
+    "error": "Area stroke must be a non-empty string."
+  },
+  {
+    "id": "P08-Arc",
+    "claim": "Creation-time Arc stroke:false",
+    "outcome": "rejected",
+    "error": "Arc stroke must be a non-empty string."
+  },
+  {
+    "id": "P08-Rect",
+    "claim": "Creation-time Rect stroke:false",
+    "outcome": "accepted",
+    "details": {
+      "layers": [
+        {
+          "id": "rect",
+          "mark": "rect"
+        }
+      ],
+      "guides": {}
+    }
+  },
+  {
+    "id": "P09",
+    "claim": "Numeric color string shorthand",
+    "outcome": "accepted",
+    "details": {
+      "layers": [
+        {
+          "id": "scatterPlot",
+          "mark": "point",
+          "encoding": {
+            "x": {
+              "field": "x",
+              "fieldType": "quantitative",
+              "scale": "x"
+            },
+            "y": {
+              "field": "y",
+              "fieldType": "quantitative",
+              "scale": "y"
+            },
+            "color": {
+              "field": "size",
+              "fieldType": "nominal",
+              "scale": "color"
+            }
+          }
+        }
+      ],
+      "guides": {}
+    }
+  },
+  {
+    "id": "P10",
+    "claim": "Grouped bar to stacked layout edit",
+    "outcome": "rejected",
+    "error": "Color layout transition from \"group\" to \"stack\" is not supported."
+  },
+  {
+    "id": "P11",
+    "claim": "Bar width authored before positions",
+    "outcome": "rejected",
+    "error": "encodeBarWidth requires complete aggregate bar x and y encodings."
+  },
+  {
+    "id": "P12",
+    "claim": "Cartesian axis title:false on create",
+    "outcome": "rejected",
+    "error": "createXAxis.title must be a plain object."
+  },
+  {
+    "id": "P13",
+    "claim": "Polar axis title:false on create",
+    "outcome": "accepted",
+    "details": {
+      "layers": [
+        {
+          "id": "point",
+          "mark": "point",
+          "encoding": {
+            "theta": {
+              "field": "x",
+              "fieldType": "quantitative",
+              "scale": "theta"
+            },
+            "radius": {
+              "field": "y",
+              "fieldType": "quantitative",
+              "scale": "radius"
+            }
+          }
+        }
+      ],
+      "guides": {
+        "axis": {
+          "theta": {
+            "scale": "theta",
+            "coordinate": "polar"
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "P14",
+    "claim": "Restore disabled Polar title using public editor",
+    "outcome": "rejected",
+    "error": "editThetaAxisTitle requires an existing axis title."
+  },
+  {
+    "id": "P15",
+    "claim": "Remove Polar title through axis editor",
+    "outcome": "rejected",
+    "error": "editThetaAxis.title options must be a plain object."
+  },
+  {
+    "id": "P16",
+    "claim": "Hide text-colored area using general fill edit",
+    "outcome": "rejected",
+    "error": "editAreaMark fill cannot be combined with a color encoding."
+  },
+  {
+    "id": "P17",
+    "claim": "Override field-colored error band using owner fill edit",
+    "outcome": "accepted",
+    "details": {
+      "layers": [
+        {
+          "id": "band",
+          "mark": "area",
+          "encoding": {
+            "x": {
+              "field": "x",
+              "fieldType": "quantitative",
+              "scale": "x"
+            },
+            "y": {
+              "field": "low",
+              "fieldType": "quantitative",
+              "scale": "y",
+              "title": "y"
+            },
+            "y2": {
+              "field": "high",
+              "fieldType": "quantitative",
+              "scale": "y"
+            },
+            "group": {
+              "field": "category",
+              "fieldType": "nominal"
+            },
+            "color": {
+              "field": "category",
+              "fieldType": "nominal",
+              "scale": "color",
+              "layout": "overlay"
+            }
+          }
+        }
+      ],
+      "guides": {},
+      "graphic": {
+        "type": "path",
+        "items": [
+          {
+            "id": "band:0",
+            "properties": {
+              "commands": [
+                {
+                  "op": "M",
+                  "x": 150,
+                  "y": 550
+                },
+                {
+                  "op": "L",
+                  "x": 850,
+                  "y": 470
+                },
+                {
+                  "op": "L",
+                  "x": 850,
+                  "y": 310
+                },
+                {
+                  "op": "L",
+                  "x": 150,
+                  "y": 390
+                },
+                {
+                  "op": "Z"
+                }
+              ],
+              "fill": "black",
+              "opacity": 0.2
+            }
+          },
+          {
+            "id": "band:1",
+            "properties": {
+              "commands": [
+                {
+                  "op": "M",
+                  "x": 150,
+                  "y": 390
+                },
+                {
+                  "op": "L",
+                  "x": 850,
+                  "y": 310
+                },
+                {
+                  "op": "L",
+                  "x": 850,
+                  "y": 150
+                },
+                {
+                  "op": "L",
+                  "x": 150,
+                  "y": 230
+                },
+                {
+                  "op": "Z"
+                }
+              ],
+              "fill": "black",
+              "opacity": 0.2
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "P18",
+    "claim": "createDerivedData filter produces values",
+    "outcome": "accepted",
+    "details": {
+      "dataset": {
+        "id": "derived",
+        "source": "data",
+        "transform": [
+          {
+            "type": "filter",
+            "field": "x",
+            "predicate": {
+              "op": "gt",
+              "value": 1
+            }
+          }
+        ]
+      }
+    }
+  },
+  {
+    "id": "P19",
+    "claim": "Use directly declared derived dataset for chart",
+    "outcome": "rejected",
+    "error": "Cannot read properties of undefined (reading 'length')"
+  },
+  {
+    "id": "P20",
+    "claim": "Second filterMarks call",
+    "outcome": "rejected",
+    "error": "Dataset \"scatterPlotFilteredData\" already exists."
+  },
+  {
+    "id": "P21",
+    "claim": "Zero-match filterMarks",
+    "outcome": "rejected",
+    "error": "filterMarks requires at least one matching mark item."
+  },
+  {
+    "id": "P22",
+    "claim": "Date values 1000 and 2000 in temporal position",
+    "outcome": "accepted",
+    "details": {
+      "scales": {
+        "x": {
+          "type": "time",
+          "domain": [
+            -30610224000000,
+            946684800000
+          ],
+          "range": [
+            70,
+            610
+          ]
+        },
+        "y": {
+          "type": "linear",
+          "domain": [
+            1,
+            2
+          ],
+          "range": [
+            340,
+            30
+          ]
+        }
+      }
+    }
+  },
+  {
+    "id": "P23",
+    "claim": "Box plot guides omission",
+    "outcome": "accepted",
+    "details": {
+      "layers": [
+        {
+          "id": "boxPlot",
+          "mark": "bar",
+          "encoding": {
+            "x": {
+              "field": "category",
+              "fieldType": "nominal",
+              "scale": "x"
+            },
+            "y": {
+              "field": "__boxPlot_q1",
+              "fieldType": "quantitative",
+              "scale": "y",
+              "title": "y"
+            },
+            "y2": {
+              "field": "__boxPlot_q3",
+              "fieldType": "quantitative",
+              "scale": "y"
+            }
+          }
+        },
+        {
+          "id": "boxPlotWhisker",
+          "mark": "rule",
+          "encoding": {
+            "x": {
+              "field": "category",
+              "fieldType": "nominal",
+              "scale": "x"
+            },
+            "y": {
+              "field": "__boxPlot_lowerWhisker",
+              "fieldType": "quantitative",
+              "scale": "y",
+              "title": "y"
+            },
+            "y2": {
+              "field": "__boxPlot_upperWhisker",
+              "fieldType": "quantitative",
+              "scale": "y"
+            },
+            "strokeDash": {
+              "datum": "solid"
+            }
+          }
+        },
+        {
+          "id": "boxPlotWhiskerLowerCap",
+          "mark": "rule",
+          "encoding": {
+            "x": {
+              "field": "category",
+              "fieldType": "nominal",
+              "scale": "x"
+            },
+            "y": {
+              "field": "__boxPlot_lowerWhisker",
+              "fieldType": "quantitative",
+              "scale": "y"
+            },
+            "strokeDash": {
+              "datum": "solid"
+            }
+          }
+        },
+        {
+          "id": "boxPlotWhiskerUpperCap",
+          "mark": "rule",
+          "encoding": {
+            "x": {
+              "field": "category",
+              "fieldType": "nominal",
+              "scale": "x"
+            },
+            "y": {
+              "field": "__boxPlot_upperWhisker",
+              "fieldType": "quantitative",
+              "scale": "y"
+            },
+            "strokeDash": {
+              "datum": "solid"
+            }
+          }
+        },
+        {
+          "id": "boxPlotMedian",
+          "mark": "rule",
+          "encoding": {
+            "x": {
+              "field": "category",
+              "fieldType": "nominal",
+              "scale": "x"
+            },
+            "y": {
+              "field": "__boxPlot_median",
+              "fieldType": "quantitative",
+              "scale": "y"
+            }
+          }
+        }
+      ],
+      "guides": {}
+    }
+  },
+  {
+    "id": "P24",
+    "claim": "Violin plot guides omission",
+    "outcome": "accepted",
+    "details": {
+      "layers": [
+        {
+          "id": "violinPlot",
+          "mark": "area",
+          "encoding": {
+            "x": {
+              "field": "category",
+              "fieldType": "nominal",
+              "scale": "x"
+            },
+            "y": {
+              "field": "y_value",
+              "fieldType": "quantitative",
+              "scale": "y"
+            },
+            "group": {
+              "field": "category",
+              "fieldType": "nominal"
+            }
+          }
+        }
+      ],
+      "guides": {
+        "axis": {
+          "x": {
+            "coordinate": "main",
+            "scale": "x",
+            "title": "category"
+          },
+          "y": {
+            "coordinate": "main",
+            "scale": "y",
+            "title": "y"
+          }
+        },
+        "grid": {
+          "horizontal": {
+            "scale": "y",
+            "coordinate": "main"
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "P25",
+    "claim": "Violin density orientation edit",
+    "outcome": "rejected",
+    "error": "Unknown editDensity option \"densityChannel\"."
+  },
+  {
+    "id": "P26",
+    "claim": "Constant point radius nested in scatter facade",
+    "outcome": "rejected",
+    "error": "Unknown createScatterPlot point option \"radius\"."
+  },
+  {
+    "id": "P27",
+    "claim": "Default guides on a categorical count pie",
+    "outcome": "accepted",
+    "details": {
+      "layers": [
+        {
+          "id": "arc",
+          "mark": "arc",
+          "encoding": {
+            "theta": {
+              "field": "category",
+              "fieldType": "nominal",
+              "aggregate": "count",
+              "scale": "theta"
+            },
+            "color": {
+              "field": "category",
+              "fieldType": "nominal",
+              "scale": "color"
+            }
+          }
+        }
+      ],
+      "guides": {
+        "axis": {
+          "theta": {
+            "scale": "theta",
+            "coordinate": "polar",
+            "title": "count(category)"
+          }
+        },
+        "grid": {
+          "theta": {
+            "scale": "theta",
+            "coordinate": "polar"
+          }
+        },
+        "legend": {
+          "color": {
+            "scale": "color",
+            "title": "category"
+          }
+        }
+      }
+    }
+  },
+  {
+    "id": "P28",
+    "claim": "Standalone size legend at left",
+    "outcome": "rejected",
+    "error": "Standalone size legends currently require position \"right\"."
+  },
+  {
+    "id": "P29",
+    "claim": "Partial removal of color from combined color/shape legend",
+    "outcome": "rejected",
+    "error": "Legend channels \"color\", \"shape\" belong to one combined block and must be removed together."
+  },
+  {
+    "id": "P30",
+    "claim": "Positive radial sectors with default radial domain",
+    "outcome": "accepted",
+    "details": {
+      "scale": {
+        "type": "linear",
+        "domain": [
+          2,
+          4
+        ],
+        "range": [
+          0,
+          155
+        ]
+      },
+      "itemCount": 2
+    }
+  },
+  {
+    "id": "P31",
+    "claim": "Positive radial sectors with explicit zero",
+    "outcome": "accepted",
+    "details": {
+      "scale": {
+        "type": "linear",
+        "domain": [
+          0,
+          4
+        ],
+        "range": [
+          0,
+          155
+        ]
+      },
+      "itemCount": 3
+    }
+  },
+  {
+    "id": "P32",
+    "claim": "Default bar aggregation with repeated category",
+    "outcome": "accepted",
+    "details": {
+      "layers": [
+        {
+          "id": "barPlot",
+          "mark": "bar",
+          "encoding": {
+            "x": {
+              "field": "category",
+              "fieldType": "nominal",
+              "scale": "x"
+            },
+            "y": {
+              "field": "y",
+              "fieldType": "quantitative",
+              "aggregate": "mean",
+              "stack": null,
+              "scale": "y"
+            }
+          }
+        }
+      ],
+      "guides": {}
+    }
+  },
+  {
+    "id": "P33",
+    "claim": "Cartesian axis label rotation",
+    "outcome": "rejected",
+    "error": "Unknown editXAxisLabels option \"rotation\"."
+  },
+  {
+    "id": "P34",
+    "claim": "Percentage text format",
+    "outcome": "rejected",
+    "error": "Text format must be \"auto\" or a fixed-decimal token such as \".1f\"."
+  },
+  {
+    "id": "P35",
+    "claim": "Shortest horizontal bar facade",
+    "outcome": "rejected",
+    "error": "Quantitative bar x encoding requires bin or aggregate."
+  },
+  {
+    "id": "P36",
+    "claim": "Horizontal bar facade with explicit aggregate",
+    "outcome": "accepted",
+    "details": {
+      "layers": [
+        {
+          "id": "barPlot",
+          "mark": "bar",
+          "encoding": {
+            "x": {
+              "field": "y",
+              "fieldType": "quantitative",
+              "aggregate": "mean",
+              "stack": null,
+              "scale": "x"
+            },
+            "y": {
+              "field": "category",
+              "fieldType": "nominal",
+              "scale": "y"
+            }
+          }
+        }
+      ],
+      "guides": {}
+    }
+  },
+  {
+    "id": "P37",
+    "claim": "Quantitative bar y before categorical x, omitted aggregate",
+    "outcome": "rejected",
+    "error": "Bar y encoding requires a binned quantitative or ordinal x category, temporal x category, or aggregate."
+  },
+  {
+    "id": "P38",
+    "claim": "Horizontal temporal-category bar at runtime",
+    "outcome": "accepted",
+    "details": {
+      "layers": [
+        {
+          "id": "barPlot",
+          "mark": "bar",
+          "encoding": {
+            "x": {
+              "field": "amount",
+              "fieldType": "quantitative",
+              "aggregate": "sum",
+              "stack": null,
+              "scale": "x"
+            },
+            "y": {
+              "field": "when",
+              "fieldType": "temporal",
+              "scale": "y"
+            }
+          }
+        }
+      ],
+      "guides": {}
+    }
+  },
+  {
+    "id": "P39",
+    "claim": "CI upper aggregate versus default interval upper on the same three rows",
+    "outcome": "accepted",
+    "details": {
+      "ciUpperLabels": [
+        "3.131606527612"
+      ],
+      "interval": [
+        {
+          "center": 2,
+          "lower": -0.48413771175,
+          "upper": 4.48413771175
+        }
+      ]
+    }
+  },
+  {
+    "id": "MCP-pie chart",
+    "claim": "Current chart-intent resolution",
+    "outcome": "accepted",
+    "details": {
+      "schemaVersion": 4,
+      "packageVersion": "0.0.12",
+      "query": "pie chart",
+      "matchedConstraints": [
+        "chart.pie"
+      ],
+      "actionPlan": [
+        {
+          "step": 1,
+          "id": "action.createPieChart",
+          "kind": "action",
+          "name": "createArcMark",
+          "constraints": [
+            "chart.pie"
+          ],
+          "requiredOptions": [
+            "innerRadius"
+          ],
+          "signature": "createArcMark(options?: { id?: string; data?: string; innerRadius?: number; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;",
+          "route": "/reference/actions/marks/#createarcmark"
+        },
+        {
+          "step": 2,
+          "id": "action.encodeTheta",
+          "kind": "action",
+          "name": "encodeTheta",
+          "constraints": [],
+          "requiredOptions": [
+            "field",
+            "fieldType"
+          ],
+          "signature": "encodeTheta(options: ThetaEncodingOptions): ChartProgram;",
+          "route": "/reference/actions/encodings/#encodetheta"
+        },
+        {
+          "step": 3,
+          "id": "action.encodeColor",
+          "kind": "action",
+          "name": "encodeColor",
+          "constraints": [],
+          "requiredOptions": [
+            "field"
+          ],
+          "signature": "encodeColor(options: ColorEncodingOptions): ChartProgram;",
+          "route": "/reference/actions/encodings/#encodecolor"
+        }
+      ],
+      "exactCalls": [
+        "program.createArcMark({ innerRadius: 0 })",
+        "program.encodeTheta({ field: \"value\", fieldType: \"quantitative\" })",
+        "program.encodeColor({ field: \"category\" })"
+      ],
+      "appliedOptions": [],
+      "placeholderBindings": [
+        {
+          "name": "values",
+          "kind": "binding",
+          "required": true,
+          "usedBy": [
+            "createData"
+          ],
+          "reason": "Supply the caller-owned dataset rows before running the authoring block."
+        },
+        {
+          "name": "value",
+          "kind": "field",
+          "required": true,
+          "usedBy": [
+            "encodeTheta"
+          ],
+          "reason": "Replace this template name unless the input dataset declares the same field."
+        },
+        {
+          "name": "category",
+          "kind": "field",
+          "required": true,
+          "usedBy": [
+            "encodeColor"
+          ],
+          "reason": "Replace this template name unless the input dataset declares the same field."
+        }
+      ],
+      "unmatchedRequirements": [],
+      "authoring": {
+        "imports": [
+          "import { chart } from \"ggaction\";"
+        ],
+        "initialize": "let program = chart()",
+        "prerequisites": [
+          {
+            "id": "action.createCanvas",
+            "signature": "createCanvas(options?: CanvasOptions): ChartProgram;",
+            "call": "program = program.createCanvas({ width: 800, height: 600, margin: { top: 140, right: 220, bottom: 120, left: 260 } })",
+            "bindings": []
+          },
+          {
+            "id": "action.createData",
+            "signature": "createData(options: { id?: string; values: readonly unknown[] }): ChartProgram;",
+            "call": "program = program.createData({ values })",
+            "bindings": [
+              "values"
+            ]
+          }
+        ],
+        "steps": [
+          "program = program.createArcMark({ innerRadius: 0 })",
+          "program = program.encodeTheta({ field: \"value\", fieldType: \"quantitative\" })",
+          "program = program.encodeColor({ field: \"category\" })"
+        ]
+      },
+      "unsupported": [],
+      "unresolved": [],
+      "candidates": [
+        {
+          "id": "action.createPieChart",
+          "kind": "action",
+          "name": "createArcMark",
+          "route": "/reference/actions/marks/#createarcmark"
+        },
+        {
+          "id": "action.encodeTheta",
+          "kind": "action",
+          "name": "encodeTheta",
+          "route": "/reference/actions/encodings/#encodetheta"
+        },
+        {
+          "id": "action.encodeColor",
+          "kind": "action",
+          "name": "encodeColor",
+          "route": "/reference/actions/encodings/#encodecolor"
+        }
+      ]
+    }
+  },
+  {
+    "id": "MCP-density plot",
+    "claim": "Current chart-intent resolution",
+    "outcome": "accepted",
+    "details": {
+      "schemaVersion": 4,
+      "packageVersion": "0.0.12",
+      "query": "density plot",
+      "matchedConstraints": [
+        "chart.density"
+      ],
+      "actionPlan": [
+        {
+          "step": 1,
+          "id": "action.createAreaMark",
+          "kind": "action",
+          "name": "createAreaMark",
+          "constraints": [],
+          "requiredOptions": [
+            "id"
+          ],
+          "signature": "createAreaMark(options?: { id?: string; data?: string; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; }): ChartProgram;",
+          "route": "/reference/actions/marks/#createareamark"
+        },
+        {
+          "step": 2,
+          "id": "action.encodeDensity",
+          "kind": "action",
+          "name": "encodeDensity",
+          "constraints": [
+            "chart.density"
+          ],
+          "requiredOptions": [
+            "field",
+            "target"
+          ],
+          "signature": "encodeDensity(options: DensityEncodingOptions): ChartProgram;",
+          "route": "/reference/actions/encodings/#encodedensity"
+        }
+      ],
+      "exactCalls": [
+        "program.createAreaMark({ id: \"densityArea\" })",
+        "program.encodeDensity({ field: \"value\", target: \"densityArea\" })"
+      ],
+      "appliedOptions": [],
+      "placeholderBindings": [
+        {
+          "name": "values",
+          "kind": "binding",
+          "required": true,
+          "usedBy": [
+            "createData"
+          ],
+          "reason": "Supply the caller-owned dataset rows before running the authoring block."
+        },
+        {
+          "name": "value",
+          "kind": "field",
+          "required": true,
+          "usedBy": [
+            "encodeDensity"
+          ],
+          "reason": "Replace this template name unless the input dataset declares the same field."
+        }
+      ],
+      "unmatchedRequirements": [],
+      "authoring": {
+        "imports": [
+          "import { chart } from \"ggaction\";"
+        ],
+        "initialize": "let program = chart()",
+        "prerequisites": [
+          {
+            "id": "action.createCanvas",
+            "signature": "createCanvas(options?: CanvasOptions): ChartProgram;",
+            "call": "program = program.createCanvas({ width: 800, height: 600, margin: { top: 140, right: 220, bottom: 120, left: 260 } })",
+            "bindings": []
+          },
+          {
+            "id": "action.createData",
+            "signature": "createData(options: { id?: string; values: readonly unknown[] }): ChartProgram;",
+            "call": "program = program.createData({ values })",
+            "bindings": [
+              "values"
+            ]
+          }
+        ],
+        "steps": [
+          "program = program.createAreaMark({ id: \"densityArea\" })",
+          "program = program.encodeDensity({ field: \"value\", target: \"densityArea\" })"
+        ]
+      },
+      "unsupported": [],
+      "unresolved": [],
+      "candidates": [
+        {
+          "id": "action.createAreaMark",
+          "kind": "action",
+          "name": "createAreaMark",
+          "route": "/reference/actions/marks/#createareamark"
+        },
+        {
+          "id": "action.encodeDensity",
+          "kind": "action",
+          "name": "encodeDensity",
+          "route": "/reference/actions/encodings/#encodedensity"
+        }
+      ]
+    }
+  },
+  {
+    "id": "MCP-rose chart",
+    "claim": "Current chart-intent resolution",
+    "outcome": "accepted",
+    "details": {
+      "schemaVersion": 4,
+      "packageVersion": "0.0.12",
+      "query": "rose chart",
+      "matchedConstraints": [
+        "chart.rose"
+      ],
+      "actionPlan": [
+        {
+          "step": 1,
+          "id": "action.createRoseChart",
+          "kind": "action",
+          "name": "createArcMark",
+          "constraints": [
+            "chart.rose"
+          ],
+          "requiredOptions": [
+            "padAngle",
+            "opacity"
+          ],
+          "signature": "createArcMark(options?: { id?: string; data?: string; innerRadius?: number; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;",
+          "route": "/reference/actions/marks/#createarcmark"
+        },
+        {
+          "step": 2,
+          "id": "action.encodeTheta",
+          "kind": "action",
+          "name": "encodeTheta",
+          "constraints": [],
+          "requiredOptions": [
+            "field",
+            "fieldType"
+          ],
+          "signature": "encodeTheta(options: ThetaEncodingOptions): ChartProgram;",
+          "route": "/reference/actions/encodings/#encodetheta"
+        },
+        {
+          "step": 3,
+          "id": "action.encodeR",
+          "kind": "action",
+          "name": "encodeR",
+          "constraints": [],
+          "requiredOptions": [
+            "field",
+            "fieldType"
+          ],
+          "signature": "encodeR(options: RadialEncodingOptions): ChartProgram;",
+          "route": "/reference/actions/encodings/#encoder"
+        },
+        {
+          "step": 4,
+          "id": "action.encodeColor",
+          "kind": "action",
+          "name": "encodeColor",
+          "constraints": [],
+          "requiredOptions": [
+            "field",
+            "layout"
+          ],
+          "signature": "encodeColor(options: ColorEncodingOptions): ChartProgram;",
+          "route": "/reference/actions/encodings/#encodecolor"
+        }
+      ],
+      "exactCalls": [
+        "program.createArcMark({ padAngle: 1, opacity: 0.9 })",
+        "program.encodeTheta({ field: \"category\", fieldType: \"ordinal\" })",
+        "program.encodeR({ field: \"value\", fieldType: \"quantitative\" })",
+        "program.encodeColor({ field: \"series\", layout: \"overlay\" })"
+      ],
+      "appliedOptions": [],
+      "placeholderBindings": [
+        {
+          "name": "values",
+          "kind": "binding",
+          "required": true,
+          "usedBy": [
+            "createData"
+          ],
+          "reason": "Supply the caller-owned dataset rows before running the authoring block."
+        },
+        {
+          "name": "category",
+          "kind": "field",
+          "required": true,
+          "usedBy": [
+            "encodeTheta"
+          ],
+          "reason": "Replace this template name unless the input dataset declares the same field."
+        },
+        {
+          "name": "value",
+          "kind": "field",
+          "required": true,
+          "usedBy": [
+            "encodeR"
+          ],
+          "reason": "Replace this template name unless the input dataset declares the same field."
+        },
+        {
+          "name": "series",
+          "kind": "field",
+          "required": true,
+          "usedBy": [
+            "encodeColor"
+          ],
+          "reason": "Replace this template name unless the input dataset declares the same field."
+        }
+      ],
+      "unmatchedRequirements": [],
+      "authoring": {
+        "imports": [
+          "import { chart } from \"ggaction\";"
+        ],
+        "initialize": "let program = chart()",
+        "prerequisites": [
+          {
+            "id": "action.createCanvas",
+            "signature": "createCanvas(options?: CanvasOptions): ChartProgram;",
+            "call": "program = program.createCanvas({ width: 800, height: 600, margin: { top: 140, right: 220, bottom: 120, left: 260 } })",
+            "bindings": []
+          },
+          {
+            "id": "action.createData",
+            "signature": "createData(options: { id?: string; values: readonly unknown[] }): ChartProgram;",
+            "call": "program = program.createData({ values })",
+            "bindings": [
+              "values"
+            ]
+          }
+        ],
+        "steps": [
+          "program = program.createArcMark({ padAngle: 1, opacity: 0.9 })",
+          "program = program.encodeTheta({ field: \"category\", fieldType: \"ordinal\" })",
+          "program = program.encodeR({ field: \"value\", fieldType: \"quantitative\" })",
+          "program = program.encodeColor({ field: \"series\", layout: \"overlay\" })"
+        ]
+      },
+      "unsupported": [],
+      "unresolved": [],
+      "candidates": [
+        {
+          "id": "action.createRoseChart",
+          "kind": "action",
+          "name": "createArcMark",
+          "route": "/reference/actions/marks/#createarcmark"
+        },
+        {
+          "id": "action.encodeTheta",
+          "kind": "action",
+          "name": "encodeTheta",
+          "route": "/reference/actions/encodings/#encodetheta"
+        },
+        {
+          "id": "action.encodeR",
+          "kind": "action",
+          "name": "encodeR",
+          "route": "/reference/actions/encodings/#encoder"
+        }
+      ]
+    }
+  },
+  {
+    "id": "MCP-radial bar chart",
+    "claim": "Current chart-intent resolution",
+    "outcome": "accepted",
+    "details": {
+      "schemaVersion": 4,
+      "packageVersion": "0.0.12",
+      "query": "radial bar chart",
+      "matchedConstraints": [
+        "chart.bar",
+        "chart.rose"
+      ],
+      "actionPlan": [
+        {
+          "step": 1,
+          "id": "action.createRoseChart",
+          "kind": "action",
+          "name": "createArcMark",
+          "constraints": [
+            "chart.rose"
+          ],
+          "requiredOptions": [
+            "padAngle",
+            "opacity"
+          ],
+          "signature": "createArcMark(options?: { id?: string; data?: string; innerRadius?: number; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;",
+          "route": "/reference/actions/marks/#createarcmark"
+        },
+        {
+          "step": 2,
+          "id": "action.encodeTheta",
+          "kind": "action",
+          "name": "encodeTheta",
+          "constraints": [],
+          "requiredOptions": [
+            "field",
+            "fieldType"
+          ],
+          "signature": "encodeTheta(options: ThetaEncodingOptions): ChartProgram;",
+          "route": "/reference/actions/encodings/#encodetheta"
+        },
+        {
+          "step": 3,
+          "id": "action.encodeR",
+          "kind": "action",
+          "name": "encodeR",
+          "constraints": [],
+          "requiredOptions": [
+            "field",
+            "fieldType"
+          ],
+          "signature": "encodeR(options: RadialEncodingOptions): ChartProgram;",
+          "route": "/reference/actions/encodings/#encoder"
+        },
+        {
+          "step": 4,
+          "id": "action.encodeColor",
+          "kind": "action",
+          "name": "encodeColor",
+          "constraints": [],
+          "requiredOptions": [
+            "field",
+            "layout"
+          ],
+          "signature": "encodeColor(options: ColorEncodingOptions): ChartProgram;",
+          "route": "/reference/actions/encodings/#encodecolor"
+        },
+        {
+          "step": 5,
+          "id": "action.createBarPlot",
+          "kind": "action",
+          "name": "createBarPlot",
+          "constraints": [
+            "chart.bar"
+          ],
+          "requiredOptions": [
+            "x",
+            "y"
+          ],
+          "signature": "createBarPlot(options: CreateBarPlotOptions): ChartProgram;",
+          "route": "/reference/actions/charts-data/#createbarplot"
+        }
+      ],
+      "exactCalls": [
+        "program.createArcMark({ padAngle: 1, opacity: 0.9 })",
+        "program.encodeTheta({ field: \"category\", fieldType: \"ordinal\" })",
+        "program.encodeR({ field: \"value\", fieldType: \"quantitative\" })",
+        "program.encodeColor({ field: \"series\", layout: \"overlay\" })",
+        "program.createBarPlot({ x: { field: \"category\", fieldType: \"nominal\" }, y: { field: \"value\", fieldType: \"quantitative\" } })"
+      ],
+      "appliedOptions": [],
+      "placeholderBindings": [
+        {
+          "name": "values",
+          "kind": "binding",
+          "required": true,
+          "usedBy": [
+            "createData"
+          ],
+          "reason": "Supply the caller-owned dataset rows before running the authoring block."
+        },
+        {
+          "name": "category",
+          "kind": "field",
+          "required": true,
+          "usedBy": [
+            "encodeTheta",
+            "createBarPlot"
+          ],
+          "reason": "Replace this template name unless the input dataset declares the same field."
+        },
+        {
+          "name": "value",
+          "kind": "field",
+          "required": true,
+          "usedBy": [
+            "encodeR",
+            "createBarPlot"
+          ],
+          "reason": "Replace this template name unless the input dataset declares the same field."
+        },
+        {
+          "name": "series",
+          "kind": "field",
+          "required": true,
+          "usedBy": [
+            "encodeColor"
+          ],
+          "reason": "Replace this template name unless the input dataset declares the same field."
+        }
+      ],
+      "unmatchedRequirements": [],
+      "authoring": {
+        "imports": [
+          "import { chart } from \"ggaction\";"
+        ],
+        "initialize": "let program = chart()",
+        "prerequisites": [
+          {
+            "id": "action.createCanvas",
+            "signature": "createCanvas(options?: CanvasOptions): ChartProgram;",
+            "call": "program = program.createCanvas({ width: 800, height: 600, margin: { top: 140, right: 220, bottom: 120, left: 260 } })",
+            "bindings": []
+          },
+          {
+            "id": "action.createData",
+            "signature": "createData(options: { id?: string; values: readonly unknown[] }): ChartProgram;",
+            "call": "program = program.createData({ values })",
+            "bindings": [
+              "values"
+            ]
+          }
+        ],
+        "steps": [
+          "program = program.createArcMark({ padAngle: 1, opacity: 0.9 })",
+          "program = program.encodeTheta({ field: \"category\", fieldType: \"ordinal\" })",
+          "program = program.encodeR({ field: \"value\", fieldType: \"quantitative\" })",
+          "program = program.encodeColor({ field: \"series\", layout: \"overlay\" })",
+          "program = program.createBarPlot({ x: { field: \"category\", fieldType: \"nominal\" }, y: { field: \"value\", fieldType: \"quantitative\" } })"
+        ]
+      },
+      "unsupported": [],
+      "unresolved": [],
+      "candidates": [
+        {
+          "id": "action.createRoseChart",
+          "kind": "action",
+          "name": "createArcMark",
+          "route": "/reference/actions/marks/#createarcmark"
+        },
+        {
+          "id": "action.encodeTheta",
+          "kind": "action",
+          "name": "encodeTheta",
+          "route": "/reference/actions/encodings/#encodetheta"
+        },
+        {
+          "id": "action.encodeR",
+          "kind": "action",
+          "name": "encodeR",
+          "route": "/reference/actions/encodings/#encoder"
+        }
+      ]
+    }
+  },
+  {
+    "id": "MCP-radar chart",
+    "claim": "Current chart-intent resolution",
+    "outcome": "accepted",
+    "details": {
+      "schemaVersion": 4,
+      "packageVersion": "0.0.12",
+      "query": "radar chart",
+      "matchedConstraints": [
+        "chart.radar"
+      ],
+      "actionPlan": [
+        {
+          "step": 1,
+          "id": "action.createRadarChart",
+          "kind": "action",
+          "name": "createLineMark",
+          "constraints": [
+            "chart.radar"
+          ],
+          "requiredOptions": [
+            "closed"
+          ],
+          "signature": "createLineMark(options?: { id?: string; data?: string; strokeWidth?: number; curve?: CurveInterpolation; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;",
+          "route": "/reference/actions/marks/#createlinemark"
+        },
+        {
+          "step": 2,
+          "id": "action.encodeTheta",
+          "kind": "action",
+          "name": "encodeTheta",
+          "constraints": [],
+          "requiredOptions": [
+            "field",
+            "fieldType"
+          ],
+          "signature": "encodeTheta(options: ThetaEncodingOptions): ChartProgram;",
+          "route": "/reference/actions/encodings/#encodetheta"
+        },
+        {
+          "step": 3,
+          "id": "action.encodeR",
+          "kind": "action",
+          "name": "encodeR",
+          "constraints": [],
+          "requiredOptions": [
+            "field",
+            "fieldType"
+          ],
+          "signature": "encodeR(options: RadialEncodingOptions): ChartProgram;",
+          "route": "/reference/actions/encodings/#encoder"
+        },
+        {
+          "step": 4,
+          "id": "action.encodeGroup",
+          "kind": "action",
+          "name": "encodeGroup",
+          "constraints": [],
+          "requiredOptions": [
+            "field"
+          ],
+          "signature": "encodeGroup(options: { field: string; target?: string; fieldType?: \"nominal\" }): ChartProgram;",
+          "route": "/reference/actions/encodings/#encodegroup"
+        },
+        {
+          "step": 5,
+          "id": "action.encodeColor",
+          "kind": "action",
+          "name": "encodeColor",
+          "constraints": [],
+          "requiredOptions": [
+            "field"
+          ],
+          "signature": "encodeColor(options: ColorEncodingOptions): ChartProgram;",
+          "route": "/reference/actions/encodings/#encodecolor"
+        }
+      ],
+      "exactCalls": [
+        "program.createLineMark({ closed: true })",
+        "program.encodeTheta({ field: \"category\", fieldType: \"nominal\" })",
+        "program.encodeR({ field: \"value\", fieldType: \"quantitative\" })",
+        "program.encodeGroup({ field: \"series\" })",
+        "program.encodeColor({ field: \"series\" })"
+      ],
+      "appliedOptions": [],
+      "placeholderBindings": [
+        {
+          "name": "values",
+          "kind": "binding",
+          "required": true,
+          "usedBy": [
+            "createData"
+          ],
+          "reason": "Supply the caller-owned dataset rows before running the authoring block."
+        },
+        {
+          "name": "category",
+          "kind": "field",
+          "required": true,
+          "usedBy": [
+            "encodeTheta"
+          ],
+          "reason": "Replace this template name unless the input dataset declares the same field."
+        },
+        {
+          "name": "value",
+          "kind": "field",
+          "required": true,
+          "usedBy": [
+            "encodeR"
+          ],
+          "reason": "Replace this template name unless the input dataset declares the same field."
+        },
+        {
+          "name": "series",
+          "kind": "field",
+          "required": true,
+          "usedBy": [
+            "encodeGroup",
+            "encodeColor"
+          ],
+          "reason": "Replace this template name unless the input dataset declares the same field."
+        }
+      ],
+      "unmatchedRequirements": [],
+      "authoring": {
+        "imports": [
+          "import { chart } from \"ggaction\";"
+        ],
+        "initialize": "let program = chart()",
+        "prerequisites": [
+          {
+            "id": "action.createCanvas",
+            "signature": "createCanvas(options?: CanvasOptions): ChartProgram;",
+            "call": "program = program.createCanvas({ width: 800, height: 600, margin: { top: 140, right: 220, bottom: 120, left: 260 } })",
+            "bindings": []
+          },
+          {
+            "id": "action.createData",
+            "signature": "createData(options: { id?: string; values: readonly unknown[] }): ChartProgram;",
+            "call": "program = program.createData({ values })",
+            "bindings": [
+              "values"
+            ]
+          }
+        ],
+        "steps": [
+          "program = program.createLineMark({ closed: true })",
+          "program = program.encodeTheta({ field: \"category\", fieldType: \"nominal\" })",
+          "program = program.encodeR({ field: \"value\", fieldType: \"quantitative\" })",
+          "program = program.encodeGroup({ field: \"series\" })",
+          "program = program.encodeColor({ field: \"series\" })"
+        ]
+      },
+      "unsupported": [],
+      "unresolved": [],
+      "candidates": [
+        {
+          "id": "action.createRadarChart",
+          "kind": "action",
+          "name": "createLineMark",
+          "route": "/reference/actions/marks/#createlinemark"
+        },
+        {
+          "id": "action.encodeTheta",
+          "kind": "action",
+          "name": "encodeTheta",
+          "route": "/reference/actions/encodings/#encodetheta"
+        },
+        {
+          "id": "action.encodeR",
+          "kind": "action",
+          "name": "encodeR",
+          "route": "/reference/actions/encodings/#encoder"
+        }
+      ]
+    }
+  },
+  {
+    "id": "MCP-area chart",
+    "claim": "Current chart-intent resolution",
+    "outcome": "accepted",
+    "details": {
+      "schemaVersion": 4,
+      "packageVersion": "0.0.12",
+      "query": "area chart",
+      "matchedConstraints": [
+        "chart.area"
+      ],
+      "actionPlan": [
+        {
+          "step": 1,
+          "id": "action.createAreaChart",
+          "kind": "action",
+          "name": "createAreaMark",
+          "constraints": [
+            "chart.area"
+          ],
+          "requiredOptions": [],
+          "signature": "createAreaMark(options?: { id?: string; data?: string; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; }): ChartProgram;",
+          "route": "/reference/actions/marks/#createareamark"
+        },
+        {
+          "step": 2,
+          "id": "action.encodeX",
+          "kind": "action",
+          "name": "encodeX",
+          "constraints": [],
+          "requiredOptions": [
+            "field",
+            "fieldType"
+          ],
+          "signature": "encodeX(options: PositionEncodingOptions | RulePositionEncodingOptions): ChartProgram;",
+          "route": "/reference/actions/encodings/#encodex"
+        },
+        {
+          "step": 3,
+          "id": "action.encodeY",
+          "kind": "action",
+          "name": "encodeY",
+          "constraints": [],
+          "requiredOptions": [
+            "field",
+            "fieldType"
+          ],
+          "signature": "encodeY(options: YPositionEncodingOptions | RulePositionEncodingOptions): ChartProgram;",
+          "route": "/reference/actions/encodings/#encodey"
+        }
+      ],
+      "exactCalls": [
+        "program.createAreaMark({})",
+        "program.encodeX({ field: \"x\", fieldType: \"quantitative\" })",
+        "program.encodeY({ field: \"y\", fieldType: \"quantitative\" })"
+      ],
+      "appliedOptions": [],
+      "placeholderBindings": [
+        {
+          "name": "values",
+          "kind": "binding",
+          "required": true,
+          "usedBy": [
+            "createData"
+          ],
+          "reason": "Supply the caller-owned dataset rows before running the authoring block."
+        },
+        {
+          "name": "x",
+          "kind": "field",
+          "required": true,
+          "usedBy": [
+            "encodeX"
+          ],
+          "reason": "Replace this template name unless the input dataset declares the same field."
+        },
+        {
+          "name": "y",
+          "kind": "field",
+          "required": true,
+          "usedBy": [
+            "encodeY"
+          ],
+          "reason": "Replace this template name unless the input dataset declares the same field."
+        }
+      ],
+      "unmatchedRequirements": [],
+      "authoring": {
+        "imports": [
+          "import { chart } from \"ggaction\";"
+        ],
+        "initialize": "let program = chart()",
+        "prerequisites": [
+          {
+            "id": "action.createCanvas",
+            "signature": "createCanvas(options?: CanvasOptions): ChartProgram;",
+            "call": "program = program.createCanvas({ width: 800, height: 600, margin: { top: 140, right: 220, bottom: 120, left: 260 } })",
+            "bindings": []
+          },
+          {
+            "id": "action.createData",
+            "signature": "createData(options: { id?: string; values: readonly unknown[] }): ChartProgram;",
+            "call": "program = program.createData({ values })",
+            "bindings": [
+              "values"
+            ]
+          }
+        ],
+        "steps": [
+          "program = program.createAreaMark({})",
+          "program = program.encodeX({ field: \"x\", fieldType: \"quantitative\" })",
+          "program = program.encodeY({ field: \"y\", fieldType: \"quantitative\" })"
+        ]
+      },
+      "unsupported": [],
+      "unresolved": [],
+      "candidates": [
+        {
+          "id": "action.createAreaChart",
+          "kind": "action",
+          "name": "createAreaMark",
+          "route": "/reference/actions/marks/#createareamark"
+        },
+        {
+          "id": "action.encodeX",
+          "kind": "action",
+          "name": "encodeX",
+          "route": "/reference/actions/encodings/#encodex"
+        },
+        {
+          "id": "action.encodeY",
+          "kind": "action",
+          "name": "encodeY",
+          "route": "/reference/actions/encodings/#encodey"
+        }
+      ]
+    }
+  },
+  {
+    "id": "MCP-strip plot",
+    "claim": "Current chart-intent resolution",
+    "outcome": "accepted",
+    "details": {
+      "schemaVersion": 4,
+      "packageVersion": "0.0.12",
+      "query": "strip plot",
+      "matchedConstraints": [
+        "mark.tick"
+      ],
+      "actionPlan": [
+        {
+          "step": 1,
+          "id": "action.createTickMark",
+          "kind": "action",
+          "name": "createTickMark",
+          "constraints": [
+            "mark.tick"
+          ],
+          "requiredOptions": [],
+          "signature": "createTickMark(options?: { id?: string; data?: string; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }): ChartProgram;",
+          "route": "/reference/actions/marks/#createtickmark"
+        }
+      ],
+      "exactCalls": [
+        "program.createTickMark({})"
+      ],
+      "appliedOptions": [],
+      "placeholderBindings": [
+        {
+          "name": "values",
+          "kind": "binding",
+          "required": true,
+          "usedBy": [
+            "createData"
+          ],
+          "reason": "Supply the caller-owned dataset rows before running the authoring block."
+        }
+      ],
+      "unmatchedRequirements": [],
+      "authoring": {
+        "imports": [
+          "import { chart } from \"ggaction\";"
+        ],
+        "initialize": "let program = chart()",
+        "prerequisites": [
+          {
+            "id": "action.createCanvas",
+            "signature": "createCanvas(options?: CanvasOptions): ChartProgram;",
+            "call": "program = program.createCanvas({ width: 800, height: 600, margin: { top: 140, right: 220, bottom: 120, left: 260 } })",
+            "bindings": []
+          },
+          {
+            "id": "action.createData",
+            "signature": "createData(options: { id?: string; values: readonly unknown[] }): ChartProgram;",
+            "call": "program = program.createData({ values })",
+            "bindings": [
+              "values"
+            ]
+          }
+        ],
+        "steps": [
+          "program = program.createTickMark({})"
+        ]
+      },
+      "unsupported": [],
+      "unresolved": [],
+      "candidates": [
+        {
+          "id": "action.createTickMark",
+          "kind": "action",
+          "name": "createTickMark",
+          "route": "/reference/actions/marks/#createtickmark"
+        }
+      ]
+    }
+  }
+]

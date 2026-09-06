@@ -98,6 +98,10 @@ function encodingView(dataset, extraOperations = []) {
       categoryEnd: categories[(categories.indexOf(String(row.category)) + 1) % categories.length],
       groupEnd: groups[(groups.indexOf(String(row.subgroup)) + 1) % groups.length],
       time: row.time,
+      timeYear: new Date(row.time).getUTCFullYear(),
+      timeTimestamp: new Date(row.time).getTime(),
+      timeYearEnd: new Date(source.rows[(index + 1) % source.rows.length].time).getUTCFullYear(),
+      timeTimestampEnd: new Date(source.rows[(index + 1) % source.rows.length].time).getTime(),
       timeEnd: source.rows[(index + 1) % source.rows.length].time,
       order: index + 1,
       angle: index * 360 / source.rows.length,
@@ -192,6 +196,8 @@ function pointPair(program, id, x, y) {
 
 function aggregateVariants() {
   return [
+    { aggregate: { op: "ciLower", method: "normal", level: 0.9 }, stack: null },
+    { aggregate: { op: "ciUpper", method: "student-t", level: 0.95 }, stack: null },
     { aggregate: { op: "first", orderBy: "order", order: "ascending" }, stack: "zero" },
     { aggregate: { op: "last", orderBy: "order", order: "descending" }, stack: "normalize" },
     { aggregate: { op: "quantile", probability: 0.5 }, stack: null },
@@ -497,12 +503,48 @@ function addPositionScales(program) {
   });
 }
 
+const TEMPORAL_MODES = Object.freeze([
+  { temporalUnit: "auto", field: "time", end: "timeEnd" },
+  { temporalUnit: "year", field: "timeYear", end: "timeYearEnd" },
+  { temporalUnit: "timestamp", field: "timeTimestamp", end: "timeTimestampEnd" }
+]);
+
+function addAreaDatumRanges(program) {
+  let next = program;
+  for (const axis of ["x", "y"]) for (const baseline of [0, 1, 2]) {
+    const id = `area-${axis}-datum-${baseline}`;
+    const independent = axis === "x" ? "encodeY" : "encodeX";
+    const range = axis === "x" ? "encodeXRange" : "encodeYRange";
+    next = next.createAreaMark({ id, data: "analysisRows", opacity: 0.15 })
+      [independent]({ target: id, field: "order", coordinate: `${id}-coordinate`, scale: { id: `${id}-independent` } })
+      [range]({ target: id, lower: { datum: baseline }, upper: axis, scale: { id: `${id}-measure` } })
+      [range]({ target: id, lower: axis, upper: { datum: baseline } });
+  }
+  return next;
+}
+
+function addTemporalRanges(program) {
+  let next = program;
+  for (const mode of TEMPORAL_MODES) {
+    const id = `temporal-ranges-${mode.temporalUnit}`;
+    const options = { target: id, fieldType: "temporal", temporalUnit: mode.temporalUnit };
+    next = next.createRuleMark({ id, data: "analysisRows" })
+      .encodeXRange({ ...options, coordinate: `${id}-coordinate`, lower: mode.field, upper: mode.end, scale: timeScale(`${id}-x`, false, { unknown: false }) })
+      .encodeYRange({ ...options, lower: mode.field, upper: mode.end, scale: timeScale(`${id}-y`, false, { unknown: false }) })
+      .encodeX({ ...options, field: mode.field })
+      .encodeY({ ...options, field: mode.field })
+      .encodeX2({ ...options, field: mode.end })
+      .encodeY2({ ...options, field: mode.end });
+  }
+  return next;
+}
+
 function buildPositionCoverage(factors) {
   const view = encodingView(factors.dataset, [{
     op: "direct-position-encoding-exercise",
     actions: POSITION_ACTIONS
   }]);
-  let program = addPositionScales(programFor(view));
+  let program = addAreaDatumRanges(addTemporalRanges(addPositionScales(programFor(view))));
   program = addHorizontalAggregateBars(program);
   program = addVerticalAggregateBars(program);
   program = addBinnedX(program);
@@ -545,6 +587,7 @@ function addColorScales(program) {
       fieldType: "quantitative",
       scale: {
         id: `${id}-color`, type: "sequential", domain: "auto",
+        midpoint: "auto",
         ...(index < 2
           ? { palette: index === 0 ? "viridis" : "magma" }
           : index === 7
@@ -821,7 +864,7 @@ function addAppearanceEncodings(program) {
       field: "y", scale: { id: "text-field-y", zero: false }
     })
     .encodeText({ target: "text-field", field: "label", format: "auto" });
-  return next.createTextMark({ id: "text-value", data: "analysisRows", fontSize: 10 })
+  next = next.createTextMark({ id: "text-value", data: "analysisRows", fontSize: 10 })
     .encodeX({
       target: "text-value", coordinate: "text-value-coordinate",
       field: "x", scale: { id: "text-value-x", zero: false }
@@ -831,6 +874,23 @@ function addAppearanceEncodings(program) {
       field: "y", scale: { id: "text-value-y", zero: false }
     })
     .encodeText({ target: "text-value", value: 42.25, format: ".2f" });
+  const source = "text-content-source";
+  next = completeBar(next, source)
+    .encodeColor({ target: source, field: "group", layout: "stack" });
+  for (const [id, options] of [
+    ["text-content-category", { content: "category", format: "auto" }],
+    ["text-content-value", { content: "value", format: ".1f" }],
+    ["text-content-share-source", {
+      content: "share", normalizeBy: "source", format: ".1%"
+    }],
+    ["text-content-share-category", {
+      content: "share", normalizeBy: "category", format: ".1%"
+    }]
+  ]) {
+    next = next.createTextMark({ id, source, fontSize: 9 })
+      .encodeText({ target: id, ...options });
+  }
+  return next;
 }
 
 function buildAppearanceCoverage(factors) {
@@ -841,6 +901,13 @@ function buildAppearanceCoverage(factors) {
   let program = addColorScales(programFor(view));
   program = addColorAggregatesAndLayouts(program);
   program = addAppearanceEncodings(program);
+  for (const mode of TEMPORAL_MODES) {
+    const id = `color-input-${mode.temporalUnit}`;
+    program = positionedPoint(program, id).encodeColor({
+      target: id, field: mode.field, fieldType: "temporal", temporalUnit: mode.temporalUnit,
+      scale: { id: `${id}-scale`, type: "sequential", palette: "viridis" }
+    });
+  }
   return finish(program, factors, "direct-appearance-encoding-options");
 }
 
@@ -857,6 +924,10 @@ function buildPolarCoverage(factors) {
   }]);
   let program = programFor(view);
   const thetaVariants = [
+    ...TEMPORAL_MODES.map(mode => ({ id: `input-${mode.temporalUnit}`, theta: {
+      field: mode.field, fieldType: "temporal", temporalUnit: mode.temporalUnit,
+      scale: timeScale(`theta-input-${mode.temporalUnit}`, false, { unknown: false })
+    } })),
     {
       id: "linear",
       theta: {
@@ -935,6 +1006,17 @@ function buildPolarCoverage(factors) {
     ...QUANTITATIVE_TYPES.map(type => `radius-${type}`)
   ]) {
     program = program.removeMark({ target: id });
+  }
+  for (const mapping of ["area", "radius-length"]) {
+    for (const aggregate of ["count", "sum"]) {
+      const id = `measured-${mapping}-${aggregate}`;
+      program = program.createArcMark({ id, data: "analysisRows", innerRadius: 0.3 })
+        .encodeTheta({ target: id, coordinate: `${id}-coordinate`, field: "category", fieldType: "nominal" })
+        .encodeR({ target: id, mapping, aggregate,
+          ...(aggregate === "sum" ? { field: "radius" } : {}),
+          scale: { id: `${id}-scale` } })
+        .encodeColor({ target: id, field: "category" });
+    }
   }
   return finish(program, factors, "direct-polar-encoding-options");
 }

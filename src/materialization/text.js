@@ -1,5 +1,8 @@
 import { resolveBarChannels } from "../grammar/bars/policy.js";
+import { resolveMarkLabelValues } from "../grammar/markLabels.js";
 import { formatTextValue } from "../grammar/text.js";
+import { normalizePositionDatum } from "../grammar/positionDatum.js";
+import { mapOrdinalPositionValues } from "../grammar/scales/index.js";
 import { findDataset } from "../selectors/datasets.js";
 import { findLayer } from "../selectors/layers.js";
 import { resolveMarkItems } from "./selection/policies/index.js";
@@ -7,6 +10,14 @@ import { mapScaleConsumerValues } from "./scales/map.js";
 import { resolveRowEncodingValues } from "./rowEncoding.js";
 
 function sourceValue(item, source, field) {
+  const measure = source.mark.type === "bar" ? resolveBarChannels(source).measure
+    : source.mark.type === "arc" ? "radius" : undefined;
+  const encoding = source.encoding?.[measure];
+  if (encoding?.field === field && encoding.aggregate != null && item.channels[measure] !== undefined) {
+    return source.mark.type === "bar"
+      ? item.channels[`${measure}2`] ?? item.channels[measure]
+      : item.channels[measure];
+  }
   if (Object.hasOwn(item.fields, field)) return item.fields[field];
   for (const [channel, encoding] of Object.entries(source.encoding ?? {})) {
     if (encoding?.field !== field || item.channels[channel] === undefined) continue;
@@ -17,6 +28,10 @@ function sourceValue(item, source, field) {
   }
   if (item.members.length === 1 && Object.hasOwn(item.members[0], field)) {
     return item.members[0][field];
+  }
+  if (source.mark.type === "line" && item.members.length > 0) {
+    const endpoint = item.members.at(-1);
+    if (Object.hasOwn(endpoint, field)) return endpoint[field];
   }
   return undefined;
 }
@@ -53,6 +68,17 @@ function sourceAnchor(program, source, item) {
       x: item.properties.x2,
       y: item.properties.y2
     };
+  }
+  if (source.mark.type === "line") {
+    const graphicId = item.graphicIds?.[0];
+    const graphic = program.graphicSpec.objects[source.id]?.items?.find(
+      candidate => candidate.id === graphicId
+    );
+    const commands = graphic?.properties?.commands;
+    const endpoint = Array.isArray(commands)
+      ? [...commands].reverse().find(command => Number.isFinite(command.x) && Number.isFinite(command.y))
+      : undefined;
+    return { x: endpoint?.x, y: endpoint?.y };
   }
   return { x: item.properties.x, y: item.properties.y };
 }
@@ -122,12 +148,14 @@ function resolveSourceTextItems(program, layer, config) {
     throw new Error(`Text mark "${layer.id}" requires source layer "${layer.source}".`);
   }
   const items = resolveMarkItems(program, source.id);
-  return items.flatMap(item => {
+  const values = layer.encoding.text.content === undefined ? undefined
+    : resolveMarkLabelValues(source, items, layer.encoding.text);
+  return items.flatMap((item, index) => {
     const anchor = sourceAnchor(program, source, item);
     const concrete = concreteItem(
       sourceTextConfig(config, source, item),
       anchor,
-      contentValue(layer.encoding.text, item, source),
+      values === undefined ? contentValue(layer.encoding.text, item, source) : values[index],
       layer.encoding.text.format
     );
     return concrete === undefined ? [] : [{ graphic: concrete, anchor }];
@@ -139,10 +167,41 @@ function resolveRowTextItems(program, layer, config) {
   if (dataset === undefined) {
     throw new Error(`Text mark "${layer.id}" requires an existing dataset.`);
   }
-  const x = resolveRowEncodingValues(program, layer, dataset, "x");
-  const y = resolveRowEncodingValues(program, layer, dataset, "y");
+  const encodings = [layer.encoding?.x, layer.encoding?.y, layer.encoding?.text];
+  const length = encodings.some(encoding => encoding !== undefined && Object.hasOwn(encoding, "field"))
+    ? dataset.values.length
+    : 1;
+  const positionValues = channel => {
+    const encoding = layer.encoding?.[channel];
+    if (encoding === undefined) return undefined;
+    if (Object.hasOwn(encoding, "field")) {
+      return resolveRowEncodingValues(program, layer, dataset, channel);
+    }
+    const scale = program.resolvedScales[encoding.scale];
+    if (scale === undefined) {
+      throw new Error(
+        `text mark "${layer.id}" requires resolved ${channel} scale "${encoding.scale}".`
+      );
+    }
+    const datum = normalizePositionDatum(
+      encoding.datum,
+      encoding.fieldType,
+      channel,
+      encoding.temporalUnit,
+      "Text"
+    );
+    const mapped = ["nominal", "ordinal"].includes(encoding.fieldType)
+      ? mapOrdinalPositionValues([datum], scale)
+      : mapScaleConsumerValues([datum], scale, channel);
+    return Array.from({ length }, () => mapped[0]);
+  };
+  const x = positionValues("x");
+  const y = positionValues("y");
   if (x === undefined || y === undefined) return [];
-  return dataset.values.flatMap((row, index) => {
+  const rows = length === 1 && dataset.values.length === 0
+    ? [undefined]
+    : dataset.values.slice(0, length);
+  return rows.flatMap((row, index) => {
     const concrete = concreteItem(
       config,
       { x: x[index], y: y[index] },

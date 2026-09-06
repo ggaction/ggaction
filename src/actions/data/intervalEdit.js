@@ -7,7 +7,7 @@ import { planDerivedDataRevision } from
 import { findDataset } from "../../selectors/datasets.js";
 import { resolveEligibleLayer } from "../../selectors/layers.js";
 
-const STATISTICS_OPTIONS = Object.freeze(["center", "extent", "level"]);
+const STATISTICS_OPTIONS = Object.freeze(["center", "extent", "method", "level"]);
 
 export function ownOptions(value, options) {
   return Object.fromEntries(
@@ -42,6 +42,7 @@ export function createResolvedIntervalData(program, resolved) {
     groupBy: resolved.groupBy,
     center: resolved.interval.center,
     extent: resolved.interval.extent,
+    method: resolved.interval.method,
     level: resolved.interval.level,
     as: resolved.fields
   });
@@ -49,7 +50,9 @@ export function createResolvedIntervalData(program, resolved) {
 
 export function applyIntervalRevision(program, interval) {
   if (!interval.changed) return program;
-  let next = program.createIntervalData(interval.dataArgs);
+  let next = interval.dataArgs === undefined
+    ? program
+    : program.createIntervalData(interval.dataArgs);
   for (const rebind of interval.revision.rebinds) {
     next = next.rebindLayerData(rebind);
   }
@@ -57,9 +60,82 @@ export function applyIntervalRevision(program, interval) {
 }
 
 export function releaseIntervalRevision(program, interval) {
-  return interval.changed
+  return interval.changed && interval.revision.release !== undefined
     ? program.releaseDerivedData(interval.revision.release)
     : program;
+}
+
+export function findIntervalTransform(program, data) {
+  const dataset = findDataset(program, data);
+  return dataset?.transform?.length === 1 &&
+    dataset.transform[0].type === "interval"
+    ? dataset.transform[0]
+    : undefined;
+}
+
+export function collectIntervalConsumers(program, owners) {
+  const consumers = new Set(owners);
+  let changed = true;
+  while (changed) {
+    changed = false;
+    for (const layer of program.semanticSpec.layers ?? []) {
+      if (
+        layer.source !== undefined &&
+        consumers.has(layer.source) &&
+        !consumers.has(layer.id)
+      ) {
+        consumers.add(layer.id);
+        changed = true;
+      }
+    }
+  }
+  return [...consumers];
+}
+
+export function planIntervalRoleData(program, {
+  owner,
+  currentData,
+  candidate,
+  consumers
+}) {
+  const previousTransform = findIntervalTransform(program, currentData);
+  if (candidate.interval.mode === "statistical") {
+    const revision = planDerivedDataRevision(program, {
+      owner,
+      role: "IntervalData",
+      ...(previousTransform === undefined ? {} : { previous: currentData }),
+      consumers
+    });
+    return {
+      changed: true,
+      revision,
+      dataId: revision.id,
+      dataArgs: {
+        id: revision.id,
+        source: candidate.source,
+        field: candidate.interval.field,
+        groupBy: candidate.groupBy,
+        center: candidate.interval.center,
+        extent: candidate.interval.extent,
+        method: candidate.interval.method,
+        level: candidate.interval.level,
+        as: candidate.fields
+      }
+    };
+  }
+  const changed = currentData !== candidate.source;
+  return {
+    changed,
+    dataId: candidate.source,
+    revision: {
+      rebinds: changed
+        ? consumers.map(id => ({ id, data: candidate.source }))
+        : [],
+      ...(previousTransform === undefined
+        ? {}
+        : { release: { id: currentData } })
+    }
+  };
 }
 
 export function planIntervalEdit(program, {
@@ -75,7 +151,7 @@ export function planIntervalEdit(program, {
   validateKeys(statistics, STATISTICS_OPTIONS, `${operation} statistics`);
   if (!STATISTICS_OPTIONS.some(key => Object.hasOwn(statistics, key))) {
     throw new Error(
-      `${operation} statistics requires center, extent, or level.`
+      `${operation} statistics requires center, extent, method, or level.`
     );
   }
   const previous = findDataset(program, data);
@@ -95,6 +171,11 @@ export function planIntervalEdit(program, {
     ? statistics.extent
     : transform.extent;
   const raw = { center, extent };
+  if (Object.hasOwn(statistics, "method")) {
+    raw.method = statistics.method;
+  } else if (extent === "ci" && transform.extent === "ci") {
+    raw.method = transform.method;
+  }
   if (Object.hasOwn(statistics, "level")) {
     raw.level = statistics.level;
   } else if (extent === "ci" && transform.extent === "ci") {
@@ -104,6 +185,7 @@ export function planIntervalEdit(program, {
   const current = {
     center: transform.center,
     extent: transform.extent,
+    ...(transform.method === undefined ? {} : { method: transform.method }),
     ...(transform.level === undefined ? {} : { level: transform.level })
   };
   const changed = JSON.stringify(parameters) !== JSON.stringify(current);

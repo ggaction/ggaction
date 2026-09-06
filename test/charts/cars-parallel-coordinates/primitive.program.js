@@ -237,9 +237,9 @@ export function createCarsParallelPrimitiveResult(cars) {
       type: "line",
       length: legend.length
     })
-    .editGraphics({ target: "seriesLegendSymbols", property: "x1", value: 742 })
+    .editGraphics({ target: "seriesLegendSymbols", property: "x1", value: 743.5 })
     .editGraphics({ target: "seriesLegendSymbols", property: "y1", value: legend.map(item => item.y) })
-    .editGraphics({ target: "seriesLegendSymbols", property: "x2", value: 766 })
+    .editGraphics({ target: "seriesLegendSymbols", property: "x2", value: 767.5 })
     .editGraphics({ target: "seriesLegendSymbols", property: "y2", value: legend.map(item => item.y) })
     .editGraphics({ target: "seriesLegendSymbols", property: "stroke", value: legend.map(item => item.color) })
     .editGraphics({ target: "seriesLegendSymbols", property: "strokeWidth", value: 3 })
@@ -254,7 +254,7 @@ export function createCarsParallelPrimitiveResult(cars) {
       type: "text",
       length: legend.length
     })
-    .editGraphics({ target: "seriesLegendLabels", property: "x", value: 776 })
+    .editGraphics({ target: "seriesLegendLabels", property: "x", value: 779 })
     .editGraphics({ target: "seriesLegendLabels", property: "y", value: legend.map(item => item.y) })
     .editGraphics({ target: "seriesLegendLabels", property: "text", value: legend.map(item => item.label) })
     .editGraphics({ target: "seriesLegendLabels", property: "fill", value: "#334155" })

@@ -115,7 +115,7 @@ test("calls every user-facing action directly from a generated scenario root", (
     directTraceOperations(buildScenario(descriptor), directOperations);
   }
 
-  assert.equal(publicActions.length, 167);
+  assert.equal(publicActions.length, 228);
   assert.deepEqual(
     publicActions.filter(operation => !directOperations.has(operation)),
     []
@@ -210,8 +210,8 @@ test("retains direct action effects in final semantic and graphic state", () => 
   assertRenderedItems(aggregateGuides, "xAxisTicks");
   assertRenderedItems(aggregateGuides, "yAxisLabels");
   assertRenderedItems(aggregateGuides, "horizontalGridLines");
-  assertRenderedItems(aggregateGuides, "seriesLegendSymbols");
-  renderedObject(aggregateGuides, "seriesLegendTitle");
+  assertRenderedItems(aggregateGuides, "colorLegendSymbols");
+  renderedObject(aggregateGuides, "colorLegendTitle");
 
   const axisFacades = buildLifecycleRecipe("action-direct-axis-facades");
   for (const id of [

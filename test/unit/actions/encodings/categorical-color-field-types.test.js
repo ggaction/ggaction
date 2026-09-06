@@ -38,7 +38,7 @@ test("maps numeric ordinal point categories in first-appearance order", () => {
     program.graphicSpec.objects.points.items.map(item => item.properties.fill)
   ).size, 3);
   assert.deepEqual(
-    program.graphicSpec.objects.seriesLegendLabels.items.map(
+    program.graphicSpec.objects.colorLegendLabels.items.map(
       item => item.properties.text
     ),
     ["4", "6", "8"]
@@ -62,7 +62,7 @@ test("uses numeric ordinal categories as histogram stack partitions", () => {
     })
     .createLegend();
 
-  assert.equal(program.semanticSpec.layers[0].encoding.color.layout, "stack");
+  assert.equal(program.semanticSpec.layers[0].layout.mode, "stack");
   assert.deepEqual(program.resolvedScales.color.domain, [4, 6, 8]);
   assert.ok(program.graphicSpec.objects.bars.items.length > 0);
   assert.equal(
