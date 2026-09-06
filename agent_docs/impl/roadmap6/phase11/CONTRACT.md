@@ -41,7 +41,7 @@ interface ActionCardV3 extends ActionCardV2 {
   supports: { entryPoints: readonly EntryPoint[] };
   units: readonly {
     path: string;
-    unit: "logical-pixel" | "degree" | "ratio" | "probability" |
+    unit: "logical-pixel" | "degree" | "angle" | "ratio" | "probability" |
       "count" | "calendar-unit" | "temporal-input" | "data-value" | "band-fraction";
   }[];
   inference: readonly {
@@ -92,7 +92,8 @@ interface ActionCardV3 extends ActionCardV2 {
 
 - `supports.entryPoints`는 default/basic program declaration의 exact method set과 runtime prototype method set을 각각
   비교한다. Primitive와 advanced action을 Basic으로 과장하지 않는다.
-- `units`는 숫자라는 이유만으로 추측하지 않는다. Current contract가 정한 logical pixel, degree, ratio/probability,
+- `units`는 숫자라는 이유만으로 추측하지 않는다. Current contract가 정한 logical pixel, fixed degree,
+  explicit degrees-or-radians angle, ratio/probability,
   count, calendar/temporal input, data value와 band fraction만 option path에 연결한다. `innerRadius` ratio와
   `padAngle` degree, temporal input의 `auto|year|timestamp`를 서로 다른 단위로 유지한다.
 - `inference`는 output ID 같은 단순 식별자를 제외한다. Optional target/data/source/coordinate/scale selector의
