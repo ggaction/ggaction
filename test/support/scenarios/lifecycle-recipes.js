@@ -1734,8 +1734,8 @@ function realisticLifecycleMetadata(base, factors) {
   const feature = `feature:${base.id.replace(/^action-/u, "")}`;
   const lifecycleClaims = {
     "action-derived-data": ["create", "filter"],
-    "action-scatter-facade": ["create", "remove"],
-    "action-line-facade": ["create"],
+    "action-scatter-facade": ["create", "edit", "remove"],
+    "action-line-facade": ["create", "edit"],
     "action-area-facade": ["create"],
     "action-bar-facade": ["create"],
     "action-parallel-facade": ["create"],
