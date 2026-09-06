@@ -98,6 +98,7 @@
   "createSummaryData": "/reference/actions/statistics/#createsummarydata",
   "createBinData": "/reference/actions/statistics/#createbindata",
   "createFoldData": "/reference/actions/statistics/#createfolddata",
+  "createComputedData": "/reference/actions/statistics/#createcomputeddata",
   "createHorizonPlot": "/reference/actions/statistics/#createhorizonplot",
   "createDensityPlot": "/reference/actions/statistics/#createdensityplot",
   "createIntervalData": "/reference/actions/statistics/#createintervaldata",

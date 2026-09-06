@@ -736,8 +736,8 @@
         "errors-and-limitations",
         "related"
       ],
-      "bytes": 2408,
-      "sha256": "17c7398bae87d08b664fccc0eef50a199d8d7f1bb12e7492ab4a6916c328e167"
+      "bytes": 2583,
+      "sha256": "af2bc30600c0bce3b03a5d224463c216d0c3bd8f61866d69e59c0079d41a83fa"
     },
     {
       "order": 48,
@@ -752,10 +752,11 @@
         "createsummarydata-id-source-groupby-aggregates-members",
         "createbindata-id-source-field-binoptions",
         "createfolddata-id-source-fields-as",
+        "createcomputeddata-id-source-as-expression",
         "related"
       ],
-      "bytes": 8681,
-      "sha256": "55ef11473f081cf1419f46624515d52f08d2225caf02cf9c51082ed2c147788f"
+      "bytes": 9613,
+      "sha256": "f6d4ea21f4c4db11ea85e46d09815a60c3e2b9194dd95705d7f7412c9c03480a"
     },
     {
       "order": 49,
@@ -1812,8 +1813,8 @@
         "action-reference",
         "exact-action-lookup"
       ],
-      "bytes": 22000,
-      "sha256": "9f9d170ef50f389be8fea7d328eeacd3faf793f252fbb4588f31f930982faadc"
+      "bytes": 22106,
+      "sha256": "cc2bdd16ce0917c41642b1b1b510a61e075a393f1b23d19e3f239eb98c1be617"
     },
     {
       "order": 115,
@@ -1959,6 +1960,7 @@
         "createsummarydata",
         "createbindata",
         "createfolddata",
+        "createcomputeddata",
         "createhorizonplot",
         "createdensityplot",
         "createintervaldata",
@@ -1975,8 +1977,8 @@
         "createviolinplot",
         "related"
       ],
-      "bytes": 9994,
-      "sha256": "660c352c7eb53f8433bba4cd564eadd63b09c3781d0978a7840d9697aeb4a26b"
+      "bytes": 10280,
+      "sha256": "196467e83b0077cf0232dd65c140b7328b0f587be1c922d7144c0b96eb14eefa"
     },
     {
       "order": 119,
@@ -2090,8 +2092,8 @@
         "exact-typescript-signatures",
         "related"
       ],
-      "bytes": 16434,
-      "sha256": "32df3ada1e90eaa0b716359a1a301e30faad544c51324d976b5f8d415c73e071"
+      "bytes": 16500,
+      "sha256": "12620f93e3c7432897bc4df46c953dc3f0b0453e101772cb14e67da5ba645eed"
     },
     {
       "order": 124,

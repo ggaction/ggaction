@@ -518,9 +518,27 @@ export interface DatasetFoldTransform {
     readonly value: string;
   };
 }
+export type ComputedExpression =
+  | { readonly field: string }
+  | { readonly constant: number }
+  | {
+      readonly op: "negate" | "absolute";
+      readonly operand: ComputedExpression;
+    }
+  | {
+      readonly op: "add" | "subtract" | "multiply" | "divide";
+      readonly left: ComputedExpression;
+      readonly right: ComputedExpression;
+    };
+export interface DatasetComputedTransform {
+  readonly type: "computed";
+  readonly as: string;
+  readonly expression: ComputedExpression;
+}
 export type DatasetTransform =
   | DatasetBinTransform
   | DatasetBin2DTransform
+  | DatasetComputedTransform
   | DatasetFilterTransform
   | DatasetFoldTransform
   | DatasetRegressionTransform
@@ -1573,6 +1591,12 @@ export interface FoldDataOptions {
   source?: string;
   fields: readonly string[];
   as?: FoldDataOutputFields;
+}
+export interface ComputedDataOptions {
+  id: string;
+  source?: string;
+  as: string;
+  expression: ComputedExpression;
 }
 
 export interface Bin2DDataOptions {
@@ -3091,6 +3115,7 @@ export class ChartProgram {
   createSummaryData(options: SummaryDataOptions): ChartProgram;
   createBinData(options: BinDataOptions): ChartProgram;
   createFoldData(options: FoldDataOptions): ChartProgram;
+  createComputedData(options: ComputedDataOptions): ChartProgram;
   createRegressionData(options: RegressionDataOptions): ChartProgram;
   createIntervalData(options: IntervalDataOptions): ChartProgram;
   createTimeUnitData(options: TimeUnitDataOptions): ChartProgram;

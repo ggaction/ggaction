@@ -6,6 +6,7 @@ import {
   validateBin2DTransform
 } from "./bin2d.js";
 import { validateDensityTransform } from "./density.js";
+import { validateComputedTransform } from "./computed.js";
 import { validateFilterTransform } from "./filter.js";
 import { validateFoldTransform } from "./fold.js";
 import {
@@ -57,6 +58,11 @@ const TRANSFORM_POLICIES = Object.freeze({
     validate: validateBin2DTransform,
     materializeOp: "materializeBin2DData",
     replayTransform: requestedBin2DTransform
+  }),
+  computed: Object.freeze({
+    ...findTransformTopology("computed"),
+    validate: validateComputedTransform,
+    materializeOp: "materializeComputedData"
   }),
   boxOutlier: Object.freeze({
     ...findTransformTopology("boxOutlier"),

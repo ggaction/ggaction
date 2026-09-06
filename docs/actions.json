@@ -3,7 +3,7 @@
   "packageVersion": "0.0.12",
   "typeSource": "types/program.d.ts",
   "errorPolicy": "An empty errors array means the compact card has no curated error override; consult the canonical route for validation, inference, and recovery behavior.",
-  "count": 205,
+  "count": 206,
   "cards": [
     {
       "schemaVersion": 2,
@@ -624,6 +624,64 @@
       "snippet": "program.createFoldData({ id: \"long\", fields: [\"apples\", \"pears\"] })",
       "errors": [],
       "route": "/reference/actions/statistics/#createfolddata"
+    },
+    {
+      "schemaVersion": 2,
+      "name": "createComputedData",
+      "layer": "user-facing",
+      "domain": "statistics",
+      "summary": "Materialize a finite row-level field from a serializable, closed arithmetic expression.",
+      "signature": "createComputedData(options: ComputedDataOptions): ChartProgram;",
+      "intents": [
+        "create computed data",
+        "create",
+        "add",
+        "statistical layer",
+        "statistical transform",
+        "computed numeric field",
+        "ratio or difference data"
+      ],
+      "lifecycle": "Immutable create-only",
+      "resources": {
+        "prerequisites": [
+          "source dataset"
+        ],
+        "owns": [
+          "computed numeric field"
+        ],
+        "idOptions": [
+          "id",
+          "source"
+        ]
+      },
+      "options": [
+        {
+          "name": "id",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "source",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "as",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "expression",
+          "required": true,
+          "type": "ComputedExpression"
+        }
+      ],
+      "callPatterns": [
+        "createComputedData({ id, as, expression, source? })"
+      ],
+      "snippet": "program.createComputedData({ id: \"ratios\", as: \"ratio\", expression: { op: \"divide\", left: { field: \"part\" }, right: { field: \"whole\" } } })",
+      "errors": [],
+      "route": "/reference/actions/statistics/#createcomputeddata"
     },
     {
       "schemaVersion": 2,

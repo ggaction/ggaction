@@ -238,6 +238,24 @@
       }
     },
     {
+      "name": "createComputedData",
+      "layer": "user-facing",
+      "domain": "statistics",
+      "status": "implemented",
+      "lifecycle": "Immutable create-only",
+      "update": "Create a finite row-level arithmetic field",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/CORE.md",
+        "anchor": "createcomputeddata"
+      }
+    },
+    {
       "name": "createDensityData",
       "layer": "user-facing",
       "domain": "core",
@@ -3740,6 +3758,7 @@
       "materializeBinData",
       "materializeBin2DData",
       "materializeComposition",
+      "materializeComputedData",
       "materializeDensityData",
       "materializeGradientProfileData",
       "materializeHorizonData",

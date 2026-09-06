@@ -385,6 +385,37 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - ✅ Covered: field/output uniqueness, source collision, 64-field and 10,000-row bounds, immutable rejection.
 - Evidence: `test/unit/actions/data/fold-data.test.js`.
 
+## `createComputedData`
+
+- Signature: `createComputedData({ id, source?, as, expression })`
+- `id`, `source`: 새 immutable derived dataset ID와 existing materialized source다. `source` 생략 시
+  current data를 사용한다.
+- `as`: 모든 source row에서 아직 존재하지 않는 non-empty output field다.
+- `expression`: callback/string/eval이 아닌 recursive data AST다. Leaf는 `{ field }` 또는 finite
+  `{ constant }`; unary는 `{ op: "negate" | "absolute", operand }`; binary는
+  `{ op: "add" | "subtract" | "multiply" | "divide", left, right }`다.
+- Effect: source row와 모든 existing cell을 보존하고 각 row에 한 finite quantitative output을 추가한다.
+  Serialized transform 자체가 exact formula provenance다. Facet replay에서는 row-preserving transform으로
+  처리한다.
+- 오류: missing/non-finite operand, divide-by-zero, overflow/non-finite result, output collision, unknown 또는
+  malformed expression node를 첫 state change 전에 거부한다. Expression은 depth 16, 128 nodes,
+  `rows × nodes` 10,000,000 work로 제한한다.
+- Coverage: `test/unit/actions/data/computed-data.test.js`가 field/constant, 모든 unary/binary family,
+  nested formula, ownership, mark consumption과 invalid/non-finite matrix를 검증한다.
+
+### Formal values — `createComputedData`
+
+- Implemented: `createComputedData({ id: UserId; source?: UserId; as: FieldName; expression: ComputedExpression }): ChartProgram`
+- Proposed (NOT IMPLEMENTED): callbacks, expression strings, conditionals, group aggregates, null propagation,
+  transcendental functions와 arbitrary code evaluation.
+
+### Value coverage — `createComputedData`
+
+- ✅ Covered: add/subtract/multiply/divide, negate/absolute, field/finite constant and nested expressions.
+- ✅ Covered: missing/non-finite input, zero denominator, finite overflow and output collision rejection.
+- ✅ Covered: strict node shape/vocabulary, immutable ownership, row grain, depth/node/work bounds.
+- Evidence: `test/unit/actions/data/computed-data.test.js`.
+
 ## `createRegressionData`
 
 - Signature: `createRegressionData({ id, source?, x, y, groupBy?, method?, degree?, span?, confidence?, interval? })`
@@ -515,7 +546,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - `id`: Implemented, 필수 새 dataset ID.
 - `source`: Implemented, 필수 existing dataset ID.
 - `transform`: Implemented, 정확히 하나의 transform definition을 가진 tuple. Public direct-authoring union은
-  filter/fold/regression/density/interval/time-unit/window/summary/bin/bin2d schema이며 값 materialization은 해당 전용 action이 담당한다. Box summary,
+  filter/fold/computed/regression/density/interval/time-unit/window/summary/bin/bin2d schema이며 값 materialization은 해당 전용 action이 담당한다. Box summary,
   box outlier, mark filter provenance는 composite action이 생성하는 internal transform으로 public union에 넣지 않는다.
 - Effect: source와 transform provenance만 저장하고 values는 만들지 않는다.
 - 오류: duplicate ID, unknown source, invalid/empty/multiple transform schema를 거부한다.
@@ -528,7 +559,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 
 ### Formal values — `createDerivedData`
 
-- Implemented: `createDerivedData({ id: UserId; source: UserId; transform: readonly [DatasetTransform] })`, where public `DatasetTransform = FilterTransform | FoldTransform | RegressionTransform | DensityTransform | IntervalTransform | TimeUnitTransform | WindowTransform | SummaryTransform | BinTransform | Bin2DTransform`.
+- Implemented: `createDerivedData({ id: UserId; source: UserId; transform: readonly [DatasetTransform] })`, where public `DatasetTransform = FilterTransform | FoldTransform | ComputedTransform | RegressionTransform | DensityTransform | IntervalTransform | TimeUnitTransform | WindowTransform | SummaryTransform | BinTransform | Bin2DTransform`.
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
@@ -537,7 +568,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - `id`, `source`
   - ✅ Covered: valid IDs, duplicate output, unknown source.
 - `transform`
-  - ✅ Covered: filter/fold/regression/density/interval/time-unit/window/summary/bin/bin2d direct schema, object/empty/multiple/unknown rejection,
+  - ✅ Covered: filter/fold/computed/regression/density/interval/time-unit/window/summary/bin/bin2d direct schema, object/empty/multiple/unknown rejection,
     one-element tuple acceptance와 deep immutable ownership.
   - Built-in value materializer는 owning high-level action이 만든 single-transform resource만 받는다.
 - Evidence: `test/unit/actions/data/derived-data.test.js`, `test/unit/actions/data/derived-consumers.test.js`,

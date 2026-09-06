@@ -69,6 +69,7 @@ corresponding higher-level action when the library should materialize values:
 | --- | --- | --- |
 | `"bin2d"` | `{ type, x, y, bins, extent, includeEmpty, members, as, resolved? }` | `createBin2DData` |
 | `"bin"` | `{ type, field, bin, extent, nice, zero, includeEmpty, members, as, resolved? }` | `createBinData` |
+| `"computed"` | `{ type, as, expression }` | `createComputedData` |
 | `"filter"` | `{ type, field, oneOf }`, `{ type, field, predicate }`, or `{ type, field, range }` | `filterData` |
 | `"fold"` | `{ type, fields, as }` | `createFoldData` |
 | `"regression"` | `{ type, method, x, y, groupBy?, ...methodParameters }` | `createRegressionData` |
@@ -205,6 +206,33 @@ Selected fields must contain one common primitive type: finite numbers,
 strings, or booleans. Missing cells and mixed types are rejected. Output names
 must be distinct and cannot overwrite a source field. The action accepts at
 most 64 selected fields and materializes at most 10,000 rows.
+
+## `createComputedData({ id, source?, as, expression })`
+
+Add a finite quantitative field to every source row with a serializable formula:
+
+```javascript
+const shares = program.createComputedData({
+  id: "shares",
+  source: "sales",
+  as: "share",
+  expression: {
+    op: "divide",
+    left: { field: "part" },
+    right: { field: "whole" }
+  }
+});
+```
+
+Leaves are `{ field }` and `{ constant }`. Binary nodes support `add`,
+`subtract`, `multiply`, and `divide`; unary nodes support `negate` and
+`absolute`. The action stores this data AST as provenance and never evaluates
+callbacks, source strings, or arbitrary code.
+
+Every referenced cell, constant, intermediate result, and final result must be
+finite. Division by zero and output-field replacement are errors. Expressions
+are bounded to depth 16 and 128 nodes, with at most 10,000,000 evaluated
+row-nodes.
 
 ## Related
 

@@ -27,6 +27,18 @@ test("createDerivedData accepts each documented transform branch as an array", (
       }
     },
     {
+      id: "computed",
+      transform: {
+        type: "computed",
+        as: "ratio",
+        expression: {
+          op: "divide",
+          left: { field: "x" },
+          right: { field: "y" }
+        }
+      }
+    },
+    {
       id: "summary",
       transform: {
         type: "summary",

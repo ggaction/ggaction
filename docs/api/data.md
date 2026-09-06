@@ -19,6 +19,7 @@ operation; marks and renderers never mutate source values.
 | [Reusable summaries](./data/source-and-derived.md#createsummarydata-id-source-groupby-aggregates-members) | `createSummaryData` | Materialize grouped multi-aggregate rows with optional members |
 | [Reusable bins](./data/source-and-derived.md#createbindata-id-source-field-binoptions) | `createBinData` | Materialize shared one-dimensional bounds, counts, and optional members |
 | [Wide-to-long data](./data/source-and-derived.md#createfolddata-id-source-fields-as) | `createFoldData` | Materialize selected fields as stable key/value rows |
+| [Computed data](./data/source-and-derived.md#createcomputeddata-id-source-as-expression) | `createComputedData` | Add a finite field from a closed arithmetic expression |
 | [Filtering](./data/filtering.md) | `filterData`, `filterMarks` | Derive rows or rebind one visual layer from a selector |
 | [Statistical transforms](./data/statistical-transforms.md) | `createRegressionData`, `createIntervalData`, `createDensityData` | Materialize fitted, interval, or density rows |
 | [Time-unit transforms](./data/time-units.md) | `createTimeUnitData` | Add reproducible UTC calendar bucket fields |

@@ -230,6 +230,21 @@ async function testNodeConsumer(directory) {
         { region: "North", apples: 2, pears: 3, fruit: "pears", amount: 3 }
       ]
     );
+    const computed = chart()
+      .createData({ id: "parts", values: [{ part: 2, whole: 8 }] })
+      .createComputedData({
+        id: "shares",
+        as: "share",
+        expression: {
+          op: "divide",
+          left: { field: "part" },
+          right: { field: "whole" }
+        }
+      });
+    assert.equal(
+      computed.semanticSpec.datasets.find(dataset => dataset.id === "shares").values[0].share,
+      0.25
+    );
     const windowed = chart()
       .createData({
         id: "events",
@@ -1436,6 +1451,8 @@ async function testTypeScriptConsumer(directory) {
       type CreateHistogramOptions,
       type CreateLinePlotOptions,
       type ColorLayout,
+      type ComputedDataOptions,
+      type ComputedExpression,
       type CreateParallelCoordinatesOptions,
       type OrderCategoriesOptions,
       type GradientPlotOptions,
@@ -2214,6 +2231,24 @@ async function testTypeScriptConsumer(directory) {
       fields: ["apples", "pears"],
       as: { key: "fruit", value: "amount" }
     };
+    const ratioExpression: ComputedExpression = {
+      op: "divide",
+      left: { field: "part" },
+      right: { field: "whole" }
+    };
+    const computedOptions: ComputedDataOptions = {
+      id: "shares",
+      as: "share",
+      expression: ratioExpression
+    };
+    const computed: ChartProgram = chart()
+      .createData({ id: "parts", values: [{ part: 1, whole: 4 }] })
+      .createComputedData(computedOptions);
+    const computedTransform: DatasetTransform = {
+      type: "computed",
+      as: "share",
+      expression: ratioExpression
+    };
     const summaryTransform: DatasetTransform = {
       type: "summary",
       groupBy: ["group"],
@@ -2566,6 +2601,7 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.a
       "summary-data",
       "bin-data",
       "fold-data",
+      "computed-data",
       "window-data",
       "bin2d-data",
       "binned-heatmap",

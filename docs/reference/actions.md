@@ -45,6 +45,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createBinData`](./actions/statistics.md#createbindata) | user-facing | statistics |
 | [`createBoxPlot`](./actions/statistics.md#createboxplot) | user-facing | statistics |
 | [`createCanvas`](./actions/charts-data.md#createcanvas) | user-facing | core |
+| [`createComputedData`](./actions/statistics.md#createcomputeddata) | user-facing | statistics |
 | [`createCoordinate`](./actions/advanced.md#semantic-resources-and-regression-layers) | user-facing | core |
 | [`createData`](./actions/charts-data.md#createdata) | user-facing | core |
 | [`createDensityData`](./actions/charts-data.md#createdensitydata) | user-facing | core |

@@ -4311,6 +4311,7 @@ operation; marks and renderers never mutate source values.
 | [Reusable summaries](./api/data/source-and-derived/#createsummarydata-id-source-groupby-aggregates-members) | `createSummaryData` | Materialize grouped multi-aggregate rows with optional members |
 | [Reusable bins](./api/data/source-and-derived/#createbindata-id-source-field-binoptions) | `createBinData` | Materialize shared one-dimensional bounds, counts, and optional members |
 | [Wide-to-long data](./api/data/source-and-derived/#createfolddata-id-source-fields-as) | `createFoldData` | Materialize selected fields as stable key/value rows |
+| [Computed data](./api/data/source-and-derived/#createcomputeddata-id-source-as-expression) | `createComputedData` | Add a finite field from a closed arithmetic expression |
 | [Filtering](./api/data/filtering/) | `filterData`, `filterMarks` | Derive rows or rebind one visual layer from a selector |
 | [Statistical transforms](./api/data/statistical-transforms/) | `createRegressionData`, `createIntervalData`, `createDensityData` | Materialize fitted, interval, or density rows |
 | [Time-unit transforms](./api/data/time-units/) | `createTimeUnitData` | Add reproducible UTC calendar bucket fields |
@@ -4402,6 +4403,7 @@ corresponding higher-level action when the library should materialize values:
 | --- | --- | --- |
 | `"bin2d"` | `{ type, x, y, bins, extent, includeEmpty, members, as, resolved? }` | `createBin2DData` |
 | `"bin"` | `{ type, field, bin, extent, nice, zero, includeEmpty, members, as, resolved? }` | `createBinData` |
+| `"computed"` | `{ type, as, expression }` | `createComputedData` |
 | `"filter"` | `{ type, field, oneOf }`, `{ type, field, predicate }`, or `{ type, field, range }` | `filterData` |
 | `"fold"` | `{ type, fields, as }` | `createFoldData` |
 | `"regression"` | `{ type, method, x, y, groupBy?, ...methodParameters }` | `createRegressionData` |
@@ -4538,6 +4540,33 @@ Selected fields must contain one common primitive type: finite numbers,
 strings, or booleans. Missing cells and mixed types are rejected. Output names
 must be distinct and cannot overwrite a source field. The action accepts at
 most 64 selected fields and materializes at most 10,000 rows.
+
+## `createComputedData({ id, source?, as, expression })`
+
+Add a finite quantitative field to every source row with a serializable formula:
+
+```javascript
+const shares = program.createComputedData({
+  id: "shares",
+  source: "sales",
+  as: "share",
+  expression: {
+    op: "divide",
+    left: { field: "part" },
+    right: { field: "whole" }
+  }
+});
+```
+
+Leaves are `{ field }` and `{ constant }`. Binary nodes support `add`,
+`subtract`, `multiply`, and `divide`; unary nodes support `negate` and
+`absolute`. The action stores this data AST as provenance and never evaluates
+callbacks, source strings, or arbitrary code.
+
+Every referenced cell, constant, intermediate result, and final result must be
+finite. Division by zero and output-field replacement are errors. Expressions
+are bounded to depth 16 and 128 nodes, with at most 10,000,000 evaluated
+row-nodes.
 
 ## Related
 
@@ -12884,6 +12913,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createBinData`](./reference/actions/statistics/#createbindata) | user-facing | statistics |
 | [`createBoxPlot`](./reference/actions/statistics/#createboxplot) | user-facing | statistics |
 | [`createCanvas`](./reference/actions/charts-data/#createcanvas) | user-facing | core |
+| [`createComputedData`](./reference/actions/statistics/#createcomputeddata) | user-facing | statistics |
 | [`createCoordinate`](./reference/actions/advanced/#semantic-resources-and-regression-layers) | user-facing | core |
 | [`createData`](./reference/actions/charts-data/#createdata) | user-facing | core |
 | [`createDensityData`](./reference/actions/charts-data/#createdensitydata) | user-facing | core |
@@ -14314,6 +14344,15 @@ createFoldData({ id, source?, fields, as? })
 Materialize selected wide fields as stable key/value rows while preserving
 every source cell. [Source and Derived Data](./api/data/source-and-derived/#createfolddata-id-source-fields-as)
 
+## `createComputedData`
+
+```javascript
+createComputedData({ id, source?, as, expression })
+```
+
+Materialize a finite row-level field from a serializable, closed arithmetic
+expression. [Source and Derived Data](./api/data/source-and-derived/#createcomputeddata-id-source-as-expression)
+
 ## `createHorizonPlot`
 
 ```js
@@ -15308,6 +15347,7 @@ interface ChartProgramActions {
   createSummaryData(options: SummaryDataOptions): ChartProgram;
   createBinData(options: BinDataOptions): ChartProgram;
   createFoldData(options: FoldDataOptions): ChartProgram;
+  createComputedData(options: ComputedDataOptions): ChartProgram;
   createRegressionData(options: RegressionDataOptions): ChartProgram;
   createIntervalData(options: IntervalDataOptions): ChartProgram;
   createTimeUnitData(options: TimeUnitDataOptions): ChartProgram;

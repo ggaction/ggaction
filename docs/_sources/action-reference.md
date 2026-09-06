@@ -356,6 +356,15 @@ createFoldData({ id, source?, fields, as? })
 Materialize selected wide fields as stable key/value rows while preserving
 every source cell. [Source and Derived Data](../api/data/source-and-derived.md#createfolddata-id-source-fields-as)
 
+### `createComputedData`
+
+```javascript
+createComputedData({ id, source?, as, expression })
+```
+
+Materialize a finite row-level field from a serializable, closed arithmetic
+expression. [Source and Derived Data](../api/data/source-and-derived.md#createcomputeddata-id-source-as-expression)
+
 ### `bindMarkData`
 
 ```javascript
