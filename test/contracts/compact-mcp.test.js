@@ -64,7 +64,7 @@ test("exposes exactly one read-only search tool with a byte-equal direct payload
     assert.equal(Buffer.byteLength(called.content[0].text) <= 6144, true);
     const packet = JSON.parse(called.content[0].text);
     assert.equal(packet.schemaVersion, 4);
-    assert.equal(packet.packageVersion, "0.0.12");
+    assert.equal(packet.packageVersion, "0.0.13");
     assert.deepEqual(packet.authoring.imports, [
       'import { chart } from "ggaction";',
       'import { renderToSVG } from "ggaction/svg";'
@@ -110,8 +110,8 @@ test("keeps resource discovery bounded and reads exact cards and recipes", async
   const overview = readKnowledgeResource("ggaction://overview");
   const recipe = readKnowledgeResource("ggaction://recipes/scatter-svg");
   assert.equal(JSON.parse(card.text).name, "createScatterPlot");
-  assert.equal(JSON.parse(overview.text).packageVersion, "0.0.12");
-  assert.equal(JSON.parse(recipe.text).packageVersion, "0.0.12");
+  assert.equal(JSON.parse(overview.text).packageVersion, "0.0.13");
+  assert.equal(JSON.parse(recipe.text).packageVersion, "0.0.13");
   assert.deepEqual(JSON.parse(recipe.text).packet.exactCalls, [
     "program.createScatterPlot({ x: { field: \"x\", fieldType: \"quantitative\" }, y: { field: \"y\", fieldType: \"quantitative\" }, color: \"category\", guides: { legend: { position: \"bottom\", offset: 70 } } })",
     "renderToSVG(program)"

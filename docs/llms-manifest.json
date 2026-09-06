@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "packageVersion": "0.0.12",
+  "packageVersion": "0.0.13",
   "sourceStatus": "checked-out-repository-documentation",
   "bundle": "llms-full.txt",
   "sectionCount": 127,
@@ -19,7 +19,7 @@
         "go-deeper"
       ],
       "bytes": 2255,
-      "sha256": "32ed334db8563db416699b9edac7d8127fce9780cf5f9413c4c3a62f09f8d101"
+      "sha256": "dbd74498c0e5865c5b4109031b07d5a1ee5c3030f81729cf693dce68bd9cdce0"
     },
     {
       "order": 2,

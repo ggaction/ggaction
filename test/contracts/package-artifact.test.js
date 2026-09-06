@@ -47,7 +47,7 @@ test("publishes only the bounded public package artifact", async () => {
   const paths = manifest.files.map(file => file.path);
 
   assert.equal(manifest.name, "ggaction");
-  assert.equal(manifest.version, "0.0.12");
+  assert.equal(manifest.version, "0.0.13");
   assert.ok(manifest.entryCount <= PACKAGE_LIMITS.entries);
   assert.ok(manifest.size <= PACKAGE_LIMITS.packedBytes);
   assert.ok(manifest.unpackedSize <= PACKAGE_LIMITS.unpackedBytes);
