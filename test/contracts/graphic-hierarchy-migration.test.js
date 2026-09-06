@@ -25,6 +25,8 @@ const LOADERS = Object.freeze({
 });
 
 const EXPECTED_DRAW_ORDER = Object.freeze({
+  "facet-grid": [],
+  "repeat-charts": [],
   "beeswarm-plot": [
     "canvas", "horizontalGridLines", "swarm",
     "xAxisLine", "xAxisTicks", "xAxisLabels", "xAxisTitle",
@@ -405,18 +407,27 @@ test("locks the complete public graphic hierarchy inventory", () => {
     if (program.compositionSpec?.type === "facet") {
       assert.deepEqual(program.graphicSpec.order, ["canvas"]);
       const rootChildren = program.graphicSpec.objects.canvas.children;
-      assert.equal(rootChildren.length, 7);
-      assert.equal(rootChildren.slice(0, 3).every(id =>
+      const childCount = program.compositionSpec.children.length;
+      assert.equal(rootChildren.slice(0, childCount).every(id =>
         program.graphicSpec.objects[id].type === "canvas"
       ), true);
-      assert.deepEqual(rootChildren.slice(3), [
-        "facet-headers", "facet-legend", "chartTitle", "chartSubtitle"
-      ]);
+      const expectedParentChildren = chart.id === "facet-grid"
+        ? ["matrix-headers"]
+        : chart.id === "repeat-charts"
+          ? ["metrics-headers", "metrics-shared-legend"]
+          : ["facet-headers", "facet-legend", "chartTitle", "chartSubtitle"];
+      assert.deepEqual(rootChildren.slice(childCount), expectedParentChildren);
       for (const childId of rootChildren) {
         assert.equal(findGraphicParent(program.graphicSpec, childId).id, "canvas");
       }
       assert.equal(drawOrder[0], "canvas");
-      assert.ok(drawOrder.length > 20);
+      const expectedDrawLength = chart.id === "facet-grid"
+        ? 19
+        : chart.id === "repeat-charts"
+          ? 15
+          : undefined;
+      if (expectedDrawLength === undefined) assert.ok(drawOrder.length > 20);
+      else assert.equal(drawOrder.length, expectedDrawLength);
       continue;
     }
     const descendants = expected.slice(1);

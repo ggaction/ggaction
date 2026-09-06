@@ -91,6 +91,8 @@ import { createCrossFeatureDashboard } from
   "./cross-feature-dashboard/program.js";
 import { createProgramCompositionExample } from
   "./program-composition/program.js";
+import { createFacetGridExample } from "./facet-grid/program.js";
+import { createRepeatChartsExample } from "./repeat-charts/program.js";
 import {
   createGroupedMaximumPointHighlight,
   createJapanLineSeriesHighlight,
@@ -343,6 +345,24 @@ export const PUBLIC_CHARTS = Object.freeze([
     createProgram: createProgramCompositionExample,
     docsGroup: "charts",
     browser: { path: "program-composition/", canvas: "#chart" }
+  }),
+  example({
+    id: "facet-grid",
+    data: {},
+    width: 504,
+    height: 272,
+    createProgram: () => createFacetGridExample(),
+    docsGroup: "charts",
+    browser: { path: "facet-grid/", canvas: "#chart" }
+  }),
+  example({
+    id: "repeat-charts",
+    data: {},
+    width: 838,
+    height: 150,
+    createProgram: () => createRepeatChartsExample(),
+    docsGroup: "charts",
+    browser: { path: "repeat-charts/", canvas: "#chart" }
   }),
   example({
     id: "cars-origin-scatterplot-facet",

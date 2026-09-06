@@ -30,6 +30,18 @@ Repeat a complete point or bar chart by field value.
 
 Representative actions: `facet`, `editFacetHeaders`, `editCompositionLayout`. [Documentation](https://ggaction.github.io/ggaction/recipes/facet/).
 
+### [Row and column facet grid](./facet-grid/)
+
+Cross two fields into an observed or complete grid with stable cell coordinates.
+
+Representative actions: `facetGrid`, `editFacetSource`, `editCompositionLayout`. [Documentation](https://ggaction.github.io/ggaction/api/composition/#build-a-row-and-column-facet-grid).
+
+### [Repeated metric charts](./repeat-charts/)
+
+Repeat one positional encoding across fields with explicit scale and guide policies.
+
+Representative actions: `repeatCharts`, `editFacetSource`, `editCompositionLayout`. [Documentation](https://ggaction.github.io/ggaction/api/composition/#repeat-a-positional-encoding-across-fields).
+
 ### [Scatterplot](./cars-scatterplot/)
 
 Compare two quantitative fields and encode a category with color.

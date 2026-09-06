@@ -3,7 +3,7 @@
   "packageVersion": "0.0.12",
   "typeSource": "types/program.d.ts",
   "errorPolicy": "An empty errors array means the compact card has no curated error override; consult the canonical route for validation, inference, and recovery behavior.",
-  "count": 228,
+  "count": 234,
   "cards": [
     {
       "schemaVersion": 2,
@@ -13762,6 +13762,144 @@
     },
     {
       "schemaVersion": 2,
+      "name": "insertCompositionChild",
+      "layer": "user-facing",
+      "domain": "composition",
+      "summary": "Insert a complete chart or nested composition under a new stable child name.",
+      "signature": "insertCompositionChild(options: InsertCompositionChildOptions): ChartProgram;",
+      "intents": [
+        "insert composition child",
+        "edit",
+        "change",
+        "chart composition",
+        "small multiples",
+        "composition child",
+        "nested chart slot"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing composition child",
+          "complete child chart program"
+        ],
+        "owns": [],
+        "idOptions": [
+          "id",
+          "before",
+          "after"
+        ]
+      },
+      "options": [
+        {
+          "name": "id",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "program",
+          "required": true,
+          "type": "ChartProgram"
+        },
+        {
+          "name": "before",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "after",
+          "required": false,
+          "type": "string | undefined"
+        }
+      ],
+      "callPatterns": [
+        "insertCompositionChild({ id, program, before?, after? })"
+      ],
+      "snippet": "program.insertCompositionChild({ id: \"detail\", program: chart().createCanvas({}).createData({ values: [] }), after: \"overview\" })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#insertcompositionchild"
+    },
+    {
+      "schemaVersion": 2,
+      "name": "removeCompositionChild",
+      "layer": "user-facing",
+      "domain": "composition",
+      "summary": "Remove one named concat child and rebuild layout.",
+      "signature": "removeCompositionChild(options: RemoveCompositionChildOptions): ChartProgram;",
+      "intents": [
+        "remove composition child",
+        "remove",
+        "delete",
+        "chart composition",
+        "small multiples",
+        "composition child",
+        "nested chart slot"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing composition child",
+          "complete child chart program"
+        ],
+        "owns": [],
+        "idOptions": [
+          "target"
+        ]
+      },
+      "options": [
+        {
+          "name": "target",
+          "required": true,
+          "type": "string"
+        }
+      ],
+      "callPatterns": [
+        "removeCompositionChild({ target })"
+      ],
+      "snippet": "program.removeCompositionChild({ target: \"mark-1\" })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#removecompositionchild"
+    },
+    {
+      "schemaVersion": 2,
+      "name": "reorderCompositionChildren",
+      "layer": "user-facing",
+      "domain": "composition",
+      "summary": "Provide every current concat child ID exactly once in its new order.",
+      "signature": "reorderCompositionChildren(options: ReorderCompositionChildrenOptions): ChartProgram;",
+      "intents": [
+        "reorder composition children",
+        "edit",
+        "change",
+        "chart composition",
+        "small multiples",
+        "composition child order",
+        "reorder chart slots"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing composition child order",
+          "complete child chart program"
+        ],
+        "owns": [],
+        "idOptions": []
+      },
+      "options": [
+        {
+          "name": "order",
+          "required": true,
+          "type": "readonly [string, ...string[]]"
+        }
+      ],
+      "callPatterns": [
+        "reorderCompositionChildren({ order })"
+      ],
+      "snippet": "program.reorderCompositionChildren({ order: [\"detail\", \"overview\"] })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#reordercompositionchildren"
+    },
+    {
+      "schemaVersion": 2,
       "name": "facet",
       "layer": "user-facing",
       "domain": "composition",
@@ -13804,6 +13942,11 @@
           "type": "string | undefined"
         },
         {
+          "name": "values",
+          "required": false,
+          "type": "readonly DatasetScalar[] | undefined"
+        },
+        {
           "name": "columns",
           "required": false,
           "type": "number | undefined"
@@ -13835,11 +13978,226 @@
         }
       ],
       "callPatterns": [
-        "facet({ field, id?, data?, columns?, gap?, align?, padding?, scales? })"
+        "facet({ field, id?, data?, values?, columns?, gap?, align?, padding? })"
       ],
       "snippet": "program.facet({ field: \"value\" })",
       "errors": [],
       "route": "/reference/actions/charts-data/#facet"
+    },
+    {
+      "schemaVersion": 2,
+      "name": "facetGrid",
+      "layer": "user-facing",
+      "domain": "composition",
+      "summary": "Repeat one supported Cartesian chart over two ordered categorical fields.",
+      "signature": "facetGrid(options: FacetGridOptions): ChartProgram;",
+      "intents": [
+        "facet grid",
+        "facet",
+        "repeat chart",
+        "chart composition",
+        "small multiples",
+        "row and column facets",
+        "two dimensional small multiples"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "complete child chart program"
+        ],
+        "owns": [
+          "row and column facets"
+        ],
+        "idOptions": [
+          "id",
+          "data"
+        ]
+      },
+      "options": [
+        {
+          "name": "id",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "data",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "rows",
+          "required": true,
+          "type": "FacetGridRole"
+        },
+        {
+          "name": "columns",
+          "required": true,
+          "type": "FacetGridRole"
+        },
+        {
+          "name": "combinations",
+          "required": false,
+          "type": "\"full\" | \"observed\" | undefined"
+        },
+        {
+          "name": "gap",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "align",
+          "required": false,
+          "type": "CompositionAlign | undefined"
+        },
+        {
+          "name": "padding",
+          "required": false,
+          "type": "number | CompositionPadding | undefined"
+        },
+        {
+          "name": "scales",
+          "required": false,
+          "type": "FacetScaleResolutions | undefined"
+        },
+        {
+          "name": "guides",
+          "required": false,
+          "type": "FacetGuideOptions | undefined"
+        }
+      ],
+      "callPatterns": [
+        "facetGrid({ rows, columns, id?, data?, combinations?, gap?, align?, padding? })"
+      ],
+      "snippet": "program.facetGrid({ rows: { field: \"region\" }, columns: { field: \"year\" } })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#facetgrid"
+    },
+    {
+      "schemaVersion": 2,
+      "name": "repeatCharts",
+      "layer": "user-facing",
+      "domain": "composition",
+      "summary": "Repeat one direct Cartesian mark by replacing its x or y field.",
+      "signature": "repeatCharts(options: RepeatChartsOptions): ChartProgram;",
+      "intents": [
+        "repeat charts",
+        "facet",
+        "repeat chart",
+        "chart composition",
+        "small multiples",
+        "repeat chart by field",
+        "field comparison panels"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "complete child chart program"
+        ],
+        "owns": [
+          "repeat chart by field"
+        ],
+        "idOptions": [
+          "id",
+          "target"
+        ]
+      },
+      "options": [
+        {
+          "name": "id",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "channel",
+          "required": true,
+          "type": "\"x\" | \"y\""
+        },
+        {
+          "name": "fields",
+          "required": true,
+          "type": "readonly [string, ...string[]]"
+        },
+        {
+          "name": "columns",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "gap",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "align",
+          "required": false,
+          "type": "CompositionAlign | undefined"
+        },
+        {
+          "name": "padding",
+          "required": false,
+          "type": "number | CompositionPadding | undefined"
+        },
+        {
+          "name": "scales",
+          "required": false,
+          "type": "FacetScaleResolutions | undefined"
+        },
+        {
+          "name": "guides",
+          "required": false,
+          "type": "FacetGuideOptions | undefined"
+        }
+      ],
+      "callPatterns": [
+        "repeatCharts({ channel, fields, id?, target?, columns?, gap?, align?, padding? })"
+      ],
+      "snippet": "program.repeatCharts({ channel: \"x\", fields: [\"sales\", \"profit\"] })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#repeatcharts"
+    },
+    {
+      "schemaVersion": 2,
+      "name": "editFacetSource",
+      "layer": "user-facing",
+      "domain": "composition",
+      "summary": "Reapply the current facet, grid, or repeat recipe to a revised complete unit program while preserving the partition dataset ID, ordered domains, layout, scale/guide policy, headers, and parent title.",
+      "signature": "editFacetSource(options: EditFacetSourceOptions): ChartProgram;",
+      "intents": [
+        "edit facet source",
+        "edit",
+        "change",
+        "chart composition",
+        "small multiples",
+        "facet source revision",
+        "rebuild small multiples"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing facet source revision",
+          "complete child chart program"
+        ],
+        "owns": [],
+        "idOptions": []
+      },
+      "options": [
+        {
+          "name": "program",
+          "required": true,
+          "type": "ChartProgram"
+        }
+      ],
+      "callPatterns": [
+        "editFacetSource({ program })"
+      ],
+      "snippet": "program.editFacetSource({ program: chart().createCanvas({}).createData({ values: [] }) })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#editfacetsource"
     },
     {
       "schemaVersion": 2,

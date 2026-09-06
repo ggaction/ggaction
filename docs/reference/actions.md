@@ -147,6 +147,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editFacetGuides`](./actions/charts-data.md#editfacetguides) | user-facing | composition |
 | [`editFacetHeaders`](./actions/charts-data.md#editfacetheaders) | user-facing | composition |
 | [`editFacetScales`](./actions/charts-data.md#editfacetscales) | user-facing | composition |
+| [`editFacetSource`](./actions/charts-data.md#editfacetsource) | user-facing | composition |
 | [`editGradientPlot`](./actions/statistics.md#editgradientplot) | user-facing | statistics |
 | [`editGraphics`](./actions/extension.md#extension-actions) | primitive | primitives |
 | [`editGrid`](./actions/advanced.md#directional-grids) | user-facing | grid |
@@ -228,16 +229,19 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`encodeYOffset`](./actions/encodings.md#encodeyoffset) | user-facing | encodings |
 | [`encodeYRange`](./actions/encodings.md#encodeyrange) | user-facing | encodings |
 | [`facet`](./actions/charts-data.md#facet) | user-facing | composition |
+| [`facetGrid`](./actions/charts-data.md#facetgrid) | user-facing | composition |
 | [`filterData`](./actions/charts-data.md#filterdata) | user-facing | core |
 | [`filterMarks`](./actions/charts-data.md#filtermarks) | user-facing | mark-selection |
 | [`fitCanvas`](./actions/charts-data.md#fitcanvas) | user-facing | core |
 | [`highlightMarks`](./actions/charts-data.md#highlightmarks) | user-facing | mark-selection |
+| [`insertCompositionChild`](./actions/charts-data.md#insertcompositionchild) | user-facing | composition |
 | [`jitterPoints`](./actions/marks.md#jitterpoints) | user-facing | marks |
 | [`layoutLabels`](./actions/marks.md#layoutlabels) | user-facing | marks |
 | [`layoutSeries`](./actions/encodings.md#layoutseries) | user-facing | encodings |
 | [`orderCategories`](./actions/encodings.md#ordercategories) | user-facing | encodings |
 | [`packPoints`](./actions/marks.md#packpoints) | user-facing | marks |
 | [`removeCategoryOrder`](./actions/encodings.md#removecategoryorder) | user-facing | encodings |
+| [`removeCompositionChild`](./actions/charts-data.md#removecompositionchild) | user-facing | composition |
 | [`removeEncoding`](./actions/encodings.md#removeencoding) | user-facing | encodings |
 | [`removeGrid`](./actions/advanced.md#directional-grids) | user-facing | grid |
 | [`removeJitter`](./actions/marks.md#removejitter) | user-facing | marks |
@@ -258,5 +262,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`removeTitle`](./actions/guides.md#removetitle) | user-facing | legend_and_title |
 | [`removeXAxis`](./actions/advanced.md#complete-axis-removal) | user-facing | axes |
 | [`removeYAxis`](./actions/advanced.md#complete-axis-removal) | user-facing | axes |
+| [`reorderCompositionChildren`](./actions/charts-data.md#reordercompositionchildren) | user-facing | composition |
+| [`repeatCharts`](./actions/charts-data.md#repeatcharts) | user-facing | composition |
 | [`replaceCompositionChild`](./actions/charts-data.md#replacecompositionchild) | user-facing | composition |
 | [`selectMarks`](./actions/advanced.md#reusable-mark-selections) | advanced | mark-selection |

@@ -3514,6 +3514,60 @@
       }
     },
     {
+      "name": "insertCompositionChild",
+      "layer": "user-facing",
+      "domain": "composition",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Inserts one stable named concat child",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/COMPOSITION.md",
+        "anchor": "insertcompositionchild"
+      }
+    },
+    {
+      "name": "removeCompositionChild",
+      "layer": "user-facing",
+      "domain": "composition",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Removes one stable named concat child",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/COMPOSITION.md",
+        "anchor": "removecompositionchild"
+      }
+    },
+    {
+      "name": "reorderCompositionChildren",
+      "layer": "user-facing",
+      "domain": "composition",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Reorders every stable named concat child",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/COMPOSITION.md",
+        "anchor": "reordercompositionchildren"
+      }
+    },
+    {
       "name": "facet",
       "layer": "user-facing",
       "domain": "composition",
@@ -3529,6 +3583,60 @@
       "contract": {
         "file": "agent_docs/contract/current/COMPOSITION.md",
         "anchor": "facet"
+      }
+    },
+    {
+      "name": "facetGrid",
+      "layer": "user-facing",
+      "domain": "composition",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Creates ordered row-column facet cells",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/COMPOSITION.md",
+        "anchor": "facetgrid"
+      }
+    },
+    {
+      "name": "repeatCharts",
+      "layer": "user-facing",
+      "domain": "composition",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Repeats one Cartesian position across fields",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/COMPOSITION.md",
+        "anchor": "repeatcharts"
+      }
+    },
+    {
+      "name": "editFacetSource",
+      "layer": "user-facing",
+      "domain": "composition",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Replays a facet or repeat recipe on a revised unit",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/COMPOSITION.md",
+        "anchor": "editfacetsource"
       }
     },
     {

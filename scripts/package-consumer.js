@@ -1149,8 +1149,19 @@ async function testNodeConsumer(directory) {
       target: "view-2",
       program: arcs
     });
+    const inserted = pair.insertCompositionChild({
+      id: "polarArcs",
+      program: arcs,
+      after: "view-1"
+    });
+    const reordered = inserted.reorderCompositionChildren({
+      order: ["polarArcs", "view-2", "view-1"]
+    });
+    const removed = reordered.removeCompositionChild({ target: "view-2" });
     const nested = vconcat({ programs: [pair, replaced] });
     assert.equal(replaced.children["view-2"], arcs);
+    assert.deepEqual(removed.compositionSpec.children, ["polarArcs", "view-1"]);
+    assert.equal(removed.children.polarArcs, arcs);
     assert.equal(nested.compositionSpec.direction, "vertical");
     const faceted = program.facet({ field: "x", columns: 2 });
     assert.equal(faceted.compositionSpec.type, "facet");
@@ -1160,6 +1171,38 @@ async function testNodeConsumer(directory) {
       ).values.length,
       1
     );
+    const comparisonRows = [
+      { row: "A", column: "X", x: 1, y: 10, z: 100, group: "g1" },
+      { row: "A", column: "Y", x: 2, y: 20, z: 200, group: "g2" },
+      { row: "B", column: "X", x: 3, y: 30, z: 300, group: "g1" }
+    ];
+    const comparisonUnit = chart()
+      .createCanvas({ width: 180, height: 140, margin: 36 })
+      .createData({ id: "comparison", values: comparisonRows })
+      .createPointMark({ id: "comparisonPoint", data: "comparison" })
+      .encodeX({ target: "comparisonPoint", field: "x" })
+      .encodeY({ target: "comparisonPoint", field: "y" })
+      .encodeColor({ target: "comparisonPoint", field: "group" });
+    const grid = comparisonUnit.facetGrid({
+      id: "packageGrid",
+      rows: { field: "row", values: ["A", "B"] },
+      columns: { field: "column", values: ["X", "Y"] },
+      combinations: "full"
+    });
+    const repeated = comparisonUnit.repeatCharts({
+      id: "packageRepeat",
+      target: "comparisonPoint",
+      channel: "x",
+      fields: ["x", "y", "z"]
+    });
+    const revisedGrid = grid.editFacetSource({ program: comparisonUnit });
+    assert.equal(grid.children["packageGrid-row-2-column-2"].semanticSpec.layers.length, 0);
+    assert.deepEqual(repeated.compositionSpec.facet.repeat.fields, ["x", "y", "z"]);
+    assert.deepEqual(revisedGrid.compositionSpec.children, grid.compositionSpec.children);
+    for (const method of [
+      "facetGrid", "repeatCharts", "editFacetSource",
+      "insertCompositionChild", "removeCompositionChild", "reorderCompositionChildren"
+    ]) assert.equal(basicChart()[method], undefined, method);
     const result = await renderToPNG(program, {
       output: ${JSON.stringify(output)},
       pixelRatio: 1
@@ -1619,20 +1662,26 @@ async function testTypeScriptConsumer(directory) {
       type HistogramEncodingOptions,
       type EditHorizonOptions,
       type FitCanvasOptions,
+      type FacetGridOptions,
       type FoldDataOptions,
       type EditAxisOptions,
+      type EditFacetSourceOptions,
       type CreateDerivedDataOptions,
       type CreateScatterPlotOptions,
       type DatasetTransform,
       type JitterMaxOffset,
       type JitterPointsOptions,
+      type InsertCompositionChildOptions,
       type PackPointsOptions,
       type PointPackingMaxOffset,
       type NonPointQuantitativePositionScaleOptions,
       type OpacityScaleOptions,
       type ParallelCoordinatesEncodingOptions,
       type RemoveJitterOptions,
+      type RemoveCompositionChildOptions,
       type RemovePointPackingOptions,
+      type ReorderCompositionChildrenOptions,
+      type RepeatChartsOptions,
       type ShapeScaleOptions,
       type SizeScaleOptions,
       type StrokeWidthEncodingOptions,
@@ -2392,6 +2441,38 @@ async function testTypeScriptConsumer(directory) {
       .editCompositionLayout({ columns: 2 })
       .editFacetScales({ x: "independent" })
       .editFacetGuides({ axes: "outer" });
+    const comparisonUnit: ChartProgram = chart()
+      .createCanvas({ width: 180, height: 140 })
+      .createData({ values: [
+        { row: "A", column: "X", x: 1, y: 10, z: 100 },
+        { row: "B", column: "Y", x: 2, y: 20, z: 200 }
+      ] })
+      .createPointMark({ id: "metric" })
+      .encodeX({ target: "metric", field: "x" })
+      .encodeY({ target: "metric", field: "y" });
+    const gridOptions: FacetGridOptions = {
+      id: "typedGrid",
+      rows: { field: "row", values: ["A", "B"] },
+      columns: { field: "column", values: ["X", "Y"] },
+      combinations: "full"
+    };
+    const repeatOptions: RepeatChartsOptions = {
+      id: "typedRepeat", target: "metric", channel: "x", fields: ["x", "y", "z"]
+    };
+    const typedGrid: ChartProgram = comparisonUnit.facetGrid(gridOptions);
+    const typedRepeat: ChartProgram = comparisonUnit.repeatCharts(repeatOptions);
+    const sourceEditOptions: EditFacetSourceOptions = { program: comparisonUnit };
+    const typedRevisedGrid: ChartProgram = typedGrid.editFacetSource(sourceEditOptions);
+    const insertOptions: InsertCompositionChildOptions = {
+      id: "third", program, after: "view-1"
+    };
+    const typedInserted: ChartProgram = composed.insertCompositionChild(insertOptions);
+    const reorderOptions: ReorderCompositionChildrenOptions = {
+      order: ["third", "view-2", "view-1"]
+    };
+    const typedReordered: ChartProgram = typedInserted.reorderCompositionChildren(reorderOptions);
+    const removeOptions: RemoveCompositionChildOptions = { target: "view-2" };
+    const typedRemoved: ChartProgram = typedReordered.removeCompositionChild(removeOptions);
     const draw: typeof render = render;
     const png: Promise<PNGRenderResult> = renderToPNG(program, { output: "chart.png" });
     const pdfMetadata: PDFMetadata = {
@@ -2740,6 +2821,10 @@ async function testTypeScriptConsumer(directory) {
     void extensionProgram;
     void composed;
     void nested;
+    void facetPolicyEdited;
+    void typedRepeat;
+    void typedRevisedGrid;
+    void typedRemoved;
     void faceted;
     void derived;
     void windowed;
@@ -2903,6 +2988,7 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.a
       "bin2d-data",
       "binned-heatmap",
       "parallel-coordinates",
+      "facet-grid-repeat-and-named-composition-editing",
       "horizon",
       "violin-plot",
       "polar-radar-rug-strip-ecdf-facades",

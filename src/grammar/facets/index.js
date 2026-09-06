@@ -18,9 +18,9 @@ const SUPPORTED_BAR_GRAINS = new Set([
 ]);
 const MAX_FACET_CHILDREN = 100;
 
-function requireFacetField(field) {
+function requireFacetField(field, label = "facet") {
   if (typeof field !== "string" || field.length === 0) {
-    throw new TypeError("facet requires a non-empty field.");
+    throw new TypeError(`${label} requires a non-empty field.`);
   }
   return field;
 }
@@ -74,23 +74,50 @@ function uniqueInOrder(values) {
   return [...new Set(values)];
 }
 
-function resolveValues(observed, requested) {
+function resolveValues(observed, requested, label = "facet values") {
   if (requested === undefined) return observed;
   if (!Array.isArray(requested) || requested.length === 0) {
-    throw new TypeError("facet values must be a non-empty array when provided.");
+    throw new TypeError(`${label} must be a non-empty array when provided.`);
   }
   const normalized = readNominalField(
     requested.map(value => ({ value })),
     "value"
   );
   if (new Set(normalized).size !== normalized.length) {
-    throw new Error("facet values must be unique.");
+    throw new Error(`${label} must be unique.`);
   }
   const missing = normalized.find(value => !observed.includes(value));
   if (missing !== undefined) {
-    throw new Error(`facet value ${JSON.stringify(missing)} is not present in the source field.`);
+    throw new Error(
+      `${label} value ${JSON.stringify(missing)} is not present in the source field.`
+    );
   }
   return normalized;
+}
+
+function requireGridRole(value, label) {
+  if (!isPlainObject(value)) {
+    throw new TypeError(`facetGrid ${label} must be a plain object.`);
+  }
+  const unknown = Object.keys(value).find(key => !["field", "values"].includes(key));
+  if (unknown !== undefined) {
+    throw new Error(`Unknown facetGrid ${label} option "${unknown}".`);
+  }
+  return {
+    field: requireFacetField(value.field, `facetGrid ${label}`),
+    ...(value.values === undefined ? {} : { values: value.values })
+  };
+}
+
+function pairKey(row, column) {
+  return JSON.stringify([
+    [typeof row, row],
+    [typeof column, column]
+  ]);
+}
+
+function displayValue(value) {
+  return value === "" ? "(empty)" : String(value);
 }
 
 export function resolveFacetDefinition(semanticSpec, options = {}) {
@@ -134,5 +161,89 @@ export function resolveFacetDefinition(semanticSpec, options = {}) {
       data: `${id}-cell-${index + 1}-data`,
       value
     }))
+  });
+}
+
+export function resolveFacetGridDefinition(semanticSpec, options = {}) {
+  if (!isPlainObject(semanticSpec)) {
+    throw new TypeError("resolveFacetGridDefinition requires a semantic spec.");
+  }
+  if (!isPlainObject(options)) {
+    throw new TypeError("facetGrid options must be a plain object.");
+  }
+  const rows = requireGridRole(options.rows, "rows");
+  const columns = requireGridRole(options.columns, "columns");
+  if (rows.field === columns.field) {
+    throw new Error("facetGrid rows.field and columns.field must be different.");
+  }
+  const combinations = options.combinations ?? "observed";
+  if (!["observed", "full"].includes(combinations)) {
+    throw new Error('facetGrid combinations must be "observed" or "full".');
+  }
+  const id = validateUserId(options.id ?? "facetGrid", "Facet grid id");
+  requireSupportedLayers(semanticSpec);
+  const dependencies = planFacetDependencies(semanticSpec, {
+    field: rows.field,
+    ...(options.data === undefined ? {} : { data: options.data })
+  });
+  const data = dependencies.anchor;
+  const dataset = requirePartitionDataset(semanticSpec, data);
+  const observedRows = readNominalField(dataset.values, rows.field);
+  const observedColumns = readNominalField(dataset.values, columns.field);
+  const rowValues = resolveValues(
+    uniqueInOrder(observedRows), rows.values, "facetGrid rows.values"
+  );
+  const columnValues = resolveValues(
+    uniqueInOrder(observedColumns), columns.values, "facetGrid columns.values"
+  );
+  const observedPairs = new Set(dataset.values.map((_, index) =>
+    pairKey(observedRows[index], observedColumns[index])
+  ));
+  const candidates = rowValues.flatMap((rowValue, row) =>
+    columnValues.map((columnValue, column) => ({
+      row,
+      column,
+      rowValue,
+      columnValue,
+      empty: !observedPairs.has(pairKey(rowValue, columnValue))
+    }))
+  );
+  const selected = combinations === "full"
+    ? candidates
+    : candidates.filter(cell => !cell.empty);
+  if (selected.length === 0) {
+    throw new Error("facetGrid has no observed row and column combinations.");
+  }
+  validateGeneratedItemLimit(
+    selected.length,
+    "Facet grid child count",
+    MAX_FACET_CHILDREN
+  );
+  validateWorkLimit(
+    dataset.values.length * selected.length,
+    "Facet grid partition work"
+  );
+  return cloneAndFreeze({
+    id,
+    data,
+    dependencies,
+    grid: {
+      rows: { field: rows.field, values: rowValues },
+      columns: { field: columns.field, values: columnValues },
+      combinations
+    },
+    cells: selected.map(cell => {
+      const cellId = `${id}-row-${cell.row + 1}-column-${cell.column + 1}`;
+      return {
+        ...cell,
+        id: cellId,
+        data: `${cellId}-data`,
+        value: `${displayValue(cell.rowValue)} · ${displayValue(cell.columnValue)}`,
+        filters: [
+          { field: rows.field, value: cell.rowValue },
+          { field: columns.field, value: cell.columnValue }
+        ]
+      };
+    })
   });
 }

@@ -128,6 +128,16 @@ export interface ReplaceCompositionChildOptions {
   target: string;
   program: ChartProgram;
 }
+export interface InsertCompositionChildOptions {
+  id: string;
+  program: ChartProgram;
+  before?: string;
+  after?: string;
+}
+export interface RemoveCompositionChildOptions { target: string; }
+export interface ReorderCompositionChildrenOptions {
+  order: readonly [string, ...string[]];
+}
 export type FacetScaleResolution = "shared" | "independent";
 export interface FacetScaleResolutions {
   x?: FacetScaleResolution;
@@ -148,6 +158,7 @@ export interface FacetOptions {
   id?: string;
   field: string;
   data?: string;
+  values?: readonly DatasetScalar[];
   columns?: number;
   gap?: number;
   align?: CompositionAlign;
@@ -155,6 +166,35 @@ export interface FacetOptions {
   scales?: FacetScaleResolutions;
   guides?: FacetGuideOptions;
 }
+export interface FacetGridRole {
+  field: string;
+  values?: readonly DatasetScalar[];
+}
+export interface FacetGridOptions {
+  id?: string;
+  data?: string;
+  rows: FacetGridRole;
+  columns: FacetGridRole;
+  combinations?: "observed" | "full";
+  gap?: number;
+  align?: CompositionAlign;
+  padding?: number | CompositionPadding;
+  scales?: FacetScaleResolutions;
+  guides?: FacetGuideOptions;
+}
+export interface RepeatChartsOptions {
+  id?: string;
+  target?: string;
+  channel: "x" | "y";
+  fields: readonly [string, ...string[]];
+  columns?: number;
+  gap?: number;
+  align?: CompositionAlign;
+  padding?: number | CompositionPadding;
+  scales?: FacetScaleResolutions;
+  guides?: FacetGuideOptions;
+}
+export interface EditFacetSourceOptions { program: ChartProgram; }
 export interface EditFacetHeadersOptions {
   fontSize?: number;
   fontFamily?: string;
@@ -180,8 +220,26 @@ export interface FacetCompositionSpec {
   readonly padding: Readonly<Required<CompositionPadding>>;
   readonly facet: {
     readonly data: string;
-    readonly field: string;
+    readonly field?: string;
     readonly values: readonly DatasetScalar[];
+    readonly grid?: {
+      readonly rows: { readonly field: string; readonly values: readonly DatasetScalar[] };
+      readonly columns: { readonly field: string; readonly values: readonly DatasetScalar[] };
+      readonly combinations: "observed" | "full";
+      readonly cells: readonly {
+        readonly id: string;
+        readonly row: number;
+        readonly column: number;
+        readonly rowValue: DatasetScalar;
+        readonly columnValue: DatasetScalar;
+        readonly empty: boolean;
+      }[];
+    };
+    readonly repeat?: {
+      readonly target: string;
+      readonly channel: "x" | "y";
+      readonly fields: readonly string[];
+    };
     readonly scales: Readonly<Required<FacetScaleResolutions>>;
     readonly guides: {
       readonly axes: "each" | "outer";
@@ -4011,7 +4069,13 @@ export class ChartProgram {
 
   editCompositionLayout(options: EditCompositionLayoutOptions): ChartProgram;
   replaceCompositionChild(options: ReplaceCompositionChildOptions): ChartProgram;
+  insertCompositionChild(options: InsertCompositionChildOptions): ChartProgram;
+  removeCompositionChild(options: RemoveCompositionChildOptions): ChartProgram;
+  reorderCompositionChildren(options: ReorderCompositionChildrenOptions): ChartProgram;
   facet(options: FacetOptions): ChartProgram;
+  facetGrid(options: FacetGridOptions): ChartProgram;
+  repeatCharts(options: RepeatChartsOptions): ChartProgram;
+  editFacetSource(options: EditFacetSourceOptions): ChartProgram;
   editFacetScales(options: FacetScaleResolutions): ChartProgram;
   editFacetGuides(options: FacetGuideOptions): ChartProgram;
   editFacetHeaders(options: EditFacetHeadersOptions): ChartProgram;

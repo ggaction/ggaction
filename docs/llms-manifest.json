@@ -1168,15 +1168,19 @@
         "program-composition",
         "arrange-complete-programs",
         "automatic-and-explicit-child-sizes",
-        "compose-cartesian-and-polar-charts",
+        "compose-cartesian-polar-and-parallel-charts",
         "repeat-the-current-chart-by-a-field",
+        "build-a-row-and-column-facet-grid",
+        "repeat-a-positional-encoding-across-fields",
         "edit-the-layout",
         "edit-facet-scale-and-guide-policies",
+        "replace-the-repeated-source-recipe",
         "replace-one-stable-slot",
+        "insert-remove-and-reorder-named-concat-children",
         "state-trace-and-action-scope"
       ],
-      "bytes": 12038,
-      "sha256": "88cc1745b7c712ada481482c3d15bb24e4856667970c2822f613840d26f97aaa"
+      "bytes": 16860,
+      "sha256": "51a73b6415a4b941cc9cea064b653dee3e83fdf91eadaef0c23339be92bd61b9"
     },
     {
       "order": 74,
@@ -1842,8 +1846,8 @@
         "action-reference",
         "exact-action-lookup"
       ],
-      "bytes": 24291,
-      "sha256": "5a343241325334b5b9d98b284addf09edd0b0f1fb8222fddfaa928664e39be32"
+      "bytes": 24935,
+      "sha256": "38fc93ab37b5f623f731e840e050ae8c0d09dd26a26c81bd43d97d04c552a5a1"
     },
     {
       "order": 117,
@@ -1859,7 +1863,13 @@
         "removetheme",
         "editcompositionlayout",
         "replacecompositionchild",
+        "insertcompositionchild",
+        "removecompositionchild",
+        "reordercompositionchildren",
         "facet",
+        "facetgrid",
+        "repeatcharts",
+        "editfacetsource",
         "editfacetheaders",
         "editfacetscales",
         "editfacetguides",
@@ -1904,8 +1914,8 @@
         "editbin2ddata",
         "related"
       ],
-      "bytes": 22043,
-      "sha256": "d709378139a36f160960bc0c6f4da88d3a0d715ee193701116586a7c2be89e97"
+      "bytes": 23898,
+      "sha256": "51d2ee6482a252f3cda2020ef882f99a2737298ac7d347242cf382731e34f4c0"
     },
     {
       "order": 118,
@@ -2143,8 +2153,8 @@
         "exact-typescript-signatures",
         "related"
       ],
-      "bytes": 17990,
-      "sha256": "53cdeaacba42636d3c3c02ea78b4706fea86050759ac8bccc552e2bc9a250f00"
+      "bytes": 18418,
+      "sha256": "13eb72c0a6f95c0a575794c312f707ed61b2833949ab9a14c71629f2d3c5b5a1"
     },
     {
       "order": 126,

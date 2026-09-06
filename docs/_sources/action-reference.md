@@ -286,10 +286,37 @@ replaceCompositionChild({ target, program })
 Replace one named child while preserving its slot ID and order. The replacement
 must already be a complete chart or composition program.
 
+### `insertCompositionChild`
+
+```javascript
+insertCompositionChild({ id, program, before?, after? })
+```
+
+Insert a complete chart or nested composition under a new stable child name.
+Use either `before` or `after`; omitting both appends the child.
+
+### `removeCompositionChild`
+
+```javascript
+removeCompositionChild({ target })
+```
+
+Remove one named concat child and rebuild layout. A concat may retain one child,
+but its final child cannot be removed.
+
+### `reorderCompositionChildren`
+
+```javascript
+reorderCompositionChildren({ order })
+```
+
+Provide every current concat child ID exactly once in its new order. Child
+program references stay unchanged while placements and snapshots are rebuilt.
+
 ### `facet`
 
 ```javascript
-facet({ id?, field, data?, columns?, gap?, align?, padding?, scales?, guides? })
+facet({ id?, field, data?, values?, columns?, gap?, align?, padding?, scales?, guides? })
 ```
 
 Repeat one complete chart by a field on its common row-preserving dataset
@@ -302,6 +329,39 @@ the child legend's configured `left`, `right`, `top`, or `bottom` edge. Top and
 bottom promotion also preserves the child legend's horizontal alignment;
 author those options with `createLegend` before calling `facet`.
 See [Program composition](../api/composition.md#repeat-the-current-chart-by-a-field).
+
+### `facetGrid`
+
+```javascript
+facetGrid({ id?, data?, rows, columns, combinations?, gap?, align?, padding?, scales?, guides? })
+```
+
+Repeat one supported Cartesian chart over two ordered categorical fields.
+`combinations: "observed"` retains the coordinates of observed pairs;
+`"full"` also creates explicit blank cells for missing pairs.
+
+### `repeatCharts`
+
+```javascript
+repeatCharts({ id?, target?, channel, fields, columns?, gap?, align?, padding?, scales?, guides? })
+```
+
+Repeat one direct Cartesian mark by replacing its x or y field. The repeated
+channel is independently scaled by default; request a shared policy explicitly
+to use the union domain. Polar roles, Parallel dimensions, and composite roles
+are rejected with explicit errors.
+
+### `editFacetSource`
+
+```javascript
+editFacetSource({ program })
+```
+
+Reapply the current facet, grid, or repeat recipe to a revised complete unit
+program while preserving the partition dataset ID, ordered domains, layout,
+scale/guide policy, headers, and parent title. All stored facet values must
+remain observed; create a new composition when the dataset ID, domain, or
+repeat field list changes.
 
 ### `editFacetHeaders`
 

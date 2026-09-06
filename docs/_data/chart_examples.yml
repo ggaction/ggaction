@@ -37,6 +37,42 @@
   recipe_order: 140
   home_group: essentials
   home_order: 120
+- id: facet-grid
+  example: /examples/facet-grid/
+  title: Row and column facet grid
+  image: /assets/images/facet-grid.png
+  alt: Six panel grid crossing North and South regions with three periods and one intentionally empty cell
+  width: 1008
+  height: 544
+  thumbnail: /assets/images/facet-grid-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 345
+  caption: Explicit row and column values preserve the empty South Q2 position.
+  summary: Cross two fields into an observed or complete grid with stable cell coordinates.
+  actions: facetGrid · editFacetSource · editCompositionLayout
+  tasks: composition comparison
+  url: /api/composition/#build-a-row-and-column-facet-grid
+  gallery_featured: true
+  home_group: essentials
+  home_order: 130
+- id: repeat-charts
+  example: /examples/repeat-charts/
+  title: Repeated metric charts
+  image: /assets/images/repeat-charts.png
+  alt: Three aligned scatterplots comparing speed quality and cost against score with a shared group legend
+  width: 1676
+  height: 300
+  thumbnail: /assets/images/repeat-charts-thumb.png
+  thumbnail_width: 640
+  thumbnail_height: 115
+  caption: Three fields replace the x encoding while score and group remain comparable.
+  summary: Repeat one positional encoding across fields with explicit scale and guide policies.
+  actions: repeatCharts · editFacetSource · editCompositionLayout
+  tasks: composition comparison
+  url: /api/composition/#repeat-a-positional-encoding-across-fields
+  gallery_featured: true
+  home_group: essentials
+  home_order: 140
 - id: scatterplot
   example: /examples/cars-scatterplot/
   title: Scatterplot

@@ -63,12 +63,30 @@ function deriveCellProgram(
   histogramBoundaries,
   scales
 ) {
-  let child = base.filterData({
-    id: cell.data,
-    source: definition.data,
+  const filters = cell.filters ?? [{
     field: definition.field,
-    oneOf: [cell.value]
-  });
+    value: cell.value
+  }];
+  let child = base;
+  let source = definition.data;
+  for (const [index, filter] of filters.entries()) {
+    const id = index === filters.length - 1
+      ? cell.data
+      : `${cell.id}-partition-${index + 1}-data`;
+    child = child.filterData({
+      id,
+      source,
+      field: filter.field,
+      oneOf: [filter.value]
+    });
+    source = id;
+  }
+  if (requireDataset(child, cell.data).values.length === 0) {
+    while (child.semanticSpec.layers.length > 0) {
+      child = child.removeMark({ target: child.semanticSpec.layers[0].id });
+    }
+    return child;
+  }
   const datasets = new Map([[definition.data, cell.data]]);
   for (const replay of definition.dependencies.replay) {
     const source = datasets.get(replay.source);
@@ -182,9 +200,35 @@ export function deriveFacetChildren(
     cell.id,
     deriveCellProgram(template, definition, cell, bins, scales)
   ]));
+  return resolveFacetChildrenScales(
+    template,
+    definition.cells.map(cell => cell.id),
+    independentlyResolved,
+    scales,
+    closeInheritedAction
+  );
+}
+
+export function resolveFacetChildrenScales(
+  template,
+  cellIds,
+  independentlyResolved,
+  scales = {},
+  closeInheritedAction = false
+) {
+  const populated = Object.fromEntries(cellIds.flatMap(id => {
+    const child = independentlyResolved[id];
+    if (child === undefined) {
+      throw new Error(`Facet derivation is missing child "${id}".`);
+    }
+    return child.semanticSpec.layers.length > 0 ? [[id, child]] : [];
+  }));
+  if (Object.keys(populated).length === 0) {
+    throw new Error("Facet derivation requires at least one populated cell.");
+  }
   const resolution = resolveFacetScaleDomains(
     template.semanticSpec,
-    Object.fromEntries(Object.entries(independentlyResolved).map(([id, child]) => [
+    Object.fromEntries(Object.entries(populated).map(([id, child]) => [
       id,
       child.resolvedScales
     ])),
@@ -192,7 +236,11 @@ export function deriveFacetChildren(
     template.resolvedScales
   );
   const resolvedChildren = Object.fromEntries(
-    Object.entries(independentlyResolved).map(([id, child]) => {
+    cellIds.map(id => {
+      const child = independentlyResolved[id];
+      if (child.semanticSpec.layers.length === 0) {
+        return [id, closeInheritedAction ? child._exitAction() : child];
+      }
       const resolved = applyResolvedDomains(
         child,
         id,
@@ -202,10 +250,11 @@ export function deriveFacetChildren(
       return [id, closeInheritedAction ? resolved._exitAction() : resolved];
     })
   );
+  const firstPopulatedId = Object.keys(populated)[0];
   const sharedScales = Object.fromEntries(
     Object.entries(resolution.scales)
       .filter(([, value]) => value.policy === "shared")
-      .map(([id]) => [id, resolvedChildren[definition.cells[0].id].resolvedScales[id]])
+      .map(([id]) => [id, resolvedChildren[firstPopulatedId].resolvedScales[id]])
   );
   return freezeOwned({
     children: freezeOwned(resolvedChildren),

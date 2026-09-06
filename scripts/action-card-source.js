@@ -69,6 +69,14 @@ function unique(values) {
 
 function operationAndSubject(name) {
   if (name === "facet") return { operation: "compose", subject: "facet" };
+  if (name === "facetGrid") return { operation: "compose", subject: "FacetGrid" };
+  if (name === "repeatCharts") return { operation: "compose", subject: "RepeatedCharts" };
+  if (name === "insertCompositionChild") {
+    return { operation: "edit", subject: "CompositionChild" };
+  }
+  if (name === "reorderCompositionChildren") {
+    return { operation: "edit", subject: "CompositionChildren" };
+  }
   if (name === "fitCanvas") return { operation: "layout", subject: "Canvas" };
   const operation = operationPrefixes.find(prefix => name.startsWith(prefix));
   if (!operation) throw new Error(`Compact card operation is missing for ${name}.`);

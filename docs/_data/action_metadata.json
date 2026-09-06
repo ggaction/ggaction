@@ -964,8 +964,38 @@
     "layer": "user-facing",
     "domain": "composition"
   },
+  "insertCompositionChild": {
+    "operation": "edit",
+    "layer": "user-facing",
+    "domain": "composition"
+  },
+  "removeCompositionChild": {
+    "operation": "remove",
+    "layer": "user-facing",
+    "domain": "composition"
+  },
+  "reorderCompositionChildren": {
+    "operation": "edit",
+    "layer": "user-facing",
+    "domain": "composition"
+  },
   "facet": {
     "operation": "compose",
+    "layer": "user-facing",
+    "domain": "composition"
+  },
+  "facetGrid": {
+    "operation": "compose",
+    "layer": "user-facing",
+    "domain": "composition"
+  },
+  "repeatCharts": {
+    "operation": "compose",
+    "layer": "user-facing",
+    "domain": "composition"
+  },
+  "editFacetSource": {
+    "operation": "edit",
     "layer": "user-facing",
     "domain": "composition"
   },

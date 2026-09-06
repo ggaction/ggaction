@@ -718,9 +718,25 @@
       "composition child",
       "nested chart slot"
     ],
+    "CompositionChildren": [
+      "composition child order",
+      "reorder chart slots"
+    ],
     "facet": [
       "faceting",
       "small multiples"
+    ],
+    "FacetGrid": [
+      "row and column facets",
+      "two dimensional small multiples"
+    ],
+    "RepeatedCharts": [
+      "repeat chart by field",
+      "field comparison panels"
+    ],
+    "FacetSource": [
+      "facet source revision",
+      "rebuild small multiples"
     ],
     "FacetHeaders": [
       "facet headers",
@@ -979,6 +995,39 @@
     },
     "replaceCompositionChild": {
       "target": "child-1",
+      "program": {
+        "$code": "chart().createCanvas({}).createData({ values: [] })"
+      }
+    },
+    "insertCompositionChild": {
+      "id": "detail",
+      "program": {
+        "$code": "chart().createCanvas({}).createData({ values: [] })"
+      },
+      "after": "overview"
+    },
+    "reorderCompositionChildren": {
+      "order": [
+        "detail",
+        "overview"
+      ]
+    },
+    "facetGrid": {
+      "rows": {
+        "field": "region"
+      },
+      "columns": {
+        "field": "year"
+      }
+    },
+    "repeatCharts": {
+      "channel": "x",
+      "fields": [
+        "sales",
+        "profit"
+      ]
+    },
+    "editFacetSource": {
       "program": {
         "$code": "chart().createCanvas({}).createData({ values: [] })"
       }

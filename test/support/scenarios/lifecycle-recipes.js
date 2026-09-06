@@ -106,6 +106,8 @@ function lifecyclePurpose(recipeId, factors) {
     "action-selection-lifecycle": "Selected observations",
     "action-composition-lifecycle": "Composition comparison",
     "action-facet-scale-lifecycle": "Faceted comparison",
+    "action-facet-grid-lifecycle": "Row and column comparison",
+    "action-repeat-charts-lifecycle": "Repeated metric comparison",
     "action-direct-data-resources": "Derived resource analysis",
     "action-direct-point-text": "Annotated observations",
     "action-direct-ranged-marks": "Ranged comparison",
@@ -879,6 +881,9 @@ function buildCompositionLifecycle(factors) {
       padding: factors.padding,
       align: factors.align
     })
+    .insertCompositionChild({ id: "temporary", program: replacement, after: "left" })
+    .reorderCompositionChildren({ order: ["right", "left", "temporary"] })
+    .removeCompositionChild({ target: "temporary" })
     .replaceCompositionChild({ target: "right", program: replacement });
 }
 
@@ -921,9 +926,54 @@ function buildFacetScaleLifecycle(factors) {
     .editFacetGuides({ axes: factors.axes });
 }
 
+function facetGridUnit(factors) {
+  const rows = lifecycleSourceRows(factors.dataset, "facet", "zoo-facet-imbalance");
+  return chart()
+    .createCanvas(facetLifecycleCanvas({ ...factors, columns: 2 }))
+    .createData({ id: "gridRows", values: rows })
+    .createPointMark({ id: "gridPoints" })
+    .encodeX({ target: "gridPoints", field: "x", scale: { zero: false } })
+    .encodeY({ target: "gridPoints", field: "y", scale: { zero: false } })
+    .encodeColor({ target: "gridPoints", field: "category" });
+}
+
+function buildFacetGridLifecycle(factors) {
+  const source = facetGridUnit(factors)
+    .createTitle({ text: lifecycleTitle(factors, "Row and column comparison") });
+  return source
+    .facetGrid({
+      id: "lifecycleGrid",
+      rows: { field: "facet" },
+      columns: { field: "category" },
+      combinations: factors.combinations,
+      guides: { legend: false }
+    })
+    .editFacetSource({ program: source });
+}
+
+function buildRepeatChartsLifecycle(factors) {
+  const rows = styleRows(factors.dataset);
+  return chart()
+    .createCanvas(cartesianCanvas(factors))
+    .createData({ id: "repeatRows", values: rows })
+    .createPointMark({ id: "repeatPoints" })
+    .encodeX({ target: "repeatPoints", field: "x", scale: { zero: false } })
+    .encodeY({ target: "repeatPoints", field: "positive", scale: { zero: false } })
+    .createTitle({ text: lifecycleTitle(factors, "Repeated metric comparison") })
+    .repeatCharts({
+      id: "lifecycleRepeat",
+      target: "repeatPoints",
+      channel: "x",
+      fields: ["x", "positive"],
+      columns: factors.columns,
+      scales: { x: factors.xScale }
+    });
+}
+
 function buildDirectDataResources(factors) {
   const rows = styleRows(factors.dataset).map(row => ({
     ...row,
+    endpointStart: row.positive - 1,
     intervalLower: row.x - 1,
     intervalCenter: row.x,
     intervalUpper: row.x + 1
@@ -1009,7 +1059,7 @@ function buildDirectDataResources(factors) {
     })
     .editEndpointPlot({
       target: "directDumbbell",
-      start: "y"
+      start: "endpointStart"
     })
     .createIntervalPlot({
       id: "directIntervalPlot",
@@ -1536,6 +1586,12 @@ export const LIFECYCLE_SCENARIO_RECIPES = Object.freeze([
   recipe("action-facet-scale-lifecycle", ["zoo-facet-imbalance"], {
     columns: [2, 3], yScale: ["shared", "independent"], axes: ["each", "outer"]
   }, buildFacetScaleLifecycle),
+  recipe("action-facet-grid-lifecycle", ["zoo-facet-imbalance"], {
+    combinations: ["observed", "full"]
+  }, buildFacetGridLifecycle),
+  recipe("action-repeat-charts-lifecycle", ["zoo-multi-encoding-styles"], {
+    columns: [1, 2], xScale: ["independent", "shared"]
+  }, buildRepeatChartsLifecycle),
   recipe("action-direct-data-resources", ["zoo-multi-encoding-styles"], {
     width: [920, 1040], background: ["#ffffff", "#f8fafc"],
     bandwidth: [0.35, 0.7], steps: [24, 48], bins: [3, 5],
@@ -1595,6 +1651,8 @@ const REALISTIC_LIFECYCLE_KINDS = Object.freeze({
   "action-selection-lifecycle": "style",
   "action-composition-lifecycle": "style",
   "action-facet-scale-lifecycle": "facet",
+  "action-facet-grid-lifecycle": "facet",
+  "action-repeat-charts-lifecycle": "style",
   "action-direct-data-resources": "style",
   "action-direct-point-text": "style",
   "action-direct-ranged-marks": "interval",
@@ -1615,6 +1673,8 @@ const COMPOSITE_LIFECYCLES = new Set([
   "action-selection-lifecycle",
   "action-composition-lifecycle",
   "action-facet-scale-lifecycle",
+  "action-facet-grid-lifecycle",
+  "action-repeat-charts-lifecycle",
   "action-direct-data-resources"
 ]);
 
@@ -1679,8 +1739,10 @@ function realisticLifecycleMetadata(base, factors) {
     "action-cartesian-guides": ["create", "edit", "remove"],
     "action-polar-guides": ["create", "edit"],
     "action-selection-lifecycle": ["create", "remove", "filter", "select", "highlight"],
-    "action-composition-lifecycle": ["edit", "compose", "reassign"],
+    "action-composition-lifecycle": ["edit", "remove", "compose", "reassign"],
     "action-facet-scale-lifecycle": ["create", "edit", "compose"],
+    "action-facet-grid-lifecycle": ["create", "edit", "compose"],
+    "action-repeat-charts-lifecycle": ["create", "compose"],
     "action-direct-data-resources": ["create", "edit"],
     "action-direct-point-text": ["create", "edit"],
     "action-direct-ranged-marks": ["create", "edit"],
@@ -1752,9 +1814,12 @@ function lifecycleSignature(base, factors) {
       "filterMarks", "highlightMarks", "removeMarkHighlight"
     ],
     "action-composition-lifecycle": [
-      "hconcat", "editCompositionLayout", "replaceCompositionChild"
+      "hconcat", "editCompositionLayout", "insertCompositionChild",
+      "reorderCompositionChildren", "removeCompositionChild", "replaceCompositionChild"
     ],
     "action-facet-scale-lifecycle": ["facet", "editFacetScales", "editFacetGuides"],
+    "action-facet-grid-lifecycle": ["facetGrid", "editFacetSource"],
+    "action-repeat-charts-lifecycle": ["repeatCharts"],
     "action-direct-data-resources": [
       "editCanvas", "createDensityData", "createBin2DData", "createDerivedData", "createScale"
     ],
@@ -1844,7 +1909,11 @@ function observeLifecycleFeatures(base, program, factors) {
   if (operations.has("highlightMarks") || operations.has("removeMarkHighlight")) {
     features.push("lifecycle:highlight");
   }
-  if (["facet", "hconcat", "vconcat", "replaceCompositionChild", "editFacetScales"]
+  if ([
+    "facet", "facetGrid", "repeatCharts", "hconcat", "vconcat",
+    "replaceCompositionChild", "insertCompositionChild", "removeCompositionChild",
+    "reorderCompositionChildren", "editFacetScales"
+  ]
     .some(value => operations.has(value))) {
     features.push("lifecycle:compose");
   }
@@ -2012,6 +2081,8 @@ export const LIFECYCLE_EXPECTED_ACTIONS = Object.freeze([
   "createRegressionLine", "editRegressionLine", "filterMarks",
   "removeMarkHighlight", "highlightMarks", "editThetaAxis", "editRadialAxis",
   "editThetaGrid", "editRadialGrid", "replaceCompositionChild", "editFacetScales",
+  "facetGrid", "repeatCharts", "editFacetSource", "insertCompositionChild",
+  "removeCompositionChild", "reorderCompositionChildren",
   "createScatterPlot", "createLinePlot", "createAreaPlot", "layoutSeries", "createBarPlot", "createParallelCoordinates",
   "createRugPlot", "createStripPlot", "packPoints", "removePointPacking",
   "createBeeswarmPlot", "createRaincloudPlot", "editRaincloudPlot",

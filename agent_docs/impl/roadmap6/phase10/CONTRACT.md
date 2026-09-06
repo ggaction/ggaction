@@ -79,8 +79,9 @@ editFacetSource(options: { program: ChartProgram }): ChartProgram;
   각 child의 scalar pair, grid coordinates와 `empty` 여부를 canonical하게 저장한다.
 - Header는 최소 구현에서 각 occupied/blank cell 위에 `rowValue · columnValue`를 표시한다. Empty string은 `(empty)`로
   표시한다. 독립적인 shared row/column spanning header는 별도 typography 제안이며 이번 의미 계약에 필요하지 않다.
-- Empty `full` cell은 원본과 같은 Canvas 크기의 mark-free child다. Shared channel은 parent/global domain을 사용한다.
-  자동 independent domain은 표본이 없으므로 거부하고, explicit semantic domain이 있는 channel만 independent를 허용한다.
+- Empty `full` cell은 원본과 같은 Canvas 크기의 mark-free child다. Shared channel은 populated cell의 parent/global
+  domain을 사용한다. Independent policy에서도 blank cell은 표본이 없으므로 local domain이나 guide를 추론하지 않고
+  mark-free Canvas로 남는다.
 - 최대 child 100개와 partition work 10,000,000 한도는 product/observed 결과에 동일하게 적용한다.
 
 ### Field repeat
@@ -101,8 +102,9 @@ editFacetSource(options: { program: ChartProgram }): ChartProgram;
   scale/guide/header/title policy를 새 complete unit program에 다시 적용한다.
 - 새 program은 unfinished action stack이 없어야 하며 현재 recipe의 fields/target role을 만족해야 한다. 성공 시 cell을
   처음부터 재생성하고 실패 시 이전 parent/children/trace와 caller program을 보존한다.
-- 동일한 ordered domains/fields에서는 child IDs가 유지된다. Observed domain이 달라지면 새 canonical order에 맞춰
-  child closure를 교체한다.
+- 저장된 partition dataset ID와 ordered domains/fields는 source revision의 recipe다. 새 source에서도 같은 dataset과
+  모든 저장 값이 관측되어야 하며 child IDs가 유지된다. Dataset ID, domain 또는 repeated field 목록 자체를 바꾸려면
+  revised unit에 새 facet/grid/repeat를 적용한다.
 
 ## W2 public surface
 

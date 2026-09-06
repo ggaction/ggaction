@@ -239,7 +239,13 @@ interface ChartProgramActions {
   editRegressionLine(options: { target?: string; strokeWidth?: number; curve?: CurveInterpolation; }): ChartProgram;
   editCompositionLayout(options: EditCompositionLayoutOptions): ChartProgram;
   replaceCompositionChild(options: ReplaceCompositionChildOptions): ChartProgram;
+  insertCompositionChild(options: InsertCompositionChildOptions): ChartProgram;
+  removeCompositionChild(options: RemoveCompositionChildOptions): ChartProgram;
+  reorderCompositionChildren(options: ReorderCompositionChildrenOptions): ChartProgram;
   facet(options: FacetOptions): ChartProgram;
+  facetGrid(options: FacetGridOptions): ChartProgram;
+  repeatCharts(options: RepeatChartsOptions): ChartProgram;
+  editFacetSource(options: EditFacetSourceOptions): ChartProgram;
   editFacetScales(options: FacetScaleResolutions): ChartProgram;
   editFacetGuides(options: FacetGuideOptions): ChartProgram;
   editFacetHeaders(options: EditFacetHeadersOptions): ChartProgram;

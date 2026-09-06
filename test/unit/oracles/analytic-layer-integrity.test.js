@@ -120,6 +120,38 @@ test("checks every materialized facet or composition leaf independently", () => 
   assert.match(report.issues[0], /facet-cell-2.*no materialized items/u);
 });
 
+test("accepts a facet-grid cell explicitly declared empty", () => {
+  const composition = {
+    semanticSpec: { layers: [{ id: "points", mark: { type: "point" } }] },
+    graphicSpec: { objects: {} },
+    compositionSpec: {
+      type: "facet",
+      facet: {
+        grid: {
+          cells: [
+            { id: "populated", empty: false },
+            { id: "missing-pair", empty: true }
+          ]
+        }
+      }
+    },
+    children: {
+      populated: pointProgram("points"),
+      "missing-pair": {
+        semanticSpec: { layers: [] },
+        graphicSpec: { objects: {} }
+      }
+    }
+  };
+
+  assert.deepEqual(assertAnalyticLayerIntegrity(composition), {
+    leafProgramCount: 2,
+    layerCount: 1,
+    itemCount: 1,
+    nonDegenerateItemCount: 1
+  });
+});
+
 test("scans large path command lists without argument-spread limits", () => {
   const commands = [
     { op: "M", x: 0, y: 0 },

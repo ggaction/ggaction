@@ -13,7 +13,7 @@ function operation(name) {
   ]) {
     if (name.startsWith(candidate)) return candidate;
   }
-  if (name === "facet") return "compose";
+  if (["facet", "facetGrid", "repeatCharts"].includes(name)) return "compose";
   if (
     name === "bindMarkData" ||
     name === "jitterPoints" ||
@@ -22,7 +22,9 @@ function operation(name) {
     name === "layoutLabels" ||
     name === "layoutSeries" ||
     name === "orderCategories" ||
-    name === "replaceCompositionChild"
+    name === "replaceCompositionChild" ||
+    name === "insertCompositionChild" ||
+    name === "reorderCompositionChildren"
   ) return "edit";
   throw new Error(`Public action ${name} needs a documentation operation classification.`);
 }

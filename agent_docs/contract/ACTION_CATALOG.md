@@ -201,7 +201,13 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`editRadialGrid`](current/GRID.md#editRadialGrid) | grid | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editCompositionLayout`](current/COMPOSITION.md#editCompositionLayout) | composition | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`replaceCompositionChild`](current/COMPOSITION.md#replaceCompositionChild) | composition | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`insertCompositionChild`](current/COMPOSITION.md#insertcompositionchild) | composition | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`removeCompositionChild`](current/COMPOSITION.md#removecompositionchild) | composition | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`reorderCompositionChildren`](current/COMPOSITION.md#reordercompositionchildren) | composition | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`facet`](current/COMPOSITION.md#facet) | composition | Aggregate create-only | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`facetGrid`](current/COMPOSITION.md#facetgrid) | composition | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`repeatCharts`](current/COMPOSITION.md#repeatcharts) | composition | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editFacetSource`](current/COMPOSITION.md#editfacetsource) | composition | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editFacetHeaders`](current/COMPOSITION.md#editFacetHeaders) | composition | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editFacetScales`](current/COMPOSITION.md#editfacetscales) | composition | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editFacetGuides`](current/COMPOSITION.md#editfacetguides) | composition | Mutable resource | Complete | ✅ / ✅ / ✅ |

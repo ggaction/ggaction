@@ -136,19 +136,19 @@ test("owns exactly fifty real TidyTuesday sources and the integrated realistic r
   assert.equal(new Set(datasets).size, 50);
   assert.equal(datasets.every(id => datasetDefinition(id).corpus === "tidytuesday"), true);
 
-  assert.equal(REALISTIC_SCENARIO_RECIPES.length, 112);
-  assert.equal(new Set(REALISTIC_SCENARIO_RECIPES.map(recipe => recipe.id)).size, 112);
+  assert.equal(REALISTIC_SCENARIO_RECIPES.length, 114);
+  assert.equal(new Set(REALISTIC_SCENARIO_RECIPES.map(recipe => recipe.id)).size, 114);
   assert.deepEqual(REALISTIC_ANALYSIS_COUNTS, {
     simple: 14,
     intermediate: 28,
     advanced: 1,
     composite: 1
   });
-  assert.deepEqual(REALISTIC_LIFECYCLE_COUNTS, { advanced: 22, composite: 7 });
+  assert.deepEqual(REALISTIC_LIFECYCLE_COUNTS, { advanced: 22, composite: 9 });
   assert.deepEqual(countBy(
     REALISTIC_SCENARIO_RECIPES,
     recipe => recipe.complexity
-  ), { simple: 16, intermediate: 38, advanced: 42, composite: 16 });
+  ), { simple: 16, intermediate: 38, advanced: 42, composite: 18 });
   assert.equal(REALISTIC_SCENARIO_RECIPES.every(recipe =>
     recipe.suite === "realistic" && recipe.datasets.length > 0 &&
     recipe.datasets.every(id => datasets.includes(id))
@@ -179,19 +179,19 @@ test("integrates every coverage recipe once with bounded tier capacity", () => {
     simple: 16,
     intermediate: 38,
     advanced: 42,
-    composite: 16
+    composite: 18
   });
   assert.deepEqual(report.minimumSelections, {
     simple: 90,
     intermediate: 1_094,
     advanced: 1_370,
-    composite: 90
+    composite: 100
   });
   assert.deepEqual(report.declaredFactorSelectionTargets, {
     simple: 179,
     intermediate: 1_278,
     advanced: 1_392,
-    composite: 101
+    composite: 113
   });
   assert.deepEqual(report.capacity, {
     simple: 550,
@@ -788,7 +788,7 @@ test("keeps no-slack encoding schedules urgent through their full-plan deadline"
     [...requirement.eligibleDatasets].map(dataset => datasetIndexes.get(dataset))
   ));
 
-  assert.equal(REALISTIC_SCENARIO_RECIPES.length, 112);
+  assert.equal(REALISTIC_SCENARIO_RECIPES.length, 114);
   assert.equal(lastEligibleIndex < realisticDatasetIds().length - 1, true);
   for (const dataset of realisticDatasetIds().slice(0, lastEligibleIndex + 1)) {
     const priorities = scenarioScheduleVariantPriorities(requirements, {

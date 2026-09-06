@@ -20,6 +20,9 @@ const LAYOUT_EDIT_OPTIONS = Object.freeze([
   "columns", "gap", "align", "padding"
 ]);
 const REPLACEMENT_OPTIONS = Object.freeze(["target", "program"]);
+const INSERTION_OPTIONS = Object.freeze(["id", "program", "before", "after"]);
+const REMOVAL_OPTIONS = Object.freeze(["target"]);
+const REORDER_OPTIONS = Object.freeze(["order"]);
 
 function option(args, name, fallback) {
   return Object.hasOwn(args, name) ? args[name] : fallback;
@@ -180,10 +183,17 @@ const editCompositionLayout = action(
       : current.padding;
     let layout;
     if (current.type === "facet") {
+      const gridCells = new Map(
+        (current.facet.grid?.cells ?? []).map(cell => [cell.id, cell])
+      );
       layout = resolveFacetLayout({
         children: current.children.map((id, index) => ({
           ...childDescriptor({ id, program: this.children[id] }),
-          value: current.facet.values[index]
+          value: current.facet.values[index],
+          ...(gridCells.has(id) ? {
+            row: gridCells.get(id).row,
+            column: gridCells.get(id).column
+          } : {})
         })),
         columns: option(args, "columns", current.columns),
         gap: option(args, "gap", current.gap),
@@ -224,6 +234,7 @@ const replaceCompositionChild = action(
   },
   function (args = {}) {
     validateOptionObject(args, REPLACEMENT_OPTIONS, "replaceCompositionChild");
+    this._assertCompositionProgram("replaceCompositionChild");
     if (this.compositionSpec.type === "facet") {
       throw new Error("replaceCompositionChild is not available on a facet composition.");
     }
@@ -246,9 +257,115 @@ const replaceCompositionChild = action(
   }
 );
 
+function requireConcat(program, operation) {
+  program._assertCompositionProgram(operation);
+  if (program.compositionSpec.type === "facet") {
+    throw new Error(`${operation} is not available on a facet composition.`);
+  }
+}
+
+const insertCompositionChild = action(
+  {
+    op: "insertCompositionChild",
+    description: "Insert one named child into a concat composition.",
+    scope: "composition"
+  },
+  function (args = {}) {
+    validateOptionObject(args, INSERTION_OPTIONS, "insertCompositionChild");
+    requireConcat(this, "insertCompositionChild");
+    const id = validateUserId(args.id, "Composition child ID");
+    if (Object.hasOwn(this.children, id)) {
+      throw new Error(`Composition child "${id}" already exists.`);
+    }
+    if (!(args.program instanceof CoreChartProgram)) {
+      throw new TypeError("insertCompositionChild program must be a ChartProgram.");
+    }
+    if (args.before !== undefined && args.after !== undefined) {
+      throw new Error("insertCompositionChild before and after are mutually exclusive.");
+    }
+    childDescriptor({ id, program: args.program });
+    const order = [...this.compositionSpec.children];
+    if (args.before !== undefined || args.after !== undefined) {
+      const property = args.before !== undefined ? "before" : "after";
+      const anchor = validateUserId(args[property], `Composition child ${property}`);
+      const index = order.indexOf(anchor);
+      if (index < 0) throw new Error(`Unknown composition child "${anchor}".`);
+      order.splice(index + (property === "after" ? 1 : 0), 0, id);
+    } else {
+      order.push(id);
+    }
+    return applyCompositionState(this, {
+      children: freezeOwned({ ...this.children, [id]: args.program }),
+      compositionSpec: { ...this.compositionSpec, children: order }
+    }, [id]);
+  }
+);
+
+const removeCompositionChild = action(
+  {
+    op: "removeCompositionChild",
+    description: "Remove one named child from a concat composition.",
+    scope: "composition"
+  },
+  function (args = {}) {
+    validateOptionObject(args, REMOVAL_OPTIONS, "removeCompositionChild");
+    requireConcat(this, "removeCompositionChild");
+    const target = validateUserId(args.target, "Composition child target");
+    if (!Object.hasOwn(this.children, target)) {
+      throw new Error(`Unknown composition child "${target}".`);
+    }
+    if (this.compositionSpec.children.length === 1) {
+      throw new Error("removeCompositionChild must leave at least one child.");
+    }
+    const { [target]: _removed, ...remaining } = this.children;
+    void _removed;
+    return applyCompositionState(this, {
+      children: freezeOwned(remaining),
+      compositionSpec: {
+        ...this.compositionSpec,
+        children: this.compositionSpec.children.filter(id => id !== target)
+      }
+    });
+  }
+);
+
+const reorderCompositionChildren = action(
+  {
+    op: "reorderCompositionChildren",
+    description: "Reorder every named child in a concat composition.",
+    scope: "composition"
+  },
+  function (args = {}) {
+    validateOptionObject(args, REORDER_OPTIONS, "reorderCompositionChildren");
+    requireConcat(this, "reorderCompositionChildren");
+    if (!Array.isArray(args.order) || args.order.length === 0 ||
+        args.order.some(id => typeof id !== "string" || id.length === 0)) {
+      throw new TypeError("reorderCompositionChildren order must be a non-empty child ID array.");
+    }
+    if (new Set(args.order).size !== args.order.length) {
+      throw new Error("reorderCompositionChildren order must not contain duplicates.");
+    }
+    const current = this.compositionSpec.children;
+    if (args.order.length !== current.length ||
+        args.order.some(id => !Object.hasOwn(this.children, id))) {
+      throw new Error("reorderCompositionChildren order must contain every current child exactly once.");
+    }
+    if (args.order.every((id, index) => id === current[index])) {
+      throw new Error("reorderCompositionChildren requires an actual order change.");
+    }
+    return applyCompositionState(this, {
+      children: this.children,
+      compositionSpec: { ...this.compositionSpec, children: [...args.order] }
+    });
+  }
+);
+
 export function registerCompositionActions(ProgramClass) {
   ProgramClass.prototype.useProgram = useProgram;
   ProgramClass.prototype.materializeComposition = materializeComposition;
   ProgramClass.prototype.editCompositionLayout = editCompositionLayout;
   ProgramClass.prototype.replaceCompositionChild = replaceCompositionChild;
+  ProgramClass.prototype.insertCompositionChild = insertCompositionChild;
+  ProgramClass.prototype.removeCompositionChild = removeCompositionChild;
+  ProgramClass.prototype.reorderCompositionChildren = reorderCompositionChildren;
 }
