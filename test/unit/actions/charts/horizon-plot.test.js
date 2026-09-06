@@ -104,6 +104,20 @@ test("lets an explicit Horizon tick count replace inferred tick values", () => {
   assert.equal(program.guideConfigs.axis.x.labels.mode, "count");
 });
 
+test("omits explicitly disabled Horizon guide branches", () => {
+  const program = base().createHorizonPlot({
+    x: "time",
+    y: "value",
+    guides: {
+      axes: { x: false },
+      grid: { vertical: false },
+      legend: false
+    }
+  });
+  assert.equal(program.semanticSpec.guides.axis, undefined);
+  assert.equal(program.semanticSpec.guides.grid, undefined);
+});
+
 test("preserves optional undefined and supports explicit missing and overflow policies", () => {
   const source = base();
   const expected = source.createHorizonPlot({ x: "time", y: "value", guides: false });

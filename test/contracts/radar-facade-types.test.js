@@ -21,6 +21,14 @@ p.createRadarPlot({ category: "dimension", value: "score" });
 p.createRadarPlot({ category: { field: "dimension", fieldType: "ordinal", scale: { type: "point" } }, value: { field: "score", scale: { type: "sqrt" } }, groupBy: ["series", "region"], order: ["speed", "quality", "cost"], color: "series", strokeDash: { field: "region" }, line: { closed: true } });
 p.createRadarPlot({ wide: { fields: ["speed", "quality", "cost"] }, groupBy: "product" });
 p.createRadarPlot({ wide: { fields: ["speed", "quality", "cost"], as: { key: "metric", value: "score" } }, order: ["quality", "cost", "speed"] });
+// @ts-expect-error categorical theta axes use exact values instead of numeric tick counts
+p.createRadarPlot({ category: "dimension", value: "score", guides: { axes: { theta: { ticksAndLabels: { count: 4 } } } } });
+// @ts-expect-error categorical theta labels accept auto formatting only
+p.createRadarPlot({ category: "dimension", value: "score", guides: { axes: { theta: { ticksAndLabels: { labels: { format: ".1f" } } } } } });
+// @ts-expect-error categorical theta grids use exact values instead of numeric tick counts
+p.createRadarPlot({ category: "dimension", value: "score", guides: { grid: { theta: { count: 4 } } } });
+// @ts-expect-error Radar path legends cannot link order to the varying theta category
+p.createRadarPlot({ category: "dimension", value: "score", guides: { legend: { order: { channel: "theta" } } } });
 // @ts-expect-error long form requires value
 p.createRadarPlot({ category: "dimension" });
 // @ts-expect-error long and wide forms are exclusive

@@ -65,8 +65,19 @@ export function fulfillFacadeGuides(program, guides, target, explicitGuides = gu
   const layer = findLayer(program, target);
   if (layer === undefined) throw new Error(`Unknown facade guide target "${target}".`);
   const resolved = resolveGuideOptions(program, guides, [layer]);
-  const axes = resolved.axes === undefined ? undefined : scopeFacadeAxes(program, layer, resolved.axes);
-  const grid = resolved.grid === undefined ? undefined : scopeGrid(program, layer, resolved.grid);
+  const axisDirections = Object.entries(resolved.axes ?? {}).filter(([key]) => key !== "coordinate");
+  const scopedAxes = resolved.axes === undefined || axisDirections.length > 0 && axisDirections.every(
+    ([, value]) => value === false
+  )
+    ? undefined
+    : scopeFacadeAxes(program, layer, resolved.axes);
+  const axes = scopedAxes;
+  const scopedGrid = resolved.grid === undefined || Object.values(resolved.grid).every(
+    value => value === false
+  )
+    ? undefined
+    : scopeGrid(program, layer, resolved.grid);
+  const grid = scopedGrid;
   const legend = resolved.legend === undefined ? undefined : { ...resolved.legend, target };
   if (resolved.legend?.target !== undefined && resolved.legend.target !== target) {
     guideConflict("legend target does not belong to this facade");

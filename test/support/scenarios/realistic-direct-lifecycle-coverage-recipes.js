@@ -14,6 +14,8 @@ import {
   REALISTIC_GUIDE_SCALE_RECIPES,
   realisticGuideScaleWitnessFactors
 } from "./realistic-guide-scale-recipes.js";
+import { appendHierarchicalFacadeCoverage } from
+  "./realistic-hierarchical-facade-matrix.js";
 
 const PROFILES = Object.freeze([Object.freeze({ id: "maximal" })]);
 const REQUIRED_REPETITIONS = 5;
@@ -361,6 +363,9 @@ function extendedView(dataset, kind, {
       timeUnique: new Date(
         (Number.isFinite(Date.parse(row.time)) ? Date.parse(row.time) : Date.UTC(2000, 0, 1)) + index
       ).toISOString(),
+      timeTimestamp:
+        (Number.isFinite(Date.parse(row.time)) ? Date.parse(row.time) : Date.UTC(2000, 0, 1)) + index,
+      calendarYear: String(2000 + index),
       x: first,
       y: second,
       positiveX,
@@ -2169,6 +2174,8 @@ function buildMiscellaneousCoverage(factors) {
       guides: false
     })
     .editViolinPlot({ target: "directViolinPlot", density: { steps: 32 } });
+
+  program = appendHierarchicalFacadeCoverage(program);
 
   program = program.createCoordinate({ id: "parallelCoverage", type: "parallel" })
     .createLineMark({ id: "parallelCoverageLines", data: "analysisRows", opacity: 0.35 })

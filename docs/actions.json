@@ -14100,7 +14100,7 @@
         {
           "name": "guides",
           "required": false,
-          "type": "false | PolarChartGuideOptions | undefined"
+          "type": "false | PolarPointGuideOptions | undefined"
         }
       ],
       "callPatterns": [
@@ -14185,12 +14185,12 @@
         {
           "name": "line",
           "required": false,
-          "type": "(Omit<{ strokeWidth?: number | undefined; curve?: CurveInterpolation | undefined; stroke?: string | undefined; opacity?: number | undefined; closed?: false | undefined; }, \"closed\"> & { ...; }) | undefined"
+          "type": "(Omit<{ strokeWidth?: number | undefined; curve?: CurveInterpolation | undefined; stroke?: string | undefined; opacity?: number | undefined; closed?: false | undefined; }, \"closed\" | \"curve\"> & { ...; }) | undefined"
         },
         {
           "name": "guides",
           "required": false,
-          "type": "false | PolarChartGuideOptions | undefined"
+          "type": "false | PolarPathGuideOptions | undefined"
         }
       ],
       "callPatterns": [
@@ -14270,12 +14270,12 @@
         {
           "name": "line",
           "required": false,
-          "type": "(Omit<{ strokeWidth?: number | undefined; curve?: CurveInterpolation | undefined; stroke?: string | undefined; opacity?: number | undefined; closed?: false | undefined; }, \"closed\"> & { ...; }) | undefined"
+          "type": "(Omit<{ strokeWidth?: number | undefined; curve?: CurveInterpolation | undefined; stroke?: string | undefined; opacity?: number | undefined; closed?: false | undefined; }, \"closed\" | \"curve\"> & { ...; }) | undefined"
         },
         {
           "name": "guides",
           "required": false,
-          "type": "false | PolarChartGuideOptions | undefined"
+          "type": "false | RadarGuideOptions | undefined"
         },
         {
           "name": "category",
@@ -14327,7 +14327,8 @@
         ],
         "idOptions": [
           "id",
-          "data"
+          "data",
+          "coordinate"
         ]
       },
       "options": [
@@ -14338,6 +14339,11 @@
         },
         {
           "name": "data",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "coordinate",
           "required": false,
           "type": "string | undefined"
         },
@@ -14401,7 +14407,8 @@
         ],
         "idOptions": [
           "id",
-          "data"
+          "data",
+          "coordinate"
         ]
       },
       "options": [
@@ -14412,6 +14419,11 @@
         },
         {
           "name": "data",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "coordinate",
           "required": false,
           "type": "string | undefined"
         },

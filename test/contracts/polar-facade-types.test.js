@@ -19,8 +19,16 @@ declare const basic: BasicChartProgram;
 p.createPolarScatterPlot({ theta: "angle", radius: "distance" });
 p.createPolarScatterPlot({ theta: { field: "date", fieldType: "temporal", temporalUnit: "timestamp" }, radius: { field: "distance", scale: { type: "sqrt" } }, size: "mass", point: { shape: "circle" }, guides: { axes: { radius: { angle: 45 } }, grid: { theta: {} }, legend: { position: "bottom" } } });
 p.createPolarLinePlot({ theta: { field: "dimension", fieldType: "ordinal", scale: { type: "point" } }, radius: "value", groupBy: ["series", "region"], color: "series", strokeDash: { field: "region" }, line: { closed: true } });
+p.createPolarScatterPlot({ theta: "angle", radius: "distance", guides: { legend: { order: { channel: "theta" }, symbol: { layers: [{ type: "point", size: 6 }] } } } });
+p.createPolarLinePlot({ theta: "angle", radius: "distance", guides: { legend: { order: { channel: "theta" } } } });
 // @ts-expect-error Polar line interpolation is currently linear only
 p.createPolarLinePlot({ theta: "angle", radius: "distance", line: { curve: "basis" } });
+// @ts-expect-error Polar legends can only link order to theta
+p.createPolarScatterPlot({ theta: "angle", radius: "distance", guides: { legend: { order: { channel: "x" } } } });
+// @ts-expect-error point recipes must use explicit symbol layers
+p.createPolarScatterPlot({ theta: "angle", radius: "distance", guides: { legend: { symbol: { type: "point", radius: 6 } } } });
+// @ts-expect-error path color legends are categorical and accept auto formatting only
+p.createPolarLinePlot({ theta: "angle", radius: "distance", guides: { legend: { labels: { format: ".1f" } } } });
 // @ts-expect-error theta is required
 p.createPolarScatterPlot({ radius: "distance" });
 // @ts-expect-error radius is required

@@ -20,6 +20,14 @@ p.createRosePlot({ category: "category" });
 p.createRadialBarPlot({ category: "category", value: "value", aggregate: "sum", radiusScale: { range: [70, 140] } });
 p.createRosePlot({ category: { field: "category", scale: { reverse: true } }, color: false, arc: { padAngle: 0, fill: "red" }, guides: false });
 p.createRosePlot({ category: "category", guides: { axes: { radius: { angle: 45, title: false } }, grid: { theta: { values: ["A", "C"] } } } });
+// @ts-expect-error categorical theta axes use exact values instead of numeric tick counts
+p.createRosePlot({ category: "category", guides: { axes: { theta: { ticksAndLabels: { count: 4 } } } } });
+// @ts-expect-error categorical theta labels accept auto formatting only
+p.createRadialBarPlot({ category: "category", guides: { axes: { theta: { ticksAndLabels: { labels: { format: ".1f" } } } } } });
+// @ts-expect-error categorical theta grids use exact values instead of numeric tick counts
+p.createRosePlot({ category: "category", guides: { grid: { theta: { count: 4 } } } });
+// @ts-expect-error radial color legends are categorical and accept auto formatting only
+p.createRadialBarPlot({ category: "category", guides: { legend: { labels: { format: ".1f" } } } });
 // @ts-expect-error category is required
 p.createRosePlot({});
 // @ts-expect-error sum must be explicit when a value is present

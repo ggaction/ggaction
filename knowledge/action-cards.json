@@ -14100,7 +14100,7 @@
         {
           "name": "guides",
           "required": false,
-          "type": "false | PolarChartGuideOptions | undefined"
+          "type": "false | PolarPointGuideOptions | undefined"
         }
       ],
       "callPatterns": [
@@ -14275,7 +14275,7 @@
         {
           "name": "guides",
           "required": false,
-          "type": "false | PolarPathGuideOptions | undefined"
+          "type": "false | RadarGuideOptions | undefined"
         },
         {
           "name": "category",

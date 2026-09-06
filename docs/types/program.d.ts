@@ -1092,9 +1092,11 @@ type FilledMarkLegendOptions = Omit<LegendOptions, "symbol"> & {
     | { width?: number; height?: number; stroke?: string; strokeWidth?: number }
     | { layers: readonly LegendSymbolLayer[] };
 };
-type PathLegendOptions = Omit<LegendOptions, "symbol" | "gradient" | "count"> & {
+type CategoricalLegendTextOptions = Omit<LegendTextOptions, "format"> & { format?: "auto" };
+type PathLegendOptions = Omit<LegendOptions, "symbol" | "gradient" | "count" | "labels"> & {
   symbol?: "auto" | { length?: number; lineWidth?: number }
     | { layers: readonly LegendSymbolLayer[] };
+  labels?: CategoricalLegendTextOptions;
 };
 type CartesianGuideOptions = {
   axes?: false | CartesianAxesOptions;
@@ -2205,6 +2207,19 @@ export type PolarChartGuideOptions = {
   grid?: false | Pick<CreateGridOptions, "theta" | "radial">;
   legend?: false | LegendOptions;
 };
+type PolarLegendOrder = LegendValueOrder | { channel: "theta"; values?: never };
+type PolarPathLegendOptions = Omit<PathLegendOptions, "order"> & {
+  order?: PolarLegendOrder;
+};
+type PolarPointLegendOptions = Omit<FilledMarkLegendOptions, "order"> & {
+  order?: PolarLegendOrder;
+};
+export type PolarPathGuideOptions = Omit<PolarChartGuideOptions, "legend"> & {
+  legend?: false | PolarPathLegendOptions;
+};
+export type PolarPointGuideOptions = Omit<PolarChartGuideOptions, "legend"> & {
+  legend?: false | PolarPointLegendOptions;
+};
 export interface CreatePolarScatterPlotOptions {
   id?: string;
   data?: string;
@@ -2215,7 +2230,7 @@ export interface CreatePolarScatterPlotOptions {
   size?: BasicSizeChannel;
   shape?: BasicShapeChannel;
   point?: CreateScatterPlotOptions["point"];
-  guides?: false | PolarChartGuideOptions;
+  guides?: false | PolarPointGuideOptions;
 }
 export interface CreatePolarLinePlotOptions {
   id?: string;
@@ -2226,10 +2241,11 @@ export interface CreatePolarLinePlotOptions {
   color?: LineCategoricalColorChannel;
   groupBy?: string | readonly [string, ...string[]];
   strokeDash?: BasicStrokeDashChannel;
-  line?: Omit<NonNullable<CreateLinePlotOptions["line"]>, "closed"> & {
+  line?: Omit<NonNullable<CreateLinePlotOptions["line"]>, "closed" | "curve"> & {
+    curve?: "linear";
     closed?: boolean;
   };
-  guides?: false | PolarChartGuideOptions;
+  guides?: false | PolarPathGuideOptions;
 }
 export type RadarCategoryValue = string | number | boolean;
 export type RadarCategoryScaleOptions = Pick<
@@ -2241,6 +2257,37 @@ export type RadarCategoryChannel = string | {
   field: string;
   fieldType?: "nominal" | "ordinal";
   scale?: RadarCategoryScaleOptions;
+};
+type CategoricalThetaTicksAndLabelsOptions = Omit<
+  PolarTicksAndLabelsOptions,
+  "count" | "labels"
+> & {
+  count?: never;
+  labels?: Omit<AxisLabelStyleOptions, "format"> & { format?: "auto" };
+};
+type CategoricalThetaAxisOptions = Omit<CompletePolarAxisOptions, "ticksAndLabels"> & {
+  ticksAndLabels?: false | CategoricalThetaTicksAndLabelsOptions;
+};
+type CategoricalThetaGridOptions = Omit<PolarGridOptions, "count"> & {
+  count?: never;
+};
+type CategoricalPolarAxesOptions = Omit<
+  Pick<CreateAxesOptions, "theta" | "radius">,
+  "theta"
+> & {
+  coordinate?: { id?: string; type?: "auto" | "polar" };
+  theta?: false | CategoricalThetaAxisOptions;
+};
+type CategoricalPolarGridOptions = Omit<
+  Pick<CreateGridOptions, "theta" | "radial">,
+  "theta"
+> & {
+  theta?: boolean | CategoricalThetaGridOptions;
+};
+export type RadarGuideOptions = Omit<PolarPathGuideOptions, "axes" | "grid" | "legend"> & {
+  axes?: false | CategoricalPolarAxesOptions;
+  grid?: false | CategoricalPolarGridOptions;
+  legend?: false | (Omit<PathLegendOptions, "order"> & { order?: LegendValueOrder });
 };
 export interface RadarWideOptions {
   fields: readonly [string, string, string, ...string[]];
@@ -2259,10 +2306,11 @@ export type CreateRadarPlotOptions = {
   ];
   color?: LineCategoricalColorChannel;
   strokeDash?: BasicStrokeDashChannel;
-  line?: Omit<NonNullable<CreateLinePlotOptions["line"]>, "closed"> & {
+  line?: Omit<NonNullable<CreateLinePlotOptions["line"]>, "closed" | "curve"> & {
+    curve?: "linear";
     closed?: true;
   };
-  guides?: false | PolarChartGuideOptions;
+  guides?: false | RadarGuideOptions;
 } & (
   | { category: RadarCategoryChannel; value: PolarRadiusChannel; wide?: never }
   | { wide: RadarWideOptions; category?: never; value?: never }
@@ -2293,6 +2341,7 @@ export type RugGuideOptions = Omit<CartesianGuideOptions, "legend"> & {
 export type CreateRugPlotOptions = {
   id?: string;
   data?: string;
+  coordinate?: string;
   tick?: RugTickOptions;
   guides?: false | RugGuideOptions;
 } & (
@@ -2318,6 +2367,7 @@ export type StripJitterOptions = StripPixelJitterOptions | StripBandJitterOption
 export type CreateStripPlotOptions = {
   id?: string;
   data?: string;
+  coordinate?: string;
   color?: BasicColorChannel;
   size?: BasicSizeChannel;
   shape?: BasicShapeChannel;
@@ -2490,9 +2540,13 @@ export type PieColor = string | {
   scale?: NonPointCategoricalColorScaleOptions;
   palette?: Palette;
 };
-export type PieLegendOptions = Omit<FilledMarkLegendOptions, "count" | "gradient" | "channels" | "order"> & {
+export type PieLegendOptions = Omit<
+  FilledMarkLegendOptions,
+  "count" | "gradient" | "channels" | "order" | "labels"
+> & {
   channels?: readonly ["color"];
   order?: LegendValueOrder | { channel: "theta"; values?: never };
+  labels?: CategoricalLegendTextOptions;
 };
 export type CreatePiePlotOptions = {
   id?: string;
@@ -2505,10 +2559,8 @@ export type CreatePiePlotOptions = {
 } & ({ value?: never; aggregate?: "count" } | { value: string; aggregate: "sum" });
 
 export type MeasuredRadialGuideOptions = {
-  axes?: false | Pick<CreateAxesOptions, "theta" | "radius"> & {
-    coordinate?: { id?: string; type?: "auto" | "polar" };
-  };
-  grid?: false | Pick<CreateGridOptions, "theta" | "radial">;
+  axes?: false | CategoricalPolarAxesOptions;
+  grid?: false | CategoricalPolarGridOptions;
   legend?: false | PieLegendOptions;
 };
 export type CreateRosePlotOptions = Omit<CreatePiePlotOptions, "guides" | "arc" | "aggregate" | "value"> & {
