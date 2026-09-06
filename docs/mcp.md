@@ -203,6 +203,11 @@ The public machine-readable copies are the typed
 [`mcp-resources.json`](./mcp-resources.json) bounded resource catalog with its
 [`schema`](./schemas/mcp-resources.schema.json), and the
 [`task-packet.schema.json`](./schemas/task-packet.schema.json) result contract.
+Each schema v3 action card keeps exposure separate from H0–H4 authoring roles
+and records direct child actions, lifecycle editors, entry-point support,
+units, inference, and completion requirements. `deferred` completion identifies
+owners such as Box and Gradient plots that still need compatible position roles
+before geometry exists.
 The complete LLM bundle also publishes a
 [`manifest`](./llms-manifest.json) and
 [`manifest schema`](./schemas/llms-manifest.schema.json). Use artifacts from

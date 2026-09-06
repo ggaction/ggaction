@@ -81,7 +81,7 @@
       let visible = 0;
       for (const region of regions) {
         const matches = !query || [
-          region.name, region.operation, region.layer, region.domain
+          region.name, region.operation, ...(region.authoringRoles ?? []), region.layer, region.domain
         ].join(" ").toLowerCase().includes(query);
         for (const node of region.nodes) node.hidden = !matches;
         if (matches) visible += 1;

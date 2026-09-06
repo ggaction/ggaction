@@ -172,7 +172,7 @@ assert.equal(
   "Internal AGENTS.md files must not be published."
 );
 const actionCards = JSON.parse(await readFile(path.join(siteRoot, "actions.json"), "utf8"));
-assert.equal(actionCards.schemaVersion, 2);
+assert.equal(actionCards.schemaVersion, 3);
 assert.deepEqual(actionCards, JSON.parse(await readFile(
   new URL("../knowledge/action-cards.json", import.meta.url), "utf8"
 )), "Built action cards must match the current canonical inventory.");

@@ -853,11 +853,11 @@ test("publishes schemas, typed action cards, and declarations from canonical sou
     );
   }
   const cards = JSON.parse(read("docs/actions.json"));
-  assert.equal(cards.schemaVersion, 2);
+  assert.equal(cards.schemaVersion, 3);
   assert.equal(cards.packageVersion, JSON.parse(read("package.json")).version);
   assert.equal(cards.count, declaredProgramMethods().length);
   assert.equal(cards.cards.every(card =>
-    card.schemaVersion === 2 &&
+    card.schemaVersion === 3 &&
     card.options.every(option => typeof option.type === "string" && option.type.length > 0)
   ), true);
   for (const schema of [

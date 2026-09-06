@@ -7,6 +7,14 @@ import {
   SignatureKind,
   SymbolFlags
 } from "typescript/unstable/sync";
+import {
+  authoringRoles,
+  completionRequirements,
+  editableVia,
+  optionInference,
+  optionUnits,
+  supportedEntryPoints
+} from "./action-card-metadata.js";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 const catalogFile = path.join(root, "agent_docs/contract/ACTION_INDEX.json");
@@ -15,6 +23,8 @@ const intentFile = path.join(root, "knowledge/action-intents.json");
 const referenceSourceFile = path.join(root, "docs/_sources/action-reference.md");
 const routeFile = path.join(root, "docs/_data/action_reference_links.json");
 const packageFile = path.join(root, "package.json");
+const basicDeclarationFile = path.join(root, "types/basic.d.ts");
+const relationshipFile = path.join(root, "knowledge/action-relationships.json");
 
 const operationPrefixes = Object.freeze([
   "create",
@@ -486,12 +496,21 @@ export function validateActionCards({ cards, actions, declarations, routes }) {
     if (card.resources.idOptions.some(name => !card.options.some(option => option.name === name))) {
       throw new Error(`${card.name} includes an undeclared resource ID option.`);
     }
+    if (card.authoringRoles.length < 1 || new Set(card.authoringRoles).size !== card.authoringRoles.length) {
+      throw new Error(`${card.name} has invalid authoring roles.`);
+    }
+    if (card.wraps.some(name => !actionByName.has(name)) || card.editableVia.some(name => !actionByName.has(name))) {
+      throw new Error(`${card.name} has an unknown action relationship.`);
+    }
+    if (new Set(card.wraps).size !== card.wraps.length || new Set(card.editableVia).size !== card.editableVia.length) {
+      throw new Error(`${card.name} repeats an action relationship.`);
+    }
     if (card.summary.includes("](") || card.summary.includes("`")) {
       throw new Error(`${card.name} summary contains documentation markup.`);
     }
     assertSnippet(action, declaration, card.snippet);
     const bytes = Buffer.byteLength(JSON.stringify(card), "utf8");
-    if (bytes > 3072) throw new Error(`${card.name} compact card is ${bytes} bytes.`);
+    if (bytes > 3328) throw new Error(`${card.name} compact card is ${bytes} bytes.`);
     maxBytes = Math.max(maxBytes, bytes);
     totalBytes += bytes;
   }
@@ -510,21 +529,36 @@ export function validateActionCards({ cards, actions, declarations, routes }) {
 }
 
 export async function buildActionCards() {
-  const [catalogSource, intentSourceText, referenceSource, routeSource, packageSource] = await Promise.all([
+  const [catalogSource, intentSourceText, referenceSource, routeSource, packageSource, basicSource, relationshipSource] = await Promise.all([
     readFile(catalogFile, "utf8"),
     readFile(intentFile, "utf8"),
     readFile(referenceSourceFile, "utf8"),
     readFile(routeFile, "utf8"),
-    readFile(packageFile, "utf8")
+    readFile(packageFile, "utf8"),
+    readFile(basicDeclarationFile, "utf8"),
+    readFile(relationshipFile, "utf8")
   ]);
   const catalog = JSON.parse(catalogSource);
   const intentSource = JSON.parse(intentSourceText);
   const routes = JSON.parse(routeSource);
   const packageVersion = JSON.parse(packageSource).version;
+  const relationships = JSON.parse(relationshipSource);
   if (intentSource.schemaVersion !== 1) {
     throw new Error("knowledge/action-intents.json must use schemaVersion 1.");
   }
   const actionNames = new Set(catalog.actions.map(action => action.name));
+  const basicActionNames = new Set([
+    ...basicSource.matchAll(/^\s*\|\s*"([A-Za-z][A-Za-z0-9]*)"/gm)
+  ].map(match => match[1]));
+  basicActionNames.add("layoutSeries");
+  if (relationships.actionCount !== catalog.actions.length) {
+    throw new Error("Action relationship count does not match the current catalog.");
+  }
+  const wrapsByName = new Map(relationships.relationships.map(entry => [entry.name, entry.wraps]));
+  const missingRelationships = catalog.actions.filter(action => !wrapsByName.has(action.name));
+  if (missingRelationships.length > 0 || wrapsByName.size !== catalog.actions.length) {
+    throw new Error(`Action relationships do not exactly cover the catalog: ${missingRelationships.map(action => action.name).join(", ")}.`);
+  }
   for (const section of [
     "summaryOverrides",
     "sampleOverrides",
@@ -548,8 +582,9 @@ export async function buildActionCards() {
     const summary = intentSource.summaryOverrides[action.name]
       ?? summaryByName.get(action.name)
       ?? generatedSummary(action, intentSource);
+    const resources = actionResources(action, optionNames, intentSource);
     return {
-      schemaVersion: 2,
+      schemaVersion: 3,
       name: action.name,
       layer: action.layer,
       domain: action.domain,
@@ -557,7 +592,14 @@ export async function buildActionCards() {
       signature: declaration.signature,
       intents: buildIntents(action, intentSource),
       lifecycle: action.lifecycle,
-      resources: actionResources(action, optionNames, intentSource),
+      resources,
+      authoringRoles: authoringRoles(action),
+      wraps: wrapsByName.get(action.name),
+      editableVia: editableVia(action, actionNames),
+      supports: { entryPoints: supportedEntryPoints(action, basicActionNames) },
+      units: optionUnits(action, declaration.options),
+      inference: optionInference(action, declaration.options),
+      completionRequirements: completionRequirements(action, resources.prerequisites),
       options: declaration.options.map(({ name, required, type }) => ({
         name,
         required,
@@ -572,7 +614,7 @@ export async function buildActionCards() {
   const stats = validateActionCards({ cards, actions: catalog.actions, declarations, routes });
   return {
     artifact: {
-      schemaVersion: 2,
+      schemaVersion: 3,
       packageVersion,
       typeSource: "types/program.d.ts",
       errorPolicy: "An empty errors array means the compact card has no curated error override; consult the canonical route for validation, inference, and recovery behavior.",

@@ -419,6 +419,11 @@ The public machine-readable copies are the typed
 [`mcp-resources.json`](./mcp-resources.json) bounded resource catalog with its
 [`schema`](./schemas/mcp-resources.schema.json), and the
 [`task-packet.schema.json`](./schemas/task-packet.schema.json) result contract.
+Each schema v3 action card keeps exposure separate from H0–H4 authoring roles
+and records direct child actions, lifecycle editors, entry-point support,
+units, inference, and completion requirements. `deferred` completion identifies
+owners such as Box and Gradient plots that still need compatible position roles
+before geometry exists.
 The complete LLM bundle also publishes a
 [`manifest`](./llms-manifest.json) and
 [`manifest schema`](./schemas/llms-manifest.schema.json). Use artifacts from
@@ -12931,7 +12936,9 @@ isolated program surface.
 ## Exact machine-readable sources
 
 - `/types/program.d.ts` serves the full public `ChartProgram` declaration.
-- `/actions.json` serves compact cards with each option's exact type string.
+- `/actions.json` serves schema v3 compact cards with each option's exact type
+ string, H0–H4 authoring roles, direct wrapped actions, lifecycle editors,
+ package entry support, units, inference, and completion requirements.
 - `/schemas/action-card.schema.json` and
  `/schemas/action-cards.schema.json` define the card shapes.
 - `/schemas/task-packet.schema.json` defines the local MCP result.
@@ -13292,7 +13299,7 @@ faceting, and shared Parallel coordinates across child programs are not implemen
 
 # Action Reference
 
-Every direct action accepts one option object and returns a new immutable `ChartProgram`. Choose a task family for readable behavior, defaults, inference, and errors; use the exact lookup when you already know the action name. The API-layer labels match the action catalog layers `user-facing`, `advanced`, and `primitive`, respectively.
+Every direct action accepts one option object and returns a new immutable `ChartProgram`. Choose a task family for readable behavior, defaults, inference, and errors; use the exact lookup when you already know the action name. Authoring roles run from H0 complete charts through H4 extension primitives. The API-layer labels match the action catalog layers `user-facing`, `advanced`, and `primitive`, respectively, and independently describe exposure.
 
  [Charts, Data, and Composition Actions Create complete charts, manage data, select marks, and compose complete programs.](./reference/actions/charts-data/)
  [Mark Actions Create, edit, jitter, and remove semantic chart marks.](./reference/actions/marks/)
@@ -13310,242 +13317,242 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 
  Filter exact actions
 
-| Action | API layer | Domain |
-| --- | --- | --- |
-| [`applyTheme`](./reference/actions/charts-data/#applytheme) | user-facing | core |
-| [`bindMarkData`](./reference/actions/charts-data/#bindmarkdata) | user-facing | core |
-| [`createAnnotation`](./reference/actions/marks/#createannotation) | user-facing | marks |
-| [`createArcMark`](./reference/actions/marks/#createarcmark) | user-facing | marks |
-| [`createAreaMark`](./reference/actions/marks/#createareamark) | user-facing | marks |
-| [`createAreaPlot`](./reference/actions/charts-data/#createareaplot) | user-facing | charts |
-| [`createAxes`](./reference/actions/guides/#createaxes) | user-facing | axes |
-| [`createBarMark`](./reference/actions/marks/#createbarmark) | user-facing | marks |
-| [`createBarPlot`](./reference/actions/charts-data/#createbarplot) | user-facing | charts |
-| [`createBeeswarmPlot`](./reference/actions/charts-data/#createbeeswarmplot) | user-facing | charts |
-| [`createBin2DData`](./reference/actions/charts-data/#createbin2ddata) | user-facing | core |
-| [`createBinData`](./reference/actions/statistics/#createbindata) | user-facing | statistics |
-| [`createBoxPlot`](./reference/actions/statistics/#createboxplot) | user-facing | statistics |
-| [`createCanvas`](./reference/actions/charts-data/#createcanvas) | user-facing | core |
-| [`createComputedData`](./reference/actions/statistics/#createcomputeddata) | user-facing | statistics |
-| [`createCoordinate`](./reference/actions/advanced/#semantic-resources-and-regression-layers) | user-facing | core |
-| [`createData`](./reference/actions/charts-data/#createdata) | user-facing | core |
-| [`createDensityData`](./reference/actions/charts-data/#createdensitydata) | user-facing | core |
-| [`createDensityPlot`](./reference/actions/statistics/#createdensityplot) | user-facing | statistics |
-| [`createDerivedData`](./reference/actions/advanced/#semantic-resources-and-regression-layers) | user-facing | core |
-| [`createDotPlot`](./reference/actions/charts-data/#createdotplot) | user-facing | charts |
-| [`createDumbbellPlot`](./reference/actions/charts-data/#createdumbbellplot) | user-facing | charts |
-| [`createECDFData`](./reference/actions/statistics/#createecdfdata) | user-facing | statistics |
-| [`createECDFPlot`](./reference/actions/charts-data/#createecdfplot) | user-facing | charts |
-| [`createErrorBand`](./reference/actions/statistics/#createerrorband) | user-facing | statistics |
-| [`createErrorBar`](./reference/actions/statistics/#createerrorbar) | user-facing | statistics |
-| [`createFoldData`](./reference/actions/statistics/#createfolddata) | user-facing | statistics |
-| [`createGradientPlot`](./reference/actions/statistics/#creategradientplot) | user-facing | statistics |
-| [`createGraphics`](./reference/actions/extension/#extension-actions) | primitive | primitives |
-| [`createGrid`](./reference/actions/guides/#creategrid) | user-facing | grid |
-| [`createGuides`](./reference/actions/guides/#createguides) | user-facing | legend_and_title |
-| [`createHeatmap`](./reference/actions/charts-data/#createheatmap) | user-facing | charts |
-| [`createHistogram`](./reference/actions/charts-data/#createhistogram) | user-facing | charts |
-| [`createHorizonPlot`](./reference/actions/statistics/#createhorizonplot) | user-facing | statistics |
-| [`createHorizontalGrid`](./reference/actions/advanced/#directional-grids) | user-facing | grid |
-| [`createIntervalData`](./reference/actions/statistics/#createintervaldata) | user-facing | statistics |
-| [`createIntervalPlot`](./reference/actions/charts-data/#createintervalplot) | user-facing | charts |
-| [`createLegend`](./reference/actions/guides/#createlegend) | user-facing | legend_and_title |
-| [`createLineMark`](./reference/actions/marks/#createlinemark) | user-facing | marks |
-| [`createLinePlot`](./reference/actions/charts-data/#createlineplot) | user-facing | charts |
-| [`createLollipopPlot`](./reference/actions/charts-data/#createlollipopplot) | user-facing | charts |
-| [`createMarkLabels`](./reference/actions/marks/#createmarklabels) | user-facing | marks |
-| [`createParallelAxes`](./reference/actions/advanced/#createparallelaxes-createparallelaxis-editparallelaxis-removeparallelaxis-removeparallelaxes) | user-facing | axes |
-| [`createParallelAxis`](./reference/actions/advanced/#createparallelaxes-createparallelaxis-editparallelaxis-removeparallelaxis-removeparallelaxes) | user-facing | axes |
-| [`createParallelCoordinates`](./reference/actions/charts-data/#createparallelcoordinates) | user-facing | charts |
-| [`createPiePlot`](./reference/actions/charts-data/#createpieplot) | user-facing | charts |
-| [`createPointMark`](./reference/actions/marks/#createpointmark) | user-facing | marks |
-| [`createPolarLinePlot`](./reference/actions/charts-data/#createpolarlineplot) | user-facing | charts |
-| [`createPolarScatterPlot`](./reference/actions/charts-data/#createpolarscatterplot) | user-facing | charts |
-| [`createRadarPlot`](./reference/actions/charts-data/#createradarplot) | user-facing | charts |
-| [`createRadialAxis`](./reference/actions/guides/#createradialaxis) | user-facing | axes |
-| [`createRadialAxisLabels`](./reference/actions/guides/#createradialaxislabels) | user-facing | axes |
-| [`createRadialAxisLine`](./reference/actions/guides/#createradialaxisline) | user-facing | axes |
-| [`createRadialAxisTicks`](./reference/actions/guides/#createradialaxisticks) | user-facing | axes |
-| [`createRadialAxisTitle`](./reference/actions/guides/#createradialaxistitle) | user-facing | axes |
-| [`createRadialBarPlot`](./reference/actions/charts-data/#createradialbarplot) | user-facing | charts |
-| [`createRadialGrid`](./reference/actions/guides/#createradialgrid) | user-facing | grid |
-| [`createRaincloudPlot`](./reference/actions/charts-data/#createraincloudplot) | user-facing | charts |
-| [`createRectMark`](./reference/actions/marks/#createrectmark) | user-facing | marks |
-| [`createReferenceBand`](./reference/actions/marks/#createreferenceband) | user-facing | marks |
-| [`createReferenceLine`](./reference/actions/marks/#createreferenceline) | user-facing | marks |
-| [`createRegression`](./reference/actions/statistics/#createregression) | user-facing | statistics |
-| [`createRegressionBand`](./reference/actions/advanced/#semantic-resources-and-regression-layers) | user-facing | statistics |
-| [`createRegressionData`](./reference/actions/charts-data/#createregressiondata) | user-facing | core |
-| [`createRegressionLine`](./reference/actions/advanced/#semantic-resources-and-regression-layers) | user-facing | statistics |
-| [`createRegressionPlot`](./reference/actions/charts-data/#createregressionplot) | user-facing | charts |
-| [`createRosePlot`](./reference/actions/charts-data/#createroseplot) | user-facing | charts |
-| [`createRugPlot`](./reference/actions/charts-data/#createrugplot) | user-facing | charts |
-| [`createRuleMark`](./reference/actions/marks/#createrulemark) | user-facing | marks |
-| [`createScale`](./reference/actions/extension/#extension-actions) | user-facing | core |
-| [`createScatterPlot`](./reference/actions/charts-data/#createscatterplot) | user-facing | charts |
-| [`createStackData`](./reference/actions/statistics/#createstackdata) | user-facing | statistics |
-| [`createStripPlot`](./reference/actions/charts-data/#createstripplot) | user-facing | charts |
-| [`createSummaryData`](./reference/actions/statistics/#createsummarydata) | user-facing | statistics |
-| [`createTextMark`](./reference/actions/marks/#createtextmark) | user-facing | marks |
-| [`createThetaAxis`](./reference/actions/guides/#createthetaaxis) | user-facing | axes |
-| [`createThetaAxisLabels`](./reference/actions/guides/#createthetaaxislabels) | user-facing | axes |
-| [`createThetaAxisLine`](./reference/actions/guides/#createthetaaxisline) | user-facing | axes |
-| [`createThetaAxisTicks`](./reference/actions/guides/#createthetaaxisticks) | user-facing | axes |
-| [`createThetaAxisTitle`](./reference/actions/guides/#createthetaaxistitle) | user-facing | axes |
-| [`createThetaGrid`](./reference/actions/guides/#createthetagrid) | user-facing | grid |
-| [`createTickMark`](./reference/actions/marks/#createtickmark) | user-facing | marks |
-| [`createTimeUnitData`](./reference/actions/charts-data/#createtimeunitdata) | user-facing | core |
-| [`createTitle`](./reference/actions/guides/#createtitle) | user-facing | legend_and_title |
-| [`createVerticalGrid`](./reference/actions/advanced/#directional-grids) | user-facing | grid |
-| [`createViolinPlot`](./reference/actions/statistics/#createviolinplot) | user-facing | statistics |
-| [`createWindowData`](./reference/actions/charts-data/#createwindowdata) | user-facing | core |
-| [`createXAxis`](./reference/actions/advanced/#complete-single-channel-axes) | user-facing | axes |
-| [`createXAxisLabels`](./reference/actions/advanced/#axis-lines-ticks-and-labels) | user-facing | axes |
-| [`createXAxisLine`](./reference/actions/advanced/#axis-lines-ticks-and-labels) | user-facing | axes |
-| [`createXAxisTicks`](./reference/actions/advanced/#axis-lines-ticks-and-labels) | user-facing | axes |
-| [`createXAxisTicksAndLabels`](./reference/actions/advanced/#ticklabel-groups-and-axis-titles) | user-facing | axes |
-| [`createXAxisTitle`](./reference/actions/advanced/#ticklabel-groups-and-axis-titles) | user-facing | axes |
-| [`createYAxis`](./reference/actions/advanced/#complete-single-channel-axes) | user-facing | axes |
-| [`createYAxisLabels`](./reference/actions/advanced/#axis-lines-ticks-and-labels) | user-facing | axes |
-| [`createYAxisLine`](./reference/actions/advanced/#axis-lines-ticks-and-labels) | user-facing | axes |
-| [`createYAxisTicks`](./reference/actions/advanced/#axis-lines-ticks-and-labels) | user-facing | axes |
-| [`createYAxisTicksAndLabels`](./reference/actions/advanced/#ticklabel-groups-and-axis-titles) | user-facing | axes |
-| [`createYAxisTitle`](./reference/actions/advanced/#ticklabel-groups-and-axis-titles) | user-facing | axes |
-| [`editArcMark`](./reference/actions/marks/#editarcmark) | user-facing | marks |
-| [`editAreaMark`](./reference/actions/marks/#editareamark) | user-facing | marks |
-| [`editBarMark`](./reference/actions/marks/#editbarmark) | user-facing | marks |
-| [`editBin2DData`](./reference/actions/charts-data/#editbin2ddata) | user-facing | core |
-| [`editBoxPlot`](./reference/actions/statistics/#editboxplot) | user-facing | statistics |
-| [`editCanvas`](./reference/actions/charts-data/#editcanvas) | user-facing | core |
-| [`editCompositionLayout`](./reference/actions/charts-data/#editcompositionlayout) | user-facing | composition |
-| [`editDensity`](./reference/actions/encodings/#editdensity) | user-facing | encodings |
-| [`editECDFPlot`](./reference/actions/charts-data/#editecdfplot) | user-facing | charts |
-| [`editEndpointPlot`](./reference/actions/charts-data/#editendpointplot) | user-facing | charts |
-| [`editErrorBand`](./reference/actions/statistics/#editerrorband-and-editerrorbandboundary) | user-facing | statistics |
-| [`editErrorBandBoundary`](./reference/actions/statistics/#editerrorband-and-editerrorbandboundary) | user-facing | statistics |
-| [`editErrorBar`](./reference/actions/statistics/#editerrorbar) | user-facing | statistics |
-| [`editFacetGuides`](./reference/actions/charts-data/#editfacetguides) | user-facing | composition |
-| [`editFacetHeaders`](./reference/actions/charts-data/#editfacetheaders) | user-facing | composition |
-| [`editFacetScales`](./reference/actions/charts-data/#editfacetscales) | user-facing | composition |
-| [`editFacetSource`](./reference/actions/charts-data/#editfacetsource) | user-facing | composition |
-| [`editGradientPlot`](./reference/actions/statistics/#editgradientplot) | user-facing | statistics |
-| [`editGraphics`](./reference/actions/extension/#extension-actions) | primitive | primitives |
-| [`editGrid`](./reference/actions/advanced/#directional-grids) | user-facing | grid |
-| [`editHorizon`](./reference/actions/encodings/#edithorizon) | user-facing | encodings |
-| [`editHorizontalGrid`](./reference/actions/advanced/#directional-grids) | user-facing | grid |
-| [`editLegend`](./reference/actions/guides/#editlegend) | user-facing | legend_and_title |
-| [`editLegendBorder`](./reference/actions/guides/#focused-legend-edits) | user-facing | legend_and_title |
-| [`editLegendLabels`](./reference/actions/guides/#focused-legend-edits) | user-facing | legend_and_title |
-| [`editLegendLayout`](./reference/actions/guides/#focused-legend-edits) | user-facing | legend_and_title |
-| [`editLegendSymbols`](./reference/actions/guides/#focused-legend-edits) | user-facing | legend_and_title |
-| [`editLegendTitle`](./reference/actions/guides/#focused-legend-edits) | user-facing | legend_and_title |
-| [`editLineMark`](./reference/actions/marks/#editlinemark) | user-facing | marks |
-| [`editMarkSelection`](./reference/actions/advanced/#editmarkselection) | advanced | mark-selection |
-| [`editParallelAxis`](./reference/actions/advanced/#createparallelaxes-createparallelaxis-editparallelaxis-removeparallelaxis-removeparallelaxes) | user-facing | axes |
-| [`editPointMark`](./reference/actions/marks/#editpointmark) | user-facing | marks |
-| [`editRadialAxis`](./reference/actions/guides/#editradialaxis) | user-facing | axes |
-| [`editRadialAxisLabels`](./reference/actions/guides/#editradialaxislabels) | user-facing | axes |
-| [`editRadialAxisLine`](./reference/actions/guides/#editradialaxisline) | user-facing | axes |
-| [`editRadialAxisTicks`](./reference/actions/guides/#editradialaxisticks) | user-facing | axes |
-| [`editRadialAxisTitle`](./reference/actions/guides/#editradialaxistitle) | user-facing | axes |
-| [`editRadialGrid`](./reference/actions/guides/#editradialgrid) | user-facing | grid |
-| [`editRaincloudPlot`](./reference/actions/charts-data/#editraincloudplot) | user-facing | charts |
-| [`editRectMark`](./reference/actions/marks/#editrectmark) | user-facing | marks |
-| [`editRegression`](./reference/actions/statistics/#editregression) | user-facing | statistics |
-| [`editRegressionBand`](./reference/actions/advanced/#semantic-resources-and-regression-layers) | user-facing | statistics |
-| [`editRegressionLine`](./reference/actions/advanced/#semantic-resources-and-regression-layers) | user-facing | statistics |
-| [`editRuleMark`](./reference/actions/marks/#editrulemark) | user-facing | marks |
-| [`editScale`](./reference/actions/extension/#extension-actions) | user-facing | core |
-| [`editSemantic`](./reference/actions/extension/#extension-actions) | primitive | primitives |
-| [`editTextMark`](./reference/actions/marks/#edittextmark) | user-facing | marks |
-| [`editThetaAxis`](./reference/actions/guides/#editthetaaxis) | user-facing | axes |
-| [`editThetaAxisLabels`](./reference/actions/guides/#editthetaaxislabels) | user-facing | axes |
-| [`editThetaAxisLine`](./reference/actions/guides/#editthetaaxisline) | user-facing | axes |
-| [`editThetaAxisTicks`](./reference/actions/guides/#editthetaaxisticks) | user-facing | axes |
-| [`editThetaAxisTitle`](./reference/actions/guides/#editthetaaxistitle) | user-facing | axes |
-| [`editThetaGrid`](./reference/actions/guides/#editthetagrid) | user-facing | grid |
-| [`editTickMark`](./reference/actions/marks/#edittickmark) | user-facing | marks |
-| [`editTitle`](./reference/actions/guides/#edittitle) | user-facing | legend_and_title |
-| [`editVerticalGrid`](./reference/actions/advanced/#directional-grids) | user-facing | grid |
-| [`editViolinPlot`](./reference/actions/statistics/#editviolinplot) | user-facing | statistics |
-| [`editXAxis`](./reference/actions/advanced/#complete-single-channel-axes) | user-facing | axes |
-| [`editXAxisLabels`](./reference/actions/advanced/#axis-lines-ticks-and-labels) | user-facing | axes |
-| [`editXAxisLine`](./reference/actions/advanced/#axis-lines-ticks-and-labels) | user-facing | axes |
-| [`editXAxisTicks`](./reference/actions/advanced/#axis-lines-ticks-and-labels) | user-facing | axes |
-| [`editXAxisTicksAndLabels`](./reference/actions/advanced/#ticklabel-groups-and-axis-titles) | user-facing | axes |
-| [`editXAxisTitle`](./reference/actions/advanced/#ticklabel-groups-and-axis-titles) | user-facing | axes |
-| [`editYAxis`](./reference/actions/advanced/#complete-single-channel-axes) | user-facing | axes |
-| [`editYAxisLabels`](./reference/actions/advanced/#axis-lines-ticks-and-labels) | user-facing | axes |
-| [`editYAxisLine`](./reference/actions/advanced/#axis-lines-ticks-and-labels) | user-facing | axes |
-| [`editYAxisTicks`](./reference/actions/advanced/#axis-lines-ticks-and-labels) | user-facing | axes |
-| [`editYAxisTicksAndLabels`](./reference/actions/advanced/#ticklabel-groups-and-axis-titles) | user-facing | axes |
-| [`editYAxisTitle`](./reference/actions/advanced/#ticklabel-groups-and-axis-titles) | user-facing | axes |
-| [`encodeAngle`](./reference/actions/encodings/#encodeangle) | user-facing | encodings |
-| [`encodeBarWidth`](./reference/actions/encodings/#encodebarwidth) | user-facing | encodings |
-| [`encodeColor`](./reference/actions/encodings/#encodecolor) | user-facing | encodings |
-| [`encodeDensity`](./reference/actions/encodings/#encodedensity) | user-facing | encodings |
-| [`encodeGroup`](./reference/actions/encodings/#encodegroup) | user-facing | encodings |
-| [`encodeHistogram`](./reference/actions/encodings/#encodehistogram) | user-facing | encodings |
-| [`encodeHorizon`](./reference/actions/encodings/#encodehorizon) | user-facing | encodings |
-| [`encodeOpacity`](./reference/actions/encodings/#encodeopacity) | user-facing | encodings |
-| [`encodeParallelCoordinates`](./reference/actions/encodings/#encodeparallelcoordinates) | user-facing | encodings |
-| [`encodePathOrder`](./reference/actions/encodings/#encodepathorder) | user-facing | encodings |
-| [`encodePointRadius`](./reference/actions/encodings/#encodepointradius) | user-facing | encodings |
-| [`encodeR`](./reference/actions/encodings/#encoder) | user-facing | encodings |
-| [`encodeRadius`](./reference/actions/encodings/#encoderadius) | user-facing | encodings |
-| [`encodeShape`](./reference/actions/encodings/#encodeshape) | user-facing | encodings |
-| [`encodeSize`](./reference/actions/encodings/#encodesize) | user-facing | encodings |
-| [`encodeStroke`](./reference/actions/encodings/#encodestroke) | user-facing | encodings |
-| [`encodeStrokeDash`](./reference/actions/encodings/#encodestrokedash) | user-facing | encodings |
-| [`encodeStrokeWidth`](./reference/actions/encodings/#encodestrokewidth) | user-facing | encodings |
-| [`encodeText`](./reference/actions/encodings/#encodetext) | user-facing | encodings |
-| [`encodeTheta`](./reference/actions/encodings/#encodetheta) | user-facing | encodings |
-| [`encodeX`](./reference/actions/encodings/#encodex) | user-facing | encodings |
-| [`encodeX2`](./reference/actions/encodings/#encodex2) | user-facing | encodings |
-| [`encodeXOffset`](./reference/actions/encodings/#encodexoffset) | user-facing | encodings |
-| [`encodeXRange`](./reference/actions/encodings/#encodexrange) | user-facing | encodings |
-| [`encodeY`](./reference/actions/encodings/#encodey) | user-facing | encodings |
-| [`encodeY2`](./reference/actions/encodings/#encodey2) | user-facing | encodings |
-| [`encodeYOffset`](./reference/actions/encodings/#encodeyoffset) | user-facing | encodings |
-| [`encodeYRange`](./reference/actions/encodings/#encodeyrange) | user-facing | encodings |
-| [`facet`](./reference/actions/charts-data/#facet) | user-facing | composition |
-| [`facetGrid`](./reference/actions/charts-data/#facetgrid) | user-facing | composition |
-| [`filterData`](./reference/actions/charts-data/#filterdata) | user-facing | core |
-| [`filterMarks`](./reference/actions/charts-data/#filtermarks) | user-facing | mark-selection |
-| [`fitCanvas`](./reference/actions/charts-data/#fitcanvas) | user-facing | core |
-| [`highlightMarks`](./reference/actions/charts-data/#highlightmarks) | user-facing | mark-selection |
-| [`insertCompositionChild`](./reference/actions/charts-data/#insertcompositionchild) | user-facing | composition |
-| [`jitterPoints`](./reference/actions/marks/#jitterpoints) | user-facing | marks |
-| [`layoutLabels`](./reference/actions/marks/#layoutlabels) | user-facing | marks |
-| [`layoutSeries`](./reference/actions/encodings/#layoutseries) | user-facing | encodings |
-| [`orderCategories`](./reference/actions/encodings/#ordercategories) | user-facing | encodings |
-| [`packPoints`](./reference/actions/marks/#packpoints) | user-facing | marks |
-| [`removeCategoryOrder`](./reference/actions/encodings/#removecategoryorder) | user-facing | encodings |
-| [`removeCompositionChild`](./reference/actions/charts-data/#removecompositionchild) | user-facing | composition |
-| [`removeEncoding`](./reference/actions/encodings/#removeencoding) | user-facing | encodings |
-| [`removeGrid`](./reference/actions/advanced/#directional-grids) | user-facing | grid |
-| [`removeJitter`](./reference/actions/marks/#removejitter) | user-facing | marks |
-| [`removeLabelLayout`](./reference/actions/marks/#removelabellayout) | user-facing | marks |
-| [`removeLegend`](./reference/actions/guides/#removelegend) | user-facing | legend_and_title |
-| [`removeMark`](./reference/actions/marks/#removemark) | user-facing | marks |
-| [`removeMarkFilter`](./reference/actions/charts-data/#removemarkfilter) | user-facing | mark-selection |
-| [`removeMarkHighlight`](./reference/actions/charts-data/#removemarkhighlight) | user-facing | mark-selection |
-| [`removeMarkSelection`](./reference/actions/advanced/#removemarkselection) | advanced | mark-selection |
-| [`removeParallelAxes`](./reference/actions/advanced/#createparallelaxes-createparallelaxis-editparallelaxis-removeparallelaxis-removeparallelaxes) | user-facing | axes |
-| [`removeParallelAxis`](./reference/actions/advanced/#createparallelaxes-createparallelaxis-editparallelaxis-removeparallelaxis-removeparallelaxes) | user-facing | axes |
-| [`removePathOrder`](./reference/actions/encodings/#removepathorder) | user-facing | encodings |
-| [`removePointPacking`](./reference/actions/marks/#removepointpacking) | user-facing | marks |
-| [`removePointRadius`](./reference/actions/encodings/#removepointradius) | user-facing | encodings |
-| [`removeRadialAxis`](./reference/actions/guides/#removeradialaxis) | user-facing | axes |
-| [`removeTheme`](./reference/actions/charts-data/#removetheme) | user-facing | core |
-| [`removeThetaAxis`](./reference/actions/guides/#removethetaaxis) | user-facing | axes |
-| [`removeTitle`](./reference/actions/guides/#removetitle) | user-facing | legend_and_title |
-| [`removeXAxis`](./reference/actions/advanced/#complete-axis-removal) | user-facing | axes |
-| [`removeYAxis`](./reference/actions/advanced/#complete-axis-removal) | user-facing | axes |
-| [`reorderCompositionChildren`](./reference/actions/charts-data/#reordercompositionchildren) | user-facing | composition |
-| [`repeatCharts`](./reference/actions/charts-data/#repeatcharts) | user-facing | composition |
-| [`replaceCompositionChild`](./reference/actions/charts-data/#replacecompositionchild) | user-facing | composition |
-| [`selectMarks`](./reference/actions/advanced/#reusable-mark-selections) | advanced | mark-selection |
+| Action | Authoring role | API layer | Domain |
+| --- | --- | --- | --- |
+| [`applyTheme`](./reference/actions/charts-data/#applytheme) | H3 | user-facing | core |
+| [`bindMarkData`](./reference/actions/charts-data/#bindmarkdata) | H2 | user-facing | core |
+| [`createAnnotation`](./reference/actions/marks/#createannotation) | H1, H2 | user-facing | marks |
+| [`createArcMark`](./reference/actions/marks/#createarcmark) | H2 | user-facing | marks |
+| [`createAreaMark`](./reference/actions/marks/#createareamark) | H2 | user-facing | marks |
+| [`createAreaPlot`](./reference/actions/charts-data/#createareaplot) | H0 | user-facing | charts |
+| [`createAxes`](./reference/actions/guides/#createaxes) | H3 | user-facing | axes |
+| [`createBarMark`](./reference/actions/marks/#createbarmark) | H2 | user-facing | marks |
+| [`createBarPlot`](./reference/actions/charts-data/#createbarplot) | H0 | user-facing | charts |
+| [`createBeeswarmPlot`](./reference/actions/charts-data/#createbeeswarmplot) | H0 | user-facing | charts |
+| [`createBin2DData`](./reference/actions/charts-data/#createbin2ddata) | H2 | user-facing | core |
+| [`createBinData`](./reference/actions/statistics/#createbindata) | H1 | user-facing | statistics |
+| [`createBoxPlot`](./reference/actions/statistics/#createboxplot) | H0, H1 | user-facing | statistics |
+| [`createCanvas`](./reference/actions/charts-data/#createcanvas) | H3 | user-facing | core |
+| [`createComputedData`](./reference/actions/statistics/#createcomputeddata) | H1 | user-facing | statistics |
+| [`createCoordinate`](./reference/actions/advanced/#semantic-resources-and-regression-layers) | H2 | user-facing | core |
+| [`createData`](./reference/actions/charts-data/#createdata) | H2 | user-facing | core |
+| [`createDensityData`](./reference/actions/charts-data/#createdensitydata) | H2 | user-facing | core |
+| [`createDensityPlot`](./reference/actions/statistics/#createdensityplot) | H0, H1 | user-facing | statistics |
+| [`createDerivedData`](./reference/actions/advanced/#semantic-resources-and-regression-layers) | H2 | user-facing | core |
+| [`createDotPlot`](./reference/actions/charts-data/#createdotplot) | H0, H1 | user-facing | charts |
+| [`createDumbbellPlot`](./reference/actions/charts-data/#createdumbbellplot) | H0, H1 | user-facing | charts |
+| [`createECDFData`](./reference/actions/statistics/#createecdfdata) | H1 | user-facing | statistics |
+| [`createECDFPlot`](./reference/actions/charts-data/#createecdfplot) | H0, H1 | user-facing | charts |
+| [`createErrorBand`](./reference/actions/statistics/#createerrorband) | H1 | user-facing | statistics |
+| [`createErrorBar`](./reference/actions/statistics/#createerrorbar) | H1 | user-facing | statistics |
+| [`createFoldData`](./reference/actions/statistics/#createfolddata) | H1 | user-facing | statistics |
+| [`createGradientPlot`](./reference/actions/statistics/#creategradientplot) | H0, H1 | user-facing | statistics |
+| [`createGraphics`](./reference/actions/extension/#extension-actions) | H4 | primitive | primitives |
+| [`createGrid`](./reference/actions/guides/#creategrid) | H3 | user-facing | grid |
+| [`createGuides`](./reference/actions/guides/#createguides) | H3 | user-facing | legend_and_title |
+| [`createHeatmap`](./reference/actions/charts-data/#createheatmap) | H0 | user-facing | charts |
+| [`createHistogram`](./reference/actions/charts-data/#createhistogram) | H0, H1 | user-facing | charts |
+| [`createHorizonPlot`](./reference/actions/statistics/#createhorizonplot) | H0, H1 | user-facing | statistics |
+| [`createHorizontalGrid`](./reference/actions/advanced/#directional-grids) | H3 | user-facing | grid |
+| [`createIntervalData`](./reference/actions/statistics/#createintervaldata) | H1 | user-facing | statistics |
+| [`createIntervalPlot`](./reference/actions/charts-data/#createintervalplot) | H0, H1 | user-facing | charts |
+| [`createLegend`](./reference/actions/guides/#createlegend) | H3 | user-facing | legend_and_title |
+| [`createLineMark`](./reference/actions/marks/#createlinemark) | H2 | user-facing | marks |
+| [`createLinePlot`](./reference/actions/charts-data/#createlineplot) | H0 | user-facing | charts |
+| [`createLollipopPlot`](./reference/actions/charts-data/#createlollipopplot) | H0, H1 | user-facing | charts |
+| [`createMarkLabels`](./reference/actions/marks/#createmarklabels) | H1, H2 | user-facing | marks |
+| [`createParallelAxes`](./reference/actions/advanced/#createparallelaxes-createparallelaxis-editparallelaxis-removeparallelaxis-removeparallelaxes) | H3 | user-facing | axes |
+| [`createParallelAxis`](./reference/actions/advanced/#createparallelaxes-createparallelaxis-editparallelaxis-removeparallelaxis-removeparallelaxes) | H3 | user-facing | axes |
+| [`createParallelCoordinates`](./reference/actions/charts-data/#createparallelcoordinates) | H0 | user-facing | charts |
+| [`createPiePlot`](./reference/actions/charts-data/#createpieplot) | H0 | user-facing | charts |
+| [`createPointMark`](./reference/actions/marks/#createpointmark) | H2 | user-facing | marks |
+| [`createPolarLinePlot`](./reference/actions/charts-data/#createpolarlineplot) | H0 | user-facing | charts |
+| [`createPolarScatterPlot`](./reference/actions/charts-data/#createpolarscatterplot) | H0 | user-facing | charts |
+| [`createRadarPlot`](./reference/actions/charts-data/#createradarplot) | H0 | user-facing | charts |
+| [`createRadialAxis`](./reference/actions/guides/#createradialaxis) | H3 | user-facing | axes |
+| [`createRadialAxisLabels`](./reference/actions/guides/#createradialaxislabels) | H3 | user-facing | axes |
+| [`createRadialAxisLine`](./reference/actions/guides/#createradialaxisline) | H3 | user-facing | axes |
+| [`createRadialAxisTicks`](./reference/actions/guides/#createradialaxisticks) | H3 | user-facing | axes |
+| [`createRadialAxisTitle`](./reference/actions/guides/#createradialaxistitle) | H3 | user-facing | axes |
+| [`createRadialBarPlot`](./reference/actions/charts-data/#createradialbarplot) | H0 | user-facing | charts |
+| [`createRadialGrid`](./reference/actions/guides/#createradialgrid) | H3 | user-facing | grid |
+| [`createRaincloudPlot`](./reference/actions/charts-data/#createraincloudplot) | H0, H1 | user-facing | charts |
+| [`createRectMark`](./reference/actions/marks/#createrectmark) | H2 | user-facing | marks |
+| [`createReferenceBand`](./reference/actions/marks/#createreferenceband) | H1, H2 | user-facing | marks |
+| [`createReferenceLine`](./reference/actions/marks/#createreferenceline) | H1, H2 | user-facing | marks |
+| [`createRegression`](./reference/actions/statistics/#createregression) | H1 | user-facing | statistics |
+| [`createRegressionBand`](./reference/actions/advanced/#semantic-resources-and-regression-layers) | H1 | user-facing | statistics |
+| [`createRegressionData`](./reference/actions/charts-data/#createregressiondata) | H2 | user-facing | core |
+| [`createRegressionLine`](./reference/actions/advanced/#semantic-resources-and-regression-layers) | H1 | user-facing | statistics |
+| [`createRegressionPlot`](./reference/actions/charts-data/#createregressionplot) | H0, H1 | user-facing | charts |
+| [`createRosePlot`](./reference/actions/charts-data/#createroseplot) | H0 | user-facing | charts |
+| [`createRugPlot`](./reference/actions/charts-data/#createrugplot) | H0 | user-facing | charts |
+| [`createRuleMark`](./reference/actions/marks/#createrulemark) | H2 | user-facing | marks |
+| [`createScale`](./reference/actions/extension/#extension-actions) | H2 | user-facing | core |
+| [`createScatterPlot`](./reference/actions/charts-data/#createscatterplot) | H0 | user-facing | charts |
+| [`createStackData`](./reference/actions/statistics/#createstackdata) | H1 | user-facing | statistics |
+| [`createStripPlot`](./reference/actions/charts-data/#createstripplot) | H0 | user-facing | charts |
+| [`createSummaryData`](./reference/actions/statistics/#createsummarydata) | H1 | user-facing | statistics |
+| [`createTextMark`](./reference/actions/marks/#createtextmark) | H2 | user-facing | marks |
+| [`createThetaAxis`](./reference/actions/guides/#createthetaaxis) | H3 | user-facing | axes |
+| [`createThetaAxisLabels`](./reference/actions/guides/#createthetaaxislabels) | H3 | user-facing | axes |
+| [`createThetaAxisLine`](./reference/actions/guides/#createthetaaxisline) | H3 | user-facing | axes |
+| [`createThetaAxisTicks`](./reference/actions/guides/#createthetaaxisticks) | H3 | user-facing | axes |
+| [`createThetaAxisTitle`](./reference/actions/guides/#createthetaaxistitle) | H3 | user-facing | axes |
+| [`createThetaGrid`](./reference/actions/guides/#createthetagrid) | H3 | user-facing | grid |
+| [`createTickMark`](./reference/actions/marks/#createtickmark) | H2 | user-facing | marks |
+| [`createTimeUnitData`](./reference/actions/charts-data/#createtimeunitdata) | H2 | user-facing | core |
+| [`createTitle`](./reference/actions/guides/#createtitle) | H3 | user-facing | legend_and_title |
+| [`createVerticalGrid`](./reference/actions/advanced/#directional-grids) | H3 | user-facing | grid |
+| [`createViolinPlot`](./reference/actions/statistics/#createviolinplot) | H0, H1 | user-facing | statistics |
+| [`createWindowData`](./reference/actions/charts-data/#createwindowdata) | H2 | user-facing | core |
+| [`createXAxis`](./reference/actions/advanced/#complete-single-channel-axes) | H3 | user-facing | axes |
+| [`createXAxisLabels`](./reference/actions/advanced/#axis-lines-ticks-and-labels) | H3 | user-facing | axes |
+| [`createXAxisLine`](./reference/actions/advanced/#axis-lines-ticks-and-labels) | H3 | user-facing | axes |
+| [`createXAxisTicks`](./reference/actions/advanced/#axis-lines-ticks-and-labels) | H3 | user-facing | axes |
+| [`createXAxisTicksAndLabels`](./reference/actions/advanced/#ticklabel-groups-and-axis-titles) | H3 | user-facing | axes |
+| [`createXAxisTitle`](./reference/actions/advanced/#ticklabel-groups-and-axis-titles) | H3 | user-facing | axes |
+| [`createYAxis`](./reference/actions/advanced/#complete-single-channel-axes) | H3 | user-facing | axes |
+| [`createYAxisLabels`](./reference/actions/advanced/#axis-lines-ticks-and-labels) | H3 | user-facing | axes |
+| [`createYAxisLine`](./reference/actions/advanced/#axis-lines-ticks-and-labels) | H3 | user-facing | axes |
+| [`createYAxisTicks`](./reference/actions/advanced/#axis-lines-ticks-and-labels) | H3 | user-facing | axes |
+| [`createYAxisTicksAndLabels`](./reference/actions/advanced/#ticklabel-groups-and-axis-titles) | H3 | user-facing | axes |
+| [`createYAxisTitle`](./reference/actions/advanced/#ticklabel-groups-and-axis-titles) | H3 | user-facing | axes |
+| [`editArcMark`](./reference/actions/marks/#editarcmark) | H3 | user-facing | marks |
+| [`editAreaMark`](./reference/actions/marks/#editareamark) | H3 | user-facing | marks |
+| [`editBarMark`](./reference/actions/marks/#editbarmark) | H3 | user-facing | marks |
+| [`editBin2DData`](./reference/actions/charts-data/#editbin2ddata) | H2 | user-facing | core |
+| [`editBoxPlot`](./reference/actions/statistics/#editboxplot) | H1, H3 | user-facing | statistics |
+| [`editCanvas`](./reference/actions/charts-data/#editcanvas) | H3 | user-facing | core |
+| [`editCompositionLayout`](./reference/actions/charts-data/#editcompositionlayout) | H3 | user-facing | composition |
+| [`editDensity`](./reference/actions/encodings/#editdensity) | H2, H3 | user-facing | encodings |
+| [`editECDFPlot`](./reference/actions/charts-data/#editecdfplot) | H1, H3 | user-facing | charts |
+| [`editEndpointPlot`](./reference/actions/charts-data/#editendpointplot) | H1, H3 | user-facing | charts |
+| [`editErrorBand`](./reference/actions/statistics/#editerrorband-and-editerrorbandboundary) | H1, H3 | user-facing | statistics |
+| [`editErrorBandBoundary`](./reference/actions/statistics/#editerrorband-and-editerrorbandboundary) | H1, H3 | user-facing | statistics |
+| [`editErrorBar`](./reference/actions/statistics/#editerrorbar) | H1, H3 | user-facing | statistics |
+| [`editFacetGuides`](./reference/actions/charts-data/#editfacetguides) | H3 | user-facing | composition |
+| [`editFacetHeaders`](./reference/actions/charts-data/#editfacetheaders) | H3 | user-facing | composition |
+| [`editFacetScales`](./reference/actions/charts-data/#editfacetscales) | H3 | user-facing | composition |
+| [`editFacetSource`](./reference/actions/charts-data/#editfacetsource) | H3 | user-facing | composition |
+| [`editGradientPlot`](./reference/actions/statistics/#editgradientplot) | H1, H3 | user-facing | statistics |
+| [`editGraphics`](./reference/actions/extension/#extension-actions) | H4 | primitive | primitives |
+| [`editGrid`](./reference/actions/advanced/#directional-grids) | H3 | user-facing | grid |
+| [`editHorizon`](./reference/actions/encodings/#edithorizon) | H2, H3 | user-facing | encodings |
+| [`editHorizontalGrid`](./reference/actions/advanced/#directional-grids) | H3 | user-facing | grid |
+| [`editLegend`](./reference/actions/guides/#editlegend) | H3 | user-facing | legend_and_title |
+| [`editLegendBorder`](./reference/actions/guides/#focused-legend-edits) | H3 | user-facing | legend_and_title |
+| [`editLegendLabels`](./reference/actions/guides/#focused-legend-edits) | H3 | user-facing | legend_and_title |
+| [`editLegendLayout`](./reference/actions/guides/#focused-legend-edits) | H3 | user-facing | legend_and_title |
+| [`editLegendSymbols`](./reference/actions/guides/#focused-legend-edits) | H3 | user-facing | legend_and_title |
+| [`editLegendTitle`](./reference/actions/guides/#focused-legend-edits) | H3 | user-facing | legend_and_title |
+| [`editLineMark`](./reference/actions/marks/#editlinemark) | H3 | user-facing | marks |
+| [`editMarkSelection`](./reference/actions/advanced/#editmarkselection) | H3 | advanced | mark-selection |
+| [`editParallelAxis`](./reference/actions/advanced/#createparallelaxes-createparallelaxis-editparallelaxis-removeparallelaxis-removeparallelaxes) | H3 | user-facing | axes |
+| [`editPointMark`](./reference/actions/marks/#editpointmark) | H3 | user-facing | marks |
+| [`editRadialAxis`](./reference/actions/guides/#editradialaxis) | H3 | user-facing | axes |
+| [`editRadialAxisLabels`](./reference/actions/guides/#editradialaxislabels) | H3 | user-facing | axes |
+| [`editRadialAxisLine`](./reference/actions/guides/#editradialaxisline) | H3 | user-facing | axes |
+| [`editRadialAxisTicks`](./reference/actions/guides/#editradialaxisticks) | H3 | user-facing | axes |
+| [`editRadialAxisTitle`](./reference/actions/guides/#editradialaxistitle) | H3 | user-facing | axes |
+| [`editRadialGrid`](./reference/actions/guides/#editradialgrid) | H3 | user-facing | grid |
+| [`editRaincloudPlot`](./reference/actions/charts-data/#editraincloudplot) | H1, H3 | user-facing | charts |
+| [`editRectMark`](./reference/actions/marks/#editrectmark) | H3 | user-facing | marks |
+| [`editRegression`](./reference/actions/statistics/#editregression) | H1, H3 | user-facing | statistics |
+| [`editRegressionBand`](./reference/actions/advanced/#semantic-resources-and-regression-layers) | H1, H3 | user-facing | statistics |
+| [`editRegressionLine`](./reference/actions/advanced/#semantic-resources-and-regression-layers) | H1, H3 | user-facing | statistics |
+| [`editRuleMark`](./reference/actions/marks/#editrulemark) | H3 | user-facing | marks |
+| [`editScale`](./reference/actions/extension/#extension-actions) | H2 | user-facing | core |
+| [`editSemantic`](./reference/actions/extension/#extension-actions) | H4 | primitive | primitives |
+| [`editTextMark`](./reference/actions/marks/#edittextmark) | H3 | user-facing | marks |
+| [`editThetaAxis`](./reference/actions/guides/#editthetaaxis) | H3 | user-facing | axes |
+| [`editThetaAxisLabels`](./reference/actions/guides/#editthetaaxislabels) | H3 | user-facing | axes |
+| [`editThetaAxisLine`](./reference/actions/guides/#editthetaaxisline) | H3 | user-facing | axes |
+| [`editThetaAxisTicks`](./reference/actions/guides/#editthetaaxisticks) | H3 | user-facing | axes |
+| [`editThetaAxisTitle`](./reference/actions/guides/#editthetaaxistitle) | H3 | user-facing | axes |
+| [`editThetaGrid`](./reference/actions/guides/#editthetagrid) | H3 | user-facing | grid |
+| [`editTickMark`](./reference/actions/marks/#edittickmark) | H3 | user-facing | marks |
+| [`editTitle`](./reference/actions/guides/#edittitle) | H3 | user-facing | legend_and_title |
+| [`editVerticalGrid`](./reference/actions/advanced/#directional-grids) | H3 | user-facing | grid |
+| [`editViolinPlot`](./reference/actions/statistics/#editviolinplot) | H1, H3 | user-facing | statistics |
+| [`editXAxis`](./reference/actions/advanced/#complete-single-channel-axes) | H3 | user-facing | axes |
+| [`editXAxisLabels`](./reference/actions/advanced/#axis-lines-ticks-and-labels) | H3 | user-facing | axes |
+| [`editXAxisLine`](./reference/actions/advanced/#axis-lines-ticks-and-labels) | H3 | user-facing | axes |
+| [`editXAxisTicks`](./reference/actions/advanced/#axis-lines-ticks-and-labels) | H3 | user-facing | axes |
+| [`editXAxisTicksAndLabels`](./reference/actions/advanced/#ticklabel-groups-and-axis-titles) | H3 | user-facing | axes |
+| [`editXAxisTitle`](./reference/actions/advanced/#ticklabel-groups-and-axis-titles) | H3 | user-facing | axes |
+| [`editYAxis`](./reference/actions/advanced/#complete-single-channel-axes) | H3 | user-facing | axes |
+| [`editYAxisLabels`](./reference/actions/advanced/#axis-lines-ticks-and-labels) | H3 | user-facing | axes |
+| [`editYAxisLine`](./reference/actions/advanced/#axis-lines-ticks-and-labels) | H3 | user-facing | axes |
+| [`editYAxisTicks`](./reference/actions/advanced/#axis-lines-ticks-and-labels) | H3 | user-facing | axes |
+| [`editYAxisTicksAndLabels`](./reference/actions/advanced/#ticklabel-groups-and-axis-titles) | H3 | user-facing | axes |
+| [`editYAxisTitle`](./reference/actions/advanced/#ticklabel-groups-and-axis-titles) | H3 | user-facing | axes |
+| [`encodeAngle`](./reference/actions/encodings/#encodeangle) | H2 | user-facing | encodings |
+| [`encodeBarWidth`](./reference/actions/encodings/#encodebarwidth) | H2 | user-facing | encodings |
+| [`encodeColor`](./reference/actions/encodings/#encodecolor) | H2 | user-facing | encodings |
+| [`encodeDensity`](./reference/actions/encodings/#encodedensity) | H2 | user-facing | encodings |
+| [`encodeGroup`](./reference/actions/encodings/#encodegroup) | H2 | user-facing | encodings |
+| [`encodeHistogram`](./reference/actions/encodings/#encodehistogram) | H2 | user-facing | encodings |
+| [`encodeHorizon`](./reference/actions/encodings/#encodehorizon) | H2 | user-facing | encodings |
+| [`encodeOpacity`](./reference/actions/encodings/#encodeopacity) | H2 | user-facing | encodings |
+| [`encodeParallelCoordinates`](./reference/actions/encodings/#encodeparallelcoordinates) | H2 | user-facing | encodings |
+| [`encodePathOrder`](./reference/actions/encodings/#encodepathorder) | H2 | user-facing | encodings |
+| [`encodePointRadius`](./reference/actions/encodings/#encodepointradius) | H2 | user-facing | encodings |
+| [`encodeR`](./reference/actions/encodings/#encoder) | H2 | user-facing | encodings |
+| [`encodeRadius`](./reference/actions/encodings/#encoderadius) | H2 | user-facing | encodings |
+| [`encodeShape`](./reference/actions/encodings/#encodeshape) | H2 | user-facing | encodings |
+| [`encodeSize`](./reference/actions/encodings/#encodesize) | H2 | user-facing | encodings |
+| [`encodeStroke`](./reference/actions/encodings/#encodestroke) | H2 | user-facing | encodings |
+| [`encodeStrokeDash`](./reference/actions/encodings/#encodestrokedash) | H2 | user-facing | encodings |
+| [`encodeStrokeWidth`](./reference/actions/encodings/#encodestrokewidth) | H2 | user-facing | encodings |
+| [`encodeText`](./reference/actions/encodings/#encodetext) | H2 | user-facing | encodings |
+| [`encodeTheta`](./reference/actions/encodings/#encodetheta) | H2 | user-facing | encodings |
+| [`encodeX`](./reference/actions/encodings/#encodex) | H2 | user-facing | encodings |
+| [`encodeX2`](./reference/actions/encodings/#encodex2) | H2 | user-facing | encodings |
+| [`encodeXOffset`](./reference/actions/encodings/#encodexoffset) | H2 | user-facing | encodings |
+| [`encodeXRange`](./reference/actions/encodings/#encodexrange) | H2 | user-facing | encodings |
+| [`encodeY`](./reference/actions/encodings/#encodey) | H2 | user-facing | encodings |
+| [`encodeY2`](./reference/actions/encodings/#encodey2) | H2 | user-facing | encodings |
+| [`encodeYOffset`](./reference/actions/encodings/#encodeyoffset) | H2 | user-facing | encodings |
+| [`encodeYRange`](./reference/actions/encodings/#encodeyrange) | H2 | user-facing | encodings |
+| [`facet`](./reference/actions/charts-data/#facet) | H0 | user-facing | composition |
+| [`facetGrid`](./reference/actions/charts-data/#facetgrid) | H0 | user-facing | composition |
+| [`filterData`](./reference/actions/charts-data/#filterdata) | H2 | user-facing | core |
+| [`filterMarks`](./reference/actions/charts-data/#filtermarks) | H3 | user-facing | mark-selection |
+| [`fitCanvas`](./reference/actions/charts-data/#fitcanvas) | H3 | user-facing | core |
+| [`highlightMarks`](./reference/actions/charts-data/#highlightmarks) | H3 | user-facing | mark-selection |
+| [`insertCompositionChild`](./reference/actions/charts-data/#insertcompositionchild) | H3 | user-facing | composition |
+| [`jitterPoints`](./reference/actions/marks/#jitterpoints) | H3 | user-facing | marks |
+| [`layoutLabels`](./reference/actions/marks/#layoutlabels) | H3 | user-facing | marks |
+| [`layoutSeries`](./reference/actions/encodings/#layoutseries) | H2 | user-facing | encodings |
+| [`orderCategories`](./reference/actions/encodings/#ordercategories) | H2 | user-facing | encodings |
+| [`packPoints`](./reference/actions/marks/#packpoints) | H3 | user-facing | marks |
+| [`removeCategoryOrder`](./reference/actions/encodings/#removecategoryorder) | H2, H3 | user-facing | encodings |
+| [`removeCompositionChild`](./reference/actions/charts-data/#removecompositionchild) | H3 | user-facing | composition |
+| [`removeEncoding`](./reference/actions/encodings/#removeencoding) | H2, H3 | user-facing | encodings |
+| [`removeGrid`](./reference/actions/advanced/#directional-grids) | H3 | user-facing | grid |
+| [`removeJitter`](./reference/actions/marks/#removejitter) | H3 | user-facing | marks |
+| [`removeLabelLayout`](./reference/actions/marks/#removelabellayout) | H3 | user-facing | marks |
+| [`removeLegend`](./reference/actions/guides/#removelegend) | H3 | user-facing | legend_and_title |
+| [`removeMark`](./reference/actions/marks/#removemark) | H3 | user-facing | marks |
+| [`removeMarkFilter`](./reference/actions/charts-data/#removemarkfilter) | H3 | user-facing | mark-selection |
+| [`removeMarkHighlight`](./reference/actions/charts-data/#removemarkhighlight) | H3 | user-facing | mark-selection |
+| [`removeMarkSelection`](./reference/actions/advanced/#removemarkselection) | H3 | advanced | mark-selection |
+| [`removeParallelAxes`](./reference/actions/advanced/#createparallelaxes-createparallelaxis-editparallelaxis-removeparallelaxis-removeparallelaxes) | H3 | user-facing | axes |
+| [`removeParallelAxis`](./reference/actions/advanced/#createparallelaxes-createparallelaxis-editparallelaxis-removeparallelaxis-removeparallelaxes) | H3 | user-facing | axes |
+| [`removePathOrder`](./reference/actions/encodings/#removepathorder) | H2, H3 | user-facing | encodings |
+| [`removePointPacking`](./reference/actions/marks/#removepointpacking) | H3 | user-facing | marks |
+| [`removePointRadius`](./reference/actions/encodings/#removepointradius) | H2, H3 | user-facing | encodings |
+| [`removeRadialAxis`](./reference/actions/guides/#removeradialaxis) | H3 | user-facing | axes |
+| [`removeTheme`](./reference/actions/charts-data/#removetheme) | H3 | user-facing | core |
+| [`removeThetaAxis`](./reference/actions/guides/#removethetaaxis) | H3 | user-facing | axes |
+| [`removeTitle`](./reference/actions/guides/#removetitle) | H3 | user-facing | legend_and_title |
+| [`removeXAxis`](./reference/actions/advanced/#complete-axis-removal) | H3 | user-facing | axes |
+| [`removeYAxis`](./reference/actions/advanced/#complete-axis-removal) | H3 | user-facing | axes |
+| [`reorderCompositionChildren`](./reference/actions/charts-data/#reordercompositionchildren) | H3 | user-facing | composition |
+| [`repeatCharts`](./reference/actions/charts-data/#repeatcharts) | H0 | user-facing | composition |
+| [`replaceCompositionChild`](./reference/actions/charts-data/#replacecompositionchild) | H3 | user-facing | composition |
+| [`selectMarks`](./reference/actions/advanced/#reusable-mark-selections) | H3 | advanced | mark-selection |
 
 <!-- Source: /reference/actions/charts-data/ -->
 

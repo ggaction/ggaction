@@ -1839,8 +1839,8 @@ function genericUnresolved(normalizedQuery, matchedIds, exactNames) {
 }
 
 export function validateResolverKnowledge() {
-  if (cardsArtifact.schemaVersion !== 2 || taxonomy.schemaVersion !== 2) {
-    throw new Error("Compact action cards and the intent taxonomy must use schemaVersion 2.");
+  if (cardsArtifact.schemaVersion !== 3 || taxonomy.schemaVersion !== 2) {
+    throw new Error("Compact action cards must use schemaVersion 3 and the intent taxonomy must use schemaVersion 2.");
   }
   if (taxonomy.packageVersion !== cardsArtifact.packageVersion) {
     throw new Error("Compact action cards and the intent taxonomy must use one packageVersion.");

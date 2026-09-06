@@ -78,9 +78,9 @@ interface ActionCardV3 extends ActionCardV2 {
 
 ## `wraps`와 `editableVia`
 
-- `wraps`는 한 action trace에서 가장 가까운 **direct public descendant**만 기록한다. Internal materializer를 건너뛰되
-  모든 transitive descendant를 펼치지 않는다. 따라서 H0 facade의 child action과 H2→H4 primitive 경계가 보이고,
-  rematerializer 세부 구현은 card payload를 오염시키지 않는다.
+- `wraps`는 한 action trace의 **immediate direct public child**만 기록한다. Internal materializer branch를 따라 내려가
+  incidental rematerialization action을 수집하거나 모든 transitive descendant를 펼치지 않는다. 따라서 H0 facade의
+  명시적 child action과 H2→H4 primitive 경계가 보이고 rematerializer 세부 구현은 card payload를 오염시키지 않는다.
 - Smoke/generated lifecycle corpus의 모든 direct action occurrence에서 같은 projection을 수집한다. Card가 주장한 edge가
   실제 trace에 없거나, corpus에서 관측한 direct child edge가 card에서 빠지면 실패한다.
 - `editableVia`는 그 action이 만든/선택한 stable owner를 이후 직접 바꾸거나 제거하는 public action만 기록한다.

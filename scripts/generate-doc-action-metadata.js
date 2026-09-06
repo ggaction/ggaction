@@ -1,6 +1,7 @@
 import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { authoringRoles } from "./action-card-metadata.js";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 const catalogFile = path.join(root, "agent_docs/contract/ACTION_INDEX.json");
@@ -33,6 +34,7 @@ export async function buildDocActionMetadata() {
   const catalog = JSON.parse(await readFile(catalogFile, "utf8"));
   return Object.fromEntries(catalog.actions.map(action => [action.name, {
     operation: operation(action.name),
+    authoringRoles: authoringRoles(action),
     layer: action.layer,
     domain: action.domain
   }]));
