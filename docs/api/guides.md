@@ -62,6 +62,23 @@ program.createGuides({ legend: false });
 guides through their owning axis, grid, and legend actions; there is no generic
 `editGuides` action.
 
+With automatic options, an existing axis, grid, or legend collection is kept
+as-is and only a missing applicable collection is created. This supports
+progressive authoring after a chart facade has already created its default
+axes and grid:
+
+```javascript
+program
+  .createScatterPlot({ x: "Displacement", y: "Acceleration" })
+  .encodeColor({ field: "Origin" })
+  .createRegression()
+  .createGuides(); // keeps the axes and grid, then adds the legend
+```
+
+Passing an explicit object for a collection keeps that child action's strict
+create contract. Use the corresponding edit action to revise an existing
+collection.
+
 Axes are selected from x/y, theta/radius, or ordered Parallel dimensions. A horizontal grid is selected
 when a y encoding exists; vertical grid remains off unless requested. Polar grids
 are selected only for the encoded Polar channels: theta creates spokes and radius

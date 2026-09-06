@@ -90,6 +90,42 @@ test("automatically creates axes, grid, and a line-series legend", () => {
   );
 });
 
+test("automatic guide creation preserves existing collections and adds a missing legend", () => {
+  const cars = [
+    { displacement: 1, acceleration: 2, origin: "A" },
+    { displacement: 2, acceleration: 3, origin: "A" },
+    { displacement: 3, acceleration: 4, origin: "A" },
+    { displacement: 1, acceleration: 4, origin: "B" },
+    { displacement: 2, acceleration: 3, origin: "B" },
+    { displacement: 3, acceleration: 2, origin: "B" }
+  ];
+  const base = chart()
+    .createCanvas({
+      width: 500,
+      height: 320,
+      margin: { top: 30, right: 130, bottom: 60, left: 60 }
+    })
+    .createData({ values: cars })
+    .createScatterPlot({ x: "displacement", y: "acceleration" });
+  const xAxis = base.graphicSpec.objects.xAxisLine;
+  const grid = base.graphicSpec.objects.horizontalGridLines;
+
+  const program = base
+    .encodeColor({ field: "origin" })
+    .editPointMark({ opacity: 0.35 })
+    .createRegression()
+    .createGuides();
+
+  assert.deepEqual(
+    program.trace.children.at(-1).children.map(child => child.op),
+    ["createLegend"]
+  );
+  assert.deepEqual(program.graphicSpec.objects.xAxisLine, xAxis);
+  assert.deepEqual(program.graphicSpec.objects.horizontalGridLines, grid);
+  assert.equal(program.semanticSpec.guides.legend.color.scale, "color");
+  assert.equal(base.semanticSpec.guides.legend, undefined);
+});
+
 test("forwards explicit child options", () => {
   const program = createSeriesLine().createGuides({
     axes: {
