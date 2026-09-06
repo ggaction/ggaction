@@ -2,8 +2,8 @@
 
 ## 진행 상태
 
-- [ ] A Gate의 정확한 결정·호환성·검증 범위 확정
-- [ ] A Gate 증거 commit/push와 명시적 사용자 승인 기록
+- [x] A Gate의 정확한 결정·호환성·검증 범위 확정 — [계약](CONTRACT.md)
+- [x] 전체 실행 사용자 승인과 기준 ref 기록
 - [ ] R6-P7-W1 Polar Scatter와 Line facade
 - [ ] R6-P7-W2 Radar long-form과 explicit fold
 - [ ] R6-P7-W3 Rug와 Strip placement
