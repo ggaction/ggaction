@@ -143,12 +143,12 @@ test("inherits measured Arc grain without attaching it to ordinary point radius"
 test("clears measured radius explicitly before reusing its scale for ordinary radius", () => {
   const p = base().encodeTheta(theta).encodeR(measured);
   assert.throws(() => p.editScale({ id: "radius", radialMapping: undefined }), /Remove measured/);
-  const q = p.removeEncoding({ channel: "radius" })
-    .editScale({ id: "radius", radialMapping: undefined })
-    .encodeR({ field: "value" });
+  const q = p.encodeR({ field: "value", mapping: false });
   assert.equal(radiusScale(q).radialMapping, undefined);
   assert.equal(q.semanticSpec.layers[0].encoding.radius.aggregate, undefined);
   assert.equal(p.semanticSpec.layers[0].encoding.radius.aggregate, "sum");
+  assert.deepEqual(q.resolvedScales.radius.domain, [0, 4]);
+  assert.ok(q.trace.children.at(-1).children.some(child => child.op === "editScale"));
 });
 
 test("validates pending radius bounds and prevents orphaned category-dependent radial guides", () => {

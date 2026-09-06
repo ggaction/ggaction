@@ -1659,11 +1659,14 @@ range is `[0, 360]`.
 ### `encodeR`
 
 ```javascript
-encodeR({ field, target?, fieldType?, scale?, coordinate? })
+encodeR({ field?, aggregate?, mapping?, target?, fieldType?, scale?, coordinate? })
 ```
 
 Encode a quantitative field as Polar radial distance. The default `radius`
 scale fits the current plot bounds and rematerializes after Canvas edits.
+Measured Arc radius accepts count/sum with `mapping: "area"` or
+`"radius-length"`. Reassign with `{ field, mapping: false }` to atomically
+replace a measured category aggregate with ordinary row-level radial length.
 [Polar positions](../api/position-encodings.md#polar-positions)
 
 ### `encodePointRadius`
@@ -2335,6 +2338,28 @@ removeMarkSelection({ selection? } = {})
 Release one stored selection after removing its dependent highlight. Other
 selection and highlight assignments remain active.
 [Selection lifecycle](../api/appearance/selection-and-highlighting.md#editing-and-removing-stored-intent)
+
+### Focused channel scale editors
+
+```javascript
+editXScale({ id?, target?, type?, domain?, range?, ...positionOptions })
+editYScale({ id?, target?, type?, domain?, range?, ...positionOptions })
+editThetaScale({ id?, target?, type?, domain?, range?, ...angularOptions })
+editRScale({ id?, target?, type?, domain?, range?, radialMapping?, ...radialOptions })
+editColorScale({ id?, target?, type?, domain?, range?, palette?, interpolate?, midpoint?, unknown? })
+editSizeScale({ id?, target?, type?, domain?, range?, unknown? })
+editOpacityScale({ id?, target?, type?, domain?, range?, nice?, zero?, clamp?, reverse?, unknown? })
+editShapeScale({ id?, target?, type?, domain?, range?, unknown? })
+editStrokeWidthScale({ id?, target?, type?, domain?, range?, ...quantitativeOptions })
+editStrokeDashScale({ id?, target?, type?, domain?, range? })
+```
+
+Edit the scale bound to one semantic channel without requiring its generated
+ID. Explicit `id` and `target` selectors must agree. Otherwise the current
+mark's channel scale wins, followed by a unique channel scale across all marks;
+ambiguity is an error. Every action delegates to `editScale`, which validates
+the channel-specific patch and refreshes all shared marks and guides.
+[Scale options](../api/scales.md)
 
 ### Semantic resources and regression layers
 

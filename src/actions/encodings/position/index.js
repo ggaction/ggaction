@@ -31,7 +31,8 @@ function encodePosition(program, channel, args, operation) {
     aggregate,
     stack,
     weight,
-    companion
+    companion,
+    clearRadialMapping
   } = resolvePositionEncoding(program, channel, args, operation);
 
   let next = program
@@ -53,13 +54,20 @@ function encodePosition(program, channel, args, operation) {
     bin,
     aggregate,
     stack,
-    weight
+    weight,
+    clearRadialMapping
   });
 
   next = next.editSemantic({
       property: `layer[${target}].encoding.${channel}.scale`,
       value: scale.id
     });
+  if (
+    clearRadialMapping &&
+    findSemanticScale(next, scale.id)?.radialMapping !== undefined
+  ) {
+    next = next.editScale({ id: scale.id, radialMapping: undefined });
+  }
   next = applyEncodingScale(next, scale, requestedScale, {
     reassignment: previous?.scale === scale.id,
     allowTypeChange: layer.mark.type === "area"

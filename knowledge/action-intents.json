@@ -772,6 +772,46 @@
       "point packing",
       "deterministic collision avoidance",
       "category-slot layout"
+    ],
+    "XScale": [
+      "x scale",
+      "horizontal position mapping"
+    ],
+    "YScale": [
+      "y scale",
+      "vertical position mapping"
+    ],
+    "ThetaScale": [
+      "theta scale",
+      "angular position mapping"
+    ],
+    "RScale": [
+      "radial scale",
+      "radial position mapping"
+    ],
+    "ColorScale": [
+      "color scale",
+      "color mapping"
+    ],
+    "SizeScale": [
+      "size scale",
+      "area mapping"
+    ],
+    "OpacityScale": [
+      "opacity scale",
+      "opacity mapping"
+    ],
+    "ShapeScale": [
+      "shape scale",
+      "categorical shape mapping"
+    ],
+    "StrokeWidthScale": [
+      "stroke-width scale",
+      "line-width mapping"
+    ],
+    "StrokeDashScale": [
+      "stroke-dash scale",
+      "dash-pattern mapping"
     ]
   },
   "summaryOverrides": {
@@ -1160,6 +1200,54 @@
     },
     "packPoints": {
       "channel": "x"
+    },
+    "editXScale": {
+      "reverse": true
+    },
+    "editYScale": {
+      "reverse": true
+    },
+    "editThetaScale": {
+      "reverse": true
+    },
+    "editRScale": {
+      "reverse": true
+    },
+    "editColorScale": {
+      "palette": "set2"
+    },
+    "editSizeScale": {
+      "range": [
+        20,
+        200
+      ]
+    },
+    "editOpacityScale": {
+      "range": [
+        0.2,
+        0.9
+      ]
+    },
+    "editShapeScale": {
+      "range": [
+        "circle",
+        "diamond"
+      ]
+    },
+    "editStrokeWidthScale": {
+      "range": [
+        1,
+        8
+      ]
+    },
+    "editStrokeDashScale": {
+      "range": [
+        [],
+        [
+          4,
+          2
+        ]
+      ]
     }
   },
   "callPatternOverrides": {

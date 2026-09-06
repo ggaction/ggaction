@@ -156,6 +156,16 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`createCoordinate`](current/CORE.md#createcoordinate) | core | Structural create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createScale`](current/CORE.md#createscale) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editScale`](current/CORE.md#editscale) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editXScale`](current/CORE.md#editxscale) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editYScale`](current/CORE.md#edityscale) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editThetaScale`](current/CORE.md#editthetascale) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editRScale`](current/CORE.md#editrscale) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editColorScale`](current/CORE.md#editcolorscale) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editSizeScale`](current/CORE.md#editsizescale) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editOpacityScale`](current/CORE.md#editopacityscale) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editShapeScale`](current/CORE.md#editshapescale) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editStrokeWidthScale`](current/CORE.md#editstrokewidthscale) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editStrokeDashScale`](current/CORE.md#editstrokedashscale) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createDerivedData`](current/CORE.md#createderiveddata) | core | Immutable create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createRegressionBand`](current/STATISTICS.md#createregressionband) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editRegressionBand`](current/STATISTICS.md#editregressionband) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |

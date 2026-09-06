@@ -263,6 +263,10 @@ function buildScatterFacade(factors) {
       point: { opacity: 0.72 },
       guides: { legend: { position: "right" } }
     })
+    .editXScale({ target: "scatterFacade", nice: factors.nice })
+    .editYScale({ target: "scatterFacade", nice: true })
+    .editColorScale({ target: "scatterFacade", palette: factors.palette })
+    .editShapeScale({ target: "scatterFacade", range: "auto" })
     .encodePointRadius({ target: "scatterFacade", value: factors.radius })
     .removePointRadius({ target: "scatterFacade" })
     .encodeAngle({ target: "scatterFacade", field: "angle" })
@@ -302,6 +306,7 @@ function buildLineFacade(factors) {
         legend: { position: "right" }
       }
     })
+    .editStrokeDashScale({ target: "lineFacade", range: [[], [4, 2]] })
     .createTitle({ text: lifecycleTitle(factors, "Temporal trend") });
 }
 
@@ -660,6 +665,7 @@ function buildCartesianGuideLifecycle(factors) {
     .encodeColor({ target: "guidePoints", field: "color" })
     .encodeShape({ target: "guidePoints", field: "color" })
     .encodeSize({ target: "guidePoints", field: "size", scale: { range: [12, 80] } })
+    .editSizeScale({ target: "guidePoints", range: [12, 80] })
     .createGuides({
       axes: {
         x: { ticksAndLabels: { count: 5 }, title: { text: "Index" } },
@@ -767,6 +773,8 @@ function buildPolarGuideLifecycle(factors) {
     .encodeTheta({ target: "polarPoints", field: "angle" })
     .encodeR({ target: "polarPoints", field: "radius", scale: { zero: true } })
     .encodeColor({ target: "polarPoints", field: "group" })
+    .editThetaScale({ target: "polarPoints", reverse: false })
+    .editRScale({ target: "polarPoints", zero: true })
     .createGuides({ legend: { position: "right" } })
     .editThetaAxis({
       line: { color: "#334155", lineWidth: 1.5 },
@@ -1104,6 +1112,7 @@ function buildDirectPointText(factors) {
       field: "opacity",
       scale: { range: factors.opacityRange }
     })
+    .editOpacityScale({ target: "appearancePoints", range: factors.opacityRange })
     .createTextMark({ id: "appearanceLabels", data: "appearanceRows" })
     .encodeX({ target: "appearanceLabels", field: "x", scale: { id: "x" } })
     .encodeY({
@@ -1162,6 +1171,7 @@ function buildDirectRangedMarks(factors) {
     })
     .encodeStroke({ target: "directRules", value: factors.stroke })
     .encodeStrokeWidth({ target: "directRules", field: "position" })
+    .editStrokeWidthScale({ target: "directRules", range: [1, 4] })
     .encodeOpacity({ target: "directRules", value: factors.opacity })
     .editRuleMark({ target: "directRules", stroke: factors.stroke, opacity: factors.opacity })
     .createRectMark({ id: "directRects", data: "directRanges", opacity: 0.12 })
@@ -1724,8 +1734,8 @@ function realisticLifecycleMetadata(base, factors) {
   const feature = `feature:${base.id.replace(/^action-/u, "")}`;
   const lifecycleClaims = {
     "action-derived-data": ["create", "filter"],
-    "action-scatter-facade": ["create", "remove"],
-    "action-line-facade": ["create"],
+    "action-scatter-facade": ["create", "edit", "remove"],
+    "action-line-facade": ["create", "edit"],
     "action-area-facade": ["create"],
     "action-bar-facade": ["create"],
     "action-parallel-facade": ["create"],
@@ -1787,9 +1797,10 @@ function lifecycleSignature(base, factors) {
       "createIntervalData", "createRegressionData"
     ],
     "action-scatter-facade": [
-      "createScatterPlot", "encodePointRadius", "removePointRadius", "removeEncoding"
+      "createScatterPlot", "editXScale", "editYScale", "editColorScale", "editShapeScale",
+      "encodePointRadius", "removePointRadius", "removeEncoding"
     ],
-    "action-line-facade": ["createLinePlot"],
+    "action-line-facade": ["createLinePlot", "editStrokeDashScale"],
     "action-area-facade": ["createAreaPlot", "layoutSeries"],
     "action-bar-facade": ["createBarPlot"],
     "action-parallel-facade": ["createParallelCoordinates"],
@@ -1804,11 +1815,12 @@ function lifecycleSignature(base, factors) {
     "action-gradient-lifecycle": ["createGradientPlot", "editGradientPlot"],
     "action-violin-facade": ["createViolinPlot"],
     "action-cartesian-guides": [
-      "createGuides", "editXAxis", "editYAxis", "editGrid", "editLegend",
+      "createGuides", "editSizeScale", "editXAxis", "editYAxis", "editGrid", "editLegend",
       "editTitle", "removeXAxis", "removeYAxis", "removeLegend", "removeTitle"
     ],
     "action-polar-guides": [
-      "editThetaAxis", "editRadialAxis", "editThetaGrid", "editRadialGrid"
+      "editThetaScale", "editRScale", "editThetaAxis", "editRadialAxis",
+      "editThetaGrid", "editRadialGrid"
     ],
     "action-selection-lifecycle": [
       "filterMarks", "highlightMarks", "removeMarkHighlight"
@@ -1824,11 +1836,12 @@ function lifecycleSignature(base, factors) {
       "editCanvas", "createDensityData", "createBin2DData", "createDerivedData", "createScale"
     ],
     "action-direct-point-text": [
-      "encodeRadius", "encodeOpacity", "createTextMark", "encodeText", "editTextMark"
+      "encodeRadius", "encodeOpacity", "editOpacityScale", "createTextMark", "encodeText",
+      "editTextMark"
     ],
     "action-direct-ranged-marks": [
       "createRuleMark", "editRuleMark", "encodeX2", "encodeY2", "createRectMark", "editRectMark",
-      "createAreaMark", "encodeXRange"
+      "createAreaMark", "encodeXRange", "editStrokeWidthScale"
     ],
     "action-direct-histogram": ["createBarMark", "encodeHistogram", "editBarMark"],
     "action-direct-parallel": [
@@ -2088,5 +2101,8 @@ export const LIFECYCLE_EXPECTED_ACTIONS = Object.freeze([
   "createBeeswarmPlot", "createRaincloudPlot", "editRaincloudPlot",
   "createECDFData", "createDotPlot",
   "createLollipopPlot", "createDumbbellPlot", "editEndpointPlot",
-  "createECDFPlot", "editECDFPlot", "createIntervalPlot", "createRegressionPlot"
+  "createECDFPlot", "editECDFPlot", "createIntervalPlot", "createRegressionPlot",
+  "editXScale", "editYScale", "editThetaScale", "editRScale", "editColorScale",
+  "editSizeScale", "editOpacityScale", "editShapeScale", "editStrokeWidthScale",
+  "editStrokeDashScale"
 ]);

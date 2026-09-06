@@ -137,6 +137,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editBin2DData`](./actions/charts-data.md#editbin2ddata) | H2 | user-facing | core |
 | [`editBoxPlot`](./actions/statistics.md#editboxplot) | H1, H3 | user-facing | statistics |
 | [`editCanvas`](./actions/charts-data.md#editcanvas) | H3 | user-facing | core |
+| [`editColorScale`](./actions/advanced.md#focused-channel-scale-editors) | H2 | user-facing | core |
 | [`editCompositionLayout`](./actions/charts-data.md#editcompositionlayout) | H3 | user-facing | composition |
 | [`editDensity`](./actions/encodings.md#editdensity) | H2, H3 | user-facing | encodings |
 | [`editECDFPlot`](./actions/charts-data.md#editecdfplot) | H1, H3 | user-facing | charts |
@@ -161,6 +162,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editLegendTitle`](./actions/guides.md#focused-legend-edits) | H3 | user-facing | legend_and_title |
 | [`editLineMark`](./actions/marks.md#editlinemark) | H3 | user-facing | marks |
 | [`editMarkSelection`](./actions/advanced.md#editmarkselection) | H3 | advanced | mark-selection |
+| [`editOpacityScale`](./actions/advanced.md#focused-channel-scale-editors) | H2 | user-facing | core |
 | [`editParallelAxis`](./actions/advanced.md#createparallelaxes-createparallelaxis-editparallelaxis-removeparallelaxis-removeparallelaxes) | H3 | user-facing | axes |
 | [`editPointMark`](./actions/marks.md#editpointmark) | H3 | user-facing | marks |
 | [`editRadialAxis`](./actions/guides.md#editradialaxis) | H3 | user-facing | axes |
@@ -174,9 +176,14 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editRegression`](./actions/statistics.md#editregression) | H1, H3 | user-facing | statistics |
 | [`editRegressionBand`](./actions/advanced.md#semantic-resources-and-regression-layers) | H1, H3 | user-facing | statistics |
 | [`editRegressionLine`](./actions/advanced.md#semantic-resources-and-regression-layers) | H1, H3 | user-facing | statistics |
+| [`editRScale`](./actions/advanced.md#focused-channel-scale-editors) | H2 | user-facing | core |
 | [`editRuleMark`](./actions/marks.md#editrulemark) | H3 | user-facing | marks |
 | [`editScale`](./actions/extension.md#extension-actions) | H2 | user-facing | core |
 | [`editSemantic`](./actions/extension.md#extension-actions) | H4 | primitive | primitives |
+| [`editShapeScale`](./actions/advanced.md#focused-channel-scale-editors) | H2 | user-facing | core |
+| [`editSizeScale`](./actions/advanced.md#focused-channel-scale-editors) | H2 | user-facing | core |
+| [`editStrokeDashScale`](./actions/advanced.md#focused-channel-scale-editors) | H2 | user-facing | core |
+| [`editStrokeWidthScale`](./actions/advanced.md#focused-channel-scale-editors) | H2 | user-facing | core |
 | [`editTextMark`](./actions/marks.md#edittextmark) | H3 | user-facing | marks |
 | [`editThetaAxis`](./actions/guides.md#editthetaaxis) | H3 | user-facing | axes |
 | [`editThetaAxisLabels`](./actions/guides.md#editthetaaxislabels) | H3 | user-facing | axes |
@@ -184,6 +191,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editThetaAxisTicks`](./actions/guides.md#editthetaaxisticks) | H3 | user-facing | axes |
 | [`editThetaAxisTitle`](./actions/guides.md#editthetaaxistitle) | H3 | user-facing | axes |
 | [`editThetaGrid`](./actions/guides.md#editthetagrid) | H3 | user-facing | grid |
+| [`editThetaScale`](./actions/advanced.md#focused-channel-scale-editors) | H2 | user-facing | core |
 | [`editTickMark`](./actions/marks.md#edittickmark) | H3 | user-facing | marks |
 | [`editTitle`](./actions/guides.md#edittitle) | H3 | user-facing | legend_and_title |
 | [`editVerticalGrid`](./actions/advanced.md#directional-grids) | H3 | user-facing | grid |
@@ -194,12 +202,14 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editXAxisTicks`](./actions/advanced.md#axis-lines-ticks-and-labels) | H3 | user-facing | axes |
 | [`editXAxisTicksAndLabels`](./actions/advanced.md#ticklabel-groups-and-axis-titles) | H3 | user-facing | axes |
 | [`editXAxisTitle`](./actions/advanced.md#ticklabel-groups-and-axis-titles) | H3 | user-facing | axes |
+| [`editXScale`](./actions/advanced.md#focused-channel-scale-editors) | H2 | user-facing | core |
 | [`editYAxis`](./actions/advanced.md#complete-single-channel-axes) | H3 | user-facing | axes |
 | [`editYAxisLabels`](./actions/advanced.md#axis-lines-ticks-and-labels) | H3 | user-facing | axes |
 | [`editYAxisLine`](./actions/advanced.md#axis-lines-ticks-and-labels) | H3 | user-facing | axes |
 | [`editYAxisTicks`](./actions/advanced.md#axis-lines-ticks-and-labels) | H3 | user-facing | axes |
 | [`editYAxisTicksAndLabels`](./actions/advanced.md#ticklabel-groups-and-axis-titles) | H3 | user-facing | axes |
 | [`editYAxisTitle`](./actions/advanced.md#ticklabel-groups-and-axis-titles) | H3 | user-facing | axes |
+| [`editYScale`](./actions/advanced.md#focused-channel-scale-editors) | H2 | user-facing | core |
 | [`encodeAngle`](./actions/encodings.md#encodeangle) | H2 | user-facing | encodings |
 | [`encodeBarWidth`](./actions/encodings.md#encodebarwidth) | H2 | user-facing | encodings |
 | [`encodeColor`](./actions/encodings.md#encodecolor) | H2 | user-facing | encodings |

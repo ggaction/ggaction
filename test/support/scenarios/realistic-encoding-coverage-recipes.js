@@ -1018,6 +1018,11 @@ function buildPolarCoverage(factors) {
         .encodeColor({ target: id, field: "category" });
     }
   }
+  program = program.encodeR({
+    target: "measured-area-sum",
+    field: "radius",
+    mapping: false
+  });
   return finish(program, factors, "direct-polar-encoding-options");
 }
 
