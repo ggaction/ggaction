@@ -266,6 +266,18 @@ shared or independent band-relative width. An optional two-value split assigns
 one half to each side of the category center.
 [Violin plots](../../api/violin-plots.md)
 
+## `editViolinPlot`
+
+```javascript
+editViolinPlot({ target?, data?, x?, y?, split?, density? })
+```
+
+Revise source, category, quantitative value, split, orientation, and density
+parameters through one stable violin owner. The action creates an immutable
+density revision and reconciles axes, grid, selections, and highlights. Area
+appearance remains available through `editAreaMark`.
+[Violin plots](../../api/violin-plots.md#editing)
+
 ## Related
 
 [Action Reference](../actions.md) · [Chart API](../../api/index.md) · [Supported Features](../../supported-features.md)

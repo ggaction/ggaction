@@ -169,6 +169,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editTickMark`](./actions/marks.md#edittickmark) | user-facing | marks |
 | [`editTitle`](./actions/guides.md#edittitle) | user-facing | legend_and_title |
 | [`editVerticalGrid`](./actions/advanced.md#directional-grids) | user-facing | grid |
+| [`editViolinPlot`](./actions/statistics.md#editviolinplot) | user-facing | statistics |
 | [`editXAxis`](./actions/advanced.md#complete-single-channel-axes) | user-facing | axes |
 | [`editXAxisLabels`](./actions/advanced.md#axis-lines-ticks-and-labels) | user-facing | axes |
 | [`editXAxisLine`](./actions/advanced.md#axis-lines-ticks-and-labels) | user-facing | axes |

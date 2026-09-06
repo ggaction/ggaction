@@ -882,12 +882,13 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 
 ## `editDensity`
 
-- Signature: `editDensity({ target?, source?, field?, groupBy?, bandwidth?, extent?, steps?, kernel?, normalization?, placement? })`.
+- Signature: `editDensity({ target?, source?, field?, groupBy?, bandwidth?, extent?, steps?, kernel?, normalization?, densityChannel?, valueScale?, placement? })`.
 - `target`: existing density-encoded area layer ID. current 또는 유일한 eligible layer를 추론하며 ambiguity는
   explicit target을 요구한다.
 - 최소 한 density option이 필요하다. `source`와 `field`는 input provenance를 replace하고 `groupBy`는 field 또는
   grouping removal을 뜻하는 `false`를 받는다. 생략한 option과 output fields, densityChannel, coordinate,
-  position scale IDs는 기존 provenance와 encoding에서 유지한다. `placement`는
+  coordinate와 position scale IDs는 기존 provenance와 encoding에서 유지한다. `densityChannel`은 x/y role을
+  교체하고 `valueScale`은 현재 value-axis scale definition을 patch한다. `placement`는
   category width/split/scale를 revise하거나 `{ type: "baseline" }`으로 baseline mode를 복원한다.
 - `${target}DensityDataRevision${n}` ID로 wrapped `createDensityData`를 호출하고 layer data를 explicit
   `editSemantic` child로 rebind한다. 이전 derived dataset이 더 이상 참조되지 않으면 internal wrapped
@@ -898,7 +899,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 
 ### Formal values — `editDensity`
 
-- Implemented: `editDensity({ target?: UserId; source?: UserId; field?: FieldName; groupBy?: FieldName | false; bandwidth?: "auto" | PositiveFinite; extent?: "auto" | OrderedFinitePair; steps?: IntegerAtLeast2; kernel?: "gaussian" | "epanechnikov" | "uniform" | "triangular"; normalization?: "unit" | "count"; placement?: DensityPlacement })`.
+- Implemented: `editDensity({ target?: UserId; source?: UserId; field?: FieldName; groupBy?: FieldName | false; bandwidth?: "auto" | PositiveFinite; extent?: "auto" | OrderedFinitePair; steps?: IntegerAtLeast2; kernel?: "gaussian" | "epanechnikov" | "uniform" | "triangular"; normalization?: "unit" | "count"; densityChannel?: "x" | "y"; valueScale?: NonPointQuantitativePositionScaleOptions; placement?: DensityPlacement })`.
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
@@ -913,6 +914,9 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 - `placement`
   - ✅ Covered: category width/split revision, placement scale edit, baseline↔category replacement, stale encoding/scale
     cleanup, color compatibility rejection와 previous-program immutability.
+- `densityChannel`, `valueScale`
+  - ✅ Covered: category orientation handoff, stable x/y scale IDs, quantitative definition patch, incompatible
+    scale-ID rejection, axes/grid normalization.
 - `source`, `field`, `groupBy`
   - ✅ Covered: source/field replacement, output field and position identity retention, group add/change/removal,
     category-field reconciliation, grouping-color reassignment/removal, legend cleanup and invalid provenance.

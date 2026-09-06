@@ -116,6 +116,7 @@
   "createGradientPlot": "/reference/actions/statistics/#creategradientplot",
   "editGradientPlot": "/reference/actions/statistics/#editgradientplot",
   "createViolinPlot": "/reference/actions/statistics/#createviolinplot",
+  "editViolinPlot": "/reference/actions/statistics/#editviolinplot",
   "createGuides": "/reference/actions/guides/#createguides",
   "createAxes": "/reference/actions/guides/#createaxes",
   "createThetaAxis": "/reference/actions/guides/#createthetaaxis",

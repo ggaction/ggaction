@@ -449,6 +449,11 @@
     "layer": "user-facing",
     "domain": "statistics"
   },
+  "editViolinPlot": {
+    "operation": "edit",
+    "layer": "user-facing",
+    "domain": "statistics"
+  },
   "createParallelAxes": {
     "operation": "create",
     "layer": "user-facing",

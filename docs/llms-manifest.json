@@ -1076,8 +1076,8 @@
         "current-boundary",
         "related"
       ],
-      "bytes": 3155,
-      "sha256": "c380b61979245f2f23cf3b4b93045663f502cfacadf154ffe14f094cad29ecb6"
+      "bytes": 3472,
+      "sha256": "b2ccd978985fc3e10d91832a59b9ac0c3d1dca0b13af5189203937b2a2a4f856"
     },
     {
       "order": 68,
@@ -1815,8 +1815,8 @@
         "action-reference",
         "exact-action-lookup"
       ],
-      "bytes": 22313,
-      "sha256": "0593ecd4fe2cad408a59e56673802ddbcc996ce6acd634d8a1ed13c744dee4b0"
+      "bytes": 22411,
+      "sha256": "e0ca15bfd3b5f81f5e868a74b0d241f79127635b0df799168f84ff263f7c3583"
     },
     {
       "order": 115,
@@ -1979,10 +1979,11 @@
         "creategradientplot",
         "editgradientplot",
         "createviolinplot",
+        "editviolinplot",
         "related"
       ],
-      "bytes": 10680,
-      "sha256": "111f656d15effc74342a96686b79ef26be5a403810572ab55cb37f45e8849117"
+      "bytes": 11109,
+      "sha256": "f090d9bf1d8f8094a6b08fa5e4f5434ccc6a295a88ee9848fac65428f0bbb2e2"
     },
     {
       "order": 119,
@@ -2096,8 +2097,8 @@
         "exact-typescript-signatures",
         "related"
       ],
-      "bytes": 16629,
-      "sha256": "f4de3dd93079c3699d901671e04ebf9fdf67dda6ed08d9b0c80e6782e5b5af3e"
+      "bytes": 16693,
+      "sha256": "c6b4da3c3d8894fc5fdeb1d67aecec0a503a67a6b59b7ee493f4146840c75f83"
     },
     {
       "order": 124,

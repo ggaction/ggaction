@@ -119,6 +119,7 @@ interface ChartProgramActions {
   createGradientPlot(options?: GradientPlotOptions): ChartProgram;
   editGradientPlot(options: EditGradientPlotOptions): ChartProgram;
   createViolinPlot(options: ViolinPlotOptions): ChartProgram;
+  editViolinPlot(options: EditViolinPlotOptions): ChartProgram;
   createScatterPlot(options: CreateScatterPlotOptions): ChartProgram;
   createLinePlot(options: CreateLinePlotOptions): ChartProgram;
   createAreaPlot(options: CreateAreaPlotOptions): ChartProgram;

@@ -1646,9 +1646,9 @@
       "layer": "user-facing",
       "domain": "statistics",
       "status": "implemented",
-      "lifecycle": "Aggregate create-only",
-      "update": "`editDensity`, `editAreaMark`, encoding, scale, and guide actions",
-      "audit": "Intentional",
+      "lifecycle": "Mutable resource",
+      "update": "`editViolinPlot`",
+      "audit": "Complete",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -1657,6 +1657,24 @@
       "contract": {
         "file": "agent_docs/contract/current/VIOLIN_PLOTS.md",
         "anchor": "createviolinplot"
+      }
+    },
+    {
+      "name": "editViolinPlot",
+      "layer": "user-facing",
+      "domain": "statistics",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Revises source/category/value/split/orientation through immutable density data",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/VIOLIN_PLOTS.md",
+        "anchor": "editviolinplot"
       }
     },
     {

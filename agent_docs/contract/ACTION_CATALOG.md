@@ -97,7 +97,8 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`editBoxPlot`](current/COMPOSITE_MARKS.md#editboxplot) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createGradientPlot`](current/GRADIENT_PLOTS.md#creategradientplot) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editGradientPlot`](current/GRADIENT_PLOTS.md#editgradientplot) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
-| user-facing | [`createViolinPlot`](current/VIOLIN_PLOTS.md#createviolinplot) | statistics | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
+| user-facing | [`createViolinPlot`](current/VIOLIN_PLOTS.md#createviolinplot) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editViolinPlot`](current/VIOLIN_PLOTS.md#editviolinplot) | statistics | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createParallelAxes`](current/AXES.md#createparallelaxes) | axes | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createParallelAxis`](current/AXES.md#createparallelaxis) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editParallelAxis`](current/AXES.md#editparallelaxis) | axes | Mutable resource | Complete | ✅ / ✅ / ✅ |

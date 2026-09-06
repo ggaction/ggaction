@@ -1915,6 +1915,15 @@ export interface ViolinPlotOptions {
   guides?: false | CartesianCategoricalGuideOptions;
 }
 
+export interface EditViolinPlotOptions {
+  target?: string;
+  data?: string;
+  x?: ViolinPlotPositionChannel;
+  y?: ViolinPlotPositionChannel;
+  split?: false | ViolinPlotSplitOptions;
+  density?: ViolinPlotDensityOptions;
+}
+
 export interface EditGradientPlotOptions {
   target?: string;
   data?: string;
@@ -2505,6 +2514,8 @@ export interface EditDensityOptions {
   steps?: number;
   kernel?: DensityKernel;
   normalization?: DensityNormalization;
+  densityChannel?: "x" | "y";
+  valueScale?: NonPointQuantitativePositionScaleOptions;
   placement?: DensityPlacement;
 }
 
@@ -3357,6 +3368,7 @@ export class ChartProgram {
   createGradientPlot(options?: GradientPlotOptions): ChartProgram;
   editGradientPlot(options: EditGradientPlotOptions): ChartProgram;
   createViolinPlot(options: ViolinPlotOptions): ChartProgram;
+  editViolinPlot(options: EditViolinPlotOptions): ChartProgram;
   createScatterPlot(options: CreateScatterPlotOptions): ChartProgram;
   createLinePlot(options: CreateLinePlotOptions): ChartProgram;
   createAreaPlot(options: CreateAreaPlotOptions): ChartProgram;

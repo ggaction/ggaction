@@ -277,10 +277,14 @@ function buildScaleWitness(action, path, type) {
               })
       });
     case "editDensity":
-      return source().createAreaMark().encodeDensity({ field: "value" }).editDensity({
-        groupBy: "category",
-        placement: { type: "category", scale: { type } }
-      });
+      return path === "valueScale.type"
+        ? source().createAreaMark().encodeDensity({ field: "value" }).editDensity({
+            valueScale: positionScale(type)
+          })
+        : source().createAreaMark().encodeDensity({ field: "value" }).editDensity({
+            groupBy: "category",
+            placement: { type: "category", scale: { type } }
+          });
     case "createHorizonPlot":
       return source().createHorizonPlot({
         x: path.startsWith("x.") ? positionChannel(type, "x") : "x",
@@ -453,6 +457,10 @@ function buildScaleWitness(action, path, type) {
           : distributionPositions(path, type)),
         guides: false
       });
+    case "editViolinPlot":
+      return source()
+        .createViolinPlot({ x: "category", y: "value", guides: false })
+        .editViolinPlot(distributionPositions(path, type));
     case "createParallelCoordinates":
       return source().createParallelCoordinates({
         dimensions: [
@@ -477,8 +485,8 @@ test("derives only role-reachable nested scale type paths", async () => {
     /(?:^|\.)(?:xScale|yScale|valueScale|densityScale|radiusScale|scale)\.type$/u.test(option.path)
   );
 
-  assert.equal(scaleTypes.length, 77);
-  assert.equal(scaleTypes.reduce((sum, option) => sum + option.values.length, 0), 299);
+  assert.equal(scaleTypes.length, 80);
+  assert.equal(scaleTypes.reduce((sum, option) => sum + option.values.length, 0), 316);
   assert.doesNotMatch(declarations, /scale\?: ScaleOptions/u);
   assert.equal(options.has("option-path:createScatterPlot.x.scale.palette"), false);
   assert.equal(options.has("option-path:createScatterPlot.x.scale.interpolate"), false);
@@ -528,7 +536,7 @@ test("executes every strict nested scale type path and literal", async () => {
       witnesses += 1;
     }
   }
-  assert.equal(witnesses, 299);
+  assert.equal(witnesses, 316);
 });
 
 test("materializes every role-specific nested scale type vocabulary", () => {

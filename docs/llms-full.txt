@@ -7398,8 +7398,23 @@ the categorical axis already identifies the same field; request
 
 ## Editing
 
-`createViolinPlot` is an aggregate create action. Edit the resource owned by
-the decision you want to change:
+`createViolinPlot` creates a stable owner. Revise its data and statistical
+roles together:
+
+```javascript
+const revised = program.editViolinPlot({
+  target: "violins",
+  data: "revised",
+  x: "value",
+  y: "category",
+  split: false,
+  density: { bandwidth: 1.1 }
+});
+```
+
+The owner ID stays stable while the action creates a new immutable density-data
+revision and reconciles orientation, scales, axes, grid, selections, and
+highlights. Use the lower actions for a single resource decision:
 
 ```javascript
 const revised = program
@@ -7413,10 +7428,9 @@ const revised = program
   .editAreaMark({ opacity: 0.55 });
 ```
 
-Use `{ type: "baseline" }` as the placement edit to return the area to the
-ordinary zero-baseline density layout. Canvas, scale, data, filtering,
-selection, highlighting, and facet changes rematerialize the complete density
-paths.
+`editAreaMark` continues to own path appearance. Canvas, scale, data,
+filtering, selection, highlighting, and facet changes rematerialize the
+complete density paths.
 
 ## Current boundary
 
@@ -13114,6 +13128,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editTickMark`](./reference/actions/marks/#edittickmark) | user-facing | marks |
 | [`editTitle`](./reference/actions/guides/#edittitle) | user-facing | legend_and_title |
 | [`editVerticalGrid`](./reference/actions/advanced/#directional-grids) | user-facing | grid |
+| [`editViolinPlot`](./reference/actions/statistics/#editviolinplot) | user-facing | statistics |
 | [`editXAxis`](./reference/actions/advanced/#complete-single-channel-axes) | user-facing | axes |
 | [`editXAxisLabels`](./reference/actions/advanced/#axis-lines-ticks-and-labels) | user-facing | axes |
 | [`editXAxisLine`](./reference/actions/advanced/#axis-lines-ticks-and-labels) | user-facing | axes |
@@ -14664,6 +14679,18 @@ shared or independent band-relative width. An optional two-value split assigns
 one half to each side of the category center.
 [Violin plots](./api/violin-plots/)
 
+## `editViolinPlot`
+
+```javascript
+editViolinPlot({ target?, data?, x?, y?, split?, density? })
+```
+
+Revise source, category, quantitative value, split, orientation, and density
+parameters through one stable violin owner. The action creates an immutable
+density revision and reconciles axes, grid, selections, and highlights. Area
+appearance remains available through `editAreaMark`.
+[Violin plots](./api/violin-plots/#editing)
+
 ## Related
 
 [Action Reference](./reference/actions/) · [Chart API](./api/) · [Supported Features](./supported-features/)
@@ -15529,6 +15556,7 @@ interface ChartProgramActions {
   createGradientPlot(options?: GradientPlotOptions): ChartProgram;
   editGradientPlot(options: EditGradientPlotOptions): ChartProgram;
   createViolinPlot(options: ViolinPlotOptions): ChartProgram;
+  editViolinPlot(options: EditViolinPlotOptions): ChartProgram;
   createScatterPlot(options: CreateScatterPlotOptions): ChartProgram;
   createLinePlot(options: CreateLinePlotOptions): ChartProgram;
   createAreaPlot(options: CreateAreaPlotOptions): ChartProgram;

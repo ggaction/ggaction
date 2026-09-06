@@ -46,20 +46,52 @@ export function resolveDensityTransitionScaleDefinitions(
   layer,
   transform,
   placement,
-  rawPlacement
+  rawPlacement,
+  rawValueScale
 ) {
   const valueScale = valueScaleForTransition(program, layer, transform);
   if (valueScale === undefined) {
     throw new Error(`Density area "${layer.id}" requires its value scale.`);
   }
-  const { id: _valueId, range: _valueRange, ...valueDefinition } = valueScale;
+  if (rawValueScale?.id !== undefined && rawValueScale.id !== valueScale.id) {
+    throw new Error("editDensity value scale cannot change its id.");
+  }
+  const { id: _valueId, range: _valueRange, ...storedValueDefinition } = valueScale;
   void _valueId;
   void _valueRange;
+  const valueDefinition = resolveDensityScaleOptions(
+    rawValueScale,
+    storedValueDefinition,
+    "Density valueScale"
+  );
+  delete valueDefinition.id;
+  delete valueDefinition.range;
   const valueChannel = placement?.channel === "x" ? "y" : "x";
   const companionChannel = valueChannel === "x" ? "y" : "x";
-  const companionDefinition = placement === undefined
-    ? { type: "linear", domain: "auto", range: "auto", nice: true, zero: true }
-    : resolveDensityCategoryScaleOptions(rawPlacement.scale);
+  let companionDefinition;
+  if (placement === undefined) {
+    companionDefinition = {
+      type: "linear", domain: "auto", range: "auto", nice: true, zero: true
+    };
+  } else {
+    const currentCategoryChannel = transform.placement?.channel;
+    const currentCategoryScale = currentCategoryChannel === undefined
+      ? undefined
+      : findSemanticScale(program, layer.encoding[currentCategoryChannel].scale);
+    const { id: _categoryId, range: _categoryRange, ...storedCategoryDefinition } =
+      currentCategoryScale ?? {};
+    void _categoryId;
+    void _categoryRange;
+    companionDefinition = resolveDensityCategoryScaleOptions({
+      domain: "auto",
+      range: "auto",
+      paddingInner: 0,
+      paddingOuter: 0,
+      align: 0.5,
+      ...storedCategoryDefinition,
+      ...(rawPlacement?.scale ?? {})
+    });
+  }
   return {
     [valueChannel]: { ...valueDefinition, range: "auto" },
     [companionChannel]: companionDefinition

@@ -3,7 +3,7 @@
   "packageVersion": "0.0.12",
   "typeSource": "types/program.d.ts",
   "errorPolicy": "An empty errors array means the compact card has no curated error override; consult the canonical route for validation, inference, and recovery behavior.",
-  "count": 208,
+  "count": 209,
   "cards": [
     {
       "schemaVersion": 2,
@@ -5167,6 +5167,16 @@
           "type": "DensityNormalization | undefined"
         },
         {
+          "name": "densityChannel",
+          "required": false,
+          "type": "\"x\" | \"y\" | undefined"
+        },
+        {
+          "name": "valueScale",
+          "required": false,
+          "type": "NonPointQuantitativePositionScaleOptions | undefined"
+        },
+        {
           "name": "placement",
           "required": false,
           "type": "DensityPlacement | undefined"
@@ -6442,7 +6452,7 @@
         "violin plot",
         "mirrored density distribution"
       ],
-      "lifecycle": "Aggregate create-only",
+      "lifecycle": "Mutable resource",
       "resources": {
         "prerequisites": [
           "statistical source and coordinate context"
@@ -6515,6 +6525,73 @@
       "snippet": "program.createViolinPlot({ x: \"x\", y: \"y\" })",
       "errors": [],
       "route": "/reference/actions/statistics/#createviolinplot"
+    },
+    {
+      "schemaVersion": 2,
+      "name": "editViolinPlot",
+      "layer": "user-facing",
+      "domain": "statistics",
+      "summary": "Revise source, category, quantitative value, split, orientation, and density parameters through one stable violin owner.",
+      "signature": "editViolinPlot(options: EditViolinPlotOptions): ChartProgram;",
+      "intents": [
+        "edit violin plot",
+        "edit",
+        "change",
+        "statistical layer",
+        "statistical transform",
+        "violin plot",
+        "mirrored density distribution"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing violin plot",
+          "statistical source and coordinate context"
+        ],
+        "owns": [],
+        "idOptions": [
+          "target",
+          "data"
+        ]
+      },
+      "options": [
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "data",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "x",
+          "required": false,
+          "type": "ViolinPlotPositionChannel | undefined"
+        },
+        {
+          "name": "y",
+          "required": false,
+          "type": "ViolinPlotPositionChannel | undefined"
+        },
+        {
+          "name": "split",
+          "required": false,
+          "type": "false | ViolinPlotSplitOptions | undefined"
+        },
+        {
+          "name": "density",
+          "required": false,
+          "type": "ViolinPlotDensityOptions | undefined"
+        }
+      ],
+      "callPatterns": [
+        "editViolinPlot({ target?, data?, x?, y?, split?, density? })"
+      ],
+      "snippet": "program.editViolinPlot({ x: \"x\" })",
+      "errors": [],
+      "route": "/reference/actions/statistics/#editviolinplot"
     },
     {
       "schemaVersion": 2,

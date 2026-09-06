@@ -304,6 +304,41 @@ test("edits the category scale through placement while preserving its id", () =>
   assert.equal(before.semanticSpec.scales[0].paddingInner, 0);
 });
 
+test("moves categorical density across axes with stable scale identities", () => {
+  const before = categoricalDensityProgram();
+  const after = before.editDensity({
+    densityChannel: "y",
+    valueScale: { domain: [0, 6], nice: false }
+  });
+  const layer = after.semanticSpec.layers[0];
+  const transform = after.semanticSpec.datasets[1].transform[0];
+
+  assert.equal(transform.placement.channel, "y");
+  assert.deepEqual(layer.encoding.x, {
+    field: "value_value", fieldType: "quantitative", scale: "x"
+  });
+  assert.deepEqual(layer.encoding.y, {
+    field: "category", fieldType: "nominal", scale: "y"
+  });
+  assert.deepEqual(after.semanticSpec.scales.map(scale => [
+    scale.id, scale.type, scale.domain
+  ]), [["x", "linear", [0, 6]], ["y", "band", "auto"]]);
+  assert.equal(after.graphicSpec.objects.violins.items.length, 2);
+  assert.equal(before.semanticSpec.datasets[1].id, "violinsDensityData");
+});
+
+test("edits the density value scale without changing its id", () => {
+  const before = categoricalDensityProgram();
+  const after = before.editDensity({ valueScale: { domain: [0, 8] } });
+
+  assert.equal(after.semanticSpec.layers[0].encoding.y.scale, "y");
+  assert.deepEqual(after.semanticSpec.scales[1].domain, [0, 8]);
+  assert.throws(
+    () => before.editDensity({ valueScale: { id: "measure" } }),
+    /cannot change its id/
+  );
+});
+
 test("revises density source and field while preserving output and position identities", () => {
   const before = densityProgram()
     .createData({ id: "observations", values: [

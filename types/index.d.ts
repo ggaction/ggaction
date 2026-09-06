@@ -139,6 +139,7 @@ export type {
   EditFacetHeadersOptions,
   EditAxisOptions,
   EditGradientPlotOptions,
+  EditViolinPlotOptions,
   EditGridDirectionsOptions,
   EditGridOptions,
   EditErrorBandBoundaryOptions,

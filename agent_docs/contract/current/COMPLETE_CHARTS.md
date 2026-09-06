@@ -122,7 +122,8 @@ Default id는 `densityPlot`, lifecycle은 Aggregate create-only다.
   KDE·derived revision·area closure는 lower owner가 수행한다. Source/statistical provenance는 dataset,
   final position/group/color/coordinate는 semantic layer, concrete closed paths는 graphicSpec에 저장한다.
 - Editing: `editDensity`, `editAreaMark`, scale/guide editors와 현재 selection/resize를 그대로 사용한다.
-  Color/selection과 충돌하는 group/source revision은 immutable failure다. Orientation edit는 신규 지원하지 않는다.
+  `editDensity({ densityChannel, valueScale })`은 baseline density orientation과 value scale을 교체한다.
+  Color/selection과 충돌하는 group/source revision은 immutable failure다.
 
 ### Formal values — `createDensityPlot`
 
