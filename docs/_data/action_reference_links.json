@@ -24,6 +24,7 @@
   "createParallelCoordinates": "/reference/actions/charts-data/#createparallelcoordinates",
   "filterData": "/reference/actions/charts-data/#filterdata",
   "filterMarks": "/reference/actions/charts-data/#filtermarks",
+  "removeMarkFilter": "/reference/actions/charts-data/#removemarkfilter",
   "highlightMarks": "/reference/actions/charts-data/#highlightmarks",
   "removeMarkHighlight": "/reference/actions/charts-data/#removemarkhighlight",
   "createRegressionData": "/reference/actions/charts-data/#createregressiondata",

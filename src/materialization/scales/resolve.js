@@ -186,20 +186,38 @@ function reverseResolvedScale(scale) {
   };
 }
 
-export function resolveScaleMaterialization({
-  id,
-  scale,
-  channel,
-  consumers,
-  valuesByConsumer,
-  bounds,
-  resolvedScales,
-  markConfigs,
-  thetaScales
-}) {
+export function resolveScaleMaterialization(options) {
+  const {
+    id,
+    scale,
+    channel,
+    consumers,
+    valuesByConsumer,
+    bounds,
+    resolvedScales,
+    markConfigs,
+    thetaScales
+  } = options;
   const allValues = valuesByConsumer
     .flatMap(item => item.values)
     .filter(value => value !== undefined);
+  const preserved = resolvedScales[id]?.domain;
+  if (
+    scale.domain === "auto" &&
+    Array.isArray(preserved) &&
+    consumers.some(({ layer }) =>
+      markConfigs?.[layer.id]?.markFilter?.empty === true
+    )
+  ) {
+    return resolveScaleMaterialization({
+      ...options,
+      scale: { ...scale, domain: preserved },
+      valuesByConsumer: valuesByConsumer.map(item => ({
+        ...item,
+        categoryOrder: undefined
+      }))
+    });
+  }
   const isSequentialColor = channel === "color" &&
     isContinuousColorScaleType(scale.type);
   const isDiscretizedColor = channel === "color" &&

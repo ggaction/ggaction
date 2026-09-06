@@ -29,6 +29,7 @@ domain action을 통해서만 실행한다.
 | `materializeFilteredData` | filter data actions |
 | `materializeFoldData` | reusable wide-to-long data actions |
 | `materializeMarkFilteredData` | `filterMarks` selected-item member rows |
+| `materializeEmptyMark` | active empty `filterMarks` view across mark, label, scale, and Canvas replay |
 | `materializeIntervalData` | interval data actions |
 | `materializeRegressionData` | regression data actions |
 | `materializeSummaryData` | grouped summary data actions |

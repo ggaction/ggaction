@@ -247,7 +247,7 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Gzip ceiling |
 | --- | ---: |
-| `ggaction` | 272,000 bytes |
+| `ggaction` | 274,000 bytes |
 | `ggaction/basic` | 150,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 
@@ -599,10 +599,13 @@ ordered comparison/range는 양쪽이 모두 finite number이거나 모두 strin
 
 `filterMarks`는 ordinary chart-authoring facade다. Shared mark selector로 final point/bar/path/rule item을
 고른 뒤 그 item의 member rows를 source order로 보존하는 `${markId}FilteredData`를 만들고 mark data
-reference를 explicit semantic action으로 rebind한다. `markFilter` provenance는 target과 normalized selector를
-기록한다. Histogram은 resolved boundaries를 semantic fixed boundaries로 승격해 subset rematerialization이
-선택 전 bin identity를 바꾸지 않게 한다. 원본과 다른 mark는 그대로 유지하며 scale, mark, guide를 ordered
-plan으로 rematerialize한다. 이미 만들어진 독립 statistical layer를 암묵적으로 rebind하지 않으므로 filtered
+reference를 explicit semantic action으로 rebind한다. Active owner와 `markFilter` provenance는 canonical source와
+ordered normalized selector recipe를 기록한다. 같은 selector 반복은 idempotent이고 다른 반복은 explicit
+`replace | compose` mode를 요구한다. 참조 중인 과거 filtered dataset은 snapshot으로 유지하고 새 revision
+ID를 쓴다. Histogram은 resolved boundaries를 semantic fixed boundaries로 승격해 subset rematerialization이
+선택 전 bin identity를 바꾸지 않게 하고 removal 때 원래 bin policy를 복구한다. Empty view는 직전 resolved
+domain을 유지하면서 mark/label/highlight graphics를 비운다. 원본과 다른 mark는 그대로 유지하며 scale,
+mark, guide를 ordered plan으로 rematerialize한다. 이미 만들어진 독립 statistical layer를 암묵적으로 rebind하지 않으므로 filtered
 statistic은 filter 이후에 생성한다.
 
 Window transform은 ordered `partitionBy`, `sortBy`, `operations` provenance를 저장한다. Partition 내부

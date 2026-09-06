@@ -1084,6 +1084,14 @@ async function testNodeConsumer(directory) {
     assert.deepEqual(histogramLabels.editCanvas({ width: 600 }).resolvedScales.x.domain, histogramLabels.resolvedScales.x.domain);
     const filteredHistogramLabels = histogramLabels.filterMarks({ target: "bar", channel: "x", op: "lt", value: 50 });
     assert.ok(filteredHistogramLabels.editCanvas({ width: 600 }).graphicSpec.objects.text.items.length > 0);
+    const emptyHistogramLabels = filteredHistogramLabels.filterMarks({
+      target: "bar", mode: "compose", channel: "x", op: "gt", value: 1000
+    });
+    assert.equal(emptyHistogramLabels.graphicSpec.objects.bar.items.length, 0);
+    assert.deepEqual(emptyHistogramLabels.resolvedScales.x.domain, filteredHistogramLabels.resolvedScales.x.domain);
+    const restoredHistogramLabels = emptyHistogramLabels.removeMarkFilter({ target: "bar" });
+    assert.deepEqual(restoredHistogramLabels.semanticSpec, histogramLabels.semanticSpec);
+    assert.deepEqual(restoredHistogramLabels.graphicSpec, histogramLabels.graphicSpec);
 
     const temporalRect = chart().createCanvas().createData({ values: [{ start: "2020-01-01", end: "2020-01-03" }] })
       .createRectMark({ data: "data" }).encodeX({ field: "start", fieldType: "temporal" })
@@ -1886,6 +1894,11 @@ async function testTypeScriptConsumer(directory) {
       .encodeStrokeWidth({ value: 3 })
       .encodeOpacity({ field: "quality" });
     typedGroups.selectMarks({ channel: "strokeWidth", op: "eq", value: 2 });
+    typedGroups.filterMarks({ field: "country", op: "eq", value: "Japan" })
+      .filterMarks({ mode: "compose", field: "quality", op: "gt", value: 0.5 })
+      .removeMarkFilter();
+    // @ts-expect-error Mark filter mode is a closed lifecycle vocabulary.
+    typedGroups.filterMarks({ mode: "append", field: "country", op: "eq", value: "Japan" });
     // @ts-expect-error A tuple must contain at least one identity field.
     typedGroups.encodeGroup({ fields: [] });
     // @ts-expect-error Scalar and tuple identity are mutually exclusive.

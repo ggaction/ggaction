@@ -11,6 +11,8 @@ import {
 import {
   filterData,
   filterMarks,
+  materializeEmptyMark,
+  removeMarkFilter,
   materializeFilteredData,
   materializeMarkFilteredData
 } from "./filter.js";
@@ -53,6 +55,8 @@ export function registerDataActions(ProgramClass) {
   ProgramClass.prototype.materializeMarkFilteredData = materializeMarkFilteredData;
   ProgramClass.prototype.filterData = filterData;
   ProgramClass.prototype.filterMarks = filterMarks;
+  ProgramClass.prototype.materializeEmptyMark = materializeEmptyMark;
+  ProgramClass.prototype.removeMarkFilter = removeMarkFilter;
   ProgramClass.prototype.materializeRegressionData = materializeRegressionData;
   ProgramClass.prototype.materializeDensityData = materializeDensityData;
   ProgramClass.prototype.createGradientProfileData = createGradientProfileData;

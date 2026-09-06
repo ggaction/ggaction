@@ -2726,9 +2726,9 @@
       "layer": "user-facing",
       "domain": "mark-selection",
       "status": "implemented",
-      "lifecycle": "Aggregate create-only",
-      "update": "Create selected-item data and rebind one mark",
-      "audit": "Intentional",
+      "lifecycle": "Mutable resource",
+      "update": "Create, replace, or compose selected-item data and rebind one mark",
+      "audit": "Complete",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -2737,6 +2737,24 @@
       "contract": {
         "file": "agent_docs/contract/current/MARK_SELECTION.md",
         "anchor": "filtermarks"
+      }
+    },
+    {
+      "name": "removeMarkFilter",
+      "layer": "user-facing",
+      "domain": "mark-selection",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Remove an active mark filter and restore its canonical source",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/MARK_SELECTION.md",
+        "anchor": "removemarkfilter"
       }
     },
     {
@@ -3777,8 +3795,9 @@
       "materializeBin2DData",
       "materializeComposition",
       "materializeComputedData",
-      "materializeDensityData",
-      "materializeGradientProfileData",
+    "materializeDensityData",
+    "materializeEmptyMark",
+    "materializeGradientProfileData",
       "materializeHorizonData",
       "materializeGradientPlot",
       "materializeGradientPlotFill",

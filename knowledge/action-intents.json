@@ -41,6 +41,7 @@
     "Canvas": ["canvas", "chart size", "plot bounds"],
     "Data": ["dataset", "rows"],
     "MarkData": ["mark data binding", "change mark dataset", "connect mark to rows"],
+    "MarkFilter": ["active mark filter", "filtered final items", "restore filtered mark"],
     "SummaryData": ["grouped summary data", "reusable aggregate rows"],
     "DensityData": ["kernel density data", "KDE"],
     "RegressionData": ["fitted values", "regression transform"],
@@ -240,6 +241,7 @@
       "op": "gt",
       "value": 0
     },
+    "removeMarkFilter": {},
     "selectMarks": {
       "field": "category",
       "op": "eq",
@@ -337,8 +339,9 @@
     ],
     "filterMarks": [
       "filterMarks({ field | channel | property, op, ...operands })",
-      "filterMarks({ target?, grain?, op: min | max, count?, groupBy? })"
+      "filterMarks({ target?, mode: replace | compose, ...selector })"
     ],
+    "removeMarkFilter": ["removeMarkFilter({ target? })"],
     "selectMarks": [
       "selectMarks({ id?, field | channel | property, op, ...operands })",
       "selectMarks({ id?, target?, grain?, op: min | max, count? })"

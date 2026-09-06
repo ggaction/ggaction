@@ -638,7 +638,11 @@ export interface RemoveMarkSelectionOptions {
 }
 export type FilterMarksOptions = {
   target?: string;
+  mode?: "replace" | "compose";
 } & MarkSelector;
+export interface RemoveMarkFilterOptions {
+  target?: string;
+}
 export interface HighlightMarksOptions {
   id?: string;
   target?: string;
@@ -3159,6 +3163,7 @@ export class ChartProgram {
   bindMarkData(options: BindMarkDataOptions): ChartProgram;
   filterData(options: FilterDataOptions): ChartProgram;
   filterMarks(options: FilterMarksOptions): ChartProgram;
+  removeMarkFilter(options?: RemoveMarkFilterOptions): ChartProgram;
   selectMarks(options: SelectMarksOptions): ChartProgram;
   editMarkSelection(options: EditMarkSelectionOptions): ChartProgram;
   removeMarkHighlight(options?: RemoveMarkSelectionOptions): ChartProgram;

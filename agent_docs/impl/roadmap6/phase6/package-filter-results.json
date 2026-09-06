@@ -1,0 +1,33 @@
+{
+  "name": "ggaction",
+  "version": "0.0.12",
+  "filename": "ggaction-0.0.12.tgz",
+  "file": "/Users/hyeonjeon/Projects/ggaction-clean-20260905/.artifacts/release/ggaction-0.0.12.tgz",
+  "sha256": "e9feb9b86675e4d139f3ff78e4622d9edffb3b855b8d84b723bdefda1947bb6e",
+  "entryCount": 472,
+  "size": 543371,
+  "unpackedSize": 2591673,
+  "browserBundles": {
+    "full": {
+      "specifier": "ggaction",
+      "chunks": 1,
+      "modules": 419,
+      "minifiedBytes": 1020504,
+      "gzipBytes": 273263
+    },
+    "basic": {
+      "specifier": "ggaction/basic",
+      "chunks": 1,
+      "modules": 253,
+      "minifiedBytes": 542672,
+      "gzipBytes": 149769
+    },
+    "svg": {
+      "specifier": "ggaction/svg",
+      "chunks": 1,
+      "modules": 15,
+      "minifiedBytes": 19840,
+      "gzipBytes": 6437
+    }
+  }
+}

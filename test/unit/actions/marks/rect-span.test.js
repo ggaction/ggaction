@@ -94,7 +94,9 @@ test("constant Rect final items share membership and anchor semantics with text,
   assert.equal(p.graphicSpec.objects.rect.items[0].properties.fill, "#93c5fd");
   const kept = p.filterMarks({ target: "rect", channel: "x2", op: "eq", value: 6 });
   assert.equal(geometry(kept).length, 1);
-  assert.throws(() => p.filterMarks({ target: "rect", channel: "x2", op: "gt", value: 6 }), /at least one matching/);
+  const empty = p.filterMarks({ target: "rect", channel: "x2", op: "gt", value: 6 });
+  assert.deepEqual(empty.semanticSpec.datasets.at(-1).values, []);
+  assert.equal(geometry(empty).length, 0);
 });
 
 test("Rect datum validation and incompatible endpoints fail immutably", () => {

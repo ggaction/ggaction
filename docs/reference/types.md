@@ -27,6 +27,7 @@ interface ChartProgramActions {
   bindMarkData(options: BindMarkDataOptions): ChartProgram;
   filterData(options: FilterDataOptions): ChartProgram;
   filterMarks(options: FilterMarksOptions): ChartProgram;
+  removeMarkFilter(options?: RemoveMarkFilterOptions): ChartProgram;
   selectMarks(options: SelectMarksOptions): ChartProgram;
   editMarkSelection(options: EditMarkSelectionOptions): ChartProgram;
   removeMarkHighlight(options?: RemoveMarkSelectionOptions): ChartProgram;

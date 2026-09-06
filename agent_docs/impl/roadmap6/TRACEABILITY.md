@@ -214,7 +214,10 @@ Primary owner는 누락 방지를 위한 책임 단위이며, 관련 작업이 �
 - 수정·추가 방향: Definition-only와 materializing transform을 구분한다. create/edit-owner/snapshot 관계와 Bin2D legacy reauthor를 정리하고 public bindMarkData의 full preflight를 만든다.
 - 완료 검증: Immutable 이전 program 유지. Field/type/grain/coordinate/scale/guide/selection incompatibility에 atomic failure, compatible revision은 orphan cleanup.
 - 근거: audit/REPORT.md: D12. [원래 조사](audit/REPORT.md)
-- 처분: 구현 또는 명시적인 계약 유지·migration 결정의 제안. 아직 완료·승인 상태가 아니다.
+- 처분: implemented-verified. [Phase 6 W1](phase6/RESULTS_W1_DATA_BINDING.md)에서 immutable source snapshot,
+  logical owner revision과 safe independent-mark binding을 확정했다. [W2](phase6/RESULTS_W2_STACK.md)의
+  materializing transform들과 [W4](phase6/RESULTS_W4_FILTER.md)의 downstream snapshot 보존도 같은 경계를
+  따른다.
 
 ### D13 — Label source·content·format·angle 단위
 
@@ -238,7 +241,9 @@ Primary owner는 누락 방지를 위한 책임 단위이며, 관련 작업이 �
 - 수정·추가 방향: Final-item filter의 기준 source와 active recipe를 저장한다. 반복 ID collision을 없애고 명시적 해제와 domain 유지 empty view를 제공한다.
 - 완료 검증: 같은 filter 반복 idempotent, replace/compose 서로 다른 기대 결과. Empty item cleanup과 이전 program 보존, 독립 통계 layer 비의도 변경 없음.
 - 근거: audit/REPORT.md: D15. [원래 조사](audit/REPORT.md)
-- 처분: 구현 또는 명시적인 계약 유지·migration 결정의 제안. 아직 완료·승인 상태가 아니다.
+- 처분: [Phase 6 W4](phase6/RESULTS_W4_FILTER.md)에서 implemented-verified. Canonical source와 ordered
+  recipe, explicit replace/compose/remove, downstream snapshot revision과 domain-preserving empty view를
+  모든 현재 final-item mark family에 연결했다.
 
 ### D16 — Composite source·position·orientation 편집 공백
 
@@ -437,7 +442,9 @@ Primary owner는 누락 방지를 위한 책임 단위이며, 관련 작업이 �
 - 수정·추가 방향: Definition-only와 materializing transform을 구분한다. create/edit-owner/snapshot 관계와 Bin2D legacy reauthor를 정리하고 public bindMarkData의 full preflight를 만든다.
 - 완료 검증: Immutable 이전 program 유지. Field/type/grain/coordinate/scale/guide/selection incompatibility에 atomic failure, compatible revision은 orphan cleanup.
 - 근거: audit/REPORT.md: F16. [원래 조사](audit/REPORT.md)
-- 처분: 구현 또는 명시적인 계약 유지·migration 결정의 제안. 아직 완료·승인 상태가 아니다.
+- 처분: 부분 implemented-verified. [Phase 6 W1](phase6/RESULTS_W1_DATA_BINDING.md)의 independent mark bind와
+  [Phase 6 W4](phase6/RESULTS_W4_FILTER.md)의 filter owner revision을 완료했다. Composite role revision은
+  R6-P6-W5에 남아 있으므로 F16 전체는 아직 닫지 않는다.
 
 ### F17 — Polar component / Parallel axis / guide edit
 

@@ -175,7 +175,8 @@ test("keeps accepted planned capabilities linked and non-public", () => {
   assert.match(currentCorpus, /"eq" \| "neq" \| "gt" \| "gte" \| "lt" \| "lte"/);
   assert.match(currentCorpus, /op: "min" \| "max"/);
   assert.match(currentCorpus, /ties\?: "first" \| "all"/);
-  assert.match(currentCorpus, /filterMarks\(\{ target\?, \.\.\.selector \}\)/);
+  assert.match(currentCorpus, /filterMarks\(\{ target\?, mode\?: "replace" \| "compose", \.\.\.selector \}\)/);
+  assert.match(currentCorpus, /removeMarkFilter\(\{ target\? \} = \{\}\)/);
   assert.match(currentCorpus, /selectMarks\(\{ id\?, target\?, \.\.\.selector \}\)/);
   assert.match(currentCorpus, /highlightMarks\(\{ id\?, target\?, select\?, selection\?/);
   assert.match(currentCorpus, /editBarMark\(\{/);

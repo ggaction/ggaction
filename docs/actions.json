@@ -3,7 +3,7 @@
   "packageVersion": "0.0.12",
   "typeSource": "types/program.d.ts",
   "errorPolicy": "An empty errors array means the compact card has no curated error override; consult the canonical route for validation, inference, and recovery behavior.",
-  "count": 207,
+  "count": 208,
   "cards": [
     {
       "schemaVersion": 2,
@@ -10733,7 +10733,7 @@
       "name": "filterMarks",
       "layer": "user-facing",
       "domain": "mark-selection",
-      "summary": "Retain matching final mark items through the shared selector grammar, create one namespaced immutable member-row dataset, rebind the mark, and rematerialize its scales and connected guides without changing the source.",
+      "summary": "Retain matching final mark items through the shared selector grammar.",
       "signature": "filterMarks(options: FilterMarksOptions): ChartProgram;",
       "intents": [
         "filter marks",
@@ -10744,7 +10744,7 @@
         "mark items",
         "selected graphical items"
       ],
-      "lifecycle": "Aggregate create-only",
+      "lifecycle": "Mutable resource",
       "resources": {
         "prerequisites": [
           "target mark and selector operands"
@@ -10761,6 +10761,11 @@
           "name": "target",
           "required": false,
           "type": "string | undefined"
+        },
+        {
+          "name": "mode",
+          "required": false,
+          "type": "\"compose\" | \"replace\" | undefined"
         },
         {
           "name": "grain",
@@ -10830,11 +10835,52 @@
       ],
       "callPatterns": [
         "filterMarks({ field | channel | property, op, ...operands })",
-        "filterMarks({ target?, grain?, op: min | max, count?, groupBy? })"
+        "filterMarks({ target?, mode: replace | compose, ...selector })"
       ],
       "snippet": "program.filterMarks({ field: \"value\", op: \"gt\", value: 0 })",
       "errors": [],
       "route": "/reference/actions/charts-data/#filtermarks"
+    },
+    {
+      "schemaVersion": 2,
+      "name": "removeMarkFilter",
+      "layer": "user-facing",
+      "domain": "mark-selection",
+      "summary": "Restore a filtered mark to its canonical source, recover its prior Histogram bin policy, and retain any filtered dataset snapshot that still has downstream users.",
+      "signature": "removeMarkFilter(options?: RemoveMarkFilterOptions): ChartProgram;",
+      "intents": [
+        "remove mark filter",
+        "remove",
+        "delete",
+        "mark selection",
+        "conditional emphasis",
+        "active mark filter",
+        "filtered final items"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing active mark filter",
+          "target mark and selector operands"
+        ],
+        "owns": [],
+        "idOptions": [
+          "target"
+        ]
+      },
+      "options": [
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | undefined"
+        }
+      ],
+      "callPatterns": [
+        "removeMarkFilter({ target? })"
+      ],
+      "snippet": "program.removeMarkFilter({})",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#removemarkfilter"
     },
     {
       "schemaVersion": 2,

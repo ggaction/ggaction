@@ -58,7 +58,7 @@ export const rematerializeScale = action(
       );
       if (materializationMode === "rematerialize") {
         if (args.marks !== false) {
-          const step = getMarkRematerializationStep(consumer.layer);
+          const step = getMarkRematerializationStep(this, consumer.layer);
           if (step !== undefined) next = next[step.op](step.args);
         }
         continue;

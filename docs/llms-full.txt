@@ -4313,7 +4313,7 @@ operation; marks and renderers never mutate source values.
 | [Wide-to-long data](./api/data/source-and-derived/#createfolddata-id-source-fields-as) | `createFoldData` | Materialize selected fields as stable key/value rows |
 | [Computed data](./api/data/source-and-derived/#createcomputeddata-id-source-as-expression) | `createComputedData` | Add a finite field from a closed arithmetic expression |
 | [Stack data](./api/data/source-and-derived/#createstackdata-id-source-category-group-value-mode-as) | `createStackData` | Materialize reusable stack endpoints, values, and shares |
-| [Filtering](./api/data/filtering/) | `filterData`, `filterMarks` | Derive rows or rebind one visual layer from a selector |
+| [Filtering](./api/data/filtering/) | `filterData`, `filterMarks`, `removeMarkFilter` | Derive rows or revise and remove one visual-layer filter |
 | [Statistical transforms](./api/data/statistical-transforms/) | `createRegressionData`, `createIntervalData`, `createDensityData` | Materialize fitted, interval, or density rows |
 | [Time-unit transforms](./api/data/time-units/) | `createTimeUnitData` | Add reproducible UTC calendar bucket fields |
 | [Window transforms](./api/data/window/) | `createWindowData` | Compute ordered values within partitions while preserving source row order |
@@ -4660,7 +4660,7 @@ program.filterData({
 });
 ```
 
-## `filterMarks({ target?, ...selector })` {#filter-marks}
+## `filterMarks({ target?, mode?, ...selector })` {#filter-marks}
 
 Filter existing final mark items without changing the source dataset.
 `filterMarks` uses the same selector grammar as `selectMarks`, infers the current
@@ -4698,13 +4698,52 @@ program.filterMarks({
 });
 ```
 
+The first filter records the mark's canonical source and a normalized selector
+recipe. Repeating the same selector is idempotent. A different repeated filter
+must state whether it replaces the recipe or composes with its current result.
+
+```javascript
+const narrower = filtered.filterMarks({
+  target: "points",
+  mode: "compose",
+  field: "Horsepower",
+  op: "gte",
+  value: 100
+});
+
+const japanOnly = narrower.filterMarks({
+  target: "points",
+  mode: "replace",
+  field: "Origin",
+  op: "eq",
+  value: "Japan"
+});
+```
+
+`replace` starts again from the canonical source. `compose` evaluates the
+ordered recipe one selector at a time at final-item grain. If another derived
+dataset references an earlier filtered result, that immutable snapshot remains
+available and the active mark advances to the next namespaced revision ID.
+
 The original dataset and earlier program remain unchanged. Apply the filter
 before creating a derived statistical layer when that statistic should use the
 filtered rows; existing independent layers are not silently rebound. Histograms
-retain their pre-filter bin boundaries, and line/area filters retain complete
-series. Reapplying the same target is rejected because its deterministic derived
-dataset ID already exists. A selector that matches no final item fails before
-creating derived state.
+retain their pre-filter bin boundaries while active, and line/area filters retain
+complete series. An empty match is a valid empty view: the preceding scale
+domains and connected guide meaning stay fixed while mark items, source labels,
+and stale highlight graphics are cleared.
+
+## `removeMarkFilter({ target? } = {})`
+
+Remove the active final-item filter and rebind the mark to its canonical source.
+The action restores the prior Histogram bin policy, rematerializes the mark,
+scales, and guides, and releases the filtered dataset when no downstream dataset
+still references that snapshot. Omit `target` for the current or unique active
+filter.
+
+```javascript
+const restored = japanOnly.removeMarkFilter({ target: "points" });
+```
 
 ## Related
 
@@ -9428,9 +9467,10 @@ graphic attached to one selected semantic item together.
 All calls reject unknown options, ambiguous targets, incompatible grain, and
 invalid values before creating selection or highlight state. `strokeWidth`
 requires a matching `stroke` for point, bar, area, and arc highlight recipes.
-`select` and `selection` are mutually exclusive. Empty `selectMarks` and
-`highlightMarks` results are valid; `filterMarks` rejects an empty retained
-dataset before mutation.
+`select` and `selection` are mutually exclusive. Empty `selectMarks`,
+`highlightMarks`, and `filterMarks` results are valid. An empty mark filter
+preserves the preceding domains and clears retained mark, label, and highlight
+graphics until the filter is replaced, composed, or removed.
 
 ```javascript
 program.highlightMarks({
@@ -13130,6 +13170,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`removeLabelLayout`](./reference/actions/marks/#removelabellayout) | user-facing | marks |
 | [`removeLegend`](./reference/actions/guides/#removelegend) | user-facing | legend_and_title |
 | [`removeMark`](./reference/actions/marks/#removemark) | user-facing | marks |
+| [`removeMarkFilter`](./reference/actions/charts-data/#removemarkfilter) | user-facing | mark-selection |
 | [`removeMarkHighlight`](./reference/actions/charts-data/#removemarkhighlight) | user-facing | mark-selection |
 | [`removeMarkSelection`](./reference/actions/advanced/#removemarkselection) | advanced | mark-selection |
 | [`removeParallelAxes`](./reference/actions/advanced/#createparallelaxes-createparallelaxis-editparallelaxis-removeparallelaxis-removeparallelaxes) | user-facing | axes |
@@ -13423,12 +13464,22 @@ comparison, or range filter. The source defaults to current data.
 ## `filterMarks`
 
 ```javascript
-filterMarks({ target?, grain?, field | channel | property, op, ...operands })
+filterMarks({ target?, mode?, grain?, field | channel | property, op, ...operands })
 ```
 
-Retain matching final mark items through the shared selector grammar, create one
-namespaced immutable member-row dataset, rebind the mark, and rematerialize its
-scales and connected guides without changing the source.
+Retain matching final mark items through the shared selector grammar. Repeated
+filters are idempotent when equal and use explicit `replace` or `compose` mode
+when different. Empty results preserve the preceding scale domains.
+[Data](./api/data/)
+
+## `removeMarkFilter`
+
+```javascript
+removeMarkFilter({ target? })
+```
+
+Restore a filtered mark to its canonical source, recover its prior Histogram bin
+policy, and retain any filtered dataset snapshot that still has downstream users.
 [Data](./api/data/)
 
 ## `highlightMarks`
@@ -15386,6 +15437,7 @@ interface ChartProgramActions {
   bindMarkData(options: BindMarkDataOptions): ChartProgram;
   filterData(options: FilterDataOptions): ChartProgram;
   filterMarks(options: FilterMarksOptions): ChartProgram;
+  removeMarkFilter(options?: RemoveMarkFilterOptions): ChartProgram;
   selectMarks(options: SelectMarksOptions): ChartProgram;
   editMarkSelection(options: EditMarkSelectionOptions): ChartProgram;
   removeMarkHighlight(options?: RemoveMarkSelectionOptions): ChartProgram;

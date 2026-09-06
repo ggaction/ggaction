@@ -122,6 +122,35 @@ function removeRootProperty(spec, root, path) {
     : spec;
 }
 
+// Materializers use this only for an immutable speculative branch while they
+// replay a multi-step recipe. The public semantic primitive deliberately keeps
+// materialized dataset values immutable after creation.
+export function withPreviewDatasetValues(program, {
+  id,
+  values,
+  target,
+  omitValues = false
+}) {
+  const semanticSpec = {
+    ...program.semanticSpec,
+    datasets: program.semanticSpec.datasets.map(dataset => {
+      if (dataset.id !== id) return dataset;
+      if (omitValues) {
+        const { values: unused, ...definition } = dataset;
+        void unused;
+        return definition;
+      }
+      return { ...dataset, values };
+    }),
+    layers: target === undefined
+      ? program.semanticSpec.layers
+      : program.semanticSpec.layers.map(layer =>
+          layer.id === target ? { ...layer, data: id } : layer
+        )
+  };
+  return program._clone({ semanticSpec });
+}
+
 export function createSemanticPrimitiveAction(validateSemanticValue) {
   return action(
     {

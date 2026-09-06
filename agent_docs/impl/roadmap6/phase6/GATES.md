@@ -44,6 +44,6 @@ R6-P6-A와 V는 [Roadmap 6 전체 실행 승인](../APPROVAL.md)에 따라 appro
 - 계약: [CONTRACT.md](CONTRACT.md)
 - 사용자 승인 근거: [APPROVAL.md](../APPROVAL.md)의 전체 A/V/X와 release 승인.
 - 현재 결과: [W1](RESULTS_W1_DATA_BINDING.md), [W2](RESULTS_W2_STACK.md),
-  [W3](RESULTS_W3_CONFIDENCE.md) 완료. W4–W5와 X closeout이 남았다.
+  [W3](RESULTS_W3_CONFIDENCE.md), [W4](RESULTS_W4_FILTER.md) 완료. W5와 X closeout이 남았다.
 
 각 W의 실제 commit/ref와 검증 결과는 해당 결과 문서와 X closeout에 추가한다.

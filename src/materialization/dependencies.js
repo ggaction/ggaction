@@ -100,6 +100,23 @@ export function applyLayerDataRematerialization(program, id) {
   );
 }
 
+export function applyLayerEmptyDataView(program, id) {
+  requireLayer(program, id);
+  const targets = [
+    id,
+    ...getSourceDependentMarkSteps(program, id).map(step => step.args.id)
+  ];
+  let next = program;
+  for (const target of new Set(targets)) {
+    const graphic = next.graphicSpec.objects[target];
+    if (graphic === undefined) continue;
+    next = graphic.type === "collection"
+      ? next.editGraphics({ target, property: "items", value: [] })
+      : next.editGraphics({ target, property: "length", value: 0 });
+  }
+  return next;
+}
+
 export function applyDetachedScaleRematerialization(program, previousLayers) {
   const retained = new Set(program.semanticSpec.layers.flatMap(getLayerScaleIds));
   const scaleIds = [...new Set(previousLayers.flatMap(layer => {

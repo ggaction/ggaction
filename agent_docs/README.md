@@ -16,7 +16,7 @@
 | 승인된 미래 계약 읽기 | [`contract/planned/`](contract/planned/) |
 | 현재 개발 순서 확인 | [`impl/README.md`](impl/README.md) |
 
-**현재 활성 계획은 Roadmap 6 Phase 5**이다. 계층적 chart authoring과 action consistency의 상세 계획을
+**현재 활성 계획은 Roadmap 6 Phase 6**이다. 계층적 chart authoring과 action consistency의 상세 계획을
 [`impl/roadmap6/ROADMAP.md`](impl/roadmap6/ROADMAP.md)에서 관리한다. 사용자 선택에 따라 새 액션군 F01–F19를
 범위로 삼았다. Phase 1–4를 완료했다. [Phase 4 X 결과](impl/roadmap6/phase4/REVIEW.md)에 Area·Rose·Radial Bar·layoutSeries와 순서·색상 의미의 구현 및 통합 검증을 기록했다. [전체 실행·0.0.13 릴리즈 승인](impl/roadmap6/APPROVAL.md)을 적용하며, 현재는 [Phase 5의 축·라벨·스타일](impl/roadmap6/phase5/GOAL.md)을 진행한다.
 후속 세부 API 계약은 실행 단계에서 구체화하며 승인과 구현 완료를 구분한다. 마지막 완료 owner는 Roadmap 5.4 Phase 6이다.

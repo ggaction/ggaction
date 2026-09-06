@@ -196,7 +196,7 @@ test("authors comparison and range filter targets with primitive state", () => {
     assert.deepEqual(selected.transform, [{
       type: "markFilter",
       target: "points",
-      selector
+      selectors: [selector]
     }]);
     assert.deepEqual(selected.values, expected.filteredRows);
     assert.equal(selected.values.length, count);

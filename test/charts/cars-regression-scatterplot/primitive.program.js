@@ -58,7 +58,7 @@ export function createCarsRegressionScatterplotPrimitives(cars, {
       value: [{
         type: "markFilter",
         target: "points",
-        selector: markSelector(filter)
+        selectors: [markSelector(filter)]
       }]
     })
     .editSemantic({

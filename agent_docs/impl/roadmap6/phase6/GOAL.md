@@ -2,7 +2,7 @@
 
 ## 상태와 목표
 
-상태: in-progress. 전체 실행 승인을 적용했고 W1과 W2를 구현·검증했다.
+상태: in-progress. 전체 실행 승인을 적용했고 W1–W4를 구현·검증했다.
 
 일반 사용자가 재사용 가능한 derived data를 만들고 안전하게 source·통계·composite 역할을 교체하도록 한다.
 
@@ -47,6 +47,8 @@
 - 연결: D15, F16.
 - 작업: Final-item filter의 기준 source와 active recipe를 저장한다. 반복 ID collision을 없애고 명시적 해제와 domain 유지 empty view를 제공한다.
 - 완료 조건: 같은 filter 반복 idempotent, replace/compose 서로 다른 기대 결과. Empty item cleanup과 이전 program 보존, 독립 통계 layer 비의도 변경 없음.
+- 결과: [W4 결과](RESULTS_W4_FILTER.md). Canonical source와 ordered recipe, deterministic revision,
+  replace·compose·remove, domain-preserving empty view를 구현하고 전체 mark family replay와 package를 검증했다.
 
 ### R6-P6-W5 — Violin·interval·composite role revision
 

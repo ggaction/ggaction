@@ -41,6 +41,7 @@ interface ChartProgramActions {
   createData(options: { id?: string; values: readonly unknown[] }): ChartProgram;
   filterData(options: FilterDataOptions): ChartProgram;
   filterMarks(options: FilterMarksOptions): ChartProgram;
+  removeMarkFilter(options?: RemoveMarkFilterOptions): ChartProgram;
   selectMarks(options: SelectMarksOptions): ChartProgram;
   highlightMarks(options: HighlightMarksOptions): ChartProgram;
   createDensityData(options: DensityDataOptions): ChartProgram;
@@ -575,12 +576,22 @@ comparison, or range filter. The source defaults to current data.
 ### `filterMarks`
 
 ```javascript
-filterMarks({ target?, grain?, field | channel | property, op, ...operands })
+filterMarks({ target?, mode?, grain?, field | channel | property, op, ...operands })
 ```
 
-Retain matching final mark items through the shared selector grammar, create one
-namespaced immutable member-row dataset, rebind the mark, and rematerialize its
-scales and connected guides without changing the source.
+Retain matching final mark items through the shared selector grammar. Repeated
+filters are idempotent when equal and use explicit `replace` or `compose` mode
+when different. Empty results preserve the preceding scale domains.
+[Data](../api/data.md)
+
+### `removeMarkFilter`
+
+```javascript
+removeMarkFilter({ target? })
+```
+
+Restore a filtered mark to its canonical source, recover its prior Histogram bin
+policy, and retain any filtered dataset snapshot that still has downstream users.
 [Data](../api/data.md)
 
 ### `highlightMarks`

@@ -35,7 +35,10 @@ export function getScaleConsumerMarkSteps(program, scaleIds) {
     .filter(step => step !== undefined);
 }
 
-export function getMarkRematerializationStep(layer) {
+export function getMarkRematerializationStep(program, layer) {
+  if (program.markConfigs?.[layer.id]?.markFilter?.empty === true) {
+    return { op: "materializeEmptyMark", args: { id: layer.id } };
+  }
   const policy = getMarkMaterializationPolicy(layer);
   return policy === undefined
     ? undefined
@@ -47,7 +50,7 @@ export function getMarkMaterializationStep(program, layer) {
   if (policy === undefined || !policy.canMaterialize(program, layer)) {
     return undefined;
   }
-  return getMarkRematerializationStep(layer);
+  return getMarkRematerializationStep(program, layer);
 }
 
 export function getSourceDependentMarkSteps(program, sourceId) {
@@ -66,7 +69,7 @@ export function getPositionEncodingMaterializationSteps(program, layer, scaleId)
   const policy = getMarkMaterializationPolicy(layer);
   if (policy === undefined) return [];
   const complete = policy.canMaterialize(program, layer);
-  const mark = getMarkRematerializationStep(layer);
+  const mark = getMarkRematerializationStep(program, layer);
   const sharedConsumerMarks = (program.semanticSpec.layers ?? [])
     .filter(candidate =>
       candidate.id !== layer.id &&
@@ -119,7 +122,7 @@ export function getExistingMarkRematerializationStep(program, layer) {
   ) {
     return undefined;
   }
-  return getMarkRematerializationStep(layer);
+  return getMarkRematerializationStep(program, layer);
 }
 
 export function getEncodingMaterializationStages(program, layer, channel, scale) {
@@ -146,7 +149,7 @@ export function getEncodingMaterializationStages(program, layer, channel, scale)
     }
     const step = candidate.id !== layer.id || candidatePolicy?.encoding?.completeOnly === true
       ? getMarkMaterializationStep(program, candidate)
-      : getMarkRematerializationStep(candidate);
+      : getMarkRematerializationStep(program, candidate);
     return step === undefined ? [] : [step];
   });
   return { scales, marks };

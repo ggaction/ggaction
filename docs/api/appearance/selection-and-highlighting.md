@@ -113,9 +113,10 @@ graphic attached to one selected semantic item together.
 All calls reject unknown options, ambiguous targets, incompatible grain, and
 invalid values before creating selection or highlight state. `strokeWidth`
 requires a matching `stroke` for point, bar, area, and arc highlight recipes.
-`select` and `selection` are mutually exclusive. Empty `selectMarks` and
-`highlightMarks` results are valid; `filterMarks` rejects an empty retained
-dataset before mutation.
+`select` and `selection` are mutually exclusive. Empty `selectMarks`,
+`highlightMarks`, and `filterMarks` results are valid. An empty mark filter
+preserves the preceding domains and clears retained mark, label, and highlight
+graphics until the filter is replaced, composed, or removed.
 
 ```javascript
 program.highlightMarks({

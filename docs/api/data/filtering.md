@@ -65,7 +65,7 @@ program.filterData({
 });
 ```
 
-## `filterMarks({ target?, ...selector })` {#filter-marks}
+## `filterMarks({ target?, mode?, ...selector })` {#filter-marks}
 
 Filter existing final mark items without changing the source dataset.
 `filterMarks` uses the same selector grammar as `selectMarks`, infers the current
@@ -103,13 +103,52 @@ program.filterMarks({
 });
 ```
 
+The first filter records the mark's canonical source and a normalized selector
+recipe. Repeating the same selector is idempotent. A different repeated filter
+must state whether it replaces the recipe or composes with its current result.
+
+```javascript
+const narrower = filtered.filterMarks({
+  target: "points",
+  mode: "compose",
+  field: "Horsepower",
+  op: "gte",
+  value: 100
+});
+
+const japanOnly = narrower.filterMarks({
+  target: "points",
+  mode: "replace",
+  field: "Origin",
+  op: "eq",
+  value: "Japan"
+});
+```
+
+`replace` starts again from the canonical source. `compose` evaluates the
+ordered recipe one selector at a time at final-item grain. If another derived
+dataset references an earlier filtered result, that immutable snapshot remains
+available and the active mark advances to the next namespaced revision ID.
+
 The original dataset and earlier program remain unchanged. Apply the filter
 before creating a derived statistical layer when that statistic should use the
 filtered rows; existing independent layers are not silently rebound. Histograms
-retain their pre-filter bin boundaries, and line/area filters retain complete
-series. Reapplying the same target is rejected because its deterministic derived
-dataset ID already exists. A selector that matches no final item fails before
-creating derived state.
+retain their pre-filter bin boundaries while active, and line/area filters retain
+complete series. An empty match is a valid empty view: the preceding scale
+domains and connected guide meaning stay fixed while mark items, source labels,
+and stale highlight graphics are cleared.
+
+## `removeMarkFilter({ target? } = {})`
+
+Remove the active final-item filter and rebind the mark to its canonical source.
+The action restores the prior Histogram bin policy, rematerializes the mark,
+scales, and guides, and releases the filtered dataset when no downstream dataset
+still references that snapshot. Omit `target` for the current or unique active
+filter.
+
+```javascript
+const restored = japanOnly.removeMarkFilter({ target: "points" });
+```
 
 ## Related
 

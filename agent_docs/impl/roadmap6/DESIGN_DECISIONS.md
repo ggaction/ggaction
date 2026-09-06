@@ -240,6 +240,9 @@ Empty view는 기존 또는 explicit domain을 유지하는 정책으로 시작�
 처음부터 domain을 정할 수 없는 empty chart와 필터 후 empty view를 구분한다.
 Empty 선택·label cleanup·legend 설명을 정의하며 독립된 통계 layer를 암묵적으로 재계산하지 않는다.
 
+구현 결과: [Phase 6 W4](phase6/RESULTS_W4_FILTER.md)에서 canonical source와 ordered recipe,
+replace·compose·remove, deterministic snapshot revision과 domain-preserving empty view를 확정했다.
+
 ## K15 — Deterministic placement와 composition
 
 연결: D19, F08, F09, F11, F12, F19. Owner: Phase 7–10.

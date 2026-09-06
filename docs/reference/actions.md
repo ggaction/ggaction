@@ -225,6 +225,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`removeLabelLayout`](./actions/marks.md#removelabellayout) | user-facing | marks |
 | [`removeLegend`](./actions/guides.md#removelegend) | user-facing | legend_and_title |
 | [`removeMark`](./actions/marks.md#removemark) | user-facing | marks |
+| [`removeMarkFilter`](./actions/charts-data.md#removemarkfilter) | user-facing | mark-selection |
 | [`removeMarkHighlight`](./actions/charts-data.md#removemarkhighlight) | user-facing | mark-selection |
 | [`removeMarkSelection`](./actions/advanced.md#removemarkselection) | advanced | mark-selection |
 | [`removeParallelAxes`](./actions/advanced.md#createparallelaxes-createparallelaxis-editparallelaxis-removeparallelaxis-removeparallelaxes) | user-facing | axes |

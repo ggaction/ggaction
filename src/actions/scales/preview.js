@@ -14,10 +14,15 @@ export function resolveScalePreview(program, id) {
   const channels = new Set(consumers.map(consumer => normalizePositionScaleChannel(consumer.channel)));
   if (channels.size !== 1) throw new Error(`Scale "${id}" cannot be shared across channels.`);
   const channel = channels.values().next().value;
-  const valuesByConsumer = consumers.map(consumer => ({ consumer,
-    values: resolveConsumerValues(program, consumer),
-    categoryOrder: resolveConsumerCategoryOrder(program, consumer),
-    seriesLayout: resolveSeriesLayoutScaleValues(program, consumer) }));
+  const valuesByConsumer = consumers.map(consumer => {
+    if (program.markConfigs?.[consumer.layer.id]?.markFilter?.empty === true) {
+      return { consumer, values: [], categoryOrder: undefined, seriesLayout: undefined };
+    }
+    return { consumer,
+      values: resolveConsumerValues(program, consumer),
+      categoryOrder: resolveConsumerCategoryOrder(program, consumer),
+      seriesLayout: resolveSeriesLayoutScaleValues(program, consumer) };
+  });
   const resolvedScale = resolveScaleMaterialization({ id, scale, channel, consumers, valuesByConsumer,
     bounds: ["color", "strokeDash", "strokeWidth", "shape", "size", "opacity", "xOffset", "yOffset"].includes(channel)
       ? undefined : resolveGraphicBounds(program),

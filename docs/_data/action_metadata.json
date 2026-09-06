@@ -749,6 +749,11 @@
     "layer": "user-facing",
     "domain": "mark-selection"
   },
+  "removeMarkFilter": {
+    "operation": "remove",
+    "layer": "user-facing",
+    "domain": "mark-selection"
+  },
   "selectMarks": {
     "operation": "select",
     "layer": "advanced",

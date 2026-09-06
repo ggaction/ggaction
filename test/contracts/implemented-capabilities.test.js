@@ -91,7 +91,10 @@ test("keeps the implemented box-plot contract complete", () => {
 });
 
 test("keeps mark selection current, documented, and executable", () => {
-  const names = ["filterMarks", "selectMarks", "highlightMarks", "editBarMark"];
+  const names = [
+    "filterMarks", "removeMarkFilter", "selectMarks", "highlightMarks",
+    "editBarMark"
+  ];
   const current = new Map(index.actions.map(action => [action.name, action]));
   const types = readFileSync(path.join(root, "types/program.d.ts"), "utf8");
   const reference = readFileSync(path.join(root, "docs/reference/actions.md"), "utf8");
