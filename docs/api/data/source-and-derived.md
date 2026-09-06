@@ -7,7 +7,7 @@ title: Source and Derived Data
 
 {% include chart-example.html id="scatterplot" %}
 
-## `createData({ id?, values })`
+## `createData({ id?, values })` {#createdata-id-values}
 
 | Option | Type | Required |
 | --- | --- | --- |
@@ -108,7 +108,7 @@ this direct-authoring union. The public tuple contains exactly one transform;
 multi-transform pipelines are rejected. Built-in value materializers each own
 and normalize that single transform.
 
-## `bindMarkData({ target, data })`
+## `bindMarkData({ target, data })` {#bindmarkdata-target-data}
 
 Use `bindMarkData` to move an existing independent mark to another materialized
 dataset while preserving its encoding and visual configuration:
@@ -131,7 +131,7 @@ result is rejected. Composite marks and marks backed by an owned density,
 horizon, or final-item filter recipe must use their documented edit or filter
 lifecycle because changing only one layer would break the resource.
 
-## `createSummaryData({ id, source?, groupBy?, aggregates, members? })`
+## `createSummaryData({ id, source?, groupBy?, aggregates, members? })` {#createsummarydata-id-source-groupby-aggregates-members}
 
 Create reusable aggregate rows without tying the calculation to a chart type:
 
@@ -159,7 +159,7 @@ An ungrouped empty input produces one aggregate row, so a row count is `0`.
 A grouped empty input produces no observed groups. The action does not synthesize
 unobserved categorical combinations.
 
-## `createBinData({ id, source?, field, ...binOptions })`
+## `createBinData({ id, source?, field, ...binOptions })` {#createbindata-id-source-field-binoptions}
 
 Materialize one-dimensional bin bounds and counts for reuse by ranged marks,
 labels, or several charts:
@@ -185,7 +185,7 @@ The normalized transform stores resolved boundaries, so consumers share the
 same bin decisions. Set `includeEmpty: false` to omit zero-count bins and
 `members: true` to retain each bin's original source rows.
 
-## `createFoldData({ id, source?, fields, as? })`
+## `createFoldData({ id, source?, fields, as? })` {#createfolddata-id-source-fields-as}
 
 Turn selected fields in a wide dataset into reusable key/value rows:
 
@@ -208,7 +208,7 @@ strings, or booleans. Missing cells and mixed types are rejected. Output names
 must be distinct and cannot overwrite a source field. The action accepts at
 most 64 selected fields and materializes at most 10,000 rows.
 
-## `createComputedData({ id, source?, as, expression })`
+## `createComputedData({ id, source?, as, expression })` {#createcomputeddata-id-source-as-expression}
 
 Add a finite quantitative field to every source row with a serializable formula:
 
@@ -235,7 +235,7 @@ finite. Division by zero and output-field replacement are errors. Expressions
 are bounded to depth 16 and 128 nodes, with at most 10,000,000 evaluated
 row-nodes.
 
-## `createStackData({ id, source?, category, group, value, mode?, as? })`
+## `createStackData({ id, source?, category, group, value, mode?, as? })` {#createstackdata-id-source-category-group-value-mode-as}
 
 Materialize stack geometry once and reuse it across ranged marks and labels:
 

@@ -247,6 +247,7 @@ function guides(factors, xTitle, yTitle, {
   return {
     axes: {
       x: {
+        position: factors.legendPosition === "bottom" ? "top" : "bottom",
         ...(xValues !== undefined
           ? {
               ticksAndLabels: {
@@ -509,7 +510,11 @@ function buildHistogram(spec, factors, resolution) {
     })
     .createGuides({
       axes: {
-        x: { ticksAndLabels: { count: 5 }, title: { text: context.measureAxis } },
+        x: {
+          position: factors.legendPosition === "bottom" ? "top" : "bottom",
+          ticksAndLabels: { count: 5 },
+          title: { text: context.measureAxis }
+        },
         y: {
           position: factors.legendPosition === "left" ? "right" : "left",
           ticksAndLabels: { count: 5 },
@@ -724,7 +729,13 @@ function buildHeatmap(spec, factors, resolution) {
     });
   if (spec.variant === "labels") {
     program = program
-      .createTextMark({ id: "cellLabels", fontSize: 8, align: "center", baseline: "middle" })
+      .createTextMark({
+        id: "cellLabels",
+        data: "analysisRows",
+        fontSize: 8,
+        align: "center",
+        baseline: "middle"
+      })
       .encodeX({ target: "cellLabels", field: "x", fieldType: "nominal" })
       .encodeY({ target: "cellLabels", field: "y", fieldType: "nominal" })
       .encodeText({ target: "cellLabels", field: "value", format: ".2f" });
@@ -780,6 +791,7 @@ function buildLabels(spec, factors, resolution) {
     .encodeY({ target: "anchorPoints", field: "value", scale: { zero: false } })
     .createTextMark({
       id: "labels",
+      data: "analysisRows",
       fontSize: factors.fontSize,
       fontWeight: factors.fontWeight,
       dx: 6,

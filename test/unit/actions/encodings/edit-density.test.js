@@ -283,6 +283,21 @@ test("transitions category placement to baseline and back without stale scales",
   assert.equal(category.semanticSpec.scales[0].type, "band");
 });
 
+test("rejects a replacement category-scale id during a placement transition", () => {
+  const before = densityProgram();
+
+  assert.throws(
+    () => before.editDensity({
+      placement: {
+        type: "category",
+        scale: { id: "replacementCategory", type: "band" }
+      }
+    }),
+    /placement scale cannot change its id/
+  );
+  assert.equal(before.semanticSpec.layers[0].encoding.x.scale, "x");
+});
+
 test("edits the category scale through placement while preserving its id", () => {
   const before = categoricalDensityProgram();
   const after = before.editDensity({

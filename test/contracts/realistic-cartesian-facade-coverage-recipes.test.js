@@ -29,21 +29,21 @@ const actionCards = JSON.parse(readFileSync(
 const inventoryPromise = buildPublicOptionInventory(actionCards);
 const ACTIONS = new Set(REALISTIC_CARTESIAN_FACADE_COVERAGE_EXPECTED_ACTIONS);
 const EXPECTED_TARGETS = Object.freeze({
-  createScatterPlot: Object.freeze({ requirements: 311, diversity: 7 }),
-  createBarPlot: Object.freeze({ requirements: 304, diversity: 8 }),
-  createLinePlot: Object.freeze({ requirements: 260, diversity: 6 }),
-  createParallelCoordinates: Object.freeze({ requirements: 99, diversity: 3 })
+  createScatterPlot: Object.freeze({ requirements: 349, diversity: 8 }),
+  createBarPlot: Object.freeze({ requirements: 360, diversity: 9 }),
+  createLinePlot: Object.freeze({ requirements: 304, diversity: 6 }),
+  createParallelCoordinates: Object.freeze({ requirements: 103, diversity: 3 })
 });
 const EXPECTED_REQUIREMENT_DIGESTS = Object.freeze({
   // Locked after public declarations match the runtime-supported facade branches.
-  createScatterPlot: "0b5783427b8983b1ec4ddd9c97f80f2212175e142f909d39a7914acef1466926",
-  createBarPlot: "372b3db0de9d407ab31d77a9b3529caad3eb047d90515e12b46278925d8f56a4",
-  createLinePlot: "f457e8bfc26224631b40fc253c91824bae3ef8739fa103343c5f1cc8f13e471b",
-  createParallelCoordinates: "3c5370c2d97cb2023d3ebcc838fd45c8e1cd3b59746e273e92b2e6c5467e8e70"
+  createScatterPlot: "4c0b67a3a615760d3feab0bed7f6e418c2109e3f41984378698b851832cd7d62",
+  createBarPlot: "0b93c3029a1ed7e7d008c59011ae0d608bbb261da106ed3bbb863c54c16bc63c",
+  createLinePlot: "77b8c874f6b1445ed7a5fcc71f7fcabcb43945c41526ce74451c0f19538b4ad7",
+  createParallelCoordinates: "9581b67e3672d426b9a1c55341d9b4b161112283d4a8e80fb74766895697a37e"
 });
 const EXPECTED_DIVERSITY_DIGESTS = Object.freeze({
-  createScatterPlot: "8364d1c7cb80a45be2fcb58dce188e69fb4eb9d40fc80b628b8dc73833509461",
-  createBarPlot: "a95e8347ab1a38e554e1be433739ae22e40bba19ac93ca341dc4eee16e2b2fb2",
+  createScatterPlot: "759d425e12a6c5b8bc8cbafd963a619324844000bcceefadcd7086802483d828",
+  createBarPlot: "e993b2af074db855a125800e960d793528c53ece7d1235c4c743714e98c693fb",
   createLinePlot: "37a49ee6ed7666a0f2d88270e2c4c049e44e00ec06dc836ce07a708c610ba1a9",
   createParallelCoordinates: "ec8f99f3b8ef011bcabbfdc64266d1157e99697a96dc593e026efb9f77793a18"
 });
@@ -172,7 +172,9 @@ option-value:createScatterPlot.y.scale.zero=boolean:false
 `.trim().split("\n"));
 const OTHER_RECIPE_DIVERSITY_IDS = new Set([
   "literal-diversity:createBarPlot.color.scale.palette",
+  "literal-diversity:createLinePlot.guides.legend.labels.format",
   "literal-diversity:createLinePlot.color.scale.palette",
+  "literal-diversity:createParallelCoordinates.guides.legend.labels.format",
   "literal-diversity:createParallelCoordinates.color.scale.palette",
   "literal-diversity:createScatterPlot.color.scale.palette"
 ]);
@@ -404,7 +406,12 @@ async function buildProjection() {
             }
           }
           if (action === "createBarPlot") {
-            const valueKey = literalValueKey(direct[0].args.color?.aggregate);
+            const aggregate = direct[0].args.color?.aggregate;
+            const valueKey = literalValueKey(
+              aggregate !== null && typeof aggregate === "object"
+                ? aggregate.op
+                : aggregate
+            );
             const requirement = aggregateByValue.get(valueKey);
             if (requirement !== undefined) {
               record(aggregateStats.get(requirement.id), dataset);
@@ -625,10 +632,10 @@ test("locks the exact assigned option, literal, aggregate, and diversity target 
     actionRequirementCount += requirementIds.length;
     diversityCount += diversityIds.length;
   }
-  assert.equal(actionRequirementCount, 974);
+  assert.equal(actionRequirementCount, 1116);
   assert.equal(target.familyLiterals.length, 15);
-  assert.equal(actionRequirementCount + target.familyLiterals.length, 989);
-  assert.equal(diversityCount, 24);
+  assert.equal(actionRequirementCount + target.familyLiterals.length, 1131);
+  assert.equal(diversityCount, 26);
 });
 
 test("keeps every orthogonal profile materially distinct under one authentic witness", {

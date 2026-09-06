@@ -430,6 +430,12 @@ const editDensity = action(
           args.placement,
           args.valueScale
         );
+        if (
+          args.placement?.scale?.id !== undefined &&
+          args.placement.scale.id !== layer.encoding[requestedPlacement.channel].scale
+        ) {
+          throw new Error("editDensity placement scale cannot change its id.");
+        }
         next = replaceScaleDefinition(next, xScaleId, scaleDefinitions.x);
         next = replaceScaleDefinition(next, yScaleId, scaleDefinitions.y);
         const valueChannel = densityChannel === "x" ? "y" : "x";
@@ -440,20 +446,20 @@ const editDensity = action(
           placement: requestedPlacement,
           coordinate: layer.coordinate,
           valueScale: {
-            id: valueChannel === "y" ? yScaleId : xScaleId,
-            ...scaleDefinitions[valueChannel]
+            ...scaleDefinitions[valueChannel],
+            id: valueChannel === "y" ? yScaleId : xScaleId
           },
           densityScale: requestedPlacement === undefined
             ? {
-                id: densityChannel === "x" ? xScaleId : yScaleId,
-                ...scaleDefinitions[densityChannel]
+                ...scaleDefinitions[densityChannel],
+                id: densityChannel === "x" ? xScaleId : yScaleId
               }
             : undefined,
           placementScale: requestedPlacement === undefined
             ? undefined
             : {
-                id: requestedPlacement.channel === "x" ? xScaleId : yScaleId,
-                ...scaleDefinitions[requestedPlacement.channel]
+                ...scaleDefinitions[requestedPlacement.channel],
+                id: requestedPlacement.channel === "x" ? xScaleId : yScaleId
               }
         });
         next = replaceDensityPositions(next, layer.id, definition);

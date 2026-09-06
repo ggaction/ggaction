@@ -643,7 +643,9 @@ function legendOptions(variant, title, { target = "points", channels = ["color"]
     direction,
     ...(direction === "horizontal" ? { columns: 4 } : {}),
     offset: 48,
-    titlePosition: ordinal % 2 === 0 ? "top" : "left",
+    titlePosition: ["right", "left"].includes(position)
+      ? "top"
+      : ordinal % 2 === 0 ? "top" : "left",
     title,
     symbol: channels.includes("shape") ? "auto" : symbolModes[ordinal % symbolModes.length],
     labels: {
@@ -845,7 +847,8 @@ function exerciseCartesianGuides(factors, base) {
     position: yPosition === "left" ? "right" : "left",
     align: "center",
     direction: "vertical",
-    offset: 48
+    offset: 48,
+    titlePosition: "top"
   };
   const movedAxesLegend = {
     ...initialAxesLegend,
@@ -1008,7 +1011,9 @@ function exerciseCartesianGuides(factors, base) {
       align: "center",
       direction: "vertical",
       offset: 48,
-      titlePosition: "left",
+      titlePosition: ["right", "left"].includes(movedAxesLegend.position)
+        ? "top"
+        : "left",
       itemGap: 16
     })
     .editLegendLabels({
@@ -1753,7 +1758,8 @@ function buildScaleVocabulary(factors) {
       position: "right",
       align: "center",
       direction: "vertical",
-      offset: 180
+      offset: 180,
+      titlePosition: "top"
     });
   }
   return program.createTitle(titleOptions(context, variant, { final: true }));
@@ -1802,7 +1808,7 @@ function polarCompleteAxis({
   return {
     scale,
     coordinate,
-    angle,
+    ...(angle === undefined ? {} : { angle }),
     line: { color: "#475569", lineWidth: 1.25 },
     ticksAndLabels: {
       ...tickPolicy(policy, values, 5),
@@ -1872,7 +1878,6 @@ function buildPolar(factors) {
   const radiusValues = endpointValues(radiusDomain);
   const thetaAxis = polarCompleteAxis({
     scale: "theta",
-    angle: 0,
     policy,
     values: thetaValues,
     title: `${context.dimensionText} rank`,

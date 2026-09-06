@@ -196,6 +196,8 @@ function pointPair(program, id, x, y) {
 
 function aggregateVariants() {
   return [
+    { aggregate: { op: "ciLower", method: "normal", level: 0.9 }, stack: null },
+    { aggregate: { op: "ciUpper", method: "student-t", level: 0.95 }, stack: null },
     { aggregate: { op: "first", orderBy: "order", order: "ascending" }, stack: "zero" },
     { aggregate: { op: "last", orderBy: "order", order: "descending" }, stack: "normalize" },
     { aggregate: { op: "quantile", probability: 0.5 }, stack: null },
@@ -862,7 +864,7 @@ function addAppearanceEncodings(program) {
       field: "y", scale: { id: "text-field-y", zero: false }
     })
     .encodeText({ target: "text-field", field: "label", format: "auto" });
-  return next.createTextMark({ id: "text-value", data: "analysisRows", fontSize: 10 })
+  next = next.createTextMark({ id: "text-value", data: "analysisRows", fontSize: 10 })
     .encodeX({
       target: "text-value", coordinate: "text-value-coordinate",
       field: "x", scale: { id: "text-value-x", zero: false }
@@ -872,6 +874,23 @@ function addAppearanceEncodings(program) {
       field: "y", scale: { id: "text-value-y", zero: false }
     })
     .encodeText({ target: "text-value", value: 42.25, format: ".2f" });
+  const source = "text-content-source";
+  next = completeBar(next, source)
+    .encodeColor({ target: source, field: "group", layout: "stack" });
+  for (const [id, options] of [
+    ["text-content-category", { content: "category", format: "auto" }],
+    ["text-content-value", { content: "value", format: ".1f" }],
+    ["text-content-share-source", {
+      content: "share", normalizeBy: "source", format: ".1%"
+    }],
+    ["text-content-share-category", {
+      content: "share", normalizeBy: "category", format: ".1%"
+    }]
+  ]) {
+    next = next.createTextMark({ id, source, fontSize: 9 })
+      .encodeText({ target: id, ...options });
+  }
+  return next;
 }
 
 function buildAppearanceCoverage(factors) {

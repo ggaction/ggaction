@@ -69,6 +69,22 @@ test("title styles reject offset across families while label offsets remain supp
   }
 });
 
+test("categorical legends accept only the no-op auto label format", () => {
+  const base = source("color");
+  const automatic = base.createLegend({ labels: { format: "auto" } });
+  assert.deepEqual(automatic.graphicSpec, base.createLegend().graphicSpec);
+  assert.equal(automatic.guideConfigs.legend.color.labels.format, undefined);
+  assert.deepEqual(
+    automatic.editLegend({ labels: { format: "auto" } }).graphicSpec,
+    automatic.graphicSpec
+  );
+  rejectsUnchanged(
+    base,
+    () => base.createLegend({ labels: { format: ".1f" } }),
+    /Categorical legend labels do not accept format/u
+  );
+});
+
 test("gradient title-position creation and public editors accept the same supported top placement", () => {
   const base = source("gradient");
   for (const position of ["left", "right", "top", "bottom"]) {

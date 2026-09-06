@@ -663,6 +663,9 @@ function legendBorder(profile) {
 
 function legendOptions(profile, context, action) {
   const ordinal = profile.legendProfile ?? 0;
+  const labelFormat = action === "createHeatmap"
+    ? ordinal % 2 === 0 ? ".1f" : ".2f"
+    : "auto";
   if (action === "createGradientPlot") {
     return {
       title: profile.legendKind === "continuous"
@@ -682,6 +685,7 @@ function legendOptions(profile, context, action) {
       count: 6,
       gradient: { length: 120, thickness: 14 },
       labels: {
+        format: labelFormat,
         offset: 5,
         color: "#334155",
         fontSize: 11,
@@ -705,10 +709,11 @@ function legendOptions(profile, context, action) {
     direction: ordinal < 2 ? "vertical" : "horizontal",
     ...(ordinal < 2 ? {} : { columns: 2 }),
     offset: 18 + ordinal,
-    titlePosition: ordinal % 2 === 0 ? "top" : "left",
+    titlePosition: ordinal < 2 ? "top" : ordinal % 2 === 0 ? "top" : "left",
     title: ordinal % 4 === 1 ? "Within-category rank half" : context.dimensionText,
     symbol: legendSymbol(ordinal),
     labels: {
+      format: labelFormat,
       offset: 5,
       color: "#334155",
       fontSize: 11,

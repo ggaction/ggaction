@@ -61,5 +61,5 @@ test("formats only the quantitative block of a combined categorical and size leg
     ["0.0", "5.0", "10.0"]);
   assert.throws(() => base().removeEncoding({ channel: "size" }).createLegend({
     channels: ["color"], labels: { format: ".1f" }
-  }), /Unknown createLegend\.labels option/);
+  }), /Categorical legend labels do not accept format/);
 });

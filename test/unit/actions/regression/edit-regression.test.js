@@ -89,6 +89,16 @@ test("keeps data for appearance-only edits and reconciles optional bands", () =>
   );
 });
 
+test("lets the legacy confidence alias replace the stored normalized level", () => {
+  const before = regressionProgram({ level: 0.9 });
+  const after = before.editRegression({ confidence: 0.88 });
+  const transform = after.semanticSpec.datasets.at(-1).transform[0];
+
+  assert.equal(transform.level, 0.88);
+  assert.equal(transform.confidence, undefined);
+  assert.equal(after.markConfigs.points.regression.parameters.level, 0.88);
+});
+
 test("resolves owners and rejects invalid composite edits atomically", () => {
   const program = regressionProgram();
   assert.throws(

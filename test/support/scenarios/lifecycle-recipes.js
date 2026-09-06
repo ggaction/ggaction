@@ -632,11 +632,15 @@ function buildViolinLifecycle(factors) {
 function buildCartesianGuideLifecycle(factors) {
   let program = chart()
     .createCanvas(factors.dataset.startsWith("tt-")
-      ? cartesianCanvas(factors)
+      ? {
+          ...cartesianCanvas(factors),
+          width: 4400,
+          margin: { top: 460, right: 1000, bottom: 520, left: 1000 }
+        }
       : {
           width: 1220,
-          height: 680,
-          margin: { top: 150, right: 310, bottom: 170, left: 230 }
+          height: 820,
+          margin: { top: 150, right: 310, bottom: 310, left: 230 }
         })
     .createData({ id: "styles", values: styleRows(factors.dataset) })
     .createPointMark({ id: "guidePoints", opacity: 0.68 })
@@ -1536,12 +1540,12 @@ function realisticLifecycleMetadata(base, factors) {
     "action-direct-ranged-marks": ["create", "edit"],
     "action-direct-bar-offsets": ["create", "edit"],
     "action-direct-histogram": ["create", "edit"],
-    "action-direct-parallel": ["create"],
+    "action-direct-parallel": ["create", "edit", "remove"],
     "action-direct-regression-components": ["create"],
     "action-direct-guide-aggregates": ["create", "edit"],
     "action-direct-axis-facades": ["create"],
     "action-direct-axis-parts": ["create"],
-    "action-direct-polar-parts": ["create", "edit"]
+    "action-direct-polar-parts": ["create", "edit", "remove"]
   }[base.id];
   const unit = measure?.unit === undefined ? "" : ` (${measure.unit})`;
   const sampleText = view.sample === undefined

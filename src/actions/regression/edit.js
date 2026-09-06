@@ -105,17 +105,26 @@ function resolveParameters(previous, args) {
   ]) {
     if (Object.hasOwn(args, key)) raw[key] = args[key];
   }
+  const inheritsLevel = !Object.hasOwn(raw, "confidence");
   if (method === previous.method) {
     for (const key of [
       "degree", "span", "confidenceMethod", "level", "interval"
     ]) {
-      if (!Object.hasOwn(raw, key) && Object.hasOwn(previous, key)) {
+      if (
+        !Object.hasOwn(raw, key) &&
+        (key !== "level" || inheritsLevel) &&
+        Object.hasOwn(previous, key)
+      ) {
         raw[key] = previous[key];
       }
     }
   } else if (method !== "loess" && previous.method !== "loess") {
     for (const key of ["confidenceMethod", "level", "interval"]) {
-      if (!Object.hasOwn(raw, key) && Object.hasOwn(previous, key)) {
+      if (
+        !Object.hasOwn(raw, key) &&
+        (key !== "level" || inheritsLevel) &&
+        Object.hasOwn(previous, key)
+      ) {
         raw[key] = previous[key];
       }
     }

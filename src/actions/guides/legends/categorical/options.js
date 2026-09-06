@@ -36,7 +36,8 @@ const TEXT_OPTIONS = Object.freeze([
   "color",
   "fontSize",
   "fontFamily",
-  "fontWeight"
+  "fontWeight",
+  "format"
 ]);
 const TITLE_OPTIONS = Object.freeze([
   "color",
@@ -91,6 +92,9 @@ export function normalizeOptions(args, kind) {
   validateOptionObject(args, OPTIONS, "createLegend");
   if (Object.hasOwn(args, "labels")) {
     validateObject(args.labels, TEXT_OPTIONS, "createLegend.labels");
+    if (args.labels.format !== undefined && args.labels.format !== "auto") {
+      throw new Error("Categorical legend labels do not accept format.");
+    }
   }
   if (Object.hasOwn(args, "titleStyle")) {
     validateObject(
@@ -110,6 +114,7 @@ export function normalizeOptions(args, kind) {
     offset: defaults.offset,
     ...(args.labels ?? {})
   };
+  delete labels.format;
   const titleStyle = {
     ...COMMON_DEFAULTS.titleStyle,
     ...(args.titleStyle ?? {})

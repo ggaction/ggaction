@@ -1668,17 +1668,17 @@ function buildDerivedEncodingCoverage(factors) {
     {
       type: "category", side: "left",
       width: { band: 0.68, resolve: "shared" },
-      scale: categoricalScale("density-category-left", "band")
+      scale: { type: "band", paddingInner: 0.16, paddingOuter: 0.08, align: 0.5 }
     },
     {
       type: "category", side: "right",
       width: { band: 0.74, resolve: "independent" },
-      scale: categoricalScale("density-category-left", "band")
+      scale: { type: "band", paddingInner: 0.16, paddingOuter: 0.08, align: 0.5 }
     },
     {
       type: "category", side: "both",
       width: { band: 0.82, resolve: "shared" },
-      scale: categoricalScale("density-category-left", "band")
+      scale: { type: "band", paddingInner: 0.16, paddingOuter: 0.08, align: 0.5 }
     }
   ];
   for (const [index, placement] of placements.entries()) {
@@ -2567,7 +2567,7 @@ function decimalPolarAxis(scaleId, angle = 0) {
   return {
     scale: scaleId,
     coordinate: "polar",
-    angle,
+    ...(scaleId === "radius" ? { angle } : {}),
     line: { color: "#475569", lineWidth: 1.2 },
     ticksAndLabels: decimalTicksAndLabels(),
     title: {

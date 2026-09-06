@@ -246,10 +246,13 @@ function binnedChannel(field, id, index, mode, rows) {
 }
 
 function aggregateValue(index) {
-  switch (index % 3) {
-    case 0: return { op: "quantile", probability: 0.25 };
-    case 1: return { op: "first", orderBy: "sourcePosition", order: "ascending" };
-    default: return { op: "last", orderBy: "sourcePosition", order: "descending" };
+  switch (index % 6) {
+    case 0: return { op: "ciLower", method: "normal", level: 0.9 };
+    case 1: return { op: "ciUpper", method: "student-t", level: 0.95 };
+    case 2: return { op: "quantile", probability: 0.25 };
+    case 3: return { op: "first", orderBy: "sourcePosition", order: "ascending" };
+    case 4: return { op: "last", orderBy: "sourcePosition", order: "descending" };
+    default: return { op: "ciLower", method: "student-t", level: 0.9 };
   }
 }
 
@@ -404,7 +407,8 @@ function barPosition(variant, rows) {
   if (index < 8) {
     const type = ["linear", "pow", "sqrt", "symlog"][Math.floor(index / 2)];
     measure = {
-      field: "positiveValue", fieldType: "quantitative", aggregate: "mean",
+      field: "positiveValue", fieldType: "quantitative",
+      aggregate: index === 1 ? "sum" : "mean",
       scale: quantitativeScale(orientation === "vertical" ? "mainY" : "mainX", type, { index })
     };
   } else if (index < 12) {
@@ -438,9 +442,20 @@ function barPosition(variant, rows) {
     };
     return orientation === "vertical" ? { x: temporal, y: aggregate } : { x: aggregate, y: temporal };
   } else {
+    const aggregateByIndex = {
+      21: { op: "quantile", probability: 0.25 },
+      22: { op: "ciUpper", method: "student-t", level: 0.95 },
+      23: { op: "last", orderBy: "sourcePosition", order: "descending" },
+      30: { op: "first", orderBy: "sourcePosition", order: "ascending" },
+      31: { op: "ciLower", method: "normal", level: 0.9 },
+      32: { op: "ciLower", method: "student-t", level: 0.9 },
+      33: { op: "ciUpper", method: "normal", level: 0.95 },
+      34: { op: "first", orderBy: "sourcePosition", order: "ascending" },
+      35: { op: "quantile", probability: 0.75 }
+    };
     measure = {
       field: "positiveValue", fieldType: "quantitative",
-      aggregate: index % 4 < 2 ? "sum" : "mean",
+      aggregate: aggregateByIndex[index] ?? (index % 4 < 2 ? "sum" : "mean"),
       scale: quantitativeScale(orientation === "vertical" ? "mainY" : "mainX", "linear", { index })
     };
   }
@@ -449,8 +464,24 @@ function barPosition(variant, rows) {
 
 function barColor(index) {
   let encoding;
-  if (index < 15) encoding = continuousColor(index, AGGREGATE_OPERATIONS[index]);
-  else if (index < 18) encoding = continuousColor(index, aggregateValue(index));
+  if (index < 15) {
+    const operation = AGGREGATE_OPERATIONS[index];
+    const aggregate = ["ciLower", "ciUpper"].includes(operation)
+      ? {
+          op: operation,
+          method: index % 2 === 0 ? "normal" : "student-t",
+          level: index % 2 === 0 ? 0.9 : 0.95
+        }
+      : operation;
+    encoding = continuousColor(index, aggregate);
+  }
+  else if (index < 18) {
+    encoding = continuousColor(index, index === 15
+      ? { op: "quantile", probability: 0.25 }
+      : index === 16
+        ? { op: "first", orderBy: "sourcePosition", order: "ascending" }
+        : { op: "last", orderBy: "sourcePosition", order: "descending" });
+  }
   else if (index < 24) {
     encoding = {
       ...paletteEncoding(index - 18),
@@ -577,23 +608,40 @@ function tickStyle() {
   return { color: "#64748b", lineWidth: 1, length: 7 };
 }
 
-function labelStyle(format) {
+function labelStyle(format, index) {
   return {
     offset: 11,
     format,
     color: "#334155",
     fontSize: 11,
     fontFamily: "sans-serif",
-    fontWeight: 500
+    fontWeight: 500,
+    rotation: {
+      value: 0,
+      unit: index % 2 === 0 ? "degrees" : "radians"
+    },
+    maxWidth: index % 3 === 0 ? false : 180,
+    ...(index % 3 === 0
+      ? {}
+      : {
+          wrap: index % 2 === 0 ? "word" : "character",
+          lineHeight: 16 + index % 3
+        }),
+    overlap: index % 2 === 0 ? "allow" : "error"
   };
 }
 
-function titleStyle(text, at) {
+function titleStyle(text, at, index) {
   return {
     text,
     ...(at === undefined ? {} : { at }),
     offset: text.includes("secondary") ? 170 : 82,
-    rotation: text.includes("secondary") ? -Math.PI / 2 : 0,
+    rotation: {
+      value: text.includes("secondary")
+        ? index % 2 === 0 ? -90 : -Math.PI / 2
+        : 0,
+      unit: index % 2 === 0 ? "degrees" : "radians"
+    },
     color: "#0f172a",
     fontSize: 13,
     fontFamily: "sans-serif",
@@ -613,11 +661,12 @@ function cartesianAxis(channel, format, policy, index) {
     ticksAndLabels: {
       ...(policy === "count" ? { count: 4 } : { values }),
       ticks: tickStyle(),
-      labels: labelStyle(format)
+      labels: labelStyle(format, index)
     },
     title: titleStyle(
       channel === "x" ? "Positive source value" : "Positive secondary value",
-      ["start", "center", "end"][index % 3]
+      ["start", "center", "end"][index % 3],
+      index
     )
   };
 }
@@ -625,20 +674,33 @@ function cartesianAxis(channel, format, policy, index) {
 function categoricalLegend(index, symbol, target = "guideColorPoints") {
   const position = ["right", "left", "top", "bottom"][index % 4];
   const side = position === "right" || position === "left";
+  if (index === 3 || index === 23) {
+    return {
+      target,
+      channels: ["color"],
+      position: "bottom",
+      layout: "legacy-bottom",
+      title: "Authentic source category",
+      symbol,
+      labels: { format: "auto" }
+    };
+  }
   return {
     target,
     channels: ["color"],
     position,
+    layout: "edge",
     align: side ? "center" : ["left", "center", "right"][index % 3],
     direction: side ? "vertical" : (index % 2 === 0 ? "horizontal" : "vertical"),
-    ...(position === "left" ? {} : { columns: 3 }),
+    ...(side ? { columns: 1 } : { columns: 3 }),
     offset: 32,
-    titlePosition: index % 2 === 0 ? "top" : "left",
+    titlePosition: side ? "top" : index % 2 === 0 ? "top" : "left",
     title: "Authentic source category",
     symbol,
     labels: {
       offset: 8, color: "#334155", fontSize: 11,
-      fontFamily: "sans-serif", fontWeight: 500
+      fontFamily: "sans-serif", fontWeight: 500,
+      format: "auto"
     },
     titleStyle: {
       color: "#0f172a", fontSize: 12,
@@ -692,7 +754,17 @@ function guideOptions(variant, program, options, action) {
       axes[channel] = disabled === channel ? false : {
         ...cartesianAxis(channel, format, "count", index + (channel === "y" ? 1 : 0)),
         coordinate: layer.coordinate, scale: scaleId,
-        ticksAndLabels: { ...ticks, ticks: tickStyle(), labels: labelStyle(format) }
+        line: index === 11 ? false : lineStyle(),
+        ticksAndLabels: index === 12
+          ? false
+          : { ...ticks, ticks: tickStyle(), labels: labelStyle(format, index) },
+        title: index === 10
+          ? false
+          : titleStyle(
+              channel === "x" ? "Positive source value" : "Positive secondary value",
+              ["start", "center", "end"][index % 3],
+              index
+            )
       };
       grid[direction] = categorical || disabled === channel ? false : guide.kind.includes("booleans") ? true : {
         scale: scaleId, coordinate: layer.coordinate, ...ticks,
@@ -720,7 +792,13 @@ function guideOptions(variant, program, options, action) {
   if (color !== undefined && program.resolvedScales[color.scale].type === "sequential") {
     legend = { target: options.id, channels: ["color"], position: "right", title: color.field,
       count: 4, gradient: { length: 150, thickness: 14 },
-      labels: { offset: 8, color: "#334155", fontSize: 11, fontFamily: "sans-serif", fontWeight: 500 },
+      labels: {
+        offset: 8, color: "#334155", fontSize: 11,
+        fontFamily: "sans-serif", fontWeight: 500,
+        format: color.fieldType === "temporal"
+          ? ["%Y", "%Y-%m", "%Y-%m-%d"][index % 3]
+          : ["auto", ".1f", ".2f"][index % 3]
+      },
       titleStyle: { color: "#0f172a", fontSize: 12, fontFamily: "sans-serif", fontWeight: 700 },
       border: { color: "#cbd5e1", lineWidth: 1, padding: 9, background: "#ffffff" } };
   }

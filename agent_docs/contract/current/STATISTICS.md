@@ -319,7 +319,8 @@ without naming generated child layers.
   line/band encodings and band provenance are reconciled to the complete candidate.
 - Method-specific values follow `createRegression`. A data-role or statistical change creates one deterministic
   immutable derived dataset revision, rebinds the owned band and line to it, rematerializes them, and releases the old
-  unreferenced revision. Appearance-only `band`/`line` patches retain the current derived dataset.
+  unreferenced revision. An explicit legacy `confidence` value replaces the stored normalized `level`; supplying both
+  aliases still requires equal values. Appearance-only `band`/`line` patches retain the current derived dataset.
 - `band: false` removes the owned band. Switching to LOESS also removes it; switching back to linear/polynomial or
   passing a band object recreates it under the same stable owner role. `line` is always retained.
 - The complete patch is validated before any returned program state changes. Earlier programs and source data remain
@@ -335,7 +336,8 @@ without naming generated child layers.
 
 - ✅ Covered: linear→polynomial and data/x/y/group revisions, exact derived rows and band/line graphics,
   group removal/addition, stable component/position identities, appearance-only data retention, LOESS band removal,
-  later band restoration, owner inference, invalid data/fields/nested options and immutable failure.
+  later band restoration, legacy-confidence replacement, owner inference, invalid data/fields/nested options and
+  immutable failure.
 - ✅ Covered: approved regression owner-edit primitive/public and PNG parity.
 - Evidence: `test/unit/actions/regression/edit-regression.test.js` and Roadmap 3 focused-editing Gate.
 

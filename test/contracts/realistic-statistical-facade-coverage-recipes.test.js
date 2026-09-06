@@ -31,6 +31,10 @@ import {
 
 const PROJECTION_CHILD = process.env.GGACTION_STAT_FACADE_PROJECTION === "1" &&
   typeof process.send === "function";
+const CATEGORICAL_LEGEND_FORMAT_DIVERSITY_WAIVERS = new Set([
+  "literal-diversity:createHistogram.guides.legend.labels.format",
+  "literal-diversity:createViolinPlot.guides.legend.labels.format"
+]);
 const contractTest = PROJECTION_CHILD ? () => undefined : test;
 const actionCards = PROJECTION_CHILD
   ? undefined
@@ -536,7 +540,8 @@ contractTest("460 actual direct-root witnesses close every corrected action targ
     );
   }
   const diversity = projection.report.literalDiversity.filter(requirement =>
-    optionIds.has(requirement.optionPath)
+    optionIds.has(requirement.optionPath) &&
+    !CATEGORICAL_LEGEND_FORMAT_DIVERSITY_WAIVERS.has(requirement.id)
   );
   assert.ok(diversity.length > 0);
   assert.deepEqual(diversity.filter(requirement => !requirement.meetsMinimum), []);

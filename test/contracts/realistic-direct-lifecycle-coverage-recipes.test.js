@@ -594,7 +594,7 @@ test(CARTESIAN_GUIDE_SWEEP_TEST_NAME, () => {
         minimumRows: 2,
         maximumRows: 8,
         minimumTitleGap: 43,
-        minimumLegendGap: 41.75
+        minimumLegendGap: 42
       },
       resourcePrefix: CARTESIAN_GUIDE_SWEEP_RESOURCE_PREFIX,
       testName: CARTESIAN_GUIDE_SWEEP_TEST_NAME
