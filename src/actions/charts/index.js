@@ -16,6 +16,7 @@ import { createIntervalPlot, createRegressionPlot } from "./interval-regression.
 import {
   createDotPlot, createLollipopPlot, createDumbbellPlot, editEndpointPlot
 } from "./endpoints.js";
+import { createECDFPlot, editECDFPlot } from "./ecdf.js";
 
 export function registerChartActions(ProgramClass) {
   ProgramClass.prototype.createRosePlot = createRosePlot;
@@ -41,4 +42,6 @@ export function registerChartActions(ProgramClass) {
   ProgramClass.prototype.createLollipopPlot = createLollipopPlot;
   ProgramClass.prototype.createDumbbellPlot = createDumbbellPlot;
   ProgramClass.prototype.editEndpointPlot = editEndpointPlot;
+  ProgramClass.prototype.createECDFPlot = createECDFPlot;
+  ProgramClass.prototype.editECDFPlot = editECDFPlot;
 }

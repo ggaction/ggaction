@@ -78,7 +78,9 @@ final visual item, so aggregated marks do not get duplicate labels for input row
 Omitting `field`, `value`, and `content` selects `content: "value"` for a supported
 Bar or Arc. Use `content: "category"` or `"share"` for other semantic content, `field`
 for raw/common fields, or `value` for a constant. These choices are exclusive.
-Point, Rule, and Rect labels require a field or constant. Format defaults to
+Point, Line, Rule, and Rect labels require a field or constant. A Line source
+creates one label at the final coordinate of each series and reads explicit fields
+from that final ordered row. Format defaults to
 `"auto"`; shares need an explicit percent format to display percentages.
 
 Text is centered horizontally and vertically at the existing source anchor. Use

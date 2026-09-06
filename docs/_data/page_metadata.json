@@ -86,6 +86,10 @@
     "title": "Dot, Lollipop, and Dumbbell Plots",
     "description": "These three Full entry actions share one categorical endpoint model. Each starts from immutable rows and produces ordinary point and rule children, so existing mark, scale, label,…"
   },
+  "/tutorials/ecdf/": {
+    "title": "Empirical Cumulative Distribution Plots",
+    "description": "An empirical cumulative distribution function answers: “What share of the observations is less than or equal to this value?” createECDFPlot owns that statistical definition and…"
+  },
   "/recipes/": {
     "title": "Chart Recipes",
     "description": "Use a recipe when you know the chart type and want the shortest supported action flow."

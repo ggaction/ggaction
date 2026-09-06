@@ -6,6 +6,7 @@ import {
   validateBin2DTransform
 } from "./bin2d.js";
 import { validateDensityTransform } from "./density.js";
+import { validateECDFTransform } from "./ecdf.js";
 import { validateComputedTransform } from "./computed.js";
 import { validateFilterTransform } from "./filter.js";
 import { validateFoldTransform } from "./fold.js";
@@ -80,6 +81,11 @@ const TRANSFORM_POLICIES = Object.freeze({
     validate: validateDensityTransform,
     materializeOp: "materializeDensityData",
     replayTransform: requestedDensityTransform
+  }),
+  ecdf: Object.freeze({
+    ...findTransformTopology("ecdf"),
+    validate: validateECDFTransform,
+    materializeOp: "materializeECDFData"
   }),
   filter: Object.freeze({
     ...findTransformTopology("filter"),

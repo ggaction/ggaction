@@ -2,6 +2,35 @@
 
 Current direct-action contracts for this domain. Shared notation and lifecycle rules live in [`../README.md`](../README.md).
 
+## `createECDFData`
+
+- Signature: `createECDFData({ id, source?, field, groupBy?, weight?, missing?, as? })`.
+- `id` is a required new immutable derived-dataset ID. `source` defaults to current data. `field` must contain
+  finite quantitative observations. `groupBy` accepts one field or a non-empty unique field array and preserves
+  groups by first source appearance.
+- The output sorts support within each group and aggregates ties into one jump. It prepends one probability-zero
+  row at the minimum support, then emits one row per distinct support with the cumulative count or weight and
+  `F(x)=P(X<=x)`. This shape is consumed by a `step-after` line to make the visible function right-continuous.
+- `weight` is optional. Omission uses valid sample count; a field uses the sum of finite non-negative weights.
+  Zero-weight rows contribute no support. Negative weights and a zero denominator are errors.
+- `missing` defaults to `"drop"`; `"error"` rejects the first non-finite value/weight or invalid group value.
+  It never changes the negative-weight or zero-denominator errors.
+- `as` optionally supplies distinct `{ value, cumulative, probability }` output names. Omission namespaces all
+  names from `id`. Stored transform provenance includes the source field, grouping, weight/missing policy,
+  outputs, each resolved group denominator and its positive-weight valid-row count.
+
+### Formal values — `createECDFData`
+
+- Implemented: `createECDFData(options: ECDFDataOptions): ChartProgram` (Full only).
+- Planned (NOT IMPLEMENTED): —
+- Proposed (NOT IMPLEMENTED): survival/censoring and uncertainty intervals.
+
+### Value coverage — `createECDFData`
+
+- ✅ Covered: ties, sorting, right-continuous seed row, grouped first-appearance order, weights, missing policy,
+  zero/negative weight, zero denominator, custom outputs, provenance, immutability and child trace.
+- Evidence: `test/unit/grammar/transforms/ecdf.test.js`, `test/unit/actions/data/ecdf-data.test.js`.
+
 ## `createIntervalData`
 
 - Signature: `createIntervalData({ id, source?, field, groupBy?, center?, extent?, method?, level?, as? })`.

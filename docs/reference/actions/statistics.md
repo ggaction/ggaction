@@ -100,6 +100,16 @@ Create immutable grouped center/lower/upper summary rows. Mean supports
 standard error, sample standard deviation, and normal or Student-t confidence intervals;
 median supports interquartile range. [Data](../../api/data.md)
 
+## `createECDFData`
+
+```javascript
+createECDFData({ id, source?, field, groupBy?, weight?, missing?, as? })
+```
+
+Create immutable sorted support, cumulative count or weight, and probability
+rows. Ties are aggregated, group order follows first source appearance, and
+resolved provenance stores every positive denominator. [Data](../../api/data.md)
+
 ## `createRegression`
 
 ```javascript

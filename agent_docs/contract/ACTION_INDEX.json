@@ -400,6 +400,24 @@
       }
     },
     {
+      "name": "createECDFData",
+      "layer": "user-facing",
+      "domain": "statistics",
+      "status": "implemented",
+      "lifecycle": "Immutable create-only",
+      "update": "Create a new derived dataset ID",
+      "audit": "Intentional",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/STATISTICS.md",
+        "anchor": "createecdfdata"
+      }
+    },
+    {
       "name": "createPointMark",
       "layer": "user-facing",
       "domain": "marks",
@@ -3622,6 +3640,42 @@
       }
     },
     {
+      "name": "createECDFPlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "editECDFPlot plus existing line, encoding, label, scale and guide actions",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "anchor": "createecdfplot"
+      }
+    },
+    {
+      "name": "editECDFPlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Atomically rebuilds owned ECDF transform and line roles",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "anchor": "editecdfplot"
+      }
+    },
+    {
       "name": "createIntervalPlot",
       "layer": "user-facing",
       "domain": "charts",
@@ -4012,6 +4066,7 @@
       "materializeComposition",
       "materializeComputedData",
       "materializeDensityData",
+      "materializeECDFData",
       "materializeEmptyMark",
       "materializeGradientProfileData",
       "materializeHorizonData",

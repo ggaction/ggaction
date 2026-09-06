@@ -922,7 +922,12 @@ function buildFacetScaleLifecycle(factors) {
 }
 
 function buildDirectDataResources(factors) {
-  const rows = styleRows(factors.dataset);
+  const rows = styleRows(factors.dataset).map(row => ({
+    ...row,
+    intervalLower: row.x - 1,
+    intervalCenter: row.x,
+    intervalUpper: row.x + 1
+  }));
   const xValues = rows.map(row => row.x);
   const width = factors.dataset.startsWith("tt-") ? factors.width * 2 : factors.width;
   const ordered = [...xValues].sort((left, right) => left - right);
@@ -955,6 +960,12 @@ function buildDirectDataResources(factors) {
       bins: factors.bins,
       includeEmpty: factors.includeEmpty
     })
+    .createECDFData({
+      id: "directECDFData",
+      source: "directSource",
+      field: "x",
+      groupBy: "color"
+    })
     .createDerivedData({
       id: "declaredFilter",
       source: "directSource",
@@ -971,6 +982,61 @@ function buildDirectDataResources(factors) {
     .createPointMark({ id: "resourcePoints", data: "directSource" })
     .encodeX({ target: "resourcePoints", field: "x" })
     .encodeY({ target: "resourcePoints", field: "positive" })
+    .createDotPlot({
+      id: "directDot",
+      data: "directSource",
+      category: "category",
+      value: "x",
+      summary: "mean",
+      guides: false
+    })
+    .createLollipopPlot({
+      id: "directLollipop",
+      data: "directSource",
+      category: "category",
+      value: "positive",
+      summary: "mean",
+      guides: false
+    })
+    .createDumbbellPlot({
+      id: "directDumbbell",
+      data: "directSource",
+      category: "category",
+      start: "x",
+      end: "positive",
+      summary: "mean",
+      guides: false
+    })
+    .editEndpointPlot({
+      target: "directDumbbell",
+      start: "y"
+    })
+    .createIntervalPlot({
+      id: "directIntervalPlot",
+      data: "directSource",
+      x: { field: "category", fieldType: "nominal" },
+      y: {
+        center: "intervalCenter",
+        lower: "intervalLower",
+        upper: "intervalUpper"
+      },
+      guides: false
+    })
+    .createRegressionPlot({
+      id: "directRegressionPlot",
+      data: "directSource",
+      x: "x",
+      y: "positive",
+      guides: false
+    })
+    .createECDFPlot({
+      id: "directECDFPlot",
+      data: "directSource",
+      field: "x",
+      groupBy: "color",
+      guides: false
+    })
+    .editECDFPlot({ target: "directECDFPlot", groupBy: false })
     .createTitle({ text: lifecycleTitle(factors, "Derived resource analysis") });
 }
 
@@ -1914,5 +1980,7 @@ export const LIFECYCLE_EXPECTED_ACTIONS = Object.freeze([
   "removeMarkHighlight", "highlightMarks", "editThetaAxis", "editRadialAxis",
   "editThetaGrid", "editRadialGrid", "replaceCompositionChild", "editFacetScales",
   "createScatterPlot", "createLinePlot", "createAreaPlot", "layoutSeries", "createBarPlot", "createParallelCoordinates",
-  "createRugPlot", "createStripPlot"
+  "createRugPlot", "createStripPlot", "createECDFData", "createDotPlot",
+  "createLollipopPlot", "createDumbbellPlot", "editEndpointPlot",
+  "createECDFPlot", "editECDFPlot", "createIntervalPlot", "createRegressionPlot"
 ]);

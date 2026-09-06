@@ -22,6 +22,7 @@ domain action을 통해서만 실행한다.
 | `materializeComposition` | `hconcat`, `vconcat`, and composition edits |
 | `materializeComputedData` | bounded row-level arithmetic data actions |
 | `materializeDensityData` | density data actions |
+| `materializeECDFData` | empirical cumulative distribution data actions |
 | `materializeGradientProfileData` | gradient-plot profile data actions |
 | `materializeHorizonData` | `encodeHorizon` and `editHorizon` derived band data |
 | `materializeGradientPlot` | deferred `createGradientPlot` completion and position encodings |

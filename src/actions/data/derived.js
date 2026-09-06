@@ -17,6 +17,7 @@ const OWNED_MARK_ROLES = Object.freeze([
   "errorBandBoundary",
   "errorBar",
   "gradientPlot",
+  "ecdfPlot",
   "regression"
 ]);
 
@@ -95,7 +96,7 @@ function assertIndependentMark(program, layer) {
   }
   const source = findDataset(program, layer.data);
   const transform = source?.transform?.[0]?.type;
-  if (["density", "horizon", "markFilter"].includes(transform)) {
+  if (["density", "ecdf", "horizon", "markFilter"].includes(transform)) {
     throw new Error(
       `Mark "${layer.id}" consumes owned ${transform} data; use its ` +
       "data or filter lifecycle action to change the source."

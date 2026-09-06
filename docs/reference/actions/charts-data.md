@@ -189,6 +189,26 @@ Atomically revise the semantic roles of a Dot, Lollipop, or Dumbbell facade.
 Owned points, rules, labels, and summary data are replaced together while the
 original appearance and guide policy are retained.
 
+## `createECDFPlot`
+
+```javascript
+createECDFPlot({ id?, data?, coordinate?, field, groupBy?, weight?, missing?, as?, color?, line?, labels?, guides? })
+```
+
+Create a right-continuous empirical cumulative distribution as an ordinary
+`step-after` line. Ties share one jump, probability is fixed to `[0,1]`, and
+optional grouping controls both statistical denominators and path identity.
+
+## `editECDFPlot`
+
+```javascript
+editECDFPlot({ target?, data?, coordinate?, field?, groupBy?, weight?, missing?, as?, color? })
+```
+
+Atomically revise an ECDF source or statistical role and rebuild its owned
+derived rows, path, final-series labels, and guides under the stable owner ID.
+Ungrouping also removes a coupled group color unless a replacement is supplied.
+
 ## `createIntervalPlot`
 
 ```javascript
@@ -198,7 +218,9 @@ createIntervalPlot({ id?, data?, coordinate?, x, y, xOffset?, yOffset?, groupBy?
 Create center points and matching statistical or explicit intervals from one
 shared dataset, coordinate, and pair of scales. The x/y interval vocabulary is
 the same as `createErrorBar`; child point and error-bar styles remain independently
-editable through their existing owners.
+editable through their existing owners. When scale IDs are omitted, the complete
+owner uses `${id}X` and `${id}Y` so unrelated earlier channel scales cannot make
+the call order dependent.
 
 ## `createRegressionPlot`
 

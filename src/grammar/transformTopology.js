@@ -5,6 +5,7 @@ const TRANSFORM_TOPOLOGY = Object.freeze({
   boxOutlier: Object.freeze({ facetTopology: "statistical" }),
   boxSummary: Object.freeze({ facetTopology: "statistical" }),
   density: Object.freeze({ facetTopology: "statistical" }),
+  ecdf: Object.freeze({ facetTopology: "statistical" }),
   filter: Object.freeze({ facetTopology: "rowPreserving" }),
   fold: Object.freeze({ facetTopology: "statistical" }),
   gradientProfile: Object.freeze({ facetTopology: "statistical" }),

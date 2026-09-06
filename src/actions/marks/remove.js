@@ -96,6 +96,7 @@ function ownedDerivedData(program, ids) {
       config.boxPlot?.summaryId,
       config.boxPlot?.outlierDataId,
       config.gradientPlot?.profileId,
+      config.ecdfPlot?.data,
       config.endpointPlot?.data
     ]) {
       if (candidate !== undefined) candidates.add(candidate);

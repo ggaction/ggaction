@@ -674,11 +674,13 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
   ID for an additional label layer on the same source. Different sources have independent default label IDs.
 - `field`, `value`, and `content` are mutually exclusive with the same semantics, supported marks, formatting and validation
   as `encodeText`. Omitting all three means `content: "value"`; this requires a Bar or Arc with a supported semantic measure.
-  Point/Rule/Rect require an explicit field or constant rather than guessing one position channel as the value.
+  Point/Line/Rule/Rect require an explicit field or constant rather than guessing one position channel as the value.
   `format` defaults to `"auto"`, including fractional shares; specify `".0%"` or another percent token for percentages.
 - Appearance defaults to centered/middle text at the source's existing final-item anchor. Other appearance defaults and
   source-fill contrast use `createTextMark`. No sign-dependent offsets are inferred; use explicit baseline/dx/dy for endpoint
   placement. Explicit appearance overrides the facade defaults.
+- A Line source creates one label per final series item. Its anchor is the last concrete path coordinate and an explicit
+  field reads the final ordered member row. This supports endpoint labels without changing Line path or selection grain.
 - `rotation` inherits the shared Text `RotationInput`: a legacy finite number means radians, while an exact
   `{ value: finite, unit: "degrees" | "radians" }` object makes the unit explicit and normalizes to radians.
 - Omitted/false `layout` creates no collision policy. `{}` enables `layoutLabels` defaults; an object accepts its options
@@ -697,7 +699,7 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 ### Value coverage — `createMarkLabels`
 
-- ✅ Covered: shortest call, source-owned IDs, explicit/inferred sources, all text content branches, appearance overrides,
+- ✅ Covered: shortest call, source-owned IDs, explicit/inferred Point/Bar/Line/Rule/Rect/Arc sources, all text content branches, appearance overrides,
   incomplete source completion, optional layout and lower edits, resize/filter replay, source removal, nested trace,
   invalid-state atomicity, literal primitive/public graphics and Canvas/PNG equality, public types and installed package/browser discovery.
 - Evidence: `test/unit/actions/marks/mark-labels.test.js`, `test/contracts/mark-label-content.test.js`,

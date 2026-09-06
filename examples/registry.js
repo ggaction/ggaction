@@ -6,6 +6,7 @@ import { createAreaSimple } from "./area-layout/program.js";
 import { createDotPlotExample } from "./dot-plot/program.js";
 import { createLollipopPlotExample } from "./lollipop-plot/program.js";
 import { createDumbbellPlotExample } from "./dumbbell-plot/program.js";
+import { createECDFExample } from "./ecdf-plot/program.js";
 import { createHorizonExample } from "./horizon-plot/program.js";
 import { createDensityExample } from "./density-plot/program.js";
 import { createPieExample } from "./pie-plot/program.js";
@@ -123,6 +124,11 @@ export const PUBLIC_CHARTS = Object.freeze([
     id: "dumbbell-plot", data: {}, width: 480, height: 320,
     createProgram: () => createDumbbellPlotExample(), testDirectory: "endpoint-plots",
     browser: { path: "dumbbell-plot/", canvas: "#chart" }
+  }),
+  example({
+    id: "ecdf-plot", data: {}, width: 520, height: 340,
+    createProgram: () => createECDFExample(), testDirectory: "ecdf-plot", docsGroup: "tutorials",
+    browser: { path: "ecdf-plot/", canvas: "#chart" }
   }),
   example({
     id: "color-transitions", data: {}, width: 1000, height: 700, docsGroup: "tutorials",

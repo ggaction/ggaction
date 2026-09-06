@@ -244,7 +244,8 @@ createMarkLabels({ id?, source?, field?, value?, content?, normalizeBy?, format?
 
 Create final-item labels on an existing mark through text creation, encoding, and
 optional collision layout. The default content is the source's semantic value;
-Point/Rule/Rect require a field or constant. The default ID is `<source>-labels`.
+Point/Line/Rule/Rect require a field or constant. A Line creates one label per
+series at its final path coordinate. The default ID is `<source>-labels`.
 [Text marks](../../api/marks/text.md)
 
 ## `createAnnotation`
@@ -277,7 +278,8 @@ createTextMark({ id?, data?, source?, text?, fill?, opacity?, fontSize?, fontFam
 ```
 
 Create a semantic text layer. Omitted data and position attach to the current
-or unique compatible point, bar, rect, rule, or arc layer. Arc text anchors at
+or unique compatible point, bar, line, rect, rule, or arc layer. Line text anchors
+at each series' final path coordinate; Arc text anchors at
 sector centers. `text` is constant-content shorthand. Source-owned text follows final source positions and never
 contributes independent scale-domain values. Source field or scale changes also drive its labels and guides.
 Direct `encodeX/Y` on attached Text is rejected: edit the source, use `editTextMark({ dx, dy })`, or create

@@ -165,6 +165,7 @@ export function canMaterializeRule(program, layer) {
 
 const TEXT_SOURCE_CAPABILITIES = Object.freeze({
   point: canMaterializePoint,
+  line: canMaterializeLine,
   bar: canMaterializeBar,
   rule: canMaterializeRule,
   rect: (program, layer) => canMaterializeRect(program, layer) ||

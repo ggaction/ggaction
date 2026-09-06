@@ -41,6 +41,7 @@ interface ChartProgramActions {
   createStackData(options: StackDataOptions): ChartProgram;
   createRegressionData(options: RegressionDataOptions): ChartProgram;
   createIntervalData(options: IntervalDataOptions): ChartProgram;
+  createECDFData(options: ECDFDataOptions): ChartProgram;
   createTimeUnitData(options: TimeUnitDataOptions): ChartProgram;
   createWindowData(options: WindowDataOptions): ChartProgram;
   createBin2DData(options: Bin2DDataOptions): ChartProgram;
@@ -127,6 +128,8 @@ interface ChartProgramActions {
   createLollipopPlot(options: CreateLollipopPlotOptions): ChartProgram;
   createDumbbellPlot(options: CreateDumbbellPlotOptions): ChartProgram;
   editEndpointPlot(options: EditEndpointPlotOptions): ChartProgram;
+  createECDFPlot(options: CreateECDFPlotOptions): ChartProgram;
+  editECDFPlot(options: EditECDFPlotOptions): ChartProgram;
   createLinePlot(options: CreateLinePlotOptions): ChartProgram;
   createPolarScatterPlot(options: CreatePolarScatterPlotOptions): ChartProgram;
   createPolarLinePlot(options: CreatePolarLinePlotOptions): ChartProgram;

@@ -28,6 +28,7 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`createBin2DData`](current/CORE.md#createbin2ddata) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editBin2DData`](current/CORE.md#editbin2ddata) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createIntervalData`](current/STATISTICS.md#createintervaldata) | statistics | Immutable create-only | Intentional | ✅ / ✅ / ✅ |
+| user-facing | [`createECDFData`](current/STATISTICS.md#createecdfdata) | statistics | Immutable create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createPointMark`](current/MARKS.md#createpointmark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createTickMark`](current/MARKS.md#createtickmark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createReferenceLine`](current/MARKS.md#createreferenceline) | marks | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
@@ -207,6 +208,8 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`createLollipopPlot`](current/COMPLETE_CHARTS.md#createlollipopplot) | charts | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createDumbbellPlot`](current/COMPLETE_CHARTS.md#createdumbbellplot) | charts | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editEndpointPlot`](current/COMPLETE_CHARTS.md#editendpointplot) | charts | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`createECDFPlot`](current/COMPLETE_CHARTS.md#createecdfplot) | charts | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editECDFPlot`](current/COMPLETE_CHARTS.md#editecdfplot) | charts | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createIntervalPlot`](current/COMPLETE_CHARTS.md#createintervalplot) | charts | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createRegressionPlot`](current/COMPLETE_CHARTS.md#createregressionplot) | charts | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createLinePlot`](current/BASIC_CHARTS.md#createlineplot) | charts | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |

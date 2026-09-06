@@ -3,7 +3,7 @@
   "packageVersion": "0.0.12",
   "typeSource": "types/program.d.ts",
   "errorPolicy": "An empty errors array means the compact card has no curated error override; consult the canonical route for validation, inference, and recovery behavior.",
-  "count": 220,
+  "count": 223,
   "cards": [
     {
       "schemaVersion": 2,
@@ -1319,6 +1319,79 @@
       "snippet": "program.createIntervalData({ id: \"interval-data-1\", field: \"value\" })",
       "errors": [],
       "route": "/reference/actions/statistics/#createintervaldata"
+    },
+    {
+      "schemaVersion": 2,
+      "name": "createECDFData",
+      "layer": "user-facing",
+      "domain": "statistics",
+      "summary": "Create immutable sorted support, cumulative count or weight, and probability rows.",
+      "signature": "createECDFData(options: ECDFDataOptions): ChartProgram;",
+      "intents": [
+        "create ecdf data",
+        "create",
+        "add",
+        "statistical layer",
+        "statistical transform",
+        "empirical cumulative distribution data",
+        "sorted cumulative probabilities"
+      ],
+      "lifecycle": "Immutable create-only",
+      "resources": {
+        "prerequisites": [
+          "source dataset"
+        ],
+        "owns": [
+          "empirical cumulative distribution data"
+        ],
+        "idOptions": [
+          "id",
+          "source"
+        ]
+      },
+      "options": [
+        {
+          "name": "id",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "source",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "field",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "groupBy",
+          "required": false,
+          "type": "string | readonly [string, ...string[]] | undefined"
+        },
+        {
+          "name": "weight",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "missing",
+          "required": false,
+          "type": "\"drop\" | \"error\" | undefined"
+        },
+        {
+          "name": "as",
+          "required": false,
+          "type": "ECDFOutputFields | undefined"
+        }
+      ],
+      "callPatterns": [
+        "createECDFData({ id, field, source?, groupBy?, weight?, missing?, as? })"
+      ],
+      "snippet": "program.createECDFData({ id: \"ecdf-data-1\", field: \"value\" })",
+      "errors": [],
+      "route": "/reference/actions/statistics/#createecdfdata"
     },
     {
       "schemaVersion": 2,
@@ -14315,6 +14388,188 @@
       "snippet": "program.editEndpointPlot({ value: \"updatedValue\" })",
       "errors": [],
       "route": "/reference/actions/charts-data/#editendpointplot"
+    },
+    {
+      "schemaVersion": 2,
+      "name": "createECDFPlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "summary": "Create a right-continuous empirical cumulative distribution as an ordinary step-after line.",
+      "signature": "createECDFPlot(options: CreateECDFPlotOptions): ChartProgram;",
+      "intents": [
+        "create ecdf plot",
+        "create",
+        "add",
+        "complete chart",
+        "chart facade",
+        "ECDF plot",
+        "empirical cumulative distribution"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "canvas and dataset context"
+        ],
+        "owns": [
+          "ECDF plot"
+        ],
+        "idOptions": [
+          "id",
+          "data",
+          "coordinate"
+        ]
+      },
+      "options": [
+        {
+          "name": "id",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "data",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "coordinate",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "field",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "groupBy",
+          "required": false,
+          "type": "string | readonly [string, ...string[]] | undefined"
+        },
+        {
+          "name": "weight",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "missing",
+          "required": false,
+          "type": "\"drop\" | \"error\" | undefined"
+        },
+        {
+          "name": "as",
+          "required": false,
+          "type": "ECDFOutputFields | undefined"
+        },
+        {
+          "name": "color",
+          "required": false,
+          "type": "LineCategoricalColorChannel | undefined"
+        },
+        {
+          "name": "line",
+          "required": false,
+          "type": "{ strokeWidth?: number | undefined; stroke?: string | undefined; opacity?: number | undefined; } | undefined"
+        },
+        {
+          "name": "labels",
+          "required": false,
+          "type": "false | EndpointLabelOptions | undefined"
+        },
+        {
+          "name": "guides",
+          "required": false,
+          "type": "false | CartesianPathGuideOptions | undefined"
+        }
+      ],
+      "callPatterns": [
+        "createECDFPlot({ field, id?, data?, coordinate?, groupBy?, weight?, missing?, as? })"
+      ],
+      "snippet": "program.createECDFPlot({ field: \"value\" })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#createecdfplot"
+    },
+    {
+      "schemaVersion": 2,
+      "name": "editECDFPlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "summary": "Atomically revise an ECDF source or statistical role and rebuild its owned derived rows, path, final-series labels, and guides under the stable owner ID.",
+      "signature": "editECDFPlot(options: EditECDFPlotOptions): ChartProgram;",
+      "intents": [
+        "edit ecdf plot",
+        "edit",
+        "change",
+        "complete chart",
+        "chart facade",
+        "ECDF plot",
+        "empirical cumulative distribution"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing ECDF plot",
+          "canvas and dataset context"
+        ],
+        "owns": [],
+        "idOptions": [
+          "target",
+          "data",
+          "coordinate"
+        ]
+      },
+      "options": [
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "data",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "coordinate",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "field",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "missing",
+          "required": false,
+          "type": "\"drop\" | \"error\" | undefined"
+        },
+        {
+          "name": "as",
+          "required": false,
+          "type": "ECDFOutputFields | undefined"
+        },
+        {
+          "name": "groupBy",
+          "required": false,
+          "type": "string | false | readonly [string, ...string[]] | undefined"
+        },
+        {
+          "name": "weight",
+          "required": false,
+          "type": "string | false | undefined"
+        },
+        {
+          "name": "color",
+          "required": false,
+          "type": "false | LineCategoricalColorChannel | undefined"
+        }
+      ],
+      "callPatterns": [
+        "editECDFPlot({ target?, data?, coordinate?, field?, missing?, as?, groupBy?, weight? })"
+      ],
+      "snippet": "program.editECDFPlot({ field: \"value\" })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#editecdfplot"
     },
     {
       "schemaVersion": 2,

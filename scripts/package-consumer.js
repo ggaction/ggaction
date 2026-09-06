@@ -153,6 +153,13 @@ async function testNodeConsumer(directory) {
       jitter: { maxOffset: { band: 0.1 }, seed: "package-strip", key: "angle" },
       guides: false
     });
+    const ecdfData = polarBase.createECDFData({
+      id: "packageECDFData", field: "distance", groupBy: "group"
+    });
+    const ecdf = polarBase.createECDFPlot({
+      id: "packageECDF", field: "distance", groupBy: "group", color: "group",
+      labels: { format: ".0%" }, guides: false
+    });
     assert.equal(polarScatter.semanticSpec.layers[0].mark.type, "point");
     assert.equal(polarScatter.semanticSpec.coordinates[0].type, "polar");
     assert.equal(
@@ -174,11 +181,20 @@ async function testNodeConsumer(directory) {
     assert.equal(strip.graphicSpec.objects.stripPlot.items.length, 3);
     assert.equal(rug.trace.children.at(-1).op, "createRugPlot");
     assert.equal(strip.trace.children.at(-1).op, "createStripPlot");
+    assert.equal(
+      ecdfData.semanticSpec.datasets.find(dataset => dataset.id === "packageECDFData")
+        .transform[0].type,
+      "ecdf"
+    );
+    assert.equal(ecdf.graphicSpec.objects.packageECDF.items.length, 1);
+    assert.equal(ecdf.graphicSpec.objects.packageECDFLabel.items[0].properties.text, "100%");
     assert.equal(basicChart().createPolarScatterPlot, undefined);
     assert.equal(basicChart().createPolarLinePlot, undefined);
     assert.equal(basicChart().createRadarPlot, undefined);
     assert.equal(basicChart().createRugPlot, undefined);
     assert.equal(basicChart().createStripPlot, undefined);
+    assert.equal(basicChart().createECDFData, undefined);
+    assert.equal(basicChart().createECDFPlot, undefined);
     const axisLifecycle = chart()
       .createCanvas({ width: 240, height: 180, margin: 50 })
       .createData({ values: [{ x: 1, y: 2 }, { x: 2, y: 4 }] })
@@ -1556,6 +1572,9 @@ async function testTypeScriptConsumer(directory) {
       type CreateRadarPlotOptions,
       type CreateRugPlotOptions,
       type CreateStripPlotOptions,
+      type CreateECDFPlotOptions,
+      type EditECDFPlotOptions,
+      type ECDFDataOptions,
       type ColorLayout,
       type ComputedDataOptions,
       type ComputedExpression,
@@ -1633,12 +1652,24 @@ async function testTypeScriptConsumer(directory) {
       x: "value", y: { field: "category", fieldType: "nominal" },
       jitter: { maxOffset: { band: 0.1 }, seed: "typed-strip" }, guides: false
     };
+    const ecdfDataOptions: ECDFDataOptions = {
+      id: "typedECDFData", field: "value", groupBy: "category", weight: "weight"
+    };
+    const ecdfOptions: CreateECDFPlotOptions = {
+      field: "value", groupBy: "category", color: "category",
+      labels: { format: ".0%" }, guides: false
+    };
+    const ecdfEditOptions: EditECDFPlotOptions = {
+      groupBy: false, weight: false, color: false
+    };
     program.createPolarScatterPlot(polarScatterOptions);
     program.createPolarLinePlot(polarLineOptions);
     program.createRadarPlot(radarOptions);
     program.createRadarPlot(radarWideOptions);
     program.createRugPlot(rugOptions);
     program.createStripPlot(stripOptions);
+    program.createECDFData(ecdfDataOptions);
+    program.createECDFPlot(ecdfOptions).editECDFPlot(ecdfEditOptions);
     // @ts-expect-error Polar facades are Full only.
     basicChart().createPolarScatterPlot(polarScatterOptions);
     // @ts-expect-error Polar facades are Full only.
@@ -1651,6 +1682,10 @@ async function testTypeScriptConsumer(directory) {
     basicChart().createRugPlot(rugOptions);
     // @ts-expect-error Strip facade is Full only.
     basicChart().createStripPlot(stripOptions);
+    // @ts-expect-error ECDF data is Full only.
+    basicChart().createECDFData(ecdfDataOptions);
+    // @ts-expect-error ECDF facade is Full only.
+    basicChart().createECDFPlot(ecdfOptions);
     const fitOptions: FitCanvasOptions = { padding: 4, overflow: "report" };
     const labelLayout: AxisLabelLayoutOptions = {
       rotation: { value: -30, unit: "degrees" },
@@ -2793,7 +2828,7 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.a
       "parallel-coordinates",
       "horizon",
       "violin-plot",
-      "polar-radar-rug-strip-facades",
+      "polar-radar-rug-strip-ecdf-facades",
       "right-categorical-legend-offset",
       "sequential-palette-count",
       "typescript",

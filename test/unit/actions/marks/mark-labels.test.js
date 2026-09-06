@@ -43,6 +43,20 @@ test("semantic, raw and constant content use the existing text encoding owner", 
   assert.deepEqual(texts(point.createMarkLabels({ field: "category" }), "point-labels"), ["A", "B"]);
 });
 
+test("labels the final coordinate and final row of every line series", () => {
+  const p = base()
+    .createLineMark({ id: "line" })
+    .encodeX({ target: "line", field: "value" })
+    .encodeY({ target: "line", field: "value" })
+    .createMarkLabels({ source: "line", field: "category", dx: 5 });
+  assert.deepEqual(texts(p, "line-labels"), ["B"]);
+  const commands = p.graphicSpec.objects.line.items[0].properties.commands;
+  const endpoint = commands.at(-1);
+  const label = p.graphicSpec.objects["line-labels"].items[0].properties;
+  assert.equal(label.x, endpoint.x + 5);
+  assert.equal(label.y, endpoint.y);
+});
+
 test("incomplete explicit sources retain content and styles until completion", () => {
   const source = base().createBarMark({ id: "bars" });
   const pending = source.createMarkLabels({ source: "bars", fontSize: 18 });

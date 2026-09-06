@@ -19,6 +19,7 @@ test("keeps every stored dataset transform in the grammar registry", () => {
     summary: ["materializeSummaryData", "statistical"],
     stack: ["materializeStackData", "statistical"],
     density: ["materializeDensityData", "statistical"],
+    ecdf: ["materializeECDFData", "statistical"],
     horizon: ["materializeHorizonData", "statistical"],
     interval: ["materializeIntervalData", "statistical"],
     timeUnit: ["materializeTimeUnitData", "rowPreserving"],

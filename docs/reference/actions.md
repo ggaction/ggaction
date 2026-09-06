@@ -53,6 +53,8 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createDerivedData`](./actions/advanced.md#semantic-resources-and-regression-layers) | user-facing | core |
 | [`createDotPlot`](./actions/charts-data.md#createdotplot) | user-facing | charts |
 | [`createDumbbellPlot`](./actions/charts-data.md#createdumbbellplot) | user-facing | charts |
+| [`createECDFData`](./actions/statistics.md#createecdfdata) | user-facing | statistics |
+| [`createECDFPlot`](./actions/charts-data.md#createecdfplot) | user-facing | charts |
 | [`createErrorBand`](./actions/statistics.md#createerrorband) | user-facing | statistics |
 | [`createErrorBar`](./actions/statistics.md#createerrorbar) | user-facing | statistics |
 | [`createFoldData`](./actions/statistics.md#createfolddata) | user-facing | statistics |
@@ -135,6 +137,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editCanvas`](./actions/charts-data.md#editcanvas) | user-facing | core |
 | [`editCompositionLayout`](./actions/charts-data.md#editcompositionlayout) | user-facing | composition |
 | [`editDensity`](./actions/encodings.md#editdensity) | user-facing | encodings |
+| [`editECDFPlot`](./actions/charts-data.md#editecdfplot) | user-facing | charts |
 | [`editEndpointPlot`](./actions/charts-data.md#editendpointplot) | user-facing | charts |
 | [`editErrorBand`](./actions/statistics.md#editerrorband-and-editerrorbandboundary) | user-facing | statistics |
 | [`editErrorBandBoundary`](./actions/statistics.md#editerrorband-and-editerrorbandboundary) | user-facing | statistics |

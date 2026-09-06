@@ -29,6 +29,10 @@ function sourceValue(item, source, field) {
   if (item.members.length === 1 && Object.hasOwn(item.members[0], field)) {
     return item.members[0][field];
   }
+  if (source.mark.type === "line" && item.members.length > 0) {
+    const endpoint = item.members.at(-1);
+    if (Object.hasOwn(endpoint, field)) return endpoint[field];
+  }
   return undefined;
 }
 
@@ -64,6 +68,17 @@ function sourceAnchor(program, source, item) {
       x: item.properties.x2,
       y: item.properties.y2
     };
+  }
+  if (source.mark.type === "line") {
+    const graphicId = item.graphicIds?.[0];
+    const graphic = program.graphicSpec.objects[source.id]?.items?.find(
+      candidate => candidate.id === graphicId
+    );
+    const commands = graphic?.properties?.commands;
+    const endpoint = Array.isArray(commands)
+      ? [...commands].reverse().find(command => Number.isFinite(command.x) && Number.isFinite(command.y))
+      : undefined;
+    return { x: endpoint?.x, y: endpoint?.y };
   }
   return { x: item.properties.x, y: item.properties.y };
 }

@@ -24,8 +24,15 @@ const ERROR_BAR_OPTIONS = Object.freeze([
   "caps", "capSize", "stroke", "strokeWidth", "strokeDash", "opacity"
 ]);
 
-function intervalChannel(value, operation, channel) {
-  return normalizeFieldEncoding(value, `${operation} ${channel}`);
+function intervalChannel(value, operation, channel, id) {
+  const encoding = normalizeFieldEncoding(value, `${operation} ${channel}`);
+  return {
+    ...encoding,
+    scale: {
+      ...(encoding.scale ?? {}),
+      id: encoding.scale?.id ?? `${id}${channel.toUpperCase()}`
+    }
+  };
 }
 
 function centerField(program, config) {
@@ -82,8 +89,8 @@ export const createIntervalPlot = action(
     validateFacadeOptions(args, INTERVAL_OPTIONS, operation);
     const id = resolveFacadeId(this, args.id, { defaultId: "intervalPlot", operation });
     const data = resolveFacadeData(this, args.data, operation);
-    const x = intervalChannel(args.x, operation, "x");
-    const y = intervalChannel(args.y, operation, "y");
+    const x = intervalChannel(args.x, operation, "x", id);
+    const y = intervalChannel(args.y, operation, "y", id);
     const point = normalizeAppearance(args.point, POINT_OPTIONS, `${operation} point`);
     const { radius, ...pointAppearance } = point;
     if (radius !== undefined) validateNonNegativeFinite(radius, `${operation} point radius`);

@@ -9,6 +9,7 @@
     { "id": "chart.dot", "phrases": ["dot plot", "categorical dot plot", "category dot chart"] },
     { "id": "chart.lollipop", "phrases": ["lollipop plot", "lollipop chart", "baseline stem chart"] },
     { "id": "chart.dumbbell", "phrases": ["dumbbell plot", "dumbbell chart", "connected dot plot", "before and after chart"] },
+    { "id": "chart.ecdf", "phrases": ["ecdf plot", "ecdf chart", "empirical cumulative distribution", "empirical cumulative distribution plot"] },
     { "id": "chart.interval", "phrases": ["interval plot", "point interval plot", "point and interval chart"] },
     { "id": "chart.regression", "phrases": ["regression plot", "regression scatter plot", "scatter plot with fit"], "shadows": ["chart.scatter"] },
     { "id": "chart.line", "phrases": ["line chart", "line plot", "time series chart"] },
@@ -51,6 +52,7 @@
     { "id": "transform.bin1d", "phrases": ["bin one field", "one dimensional bins", "histogram bins"] },
     { "id": "transform.bin2d", "phrases": ["bin two fields", "two dimensional bins", "2d bins", "bin2d", "rectangular bins", "binned heatmap"] },
     { "id": "transform.interval", "phrases": ["interval data", "confidence interval data", "summary interval"] },
+    { "id": "transform.ecdf", "phrases": ["ecdf data", "empirical cumulative distribution data", "cumulative probability transform"] },
 
     { "id": "statistics.regression", "phrases": ["regression line", "trend line", "fitted line", "regression fit", "best fit line", "fitted trend"] },
     { "id": "statistics.errorBar", "phrases": ["error bars", "error bar", "point and whisker", "point whisker plot", "uncertainty whiskers"] },
@@ -122,6 +124,7 @@
     { "id": "action.createDotPlot", "kind": "action", "name": "createDotPlot", "order": 40, "anchors": ["chart.dot"], "covers": ["chart.dot", "encoding.x", "encoding.y", "guide.axes", "guide.all"], "baseOptions": { "category": "\"category\"", "value": "\"value\"" } },
     { "id": "action.createLollipopPlot", "kind": "action", "name": "createLollipopPlot", "order": 40, "anchors": ["chart.lollipop"], "covers": ["chart.lollipop", "encoding.x", "encoding.y", "guide.axes", "guide.all"], "baseOptions": { "category": "\"category\"", "value": "\"value\"" } },
     { "id": "action.createDumbbellPlot", "kind": "action", "name": "createDumbbellPlot", "order": 40, "anchors": ["chart.dumbbell"], "covers": ["chart.dumbbell", "encoding.x", "encoding.y", "guide.axes", "guide.all"], "baseOptions": { "category": "\"category\"", "start": "\"before\"", "end": "\"after\"" } },
+    { "id": "action.createECDFPlot", "kind": "action", "name": "createECDFPlot", "order": 40, "anchors": ["chart.ecdf"], "covers": ["chart.ecdf", "transform.ecdf", "encoding.x", "encoding.y", "guide.axes", "guide.all"], "baseOptions": { "field": "\"value\"" } },
     { "id": "action.createIntervalPlot", "kind": "action", "name": "createIntervalPlot", "order": 40, "anchors": ["chart.interval"], "covers": ["chart.interval", "statistics.errorBar", "encoding.x", "encoding.y", "guide.axes", "guide.all"], "baseOptions": { "x": "\"category\"", "y": "\"value\"" } },
     { "id": "action.createRegressionPlot", "kind": "action", "name": "createRegressionPlot", "order": 40, "anchors": ["chart.regression"], "covers": ["chart.regression", "chart.scatter", "statistics.regression", "statistics.errorBand", "encoding.x", "encoding.y", "guide.axes", "guide.all"], "baseOptions": { "x": "\"x\"", "y": "\"y\"" } },
     { "id": "action.createLinePlot", "kind": "action", "name": "createLinePlot", "order": 40, "anchors": ["chart.line"], "covers": ["chart.line", "encoding.x", "encoding.y", "encoding.color", "encoding.group", "encoding.strokeDash", "guide.axes", "guide.legend"], "baseOptions": { "x": "\"x\"", "y": "\"y\"" }, "optionsByConstraint": { "encoding.color": { "color": "\"category\"" }, "encoding.group": { "groupBy": "\"category\"" }, "encoding.strokeDash": { "strokeDash": "{ field: \"category\" }" }, "guide.axes": { "guides": "{}" }, "guide.legend": { "guides": "{ legend: {} }" } } },
@@ -164,6 +167,7 @@
     { "id": "action.encodeHistogram", "kind": "action", "name": "encodeHistogram", "order": 50, "anchors": ["transform.bin1d"], "covers": ["transform.bin1d"], "baseOptions": { "field": "\"value\"" } },
     { "id": "action.createBin2DData", "kind": "action", "name": "createBin2DData", "order": 30, "anchors": ["transform.bin2d"], "covers": ["transform.bin2d"], "baseOptions": { "id": "\"bins\"", "x": "\"x\"", "y": "\"y\"" } },
     { "id": "action.createIntervalData", "kind": "action", "name": "createIntervalData", "order": 30, "anchors": ["transform.interval"], "covers": ["transform.interval"], "baseOptions": { "id": "\"interval\"", "field": "\"value\"" } },
+    { "id": "action.createECDFData", "kind": "action", "name": "createECDFData", "order": 30, "anchors": ["transform.ecdf"], "covers": ["transform.ecdf"], "baseOptions": { "id": "\"ecdf\"", "field": "\"value\"" } },
 
     { "id": "action.createRegression", "kind": "action", "name": "createRegression", "order": 60, "anchors": ["statistics.regression"], "covers": ["mark.line", "transform.regression", "statistics.regression", "statistics.errorBand"], "baseOptions": {} },
     { "id": "action.createErrorBar", "kind": "action", "name": "createErrorBar", "order": 60, "anchors": ["statistics.errorBar"], "covers": ["statistics.errorBar"], "baseOptions": {} },

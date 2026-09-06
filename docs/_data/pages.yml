@@ -64,6 +64,9 @@
 - title: Dot, Lollipop, and Dumbbell Plots
   url: /tutorials/endpoint-plots/
   parent: /tutorials/
+- title: Empirical Cumulative Distribution Plots
+  url: /tutorials/ecdf/
+  parent: /tutorials/
 - title: Chart Recipes
   url: /recipes/
   nav_group: start

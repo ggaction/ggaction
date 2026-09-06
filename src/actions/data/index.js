@@ -27,6 +27,7 @@ import {
   materializeDensityData
 } from "./density.js";
 import { createIntervalData, materializeIntervalData } from "./interval.js";
+import { createECDFData, materializeECDFData } from "./ecdf.js";
 import { createHorizonData, materializeHorizonData } from "./horizon.js";
 import {
   createBin2DData,
@@ -65,6 +66,8 @@ export function registerDataActions(ProgramClass) {
   ProgramClass.prototype.createRegressionData = createRegressionData;
   ProgramClass.prototype.materializeIntervalData = materializeIntervalData;
   ProgramClass.prototype.createIntervalData = createIntervalData;
+  ProgramClass.prototype.createECDFData = createECDFData;
+  ProgramClass.prototype.materializeECDFData = materializeECDFData;
   ProgramClass.prototype.createHorizonData = createHorizonData;
   ProgramClass.prototype.materializeHorizonData = materializeHorizonData;
   ProgramClass.prototype.createWindowData = createWindowData;

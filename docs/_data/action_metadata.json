@@ -99,6 +99,11 @@
     "layer": "user-facing",
     "domain": "statistics"
   },
+  "createECDFData": {
+    "operation": "create",
+    "layer": "user-facing",
+    "domain": "statistics"
+  },
   "createPointMark": {
     "operation": "create",
     "layer": "user-facing",
@@ -990,6 +995,16 @@
     "domain": "charts"
   },
   "editEndpointPlot": {
+    "operation": "edit",
+    "layer": "user-facing",
+    "domain": "charts"
+  },
+  "createECDFPlot": {
+    "operation": "create",
+    "layer": "user-facing",
+    "domain": "charts"
+  },
+  "editECDFPlot": {
     "operation": "edit",
     "layer": "user-facing",
     "domain": "charts"

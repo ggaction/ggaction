@@ -2568,6 +2568,120 @@ immutable action while retaining the original appearance and guide policy.
 Individual point, rule, label, scale, and guide actions remain the lower-level
 style editing path.
 
+<!-- Source: /tutorials/ecdf/ -->
+
+# Empirical Cumulative Distribution Plots
+
+![Two weighted empirical cumulative distributions](./assets/images/ecdf-plot.png)
+
+An empirical cumulative distribution function answers: “What share of the
+observations is less than or equal to this value?” `createECDFPlot` owns that
+statistical definition and expresses the result with ordinary derived data,
+Line, encoding, label, scale, and guide actions.
+
+## Build a grouped weighted ECDF
+
+```javascript
+import { chart, render } from "ggaction";
+
+const values = [
+  { group: "A", value: 1, weight: 2 },
+  { group: "B", value: 2, weight: 1 },
+  { group: "A", value: 3, weight: 1 },
+  { group: "B", value: 4, weight: 3 }
+];
+
+const program = chart()
+  .createCanvas({ width: 520, height: 340, margin: 55 })
+  .createData({ id: "data", values })
+  .createECDFPlot({
+    id: "ecdf",
+    field: "value",
+    groupBy: "group",
+    weight: "weight",
+    color: "group",
+    labels: { dx: 10 }
+  });
+
+render(program, document.querySelector("#chart").getContext("2d"));
+```
+
+The runnable repository version is in
+[`examples/ecdf-plot`](https://github.com/ggaction/ggaction/tree/main/examples/ecdf-plot).
+
+## How the step data is defined
+
+For unweighted values `[1, 1, 2, 4]`, the materialized rows represent:
+
+| Support | Cumulative count | Probability |
+| ---: | ---: | ---: |
+| 1 | 0 | 0 |
+| 1 | 2 | 0.5 |
+| 2 | 3 | 0.75 |
+| 4 | 4 | 1 |
+
+The first row seeds the lower end of the first jump. The Line uses
+`curve: "step-after"`, so the visible jump at each support is the
+right-continuous definition `F(x) = P(X <= x)`. Equal observations share one
+jump instead of depending on source row order.
+
+Grouping computes a separate denominator and path for each group. With
+`weight`, the denominator is the sum of positive finite weights. Zero-weight
+rows add neither mass nor support. Negative weights and a zero denominator are
+errors.
+
+## Reuse the derived rows
+
+Use `createECDFData` when another chart or annotation should consume the same
+statistics:
+
+```javascript
+const dataOnly = chart()
+  .createData({ id: "data", values })
+  .createECDFData({
+    id: "distribution",
+    field: "value",
+    groupBy: "group",
+    weight: "weight",
+    as: { value: "support", cumulative: "mass", probability: "share" }
+  });
+```
+
+The immutable transform records the source field, grouping, weight and missing
+policies, output fields, and resolved denominator for every group.
+
+## Missing values and grouping
+
+`missing` defaults to `"drop"`. It omits a row whose value, weight, or group
+field is invalid. Use `missing: "error"` when incomplete input should stop the
+action. A negative weight remains an error under both policies.
+
+Color does not create statistical groups. If `color` uses a field, include
+that field in `groupBy`; this keeps appearance from silently changing the
+denominator.
+
+## Revise the statistical source
+
+Filter raw observations first, then point the ECDF owner at that derived source:
+
+```javascript
+const revised = program
+  .filterData({
+    id: "positive",
+    source: "data",
+    field: "value",
+    predicate: { op: "gt", value: 1 }
+  })
+  .editECDFPlot({ target: "ecdf", data: "positive" });
+```
+
+The edit recalculates denominators and steps, then rebuilds the path, endpoint
+labels, and guides while retaining the stored appearance policy. Use
+`groupBy: false` to remove grouping or `weight: false` to return to sample
+counts. Ungrouping removes a coupled group color; `color: false` removes it
+explicitly during another role edit. Line appearance, labels, scales, and guides remain editable through
+their ordinary lower-level actions.
+
 <!-- Source: /recipes/ -->
 
 # Chart Recipes
@@ -5872,7 +5986,9 @@ final visual item, so aggregated marks do not get duplicate labels for input row
 Omitting `field`, `value`, and `content` selects `content: "value"` for a supported
 Bar or Arc. Use `content: "category"` or `"share"` for other semantic content, `field`
 for raw/common fields, or `value` for a constant. These choices are exclusive.
-Point, Rule, and Rect labels require a field or constant. Format defaults to
+Point, Line, Rule, and Rect labels require a field or constant. A Line source
+creates one label at the final coordinate of each series and reads explicit fields
+from that final ordered row. Format defaults to
 `"auto"`; shares need an explicit percent format to display percentages.
 
 Text is centered horizontally and vertically at the existing source anchor. Use
@@ -13106,6 +13222,8 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createDerivedData`](./reference/actions/advanced/#semantic-resources-and-regression-layers) | user-facing | core |
 | [`createDotPlot`](./reference/actions/charts-data/#createdotplot) | user-facing | charts |
 | [`createDumbbellPlot`](./reference/actions/charts-data/#createdumbbellplot) | user-facing | charts |
+| [`createECDFData`](./reference/actions/statistics/#createecdfdata) | user-facing | statistics |
+| [`createECDFPlot`](./reference/actions/charts-data/#createecdfplot) | user-facing | charts |
 | [`createErrorBand`](./reference/actions/statistics/#createerrorband) | user-facing | statistics |
 | [`createErrorBar`](./reference/actions/statistics/#createerrorbar) | user-facing | statistics |
 | [`createFoldData`](./reference/actions/statistics/#createfolddata) | user-facing | statistics |
@@ -13188,6 +13306,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editCanvas`](./reference/actions/charts-data/#editcanvas) | user-facing | core |
 | [`editCompositionLayout`](./reference/actions/charts-data/#editcompositionlayout) | user-facing | composition |
 | [`editDensity`](./reference/actions/encodings/#editdensity) | user-facing | encodings |
+| [`editECDFPlot`](./reference/actions/charts-data/#editecdfplot) | user-facing | charts |
 | [`editEndpointPlot`](./reference/actions/charts-data/#editendpointplot) | user-facing | charts |
 | [`editErrorBand`](./reference/actions/statistics/#editerrorband-and-editerrorbandboundary) | user-facing | statistics |
 | [`editErrorBandBoundary`](./reference/actions/statistics/#editerrorband-and-editerrorbandboundary) | user-facing | statistics |
@@ -13493,6 +13612,26 @@ Atomically revise the semantic roles of a Dot, Lollipop, or Dumbbell facade.
 Owned points, rules, labels, and summary data are replaced together while the
 original appearance and guide policy are retained.
 
+## `createECDFPlot`
+
+```javascript
+createECDFPlot({ id?, data?, coordinate?, field, groupBy?, weight?, missing?, as?, color?, line?, labels?, guides? })
+```
+
+Create a right-continuous empirical cumulative distribution as an ordinary
+`step-after` line. Ties share one jump, probability is fixed to `[0,1]`, and
+optional grouping controls both statistical denominators and path identity.
+
+## `editECDFPlot`
+
+```javascript
+editECDFPlot({ target?, data?, coordinate?, field?, groupBy?, weight?, missing?, as?, color? })
+```
+
+Atomically revise an ECDF source or statistical role and rebuild its owned
+derived rows, path, final-series labels, and guides under the stable owner ID.
+Ungrouping also removes a coupled group color unless a replacement is supplied.
+
 ## `createIntervalPlot`
 
 ```javascript
@@ -13502,7 +13641,9 @@ createIntervalPlot({ id?, data?, coordinate?, x, y, xOffset?, yOffset?, groupBy?
 Create center points and matching statistical or explicit intervals from one
 shared dataset, coordinate, and pair of scales. The x/y interval vocabulary is
 the same as `createErrorBar`; child point and error-bar styles remain independently
-editable through their existing owners.
+editable through their existing owners. When scale IDs are omitted, the complete
+owner uses `${id}X` and `${id}Y` so unrelated earlier channel scales cannot make
+the call order dependent.
 
 ## `createRegressionPlot`
 
@@ -14059,7 +14200,8 @@ createMarkLabels({ id?, source?, field?, value?, content?, normalizeBy?, format?
 
 Create final-item labels on an existing mark through text creation, encoding, and
 optional collision layout. The default content is the source's semantic value;
-Point/Rule/Rect require a field or constant. The default ID is `<source>-labels`.
+Point/Line/Rule/Rect require a field or constant. A Line creates one label per
+series at its final path coordinate. The default ID is `<source>-labels`.
 [Text marks](./api/marks/text/)
 
 ## `createAnnotation`
@@ -14092,7 +14234,8 @@ createTextMark({ id?, data?, source?, text?, fill?, opacity?, fontSize?, fontFam
 ```
 
 Create a semantic text layer. Omitted data and position attach to the current
-or unique compatible point, bar, rect, rule, or arc layer. Arc text anchors at
+or unique compatible point, bar, line, rect, rule, or arc layer. Line text anchors
+at each series' final path coordinate; Arc text anchors at
 sector centers. `text` is constant-content shorthand. Source-owned text follows final source positions and never
 contributes independent scale-domain values. Source field or scale changes also drive its labels and guides.
 Direct `encodeX/Y` on attached Text is rejected: edit the source, use `editTextMark({ dx, dy })`, or create
@@ -14727,6 +14870,16 @@ createIntervalData({
 Create immutable grouped center/lower/upper summary rows. Mean supports
 standard error, sample standard deviation, and normal or Student-t confidence intervals;
 median supports interquartile range. [Data](./api/data/)
+
+## `createECDFData`
+
+```javascript
+createECDFData({ id, source?, field, groupBy?, weight?, missing?, as? })
+```
+
+Create immutable sorted support, cumulative count or weight, and probability
+rows. Ties are aggregated, group order follows first source appearance, and
+resolved provenance stores every positive denominator. [Data](./api/data/)
 
 ## `createRegression`
 
@@ -15698,6 +15851,7 @@ interface ChartProgramActions {
   createStackData(options: StackDataOptions): ChartProgram;
   createRegressionData(options: RegressionDataOptions): ChartProgram;
   createIntervalData(options: IntervalDataOptions): ChartProgram;
+  createECDFData(options: ECDFDataOptions): ChartProgram;
   createTimeUnitData(options: TimeUnitDataOptions): ChartProgram;
   createWindowData(options: WindowDataOptions): ChartProgram;
   createBin2DData(options: Bin2DDataOptions): ChartProgram;
@@ -15784,6 +15938,8 @@ interface ChartProgramActions {
   createLollipopPlot(options: CreateLollipopPlotOptions): ChartProgram;
   createDumbbellPlot(options: CreateDumbbellPlotOptions): ChartProgram;
   editEndpointPlot(options: EditEndpointPlotOptions): ChartProgram;
+  createECDFPlot(options: CreateECDFPlotOptions): ChartProgram;
+  editECDFPlot(options: EditECDFPlotOptions): ChartProgram;
   createLinePlot(options: CreateLinePlotOptions): ChartProgram;
   createPolarScatterPlot(options: CreatePolarScatterPlotOptions): ChartProgram;
   createPolarLinePlot(options: CreatePolarLinePlotOptions): ChartProgram;

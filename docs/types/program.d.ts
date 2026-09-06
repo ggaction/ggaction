@@ -431,6 +431,27 @@ export interface DatasetWindowTransform {
   readonly sortBy: readonly DatasetWindowSort[];
   readonly operations: readonly DatasetWindowOperation[];
 }
+export interface ECDFOutputFields {
+  value: string;
+  cumulative: string;
+  probability: string;
+}
+export interface DatasetECDFResolvedGroup {
+  readonly keys: Readonly<Record<string, string | number | boolean>>;
+  readonly denominator: number;
+  readonly validCount: number;
+}
+export interface DatasetECDFTransform {
+  readonly type: "ecdf";
+  readonly field: string;
+  readonly groupBy: readonly string[];
+  readonly weight?: string;
+  readonly missing: "drop" | "error";
+  readonly as: Readonly<ECDFOutputFields>;
+  readonly resolved?: {
+    readonly groups: readonly DatasetECDFResolvedGroup[];
+  };
+}
 export type TimeUnit =
   | "year"
   | "quarter"
@@ -567,6 +588,7 @@ export type DatasetTransform =
   | DatasetFoldTransform
   | DatasetRegressionTransform
   | DatasetDensityTransform
+  | DatasetECDFTransform
   | DatasetHorizonTransform
   | DatasetIntervalTransform
   | DatasetSummaryTransform
@@ -1585,6 +1607,16 @@ export interface WindowDataOptions {
   operations: readonly WindowOperation[];
 }
 
+export interface ECDFDataOptions {
+  id: string;
+  source?: string;
+  field: string;
+  groupBy?: string | readonly [string, ...string[]];
+  weight?: string;
+  missing?: "drop" | "error";
+  as?: ECDFOutputFields;
+}
+
 export interface TimeUnitDataOptions {
   id: string;
   source?: string;
@@ -2301,6 +2333,29 @@ export type EditEndpointPlotOptions = { target?: string } & Partial<Pick<
 >> & {
   value?: EndpointValueChannel;
   baseline?: number;
+};
+
+export interface CreateECDFPlotOptions {
+  id?: string;
+  data?: string;
+  coordinate?: string;
+  field: string;
+  groupBy?: string | readonly [string, ...string[]];
+  weight?: string;
+  missing?: "drop" | "error";
+  as?: ECDFOutputFields;
+  color?: string | LineCategoricalColorChannel;
+  line?: { strokeWidth?: number; stroke?: string; opacity?: number };
+  labels?: false | EndpointLabelOptions;
+  guides?: false | CartesianPathGuideOptions;
+}
+export type EditECDFPlotOptions = { target?: string } & Partial<Pick<
+  CreateECDFPlotOptions,
+  "data" | "coordinate" | "field" | "missing" | "as"
+>> & {
+  groupBy?: CreateECDFPlotOptions["groupBy"] | false;
+  weight?: string | false;
+  color?: CreateECDFPlotOptions["color"] | false;
 };
 
 export type PolarThetaChannel = string | ({ field: string; scale?: ThetaScaleOptions } & (
@@ -3509,6 +3564,7 @@ export class ChartProgram {
   createStackData(options: StackDataOptions): ChartProgram;
   createRegressionData(options: RegressionDataOptions): ChartProgram;
   createIntervalData(options: IntervalDataOptions): ChartProgram;
+  createECDFData(options: ECDFDataOptions): ChartProgram;
   createTimeUnitData(options: TimeUnitDataOptions): ChartProgram;
   createWindowData(options: WindowDataOptions): ChartProgram;
   createBin2DData(options: Bin2DDataOptions): ChartProgram;
@@ -3697,6 +3753,8 @@ export class ChartProgram {
   createLollipopPlot(options: CreateLollipopPlotOptions): ChartProgram;
   createDumbbellPlot(options: CreateDumbbellPlotOptions): ChartProgram;
   editEndpointPlot(options: EditEndpointPlotOptions): ChartProgram;
+  createECDFPlot(options: CreateECDFPlotOptions): ChartProgram;
+  editECDFPlot(options: EditECDFPlotOptions): ChartProgram;
   createLinePlot(options: CreateLinePlotOptions): ChartProgram;
   createPolarScatterPlot(options: CreatePolarScatterPlotOptions): ChartProgram;
   createPolarLinePlot(options: CreatePolarLinePlotOptions): ChartProgram;

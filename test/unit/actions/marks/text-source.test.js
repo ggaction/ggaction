@@ -98,9 +98,14 @@ test("invalid explicit sources and source/data conflicts reject immutably", () =
   for (const source of ["", null, undefined, 5, "bad.id"]) {
     assert.throws(() => p.createTextMark({ source }), /Text source id/);
   }
-  for (const source of ["missing", "line"]) {
+  for (const source of ["missing"]) {
     assert.throws(() => p.createTextMark({ source }), /Unknown text source target/);
   }
+  assert.equal(
+    p.createTextMark({ id: "lineText", source: "line", text: "pending" })
+      .semanticSpec.layers.at(-1).source,
+    "line"
+  );
   for (const data of ["data", undefined]) {
     assert.throws(() => p.createTextMark({ source: "point", data }), /mutually exclusive/);
   }

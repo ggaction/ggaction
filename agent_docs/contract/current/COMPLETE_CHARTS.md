@@ -7,6 +7,55 @@ Data는 explicit/current/unique, coordinate는 explicit/bound/unique/family defa
 Guide 생략/{}는 자기 layer의 compatible guide를 확보하고 false는 이번 확보만 생략한다.
 기존 guide를 삭제하거나 충돌하는 resource를 덮지 않는다. 모든 실패는 caller와 이전 program/trace를 보존한다.
 
+## `createECDFPlot`
+
+`createECDFPlot({ id?, data?, coordinate?, field, groupBy?, weight?, missing?, as?, color?, line?, labels?, guides? })`
+는 wrapped `createECDFData` 결과를 ordinary Line으로 표현하는 Full-only complete facade다. 기본 id는
+`ecdfPlot`, data id는 `${id}ECDFData`, value/probability scale은 `${id}Value`와 `${id}Probability`다.
+
+- Line curve는 통계 의미를 소유하는 `step-after`로 고정하며 `line`은 stroke/width/opacity만 노출한다.
+- Probability scale domain은 정확히 `[0,1]`이다. Value scale은 유효 support extent를 사용하고 zero를
+  강제로 포함하지 않는다.
+- `groupBy`는 통계 grain과 path identity를 함께 정한다. Field color는 그 grain에 포함된 categorical
+  field만 허용하므로 appearance가 분모를 암묵적으로 바꾸지 않는다.
+- `labels:{}`는 ordinary `createMarkLabels`로 각 Line series의 마지막 endpoint를 표시한다. 일반 Line도
+  source-owned label의 final-series anchor를 지원하므로 Canvas/scale/data rematerialization을 공유한다.
+- Effects: `createECDFData → createLineMark(curve:"step-after") → encodeX/Y → encodeGroup? → encodeColor? →
+  createMarkLabels? → scoped guides`.
+
+### Formal values — `createECDFPlot`
+
+- Implemented: `createECDFPlot(options: CreateECDFPlotOptions): ChartProgram` (Full only).
+- Required: finite quantitative observations in `field`, and a positive denominator per emitted group.
+- Proposed (NOT IMPLEMENTED): survival/censoring, uncertainty bands and inferred appearance grouping.
+
+### Value coverage — `createECDFPlot`
+
+- ✅ Covered: shortest ungrouped call, right-continuous commands, grouped color, final labels, weights, guides,
+  ordinary-resource hierarchy, remove lifecycle, Canvas/scale replay and immutable failure.
+- Evidence: `test/unit/actions/charts/ecdf-facade.test.js`, `test/contracts/ecdf-types.test.js`.
+
+## `editECDFPlot`
+
+`editECDFPlot({ target?, data?, coordinate?, field?, groupBy?, weight?, missing?, as?, color? })` revises one stable ECDF
+owner atomically. Omitted target uses current/unique eligible owner inference. `groupBy:false` removes grouping and
+`weight:false` returns to unweighted count. `color:false` removes grouped color; `groupBy:false` also removes its
+coupled color when no replacement is supplied. The action rebuilds the immutable derived dataset under the stable
+owned ID, reuses stored appearance/color/labels/guides, and rejects the entire edit before returning any partial
+state when the revised source or statistical roles are invalid.
+
+### Formal values — `editECDFPlot`
+
+- Implemented: `editECDFPlot(options: EditECDFPlotOptions): ChartProgram` (Full only).
+- Required: at least one supported revision option.
+- Proposed (NOT IMPLEMENTED): in-place mutation of a materialized derived dataset.
+
+### Value coverage — `editECDFPlot`
+
+- ✅ Covered: source/field/group/weight/missing/output revision, label and denominator convergence, derived-data
+  release, target inference, nested trace and atomic invalid failure.
+- Evidence: `test/unit/actions/charts/ecdf-facade.test.js`.
+
 ## `createDotPlot`
 
 `createDotPlot({ id?, data?, coordinate?, category, value, orientation?, summary?, point?, labels?, guides? })`는
@@ -86,7 +135,8 @@ errorBar?, guides? })`. Default id는 `intervalPlot`, lifecycle은 Aggregate cre
   명시해 방향을 결정한다.
 - ErrorBar child id는 `${id}Interval`이다. Statistical mode의 Point는 child가 만든 immutable interval dataset과
   center output field를 사용하고 explicit mode는 원본 dataset의 center field를 사용한다. Point와 main rule은
-  position/interval/offset coordinate와 scale id를 정확히 공유한다.
+  position/interval/offset coordinate와 scale id를 정확히 공유한다. Caller가 scale id를 생략하면 complete
+  owner는 `${id}X`와 `${id}Y`를 사용해 앞서 만든 unrelated channel scale과 authoring order 충돌을 막는다.
 - `groupBy:false`는 직렬화 뒤에도 명시적 ungrouped 요청으로 남는다. `color`는 center Point에만 적용하며
   통계 grouping을 추론하거나 바꾸지 않는다.
 - `point`는 Point appearance와 constant radius, `errorBar`는 cap·stroke appearance를 기존 owner에 전달한다.
@@ -104,7 +154,7 @@ errorBar?, guides? })`. Default id는 `intervalPlot`, lifecycle은 Aggregate cre
 ### Value coverage — `createIntervalPlot`
 
 - ✅ Covered: statistical/explicit center, vertical/horizontal direction, categorical offset, same data/scale grain,
-  point/error appearance, group false, guides, invalid option과 immutable failure.
+  owner-scoped default scale isolation, point/error appearance, group false, guides, invalid option과 immutable failure.
 - Evidence: `test/unit/actions/charts/interval-regression-facades.test.js`,
   `test/contracts/interval-regression-facade-types.test.js`.
 
