@@ -2,7 +2,8 @@
 
 ## 상태와 목표
 
-상태: in-progress. 전체 실행 승인을 적용했고 W1–W5를 구현·검증했다. 누적 X closeout이 남았다.
+상태: completed. 전체 실행 승인 아래 W1–W5와 누적 X 검증을 완료했다. 결과는
+[RESULTS_X.md](RESULTS_X.md)에 있다.
 
 일반 사용자가 재사용 가능한 derived data를 만들고 안전하게 source·통계·composite 역할을 교체하도록 한다.
 

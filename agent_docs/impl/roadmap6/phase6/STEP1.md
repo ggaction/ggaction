@@ -9,10 +9,10 @@
 - [x] R6-P6-W3 공통 interval method·level
 - [x] R6-P6-W4 Filter replace·compose·remove·empty — [구현·검증](RESULTS_W4_FILTER.md)
 - [x] R6-P6-W5 Violin·interval·composite role revision — [구현·검증](RESULTS_W5_COMPOSITE_ROLES.md)
-- [ ] 모든 시각 variant의 primitive target 작성·표시·V 승인
-- [ ] 승인된 variant의 public 구현과 같은 실행의 primitive/public render 비교
-- [ ] 누적 검증·migration·문서·원장 동기화
-- [ ] X Gate의 증거 commit/push와 명시적 사용자 승인 기록
+- [x] 새 primitive target N/A 판정과 기존 승인 variant 누적 render 확인
+- [x] 기존 primitive/public 결과의 renderer·installed consumer 검증
+- [x] 누적 검증·migration·문서·원장 동기화 — [X 결과](RESULTS_X.md)
+- [x] X Gate의 검증 source commit/push와 전체 실행 사용자 승인 적용
 
 위 체크는 미래 실행용이다. 계획 문서를 만든 사실을 구현 완료나 Gate 승인으로 표시하지 않는다.
 

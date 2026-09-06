@@ -30,7 +30,7 @@ R6-P6-A와 V는 [Roadmap 6 전체 실행 승인](../APPROVAL.md)에 따라 appro
 
 ## R6-P6-X — Result and closeout
 
-- 상태: planned
+- 상태: approved
 - 검토 대상: [GOAL.md](GOAL.md)의 전체 승인 범위 결과와 [STEP1.md](STEP1.md)의 실제 완료 상태.
 - 필요 증거: verified source commit/remote ref, focused·누적 tests, strict positive/negative declarations, actual trace, immutable failure, documentation/metadata/generated diff와 compatibility 예제.
 - 시각 범위: 승인된 target별 same-run decoded primitive/public pixel equality, concrete graphic parity, renderer 소비 결과. 시각 범위가 없으면 이유를 기록한다.
@@ -45,6 +45,9 @@ R6-P6-A와 V는 [Roadmap 6 전체 실행 승인](../APPROVAL.md)에 따라 appro
 - 사용자 승인 근거: [APPROVAL.md](../APPROVAL.md)의 전체 A/V/X와 release 승인.
 - 현재 결과: [W1](RESULTS_W1_DATA_BINDING.md), [W2](RESULTS_W2_STACK.md),
   [W3](RESULTS_W3_CONFIDENCE.md), [W4](RESULTS_W4_FILTER.md),
-  [W5](RESULTS_W5_COMPOSITE_ROLES.md) 완료. X closeout이 남았다.
+  [W5](RESULTS_W5_COMPOSITE_ROLES.md), [X](RESULTS_X.md) 완료.
+- X 검증 source/remote ref: `ce2e37a5821cccce40d9d8703af06f170dc14c28`.
+- 누적 결과: realistic 242/242, normal 3,114/3,114, browser 65/65, render 208/208,
+  coverage 95.45/92.41/98.93%, docs 125 pages×3 viewports, installed package pass.
 
-각 W의 실제 commit/ref와 검증 결과는 해당 결과 문서와 X closeout에 추가한다.
+각 W의 실제 commit/ref와 검증 결과는 해당 결과 문서와 X closeout에 기록했다.
