@@ -90,8 +90,9 @@ interface ActionCardV3 extends ActionCardV2 {
 
 ## 지원, 단위, 추론과 완성
 
-- `supports.entryPoints`는 default/basic program declaration의 exact method set과 runtime prototype method set을 각각
-  비교한다. Primitive와 advanced action을 Basic으로 과장하지 않는다.
+- `supports.entryPoints`는 default/basic의 public program declaration exact method set과 각 declared method의 runtime
+  가용성을 비교한다. Basic facade 구현을 위해 prototype에 등록되지만 Basic declaration에는 없는 wrapped dependency는
+  public Basic 지원으로 기록하지 않는다. Primitive와 advanced action을 Basic으로 과장하지 않는다.
 - `units`는 숫자라는 이유만으로 추측하지 않는다. Current contract가 정한 logical pixel, fixed degree,
   explicit degrees-or-radians angle, ratio/probability,
   count, calendar/temporal input, data value와 band fraction만 option path에 연결한다. `innerRadius` ratio와

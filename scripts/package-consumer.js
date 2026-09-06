@@ -1461,6 +1461,10 @@ async function testNodeConsumer(directory) {
 
 async function testMcpConsumer(directory) {
   const installedRoot = path.join(directory, "node_modules", "ggaction");
+  const installedPackage = JSON.parse(await readFile(
+    path.join(installedRoot, "package.json"),
+    "utf8"
+  ));
   const executable = path.join(
     directory,
     "node_modules",
@@ -1471,12 +1475,18 @@ async function testMcpConsumer(directory) {
     pathToFileURL(path.join(installedRoot, "src", "mcp", "adapter.js")).href
   );
   const [
+    actionCardSchema,
+    actionCardsSchema,
+    actionCards,
     taskPacketSchema,
     intentTaxonomySchema,
     mcpResourcesSchema,
     intentTaxonomy,
     mcpResources
   ] = await Promise.all([
+    "action-card.schema.json",
+    "action-cards.schema.json",
+    "action-cards.json",
     "task-packet.schema.json",
     "intent-taxonomy.schema.json",
     "mcp-resources.schema.json",
@@ -1486,6 +1496,35 @@ async function testMcpConsumer(directory) {
     path.join(installedRoot, "knowledge", file),
     "utf8"
   ))));
+  if (
+    actionCardSchema.properties?.schemaVersion?.const !== 3 ||
+    actionCardsSchema.properties?.schemaVersion?.const !== 3 ||
+    actionCards.schemaVersion !== 3 ||
+    actionCards.count !== 234 ||
+    actionCards.cards.length !== 234 ||
+    actionCards.packageVersion !== installedPackage.version
+  ) {
+    throw new Error("Installed action-card discovery contract is missing or stale.");
+  }
+  const installedCards = new Map(actionCards.cards.map(card => [card.name, card]));
+  const installedScatter = installedCards.get("createScatterPlot");
+  if (
+    !installedScatter?.authoringRoles.includes("H0") ||
+    !installedScatter?.wraps.includes("createPointMark") ||
+    installedScatter?.completionRequirements.state !== "complete" ||
+    installedScatter?.supports.entryPoints.join(",") !== "default,basic"
+  ) {
+    throw new Error("Installed complete-chart discovery metadata is stale.");
+  }
+  if (
+    installedCards.get("createBoxPlot")?.completionRequirements.state !== "deferred" ||
+    installedCards.get("createGradientPlot")?.completionRequirements.state !== "deferred" ||
+    ["editSemantic", "createGraphics", "editGraphics"].some(name =>
+      installedCards.get(name)?.authoringRoles.join(",") !== "H4"
+    )
+  ) {
+    throw new Error("Installed completion or primitive discovery metadata is stale.");
+  }
   if (taskPacketSchema.properties?.schemaVersion?.const !== 4) {
     throw new Error("Installed task packet schema must require schemaVersion 4.");
   }
@@ -1498,8 +1537,8 @@ async function testMcpConsumer(directory) {
     throw new Error("Installed resolver knowledge schemas are missing or stale.");
   }
   if (
-    intentTaxonomy.packageVersion !== "0.0.12" ||
-    mcpResources.packageVersion !== "0.0.12"
+    intentTaxonomy.packageVersion !== installedPackage.version ||
+    mcpResources.packageVersion !== installedPackage.version
   ) {
     throw new Error("Installed resolver knowledge must match the package version.");
   }
@@ -1531,7 +1570,7 @@ async function testMcpConsumer(directory) {
     const packet = JSON.parse(result.content[0].text);
     if (
       packet.schemaVersion !== 4 ||
-      packet.packageVersion !== "0.0.12" ||
+      packet.packageVersion !== installedPackage.version ||
       packet.authoring?.initialize !== "let program = chart()" ||
       packet.authoring?.prerequisites?.length !== 2 ||
       !Array.isArray(packet.appliedOptions) ||
