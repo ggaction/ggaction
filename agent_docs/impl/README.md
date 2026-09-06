@@ -4,13 +4,12 @@
 
 ## 현재 작업
 
-- **현재 활성 계획은 Roadmap 6 Phase 11**이다. [`roadmap6/ROADMAP.md`](roadmap6/ROADMAP.md)는
-  173개 액션 감사에서 나온 오류 8건·설계 문제 20건·사용자가 선택한 추가 액션군 19개를 12단계로 연결한다.
-  Phase 1–10을 완료했고, [Phase 10 X 결과](roadmap6/phase10/REVIEW.md)에 facet grid, repeat와 named-child composition 구현·검증을 기록했다. [전체 실행·0.0.13 릴리즈 승인](roadmap6/APPROVAL.md)을 적용하며, 다음 실행 단위는 [Phase 11의 통합 discovery 감사와 closeout](roadmap6/phase11/GOAL.md)이다.
-- [`roadmap6/phase11/GOAL.md`](roadmap6/phase11/GOAL.md) — 전체 계층·card·MCP·package 검증과 closeout
+- **현재 활성 Roadmap은 없다.** Roadmap 6 Phase 0–11을 완료했다.
+- [`roadmap6/phase11/REVIEW.md`](roadmap6/phase11/REVIEW.md) — 234개 action의 계층·card·MCP·package
+  통합 검증과 최종 closeout
 - [`roadmap6/TRACEABILITY.md`](roadmap6/TRACEABILITY.md) — 실행 대상 47개 항목과 작업·검증 조건
 - [`roadmap6/DESIGN_DECISIONS.md`](roadmap6/DESIGN_DECISIONS.md) — 공통 결정과 migration
-- 마지막 완료 owner는 [Roadmap 5.4 Phase 6](roadmap5.4/ROADMAP.md)이다.
+- 마지막 완료 owner는 [Roadmap 6 Phase 11](roadmap6/phase11/REVIEW.md)이다.
 - [`ROADMAP_INDEX.json`](ROADMAP_INDEX.json) — nullable active Roadmap/Phase와 마지막 완료 owner의 machine-readable source
 
 ## 개발 이력
@@ -28,6 +27,7 @@
 - [`roadmap5.2/ROADMAP.md`](roadmap5.2/ROADMAP.md) — completed, repository integrity와 maintainer hardening
 - [`roadmap5.3/ROADMAP.md`](roadmap5.3/ROADMAP.md) — completed, LLM knowledge/MCP 실험과 non-integration 결과
 - [`roadmap5.4/ROADMAP.md`](roadmap5.4/ROADMAP.md) — completed, compact knowledge delivery와 local MCP integration
+- [`roadmap6/ROADMAP.md`](roadmap6/ROADMAP.md) — completed, hierarchical chart authoring과 action consistency
 
 ## 재사용하는 개발 절차
 

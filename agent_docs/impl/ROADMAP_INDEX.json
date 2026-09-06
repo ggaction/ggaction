@@ -1,9 +1,9 @@
 {
   "version": 2,
-  "activeRoadmap": "roadmap6",
-  "activePhase": 11,
-  "lastCompletedRoadmap": "roadmap5.4",
-  "lastCompletedPhase": 10,
+  "activeRoadmap": null,
+  "activePhase": null,
+  "lastCompletedRoadmap": "roadmap6",
+  "lastCompletedPhase": 11,
   "roadmaps": [
     {
       "id": "roadmap1",
@@ -104,8 +104,8 @@
     {
       "id": "roadmap6",
       "title": "Hierarchical Chart Authoring and Action Consistency",
-      "status": "active",
-      "role": "current-execution-plan",
+      "status": "completed",
+      "role": "historical-execution-record",
       "file": "agent_docs/impl/roadmap6/ROADMAP.md"
     }
   ]

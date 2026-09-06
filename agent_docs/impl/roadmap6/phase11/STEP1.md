@@ -4,13 +4,13 @@
 
 - [x] A Gate의 정확한 결정·호환성·검증 범위 확정 — [계약](CONTRACT.md)
 - [x] A Gate 증거 commit/push와 전체 실행 사용자 승인 기록
-- [ ] R6-P11-W1 계층·card·discovery 전체 대조
-- [ ] R6-P11-W2 Cross-layer 검증과 installed consumer
-- [ ] R6-P11-W4 Contract·문서·이력 closeout
-- [ ] 누적 검증·migration·문서·원장 동기화
-- [ ] X Gate의 증거 commit/push와 명시적 사용자 승인 기록
+- [x] R6-P11-W1 계층·card·discovery 전체 대조 — [결과](RESULTS_W1.md)
+- [x] R6-P11-W2 Cross-layer 검증과 installed consumer — [결과](RESULTS_W2.md)
+- [x] R6-P11-W4 Contract·문서·이력 closeout — [X 결과](REVIEW.md)
+- [x] 누적 검증·migration·문서·원장 동기화
+- [x] X Gate의 증거 commit/push와 명시적 사용자 승인 기록
 
-위 체크는 미래 실행용이다. 계획 문서를 만든 사실을 구현 완료나 Gate 승인으로 표시하지 않는다.
+완료 표시는 위 결과 문서의 실행 증거와 원격 source ref를 기준으로 한다.
 
 ## 순서
 

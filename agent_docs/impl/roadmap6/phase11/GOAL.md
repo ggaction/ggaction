@@ -2,7 +2,8 @@
 
 ## 상태와 목표
 
-상태: in-progress. [전체 실행·A/X 승인](../APPROVAL.md)과 [A 계약](CONTRACT.md)을 적용했다.
+상태: completed. [전체 실행·A/X 승인](../APPROVAL.md), [A 계약](CONTRACT.md)과
+[X 결과](REVIEW.md)를 적용했다.
 
 단계별 구현을 전체 액션 계층과 제품 surface에서 검증한다. 선택한 19개 액션군과 기존 오류·설계 문제의 결과를 확인하여 실행 범위를 닫는다.
 
@@ -38,5 +39,5 @@
 - [VALIDATION.md](../VALIDATION.md)의 공통 matrix와 각 작업의 acceptance를 적용한다.
 - Runtime/type/contract/card/docs 변경은 각 conceptual change와 함께 완료한다.
 - [STEP1.md](STEP1.md)의 실행 체크를 갱신하고 [GATES.md](GATES.md)에 실제 증거만 기록한다.
-- R6-P11-X 승인 전 이 결과를 전제로 하는 다음 단계 구현을 시작하지 않는다.
+- R6-P11-X를 실제 검증 결과로 닫았으며 별도로 승인된 0.0.13 release 절차로 이동한다.
 - 구현하지 않은 후보는 완료로 표시하지 않고 [추적 원장](../TRACEABILITY.md)에 처분을 남긴다.

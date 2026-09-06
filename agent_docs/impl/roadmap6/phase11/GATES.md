@@ -2,7 +2,7 @@
 
 ## 공통 상태
 
-R6-P11-A는 전체 실행 승인에 따라 approved다. R6-P11-X는 실제 구현·검증 전까지 planned다.
+R6-P11-A와 R6-P11-X는 전체 실행 승인과 실제 구현·검증 결과에 따라 approved다.
 허용 상태는 planned | ready-for-review | approved | changes-requested다.
 이 문서는 지금 승인을 요청하는 문서가 아니라 실행 시점의 검토 범위와 경계를 미리 선언한다.
 
@@ -18,7 +18,7 @@ R6-P11-A는 전체 실행 승인에 따라 approved다. R6-P11-X는 실제 구�
 
 ## R6-P11-X — Result and closeout
 
-- 상태: planned
+- 상태: approved
 - 검토 대상: [GOAL.md](GOAL.md)의 전체 승인 범위 결과와 [STEP1.md](STEP1.md)의 실제 완료 상태.
 - 필요 증거: verified source commit/remote ref, focused·누적 tests, strict positive/negative declarations, actual trace, immutable failure, documentation/metadata/generated diff와 compatibility 예제.
 - 시각 범위: 승인된 target별 same-run decoded primitive/public pixel equality, concrete graphic parity, renderer 소비 결과. 시각 범위가 없으면 이유를 기록한다.
@@ -28,9 +28,11 @@ R6-P11-A는 전체 실행 승인에 따라 approved다. R6-P11-X는 실제 구�
 
 ## 승인 기록
 
-- Baseline/source ref: `d012d6a1f6714254aaa9f96761d4e2f0654026e6`
+- Baseline ref: `d012d6a1f6714254aaa9f96761d4e2f0654026e6`
+- W1 source ref: `4df800e29395e0979bc2ef52a58ebdad0733db73`
+- W2 source ref: `4068121a73a6d34cfd5c8edece13ea3301d5346e`
 - 계약: [CONTRACT.md](CONTRACT.md)
 - 사용자 승인 근거: [APPROVAL.md](../APPROVAL.md)의 전체 A/X와 release 승인.
-- 남은 작업: W1, W2, W4 구현과 X 검증.
+- 결과: [W1](RESULTS_W1.md), [W2](RESULTS_W2.md), [X closeout](REVIEW.md).
 
-실행 시 실제 증거를 채운다. 문서 작성 날짜나 이전 로드맵 승인을 이 Gate의 승인으로 재사용하지 않는다.
+Source ref와 결과 문서의 실제 검증이 X 승인 적용 조건을 충족한다.

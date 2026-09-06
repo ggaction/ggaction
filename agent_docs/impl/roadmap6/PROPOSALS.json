@@ -1,7 +1,7 @@
 {
   "version": 1,
   "roadmap": "roadmap6",
-  "status": "in-progress",
+  "status": "completed",
   "baseline": {
     "commit": "cee752b0580e6f31630ad5dd2224ab3b5f5f682b",
     "packageVersion": "0.0.12",
@@ -19,21 +19,46 @@
       "R6-P1-A",
       "R6-P1-X",
       "R6-P2-A",
-      "R6-P2-B",
       "R6-P2-V",
       "R6-P2-X",
+      "R6-P2-B",
       "R6-P3-A",
       "R6-P3-V",
       "R6-P3-B",
       "R6-P3-X",
       "R6-P4-A",
-      "R6-P11-A"
+      "R6-P4-V",
+      "R6-P4-X",
+      "R6-P4-V1",
+      "R6-P4-V2",
+      "R6-P4-V3",
+      "R6-P4-B",
+      "R6-P5-A",
+      "R6-P5-V",
+      "R6-P5-X",
+      "R6-P6-A",
+      "R6-P6-V",
+      "R6-P6-X",
+      "R6-P7-A",
+      "R6-P7-V",
+      "R6-P7-X",
+      "R6-P8-A",
+      "R6-P8-V",
+      "R6-P8-X",
+      "R6-P9-A",
+      "R6-P9-V",
+      "R6-P9-X",
+      "R6-P10-A",
+      "R6-P10-V",
+      "R6-P10-X",
+      "R6-P11-A",
+      "R6-P11-X"
     ],
     "implementationStarted": true,
-    "reviewCommit": "cf13920ed517cfc6c333b04ec55a724826960228",
+    "reviewCommit": "4068121a73a6d34cfd5c8edece13ea3301d5346e",
     "userDirection": "밀자",
     "date": "2026-09-05",
-    "scope": "Phase 1의 문서화된 B01–B08 교정. 후속 신규 API·시각 target은 별도 검토."
+    "scope": "Roadmap 6 Phase 0–11 completed; F20 remains excluded by the recorded scope decision."
   },
   "phases": [
     {
@@ -51,7 +76,9 @@
           "relativeSize": "S",
           "findingIds": [],
           "scope": "173개 direct, 284개 wrapped, internal 95/111, 43 API·7 MCP·4 type 사례를 저장한다. 새 clone에서 재현할 명령과 기준 commit을 기록한다.",
-          "acceptance": "원본 evidence와 source commit이 연결되고 ignored artifact 없이 읽을 수 있다."
+          "acceptance": "원본 evidence와 source commit이 연결되고 ignored artifact 없이 읽을 수 있다.",
+          "status": "completed",
+          "resultEvidence": "audit/REPORT.md"
         },
         {
           "id": "R6-P0-W2",
@@ -59,7 +86,9 @@
           "relativeSize": "M",
           "findingIds": [],
           "scope": "H0–H4, exposure, lifecycle을 분리한다. 범위에 포함된 B01–B08, D01–D20, F01–F19에 primary owner, dependent phases와 acceptance를 부여한다.",
-          "acceptance": "47개 ID 중 누락·중복 primary owner 0; 전체 액션 전수표 링크가 존재한다."
+          "acceptance": "47개 ID 중 누락·중복 primary owner 0; 전체 액션 전수표 링크가 존재한다.",
+          "status": "completed",
+          "resultEvidence": "TRACEABILITY.md"
         },
         {
           "id": "R6-P0-W3",
@@ -67,7 +96,9 @@
           "relativeSize": "M",
           "findingIds": [],
           "scope": "Current bug repair와 새 의미·default 변경을 구분한다. 각 단계에 A/V/X와 compatibility 예제를 요구한다.",
-          "acceptance": "Proposed를 Current/Planned로 승격한 항목 0, 승인했다고 기록한 Gate 0."
+          "acceptance": "Proposed를 Current/Planned로 승격한 항목 0, 승인했다고 기록한 Gate 0.",
+          "status": "completed",
+          "resultEvidence": "DESIGN_DECISIONS.md"
         },
         {
           "id": "R6-P0-W4",
@@ -75,7 +106,9 @@
           "relativeSize": "M",
           "findingIds": [],
           "scope": "수치·계층·편집·render·types·MCP·package matrix와 선택한 19개 액션군의 납품 순서를 작성한다.",
-          "acceptance": "각 단계가 진입 조건, 구체적 결과, 실패 조건, 다음 Gate를 가진다."
+          "acceptance": "각 단계가 진입 조건, 구체적 결과, 실패 조건, 다음 Gate를 가진다.",
+          "status": "completed",
+          "resultEvidence": "PLAN_VALIDATION.md"
         }
       ]
     },
@@ -103,7 +136,7 @@
           "scope": "Facade에서 x/y category·measure를 함께 preflight하고 기존 position owner를 호출한다. 수평 temporal category type을 공통 role union으로 표현한다. Mean default는 유지한다.",
           "acceptance": "가로/세로 shorthand, explicit aggregate, temporal category가 runtime와 strict TS에서 일치. 잘못된 양쪽 category/measure 조합은 명확히 거부.",
           "status": "implemented-and-verified",
-          "resultEvidence": "phase1/RESULTS.md#w1--bar-pair-role와-temporal-선언"
+          "resultEvidence": "phase1/RESULTS.md"
         },
         {
           "id": "R6-P1-W2",
@@ -115,7 +148,7 @@
           "scope": "Definition-only dataset과 materialized dataset을 구별한다. Scatter뿐 아니라 같은 consumer selection owner를 쓰는 진입점에 domain precondition을 적용한다.",
           "acceptance": "createDerivedData 자체 계약 유지. 후속 action이 internal TypeError 대신 필요한 materialized data를 설명하고 원래 program/trace는 보존.",
           "status": "implemented-and-verified",
-          "resultEvidence": "phase1/RESULTS.md#w2--definition-only-data-소비"
+          "resultEvidence": "phase1/RESULTS.md"
         },
         {
           "id": "R6-P1-W3",
@@ -127,7 +160,7 @@
           "scope": "Point/Bar의 실제 허용 범위를 declarations, shared alias, Current prose에 맞춘다. Rect 비교 사례를 유지하고 Area/Arc 확장은 이 수정과 분리한다.",
           "acceptance": "JS·TS의 동일 positive/negative case 결과, unknown style option 거부, 기존 render 유지.",
           "status": "implemented-and-verified",
-          "resultEvidence": "phase1/RESULTS.md#w3--strokefalse-정합성"
+          "resultEvidence": "phase1/RESULTS.md"
         },
         {
           "id": "R6-P1-W4",
@@ -141,7 +174,7 @@
           "scope": "Area/Strip의 complete-chart provider를 실제 완성 경로 또는 unresolved로 바꾼다. Radial-bar가 generic bar를 shadow하게 한다. Raw mark 요청은 별도 provider로 유지한다.",
           "acceptance": "7개 probe를 실행해 필수 encoding·item grain·coordinate·extra layer를 검사. 지원 안 된 요구를 unresolved=[]로 반환하지 않음. 비용 드는 모델 호출 불필요.",
           "status": "implemented-and-verified",
-          "resultEvidence": "phase1/RESULTS.md#w4--mcp-chart-closure와-phrase-우선순위"
+          "resultEvidence": "phase1/RESULTS.md"
         },
         {
           "id": "R6-P1-W5",
@@ -153,7 +186,7 @@
           "scope": "등록 wrapped method = direct ∪ internal, 교집합 없음, manifest orphan 없음의 전체 집합 대조를 만든다. 누락 16개를 internal에 기록한다.",
           "acceptance": "현재 기준 direct173/internal111/registered284와 일치하며 임의 internal method 누락을 탐지한다. Public promotion 없음.",
           "status": "implemented-and-verified",
-          "resultEvidence": "phase1/RESULTS.md#w5--internal-inventory-전체-집합"
+          "resultEvidence": "phase1/RESULTS.md"
         }
       ],
       "visualGateApplicability": "not-applicable-to-current-correction-scope",
@@ -193,7 +226,8 @@
           "acceptance": "Scatter→Line 기본 조합 성공, incompatible scale guide는 atomic conflict. omitted/{} /false matrix가 facade와 child별로 명시됨.",
           "contractEvidence": "phase2/CONTRACT_REVIEW.md",
           "implementationStatus": "implemented-verified",
-          "resultEvidence": "phase2/RESULTS.md#w1--facade-guide-reuse"
+          "resultEvidence": "phase2/REVIEW.md",
+          "status": "implemented-and-verified"
         },
         {
           "id": "R6-P2-W2",
@@ -207,7 +241,8 @@
           "acceptance": "country group+continent color 성공; 한 series의 모호한 appearance 거부; field 작성 순서와 group edit 뒤 수렴.",
           "contractEvidence": "phase2/CONTRACT_REVIEW.md",
           "implementationStatus": "implemented-verified",
-          "resultEvidence": "phase2/RESULTS.md#w2--explicit-series-identity-and-line-appearance"
+          "resultEvidence": "phase2/REVIEW.md",
+          "status": "implemented-and-verified"
         },
         {
           "id": "R6-P2-W3",
@@ -220,7 +255,8 @@
           "acceptance": "create/edit/field/constant 지원 matrix 일치. Override 뒤 scale·legend가 거짓 의미를 설명하지 않음. Local highlight override 별도 유지.",
           "contractEvidence": "phase2/CONTRACT_REVIEW.md",
           "implementationStatus": "implemented-verified",
-          "resultEvidence": "phase2/RESULTS.md#w3--style-assignment-and-facade-forwarding"
+          "resultEvidence": "phase2/REVIEW.md",
+          "status": "implemented-and-verified"
         },
         {
           "id": "R6-P2-W4",
@@ -234,7 +270,8 @@
           "acceptance": "numeric nominal color, mean Bar, year/timestamp 기존 결과 비교. 생략·false·undefined·auto의 source/trace/serialization 의미를 검사.",
           "contractEvidence": "phase2/CONTRACT_REVIEW.md",
           "implementationStatus": "implemented-verified",
-          "resultEvidence": "phase2/RESULTS.md#w4--explicit-temporal-input-and-json-opt-out"
+          "resultEvidence": "phase2/REVIEW.md",
+          "status": "implemented-and-verified"
         },
         {
           "id": "R6-P2-W5",
@@ -248,7 +285,8 @@
           "acceptance": "width-first/last, category-first/measure-first의 semantic/graphic 동등성. Invalid field/width는 즉시 거부, placeholder graphics 없음.",
           "contractEvidence": "phase2/CONTRACT_REVIEW.md",
           "implementationStatus": "implemented-verified",
-          "resultEvidence": "phase2/RESULTS.md#w5--bar-incomplete-authoring"
+          "resultEvidence": "phase2/REVIEW.md",
+          "status": "implemented-and-verified"
         }
       ],
       "activity": "completed",
@@ -348,8 +386,8 @@
           "scope": "Category count와 explicit weighted sum의 createPiePlot을 제안한다. Donut은 arc.innerRadius로 작성하고 별도 alias는 추가하지 않는 방향이다. Color는 category 기본, guide는 legend만이며 labels/theta order는 후속 단계다.",
           "acceptance": "category count·중복 category sum·donut hole·no axes/grid·하위 edit chain이 chart 계약과 일치. Facade-child semantic/graphic 동등성.",
           "contractEvidence": "phase3/CONTRACT_REVIEW.md",
-          "status": "completed",
-          "resultEvidence": "phase3/RESULTS.md#w1--pie-and-donut"
+          "status": "implemented-and-verified",
+          "resultEvidence": "phase3/REVIEW.md"
         },
         {
           "id": "R6-P3-W2",
@@ -361,8 +399,8 @@
           "scope": "Baseline-only createDensityPlot을 제안한다. 기존 KDE와 densityChannel을 재사용하고 groupBy와 color는 별도 명시하며 color는 retained group field만 지원한다. Orientation edit와 raw metadata join은 추가하지 않는다.",
           "acceptance": "세로/가로·grouped density의 값과 영역이 기존 chain과 동일. editDensity/editAreaMark/editScale 후 owner 유지.",
           "contractEvidence": "phase3/CONTRACT_REVIEW.md",
-          "status": "completed",
-          "resultEvidence": "phase3/RESULTS.md#w2--baseline-density"
+          "status": "implemented-and-verified",
+          "resultEvidence": "phase3/REVIEW.md"
         },
         {
           "id": "R6-P3-W3",
@@ -374,8 +412,8 @@
           "scope": "필수 x/y를 받는 createHorizonPlot을 제안한다. 기존 createCoordinate로 좌표를 연결하고 encodeHorizon 뒤 explicit opacity를 적용한다. H0는 x guide만 허용하며 기존 lower guide escape는 유지한다.",
           "acceptance": "signed data와 editHorizon의 revision 검증. Folded y를 원래 양적 축처럼 표시하거나 internal band color legend를 자동 생성하지 않음.",
           "contractEvidence": "phase3/CONTRACT_REVIEW.md",
-          "status": "completed",
-          "resultEvidence": "phase3/RESULTS.md#w3--horizon"
+          "status": "implemented-and-verified",
+          "resultEvidence": "phase3/REVIEW.md"
         }
       ],
       "activity": "completed",
@@ -556,9 +594,10 @@
           "scope": "Constant data endpoint를 lower owner에 추가하고 simple area, ranged ribbon, stacked area를 구분한다. Nonlinear scale과 missing path break를 명시한다.",
           "acceptance": "simple x/y 입력이 실제 area를 그림. Baseline/domain/zero/log·range edit 수렴. 가짜 source field와 renderer inference 없음.",
           "contractEvidence": "phase4/CONTRACT_REVIEW.md",
-          "status": "completed",
+          "status": "implemented-and-verified",
           "implementationStatus": "implemented-verified",
-          "implementationEvidence": "phase4/RESULTS_V1.md"
+          "implementationEvidence": "phase4/RESULTS_V1.md",
+          "resultEvidence": "phase4/REVIEW.md"
         },
         {
           "id": "R6-P4-W2",
@@ -570,9 +609,10 @@
           "scope": "Group/stack/fill/overlay/diverging을 atomic owner에 모은다. 기존 color.layout/measure.stack/offset 경로가 owner에 위임하도록 migration한다.",
           "acceptance": "group→stack→group에서 scale, offset, normalization, guides, selections에 stale 상태 없음. Negative/missing/group conflict atomic.",
           "contractEvidence": "phase4/CONTRACT_REVIEW.md",
-          "status": "completed",
+          "status": "implemented-and-verified",
           "implementationStatus": "implemented-verified",
-          "implementationEvidence": "phase4/RESULTS_V1.md"
+          "implementationEvidence": "phase4/RESULTS_V1.md",
+          "resultEvidence": "phase4/REVIEW.md"
         },
         {
           "id": "R6-P4-W3",
@@ -595,7 +635,8 @@
             "V2-public-primitive-render-parity",
             "distinct-chart-discovery"
           ],
-          "status": "completed"
+          "status": "implemented-and-verified",
+          "resultEvidence": "phase4/REVIEW.md"
         },
         {
           "id": "R6-P4-W4",
@@ -607,9 +648,10 @@
           "scope": "Category order를 theta에 확장한다. Vertex/stack/drawing order와 혼합하지 않고 stable tie-break, explicit order, legend-domain 연결을 정의한다.",
           "acceptance": "Pie/Radar category identity가 값 수정만으로 바뀌지 않음. Omitted category/ties/unknown-order-entry policy와 edit/clear 수렴.",
           "contractEvidence": "phase4/CONTRACT_REVIEW.md",
-          "status": "completed",
+          "status": "implemented-and-verified",
           "implementationStatus": "implemented-verified",
-          "implementationEvidence": "phase4/RESULTS_W4.md"
+          "implementationEvidence": "phase4/RESULTS_W4.md",
+          "resultEvidence": "phase4/REVIEW.md"
         },
         {
           "id": "R6-P4-W5",
@@ -630,7 +672,8 @@
             "atomic-color-scale-and-legend-family-transitions",
             "V3-point-bar-transition-parity"
           ],
-          "status": "completed"
+          "status": "implemented-and-verified",
+          "resultEvidence": "phase4/REVIEW.md"
         }
       ],
       "activity": "completed",
@@ -804,7 +847,9 @@
             "F17"
           ],
           "scope": "Cartesian/Polar/Parallel component create/edit/remove/recreate matrix를 완성한다. Polar focused 생성의 공개 경계를 정리하고 dimension-key 기반 editParallelAxis를 설계한다.",
-          "acceptance": "title:false→create title→edit→remove→recreate가 public chain으로 가능. Font/format/tick count가 resize·scale edit 뒤 유지."
+          "acceptance": "title:false→create title→edit→remove→recreate가 public chain으로 가능. Font/format/tick count가 resize·scale edit 뒤 유지.",
+          "status": "implemented-and-verified",
+          "resultEvidence": "phase5/REVIEW.md"
         },
         {
           "id": "R6-P5-W2",
@@ -814,7 +859,9 @@
             "D08"
           ],
           "scope": "Standalone/combined size, categorical/continuous/interval/width legend의 edge 지원과 recipe 편집을 공통 layout owner로 연결한다. Legacy bottom mode를 명시한다.",
-          "acceptance": "지원하는 각 kind×edge×lifecycle 검증, unsupported 셀 이유 명시. Combined color/shape 일부 제거 뒤 설명과 graphics가 일치."
+          "acceptance": "지원하는 각 kind×edge×lifecycle 검증, unsupported 셀 이유 명시. Combined color/shape 일부 제거 뒤 설명과 graphics가 일치.",
+          "status": "implemented-and-verified",
+          "resultEvidence": "phase5/REVIEW.md"
         },
         {
           "id": "R6-P5-W3",
@@ -826,7 +873,9 @@
             "F18"
           ],
           "scope": "명시적 source mark와 category/aggregate/share content, data/plot anchor reference, annotation을 text/rule/rect owner 위에 제공한다. Axis/legend/text formatter·rotation unit을 정리한다.",
-          "acceptance": "집계 Bar/Pie에 final item당 label 하나, percent 분모 검증. Multiple eligible marks에서 explicit source가 작동. Scale/data/filter 후 label과 anchor 수렴."
+          "acceptance": "집계 Bar/Pie에 final item당 label 하나, percent 분모 검증. Multiple eligible marks에서 explicit source가 작동. Scale/data/filter 후 label과 anchor 수렴.",
+          "status": "implemented-and-verified",
+          "resultEvidence": "phase5/REVIEW.md"
         },
         {
           "id": "R6-P5-W4",
@@ -837,7 +886,9 @@
             "F18"
           ],
           "scope": "Theme owner를 추가하고 기존 font/color token과 mark·guide default를 연결한다. Explicit local/inherited 구분과 reset을 저장한다.",
-          "acceptance": "Light/dark와 override/reset에서 axes·legend·text·Parallel까지 갱신. Theme 변경 전후 statistical values/group/domain/order 동일."
+          "acceptance": "Light/dark와 override/reset에서 axes·legend·text·Parallel까지 갱신. Theme 변경 전후 statistical values/group/domain/order 동일.",
+          "status": "implemented-and-verified",
+          "resultEvidence": "phase5/REVIEW.md"
         },
         {
           "id": "R6-P5-W5",
@@ -848,7 +899,9 @@
             "F18"
           ],
           "scope": "Bounded deterministic text fitting과 guide wrap/rotation/overlap 정책을 기존 text metrics 위에 추가한다. Fixed Canvas default와 분리한다.",
-          "acceptance": "긴 title/legend/axis label 사례에서 bounds와 최소 plot을 만족하거나 explicit overflow. 반복 호출 수렴, 무한 layout loop 없음."
+          "acceptance": "긴 title/legend/axis label 사례에서 bounds와 최소 plot을 만족하거나 explicit overflow. 반복 호출 수렴, 무한 layout loop 없음.",
+          "status": "implemented-and-verified",
+          "resultEvidence": "phase5/REVIEW.md"
         }
       ],
       "activity": "W1-W5-verified-phase-complete",
@@ -860,15 +913,15 @@
     {
       "id": 6,
       "title": "Data statistics and composite lifecycle",
-      "status": "planned",
+      "status": "completed",
       "dependencies": [
         4,
         5
       ],
       "gateStates": {
-        "R6-P6-A": "planned",
-        "R6-P6-V": "planned",
-        "R6-P6-X": "planned"
+        "R6-P6-A": "approved",
+        "R6-P6-V": "approved",
+        "R6-P6-X": "approved"
       },
       "workPackages": [
         {
@@ -880,7 +933,9 @@
             "F16"
           ],
           "scope": "Definition-only와 materializing transform을 구분한다. create/edit-owner/snapshot 관계와 Bin2D legacy reauthor를 정리하고 public bindMarkData의 full preflight를 만든다.",
-          "acceptance": "Immutable 이전 program 유지. Field/type/grain/coordinate/scale/guide/selection incompatibility에 atomic failure, compatible revision은 orphan cleanup."
+          "acceptance": "Immutable 이전 program 유지. Field/type/grain/coordinate/scale/guide/selection incompatibility에 atomic failure, compatible revision은 orphan cleanup.",
+          "status": "implemented-and-verified",
+          "resultEvidence": "phase6/RESULTS_W1_DATA_BINDING.md"
         },
         {
           "id": "R6-P6-W2",
@@ -890,7 +945,9 @@
             "F15"
           ],
           "scope": "Group+multi-aggregate summary, reusable 1D bin bounds/count/member, selected-field fold를 먼저 만든다. 제한된 serializable arithmetic와 Phase4 stack grammar의 data projection을 후속 소단위로 작성한다.",
-          "acceptance": "명시적 input/output grain, alias collision/missing/type error, concrete values+provenance. Window/Histogram/stack 수학 복제 없음. Callback/eval transform language 없음."
+          "acceptance": "명시적 input/output grain, alias collision/missing/type error, concrete values+provenance. Window/Histogram/stack 수학 복제 없음. Callback/eval transform language 없음.",
+          "status": "implemented-and-verified",
+          "resultEvidence": "phase6/RESULTS_X.md"
         },
         {
           "id": "R6-P6-W3",
@@ -900,7 +957,9 @@
             "D11"
           ],
           "scope": "Normal approximation과 Student-t를 method로 구분한다. ciLower/Upper와 Interval/Regression 어휘·계산 owner·provenance를 정리하되 기존 결과를 migration 없이 바꾸지 않는다.",
-          "acceptance": "[1,2,3]의 두 기존 upper를 각각 재현. n0/n1/constant/grouped/missing과 method·level 오류를 독립 oracle로 검사."
+          "acceptance": "[1,2,3]의 두 기존 upper를 각각 재현. n0/n1/constant/grouped/missing과 method·level 오류를 독립 oracle로 검사.",
+          "status": "implemented-and-verified",
+          "resultEvidence": "phase6/RESULTS_W3_CONFIDENCE.md"
         },
         {
           "id": "R6-P6-W4",
@@ -911,7 +970,9 @@
             "F16"
           ],
           "scope": "Final-item filter의 기준 source와 active recipe를 저장한다. 반복 ID collision을 없애고 명시적 해제와 domain 유지 empty view를 제공한다.",
-          "acceptance": "같은 filter 반복 idempotent, replace/compose 서로 다른 기대 결과. Empty item cleanup과 이전 program 보존, 독립 통계 layer 비의도 변경 없음."
+          "acceptance": "같은 filter 반복 idempotent, replace/compose 서로 다른 기대 결과. Empty item cleanup과 이전 program 보존, 독립 통계 layer 비의도 변경 없음.",
+          "status": "implemented-and-verified",
+          "resultEvidence": "phase6/RESULTS_W4_FILTER.md"
         },
         {
           "id": "R6-P6-W5",
@@ -922,22 +983,24 @@
             "F16"
           ],
           "scope": "Violin의 source/category/value/split/orientation, ErrorBar/Band의 source/position/interval roles를 atomic owner edit로 제공한다. Box/Gradient/Regression의 vocabulary와 비교한다.",
-          "acceptance": "생성→source 교체→방향 전환→style edit가 한 owner identity를 유지. Scale/guide/labels downstream이 수렴하고 부적합 변경은 전부 실패."
+          "acceptance": "생성→source 교체→방향 전환→style edit가 한 owner identity를 유지. Scale/guide/labels downstream이 수렴하고 부적합 변경은 전부 실패.",
+          "status": "implemented-and-verified",
+          "resultEvidence": "phase6/RESULTS_W5_COMPOSITE_ROLES.md"
         }
       ]
     },
     {
       "id": 7,
       "title": "Polar and one dimensional charts",
-      "status": "planned",
+      "status": "completed",
       "dependencies": [
         5,
         6
       ],
       "gateStates": {
-        "R6-P7-A": "planned",
-        "R6-P7-V": "planned",
-        "R6-P7-X": "planned"
+        "R6-P7-A": "approved",
+        "R6-P7-V": "approved",
+        "R6-P7-X": "approved"
       },
       "workPackages": [
         {
@@ -948,7 +1011,9 @@
             "F02"
           ],
           "scope": "Point/line→theta/radius→group/color→Polar guides를 연결한다. Radial position과 glyph size, theta unit, seam/closure를 구분한다.",
-          "acceptance": "기존 lower chain과 동일, theta/radius scale edit 후 수렴. Cartesian과 Polar consumer가 잘못 혼합되지 않음."
+          "acceptance": "기존 lower chain과 동일, theta/radius scale edit 후 수렴. Cartesian과 Polar consumer가 잘못 혼합되지 않음.",
+          "status": "implemented-and-verified",
+          "resultEvidence": "phase7/RESULTS_W1_POLAR.md"
         },
         {
           "id": "R6-P7-W2",
@@ -958,7 +1023,9 @@
             "F03"
           ],
           "scope": "Closed line, categorical theta order, series와 radius contract를 연결한다. Wide data는 explicit Fold provenance를 통해 long-form으로 만든다.",
-          "acceptance": "다른 단위 measure의 자동 정규화 없음. 명시적 per-dimension normalization 또는 same-unit 경로를 구분. Missing/tie/order/closed path 검증."
+          "acceptance": "다른 단위 measure의 자동 정규화 없음. 명시적 per-dimension normalization 또는 same-unit 경로를 구분. Missing/tie/order/closed path 검증.",
+          "status": "implemented-and-verified",
+          "resultEvidence": "phase7/RESULTS_W2_RADAR.md"
         },
         {
           "id": "R6-P7-W3",
@@ -968,21 +1035,23 @@
             "F08"
           ],
           "scope": "Rug는 tick+plot edge, Strip은 point+constant/category slot으로 제공한다. Jitter를 explicit optional 배치로 재사용하고 placement 의미를 저장한다.",
-          "acceptance": "Dummy field 없이 drawable output. Tick/point 구별, x/y 방향, scale/Canvas edit·filter 후 anchor 유지. MCP complete-chart provider가 이 경로를 사용."
+          "acceptance": "Dummy field 없이 drawable output. Tick/point 구별, x/y 방향, scale/Canvas edit·filter 후 anchor 유지. MCP complete-chart provider가 이 경로를 사용.",
+          "status": "implemented-and-verified",
+          "resultEvidence": "phase7/RESULTS_W3_RUG_STRIP.md"
         }
       ]
     },
     {
       "id": 8,
       "title": "Statistical and endpoint charts",
-      "status": "planned",
+      "status": "completed",
       "dependencies": [
         7
       ],
       "gateStates": {
-        "R6-P8-A": "planned",
-        "R6-P8-V": "planned",
-        "R6-P8-X": "planned"
+        "R6-P8-A": "approved",
+        "R6-P8-V": "approved",
+        "R6-P8-X": "approved"
       },
       "workPackages": [
         {
@@ -993,7 +1062,9 @@
             "F10"
           ],
           "scope": "Interval center point와 error bar, scatter와 regression line/band를 조합한다. Source와 group, method/level을 기존 statistical owner에 위임한다.",
-          "acceptance": "Center/interval 같은 grain·scale, explicit group:false serialization, confidence method provenance. Child style와 role editor로 수정 가능."
+          "acceptance": "Center/interval 같은 grain·scale, explicit group:false serialization, confidence method provenance. Child style와 role editor로 수정 가능.",
+          "status": "implemented-and-verified",
+          "resultEvidence": "phase8/RESULTS_W1_INTERVAL_REGRESSION.md"
         },
         {
           "id": "R6-P8-W2",
@@ -1003,7 +1074,9 @@
             "F11"
           ],
           "scope": "Summary/raw mode를 구분한 point, baseline stem rule, two endpoints connector를 ordinary child로 만든다. Atomic role edit와 final-item label anchor를 정의한다.",
-          "acceptance": "Horizontal/vertical, zero/nonzero baseline, endpoint swap, negative/equal values, source edit 후 geometry·guide 수렴."
+          "acceptance": "Horizontal/vertical, zero/nonzero baseline, endpoint swap, negative/equal values, source edit 후 geometry·guide 수렴.",
+          "status": "implemented-and-verified",
+          "resultEvidence": "phase8/RESULTS_W2_ENDPOINT_PLOTS.md"
         },
         {
           "id": "R6-P8-W3",
@@ -1013,21 +1086,23 @@
             "F13"
           ],
           "scope": "Sorted values와 tie grouping, denominator, missing/weight policy를 materialized derived data로 정의한다. Step line은 기존 path owner로 표현하고 generic cumsum은 Window에 남긴다.",
-          "acceptance": "관측점 우연속 cumulative probability, ties/count/weights와 0..1 bounds 독립 oracle. Group와 filter/source edit 후 분모·steps·labels 일치."
+          "acceptance": "관측점 우연속 cumulative probability, ties/count/weights와 0..1 bounds 독립 oracle. Group와 filter/source edit 후 분모·steps·labels 일치.",
+          "status": "implemented-and-verified",
+          "resultEvidence": "phase8/RESULTS_W3_ECDF.md"
         }
       ]
     },
     {
       "id": 9,
       "title": "Deterministic packing and raincloud",
-      "status": "planned",
+      "status": "completed",
       "dependencies": [
         8
       ],
       "gateStates": {
-        "R6-P9-A": "planned",
-        "R6-P9-V": "planned",
-        "R6-P9-X": "planned"
+        "R6-P9-A": "approved",
+        "R6-P9-V": "approved",
+        "R6-P9-X": "approved"
       },
       "workPackages": [
         {
@@ -1038,7 +1113,9 @@
             "F09"
           ],
           "scope": "Glyph bounds, fixed quantitative coordinate, category slot과 stable order를 사용하는 packPoints 후보를 설계한다. 해제·replay·overflow 정책을 함께 제공한다.",
-          "acceptance": "Feasible fixture에서 actual glyph collision 0, quantitative value 불변, deterministic output. Resize/radius change 때 재배치, remove 뒤 base position 복구."
+          "acceptance": "Feasible fixture에서 actual glyph collision 0, quantitative value 불변, deterministic output. Resize/radius change 때 재배치, remove 뒤 base position 복구.",
+          "status": "implemented-and-verified",
+          "resultEvidence": "phase9/RESULTS_W1_BEESWARM.md"
         },
         {
           "id": "R6-P9-W2",
@@ -1048,21 +1125,23 @@
             "F12"
           ],
           "scope": "Half violin+box/interval+raw point child를 같은 source와 category slot recipe에서 만든다. Points mode strip/beeswarm을 명시하고 child IDs와 owner relation을 안정화한다.",
-          "acceptance": "Summary/KDE/raw sample source 일치, slot overlap policy 검증. Source/filter/orientation edit는 정의된 child 범위만 원자적으로 갱신."
+          "acceptance": "Summary/KDE/raw sample source 일치, slot overlap policy 검증. Source/filter/orientation edit는 정의된 child 범위만 원자적으로 갱신.",
+          "status": "implemented-and-verified",
+          "resultEvidence": "phase9/RESULTS_W2_RAINCLOUD.md"
         }
       ]
     },
     {
       "id": 10,
       "title": "Comparison and composition",
-      "status": "planned",
+      "status": "completed",
       "dependencies": [
         9
       ],
       "gateStates": {
-        "R6-P10-A": "planned",
-        "R6-P10-V": "planned",
-        "R6-P10-X": "planned"
+        "R6-P10-A": "approved",
+        "R6-P10-V": "approved",
+        "R6-P10-X": "approved"
       },
       "workPackages": [
         {
@@ -1074,7 +1153,9 @@
             "F19"
           ],
           "scope": "Row×column facet과 field repeat를 목적별로 제공한다. Observed vs full category combinations, empty cells, order와 shared domain을 명시한다.",
-          "acceptance": "2D facet identity/order, empty-cell policy, shared/independent scale 결과, legend 설명 보존. 전체 source edit 후 cell들이 같은 recipe로 재생성."
+          "acceptance": "2D facet identity/order, empty-cell policy, shared/independent scale 결과, legend 설명 보존. 전체 source edit 후 cell들이 같은 recipe로 재생성.",
+          "status": "implemented-and-verified",
+          "resultEvidence": "phase10/REVIEW.md"
         },
         {
           "id": "R6-P10-W2",
@@ -1085,7 +1166,9 @@
             "F19"
           ],
           "scope": "Concat에 insert/remove/reorder를 추가하고 stable child name을 target으로 한다. Facet-derived child는 arbitrary replacement 대신 허용된 override policy로만 편집한다.",
-          "acceptance": "반복 삽입 ID conflict, 마지막 child 제거, reorder geometry, previous program 보존. Recipe와 concrete child가 어긋나는 편집 거부."
+          "acceptance": "반복 삽입 ID conflict, 마지막 child 제거, reorder geometry, previous program 보존. Recipe와 concrete child가 어긋나는 편집 거부.",
+          "status": "implemented-and-verified",
+          "resultEvidence": "phase10/REVIEW.md"
         },
         {
           "id": "R6-P10-W3",
@@ -1096,20 +1179,22 @@
             "F19"
           ],
           "scope": "Cartesian/Polar/Parallel cell의 실제 supported matrix를 작성한다. Compatible guides의 부모 승격과 per-cell ownership을 family별로 검증한다.",
-          "acceptance": "지원 셀에서 resize/data/scale/theme edit 수렴. Unsupported 조합은 explicit reason. Polar/Parallel 지원을 문서만으로 선언하지 않음."
+          "acceptance": "지원 셀에서 resize/data/scale/theme edit 수렴. Unsupported 조합은 explicit reason. Polar/Parallel 지원을 문서만으로 선언하지 않음.",
+          "status": "implemented-and-verified",
+          "resultEvidence": "phase10/REVIEW.md"
         }
       ]
     },
     {
       "id": 11,
       "title": "Integration discovery and closeout",
-      "status": "in-progress",
+      "status": "completed",
       "dependencies": [
         10
       ],
       "gateStates": {
         "R6-P11-A": "approved",
-        "R6-P11-X": "planned"
+        "R6-P11-X": "approved"
       },
       "workPackages": [
         {
@@ -1120,7 +1205,9 @@
             "D20"
           ],
           "scope": "변경 후 모든 direct/internal action, declarations, Current, card, public docs를 재분류한다. Wraps/editableVia/supports/units/inference/completion과 실제 public trace를 대조한다.",
-          "acceptance": "미분류 direct action 0, supported 주장과 runtime/type 불일치 0. Proposed/Planned/Current 잔여 문장과 selectMarks lifecycle drift 정리."
+          "acceptance": "미분류 direct action 0, supported 주장과 runtime/type 불일치 0. Proposed/Planned/Current 잔여 문장과 selectMarks lifecycle drift 정리.",
+          "status": "implemented-and-verified",
+          "resultEvidence": "phase11/RESULTS_W1.md"
         },
         {
           "id": "R6-P11-W2",
@@ -1128,7 +1215,9 @@
           "relativeSize": "L",
           "findingIds": [],
           "scope": "각 chart의 H0 시작과 H2 시작, H3 edit를 같은 evidence corpus에서 비교한다. Fresh compositional scenarios, MCP completion, renderers, package/browser ceilings를 검증한다.",
-          "acceptance": "승인된 facade마다 child-chain·primitive equivalence와 edit/rematerialization matrix 완료. Existing release gates 통과, 새 payload/bundle 초과를 숨기지 않음."
+          "acceptance": "승인된 facade마다 child-chain·primitive equivalence와 edit/rematerialization matrix 완료. Existing release gates 통과, 새 payload/bundle 초과를 숨기지 않음.",
+          "status": "implemented-and-verified",
+          "resultEvidence": "phase11/RESULTS_W2.md"
         },
         {
           "id": "R6-P11-W4",
@@ -1136,7 +1225,9 @@
           "relativeSize": "M",
           "findingIds": [],
           "scope": "승인 범위의 Planned를 Current 또는 승인된 장기 처분으로 정리한다. Durable executable evidence를 capability owner로 옮기고 README/index/history를 갱신한다.",
-          "acceptance": "승인 범위 Planned0, unresolved hidden deferral0. 현재 source/type/docs/architecture/generated output 일치. 원격 검증 commit과 명시적 Exit 승인 후에만 completed."
+          "acceptance": "승인 범위 Planned0, unresolved hidden deferral0. 현재 source/type/docs/architecture/generated output 일치. 원격 검증 commit과 명시적 Exit 승인 후에만 completed.",
+          "status": "implemented-and-verified",
+          "resultEvidence": "phase11/REVIEW.md"
         }
       ],
       "contract": "phase11/CONTRACT.md",
@@ -1165,14 +1256,14 @@
       "recommended": "Facade에서 x/y category·measure를 함께 preflight하고 기존 position owner를 호출한다. 수평 temporal category type을 공통 role union으로 표현한다. Mean default는 유지한다.",
       "acceptance": "가로/세로 shorthand, explicit aggregate, temporal category가 runtime와 strict TS에서 일치. 잘못된 양쪽 category/measure 조합은 명확히 거부.",
       "evidence": "audit/probe-results.json: P35–P37",
-      "disposition": "Facade and lower measure-first paths corrected and verified; Phase 2 X approved by the user.",
-      "resultEvidence": "phase2/RESULTS.md#w5--bar-incomplete-authoring"
+      "disposition": "Implemented and verified; see phase1/REVIEW.md.",
+      "resultEvidence": "phase1/REVIEW.md"
     },
     {
       "id": "B02",
       "title": "MCP Area의 빈 chart 거짓 완료",
       "kind": "reproduced-bug-or-contract-mismatch",
-      "status": "implemented-and-verified",
+      "status": "implemented-verified",
       "primaryPhase": 1,
       "primaryWorkPackage": "R6-P1-W4",
       "relatedWorkPackages": [
@@ -1185,14 +1276,14 @@
       "recommended": "Area/Strip의 complete-chart provider를 실제 완성 경로 또는 unresolved로 바꾼다. Radial-bar가 generic bar를 shadow하게 한다. Raw mark 요청은 별도 provider로 유지한다.",
       "acceptance": "7개 probe를 실행해 필수 encoding·item grain·coordinate·extra layer를 검사. 지원 안 된 요구를 unresolved=[]로 반환하지 않음. 비용 드는 모델 호출 불필요.",
       "evidence": "audit/mcp-execution.json: area chart",
-      "disposition": "Incomplete chart decisions are explicitly unresolved; complete chart APIs remain with their later family owners.",
-      "resultEvidence": "phase1/RESULTS.md#w4--mcp-chart-closure와-phrase-우선순위"
+      "disposition": "Implemented and verified; see phase1/REVIEW.md.",
+      "resultEvidence": "phase1/REVIEW.md"
     },
     {
       "id": "B03",
       "title": "MCP Strip의 unpositioned Tick 거짓 완료",
       "kind": "reproduced-bug-or-contract-mismatch",
-      "status": "implemented-and-verified",
+      "status": "implemented-verified",
       "primaryPhase": 1,
       "primaryWorkPackage": "R6-P1-W4",
       "relatedWorkPackages": [
@@ -1205,14 +1296,14 @@
       "recommended": "Area/Strip의 complete-chart provider를 실제 완성 경로 또는 unresolved로 바꾼다. Radial-bar가 generic bar를 shadow하게 한다. Raw mark 요청은 별도 provider로 유지한다.",
       "acceptance": "7개 probe를 실행해 필수 encoding·item grain·coordinate·extra layer를 검사. 지원 안 된 요구를 unresolved=[]로 반환하지 않음. 비용 드는 모델 호출 불필요.",
       "evidence": "audit/mcp-execution.json: strip plot",
-      "disposition": "Incomplete chart decisions are explicitly unresolved; complete chart APIs remain with their later family owners.",
-      "resultEvidence": "phase1/RESULTS.md#w4--mcp-chart-closure와-phrase-우선순위"
+      "disposition": "Implemented and verified; see phase1/REVIEW.md.",
+      "resultEvidence": "phase1/REVIEW.md"
     },
     {
       "id": "B04",
       "title": "MCP Radial bar의 Cartesian layer 혼입",
       "kind": "reproduced-bug-or-contract-mismatch",
-      "status": "implemented-and-verified",
+      "status": "implemented-verified",
       "primaryPhase": 1,
       "primaryWorkPackage": "R6-P1-W4",
       "relatedWorkPackages": [
@@ -1225,14 +1316,14 @@
       "recommended": "Area/Strip의 complete-chart provider를 실제 완성 경로 또는 unresolved로 바꾼다. Radial-bar가 generic bar를 shadow하게 한다. Raw mark 요청은 별도 provider로 유지한다.",
       "acceptance": "7개 probe를 실행해 필수 encoding·item grain·coordinate·extra layer를 검사. 지원 안 된 요구를 unresolved=[]로 반환하지 않음. 비용 드는 모델 호출 불필요.",
       "evidence": "audit/mcp-execution.json: radial bar chart",
-      "disposition": "Overlapping generic chart phrases shadowed; separate requests retained. D01 remains for Phase 4.",
-      "resultEvidence": "phase1/RESULTS.md#w4--mcp-chart-closure와-phrase-우선순위"
+      "disposition": "Implemented and verified; see phase1/REVIEW.md.",
+      "resultEvidence": "phase1/REVIEW.md"
     },
     {
       "id": "B05",
       "title": "미완성 derived data 소비의 internal TypeError",
       "kind": "reproduced-bug-or-contract-mismatch",
-      "status": "implemented-and-verified",
+      "status": "implemented-verified",
       "primaryPhase": 1,
       "primaryWorkPackage": "R6-P1-W2",
       "relatedWorkPackages": [
@@ -1245,14 +1336,14 @@
       "recommended": "Definition-only dataset과 materialized dataset을 구별한다. Scatter뿐 아니라 같은 consumer selection owner를 쓰는 진입점에 domain precondition을 적용한다.",
       "acceptance": "createDerivedData 자체 계약 유지. 후속 action이 internal TypeError 대신 필요한 materialized data를 설명하고 원래 program/trace는 보존.",
       "evidence": "audit/probe-results.json: P18–P19",
-      "disposition": "Shared chart and mark data consumer precondition verified; definition registration and internal rebinding preserved. Phase 1 X review pending.",
-      "resultEvidence": "phase1/RESULTS.md#w2--definition-only-data-소비"
+      "disposition": "Implemented and verified; see phase1/REVIEW.md.",
+      "resultEvidence": "phase1/REVIEW.md"
     },
     {
       "id": "B06",
       "title": "Point/Bar stroke:false의 runtime·type·prose 불일치",
       "kind": "reproduced-bug-or-contract-mismatch",
-      "status": "implemented-and-verified",
+      "status": "implemented-verified",
       "primaryPhase": 1,
       "primaryWorkPackage": "R6-P1-W3",
       "relatedWorkPackages": [
@@ -1265,14 +1356,14 @@
       "recommended": "Point/Bar의 실제 허용 범위를 declarations, shared alias, Current prose에 맞춘다. Rect 비교 사례를 유지하고 Area/Arc 확장은 이 수정과 분리한다.",
       "acceptance": "JS·TS의 동일 positive/negative case 결과, unknown style option 거부, 기존 render 유지.",
       "evidence": "audit/probe-results.json: P08; audit/type-results.txt",
-      "disposition": "Point/Bar and facade declarations aligned with existing runtime; strict installed consumer verified. Phase 1 X review pending.",
-      "resultEvidence": "phase1/RESULTS.md#w3--strokefalse-정합성"
+      "disposition": "Implemented and verified; see phase1/REVIEW.md.",
+      "resultEvidence": "phase1/REVIEW.md"
     },
     {
       "id": "B07",
       "title": "가로 temporal Bar의 type 누락",
       "kind": "reproduced-bug-or-contract-mismatch",
-      "status": "implemented-and-verified",
+      "status": "implemented-verified",
       "primaryPhase": 1,
       "primaryWorkPackage": "R6-P1-W1",
       "relatedWorkPackages": [
@@ -1285,14 +1376,14 @@
       "recommended": "Facade에서 x/y category·measure를 함께 preflight하고 기존 position owner를 호출한다. 수평 temporal category type을 공통 role union으로 표현한다. Mean default는 유지한다.",
       "acceptance": "가로/세로 shorthand, explicit aggregate, temporal category가 runtime와 strict TS에서 일치. 잘못된 양쪽 category/measure 조합은 명확히 거부.",
       "evidence": "audit/probe-results.json: P38; audit/type-results.txt",
-      "disposition": "Temporal y declaration aligned with runtime; Phase 1 X review pending.",
-      "resultEvidence": "phase1/RESULTS.md#w1--bar-pair-role와-temporal-선언"
+      "disposition": "Implemented and verified; see phase1/REVIEW.md.",
+      "resultEvidence": "phase1/REVIEW.md"
     },
     {
       "id": "B08",
       "title": "Internal wrapped inventory 16개 누락",
       "kind": "reproduced-bug-or-contract-mismatch",
-      "status": "implemented-and-verified",
+      "status": "implemented-verified",
       "primaryPhase": 1,
       "primaryWorkPackage": "R6-P1-W5",
       "relatedWorkPackages": [
@@ -1305,8 +1396,8 @@
       "recommended": "등록 wrapped method = direct ∪ internal, 교집합 없음, manifest orphan 없음의 전체 집합 대조를 만든다. 누락 16개를 internal에 기록한다.",
       "acceptance": "현재 기준 direct173/internal111/registered284와 일치하며 임의 internal method 누락을 탐지한다. Public promotion 없음.",
       "evidence": "audit/inventory-reconciliation.json",
-      "disposition": "Manifest and internal owner tables reconcile all 284 wrapped methods as 173 direct plus 111 internal; exhaustive partition guard passes.",
-      "resultEvidence": "phase1/RESULTS.md#w5--internal-inventory-전체-집합"
+      "disposition": "Implemented and verified; see phase1/REVIEW.md.",
+      "resultEvidence": "phase1/REVIEW.md"
     },
     {
       "id": "D01",
@@ -1325,7 +1416,7 @@
       "recommended": "Equal-angle area mode와 zero-baseline radius-length mode를 구분한다. Arc·theta/radius owner를 재사용하고 inner radius를 포함한 area mapping을 확정한다.",
       "acceptance": "값2·3·4가 모두 표현됨. Area 비율·radius-length 비율 각각 독립 수치 검증. Polar scatter 기본 encodeR는 바뀌지 않음.",
       "evidence": "audit/REPORT.md: D01",
-      "disposition": "Implemented and verified through Phase 4 integration; D14 includes the Phase 2 incomplete-width work and Phase 4 theta/legend order.",
+      "disposition": "Implemented and verified; see phase4/REVIEW.md.",
       "resultEvidence": "phase4/REVIEW.md"
     },
     {
@@ -1345,8 +1436,8 @@
       "recommended": "encodeGroup의 identity와 color/dash/width의 final-series appearance를 분리한다. Multi-key group을 충돌 없는 구조로 다룬다. Existing inferred grouping의 호환 경로를 유지한다.",
       "acceptance": "country group+continent color 성공; 한 series의 모호한 appearance 거부; field 작성 순서와 group edit 뒤 수렴.",
       "evidence": "audit/REPORT.md: D02",
-      "disposition": "Approved Phase 2 scope implemented and consumer-verified; result Gate X approved by the user.",
-      "resultEvidence": "phase2/RESULTS.md#integration--verified-consumers-and-compatibility"
+      "disposition": "Implemented and verified; see phase2/REVIEW.md.",
+      "resultEvidence": "phase2/REVIEW.md"
     },
     {
       "id": "D03",
@@ -1365,7 +1456,7 @@
       "recommended": "Group/stack/fill/overlay/diverging을 atomic owner에 모은다. 기존 color.layout/measure.stack/offset 경로가 owner에 위임하도록 migration한다.",
       "acceptance": "group→stack→group에서 scale, offset, normalization, guides, selections에 stale 상태 없음. Negative/missing/group conflict atomic.",
       "evidence": "audit/REPORT.md: D03",
-      "disposition": "Implemented and verified through Phase 4 integration; D14 includes the Phase 2 incomplete-width work and Phase 4 theta/legend order.",
+      "disposition": "Implemented and verified; see phase4/REVIEW.md.",
       "implementationEvidence": "phase4/RESULTS_V1.md",
       "resultEvidence": "phase4/REVIEW.md"
     },
@@ -1373,7 +1464,7 @@
       "id": "D04",
       "title": "Complete facade와 deferred composite의 역할 혼합",
       "kind": "design-issue",
-      "status": "partially-implemented",
+      "status": "implemented-verified",
       "primaryPhase": 2,
       "primaryWorkPackage": "R6-P2-W1",
       "relatedWorkPackages": [
@@ -1386,8 +1477,8 @@
       "recommended": "Box/Gradient deferred 역할을 metadata에 명시한다. H0는 compatible guide를 재사용하고 missing만 생성한다. Low-level create strictness는 유지한다. Box guides default는 초기에는 유지하는 안을 확정한다.",
       "acceptance": "Scatter→Line 기본 조합 성공, incompatible scale guide는 atomic conflict. omitted/{} /false matrix가 facade와 child별로 명시됨.",
       "evidence": "audit/REPORT.md: D04",
-      "disposition": "W1 deferred metadata and guide reuse verified, including the installed package after R6-P2-B approval. Full metadata audit remains in Phase 11.",
-      "resultEvidence": "phase2/RESULTS.md#w1--facade-guide-reuse"
+      "disposition": "Implemented and verified; see phase2/REVIEW.md.",
+      "resultEvidence": "phase2/REVIEW.md"
     },
     {
       "id": "D05",
@@ -1406,8 +1497,8 @@
       "recommended": "Box/Gradient deferred 역할을 metadata에 명시한다. H0는 compatible guide를 재사용하고 missing만 생성한다. Low-level create strictness는 유지한다. Box guides default는 초기에는 유지하는 안을 확정한다.",
       "acceptance": "Scatter→Line 기본 조합 성공, incompatible scale guide는 atomic conflict. omitted/{} /false matrix가 facade와 child별로 명시됨.",
       "evidence": "audit/REPORT.md: D05",
-      "disposition": "W1 guide reuse and compatibility matrix verified, including the installed package after R6-P2-B approval. Phase 2 result Gate X approved by the user.",
-      "resultEvidence": "phase2/RESULTS.md#w1--facade-guide-reuse"
+      "disposition": "Implemented and verified; see phase2/REVIEW.md.",
+      "resultEvidence": "phase2/REVIEW.md"
     },
     {
       "id": "D06",
@@ -1426,7 +1517,7 @@
       "recommended": "Line constant width/opacity, Scatter point radius, Rule style 경로를 공통 owner로 연결한다. ErrorBand fill의 semantic color/legend 충돌을 명시적 assignment 교체로 정리한다.",
       "acceptance": "create/edit/field/constant 지원 matrix 일치. Override 뒤 scale·legend가 거짓 의미를 설명하지 않음. Local highlight override 별도 유지.",
       "evidence": "audit/REPORT.md: D06",
-      "disposition": "Approved Phase 2 scope implemented and consumer-verified; result Gate X approved by the user.",
+      "disposition": "Implemented and verified; see phase2/REVIEW.md.",
       "additionalEvidence": "phase2/baseline-results.json",
       "additionalProbeIds": [
         "S13",
@@ -1434,7 +1525,7 @@
         "S16",
         "S18"
       ],
-      "resultEvidence": "phase2/RESULTS.md#integration--verified-consumers-and-compatibility"
+      "resultEvidence": "phase2/REVIEW.md"
     },
     {
       "id": "D07",
@@ -1453,7 +1544,8 @@
       "recommended": "Cartesian/Polar/Parallel component create/edit/remove/recreate matrix를 완성한다. Polar focused 생성의 공개 경계를 정리하고 dimension-key 기반 editParallelAxis를 설계한다.",
       "acceptance": "title:false→create title→edit→remove→recreate가 public chain으로 가능. Font/format/tick count가 resize·scale edit 뒤 유지.",
       "evidence": "audit/REPORT.md: D07",
-      "disposition": "implemented-verified-phase5"
+      "disposition": "Implemented and verified; see phase5/REVIEW.md.",
+      "resultEvidence": "phase5/REVIEW.md"
     },
     {
       "id": "D08",
@@ -1472,7 +1564,8 @@
       "recommended": "Standalone/combined size, categorical/continuous/interval/width legend의 edge 지원과 recipe 편집을 공통 layout owner로 연결한다. Legacy bottom mode를 명시한다.",
       "acceptance": "지원하는 각 kind×edge×lifecycle 검증, unsupported 셀 이유 명시. Combined color/shape 일부 제거 뒤 설명과 graphics가 일치.",
       "evidence": "audit/REPORT.md: D08",
-      "disposition": "implemented-verified-phase5"
+      "disposition": "Implemented and verified; see phase5/REVIEW.md.",
+      "resultEvidence": "phase5/REVIEW.md"
     },
     {
       "id": "D09",
@@ -1491,8 +1584,8 @@
       "recommended": "Explicit type/schema/temporal unit/aggregate를 우선하는 선택표를 확정한다. groupBy:false의 JSON round trip을 제공하고 create omission과 edit preservation을 구분한다.",
       "acceptance": "numeric nominal color, mean Bar, year/timestamp 기존 결과 비교. 생략·false·undefined·auto의 source/trace/serialization 의미를 검사.",
       "evidence": "audit/REPORT.md: D09",
-      "disposition": "Approved Phase 2 scope implemented and consumer-verified; result Gate X approved by the user.",
-      "resultEvidence": "phase2/RESULTS.md#integration--verified-consumers-and-compatibility"
+      "disposition": "Implemented and verified; see phase2/REVIEW.md.",
+      "resultEvidence": "phase2/REVIEW.md"
     },
     {
       "id": "D10",
@@ -1515,14 +1608,14 @@
       "recommended": "Explicit type/schema/temporal unit/aggregate를 우선하는 선택표를 확정한다. groupBy:false의 JSON round trip을 제공하고 create omission과 edit preservation을 구분한다.",
       "acceptance": "numeric nominal color, mean Bar, year/timestamp 기존 결과 비교. 생략·false·undefined·auto의 source/trace/serialization 의미를 검사.",
       "evidence": "audit/REPORT.md: D10",
-      "disposition": "Approved Phase 2 scope implemented and consumer-verified; result Gate X approved by the user.",
-      "resultEvidence": "phase2/RESULTS.md#integration--verified-consumers-and-compatibility"
+      "disposition": "Implemented and verified; see phase2/REVIEW.md.",
+      "resultEvidence": "phase2/REVIEW.md"
     },
     {
       "id": "D11",
       "title": "CI method와 level 어휘 불일치",
       "kind": "design-issue",
-      "status": "proposed",
+      "status": "implemented-verified",
       "primaryPhase": 6,
       "primaryWorkPackage": "R6-P6-W3",
       "relatedWorkPackages": [
@@ -1535,13 +1628,14 @@
       "recommended": "Normal approximation과 Student-t를 method로 구분한다. ciLower/Upper와 Interval/Regression 어휘·계산 owner·provenance를 정리하되 기존 결과를 migration 없이 바꾸지 않는다.",
       "acceptance": "[1,2,3]의 두 기존 upper를 각각 재현. n0/n1/constant/grouped/missing과 method·level 오류를 독립 oracle로 검사.",
       "evidence": "audit/REPORT.md: D11",
-      "disposition": "implementation-or-explicit-contract-decision-proposed"
+      "disposition": "Implemented and verified; see phase6/RESULTS_X.md.",
+      "resultEvidence": "phase6/RESULTS_X.md"
     },
     {
       "id": "D12",
       "title": "Data snapshot·revision·소비 lifecycle",
       "kind": "design-issue",
-      "status": "proposed",
+      "status": "implemented-verified",
       "primaryPhase": 6,
       "primaryWorkPackage": "R6-P6-W1",
       "relatedWorkPackages": [
@@ -1554,7 +1648,8 @@
       "recommended": "Definition-only와 materializing transform을 구분한다. create/edit-owner/snapshot 관계와 Bin2D legacy reauthor를 정리하고 public bindMarkData의 full preflight를 만든다.",
       "acceptance": "Immutable 이전 program 유지. Field/type/grain/coordinate/scale/guide/selection incompatibility에 atomic failure, compatible revision은 orphan cleanup.",
       "evidence": "audit/REPORT.md: D12",
-      "disposition": "implementation-or-explicit-contract-decision-proposed"
+      "disposition": "Implemented and verified; see phase6/RESULTS_X.md.",
+      "resultEvidence": "phase6/RESULTS_X.md"
     },
     {
       "id": "D13",
@@ -1573,7 +1668,8 @@
       "recommended": "명시적 source mark와 category/aggregate/share content, data/plot anchor reference, annotation을 text/rule/rect owner 위에 제공한다. Axis/legend/text formatter·rotation unit을 정리한다.",
       "acceptance": "집계 Bar/Pie에 final item당 label 하나, percent 분모 검증. Multiple eligible marks에서 explicit source가 작동. Scale/data/filter 후 label과 anchor 수렴.",
       "evidence": "audit/REPORT.md: D13",
-      "disposition": "implemented-verified-phase5"
+      "disposition": "Implemented and verified; see phase5/REVIEW.md.",
+      "resultEvidence": "phase5/REVIEW.md"
     },
     {
       "id": "D14",
@@ -1596,15 +1692,15 @@
       "recommended": "Bar width와 measure-first encoding 중 geometry 없이 검증 가능한 intent를 보존한다. Missing positions 완료 시 원래 requested width와 role을 적용한다.",
       "acceptance": "width-first/last, category-first/measure-first의 semantic/graphic 동등성. Invalid field/width는 즉시 거부, placeholder graphics 없음.",
       "evidence": "audit/REPORT.md: D14",
-      "disposition": "Implemented and verified through Phase 4 integration; D14 includes the Phase 2 incomplete-width work and Phase 4 theta/legend order.",
-      "resultEvidence": "phase4/REVIEW.md",
+      "disposition": "Implemented and verified; see phase2/REVIEW.md.",
+      "resultEvidence": "phase2/REVIEW.md",
       "implementationEvidence": "phase4/RESULTS_W4.md"
     },
     {
       "id": "D15",
       "title": "반복 filter와 empty view 공백",
       "kind": "design-issue",
-      "status": "proposed",
+      "status": "implemented-verified",
       "primaryPhase": 6,
       "primaryWorkPackage": "R6-P6-W4",
       "relatedWorkPackages": [
@@ -1617,13 +1713,14 @@
       "recommended": "Final-item filter의 기준 source와 active recipe를 저장한다. 반복 ID collision을 없애고 명시적 해제와 domain 유지 empty view를 제공한다.",
       "acceptance": "같은 filter 반복 idempotent, replace/compose 서로 다른 기대 결과. Empty item cleanup과 이전 program 보존, 독립 통계 layer 비의도 변경 없음.",
       "evidence": "audit/REPORT.md: D15",
-      "disposition": "implementation-or-explicit-contract-decision-proposed"
+      "disposition": "Implemented and verified; see phase6/RESULTS_X.md.",
+      "resultEvidence": "phase6/RESULTS_X.md"
     },
     {
       "id": "D16",
       "title": "Composite source·position·orientation 편집 공백",
       "kind": "design-issue",
-      "status": "proposed",
+      "status": "implemented-verified",
       "primaryPhase": 6,
       "primaryWorkPackage": "R6-P6-W5",
       "relatedWorkPackages": [
@@ -1636,7 +1733,8 @@
       "recommended": "Violin의 source/category/value/split/orientation, ErrorBar/Band의 source/position/interval roles를 atomic owner edit로 제공한다. Box/Gradient/Regression의 vocabulary와 비교한다.",
       "acceptance": "생성→source 교체→방향 전환→style edit가 한 owner identity를 유지. Scale/guide/labels downstream이 수렴하고 부적합 변경은 전부 실패.",
       "evidence": "audit/REPORT.md: D16",
-      "disposition": "implementation-or-explicit-contract-decision-proposed"
+      "disposition": "Implemented and verified; see phase6/RESULTS_X.md.",
+      "resultEvidence": "phase6/RESULTS_X.md"
     },
     {
       "id": "D17",
@@ -1659,7 +1757,8 @@
       "recommended": "Theme owner를 추가하고 기존 font/color token과 mark·guide default를 연결한다. Explicit local/inherited 구분과 reset을 저장한다.",
       "acceptance": "Light/dark와 override/reset에서 axes·legend·text·Parallel까지 갱신. Theme 변경 전후 statistical values/group/domain/order 동일.",
       "evidence": "audit/REPORT.md: D17",
-      "disposition": "implemented-verified-phase5"
+      "disposition": "Implemented and verified; see phase5/REVIEW.md.",
+      "resultEvidence": "phase5/REVIEW.md"
     },
     {
       "id": "D18",
@@ -1678,7 +1777,7 @@
       "recommended": "명시적 semantic midpoint를 추가하고 sequential/discretized/diverging recipe transition을 shared consumers 전체와 함께 preflight한다.",
       "acceptance": "비대칭 domain에서 midpoint의 neutral color 검증. Legend 유무·복수 mark에서 전환 동일. Incompatible consumer 하나면 전부 rollback.",
       "evidence": "audit/REPORT.md: D18",
-      "disposition": "Implemented and verified through Phase 4 integration; D14 includes the Phase 2 incomplete-width work and Phase 4 theta/legend order.",
+      "disposition": "Implemented and verified; see phase4/REVIEW.md.",
       "implementationEvidence": "phase4/RESULTS_W5.md",
       "resultEvidence": "phase4/REVIEW.md"
     },
@@ -1686,7 +1785,7 @@
       "id": "D19",
       "title": "Facet/repeat/child 구조 편집의 한계",
       "kind": "design-issue",
-      "status": "proposed",
+      "status": "implemented-verified",
       "primaryPhase": 10,
       "primaryWorkPackage": "R6-P10-W1",
       "relatedWorkPackages": [
@@ -1707,13 +1806,14 @@
       "recommended": "Row×column facet과 field repeat를 목적별로 제공한다. Observed vs full category combinations, empty cells, order와 shared domain을 명시한다.",
       "acceptance": "2D facet identity/order, empty-cell policy, shared/independent scale 결과, legend 설명 보존. 전체 source edit 후 cell들이 같은 recipe로 재생성.",
       "evidence": "audit/REPORT.md: D19",
-      "disposition": "implementation-or-explicit-contract-decision-proposed"
+      "disposition": "Implemented and verified; see phase10/REVIEW.md.",
+      "resultEvidence": "phase10/REVIEW.md"
     },
     {
       "id": "D20",
       "title": "Discovery hierarchy·lifecycle·status metadata",
       "kind": "design-issue",
-      "status": "proposed",
+      "status": "implemented-verified",
       "primaryPhase": 11,
       "primaryWorkPackage": "R6-P11-W1",
       "relatedWorkPackages": [
@@ -1726,13 +1826,14 @@
       "recommended": "변경 후 모든 direct/internal action, declarations, Current, card, public docs를 재분류한다. Wraps/editableVia/supports/units/inference/completion과 실제 public trace를 대조한다.",
       "acceptance": "미분류 direct action 0, supported 주장과 runtime/type 불일치 0. Proposed/Planned/Current 잔여 문장과 selectMarks lifecycle drift 정리.",
       "evidence": "audit/REPORT.md: D20",
-      "disposition": "implementation-or-explicit-contract-decision-proposed"
+      "disposition": "Implemented and verified; see phase11/REVIEW.md.",
+      "resultEvidence": "phase11/REVIEW.md"
     },
     {
       "id": "F01",
       "title": "Pie / Donut",
       "kind": "proposed-family",
-      "status": "completed",
+      "status": "implemented-verified",
       "primaryPhase": 3,
       "primaryWorkPackage": "R6-P3-W1",
       "relatedWorkPackages": [
@@ -1745,15 +1846,15 @@
       "recommended": "Category count와 explicit weighted sum의 createPiePlot을 제안한다. Donut은 arc.innerRadius로 작성하고 별도 alias는 추가하지 않는 방향이다. Color는 category 기본, guide는 legend만이며 labels/theta order는 후속 단계다.",
       "acceptance": "category count·중복 category sum·donut hole·no axes/grid·하위 edit chain이 chart 계약과 일치. Facade-child semantic/graphic 동등성.",
       "evidence": "audit/REPORT.md: F01",
-      "disposition": "implemented-and-approved",
+      "disposition": "Implemented and verified; see phase3/REVIEW.md.",
       "contractEvidence": "phase3/CONTRACT_REVIEW.md",
-      "resultEvidence": "phase3/RESULTS.md#w1--pie-and-donut"
+      "resultEvidence": "phase3/REVIEW.md"
     },
     {
       "id": "F02",
       "title": "Polar Scatter / Line",
       "kind": "proposed-family",
-      "status": "proposed",
+      "status": "implemented-verified",
       "primaryPhase": 7,
       "primaryWorkPackage": "R6-P7-W1",
       "relatedWorkPackages": [
@@ -1766,13 +1867,14 @@
       "recommended": "Point/line→theta/radius→group/color→Polar guides를 연결한다. Radial position과 glyph size, theta unit, seam/closure를 구분한다.",
       "acceptance": "기존 lower chain과 동일, theta/radius scale edit 후 수렴. Cartesian과 Polar consumer가 잘못 혼합되지 않음.",
       "evidence": "audit/REPORT.md: F02",
-      "disposition": "implementation-or-explicit-contract-decision-proposed"
+      "disposition": "Implemented and verified; see phase7/REVIEW.md.",
+      "resultEvidence": "phase7/REVIEW.md"
     },
     {
       "id": "F03",
       "title": "Radar",
       "kind": "proposed-family",
-      "status": "proposed",
+      "status": "implemented-verified",
       "primaryPhase": 7,
       "primaryWorkPackage": "R6-P7-W2",
       "relatedWorkPackages": [
@@ -1785,7 +1887,8 @@
       "recommended": "Closed line, categorical theta order, series와 radius contract를 연결한다. Wide data는 explicit Fold provenance를 통해 long-form으로 만든다.",
       "acceptance": "다른 단위 measure의 자동 정규화 없음. 명시적 per-dimension normalization 또는 same-unit 경로를 구분. Missing/tie/order/closed path 검증.",
       "evidence": "audit/REPORT.md: F03",
-      "disposition": "implementation-or-explicit-contract-decision-proposed"
+      "disposition": "Implemented and verified; see phase7/REVIEW.md.",
+      "resultEvidence": "phase7/REVIEW.md"
     },
     {
       "id": "F04",
@@ -1804,7 +1907,7 @@
       "recommended": "Equal-angle area mode와 zero-baseline radius-length mode를 구분한다. Arc·theta/radius owner를 재사용하고 inner radius를 포함한 area mapping을 확정한다.",
       "acceptance": "값2·3·4가 모두 표현됨. Area 비율·radius-length 비율 각각 독립 수치 검증. Polar scatter 기본 encodeR는 바뀌지 않음.",
       "evidence": "audit/REPORT.md: F04",
-      "disposition": "Implemented and verified through Phase 4 integration; D14 includes the Phase 2 incomplete-width work and Phase 4 theta/legend order.",
+      "disposition": "Implemented and verified; see phase4/REVIEW.md.",
       "resultEvidence": "phase4/REVIEW.md"
     },
     {
@@ -1824,7 +1927,7 @@
       "recommended": "Constant data endpoint를 lower owner에 추가하고 simple area, ranged ribbon, stacked area를 구분한다. Nonlinear scale과 missing path break를 명시한다.",
       "acceptance": "simple x/y 입력이 실제 area를 그림. Baseline/domain/zero/log·range edit 수렴. 가짜 source field와 renderer inference 없음.",
       "evidence": "audit/REPORT.md: F05",
-      "disposition": "Implemented and verified through Phase 4 integration; D14 includes the Phase 2 incomplete-width work and Phase 4 theta/legend order.",
+      "disposition": "Implemented and verified; see phase4/REVIEW.md.",
       "implementationEvidence": "phase4/RESULTS_V1.md",
       "resultEvidence": "phase4/REVIEW.md"
     },
@@ -1832,7 +1935,7 @@
       "id": "F06",
       "title": "Density",
       "kind": "proposed-family",
-      "status": "completed",
+      "status": "implemented-verified",
       "primaryPhase": 3,
       "primaryWorkPackage": "R6-P3-W2",
       "relatedWorkPackages": [
@@ -1845,15 +1948,15 @@
       "recommended": "Baseline-only createDensityPlot을 제안한다. 기존 KDE와 densityChannel을 재사용하고 groupBy와 color는 별도 명시하며 color는 retained group field만 지원한다. Orientation edit와 raw metadata join은 추가하지 않는다.",
       "acceptance": "세로/가로·grouped density의 값과 영역이 기존 chain과 동일. editDensity/editAreaMark/editScale 후 owner 유지.",
       "evidence": "audit/REPORT.md: F06",
-      "disposition": "implemented-and-approved",
+      "disposition": "Implemented and verified; see phase3/REVIEW.md.",
       "contractEvidence": "phase3/CONTRACT_REVIEW.md",
-      "resultEvidence": "phase3/RESULTS.md#w2--baseline-density"
+      "resultEvidence": "phase3/REVIEW.md"
     },
     {
       "id": "F07",
       "title": "Horizon",
       "kind": "proposed-family",
-      "status": "completed",
+      "status": "implemented-verified",
       "primaryPhase": 3,
       "primaryWorkPackage": "R6-P3-W3",
       "relatedWorkPackages": [
@@ -1866,15 +1969,15 @@
       "recommended": "필수 x/y를 받는 createHorizonPlot을 제안한다. 기존 createCoordinate로 좌표를 연결하고 encodeHorizon 뒤 explicit opacity를 적용한다. H0는 x guide만 허용하며 기존 lower guide escape는 유지한다.",
       "acceptance": "signed data와 editHorizon의 revision 검증. Folded y를 원래 양적 축처럼 표시하거나 internal band color legend를 자동 생성하지 않음.",
       "evidence": "audit/REPORT.md: F07",
-      "disposition": "implemented-and-approved",
+      "disposition": "Implemented and verified; see phase3/REVIEW.md.",
       "contractEvidence": "phase3/CONTRACT_REVIEW.md",
-      "resultEvidence": "phase3/RESULTS.md#w3--horizon"
+      "resultEvidence": "phase3/REVIEW.md"
     },
     {
       "id": "F08",
       "title": "Rug / Strip",
       "kind": "proposed-family",
-      "status": "proposed",
+      "status": "implemented-verified",
       "primaryPhase": 7,
       "primaryWorkPackage": "R6-P7-W3",
       "relatedWorkPackages": [
@@ -1887,13 +1990,14 @@
       "recommended": "Rug는 tick+plot edge, Strip은 point+constant/category slot으로 제공한다. Jitter를 explicit optional 배치로 재사용하고 placement 의미를 저장한다.",
       "acceptance": "Dummy field 없이 drawable output. Tick/point 구별, x/y 방향, scale/Canvas edit·filter 후 anchor 유지. MCP complete-chart provider가 이 경로를 사용.",
       "evidence": "audit/REPORT.md: F08",
-      "disposition": "implementation-or-explicit-contract-decision-proposed"
+      "disposition": "Implemented and verified; see phase7/REVIEW.md.",
+      "resultEvidence": "phase7/REVIEW.md"
     },
     {
       "id": "F09",
       "title": "Beeswarm / point packing",
       "kind": "proposed-family",
-      "status": "proposed",
+      "status": "implemented-verified",
       "primaryPhase": 9,
       "primaryWorkPackage": "R6-P9-W1",
       "relatedWorkPackages": [
@@ -1906,13 +2010,14 @@
       "recommended": "Glyph bounds, fixed quantitative coordinate, category slot과 stable order를 사용하는 packPoints 후보를 설계한다. 해제·replay·overflow 정책을 함께 제공한다.",
       "acceptance": "Feasible fixture에서 actual glyph collision 0, quantitative value 불변, deterministic output. Resize/radius change 때 재배치, remove 뒤 base position 복구.",
       "evidence": "audit/REPORT.md: F09",
-      "disposition": "implementation-or-explicit-contract-decision-proposed"
+      "disposition": "Implemented and verified; see phase9/REVIEW.md.",
+      "resultEvidence": "phase9/REVIEW.md"
     },
     {
       "id": "F10",
       "title": "Interval / Regression complete plot",
       "kind": "proposed-family",
-      "status": "proposed",
+      "status": "implemented-verified",
       "primaryPhase": 8,
       "primaryWorkPackage": "R6-P8-W1",
       "relatedWorkPackages": [
@@ -1925,13 +2030,14 @@
       "recommended": "Interval center point와 error bar, scatter와 regression line/band를 조합한다. Source와 group, method/level을 기존 statistical owner에 위임한다.",
       "acceptance": "Center/interval 같은 grain·scale, explicit group:false serialization, confidence method provenance. Child style와 role editor로 수정 가능.",
       "evidence": "audit/REPORT.md: F10",
-      "disposition": "implementation-or-explicit-contract-decision-proposed"
+      "disposition": "Implemented and verified; see phase8/REVIEW.md.",
+      "resultEvidence": "phase8/REVIEW.md"
     },
     {
       "id": "F11",
       "title": "Dot / Lollipop / Dumbbell",
       "kind": "proposed-family",
-      "status": "proposed",
+      "status": "implemented-verified",
       "primaryPhase": 8,
       "primaryWorkPackage": "R6-P8-W2",
       "relatedWorkPackages": [
@@ -1944,13 +2050,14 @@
       "recommended": "Summary/raw mode를 구분한 point, baseline stem rule, two endpoints connector를 ordinary child로 만든다. Atomic role edit와 final-item label anchor를 정의한다.",
       "acceptance": "Horizontal/vertical, zero/nonzero baseline, endpoint swap, negative/equal values, source edit 후 geometry·guide 수렴.",
       "evidence": "audit/REPORT.md: F11",
-      "disposition": "implementation-or-explicit-contract-decision-proposed"
+      "disposition": "Implemented and verified; see phase8/REVIEW.md.",
+      "resultEvidence": "phase8/REVIEW.md"
     },
     {
       "id": "F12",
       "title": "Raincloud",
       "kind": "proposed-family",
-      "status": "proposed",
+      "status": "implemented-verified",
       "primaryPhase": 9,
       "primaryWorkPackage": "R6-P9-W2",
       "relatedWorkPackages": [
@@ -1963,13 +2070,14 @@
       "recommended": "Half violin+box/interval+raw point child를 같은 source와 category slot recipe에서 만든다. Points mode strip/beeswarm을 명시하고 child IDs와 owner relation을 안정화한다.",
       "acceptance": "Summary/KDE/raw sample source 일치, slot overlap policy 검증. Source/filter/orientation edit는 정의된 child 범위만 원자적으로 갱신.",
       "evidence": "audit/REPORT.md: F12",
-      "disposition": "implementation-or-explicit-contract-decision-proposed"
+      "disposition": "Implemented and verified; see phase9/REVIEW.md.",
+      "resultEvidence": "phase9/REVIEW.md"
     },
     {
       "id": "F13",
       "title": "ECDF data / plot",
       "kind": "proposed-family",
-      "status": "proposed",
+      "status": "implemented-verified",
       "primaryPhase": 8,
       "primaryWorkPackage": "R6-P8-W3",
       "relatedWorkPackages": [
@@ -1982,7 +2090,8 @@
       "recommended": "Sorted values와 tie grouping, denominator, missing/weight policy를 materialized derived data로 정의한다. Step line은 기존 path owner로 표현하고 generic cumsum은 Window에 남긴다.",
       "acceptance": "관측점 우연속 cumulative probability, ties/count/weights와 0..1 bounds 독립 oracle. Group와 filter/source edit 후 분모·steps·labels 일치.",
       "evidence": "audit/REPORT.md: F13",
-      "disposition": "implementation-or-explicit-contract-decision-proposed"
+      "disposition": "Implemented and verified; see phase8/REVIEW.md.",
+      "resultEvidence": "phase8/REVIEW.md"
     },
     {
       "id": "F14",
@@ -2001,13 +2110,14 @@
       "recommended": "명시적 source mark와 category/aggregate/share content, data/plot anchor reference, annotation을 text/rule/rect owner 위에 제공한다. Axis/legend/text formatter·rotation unit을 정리한다.",
       "acceptance": "집계 Bar/Pie에 final item당 label 하나, percent 분모 검증. Multiple eligible marks에서 explicit source가 작동. Scale/data/filter 후 label과 anchor 수렴.",
       "evidence": "audit/REPORT.md: F14",
-      "disposition": "implemented-verified-phase5"
+      "disposition": "Implemented and verified; see phase5/REVIEW.md.",
+      "resultEvidence": "phase5/REVIEW.md"
     },
     {
       "id": "F15",
       "title": "Summary / bin / fold / computed / stack data",
       "kind": "proposed-family",
-      "status": "proposed",
+      "status": "implemented-verified",
       "primaryPhase": 6,
       "primaryWorkPackage": "R6-P6-W2",
       "relatedWorkPackages": [
@@ -2020,13 +2130,14 @@
       "recommended": "Group+multi-aggregate summary, reusable 1D bin bounds/count/member, selected-field fold를 먼저 만든다. 제한된 serializable arithmetic와 Phase4 stack grammar의 data projection을 후속 소단위로 작성한다.",
       "acceptance": "명시적 input/output grain, alias collision/missing/type error, concrete values+provenance. Window/Histogram/stack 수학 복제 없음. Callback/eval transform language 없음.",
       "evidence": "audit/REPORT.md: F15",
-      "disposition": "implementation-or-explicit-contract-decision-proposed"
+      "disposition": "Implemented and verified; see phase6/RESULTS_X.md.",
+      "resultEvidence": "phase6/RESULTS_X.md"
     },
     {
       "id": "F16",
       "title": "Data binding / transform revision / role edit",
       "kind": "proposed-family",
-      "status": "proposed",
+      "status": "implemented-verified",
       "primaryPhase": 6,
       "primaryWorkPackage": "R6-P6-W1",
       "relatedWorkPackages": [
@@ -2047,7 +2158,8 @@
       "recommended": "Definition-only와 materializing transform을 구분한다. create/edit-owner/snapshot 관계와 Bin2D legacy reauthor를 정리하고 public bindMarkData의 full preflight를 만든다.",
       "acceptance": "Immutable 이전 program 유지. Field/type/grain/coordinate/scale/guide/selection incompatibility에 atomic failure, compatible revision은 orphan cleanup.",
       "evidence": "audit/REPORT.md: F16",
-      "disposition": "implementation-or-explicit-contract-decision-proposed"
+      "disposition": "Implemented and verified; see phase6/RESULTS_X.md.",
+      "resultEvidence": "phase6/RESULTS_X.md"
     },
     {
       "id": "F17",
@@ -2066,7 +2178,8 @@
       "recommended": "Cartesian/Polar/Parallel component create/edit/remove/recreate matrix를 완성한다. Polar focused 생성의 공개 경계를 정리하고 dimension-key 기반 editParallelAxis를 설계한다.",
       "acceptance": "title:false→create title→edit→remove→recreate가 public chain으로 가능. Font/format/tick count가 resize·scale edit 뒤 유지.",
       "evidence": "audit/REPORT.md: F17",
-      "disposition": "implemented-verified-phase5"
+      "disposition": "Implemented and verified; see phase5/REVIEW.md.",
+      "resultEvidence": "phase5/REVIEW.md"
     },
     {
       "id": "F18",
@@ -2093,13 +2206,14 @@
       "recommended": "Theme owner를 추가하고 기존 font/color token과 mark·guide default를 연결한다. Explicit local/inherited 구분과 reset을 저장한다.",
       "acceptance": "Light/dark와 override/reset에서 axes·legend·text·Parallel까지 갱신. Theme 변경 전후 statistical values/group/domain/order 동일.",
       "evidence": "audit/REPORT.md: F18",
-      "disposition": "implemented-verified-phase5"
+      "disposition": "Implemented and verified; see phase5/REVIEW.md.",
+      "resultEvidence": "phase5/REVIEW.md"
     },
     {
       "id": "F19",
       "title": "Facet grid / repeat / child structure",
       "kind": "proposed-family",
-      "status": "proposed",
+      "status": "implemented-verified",
       "primaryPhase": 10,
       "primaryWorkPackage": "R6-P10-W1",
       "relatedWorkPackages": [
@@ -2120,7 +2234,8 @@
       "recommended": "Row×column facet과 field repeat를 목적별로 제공한다. Observed vs full category combinations, empty cells, order와 shared domain을 명시한다.",
       "acceptance": "2D facet identity/order, empty-cell policy, shared/independent scale 결과, legend 설명 보존. 전체 source edit 후 cell들이 같은 recipe로 재생성.",
       "evidence": "audit/REPORT.md: F19",
-      "disposition": "implementation-or-explicit-contract-decision-proposed"
+      "disposition": "Implemented and verified; see phase10/REVIEW.md.",
+      "resultEvidence": "phase10/REVIEW.md"
     }
   ],
   "scopeDecision": {
@@ -2158,5 +2273,14 @@
     "baselineCommit": "f45dcdee70e6442eac96b20e00f4a5435a295a8d",
     "evidence": "APPROVAL.md",
     "scope": "All remaining Roadmap 6 work and necessary budget increases; F20 remains excluded. Approval does not claim implementation or validation complete."
+  },
+  "closeout": {
+    "sourceCommit": "4068121a73a6d34cfd5c8edece13ea3301d5346e",
+    "evidence": "phase11/REVIEW.md",
+    "directActions": 234,
+    "userFacingActions": 228,
+    "plannedActions": 0,
+    "plannedCapabilities": 0,
+    "actionCardSchemaVersion": 3
   }
 }

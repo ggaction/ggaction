@@ -142,7 +142,9 @@ Primary owner는 누락 방지를 위한 책임 단위이며, 관련 작업이 �
 - 수정·추가 방향: Box/Gradient deferred 역할을 metadata에 명시한다. H0는 compatible guide를 재사용하고 missing만 생성한다. Low-level create strictness는 유지한다. Box guides default는 초기에는 유지하는 안을 확정한다.
 - 완료 검증: Scatter→Line 기본 조합 성공, incompatible scale guide는 atomic conflict. omitted/{} /false matrix가 facade와 child별로 명시됨.
 - 근거: audit/REPORT.md: D04. [원래 조사](audit/REPORT.md)
-- 처분: [W1](phase2/RESULTS.md#w1--facade-guide-reuse)의 deferred metadata·owned guide 재사용과 선언 정합성을 검증했다. 전수 metadata audit는 Phase 11에 남기며 항목 전체를 닫지 않는다.
+- 처분: [W1](phase2/RESULTS.md#w1--facade-guide-reuse)의 deferred metadata·owned guide 재사용과 선언 정합성을
+  검증했고, [Phase 11 X](phase11/REVIEW.md)에서 234개 direct action의 H0–H4, completion, entry 지원,
+  unit, inference와 실행 trace 관계를 전수 대조했다. implemented-verified.
 
 ### D05 — Guide default와 facade 중첩 비대칭
 
@@ -291,7 +293,10 @@ Primary owner는 누락 방지를 위한 책임 단위이며, 관련 작업이 �
 - 수정·추가 방향: 변경 후 모든 direct/internal action, declarations, Current, card, public docs를 재분류한다. Wraps/editableVia/supports/units/inference/completion과 실제 public trace를 대조한다.
 - 완료 검증: 미분류 direct action 0, supported 주장과 runtime/type 불일치 0. Proposed/Planned/Current 잔여 문장과 selectMarks lifecycle drift 정리.
 - 근거: audit/REPORT.md: D20. [원래 조사](audit/REPORT.md)
-- 처분: 구현 또는 명시적인 계약 유지·migration 결정의 제안. 아직 완료·승인 상태가 아니다.
+- 처분: [Phase 11 X](phase11/REVIEW.md)로 implemented-verified. Card schema v3가 234개 direct action의
+  H0–H4 역할, immediate public child, direct editor, entry 지원, unit, inference와 completion을 필수 필드로
+  제공한다. 실행 trace, strict declaration, public docs, MCP와 fresh installed package가 같은 projection을
+  사용하며 미분류·unknown relationship·지원 과장·승인 범위의 Planned 잔여는 모두 0이다.
 
 ## 추가 액션군 19개
 
@@ -390,7 +395,9 @@ Primary owner는 누락 방지를 위한 책임 단위이며, 관련 작업이 �
 - 수정·추가 방향: Glyph bounds, fixed quantitative coordinate, category slot과 stable order를 사용하는 packPoints 후보를 설계한다. 해제·replay·overflow 정책을 함께 제공한다.
 - 완료 검증: Feasible fixture에서 actual glyph collision 0, quantitative value 불변, deterministic output. Resize/radius change 때 재배치, remove 뒤 base position 복구.
 - 근거: audit/REPORT.md: F09. [원래 조사](audit/REPORT.md)
-- 처분: 구현 또는 명시적인 계약 유지·migration 결정의 제안. 아직 완료·승인 상태가 아니다.
+- 처분: [Phase 9 W1](phase9/RESULTS_W1_BEESWARM.md)과 [X 통합 감사](phase9/REVIEW.md)로
+  implemented-verified. Deterministic packing은 glyph bounds, fixed quantitative coordinate, categorical slot과
+  stable identity를 사용하며 resize/style/data/scale replay와 제거 복원을 검증했다.
 
 ### F10 — Interval / Regression complete plot
 
@@ -419,7 +426,9 @@ Primary owner는 누락 방지를 위한 책임 단위이며, 관련 작업이 �
 - 수정·추가 방향: Half violin+box/interval+raw point child를 같은 source와 category slot recipe에서 만든다. Points mode strip/beeswarm을 명시하고 child IDs와 owner relation을 안정화한다.
 - 완료 검증: Summary/KDE/raw sample source 일치, slot overlap policy 검증. Source/filter/orientation edit는 정의된 child 범위만 원자적으로 갱신.
 - 근거: audit/REPORT.md: F12. [원래 조사](audit/REPORT.md)
-- 처분: 구현 또는 명시적인 계약 유지·migration 결정의 제안. 아직 완료·승인 상태가 아니다.
+- 처분: [Phase 9 W2](phase9/RESULTS_W2_RAINCLOUD.md)와 [X 통합 감사](phase9/REVIEW.md)로
+  implemented-verified. Half density, summary와 raw Point가 같은 source/category/value slot을 공유하고,
+  strip/beeswarm mode, stable child closure와 atomic source/orientation edit를 검증했다.
 
 ### F13 — ECDF data / plot
 
@@ -459,9 +468,10 @@ Primary owner는 누락 방지를 위한 책임 단위이며, 관련 작업이 �
 - 수정·추가 방향: Definition-only와 materializing transform을 구분한다. create/edit-owner/snapshot 관계와 Bin2D legacy reauthor를 정리하고 public bindMarkData의 full preflight를 만든다.
 - 완료 검증: Immutable 이전 program 유지. Field/type/grain/coordinate/scale/guide/selection incompatibility에 atomic failure, compatible revision은 orphan cleanup.
 - 근거: audit/REPORT.md: F16. [원래 조사](audit/REPORT.md)
-- 처분: 부분 implemented-verified. [Phase 6 W1](phase6/RESULTS_W1_DATA_BINDING.md)의 independent mark bind와
-  [Phase 6 W4](phase6/RESULTS_W4_FILTER.md)의 filter owner revision을 완료했다. Composite role revision은
-  R6-P6-W5에 남아 있으므로 F16 전체는 아직 닫지 않는다.
+- 처분: implemented-verified. [Phase 6 W1](phase6/RESULTS_W1_DATA_BINDING.md)의 independent mark bind,
+  [Phase 6 W4](phase6/RESULTS_W4_FILTER.md)의 filter owner revision과
+  [Phase 6 W5](phase6/RESULTS_W5_COMPOSITE_ROLES.md)의 composite role revision을 완료했다. Compatible revision의
+  replay/orphan cleanup과 incompatible field·grain·coordinate·scale·guide·selection의 atomic failure를 검증했다.
 
 ### F17 — Polar component / Parallel axis / guide edit
 

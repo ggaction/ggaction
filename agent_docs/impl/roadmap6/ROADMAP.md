@@ -1,7 +1,8 @@
 # Roadmap 6 — Hierarchical Chart Authoring and Action Consistency
 
-> **문서 상태 — 현재 실행 계획.** Phase 1–10을 완료했고 Phase 11 전체 통합 감사로 이동한다. Phase 10의 최종 증거는 [Phase 10 X](phase10/REVIEW.md), data/statistics/composite lifecycle의 최종 증거는 [Phase 6 X](phase6/RESULTS_X.md)를 따른다.
-> [사용자의 전체 실행·0.0.13 릴리즈 승인](APPROVAL.md)은 F20을 제외한 남은 계약·시각 목표·구현·검증과 필요한 한도 조정을 포함한다. 승인과 검증 완료를 구분하며 Phase 11은 아직 구현 완료가 아니다.
+> **문서 상태 — 완료된 실행 기록.** Phase 0–11을 완료했다. 최종 계층·discovery·package 증거는
+> [Phase 11 X](phase11/REVIEW.md), composition 증거는 [Phase 10 X](phase10/REVIEW.md)를 따른다.
+> [사용자의 전체 실행·0.0.13 릴리즈 승인](APPROVAL.md)은 F20을 제외한 계약·시각 목표·구현·검증과 필요한 한도 조정을 포함했다. 실제 완료 여부는 각 Phase 결과를 따른다.
 > 실행 위치는 [ROADMAP_INDEX.json](../ROADMAP_INDEX.json), 현재 제품 계약은
 > [ACTION_INDEX.json](../../contract/ACTION_INDEX.json)이 소유한다.
 
@@ -121,7 +122,7 @@ S는 기존 owner 위의 교정·연결, M은 여러 consumer의 lifecycle 변�
 | 8 | completed | Interval/Regression, Dot/Lollipop/Dumbbell, ECDF — [Phase 8 X](phase8/REVIEW.md) |
 | 9 | completed | Deterministic point packing과 Raincloud — [Phase 9 X](phase9/REVIEW.md) |
 | 10 | completed | Facet grid, repeat, named child 구조 편집 — [Phase 10 X](phase10/REVIEW.md) |
-| 11 | in-progress | 전체 계층·MCP·package 검증과 closeout |
+| 11 | completed | 전체 계층·MCP·package 검증과 closeout — [Phase 11 X](phase11/REVIEW.md) |
 
 ## 의존 관계와 기본 실행 순서
 
@@ -241,7 +242,8 @@ insert/remove/reorder와 shared guide 소유권을 확장한다. Polar/Parallel�
 
 ## Approval Gates
 
-2026-09-05 진행 승인으로 R6-P0-A와 R6-P1-A를, 후속 “승인한다”로 R6-P1-X를 approved로 기록했다. 나머지 Gate는 각 단계의 실제 검토·증거를 기다린다.
+단계별 Gate는 사용자 승인과 각 결과 문서의 실제 검증 증거를 함께 기록한다. Phase 0–11의 적용 가능한
+필수 Gate를 모두 닫았다. Phase 1 V는 새 appearance target이 없어 실행 대상이 되지 않았고 planned 기록을 보존했다.
 단계별 문서에서 exact scope, 필요한 source/public chain·검증·시각 증거, 다음 차단 작업을 선언한다.
 
 - A: 해당 단계의 public contract·호환성·작업 범위.
@@ -263,5 +265,5 @@ F01의 Donut 별도 alias, F17의 editGuides, F18 fitting의 세부 API, F19의 
 세부 설계에서 확정한다. 보류 시 원래 ID와 rationale를 남기고, 이미 승인되어 Planned가 된
 항목은 임의로 원장에서 지우지 않는다. API 정리 과정에서 제안 이름을 바꿔도 finding ID는 유지한다.
 
-배포 단위·버전·PR·merge·publish·docs deploy는 구현 결과 이후 별도 작업이다.
-이 로드맵은 그러한 외부 작업이나 비용 사용의 승인을 포함하지 않는다.
+배포 단위·버전·PR·merge·publish·docs deploy는 구현 closeout과 분리해 실행한다. 0.0.13 release는
+[별도 승인 기록](APPROVAL.md)에 따라 진행한다.
