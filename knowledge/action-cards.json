@@ -6353,7 +6353,7 @@
         {
           "name": "mapping",
           "required": false,
-          "type": "RadialMapping | undefined"
+          "type": "false | RadialMapping | undefined"
         },
         {
           "name": "aggregate",

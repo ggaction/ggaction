@@ -110,6 +110,8 @@ export function resolvePositionEncoding(program, channel, args, operation) {
     throw new Error(`${operation} mapping requires Arc radius.`);
   }
   validateCoordinateFamily(layer, channel, operation);
+  const clearRadialMapping =
+    layer.mark.type === "arc" && channel === "radius" && args.mapping === false;
   const hasField = Object.hasOwn(args, "field");
   const hasDatum = Object.hasOwn(args, "datum");
   if (["rule", "rect", "text", "point", "tick"].includes(layer.mark.type)) {
@@ -130,7 +132,9 @@ export function resolvePositionEncoding(program, channel, args, operation) {
   }
   const previous = layer.encoding?.[channel];
   const mapping = channel === "radius" && layer.mark.type === "arc"
-    ? args.mapping ?? findSemanticScale(program, previous?.scale)?.radialMapping
+    ? clearRadialMapping
+      ? undefined
+      : args.mapping ?? findSemanticScale(program, previous?.scale)?.radialMapping
     : undefined;
   const countRadius = mapping !== undefined && (args.aggregate ?? previous?.aggregate) === "count";
   const requestedFieldType = args.fieldType ?? previous?.fieldType ?? (
@@ -165,7 +169,9 @@ export function resolvePositionEncoding(program, channel, args, operation) {
       validateAggregateFieldValues(dataset.values, field, fieldType);
     } else readScaleField(dataset.values, field, fieldType, { temporalUnit });
   }
-  const effectiveArgs = { ...args, ...(mapping === undefined ? {} : { mapping }) };
+  const effectiveArgs = { ...args };
+  if (clearRadialMapping) delete effectiveArgs.mapping;
+  else if (mapping !== undefined) effectiveArgs.mapping = mapping;
   const directQuantitativeArcTheta =
     layer.mark.type === "arc" &&
     channel === "theta" &&
@@ -173,7 +179,8 @@ export function resolvePositionEncoding(program, channel, args, operation) {
   for (const property of ["aggregate", "bin", "stack"]) {
     if (!Object.hasOwn(effectiveArgs, property) && previous !== undefined &&
       Object.hasOwn(previous, property) &&
-      !(directQuantitativeArcTheta && property === "aggregate")) {
+      !(directQuantitativeArcTheta && property === "aggregate") &&
+      !(clearRadialMapping && property === "aggregate")) {
       effectiveArgs[property] = previous[property];
     }
   }
@@ -201,7 +208,7 @@ export function resolvePositionEncoding(program, channel, args, operation) {
     previous,
     Object.hasOwn(args, "scale") ? args.scale : {}
   );
-  const scale = resolvePositionScaleDefinition(
+  const resolvedScale = resolvePositionScaleDefinition(
     program,
     channel,
     aggregateOutput ? "quantitative" : fieldType,
@@ -229,6 +236,11 @@ export function resolvePositionEncoding(program, channel, args, operation) {
           }
         : {}
   );
+  const scale = clearRadialMapping
+    ? Object.fromEntries(
+        Object.entries(resolvedScale).filter(([property]) => property !== "radialMapping")
+      )
+    : resolvedScale;
   if (
     layer.mark.type === "bar" &&
     program.markConfigs[target]?.boxPlot === undefined &&
@@ -310,6 +322,7 @@ export function resolvePositionEncoding(program, channel, args, operation) {
     temporalUnit,
     scale,
     coordinate: resolveCoordinate(program, channel, layer, args.coordinate),
+    clearRadialMapping,
     ...policy
   };
 }

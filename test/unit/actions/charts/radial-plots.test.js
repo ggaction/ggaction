@@ -118,3 +118,35 @@ test("Polar facade fills missing axis components without changing existing label
   assert.ok(q.guideConfigs.axis.radius.line);
   assert.ok(q.guideConfigs.axis.radius.title);
 });
+
+test("Rose plots refine atomically into row-level cause overlays", () => {
+  const values = [
+    { month: "April", cause: "Wounds", value: 2 },
+    { month: "April", cause: "Disease", value: 9 },
+    { month: "May", cause: "Wounds", value: 1 },
+    { month: "May", cause: "Disease", value: 4 },
+    { month: "June", cause: "Disease", value: 0 }
+  ];
+  const p = chart().createCanvas({ width: 600, height: 500, margin: 90 })
+    .createData({ values })
+    .createRosePlot({ category: "month", value: "value", aggregate: "sum" });
+  const q = p
+    .encodeR({ field: "value", mapping: false })
+    .encodeColor({ field: "cause", layout: "overlay" });
+  const layer = q.semanticSpec.layers[0];
+  assert.equal(layer.id, "rosePlot");
+  assert.equal(layer.encoding.radius.field, "value");
+  assert.equal(layer.encoding.radius.aggregate, undefined);
+  assert.equal(q.semanticSpec.scales.find(scale => scale.id === "radius").radialMapping, undefined);
+  assert.deepEqual(q.resolvedScales.radius.domain, [0, 9]);
+  assert.deepEqual(q.resolvedScales.theta.domain, ["April", "May", "June"]);
+  assert.deepEqual(q.semanticSpec.datasets[0].values, values);
+  assert.equal(q.semanticSpec.guides.legend.color.scale, layer.encoding.color.scale);
+  assert.equal(q.semanticSpec.guides.legend.color.title, "cause");
+  assert.deepEqual(
+    resolveArcItems(q, layer, q.semanticSpec.datasets[0]).map(item => item.members[0].value),
+    [9, 2, 4, 1]
+  );
+  assert.equal(q.graphicSpec.objects.rosePlot.items.length, 4);
+  assert.equal(p.semanticSpec.layers[0].encoding.radius.aggregate, "sum");
+});

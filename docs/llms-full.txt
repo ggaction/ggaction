@@ -8694,6 +8694,15 @@ mapping on a shared measured scale, use `editScale({ id, radialMapping: "area" }
 all its compatible sectors and radial guides update together. Ordinary point
 radius and measured Arc radius require separate scales.
 
+Use `encodeR({ field: "value", mapping: false })` to refine a measured Arc into
+ordinary row-level radial length. This one action removes the inherited
+count/sum aggregate, clears the scale's measured mapping, and updates existing
+radial guides. It preserves the mark, data, categorical theta order, and
+compatible styling. This is an explicit semantic change: `mapping: "area"`
+makes aggregate annular area proportional to value, while `mapping: false`
+makes each row's radius proportional to its value. A measured scale shared by
+another aggregate Arc must be separated before this transition.
+
 ## Rule endpoints
 
 Rule positions use the same `encodeX` and `encodeY` actions and accept exactly
@@ -10294,9 +10303,12 @@ linear measured scale; `editScale({ id: "radius", radialMapping: "radius-length"
 updates all compatible consumers. Explicit domains use `[0, positiveMaximum]`
 and ranges use `[inner, outer]`, with `0 <= inner < outer`.
 
-To clear `radialMapping` with an explicit `undefined`, first remove its measured
-radius encodings. Reusing a generic scale must not silently change how existing
-sectors represent values. A separate scale id is usually simpler.
+To turn one measured Arc into ordinary row-level radius while reusing its scale,
+call `encodeR({ field, mapping: false })`. The action clears the Arc aggregate
+before delegating the `radialMapping` removal to `editScale`, then refreshes the
+scale, sectors, axis, and grid together. It rejects a scale that still has
+another measured consumer. Direct `editScale({ radialMapping: undefined })`
+continues to require that measured radius encodings have already been removed.
 
 ## Related
 
@@ -14934,11 +14946,14 @@ range is `[0, 360]`.
 ## `encodeR`
 
 ```javascript
-encodeR({ field, target?, fieldType?, scale?, coordinate? })
+encodeR({ field?, aggregate?, mapping?, target?, fieldType?, scale?, coordinate? })
 ```
 
 Encode a quantitative field as Polar radial distance. The default `radius`
 scale fits the current plot bounds and rematerializes after Canvas edits.
+Measured Arc radius accepts count/sum with `mapping: "area"` or
+`"radius-length"`. Reassign with `{ field, mapping: false }` to atomically
+replace a measured category aggregate with ordinary row-level radial length.
 [Polar positions](./api/position-encodings/#polar-positions)
 
 ## `encodePointRadius`

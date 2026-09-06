@@ -1198,8 +1198,8 @@
         "related",
         "area-bounds"
       ],
-      "bytes": 9744,
-      "sha256": "57129c5613167fa3af2207ff1428a77ef9324eca0210b03128a975695ca0b321"
+      "bytes": 10341,
+      "sha256": "acd918602754dc5155a5c38afccffa356add62b8876c4e937cf5366f26b6fb97"
     },
     {
       "order": 75,
@@ -1429,8 +1429,8 @@
         "measured-radius-scales",
         "related"
       ],
-      "bytes": 5614,
-      "sha256": "79cf42a30877143b6b143b55240ab1d95a15c8fce9bdd08a437d82feb969cc0d"
+      "bytes": 5858,
+      "sha256": "a207389f7e2db482af83770f7cf5ccdfa0e249dd77803814e5aa329c8117e430"
     },
     {
       "order": 90,
@@ -2005,8 +2005,8 @@
         "encodebarwidth",
         "related"
       ],
-      "bytes": 17587,
-      "sha256": "ed6549a7b8564ab25065595546faae00c0edd81d9070c0cef7b6c392d1dda579"
+      "bytes": 17826,
+      "sha256": "912fdffe5c585a158c90a95471600aee29411abff094328d9a5f8e06e90c1884"
     },
     {
       "order": 120,

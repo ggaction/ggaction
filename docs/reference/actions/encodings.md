@@ -382,11 +382,14 @@ range is `[0, 360]`.
 ## `encodeR`
 
 ```javascript
-encodeR({ field, target?, fieldType?, scale?, coordinate? })
+encodeR({ field?, aggregate?, mapping?, target?, fieldType?, scale?, coordinate? })
 ```
 
 Encode a quantitative field as Polar radial distance. The default `radius`
 scale fits the current plot bounds and rematerializes after Canvas edits.
+Measured Arc radius accepts count/sum with `mapping: "area"` or
+`"radius-length"`. Reassign with `{ field, mapping: false }` to atomically
+replace a measured category aggregate with ordinary row-level radial length.
 [Polar positions](../../api/position-encodings.md#polar-positions)
 
 ## `encodePointRadius`

@@ -1467,7 +1467,7 @@ export type RadialEncodingOptions = {
   fieldType?: "quantitative";
   coordinate?: string;
 } & (
-  | { field: string; mapping?: never; aggregate?: never; scale?: RadiusScaleOptions }
+  | { field: string; mapping?: false; aggregate?: never; scale?: RadiusScaleOptions }
   | { field: string; mapping?: RadialMapping; aggregate: "sum"; scale?: MeasuredRadiusScaleOptions }
   | { field?: never; mapping?: RadialMapping; aggregate: "count"; scale?: MeasuredRadiusScaleOptions }
 );

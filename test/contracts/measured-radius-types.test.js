@@ -17,6 +17,7 @@ import type { BasicChartProgram } from ${JSON.stringify(path.join(root, "types/b
 declare const p: ChartProgram;
 declare const basic: BasicChartProgram;
 p.encodeR({ field: "value" });
+p.encodeR({ field: "value", mapping: false });
 p.encodeR({ field: "value", aggregate: "sum", mapping: "area", scale: { domain: [0, 4], range: [70, 140] } });
 p.encodeR({ aggregate: "count", mapping: "radius-length" });
 p.encodeR({ field: "other", aggregate: "sum" });
@@ -27,6 +28,10 @@ p.editScale({ id: "radius", radialMapping: undefined });
 basic.encodeR({ aggregate: "count", mapping: "area" });
 // @ts-expect-error count does not consume a measure field
 p.encodeR({ field: "value", aggregate: "count", mapping: "area" });
+// @ts-expect-error direct mapping mode does not aggregate
+p.encodeR({ field: "value", aggregate: "sum", mapping: false });
+// @ts-expect-error direct mapping mode requires a field
+p.encodeR({ aggregate: "count", mapping: false });
 // @ts-expect-error sum needs a field
 p.encodeR({ aggregate: "sum", mapping: "area" });
 // @ts-expect-error a mapping needs count or sum

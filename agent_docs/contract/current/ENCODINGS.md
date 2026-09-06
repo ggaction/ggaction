@@ -1320,7 +1320,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 
 ## `encodeR`
 
-- Signature: `encodeR({ field?, aggregate?: "count" | "sum", mapping?: "area" | "radius-length", target?, fieldType?: "quantitative", scale?, coordinate? })`
+- Signature: `encodeR({ field?, aggregate?: "count" | "sum", mapping?: "area" | "radius-length" | false, target?, fieldType?: "quantitative", scale?, coordinate? })`
 - Radius is semantic Polar position, distinct from graphical `encodeRadius`/`encodePointRadius` glyph size.
 - Auto range is `[0, min(plotWidth, plotHeight) / 2]`. Explicit range values are non-negative logical Canvas
   pixels and must fit current plot bounds.
@@ -1335,11 +1335,11 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 - Measured scale subset is linear, zero:true, nice:false, reverse:false, optional clamp, domain:auto|[0,U], range:auto|[r0,R]. U must cover every category aggregate; 0<=r0<R. Theta is equal-angle categorical band without padding/aggregate/weight, and Arc padAngle is 0.
 - Auto range follows Canvas and innerRadius. Explicit range defines the hole; an explicitly authored Arc innerRadius must agree with r0/R. Ordinary Point/Arc consumers cannot share a measured scale. Compatible measured Arc consumers share its mapping and require one auto innerRadius policy.
 - Radius-first assignment stays pending until theta exists, without a fabricated domain or graphic. Pending explicit range still must fit Canvas. Remove measured radius before removing its category theta; this prevents orphaned aggregate guides. Adding a compatible Arc inherits the aggregate; ordinary Point inheritance excludes measured radius.
-- Mapping is stored once on the scale as radialMapping. `editScale({radialMapping})` changes all compatible consumers; `encodeR({mapping})` changes the assigned scale through the same lower action. Clearing mapping while aggregate consumers remain is rejected. To reuse the scale for ordinary radius, remove the radius encoding, clear its orphaned radialMapping with editScale, then encodeR a field; a fresh scale id also works.
+- Mapping is stored once on the scale as radialMapping. `editScale({radialMapping})` changes all compatible consumers; `encodeR({mapping})` changes the assigned scale through the same lower action. `encodeR({field, mapping:false})` atomically removes the current Arc radius aggregate, clears radialMapping through `editScale`, and rematerializes the existing radial guides as ordinary row-level radial length. It rejects if another measured consumer still shares that scale. Omitting mapping continues to preserve an existing measured assignment.
 
 ### Formal values — `encodeR`
 
-- Implemented: `encodeR(RadialEncodingOptions)` — ordinary field/RadiusScaleOptions, or sum+field/count-without-field and optional inherited RadialMapping/MeasuredRadiusScaleOptions.
+- Implemented: `encodeR(RadialEncodingOptions)` — ordinary field/RadiusScaleOptions with optional explicit `mapping:false`, or sum+field/count-without-field and optional inherited RadialMapping/MeasuredRadiusScaleOptions.
 - Range: `"auto" | readonly [NonNegativeFinite, NonNegativeFinite]` within the current available radius.
 - Proposed (NOT IMPLEMENTED): —
 

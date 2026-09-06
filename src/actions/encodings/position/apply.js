@@ -104,6 +104,26 @@ function removeStaleArcThetaAggregate(
   });
 }
 
+function removeMeasuredRadiusAggregate(
+  program,
+  target,
+  channel,
+  previous,
+  clearRadialMapping
+) {
+  if (
+    channel !== "radius" ||
+    !clearRadialMapping ||
+    previous?.aggregate === undefined
+  ) {
+    return program;
+  }
+  return program.editSemantic({
+    property: `layer[${target}].encoding.radius.aggregate`,
+    remove: true
+  });
+}
+
 export function applyPositionSemantics(program, {
   target,
   channel,
@@ -117,7 +137,8 @@ export function applyPositionSemantics(program, {
   bin,
   aggregate,
   stack,
-  weight
+  weight,
+  clearRadialMapping
 }) {
   let next = reconcileInheritedRulePosition(program, {
     target,
@@ -159,6 +180,13 @@ export function applyPositionSemantics(program, {
     previous,
     fieldType,
     aggregate
+  );
+  next = removeMeasuredRadiusAggregate(
+    next,
+    target,
+    channel,
+    previous,
+    clearRadialMapping
   );
   return applyArcThetaWeight(
     next,

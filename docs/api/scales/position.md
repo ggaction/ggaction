@@ -114,9 +114,12 @@ linear measured scale; `editScale({ id: "radius", radialMapping: "radius-length"
 updates all compatible consumers. Explicit domains use `[0, positiveMaximum]`
 and ranges use `[inner, outer]`, with `0 <= inner < outer`.
 
-To clear `radialMapping` with an explicit `undefined`, first remove its measured
-radius encodings. Reusing a generic scale must not silently change how existing
-sectors represent values. A separate scale id is usually simpler.
+To turn one measured Arc into ordinary row-level radius while reusing its scale,
+call `encodeR({ field, mapping: false })`. The action clears the Arc aggregate
+before delegating the `radialMapping` removal to `editScale`, then refreshes the
+scale, sectors, axis, and grid together. It rejects a scale that still has
+another measured consumer. Direct `editScale({ radialMapping: undefined })`
+continues to require that measured radius encodings have already been removed.
 
 ## Related
 

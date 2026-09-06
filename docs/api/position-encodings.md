@@ -126,6 +126,15 @@ mapping on a shared measured scale, use `editScale({ id, radialMapping: "area" }
 all its compatible sectors and radial guides update together. Ordinary point
 radius and measured Arc radius require separate scales.
 
+Use `encodeR({ field: "value", mapping: false })` to refine a measured Arc into
+ordinary row-level radial length. This one action removes the inherited
+count/sum aggregate, clears the scale's measured mapping, and updates existing
+radial guides. It preserves the mark, data, categorical theta order, and
+compatible styling. This is an explicit semantic change: `mapping: "area"`
+makes aggregate annular area proportional to value, while `mapping: false`
+makes each row's radius proportional to its value. A measured scale shared by
+another aggregate Arc must be separated before this transition.
+
 ## Rule endpoints
 
 Rule positions use the same `encodeX` and `encodeY` actions and accept exactly
