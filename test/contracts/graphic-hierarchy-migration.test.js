@@ -25,6 +25,11 @@ const LOADERS = Object.freeze({
 });
 
 const EXPECTED_DRAW_ORDER = Object.freeze({
+  "beeswarm-plot": [
+    "canvas", "horizontalGridLines", "swarm",
+    "xAxisLine", "xAxisTicks", "xAxisLabels", "xAxisTitle",
+    "yAxisLine", "yAxisTicks", "yAxisLabels", "yAxisTitle"
+  ],
   "dot-plot": ["canvas", "dot"],
   "lollipop-plot": ["canvas", "lollipopStem", "lollipop"],
   "dumbbell-plot": ["canvas", "dumbbellConnector", "dumbbellStart", "dumbbell"],

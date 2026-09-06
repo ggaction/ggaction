@@ -330,6 +330,33 @@ lifecycle은 Aggregate create-only다.
 - Evidence: `test/unit/actions/charts/strip-facade.test.js`, `test/contracts/strip-facade-types.test.js`,
   `test/charts/point-jitter/`, `examples/point-jitter/`.
 
+## `createBeeswarmPlot`
+
+`createBeeswarmPlot({ id?, data?, coordinate?, x, y, color?, size?, shape?, point?, packing?, guides? })`.
+Default id는 `beeswarmPlot`, lifecycle은 Aggregate create-only다.
+
+- x/y 중 정확히 하나는 quantitative/temporal measure이고 다른 하나는 nominal/ordinal category다.
+  생략한 scale ID는 `${id}X`와 `${id}Y`로 격리하며 명시한 ID는 보존한다.
+- `packing`은 false로 끌 수 있으며 기본은 `packPoints`의 category-slot policy다. `maxOffset`, `padding`,
+  `key`, `overflow`만 전달할 수 있고 target/channel은 facade가 실제 역할에서 결정한다.
+- Point appearance, color/size/shape와 Cartesian guides는 Strip과 같은 lower owner를 재사용한다.
+- Effects: `createStripPlot → packPoints?`. Facade는 derived row나 별도 composite config를 만들지 않는다.
+  이후 scale/Canvas/data/point style/packing 제거는 lower action이 담당한다.
+
+### Formal values — `createBeeswarmPlot`
+
+- Implemented: `createBeeswarmPlot(options: CreateBeeswarmPlotOptions): ChartProgram`.
+- Required: role-safe x/y pair. Full entry 전용이다.
+- Proposed (NOT IMPLEMENTED): implicit domain expansion, outlier removal과 arbitrary 2D graph layout.
+
+### Value coverage — `createBeeswarmPlot`
+
+- ✅ Covered: vertical/horizontal, multiple categories, default/explicit scale IDs, packing opt-out, appearance와 guides.
+- ✅ Covered: lower-chain semantic/graphic equivalence, trace hierarchy, independent overlap/measure oracle와 PNG parity.
+- ✅ Covered: runtime/type errors, Full-only surface와 immutable failure.
+- Evidence: `test/unit/actions/charts/beeswarm-facade.test.js`, `test/contracts/beeswarm-types.test.js`,
+  `test/charts/beeswarm-plot/`, and `examples/beeswarm-plot/`.
+
 ## `createRosePlot`
 
 `createRosePlot({ id?, data?, coordinate?, category, value?, aggregate?, radiusScale?, color?, arc?, guides? })`.

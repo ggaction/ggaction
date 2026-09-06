@@ -41,6 +41,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createAxes`](./actions/guides.md#createaxes) | user-facing | axes |
 | [`createBarMark`](./actions/marks.md#createbarmark) | user-facing | marks |
 | [`createBarPlot`](./actions/charts-data.md#createbarplot) | user-facing | charts |
+| [`createBeeswarmPlot`](./actions/charts-data.md#createbeeswarmplot) | user-facing | charts |
 | [`createBin2DData`](./actions/charts-data.md#createbin2ddata) | user-facing | core |
 | [`createBinData`](./actions/statistics.md#createbindata) | user-facing | statistics |
 | [`createBoxPlot`](./actions/statistics.md#createboxplot) | user-facing | statistics |
@@ -233,6 +234,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`layoutLabels`](./actions/marks.md#layoutlabels) | user-facing | marks |
 | [`layoutSeries`](./actions/encodings.md#layoutseries) | user-facing | encodings |
 | [`orderCategories`](./actions/encodings.md#ordercategories) | user-facing | encodings |
+| [`packPoints`](./actions/marks.md#packpoints) | user-facing | marks |
 | [`removeCategoryOrder`](./actions/encodings.md#removecategoryorder) | user-facing | encodings |
 | [`removeEncoding`](./actions/encodings.md#removeencoding) | user-facing | encodings |
 | [`removeGrid`](./actions/advanced.md#directional-grids) | user-facing | grid |
@@ -246,6 +248,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`removeParallelAxes`](./actions/advanced.md#createparallelaxes-createparallelaxis-editparallelaxis-removeparallelaxis-removeparallelaxes) | user-facing | axes |
 | [`removeParallelAxis`](./actions/advanced.md#createparallelaxes-createparallelaxis-editparallelaxis-removeparallelaxis-removeparallelaxes) | user-facing | axes |
 | [`removePathOrder`](./actions/encodings.md#removepathorder) | user-facing | encodings |
+| [`removePointPacking`](./actions/marks.md#removepointpacking) | user-facing | marks |
 | [`removePointRadius`](./actions/encodings.md#removepointradius) | user-facing | encodings |
 | [`removeRadialAxis`](./actions/guides.md#removeradialaxis) | user-facing | axes |
 | [`removeTheme`](./actions/charts-data.md#removetheme) | user-facing | core |

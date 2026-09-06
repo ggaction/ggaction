@@ -52,6 +52,8 @@ interface ChartProgramActions {
   editTickMark(options: { target?: string; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }): ChartProgram;
   jitterPoints(options: JitterPointsOptions): ChartProgram;
   removeJitter(options?: RemoveJitterOptions): ChartProgram;
+  packPoints(options: PackPointsOptions): ChartProgram;
+  removePointPacking(options?: RemovePointPackingOptions): ChartProgram;
   createLineMark(options?: { id?: string; data?: string; strokeWidth?: number; curve?: CurveInterpolation; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
   editLineMark(options: { target?: string; strokeWidth?: number; curve?: CurveInterpolation; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
   createBarMark(options?: { id?: string; data?: string; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
@@ -136,6 +138,7 @@ interface ChartProgramActions {
   createRadarPlot(options: CreateRadarPlotOptions): ChartProgram;
   createRugPlot(options: CreateRugPlotOptions): ChartProgram;
   createStripPlot(options: CreateStripPlotOptions): ChartProgram;
+  createBeeswarmPlot(options: CreateBeeswarmPlotOptions): ChartProgram;
   createAreaPlot(options: CreateAreaPlotOptions): ChartProgram;
   createBarPlot(options: CreateBarPlotOptions): ChartProgram;
   createHistogram(options: CreateHistogramOptions): ChartProgram;

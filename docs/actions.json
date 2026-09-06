@@ -3,7 +3,7 @@
   "packageVersion": "0.0.12",
   "typeSource": "types/program.d.ts",
   "errorPolicy": "An empty errors array means the compact card has no curated error override; consult the canonical route for validation, inference, and recovery behavior.",
-  "count": 223,
+  "count": 226,
   "cards": [
     {
       "schemaVersion": 2,
@@ -2538,6 +2538,113 @@
       "snippet": "program.removeJitter({})",
       "errors": [],
       "route": "/reference/actions/marks/#removejitter"
+    },
+    {
+      "schemaVersion": 2,
+      "name": "packPoints",
+      "layer": "user-facing",
+      "domain": "marks",
+      "summary": "Deterministically displace Point glyphs only on a categorical x or y axis to avoid overlap while preserving measure coordinates.",
+      "signature": "packPoints(options: PackPointsOptions): ChartProgram;",
+      "intents": [
+        "pack points",
+        "pack",
+        "avoid point overlap",
+        "graphical mark",
+        "mark appearance",
+        "point positions",
+        "overlapping observations"
+      ],
+      "lifecycle": "Assignment",
+      "resources": {
+        "prerequisites": [
+          "existing point positions"
+        ],
+        "owns": [
+          "point positions"
+        ],
+        "idOptions": [
+          "target"
+        ]
+      },
+      "options": [
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "channel",
+          "required": true,
+          "type": "\"x\" | \"y\""
+        },
+        {
+          "name": "maxOffset",
+          "required": false,
+          "type": "PointPackingMaxOffset | undefined"
+        },
+        {
+          "name": "padding",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "key",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "overflow",
+          "required": false,
+          "type": "\"error\" | \"overlap\" | undefined"
+        }
+      ],
+      "callPatterns": [
+        "packPoints({ channel, maxOffset?, padding?, key?, overflow? })"
+      ],
+      "snippet": "program.packPoints({ channel: \"x\" })",
+      "errors": [],
+      "route": "/reference/actions/marks/#packpoints"
+    },
+    {
+      "schemaVersion": 2,
+      "name": "removePointPacking",
+      "layer": "user-facing",
+      "domain": "marks",
+      "summary": "Remove stored point packing and rematerialize the current semantic scale positions.",
+      "signature": "removePointPacking(options?: RemovePointPackingOptions): ChartProgram;",
+      "intents": [
+        "remove point packing",
+        "remove",
+        "delete",
+        "graphical mark",
+        "mark appearance",
+        "point packing",
+        "deterministic collision avoidance"
+      ],
+      "lifecycle": "Assignment",
+      "resources": {
+        "prerequisites": [
+          "existing point packing"
+        ],
+        "owns": [],
+        "idOptions": [
+          "target"
+        ]
+      },
+      "options": [
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | undefined"
+        }
+      ],
+      "callPatterns": [
+        "removePointPacking({ target? })"
+      ],
+      "snippet": "program.removePointPacking({})",
+      "errors": [],
+      "route": "/reference/actions/marks/#removepointpacking"
     },
     {
       "schemaVersion": 2,
@@ -15354,6 +15461,101 @@
       "snippet": "program.createStripPlot({ x: \"value\" })",
       "errors": [],
       "route": "/reference/actions/charts-data/#createstripplot"
+    },
+    {
+      "schemaVersion": 2,
+      "name": "createBeeswarmPlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "summary": "Create a role-safe category/measure Point chart and deterministically pack actual glyph extents within each category slot.",
+      "signature": "createBeeswarmPlot(options: CreateBeeswarmPlotOptions): ChartProgram;",
+      "intents": [
+        "create beeswarm plot",
+        "create",
+        "add",
+        "complete chart",
+        "chart facade",
+        "beeswarm plot",
+        "collision-free grouped observations"
+      ],
+      "lifecycle": "Aggregate create-only",
+      "resources": {
+        "prerequisites": [
+          "canvas and dataset context"
+        ],
+        "owns": [
+          "beeswarm plot"
+        ],
+        "idOptions": [
+          "id",
+          "data",
+          "coordinate"
+        ]
+      },
+      "options": [
+        {
+          "name": "id",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "data",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "coordinate",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "color",
+          "required": false,
+          "type": "BasicColorChannel | undefined"
+        },
+        {
+          "name": "size",
+          "required": false,
+          "type": "BasicSizeChannel | undefined"
+        },
+        {
+          "name": "shape",
+          "required": false,
+          "type": "BasicShapeChannel | undefined"
+        },
+        {
+          "name": "point",
+          "required": false,
+          "type": "{ radius?: number | undefined; shape?: PointShape | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; } | undefined"
+        },
+        {
+          "name": "packing",
+          "required": false,
+          "type": "false | BeeswarmPackingOptions | undefined"
+        },
+        {
+          "name": "guides",
+          "required": false,
+          "type": "false | CartesianGuideOptions | undefined"
+        },
+        {
+          "name": "x",
+          "required": true,
+          "type": "string | { field: string; fieldType?: \"quantitative\" | undefined; temporalUnit?: undefined; scale?: NonPointQuantitativePositionScaleOptions | undefined; } | { ...; } | { ...; }"
+        },
+        {
+          "name": "y",
+          "required": true,
+          "type": "string | { field: string; fieldType?: \"quantitative\" | undefined; temporalUnit?: undefined; scale?: NonPointQuantitativePositionScaleOptions | undefined; } | { ...; } | { ...; }"
+        }
+      ],
+      "callPatterns": [
+        "createBeeswarmPlot({ x, y, packing?, guides? })",
+        "createBeeswarmPlot({ x, y, color?, size?, shape?, point?, packing?, guides? })"
+      ],
+      "snippet": "program.createBeeswarmPlot({ x: { field: \"category\", fieldType: \"nominal\" }, y: \"value\" })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#createbeeswarmplot"
     },
     {
       "schemaVersion": 2,

@@ -71,6 +71,20 @@ export interface JitterPointsOptions {
 export interface RemoveJitterOptions {
   target?: string;
 }
+export type PointPackingMaxOffset =
+  | { pixels: number; band?: never }
+  | { pixels?: never; band: number };
+export interface PackPointsOptions {
+  target?: string;
+  channel: "x" | "y";
+  maxOffset?: PointPackingMaxOffset;
+  padding?: number;
+  key?: string;
+  overflow?: "error" | "overlap";
+}
+export interface RemovePointPackingOptions {
+  target?: string;
+}
 export type ScaleType =
   | "linear"
   | "log"
@@ -2552,6 +2566,33 @@ export type CreateStripPlotOptions = {
   | { x: RugMeasureChannel; y: StripCategoryChannel; jitter?: false | StripBandJitterOptions }
   | { x: StripCategoryChannel; y: RugMeasureChannel; jitter?: false | StripBandJitterOptions }
 );
+export interface BeeswarmPackingOptions {
+  maxOffset?: PointPackingMaxOffset;
+  padding?: number;
+  key?: string;
+  overflow?: "error" | "overlap";
+}
+export type CreateBeeswarmPlotOptions = {
+  id?: string;
+  data?: string;
+  coordinate?: string;
+  color?: BasicColorChannel;
+  size?: BasicSizeChannel;
+  shape?: BasicShapeChannel;
+  point?: {
+    radius?: number;
+    shape?: PointShape;
+    fill?: string;
+    opacity?: number;
+    stroke?: FilledMarkStroke;
+    strokeWidth?: number;
+  };
+  packing?: false | BeeswarmPackingOptions;
+  guides?: false | CartesianGuideOptions;
+} & (
+  | { x: RugMeasureChannel; y: StripCategoryChannel }
+  | { x: StripCategoryChannel; y: RugMeasureChannel }
+);
 
 export type GroupEncodingOptions = { target?: string; fieldType?: "nominal" } & (
   | { field: string; fields?: never }
@@ -3604,6 +3645,8 @@ export class ChartProgram {
   }): ChartProgram;
   jitterPoints(options: JitterPointsOptions): ChartProgram;
   removeJitter(options?: RemoveJitterOptions): ChartProgram;
+  packPoints(options: PackPointsOptions): ChartProgram;
+  removePointPacking(options?: RemovePointPackingOptions): ChartProgram;
   createLineMark(options?: {
     id?: string;
     data?: string;
@@ -3761,6 +3804,7 @@ export class ChartProgram {
   createRadarPlot(options: CreateRadarPlotOptions): ChartProgram;
   createRugPlot(options: CreateRugPlotOptions): ChartProgram;
   createStripPlot(options: CreateStripPlotOptions): ChartProgram;
+  createBeeswarmPlot(options: CreateBeeswarmPlotOptions): ChartProgram;
   createAreaPlot(options: CreateAreaPlotOptions): ChartProgram;
   createBarPlot(options: CreateBarPlotOptions): ChartProgram;
   createHistogram(options: CreateHistogramOptions): ChartProgram;

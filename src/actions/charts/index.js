@@ -17,6 +17,7 @@ import {
   createDotPlot, createLollipopPlot, createDumbbellPlot, editEndpointPlot
 } from "./endpoints.js";
 import { createECDFPlot, editECDFPlot } from "./ecdf.js";
+import { createBeeswarmPlot } from "./beeswarm.js";
 
 export function registerChartActions(ProgramClass) {
   ProgramClass.prototype.createRosePlot = createRosePlot;
@@ -44,4 +45,5 @@ export function registerChartActions(ProgramClass) {
   ProgramClass.prototype.editEndpointPlot = editEndpointPlot;
   ProgramClass.prototype.createECDFPlot = createECDFPlot;
   ProgramClass.prototype.editECDFPlot = editECDFPlot;
+  ProgramClass.prototype.createBeeswarmPlot = createBeeswarmPlot;
 }

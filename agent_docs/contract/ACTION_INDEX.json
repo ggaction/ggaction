@@ -670,6 +670,42 @@
       }
     },
     {
+      "name": "packPoints",
+      "layer": "user-facing",
+      "domain": "marks",
+      "status": "implemented",
+      "lifecycle": "Assignment",
+      "update": "Same action replaces deterministic category-slot packing; `removePointPacking` removes it",
+      "audit": "Reassignment — Implemented",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/MARKS.md",
+        "anchor": "packpoints"
+      }
+    },
+    {
+      "name": "removePointPacking",
+      "layer": "user-facing",
+      "domain": "marks",
+      "status": "implemented",
+      "lifecycle": "Assignment",
+      "update": "Removes one packing assignment and restores semantic positions",
+      "audit": "Reassignment — Implemented",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/MARKS.md",
+        "anchor": "removepointpacking"
+      }
+    },
+    {
       "name": "removeMark",
       "layer": "user-facing",
       "domain": "marks",
@@ -3817,6 +3853,24 @@
       "contract": {
         "file": "agent_docs/contract/current/COMPLETE_CHARTS.md",
         "anchor": "createstripplot"
+      }
+    },
+    {
+      "name": "createBeeswarmPlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "status": "implemented",
+      "lifecycle": "Aggregate create-only",
+      "audit": "Intentional",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "update": "Existing Strip, deterministic point packing, appearance, scale and guide actions",
+      "contract": {
+        "file": "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "anchor": "createbeeswarmplot"
       }
     },
     {

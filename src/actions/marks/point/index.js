@@ -3,6 +3,7 @@ import { editPointMark } from "./edit.js";
 import { rematerializePointMark } from "./materialize.js";
 
 export { registerPointJitterActions } from "./jitter.js";
+export { registerPointPackingActions } from "./packing.js";
 
 export function registerPointMarkActions(ProgramClass) {
   ProgramClass.prototype.editPointMark = editPointMark;

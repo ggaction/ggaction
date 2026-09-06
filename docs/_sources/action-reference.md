@@ -547,6 +547,16 @@ slot. Optional deterministic jitter moves only the category or constant slot and
 preserves the measured coordinate. Category jitter uses band units; a centered
 one-measure strip uses pixel units.
 
+### `createBeeswarmPlot`
+
+```javascript
+createBeeswarmPlot({ id?, data?, coordinate?, x, y, color?, size?, shape?, point?, packing?, guides? })
+```
+
+Create a role-safe category/measure Point chart and deterministically pack actual
+glyph extents within each category slot. The facade reuses `createStripPlot` and
+`packPoints`; set `packing: false` to retain semantic centers without packing.
+
 ### `createBarPlot`
 
 ```javascript
@@ -914,6 +924,26 @@ removeJitter({ target? } = {})
 
 Remove the target point mark's jitter assignment and restore positions derived
 directly from its semantic encodings. [Point marks](../api/marks/point.md)
+
+### `packPoints`
+
+```javascript
+packPoints({ target?, channel, maxOffset?, padding?, key?, overflow? })
+```
+
+Deterministically displace Point glyphs only on a categorical x or y axis to
+avoid overlap while preserving measure coordinates. The default overflow policy
+fails atomically; `"overlap"` records unresolved best-effort placements.
+[Point marks](../api/marks/point.md)
+
+### `removePointPacking`
+
+```javascript
+removePointPacking({ target? } = {})
+```
+
+Remove stored point packing and rematerialize the current semantic scale
+positions. [Point marks](../api/marks/point.md)
 
 ### `removeMark`
 

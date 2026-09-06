@@ -1439,6 +1439,21 @@ function buildDirectPolarParts(factors) {
       },
       point: { radius: 3, opacity: 0.6 },
       guides: false
+    })
+    .packPoints({ target: "directStrip", channel: "y", overflow: "overlap" })
+    .removePointPacking({ target: "directStrip" })
+    .createBeeswarmPlot({
+      id: "directBeeswarm",
+      data: "directPolarRows",
+      x: { field: "radius", scale: { id: "directBeeswarmX", zero: true } },
+      y: {
+        field: "angle",
+        fieldType: "nominal",
+        scale: { id: "directBeeswarmY", type: "band" }
+      },
+      point: { radius: 3, opacity: 0.6 },
+      packing: { overflow: "overlap" },
+      guides: false
     });
 }
 
@@ -1752,7 +1767,8 @@ function lifecycleSignature(base, factors) {
     ],
     "action-direct-polar-parts": [
       "createPolarScatterPlot", "createPolarLinePlot", "createRadarPlot",
-      "createRugPlot", "createStripPlot",
+      "createRugPlot", "createStripPlot", "packPoints", "removePointPacking",
+      "createBeeswarmPlot",
       "createThetaAxisLine", "createThetaAxisTicks", "createThetaAxisLabels", "createThetaAxisTitle",
       "createRadialAxisLine", "createRadialAxisTicks", "createRadialAxisLabels", "createRadialAxisTitle",
       "createThetaAxis", "createRadialAxis", "editThetaAxisLine", "editRadialAxisLine",
@@ -1799,7 +1815,8 @@ function observeLifecycleFeatures(base, program, factors) {
     features.push("lifecycle:create");
   }
   if ([...operations].some(value =>
-    value.startsWith("edit") || value === "jitterPoints" || value === "orderCategories"
+    value.startsWith("edit") || value === "jitterPoints" || value === "packPoints" ||
+      value === "orderCategories"
   )) features.push("lifecycle:edit");
   if ([...operations].some(value => value.startsWith("remove"))) {
     features.push("lifecycle:remove");
@@ -1980,7 +1997,8 @@ export const LIFECYCLE_EXPECTED_ACTIONS = Object.freeze([
   "removeMarkHighlight", "highlightMarks", "editThetaAxis", "editRadialAxis",
   "editThetaGrid", "editRadialGrid", "replaceCompositionChild", "editFacetScales",
   "createScatterPlot", "createLinePlot", "createAreaPlot", "layoutSeries", "createBarPlot", "createParallelCoordinates",
-  "createRugPlot", "createStripPlot", "createECDFData", "createDotPlot",
+  "createRugPlot", "createStripPlot", "packPoints", "removePointPacking",
+  "createBeeswarmPlot", "createECDFData", "createDotPlot",
   "createLollipopPlot", "createDumbbellPlot", "editEndpointPlot",
   "createECDFPlot", "editECDFPlot", "createIntervalPlot", "createRegressionPlot"
 ]);

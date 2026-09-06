@@ -17,6 +17,7 @@ function operation(name) {
   if (
     name === "bindMarkData" ||
     name === "jitterPoints" ||
+    name === "packPoints" ||
     name === "fitCanvas" ||
     name === "layoutLabels" ||
     name === "layoutSeries" ||

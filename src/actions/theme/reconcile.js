@@ -383,6 +383,7 @@ function addFacadeMarkOverrides(overrides, op, args) {
     createRadarPlot: ["radarPlot", "line", ["stroke"]],
     createRugPlot: ["rugPlot", "tick", ["stroke"]],
     createStripPlot: ["stripPlot", "point", ["fill", "stroke"]],
+    createBeeswarmPlot: ["beeswarmPlot", "point", ["fill", "stroke"]],
     createBarPlot: ["barPlot", "bar", ["fill", "stroke"]],
     createAreaPlot: ["areaPlot", "area", ["fill", "stroke"]],
     createPiePlot: ["piePlot", "arc", ["fill", "stroke"]],

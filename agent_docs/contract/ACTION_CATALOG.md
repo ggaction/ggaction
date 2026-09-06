@@ -43,6 +43,8 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`editTickMark`](current/MARKS.md#edittickmark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`jitterPoints`](current/MARKS.md#jitterpoints) | marks | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
 | user-facing | [`removeJitter`](current/MARKS.md#removejitter) | marks | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
+| user-facing | [`packPoints`](current/MARKS.md#packpoints) | marks | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
+| user-facing | [`removePointPacking`](current/MARKS.md#removepointpacking) | marks | Assignment | Reassignment — Implemented | ✅ / ✅ / ✅ |
 | user-facing | [`removeMark`](current/MARKS.md#removemark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createLineMark`](current/MARKS.md#createlinemark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editLineMark`](current/MARKS.md#editlinemark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
@@ -218,6 +220,7 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`createRadarPlot`](current/COMPLETE_CHARTS.md#createradarplot) | charts | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createRugPlot`](current/COMPLETE_CHARTS.md#createrugplot) | charts | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createStripPlot`](current/COMPLETE_CHARTS.md#createstripplot) | charts | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
+| user-facing | [`createBeeswarmPlot`](current/COMPLETE_CHARTS.md#createbeeswarmplot) | charts | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createBarPlot`](current/BASIC_CHARTS.md#createbarplot) | charts | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createHistogram`](current/BASIC_CHARTS.md#createhistogram) | charts | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createHeatmap`](current/BASIC_CHARTS.md#createheatmap) | charts | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |

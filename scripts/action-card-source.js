@@ -28,6 +28,7 @@ const operationPrefixes = Object.freeze([
   "highlight",
   "layout",
   "jitter",
+  "pack",
   "order",
   "replace"
 ]);
@@ -145,6 +146,7 @@ function generatedSummary(action, intentSource) {
     case "highlight": return `Emphasizes selected ${resource} and can dim the remaining items.`;
     case "layout": return `Lays out ${resource} for ${purpose}.`;
     case "jitter": return `Offsets ${resource} to reduce overplotting while preserving data values.`;
+    case "pack": return `Packs ${resource} deterministically to avoid glyph overlap while preserving data values.`;
     case "order": return `Sets a deterministic order for ${resource}.`;
     case "replace": return `Replaces ${resource} while preserving its composition slot and order.`;
     case "compose": return `Repeats a complete chart by a field to create ${purpose}.`;
@@ -169,7 +171,7 @@ function actionResources(action, optionNames, intentSource) {
   const resource = aliases[0];
   const prerequisites = [];
 
-  if (["edit", "remove", "layout", "jitter", "order", "replace"].includes(operation)) {
+  if (["edit", "remove", "layout", "jitter", "pack", "order", "replace"].includes(operation)) {
     prerequisites.push(`existing ${resource}`);
   }
   if (operation === "encode") {
@@ -201,7 +203,7 @@ function actionResources(action, optionNames, intentSource) {
   if (action.domain === "primitives") prerequisites.push("extension action context");
 
   const owns = [];
-  if (["create", "apply", "encode", "filter", "select", "highlight", "layout", "jitter", "order", "compose"].includes(operation)) {
+  if (["create", "apply", "encode", "filter", "select", "highlight", "layout", "jitter", "pack", "order", "compose"].includes(operation)) {
     owns.push(operation === "encode" ? `${resource} assignment` : resource);
   }
 

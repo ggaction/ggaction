@@ -184,7 +184,8 @@ Definition registration and internal layer rebinding remain available without au
   metadata에 unavailable 상태가 남는다.
 - Rematerialization: Canvas, scale, data/filter, point radius/shape/stroke, selection/highlight와 facet replay가
   같은 stored assignment를 다시 적용한다. Highlight offset은 jitter 이후 final concrete geometry에 적용된다.
-- Non-goals: collision-free packing/beeswarm, density-aware displacement와 Polar point jitter는 구현하지 않는다.
+- Non-goals: density-aware displacement와 Polar point jitter는 구현하지 않는다. Collision-free category
+  packing은 별도 `packPoints` owner가 담당한다.
 
 ### Formal values — `jitterPoints`
 
@@ -217,6 +218,55 @@ Definition registration and internal layer rebinding remain available without au
 
 - ✅ Covered: inferred/explicit target, base-position restoration, config cleanup, nested trace and earlier-program immutability.
 - Evidence: `test/unit/actions/marks/point-jitter.test.js`.
+
+## `packPoints`
+
+- Signature: `packPoints({ target?, channel, maxOffset?, padding?, key?, overflow? })`.
+- Lifecycle: Assignment. 같은 target에 다시 호출하면 semantic position에서 policy 전체를 교체하며
+  `removePointPacking`이 제거를 소유한다. 한 point에서 jitter와 packing은 동시에 활성화할 수 없다.
+- Target은 complete Cartesian Point다. `channel`은 nominal/ordinal category position이어야 하고 반대
+  position은 quantitative/temporal measure여야 한다. Measure coordinate는 그대로 유지한다.
+- `maxOffset`은 `{ pixels: PositiveFinite }` 또는 `{ band: PositiveFiniteAtMostHalf }`이고 생략하면
+  category slot half-width다. Point의 실제 shape, area/radius, rotation과 stroke extent를 plot/slot bounds에
+  포함하며 `padding`의 기본은 1 logical pixel이다.
+- Placement는 measure coordinate와 stable source index 또는 unique `key` identity 순서의
+  `point-pack-greedy-v1` 문법이다. 같은 input/state는 환경과 호출 순서에 관계없이 같은 concrete position을 낸다.
+- `overflow` 기본 `"error"`는 충돌 없는 위치가 없으면 program 전체를 보존하고 실패한다.
+  `"overlap"`은 충돌 수, displacement 순으로 best-effort 위치를 선택하고 `resolved.unresolvedItemCount`와
+  item별 `collisionCount`를 기록한다.
+- State는 `materializationConfigs.pointPacking[target]`이 policy와 resolution을 소유한다. Canvas, scale,
+  data/filter, point radius/shape/stroke와 facet replay에서 매번 semantic base position부터 다시 계산한다.
+
+### Formal values — `packPoints`
+
+- Implemented: `packPoints(options: PackPointsOptions): ChartProgram`.
+- Required: category `channel`; target은 current/unique eligible Point로 infer할 수 있다.
+- Proposed (NOT IMPLEMENTED): global force simulation, arbitrary 2D packing과 implicit scale expansion.
+
+### Value coverage — `packPoints`
+
+- ✅ Covered: literal zero-overlap oracle, measure invariance, slot/plot bounds, mixed glyph extents와 keyed reorder.
+- ✅ Covered: malformed/duplicate identity, infeasible error/overlap, jitter conflict와 immutable rollback.
+- ✅ Covered: Canvas/style replay, exact removal, mark cleanup, public Beeswarm primitive/render parity.
+- Evidence: `test/unit/grammar/layout/point-packing.test.js`,
+  `test/unit/actions/marks/point-packing.test.js`, and `test/charts/beeswarm-plot/`.
+
+## `removePointPacking`
+
+- Signature: `removePointPacking({ target? } = {})`.
+- Stored packing이 있는 current/unique point target을 찾아 assignment를 제거하고 wrapped point
+  rematerialization으로 현재 semantic scale position을 복구한다. 다른 semantic/config state는 보존한다.
+- Evidence: `test/unit/actions/marks/point-packing.test.js`.
+
+### Formal values — `removePointPacking`
+
+- Implemented: `removePointPacking(options?: RemovePointPackingOptions): ChartProgram`.
+- Proposed (NOT IMPLEMENTED): batch removal across unrelated marks.
+
+### Value coverage — `removePointPacking`
+
+- ✅ Covered: inferred/explicit target, exact semantic-position restoration, config cleanup and immutable prior state.
+- Evidence: `test/unit/actions/marks/point-packing.test.js`.
 
 ## `removeMark`
 

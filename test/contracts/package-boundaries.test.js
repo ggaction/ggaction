@@ -80,7 +80,9 @@ test("keeps the basic entry focused on common Cartesian charts", () => {
     "selectMarks",
     "createParallelCoordinates",
     "createRugPlot",
-    "createStripPlot"
+    "createStripPlot",
+    "createBeeswarmPlot",
+    "packPoints"
   ]) {
     assert.equal(program[method], undefined, method);
   }

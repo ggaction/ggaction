@@ -153,6 +153,13 @@ async function testNodeConsumer(directory) {
       jitter: { maxOffset: { band: 0.1 }, seed: "package-strip", key: "angle" },
       guides: false
     });
+    const beeswarm = polarBase.createBeeswarmPlot({
+      id: "packageBeeswarm",
+      x: { field: "group", fieldType: "nominal" },
+      y: "distance",
+      packing: { key: "angle", overflow: "overlap" },
+      guides: false
+    });
     const ecdfData = polarBase.createECDFData({
       id: "packageECDFData", field: "distance", groupBy: "group"
     });
@@ -179,6 +186,13 @@ async function testNodeConsumer(directory) {
     );
     assert.equal(rug.graphicSpec.objects.rugPlot.items.length, 3);
     assert.equal(strip.graphicSpec.objects.stripPlot.items.length, 3);
+    assert.equal(beeswarm.graphicSpec.objects.packageBeeswarm.items.length, 3);
+    assert.equal(beeswarm.materializationConfigs.pointPacking.packageBeeswarm.channel, "x");
+    assert.deepEqual(
+      beeswarm.removePointPacking({ target: "packageBeeswarm" })
+        .materializationConfigs.pointPacking,
+      undefined
+    );
     assert.equal(rug.trace.children.at(-1).op, "createRugPlot");
     assert.equal(strip.trace.children.at(-1).op, "createStripPlot");
     assert.equal(
@@ -193,6 +207,8 @@ async function testNodeConsumer(directory) {
     assert.equal(basicChart().createRadarPlot, undefined);
     assert.equal(basicChart().createRugPlot, undefined);
     assert.equal(basicChart().createStripPlot, undefined);
+    assert.equal(basicChart().createBeeswarmPlot, undefined);
+    assert.equal(basicChart().packPoints, undefined);
     assert.equal(basicChart().createECDFData, undefined);
     assert.equal(basicChart().createECDFPlot, undefined);
     const axisLifecycle = chart()
@@ -1572,6 +1588,7 @@ async function testTypeScriptConsumer(directory) {
       type CreateRadarPlotOptions,
       type CreateRugPlotOptions,
       type CreateStripPlotOptions,
+      type CreateBeeswarmPlotOptions,
       type CreateECDFPlotOptions,
       type EditECDFPlotOptions,
       type ECDFDataOptions,
@@ -1592,10 +1609,13 @@ async function testTypeScriptConsumer(directory) {
       type DatasetTransform,
       type JitterMaxOffset,
       type JitterPointsOptions,
+      type PackPointsOptions,
+      type PointPackingMaxOffset,
       type NonPointQuantitativePositionScaleOptions,
       type OpacityScaleOptions,
       type ParallelCoordinatesEncodingOptions,
       type RemoveJitterOptions,
+      type RemovePointPackingOptions,
       type ShapeScaleOptions,
       type SizeScaleOptions,
       type StrokeWidthEncodingOptions,
@@ -1652,6 +1672,10 @@ async function testTypeScriptConsumer(directory) {
       x: "value", y: { field: "category", fieldType: "nominal" },
       jitter: { maxOffset: { band: 0.1 }, seed: "typed-strip" }, guides: false
     };
+    const beeswarmOptions: CreateBeeswarmPlotOptions = {
+      x: { field: "category", fieldType: "nominal" }, y: "value",
+      packing: { key: "id", padding: 1 }, guides: false
+    };
     const ecdfDataOptions: ECDFDataOptions = {
       id: "typedECDFData", field: "value", groupBy: "category", weight: "weight"
     };
@@ -1668,6 +1692,7 @@ async function testTypeScriptConsumer(directory) {
     program.createRadarPlot(radarWideOptions);
     program.createRugPlot(rugOptions);
     program.createStripPlot(stripOptions);
+    program.createBeeswarmPlot(beeswarmOptions);
     program.createECDFData(ecdfDataOptions);
     program.createECDFPlot(ecdfOptions).editECDFPlot(ecdfEditOptions);
     // @ts-expect-error Polar facades are Full only.
@@ -1682,6 +1707,8 @@ async function testTypeScriptConsumer(directory) {
     basicChart().createRugPlot(rugOptions);
     // @ts-expect-error Strip facade is Full only.
     basicChart().createStripPlot(stripOptions);
+    // @ts-expect-error Beeswarm facade is Full only.
+    basicChart().createBeeswarmPlot(beeswarmOptions);
     // @ts-expect-error ECDF data is Full only.
     basicChart().createECDFData(ecdfDataOptions);
     // @ts-expect-error ECDF facade is Full only.
@@ -2642,6 +2669,19 @@ async function testTypeScriptConsumer(directory) {
       .encodeY({ field: "y" })
       .jitterPoints(jitterOptions)
       .removeJitter(removeJitterOptions);
+    const pointPackingOffset: PointPackingMaxOffset = { band: 0.4 };
+    const pointPackingOptions: PackPointsOptions = {
+      channel: "x", maxOffset: pointPackingOffset, key: "id", overflow: "overlap"
+    };
+    const removePointPackingOptions: RemovePointPackingOptions = {};
+    const packed: ChartProgram = chart()
+      .createCanvas()
+      .createData({ values: [{ id: "a", c: "A", v: 2 }, { id: "b", c: "A", v: 2 }] })
+      .createPointMark()
+      .encodeX({ field: "c", fieldType: "nominal" })
+      .encodeY({ field: "v" })
+      .packPoints(pointPackingOptions)
+      .removePointPacking(removePointPackingOptions);
     const pointLayer = inspected.semanticSpec.layers.find(
       layer => layer.id === "points"
     );
@@ -2676,6 +2716,7 @@ async function testTypeScriptConsumer(directory) {
     void weightedArcs;
     void weightedRules;
     void jittered;
+    void packed;
     void pointLayer;
     void pointItems;
     void lastAction;
@@ -2815,6 +2856,8 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.a
       "svg",
       "numeric-font-weight",
       "point-jitter",
+      "point-packing",
+      "beeswarm-plot",
       "path-order",
       "time-unit-data",
       "summary-data",

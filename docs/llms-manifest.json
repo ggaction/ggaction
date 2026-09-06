@@ -1842,8 +1842,8 @@
         "action-reference",
         "exact-action-lookup"
       ],
-      "bytes": 23806,
-      "sha256": "218fdc6679c0a57ddfdd6cd780aef6d9eb451c87cbbbfd5aab30b451b9414661"
+      "bytes": 24085,
+      "sha256": "b41617f3b0d392386bdd35754799c7a8b766a3364fe9969ff3bf7ba72ad2893e"
     },
     {
       "order": 117,
@@ -1880,6 +1880,7 @@
         "createradarplot",
         "createrugplot",
         "createstripplot",
+        "createbeeswarmplot",
         "createbarplot",
         "createhistogram",
         "createareaplot",
@@ -1901,8 +1902,8 @@
         "editbin2ddata",
         "related"
       ],
-      "bytes": 20708,
-      "sha256": "b4be532896043195284c6e17eaffa82bf38433fe326a66b8ada5da7d0c2c0cc3"
+      "bytes": 21099,
+      "sha256": "1d77f31abcb2ca4b1079adfc199832614edf94638768953508487d56cc5cd571"
     },
     {
       "order": 118,
@@ -1917,6 +1918,8 @@
         "edittickmark",
         "jitterpoints",
         "removejitter",
+        "packpoints",
+        "removepointpacking",
         "removemark",
         "createlinemark",
         "editlinemark",
@@ -1941,8 +1944,8 @@
         "position-capability-matrix",
         "related"
       ],
-      "bytes": 14750,
-      "sha256": "efb4a3939c681d0a468d0fa65a47bb6cdf7323cb21e17abe566f450a984bcf4c"
+      "bytes": 15323,
+      "sha256": "fc1381434323a6df03be9f7722000d72546a19ae16caf66b8dadefc5b9532ab2"
     },
     {
       "order": 119,
@@ -2138,8 +2141,8 @@
         "exact-typescript-signatures",
         "related"
       ],
-      "bytes": 17645,
-      "sha256": "1bb1d4aac05331b864c39db8fd060ddfb1c094c440d3e91539e01a92e590682a"
+      "bytes": 17846,
+      "sha256": "adc050f744962726ef30d6586f7a46a335530f78c270ba2074206ecf2596629f"
     },
     {
       "order": 126,

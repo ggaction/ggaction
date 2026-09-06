@@ -7,6 +7,7 @@ import { createDotPlotExample } from "./dot-plot/program.js";
 import { createLollipopPlotExample } from "./lollipop-plot/program.js";
 import { createDumbbellPlotExample } from "./dumbbell-plot/program.js";
 import { createECDFExample } from "./ecdf-plot/program.js";
+import { createBeeswarmExample } from "./beeswarm-plot/program.js";
 import { createHorizonExample } from "./horizon-plot/program.js";
 import { createDensityExample } from "./density-plot/program.js";
 import { createPieExample } from "./pie-plot/program.js";
@@ -110,6 +111,12 @@ function example({ id, data, width, height, createProgram, ...options }) {
 }
 
 export const PUBLIC_CHARTS = Object.freeze([
+  example({
+    id: "beeswarm-plot", data: {}, width: 520, height: 340,
+    createProgram: () => createBeeswarmExample(), testDirectory: "beeswarm-plot",
+    docsGroup: "tutorials",
+    browser: { path: "beeswarm-plot/", canvas: "#chart" }
+  }),
   example({
     id: "dot-plot", data: {}, width: 480, height: 320,
     createProgram: () => createDotPlotExample(), testDirectory: "endpoint-plots",

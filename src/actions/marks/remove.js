@@ -235,6 +235,7 @@ export const removeMark = action(
       }
       next = next._withoutMaterializationConfig(["marks", id]);
       next = next._withoutMaterializationConfig(["jitters", id]);
+      next = next._withoutMaterializationConfig(["pointPacking", id]);
       next = next._withoutMaterializationConfig(["labelLayouts", id]);
     }
 

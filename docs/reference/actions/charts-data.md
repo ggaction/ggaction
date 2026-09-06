@@ -293,6 +293,16 @@ slot. Optional deterministic jitter moves only the category or constant slot and
 preserves the measured coordinate. Category jitter uses band units; a centered
 one-measure strip uses pixel units.
 
+## `createBeeswarmPlot`
+
+```javascript
+createBeeswarmPlot({ id?, data?, coordinate?, x, y, color?, size?, shape?, point?, packing?, guides? })
+```
+
+Create a role-safe category/measure Point chart and deterministically pack actual
+glyph extents within each category slot. The facade reuses `createStripPlot` and
+`packPoints`; set `packing: false` to retain semantic centers without packing.
+
 ## `createBarPlot`
 
 ```javascript

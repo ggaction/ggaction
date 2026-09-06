@@ -23,7 +23,8 @@ const INTERPOLATIONS = Object.freeze([
 export const REALISTIC_HIERARCHICAL_FACADE_ACTIONS = Object.freeze([
   "createAreaPlot", "createDensityPlot", "createHorizonPlot", "createPiePlot",
   "createPolarLinePlot", "createPolarScatterPlot", "createRadarPlot",
-  "createRadialBarPlot", "createRosePlot", "createRugPlot", "createStripPlot"
+  "createRadialBarPlot", "createRosePlot", "createRugPlot", "createStripPlot",
+  "createBeeswarmPlot"
 ]);
 
 export const REALISTIC_HIERARCHICAL_FACADE_PROFILE_COUNT = 24;
@@ -996,6 +997,133 @@ function appendStrip(program, index) {
   return removeWitness(program.createStripPlot(options), suffix);
 }
 
+function appendBeeswarm(program, index) {
+  const suffix = `matrix-beeswarm-${index}`;
+  const hasColor = index % 11 !== 0;
+  const hasSize = index % 6 !== 0;
+  const mode = [16, 17, 20, 21].includes(index) ? 2 : index % 4;
+  let positions;
+  if (mode === 0 || mode === 1) {
+    positions = {
+      x: measureChannel(`${suffix}-x`, index),
+      y: {
+        field: "bucket",
+        fieldType: mode === 0 ? "ordinal" : "nominal",
+        scale: categoryScale(`${suffix}-y`, index, mode === 1 ? "band" : "point")
+      }
+    };
+  } else if (mode === 2) {
+    const temporalUnit = index === 10
+      ? "auto"
+      : index === 18
+        ? "year"
+        : index === 22
+          ? "timestamp"
+          : undefined;
+    positions = {
+      x: {
+        field: "bucket",
+        fieldType: index === 6 ? "nominal" : "ordinal",
+        scale: categoryScale(`${suffix}-x`, index, index % 8 === 6 ? "band" : "point")
+      },
+      y: measureChannel(`${suffix}-y`, index, {
+        temporal: temporalUnit !== undefined,
+        temporalUnit
+      })
+    };
+    if (index === 6) positions.x.scale.unknown = 0;
+    if (index === 14) positions.y.scale.unknown = 0;
+    if (index === 17) {
+      positions.y.scale.type = "sqrt";
+      positions.y.scale.zero = true;
+      delete positions.y.scale.exponent;
+    }
+  } else {
+    positions = {
+      x: measureChannel(`${suffix}-x`, index, { temporal: true }),
+      y: {
+        field: "bucket", fieldType: "ordinal",
+        scale: categoryScale(`${suffix}-y`, index)
+      }
+    };
+  }
+  const packing = index === 3
+    ? false
+    : {
+        maxOffset: index % 2 === 0
+          ? { pixels: 8 + index % 3 }
+          : { band: 0.4 },
+        padding: index % 3,
+        key: "id",
+        overflow: index === 0 ? "error" : "overlap"
+      };
+  const options = {
+    id: suffix,
+    data: "analysisRows",
+    coordinate: `${suffix}-coordinate`,
+    ...positions,
+    ...(hasColor ? {
+      color: [5, 14].includes(index)
+        ? {
+            ...colorChannel(`${suffix}-color`, index, { categorical: true }),
+            field: "bucket", fieldType: "ordinal",
+            ...(index === 14 ? { palette: "tableau10" } : {})
+          }
+        : colorChannel(`${suffix}-color`, index, {
+            temporal: [12, 13, 15].includes(index)
+          })
+    } : {}),
+    ...(hasSize ? { size: sizeChannel(`${suffix}-size`, index) } : {}),
+    shape: shapeChannel(`${suffix}-shape`, index),
+    point: {
+      ...(hasSize ? {} : { radius: 3 + index % 3 }),
+      shape: POINT_SHAPES[index % POINT_SHAPES.length],
+      ...(hasColor ? {} : { fill: "#2563eb" }),
+      opacity: 0.55 + index / 100,
+      stroke: index % 2 === 0 ? false : "#ffffff",
+      ...(index % 2 === 0 ? {} : { strokeWidth: 0.8 })
+    },
+    packing
+  };
+  options.guides = cartesianGuides({
+    id: suffix,
+    coordinate: `${suffix}-coordinate`,
+    xScale: `${suffix}-x`,
+    yScale: `${suffix}-y`,
+    index,
+    hasColor,
+    continuousColor: hasColor && [16, 20].includes(index)
+      ? "gradient"
+      : hasColor && ![5, 14].includes(index) && index >= 16
+        ? "interval"
+        : hasColor && ![5, 14].includes(index) && index >= 8
+          ? "gradient"
+          : false,
+    xDiscrete: mode === 2,
+    yDiscrete: mode !== 2,
+    legendKind: "point",
+    legendTemporal: [12, 13, 15].includes(index),
+    legendOrderValues: categoryValues(program, "analysisRows", "group"),
+    legendOrderChannel: index === 5 ? "y" : index === 14 ? "x" : undefined,
+    xValues: index === 12
+      ? [numericFieldValue(program, "analysisRows", "positiveX")]
+      : undefined,
+    yValues: index === 14
+      ? [numericFieldValue(program, "analysisRows", "positiveX")]
+      : undefined,
+    xFormat: index === 4 ? ".1f" : "auto",
+    yFormat: index === 14 ? ".1f" : "auto"
+  });
+  if (index === 18 && options.guides !== false) {
+    if (options.guides.axes !== false && options.guides.axes.y !== false) {
+      options.guides.axes.y.ticksAndLabels = false;
+      options.guides.axes.y.title = false;
+    }
+    if (options.guides.grid !== false) options.guides.grid.horizontal = true;
+  }
+  return removeWitness(program.createBeeswarmPlot(options), suffix);
+}
+
 function appendArea(program, index) {
   const suffix = `matrix-area-${index}`;
   const branch = index % 6;
@@ -1254,7 +1382,8 @@ export function appendHierarchicalFacadeCoverage(program) {
       ["createRadialBarPlot", (current, profile) => appendRadial(current, "createRadialBarPlot", profile)],
       ["createRosePlot", (current, profile) => appendRadial(current, "createRosePlot", profile)],
       ["createRugPlot", appendRug],
-      ["createStripPlot", appendStrip]
+      ["createStripPlot", appendStrip],
+      ["createBeeswarmPlot", appendBeeswarm]
     ];
     for (const [action, append] of steps) {
       try {

@@ -13210,6 +13210,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createAxes`](./reference/actions/guides/#createaxes) | user-facing | axes |
 | [`createBarMark`](./reference/actions/marks/#createbarmark) | user-facing | marks |
 | [`createBarPlot`](./reference/actions/charts-data/#createbarplot) | user-facing | charts |
+| [`createBeeswarmPlot`](./reference/actions/charts-data/#createbeeswarmplot) | user-facing | charts |
 | [`createBin2DData`](./reference/actions/charts-data/#createbin2ddata) | user-facing | core |
 | [`createBinData`](./reference/actions/statistics/#createbindata) | user-facing | statistics |
 | [`createBoxPlot`](./reference/actions/statistics/#createboxplot) | user-facing | statistics |
@@ -13402,6 +13403,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`layoutLabels`](./reference/actions/marks/#layoutlabels) | user-facing | marks |
 | [`layoutSeries`](./reference/actions/encodings/#layoutseries) | user-facing | encodings |
 | [`orderCategories`](./reference/actions/encodings/#ordercategories) | user-facing | encodings |
+| [`packPoints`](./reference/actions/marks/#packpoints) | user-facing | marks |
 | [`removeCategoryOrder`](./reference/actions/encodings/#removecategoryorder) | user-facing | encodings |
 | [`removeEncoding`](./reference/actions/encodings/#removeencoding) | user-facing | encodings |
 | [`removeGrid`](./reference/actions/advanced/#directional-grids) | user-facing | grid |
@@ -13415,6 +13417,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`removeParallelAxes`](./reference/actions/advanced/#createparallelaxes-createparallelaxis-editparallelaxis-removeparallelaxis-removeparallelaxes) | user-facing | axes |
 | [`removeParallelAxis`](./reference/actions/advanced/#createparallelaxes-createparallelaxis-editparallelaxis-removeparallelaxis-removeparallelaxes) | user-facing | axes |
 | [`removePathOrder`](./reference/actions/encodings/#removepathorder) | user-facing | encodings |
+| [`removePointPacking`](./reference/actions/marks/#removepointpacking) | user-facing | marks |
 | [`removePointRadius`](./reference/actions/encodings/#removepointradius) | user-facing | encodings |
 | [`removeRadialAxis`](./reference/actions/guides/#removeradialaxis) | user-facing | axes |
 | [`removeTheme`](./reference/actions/charts-data/#removetheme) | user-facing | core |
@@ -13715,6 +13718,16 @@ Create a point strip from one measure or from one measure plus one categorical
 slot. Optional deterministic jitter moves only the category or constant slot and
 preserves the measured coordinate. Category jitter uses band units; a centered
 one-measure strip uses pixel units.
+
+## `createBeeswarmPlot`
+
+```javascript
+createBeeswarmPlot({ id?, data?, coordinate?, x, y, color?, size?, shape?, point?, packing?, guides? })
+```
+
+Create a role-safe category/measure Point chart and deterministically pack actual
+glyph extents within each category slot. The facade reuses `createStripPlot` and
+`packPoints`; set `packing: false` to retain semantic centers without packing.
 
 ## `createBarPlot`
 
@@ -14018,6 +14031,26 @@ removeJitter({ target? } = {})
 
 Remove the target point mark's jitter assignment and restore positions derived
 directly from its semantic encodings. [Point marks](./api/marks/point/)
+
+## `packPoints`
+
+```javascript
+packPoints({ target?, channel, maxOffset?, padding?, key?, overflow? })
+```
+
+Deterministically displace Point glyphs only on a categorical x or y axis to
+avoid overlap while preserving measure coordinates. The default overflow policy
+fails atomically; `"overlap"` records unresolved best-effort placements.
+[Point marks](./api/marks/point/)
+
+## `removePointPacking`
+
+```javascript
+removePointPacking({ target? } = {})
+```
+
+Remove stored point packing and rematerialize the current semantic scale
+positions. [Point marks](./api/marks/point/)
 
 ## `removeMark`
 
@@ -15862,6 +15895,8 @@ interface ChartProgramActions {
   editTickMark(options: { target?: string; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }): ChartProgram;
   jitterPoints(options: JitterPointsOptions): ChartProgram;
   removeJitter(options?: RemoveJitterOptions): ChartProgram;
+  packPoints(options: PackPointsOptions): ChartProgram;
+  removePointPacking(options?: RemovePointPackingOptions): ChartProgram;
   createLineMark(options?: { id?: string; data?: string; strokeWidth?: number; curve?: CurveInterpolation; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
   editLineMark(options: { target?: string; strokeWidth?: number; curve?: CurveInterpolation; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
   createBarMark(options?: { id?: string; data?: string; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
@@ -15946,6 +15981,7 @@ interface ChartProgramActions {
   createRadarPlot(options: CreateRadarPlotOptions): ChartProgram;
   createRugPlot(options: CreateRugPlotOptions): ChartProgram;
   createStripPlot(options: CreateStripPlotOptions): ChartProgram;
+  createBeeswarmPlot(options: CreateBeeswarmPlotOptions): ChartProgram;
   createAreaPlot(options: CreateAreaPlotOptions): ChartProgram;
   createBarPlot(options: CreateBarPlotOptions): ChartProgram;
   createHistogram(options: CreateHistogramOptions): ChartProgram;

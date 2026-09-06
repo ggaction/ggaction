@@ -136,7 +136,7 @@ test("keeps lifecycle, coverage, and edit gaps machine-readable", () => {
     if (action.lifecycle === "Assignment") {
       assert.match(
         action.name,
-        /^(?:encode|layoutSeries$|jitterPoints$|orderCategories$|remove[A-Z])/,
+        /^(?:encode|layoutSeries$|jitterPoints$|packPoints$|orderCategories$|remove[A-Z])/,
         action.name
       );
       assert.match(action.audit, /Implemented|Planned|Proposed/, action.name);
