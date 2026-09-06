@@ -2,7 +2,7 @@
 
 ## 상태와 목표
 
-상태: in-progress. [전체 실행·A/V/X 승인](../APPROVAL.md)과 [A 계약](CONTRACT.md)을 적용했다.
+상태: completed. [전체 실행·A/V/X 승인](../APPROVAL.md)을 적용했고 [X 결과](REVIEW.md)로 닫았다.
 
 하나의 chart를 반복·배치·편집하는 상위 계층을 확장하고 shared scale/guide와 child recipe의 책임을 보존한다.
 

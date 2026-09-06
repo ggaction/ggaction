@@ -280,10 +280,10 @@ Primary owner는 누락 방지를 위한 책임 단위이며, 관련 작업이 �
 - 수정·추가 방향: Row×column facet과 field repeat를 목적별로 제공한다. Observed vs full category combinations, empty cells, order와 shared domain을 명시한다.
 - 완료 검증: 2D facet identity/order, empty-cell policy, shared/independent scale 결과, legend 설명 보존. 전체 source edit 후 cell들이 같은 recipe로 재생성.
 - 근거: audit/REPORT.md: D19. [원래 조사](audit/REPORT.md)
-- 처분: [Phase 9 W2](phase9/RESULTS_W2_RAINCLOUD.md)로 implemented-verified. Half Violin, box/interval summary와
-  strip/beeswarm raw points를 같은 canonical source/category/value와 band-relative slot recipe로 조합했다.
-  Stable child ownership, atomic parent role edit, orientation/side/scale replay, strict types와 primitive/public
-  state·Canvas·PNG·browser 동등성을 검증했다.
+- 처분: [Phase 10 X](phase10/REVIEW.md)로 implemented-verified. `facetGrid`, `repeatCharts`,
+  `editFacetSource`가 ordered domain, observed/full topology, intentional blank cell과 scale/guide recipe를
+  canonical composition state에 저장한다. Concat의 stable child는 이름으로 insert/remove/reorder하며
+  Cartesian/Polar/Parallel 지원 행렬과 unsupported 이유를 runtime·type·Current·renderer·package에서 검증했다.
 
 ### D20 — Discovery hierarchy·lifecycle·status metadata
 
@@ -489,7 +489,9 @@ Primary owner는 누락 방지를 위한 책임 단위이며, 관련 작업이 �
 - 수정·추가 방향: Row×column facet과 field repeat를 목적별로 제공한다. Observed vs full category combinations, empty cells, order와 shared domain을 명시한다.
 - 완료 검증: 2D facet identity/order, empty-cell policy, shared/independent scale 결과, legend 설명 보존. 전체 source edit 후 cell들이 같은 recipe로 재생성.
 - 근거: audit/REPORT.md: F19. [원래 조사](audit/REPORT.md)
-- 처분: 구현 또는 명시적인 계약 유지·migration 결정의 제안. 아직 완료·승인 상태가 아니다.
+- 처분: [Phase 10 X](phase10/REVIEW.md)로 implemented-verified. Row×column grid, positional field repeat,
+  whole-recipe source revision과 concat named-child insert/remove/reorder를 Current로 제공한다. 공개 primitive chain과
+  facade의 concrete graphics·decoded PNG가 일치하며 승인 범위의 Planned action/capability는 0개다.
 
 ## 원장 운영
 

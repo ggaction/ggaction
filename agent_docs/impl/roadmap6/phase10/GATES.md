@@ -42,6 +42,9 @@
 - Review baseline: `3343c82c`
 - 계약: [CONTRACT.md](CONTRACT.md)
 - 사용자 승인 근거: [APPROVAL.md](../APPROVAL.md)의 전체 A/V/X와 release 승인.
-- 남은 작업: W1~W3 구현과 X 검증.
+- A contract/remote ref: `874104bfdd8e54591917eb650c9f284400e6016e`
+- W1~W3 source/remote ref: `08664f05daf18bd065592c22023589417fdec6fa`
+- X evidence: [REVIEW.md](REVIEW.md)
+- 남은 작업: 없음. R6-P10-X approved, Phase 11로 이동.
 
 실행 시 실제 증거를 채운다. 문서 작성 날짜나 이전 로드맵 승인을 이 Gate의 승인으로 재사용하지 않는다.
