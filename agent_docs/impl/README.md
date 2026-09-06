@@ -4,10 +4,10 @@
 
 ## 현재 작업
 
-- **현재 활성 계획은 Roadmap 6 Phase 9**이다. [`roadmap6/ROADMAP.md`](roadmap6/ROADMAP.md)는
+- **현재 활성 계획은 Roadmap 6 Phase 10**이다. [`roadmap6/ROADMAP.md`](roadmap6/ROADMAP.md)는
   173개 액션 감사에서 나온 오류 8건·설계 문제 20건·사용자가 선택한 추가 액션군 19개를 12단계로 연결한다.
-  Phase 1–8을 완료했고, [Phase 8 X 결과](roadmap6/phase8/REVIEW.md)에 통계·endpoint chart의 구현과 검증을 기록했다. [전체 실행·0.0.13 릴리즈 승인](roadmap6/APPROVAL.md)을 적용하며, 현재 실행 단위는 [Phase 9의 deterministic packing과 Raincloud](roadmap6/phase9/GOAL.md)다.
-- [`roadmap6/phase9/GOAL.md`](roadmap6/phase9/GOAL.md) — Point packing·Beeswarm·Raincloud
+  Phase 1–9를 완료했고, [Phase 9 X 결과](roadmap6/phase9/REVIEW.md)에 deterministic packing과 Raincloud 구현·검증을 기록했다. [전체 실행·0.0.13 릴리즈 승인](roadmap6/APPROVAL.md)을 적용하며, 다음 실행 단위는 [Phase 10의 comparison과 composition](roadmap6/phase10/GOAL.md)이다.
+- [`roadmap6/phase10/GOAL.md`](roadmap6/phase10/GOAL.md) — Facet grid·repeat·named child composition
 - [`roadmap6/TRACEABILITY.md`](roadmap6/TRACEABILITY.md) — 실행 대상 47개 항목과 작업·검증 조건
 - [`roadmap6/DESIGN_DECISIONS.md`](roadmap6/DESIGN_DECISIONS.md) — 공통 결정과 migration
 - 마지막 완료 owner는 [Roadmap 5.4 Phase 6](roadmap5.4/ROADMAP.md)이다.

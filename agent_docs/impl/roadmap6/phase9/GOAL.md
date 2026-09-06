@@ -2,7 +2,7 @@
 
 ## 상태와 목표
 
-상태: in-progress. [전체 실행·A/V/X 승인](../APPROVAL.md)과 [A 계약](CONTRACT.md)을 적용했다.
+상태: completed. [전체 실행·A/V/X 승인](../APPROVAL.md)을 적용했고 [X 결과](REVIEW.md)로 닫았다.
 
 새 배치가 필요한 분포 차트는 명시적 owner로 추가한다. 복합 chart의 source와 slot 정렬을 단순한 mark 나열에 맡기지 않는다.
 

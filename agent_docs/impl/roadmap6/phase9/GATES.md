@@ -44,6 +44,9 @@
 - 사용자 승인 근거: [APPROVAL.md](../APPROVAL.md)의 전체 A/V/X와 release 승인.
 - W1 source/remote ref: `c818f8f407288c18c288e31492f66b261444c6b6`
 - W1 evidence: [RESULTS_W1_BEESWARM.md](RESULTS_W1_BEESWARM.md)
-- 남은 작업: W2 구현과 X 검증.
+- W2 source/remote ref: `70c9fe8aff94d06b555b03f8dd14d869b9c6da5f`
+- W2 evidence: [RESULTS_W2_RAINCLOUD.md](RESULTS_W2_RAINCLOUD.md)
+- X evidence: [REVIEW.md](REVIEW.md)
+- 남은 작업: 없음. R6-P9-X approved, Phase 10으로 이동.
 
 실행 시 실제 증거를 채운다. 문서 작성 날짜나 이전 로드맵 승인을 이 Gate의 승인으로 재사용하지 않는다.

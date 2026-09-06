@@ -1,7 +1,7 @@
 # Roadmap 6 — Hierarchical Chart Authoring and Action Consistency
 
-> **문서 상태 — 현재 실행 계획.** Phase 1–8을 완료했고 Phase 9 deterministic packing/Raincloud를 실행한다. Phase 8의 최종 증거는 [Phase 8 X](phase8/REVIEW.md), data/statistics/composite lifecycle의 최종 증거는 [Phase 6 X](phase6/RESULTS_X.md)를 따른다.
-> [사용자의 전체 실행·0.0.13 릴리즈 승인](APPROVAL.md)은 F20을 제외한 남은 계약·시각 목표·구현·검증과 필요한 한도 조정을 포함한다. 승인과 검증 완료를 구분하며 Phase 9–11은 아직 구현 완료가 아니다.
+> **문서 상태 — 현재 실행 계획.** Phase 1–9를 완료했고 Phase 10 comparison/composition으로 이동한다. Phase 9의 최종 증거는 [Phase 9 X](phase9/REVIEW.md), data/statistics/composite lifecycle의 최종 증거는 [Phase 6 X](phase6/RESULTS_X.md)를 따른다.
+> [사용자의 전체 실행·0.0.13 릴리즈 승인](APPROVAL.md)은 F20을 제외한 남은 계약·시각 목표·구현·검증과 필요한 한도 조정을 포함한다. 승인과 검증 완료를 구분하며 Phase 10–11은 아직 구현 완료가 아니다.
 > 실행 위치는 [ROADMAP_INDEX.json](../ROADMAP_INDEX.json), 현재 제품 계약은
 > [ACTION_INDEX.json](../../contract/ACTION_INDEX.json)이 소유한다.
 
@@ -119,7 +119,7 @@ S는 기존 owner 위의 교정·연결, M은 여러 consumer의 lifecycle 변�
 | 6 | completed | Data·transform·통계·filter·composite role 편집 — [Phase 6 X](phase6/RESULTS_X.md) |
 | 7 | completed | Polar Scatter/Line, Radar, Rug/Strip — [Phase 7 X](phase7/REVIEW.md) |
 | 8 | completed | Interval/Regression, Dot/Lollipop/Dumbbell, ECDF — [Phase 8 X](phase8/REVIEW.md) |
-| 9 | planned | Deterministic point packing과 Raincloud |
+| 9 | completed | Deterministic point packing과 Raincloud — [Phase 9 X](phase9/REVIEW.md) |
 | 10 | planned | Facet grid, repeat, named child 구조 편집 |
 | 11 | planned | 전체 계층·MCP·package 검증과 closeout |
 

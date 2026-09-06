@@ -280,7 +280,10 @@ Primary owner는 누락 방지를 위한 책임 단위이며, 관련 작업이 �
 - 수정·추가 방향: Row×column facet과 field repeat를 목적별로 제공한다. Observed vs full category combinations, empty cells, order와 shared domain을 명시한다.
 - 완료 검증: 2D facet identity/order, empty-cell policy, shared/independent scale 결과, legend 설명 보존. 전체 source edit 후 cell들이 같은 recipe로 재생성.
 - 근거: audit/REPORT.md: D19. [원래 조사](audit/REPORT.md)
-- 처분: 구현 또는 명시적인 계약 유지·migration 결정의 제안. 아직 완료·승인 상태가 아니다.
+- 처분: [Phase 9 W2](phase9/RESULTS_W2_RAINCLOUD.md)로 implemented-verified. Half Violin, box/interval summary와
+  strip/beeswarm raw points를 같은 canonical source/category/value와 band-relative slot recipe로 조합했다.
+  Stable child ownership, atomic parent role edit, orientation/side/scale replay, strict types와 primitive/public
+  state·Canvas·PNG·browser 동등성을 검증했다.
 
 ### D20 — Discovery hierarchy·lifecycle·status metadata
 

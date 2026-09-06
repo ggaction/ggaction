@@ -5,11 +5,11 @@
 - [x] A Gate의 정확한 결정·호환성·검증 범위 확정 — [계약](CONTRACT.md)
 - [x] 전체 실행 사용자 승인과 기준 ref 기록
 - [x] R6-P9-W1 Point packing과 Beeswarm — [결과](RESULTS_W1_BEESWARM.md)
-- [ ] R6-P9-W2 Raincloud composite
-- [ ] 모든 시각 variant의 primitive target 작성·표시·V 승인
-- [ ] 승인된 variant의 public 구현과 같은 실행의 primitive/public render 비교
-- [ ] 누적 검증·migration·문서·원장 동기화
-- [ ] X Gate의 증거 commit/push와 명시적 사용자 승인 기록
+- [x] R6-P9-W2 Raincloud composite — [결과](RESULTS_W2_RAINCLOUD.md)
+- [x] 모든 시각 variant의 primitive target 작성·표시·V 승인
+- [x] 승인된 variant의 public 구현과 같은 실행의 primitive/public render 비교
+- [x] 누적 검증·migration·문서·원장 동기화
+- [x] X Gate의 증거 commit/push와 명시적 사용자 승인 기록 — [X 결과](REVIEW.md)
 
 위 체크는 미래 실행용이다. 계획 문서를 만든 사실을 구현 완료나 Gate 승인으로 표시하지 않는다.
 
