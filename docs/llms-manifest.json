@@ -1807,8 +1807,8 @@
         "action-reference",
         "exact-action-lookup"
       ],
-      "bytes": 21358,
-      "sha256": "faa6d1462d6fabf16760deb4be82b13ab2e78c995cb218867ae2bc76e552b3d2"
+      "bytes": 21530,
+      "sha256": "ef4fee3080e9a90bf6f14d1a2584dad5df82a9918082ab43d359e5d0e8d3938a"
     },
     {
       "order": 115,
@@ -1819,6 +1819,8 @@
         "charts-data-and-composition-actions",
         "createcanvas",
         "editcanvas",
+        "applytheme",
+        "removetheme",
         "editcompositionlayout",
         "replacecompositionchild",
         "facet",
@@ -1848,8 +1850,8 @@
         "editbin2ddata",
         "related"
       ],
-      "bytes": 13873,
-      "sha256": "14b92dad2cf1d933ac9e3aae6face9ac5a70b910a4967de0dd55d6a0d20ff0ee"
+      "bytes": 14399,
+      "sha256": "411bf553910f444756d888aab70fb817ca87a523e7b06394715e408866375a76"
     },
     {
       "order": 116,
@@ -2078,8 +2080,8 @@
         "exact-typescript-signatures",
         "related"
       ],
-      "bytes": 16054,
-      "sha256": "3e6f77bb69b60b2d2d6784559aaba8af0bf0c4c0c8da9d6e62f5fafa541bf97b"
+      "bytes": 16141,
+      "sha256": "16b855d4a1dd2fd2f5d11c44f79f3d1150ed0f6d3aae16e119bce1c574a7fbb3"
     },
     {
       "order": 124,

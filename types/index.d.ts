@@ -246,6 +246,8 @@ export type {
   TimeUnit,
   TimeUnitDataOptions,
   TemporalInputUnit,
+  ThemeName,
+  ApplyThemeOptions,
   TraceNode,
   TitleOptions,
   EditTitleOptions,

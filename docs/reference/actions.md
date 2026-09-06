@@ -32,6 +32,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 
 | Action | API layer | Domain |
 | --- | --- | --- |
+| [`applyTheme`](./actions/charts-data.md#applytheme) | user-facing | core |
 | [`createAnnotation`](./actions/marks.md#createannotation) | user-facing | marks |
 | [`createArcMark`](./actions/marks.md#createarcmark) | user-facing | marks |
 | [`createAreaMark`](./actions/marks.md#createareamark) | user-facing | marks |
@@ -224,6 +225,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`removePathOrder`](./actions/encodings.md#removepathorder) | user-facing | encodings |
 | [`removePointRadius`](./actions/encodings.md#removepointradius) | user-facing | encodings |
 | [`removeRadialAxis`](./actions/guides.md#removeradialaxis) | user-facing | axes |
+| [`removeTheme`](./actions/charts-data.md#removetheme) | user-facing | core |
 | [`removeThetaAxis`](./actions/guides.md#removethetaaxis) | user-facing | axes |
 | [`removeTitle`](./actions/guides.md#removetitle) | user-facing | legend_and_title |
 | [`removeXAxis`](./actions/advanced.md#complete-axis-removal) | user-facing | axes |

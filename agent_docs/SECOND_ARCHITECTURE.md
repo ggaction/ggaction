@@ -247,8 +247,8 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Gzip ceiling |
 | --- | ---: |
-| `ggaction` | 259,000 bytes |
-| `ggaction/basic` | 142,000 bytes |
+| `ggaction` | 265,000 bytes |
+| `ggaction/basic` | 148,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 
 이 값은 current executable regression ceiling이며 측정 결과 자체가 아니다. Canonical numeric owner는
@@ -316,7 +316,8 @@ materializationConfigs = {
   jitters: { ... },
   labelLayouts: { ... },
   canvas: { ... },
-  title: { ... }
+  title: { ... },
+  theme: { name, overrides }
 };
 ```
 
@@ -1160,7 +1161,9 @@ Wrapper는 다음 순서를 보장한다.
 3. implementation을 entered immutable program에서 실행한다.
 4. 내부에서 호출한 wrapped action을 현재 node의 child로 기록한다.
 5. 반환값이 같은 `ChartProgram` runtime class의 instance인지 확인한다.
-6. `_exitAction()`으로 stack을 pop한다.
+6. 가장 바깥 action이면 등록된 completion reconciliation을 실행한다. 이 과정에서 호출한
+   wrapped graphic/materialization action은 아직 열린 사용자 action의 child로 기록된다.
+7. `_exitAction()`으로 stack을 pop한다.
 
 Trace root는 항상 virtual `program` node다.
 
@@ -1183,6 +1186,9 @@ Circular action argument는 trace에 안전하게 저장할 수 없으므로 거
 
 Action stack은 index path를 저장한다. 매번 tree 전체를 검색하지 않고 정확한 parent에
 structural copy로 child를 추가한다. 완료된 public action chain의 stack은 비어 있다.
+Completion reconciliation은 program-wide theme처럼 이후의 모든 authoring action 결과를
+수렴시켜야 하는 cross-cutting graphical policy에 한정한다. Nested action마다 재진입하지 않고
+top-level action이 완성된 뒤 한 번만 실행하며, semantic state를 수정하지 않는다.
 
 ## API의 세 층
 
@@ -2128,6 +2134,18 @@ Action이나 guide recipe가 같은 hex/font literal을 독립적으로 복제�
 action의 semantic하지 않은 operation default는 그 action 또는 관련 layout/recipe가
 소유하되, 여러 feature가 공유하는 token은 theme owner로 올린다.
 
+Unit program의 persistent theme은 `materializationConfigs.theme`이 소유한다. `applyTheme`은
+선택한 preset과 action trace에서 판정한 explicit local override key를 저장하고 기존 concrete
+graphics를 즉시 수렴시킨다. 이후 top-level action completion reconciliation은 새로 만들어지거나
+rematerialize된 mark·guide·title·Canvas의 inherited color를 같은 preset으로 다시 투영한다.
+`removeTheme`은 inherited 값을 light library default로 되돌린 뒤 theme config를 제거한다.
+
+Theme reconciliation은 concrete appearance와 해당 materialization config만 바꾼다. Field-driven
+palette output, semantic spec, resolved scale, 통계 row, grouping, domain, item/draw order는 입력과
+동일하게 유지한다. Explicit local style은 값이 preset 또는 library default와 같더라도 action
+trace의 top-level authoring argument로 식별하므로 theme 교체와 제거 뒤에도 보존된다. 정확한
+public signature와 지원 preset은 [CORE current contract](contract/current/CORE.md)가 소유한다.
+
 ## Canvas renderer
 
 `render(program, context, { pixelRatio })`는 `program.graphicSpec`만 읽는다.
@@ -2252,6 +2270,7 @@ src/
 │  ├─ regression/      regression aggregate, component actions와 inference policy
 │  ├─ scales/          semantic scale create/resolve/materialize
 │  │  └─ consumers/ common consumer discovery, mark family과 series layout policy
+│  ├─ theme/           persistent preset lifecycle, local-override 판정과 graphical reconciliation
 │  └─ titles/          chart title actions
 ├─ core/               action-free ChartProgram, action wrapper, immutable ownership, empty specs
 │  ├─ programState.js immutable spec/context/trace transition

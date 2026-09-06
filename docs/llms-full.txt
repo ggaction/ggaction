@@ -12696,6 +12696,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 
 | Action | API layer | Domain |
 | --- | --- | --- |
+| [`applyTheme`](./reference/actions/charts-data/#applytheme) | user-facing | core |
 | [`createAnnotation`](./reference/actions/marks/#createannotation) | user-facing | marks |
 | [`createArcMark`](./reference/actions/marks/#createarcmark) | user-facing | marks |
 | [`createAreaMark`](./reference/actions/marks/#createareamark) | user-facing | marks |
@@ -12888,6 +12889,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`removePathOrder`](./reference/actions/encodings/#removepathorder) | user-facing | encodings |
 | [`removePointRadius`](./reference/actions/encodings/#removepointradius) | user-facing | encodings |
 | [`removeRadialAxis`](./reference/actions/guides/#removeradialaxis) | user-facing | axes |
+| [`removeTheme`](./reference/actions/charts-data/#removetheme) | user-facing | core |
 | [`removeThetaAxis`](./reference/actions/guides/#removethetaaxis) | user-facing | axes |
 | [`removeTitle`](./reference/actions/guides/#removetitle) | user-facing | legend_and_title |
 | [`removeXAxis`](./reference/actions/advanced/#complete-axis-removal) | user-facing | axes |
@@ -12917,6 +12919,26 @@ editCanvas({ width?, height?, background?, margin? })
 
 Edit Canvas properties and rematerialize connected consumers.
 [Canvas options](./api/canvas/)
+
+## `applyTheme`
+
+```javascript
+applyTheme({ theme: "light" | "dark" })
+```
+
+Apply persistent visual defaults to existing resources and resources created by
+later actions. Local styles take precedence, including an explicitly authored
+value that equals a theme default. Theme changes preserve data, statistics,
+scales, grouping, category order, and field-driven palettes.
+
+## `removeTheme`
+
+```javascript
+removeTheme()
+```
+
+Remove the active program theme and restore inherited library defaults while
+preserving local styles.
 
 ## `editCompositionLayout`
 
@@ -15038,6 +15060,8 @@ The action entries below provide the readable form, behavior, defaults, and rout
 interface ChartProgramActions {
   createCanvas(options?: CanvasOptions): ChartProgram;
   editCanvas(options: CanvasOptions): ChartProgram;
+  applyTheme(options: ApplyThemeOptions): ChartProgram;
+  removeTheme(): ChartProgram;
   createData(options: { id?: string; values: readonly unknown[] }): ChartProgram;
   filterData(options: FilterDataOptions): ChartProgram;
   filterMarks(options: FilterMarksOptions): ChartProgram;

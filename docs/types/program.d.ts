@@ -1,6 +1,10 @@
 import type { RegisteredExtensionActions } from "./extension.js";
 
 export type TemporalInputUnit = "auto" | "year" | "timestamp";
+export type ThemeName = "light" | "dark";
+export interface ApplyThemeOptions {
+  theme: ThemeName;
+}
 export type FieldType = "quantitative" | "temporal" | "ordinal" | "nominal";
 export type GraphicType =
   | "canvas"
@@ -2954,6 +2958,8 @@ export class ChartProgram {
 
   createCanvas(options?: CanvasOptions): ChartProgram;
   editCanvas(options: CanvasOptions): ChartProgram;
+  applyTheme(options: ApplyThemeOptions): ChartProgram;
+  removeTheme(): ChartProgram;
   createData(options: { id?: string; values: readonly unknown[] }): ChartProgram;
   filterData(options: FilterDataOptions): ChartProgram;
   filterMarks(options: FilterMarksOptions): ChartProgram;

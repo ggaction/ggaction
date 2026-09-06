@@ -76,6 +76,42 @@
       }
     },
     {
+      "name": "applyTheme",
+      "layer": "user-facing",
+      "domain": "core",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Swap with `applyTheme` or reset with `removeTheme`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/CORE.md",
+        "anchor": "applytheme"
+      }
+    },
+    {
+      "name": "removeTheme",
+      "layer": "user-facing",
+      "domain": "core",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Removes the active program theme",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/CORE.md",
+        "anchor": "removetheme"
+      }
+    },
+    {
       "name": "createData",
       "layer": "user-facing",
       "domain": "core",

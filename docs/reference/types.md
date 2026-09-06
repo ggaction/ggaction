@@ -20,6 +20,8 @@ The action entries below provide the readable form, behavior, defaults, and rout
 interface ChartProgramActions {
   createCanvas(options?: CanvasOptions): ChartProgram;
   editCanvas(options: CanvasOptions): ChartProgram;
+  applyTheme(options: ApplyThemeOptions): ChartProgram;
+  removeTheme(): ChartProgram;
   createData(options: { id?: string; values: readonly unknown[] }): ChartProgram;
   filterData(options: FilterDataOptions): ChartProgram;
   filterMarks(options: FilterMarksOptions): ChartProgram;

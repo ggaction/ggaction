@@ -9,6 +9,16 @@
     "layer": "user-facing",
     "domain": "core"
   },
+  "applyTheme": {
+    "operation": "apply",
+    "layer": "user-facing",
+    "domain": "core"
+  },
+  "removeTheme": {
+    "operation": "remove",
+    "layer": "user-facing",
+    "domain": "core"
+  },
   "createData": {
     "operation": "create",
     "layer": "user-facing",

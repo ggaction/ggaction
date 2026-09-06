@@ -46,7 +46,11 @@
 - [x] W3 D createAnnotation mark/data/plot anchor — [계약](CONTRACT_W3_ANNOTATION.md), [결과](RESULTS_W3_ANNOTATION.md)
 - [x] W3 후속 common value formatter — [계약](CONTRACT_W3_COMMON_FORMAT.md), [결과](RESULTS_W3_COMMON_FORMAT.md)
 - [x] W3 후속 rotation unit — [계약](CONTRACT_W3_ROTATION_UNITS.md), [결과](RESULTS_W3_ROTATION_UNITS.md)
-- [ ] R6-P5-W4 Program theme와 local override
+- [x] R6-P5-W4 Program theme와 local override — [계약](CONTRACT_W4_THEME.md), [결과](RESULTS_W4_THEME.md)
+- [x] W4 light/dark apply·swap·remove와 이후 action 완료 수렴
+- [x] W4 explicit local·field palette·통계 의미 불변성 전수 검증
+- [x] W4 dark-theme-scatterplot primitive/public state·render parity
+- [x] W4 Full/Basic/types/docs/canonical package·browser consumer 검증
 - [ ] R6-P5-W5 Opt-in fitting과 guide label layout
 - [ ] 모든 시각 variant의 primitive target 작성·표시·V 승인
 - [ ] 승인된 variant의 public 구현과 같은 실행의 primitive/public render 비교

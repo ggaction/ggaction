@@ -127,6 +127,8 @@ test.before(async () => {
         .createCanvas({ width: 160, height: 120, margin: 20 })
         .createData({ values: [{ x: 1, y: 2 }, { x: 2, y: 4 }] })
         .createScatterPlot({ x: "x", y: "y", guides: false });
+      const themedProgram = program.applyTheme({ theme: "dark" });
+      const basicThemedProgram = basicProgram.applyTheme({ theme: "dark" });
       const canvas = document.querySelector("#chart");
       render(program, canvas.getContext("2d"));
       const legendCanvas = document.querySelector("#legend");
@@ -445,6 +447,12 @@ test.before(async () => {
       document.querySelector("#status").textContent = "complete";
       window.__ggactionGuideComparisons = guideComparisons;
       window.__ggactionConsumer = {
+        theme: [
+          themedProgram.graphicSpec.objects.canvas.properties.background,
+          themedProgram.graphicSpec.objects.point.items[0].properties.fill,
+          themedProgram.removeTheme().graphicSpec.objects.canvas.properties.background,
+          basicThemedProgram.graphicSpec.objects.scatterPlot.items[0].properties.fill
+        ],
         sourceTextDomain: sourceTextScale.resolvedScales["next-y"].domain,
         sourceTextPositions: sourceTextScale.graphicSpec.objects.text.items.map(i => i.properties.y),
         sourceTextSVG: renderToSVG(sourceTextScale).includes("label"),
@@ -622,6 +630,7 @@ test("imports and renders the packed browser entries", async () => {
   assert.equal(guideComparisons.length, 4);
   for (const [actual, expected] of guideComparisons) assert.deepEqual(actual, expected);
   assert.deepEqual(await windowValue(page, "__ggactionConsumer"), {
+    theme: ["#0f172a", "#60a5fa", "white", "#60a5fa"],
     sourceTextDomain: [100, 1000],
     sourceTextPositions: [260, 60],
     sourceTextSVG: true,

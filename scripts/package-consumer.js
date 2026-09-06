@@ -106,6 +106,18 @@ async function testNodeConsumer(directory) {
     );
     assert.equal(typeof render, "function");
     assert.equal(program.graphicSpec.objects.point.items.length, 2);
+    const themed = program.applyTheme({ theme: "dark" });
+    assert.equal(themed.graphicSpec.objects.canvas.properties.background, "#0f172a");
+    assert.equal(themed.graphicSpec.objects.point.items[0].properties.fill, "#60a5fa");
+    assert.equal(themed.removeTheme().graphicSpec.objects.canvas.properties.background, "white");
+    const basicThemed = basicChart()
+      .applyTheme({ theme: "dark" })
+      .createCanvas({ width: 160, height: 120, margin: 20 })
+      .createData({ values: [{ x: 1, y: 2 }] })
+      .createPointMark()
+      .encodeX({ field: "x" })
+      .encodeY({ field: "y" });
+    assert.equal(basicThemed.graphicSpec.objects.point.items[0].properties.fill, "#60a5fa");
     const axisLifecycle = chart()
       .createCanvas({ width: 240, height: 180, margin: 50 })
       .createData({ values: [{ x: 1, y: 2 }, { x: 2, y: 4 }] })
@@ -1333,6 +1345,7 @@ async function testTypeScriptConsumer(directory) {
       render,
       vconcat,
       type ChartProgram,
+      type ApplyThemeOptions,
       type Bin2DDataOptions,
       type EditBin2DDataOptions,
       type CreateBarPlotOptions,
@@ -1361,6 +1374,7 @@ async function testTypeScriptConsumer(directory) {
       type StrokeWidthEncodingOptions,
       type ThetaEncodingOptions,
       type ThetaScaleOptions,
+      type ThemeName,
       type TimeUnitDataOptions,
       type ViolinPlotOptions,
       type WindowDataOptions,
@@ -1384,6 +1398,10 @@ async function testTypeScriptConsumer(directory) {
     } from "ggaction/basic";
 
     const program: ChartProgram = chart().createCanvas({ width: 100, height: 100 });
+    const themeName: ThemeName = "dark";
+    const themeOptions: ApplyThemeOptions = { theme: themeName };
+    const themedProgram: ChartProgram = program.applyTheme(themeOptions).removeTheme();
+    const basicThemedProgram: BasicChartProgram = basicChart().applyTheme(themeOptions);
     const roseOptions: import("ggaction").CreateRosePlotOptions = { category: "category", radiusScale: { range: [70, 140] } };
     program.createScale({ id: "midpoint", type: "sequential", midpoint: 0 });
     program.editScale({ id: "midpoint", midpoint: "auto" });
@@ -2235,6 +2253,8 @@ async function testTypeScriptConsumer(directory) {
     // @ts-expect-error DatasetTransform is a closed discriminated union.
     const invalidTransform: DatasetTransform = { type: "unknown" };
     void draw;
+    void themedProgram;
+    void basicThemedProgram;
     void scatterFacade;
     void basicScatter;
     void basicDraw;

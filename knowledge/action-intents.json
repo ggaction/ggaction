@@ -2,6 +2,7 @@
   "schemaVersion": 1,
   "operationIntents": {
     "create": ["create", "add"],
+    "apply": ["apply", "set defaults"],
     "edit": ["edit", "change"],
     "encode": ["encode", "map field"],
     "remove": ["remove", "delete"],
@@ -28,6 +29,7 @@
     "primitives": ["extension primitive", "low-level authoring"]
   },
   "termAliases": {
+    "Theme": ["program theme", "light or dark visual defaults"],
     "ParallelAxis": ["parallel dimension axis", "field axis", "multivariate axis"],
     "ParallelAxes": ["parallel axes", "dimension axes"],
     "AreaPlot": ["area chart", "ribbon", "stacked area"],

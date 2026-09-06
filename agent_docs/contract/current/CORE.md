@@ -78,6 +78,73 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - Proposed values는 `createCanvas`의 responsive/auto 후보와 동일하다.
 - Evidence: `test/unit/actions/canvas/edit-canvas.test.js`.
 
+## `applyTheme`
+
+- Signature: `applyTheme({ theme })`
+- 목적과 필수 state: Unit program에 지속되는 시각 기본값을 적용한다. Canvas나 mark가
+  생기기 전에도 호출할 수 있으며, 기존 inherited style과 이후 action이 만드는 resource에
+  같은 theme을 적용한다.
+- `theme`
+  - Status: Implemented. 정확히 `"light" | "dark"`다.
+  - Effect: Canvas background와 기존 mark/text/axis/axis-title/grid/legend/title color token을
+    원자적으로 교체한다. Box/reference처럼 이전 component가 shared token 밖의 기본색을 쓰는
+    경우에도 concrete role을 판정해 읽을 수 있는 dark mark color로 수렴한다. `light`는 library
+    default이고 `dark`는 어두운 Canvas에서 읽을 수 있는 대응 token 집합이다.
+- 우선순위와 상호작용: explicit local style > program theme > library default다. 사용자가
+  현재 theme이나 library default와 같은 값을 명시해도 local override로 저장한다. Field-driven
+  color/palette, highlight/selection policy, opacity, geometry, spacing, statistics, grouping,
+  domain과 order는 바꾸지 않는다.
+- 오류: options 생략/빈 object, unknown theme/option, composition program 호출을 거부한다.
+- Coverage: `test/unit/actions/theme.test.js`가 immediate/later apply, light↔dark swap,
+  same-value override, Parallel/Polar/legend/title/Box/reference, semantic stability와 immutability를
+  검증한다. `test/contracts/theme.test.js`는 public unit chart corpus 전체를 검증한다.
+
+### Formal values — `applyTheme`
+
+- Implemented: `applyTheme({ theme: "light" | "dark" }): ChartProgram`
+- Proposed (NOT IMPLEMENTED): custom theme-token object와 composition-wide theme propagation.
+
+### Value coverage — `applyTheme`
+
+- `theme`
+  - ✅ Covered: `"light"`, `"dark"`, repeated apply, swap, apply-before-resources와 invalid value rejection.
+- Local override
+  - ✅ Covered: custom value, built-in default와 같은 explicit value, theme 적용 전후 authored value,
+    Parallel field별 override, facade/component override와 field-driven mark/legend appearance 보존.
+- Semantic boundary
+  - ✅ Covered: semantic spec와 resolved scale byte-equivalent snapshot, statistical regression output,
+    draw order, source program immutability, public unit chart 51개 corpus.
+- Visual boundary
+  - ✅ Covered: `dark-theme-scatterplot`의 explicit low-level style primitive와 public `applyTheme`
+    program 사이 exact graphic/renderer/decoded PNG pixel equivalence.
+- Proposed custom/composition values는 token validation과 child-owner propagation 계약 뒤에 검토한다.
+- Evidence: `test/unit/actions/theme.test.js`, `test/contracts/theme.test.js`,
+  `test/charts/dark-theme-scatterplot/`.
+
+## `removeTheme`
+
+- Signature: `removeTheme()`
+- 목적과 필수 state: active program theme을 제거하고 inherited style을 library default로 되돌린다.
+- Effect: active theme metadata를 제거한다. Explicit local style과 semantic/scale state는 보존한다.
+- 오류와 상호작용: active theme이 없거나 option을 전달하면 거부한다. 이전 immutable themed
+  program은 그대로 유지된다.
+- Coverage: `test/unit/actions/theme.test.js`가 dark reset, local override 보존, invalid lifecycle,
+  source immutability를 검증한다.
+
+### Formal values — `removeTheme`
+
+- Implemented: `removeTheme(): ChartProgram`
+- Proposed (NOT IMPLEMENTED): resource-subtree별 partial theme removal.
+
+### Value coverage — `removeTheme`
+
+- Active lifecycle
+  - ✅ Covered: dark→library default, local value 유지, theme metadata 제거와 inactive rejection.
+- Arguments
+  - ✅ Covered: no arguments only; unknown option rejection.
+- Partial removal은 program-wide precedence를 모호하게 하므로 현재 future proposal이다.
+- Evidence: `test/unit/actions/theme.test.js`.
+
 ## `createData`
 
 - Signature: `createData({ id?, values })`

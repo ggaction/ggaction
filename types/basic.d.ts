@@ -6,6 +6,7 @@ export type {
   AxisTickOptions,
   AxisTicksAndLabelsOptions,
   AxisTitleOptions,
+  ApplyThemeOptions,
   BarWidthOptions,
   BasicSeriesLayoutOptions,
   Bin2DDataOptions,
@@ -33,6 +34,7 @@ export type {
   SemanticSpec,
   StrokeDashEncodingOptions,
   TemporalInputUnit,
+  ThemeName,
   TraceNode,
   XAxisPosition,
   XOffsetEncodingOptions,
@@ -50,6 +52,8 @@ type BasicStateKey =
 
 type BasicMethodKey =
   | "createCanvas"
+  | "applyTheme"
+  | "removeTheme"
   | "createData"
   | "createPointMark"
   | "createLineMark"

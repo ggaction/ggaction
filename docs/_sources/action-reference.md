@@ -221,6 +221,26 @@ editCanvas({ width?, height?, background?, margin? })
 Edit Canvas properties and rematerialize connected consumers.
 [Canvas options](../api/canvas.md)
 
+### `applyTheme`
+
+```javascript
+applyTheme({ theme: "light" | "dark" })
+```
+
+Apply persistent visual defaults to existing resources and resources created by
+later actions. Local styles take precedence, including an explicitly authored
+value that equals a theme default. Theme changes preserve data, statistics,
+scales, grouping, category order, and field-driven palettes.
+
+### `removeTheme`
+
+```javascript
+removeTheme()
+```
+
+Remove the active program theme and restore inherited library defaults while
+preserving local styles.
+
 ### `editCompositionLayout`
 
 ```javascript

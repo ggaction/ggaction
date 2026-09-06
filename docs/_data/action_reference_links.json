@@ -1,6 +1,8 @@
 {
   "createCanvas": "/reference/actions/charts-data/#createcanvas",
   "editCanvas": "/reference/actions/charts-data/#editcanvas",
+  "applyTheme": "/reference/actions/charts-data/#applytheme",
+  "removeTheme": "/reference/actions/charts-data/#removetheme",
   "editCompositionLayout": "/reference/actions/charts-data/#editcompositionlayout",
   "replaceCompositionChild": "/reference/actions/charts-data/#replacecompositionchild",
   "facet": "/reference/actions/charts-data/#facet",

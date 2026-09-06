@@ -44,6 +44,8 @@ import {
 } from "./point-jitter/program.js";
 import { createAnnotatedImdbScatterplot } from
   "./annotated-imdb-scatterplot/program.js";
+import { createDarkThemeScatterplot } from
+  "./dark-theme-scatterplot/program.js";
 import { createGapminderLifeExpectancyHeatmap } from
   "./gapminder-life-expectancy-heatmap/program.js";
 import { createCarsOriginScatterplotFacet } from
@@ -370,6 +372,21 @@ export const PUBLIC_CHARTS = Object.freeze([
     createProgram: createAnnotatedImdbScatterplot,
     docsGroup: "charts",
     browser: { path: "annotated-imdb-scatterplot/", canvas: "#chart" }
+  }),
+  example({
+    id: "dark-theme-scatterplot",
+    data: {},
+    width: 640,
+    height: 400,
+    createProgram: () => createDarkThemeScatterplot(),
+    browser: {
+      path: "browser-host/?chart=dark-theme-scatterplot",
+      canvas: "#chart",
+      state: {
+        global: "__ggactionExample",
+        expected: { id: "dark-theme-scatterplot", width: 640, height: 400 }
+      }
+    }
   }),
   example({
     id: "gapminder-life-expectancy-heatmap",

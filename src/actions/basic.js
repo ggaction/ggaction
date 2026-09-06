@@ -7,8 +7,10 @@ import { registerBasicGuideActions } from "./guides/basic.js";
 import { registerBasicMarkActions } from "./marks/basic.js";
 import { registerBasicPrimitiveActions } from "./primitives/index.js";
 import { registerBasicScaleActions } from "./scales/index.js";
+import { registerThemeActions } from "./theme/index.js";
 
 export function registerBasicActions(ProgramClass) {
+  registerThemeActions(ProgramClass);
   registerBasicPrimitiveActions(ProgramClass);
   registerBasicCanvasActions(ProgramClass);
   registerBasicDataActions(ProgramClass);

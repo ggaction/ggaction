@@ -18,6 +18,7 @@ const packageFile = path.join(root, "package.json");
 
 const operationPrefixes = Object.freeze([
   "create",
+  "apply",
   "edit",
   "encode",
   "remove",
@@ -132,6 +133,7 @@ function generatedSummary(action, intentSource) {
   const purpose = aliases[1] ?? intentSource.domainIntents[action.domain][0];
   switch (operation) {
     case "create": return `Creates ${resource} for ${purpose}.`;
+    case "apply": return `Applies ${resource} defaults to existing and later chart resources.`;
     case "edit": return `Edits ${resource}, including settings for ${purpose}.`;
     case "encode": return `Maps data or a constant to ${resource} for ${purpose}.`;
     case "remove": return `Removes ${resource} while preserving unrelated chart resources.`;
@@ -196,7 +198,7 @@ function actionResources(action, optionNames, intentSource) {
   if (action.domain === "primitives") prerequisites.push("extension action context");
 
   const owns = [];
-  if (["create", "encode", "filter", "select", "highlight", "layout", "jitter", "order", "compose"].includes(operation)) {
+  if (["create", "apply", "encode", "filter", "select", "highlight", "layout", "jitter", "order", "compose"].includes(operation)) {
     owns.push(operation === "encode" ? `${resource} assignment` : resource);
   }
 
@@ -337,7 +339,8 @@ function representativeValue(action, option) {
     angle: 45,
     radius: 4,
     direction: "horizontal",
-    align: "start"
+    align: "start",
+    theme: "dark"
   };
   if (option.name === "value") {
     const literal = firstQuotedLiteral(option.type);

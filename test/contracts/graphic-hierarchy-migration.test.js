@@ -91,6 +91,13 @@ const EXPECTED_DRAW_ORDER = Object.freeze({
     "yAxisLine", "yAxisTicks", "yAxisLabels", "yAxisTitle",
     "chartTitle"
   ],
+  "dark-theme-scatterplot": [
+    "canvas", "horizontalGridLines", "point",
+    "xAxisLine", "xAxisTicks", "xAxisLabels", "xAxisTitle",
+    "yAxisLine", "yAxisTicks", "yAxisLabels", "yAxisTitle",
+    "colorLegendSymbols", "colorLegendLabels", "colorLegendTitle",
+    "chartTitle", "chartSubtitle"
+  ],
   "gapminder-life-expectancy-heatmap": [
     "canvas", "rect", "text",
     "xAxisLine", "xAxisTicks", "xAxisLabels", "xAxisTitle",

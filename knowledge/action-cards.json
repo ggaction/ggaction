@@ -3,7 +3,7 @@
   "packageVersion": "0.0.12",
   "typeSource": "types/program.d.ts",
   "errorPolicy": "An empty errors array means the compact card has no curated error override; consult the canonical route for validation, inference, and recovery behavior.",
-  "count": 198,
+  "count": 200,
   "cards": [
     {
       "schemaVersion": 2,
@@ -110,6 +110,76 @@
       "snippet": "program.editCanvas({ width: 640 })",
       "errors": [],
       "route": "/reference/actions/charts-data/#editcanvas"
+    },
+    {
+      "schemaVersion": 2,
+      "name": "applyTheme",
+      "layer": "user-facing",
+      "domain": "core",
+      "summary": "Apply persistent visual defaults to existing resources and resources created by later actions.",
+      "signature": "applyTheme(options: ApplyThemeOptions): ChartProgram;",
+      "intents": [
+        "apply theme",
+        "apply",
+        "set defaults",
+        "chart setup",
+        "data and scales",
+        "program theme",
+        "light or dark visual defaults"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [],
+        "owns": [
+          "program theme"
+        ],
+        "idOptions": []
+      },
+      "options": [
+        {
+          "name": "theme",
+          "required": true,
+          "type": "ThemeName"
+        }
+      ],
+      "callPatterns": [
+        "applyTheme({ theme })"
+      ],
+      "snippet": "program.applyTheme({ theme: \"dark\" })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#applytheme"
+    },
+    {
+      "schemaVersion": 2,
+      "name": "removeTheme",
+      "layer": "user-facing",
+      "domain": "core",
+      "summary": "Remove the active program theme and restore inherited library defaults while preserving local styles.",
+      "signature": "removeTheme(): ChartProgram;",
+      "intents": [
+        "remove theme",
+        "remove",
+        "delete",
+        "chart setup",
+        "data and scales",
+        "program theme",
+        "light or dark visual defaults"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing program theme"
+        ],
+        "owns": [],
+        "idOptions": []
+      },
+      "options": [],
+      "callPatterns": [
+        "removeTheme()"
+      ],
+      "snippet": "program.removeTheme()",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#removetheme"
     },
     {
       "schemaVersion": 2,

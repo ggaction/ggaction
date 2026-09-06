@@ -9,7 +9,7 @@ const browserOutputFile = path.join(root, "docs/assets/js/action-metadata.js");
 
 function operation(name) {
   for (const candidate of [
-    "create", "edit", "encode", "filter", "highlight", "select", "render", "remove"
+    "create", "apply", "edit", "encode", "filter", "highlight", "select", "render", "remove"
   ]) {
     if (name.startsWith(candidate)) return candidate;
   }

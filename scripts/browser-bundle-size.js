@@ -5,8 +5,8 @@ import path from "node:path";
 import { build } from "vite";
 
 export const BROWSER_BUNDLE_GZIP_LIMITS = Object.freeze({
-  ggaction: 259_000,
-  "ggaction/basic": 142_000,
+  ggaction: 265_000,
+  "ggaction/basic": 148_000,
   "ggaction/svg": 25_000
 });
 
