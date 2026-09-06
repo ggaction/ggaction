@@ -1,3 +1,4 @@
+import { isSourceOwnedText } from "../../../grammar/text.js";
 import { findSemanticScale } from "../../../selectors/scales.js";
 import { readAreaEndpoint } from "../../../grammar/areaEndpoints.js";
 import { validateUserId } from "../../../core/identifiers.js";
@@ -96,6 +97,9 @@ export function resolvePositionEncoding(program, channel, args, operation) {
     args.target,
     getPositionChannelDefinition(channel).markTypes
   );
+  if (isSourceOwnedText(layer)) {
+    throw new Error(`${operation} cannot replace source-owned Text positions; edit the source, use dx/dy, or create independent Text with data.`);
+  }
   if (
     Object.hasOwn(args, "weight") &&
     !(layer.mark.type === "arc" && channel === "theta")

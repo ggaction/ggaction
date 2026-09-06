@@ -922,8 +922,8 @@
         "removelabellayoutoptions",
         "related"
       ],
-      "bytes": 10315,
-      "sha256": "7cb07e8800992acee97275d59b1f7a9bf57a822da8c7e13e5b0ae95ffed833be"
+      "bytes": 10696,
+      "sha256": "824054eedf7bbfad8c1c236b6573a16b7a039a44d4bb749d92137e3a247b4e31"
     },
     {
       "order": 60,
@@ -1886,8 +1886,8 @@
         "position-capability-matrix",
         "related"
       ],
-      "bytes": 12530,
-      "sha256": "7060e14d900cdb3a1b43890c19b6423ae325fb6f2c0a4106a4a46057595f09b6"
+      "bytes": 12931,
+      "sha256": "3223b76707ea3688999b43a3d8f8bc01f79fdb515b97e371b810178f51eff7b6"
     },
     {
       "order": 117,

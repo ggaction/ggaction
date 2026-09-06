@@ -943,6 +943,14 @@ async function testNodeConsumer(directory) {
       .encodeX({ datum: 2, scale: { domain: [0, 10] } }).encodeX2({ datum: 6 });
     assert.equal(referenceRect.graphicSpec.objects.rect.items.length, 1);
     assert.equal(referenceRect.editCanvas({ height: 400 }).graphicSpec.objects.rect.items[0].properties.height, 320);
+    const sourceTextScale = chart().createCanvas({ width: 480, height: 320, margin: 60 })
+      .createData({ values: [{ x: 1, y: 1, next: 100 }, { x: 2, y: 3, next: 1000 }] })
+      .createPointMark().encodeX({ field: "x" }).encodeY({ field: "y" })
+      .createTextMark({ source: "point", text: "label" })
+      .encodeY({ target: "point", field: "next", scale: { id: "next-y" } }).createAxes().createGrid();
+    assert.deepEqual(sourceTextScale.resolvedScales["next-y"].domain, [100, 1000]);
+    assert.equal(sourceTextScale.semanticSpec.guides.axis.y.scale, "next-y");
+    assert.throws(() => sourceTextScale.encodeY({ target: "text", field: "y" }), /source-owned Text positions/);
     const referenceFacades = chart().createCanvas({ width: 480, height: 320, margin: 40 })
       .createData({ values: [] }).createReferenceBand({ space: "plot", x: [0.2, 0.6] })
       .createReferenceLine({ space: "plot", y: 0.5 });

@@ -93,8 +93,11 @@ For an aggregate Bar or a measured Rose/Radial Bar, labeling the measure field
 uses its final aggregate value, even when every contributing row has the same
 value. For example, two values of 1 in one category produce a sum label of 2.
 Category labels continue to show the category itself.
-These source-owned labels follow the source's scale domain; adding them or
-resizing does not expand a normalized stack domain with raw source values.
+These source-owned labels follow the source's scale domain. They never contribute independent domain values,
+including after source field changes, scale rebinding, filtering, and resizing. Axis/grid inference uses the source's
+current bindings instead of inherited label aliases. Direct `encodeX/Y` on an attached Text layer is rejected;
+edit the source positions or use `editTextMark({ dx, dy })` for an offset. For independent positions, create Text
+with explicit `data`. Independent Text still contributes its own scale values.
 
 Creation options are `id`, `data`, `source`, `text`, `fill`, `opacity`, `fontSize`,
 `fontFamily`, `fontWeight`, `align`, `baseline`, `rotation`, `dx`, and `dy`.

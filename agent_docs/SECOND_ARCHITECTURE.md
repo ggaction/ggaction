@@ -1660,8 +1660,11 @@ Text annotation은 explicit source 또는 current/unique compatible point/bar/re
 Explicit source는 미완성이어도 관계를 저장하며 capability owner가 source readiness를 검사한다. Position encoding plan과
 scale edit은 직접 scale consumer 뒤에 source-dependent label을 재계산한다. 미완성으로 돌아가면 기존 label을 지우고
 완성 시 복구한다. 새 scale binding도 inherited text scale ID가 아닌 source relation을 통해 추적한다.
-Source-owned text는 source가 포함된 bin domain의 독립 raw consumer가 아니다. Binned owner 값만으로 domain을
-계산하며 position scale refresh는 attached text를 유예하고 source geometry 완료 뒤 dependency plan이 실행한다.
+Source-owned text는 독립 scale consumer가 아니다. `grammar/text.js`의 ownership 판별을 scale/domain,
+Canvas/detach plan, guide inference/rebinding과 orphan cleanup이 공유한다. Inherited position aliases는
+provenance로 보존하지만 실제 source만 domain 값을 제공한다. 직접 attached Text position encoding은 사전 거부하고
+source 편집 또는 dx/dy를 사용한다. Position scale refresh는 attached text를 유예하며 source geometry 완료 뒤
+source-dependent plan이 실행한다. Explicit-data independent Text는 기존 scale consumer다.
 Position encoding과 coordinate도 새 text layer에 명시적으로 복사하지만 concrete anchor는 source의 final
 visual item grain에서 결정한다. 따라서 aggregate bar는 source row가 아니라 final bar마다 하나의 label을
 만들고 rect는 cell center, rule은 final endpoint에 붙는다. Rect source에서 text fill을 생략하면 realized cell

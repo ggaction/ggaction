@@ -205,7 +205,7 @@ createReferenceLine({ id?, x?, y?, space?, source?, data?, coordinate?, temporal
 
 Create one constant Rule spanning the other plot axis. Exactly one `x` or `y` is required.
 Data space is the default: `source` resolves explicit, current eligible, then unique eligible Cartesian layer.
-It supplies data, coordinate, scale, field type, and temporal input unit. Strings are literal values.
+It supplies data, coordinate, scale, field type, and temporal input unit. Source-owned Text aliases are excluded from source inference. Strings are literal values.
 Reference constants participate in automatic domains; explicit domains preserve the requested extent.
 `temporalUnit` may override the source unit. `data` and `coordinate` are plot-space options only.
 
@@ -255,7 +255,10 @@ createTextMark({ id?, data?, source?, text?, fill?, opacity?, fontSize?, fontFam
 
 Create a semantic text layer. Omitted data and position attach to the current
 or unique compatible point, bar, rect, rule, or arc layer. Arc text anchors at
-sector centers. `text` is constant-content shorthand.
+sector centers. `text` is constant-content shorthand. Source-owned text follows final source positions and never
+contributes independent scale-domain values. Source field or scale changes also drive its labels and guides.
+Direct `encodeX/Y` on attached Text is rejected: edit the source, use `editTextMark({ dx, dy })`, or create
+independent Text with explicit `data` to author its positions.
 [Text marks](../../api/marks/text.md)
 
 ## `editTextMark`

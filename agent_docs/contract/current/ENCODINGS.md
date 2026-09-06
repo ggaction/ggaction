@@ -81,6 +81,11 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
 
 ## `encodeX`
 
+Source-owned Text는 독립 position consumer가 아니므로 encodeX/Y를 직접 적용하면 사전 오류다.
+Source 위치를 편집하거나 editTextMark의 dx/dy를 사용한다. Explicit data로 만든 independent Text는 기존 위치 encoding을 지원한다.
+Source-owned Text의 inherited aliases는 domain, guide inference/rebinding, scale/Canvas dependency에서 제외한다.
+근거: `test/unit/actions/marks/text-scale-ownership.test.js`, `test/contracts/source-text-scale.test.js`.
+
 - Signature: `encodeX({ field, target?, fieldType?, scale?, coordinate?, aggregate?, bin?, stack? })`
 - `field`: Implemented, dataset에 존재하는 field. 현재 supported mark grain에 맞는 값 type이 필요하다.
 - `target`: Implemented, mark ID. 생략하면 current mark, 아니면 유일한 eligible mark를 추론한다.
@@ -170,6 +175,8 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
   `test/contracts/rule-inherited-datum-span.test.js`.
 
 ## `encodeY`
+
+Source-owned Text의 직접 위치 편집과 scale ownership은 위 encodeX의 공통 규칙을 따른다.
 
 ```typescript
 type ScalarAggregateOperation =

@@ -1,0 +1,31 @@
+{
+  "file": "/Users/hyeonjeon/Projects/ggaction-clean-20260905/.artifacts/roadmap6-authoring/package-text-scale/ggaction-0.0.12.tgz",
+  "filename": "ggaction-0.0.12.tgz",
+  "sha256": "df315857b2633c726fd956e0c46485d394caa6db139a988ddc8bb04349750b2c",
+  "entryCount": 455,
+  "size": 515432,
+  "unpackedSize": 2459248,
+  "browserBundles": {
+    "full": {
+      "specifier": "ggaction",
+      "chunks": 1,
+      "modules": 402,
+      "minifiedBytes": 961074,
+      "gzipBytes": 256946
+    },
+    "basic": {
+      "specifier": "ggaction/basic",
+      "chunks": 1,
+      "modules": 245,
+      "minifiedBytes": 511416,
+      "gzipBytes": 140480
+    },
+    "svg": {
+      "specifier": "ggaction/svg",
+      "chunks": 1,
+      "modules": 15,
+      "minifiedBytes": 19840,
+      "gzipBytes": 6437
+    }
+  }
+}

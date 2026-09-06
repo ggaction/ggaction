@@ -1,3 +1,4 @@
+import { isSourceOwnedText } from "../../../grammar/text.js";
 import { action } from "../../../core/action.js";
 import { isPlainObject } from "../../../core/immutable.js";
 import { validateUserId } from "../../../core/identifiers.js";
@@ -191,7 +192,7 @@ const createAxes = action(
   function (args = {}) {
     const coordinateDescriptor = validateAxesArgs(args);
     const { cartesianLayers, polarLayers, parallelLayers } = inspectChannels(
-      this.semanticSpec.layers
+      this.semanticSpec.layers.filter(layer => !isSourceOwnedText(layer))
     );
     const requestedCoordinateType = coordinateDescriptor.id === undefined
       ? undefined

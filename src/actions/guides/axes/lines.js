@@ -1,3 +1,4 @@
+import { isSourceOwnedText } from "../../../grammar/text.js";
 import { withGuideLayoutValidation } from "../../../materialization/guides/layout.js";
 import { action } from "../../../core/action.js";
 import { validateUserId } from "../../../core/identifiers.js";
@@ -41,7 +42,7 @@ function resolveLineRange(resolvedScale, bounds, channel) {
 
 function resolveGeometry(program, channel, scaleId, position) {
   const hasConsumer = program.semanticSpec.layers.some(
-    layer => layer.encoding?.[channel]?.scale === scaleId
+    layer => !isSourceOwnedText(layer) && layer.encoding?.[channel]?.scale === scaleId
   );
 
   if (!hasConsumer) {

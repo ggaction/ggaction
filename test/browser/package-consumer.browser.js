@@ -31,6 +31,7 @@ test.before(async () => {
     <canvas id="shape-legend" aria-label="Shape legend after color removal"></canvas>
     <canvas id="bottom-legend" aria-label="Explicit bottom legend layout"></canvas>
     <canvas id="legend-content" aria-label="Explicit color and size legend content"></canvas>
+    <canvas id="source-text-scale" aria-label="Labels follow updated source scale"></canvas>
     <canvas id="reference-facades" aria-label="Reference line and shaded plot interval"></canvas>
     <canvas id="reference-rect" aria-label="Constant interval shading"></canvas>
     <canvas id="semantic-labels" aria-label="Pie shares from final source items"></canvas>
@@ -390,6 +391,13 @@ test.before(async () => {
         .editLegendTitle({ title: "Mass" }).editLegendLabels({ fontWeight: 700 });
       const hiddenSizeLegend = editedSizeLegend.editLegendTitle({ title: false });
       render(editedSizeLegend, document.getElementById("size-legend").getContext("2d"));
+      const sourceTextScale = chart().createCanvas({ width: 480, height: 320, margin: 60 })
+        .createData({ values: [{ x: 1, y: 1, next: 100 }, { x: 2, y: 3, next: 1000 }] })
+        .createPointMark().encodeX({ field: "x" }).encodeY({ field: "y" })
+        .createTextMark({ source: "point", text: "label" })
+        .encodeY({ target: "point", field: "next", scale: { id: "next-y" } }).createAxes().createGrid()
+        .editCanvas({ width: 600 });
+      render(sourceTextScale, document.getElementById("source-text-scale").getContext("2d"));
       const referenceFacades = chart().createCanvas({ width: 480, height: 320, margin: 40 })
         .createData({ values: [] }).createReferenceBand({ space: "plot", x: [0.2, 0.6] })
         .createReferenceLine({ space: "plot", y: 0.5 });
@@ -411,6 +419,9 @@ test.before(async () => {
       document.querySelector("#status").textContent = "complete";
       window.__ggactionGuideComparisons = guideComparisons;
       window.__ggactionConsumer = {
+        sourceTextDomain: sourceTextScale.resolvedScales["next-y"].domain,
+        sourceTextPositions: sourceTextScale.graphicSpec.objects.text.items.map(i => i.properties.y),
+        sourceTextSVG: renderToSVG(sourceTextScale).includes("label"),
         referenceFacades: [referenceFacades.graphicSpec.objects.referenceBand.items[0].properties.width,
           referenceFacades.graphicSpec.objects.referenceLine.items[0].properties.y1,
           renderToSVG(referenceFacades).includes("#64748b")],
@@ -568,6 +579,9 @@ test("imports and renders the packed browser entries", async () => {
   assert.equal(guideComparisons.length, 4);
   for (const [actual, expected] of guideComparisons) assert.deepEqual(actual, expected);
   assert.deepEqual(await windowValue(page, "__ggactionConsumer"), {
+    sourceTextDomain: [100, 1000],
+    sourceTextPositions: [260, 60],
+    sourceTextSVG: true,
     referenceFacades: [160, 160, true],
     temporalRectCount: 1,
     referenceRect: 160,

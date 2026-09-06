@@ -609,7 +609,7 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 - Aggregate create-only. 정확히 한 x/y 상수로 한 Rule을 만들고 반대 축 전체 plot bounds를 잇는다.
   문자열은 field 이름이 아닌 literal datum이다. Source의 선택 축 scale/coordinate/data/fieldType/temporalUnit을
   사용한다. Data space가 기본이며 explicit source → current eligible → unique eligible Cartesian layer 순이다.
-  선택 축 encoding/scale이 없는 source와 polar/parallel source는 제외한다. 모호하면 명시적 source가 필요하다.
+  선택 축 encoding/scale이 없는 source, source-owned Text와 polar/parallel source는 제외한다. 모호하면 명시적 source가 필요하다.
 - `space: "plot"`는 finite [0,1]만 허용한다. x=0은 왼쪽, y=0은 아래쪽. 기존 data는 explicit/current/unique
   규칙을 사용하고 빈 data도 허용한다. Coordinate는 하위 Cartesian encoder의 추론을 따른다.
   `<id>-<axis>` linear scale, domain=[0,1], range=auto를 기존 createScale로 만든다. 동일 definition 재사용,
@@ -714,6 +714,8 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
   Source position reassignment, scale edits and position removal/restoration refresh attached labels through the persisted
   source relation, including when inherited encoding scale IDs differ from the source's current scale IDs.
   `source` is creation-only; `editTextMark` remains an appearance editor.
+  Direct encodeX/Y on source-owned Text rejects before child effects: edit the source positions, use dx/dy, or create
+  independent Text with explicit data. Inherited encodings are provenance, not independent position assignments.
 - `text` is a constant-content shorthand for wrapped `encodeText({ value: text })`. Appearance options use wrapped
   `editTextMark`; defaults are theme text fill, opacity `1`, 12px sans-serif normal text, left/alphabetic alignment,
   zero rotation, and zero offsets.
@@ -721,10 +723,11 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
   bar measure endpoints, rect centers, rule endpoints, or arc-sector radial/angular midpoints, so aggregate bars and arcs
   produce one label per final visual item rather than one per row. Arc anchors derive from concrete sector paths and replay
   after Canvas, scale, padding, and inner-radius changes.
-  Source-owned text does not contribute raw rows as an independent series-layout domain or aggregation policy.
-  Count and normalized Bar domains therefore remain unchanged by adding labels and resizing. Histogram source-owned
-  text is also excluded from independent bin-domain consumers; actual binned owners supply domain values. Position scale
-  refresh defers attached labels until source geometry completes, preventing cardinality mismatches during filtering.
+  Layered mark/reference inference also excludes inherited source-owned Text aliases; the independent source supplies fresh bindings.
+  Source-owned text never contributes independent scale values. Source field/category/time changes, scale rebinding,
+  Canvas/detach plans and guide inference/rebinding ignore inherited label aliases and follow the actual source instead.
+  Count, normalized and histogram domains therefore remain unchanged by labels. Position scale refresh defers attached
+  labels until source geometry completes. Independent Text retains its own scale values and shared-guide constraints.
 - Collision avoidance is not automatic. Authors may preserve explicit placement or assign it afterward with
   `layoutLabels()`.
 
@@ -737,7 +740,8 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 - ✅ Covered: deterministic ID, explicit/inferred data, point/bar/rule/arc source inference, incomplete creation, constant
   content shorthand, explicit typography, offsets, ambiguity and invalid options.
-- Evidence: `test/unit/actions/marks/text-mark.test.js`, `test/unit/actions/marks/text-source.test.js`, installed package runtime/type probes, and the annotated IMDb chart pair.
+- Evidence: `test/unit/actions/marks/text-mark.test.js`, `test/unit/actions/marks/text-source.test.js`, `test/unit/actions/marks/text-scale-ownership.test.js`,
+  `test/contracts/source-text-scale.test.js`, installed package runtime/type probes, and the annotated IMDb chart pair.
 
 ## `editTextMark`
 

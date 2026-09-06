@@ -1,3 +1,4 @@
+import { isSourceOwnedText } from "../../grammar/text.js";
 import {
   resolveOptionalUserId,
   validateUserId
@@ -162,7 +163,7 @@ export function resolveCompatibleEncodings(program, source, markType) {
 }
 
 function eligibleLayeredSource(program, layer, requestedData, markType) {
-  if (layer?.data === undefined) return false;
+  if (layer?.data === undefined || isSourceOwnedText(layer)) return false;
   if (requestedData !== undefined && layer.data !== requestedData) return false;
   return Object.keys(resolveCompatibleEncodings(program, layer, markType)).length > 0;
 }

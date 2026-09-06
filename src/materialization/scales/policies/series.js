@@ -1,3 +1,4 @@
+import { isSourceOwnedText } from "../../../grammar/text.js";
 import {
   isTransformedScaleType,
   resolveContinuousDomain,
@@ -21,12 +22,7 @@ export function resolveSeriesLayoutDomain({
     (_, index) => seriesLayouts[index] !== undefined
   );
   const directConsumers = valuesByConsumer.filter(
-    ({ consumer }, index) => seriesLayouts[index] === undefined &&
-      // Source-owned text follows the final item; it does not contribute raw
-      // rows as an independent quantitative domain or aggregation policy.
-      !(consumer.layer.mark.type === "text" && layoutConsumers.some(
-        ({ consumer: owner }) => consumer.layer.source === owner.layer.id
-      ))
+    ({ consumer }, index) => seriesLayouts[index] === undefined && !isSourceOwnedText(consumer.layer)
   );
   const compatibleDirect = directConsumers.every(({ consumer }) =>
     layoutConsumers.every(({ consumer: layoutConsumer }) => {

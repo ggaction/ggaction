@@ -1,3 +1,4 @@
+import { isSourceOwnedText } from "../../grammar/text.js";
 import {
   BAR_ORIENTATIONS,
   resolveBarOrientation
@@ -107,6 +108,7 @@ export function resolveGuideApplicability(program, layers = program.semanticSpec
 }
 
 export function resolveAutomaticGridOptions(program, layers = program.semanticSpec.layers) {
+  layers = layers.filter(layer => !isSourceOwnedText(layer));
   const applicability = resolveGuideApplicability(program, layers);
   const directions = applicability.grid.directions;
   if (applicability.grid.polar && !applicability.grid.cartesian) {

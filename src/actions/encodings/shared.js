@@ -1,3 +1,4 @@
+import { isSourceOwnedText } from "../../grammar/text.js";
 import { validateUserId } from "../../core/identifiers.js";
 import { findDataset } from "../../selectors/datasets.js";
 import { resolveEligibleLayer } from "../../selectors/layers.js";
@@ -108,7 +109,7 @@ export function rebindPositionGuides(
   if (!ownsAxis && !ownsGrid) return program;
 
   const remaining = program.semanticSpec.layers.some(layer =>
-    layer.id !== target && layer.encoding?.[channel]?.scale === previousScale
+    layer.id !== target && !isSourceOwnedText(layer) && layer.encoding?.[channel]?.scale === previousScale
   );
   if (remaining) {
     throw new Error(

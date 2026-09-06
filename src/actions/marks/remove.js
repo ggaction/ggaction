@@ -1,3 +1,4 @@
+import { isSourceOwnedText } from "../../grammar/text.js";
 import { action } from "../../core/action.js";
 import { validateUserId } from "../../core/identifiers.js";
 import { validateKeys } from "../../core/validation.js";
@@ -162,7 +163,7 @@ export function removeOwnedMark(program, id, partial = false) {
 
 function hasScaleConsumer(program, channel, scale) {
   return program.semanticSpec.layers.some(
-    layer => layer.encoding?.[channel]?.scale === scale
+    layer => !isSourceOwnedText(layer) && layer.encoding?.[channel]?.scale === scale
   );
 }
 

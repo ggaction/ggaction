@@ -1,3 +1,4 @@
+import { isSourceOwnedText } from "../../../grammar/text.js";
 import { resolveHistogramBins } from "../../../grammar/histogram.js";
 
 export function resolveBinnedPositionDomain({
@@ -13,9 +14,7 @@ export function resolveBinnedPositionDomain({
   );
   if (binnedPositions.length === 0) return undefined;
   const independentConsumers = valuesByConsumer.filter(({ consumer }) =>
-    !(consumer.layer.mark?.type === "text" && binnedPositions.some(
-      ({ consumer: owner }) => consumer.layer.source === owner.layer.id
-    ))
+    !isSourceOwnedText(consumer.layer)
   );
   if (channel !== "x" || binnedPositions.length !== independentConsumers.length) {
     throw new Error(

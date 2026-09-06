@@ -1,3 +1,4 @@
+import { isSourceOwnedText } from "../../../grammar/text.js";
 import { readSeriesIdentity } from "../../../grammar/pathSeries.js";
 import { readAreaEndpoint } from "../../../grammar/areaEndpoints.js";
 import { readScaleField } from "../../../grammar/scales/index.js";
@@ -12,6 +13,7 @@ export function findScale(program, id) {
 export function findScaleConsumers(program, id) {
   const consumers = [];
   for (const layer of program.semanticSpec.layers) {
+    if (isSourceOwnedText(layer)) continue;
     for (const channel of SCALED_ENCODING_CHANNELS) {
       const encoding = layer.encoding?.[channel];
       if (encoding?.scale === id) consumers.push({ layer, channel, encoding });

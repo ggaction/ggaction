@@ -1,3 +1,4 @@
+import { isSourceOwnedText } from "../../../grammar/text.js";
 import { withGuideLayoutValidation } from "../../../materialization/guides/layout.js";
 import { action } from "../../../core/action.js";
 import { isPlainObject } from "../../../core/immutable.js";
@@ -92,7 +93,7 @@ function makeCreateAxis(channel) {
         const exists = hasCoordinate(next, coordinate);
         const hasConsumer = next.semanticSpec.layers.some(
           layer =>
-            layer.coordinate === coordinate &&
+            !isSourceOwnedText(layer) && layer.coordinate === coordinate &&
             layer.encoding?.[channel]?.scale === scale
         );
 

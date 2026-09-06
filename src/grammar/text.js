@@ -1,6 +1,10 @@
 import { cloneAndFreeze } from "../core/immutable.js";
 import { validateConcreteGraphicValue } from "./schemas/concreteGraphic.js";
 
+export function isSourceOwnedText(layer) {
+  return layer?.mark?.type === "text" && layer.source !== undefined;
+}
+
 export const DEFAULT_TEXT_MARK = cloneAndFreeze({
   fill: "#334155",
   opacity: 1,

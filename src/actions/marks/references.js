@@ -1,3 +1,4 @@
+import { isSourceOwnedText } from "../../grammar/text.js";
 import { action } from "../../core/action.js";
 import { validateUserId } from "../../core/identifiers.js";
 import { findCoordinate } from "../../selectors/coordinates.js";
@@ -25,7 +26,7 @@ function resolveBinding(program, args, axis, operation, band) {
   }
   const source = resolveEligibleLayer(program, {
     target: args.source === undefined ? undefined : validateUserId(args.source, `${operation} source`),
-    predicate: layer => layer.data !== undefined && layer.encoding?.[axis]?.scale !== undefined &&
+    predicate: layer => !isSourceOwnedText(layer) && layer.data !== undefined && layer.encoding?.[axis]?.scale !== undefined &&
       findCoordinate(program, layer.coordinate)?.type === "cartesian" &&
       (!band || ["quantitative", "temporal"].includes(layer.encoding[axis].fieldType)),
     label: `${operation} Cartesian layer`,

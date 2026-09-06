@@ -1,3 +1,4 @@
+import { isSourceOwnedText } from "../../grammar/text.js";
 import { findLayer } from "../../selectors/layers.js";
 import {
   POSITION_CHANNELS,
@@ -20,6 +21,7 @@ export {
 } from "./capabilities.js";
 
 export function getLayerScaleIds(layer) {
+  if (isSourceOwnedText(layer)) return [];
   return [
     ...Object.values(layer.encoding ?? {}).map(encoding => encoding?.scale),
     ...(layer.encoding?.parallel?.dimensions ?? []).map(dimension => dimension.scale)
@@ -68,6 +70,7 @@ export function getPositionEncodingMaterializationSteps(program, layer, scaleId)
   const sharedConsumerMarks = (program.semanticSpec.layers ?? [])
     .filter(candidate =>
       candidate.id !== layer.id &&
+      !isSourceOwnedText(candidate) &&
       POSITION_CHANNELS.some(channel =>
         candidate.encoding?.[channel]?.scale === scaleId
       )

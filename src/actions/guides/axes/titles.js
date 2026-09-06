@@ -1,3 +1,4 @@
+import { isSourceOwnedText } from "../../../grammar/text.js";
 import { withGuideLayoutValidation } from "../../../materialization/guides/layout.js";
 import { action } from "../../../core/action.js";
 import { validateUserId } from "../../../core/identifiers.js";
@@ -103,6 +104,7 @@ export function inferAxisTitleText(program, channel, scaleId) {
   const titles = new Set();
   const primaryTitles = new Set();
   for (const layer of program.semanticSpec.layers) {
+    if (isSourceOwnedText(layer)) continue;
     const primary = layer.encoding?.[channel];
     const encoding = layer.mark?.type === "area" && Object.hasOwn(primary ?? {}, "datum")
       ? layer.encoding?.[`${channel}2`] : primary;
