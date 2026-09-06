@@ -35,6 +35,7 @@ function normalizeGroupBy(value) {
 function normalizeAggregate(value) {
   if (!isPlainObject(value)) return value;
   return {
+    ...value,
     op: validateAggregate(value.op),
     ...(Object.hasOwn(value, "field") ? { field: value.field } : {}),
     as: value.as

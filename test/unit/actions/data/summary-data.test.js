@@ -100,6 +100,7 @@ test("createSummaryData rejects invalid fields, types, aliases, and shapes atomi
     [{ aggregates: [{ op: "mean", field: "group", as: "m" }] }, /numeric or missing/],
     [{ aggregates: [{ op: "count", as: "n" }], members: "n" }, /collides/],
     [{ aggregates: [{ op: "bogus", field: "value", as: "n" }] }, /Unsupported aggregate/],
+    [{ aggregates: [{ op: "count", as: "n", extra: true }] }, /Unknown summary aggregate/],
     [{ aggregates: [{ op: "count", as: "n" }], extra: true }, /Unknown createSummaryData option/]
   ];
   invalid.forEach(([options, error], index) => {

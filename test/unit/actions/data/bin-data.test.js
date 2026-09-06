@@ -70,6 +70,7 @@ test("createBinData rejects invalid bin policies and input atomically", () => {
     [{ field: "value", boundaries: [0, 2, 1] }, /strictly increasing/],
     [{ field: "value", extent: [1, 3] }, /contain the histogram data extent/],
     [{ field: "value", as: { lower: "x", upper: "x" } }, /unique/],
+    [{ field: "value", as: { extra: "x" } }, /Unknown bin as/],
     [{ field: "value", members: false, as: { members: "rows" } }, /requires members/],
     [{ field: "value", includeEmpty: "yes" }, /must be a boolean/],
     [{ field: "missing" }, /finite number at row 0/],

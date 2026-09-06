@@ -30,6 +30,7 @@ function normalizeAs(field, value, members) {
   const requested = value ?? {};
   if (!isPlainObject(requested)) return requested;
   const result = {
+    ...requested,
     lower: requested.lower ?? `${field}_start`,
     upper: requested.upper ?? `${field}_end`,
     count: requested.count ?? "count"
