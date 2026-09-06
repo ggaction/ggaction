@@ -63,6 +63,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createHorizonPlot`](./actions/statistics.md#createhorizonplot) | user-facing | statistics |
 | [`createHorizontalGrid`](./actions/advanced.md#directional-grids) | user-facing | grid |
 | [`createIntervalData`](./actions/statistics.md#createintervaldata) | user-facing | statistics |
+| [`createIntervalPlot`](./actions/charts-data.md#createintervalplot) | user-facing | charts |
 | [`createLegend`](./actions/guides.md#createlegend) | user-facing | legend_and_title |
 | [`createLineMark`](./actions/marks.md#createlinemark) | user-facing | marks |
 | [`createLinePlot`](./actions/charts-data.md#createlineplot) | user-facing | charts |
@@ -89,6 +90,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createRegressionBand`](./actions/advanced.md#semantic-resources-and-regression-layers) | user-facing | statistics |
 | [`createRegressionData`](./actions/charts-data.md#createregressiondata) | user-facing | core |
 | [`createRegressionLine`](./actions/advanced.md#semantic-resources-and-regression-layers) | user-facing | statistics |
+| [`createRegressionPlot`](./actions/charts-data.md#createregressionplot) | user-facing | charts |
 | [`createRosePlot`](./actions/charts-data.md#createroseplot) | user-facing | charts |
 | [`createRugPlot`](./actions/charts-data.md#createrugplot) | user-facing | charts |
 | [`createRuleMark`](./actions/marks.md#createrulemark) | user-facing | marks |

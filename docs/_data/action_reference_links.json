@@ -13,6 +13,8 @@
   "createData": "/reference/actions/charts-data/#createdata",
   "bindMarkData": "/reference/actions/charts-data/#bindmarkdata",
   "createScatterPlot": "/reference/actions/charts-data/#createscatterplot",
+  "createIntervalPlot": "/reference/actions/charts-data/#createintervalplot",
+  "createRegressionPlot": "/reference/actions/charts-data/#createregressionplot",
   "createLinePlot": "/reference/actions/charts-data/#createlineplot",
   "createPolarScatterPlot": "/reference/actions/charts-data/#createpolarscatterplot",
   "createPolarLinePlot": "/reference/actions/charts-data/#createpolarlineplot",

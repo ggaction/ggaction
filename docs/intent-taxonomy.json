@@ -6,6 +6,8 @@
     { "id": "program.data", "phrases": ["create dataset", "load rows", "inline data"] },
 
     { "id": "chart.scatter", "phrases": ["scatter plot", "scatter chart", "point chart"] },
+    { "id": "chart.interval", "phrases": ["interval plot", "point interval plot", "point and interval chart"] },
+    { "id": "chart.regression", "phrases": ["regression plot", "regression scatter plot", "scatter plot with fit"], "shadows": ["chart.scatter"] },
     { "id": "chart.line", "phrases": ["line chart", "line plot", "time series chart"] },
     { "id": "chart.bar", "phrases": ["bar chart", "bar plot", "column chart"] },
     { "id": "chart.bar.horizontal", "phrases": ["horizontal bar chart", "horizontal bar plot", "horizontal bars"], "shadows": ["chart.bar"] },
@@ -114,6 +116,8 @@
     { "id": "action.createData", "kind": "action", "name": "createData", "order": 20, "anchors": ["program.data"], "covers": ["program.data"], "baseOptions": { "values": "[{ category: \"A\", x: 1, y: 2, value: 3 }]" } },
 
     { "id": "action.createScatterPlot", "kind": "action", "name": "createScatterPlot", "order": 40, "anchors": ["chart.scatter"], "covers": ["chart.scatter", "encoding.x", "encoding.y", "encoding.color", "encoding.size", "encoding.shape", "guide.axes", "guide.legend"], "baseOptions": { "x": "\"x\"", "y": "\"y\"" }, "optionsByConstraint": { "encoding.color": { "color": "\"category\"" }, "encoding.size": { "size": "\"value\"" }, "encoding.shape": { "shape": "\"category\"" }, "guide.axes": { "guides": "{}" }, "guide.legend": { "guides": "{ legend: {} }" } } },
+    { "id": "action.createIntervalPlot", "kind": "action", "name": "createIntervalPlot", "order": 40, "anchors": ["chart.interval"], "covers": ["chart.interval", "statistics.errorBar", "encoding.x", "encoding.y", "guide.axes", "guide.all"], "baseOptions": { "x": "\"category\"", "y": "\"value\"" } },
+    { "id": "action.createRegressionPlot", "kind": "action", "name": "createRegressionPlot", "order": 40, "anchors": ["chart.regression"], "covers": ["chart.regression", "chart.scatter", "statistics.regression", "statistics.errorBand", "encoding.x", "encoding.y", "guide.axes", "guide.all"], "baseOptions": { "x": "\"x\"", "y": "\"y\"" } },
     { "id": "action.createLinePlot", "kind": "action", "name": "createLinePlot", "order": 40, "anchors": ["chart.line"], "covers": ["chart.line", "encoding.x", "encoding.y", "encoding.color", "encoding.group", "encoding.strokeDash", "guide.axes", "guide.legend"], "baseOptions": { "x": "\"x\"", "y": "\"y\"" }, "optionsByConstraint": { "encoding.color": { "color": "\"category\"" }, "encoding.group": { "groupBy": "\"category\"" }, "encoding.strokeDash": { "strokeDash": "{ field: \"category\" }" }, "guide.axes": { "guides": "{}" }, "guide.legend": { "guides": "{ legend: {} }" } } },
     { "id": "action.createBarPlot", "kind": "action", "name": "createBarPlot", "order": 40, "anchors": ["chart.bar"], "covers": ["chart.bar", "encoding.x", "encoding.y", "encoding.color", "guide.axes", "guide.legend"], "baseOptions": { "x": "\"category\"", "y": "\"value\"" }, "optionsByConstraint": { "encoding.color": { "color": "\"category\"" }, "guide.axes": { "guides": "{}" }, "guide.legend": { "guides": "{ legend: {} }" } } },
     { "id": "action.createHorizontalBar", "kind": "action", "name": "createBarMark", "order": 40, "anchors": ["chart.bar.horizontal"], "covers": ["chart.bar.horizontal"], "baseOptions": { "id": "\"bar\"" } },

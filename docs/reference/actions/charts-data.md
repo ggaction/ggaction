@@ -152,6 +152,27 @@ createScatterPlot({ id?, data?, coordinate?, x, y, color?, size?, shape?, point?
 Create a complete Cartesian point chart from required x/y fields and optional
 appearance encodings. [Basic Charts](../../api/basic-charts.md#createscatterplot)
 
+## `createIntervalPlot`
+
+```javascript
+createIntervalPlot({ id?, data?, coordinate?, x, y, xOffset?, yOffset?, groupBy?, color?, point?, errorBar?, guides? })
+```
+
+Create center points and matching statistical or explicit intervals from one
+shared dataset, coordinate, and pair of scales. The x/y interval vocabulary is
+the same as `createErrorBar`; child point and error-bar styles remain independently
+editable through their existing owners.
+
+## `createRegressionPlot`
+
+```javascript
+createRegressionPlot({ id?, data?, coordinate?, x, y, color?, size?, shape?, point?, groupBy?, method?, band?, line?, guides? })
+```
+
+Create a complete scatter plot with an existing regression data, line, and
+optional interval-band hierarchy. `groupBy: false` is preserved as an explicit
+ungrouped model request.
+
 ## `createLinePlot`
 
 ```javascript
@@ -178,8 +199,7 @@ createPolarLinePlot({ id?, data?, coordinate?, theta, radius, groupBy?, color?, 
 ```
 
 Create grouped Polar paths from required angular and radial fields. Paths stay
-open unless `line.closed: true` is explicit. Polar paths currently accept only
-`line.curve: "linear"`. [Polar positions](../../api/position-encodings.md#polar-positions)
+open unless `line.closed: true` is explicit. [Polar positions](../../api/position-encodings.md#polar-positions)
 
 ## `createRadarPlot`
 
@@ -190,14 +210,13 @@ createRadarPlot({ id?, data?, coordinate?, wide: { fields, as? }, groupBy?, orde
 
 Create closed Radar paths from validated long rows or an explicit wide-to-long
 Fold. Every series must contain the same ordered dimensions exactly once. Values
-are used as supplied; the facade does not infer normalization, and Radar paths
-currently accept only `line.curve: "linear"`. [Polar positions](../../api/position-encodings.md#polar-positions)
+are used as supplied; the facade does not infer normalization. [Polar positions](../../api/position-encodings.md#polar-positions)
 
 ## `createRugPlot`
 
 ```javascript
-createRugPlot({ id?, data?, coordinate?, x, edge: "top" | "bottom", tick?, guides? })
-createRugPlot({ id?, data?, coordinate?, y, edge: "left" | "right", tick?, guides? })
+createRugPlot({ id?, data?, x, edge: "top" | "bottom", tick?, guides? })
+createRugPlot({ id?, data?, y, edge: "left" | "right", tick?, guides? })
 ```
 
 Create a one-dimensional distribution from quantitative or temporal observations.
@@ -207,7 +226,7 @@ needed. The default guide contains only the measure axis.
 ## `createStripPlot`
 
 ```javascript
-createStripPlot({ id?, data?, coordinate?, x, y?, color?, size?, shape?, point?, jitter?, guides? })
+createStripPlot({ id?, data?, x, y?, color?, size?, shape?, point?, jitter?, guides? })
 ```
 
 Create a point strip from one measure or from one measure plus one categorical

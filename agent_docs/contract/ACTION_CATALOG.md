@@ -203,6 +203,8 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`editFacetScales`](current/COMPOSITION.md#editfacetscales) | composition | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editFacetGuides`](current/COMPOSITION.md#editfacetguides) | composition | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createScatterPlot`](current/BASIC_CHARTS.md#createscatterplot) | charts | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
+| user-facing | [`createIntervalPlot`](current/COMPLETE_CHARTS.md#createintervalplot) | charts | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
+| user-facing | [`createRegressionPlot`](current/COMPLETE_CHARTS.md#createregressionplot) | charts | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createLinePlot`](current/BASIC_CHARTS.md#createlineplot) | charts | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createPolarScatterPlot`](current/COMPLETE_CHARTS.md#createpolarscatterplot) | charts | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createPolarLinePlot`](current/COMPLETE_CHARTS.md#createpolarlineplot) | charts | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |

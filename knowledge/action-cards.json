@@ -3,7 +3,7 @@
   "packageVersion": "0.0.12",
   "typeSource": "types/program.d.ts",
   "errorPolicy": "An empty errors array means the compact card has no curated error override; consult the canonical route for validation, inference, and recovery behavior.",
-  "count": 214,
+  "count": 216,
   "cards": [
     {
       "schemaVersion": 2,
@@ -5715,7 +5715,7 @@
         {
           "name": "groupBy",
           "required": false,
-          "type": "string | undefined"
+          "type": "string | false | undefined"
         },
         {
           "name": "coordinate",
@@ -13931,6 +13931,246 @@
       "snippet": "program.createScatterPlot({ x: \"x\", y: \"y\" })",
       "errors": [],
       "route": "/reference/actions/charts-data/#createscatterplot"
+    },
+    {
+      "schemaVersion": 2,
+      "name": "createIntervalPlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "summary": "Create center points and matching statistical or explicit intervals from one shared dataset, coordinate, and pair of scales.",
+      "signature": "createIntervalPlot(options: CreateIntervalPlotOptions): ChartProgram;",
+      "intents": [
+        "create interval plot",
+        "create",
+        "add",
+        "complete chart",
+        "chart facade",
+        "interval plot",
+        "center estimate and uncertainty"
+      ],
+      "lifecycle": "Aggregate create-only",
+      "resources": {
+        "prerequisites": [
+          "canvas and dataset context"
+        ],
+        "owns": [
+          "interval plot"
+        ],
+        "idOptions": [
+          "id",
+          "data",
+          "coordinate"
+        ]
+      },
+      "options": [
+        {
+          "name": "id",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "data",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "coordinate",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "xOffset",
+          "required": false,
+          "type": "ErrorBarOffsetChannel | undefined"
+        },
+        {
+          "name": "yOffset",
+          "required": false,
+          "type": "ErrorBarOffsetChannel | undefined"
+        },
+        {
+          "name": "groupBy",
+          "required": false,
+          "type": "string | false | undefined"
+        },
+        {
+          "name": "color",
+          "required": false,
+          "type": "BasicColorChannel | undefined"
+        },
+        {
+          "name": "point",
+          "required": false,
+          "type": "{ radius?: number | undefined; shape?: PointShape | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; } | undefined"
+        },
+        {
+          "name": "errorBar",
+          "required": false,
+          "type": "IntervalPlotErrorBarOptions | undefined"
+        },
+        {
+          "name": "guides",
+          "required": false,
+          "type": "false | CartesianGuideOptions | undefined"
+        },
+        {
+          "name": "x",
+          "required": true,
+          "type": "string | ErrorBarIntervalChannel | ErrorBarPositionChannel"
+        },
+        {
+          "name": "y",
+          "required": true,
+          "type": "string | ErrorBarIntervalChannel | ErrorBarPositionChannel"
+        }
+      ],
+      "callPatterns": [
+        "createIntervalPlot({ x, y })",
+        "createIntervalPlot({ x, y, groupBy?, point?, errorBar?, guides? })"
+      ],
+      "snippet": "program.createIntervalPlot({ x: \"category\", y: \"value\" })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#createintervalplot"
+    },
+    {
+      "schemaVersion": 2,
+      "name": "createRegressionPlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "summary": "Create a complete scatter plot with an existing regression data, line, and optional interval-band hierarchy.",
+      "signature": "createRegressionPlot(options: CreateRegressionPlotOptions): ChartProgram;",
+      "intents": [
+        "create regression plot",
+        "create",
+        "add",
+        "complete chart",
+        "chart facade",
+        "regression plot",
+        "scatter relationship with fitted trend"
+      ],
+      "lifecycle": "Aggregate create-only",
+      "resources": {
+        "prerequisites": [
+          "canvas and dataset context"
+        ],
+        "owns": [
+          "regression plot"
+        ],
+        "idOptions": [
+          "id",
+          "data",
+          "coordinate"
+        ]
+      },
+      "options": [
+        {
+          "name": "id",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "data",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "coordinate",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "x",
+          "required": true,
+          "type": "RegressionPlotPositionChannel"
+        },
+        {
+          "name": "y",
+          "required": true,
+          "type": "RegressionPlotPositionChannel"
+        },
+        {
+          "name": "color",
+          "required": false,
+          "type": "BasicColorChannel | undefined"
+        },
+        {
+          "name": "size",
+          "required": false,
+          "type": "BasicSizeChannel | undefined"
+        },
+        {
+          "name": "shape",
+          "required": false,
+          "type": "BasicShapeChannel | undefined"
+        },
+        {
+          "name": "point",
+          "required": false,
+          "type": "{ radius?: number | undefined; shape?: PointShape | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; } | undefined"
+        },
+        {
+          "name": "guides",
+          "required": false,
+          "type": "false | CartesianGuideOptions | undefined"
+        },
+        {
+          "name": "method",
+          "required": false,
+          "type": "\"linear\" | \"loess\" | \"polynomial\" | undefined"
+        },
+        {
+          "name": "degree",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "span",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "confidenceMethod",
+          "required": false,
+          "type": "ConfidenceIntervalMethod | undefined"
+        },
+        {
+          "name": "level",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "confidence",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "interval",
+          "required": false,
+          "type": "RegressionInterval | undefined"
+        },
+        {
+          "name": "groupBy",
+          "required": false,
+          "type": "string | false | undefined"
+        },
+        {
+          "name": "line",
+          "required": false,
+          "type": "{ strokeWidth?: number | undefined; curve?: CurveInterpolation | undefined; } | undefined"
+        },
+        {
+          "name": "band",
+          "required": false,
+          "type": "false | RegressionBandOptions | undefined"
+        }
+      ],
+      "callPatterns": [
+        "createRegressionPlot({ x, y })",
+        "createRegressionPlot({ x, y, groupBy?, method?, band?, line?, guides? })"
+      ],
+      "snippet": "program.createRegressionPlot({ x: \"x\", y: \"y\", groupBy: false })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#createregressionplot"
     },
     {
       "schemaVersion": 2,

@@ -342,6 +342,46 @@ function buildScaleWitness(action, path, type) {
           : { x: "x", y: positionChannel(type, "y") }),
         guides: false
       });
+    case "createIntervalPlot":
+      if (path === "color.scale.type") {
+        return source().createIntervalPlot({
+          x: { field: "category", fieldType: "nominal" },
+          y: { center: "center", lower: "lower", upper: "upper" },
+          color: colorChannel(type),
+          guides: false
+        });
+      }
+      return source().createIntervalPlot({
+        ...errorBarPositions(path, type),
+        guides: false
+      });
+    case "createRegressionPlot":
+      if (path === "color.scale.type") {
+        return source().createRegressionPlot({
+          x: "x", y: "y", color: colorChannel(type), groupBy: false,
+          band: false, guides: false
+        });
+      }
+      if (path === "size.scale.type") {
+        return source().createRegressionPlot({
+          x: "x", y: "y", size: { field: "size", scale: { type } },
+          band: false, guides: false
+        });
+      }
+      if (path === "shape.scale.type") {
+        return source().createRegressionPlot({
+          x: "x", y: "y", shape: { field: "category", scale: { type } },
+          groupBy: false, band: false, guides: false
+        });
+      }
+      return source().createRegressionPlot({
+        ...(path.startsWith("x.")
+          ? { x: positionChannel(type, "x"), y: "y" }
+          : { x: "x", y: positionChannel(type, "y") }),
+        groupBy: false,
+        band: false,
+        guides: false
+      });
     case "createLinePlot":
       if (path === "color.scale.type") {
         return source().createLinePlot({
@@ -629,8 +669,8 @@ test("derives only role-reachable nested scale type paths", async () => {
     /(?:^|\.)(?:xScale|yScale|valueScale|densityScale|radiusScale|scale)\.type$/u.test(option.path)
   );
 
-  assert.equal(scaleTypes.length, 106);
-  assert.equal(scaleTypes.reduce((sum, option) => sum + option.values.length, 0), 417);
+  assert.equal(scaleTypes.length, 116);
+  assert.equal(scaleTypes.reduce((sum, option) => sum + option.values.length, 0), 457);
   assert.doesNotMatch(declarations, /scale\?: ScaleOptions/u);
   assert.equal(options.has("option-path:createScatterPlot.x.scale.palette"), false);
   assert.equal(options.has("option-path:createScatterPlot.x.scale.interpolate"), false);
@@ -680,7 +720,7 @@ test("executes every strict nested scale type path and literal", async () => {
       witnesses += 1;
     }
   }
-  assert.equal(witnesses, 417);
+  assert.equal(witnesses, 457);
 });
 
 test("materializes every role-specific nested scale type vocabulary", () => {

@@ -22,9 +22,9 @@ const root = fileURLToPath(new URL("../", import.meta.url));
 const npmCommand = process.platform === "win32" ? "npm.cmd" : "npm";
 
 export const PACKAGE_LIMITS = Object.freeze({
-  entries: 476,
-  packedBytes: 560_000,
-  unpackedBytes: 2_685_000
+  entries: 477,
+  packedBytes: 562_000,
+  unpackedBytes: 2_700_000
 });
 
 const REQUIRED_FILES = Object.freeze([

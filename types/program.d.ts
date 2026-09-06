@@ -1722,7 +1722,7 @@ export interface ErrorBarOptions {
   y?: ErrorBarPositionChannel | ErrorBarIntervalChannel;
   xOffset?: ErrorBarOffsetChannel;
   yOffset?: ErrorBarOffsetChannel;
-  groupBy?: string;
+  groupBy?: string | false;
   coordinate?: string;
   caps?: boolean;
   capSize?: number;
@@ -2190,6 +2190,60 @@ export interface CreateScatterPlotOptions {
   };
   guides?: false | CartesianGuideOptions;
 }
+
+export interface IntervalPlotErrorBarOptions {
+  caps?: boolean;
+  capSize?: number;
+  stroke?: string;
+  strokeWidth?: number;
+  strokeDash?: DashStyle | DashPattern;
+  opacity?: number;
+}
+type IntervalPlotBaseOptions = {
+  id?: string;
+  data?: string;
+  coordinate?: string;
+  xOffset?: ErrorBarOffsetChannel;
+  yOffset?: ErrorBarOffsetChannel;
+  groupBy?: string | false;
+  color?: BasicColorChannel;
+  point?: CreateScatterPlotOptions["point"];
+  errorBar?: IntervalPlotErrorBarOptions;
+  guides?: false | CartesianGuideOptions;
+};
+export type CreateIntervalPlotOptions = IntervalPlotBaseOptions & (
+  | {
+      x: string | ErrorBarPositionChannel;
+      y: string | ErrorBarIntervalChannel;
+    }
+  | {
+      x: string | ErrorBarIntervalChannel;
+      y: string | ErrorBarPositionChannel;
+    }
+);
+
+export type RegressionPlotPositionChannel = string | {
+  field: string;
+  fieldType?: "quantitative";
+  scale?: NonPointQuantitativePositionScaleOptions;
+};
+type RegressionPlotBaseOptions = {
+  id?: string;
+  data?: string;
+  coordinate?: string;
+  x: RegressionPlotPositionChannel;
+  y: RegressionPlotPositionChannel;
+  color?: BasicColorChannel;
+  size?: BasicSizeChannel;
+  shape?: BasicShapeChannel;
+  point?: CreateScatterPlotOptions["point"];
+  guides?: false | CartesianGuideOptions;
+};
+type RegressionPlotStatisticalOptions<T> = T extends unknown
+  ? Omit<T, "target" | "x" | "y">
+  : never;
+export type CreateRegressionPlotOptions = RegressionPlotBaseOptions &
+  RegressionPlotStatisticalOptions<RegressionOptions>;
 
 export type PolarThetaChannel = string | ({ field: string; scale?: ThetaScaleOptions } & (
   | { fieldType?: "quantitative" | "nominal" | "ordinal"; temporalUnit?: never }
@@ -3579,6 +3633,8 @@ export class ChartProgram {
   createViolinPlot(options: ViolinPlotOptions): ChartProgram;
   editViolinPlot(options: EditViolinPlotOptions): ChartProgram;
   createScatterPlot(options: CreateScatterPlotOptions): ChartProgram;
+  createIntervalPlot(options: CreateIntervalPlotOptions): ChartProgram;
+  createRegressionPlot(options: CreateRegressionPlotOptions): ChartProgram;
   createLinePlot(options: CreateLinePlotOptions): ChartProgram;
   createPolarScatterPlot(options: CreatePolarScatterPlotOptions): ChartProgram;
   createPolarLinePlot(options: CreatePolarLinePlotOptions): ChartProgram;

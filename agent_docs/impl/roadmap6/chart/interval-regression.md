@@ -1,8 +1,7 @@
 # Roadmap 6 — Interval / Regression complete plots
 
-**상태: Proposed, 미구현·미승인.** 아래 새 이름과 option 구조는 추천 계약 초안이다.
-현행 API가 아니며 그대로 실행 가능한 예제로 주장하지 않는다. Phase 8 A에서 signature를 확정하고
-V에서 primitive 목표를 확인한 뒤 public flow를 구현한다.
+**상태: Phase 8 A/V 승인, 구현 진행 중.** Signature와 lower hierarchy는
+[현재 complete chart 계약](../../../contract/current/COMPLETE_CHARTS.md)에 확정했다.
 
 ## 목적과 범위
 
@@ -18,7 +17,6 @@ V에서 primitive 목표를 확인한 뒤 public flow를 구현한다.
 A에서 실제 public signature를 확정하고, primitive/public 두 프로그램이 같은 manifest의 values와 dimensions를 사용한다.
 
 ~~~javascript
-// Proposed API design — not a Current executable example.
 import { chart } from 'ggaction';
 
 const values = [{ category: 'A', x: 1, value: 1 }, { category: 'A', x: 2, value: 2 }, { category: 'A', x: 3, value: 3 }, { category: 'B', x: 4, value: 5 }];
@@ -26,9 +24,7 @@ const base = chart()
   .createCanvas({ width: 1000, height: 700, margin: 150 })
   .createData({ id: 'data', values });
 
-const interval = base.createIntervalPlot({
-  x: 'category', y: 'value', interval: { method: 'student-t', level: 0.95 }
-});
+const interval = base.createIntervalPlot({ x: 'category', y: 'value' });
 const regression = base.createRegressionPlot({ x: 'x', y: 'value', groupBy: false });
 ~~~
 

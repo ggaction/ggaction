@@ -105,6 +105,8 @@ interface ChartProgramActions {
   createBoxPlot(options?: BoxPlotOptions): ChartProgram;
   editBoxPlot(options: EditBoxPlotOptions): ChartProgram;
   createScatterPlot(options: CreateScatterPlotOptions): ChartProgram;
+  createIntervalPlot(options: CreateIntervalPlotOptions): ChartProgram;
+  createRegressionPlot(options: CreateRegressionPlotOptions): ChartProgram;
   createLinePlot(options: CreateLinePlotOptions): ChartProgram;
   createPolarScatterPlot(options: CreatePolarScatterPlotOptions): ChartProgram;
   createPolarLinePlot(options: CreatePolarLinePlotOptions): ChartProgram;
@@ -399,6 +401,27 @@ createScatterPlot({ id?, data?, coordinate?, x, y, color?, size?, shape?, point?
 
 Create a complete Cartesian point chart from required x/y fields and optional
 appearance encodings. [Basic Charts](../api/basic-charts.md#createscatterplot)
+
+### `createIntervalPlot`
+
+```javascript
+createIntervalPlot({ id?, data?, coordinate?, x, y, xOffset?, yOffset?, groupBy?, color?, point?, errorBar?, guides? })
+```
+
+Create center points and matching statistical or explicit intervals from one
+shared dataset, coordinate, and pair of scales. The x/y interval vocabulary is
+the same as `createErrorBar`; child point and error-bar styles remain independently
+editable through their existing owners.
+
+### `createRegressionPlot`
+
+```javascript
+createRegressionPlot({ id?, data?, coordinate?, x, y, color?, size?, shape?, point?, groupBy?, method?, band?, line?, guides? })
+```
+
+Create a complete scatter plot with an existing regression data, line, and
+optional interval-band hierarchy. `groupBy: false` is preserved as an explicit
+ungrouped model request.
 
 ### `createLinePlot`
 

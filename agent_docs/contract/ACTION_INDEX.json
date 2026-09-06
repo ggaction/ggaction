@@ -3550,6 +3550,42 @@
       }
     },
     {
+      "name": "createIntervalPlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "status": "implemented",
+      "lifecycle": "Aggregate create-only",
+      "update": "Existing interval data, error bar, point, encoding, scale and guide actions",
+      "audit": "Intentional",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "anchor": "createintervalplot"
+      }
+    },
+    {
+      "name": "createRegressionPlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "status": "implemented",
+      "lifecycle": "Aggregate create-only",
+      "update": "Existing scatter, regression data, band, line, scale and guide actions",
+      "audit": "Intentional",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "anchor": "createregressionplot"
+      }
+    },
+    {
       "name": "createLinePlot",
       "layer": "user-facing",
       "domain": "charts",

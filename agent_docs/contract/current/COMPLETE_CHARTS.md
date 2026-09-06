@@ -7,6 +7,66 @@ Data는 explicit/current/unique, coordinate는 explicit/bound/unique/family defa
 Guide 생략/{}는 자기 layer의 compatible guide를 확보하고 false는 이번 확보만 생략한다.
 기존 guide를 삭제하거나 충돌하는 resource를 덮지 않는다. 모든 실패는 caller와 이전 program/trace를 보존한다.
 
+## `createIntervalPlot`
+
+`createIntervalPlot({ id?, data?, coordinate?, x, y, xOffset?, yOffset?, groupBy?, color?, point?,
+errorBar?, guides? })`. Default id는 `intervalPlot`, lifecycle은 Aggregate create-only다.
+
+- X/y 역할과 통계·명시 interval vocabulary는 `createErrorBar`와 같다. String shorthand는 field만 전달하며
+  vertical statistical interval을 기본으로 한다. Horizontal interval은 x에 center/extent/method/level 중 하나를
+  명시해 방향을 결정한다.
+- ErrorBar child id는 `${id}Interval`이다. Statistical mode의 Point는 child가 만든 immutable interval dataset과
+  center output field를 사용하고 explicit mode는 원본 dataset의 center field를 사용한다. Point와 main rule은
+  position/interval/offset coordinate와 scale id를 정확히 공유한다.
+- `groupBy:false`는 직렬화 뒤에도 명시적 ungrouped 요청으로 남는다. `color`는 center Point에만 적용하며
+  통계 grouping을 추론하거나 바꾸지 않는다.
+- `point`는 Point appearance와 constant radius, `errorBar`는 cap·stroke appearance를 기존 owner에 전달한다.
+  Radius와 guides를 포함한 lower edit, scale/Canvas rematerialization은 ordinary child owner가 맡는다.
+- Effects: `createErrorBar → createPointMark → shared position/offset encodings → color? → scoped guides`.
+  별도 interval facade registry나 renderer primitive를 만들지 않는다.
+
+### Formal values — `createIntervalPlot`
+
+- Implemented: `createIntervalPlot(options: CreateIntervalPlotOptions): ChartProgram`.
+- Required: x와 y. 정확히 한 channel은 statistical 또는 explicit quantitative interval이고 다른 channel은
+  compatible position이다.
+- Proposed (NOT IMPLEMENTED): bootstrap/random interval과 자동 horizontal 방향 추론.
+
+### Value coverage — `createIntervalPlot`
+
+- ✅ Covered: statistical/explicit center, vertical/horizontal direction, categorical offset, same data/scale grain,
+  point/error appearance, group false, guides, invalid option과 immutable failure.
+- Evidence: `test/unit/actions/charts/interval-regression-facades.test.js`,
+  `test/contracts/interval-regression-facade-types.test.js`.
+
+## `createRegressionPlot`
+
+`createRegressionPlot({ id?, data?, coordinate?, x, y, color?, size?, shape?, point?, groupBy?, method?, degree?,
+span?, confidenceMethod?, level?, confidence?, interval?, band?, line?, guides? })`. Default id는
+`regressionPlot`, lifecycle은 Aggregate create-only다.
+
+- X/y는 quantitative Scatter position이다. Point appearance와 color/size/shape는 `createScatterPlot`, model과
+  band/line은 `createRegression`의 현재 vocabulary를 그대로 사용한다.
+- `groupBy:false`는 inferred color/shape series를 끄는 명시적 ungrouped 요청이며 trace와 JSON에서 보존된다.
+  Linear/polynomial/LOESS의 method-specific option과 band 지원 경계는 regression owner가 검증한다.
+- Facade는 Scatter를 guide 없이 먼저 만들고 regression derived data·band·line을 같은 position scale에 연결한
+  뒤 scoped guides를 한 번 확보한다. Regression이 확장한 domain과 최종 guide가 같은 scale 결과를 소비한다.
+- Effects: `createScatterPlot(guides:false) → createRegression → scoped guides`. Generated regression data/band/line
+  id와 편집 lifecycle은 stable Point owner를 기준으로 기존 `editRegression`이 맡는다.
+
+### Formal values — `createRegressionPlot`
+
+- Implemented: `createRegressionPlot(options: CreateRegressionPlotOptions): ChartProgram`.
+- Required: quantitative x와 y.
+- Proposed (NOT IMPLEMENTED): 새 model family와 automatic model selection.
+
+### Value coverage — `createRegressionPlot`
+
+- ✅ Covered: shortest linear fit, explicit ungrouped serialization, confidence provenance, method-specific strict
+  types, point/model hierarchy, default/disabled guides와 immutable failure.
+- Evidence: `test/unit/actions/charts/interval-regression-facades.test.js`,
+  `test/contracts/interval-regression-facade-types.test.js`와 기존 regression suite.
+
 ## `createPolarScatterPlot`
 
 `createPolarScatterPlot({ id?, data?, coordinate?, theta, radius, color?, size?, shape?, point?, guides? })`.

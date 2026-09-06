@@ -974,6 +974,16 @@
     "layer": "user-facing",
     "domain": "charts"
   },
+  "createIntervalPlot": {
+    "operation": "create",
+    "layer": "user-facing",
+    "domain": "charts"
+  },
+  "createRegressionPlot": {
+    "operation": "create",
+    "layer": "user-facing",
+    "domain": "charts"
+  },
   "createLinePlot": {
     "operation": "create",
     "layer": "user-facing",
