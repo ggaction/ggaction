@@ -232,6 +232,16 @@ interface ChartProgramActions {
   createCoordinate(options?: CreateCoordinateOptions): ChartProgram;
   createScale(options: CreateScaleOptions): ChartProgram;
   editScale(options: EditScaleOptions): ChartProgram;
+  editXScale(options: EditXScaleOptions): ChartProgram;
+  editYScale(options: EditYScaleOptions): ChartProgram;
+  editThetaScale(options: EditThetaScaleOptions): ChartProgram;
+  editRScale(options: EditRScaleOptions): ChartProgram;
+  editColorScale(options: EditColorScaleOptions): ChartProgram;
+  editSizeScale(options: EditSizeScaleOptions): ChartProgram;
+  editOpacityScale(options: EditOpacityScaleOptions): ChartProgram;
+  editShapeScale(options: EditShapeScaleOptions): ChartProgram;
+  editStrokeWidthScale(options: EditStrokeWidthScaleOptions): ChartProgram;
+  editStrokeDashScale(options: EditStrokeDashScaleOptions): ChartProgram;
   createDerivedData(options: CreateDerivedDataOptions): ChartProgram;
   createRegressionBand(options: CreateRegressionBandOptions): ChartProgram;
   editRegressionBand(options: { target?: string; color?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; curve?: CurveInterpolation; }): ChartProgram;

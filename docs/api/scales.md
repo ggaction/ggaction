@@ -45,6 +45,32 @@ editing. It is mutually exclusive with `range`:
 const recolored = program.editScale({ id: "color", palette: "set2" });
 ```
 
+Full programs also expose channel-specific editors, so ordinary revisions do
+not require knowing the generated scale ID:
+
+```javascript
+program
+  .editXScale({ domain: [0, 100], nice: true })
+  .editYScale({ zero: false })
+  .editColorScale({ palette: "set2" })
+  .editSizeScale({ range: [20, 200] });
+```
+
+The complete family is `editXScale`, `editYScale`, `editThetaScale`,
+`editRScale`, `editColorScale`, `editSizeScale`, `editOpacityScale`,
+`editShapeScale`, `editStrokeWidthScale`, and `editStrokeDashScale`.
+`editRScale` means Polar radial position; point glyph radius remains a constant
+appearance action.
+
+Each focused editor accepts an optional `id`, `target`, or both. A supplied pair
+must agree. Without selectors, ggaction first uses the current mark's scale for
+that channel, then a unique channel scale across the program. Multiple marks
+sharing one scale remain unambiguous; multiple scale IDs require a selector.
+The scale must actually be bound to the named channel, so a position scale named
+`color` is rejected by `editColorScale`. Use generic `editScale` for unattached
+named scales. Successful focused edits run through `editScale`, including shared
+mark, axis, grid, and legend refresh.
+
 Advanced authors can create a named unattached scale with the same complete
 type vocabulary:
 
@@ -66,7 +92,7 @@ The accepted types are `linear`, `log`, `pow`, `sqrt`, `symlog`, `time`,
 `threshold`. A later encoding attachment validates whether the type, range,
 and fallback are compatible with that channel and mark.
 
-`id` may be omitted when the current scale or the program's only scale is
+Generic `editScale` allows `id` to be omitted when the current scale or the program's only scale is
 unambiguous. At least one editable option is required. Use `"auto"` to reset
 domain or range; omission preserves the current value. Quantitative position
 scales can change atomically between `linear`, `log`, `pow`, `sqrt`, and

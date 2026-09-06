@@ -28,6 +28,51 @@ function selectionLifecyclePrograms() {
   return [selected, selected.removeMarkSelection({ selection: "focus" })];
 }
 
+function focusedScaleEditorPrograms() {
+  const values = [
+    { x: 1, y: 2, group: "a", amount: 2 },
+    { x: 2, y: 3, group: "a", amount: 2 },
+    { x: 3, y: 4, group: "b", amount: 5 },
+    { x: 4, y: 5, group: "b", amount: 5 }
+  ];
+  const point = chart()
+    .createCanvas({ width: 320, height: 240, margin: 30 })
+    .createData({ values })
+    .createPointMark()
+    .encodeX({ field: "x" })
+    .encodeY({ field: "y" })
+    .encodeColor({ field: "group" })
+    .encodeSize({ field: "amount" })
+    .encodeOpacity({ field: "amount" })
+    .encodeShape({ field: "group" })
+    .editXScale({ reverse: true })
+    .editYScale({ reverse: true })
+    .editColorScale({ palette: "set2" })
+    .editSizeScale({ range: [20, 80] })
+    .editOpacityScale({ range: [0.2, 0.9] })
+    .editShapeScale({ range: ["circle", "diamond"] });
+  const polar = chart()
+    .createCanvas({ width: 240, height: 240, margin: 30 })
+    .createData({ values })
+    .createPointMark()
+    .encodeTheta({ field: "x" })
+    .encodeR({ field: "amount" })
+    .editThetaScale({ reverse: true })
+    .editRScale({ domain: [0, 8] });
+  const line = chart()
+    .createCanvas({ width: 320, height: 240, margin: 30 })
+    .createData({ values })
+    .createLineMark()
+    .encodeX({ field: "x" })
+    .encodeY({ field: "y" })
+    .encodeGroup({ field: "group" })
+    .encodeStrokeWidth({ field: "amount" })
+    .encodeStrokeDash({ field: "group" })
+    .editStrokeWidthScale({ range: [1, 8] })
+    .editStrokeDashScale({ range: [[], [6, 2]] });
+  return [point, polar, line];
+}
+
 function collectDirectRelationships(trace, directNames, relationships, observed) {
   if (directNames.has(trace.op)) {
     observed.add(trace.op);
@@ -53,7 +98,8 @@ export async function buildActionRelationships() {
   });
   const programs = [
     ...descriptors.map(buildScenario),
-    ...selectionLifecyclePrograms()
+    ...selectionLifecyclePrograms(),
+    ...focusedScaleEditorPrograms()
   ];
   for (const program of programs) {
     collectDirectRelationships(program.trace, directNames, relationships, observed);

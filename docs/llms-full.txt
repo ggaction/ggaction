@@ -10117,6 +10117,32 @@ editing. It is mutually exclusive with `range`:
 const recolored = program.editScale({ id: "color", palette: "set2" });
 ```
 
+Full programs also expose channel-specific editors, so ordinary revisions do
+not require knowing the generated scale ID:
+
+```javascript
+program
+  .editXScale({ domain: [0, 100], nice: true })
+  .editYScale({ zero: false })
+  .editColorScale({ palette: "set2" })
+  .editSizeScale({ range: [20, 200] });
+```
+
+The complete family is `editXScale`, `editYScale`, `editThetaScale`,
+`editRScale`, `editColorScale`, `editSizeScale`, `editOpacityScale`,
+`editShapeScale`, `editStrokeWidthScale`, and `editStrokeDashScale`.
+`editRScale` means Polar radial position; point glyph radius remains a constant
+appearance action.
+
+Each focused editor accepts an optional `id`, `target`, or both. A supplied pair
+must agree. Without selectors, ggaction first uses the current mark's scale for
+that channel, then a unique channel scale across the program. Multiple marks
+sharing one scale remain unambiguous; multiple scale IDs require a selector.
+The scale must actually be bound to the named channel, so a position scale named
+`color` is rejected by `editColorScale`. Use generic `editScale` for unattached
+named scales. Successful focused edits run through `editScale`, including shared
+mark, axis, grid, and legend refresh.
+
 Advanced authors can create a named unattached scale with the same complete
 type vocabulary:
 
@@ -10138,7 +10164,7 @@ The accepted types are `linear`, `log`, `pow`, `sqrt`, `symlog`, `time`,
 `threshold`. A later encoding attachment validates whether the type, range,
 and fallback are compatible with that channel and mark.
 
-`id` may be omitted when the current scale or the program's only scale is
+Generic `editScale` allows `id` to be omitted when the current scale or the program's only scale is
 unambiguous. At least one editable option is required. Use `"auto"` to reset
 domain or range; omission preserves the current value. Quantitative position
 scales can change atomically between `linear`, `log`, `pow`, `sqrt`, and
@@ -13453,6 +13479,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editBin2DData`](./reference/actions/charts-data/#editbin2ddata) | H2 | user-facing | core |
 | [`editBoxPlot`](./reference/actions/statistics/#editboxplot) | H1, H3 | user-facing | statistics |
 | [`editCanvas`](./reference/actions/charts-data/#editcanvas) | H3 | user-facing | core |
+| [`editColorScale`](./reference/actions/advanced/#focused-channel-scale-editors) | H2 | user-facing | core |
 | [`editCompositionLayout`](./reference/actions/charts-data/#editcompositionlayout) | H3 | user-facing | composition |
 | [`editDensity`](./reference/actions/encodings/#editdensity) | H2, H3 | user-facing | encodings |
 | [`editECDFPlot`](./reference/actions/charts-data/#editecdfplot) | H1, H3 | user-facing | charts |
@@ -13477,6 +13504,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editLegendTitle`](./reference/actions/guides/#focused-legend-edits) | H3 | user-facing | legend_and_title |
 | [`editLineMark`](./reference/actions/marks/#editlinemark) | H3 | user-facing | marks |
 | [`editMarkSelection`](./reference/actions/advanced/#editmarkselection) | H3 | advanced | mark-selection |
+| [`editOpacityScale`](./reference/actions/advanced/#focused-channel-scale-editors) | H2 | user-facing | core |
 | [`editParallelAxis`](./reference/actions/advanced/#createparallelaxes-createparallelaxis-editparallelaxis-removeparallelaxis-removeparallelaxes) | H3 | user-facing | axes |
 | [`editPointMark`](./reference/actions/marks/#editpointmark) | H3 | user-facing | marks |
 | [`editRadialAxis`](./reference/actions/guides/#editradialaxis) | H3 | user-facing | axes |
@@ -13490,9 +13518,14 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editRegression`](./reference/actions/statistics/#editregression) | H1, H3 | user-facing | statistics |
 | [`editRegressionBand`](./reference/actions/advanced/#semantic-resources-and-regression-layers) | H1, H3 | user-facing | statistics |
 | [`editRegressionLine`](./reference/actions/advanced/#semantic-resources-and-regression-layers) | H1, H3 | user-facing | statistics |
+| [`editRScale`](./reference/actions/advanced/#focused-channel-scale-editors) | H2 | user-facing | core |
 | [`editRuleMark`](./reference/actions/marks/#editrulemark) | H3 | user-facing | marks |
 | [`editScale`](./reference/actions/extension/#extension-actions) | H2 | user-facing | core |
 | [`editSemantic`](./reference/actions/extension/#extension-actions) | H4 | primitive | primitives |
+| [`editShapeScale`](./reference/actions/advanced/#focused-channel-scale-editors) | H2 | user-facing | core |
+| [`editSizeScale`](./reference/actions/advanced/#focused-channel-scale-editors) | H2 | user-facing | core |
+| [`editStrokeDashScale`](./reference/actions/advanced/#focused-channel-scale-editors) | H2 | user-facing | core |
+| [`editStrokeWidthScale`](./reference/actions/advanced/#focused-channel-scale-editors) | H2 | user-facing | core |
 | [`editTextMark`](./reference/actions/marks/#edittextmark) | H3 | user-facing | marks |
 | [`editThetaAxis`](./reference/actions/guides/#editthetaaxis) | H3 | user-facing | axes |
 | [`editThetaAxisLabels`](./reference/actions/guides/#editthetaaxislabels) | H3 | user-facing | axes |
@@ -13500,6 +13533,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editThetaAxisTicks`](./reference/actions/guides/#editthetaaxisticks) | H3 | user-facing | axes |
 | [`editThetaAxisTitle`](./reference/actions/guides/#editthetaaxistitle) | H3 | user-facing | axes |
 | [`editThetaGrid`](./reference/actions/guides/#editthetagrid) | H3 | user-facing | grid |
+| [`editThetaScale`](./reference/actions/advanced/#focused-channel-scale-editors) | H2 | user-facing | core |
 | [`editTickMark`](./reference/actions/marks/#edittickmark) | H3 | user-facing | marks |
 | [`editTitle`](./reference/actions/guides/#edittitle) | H3 | user-facing | legend_and_title |
 | [`editVerticalGrid`](./reference/actions/advanced/#directional-grids) | H3 | user-facing | grid |
@@ -13510,12 +13544,14 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editXAxisTicks`](./reference/actions/advanced/#axis-lines-ticks-and-labels) | H3 | user-facing | axes |
 | [`editXAxisTicksAndLabels`](./reference/actions/advanced/#ticklabel-groups-and-axis-titles) | H3 | user-facing | axes |
 | [`editXAxisTitle`](./reference/actions/advanced/#ticklabel-groups-and-axis-titles) | H3 | user-facing | axes |
+| [`editXScale`](./reference/actions/advanced/#focused-channel-scale-editors) | H2 | user-facing | core |
 | [`editYAxis`](./reference/actions/advanced/#complete-single-channel-axes) | H3 | user-facing | axes |
 | [`editYAxisLabels`](./reference/actions/advanced/#axis-lines-ticks-and-labels) | H3 | user-facing | axes |
 | [`editYAxisLine`](./reference/actions/advanced/#axis-lines-ticks-and-labels) | H3 | user-facing | axes |
 | [`editYAxisTicks`](./reference/actions/advanced/#axis-lines-ticks-and-labels) | H3 | user-facing | axes |
 | [`editYAxisTicksAndLabels`](./reference/actions/advanced/#ticklabel-groups-and-axis-titles) | H3 | user-facing | axes |
 | [`editYAxisTitle`](./reference/actions/advanced/#ticklabel-groups-and-axis-titles) | H3 | user-facing | axes |
+| [`editYScale`](./reference/actions/advanced/#focused-channel-scale-editors) | H2 | user-facing | core |
 | [`encodeAngle`](./reference/actions/encodings/#encodeangle) | H2 | user-facing | encodings |
 | [`encodeBarWidth`](./reference/actions/encodings/#encodebarwidth) | H2 | user-facing | encodings |
 | [`encodeColor`](./reference/actions/encodings/#encodecolor) | H2 | user-facing | encodings |
@@ -15756,6 +15792,28 @@ Release one stored selection after removing its dependent highlight. Other
 selection and highlight assignments remain active.
 [Selection lifecycle](./api/appearance/selection-and-highlighting/#editing-and-removing-stored-intent)
 
+## Focused channel scale editors
+
+```javascript
+editXScale({ id?, target?, type?, domain?, range?, ...positionOptions })
+editYScale({ id?, target?, type?, domain?, range?, ...positionOptions })
+editThetaScale({ id?, target?, type?, domain?, range?, ...angularOptions })
+editRScale({ id?, target?, type?, domain?, range?, radialMapping?, ...radialOptions })
+editColorScale({ id?, target?, type?, domain?, range?, palette?, interpolate?, midpoint?, unknown? })
+editSizeScale({ id?, target?, type?, domain?, range?, unknown? })
+editOpacityScale({ id?, target?, type?, domain?, range?, nice?, zero?, clamp?, reverse?, unknown? })
+editShapeScale({ id?, target?, type?, domain?, range?, unknown? })
+editStrokeWidthScale({ id?, target?, type?, domain?, range?, ...quantitativeOptions })
+editStrokeDashScale({ id?, target?, type?, domain?, range? })
+```
+
+Edit the scale bound to one semantic channel without requiring its generated
+ID. Explicit `id` and `target` selectors must agree. Otherwise the current
+mark's channel scale wins, followed by a unique channel scale across all marks;
+ambiguity is an error. Every action delegates to `editScale`, which validates
+the channel-specific patch and refreshes all shared marks and guides.
+[Scale options](./api/scales/)
+
 ## Semantic resources and regression layers
 
 ```javascript
@@ -16317,6 +16375,16 @@ interface ChartProgramActions {
   createCoordinate(options?: CreateCoordinateOptions): ChartProgram;
   createScale(options: CreateScaleOptions): ChartProgram;
   editScale(options: EditScaleOptions): ChartProgram;
+  editXScale(options: EditXScaleOptions): ChartProgram;
+  editYScale(options: EditYScaleOptions): ChartProgram;
+  editThetaScale(options: EditThetaScaleOptions): ChartProgram;
+  editRScale(options: EditRScaleOptions): ChartProgram;
+  editColorScale(options: EditColorScaleOptions): ChartProgram;
+  editSizeScale(options: EditSizeScaleOptions): ChartProgram;
+  editOpacityScale(options: EditOpacityScaleOptions): ChartProgram;
+  editShapeScale(options: EditShapeScaleOptions): ChartProgram;
+  editStrokeWidthScale(options: EditStrokeWidthScaleOptions): ChartProgram;
+  editStrokeDashScale(options: EditStrokeDashScaleOptions): ChartProgram;
   createDerivedData(options: CreateDerivedDataOptions): ChartProgram;
   createRegressionBand(options: CreateRegressionBandOptions): ChartProgram;
   editRegressionBand(options: { target?: string; color?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; curve?: CurveInterpolation; }): ChartProgram;

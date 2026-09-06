@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "source": "generated lifecycle smoke corpus plus selection lifecycle",
-  "actionCount": 234,
+  "actionCount": 244,
   "relationships": [
     {
       "name": "createCanvas",
@@ -1017,6 +1017,66 @@
       "name": "editScale",
       "wraps": [
         "editSemantic"
+      ]
+    },
+    {
+      "name": "editXScale",
+      "wraps": [
+        "editScale"
+      ]
+    },
+    {
+      "name": "editYScale",
+      "wraps": [
+        "editScale"
+      ]
+    },
+    {
+      "name": "editThetaScale",
+      "wraps": [
+        "editScale"
+      ]
+    },
+    {
+      "name": "editRScale",
+      "wraps": [
+        "editScale"
+      ]
+    },
+    {
+      "name": "editColorScale",
+      "wraps": [
+        "editScale"
+      ]
+    },
+    {
+      "name": "editSizeScale",
+      "wraps": [
+        "editScale"
+      ]
+    },
+    {
+      "name": "editOpacityScale",
+      "wraps": [
+        "editScale"
+      ]
+    },
+    {
+      "name": "editShapeScale",
+      "wraps": [
+        "editScale"
+      ]
+    },
+    {
+      "name": "editStrokeWidthScale",
+      "wraps": [
+        "editScale"
+      ]
+    },
+    {
+      "name": "editStrokeDashScale",
+      "wraps": [
+        "editScale"
       ]
     },
     {

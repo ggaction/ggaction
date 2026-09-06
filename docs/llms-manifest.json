@@ -1412,8 +1412,8 @@
         "errors-and-limitations",
         "related"
       ],
-      "bytes": 4922,
-      "sha256": "d18f44210d4b663ad0caacc78e4b86b2d50e47fb92f6f1d14dadd74193ec4cf1"
+      "bytes": 6158,
+      "sha256": "98525407adb6387ccf0b02075e30778195a0a98f001cebfa41999d7b53448b97"
     },
     {
       "order": 89,
@@ -1846,8 +1846,8 @@
         "action-reference",
         "exact-action-lookup"
       ],
-      "bytes": 26382,
-      "sha256": "4f7187b48ba87196984e46520ac9d67e8dacd3985128b5a22b3b27cda93224bc"
+      "bytes": 27482,
+      "sha256": "9895277c84c165f52422097ed4dc1d7d11cc36d2d45914a7510fb5903271a780"
     },
     {
       "order": 117,
@@ -2099,6 +2099,7 @@
         "reusable-mark-selections",
         "editmarkselection",
         "removemarkselection",
+        "focused-channel-scale-editors",
         "semantic-resources-and-regression-layers",
         "createparallelaxes-createparallelaxis-editparallelaxis-removeparallelaxis-removeparallelaxes",
         "complete-single-channel-axes",
@@ -2108,8 +2109,8 @@
         "directional-grids",
         "related"
       ],
-      "bytes": 8833,
-      "sha256": "439ca688fbc911ae281d526d092ce6ab1f76e9370394e58aa0ecf1099bcd4eff"
+      "bytes": 10092,
+      "sha256": "4ad7c5618fd6257c0f836c10dcc1b5d7aa2fa9e4bb027e746ac8193bcf19bfb6"
     },
     {
       "order": 123,
@@ -2153,8 +2154,8 @@
         "exact-typescript-signatures",
         "related"
       ],
-      "bytes": 18418,
-      "sha256": "13eb72c0a6f95c0a575794c312f707ed61b2833949ab9a14c71629f2d3c5b5a1"
+      "bytes": 19058,
+      "sha256": "6f553d69c77f38aed0a7b4df951eecd8fbff61fe92bf0c350e342e5cb7332a9e"
     },
     {
       "order": 126,

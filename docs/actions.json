@@ -3,7 +3,7 @@
   "packageVersion": "0.0.13",
   "typeSource": "types/program.d.ts",
   "errorPolicy": "An empty errors array means the compact card has no curated error override; consult the canonical route for validation, inference, and recovery behavior.",
-  "count": 234,
+  "count": 244,
   "cards": [
     {
       "schemaVersion": 3,
@@ -16201,6 +16201,1329 @@
       "snippet": "program.editScale({ type: \"linear\" })",
       "errors": [],
       "route": "/reference/actions/extension/#extension-actions"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "editXScale",
+      "layer": "user-facing",
+      "domain": "core",
+      "summary": "Edits x scale, including settings for horizontal position mapping.",
+      "signature": "editXScale(options: EditXScaleOptions): ChartProgram;",
+      "intents": [
+        "edit x scale",
+        "edit",
+        "change",
+        "chart setup",
+        "data and scales",
+        "x scale",
+        "horizontal position mapping"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing x scale"
+        ],
+        "owns": [],
+        "idOptions": [
+          "id",
+          "target"
+        ]
+      },
+      "authoringRoles": [
+        "H2"
+      ],
+      "wraps": [
+        "editScale"
+      ],
+      "editableVia": [
+        "editXScale",
+        "editScale"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [
+        {
+          "path": "paddingInner",
+          "unit": "band-fraction"
+        },
+        {
+          "path": "paddingOuter",
+          "unit": "band-fraction"
+        },
+        {
+          "path": "padding",
+          "unit": "logical-pixel"
+        }
+      ],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "domain",
+          "strategy": "documented-auto"
+        },
+        {
+          "input": "range",
+          "strategy": "documented-auto"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "existing x scale"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "id",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "reverse",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "type",
+          "required": false,
+          "type": "\"band\" | \"point\" | \"time\" | QuantitativePositionScaleType | undefined"
+        },
+        {
+          "name": "domain",
+          "required": false,
+          "type": "\"auto\" | readonly unknown[] | readonly [number, number] | undefined"
+        },
+        {
+          "name": "range",
+          "required": false,
+          "type": "\"auto\" | readonly [number, number] | undefined"
+        },
+        {
+          "name": "unknown",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "paddingInner",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "paddingOuter",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "align",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "padding",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "nice",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "zero",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "clamp",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "base",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "exponent",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "constant",
+          "required": false,
+          "type": "number | undefined"
+        }
+      ],
+      "callPatterns": [
+        "editXScale({ id?, target?, reverse?, type?, domain?, range?, unknown?, paddingInner? })"
+      ],
+      "snippet": "program.editXScale({ reverse: true })",
+      "errors": [],
+      "route": "/reference/actions/advanced/#focused-channel-scale-editors"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "editYScale",
+      "layer": "user-facing",
+      "domain": "core",
+      "summary": "Edits y scale, including settings for vertical position mapping.",
+      "signature": "editYScale(options: EditYScaleOptions): ChartProgram;",
+      "intents": [
+        "edit y scale",
+        "edit",
+        "change",
+        "chart setup",
+        "data and scales",
+        "y scale",
+        "vertical position mapping"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing y scale"
+        ],
+        "owns": [],
+        "idOptions": [
+          "id",
+          "target"
+        ]
+      },
+      "authoringRoles": [
+        "H2"
+      ],
+      "wraps": [
+        "editScale"
+      ],
+      "editableVia": [
+        "editYScale",
+        "editScale"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [
+        {
+          "path": "paddingInner",
+          "unit": "band-fraction"
+        },
+        {
+          "path": "paddingOuter",
+          "unit": "band-fraction"
+        },
+        {
+          "path": "padding",
+          "unit": "logical-pixel"
+        }
+      ],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "domain",
+          "strategy": "documented-auto"
+        },
+        {
+          "input": "range",
+          "strategy": "documented-auto"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "existing y scale"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "id",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "reverse",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "type",
+          "required": false,
+          "type": "\"band\" | \"point\" | \"time\" | QuantitativePositionScaleType | undefined"
+        },
+        {
+          "name": "domain",
+          "required": false,
+          "type": "\"auto\" | readonly unknown[] | readonly [number, number] | undefined"
+        },
+        {
+          "name": "range",
+          "required": false,
+          "type": "\"auto\" | readonly [number, number] | undefined"
+        },
+        {
+          "name": "unknown",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "paddingInner",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "paddingOuter",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "align",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "padding",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "nice",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "zero",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "clamp",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "base",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "exponent",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "constant",
+          "required": false,
+          "type": "number | undefined"
+        }
+      ],
+      "callPatterns": [
+        "editYScale({ id?, target?, reverse?, type?, domain?, range?, unknown?, paddingInner? })"
+      ],
+      "snippet": "program.editYScale({ reverse: true })",
+      "errors": [],
+      "route": "/reference/actions/advanced/#focused-channel-scale-editors"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "editThetaScale",
+      "layer": "user-facing",
+      "domain": "core",
+      "summary": "Edits theta scale, including settings for angular position mapping.",
+      "signature": "editThetaScale(options: EditThetaScaleOptions): ChartProgram;",
+      "intents": [
+        "edit theta scale",
+        "edit",
+        "change",
+        "chart setup",
+        "data and scales",
+        "theta scale",
+        "angular position mapping"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing theta scale"
+        ],
+        "owns": [],
+        "idOptions": [
+          "id",
+          "target"
+        ]
+      },
+      "authoringRoles": [
+        "H2"
+      ],
+      "wraps": [
+        "editScale"
+      ],
+      "editableVia": [
+        "editThetaScale",
+        "editScale"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [
+        {
+          "path": "paddingInner",
+          "unit": "band-fraction"
+        },
+        {
+          "path": "paddingOuter",
+          "unit": "band-fraction"
+        },
+        {
+          "path": "padding",
+          "unit": "logical-pixel"
+        }
+      ],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "domain",
+          "strategy": "documented-auto"
+        },
+        {
+          "input": "range",
+          "strategy": "documented-auto"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "existing theta scale"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "id",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "type",
+          "required": false,
+          "type": "\"band\" | \"linear\" | \"point\" | \"time\" | undefined"
+        },
+        {
+          "name": "domain",
+          "required": false,
+          "type": "\"auto\" | readonly unknown[] | undefined"
+        },
+        {
+          "name": "range",
+          "required": false,
+          "type": "\"auto\" | readonly [number, number] | undefined"
+        },
+        {
+          "name": "nice",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "zero",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "clamp",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "reverse",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "paddingInner",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "paddingOuter",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "padding",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "align",
+          "required": false,
+          "type": "number | undefined"
+        }
+      ],
+      "callPatterns": [
+        "editThetaScale({ id?, target?, type?, domain?, range?, nice?, zero?, clamp? })"
+      ],
+      "snippet": "program.editThetaScale({ reverse: true })",
+      "errors": [],
+      "route": "/reference/actions/advanced/#focused-channel-scale-editors"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "editRScale",
+      "layer": "user-facing",
+      "domain": "core",
+      "summary": "Edits radial scale, including settings for radial position mapping.",
+      "signature": "editRScale(options: EditRScaleOptions): ChartProgram;",
+      "intents": [
+        "edit radial scale",
+        "edit",
+        "change",
+        "chart setup",
+        "data and scales",
+        "radial scale",
+        "radial position mapping"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing radial scale"
+        ],
+        "owns": [],
+        "idOptions": [
+          "id",
+          "target"
+        ]
+      },
+      "authoringRoles": [
+        "H2"
+      ],
+      "wraps": [
+        "editScale"
+      ],
+      "editableVia": [
+        "editRScale",
+        "editScale"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "domain",
+          "strategy": "documented-auto"
+        },
+        {
+          "input": "range",
+          "strategy": "documented-auto"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "existing radial scale"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "id",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "type",
+          "required": false,
+          "type": "\"linear\" | \"log\" | \"pow\" | \"sqrt\" | \"symlog\" | undefined"
+        },
+        {
+          "name": "domain",
+          "required": false,
+          "type": "\"auto\" | readonly [number, number] | undefined"
+        },
+        {
+          "name": "range",
+          "required": false,
+          "type": "\"auto\" | readonly [number, number] | undefined"
+        },
+        {
+          "name": "nice",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "zero",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "clamp",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "reverse",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "base",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "exponent",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "constant",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "radialMapping",
+          "required": false,
+          "type": "RadialMapping | undefined"
+        }
+      ],
+      "callPatterns": [
+        "editRScale({ id?, target?, type?, domain?, range?, nice?, zero?, clamp? })"
+      ],
+      "snippet": "program.editRScale({ reverse: true })",
+      "errors": [],
+      "route": "/reference/actions/advanced/#focused-channel-scale-editors"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "editColorScale",
+      "layer": "user-facing",
+      "domain": "core",
+      "summary": "Edits color scale, including settings for color mapping.",
+      "signature": "editColorScale(options: EditColorScaleOptions): ChartProgram;",
+      "intents": [
+        "edit color scale",
+        "edit",
+        "change",
+        "chart setup",
+        "data and scales",
+        "color scale",
+        "color mapping"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing color scale"
+        ],
+        "owns": [],
+        "idOptions": [
+          "id",
+          "target"
+        ]
+      },
+      "authoringRoles": [
+        "H2"
+      ],
+      "wraps": [
+        "editScale"
+      ],
+      "editableVia": [
+        "editColorScale",
+        "editScale"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "domain",
+          "strategy": "documented-auto"
+        },
+        {
+          "input": "range",
+          "strategy": "documented-auto"
+        },
+        {
+          "input": "midpoint",
+          "strategy": "documented-auto"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "existing color scale"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "id",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "palette",
+          "required": false,
+          "type": "\"accent\" | \"bluegreen\" | \"blueorange\" | \"bluepurple\" | \"blues\" | \"brownbluegreen\" | \"browns\" | \"category10\" | \"category20\" | \"category20b\" | \"category20c\" | \"cividis\" | \"dark2\" | ... 60 more ... | undefined"
+        },
+        {
+          "name": "type",
+          "required": false,
+          "type": "\"ordinal\" | \"quantile\" | \"quantize\" | \"sequential\" | \"threshold\" | undefined"
+        },
+        {
+          "name": "domain",
+          "required": false,
+          "type": "\"auto\" | readonly unknown[] | readonly number[] | readonly [unknown, unknown] | readonly [number, number] | undefined"
+        },
+        {
+          "name": "range",
+          "required": false,
+          "type": "\"auto\" | readonly string[] | { readonly palette: Palette; } | readonly [string, string, ...string[]] | undefined"
+        },
+        {
+          "name": "unknown",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "clamp",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "reverse",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "interpolate",
+          "required": false,
+          "type": "ContinuousColorInterpolation | undefined"
+        },
+        {
+          "name": "midpoint",
+          "required": false,
+          "type": "number | \"auto\" | undefined"
+        }
+      ],
+      "callPatterns": [
+        "editColorScale({ id?, target?, palette?, type?, domain?, range?, unknown?, clamp? })"
+      ],
+      "snippet": "program.editColorScale({ palette: \"set2\" })",
+      "errors": [],
+      "route": "/reference/actions/advanced/#focused-channel-scale-editors"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "editSizeScale",
+      "layer": "user-facing",
+      "domain": "core",
+      "summary": "Edits size scale, including settings for area mapping.",
+      "signature": "editSizeScale(options: EditSizeScaleOptions): ChartProgram;",
+      "intents": [
+        "edit size scale",
+        "edit",
+        "change",
+        "chart setup",
+        "data and scales",
+        "size scale",
+        "area mapping"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing size scale"
+        ],
+        "owns": [],
+        "idOptions": [
+          "id",
+          "target"
+        ]
+      },
+      "authoringRoles": [
+        "H2"
+      ],
+      "wraps": [
+        "editScale"
+      ],
+      "editableVia": [
+        "editSizeScale",
+        "editScale"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "domain",
+          "strategy": "documented-auto"
+        },
+        {
+          "input": "range",
+          "strategy": "documented-auto"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "existing size scale"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "id",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "type",
+          "required": false,
+          "type": "\"linear\" | undefined"
+        },
+        {
+          "name": "domain",
+          "required": false,
+          "type": "\"auto\" | readonly [number, number] | undefined"
+        },
+        {
+          "name": "range",
+          "required": false,
+          "type": "\"auto\" | readonly [number, number] | undefined"
+        },
+        {
+          "name": "unknown",
+          "required": false,
+          "type": "number | undefined"
+        }
+      ],
+      "callPatterns": [
+        "editSizeScale({ id?, target?, type?, domain?, range?, unknown? })"
+      ],
+      "snippet": "program.editSizeScale({ range: [20, 200] })",
+      "errors": [],
+      "route": "/reference/actions/advanced/#focused-channel-scale-editors"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "editOpacityScale",
+      "layer": "user-facing",
+      "domain": "core",
+      "summary": "Edits opacity scale, including settings for opacity mapping.",
+      "signature": "editOpacityScale(options: EditOpacityScaleOptions): ChartProgram;",
+      "intents": [
+        "edit opacity scale",
+        "edit",
+        "change",
+        "chart setup",
+        "data and scales",
+        "opacity scale",
+        "opacity mapping"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing opacity scale"
+        ],
+        "owns": [],
+        "idOptions": [
+          "id",
+          "target"
+        ]
+      },
+      "authoringRoles": [
+        "H2"
+      ],
+      "wraps": [
+        "editScale"
+      ],
+      "editableVia": [
+        "editOpacityScale",
+        "editScale"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "domain",
+          "strategy": "documented-auto"
+        },
+        {
+          "input": "range",
+          "strategy": "documented-auto"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "existing opacity scale"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "id",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "nice",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "zero",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "clamp",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "reverse",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "type",
+          "required": false,
+          "type": "\"linear\" | undefined"
+        },
+        {
+          "name": "domain",
+          "required": false,
+          "type": "\"auto\" | readonly [number, number] | undefined"
+        },
+        {
+          "name": "range",
+          "required": false,
+          "type": "\"auto\" | readonly [number, number] | undefined"
+        },
+        {
+          "name": "unknown",
+          "required": false,
+          "type": "number | undefined"
+        }
+      ],
+      "callPatterns": [
+        "editOpacityScale({ id?, target?, nice?, zero?, clamp?, reverse?, type?, domain? })"
+      ],
+      "snippet": "program.editOpacityScale({ range: [0.2, 0.9] })",
+      "errors": [],
+      "route": "/reference/actions/advanced/#focused-channel-scale-editors"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "editShapeScale",
+      "layer": "user-facing",
+      "domain": "core",
+      "summary": "Edits shape scale, including settings for categorical shape mapping.",
+      "signature": "editShapeScale(options: EditShapeScaleOptions): ChartProgram;",
+      "intents": [
+        "edit shape scale",
+        "edit",
+        "change",
+        "chart setup",
+        "data and scales",
+        "shape scale",
+        "categorical shape mapping"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing shape scale"
+        ],
+        "owns": [],
+        "idOptions": [
+          "id",
+          "target"
+        ]
+      },
+      "authoringRoles": [
+        "H2"
+      ],
+      "wraps": [
+        "editScale"
+      ],
+      "editableVia": [
+        "editShapeScale",
+        "editScale"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "domain",
+          "strategy": "documented-auto"
+        },
+        {
+          "input": "range",
+          "strategy": "documented-auto"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "existing shape scale"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "id",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "type",
+          "required": false,
+          "type": "\"ordinal\" | undefined"
+        },
+        {
+          "name": "domain",
+          "required": false,
+          "type": "\"auto\" | readonly unknown[] | undefined"
+        },
+        {
+          "name": "range",
+          "required": false,
+          "type": "\"auto\" | readonly PointShape[] | undefined"
+        },
+        {
+          "name": "unknown",
+          "required": false,
+          "type": "PointShape | undefined"
+        }
+      ],
+      "callPatterns": [
+        "editShapeScale({ id?, target?, type?, domain?, range?, unknown? })"
+      ],
+      "snippet": "program.editShapeScale({ range: [\"circle\", \"diamond\"] })",
+      "errors": [],
+      "route": "/reference/actions/advanced/#focused-channel-scale-editors"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "editStrokeWidthScale",
+      "layer": "user-facing",
+      "domain": "core",
+      "summary": "Edits stroke-width scale, including settings for line-width mapping.",
+      "signature": "editStrokeWidthScale(options: EditStrokeWidthScaleOptions): ChartProgram;",
+      "intents": [
+        "edit stroke width scale",
+        "edit",
+        "change",
+        "chart setup",
+        "data and scales",
+        "stroke-width scale",
+        "line-width mapping"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing stroke-width scale"
+        ],
+        "owns": [],
+        "idOptions": [
+          "id",
+          "target"
+        ]
+      },
+      "authoringRoles": [
+        "H2"
+      ],
+      "wraps": [
+        "editScale"
+      ],
+      "editableVia": [
+        "editStrokeWidthScale",
+        "editScale"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "domain",
+          "strategy": "documented-auto"
+        },
+        {
+          "input": "range",
+          "strategy": "documented-auto"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "existing stroke-width scale"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "id",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "nice",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "zero",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "clamp",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "reverse",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "base",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "exponent",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "constant",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "type",
+          "required": false,
+          "type": "QuantitativePositionScaleType | undefined"
+        },
+        {
+          "name": "domain",
+          "required": false,
+          "type": "\"auto\" | readonly [number, number] | undefined"
+        },
+        {
+          "name": "range",
+          "required": false,
+          "type": "\"auto\" | readonly [number, number] | undefined"
+        }
+      ],
+      "callPatterns": [
+        "editStrokeWidthScale({ id?, target?, nice?, zero?, clamp?, reverse?, base?, exponent? })"
+      ],
+      "snippet": "program.editStrokeWidthScale({ range: [1, 8] })",
+      "errors": [],
+      "route": "/reference/actions/advanced/#focused-channel-scale-editors"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "editStrokeDashScale",
+      "layer": "user-facing",
+      "domain": "core",
+      "summary": "Edits stroke-dash scale, including settings for dash-pattern mapping.",
+      "signature": "editStrokeDashScale(options: EditStrokeDashScaleOptions): ChartProgram;",
+      "intents": [
+        "edit stroke dash scale",
+        "edit",
+        "change",
+        "chart setup",
+        "data and scales",
+        "stroke-dash scale",
+        "dash-pattern mapping"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing stroke-dash scale"
+        ],
+        "owns": [],
+        "idOptions": [
+          "id",
+          "target"
+        ]
+      },
+      "authoringRoles": [
+        "H2"
+      ],
+      "wraps": [
+        "editScale"
+      ],
+      "editableVia": [
+        "editStrokeDashScale",
+        "editScale"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "domain",
+          "strategy": "documented-auto"
+        },
+        {
+          "input": "range",
+          "strategy": "documented-auto"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "existing stroke-dash scale"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "id",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "type",
+          "required": false,
+          "type": "\"ordinal\" | undefined"
+        },
+        {
+          "name": "domain",
+          "required": false,
+          "type": "\"auto\" | readonly unknown[] | undefined"
+        },
+        {
+          "name": "range",
+          "required": false,
+          "type": "\"auto\" | readonly (DashPattern | DashStyle)[] | undefined"
+        }
+      ],
+      "callPatterns": [
+        "editStrokeDashScale({ id?, target?, type?, domain?, range? })"
+      ],
+      "snippet": "program.editStrokeDashScale({ range: [[], [4, 2]] })",
+      "errors": [],
+      "route": "/reference/actions/advanced/#focused-channel-scale-editors"
     },
     {
       "schemaVersion": 3,

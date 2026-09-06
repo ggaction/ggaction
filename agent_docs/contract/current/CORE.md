@@ -989,3 +989,171 @@ type EditableCurrentScale = {
   `test/unit/actions/scales/scale-vocabulary-and-policies.test.js`,
   `test/unit/actions/scales/transformed-position-scale.test.js`,
   `test/unit/grammar/scales/mapping-policies.test.js` and transformed-scale chart integration tests.
+
+## Focused channel scale editors
+
+- Implemented family: `editXScale`, `editYScale`, `editThetaScale`, `editRScale`,
+  `editColorScale`, `editSizeScale`, `editOpacityScale`, `editShapeScale`,
+  `editStrokeWidthScale`, and `editStrokeDashScale`.
+- Each action accepts the scale properties valid for its named channel plus
+  optional `id` and `target`. At least one scale property is required. `editRScale`
+  owns semantic Polar radius; constant point glyph radius remains under
+  `encodePointRadius`/`removePointRadius`.
+- Selection resolves an explicit scale ID and/or mark target first. If both are
+  present they must identify the same scale. Without selectors, the current
+  mark's scale for that channel wins; otherwise exactly one channel-bound scale
+  must exist in the program. Several marks sharing one scale count as one
+  candidate. Multiple scale IDs are ambiguous and never use array order.
+- An explicit scale must have at least one consumer in the named channel. Its ID
+  does not establish its role, and an unattached scale remains editable only
+  through generic `editScale`.
+- Every focused action is a thin wrapped delegate to `editScale`. The child owns
+  value and type validation, immutable preflight, shared-consumer
+  rematerialization, and compatible axis, grid, and legend transitions.
+- Runtime option vocabularies and TypeScript unions are channel-specific. Omitted
+  values preserve stored properties, `domain`/`range: "auto"` restore inference,
+  and supported explicit `undefined` follows the underlying `editScale` removal
+  contract.
+- Available in the Full entry. Basic retains its smaller scale surface.
+- Evidence: `test/unit/actions/scales/channel-scale-editors.test.js` and
+  `test/contracts/channel-scale-editor-types.test.js`.
+
+## `editXScale`
+
+- Implemented: edits a scale bound exclusively to normalized x/x2 consumers through the focused selection contract above.
+- Proposed (NOT IMPLEMENTED): —
+
+### Formal values — `editXScale`
+
+- Implemented: `editXScale(EditXScaleOptions)` with quantitative, temporal, band, and point position options plus `id?` and `target?`.
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `editXScale`
+
+- ✅ Covered: explicit target, current-mark inference, domain editing, ambiguity, selector disagreement, and wrapped `editScale` execution. Evidence: `test/unit/actions/scales/channel-scale-editors.test.js`, `test/contracts/channel-scale-editor-types.test.js`.
+
+## `editYScale`
+
+- Implemented: edits a scale bound exclusively to normalized y/y2 consumers through the focused selection contract above.
+- Proposed (NOT IMPLEMENTED): —
+
+### Formal values — `editYScale`
+
+- Implemented: `editYScale(EditYScaleOptions)` with quantitative, temporal, band, and point position options plus `id?` and `target?`.
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `editYScale`
+
+- ✅ Covered: current-mark inference, reverse editing, channel validation, and wrapped rematerialization. Evidence: `test/unit/actions/scales/channel-scale-editors.test.js`, `test/contracts/channel-scale-editor-types.test.js`.
+
+## `editThetaScale`
+
+- Implemented: edits the scale bound to semantic Polar angle without inferring from unrelated position scales.
+- Proposed (NOT IMPLEMENTED): —
+
+### Formal values — `editThetaScale`
+
+- Implemented: `editThetaScale(EditThetaScaleOptions)` with linear, time, band, and point angular options plus `id?` and `target?`.
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `editThetaScale`
+
+- ✅ Covered: Polar current-mark selection, reverse editing, strict option typing, and graphical refresh. Evidence: `test/unit/actions/scales/channel-scale-editors.test.js`, `test/contracts/channel-scale-editor-types.test.js`.
+
+## `editRScale`
+
+- Implemented: edits semantic Polar radius, including measured `radialMapping`; it never edits point glyph radius.
+- Proposed (NOT IMPLEMENTED): —
+
+### Formal values — `editRScale`
+
+- Implemented: `editRScale(EditRScaleOptions)` with quantitative radial options, `radialMapping?`, `id?`, and `target?`.
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `editRScale`
+
+- ✅ Covered: Polar current-mark selection, domain editing, glyph-radius separation, strict option typing, and rematerialization. Evidence: `test/unit/actions/scales/channel-scale-editors.test.js`, `test/contracts/channel-scale-editor-types.test.js`.
+
+## `editColorScale`
+
+- Implemented: edits categorical, sequential, or discretized color through a verified color consumer.
+- Proposed (NOT IMPLEMENTED): —
+
+### Formal values — `editColorScale`
+
+- Implemented: `editColorScale(EditColorScaleOptions)` with color type/domain/range, palette, interpolation, midpoint, fallback, `id?`, and `target?`.
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `editColorScale`
+
+- ✅ Covered: current, target, explicit ID, unique shared-scale inference, palette and legend refresh, ambiguity, orphan/wrong-channel rejection, and immutable failures. Evidence: `test/unit/actions/scales/channel-scale-editors.test.js`, `test/contracts/channel-scale-editor-types.test.js`.
+
+## `editSizeScale`
+
+- Implemented: edits the quantitative area scale bound to point size.
+- Proposed (NOT IMPLEMENTED): —
+
+### Formal values — `editSizeScale`
+
+- Implemented: `editSizeScale(EditSizeScaleOptions)` with linear domain/range/fallback, `id?`, and `target?`.
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `editSizeScale`
+
+- ✅ Covered: inferred range editing, strict option typing, and point rematerialization. Evidence: `test/unit/actions/scales/channel-scale-editors.test.js`, `test/contracts/channel-scale-editor-types.test.js`.
+
+## `editOpacityScale`
+
+- Implemented: edits the quantitative scale bound to field-driven opacity.
+- Proposed (NOT IMPLEMENTED): —
+
+### Formal values — `editOpacityScale`
+
+- Implemented: `editOpacityScale(EditOpacityScaleOptions)` with linear domain/range policies and fallback plus `id?` and `target?`.
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `editOpacityScale`
+
+- ✅ Covered: inferred range editing, strict option typing, and point rematerialization. Evidence: `test/unit/actions/scales/channel-scale-editors.test.js`, `test/contracts/channel-scale-editor-types.test.js`.
+
+## `editShapeScale`
+
+- Implemented: edits the ordinal scale bound to point shape.
+- Proposed (NOT IMPLEMENTED): —
+
+### Formal values — `editShapeScale`
+
+- Implemented: `editShapeScale(EditShapeScaleOptions)` with ordinal domain/range/fallback plus `id?` and `target?`.
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `editShapeScale`
+
+- ✅ Covered: inferred range editing, strict shape typing, and point rematerialization. Evidence: `test/unit/actions/scales/channel-scale-editors.test.js`, `test/contracts/channel-scale-editor-types.test.js`.
+
+## `editStrokeWidthScale`
+
+- Implemented: edits the quantitative scale bound to line or rule stroke width.
+- Proposed (NOT IMPLEMENTED): —
+
+### Formal values — `editStrokeWidthScale`
+
+- Implemented: `editStrokeWidthScale(EditStrokeWidthScaleOptions)` with quantitative scale policies plus `id?` and `target?`.
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `editStrokeWidthScale`
+
+- ✅ Covered: line-series range editing, strict option typing, and shared materialization ownership. Evidence: `test/unit/actions/scales/channel-scale-editors.test.js`, `test/contracts/channel-scale-editor-types.test.js`.
+
+## `editStrokeDashScale`
+
+- Implemented: edits the ordinal scale bound to categorical line or rule dash patterns.
+- Proposed (NOT IMPLEMENTED): —
+
+### Formal values — `editStrokeDashScale`
+
+- Implemented: `editStrokeDashScale(EditStrokeDashScaleOptions)` with ordinal domain/range plus `id?` and `target?`.
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `editStrokeDashScale`
+
+- ✅ Covered: line-series dash-range editing, strict dash typing, and rematerialization. Evidence: `test/unit/actions/scales/channel-scale-editors.test.js`, `test/contracts/channel-scale-editor-types.test.js`.

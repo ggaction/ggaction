@@ -1361,6 +1361,24 @@ export interface EditScaleOptions {
   unknown?: unknown;
 }
 
+type FocusedScaleSelection = { id?: string; target?: string };
+export type EditXScaleOptions = FocusedScaleSelection & WithoutScaleId<
+  QuantitativePositionScaleOptions | TemporalPositionScaleOptions | CategoricalPositionScaleOptions
+>;
+export type EditYScaleOptions = EditXScaleOptions;
+export type EditThetaScaleOptions = FocusedScaleSelection & WithoutScaleId<ThetaScaleOptions>;
+export type EditRScaleOptions = FocusedScaleSelection & WithoutScaleId<RadiusScaleOptions> & {
+  radialMapping?: RadialMapping;
+};
+export type EditColorScaleOptions = FocusedScaleSelection & WithoutScaleId<
+  CategoricalColorScaleOptions | ContinuousColorScaleOptions | DiscretizedColorScaleOptions
+>;
+export type EditSizeScaleOptions = FocusedScaleSelection & WithoutScaleId<SizeScaleOptions>;
+export type EditOpacityScaleOptions = FocusedScaleSelection & WithoutScaleId<OpacityScaleOptions>;
+export type EditShapeScaleOptions = FocusedScaleSelection & WithoutScaleId<ShapeScaleOptions>;
+export type EditStrokeWidthScaleOptions = FocusedScaleSelection & WithoutScaleId<StrokeWidthScaleOptions>;
+export type EditStrokeDashScaleOptions = FocusedScaleSelection & WithoutScaleId<DashScaleOptions>;
+
 interface PositionEncodingBase {
   field: string;
   target?: string;
@@ -4050,6 +4068,16 @@ export class ChartProgram {
   createCoordinate(options?: CreateCoordinateOptions): ChartProgram;
   createScale(options: CreateScaleOptions): ChartProgram;
   editScale(options: EditScaleOptions): ChartProgram;
+  editXScale(options: EditXScaleOptions): ChartProgram;
+  editYScale(options: EditYScaleOptions): ChartProgram;
+  editThetaScale(options: EditThetaScaleOptions): ChartProgram;
+  editRScale(options: EditRScaleOptions): ChartProgram;
+  editColorScale(options: EditColorScaleOptions): ChartProgram;
+  editSizeScale(options: EditSizeScaleOptions): ChartProgram;
+  editOpacityScale(options: EditOpacityScaleOptions): ChartProgram;
+  editShapeScale(options: EditShapeScaleOptions): ChartProgram;
+  editStrokeWidthScale(options: EditStrokeWidthScaleOptions): ChartProgram;
+  editStrokeDashScale(options: EditStrokeDashScaleOptions): ChartProgram;
   createDerivedData(options: CreateDerivedDataOptions): ChartProgram;
   createRegressionBand(options: CreateRegressionBandOptions): ChartProgram;
   editRegressionBand(options: {
