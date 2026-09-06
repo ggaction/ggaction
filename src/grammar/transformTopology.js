@@ -5,6 +5,7 @@ const TRANSFORM_TOPOLOGY = Object.freeze({
   boxSummary: Object.freeze({ facetTopology: "statistical" }),
   density: Object.freeze({ facetTopology: "statistical" }),
   filter: Object.freeze({ facetTopology: "rowPreserving" }),
+  fold: Object.freeze({ facetTopology: "statistical" }),
   gradientProfile: Object.freeze({ facetTopology: "statistical" }),
   horizon: Object.freeze({ facetTopology: "statistical" }),
   interval: Object.freeze({ facetTopology: "statistical" }),

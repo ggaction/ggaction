@@ -52,6 +52,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createDerivedData`](./actions/advanced.md#semantic-resources-and-regression-layers) | user-facing | core |
 | [`createErrorBand`](./actions/statistics.md#createerrorband) | user-facing | statistics |
 | [`createErrorBar`](./actions/statistics.md#createerrorbar) | user-facing | statistics |
+| [`createFoldData`](./actions/statistics.md#createfolddata) | user-facing | statistics |
 | [`createGradientPlot`](./actions/statistics.md#creategradientplot) | user-facing | statistics |
 | [`createGraphics`](./actions/extension.md#extension-actions) | primitive | primitives |
 | [`createGrid`](./actions/guides.md#creategrid) | user-facing | grid |

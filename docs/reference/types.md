@@ -35,6 +35,7 @@ interface ChartProgramActions {
   createDensityData(options: DensityDataOptions): ChartProgram;
   createSummaryData(options: SummaryDataOptions): ChartProgram;
   createBinData(options: BinDataOptions): ChartProgram;
+  createFoldData(options: FoldDataOptions): ChartProgram;
   createRegressionData(options: RegressionDataOptions): ChartProgram;
   createIntervalData(options: IntervalDataOptions): ChartProgram;
   createTimeUnitData(options: TimeUnitDataOptions): ChartProgram;

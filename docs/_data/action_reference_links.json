@@ -97,6 +97,7 @@
   "encodeBarWidth": "/reference/actions/encodings/#encodebarwidth",
   "createSummaryData": "/reference/actions/statistics/#createsummarydata",
   "createBinData": "/reference/actions/statistics/#createbindata",
+  "createFoldData": "/reference/actions/statistics/#createfolddata",
   "createHorizonPlot": "/reference/actions/statistics/#createhorizonplot",
   "createDensityPlot": "/reference/actions/statistics/#createdensityplot",
   "createIntervalData": "/reference/actions/statistics/#createintervaldata",

@@ -48,6 +48,7 @@
     "TimeUnitData": ["date bucket", "UTC time unit"],
     "Bin2DData": ["two-dimensional bins", "rectangular aggregation"],
     "BinData": ["one-dimensional bins", "reusable histogram bounds and counts"],
+    "FoldData": ["wide to long data", "key value rows", "unpivot fields"],
     "IntervalData": ["confidence interval data", "summary interval"],
     "PointMark": ["point mark", "scatter point"],
     "TickMark": ["tick mark", "one-dimensional distribution"],
@@ -182,6 +183,7 @@
     "editGraphics": "Sets a concrete graphic property or removes a top-level graphic resource inside an extension action."
   },
   "sampleOverrides": {
+    "createFoldData": { "id": "long", "fields": ["apples", "pears"] },
     "createReferenceLine": { "y": 5 },
     "createReferenceBand": { "x": [2, 6] },
     "createAnnotation": { "text": "Peak", "x": 8, "y": 9 },

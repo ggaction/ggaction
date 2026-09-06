@@ -736,8 +736,8 @@
         "errors-and-limitations",
         "related"
       ],
-      "bytes": 2243,
-      "sha256": "a405b00579f691639cb31122f89cd0b66eb7e6ba08d95efa31eb76effe8f2a56"
+      "bytes": 2408,
+      "sha256": "17c7398bae87d08b664fccc0eef50a199d8d7f1bb12e7492ab4a6916c328e167"
     },
     {
       "order": 48,
@@ -751,10 +751,11 @@
         "bindmarkdata-target-data",
         "createsummarydata-id-source-groupby-aggregates-members",
         "createbindata-id-source-field-binoptions",
+        "createfolddata-id-source-fields-as",
         "related"
       ],
-      "bytes": 7796,
-      "sha256": "a328ca002efd3eb9d3a462c739a0b7ba4e813917b90533300f517916726cdfa6"
+      "bytes": 8681,
+      "sha256": "55ef11473f081cf1419f46624515d52f08d2225caf02cf9c51082ed2c147788f"
     },
     {
       "order": 49,
@@ -1811,8 +1812,8 @@
         "action-reference",
         "exact-action-lookup"
       ],
-      "bytes": 21902,
-      "sha256": "8b2a4e4f0bf036053dfadc02239aabf22155cc2d93afdebf6987b715b1a95cbd"
+      "bytes": 22000,
+      "sha256": "9f9d170ef50f389be8fea7d328eeacd3faf793f252fbb4588f31f930982faadc"
     },
     {
       "order": 115,
@@ -1957,6 +1958,7 @@
         "statistical-layer-actions",
         "createsummarydata",
         "createbindata",
+        "createfolddata",
         "createhorizonplot",
         "createdensityplot",
         "createintervaldata",
@@ -1973,8 +1975,8 @@
         "createviolinplot",
         "related"
       ],
-      "bytes": 9721,
-      "sha256": "035893511d376e1f1b2c84ca30b829166ec2d1cf44de57b83e60b928d394b887"
+      "bytes": 9994,
+      "sha256": "660c352c7eb53f8433bba4cd564eadd63b09c3781d0978a7840d9697aeb4a26b"
     },
     {
       "order": 119,
@@ -2088,8 +2090,8 @@
         "exact-typescript-signatures",
         "related"
       ],
-      "bytes": 16376,
-      "sha256": "9900d48f138a57126cdd44b3e2e83269ec160522e2b9a2e4bd7542ba82ad701a"
+      "bytes": 16434,
+      "sha256": "32df3ada1e90eaa0b716359a1a301e30faad544c51324d976b5f8d415c73e071"
     },
     {
       "order": 124,

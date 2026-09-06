@@ -510,10 +510,19 @@ export interface DatasetBinTransform {
     readonly boundaries: readonly [number, number, ...number[]];
   };
 }
+export interface DatasetFoldTransform {
+  readonly type: "fold";
+  readonly fields: readonly string[];
+  readonly as: {
+    readonly key: string;
+    readonly value: string;
+  };
+}
 export type DatasetTransform =
   | DatasetBinTransform
   | DatasetBin2DTransform
   | DatasetFilterTransform
+  | DatasetFoldTransform
   | DatasetRegressionTransform
   | DatasetDensityTransform
   | DatasetHorizonTransform
@@ -1554,6 +1563,17 @@ export type BinDataOptions = {
   members?: boolean;
   as?: BinDataOutputFields;
 } & BinDataMode;
+
+export interface FoldDataOutputFields {
+  key?: string;
+  value?: string;
+}
+export interface FoldDataOptions {
+  id: string;
+  source?: string;
+  fields: readonly string[];
+  as?: FoldDataOutputFields;
+}
 
 export interface Bin2DDataOptions {
   id: string;
@@ -3070,6 +3090,7 @@ export class ChartProgram {
   createDensityData(options: DensityDataOptions): ChartProgram;
   createSummaryData(options: SummaryDataOptions): ChartProgram;
   createBinData(options: BinDataOptions): ChartProgram;
+  createFoldData(options: FoldDataOptions): ChartProgram;
   createRegressionData(options: RegressionDataOptions): ChartProgram;
   createIntervalData(options: IntervalDataOptions): ChartProgram;
   createTimeUnitData(options: TimeUnitDataOptions): ChartProgram;

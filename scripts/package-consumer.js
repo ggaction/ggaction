@@ -213,6 +213,23 @@ async function testNodeConsumer(directory) {
         { value_start: 2, value_end: 4, count: 2 }
       ]
     );
+    const folded = chart()
+      .createData({
+        id: "wideValues",
+        values: [{ region: "North", apples: 2, pears: 3 }]
+      })
+      .createFoldData({
+        id: "longValues",
+        fields: ["apples", "pears"],
+        as: { key: "fruit", value: "amount" }
+      });
+    assert.deepEqual(
+      folded.semanticSpec.datasets.find(dataset => dataset.id === "longValues").values,
+      [
+        { region: "North", apples: 2, pears: 3, fruit: "apples", amount: 2 },
+        { region: "North", apples: 2, pears: 3, fruit: "pears", amount: 3 }
+      ]
+    );
     const windowed = chart()
       .createData({
         id: "events",
@@ -1426,6 +1443,7 @@ async function testTypeScriptConsumer(directory) {
       type HistogramEncodingOptions,
       type EditHorizonOptions,
       type FitCanvasOptions,
+      type FoldDataOptions,
       type EditAxisOptions,
       type CreateDerivedDataOptions,
       type CreateScatterPlotOptions,
@@ -2183,6 +2201,19 @@ async function testTypeScriptConsumer(directory) {
       members: false,
       as: { lower: "value_start", upper: "value_end", count: "count" }
     };
+    const foldOptions: FoldDataOptions = {
+      id: "long",
+      fields: ["apples", "pears"],
+      as: { key: "fruit", value: "amount" }
+    };
+    const folded: ChartProgram = chart()
+      .createData({ id: "wide", values: [{ apples: 1, pears: 2 }] })
+      .createFoldData(foldOptions);
+    const foldTransform: DatasetTransform = {
+      type: "fold",
+      fields: ["apples", "pears"],
+      as: { key: "fruit", value: "amount" }
+    };
     const summaryTransform: DatasetTransform = {
       type: "summary",
       groupBy: ["group"],
@@ -2534,6 +2565,7 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.a
       "time-unit-data",
       "summary-data",
       "bin-data",
+      "fold-data",
       "window-data",
       "bin2d-data",
       "binned-heatmap",

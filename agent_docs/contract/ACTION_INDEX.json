@@ -220,6 +220,24 @@
       }
     },
     {
+      "name": "createFoldData",
+      "layer": "user-facing",
+      "domain": "statistics",
+      "status": "implemented",
+      "lifecycle": "Immutable create-only",
+      "update": "Create reusable materialized wide-to-long rows",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/CORE.md",
+        "anchor": "createfolddata"
+      }
+    },
+    {
       "name": "createDensityData",
       "layer": "user-facing",
       "domain": "core",
@@ -3728,6 +3746,7 @@
       "materializeGradientPlot",
       "materializeGradientPlotFill",
       "materializeFilteredData",
+      "materializeFoldData",
       "materializeMarkFilteredData",
       "materializeIntervalData",
       "materializeRegressionData",

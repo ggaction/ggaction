@@ -4310,6 +4310,7 @@ operation; marks and renderers never mutate source values.
 | [Source and derived data](./api/data/source-and-derived/) | `createData`, `createDerivedData` | Store source rows or explicit transform provenance |
 | [Reusable summaries](./api/data/source-and-derived/#createsummarydata-id-source-groupby-aggregates-members) | `createSummaryData` | Materialize grouped multi-aggregate rows with optional members |
 | [Reusable bins](./api/data/source-and-derived/#createbindata-id-source-field-binoptions) | `createBinData` | Materialize shared one-dimensional bounds, counts, and optional members |
+| [Wide-to-long data](./api/data/source-and-derived/#createfolddata-id-source-fields-as) | `createFoldData` | Materialize selected fields as stable key/value rows |
 | [Filtering](./api/data/filtering/) | `filterData`, `filterMarks` | Derive rows or rebind one visual layer from a selector |
 | [Statistical transforms](./api/data/statistical-transforms/) | `createRegressionData`, `createIntervalData`, `createDensityData` | Materialize fitted, interval, or density rows |
 | [Time-unit transforms](./api/data/time-units/) | `createTimeUnitData` | Add reproducible UTC calendar bucket fields |
@@ -4402,6 +4403,7 @@ corresponding higher-level action when the library should materialize values:
 | `"bin2d"` | `{ type, x, y, bins, extent, includeEmpty, members, as, resolved? }` | `createBin2DData` |
 | `"bin"` | `{ type, field, bin, extent, nice, zero, includeEmpty, members, as, resolved? }` | `createBinData` |
 | `"filter"` | `{ type, field, oneOf }`, `{ type, field, predicate }`, or `{ type, field, range }` | `filterData` |
+| `"fold"` | `{ type, fields, as }` | `createFoldData` |
 | `"regression"` | `{ type, method, x, y, groupBy?, ...methodParameters }` | `createRegressionData` |
 | `"density"` | `{ type, field, groupBy?, bandwidth, extent, steps, kernel?, normalization?, as, resolve: "shared", resolved? }` | `createDensityData` |
 | `"horizon"` | `{ type, x, y, groupBy?, bands, baseline, extent, resolve, missing, overflow, palette, ... }` | `encodeHorizon` |
@@ -4513,6 +4515,29 @@ extent or boundaries must contain every source value.
 The normalized transform stores resolved boundaries, so consumers share the
 same bin decisions. Set `includeEmpty: false` to omit zero-count bins and
 `members: true` to retain each bin's original source rows.
+
+## `createFoldData({ id, source?, fields, as? })`
+
+Turn selected fields in a wide dataset into reusable key/value rows:
+
+```javascript
+const long = program.createFoldData({
+  id: "fruitLong",
+  source: "fruitWide",
+  fields: ["apples", "pears"],
+  as: { key: "fruit", value: "amount" }
+});
+```
+
+Output follows source row order and then the exact `fields` order. Every row
+retains all source cells and adds the selected field name and value, so its
+grain is `source row × selected field`. The default output names are `key` and
+`value`.
+
+Selected fields must contain one common primitive type: finite numbers,
+strings, or booleans. Missing cells and mixed types are rejected. Output names
+must be distinct and cannot overwrite a source field. The action accepts at
+most 64 selected fields and materializes at most 10,000 rows.
 
 ## Related
 
@@ -12866,6 +12891,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createDerivedData`](./reference/actions/advanced/#semantic-resources-and-regression-layers) | user-facing | core |
 | [`createErrorBand`](./reference/actions/statistics/#createerrorband) | user-facing | statistics |
 | [`createErrorBar`](./reference/actions/statistics/#createerrorbar) | user-facing | statistics |
+| [`createFoldData`](./reference/actions/statistics/#createfolddata) | user-facing | statistics |
 | [`createGradientPlot`](./reference/actions/statistics/#creategradientplot) | user-facing | statistics |
 | [`createGraphics`](./reference/actions/extension/#extension-actions) | primitive | primitives |
 | [`createGrid`](./reference/actions/guides/#creategrid) | user-facing | grid |
@@ -14279,6 +14305,15 @@ Materialize reusable one-dimensional bounds, counts, and optional source
 members using the same edge rules as Histogram.
 [Source and Derived Data](./api/data/source-and-derived/#createbindata-id-source-field-binoptions)
 
+## `createFoldData`
+
+```javascript
+createFoldData({ id, source?, fields, as? })
+```
+
+Materialize selected wide fields as stable key/value rows while preserving
+every source cell. [Source and Derived Data](./api/data/source-and-derived/#createfolddata-id-source-fields-as)
+
 ## `createHorizonPlot`
 
 ```js
@@ -15272,6 +15307,7 @@ interface ChartProgramActions {
   createDensityData(options: DensityDataOptions): ChartProgram;
   createSummaryData(options: SummaryDataOptions): ChartProgram;
   createBinData(options: BinDataOptions): ChartProgram;
+  createFoldData(options: FoldDataOptions): ChartProgram;
   createRegressionData(options: RegressionDataOptions): ChartProgram;
   createIntervalData(options: IntervalDataOptions): ChartProgram;
   createTimeUnitData(options: TimeUnitDataOptions): ChartProgram;

@@ -70,6 +70,7 @@ corresponding higher-level action when the library should materialize values:
 | `"bin2d"` | `{ type, x, y, bins, extent, includeEmpty, members, as, resolved? }` | `createBin2DData` |
 | `"bin"` | `{ type, field, bin, extent, nice, zero, includeEmpty, members, as, resolved? }` | `createBinData` |
 | `"filter"` | `{ type, field, oneOf }`, `{ type, field, predicate }`, or `{ type, field, range }` | `filterData` |
+| `"fold"` | `{ type, fields, as }` | `createFoldData` |
 | `"regression"` | `{ type, method, x, y, groupBy?, ...methodParameters }` | `createRegressionData` |
 | `"density"` | `{ type, field, groupBy?, bandwidth, extent, steps, kernel?, normalization?, as, resolve: "shared", resolved? }` | `createDensityData` |
 | `"horizon"` | `{ type, x, y, groupBy?, bands, baseline, extent, resolve, missing, overflow, palette, ... }` | `encodeHorizon` |
@@ -181,6 +182,29 @@ extent or boundaries must contain every source value.
 The normalized transform stores resolved boundaries, so consumers share the
 same bin decisions. Set `includeEmpty: false` to omit zero-count bins and
 `members: true` to retain each bin's original source rows.
+
+## `createFoldData({ id, source?, fields, as? })`
+
+Turn selected fields in a wide dataset into reusable key/value rows:
+
+```javascript
+const long = program.createFoldData({
+  id: "fruitLong",
+  source: "fruitWide",
+  fields: ["apples", "pears"],
+  as: { key: "fruit", value: "amount" }
+});
+```
+
+Output follows source row order and then the exact `fields` order. Every row
+retains all source cells and adds the selected field name and value, so its
+grain is `source row × selected field`. The default output names are `key` and
+`value`.
+
+Selected fields must contain one common primitive type: finite numbers,
+strings, or booleans. Missing cells and mixed types are rejected. Output names
+must be distinct and cannot overwrite a source field. The action accepts at
+most 64 selected fields and materializes at most 10,000 rows.
 
 ## Related
 

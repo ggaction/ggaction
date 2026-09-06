@@ -9,9 +9,13 @@ import {
 
 test("keeps every stored dataset transform in the grammar registry", () => {
   const expected = {
+    bin: ["materializeBinData", "statistical"],
+    bin2d: ["materializeBin2DData", "statistical"],
     filter: ["materializeFilteredData", "rowPreserving"],
+    fold: ["materializeFoldData", "statistical"],
     markFilter: ["materializeMarkFilteredData", undefined],
     regression: ["materializeRegressionData", "statistical"],
+    summary: ["materializeSummaryData", "statistical"],
     density: ["materializeDensityData", "statistical"],
     horizon: ["materializeHorizonData", "statistical"],
     interval: ["materializeIntervalData", "statistical"],

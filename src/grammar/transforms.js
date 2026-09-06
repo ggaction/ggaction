@@ -7,6 +7,7 @@ import {
 } from "./bin2d.js";
 import { validateDensityTransform } from "./density.js";
 import { validateFilterTransform } from "./filter.js";
+import { validateFoldTransform } from "./fold.js";
 import {
   requestedGradientProfileTransform,
   validateGradientProfileTransform
@@ -77,6 +78,11 @@ const TRANSFORM_POLICIES = Object.freeze({
     ...findTransformTopology("filter"),
     validate: validateFilterTransform,
     materializeOp: "materializeFilteredData"
+  }),
+  fold: Object.freeze({
+    ...findTransformTopology("fold"),
+    validate: validateFoldTransform,
+    materializeOp: "materializeFoldData"
   }),
   gradientProfile: Object.freeze({
     ...findTransformTopology("gradientProfile"),

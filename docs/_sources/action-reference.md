@@ -347,6 +347,15 @@ Materialize reusable one-dimensional bounds, counts, and optional source
 members using the same edge rules as Histogram.
 [Source and Derived Data](../api/data/source-and-derived.md#createbindata-id-source-field-binoptions)
 
+### `createFoldData`
+
+```javascript
+createFoldData({ id, source?, fields, as? })
+```
+
+Materialize selected wide fields as stable key/value rows while preserving
+every source cell. [Source and Derived Data](../api/data/source-and-derived.md#createfolddata-id-source-fields-as)
+
 ### `bindMarkData`
 
 ```javascript

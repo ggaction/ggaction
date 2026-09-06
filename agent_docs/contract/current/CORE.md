@@ -356,6 +356,35 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - ✅ Covered: out-of-range, non-finite/missing field, invalid mode/boundary/boolean/alias와 immutable rejection.
 - Evidence: `test/unit/actions/data/bin-data.test.js`.
 
+## `createFoldData`
+
+- Signature: `createFoldData({ id, source?, fields, as? })`
+- `id`, `source`: 새 immutable derived dataset ID와 existing materialized source다. `source` 생략 시
+  current data를 사용한다.
+- `fields`: 1..64개의 unique source field 이름이다. Output은 source row 순서 안에서 이 목록의 순서를
+  사용하므로 grain은 정확히 `source row × selected field`다.
+- `as`: `{ key?, value? }`이며 기본은 `key`, `value`다. 두 output 이름은 서로 달라야 하고 source에
+  이미 존재하는 field와 겹칠 수 없다.
+- Effect: 각 output row는 source row의 모든 cell을 보존하고 key output에 선택한 field 이름, value
+  output에 해당 cell을 추가한다. Selected value는 finite number, string 또는 boolean 중 하나이며 한
+  materialization에서는 공통 primitive type이어야 한다. Empty source는 empty output을 만든다.
+- 오류: duplicate/missing selected field, null/undefined/non-finite/structured value, mixed primitive type,
+  output collision, unknown option과 10,000 output row 초과를 첫 semantic change 전에 거부한다.
+- Coverage: `test/unit/actions/data/fold-data.test.js`가 stable row/field order, source-cell 보존, defaults,
+  empty input, ordinary mark consumption, alias/type/missing/shape와 bounds를 검증한다.
+
+### Formal values — `createFoldData`
+
+- Implemented: `createFoldData({ id: UserId; source?: UserId; fields: readonly FieldName[]; as?: { key?: FieldName; value?: FieldName } }): ChartProgram`
+- Proposed (NOT IMPLEMENTED): heterogeneous value union, null-preserving fold와 source-field replacement.
+
+### Value coverage — `createFoldData`
+
+- ✅ Covered: explicit field order, row-major expansion, default/custom aliases and original cell preservation.
+- ✅ Covered: numeric common type, mixed/missing/non-finite/structured rejection, empty source.
+- ✅ Covered: field/output uniqueness, source collision, 64-field and 10,000-row bounds, immutable rejection.
+- Evidence: `test/unit/actions/data/fold-data.test.js`.
+
 ## `createRegressionData`
 
 - Signature: `createRegressionData({ id, source?, x, y, groupBy?, method?, degree?, span?, confidence?, interval? })`
@@ -486,20 +515,20 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - `id`: Implemented, 필수 새 dataset ID.
 - `source`: Implemented, 필수 existing dataset ID.
 - `transform`: Implemented, 정확히 하나의 transform definition을 가진 tuple. Public direct-authoring union은
-  filter/regression/density/interval/time-unit/window/bin2d schema이며 값 materialization은 해당 전용 action이 담당한다. Box summary,
+  filter/fold/regression/density/interval/time-unit/window/summary/bin/bin2d schema이며 값 materialization은 해당 전용 action이 담당한다. Box summary,
   box outlier, mark filter provenance는 composite action이 생성하는 internal transform으로 public union에 넣지 않는다.
 - Effect: source와 transform provenance만 저장하고 values는 만들지 않는다.
 - 오류: duplicate ID, unknown source, invalid/empty/multiple transform schema를 거부한다.
 - Consumer precondition: chart facade와 ordinary mark의 공통 data selection은 `values`가 있는 dataset을 요구한다.
   Definition-only ID를 explicit/current data로 소비하면 dataset ID와 materialized values의 필요성을 설명하는
   domain error를 낸다. 정의 생성·internal rebind는 유지하며 자동 실행하거나 다른 dataset으로 fallback하지 않는다.
-- Coverage: `test/unit/actions/data/derived-data.test.js`가 일곱 public branch의 direct call, 배열 cardinality,
+- Coverage: `test/unit/actions/data/derived-data.test.js`가 public branch의 direct call, 배열 cardinality,
   invalid discriminant와 caller-owned input immutability를 검증한다. Package consumer는 documented filter call과
   closed union을 strict TypeScript로 compile한다.
 
 ### Formal values — `createDerivedData`
 
-- Implemented: `createDerivedData({ id: UserId; source: UserId; transform: readonly [DatasetTransform] })`, where public `DatasetTransform = FilterTransform | RegressionTransform | DensityTransform | IntervalTransform | TimeUnitTransform | WindowTransform | Bin2DTransform`.
+- Implemented: `createDerivedData({ id: UserId; source: UserId; transform: readonly [DatasetTransform] })`, where public `DatasetTransform = FilterTransform | FoldTransform | RegressionTransform | DensityTransform | IntervalTransform | TimeUnitTransform | WindowTransform | SummaryTransform | BinTransform | Bin2DTransform`.
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
@@ -508,7 +537,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - `id`, `source`
   - ✅ Covered: valid IDs, duplicate output, unknown source.
 - `transform`
-  - ✅ Covered: filter/regression/density/interval/time-unit/window/bin2d direct schema, object/empty/multiple/unknown rejection,
+  - ✅ Covered: filter/fold/regression/density/interval/time-unit/window/summary/bin/bin2d direct schema, object/empty/multiple/unknown rejection,
     one-element tuple acceptance와 deep immutable ownership.
   - Built-in value materializer는 owning high-level action이 만든 single-transform resource만 받는다.
 - Evidence: `test/unit/actions/data/derived-data.test.js`, `test/unit/actions/data/derived-consumers.test.js`,
