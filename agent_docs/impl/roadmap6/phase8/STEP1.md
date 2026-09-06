@@ -4,7 +4,7 @@
 
 - [x] A Gate의 정확한 결정·호환성·검증 범위 확정
 - [x] A/V Gate에 전체 실행 사용자 승인 적용
-- [ ] R6-P8-W1 Interval과 Regression complete facade
+- [x] R6-P8-W1 Interval과 Regression complete facade — [결과](RESULTS_W1_INTERVAL_REGRESSION.md)
 - [ ] R6-P8-W2 Dot·Lollipop·Dumbbell
 - [ ] R6-P8-W3 ECDF data와 complete plot
 - [ ] 모든 시각 variant의 primitive target 작성·표시·V 승인

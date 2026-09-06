@@ -395,7 +395,9 @@ Primary owner는 누락 방지를 위한 책임 단위이며, 관련 작업이 �
 - 수정·추가 방향: Interval center point와 error bar, scatter와 regression line/band를 조합한다. Source와 group, method/level을 기존 statistical owner에 위임한다.
 - 완료 검증: Center/interval 같은 grain·scale, explicit group:false serialization, confidence method provenance. Child style와 role editor로 수정 가능.
 - 근거: audit/REPORT.md: F10. [원래 조사](audit/REPORT.md)
-- 처분: 구현 또는 명시적인 계약 유지·migration 결정의 제안. 아직 완료·승인 상태가 아니다.
+- 처분: [Phase 8 W1](phase8/RESULTS_W1_INTERVAL_REGRESSION.md)로 implemented-verified. Center/interval의
+  shared derived grain·coordinate·scale·offset, Regression facade hierarchy, `groupBy:false` JSON 보존과
+  confidence provenance를 runtime·strict types·nested-scale matrix·전체 unit/contract suite에서 검증했다.
 
 ### F11 — Dot / Lollipop / Dumbbell
 
