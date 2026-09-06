@@ -2,8 +2,8 @@
 
 These actions may appear in traces but are not public direct actions or primitives.
 
-현재 등록된 wrapped method는 direct 173개와 internal 111개로 분리된다. 두 집합은 겹치지 않고 합집합은
-등록된 284개 전체와 같다. [`../ACTION_INDEX.json`](../ACTION_INDEX.json)이 목록을 소유하며,
+현재 등록된 wrapped method는 direct 203개와 internal 103개로 분리된다. 두 집합은 겹치지 않고 합집합은
+등록된 306개 전체와 같다. [`../ACTION_INDEX.json`](../ACTION_INDEX.json)이 목록을 소유하며,
 `test/contracts/action-catalog.test.js`는 wrapper metadata로 runtime을 읽어 누락·중복·orphan과 각 owner 표의 누락을 검사한다.
 
 ## Internal materialization inventory
@@ -28,6 +28,7 @@ domain action을 통해서만 실행한다.
 | `materializeMarkFilteredData` | `filterMarks` selected-item member rows |
 | `materializeIntervalData` | interval data actions |
 | `materializeRegressionData` | regression data actions |
+| `materializeSummaryData` | grouped summary data actions |
 | `materializeTimeUnitData` | time-unit data actions |
 | `materializeWindowData` | window data actions |
 | `materializeRuleSpan` | error-bar cap components and rule rematerialization |

@@ -184,6 +184,24 @@
       }
     },
     {
+      "name": "createSummaryData",
+      "layer": "user-facing",
+      "domain": "statistics",
+      "status": "implemented",
+      "lifecycle": "Immutable create-only",
+      "update": "Create a materialized grouped summary dataset ID",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/CORE.md",
+        "anchor": "createsummarydata"
+      }
+    },
+    {
       "name": "createDensityData",
       "layer": "user-facing",
       "domain": "core",
@@ -3694,6 +3712,7 @@
       "materializeMarkFilteredData",
       "materializeIntervalData",
       "materializeRegressionData",
+      "materializeSummaryData",
       "materializeTimeUnitData",
       "materializeWindowData",
       "materializeRuleSpan",

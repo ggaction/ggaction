@@ -736,8 +736,8 @@
         "errors-and-limitations",
         "related"
       ],
-      "bytes": 1859,
-      "sha256": "88f2f4a8b77294121a2f4de9b5ad36c863fcd7bb843b6aa12ba902c22b09aa7a"
+      "bytes": 2058,
+      "sha256": "7888cab1bf973a13b3c34042a383f8ca9b94adde3d269db40311981d2c0ce48a"
     },
     {
       "order": 48,
@@ -749,10 +749,11 @@
         "createdata-id-values",
         "create-derived-data",
         "bindmarkdata-target-data",
+        "createsummarydata-id-source-groupby-aggregates-members",
         "related"
       ],
-      "bytes": 5638,
-      "sha256": "dc29541c65dc1f09a3011fc3b91706aa9a22d489ef0f8eb42a2bde089a422296"
+      "bytes": 6730,
+      "sha256": "dc0eec74613912f1b0cde24a318a57e08fea1116122088041fffdf86723df5f2"
     },
     {
       "order": 49,
@@ -1809,8 +1810,8 @@
         "action-reference",
         "exact-action-lookup"
       ],
-      "bytes": 21702,
-      "sha256": "11decce3fb1bd8f5c3cbc7e230a1aa6b72bce1d7631fbfe71e9e2d5ac08dd170"
+      "bytes": 21806,
+      "sha256": "cce72b1c810ff3c5f338894637f63abb6036866c41f97da5205e04a2737dcc06"
     },
     {
       "order": 115,
@@ -1953,6 +1954,7 @@
       "source": "reference/actions/statistics.md",
       "headings": [
         "statistical-layer-actions",
+        "createsummarydata",
         "createhorizonplot",
         "createdensityplot",
         "createintervaldata",
@@ -1969,8 +1971,8 @@
         "createviolinplot",
         "related"
       ],
-      "bytes": 9010,
-      "sha256": "a9ce80883dc3fc0036e31477eb2aa31e581b00daaee7e03e22f72138f5f48df3"
+      "bytes": 9340,
+      "sha256": "29d927d843d80d370b7b6b7bd973f7b3d70f973f00cbafb64b406cf3af2655ff"
     },
     {
       "order": 119,
@@ -2084,8 +2086,8 @@
         "exact-typescript-signatures",
         "related"
       ],
-      "bytes": 16256,
-      "sha256": "d376e2a296ff7b5841b0035bdc1a6c3e75028ff4e0eedf4735e00a482d54895b"
+      "bytes": 16320,
+      "sha256": "a6c98c1dd0caaf9fbcae4afe534f6cd92e4667d7301914a3f03a85710632392f"
     },
     {
       "order": 124,

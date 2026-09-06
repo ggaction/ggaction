@@ -175,6 +175,30 @@ async function testNodeConsumer(directory) {
         .values[0].month,
       Date.UTC(2024, 4, 1)
     );
+    const summarized = chart()
+      .createData({
+        id: "sales",
+        values: [
+          { region: "East", value: 2 },
+          { region: "East", value: 3 },
+          { region: "West", value: 4 }
+        ]
+      })
+      .createSummaryData({
+        id: "regionalSales",
+        groupBy: "region",
+        aggregates: [
+          { op: "sum", field: "value", as: "total" },
+          { op: "count", as: "records" }
+        ]
+      });
+    assert.deepEqual(
+      summarized.semanticSpec.datasets.find(dataset => dataset.id === "regionalSales").values,
+      [
+        { region: "East", total: 5, records: 2 },
+        { region: "West", total: 4, records: 1 }
+      ]
+    );
     const windowed = chart()
       .createData({
         id: "events",
@@ -1403,6 +1427,7 @@ async function testTypeScriptConsumer(directory) {
       type ThetaEncodingOptions,
       type ThetaScaleOptions,
       type ThemeName,
+      type SummaryDataOptions,
       type TimeUnitDataOptions,
       type ViolinPlotOptions,
       type WindowDataOptions,
@@ -2115,6 +2140,19 @@ async function testTypeScriptConsumer(directory) {
     const monthlyEvents: ChartProgram = chart()
       .createData({ id: "events", values: [{ date: "2024-05-17", value: 2 }] })
       .createTimeUnitData(timeUnitOptions);
+    const summaryOptions: SummaryDataOptions = {
+      id: "summary",
+      groupBy: "group",
+      aggregates: [{ op: "sum", field: "value", as: "total" }]
+    };
+    const summary: ChartProgram = chart()
+      .createData({ id: "summarySource", values: [{ group: "A", value: 2 }] })
+      .createSummaryData(summaryOptions);
+    const summaryTransform: DatasetTransform = {
+      type: "summary",
+      groupBy: ["group"],
+      aggregates: [{ op: "count", as: "rows" }]
+    };
     const timeUnitTransform: DatasetTransform = {
       type: "timeUnit",
       field: "date",
@@ -2459,6 +2497,7 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.a
       "point-jitter",
       "path-order",
       "time-unit-data",
+      "summary-data",
       "window-data",
       "bin2d-data",
       "binned-heatmap",

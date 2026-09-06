@@ -328,6 +328,15 @@ createData({ id?, values })
 
 Create one immutable named dataset. [Data](../api/data.md)
 
+### `createSummaryData`
+
+```javascript
+createSummaryData({ id, source?, groupBy?, aggregates, members? })
+```
+
+Materialize reusable, first-appearance-ordered summary rows from one or more
+shared aggregate operations. [Source and Derived Data](../api/data/source-and-derived.md#createsummarydata-id-source-groupby-aggregates-members)
+
 ### `bindMarkData`
 
 ```javascript

@@ -493,12 +493,31 @@ export type DatasetTransform =
   | DatasetDensityTransform
   | DatasetHorizonTransform
   | DatasetIntervalTransform
+  | DatasetSummaryTransform
   | DatasetTimeUnitTransform
   | DatasetWindowTransform;
 export interface CreateDerivedDataOptions {
   id: string;
   source: string;
   transform: readonly [DatasetTransform];
+}
+export interface DatasetSummaryTransform {
+  type: "summary";
+  groupBy: readonly string[];
+  aggregates: readonly SummaryAggregateOptions[];
+  members?: string;
+}
+export interface SummaryAggregateOptions {
+  op: AggregateOperation;
+  field?: string;
+  as: string;
+}
+export interface SummaryDataOptions {
+  id: string;
+  source?: string;
+  groupBy?: string | readonly string[];
+  aggregates: readonly SummaryAggregateOptions[];
+  members?: string;
 }
 export interface BindMarkDataOptions {
   target: string;
@@ -2998,6 +3017,7 @@ export class ChartProgram {
   removeMarkSelection(options?: RemoveMarkSelectionOptions): ChartProgram;
   highlightMarks(options: HighlightMarksOptions): ChartProgram;
   createDensityData(options: DensityDataOptions): ChartProgram;
+  createSummaryData(options: SummaryDataOptions): ChartProgram;
   createRegressionData(options: RegressionDataOptions): ChartProgram;
   createIntervalData(options: IntervalDataOptions): ChartProgram;
   createTimeUnitData(options: TimeUnitDataOptions): ChartProgram;

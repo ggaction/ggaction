@@ -8,6 +8,15 @@ description: Create and edit regression, density, interval, error, and box-plot 
 
 These are direct immutable `ChartProgram` actions. Each accepts one option object and returns a new program.
 
+## `createSummaryData`
+
+```javascript
+createSummaryData({ id, source?, groupBy?, aggregates, members? })
+```
+
+Materialize reusable, first-appearance-ordered summary rows from one or more
+shared aggregate operations. [Source and Derived Data](../../api/data/source-and-derived.md#createsummarydata-id-source-groupby-aggregates-members)
+
 ## `createHorizonPlot`
 
 ```js

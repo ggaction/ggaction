@@ -73,6 +73,7 @@ corresponding higher-level action when the library should materialize values:
 | `"density"` | `{ type, field, groupBy?, bandwidth, extent, steps, kernel?, normalization?, as, resolve: "shared", resolved? }` | `createDensityData` |
 | `"horizon"` | `{ type, x, y, groupBy?, bands, baseline, extent, resolve, missing, overflow, palette, ... }` | `encodeHorizon` |
 | `"interval"` | `{ type, field, groupBy, center, extent, level?, as }` | `createIntervalData` |
+| `"summary"` | `{ type, groupBy, aggregates, members? }` | `createSummaryData` |
 | `"timeUnit"` | `{ type, field, unit, as }` | `createTimeUnitData` |
 | `"window"` | `{ type, partitionBy, sortBy, operations }` | `createWindowData` |
 
@@ -125,6 +126,34 @@ remains usable.
 result is rejected. Composite marks and marks backed by an owned density,
 horizon, or final-item filter recipe must use their documented edit or filter
 lifecycle because changing only one layer would break the resource.
+
+## `createSummaryData({ id, source?, groupBy?, aggregates, members? })`
+
+Create reusable aggregate rows without tying the calculation to a chart type:
+
+```javascript
+const totals = program.createSummaryData({
+  id: "regionalTotals",
+  source: "sales",
+  groupBy: "region",
+  aggregates: [
+    { op: "sum", field: "sales", as: "total" },
+    { op: "count", as: "records" }
+  ],
+  members: "sourceRows"
+});
+```
+
+Groups follow first source appearance. `aggregates` accepts the shared
+`AggregateOperation` vocabulary, including quantile and ordered first/last
+objects. `count` counts rows and omits `field`; every other operation requires
+one. Output aliases, group fields, and the optional `members` alias must be
+distinct. The result contains concrete values and can be used immediately by
+marks or `bindMarkData`.
+
+An ungrouped empty input produces one aggregate row, so a row count is `0`.
+A grouped empty input produces no observed groups. The action does not synthesize
+unobserved categorical combinations.
 
 ## Related
 

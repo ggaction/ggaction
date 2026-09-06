@@ -3,7 +3,7 @@
   "packageVersion": "0.0.12",
   "typeSource": "types/program.d.ts",
   "errorPolicy": "An empty errors array means the compact card has no curated error override; consult the canonical route for validation, inference, and recovery behavior.",
-  "count": 202,
+  "count": 203,
   "cards": [
     {
       "schemaVersion": 2,
@@ -405,6 +405,69 @@
         }
       ],
       "route": "/reference/actions/charts-data/#filterdata"
+    },
+    {
+      "schemaVersion": 2,
+      "name": "createSummaryData",
+      "layer": "user-facing",
+      "domain": "statistics",
+      "summary": "Materialize reusable, first-appearance-ordered summary rows from one or more shared aggregate operations.",
+      "signature": "createSummaryData(options: SummaryDataOptions): ChartProgram;",
+      "intents": [
+        "create summary data",
+        "create",
+        "add",
+        "statistical layer",
+        "statistical transform",
+        "grouped summary data",
+        "reusable aggregate rows"
+      ],
+      "lifecycle": "Immutable create-only",
+      "resources": {
+        "prerequisites": [
+          "source dataset"
+        ],
+        "owns": [
+          "grouped summary data"
+        ],
+        "idOptions": [
+          "id",
+          "source"
+        ]
+      },
+      "options": [
+        {
+          "name": "id",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "source",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "groupBy",
+          "required": false,
+          "type": "string | readonly string[] | undefined"
+        },
+        {
+          "name": "aggregates",
+          "required": true,
+          "type": "readonly SummaryAggregateOptions[]"
+        },
+        {
+          "name": "members",
+          "required": false,
+          "type": "string | undefined"
+        }
+      ],
+      "callPatterns": [
+        "createSummaryData({ id, aggregates, source?, groupBy?, members? })"
+      ],
+      "snippet": "program.createSummaryData({ id: \"summary-data-1\", aggregates: [] })",
+      "errors": [],
+      "route": "/reference/actions/statistics/#createsummarydata"
     },
     {
       "schemaVersion": 2,

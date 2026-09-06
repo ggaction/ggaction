@@ -39,6 +39,11 @@
     "layer": "user-facing",
     "domain": "core"
   },
+  "createSummaryData": {
+    "operation": "create",
+    "layer": "user-facing",
+    "domain": "statistics"
+  },
   "createDensityData": {
     "operation": "create",
     "layer": "user-facing",

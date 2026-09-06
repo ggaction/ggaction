@@ -95,6 +95,7 @@
   "encodeStroke": "/reference/actions/encodings/#encodestroke",
   "encodeStrokeWidth": "/reference/actions/encodings/#encodestrokewidth",
   "encodeBarWidth": "/reference/actions/encodings/#encodebarwidth",
+  "createSummaryData": "/reference/actions/statistics/#createsummarydata",
   "createHorizonPlot": "/reference/actions/statistics/#createhorizonplot",
   "createDensityPlot": "/reference/actions/statistics/#createdensityplot",
   "createIntervalData": "/reference/actions/statistics/#createintervaldata",

@@ -87,6 +87,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createRuleMark`](./actions/marks.md#createrulemark) | user-facing | marks |
 | [`createScale`](./actions/extension.md#extension-actions) | user-facing | core |
 | [`createScatterPlot`](./actions/charts-data.md#createscatterplot) | user-facing | charts |
+| [`createSummaryData`](./actions/statistics.md#createsummarydata) | user-facing | statistics |
 | [`createTextMark`](./actions/marks.md#createtextmark) | user-facing | marks |
 | [`createThetaAxis`](./actions/guides.md#createthetaaxis) | user-facing | axes |
 | [`createThetaAxisLabels`](./actions/guides.md#createthetaaxislabels) | user-facing | axes |

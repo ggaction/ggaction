@@ -41,6 +41,7 @@
     "Canvas": ["canvas", "chart size", "plot bounds"],
     "Data": ["dataset", "rows"],
     "MarkData": ["mark data binding", "change mark dataset", "connect mark to rows"],
+    "SummaryData": ["grouped summary data", "reusable aggregate rows"],
     "DensityData": ["kernel density data", "KDE"],
     "RegressionData": ["fitted values", "regression transform"],
     "WindowData": ["moving window", "rank", "lag"],

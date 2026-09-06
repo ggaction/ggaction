@@ -292,6 +292,38 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
   - ✅ Covered: exactly-one mutual exclusivity, source immutability/order와 primitive/public chart equivalence.
 - Evidence: `test/unit/actions/data/filter-data.test.js`.
 
+## `createSummaryData`
+
+- Signature: `createSummaryData({ id, source?, groupBy?, aggregates, members? })`
+- `id`, `source`: 새 immutable derived dataset ID와 existing materialized source다. `source` 생략 시
+  current data를 사용한다.
+- `groupBy`: field name 또는 unique field-name array이며 기본은 `[]`다. Observed group을 source의 첫
+  등장 순서로 만들며 categorical combination을 합성하지 않는다.
+- `aggregates`: 1..64개의 `{ op, field?, as }`다. `op`는 공통 `AggregateOperation` 전체를 재사용한다.
+  `count`는 row count이므로 field를 받지 않고 다른 op는 field가 필수다. `as`는 group/output과 겹치지
+  않는 고유 field 이름이다.
+- `members`: optional output field 이름이다. 각 summary row가 해당 source group의 원래 rows를 보존한다.
+  Group/output alias와 충돌하면 거부한다.
+- Effect: normalized `summary` provenance와 concrete values를 같은 호출에서 완성한다. Ungrouped empty
+  source는 aggregate identity를 표현하는 한 row를 만들며 `count`는 0이다. Grouped empty source는
+  observed group이 없으므로 `[]`다. Missing 수치 결과는 기존 aggregate owner와 동일하게 `undefined`다.
+- 오류: missing source/group/aggregate/order field, duplicate group/output, incompatible aggregate field
+  type, non-scalar group key, unsupported op와 10,000 group 초과를 첫 semantic change 전에 거부한다.
+- Coverage: `test/unit/actions/data/summary-data.test.js`가 multi-aggregate, ordered aggregate, members,
+  stable group order, empty grain, ownership, mark consumption과 invalid matrix를 검증한다.
+
+### Formal values — `createSummaryData`
+
+- Implemented: `createSummaryData({ id: UserId; source?: UserId; groupBy?: FieldName | readonly FieldName[]; aggregates: readonly { op: AggregateOperation; field?: FieldName; as: FieldName }[]; members?: FieldName }): ChartProgram`
+- Proposed (NOT IMPLEMENTED): full categorical cube/empty-group synthesis, callback aggregate.
+
+### Value coverage — `createSummaryData`
+
+- ✅ Covered: grouped/ungrouped, first-appearance ordering, count/mean/missing/ordered first, multiple outputs.
+- ✅ Covered: ungrouped/grouped empty input, null numeric member, members provenance and caller ownership.
+- ✅ Covered: field/type/alias/shape/unknown option and immutable rejection.
+- Evidence: `test/unit/actions/data/summary-data.test.js`.
+
 ## `createRegressionData`
 
 - Signature: `createRegressionData({ id, source?, x, y, groupBy?, method?, degree?, span?, confidence?, interval? })`
