@@ -97,10 +97,11 @@ test("complete-chart discovery reaches semantic and primitive authoring layers",
 test("discovery separates completion from resource validity", async () => {
   const actionCards = await cards();
   const byName = new Map(actionCards.map(card => [card.name, card]));
-  const byState = Object.groupBy(
-    actionCards,
-    card => card.completionRequirements.state
-  );
+  const byState = {};
+  for (const card of actionCards) {
+    const state = card.completionRequirements.state;
+    (byState[state] ??= []).push(card);
+  }
   assert.deepEqual(Object.fromEntries(Object.entries(byState).map(([state, entries]) => [
     state,
     entries.length
