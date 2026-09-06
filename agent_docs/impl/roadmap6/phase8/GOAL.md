@@ -2,7 +2,7 @@
 
 ## 상태와 목표
 
-상태: in-progress. [전체 실행·A/V/X 승인](../APPROVAL.md)을 적용했다.
+상태: completed. [전체 실행·A/V/X 승인](../APPROVAL.md)을 적용했고 [X 감사](REVIEW.md)로 닫았다.
 
 개별 통계 layer와 endpoint mark를 재사용해 완성 chart facade를 만든다. 파생값·label·center가 같은 grain을 공유하게 한다.
 

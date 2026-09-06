@@ -40,8 +40,11 @@
 ## 승인 기록
 
 - Review baseline: `3fbb9d0bd7e51a2c6d19cf5ab0188ef54a998839`
-- 검증 명령과 실제 결과: 각 W/X 결과에 기록
-- 사용자 승인 근거: [APPROVAL.md](../APPROVAL.md)의 전체 A/V/X와 release 승인
-- 남은 작업: 해당 GOAL/STEP 전 범위
+- 사용자 승인 근거: [APPROVAL.md](../APPROVAL.md)의 전체 A/V/X와 release 승인.
+- 현재 결과: [W1](RESULTS_W1_INTERVAL_REGRESSION.md), [W2](RESULTS_W2_ENDPOINT_PLOTS.md),
+  [W3](RESULTS_W3_ECDF.md), [X](REVIEW.md) 완료.
+- X 검증 source/remote ref: `bc9213379fd12d5d5ea6ffd67a8385bf42fd8aa5`.
+- 누적 결과: unit 2,246/2,246, contracts 318/318, charts 570/570, browser 69/69,
+  realistic 243/243, generated/package checks pass.
 
 실행 시 실제 증거를 채운다. 문서 작성 날짜나 이전 로드맵 승인을 이 Gate의 승인으로 재사용하지 않는다.
