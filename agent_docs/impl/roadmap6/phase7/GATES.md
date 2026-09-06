@@ -30,7 +30,7 @@ R6-P7-A와 V는 [Roadmap 6 전체 실행 승인](../APPROVAL.md)에 따라 appro
 
 ## R6-P7-X — Result and closeout
 
-- 상태: planned
+- 상태: approved
 - 검토 대상: [GOAL.md](GOAL.md)의 전체 승인 범위 결과와 [STEP1.md](STEP1.md)의 실제 완료 상태.
 - 필요 증거: verified source commit/remote ref, focused·누적 tests, strict positive/negative declarations, actual trace, immutable failure, documentation/metadata/generated diff와 compatibility 예제.
 - 시각 범위: 승인된 target별 same-run decoded primitive/public pixel equality, concrete graphic parity, renderer 소비 결과. 시각 범위가 없으면 이유를 기록한다.
@@ -43,6 +43,10 @@ R6-P7-A와 V는 [Roadmap 6 전체 실행 승인](../APPROVAL.md)에 따라 appro
 - Review baseline: `5b4e5a87c9aba1d3f47b5676db4ced4f28bdd132`
 - 계약: [CONTRACT.md](CONTRACT.md)
 - 사용자 승인 근거: [APPROVAL.md](../APPROVAL.md)의 전체 A/V/X와 release 승인.
-- 남은 작업: W1–W3 구현, 실제 visual/runtime/package 증거와 X closeout.
+- 현재 결과: [W1](RESULTS_W1_POLAR.md), [W2](RESULTS_W2_RADAR.md),
+  [W3](RESULTS_W3_RUG_STRIP.md), [X](REVIEW.md) 완료.
+- X 검증 source/remote ref: `573ec54fe8cf3e538cc173931f1f88d187c88504`.
+- 누적 결과: hierarchical realistic 1,320 direct calls, normal 2,193/2,193,
+  contracts 315/315, package와 generated contract checks pass.
 
 실행 시 실제 증거를 채운다. 문서 작성 날짜나 이전 로드맵 승인을 이 Gate의 승인으로 재사용하지 않는다.

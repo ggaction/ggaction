@@ -251,7 +251,9 @@ Primary owner는 누락 방지를 위한 책임 단위이며, 관련 작업이 �
 - 수정·추가 방향: Violin의 source/category/value/split/orientation, ErrorBar/Band의 source/position/interval roles를 atomic owner edit로 제공한다. Box/Gradient/Regression의 vocabulary와 비교한다.
 - 완료 검증: 생성→source 교체→방향 전환→style edit가 한 owner identity를 유지. Scale/guide/labels downstream이 수렴하고 부적합 변경은 전부 실패.
 - 근거: audit/REPORT.md: D16. [원래 조사](audit/REPORT.md)
-- 처분: 구현 또는 명시적인 계약 유지·migration 결정의 제안. 아직 완료·승인 상태가 아니다.
+- 처분: [Phase 6 W5](phase6/RESULTS_W5_COMPOSITE_ROLES.md)와
+  [Phase 6 X](phase6/RESULTS_X.md)로 implemented-verified. Violin과 ErrorBar/ErrorBand의 source,
+  position, interval, orientation revision과 downstream scale/guide/label 수렴을 검증했다.
 
 ### D17 — Program theme와 명시적 fitting 부재
 
@@ -326,7 +328,8 @@ Primary owner는 누락 방지를 위한 책임 단위이며, 관련 작업이 �
 - 수정·추가 방향: Point/line→theta/radius→group/color→Polar guides를 연결한다. Radial position과 glyph size, theta unit, seam/closure를 구분한다.
 - 완료 검증: 기존 lower chain과 동일, theta/radius scale edit 후 수렴. Cartesian과 Polar consumer가 잘못 혼합되지 않음.
 - 근거: audit/REPORT.md: F02. [원래 조사](audit/REPORT.md)
-- 처분: 구현 또는 명시적인 계약 유지·migration 결정의 제안. 아직 완료·승인 상태가 아니다.
+- 처분: [Phase 7 W1](phase7/RESULTS_W1_POLAR.md)과 [X 통합 감사](phase7/REVIEW.md)로
+  implemented-verified. Polar position/glyph 역할, guide/type 계약과 lower edit 수렴을 검증했다.
 
 ### F03 — Radar
 
@@ -334,7 +337,8 @@ Primary owner는 누락 방지를 위한 책임 단위이며, 관련 작업이 �
 - 수정·추가 방향: Closed line, categorical theta order, series와 radius contract를 연결한다. Wide data는 explicit Fold provenance를 통해 long-form으로 만든다.
 - 완료 검증: 다른 단위 measure의 자동 정규화 없음. 명시적 per-dimension normalization 또는 same-unit 경로를 구분. Missing/tie/order/closed path 검증.
 - 근거: audit/REPORT.md: F03. [원래 조사](audit/REPORT.md)
-- 처분: 구현 또는 명시적인 계약 유지·migration 결정의 제안. 아직 완료·승인 상태가 아니다.
+- 처분: [Phase 7 W2](phase7/RESULTS_W2_RADAR.md)와 [X 통합 감사](phase7/REVIEW.md)로
+  implemented-verified. Long/explicit-wide, categorical order, closed path와 normalization 경계를 검증했다.
 
 ### F04 — Rose / Radial bar
 
@@ -374,7 +378,8 @@ Primary owner는 누락 방지를 위한 책임 단위이며, 관련 작업이 �
 - 수정·추가 방향: Rug는 tick+plot edge, Strip은 point+constant/category slot으로 제공한다. Jitter를 explicit optional 배치로 재사용하고 placement 의미를 저장한다.
 - 완료 검증: Dummy field 없이 drawable output. Tick/point 구별, x/y 방향, scale/Canvas edit·filter 후 anchor 유지. MCP complete-chart provider가 이 경로를 사용.
 - 근거: audit/REPORT.md: F08. [원래 조사](audit/REPORT.md)
-- 처분: 구현 또는 명시적인 계약 유지·migration 결정의 제안. 아직 완료·승인 상태가 아니다.
+- 처분: [Phase 7 W3](phase7/RESULTS_W3_RUG_STRIP.md)과 [X 통합 감사](phase7/REVIEW.md)로
+  implemented-verified. Dummy field 없는 edge/slot placement와 deterministic jitter lifecycle을 검증했다.
 
 ### F09 — Beeswarm / point packing
 

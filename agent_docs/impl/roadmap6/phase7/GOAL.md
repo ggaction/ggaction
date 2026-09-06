@@ -2,7 +2,7 @@
 
 ## 상태와 목표
 
-상태: in-progress. [Phase 7 계약](CONTRACT.md)과 전체 실행 승인을 적용했다.
+상태: completed. [Phase 7 계약](CONTRACT.md), [X 결과](REVIEW.md)와 전체 실행 승인을 적용했다.
 
 기존 Polar 조합과 1D mark를 완성 chart 의도로 연결한다. 단위·anchor·정규화를 사용자에게 설명할 수 있게 한다.
 
