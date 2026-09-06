@@ -19,6 +19,8 @@ declare const basic: BasicChartProgram;
 p.createPolarScatterPlot({ theta: "angle", radius: "distance" });
 p.createPolarScatterPlot({ theta: { field: "date", fieldType: "temporal", temporalUnit: "timestamp" }, radius: { field: "distance", scale: { type: "sqrt" } }, size: "mass", point: { shape: "circle" }, guides: { axes: { radius: { angle: 45 } }, grid: { theta: {} }, legend: { position: "bottom" } } });
 p.createPolarLinePlot({ theta: { field: "dimension", fieldType: "ordinal", scale: { type: "point" } }, radius: "value", groupBy: ["series", "region"], color: "series", strokeDash: { field: "region" }, line: { closed: true } });
+// @ts-expect-error Polar line interpolation is currently linear only
+p.createPolarLinePlot({ theta: "angle", radius: "distance", line: { curve: "basis" } });
 // @ts-expect-error theta is required
 p.createPolarScatterPlot({ radius: "distance" });
 // @ts-expect-error radius is required

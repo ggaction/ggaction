@@ -68,6 +68,15 @@ test("creates only the measure guide by default", () => {
   assert.equal(program.semanticSpec.guides.legend, undefined);
 });
 
+test("targets an explicit Cartesian coordinate when several are available", () => {
+  const program = base()
+    .createCoordinate({ id: "overview", type: "cartesian" })
+    .createCoordinate({ id: "detail", type: "cartesian" })
+    .createRugPlot({ x: "value", edge: "bottom", coordinate: "detail", guides: false });
+  assert.equal(program.semanticSpec.layers[0].coordinate, "detail");
+  assert.equal(program.trace.children.at(-1).children[1].op, "createCoordinate");
+});
+
 test("rejects ambiguous measures, incompatible edges and anchor guides atomically", () => {
   const source = base();
   const before = JSON.stringify(source);

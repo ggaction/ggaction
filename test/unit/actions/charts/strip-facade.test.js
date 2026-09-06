@@ -81,6 +81,15 @@ test("creates axes only for real positions by default", () => {
   assert.equal(program.guideConfigs.axis.y, undefined);
 });
 
+test("targets an explicit Cartesian coordinate when several are available", () => {
+  const program = base()
+    .createCoordinate({ id: "overview", type: "cartesian" })
+    .createCoordinate({ id: "detail", type: "cartesian" })
+    .createStripPlot({ x: "value", coordinate: "overview", guides: false });
+  assert.equal(program.semanticSpec.layers[0].coordinate, "overview");
+  assert.equal(program.trace.children.at(-1).children[1].op, "createCoordinate");
+});
+
 test("rejects ambiguous roles, wrong jitter units and radius conflicts atomically", () => {
   const source = base();
   const before = JSON.stringify(source);

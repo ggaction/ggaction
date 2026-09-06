@@ -21,6 +21,7 @@ const options: CreateStripPlotOptions = { x: "value", jitter: { maxOffset: { pix
 p.createStripPlot(options);
 p.createStripPlot({ x: { field: "category", fieldType: "nominal" }, y: { field: "value", scale: { type: "sqrt" } }, jitter: { maxOffset: { band: 0.2 }, key: "id" } });
 p.createStripPlot({ x: { field: "date", fieldType: "temporal" }, y: { field: "category", fieldType: "ordinal" }, color: "series", point: { radius: 3 } });
+p.createStripPlot({ x: "value", coordinate: "detail" });
 // @ts-expect-error x is required.
 p.createStripPlot({});
 // @ts-expect-error a lone categorical x has no measure.

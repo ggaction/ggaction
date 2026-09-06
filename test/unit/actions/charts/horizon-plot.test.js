@@ -89,6 +89,21 @@ test("retains lower folded-guide escape and reuses compatible facade x guides", 
     guides: { axes: { x: { title: { text: "Conflicting title" } } } } }));
 });
 
+test("lets an explicit Horizon tick count replace inferred tick values", () => {
+  const program = base().createHorizonPlot({
+    x: "time",
+    y: "value",
+    guides: {
+      axes: { x: { ticksAndLabels: { count: 3 } } },
+      grid: false,
+      legend: false
+    }
+  });
+  assert.equal(program.guideConfigs.axis.x.ticks.mode, "count");
+  assert.equal(program.guideConfigs.axis.x.ticks.count, 3);
+  assert.equal(program.guideConfigs.axis.x.labels.mode, "count");
+});
+
 test("preserves optional undefined and supports explicit missing and overflow policies", () => {
   const source = base();
   const expected = source.createHorizonPlot({ x: "time", y: "value", guides: false });

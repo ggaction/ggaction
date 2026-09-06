@@ -84,6 +84,8 @@ function mergeInferredOptions(inferred, explicit) {
       ? mergeInferredOptions(inferred[key], value)
       : value;
   }
+  if (Object.hasOwn(explicit, "count")) delete merged.values;
+  if (Object.hasOwn(explicit, "values")) delete merged.count;
   return merged;
 }
 

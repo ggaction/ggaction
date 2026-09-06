@@ -35,6 +35,8 @@ p.createRadarPlot({ category: { field: "dimension", fieldType: "quantitative" },
 p.createRadarPlot({ category: "dimension", value: { field: "score", fieldType: "nominal" } });
 // @ts-expect-error Radar paths cannot be opened
 p.createRadarPlot({ category: "dimension", value: "score", line: { closed: false } });
+// @ts-expect-error Radar interpolation is currently linear only
+p.createRadarPlot({ category: "dimension", value: "score", line: { curve: "basis" } });
 // @ts-expect-error Full only
 basic.createRadarPlot({ category: "dimension", value: "score" });
 `);

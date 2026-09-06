@@ -27,6 +27,9 @@
   `createRugPlot({x:"value",edge:"bottom"})`으로 실행 가능하게 추가했다.
 - 최초 Strip 타입은 runtime이 거부하는 constant-band와 category-pixel jitter 조합까지 허용했다. Position
   branch별 pixel/band jitter union으로 좁혀 잘못된 호출을 컴파일 단계에서도 막았다.
+- 후속 전수 시나리오에서 두 facade에 `coordinate`가 없어 Cartesian coordinate가 여러 개인 program에서
+  position 해석이 모호해지는 문제를 찾았다. 다른 chart facade와 같은 explicit `coordinate` 옵션을
+  runtime과 TypeScript에 추가하고, 선택한 coordinate가 mark를 소유하도록 수정했다.
 
 ## 계층과 시각 동등성
 

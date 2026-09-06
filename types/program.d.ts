@@ -2205,6 +2205,9 @@ export type PolarChartGuideOptions = {
   grid?: false | Pick<CreateGridOptions, "theta" | "radial">;
   legend?: false | LegendOptions;
 };
+export type PolarPathGuideOptions = Omit<PolarChartGuideOptions, "legend"> & {
+  legend?: false | PathLegendOptions;
+};
 export interface CreatePolarScatterPlotOptions {
   id?: string;
   data?: string;
@@ -2226,10 +2229,11 @@ export interface CreatePolarLinePlotOptions {
   color?: LineCategoricalColorChannel;
   groupBy?: string | readonly [string, ...string[]];
   strokeDash?: BasicStrokeDashChannel;
-  line?: Omit<NonNullable<CreateLinePlotOptions["line"]>, "closed"> & {
+  line?: Omit<NonNullable<CreateLinePlotOptions["line"]>, "closed" | "curve"> & {
+    curve?: "linear";
     closed?: boolean;
   };
-  guides?: false | PolarChartGuideOptions;
+  guides?: false | PolarPathGuideOptions;
 }
 export type RadarCategoryValue = string | number | boolean;
 export type RadarCategoryScaleOptions = Pick<
@@ -2259,10 +2263,11 @@ export type CreateRadarPlotOptions = {
   ];
   color?: LineCategoricalColorChannel;
   strokeDash?: BasicStrokeDashChannel;
-  line?: Omit<NonNullable<CreateLinePlotOptions["line"]>, "closed"> & {
+  line?: Omit<NonNullable<CreateLinePlotOptions["line"]>, "closed" | "curve"> & {
+    curve?: "linear";
     closed?: true;
   };
-  guides?: false | PolarChartGuideOptions;
+  guides?: false | PolarPathGuideOptions;
 } & (
   | { category: RadarCategoryChannel; value: PolarRadiusChannel; wide?: never }
   | { wide: RadarWideOptions; category?: never; value?: never }
@@ -2293,6 +2298,7 @@ export type RugGuideOptions = Omit<CartesianGuideOptions, "legend"> & {
 export type CreateRugPlotOptions = {
   id?: string;
   data?: string;
+  coordinate?: string;
   tick?: RugTickOptions;
   guides?: false | RugGuideOptions;
 } & (
@@ -2318,6 +2324,7 @@ export type StripJitterOptions = StripPixelJitterOptions | StripBandJitterOption
 export type CreateStripPlotOptions = {
   id?: string;
   data?: string;
+  coordinate?: string;
   color?: BasicColorChannel;
   size?: BasicSizeChannel;
   shape?: BasicShapeChannel;

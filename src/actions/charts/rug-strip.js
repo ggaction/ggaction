@@ -17,11 +17,11 @@ import {
   validateFacadeOptions
 } from "./shared.js";
 
-const RUG_OPTIONS = Object.freeze(["id", "data", "x", "y", "edge", "tick", "guides"]);
+const RUG_OPTIONS = Object.freeze(["id", "data", "coordinate", "x", "y", "edge", "tick", "guides"]);
 const MEASURE_OPTIONS = Object.freeze(["field", "fieldType", "temporalUnit", "scale"]);
 const TICK_OPTIONS = Object.freeze(["length", "stroke", "strokeWidth", "opacity"]);
 const STRIP_OPTIONS = Object.freeze([
-  "id", "data", "x", "y", "color", "size", "shape", "point", "jitter", "guides"
+  "id", "data", "coordinate", "x", "y", "color", "size", "shape", "point", "jitter", "guides"
 ]);
 const POINT_OPTIONS = Object.freeze([
   "radius", "shape", "fill", "opacity", "stroke", "strokeWidth"
@@ -106,6 +106,9 @@ export const createRugPlot = action(
     const highEdge = edge === "top" || edge === "right";
 
     let next = this.createTickMark({ id, data, ...tick });
+    if (args.coordinate !== undefined) {
+      next = next.createCoordinate({ id: args.coordinate, type: "cartesian", layers: [id] });
+    }
     next = next[measure === "x" ? "encodeX" : "encodeY"](
       positionArgs(encoding, { target: id })
     );
@@ -253,9 +256,11 @@ export const createStripPlot = action(
       operation
     );
 
-    let next = this
-      .createPointMark({ id, data, ...point })
-      .encodeX(positionArgs(x, { target: id }));
+    let next = this.createPointMark({ id, data, ...point });
+    if (args.coordinate !== undefined) {
+      next = next.createCoordinate({ id: args.coordinate, type: "cartesian", layers: [id] });
+    }
+    next = next.encodeX(positionArgs(x, { target: id }));
     next = y === undefined
       ? next.encodeY({
           target: id,

@@ -21,6 +21,7 @@ const options: CreateRugPlotOptions = { x: "value", edge: "bottom" };
 p.createRugPlot(options);
 p.createRugPlot({ x: { field: "date", fieldType: "temporal", temporalUnit: "timestamp" }, edge: "top", tick: { length: 8 }, guides: false });
 p.createRugPlot({ y: { field: "value", scale: { type: "sqrt" } }, edge: "right" });
+p.createRugPlot({ x: "value", edge: "bottom", coordinate: "detail" });
 // @ts-expect-error x measure cannot use a horizontal edge.
 p.createRugPlot({ x: "value", edge: "left" });
 // @ts-expect-error y measure cannot use a vertical edge.
