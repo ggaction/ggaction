@@ -432,6 +432,11 @@ test.before(async () => {
         .createMarkLabels({ id: "text", source: "piePlot", content: "share", format: ".1%", layout: {} });
       render(semanticLabels, document.getElementById("semantic-labels").getContext("2d"));
       const semanticLabelSVG = renderToSVG(semanticLabels);
+      const scientificLabels = semanticLabels.encodeText({ content: "value", format: ".2e" });
+      const formattedSizeLegend = editedSizeLegend.editLegendLabels({ format: ".1e", offset: 20 });
+      const formattedCombined = legendContentBase.createLegend({
+        channels: ["color", "size"], count: 3, labels: { format: ".1f" }
+      });
       document.querySelector("#status").textContent = "complete";
       window.__ggactionGuideComparisons = guideComparisons;
       window.__ggactionConsumer = {
@@ -454,6 +459,13 @@ test.before(async () => {
         semanticTextSVG: semanticLabelSVG.includes("25.0%") && semanticLabelSVG.includes("75.0%"),
         semanticFiltered: semanticLabels.filterMarks({ target: "piePlot", field: "category", op: "eq", value: "B" })
           .graphicSpec.objects.text.items.map(i => i.properties.text),
+        commonFormats: [
+          scientificLabels.graphicSpec.objects.text.items.map(i => i.properties.text),
+          formattedSizeLegend.graphicSpec.objects.sizeLegendLabels.items.map(i => i.properties.text),
+          formattedSizeLegend.guideConfigs.legend.size.labels.offset,
+          formattedCombined.guideConfigs.legend.color.labels.format ?? null,
+          formattedCombined.graphicSpec.objects.sizeLegendLabels.items.map(i => i.properties.text)
+        ],
         intervalPosition: intervalTop.guideConfigs.legend.interval.position,
         intervalColumns: intervalTop.guideConfigs.legend.interval.columns,
         intervalSVG: renderToSVG(intervalTop).startsWith("<svg "),
@@ -613,6 +625,8 @@ test("imports and renders the packed browser entries", async () => {
     semanticTexts: ["25.0%", "75.0%"],
     semanticTextSVG: true,
     semanticFiltered: ["100.0%"],
+    commonFormats: [["2.00e+0", "6.00e+0"], ["1.0e+1", "2.0e+1", "3.0e+1"], 20, null,
+      ["4.0", "6.5", "9.0"]],
     intervalPosition: "top",
     intervalColumns: 2,
     intervalSVG: true,

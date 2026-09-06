@@ -312,7 +312,7 @@ editLegendLayout({
   target?, position?, layout?, align?, direction?, columns?, offset?,
   titlePosition?, itemGap?
 })
-editLegendLabels({ target?, color?, fontSize?, fontFamily?, fontWeight? })
+editLegendLabels({ target?, offset?, color?, fontSize?, fontFamily?, fontWeight?, format? })
 editLegendTitle({
   target?, title?, color?, fontSize?, fontFamily?, fontWeight?
 })

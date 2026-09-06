@@ -159,6 +159,38 @@ test("formats temporal gradient labels from normalized time domains", () => {
   assert.equal(program.guideConfigs.legend.gradient.fieldType, "temporal");
 });
 
+test("uses the shared explicit formatter for quantitative and UTC legend labels", () => {
+  const numeric = pointProgram({ top: 30, left: 70, bottom: 60 })
+    .encodeColor({ field: "value", fieldType: "quantitative" })
+    .createLegend({ channels: ["color"], labels: { format: ".1f" } });
+  assert.deepEqual(
+    numeric.graphicSpec.objects.colorGradientLabels.items.map(item => item.properties.text),
+    ["8.0", "12.2", "16.4", "20.6", "24.8"]
+  );
+  const scientific = numeric.editLegend({ labels: { format: ".2e" } });
+  assert.deepEqual(
+    scientific.graphicSpec.objects.colorGradientLabels.items.map(item => item.properties.text),
+    ["8.00e+0", "1.22e+1", "1.64e+1", "2.06e+1", "2.48e+1"]
+  );
+
+  const temporalRows = rows.map((row, index) => ({
+    ...row,
+    date: `${2020 + index}-01-01T00:00:00.000Z`
+  }));
+  const temporal = chart()
+    .createCanvas({ width: 760, height: 460, margin: { top: 90, right: 150, bottom: 90, left: 150 } })
+    .createData({ values: temporalRows })
+    .createPointMark()
+    .encodeX({ field: "x" })
+    .encodeY({ field: "y" })
+    .encodeColor({ field: "date", fieldType: "temporal" })
+    .createLegend({ channels: ["color"], count: 2, labels: { format: "%Y" } });
+  assert.deepEqual(
+    temporal.graphicSpec.objects.colorGradientLabels.items.map(item => item.properties.text),
+    ["2020", "2024"]
+  );
+});
+
 test("creates ascending opacity samples and removes them in constant mode", () => {
   const fieldProgram = pointProgram({ top: 30, left: 70, bottom: 60 })
     .encodeOpacity({ field: "value" })

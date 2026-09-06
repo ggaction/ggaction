@@ -711,14 +711,15 @@ export interface CanvasOptions {
 
 export type XAxisPosition = "bottom" | "top";
 export type YAxisPosition = "left" | "right";
+type ValueFormatDigit = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
+type ValueFormatPrecision = ValueFormatDigit | 10 | 11 | 12 | `0${ValueFormatDigit}`;
 type TimeAxisDirective = "Y" | "m" | "d" | "b";
-export type AxisFormatString =
-  | ".0f" | ".1f" | ".2f"
-  | ".0%" | ".1%" | ".2e"
-  | `${string}%${TimeAxisDirective}${string}`;
+export type NumericFormatString = `.${ValueFormatPrecision}${"f" | "%" | "e"}`;
+export type UtcFormatString = `${string}%${TimeAxisDirective}${string}`;
+export type ValueFormat = "auto" | NumericFormatString | UtcFormatString;
+export type AxisFormatString = NumericFormatString | UtcFormatString;
 export type AxisFormat =
-  | "auto"
-  | AxisFormatString
+  | ValueFormat
   | { decimals: number };
 export type AxisValue = string | boolean | number;
 export interface AxisLineStyleOptions {
@@ -2330,9 +2331,7 @@ export interface OffsetEncodingOptions {
 export interface XOffsetEncodingOptions extends OffsetEncodingOptions {}
 export interface YOffsetEncodingOptions extends OffsetEncodingOptions {}
 
-type TextFormatDigit = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
-type TextFormatPrecision = TextFormatDigit | 10 | 11 | 12 | `0${TextFormatDigit}`;
-export type TextFormat = "auto" | `.${TextFormatPrecision}${"f" | "%"}`;
+export type TextFormat = ValueFormat;
 
 export interface TextMarkOptions {
   id?: string;
@@ -2743,6 +2742,8 @@ export interface LegendTextOptions {
   fontSize?: number;
   fontFamily?: string;
   fontWeight?: string | number;
+  /** Continuous numeric/temporal label format. Categorical legends accept auto only. */
+  format?: ValueFormat;
 }
 
 export interface LegendTitleStyleOptions {
@@ -2842,7 +2843,7 @@ export interface EditLegendLayoutOptions {
   itemGap?: number;
 }
 
-export interface EditLegendLabelsOptions extends LegendTitleStyleOptions {
+export interface EditLegendLabelsOptions extends LegendTextOptions {
   target?: string;
 }
 

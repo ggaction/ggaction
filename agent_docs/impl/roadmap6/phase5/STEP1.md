@@ -44,7 +44,8 @@
 - [x] W3 annotation 선행 source-owned Text scale/domain/guide ownership #115 — [계약](CONTRACT_W3_TEXT_SCALE_OWNERSHIP.md), [결과](RESULTS_W3_TEXT_SCALE_OWNERSHIP.md)
 - [x] W3 annotation 기반 independent Text datum 좌표 — [계약](CONTRACT_W3_TEXT_DATUM.md), [결과](RESULTS_W3_TEXT_DATUM.md)
 - [x] W3 D createAnnotation mark/data/plot anchor — [계약](CONTRACT_W3_ANNOTATION.md), [결과](RESULTS_W3_ANNOTATION.md)
-- [ ] W3 후속 common format/rotation
+- [x] W3 후속 common value formatter — [계약](CONTRACT_W3_COMMON_FORMAT.md), [결과](RESULTS_W3_COMMON_FORMAT.md)
+- [ ] W3 후속 rotation unit
 - [ ] R6-P5-W4 Program theme와 local override
 - [ ] R6-P5-W5 Opt-in fitting과 guide label layout
 - [ ] 모든 시각 variant의 primitive target 작성·표시·V 승인

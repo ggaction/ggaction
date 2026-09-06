@@ -267,15 +267,23 @@ export function resolveLegendCreationPlan(program, args = {}, layers = program.s
     const inferredChannels = ["color", "shape"].filter(
       channel => requestedPoint.encoding?.[channel]?.scale !== undefined
     );
+    const { format: sizeFormat, ...categoricalLabels } = categoricalArgs.labels ?? {};
+    if (!combined && sizeFormat !== undefined && sizeFormat !== "auto") {
+      throw new Error("Categorical legend labels do not accept format.");
+    }
     const steps = [{ op: "createCategoricalLegend", args: {
       ...categoricalArgs,
+      ...(categoricalArgs.labels === undefined ? {} : { labels: categoricalLabels }),
       target: requestedPoint.id,
       channels: channels?.filter(channel => channel !== "size") ?? inferredChannels
     } }];
     if (combined) steps.push({ op: "createSizeLegend", args: {
       target: requestedPoint.id,
       ...(count === undefined ? {} : { count }),
-      ...(categoricalArgs.labels?.offset === undefined ? {} : { labels: { offset: categoricalArgs.labels.offset } }),
+      ...(categoricalArgs.labels === undefined ? {} : { labels: {
+        ...(categoricalArgs.labels.offset === undefined ? {} : { offset: categoricalArgs.labels.offset }),
+        ...(sizeFormat === undefined ? {} : { format: sizeFormat })
+      } }),
       inheritAppearance: true
     } });
     // Validate both content owners before any component action starts.

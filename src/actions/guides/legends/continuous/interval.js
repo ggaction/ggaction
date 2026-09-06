@@ -105,7 +105,7 @@ export function resolveIntervalConfig(program, stored) {
 
 export function resolveIntervalLayout(program, config, scale) {
   const { plot, canvas } = resolveContinuousBounds(program);
-  const labels = formatDiscretizedIntervals(scale.thresholds);
+  const labels = formatDiscretizedIntervals(scale.thresholds, config.labels.format);
   const layout = resolveLegendItemLayout(plot, config, labels, config.symbol);
   const occupiedBounds = layout.bounds;
   assertLegendBoundsInsideCanvas(

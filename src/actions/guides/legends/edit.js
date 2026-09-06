@@ -314,6 +314,11 @@ function resolveCategoricalEdit(program, kind, previous, size, args, storedOrder
   const title = titleMode === "auto"
     ? previous.field
     : typeof titleMode === "string" ? titleMode : previous.title;
+  const mergedLabels = mergeObject(previous.labels, args.labels);
+  if (mergedLabels.format !== undefined && mergedLabels.format !== "auto" && size === undefined) {
+    throw new Error("Categorical legend labels do not accept format.");
+  }
+  const { format: _sizeFormat, ...categoricalLabels } = mergedLabels;
   const normalized = normalizeOptions({
     target: previous.target,
     channels: previous.channels,
@@ -329,7 +334,7 @@ function resolveCategoricalEdit(program, kind, previous, size, args, storedOrder
     title,
     symbol: args.symbol === undefined ? previous.symbol
       : resolveLegendSymbol(program, findLayer(program, previous.target), previous.channels, args.symbol),
-    labels: mergeObject(previous.labels, args.labels),
+    labels: categoricalLabels,
     titleStyle: mergeObject(previous.titleStyle, args.titleStyle),
     itemGap: args.itemGap ?? previous.itemGap,
     border: mergeBorder(previous.border, args.border)

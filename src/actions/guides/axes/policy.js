@@ -1,31 +1,14 @@
 import { formatVisibleText } from "../../../core/textMetrics.js";
+import {
+  formatValue,
+  isUtcValueFormat,
+  validateValueFormat
+} from "../../../grammar/valueFormat.js";
 
 const AXIS_POSITIONS = Object.freeze({
   x: Object.freeze(["bottom", "top"]),
   y: Object.freeze(["left", "right"])
 });
-
-const NUMERIC_FORMATS = new Set([
-  ".0f", ".1f", ".2f", ".0%", ".1%", ".2e"
-]);
-const TIME_DIRECTIVES = new Set(["Y", "m", "d", "b", "%"]);
-const MONTH_NAMES = Object.freeze([
-  "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
-]);
-
-function isTimeFormat(format) {
-  if (typeof format !== "string") return false;
-  let directives = 0;
-  for (let index = 0; index < format.length; index += 1) {
-    if (format[index] !== "%") continue;
-    const directive = format[index + 1];
-    if (!TIME_DIRECTIVES.has(directive)) return false;
-    if (directive !== "%") directives += 1;
-    index += 1;
-  }
-  return directives > 0;
-}
 
 export function defaultAxisPosition(channel) {
   return channel === "x" ? "bottom" : "left";
@@ -113,42 +96,9 @@ export function resolveAxisTitleGeometry({
 }
 
 export function validateAxisFormat(format) {
-  if (format === "auto") return format;
-  if (
-    format !== null &&
-    typeof format === "object" &&
-    Number.isInteger(format.decimals) &&
-    format.decimals >= 0 &&
-    Object.keys(format).length === 1
-  ) {
-    return format;
-  }
-  if (typeof format === "string" && (
-    NUMERIC_FORMATS.has(format) || isTimeFormat(format)
-  )) {
-    return format;
-  }
-  throw new TypeError(
-    "Label format must be auto, { decimals }, or a supported format string."
-  );
-}
-
-function pad(value, length = 2) {
-  return String(value).padStart(length, "0");
-}
-
-function formatTime(value, format) {
-  const date = new Date(value);
-  if (!Number.isFinite(date.getTime())) {
-    throw new TypeError("Time axis format requires valid timestamps.");
-  }
-  const year = pad(date.getUTCFullYear(), 4);
-  const month = pad(date.getUTCMonth() + 1);
-  const day = pad(date.getUTCDate());
-  const values = { Y: year, m: month, d: day, b: MONTH_NAMES[date.getUTCMonth()] };
-  return format.replace(/%([Ymdb%])/g, (_, directive) =>
-    directive === "%" ? "%" : values[directive]
-  );
+  return validateValueFormat(format, "Label format", {
+    allowDecimalsObject: true
+  });
 }
 
 export function formatAxisValue(value, scaleType, format, autoFormatter) {
@@ -158,18 +108,22 @@ export function formatAxisValue(value, scaleType, format, autoFormatter) {
     throw new Error('Discrete axis labels require format "auto".');
   }
   if (scaleType === "time") {
-    if (!isTimeFormat(format)) {
+    if (!isUtcValueFormat(format)) {
       throw new Error("Time axis labels require a supported time format string.");
     }
-    return formatTime(value, format);
+    return formatValue(value, {
+      format,
+      valueType: "temporal",
+      label: "Axis label format"
+    });
   }
-  if (isTimeFormat(format)) {
+  if (isUtcValueFormat(format)) {
     throw new Error("Quantitative axis labels cannot use a time format string.");
   }
-  if (typeof format === "object") return value.toFixed(format.decimals);
-  if (format.endsWith("f")) return value.toFixed(Number(format[1]));
-  if (format.endsWith("%")) {
-    return `${(value * 100).toFixed(Number(format[1]))}%`;
-  }
-  return value.toExponential(2);
+  return formatValue(value, {
+    format,
+    valueType: "quantitative",
+    label: "Axis label format",
+    allowDecimalsObject: true
+  });
 }

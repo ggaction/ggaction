@@ -1439,9 +1439,11 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
   templates reject pre-existing text layers. Finite non-negative values and a positive denominator are required; an empty
   final-item set yields empty text. Zero-height bars excluded from final items produce no placeholder labels.
   Scaling by the maximum before summing preserves meaningful shares when the raw sum would overflow.
-- `format`: `"auto"`, fixed-decimal `.0f`–`.12f`, or percent `.0%`–`.12%`. Auto uses deterministic string conversion,
+- `format`: `"auto"`, `.0`–`.12` precision with fixed-decimal `f`, percent `%`, or scientific `e`, or a UTC
+  pattern containing `%Y | %m | %d | %b` and literals (`%%` emits `%`). Auto uses deterministic string conversion,
   so share content with auto is a fraction. Percent multiplies by 100, rounds to the specified decimals and appends `%`.
-  Numeric formats require finite values and reject percent overflow. Precision is an integer from 0 through 12;
+  Numeric formats require finite values and reject percent overflow; UTC formats require a valid date/timestamp.
+  Precision is an integer from 0 through 12;
   two-digit zero-padded 00–09 forms remain supported in both runtime and TypeScript. Negative, fractional and >12
   precision tokens are rejected by declarations as well as runtime. Null/undefined/empty content creates no placeholders.
 - Reassignment replaces incompatible field/datum/content/normalization branches, preserves previous format when omitted,
@@ -1450,8 +1452,8 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 
 ### Formal values — `encodeText`
 
-- Implemented: `encodeText({ target?: UserId; format?: "auto" | ".0f" … ".12f" | ".0%" … ".12%" } & ({ field: FieldName } | { value: unknown } | { content: "category" | "value" } | { content: "share"; normalizeBy?: "source" | "category" }))`; branches are mutually exclusive.
-- Proposed (NOT IMPLEMENTED): date/time and locale-aware text formatting tokens.
+- Implemented: `encodeText({ target?: UserId; format?: ValueFormat } & ({ field: FieldName } | { value: unknown } | { content: "category" | "value" } | { content: "share"; normalizeBy?: "source" | "category" }))`; branches are mutually exclusive. `ValueFormat` is `"auto" | NumericFormatString | UtcFormatString`; numeric precision is 0–12 and suffix is `f | % | e`.
+- Proposed (NOT IMPLEMENTED): locale-aware text formatting tokens.
 
 ### Value coverage — `encodeText`
 

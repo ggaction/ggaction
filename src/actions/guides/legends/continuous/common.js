@@ -10,6 +10,10 @@ import {
 } from "../../../../core/validation.js";
 import { formatTimeTick } from "../../../../grammar/ticks.js";
 import {
+  formatValue,
+  validateValueFormat
+} from "../../../../grammar/valueFormat.js";
+import {
   formatDistinctNumericSamples,
   sampleNumericRange
 } from "../../../../grammar/numeric.js";
@@ -28,7 +32,7 @@ const OPTIONS = [
   "direction", "columns", "titlePosition"
 ];
 const TEXT_OPTIONS = [
-  "offset", "color", "fontSize", "fontFamily", "fontWeight"
+  "offset", "color", "fontSize", "fontFamily", "fontWeight", "format"
 ];
 const BORDER_OPTIONS = [
   "color", "lineWidth", "padding", "background"
@@ -83,6 +87,9 @@ export function normalizeLegendTextOptions(value, label, defaults) {
     !Number.isFinite(result.fontWeight)
   ) {
     throw new TypeError(`${label} fontWeight must be a string or finite number.`);
+  }
+  if (Object.hasOwn(result, "format")) {
+    result.format = validateValueFormat(result.format, `${label} format`);
   }
   return result;
 }
@@ -263,10 +270,18 @@ export function sampleContinuousValues(domain, count) {
   );
 }
 
-export function formatContinuousValues(values, domain, fieldType) {
-  return fieldType === "temporal"
-    ? values.map(value => formatTimeTick(value, domain))
-    : formatDistinctNumericSamples(values);
+export function formatContinuousValues(values, domain, fieldType, format = "auto") {
+  const resolved = validateValueFormat(format, "Legend label format");
+  if (resolved === "auto") {
+    return fieldType === "temporal"
+      ? values.map(value => formatTimeTick(value, domain))
+      : formatDistinctNumericSamples(values);
+  }
+  return values.map(value => formatValue(value, {
+    format: resolved,
+    valueType: fieldType === "temporal" ? "temporal" : "quantitative",
+    label: "Legend label format"
+  }));
 }
 
 export function styleContinuousText(

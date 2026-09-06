@@ -86,7 +86,12 @@ function resolveOpacityLayout(program, config, scale) {
   const { plot, canvas } = resolveContinuousBounds(program);
   const vertical = ["right", "left"].includes(config.position);
   const values = sampleContinuousValues(scale.domain, config.count);
-  const texts = formatContinuousValues(values, scale.domain, "quantitative");
+  const texts = formatContinuousValues(
+    values,
+    scale.domain,
+    "quantitative",
+    config.labels.format
+  );
   const symbolExtent = config.symbol.radius + (config.symbol.strokeWidth ?? 0) / 2;
   const labelWidths = texts.map(text => measureTextWidth(text, config.labels));
   let symbols;

@@ -11,9 +11,9 @@ test("text content and precision types match their runtime vocabularies", async 
   const directory = await mkdtemp(path.join(tmpdir(), "ggaction-text-content-types-"));
   try {
     const file = path.join(directory, "text.mts");
-    const precisionCalls = [...Array(13).keys()].flatMap(precision => ["f", "%"].map(suffix =>
+    const precisionCalls = [...Array(13).keys()].flatMap(precision => ["f", "%", "e"].map(suffix =>
       `p.encodeText({ value: 0.125, format: ".${precision}${suffix}" });`));
-    const paddedCalls = [...Array(10).keys()].flatMap(precision => ["f", "%"].map(suffix =>
+    const paddedCalls = [...Array(10).keys()].flatMap(precision => ["f", "%", "e"].map(suffix =>
       `p.encodeText({ value: 0.125, format: ".0${precision}${suffix}" });`));
     await writeFile(file, `
 import type { ChartProgram, TextEncodingOptions, DatumPositionEncodingOptions, CreateMarkLabelsOptions, CreateAnnotationOptions, CreateReferenceLineOptions, CreateReferenceBandOptions } from ${JSON.stringify(path.join(root, "types/index.js"))};
@@ -81,6 +81,10 @@ p.encodeText({ content: "value" });
 p.encodeText({ content: "category" });
 p.encodeText({ field: "value" });
 p.encodeText({ value: "hello", format: "auto" });
+p.encodeText({ value: 1250, format: ".2e" });
+p.encodeText({ value: "2024-03-05T00:00:00Z", format: "%Y-%m-%d" });
+p.createLegend({ channels: ["color"], labels: { format: ".2e" } });
+p.editLegendLabels({ format: "%Y" });
 ${[...precisionCalls, ...paddedCalls].join("\n")}
 // @ts-expect-error Content and field are exclusive.
 p.encodeText({ content: "value", field: "value" });
@@ -100,6 +104,8 @@ p.encodeText({ value: 1, format: ".-1f" });
 p.encodeText({ value: 1, format: ".1.5f" });
 // @ts-expect-error Percent precision follows the same bounds.
 p.encodeText({ value: 1, format: ".13%" });
+// @ts-expect-error Scientific precision follows the same bounds.
+p.encodeText({ value: 1, format: ".13e" });
 `);
     const result = spawnSync(path.join(root, "node_modules/.bin/tsc"), ["--noEmit", "--strict", "--skipLibCheck",
       "--target", "ES2022", "--module", "NodeNext", "--moduleResolution", "NodeNext", file], { encoding: "utf8", cwd: root });

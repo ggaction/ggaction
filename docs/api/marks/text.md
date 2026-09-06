@@ -165,16 +165,22 @@ use this same renderer policy.
 ## `encodeText({ target?, field?, value?, content?, normalizeBy?, format? })`
 
 Provide exactly one of `field`, constant `value`, or semantic `content`.
-`format` defaults to `"auto"`; numeric formats include `".0f"`–`".12f"` and
-`".0%"`–`".12%"`. Calling `encodeText` again replaces the previous content
-assignment and preserves the previous format unless you supply one. Precision
-is an integer from 0 through 12; two-digit zero-padded forms such as `".01f"`
-are also accepted and mean the same as `".1f"`.
+`format` defaults to `"auto"`. Numeric formats are `".0f"`–`".12f"`,
+`".0%"`–`".12%"`, and `".0e"`–`".12e"`. UTC date formats compose `%Y`, `%m`,
+`%d`, and `%b`, such as `"%Y-%m-%d"`; `%%` emits a literal percent sign.
+Calling `encodeText` again replaces the previous content assignment and
+preserves the previous format unless you supply one. Precision is an integer
+from 0 through 12; two-digit zero-padded forms such as `".01f"` are also
+accepted and mean the same as `".1f"`.
 
 ```javascript
 bars
   .createTextMark({ dy: -4, align: "center" })
   .encodeText({ field: "value", format: ".1f" });
+
+events
+  .createTextMark()
+  .encodeText({ field: "date", format: "%b %Y" });
 ```
 
 Use semantic content when the label should describe the source's final items:

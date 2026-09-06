@@ -5648,16 +5648,22 @@ use this same renderer policy.
 ## `encodeText({ target?, field?, value?, content?, normalizeBy?, format? })`
 
 Provide exactly one of `field`, constant `value`, or semantic `content`.
-`format` defaults to `"auto"`; numeric formats include `".0f"`–`".12f"` and
-`".0%"`–`".12%"`. Calling `encodeText` again replaces the previous content
-assignment and preserves the previous format unless you supply one. Precision
-is an integer from 0 through 12; two-digit zero-padded forms such as `".01f"`
-are also accepted and mean the same as `".1f"`.
+`format` defaults to `"auto"`. Numeric formats are `".0f"`–`".12f"`,
+`".0%"`–`".12%"`, and `".0e"`–`".12e"`. UTC date formats compose `%Y`, `%m`,
+`%d`, and `%b`, such as `"%Y-%m-%d"`; `%%` emits a literal percent sign.
+Calling `encodeText` again replaces the previous content assignment and
+preserves the previous format unless you supply one. Precision is an integer
+from 0 through 12; two-digit zero-padded forms such as `".01f"` are also
+accepted and mean the same as `".1f"`.
 
 ```javascript
 bars
   .createTextMark({ dy: -4, align: "center" })
   .encodeText({ field: "value", format: ".1f" });
+
+events
+  .createTextMark()
+  .encodeText({ field: "date", format: "%b %Y" });
 ```
 
 Use semantic content when the label should describe the source's final items:
@@ -10236,7 +10242,10 @@ Top ticks point upward and right ticks point right. Labels and titles are
 placed outward from the selected edge. The Canvas margin must already be large
 enough; guide creation does not resize it.
 
-Numeric label formats are `.0f`, `.1f`, `.2f`, `.0%`, `.1%`, and `.2e`.
+Numeric label formats use `.0f` through `.12f` for fixed decimals, `.0%`
+through `.12%` for percentages, and `.0e` through `.12e` for scientific
+notation. A leading zero in a one-digit precision, such as `.01f`, is accepted
+and means `.1f`.
 UTC time formats compose `%Y` (year), `%m` (two-digit month), `%d` (two-digit
 day), and `%b` (English abbreviated month) with literals, for example `%b %Y`,
 `%Y-%m`, or `%Y/%m/%d`; use `%%` for a literal percent sign. Every time format
@@ -10897,6 +10906,15 @@ including `editLegendLayout`; `"left"` is unsupported.
 
 Their requested sample `count` is limited to the inclusive range `2`–`10,000`.
 
+Continuous legend labels accept the same explicit value formats as axes and
+Text: `.0f`–`.12f`, `.0%`–`.12%`, `.0e`–`.12e`, or a compatible UTC pattern
+using `%Y`, `%m`, `%d`, `%b`, and `%%`. Set the token in `labels.format` on
+creation or editing, including `editLegendLabels({ format: ".2e" })`. Numeric
+formats require a quantitative scale and UTC formats require a temporal scale.
+The default `"auto"` keeps the family's tick-aware label selection. Explicit
+formats are exact, so nearby samples may intentionally display the same text.
+Categorical legends keep their identity labels and accept `"auto"` only.
+
 For a `quantize`, `quantile`, or `threshold` point-color scale, the same call
 creates ordered swatches and concrete interval labels. Interval
 legends support all four positions with `layout: "edge"`. Side legends use a
@@ -11181,7 +11199,7 @@ legend component should change:
 ```javascript
 program
   .editLegendLayout({ position: "left", offset: 12 })
-  .editLegendLabels({ color: "#475569", fontSize: 11 })
+  .editLegendLabels({ color: "#475569", fontSize: 11, format: ".2e" })
   .editLegendTitle({ title: "Country", fontWeight: 700 })
   .editLegendSymbols({ count: 5 })
   .editLegendBorder({
@@ -11192,7 +11210,7 @@ program
 | Action | Accepted component options |
 | --- | --- |
 | `editLegendLayout` | `position`, `layout`, `align`, `direction`, `columns`, `offset`, `titlePosition`, `itemGap` |
-| `editLegendLabels` | `color`, `fontSize`, `fontFamily`, `fontWeight` |
+| `editLegendLabels` | `offset`, `color`, `fontSize`, `fontFamily`, `fontWeight`, continuous `format` |
 | `editLegendTitle` | `title`, `color`, `fontSize`, `fontFamily`, `fontWeight` |
 | `editLegendSymbols` | `symbol`, `count`, `gradient` |
 | `editLegendBorder` | required `border` boolean or border style object |
@@ -13734,8 +13752,9 @@ branch; remove it with `removeEncoding({ channel: "angle" })`.
 encodeText({ target?, field?, value?, format? })
 ```
 
-Assign exactly one field or constant value to a text mark. `format` accepts
-`"auto"` or fixed-decimal tokens from `".0f"` through `".12f"`. Reassignment
+Assign exactly one field, constant value, or semantic content to a text mark.
+`format` accepts `"auto"`, `.0`–`.12` precision with `f`, `%`, or `e`, or a UTC
+pattern composed from `%Y`, `%m`, `%d`, `%b`, `%%`, and literals. Reassignment
 replaces the previous content branch. [Text marks](./api/marks/text/)
 
 ## `encodeXOffset`
@@ -14546,7 +14565,7 @@ editLegendLayout({
   target?, position?, layout?, align?, direction?, columns?, offset?,
   titlePosition?, itemGap?
 })
-editLegendLabels({ target?, color?, fontSize?, fontFamily?, fontWeight? })
+editLegendLabels({ target?, offset?, color?, fontSize?, fontFamily?, fontWeight?, format? })
 editLegendTitle({
   target?, title?, color?, fontSize?, fontFamily?, fontWeight?
 })
@@ -14764,10 +14783,10 @@ editYAxisLabels({
 ```
 
 Axis `position` is `"bottom" | "top"` for x and `"left" | "right"` for y.
-Label `format` accepts `"auto"`, `{ decimals }`, numeric `.0f/.1f/.2f/.0%/.1%/.2e`,
-or a UTC sequence of `%Y/%m/%d/%b` directives and literals when compatible with
-the resolved scale. Use `%%` for a literal percent; unknown or dangling
-directives reject.
+Label `format` accepts `"auto"`, `{ decimals }`, `.0`–`.12` precision with
+`f`, `%`, or `e`, or a UTC sequence of `%Y/%m/%d/%b` directives and literals
+when compatible with the resolved scale. Use `%%` for a literal percent;
+unknown or dangling directives reject.
 
 ## Tick/label groups and axis titles
 

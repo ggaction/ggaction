@@ -691,6 +691,13 @@ async function testNodeConsumer(directory) {
     assert.equal(editedContent.graphicSpec.objects.sizeLegendLabels.items[0].properties.fill, "red");
     assert.equal(editedContent.graphicSpec.objects.sizeLegendTitle.properties.fontWeight, 900);
     assert.equal(editedContent.graphicSpec.objects.sizeLegendLabels.items[0].properties.fontWeight, 700);
+    const formattedCombined = legendContentBase.createLegend({
+      channels: ["color", "size"], count: 3, labels: { format: ".1f" }
+    });
+    assert.equal(formattedCombined.guideConfigs.legend.color.labels.format, undefined);
+    assert.equal(formattedCombined.guideConfigs.legend.size.labels.format, ".1f");
+    assert.deepEqual(formattedCombined.graphicSpec.objects.sizeLegendLabels.items.map(item =>
+      item.properties.text), ["4.0", "6.5", "9.0"]);
     assert.deepEqual(editedContent.editLegend({ channels: ["shape"] }).guideConfigs.legend.series.channels, ["shape"]);
     assert.match(renderToSVG(editedContent), /<svg /);
     const hiddenContent = legendContentBase.createLegend({ count: 3 }).editLegend({ title: false });
@@ -738,6 +745,10 @@ async function testNodeConsumer(directory) {
       .createLegend({ channels: ["size"] }).editLegend({ count: 3, title: "Mass", labels: { fontWeight: 700 } });
     assert.deepEqual(editedSizeLegend.graphicSpec.objects.sizeLegendSymbols.items.map(item => item.properties.radius),
       [2, Math.sqrt(20), 6]);
+    const formattedSizeLegend = editedSizeLegend.editLegendLabels({ format: ".1e", offset: 20 });
+    assert.deepEqual(formattedSizeLegend.graphicSpec.objects.sizeLegendLabels.items.map(item => item.properties.text),
+      ["1.0e+1", "2.0e+1", "3.0e+1"]);
+    assert.equal(formattedSizeLegend.guideConfigs.legend.size.labels.offset, 20);
     const hiddenSizeLegend = editedSizeLegend.editLegendTitle({ title: false }).editCanvas({ width: 740 });
     assert.equal(hiddenSizeLegend.graphicSpec.objects.sizeLegendTitle, undefined);
     assert.equal(hiddenSizeLegend.editLegendTitle({ title: "auto" }).graphicSpec.objects.sizeLegendTitle.properties.text, "m");
@@ -990,6 +1001,12 @@ async function testNodeConsumer(directory) {
     assert.deepEqual(semanticLabels.filterMarks({ target: "piePlot", field: "category", op: "eq", value: "B" })
       .graphicSpec.objects.text.items.map(i => i.properties.text), ["100.0%"]);
     assert.deepEqual(semanticLabels.encodeText({ content: "value", format: "auto" }).graphicSpec.objects.text.items.map(i => i.properties.text), ["2", "6"]);
+    assert.deepEqual(semanticLabels.encodeText({ content: "value", format: ".2e" }).graphicSpec.objects.text.items.map(i => i.properties.text), ["2.00e+0", "6.00e+0"]);
+    const utcText = chart().createCanvas({ width: 320, height: 200, margin: 30 })
+      .createData({ values: [{ x: 1, y: 2, date: "2024-03-05T00:00:00Z" }] })
+      .createPointMark().encodeX({ field: "x" }).encodeY({ field: "y" })
+      .createTextMark({ source: "point" }).encodeText({ field: "date", format: "%Y-%m-%d" });
+    assert.deepEqual(utcText.graphicSpec.objects.text.items.map(i => i.properties.text), ["2024-03-05"]);
 
     const textSource = chart().createCanvas({ width: 400, height: 300, margin: 40 })
       .createData({ values: [{ x: 1, y: 2, label: "Alpha" }, { x: 2, y: 4, label: "Beta" }] })
@@ -2262,6 +2279,8 @@ async function testTypeScriptConsumer(directory) {
     chart().encodeText({ content: "share", normalizeBy: "category", format: ".12%" });
     chart().encodeText({ content: "category" });
     chart().encodeText({ value: 0.5, format: ".01%" });
+    chart().encodeText({ value: 1250, format: ".2e" });
+    chart().encodeText({ value: "2024-03-05T00:00:00Z", format: "%Y-%m-%d" });
     // @ts-expect-error Precision cannot exceed twelve.
     chart().encodeText({ value: 1, format: ".13f" });
     // @ts-expect-error Precision cannot be negative.
@@ -2287,10 +2306,14 @@ async function testTypeScriptConsumer(directory) {
       .createData({ values: [{ x: 0, y: 0, m: 0 }, { x: 1, y: 1, m: 1 }] })
       .createPointMark().encodeX({ field: "x" }).encodeY({ field: "y" }).encodeOpacity({ field: "m" });
     opacityLegendTypes.createLegend({ channels: ["opacity"], symbol: { type: "point", radius: 9, fill: "red", stroke: "black", strokeWidth: 2 } })
-      .editLegend({ symbol: { radius: 11 } }).editLegendSymbols({ symbol: { type: "point", radius: 13 } });
+      .editLegend({ symbol: { radius: 11 }, labels: { format: ".1%" } })
+      .editLegendSymbols({ symbol: { type: "point", radius: 13 } })
+      .editLegendLabels({ offset: 10, format: ".2e" });
     opacityLegendTypes.createGuides({ legend: { channels: ["opacity"], symbol: { radius: 9 } } });
     // @ts-expect-error Opacity symbol radius must be numeric.
     opacityLegendTypes.createLegend({ channels: ["opacity"], symbol: { radius: "9" } });
+    // @ts-expect-error Legend precision cannot exceed twelve.
+    opacityLegendTypes.createLegend({ channels: ["opacity"], labels: { format: ".13e" } });
   `);
   await writeFile(path.join(directory, "tsconfig.json"), `${JSON.stringify({
     compilerOptions: {

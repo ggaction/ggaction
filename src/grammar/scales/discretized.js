@@ -1,6 +1,7 @@
 import { cloneAndFreeze } from "../../core/immutable.js";
 import { validateGeneratedItemLimit } from "../../core/validation.js";
 import { interpolateNumber } from "../numeric.js";
+import { formatValue, validateValueFormat } from "../valueFormat.js";
 import { resolveColorRange, validateColorRange } from "./appearance.js";
 import { SCALE_ROLES, validateScaleTypeForRole } from "./types.js";
 
@@ -162,17 +163,22 @@ export function mapDiscretizedColors(values, scale) {
   }));
 }
 
-export function formatDiscretizedIntervals(thresholds) {
+export function formatDiscretizedIntervals(thresholds, format = "auto") {
   nondecreasing(thresholds, "Discretized color thresholds");
+  const resolvedFormat = validateValueFormat(format, "Legend label format");
   let resolution = Infinity;
   for (let index = 1; index < thresholds.length; index += 1) {
     const gap = thresholds[index] - thresholds[index - 1];
     if (Number.isFinite(gap) && gap > 0) resolution = Math.min(resolution, gap);
   }
-  let labels = thresholds.map(value =>
-    Number.isInteger(value) ? String(value) : value.toFixed(1)
-  );
-  if (thresholds.some((value, index) => {
+  let labels = resolvedFormat === "auto"
+    ? thresholds.map(value => Number.isInteger(value) ? String(value) : value.toFixed(1))
+    : thresholds.map(value => formatValue(value, {
+        format: resolvedFormat,
+        valueType: "quantitative",
+        label: "Legend label format"
+      }));
+  if (resolvedFormat === "auto" && thresholds.some((value, index) => {
     const rounded = Number(labels[index]);
     return value !== 0 && rounded === 0 ||
       index > 0 && value !== thresholds[index - 1] &&

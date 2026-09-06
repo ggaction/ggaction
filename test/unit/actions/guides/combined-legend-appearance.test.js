@@ -45,3 +45,21 @@ test("retained standalone size styles remain independent when joining a categori
   }
   assert.equal(base().createLegend({ channels: ["size"] }).graphicSpec.objects.sizeLegendTitle.properties.fill, "#0f172a");
 });
+
+test("formats only the quantitative block of a combined categorical and size legend", () => {
+  const created = base().createLegend({
+    channels: ["color", "size"],
+    count: 3,
+    labels: { format: ".1e" }
+  });
+  assert.deepEqual(created.graphicSpec.objects.colorLegendLabels.items.map(item => item.properties.text), ["A", "B"]);
+  assert.deepEqual(created.graphicSpec.objects.sizeLegendLabels.items.map(item => item.properties.text),
+    ["0.0e+0", "5.0e+0", "1.0e+1"]);
+  const edited = created.editLegendLabels({ format: ".1f" });
+  assert.deepEqual(edited.graphicSpec.objects.colorLegendLabels.items.map(item => item.properties.text), ["A", "B"]);
+  assert.deepEqual(edited.graphicSpec.objects.sizeLegendLabels.items.map(item => item.properties.text),
+    ["0.0", "5.0", "10.0"]);
+  assert.throws(() => base().removeEncoding({ channel: "size" }).createLegend({
+    channels: ["color"], labels: { format: ".1f" }
+  }), /Unknown createLegend\.labels option/);
+});

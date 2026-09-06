@@ -93,7 +93,10 @@ type TitleWrap = "word" | "character";
 - Point의 자동 typed recipe는 selected shape를 설명하며, selected color가 있을 때만 matching line을 합친다.
   Config의 inferredSymbol이 omission/auto와 caller recipe를 구분한다. Edit symbol auto, encoding 제거·재연결, matching companion mark 추가·제거와 Canvas/scale/data dependency replay는
   자동 recipe를 재추론하고 concrete symbol type·순서를 reconcile한다. Explicit recipe는 보존한다. Recipe의 layer 순서는 생성과 편집 모두 실제 drawing order다.
-- `labels`, `titleStyle`: color/fontSize/fontFamily/fontWeight style object. Labels만 offset을 받으며 모든 family의 titleStyle.offset은 거절한다.
+- `labels`, `titleStyle`: color/fontSize/fontFamily/fontWeight style object. Labels만 offset을 받는다. Continuous
+  gradient/opacity/size/stroke-width/interval labels는 `format?: ValueFormat`도 받으며 quantitative에는 numeric,
+  temporal에는 UTC token만 허용한다. Categorical identity label은 `"auto"`만 허용한다. 모든 family의
+  titleStyle.offset/format은 거절한다.
 - `itemGap`: positive finite number; position별 default spacing을 override한다.
 - `border`: `false | true | { color?, lineWidth?, padding?, background? }`; false가 default이며 true는
   default bordered background를 만든다.
@@ -137,7 +140,7 @@ type TitleWrap = "word" | "character";
 
 ### Formal values — `createLegend`
 
-- Implemented: `createLegend({ target?: UserId; channels?: readonly LegendChannel[]; position?: LegendPosition; layout?: "edge" | "legacy-bottom"; align?: LegendAlign; direction?: LegendDirection; columns?: PositiveInteger; offset?: NonNegativeFinite; titlePosition?: "top" | "left"; title?: NonEmptyString; symbol?: "auto" | LegendSymbolLayer | { layers: readonly LegendSymbolLayer[] }; labels?: TextStyle; titleStyle?: TextStyle; itemGap?: PositiveFinite; border?: LegendBorder; count?: IntegerAtLeast2; gradient?: { length?: PositiveFinite; thickness?: PositiveFinite }; order?: "scale" | { values: readonly CategoryValue[] } | { channel: "x"|"y"|"theta" } } = {})`
+- Implemented: `createLegend({ target?: UserId; channels?: readonly LegendChannel[]; position?: LegendPosition; layout?: "edge" | "legacy-bottom"; align?: LegendAlign; direction?: LegendDirection; columns?: PositiveInteger; offset?: NonNegativeFinite; titlePosition?: "top" | "left"; title?: NonEmptyString; symbol?: "auto" | LegendSymbolLayer | { layers: readonly LegendSymbolLayer[] }; labels?: LegendTextOptions; titleStyle?: TextStyle; itemGap?: PositiveFinite; border?: LegendBorder; count?: IntegerAtLeast2; gradient?: { length?: PositiveFinite; thickness?: PositiveFinite }; order?: "scale" | { values: readonly CategoryValue[] } | { channel: "x"|"y"|"theta" } } = {})`
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
@@ -296,8 +299,9 @@ encoding removal/recreation, combined legend와 Polar 가이드를 검증한다.
 
 ## `editLegendLabels`
 
-- Signature: `editLegendLabels({ target?, color?, fontSize?, fontFamily?, fontWeight? })`.
-- Label style만 `editLegend({ labels })`로 전달한다. 최소 한 style change가 필요하다.
+- Signature: `editLegendLabels({ target?, offset?, color?, fontSize?, fontFamily?, fontWeight?, format? })`.
+- Label style/format만 `editLegend({ labels })`로 전달한다. 최소 한 change가 필요하다. `format`은 continuous
+  family에서만 지원하고 explicit token의 결과가 겹치더라도 그대로 유지한다.
 
 ### Formal values — `editLegendLabels`
 
@@ -306,7 +310,7 @@ encoding removal/recreation, combined legend와 Polar 가이드를 검증한다.
 
 ### Value coverage — `editLegendLabels`
 
-- ✅ Covered: partial style merge, shared categorical/size application, trace and invalid option rejection.
+- ✅ Covered: partial style merge, offset and continuous format, shared categorical/size application, trace and invalid option rejection.
 - No proposal: label text는 resolved domain이 소유하며 appearance action으로 교체하지 않는다.
   Empty-string nominal values는 domain에서는 보존하고 visible label은 deterministic `(empty)`로 표시한다.
 - Evidence: `test/unit/actions/guides/legend-edit-actions.test.js`.

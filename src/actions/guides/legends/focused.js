@@ -28,7 +28,7 @@ const editLegendLayout = makeFocusedLegendEdit({
 
 const editLegendLabels = makeFocusedLegendEdit({
   name: "editLegendLabels",
-  options: ["color", "fontSize", "fontFamily", "fontWeight"],
+  options: ["offset", "color", "fontSize", "fontFamily", "fontWeight", "format"],
   map: ({ target, ...labels }) => ({ target, labels })
 });
 

@@ -179,7 +179,10 @@ Top ticks point upward and right ticks point right. Labels and titles are
 placed outward from the selected edge. The Canvas margin must already be large
 enough; guide creation does not resize it.
 
-Numeric label formats are `.0f`, `.1f`, `.2f`, `.0%`, `.1%`, and `.2e`.
+Numeric label formats use `.0f` through `.12f` for fixed decimals, `.0%`
+through `.12%` for percentages, and `.0e` through `.12e` for scientific
+notation. A leading zero in a one-digit precision, such as `.01f`, is accepted
+and means `.1f`.
 UTC time formats compose `%Y` (year), `%m` (two-digit month), `%d` (two-digit
 day), and `%b` (English abbreviated month) with literals, for example `%b %Y`,
 `%Y-%m`, or `%Y/%m/%d`; use `%%` for a literal percent sign. Every time format

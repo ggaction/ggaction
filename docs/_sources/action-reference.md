@@ -1100,8 +1100,9 @@ branch; remove it with `removeEncoding({ channel: "angle" })`.
 encodeText({ target?, field?, value?, format? })
 ```
 
-Assign exactly one field or constant value to a text mark. `format` accepts
-`"auto"` or fixed-decimal tokens from `".0f"` through `".12f"`. Reassignment
+Assign exactly one field, constant value, or semantic content to a text mark.
+`format` accepts `"auto"`, `.0`–`.12` precision with `f`, `%`, or `e`, or a UTC
+pattern composed from `%Y`, `%m`, `%d`, `%b`, `%%`, and literals. Reassignment
 replaces the previous content branch. [Text marks](../api/marks/text.md)
 
 ### `encodeXOffset`
@@ -1848,7 +1849,7 @@ editLegendLayout({
   target?, position?, layout?, align?, direction?, columns?, offset?,
   titlePosition?, itemGap?
 })
-editLegendLabels({ target?, color?, fontSize?, fontFamily?, fontWeight? })
+editLegendLabels({ target?, offset?, color?, fontSize?, fontFamily?, fontWeight?, format? })
 editLegendTitle({
   target?, title?, color?, fontSize?, fontFamily?, fontWeight?
 })
@@ -2058,10 +2059,10 @@ editYAxisLabels({
 ```
 
 Axis `position` is `"bottom" | "top"` for x and `"left" | "right"` for y.
-Label `format` accepts `"auto"`, `{ decimals }`, numeric `.0f/.1f/.2f/.0%/.1%/.2e`,
-or a UTC sequence of `%Y/%m/%d/%b` directives and literals when compatible with
-the resolved scale. Use `%%` for a literal percent; unknown or dangling
-directives reject.
+Label `format` accepts `"auto"`, `{ decimals }`, `.0`–`.12` precision with
+`f`, `%`, or `e`, or a UTC sequence of `%Y/%m/%d/%b` directives and literals
+when compatible with the resolved scale. Use `%%` for a literal percent;
+unknown or dangling directives reject.
 
 ### Tick/label groups and axis titles
 

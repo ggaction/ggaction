@@ -60,7 +60,12 @@ function resolveGradientLayout(program, config, scale) {
     values.push(scale.midpoint);
     values.sort((a, b) => scale.domain[1] > scale.domain[0] ? a - b : b - a);
   }
-  const texts = formatContinuousValues(values, scale.domain, config.fieldType);
+  const texts = formatContinuousValues(
+    values,
+    scale.domain,
+    config.fieldType,
+    config.labels.format
+  );
   const fractions = values.map((value, index) => scale.midpoint === undefined
     ? index / (values.length - 1)
     : inverseLerp(value, ...scale.domain));

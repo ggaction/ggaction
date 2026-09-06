@@ -92,7 +92,12 @@ export function resolveSizeLegendLayout(program, config) {
   const radius = Math.max(...radii);
   const width = Math.max(32, radius * 2);
   const { plot, canvas } = resolveContinuousBounds(program);
-  const text = formatContinuousValues(values, scale.domain, "quantitative");
+  const text = formatContinuousValues(
+    values,
+    scale.domain,
+    "quantitative",
+    config.labels.format
+  );
   const layout = resolveLegendItemLayout(plot, { ...config, ...geometry, labels, titleStyle }, text, {
     width, height: radius * 2,
     itemBounds: radii.map(r => ({ left: width / 2 - r, right: width / 2 + r, top: -r, bottom: r }))

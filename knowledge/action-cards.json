@@ -1220,7 +1220,7 @@
         {
           "name": "format",
           "required": false,
-          "type": "TextFormat | undefined"
+          "type": "ValueFormat | undefined"
         },
         {
           "name": "field",
@@ -1346,7 +1346,7 @@
         {
           "name": "format",
           "required": false,
-          "type": "TextFormat | undefined"
+          "type": "ValueFormat | undefined"
         },
         {
           "name": "layout",
@@ -4288,7 +4288,7 @@
       "name": "encodeText",
       "layer": "user-facing",
       "domain": "encodings",
-      "summary": "Assign exactly one field or constant value to a text mark.",
+      "summary": "Assign exactly one field, constant value, or semantic content to a text mark.",
       "signature": "encodeText(options: TextEncodingOptions): ChartProgram;",
       "intents": [
         "encode text",
@@ -4321,7 +4321,7 @@
         {
           "name": "format",
           "required": false,
-          "type": "TextFormat | undefined"
+          "type": "ValueFormat | undefined"
         },
         {
           "name": "field",
@@ -8854,6 +8854,11 @@
           "type": "string | undefined"
         },
         {
+          "name": "offset",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
           "name": "color",
           "required": false,
           "type": "string | undefined"
@@ -8872,12 +8877,17 @@
           "name": "fontWeight",
           "required": false,
           "type": "string | number | undefined"
+        },
+        {
+          "name": "format",
+          "required": false,
+          "type": "ValueFormat | undefined"
         }
       ],
       "callPatterns": [
-        "editLegendLabels({ target?, color?, fontSize?, fontFamily?, fontWeight? })"
+        "editLegendLabels({ target?, offset?, color?, fontSize?, fontFamily?, fontWeight?, format? })"
       ],
-      "snippet": "program.editLegendLabels({ color: \"#f28e2b\" })",
+      "snippet": "program.editLegendLabels({ offset: 1 })",
       "errors": [],
       "route": "/reference/actions/guides/#focused-legend-edits"
     },

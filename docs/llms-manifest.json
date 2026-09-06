@@ -923,8 +923,8 @@
         "removelabellayoutoptions",
         "related"
       ],
-      "bytes": 12708,
-      "sha256": "240038c0e7d492f83c1e18628987f073c2e9dbc66d224d962b17f7743a5ea7e3"
+      "bytes": 12914,
+      "sha256": "0a2ee6b6ee7a7fa70972fff856d400dc25d7c18c57542bb51e49f051def4b01a"
     },
     {
       "order": 60,
@@ -1480,8 +1480,8 @@
         "errors-and-limitations",
         "related"
       ],
-      "bytes": 16431,
-      "sha256": "244bb1d19288b1710581f00e9dc46a2992f3f4562d63c25e099f7748d23da4fb"
+      "bytes": 16600,
+      "sha256": "d8c4e6e7f611aeceda7f113b06ebe83313ec4938a282a7ac016df10f95d70de3"
     },
     {
       "order": 94,
@@ -1541,8 +1541,8 @@
         "continuous-color-and-opacity",
         "related"
       ],
-      "bytes": 4685,
-      "sha256": "34e7189913350ee25c7c199748d45891fc299d652aab3f7b72a344a5792ee7a1"
+      "bytes": 5305,
+      "sha256": "6799e5ca39b18cfc667f7a977b9e2d2a40c7b54f5291b9f3857a82bb57cca7be"
     },
     {
       "order": 98,
@@ -1572,8 +1572,8 @@
         "removing-a-legend",
         "related"
       ],
-      "bytes": 11157,
-      "sha256": "7aa680089cbf7d58375bb808aef41dd3fa5d28fe96f34e18d9274de52c60b8db"
+      "bytes": 11203,
+      "sha256": "869c8b0bd9bc3169eb66f1a90958533216c843a547955eddd10c578da0a715f6"
     },
     {
       "order": 100,
@@ -1937,8 +1937,8 @@
         "encodebarwidth",
         "related"
       ],
-      "bytes": 17501,
-      "sha256": "242149f41e92f788733b9782b62ccc679919732ab42b75b9cca2206fb5dc7088"
+      "bytes": 17587,
+      "sha256": "ed6549a7b8564ab25065595546faae00c0edd81d9070c0cef7b6c392d1dda579"
     },
     {
       "order": 118,
@@ -2011,8 +2011,8 @@
         "removetitle",
         "related"
       ],
-      "bytes": 12666,
-      "sha256": "844f907b0beba47dfc97cbc5fd30a67b7cc039827e7789461e290c680b0219f3"
+      "bytes": 12684,
+      "sha256": "28ee4502a931b2443e907cb07a82be0aef93392fa5d9cffa59ba3f77bdfe3c96"
     },
     {
       "order": 120,
@@ -2033,8 +2033,8 @@
         "directional-grids",
         "related"
       ],
-      "bytes": 8608,
-      "sha256": "a106c796724068c28ddb5934e106be9e84dab93ebe664aaef4c798b25e7228af"
+      "bytes": 8619,
+      "sha256": "1b70fcbefdaeecec49de35a00abc52d0881f379ead69fdc8f4fdd799406c7318"
     },
     {
       "order": 121,

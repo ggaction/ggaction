@@ -75,6 +75,15 @@ including `editLegendLayout`; `"left"` is unsupported.
 
 Their requested sample `count` is limited to the inclusive range `2`–`10,000`.
 
+Continuous legend labels accept the same explicit value formats as axes and
+Text: `.0f`–`.12f`, `.0%`–`.12%`, `.0e`–`.12e`, or a compatible UTC pattern
+using `%Y`, `%m`, `%d`, `%b`, and `%%`. Set the token in `labels.format` on
+creation or editing, including `editLegendLabels({ format: ".2e" })`. Numeric
+formats require a quantitative scale and UTC formats require a temporal scale.
+The default `"auto"` keeps the family's tick-aware label selection. Explicit
+formats are exact, so nearby samples may intentionally display the same text.
+Categorical legends keep their identity labels and accept `"auto"` only.
+
 For a `quantize`, `quantile`, or `threshold` point-color scale, the same call
 creates ordered swatches and concrete interval labels. Interval
 legends support all four positions with `layout: "edge"`. Side legends use a

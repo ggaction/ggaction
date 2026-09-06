@@ -147,7 +147,7 @@ legend component should change:
 ```javascript
 program
   .editLegendLayout({ position: "left", offset: 12 })
-  .editLegendLabels({ color: "#475569", fontSize: 11 })
+  .editLegendLabels({ color: "#475569", fontSize: 11, format: ".2e" })
   .editLegendTitle({ title: "Country", fontWeight: 700 })
   .editLegendSymbols({ count: 5 })
   .editLegendBorder({
@@ -158,7 +158,7 @@ program
 | Action | Accepted component options |
 | --- | --- |
 | `editLegendLayout` | `position`, `layout`, `align`, `direction`, `columns`, `offset`, `titlePosition`, `itemGap` |
-| `editLegendLabels` | `color`, `fontSize`, `fontFamily`, `fontWeight` |
+| `editLegendLabels` | `offset`, `color`, `fontSize`, `fontFamily`, `fontWeight`, continuous `format` |
 | `editLegendTitle` | `title`, `color`, `fontSize`, `fontFamily`, `fontWeight` |
 | `editLegendSymbols` | `symbol`, `count`, `gradient` |
 | `editLegendBorder` | required `border` boolean or border style object |

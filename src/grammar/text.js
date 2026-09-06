@@ -1,5 +1,10 @@
 import { cloneAndFreeze } from "../core/immutable.js";
 import { validateConcreteGraphicValue } from "./schemas/concreteGraphic.js";
+import {
+  formatValue,
+  isUtcValueFormat,
+  validateValueFormat
+} from "./valueFormat.js";
 
 export function isSourceOwnedText(layer) {
   return layer?.mark?.type === "text" && layer.source !== undefined;
@@ -18,20 +23,13 @@ export const DEFAULT_TEXT_MARK = cloneAndFreeze({
   dy: 0
 });
 
-const FIXED_FORMAT = /^\.(\d{1,2})(f|%)$/;
-
 export function validateTextFormat(format) {
-  if (format === undefined || format === "auto") return format ?? "auto";
-  if (typeof format !== "string" || !FIXED_FORMAT.test(format)) {
+  if (format !== undefined && typeof format !== "string") {
     throw new Error(
-      'Text format must be "auto" or a fixed-decimal/percent token such as ".1f" or ".1%".'
+      'Text format must be "auto" or a supported numeric/UTC format string.'
     );
   }
-  const decimals = Number(format.match(FIXED_FORMAT)[1]);
-  if (decimals > 12) {
-    throw new RangeError("Text fixed-decimal/percent format supports at most 12 decimals.");
-  }
-  return format;
+  return validateValueFormat(format, "Text format");
 }
 
 export function formatTextValue(value, format = "auto") {
@@ -41,16 +39,11 @@ export function formatTextValue(value, format = "auto") {
     const text = String(value);
     return text.length === 0 ? undefined : text;
   }
-  if (!Number.isFinite(value)) {
-    throw new TypeError(`Text format "${resolved}" requires a finite number.`);
-  }
-  const decimals = Number(resolved.match(FIXED_FORMAT)[1]);
-  if (resolved.endsWith("%")) {
-    const percentage = value * 100;
-    if (!Number.isFinite(percentage)) throw new RangeError("Text percent format overflow.");
-    return `${percentage.toFixed(decimals)}%`;
-  }
-  return value.toFixed(decimals);
+  return formatValue(value, {
+    format: resolved,
+    valueType: isUtcValueFormat(resolved) ? "temporal" : "quantitative",
+    label: "Text format"
+  });
 }
 
 export function normalizeTextMarkConfig(options, base = DEFAULT_TEXT_MARK) {

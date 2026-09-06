@@ -36,6 +36,10 @@ test("edits standalone size content and replays exact equal-area samples and sty
   assert.equal(replay.graphicSpec.objects.sizeLegendLabels.items[0].properties.fill, "#123456");
   assert.equal(JSON.stringify(p), snapshot);
   assert.deepEqual(args.labels, { color: "#123456", fontWeight: 700 });
+  const formatted = p.editLegendLabels({ format: ".1e", offset: 20 });
+  assert.deepEqual(props(formatted, "sizeLegendLabels", "text"), ["1.0e+1", "1.5e+1", "2.0e+1", "2.5e+1", "3.0e+1"]);
+  assert.equal(formatted.guideConfigs.legend.size.labels.offset, 20);
+  assert.equal(formatted.guideConfigs.legend.size.labels.format, ".1e");
 });
 
 test("hides and restores the size title through focused edits without recreating samples", () => {
@@ -77,7 +81,8 @@ test("rejects unsupported standalone size options and invalid proposals atomical
   const p = base();
   const failures = [{}, { count: 1 }, { count: 3.5 }, { count: 10001 }, { title: "" },
     { count: 3, labels: { fontSize: 0 } }, { labels: { offset: -1 } },
-    { titleStyle: { offset: 10 } }, { target: "other", count: 3 }, { target: null, count: 3 }];
+    { titleStyle: { offset: 10 } }, { labels: { format: { decimals: 1 } } },
+    { target: "other", count: 3 }, { target: null, count: 3 }];
   for (const option of ["symbol", "gradient", "order"]) {
     failures.push({ [option]: {} });
   }

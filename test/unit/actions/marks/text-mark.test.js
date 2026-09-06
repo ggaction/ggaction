@@ -63,6 +63,21 @@ test("supports constant content, formatting, reassignment, and focused edits", (
   assert.equal(numeric.semanticSpec.layers.at(-1).encoding.text.datum, undefined);
 });
 
+test("formats Text with the shared scientific and UTC vocabulary", () => {
+  const base = chart().createCanvas().createData({ values: [{ x: 1250, y: 1, date: "2024-03-05T00:00:00.000Z" }] })
+    .createTextMark({ data: "data" })
+    .encodeX({ field: "x" })
+    .encodeY({ field: "y" });
+  const scientific = base.encodeText({ field: "x", format: ".2e" });
+  assert.equal(scientific.graphicSpec.objects.text.items[0].properties.text, "1.25e+3");
+  const utc = scientific.encodeText({ field: "date", format: "%Y-%m-%d" });
+  assert.equal(utc.graphicSpec.objects.text.items[0].properties.text, "2024-03-05");
+  assert.throws(
+    () => base.encodeText({ field: "date", format: ".1f" }),
+    /requires a finite number/
+  );
+});
+
 test("keeps text authoring order-independent", () => {
   const data = chart()
     .createCanvas({ width: 300, height: 200, margin: 20 })

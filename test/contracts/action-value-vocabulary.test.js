@@ -191,7 +191,9 @@ test("keeps accepted planned capabilities linked and non-public", () => {
   assert.match(currentCorpus, /x bottom\/top default `0`/);
   assert.match(currentCorpus, /y right default\s+`Math\.PI \/ 2`/);
   assert.match(currentCorpus, /type AxisFormatString =/);
-  assert.match(currentCorpus, /"\.0f" \| "\.1f" \| "\.2f"/);
+  assert.match(currentCorpus, /type NumericFormatString =/);
+  assert.match(currentCorpus, /ValueFormatPrecision/);
+  assert.match(currentCorpus, /"f" \| "%" \| "e"/);
   assert.doesNotMatch(plannedCorpus, /## mirrored Cartesian axis positions/);
   assert.doesNotMatch(plannedCorpus, /## axis label format strings/);
   // Combined edge behavior is exercised by combined-legend-edges.test.js.
