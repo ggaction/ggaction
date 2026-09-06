@@ -535,6 +535,21 @@ export interface DatasetComputedTransform {
   readonly as: string;
   readonly expression: ComputedExpression;
 }
+export type StackDataMode = "stack" | "fill" | "center" | "diverging";
+export interface StackDataOutputFields {
+  start?: string;
+  end?: string;
+  value?: string;
+  share?: string;
+}
+export interface DatasetStackTransform {
+  readonly type: "stack";
+  readonly category: string;
+  readonly group: string;
+  readonly value: string;
+  readonly mode: StackDataMode;
+  readonly as: Required<StackDataOutputFields>;
+}
 export type DatasetTransform =
   | DatasetBinTransform
   | DatasetBin2DTransform
@@ -546,6 +561,7 @@ export type DatasetTransform =
   | DatasetHorizonTransform
   | DatasetIntervalTransform
   | DatasetSummaryTransform
+  | DatasetStackTransform
   | DatasetTimeUnitTransform
   | DatasetWindowTransform;
 export interface CreateDerivedDataOptions {
@@ -1597,6 +1613,15 @@ export interface ComputedDataOptions {
   source?: string;
   as: string;
   expression: ComputedExpression;
+}
+export interface StackDataOptions {
+  id: string;
+  source?: string;
+  category: string;
+  group: string;
+  value: string;
+  mode?: StackDataMode;
+  as?: StackDataOutputFields;
 }
 
 export interface Bin2DDataOptions {
@@ -3116,6 +3141,7 @@ export class ChartProgram {
   createBinData(options: BinDataOptions): ChartProgram;
   createFoldData(options: FoldDataOptions): ChartProgram;
   createComputedData(options: ComputedDataOptions): ChartProgram;
+  createStackData(options: StackDataOptions): ChartProgram;
   createRegressionData(options: RegressionDataOptions): ChartProgram;
   createIntervalData(options: IntervalDataOptions): ChartProgram;
   createTimeUnitData(options: TimeUnitDataOptions): ChartProgram;

@@ -422,7 +422,11 @@ Primary owner는 누락 방지를 위한 책임 단위이며, 관련 작업이 �
 - 수정·추가 방향: Group+multi-aggregate summary, reusable 1D bin bounds/count/member, selected-field fold를 먼저 만든다. 제한된 serializable arithmetic와 Phase4 stack grammar의 data projection을 후속 소단위로 작성한다.
 - 완료 검증: 명시적 input/output grain, alias collision/missing/type error, concrete values+provenance. Window/Histogram/stack 수학 복제 없음. Callback/eval transform language 없음.
 - 근거: audit/REPORT.md: F15. [원래 조사](audit/REPORT.md)
-- 처분: 구현 또는 명시적인 계약 유지·migration 결정의 제안. 아직 완료·승인 상태가 아니다.
+- 처분: 완료. Phase 6 W2에서 [summary](phase6/RESULTS_W2_SUMMARY.md),
+  [bin](phase6/RESULTS_W2_BIN.md), [fold](phase6/RESULTS_W2_FOLD.md),
+  [computed](phase6/RESULTS_W2_COMPUTED.md), [stack](phase6/RESULTS_W2_STACK.md)을 public materializing
+  transform으로 구현했다. 모든 결과가 concrete values와 provenance를 함께 저장하며 aggregate,
+  Histogram과 Phase 4 stack 수학을 재사용한다. Callback/eval language는 추가하지 않았다.
 
 ### F16 — Data binding / transform revision / role edit
 

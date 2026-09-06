@@ -256,6 +256,24 @@
       }
     },
     {
+      "name": "createStackData",
+      "layer": "user-facing",
+      "domain": "statistics",
+      "status": "implemented",
+      "lifecycle": "Immutable create-only",
+      "update": "Create reusable stack endpoints and shares",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/CORE.md",
+        "anchor": "createstackdata"
+      }
+    },
+    {
       "name": "createDensityData",
       "layer": "user-facing",
       "domain": "core",
@@ -3770,6 +3788,7 @@
       "materializeIntervalData",
       "materializeRegressionData",
       "materializeSummaryData",
+      "materializeStackData",
       "materializeTimeUnitData",
       "materializeWindowData",
       "materializeRuleSpan",

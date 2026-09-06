@@ -245,6 +245,25 @@ async function testNodeConsumer(directory) {
       computed.semanticSpec.datasets.find(dataset => dataset.id === "shares").values[0].share,
       0.25
     );
+    const stacked = chart()
+      .createData({
+        id: "stackCells",
+        values: [
+          { category: "A", series: "one", amount: 2 },
+          { category: "A", series: "two", amount: 3 }
+        ]
+      })
+      .createStackData({
+        id: "stackedCells",
+        category: "category",
+        group: "series",
+        value: "amount"
+      });
+    assert.deepEqual(
+      stacked.semanticSpec.datasets.find(dataset => dataset.id === "stackedCells")
+        .values.map(row => [row.amount_start, row.amount_end, row.amount_share]),
+      [[0, 2, 0.4], [2, 5, 0.6]]
+    );
     const windowed = chart()
       .createData({
         id: "events",
@@ -1478,6 +1497,7 @@ async function testTypeScriptConsumer(directory) {
       type ThetaScaleOptions,
       type ThemeName,
       type SummaryDataOptions,
+      type StackDataOptions,
       type TimeUnitDataOptions,
       type ViolinPlotOptions,
       type WindowDataOptions,
@@ -2249,6 +2269,32 @@ async function testTypeScriptConsumer(directory) {
       as: "share",
       expression: ratioExpression
     };
+    const stackOptions: StackDataOptions = {
+      id: "stacked",
+      category: "category",
+      group: "series",
+      value: "amount",
+      mode: "fill"
+    };
+    const stacked: ChartProgram = chart()
+      .createData({
+        id: "stackSource",
+        values: [{ category: "A", series: "one", amount: 1 }]
+      })
+      .createStackData(stackOptions);
+    const stackTransform: DatasetTransform = {
+      type: "stack",
+      category: "category",
+      group: "series",
+      value: "amount",
+      mode: "stack",
+      as: {
+        start: "amount_start",
+        end: "amount_end",
+        value: "amount_value",
+        share: "amount_share"
+      }
+    };
     const summaryTransform: DatasetTransform = {
       type: "summary",
       groupBy: ["group"],
@@ -2602,6 +2648,7 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.a
       "bin-data",
       "fold-data",
       "computed-data",
+      "stack-data",
       "window-data",
       "bin2d-data",
       "binned-heatmap",

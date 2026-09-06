@@ -77,6 +77,7 @@ corresponding higher-level action when the library should materialize values:
 | `"horizon"` | `{ type, x, y, groupBy?, bands, baseline, extent, resolve, missing, overflow, palette, ... }` | `encodeHorizon` |
 | `"interval"` | `{ type, field, groupBy, center, extent, level?, as }` | `createIntervalData` |
 | `"summary"` | `{ type, groupBy, aggregates, members? }` | `createSummaryData` |
+| `"stack"` | `{ type, category, group, value, mode, as }` | `createStackData` |
 | `"timeUnit"` | `{ type, field, unit, as }` | `createTimeUnitData` |
 | `"window"` | `{ type, partitionBy, sortBy, operations }` | `createWindowData` |
 
@@ -233,6 +234,32 @@ Every referenced cell, constant, intermediate result, and final result must be
 finite. Division by zero and output-field replacement are errors. Expressions
 are bounded to depth 16 and 128 nodes, with at most 10,000,000 evaluated
 row-nodes.
+
+## `createStackData({ id, source?, category, group, value, mode?, as? })`
+
+Materialize stack geometry once and reuse it across ranged marks and labels:
+
+```javascript
+const stacked = program.createStackData({
+  id: "stackedSales",
+  source: "sales",
+  category: "quarter",
+  group: "region",
+  value: "sales",
+  mode: "fill"
+});
+```
+
+`stack`, `fill`, `center`, and `diverging` call the same shared stack math used
+by Bar and Area series layout. Category and group order follow first source
+appearance. Every category/group pair must have at most one row; missing cells
+are not synthesized. Output preserves each source row and adds lower/upper
+endpoints, the raw value, and its absolute-magnitude share in the category.
+
+The default fields are `<value>_start`, `<value>_end`, `<value>_value`, and
+`<value>_share`; use `as` to rename all four roles. Stack, fill, and center
+require non-negative values. Diverging accumulates positive and negative values
+separately from zero. Zero cells remain as zero-thickness rows with share 0.
 
 ## Related
 

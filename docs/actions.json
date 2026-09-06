@@ -3,7 +3,7 @@
   "packageVersion": "0.0.12",
   "typeSource": "types/program.d.ts",
   "errorPolicy": "An empty errors array means the compact card has no curated error override; consult the canonical route for validation, inference, and recovery behavior.",
-  "count": 206,
+  "count": 207,
   "cards": [
     {
       "schemaVersion": 2,
@@ -682,6 +682,79 @@
       "snippet": "program.createComputedData({ id: \"ratios\", as: \"ratio\", expression: { op: \"divide\", left: { field: \"part\" }, right: { field: \"whole\" } } })",
       "errors": [],
       "route": "/reference/actions/statistics/#createcomputeddata"
+    },
+    {
+      "schemaVersion": 2,
+      "name": "createStackData",
+      "layer": "user-facing",
+      "domain": "statistics",
+      "summary": "Materialize reusable start/end/value/share rows with the same stack math used by Bar and Area layouts.",
+      "signature": "createStackData(options: StackDataOptions): ChartProgram;",
+      "intents": [
+        "create stack data",
+        "create",
+        "add",
+        "statistical layer",
+        "statistical transform",
+        "stacked data",
+        "reusable stack endpoints and shares"
+      ],
+      "lifecycle": "Immutable create-only",
+      "resources": {
+        "prerequisites": [
+          "source dataset"
+        ],
+        "owns": [
+          "stacked data"
+        ],
+        "idOptions": [
+          "id",
+          "source"
+        ]
+      },
+      "options": [
+        {
+          "name": "id",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "source",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "category",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "group",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "value",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "mode",
+          "required": false,
+          "type": "StackDataMode | undefined"
+        },
+        {
+          "name": "as",
+          "required": false,
+          "type": "StackDataOutputFields | undefined"
+        }
+      ],
+      "callPatterns": [
+        "createStackData({ id, category, group, value, source?, mode?, as? })"
+      ],
+      "snippet": "program.createStackData({ id: \"stacked\", category: \"category\", group: \"series\", value: \"amount\" })",
+      "errors": [],
+      "route": "/reference/actions/statistics/#createstackdata"
     },
     {
       "schemaVersion": 2,

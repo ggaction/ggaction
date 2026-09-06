@@ -365,6 +365,15 @@ createComputedData({ id, source?, as, expression })
 Materialize a finite row-level field from a serializable, closed arithmetic
 expression. [Source and Derived Data](../api/data/source-and-derived.md#createcomputeddata-id-source-as-expression)
 
+### `createStackData`
+
+```javascript
+createStackData({ id, source?, category, group, value, mode?, as? })
+```
+
+Materialize reusable start/end/value/share rows with the same stack math used
+by Bar and Area layouts. [Source and Derived Data](../api/data/source-and-derived.md#createstackdata-id-source-category-group-value-mode-as)
+
 ### `bindMarkData`
 
 ```javascript

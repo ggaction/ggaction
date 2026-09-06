@@ -2,7 +2,7 @@
 
 ## 상태와 목표
 
-상태: in-progress. 전체 실행 승인을 적용했고 W1을 구현·검증했다.
+상태: in-progress. 전체 실행 승인을 적용했고 W1과 W2를 구현·검증했다.
 
 일반 사용자가 재사용 가능한 derived data를 만들고 안전하게 source·통계·composite 역할을 교체하도록 한다.
 
@@ -28,6 +28,9 @@
 - 연결: F15.
 - 작업: Group+multi-aggregate summary, reusable 1D bin bounds/count/member, selected-field fold를 먼저 만든다. 제한된 serializable arithmetic와 Phase4 stack grammar의 data projection을 후속 소단위로 작성한다.
 - 완료 조건: 명시적 input/output grain, alias collision/missing/type error, concrete values+provenance. Window/Histogram/stack 수학 복제 없음. Callback/eval transform language 없음.
+- 결과: [Summary](RESULTS_W2_SUMMARY.md), [bin](RESULTS_W2_BIN.md), [fold](RESULTS_W2_FOLD.md),
+  [computed](RESULTS_W2_COMPUTED.md), [stack](RESULTS_W2_STACK.md)을 구현하고 public contract/types/docs,
+  generated cards와 installed-package consumer까지 검증했다.
 
 ### R6-P6-W3 — 공통 interval method·level
 

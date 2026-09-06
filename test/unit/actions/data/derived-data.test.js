@@ -39,6 +39,22 @@ test("createDerivedData accepts each documented transform branch as an array", (
       }
     },
     {
+      id: "stack",
+      transform: {
+        type: "stack",
+        category: "group",
+        group: "x",
+        value: "y",
+        mode: "stack",
+        as: {
+          start: "y_start",
+          end: "y_end",
+          value: "y_value",
+          share: "y_share"
+        }
+      }
+    },
+    {
       id: "summary",
       transform: {
         type: "summary",

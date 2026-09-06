@@ -4312,6 +4312,7 @@ operation; marks and renderers never mutate source values.
 | [Reusable bins](./api/data/source-and-derived/#createbindata-id-source-field-binoptions) | `createBinData` | Materialize shared one-dimensional bounds, counts, and optional members |
 | [Wide-to-long data](./api/data/source-and-derived/#createfolddata-id-source-fields-as) | `createFoldData` | Materialize selected fields as stable key/value rows |
 | [Computed data](./api/data/source-and-derived/#createcomputeddata-id-source-as-expression) | `createComputedData` | Add a finite field from a closed arithmetic expression |
+| [Stack data](./api/data/source-and-derived/#createstackdata-id-source-category-group-value-mode-as) | `createStackData` | Materialize reusable stack endpoints, values, and shares |
 | [Filtering](./api/data/filtering/) | `filterData`, `filterMarks` | Derive rows or rebind one visual layer from a selector |
 | [Statistical transforms](./api/data/statistical-transforms/) | `createRegressionData`, `createIntervalData`, `createDensityData` | Materialize fitted, interval, or density rows |
 | [Time-unit transforms](./api/data/time-units/) | `createTimeUnitData` | Add reproducible UTC calendar bucket fields |
@@ -4411,6 +4412,7 @@ corresponding higher-level action when the library should materialize values:
 | `"horizon"` | `{ type, x, y, groupBy?, bands, baseline, extent, resolve, missing, overflow, palette, ... }` | `encodeHorizon` |
 | `"interval"` | `{ type, field, groupBy, center, extent, level?, as }` | `createIntervalData` |
 | `"summary"` | `{ type, groupBy, aggregates, members? }` | `createSummaryData` |
+| `"stack"` | `{ type, category, group, value, mode, as }` | `createStackData` |
 | `"timeUnit"` | `{ type, field, unit, as }` | `createTimeUnitData` |
 | `"window"` | `{ type, partitionBy, sortBy, operations }` | `createWindowData` |
 
@@ -4567,6 +4569,32 @@ Every referenced cell, constant, intermediate result, and final result must be
 finite. Division by zero and output-field replacement are errors. Expressions
 are bounded to depth 16 and 128 nodes, with at most 10,000,000 evaluated
 row-nodes.
+
+## `createStackData({ id, source?, category, group, value, mode?, as? })`
+
+Materialize stack geometry once and reuse it across ranged marks and labels:
+
+```javascript
+const stacked = program.createStackData({
+  id: "stackedSales",
+  source: "sales",
+  category: "quarter",
+  group: "region",
+  value: "sales",
+  mode: "fill"
+});
+```
+
+`stack`, `fill`, `center`, and `diverging` call the same shared stack math used
+by Bar and Area series layout. Category and group order follow first source
+appearance. Every category/group pair must have at most one row; missing cells
+are not synthesized. Output preserves each source row and adds lower/upper
+endpoints, the raw value, and its absolute-magnitude share in the category.
+
+The default fields are `<value>_start`, `<value>_end`, `<value>_value`, and
+`<value>_share`; use `as` to rename all four roles. Stack, fill, and center
+require non-negative values. Diverging accumulates positive and negative values
+separately from zero. Zero cells remain as zero-thickness rows with share 0.
 
 ## Related
 
@@ -12958,6 +12986,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createRuleMark`](./reference/actions/marks/#createrulemark) | user-facing | marks |
 | [`createScale`](./reference/actions/extension/#extension-actions) | user-facing | core |
 | [`createScatterPlot`](./reference/actions/charts-data/#createscatterplot) | user-facing | charts |
+| [`createStackData`](./reference/actions/statistics/#createstackdata) | user-facing | statistics |
 | [`createSummaryData`](./reference/actions/statistics/#createsummarydata) | user-facing | statistics |
 | [`createTextMark`](./reference/actions/marks/#createtextmark) | user-facing | marks |
 | [`createThetaAxis`](./reference/actions/guides/#createthetaaxis) | user-facing | axes |
@@ -14353,6 +14382,15 @@ createComputedData({ id, source?, as, expression })
 Materialize a finite row-level field from a serializable, closed arithmetic
 expression. [Source and Derived Data](./api/data/source-and-derived/#createcomputeddata-id-source-as-expression)
 
+## `createStackData`
+
+```javascript
+createStackData({ id, source?, category, group, value, mode?, as? })
+```
+
+Materialize reusable start/end/value/share rows with the same stack math used
+by Bar and Area layouts. [Source and Derived Data](./api/data/source-and-derived/#createstackdata-id-source-category-group-value-mode-as)
+
 ## `createHorizonPlot`
 
 ```js
@@ -15348,6 +15386,7 @@ interface ChartProgramActions {
   createBinData(options: BinDataOptions): ChartProgram;
   createFoldData(options: FoldDataOptions): ChartProgram;
   createComputedData(options: ComputedDataOptions): ChartProgram;
+  createStackData(options: StackDataOptions): ChartProgram;
   createRegressionData(options: RegressionDataOptions): ChartProgram;
   createIntervalData(options: IntervalDataOptions): ChartProgram;
   createTimeUnitData(options: TimeUnitDataOptions): ChartProgram;

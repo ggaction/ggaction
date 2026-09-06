@@ -23,6 +23,7 @@ import { validateRegressionTransform } from "./regression/index.js";
 import { validateWindowTransform } from "./window.js";
 import { validateTimeUnitTransform } from "./timeUnit.js";
 import { validateSummaryTransform } from "./summary.js";
+import { validateStackTransform } from "./stack.js";
 import { findTransformTopology } from "./transformTopology.js";
 
 function requestedDensityTransform(transform) {
@@ -122,6 +123,11 @@ const TRANSFORM_POLICIES = Object.freeze({
     ...findTransformTopology("summary"),
     validate: validateSummaryTransform,
     materializeOp: "materializeSummaryData"
+  }),
+  stack: Object.freeze({
+    ...findTransformTopology("stack"),
+    validate: validateStackTransform,
+    materializeOp: "materializeStackData"
   }),
   timeUnit: Object.freeze({
     ...findTransformTopology("timeUnit"),

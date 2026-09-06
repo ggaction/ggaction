@@ -50,6 +50,7 @@
     "BinData": ["one-dimensional bins", "reusable histogram bounds and counts"],
     "FoldData": ["wide to long data", "key value rows", "unpivot fields"],
     "ComputedData": ["computed numeric field", "ratio or difference data"],
+    "StackData": ["stacked data", "reusable stack endpoints and shares"],
     "IntervalData": ["confidence interval data", "summary interval"],
     "PointMark": ["point mark", "scatter point"],
     "TickMark": ["tick mark", "one-dimensional distribution"],
@@ -184,6 +185,12 @@
     "editGraphics": "Sets a concrete graphic property or removes a top-level graphic resource inside an extension action."
   },
   "sampleOverrides": {
+    "createStackData": {
+      "id": "stacked",
+      "category": "category",
+      "group": "series",
+      "value": "amount"
+    },
     "createComputedData": {
       "id": "ratios",
       "as": "ratio",

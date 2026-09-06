@@ -416,6 +416,38 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - ✅ Covered: strict node shape/vocabulary, immutable ownership, row grain, depth/node/work bounds.
 - Evidence: `test/unit/actions/data/computed-data.test.js`.
 
+## `createStackData`
+
+- Signature: `createStackData({ id, source?, category, group, value, mode?, as? })`
+- `id`, `source`: 새 immutable derived dataset ID와 existing materialized source다. `source` 생략 시
+  current data를 사용한다.
+- `category`, `group`, `value`: 서로 다른 field다. 각 source row는 한 unique category/group cell이며
+  value는 finite number다. Category와 group은 null/string/boolean/finite-number scalar identity를 쓴다.
+- `mode`: `"stack" | "fill" | "center" | "diverging"`, 기본 `"stack"`이다. Phase 4의
+  `layoutSeriesPartition`을 그대로 사용한다. Stack/fill/center는 non-negative values, diverging은 positive와
+  negative를 zero에서 별도로 누적한다.
+- `as`: `{ start?, end?, value?, share? }`; 기본은 `${value}_start`, `${value}_end`, `${value}_value`,
+  `${value}_share`다. 모든 output은 고유하고 source field를 덮어쓰지 않는다.
+- Effect: category는 source first appearance, group stack order는 전체 source의 first appearance를 쓴다.
+  Output row order와 original cells를 보존하고 start/end, raw value, absolute-magnitude partition share를
+  추가한다. Zero cell은 zero-thickness endpoint와 share 0으로 보존한다. Fill의 endpoints는 [0,1]이다.
+- 오류: missing/non-finite roles, duplicate category/group cell, invalid mode/sign, output collision과 10,000
+  output row 초과를 첫 state change 전에 거부한다.
+- Coverage: `test/unit/actions/data/stack-data.test.js`가 stable cross-category group order, 모든 네 mode,
+  zero/negative/share math, ranged mark consumption, alias/cell/type/mode errors와 ownership을 검증한다.
+
+### Formal values — `createStackData`
+
+- Implemented: `createStackData({ id: UserId; source?: UserId; category: FieldName; group: FieldName; value: FieldName; mode?: "stack" | "fill" | "center" | "diverging"; as?: StackDataOutputFields }): ChartProgram`
+- Proposed (NOT IMPLEMENTED): duplicate-cell aggregation, missing-cell synthesis, explicit series order와 edit/revision.
+
+### Value coverage — `createStackData`
+
+- ✅ Covered: stack/fill/center/diverging shared math, stable order, zero thickness and absolute-magnitude shares.
+- ✅ Covered: mixed-sign diverging and negative rejection in non-negative modes.
+- ✅ Covered: missing/duplicate/non-finite cells, role/output uniqueness, source collision and immutable rejection.
+- Evidence: `test/unit/actions/data/stack-data.test.js`, `test/unit/grammar/transforms/series-layout.test.js`.
+
 ## `createRegressionData`
 
 - Signature: `createRegressionData({ id, source?, x, y, groupBy?, method?, degree?, span?, confidence?, interval? })`
@@ -546,7 +578,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - `id`: Implemented, 필수 새 dataset ID.
 - `source`: Implemented, 필수 existing dataset ID.
 - `transform`: Implemented, 정확히 하나의 transform definition을 가진 tuple. Public direct-authoring union은
-  filter/fold/computed/regression/density/interval/time-unit/window/summary/bin/bin2d schema이며 값 materialization은 해당 전용 action이 담당한다. Box summary,
+  filter/fold/computed/stack/regression/density/interval/time-unit/window/summary/bin/bin2d schema이며 값 materialization은 해당 전용 action이 담당한다. Box summary,
   box outlier, mark filter provenance는 composite action이 생성하는 internal transform으로 public union에 넣지 않는다.
 - Effect: source와 transform provenance만 저장하고 values는 만들지 않는다.
 - 오류: duplicate ID, unknown source, invalid/empty/multiple transform schema를 거부한다.
@@ -559,7 +591,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 
 ### Formal values — `createDerivedData`
 
-- Implemented: `createDerivedData({ id: UserId; source: UserId; transform: readonly [DatasetTransform] })`, where public `DatasetTransform = FilterTransform | FoldTransform | ComputedTransform | RegressionTransform | DensityTransform | IntervalTransform | TimeUnitTransform | WindowTransform | SummaryTransform | BinTransform | Bin2DTransform`.
+- Implemented: `createDerivedData({ id: UserId; source: UserId; transform: readonly [DatasetTransform] })`, where public `DatasetTransform = FilterTransform | FoldTransform | ComputedTransform | StackTransform | RegressionTransform | DensityTransform | IntervalTransform | TimeUnitTransform | WindowTransform | SummaryTransform | BinTransform | Bin2DTransform`.
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
@@ -568,7 +600,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - `id`, `source`
   - ✅ Covered: valid IDs, duplicate output, unknown source.
 - `transform`
-  - ✅ Covered: filter/fold/computed/regression/density/interval/time-unit/window/summary/bin/bin2d direct schema, object/empty/multiple/unknown rejection,
+  - ✅ Covered: filter/fold/computed/stack/regression/density/interval/time-unit/window/summary/bin/bin2d direct schema, object/empty/multiple/unknown rejection,
     one-element tuple acceptance와 deep immutable ownership.
   - Built-in value materializer는 owning high-level action이 만든 single-transform resource만 받는다.
 - Evidence: `test/unit/actions/data/derived-data.test.js`, `test/unit/actions/data/derived-consumers.test.js`,

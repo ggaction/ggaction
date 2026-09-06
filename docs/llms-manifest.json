@@ -736,8 +736,8 @@
         "errors-and-limitations",
         "related"
       ],
-      "bytes": 2583,
-      "sha256": "af2bc30600c0bce3b03a5d224463c216d0c3bd8f61866d69e59c0079d41a83fa"
+      "bytes": 2766,
+      "sha256": "7339d0d3c37dfc4fdff9d9e6cc68b7ef9b138abb6e7c9388abf27fc3c3aebd8d"
     },
     {
       "order": 48,
@@ -753,10 +753,11 @@
         "createbindata-id-source-field-binoptions",
         "createfolddata-id-source-fields-as",
         "createcomputeddata-id-source-as-expression",
+        "createstackdata-id-source-category-group-value-mode-as",
         "related"
       ],
-      "bytes": 9613,
-      "sha256": "f6d4ea21f4c4db11ea85e46d09815a60c3e2b9194dd95705d7f7412c9c03480a"
+      "bytes": 10725,
+      "sha256": "84bc1d48b20d04486db779a5189610b4a39851e79d19bf7a7393eeca518c01ef"
     },
     {
       "order": 49,
@@ -1813,8 +1814,8 @@
         "action-reference",
         "exact-action-lookup"
       ],
-      "bytes": 22106,
-      "sha256": "cc2bdd16ce0917c41642b1b1b510a61e075a393f1b23d19e3f239eb98c1be617"
+      "bytes": 22206,
+      "sha256": "d9a26dbd15cbd682c1e58efbd32e65b7d6533fa0d51e5697c72b72c7c07f2069"
     },
     {
       "order": 115,
@@ -1961,6 +1962,7 @@
         "createbindata",
         "createfolddata",
         "createcomputeddata",
+        "createstackdata",
         "createhorizonplot",
         "createdensityplot",
         "createintervaldata",
@@ -1977,8 +1979,8 @@
         "createviolinplot",
         "related"
       ],
-      "bytes": 10280,
-      "sha256": "196467e83b0077cf0232dd65c140b7328b0f587be1c922d7144c0b96eb14eefa"
+      "bytes": 10607,
+      "sha256": "e3dc1dbf31441ff4950d0256b49778bf099e73b39959ae4e40e6d41155dfe971"
     },
     {
       "order": 119,
@@ -2092,8 +2094,8 @@
         "exact-typescript-signatures",
         "related"
       ],
-      "bytes": 16500,
-      "sha256": "12620f93e3c7432897bc4df46c953dc3f0b0453e101772cb14e67da5ba645eed"
+      "bytes": 16560,
+      "sha256": "bc685299658937d8ab9b1979ec84a65cbf1fa8a2a181becb85f1e21117b242cb"
     },
     {
       "order": 124,

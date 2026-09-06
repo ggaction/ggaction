@@ -17,6 +17,7 @@ test("keeps every stored dataset transform in the grammar registry", () => {
     markFilter: ["materializeMarkFilteredData", undefined],
     regression: ["materializeRegressionData", "statistical"],
     summary: ["materializeSummaryData", "statistical"],
+    stack: ["materializeStackData", "statistical"],
     density: ["materializeDensityData", "statistical"],
     horizon: ["materializeHorizonData", "statistical"],
     interval: ["materializeIntervalData", "statistical"],
