@@ -30,6 +30,14 @@ const EXPECTED_DRAW_ORDER = Object.freeze({
     "xAxisLine", "xAxisTicks", "xAxisLabels", "xAxisTitle",
     "yAxisLine", "yAxisTicks", "yAxisLabels", "yAxisTitle"
   ],
+  "raincloud-plot": [
+    "canvas", "horizontalGridLines", "distributionCloud",
+    "distributionSummaryWhisker", "distributionSummaryWhiskerLowerCap",
+    "distributionSummaryWhiskerUpperCap", "distributionSummary",
+    "distributionSummaryMedian", "distributionPoints",
+    "xAxisLine", "xAxisTicks", "xAxisLabels", "xAxisTitle",
+    "yAxisLine", "yAxisTicks", "yAxisLabels", "yAxisTitle"
+  ],
   "dot-plot": ["canvas", "dot"],
   "lollipop-plot": ["canvas", "lollipopStem", "lollipop"],
   "dumbbell-plot": ["canvas", "dumbbellConnector", "dumbbellStart", "dumbbell"],

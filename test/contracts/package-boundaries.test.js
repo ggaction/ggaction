@@ -82,6 +82,8 @@ test("keeps the basic entry focused on common Cartesian charts", () => {
     "createRugPlot",
     "createStripPlot",
     "createBeeswarmPlot",
+    "createRaincloudPlot",
+    "editRaincloudPlot",
     "packPoints"
   ]) {
     assert.equal(program[method], undefined, method);

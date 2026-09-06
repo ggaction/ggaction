@@ -139,6 +139,8 @@ interface ChartProgramActions {
   createRugPlot(options: CreateRugPlotOptions): ChartProgram;
   createStripPlot(options: CreateStripPlotOptions): ChartProgram;
   createBeeswarmPlot(options: CreateBeeswarmPlotOptions): ChartProgram;
+  createRaincloudPlot(options: CreateRaincloudPlotOptions): ChartProgram;
+  editRaincloudPlot(options: EditRaincloudPlotOptions): ChartProgram;
   createAreaPlot(options: CreateAreaPlotOptions): ChartProgram;
   createBarPlot(options: CreateBarPlotOptions): ChartProgram;
   createHistogram(options: CreateHistogramOptions): ChartProgram;

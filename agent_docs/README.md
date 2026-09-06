@@ -16,9 +16,9 @@
 | 승인된 미래 계약 읽기 | [`contract/planned/`](contract/planned/) |
 | 현재 개발 순서 확인 | [`impl/README.md`](impl/README.md) |
 
-**현재 활성 계획은 Roadmap 6 Phase 8**이다. 계층적 chart authoring과 action consistency의 상세 계획을
+**현재 활성 계획은 Roadmap 6 Phase 9**이다. 계층적 chart authoring과 action consistency의 상세 계획을
 [`impl/roadmap6/ROADMAP.md`](impl/roadmap6/ROADMAP.md)에서 관리한다. 사용자 선택에 따라 새 액션군 F01–F19를
-범위로 삼았다. Phase 1–7을 완료했고, [Phase 7 X 결과](impl/roadmap6/phase7/REVIEW.md)에 계층형 facade의 현실형 시나리오 감사와 좌표·guide 계약 수정을 기록했다. [전체 실행·0.0.13 릴리즈 승인](impl/roadmap6/APPROVAL.md)을 적용하며, 다음 실행 단위는 [Phase 8의 통계·비교 plot](impl/roadmap6/phase8/GOAL.md)이다.
+범위로 삼았다. Phase 1–8을 완료했고, [Phase 8 X 결과](impl/roadmap6/phase8/REVIEW.md)에 통계·endpoint chart의 구현과 검증을 기록했다. [전체 실행·0.0.13 릴리즈 승인](impl/roadmap6/APPROVAL.md)을 적용하며, 현재 실행 단위는 [Phase 9의 deterministic packing과 Raincloud](impl/roadmap6/phase9/GOAL.md)다.
 후속 세부 API 계약은 실행 단계에서 구체화하며 승인과 구현 완료를 구분한다. 마지막 완료 owner는 Roadmap 5.4 Phase 6이다.
 Nullable active pointer와 마지막 완료 owner의 machine-readable source는
 [`impl/ROADMAP_INDEX.json`](impl/ROADMAP_INDEX.json)이다.

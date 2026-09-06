@@ -221,6 +221,8 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`createRugPlot`](current/COMPLETE_CHARTS.md#createrugplot) | charts | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createStripPlot`](current/COMPLETE_CHARTS.md#createstripplot) | charts | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createBeeswarmPlot`](current/COMPLETE_CHARTS.md#createbeeswarmplot) | charts | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
+| user-facing | [`createRaincloudPlot`](current/COMPLETE_CHARTS.md#createraincloudplot) | charts | Mutable resource | Intentional | ✅ / ✅ / ✅ |
+| user-facing | [`editRaincloudPlot`](current/COMPLETE_CHARTS.md#editraincloudplot) | charts | Mutable resource | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createBarPlot`](current/BASIC_CHARTS.md#createbarplot) | charts | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createHistogram`](current/BASIC_CHARTS.md#createhistogram) | charts | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createHeatmap`](current/BASIC_CHARTS.md#createheatmap) | charts | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |

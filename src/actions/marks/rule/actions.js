@@ -29,6 +29,8 @@ import { resolveMarkGraphicPlacement } from
 import { rematerializeHighlightBaseline } from "../lifecycle.js";
 import { applyOffsetPositionValues } from
   "../../../materialization/rowEncoding.js";
+import { resolveCategorySlotOffset } from
+  "../../../materialization/categorySlotOffset.js";
 
 const CREATE_OPTIONS = Object.freeze(["id", "data", "stroke", "strokeWidth", "strokeDash", "opacity"]);
 const EDIT_OPTIONS = Object.freeze(["target", "stroke", "strokeWidth", "strokeDash", "opacity"]);
@@ -281,6 +283,15 @@ const rematerializeRuleMark = action(
       y1.push(startY);
       x2.push(endX);
       y2.push(endY);
+    }
+    const categoryOffset = resolveCategorySlotOffset(resolved, layer);
+    if (categoryOffset?.pixels) {
+      const targets = categoryOffset.channel === "x" ? [x1, x2] : [y1, y2];
+      for (const values of targets) {
+        for (let index = 0; index < values.length; index += 1) {
+          if (Number.isFinite(values[index])) values[index] += categoryOffset.pixels;
+        }
+      }
     }
 
     const resolvedConfig = {

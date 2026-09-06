@@ -1,8 +1,9 @@
 # Roadmap 6 — Raincloud
 
-**상태: Approved contract, implementation pending.** Phase 9 A에서 `createRaincloudPlot`과
-`editRaincloudPlot`의 source/statistical role 경계를 확정했다. 현행 API는 아니며 구현·검증 전까지
-실행 가능한 예제로 주장하지 않는다. 정확한 signature는 [Phase 9 계약](../phase9/CONTRACT.md)이 소유한다.
+**상태: Implemented and verified.** Phase 9 W2에서 `createRaincloudPlot`과
+`editRaincloudPlot`의 source/statistical role 경계, category-band-relative slot 배치와 stable child ownership을
+구현했다. 정확한 signature는 [Phase 9 계약](../phase9/CONTRACT.md)이 소유하고 실행 증거는
+[W2 결과](../phase9/RESULTS_W2_RAINCLOUD.md)에 기록한다.
 
 ## 목적과 범위
 
@@ -12,13 +13,11 @@ Half density, summary interval/box, raw points를 같은 category와 source에�
 - 실행 owner: [Phase 9](../phase9/GOAL.md).
 - 공통 기준: [DESIGN_DECISIONS.md](../DESIGN_DECISIONS.md), [VALIDATION.md](../VALIDATION.md).
 
-## 데이터와 최종 public chain 초안
+## 데이터와 public chain
 
-아래 synthetic rows를 수치 oracle와 최소 visual target의 출발점으로 쓴다.
-A에서 실제 public signature를 확정하고, primitive/public 두 프로그램이 같은 manifest의 values와 dimensions를 사용한다.
+아래 synthetic rows는 최소 실행 형태다. Primitive/public visual 검증은 같은 manifest의 values와 dimensions를 쓴다.
 
 ~~~javascript
-// Proposed API design — not a Current executable example.
 import { chart } from 'ggaction';
 
 const values = [{ category: 'A', value: 1 }, { category: 'A', value: 2 }, { category: 'A', value: 4 }, { category: 'B', value: 2 }, { category: 'B', value: 5 }, { category: 'B', value: 6 }];
@@ -28,7 +27,8 @@ const base = chart()
 
 const raincloud = base.createRaincloudPlot({
   category: 'category', value: 'value',
-  summary: 'box', points: 'beeswarm'
+  summary: { type: 'box' },
+  points: { type: 'beeswarm' }
 });
 ~~~
 

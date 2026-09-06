@@ -1128,7 +1128,14 @@ type FilledMarkLegendOptions = Omit<LegendOptions, "symbol"> & {
     | { width?: number; height?: number; stroke?: string; strokeWidth?: number }
     | { layers: readonly LegendSymbolLayer[] };
 };
-type CategoricalLegendTextOptions = Omit<LegendTextOptions, "format"> & { format?: "auto" };
+type CategoricalLegendTextOptions = {
+  offset?: number;
+  color?: string;
+  fontSize?: number;
+  fontFamily?: string;
+  fontWeight?: string | number;
+  format?: "auto";
+};
 type PathLegendOptions = Omit<LegendOptions, "symbol" | "gradient" | "count" | "labels"> & {
   symbol?: "auto" | { length?: number; lineWidth?: number }
     | { layers: readonly LegendSymbolLayer[] };
@@ -1143,7 +1150,13 @@ type CartesianPathGuideOptions = Omit<CartesianGuideOptions, "legend"> & {
   legend?: false | (Omit<PathLegendOptions, "order"> & { order?: LegendValueOrder });
 };
 type CartesianCategoricalGuideOptions = Omit<CartesianGuideOptions, "legend"> & {
-  legend?: false | (Omit<FilledMarkLegendOptions, "count" | "gradient" | "order"> & { order?: CartesianLegendOrder });
+  legend?: false | (Omit<
+    FilledMarkLegendOptions,
+    "count" | "gradient" | "labels" | "order"
+  > & {
+    labels?: CategoricalLegendTextOptions;
+    order?: CartesianLegendOrder;
+  });
 };
 type BoxPlotGuideOptions = Omit<CartesianGuideOptions, "legend"> & { legend?: false };
 type GradientPlotDensityLegendOptions = {
@@ -1931,6 +1944,7 @@ export type ViolinPlotPositionChannel =
 export interface ViolinPlotDensityOptions
   extends GradientPlotDensityOptions {
   width?: DensityPlacementWidth;
+  side?: "both" | "left" | "right" | "top" | "bottom";
 }
 
 export interface ViolinPlotSplitOptions {
@@ -2593,6 +2607,84 @@ export type CreateBeeswarmPlotOptions = {
   | { x: RugMeasureChannel; y: StripCategoryChannel }
   | { x: StripCategoryChannel; y: RugMeasureChannel }
 );
+
+export interface RaincloudDensityOptions extends GradientPlotDensityOptions {
+  width?: DensityPlacementWidth;
+  area?: ViolinPlotAreaOptions;
+}
+export interface RaincloudBoxSummaryOptions {
+  type?: "box";
+  whisker?: BoxPlotWhisker;
+  width?: { band?: number };
+  outliers?: boolean;
+  box?: BoxPlotOptions["box"];
+  median?: BoxPlotOptions["median"];
+  outlier?: BoxPlotOptions["outlier"];
+}
+export interface RaincloudIntervalSummaryOptions {
+  type: "interval";
+  center?: IntervalCenter;
+  extent?: IntervalExtent;
+  method?: ConfidenceIntervalMethod;
+  level?: number;
+  point?: CreateScatterPlotOptions["point"];
+  errorBar?: IntervalPlotErrorBarOptions;
+}
+export type RaincloudSummaryOptions =
+  | RaincloudBoxSummaryOptions
+  | RaincloudIntervalSummaryOptions;
+export interface RaincloudPointAppearanceOptions {
+  size?: BasicSizeChannel;
+  shape?: BasicShapeChannel;
+  point?: CreateScatterPlotOptions["point"];
+}
+export type RaincloudPointsOptions =
+  | (RaincloudPointAppearanceOptions & {
+      type: "strip";
+      jitter?: false | StripBandJitterOptions;
+      packing?: never;
+    })
+  | (RaincloudPointAppearanceOptions & {
+      type?: "beeswarm";
+      packing?: false | BeeswarmPackingOptions;
+      jitter?: never;
+    });
+export type RaincloudCategoryChannel = string | {
+  field: string;
+  fieldType?: "nominal" | "ordinal";
+  scale?: NonPointBandPositionScaleOptions;
+};
+export type RaincloudValueChannel = string | {
+  field: string;
+  fieldType?: "quantitative";
+  scale?: NonPointQuantitativePositionScaleOptions;
+};
+export interface CreateRaincloudPlotOptions {
+  id?: string;
+  data?: string;
+  coordinate?: string;
+  category: RaincloudCategoryChannel;
+  value: RaincloudValueChannel;
+  orientation?: "vertical" | "horizontal";
+  side?: "before" | "after";
+  density?: false | RaincloudDensityOptions;
+  summary?: false | RaincloudSummaryOptions;
+  points?: false | RaincloudPointsOptions;
+  color?: LineCategoricalColorChannel;
+  guides?: false | CartesianCategoricalGuideOptions;
+}
+export interface EditRaincloudPlotOptions {
+  target?: string;
+  data?: string;
+  category?: RaincloudCategoryChannel;
+  value?: RaincloudValueChannel;
+  orientation?: "vertical" | "horizontal";
+  side?: "before" | "after";
+  density?: false | RaincloudDensityOptions;
+  summary?: false | RaincloudSummaryOptions;
+  points?: false | RaincloudPointsOptions;
+  color?: false | LineCategoricalColorChannel;
+}
 
 export type GroupEncodingOptions = { target?: string; fieldType?: "nominal" } & (
   | { field: string; fields?: never }
@@ -3805,6 +3897,8 @@ export class ChartProgram {
   createRugPlot(options: CreateRugPlotOptions): ChartProgram;
   createStripPlot(options: CreateStripPlotOptions): ChartProgram;
   createBeeswarmPlot(options: CreateBeeswarmPlotOptions): ChartProgram;
+  createRaincloudPlot(options: CreateRaincloudPlotOptions): ChartProgram;
+  editRaincloudPlot(options: EditRaincloudPlotOptions): ChartProgram;
   createAreaPlot(options: CreateAreaPlotOptions): ChartProgram;
   createBarPlot(options: CreateBarPlotOptions): ChartProgram;
   createHistogram(options: CreateHistogramOptions): ChartProgram;

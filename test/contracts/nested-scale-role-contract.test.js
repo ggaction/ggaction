@@ -136,6 +136,33 @@ function distributionPositions(path, type) {
     : { x: counterpart, y: requested };
 }
 
+function raincloudScaleOptions(path, type) {
+  const options = {
+    category: positionChannel("band"),
+    value: positionChannel("linear"),
+    density: false,
+    summary: false,
+    points: { type: "beeswarm", packing: false },
+    guides: false
+  };
+  if (path.startsWith("category.")) options.category = positionChannel(type);
+  if (path.startsWith("value.")) options.value = positionChannel(type);
+  if (path === "color.scale.type") options.color = colorChannel(type);
+  if (path === "points.size.scale.type") {
+    options.points = {
+      ...options.points,
+      size: { field: "size", scale: { type } }
+    };
+  }
+  if (path === "points.shape.scale.type") {
+    options.points = {
+      ...options.points,
+      shape: { field: "category", scale: { type } }
+    };
+  }
+  return options;
+}
+
 function intervalPositions(path, type) {
   const requested = positionChannel(type);
   const interval = {
@@ -599,6 +626,23 @@ function buildScaleWitness(action, path, type) {
             x: positionChannel("band"), y: positionChannel(type),
             packing: false, guides: false
           });
+    case "createRaincloudPlot":
+      return source().createRaincloudPlot(raincloudScaleOptions(path, type));
+    case "editRaincloudPlot": {
+      const current = source().createRaincloudPlot({
+        category: "category", value: "value",
+        density: false, summary: false,
+        points: { type: "beeswarm", packing: false }, guides: false
+      });
+      const options = raincloudScaleOptions(path, type);
+      delete options.density;
+      delete options.summary;
+      delete options.guides;
+      if (!path.startsWith("category.")) delete options.category;
+      if (!path.startsWith("value.")) delete options.value;
+      if (!path.startsWith("points.")) delete options.points;
+      return current.editRaincloudPlot(options);
+    }
     case "createBarPlot":
       return source().createBarPlot({
         ...(path === "color.scale.type"
@@ -752,8 +796,8 @@ test("derives only role-reachable nested scale type paths", async () => {
     /(?:^|\.)(?:xScale|yScale|valueScale|densityScale|radiusScale|scale)\.type$/u.test(option.path)
   );
 
-  assert.equal(scaleTypes.length, 134);
-  assert.equal(scaleTypes.reduce((sum, option) => sum + option.values.length, 0), 525);
+  assert.equal(scaleTypes.length, 144);
+  assert.equal(scaleTypes.reduce((sum, option) => sum + option.values.length, 0), 543);
   assert.doesNotMatch(declarations, /scale\?: ScaleOptions/u);
   assert.equal(options.has("option-path:createScatterPlot.x.scale.palette"), false);
   assert.equal(options.has("option-path:createScatterPlot.x.scale.interpolate"), false);
@@ -803,7 +847,7 @@ test("executes every strict nested scale type path and literal", async () => {
       witnesses += 1;
     }
   }
-  assert.equal(witnesses, 525);
+  assert.equal(witnesses, 543);
 });
 
 test("materializes every role-specific nested scale type vocabulary", () => {

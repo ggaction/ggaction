@@ -160,6 +160,14 @@ async function testNodeConsumer(directory) {
       packing: { key: "angle", overflow: "overlap" },
       guides: false
     });
+    const raincloud = polarBase.createRaincloudPlot({
+      id: "packageRaincloud",
+      category: { field: "group", fieldType: "nominal" },
+      value: { field: "distance", fieldType: "quantitative" },
+      density: { steps: 16 },
+      points: { type: "beeswarm", packing: { key: "angle", overflow: "overlap" } },
+      guides: false
+    }).editRaincloudPlot({ target: "packageRaincloud", side: "after" });
     const ecdfData = polarBase.createECDFData({
       id: "packageECDFData", field: "distance", groupBy: "group"
     });
@@ -188,6 +196,11 @@ async function testNodeConsumer(directory) {
     assert.equal(strip.graphicSpec.objects.stripPlot.items.length, 3);
     assert.equal(beeswarm.graphicSpec.objects.packageBeeswarm.items.length, 3);
     assert.equal(beeswarm.materializationConfigs.pointPacking.packageBeeswarm.channel, "x");
+    assert.equal(raincloud.markConfigs.packageRaincloudCloud.raincloudPlot.side, "after");
+    assert.deepEqual(
+      raincloud.markConfigs.packageRaincloudCloud.raincloudPlot.ownedChildIds,
+      ["packageRaincloudCloud", "packageRaincloudSummary", "packageRaincloudPoints"]
+    );
     assert.deepEqual(
       beeswarm.removePointPacking({ target: "packageBeeswarm" })
         .materializationConfigs.pointPacking,
@@ -208,6 +221,8 @@ async function testNodeConsumer(directory) {
     assert.equal(basicChart().createRugPlot, undefined);
     assert.equal(basicChart().createStripPlot, undefined);
     assert.equal(basicChart().createBeeswarmPlot, undefined);
+    assert.equal(basicChart().createRaincloudPlot, undefined);
+    assert.equal(basicChart().editRaincloudPlot, undefined);
     assert.equal(basicChart().packPoints, undefined);
     assert.equal(basicChart().createECDFData, undefined);
     assert.equal(basicChart().createECDFPlot, undefined);
@@ -1589,6 +1604,8 @@ async function testTypeScriptConsumer(directory) {
       type CreateRugPlotOptions,
       type CreateStripPlotOptions,
       type CreateBeeswarmPlotOptions,
+      type CreateRaincloudPlotOptions,
+      type EditRaincloudPlotOptions,
       type CreateECDFPlotOptions,
       type EditECDFPlotOptions,
       type ECDFDataOptions,
@@ -1676,6 +1693,17 @@ async function testTypeScriptConsumer(directory) {
       x: { field: "category", fieldType: "nominal" }, y: "value",
       packing: { key: "id", padding: 1 }, guides: false
     };
+    const raincloudOptions: CreateRaincloudPlotOptions = {
+      category: { field: "category", fieldType: "nominal" },
+      value: { field: "value", fieldType: "quantitative" },
+      density: { steps: 16 },
+      summary: { type: "box", width: { band: 0.2 } },
+      points: { type: "beeswarm", packing: { key: "id", overflow: "overlap" } },
+      guides: false
+    };
+    const raincloudEditOptions: EditRaincloudPlotOptions = {
+      side: "after", points: { type: "strip", jitter: { maxOffset: { band: 0.1 } } }
+    };
     const ecdfDataOptions: ECDFDataOptions = {
       id: "typedECDFData", field: "value", groupBy: "category", weight: "weight"
     };
@@ -1693,6 +1721,7 @@ async function testTypeScriptConsumer(directory) {
     program.createRugPlot(rugOptions);
     program.createStripPlot(stripOptions);
     program.createBeeswarmPlot(beeswarmOptions);
+    program.createRaincloudPlot(raincloudOptions).editRaincloudPlot(raincloudEditOptions);
     program.createECDFData(ecdfDataOptions);
     program.createECDFPlot(ecdfOptions).editECDFPlot(ecdfEditOptions);
     // @ts-expect-error Polar facades are Full only.
@@ -1709,6 +1738,10 @@ async function testTypeScriptConsumer(directory) {
     basicChart().createStripPlot(stripOptions);
     // @ts-expect-error Beeswarm facade is Full only.
     basicChart().createBeeswarmPlot(beeswarmOptions);
+    // @ts-expect-error Raincloud facade is Full only.
+    basicChart().createRaincloudPlot(raincloudOptions);
+    // @ts-expect-error Raincloud editing is Full only.
+    basicChart().editRaincloudPlot(raincloudEditOptions);
     // @ts-expect-error ECDF data is Full only.
     basicChart().createECDFData(ecdfDataOptions);
     // @ts-expect-error ECDF facade is Full only.
@@ -2858,6 +2891,7 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.a
       "point-jitter",
       "point-packing",
       "beeswarm-plot",
+      "raincloud-plot",
       "path-order",
       "time-unit-data",
       "summary-data",

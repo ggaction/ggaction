@@ -31,14 +31,16 @@ function ownedChildren(program, id) {
     config.boxPlot?.medianId,
     config.boxPlot?.outlierId,
     config.gradientPlot?.centerId,
+    config.intervalPlot?.intervalId,
     config.endpointPlot?.roles?.stemId,
     config.endpointPlot?.roles?.startId,
-    config.endpointPlot?.roles?.connectorId
+    config.endpointPlot?.roles?.connectorId,
+    ...(config.raincloudPlot?.ownedChildIds ?? [])
   ].concat(
     program.semanticSpec.layers
       .filter(layer => layer.source === id)
       .map(layer => layer.id)
-  ).filter(child => child !== undefined && findLayer(program, child) !== undefined);
+  ).filter(child => child !== undefined && child !== id && findLayer(program, child) !== undefined);
 }
 
 function ownership(program) {
@@ -96,6 +98,7 @@ function ownedDerivedData(program, ids) {
       config.boxPlot?.summaryId,
       config.boxPlot?.outlierDataId,
       config.gradientPlot?.profileId,
+      config.violinPlot?.materialized === true ? layer?.data : undefined,
       config.ecdfPlot?.data,
       config.endpointPlot?.data
     ]) {

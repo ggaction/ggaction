@@ -89,6 +89,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createRadialAxisTitle`](./actions/guides.md#createradialaxistitle) | user-facing | axes |
 | [`createRadialBarPlot`](./actions/charts-data.md#createradialbarplot) | user-facing | charts |
 | [`createRadialGrid`](./actions/guides.md#createradialgrid) | user-facing | grid |
+| [`createRaincloudPlot`](./actions/charts-data.md#createraincloudplot) | user-facing | charts |
 | [`createRectMark`](./actions/marks.md#createrectmark) | user-facing | marks |
 | [`createReferenceBand`](./actions/marks.md#createreferenceband) | user-facing | marks |
 | [`createReferenceLine`](./actions/marks.md#createreferenceline) | user-facing | marks |
@@ -167,6 +168,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editRadialAxisTicks`](./actions/guides.md#editradialaxisticks) | user-facing | axes |
 | [`editRadialAxisTitle`](./actions/guides.md#editradialaxistitle) | user-facing | axes |
 | [`editRadialGrid`](./actions/guides.md#editradialgrid) | user-facing | grid |
+| [`editRaincloudPlot`](./actions/charts-data.md#editraincloudplot) | user-facing | charts |
 | [`editRectMark`](./actions/marks.md#editrectmark) | user-facing | marks |
 | [`editRegression`](./actions/statistics.md#editregression) | user-facing | statistics |
 | [`editRegressionBand`](./actions/advanced.md#semantic-resources-and-regression-layers) | user-facing | statistics |

@@ -1357,7 +1357,8 @@ function buildDirectAxisParts(factors) {
 }
 
 function buildDirectPolarParts(factors) {
-  const rows = lifecycleSourceRows(factors.dataset, "polar", "zoo-polar-wrap");
+  const rows = lifecycleSourceRows(factors.dataset, "polar", "zoo-polar-wrap")
+    .map(row => ({ ...row, raincloudGroup: "All" }));
   const binding = { coordinate: "polar" };
   const theta = { ...binding, scale: "theta" };
   const radial = { ...binding, scale: "radius", angle: factors.angle };
@@ -1454,6 +1455,21 @@ function buildDirectPolarParts(factors) {
       point: { radius: 3, opacity: 0.6 },
       packing: { overflow: "overlap" },
       guides: false
+    })
+    .createRaincloudPlot({
+      id: "directRaincloud",
+      data: "directPolarRows",
+      category: { field: "raincloudGroup", fieldType: "nominal" },
+      value: { field: "radius", fieldType: "quantitative" },
+      density: { steps: 24 },
+      points: { type: "beeswarm", packing: { overflow: "overlap" } },
+      guides: false
+    })
+    .editRaincloudPlot({
+      target: "directRaincloud",
+      side: "after",
+      summary: { type: "interval", center: "mean", extent: "stderr" },
+      points: { type: "strip", jitter: false }
     });
 }
 
@@ -1768,7 +1784,7 @@ function lifecycleSignature(base, factors) {
     "action-direct-polar-parts": [
       "createPolarScatterPlot", "createPolarLinePlot", "createRadarPlot",
       "createRugPlot", "createStripPlot", "packPoints", "removePointPacking",
-      "createBeeswarmPlot",
+      "createBeeswarmPlot", "createRaincloudPlot", "editRaincloudPlot",
       "createThetaAxisLine", "createThetaAxisTicks", "createThetaAxisLabels", "createThetaAxisTitle",
       "createRadialAxisLine", "createRadialAxisTicks", "createRadialAxisLabels", "createRadialAxisTitle",
       "createThetaAxis", "createRadialAxis", "editThetaAxisLine", "editRadialAxisLine",
@@ -1998,7 +2014,8 @@ export const LIFECYCLE_EXPECTED_ACTIONS = Object.freeze([
   "editThetaGrid", "editRadialGrid", "replaceCompositionChild", "editFacetScales",
   "createScatterPlot", "createLinePlot", "createAreaPlot", "layoutSeries", "createBarPlot", "createParallelCoordinates",
   "createRugPlot", "createStripPlot", "packPoints", "removePointPacking",
-  "createBeeswarmPlot", "createECDFData", "createDotPlot",
+  "createBeeswarmPlot", "createRaincloudPlot", "editRaincloudPlot",
+  "createECDFData", "createDotPlot",
   "createLollipopPlot", "createDumbbellPlot", "editEndpointPlot",
   "createECDFPlot", "editECDFPlot", "createIntervalPlot", "createRegressionPlot"
 ]);

@@ -357,6 +357,66 @@ Default id는 `beeswarmPlot`, lifecycle은 Aggregate create-only다.
 - Evidence: `test/unit/actions/charts/beeswarm-facade.test.js`, `test/contracts/beeswarm-types.test.js`,
   `test/charts/beeswarm-plot/`, and `examples/beeswarm-plot/`.
 
+## `createRaincloudPlot`
+
+`createRaincloudPlot({ id?, data?, coordinate?, category, value, orientation?, side?, density?, summary?, points?, color?, guides? })`.
+Default id는 `raincloudPlot`; lifecycle은 stable mutable composite다.
+
+- `category`와 `value`는 한 canonical source에서 각각 nominal/ordinal과 quantitative 역할을 가져야 한다.
+  기본 orientation은 vertical, `side`는 `before`다. Stable role scales는 `${id}Category`, `${id}Value`,
+  children은 `${id}Cloud`, `${id}Summary`, `${id}Points`다.
+- `density` default는 enabled half Violin이다. KDE/width/area options는 기존 Violin owner에 전달하고 semantic
+  before/after를 vertical left/right 또는 horizontal top/bottom placement로 변환한다.
+- `summary` default는 `{ type: "box" }`; `type:"interval"`은 center/extent/method/level과 point/errorBar를 기존
+  Interval owner에 전달한다. `points` default는 Beeswarm이고 `type:"strip"`은 keyed band jitter를 지원한다.
+- Summary와 Points는 Cloud 반대편 category half에 band-relative 0.22 offset을 저장한다. Point spread default는
+  0.12 band, Box width default는 0.24 band다. Bar/Rule/Point rematerializer가 이 offset을 적용하므로 Canvas,
+  scale과 child style 변경에도 누적 없이 다시 계산된다.
+- Density/Summary/Points는 각각 false로 끌 수 있으나 모두 false일 수 없다. `color`는 category field만 받으며
+  active child가 같은 categorical color scale을 공유한다. Guide는 한 active child를 owner로 한 번만 만든다.
+- Effects: `createViolinPlot? → createBoxPlot|createIntervalPlot? → createStripPlot|createBeeswarmPlot? → scoped
+  guides`. First active child가 parent config와 active child closure를 소유한다. Parent 제거는 모든 children과
+  unreferenced KDE/summary data를 함께 제거하며 owned child 직접 제거는 거부한다.
+
+### Formal values — `createRaincloudPlot`
+
+- Implemented: `createRaincloudPlot(options: CreateRaincloudPlotOptions): ChartProgram`.
+- Required: category, value와 한 개 이상의 enabled component. Full entry 전용이다.
+- Proposed (NOT IMPLEMENTED): arbitrary child graph, automatic outlier removal와 implicit population normalization.
+
+### Value coverage — `createRaincloudPlot`
+
+- ✅ Covered: vertical/horizontal, before/after, Box/Interval, Strip/Beeswarm, every nonempty component subset,
+  color/guide owner, shared source/scales와 stable child IDs.
+- ✅ Covered: band-relative geometry, Canvas/style replay, lower hierarchy, parent closure removal와 atomic errors.
+- Evidence: `test/unit/actions/charts/raincloud-facade.test.js`, `test/contracts/raincloud-types.test.js`,
+  `test/charts/raincloud-plot/`, and `examples/raincloud-plot/`.
+
+## `editRaincloudPlot`
+
+`editRaincloudPlot({ target?, data?, category?, value?, orientation?, side?, density?, summary?, points?, color? })`.
+
+- Parent id 또는 current/unique owner로 stable Raincloud을 찾는다. Omitted role/component는 보존하고 object는 같은
+  type의 partial patch, 다른 explicit type은 replacement, false는 component 또는 color 제거다.
+- Source/category/value/orientation/side 변경은 existing parent closure를 immutable candidate에서 제거한 뒤 같은
+  parent와 child IDs로 전체 recipe를 다시 만든다. 어떤 child validation이라도 실패하면 caller, 이전 program,
+  trace와 derived data는 바뀌지 않는다.
+- Parent data revision만 KDE/summary/packing population을 함께 바꾼다. `filterMarks` 같은 child display filter는
+  해당 child의 derived display data만 바꾸며 sibling population을 다시 계산하지 않는다. Appearance는 각 lower
+  mark editor가 소유한다.
+
+### Formal values — `editRaincloudPlot`
+
+- Implemented: `editRaincloudPlot(options: EditRaincloudPlotOptions): ChartProgram`.
+- Required: target은 생략 가능하지만 최소 한 revision option이 필요하다.
+- Proposed (NOT IMPLEMENTED): child topology를 parent config 밖에서 임의 재배선하는 편집.
+
+### Value coverage — `editRaincloudPlot`
+
+- ✅ Covered: source/role/orientation/side와 component type/enablement atomic revision, stable IDs, stale derived-data
+  release, lower style retention boundary와 invalid target/options rollback.
+- Evidence: `test/unit/actions/charts/raincloud-facade.test.js`, `test/contracts/raincloud-types.test.js`.
+
 ## `createRosePlot`
 
 `createRosePlot({ id?, data?, coordinate?, category, value?, aggregate?, radiusScale?, color?, arc?, guides? })`.

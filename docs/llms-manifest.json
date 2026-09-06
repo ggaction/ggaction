@@ -1842,8 +1842,8 @@
         "action-reference",
         "exact-action-lookup"
       ],
-      "bytes": 24085,
-      "sha256": "b41617f3b0d392386bdd35754799c7a8b766a3364fe9969ff3bf7ba72ad2893e"
+      "bytes": 24291,
+      "sha256": "5a343241325334b5b9d98b284addf09edd0b0f1fb8222fddfaa928664e39be32"
     },
     {
       "order": 117,
@@ -1881,6 +1881,8 @@
         "createrugplot",
         "createstripplot",
         "createbeeswarmplot",
+        "createraincloudplot",
+        "editraincloudplot",
         "createbarplot",
         "createhistogram",
         "createareaplot",
@@ -1902,8 +1904,8 @@
         "editbin2ddata",
         "related"
       ],
-      "bytes": 21099,
-      "sha256": "1d77f31abcb2ca4b1079adfc199832614edf94638768953508487d56cc5cd571"
+      "bytes": 22043,
+      "sha256": "d709378139a36f160960bc0c6f4da88d3a0d715ee193701116586a7c2be89e97"
     },
     {
       "order": 118,
@@ -2141,8 +2143,8 @@
         "exact-typescript-signatures",
         "related"
       ],
-      "bytes": 17846,
-      "sha256": "adc050f744962726ef30d6586f7a46a335530f78c270ba2074206ecf2596629f"
+      "bytes": 17990,
+      "sha256": "53cdeaacba42636d3c3c02ea78b4706fea86050759ac8bccc552e2bc9a250f00"
     },
     {
       "order": 126,

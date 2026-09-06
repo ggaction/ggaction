@@ -24,7 +24,7 @@ export const REALISTIC_HIERARCHICAL_FACADE_ACTIONS = Object.freeze([
   "createAreaPlot", "createDensityPlot", "createHorizonPlot", "createPiePlot",
   "createPolarLinePlot", "createPolarScatterPlot", "createRadarPlot",
   "createRadialBarPlot", "createRosePlot", "createRugPlot", "createStripPlot",
-  "createBeeswarmPlot"
+  "createBeeswarmPlot", "createRaincloudPlot"
 ]);
 
 export const REALISTIC_HIERARCHICAL_FACADE_PROFILE_COUNT = 24;
@@ -678,6 +678,14 @@ function numericFieldValue(program, data, field) {
   return rows.map(row => row[field]).find(Number.isFinite);
 }
 
+function numericFieldExtent(program, data, field) {
+  const rows = program.semanticSpec.datasets.find(dataset => dataset.id === data)?.values ?? [];
+  const values = rows.map(row => row[field]).filter(value => Number.isFinite(value) && value > 0);
+  const low = Math.min(...values);
+  const high = Math.max(...values);
+  return low === high ? [low, low + 1] : [low, high];
+}
+
 function fieldValue(program, data, field) {
   const rows = program.semanticSpec.datasets.find(dataset => dataset.id === data)?.values ?? [];
   return rows.find(row => row[field] !== undefined)?.[field];
@@ -1124,6 +1132,186 @@ function appendBeeswarm(program, index) {
   return removeWitness(program.createBeeswarmPlot(options), suffix);
 }
 
+function appendRaincloud(program, index) {
+  const suffix = `matrix-raincloud-${index}`;
+  const orientation = index % 2 === 0 ? "vertical" : "horizontal";
+  const categoryScaleId = `${suffix}-category`;
+  const valueScaleId = `${suffix}-value`;
+  const hasColor = ![1, 2, 3].includes(index);
+  const valueExtent = numericFieldExtent(program, "analysisRows", "positiveY");
+  const intervalExtent = ["stderr", "stdev", "ci", "iqr"][Math.floor(index / 2) % 4];
+  const valueScale = numericScale(valueScaleId, index);
+  if (index % 2 === 1 && valueScale.type === "log") {
+    valueScale.type = "linear";
+    delete valueScale.base;
+  }
+  const density = index === 0
+    ? false
+    : {
+        bandwidth: index % 5 === 0
+          ? "auto"
+          : Math.max((valueExtent[1] - valueExtent[0]) / 10, Number.EPSILON),
+        extent: index % 4 === 0
+          ? "auto"
+          : valueExtent,
+        steps: 24 + index,
+        kernel: ["gaussian", "epanechnikov", "uniform", "triangular"][index % 4],
+        normalization: index % 2 === 0 ? "unit" : "count",
+        width: {
+          band: 0.55 + (index % 3) * 0.1,
+          resolve: index % 2 === 0 ? "shared" : "independent"
+        },
+        area: {
+          ...(hasColor ? {} : { fill: "#93c5fd" }),
+          opacity: 0.45 + index / 100,
+          stroke: "#1d4ed8",
+          strokeWidth: 0.8 + index % 3 * 0.2,
+          curve: CURVES[index % CURVES.length]
+        }
+      };
+  const summary = index === 1
+    ? false
+    : index % 2 === 0
+      ? {
+          type: "box",
+          whisker: {
+            type: index % 4 === 0 ? "tukey" : "minmax",
+            ...(index % 4 === 0 ? { factor: 1.25 + index / 20 } : {})
+          },
+          width: { band: 0.18 + index % 3 * 0.03 },
+          outliers: index % 4 === 0,
+          box: {
+            ...(hasColor ? {} : { fill: "#eff6ff" }),
+            opacity: 0.75, stroke: "#1e40af", strokeWidth: 1
+          },
+          median: { stroke: "#172554", strokeWidth: 1.5 },
+          outlier: {
+            shape: POINT_SHAPES[index % POINT_SHAPES.length],
+            radius: 2.5 + index % 3,
+            opacity: 0.6
+          }
+        }
+      : {
+          type: "interval",
+          center: intervalExtent === "iqr" ? "median" : "mean",
+          extent: intervalExtent,
+          ...(intervalExtent === "ci" ? {
+            method: index === 5 ? "normal" : "student-t",
+            level: 0.9 + index % 2 * 0.05
+          } : {}),
+          point: {
+            radius: 3 + index % 3,
+            shape: POINT_SHAPES[index % POINT_SHAPES.length],
+            ...(hasColor ? {} : { fill: "#1d4ed8" }), opacity: 0.85,
+            stroke: index % 3 === 0 ? false : "#ffffff",
+            ...(index % 3 === 0 ? {} : { strokeWidth: 0.8 })
+          },
+          errorBar: {
+            caps: index % 3 !== 0,
+            capSize: 7 + index % 3,
+            stroke: "#1e3a8a", strokeWidth: 1.2,
+            strokeDash: DASHES[Math.floor(index / 2) % DASHES.length], opacity: 0.85
+          }
+        };
+  let points = index === 2
+    ? false
+    : index % 2 === 1
+      ? {
+          type: "strip",
+          jitter: index === 3
+            ? false
+            : { maxOffset: { band: 0.08 + index % 3 * 0.01 }, seed: index, key: "id" },
+          size: sizeChannel(`${suffix}-size`, index),
+          shape: shapeChannel(`${suffix}-shape`, index),
+          point: {
+            shape: POINT_SHAPES[index % POINT_SHAPES.length],
+            opacity: 0.55 + index / 100,
+            ...(hasColor ? {} : { fill: "#2563eb" }),
+            stroke: index % 3 === 0 ? false : "#ffffff",
+            ...(index % 3 === 0 ? {} : { strokeWidth: 0.8 })
+          }
+        }
+      : {
+          type: "beeswarm",
+          packing: index === 4
+            ? false
+            : {
+                maxOffset: index === 0
+                  ? { band: 0.5 }
+                  : index % 4 === 0 ? { pixels: 6 } : { band: 0.1 },
+                padding: index % 3,
+                key: "id",
+                overflow: index === 0 ? "error" : "overlap"
+              },
+          ...(index === 0 ? {} : { size: sizeChannel(`${suffix}-size`, index) }),
+          shape: shapeChannel(`${suffix}-shape`, index),
+          point: {
+            ...(index === 0 ? { radius: 0.5 } : {}),
+            shape: POINT_SHAPES[index % POINT_SHAPES.length],
+            opacity: 0.55 + index / 100,
+            ...(hasColor ? {} : { fill: "#2563eb" }),
+            stroke: index % 3 === 0 ? false : "#ffffff",
+            ...(index % 3 === 0 ? {} : { strokeWidth: 0.8 })
+          }
+        };
+  if (density === false && summary === false && points === false) {
+    points = { type: "beeswarm", packing: { overflow: "overlap" } };
+  }
+  const options = {
+    id: suffix,
+    data: "analysisRows",
+    coordinate: `${suffix}-coordinate`,
+    category: {
+      field: "group",
+      fieldType: index % 2 === 0 ? "nominal" : "ordinal",
+      scale: categoryScale(categoryScaleId, index, "band")
+    },
+    value: {
+      field: "positiveY",
+      fieldType: "quantitative",
+      scale: valueScale
+    },
+    orientation,
+    side: index % 4 < 2 ? "before" : "after",
+    density,
+    summary,
+    points,
+    ...(hasColor ? { color: colorChannel(`${suffix}-color`, index, { categorical: true }) } : {})
+  };
+  const guideTarget = `${suffix}Points`;
+  options.guides = cartesianGuides({
+    id: guideTarget,
+    coordinate: `${suffix}-coordinate`,
+    xScale: orientation === "vertical" ? categoryScaleId : valueScaleId,
+    yScale: orientation === "vertical" ? valueScaleId : categoryScaleId,
+    index,
+    hasColor,
+    xDiscrete: orientation === "vertical",
+    yDiscrete: orientation === "horizontal",
+    legendKind: index % 3 === 0 ? "filled" : "point",
+    legendOrderValues: categoryValues(program, "analysisRows", "group"),
+    legendOrderChannel: index === 5 ? "y" : index === 8 ? "x" : undefined,
+    xValues: orientation === "vertical"
+      ? categoryValues(program, "analysisRows", "group")
+      : [5, 12].includes(index)
+        ? [numericFieldValue(program, "analysisRows", "positiveY")]
+        : undefined,
+    yValues: orientation === "horizontal"
+      ? categoryValues(program, "analysisRows", "group")
+      : index === 14 ? [numericFieldValue(program, "analysisRows", "positiveY")] : undefined,
+    xFormat: index === 3 ? ".1f" : "auto",
+    yFormat: index === 14 ? ".1f" : "auto"
+  });
+  if (options.guides !== false && options.guides.grid !== false) {
+    if (index === 3) options.guides.grid.vertical = true;
+    if (index === 4) options.guides.grid.horizontal = true;
+  }
+  const created = program.createRaincloudPlot(options);
+  const owner = Object.keys(created.markConfigs).find(id =>
+    created.markConfigs[id].raincloudPlot?.id === suffix);
+  return removeWitness(created, owner);
+}
+
 function appendArea(program, index) {
   const suffix = `matrix-area-${index}`;
   const branch = index % 6;
@@ -1383,7 +1571,8 @@ export function appendHierarchicalFacadeCoverage(program) {
       ["createRosePlot", (current, profile) => appendRadial(current, "createRosePlot", profile)],
       ["createRugPlot", appendRug],
       ["createStripPlot", appendStrip],
-      ["createBeeswarmPlot", appendBeeswarm]
+      ["createBeeswarmPlot", appendBeeswarm],
+      ["createRaincloudPlot", appendRaincloud]
     ];
     for (const [action, append] of steps) {
       try {

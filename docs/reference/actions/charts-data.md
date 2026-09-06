@@ -303,6 +303,28 @@ Create a role-safe category/measure Point chart and deterministically pack actua
 glyph extents within each category slot. The facade reuses `createStripPlot` and
 `packPoints`; set `packing: false` to retain semantic centers without packing.
 
+## `createRaincloudPlot`
+
+```javascript
+createRaincloudPlot({ id?, data?, coordinate?, category, value, orientation?, side?, density?, summary?, points?, color?, guides? })
+```
+
+Create a shared-source distribution composite from an optional half Violin,
+Box or Interval summary, and Strip or Beeswarm raw points. Defaults are vertical,
+`side: "before"`, Box summary, and Beeswarm points. Stable Cloud/Summary/Points
+children share role scales; summary and points use a replayable band-relative slot
+offset on the side opposite the density.
+
+## `editRaincloudPlot`
+
+```javascript
+editRaincloudPlot({ target?, data?, category?, value?, orientation?, side?, density?, summary?, points?, color? })
+```
+
+Atomically revise one Raincloud's shared source, roles, orientation, side, and
+component modes while preserving its parent and child IDs. Use `false` to disable
+an optional component or remove color; at least one component must remain enabled.
+
 ## `createBarPlot`
 
 ```javascript

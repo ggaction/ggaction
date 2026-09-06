@@ -3874,6 +3874,42 @@
       }
     },
     {
+      "name": "createRaincloudPlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "audit": "Intentional",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "update": "`editRaincloudPlot` revises the shared source and statistical child roles; lower child actions own appearance",
+      "contract": {
+        "file": "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "anchor": "createraincloudplot"
+      }
+    },
+    {
+      "name": "editRaincloudPlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "audit": "Intentional",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "update": "Rebuilds the stable Cloud/Summary/Points roles atomically under the same Raincloud id",
+      "contract": {
+        "file": "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "anchor": "editraincloudplot"
+      }
+    },
+    {
       "name": "createBarPlot",
       "layer": "user-facing",
       "domain": "charts",

@@ -108,6 +108,26 @@ test("supports horizontal placement and complete guide opt-out", () => {
   assert.equal(program.graphicSpec.objects.horizontalGridLines, undefined);
 });
 
+test("creates and edits one-sided density placement", () => {
+  const left = base().createViolinPlot({
+    id: "half",
+    x: "category",
+    y: "value",
+    density: { side: "left", steps: 16 },
+    guides: false
+  });
+  const right = left.editViolinPlot({ target: "half", density: { side: "right" } });
+  const placement = program => program.semanticSpec.datasets.find(
+    dataset => dataset.id === program.semanticSpec.layers[0].data
+  ).transform[0].placement;
+
+  assert.equal(placement(left).side, "left");
+  assert.equal(placement(right).side, "right");
+  assert.notDeepEqual(right.graphicSpec.objects.half, left.graphicSpec.objects.half);
+  assert.equal(left.markConfigs.half.violinPlot.density.side, "left");
+  assert.equal(right.markConfigs.half.violinPlot.density.side, "right");
+});
+
 test("suppresses a redundant category-color legend unless explicitly requested", () => {
   const automatic = base().createViolinPlot({
     x: "category",

@@ -126,7 +126,7 @@ export const editViolinPlot = action(
     const valueScale = requestedScale(
       args, valueChannel, owner.encoding[valueChannel].scale
     );
-    const { width, ...densityOptions } = density;
+    const { width, side, ...densityOptions } = density;
     let next = this;
     if (current.colorRole === "split" && changesSplit) {
       next = next.editSemantic({
@@ -144,6 +144,7 @@ export const editViolinPlot = action(
       ...(valueScale === undefined ? {} : { valueScale }),
       placement: {
         type: "category",
+        ...(side === undefined ? {} : { side }),
         width,
         ...(split === undefined ? {} : { split }),
         ...(categoryScale === undefined ? {} : { scale: categoryScale })
@@ -180,7 +181,8 @@ export const editViolinPlot = action(
           steps: transform.steps,
           kernel: transform.kernel,
           normalization: transform.normalization,
-          width: transform.placement.width
+          width: transform.placement.width,
+          side: transform.placement.side
         }
       }
     });

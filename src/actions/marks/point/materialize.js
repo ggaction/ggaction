@@ -32,6 +32,8 @@ import {
   resolveRowPositionValues
 } from
   "../../../materialization/rowEncoding.js";
+import { offsetCategoryPositions } from
+  "../../../materialization/categorySlotOffset.js";
 
 const REMATERIALIZE_OPTIONS = Object.freeze(["id"]);
 const DEFAULT_POINT_FILL = DEFAULT_COLORS.mark;
@@ -387,7 +389,7 @@ export const rematerializePointMark = action(
       graphic,
       existingChildren
     });
-    const { x, y } = jittered;
+    const { x, y } = offsetCategoryPositions(jittered.program, layer, jittered);
 
     if (requiresMixedCollection) {
       const items = dataset.values.map((_, index) => {

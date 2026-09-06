@@ -115,7 +115,7 @@ test("calls every user-facing action directly from a generated scenario root", (
     directTraceOperations(buildScenario(descriptor), directOperations);
   }
 
-  assert.equal(publicActions.length, 220);
+  assert.equal(publicActions.length, 222);
   assert.deepEqual(
     publicActions.filter(operation => !directOperations.has(operation)),
     []

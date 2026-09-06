@@ -28,6 +28,8 @@
   "createRugPlot": "/reference/actions/charts-data/#createrugplot",
   "createStripPlot": "/reference/actions/charts-data/#createstripplot",
   "createBeeswarmPlot": "/reference/actions/charts-data/#createbeeswarmplot",
+  "createRaincloudPlot": "/reference/actions/charts-data/#createraincloudplot",
+  "editRaincloudPlot": "/reference/actions/charts-data/#editraincloudplot",
   "createBarPlot": "/reference/actions/charts-data/#createbarplot",
   "createHistogram": "/reference/actions/charts-data/#createhistogram",
   "createAreaPlot": "/reference/actions/charts-data/#createareaplot",

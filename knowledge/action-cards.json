@@ -3,7 +3,7 @@
   "packageVersion": "0.0.12",
   "typeSource": "types/program.d.ts",
   "errorPolicy": "An empty errors array means the compact card has no curated error override; consult the canonical route for validation, inference, and recovery behavior.",
-  "count": 226,
+  "count": 228,
   "cards": [
     {
       "schemaVersion": 2,
@@ -15556,6 +15556,194 @@
       "snippet": "program.createBeeswarmPlot({ x: { field: \"category\", fieldType: \"nominal\" }, y: \"value\" })",
       "errors": [],
       "route": "/reference/actions/charts-data/#createbeeswarmplot"
+    },
+    {
+      "schemaVersion": 2,
+      "name": "createRaincloudPlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "summary": "Create a shared-source distribution composite from an optional half Violin, Box or Interval summary, and Strip or Beeswarm raw points.",
+      "signature": "createRaincloudPlot(options: CreateRaincloudPlotOptions): ChartProgram;",
+      "intents": [
+        "create raincloud plot",
+        "create",
+        "add",
+        "complete chart",
+        "chart facade",
+        "raincloud plot",
+        "half density with summary and raw observations"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "canvas and dataset context"
+        ],
+        "owns": [
+          "raincloud plot"
+        ],
+        "idOptions": [
+          "id",
+          "data",
+          "coordinate"
+        ]
+      },
+      "options": [
+        {
+          "name": "id",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "data",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "coordinate",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "category",
+          "required": true,
+          "type": "RaincloudCategoryChannel"
+        },
+        {
+          "name": "value",
+          "required": true,
+          "type": "RaincloudValueChannel"
+        },
+        {
+          "name": "orientation",
+          "required": false,
+          "type": "\"horizontal\" | \"vertical\" | undefined"
+        },
+        {
+          "name": "side",
+          "required": false,
+          "type": "\"after\" | \"before\" | undefined"
+        },
+        {
+          "name": "density",
+          "required": false,
+          "type": "false | RaincloudDensityOptions | undefined"
+        },
+        {
+          "name": "summary",
+          "required": false,
+          "type": "false | RaincloudSummaryOptions | undefined"
+        },
+        {
+          "name": "points",
+          "required": false,
+          "type": "false | RaincloudPointsOptions | undefined"
+        },
+        {
+          "name": "color",
+          "required": false,
+          "type": "LineCategoricalColorChannel | undefined"
+        },
+        {
+          "name": "guides",
+          "required": false,
+          "type": "false | CartesianCategoricalGuideOptions | undefined"
+        }
+      ],
+      "callPatterns": [
+        "createRaincloudPlot({ category, value })",
+        "createRaincloudPlot({ category, value, density?, summary?, points?, color?, guides? })"
+      ],
+      "snippet": "program.createRaincloudPlot({ category: { field: \"category\", fieldType: \"nominal\" }, value: \"value\" })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#createraincloudplot"
+    },
+    {
+      "schemaVersion": 2,
+      "name": "editRaincloudPlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "summary": "Atomically revise one Raincloud's shared source, roles, orientation, side, and component modes while preserving its parent and child IDs.",
+      "signature": "editRaincloudPlot(options: EditRaincloudPlotOptions): ChartProgram;",
+      "intents": [
+        "edit raincloud plot",
+        "edit",
+        "change",
+        "complete chart",
+        "chart facade",
+        "raincloud plot",
+        "half density with summary and raw observations"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing raincloud plot",
+          "canvas and dataset context"
+        ],
+        "owns": [],
+        "idOptions": [
+          "target",
+          "data"
+        ]
+      },
+      "options": [
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "data",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "category",
+          "required": false,
+          "type": "RaincloudCategoryChannel | undefined"
+        },
+        {
+          "name": "value",
+          "required": false,
+          "type": "RaincloudValueChannel | undefined"
+        },
+        {
+          "name": "orientation",
+          "required": false,
+          "type": "\"horizontal\" | \"vertical\" | undefined"
+        },
+        {
+          "name": "side",
+          "required": false,
+          "type": "\"after\" | \"before\" | undefined"
+        },
+        {
+          "name": "density",
+          "required": false,
+          "type": "false | RaincloudDensityOptions | undefined"
+        },
+        {
+          "name": "summary",
+          "required": false,
+          "type": "false | RaincloudSummaryOptions | undefined"
+        },
+        {
+          "name": "points",
+          "required": false,
+          "type": "false | RaincloudPointsOptions | undefined"
+        },
+        {
+          "name": "color",
+          "required": false,
+          "type": "false | LineCategoricalColorChannel | undefined"
+        }
+      ],
+      "callPatterns": [
+        "editRaincloudPlot({ target?, data?, category?, value? })",
+        "editRaincloudPlot({ target?, orientation?, side?, density?, summary?, points?, color? })"
+      ],
+      "snippet": "program.editRaincloudPlot({ target: \"raincloudPlot\", side: \"after\" })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#editraincloudplot"
     },
     {
       "schemaVersion": 2,

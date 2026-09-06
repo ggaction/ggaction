@@ -747,6 +747,11 @@
       "collision-free grouped observations",
       "packed point distribution"
     ],
+    "RaincloudPlot": [
+      "raincloud plot",
+      "half density with summary and raw observations",
+      "layered distribution chart"
+    ],
     "PointPacking": [
       "point packing",
       "deterministic collision avoidance",
@@ -1093,6 +1098,17 @@
       },
       "y": "value"
     },
+    "createRaincloudPlot": {
+      "category": {
+        "field": "category",
+        "fieldType": "nominal"
+      },
+      "value": "value"
+    },
+    "editRaincloudPlot": {
+      "target": "raincloudPlot",
+      "side": "after"
+    },
     "packPoints": {
       "channel": "x"
     }
@@ -1243,6 +1259,14 @@
     "createBeeswarmPlot": [
       "createBeeswarmPlot({ x, y, packing?, guides? })",
       "createBeeswarmPlot({ x, y, color?, size?, shape?, point?, packing?, guides? })"
+    ],
+    "createRaincloudPlot": [
+      "createRaincloudPlot({ category, value })",
+      "createRaincloudPlot({ category, value, density?, summary?, points?, color?, guides? })"
+    ],
+    "editRaincloudPlot": [
+      "editRaincloudPlot({ target?, data?, category?, value? })",
+      "editRaincloudPlot({ target?, orientation?, side?, density?, summary?, points?, color? })"
     ],
     "packPoints": [
       "packPoints({ channel, maxOffset?, padding?, key?, overflow? })"

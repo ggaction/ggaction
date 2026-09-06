@@ -13258,6 +13258,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createRadialAxisTitle`](./reference/actions/guides/#createradialaxistitle) | user-facing | axes |
 | [`createRadialBarPlot`](./reference/actions/charts-data/#createradialbarplot) | user-facing | charts |
 | [`createRadialGrid`](./reference/actions/guides/#createradialgrid) | user-facing | grid |
+| [`createRaincloudPlot`](./reference/actions/charts-data/#createraincloudplot) | user-facing | charts |
 | [`createRectMark`](./reference/actions/marks/#createrectmark) | user-facing | marks |
 | [`createReferenceBand`](./reference/actions/marks/#createreferenceband) | user-facing | marks |
 | [`createReferenceLine`](./reference/actions/marks/#createreferenceline) | user-facing | marks |
@@ -13336,6 +13337,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editRadialAxisTicks`](./reference/actions/guides/#editradialaxisticks) | user-facing | axes |
 | [`editRadialAxisTitle`](./reference/actions/guides/#editradialaxistitle) | user-facing | axes |
 | [`editRadialGrid`](./reference/actions/guides/#editradialgrid) | user-facing | grid |
+| [`editRaincloudPlot`](./reference/actions/charts-data/#editraincloudplot) | user-facing | charts |
 | [`editRectMark`](./reference/actions/marks/#editrectmark) | user-facing | marks |
 | [`editRegression`](./reference/actions/statistics/#editregression) | user-facing | statistics |
 | [`editRegressionBand`](./reference/actions/advanced/#semantic-resources-and-regression-layers) | user-facing | statistics |
@@ -13728,6 +13730,28 @@ createBeeswarmPlot({ id?, data?, coordinate?, x, y, color?, size?, shape?, point
 Create a role-safe category/measure Point chart and deterministically pack actual
 glyph extents within each category slot. The facade reuses `createStripPlot` and
 `packPoints`; set `packing: false` to retain semantic centers without packing.
+
+## `createRaincloudPlot`
+
+```javascript
+createRaincloudPlot({ id?, data?, coordinate?, category, value, orientation?, side?, density?, summary?, points?, color?, guides? })
+```
+
+Create a shared-source distribution composite from an optional half Violin,
+Box or Interval summary, and Strip or Beeswarm raw points. Defaults are vertical,
+`side: "before"`, Box summary, and Beeswarm points. Stable Cloud/Summary/Points
+children share role scales; summary and points use a replayable band-relative slot
+offset on the side opposite the density.
+
+## `editRaincloudPlot`
+
+```javascript
+editRaincloudPlot({ target?, data?, category?, value?, orientation?, side?, density?, summary?, points?, color? })
+```
+
+Atomically revise one Raincloud's shared source, roles, orientation, side, and
+component modes while preserving its parent and child IDs. Use `false` to disable
+an optional component or remove color; at least one component must remain enabled.
 
 ## `createBarPlot`
 
@@ -15982,6 +16006,8 @@ interface ChartProgramActions {
   createRugPlot(options: CreateRugPlotOptions): ChartProgram;
   createStripPlot(options: CreateStripPlotOptions): ChartProgram;
   createBeeswarmPlot(options: CreateBeeswarmPlotOptions): ChartProgram;
+  createRaincloudPlot(options: CreateRaincloudPlotOptions): ChartProgram;
+  editRaincloudPlot(options: EditRaincloudPlotOptions): ChartProgram;
   createAreaPlot(options: CreateAreaPlotOptions): ChartProgram;
   createBarPlot(options: CreateBarPlotOptions): ChartProgram;
   createHistogram(options: CreateHistogramOptions): ChartProgram;

@@ -18,6 +18,7 @@ import {
 } from "./endpoints.js";
 import { createECDFPlot, editECDFPlot } from "./ecdf.js";
 import { createBeeswarmPlot } from "./beeswarm.js";
+import { createRaincloudPlot, editRaincloudPlot } from "./raincloud.js";
 
 export function registerChartActions(ProgramClass) {
   ProgramClass.prototype.createRosePlot = createRosePlot;
@@ -46,4 +47,6 @@ export function registerChartActions(ProgramClass) {
   ProgramClass.prototype.createECDFPlot = createECDFPlot;
   ProgramClass.prototype.editECDFPlot = editECDFPlot;
   ProgramClass.prototype.createBeeswarmPlot = createBeeswarmPlot;
+  ProgramClass.prototype.createRaincloudPlot = createRaincloudPlot;
+  ProgramClass.prototype.editRaincloudPlot = editRaincloudPlot;
 }

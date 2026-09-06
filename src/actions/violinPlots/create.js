@@ -20,7 +20,7 @@ const OPTIONS = Object.freeze([
 ]);
 const POSITION_OPTIONS = Object.freeze(["field", "fieldType", "scale"]);
 const DENSITY_OPTIONS = Object.freeze([
-  "bandwidth", "extent", "steps", "kernel", "normalization", "width"
+  "bandwidth", "extent", "steps", "kernel", "normalization", "width", "side"
 ]);
 const WIDTH_OPTIONS = Object.freeze(["band", "resolve"]);
 const SPLIT_OPTIONS = Object.freeze(["field", "domain"]);
@@ -156,7 +156,7 @@ export const createViolinPlot = action(
       );
     }
     const density = resolveViolinDensity(args.density);
-    const { width: densityWidth, ...densityOptions } = density;
+    const { width: densityWidth, side: densitySide, ...densityOptions } = density;
     const area = normalizeAppearance(
       args.area,
       AREA_OPTIONS,
@@ -196,6 +196,7 @@ export const createViolinPlot = action(
       ...densityOptions,
       placement: {
         type: "category",
+        ...(densitySide === undefined ? {} : { side: densitySide }),
         ...(densityWidth === undefined ? {} : { width: densityWidth }),
         ...(split === undefined ? {} : { split }),
         ...(category.scale === undefined ? {} : { scale: category.scale })
@@ -220,7 +221,8 @@ export const createViolinPlot = action(
           steps: transform.steps,
           kernel: transform.kernel,
           normalization: transform.normalization,
-          width: transform.placement.width
+          width: transform.placement.width,
+          side: transform.placement.side
         },
         colorRole: color === undefined
           ? undefined

@@ -122,6 +122,10 @@ export const createIntervalPlot = action(
     next = applyIntervalPointPositions(next, id, config);
     if (radius !== undefined) next = next.encodePointRadius({ target: id, value: radius });
     if (color !== undefined) next = next.encodeColor(targetArgs(color, id));
+    next = next._withMarkConfig(id, {
+      ...next.markConfigs[id],
+      intervalPlot: { intervalId, materialized: true }
+    });
     return applyFacadeGuides(next, guides, id, guides);
   }
 );

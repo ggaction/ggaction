@@ -193,6 +193,15 @@
       ]
     },
     {
+      "id": "chart.raincloud",
+      "phrases": [
+        "raincloud plot",
+        "raincloud chart",
+        "half violin with box and points",
+        "density summary raw points"
+      ]
+    },
+    {
       "id": "chart.horizon",
       "phrases": [
         "horizon chart",
@@ -1492,6 +1501,47 @@
         },
         "layout.packing": {
           "packing": "{ key: \"id\" }"
+        }
+      }
+    },
+    {
+      "id": "action.createRaincloudPlot",
+      "kind": "action",
+      "name": "createRaincloudPlot",
+      "order": 40,
+      "anchors": [
+        "chart.raincloud"
+      ],
+      "covers": [
+        "chart.raincloud",
+        "encoding.x",
+        "encoding.y",
+        "encoding.color",
+        "guide.axes",
+        "guide.legend",
+        "guide.all",
+        "layout.packing"
+      ],
+      "baseOptions": {
+        "category": "{ field: \"category\", fieldType: \"nominal\" }",
+        "value": "\"value\""
+      },
+      "optionsByConstraint": {
+        "encoding.color": {
+          "color": "\"category\""
+        },
+        "guide.axes": {
+          "guides": "{}"
+        },
+        "guide.legend": {
+          "color": "\"category\"",
+          "guides": "{ legend: {} }"
+        },
+        "guide.all": {
+          "guides": "{}"
+        },
+        "layout.packing": {
+          "points": "{ type: \"beeswarm\", packing: { key: \"id\" } }"
         }
       }
     },
