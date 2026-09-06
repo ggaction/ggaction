@@ -1,6 +1,6 @@
 # Roadmap 6 — ECDF data / plot
 
-**상태: Implemented, Phase 8 W3 검증 중.** `createECDFData`, `createECDFPlot`, `editECDFPlot`과
+**상태: Implemented and verified.** `createECDFData`, `createECDFPlot`, `editECDFPlot`과
 Line final-series label source를 구현했다. Current의 정확한 공개 계약은
 [`STATISTICS.md`](../../../contract/current/STATISTICS.md)와
 [`COMPLETE_CHARTS.md`](../../../contract/current/COMPLETE_CHARTS.md)가 소유한다.

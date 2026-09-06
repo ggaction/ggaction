@@ -424,7 +424,11 @@ Primary owner는 누락 방지를 위한 책임 단위이며, 관련 작업이 �
 - 수정·추가 방향: Sorted values와 tie grouping, denominator, missing/weight policy를 materialized derived data로 정의한다. Step line은 기존 path owner로 표현하고 generic cumsum은 Window에 남긴다.
 - 완료 검증: 관측점 우연속 cumulative probability, ties/count/weights와 0..1 bounds 독립 oracle. Group와 filter/source edit 후 분모·steps·labels 일치.
 - 근거: audit/REPORT.md: F13. [원래 조사](audit/REPORT.md)
-- 처분: 구현 또는 명시적인 계약 유지·migration 결정의 제안. 아직 완료·승인 상태가 아니다.
+- 처분: [Phase 8 W3](phase8/RESULTS_W3_ECDF.md)로 implemented-verified. `createECDFData`가
+  sorting/ties/group별 count·positive-weight denominator/missing policy와 resolved provenance를 소유하고,
+  `createECDFPlot`이 ordinary `step-after` Line·[0,1] scale·group/color·final-series label을 조합한다.
+  `editECDFPlot`은 raw filtered source와 통계 역할을 원자적으로 재작성하며 primitive/public state·Canvas·PNG와
+  realistic corpus를 검증했다.
 
 ### F14 — Mark labels / reference / annotation
 

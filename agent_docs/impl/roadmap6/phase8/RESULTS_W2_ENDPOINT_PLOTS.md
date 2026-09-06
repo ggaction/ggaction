@@ -30,7 +30,7 @@
   graphic tree, draw order, Canvas calls에서 정확히 일치한다.
 - 같은 실행의 Node PNG primitive/public pixel hash가 세 variant 모두 일치한다. Public browser registry의 63개
   예제 전체도 logical Canvas size, 접근성 이름, browser error 검사를 통과했다.
-- [튜토리얼](../../../docs/tutorials/endpoint-plots.md)은 raw/summary 경계, baseline/log 조건, named endpoint와
+- [튜토리얼](../../../../docs/tutorials/endpoint-plots.md)은 raw/summary 경계, baseline/log 조건, named endpoint와
   atomic edit를 실행 가능한 public call로 설명한다.
 
 ## 검증 결과

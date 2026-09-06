@@ -6,10 +6,10 @@
 - [x] A/V Gate에 전체 실행 사용자 승인 적용
 - [x] R6-P8-W1 Interval과 Regression complete facade — [결과](RESULTS_W1_INTERVAL_REGRESSION.md)
 - [x] R6-P8-W2 Dot·Lollipop·Dumbbell — [결과](RESULTS_W2_ENDPOINT_PLOTS.md)
-- [ ] R6-P8-W3 ECDF data와 complete plot
-- [ ] 모든 시각 variant의 primitive target 작성·표시·V 승인
-- [ ] 승인된 variant의 public 구현과 같은 실행의 primitive/public render 비교
-- [ ] 누적 검증·migration·문서·원장 동기화
+- [x] R6-P8-W3 ECDF data와 complete plot — [결과](RESULTS_W3_ECDF.md)
+- [x] 모든 시각 variant의 primitive target 작성·표시·V 승인
+- [x] 승인된 variant의 public 구현과 같은 실행의 primitive/public render 비교
+- [x] 누적 검증·migration·문서·원장 동기화
 - [ ] X Gate의 증거 commit/push와 명시적 사용자 승인 기록
 
 위 체크는 미래 실행용이다. 계획 문서를 만든 사실을 구현 완료나 Gate 승인으로 표시하지 않는다.
