@@ -405,7 +405,10 @@ Primary owner는 누락 방지를 위한 책임 단위이며, 관련 작업이 �
 - 수정·추가 방향: Summary/raw mode를 구분한 point, baseline stem rule, two endpoints connector를 ordinary child로 만든다. Atomic role edit와 final-item label anchor를 정의한다.
 - 완료 검증: Horizontal/vertical, zero/nonzero baseline, endpoint swap, negative/equal values, source edit 후 geometry·guide 수렴.
 - 근거: audit/REPORT.md: F11. [원래 조사](audit/REPORT.md)
-- 처분: 구현 또는 명시적인 계약 유지·migration 결정의 제안. 아직 완료·승인 상태가 아니다.
+- 처분: [Phase 8 W2](phase8/RESULTS_W2_ENDPOINT_PLOTS.md)로 implemented-verified. Raw/explicit summary,
+  baseline stem, named start/end connector, final-item labels와 atomic source/role edit를 ordinary child owner로
+  구현했다. Horizontal/vertical, signed/equal/reversed endpoint, shared scale/grain, remove/rematerialization,
+  strict types와 primitive/public state·Canvas·PNG·browser 동등성을 검증했다.
 
 ### F12 — Raincloud
 
