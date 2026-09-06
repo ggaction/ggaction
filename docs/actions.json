@@ -3,7 +3,7 @@
   "packageVersion": "0.0.12",
   "typeSource": "types/program.d.ts",
   "errorPolicy": "An empty errors array means the compact card has no curated error override; consult the canonical route for validation, inference, and recovery behavior.",
-  "count": 216,
+  "count": 220,
   "cards": [
     {
       "schemaVersion": 2,
@@ -13931,6 +13931,390 @@
       "snippet": "program.createScatterPlot({ x: \"x\", y: \"y\" })",
       "errors": [],
       "route": "/reference/actions/charts-data/#createscatterplot"
+    },
+    {
+      "schemaVersion": 2,
+      "name": "createDotPlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "summary": "Create categorical dots from raw rows by default.",
+      "signature": "createDotPlot(options: CreateDotPlotOptions): ChartProgram;",
+      "intents": [
+        "create dot plot",
+        "create",
+        "add",
+        "complete chart",
+        "chart facade",
+        "dot plot",
+        "categorical dots"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "canvas and dataset context"
+        ],
+        "owns": [
+          "dot plot"
+        ],
+        "idOptions": [
+          "id",
+          "data",
+          "coordinate"
+        ]
+      },
+      "options": [
+        {
+          "name": "value",
+          "required": true,
+          "type": "EndpointValueChannel"
+        },
+        {
+          "name": "point",
+          "required": false,
+          "type": "{ radius?: number | undefined; shape?: PointShape | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; } | undefined"
+        },
+        {
+          "name": "labels",
+          "required": false,
+          "type": "false | EndpointLabelOptions | undefined"
+        },
+        {
+          "name": "id",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "data",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "coordinate",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "category",
+          "required": true,
+          "type": "EndpointCategoryChannel"
+        },
+        {
+          "name": "orientation",
+          "required": false,
+          "type": "\"horizontal\" | \"vertical\" | undefined"
+        },
+        {
+          "name": "summary",
+          "required": false,
+          "type": "EndpointPlotSummary | undefined"
+        },
+        {
+          "name": "guides",
+          "required": false,
+          "type": "false | CartesianGuideOptions | undefined"
+        }
+      ],
+      "callPatterns": [
+        "createDotPlot({ category, value })",
+        "createDotPlot({ category, value, orientation?, summary?, point?, labels?, guides? })"
+      ],
+      "snippet": "program.createDotPlot({ category: \"category\", value: \"value\" })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#createdotplot"
+    },
+    {
+      "schemaVersion": 2,
+      "name": "createLollipopPlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "summary": "Create a value point and a stem to a finite baseline, which defaults to zero.",
+      "signature": "createLollipopPlot(options: CreateLollipopPlotOptions): ChartProgram;",
+      "intents": [
+        "create lollipop plot",
+        "create",
+        "add",
+        "complete chart",
+        "chart facade",
+        "lollipop plot",
+        "value point with baseline stem"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "canvas and dataset context"
+        ],
+        "owns": [
+          "lollipop plot"
+        ],
+        "idOptions": [
+          "id",
+          "data",
+          "coordinate"
+        ]
+      },
+      "options": [
+        {
+          "name": "value",
+          "required": true,
+          "type": "EndpointValueChannel"
+        },
+        {
+          "name": "baseline",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "point",
+          "required": false,
+          "type": "{ radius?: number | undefined; shape?: PointShape | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; } | undefined"
+        },
+        {
+          "name": "stem",
+          "required": false,
+          "type": "RuleStyleOptions | undefined"
+        },
+        {
+          "name": "labels",
+          "required": false,
+          "type": "false | EndpointLabelOptions | undefined"
+        },
+        {
+          "name": "id",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "data",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "coordinate",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "category",
+          "required": true,
+          "type": "EndpointCategoryChannel"
+        },
+        {
+          "name": "orientation",
+          "required": false,
+          "type": "\"horizontal\" | \"vertical\" | undefined"
+        },
+        {
+          "name": "summary",
+          "required": false,
+          "type": "EndpointPlotSummary | undefined"
+        },
+        {
+          "name": "guides",
+          "required": false,
+          "type": "false | CartesianGuideOptions | undefined"
+        }
+      ],
+      "callPatterns": [
+        "createLollipopPlot({ category, value })",
+        "createLollipopPlot({ category, value, baseline?, orientation?, summary?, point?, stem?, labels?, guides? })"
+      ],
+      "snippet": "program.createLollipopPlot({ category: \"category\", value: \"value\", baseline: 0 })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#createlollipopplot"
+    },
+    {
+      "schemaVersion": 2,
+      "name": "createDumbbellPlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "summary": "Create named start and end points with a connector.",
+      "signature": "createDumbbellPlot(options: CreateDumbbellPlotOptions): ChartProgram;",
+      "intents": [
+        "create dumbbell plot",
+        "create",
+        "add",
+        "complete chart",
+        "chart facade",
+        "dumbbell plot",
+        "connected start and end points"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "canvas and dataset context"
+        ],
+        "owns": [
+          "dumbbell plot"
+        ],
+        "idOptions": [
+          "id",
+          "data",
+          "coordinate"
+        ]
+      },
+      "options": [
+        {
+          "name": "start",
+          "required": true,
+          "type": "EndpointValueChannel"
+        },
+        {
+          "name": "end",
+          "required": true,
+          "type": "EndpointValueChannel"
+        },
+        {
+          "name": "startPoint",
+          "required": false,
+          "type": "{ radius?: number | undefined; shape?: PointShape | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; } | undefined"
+        },
+        {
+          "name": "endPoint",
+          "required": false,
+          "type": "{ radius?: number | undefined; shape?: PointShape | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; } | undefined"
+        },
+        {
+          "name": "connector",
+          "required": false,
+          "type": "RuleStyleOptions | undefined"
+        },
+        {
+          "name": "labels",
+          "required": false,
+          "type": "false | (EndpointLabelOptions & { endpoint?: \"both\" | \"end\" | \"start\" | undefined; }) | undefined"
+        },
+        {
+          "name": "id",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "data",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "coordinate",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "category",
+          "required": true,
+          "type": "EndpointCategoryChannel"
+        },
+        {
+          "name": "orientation",
+          "required": false,
+          "type": "\"horizontal\" | \"vertical\" | undefined"
+        },
+        {
+          "name": "summary",
+          "required": false,
+          "type": "EndpointPlotSummary | undefined"
+        },
+        {
+          "name": "guides",
+          "required": false,
+          "type": "false | CartesianGuideOptions | undefined"
+        }
+      ],
+      "callPatterns": [
+        "createDumbbellPlot({ category, start, end })",
+        "createDumbbellPlot({ category, start, end, orientation?, summary?, startPoint?, endPoint?, connector?, labels?, guides? })"
+      ],
+      "snippet": "program.createDumbbellPlot({ category: \"category\", start: \"before\", end: \"after\" })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#createdumbbellplot"
+    },
+    {
+      "schemaVersion": 2,
+      "name": "editEndpointPlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "summary": "Atomically revise the semantic roles of a Dot, Lollipop, or Dumbbell facade.",
+      "signature": "editEndpointPlot(options: EditEndpointPlotOptions): ChartProgram;",
+      "intents": [
+        "edit endpoint plot",
+        "edit",
+        "change",
+        "complete chart",
+        "chart facade",
+        "endpoint plot",
+        "dot lollipop or dumbbell semantic roles"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing endpoint plot",
+          "canvas and dataset context"
+        ],
+        "owns": [],
+        "idOptions": [
+          "target",
+          "data",
+          "coordinate"
+        ]
+      },
+      "options": [
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "data",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "coordinate",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "category",
+          "required": false,
+          "type": "EndpointCategoryChannel | undefined"
+        },
+        {
+          "name": "orientation",
+          "required": false,
+          "type": "\"horizontal\" | \"vertical\" | undefined"
+        },
+        {
+          "name": "summary",
+          "required": false,
+          "type": "EndpointPlotSummary | undefined"
+        },
+        {
+          "name": "start",
+          "required": false,
+          "type": "EndpointValueChannel | undefined"
+        },
+        {
+          "name": "end",
+          "required": false,
+          "type": "EndpointValueChannel | undefined"
+        },
+        {
+          "name": "value",
+          "required": false,
+          "type": "EndpointValueChannel | undefined"
+        },
+        {
+          "name": "baseline",
+          "required": false,
+          "type": "number | undefined"
+        }
+      ],
+      "callPatterns": [
+        "editEndpointPlot({ value })",
+        "editEndpointPlot({ target?, data?, category?, value?, start?, end?, orientation?, summary?, baseline? })"
+      ],
+      "snippet": "program.editEndpointPlot({ value: \"updatedValue\" })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#editendpointplot"
     },
     {
       "schemaVersion": 2,

@@ -51,6 +51,8 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createDensityData`](./actions/charts-data.md#createdensitydata) | user-facing | core |
 | [`createDensityPlot`](./actions/statistics.md#createdensityplot) | user-facing | statistics |
 | [`createDerivedData`](./actions/advanced.md#semantic-resources-and-regression-layers) | user-facing | core |
+| [`createDotPlot`](./actions/charts-data.md#createdotplot) | user-facing | charts |
+| [`createDumbbellPlot`](./actions/charts-data.md#createdumbbellplot) | user-facing | charts |
 | [`createErrorBand`](./actions/statistics.md#createerrorband) | user-facing | statistics |
 | [`createErrorBar`](./actions/statistics.md#createerrorbar) | user-facing | statistics |
 | [`createFoldData`](./actions/statistics.md#createfolddata) | user-facing | statistics |
@@ -67,6 +69,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createLegend`](./actions/guides.md#createlegend) | user-facing | legend_and_title |
 | [`createLineMark`](./actions/marks.md#createlinemark) | user-facing | marks |
 | [`createLinePlot`](./actions/charts-data.md#createlineplot) | user-facing | charts |
+| [`createLollipopPlot`](./actions/charts-data.md#createlollipopplot) | user-facing | charts |
 | [`createMarkLabels`](./actions/marks.md#createmarklabels) | user-facing | marks |
 | [`createParallelAxes`](./actions/advanced.md#createparallelaxes-createparallelaxis-editparallelaxis-removeparallelaxis-removeparallelaxes) | user-facing | axes |
 | [`createParallelAxis`](./actions/advanced.md#createparallelaxes-createparallelaxis-editparallelaxis-removeparallelaxis-removeparallelaxes) | user-facing | axes |
@@ -132,6 +135,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editCanvas`](./actions/charts-data.md#editcanvas) | user-facing | core |
 | [`editCompositionLayout`](./actions/charts-data.md#editcompositionlayout) | user-facing | composition |
 | [`editDensity`](./actions/encodings.md#editdensity) | user-facing | encodings |
+| [`editEndpointPlot`](./actions/charts-data.md#editendpointplot) | user-facing | charts |
 | [`editErrorBand`](./actions/statistics.md#editerrorband-and-editerrorbandboundary) | user-facing | statistics |
 | [`editErrorBandBoundary`](./actions/statistics.md#editerrorband-and-editerrorbandboundary) | user-facing | statistics |
 | [`editErrorBar`](./actions/statistics.md#editerrorbar) | user-facing | statistics |

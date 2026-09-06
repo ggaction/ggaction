@@ -3550,6 +3550,78 @@
       }
     },
     {
+      "name": "createDotPlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "editEndpointPlot plus existing point, encoding, label, scale and guide actions",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "anchor": "createdotplot"
+      }
+    },
+    {
+      "name": "createLollipopPlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "editEndpointPlot plus existing point, rule, encoding, label, scale and guide actions",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "anchor": "createlollipopplot"
+      }
+    },
+    {
+      "name": "createDumbbellPlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "editEndpointPlot plus existing point, rule, encoding, label, scale and guide actions",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "anchor": "createdumbbellplot"
+      }
+    },
+    {
+      "name": "editEndpointPlot",
+      "layer": "user-facing",
+      "domain": "charts",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Atomically rebuilds owned endpoint roles and derived summary data",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/COMPLETE_CHARTS.md",
+        "anchor": "editendpointplot"
+      }
+    },
+    {
       "name": "createIntervalPlot",
       "layer": "user-facing",
       "domain": "charts",

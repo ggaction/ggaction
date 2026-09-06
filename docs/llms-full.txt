@@ -2497,6 +2497,77 @@ data-cardinality changes. It does not store stale item IDs.
 - Use [`filterMarks`](./api/data/filtering/#filter-marks) when matching items should replace the target mark's data.
 - Use [`editBarMark`](./api/marks/bar/#edit-bar-mark) for whole-bar appearance rather than selected items.
 
+<!-- Source: /tutorials/endpoint-plots/ -->
+
+# Dot, Lollipop, and Dumbbell Plots
+
+![A categorical dumbbell plot with named start and end points](./assets/images/endpoint-plots.png)
+
+These three Full entry actions share one categorical endpoint model. Each starts
+from immutable rows and produces ordinary point and rule children, so existing
+mark, scale, label, guide, and renderer actions continue to work.
+
+```javascript
+import { chart, render } from "ggaction";
+
+const values = [
+  { category: "A", value: 4, before: 2, after: 5 },
+  { category: "B", value: -1, before: 3, after: -1 },
+  { category: "C", value: 2, before: 2, after: 2 }
+];
+const base = chart()
+  .createCanvas({ width: 480, height: 320, margin: 50 })
+  .createData({ id: "data", values });
+
+const dots = base.createDotPlot({
+  category: "category",
+  value: "value"
+});
+const lollipops = base.createLollipopPlot({
+  category: "category",
+  value: "value",
+  baseline: 0
+});
+const changes = base.createDumbbellPlot({
+  category: "category",
+  start: "before",
+  end: "after",
+  labels: { endpoint: "both" }
+});
+
+render(changes, document.querySelector("#chart").getContext("2d"));
+```
+
+Raw rows remain raw. When categories repeat, set `summary` to `mean`, `median`,
+`sum`, `min`, or `max` to request one derived row per category. Ggaction never
+chooses an aggregate from the data shape.
+
+Lollipop stems use the same quantitative scale as their value points. The
+baseline defaults to zero and may be any finite number. For a log scale, provide
+a positive baseline and positive values.
+
+Dumbbell `start` and `end` name semantic roles rather than the lower and higher
+number. A reversed or equal pair keeps the same endpoint appearance and label.
+Both endpoint fields share one quantitative scale; conflicting scale definitions
+are rejected before the caller program changes.
+
+Use `editEndpointPlot` when a source or semantic role changes:
+
+```javascript
+const revised = changes.editEndpointPlot({
+  data: "replacement",
+  start: "after",
+  end: "before",
+  orientation: "vertical",
+  summary: false
+});
+```
+
+The editor replaces every owned point, rule, label, and summary dataset in one
+immutable action while retaining the original appearance and guide policy.
+Individual point, rule, label, scale, and guide actions remain the lower-level
+style editing path.
+
 <!-- Source: /recipes/ -->
 
 # Chart Recipes
@@ -13033,6 +13104,8 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createDensityData`](./reference/actions/charts-data/#createdensitydata) | user-facing | core |
 | [`createDensityPlot`](./reference/actions/statistics/#createdensityplot) | user-facing | statistics |
 | [`createDerivedData`](./reference/actions/advanced/#semantic-resources-and-regression-layers) | user-facing | core |
+| [`createDotPlot`](./reference/actions/charts-data/#createdotplot) | user-facing | charts |
+| [`createDumbbellPlot`](./reference/actions/charts-data/#createdumbbellplot) | user-facing | charts |
 | [`createErrorBand`](./reference/actions/statistics/#createerrorband) | user-facing | statistics |
 | [`createErrorBar`](./reference/actions/statistics/#createerrorbar) | user-facing | statistics |
 | [`createFoldData`](./reference/actions/statistics/#createfolddata) | user-facing | statistics |
@@ -13045,9 +13118,11 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createHorizonPlot`](./reference/actions/statistics/#createhorizonplot) | user-facing | statistics |
 | [`createHorizontalGrid`](./reference/actions/advanced/#directional-grids) | user-facing | grid |
 | [`createIntervalData`](./reference/actions/statistics/#createintervaldata) | user-facing | statistics |
+| [`createIntervalPlot`](./reference/actions/charts-data/#createintervalplot) | user-facing | charts |
 | [`createLegend`](./reference/actions/guides/#createlegend) | user-facing | legend_and_title |
 | [`createLineMark`](./reference/actions/marks/#createlinemark) | user-facing | marks |
 | [`createLinePlot`](./reference/actions/charts-data/#createlineplot) | user-facing | charts |
+| [`createLollipopPlot`](./reference/actions/charts-data/#createlollipopplot) | user-facing | charts |
 | [`createMarkLabels`](./reference/actions/marks/#createmarklabels) | user-facing | marks |
 | [`createParallelAxes`](./reference/actions/advanced/#createparallelaxes-createparallelaxis-editparallelaxis-removeparallelaxis-removeparallelaxes) | user-facing | axes |
 | [`createParallelAxis`](./reference/actions/advanced/#createparallelaxes-createparallelaxis-editparallelaxis-removeparallelaxis-removeparallelaxes) | user-facing | axes |
@@ -13071,6 +13146,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createRegressionBand`](./reference/actions/advanced/#semantic-resources-and-regression-layers) | user-facing | statistics |
 | [`createRegressionData`](./reference/actions/charts-data/#createregressiondata) | user-facing | core |
 | [`createRegressionLine`](./reference/actions/advanced/#semantic-resources-and-regression-layers) | user-facing | statistics |
+| [`createRegressionPlot`](./reference/actions/charts-data/#createregressionplot) | user-facing | charts |
 | [`createRosePlot`](./reference/actions/charts-data/#createroseplot) | user-facing | charts |
 | [`createRugPlot`](./reference/actions/charts-data/#createrugplot) | user-facing | charts |
 | [`createRuleMark`](./reference/actions/marks/#createrulemark) | user-facing | marks |
@@ -13112,6 +13188,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editCanvas`](./reference/actions/charts-data/#editcanvas) | user-facing | core |
 | [`editCompositionLayout`](./reference/actions/charts-data/#editcompositionlayout) | user-facing | composition |
 | [`editDensity`](./reference/actions/encodings/#editdensity) | user-facing | encodings |
+| [`editEndpointPlot`](./reference/actions/charts-data/#editendpointplot) | user-facing | charts |
 | [`editErrorBand`](./reference/actions/statistics/#editerrorband-and-editerrorbandboundary) | user-facing | statistics |
 | [`editErrorBandBoundary`](./reference/actions/statistics/#editerrorband-and-editerrorbandboundary) | user-facing | statistics |
 | [`editErrorBar`](./reference/actions/statistics/#editerrorbar) | user-facing | statistics |
@@ -13378,6 +13455,64 @@ createScatterPlot({ id?, data?, coordinate?, x, y, color?, size?, shape?, point?
 
 Create a complete Cartesian point chart from required x/y fields and optional
 appearance encodings. [Basic Charts](./api/basic-charts/#createscatterplot)
+
+## `createDotPlot`
+
+```javascript
+createDotPlot({ id?, data?, coordinate?, category, value, orientation?, summary?, point?, labels?, guides? })
+```
+
+Create categorical dots from raw rows by default. Set `summary` explicitly to
+`mean`, `median`, `sum`, `min`, or `max` to aggregate one dot per category.
+
+## `createLollipopPlot`
+
+```javascript
+createLollipopPlot({ id?, data?, coordinate?, category, value, orientation?, summary?, baseline?, point?, stem?, labels?, guides? })
+```
+
+Create a value point and a stem to a finite baseline, which defaults to zero.
+The point and stem use the same source grain and quantitative scale.
+
+## `createDumbbellPlot`
+
+```javascript
+createDumbbellPlot({ id?, data?, coordinate?, category, start, end, orientation?, summary?, startPoint?, endPoint?, connector?, labels?, guides? })
+```
+
+Create named start and end points with a connector. Endpoint identity stays
+attached to its field and appearance when values reverse or coincide.
+
+## `editEndpointPlot`
+
+```javascript
+editEndpointPlot({ target?, data?, coordinate?, category?, value?, start?, end?, orientation?, summary?, baseline? })
+```
+
+Atomically revise the semantic roles of a Dot, Lollipop, or Dumbbell facade.
+Owned points, rules, labels, and summary data are replaced together while the
+original appearance and guide policy are retained.
+
+## `createIntervalPlot`
+
+```javascript
+createIntervalPlot({ id?, data?, coordinate?, x, y, xOffset?, yOffset?, groupBy?, color?, point?, errorBar?, guides? })
+```
+
+Create center points and matching statistical or explicit intervals from one
+shared dataset, coordinate, and pair of scales. The x/y interval vocabulary is
+the same as `createErrorBar`; child point and error-bar styles remain independently
+editable through their existing owners.
+
+## `createRegressionPlot`
+
+```javascript
+createRegressionPlot({ id?, data?, coordinate?, x, y, color?, size?, shape?, point?, groupBy?, method?, band?, line?, guides? })
+```
+
+Create a complete scatter plot with an existing regression data, line, and
+optional interval-band hierarchy. `groupBy: false` is preserved as an explicit
+ungrouped model request.
 
 ## `createLinePlot`
 
@@ -15643,6 +15778,12 @@ interface ChartProgramActions {
   createViolinPlot(options: ViolinPlotOptions): ChartProgram;
   editViolinPlot(options: EditViolinPlotOptions): ChartProgram;
   createScatterPlot(options: CreateScatterPlotOptions): ChartProgram;
+  createIntervalPlot(options: CreateIntervalPlotOptions): ChartProgram;
+  createRegressionPlot(options: CreateRegressionPlotOptions): ChartProgram;
+  createDotPlot(options: CreateDotPlotOptions): ChartProgram;
+  createLollipopPlot(options: CreateLollipopPlotOptions): ChartProgram;
+  createDumbbellPlot(options: CreateDumbbellPlotOptions): ChartProgram;
+  editEndpointPlot(options: EditEndpointPlotOptions): ChartProgram;
   createLinePlot(options: CreateLinePlotOptions): ChartProgram;
   createPolarScatterPlot(options: CreatePolarScatterPlotOptions): ChartProgram;
   createPolarLinePlot(options: CreatePolarLinePlotOptions): ChartProgram;

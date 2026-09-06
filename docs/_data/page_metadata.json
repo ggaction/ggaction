@@ -82,6 +82,10 @@
     "title": "Mark Selection Tutorial",
     "description": "Select final visual items by data field, semantic channel, or concrete graphic property, then filter, reuse, or highlight that selection."
   },
+  "/tutorials/endpoint-plots/": {
+    "title": "Dot, Lollipop, and Dumbbell Plots",
+    "description": "These three Full entry actions share one categorical endpoint model. Each starts from immutable rows and produces ordinary point and rule children, so existing mark, scale, label,…"
+  },
   "/recipes/": {
     "title": "Chart Recipes",
     "description": "Use a recipe when you know the chart type and want the shortest supported action flow."

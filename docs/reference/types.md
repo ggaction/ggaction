@@ -123,6 +123,10 @@ interface ChartProgramActions {
   createScatterPlot(options: CreateScatterPlotOptions): ChartProgram;
   createIntervalPlot(options: CreateIntervalPlotOptions): ChartProgram;
   createRegressionPlot(options: CreateRegressionPlotOptions): ChartProgram;
+  createDotPlot(options: CreateDotPlotOptions): ChartProgram;
+  createLollipopPlot(options: CreateLollipopPlotOptions): ChartProgram;
+  createDumbbellPlot(options: CreateDumbbellPlotOptions): ChartProgram;
+  editEndpointPlot(options: EditEndpointPlotOptions): ChartProgram;
   createLinePlot(options: CreateLinePlotOptions): ChartProgram;
   createPolarScatterPlot(options: CreatePolarScatterPlotOptions): ChartProgram;
   createPolarLinePlot(options: CreatePolarLinePlotOptions): ChartProgram;

@@ -7,6 +7,75 @@ Data는 explicit/current/unique, coordinate는 explicit/bound/unique/family defa
 Guide 생략/{}는 자기 layer의 compatible guide를 확보하고 false는 이번 확보만 생략한다.
 기존 guide를 삭제하거나 충돌하는 resource를 덮지 않는다. 모든 실패는 caller와 이전 program/trace를 보존한다.
 
+## `createDotPlot`
+
+`createDotPlot({ id?, data?, coordinate?, category, value, orientation?, summary?, point?, labels?, guides? })`는
+raw categorical row를 기본으로 ordinary Point를 만든다. Horizontal이 기본이고 vertical을 명시할 수 있다.
+`summary:"mean"|"median"|"sum"|"min"|"max"`만 category별 집계를 만든다. Label content 생략은 value field다.
+
+### Formal values — `createDotPlot`
+
+- Implemented: `createDotPlot(options: CreateDotPlotOptions): ChartProgram` (Full only).
+- Required: nominal/ordinal category와 finite quantitative value를 가진 하나 이상의 row.
+- Proposed (NOT IMPLEMENTED): implicit aggregation과 value 기반 category 정렬.
+
+### Value coverage — `createDotPlot`
+
+- ✅ Covered: raw/explicit summary, orientation, point/label, guides, Canvas/scale rematerialization과 invalid failure.
+- Evidence: `test/unit/actions/charts/endpoint-facades.test.js`, `test/contracts/endpoint-facade-types.test.js`.
+
+## `createLollipopPlot`
+
+`createLollipopPlot({ id?, data?, coordinate?, category, value, orientation?, summary?, baseline?, point?, stem?,
+labels?, guides? })`는 같은 source grain과 quantitative scale에 Point와 Rule을 만든다. Baseline 기본은 0이고
+finite nonzero와 signed value를 지원한다. Stable owner는 Point, stem id는 `${id}Stem`이다.
+
+### Formal values — `createLollipopPlot`
+
+- Implemented: `createLollipopPlot(options: CreateLollipopPlotOptions): ChartProgram` (Full only).
+- Required: nominal/ordinal category와 finite quantitative value; baseline은 finite number다.
+- Proposed (NOT IMPLEMENTED): waterfall 누적 baseline 의미와 implicit aggregation.
+
+### Value coverage — `createLollipopPlot`
+
+- ✅ Covered: zero/nonzero baseline, signed values, horizontal/vertical, shared scale, style/label, remove/edit lifecycle.
+- Evidence: `test/unit/actions/charts/endpoint-facades.test.js`, `test/contracts/endpoint-facade-types.test.js`.
+
+## `createDumbbellPlot`
+
+`createDumbbellPlot({ id?, data?, coordinate?, category, start, end, orientation?, summary?, startPoint?, endPoint?,
+connector?, labels?, guides? })`는 start/end Point와 connector를 하나의 quantitative scale에 둔다. 역할은 값
+크기와 독립이라 역전되거나 같아도 style과 label이 교환되지 않는다. Stable end owner는 `id`, 다른 child는
+`${id}Start`와 `${id}Connector`다. Label endpoint 기본은 end이며 start/end/both를 지원한다.
+
+### Formal values — `createDumbbellPlot`
+
+- Implemented: `createDumbbellPlot(options: CreateDumbbellPlotOptions): ChartProgram` (Full only).
+- Required: nominal/ordinal category와 서로 다른 두 finite quantitative field; endpoint scale definition은 같아야 한다.
+- Proposed (NOT IMPLEMENTED): 값 정렬에 따른 role 교환과 missing endpoint 보간.
+
+### Value coverage — `createDumbbellPlot`
+
+- ✅ Covered: start>end/start=end, shared scale/grain, endpoint style/label, summary, remove/edit와 immutable failure.
+- Evidence: `test/unit/actions/charts/endpoint-facades.test.js`, `test/contracts/endpoint-facade-types.test.js`.
+
+## `editEndpointPlot`
+
+`editEndpointPlot({ target?, data?, coordinate?, category?, value?, start?, end?, orientation?, summary?, baseline? })`
+은 target 종류에 맞는 semantic role만 받아 owned Point·Rule·label·summary data를 한 immutable action에서 교체한다.
+생성 때 저장한 appearance와 guide 정책은 유지한다.
+
+### Formal values — `editEndpointPlot`
+
+- Implemented: `editEndpointPlot(options: EditEndpointPlotOptions): ChartProgram` (Full only).
+- Required: target 또는 유일한 endpoint plot과 그 종류에서 유효한 변경 하나 이상.
+- Proposed (NOT IMPLEMENTED): appearance를 복합 editor에 중복 노출하는 것.
+
+### Value coverage — `editEndpointPlot`
+
+- ✅ Covered: source/category/value/start/end/orientation/summary/baseline, owned cleanup, trace nesting과 atomic failure.
+- Evidence: `test/unit/actions/charts/endpoint-facades.test.js`, `test/contracts/endpoint-facade-types.test.js`.
+
 ## `createIntervalPlot`
 
 `createIntervalPlot({ id?, data?, coordinate?, x, y, xOffset?, yOffset?, groupBy?, color?, point?,

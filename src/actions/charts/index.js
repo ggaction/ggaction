@@ -13,6 +13,9 @@ import { createPolarLinePlot, createPolarScatterPlot } from "./polar.js";
 import { createRadarPlot } from "./radar.js";
 import { createRugPlot, createStripPlot } from "./rug-strip.js";
 import { createIntervalPlot, createRegressionPlot } from "./interval-regression.js";
+import {
+  createDotPlot, createLollipopPlot, createDumbbellPlot, editEndpointPlot
+} from "./endpoints.js";
 
 export function registerChartActions(ProgramClass) {
   ProgramClass.prototype.createRosePlot = createRosePlot;
@@ -34,4 +37,8 @@ export function registerChartActions(ProgramClass) {
   ProgramClass.prototype.createStripPlot = createStripPlot;
   ProgramClass.prototype.createIntervalPlot = createIntervalPlot;
   ProgramClass.prototype.createRegressionPlot = createRegressionPlot;
+  ProgramClass.prototype.createDotPlot = createDotPlot;
+  ProgramClass.prototype.createLollipopPlot = createLollipopPlot;
+  ProgramClass.prototype.createDumbbellPlot = createDumbbellPlot;
+  ProgramClass.prototype.editEndpointPlot = editEndpointPlot;
 }

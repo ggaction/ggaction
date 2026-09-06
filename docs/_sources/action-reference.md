@@ -107,6 +107,10 @@ interface ChartProgramActions {
   createScatterPlot(options: CreateScatterPlotOptions): ChartProgram;
   createIntervalPlot(options: CreateIntervalPlotOptions): ChartProgram;
   createRegressionPlot(options: CreateRegressionPlotOptions): ChartProgram;
+  createDotPlot(options: CreateDotPlotOptions): ChartProgram;
+  createLollipopPlot(options: CreateLollipopPlotOptions): ChartProgram;
+  createDumbbellPlot(options: CreateDumbbellPlotOptions): ChartProgram;
+  editEndpointPlot(options: EditEndpointPlotOptions): ChartProgram;
   createLinePlot(options: CreateLinePlotOptions): ChartProgram;
   createPolarScatterPlot(options: CreatePolarScatterPlotOptions): ChartProgram;
   createPolarLinePlot(options: CreatePolarLinePlotOptions): ChartProgram;
@@ -401,6 +405,43 @@ createScatterPlot({ id?, data?, coordinate?, x, y, color?, size?, shape?, point?
 
 Create a complete Cartesian point chart from required x/y fields and optional
 appearance encodings. [Basic Charts](../api/basic-charts.md#createscatterplot)
+
+### `createDotPlot`
+
+```javascript
+createDotPlot({ id?, data?, coordinate?, category, value, orientation?, summary?, point?, labels?, guides? })
+```
+
+Create categorical dots from raw rows by default. Set `summary` explicitly to
+`mean`, `median`, `sum`, `min`, or `max` to aggregate one dot per category.
+
+### `createLollipopPlot`
+
+```javascript
+createLollipopPlot({ id?, data?, coordinate?, category, value, orientation?, summary?, baseline?, point?, stem?, labels?, guides? })
+```
+
+Create a value point and a stem to a finite baseline, which defaults to zero.
+The point and stem use the same source grain and quantitative scale.
+
+### `createDumbbellPlot`
+
+```javascript
+createDumbbellPlot({ id?, data?, coordinate?, category, start, end, orientation?, summary?, startPoint?, endPoint?, connector?, labels?, guides? })
+```
+
+Create named start and end points with a connector. Endpoint identity stays
+attached to its field and appearance when values reverse or coincide.
+
+### `editEndpointPlot`
+
+```javascript
+editEndpointPlot({ target?, data?, coordinate?, category?, value?, start?, end?, orientation?, summary?, baseline? })
+```
+
+Atomically revise the semantic roles of a Dot, Lollipop, or Dumbbell facade.
+Owned points, rules, labels, and summary data are replaced together while the
+original appearance and guide policy are retained.
 
 ### `createIntervalPlot`
 

@@ -3,6 +3,9 @@ import { createMidpoint } from "./color-midpoint/program.js";
 import { createRoseHole } from "./radial-sectors/program.js";
 import { createLinkedThetaLegend } from "./theta-legend-order/program.js";
 import { createAreaSimple } from "./area-layout/program.js";
+import { createDotPlotExample } from "./dot-plot/program.js";
+import { createLollipopPlotExample } from "./lollipop-plot/program.js";
+import { createDumbbellPlotExample } from "./dumbbell-plot/program.js";
 import { createHorizonExample } from "./horizon-plot/program.js";
 import { createDensityExample } from "./density-plot/program.js";
 import { createPieExample } from "./pie-plot/program.js";
@@ -106,6 +109,21 @@ function example({ id, data, width, height, createProgram, ...options }) {
 }
 
 export const PUBLIC_CHARTS = Object.freeze([
+  example({
+    id: "dot-plot", data: {}, width: 480, height: 320,
+    createProgram: () => createDotPlotExample(), testDirectory: "endpoint-plots",
+    browser: { path: "dot-plot/", canvas: "#chart" }
+  }),
+  example({
+    id: "lollipop-plot", data: {}, width: 480, height: 320,
+    createProgram: () => createLollipopPlotExample(), testDirectory: "endpoint-plots",
+    browser: { path: "lollipop-plot/", canvas: "#chart" }
+  }),
+  example({
+    id: "dumbbell-plot", data: {}, width: 480, height: 320,
+    createProgram: () => createDumbbellPlotExample(), testDirectory: "endpoint-plots",
+    browser: { path: "dumbbell-plot/", canvas: "#chart" }
+  }),
   example({
     id: "color-transitions", data: {}, width: 1000, height: 700, docsGroup: "tutorials",
     createProgram: () => createBarTransition(),

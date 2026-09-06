@@ -2245,6 +2245,64 @@ type RegressionPlotStatisticalOptions<T> = T extends unknown
 export type CreateRegressionPlotOptions = RegressionPlotBaseOptions &
   RegressionPlotStatisticalOptions<RegressionOptions>;
 
+export type EndpointPlotSummary = false | "mean" | "median" | "sum" | "min" | "max";
+export type EndpointCategoryChannel = string | {
+  field: string;
+  fieldType?: "nominal" | "ordinal";
+  scale?: NonPointCategoricalPositionScaleOptions;
+};
+export type EndpointValueChannel = string | {
+  field: string;
+  fieldType?: "quantitative";
+  scale?: NonPointQuantitativePositionScaleOptions;
+};
+export type EndpointLabelOptions = Omit<
+  TextMarkOptions,
+  "id" | "data" | "source" | "text"
+> & {
+  format?: TextFormat;
+  layout?: false | Omit<LabelLayoutOptions, "target">;
+} & (
+  | { field?: string; value?: never }
+  | { field?: never; value: unknown }
+);
+type EndpointPlotBaseOptions = {
+  id?: string;
+  data?: string;
+  coordinate?: string;
+  category: EndpointCategoryChannel;
+  orientation?: "horizontal" | "vertical";
+  summary?: EndpointPlotSummary;
+  guides?: false | CartesianGuideOptions;
+};
+export interface CreateDotPlotOptions extends EndpointPlotBaseOptions {
+  value: EndpointValueChannel;
+  point?: CreateScatterPlotOptions["point"];
+  labels?: false | EndpointLabelOptions;
+}
+export interface CreateLollipopPlotOptions extends EndpointPlotBaseOptions {
+  value: EndpointValueChannel;
+  baseline?: number;
+  point?: CreateScatterPlotOptions["point"];
+  stem?: RuleStyleOptions;
+  labels?: false | EndpointLabelOptions;
+}
+export interface CreateDumbbellPlotOptions extends EndpointPlotBaseOptions {
+  start: EndpointValueChannel;
+  end: EndpointValueChannel;
+  startPoint?: CreateScatterPlotOptions["point"];
+  endPoint?: CreateScatterPlotOptions["point"];
+  connector?: RuleStyleOptions;
+  labels?: false | (EndpointLabelOptions & { endpoint?: "start" | "end" | "both" });
+}
+export type EditEndpointPlotOptions = { target?: string } & Partial<Pick<
+  CreateDumbbellPlotOptions,
+  "data" | "coordinate" | "category" | "start" | "end" | "orientation" | "summary"
+>> & {
+  value?: EndpointValueChannel;
+  baseline?: number;
+};
+
 export type PolarThetaChannel = string | ({ field: string; scale?: ThetaScaleOptions } & (
   | { fieldType?: "quantitative" | "nominal" | "ordinal"; temporalUnit?: never }
   | { fieldType: "temporal"; temporalUnit?: TemporalInputUnit }
@@ -3635,6 +3693,10 @@ export class ChartProgram {
   createScatterPlot(options: CreateScatterPlotOptions): ChartProgram;
   createIntervalPlot(options: CreateIntervalPlotOptions): ChartProgram;
   createRegressionPlot(options: CreateRegressionPlotOptions): ChartProgram;
+  createDotPlot(options: CreateDotPlotOptions): ChartProgram;
+  createLollipopPlot(options: CreateLollipopPlotOptions): ChartProgram;
+  createDumbbellPlot(options: CreateDumbbellPlotOptions): ChartProgram;
+  editEndpointPlot(options: EditEndpointPlotOptions): ChartProgram;
   createLinePlot(options: CreateLinePlotOptions): ChartProgram;
   createPolarScatterPlot(options: CreatePolarScatterPlotOptions): ChartProgram;
   createPolarLinePlot(options: CreatePolarLinePlotOptions): ChartProgram;

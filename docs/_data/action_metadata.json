@@ -974,6 +974,26 @@
     "layer": "user-facing",
     "domain": "charts"
   },
+  "createDotPlot": {
+    "operation": "create",
+    "layer": "user-facing",
+    "domain": "charts"
+  },
+  "createLollipopPlot": {
+    "operation": "create",
+    "layer": "user-facing",
+    "domain": "charts"
+  },
+  "createDumbbellPlot": {
+    "operation": "create",
+    "layer": "user-facing",
+    "domain": "charts"
+  },
+  "editEndpointPlot": {
+    "operation": "edit",
+    "layer": "user-facing",
+    "domain": "charts"
+  },
   "createIntervalPlot": {
     "operation": "create",
     "layer": "user-facing",

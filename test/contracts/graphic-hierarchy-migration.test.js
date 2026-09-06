@@ -25,6 +25,9 @@ const LOADERS = Object.freeze({
 });
 
 const EXPECTED_DRAW_ORDER = Object.freeze({
+  "dot-plot": ["canvas", "dot"],
+  "lollipop-plot": ["canvas", "lollipopStem", "lollipop"],
+  "dumbbell-plot": ["canvas", "dumbbellConnector", "dumbbellStart", "dumbbell"],
   "color-transitions": ["canvas","horizontalGridLines","m","xAxisLine","xAxisTicks","xAxisLabels","xAxisTitle","yAxisLine","yAxisTicks","yAxisLabels","yAxisTitle","colorLegendSymbols","colorLegendLabels","colorLegendTitle"],
   "color-midpoint": ["canvas","horizontalGridLines","m","xAxisLine","xAxisTicks","xAxisLabels","xAxisTitle","yAxisLine","yAxisTicks","yAxisLabels","yAxisTitle","colorGradientStrips","colorGradientTicks","colorGradientLabels","colorGradientTitle"],
   "radial-sectors": ["canvas", "radialGridCircles", "thetaGridLines", "sectors", "thetaAxisLine", "thetaAxisTicks", "thetaAxisLabels", "thetaAxisTitle", "radialAxisLine", "radialAxisTicks", "radialAxisLabels", "radialAxisTitle", "colorLegendSymbols", "colorLegendLabels", "colorLegendTitle"],

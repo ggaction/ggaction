@@ -30,7 +30,10 @@ function ownedChildren(program, id) {
     config.boxPlot?.whiskerId,
     config.boxPlot?.medianId,
     config.boxPlot?.outlierId,
-    config.gradientPlot?.centerId
+    config.gradientPlot?.centerId,
+    config.endpointPlot?.roles?.stemId,
+    config.endpointPlot?.roles?.startId,
+    config.endpointPlot?.roles?.connectorId
   ].concat(
     program.semanticSpec.layers
       .filter(layer => layer.source === id)
@@ -92,7 +95,8 @@ function ownedDerivedData(program, ids) {
       config.regression?.dataId,
       config.boxPlot?.summaryId,
       config.boxPlot?.outlierDataId,
-      config.gradientPlot?.profileId
+      config.gradientPlot?.profileId,
+      config.endpointPlot?.data
     ]) {
       if (candidate !== undefined) candidates.add(candidate);
     }
