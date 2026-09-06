@@ -2,7 +2,7 @@
 
 ## 상태와 목표
 
-상태: planned. 구현·사용자 승인 기록 없음.
+상태: in-progress. [전체 실행·A/V/X 승인](../APPROVAL.md)과 [A 계약](CONTRACT.md)을 적용했다.
 
 하나의 chart를 반복·배치·편집하는 상위 계층을 확장하고 shared scale/guide와 child recipe의 책임을 보존한다.
 
