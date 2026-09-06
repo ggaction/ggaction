@@ -15,6 +15,8 @@ createGuides({ axes?, grid?, legend? })
 ```
 
 Create applicable Cartesian or Polar axes and grids plus supported legends.
+Automatic calls preserve existing guide collections and add missing applicable
+collections; explicit collection objects retain strict create semantics.
 [Guides](../../api/guides.md)
 
 ## `createAxes`

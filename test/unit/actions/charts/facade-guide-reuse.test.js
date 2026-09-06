@@ -134,7 +134,10 @@ test("false disables this facade's requests without deleting shared guides", () 
   assert.deepEqual(state(line(before, { axes: false, grid: false, legend: false })), state(line(before, false)));
   const withoutGuides = line(scatter(base(), false), { axes: false, grid: false, legend: false });
   assert.equal(withoutGuides.graphicSpec.objects.xAxisLine, undefined);
-  for (const create of [p => p.createGuides(), p => p.createAxes(), p => p.createXAxisLine()]) {
+  const ensured = before.createGuides();
+  assert.deepEqual(state(ensured), state(before));
+  assert.deepEqual(ensured.trace.children.at(-1).children, []);
+  for (const create of [p => p.createAxes(), p => p.createXAxisLine()]) {
     expectAtomic(before, create, /already|missing/);
   }
 });

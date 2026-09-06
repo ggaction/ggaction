@@ -89,6 +89,13 @@ function mergeInferredOptions(inferred, explicit) {
   return merged;
 }
 
+function hasStoredGuideCollection(program, collection) {
+  return [
+    program.semanticSpec.guides?.[collection],
+    program.guideConfigs?.[collection]
+  ].some(value => value !== undefined && Object.keys(value).length > 0);
+}
+
 export function resolveGuideOptions(program, args = {}, layers = program.semanticSpec.layers) {
   validateOptions(args);
   const applicability = resolveGuideApplicability(program, layers);
@@ -128,9 +135,18 @@ const createGuides = action(
     }
 
     let next = this;
-    if (axes !== undefined) next = next.createAxes(axes);
-    if (grid !== undefined) next = next.createGrid(grid);
-    if (legend !== undefined) next = next.createLegend(legend);
+    if (
+      axes !== undefined &&
+      !(args.axes === undefined && hasStoredGuideCollection(this, "axis"))
+    ) next = next.createAxes(axes);
+    if (
+      grid !== undefined &&
+      !(args.grid === undefined && hasStoredGuideCollection(this, "grid"))
+    ) next = next.createGrid(grid);
+    if (
+      legend !== undefined &&
+      !(args.legend === undefined && hasStoredGuideCollection(this, "legend"))
+    ) next = next.createLegend(legend);
     return next;
   }
 );
