@@ -122,7 +122,7 @@ test("validates derived-data transform contracts", () => {
         interval: "mean"
       }]
     }),
-    /confidence must be between 0 and 1/
+    /confidence interval level must be between 0 and 1/i
   );
   assert.throws(
     () => base.editSemantic({

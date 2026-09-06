@@ -50,7 +50,9 @@ export function createResolvedIntervalData(program, resolved) {
 
 export function applyIntervalRevision(program, interval) {
   if (!interval.changed) return program;
-  let next = program.createIntervalData(interval.dataArgs);
+  let next = interval.dataArgs === undefined
+    ? program
+    : program.createIntervalData(interval.dataArgs);
   for (const rebind of interval.revision.rebinds) {
     next = next.rebindLayerData(rebind);
   }
@@ -58,9 +60,82 @@ export function applyIntervalRevision(program, interval) {
 }
 
 export function releaseIntervalRevision(program, interval) {
-  return interval.changed
+  return interval.changed && interval.revision.release !== undefined
     ? program.releaseDerivedData(interval.revision.release)
     : program;
+}
+
+export function findIntervalTransform(program, data) {
+  const dataset = findDataset(program, data);
+  return dataset?.transform?.length === 1 &&
+    dataset.transform[0].type === "interval"
+    ? dataset.transform[0]
+    : undefined;
+}
+
+export function collectIntervalConsumers(program, owners) {
+  const consumers = new Set(owners);
+  let changed = true;
+  while (changed) {
+    changed = false;
+    for (const layer of program.semanticSpec.layers ?? []) {
+      if (
+        layer.source !== undefined &&
+        consumers.has(layer.source) &&
+        !consumers.has(layer.id)
+      ) {
+        consumers.add(layer.id);
+        changed = true;
+      }
+    }
+  }
+  return [...consumers];
+}
+
+export function planIntervalRoleData(program, {
+  owner,
+  currentData,
+  candidate,
+  consumers
+}) {
+  const previousTransform = findIntervalTransform(program, currentData);
+  if (candidate.interval.mode === "statistical") {
+    const revision = planDerivedDataRevision(program, {
+      owner,
+      role: "IntervalData",
+      ...(previousTransform === undefined ? {} : { previous: currentData }),
+      consumers
+    });
+    return {
+      changed: true,
+      revision,
+      dataId: revision.id,
+      dataArgs: {
+        id: revision.id,
+        source: candidate.source,
+        field: candidate.interval.field,
+        groupBy: candidate.groupBy,
+        center: candidate.interval.center,
+        extent: candidate.interval.extent,
+        method: candidate.interval.method,
+        level: candidate.interval.level,
+        as: candidate.fields
+      }
+    };
+  }
+  const changed = currentData !== candidate.source;
+  return {
+    changed,
+    dataId: candidate.source,
+    revision: {
+      rebinds: changed
+        ? consumers.map(id => ({ id, data: candidate.source }))
+        : [],
+      ...(previousTransform === undefined
+        ? {}
+        : { release: { id: currentData } })
+    }
+  };
 }
 
 export function planIntervalEdit(program, {

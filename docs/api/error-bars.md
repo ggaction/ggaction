@@ -16,7 +16,7 @@ inputs from an already encoded layer or accept both channel roles directly.
 | Action | Shortest call | Result |
 | --- | --- | --- |
 | `createErrorBar` | `createErrorBar()` after one eligible encoded layer | Mean 95% confidence intervals sharing that layer's data, coordinate, and scales |
-| `editErrorBar` | `editErrorBar({ opacity: 0.6 })` | Main rule and owned caps rematerialized without replacing interval data |
+| `editErrorBar` | `editErrorBar({ opacity: 0.6 })` | Stable main rule and owned caps revised together |
 
 ## `createErrorBar(options?)`
 
@@ -271,6 +271,8 @@ Use the stable error-bar owner instead of editing generated cap layers:
 
 ```javascript
 const edited = intervals.editErrorBar({
+  x: { field: "group", fieldType: "nominal" },
+  y: { field: "value", center: "median", extent: "iqr" },
   statistics: { center: "median", extent: "iqr" },
   caps: true,
   capSize: 16,
@@ -281,9 +283,18 @@ const edited = intervals.editErrorBar({
 });
 ```
 
-The options are `target`, `caps`, `capSize`, `stroke`, `strokeWidth`,
-`strokeDash`, `opacity`, and `statistics`. Omitted values retain their current setting.
+The options are `target`, `data`, `x`, `y`, `xOffset`, `yOffset`, `groupBy`,
+`caps`, `capSize`, `stroke`, `strokeWidth`, `strokeDash`, `opacity`, and
+`statistics`. Omitted values retain their current setting.
 Omit `target` when the current or unique error bar is unambiguous.
+
+`data`, `x`, and `y` replace the source and channel roles atomically. They may
+switch vertical and horizontal orientation or convert statistical intervals to
+explicit `{ center, lower, upper }` fields and back. Statistical revisions use a
+new immutable derived dataset; the stable main-rule and cap IDs are preserved.
+`xOffset` or `yOffset` belongs to the independent categorical axis and may be
+removed with `false`. A preserved offset follows that axis across an orientation
+change. `groupBy: false` removes explicit grouping when valid.
 
 `statistics` is a partial `{ center?, extent?, method?, level? }` patch for statistical
 owners. It creates one immutable interval revision and rebinds the main rule
@@ -295,7 +306,9 @@ statistics edit instead of converting modes.
 them from the owner's stored data, fields, coordinate, position/offset scales,
 and offset padding. The main
 interval retains its current dataset unless `statistics` is supplied.
-The complete request is validated before the wrapped rematerialization runs.
+Attached mark labels are rebound to the new interval revision, and stored
+selections and highlights replay after rematerialization. The complete request
+is validated before the wrapped rematerialization runs.
 
 ## Errors and current limitations
 

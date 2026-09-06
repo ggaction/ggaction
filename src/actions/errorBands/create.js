@@ -24,7 +24,7 @@ const OPTIONS = Object.freeze([
   "boundaries"
 ]);
 
-const ERROR_BAND_POLICY = Object.freeze({
+export const ERROR_BAND_POLICY = Object.freeze({
   operation: "createErrorBand",
   resourceLabel: "error-band",
   defaultId: "errorBand",
@@ -41,8 +41,8 @@ const ERROR_BAND_POLICY = Object.freeze({
     "createErrorBand cannot infer the interval axis when both positions are quantitative; provide an interval option."
 });
 
-function resolveErrorBand(program, args) {
-  const resolved = resolveIntervalComposite(program, args, ERROR_BAND_POLICY);
+export function resolveErrorBand(program, args, policy = ERROR_BAND_POLICY) {
+  const resolved = resolveIntervalComposite(program, args, policy);
   if (resolved.groupField === resolved.position.field) {
     throw new Error(
       "createErrorBand groupBy must differ from the independent position field."
@@ -223,6 +223,12 @@ export const createErrorBand = action(
       ...next.markConfigs[resolved.id],
       errorBand: {
         ...(args.fill === undefined ? {} : { fill: args.fill }),
+        source: resolved.source,
+        intervalMode: resolved.interval.mode,
+        ...(resolved.interval.mode === "statistical"
+          ? { intervalField: resolved.interval.field }
+          : { centerField: resolved.fields.center }),
+        transformGroupBy: resolved.groupBy,
         data: resolved.dataId,
         orientation: resolved.orientation,
         position: resolved.position,

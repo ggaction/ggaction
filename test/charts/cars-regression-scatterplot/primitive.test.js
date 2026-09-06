@@ -39,12 +39,12 @@ test("authors and renders the complete primitive regression scatterplot", () => 
         transform: [{
           type: "markFilter",
           target: "points",
-          selector: {
+          selectors: [{
             grain: "item",
             field: "Origin",
             op: "oneOf",
             values: ["Japan", "USA"]
-          }
+          }]
         }],
         valueCount: 333
       },
@@ -57,7 +57,8 @@ test("authors and renders the complete primitive regression scatterplot", () => 
           x: "Displacement",
           y: "Acceleration",
           groupBy: "Origin",
-          confidence: 0.95,
+          confidenceMethod: "student-t",
+          level: 0.95,
           interval: "mean"
         }],
         valueCount: 73

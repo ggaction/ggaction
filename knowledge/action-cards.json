@@ -5765,7 +5765,7 @@
       "name": "editErrorBar",
       "layer": "user-facing",
       "domain": "statistics",
-      "summary": "Partially edit one error bar and its owned caps.",
+      "summary": "Revise one error bar's source, position/interval roles, optional categorical offset, statistics, and owned caps.",
       "signature": "editErrorBar(options: EditErrorBarOptions): ChartProgram;",
       "intents": [
         "edit error bar",
@@ -5784,7 +5784,8 @@
         ],
         "owns": [],
         "idOptions": [
-          "target"
+          "target",
+          "data"
         ]
       },
       "options": [
@@ -5792,6 +5793,36 @@
           "name": "target",
           "required": false,
           "type": "string | undefined"
+        },
+        {
+          "name": "data",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "x",
+          "required": false,
+          "type": "ErrorBarIntervalChannel | ErrorBarPositionChannel | undefined"
+        },
+        {
+          "name": "y",
+          "required": false,
+          "type": "ErrorBarIntervalChannel | ErrorBarPositionChannel | undefined"
+        },
+        {
+          "name": "xOffset",
+          "required": false,
+          "type": "false | ErrorBarOffsetChannel | undefined"
+        },
+        {
+          "name": "yOffset",
+          "required": false,
+          "type": "false | ErrorBarOffsetChannel | undefined"
+        },
+        {
+          "name": "groupBy",
+          "required": false,
+          "type": "string | false | undefined"
         },
         {
           "name": "caps",
@@ -5830,9 +5861,9 @@
         }
       ],
       "callPatterns": [
-        "editErrorBar({ target?, caps?, capSize?, stroke?, strokeWidth?, strokeDash?, opacity?, statistics? })"
+        "editErrorBar({ target?, data?, x?, y?, xOffset?, yOffset?, groupBy?, caps? })"
       ],
-      "snippet": "program.editErrorBar({ caps: true })",
+      "snippet": "program.editErrorBar({ opacity: 0.6 })",
       "errors": [],
       "route": "/reference/actions/statistics/#editerrorbar"
     },
@@ -5955,7 +5986,8 @@
         ],
         "owns": [],
         "idOptions": [
-          "target"
+          "target",
+          "data"
         ]
       },
       "options": [
@@ -5963,6 +5995,26 @@
           "name": "target",
           "required": false,
           "type": "string | undefined"
+        },
+        {
+          "name": "data",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "x",
+          "required": false,
+          "type": "ErrorBandIntervalChannel | ErrorBandPositionChannel | undefined"
+        },
+        {
+          "name": "y",
+          "required": false,
+          "type": "ErrorBandIntervalChannel | ErrorBandPositionChannel | undefined"
+        },
+        {
+          "name": "groupBy",
+          "required": false,
+          "type": "string | false | undefined"
         },
         {
           "name": "fill",
@@ -5991,9 +6043,9 @@
         }
       ],
       "callPatterns": [
-        "editErrorBand({ target?, fill?, opacity?, curve?, statistics?, boundaries? })"
+        "editErrorBand({ target?, data?, x?, y?, groupBy?, fill?, opacity?, curve? })"
       ],
-      "snippet": "program.editErrorBand({ fill: \"#f28e2b\" })",
+      "snippet": "program.editErrorBand({ opacity: 0.35 })",
       "errors": [],
       "route": "/reference/actions/statistics/#editerrorband-and-editerrorbandboundary"
     },

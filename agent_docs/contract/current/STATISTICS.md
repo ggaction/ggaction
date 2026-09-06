@@ -99,20 +99,28 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 
 ## `editErrorBar`
 
-- Signature: `editErrorBar({ target?, caps?, capSize?, stroke?, strokeWidth?, strokeDash?, opacity?, statistics? })`.
+- Signature: `editErrorBar({ target?, data?, x?, y?, xOffset?, yOffset?, groupBy?, caps?, capSize?, stroke?, strokeWidth?, strokeDash?, opacity?, statistics? })`.
 - `target` selects the stable main error-bar layer; omission uses current/unique eligible owner inference.
+- `data`, `x`, and `y` replace source and channel roles in one preflighted owner edit. The edit may change
+  orientation or convert statistical `{ field, center?, extent?, method?, level? }` intervals to explicit
+  `{ center, lower, upper }` intervals and back. The main rule and enabled caps keep their stable IDs; statistical
+  changes create a namespaced immutable interval revision and explicit changes release an unreferenced old revision.
+- `xOffset`/`yOffset` follows the categorical independent axis; `false` removes it. A preserved offset moves with
+  that axis when orientation changes and remains part of statistical grouping. `groupBy: false` removes explicit
+  grouping when the resulting interval roles permit it.
 - Omitted appearance leaves the stored value unchanged. `caps: false` removes both owned cap layers and graphics;
   `caps: true` restores missing caps from the owner's stored data, fields, coordinate, position/offset scales and padding.
 - `statistics: { center?, extent?, method?, level? }` is valid only for a statistical interval owner. It partially merges with
   stored interval provenance, validates the complete center/extent/method/level combination, creates one namespaced immutable
   interval revision, explicitly rebinds the main rule and enabled caps, rematerializes them, and safely releases the
   old unreferenced dataset. Explicit center/lower/upper owners reject this option rather than changing modes.
-- Without `statistics`, the edit retains the existing source or interval dataset. Main and cap appearance is
-  reconciled through one wrapped `rematerializeErrorBar` action; generated cap IDs are not public parameters.
+- Without data-role options or `statistics`, the edit retains the existing interval dataset. Main and cap
+  appearance is reconciled through one wrapped `rematerializeErrorBar` action; generated cap IDs are not public
+  parameters. Attached mark labels are rebound with interval revisions, and stored selections/highlights replay.
 
 ### Formal values — `editErrorBar`
 
-- Implemented: `editErrorBar({ target?: UserId; caps?: boolean; capSize?: PositiveFinite; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; strokeDash?: DashStyle | DashPattern; opacity?: UnitInterval; statistics?: { center?: "mean" | "median"; extent?: "stderr" | "stdev" | "ci" | "iqr"; method?: ConfidenceIntervalMethod; level?: UnitIntervalExclusive } })`.
+- Implemented: `editErrorBar({ target?: UserId; data?: UserId; x?: PositionChannel | StatisticalIntervalChannel | ExplicitIntervalChannel; y?: PositionChannel | StatisticalIntervalChannel | ExplicitIntervalChannel; xOffset?: OffsetChannel | false; yOffset?: OffsetChannel | false; groupBy?: FieldName | false; caps?: boolean; capSize?: PositiveFinite; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; strokeDash?: DashStyle | DashPattern; opacity?: UnitInterval; statistics?: { center?: "mean" | "median"; extent?: "stderr" | "stdev" | "ci" | "iqr"; method?: ConfidenceIntervalMethod; level?: UnitIntervalExclusive } })`.
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
@@ -121,6 +129,8 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - ✅ Covered: inferred/explicit target, complete appearance patch, cap removal/restoration, cap-size geometry,
   named/explicit dash, retained data for appearance edits, statistical revision/rebind/release, explicit-owner
   rejection, nested trace, immutability and atomic validation.
+- ✅ Covered: source and role replacement, orientation change, statistical/explicit conversion, stable cap IDs,
+  offset migration, attached-label rebinding, highlight replay, and invalid combined-role atomic rejection.
 - ✅ Covered: approved primitive/public semantic, graphic and pixel parity.
 - Evidence: `test/unit/actions/error-bars/edit-error-bar.test.js` and Roadmap 3 focused-editing Gate.
 
@@ -196,8 +206,11 @@ without naming generated child layers.
 
 ## `editErrorBand`
 
-- Signature: `editErrorBand({ target?, fill?, opacity?, curve?, statistics?, boundaries? })`.
+- Signature: `editErrorBand({ target?, data?, x?, y?, groupBy?, fill?, opacity?, curve?, statistics?, boundaries? })`.
 - The stable owner is an error-band area created by `createErrorBand`; omission uses current/unique inference.
+- `data`, `x`, and `y` revise the source and interval/position roles together. The edit may change orientation or
+  convert between statistical and explicit center/lower/upper intervals while retaining the body and enabled
+  boundary IDs. `groupBy` replaces the path grouping field and `groupBy: false` removes it.
 - Constant fill conflicts with an active color encoding. Remove color with `removeEncoding({ channel: "color" })`
   first; this also updates the owned legend. Conversely, encodeColor rejects an explicit ErrorBand fill.
 - Edit-only `fill: false` removes the constant override, restoring active encoded color or the theme default.
@@ -209,7 +222,7 @@ without naming generated child layers.
 
 ### Formal values — `editErrorBand`
 
-- Implemented: `editErrorBand({ target?: UserId; fill?: NonEmptyString | false; opacity?: UnitInterval; curve?: CurveInterpolation; statistics?: { center?: "mean" | "median"; extent?: "stderr" | "stdev" | "ci" | "iqr"; method?: ConfidenceIntervalMethod; level?: UnitIntervalExclusive }; boundaries?: false | ErrorBandBoundaryAppearance })`.
+- Implemented: `editErrorBand({ target?: UserId; data?: UserId; x?: PositionChannel | StatisticalIntervalChannel | ExplicitIntervalChannel; y?: PositionChannel | StatisticalIntervalChannel | ExplicitIntervalChannel; groupBy?: FieldName | false; fill?: NonEmptyString | false; opacity?: UnitInterval; curve?: CurveInterpolation; statistics?: { center?: "mean" | "median"; extent?: "stderr" | "stdev" | "ci" | "iqr"; method?: ConfidenceIntervalMethod; level?: UnitIntervalExclusive }; boundaries?: false | ErrorBandBoundaryAppearance })`.
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
@@ -220,6 +233,8 @@ without naming generated child layers.
   rejection and exact Gate parity.
 - ✅ Covered: both-direction color conflicts, reset to theme/field mode, selection/highlight and boundary/statistical
   replay; `test/unit/actions/encodings/style-assignment-lifecycle.test.js`.
+- ✅ Covered: source/role/group replacement, orientation change, statistical/explicit conversion, stable boundary
+  ownership, highlight replay and atomic rejection of invalid combined role edits.
 - Evidence: `test/unit/actions/error-bands/edit-error-band.test.js` and Roadmap 3 focused-editing Gate.
 
 ## `editErrorBandBoundary`

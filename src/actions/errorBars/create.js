@@ -38,7 +38,7 @@ const OFFSET_OPTIONS = Object.freeze([
   "field", "fieldType", "scale", "paddingInner", "paddingOuter"
 ]);
 
-const ERROR_BAR_POLICY = Object.freeze({
+export const ERROR_BAR_POLICY = Object.freeze({
   operation: "createErrorBar",
   resourceLabel: "error-bar",
   defaultId: "errorBar",
@@ -55,9 +55,9 @@ const ERROR_BAR_POLICY = Object.freeze({
     "createErrorBar requires one quantitative interval axis and one compatible position axis; use interval options to disambiguate two quantitative channels."
 });
 
-function resolveErrorBar(program, args) {
-  const resolved = resolveIntervalComposite(program, args, ERROR_BAR_POLICY);
-  const offset = resolveErrorBarOffset(program, args, resolved);
+export function resolveErrorBar(program, args, policy = ERROR_BAR_POLICY) {
+  const resolved = resolveIntervalComposite(program, args, policy);
+  const offset = resolveErrorBarOffset(program, args, resolved, policy.operation);
   const groupBy = resolved.interval.mode === "statistical" && offset !== undefined
     ? [...new Set([...resolved.groupBy, offset.field])]
     : resolved.groupBy;
@@ -70,27 +70,27 @@ function resolveErrorBar(program, args) {
   };
 }
 
-function resolveErrorBarOffset(program, args, resolved) {
+function resolveErrorBarOffset(program, args, resolved, operation) {
   const channel = `${resolved.position.channel}Offset`;
   const incompatible = channel === "xOffset" ? "yOffset" : "xOffset";
   if (args[incompatible] !== undefined) {
     throw new Error(
-      `createErrorBar ${incompatible} does not match the ${resolved.orientation} interval orientation.`
+      `${operation} ${incompatible} does not match the ${resolved.orientation} interval orientation.`
     );
   }
   const explicit = args[channel] === undefined
     ? undefined
-    : validateOptionObject(args[channel], OFFSET_OPTIONS, `createErrorBar ${channel}`);
+    : validateOptionObject(args[channel], OFFSET_OPTIONS, `${operation} ${channel}`);
   const inferred = resolved.sourceLayer?.encoding?.[channel];
   if (explicit === undefined && inferred === undefined) return undefined;
   if (!["nominal", "ordinal"].includes(resolved.position.fieldType)) {
     throw new Error(
-      `createErrorBar ${channel} requires a categorical ${resolved.position.channel} position.`
+      `${operation} ${channel} requires a categorical ${resolved.position.channel} position.`
     );
   }
   const field = explicit?.field ?? inferred?.field;
   if (typeof field !== "string" || field.length === 0) {
-    throw new TypeError(`createErrorBar ${channel} field must be a non-empty string.`);
+    throw new TypeError(`${operation} ${channel} field must be a non-empty string.`);
   }
   const fieldType = validateCategoricalFieldType(
     explicit?.fieldType ?? inferred?.fieldType ?? "nominal"
@@ -310,6 +310,13 @@ export const createErrorBar = action(
     return next._withMarkConfig(resolved.id, {
       ...next.markConfigs[resolved.id],
       errorBar: {
+        source: resolved.source,
+        intervalMode: resolved.interval.mode,
+        ...(resolved.interval.mode === "statistical"
+          ? { intervalField: resolved.interval.field }
+          : { centerField: resolved.fields.center }),
+        groupField: resolved.groupField,
+        groupBy: resolved.groupBy,
         data: resolved.dataId,
         orientation: resolved.orientation,
         positionField: resolved.position.field,

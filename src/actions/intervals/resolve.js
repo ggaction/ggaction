@@ -193,13 +193,19 @@ function resolveInterval(program, channel, explicit, inferred, dataset, {
     }
     return { channel, mode: "explicit", fields, scale, title: fields.center };
   }
+  const field = requireField(
+    explicit?.field ?? inferred?.field,
+    `${operation} ${channel} field`
+  );
+  if (!dataset.values.some(row => Number.isFinite(row?.[field]))) {
+    throw new TypeError(
+      `Field "${field}" must contain at least one finite number.`
+    );
+  }
   return {
     channel,
     mode: "statistical",
-    field: requireField(
-      explicit?.field ?? inferred?.field,
-      `${operation} ${channel} field`
-    ),
+    field,
     center: explicit?.center,
     extent: explicit?.extent,
     method: explicit?.method,
@@ -212,11 +218,16 @@ function resolveGrouping(args, sourceLayer, independentField, mode, {
   operation,
   allowExplicitGrouping
 }) {
-  if (mode === "explicit" && !allowExplicitGrouping && args.groupBy !== undefined) {
+  if (
+    mode === "explicit" &&
+    !allowExplicitGrouping &&
+    args.groupBy !== undefined &&
+    args.groupBy !== false
+  ) {
     throw new Error(`Explicit ${operation} intervals do not accept groupBy.`);
   }
   const inferred = sourceLayer?.encoding?.group?.field;
-  const groupField = args.groupBy ?? inferred;
+  const groupField = args.groupBy === false ? undefined : args.groupBy ?? inferred;
   const normalizedGroup = groupField === undefined
     ? undefined
     : requireField(groupField, `${operation} groupBy`);
@@ -241,7 +252,9 @@ export function resolveIntervalComposite(program, args, policy) {
       : requireObject(args.y, `${operation} y`)
   };
   let sourceLayer;
-  if (!(args.target === undefined && args.x !== undefined && args.y !== undefined)) {
+  if (policy.existingId === undefined && !(
+    args.target === undefined && args.x !== undefined && args.y !== undefined
+  )) {
     const target = args.target === undefined
       ? undefined
       : validateUserId(args.target, `${operation} source layer id`);
@@ -288,7 +301,7 @@ export function resolveIntervalComposite(program, args, policy) {
     policy
   );
   const defaultId = policy.defaultId;
-  const id = resolveOptionalUserId(args.id, {
+  const id = policy.existingId ?? resolveOptionalUserId(args.id, {
     defaultId,
     label: policy.ownerLabel,
     operation,
@@ -296,7 +309,7 @@ export function resolveIntervalComposite(program, args, policy) {
       program.graphicSpec.objects[defaultId] !== undefined ||
       findDataset(program, `${defaultId}IntervalData`) !== undefined
   });
-  const generatedFields = {
+  const generatedFields = policy.generatedFields ?? {
     center: `__${id}_center`,
     lower: `__${id}_lower`,
     upper: `__${id}_upper`
@@ -316,7 +329,7 @@ export function resolveIntervalComposite(program, args, policy) {
     source: dataset.id,
     dataId: interval.mode === "statistical" ? `${id}IntervalData` : dataset.id,
     coordinate: validateUserId(
-      args.coordinate ?? sourceLayer?.coordinate ?? "main",
+      args.coordinate ?? policy.coordinate ?? sourceLayer?.coordinate ?? "main",
       `${resourceLabel} coordinate id`
     ),
     orientation: intervalChannel === "y" ? "vertical" : "horizontal",

@@ -1010,8 +1010,8 @@
         "errors-and-current-limitations",
         "related"
       ],
-      "bytes": 9884,
-      "sha256": "e119a0569ff8a9f463913907d1bfccd367c3e9268de7b12073bdfb0ddd315cbd"
+      "bytes": 10690,
+      "sha256": "35a074fe671ec27b4009b30d52d723d4051e515e1511d1e5f35a803bc058fdcc"
     },
     {
       "order": 64,
@@ -1025,8 +1025,8 @@
         "inference-and-ownership",
         "editing-the-band"
       ],
-      "bytes": 7071,
-      "sha256": "e41e7d81b26cc9a7360692b2a189d1cc0a215771902f7ab0e67f0a7d0425345d"
+      "bytes": 7602,
+      "sha256": "10be443705b47415e8b8191f85f170537e8deb6112680a200489cdf2e80d72d5"
     },
     {
       "order": 65,
@@ -1982,8 +1982,8 @@
         "editviolinplot",
         "related"
       ],
-      "bytes": 11109,
-      "sha256": "f090d9bf1d8f8094a6b08fa5e4f5434ccc6a295a88ee9848fac65428f0bbb2e2"
+      "bytes": 11345,
+      "sha256": "a9a1696eb85b3328a81393e286f4777e478ac34ed0c8547cfd233862ed666da3"
     },
     {
       "order": 119,

@@ -28,11 +28,11 @@ test("publishes statistical-owner revision options as current behavior", () => {
   );
   assert.match(
     declarations,
-    /interface EditErrorBarOptions \{[\s\S]*statistics\?: \{[\s\S]*center\?: IntervalCenter;[\s\S]*extent\?: IntervalExtent;[\s\S]*level\?: number;/
+    /interface EditErrorBarOptions \{[\s\S]*data\?: string;[\s\S]*x\?: ErrorBarPositionChannel \| ErrorBarIntervalChannel;[\s\S]*y\?: ErrorBarPositionChannel \| ErrorBarIntervalChannel;[\s\S]*groupBy\?: string \| false;[\s\S]*statistics\?: \{[\s\S]*center\?: IntervalCenter;[\s\S]*extent\?: IntervalExtent;[\s\S]*level\?: number;/
   );
   assert.match(
     declarations,
-    /interface EditErrorBandOptions \{[\s\S]*statistics\?: \{[\s\S]*boundaries\?: false \| \{/
+    /interface EditErrorBandOptions \{[\s\S]*data\?: string;[\s\S]*x\?: ErrorBandPositionChannel \| ErrorBandIntervalChannel;[\s\S]*y\?: ErrorBandPositionChannel \| ErrorBandIntervalChannel;[\s\S]*groupBy\?: string \| false;[\s\S]*statistics\?: \{[\s\S]*boundaries\?: false \| \{/
   );
   assert.match(
     declarations,
@@ -66,7 +66,16 @@ function revisedPrograms() {
       x: { field: "group", fieldType: "nominal" },
       y: { field: "value" }
     })
-    .editErrorBar({ statistics: { center: "median", extent: "iqr" } });
+    .createData({ id: "revisedBars", values: intervalRows().map(row => ({
+      cohort: row.group,
+      time: row.time,
+      measure: row.value + 1
+    })) })
+    .editErrorBar({
+      data: "revisedBars",
+      x: { field: "measure", center: "median", extent: "iqr" },
+      y: { field: "cohort", fieldType: "nominal" }
+    });
   const errorBand = base()
     .createErrorBand({
       x: { field: "time" },
@@ -74,8 +83,16 @@ function revisedPrograms() {
       groupBy: "group",
       boundaries: {}
     })
+    .createData({ id: "revisedBands", values: intervalRows().map(row => ({
+      cohort: row.group,
+      time: row.time,
+      measure: row.value + 1
+    })) })
     .editErrorBand({
-      statistics: { extent: "ci", level: 0.9 },
+      data: "revisedBands",
+      x: { field: "measure", extent: "ci", level: 0.9 },
+      y: { field: "time" },
+      groupBy: "cohort",
       boundaries: false
     })
     .editErrorBand({

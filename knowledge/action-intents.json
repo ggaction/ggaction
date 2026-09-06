@@ -293,6 +293,8 @@
     "orderCategories": { "channel": "x", "by": "category" },
     "editBoxPlot": { "data": "data-1" },
     "editGradientPlot": { "data": "data-1" },
+    "editErrorBar": { "opacity": 0.6 },
+    "editErrorBand": { "opacity": 0.35 },
     "editScale": { "type": "linear" },
     "editFacetScales": { "x": "shared" },
     "layoutLabels": { "axis": "y" },

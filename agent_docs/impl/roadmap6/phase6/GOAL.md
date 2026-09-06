@@ -2,7 +2,7 @@
 
 ## 상태와 목표
 
-상태: in-progress. 전체 실행 승인을 적용했고 W1–W4를 구현·검증했다.
+상태: in-progress. 전체 실행 승인을 적용했고 W1–W5를 구현·검증했다. 누적 X closeout이 남았다.
 
 일반 사용자가 재사용 가능한 derived data를 만들고 안전하게 source·통계·composite 역할을 교체하도록 한다.
 
@@ -56,6 +56,8 @@
 - 연결: D16, F16.
 - 작업: Violin의 source/category/value/split/orientation, ErrorBar/Band의 source/position/interval roles를 atomic owner edit로 제공한다. Box/Gradient/Regression의 vocabulary와 비교한다.
 - 완료 조건: 생성→source 교체→방향 전환→style edit가 한 owner identity를 유지. Scale/guide/labels downstream이 수렴하고 부적합 변경은 전부 실패.
+- 결과: [W5 결과](RESULTS_W5_COMPOSITE_ROLES.md). Violin, ErrorBar와 ErrorBand의 stable owner role
+  revision, interval mode 전환, owned child/label rebind와 selection/highlight replay를 구현하고 검증했다.
 
 ## 검증과 종료
 

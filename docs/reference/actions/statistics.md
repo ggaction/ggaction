@@ -149,14 +149,15 @@ the main rule, and both caps on one shared sub-slot scale.
 
 ```javascript
 editErrorBar({
-  target?, caps?, capSize?, stroke?, strokeWidth?, strokeDash?, opacity?,
-  statistics?
+  target?, data?, x?, y?, xOffset?, yOffset?, groupBy?, caps?, capSize?,
+  stroke?, strokeWidth?, strokeDash?, opacity?, statistics?
 })
 ```
 
-Partially edit one error bar and its owned caps. `statistics` revises a
-statistical interval through immutable data; explicit interval owners reject
-that option. `caps: false` removes both caps and `caps: true` restores them.
+Revise one error bar's source, position/interval roles, optional categorical
+offset, statistics, and owned caps. Role changes can switch orientation or
+convert statistical and explicit intervals while preserving owner/cap IDs.
+`caps: false` removes both caps and `caps: true` restores them.
 [Error bars](../../api/error-bars.md#editing-error-bars)
 
 ## `createErrorBand`
@@ -179,7 +180,10 @@ is overridden.
 ## `editErrorBand` and `editErrorBandBoundary`
 
 ```javascript
-editErrorBand({ target?, fill?, opacity?, curve?, statistics?, boundaries? })
+editErrorBand({
+  target?, data?, x?, y?, groupBy?, fill?, opacity?, curve?, statistics?,
+  boundaries?
+})
 editErrorBandBoundary({
   target?, boundary?, stroke?, strokeWidth?, strokeDash?, opacity?, curve?
 })
@@ -188,8 +192,9 @@ editErrorBandBoundary({
 Constant band fill conflicts with active color. Remove that encoding first, or
 use edit-only `fill: false` to clear a constant fill and restore color eligibility.
 
-Edit the band body, statistical interval, or both owned boundary components
-without addressing generated line IDs. `boundaries: false` disables both;
+Edit the band source, position/interval roles, grouping, body, statistical
+interval, or both owned boundary components without addressing generated line
+IDs. Role changes may switch orientation or interval mode. `boundaries: false` disables both;
 an object creates or edits both. The focused boundary action still accepts
 `"both"`, `"lower"`, or `"upper"` and creates missing selected boundaries.
 [Error bands](../../api/error-bands.md#editing-the-band)

@@ -1732,6 +1732,12 @@ export interface ErrorBarOptions {
 
 export interface EditErrorBarOptions {
   target?: string;
+  data?: string;
+  x?: ErrorBarPositionChannel | ErrorBarIntervalChannel;
+  y?: ErrorBarPositionChannel | ErrorBarIntervalChannel;
+  xOffset?: ErrorBarOffsetChannel | false;
+  yOffset?: ErrorBarOffsetChannel | false;
+  groupBy?: string | false;
   caps?: boolean;
   capSize?: number;
   stroke?: string;
@@ -2476,6 +2482,10 @@ export interface ErrorBandOptions {
 
 export interface EditErrorBandOptions {
   target?: string;
+  data?: string;
+  x?: ErrorBandPositionChannel | ErrorBandIntervalChannel;
+  y?: ErrorBandPositionChannel | ErrorBandIntervalChannel;
+  groupBy?: string | false;
   fill?: string | false;
   opacity?: number;
   curve?: CurveInterpolation;

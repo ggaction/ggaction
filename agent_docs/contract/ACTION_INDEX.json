@@ -1503,7 +1503,7 @@
       "domain": "statistics",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Revises interval statistics and edits main-rule and owned-cap appearance",
+      "update": "Revises source, channel roles, interval mode, statistics, offsets, and owned caps",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -1539,7 +1539,7 @@
       "domain": "statistics",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Revises interval statistics, boundary state, and body appearance",
+      "update": "Revises source, channel roles, grouping, interval mode, statistics, boundaries, and body appearance",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",

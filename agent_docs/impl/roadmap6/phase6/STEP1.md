@@ -8,7 +8,7 @@
 - [x] R6-P6-W2 Summary·bin·fold·computed·stack data
 - [x] R6-P6-W3 공통 interval method·level
 - [x] R6-P6-W4 Filter replace·compose·remove·empty — [구현·검증](RESULTS_W4_FILTER.md)
-- [ ] R6-P6-W5 Violin·interval·composite role revision
+- [x] R6-P6-W5 Violin·interval·composite role revision — [구현·검증](RESULTS_W5_COMPOSITE_ROLES.md)
 - [ ] 모든 시각 variant의 primitive target 작성·표시·V 승인
 - [ ] 승인된 variant의 public 구현과 같은 실행의 primitive/public render 비교
 - [ ] 누적 검증·migration·문서·원장 동기화

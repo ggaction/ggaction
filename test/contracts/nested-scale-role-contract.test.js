@@ -427,8 +427,29 @@ function buildScaleWitness(action, path, type) {
       return source().createErrorBar({
         ...errorBarPositions(path, type), caps: false
       });
+    case "editErrorBar":
+      return source()
+        .createErrorBar({
+          x: positionChannel("point"),
+          y: {
+            center: "center", lower: "lower", upper: "upper",
+            scale: positionScale("linear")
+          },
+          caps: false
+        })
+        .editErrorBar(errorBarPositions(path, type));
     case "createErrorBand":
       return source().createErrorBand(intervalPositions(path, type));
+    case "editErrorBand":
+      return source()
+        .createErrorBand({
+          x: positionChannel("time"),
+          y: {
+            center: "center", lower: "lower", upper: "upper",
+            scale: positionScale("linear")
+          }
+        })
+        .editErrorBand(intervalPositions(path, type));
     case "createBoxPlot":
       return source().createBoxPlot({ ...distributionPositions(path, type), guides: false });
     case "editBoxPlot": {
@@ -485,8 +506,8 @@ test("derives only role-reachable nested scale type paths", async () => {
     /(?:^|\.)(?:xScale|yScale|valueScale|densityScale|radiusScale|scale)\.type$/u.test(option.path)
   );
 
-  assert.equal(scaleTypes.length, 80);
-  assert.equal(scaleTypes.reduce((sum, option) => sum + option.values.length, 0), 316);
+  assert.equal(scaleTypes.length, 86);
+  assert.equal(scaleTypes.reduce((sum, option) => sum + option.values.length, 0), 346);
   assert.doesNotMatch(declarations, /scale\?: ScaleOptions/u);
   assert.equal(options.has("option-path:createScatterPlot.x.scale.palette"), false);
   assert.equal(options.has("option-path:createScatterPlot.x.scale.interpolate"), false);
@@ -536,7 +557,7 @@ test("executes every strict nested scale type path and literal", async () => {
       witnesses += 1;
     }
   }
-  assert.equal(witnesses, 316);
+  assert.equal(witnesses, 346);
 });
 
 test("materializes every role-specific nested scale type vocabulary", () => {

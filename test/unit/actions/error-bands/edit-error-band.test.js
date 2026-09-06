@@ -128,3 +128,116 @@ test("treats boundaries false as an idempotent desired-state disable", () => {
   assert.deepEqual(repeated.semanticSpec, disabled.semanticSpec);
   assert.deepEqual(repeated.graphicSpec, disabled.graphicSpec);
 });
+
+test("revises source, position, interval roles, orientation, and boundaries together", () => {
+  const before = errorBand()
+    .editErrorBand({ boundaries: {} })
+    .createData({ id: "revised", values: [
+      { time: 1, cohort: "A", measure: 2 },
+      { time: 1, cohort: "A", measure: 4 },
+      { time: 2, cohort: "A", measure: 5 },
+      { time: 2, cohort: "A", measure: 7 },
+      { time: 1, cohort: "B", measure: 6 },
+      { time: 1, cohort: "B", measure: 8 },
+      { time: 2, cohort: "B", measure: 9 },
+      { time: 2, cohort: "B", measure: 11 }
+    ] });
+  const after = before.editErrorBand({
+    target: "errorBand",
+    data: "revised",
+    x: { field: "measure", center: "median", extent: "iqr" },
+    y: { field: "time", fieldType: "quantitative" },
+    groupBy: "cohort"
+  });
+  const owner = after.semanticSpec.layers.find(layer => layer.id === "errorBand");
+  const lower = after.semanticSpec.layers.find(
+    layer => layer.id === "errorBandLowerBoundary"
+  );
+  const transform = after.semanticSpec.datasets.find(
+    dataset => dataset.id === owner.data
+  ).transform[0];
+
+  assert.equal(owner.id, "errorBand");
+  assert.equal(owner.encoding.x.field, "__errorBand_lower");
+  assert.equal(owner.encoding.x2.field, "__errorBand_upper");
+  assert.equal(owner.encoding.y.field, "time");
+  assert.equal(owner.encoding.group.field, "cohort");
+  assert.equal(lower.encoding.x.field, "__errorBand_lower");
+  assert.equal(lower.encoding.y.field, "time");
+  assert.equal(lower.encoding.group.field, "cohort");
+  assert.equal(transform.field, "measure");
+  assert.deepEqual(transform.groupBy, ["time", "cohort"]);
+  assert.equal(transform.center, "median");
+  assert.equal(transform.extent, "iqr");
+  assert.equal(after.markConfigs.errorBand.errorBand.orientation, "horizontal");
+  assert.equal(after.markConfigs.errorBand.errorBand.source, "revised");
+  assert.equal(before.markConfigs.errorBand.errorBand.orientation, "vertical");
+});
+
+test("converts statistical and explicit error-band roles without replacing the owner", () => {
+  const statistical = errorBand().createData({ id: "explicit", values: [
+    { year: 2000, group: "A", center: 5, low: 3, high: 7 },
+    { year: 2001, group: "A", center: 8, low: 6, high: 10 }
+  ] });
+  const explicit = statistical.editErrorBand({
+    data: "explicit",
+    x: { field: "year", fieldType: "temporal" },
+    y: { center: "center", lower: "low", upper: "high" }
+  });
+
+  assert.equal(explicit.semanticSpec.layers[0].id, "errorBand");
+  assert.equal(explicit.semanticSpec.layers[0].data, "explicit");
+  assert.equal(explicit.semanticSpec.datasets.some(
+    dataset => dataset.id === "errorBandIntervalData"
+  ), false);
+  assert.equal(explicit.semanticSpec.layers[0].encoding.y.field, "low");
+  assert.equal(explicit.semanticSpec.layers[0].encoding.y2.field, "high");
+  assert.equal(explicit.markConfigs.errorBand.errorBand.intervalMode, "explicit");
+  assert.equal(explicit.markConfigs.errorBand.errorBand.intervalField, undefined);
+  assert.equal(explicit.markConfigs.errorBand.errorBand.centerField, "center");
+});
+
+test("replays a band highlight after an immutable role revision", () => {
+  const before = errorBand()
+    .highlightMarks({
+      target: "errorBand",
+      select: { field: "group", op: "eq", value: "A" },
+      fill: "#dc2626",
+      dimOthers: { opacity: 0.2 }
+    })
+    .createData({ id: "revised", values: rows.map(row => ({
+      ...row, revised: row.value + 5
+    })) });
+  const after = before.editErrorBand({
+    data: "revised",
+    x: { field: "year", fieldType: "temporal" },
+    y: { field: "revised" },
+    groupBy: "group"
+  });
+
+  assert.equal(
+    after.materializationConfigs.selections.errorBandSelection.target,
+    "errorBand"
+  );
+  assert.equal(after.graphicSpec.objects.errorBand.items.some(
+    item => item.properties.fill === "#dc2626"
+  ), true);
+  assert.equal(after.graphicSpec.objects.errorBand.items.some(
+    item => item.properties.opacity === 0.2
+  ), true);
+});
+
+test("rejects invalid band roles atomically", () => {
+  const before = errorBand();
+  const snapshot = JSON.stringify(before);
+
+  assert.throws(
+    () => before.editErrorBand({ data: "missing", opacity: 0.4 }),
+    /Unknown error-band dataset/
+  );
+  assert.throws(
+    () => before.editErrorBand({ groupBy: "year" }),
+    /must differ from the independent position field/
+  );
+  assert.equal(JSON.stringify(before), snapshot);
+});

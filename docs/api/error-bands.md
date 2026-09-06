@@ -16,7 +16,7 @@ consume existing center/lower/upper fields.
 | Action | Shortest call | Result |
 | --- | --- | --- |
 | `createErrorBand` | `createErrorBand()` after one eligible encoded layer | One grouped interval dataset and ordinary area/boundary layers |
-| `editErrorBand` | `editErrorBand({ opacity: 0.35 })` | Existing band body rematerialized without replacing interval data |
+| `editErrorBand` | `editErrorBand({ opacity: 0.35 })` | Stable body and owned boundaries revised together |
 | `editErrorBandBoundary` | `editErrorBandBoundary({ strokeWidth: 2 })` | Both owned boundaries created or edited |
 
 ## `createErrorBand(options?)`
@@ -175,6 +175,9 @@ layer IDs. The create action intentionally accepts one shared boundary recipe.
 
 ```javascript
 program.removeEncoding({ target: "errorBand", channel: "color" }).editErrorBand({
+  x: { field: "year", fieldType: "temporal" },
+  y: { field: "life_expect", center: "mean", extent: "ci" },
+  groupBy: "cluster",
   statistics: { extent: "ci", level: 0.9 },
   fill: "#7dd3fc",
   opacity: 0.34,
@@ -190,6 +193,13 @@ default; it does not make the band transparent. Creation still requires a string
 fill. `statistics: { center?, extent?, level? }` creates one
 immutable interval revision for statistical owners and rebinds the body and
 enabled boundaries. Explicit interval owners reject that option.
+
+`data`, `x`, and `y` replace the source and position/interval roles in the same
+preflight. They may switch orientation or convert between statistical and
+explicit `{ center, lower, upper }` intervals while preserving body and boundary
+IDs. `groupBy` replaces path grouping and `groupBy: false` removes it. Active
+color, selection, and highlight dependencies must remain valid and are replayed
+on the revised result.
 
 Use `boundaries: false` on `editErrorBand()` to disable both boundaries; the
 call is also valid when they are already absent. A boundary appearance object
