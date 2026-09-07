@@ -16,4 +16,4 @@ Apply these instructions to documentation layouts, includes, Sass, JavaScript, n
 - Run Axe or equivalent automated accessibility checks on representative desktop and mobile pages, while retaining explicit keyboard and state assertions for interactive behavior.
 - Run documentation environment preflight before full local verification and keep Node, Ruby, dependencies, and browser requirements aligned with CI.
 - Validate generated image freshness through platform-independent manifests rather than cross-platform PNG byte equality.
-- A site change is complete only after source contracts, Jekyll build, built links/assets, search, responsive containment, accessibility, and browser smoke tests pass.
+- At the documentation-site completion checkpoint, require source contracts, the Jekyll build, built links and assets, search, responsive containment, accessibility, and browser smoke tests to pass. During iteration, follow `test/AGENTS.md` for affected checks and checkpoint evidence.

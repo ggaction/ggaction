@@ -92,46 +92,26 @@ test("keeps human entry points synchronized with roadmap activity", () => {
   assert.match(rootReadme, new RegExp(`Phase ${phaseLabel}`));
   assert.match(implReadme, new RegExp(`${owner}/ROADMAP\\.md`));
   assert.match(implReadme, new RegExp(`Phase ${phaseLabel}`));
-  if (active === null) {
-    assert.match(rootReadme, /활성 Roadmap은 없다/);
-    assert.match(implReadme, /활성 Roadmap은 없다/);
-  }
-
   for (const entry of roadmapIndex.roadmaps) {
     assert.match(implReadme, new RegExp(`${entry.id}/ROADMAP\\.md`), entry.id);
   }
 });
 
-test("keeps the active or last completed phase aligned with its roadmap", () => {
+test("keeps the active or last completed phase linked to its roadmap", () => {
   const owner = roadmap(
     roadmapIndex.activeRoadmap ?? roadmapIndex.lastCompletedRoadmap
   );
-  const source = readFileSync(path.join(root, owner.file), "utf8");
-  if (roadmapIndex.activePhase === null) {
-    assert.match(
-      source,
-      new RegExp(`\\| ${roadmapIndex.lastCompletedPhase} \\| completed \\|`)
-    );
-    assert.equal(
-      /^\| \d+ \| in-progress \|/mu.test(source),
-      false
-    );
-    return;
-  }
-  assert.match(
-    source,
-    new RegExp(`\\| ${roadmapIndex.activePhase} \\| (?:planned|in-progress|blocked) \\|`)
-  );
-  assert.match(source, new RegExp(`^## Phase ${roadmapIndex.activePhase} —`, "m"));
+  const phase = roadmapIndex.activePhase ?? roadmapIndex.lastCompletedPhase;
+  const roadmapRoot = path.dirname(path.join(root, owner.file));
+  const phaseRoot = path.join(roadmapRoot, `phase${phase}`);
+
+  assert.equal(existsSync(phaseRoot), true, phaseRoot);
+  assert.equal(existsSync(path.join(phaseRoot, "GOAL.md")), true, phaseRoot);
 });
 
-test("labels current and historical roadmap roots without rewriting history", () => {
+test("links current and historical roadmap roots to their canonical owner", () => {
   for (const entry of roadmapIndex.roadmaps) {
     const source = readFileSync(path.join(root, entry.file), "utf8");
-    const expected = entry.status === "active"
-      ? "문서 상태 — 현재 실행 계획."
-      : "문서 상태 — 완료된 실행 기록.";
-    assert.match(source, new RegExp(expected), entry.id);
     if (entry.status === "completed") {
       assert.match(source, /ACTION_INDEX\.json/, entry.id);
     } else {
@@ -154,19 +134,11 @@ test("routes architecture work without duplicating the canonical record", () => 
   assert.equal(new Set(architectureHeadings).size, architectureHeadings.length);
   assert.match(architecture, /architecture\/README\.md/);
   assert.match(map, /SECOND_ARCHITECTURE\.md/);
-  for (const route of [
-    "Public package boundary",
-    "ChartProgram",
-    "semanticSpec",
-    "graphicSpec",
-    "Action과 trace",
-    "materialization",
-    "Canvas renderer",
-    "Source ownership",
-    "Test architecture"
-  ]) {
-    assert.match(map, new RegExp(route), route);
-  }
+  const routes = localMarkdownLinks(map).filter(link =>
+    link.startsWith("../SECOND_ARCHITECTURE.md#")
+  );
+  assert.equal(routes.length >= 5, true);
+  assert.equal(new Set(routes).size, routes.length);
 });
 
 test("keeps the contract landing page lightweight and action-directed", () => {

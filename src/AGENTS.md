@@ -30,5 +30,5 @@ Apply these instructions to library source, public package entry points, and sou
 
 - `agent_docs/SECOND_ARCHITECTURE.md` owns the current macro architecture and state-flow explanation.
 - `agent_docs/contract/ACTION_INDEX.json` and `agent_docs/contract/current/` own exact current action lifecycles, parameters, defaults, inference, effects, supported values, and domain-specific behavior.
-- Before changing a public action or a domain behavior, read and update its owning current contract instead of copying the exact behavior into an `AGENTS.md` file.
+- Read the owning current contract before changing a public action or domain behavior. When observable behavior changes, update that contract in the same verified implementation checkpoint. Keep unimplemented proposals outside Current. When restoring already-documented behavior, preserve the contract unless it contains an actual error or omission; never copy exact behavior into an `AGENTS.md` file.
 - Mechanically enforce package boundaries, selectors, validation, compatibility, rematerialization plans, and other executable invariants in tests; AGENTS files remain decision guidance rather than a second contract catalog.

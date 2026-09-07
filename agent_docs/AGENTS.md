@@ -12,7 +12,7 @@ Apply these instructions to architecture records, implementation plans, roadmaps
 
 - Write internal collaboration and implementation records in Korean unless a machine-readable format or public identifier requires English.
 - Preserve `agent_docs/INITIAL_ARCHITECTURE.md` as the initial design record unless the user explicitly requests a revision.
-- Treat `agent_docs/SECOND_ARCHITECTURE.md` as the current macro-architecture record. Update it for deliberate changes to ownership, state boundaries, materialization flow, renderer boundaries, or public package boundaries.
+- Treat `agent_docs/SECOND_ARCHITECTURE.md` as the current macro-architecture record. This file owns the update trigger: update the record for deliberate changes to ownership, state boundaries, materialization flow, renderer boundaries, or public package boundaries.
 - Keep historical design rationale distinct from current observable behavior. Current action contracts, declarations, tests, and public documentation take precedence for exact supported behavior.
 - Do not turn architecture records into a duplicate action catalog. Link to the owning current domain contract for exact parameters, values, defaults, and errors.
 - Keep roadmap documents as collaboration history rather than executable product dependencies.
