@@ -1,0 +1,17 @@
+{
+  "phase": 6,
+  "status": "Proposed",
+  "scope": "implementation",
+  "candidates": [
+    {
+      "id": "R27",
+      "status": "Proposed",
+      "file": "../features/27-coordinate-aspect.md"
+    },
+    {
+      "id": "R29",
+      "status": "Proposed",
+      "file": "../features/29-polar-frame.md"
+    }
+  ]
+}

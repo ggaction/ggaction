@@ -1,0 +1,22 @@
+{
+  "phase": 8,
+  "status": "Proposed",
+  "scope": "implementation",
+  "candidates": [
+    {
+      "id": "R37",
+      "status": "Proposed",
+      "file": "../features/37-legend-values.md"
+    },
+    {
+      "id": "R38",
+      "status": "Proposed",
+      "file": "../features/38-legend-blocks.md"
+    },
+    {
+      "id": "R39",
+      "status": "Proposed",
+      "file": "../features/39-display-names-headers.md"
+    }
+  ]
+}

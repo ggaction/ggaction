@@ -1,0 +1,12 @@
+{
+  "phase": 3,
+  "status": "Proposed",
+  "scope": "implementation",
+  "candidates": [
+    {
+      "id": "R10",
+      "status": "Proposed",
+      "file": "../features/10-weighted-statistics.md"
+    }
+  ]
+}

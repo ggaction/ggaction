@@ -1,0 +1,12 @@
+{
+  "phase": 10,
+  "status": "Proposed",
+  "scope": "implementation",
+  "candidates": [
+    {
+      "id": "R43",
+      "status": "Proposed",
+      "file": "../features/43-polar-parallel-facets.md"
+    }
+  ]
+}

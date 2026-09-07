@@ -1,0 +1,17 @@
+{
+  "phase": 9,
+  "status": "Proposed",
+  "scope": "implementation",
+  "candidates": [
+    {
+      "id": "R47",
+      "status": "Proposed",
+      "file": "../features/47-custom-theme.md"
+    },
+    {
+      "id": "R49",
+      "status": "Proposed",
+      "file": "../features/49-shape-style-details.md"
+    }
+  ]
+}

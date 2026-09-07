@@ -1,0 +1,27 @@
+{
+  "phase": 7,
+  "status": "Proposed",
+  "scope": "implementation",
+  "candidates": [
+    {
+      "id": "R31",
+      "status": "Proposed",
+      "file": "../features/31-remove-labels.md"
+    },
+    {
+      "id": "R32",
+      "status": "Proposed",
+      "file": "../features/32-selected-labels.md"
+    },
+    {
+      "id": "R33",
+      "status": "Proposed",
+      "file": "../features/33-semantic-label-anchors.md"
+    },
+    {
+      "id": "R36",
+      "status": "Proposed",
+      "file": "../features/36-statistical-references.md"
+    }
+  ]
+}

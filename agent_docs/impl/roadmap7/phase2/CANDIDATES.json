@@ -1,0 +1,22 @@
+{
+  "phase": 2,
+  "status": "Proposed",
+  "scope": "implementation",
+  "candidates": [
+    {
+      "id": "R05",
+      "status": "Proposed",
+      "file": "../features/05-complete-impute.md"
+    },
+    {
+      "id": "R08",
+      "status": "Proposed",
+      "file": "../features/08-calendar-buckets.md"
+    },
+    {
+      "id": "R09",
+      "status": "Proposed",
+      "file": "../features/09-duration-windows.md"
+    }
+  ]
+}

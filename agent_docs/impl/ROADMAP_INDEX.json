@@ -1,7 +1,7 @@
 {
   "version": 2,
-  "activeRoadmap": null,
-  "activePhase": null,
+  "activeRoadmap": "roadmap7",
+  "activePhase": 0,
   "lastCompletedRoadmap": "roadmap6",
   "lastCompletedPhase": 11,
   "roadmaps": [
@@ -106,7 +106,15 @@
       "title": "Hierarchical Chart Authoring and Action Consistency",
       "status": "completed",
       "role": "historical-execution-record",
-      "file": "agent_docs/impl/roadmap6/ROADMAP.md"
+      "file": "agent_docs/impl/roadmap6/ROADMAP.md",
+      "successor": "roadmap7"
+    },
+    {
+      "id": "roadmap7",
+      "title": "Detailed Chart Authoring Operations",
+      "status": "active",
+      "role": "current-execution-plan",
+      "file": "agent_docs/impl/roadmap7/ROADMAP.md"
     }
   ]
 }

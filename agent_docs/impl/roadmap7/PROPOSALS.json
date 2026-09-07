@@ -1,0 +1,683 @@
+{
+  "version": 1,
+  "baseCommit": "c0e47da6e213852213bcb04eb19031a1a6a63cd7",
+  "status": "Proposed",
+  "scopeSelection": "user-selected",
+  "selectedAuditIds": [
+    2,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    19,
+    20,
+    21,
+    22,
+    23,
+    25,
+    27,
+    29,
+    31,
+    32,
+    33,
+    36,
+    37,
+    38,
+    39,
+    43,
+    47,
+    49
+  ],
+  "features": [
+    {
+      "id": "R02",
+      "auditId": 2,
+      "title": "파생 데이터 정의 편집과 종속 갱신",
+      "slug": "derived-editing",
+      "phase": 4,
+      "dependsOn": [
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "R09",
+        "R10"
+      ],
+      "status": "Proposed",
+      "scopeSelection": "user-selected",
+      "file": "features/02-derived-editing.md",
+      "sources": [
+        "src/actions/data/bin2d.js",
+        "src/actions/data/intervalEdit.js",
+        "src/materialization/dataProvenance.js",
+        "src/grammar/transforms.js",
+        "src/actions/facets/replay.js"
+      ],
+      "acceptanceSections": [
+        "값·기본값·오류 계약",
+        "저장 결과와 생명주기",
+        "독립 oracle와 인수 테스트",
+        "완료 조건"
+      ]
+    },
+    {
+      "id": "R05",
+      "auditId": 5,
+      "title": "결측 조합 완성과 대체",
+      "slug": "complete-impute",
+      "phase": 2,
+      "dependsOn": [],
+      "status": "Proposed",
+      "scopeSelection": "user-selected",
+      "file": "features/05-complete-impute.md",
+      "sources": [
+        "src/grammar/stack.js",
+        "src/grammar/areaSeries.js",
+        "src/grammar/transformTopology.js",
+        "src/actions/data/shared.js"
+      ],
+      "acceptanceSections": [
+        "값·기본값·오류 계약",
+        "저장 결과와 생명주기",
+        "독립 oracle와 인수 테스트",
+        "완료 조건"
+      ]
+    },
+    {
+      "id": "R06",
+      "auditId": 6,
+      "title": "조건·문자열·null 계산식",
+      "slug": "computed-expressions",
+      "phase": 1,
+      "dependsOn": [],
+      "status": "Proposed",
+      "scopeSelection": "user-selected",
+      "file": "features/06-computed-expressions.md",
+      "sources": [
+        "src/grammar/computed.js",
+        "src/actions/data/computed.js",
+        "src/grammar/transforms.js",
+        "types/program.d.ts"
+      ],
+      "acceptanceSections": [
+        "값·기본값·오류 계약",
+        "저장 결과와 생명주기",
+        "독립 oracle와 인수 테스트",
+        "완료 조건"
+      ]
+    },
+    {
+      "id": "R07",
+      "auditId": 7,
+      "title": "그룹 정규화·기준값 비교",
+      "slug": "normalization",
+      "phase": 1,
+      "dependsOn": [
+        "R06"
+      ],
+      "status": "Proposed",
+      "scopeSelection": "user-selected",
+      "file": "features/07-normalization.md",
+      "sources": [
+        "src/grammar/summary.js",
+        "src/grammar/window.js",
+        "src/actions/data/computed.js",
+        "src/grammar/transformTopology.js"
+      ],
+      "acceptanceSections": [
+        "값·기본값·오류 계약",
+        "저장 결과와 생명주기",
+        "독립 oracle와 인수 테스트",
+        "완료 조건"
+      ]
+    },
+    {
+      "id": "R08",
+      "auditId": 8,
+      "title": "주간·요일·시간대 버킷",
+      "slug": "calendar-buckets",
+      "phase": 2,
+      "dependsOn": [],
+      "status": "Proposed",
+      "scopeSelection": "user-selected",
+      "file": "features/08-calendar-buckets.md",
+      "sources": [
+        "src/grammar/timeUnit.js",
+        "src/actions/data/timeUnit.js",
+        "types/program.d.ts",
+        "src/grammar/transforms.js"
+      ],
+      "acceptanceSections": [
+        "값·기본값·오류 계약",
+        "저장 결과와 생명주기",
+        "독립 oracle와 인수 테스트",
+        "완료 조건"
+      ]
+    },
+    {
+      "id": "R09",
+      "auditId": 9,
+      "title": "기간 기반 window와 최소 관측수",
+      "slug": "duration-windows",
+      "phase": 2,
+      "dependsOn": [
+        "R08"
+      ],
+      "status": "Proposed",
+      "scopeSelection": "user-selected",
+      "file": "features/09-duration-windows.md",
+      "sources": [
+        "src/grammar/window.js",
+        "src/actions/data/window.js",
+        "src/grammar/transforms.js",
+        "types/program.d.ts"
+      ],
+      "acceptanceSections": [
+        "값·기본값·오류 계약",
+        "저장 결과와 생명주기",
+        "독립 oracle와 인수 테스트",
+        "완료 조건"
+      ]
+    },
+    {
+      "id": "R10",
+      "auditId": 10,
+      "title": "가중 통계·histogram·KDE",
+      "slug": "weighted-statistics",
+      "phase": 3,
+      "dependsOn": [],
+      "status": "Proposed",
+      "scopeSelection": "user-selected",
+      "file": "features/10-weighted-statistics.md",
+      "sources": [
+        "src/grammar/summary.js",
+        "src/grammar/bin.js",
+        "src/grammar/density.js",
+        "src/actions/data/summary.js",
+        "src/actions/data/density.js",
+        "types/program.d.ts"
+      ],
+      "acceptanceSections": [
+        "값·기본값·오류 계약",
+        "저장 결과와 생명주기",
+        "독립 oracle와 인수 테스트",
+        "완료 조건"
+      ]
+    },
+    {
+      "id": "R19",
+      "auditId": 19,
+      "title": "다중 채널의 원자적 재인코딩",
+      "slug": "atomic-encoding",
+      "phase": 5,
+      "dependsOn": [
+        "R20",
+        "R21",
+        "R22",
+        "R23"
+      ],
+      "status": "Proposed",
+      "scopeSelection": "user-selected",
+      "file": "features/19-atomic-encoding.md",
+      "sources": [
+        "src/actions/encodings/index.js",
+        "src/actions/scales/edit.js",
+        "src/actions/encodings/parallel.js",
+        "src/materialization/planner.js"
+      ],
+      "acceptanceSections": [
+        "값·기본값·오류 계약",
+        "저장 결과와 생명주기",
+        "독립 oracle와 인수 테스트",
+        "완료 조건"
+      ]
+    },
+    {
+      "id": "R20",
+      "auditId": 20,
+      "title": "Parallel 차원별 scale 집중 편집",
+      "slug": "parallel-scale",
+      "phase": 5,
+      "dependsOn": [],
+      "status": "Proposed",
+      "scopeSelection": "user-selected",
+      "file": "features/20-parallel-scale.md",
+      "sources": [
+        "src/actions/scales/edit.js",
+        "src/actions/scales/consumers/common.js",
+        "src/actions/coordinates/parallel.js",
+        "src/actions/guides/axes/parallel.js"
+      ],
+      "acceptanceSections": [
+        "값·기본값·오류 계약",
+        "저장 결과와 생명주기",
+        "독립 oracle와 인수 테스트",
+        "완료 조건"
+      ]
+    },
+    {
+      "id": "R21",
+      "auditId": 21,
+      "title": "중첩 band offset scale 집중 편집",
+      "slug": "offset-scales",
+      "phase": 5,
+      "dependsOn": [],
+      "status": "Proposed",
+      "scopeSelection": "user-selected",
+      "file": "features/21-offset-scales.md",
+      "sources": [
+        "src/actions/scales/channels.js",
+        "src/actions/scales/edit.js",
+        "src/actions/encodings/offset.js",
+        "src/materialization/scales/policies/offset.js"
+      ],
+      "acceptanceSections": [
+        "값·기본값·오류 계약",
+        "저장 결과와 생명주기",
+        "독립 oracle와 인수 테스트",
+        "완료 조건"
+      ]
+    },
+    {
+      "id": "R22",
+      "auditId": 22,
+      "title": "필드 기반 stroke 색상",
+      "slug": "stroke-color",
+      "phase": 5,
+      "dependsOn": [],
+      "status": "Proposed",
+      "scopeSelection": "user-selected",
+      "file": "features/22-stroke-color.md",
+      "sources": [
+        "src/actions/encodings/index.js",
+        "src/actions/scales/quantitativeColor.js",
+        "src/actions/guides/legends/index.js",
+        "src/renderers/svg.js",
+        "src/renderers/pdf.js"
+      ],
+      "acceptanceSections": [
+        "값·기본값·오류 계약",
+        "저장 결과와 생명주기",
+        "독립 oracle와 인수 테스트",
+        "완료 조건"
+      ]
+    },
+    {
+      "id": "R23",
+      "auditId": 23,
+      "title": "크기 scale의 비선형·단계형 mapping",
+      "slug": "size-scale-types",
+      "phase": 5,
+      "dependsOn": [],
+      "status": "Proposed",
+      "scopeSelection": "user-selected",
+      "file": "features/23-size-scale-types.md",
+      "sources": [
+        "src/actions/scales/definitions.js",
+        "src/actions/scales/edit.js",
+        "src/actions/guides/legends/size.js",
+        "src/actions/encodings/index.js"
+      ],
+      "acceptanceSections": [
+        "값·기본값·오류 계약",
+        "저장 결과와 생명주기",
+        "독립 oracle와 인수 테스트",
+        "완료 조건"
+      ]
+    },
+    {
+      "id": "R25",
+      "auditId": 25,
+      "title": "미사용 dataset·scale·coordinate 안전 삭제",
+      "slug": "remove-resources",
+      "phase": 11,
+      "dependsOn": [
+        "R02",
+        "R19",
+        "R20",
+        "R21",
+        "R22",
+        "R27",
+        "R29",
+        "R31",
+        "R32",
+        "R36",
+        "R37",
+        "R38",
+        "R39",
+        "R43",
+        "R47",
+        "R49"
+      ],
+      "status": "Proposed",
+      "scopeSelection": "user-selected",
+      "file": "features/25-remove-resources.md",
+      "sources": [
+        "src/actions/marks/remove.js",
+        "src/actions/data/derived.js",
+        "src/selectors/datasets.js",
+        "src/materialization/guides/resources.js",
+        "src/actions/scales/consumers/common.js"
+      ],
+      "acceptanceSections": [
+        "값·기본값·오류 계약",
+        "저장 결과와 생명주기",
+        "독립 oracle와 인수 테스트",
+        "완료 조건"
+      ]
+    },
+    {
+      "id": "R27",
+      "auditId": 27,
+      "title": "좌표 frame 종횡비와 데이터 단위비",
+      "slug": "coordinate-aspect",
+      "phase": 6,
+      "dependsOn": [],
+      "status": "Proposed",
+      "scopeSelection": "user-selected",
+      "file": "features/27-coordinate-aspect.md",
+      "sources": [
+        "src/actions/coordinates/actions.js",
+        "src/actions/scales/materialize.js",
+        "src/materialization/planner.js",
+        "src/grammar/coordinates.js"
+      ],
+      "acceptanceSections": [
+        "값·기본값·오류 계약",
+        "저장 결과와 생명주기",
+        "독립 oracle와 인수 테스트",
+        "완료 조건"
+      ]
+    },
+    {
+      "id": "R29",
+      "auditId": 29,
+      "title": "Polar 중심과 frame 반지름·배치",
+      "slug": "polar-frame",
+      "phase": 6,
+      "dependsOn": [
+        "R27"
+      ],
+      "status": "Proposed",
+      "scopeSelection": "user-selected",
+      "file": "features/29-polar-frame.md",
+      "sources": [
+        "src/grammar/polar.js",
+        "src/grammar/polarPaths.js",
+        "src/grammar/polarGuides.js",
+        "src/actions/charts/polar.js"
+      ],
+      "acceptanceSections": [
+        "값·기본값·오류 계약",
+        "저장 결과와 생명주기",
+        "독립 oracle와 인수 테스트",
+        "완료 조건"
+      ]
+    },
+    {
+      "id": "R31",
+      "auditId": 31,
+      "title": "원본 마크를 보존하는 붙임 라벨 삭제",
+      "slug": "remove-labels",
+      "phase": 7,
+      "dependsOn": [],
+      "status": "Proposed",
+      "scopeSelection": "user-selected",
+      "file": "features/31-remove-labels.md",
+      "sources": [
+        "src/actions/marks/text/index.js",
+        "src/actions/marks/remove.js",
+        "src/actions/marks/text/layout.js",
+        "src/materialization/planner.js"
+      ],
+      "acceptanceSections": [
+        "값·기본값·오류 계약",
+        "저장 결과와 생명주기",
+        "독립 oracle와 인수 테스트",
+        "완료 조건"
+      ]
+    },
+    {
+      "id": "R32",
+      "auditId": 32,
+      "title": "선택된 final item만 라벨링",
+      "slug": "selected-labels",
+      "phase": 7,
+      "dependsOn": [
+        "R31"
+      ],
+      "status": "Proposed",
+      "scopeSelection": "user-selected",
+      "file": "features/32-selected-labels.md",
+      "sources": [
+        "src/actions/marks/text/index.js",
+        "src/materialization/selection/state.js",
+        "src/grammar/markFilter.js",
+        "types/program.d.ts"
+      ],
+      "acceptanceSections": [
+        "값·기본값·오류 계약",
+        "저장 결과와 생명주기",
+        "독립 oracle와 인수 테스트",
+        "완료 조건"
+      ]
+    },
+    {
+      "id": "R33",
+      "auditId": 33,
+      "title": "의미 기반 라벨 anchor와 배치 정책",
+      "slug": "semantic-label-anchors",
+      "phase": 7,
+      "dependsOn": [
+        "R27",
+        "R29",
+        "R32"
+      ],
+      "status": "Proposed",
+      "scopeSelection": "user-selected",
+      "file": "features/33-semantic-label-anchors.md",
+      "sources": [
+        "src/actions/marks/text/layout.js",
+        "src/layout/labels.js",
+        "src/grammar/polar.js",
+        "src/actions/marks/text/index.js"
+      ],
+      "acceptanceSections": [
+        "값·기본값·오류 계약",
+        "저장 결과와 생명주기",
+        "독립 oracle와 인수 테스트",
+        "완료 조건"
+      ]
+    },
+    {
+      "id": "R36",
+      "auditId": 36,
+      "title": "데이터를 추적하는 통계 참조선·밴드",
+      "slug": "statistical-references",
+      "phase": 7,
+      "dependsOn": [
+        "R02",
+        "R19"
+      ],
+      "status": "Proposed",
+      "scopeSelection": "user-selected",
+      "file": "features/36-statistical-references.md",
+      "sources": [
+        "src/actions/marks/references.js",
+        "src/actions/marks/rule/index.js",
+        "src/grammar/summary.js",
+        "src/materialization/planner.js"
+      ],
+      "acceptanceSections": [
+        "값·기본값·오류 계약",
+        "저장 결과와 생명주기",
+        "독립 oracle와 인수 테스트",
+        "완료 조건"
+      ]
+    },
+    {
+      "id": "R37",
+      "auditId": 37,
+      "title": "연속 범례의 명시적인 표본값",
+      "slug": "legend-values",
+      "phase": 8,
+      "dependsOn": [
+        "R22",
+        "R23"
+      ],
+      "status": "Proposed",
+      "scopeSelection": "user-selected",
+      "file": "features/37-legend-values.md",
+      "sources": [
+        "src/actions/guides/legends/size.js",
+        "src/actions/guides/legends/strokeWidth.js",
+        "src/actions/guides/legends/continuous/opacity.js",
+        "src/actions/guides/legends/edit.js"
+      ],
+      "acceptanceSections": [
+        "값·기본값·오류 계약",
+        "저장 결과와 생명주기",
+        "독립 oracle와 인수 테스트",
+        "완료 조건"
+      ]
+    },
+    {
+      "id": "R38",
+      "auditId": 38,
+      "title": "결합 범례의 channel block별 편집",
+      "slug": "legend-blocks",
+      "phase": 8,
+      "dependsOn": [
+        "R37"
+      ],
+      "status": "Proposed",
+      "scopeSelection": "user-selected",
+      "file": "features/38-legend-blocks.md",
+      "sources": [
+        "src/actions/guides/legends/edit.js",
+        "src/actions/guides/legends/target.js",
+        "src/actions/guides/legends/transition.js",
+        "src/materialization/legends.js"
+      ],
+      "acceptanceSections": [
+        "값·기본값·오류 계약",
+        "저장 결과와 생명주기",
+        "독립 oracle와 인수 테스트",
+        "완료 조건"
+      ]
+    },
+    {
+      "id": "R39",
+      "auditId": 39,
+      "title": "범주 표시명과 facet header 배치",
+      "slug": "display-names-headers",
+      "phase": 8,
+      "dependsOn": [
+        "R38"
+      ],
+      "status": "Proposed",
+      "scopeSelection": "user-selected",
+      "file": "features/39-display-names-headers.md",
+      "sources": [
+        "src/actions/guides/axes/labels.js",
+        "src/actions/facets/guides.js",
+        "src/actions/guides/legends/edit.js",
+        "types/program.d.ts"
+      ],
+      "acceptanceSections": [
+        "값·기본값·오류 계약",
+        "저장 결과와 생명주기",
+        "독립 oracle와 인수 테스트",
+        "완료 조건"
+      ]
+    },
+    {
+      "id": "R43",
+      "auditId": 43,
+      "title": "Polar·Parallel facet와 repeat 지원",
+      "slug": "polar-parallel-facets",
+      "phase": 10,
+      "dependsOn": [
+        "R02",
+        "R20",
+        "R22",
+        "R27",
+        "R29",
+        "R32",
+        "R33",
+        "R37",
+        "R38",
+        "R39",
+        "R47",
+        "R49"
+      ],
+      "status": "Proposed",
+      "scopeSelection": "user-selected",
+      "file": "features/43-polar-parallel-facets.md",
+      "sources": [
+        "src/actions/facets/derive.js",
+        "src/actions/facets/replay.js",
+        "src/grammar/facets/dependencies.js",
+        "src/grammar/facets/scales.js",
+        "src/actions/composition/actions.js",
+        "src/grammar/parallelCoordinates.js"
+      ],
+      "acceptanceSections": [
+        "값·기본값·오류 계약",
+        "저장 결과와 생명주기",
+        "독립 oracle와 인수 테스트",
+        "완료 조건"
+      ]
+    },
+    {
+      "id": "R47",
+      "auditId": 47,
+      "title": "사용자 theme tokens와 composition 전파",
+      "slug": "custom-theme",
+      "phase": 9,
+      "dependsOn": [],
+      "status": "Proposed",
+      "scopeSelection": "user-selected",
+      "file": "features/47-custom-theme.md",
+      "sources": [
+        "src/theme/defaults.js",
+        "src/actions/theme/actions.js",
+        "src/actions/theme/reconcile.js",
+        "src/materialization/composition.js"
+      ],
+      "acceptanceSections": [
+        "값·기본값·오류 계약",
+        "저장 결과와 생명주기",
+        "독립 oracle와 인수 테스트",
+        "완료 조건"
+      ]
+    },
+    {
+      "id": "R49",
+      "auditId": 49,
+      "title": "둥근 모서리와 stroke cap·join",
+      "slug": "shape-style-details",
+      "phase": 9,
+      "dependsOn": [],
+      "status": "Proposed",
+      "scopeSelection": "user-selected",
+      "file": "features/49-shape-style-details.md",
+      "sources": [
+        "src/actions/marks/bar/index.js",
+        "src/actions/marks/rect/index.js",
+        "src/actions/marks/line/index.js",
+        "src/renderers/canvas/index.js",
+        "src/renderers/svg.js",
+        "src/renderers/pdf.js"
+      ],
+      "acceptanceSections": [
+        "값·기본값·오류 계약",
+        "저장 결과와 생명주기",
+        "독립 oracle와 인수 테스트",
+        "완료 조건"
+      ]
+    }
+  ]
+}

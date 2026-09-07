@@ -1,0 +1,12 @@
+{
+  "phase": 11,
+  "status": "Proposed",
+  "scope": "implementation",
+  "candidates": [
+    {
+      "id": "R25",
+      "status": "Proposed",
+      "file": "../features/25-remove-resources.md"
+    }
+  ]
+}

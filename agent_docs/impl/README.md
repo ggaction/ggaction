@@ -4,7 +4,10 @@
 
 ## 현재 작업
 
-- **현재 활성 Roadmap은 없다.** Roadmap 6 Phase 0–11을 완료했다.
+- **현재 활성 계획은 Roadmap 7 Phase 0**이다. 선택한 차트 저작 연산 25개의 상세 구현 계획을 작성했으며, 세부 API는 Proposed 상태다.
+- [`roadmap7/ROADMAP.md`](roadmap7/ROADMAP.md) — 범위·의존성·Phase 0–12
+- [`roadmap7/IMPLEMENTER_START_HERE.md`](roadmap7/IMPLEMENTER_START_HERE.md) — 구현자 인계와 검증 순서
+- Roadmap 6 Phase 0–11은 완료된 이력으로 보존한다.
 - [`roadmap6/phase11/REVIEW.md`](roadmap6/phase11/REVIEW.md) — 234개 action의 계층·card·MCP·package
   통합 검증과 최종 closeout
 - [`roadmap6/TRACEABILITY.md`](roadmap6/TRACEABILITY.md) — 실행 대상 47개 항목과 작업·검증 조건

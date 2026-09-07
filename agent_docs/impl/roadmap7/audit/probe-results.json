@@ -1,0 +1,155 @@
+{
+  "baseCommit": "c0e47da6e213852213bcb04eb19031a1a6a63cd7",
+  "directMethods": 244,
+  "userFacing": 238,
+  "results": [
+    {
+      "id": "source-data-same-id-replacement",
+      "expected": "rejected",
+      "actual": "rejected",
+      "pass": true,
+      "detail": "Dataset \"rows\" already exists."
+    },
+    {
+      "id": "independent-label-removal",
+      "expected": "rejected",
+      "actual": "rejected",
+      "pass": true,
+      "detail": "Mark \"labels\" is owned by \"points\"; remove its stable owner."
+    },
+    {
+      "id": "coordinate-aspect",
+      "expected": "rejected",
+      "actual": "rejected",
+      "pass": true,
+      "detail": "Unknown createCoordinate option \"aspect\"."
+    },
+    {
+      "id": "field-driven-stroke",
+      "expected": "rejected",
+      "actual": "rejected",
+      "pass": true,
+      "detail": "Unknown encodeStroke option \"field\"."
+    },
+    {
+      "id": "compound-selection",
+      "expected": "rejected",
+      "actual": "rejected",
+      "pass": true,
+      "detail": "Unknown selectMarks option \"any\"."
+    },
+    {
+      "id": "custom-theme",
+      "expected": "rejected",
+      "actual": "rejected",
+      "pass": true,
+      "detail": "Unsupported theme \"[object Object]\"."
+    },
+    {
+      "id": "conditional-computed-field",
+      "expected": "rejected",
+      "actual": "rejected",
+      "pass": true,
+      "detail": "Unsupported computed operation \"if\"."
+    },
+    {
+      "id": "week-bucket",
+      "expected": "rejected",
+      "actual": "rejected",
+      "pass": true,
+      "detail": "Unsupported time unit \"week\"."
+    },
+    {
+      "id": "nonlinear-size-scale",
+      "expected": "rejected",
+      "actual": "rejected",
+      "pass": true,
+      "detail": "editScale type transition currently requires a quantitative position scale."
+    },
+    {
+      "id": "facet-header-text",
+      "expected": "rejected",
+      "actual": "rejected",
+      "pass": true,
+      "detail": "Unknown editFacetHeaders option \"text\"."
+    },
+    {
+      "id": "repeat-two-channels",
+      "expected": "rejected",
+      "actual": "rejected",
+      "pass": true,
+      "detail": "repeatCharts channel must be \"x\" or \"y\"."
+    },
+    {
+      "id": "legend-explicit-samples",
+      "expected": "rejected",
+      "actual": "rejected",
+      "pass": true,
+      "detail": "Unknown editLegendSymbols option \"values\"."
+    },
+    {
+      "id": "point-rounded-border-style",
+      "expected": "rejected",
+      "actual": "rejected",
+      "pass": true,
+      "detail": "Unknown editPointMark option \"strokeLinecap\"."
+    },
+    {
+      "id": "mark-label-selection",
+      "expected": "rejected",
+      "actual": "rejected",
+      "pass": true,
+      "detail": "Unknown createMarkLabels option \"selection\"."
+    },
+    {
+      "id": "layer-visible-property",
+      "expected": "rejected",
+      "actual": "rejected",
+      "pass": true,
+      "detail": "Unknown editPointMark option \"visible\"."
+    },
+    {
+      "id": "category-order-control",
+      "expected": "supported",
+      "actual": "supported",
+      "pass": true,
+      "detail": {
+        "values": [
+          "B",
+          "A"
+        ]
+      }
+    },
+    {
+      "id": "reference-move-control",
+      "expected": "supported",
+      "actual": "supported",
+      "pass": true,
+      "detail": 3
+    },
+    {
+      "id": "annotation-move-control",
+      "expected": "supported",
+      "actual": "supported",
+      "pass": true,
+      "detail": 2
+    },
+    {
+      "id": "theta-range-control",
+      "expected": "supported",
+      "actual": "supported",
+      "pass": true,
+      "detail": [
+        90,
+        270
+      ]
+    },
+    {
+      "id": "remove-axis-part-control",
+      "expected": "supported",
+      "actual": "supported",
+      "pass": true,
+      "detail": true
+    }
+  ]
+}

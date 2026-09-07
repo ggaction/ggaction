@@ -1,0 +1,12 @@
+{
+  "phase": 4,
+  "status": "Proposed",
+  "scope": "implementation",
+  "candidates": [
+    {
+      "id": "R02",
+      "status": "Proposed",
+      "file": "../features/02-derived-editing.md"
+    }
+  ]
+}

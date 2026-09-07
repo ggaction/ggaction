@@ -1,0 +1,32 @@
+{
+  "phase": 5,
+  "status": "Proposed",
+  "scope": "implementation",
+  "candidates": [
+    {
+      "id": "R20",
+      "status": "Proposed",
+      "file": "../features/20-parallel-scale.md"
+    },
+    {
+      "id": "R21",
+      "status": "Proposed",
+      "file": "../features/21-offset-scales.md"
+    },
+    {
+      "id": "R23",
+      "status": "Proposed",
+      "file": "../features/23-size-scale-types.md"
+    },
+    {
+      "id": "R22",
+      "status": "Proposed",
+      "file": "../features/22-stroke-color.md"
+    },
+    {
+      "id": "R19",
+      "status": "Proposed",
+      "file": "../features/19-atomic-encoding.md"
+    }
+  ]
+}

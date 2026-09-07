@@ -16,11 +16,12 @@
 | 승인된 미래 계약 읽기 | [`contract/planned/`](contract/planned/) |
 | 현재 개발 순서 확인 | [`impl/README.md`](impl/README.md) |
 
-**현재 활성 Roadmap은 없다.** 계층적 chart authoring과 action consistency를 다룬
-[`impl/roadmap6/ROADMAP.md`](impl/roadmap6/ROADMAP.md)는 Phase 0–11을 완료했다. 사용자 선택에 따라 F20을
-제외한 새 액션군 F01–F19를 구현했고, [Phase 11 X 결과](impl/roadmap6/phase11/REVIEW.md)에 234개 action의
-계층·card·MCP·renderer·package 통합 검증과 원장 closeout을 기록했다. 마지막 완료 owner는 Roadmap 6
-Phase 11이다.
+**현재 활성 계획은 Roadmap 7 Phase 0**이다. [상세 로드맵](impl/roadmap7/ROADMAP.md)은
+사용자가 선택한 차트 저작 연산 25개를 다루며, [구현자 인계](impl/roadmap7/IMPLEMENTER_START_HERE.md)에서
+읽기 순서와 작업 절차를 제공한다. 세부 API·수치·소유권 정책은 Proposed이고 구현 완료 기록이 아니다.
+
+[Roadmap 6](impl/roadmap6/ROADMAP.md)은 Phase 0–11을 완료했다. 마지막 완료 owner는
+[Roadmap 6 Phase 11](impl/roadmap6/phase11/REVIEW.md)이며 당시 closeout은 과거 기록으로 보존한다.
 Nullable active pointer와 마지막 완료 owner의 machine-readable source는
 [`impl/ROADMAP_INDEX.json`](impl/ROADMAP_INDEX.json)이다.
 
