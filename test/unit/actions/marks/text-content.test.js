@@ -104,6 +104,28 @@ test("histogram labels use final segment counts and bin-local denominators", () 
   assert.deepEqual(labels(shares.editCanvas({ width: 600 })).sort(), labels(shares).sort());
 });
 
+test("weighted histogram labels use bin mass and ignore zero-weight members", () => {
+  const program = data([
+    { value: 1, weight: 1 },
+    { value: 3, weight: 3 },
+    { value: 1000, weight: 0 }
+  ])
+    .createHistogram({
+      field: "value",
+      binBoundaries: [0, 2, 4],
+      weight: { field: "weight", kind: "frequency" },
+      guides: false
+    })
+    .createTextMark()
+    .encodeText({ content: "value" });
+
+  assert.deepEqual(labels(program), ["1", "3"]);
+  assert.deepEqual(
+    program.semanticSpec.layers.at(-1).source,
+    "histogram"
+  );
+});
+
 test("measured Arc shares follow semantic radius values through scale edits", () => {
   for (const operation of ["createRosePlot", "createRadialBarPlot"]) {
     const p = data()[operation]({ category: "category", value: "value", aggregate: "sum", guides: false })

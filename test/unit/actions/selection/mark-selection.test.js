@@ -115,6 +115,31 @@ test("selects final bar and series items without changing their graphics", () =>
   assert.equal(selectedSeries.graphicSpec, line.graphicSpec);
 });
 
+test("weighted histogram selections use positive-weight final members", () => {
+  const histogram = chart()
+    .createCanvas({ width: 240, height: 180, margin: 40 })
+    .createData({ values: [
+      { value: 1, weight: 1 },
+      { value: 3, weight: 3 },
+      { value: 1000, weight: 0 }
+    ] })
+    .createHistogram({
+      field: "value",
+      binBoundaries: [0, 2, 4],
+      weight: { field: "weight", kind: "frequency" },
+      guides: false
+    });
+  const selected = histogram.selectMarks({ field: "weight", op: "max" });
+  const state = resolveStoredSelection(selected);
+
+  assert.deepEqual(state.keys, ["histogram/histogram/1"]);
+  assert.deepEqual(state.items.map(item => item.members), [
+    [{ value: 1, weight: 1 }],
+    [{ value: 3, weight: 3 }]
+  ]);
+  assert.equal(selected.graphicSpec, histogram.graphicSpec);
+});
+
 test("highlights inline and reusable selections through wrapped point actions", () => {
   const inline = pointProgram().highlightMarks({
     select: { field: "x", op: "max", groupBy: "group" },
