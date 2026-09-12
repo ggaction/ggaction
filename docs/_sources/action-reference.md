@@ -2424,6 +2424,8 @@ selection and highlight assignments remain active.
 ```javascript
 editXScale({ id?, target?, type?, domain?, range?, ...positionOptions })
 editYScale({ id?, target?, type?, domain?, range?, ...positionOptions })
+editXOffsetScale({ target, domain?, reverse?, padding?, paddingInner?, paddingOuter?, align? })
+editYOffsetScale({ target, domain?, reverse?, padding?, paddingInner?, paddingOuter?, align? })
 editParallelScale({ target, dimension, type?, domain?, range?, ...dimensionOptions })
 editThetaScale({ id?, target?, type?, domain?, range?, ...angularOptions })
 editRScale({ id?, target?, type?, domain?, range?, radialMapping?, ...radialOptions })
@@ -2443,6 +2445,10 @@ the channel-specific patch and refreshes all shared marks and guides.
 `editParallelScale` is the field-selected exception: both `target` and the
 exact Parallel `dimension` field are required, and its generated scale ID is
 resolved internally.
+The offset editors also require `target`; they resolve only that mark's matching
+nested offset scale. Their concrete range remains derived from the parent
+categorical slot, while the semantic scale owns domain, reverse, padding, and
+alignment.
 [Scale options](../api/scales.md)
 
 ### Semantic resources and regression layers

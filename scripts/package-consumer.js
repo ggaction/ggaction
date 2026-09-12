@@ -731,6 +731,26 @@ async function testNodeConsumer(directory) {
         y: { field: "value", aggregate: "mean" },
         guides: false
       });
+    const offsetScaleFacade = chart()
+      .createCanvas({ width: 160, height: 120, margin: 20 })
+      .createData({ values: [
+        { category: "A", subgroup: "u", value: 2 },
+        { category: "A", subgroup: "v", value: 4 },
+        { category: "B", subgroup: "u", value: 3 },
+        { category: "B", subgroup: "v", value: 5 }
+      ] })
+      .createBarMark({ id: "offsetBars" })
+      .encodeX({ target: "offsetBars", field: "category", fieldType: "nominal" })
+      .encodeY({ target: "offsetBars", field: "value" })
+      .encodeXOffset({ target: "offsetBars", field: "subgroup" })
+      .encodeBarWidth({ target: "offsetBars" });
+    const editedOffsetScale = offsetScaleFacade.editXOffsetScale({
+      target: "offsetBars", paddingInner: 0.2, paddingOuter: 0.1
+    });
+    assert.equal(editedOffsetScale.resolvedScales.xOffset.paddingInner, 0.2);
+    assert.equal(editedOffsetScale.resolvedScales.xOffset.paddingOuter, 0.1);
+    assert.equal(editedOffsetScale.markConfigs.offsetBars.xOffset, undefined);
+    assert.equal(offsetScaleFacade.resolvedScales.xOffset.paddingInner, 0);
     const orderedCategories = chart()
       .createCanvas({ width: 180, height: 130, margin: 30 })
       .createData({ values: [
@@ -1666,8 +1686,8 @@ async function testMcpConsumer(directory) {
     actionCardSchema.properties?.schemaVersion?.const !== 3 ||
     actionCardsSchema.properties?.schemaVersion?.const !== 3 ||
     actionCards.schemaVersion !== 3 ||
-    actionCards.count !== 264 ||
-    actionCards.cards.length !== 264 ||
+    actionCards.count !== 266 ||
+    actionCards.cards.length !== 266 ||
     actionCards.packageVersion !== installedPackage.version
   ) {
     throw new Error("Installed action-card discovery contract is missing or stale.");
@@ -1696,6 +1716,14 @@ async function testMcpConsumer(directory) {
   if (installedCards.get("editParallelScale")?.signature !==
     "editParallelScale(options: EditParallelScaleOptions): ChartProgram;") {
     throw new Error("Installed Parallel scale editing metadata is stale.");
+  }
+  if (
+    installedCards.get("editXOffsetScale")?.signature !==
+      "editXOffsetScale(options: EditXOffsetScaleOptions): ChartProgram;" ||
+    installedCards.get("editYOffsetScale")?.signature !==
+      "editYOffsetScale(options: EditYOffsetScaleOptions): ChartProgram;"
+  ) {
+    throw new Error("Installed offset-scale editing metadata is stale.");
   }
   const installedScatter = installedCards.get("createScatterPlot");
   if (
@@ -1898,6 +1926,8 @@ async function testTypeScriptConsumer(directory) {
       type HistogramEncodingOptions,
       type EditHorizonOptions,
       type EditParallelScaleOptions,
+      type EditXOffsetScaleOptions,
+      type EditYOffsetScaleOptions,
       type FitCanvasOptions,
       type FacetGridOptions,
       type FoldDataOptions,
@@ -2562,6 +2592,31 @@ async function testTypeScriptConsumer(directory) {
       .createCanvas()
       .createData({ values: [{ category: "A", value: 2 }] })
       .createBarPlot(barOptions);
+    const typedOffsetBars: ChartProgram = chart()
+      .createCanvas()
+      .createData({ values: [
+        { category: "A", subgroup: "u", value: 2 },
+        { category: "A", subgroup: "v", value: 4 }
+      ] })
+      .createBarMark({ id: "offsetBars" })
+      .encodeX({ target: "offsetBars", field: "category", fieldType: "nominal" })
+      .encodeY({ target: "offsetBars", field: "value" })
+      .encodeXOffset({ target: "offsetBars", field: "subgroup" });
+    const xOffsetScaleEdit: EditXOffsetScaleOptions = {
+      target: "offsetBars",
+      paddingInner: 0.2,
+      paddingOuter: 0.1,
+      align: 0.5
+    };
+    const editedXOffsetBars: ChartProgram = typedOffsetBars
+      .editXOffsetScale(xOffsetScaleEdit);
+    const yOffsetScaleEdit: EditYOffsetScaleOptions = {
+      target: "offsetBars",
+      reverse: true
+    };
+    typedOffsetBars.editYOffsetScale(yOffsetScaleEdit);
+    // @ts-expect-error Offset ranges are derived from the parent categorical slot.
+    typedOffsetBars.editXOffsetScale({ target: "offsetBars", range: [0, 20] });
     const histogramOptions: CreateHistogramOptions = {
       field: "value",
       maxBins: 5,
@@ -3238,6 +3293,8 @@ async function testTypeScriptConsumer(directory) {
     void lineFacade;
     void orderedLineFacade;
     void barFacade;
+    void typedOffsetBars;
+    void editedXOffsetBars;
     void histogramFacade;
     void heatmapFacade;
     void gradientFacade;
@@ -3418,6 +3475,7 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.a
       "binned-heatmap",
       "parallel-coordinates",
       "parallel-dimension-scale-editing",
+      "offset-scale-editing",
       "facet-grid-repeat-and-named-composition-editing",
       "horizon",
       "violin-plot",

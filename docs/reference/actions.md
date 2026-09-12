@@ -222,6 +222,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editXAxisTicks`](./actions/advanced.md#axis-lines-ticks-and-labels) | H3 | user-facing | axes |
 | [`editXAxisTicksAndLabels`](./actions/advanced.md#ticklabel-groups-and-axis-titles) | H3 | user-facing | axes |
 | [`editXAxisTitle`](./actions/advanced.md#ticklabel-groups-and-axis-titles) | H3 | user-facing | axes |
+| [`editXOffsetScale`](./actions/advanced.md#focused-channel-scale-editors) | H2 | user-facing | core |
 | [`editXScale`](./actions/advanced.md#focused-channel-scale-editors) | H2 | user-facing | core |
 | [`editYAxis`](./actions/advanced.md#complete-single-channel-axes) | H3 | user-facing | axes |
 | [`editYAxisLabels`](./actions/advanced.md#axis-lines-ticks-and-labels) | H3 | user-facing | axes |
@@ -229,6 +230,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editYAxisTicks`](./actions/advanced.md#axis-lines-ticks-and-labels) | H3 | user-facing | axes |
 | [`editYAxisTicksAndLabels`](./actions/advanced.md#ticklabel-groups-and-axis-titles) | H3 | user-facing | axes |
 | [`editYAxisTitle`](./actions/advanced.md#ticklabel-groups-and-axis-titles) | H3 | user-facing | axes |
+| [`editYOffsetScale`](./actions/advanced.md#focused-channel-scale-editors) | H2 | user-facing | core |
 | [`editYScale`](./actions/advanced.md#focused-channel-scale-editors) | H2 | user-facing | core |
 | [`encodeAngle`](./actions/encodings.md#encodeangle) | H2 | user-facing | encodings |
 | [`encodeBarWidth`](./actions/encodings.md#encodebarwidth) | H2 | user-facing | encodings |

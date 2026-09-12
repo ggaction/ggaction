@@ -1530,6 +1530,12 @@ export type EditXScaleOptions = FocusedScaleSelection & WithoutScaleId<
   QuantitativePositionScaleOptions | TemporalPositionScaleOptions | CategoricalPositionScaleOptions
 >;
 export type EditYScaleOptions = EditXScaleOptions;
+export type OffsetScaleEditPatch = Pick<
+  ScaleOptions,
+  "domain" | "reverse" | "padding" | "paddingInner" | "paddingOuter" | "align"
+>;
+export type EditXOffsetScaleOptions = { target: string } & OffsetScaleEditPatch;
+export type EditYOffsetScaleOptions = EditXOffsetScaleOptions;
 export type EditParallelScaleOptions = {
   target: string;
   dimension: string;
@@ -3420,7 +3426,11 @@ export interface OffsetScaleOptions {
   id?: string;
   type?: "ordinal";
   domain?: "auto" | readonly unknown[];
-  range?: "auto" | readonly [number, number];
+  reverse?: boolean;
+  padding?: number;
+  paddingInner?: number;
+  paddingOuter?: number;
+  align?: number;
 }
 
 export interface OffsetEncodingOptions {
@@ -4401,6 +4411,8 @@ export class ChartProgram {
   editScale(options: EditScaleOptions): ChartProgram;
   editXScale(options: EditXScaleOptions): ChartProgram;
   editYScale(options: EditYScaleOptions): ChartProgram;
+  editXOffsetScale(options: EditXOffsetScaleOptions): ChartProgram;
+  editYOffsetScale(options: EditYOffsetScaleOptions): ChartProgram;
   editParallelScale(options: EditParallelScaleOptions): ChartProgram;
   editThetaScale(options: EditThetaScaleOptions): ChartProgram;
   editRScale(options: EditRScaleOptions): ChartProgram;

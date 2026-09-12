@@ -45,6 +45,50 @@ export function normalizeOffsetPadding(options = {}, existing, channel = "xOffse
   return cloneAndFreeze({ paddingInner, paddingOuter });
 }
 
+export function normalizeOffsetScalePolicy(
+  options = {},
+  existing,
+  channel = "xOffset"
+) {
+  const hasPadding = Object.hasOwn(options, "padding");
+  const hasInner = Object.hasOwn(options, "paddingInner");
+  const hasOuter = Object.hasOwn(options, "paddingOuter");
+  if (hasPadding && (hasInner || hasOuter)) {
+    throw new Error(
+      `${channel} padding cannot be combined with paddingInner or paddingOuter.`
+    );
+  }
+  const padding = hasPadding ? options.padding : undefined;
+  if (hasPadding && (!Number.isFinite(padding) || padding < 0 || padding >= 1)) {
+    throw new RangeError(
+      `${channel} padding must be from 0 (inclusive) to 1 (exclusive).`
+    );
+  }
+  const paddingInner = hasPadding
+    ? padding
+    : hasInner ? options.paddingInner : existing?.paddingInner ?? 0;
+  const paddingOuter = hasPadding
+    ? padding
+    : hasOuter ? options.paddingOuter : existing?.paddingOuter ?? 0;
+  const align = Object.hasOwn(options, "align")
+    ? options.align
+    : existing?.align ?? 0.5;
+  if (!Number.isFinite(paddingInner) || paddingInner < 0 || paddingInner >= 1) {
+    throw new RangeError(
+      `${channel} paddingInner must be from 0 (inclusive) to 1 (exclusive).`
+    );
+  }
+  if (!Number.isFinite(paddingOuter) || paddingOuter < 0) {
+    throw new RangeError(
+      `${channel} paddingOuter must be a non-negative finite number.`
+    );
+  }
+  if (!Number.isFinite(align) || align < 0 || align > 1) {
+    throw new RangeError(`${channel} align must be between 0 and 1.`);
+  }
+  return cloneAndFreeze({ paddingInner, paddingOuter, align });
+}
+
 export function resolveBarWidth(config, slotBandwidth) {
   if (!Number.isFinite(slotBandwidth) || slotBandwidth <= 0) {
     throw new Error("Bar width requires a positive resolved slot bandwidth.");

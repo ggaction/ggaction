@@ -46,7 +46,8 @@ test("encodes horizontal grouped color through a nested yOffset action", () => {
     start: 0,
     bandwidth: 55,
     paddingInner: 0,
-    paddingOuter: 0
+    paddingOuter: 0,
+    align: 0.5
   });
   assert.deepEqual(rectangles.map(rect => rect.height), [39.6, 39.6, 39.6, 39.6]);
   assert.deepEqual(
@@ -61,13 +62,13 @@ test("encodes horizontal grouped color through a nested yOffset action", () => {
   assert.equal(colorNode.children.some(child => child.op === "encodeXOffset"), false);
 });
 
-test("supports direct yOffset padding, categorical field types, and reversed ranges", () => {
+test("supports direct yOffset padding, categorical field types, and reverse", () => {
   const direct = horizontalBarProgram().encodeYOffset({
     field: "sex",
     fieldType: "ordinal",
     paddingInner: 0.2,
     paddingOuter: 0.1,
-    scale: { range: [110, 0] }
+    scale: { reverse: true }
   });
 
   assert.deepEqual(direct.semanticSpec.layers[0].encoding.yOffset, {
@@ -75,20 +76,23 @@ test("supports direct yOffset padding, categorical field types, and reversed ran
     fieldType: "ordinal",
     scale: "yOffset"
   });
-  assert.deepEqual(direct.markConfigs.bars.yOffset, {
+  assert.deepEqual(
+    (({ paddingInner, paddingOuter }) => ({ paddingInner, paddingOuter }))(
+      direct.semanticSpec.scales.find(scale => scale.id === "yOffset")
+    ),
+    {
     paddingInner: 0.2,
     paddingOuter: 0.1
-  });
+    }
+  );
+  assert.equal(direct.markConfigs.bars.yOffset, undefined);
   assert.deepEqual(direct.resolvedScales.yOffset.range, [110, 0]);
   assert.equal(direct.resolvedScales.yOffset.step < 0, true);
   assert.equal(direct.graphicSpec.objects.bars.items.length, 4);
 
   const grouped = direct.encodeColor({ field: "sex", layout: "group" });
   assert.equal(grouped.graphicSpec.objects.bars.items.length, 4);
-  assert.deepEqual(grouped.markConfigs.bars.yOffset, {
-    paddingInner: 0.2,
-    paddingOuter: 0.1
-  });
+  assert.equal(grouped.markConfigs.bars.yOffset, undefined);
 });
 
 test("resizes yOffset slots while color-domain edits preserve series positions", () => {

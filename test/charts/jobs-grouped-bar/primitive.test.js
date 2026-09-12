@@ -80,7 +80,15 @@ test("authors and renders the complete primitive jobs grouped bar chart", () => 
       domain: "auto",
       range: { palette: "tableau10" }
     },
-    { id: "xOffset", type: "ordinal", domain: "auto", range: "auto" }
+    {
+      id: "xOffset",
+      type: "ordinal",
+      domain: "auto",
+      range: "auto",
+      paddingInner: 0,
+      paddingOuter: 0,
+      align: 0.5
+    }
   ]);
   assert.deepEqual(program.semanticSpec.coordinates, [
     { id: "main", type: "cartesian" }

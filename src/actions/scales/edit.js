@@ -71,7 +71,14 @@ function planMarkRematerialization(program, consumers) {
   ];
 }
 
-function applyScaleEdit(program, { id, scale, consumers, definition, legendTransition }) {
+function applyScaleEdit(program, {
+  id,
+  scale,
+  channel,
+  consumers,
+  definition,
+  legendTransition
+}) {
   let next = legendTransition === undefined ? program
     : program.removeLegend({ target: legendTransition.args.target, channels: ["color"] });
   for (const property of EDITABLE) {
@@ -99,6 +106,13 @@ function applyScaleEdit(program, { id, scale, consumers, definition, legendTrans
 
   next = next.rematerializeScale({ id });
   next = applyMaterializationPlan(next, planMarkRematerialization(next, consumers));
+  if (["xOffset", "yOffset"].includes(channel)) {
+    for (const consumer of consumers) {
+      next = next._withoutMaterializationConfig([
+        "marks", consumer.layer.id, channel
+      ]);
+    }
+  }
   return legendTransition === undefined ? next : applyColorLegendTransition(next, legendTransition);
 }
 
@@ -119,7 +133,14 @@ export const editScale = action(
     const definition = prepareScaleEdit(this, scale, channel, consumers, args);
 
     const legendTransition = planColorLegendTransition(this, scale, definition.type);
-    const proposal = { id, scale, consumers, definition, legendTransition };
+    const proposal = {
+      id,
+      scale,
+      channel,
+      consumers,
+      definition,
+      legendTransition
+    };
     // Preflight every dependent mark and guide on a discarded immutable branch.
     if (scale.type !== definition.type) applyScaleEdit(this, proposal);
     return applyScaleEdit(this, proposal);

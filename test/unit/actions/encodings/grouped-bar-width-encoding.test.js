@@ -33,7 +33,6 @@ test("materializes grouped rectangles with the default band", () => {
 
   assert.deepEqual(program.markConfigs.bars, {
     seriesOffsetScale: "xOffset",
-    xOffset: { paddingInner: 0, paddingOuter: 0 },
     barWidth: { band: 0.72 }
   });
   assert.equal(rectangles.length, 4);
@@ -206,7 +205,7 @@ test("validates grouped bar width options and prerequisites", () => {
   const uncolored = incomplete.encodeBarWidth();
   assert.deepEqual(uncolored.markConfigs.bars.barWidth, { band: 0.72 });
   assert.deepEqual(program.markConfigs, {
-    bars: { seriesOffsetScale: "xOffset", xOffset: { paddingInner: 0, paddingOuter: 0 } }
+    bars: { seriesOffsetScale: "xOffset" }
   });
 });
 
@@ -231,7 +230,6 @@ test("requires an explicit target when more than one bar mark is eligible", () =
     /bar mark target is ambiguous/
   );
   assert.deepEqual(ambiguous.markConfigs.bars, {
-    seriesOffsetScale: "xOffset",
-    xOffset: { paddingInner: 0, paddingOuter: 0 }
+    seriesOffsetScale: "xOffset"
   });
 });

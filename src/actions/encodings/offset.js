@@ -18,7 +18,6 @@ import {
   resolveBarChannels,
   resolveBarGrain
 } from "../../grammar/bars/policy.js";
-import { normalizeOffsetPadding } from "../../grammar/bars/geometry.js";
 
 const ENCODING_OPTIONS = Object.freeze([
   "field", "target", "fieldType", "scale", "paddingInner", "paddingOuter"
@@ -69,30 +68,38 @@ function createOffsetEncoding(channel) {
         layer.encoding?.[channel],
         args.scale ?? {}
       );
-      const scale = resolveOffsetScaleDefinition(this, requestedScale, channel);
+      const scaleOptions = {
+        ...requestedScale,
+        ...Object.fromEntries(
+          ["paddingInner", "paddingOuter"]
+            .filter(property => Object.hasOwn(args, property))
+            .map(property => [property, args[property]])
+        )
+      };
+      const scale = resolveOffsetScaleDefinition(this, scaleOptions, channel);
       if (Object.hasOwn(scale, "unknown")) {
         throw new Error(
           `${channel} scale unknown is not supported for offset positions.`
         );
       }
-      const padding = normalizeOffsetPadding(
-        args,
-        this.markConfigs[target]?.[channel],
-        channel
-      );
 
       const grouped = layer.mark.type === "bar" ? inferSeriesGroup(this, layer, args.field, "offset") : this;
       let next = setEncodingProperties(grouped, target, channel, {
         field: args.field,
         fieldType,
         scale: scale.id
-      })._withMarkConfig(target, {
-          ...this.markConfigs[target],
-          [channel]: padding
-        });
-      next = applyEncodingScale(next, scale, requestedScale, {
-        reassignment: layer.encoding?.[channel]?.scale === scale.id
       });
+      next = applyEncodingScale(next, scale, {
+        ...Object.fromEntries(Object.entries(scaleOptions).filter(
+          ([property]) => property !== "range"
+        )),
+        paddingInner: scale.paddingInner,
+        paddingOuter: scale.paddingOuter,
+        align: scale.align
+      }, {
+        reassignment: findSemanticScale(this, scale.id) !== undefined
+      });
+      next = next._withoutMaterializationConfig(["marks", target, channel]);
       if (layer.mark.type === "bar") {
         if (findSemanticScale(this, scale.id) === undefined && args.scale?.id === undefined) next = next._withMarkConfig(target, { ...next.markConfigs[target], seriesOffsetScale: scale.id });
         if (layer.layout?.mode !== "group" || layer.encoding?.group?.field !== args.field) return next.layoutSeries({ target, mode: "group" });

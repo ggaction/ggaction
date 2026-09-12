@@ -79,7 +79,27 @@ function focusedScaleEditorPrograms() {
     .editParallelScale({
       target: "parallelLines", dimension: "amount", reverse: true
     });
-  return [point, polar, line, parallel];
+  const offsets = chart()
+    .createCanvas({ width: 320, height: 240, margin: 30 })
+    .createData({ values })
+    .createBarMark({ id: "offsetBars" })
+    .encodeX({
+      target: "offsetBars", field: "group", fieldType: "nominal"
+    })
+    .encodeY({ target: "offsetBars", field: "amount" })
+    .encodeXOffset({ target: "offsetBars", field: "group" })
+    .editXOffsetScale({ target: "offsetBars", padding: 0.2 });
+  const yOffsets = chart()
+    .createCanvas({ width: 320, height: 240, margin: 30 })
+    .createData({ values })
+    .createPointMark({ id: "offsetPoints" })
+    .encodeX({ target: "offsetPoints", field: "x" })
+    .encodeY({
+      target: "offsetPoints", field: "group", fieldType: "nominal"
+    })
+    .encodeYOffset({ target: "offsetPoints", field: "group" })
+    .editYOffsetScale({ target: "offsetPoints", reverse: true });
+  return [point, polar, line, parallel, offsets, yOffsets];
 }
 
 function normalizedDataPrograms() {

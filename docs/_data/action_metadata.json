@@ -1381,6 +1381,22 @@
     "layer": "user-facing",
     "domain": "core"
   },
+  "editXOffsetScale": {
+    "operation": "edit",
+    "authoringRoles": [
+      "H2"
+    ],
+    "layer": "user-facing",
+    "domain": "core"
+  },
+  "editYOffsetScale": {
+    "operation": "edit",
+    "authoringRoles": [
+      "H2"
+    ],
+    "layer": "user-facing",
+    "domain": "core"
+  },
   "editParallelScale": {
     "operation": "edit",
     "authoringRoles": [

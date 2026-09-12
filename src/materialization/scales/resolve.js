@@ -313,6 +313,7 @@ export function resolveScaleMaterialization(options) {
           values: allValues,
           range: scale.range,
           ...resolveOffsetScalePolicy({
+            scale,
             consumers,
             resolvedScales,
             markConfigs,

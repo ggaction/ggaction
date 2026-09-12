@@ -32,6 +32,10 @@ import {
   validateThetaRange
 } from "../../grammar/polar.js";
 import { findSemanticScale } from "../../selectors/scales.js";
+import { normalizeOffsetScalePolicy } from "../../grammar/bars/geometry.js";
+import { resolveRequestedOffsetPolicy } from
+  "../../materialization/scales/policies/offset.js";
+import { findScaleConsumers } from "./consumers/index.js";
 
 const BASE_OPTIONS = ["id", "type", "domain", "range"];
 const UNKNOWN_OPTIONS = [...BASE_OPTIONS, "unknown"];
@@ -365,7 +369,45 @@ export function resolveStrokeWidthScaleDefinition(program, options) {
 }
 
 export function resolveOffsetScaleDefinition(program, options, channel = "xOffset") {
-  return resolveOrdinalScaleDefinition(
-    program, options, channel, validateScaleRange
+  optionsObject(options);
+  validateKeys(options, [
+    "id", "type", "domain", "range", "reverse",
+    "padding", "paddingInner", "paddingOuter", "align"
+  ], "scale");
+  const id = validateUserId(options.id ?? channel, "Scale id");
+  const existing = findSemanticScale(program, id);
+  const type = options.type ?? existing?.type ?? "ordinal";
+  if (type !== "ordinal") {
+    throw new Error(`Scale type "${type}" is not valid for ${channel}.`);
+  }
+  if (Object.hasOwn(options, "range") && options.range !== "auto") {
+    throw new Error(
+      `${channel} scale range is derived from its parent categorical slot.`
+    );
+  }
+  const consumers = findScaleConsumers(program, id).filter(
+    consumer => consumer.channel === channel
   );
+  const currentPolicy = resolveRequestedOffsetPolicy({
+    scale: existing,
+    consumers,
+    markConfigs: program.markConfigs,
+    id,
+    channel
+  });
+  const policy = normalizeOffsetScalePolicy(options, currentPolicy, channel);
+  const patch = Object.fromEntries(Object.entries(options).filter(
+    ([property]) => !["id", "padding"].includes(property)
+  ));
+  return {
+    id,
+    ...normalizeScaleDefinition({
+      type,
+      previous: existing,
+      patch: { ...patch, ...policy },
+      allowOrdinalBandParameters: true,
+      validateDomain: (_scaleType, value) => validateOrdinalDomain(value),
+      validateRange: (_scaleType, value) => validateScaleRange(value)
+    })
+  };
 }

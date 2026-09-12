@@ -5,6 +5,7 @@ import {
 } from "../../core/validation.js";
 import { findLayer } from "../../selectors/layers.js";
 import { findDataset } from "../../selectors/datasets.js";
+import { findSemanticScale } from "../../selectors/scales.js";
 import { DEFAULT_COLORS } from "../../theme/defaults.js";
 import {
   readNominalField,
@@ -101,7 +102,15 @@ function resolveErrorBarOffset(program, args, resolved, operation) {
     explicit ?? {},
     resolved.sourceLayer === undefined
       ? undefined
-      : program.markConfigs[resolved.sourceLayer.id]?.[channel],
+      : (() => {
+          const semantic = inferred?.scale === undefined
+            ? undefined
+            : findSemanticScale(program, inferred.scale);
+          return semantic !== undefined && ["paddingInner", "paddingOuter"]
+            .some(property => Object.hasOwn(semantic, property))
+            ? semantic
+            : program.markConfigs[resolved.sourceLayer.id]?.[channel];
+        })(),
     channel
   );
   return {

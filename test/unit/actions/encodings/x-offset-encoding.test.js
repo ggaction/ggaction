@@ -41,7 +41,10 @@ test("encodes a nominal xOffset inside each ordinal x band", () => {
     id: "xOffset",
     type: "ordinal",
     domain: "auto",
-    range: "auto"
+    range: "auto",
+    paddingInner: 0,
+    paddingOuter: 0,
+    align: 0.5
   });
   assert.deepEqual(program.resolvedScales.xOffset, {
     type: "ordinal",
@@ -51,12 +54,10 @@ test("encodes a nominal xOffset inside each ordinal x band", () => {
     start: 0,
     bandwidth: 80,
     paddingInner: 0,
-    paddingOuter: 0
+    paddingOuter: 0,
+    align: 0.5
   });
-  assert.deepEqual(program.markConfigs.bars.xOffset, {
-    paddingInner: 0,
-    paddingOuter: 0
-  });
+  assert.equal(program.markConfigs.bars.xOffset, undefined);
   assert.equal(program.graphicSpec.objects.bars.items.length, 4);
   assert.equal(before.semanticSpec.layers[0].encoding.xOffset, undefined);
 
@@ -65,25 +66,26 @@ test("encodes a nominal xOffset inside each ordinal x band", () => {
   assert.equal(node.children.find(child => child.op === "layoutSeries").args.mode, "group");
 });
 
-test("supports explicit xOffset domain order and reversed range", () => {
+test("supports explicit xOffset domain order and semantic reverse", () => {
   const program = aggregateBarProgram().encodeXOffset({
     field: "sex",
     scale: {
       id: "group",
       domain: ["women", "men"],
-      range: [100, 0]
+      reverse: true
     }
   });
 
   assert.deepEqual(program.resolvedScales.group, {
     type: "ordinal",
     domain: ["women", "men"],
-    range: [100, 0],
-    step: -50,
-    start: 100,
-    bandwidth: 50,
+    range: [160, 0],
+    step: -80,
+    start: 160,
+    bandwidth: 80,
     paddingInner: 0,
-    paddingOuter: 0
+    paddingOuter: 0,
+    align: 0.5
   });
 });
 
@@ -96,10 +98,17 @@ test("applies inner and outer padding to automatic group slots", () => {
       paddingOuter: 0.1
     });
 
-  assert.deepEqual(program.markConfigs.bars.xOffset, {
+  assert.deepEqual(
+    (({ paddingInner, paddingOuter, align }) => ({
+      paddingInner, paddingOuter, align
+    }))(program.semanticSpec.scales.find(scale => scale.id === "xOffset")),
+    {
     paddingInner: 0.2,
-    paddingOuter: 0.1
-  });
+      paddingOuter: 0.1,
+      align: 0.5
+    }
+  );
+  assert.equal(program.markConfigs.bars.xOffset, undefined);
   assert.deepEqual(program.resolvedScales.xOffset, {
     type: "ordinal",
     domain: ["men", "women"],
@@ -108,7 +117,8 @@ test("applies inner and outer padding to automatic group slots", () => {
     start: 8,
     bandwidth: 64,
     paddingInner: 0.2,
-    paddingOuter: 0.1
+    paddingOuter: 0.1,
+    align: 0.5
   });
   assert.deepEqual(
     program.graphicSpec.objects.bars.items.map(
@@ -118,34 +128,41 @@ test("applies inner and outer padding to automatic group slots", () => {
   );
 });
 
-test("preserves padding across same-field scale edits and supports reversed ranges", () => {
+test("preserves padding across same-field scale edits and supports reverse", () => {
   const padded = groupedBarProgram().encodeXOffset({
     field: "sex",
     paddingInner: 0.2,
     paddingOuter: 0.1,
-    scale: { range: [100, 0] }
+    scale: { reverse: true }
   });
   const edited = padded.encodeXOffset({
     field: "sex",
-    scale: { range: [80, 0] }
+    scale: { domain: ["women", "men"] }
   });
 
   assert.deepEqual(padded.resolvedScales.xOffset, {
     type: "ordinal",
     domain: ["men", "women"],
-    range: [100, 0],
-    step: -50,
-    start: 95,
-    bandwidth: 40,
+    range: [160, 0],
+    step: -80,
+    start: 152,
+    bandwidth: 64,
+    paddingInner: 0.2,
+    paddingOuter: 0.1,
+    align: 0.5
+  });
+  assert.deepEqual(
+    (({ paddingInner, paddingOuter }) => ({ paddingInner, paddingOuter }))(
+      edited.semanticSpec.scales.find(scale => scale.id === "xOffset")
+    ),
+    {
     paddingInner: 0.2,
     paddingOuter: 0.1
-  });
-  assert.deepEqual(edited.markConfigs.bars.xOffset, {
-    paddingInner: 0.2,
-    paddingOuter: 0.1
-  });
-  assert.equal(edited.resolvedScales.xOffset.step, -40);
-  assert.equal(edited.resolvedScales.xOffset.bandwidth, 32);
+    }
+  );
+  assert.equal(edited.markConfigs.bars.xOffset, undefined);
+  assert.equal(edited.resolvedScales.xOffset.step, -80);
+  assert.equal(edited.resolvedScales.xOffset.bandwidth, 64);
 });
 
 test("converges when width and offset padding are authored in either order", () => {
@@ -166,7 +183,7 @@ test("converges when width and offset padding are authored in either order", () 
   assert.deepEqual(first.materializationConfigs, second.materializationConfigs);
 });
 
-test("rejects conflicting padding policies on one shared offset scale", () => {
+test("updates one semantic padding policy on a shared offset scale", () => {
   let program = chart()
     .createCanvas({ width: 420, height: 300 })
     .createData({ id: "jobs", values })
@@ -181,18 +198,17 @@ test("rejects conflicting padding policies on one shared offset scale", () => {
     .encodeColor({ target: "right", field: "sex", layout: "group", scale: { id: "rightColor" } })
     .encodeBarWidth({ target: "right" });
 
-  assert.throws(
-    () => program.encodeXOffset({
+  program = program.encodeXOffset({
       target: "right",
       field: "sex",
       paddingInner: 0.2
-    }),
-    /one shared padding policy/
+    });
+  assert.equal(
+    program.semanticSpec.scales.find(scale => scale.id === "xOffset").paddingInner,
+    0.2
   );
-  assert.deepEqual(program.markConfigs.right.xOffset, {
-    paddingInner: 0,
-    paddingOuter: 0
-  });
+  assert.equal(program.markConfigs.left.xOffset, undefined);
+  assert.equal(program.markConfigs.right.xOffset, undefined);
 });
 
 test("rematerializes an automatic xOffset range after Canvas edits", () => {
@@ -246,7 +262,7 @@ test("dodges point rows within categorical x slots and tracks parent scale edits
   );
 });
 
-test("supports explicit reversed point offset ranges and rejects numeric parents", () => {
+test("supports reversed point offsets and rejects numeric parents", () => {
   const rows = [
     { category: "A", model: "one", value: 1 },
     { category: "A", model: "two", value: 2 }
@@ -259,7 +275,7 @@ test("supports explicit reversed point offset ranges and rejects numeric parents
     .encodeY({ field: "value" });
   const reversed = categorical.encodeXOffset({
     field: "model",
-    scale: { range: [100, 0] }
+    scale: { reverse: true }
   });
   const x = reversed.graphicSpec.objects.point.items.map(
     item => item.properties.x
@@ -315,7 +331,7 @@ test("validates xOffset prerequisites, fields, and scale options", () => {
   );
   assert.throws(
     () => program.encodeXOffset({ field: "sex", scale: { type: "linear" } }),
-    /Unsupported color scale type/
+    /not valid for xOffset/
   );
   assert.throws(
     () => program.encodeXOffset({ field: "sex", scale: { domain: ["men"] } }),

@@ -3082,6 +3082,42 @@
       }
     },
     {
+      "name": "editXOffsetScale",
+      "layer": "user-facing",
+      "domain": "core",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Edits the nested xOffset scale selected by an explicit mark target",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/CORE.md",
+        "anchor": "editxoffsetscale"
+      }
+    },
+    {
+      "name": "editYOffsetScale",
+      "layer": "user-facing",
+      "domain": "core",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Edits the nested yOffset scale selected by an explicit mark target",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/CORE.md",
+        "anchor": "edityoffsetscale"
+      }
+    },
+    {
       "name": "editParallelScale",
       "layer": "user-facing",
       "domain": "core",

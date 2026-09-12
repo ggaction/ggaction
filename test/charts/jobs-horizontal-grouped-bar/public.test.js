@@ -35,11 +35,13 @@ test("builds the approved horizontal grouped bar through public actions", () => 
     id: "yOffset",
     type: "ordinal",
     domain: "auto",
-    range: "auto"
+    range: "auto",
+    paddingInner: 0,
+    paddingOuter: 0,
+    align: 0.5
   });
   assert.deepEqual(program.markConfigs.bar, {
     seriesOffsetScale: "yOffset",
-    yOffset: { paddingInner: 0, paddingOuter: 0 },
     barWidth: { band: 0.72 }
   });
   assert.equal(program.graphicSpec.objects.bar.items.length, 30);

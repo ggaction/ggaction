@@ -3,7 +3,7 @@
   "packageVersion": "0.0.13",
   "typeSource": "types/program.d.ts",
   "errorPolicy": "An empty errors array means the compact card has no curated error override; consult the canonical route for validation, inference, and recovery behavior.",
-  "count": 264,
+  "count": 266,
   "cards": [
     {
       "schemaVersion": 3,
@@ -8672,7 +8672,8 @@
       "wraps": [
         "editSemantic",
         "createScale",
-        "layoutSeries"
+        "layoutSeries",
+        "editScale"
       ],
       "editableVia": [
         "removeEncoding"
@@ -8786,7 +8787,8 @@
       "wraps": [
         "editSemantic",
         "createScale",
-        "layoutSeries"
+        "layoutSeries",
+        "editScale"
       ],
       "editableVia": [
         "removeEncoding"
@@ -18681,6 +18683,254 @@
     },
     {
       "schemaVersion": 3,
+      "name": "editXOffsetScale",
+      "layer": "user-facing",
+      "domain": "core",
+      "summary": "Edits x-offset scale, including settings for horizontal subgroup placement.",
+      "signature": "editXOffsetScale(options: EditXOffsetScaleOptions): ChartProgram;",
+      "intents": [
+        "edit x offset scale",
+        "edit",
+        "change",
+        "chart setup",
+        "data and scales",
+        "x-offset scale",
+        "horizontal subgroup placement"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing x-offset scale"
+        ],
+        "owns": [],
+        "idOptions": [
+          "target"
+        ]
+      },
+      "authoringRoles": [
+        "H2"
+      ],
+      "wraps": [
+        "editScale"
+      ],
+      "editableVia": [
+        "editXOffsetScale"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [
+        {
+          "path": "paddingInner",
+          "unit": "band-fraction"
+        },
+        {
+          "path": "paddingOuter",
+          "unit": "band-fraction"
+        },
+        {
+          "path": "padding",
+          "unit": "logical-pixel"
+        }
+      ],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit"
+        },
+        {
+          "input": "domain",
+          "strategy": "documented-auto"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "existing x-offset scale"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "target",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "domain",
+          "required": false,
+          "type": "\"auto\" | readonly unknown[] | undefined"
+        },
+        {
+          "name": "reverse",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "paddingInner",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "paddingOuter",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "padding",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "align",
+          "required": false,
+          "type": "number | undefined"
+        }
+      ],
+      "callPatterns": [
+        "editXOffsetScale({ target, domain?, reverse?, padding?, paddingInner?, paddingOuter?, align? })"
+      ],
+      "snippet": "program.editXOffsetScale({ target: \"bars\", paddingInner: 0.2, paddingOuter: 0.1 })",
+      "errors": [
+        {
+          "error": "The target has no xOffset scale.",
+          "fix": "Encode a categorical xOffset on that mark before editing its nested scale."
+        },
+        {
+          "error": "range, type, or order is supplied.",
+          "fix": "Use domain for subgroup order; the parent category slot owns the concrete range and the scale type is ordinal."
+        }
+      ],
+      "route": "/reference/actions/advanced/#focused-channel-scale-editors"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "editYOffsetScale",
+      "layer": "user-facing",
+      "domain": "core",
+      "summary": "Edits y-offset scale, including settings for vertical subgroup placement.",
+      "signature": "editYOffsetScale(options: EditYOffsetScaleOptions): ChartProgram;",
+      "intents": [
+        "edit y offset scale",
+        "edit",
+        "change",
+        "chart setup",
+        "data and scales",
+        "y-offset scale",
+        "vertical subgroup placement"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing y-offset scale"
+        ],
+        "owns": [],
+        "idOptions": [
+          "target"
+        ]
+      },
+      "authoringRoles": [
+        "H2"
+      ],
+      "wraps": [
+        "editScale"
+      ],
+      "editableVia": [
+        "editYOffsetScale"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [
+        {
+          "path": "paddingInner",
+          "unit": "band-fraction"
+        },
+        {
+          "path": "paddingOuter",
+          "unit": "band-fraction"
+        },
+        {
+          "path": "padding",
+          "unit": "logical-pixel"
+        }
+      ],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit"
+        },
+        {
+          "input": "domain",
+          "strategy": "documented-auto"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "existing y-offset scale"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "target",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "domain",
+          "required": false,
+          "type": "\"auto\" | readonly unknown[] | undefined"
+        },
+        {
+          "name": "reverse",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "paddingInner",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "paddingOuter",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "padding",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "align",
+          "required": false,
+          "type": "number | undefined"
+        }
+      ],
+      "callPatterns": [
+        "editYOffsetScale({ target, domain?, reverse?, padding?, paddingInner?, paddingOuter?, align? })"
+      ],
+      "snippet": "program.editYOffsetScale({ target: \"bars\", reverse: true })",
+      "errors": [
+        {
+          "error": "The target has no yOffset scale.",
+          "fix": "Encode a categorical yOffset on that mark before editing its nested scale."
+        },
+        {
+          "error": "range, type, or order is supplied.",
+          "fix": "Use domain for subgroup order; the parent category slot owns the concrete range and the scale type is ordinal."
+        }
+      ],
+      "route": "/reference/actions/advanced/#focused-channel-scale-editors"
+    },
+    {
+      "schemaVersion": 3,
       "name": "editParallelScale",
       "layer": "user-facing",
       "domain": "core",
@@ -18845,7 +19095,8 @@
         "editParallelScale({ target, dimension, reverse?, type?, domain?, range?, unknown?, paddingInner? })"
       ],
       "snippet": "program.editParallelScale({ target: \"parallelLines\", dimension: \"amount\", reverse: true })",
-      "errors": []
+      "errors": [],
+      "route": "/reference/actions/advanced/#focused-channel-scale-editors"
     },
     {
       "schemaVersion": 3,

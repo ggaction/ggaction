@@ -8,9 +8,22 @@ import {
   validateSemanticScaleType
 } from "../../../grammar/scales/index.js";
 import { findSemanticScale } from "../../../selectors/scales.js";
+import { findScaleConsumers } from "../../scales/consumers/index.js";
 
-function validateOwnedProperty(existing, property) {
+function isOffsetScale(program, id, existing) {
+  if (existing?.type !== "ordinal") return false;
+  const consumers = findScaleConsumers(program, id);
+  return consumers.length > 0 && consumers.every(
+    consumer => ["xOffset", "yOffset"].includes(consumer.channel)
+  );
+}
+
+function validateOwnedProperty(program, id, existing, property) {
   if (existing?.type !== undefined) {
+    if (
+      isOffsetScale(program, id, existing) &&
+      ["paddingInner", "paddingOuter", "align"].includes(property)
+    ) return;
     validateScalePropertyForType(existing.type, property);
   }
 }
@@ -31,7 +44,13 @@ export function validateScaleSemanticValue(program, parsed, value) {
       "nice", "zero", "clamp", "base", "exponent", "constant", "midpoint",
       "paddingInner", "paddingOuter", "padding", "align"
     ]) {
-      if (existing?.[owned] !== undefined) validateScalePropertyForType(value, owned);
+      if (existing?.[owned] === undefined) continue;
+      if (
+        value === "ordinal" &&
+        isOffsetScale(program, parsed.id, existing) &&
+        ["paddingInner", "paddingOuter", "align"].includes(owned)
+      ) continue;
+      validateScalePropertyForType(value, owned);
     }
     return;
   }
@@ -41,7 +60,9 @@ export function validateScaleSemanticValue(program, parsed, value) {
     if (typeof value !== "boolean") {
       throw new TypeError(`Scale ${property} must be a boolean.`);
     }
-    if (property !== "reverse") validateOwnedProperty(existing, property);
+    if (property !== "reverse") {
+      validateOwnedProperty(program, parsed.id, existing, property);
+    }
     return;
   }
   if (["base", "exponent", "constant"].includes(property)) {
@@ -51,7 +72,7 @@ export function validateScaleSemanticValue(program, parsed, value) {
     if (property === "base" && value === 1) {
       throw new RangeError("Scale base must not equal 1.");
     }
-    validateOwnedProperty(existing, property);
+    validateOwnedProperty(program, parsed.id, existing, property);
     return;
   }
   if (property === "interpolate") {
@@ -64,20 +85,20 @@ export function validateScaleSemanticValue(program, parsed, value) {
         "Scale paddingInner must be from 0 (inclusive) to 1 (exclusive)."
       );
     }
-    validateOwnedProperty(existing, property);
+    validateOwnedProperty(program, parsed.id, existing, property);
     return;
   }
   if (property === "paddingOuter" || property === "padding") {
     if (!Number.isFinite(value) || value < 0) {
       throw new RangeError(`Scale ${property} must be a non-negative finite number.`);
     }
-    validateOwnedProperty(existing, property);
+    validateOwnedProperty(program, parsed.id, existing, property);
     return;
   }
   if (property === "align") {
     if (!Number.isFinite(value) || value < 0 || value > 1) {
       throw new RangeError("Scale align must be between 0 and 1.");
     }
-    validateOwnedProperty(existing, property);
+    validateOwnedProperty(program, parsed.id, existing, property);
   }
 }

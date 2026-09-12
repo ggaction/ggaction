@@ -1295,11 +1295,12 @@
         "ordinal-offsets",
         "at-a-glance",
         "advanced-encodexoffsetoptions-and-encodeyoffsetoptions",
+        "focused-offset-scale-editing",
         "errors-and-limitations",
         "related"
       ],
-      "bytes": 2685,
-      "sha256": "7af3a05a825e72d0e44d9f9eebb6f0f2a0f3294d69120ad461df304245544290"
+      "bytes": 4608,
+      "sha256": "313456870e73b55761bfc146a39f9e80a501e04ab6e6845313c34b62ea61b438"
     },
     {
       "order": 81,
@@ -1851,8 +1852,8 @@
         "action-reference",
         "exact-action-lookup"
       ],
-      "bytes": 29848,
-      "sha256": "071cb33ac800a555c724639ed4fb82992c142fa3c5b51cb065b9756077c3e1c6"
+      "bytes": 30072,
+      "sha256": "ca9a80f977e9a7d054596d05ecff95f56112134a0014355481a41336d7468aec"
     },
     {
       "order": 117,
@@ -2119,8 +2120,8 @@
         "directional-grids",
         "related"
       ],
-      "bytes": 10351,
-      "sha256": "8ab2b005c324792d1aabac9fc8727a8cda87eb2fd6c9ac3c71b2410a51e63df8"
+      "bytes": 10787,
+      "sha256": "d74ed1cd91e8b27e280706cee03370f1a06dce4783af1feb4504bffa64ca023d"
     },
     {
       "order": 123,
@@ -2164,8 +2165,8 @@
         "exact-typescript-signatures",
         "related"
       ],
-      "bytes": 20380,
-      "sha256": "a408a97431065883ee60bc01f51986b403195aba459451782927b2878090aec8"
+      "bytes": 20516,
+      "sha256": "df6ca845f87997046c19e7b38b23ceea87e3acb59101a384d6d9451981584f5e"
     },
     {
       "order": 126,

@@ -85,6 +85,7 @@ export const layoutSeries = action({ op: "layoutSeries", description: "Assign se
       next = offset.field === undefined
         ? setEncodingProperties(next, target, offsetChannel, offset).createScale(offsetScale)
         : next[offsetChannel === "xOffset" ? "encodeXOffset" : "encodeYOffset"]({ target, field: offset.field, fieldType: offset.fieldType, scale: offsetScale });
+      next = next._withoutMaterializationConfig(["marks", target, offsetChannel]);
       if (findSemanticScale(this, offsetScale.id) === undefined) next = next._withMarkConfig(target, { ...next.markConfigs[target], seriesOffsetScale: offsetScale.id });
     } else {
       const owned = next.markConfigs[target]?.seriesOffsetScale;

@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "source": "generated lifecycle smoke corpus plus selection lifecycle",
-  "actionCount": 264,
+  "actionCount": 266,
   "relationships": [
     {
       "name": "createCanvas",
@@ -526,7 +526,8 @@
       "wraps": [
         "editSemantic",
         "createScale",
-        "layoutSeries"
+        "layoutSeries",
+        "editScale"
       ]
     },
     {
@@ -534,7 +535,8 @@
       "wraps": [
         "editSemantic",
         "createScale",
-        "layoutSeries"
+        "layoutSeries",
+        "editScale"
       ]
     },
     {
@@ -1141,6 +1143,18 @@
     },
     {
       "name": "editYScale",
+      "wraps": [
+        "editScale"
+      ]
+    },
+    {
+      "name": "editXOffsetScale",
+      "wraps": [
+        "editScale"
+      ]
+    },
+    {
+      "name": "editYOffsetScale",
       "wraps": [
         "editScale"
       ]

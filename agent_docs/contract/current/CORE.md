@@ -1430,7 +1430,8 @@ type EditableCurrentScale = {
 
 ## Focused channel scale editors
 
-- Implemented family: `editXScale`, `editYScale`, `editParallelScale`, `editThetaScale`, `editRScale`,
+- Implemented family: `editXScale`, `editYScale`, `editXOffsetScale`,
+  `editYOffsetScale`, `editParallelScale`, `editThetaScale`, `editRScale`,
   `editColorScale`, `editSizeScale`, `editOpacityScale`, `editShapeScale`,
   `editStrokeWidthScale`, and `editStrokeDashScale`.
 - Each action accepts the scale properties valid for its named channel plus
@@ -1483,6 +1484,75 @@ type EditableCurrentScale = {
 ### Value coverage — `editYScale`
 
 - ✅ Covered: current-mark inference, reverse editing, channel validation, and wrapped rematerialization. Evidence: `test/unit/actions/scales/channel-scale-editors.test.js`, `test/contracts/channel-scale-editor-types.test.js`.
+
+## `editXOffsetScale`
+
+- Implemented: edits the ordinal subgroup scale bound to `target`'s `xOffset`
+  encoding. `target` is mandatory and must resolve to an existing mark with an
+  existing offset scale; scale ID, current-mark, and unique-program inference
+  are intentionally absent.
+- Accepted properties are `domain`, `reverse`, `padding`, `paddingInner`,
+  `paddingOuter`, and `align`. At least one is required. `padding` is shorthand
+  for equal inner and outer padding and cannot be combined with either explicit
+  padding property. `paddingInner` and `padding` are finite in `[0, 1)`,
+  `paddingOuter` is finite and non-negative, and `align` is finite in `[0, 1]`.
+- The semantic scale is the single owner of requested padding and alignment.
+  Older mark-owned `xOffset` padding is read only as a compatibility fallback;
+  the first successful encoding or scale edit stores the complete policy on the
+  semantic scale and removes every legacy copy for consumers of that scale.
+  Conflicting legacy owners fail before any state or trace change.
+- The concrete range always comes from the resolved parent x category slot.
+  An absolute `range`, a scale `type`, and an `order` alias are rejected; an
+  explicit domain array owns subgroup order and `domain: "auto"` restores
+  observed order. Existing values omitted from an explicit domain are errors.
+- For parent slot `S`, domain length `n`, inner padding `pi`, outer padding `po`,
+  and alignment `a`, materialization uses
+  `step=S/max(1,n-pi+2*po)`, `bandwidth=abs(step)*(1-pi)`, and
+  `start=(S-step*(n-pi))*a`. Reverse mirrors the concrete range while retaining
+  category identity. Parent Canvas/scale edits recompute the range and retain
+  the requested policy.
+- Shared consumers are validated and rematerialized together. Their parent slot
+  sizes must agree; point-parent step and legacy binned-x slot policies remain
+  supported. Offset domain changes do not mutate the parent or color domain.
+- Available only in the Full entry.
+- Evidence: `test/unit/actions/scales/offset-scale.test.js`,
+  `test/unit/actions/encodings/x-offset-encoding.test.js`, and
+  `test/contracts/phase5-scale-types.test.js`.
+
+### Formal values — `editXOffsetScale`
+
+- Implemented: `editXOffsetScale({ target: UserId; domain?; reverse?; padding?;
+  paddingInner?; paddingOuter?; align? })`.
+- Proposed (NOT IMPLEMENTED): —.
+
+### Value coverage — `editXOffsetScale`
+
+- ✅ Covered: exact default and padded geometry, shorthand, alignment, explicit
+  domain order, reverse, Canvas resize, shared consumers, point parents, legacy
+  migration/conflict, unknown category, missing offset, invalid ranges, and
+  immutable failure behavior.
+
+## `editYOffsetScale`
+
+- Implemented: the horizontal-orientation dual of `editXOffsetScale`, selected
+  from `target`'s `yOffset` encoding with the same property, ownership,
+  validation, sharing, migration, formula, and Full-only contracts.
+- Its parent slot is the resolved y category bandwidth or point step. Reverse
+  mirrors the nested y range and rematerializes all dependent marks.
+- Evidence: `test/unit/actions/scales/offset-scale.test.js`,
+  `test/unit/actions/encodings/y-offset-encoding.test.js`, and
+  `test/contracts/phase5-scale-types.test.js`.
+
+### Formal values — `editYOffsetScale`
+
+- Implemented: `editYOffsetScale(EditYOffsetScaleOptions)` where
+  `EditYOffsetScaleOptions` equals the explicit-target xOffset patch.
+- Proposed (NOT IMPLEMENTED): —.
+
+### Value coverage — `editYOffsetScale`
+
+- ✅ Covered: horizontal parent geometry, padding, reverse, semantic ownership,
+  missing target/offset rejection, wrapped trace, and prior-state immutability.
 
 ## `editParallelScale`
 

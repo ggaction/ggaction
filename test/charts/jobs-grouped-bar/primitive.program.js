@@ -118,7 +118,16 @@ export function createJobsGroupedBarPrimitives(
     program = program
       .editSemantic({ property: "scale[xOffset].type", value: "ordinal" })
       .editSemantic({ property: "scale[xOffset].domain", value: "auto" })
-      .editSemantic({ property: "scale[xOffset].range", value: "auto" });
+      .editSemantic({ property: "scale[xOffset].range", value: "auto" })
+      .editSemantic({
+        property: "scale[xOffset].paddingInner",
+        value: paddingInner
+      })
+      .editSemantic({
+        property: "scale[xOffset].paddingOuter",
+        value: paddingOuter
+      })
+      .editSemantic({ property: "scale[xOffset].align", value: 0.5 });
   }
 
   return program

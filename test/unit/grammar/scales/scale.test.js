@@ -422,7 +422,8 @@ test("resolves ordinal offsets within a parent band", () => {
     start: 0,
     bandwidth: 20,
     paddingInner: 0,
-    paddingOuter: 0
+    paddingOuter: 0,
+    align: 0.5
   });
   assert.deepEqual(resolveOrdinalOffsetScale({
     domain: ["men", "women"],
@@ -439,7 +440,8 @@ test("resolves ordinal offsets within a parent band", () => {
     start: 38,
     bandwidth: 16,
     paddingInner: 0.2,
-    paddingOuter: 0.1
+    paddingOuter: 0.1,
+    align: 0.5
   });
   assert.throws(
     () => resolveOrdinalOffsetScale({

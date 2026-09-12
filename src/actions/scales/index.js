@@ -4,10 +4,12 @@ import { rematerializeScale } from "./materialize.js";
 import { setQuantitativeColorScale } from "./quantitativeColor.js";
 import { registerChannelScaleActions } from "./channels.js";
 import { editParallelScale } from "./parallel.js";
+import { registerOffsetScaleActions } from "./offset.js";
 
 export function registerScaleActions(ProgramClass) {
   ProgramClass.prototype.editScale = editScale;
   ProgramClass.prototype.editParallelScale = editParallelScale;
+  registerOffsetScaleActions(ProgramClass);
   registerChannelScaleActions(ProgramClass);
   registerBasicScaleActions(ProgramClass);
 }

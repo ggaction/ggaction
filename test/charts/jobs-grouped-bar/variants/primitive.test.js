@@ -284,10 +284,15 @@ test("rematerializes approved geometry modes after Canvas resize", () => {
     paddedResized.graphicSpec.objects.bars.items[0].properties.width,
     padded.graphicSpec.objects.bars.items[0].properties.width
   );
-  assert.deepEqual(paddedResized.markConfigs.bars.xOffset, {
-    paddingInner: 0.2,
-    paddingOuter: 0.1
-  });
+  assert.deepEqual(
+    (({ paddingInner, paddingOuter, align }) => ({
+      paddingInner, paddingOuter, align
+    }))(paddedResized.semanticSpec.scales.find(
+      scale => scale.id === "xOffset"
+    )),
+    { paddingInner: 0.2, paddingOuter: 0.1, align: 0.5 }
+  );
+  assert.equal(paddedResized.markConfigs.bars.xOffset, undefined);
 
   const reassigned = createJobsGroupReassignmentBar(reassignmentJobs);
   const reassignedResized = reassigned.editCanvas({ width: 760, height: 500 });

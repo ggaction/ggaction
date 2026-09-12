@@ -196,6 +196,7 @@ export function resolveOrdinalOffsetScale({
   parentBandwidth,
   paddingInner = 0,
   paddingOuter = 0,
+  align = 0.5,
   channel = "xOffset"
 }) {
   const resolvedDomain = resolveOrdinalDomain(domain, values);
@@ -217,6 +218,9 @@ export function resolveOrdinalOffsetScale({
       "Offset scale paddingOuter must be a non-negative finite number."
     );
   }
+  if (!Number.isFinite(align) || align < 0 || align > 1) {
+    throw new RangeError("Offset scale align must be between 0 and 1.");
+  }
   validateDomainValues(resolvedDomain, values, undefined, "ordinal");
   const denominator = Math.max(
     1,
@@ -231,15 +235,18 @@ export function resolveOrdinalOffsetScale({
   if (!Number.isFinite(bandwidth) || bandwidth <= 0) {
     throw new Error("Offset scale padding must leave a positive bandwidth.");
   }
+  const occupied = step * (resolvedDomain.length - paddingInner);
+  const start = resolvedRange[0] + (resolvedRange[1] - resolvedRange[0] - occupied) * align;
   return cloneAndFreeze({
     type: "ordinal",
     domain: resolvedDomain,
     range: resolvedRange,
     step,
-    start: resolvedRange[0] + step * paddingOuter,
+    start,
     bandwidth,
     paddingInner,
-    paddingOuter
+    paddingOuter,
+    align
   });
 }
 
@@ -296,7 +303,9 @@ export function mapOrdinalOffsetValues(values, scale) {
     return finitePosition(
       direct,
       scale,
-      (scale.paddingOuter + index + (1 - scale.paddingInner) / 2) /
+      (scale.paddingOuter * 2 * scale.align +
+        index +
+        (1 - scale.paddingInner) / 2) /
         denominator
     );
   }));

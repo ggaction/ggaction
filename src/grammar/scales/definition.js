@@ -24,13 +24,35 @@ function retainedValue(previous, patch, defaults, property, typeChanged) {
 }
 
 function validateBandParameters(definition, previous, patch, defaults, typeChanged) {
+  const hasPadding = Object.hasOwn(patch, "padding");
+  if (
+    hasPadding &&
+    (Object.hasOwn(patch, "paddingInner") || Object.hasOwn(patch, "paddingOuter"))
+  ) {
+    throw new Error(
+      "Scale padding cannot be combined with paddingInner or paddingOuter."
+    );
+  }
+  if (
+    hasPadding &&
+    (!Number.isFinite(patch.padding) || patch.padding < 0 || patch.padding >= 1)
+  ) {
+    throw new RangeError(
+      "Scale padding must be from 0 (inclusive) to 1 (exclusive)."
+    );
+  }
+  const normalizedPatch = hasPadding
+    ? { ...patch, paddingInner: patch.padding, paddingOuter: patch.padding }
+    : patch;
   const paddingInner = retainedValue(
-    previous, patch, defaults, "paddingInner", typeChanged
+    previous, normalizedPatch, defaults, "paddingInner", typeChanged
   ) ?? 0;
   const paddingOuter = retainedValue(
-    previous, patch, defaults, "paddingOuter", typeChanged
+    previous, normalizedPatch, defaults, "paddingOuter", typeChanged
   ) ?? 0;
-  const align = retainedValue(previous, patch, defaults, "align", typeChanged) ?? 0.5;
+  const align = retainedValue(
+    previous, normalizedPatch, defaults, "align", typeChanged
+  ) ?? 0.5;
   if (!Number.isFinite(paddingInner) || paddingInner < 0 || paddingInner >= 1) {
     throw new RangeError(
       "Scale paddingInner must be from 0 (inclusive) to 1 (exclusive)."
@@ -66,6 +88,7 @@ export function normalizeScaleDefinition({
   defaults = {},
   retainCoreOnTypeChange = false,
   retainCompatibleOnTypeChange = false,
+  allowOrdinalBandParameters = false,
   validateDomain,
   validateRange
 }) {
@@ -143,7 +166,7 @@ export function normalizeScaleDefinition({
   );
   if (midpoint !== undefined) definition.midpoint = midpoint;
 
-  if (type === "band") {
+  if (type === "band" || (type === "ordinal" && allowOrdinalBandParameters)) {
     validateBandParameters(definition, previous, patch, defaults, typeChanged);
   } else if (type === "point") {
     validatePointParameters(definition, previous, patch, defaults, typeChanged);

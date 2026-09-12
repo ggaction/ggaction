@@ -17,6 +17,7 @@ import {
   normalizeScaleDefinition
 } from "../../grammar/scales/index.js";
 import { findSemanticScale } from "../../selectors/scales.js";
+import { findScaleConsumers } from "./consumers/index.js";
 
 const CREATE_SCALE_OPTIONS = Object.freeze([
   "id",
@@ -97,12 +98,29 @@ export const createScale = action(
     const requestedRange = args.palette === undefined
       ? args.range
       : { palette: args.palette };
+    const consumers = findScaleConsumers(this, id);
+    const offsetScale = consumers.length > 0 && consumers.every(
+      consumer => ["xOffset", "yOffset"].includes(consumer.channel)
+    );
+    if (offsetScale && type !== "ordinal") {
+      throw new Error(`Scale type "${type}" is not valid for offset positions.`);
+    }
+    if (
+      offsetScale &&
+      Object.hasOwn(args, "range") &&
+      args.range !== "auto"
+    ) {
+      throw new Error(
+        "Offset scale range is derived from its parent categorical slot."
+      );
+    }
     const definition = normalizeScaleDefinition({
       type,
       patch: {
         ...args,
         ...(requestedRange === undefined ? {} : { range: requestedRange })
       },
+      allowOrdinalBandParameters: offsetScale,
       validateDomain: (scaleType, value) =>
         isDiscretizedColorScaleType(scaleType)
           ? validateDiscretizedColorDomain(scaleType, value)

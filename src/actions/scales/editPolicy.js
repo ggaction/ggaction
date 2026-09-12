@@ -26,7 +26,13 @@ import {
   validateRadialRange,
   validateThetaRange
 } from "../../grammar/polar.js";
-import { normalizePositionScaleChannel } from "../../core/vocabulary.js";
+import {
+  normalizePositionScaleChannel,
+  OFFSET_POSITION_CHANNELS
+} from "../../core/vocabulary.js";
+import { normalizeOffsetScalePolicy } from "../../grammar/bars/geometry.js";
+import { resolveRequestedOffsetPolicy } from
+  "../../materialization/scales/policies/offset.js";
 
 export function resolveScaleConsumerChannel(consumers, id) {
   const channels = new Set(
@@ -127,23 +133,54 @@ function validateTypeTransition(scale, nextType, channel, consumers) {
   }
 }
 
-function normalizeDefinition(scale, channel, consumers, patch) {
+function normalizeDefinition(program, scale, channel, consumers, patch) {
   if (scale.radialMapping !== undefined && Object.hasOwn(patch, "radialMapping") &&
     patch.radialMapping === undefined && consumers.some(consumer => consumer.encoding.aggregate !== undefined)) {
     throw new Error("Remove measured radius encodings before clearing their scale mapping.");
   }
   const type = patch.type ?? scale.type;
   validateTypeTransition(scale, type, channel, consumers);
+  const offset = OFFSET_POSITION_CHANNELS.includes(channel);
+  if (offset && Object.hasOwn(patch, "range")) {
+    throw new Error(
+      `${channel} scale range is derived from its parent categorical slot.`
+    );
+  }
+  if (offset && Object.hasOwn(patch, "unknown")) {
+    throw new Error(`${channel} scale unknown is not supported for offset positions.`);
+  }
   if (type !== scale.type && scale.domain !== "auto" && !Object.hasOwn(patch, "domain") &&
     (["quantile", "threshold"].includes(type) || ["quantile", "threshold"].includes(scale.type))) {
     throw new Error("Color scale type transition requires an explicit domain when its meaning changes.");
   }
+  const offsetPolicy = offset
+    ? normalizeOffsetScalePolicy(
+        patch,
+        resolveRequestedOffsetPolicy({
+          scale,
+          consumers,
+          markConfigs: program.markConfigs,
+          id: scale.id,
+          channel
+        }),
+        channel
+      )
+    : undefined;
+  const normalizedPatch = offset
+    ? {
+        ...Object.fromEntries(Object.entries(patch).filter(
+          ([property]) => property !== "padding"
+        )),
+        ...offsetPolicy
+      }
+    : patch;
   const definition = normalizeScaleDefinition({
     type,
     previous: scale,
-    patch,
+    patch: normalizedPatch,
     retainCoreOnTypeChange: true,
     retainCompatibleOnTypeChange: true,
+    allowOrdinalBandParameters: offset,
     validateDomain: (scaleType, value) =>
       isDiscretizedColorScaleType(scaleType)
         ? validateDiscretizedColorDomain(scaleType, value)
@@ -167,8 +204,8 @@ function normalizeDefinition(scale, channel, consumers, patch) {
     throw new Error("Scale midpoint requires quantitative color consumers.");
   }
   const typeChanged = type !== scale.type;
-  const unknown = Object.hasOwn(patch, "unknown")
-    ? patch.unknown
+  const unknown = Object.hasOwn(normalizedPatch, "unknown")
+    ? normalizedPatch.unknown
     : typeChanged ? undefined : scale.unknown;
   if (unknown !== undefined) {
     if (consumers.some(consumer => consumer.layer.mark?.type !== "point")) {
@@ -200,5 +237,5 @@ export function prepareScaleEdit(program, scale, channel, consumers, args) {
         ...Object.entries(args).filter(([key]) => key !== "palette"),
         ["range", { palette: args.palette }]
       ]);
-  return normalizeDefinition(scale, channel, consumers, patch);
+  return normalizeDefinition(program, scale, channel, consumers, patch);
 }
