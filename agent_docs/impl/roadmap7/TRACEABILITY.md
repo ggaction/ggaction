@@ -5,11 +5,11 @@
 | ID | Primary Phase | 계약 | 필수 evidence owner | status |
 | --- | --- | --- | --- | --- |
 | R02 | 4 | [파생 데이터 정의 편집과 종속 갱신](features/02-derived-editing.md) | feature 내 독립 oracle/완료 조건 → Phase 4 STEP1 evidence | Proposed / 미구현 |
-| R05 | 2 | [결측 조합 완성과 대체](features/05-complete-impute.md) | feature 내 독립 oracle/완료 조건 → Phase 2 STEP1 evidence | Proposed / 미구현 |
+| R05 | 2 | [결측 조합 완성과 대체](features/05-complete-impute.md) | [Phase 2 STEP1](phase2/STEP1.md) · `9d4d0840` | primary 구현 완료 / R02 edit 통합 대기 |
 | R06 | 1 | [조건·문자열·null 계산식](features/06-computed-expressions.md) | [Phase 1 STEP1](phase1/STEP1.md) · `b891d1d5` | primary 구현 완료 / R02 edit 통합 대기 |
 | R07 | 1 | [그룹 정규화·기준값 비교](features/07-normalization.md) | [Phase 1 STEP1](phase1/STEP1.md) · `b891d1d5` | primary 구현 완료 / R02 edit 통합 대기 |
-| R08 | 2 | [주간·요일·시간대 버킷](features/08-calendar-buckets.md) | feature 내 독립 oracle/완료 조건 → Phase 2 STEP1 evidence | Proposed / 미구현 |
-| R09 | 2 | [기간 기반 window와 최소 관측수](features/09-duration-windows.md) | feature 내 독립 oracle/완료 조건 → Phase 2 STEP1 evidence | Proposed / 미구현 |
+| R08 | 2 | [주간·요일·시간대 버킷](features/08-calendar-buckets.md) | [Phase 2 STEP1](phase2/STEP1.md) · `9d4d0840` | primary 구현 완료 / R02 edit 통합 대기 |
+| R09 | 2 | [기간 기반 window와 최소 관측수](features/09-duration-windows.md) | [Phase 2 STEP1](phase2/STEP1.md) · `9d4d0840` | primary 구현 완료 / R02 edit 통합 대기 |
 | R10 | 3 | [가중 통계·histogram·KDE](features/10-weighted-statistics.md) | feature 내 독립 oracle/완료 조건 → Phase 3 STEP1 evidence | Proposed / 미구현 |
 | R19 | 5 | [다중 채널의 원자적 재인코딩](features/19-atomic-encoding.md) | feature 내 독립 oracle/완료 조건 → Phase 5 STEP1 evidence | Proposed / 미구현 |
 | R20 | 5 | [Parallel 차원별 scale 집중 편집](features/20-parallel-scale.md) | feature 내 독립 oracle/완료 조건 → Phase 5 STEP1 evidence | Proposed / 미구현 |

@@ -2,14 +2,14 @@
 
 ## 진행 상태
 
-- [ ] 범위·현재 source owner·선행 Phase 완료 상태 확인
-- [ ] Gate A 자료: 정확한 API/schema/defaults/오류/수치 oracle 작성·검증
-- [ ] 명시 승인 범위 기록 후 해당 구현 시작
-- [ ] appearance 대상은 primitive render와 target public chain으로 Gate V 확인
-- [ ] 아래 wave 구현과 focused/cumulative tests 완료
-- [ ] types/current contracts/catalog/cards/MCP/docs/package 영향 갱신
-- [ ] Gate X 결과와 남은 후속 통합 cell 기록
-- [ ] 검증된 coherent change마다 commit/push하고 다음 Gate 범위 확인
+- [x] 범위·현재 source owner·선행 Phase 완료 상태 확인
+- [x] Gate A 자료: 정확한 API/schema/defaults/오류/수치 oracle 작성·검증
+- [x] 명시 승인 범위 기록 후 해당 구현 시작
+- [x] data-only 범위라 새 appearance 목표가 없음을 확인하고 Cartesian/facet Canvas consumer 실행
+- [x] 아래 wave 구현과 focused/cumulative tests 완료
+- [x] types/current contracts/catalog/cards/MCP/docs/package 영향 갱신
+- [x] Gate X 결과와 남은 후속 통합 cell 기록
+- [x] 검증된 coherent change를 commit/push하고 Phase 3으로 전환
 
 계획 작성 시 모든 체크는 미완료다. Phase 0 은 제품 구현이 없으므로 해당 구현·시각 항목의 미적용 이유를 기록한다. Phase 12 는 새 시각 목표가 없으면 승인된 variant를 현재 코드에서 다시 실행해 검증한다.
 
@@ -44,7 +44,22 @@
 
 | wave | commit | tests/artifacts | remaining | status |
 | --- | --- | --- | --- | --- |
-| 미착수 | — | 실행 증거 없음 | 위 전체 범위 | planned |
+| W1 | `9d4d0840` | complete domain/product/members와 grouped constant/forward/backward/linear impute oracle | `editCompleteData`/`editImputedData`는 R02/Phase 4 | completed-primary |
+| W2–W3 | `9d4d0840` | UTC legacy, week/weekday, IANA zone, New York/Lord Howe/Kolkata/Apia fold·gap oracle | `editTimeUnitData`는 R02/Phase 4 | completed-primary |
+| W4 | `9d4d0840` | row/duration frame, closed peers, temporal stable sort, minPeriods/missing, source-order output | `editWindowData`는 R02/Phase 4 | completed-primary |
+| W5 | `9d4d0840` | complete→impute→duration window→mark/encoding→facet-local replay; Full types/current/catalog/cards/MCP/docs/package | Phase 4 edit와 Phase 12 전체 통합 | completed-primary |
+
+## 검증 결과
+
+- Focused: Phase 2 data/type/registry tests 33/33, 추가 경계 회귀 25/25.
+- Unit cumulative: 2,315/2,315.
+- Contract cumulative: 331/331.
+- Documentation: 47/47; generated reference/cards/machine/LLM artifacts synchronized.
+- Installed package: Node runtime, strict TypeScript, MCP와 tutorial consumers 통과. Full/basic/SVG gzip은 306,231/152,450/6,418 bytes로 308,000/153,000/25,000 ceiling 이하다.
+- Package artifact: 493 entries, packed 611,829 bytes, unpacked 3,059,221 bytes로 승인된 한도 이내.
+- 시각 Gate V: R05/R08/R09는 data transform이라 새 appearance variant가 없다. complete→impute→duration window 결과를 point/quantitative encoding과 facet Canvas materialization으로 검증했다.
+
+후속 의무는 누락이 아니다. R02가 네 transform의 edit/revision transaction을 Phase 4에서 같은 materializer로 연결하고, Phase 12가 source edit·labels·references·facet 전체 흐름을 다시 실행한다.
 
 ## Gate 연결
 

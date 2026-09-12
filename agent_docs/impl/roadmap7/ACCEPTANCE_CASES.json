@@ -70,8 +70,8 @@
       "kind": "normal",
       "specification": "A의 (t,v)=[(1,2),(3,6)], values=[1,2,3] → [2,null,6], members=[[0],[],[1]].",
       "owner": "features/05-complete-impute.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/unit/actions/data/complete-impute-data.test.js; 9d4d0840"
     },
     {
       "id": "R05-N02",
@@ -80,8 +80,8 @@
       "kind": "normal",
       "specification": "(t,v)=[(1,2),(2,null),(5,10)], linear → [2,4,10].",
       "owner": "features/05-complete-impute.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/unit/actions/data/complete-impute-data.test.js; 9d4d0840"
     },
     {
       "id": "R05-N03",
@@ -90,8 +90,8 @@
       "kind": "normal",
       "specification": "v=[null,2,null,null,8,null], forward,maxGap:1 → [null,2,null,null,8,8].",
       "owner": "features/05-complete-impute.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/unit/actions/data/complete-impute-data.test.js; 9d4d0840"
     },
     {
       "id": "R05-E01",
@@ -100,8 +100,8 @@
       "kind": "error",
       "specification": "위 입력 edges:error → leading run 때문에 실패. leading row를 제거하면 maxGap 초과 internal run은 그대로 두고 성공.",
       "owner": "features/05-complete-impute.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/unit/actions/data/complete-impute-data.test.js; 9d4d0840"
     },
     {
       "id": "R05-E02",
@@ -110,8 +110,8 @@
       "kind": "error",
       "specification": "같은 group/key 중복, unknown field, values:[1,1], size10001 → 각각 오류.",
       "owner": "features/05-complete-impute.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/unit/actions/data/complete-impute-data.test.js; 9d4d0840"
     },
     {
       "id": "R05-L01",
@@ -120,8 +120,8 @@
       "kind": "lifecycle",
       "specification": "source empty, values:[1,2], groupBy:[] → 2 synthetic rows; groupBy:[\"g\"] → 0 rows.",
       "owner": "features/05-complete-impute.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/unit/actions/data/complete-impute-data.test.js; 9d4d0840"
     },
     {
       "id": "R06-N01",
@@ -260,8 +260,8 @@
       "kind": "normal",
       "specification": "2024-01-03T12:00Z / week / UTC | 2024-01-01T00:00Z",
       "owner": "features/08-calendar-buckets.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/unit/actions/data/time-unit-data.test.js; 9d4d0840"
     },
     {
       "id": "R08-N02",
@@ -270,8 +270,8 @@
       "kind": "normal",
       "specification": "같은 instant / week / Asia/Seoul | 2023-12-31T15:00Z",
       "owner": "features/08-calendar-buckets.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/unit/actions/data/time-unit-data.test.js; 9d4d0840"
     },
     {
       "id": "R08-N03",
@@ -280,8 +280,8 @@
       "kind": "normal",
       "specification": "2024-03-10T12:00Z / day / America/New_York | 2024-03-10T05:00Z",
       "owner": "features/08-calendar-buckets.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/unit/actions/data/time-unit-data.test.js; 9d4d0840"
     },
     {
       "id": "R08-N04",
@@ -290,8 +290,8 @@
       "kind": "normal",
       "specification": "2024-03-11T12:00Z / day / America/New_York | 2024-03-11T04:00Z",
       "owner": "features/08-calendar-buckets.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/unit/actions/data/time-unit-data.test.js; 9d4d0840"
     },
     {
       "id": "R08-N05",
@@ -300,8 +300,8 @@
       "kind": "normal",
       "specification": "2024-11-03T05:30Z와06:30Z / hour / America/New_York | 둘 다 2024-11-03T05:00Z",
       "owner": "features/08-calendar-buckets.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/unit/actions/data/time-unit-data.test.js; 9d4d0840"
     },
     {
       "id": "R08-N06",
@@ -310,8 +310,8 @@
       "kind": "normal",
       "specification": "2024-10-05T15:45Z / hour / Australia/Lord_Howe | 2024-10-05T15:30Z (local 02:30 최초 유효)",
       "owner": "features/08-calendar-buckets.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/unit/actions/data/time-unit-data.test.js; 9d4d0840"
     },
     {
       "id": "R08-N07",
@@ -320,8 +320,8 @@
       "kind": "normal",
       "specification": "2024-01-01T00:00Z / day / Asia/Kolkata | 2023-12-31T18:30Z",
       "owner": "features/08-calendar-buckets.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/unit/actions/data/time-unit-data.test.js; 9d4d0840"
     },
     {
       "id": "R08-N08",
@@ -330,8 +330,8 @@
       "kind": "normal",
       "specification": "2011-12-30T12:00Z / day / Pacific/Apia | 2011-12-30T10:00Z (local Dec31)",
       "owner": "features/08-calendar-buckets.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/unit/actions/data/time-unit-data.test.js; 9d4d0840"
     },
     {
       "id": "R08-E01",
@@ -340,8 +340,8 @@
       "kind": "error",
       "specification": "iso+weekStartsOn:0 / weekday+weekRule / invalid zone | 각각 오류",
       "owner": "features/08-calendar-buckets.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/unit/actions/data/time-unit-data.test.js; 9d4d0840"
     },
     {
       "id": "R08-L01",
@@ -350,8 +350,8 @@
       "kind": "lifecycle",
       "specification": "createTimeUnitData → editTimeUnitData(timeZone 변경) → facet replay에서 저장된 zone/unit으로 bucket 재계산, 원본 UTC 결과 불변.",
       "owner": "features/08-calendar-buckets.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "partial",
+      "runtimeEvidence": "create/facet paths: test/unit/actions/data/time-unit-data.test.js; editTimeUnitData remains Phase 4; 9d4d0840"
     },
     {
       "id": "R09-N01",
@@ -360,8 +360,8 @@
       "kind": "normal",
       "specification": "days=[0,1,10],x=[2,4,10],duration preceding7day → means=[2,3,10].",
       "owner": "features/09-duration-windows.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/unit/actions/data/window-data.test.js; 9d4d0840"
     },
     {
       "id": "R09-N02",
@@ -370,8 +370,8 @@
       "kind": "normal",
       "specification": "ms=[0,604800000],x=[2,4] → means=[2,3]; 두 번째를604800001로 변경 → [2,4].",
       "owner": "features/09-duration-windows.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/unit/actions/data/window-data.test.js; 9d4d0840"
     },
     {
       "id": "R09-N03",
@@ -380,8 +380,8 @@
       "kind": "normal",
       "specification": "t=[0,0,1],x=[2,4,8],duration0 → [3,3,8].",
       "owner": "features/09-duration-windows.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/unit/actions/data/window-data.test.js; 9d4d0840"
     },
     {
       "id": "R09-N04",
@@ -390,8 +390,8 @@
       "kind": "normal",
       "specification": "t=[0,1,2],x=[2,null,4],row preceding1,skip → [2,2,4]; minPeriods2 → [null,null,null].",
       "owner": "features/09-duration-windows.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/unit/actions/data/window-data.test.js; 9d4d0840"
     },
     {
       "id": "R09-N05",
@@ -400,8 +400,8 @@
       "kind": "normal",
       "specification": "unsorted t=[10,0,1],x=[10,2,4]의 N01 조건 → [10,2,3].",
       "owner": "features/09-duration-windows.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/unit/actions/data/window-data.test.js; 9d4d0840"
     },
     {
       "id": "R09-E01",
@@ -410,8 +410,8 @@
       "kind": "error",
       "specification": "minPeriods0, mixed frame keys, rank+missing, undefined sort field, all nonfinite → 각 오류.",
       "owner": "features/09-duration-windows.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/unit/actions/data/window-data.test.js; 9d4d0840"
     },
     {
       "id": "R09-L01",
@@ -420,8 +420,8 @@
       "kind": "lifecycle",
       "specification": "editWindowData와 facet-local replay의 closed-boundary/duplicate 규칙이 같아야 한다.",
       "owner": "features/09-duration-windows.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "partial",
+      "runtimeEvidence": "facet/closed peer paths: test/unit/actions/data/window-data.test.js and test/unit/actions/data/complete-impute-data.test.js; editWindowData remains Phase 4; 9d4d0840"
     },
     {
       "id": "R10-N01",

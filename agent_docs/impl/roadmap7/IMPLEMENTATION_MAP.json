@@ -78,24 +78,28 @@
       "spec": "features/05-complete-impute.md",
       "phase": 2,
       "dependsOn": [],
-      "status": "Proposed",
+      "status": "Implemented-primary",
       "newPublicActions": [
         "createCompleteData",
         "createImputedData"
       ],
       "extendedPublicSurfaces": [],
       "currentSourceFiles": [
-        "src/grammar/stack.js",
-        "src/grammar/areaSeries.js",
-        "src/grammar/transformTopology.js",
+        "src/grammar/complete.js",
+        "src/grammar/impute.js",
+        "src/actions/data/complete.js",
+        "src/actions/data/impute.js",
         "src/actions/data/shared.js",
-        "src/grammar/window.js",
-        "src/grammar/numeric.js"
+        "src/grammar/transformTopology.js",
+        "src/grammar/transforms.js",
+        "types/program.d.ts"
       ],
       "existingRegressionTests": [
+        "test/unit/actions/data/complete-impute-data.test.js",
+        "test/contracts/phase2-data-types.test.js",
         "test/contracts/transform-registry.test.js"
       ],
-      "suggestedNewTest": "test/contracts/complete-impute.test.js",
+      "suggestedNewTest": "test/unit/actions/data/complete-impute-data.test.js",
       "acceptanceCases": [
         "R05-N01",
         "R05-N02",
@@ -197,7 +201,7 @@
       "spec": "features/08-calendar-buckets.md",
       "phase": 2,
       "dependsOn": [],
-      "status": "Proposed",
+      "status": "Implemented-primary",
       "newPublicActions": [],
       "extendedPublicSurfaces": [
         "createTimeUnitData"
@@ -211,9 +215,10 @@
       ],
       "existingRegressionTests": [
         "test/unit/grammar/transforms/time-unit.test.js",
-        "test/unit/actions/data/time-unit-data.test.js"
+        "test/unit/actions/data/time-unit-data.test.js",
+        "test/contracts/phase2-data-types.test.js"
       ],
-      "suggestedNewTest": "test/contracts/calendar-buckets.test.js",
+      "suggestedNewTest": "test/unit/actions/data/time-unit-data.test.js",
       "acceptanceCases": [
         "R08-N01",
         "R08-N02",
@@ -242,7 +247,7 @@
       "dependsOn": [
         "R08"
       ],
-      "status": "Proposed",
+      "status": "Implemented-primary",
       "newPublicActions": [],
       "extendedPublicSurfaces": [
         "createWindowData"
@@ -256,9 +261,10 @@
       ],
       "existingRegressionTests": [
         "test/unit/grammar/transforms/window.test.js",
-        "test/unit/actions/data/window-data.test.js"
+        "test/unit/actions/data/window-data.test.js",
+        "test/contracts/phase2-data-types.test.js"
       ],
-      "suggestedNewTest": "test/contracts/duration-windows.test.js",
+      "suggestedNewTest": "test/unit/actions/data/window-data.test.js",
       "acceptanceCases": [
         "R09-N01",
         "R09-N02",

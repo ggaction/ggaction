@@ -1,17 +1,21 @@
 # R05 — 결측 조합 완성과 대체
 
-원래 감사 번호: **5**. Primary owner: **Phase 2**. 상태: **Proposed / 구현 전**.
-아래 세부 API·수치 정책의 Gate는 승인됐다. 상태의 `Proposed`는 제품 구현·검증이 아직 완료되지 않았다는 뜻이다.
+원래 감사 번호: **5**. Primary owner: **Phase 2**. 상태: **primary 구현 완료 / R02 edit 통합 대기**.
+`9d4d0840`에서 complete/impute grammar·materializer·public API·facet replay·타입·Current 계약·설치 패키지를 구현했다. `editCompleteData`와 `editImputedData`는 R02가 소유하므로 Phase 4에서 닫는다.
 
 ## 목적과 현재 연결점
 
 현재 stack/area가 요구하는 정렬된 group×position 데이터와 결측값 정책을 사용자가 명시적으로 만든다. 관측 없음과 0을 라이브러리가 임의로 같게 취급하지 않는다.
 
 현재 파일(저장소 root 상대 경로):
-- `src/grammar/stack.js`
-- `src/grammar/areaSeries.js`
-- `src/grammar/transformTopology.js`
+- `src/grammar/complete.js`
+- `src/grammar/impute.js`
+- `src/actions/data/complete.js`
+- `src/actions/data/impute.js`
 - `src/actions/data/shared.js`
+- `src/grammar/transformTopology.js`
+- `src/grammar/transforms.js`
+- `types/program.d.ts`
 
 관련 항목: 공통 계약 C01–C12만 선행. 파일이 후속 작업에서 이동하면 역할 owner를 찾아 경로를 갱신하고 비슷한 이름의 구현을 새로 중복 생성하지 않는다.
 
@@ -116,9 +120,9 @@ field가 row에 없으면 오류, own field의 undefined/null만 결측이다. c
 
 ## 완료 조건
 
-- [ ] 위 API의 최단 호출과 explicit 대상 호출, 누락/auto/false/empty 경계를 타입과 runtime으로 동기화했다.
-- [ ] 위 수치 oracle를 실제 capability test에 구현했고 계획 예제를 기대값 생성기로 재사용하지 않았다.
-- [ ] 기존 consumer와 새 consumer에 scale/mark/guide/label/selection/facet/Canvas replay를 검증했다.
-- [ ] Full 등록·타입 export·Current 계약·catalog·card·관계 trace·MCP·문서·installed consumer를 갱신했다.
-- [ ] 미지원 cell은 이유를 적었다. 이 문서에 명시한 필수 cell을 임의 제외하지 않았다.
-- [ ] 해당 Phase의 승인/검증 근거를 기록했다. 추측으로 완료 표시하지 않았다.
+- [x] create API의 최단 호출과 explicit source, method별 옵션, 누락/empty 경계를 타입과 runtime으로 동기화했다.
+- [x] 위 수치 oracle를 `test/unit/actions/data/complete-impute-data.test.js`에 독립 기대값으로 구현했다.
+- [x] point/quantitative encoding과 complete→impute→window→facet-local Canvas replay를 검증했다.
+- [x] Full 등록·타입 export·Current 계약·catalog·card·관계 trace·MCP·문서·installed consumer를 갱신했다.
+- [ ] `editCompleteData`/`editImputedData`, source revision 뒤 label/selection/reference consumer는 R02/Phase 4와 Phase 12에서 검증한다.
+- [x] Phase 2 승인과 `9d4d0840` 검증 근거를 `phase2/STEP1.md`에 기록했다. appearance 전용 Gate V는 data-only라 새 시각 목표가 없다.

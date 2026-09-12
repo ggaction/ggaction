@@ -1,6 +1,6 @@
 # Phase 2 — 결측·지역 달력·기간 window
 
-상태: active. 모든 Gate는 승인됐고 Phase 1 완료 근거 `b891d1d5` 이후 이 Phase를 구현한다.
+상태: completed-primary. `9d4d0840`이 complete/impute, 지역 달력 bucket, duration window와 public surface를 구현했으며 Phase 4의 edit 통합만 후속 의무로 남는다.
 
 ## 목표와 범위
 

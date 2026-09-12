@@ -1,7 +1,7 @@
 # R09 — 기간 기반 window와 최소 관측수
 
-원래 감사 번호: **9**. Primary owner: **Phase 2**. 상태: **Proposed / 구현 전**.
-아래 세부 API·수치 정책의 Gate는 승인됐다. 상태의 `Proposed`는 제품 구현·검증이 아직 완료되지 않았다는 뜻이다.
+원래 감사 번호: **9**. Primary owner: **Phase 2**. 상태: **primary 구현 완료 / R02 edit 통합 대기**.
+`9d4d0840`에서 elapsed-duration frame, closed peers, minPeriods/missing, stable temporal sort와 public 타입·Current 계약·facet replay·설치 패키지를 구현했다. `editWindowData`는 R02가 소유하므로 Phase 4에서 닫는다.
 
 ## 목적과 현재 연결점
 
@@ -99,9 +99,9 @@ window source field 자체가 없는 것은 skip 대상이 아니다. 전체 par
 
 ## 완료 조건
 
-- [ ] 위 API의 최단 호출과 explicit 대상 호출, 누락/auto/false/empty 경계를 타입과 runtime으로 동기화했다.
-- [ ] 위 수치 oracle를 실제 capability test에 구현했고 계획 예제를 기대값 생성기로 재사용하지 않았다.
-- [ ] 기존 consumer와 새 consumer에 scale/mark/guide/label/selection/facet/Canvas replay를 검증했다.
-- [ ] Full 등록·타입 export·Current 계약·catalog·card·관계 trace·MCP·문서·installed consumer를 갱신했다.
-- [ ] 미지원 cell은 이유를 적었다. 이 문서에 명시한 필수 cell을 임의 제외하지 않았다.
-- [ ] 해당 Phase의 승인/검증 근거를 기록했다. 추측으로 완료 표시하지 않았다.
+- [x] row/duration frame, temporalUnit, minPeriods와 missing 경계를 타입과 runtime으로 동기화했다.
+- [x] 위 수치 oracle를 `test/unit/actions/data/window-data.test.js`에 독립 기대값으로 구현했다.
+- [x] same-instant peer/rank, source-order output, point encoding과 facet-local Canvas replay를 검증했다.
+- [x] Full 타입·Current 계약·catalog·card·MCP·문서·installed consumer를 갱신했다.
+- [ ] `editWindowData`와 source revision replay는 R02/Phase 4에서 같은 two-pointer materializer로 검증한다.
+- [x] Phase 2 승인과 `9d4d0840` 검증 근거를 `phase2/STEP1.md`에 기록했다. appearance 전용 Gate V는 data-only라 새 시각 목표가 없다.

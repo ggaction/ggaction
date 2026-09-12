@@ -72,16 +72,18 @@
       "slug": "complete-impute",
       "phase": 2,
       "dependsOn": [],
-      "status": "Proposed",
+      "status": "Implemented-primary",
       "scopeSelection": "user-selected",
       "file": "features/05-complete-impute.md",
       "sources": [
-        "src/grammar/stack.js",
-        "src/grammar/areaSeries.js",
-        "src/grammar/transformTopology.js",
+        "src/grammar/complete.js",
+        "src/grammar/impute.js",
+        "src/actions/data/complete.js",
+        "src/actions/data/impute.js",
         "src/actions/data/shared.js",
-        "src/grammar/window.js",
-        "src/grammar/numeric.js"
+        "src/grammar/transformTopology.js",
+        "src/grammar/transforms.js",
+        "types/program.d.ts"
       ],
       "acceptanceSections": [
         "값·기본값·오류 계약",
@@ -150,7 +152,7 @@
       "slug": "calendar-buckets",
       "phase": 2,
       "dependsOn": [],
-      "status": "Proposed",
+      "status": "Implemented-primary",
       "scopeSelection": "user-selected",
       "file": "features/08-calendar-buckets.md",
       "sources": [
@@ -177,7 +179,7 @@
       "dependsOn": [
         "R08"
       ],
-      "status": "Proposed",
+      "status": "Implemented-primary",
       "scopeSelection": "user-selected",
       "file": "features/09-duration-windows.md",
       "sources": [

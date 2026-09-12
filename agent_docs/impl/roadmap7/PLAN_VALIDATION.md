@@ -56,3 +56,20 @@
 | 구현 순서 | Phase 1 후속 의무와 Phase 2–12 작업·선행 관계·종료 기준 명시 |
 | 문서 링크 | roadmap7 Markdown 38개 상대 링크 검사 통과 |
 | 제품 변경 경계 | 이 runbook checkpoint는 `agent_docs/impl/roadmap7` 문서만 변경 |
+
+## 2026-09-13 Phase 2 구현 검증
+
+`9d4d0840`에서 R05 complete/impute, R08 week/weekday/IANA timeZone, R09 elapsed-duration window의 primary create 경로를 구현했다. R02가 소유하는 edit/revision 경로는 Phase 4의 명시적 후속 의무로 유지한다.
+
+| 검증 | 실제 결과 |
+| --- | --- |
+| 고정 인수 사례 | R05 6개 전부 passed, R08 정상·오류 9개 passed와 lifecycle partial, R09 정상·오류 6개 passed와 lifecycle partial |
+| 핵심 통합 | complete → impute → duration window → point encoding → facet-local replay |
+| 누적 unit | 2,315/2,315, 실패·skip 0 |
+| 누적 contract | 331/331, 실패·skip 0 |
+| public docs | 47/47, generated reference/cards/machine/LLM artifacts 동기화 |
+| installed package | Node·strict TypeScript·MCP·tutorial consumer 통과 |
+| package artifact | 493 entries, packed 611,829 bytes, unpacked 3,059,221 bytes |
+| browser bundle | Full/basic/SVG gzip 306,231/152,450/6,418 bytes; ceiling 308,000/153,000/25,000 |
+| appearance | data-only Phase라 새 visual target 없음; 기존 Cartesian/facet Canvas consumer 실행 |
+| Diff 형식 | `git diff --check` 통과 |
