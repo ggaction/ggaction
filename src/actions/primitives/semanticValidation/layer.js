@@ -17,6 +17,8 @@ import { normalizeCategoryOrder } from "../../../grammar/categoryOrder.js";
 import { validateSemanticFieldType } from "../../../grammar/scales/index.js";
 import { findLayer } from "../../../selectors/layers.js";
 import { validateNonEmptySemanticString } from "./shared.js";
+import { normalizeStatisticalWeight } from
+  "../../../grammar/weightedStatistics.js";
 
 function validateLayerSource(program, parsed, value, sourceMarkTypes) {
   validateUserId(value, "Layer source id");
@@ -81,6 +83,9 @@ export function validateLayerSemanticValue(
     validateParallel?.(property, value);
   }
   if (property.endsWith(".aggregate")) validateAggregate(value);
+  if (property === "encoding.x.weight") {
+    normalizeStatisticalWeight(value, "Histogram weight");
+  }
   if (property.endsWith(".bin.maxBins")) normalizeHistogramBin({ maxBins: value });
   if (property.endsWith(".bin.step")) validateHistogramBinStep(value);
   if (property.endsWith(".bin.boundaries")) validateHistogramBinBoundaries(value);

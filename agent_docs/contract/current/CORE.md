@@ -294,7 +294,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 
 ## `createSummaryData`
 
-- Signature: `createSummaryData({ id, source?, groupBy?, aggregates, members? })`
+- Signature: `createSummaryData({ id, source?, groupBy?, aggregates, members?, weight? })`
 - `id`, `source`: 새 immutable derived dataset ID와 existing materialized source다. `source` 생략 시
   current data를 사용한다.
 - `groupBy`: field name 또는 unique field-name array이며 기본은 `[]`다. Observed group을 source의 첫
@@ -304,6 +304,15 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
   않는 고유 field 이름이다.
 - `members`: optional output field 이름이다. 각 summary row가 해당 source group의 원래 rows를 보존한다.
   Group/output alias와 충돌하면 거부한다.
+- `weight`: optional `{ field, kind: "frequency" | "reliability" }`다. 생략하면 기존 unweighted 결과를
+  유지한다. Frequency weight와 group total은 non-negative safe integer여야 하고 reliability weight는
+  non-negative finite number여야 한다. 모든 요청 value와 weight를 zero-weight row까지 먼저 검증하며,
+  zero-weight rows는 통계와 `members`에서 제외한다. Positive total이 없는 observed group은 오류다.
+- Weighted branch는 `count`, `sum`, `mean`, population/sample variance와 stdev, `stderr`, `median`,
+  `q1`, `q3`, parameterized `quantile`만 지원한다. Frequency quantile은 virtual repetition에 기존 linear
+  quantile을 적용하고 실제 row를 복제하지 않는다. Reliability quantile은 equal values의 weight를 합친
+  inverse CDF다. Sample denominator는 frequency `W-1`, reliability `W-W2/W`; standard error의 effective
+  size는 각각 `W`, `W²/W2`다. Weighted CI와 ordered/nominal aggregates는 명시적으로 거부한다.
 - Effect: normalized `summary` provenance와 concrete values를 같은 호출에서 완성한다. Ungrouped empty
   source는 aggregate identity를 표현하는 한 row를 만들며 `count`는 0이다. Grouped empty source는
   observed group이 없으므로 `[]`다. Missing 수치 결과는 기존 aggregate owner와 동일하게 `undefined`다.
@@ -314,7 +323,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 
 ### Formal values — `createSummaryData`
 
-- Implemented: `createSummaryData({ id: UserId; source?: UserId; groupBy?: FieldName | readonly FieldName[]; aggregates: readonly { op: AggregateOperation; field?: FieldName; as: FieldName }[]; members?: FieldName }): ChartProgram`
+- Implemented: `createSummaryData({ id: UserId; source?: UserId; groupBy?: FieldName | readonly FieldName[]; aggregates: readonly { op: AggregateOperation; field?: FieldName; as: FieldName }[]; members?: FieldName; weight?: StatisticalWeight }): ChartProgram`
 - Proposed (NOT IMPLEMENTED): full categorical cube/empty-group synthesis, callback aggregate.
 
 ### Value coverage — `createSummaryData`
@@ -322,11 +331,13 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - ✅ Covered: grouped/ungrouped, first-appearance ordering, count/mean/missing/ordered first, multiple outputs.
 - ✅ Covered: ungrouped/grouped empty input, null numeric member, members provenance and caller ownership.
 - ✅ Covered: field/type/alias/shape/unknown option and immutable rejection.
+- ✅ Covered: frequency/reliability formulas, distinct quantiles, scale invariance, zero-weight membership,
+  invalid/all-zero/overflow weights and weighted-operation whitelist.
 - Evidence: `test/unit/actions/data/summary-data.test.js`.
 
 ## `createBinData`
 
-- Signature: `createBinData({ id, source?, field, maxBins? | step | boundaries, extent?, nice?, zero?, includeEmpty?, members?, as? })`
+- Signature: `createBinData({ id, source?, field, maxBins? | step | boundaries, extent?, nice?, zero?, includeEmpty?, members?, as?, weight? })`
 - `id`, `source`, `field`: 새 immutable derived ID, materialized source와 필수 quantitative field다.
 - Bin mode: `maxBins`(기본 10), positive `step`, 또는 strictly increasing finite `boundaries` 중 하나다.
   기존 Histogram의 `resolveHistogramBins`와 `findHistogramBinIndex`를 그대로 사용한다.
@@ -335,6 +346,9 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - `nice`, `zero`: Histogram boundary policy와 같은 boolean이며 기본값은 `true`, `false`다.
 - `includeEmpty`: 기본 `true`로 resolved boundary의 모든 bin을 보존한다. `false`는 count 0 bin만 제거한다.
 - `members`: 기본 `false`. `true`면 각 bin의 original source rows를 output에 저장한다.
+- `weight`: optional `StatisticalWeight`. 지정하면 count는 positive-weight row의 weight mass이고 extent와
+  members도 그 rows만 사용한다. 모든 source value/weight는 기여 여부와 관계없이 먼저 검증하며 total
+  weight 0은 오류다. Empty bin의 mass 0은 정상이고 마지막 upper endpoint 포함 규칙은 그대로다.
 - `as`: `{ lower?, upper?, count?, members? }`; 기본은 `${field}_start`, `${field}_end`, `count`, `members`다.
   모든 enabled output은 고유해야 하며 `as.members`는 `members:true`에서만 허용한다.
 - Edge: `[lower, upper)`이고 마지막 bin만 upper endpoint를 포함한다. Resolved domain, step와 boundaries를
@@ -346,14 +360,15 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 
 ### Formal values — `createBinData`
 
-- Implemented: `createBinData({ id: UserId; source?: UserId; field: FieldName; maxBins?: PositiveInteger; step?: PositiveFinite; boundaries?: readonly [Finite, Finite, ...Finite[]]; extent?: "auto" | OrderedFinitePair; nice?: boolean; zero?: boolean; includeEmpty?: boolean; members?: boolean; as?: BinDataOutputFields }): ChartProgram`; bin mode는 상호 배타다.
-- Proposed (NOT IMPLEMENTED): out-of-range drop/clamp policy와 weighted count.
+- Implemented: `createBinData({ id: UserId; source?: UserId; field: FieldName; maxBins?: PositiveInteger; step?: PositiveFinite; boundaries?: readonly [Finite, Finite, ...Finite[]]; extent?: "auto" | OrderedFinitePair; nice?: boolean; zero?: boolean; includeEmpty?: boolean; members?: boolean; as?: BinDataOutputFields; weight?: StatisticalWeight }): ChartProgram`; bin mode는 상호 배타다.
+- Proposed (NOT IMPLEMENTED): out-of-range drop/clamp policy.
 
 ### Value coverage — `createBinData`
 
 - ✅ Covered: explicit boundaries와 마지막 endpoint, equal max bins, zero-anchored step, auto/explicit extent.
 - ✅ Covered: include/omit empty, members, custom/default outputs, concrete ranged mark consumption.
 - ✅ Covered: out-of-range, non-finite/missing field, invalid mode/boundary/boolean/alias와 immutable rejection.
+- ✅ Covered: weighted mass, positive-weight extent/members, zero-weight prevalidation과 invalid/all-zero weights.
 - Evidence: `test/unit/actions/data/bin-data.test.js`.
 
 ## `createFoldData`
@@ -615,13 +630,13 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 
 ## `createDensityData`
 
-- Signature: `createDensityData({ id, source?, field, groupBy?, bandwidth?, extent?, steps?, kernel?, normalization?, as? })`
+- Signature: `createDensityData({ id, source?, field, groupBy?, bandwidth?, extent?, steps?, kernel?, normalization?, weight?, as? })`
 - `id`, `source`, `field`, `groupBy`: Implemented. 새 derived ID, existing source, 필수 quantitative
   field와 optional grouping field다.
 - `bandwidth`
   - Status: Implemented. positive finite number 또는 `"auto"`; 기본은 `"auto"`다.
   - Effect: 선택한 kernel 폭을 결정한다. requested `"auto"`는 그대로 보존하고 deterministic
-    Scott-rule 결과는 revision-owned `resolved.bandwidth`에 별도로 저장한다.
+    rule-of-thumb 결과는 revision-owned `resolved.bandwidth`에 별도로 저장한다.
 - `extent`
   - Status: Implemented. `"auto"` 또는 오름차순 finite `[min, max]`; 기본은 `"auto"`다.
   - Effect: 모든 group이 공유하는 sample grid의 시작과 끝을 결정한다. requested `"auto"`는 그대로
@@ -637,6 +652,18 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
   - Status: Implemented. `"unit" | "count"`; 기본값은 `"unit"`이다.
   - Effect: unit은 group density integral을 1로 맞추고 count는 같은 estimate에 group의 valid sample
     count를 곱한다.
+- `weight`
+  - Status: Implemented. Optional `StatisticalWeight`; 생략은 이전 unweighted KDE transform shape와
+    계산 경로를 유지한다.
+  - Effect: unit은 `sum(w*K)/(W*h)`, count는 `sum(w*K)/h`다. Positive-weight rows만 extent, group
+    membership과 density에 기여하지만 every requested value/weight row는 선검증한다. Auto bandwidth는
+    `1.06*s*nEff^(-1/5)`, `s=min(weighted sample stdev,IQR/1.34)`이며 IQR 0이면 sample stdev를 쓴다.
+    Frequency/reliability의 quantile과 effective-size 정의는 weighted summary와 같다. Auto는
+    `nEff>1`과 positive spread를 요구하고 explicit positive bandwidth는 singleton을 허용한다.
+    Weighted grouped/split auto bandwidth는 profile마다 다시 계산한다. Profile이 하나면
+    `resolved.bandwidth`, 여러 개면 first-appearance 순서의 `resolved.bandwidths`에
+    `{ group?, split?, bandwidth }`를 저장하며 두 필드는 배타다. Explicit bandwidth와 unweighted
+    호출은 기존 단일 `resolved.bandwidth` shape를 유지한다. Facet replay도 각 child source에서 재계산한다.
 - `as`
   - Status: Implemented. 서로 다른 두 개의 non-empty field 이름이며 기본은
     `[`${field}_value`, `${field}_density`]`다.
@@ -652,7 +679,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 
 ### Formal values — `createDensityData`
 
-- Implemented: `createDensityData({ id: UserId; source?: UserId; field: FieldName; groupBy?: FieldName; bandwidth?: "auto" | PositiveFinite; extent?: "auto" | OrderedFinitePair; steps?: IntegerAtLeast2; kernel?: "gaussian" | "epanechnikov" | "uniform" | "triangular"; normalization?: "unit" | "count"; as?: readonly [FieldName, FieldName] })`
+- Implemented: `createDensityData({ id: UserId; source?: UserId; field: FieldName; groupBy?: FieldName; bandwidth?: "auto" | PositiveFinite; extent?: "auto" | OrderedFinitePair; steps?: IntegerAtLeast2; kernel?: "gaussian" | "epanechnikov" | "uniform" | "triangular"; normalization?: "unit" | "count"; weight?: StatisticalWeight; as?: readonly [FieldName, FieldName] })`
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
@@ -678,6 +705,9 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
   - ✅ Covered: four formulas, Gaussian default, invalid value, provenance와 primitive/public parity.
 - `normalization`
   - ✅ Covered: unit/count formulas, unit default, group-local scaling, invalid value와 provenance.
+- `weight`
+  - ✅ Covered: frequency/reliability formulas, auto bandwidth, positive-row extent, scale invariance,
+    zero-weight value validation, all-zero groups and explicit-bandwidth singleton.
 - Numeric range
   - ✅ Covered: full finite-range extent interpolation, large-offset auto bandwidth, finite density invariant와
     unrepresentable grid/estimate rejection.

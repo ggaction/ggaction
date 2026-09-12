@@ -99,6 +99,8 @@ weight:false는 edit 전용 patch sentinel이고 canonical transform에는 저�
 7. Gaussian KDE unit=sum(w*exp(-.5*((x-xi)/h)^2))/(W*h*sqrt(2*pi)); count는 W배. bandwidth:auto는 feature 수식을 사용한다. explicit positive h는 effective sample size1에도 허용한다.
 8. 현재 density grid/extent/kernel/output-order/work-budget는 유지한다. finite grid의 적분을 무조건1로 다시 정규화하지 않는다.
 
+Weighted `bandwidth:"auto"`는 `groupBy`와 split의 각 실제 profile에서 별도로 계산한다. Profile이 하나면 기존처럼 `resolved.bandwidth:number`를 저장한다. 둘 이상이면 하나의 전역 숫자를 실제 계산값인 것처럼 저장하지 않고 `resolved.bandwidths`를 first-appearance profile 순서의 `{group?,split?,bandwidth}` 배열로 저장한다. `resolved.bandwidth`와 `resolved.bandwidths`는 배타다. Explicit bandwidth와 unweighted legacy path는 기존 단일 `resolved.bandwidth` shape를 유지한다. Facet replay는 resolved 값을 제거한 requested transform에서 다시 materialize하므로 각 child source에서 같은 규칙을 다시 실행한다.
+
 ### 계층별 완료 의무
 
 data creators → statistical encoders → complete facades → edit/replay 모두 weight를 보존한다. histogram bin count를 다시 단순 row count로 덮지 않는다. violin은 먼저 weighted profile을 계산한 뒤 기존 unit/count/width 정규화를 적용하며 반쪽/그룹 profile끼리 weights를 섞지 않는다. 새 facade의 옵션만 받고 하위 requested transform에 weight가 없는 구현은 실패다.

@@ -3,7 +3,7 @@ import { validateOptions } from "./shared.js";
 
 const HISTOGRAM_OPTIONS = Object.freeze([
   "field", "target", "coordinate", "maxBins", "binStep", "binBoundaries",
-  "stack", "xScale", "yScale"
+  "stack", "xScale", "yScale", "weight"
 ]);
 
 const encodeHistogram = action(
@@ -28,7 +28,8 @@ const encodeHistogram = action(
         : { maxBins: args.maxBins ?? 10 };
     const x = {
       field: args.field,
-      bin
+      bin,
+      ...(args.weight === undefined ? {} : { weight: args.weight })
     };
     const y = {
       stack: Object.hasOwn(args, "stack") ? args.stack : "zero"

@@ -48,6 +48,21 @@ shape. `resolve: "shared"` uses one density maximum across categories;
 `"independent"` gives each category its own maximum. The default is
 `{ band: 0.8, resolve: "shared" }`.
 
+For weighted observations, put the definition inside `density`:
+
+```javascript
+.createViolinPlot({
+  x: "category",
+  y: "value",
+  density: {
+    weight: { field: "surveyWeight", kind: "reliability" }
+  }
+})
+```
+
+Each category or split profile uses its own positive-weight membership. The
+same weighted rules determine unit/count density and automatic bandwidth.
+
 ## Split a category into two halves
 
 ```javascript
@@ -102,6 +117,9 @@ const revised = program.editViolinPlot({
   density: { bandwidth: 1.1 }
 });
 ```
+
+Use `density: { weight: false }` in `editViolinPlot` to return to unweighted
+profiles. Omitting `weight` preserves the current mode.
 
 The owner ID stays stable while the action creates a new immutable density-data
 revision and reconciles orientation, scales, axes, grid, selections, and

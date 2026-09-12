@@ -395,3 +395,77 @@ test("preflights incompatible violin role revisions atomically", () => {
   assert.equal(before.semanticSpec.layers[0].data, "violinsDensityData");
   assert.equal(before.markConfigs.violins.violinPlot.orientation, "vertical");
 });
+
+test("violin density owns statistical weight and supports explicit removal", () => {
+  const values = [
+    { category: "A", value: 1, weight: 1 },
+    { category: "A", value: 2, weight: 2 },
+    { category: "B", value: 3, weight: 1 },
+    { category: "B", value: 4, weight: 2 }
+  ];
+  const weighted = chart()
+    .createCanvas({ width: 520, height: 360, margin: 70 })
+    .createData({ values })
+    .createViolinPlot({
+    id: "violins",
+    x: "category",
+    y: "value",
+    density: {
+      weight: { field: "weight", kind: "reliability" },
+      bandwidth: 1,
+      extent: [0, 5],
+      steps: 8
+    },
+    guides: false
+  });
+  const transform = program => program.semanticSpec.datasets.find(
+    dataset => dataset.id === program.semanticSpec.layers[0].data
+  ).transform[0];
+
+  assert.deepEqual(transform(weighted).weight, {
+    field: "weight",
+    kind: "reliability"
+  });
+  assert.deepEqual(weighted.markConfigs.violins.violinPlot.density.weight, {
+    field: "weight",
+    kind: "reliability"
+  });
+  const unweighted = weighted.editViolinPlot({
+    target: "violins",
+    density: { weight: false }
+  });
+  assert.equal(transform(unweighted).weight, undefined);
+  assert.equal(unweighted.markConfigs.violins.violinPlot.density.weight, undefined);
+});
+
+test("replays weighted automatic bandwidth from each facet source", () => {
+  const faceted = chart()
+    .createCanvas({ width: 520, height: 360, margin: 70 })
+    .createData({ values: [
+      { panel: "narrow", category: "A", value: 0, weight: 1 },
+      { panel: "narrow", category: "A", value: 1, weight: 1 },
+      { panel: "wide", category: "A", value: 0, weight: 1 },
+      { panel: "wide", category: "A", value: 10, weight: 1 }
+    ] })
+    .createViolinPlot({
+      id: "violins",
+      x: "category",
+      y: "value",
+      density: {
+        weight: { field: "weight", kind: "reliability" },
+        steps: 8
+      },
+      guides: false
+    })
+    .facet({ field: "panel", guides: { legend: false } });
+  const bandwidths = faceted.compositionSpec.children.map(id => {
+    const child = faceted.children[id];
+    const dataset = child.semanticSpec.datasets.find(candidate =>
+      candidate.id.startsWith(`${id}-violinsDensityData`)
+    );
+    return dataset.transform[0].resolved.bandwidth;
+  });
+
+  assert.equal(bandwidths.length, 2);
+  assert.ok(Math.abs(bandwidths[1] / bandwidths[0] - 10) < 1e-12);
+});

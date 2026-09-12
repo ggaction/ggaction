@@ -320,3 +320,43 @@ test("rejects ambiguous, conflicting, and invalid density requests atomically", 
   );
   assert.equal(encoded.semanticSpec.datasets.length, 1);
 });
+
+test("forwards and removes statistical weight through density revisions", () => {
+  const weightedRows = [
+    { value: 1, group: "A", weight: 1 },
+    { value: 2, group: "A", weight: 2 },
+    { value: 3, group: "B", weight: 1 },
+    { value: 4, group: "B", weight: 2 }
+  ];
+  const source = chart()
+    .createCanvas({ width: 400, height: 300, margin: 50 })
+    .createData({ id: "source", values: weightedRows })
+    .createAreaMark({ id: "density" });
+  const weighted = source.encodeDensity({
+    target: "density",
+    source: "source",
+    field: "value",
+    groupBy: "group",
+    weight: { field: "weight", kind: "reliability" },
+    bandwidth: 1,
+    extent: [0, 5],
+    steps: 5
+  });
+  const transform = program => program.semanticSpec.datasets.find(
+    dataset => dataset.id === program.semanticSpec.layers[0].data
+  ).transform[0];
+
+  assert.deepEqual(transform(weighted).weight, {
+    field: "weight",
+    kind: "reliability"
+  });
+  const unweighted = weighted.editDensity({
+    target: "density",
+    weight: false
+  });
+  assert.equal(transform(unweighted).weight, undefined);
+  assert.deepEqual(transform(weighted).weight, {
+    field: "weight",
+    kind: "reliability"
+  });
+});

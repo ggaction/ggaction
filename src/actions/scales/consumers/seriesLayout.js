@@ -9,7 +9,6 @@ import {
   resolveBarGrain
 } from "../../../grammar/bars/policy.js";
 import {
-  countHistogramBins,
   findHistogramBinIndex,
   resolveHistogramBins
 } from "../../../grammar/histogram.js";
@@ -22,11 +21,12 @@ import {
 } from "../../../grammar/seriesLayout.js";
 import {
   readNominalField,
-  readQuantitativeField,
   resolveOrdinalDomain
 } from "../../../grammar/scales/index.js";
 import { findDataset } from "../../../selectors/datasets.js";
 import { findScale } from "./common.js";
+import { resolveHistogramInput } from
+  "../../../materialization/bars/histogram.js";
 
 export function resolveHistogramCountValues(program, consumer) {
   const xEncoding = consumer.layer.encoding?.x;
@@ -44,7 +44,8 @@ export function resolveHistogramCountValues(program, consumer) {
       `Histogram mark "${consumer.layer.id}" requires an existing dataset.`
     );
   }
-  const xValues = readQuantitativeField(dataset.values, xEncoding.field);
+  const input = resolveHistogramInput(dataset, xEncoding);
+  const xValues = input.values;
   const bins = resolveHistogramBins({
     values: xValues,
     bin: xEncoding.bin,
@@ -52,7 +53,12 @@ export function resolveHistogramCountValues(program, consumer) {
     nice: xScale.nice ?? true,
     zero: xScale.zero ?? false
   });
-  return countHistogramBins(xValues, bins.boundaries);
+  const cells = bins.boundaries.slice(0, -1).map(() => []);
+  xValues.forEach((value, index) => {
+    const bin = findHistogramBinIndex(value, bins.boundaries);
+    if (bin !== -1) cells[bin].push(input.entries[index]);
+  });
+  return cells.map(input.mass);
 }
 
 function resolveHistogramPartitions(program, consumer) {
@@ -60,7 +66,8 @@ function resolveHistogramPartitions(program, consumer) {
   const dataset = findDataset(program, layer.data);
   const xEncoding = layer.encoding.x;
   const xScale = findScale(program, xEncoding.scale);
-  const xValues = readQuantitativeField(dataset.values, xEncoding.field);
+  const input = resolveHistogramInput(dataset, xEncoding);
+  const xValues = input.values;
   const bins = resolveHistogramBins({
     values: xValues,
     bin: xEncoding.bin,
@@ -70,19 +77,24 @@ function resolveHistogramPartitions(program, consumer) {
   });
   const colorEncoding = layer.encoding?.color;
   if (layer.encoding?.group !== undefined) {
-    const identity = readSeriesIdentity(dataset.values, layer);
+    const identity = readSeriesIdentity(input.rows, layer);
     validateGeneratedItemLimit((bins.boundaries.length - 1) * identity.domain.length, "Histogram layout cell count");
-    const counts = bins.boundaries.slice(0, -1).map(() => identity.domain.map(() => 0));
+    const cells = bins.boundaries.slice(0, -1).map(() => identity.domain.map(() => []));
     const groups = new Map(identity.domain.map((value, index) => [value, index]));
     xValues.forEach((value, index) => { const bin = findHistogramBinIndex(value, bins.boundaries);
-      if (bin !== -1) counts[bin][groups.get(identity.values[index])] += 1; });
-    return counts;
+      if (bin !== -1) cells[bin][groups.get(identity.values[index])].push(input.entries[index]); });
+    return cells.map(partition => partition.map(input.mass));
   }
   if (colorEncoding?.scale === undefined) {
-    return countHistogramBins(xValues, bins.boundaries).map(value => [value]);
+    const cells = bins.boundaries.slice(0, -1).map(() => []);
+    xValues.forEach((value, index) => {
+      const bin = findHistogramBinIndex(value, bins.boundaries);
+      if (bin !== -1) cells[bin].push(input.entries[index]);
+    });
+    return cells.map(entries => [input.mass(entries)]);
   }
   const colorScale = findScale(program, colorEncoding.scale);
-  const colorValues = readNominalField(dataset.values, colorEncoding.field);
+  const colorValues = readNominalField(input.rows, colorEncoding.field);
   const colorDomain = resolveOrdinalDomain(colorScale.domain, colorValues);
   validateGeneratedItemLimit(
     (bins.boundaries.length - 1) * colorDomain.length,
@@ -90,14 +102,16 @@ function resolveHistogramPartitions(program, consumer) {
   );
   const colorIndex = new Map(colorDomain.map((value, index) => [value, index]));
   const partitions = bins.boundaries.slice(0, -1).map(() =>
-    colorDomain.map(() => 0)
+    colorDomain.map(() => [])
   );
   for (let index = 0; index < xValues.length; index += 1) {
     const bin = findHistogramBinIndex(xValues[index], bins.boundaries);
     const color = colorIndex.get(colorValues[index]);
-    if (bin !== -1 && color !== undefined) partitions[bin][color] += 1;
+    if (bin !== -1 && color !== undefined) {
+      partitions[bin][color].push(input.entries[index]);
+    }
   }
-  return partitions;
+  return partitions.map(partition => partition.map(input.mass));
 }
 
 function resolveAggregatePartitions(program, consumer) {

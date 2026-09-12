@@ -10,6 +10,15 @@ import {
   requireFiniteResult,
   stableFiniteDeviation
 } from "./numeric.js";
+import {
+  normalizeStatisticalWeight,
+  readStatisticalWeights,
+  summarizeStatisticalWeights,
+  validateWeightedNumericFields,
+  weightedBandwidth,
+  weightedEntriesExtent,
+  weightedKernelEstimate
+} from "./weightedStatistics.js";
 
 const SQRT_TWO_PI = Math.sqrt(2 * Math.PI);
 
@@ -261,10 +270,88 @@ function validateStoredDensityPlacement(value, groupBy) {
   return value;
 }
 
+function validateResolvedBandwidths(value, transform) {
+  if (!Array.isArray(value) || value.length === 0) {
+    throw new TypeError(
+      "Density resolved bandwidths must be a non-empty array."
+    );
+  }
+  const normalized = value.map((item, index) => {
+    if (!isPlainObject(item)) {
+      throw new TypeError(
+        `Density resolved bandwidth ${index} must be a plain object.`
+      );
+    }
+    const unknown = Object.keys(item).find(
+      key => !["group", "split", "bandwidth"].includes(key)
+    );
+    if (unknown !== undefined) {
+      throw new Error(
+        `Unknown density resolved bandwidth property "${unknown}".`
+      );
+    }
+    if (!Number.isFinite(item.bandwidth) || item.bandwidth <= 0) {
+      throw new RangeError(
+        `Density resolved bandwidth ${index} must be positive and finite.`
+      );
+    }
+    if (transform.groupBy === undefined) {
+      if (Object.hasOwn(item, "group")) {
+        throw new Error(
+          "Density resolved bandwidth cannot store a group without groupBy."
+        );
+      }
+    } else if (!Object.hasOwn(item, "group") || !isNominalValue(item.group)) {
+      throw new TypeError(
+        `Density resolved bandwidth ${index} requires a nominal group.`
+      );
+    }
+    if (transform.placement?.split === undefined) {
+      if (Object.hasOwn(item, "split")) {
+        throw new Error(
+          "Density resolved bandwidth cannot store a split without split placement."
+        );
+      }
+    } else if (!Object.hasOwn(item, "split") || !isNominalValue(item.split)) {
+      throw new TypeError(
+        `Density resolved bandwidth ${index} requires a nominal split.`
+      );
+    }
+    return item;
+  });
+  for (let index = 0; index < normalized.length; index += 1) {
+    const duplicate = normalized.slice(0, index).some(item =>
+      Object.is(item.group, normalized[index].group) &&
+      Object.is(item.split, normalized[index].split)
+    );
+    if (duplicate) {
+      throw new Error(
+        `Density resolved bandwidth ${index} duplicates an earlier profile.`
+      );
+    }
+  }
+  return value;
+}
+
+function hasValidResolvedBandwidthState(resolved, transform) {
+  const hasBandwidth = Object.hasOwn(resolved, "bandwidth");
+  const hasBandwidths = Object.hasOwn(resolved, "bandwidths");
+  if (hasBandwidth === hasBandwidths) return false;
+  if (hasBandwidth) {
+    return Number.isFinite(resolved.bandwidth) && resolved.bandwidth > 0;
+  }
+  try {
+    validateResolvedBandwidths(resolved.bandwidths, transform);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 export function validateDensityTransform(transform) {
   const supported = [
     "type", "field", "groupBy", "bandwidth", "extent", "steps", "as",
-    "resolve", "kernel", "normalization", "placement", "resolved"
+    "resolve", "kernel", "normalization", "placement", "weight", "resolved"
   ];
   const unknown = Object.keys(transform).find(key => !supported.includes(key));
   if (unknown !== undefined) {
@@ -274,6 +361,9 @@ export function validateDensityTransform(transform) {
     throw new Error(`Unsupported density transform "${transform.type}".`);
   }
   requireField(transform.field, "Density field");
+  if (transform.weight !== undefined) {
+    normalizeStatisticalWeight(transform.weight, "Density weight");
+  }
   if (transform.groupBy !== undefined) {
     requireField(transform.groupBy, "Density groupBy");
   }
@@ -301,10 +391,9 @@ export function validateDensityTransform(transform) {
       typeof resolved !== "object" ||
       Array.isArray(resolved) ||
       Object.keys(resolved).some(
-        key => !["bandwidth", "extent", "splitDomain"].includes(key)
+        key => !["bandwidth", "bandwidths", "extent", "splitDomain"].includes(key)
       ) ||
-      !Number.isFinite(resolved.bandwidth) ||
-      resolved.bandwidth <= 0 ||
+      !hasValidResolvedBandwidthState(resolved, transform) ||
       !Array.isArray(resolved.extent) ||
       resolved.extent.length !== 2 ||
       !resolved.extent.every(Number.isFinite) ||
@@ -319,7 +408,7 @@ export function validateDensityTransform(transform) {
       })())
     ) {
       throw new TypeError(
-        "Density resolved provenance requires a positive bandwidth, ascending finite extent, and optional two-value split domain."
+        "Density resolved provenance requires one positive bandwidth or profile bandwidth list, an ascending finite extent, and an optional two-value split domain."
       );
     }
   }
@@ -363,22 +452,26 @@ export function estimateDensityBandwidth(values) {
   return bandwidth;
 }
 
-function resolveBandwidth(value, sourceValues) {
+function resolveBandwidth(value, sourceValues, weightSummary, field) {
   if (value === undefined || value === "auto") {
-    return estimateDensityBandwidth(sourceValues);
+    return weightSummary === undefined
+      ? estimateDensityBandwidth(sourceValues)
+      : weightedBandwidth(weightSummary, field);
   }
   return validateDensityBandwidth(value);
 }
 
-function resolveExtent(value, sourceValues) {
+function resolveExtent(value, sourceValues, weightSummary, field) {
   if (value === undefined || value === "auto") {
-    let lower = Infinity;
-    let upper = -Infinity;
-    for (const sourceValue of sourceValues) {
-      lower = Math.min(lower, sourceValue);
-      upper = Math.max(upper, sourceValue);
-    }
-    const extent = [lower, upper];
+    const extent = weightSummary === undefined
+      ? sourceValues.reduce(
+          ([lower, upper], sourceValue) => [
+            Math.min(lower, sourceValue),
+            Math.max(upper, sourceValue)
+          ],
+          [Infinity, -Infinity]
+        )
+      : weightedEntriesExtent(weightSummary, field);
     if (extent[0] === extent[1]) {
       throw new Error("Density observed extent requires varying finite values.");
     }
@@ -407,6 +500,17 @@ function estimateAt(sample, values, bandwidth, kernel, normalization) {
   return requireFiniteResult(stable, "Density estimate");
 }
 
+function estimateWeightedAt(sample, summary, field, bandwidth, kernel, normalization) {
+  return weightedKernelEstimate(
+    summary,
+    field,
+    sample,
+    bandwidth,
+    KERNEL_FUNCTIONS[kernel],
+    normalization
+  );
+}
+
 export function deriveKernelDensity(values, {
   field,
   groupBy,
@@ -416,7 +520,8 @@ export function deriveKernelDensity(values, {
   kernel = "gaussian",
   normalization = "unit",
   as,
-  placement
+  placement,
+  weight
 } = {}) {
   if (!Array.isArray(values)) {
     throw new TypeError("Density values must be an array.");
@@ -437,29 +542,66 @@ export function deriveKernelDensity(values, {
   )];
   const resolvedKernel = validateDensityKernel(kernel);
   const resolvedNormalization = validateDensityNormalization(normalization);
-  const validRows = values.filter(row =>
-    row !== null &&
-    typeof row === "object" &&
-    Number.isFinite(row[sourceField]) &&
-    (groupField === undefined || isNominalValue(row[groupField])) &&
-    (placement?.split === undefined || isNominalValue(row[placement.split.field]))
-  );
+  const statisticalWeights = weight === undefined
+    ? undefined
+    : readStatisticalWeights(values, weight, "Density");
+  if (statisticalWeights !== undefined) {
+    validateWeightedNumericFields(
+      statisticalWeights.entries,
+      [sourceField],
+      "Density"
+    );
+  }
+  const validEntries = statisticalWeights === undefined
+    ? undefined
+    : statisticalWeights.entries.filter(entry =>
+        (groupField === undefined || isNominalValue(entry.row[groupField])) &&
+        (placement?.split === undefined ||
+          isNominalValue(entry.row[placement.split.field]))
+      );
+  const validRows = statisticalWeights === undefined
+    ? values.filter(row =>
+        row !== null &&
+        typeof row === "object" &&
+        Number.isFinite(row[sourceField]) &&
+        (groupField === undefined || isNominalValue(row[groupField])) &&
+        (placement?.split === undefined || isNominalValue(row[placement.split.field]))
+      )
+    : validEntries.map(entry => entry.row);
   if (validRows.length === 0) {
     throw new Error("Density requires at least one valid field/group row.");
   }
-  validateWorkLimit(validRows.length * steps, "Density computation");
-  const sourceValues = validRows.map(row => row[sourceField]);
-  const resolvedBandwidth = resolveBandwidth(bandwidth, sourceValues);
-  const resolvedExtent = resolveExtent(extent, sourceValues);
+  const globalWeightSummary = statisticalWeights === undefined
+    ? undefined
+    : summarizeStatisticalWeights(
+        validEntries,
+        statisticalWeights.definition.kind,
+        "Density data"
+      );
+  validateWorkLimit(
+    (globalWeightSummary?.positive.length ?? validRows.length) * steps,
+    "Density computation"
+  );
+  const sourceValues = globalWeightSummary === undefined
+    ? validRows.map(row => row[sourceField])
+    : globalWeightSummary.positive.map(entry => entry.row[sourceField]);
+  const resolvedExtent = resolveExtent(
+    extent,
+    sourceValues,
+    globalWeightSummary,
+    sourceField
+  );
   const groupedValues = new Map();
-  for (const row of validRows) {
+  const groupedSource = statisticalWeights === undefined ? validRows : validEntries;
+  for (const source of groupedSource) {
+    const row = statisticalWeights === undefined ? source : source.row;
     const group = groupField === undefined ? undefined : row[groupField];
     const split = placement?.split === undefined
       ? undefined
       : row[placement.split.field];
     const bySplit = groupedValues.get(group) ?? new Map();
     const groupValues = bySplit.get(split) ?? [];
-    groupValues.push(row[sourceField]);
+    groupValues.push(statisticalWeights === undefined ? row[sourceField] : source);
     bySplit.set(split, groupValues);
     groupedValues.set(group, bySplit);
   }
@@ -492,6 +634,16 @@ export function deriveKernelDensity(values, {
     outputGroups * steps,
     "Density generated row count"
   );
+  const profileBandwidths = statisticalWeights !== undefined &&
+    bandwidth === "auto" && outputGroups > 1;
+  const resolvedBandwidth = profileBandwidths
+    ? undefined
+    : resolveBandwidth(
+        bandwidth,
+        sourceValues,
+        globalWeightSummary,
+        sourceField
+      );
   const extentSpan = resolvedExtent[1] - resolvedExtent[0];
   const sampleStep = extentSpan / (steps - 1);
   const samples = Array.from(
@@ -516,10 +668,30 @@ export function deriveKernelDensity(values, {
     );
   }
   const rows = [];
+  const resolvedBandwidths = [];
   for (const group of groups) {
     for (const split of splits) {
       const groupValues = groupedValues.get(group).get(split) ?? [];
       if (groupValues.length === 0) continue;
+      const groupWeightSummary = statisticalWeights === undefined
+        ? undefined
+        : summarizeStatisticalWeights(
+            groupValues,
+            statisticalWeights.definition.kind,
+            "Density group"
+          );
+      const groupBandwidth = resolvedBandwidth ?? weightedBandwidth(
+        groupWeightSummary,
+        sourceField,
+        "Density group auto bandwidth"
+      );
+      if (profileBandwidths) {
+        resolvedBandwidths.push({
+          ...(groupField === undefined ? {} : { group }),
+          ...(placement?.split === undefined ? {} : { split }),
+          bandwidth: groupBandwidth
+        });
+      }
       for (const sample of samples) {
         rows.push({
           ...(groupField === undefined
@@ -531,13 +703,22 @@ export function deriveKernelDensity(values, {
             ? {}
             : { [placement.split.field]: split }),
           [outputFields[0]]: sample,
-          [outputFields[1]]: estimateAt(
-            sample,
-            groupValues,
-            resolvedBandwidth,
-            resolvedKernel,
-            resolvedNormalization
-          )
+          [outputFields[1]]: groupWeightSummary === undefined
+            ? estimateAt(
+                sample,
+                groupValues,
+                groupBandwidth,
+                resolvedKernel,
+                resolvedNormalization
+              )
+            : estimateWeightedAt(
+                sample,
+                groupWeightSummary,
+                sourceField,
+                groupBandwidth,
+                resolvedKernel,
+                resolvedNormalization
+              )
         });
       }
     }
@@ -551,7 +732,9 @@ export function deriveKernelDensity(values, {
     },
     groups,
     ...(splitDomain === undefined ? {} : { splitDomain }),
-    bandwidth: resolvedBandwidth,
+    ...(resolvedBandwidth === undefined
+      ? { bandwidths: resolvedBandwidths }
+      : { bandwidth: resolvedBandwidth }),
     kernel: resolvedKernel,
     normalization: resolvedNormalization,
     extent: resolvedExtent,

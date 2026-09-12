@@ -1,6 +1,11 @@
 import { aggregateRows } from "./aggregate.js";
 import { BAR_GRAINS, resolveBarChannels, resolveBarGrain } from "./bars/policy.js";
 import { stableFiniteSum } from "./numeric.js";
+import {
+  readStatisticalWeights,
+  statisticalWeightTotal,
+  summarizeStatisticalWeights
+} from "./weightedStatistics.js";
 
 const CONTENTS = new Set(["category", "value", "share"]);
 const NORMALIZATIONS = new Set(["source", "category"]);
@@ -44,7 +49,19 @@ export function normalizeMarkLabelContent(source, { content, normalizeBy }) {
 
 function itemValue(source, item) {
   if (source.mark.type === "bar") {
-    if (resolveBarGrain(source) === BAR_GRAINS.histogram) return item.members.length;
+    if (resolveBarGrain(source) === BAR_GRAINS.histogram) {
+      const weight = source.encoding.x.weight;
+      if (weight === undefined || item.members.length === 0) return item.members.length;
+      const weighted = readStatisticalWeights(item.members, weight, "Histogram label");
+      return statisticalWeightTotal(
+        summarizeStatisticalWeights(
+          weighted.entries,
+          weighted.definition.kind,
+          "Histogram label"
+        ),
+        "Histogram label value"
+      );
+    }
     const measure = source.encoding[resolveBarChannels(source).measure];
     return measure.aggregate === "count" ? item.members.length
       : aggregateRows(item.members, measure.field, measure.aggregate);

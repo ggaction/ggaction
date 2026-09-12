@@ -39,6 +39,7 @@ test.before(async () => {
     <canvas id="reference-rect" aria-label="Constant interval shading"></canvas>
     <canvas id="semantic-labels" aria-label="Pie shares from final source items"></canvas>
     <canvas id="parallel-reencoded" aria-label="Reordered Parallel dimension axes"></canvas>
+    <canvas id="weighted-histogram" aria-label="Frequency weighted histogram"></canvas>
     <div id="svg"></div><div id="svg-resources"></div><script type="importmap">
     {"imports":{"ggaction":"/node_modules/ggaction/src/index.js","ggaction/basic":"/node_modules/ggaction/src/basic.js","ggaction/svg":"/node_modules/ggaction/src/renderers/svg.js"}}
     </script><script type="module">
@@ -67,6 +68,19 @@ test.before(async () => {
         })
         .editMarkSelection({ selection: "focus", field: "x", op: "min" })
         .removeMarkSelection({ selection: "focus" });
+      const weightedHistogram = chart()
+        .createCanvas({ width: 240, height: 180, margin: 40 })
+        .createData({ values: [
+          { value: 1, weight: 1 },
+          { value: 3, weight: 3 },
+          { value: 1000, weight: 0 }
+        ] })
+        .createHistogram({
+          field: "value",
+          binBoundaries: [0, 2, 4],
+          weight: { field: "weight", kind: "frequency" },
+          guides: false
+        });
       const editedLegend = chart()
         .createCanvas({
           width: 800,
@@ -151,6 +165,10 @@ test.before(async () => {
       const basicThemedProgram = basicProgram.applyTheme({ theme: "dark" });
       const canvas = document.querySelector("#chart");
       render(program, canvas.getContext("2d"));
+      render(
+        weightedHistogram,
+        document.querySelector("#weighted-histogram").getContext("2d")
+      );
       const legendCanvas = document.querySelector("#legend");
       render(editedLegend, legendCanvas.getContext("2d"));
       const axisCanvas = document.querySelector("#axis");
@@ -577,6 +595,14 @@ test.before(async () => {
         polarTitleY: polarComponents.graphicSpec.objects.radialAxisTitle.properties.y,
         polarSharedAngle: polarComponents.guideConfigs.axis.radius.layout.angle,
         polarSVGTitle: renderToSVG(polarComponents).includes("Long radial title"),
+        weightedHistogram: {
+          xDomain: weightedHistogram.resolvedScales.x.domain,
+          yDomain: weightedHistogram.resolvedScales.y.domain,
+          items: weightedHistogram.graphicSpec.objects.histogram.items.length,
+          heights: weightedHistogram.graphicSpec.objects.histogram.items.map(
+            item => item.properties.height
+          )
+        },
         width: canvas.width,
         height: canvas.height,
         points: program.graphicSpec.objects.point.items.length,
@@ -745,6 +771,12 @@ test("imports and renders the packed browser entries", async () => {
     polarTitleY: 358,
     polarSharedAngle: 180,
     polarSVGTitle: true,
+    weightedHistogram: {
+      xDomain: [0, 4],
+      yDomain: [0, 3],
+      items: 2,
+      heights: [33.33333333333333, 100]
+    },
     width: 160,
     height: 120,
     points: 2,

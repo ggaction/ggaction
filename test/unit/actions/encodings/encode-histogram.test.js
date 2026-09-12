@@ -283,3 +283,55 @@ test("infers a unique histogram target and rejects ambiguity", () => {
   );
   assert.deepEqual(withoutBar.semanticSpec.layers, []);
 });
+
+test("encodes weighted histogram mass and excludes zero-weight extent", () => {
+  const rows = [
+    { value: 1, w: 1 },
+    { value: 3, w: 3 },
+    { value: 1000, w: 0 }
+  ];
+  const source = chart()
+    .createCanvas({ width: 400, height: 300, margin: 50 })
+    .createData({ id: "source", values: rows })
+    .createBarMark({ id: "bars" });
+  const weighted = source.encodeHistogram({
+    field: "value",
+    binBoundaries: [1, 2, 3],
+    weight: { field: "w", kind: "frequency" }
+  });
+  const layer = weighted.semanticSpec.layers[0];
+
+  assert.deepEqual(layer.encoding.x.weight, {
+    field: "w",
+    kind: "frequency"
+  });
+  assert.deepEqual(weighted.resolvedScales.x.domain, [1, 3]);
+  assert.deepEqual(weighted.resolvedScales.y.domain, [0, 3]);
+  assert.equal(weighted.graphicSpec.objects.bars.items.length, 2);
+  assert.ok(
+    weighted.graphicSpec.objects.bars.items[1].properties.height >
+      weighted.graphicSpec.objects.bars.items[0].properties.height
+  );
+
+  const unweighted = weighted.encodeHistogram({
+    field: "value",
+    binBoundaries: [1, 500, 1000]
+  });
+  assert.equal(unweighted.semanticSpec.layers[0].encoding.x.weight, undefined);
+  assert.deepEqual(unweighted.resolvedScales.x.domain, [1, 1000]);
+});
+
+test("rejects invalid histogram statistical weights atomically", () => {
+  const create = values => chart()
+    .createCanvas({ width: 300, height: 200, margin: 30 })
+    .createData({ id: "source", values })
+    .createBarMark({ id: "bars" });
+  assert.throws(() => create([{ value: 1, w: 0 }]).encodeHistogram({
+    field: "value",
+    weight: { field: "w", kind: "frequency" }
+  }), /positive total weight/);
+  assert.throws(() => create([{ value: 1, w: 0.5 }]).encodeHistogram({
+    field: "value",
+    weight: { field: "w", kind: "frequency" }
+  }), /safe integers/);
+});

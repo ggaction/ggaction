@@ -79,7 +79,7 @@ non-finite measures, and undersized mean groups are omitted; valid source rows
 and the source dataset remain unchanged. A summary whose derived finite center
 or endpoint is not representable throws a `RangeError` atomically.
 
-## `createDensityData({ id, source?, field, groupBy?, bandwidth?, extent?, steps?, kernel?, normalization?, as? })`
+## `createDensityData({ id, source?, field, groupBy?, bandwidth?, extent?, steps?, kernel?, normalization?, weight?, as? })`
 
 Create an immutable kernel-density dataset. This is an advanced data
 action used by higher-level density-chart encodings.
@@ -99,11 +99,12 @@ program.createDensityData({
 | `source` | existing dataset ID | current dataset |
 | `field` | quantitative field name | required |
 | `groupBy` | nominal field name | one ungrouped density |
-| `bandwidth` | positive number or `"auto"` | automatic Scott-rule estimate |
+| `bandwidth` | positive number or `"auto"` | automatic rule-of-thumb estimate |
 | `extent` | ascending finite pair or `"auto"` | observed valid extent |
 | `steps` | integer from `2` through `10,000` | `100` |
 | `kernel` | `"gaussian"`, `"epanechnikov"`, `"uniform"`, or `"triangular"` | `"gaussian"` |
 | `normalization` | `"unit"` or `"count"` | `"unit"` |
+| `weight` | `{ field, kind: "frequency" | "reliability" }` | unweighted |
 | `as` | two distinct output field names | `<field>_value`, `<field>_density` |
 
 Grouped densities use one shared extent and inclusive sample grid. Group order
@@ -115,6 +116,16 @@ each complete group density to one; count normalization scales it by that
 group's valid sample count. Density output is limited to 10,000 rows, and
 valid source rows multiplied by `steps` must not exceed the 10,000,000-unit
 work budget. Source values remain unchanged.
+
+Weighted density validates every requested value and weight, including rows
+whose weight is zero. Only positive-weight rows contribute to the observed
+extent, profiles, and membership. `unit` divides weighted kernel mass by total
+weight; `count` preserves that mass. Automatic bandwidth uses weighted sample
+spread and effective sample size, and is recomputed for every group, split
+profile, and facet child. Multiple profiles store their individual resolved
+bandwidths in first-appearance order. Frequency weights are non-negative safe
+integers; reliability weights are non-negative finite numbers. Use an explicit
+positive bandwidth when a weighted profile has effective sample size one.
 
 ## Related
 

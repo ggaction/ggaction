@@ -3,7 +3,7 @@ import { derivedCreator, derivedMaterializer } from "./shared.js";
 
 const OPTIONS = Object.freeze([
   "id", "source", "field", "groupBy", "bandwidth", "extent", "steps",
-  "kernel", "normalization", "as"
+  "kernel", "normalization", "as", "weight"
 ]);
 const CATEGORICAL_OPTIONS = Object.freeze([...OPTIONS, "placement"]);
 
@@ -19,6 +19,7 @@ function densityTransform(args, placement) {
     normalization: args.normalization ?? "unit",
     as: args.as ?? [`${args.field}_value`, `${args.field}_density`],
     resolve: "shared",
+    ...(args.weight === undefined ? {} : { weight: args.weight }),
     ...(placement === undefined ? {} : { placement })
   };
 }
@@ -43,7 +44,9 @@ export const materializeDensityData = derivedMaterializer(
   (result, transform) => [{
     ...transform,
     resolved: {
-      bandwidth: result.bandwidth,
+      ...(result.bandwidth === undefined
+        ? { bandwidths: result.bandwidths }
+        : { bandwidth: result.bandwidth }),
       extent: result.extent,
       ...(result.splitDomain === undefined
         ? {}

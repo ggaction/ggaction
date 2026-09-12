@@ -4,10 +4,18 @@ import {
   normalizeHistogramBin,
   resolveHistogramBins
 } from "./histogram.js";
+import {
+  normalizeStatisticalWeight,
+  readStatisticalWeights,
+  sumEntryWeights,
+  summarizeStatisticalWeights,
+  validateWeightedNumericFields,
+  weightedRows
+} from "./weightedStatistics.js";
 
 const TRANSFORM_KEYS = Object.freeze([
   "type", "field", "bin", "extent", "nice", "zero", "includeEmpty",
-  "members", "as", "resolved"
+  "members", "as", "weight", "resolved"
 ]);
 const AS_KEYS = Object.freeze(["lower", "upper", "count", "members"]);
 const RESOLVED_KEYS = Object.freeze(["domain", "step", "boundaries"]);
@@ -50,7 +58,8 @@ export function normalizeBinTransform({
   zero,
   includeEmpty,
   members,
-  as
+  as,
+  weight
 } = {}) {
   const selected = [maxBins, step, boundaries].filter(value => value !== undefined);
   if (selected.length > 1) {
@@ -71,7 +80,10 @@ export function normalizeBinTransform({
     zero: zero ?? false,
     includeEmpty: includeEmpty ?? true,
     members: resolvedMembers,
-    as: normalizeAs(field, as, resolvedMembers)
+    as: normalizeAs(field, as, resolvedMembers),
+    ...(weight === undefined
+      ? {}
+      : { weight: normalizeStatisticalWeight(weight, "Bin weight") })
   };
   validateBinTransform(transform);
   return cloneAndFreeze(transform);
@@ -86,6 +98,9 @@ export function validateBinTransform(transform) {
     throw new Error(`Unsupported bin transform "${transform.type}".`);
   }
   requireField(transform.field, "Bin field");
+  if (transform.weight !== undefined) {
+    normalizeStatisticalWeight(transform.weight, "Bin weight");
+  }
   normalizeHistogramBin(transform.bin);
   if (
     transform.extent !== "auto" &&
@@ -140,30 +155,60 @@ function readValues(rows, field) {
 export function deriveBinRows(rows, transform) {
   validateBinTransform(transform);
   const values = readValues(rows, transform.field);
+  const weights = transform.weight === undefined
+    ? undefined
+    : readStatisticalWeights(rows, transform.weight, "Bin");
+  if (weights !== undefined) {
+    validateWeightedNumericFields(weights.entries, [transform.field], "Bin");
+  }
+  const weightSummary = weights === undefined
+    ? undefined
+    : summarizeStatisticalWeights(
+        weights.entries,
+        weights.definition.kind,
+        "Bin data"
+      );
+  const contributingValues = weightSummary === undefined
+    ? values
+    : weightSummary.positive.map(entry => entry.row[transform.field]);
   if (
     transform.extent !== "auto" &&
-    values.some(value => value < transform.extent[0] || value > transform.extent[1])
+    contributingValues.some(value =>
+      value < transform.extent[0] || value > transform.extent[1]
+    )
   ) {
     throw new RangeError("Bin extent must contain the histogram data extent.");
   }
   const resolved = resolveHistogramBins({
-    values,
+    values: contributingValues,
     bin: transform.bin,
     domain: transform.extent,
     nice: transform.nice,
     zero: transform.zero
   });
   const members = resolved.boundaries.slice(0, -1).map(() => []);
-  values.forEach((value, index) => {
+  const entries = weightSummary === undefined
+    ? rows.map((row, index) => ({ row, index }))
+    : weightSummary.positive;
+  entries.forEach(entry => {
+    const value = entry.row[transform.field];
     const bin = findHistogramBinIndex(value, resolved.boundaries);
-    if (bin !== -1) members[bin].push(rows[index]);
+    if (bin !== -1) members[bin].push(entry);
   });
   const output = members.flatMap((group, index) =>
     !transform.includeEmpty && group.length === 0 ? [] : [{
       [transform.as.lower]: resolved.boundaries[index],
       [transform.as.upper]: resolved.boundaries[index + 1],
-      [transform.as.count]: group.length,
-      ...(transform.members ? { [transform.as.members]: group } : {})
+      [transform.as.count]: weightSummary === undefined
+        ? group.length
+        : sumEntryWeights(group, weightSummary, "Bin mass"),
+      ...(transform.members
+        ? {
+            [transform.as.members]: weightSummary === undefined
+              ? group.map(entry => entry.row)
+              : weightedRows({ positive: group })
+          }
+        : {})
     }]
   );
   return {

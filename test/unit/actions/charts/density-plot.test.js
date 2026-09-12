@@ -138,3 +138,21 @@ test("forwards every existing kernel and normalization without changing their st
     }
   }
 });
+
+test("createDensityPlot forwards statistical weight to its derived profile", () => {
+  const program = base([
+    { value: 1, weight: 1 },
+    { value: 3, weight: 3 }
+  ]).createDensityPlot({
+    field: "value",
+    weight: { field: "weight", kind: "frequency" },
+    bandwidth: 1,
+    extent: [0, 4],
+    steps: 5,
+    guides: false
+  });
+  assert.deepEqual(program.semanticSpec.datasets.at(-1).transform[0].weight, {
+    field: "weight",
+    kind: "frequency"
+  });
+});

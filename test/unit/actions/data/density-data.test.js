@@ -362,6 +362,28 @@ test("validates density derivation and action options", () => {
     }),
     /resolved provenance/
   );
+  assert.throws(
+    () => source.createDerivedData({
+      id: "invalidResolvedPair",
+      source: "source",
+      transform: [{
+        type: "density",
+        field: "value",
+        groupBy: "group",
+        bandwidth: "auto",
+        extent: "auto",
+        steps: 10,
+        as: ["sample", "density"],
+        resolve: "shared",
+        resolved: {
+          bandwidth: 1,
+          bandwidths: [{ group: "A", bandwidth: 1 }],
+          extent: [1, 2]
+        }
+      }]
+    }),
+    /resolved provenance/
+  );
 });
 
 test("does not mutate or retain caller-owned density inputs", () => {
@@ -405,4 +427,124 @@ test("releases only unreferenced derived data through a wrapped action", () => {
     () => derived.releaseDerivedData({ id: "density", extra: true }),
     /Unknown releaseDerivedData option/
   );
+});
+
+test("computes weighted KDE values, count mass, and positive-weight extent", () => {
+  const values = [
+    { value: 1, w: 1 },
+    { value: 3, w: 3 },
+    { value: 1000, w: 0 }
+  ];
+  const unit = deriveKernelDensity(values, {
+    field: "value",
+    weight: { field: "w", kind: "frequency" },
+    bandwidth: 1,
+    extent: [1, 3],
+    steps: 2,
+    as: ["sample", "density"]
+  });
+  const count = deriveKernelDensity(values, {
+    field: "value",
+    weight: { field: "w", kind: "frequency" },
+    bandwidth: 1,
+    extent: [1, 3],
+    steps: 2,
+    normalization: "count",
+    as: ["sample", "density"]
+  });
+  const expected = (1 + 3 * Math.exp(-2)) / (4 * Math.sqrt(2 * Math.PI));
+
+  assert.ok(Math.abs(unit.values[0].density - expected) < 1e-15);
+  assert.ok(Math.abs(count.values[0].density - expected * 4) < 1e-15);
+  assert.deepEqual(unit.extent, [1, 3]);
+
+  const automatic = deriveKernelDensity(values, {
+    field: "value",
+    weight: { field: "w", kind: "frequency" },
+    steps: 2
+  });
+  assert.deepEqual(automatic.extent, [1, 3]);
+  assert.equal(Number.isFinite(automatic.bandwidth), true);
+});
+
+test("keeps reliability KDE shape invariant under weight scaling", () => {
+  const derive = multiplier => deriveKernelDensity([
+    { value: 1, w: multiplier },
+    { value: 3, w: 3 * multiplier }
+  ], {
+    field: "value",
+    weight: { field: "w", kind: "reliability" },
+    steps: 5
+  });
+  const original = derive(1);
+  const scaled = derive(10);
+  assert.equal(original.bandwidth, scaled.bandwidth);
+  assert.deepEqual(original.values, scaled.values);
+});
+
+test("resolves weighted automatic bandwidth independently for each profile", () => {
+  const values = [
+    { group: "narrow", value: 0, w: 1 },
+    { group: "narrow", value: 1, w: 1 },
+    { group: "wide", value: 0, w: 1 },
+    { group: "wide", value: 10, w: 1 }
+  ];
+  const result = deriveKernelDensity(values, {
+    field: "value",
+    groupBy: "group",
+    weight: { field: "w", kind: "reliability" },
+    extent: [0, 10],
+    steps: 3
+  });
+
+  assert.equal(result.bandwidth, undefined);
+  assert.equal(result.bandwidths.length, 2);
+  assert.equal(result.bandwidths[0].group, "narrow");
+  assert.equal(result.bandwidths[1].group, "wide");
+  assert.ok(Math.abs(
+    result.bandwidths[1].bandwidth / result.bandwidths[0].bandwidth - 10
+  ) < 1e-12);
+
+  const program = chart()
+    .createData({ id: "source", values })
+    .createDensityData({
+      id: "density",
+      field: "value",
+      groupBy: "group",
+      weight: { field: "w", kind: "reliability" },
+      extent: [0, 10],
+      steps: 3
+    });
+  const resolved = program.semanticSpec.datasets[1].transform[0].resolved;
+  assert.equal(resolved.bandwidth, undefined);
+  assert.deepEqual(resolved.bandwidths, result.bandwidths);
+});
+
+test("validates weighted KDE rows before excluding zero contribution", () => {
+  assert.throws(() => deriveKernelDensity([
+    { value: Number.NaN, w: 0 },
+    { value: 1, w: 1 }
+  ], {
+    field: "value",
+    weight: { field: "w", kind: "frequency" },
+    bandwidth: 1,
+    extent: [0, 2]
+  }), /finite number at row 0/);
+  assert.throws(() => deriveKernelDensity([{ value: 1, w: 0 }], {
+    field: "value",
+    weight: { field: "w", kind: "reliability" },
+    bandwidth: 1,
+    extent: [0, 2]
+  }), /positive total weight/);
+  assert.throws(() => deriveKernelDensity([{ value: 1, w: 1 }], {
+    field: "value",
+    weight: { field: "w", kind: "reliability" },
+    extent: [0, 2]
+  }), /effective sample size greater than one/);
+  assert.doesNotThrow(() => deriveKernelDensity([{ value: 1, w: 1 }], {
+    field: "value",
+    weight: { field: "w", kind: "reliability" },
+    bandwidth: 1,
+    extent: [0, 2]
+  }));
 });

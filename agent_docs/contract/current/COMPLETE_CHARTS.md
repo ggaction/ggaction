@@ -515,7 +515,7 @@ Default id는 `piePlot`, lifecycle은 Aggregate create-only다.
 
 ## `createDensityPlot`
 
-`createDensityPlot({ id?, data?, coordinate?, field, groupBy?, bandwidth?, extent?, steps?, kernel?, normalization?, as?, densityChannel?, valueScale?, densityScale?, color?, area?, guides? })`.
+`createDensityPlot({ id?, data?, coordinate?, field, groupBy?, bandwidth?, extent?, steps?, kernel?, normalization?, weight?, as?, densityChannel?, valueScale?, densityScale?, color?, area?, guides? })`.
 Default id는 `densityPlot`, lifecycle은 Aggregate create-only다.
 
 - Field는 필수 quantitative source field다. GroupBy 생략/false는 ungrouped, string은 explicit group이다.
@@ -523,6 +523,8 @@ Default id는 `densityPlot`, lifecycle은 Aggregate create-only다.
 - 기존 kernel vocabulary, gaussian default, bandwidth/extent auto, steps 100, unit normalization을 유지한다.
   유효 numeric rows만 사용한다. Constant/singleton은 explicit positive bandwidth와 increasing extent로 작성한다.
   As는 distinct output field pair다. Derived snapshot은 group(있을 때), value와 density만 유지한다.
+- `weight`는 `StatisticalWeight`이고 lower density transform에 그대로 저장한다. Weighted unit/count,
+  positive-row extent와 auto-bandwidth semantics는 `createDensityData`가 소유한다.
 - DensityChannel y는 x=value/y=density, x는 x=density/y=value다. Baseline만 지원하고 category placement는 Violin owner다.
   Value/density scale는 기존 quantitative position vocabulary며 density는 zero를 포함해야 한다.
 - Color는 생략하면 없음. String/object field를 지정하면 groupBy와 같아야 하며 fieldType nominal/ordinal,
@@ -548,6 +550,7 @@ Default id는 `densityPlot`, lifecycle은 Aggregate create-only다.
 
 - ✅ Covered: shortest defaults, explicit group/no-color/opt-out, invalid/missing rows, singleton, custom output names,
   role/option/style/guide errors, shared guides, optional undefined, selected profile membership, immutable failures.
+- ✅ Covered: weighted density facade forwarding and provenance.
 - ✅ Covered: three public/primitive semantic/graphic/order/Canvas pairs and lower statistics/style/scale/resize revisions.
 - Evidence: `test/unit/actions/charts/density-plot.test.js`, `test/charts/density-plot/{primitive,public}.test.js`,
   `test/charts/density-plot/{png,vector}.render.js`, `examples/density-plot/program.js`, `scripts/package-consumer.js`.

@@ -259,6 +259,23 @@ test("supports histogram step bins and validates the atomic bin contract", () =>
   assert.equal(source.semanticSpec.layers.length, 0);
 });
 
+test("createHistogram forwards statistical weight to histogram encoding", () => {
+  const program = base([
+    { value: 1, weight: 1 },
+    { value: 3, weight: 3 }
+  ]).createHistogram({
+    field: "value",
+    binBoundaries: [1, 2, 3],
+    weight: { field: "weight", kind: "frequency" },
+    guides: false
+  });
+  assert.deepEqual(program.semanticSpec.layers[0].encoding.x.weight, {
+    field: "weight",
+    kind: "frequency"
+  });
+  assert.deepEqual(program.resolvedScales.y.domain, [0, 3]);
+});
+
 test("uses explicit/current data and requires explicit IDs after stable conflicts", () => {
   const source = chart()
     .createCanvas({ width: 400, height: 300, margin: 60 })

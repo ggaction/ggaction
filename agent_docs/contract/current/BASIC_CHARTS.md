@@ -198,6 +198,7 @@ createHistogram({
   stack?: StackMode;
   xScale?: NonPointQuantitativePositionScaleOptions;
   yScale?: NonPointZeroSupportingPositionScaleOptions;
+  weight?: StatisticalWeight;
   color?: FieldName | ColorEncodingOptionsWithoutTarget;
   bar?: BarMarkAppearanceOptions;
   guides?: false | CreateGuidesOptions;
@@ -209,13 +210,15 @@ createHistogram({
 - Default `maxBins` is `10`; `maxBins`, `binStep` and `binBoundaries` remain mutually exclusive. Count, stack,
   normalized fill, empty-bin omission and x/y scale policy are owned by `encodeHistogram` and bar materialization.
 - Constant appearance belongs to `bar`; grouped/filled color uses the existing color policy.
+- `weight` forwards unchanged to `encodeHistogram`; weighted mass owns bin height, layout, scale, labels and
+  selection membership.
 - Semantic/graphic/render output exactly matches the equivalent explicit chain and approved Cars histogram primitive.
 
 ### Formal values — `createHistogram`
 
 - Implemented: `createHistogram(options: CreateHistogramOptions): ChartProgram`.
 - Required: `field`; optional: `id`, `data`, `coordinate`, `maxBins`, `binStep`, `binBoundaries`, `stack`,
-  `xScale`, `yScale`, `color`, `bar`, `guides`.
+  `xScale`, `yScale`, `weight`, `color`, `bar`, `guides`.
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
@@ -224,6 +227,7 @@ createHistogram({
 - ✅ Covered: shortest default bins, stable/explicit ID and explicit/current data.
 - ✅ Covered: max bins, step, boundaries, zero/normalize stack, color fill and appearance.
 - ✅ Covered: mutually exclusive bin validation, empty field, guide default/disable and immutable failure.
+- ✅ Covered: frequency/reliability weight forwarding and weighted y-scale/geometry.
 - ✅ Covered: Browser Canvas, Node PNG and approved primitive equality.
 - Evidence: `test/unit/actions/charts/bar-histogram-facades.test.js`,
   `test/charts/cars-histogram/public.test.js`, and

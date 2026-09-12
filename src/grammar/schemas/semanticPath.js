@@ -18,6 +18,7 @@ const ENCODING_PATHS = Object.freeze([
   "encoding.x.bin.maxBins",
   "encoding.x.bin.step",
   "encoding.x.bin.boundaries",
+  "encoding.x.weight",
   "encoding.color.layout",
   "encoding.color.aggregate",
   "encoding.group.fields",

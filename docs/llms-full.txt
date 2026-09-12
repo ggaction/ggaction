@@ -4593,7 +4593,7 @@ corresponding higher-level action when the library should materialize values:
 | `type` | Public transform shape | Value-producing action |
 | --- | --- | --- |
 | `"bin2d"` | `{ type, x, y, bins, extent, includeEmpty, members, as, resolved? }` | `createBin2DData` |
-| `"bin"` | `{ type, field, bin, extent, nice, zero, includeEmpty, members, as, resolved? }` | `createBinData` |
+| `"bin"` | `{ type, field, bin, extent, nice, zero, includeEmpty, members, as, weight?, resolved? }` | `createBinData` |
 | `"computed"` | `{ type, as, expression }` | `createComputedData` |
 | `"normalize"` | `{ type, field, as, groupBy, method, ...methodPolicies }` | `createNormalizedData` |
 | `"complete"` | `{ type, key, groupBy, values? or sequence?, fill, members? }` | `createCompleteData` |
@@ -4601,10 +4601,10 @@ corresponding higher-level action when the library should materialize values:
 | `"filter"` | `{ type, field, oneOf }`, `{ type, field, predicate }`, or `{ type, field, range }` | `filterData` |
 | `"fold"` | `{ type, fields, as }` | `createFoldData` |
 | `"regression"` | `{ type, method, x, y, groupBy?, ...methodParameters }` | `createRegressionData` |
-| `"density"` | `{ type, field, groupBy?, bandwidth, extent, steps, kernel?, normalization?, as, resolve: "shared", resolved? }` | `createDensityData` |
+| `"density"` | `{ type, field, groupBy?, bandwidth, extent, steps, kernel?, normalization?, weight?, as, resolve: "shared", resolved? }` | `createDensityData` |
 | `"horizon"` | `{ type, x, y, groupBy?, bands, baseline, extent, resolve, missing, overflow, palette, ... }` | `encodeHorizon` |
 | `"interval"` | `{ type, field, groupBy, center, extent, level?, as }` | `createIntervalData` |
-| `"summary"` | `{ type, groupBy, aggregates, members? }` | `createSummaryData` |
+| `"summary"` | `{ type, groupBy, aggregates, members?, weight? }` | `createSummaryData` |
 | `"stack"` | `{ type, category, group, value, mode, as }` | `createStackData` |
 | `"timeUnit"` | `{ type, field, unit, as, temporalUnit?, timeZone?, ...weekPolicy }` | `createTimeUnitData` |
 | `"window"` | `{ type, partitionBy, sortBy, operations, temporalUnit? }` | `createWindowData` |
@@ -4660,7 +4660,7 @@ result is rejected. Composite marks and marks backed by an owned density,
 horizon, or final-item filter recipe must use their documented edit or filter
 lifecycle because changing only one layer would break the resource.
 
-## `createSummaryData({ id, source?, groupBy?, aggregates, members? })` {#createsummarydata-id-source-groupby-aggregates-members}
+## `createSummaryData({ id, source?, groupBy?, aggregates, members?, weight? })` {#createsummarydata-id-source-groupby-aggregates-members}
 
 Create reusable aggregate rows without tying the calculation to a chart type:
 
@@ -4688,6 +4688,13 @@ An ungrouped empty input produces one aggregate row, so a row count is `0`.
 A grouped empty input produces no observed groups. The action does not synthesize
 unobserved categorical combinations.
 
+Set `weight` to `{ field, kind: "frequency" | "reliability" }` for weighted
+count, sum, mean, variance, standard deviation, standard error, median, q1/q3,
+or quantile. Frequency weights act like virtual repeated rows without allocating
+them; reliability weights use effective sample size for sample statistics. The
+action validates every requested value and weight before grouping. Zero-weight
+rows remain in the source but are omitted from statistical membership.
+
 ## `createBinData({ id, source?, field, ...binOptions })` {#createbindata-id-source-field-binoptions}
 
 Materialize one-dimensional bin bounds and counts for reuse by ranged marks,
@@ -4713,6 +4720,11 @@ extent or boundaries must contain every source value.
 The normalized transform stores resolved boundaries, so consumers share the
 same bin decisions. Set `includeEmpty: false` to omit zero-count bins and
 `members: true` to retain each bin's original source rows.
+
+`weight: { field, kind }` changes each count to weighted mass. Automatic extent
+and members use positive-weight rows, while zero-weight rows are still validated.
+Frequency weights require non-negative safe integers; reliability weights require
+non-negative finite numbers.
 
 ## `createFoldData({ id, source?, fields, as? })` {#createfolddata-id-source-fields-as}
 
@@ -5107,7 +5119,7 @@ non-finite measures, and undersized mean groups are omitted; valid source rows
 and the source dataset remain unchanged. A summary whose derived finite center
 or endpoint is not representable throws a `RangeError` atomically.
 
-## `createDensityData({ id, source?, field, groupBy?, bandwidth?, extent?, steps?, kernel?, normalization?, as? })`
+## `createDensityData({ id, source?, field, groupBy?, bandwidth?, extent?, steps?, kernel?, normalization?, weight?, as? })`
 
 Create an immutable kernel-density dataset. This is an advanced data
 action used by higher-level density-chart encodings.
@@ -5127,11 +5139,12 @@ program.createDensityData({
 | `source` | existing dataset ID | current dataset |
 | `field` | quantitative field name | required |
 | `groupBy` | nominal field name | one ungrouped density |
-| `bandwidth` | positive number or `"auto"` | automatic Scott-rule estimate |
+| `bandwidth` | positive number or `"auto"` | automatic rule-of-thumb estimate |
 | `extent` | ascending finite pair or `"auto"` | observed valid extent |
 | `steps` | integer from `2` through `10,000` | `100` |
 | `kernel` | `"gaussian"`, `"epanechnikov"`, `"uniform"`, or `"triangular"` | `"gaussian"` |
 | `normalization` | `"unit"` or `"count"` | `"unit"` |
+| `weight` | `{ field, kind: "frequency" | "reliability" }` | unweighted |
 | `as` | two distinct output field names | `<field>_value`, `<field>_density` |
 
 Grouped densities use one shared extent and inclusive sample grid. Group order
@@ -5143,6 +5156,16 @@ each complete group density to one; count normalization scales it by that
 group's valid sample count. Density output is limited to 10,000 rows, and
 valid source rows multiplied by `steps` must not exceed the 10,000,000-unit
 work budget. Source values remain unchanged.
+
+Weighted density validates every requested value and weight, including rows
+whose weight is zero. Only positive-weight rows contribute to the observed
+extent, profiles, and membership. `unit` divides weighted kernel mass by total
+weight; `count` preserves that mass. Automatic bandwidth uses weighted sample
+spread and effective sample size, and is recomputed for every group, split
+profile, and facet child. Multiple profiles store their individual resolved
+bandwidths in first-appearance order. Frequency weights are non-negative safe
+integers; reliability weights are non-negative finite numbers. Use an explicit
+positive bandwidth when a weighted profile has effective sample size one.
 
 ## Related
 
@@ -7708,6 +7731,21 @@ shape. `resolve: "shared"` uses one density maximum across categories;
 `"independent"` gives each category its own maximum. The default is
 `{ band: 0.8, resolve: "shared" }`.
 
+For weighted observations, put the definition inside `density`:
+
+```javascript
+.createViolinPlot({
+  x: "category",
+  y: "value",
+  density: {
+    weight: { field: "surveyWeight", kind: "reliability" }
+  }
+})
+```
+
+Each category or split profile uses its own positive-weight membership. The
+same weighted rules determine unit/count density and automatic bandwidth.
+
 ## Split a category into two halves
 
 ```javascript
@@ -7762,6 +7800,9 @@ const revised = program.editViolinPlot({
   density: { bandwidth: 1.1 }
 });
 ```
+
+Use `density: { weight: false }` in `editViolinPlot` to return to unweighted
+profiles. Omitting `weight` preserves the current mode.
 
 The owner ID stays stable while the action creates a new immutable density-data
 revision and reconciles orientation, scales, axes, grid, selections, and
@@ -9299,6 +9340,21 @@ program.encodeHistogram({ field: "Displacement", maxBins: 10 });
 It calls the wrapped x and y actions below without duplicating their inference
 or validation.
 
+Pass a statistical weight when rows represent repeated observations or have
+unequal reliability:
+
+```javascript
+program.encodeHistogram({
+  field: "Displacement",
+  weight: { field: "frequency", kind: "frequency" }
+});
+```
+
+The weighted mass drives bin heights, stacks, the y scale, value/share labels,
+and selection membership. Zero-weight rows are validated but do not extend the
+automatic x domain or become members. `kind: "reliability"` accepts any finite
+non-negative weight; `kind: "frequency"` requires safe integers.
+
 ## Binned bar `encodeX(options)`
 
 | Option | Type | Default |
@@ -9316,6 +9372,7 @@ or validation.
 | `scale.range` | `"auto"` or two finite numbers | `"auto"` |
 | `scale.nice` | boolean | `true` |
 | `scale.zero` | boolean | `false` |
+| `weight` | `{ field, kind: "frequency" | "reliability" }` | unweighted |
 
 Automatic nice bins use `1, 2, 3, 5 × 10ⁿ` steps and never exceed `maxBins`.
 Exact-step bins use zero as their grid anchor and expand an automatic domain

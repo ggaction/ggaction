@@ -786,18 +786,21 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 
 ## `encodeHistogram`
 
-- Signature: `encodeHistogram({ field, target?, coordinate?, maxBins?, binStep?, binBoundaries?, stack?, xScale?, yScale? })`
+- Signature: `encodeHistogram({ field, target?, coordinate?, maxBins?, binStep?, binBoundaries?, stack?, xScale?, yScale?, weight? })`
 - `field`, `target`, `coordinate`: binned x에 전달되는 field와 optional target/coordinate다.
 - `maxBins`: positive integer, 기본값 `10`; `encodeX.bin.maxBins`로 전달된다.
 - `binStep`, `binBoundaries`: exact-width/explicit-boundary modes이며 maxBins와 mutually exclusive다.
 - `stack`: `"zero" | "normalize" | null`, 기본값 `"zero"`; `encodeY`로 전달된다.
 - `xScale`, `yScale`: optional scale objects이며 각각 child x/y action에 전달된다.
+- `weight`: optional `StatisticalWeight`이며 binned x provenance에 저장된다. Bin extent, every rendered
+  segment mass, stack/group layout, y-scale domain, positive-row selection membership와 semantic value/share
+  labels가 같은 weighted count를 사용한다. 새 encode 호출에서 생략하면 unweighted로 교체된다.
 - Effect: wrapped `encodeX`와 `encodeY`를 원자적으로 결합해 bin/count semantics와 concrete rects를 만든다.
 - Coverage: histogram unit/chart tests가 defaults, stack, bin boundaries, scale rules와 trace hierarchy를 검증한다.
 
 ### Formal values — `encodeHistogram`
 
-- Implemented: `encodeHistogram({ field: FieldName; target?: UserId; coordinate?: UserId; maxBins?: PositiveInteger; binStep?: PositiveFinite; binBoundaries?: readonly [Finite, Finite, ...Finite[]]; stack?: "zero" | "normalize" | null; xScale?: NonPointQuantitativePositionScale; yScale?: NonPointZeroSupportingPositionScale })`; 세 bin option은 mutually exclusive다.
+- Implemented: `encodeHistogram({ field: FieldName; target?: UserId; coordinate?: UserId; maxBins?: PositiveInteger; binStep?: PositiveFinite; binBoundaries?: readonly [Finite, Finite, ...Finite[]]; stack?: "zero" | "normalize" | null; xScale?: NonPointQuantitativePositionScale; yScale?: NonPointZeroSupportingPositionScale; weight?: StatisticalWeight })`; 세 bin option은 mutually exclusive다.
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
@@ -821,17 +824,21 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 - Reassignment
   - ✅ Covered: full x/y field replacement, stale bin-mode removal, existing stack/color/legend preservation,
     inferred guide refresh, explicit guide-value preservation, atomic failure와 primitive/public parity.
+- `weight`
+  - ✅ Covered: frequency mass, zero-weight extent/membership, scale and rectangle geometry, facade forwarding,
+    omission removal, invalid fractional/all-zero input and immutable failure.
 - Evidence: `test/unit/actions/encodings/encode-histogram.test.js`와 histogram chart tests.
 
 ## `encodeDensity`
 
-- Signature: `encodeDensity({ field, target?, source?, groupBy?, bandwidth?, extent?, steps?, kernel?, normalization?, as?, densityChannel?, coordinate?, valueScale?, densityScale?, placement? })`
+- Signature: `encodeDensity({ field, target?, source?, groupBy?, bandwidth?, extent?, steps?, kernel?, normalization?, weight?, as?, densityChannel?, coordinate?, valueScale?, densityScale?, placement? })`
 - `groupBy:false` requests ungrouped density and survives JSON serialization.
 - `field`, `source`, `bandwidth`, `extent`, `steps`, `as`: `createDensityData`와 같은 계약이며
   derived ID는 `${target}DensityData`로 namespace된다.
 - `kernel`: `"gaussian" | "epanechnikov" | "uniform" | "triangular"`; 생략 시 Gaussian이다.
 - `normalization`: `"unit" | "count"`; 생략 시 unit이며 count는 group-local sample count로 magnitude를
   조정한다.
+- `weight`: optional `StatisticalWeight`; `createDensityData`의 weighted KDE 계약을 그대로 전달한다.
 - `target`: area mark ID. 생략하면 current 또는 유일한 eligible area를 추론한다.
 - `densityChannel`: `"x" | "y"`. Baseline default는 `"y"`이고 y이면 value→x/density→y,
   x이면 반대로 연결한다. Category placement default는 `"x"`이고 category→x/value→y violin을 만든다.
@@ -853,7 +860,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 
 ### Formal values — `encodeDensity`
 
-- Implemented: `encodeDensity({ field: FieldName; target?: UserId; source?: UserId; groupBy?: FieldName | false; bandwidth?: "auto" | PositiveFinite; extent?: "auto" | OrderedFinitePair; steps?: IntegerAtLeast2; kernel?: "gaussian" | "epanechnikov" | "uniform" | "triangular"; normalization?: "unit" | "count"; as?: readonly [FieldName, FieldName]; densityChannel?: "x" | "y"; coordinate?: UserId; valueScale?: PositionScale; densityScale?: PositionScale; placement?: { type: "baseline" } | { type: "category"; side?: "both" | "left" | "right" | "top" | "bottom"; width?: { band?: UnitIntervalExclusiveOrOne; resolve?: "shared" | "independent" }; split?: { field: FieldName; domain?: readonly [unknown, unknown] }; scale?: BandScale } })`
+- Implemented: `encodeDensity({ field: FieldName; target?: UserId; source?: UserId; groupBy?: FieldName | false; bandwidth?: "auto" | PositiveFinite; extent?: "auto" | OrderedFinitePair; steps?: IntegerAtLeast2; kernel?: DensityKernel; normalization?: DensityNormalization; weight?: StatisticalWeight; as?: readonly [FieldName, FieldName]; densityChannel?: "x" | "y"; coordinate?: UserId; valueScale?: PositionScale; densityScale?: PositionScale; placement?: DensityPlacement })`
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
@@ -875,6 +882,8 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
     excluding zero is rejected before materialization.
 - `kernel`, `normalization`
   - ✅ Covered: closed vocabularies, defaults, forwarding, provenance, formula fixtures와 scale/path parity.
+- `weight`
+  - ✅ Covered: data-action forwarding, grouped profile geometry and immutable provenance.
 - `placement`
   - ✅ Covered: baseline omission compatibility, full/left/right/top/bottom, split inferred/explicit domain,
     shared/independent width, band containment, category scale, invalid side/split/band/densityScale combinations.
@@ -882,7 +891,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 
 ## `editDensity`
 
-- Signature: `editDensity({ target?, source?, field?, groupBy?, bandwidth?, extent?, steps?, kernel?, normalization?, densityChannel?, valueScale?, placement? })`.
+- Signature: `editDensity({ target?, source?, field?, groupBy?, bandwidth?, extent?, steps?, kernel?, normalization?, weight?, densityChannel?, valueScale?, placement? })`.
 - `target`: existing density-encoded area layer ID. current 또는 유일한 eligible layer를 추론하며 ambiguity는
   explicit target을 요구한다.
 - 최소 한 density option이 필요하다. `source`와 `field`는 input provenance를 replace하고 `groupBy`는 field 또는
@@ -890,6 +899,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
   coordinate와 position scale IDs는 기존 provenance와 encoding에서 유지한다. `densityChannel`은 x/y role을
   교체하고 `valueScale`은 현재 value-axis scale definition을 patch한다. `placement`는
   category width/split/scale를 revise하거나 `{ type: "baseline" }`으로 baseline mode를 복원한다.
+- `weight` object는 replace, `false`는 remove이며 omission은 현재 weighted/unweighted state를 보존한다.
 - `${target}DensityDataRevision${n}` ID로 wrapped `createDensityData`를 호출하고 layer data를 explicit
   `editSemantic` child로 rebind한다. 이전 derived dataset이 더 이상 참조되지 않으면 internal wrapped
   `releaseDerivedData`가 전체 resource를 제거한다.
@@ -899,7 +909,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 
 ### Formal values — `editDensity`
 
-- Implemented: `editDensity({ target?: UserId; source?: UserId; field?: FieldName; groupBy?: FieldName | false; bandwidth?: "auto" | PositiveFinite; extent?: "auto" | OrderedFinitePair; steps?: IntegerAtLeast2; kernel?: "gaussian" | "epanechnikov" | "uniform" | "triangular"; normalization?: "unit" | "count"; densityChannel?: "x" | "y"; valueScale?: NonPointQuantitativePositionScaleOptions; placement?: DensityPlacement })`.
+- Implemented: `editDensity({ target?: UserId; source?: UserId; field?: FieldName; groupBy?: FieldName | false; bandwidth?: "auto" | PositiveFinite; extent?: "auto" | OrderedFinitePair; steps?: IntegerAtLeast2; kernel?: DensityKernel; normalization?: DensityNormalization; weight?: StatisticalWeight | false; densityChannel?: "x" | "y"; valueScale?: NonPointQuantitativePositionScaleOptions; placement?: DensityPlacement })`.
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
@@ -923,6 +933,8 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 - Revision lifecycle
   - ✅ Covered: deterministic IDs, explicit rebind, orphan release, retained shared old dataset, earlier-program
     immutability and shared-scale mark rematerialization.
+- `weight`
+  - ✅ Covered: replace/preserve/remove semantics and regenerated transform provenance.
 - No future edit parameters are currently Planned or Proposed.
 - Evidence: `test/unit/actions/encodings/edit-density.test.js`, density-area variant equivalence and PNG tests.
 

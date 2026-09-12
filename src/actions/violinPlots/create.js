@@ -20,7 +20,7 @@ const OPTIONS = Object.freeze([
 ]);
 const POSITION_OPTIONS = Object.freeze(["field", "fieldType", "scale"]);
 const DENSITY_OPTIONS = Object.freeze([
-  "bandwidth", "extent", "steps", "kernel", "normalization", "width", "side"
+  "bandwidth", "extent", "steps", "kernel", "normalization", "weight", "width", "side"
 ]);
 const WIDTH_OPTIONS = Object.freeze(["band", "resolve"]);
 const SPLIT_OPTIONS = Object.freeze(["field", "domain"]);
@@ -221,6 +221,7 @@ export const createViolinPlot = action(
           steps: transform.steps,
           kernel: transform.kernel,
           normalization: transform.normalization,
+          ...(transform.weight === undefined ? {} : { weight: transform.weight }),
           width: transform.placement.width,
           side: transform.placement.side
         },

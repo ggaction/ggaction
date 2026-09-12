@@ -181,6 +181,7 @@ export const editViolinPlot = action(
           steps: transform.steps,
           kernel: transform.kernel,
           normalization: transform.normalization,
+          ...(transform.weight === undefined ? {} : { weight: transform.weight }),
           width: transform.placement.width,
           side: transform.placement.side
         }

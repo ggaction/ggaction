@@ -9,6 +9,8 @@ import {
 } from "./common.js";
 import { resolveMarkFamilyConsumerValues } from "./families.js";
 import { CATEGORY_ORDER_CHANNELS, resolveCategoryOrder } from "../../../grammar/categoryOrder.js";
+import { resolveHistogramInput } from
+  "../../../materialization/bars/histogram.js";
 
 export { findScale, findScaleConsumers } from "./common.js";
 export {
@@ -49,6 +51,14 @@ export function resolveConsumerValues(program, consumer) {
     );
   }
   const scale = findScale(program, consumer.encoding.scale);
+  if (
+    consumer.layer.mark.type === "bar" &&
+    consumer.channel === "x" &&
+    consumer.encoding.bin !== undefined &&
+    consumer.encoding.weight !== undefined
+  ) {
+    return resolveHistogramInput(dataset, consumer.encoding).values;
+  }
   if (isDirectCategoricalConsumer(consumer)) {
     return readConsumerFieldValues(program, consumer, dataset, scale);
   }

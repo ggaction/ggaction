@@ -13,13 +13,13 @@ import {
 
 const OPTIONS = Object.freeze([
   "id", "data", "coordinate", "field", "maxBins", "binStep",
-  "binBoundaries", "stack", "xScale", "yScale", "color", "bar", "guides"
+  "binBoundaries", "stack", "xScale", "yScale", "weight", "color", "bar", "guides"
 ]);
 const BAR_OPTIONS = Object.freeze([
   "fill", "opacity", "stroke", "strokeWidth"
 ]);
 const HISTOGRAM_OPTIONS = Object.freeze([
-  "maxBins", "binStep", "binBoundaries", "stack", "xScale", "yScale"
+  "maxBins", "binStep", "binBoundaries", "stack", "xScale", "yScale", "weight"
 ]);
 
 export const createHistogram = action(

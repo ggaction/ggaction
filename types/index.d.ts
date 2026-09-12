@@ -186,6 +186,7 @@ export type {
   DurationWindowUnit,
   DatasetRegressionTransform,
   DatasetScalar,
+  StatisticalWeight,
   DatasetStackTransform,
   DatasetTransform,
   EditGraphicsOptions,

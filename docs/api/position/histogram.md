@@ -24,6 +24,21 @@ program.encodeHistogram({ field: "Displacement", maxBins: 10 });
 It calls the wrapped x and y actions below without duplicating their inference
 or validation.
 
+Pass a statistical weight when rows represent repeated observations or have
+unequal reliability:
+
+```javascript
+program.encodeHistogram({
+  field: "Displacement",
+  weight: { field: "frequency", kind: "frequency" }
+});
+```
+
+The weighted mass drives bin heights, stacks, the y scale, value/share labels,
+and selection membership. Zero-weight rows are validated but do not extend the
+automatic x domain or become members. `kind: "reliability"` accepts any finite
+non-negative weight; `kind: "frequency"` requires safe integers.
+
 ## Binned bar `encodeX(options)`
 
 | Option | Type | Default |
@@ -41,6 +56,7 @@ or validation.
 | `scale.range` | `"auto"` or two finite numbers | `"auto"` |
 | `scale.nice` | boolean | `true` |
 | `scale.zero` | boolean | `false` |
+| `weight` | `{ field, kind: "frequency" | "reliability" }` | unweighted |
 
 Automatic nice bins use `1, 2, 3, 5 × 10ⁿ` steps and never exceed `maxBins`.
 Exact-step bins use zero as their grid anchor and expand an automatic domain

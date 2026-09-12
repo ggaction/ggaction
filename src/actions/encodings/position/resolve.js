@@ -97,14 +97,19 @@ export function resolvePositionEncoding(program, channel, args, operation) {
     args.target,
     getPositionChannelDefinition(channel).markTypes
   );
+  const previous = layer.encoding?.[channel];
   if (isSourceOwnedText(layer)) {
     throw new Error(`${operation} cannot replace source-owned Text positions; edit the source, use dx/dy, or create independent Text with data.`);
   }
   if (
     Object.hasOwn(args, "weight") &&
-    !(layer.mark.type === "arc" && channel === "theta")
+    !(layer.mark.type === "arc" && channel === "theta") &&
+    !(layer.mark.type === "bar" && channel === "x" &&
+      (args.bin !== undefined || previous?.bin !== undefined))
   ) {
-    throw new Error(`${operation} weight is supported only for arc theta encoding.`);
+      throw new Error(
+        `${operation} weight is supported only for arc theta encoding or histogram x encoding.`
+      );
   }
   if (Object.hasOwn(args, "mapping") && (layer.mark.type !== "arc" || channel !== "radius")) {
     throw new Error(`${operation} mapping requires Arc radius.`);
@@ -130,7 +135,6 @@ export function resolvePositionEncoding(program, channel, args, operation) {
   } else if (hasDatum) {
     throw new Error(`${operation} does not support datum for a ${layer.mark.type} mark.`);
   }
-  const previous = layer.encoding?.[channel];
   const mapping = channel === "radius" && layer.mark.type === "arc"
     ? clearRadialMapping
       ? undefined

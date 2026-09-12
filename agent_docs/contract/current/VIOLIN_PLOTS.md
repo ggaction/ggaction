@@ -19,7 +19,9 @@ createViolinPlot({
   domain 생략은 exactly two observed values에서 first-appearance order로 해결해 provenance에 저장한다.
 - `color`: category field 또는 split field의 nominal encoding. String shorthand와 ordinary categorical color
   object를 받는다. Category=color이고 legend를 명시하지 않으면 중복 legend를 생성하지 않는다.
-- `density`: `{ bandwidth?, extent?, steps?, kernel?, normalization?, width?, side? }`.
+- `density`: `{ bandwidth?, extent?, steps?, kernel?, normalization?, weight?, width?, side? }`.
+  `weight`는 `StatisticalWeight`이며 category/split profile마다 같은 weight field를 적용하고 lower density
+  transform에 보존한다.
   `width` default는 `{ band: 0.8, resolve: "shared" }`; `band` is `(0, 1]`, resolve는
   `"shared" | "independent"`다. `side` default는 `"both"`; category-x는 `left/right`, category-y는
   `top/bottom` half를 지원한다. Split과 explicit side는 함께 쓸 수 없다. Split half는 independent mode에서도
@@ -36,7 +38,7 @@ createViolinPlot({
 
 ### Formal values — `createViolinPlot`
 
-- Implemented: `createViolinPlot({ id?: UserId; data?: UserId; coordinate?: UserId; x: FieldName | ViolinPlotPositionChannel; y: FieldName | ViolinPlotPositionChannel; split?: { field: FieldName; domain?: readonly [unknown, unknown] }; color?: FieldName | CategoricalColorEncoding; density?: { bandwidth?: "auto" | PositiveFinite; extent?: "auto" | OrderedFinitePair; steps?: IntegerAtLeast2; kernel?: "gaussian" | "epanechnikov" | "uniform" | "triangular"; normalization?: "unit" | "count"; width?: { band?: UnitIntervalExclusiveOrOne; resolve?: "shared" | "independent" }; side?: "both" | "left" | "right" | "top" | "bottom" }; area?: AreaAppearance; guides?: false | CreateGuidesOptions })`.
+- Implemented: `createViolinPlot({ id?: UserId; data?: UserId; coordinate?: UserId; x: FieldName | ViolinPlotPositionChannel; y: FieldName | ViolinPlotPositionChannel; split?: ViolinPlotSplitOptions; color?: ViolinPlotColorOptions; density?: ViolinPlotDensityOptions; area?: ViolinPlotAreaOptions; guides?: false | CartesianCategoricalGuideOptions })`.
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
@@ -45,7 +47,7 @@ createViolinPlot({
 - Position/inference: ✅ Covered — shortest string call, explicit types/scales, vertical/horizontal, invalid same-role pair,
   unknown/ambiguous data와 atomic failure.
 - Density/width: ✅ Covered — defaults, explicit bandwidth/extent/steps, shared/independent, full/half/split, unit/count,
-  invalid band/side/split domain.
+  statistical weight, invalid band/side/split domain.
 - Appearance/guides: ✅ Covered — color, fill-following outline, redundant legend suppression, explicit legend,
   axis/grid opt-out.
 - Lifecycle: ✅ Covered — Canvas/scale/data/filter/selection/highlight rematerialization, baseline↔category revision,
@@ -72,11 +74,12 @@ editViolinPlot({ target?, data?, x?, y?, split?, density? })
 - `density`는 partial patch다. KDE parameter, width와 side를 보존 또는 교체하고 `${target}DensityDataRevision${n}`
   revision으로 owner를 rebind한다. Labels, filters, selections와 highlights는 ordinary density
   rematerialization lifecycle을 그대로 재생한다.
+  `density.weight:false`는 statistical weight를 제거하고 omission은 보존한다.
 - Area appearance는 계속 `editAreaMark`가 소유한다. Owner editor는 child appearance API를 숨기지 않는다.
 
 ### Formal values — `editViolinPlot`
 
-- Implemented: `editViolinPlot({ target?: UserId; data?: UserId; x?: ViolinPlotPositionChannel; y?: ViolinPlotPositionChannel; split?: false | ViolinPlotSplitOptions; density?: ViolinPlotDensityOptions })`.
+- Implemented: `editViolinPlot({ target?: UserId; data?: UserId; x?: ViolinPlotPositionChannel; y?: ViolinPlotPositionChannel; split?: false | ViolinPlotSplitOptions; density?: Omit<ViolinPlotDensityOptions, "weight"> & { weight?: StatisticalWeight | false } })`.
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
@@ -84,5 +87,6 @@ editViolinPlot({ target?, data?, x?, y?, split?, density? })
 
 - ✅ Covered: source/category/value/split/orientation/statistics in one edit, stable owner and scale IDs, derived
   revision/release, axes/grid handoff, highlight replay, lower appearance edit and atomic invalid roles.
+- ✅ Covered: statistical weight preservation and explicit removal.
 - Evidence: `test/unit/actions/charts/violin-plot-facade.test.js`,
   `test/unit/actions/encodings/edit-density.test.js`.

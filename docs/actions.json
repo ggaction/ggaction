@@ -739,10 +739,15 @@
           "name": "members",
           "required": false,
           "type": "string | undefined"
+        },
+        {
+          "name": "weight",
+          "required": false,
+          "type": "StatisticalWeight | undefined"
         }
       ],
       "callPatterns": [
-        "createSummaryData({ id, aggregates, source?, groupBy?, members? })"
+        "createSummaryData({ id, aggregates, source?, groupBy?, members?, weight? })"
       ],
       "snippet": "program.createSummaryData({ id: \"summary-data-1\", aggregates: [] })",
       "errors": [],
@@ -856,6 +861,11 @@
           "name": "members",
           "required": false,
           "type": "boolean | undefined"
+        },
+        {
+          "name": "weight",
+          "required": false,
+          "type": "StatisticalWeight | undefined"
         },
         {
           "name": "as",
@@ -1620,6 +1630,11 @@
           "name": "normalization",
           "required": false,
           "type": "DensityNormalization | undefined"
+        },
+        {
+          "name": "weight",
+          "required": false,
+          "type": "StatisticalWeight | undefined"
         },
         {
           "name": "as",
@@ -8247,6 +8262,11 @@
           "type": "NonPointZeroSupportingPositionScaleOptions | undefined"
         },
         {
+          "name": "weight",
+          "required": false,
+          "type": "StatisticalWeight | undefined"
+        },
+        {
           "name": "maxBins",
           "required": false,
           "type": "number | undefined"
@@ -8263,7 +8283,7 @@
         }
       ],
       "callPatterns": [
-        "encodeHistogram({ field, target?, coordinate?, xScale?, yScale?, stack?, maxBins?, binStep? })"
+        "encodeHistogram({ field, target?, coordinate?, xScale?, yScale?, stack?, weight?, maxBins? })"
       ],
       "snippet": "program.encodeHistogram({ field: \"value\" })",
       "errors": [],
@@ -8394,6 +8414,11 @@
           "name": "normalization",
           "required": false,
           "type": "DensityNormalization | undefined"
+        },
+        {
+          "name": "weight",
+          "required": false,
+          "type": "StatisticalWeight | undefined"
         },
         {
           "name": "as",
@@ -8565,6 +8590,11 @@
           "name": "normalization",
           "required": false,
           "type": "DensityNormalization | undefined"
+        },
+        {
+          "name": "weight",
+          "required": false,
+          "type": "false | StatisticalWeight | undefined"
         },
         {
           "name": "densityChannel",
@@ -10717,7 +10747,7 @@
         {
           "name": "density",
           "required": false,
-          "type": "ViolinPlotDensityOptions | undefined"
+          "type": "(Omit<ViolinPlotDensityOptions, \"weight\"> & { weight?: false | StatisticalWeight | undefined; }) | undefined"
         }
       ],
       "callPatterns": [
@@ -26255,6 +26285,11 @@
           "type": "NonPointZeroSupportingPositionScaleOptions | undefined"
         },
         {
+          "name": "weight",
+          "required": false,
+          "type": "StatisticalWeight | undefined"
+        },
+        {
           "name": "maxBins",
           "required": false,
           "type": "number | undefined"
@@ -27299,6 +27334,11 @@
           "name": "normalization",
           "required": false,
           "type": "DensityNormalization | undefined"
+        },
+        {
+          "name": "weight",
+          "required": false,
+          "type": "StatisticalWeight | undefined"
         },
         {
           "name": "as",

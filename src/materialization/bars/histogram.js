@@ -1,6 +1,5 @@
 import { readSeriesIdentity } from "../../grammar/pathSeries.js";
 import {
-  countHistogramBins,
   findHistogramBinIndex,
   resolveHistogramBins
 } from "../../grammar/histogram.js";
@@ -16,6 +15,45 @@ import {
   DEFAULT_BAR_FILL,
   resolveBarAppearance
 } from "./resolve.js";
+import {
+  readStatisticalWeights,
+  sumEntryWeights,
+  summarizeStatisticalWeights,
+  validateWeightedNumericFields
+} from "../../grammar/weightedStatistics.js";
+
+export function resolveHistogramInput(dataset, xEncoding) {
+  const allValues = readQuantitativeField(dataset.values, xEncoding.field);
+  if (xEncoding.weight === undefined) {
+    return {
+      rows: dataset.values,
+      values: allValues,
+      entries: dataset.values.map((row, index) => ({ row, index })),
+      mass(entries) {
+        return entries.length;
+      }
+    };
+  }
+  const weights = readStatisticalWeights(
+    dataset.values,
+    xEncoding.weight,
+    "Histogram"
+  );
+  validateWeightedNumericFields(weights.entries, [xEncoding.field], "Histogram");
+  const summary = summarizeStatisticalWeights(
+    weights.entries,
+    weights.definition.kind,
+    "Histogram data"
+  );
+  return {
+    rows: summary.positive.map(entry => entry.row),
+    values: summary.positive.map(entry => entry.row[xEncoding.field]),
+    entries: summary.positive,
+    mass(entries) {
+      return sumEntryWeights(entries, summary, "Histogram bin mass");
+    }
+  };
+}
 
 export function deriveHistogramSegments({
   dataset,
@@ -24,7 +62,8 @@ export function deriveHistogramSegments({
   xScale,
   resolvedScales
 }) {
-  const xValues = readQuantitativeField(dataset.values, xEncoding.field);
+  const input = resolveHistogramInput(dataset, xEncoding);
+  const { rows, values: xValues, entries } = input;
   const bins = resolveHistogramBins({
     values: xValues,
     bin: xEncoding.bin,
@@ -36,13 +75,13 @@ export function deriveHistogramSegments({
   const layout = resolveBarColorLayout(layer);
 
   if (layer.encoding?.group !== undefined) {
-    const identity = readSeriesIdentity(dataset.values, layer);
+    const identity = readSeriesIdentity(rows, layer);
     const cellRows = bins.boundaries.slice(0, -1).map(() => identity.domain.map(() => []));
     const index = new Map(identity.domain.map((value, i) => [value, i]));
     xValues.forEach((value, i) => { const bin = findHistogramBinIndex(value, bins.boundaries);
-      if (bin !== -1) cellRows[bin][index.get(identity.values[i])].push(dataset.values[i]); });
-    return cellRows.flatMap((cells, bin) => layoutSeriesPartition(cells.map(rows => rows.length), layout).map(segment => {
-      const members = cells[segment.index];
+      if (bin !== -1) cellRows[bin][index.get(identity.values[i])].push(entries[i]); });
+    return cellRows.flatMap((cells, bin) => layoutSeriesPartition(cells.map(input.mass), layout).map(segment => {
+      const members = cells[segment.index].map(entry => entry.row);
       let color, colorValue;
       if (colorEncoding !== undefined) {
         const values = readNominalField(members, colorEncoding.field);
@@ -59,8 +98,13 @@ export function deriveHistogramSegments({
   }
 
   if (colorEncoding?.scale === undefined) {
-    return countHistogramBins(xValues, bins.boundaries).flatMap((count, bin) =>
-      layoutSeriesPartition([count], layout).map(segment => ({
+    const cellRows = bins.boundaries.slice(0, -1).map(() => []);
+    xValues.forEach((value, index) => {
+      const bin = findHistogramBinIndex(value, bins.boundaries);
+      if (bin !== -1) cellRows[bin].push(entries[index]);
+    });
+    return cellRows.flatMap((cell, bin) =>
+      layoutSeriesPartition([input.mass(cell)], layout).map(segment => ({
         bin,
         start: bins.boundaries[bin],
         end: bins.boundaries[bin + 1],
@@ -68,9 +112,7 @@ export function deriveHistogramSegments({
         categoryCount: 1,
         stackStart: segment.start,
         stackEnd: segment.end,
-        members: dataset.values.filter((_, index) =>
-          findHistogramBinIndex(xValues[index], bins.boundaries) === bin
-        )
+        members: cell.map(entry => entry.row)
       }))
     );
   }
@@ -81,24 +123,24 @@ export function deriveHistogramSegments({
       `Bar mark "${layer.id}" requires a resolved color scale.`
     );
   }
-  const colorValues = readNominalField(dataset.values, colorEncoding.field);
+  const colorValues = readNominalField(rows, colorEncoding.field);
   mapOrdinalValues(colorValues, colorScale.domain, colorScale.range);
   const categoryIndex = new Map(
     colorScale.domain.map((value, index) => [value, index])
   );
-  const counts = bins.boundaries.slice(0, -1).map(() =>
-    colorScale.domain.map(() => 0)
+  const cells = bins.boundaries.slice(0, -1).map(() =>
+    colorScale.domain.map(() => [])
   );
 
   for (let index = 0; index < xValues.length; index += 1) {
     const bin = findHistogramBinIndex(xValues[index], bins.boundaries);
     const category = categoryIndex.get(colorValues[index]);
-    if (bin !== -1 && category !== undefined) counts[bin][category] += 1;
+    if (bin !== -1 && category !== undefined) cells[bin][category].push(entries[index]);
   }
 
   const segments = [];
-  for (let bin = 0; bin < counts.length; bin += 1) {
-    const partition = layoutSeriesPartition(counts[bin], layout);
+  for (let bin = 0; bin < cells.length; bin += 1) {
+    const partition = layoutSeriesPartition(cells[bin].map(input.mass), layout);
     for (const segment of partition) {
       const category = segment.index;
       segments.push({
@@ -106,13 +148,10 @@ export function deriveHistogramSegments({
         start: bins.boundaries[bin],
         end: bins.boundaries[bin + 1],
         category,
-        categoryCount: counts[bin].length,
+        categoryCount: cells[bin].length,
         stackStart: segment.start,
         stackEnd: segment.end,
-        members: dataset.values.filter((_, index) =>
-          findHistogramBinIndex(xValues[index], bins.boundaries) === bin &&
-          categoryIndex.get(colorValues[index]) === category
-        ),
+        members: cells[bin][category].map(entry => entry.row),
         color: mapOrdinalValues(
           [colorScale.domain[category]],
           colorScale.domain,

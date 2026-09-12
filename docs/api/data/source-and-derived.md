@@ -68,7 +68,7 @@ corresponding higher-level action when the library should materialize values:
 | `type` | Public transform shape | Value-producing action |
 | --- | --- | --- |
 | `"bin2d"` | `{ type, x, y, bins, extent, includeEmpty, members, as, resolved? }` | `createBin2DData` |
-| `"bin"` | `{ type, field, bin, extent, nice, zero, includeEmpty, members, as, resolved? }` | `createBinData` |
+| `"bin"` | `{ type, field, bin, extent, nice, zero, includeEmpty, members, as, weight?, resolved? }` | `createBinData` |
 | `"computed"` | `{ type, as, expression }` | `createComputedData` |
 | `"normalize"` | `{ type, field, as, groupBy, method, ...methodPolicies }` | `createNormalizedData` |
 | `"complete"` | `{ type, key, groupBy, values? or sequence?, fill, members? }` | `createCompleteData` |
@@ -76,10 +76,10 @@ corresponding higher-level action when the library should materialize values:
 | `"filter"` | `{ type, field, oneOf }`, `{ type, field, predicate }`, or `{ type, field, range }` | `filterData` |
 | `"fold"` | `{ type, fields, as }` | `createFoldData` |
 | `"regression"` | `{ type, method, x, y, groupBy?, ...methodParameters }` | `createRegressionData` |
-| `"density"` | `{ type, field, groupBy?, bandwidth, extent, steps, kernel?, normalization?, as, resolve: "shared", resolved? }` | `createDensityData` |
+| `"density"` | `{ type, field, groupBy?, bandwidth, extent, steps, kernel?, normalization?, weight?, as, resolve: "shared", resolved? }` | `createDensityData` |
 | `"horizon"` | `{ type, x, y, groupBy?, bands, baseline, extent, resolve, missing, overflow, palette, ... }` | `encodeHorizon` |
 | `"interval"` | `{ type, field, groupBy, center, extent, level?, as }` | `createIntervalData` |
-| `"summary"` | `{ type, groupBy, aggregates, members? }` | `createSummaryData` |
+| `"summary"` | `{ type, groupBy, aggregates, members?, weight? }` | `createSummaryData` |
 | `"stack"` | `{ type, category, group, value, mode, as }` | `createStackData` |
 | `"timeUnit"` | `{ type, field, unit, as, temporalUnit?, timeZone?, ...weekPolicy }` | `createTimeUnitData` |
 | `"window"` | `{ type, partitionBy, sortBy, operations, temporalUnit? }` | `createWindowData` |
@@ -135,7 +135,7 @@ result is rejected. Composite marks and marks backed by an owned density,
 horizon, or final-item filter recipe must use their documented edit or filter
 lifecycle because changing only one layer would break the resource.
 
-## `createSummaryData({ id, source?, groupBy?, aggregates, members? })` {#createsummarydata-id-source-groupby-aggregates-members}
+## `createSummaryData({ id, source?, groupBy?, aggregates, members?, weight? })` {#createsummarydata-id-source-groupby-aggregates-members}
 
 Create reusable aggregate rows without tying the calculation to a chart type:
 
@@ -163,6 +163,13 @@ An ungrouped empty input produces one aggregate row, so a row count is `0`.
 A grouped empty input produces no observed groups. The action does not synthesize
 unobserved categorical combinations.
 
+Set `weight` to `{ field, kind: "frequency" | "reliability" }` for weighted
+count, sum, mean, variance, standard deviation, standard error, median, q1/q3,
+or quantile. Frequency weights act like virtual repeated rows without allocating
+them; reliability weights use effective sample size for sample statistics. The
+action validates every requested value and weight before grouping. Zero-weight
+rows remain in the source but are omitted from statistical membership.
+
 ## `createBinData({ id, source?, field, ...binOptions })` {#createbindata-id-source-field-binoptions}
 
 Materialize one-dimensional bin bounds and counts for reuse by ranged marks,
@@ -188,6 +195,11 @@ extent or boundaries must contain every source value.
 The normalized transform stores resolved boundaries, so consumers share the
 same bin decisions. Set `includeEmpty: false` to omit zero-count bins and
 `members: true` to retain each bin's original source rows.
+
+`weight: { field, kind }` changes each count to weighted mass. Automatic extent
+and members use positive-weight rows, while zero-weight rows are still validated.
+Frequency weights require non-negative safe integers; reliability weights require
+non-negative finite numbers.
 
 ## `createFoldData({ id, source?, fields, as? })` {#createfolddata-id-source-fields-as}
 

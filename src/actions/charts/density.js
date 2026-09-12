@@ -7,7 +7,7 @@ import {
 
 const OPERATION = "createDensityPlot";
 const OPTIONS = ["id", "data", "coordinate", "field", "groupBy", "bandwidth", "extent", "steps",
-  "kernel", "normalization", "as", "densityChannel", "valueScale", "densityScale", "color", "area", "guides"];
+  "kernel", "normalization", "weight", "as", "densityChannel", "valueScale", "densityScale", "color", "area", "guides"];
 const AREA_OPTIONS = ["fill", "opacity", "stroke", "strokeWidth", "curve"];
 
 export const createDensityPlot = action({

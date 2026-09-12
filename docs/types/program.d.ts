@@ -254,6 +254,10 @@ export type DensityKernel =
   | "uniform"
   | "triangular";
 export type DensityNormalization = "unit" | "count";
+export interface StatisticalWeight {
+  readonly field: string;
+  readonly kind: "frequency" | "reliability";
+}
 export type DensityPlacementSide =
   | "both"
   | "left"
@@ -351,6 +355,7 @@ export interface DatasetDensityTransform {
   steps: number;
   kernel?: DensityKernel;
   normalization?: DensityNormalization;
+  weight?: StatisticalWeight;
   as: readonly [string, string];
   resolve: "shared";
   placement?: {
@@ -368,10 +373,22 @@ export interface DatasetDensityTransform {
     };
   };
   resolved?: {
-    readonly bandwidth: number;
     readonly extent: readonly [number, number];
     readonly splitDomain?: readonly [unknown, unknown];
-  };
+  } & (
+    | {
+        readonly bandwidth: number;
+        readonly bandwidths?: never;
+      }
+    | {
+        readonly bandwidth?: never;
+        readonly bandwidths: readonly {
+          readonly group?: unknown;
+          readonly split?: unknown;
+          readonly bandwidth: number;
+        }[];
+      }
+  );
 }
 export type HorizonResolution = "shared" | "independent";
 export type HorizonMissingPolicy = "break" | "error";
@@ -640,6 +657,7 @@ export interface DatasetBinTransform {
   readonly zero: boolean;
   readonly includeEmpty: boolean;
   readonly members: boolean;
+  readonly weight?: StatisticalWeight;
   readonly as: {
     readonly lower: string;
     readonly upper: string;
@@ -810,6 +828,7 @@ export interface DatasetSummaryTransform {
   groupBy: readonly string[];
   aggregates: readonly SummaryAggregateOptions[];
   members?: string;
+  weight?: StatisticalWeight;
 }
 export interface SummaryAggregateOptions {
   op: AggregateOperation;
@@ -822,6 +841,7 @@ export interface SummaryDataOptions {
   groupBy?: string | readonly string[];
   aggregates: readonly SummaryAggregateOptions[];
   members?: string;
+  weight?: StatisticalWeight;
 }
 export interface BindMarkDataOptions {
   target: string;
@@ -1708,6 +1728,7 @@ export type HistogramEncodingOptions = {
   stack?: StackMode;
   xScale?: NonPointQuantitativePositionScaleOptions;
   yScale?: NonPointZeroSupportingPositionScaleOptions;
+  weight?: StatisticalWeight;
 } & (
   | { maxBins?: number; binStep?: never; binBoundaries?: never }
   | { maxBins?: never; binStep: number; binBoundaries?: never }
@@ -1737,6 +1758,7 @@ export interface DensityDataOptions {
   steps?: number;
   kernel?: DensityKernel;
   normalization?: DensityNormalization;
+  weight?: StatisticalWeight;
   as?: readonly [string, string];
 }
 
@@ -1903,6 +1925,7 @@ export type BinDataOptions = {
   zero?: boolean;
   includeEmpty?: boolean;
   members?: boolean;
+  weight?: StatisticalWeight;
   as?: BinDataOutputFields;
 } & BinDataMode;
 
@@ -2243,6 +2266,7 @@ export type ViolinPlotPositionChannel =
 
 export interface ViolinPlotDensityOptions
   extends GradientPlotDensityOptions {
+  weight?: StatisticalWeight;
   width?: DensityPlacementWidth;
   side?: "both" | "left" | "right" | "top" | "bottom";
 }
@@ -2289,7 +2313,9 @@ export interface EditViolinPlotOptions {
   x?: ViolinPlotPositionChannel;
   y?: ViolinPlotPositionChannel;
   split?: false | ViolinPlotSplitOptions;
-  density?: ViolinPlotDensityOptions;
+  density?: Omit<ViolinPlotDensityOptions, "weight"> & {
+    weight?: StatisticalWeight | false;
+  };
 }
 
 export interface EditGradientPlotOptions {
@@ -3114,6 +3140,7 @@ export interface CreateDensityPlotOptions {
   steps?: number;
   kernel?: DensityKernel;
   normalization?: DensityNormalization;
+  weight?: StatisticalWeight;
   as?: readonly [string, string];
   densityChannel?: "x" | "y";
   valueScale?: NonPointQuantitativePositionScaleOptions;
@@ -3323,6 +3350,7 @@ export interface EditDensityOptions {
   steps?: number;
   kernel?: DensityKernel;
   normalization?: DensityNormalization;
+  weight?: StatisticalWeight | false;
   densityChannel?: "x" | "y";
   valueScale?: NonPointQuantitativePositionScaleOptions;
   placement?: DensityPlacement;

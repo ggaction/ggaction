@@ -321,6 +321,23 @@ async function testNodeConsumer(directory) {
         { region: "West", total: 4, records: 1 }
       ]
     );
+    const weightedSummary = chart()
+      .createData({ id: "weighted", values: [
+        { value: 1, weight: 1 },
+        { value: 3, weight: 3 }
+      ] })
+      .createSummaryData({
+        id: "weightedSummary",
+        aggregates: [
+          { op: "count", as: "count" },
+          { op: "mean", field: "value", as: "mean" }
+        ],
+        weight: { field: "weight", kind: "frequency" }
+      });
+    assert.deepEqual(
+      weightedSummary.semanticSpec.datasets.at(-1).values,
+      [{ count: 4, mean: 2.5 }]
+    );
     const reusableBins = chart()
       .createData({ id: "binValues", values: [{ value: 0 }, { value: 2 }, { value: 4 }] })
       .createBinData({
@@ -1847,6 +1864,7 @@ async function testTypeScriptConsumer(directory) {
       type ThemeName,
       type SummaryDataOptions,
       type StackDataOptions,
+      type StatisticalWeight,
       type TimeUnitDataOptions,
       type ViolinPlotOptions,
       type WindowDataOptions,
@@ -2562,6 +2580,23 @@ async function testTypeScriptConsumer(directory) {
       },
       guides: false
     };
+    const weightedViolinOptions: ViolinPlotOptions = {
+      x: { field: "group", fieldType: "nominal" },
+      y: { field: "value", fieldType: "quantitative" },
+      density: {
+        weight: { field: "weight", kind: "reliability" }
+      }
+    };
+    const invalidGradientWeight: GradientPlotOptions = {
+      x: { field: "group", fieldType: "nominal" },
+      y: { field: "value", fieldType: "quantitative" },
+      density: {
+        // @ts-expect-error Statistical weight is owned by violin, not gradient plots.
+        weight: { field: "weight", kind: "reliability" }
+      }
+    };
+    void weightedViolinOptions;
+    void invalidGradientWeight;
     const invalidViolinLayout: ViolinPlotOptions = {
       x: { field: "group", fieldType: "nominal" },
       y: { field: "value", fieldType: "quantitative" },
@@ -2684,7 +2719,8 @@ async function testTypeScriptConsumer(directory) {
     const summaryOptions: SummaryDataOptions = {
       id: "summary",
       groupBy: "group",
-      aggregates: [{ op: "sum", field: "value", as: "total" }]
+      aggregates: [{ op: "sum", field: "value", as: "total" }],
+      weight: { field: "weight", kind: "frequency" }
     };
     const summary: ChartProgram = chart()
       .createData({ id: "summarySource", values: [{ group: "A", value: 2 }] })
@@ -2693,8 +2729,14 @@ async function testTypeScriptConsumer(directory) {
       id: "bins",
       field: "value",
       boundaries: [0, 1, 2],
-      includeEmpty: false
+      includeEmpty: false,
+      weight: { field: "weight", kind: "reliability" }
     };
+    const statisticalWeight: StatisticalWeight = {
+      field: "weight",
+      kind: "frequency"
+    };
+    void statisticalWeight;
     const reusableBins: ChartProgram = chart()
       .createData({ id: "reusableBinSource", values: [{ value: 1 }] })
       .createBinData(reusableBinOptions);

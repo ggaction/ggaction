@@ -66,18 +66,35 @@ function applyBin(program, target, channel, previous, bin) {
   });
 }
 
-function applyArcThetaWeight(program, target, channel, previous, aggregate, weight) {
-  if (channel !== "theta") return program;
-  if (aggregate !== "sum") {
+function applyPositionWeight(
+  program,
+  target,
+  channel,
+  previous,
+  bin,
+  aggregate,
+  weight
+) {
+  const histogram = channel === "x" && bin !== undefined;
+  const arcSum = channel === "theta" && aggregate === "sum";
+  if (!histogram && !arcSum) {
     return previous?.weight === undefined
       ? program
       : program.editSemantic({
-          property: `layer[${target}].encoding.theta.weight`,
+          property: `layer[${target}].encoding.${channel}.weight`,
+          remove: true
+        });
+  }
+  if (weight === undefined) {
+    return previous?.weight === undefined
+      ? program
+      : program.editSemantic({
+          property: `layer[${target}].encoding.${channel}.weight`,
           remove: true
         });
   }
   return program.editSemantic({
-    property: `layer[${target}].encoding.theta.weight`,
+    property: `layer[${target}].encoding.${channel}.weight`,
     value: weight
   });
 }
@@ -188,11 +205,12 @@ export function applyPositionSemantics(program, {
     previous,
     clearRadialMapping
   );
-  return applyArcThetaWeight(
+  return applyPositionWeight(
     next,
     target,
     channel,
     previous,
+    bin,
     aggregate,
     weight
   );

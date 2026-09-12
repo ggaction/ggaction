@@ -786,8 +786,8 @@
         "createstackdata-id-source-category-group-value-mode-as",
         "related"
       ],
-      "bytes": 15264,
-      "sha256": "80bca6e3665fac0dd8c239490f4794b01c1b7b28b9c0da0f5e0886b4b22d1514"
+      "bytes": 16040,
+      "sha256": "f79ab8989f7f9f8e49b9e06ef395a06c7d2b8e288ce9d23e4d23d886b3dad051"
     },
     {
       "order": 51,
@@ -813,11 +813,11 @@
         "statistical-data-transforms",
         "createregressiondata-id-source-x-y-groupby-method-degree-span-confidencemethod-level-confidence-interval",
         "create-interval-data",
-        "createdensitydata-id-source-field-groupby-bandwidth-extent-steps-kernel-normalization-as",
+        "createdensitydata-id-source-field-groupby-bandwidth-extent-steps-kernel-normalization-weight-as",
         "related"
       ],
-      "bytes": 5182,
-      "sha256": "3fdc1b6185286f46a97f47324048462ceb467f04bc1be04e7bc8782de6bc3ad0"
+      "bytes": 5960,
+      "sha256": "9b05efbcfccff71015a666ccbf90b215ba5b5330e4a155088890d3f3c9be752a"
     },
     {
       "order": 53,
@@ -1106,8 +1106,8 @@
         "current-boundary",
         "related"
       ],
-      "bytes": 3472,
-      "sha256": "b2ccd978985fc3e10d91832a59b9ac0c3d1dca0b13af5189203937b2a2a4f856"
+      "bytes": 3971,
+      "sha256": "83a9f9245ad89fb11ec777d14f7cf2b2bc1c4ee5ddb95cd47efeb662659439ea"
     },
     {
       "order": 70,
@@ -1281,8 +1281,8 @@
         "errors-and-limitations",
         "related"
       ],
-      "bytes": 3365,
-      "sha256": "95f5601f2db0e05516113d0b723466fdfe5b646a4f8e803ab9c30c9f2b37a658"
+      "bytes": 3967,
+      "sha256": "9ac3a80fcc9e97307b4e4e65c1966cf0dbe4bf59ba12869b4533c4b27ef08866"
     },
     {
       "order": 80,

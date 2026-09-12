@@ -5,9 +5,18 @@ import {
   validateAggregate,
   validateAggregateFieldValues
 } from "./aggregate.js";
+import {
+  calculateWeightedAggregate,
+  normalizeStatisticalWeight,
+  readStatisticalWeights,
+  summarizeStatisticalWeights,
+  validateWeightedAggregate,
+  validateWeightedNumericFields,
+  weightedRows
+} from "./weightedStatistics.js";
 
 const TRANSFORM_KEYS = Object.freeze([
-  "type", "groupBy", "aggregates", "members"
+  "type", "groupBy", "aggregates", "members", "weight"
 ]);
 const AGGREGATE_KEYS = Object.freeze(["op", "field", "as"]);
 const NOMINAL_OPERATIONS = new Set(["distinct", "valid", "missing"]);
@@ -42,14 +51,17 @@ function normalizeAggregate(value) {
   };
 }
 
-export function normalizeSummaryTransform({ groupBy, aggregates, members } = {}) {
+export function normalizeSummaryTransform({ groupBy, aggregates, members, weight } = {}) {
   const transform = {
     type: "summary",
     groupBy: normalizeGroupBy(groupBy),
     aggregates: Array.isArray(aggregates)
       ? aggregates.map(normalizeAggregate)
       : aggregates,
-    ...(members === undefined ? {} : { members })
+    ...(members === undefined ? {} : { members }),
+    ...(weight === undefined
+      ? {}
+      : { weight: normalizeStatisticalWeight(weight, "Summary weight") })
   };
   validateSummaryTransform(transform);
   return cloneAndFreeze(transform);
@@ -85,6 +97,7 @@ export function validateSummaryTransform(transform) {
     }
     rejectUnknownKeys(aggregate, AGGREGATE_KEYS, `summary aggregate ${index}`);
     const operation = validateAggregate(aggregate.op);
+    if (transform.weight !== undefined) validateWeightedAggregate(operation);
     if (operation === "count") {
       if (Object.hasOwn(aggregate, "field")) {
         throw new Error("Summary count does not accept a field.");
@@ -103,6 +116,9 @@ export function validateSummaryTransform(transform) {
     if (outputs.has(members)) {
       throw new Error(`Summary members field "${members}" collides with another output.`);
     }
+  }
+  if (transform.weight !== undefined) {
+    normalizeStatisticalWeight(transform.weight, "Summary weight");
   }
   return transform;
 }
@@ -136,6 +152,9 @@ function requireSourceFields(rows, transform) {
       throw new Error(`Summary source does not contain order field "${orderBy}".`);
     }
   }
+  if (transform.weight !== undefined && !fields.has(transform.weight.field)) {
+    throw new Error(`Summary source does not contain weight field "${transform.weight.field}".`);
+  }
 }
 
 function validateAggregateValues(rows, aggregate) {
@@ -150,21 +169,42 @@ function validateAggregateValues(rows, aggregate) {
 export function deriveSummaryRows(rows, transform) {
   validateSummaryTransform(transform);
   requireSourceFields(rows, transform);
-  for (const aggregate of transform.aggregates) {
-    validateAggregateValues(rows, aggregate);
+  let weightEntries;
+  if (transform.weight === undefined) {
+    for (const aggregate of transform.aggregates) {
+      validateAggregateValues(rows, aggregate);
+    }
+  } else {
+    weightEntries = readStatisticalWeights(rows, transform.weight, "Summary").entries;
+    validateWeightedNumericFields(
+      weightEntries,
+      [...new Set(transform.aggregates.flatMap(aggregate =>
+        aggregate.field === undefined ? [] : [aggregate.field]
+      ))],
+      "Summary"
+    );
   }
 
   const groups = new Map();
   if (transform.groupBy.length === 0) {
-    groups.set("all", { values: {}, rows });
+    groups.set("all", {
+      values: {},
+      rows,
+      ...(weightEntries === undefined ? {} : { entries: weightEntries })
+    });
   } else {
-    rows.forEach(row => {
+    rows.forEach((row, index) => {
       const values = Object.fromEntries(transform.groupBy.map(field => [field, row[field]]));
       const key = transform.groupBy.map(field =>
         scalarKey(row[field], `Summary group field "${field}"`)
       ).join("|");
-      const group = groups.get(key) ?? { values, rows: [] };
+      const group = groups.get(key) ?? {
+        values,
+        rows: [],
+        ...(weightEntries === undefined ? {} : { entries: [] })
+      };
       group.rows.push(row);
+      if (weightEntries !== undefined) group.entries.push(weightEntries[index]);
       groups.set(key, group);
     });
   }
@@ -172,12 +212,34 @@ export function deriveSummaryRows(rows, transform) {
     throw new RangeError(`Summary output cannot exceed ${MAX_OUTPUT_ROWS} groups.`);
   }
 
-  return [...groups.values()].map(group => ({
-    ...group.values,
-    ...Object.fromEntries(transform.aggregates.map(aggregate => [
-      aggregate.as,
-      aggregateRows(group.rows, aggregate.field ?? "__row", aggregate.op)
-    ])),
-    ...(transform.members === undefined ? {} : { [transform.members]: group.rows })
-  }));
+  return [...groups.values()].map(group => {
+    const weightSummary = transform.weight === undefined
+      ? undefined
+      : summarizeStatisticalWeights(
+          group.entries,
+          transform.weight.kind,
+          "Summary group"
+        );
+    return {
+      ...group.values,
+      ...Object.fromEntries(transform.aggregates.map(aggregate => [
+        aggregate.as,
+        weightSummary === undefined
+          ? aggregateRows(group.rows, aggregate.field ?? "__row", aggregate.op)
+          : calculateWeightedAggregate(
+              weightSummary,
+              aggregate.field,
+              aggregate.op,
+              `Summary aggregate "${aggregate.as}"`
+            )
+      ])),
+      ...(transform.members === undefined
+        ? {}
+        : {
+            [transform.members]: weightSummary === undefined
+              ? group.rows
+              : weightedRows(weightSummary)
+          })
+    };
+  });
 }

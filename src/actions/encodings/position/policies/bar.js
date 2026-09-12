@@ -10,6 +10,8 @@ import {
   resolveBarOrientation
 } from "../../../../grammar/bars/policy.js";
 import { resolveBin, validateStack } from "./common.js";
+import { normalizeStatisticalWeight } from
+  "../../../../grammar/weightedStatistics.js";
 
 function resolveBarChannelPolicy({
   program,
@@ -37,6 +39,10 @@ function resolveBarChannelPolicy({
       throw new Error("Binned bar x encoding does not support aggregate or stack.");
     }
     bin = resolveBin(args.bin);
+    const weight = args.weight === undefined
+      ? undefined
+      : normalizeStatisticalWeight(args.weight, "Histogram weight");
+    return { bin, aggregate, stack, weight };
   } else if (
     fieldType === "quantitative" &&
     channel === "y" &&
@@ -89,6 +95,9 @@ function resolveBarChannelPolicy({
     );
   }
 
+  if (args.weight !== undefined) {
+    throw new Error("Bar weight is supported only for a binned x encoding.");
+  }
   return { bin, aggregate, stack };
 }
 

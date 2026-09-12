@@ -28,12 +28,12 @@ import {
 
 const OPTIONS = Object.freeze([
   "field", "target", "source", "groupBy", "bandwidth", "extent", "steps",
-  "kernel", "normalization", "as", "densityChannel", "coordinate",
+  "kernel", "normalization", "weight", "as", "densityChannel", "coordinate",
   "valueScale", "densityScale", "placement"
 ]);
 const EDIT_OPTIONS = Object.freeze([
   "target", "source", "field", "groupBy", "bandwidth", "extent", "steps",
-  "kernel", "normalization", "densityChannel", "valueScale", "placement"
+  "kernel", "normalization", "weight", "densityChannel", "valueScale", "placement"
 ]);
 const EDITABLE = Object.freeze(EDIT_OPTIONS.filter(option => option !== "target"));
 const SCALE_PROPERTIES = Object.freeze([
@@ -193,6 +193,7 @@ const encodeDensity = action(
       ...(args.normalization === undefined
         ? {}
         : { normalization: args.normalization }),
+      ...(args.weight === undefined ? {} : { weight: args.weight }),
       ...(args.as === undefined ? {} : { as: args.as }),
       ...(placement === undefined ? {} : { placement })
     };
@@ -350,6 +351,7 @@ const editDensity = action(
     const option = property => Object.hasOwn(args, property)
       ? args[property]
       : transform[property];
+    const weight = option("weight");
 
     const dataArgs = {
       id: revision.id,
@@ -364,6 +366,7 @@ const editDensity = action(
       kernel: option("kernel") ?? "gaussian",
       normalization: option("normalization") ?? "unit",
       as: transform.as,
+      ...(weight === undefined || weight === false ? {} : { weight }),
       ...(requestedPlacement === undefined
         ? {}
         : { placement: requestedPlacement })

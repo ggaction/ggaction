@@ -99,3 +99,44 @@ test("createBinData produces values directly consumable by ranged marks", () => 
     .encodeY2({ target: "cells", field: "count" });
   assert.equal(program.graphicSpec.objects.cells.items.length, 2);
 });
+
+test("createBinData uses weighted mass and positive-weight extent and members", () => {
+  const values = [
+    { value: 1, w: 1 },
+    { value: 3, w: 3 },
+    { value: 1000, w: 0 }
+  ];
+  const data = chart()
+    .createData({ id: "source", values })
+    .createBinData({
+      id: "bins",
+      field: "value",
+      boundaries: [1, 2, 3],
+      weight: { field: "w", kind: "frequency" },
+      members: true
+    }).semanticSpec.datasets[1];
+
+  assert.deepEqual(data.values, [
+    { value_start: 1, value_end: 2, count: 1, members: [values[0]] },
+    { value_start: 2, value_end: 3, count: 3, members: [values[1]] }
+  ]);
+  assert.deepEqual(data.transform[0].resolved.domain, [1, 3]);
+  assert.deepEqual(data.transform[0].weight, {
+    field: "w",
+    kind: "frequency"
+  });
+});
+
+test("createBinData rejects invalid and all-zero statistical weights", () => {
+  const create = values => chart().createData({ id: "source", values });
+  assert.throws(() => create([{ value: 1, w: 0 }]).createBinData({
+    id: "bins", field: "value", weight: { field: "w", kind: "frequency" }
+  }), /positive total weight/);
+  assert.throws(() => create([{ value: 1, w: -1 }]).createBinData({
+    id: "bins", field: "value", weight: { field: "w", kind: "reliability" }
+  }), /non-negative finite/);
+  assert.throws(() => create([{ value: Number.NaN, w: 0 }, { value: 1, w: 1 }])
+    .createBinData({
+      id: "bins", field: "value", weight: { field: "w", kind: "frequency" }
+    }), /finite number at row 0/);
+});
