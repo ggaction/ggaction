@@ -348,15 +348,19 @@
       "slug": "size-scale-types",
       "phase": 5,
       "dependsOn": [],
-      "status": "Proposed",
+      "status": "Implemented-primary",
       "scopeSelection": "user-selected",
       "file": "features/23-size-scale-types.md",
       "sources": [
+        "src/grammar/scales/size.js",
         "src/actions/scales/definitions.js",
-        "src/actions/scales/edit.js",
+        "src/actions/scales/create.js",
+        "src/actions/scales/editPolicy.js",
+        "src/actions/scales/channels.js",
+        "src/materialization/scales/resolve.js",
+        "src/materialization/scales/map.js",
         "src/actions/guides/legends/size.js",
-        "src/actions/encodings/index.js",
-        "src/grammar/scales/mapping.js",
+        "src/actions/guides/legends/edit.js",
         "src/grammar/pointShapes.js"
       ],
       "acceptanceSections": [

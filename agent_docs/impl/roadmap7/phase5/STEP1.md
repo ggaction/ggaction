@@ -48,7 +48,8 @@
 | --- | --- | --- | --- | --- |
 | W1a — R20 Parallel scale | `eaea2b8b` | Parallel numeric/reorder/shared/error unit oracle, strict types, contracts, docs, installed package | R43 facet/repeat 통합은 Phase 10에서 재검증 | complete |
 | W1b — R21 offset scale | `335ce4f0` | 12 focused unit/type cases; 2,357 unit; 578 chart; 336 contract; 47 docs; installed package; 315,821-byte gzip measurement | R19 atomic reencoding과 R43 facet/repeat 통합은 해당 owner Phase에서 재검증 | complete |
-| W2–W4 — R23/R22/R19 | — | 실행 증거 없음 | size mapping, stroke color, atomic encoding 전체 | planned |
+| W2 — R23 size scale types | `1b68a8ba` | 10 focused pure/public cases; 2,357 unit; 342 contract; 47 docs; Canvas/SVG/PNG/PDF; installed package; full/basic gzip 317,613/156,182 bytes | R19/R37/R43 통합은 해당 owner Phase에서 재검증 | complete |
+| W3–W4 — R22/R19 | — | 실행 증거 없음 | stroke color, atomic encoding 전체 | planned |
 
 ## Gate 연결
 

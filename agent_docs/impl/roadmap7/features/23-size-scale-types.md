@@ -1,7 +1,8 @@
 # R23 — 크기 scale의 비선형·단계형 mapping
 
-원래 감사 번호: **23**. Primary owner: **Phase 5**. 상태: **Proposed / 구현 전**.
-아래 세부 API·수치 정책의 Gate는 승인됐다. 상태의 `Proposed`는 제품 구현·검증이 아직 완료되지 않았다는 뜻이다.
+원래 감사 번호: **23**. Primary owner: **Phase 5**. 상태: **Implemented-primary** (`1b68a8ba`).
+비선형·단계형 area mapping, type migration, interval legend, lifecycle, renderer, 타입,
+Current 계약, 문서와 설치 패키지 검증까지 구현됐다.
 
 ## 목적과 현재 연결점
 
@@ -105,9 +106,10 @@ size mapper 반환값은 area다. circle r=sqrt(area/pi), 다른 point shapes는
 
 ## 완료 조건
 
-- [ ] 위 API의 최단 호출과 explicit 대상 호출, 누락/auto/false/empty 경계를 타입과 runtime으로 동기화했다.
-- [ ] 위 수치 oracle를 실제 capability test에 구현했고 계획 예제를 기대값 생성기로 재사용하지 않았다.
-- [ ] 기존 consumer와 새 consumer에 scale/mark/guide/label/selection/facet/Canvas replay를 검증했다.
-- [ ] Full 등록·타입 export·Current 계약·catalog·card·관계 trace·MCP·문서·installed consumer를 갱신했다.
-- [ ] 미지원 cell은 이유를 적었다. 이 문서에 명시한 필수 cell을 임의 제외하지 않았다.
-- [ ] 해당 Phase의 승인/검증 근거를 기록했다. 추측으로 완료 표시하지 않았다.
+- [x] 위 API의 최단 호출과 explicit 대상 호출, 누락/auto/false/empty 경계를 타입과 runtime으로 동기화했다.
+- [x] 위 수치 oracle를 `test/contracts/size-scale-types.test.js`와
+  `test/unit/grammar/scales/size.test.js`에 독립 기대값으로 구현했다.
+- [x] shared consumer, mark/shape/guide/highlight, source revision, Canvas/theme replay와 오류 원자성을 검증했다.
+- [x] Full/Basic 타입, Current 계약, catalog/card, MCP 문서, 공개 문서와 installed consumer를 갱신했다.
+- [x] Canvas/SVG/PNG/PDF와 기존 size legend pixel regression을 검증했다.
+- [x] Phase 승인과 `1b68a8ba` 구현·검증 근거를 기록했다.

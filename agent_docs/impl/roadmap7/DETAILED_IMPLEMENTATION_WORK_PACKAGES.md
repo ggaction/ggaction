@@ -14,6 +14,7 @@
 | R02 파생 데이터 편집 | Implemented-primary | `d29287c9` | 새 owner/reference/composition 경로 통합 |
 | R20 Parallel scale | Implemented-primary | `eaea2b8b` | R19/R43 통합 |
 | R21 offset scale | Implemented-primary | `335ce4f0` | R19/R43 통합 |
+| R23 size scale types | Implemented-primary | `1b68a8ba` | R19/R37/R43 통합 |
 
 완료 checkpoint의 pure core나 public API를 다른 이름으로 다시 만들지 않는다. 후속 기능이 새 consumer를 추가할 때 기존 owner에 consumer path와 regression만 보강한다.
 
@@ -21,7 +22,7 @@
 
 순서는 의존성 계약이다. 같은 번호의 소단계는 위에서 아래로 수행한다.
 
-1. Phase 5: R23 → R22 → R19 → Phase 5 통합.
+1. Phase 5: R22 → R19 → Phase 5 통합. R23은 완료 checkpoint다.
 2. Phase 6: R27 → R29 → 좌표 통합.
 3. Phase 7: R31 → R32 → R33 → R36 → 라벨/참조 통합.
 4. Phase 8: R37 → R38 → R39 → guide 통합.
@@ -47,7 +48,7 @@ R19를 R23/R22보다 먼저 만들지 않는다. R43을 좌표·라벨·guide·t
 | R20 | Parallel focused scale edit | Implemented-primary | 완료 checkpoint + WP5.4/WP10 |
 | R21 | x/y offset focused scale edit | Implemented-primary | 완료 checkpoint + WP5.4/WP10 |
 | R22 | field stroke·stroke scale·legend | Proposed | WP5.2 |
-| R23 | nonlinear/discrete size scale | Proposed | WP5.1 |
+| R23 | nonlinear/discrete size scale | Implemented-primary | 완료 checkpoint + WP5.3/WP8.1/WP10/WP12 |
 | R25 | 안전한 resource 삭제 | Proposed | WP11 |
 | R27 | coordinate aspect | Proposed | WP6.1 |
 | R29 | Polar frame | Proposed | WP6.2 |

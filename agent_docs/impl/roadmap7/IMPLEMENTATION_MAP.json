@@ -541,7 +541,7 @@
       "spec": "features/23-size-scale-types.md",
       "phase": 5,
       "dependsOn": [],
-      "status": "Proposed",
+      "status": "Implemented-primary",
       "newPublicActions": [],
       "extendedPublicSurfaces": [
         "encodeSize",
@@ -549,16 +549,22 @@
         "createLegend"
       ],
       "currentSourceFiles": [
+        "src/grammar/scales/size.js",
         "src/actions/scales/definitions.js",
-        "src/actions/scales/edit.js",
+        "src/actions/scales/create.js",
+        "src/actions/scales/editPolicy.js",
+        "src/actions/scales/channels.js",
+        "src/materialization/scales/resolve.js",
+        "src/materialization/scales/map.js",
         "src/actions/guides/legends/size.js",
-        "src/actions/encodings/index.js",
-        "src/grammar/scales/mapping.js",
+        "src/actions/guides/legends/edit.js",
         "src/grammar/pointShapes.js"
       ],
       "existingRegressionTests": [
         "test/unit/grammar/scales/transformed.test.js",
-        "test/contracts/size-legend-edges.test.js"
+        "test/contracts/size-legend-edges.test.js",
+        "test/unit/actions/guides/size-legend-editing.test.js",
+        "test/contracts/shared-scale-refresh.test.js"
       ],
       "suggestedNewTest": "test/contracts/size-scale-types.test.js",
       "acceptanceCases": [

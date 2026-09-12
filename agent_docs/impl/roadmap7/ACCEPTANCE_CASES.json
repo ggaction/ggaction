@@ -730,8 +730,8 @@
       "kind": "normal",
       "specification": "log d[1,100],A[4π,100π],x10 → area52π,r7.211102550927978.",
       "owner": "features/23-size-scale-types.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/contracts/size-scale-types.test.js; test/unit/grammar/scales/size.test.js; installed package; 1b68a8ba"
     },
     {
       "id": "R23-N02",
@@ -740,8 +740,8 @@
       "kind": "normal",
       "specification": "pow2 d[1,9],range[0,80],x5 → area24; normalize-then-square는 잘못된20.",
       "owner": "features/23-size-scale-types.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/contracts/size-scale-types.test.js; test/unit/grammar/scales/size.test.js; installed package; 1b68a8ba"
     },
     {
       "id": "R23-N03",
@@ -750,8 +750,8 @@
       "kind": "normal",
       "specification": "sqrt d[1,9],range[0,100],x4 → area50.",
       "owner": "features/23-size-scale-types.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/contracts/size-scale-types.test.js; test/unit/grammar/scales/size.test.js; installed package; 1b68a8ba"
     },
     {
       "id": "R23-N04",
@@ -760,8 +760,8 @@
       "kind": "normal",
       "specification": "thresholds[10,20],range[2,4,8],x[9,10,19,20] → [2,4,4,8].",
       "owner": "features/23-size-scale-types.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/contracts/size-scale-types.test.js; test/unit/grammar/scales/size.test.js; installed package; 1b68a8ba"
     },
     {
       "id": "R23-N05",
@@ -770,8 +770,8 @@
       "kind": "normal",
       "specification": "quantile samples[0,0,0,10],range[1,2,3,4] → cuts[0,0,2.5], x0은 area3.",
       "owner": "features/23-size-scale-types.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/contracts/size-scale-types.test.js; test/unit/grammar/scales/size.test.js; installed package; 1b68a8ba"
     },
     {
       "id": "R23-E01",
@@ -780,8 +780,8 @@
       "kind": "error",
       "specification": "negative log input, wrong range count, stale domain meaning after type change, discrete legend values → 오류.",
       "owner": "features/23-size-scale-types.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/contracts/size-scale-types.test.js; test/unit/grammar/scales/size.test.js; installed package; 1b68a8ba"
     },
     {
       "id": "R23-L01",
@@ -790,8 +790,8 @@
       "kind": "lifecycle",
       "specification": "quantile auto source edit → thresholds 재계산, mark/legend/highlight가 같은 area mapper 사용; type migration → Canvas/theme 후 요청 보존.",
       "owner": "features/23-size-scale-types.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/contracts/size-scale-types.test.js; test/unit/grammar/scales/size.test.js; installed package; 1b68a8ba"
     },
     {
       "id": "R25-N01",

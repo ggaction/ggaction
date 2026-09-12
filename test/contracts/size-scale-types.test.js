@@ -20,16 +20,16 @@ function close(actual, expected, tolerance = 1e-10) {
   );
 }
 
+function itemArea(object, item) {
+  const type = item.type ?? object.type;
+  if (type === "circle") return Math.PI * item.properties.radius ** 2;
+  if (type === "rect") return item.properties.width * item.properties.height;
+  throw new Error(`Unexpected test point graphic "${type}".`);
+}
+
 function pointAreas(program, id = "points") {
   const object = program.graphicSpec.objects[id];
-  return object.items.map(item => {
-    const type = item.type ?? object.type;
-    if (type === "circle") return Math.PI * item.properties.radius ** 2;
-    if (type === "rect") {
-      return item.properties.width * item.properties.height;
-    }
-    throw new Error(`Unexpected test point graphic "${type}".`);
-  });
+  return object.items.map(item => itemArea(object, item));
 }
 
 function closeArray(actual, expected) {
@@ -263,6 +263,35 @@ test("edits size scale families with explicit migration and stable interval labe
   assert.equal(Object.hasOwn(sizeScale(restored), "base"), false);
   assert.equal(Object.hasOwn(sizeScale(restored), "exponent"), false);
   assert.deepEqual(restored.resolvedScales.size.range, [196, 24]);
+
+  const highlighted = discrete.highlightMarks({
+    select: { field: "magnitude", op: "max" },
+    size: 2
+  });
+  const highlightedObject = highlighted.graphicSpec.objects.points;
+  close(
+    itemArea(
+      highlightedObject,
+      highlightedObject.items.find(item => item.id === "points:3")
+    ),
+    50
+  );
+  const replayed = highlighted
+    .editSizeScale({ reverse: true })
+    .editCanvas({ width: 720 })
+    .applyTheme({ theme: "dark" });
+  const replayedObject = replayed.graphicSpec.objects.points;
+  close(
+    itemArea(
+      replayedObject,
+      replayedObject.items.find(item => item.id === "points:3")
+    ),
+    8
+  );
+  assert.deepEqual(sizeScale(replayed), {
+    id: "size", type: "quantile", domain: "auto",
+    range: [4, 9, 16, 25], reverse: true
+  });
 });
 
 test("recomputes automatic quantile thresholds after a derived source revision", () => {
