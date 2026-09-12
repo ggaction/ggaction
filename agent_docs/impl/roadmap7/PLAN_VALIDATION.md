@@ -115,3 +115,20 @@ categorical↔quantitative field를 재할당하면 호환되지 않는 이전 d
 R19의 한 요청 다중 채널 final-state transaction과 R43의 advanced facet matrix는 각각의
 후속 owner에 남아 있다. 이 후속 cell은 R22 primary 구현을 Planned로 되돌리는 사유가 아니며,
 해당 기능 완료 시 R22 조합 회귀를 다시 실행한다.
+
+## 2026-09-13 저성능 구현 모델용 실행 명세 보강
+
+Roadmap 7의 기능별 행동 계약을 새 문서로 복제하지 않고, 기존 canonical 작업 패킷의 실행 분해를 보강했다.
+
+- 마지막 완료 checkpoint를 R22 기록 revision `0a2fed94`로 갱신하고 R22를 완료 checkpoint 표에 추가했다.
+- 미완료 14개 기능을 공개 표면, requested owner, pure/transaction 중심, 필수 후속 consumer로 연결한 라우팅 표를 추가했다.
+- 모든 WP에 동일하게 적용할 17단계 무추론 실행 순서를 고정했다. read-only resolve와 final candidate preflight 전에는 trace/ID/state write를 금지한다.
+- 현재 활성 WP5.3 R19에 대해 public type, 19-key canonical 순서, private plan shape, scale patch 병합, final-state validation, commit/materialization 순서, 금지 구현, 12개 고정 fixture를 명시했다.
+- 특히 순차 focused action reduce, staged `_clone`을 planner 대체로 사용하는 방식, 동일 scale patch last-write, 실패 후 보상 rollback을 명시적으로 금지했다.
+- `IMPLEMENTER_START_HERE.md`와 `IMPLEMENTATION_SPEC.md`가 이 실행 규약과 활성 WP를 직접 가리키도록 연결했다.
+
+검증:
+
+- `node --test test/contracts/agent-docs-navigation.test.js`: 7/7 통과.
+- `tsc --noEmit --strict ... agent_docs/impl/roadmap7/IMPLEMENTATION_TYPES.examples.ts`: 통과.
+- `git diff --check`: 통과.

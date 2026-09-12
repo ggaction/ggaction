@@ -1,6 +1,6 @@
 # Roadmap 7 — 상세 구현 작업 패킷
 
-작성 기준: 2026-09-13. 현재 branch `codex/roadmap7-authoring-refinement`, 마지막 검증 완료 checkpoint `68843532`. 이 문서는 이미 승인된 Roadmap 7을 구현자가 기능 단위로 끝까지 실행하기 위한 **작업 분해와 종료 절차**다. 공개 API의 정확한 의미·수식·기본값은 각 `features/*.md`가 canonical owner이며, 이 문서는 그 계약을 어느 파일에 어떤 순서로 구현하고 무엇으로 검증할지를 소유한다.
+작성 기준: 2026-09-13. 현재 branch `codex/roadmap7-authoring-refinement`, 마지막 구현 검증 checkpoint `0a2fed94`. 이 문서는 이미 승인된 Roadmap 7을 구현자가 기능 단위로 끝까지 실행하기 위한 **작업 분해와 종료 절차**다. 공개 API의 정확한 의미·수식·기본값은 각 `features/*.md`가 canonical owner이며, 이 문서는 그 계약을 어느 파일에 어떤 순서로 구현하고 무엇으로 검증할지를 소유한다.
 
 ## 1. 현재 상태와 실행 경계
 
@@ -15,6 +15,7 @@
 | R20 Parallel scale | Implemented-primary | `eaea2b8b` | R19/R43 통합 |
 | R21 offset scale | Implemented-primary | `335ce4f0` | R19/R43 통합 |
 | R23 size scale types | Implemented-primary | `1b68a8ba` | R19/R37/R43 통합 |
+| R22 field stroke | Implemented-primary | `3fc40a66`, 기록 `0a2fed94` | R19/R43 통합 |
 
 완료 checkpoint의 pure core나 public API를 다른 이름으로 다시 만들지 않는다. 후속 기능이 새 consumer를 추가할 때 기존 owner에 consumer path와 regression만 보강한다.
 
@@ -47,7 +48,7 @@ R19를 R23/R22보다 먼저 만들지 않는다. R43을 좌표·라벨·guide·t
 | R19 | 원자적 다중 encoding | Proposed | WP5.3 |
 | R20 | Parallel focused scale edit | Implemented-primary | 완료 checkpoint + WP5.4/WP10 |
 | R21 | x/y offset focused scale edit | Implemented-primary | 완료 checkpoint + WP5.4/WP10 |
-| R22 | field stroke·stroke scale·legend | Implemented-primary (`3fc40a66`) | WP5.2 |
+| R22 | field stroke·stroke scale·legend | Implemented-primary (`3fc40a66`) | 완료 checkpoint + WP5.4/WP10 |
 | R23 | nonlinear/discrete size scale | Implemented-primary | 완료 checkpoint + WP5.3/WP8.1/WP10/WP12 |
 | R25 | 안전한 resource 삭제 | Proposed | WP11 |
 | R27 | coordinate aspect | Proposed | WP6.1 |
@@ -98,6 +99,57 @@ R19를 R23/R22보다 먼저 만들지 않는다. R43을 좌표·라벨·guide·t
 | Public surface | runtime/type/current contract/generated/package 변경 목록 | 아래 공개 surface 표 |
 
 작업 중 문서의 파일 경로가 현재 source와 다르면 이름이 같은 새 파일을 즉시 만들지 않는다. `rg`로 현재 registrar, state writer, reader, materializer, remover를 찾아 역할 owner가 이동했는지 확인한다. 이동했다면 이 문서의 경로도 같은 checkpoint에서 고친다. 문서의 **행동 계약**과 source의 **현재 구조**가 충돌하면 임시 compatibility registry나 중복 state를 만들지 않고, 이미 승인된 동작을 현재 구조의 한 owner에 구현한다.
+
+### 저성능 구현 모델을 위한 무추론 실행 규약
+
+아래 순서는 권장이 아니라 각 미완료 WP의 실행 절차다. 한 단계의 산출물을 만들지 않고 다음 단계로 넘어가지 않는다.
+
+1. `git status`, 현재 Phase STEP, 해당 feature 상태를 확인한다. 완료 checkpoint source를 새 구현으로 덮지 않는다.
+2. feature 문서의 public call을 `test/contracts/<capability>.test.js`에 실제 유효한 최소 fixture로 먼저 옮긴다. 구현 전에는 실패가 정상이다.
+3. `ACCEPTANCE_CASES.json`의 해당 R번호 case를 모두 테스트 이름 옆 주석 또는 STEP evidence 표에 연결한다. JSON을 runtime test에서 import하지 않는다.
+4. 가장 가까운 기존 action의 validator, semantic writer, materializer, remover를 각각 하나씩 식별한다. 하나의 함수가 네 역할을 섞고 있으면 pure 계산만 추출하고 기존 public signature는 유지한다.
+5. 입력 key whitelist와 discriminated union을 먼저 구현한다. unknown key를 버리거나 `...rest`로 내부 state에 복사하지 않는다.
+6. requested state와 resolved state를 별도 변수로 만든다. requested 객체에는 사용자 입력만, resolved 객체에는 domain·geometry·membership·sample 결과만 둔다.
+7. 모든 대상과 참조를 읽기 전용으로 resolve한다. 이 단계에서는 `editSemantic`, `_nextId`, `_enterAction`, materializer를 호출하지 않는다.
+8. final candidate를 plain immutable data로 만든다. shared consumer 전체, mode 전환 cleanup, detached owner를 이 candidate로 검사한다.
+9. 실패 fixture를 실행해 원본 program과 frozen input이 그대로인지 확인한다. 이 단계가 통과하기 전에 성공 write 경로를 public registry에 노출하지 않는다.
+10. 기존 wrapped primitive로 semantic/config patch를 commit한다. trace node를 직접 조립하거나 성공하지 않은 public action 이름을 child로 위조하지 않는다.
+11. materialization plan을 canonical dependency 순서로 만들고 같은 `{op,args}`를 한 번만 실행한다. 한 owner를 여러 requested channel이 건드려도 scale/mark refresh는 중복하지 않는다.
+12. focused action과 새 batch/edit action의 겹치는 호출을 비교한다. semantic, graphic, config, context 결과가 다르면 의도된 public 차이를 feature에 기록한 경우가 아니면 실패다.
+13. 지원 consumer를 하나씩 연결하고 lifecycle fixture를 다시 실행한다. mark 성공만으로 legend, label, selection, facet, renderer가 된 것으로 간주하지 않는다.
+14. runtime과 타입을 같은 diff에 연결한다. positive type fixture와 각 forbidden union의 `@ts-expect-error`를 같이 둔다.
+15. current contract와 ACTION_INDEX owner를 갱신한 다음 generator를 실행한다. generated 파일을 먼저 고치지 않는다.
+16. focused → affected cumulative → generated freshness → installed package 순서로 검증하고 실제 개수와 revision을 STEP에 적는다.
+17. `git diff --check`와 변경 파일 목록을 검토한 뒤 coherent checkpoint를 commit/push한다. 그 뒤에만 다음 WP를 시작한다.
+
+다음 다섯 문장은 구현 판단의 기본 분기다.
+
+- 문서에 없는 public option은 추가하지 않는다.
+- 생략은 유지, 명시된 `"auto"`나 remove action만 reset이다.
+- 여러 요청이 같은 owner에 다른 명시 값을 쓰면 입력 순서로 고르지 않고 충돌 오류를 낸다.
+- final-state API는 intermediate state를 public validator에 통과시키는 방식으로 구현하지 않는다.
+- 오류가 난 private candidate는 버리며 원본의 trace, ID allocator, current pointer, resolved cache에 흔적을 남기지 않는다.
+
+### 남은 기능의 구현 라우팅 표
+
+이 표는 구현 위치를 찾는 라우터다. signature·기본값·수식은 링크된 feature가 유일한 owner다.
+
+| 순서 | 기능 | 공개 표면 | requested owner | pure/transaction 중심 | 반드시 닫을 후속 경로 |
+| --- | --- | --- | --- | --- | --- |
+| 1 | [R19](features/19-atomic-encoding.md) | Full `encodeChannels` | target layer encodings + 기존 scale/config owner | canonical request map → final layer/scale plan → one commit | R20/R21/R22/R23, guide/label/highlight |
+| 2 | [R27](features/27-coordinate-aspect.md) | Full `editCoordinate.aspect` | semantic coordinate `aspect` | effective bounds resolver; domain→aspect→range | resize, guide allocation, layer shared bounds |
+| 3 | [R29](features/29-polar-frame.md) | `editCoordinate.polarFrame` | semantic coordinate `polarFrame` | effective bounds→center/available radius | polar mark/axis/grid/label/leader |
+| 4 | [R31](features/31-remove-labels.md) | Full `removeMarkLabels` | attached label owner + replay recipe | reference closure→label/config/leader removal | selection/highlight, resize/theme/facet replay |
+| 5 | [R32](features/32-selected-labels.md) | label create 확장 + `editMarkLabelSelection` | `labelAuthoring.selection` | final-item membership resolver | source edit, named selection, label geometry |
+| 6 | [R33](features/33-semantic-label-anchors.md) | label create 확장 + `editMarkLabelPlacement` | `labelAuthoring.placement` | mark geometry→anchor/bbox/leader | signed/stacked Bar, Arc, resize/aspect |
+| 7 | [R36](features/36-statistical-references.md) | reference line/band statistic union | `statisticalReference` config | population→summary→scale map | source/filter/reencode/scale/facet |
+| 8 | [R37](features/37-legend-values.md) | legend `values` create/edit | legend sampling owner | explicit samples→actual channel mapper | domain edit rejection, R23 size, resize/theme |
+| 9 | [R38](features/38-legend-blocks.md) | Full `editLegendBlock` | block descriptor override | channel set identity→merge/split preflight | reorder/removal/reencode, R22/R23 |
+| 10 | [R39](features/39-display-names-headers.md) | `labelMap` + `editFacetHeaders` roles | guide/header recipe | typed identity formatter + occupied strips | raw key preservation, facet replay, aspect |
+| 11 | [R47](features/47-custom-theme.md) | `applyTheme` 확장, `removeTheme` lifecycle | theme + provenance owner | closed tokens→precedence→postorder replay | nested concat/facet/repeat, explicit style |
+| 12 | [R49](features/49-shape-style-details.md) | 기존 mark options 확장 | mark requested style | rounded path + stroke bounds | legend/highlight, Canvas/SVG/PDF state reset |
+| 13 | [R43](features/43-polar-parallel-facets.md) | facet/facetGrid 지원 확장 + repeat roles | retained source/family resolution recipe | raw partition→family replay→local frame/range | 7 family matrix 전체, all prior consumers |
+| 14 | [R25](features/25-remove-resources.md) | Full `removeData/Scale/Coordinate` | 각 named resource registry | typed live-edge collector→preflight→cleanup | 모든 새 owner/ref path, pixel invariance |
 
 ### 패치의 네 구간과 통과 조건
 
@@ -260,27 +312,114 @@ Canonical behavior: [R22](features/22-stroke-color.md).
 
 Canonical behavior: [R19](features/19-atomic-encoding.md).
 
-#### 구현 구조
+#### 공개 API와 타입을 먼저 고정한다
 
-1. **`src/actions/encodings/shared.js`**에 single-channel action이 사용할 `normalizeChannelRequest`와 `planChannelEncoding`을 추출한다. public method를 내부에서 연속 호출하지 않는다.
-2. **신규 `src/actions/encodings/channels.js`**에 `encodeChannels({target,channels})`를 구현한다.
-3. 입력 key와 무관하게 canonical 순서를 사용한다: `x,y,x2,y2,theta,r,xOffset,yOffset,group,pathOrder,color,stroke,size,shape,opacity,strokeWidth,strokeDash,angle,text`.
-4. target mark를 한 번 resolve하고 모든 요청을 정규화한다. payload 내부 `target`, `coordinate`, top-level resource `id`는 거부하되 nested `scale.id`는 허용한다.
-5. 모든 final bindings와 scale requests를 draft에 먼저 놓는다. x↔y swap처럼 중간-invalid/final-valid 조합을 허용한다.
-6. 같은 scale ID 요청을 canonical definition으로 병합한다. 값이 다르면 last-write를 하지 않고 충돌 오류를 낸다.
-7. secondary channel, offset parent, series grain, polar roles, shared external consumer를 final draft로 preflight한다.
-8. semantic patch를 한 번 commit하고 affected scale/mark/guide를 ID별로 deduplicate해 한 번씩 rematerialize한다.
-9. trace는 `encodeChannels` root 아래 deterministic child action order를 갖는다. 실패 trace는 0개 증가다.
-10. one-channel 호출은 대응 focused action과 semantic/graphic/config가 deep-equal이고 root trace 이름만 다르다.
-11. **`types/program.d.ts`**의 19-key closed payload와 Full registry/current contract/knowledge surface를 추가한다.
+1. 새 public type은 `EncodeChannelsOptions`다. `target:string`과 nonempty plain object `channels`만 top-level key로 허용한다.
+2. 각 channel payload는 대응 focused options에서 `target`과 `coordinate`를 제거한 **distributive union**이다. 일반 `Omit<Union,...>`으로 exclusive branch가 합쳐지면 안 된다. 문서 타입에서는 `type WithoutBatchTarget<T> = T extends unknown ? Omit<T,"target"|"coordinate"> : never` 형태를 사용한다.
+3. 허용 channel key는 정확히 19개다: `x,y,x2,y2,theta,r,xOffset,yOffset,group,pathOrder,color,stroke,size,shape,opacity,strokeWidth,strokeDash,angle,text`.
+4. `radius`, `yRange`, `xRange`, `barWidth`, `parallelDimensions`와 임의 문자열 key는 허용하지 않는다. `r`만 public alias이며 final semantic channel에서는 기존 vocabulary대로 `radius`가 될 수 있다.
+5. channel payload `null`, 배열, primitive, empty object 중 focused action에서 유효하지 않은 shape는 오류다. `null`은 remove 의미가 아니다. 제거는 기존 `removeEncoding` owner다.
+6. payload direct key의 `target`, `coordinate`, `id`는 오류다. `payload.scale.id`는 named scale binding이므로 허용한다. `scale` 아래의 unknown key는 기존 focused scale validator가 거부한다.
+7. `ChartProgramActions`와 root export에 method/type을 추가하고 Full registrar에만 등록한다. `src/actions/encodings/basic.js`와 Basic declarations에는 method를 추가하지 않는다.
 
-#### 필수 테스트
+#### 내부 module과 자료구조
 
-- 신규 `test/contracts/atomic-encoding.test.js`.
-- key order를 바꾼 두 호출의 final state와 child trace 순서 equality.
-- x↔y swap, x/x2·y/y2, band+offset, group+pathOrder, theta+r, color+stroke+size, combined legend.
-- 하나의 잘못된 channel, shared scale conflict, unsupported target에서 전체 program/trace 원자성.
-- 회귀: `test/contracts/shared-scale-refresh.test.js`, `test/unit/actions/scales/scale-consumers.test.js`.
+다음 이름은 private 권장 이름이다. 현재 code owner와 충돌하면 같은 역할의 기존 helper를 확장할 수 있지만 역할을 합치거나 생략하지 않는다.
+
+1. **`src/actions/encodings/channels.js`**
+   - `ENCODING_CHANNEL_ORDER`: 위 19개를 frozen array로 한 번 정의한다.
+   - `normalizeEncodeChannelsArgs(program,args)`: top-level shape, target, key 집합, nonempty를 검증하고 canonical 순서의 request 배열을 반환한다.
+   - `planEncodingAssignments(program,target,requests)`: write 없는 final plan을 반환한다.
+   - wrapped `encodeChannels`: normalize → plan → commit → materialization plan 적용만 조정한다.
+   - `registerAtomicEncodingAction(ProgramClass)`: Full registrar 연결만 담당한다.
+2. **`src/actions/encodings/shared.js` 또는 가까운 family owner**
+   - `normalizeChannelRequest(channel,payload,context)`: focused action과 batch가 공유하는 canonical payload를 만든다.
+   - `prepareChannelAssignment(draft,request)`: final layer/config/scale request만 갱신하고 ChartProgram을 호출하지 않는다.
+   - focused action은 기존 결과와 trace를 유지하면서 이 pure normalizer/planner를 사용한다. focused action이 `encodeChannels`를 호출하는 역의존은 금지한다.
+3. plan의 최소 논리 shape는 다음 정보를 모두 가져야 한다. 실제 property 이름은 private이지만 항목을 잃으면 안 된다.
+
+```js
+{
+  target,
+  coordinateId,
+  originalLayer,
+  finalLayer,
+  scaleRequestsById,
+  configPatches,
+  detachedScaleIds,
+  affected: {
+    scaleIds, markIds, guideIds, labelIds, referenceIds,
+    selectionIds, compositionIds
+  },
+  materializationStages
+}
+```
+
+`originalLayer`, caller payload, 기존 scale definition을 직접 수정하지 않는다. plan 값은 deterministic plain data여야 하며 function, `ChartProgram`, backend 객체를 저장하지 않는다.
+
+#### normalize 단계
+
+1. target mark를 기존 exact target resolver로 한 번만 찾는다. missing/wrong resource/ambiguous inference는 focused action의 error family를 유지한다.
+2. `Object.keys(channels)`를 whitelist와 대조한 뒤 `ENCODING_CHANNEL_ORDER.filter(key => hasOwn(channels,key))`로 순서를 만든다. 입력 enumeration 순서로 loop하지 않는다.
+3. 각 request는 focused action과 같은 field existence, fieldType, datum/value exclusive union, temporal unit, aggregate, bin, stack, scale option 검증을 사용한다.
+4. family whitelist는 target의 **기존 mark family와 coordinate**로 검사한다. batch가 mark family나 coordinate type을 추론해 바꾸면 실패다.
+5. constant↔field 전환은 새 branch만 추가하는 merge가 아니다. old-only semantic binding, constant style, scale/legend dependency를 cleanup 목록에 넣는다.
+6. normalizer는 scale ID를 발급하거나 semantic/graphic/config를 쓰거나 trace를 추가하지 않는다. implicit scale ID가 필요하면 기존 deterministic ID 정책에 필요한 요청만 plan에 기록하고 실제 ID 소비는 성공 commit에 한정한다.
+
+#### final draft와 scale 병합
+
+1. canonical requests를 original layer의 복사본에 모두 적용한 뒤 pair/grain 검증을 한다. x 변경 직후 old y를 검사하는 식의 intermediate validation은 금지한다.
+2. x/x2와 y/y2는 각 축의 final field type·scale family·secondary ownership으로 검사한다. primary를 바꿨을 때 secondary old binding이 final로 불가능하면 요청이 secondary를 함께 고친 경우 성공하고, 그대로 남아 불가능하면 오류다.
+3. xOffset/yOffset은 final parent x/y가 band-compatible인지 확인한다. parent와 offset이 한 요청에서 함께 바뀌는 경우 final parent를 사용한다.
+4. group/pathOrder는 final item grain과 series family로 검사한다. Line/Area의 color/stroke field도 final series 안에서 값 하나인지 확인한다.
+5. theta/r은 existing polar role validator를 사용한다. Cartesian target에 request가 있거나 polar role이 incomplete/incompatible하면 write 전 오류다.
+6. appearance channel은 R22 stroke와 R23 size를 포함한 현재 family matrix로 검사한다. Parallel target에서는 dimension topology를 바꾸지 않고 이미 지원하는 appearance만 허용한다.
+7. 같은 explicit `scale.id`에 여러 request가 닿으면 property별 canonical explicit patch를 병합한다. 한 요청에서 생략한 property는 충돌이 아니다. 두 요청이 같은 property에 deep-equal 값을 주면 하나로 합친다. 서로 다른 `type/domain/range/reverse/clamp/base/exponent/padding/...` 명시 값은 `Error`다.
+8. 기존 external consumer를 포함한 final consumer 집합으로 scale family/type/domain/range 호환성을 검사한다. batch target만 떼어 놓고 scale edit를 허용하지 않는다.
+9. detached scale은 final live consumer가 0인 경우에만 cleanup한다. 다른 layer/guide/retained recipe가 쓰면 남긴다.
+
+#### commit과 materialization
+
+1. preflight가 모두 끝난 뒤 wrapped `encodeChannels` action 안에서 semantic/config patch를 canonical channel 순서로 적용한다. public `encodeX`, `encodeY` 등을 연속 호출하지 않는다.
+2. 기존 `editSemantic` 및 family-specific wrapped primitive를 재사용한다. child trace는 실제 실행된 의미 변경만 기록한다. `encodeX` 같은 가짜 child node를 직접 생성하지 않는다.
+3. materialization은 `buildMaterializationPlan`의 stage order를 사용한다. affected ID set을 canonical 정렬한 뒤 `{op,args}`가 같은 step을 deduplicate한다.
+4. 최소 dependency 순서는 final scale resolve/materialize → target와 dependent marks → labels/references → guides → occupied layout → highlights다. 현재 planner가 labels/references를 mark/guide 내부 owner로 실행한다면 그 owner action을 한 번만 계획하고 별도 중복 step을 추가하지 않는다.
+5. combined legend는 channel별 중간 legend를 만들지 않는다. final channel binding과 final scale mapper를 읽어 한 번 재생성한다.
+6. rebind가 필요한 axis/legend는 `originalLayer`의 old scale ID와 `finalLayer`의 new scale ID를 비교해 수행한다. final draft를 original인 것처럼 넘겨 old binding 정보를 잃지 않는다.
+7. 성공 결과에서 요청되지 않은 channel/config는 보존한다. one-channel batch는 대응 focused action과 `semanticSpec`, `graphicSpec`, `materializationConfigs`, `context`, resolved cache가 deep-equal이어야 한다.
+8. trace 차이는 root `encodeChannels`와 그 아래 실제 wrapped operations뿐이다. 같은 key set의 permutation은 child op/args/order까지 동일해야 한다.
+
+#### 금지 구현
+
+- `requests.reduce((p,r) => p[focusedAction](...))`: intermediate validation과 반복 materialization 때문에 금지.
+- `_clone({semanticSpec: staged})`로 old binding을 덮은 뒤 focused action을 호출하는 방식: detached scale/guide rebind의 old owner를 잃으므로 final planner 대체로 사용 금지.
+- `Promise.all`이나 mutable draft에 public actions를 적용: action/ID/trace 순서가 비결정적이므로 금지.
+- 동일 scale patch의 object spread last-write: property 충돌을 숨기므로 금지.
+- 실패 뒤 `_nextId`, trace 또는 cache를 되돌리는 보상 transaction: 사전 plan으로 write 자체가 없어야 한다.
+- batch 전용 scale/mark mapper 복제: focused와 batch 결과 drift를 만들므로 기존 pure owner를 공유해야 한다.
+
+#### `test/contracts/atomic-encoding.test.js`의 고정 fixture
+
+| 묶음 | 설정 | 호출 | exact 판정 |
+| --- | --- | --- | --- |
+| one channel | Point `x:a` fixed scale | `channels:{x:{field:"b",scale:{domain:[0,10],range:[0,100]}}}` | focused `encodeX`와 state/config/graphic 동일 |
+| permutation | 동일 base를 두 번 분기 | `{x,y,color,stroke,size}`와 역순 key 객체 | final fingerprint와 child trace 동일 |
+| R19-N01 | rows `{a:2,b:8}`, x/y domain0..10 range0..100 | x=b,y=a | graphic x80,y20 |
+| secondary | Rect/Rule에 x,x2,y,y2 final pair 동시 변경 | 네 channel batch | 각 endpoint가 새 scale과 field 사용 |
+| offset | grouped Bar의 x parent와 xOffset 동시 변경 | x + xOffset | final band parent로 offset 배치 |
+| series | Line/Area group과 pathOrder 동시 변경 | group + pathOrder | final series partition/order exact |
+| polar | Polar Point/Arc | theta + r | 같은 final coordinate에서 angle/radius 갱신 |
+| appearance | Point color+stroke+size | 세 channel batch | fill/stroke 독립, size area mapper, final legend symbols |
+| atomic error | valid x + 없는 stroke field | batch throws | original 모든 state branch/trace/ID context 동일 |
+| shared conflict | 두 channel이 scale ID `s`에 다른 explicit domain | batch throws | last-write 없음, original 동일 |
+| external consumer | 다른 layer가 `s`를 계속 사용 | incompatible batch | 전체 오류; 외부 layer/guide도 동일 |
+| input safety | 모든 payload와 nested scale/domain deep-freeze | success/error 양쪽 | caller object 변경 없음 |
+
+추가 integration은 `shared-scale-refresh`, scale consumer unit, R20 parallel scale, R21 offset scale, R22 stroke, R23 size, combined legend 회귀를 실행한다. refresh-count 검사는 trace 이름만 세지 말고 동일 target `{op,args}` materialization step이 한 번인지 검사한다.
+
+#### 완료와 기록
+
+R19-N01/N02/E01/E02/L01/L02 각각에 실행 test path와 current revision을 기록한다. Full runtime/types/current encoding contract/ACTION_INDEX/intent taxonomy/generated catalog·relations·cards/API reference/MCP task resolution/package consumer가 모두 통과해야 한다. Phase 5 STEP W4에 focused와 누적 test 수, package tarball hash를 기록하고 WP5.4 통합을 닫은 뒤 Phase 6으로 이동한다.
 
 ### WP5.4 — Phase 5 closeout
 
