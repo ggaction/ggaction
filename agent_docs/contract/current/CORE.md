@@ -532,7 +532,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 
 - Implemented: `createImputedData(options: ImputedDataOptions): ChartProgram` (Full only).
 - Implemented methods: `"constant" | "forward" | "backward" | "linear"`; edges `"keep" | "error"`.
-- Proposed (NOT IMPLEMENTED): spline/model imputation, callback functions, automatic aggregation과 source replacement/edit revision.
+- Proposed (NOT IMPLEMENTED): spline/model imputation, callback functions, automatic aggregation과 source replacement.
 
 ### Value coverage — `createImputedData`
 
@@ -566,7 +566,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 ### Formal values — `createStackData`
 
 - Implemented: `createStackData({ id: UserId; source?: UserId; category: FieldName; group: FieldName; value: FieldName; mode?: "stack" | "fill" | "center" | "diverging"; as?: StackDataOutputFields }): ChartProgram`
-- Proposed (NOT IMPLEMENTED): duplicate-cell aggregation, missing-cell synthesis, explicit series order와 edit/revision.
+- Proposed (NOT IMPLEMENTED): duplicate-cell aggregation, missing-cell synthesis와 explicit series order.
 
 ### Value coverage — `createStackData`
 
@@ -750,11 +750,293 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - Evidence: `test/unit/actions/data/derived-data.test.js`, `test/unit/actions/data/derived-consumers.test.js`,
   `scripts/package-consumer.js`, 각 high-level data action test.
 
+## `editDerivedData`
+
+- Signature: `editDerivedData({ target, definition, dependents? })`.
+- Target: 필수 stable logical standalone-derived owner ID 또는 그 owner의 current snapshot ID다. Source dataset,
+  stale revision ID와 chart-owned internal dataset은 오류다. 기존 owner registry가 없는 serialized program은 direct
+  top-level creator trace, single transform과 source를 모두 확인할 수 있을 때만 lazy owner로 migration한다.
+- `definition`: 현재 transform과 같은 type의 complete requested definition이다. Dataset envelope가 아니므로 `id`,
+  `source`, `current`, materializer가 추가한 `resolved`를 받지 않는다. Complete transform의 domain option `values`는
+  이 금지 목록과 무관하며 허용된다. Arrays, AST, aggregate/output maps는 전체 교체다.
+- `dependents`: `"reject" | "recompute"`, 기본 `"reject"`. Reject는 첫 downstream derived dataset을 deterministic하게
+  보고하고 쓰기 전에 중단한다. Recompute는 `dataset.source` DAG의 reachable closure를 semantic dataset 순서 기반
+  topological order로 새 immutable revisions에 materialize한다. Cycle, unsupported transform, 잘못된 downstream field,
+  non-finite output 또는 visual consumer incompatibility가 하나라도 있으면 원본 state와 trace를 그대로 보존한다.
+- Output roles: 같은 semantic output role의 일대일 rename만 direct layer encoding, category-order summary,
+  weighted theta, Parallel dimension/key, selection selector와 jitter key에 전달한다. Downstream expression/predicate의
+  임의 field 문자열은 치환하지 않는다.
+- Effect: `materializationConfigs.data.<family>.<owner>.current`를 새 snapshot으로 이동하고 direct consumers를 모두
+  rebind/rematerialize한다. Context는 원래 값을 보존하되 `currentData`가 retired snapshot을 가리켰을 때만 대응 revision으로
+  이동한다. 새 owner/current와 모든 live references를 연결한 뒤 실제 미참조 old revision만 release한다.
+- No-op: canonical requested definition이 동일하면 dataset revision을 만들지 않는다. Public action trace node는 남지만
+  materialize/rebind/release child는 없다.
+- Immutability: caller definition/patch/source rows, 이전 program의 semantic/graphic/config/context/trace/resolved scales와
+  composition children을 성공·실패 모두 변경하지 않는다.
+
+### Formal values — `editDerivedData`
+
+- Implemented: `editDerivedData({ target: UserId; definition: RequestedDatasetTransform; dependents?: "reject" | "recompute" }): ChartProgram`.
+- Editable transform types: `computed | filter | fold | summary | bin | bin2d | timeUnit | window | density | stack |
+  regression | interval | ecdf | normalize | complete | impute`.
+- Planned (NOT IMPLEMENTED): source 교체와 transform type 교체. 기존 `editBin2DData.source`는 전용 compatibility 예외다.
+- Proposed (NOT IMPLEMENTED): 추가 transform family가 standalone create lifecycle을 얻을 때 같은 registry 계약으로 검토한다.
+
+### Value coverage — `editDerivedData`
+
+- ✅ Covered: explicit owner/current target, lazy legacy owner, wrong/source/chart-owned/stale target, complete definition,
+  resolved/source injection, same-type enforcement, no-op, deterministic revision IDs, default reject, full DAG recompute,
+  sibling preservation, logical-source reuse, direct output-role rename와 원자적 downstream failure.
+- Evidence: `test/unit/actions/data/derived-editing.test.js`, `test/unit/actions/data/bin2d-data.test.js`.
+
+## Focused derived-data editor rules
+
+아래 focused actions는 모두 `target`을 필수로 받고 `dependents?`를 공유한다. 나머지 keys는 해당 create action에서
+`id`와 `source`를 뺀 partial transform options다. 최소 한 transform option이 필요하며 omission은 current requested
+definition을 보존한다. `undefined`와 `null`은 삭제 기호가 아니다. Arrays/objects/AST는 전체 교체다. `weight:false`는
+weight를 지원하는 focused editors에서만 stored weight를 제거한다. 각 action은 자신의 trace node 아래 wrapped
+`editDerivedData`를 두며 모든 lifecycle/error/immutability 규칙을 상속한다.
+
+## `editComputedData`
+
+- Signature: `editComputedData({ target, as?, expression?, dependents? })`.
+- `as` 또는 typed `ComputedExpression` AST를 교체한다. Output rename은 direct semantic role만 rebind한다.
+
+### Formal values — `editComputedData`
+
+- Implemented: `editComputedData(options: EditComputedDataOptions): ChartProgram`.
+- Proposed (NOT IMPLEMENTED): source 교체와 임의 함수·문자열 식 실행.
+
+### Value coverage — `editComputedData`
+
+- ✅ Covered: output·AST 전체 교체, direct output-role rename, downstream AST의 unsafe field 유지 시 atomic failure.
+- Evidence: `test/unit/actions/data/derived-editing.test.js`.
+
+## `editFilteredData`
+
+- Signature: `editFilteredData({ target, field?, oneOf? | predicate? | range?, dependents? })`.
+- Filter mode option을 제공하면 이전 mode keys를 모두 제거한 뒤 exactly-one mode를 검증한다. `field`만 편집하면
+  현재 mode를 유지한다.
+
+### Formal values — `editFilteredData`
+
+- Implemented: `editFilteredData(options: EditFilteredDataOptions): ChartProgram`.
+- Proposed (NOT IMPLEMENTED): source 교체와 callback predicate.
+
+### Value coverage — `editFilteredData`
+
+- ✅ Covered: field-only 유지, oneOf/predicate/range 상호배타 전환, invalid range와 empty patch 거부.
+- Evidence: `test/unit/actions/data/derived-editing.test.js`.
+
+## `editFoldData`
+
+- Signature: `editFoldData({ target, fields?, as?, dependents? })`.
+- `fields`와 `{key,value}` output map은 각자 전체 교체다.
+
+### Formal values — `editFoldData`
+
+- Implemented: `editFoldData(options: EditFoldDataOptions): ChartProgram`.
+- Proposed (NOT IMPLEMENTED): source 교체와 부분 output-map merge.
+
+### Value coverage — `editFoldData`
+
+- ✅ Covered: fields와 as whole replacement, output role migration, row-limit·type validation 재사용.
+- Evidence: `test/unit/actions/data/derived-editing.test.js`.
+
+## `editSummaryData`
+
+- Signature: `editSummaryData({ target, groupBy?, aggregates?, members?, weight?, dependents? })`.
+- `aggregates`는 전체 교체하며 output role은 unique aggregate operation+source field identity로만 대응한다. 배열 index로
+  rename을 추론하지 않는다. `weight:false`는 weight를 제거한다.
+
+### Formal values — `editSummaryData`
+
+- Implemented: `editSummaryData(options: EditSummaryDataOptions): ChartProgram`.
+- Proposed (NOT IMPLEMENTED): aggregate 배열의 index 기반 patch와 source 교체.
+
+### Value coverage — `editSummaryData`
+
+- ✅ Covered: groupBy/aggregate/member replacement, semantic aggregate role, weighted→unweighted 제거, dependent recompute.
+- Evidence: `test/unit/actions/data/derived-editing.test.js`.
+
+## `editBinData`
+
+- Signature: `editBinData({ target, field?, maxBins? | step? | boundaries?, extent?, nice?, zero?, includeEmpty?, members?, as?, weight?, dependents? })`.
+- Bin mode key를 제공하면 이전 maxBins/step/boundaries mode를 지운다. `as`는 complete map replacement이고
+  `weight:false`는 weight를 제거한다.
+
+### Formal values — `editBinData`
+
+- Implemented: `editBinData(options: EditBinDataOptions): ChartProgram`.
+- Proposed (NOT IMPLEMENTED): source 교체와 bin-mode partial merge.
+
+### Value coverage — `editBinData`
+
+- ✅ Covered: maxBins/step/boundaries exclusivity, exact output roles, includeEmpty/members와 weight removal.
+- Evidence: `test/unit/actions/data/derived-editing.test.js`.
+
+## `editTimeUnitData`
+
+- Signature: `editTimeUnitData({ target, field?, unit?, as?, temporalUnit?, timeZone?, weekStartsOn?, weekRule?, dependents? })`.
+- Non-week unit으로 전환하면 week-only keys를 제거한다. Week로 전환하면 create defaults와 ISO/Monday constraint를
+  동일하게 적용한다.
+
+### Formal values — `editTimeUnitData`
+
+- Implemented: `editTimeUnitData(options: EditTimeUnitDataOptions): ChartProgram`.
+- Proposed (NOT IMPLEMENTED): source 교체와 host-local implicit timezone.
+
+### Value coverage — `editTimeUnitData`
+
+- ✅ Covered: unit/zone/input/output 교체, week-only key cleanup, deterministic calendar validation.
+- Evidence: `test/unit/actions/data/derived-editing.test.js`.
+
+## `editWindowData`
+
+- Signature: `editWindowData({ target, partitionBy?, sortBy?, operations?, temporalUnit?, dependents? })`.
+- 모든 목록과 operation/frame 객체는 전체 교체이며 row/duration frame exclusivity와 duration temporal policy를
+  create와 동일하게 검증한다.
+
+### Formal values — `editWindowData`
+
+- Implemented: `editWindowData(options: EditWindowDataOptions): ChartProgram`.
+- Proposed (NOT IMPLEMENTED): operation별 index patch와 source 교체.
+
+### Value coverage — `editWindowData`
+
+- ✅ Covered: partition/sort/operation whole replacement, row·duration frame validation, logical-source replay.
+- Evidence: `test/unit/actions/data/derived-editing.test.js`.
+
+## `editDensityData`
+
+- Signature: `editDensityData({ target, field?, groupBy?, bandwidth?, extent?, steps?, kernel?, normalization?, as?, weight?, dependents? })`.
+- Resolved bandwidth/extent는 carried state가 아니며 새 source/current requested definition에서 재계산한다.
+  `weight:false`는 weight를 제거한다.
+
+### Formal values — `editDensityData`
+
+- Implemented: `editDensityData(options: EditDensityDataOptions): ChartProgram`.
+- Proposed (NOT IMPLEMENTED): chart-owned density facade의 standalone target adoption.
+
+### Value coverage — `editDensityData`
+
+- ✅ Covered: requested/resolved 분리, bandwidth/extent/steps/kernel/normalization/as 편집과 weight removal.
+- Evidence: `test/unit/actions/data/derived-editing.test.js`.
+
+## `editStackData`
+
+- Signature: `editStackData({ target, category?, group?, value?, mode?, as?, dependents? })`.
+- Category/group/value grain과 complete output map을 final candidate에서 함께 검증한다.
+
+### Formal values — `editStackData`
+
+- Implemented: `editStackData(options: EditStackDataOptions): ChartProgram`.
+- Proposed (NOT IMPLEMENTED): source 교체와 output-map partial merge.
+
+### Value coverage — `editStackData`
+
+- ✅ Covered: grain fields, four modes, complete semantic output roles와 duplicate-cell failure.
+- Evidence: `test/unit/actions/data/derived-editing.test.js`.
+
+## `editRegressionData`
+
+- Signature: `editRegressionData({ target, x?, y?, groupBy?, method?, degree?, span?, confidenceMethod?, level?, confidence?, interval?, dependents? })`.
+- Linear↔polynomial은 공통 confidence/interval을 보존하고 degree만 mode에 맞게 추가/제거한다. Loess 전환은
+  confidence/interval을 제거하며 loess 밖으로 전환할 때 해당 defaults를 다시 정규화한다.
+
+### Formal values — `editRegressionData`
+
+- Implemented: `editRegressionData(options: EditRegressionDataOptions): ChartProgram`.
+- Proposed (NOT IMPLEMENTED): chart-owned regression facade의 standalone target adoption과 source 교체.
+
+### Value coverage — `editRegressionData`
+
+- ✅ Covered: linear/polynomial/loess mode cleanup, confidence policy, group/field edit와 finite model validation.
+- Evidence: `test/unit/actions/data/derived-editing.test.js`.
+
+## `editIntervalData`
+
+- Signature: `editIntervalData({ target, field?, groupBy?, center?, extent?, method?, level?, as?, dependents? })`.
+- Non-CI extent로 전환하면 CI-only method/level을 제거한다. Mean/median과 extent의 valid pair는 final candidate에서
+  검증하며 자동으로 반대쪽 option을 추측하지 않는다.
+
+### Formal values — `editIntervalData`
+
+- Implemented: `editIntervalData(options: EditIntervalDataOptions): ChartProgram`.
+- Proposed (NOT IMPLEMENTED): center/extent pair 자동 교정과 source 교체.
+
+### Value coverage — `editIntervalData`
+
+- ✅ Covered: mean/median extent pairs, CI-only cleanup, complete center/lower/upper output role migration.
+- Evidence: `test/unit/actions/data/derived-editing.test.js`.
+
+## `editECDFData`
+
+- Signature: `editECDFData({ target, field?, groupBy?, weight?, missing?, as?, dependents? })`.
+- `weight:false`는 weight field를 제거하고 explicit output map은 전체 교체한다.
+
+### Formal values — `editECDFData`
+
+- Implemented: `editECDFData(options: EditECDFDataOptions): ChartProgram`.
+- Proposed (NOT IMPLEMENTED): chart-owned ECDF facade의 standalone target adoption과 source 교체.
+
+### Value coverage — `editECDFData`
+
+- ✅ Covered: field/group/missing/as edit, weighted→unweighted 제거와 cumulative output roles.
+- Evidence: `test/unit/actions/data/derived-editing.test.js`.
+
+## `editNormalizedData`
+
+- Signature: `editNormalizedData({ target, field?, as?, groupBy?, method?, variance?, zeroDenominator?, baseline?, sortBy?, dependents? })`.
+- Method 변경은 새 method에서 유효한 shared options만 유지한다. Baseline-family 내부 전환은 baseline/sortBy를 유지하고,
+  다른 family에서 들어오면 명시 patch 또는 create defaults를 사용한다.
+
+### Formal values — `editNormalizedData`
+
+- Implemented: `editNormalizedData(options: EditNormalizedDataOptions): ChartProgram`.
+- Proposed (NOT IMPLEMENTED): source 교체와 method-incompatible option 자동 보존.
+
+### Value coverage — `editNormalizedData`
+
+- ✅ Covered: share/zscore/minmax/baseline family cleanup, zero-denominator policy와 output rename.
+- Evidence: `test/unit/actions/data/derived-editing.test.js`.
+
+## `editCompleteData`
+
+- Signature: `editCompleteData({ target, key?, groupBy?, values? | sequence?, fill?, members?, dependents? })`.
+- `values` 또는 `sequence`를 제공하면 이전 domain mode를 제거한다. `values`는 materialized rows가 아니라 Complete의
+  requested typed domain이다. `fill`은 whole-map replacement다.
+
+### Formal values — `editCompleteData`
+
+- Implemented: `editCompleteData(options: EditCompleteDataOptions): ChartProgram`.
+- Proposed (NOT IMPLEMENTED): source 교체와 values/sequence 병합.
+
+### Value coverage — `editCompleteData`
+
+- ✅ Covered: observed/values/sequence domain 전환, Complete values 허용, fill/members/grouping validation.
+- Evidence: `test/unit/actions/data/derived-editing.test.js`.
+
+## `editImputedData`
+
+- Signature: `editImputedData({ target, fields?, groupBy?, sortBy?, method?, value?, edges?, maxGap?, dependents? })`.
+- Constant↔ordered mode 전환에서 `value`를 정리하고 final method의 sort/value requirements를 검증한다.
+
+### Formal values — `editImputedData`
+
+- Implemented: `editImputedData(options: EditImputedDataOptions): ChartProgram`.
+- Proposed (NOT IMPLEMENTED): source 교체와 method-required fields 자동 추론.
+
+### Value coverage — `editImputedData`
+
+- ✅ Covered: constant/forward/backward/linear 전환, value cleanup, sort/edges/maxGap validation.
+- Evidence: `test/unit/actions/data/derived-editing.test.js`.
+
 ## `createTimeUnitData`
 
 - Signature: `createTimeUnitData({ id, source?, field, temporalUnit?, unit, as, timeZone?, weekStartsOn?, weekRule? })`
-- Lifecycle: immutable create-only다. `id`는 필수 새 derived dataset ID이며 existing dataset을 수정하거나 consumer를
-  rebind하지 않는다.
+- Lifecycle: standalone 호출은 stable logical owner를 만들고 `editTimeUnitData`가 immutable revision을 생성해
+  consumer를 rebind한다. `id`는 최초 생성 시 필수 새 derived dataset ID다.
 - `source`: existing dataset ID다. 생략하면 current data를 사용하며 안전하게 추론할 수 없으면 오류다.
 - `field`: 모든 row에 존재하는 temporal input field다. Existing temporal normalization과 동일하게 finite timestamp,
   ISO/date string 또는 four-digit year를 받는다. `temporalUnit`은 입력 해석만 제어하며 transform에 보존된다.
@@ -782,7 +1064,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - `TimeUnit`은 기존 7개 unit과 `"week" | "weekday"`를 포함한다. Week transform만 normalized
   `weekStartsOn`과 `weekRule`을 저장하며 explicit `timeZone`은 모든 unit에서 저장한다.
 - Planned (NOT IMPLEMENTED): —
-- Proposed (NOT IMPLEMENTED): locale calendar 선택, aggregation, resampling과 edit/revision action.
+- Proposed (NOT IMPLEMENTED): locale calendar 선택, aggregation과 resampling.
 
 ### Value coverage — `createTimeUnitData`
 
@@ -805,8 +1087,8 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 source row의 prototype을 바꾸거나 결과를 누락하지 않는다. 뒤 operation은 앞의 해당 결과를 field로 읽을 수 있다.
 
 - Signature: `createWindowData({ id, source?, partitionBy?, sortBy?, operations, temporalUnit? })`
-- Lifecycle: immutable create-only다. `id`는 새 derived dataset ID여야 하며 동일 ID를 다시 만들면 오류다.
-  기존 source나 consumer를 교체하거나 rebind하지 않는다.
+- Lifecycle: standalone 호출은 stable logical owner를 만들고 `editWindowData`가 immutable revision을 생성해
+  consumer를 rebind한다. `id`는 최초 생성 시 새 derived dataset ID여야 한다.
 - `source`: existing dataset ID다. 생략하면 current data를 사용하고 유일하게 추론할 수 없으면 오류다.
 - `partitionBy`: field 이름 하나 또는 field 이름 array다. 기본은 `[]`이며 전체 source가 한 partition이다.
 - `sortBy`: `{ field, order? }` array다. 기본은 `[]`, order 기본은 `"ascending"`이다. 여러 field는
@@ -837,7 +1119,7 @@ source row의 prototype을 바꾸거나 결과를 누락하지 않는다. 뒤 op
 
 - Implemented: `createWindowData(options: WindowDataOptions): ChartProgram` (Full only).
 - `WindowOperation`은 rank/cumulative/lag/lead와 row 또는 duration frame을 가진 movingMean/movingSum의 strict union이다.
-- Planned (NOT IMPLEMENTED): edit/revision action, percent rank, ntile.
+- Planned (NOT IMPLEMENTED): percent rank와 ntile.
 - Proposed (NOT IMPLEMENTED): weighted windows와 calendar-duration windows.
 
 ### Value coverage — `createWindowData`
@@ -915,7 +1197,7 @@ source row의 prototype을 바꾸거나 결과를 누락하지 않는다. 뒤 op
 
 ## `editBin2DData`
 
-- Signature: `editBin2DData({ target?, source?, x?, y?, bins?, extent?, includeEmpty?, members?, as? })`.
+- Signature: `editBin2DData({ target?, source?, x?, y?, bins?, extent?, includeEmpty?, members?, as?, dependents? })`.
 - Target: `target`은 materialization registry의 stable logical Bin2D owner ID다. 생략하면
   `context.currentData`가 가리키는 current revision의 owner, 그 다음 유일한 owner를 사용한다. Current match가 없고
   owner가 둘 이상이면 명시적 `target`을 요구하며 첫 owner를 선택하지 않는다.
@@ -925,20 +1207,23 @@ source row의 prototype을 바꾸거나 결과를 누락하지 않는다. 뒤 op
 - Output and members: explicit `as`는 `x0/x1/y0/y1/count`와, `members: true`일 때 `members`까지 complete output map을
   요구한다. `as`를 생략하고 members를 켜면 logical owner namespace의 members field를 추가하고, 끄면 prior members
   output을 제거한다. 다른 output field는 보존한다.
+- `dependents`: `"reject" | "recompute"`, 기본 `"reject"`. 공통 `editDerivedData` revision executor를 사용한다.
+  Recompute는 current Bin2D를 source로 삼는 전체 derived closure를 새 revision으로 갱신한다. `source`가 자기 downstream을
+  가리키는 cycle과 downstream output-field incompatibility는 첫 쓰기 전에 거부한다.
 - Atomic effect: complete source rows와 transform을 계산하고 derived-dataset dependency 및 모든 direct visual
   consumer의 rematerialization을 speculative immutable branch에서 먼저 검증한다. 성공하면 deterministic revision ID로
   새 dataset을 만들고 wrapped `rebindLayerData` 뒤 output role에 연결된 downstream semantic/config field를 새 output
   이름으로 옮긴 다음 scale/mark/guide materialization plan을 적용하며, 참조가 없어진 prior revision만
   `releaseDerivedData`로 정리한다. Logical owner ID와 consumer layer/scale/coordinate/guide/selection identity는 유지한다.
-- Compatibility: `createBin2DData({ id: existing, ...completeTransform })`의 full reauthor/revision 동작은 유지한다.
-  Partial intent에는 `editBin2DData`를 사용한다. Derived dataset이 current revision을 직접 소비하면 silent cascade 대신
-  edit를 state 생성 전에 거부한다.
+- Compatibility: `createBin2DData({ id: existing, ...completeTransform })`의 full reauthor/revision 동작과
+  `editBin2DData`의 optional target/source는 유지한다. Partial intent에는 `editBin2DData`를 사용한다. Derived dataset이
+  current revision을 직접 소비하면 기본 reject하고 명시적인 `dependents:"recompute"`만 cascade한다.
 - Immutability: previous program, prior revision, source rows와 caller-owned nested options를 변경하지 않는다.
 
 ### Formal values — `editBin2DData`
 
-- Implemented: `editBin2DData({ target?: UserId; source?: UserId; x?: FieldName; y?: FieldName; bins?: PositiveInteger | { x: PositiveInteger; y: PositiveInteger }; extent?: { x?: [FiniteNumber, FiniteNumber]; y?: [FiniteNumber, FiniteNumber] }; includeEmpty?: boolean; members?: boolean; as?: { x0: FieldName; x1: FieldName; y0: FieldName; y1: FieldName; count: FieldName; members?: FieldName } })`.
-- Planned (NOT IMPLEMENTED): dependent derived-dataset revision cascade, weighted cells, hexagonal/adaptive bins.
+- Implemented: `editBin2DData({ target?: UserId; source?: UserId; x?: FieldName; y?: FieldName; bins?: PositiveInteger | { x: PositiveInteger; y: PositiveInteger }; extent?: { x?: [FiniteNumber, FiniteNumber]; y?: [FiniteNumber, FiniteNumber] }; includeEmpty?: boolean; members?: boolean; as?: { x0: FieldName; x1: FieldName; y0: FieldName; y1: FieldName; count: FieldName; members?: FieldName }; dependents?: "reject" | "recompute" })`.
+- Planned (NOT IMPLEMENTED): weighted cells, hexagonal/adaptive bins.
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `editBin2DData`

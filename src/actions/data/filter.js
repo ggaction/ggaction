@@ -22,6 +22,7 @@ import {
 import {
   hasDataset,
   findDataset,
+  resolveDatasetReference,
   requireLayer,
   resolveEligibleLayer
 } from "../../selectors/index.js";
@@ -70,18 +71,29 @@ export const filterData = action(
   function (args = {}) {
     validateKeys(args, OPTIONS, "filterData");
     const id = validateUserId(args.id, "Filtered dataset id");
-    const source = validateUserId(
+    const requestedSource = validateUserId(
       args.source ?? this.context.currentData,
       "Source dataset id"
     );
+    const source = resolveDatasetReference(
+      this,
+      requestedSource,
+      "Filter source dataset"
+    ).id;
     const transform = normalizeFilterTransform(args);
-    return this
+    const next = this
       .createDerivedData({
         id,
         source,
         transform: [transform]
       })
       .materializeFilteredData({ id });
+    return this.actionStack.length === 1
+      ? next._withMaterializationConfig(
+          ["data", "filter", id],
+          { current: id }
+        )
+      : next;
   }
 );
 

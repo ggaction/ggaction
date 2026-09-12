@@ -818,6 +818,17 @@ export type DatasetTransform =
   | DatasetStackTransform
   | DatasetTimeUnitTransform
   | DatasetWindowTransform;
+type RequestedTransform<T> = T extends unknown ? Omit<T, "resolved"> : never;
+export type RequestedDatasetTransform = RequestedTransform<Exclude<
+  DatasetTransform,
+  DatasetHorizonTransform
+>>;
+export type DerivedDataDependents = "reject" | "recompute";
+export interface EditDerivedDataOptions {
+  target: string;
+  definition: RequestedDatasetTransform;
+  dependents?: DerivedDataDependents;
+}
 export interface CreateDerivedDataOptions {
   id: string;
   source: string;
@@ -2050,7 +2061,50 @@ export interface EditBin2DDataOptions {
   includeEmpty?: boolean;
   members?: boolean;
   as?: DatasetBin2DOutputFields;
+  dependents?: DerivedDataDependents;
 }
+
+type FocusedDerivedDataPatch<T> = T extends unknown
+  ? Partial<Omit<T, "id" | "source">>
+  : never;
+type FocusedDerivedDataEdit<T> = {
+  target: string;
+  dependents?: DerivedDataDependents;
+} & FocusedDerivedDataPatch<T>;
+type FocusedWeightedDerivedDataEdit<T, Weight> = {
+  target: string;
+  dependents?: DerivedDataDependents;
+} & (T extends unknown
+  ? Omit<FocusedDerivedDataPatch<T>, "weight"> & { weight?: Weight | false }
+  : never);
+
+export type EditComputedDataOptions = FocusedDerivedDataEdit<ComputedDataOptions>;
+export type EditFilteredDataOptions = FocusedDerivedDataEdit<FilterDataOptions>;
+export type EditFoldDataOptions = FocusedDerivedDataEdit<FoldDataOptions>;
+export type EditSummaryDataOptions = FocusedWeightedDerivedDataEdit<
+  SummaryDataOptions,
+  StatisticalWeight
+>;
+export type EditBinDataOptions = FocusedWeightedDerivedDataEdit<
+  BinDataOptions,
+  StatisticalWeight
+>;
+export type EditTimeUnitDataOptions = FocusedDerivedDataEdit<TimeUnitDataOptions>;
+export type EditWindowDataOptions = FocusedDerivedDataEdit<WindowDataOptions>;
+export type EditDensityDataOptions = FocusedWeightedDerivedDataEdit<
+  DensityDataOptions,
+  StatisticalWeight
+>;
+export type EditStackDataOptions = FocusedDerivedDataEdit<StackDataOptions>;
+export type EditRegressionDataOptions = FocusedDerivedDataEdit<RegressionDataOptions>;
+export type EditIntervalDataOptions = FocusedDerivedDataEdit<IntervalDataOptions>;
+export type EditECDFDataOptions = FocusedWeightedDerivedDataEdit<
+  ECDFDataOptions,
+  string
+>;
+export type EditNormalizedDataOptions = FocusedDerivedDataEdit<NormalizedDataOptions>;
+export type EditCompleteDataOptions = FocusedDerivedDataEdit<CompleteDataOptions>;
+export type EditImputedDataOptions = FocusedDerivedDataEdit<ImputedDataOptions>;
 
 export type ErrorBarPositionChannel = { field?: string } & (
   | {
@@ -4032,6 +4086,22 @@ export class ChartProgram {
   createTimeUnitData(options: TimeUnitDataOptions): ChartProgram;
   createWindowData(options: WindowDataOptions): ChartProgram;
   createBin2DData(options: Bin2DDataOptions): ChartProgram;
+  editDerivedData(options: EditDerivedDataOptions): ChartProgram;
+  editComputedData(options: EditComputedDataOptions): ChartProgram;
+  editFilteredData(options: EditFilteredDataOptions): ChartProgram;
+  editFoldData(options: EditFoldDataOptions): ChartProgram;
+  editSummaryData(options: EditSummaryDataOptions): ChartProgram;
+  editBinData(options: EditBinDataOptions): ChartProgram;
+  editTimeUnitData(options: EditTimeUnitDataOptions): ChartProgram;
+  editWindowData(options: EditWindowDataOptions): ChartProgram;
+  editDensityData(options: EditDensityDataOptions): ChartProgram;
+  editStackData(options: EditStackDataOptions): ChartProgram;
+  editRegressionData(options: EditRegressionDataOptions): ChartProgram;
+  editIntervalData(options: EditIntervalDataOptions): ChartProgram;
+  editECDFData(options: EditECDFDataOptions): ChartProgram;
+  editNormalizedData(options: EditNormalizedDataOptions): ChartProgram;
+  editCompleteData(options: EditCompleteDataOptions): ChartProgram;
+  editImputedData(options: EditImputedDataOptions): ChartProgram;
   editBin2DData(options: EditBin2DDataOptions): ChartProgram;
 
   createPointMark(options?: {

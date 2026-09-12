@@ -139,3 +139,26 @@ export function validateRegressionTransform(transform) {
   }
   return transform;
 }
+
+export function normalizeRegressionTransform(args = {}) {
+  const parameters = normalizeRegressionParameters(args);
+  const transform = {
+    type: "regression",
+    method: parameters.method,
+    x: args.x,
+    y: args.y,
+    ...(args.groupBy === undefined ? {} : { groupBy: args.groupBy }),
+    ...(parameters.method === "polynomial"
+      ? { degree: parameters.degree }
+      : {}),
+    ...(parameters.method === "loess"
+      ? { span: parameters.span }
+      : {
+          confidenceMethod: parameters.confidenceMethod,
+          level: parameters.level,
+          interval: parameters.interval
+        })
+  };
+  validateRegressionTransform(transform);
+  return cloneAndFreeze(transform);
+}

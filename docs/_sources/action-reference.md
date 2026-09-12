@@ -975,7 +975,8 @@ direct visual consumers. [Rectangular 2D bins](../api/data/bin2d.md)
 
 ```javascript
 editBin2DData({
-  target?, source?, x?, y?, bins?, extent?, includeEmpty?, members?, as?
+  target?, source?, x?, y?, bins?, extent?, includeEmpty?, members?, as?,
+  dependents?
 })
 ```
 
@@ -983,6 +984,53 @@ Partially revise the current or unique logical 2D-bin owner. Omitted top-level
 transform options are preserved; successful edits create an immutable revision,
 rebind direct visual consumers, and safely release the prior revision.
 [Rectangular 2D bins](../api/data/bin2d.md#editbin2ddata)
+
+### Focused core data editing
+
+```javascript
+editDerivedData({ target, definition, dependents? })
+editFilteredData({ target, field?, oneOf? | predicate? | range?, dependents? })
+editTimeUnitData({ target, field?, unit?, as?, temporalUnit?, timeZone?, weekStartsOn?, weekRule?, dependents? })
+editWindowData({ target, partitionBy?, sortBy?, operations?, temporalUnit?, dependents? })
+editDensityData({ target, field?, groupBy?, bandwidth?, extent?, steps?, kernel?, normalization?, as?, weight?, dependents? })
+editRegressionData({ target, x?, y?, groupBy?, method?, degree?, span?, confidenceMethod?, level?, interval?, dependents? })
+```
+
+Revise a standalone derived-data owner without rebuilding its consumers. New
+focused editors require an explicit logical owner or current snapshot. Omitted
+transform options remain unchanged. The generic form requires a complete
+requested transform of the same type and does not accept `id`, `source`,
+`current`, or resolved materializer output.
+
+`dependents` defaults to `"reject"`. Set it to `"recompute"` to revise every
+reachable derived dataset in dependency order. The operation is atomic: an
+invalid downstream field, scale, mark, guide, label, or selection preserves the
+entire input program. Output names are carried only across unambiguous direct
+semantic roles; expressions and predicates are never rewritten as strings.
+[Editing derived data](../api/data/source-and-derived.md#editing-derived-data)
+
+### Focused statistical data editing
+
+```javascript
+editComputedData({ target, as?, expression?, dependents? })
+editFoldData({ target, fields?, as?, dependents? })
+editSummaryData({ target, groupBy?, aggregates?, members?, weight?, dependents? })
+editBinData({ target, field?, maxBins? | step? | boundaries?, extent?, nice?, zero?, includeEmpty?, members?, as?, weight?, dependents? })
+editStackData({ target, category?, group?, value?, mode?, as?, dependents? })
+editIntervalData({ target, field?, groupBy?, center?, extent?, method?, level?, as?, dependents? })
+editECDFData({ target, field?, groupBy?, weight?, missing?, as?, dependents? })
+editNormalizedData({ target, field?, as?, groupBy?, method?, variance?, zeroDenominator?, baseline?, sortBy?, dependents? })
+editCompleteData({ target, key?, groupBy?, values? | sequence?, fill?, members?, dependents? })
+editImputedData({ target, fields?, groupBy?, sortBy?, method?, value?, edges?, maxGap?, dependents? })
+```
+
+Use a focused editor for a partial change to the corresponding standalone data
+transform. Arrays, expressions, aggregate lists, and output maps replace the
+whole current value. A patch must contain at least one transform option.
+`undefined` and `null` do not delete options. `weight: false` removes an existing
+weight only from the editors that expose weight. Mode changes remove keys that
+belong only to the previous mode before validating the final definition.
+[Editing derived data](../api/data/source-and-derived.md#editing-derived-data)
 
 ### `createPointMark`
 

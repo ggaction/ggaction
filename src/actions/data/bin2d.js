@@ -6,24 +6,27 @@ import {
   normalizeBin2DTransform,
   requestedBin2DTransform
 } from "../../grammar/bin2d.js";
-import { applyLayerDataRematerialization } from
-  "../../materialization/dependencies.js";
-import { planDerivedDataRevision } from
-  "../../materialization/dataProvenance.js";
 import {
   findDataset,
-  findDatasetConsumer
+  resolveDatasetReference
 } from "../../selectors/datasets.js";
-import { requireLayer } from "../../selectors/layers.js";
+import {
+  normalizeDerivedDependentPolicy,
+  resolveDerivedDataOwner,
+  reviseDerivedData
+} from "./edit.js";
 export { materializeBin2DData } from "./bin2dMaterialize.js";
 
 const OPTIONS = Object.freeze([
   "id", "source", "x", "y", "bins", "extent", "includeEmpty", "members", "as"
 ]);
 const EDIT_OPTIONS = Object.freeze([
-  "target", "source", "x", "y", "bins", "extent", "includeEmpty", "members", "as"
+  "target", "source", "x", "y", "bins", "extent", "includeEmpty",
+  "members", "as", "dependents"
 ]);
-const EDITABLE = Object.freeze(EDIT_OPTIONS.slice(1));
+const EDITABLE = Object.freeze(EDIT_OPTIONS.filter(option =>
+  !["target", "dependents"].includes(option)
+));
 const OUTPUT_FIELDS = Object.freeze([
   "x0", "x1", "y0", "y1", "count", "members"
 ]);
@@ -67,122 +70,6 @@ function requireCurrentBin2D(program, id, config) {
     throw new Error(`2D bin owner "${id}" has no current derived dataset.`);
   }
   return current;
-}
-
-function directLayerConsumers(program, data) {
-  return program.semanticSpec.layers
-    .filter(layer => layer.data === data)
-    .map(layer => layer.id);
-}
-
-function outputFieldChanges(previous, next) {
-  return new Map(OUTPUT_FIELDS.flatMap(role => {
-    const from = previous.as[role];
-    const to = next.as[role];
-    return from !== undefined && from !== to
-      ? [[from, [role, to]]]
-      : [];
-  }));
-}
-
-function changedConsumerField(field, changes) {
-  const change = changes.get(field);
-  if (change === undefined) return field;
-  const [role, next] = change;
-  if (next === undefined) {
-    throw new Error(
-      `Cannot remove referenced 2D bin ${role} output field "${field}".`
-    );
-  }
-  return next;
-}
-
-function rebindLayerOutputFields(program, id, changes) {
-  const layer = requireLayer(program, id);
-  let next = program;
-  const changed = field => changedConsumerField(field, changes);
-  const editField = (property, field) => {
-    if (field === undefined) return;
-    const value = changed(field);
-    if (value !== field) next = next.editSemantic({ property, value });
-  };
-  for (const [channel, encoding] of Object.entries(layer.encoding ?? {})) {
-    editField(
-      `layer[${id}].encoding.${channel}.field`,
-      encoding?.field
-    );
-    const summary = encoding?.categoryOrder?.by;
-    if (summary?.field !== undefined) {
-      const field = changed(summary.field);
-      if (field !== summary.field) {
-        next = next.editSemantic({
-          property: `layer[${id}].encoding.${channel}.categoryOrder`,
-          value: { ...encoding.categoryOrder, by: { ...summary, field } }
-        });
-      }
-    }
-  }
-  editField(
-    `layer[${id}].encoding.theta.weight`,
-    layer.encoding?.theta?.weight
-  );
-
-  const parallel = layer.encoding?.parallel;
-  if (parallel?.dimensions !== undefined) {
-    const dimensions = parallel.dimensions.map(dimension => {
-      const field = changed(dimension.field);
-      return { ...dimension, field };
-    });
-    if (dimensions.some((dimension, index) =>
-      dimension.field !== parallel.dimensions[index].field
-    )) {
-      next = next.editSemantic({
-        property: `layer[${id}].encoding.parallel.dimensions`,
-        value: dimensions
-      });
-    }
-  }
-  editField(
-    `layer[${id}].encoding.parallel.key`,
-    parallel?.key
-  );
-
-  for (const [selectionId, config] of Object.entries(
-    program.materializationConfigs.selections ?? {}
-  )) {
-    if (config.target !== id) continue;
-    const selector = { ...config.selector };
-    if (selector.field !== undefined) {
-      selector.field = changed(selector.field);
-    }
-    if (selector.groupBy !== undefined) {
-      selector.groupBy = selector.groupBy.map(changed);
-    }
-    if (JSON.stringify(selector) !== JSON.stringify(config.selector)) {
-      next = next._withSelectionConfig(selectionId, { ...config, selector });
-    }
-  }
-
-  const jitter = program.materializationConfigs.jitters?.[id];
-  const key = jitter?.key === undefined
-    ? undefined
-    : changed(jitter.key);
-  if (key !== undefined && key !== jitter.key) {
-    next = next._withMaterializationConfig(
-      ["jitters", id], { ...jitter, key }
-    );
-  }
-  return next;
-}
-
-function rejectDerivedConsumers(program, data) {
-  const dependent = findDatasetConsumer(program, data);
-  if (dependent !== undefined) {
-    throw new Error(
-      `Cannot replace 2D bin dataset "${data}" while derived dataset ` +
-      `"${dependent.id}" depends on it.`
-    );
-  }
 }
 
 function preflight(program, sourceId, transform) {
@@ -238,29 +125,18 @@ function sameRequestedTransform(left, right) {
   return JSON.stringify(left) === JSON.stringify(right);
 }
 
-function applyBin2DRevision(program, { owner, previous, source, transform }) {
-  rejectDerivedConsumers(program, previous.id);
-  const consumers = directLayerConsumers(program, previous.id);
-  const changes = outputFieldChanges(previous.transform[0], transform);
-  const revision = planDerivedDataRevision(program, {
-    owner,
-    role: "Bin2DData",
-    previous: previous.id,
-    consumers
+function applyBin2DRevision(program, {
+  owner,
+  source,
+  transform,
+  dependents = "reject"
+}) {
+  return reviseDerivedData(program, {
+    resolved: resolveDerivedDataOwner(program, owner, "bin2d"),
+    definition: transform,
+    dependents,
+    source
   });
-  let next = program
-    .createDerivedData({ id: revision.id, source, transform: [transform] })
-    .materializeBin2DData({ id: revision.id });
-  for (const rebind of revision.rebinds) {
-    next = next.rebindLayerData(rebind);
-    next = rebindLayerOutputFields(next, rebind.id, changes);
-    next = applyLayerDataRematerialization(next, rebind.id);
-  }
-  next = next.releaseDerivedData(revision.release);
-  return next._withMaterializationConfig(
-    ["data", "bin2d", owner],
-    { current: revision.id }
-  );
 }
 
 export const createBin2DData = action(
@@ -275,10 +151,14 @@ export const createBin2DData = action(
     const previous = config === undefined
       ? undefined
       : requireCurrentBin2D(this, owner, config);
-    const source = validateUserId(
-      args.source ?? previous?.source ?? this.context.currentData,
-      "Source dataset id"
-    );
+    const source = resolveDatasetReference(
+      this,
+      validateUserId(
+        args.source ?? previous?.source ?? this.context.currentData,
+        "Source dataset id"
+      ),
+      "Source dataset"
+    ).id;
     const transform = normalizeBin2DTransform({ ...args, id: owner });
     preflight(this, source, transform);
 
@@ -313,10 +193,15 @@ export const editBin2DData = action(
     }
     const owner = resolveBin2DOwner(this, args.target);
     const previous = requireCurrentBin2D(this, owner, ownerConfig(this, owner));
-    const source = validateUserId(
-      args.source ?? previous.source,
-      "2D bin source dataset id"
-    );
+    const dependents = normalizeDerivedDependentPolicy(args.dependents);
+    const source = resolveDatasetReference(
+      this,
+      validateUserId(
+        args.source ?? previous.source,
+        "2D bin source dataset id"
+      ),
+      "2D bin source dataset"
+    ).id;
     const transform = editedTransform(owner, previous, args);
     if (
       source === previous.source &&
@@ -328,11 +213,11 @@ export const editBin2DData = action(
       throw new Error("editBin2DData requires an actual transform or source change.");
     }
     preflight(this, source, transform);
-    const revision = { owner, previous, source, transform };
-
-    // Execute one speculative immutable branch so every consumer plan is known
-    // to succeed before the returned action trace records its first child.
-    applyBin2DRevision(this, revision);
-    return applyBin2DRevision(this, revision);
+    return applyBin2DRevision(this, {
+      owner,
+      source,
+      transform,
+      dependents
+    });
   }
 );

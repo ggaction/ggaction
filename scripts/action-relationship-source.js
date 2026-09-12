@@ -109,6 +109,111 @@ function missingDataPrograms() {
   })];
 }
 
+function derivedEditingPrograms() {
+  const rows = [
+    {
+      group: "a", category: "c1", x: 1, y: 2, value: 1,
+      a: 1, b: 2, when: "2024-01-01T00:00:00Z", order: 1,
+      missing: null
+    },
+    {
+      group: "a", category: "c2", x: 2, y: 4, value: 2,
+      a: 2, b: 3, when: "2024-01-02T00:00:00Z", order: 2,
+      missing: 2
+    },
+    {
+      group: "b", category: "c1", x: 3, y: 6, value: 3,
+      a: 3, b: 4, when: "2024-01-03T00:00:00Z", order: 3,
+      missing: null
+    },
+    {
+      group: "b", category: "c2", x: 4, y: 8, value: 4,
+      a: 4, b: 5, when: "2024-01-04T00:00:00Z", order: 4,
+      missing: 4
+    }
+  ];
+  let program = chart().createData({ id: "editSource", values: rows });
+  program = program
+    .createComputedData({
+      id: "editComputed", source: "editSource", as: "computed",
+      expression: { field: "x" }
+    })
+    .editComputedData({ target: "editComputed", expression: {
+      op: "multiply", left: { field: "x" }, right: { constant: 2 }
+    } })
+    .filterData({
+      id: "editFiltered", source: "editSource", field: "group", oneOf: ["a"]
+    })
+    .editFilteredData({ target: "editFiltered", oneOf: ["b"] })
+    .createFoldData({
+      id: "editFold", source: "editSource", fields: ["a", "b"],
+      as: { key: "foldKey", value: "foldValue" }
+    })
+    .editFoldData({ target: "editFold", fields: ["a"] })
+    .createSummaryData({
+      id: "editSummary", source: "editSource",
+      aggregates: [{ op: "mean", field: "value", as: "mean" }]
+    })
+    .editSummaryData({
+      target: "editSummary",
+      aggregates: [{ op: "sum", field: "value", as: "mean" }]
+    })
+    .createBinData({
+      id: "editBin", source: "editSource", field: "value",
+      boundaries: [0, 2, 4]
+    })
+    .editBinData({ target: "editBin", boundaries: [0, 3, 4] })
+    .createTimeUnitData({
+      id: "editTime", source: "editSource", field: "when", unit: "day",
+      as: "bucket"
+    })
+    .editTimeUnitData({ target: "editTime", unit: "month" })
+    .createWindowData({
+      id: "editWindow", source: "editSource", sortBy: [{ field: "order" }],
+      operations: [{ op: "rowNumber", as: "rank" }]
+    })
+    .editWindowData({
+      target: "editWindow", operations: [{ op: "rank", as: "rank" }]
+    })
+    .createDensityData({
+      id: "editDensity", source: "editSource", field: "value", steps: 8
+    })
+    .editDensityData({ target: "editDensity", steps: 10 })
+    .createStackData({
+      id: "editStack", source: "editSource", category: "category",
+      group: "group", value: "value"
+    })
+    .editStackData({ target: "editStack", mode: "fill" })
+    .createRegressionData({
+      id: "editRegression", source: "editSource", x: "x", y: "y"
+    })
+    .editRegressionData({ target: "editRegression", method: "polynomial" })
+    .createIntervalData({
+      id: "editInterval", source: "editSource", field: "value"
+    })
+    .editIntervalData({
+      target: "editInterval", center: "median", extent: "iqr"
+    })
+    .createECDFData({ id: "editECDF", source: "editSource", field: "value" })
+    .editECDFData({ target: "editECDF", missing: "error" })
+    .createNormalizedData({
+      id: "editNormalized", source: "editSource", field: "value",
+      as: "normalized", method: "share"
+    })
+    .editNormalizedData({ target: "editNormalized", method: "minmax" })
+    .createCompleteData({
+      id: "editComplete", source: "editSource", key: "category",
+      groupBy: "group", values: ["c1", "c2"]
+    })
+    .editCompleteData({ target: "editComplete", values: ["c1", "c2", "c3"] })
+    .createImputedData({
+      id: "editImputed", source: "editSource", fields: "missing",
+      method: "constant", value: 0
+    })
+    .editImputedData({ target: "editImputed", value: 1 });
+  return [program];
+}
+
 function collectDirectRelationships(trace, directNames, relationships, observed) {
   if (directNames.has(trace.op)) {
     observed.add(trace.op);
@@ -137,7 +242,8 @@ export async function buildActionRelationships() {
     ...selectionLifecyclePrograms(),
     ...focusedScaleEditorPrograms(),
     ...normalizedDataPrograms(),
-    ...missingDataPrograms()
+    ...missingDataPrograms(),
+    ...derivedEditingPrograms()
   ];
   for (const program of programs) {
     collectDirectRelationships(program.trace, directNames, relationships, observed);

@@ -159,6 +159,10 @@
       "dataset",
       "rows"
     ],
+    "FilteredData": [
+      "filtered dataset",
+      "rows matching a predicate"
+    ],
     "MarkData": [
       "mark data binding",
       "change mark dataset",
@@ -1036,6 +1040,89 @@
           }
         }
       ]
+    },
+    "editDerivedData": {
+      "target": "computed",
+      "definition": {
+        "type": "computed",
+        "as": "result",
+        "expression": {
+          "field": "value"
+        }
+      }
+    },
+    "editComputedData": {
+      "target": "computed",
+      "expression": {
+        "field": "value"
+      }
+    },
+    "editFilteredData": {
+      "target": "filtered",
+      "oneOf": [1]
+    },
+    "editFoldData": {
+      "target": "folded",
+      "fields": ["value"]
+    },
+    "editSummaryData": {
+      "target": "summary",
+      "aggregates": [
+        {
+          "op": "count",
+          "as": "count"
+        }
+      ]
+    },
+    "editBinData": {
+      "target": "bins",
+      "maxBins": 12
+    },
+    "editTimeUnitData": {
+      "target": "buckets",
+      "unit": "month"
+    },
+    "editWindowData": {
+      "target": "windowed",
+      "operations": [
+        {
+          "op": "rowNumber",
+          "as": "rowNumber"
+        }
+      ]
+    },
+    "editDensityData": {
+      "target": "density",
+      "steps": 64
+    },
+    "editStackData": {
+      "target": "stacked",
+      "mode": "fill"
+    },
+    "editRegressionData": {
+      "target": "regression",
+      "method": "loess"
+    },
+    "editIntervalData": {
+      "target": "interval",
+      "center": "median",
+      "extent": "iqr"
+    },
+    "editECDFData": {
+      "target": "ecdf",
+      "missing": "error"
+    },
+    "editNormalizedData": {
+      "target": "normalized",
+      "method": "minmax"
+    },
+    "editCompleteData": {
+      "target": "complete",
+      "values": [1, 2]
+    },
+    "editImputedData": {
+      "target": "imputed",
+      "value": 0
     },
     "createHeatmap": {
       "x": "x",

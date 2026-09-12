@@ -170,8 +170,8 @@
       "layer": "user-facing",
       "domain": "core",
       "status": "implemented",
-      "lifecycle": "Immutable create-only",
-      "update": "Create a new derived dataset ID",
+      "lifecycle": "Mutable resource",
+      "update": "Create a logical filtered owner; revise it with editFilteredData",
       "audit": "Intentional",
       "coverage": {
         "contract": "complete",
@@ -188,8 +188,8 @@
       "layer": "user-facing",
       "domain": "statistics",
       "status": "implemented",
-      "lifecycle": "Immutable create-only",
-      "update": "Create a materialized grouped summary dataset ID",
+      "lifecycle": "Mutable resource",
+      "update": "Create a logical summary owner; revise it with editSummaryData",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -206,8 +206,8 @@
       "layer": "user-facing",
       "domain": "statistics",
       "status": "implemented",
-      "lifecycle": "Immutable create-only",
-      "update": "Create reusable materialized one-dimensional bins",
+      "lifecycle": "Mutable resource",
+      "update": "Create a logical bin owner; revise it with editBinData",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -224,8 +224,8 @@
       "layer": "user-facing",
       "domain": "statistics",
       "status": "implemented",
-      "lifecycle": "Immutable create-only",
-      "update": "Create reusable materialized wide-to-long rows",
+      "lifecycle": "Mutable resource",
+      "update": "Create a logical fold owner; revise it with editFoldData",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -242,8 +242,8 @@
       "layer": "user-facing",
       "domain": "statistics",
       "status": "implemented",
-      "lifecycle": "Immutable create-only",
-      "update": "Create a typed row-level computed field",
+      "lifecycle": "Mutable resource",
+      "update": "Create a logical computed owner; revise it with editComputedData",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -260,8 +260,8 @@
       "layer": "user-facing",
       "domain": "statistics",
       "status": "implemented",
-      "lifecycle": "Immutable create-only",
-      "update": "Create row-preserving grouped normalization values",
+      "lifecycle": "Mutable resource",
+      "update": "Create a logical normalization owner; revise it with editNormalizedData",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -278,8 +278,8 @@
       "layer": "user-facing",
       "domain": "statistics",
       "status": "implemented",
-      "lifecycle": "Immutable create-only",
-      "update": "Complete a typed key domain within observed groups",
+      "lifecycle": "Mutable resource",
+      "update": "Create a logical completion owner; revise it with editCompleteData",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -296,8 +296,8 @@
       "layer": "user-facing",
       "domain": "statistics",
       "status": "implemented",
-      "lifecycle": "Immutable create-only",
-      "update": "Replace explicit missing cells within independent groups",
+      "lifecycle": "Mutable resource",
+      "update": "Create a logical imputation owner; revise it with editImputedData",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -314,8 +314,8 @@
       "layer": "user-facing",
       "domain": "statistics",
       "status": "implemented",
-      "lifecycle": "Immutable create-only",
-      "update": "Create reusable stack endpoints and shares",
+      "lifecycle": "Mutable resource",
+      "update": "Create a logical stack owner; revise it with editStackData",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -332,8 +332,8 @@
       "layer": "user-facing",
       "domain": "core",
       "status": "implemented",
-      "lifecycle": "Immutable create-only",
-      "update": "Create a new derived dataset ID",
+      "lifecycle": "Mutable resource",
+      "update": "Create a logical density owner; revise it with editDensityData",
       "audit": "Intentional",
       "coverage": {
         "contract": "complete",
@@ -350,8 +350,8 @@
       "layer": "user-facing",
       "domain": "core",
       "status": "implemented",
-      "lifecycle": "Immutable create-only",
-      "update": "Create a new derived dataset ID",
+      "lifecycle": "Mutable resource",
+      "update": "Create a logical regression owner; revise it with editRegressionData",
       "audit": "Intentional",
       "coverage": {
         "contract": "complete",
@@ -368,8 +368,8 @@
       "layer": "user-facing",
       "domain": "core",
       "status": "implemented",
-      "lifecycle": "Immutable create-only",
-      "update": "Create a new derived dataset ID",
+      "lifecycle": "Mutable resource",
+      "update": "Create a logical window owner; revise it with editWindowData",
       "audit": "Intentional",
       "coverage": {
         "contract": "complete",
@@ -386,8 +386,8 @@
       "layer": "user-facing",
       "domain": "core",
       "status": "implemented",
-      "lifecycle": "Immutable create-only",
-      "update": "Create a new derived dataset ID",
+      "lifecycle": "Mutable resource",
+      "update": "Create a logical time-unit owner; revise it with editTimeUnitData",
       "audit": "Intentional",
       "coverage": {
         "contract": "complete",
@@ -436,12 +436,300 @@
       }
     },
     {
+      "name": "editDerivedData",
+      "layer": "user-facing",
+      "domain": "core",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Atomically revises one standalone derived owner and optionally recomputes its dependency closure",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/CORE.md",
+        "anchor": "editderiveddata"
+      }
+    },
+    {
+      "name": "editComputedData",
+      "layer": "user-facing",
+      "domain": "statistics",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Partially revises a standalone computed dataset",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/CORE.md",
+        "anchor": "editcomputeddata"
+      }
+    },
+    {
+      "name": "editFilteredData",
+      "layer": "user-facing",
+      "domain": "core",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Partially revises a standalone filtered dataset",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/CORE.md",
+        "anchor": "editfiltereddata"
+      }
+    },
+    {
+      "name": "editFoldData",
+      "layer": "user-facing",
+      "domain": "statistics",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Partially revises a standalone folded dataset",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/CORE.md",
+        "anchor": "editfolddata"
+      }
+    },
+    {
+      "name": "editSummaryData",
+      "layer": "user-facing",
+      "domain": "statistics",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Partially revises a standalone summary dataset",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/CORE.md",
+        "anchor": "editsummarydata"
+      }
+    },
+    {
+      "name": "editBinData",
+      "layer": "user-facing",
+      "domain": "statistics",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Partially revises a standalone one-dimensional bin dataset",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/CORE.md",
+        "anchor": "editbindata"
+      }
+    },
+    {
+      "name": "editTimeUnitData",
+      "layer": "user-facing",
+      "domain": "core",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Partially revises a standalone time-unit dataset",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/CORE.md",
+        "anchor": "edittimeunitdata"
+      }
+    },
+    {
+      "name": "editWindowData",
+      "layer": "user-facing",
+      "domain": "core",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Partially revises a standalone window dataset",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/CORE.md",
+        "anchor": "editwindowdata"
+      }
+    },
+    {
+      "name": "editDensityData",
+      "layer": "user-facing",
+      "domain": "core",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Partially revises a standalone density dataset",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/CORE.md",
+        "anchor": "editdensitydata"
+      }
+    },
+    {
+      "name": "editStackData",
+      "layer": "user-facing",
+      "domain": "statistics",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Partially revises a standalone stack dataset",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/CORE.md",
+        "anchor": "editstackdata"
+      }
+    },
+    {
+      "name": "editRegressionData",
+      "layer": "user-facing",
+      "domain": "core",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Partially revises a standalone regression dataset",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/CORE.md",
+        "anchor": "editregressiondata"
+      }
+    },
+    {
+      "name": "editIntervalData",
+      "layer": "user-facing",
+      "domain": "statistics",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Partially revises a standalone interval dataset",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/CORE.md",
+        "anchor": "editintervaldata"
+      }
+    },
+    {
+      "name": "editECDFData",
+      "layer": "user-facing",
+      "domain": "statistics",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Partially revises a standalone ECDF dataset",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/CORE.md",
+        "anchor": "editecdfdata"
+      }
+    },
+    {
+      "name": "editNormalizedData",
+      "layer": "user-facing",
+      "domain": "statistics",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Partially revises a standalone normalized dataset",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/CORE.md",
+        "anchor": "editnormalizeddata"
+      }
+    },
+    {
+      "name": "editCompleteData",
+      "layer": "user-facing",
+      "domain": "statistics",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Partially revises a standalone completed-key dataset",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/CORE.md",
+        "anchor": "editcompletedata"
+      }
+    },
+    {
+      "name": "editImputedData",
+      "layer": "user-facing",
+      "domain": "statistics",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Partially revises a standalone imputed dataset",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/CORE.md",
+        "anchor": "editimputeddata"
+      }
+    },
+    {
       "name": "createIntervalData",
       "layer": "user-facing",
       "domain": "statistics",
       "status": "implemented",
-      "lifecycle": "Immutable create-only",
-      "update": "Create a new derived dataset ID",
+      "lifecycle": "Mutable resource",
+      "update": "Create a logical interval owner; revise it with editIntervalData",
       "audit": "Intentional",
       "coverage": {
         "contract": "complete",
@@ -458,8 +746,8 @@
       "layer": "user-facing",
       "domain": "statistics",
       "status": "implemented",
-      "lifecycle": "Immutable create-only",
-      "update": "Create a new derived dataset ID",
+      "lifecycle": "Mutable resource",
+      "update": "Create a logical ECDF owner; revise it with editECDFData",
       "audit": "Intentional",
       "coverage": {
         "contract": "complete",

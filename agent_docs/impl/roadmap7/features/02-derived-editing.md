@@ -83,7 +83,7 @@ recompute는 새로운 program에서 downstream snapshots를 새 revision으로 
 
 ### 정규화와 저장 형태
 
-새 export 이름은 EditDerivedDataOptions, DerivedDataDependents, RequestedDatasetTransform 및 각 EditComputedDataOptions/…/EditImputedDataOptions로 제안한다. 반환 타입은 모두 ChartProgram이다. 공통 editor는 definition.type을 필수로 받고 현재 transform.type과 같아야 한다. focused editor는 type을 받지 않는다. source/id/resolved/current/values는 두 입력 모두에서 금지한다. Bin2D의 기존 source 예외는 전용 API에서만 유지한다.
+새 export 이름은 EditDerivedDataOptions, DerivedDataDependents, RequestedDatasetTransform 및 각 EditComputedDataOptions/…/EditImputedDataOptions로 제안한다. 반환 타입은 모두 ChartProgram이다. 공통 editor는 definition.type을 필수로 받고 현재 transform.type과 같아야 한다. focused editor는 type을 받지 않는다. source/id/resolved/current는 두 입력 모두에서 금지한다. `definition`은 dataset envelope가 아니라 transform 자체이므로 materialized row 배열을 주입할 위치가 없다. 단, Complete transform의 domain option인 `definition.values`와 `editCompleteData.values`는 승인된 transform 필드이므로 허용하고 Complete validator가 scalar type·uniqueness·values/sequence exclusivity를 검사한다. Bin2D의 기존 source 예외는 전용 API에서만 유지한다.
 
 ~~~ts
 type DerivedDataDependents = "reject" | "recompute";

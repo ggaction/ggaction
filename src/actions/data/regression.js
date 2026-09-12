@@ -3,8 +3,9 @@ import { validateUserId } from "../../core/identifiers.js";
 import { validateKeys } from "../../core/validation.js";
 import {
   deriveRegression,
-  normalizeRegressionParameters
+  normalizeRegressionTransform
 } from "../../grammar/regression/index.js";
+import { resolveDatasetReference } from "../../selectors/datasets.js";
 import { derivedMaterializer } from "./shared.js";
 
 const OPTIONS = Object.freeze([
@@ -34,31 +35,25 @@ export const createRegressionData = action(
   { op: "createRegressionData", description: "Create grouped regression values and optional interval bounds." },
   function (args = {}) {
     validateKeys(args, OPTIONS, "createRegressionData");
-    const parameters = normalizeRegressionParameters(args);
     const id = validateUserId(args.id, "Regression dataset id");
-    const source = validateUserId(
+    const requestedSource = validateUserId(
       args.source ?? this.context.currentData,
       "Source dataset id"
     );
-    const transform = {
-      type: "regression",
-      method: parameters.method,
-      x: args.x,
-      y: args.y,
-      ...(args.groupBy === undefined ? {} : { groupBy: args.groupBy }),
-      ...(parameters.method === "polynomial"
-        ? { degree: parameters.degree }
-        : {}),
-      ...(parameters.method === "loess"
-        ? { span: parameters.span }
-        : {
-            confidenceMethod: parameters.confidenceMethod,
-            level: parameters.level,
-            interval: parameters.interval
-          })
-    };
-    return this
+    const source = resolveDatasetReference(
+      this,
+      requestedSource,
+      "Regression source dataset"
+    ).id;
+    const transform = normalizeRegressionTransform(args);
+    const next = this
       .createDerivedData({ id, source, transform: [transform] })
       .materializeRegressionData({ id });
+    return this.actionStack.length === 1
+      ? next._withMaterializationConfig(
+          ["data", "regression", id],
+          { current: id }
+        )
+      : next;
   }
 );

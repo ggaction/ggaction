@@ -48,6 +48,7 @@ const explicitLifecycleEditors = Object.freeze({
   applyTheme: ["applyTheme", "removeTheme"],
   removeTheme: ["applyTheme"],
   bindMarkData: ["bindMarkData"],
+  filterData: ["editFilteredData"],
   layoutLabels: ["layoutLabels", "removeLabelLayout"],
   jitterPoints: ["jitterPoints", "removeJitter"],
   packPoints: ["packPoints", "removePointPacking"],

@@ -47,9 +47,11 @@ import {
 import { createCompleteData, materializeCompleteData } from "./complete.js";
 import { createImputedData, materializeImputedData } from "./impute.js";
 import { createStackData, materializeStackData } from "./stack.js";
+import { EDIT_DERIVED_DATA_ACTIONS } from "./edit.js";
 import { createBoxSummaryData, createBoxOutlierData, materializeBoxSummaryData, materializeBoxOutlierData } from "./box.js";
 
 export function registerDataActions(ProgramClass) {
+  Object.assign(ProgramClass.prototype, EDIT_DERIVED_DATA_ACTIONS);
   ProgramClass.prototype.createData = createData;
   ProgramClass.prototype.createDerivedData = createDerivedData;
   ProgramClass.prototype.bindMarkData = bindMarkData;

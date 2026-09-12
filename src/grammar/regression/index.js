@@ -9,6 +9,7 @@ export {
 } from "./derive.js";
 export {
   normalizeRegressionParameters,
+  normalizeRegressionTransform,
   validateRegressionTransform
 } from "./parameters.js";
 

@@ -1,8 +1,12 @@
 import { action } from "../../core/action.js";
 import { validateUserId } from "../../core/identifiers.js";
 import { validateKeys } from "../../core/validation.js";
-import { hasDataset } from "../../selectors/index.js";
-import { findDataset } from "../../selectors/datasets.js";
+import {
+  findDataset,
+  hasDataset,
+  hasDatasetOwner,
+  resolveDatasetReference
+} from "../../selectors/datasets.js";
 import { requireLayer } from "../../selectors/layers.js";
 import { applyLayerDataRematerialization } from
   "../../materialization/dependencies.js";
@@ -26,8 +30,13 @@ export const createDerivedData = action(
   function (args = {}) {
     validateKeys(args, OPTIONS, "createDerivedData");
     const id = validateUserId(args.id, "Derived dataset id");
-    const source = validateUserId(args.source, "Source dataset id");
-    if (hasDataset(this, id)) {
+    const requestedSource = validateUserId(args.source, "Source dataset id");
+    const source = resolveDatasetReference(
+      this,
+      requestedSource,
+      "Source dataset"
+    ).id;
+    if (hasDataset(this, id) || hasDatasetOwner(this, id)) {
       throw new Error(`Dataset "${id}" already exists.`);
     }
     if (!hasDataset(this, source)) {
@@ -73,7 +82,12 @@ export const rebindLayerData = action(
   function (args = {}) {
     validateKeys(args, REBIND_OPTIONS, "rebindLayerData");
     const id = validateUserId(args.id, "Layer id");
-    const data = validateUserId(args.data, "Layer dataset id");
+    const requestedData = validateUserId(args.data, "Layer dataset id");
+    const data = resolveDatasetReference(
+      this,
+      requestedData,
+      "Layer dataset"
+    ).id;
     requireLayer(this, id);
     if (!hasDataset(this, data)) {
       throw new Error(`Layer dataset "${data}" does not exist.`);
@@ -117,7 +131,12 @@ export const bindMarkData = action(
   function (args = {}) {
     validateKeys(args, BIND_OPTIONS, "bindMarkData");
     const target = validateUserId(args.target, "Mark target id");
-    const data = validateUserId(args.data, "Mark dataset id");
+    const requestedData = validateUserId(args.data, "Mark dataset id");
+    const data = resolveDatasetReference(
+      this,
+      requestedData,
+      "Mark dataset"
+    ).id;
     const layer = requireLayer(this, target);
     const dataset = findDataset(this, data);
     if (dataset === undefined) {

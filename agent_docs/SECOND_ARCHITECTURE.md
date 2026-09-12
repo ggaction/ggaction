@@ -252,7 +252,7 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Gzip ceiling |
 | --- | ---: |
-| `ggaction` | 310,000 bytes |
+| `ggaction` | 315,000 bytes |
 | `ggaction/basic` | 155,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 
@@ -432,11 +432,22 @@ Facet replay는 Horizon resolved provenance를 그대로 복사하지 않는다.
 계산한다. 이 차이는 semantic scale resolution에 의해 결정되며 renderer나 facet layout이 band 계산을 복제하지
 않는다.
 
-Rectangular 2D-bin provenance도 requested grid policy와 materialized revision 결과를 분리한다. Transform은
+Standalone derived-data provenance는 requested transform과 materialized revision 결과를 분리한다.
+`materializationConfigs.data[family][owner].current`가 안정적인 logical owner를 현재 immutable snapshot에
+연결한다. Dataset selector는 logical owner를 먼저 해석하고, 실제 `dataset.source`와 `layer.data`에는 해석된
+snapshot ID를 저장한다. `editDerivedData`와 family별 focused editor는 transform registry의 requested extractor,
+normalizer, materializer와 semantic output-role 정보를 사용해 하나의 transaction을 계획한다. 기본
+`dependents:"reject"`는 하위 derived edge가 있으면 쓰기 전에 중단한다. 명시적인 `"recompute"`는 semantic dataset
+순서로 고정된 DAG traversal에서 모든 도달 가능한 snapshot을 만들고, direct consumers와 known retained data
+references를 rebind하고, 전체 speculative program이 유효한 뒤에만 같은 wrapped action hierarchy를 반환한다.
+Earlier program은 기존 snapshots를 유지하며 stale snapshot은 source로 읽을 수 있지만 edit target으로 사용할 수
+없다. Chart facade 내부 transform은 logical owner registry에 등록하지 않으므로 owning chart editor가 계속 lifecycle을
+소유한다.
+
+Rectangular 2D-bin provenance도 같은 공통 revision 실행기를 사용하며 requested grid policy와 materialized revision 결과를 분리한다. Transform은
 requested `bins`, per-axis automatic/explicit `extent`, output fields와 empty/member policy를 저장하고,
 `resolved`는 해당 revision의 concrete extent, edges, eligible count와 occupied count를 저장한다. 동일 logical
-owner를 다시 author하거나 `editBin2DData`로 partial edit하면
-`materializationConfigs.data.bin2d[owner].current`가 current immutable revision ID를 가리키고 direct layer consumer는
+owner를 다시 author하거나 `editBin2DData`로 partial edit하면 direct layer consumer는
 wrapped rebind와 materialization plan으로 갱신된다. Output 이름을 바꾸는 revision은 transform role을 기준으로 direct
 consumer의 semantic encoding과 stored selection/jitter field binding을 함께 옮긴 뒤 scale, mark와 guide를 다시
 materialize하되 stored display title은 보존한다. 제거되는 optional output을 참조하는 binding은 transition 전에 거부한다. Edit facade는 omitted

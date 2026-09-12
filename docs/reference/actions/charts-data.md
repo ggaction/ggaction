@@ -616,7 +616,8 @@ direct visual consumers. [Rectangular 2D bins](../../api/data/bin2d.md)
 
 ```javascript
 editBin2DData({
-  target?, source?, x?, y?, bins?, extent?, includeEmpty?, members?, as?
+  target?, source?, x?, y?, bins?, extent?, includeEmpty?, members?, as?,
+  dependents?
 })
 ```
 
@@ -624,6 +625,30 @@ Partially revise the current or unique logical 2D-bin owner. Omitted top-level
 transform options are preserved; successful edits create an immutable revision,
 rebind direct visual consumers, and safely release the prior revision.
 [Rectangular 2D bins](../../api/data/bin2d.md#editbin2ddata)
+
+## Focused core data editing
+
+```javascript
+editDerivedData({ target, definition, dependents? })
+editFilteredData({ target, field?, oneOf? | predicate? | range?, dependents? })
+editTimeUnitData({ target, field?, unit?, as?, temporalUnit?, timeZone?, weekStartsOn?, weekRule?, dependents? })
+editWindowData({ target, partitionBy?, sortBy?, operations?, temporalUnit?, dependents? })
+editDensityData({ target, field?, groupBy?, bandwidth?, extent?, steps?, kernel?, normalization?, as?, weight?, dependents? })
+editRegressionData({ target, x?, y?, groupBy?, method?, degree?, span?, confidenceMethod?, level?, interval?, dependents? })
+```
+
+Revise a standalone derived-data owner without rebuilding its consumers. New
+focused editors require an explicit logical owner or current snapshot. Omitted
+transform options remain unchanged. The generic form requires a complete
+requested transform of the same type and does not accept `id`, `source`,
+`current`, or resolved materializer output.
+
+`dependents` defaults to `"reject"`. Set it to `"recompute"` to revise every
+reachable derived dataset in dependency order. The operation is atomic: an
+invalid downstream field, scale, mark, guide, label, or selection preserves the
+entire input program. Output names are carried only across unambiguous direct
+semantic roles; expressions and predicates are never rewritten as strings.
+[Editing derived data](../../api/data/source-and-derived.md#editing-derived-data)
 
 ## Related
 

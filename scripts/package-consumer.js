@@ -384,6 +384,42 @@ async function testNodeConsumer(directory) {
       computed.semanticSpec.datasets.find(dataset => dataset.id === "shares").values[0].share,
       0.25
     );
+    const editedComputed = computed.editComputedData({
+      target: "shares",
+      expression: {
+        op: "multiply",
+        left: { field: "part" },
+        right: { constant: 2 }
+      }
+    });
+    assert.equal(
+      editedComputed.semanticSpec.datasets.find(dataset =>
+        dataset.id === editedComputed.materializationConfigs.data.computed.shares.current
+      ).values[0].share,
+      4
+    );
+    assert.equal(
+      computed.semanticSpec.datasets.find(dataset => dataset.id === "shares").values[0].share,
+      0.25
+    );
+    const genericallyEditedComputed = editedComputed.editDerivedData({
+      target: "shares",
+      definition: {
+        type: "computed",
+        as: "share",
+        expression: {
+          op: "add",
+          left: { field: "part" },
+          right: { field: "whole" }
+        }
+      }
+    });
+    assert.equal(
+      genericallyEditedComputed.semanticSpec.datasets.find(dataset =>
+        dataset.id === genericallyEditedComputed.materializationConfigs.data.computed.shares.current
+      ).values[0].share,
+      10
+    );
     const classified = chart()
       .createData({ id: "measurements", values: [{ value: -1 }, { value: 4 }] })
       .createComputedData({
@@ -1617,8 +1653,8 @@ async function testMcpConsumer(directory) {
     actionCardSchema.properties?.schemaVersion?.const !== 3 ||
     actionCardsSchema.properties?.schemaVersion?.const !== 3 ||
     actionCards.schemaVersion !== 3 ||
-    actionCards.count !== 247 ||
-    actionCards.cards.length !== 247 ||
+    actionCards.count !== 263 ||
+    actionCards.cards.length !== 263 ||
     actionCards.packageVersion !== installedPackage.version
   ) {
     throw new Error("Installed action-card discovery contract is missing or stale.");
@@ -1635,6 +1671,14 @@ async function testMcpConsumer(directory) {
       "createImputedData(options: ImputedDataOptions): ChartProgram;"
   ) {
     throw new Error("Installed missing-data discovery metadata is stale.");
+  }
+  if (
+    installedCards.get("editDerivedData")?.signature !==
+      "editDerivedData(options: EditDerivedDataOptions): ChartProgram;" ||
+    installedCards.get("editComputedData")?.signature !==
+      "editComputedData(options: EditComputedDataOptions): ChartProgram;"
+  ) {
+    throw new Error("Installed derived-data editing metadata is stale.");
   }
   const installedScatter = installedCards.get("createScatterPlot");
   if (
@@ -1827,6 +1871,9 @@ async function testTypeScriptConsumer(directory) {
       type DatasetCompleteTransform,
       type DatasetImputedTransform,
       type DatasetNormalizedTransform,
+      type DerivedDataDependents,
+      type EditComputedDataOptions,
+      type EditDerivedDataOptions,
       type CreateParallelCoordinatesOptions,
       type OrderCategoriesOptions,
       type GradientPlotOptions,
@@ -1847,6 +1894,7 @@ async function testTypeScriptConsumer(directory) {
       type ImputedDataOptions,
       type PackPointsOptions,
       type PointPackingMaxOffset,
+      type RequestedDatasetTransform,
       type NonPointQuantitativePositionScaleOptions,
       type NormalizedDataOptions,
       type OpacityScaleOptions,
@@ -2782,6 +2830,26 @@ async function testTypeScriptConsumer(directory) {
       as: "share",
       expression: ratioExpression
     };
+    const derivedDependents: DerivedDataDependents = "recompute";
+    const requestedComputedTransform: RequestedDatasetTransform = {
+      type: "computed",
+      as: "share",
+      expression: ratioExpression
+    };
+    const editComputedOptions: EditComputedDataOptions = {
+      target: "shares",
+      dependents: derivedDependents,
+      expression: ratioExpression
+    };
+    const editDerivedOptions: EditDerivedDataOptions = {
+      target: "shares",
+      definition: requestedComputedTransform,
+      dependents: derivedDependents
+    };
+    const editedComputed: ChartProgram = computed.editComputedData(editComputedOptions);
+    const genericallyEditedComputed: ChartProgram = computed.editDerivedData(editDerivedOptions);
+    void editedComputed;
+    void genericallyEditedComputed;
     const normalizedOptions: NormalizedDataOptions = {
       id: "normalized",
       field: "value",
@@ -3315,6 +3383,7 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.a
       "bin-data",
       "fold-data",
       "computed-data",
+      "derived-data-editing",
       "normalized-data",
       "complete-data",
       "imputed-data",

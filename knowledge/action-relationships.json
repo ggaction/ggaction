@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "source": "generated lifecycle smoke corpus plus selection lifecycle",
-  "actionCount": 247,
+  "actionCount": 263,
   "relationships": [
     {
       "name": "createCanvas",
@@ -148,6 +148,102 @@
         "editYAxisTicks",
         "editYAxisLabels",
         "editYAxisTitle"
+      ]
+    },
+    {
+      "name": "editDerivedData",
+      "wraps": [
+        "createDerivedData"
+      ]
+    },
+    {
+      "name": "editComputedData",
+      "wraps": [
+        "editDerivedData"
+      ]
+    },
+    {
+      "name": "editFilteredData",
+      "wraps": [
+        "editDerivedData"
+      ]
+    },
+    {
+      "name": "editFoldData",
+      "wraps": [
+        "editDerivedData"
+      ]
+    },
+    {
+      "name": "editSummaryData",
+      "wraps": [
+        "editDerivedData"
+      ]
+    },
+    {
+      "name": "editBinData",
+      "wraps": [
+        "editDerivedData"
+      ]
+    },
+    {
+      "name": "editTimeUnitData",
+      "wraps": [
+        "editDerivedData"
+      ]
+    },
+    {
+      "name": "editWindowData",
+      "wraps": [
+        "editDerivedData"
+      ]
+    },
+    {
+      "name": "editDensityData",
+      "wraps": [
+        "editDerivedData"
+      ]
+    },
+    {
+      "name": "editStackData",
+      "wraps": [
+        "editDerivedData"
+      ]
+    },
+    {
+      "name": "editRegressionData",
+      "wraps": [
+        "editDerivedData"
+      ]
+    },
+    {
+      "name": "editIntervalData",
+      "wraps": [
+        "editDerivedData"
+      ]
+    },
+    {
+      "name": "editECDFData",
+      "wraps": [
+        "editDerivedData"
+      ]
+    },
+    {
+      "name": "editNormalizedData",
+      "wraps": [
+        "editDerivedData"
+      ]
+    },
+    {
+      "name": "editCompleteData",
+      "wraps": [
+        "editDerivedData"
+      ]
+    },
+    {
+      "name": "editImputedData",
+      "wraps": [
+        "editDerivedData"
       ]
     },
     {

@@ -4890,6 +4890,128 @@ The default fields are `<value>_start`, `<value>_end`, `<value>_value`, and
 require non-negative values. Diverging accumulates positive and negative values
 separately from zero. Zero cells remain as zero-thickness rows with share 0.
 
+## Editing derived data {#editing-derived-data}
+
+Every standalone value-producing data action creates a logical dataset owner.
+The owner ID remains stable while successful edits create immutable physical
+revisions. Use the generic action when an editor must receive a complete
+normalized transform definition:
+
+```javascript
+const revised = program.editDerivedData({
+  target: "twice",
+  definition: {
+    type: "computed",
+    as: "value2",
+    expression: {
+      op: "multiply",
+      left: { field: "value" },
+      right: { constant: 3 }
+    }
+  },
+  dependents: "recompute"
+});
+```
+
+`definition` contains only the requested public transform. It cannot contain a
+dataset `id`, `source`, materialized `resolved` values, or a revision pointer.
+The Complete transform may still use its own `values` domain because that field
+is part of the transform rather than a dataset value envelope. Generic edits
+replace the complete transform definition. Source replacement remains exclusive
+to the compatibility-preserving `editBin2DData` API.
+
+Focused editors accept partial transform changes and preserve every omitted
+top-level decision:
+
+| Transform family | Focused editor |
+| --- | --- |
+| computed | `editComputedData` |
+| filter | `editFilteredData` |
+| fold | `editFoldData` |
+| summary | `editSummaryData` |
+| one-dimensional bin | `editBinData` |
+| time unit | `editTimeUnitData` |
+| window | `editWindowData` |
+| density | `editDensityData` |
+| stack | `editStackData` |
+| regression | `editRegressionData` |
+| interval | `editIntervalData` |
+| ECDF | `editECDFData` |
+| normalize | `editNormalizedData` |
+| complete | `editCompleteData` |
+| impute | `editImputedData` |
+
+Each focused action requires `target`. It accepts the stable logical owner ID or
+the owner's current physical revision ID. An older physical revision is stale
+and rejects. A dataset produced privately inside a chart facade is chart-owned
+and must be changed through that chart's editor. `source` accepts either an
+ordinary physical dataset ID or a logical owner ID; a logical source always
+resolves to its current revision at call time.
+
+`dependents` defaults to `"reject"`. An edit therefore fails atomically when a
+derived dataset reads the target. Pass `dependents: "recompute"` to revise the
+entire downstream closure in deterministic topological order. The editor first
+builds and validates a speculative program. Only then does it record the same
+revisions in the returned program, rebind all direct marks and known stored data
+references, and release obsolete physical revisions in reverse topological
+order. A cycle or an unsupported internal transform aborts the operation without
+altering the input program.
+
+Output names are tracked by semantic role. Renaming a role updates downstream
+field references and visual encodings when the old name has one unambiguous
+meaning. A rename rejects if the old output name is shared by several roles or
+if a downstream expression contains a field reference that cannot be rewritten
+safely. Mode changes clear fields owned by the previous mode before the new
+definition is normalized. In focused weighted editors, `weight: false` removes
+an existing weight; omission preserves it.
+
+An edit must change the requested transform or source. A semantic no-op throws
+before creating a revision. Successful revisions use deterministic IDs of the
+form `<owner><Role>Revision<n>`. Earlier `ChartProgram` values remain unchanged.
+The returned program keeps the previous current dataset unless it pointed at the
+edited current revision, in which case it moves to the new revision.
+
+The following chain demonstrates rejection by default, downstream replay, and
+logical-source reuse:
+
+```javascript
+const before = chart()
+  .createData({ id: "raw", values: [{ x: 1 }, { x: 2 }, { x: 3 }] })
+  .createComputedData({
+    id: "twice",
+    source: "raw",
+    as: "scaled",
+    expression: {
+      op: "multiply",
+      left: { field: "x" },
+      right: { constant: 2 }
+    }
+  })
+  .createSummaryData({
+    id: "average",
+    source: "twice",
+    aggregates: [{ op: "mean", field: "scaled", as: "mean" }]
+  });
+
+// Throws because "average" depends on "twice".
+before.editComputedData({ target: "twice", expression: {
+  op: "multiply", left: { field: "x" }, right: { constant: 3 }
+} });
+
+const after = before.editComputedData({
+  target: "twice",
+  expression: {
+    op: "multiply",
+    left: { field: "x" },
+    right: { constant: 3 }
+  },
+  dependents: "recompute"
+});
+
+// before still has mean 4; after has mean 6.
+// A later source: "twice" resolves to the new current revision in after.
+```
+
 ## Related
 
 [Data overview](./api/data/) · [Chart API](./api/) · [Action reference](./reference/actions/)
@@ -5471,7 +5593,7 @@ unreferenced previous revision.
 
 ## `editBin2DData`
 
-`editBin2DData({ target?, source?, x?, y?, bins?, extent?, includeEmpty?, members?, as? })`
+`editBin2DData({ target?, source?, x?, y?, bins?, extent?, includeEmpty?, members?, as?, dependents? })`
 
 Use `editBin2DData` when only part of the current transform should change:
 
@@ -5504,9 +5626,14 @@ each direct layer, rematerialize affected scales, marks, and guides, then releas
 the unreferenced prior revision. Earlier programs and caller-owned options remain
 unchanged.
 
-A dependent derived dataset currently blocks both complete reauthoring and
-partial editing with an explicit error; create a new logical ID when that
-dependency must remain.
+`dependents` defaults to `"reject"`. With that default, an edit stops before
+changing the program when another derived dataset reads the current grid.
+Pass `dependents: "recompute"` to revise the complete downstream dependency
+closure in topological order. Every affected logical owner receives one new
+deterministic revision, direct visual consumers move to those revisions, and
+obsolete revisions are released only after the whole speculative result passes
+validation. Cycles, unsupported internal transforms, and unsafe output-field
+renames reject atomically.
 
 ## Related
 
@@ -13673,11 +13800,17 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editAreaMark`](./reference/actions/marks/#editareamark) | H3 | user-facing | marks |
 | [`editBarMark`](./reference/actions/marks/#editbarmark) | H3 | user-facing | marks |
 | [`editBin2DData`](./reference/actions/charts-data/#editbin2ddata) | H2 | user-facing | core |
+| [`editBinData`](./reference/actions/statistics/#focused-statistical-data-editing) | H1, H3 | user-facing | statistics |
 | [`editBoxPlot`](./reference/actions/statistics/#editboxplot) | H1, H3 | user-facing | statistics |
 | [`editCanvas`](./reference/actions/charts-data/#editcanvas) | H3 | user-facing | core |
 | [`editColorScale`](./reference/actions/advanced/#focused-channel-scale-editors) | H2 | user-facing | core |
+| [`editCompleteData`](./reference/actions/statistics/#focused-statistical-data-editing) | H1, H3 | user-facing | statistics |
 | [`editCompositionLayout`](./reference/actions/charts-data/#editcompositionlayout) | H3 | user-facing | composition |
+| [`editComputedData`](./reference/actions/statistics/#focused-statistical-data-editing) | H1, H3 | user-facing | statistics |
 | [`editDensity`](./reference/actions/encodings/#editdensity) | H2, H3 | user-facing | encodings |
+| [`editDensityData`](./reference/actions/charts-data/#focused-core-data-editing) | H2 | user-facing | core |
+| [`editDerivedData`](./reference/actions/charts-data/#focused-core-data-editing) | H2 | user-facing | core |
+| [`editECDFData`](./reference/actions/statistics/#focused-statistical-data-editing) | H1, H3 | user-facing | statistics |
 | [`editECDFPlot`](./reference/actions/charts-data/#editecdfplot) | H1, H3 | user-facing | charts |
 | [`editEndpointPlot`](./reference/actions/charts-data/#editendpointplot) | H1, H3 | user-facing | charts |
 | [`editErrorBand`](./reference/actions/statistics/#editerrorband-and-editerrorbandboundary) | H1, H3 | user-facing | statistics |
@@ -13687,11 +13820,15 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editFacetHeaders`](./reference/actions/charts-data/#editfacetheaders) | H3 | user-facing | composition |
 | [`editFacetScales`](./reference/actions/charts-data/#editfacetscales) | H3 | user-facing | composition |
 | [`editFacetSource`](./reference/actions/charts-data/#editfacetsource) | H3 | user-facing | composition |
+| [`editFilteredData`](./reference/actions/charts-data/#focused-core-data-editing) | H2 | user-facing | core |
+| [`editFoldData`](./reference/actions/statistics/#focused-statistical-data-editing) | H1, H3 | user-facing | statistics |
 | [`editGradientPlot`](./reference/actions/statistics/#editgradientplot) | H1, H3 | user-facing | statistics |
 | [`editGraphics`](./reference/actions/extension/#extension-actions) | H4 | primitive | primitives |
 | [`editGrid`](./reference/actions/advanced/#directional-grids) | H3 | user-facing | grid |
 | [`editHorizon`](./reference/actions/encodings/#edithorizon) | H2, H3 | user-facing | encodings |
 | [`editHorizontalGrid`](./reference/actions/advanced/#directional-grids) | H3 | user-facing | grid |
+| [`editImputedData`](./reference/actions/statistics/#focused-statistical-data-editing) | H1, H3 | user-facing | statistics |
+| [`editIntervalData`](./reference/actions/statistics/#focused-statistical-data-editing) | H1, H3 | user-facing | statistics |
 | [`editLegend`](./reference/actions/guides/#editlegend) | H3 | user-facing | legend_and_title |
 | [`editLegendBorder`](./reference/actions/guides/#focused-legend-edits) | H3 | user-facing | legend_and_title |
 | [`editLegendLabels`](./reference/actions/guides/#focused-legend-edits) | H3 | user-facing | legend_and_title |
@@ -13700,6 +13837,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editLegendTitle`](./reference/actions/guides/#focused-legend-edits) | H3 | user-facing | legend_and_title |
 | [`editLineMark`](./reference/actions/marks/#editlinemark) | H3 | user-facing | marks |
 | [`editMarkSelection`](./reference/actions/advanced/#editmarkselection) | H3 | advanced | mark-selection |
+| [`editNormalizedData`](./reference/actions/statistics/#focused-statistical-data-editing) | H1, H3 | user-facing | statistics |
 | [`editOpacityScale`](./reference/actions/advanced/#focused-channel-scale-editors) | H2 | user-facing | core |
 | [`editParallelAxis`](./reference/actions/advanced/#createparallelaxes-createparallelaxis-editparallelaxis-removeparallelaxis-removeparallelaxes) | H3 | user-facing | axes |
 | [`editPointMark`](./reference/actions/marks/#editpointmark) | H3 | user-facing | marks |
@@ -13713,6 +13851,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editRectMark`](./reference/actions/marks/#editrectmark) | H3 | user-facing | marks |
 | [`editRegression`](./reference/actions/statistics/#editregression) | H1, H3 | user-facing | statistics |
 | [`editRegressionBand`](./reference/actions/advanced/#semantic-resources-and-regression-layers) | H1, H3 | user-facing | statistics |
+| [`editRegressionData`](./reference/actions/charts-data/#focused-core-data-editing) | H2 | user-facing | core |
 | [`editRegressionLine`](./reference/actions/advanced/#semantic-resources-and-regression-layers) | H1, H3 | user-facing | statistics |
 | [`editRScale`](./reference/actions/advanced/#focused-channel-scale-editors) | H2 | user-facing | core |
 | [`editRuleMark`](./reference/actions/marks/#editrulemark) | H3 | user-facing | marks |
@@ -13720,8 +13859,10 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editSemantic`](./reference/actions/extension/#extension-actions) | H4 | primitive | primitives |
 | [`editShapeScale`](./reference/actions/advanced/#focused-channel-scale-editors) | H2 | user-facing | core |
 | [`editSizeScale`](./reference/actions/advanced/#focused-channel-scale-editors) | H2 | user-facing | core |
+| [`editStackData`](./reference/actions/statistics/#focused-statistical-data-editing) | H1, H3 | user-facing | statistics |
 | [`editStrokeDashScale`](./reference/actions/advanced/#focused-channel-scale-editors) | H2 | user-facing | core |
 | [`editStrokeWidthScale`](./reference/actions/advanced/#focused-channel-scale-editors) | H2 | user-facing | core |
+| [`editSummaryData`](./reference/actions/statistics/#focused-statistical-data-editing) | H1, H3 | user-facing | statistics |
 | [`editTextMark`](./reference/actions/marks/#edittextmark) | H3 | user-facing | marks |
 | [`editThetaAxis`](./reference/actions/guides/#editthetaaxis) | H3 | user-facing | axes |
 | [`editThetaAxisLabels`](./reference/actions/guides/#editthetaaxislabels) | H3 | user-facing | axes |
@@ -13731,9 +13872,11 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editThetaGrid`](./reference/actions/guides/#editthetagrid) | H3 | user-facing | grid |
 | [`editThetaScale`](./reference/actions/advanced/#focused-channel-scale-editors) | H2 | user-facing | core |
 | [`editTickMark`](./reference/actions/marks/#edittickmark) | H3 | user-facing | marks |
+| [`editTimeUnitData`](./reference/actions/charts-data/#focused-core-data-editing) | H2 | user-facing | core |
 | [`editTitle`](./reference/actions/guides/#edittitle) | H3 | user-facing | legend_and_title |
 | [`editVerticalGrid`](./reference/actions/advanced/#directional-grids) | H3 | user-facing | grid |
 | [`editViolinPlot`](./reference/actions/statistics/#editviolinplot) | H1, H3 | user-facing | statistics |
+| [`editWindowData`](./reference/actions/charts-data/#focused-core-data-editing) | H2 | user-facing | core |
 | [`editXAxis`](./reference/actions/advanced/#complete-single-channel-axes) | H3 | user-facing | axes |
 | [`editXAxisLabels`](./reference/actions/advanced/#axis-lines-ticks-and-labels) | H3 | user-facing | axes |
 | [`editXAxisLine`](./reference/actions/advanced/#axis-lines-ticks-and-labels) | H3 | user-facing | axes |
@@ -14429,7 +14572,8 @@ direct visual consumers. [Rectangular 2D bins](./api/data/bin2d/)
 
 ```javascript
 editBin2DData({
-  target?, source?, x?, y?, bins?, extent?, includeEmpty?, members?, as?
+  target?, source?, x?, y?, bins?, extent?, includeEmpty?, members?, as?,
+  dependents?
 })
 ```
 
@@ -14437,6 +14581,30 @@ Partially revise the current or unique logical 2D-bin owner. Omitted top-level
 transform options are preserved; successful edits create an immutable revision,
 rebind direct visual consumers, and safely release the prior revision.
 [Rectangular 2D bins](./api/data/bin2d/#editbin2ddata)
+
+## Focused core data editing
+
+```javascript
+editDerivedData({ target, definition, dependents? })
+editFilteredData({ target, field?, oneOf? | predicate? | range?, dependents? })
+editTimeUnitData({ target, field?, unit?, as?, temporalUnit?, timeZone?, weekStartsOn?, weekRule?, dependents? })
+editWindowData({ target, partitionBy?, sortBy?, operations?, temporalUnit?, dependents? })
+editDensityData({ target, field?, groupBy?, bandwidth?, extent?, steps?, kernel?, normalization?, as?, weight?, dependents? })
+editRegressionData({ target, x?, y?, groupBy?, method?, degree?, span?, confidenceMethod?, level?, interval?, dependents? })
+```
+
+Revise a standalone derived-data owner without rebuilding its consumers. New
+focused editors require an explicit logical owner or current snapshot. Omitted
+transform options remain unchanged. The generic form requires a complete
+requested transform of the same type and does not accept `id`, `source`,
+`current`, or resolved materializer output.
+
+`dependents` defaults to `"reject"`. Set it to `"recompute"` to revise every
+reachable derived dataset in dependency order. The operation is atomic: an
+invalid downstream field, scale, mark, guide, label, or selection preserves the
+entire input program. Output names are carried only across unambiguous direct
+semantic roles; expressions and predicates are never rewritten as strings.
+[Editing derived data](./api/data/source-and-derived/#editing-derived-data)
 
 ## Related
 
@@ -15417,6 +15585,29 @@ createECDFData({ id, source?, field, groupBy?, weight?, missing?, as? })
 Create immutable sorted support, cumulative count or weight, and probability
 rows. Ties are aggregated, group order follows first source appearance, and
 resolved provenance stores every positive denominator. [Data](./api/data/)
+
+## Focused statistical data editing
+
+```javascript
+editComputedData({ target, as?, expression?, dependents? })
+editFoldData({ target, fields?, as?, dependents? })
+editSummaryData({ target, groupBy?, aggregates?, members?, weight?, dependents? })
+editBinData({ target, field?, maxBins? | step? | boundaries?, extent?, nice?, zero?, includeEmpty?, members?, as?, weight?, dependents? })
+editStackData({ target, category?, group?, value?, mode?, as?, dependents? })
+editIntervalData({ target, field?, groupBy?, center?, extent?, method?, level?, as?, dependents? })
+editECDFData({ target, field?, groupBy?, weight?, missing?, as?, dependents? })
+editNormalizedData({ target, field?, as?, groupBy?, method?, variance?, zeroDenominator?, baseline?, sortBy?, dependents? })
+editCompleteData({ target, key?, groupBy?, values? | sequence?, fill?, members?, dependents? })
+editImputedData({ target, fields?, groupBy?, sortBy?, method?, value?, edges?, maxGap?, dependents? })
+```
+
+Use a focused editor for a partial change to the corresponding standalone data
+transform. Arrays, expressions, aggregate lists, and output maps replace the
+whole current value. A patch must contain at least one transform option.
+`undefined` and `null` do not delete options. `weight: false` removes an existing
+weight only from the editors that expose weight. Mode changes remove keys that
+belong only to the previous mode before validating the final definition.
+[Editing derived data](./api/data/source-and-derived/#editing-derived-data)
 
 ## `createRegression`
 
@@ -16420,6 +16611,22 @@ interface ChartProgramActions {
   createTimeUnitData(options: TimeUnitDataOptions): ChartProgram;
   createWindowData(options: WindowDataOptions): ChartProgram;
   createBin2DData(options: Bin2DDataOptions): ChartProgram;
+  editDerivedData(options: EditDerivedDataOptions): ChartProgram;
+  editComputedData(options: EditComputedDataOptions): ChartProgram;
+  editFilteredData(options: EditFilteredDataOptions): ChartProgram;
+  editFoldData(options: EditFoldDataOptions): ChartProgram;
+  editSummaryData(options: EditSummaryDataOptions): ChartProgram;
+  editBinData(options: EditBinDataOptions): ChartProgram;
+  editTimeUnitData(options: EditTimeUnitDataOptions): ChartProgram;
+  editWindowData(options: EditWindowDataOptions): ChartProgram;
+  editDensityData(options: EditDensityDataOptions): ChartProgram;
+  editStackData(options: EditStackDataOptions): ChartProgram;
+  editRegressionData(options: EditRegressionDataOptions): ChartProgram;
+  editIntervalData(options: EditIntervalDataOptions): ChartProgram;
+  editECDFData(options: EditECDFDataOptions): ChartProgram;
+  editNormalizedData(options: EditNormalizedDataOptions): ChartProgram;
+  editCompleteData(options: EditCompleteDataOptions): ChartProgram;
+  editImputedData(options: EditImputedDataOptions): ChartProgram;
   editBin2DData(options: EditBin2DDataOptions): ChartProgram;
   createPointMark(options?: { id?: string; data?: string; shape?: PointShape; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
   editPointMark(options: { target?: string; shape?: PointShape; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;

@@ -2,7 +2,7 @@ import { action } from "../../core/action.js";
 import { resolveOptionalUserId } from "../../core/identifiers.js";
 import { isPlainObject } from "../../core/immutable.js";
 import { validateKeys } from "../../core/validation.js";
-import { hasDataset } from "../../selectors/index.js";
+import { hasDataset, hasDatasetOwner } from "../../selectors/index.js";
 
 const OPTIONS = Object.freeze(["id", "values"]);
 
@@ -22,7 +22,7 @@ export const createData = action(
     if (!args.values.every(isPlainObject)) {
       throw new TypeError("createData requires every row to be a plain object.");
     }
-    if (hasDataset(this, id)) {
+    if (hasDataset(this, id) || hasDatasetOwner(this, id)) {
       throw new Error(`Dataset "${id}" already exists.`);
     }
     return this.editSemantic({

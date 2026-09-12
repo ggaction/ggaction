@@ -365,6 +365,128 @@ The default fields are `<value>_start`, `<value>_end`, `<value>_value`, and
 require non-negative values. Diverging accumulates positive and negative values
 separately from zero. Zero cells remain as zero-thickness rows with share 0.
 
+## Editing derived data {#editing-derived-data}
+
+Every standalone value-producing data action creates a logical dataset owner.
+The owner ID remains stable while successful edits create immutable physical
+revisions. Use the generic action when an editor must receive a complete
+normalized transform definition:
+
+```javascript
+const revised = program.editDerivedData({
+  target: "twice",
+  definition: {
+    type: "computed",
+    as: "value2",
+    expression: {
+      op: "multiply",
+      left: { field: "value" },
+      right: { constant: 3 }
+    }
+  },
+  dependents: "recompute"
+});
+```
+
+`definition` contains only the requested public transform. It cannot contain a
+dataset `id`, `source`, materialized `resolved` values, or a revision pointer.
+The Complete transform may still use its own `values` domain because that field
+is part of the transform rather than a dataset value envelope. Generic edits
+replace the complete transform definition. Source replacement remains exclusive
+to the compatibility-preserving `editBin2DData` API.
+
+Focused editors accept partial transform changes and preserve every omitted
+top-level decision:
+
+| Transform family | Focused editor |
+| --- | --- |
+| computed | `editComputedData` |
+| filter | `editFilteredData` |
+| fold | `editFoldData` |
+| summary | `editSummaryData` |
+| one-dimensional bin | `editBinData` |
+| time unit | `editTimeUnitData` |
+| window | `editWindowData` |
+| density | `editDensityData` |
+| stack | `editStackData` |
+| regression | `editRegressionData` |
+| interval | `editIntervalData` |
+| ECDF | `editECDFData` |
+| normalize | `editNormalizedData` |
+| complete | `editCompleteData` |
+| impute | `editImputedData` |
+
+Each focused action requires `target`. It accepts the stable logical owner ID or
+the owner's current physical revision ID. An older physical revision is stale
+and rejects. A dataset produced privately inside a chart facade is chart-owned
+and must be changed through that chart's editor. `source` accepts either an
+ordinary physical dataset ID or a logical owner ID; a logical source always
+resolves to its current revision at call time.
+
+`dependents` defaults to `"reject"`. An edit therefore fails atomically when a
+derived dataset reads the target. Pass `dependents: "recompute"` to revise the
+entire downstream closure in deterministic topological order. The editor first
+builds and validates a speculative program. Only then does it record the same
+revisions in the returned program, rebind all direct marks and known stored data
+references, and release obsolete physical revisions in reverse topological
+order. A cycle or an unsupported internal transform aborts the operation without
+altering the input program.
+
+Output names are tracked by semantic role. Renaming a role updates downstream
+field references and visual encodings when the old name has one unambiguous
+meaning. A rename rejects if the old output name is shared by several roles or
+if a downstream expression contains a field reference that cannot be rewritten
+safely. Mode changes clear fields owned by the previous mode before the new
+definition is normalized. In focused weighted editors, `weight: false` removes
+an existing weight; omission preserves it.
+
+An edit must change the requested transform or source. A semantic no-op throws
+before creating a revision. Successful revisions use deterministic IDs of the
+form `<owner><Role>Revision<n>`. Earlier `ChartProgram` values remain unchanged.
+The returned program keeps the previous current dataset unless it pointed at the
+edited current revision, in which case it moves to the new revision.
+
+The following chain demonstrates rejection by default, downstream replay, and
+logical-source reuse:
+
+```javascript
+const before = chart()
+  .createData({ id: "raw", values: [{ x: 1 }, { x: 2 }, { x: 3 }] })
+  .createComputedData({
+    id: "twice",
+    source: "raw",
+    as: "scaled",
+    expression: {
+      op: "multiply",
+      left: { field: "x" },
+      right: { constant: 2 }
+    }
+  })
+  .createSummaryData({
+    id: "average",
+    source: "twice",
+    aggregates: [{ op: "mean", field: "scaled", as: "mean" }]
+  });
+
+// Throws because "average" depends on "twice".
+before.editComputedData({ target: "twice", expression: {
+  op: "multiply", left: { field: "x" }, right: { constant: 3 }
+} });
+
+const after = before.editComputedData({
+  target: "twice",
+  expression: {
+    op: "multiply",
+    left: { field: "x" },
+    right: { constant: 3 }
+  },
+  dependents: "recompute"
+});
+
+// before still has mean 4; after has mean 6.
+// A later source: "twice" resolves to the new current revision in after.
+```
+
 ## Related
 
 [Data overview](../data.md) · [Chart API](../index.md) · [Action reference](../../reference/actions.md)

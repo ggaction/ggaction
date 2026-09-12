@@ -106,7 +106,7 @@ test("discovery separates completion from resource validity", async () => {
     state,
     entries.length
   ])), {
-    contextual: 213,
+    contextual: 229,
     deferred: 2,
     complete: 29,
     "not-applicable": 3

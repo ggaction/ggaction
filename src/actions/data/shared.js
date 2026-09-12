@@ -1,7 +1,10 @@
 import { action } from "../../core/action.js";
 import { validateUserId } from "../../core/identifiers.js";
 import { validateKeys } from "../../core/validation.js";
-import { findDataset } from "../../selectors/datasets.js";
+import {
+  findDataset,
+  resolveDatasetReference
+} from "../../selectors/datasets.js";
 
 export const MATERIALIZE_OPTIONS = Object.freeze(["id"]);
 
@@ -61,12 +64,25 @@ export function derivedCreator(
   return action({ op, description }, function (args = {}) {
     validateKeys(args, options, op);
     const id = validateUserId(args.id, idLabel);
-    const source = validateUserId(
+    const requestedSource = validateUserId(
       requireSource ? args.source : args.source ?? this.context.currentData,
       sourceLabel
     );
-    return this
-      .createDerivedData({ id, source, transform: [transform(args, id)] })
+    const source = resolveDatasetReference(
+      this,
+      requestedSource,
+      sourceLabel
+    ).id;
+    const standalone = this.actionStack.length === 1;
+    const requestedTransform = transform(args, id);
+    const next = this
+      .createDerivedData({ id, source, transform: [requestedTransform] })
       [materialize]({ id });
+    return standalone
+      ? next._withMaterializationConfig(
+          ["data", requestedTransform.type, id],
+          { current: id }
+        )
+      : next;
   });
 }

@@ -1,4 +1,7 @@
-import { deriveKernelDensity } from "../../grammar/density.js";
+import {
+  deriveKernelDensity,
+  normalizeDensityTransform
+} from "../../grammar/density.js";
 import { derivedCreator, derivedMaterializer } from "./shared.js";
 
 const OPTIONS = Object.freeze([
@@ -6,23 +9,6 @@ const OPTIONS = Object.freeze([
   "kernel", "normalization", "as", "weight"
 ]);
 const CATEGORICAL_OPTIONS = Object.freeze([...OPTIONS, "placement"]);
-
-function densityTransform(args, placement) {
-  return {
-    type: "density",
-    field: args.field,
-    ...(args.groupBy === undefined ? {} : { groupBy: args.groupBy }),
-    bandwidth: args.bandwidth ?? "auto",
-    extent: args.extent ?? "auto",
-    steps: args.steps ?? 100,
-    kernel: args.kernel ?? "gaussian",
-    normalization: args.normalization ?? "unit",
-    as: args.as ?? [`${args.field}_value`, `${args.field}_density`],
-    resolve: "shared",
-    ...(args.weight === undefined ? {} : { weight: args.weight }),
-    ...(placement === undefined ? {} : { placement })
-  };
-}
 
 function requestedTransform(args, op, categorical = false) {
   if (typeof args.field !== "string" || args.field.length === 0) {
@@ -33,7 +19,10 @@ function requestedTransform(args, op, categorical = false) {
       "createCategoricalDensityData requires normalized category placement."
     );
   }
-  return densityTransform(args, categorical ? args.placement : undefined);
+  return normalizeDensityTransform({
+    ...args,
+    ...(categorical ? { placement: args.placement } : {})
+  });
 }
 
 export const materializeDensityData = derivedMaterializer(

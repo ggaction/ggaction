@@ -3,7 +3,7 @@
   "packageVersion": "0.0.13",
   "typeSource": "types/program.d.ts",
   "errorPolicy": "An empty errors array means the compact card has no curated error override; consult the canonical route for validation, inference, and recovery behavior.",
-  "count": 247,
+  "count": 263,
   "cards": [
     {
       "schemaVersion": 3,
@@ -571,7 +571,7 @@
         "dataset",
         "rows"
       ],
-      "lifecycle": "Immutable create-only",
+      "lifecycle": "Mutable resource",
       "resources": {
         "prerequisites": [
           "source dataset"
@@ -590,7 +590,9 @@
       "wraps": [
         "createDerivedData"
       ],
-      "editableVia": [],
+      "editableVia": [
+        "editFilteredData"
+      ],
       "supports": {
         "entryPoints": [
           "default"
@@ -671,7 +673,7 @@
         "grouped summary data",
         "reusable aggregate rows"
       ],
-      "lifecycle": "Immutable create-only",
+      "lifecycle": "Mutable resource",
       "resources": {
         "prerequisites": [
           "source dataset"
@@ -690,7 +692,9 @@
       "wraps": [
         "createDerivedData"
       ],
-      "editableVia": [],
+      "editableVia": [
+        "editSummaryData"
+      ],
       "supports": {
         "entryPoints": [
           "default"
@@ -769,7 +773,7 @@
         "one-dimensional bins",
         "reusable histogram bounds and counts"
       ],
-      "lifecycle": "Immutable create-only",
+      "lifecycle": "Mutable resource",
       "resources": {
         "prerequisites": [
           "source dataset"
@@ -788,7 +792,9 @@
       "wraps": [
         "createDerivedData"
       ],
-      "editableVia": [],
+      "editableVia": [
+        "editBinData"
+      ],
       "supports": {
         "entryPoints": [
           "default"
@@ -911,7 +917,7 @@
         "wide to long data",
         "key value rows"
       ],
-      "lifecycle": "Immutable create-only",
+      "lifecycle": "Mutable resource",
       "resources": {
         "prerequisites": [
           "source dataset"
@@ -930,7 +936,9 @@
       "wraps": [
         "createDerivedData"
       ],
-      "editableVia": [],
+      "editableVia": [
+        "editFoldData"
+      ],
       "supports": {
         "entryPoints": [
           "default"
@@ -999,7 +1007,7 @@
         "computed field",
         "typed formula data"
       ],
-      "lifecycle": "Immutable create-only",
+      "lifecycle": "Mutable resource",
       "resources": {
         "prerequisites": [
           "source dataset"
@@ -1018,7 +1026,9 @@
       "wraps": [
         "createDerivedData"
       ],
-      "editableVia": [],
+      "editableVia": [
+        "editComputedData"
+      ],
       "supports": {
         "entryPoints": [
           "default"
@@ -1083,7 +1093,7 @@
         "normalized data",
         "group shares and baseline comparisons"
       ],
-      "lifecycle": "Immutable create-only",
+      "lifecycle": "Mutable resource",
       "resources": {
         "prerequisites": [
           "source dataset"
@@ -1102,7 +1112,9 @@
       "wraps": [
         "createDerivedData"
       ],
-      "editableVia": [],
+      "editableVia": [
+        "editNormalizedData"
+      ],
       "supports": {
         "entryPoints": [
           "default"
@@ -1201,7 +1213,7 @@
         "completed data",
         "explicit key-domain rows"
       ],
-      "lifecycle": "Immutable create-only",
+      "lifecycle": "Mutable resource",
       "resources": {
         "prerequisites": [
           "source dataset"
@@ -1220,7 +1232,9 @@
       "wraps": [
         "createDerivedData"
       ],
-      "editableVia": [],
+      "editableVia": [
+        "editCompleteData"
+      ],
       "supports": {
         "entryPoints": [
           "default"
@@ -1309,7 +1323,7 @@
         "imputed data",
         "filled missing values"
       ],
-      "lifecycle": "Immutable create-only",
+      "lifecycle": "Mutable resource",
       "resources": {
         "prerequisites": [
           "source dataset"
@@ -1328,7 +1342,9 @@
       "wraps": [
         "createDerivedData"
       ],
-      "editableVia": [],
+      "editableVia": [
+        "editImputedData"
+      ],
       "supports": {
         "entryPoints": [
           "default"
@@ -1422,7 +1438,7 @@
         "stacked data",
         "reusable stack endpoints and shares"
       ],
-      "lifecycle": "Immutable create-only",
+      "lifecycle": "Mutable resource",
       "resources": {
         "prerequisites": [
           "source dataset"
@@ -1441,7 +1457,9 @@
       "wraps": [
         "createDerivedData"
       ],
-      "editableVia": [],
+      "editableVia": [
+        "editStackData"
+      ],
       "supports": {
         "entryPoints": [
           "default"
@@ -1525,7 +1543,7 @@
         "kernel density data",
         "KDE"
       ],
-      "lifecycle": "Immutable create-only",
+      "lifecycle": "Mutable resource",
       "resources": {
         "prerequisites": [
           "source dataset"
@@ -1544,7 +1562,9 @@
       "wraps": [
         "createDerivedData"
       ],
-      "editableVia": [],
+      "editableVia": [
+        "editDensityData"
+      ],
       "supports": {
         "entryPoints": [
           "default"
@@ -1665,7 +1685,7 @@
         "fitted values",
         "regression transform"
       ],
-      "lifecycle": "Immutable create-only",
+      "lifecycle": "Mutable resource",
       "resources": {
         "prerequisites": [
           "source dataset"
@@ -1684,7 +1704,9 @@
       "wraps": [
         "createDerivedData"
       ],
-      "editableVia": [],
+      "editableVia": [
+        "editRegressionData"
+      ],
       "supports": {
         "entryPoints": [
           "default"
@@ -1793,7 +1815,7 @@
         "moving window",
         "rank"
       ],
-      "lifecycle": "Immutable create-only",
+      "lifecycle": "Mutable resource",
       "resources": {
         "prerequisites": [
           "source dataset"
@@ -1812,7 +1834,9 @@
       "wraps": [
         "createDerivedData"
       ],
-      "editableVia": [],
+      "editableVia": [
+        "editWindowData"
+      ],
       "supports": {
         "entryPoints": [
           "default"
@@ -1896,7 +1920,7 @@
         "date bucket",
         "UTC time unit"
       ],
-      "lifecycle": "Immutable create-only",
+      "lifecycle": "Mutable resource",
       "resources": {
         "prerequisites": [
           "source dataset"
@@ -1915,7 +1939,9 @@
       "wraps": [
         "createDerivedData"
       ],
-      "editableVia": [],
+      "editableVia": [
+        "editTimeUnitData"
+      ],
       "supports": {
         "entryPoints": [
           "default"
@@ -2229,6 +2255,11 @@
           "name": "as",
           "required": false,
           "type": "DatasetBin2DOutputFields | undefined"
+        },
+        {
+          "name": "dependents",
+          "required": false,
+          "type": "DerivedDataDependents | undefined"
         }
       ],
       "callPatterns": [
@@ -2237,6 +2268,1712 @@
       "snippet": "program.editBin2DData({ x: \"x\" })",
       "errors": [],
       "route": "/reference/actions/charts-data/#editbin2ddata"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "editDerivedData",
+      "layer": "user-facing",
+      "domain": "core",
+      "summary": "Edits derived dataset, including settings for stored transform provenance.",
+      "signature": "editDerivedData(options: EditDerivedDataOptions): ChartProgram;",
+      "intents": [
+        "edit derived data",
+        "edit",
+        "change",
+        "chart setup",
+        "data and scales",
+        "derived dataset",
+        "stored transform provenance"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing derived dataset",
+          "source dataset"
+        ],
+        "owns": [],
+        "idOptions": [
+          "target"
+        ]
+      },
+      "authoringRoles": [
+        "H2"
+      ],
+      "wraps": [
+        "createDerivedData"
+      ],
+      "editableVia": [
+        "editDerivedData"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "existing derived dataset",
+          "source dataset"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "target",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "definition",
+          "required": true,
+          "type": "RequestedDatasetTransform"
+        },
+        {
+          "name": "dependents",
+          "required": false,
+          "type": "DerivedDataDependents | undefined"
+        }
+      ],
+      "callPatterns": [
+        "editDerivedData({ target, definition, dependents? })"
+      ],
+      "snippet": "program.editDerivedData({ target: \"computed\", definition: { type: \"computed\", as: \"result\", expression: { field: \"value\" } } })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#focused-core-data-editing"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "editComputedData",
+      "layer": "user-facing",
+      "domain": "statistics",
+      "summary": "Edits computed field, including settings for typed formula data.",
+      "signature": "editComputedData(options: EditComputedDataOptions): ChartProgram;",
+      "intents": [
+        "edit computed data",
+        "edit",
+        "change",
+        "statistical layer",
+        "statistical transform",
+        "computed field",
+        "typed formula data"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing computed field",
+          "source dataset"
+        ],
+        "owns": [],
+        "idOptions": [
+          "target"
+        ]
+      },
+      "authoringRoles": [
+        "H1",
+        "H3"
+      ],
+      "wraps": [
+        "editDerivedData"
+      ],
+      "editableVia": [
+        "editComputedData"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "existing computed field",
+          "source dataset"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "target",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "dependents",
+          "required": false,
+          "type": "DerivedDataDependents | undefined"
+        },
+        {
+          "name": "as",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "expression",
+          "required": false,
+          "type": "ComputedExpression | undefined"
+        }
+      ],
+      "callPatterns": [
+        "editComputedData({ target, dependents?, as?, expression? })"
+      ],
+      "snippet": "program.editComputedData({ target: \"computed\", expression: { field: \"value\" } })",
+      "errors": [],
+      "route": "/reference/actions/statistics/#focused-statistical-data-editing"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "editFilteredData",
+      "layer": "user-facing",
+      "domain": "core",
+      "summary": "Edits filtered dataset, including settings for rows matching a predicate.",
+      "signature": "editFilteredData(options: EditFilteredDataOptions): ChartProgram;",
+      "intents": [
+        "edit filtered data",
+        "edit",
+        "change",
+        "chart setup",
+        "data and scales",
+        "filtered dataset",
+        "rows matching a predicate"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing filtered dataset",
+          "source dataset"
+        ],
+        "owns": [],
+        "idOptions": [
+          "target"
+        ]
+      },
+      "authoringRoles": [
+        "H2"
+      ],
+      "wraps": [
+        "editDerivedData"
+      ],
+      "editableVia": [
+        "editFilteredData"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "existing filtered dataset",
+          "source dataset"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "target",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "dependents",
+          "required": false,
+          "type": "DerivedDataDependents | undefined"
+        },
+        {
+          "name": "oneOf",
+          "required": false,
+          "type": "readonly unknown[] | undefined"
+        },
+        {
+          "name": "predicate",
+          "required": false,
+          "type": "FilterComparison | undefined"
+        },
+        {
+          "name": "range",
+          "required": false,
+          "type": "FilterRange | undefined"
+        },
+        {
+          "name": "field",
+          "required": false,
+          "type": "string | undefined"
+        }
+      ],
+      "callPatterns": [
+        "editFilteredData({ target, dependents?, oneOf?, predicate?, range?, field? })"
+      ],
+      "snippet": "program.editFilteredData({ target: \"filtered\", oneOf: [1] })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#focused-core-data-editing"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "editFoldData",
+      "layer": "user-facing",
+      "domain": "statistics",
+      "summary": "Edits wide to long data, including settings for key value rows.",
+      "signature": "editFoldData(options: EditFoldDataOptions): ChartProgram;",
+      "intents": [
+        "edit fold data",
+        "edit",
+        "change",
+        "statistical layer",
+        "statistical transform",
+        "wide to long data",
+        "key value rows"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing wide to long data",
+          "source dataset"
+        ],
+        "owns": [],
+        "idOptions": [
+          "target"
+        ]
+      },
+      "authoringRoles": [
+        "H1",
+        "H3"
+      ],
+      "wraps": [
+        "editDerivedData"
+      ],
+      "editableVia": [
+        "editFoldData"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "existing wide to long data",
+          "source dataset"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "target",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "dependents",
+          "required": false,
+          "type": "DerivedDataDependents | undefined"
+        },
+        {
+          "name": "fields",
+          "required": false,
+          "type": "readonly string[] | undefined"
+        },
+        {
+          "name": "as",
+          "required": false,
+          "type": "FoldDataOutputFields | undefined"
+        }
+      ],
+      "callPatterns": [
+        "editFoldData({ target, dependents?, fields?, as? })"
+      ],
+      "snippet": "program.editFoldData({ target: \"folded\", fields: [\"value\"] })",
+      "errors": [],
+      "route": "/reference/actions/statistics/#focused-statistical-data-editing"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "editSummaryData",
+      "layer": "user-facing",
+      "domain": "statistics",
+      "summary": "Edits grouped summary data, including settings for reusable aggregate rows.",
+      "signature": "editSummaryData(options: EditSummaryDataOptions): ChartProgram;",
+      "intents": [
+        "edit summary data",
+        "edit",
+        "change",
+        "statistical layer",
+        "statistical transform",
+        "grouped summary data",
+        "reusable aggregate rows"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing grouped summary data",
+          "source dataset"
+        ],
+        "owns": [],
+        "idOptions": [
+          "target"
+        ]
+      },
+      "authoringRoles": [
+        "H1",
+        "H3"
+      ],
+      "wraps": [
+        "editDerivedData"
+      ],
+      "editableVia": [
+        "editSummaryData"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "existing grouped summary data",
+          "source dataset"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "target",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "dependents",
+          "required": false,
+          "type": "DerivedDataDependents | undefined"
+        },
+        {
+          "name": "groupBy",
+          "required": false,
+          "type": "string | readonly string[] | undefined"
+        },
+        {
+          "name": "aggregates",
+          "required": false,
+          "type": "readonly SummaryAggregateOptions[] | undefined"
+        },
+        {
+          "name": "members",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "weight",
+          "required": false,
+          "type": "false | StatisticalWeight | undefined"
+        }
+      ],
+      "callPatterns": [
+        "editSummaryData({ target, dependents?, groupBy?, aggregates?, members?, weight? })"
+      ],
+      "snippet": "program.editSummaryData({ target: \"summary\", aggregates: [{ op: \"count\", as: \"count\" }] })",
+      "errors": [],
+      "route": "/reference/actions/statistics/#focused-statistical-data-editing"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "editBinData",
+      "layer": "user-facing",
+      "domain": "statistics",
+      "summary": "Edits one-dimensional bins, including settings for reusable histogram bounds and counts.",
+      "signature": "editBinData(options: EditBinDataOptions): ChartProgram;",
+      "intents": [
+        "edit bin data",
+        "edit",
+        "change",
+        "statistical layer",
+        "statistical transform",
+        "one-dimensional bins",
+        "reusable histogram bounds and counts"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing one-dimensional bins",
+          "source dataset"
+        ],
+        "owns": [],
+        "idOptions": [
+          "target"
+        ]
+      },
+      "authoringRoles": [
+        "H1",
+        "H3"
+      ],
+      "wraps": [
+        "editDerivedData"
+      ],
+      "editableVia": [
+        "editBinData"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [
+        {
+          "path": "maxBins",
+          "unit": "count"
+        }
+      ],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit"
+        },
+        {
+          "input": "extent",
+          "strategy": "documented-auto"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "existing one-dimensional bins",
+          "source dataset"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "target",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "dependents",
+          "required": false,
+          "type": "DerivedDataDependents | undefined"
+        },
+        {
+          "name": "maxBins",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "step",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "boundaries",
+          "required": false,
+          "type": "readonly [number, number, ...number[]] | undefined"
+        },
+        {
+          "name": "field",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "extent",
+          "required": false,
+          "type": "\"auto\" | readonly [number, number] | undefined"
+        },
+        {
+          "name": "nice",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "zero",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "includeEmpty",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "members",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "as",
+          "required": false,
+          "type": "BinDataOutputFields | undefined"
+        },
+        {
+          "name": "weight",
+          "required": false,
+          "type": "false | StatisticalWeight | undefined"
+        }
+      ],
+      "callPatterns": [
+        "editBinData({ target, dependents?, maxBins?, step?, boundaries?, field?, extent?, nice? })"
+      ],
+      "snippet": "program.editBinData({ target: \"bins\", maxBins: 12 })",
+      "errors": [],
+      "route": "/reference/actions/statistics/#focused-statistical-data-editing"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "editTimeUnitData",
+      "layer": "user-facing",
+      "domain": "core",
+      "summary": "Edits date bucket, including settings for UTC time unit.",
+      "signature": "editTimeUnitData(options: EditTimeUnitDataOptions): ChartProgram;",
+      "intents": [
+        "edit time unit data",
+        "edit",
+        "change",
+        "chart setup",
+        "data and scales",
+        "date bucket",
+        "UTC time unit"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing date bucket",
+          "source dataset"
+        ],
+        "owns": [],
+        "idOptions": [
+          "target"
+        ]
+      },
+      "authoringRoles": [
+        "H2"
+      ],
+      "wraps": [
+        "editDerivedData"
+      ],
+      "editableVia": [
+        "editTimeUnitData"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [
+        {
+          "path": "temporalUnit",
+          "unit": "temporal-input"
+        }
+      ],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "existing date bucket",
+          "source dataset"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "target",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "dependents",
+          "required": false,
+          "type": "DerivedDataDependents | undefined"
+        },
+        {
+          "name": "field",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "temporalUnit",
+          "required": false,
+          "type": "TemporalInputUnit | undefined"
+        },
+        {
+          "name": "as",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "timeZone",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "unit",
+          "required": false,
+          "type": "\"day\" | \"hour\" | \"minute\" | \"month\" | \"quarter\" | \"second\" | \"week\" | \"weekday\" | \"year\" | undefined"
+        },
+        {
+          "name": "weekStartsOn",
+          "required": false,
+          "type": "0 | 1 | 2 | 3 | 4 | 5 | 6 | undefined"
+        },
+        {
+          "name": "weekRule",
+          "required": false,
+          "type": "\"calendar\" | \"iso\" | undefined"
+        }
+      ],
+      "callPatterns": [
+        "editTimeUnitData({ target, dependents?, field?, temporalUnit?, as?, timeZone?, unit?, weekStartsOn? })"
+      ],
+      "snippet": "program.editTimeUnitData({ target: \"buckets\", unit: \"month\" })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#focused-core-data-editing"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "editWindowData",
+      "layer": "user-facing",
+      "domain": "core",
+      "summary": "Edits moving window, including settings for rank.",
+      "signature": "editWindowData(options: EditWindowDataOptions): ChartProgram;",
+      "intents": [
+        "edit window data",
+        "edit",
+        "change",
+        "chart setup",
+        "data and scales",
+        "moving window",
+        "rank"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing moving window",
+          "source dataset"
+        ],
+        "owns": [],
+        "idOptions": [
+          "target"
+        ]
+      },
+      "authoringRoles": [
+        "H2"
+      ],
+      "wraps": [
+        "editDerivedData"
+      ],
+      "editableVia": [
+        "editWindowData"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [
+        {
+          "path": "temporalUnit",
+          "unit": "temporal-input"
+        }
+      ],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "existing moving window",
+          "source dataset"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "target",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "dependents",
+          "required": false,
+          "type": "DerivedDataDependents | undefined"
+        },
+        {
+          "name": "partitionBy",
+          "required": false,
+          "type": "string | readonly string[] | undefined"
+        },
+        {
+          "name": "sortBy",
+          "required": false,
+          "type": "readonly WindowSort[] | undefined"
+        },
+        {
+          "name": "operations",
+          "required": false,
+          "type": "readonly WindowOperation[] | undefined"
+        },
+        {
+          "name": "temporalUnit",
+          "required": false,
+          "type": "TemporalInputUnit | undefined"
+        }
+      ],
+      "callPatterns": [
+        "editWindowData({ target, dependents?, partitionBy?, sortBy?, operations?, temporalUnit? })"
+      ],
+      "snippet": "program.editWindowData({ target: \"windowed\", operations: [{ op: \"rowNumber\", as: \"rowNumber\" }] })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#focused-core-data-editing"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "editDensityData",
+      "layer": "user-facing",
+      "domain": "core",
+      "summary": "Edits kernel density data, including settings for KDE.",
+      "signature": "editDensityData(options: EditDensityDataOptions): ChartProgram;",
+      "intents": [
+        "edit density data",
+        "edit",
+        "change",
+        "chart setup",
+        "data and scales",
+        "kernel density data",
+        "KDE"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing kernel density data",
+          "source dataset"
+        ],
+        "owns": [],
+        "idOptions": [
+          "target"
+        ]
+      },
+      "authoringRoles": [
+        "H2"
+      ],
+      "wraps": [
+        "editDerivedData"
+      ],
+      "editableVia": [
+        "editDensityData"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [
+        {
+          "path": "bandwidth",
+          "unit": "data-value"
+        },
+        {
+          "path": "steps",
+          "unit": "count"
+        }
+      ],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit"
+        },
+        {
+          "input": "bandwidth",
+          "strategy": "documented-auto"
+        },
+        {
+          "input": "extent",
+          "strategy": "documented-auto"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "existing kernel density data",
+          "source dataset"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "target",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "dependents",
+          "required": false,
+          "type": "DerivedDataDependents | undefined"
+        },
+        {
+          "name": "field",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "groupBy",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "bandwidth",
+          "required": false,
+          "type": "number | \"auto\" | undefined"
+        },
+        {
+          "name": "extent",
+          "required": false,
+          "type": "\"auto\" | readonly [number, number] | undefined"
+        },
+        {
+          "name": "steps",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "kernel",
+          "required": false,
+          "type": "DensityKernel | undefined"
+        },
+        {
+          "name": "normalization",
+          "required": false,
+          "type": "DensityNormalization | undefined"
+        },
+        {
+          "name": "as",
+          "required": false,
+          "type": "readonly [string, string] | undefined"
+        },
+        {
+          "name": "weight",
+          "required": false,
+          "type": "false | StatisticalWeight | undefined"
+        }
+      ],
+      "callPatterns": [
+        "editDensityData({ target, dependents?, field?, groupBy?, bandwidth?, extent?, steps?, kernel? })"
+      ],
+      "snippet": "program.editDensityData({ target: \"density\", steps: 64 })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#focused-core-data-editing"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "editStackData",
+      "layer": "user-facing",
+      "domain": "statistics",
+      "summary": "Edits stacked data, including settings for reusable stack endpoints and shares.",
+      "signature": "editStackData(options: EditStackDataOptions): ChartProgram;",
+      "intents": [
+        "edit stack data",
+        "edit",
+        "change",
+        "statistical layer",
+        "statistical transform",
+        "stacked data",
+        "reusable stack endpoints and shares"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing stacked data",
+          "source dataset"
+        ],
+        "owns": [],
+        "idOptions": [
+          "target"
+        ]
+      },
+      "authoringRoles": [
+        "H1",
+        "H3"
+      ],
+      "wraps": [
+        "editDerivedData"
+      ],
+      "editableVia": [
+        "editStackData"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "existing stacked data",
+          "source dataset"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "target",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "dependents",
+          "required": false,
+          "type": "DerivedDataDependents | undefined"
+        },
+        {
+          "name": "category",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "group",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "value",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "mode",
+          "required": false,
+          "type": "StackDataMode | undefined"
+        },
+        {
+          "name": "as",
+          "required": false,
+          "type": "StackDataOutputFields | undefined"
+        }
+      ],
+      "callPatterns": [
+        "editStackData({ target, dependents?, category?, group?, value?, mode?, as? })"
+      ],
+      "snippet": "program.editStackData({ target: \"stacked\", mode: \"fill\" })",
+      "errors": [],
+      "route": "/reference/actions/statistics/#focused-statistical-data-editing"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "editRegressionData",
+      "layer": "user-facing",
+      "domain": "core",
+      "summary": "Edits fitted values, including settings for regression transform.",
+      "signature": "editRegressionData(options: EditRegressionDataOptions): ChartProgram;",
+      "intents": [
+        "edit regression data",
+        "edit",
+        "change",
+        "chart setup",
+        "data and scales",
+        "fitted values",
+        "regression transform"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing fitted values",
+          "source dataset"
+        ],
+        "owns": [],
+        "idOptions": [
+          "target"
+        ]
+      },
+      "authoringRoles": [
+        "H2"
+      ],
+      "wraps": [
+        "editDerivedData"
+      ],
+      "editableVia": [
+        "editRegressionData"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "existing fitted values",
+          "source dataset"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "target",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "dependents",
+          "required": false,
+          "type": "DerivedDataDependents | undefined"
+        },
+        {
+          "name": "method",
+          "required": false,
+          "type": "\"linear\" | \"loess\" | \"polynomial\" | undefined"
+        },
+        {
+          "name": "degree",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "span",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "confidenceMethod",
+          "required": false,
+          "type": "ConfidenceIntervalMethod | undefined"
+        },
+        {
+          "name": "level",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "confidence",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "interval",
+          "required": false,
+          "type": "RegressionInterval | undefined"
+        },
+        {
+          "name": "x",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "y",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "groupBy",
+          "required": false,
+          "type": "string | undefined"
+        }
+      ],
+      "callPatterns": [
+        "editRegressionData({ target, dependents?, method?, degree?, span?, confidenceMethod?, level?, confidence? })"
+      ],
+      "snippet": "program.editRegressionData({ target: \"regression\", method: \"loess\" })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#focused-core-data-editing"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "editIntervalData",
+      "layer": "user-facing",
+      "domain": "statistics",
+      "summary": "Edits confidence interval data, including settings for summary interval.",
+      "signature": "editIntervalData(options: EditIntervalDataOptions): ChartProgram;",
+      "intents": [
+        "edit interval data",
+        "edit",
+        "change",
+        "statistical layer",
+        "statistical transform",
+        "confidence interval data",
+        "summary interval"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing confidence interval data",
+          "source dataset"
+        ],
+        "owns": [],
+        "idOptions": [
+          "target"
+        ]
+      },
+      "authoringRoles": [
+        "H1",
+        "H3"
+      ],
+      "wraps": [
+        "editDerivedData"
+      ],
+      "editableVia": [
+        "editIntervalData"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "existing confidence interval data",
+          "source dataset"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "target",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "dependents",
+          "required": false,
+          "type": "DerivedDataDependents | undefined"
+        },
+        {
+          "name": "field",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "groupBy",
+          "required": false,
+          "type": "string | readonly string[] | undefined"
+        },
+        {
+          "name": "center",
+          "required": false,
+          "type": "IntervalCenter | undefined"
+        },
+        {
+          "name": "extent",
+          "required": false,
+          "type": "IntervalExtent | undefined"
+        },
+        {
+          "name": "method",
+          "required": false,
+          "type": "ConfidenceIntervalMethod | undefined"
+        },
+        {
+          "name": "level",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "as",
+          "required": false,
+          "type": "IntervalOutputFields | undefined"
+        }
+      ],
+      "callPatterns": [
+        "editIntervalData({ target, dependents?, field?, groupBy?, center?, extent?, method?, level? })"
+      ],
+      "snippet": "program.editIntervalData({ target: \"interval\", center: \"median\", extent: \"iqr\" })",
+      "errors": [],
+      "route": "/reference/actions/statistics/#focused-statistical-data-editing"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "editECDFData",
+      "layer": "user-facing",
+      "domain": "statistics",
+      "summary": "Edits empirical cumulative distribution data, including settings for sorted cumulative probabilities.",
+      "signature": "editECDFData(options: EditECDFDataOptions): ChartProgram;",
+      "intents": [
+        "edit ecdf data",
+        "edit",
+        "change",
+        "statistical layer",
+        "statistical transform",
+        "empirical cumulative distribution data",
+        "sorted cumulative probabilities"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing empirical cumulative distribution data",
+          "source dataset"
+        ],
+        "owns": [],
+        "idOptions": [
+          "target"
+        ]
+      },
+      "authoringRoles": [
+        "H1",
+        "H3"
+      ],
+      "wraps": [
+        "editDerivedData"
+      ],
+      "editableVia": [
+        "editECDFData"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "existing empirical cumulative distribution data",
+          "source dataset"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "target",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "dependents",
+          "required": false,
+          "type": "DerivedDataDependents | undefined"
+        },
+        {
+          "name": "field",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "groupBy",
+          "required": false,
+          "type": "string | readonly [string, ...string[]] | undefined"
+        },
+        {
+          "name": "missing",
+          "required": false,
+          "type": "\"drop\" | \"error\" | undefined"
+        },
+        {
+          "name": "as",
+          "required": false,
+          "type": "ECDFOutputFields | undefined"
+        },
+        {
+          "name": "weight",
+          "required": false,
+          "type": "string | false | undefined"
+        }
+      ],
+      "callPatterns": [
+        "editECDFData({ target, dependents?, field?, groupBy?, missing?, as?, weight? })"
+      ],
+      "snippet": "program.editECDFData({ target: \"ecdf\", missing: \"error\" })",
+      "errors": [],
+      "route": "/reference/actions/statistics/#focused-statistical-data-editing"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "editNormalizedData",
+      "layer": "user-facing",
+      "domain": "statistics",
+      "summary": "Edits normalized data, including settings for group shares and baseline comparisons.",
+      "signature": "editNormalizedData(options: EditNormalizedDataOptions): ChartProgram;",
+      "intents": [
+        "edit normalized data",
+        "edit",
+        "change",
+        "statistical layer",
+        "statistical transform",
+        "normalized data",
+        "group shares and baseline comparisons"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing normalized data",
+          "source dataset"
+        ],
+        "owns": [],
+        "idOptions": [
+          "target"
+        ]
+      },
+      "authoringRoles": [
+        "H1",
+        "H3"
+      ],
+      "wraps": [
+        "editDerivedData"
+      ],
+      "editableVia": [
+        "editNormalizedData"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "existing normalized data",
+          "source dataset"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "target",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "dependents",
+          "required": false,
+          "type": "DerivedDataDependents | undefined"
+        },
+        {
+          "name": "field",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "as",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "groupBy",
+          "required": false,
+          "type": "string | readonly string[] | undefined"
+        },
+        {
+          "name": "method",
+          "required": false,
+          "type": "\"change\" | \"index\" | \"minmax\" | \"percentChange\" | \"share\" | \"zscore\" | undefined"
+        },
+        {
+          "name": "zeroDenominator",
+          "required": false,
+          "type": "NormalizeZeroDenominator | undefined"
+        },
+        {
+          "name": "variance",
+          "required": false,
+          "type": "\"population\" | \"sample\" | undefined"
+        },
+        {
+          "name": "baseline",
+          "required": false,
+          "type": "{ position: \"first\" | \"last\"; } | undefined"
+        },
+        {
+          "name": "sortBy",
+          "required": false,
+          "type": "readonly [WindowSort, ...WindowSort[]] | undefined"
+        }
+      ],
+      "callPatterns": [
+        "editNormalizedData({ target, dependents?, field?, as?, groupBy?, method?, zeroDenominator?, variance? })"
+      ],
+      "snippet": "program.editNormalizedData({ target: \"normalized\", method: \"minmax\" })",
+      "errors": [],
+      "route": "/reference/actions/statistics/#focused-statistical-data-editing"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "editCompleteData",
+      "layer": "user-facing",
+      "domain": "statistics",
+      "summary": "Edits completed data, including settings for explicit key-domain rows.",
+      "signature": "editCompleteData(options: EditCompleteDataOptions): ChartProgram;",
+      "intents": [
+        "edit complete data",
+        "edit",
+        "change",
+        "statistical layer",
+        "statistical transform",
+        "completed data",
+        "explicit key-domain rows"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing completed data",
+          "source dataset"
+        ],
+        "owns": [],
+        "idOptions": [
+          "target"
+        ]
+      },
+      "authoringRoles": [
+        "H1",
+        "H3"
+      ],
+      "wraps": [
+        "editDerivedData"
+      ],
+      "editableVia": [
+        "editCompleteData"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "existing completed data",
+          "source dataset"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "target",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "dependents",
+          "required": false,
+          "type": "DerivedDataDependents | undefined"
+        },
+        {
+          "name": "key",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "groupBy",
+          "required": false,
+          "type": "string | readonly string[] | undefined"
+        },
+        {
+          "name": "fill",
+          "required": false,
+          "type": "Readonly<Record<string, DatasetScalar>> | undefined"
+        },
+        {
+          "name": "members",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "values",
+          "required": false,
+          "type": "readonly [DatasetScalar, ...DatasetScalar[]] | undefined"
+        },
+        {
+          "name": "sequence",
+          "required": false,
+          "type": "{ start: number; end: number; step: number; } | undefined"
+        }
+      ],
+      "callPatterns": [
+        "editCompleteData({ target, dependents?, key?, groupBy?, fill?, members?, values?, sequence? })"
+      ],
+      "snippet": "program.editCompleteData({ target: \"complete\", values: [1, 2] })",
+      "errors": [],
+      "route": "/reference/actions/statistics/#focused-statistical-data-editing"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "editImputedData",
+      "layer": "user-facing",
+      "domain": "statistics",
+      "summary": "Edits imputed data, including settings for filled missing values.",
+      "signature": "editImputedData(options: EditImputedDataOptions): ChartProgram;",
+      "intents": [
+        "edit imputed data",
+        "edit",
+        "change",
+        "statistical layer",
+        "statistical transform",
+        "imputed data",
+        "filled missing values"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing imputed data",
+          "source dataset"
+        ],
+        "owns": [],
+        "idOptions": [
+          "target"
+        ]
+      },
+      "authoringRoles": [
+        "H1",
+        "H3"
+      ],
+      "wraps": [
+        "editDerivedData"
+      ],
+      "editableVia": [
+        "editImputedData"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "existing imputed data",
+          "source dataset"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "target",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "dependents",
+          "required": false,
+          "type": "DerivedDataDependents | undefined"
+        },
+        {
+          "name": "fields",
+          "required": false,
+          "type": "string | readonly [string, ...string[]] | undefined"
+        },
+        {
+          "name": "groupBy",
+          "required": false,
+          "type": "string | readonly string[] | undefined"
+        },
+        {
+          "name": "edges",
+          "required": false,
+          "type": "\"error\" | \"keep\" | undefined"
+        },
+        {
+          "name": "maxGap",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "method",
+          "required": false,
+          "type": "\"backward\" | \"constant\" | \"forward\" | \"linear\" | undefined"
+        },
+        {
+          "name": "value",
+          "required": false,
+          "type": "DatasetScalar | undefined"
+        },
+        {
+          "name": "sortBy",
+          "required": false,
+          "type": "readonly WindowSort[] | readonly [{ field: string; order?: \"ascending\" | undefined; }] | readonly [WindowSort, ...WindowSort[]] | undefined"
+        }
+      ],
+      "callPatterns": [
+        "editImputedData({ target, dependents?, fields?, groupBy?, edges?, maxGap?, method?, value? })"
+      ],
+      "snippet": "program.editImputedData({ target: \"imputed\", value: 0 })",
+      "errors": [],
+      "route": "/reference/actions/statistics/#focused-statistical-data-editing"
     },
     {
       "schemaVersion": 3,
@@ -2254,7 +3991,7 @@
         "confidence interval data",
         "summary interval"
       ],
-      "lifecycle": "Immutable create-only",
+      "lifecycle": "Mutable resource",
       "resources": {
         "prerequisites": [
           "source dataset"
@@ -2273,7 +4010,9 @@
       "wraps": [
         "createDerivedData"
       ],
-      "editableVia": [],
+      "editableVia": [
+        "editIntervalData"
+      ],
       "supports": {
         "entryPoints": [
           "default"
@@ -2367,7 +4106,7 @@
         "empirical cumulative distribution data",
         "sorted cumulative probabilities"
       ],
-      "lifecycle": "Immutable create-only",
+      "lifecycle": "Mutable resource",
       "resources": {
         "prerequisites": [
           "source dataset"
@@ -2386,7 +4125,9 @@
       "wraps": [
         "createDerivedData"
       ],
-      "editableVia": [],
+      "editableVia": [
+        "editECDFData"
+      ],
       "supports": {
         "entryPoints": [
           "default"
@@ -17954,7 +19695,9 @@
       "wraps": [
         "editSemantic"
       ],
-      "editableVia": [],
+      "editableVia": [
+        "editDerivedData"
+      ],
       "supports": {
         "entryPoints": [
           "default"

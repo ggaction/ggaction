@@ -46,6 +46,25 @@ export const DENSITY_WIDTH_RESOLUTIONS = Object.freeze([
   "shared", "independent"
 ]);
 
+export function normalizeDensityTransform(args = {}) {
+  const transform = {
+    type: "density",
+    field: args.field,
+    ...(args.groupBy === undefined ? {} : { groupBy: args.groupBy }),
+    bandwidth: args.bandwidth ?? "auto",
+    extent: args.extent ?? "auto",
+    steps: args.steps ?? 100,
+    kernel: args.kernel ?? "gaussian",
+    normalization: args.normalization ?? "unit",
+    as: args.as ?? [`${args.field}_value`, `${args.field}_density`],
+    resolve: args.resolve ?? "shared",
+    ...(args.weight === undefined ? {} : { weight: args.weight }),
+    ...(args.placement === undefined ? {} : { placement: args.placement })
+  };
+  validateDensityTransform(transform);
+  return cloneAndFreeze(transform);
+}
+
 export function validateDensitySteps(value, label = "Density steps") {
   if (!Number.isInteger(value) || value < 2) {
     throw new RangeError(`${label} must be an integer of at least 2.`);

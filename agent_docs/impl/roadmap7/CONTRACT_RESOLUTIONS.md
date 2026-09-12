@@ -22,6 +22,7 @@
 | S16 | custom theme/removeTheme와child provenance 미정 | name+tokens+overrides,descendant origin기록,독립child explicit theme보존;R47 |
 | S17 | R49 "common path 권장"만으로backend분기가능 | rounded rect는M/L/C/Z cubic path,cap/join은sharedattrs;R49 |
 | S18 | "현재 계층유지"만으로code/decl/MCP 작업누락가능 | IMPLEMENTATION_MAP+상세타입+고정case 인덱스와surface별완료행렬 |
+| S19 | R02 공통 금지 목록의 `values`가 dataset materialized rows와 Complete transform의 domain option을 구분하지 않음 | `definition`은 transform-only 객체로 고정하고 envelope rows 주입 경로는 두지 않되, R05 Complete의 `values`는 family validator를 통해 허용; R02/R05 |
 
 가중치의 계층별 위치와 edit 전용 weight:false 해제 규칙도 R10에 구체화했다. 생성/인코딩에는 StatisticalWeight만, Violin에는 density.weight를 사용하며 미선택 Gradient API로 타입이 새지 않게 한다. R33의 길이0인 막대는 quantitative axis의 증가 방향을 사용하고 fit/overflow 정책을 적용한다.
 

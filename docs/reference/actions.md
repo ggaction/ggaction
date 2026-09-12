@@ -138,11 +138,17 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editAreaMark`](./actions/marks.md#editareamark) | H3 | user-facing | marks |
 | [`editBarMark`](./actions/marks.md#editbarmark) | H3 | user-facing | marks |
 | [`editBin2DData`](./actions/charts-data.md#editbin2ddata) | H2 | user-facing | core |
+| [`editBinData`](./actions/statistics.md#focused-statistical-data-editing) | H1, H3 | user-facing | statistics |
 | [`editBoxPlot`](./actions/statistics.md#editboxplot) | H1, H3 | user-facing | statistics |
 | [`editCanvas`](./actions/charts-data.md#editcanvas) | H3 | user-facing | core |
 | [`editColorScale`](./actions/advanced.md#focused-channel-scale-editors) | H2 | user-facing | core |
+| [`editCompleteData`](./actions/statistics.md#focused-statistical-data-editing) | H1, H3 | user-facing | statistics |
 | [`editCompositionLayout`](./actions/charts-data.md#editcompositionlayout) | H3 | user-facing | composition |
+| [`editComputedData`](./actions/statistics.md#focused-statistical-data-editing) | H1, H3 | user-facing | statistics |
 | [`editDensity`](./actions/encodings.md#editdensity) | H2, H3 | user-facing | encodings |
+| [`editDensityData`](./actions/charts-data.md#focused-core-data-editing) | H2 | user-facing | core |
+| [`editDerivedData`](./actions/charts-data.md#focused-core-data-editing) | H2 | user-facing | core |
+| [`editECDFData`](./actions/statistics.md#focused-statistical-data-editing) | H1, H3 | user-facing | statistics |
 | [`editECDFPlot`](./actions/charts-data.md#editecdfplot) | H1, H3 | user-facing | charts |
 | [`editEndpointPlot`](./actions/charts-data.md#editendpointplot) | H1, H3 | user-facing | charts |
 | [`editErrorBand`](./actions/statistics.md#editerrorband-and-editerrorbandboundary) | H1, H3 | user-facing | statistics |
@@ -152,11 +158,15 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editFacetHeaders`](./actions/charts-data.md#editfacetheaders) | H3 | user-facing | composition |
 | [`editFacetScales`](./actions/charts-data.md#editfacetscales) | H3 | user-facing | composition |
 | [`editFacetSource`](./actions/charts-data.md#editfacetsource) | H3 | user-facing | composition |
+| [`editFilteredData`](./actions/charts-data.md#focused-core-data-editing) | H2 | user-facing | core |
+| [`editFoldData`](./actions/statistics.md#focused-statistical-data-editing) | H1, H3 | user-facing | statistics |
 | [`editGradientPlot`](./actions/statistics.md#editgradientplot) | H1, H3 | user-facing | statistics |
 | [`editGraphics`](./actions/extension.md#extension-actions) | H4 | primitive | primitives |
 | [`editGrid`](./actions/advanced.md#directional-grids) | H3 | user-facing | grid |
 | [`editHorizon`](./actions/encodings.md#edithorizon) | H2, H3 | user-facing | encodings |
 | [`editHorizontalGrid`](./actions/advanced.md#directional-grids) | H3 | user-facing | grid |
+| [`editImputedData`](./actions/statistics.md#focused-statistical-data-editing) | H1, H3 | user-facing | statistics |
+| [`editIntervalData`](./actions/statistics.md#focused-statistical-data-editing) | H1, H3 | user-facing | statistics |
 | [`editLegend`](./actions/guides.md#editlegend) | H3 | user-facing | legend_and_title |
 | [`editLegendBorder`](./actions/guides.md#focused-legend-edits) | H3 | user-facing | legend_and_title |
 | [`editLegendLabels`](./actions/guides.md#focused-legend-edits) | H3 | user-facing | legend_and_title |
@@ -165,6 +175,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editLegendTitle`](./actions/guides.md#focused-legend-edits) | H3 | user-facing | legend_and_title |
 | [`editLineMark`](./actions/marks.md#editlinemark) | H3 | user-facing | marks |
 | [`editMarkSelection`](./actions/advanced.md#editmarkselection) | H3 | advanced | mark-selection |
+| [`editNormalizedData`](./actions/statistics.md#focused-statistical-data-editing) | H1, H3 | user-facing | statistics |
 | [`editOpacityScale`](./actions/advanced.md#focused-channel-scale-editors) | H2 | user-facing | core |
 | [`editParallelAxis`](./actions/advanced.md#createparallelaxes-createparallelaxis-editparallelaxis-removeparallelaxis-removeparallelaxes) | H3 | user-facing | axes |
 | [`editPointMark`](./actions/marks.md#editpointmark) | H3 | user-facing | marks |
@@ -178,6 +189,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editRectMark`](./actions/marks.md#editrectmark) | H3 | user-facing | marks |
 | [`editRegression`](./actions/statistics.md#editregression) | H1, H3 | user-facing | statistics |
 | [`editRegressionBand`](./actions/advanced.md#semantic-resources-and-regression-layers) | H1, H3 | user-facing | statistics |
+| [`editRegressionData`](./actions/charts-data.md#focused-core-data-editing) | H2 | user-facing | core |
 | [`editRegressionLine`](./actions/advanced.md#semantic-resources-and-regression-layers) | H1, H3 | user-facing | statistics |
 | [`editRScale`](./actions/advanced.md#focused-channel-scale-editors) | H2 | user-facing | core |
 | [`editRuleMark`](./actions/marks.md#editrulemark) | H3 | user-facing | marks |
@@ -185,8 +197,10 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editSemantic`](./actions/extension.md#extension-actions) | H4 | primitive | primitives |
 | [`editShapeScale`](./actions/advanced.md#focused-channel-scale-editors) | H2 | user-facing | core |
 | [`editSizeScale`](./actions/advanced.md#focused-channel-scale-editors) | H2 | user-facing | core |
+| [`editStackData`](./actions/statistics.md#focused-statistical-data-editing) | H1, H3 | user-facing | statistics |
 | [`editStrokeDashScale`](./actions/advanced.md#focused-channel-scale-editors) | H2 | user-facing | core |
 | [`editStrokeWidthScale`](./actions/advanced.md#focused-channel-scale-editors) | H2 | user-facing | core |
+| [`editSummaryData`](./actions/statistics.md#focused-statistical-data-editing) | H1, H3 | user-facing | statistics |
 | [`editTextMark`](./actions/marks.md#edittextmark) | H3 | user-facing | marks |
 | [`editThetaAxis`](./actions/guides.md#editthetaaxis) | H3 | user-facing | axes |
 | [`editThetaAxisLabels`](./actions/guides.md#editthetaaxislabels) | H3 | user-facing | axes |
@@ -196,9 +210,11 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editThetaGrid`](./actions/guides.md#editthetagrid) | H3 | user-facing | grid |
 | [`editThetaScale`](./actions/advanced.md#focused-channel-scale-editors) | H2 | user-facing | core |
 | [`editTickMark`](./actions/marks.md#edittickmark) | H3 | user-facing | marks |
+| [`editTimeUnitData`](./actions/charts-data.md#focused-core-data-editing) | H2 | user-facing | core |
 | [`editTitle`](./actions/guides.md#edittitle) | H3 | user-facing | legend_and_title |
 | [`editVerticalGrid`](./actions/advanced.md#directional-grids) | H3 | user-facing | grid |
 | [`editViolinPlot`](./actions/statistics.md#editviolinplot) | H1, H3 | user-facing | statistics |
+| [`editWindowData`](./actions/charts-data.md#focused-core-data-editing) | H2 | user-facing | core |
 | [`editXAxis`](./actions/advanced.md#complete-single-channel-axes) | H3 | user-facing | axes |
 | [`editXAxisLabels`](./actions/advanced.md#axis-lines-ticks-and-labels) | H3 | user-facing | axes |
 | [`editXAxisLine`](./actions/advanced.md#axis-lines-ticks-and-labels) | H3 | user-facing | axes |

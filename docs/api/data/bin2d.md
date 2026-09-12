@@ -88,7 +88,7 @@ unreferenced previous revision.
 
 ## `editBin2DData`
 
-`editBin2DData({ target?, source?, x?, y?, bins?, extent?, includeEmpty?, members?, as? })`
+`editBin2DData({ target?, source?, x?, y?, bins?, extent?, includeEmpty?, members?, as?, dependents? })`
 
 Use `editBin2DData` when only part of the current transform should change:
 
@@ -121,9 +121,14 @@ each direct layer, rematerialize affected scales, marks, and guides, then releas
 the unreferenced prior revision. Earlier programs and caller-owned options remain
 unchanged.
 
-A dependent derived dataset currently blocks both complete reauthoring and
-partial editing with an explicit error; create a new logical ID when that
-dependency must remain.
+`dependents` defaults to `"reject"`. With that default, an edit stops before
+changing the program when another derived dataset reads the current grid.
+Pass `dependents: "recompute"` to revise the complete downstream dependency
+closure in topological order. Every affected logical owner receives one new
+deterministic revision, direct visual consumers move to those revisions, and
+obsolete revisions are released only after the whole speculative result passes
+validation. Cycles, unsupported internal transforms, and unsafe output-field
+renames reject atomically.
 
 ## Related
 

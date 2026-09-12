@@ -140,6 +140,29 @@ Create immutable sorted support, cumulative count or weight, and probability
 rows. Ties are aggregated, group order follows first source appearance, and
 resolved provenance stores every positive denominator. [Data](../../api/data.md)
 
+## Focused statistical data editing
+
+```javascript
+editComputedData({ target, as?, expression?, dependents? })
+editFoldData({ target, fields?, as?, dependents? })
+editSummaryData({ target, groupBy?, aggregates?, members?, weight?, dependents? })
+editBinData({ target, field?, maxBins? | step? | boundaries?, extent?, nice?, zero?, includeEmpty?, members?, as?, weight?, dependents? })
+editStackData({ target, category?, group?, value?, mode?, as?, dependents? })
+editIntervalData({ target, field?, groupBy?, center?, extent?, method?, level?, as?, dependents? })
+editECDFData({ target, field?, groupBy?, weight?, missing?, as?, dependents? })
+editNormalizedData({ target, field?, as?, groupBy?, method?, variance?, zeroDenominator?, baseline?, sortBy?, dependents? })
+editCompleteData({ target, key?, groupBy?, values? | sequence?, fill?, members?, dependents? })
+editImputedData({ target, fields?, groupBy?, sortBy?, method?, value?, edges?, maxGap?, dependents? })
+```
+
+Use a focused editor for a partial change to the corresponding standalone data
+transform. Arrays, expressions, aggregate lists, and output maps replace the
+whole current value. A patch must contain at least one transform option.
+`undefined` and `null` do not delete options. `weight: false` removes an existing
+weight only from the editors that expose weight. Mode changes remove keys that
+belong only to the previous mode before validating the final definition.
+[Editing derived data](../../api/data/source-and-derived.md#editing-derived-data)
+
 ## `createRegression`
 
 ```javascript

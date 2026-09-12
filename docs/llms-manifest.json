@@ -784,10 +784,11 @@
         "createcompletedata-id-source-key-groupby-values-sequence-fill-members",
         "createimputeddata-id-source-fields-groupby-sortby-method-value-edges-maxgap",
         "createstackdata-id-source-category-group-value-mode-as",
+        "editing-derived-data",
         "related"
       ],
-      "bytes": 16040,
-      "sha256": "f79ab8989f7f9f8e49b9e06ef395a06c7d2b8e288ce9d23e4d23d886b3dad051"
+      "bytes": 20645,
+      "sha256": "09dedf647c9355418d9f7288ef86aa45f7ab11056402412d588b2120df58488b"
     },
     {
       "order": 51,
@@ -858,8 +859,8 @@
         "editbin2ddata",
         "related"
       ],
-      "bytes": 5088,
-      "sha256": "963cbf02ba062e9dff13ceb3fcc315994f18ee030bd5eb1bcb28cb27c417dad6"
+      "bytes": 5491,
+      "sha256": "aea14e7a36a3140f1f6f508ba0cfc4929ead8bdf3f61ccb96e6d029d7ab199db"
     },
     {
       "order": 56,
@@ -1849,8 +1850,8 @@
         "action-reference",
         "exact-action-lookup"
       ],
-      "bytes": 27817,
-      "sha256": "d751435857123a27d10d321dfb769df4d46d0727bdeb365bedd15e5603ed7da1"
+      "bytes": 29735,
+      "sha256": "633b797b2f08511271fee6ae6525b967de89978e99d49a570ceaf6fbc488cadc"
     },
     {
       "order": 117,
@@ -1915,10 +1916,11 @@
         "createwindowdata",
         "createbin2ddata",
         "editbin2ddata",
+        "focused-core-data-editing",
         "related"
       ],
-      "bytes": 24133,
-      "sha256": "e94f853adb1b3b2f9b9ae56994f8a50d8fdb588589ae5c8895387195becebfc1"
+      "bytes": 25596,
+      "sha256": "4955475e2ce6dc98915c37ff24a0a5ec79839025d97d02fdb470af8002a3320a"
     },
     {
       "order": 118,
@@ -2030,6 +2032,7 @@
         "createdensityplot",
         "createintervaldata",
         "createecdfdata",
+        "focused-statistical-data-editing",
         "createregression",
         "editregression",
         "createerrorbar",
@@ -2044,8 +2047,8 @@
         "editviolinplot",
         "related"
       ],
-      "bytes": 12924,
-      "sha256": "e5a2e4162680d72a62ef4a29d8faee57d2e72c50eb6cb1ab8ae3c196239f4fea"
+      "bytes": 14436,
+      "sha256": "0dd1cabcfecf3728fcda3fd72a59c7367a1c9c6aaa001c79c8cb835c3ca08f72"
     },
     {
       "order": 121,
@@ -2160,8 +2163,8 @@
         "exact-typescript-signatures",
         "related"
       ],
-      "bytes": 19258,
-      "sha256": "c2b599d38aedcf25a7753265d191759c62fb7eab817047b808aa9f6d5482c98b"
+      "bytes": 20310,
+      "sha256": "5fc6de6a75fed1c603dae75c6d9f254c9c25a10a0e2bd8e4f48e35478dcfbddb"
     },
     {
       "order": 126,

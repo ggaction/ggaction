@@ -29,7 +29,7 @@ export function resolveMarkData(program, requested) {
   }
 
   const dataset = requireMaterializedDataset(program, data);
-  return { data, dataset };
+  return { data: dataset.id, dataset };
 }
 
 export function resolveMarkId(program, requested, {
