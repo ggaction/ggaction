@@ -12,7 +12,7 @@
 
 ## 먼저 읽을 순서
 
-1. [IMPLEMENTER_START_HERE.md](IMPLEMENTER_START_HERE.md) — 구현자 인계·작업 순서. 상세 실행은 [IMPLEMENTATION_SPEC.md](IMPLEMENTATION_SPEC.md), 정정된 제안은 [CONTRACT_RESOLUTIONS.md](CONTRACT_RESOLUTIONS.md)를 먼저 읽는다.
+1. [IMPLEMENTER_START_HERE.md](IMPLEMENTER_START_HERE.md) — 구현자 인계·작업 순서. 공통 규약은 [IMPLEMENTATION_SPEC.md](IMPLEMENTATION_SPEC.md), Phase별 기계적인 실행은 [EXECUTION_RUNBOOK.md](EXECUTION_RUNBOOK.md), 정정된 제안은 [CONTRACT_RESOLUTIONS.md](CONTRACT_RESOLUTIONS.md)를 먼저 읽는다.
 2. [COMMON_CONTRACT.md](COMMON_CONTRACT.md) — 공통 불변조건 12개.
 3. [API_DETAILS.md](API_DETAILS.md) — 실제 current 타입 연결과 빠뜨리면 안 되는 옵션 의미.
 4. [DECISIONS.md](DECISIONS.md) — 권장안 26개와 gate별 concrete 설계 검증.

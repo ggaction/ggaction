@@ -2,7 +2,7 @@
 
 검증일: 2026-09-07. 기준 코드 commit: c0e47da6e213852213bcb04eb19031a1a6a63cd7.
 
-이번 변경은 문서 작성이다. 아래 결과는 계획의 완결성·탐색 일관성에 대한 검증이며, 제안한 제품 기능이 구현되었다는 증거가 아니다.
+이 첫 절은 2026-09-07 계획 작성 당시의 역사적 검증 기록이다. 아래 결과는 당시 계획의 완결성·탐색 일관성에 대한 검증이며, 현재 구현 상태는 ROADMAP과 Phase STEP 원장을 따른다.
 
 | 검증 | 실제 결과 |
 | --- | --- |
@@ -42,4 +42,17 @@
 
 제안 타입 검사 명령은 VALIDATION의 문서 단계 항목에 있다. 범위·case ID·경로·링크 검증은 이번 작업의 일회성 검사로 수행했으며 .artifacts/roadmap7-spec/validation.json은 로컬 관측 결과다. 구현 테스트가 이 ignored artifact에 의존하지 않도록 한다.
 
-새 runtime action, SVG/PDF/Canvas 목표 이미지, 패키지 consumer는 이번 문서 요청에서 구현하지 않았다. Gate는 planned이며 사용자 승인 기록이나 Current 기능 승격을 추가하지 않았다.
+이 2026-09-13 상세화 절도 구현 시작 전의 역사적 기록이다. 이후 사용자가 Phase 0–12 Gate를 모두 승인했고 Phase 1이 구현됐다. 현재 승인·구현·인수 case 상태는 각 `GATES.md`, `STEP1.md`, `IMPLEMENTATION_MAP.json`, `ACCEPTANCE_CASES.json`이 소유한다.
+
+## 2026-09-13 실행 runbook 검증
+
+[EXECUTION_RUNBOOK.md](EXECUTION_RUNBOOK.md)를 추가해 승인된 25개 기능을 Phase별 입력 검증, pure core, transaction, consumer replay, public surface, test와 종료 조건으로 분해했다.
+
+| 검증 | 실제 결과 |
+| --- | --- |
+| 선택 범위 | runbook, PROPOSALS, IMPLEMENTATION_MAP, ACCEPTANCE_CASES 모두 동일한 25개 |
+| 인수 사례 | 총 154개, R06/R07의 실행 상태와 나머지 planned 상태 보존 |
+| 상태 의미 | Gate 승인과 제품 Current 상태를 분리하고 재승인 오해 문구 제거 |
+| 구현 순서 | Phase 1 후속 의무와 Phase 2–12 작업·선행 관계·종료 기준 명시 |
+| 문서 링크 | roadmap7 Markdown 38개 상대 링크 검사 통과 |
+| 제품 변경 경계 | 이 runbook checkpoint는 `agent_docs/impl/roadmap7` 문서만 변경 |

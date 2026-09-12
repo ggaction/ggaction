@@ -1,11 +1,11 @@
 # Roadmap 7 — 구현 상세 스펙 진입점
 
-작성 기준: 2026-09-13, 코드 baseline c0e47da6e213852213bcb04eb19031a1a6a63cd7, 문서 작업 시작 revision 3b61e789. 상태: **Proposed / 문서 작성 완료, 제품 구현 전**. 이 파일은 선택된 25개 기능을 작은 작업으로 구현할 때의 실행 규약이다. 구현 경험이 적은 모델도 기본값·소유권·순서를 임의로 정하지 않도록 기능별 상세 명세와 검증 사례를 연결한다.
+작성 기준: 2026-09-13, 원래 코드 baseline c0e47da6e213852213bcb04eb19031a1a6a63cd7, 문서 작업 시작 revision 3b61e789. 상태: **승인된 실행 계약 / Phase 1 완료, Phase 2 진행 중**. 이 파일은 선택된 25개 기능을 작은 작업으로 구현할 때의 공통 실행 규약이다. 단계별 기계적인 작업과 종료 조건은 [EXECUTION_RUNBOOK.md](EXECUTION_RUNBOOK.md), 정확한 기능별 계약은 `features/*.md`가 소유한다.
 
 ## 문서 읽는 순서와 권위
 
 1. 현재 저장소 AGENTS와 [ROADMAP](ROADMAP.md)에서 사용자 범위/승인/활성 Phase 확인.
-2. 이 파일과 [CONTRACT_RESOLUTIONS](CONTRACT_RESOLUTIONS.md)에서 baseline 차이와 정정된 제안 확인.
+2. 이 파일과 [EXECUTION_RUNBOOK](EXECUTION_RUNBOOK.md), [CONTRACT_RESOLUTIONS](CONTRACT_RESOLUTIONS.md)에서 baseline 차이, 단계별 작업, 정정된 제안 확인.
 3. [COMMON_CONTRACT](COMMON_CONTRACT.md), [STATE_AND_REPLAY](STATE_AND_REPLAY.md)에서 상태 경계 확인.
 4. 해당 features 문서의 API, **구현 고정 명세**, 독립 oracle를 함께 읽는다.
 5. [IMPLEMENTATION_MAP.json](IMPLEMENTATION_MAP.json)의 실제 code/test 연결점과 [ACCEPTANCE_CASES.json](ACCEPTANCE_CASES.json)의 case ID를 사용한다.
@@ -14,7 +14,7 @@
 
 공개 계약의 현재 사실은 src/types/current contracts가 소유한다. 이 계획의 미구현 목표는 기능별 구현 고정 명세가 소유한다. 옛 예시와 충돌하는 문구는 CONTRACT_RESOLUTIONS에 정정 이유를 남긴다. 계획 타입 파일과 case JSON은 제품에서 import하거나 package에 포함하지 않는다.
 
-"구현 고정"은 검토 가능한 구체안을 정했다는 뜻이며 approved 표시가 아니다. 현재 요청은 상세 문서 작성이다. 기존 세부 승인/시각 Gate를 새로 만들어 늘리거나, 이 문서를 읽었다는 이유로 승인됐다고 기록하지 않는다.
+"구현 고정"은 사용자가 승인한 구체 계약을 뜻한다. 구현 상태는 별개이며 source·executable evidence가 있는 항목만 Implemented/Current로 승격한다. 2026-09-13의 전체 Gate 승인은 각 Phase `GATES.md`에 기록돼 있으므로 같은 계약을 다시 묻지 않는다. 새로운 material departure가 생긴 경우에만 영향을 받는 경계를 다시 검토한다.
 
 ## source에서 확인한 실제 출발점
 
@@ -114,7 +114,7 @@ resolved 값으로 requested state를 덮으면 auto 값이 이후 데이터/크
 
 ## 인수 case를 실제 테스트로 옮기는 법
 
-ACCEPTANCE_CASES의 status는 모두 planned이고 입력/기대 결과는 명세다. JSON에 써 있다는 사실은 테스트 통과가 아니다.
+ACCEPTANCE_CASES의 입력/기대 결과는 명세이고 각 case의 status/runtimeEvidence는 현재 실행 증거다. `passed`는 연결된 실제 test가 통과했을 때만, 후속 lifecycle 일부가 남으면 `partial`, 미구현은 `planned`로 둔다. JSON에 써 있다는 사실 자체는 테스트 통과가 아니다.
 
 - N: 값/정상 동작, E: 거부/원자성, L: 여러 action을 거친 lifecycle.
 - 한 case의 성공과 실패를 실제 action call로 각각 재현한다.

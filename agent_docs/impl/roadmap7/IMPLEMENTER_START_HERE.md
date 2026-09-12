@@ -1,12 +1,12 @@
 # 구현자 인계 — 여기부터 시작
 
-사용자는 감사 번호 25개를 골랐으며, 먼저 아주 상세한 로드맵을 요구했다. 이 문서가 있는 변경은 계획 작성이다. 제품에 25개 기능이 구현됐다고 가정하지 않는다. 새 API 이름·옵션·수식은 Proposed 권장안이다.
+사용자는 감사 번호 25개와 Phase 0–12 Gate를 모두 승인했다. 현재 Phase 1의 primary 구현이 완료됐고 Phase 2를 진행 중이다. 승인된 공개 API·옵션·수식은 구현 계약이지만, 실제 source·tests·types·Current contract 증거가 없는 기능을 구현 완료로 간주하지 않는다.
 
 ## 첫 작업
 
 1. 저장소 root와 실제 수정 영역의 AGENTS.md를 읽는다. 다른 project 디렉터리는 조사하지 않는다.
 2. git status/branch/log와 agent_docs/impl/ROADMAP_INDEX.json을 확인한다. 다른 사람의 수정은 보존한다.
-3. ROADMAP → [IMPLEMENTATION_SPEC](IMPLEMENTATION_SPEC.md) → [CONTRACT_RESOLUTIONS](CONTRACT_RESOLUTIONS.md) → COMMON_CONTRACT → API_DETAILS → DECISIONS → 현재 Phase의 GOAL/STEP/GATES → 해당 feature의 구현 고정 명세 순서로 읽는다. [IMPLEMENTATION_MAP](IMPLEMENTATION_MAP.json)과 [ACCEPTANCE_CASES](ACCEPTANCE_CASES.json)로 code/test/case 연결을 확인한다.
+3. ROADMAP → [IMPLEMENTATION_SPEC](IMPLEMENTATION_SPEC.md) → [EXECUTION_RUNBOOK](EXECUTION_RUNBOOK.md) → [CONTRACT_RESOLUTIONS](CONTRACT_RESOLUTIONS.md) → COMMON_CONTRACT → API_DETAILS → DECISIONS → 현재 Phase의 GOAL/STEP/GATES → 해당 feature의 구현 고정 명세 순서로 읽는다. [IMPLEMENTATION_MAP](IMPLEMENTATION_MAP.json)과 [ACCEPTANCE_CASES](ACCEPTANCE_CASES.json)로 code/test/case 연결을 확인한다.
 4. ACTION_INDEX에서 가장 가까운 현재 action의 contract.file/anchor와 관련 source/type/tests를 확인한다. Proposed 문구를 현재 동작의 증거로 삼지 않는다.
 5. Gate의 실제 사용자 승인을 확인한다. 계획을 approved로 임의 수정하지 않는다. 이미 승인된 범위는 계속 진행한다.
 
