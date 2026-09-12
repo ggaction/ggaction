@@ -1,7 +1,7 @@
 # R06 — 조건·문자열·null 계산식
 
-원래 감사 번호: **6**. Primary owner: **Phase 1**. 상태: **Proposed / 구현 전**.
-선택된 기능의 구현 의도는 확인되었으나 아래 세부 API/수치 정책의 승인·구현·검증 완료를 뜻하지 않는다.
+원래 감사 번호: **6**. Primary owner: **Phase 1**. 상태: **primary 구현 완료 / R02 edit 통합 대기**.
+`b891d1d5`에서 typed AST·평가·facet/encoding 연결·공개 타입·Current 계약·설치 패키지를 구현했다. `editComputedData`와 source revision 재실행은 R02가 소유하므로 Phase 4에서 닫는다.
 
 ## 목적과 현재 연결점
 
@@ -111,9 +111,9 @@ computed는 rowPreserving 그대로다. normalizeExpression은 새 operands/cond
 
 ## 완료 조건
 
-- [ ] 위 API의 최단 호출과 explicit 대상 호출, 누락/auto/false/empty 경계를 타입과 runtime으로 동기화했다.
-- [ ] 위 수치 oracle를 실제 capability test에 구현했고 계획 예제를 기대값 생성기로 재사용하지 않았다.
-- [ ] 기존 consumer와 새 consumer에 scale/mark/guide/label/selection/facet/Canvas replay를 검증했다.
-- [ ] Full 등록·타입 export·Current 계약·catalog·card·관계 trace·MCP·문서·installed consumer를 갱신했다.
-- [ ] 미지원 cell은 이유를 적었다. 이 문서에 명시한 필수 cell을 임의 제외하지 않았다.
-- [ ] 해당 Phase의 승인/검증 근거를 기록했다. 추측으로 완료 표시하지 않았다.
+- [x] create API의 최단 호출과 explicit source, 누락/empty 경계를 타입과 runtime으로 동기화했다.
+- [x] 위 수치 oracle를 `test/unit/actions/data/computed-data.test.js`에 독립 기대값으로 구현했다.
+- [x] 수치·문자열·null consumer와 facet/Canvas materialization을 검증했다.
+- [x] Full 등록·타입 export·Current 계약·catalog·card·관계 trace·MCP·문서·installed consumer를 갱신했다.
+- [ ] `editComputedData`와 source revision replay는 R02/Phase 4에서 같은 evaluator로 검증한다.
+- [x] Phase 1 승인과 `b891d1d5` 검증 근거를 `phase1/STEP1.md`에 기록했다. appearance 전용 Gate V는 data-only라 새 시각 목표가 없다.

@@ -1,7 +1,7 @@
 {
   "version": 1,
   "baseCommit": "c0e47da6e213852213bcb04eb19031a1a6a63cd7",
-  "status": "Proposed",
+  "status": "In progress",
   "scopeSelection": "user-selected",
   "selectedAuditIds": [
     2,
@@ -98,7 +98,7 @@
       "slug": "computed-expressions",
       "phase": 1,
       "dependsOn": [],
-      "status": "Proposed",
+      "status": "Implemented-primary",
       "scopeSelection": "user-selected",
       "file": "features/06-computed-expressions.md",
       "sources": [
@@ -125,7 +125,7 @@
       "dependsOn": [
         "R06"
       ],
-      "status": "Proposed",
+      "status": "Implemented-primary",
       "scopeSelection": "user-selected",
       "file": "features/07-normalization.md",
       "sources": [

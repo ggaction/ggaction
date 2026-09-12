@@ -1,16 +1,16 @@
 {
   "phase": 1,
-  "status": "Proposed",
+  "status": "completed",
   "scope": "implementation",
   "candidates": [
     {
       "id": "R06",
-      "status": "Proposed",
+      "status": "implemented-primary",
       "file": "../features/06-computed-expressions.md"
     },
     {
       "id": "R07",
-      "status": "Proposed",
+      "status": "implemented-primary",
       "file": "../features/07-normalization.md"
     }
   ]

@@ -2,14 +2,14 @@
 
 ## 진행 상태
 
-- [ ] 범위·현재 source owner·선행 Phase 완료 상태 확인
-- [ ] Gate A 자료: 정확한 API/schema/defaults/오류/수치 oracle 작성·검증
-- [ ] 명시 승인 범위 기록 후 해당 구현 시작
-- [ ] appearance 대상은 primitive render와 target public chain으로 Gate V 확인
-- [ ] 아래 wave 구현과 focused/cumulative tests 완료
-- [ ] types/current contracts/catalog/cards/MCP/docs/package 영향 갱신
-- [ ] Gate X 결과와 남은 후속 통합 cell 기록
-- [ ] 검증된 coherent change마다 commit/push하고 다음 Gate 범위 확인
+- [x] 범위·현재 source owner·선행 Phase 완료 상태 확인
+- [x] Gate A 자료: 정확한 API/schema/defaults/오류/수치 oracle 작성·검증
+- [x] 명시 승인 범위 기록 후 해당 구현 시작
+- [x] data-only 범위라 새 appearance 목표가 없음을 확인하고 기존 Canvas consumer를 실행
+- [x] 아래 wave 구현과 focused/cumulative tests 완료
+- [x] types/current contracts/catalog/cards/MCP/docs/package 영향 갱신
+- [x] Gate X 결과와 남은 후속 통합 cell 기록
+- [x] 검증된 coherent change를 commit/push하고 Phase 2로 전환
 
 계획 작성 시 모든 체크는 미완료다. Phase 0 은 제품 구현이 없으므로 해당 구현·시각 항목의 미적용 이유를 기록한다. Phase 12 는 새 시각 목표가 없으면 승인된 variant를 현재 코드에서 다시 실행해 검증한다.
 
@@ -41,7 +41,21 @@
 
 | wave | commit | tests/artifacts | remaining | status |
 | --- | --- | --- | --- | --- |
-| 미착수 | — | 실행 증거 없음 | 위 전체 범위 | planned |
+| W1 | `b891d1d5` | computed oracle, nullable/string/boolean typed AST, nominal/null/facet consumers | `editComputedData`와 source revision은 R02/Phase 4 | completed-primary |
+| W2 | `b891d1d5` | share/minmax/zscore/index/change/percentChange oracle, zero policy, stable baseline, group/facet-local replay | `editNormalizedData`와 source revision은 R02/Phase 4 | completed-primary |
+| W3 | `b891d1d5` | Full-only runtime/types, Current/catalog/cards/relations/MCP/docs, installed Node+TypeScript package | Phase 4 edit 및 Phase 12 전체 통합 | completed-primary |
+
+## 검증 결과
+
+- Focused: computed/normalization/type/transform tests 20/20.
+- Unit cumulative: 2,299/2,299.
+- Contract cumulative: 330/330.
+- Documentation: 47/47; generated reference/cards/machine/LLM artifacts synchronized.
+- Installed package: Node runtime, strict TypeScript, MCP and tutorial consumers 통과. Full/basic/SVG gzip은 300,790/152,434/6,418 bytes로 승인된 305,000/153,000/25,000 ceiling 이하다.
+- Package artifact: 489 entries, packed 620,000-byte 및 unpacked 3,100,000-byte ceiling 이내.
+- 시각 Gate V: R06/R07은 data transform이라 새 appearance variant가 없다. nominal computed color와 normalized quantitative point를 public Canvas materialization으로 검증했고 renderer 전용 분기는 추가하지 않았다.
+
+후속 의무는 누락이 아니다. R02가 `editComputedData`/`editNormalizedData`와 descendant recompute를 구현할 때 이 Phase의 evaluator/materializer를 재사용하고, Phase 12가 source edit·labels·references·facet 전체 흐름을 다시 실행한다.
 
 ## Gate 연결
 

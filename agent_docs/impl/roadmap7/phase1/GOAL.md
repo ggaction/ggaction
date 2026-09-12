@@ -1,6 +1,6 @@
 # Phase 1 — 계산식과 그룹 정규화
 
-상태: planned. 이 문서는 실행 계획이며 구현 또는 승인 완료 기록이 아니다.
+상태: completed-primary. `b891d1d5`가 create/evaluator/materializer/public surface를 구현했으며 Phase 4의 edit 통합만 후속 의무로 남는다.
 
 ## 목표와 범위
 

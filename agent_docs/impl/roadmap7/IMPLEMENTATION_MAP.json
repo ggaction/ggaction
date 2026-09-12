@@ -1,10 +1,10 @@
 {
   "version": 1,
-  "status": "Proposed",
+  "status": "In progress",
   "baseCommit": "c0e47da6e213852213bcb04eb19031a1a6a63cd7",
   "sourceOfScope": "PROPOSALS.json",
   "sourceOfBehavior": "features/*.md 구현 고정 명세",
-  "note": "연결표이며 현재 구현이나 테스트 통과 증거가 아님. suggestedNewTest는 미래 소유 위치다.",
+  "note": "연결표다. Implemented-primary 항목의 통과 증거는 해당 Phase STEP 원장에 있고, Proposed 항목의 suggestedNewTest는 미래 소유 위치다.",
   "features": [
     {
       "id": "R02",
@@ -118,7 +118,7 @@
       "spec": "features/06-computed-expressions.md",
       "phase": 1,
       "dependsOn": [],
-      "status": "Proposed",
+      "status": "Implemented-primary",
       "newPublicActions": [],
       "extendedPublicSurfaces": [
         "createComputedData"
@@ -159,7 +159,7 @@
       "dependsOn": [
         "R06"
       ],
-      "status": "Proposed",
+      "status": "Implemented-primary",
       "newPublicActions": [
         "createNormalizedData"
       ],
