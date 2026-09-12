@@ -10,8 +10,8 @@
       "kind": "normal",
       "specification": "raw x=[1,2,3] → twice z=2*x → avg mean(z)=4. z=3*x로 recompute 후 z=[3,6,9], avg=6. 이전 program은 z=[2,4,6], avg=4.",
       "owner": "features/02-derived-editing.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/unit/actions/data/derived-editing.test.js (dependency closure numeric oracle); d29287c9"
     },
     {
       "id": "R02-E01",
@@ -20,8 +20,8 @@
       "kind": "error",
       "specification": "같은 입력에서 dependents 생략 → Error, 다섯 canonical state와 resolvedScales/children/compositionSpec까지 동일.",
       "owner": "features/02-derived-editing.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/unit/actions/data/derived-editing.test.js (default dependent rejection and immutable input); d29287c9"
     },
     {
       "id": "R02-E02",
@@ -30,8 +30,8 @@
       "kind": "error",
       "specification": "z를 w로 rename하지만 downstream expression.field=\"z\" 유지 → 전체 실패.",
       "owner": "features/02-derived-editing.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/unit/actions/data/derived-editing.test.js (unsafe downstream rename rollback); d29287c9"
     },
     {
       "id": "R02-L01",
@@ -40,8 +40,8 @@
       "kind": "lifecycle",
       "specification": "after에서 source:\"twice\"로 새 summary 생성 → 6; before의 동일 호출 → 4.",
       "owner": "features/02-derived-editing.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/unit/actions/data/derived-editing.test.js (logical owner reuse before/after revision); d29287c9"
     },
     {
       "id": "R02-L02",
@@ -50,8 +50,8 @@
       "kind": "lifecycle",
       "specification": "두 direct consumers + 영향 없는 sibling → 두 consumer만 새 current 사용, sibling 값/ID 유지.",
       "owner": "features/02-derived-editing.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/unit/actions/data/derived-editing.test.js (two direct consumers and unaffected sibling); d29287c9"
     },
     {
       "id": "R02-L03",
@@ -60,8 +60,8 @@
       "kind": "lifecycle",
       "specification": "모든 16개 public standalone create family를 표 기반으로 create/edit/edit/no-op/replay한다. 한 family만 구현하고 공통 editor 완료로 표시하지 않는다.",
       "owner": "features/02-derived-editing.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/unit/actions/data/derived-editing.test.js and test/unit/actions/data/bin2d-data.test.js (all 16 families, repeated edit/no-op/facet/Canvas); test/contracts/derived-editing-types.test.js; d29287c9"
     },
     {
       "id": "R05-N01",
@@ -190,8 +190,8 @@
       "kind": "lifecycle",
       "specification": "computed 문자열 결과 → nominal mark → editComputedData → facet/source replay에서 AST 요청·output type·원본 불변성 유지.",
       "owner": "features/06-computed-expressions.md",
-      "status": "partial",
-      "runtimeEvidence": "create/nominal/facet paths: test/unit/actions/data/computed-data.test.js; editComputedData remains Phase 4; b891d1d5"
+      "status": "passed",
+      "runtimeEvidence": "test/unit/actions/data/derived-editing.test.js (edited string computation, nominal encoding, facet replay); d29287c9"
     },
     {
       "id": "R07-N01",
@@ -350,8 +350,8 @@
       "kind": "lifecycle",
       "specification": "createTimeUnitData → editTimeUnitData(timeZone 변경) → facet replay에서 저장된 zone/unit으로 bucket 재계산, 원본 UTC 결과 불변.",
       "owner": "features/08-calendar-buckets.md",
-      "status": "partial",
-      "runtimeEvidence": "create/facet paths: test/unit/actions/data/time-unit-data.test.js; editTimeUnitData remains Phase 4; 9d4d0840"
+      "status": "passed",
+      "runtimeEvidence": "test/unit/actions/data/derived-editing.test.js (edited Asia/Seoul day bucket and facet replay); d29287c9"
     },
     {
       "id": "R09-N01",
@@ -420,8 +420,8 @@
       "kind": "lifecycle",
       "specification": "editWindowData와 facet-local replay의 closed-boundary/duplicate 규칙이 같아야 한다.",
       "owner": "features/09-duration-windows.md",
-      "status": "partial",
-      "runtimeEvidence": "facet/closed peer paths: test/unit/actions/data/window-data.test.js and test/unit/actions/data/complete-impute-data.test.js; editWindowData remains Phase 4; 9d4d0840"
+      "status": "passed",
+      "runtimeEvidence": "test/unit/actions/data/derived-editing.test.js (edited closed duration window and facet-local replay); d29287c9"
     },
     {
       "id": "R10-N01",

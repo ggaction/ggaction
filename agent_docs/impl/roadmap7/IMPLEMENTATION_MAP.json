@@ -18,7 +18,7 @@
         "R09",
         "R10"
       ],
-      "status": "Proposed",
+      "status": "Implemented-primary",
       "newPublicActions": [
         "editDerivedData",
         "editComputedData",
@@ -43,19 +43,20 @@
         "data resolvers"
       ],
       "currentSourceFiles": [
+        "src/actions/data/edit.js",
+        "src/actions/data/revisionBindings.js",
         "src/actions/data/bin2d.js",
-        "src/actions/data/intervalEdit.js",
-        "src/materialization/dataProvenance.js",
+        "src/actions/data/index.js",
         "src/grammar/transforms.js",
-        "src/actions/facets/replay.js",
         "src/selectors/datasets.js",
-        "src/actions/data/shared.js"
+        "src/actions/data/shared.js",
+        "src/actions/facets/replay.js"
       ],
       "existingRegressionTests": [
         "test/unit/actions/data/bin2d-data.test.js",
         "test/contracts/statistical-owner-revisions.test.js"
       ],
-      "suggestedNewTest": "test/contracts/derived-editing.test.js",
+      "suggestedNewTest": null,
       "acceptanceCases": [
         "R02-N01",
         "R02-E01",
@@ -71,7 +72,13 @@
         "edit/reencode/Canvas/source replay/remove",
         "applicable composition and renderer cells",
         "Full registration/types/current contracts/knowledge/docs/installed package"
-      ]
+      ],
+      "implementedTests": [
+        "test/unit/actions/data/derived-editing.test.js",
+        "test/contracts/derived-editing-types.test.js",
+        "scripts/package-consumer.js"
+      ],
+      "implementationCommit": "d29287c9"
     },
     {
       "id": "R05",

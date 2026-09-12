@@ -19,6 +19,6 @@ V는 새로운 appearance가 있는 경우에 적용한다. data-only 범위는 
 - Contract revision: `67480f52` — 25개 기능의 상세 구현 계약, 고정 인수 사례, 타입 제안과 source/test 연결표
 - User approval: 2026-09-13 — “게이트 모두 승인”; 이 파일 표의 A/V/X 범위 전체
 - Evidence policy: 승인된 계약이 바뀌지 않는 한 재승인을 요구하지 않는다. 구현 commit, 실행 test, primitive/public render와 남은 integration cell은 각 Phase STEP 결과 원장에 계속 추가한다.
-- Remaining: GOAL/STEP/features의 구현과 검증 증거. 승인 자체는 완료됐지만 검증되지 않은 기능을 Current 또는 완료로 표시하지 않는다.
+- Implementation evidence: `d29287c9`; 자세한 수치·계약·package 결과와 후속 integration owner는 [STEP1.md](STEP1.md)에 기록했다.
 
 이 파일을 읽는 행위는 승인에 해당하지 않는다. PR/publish/deploy는 별도 요청 범위다.

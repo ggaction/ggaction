@@ -1,6 +1,6 @@
 # Roadmap 7 — 구현 상세 스펙 진입점
 
-작성 기준: 2026-09-13, 원래 코드 baseline c0e47da6e213852213bcb04eb19031a1a6a63cd7, 문서 작업 시작 revision 3b61e789. 상태: **승인된 실행 계약 / Phase 1–3 완료, Phase 4 진행 중**. 이 파일은 선택된 25개 기능을 작은 작업으로 구현할 때의 공통 실행 규약이다. 단계별 기계적인 작업과 종료 조건은 [EXECUTION_RUNBOOK.md](EXECUTION_RUNBOOK.md), 정확한 기능별 계약은 `features/*.md`가 소유한다.
+작성 기준: 2026-09-13, 원래 코드 baseline c0e47da6e213852213bcb04eb19031a1a6a63cd7, 문서 작업 시작 revision 3b61e789. 상태: **승인된 실행 계약 / Phase 1–4 완료, Phase 5 진행 중**. 이 파일은 선택된 25개 기능을 작은 작업으로 구현할 때의 공통 실행 규약이다. 단계별 기계적인 작업과 종료 조건은 [EXECUTION_RUNBOOK.md](EXECUTION_RUNBOOK.md), 정확한 기능별 계약은 `features/*.md`가 소유한다.
 
 ## 문서 읽는 순서와 권위
 

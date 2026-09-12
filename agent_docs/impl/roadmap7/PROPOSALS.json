@@ -45,17 +45,17 @@
         "R09",
         "R10"
       ],
-      "status": "Proposed",
+      "status": "Implemented-primary",
       "scopeSelection": "user-selected",
       "file": "features/02-derived-editing.md",
       "sources": [
+        "src/actions/data/edit.js",
+        "src/actions/data/revisionBindings.js",
         "src/actions/data/bin2d.js",
-        "src/actions/data/intervalEdit.js",
-        "src/materialization/dataProvenance.js",
         "src/grammar/transforms.js",
-        "src/actions/facets/replay.js",
         "src/selectors/datasets.js",
-        "src/actions/data/shared.js"
+        "src/actions/data/shared.js",
+        "src/actions/facets/replay.js"
       ],
       "acceptanceSections": [
         "값·기본값·오류 계약",
@@ -63,7 +63,8 @@
         "독립 oracle와 인수 테스트",
         "완료 조건",
         "구현 고정 명세"
-      ]
+      ],
+      "implementationCommit": "d29287c9"
     },
     {
       "id": "R05",

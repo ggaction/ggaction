@@ -1,12 +1,13 @@
 {
   "phase": 4,
-  "status": "Proposed",
+  "status": "Implemented-primary",
   "scope": "implementation",
   "candidates": [
     {
       "id": "R02",
-      "status": "Proposed",
-      "file": "../features/02-derived-editing.md"
+      "status": "Implemented-primary",
+      "file": "../features/02-derived-editing.md",
+      "implementationCommit": "d29287c9"
     }
   ]
 }

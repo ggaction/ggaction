@@ -1,7 +1,7 @@
 # R02 — 파생 데이터 정의 편집과 종속 갱신
 
-원래 감사 번호: **2**. Primary owner: **Phase 4**. 상태: **Proposed / 구현 전**.
-아래 세부 API·수치 정책의 Gate는 승인됐다. 상태의 `Proposed`는 제품 구현·검증이 아직 완료되지 않았다는 뜻이다.
+원래 감사 번호: **2**. Primary owner: **Phase 4**. 상태: **Implemented-primary**.
+아래 API·revision transaction·16개 family 편집은 `d29287c9`에서 구현됐다. Phase 7의 동적 reference, Phase 8의 새 legend content, Phase 10의 Polar/Parallel facet 확장, Phase 11의 범용 resource collector와 결합하는 후속 통합은 각 기능 owner가 다시 검증한다.
 
 ## 목적과 현재 연결점
 
@@ -132,9 +132,9 @@ materializationConfigs.data.computed.twice = { current: "twice" };
 
 ## 완료 조건
 
-- [ ] 위 API의 최단 호출과 explicit 대상 호출, 누락/auto/false/empty 경계를 타입과 runtime으로 동기화했다.
-- [ ] 위 수치 oracle를 실제 capability test에 구현했고 계획 예제를 기대값 생성기로 재사용하지 않았다.
-- [ ] 기존 consumer와 새 consumer에 scale/mark/guide/label/selection/facet/Canvas replay를 검증했다.
-- [ ] Full 등록·타입 export·Current 계약·catalog·card·관계 trace·MCP·문서·installed consumer를 갱신했다.
-- [ ] 미지원 cell은 이유를 적었다. 이 문서에 명시한 필수 cell을 임의 제외하지 않았다.
-- [ ] 해당 Phase의 승인/검증 근거를 기록했다. 추측으로 완료 표시하지 않았다.
+- [x] 위 API의 최단 호출과 explicit 대상 호출, 누락/auto/false/empty 경계를 타입과 runtime으로 동기화했다.
+- [x] 위 수치 oracle를 실제 capability test에 구현했고 계획 예제를 기대값 생성기로 재사용하지 않았다.
+- [x] 현재 존재하는 scale/mark/guide/label/selection/facet/Canvas consumer replay를 검증했다.
+- [x] Full 등록·타입 export·Current 계약·catalog·card·관계 trace·MCP·문서·installed consumer를 갱신했다.
+- [x] 아직 제품에 없는 R36/R37/R38/R43/R25 consumer cell은 해당 Primary Phase의 후속 통합으로 남겼다.
+- [x] Phase 4 승인과 `d29287c9` 구현, unit 2,344개·contract 333개·docs 47개·installed package 결과를 STEP 원장에 기록했다.

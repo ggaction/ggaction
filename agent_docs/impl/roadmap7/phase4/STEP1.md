@@ -2,14 +2,14 @@
 
 ## 진행 상태
 
-- [ ] 범위·현재 source owner·선행 Phase 완료 상태 확인
-- [ ] Gate A 자료: 정확한 API/schema/defaults/오류/수치 oracle 작성·검증
-- [ ] 명시 승인 범위 기록 후 해당 구현 시작
-- [ ] appearance 대상은 primitive render와 target public chain으로 Gate V 확인
-- [ ] 아래 wave 구현과 focused/cumulative tests 완료
-- [ ] types/current contracts/catalog/cards/MCP/docs/package 영향 갱신
-- [ ] Gate X 결과와 남은 후속 통합 cell 기록
-- [ ] 검증된 coherent change마다 commit/push하고 다음 Gate 범위 확인
+- [x] 범위·현재 source owner·선행 Phase 완료 상태 확인
+- [x] Gate A 자료: 정확한 API/schema/defaults/오류/수치 oracle 작성·검증
+- [x] 명시 승인 범위 기록 후 해당 구현 시작
+- [x] data-only 기능이라 새 appearance variant는 만들지 않고 기존 Point/Bin2D와 Canvas·PNG·SVG·PDF package consumer를 검증
+- [x] 아래 wave 구현과 focused/cumulative tests 완료
+- [x] types/current contracts/catalog/cards/MCP/docs/package 영향 갱신
+- [x] Gate X 결과와 남은 후속 통합 cell 기록
+- [x] 구현 commit `d29287c9`; 이 원장 commit을 push한 뒤 Phase 5 진행
 
 계획 작성 시 모든 체크는 미완료다. Phase 0 은 제품 구현이 없으므로 해당 구현·시각 항목의 미적용 이유를 기록한다. Phase 12 는 새 시각 목표가 없으면 승인된 variant를 현재 코드에서 다시 실행해 검증한다.
 
@@ -42,7 +42,10 @@
 
 | wave | commit | tests/artifacts | remaining | status |
 | --- | --- | --- | --- | --- |
-| 미착수 | — | 실행 증거 없음 | 위 전체 범위 | planned |
+| W1–W4 | `d29287c9` | logical owner/current, requested transform registry, DAG reject/recompute, role rebinding, generic+15 focused editors, shared Bin2D executor | 현재 제품 consumer 검증 | passed |
+| W5 lifecycle | `d29287c9` | `test/unit/actions/data/derived-editing.test.js` 10 tests; 기존 Bin2D regression; string/timezone/duration facet replay; labels+selection refresh | R36/R37/R38/R43/R25가 추가할 새 consumer와 후속 재검증 | passed-primary |
+| public surface | `d29287c9` | Full/current types/contracts/ACTION_INDEX/cards/relations/docs; installed Node+TypeScript+MCP consumer | Basic에는 advanced editor를 추가하지 않음 | passed |
+| cumulative | `d29287c9` | unit 2,344/2,344; contracts 333/333; docs 47/47; package 496 entries, 627,230 packed, 3,148,859 unpacked; full/basic/svg gzip 313,593/153,637/6,418 | Phase 12에서 전체 chart/render/browser/realistic matrix 재실행 | passed-primary |
 
 ## Gate 연결
 

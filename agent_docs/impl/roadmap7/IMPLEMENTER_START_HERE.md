@@ -1,6 +1,6 @@
 # 구현자 인계 — 여기부터 시작
 
-사용자는 감사 번호 25개와 Phase 0–12 Gate를 모두 승인했다. 현재 Phase 1–3의 primary 구현이 완료됐고 Phase 4를 진행 중이다. 승인된 공개 API·옵션·수식은 구현 계약이지만, 실제 source·tests·types·Current contract 증거가 없는 기능을 구현 완료로 간주하지 않는다.
+사용자는 감사 번호 25개와 Phase 0–12 Gate를 모두 승인했다. 현재 Phase 1–4의 primary 구현이 완료됐고 Phase 5를 진행 중이다. 승인된 공개 API·옵션·수식은 구현 계약이지만, 실제 source·tests·types·Current contract 증거가 없는 기능을 구현 완료로 간주하지 않는다.
 
 ## 첫 작업
 

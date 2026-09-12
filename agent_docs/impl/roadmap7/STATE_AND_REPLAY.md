@@ -1,6 +1,6 @@
 # 상태·소유권·재실행의 구현 계약
 
-상태: Proposed. 현재 planner stage 이름이나 public schema가 이미 바뀌었다는 기록이 아니다. 아래는 Roadmap7에서 확장할 owner와  필수 순서다.
+상태: 부분 Current. R02 logical data owner와 revision transaction은 `d29287c9`에서 Current가 됐다. 나머지 row는 각 Primary Phase가 구현하기 전까지 Proposed이며, 아래 전체 순서는 Roadmap 7 통합 계약이다.
 
 ## 권장 owner map
 

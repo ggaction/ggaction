@@ -4,7 +4,7 @@
 
 | ID | Primary Phase | 계약 | 필수 evidence owner | status |
 | --- | --- | --- | --- | --- |
-| R02 | 4 | [파생 데이터 정의 편집과 종속 갱신](features/02-derived-editing.md) | feature 내 독립 oracle/완료 조건 → Phase 4 STEP1 evidence | Proposed / 미구현 |
+| R02 | 4 | [파생 데이터 정의 편집과 종속 갱신](features/02-derived-editing.md) | [Phase 4 STEP1](phase4/STEP1.md) · `d29287c9` | primary 구현 완료 / 후속 새 consumer 통합 대기 |
 | R05 | 2 | [결측 조합 완성과 대체](features/05-complete-impute.md) | [Phase 2 STEP1](phase2/STEP1.md) · `9d4d0840` | primary 구현 완료 / R02 edit 통합 대기 |
 | R06 | 1 | [조건·문자열·null 계산식](features/06-computed-expressions.md) | [Phase 1 STEP1](phase1/STEP1.md) · `b891d1d5` | primary 구현 완료 / R02 edit 통합 대기 |
 | R07 | 1 | [그룹 정규화·기준값 비교](features/07-normalization.md) | [Phase 1 STEP1](phase1/STEP1.md) · `b891d1d5` | primary 구현 완료 / R02 edit 통합 대기 |

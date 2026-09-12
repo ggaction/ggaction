@@ -4,7 +4,7 @@
 
 ## 현재 작업
 
-- **현재 활성 계획은 Roadmap 7 Phase 3**다. Phase 1의 계산식·정규화는 `b891d1d5`, Phase 2의 결측·지역 달력·기간 window primary 범위는 `9d4d0840`에서 구현했고, 나머지 선택 기능은 해당 Phase 원장이 상태를 소유한다.
+- **현재 활성 계획은 Roadmap 7 Phase 5**다. Phase 1의 계산식·정규화는 `b891d1d5`, Phase 2의 결측·지역 달력·기간 window는 `9d4d0840`, Phase 3의 가중 통계는 `da0ca4e2`·`276c8318`·`32ddfcdd`, Phase 4의 파생 데이터 편집은 `d29287c9`에서 primary 구현했고, 나머지 선택 기능은 해당 Phase 원장이 상태를 소유한다.
 - [`roadmap7/ROADMAP.md`](roadmap7/ROADMAP.md) — 범위·의존성·Phase 0–12
 - [`roadmap7/IMPLEMENTER_START_HERE.md`](roadmap7/IMPLEMENTER_START_HERE.md) — 구현자 인계와 검증 순서
 - Roadmap 6 Phase 0–11은 완료된 이력으로 보존한다.

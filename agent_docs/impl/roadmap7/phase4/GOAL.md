@@ -1,6 +1,6 @@
 # Phase 4 — 파생 데이터 편집
 
-상태: active. 모든 Gate는 승인됐고 Phase 3 완료 근거 `da0ca4e2`, `276c8318`, `32ddfcdd` 이후 이 Phase를 구현한다.
+상태: completed-primary. 모든 Gate는 승인됐고 구현 근거는 `d29287c9`다.
 
 ## 목표와 범위
 
@@ -21,3 +21,5 @@
 이 Phase에 배정되지 않은 선택 기능은 해당 owner Phase에서 구현한다. 감사에서 선택하지 않은 나머지 25개는 추가하지 않는다. 독립적인 저작 의미가 필요할 때만 action을 추가하고, 타입과 문서만 있는 API를 만들지 않는다.
 
 [STEP1.md](STEP1.md)의 체크리스트와 [GATES.md](GATES.md)의 상태를 함께 갱신한다. 실패한 테스트나 미실행 backend는 완료 근거가 아니다. 다음 Phase를 진행하기 위해 이름만 있는 stub을 commit하지 않는다.
+
+Phase 4는 현재 제품에 존재하는 derived/mark/guide/label/selection/facet/Canvas 경로를 닫았다. R36의 동적 reference, R37/R38의 새 legend recipe, R43의 새 non-Cartesian composition, R25의 범용 삭제 collector는 아직 존재하지 않으므로 각 후속 Primary Phase에서 R02 revision과 함께 다시 검증한다.

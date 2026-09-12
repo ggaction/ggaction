@@ -1,6 +1,6 @@
 # Roadmap 7 — 단계별 구현 실행 명세
 
-문서 상태: **실행 기준**. 기준일 2026-09-13. 사용자는 Roadmap 7의 25개 기능과 Phase 0–12 Gate를 모두 승인했다. 이 승인은 아래에 고정된 공개 계약과 구현 범위를 진행할 권한이며, 아직 구현되지 않은 기능을 Current로 표시해도 된다는 뜻은 아니다. 현재 Phase 1–3의 primary 경로가 구현됐고 Phase 4를 진행 중이다.
+문서 상태: **실행 기준**. 기준일 2026-09-13. 사용자는 Roadmap 7의 25개 기능과 Phase 0–12 Gate를 모두 승인했다. 이 승인은 아래에 고정된 공개 계약과 구현 범위를 진행할 권한이며, 아직 구현되지 않은 기능을 Current로 표시해도 된다는 뜻은 아니다. 현재 Phase 1–4의 primary 경로가 구현됐고 Phase 5를 진행 중이다.
 
 이 문서는 구현 순서와 완료 판정을 한 곳에서 찾게 하는 실행 원장이다. 정확한 필드, union, 수식, 지원 행렬은 각 [기능 명세](features/)가 단일 owner이고, case별 literal 기대값은 [ACCEPTANCE_CASES.json](ACCEPTANCE_CASES.json)이 소유한다. 이 문서와 기능 명세가 충돌하면 기능 명세를 따르고 이 문서를 같은 변경에서 고친다.
 
@@ -207,6 +207,8 @@ R02는 Roadmap 7 data 기능의 lifecycle을 닫는 단계다. transform마다 �
 7. rebinding 후 실제 live ref가 없는 old revision만 release한다.
 
 computed부터 imputed까지 16 family 표 기반 create/edit/edit/no-op/recompute/facet replay를 테스트한다. R06/R07/R05/R08/R09/R10의 lifecycle `partial` case를 이 Phase에서 닫는다.
+
+구현 checkpoint는 `d29287c9`다. generic+15 focused editor, 기존 Bin2D editor의 공통 executor, logical owner resolver, output-role rebinding, selected-label/highlight refresh, string/timezone/duration facet replay, Full/types/current docs/installed package가 통과했다. 후속 Phase가 새 reference/legend/non-Cartesian composition/resource path를 추가하면 R02 transaction을 소비하는 통합 test를 그 Phase에 함께 추가한다.
 
 ## 7. Phase 5 — R20/R21/R23/R22/R19
 
