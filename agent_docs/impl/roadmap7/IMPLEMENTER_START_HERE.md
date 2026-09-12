@@ -6,7 +6,7 @@
 
 1. 저장소 root와 실제 수정 영역의 AGENTS.md를 읽는다. 다른 project 디렉터리는 조사하지 않는다.
 2. git status/branch/log와 agent_docs/impl/ROADMAP_INDEX.json을 확인한다. 다른 사람의 수정은 보존한다.
-3. ROADMAP → [IMPLEMENTATION_SPEC](IMPLEMENTATION_SPEC.md) → [EXECUTION_RUNBOOK](EXECUTION_RUNBOOK.md) → [CONTRACT_RESOLUTIONS](CONTRACT_RESOLUTIONS.md) → COMMON_CONTRACT → API_DETAILS → DECISIONS → 현재 Phase의 GOAL/STEP/GATES → 해당 feature의 구현 고정 명세 순서로 읽는다. [IMPLEMENTATION_MAP](IMPLEMENTATION_MAP.json)과 [ACCEPTANCE_CASES](ACCEPTANCE_CASES.json)로 code/test/case 연결을 확인한다.
+3. ROADMAP → [IMPLEMENTATION_SPEC](IMPLEMENTATION_SPEC.md) → [상세 구현 작업 패킷](DETAILED_IMPLEMENTATION_WORK_PACKAGES.md) → [EXECUTION_RUNBOOK](EXECUTION_RUNBOOK.md) → [CONTRACT_RESOLUTIONS](CONTRACT_RESOLUTIONS.md) → COMMON_CONTRACT → API_DETAILS → DECISIONS → 현재 Phase의 GOAL/STEP/GATES → 해당 feature의 구현 고정 명세 순서로 읽는다. [IMPLEMENTATION_MAP](IMPLEMENTATION_MAP.json)과 [ACCEPTANCE_CASES](ACCEPTANCE_CASES.json)로 code/test/case 연결을 확인한다.
 4. ACTION_INDEX에서 가장 가까운 현재 action의 contract.file/anchor와 관련 source/type/tests를 확인한다. Proposed 문구를 현재 동작의 증거로 삼지 않는다.
 5. Gate의 실제 사용자 승인을 확인한다. 계획을 approved로 임의 수정하지 않는다. 이미 승인된 범위는 계속 진행한다.
 

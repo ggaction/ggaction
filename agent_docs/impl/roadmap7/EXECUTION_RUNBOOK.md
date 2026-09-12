@@ -232,7 +232,7 @@ focused scale/channel 기능을 먼저 구현하고 R19가 그 pure planners를 
 
 ### W5.3 R23 size scale types
 
-- size scale type은 linear/sqrt/pow/log/ordinal/threshold/quantize/quantile의 닫힌 union이다.
+- size scale type은 linear/log/sqrt/pow/quantize/quantile/threshold의 닫힌 union이다. `ordinal`은 이번 계약에 포함하지 않는다.
 - continuous/discrete option 조합, exponent/base/threshold/domain/range 길이를 type별로 preflight한다.
 - size range의 단위는 px² 면적이다. circle radius는 `sqrt(area/pi)`, square side는 `sqrt(area)`다.
 - scale type edit는 incompatible old keys를 제거한 뒤 새 type defaults를 적용한다. omission patch는 유지한다.

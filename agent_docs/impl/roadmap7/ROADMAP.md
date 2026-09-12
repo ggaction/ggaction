@@ -12,7 +12,7 @@
 
 ## 먼저 읽을 순서
 
-1. [IMPLEMENTER_START_HERE.md](IMPLEMENTER_START_HERE.md) — 구현자 인계·작업 순서. 공통 규약은 [IMPLEMENTATION_SPEC.md](IMPLEMENTATION_SPEC.md), Phase별 기계적인 실행은 [EXECUTION_RUNBOOK.md](EXECUTION_RUNBOOK.md), 정정된 제안은 [CONTRACT_RESOLUTIONS.md](CONTRACT_RESOLUTIONS.md)를 먼저 읽는다.
+1. [IMPLEMENTER_START_HERE.md](IMPLEMENTER_START_HERE.md) — 구현자 인계·작업 순서. 공통 규약은 [IMPLEMENTATION_SPEC.md](IMPLEMENTATION_SPEC.md), 남은 기능의 파일별 원자 작업은 [DETAILED_IMPLEMENTATION_WORK_PACKAGES.md](DETAILED_IMPLEMENTATION_WORK_PACKAGES.md), Phase별 기계적인 실행은 [EXECUTION_RUNBOOK.md](EXECUTION_RUNBOOK.md), 정정된 제안은 [CONTRACT_RESOLUTIONS.md](CONTRACT_RESOLUTIONS.md)를 먼저 읽는다.
 2. [COMMON_CONTRACT.md](COMMON_CONTRACT.md) — 공통 불변조건 12개.
 3. [API_DETAILS.md](API_DETAILS.md) — 실제 current 타입 연결과 빠뜨리면 안 되는 옵션 의미.
 4. [DECISIONS.md](DECISIONS.md) — 권장안 26개와 gate별 concrete 설계 검증.
@@ -221,4 +221,4 @@ Primary 구현은 `da0ca4e2`, density scaling 보강은 `276c8318`, histogram co
 
 ## 변경·완료 규칙
 
-각 coherent change마다 검증·commit·push한다. Planned/Current inventory는 승인되거나 구현된 부분만 승격한다. 모든 25개와 필수 통합 cells가 닫히기 전에는 Roadmap 완료로 표시하지 않는다. PR 생성·메인 머지·패키지 publish·docs 배포는 이번 문서 작성 요청에 포함하지 않는다. 이후 구현은 사용자 승인 범위에 따라 실행한다.
+각 coherent change마다 검증·commit·push한다. Planned/Current inventory는 승인되거나 구현된 부분만 승격한다. 모든 25개와 필수 통합 cells가 닫히기 전에는 Roadmap 완료로 표시하지 않는다. 사용자는 이후 Roadmap 7 전체 구현과 최종 PR 생성·main 머지를 명시적으로 승인했으므로 검증 완료 뒤 같은 revision으로 수행한다. package publish와 docs 배포는 별도 명시가 없으면 수행하지 않는다.
