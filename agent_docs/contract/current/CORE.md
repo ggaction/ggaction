@@ -455,6 +455,79 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - ✅ Covered: empty source, immutable input/program, transform ownership and trace hierarchy.
 - Evidence: `test/unit/actions/data/normalized-data.test.js`, `test/contracts/transform-registry.test.js`.
 
+## `createCompleteData`
+
+- Signature: `createCompleteData({ id, source?, key, groupBy?, values?, sequence?, fill?, members? })`
+- Lifecycle: Full-only immutable create action이다. 새 dataset ID를 만들며 source 또는 기존 consumer를 수정하지 않는다.
+  `source` 생략은 현재 dataset을 안전하게 하나로 추론할 수 있을 때만 허용한다.
+- `key`: 모든 source row에 있는 non-empty field다. `groupBy`와 겹치지 않아야 한다. `groupBy`는
+  field 하나 또는 field 배열이고 기본은 `[]`다.
+- Domain: `values`와 `sequence`는 배타다. `values`는 하나의 scalar type으로 구성된 non-empty unique
+  array다. `sequence`는 finite `start <= end`, positive `step`을 받고 `start + i * step <= end`를 생성한다.
+  둘 다 없으면 source 전체 key의 typed first-appearance domain을 사용한다.
+- Group semantics: 실제 관측된 group tuple만 사용하고 group field별 Cartesian product를 만들지 않는다.
+  동일 group×key source row가 둘 이상이면 자동 집계하지 않고 오류다. explicit domain 밖의 관측 key도 오류다.
+- Output: group first appearance와 domain order를 따른다. 원본 row의 모든 cell을 보존하고 합성 row는 key와
+  group fields를 채운 뒤 나머지 source-field union을 `fill[field]` 또는 `null`로 채운다. `fill`은 key,
+  group 또는 members field를 바꿀 수 없다.
+- `members`: 생략 가능 output field다. 지정하면 원본 row는 `[sourceIndex]`, 합성 row는 `[]`를 갖는다.
+  기존 source field와 충돌하면 오류다.
+- Bounds and replay: allocation 전에 output 10,000-row 한도를 검사한다. `complete`는 statistical facet
+  topology라 각 child의 local source rows에서 domain/group completion을 다시 계산한다.
+- Errors: invalid/duplicate ID, unknown/ambiguous source, unknown option, missing field, mixed/non-scalar key,
+  duplicate domain/group×key, invalid sequence/fill/members, field collision와 output budget 초과를 첫 state change
+  전에 거부한다.
+
+### Formal values — `createCompleteData`
+
+- Implemented: `createCompleteData(options: CompleteDataOptions): ChartProgram` (Full only).
+- Implemented domain modes: observed typed domain, explicit typed values, finite numeric sequence.
+- Proposed (NOT IMPLEMENTED): multi-key completion, group Cartesian expansion, automatic duplicate aggregation,
+  calendar-month sequence와 source replacement/edit revision.
+
+### Value coverage — `createCompleteData`
+
+- ✅ Covered: observed/explicit/sequence domain, group/domain stable ordering, sparse observed tuple handling,
+  fill and membership provenance, global/grouped empty inputs.
+- ✅ Covered: duplicate/mixed/domain-missing/collision/budget errors, immutable caller rows/options/program and trace hierarchy.
+- ✅ Covered: transform registry and facet-local statistical replay.
+- Evidence: `test/unit/actions/data/complete-impute-data.test.js`, `test/contracts/transform-registry.test.js`,
+  `test/contracts/phase2-data-types.test.js`.
+
+## `createImputedData`
+
+- Signature: `createImputedData({ id, source?, fields, groupBy?, sortBy?, method, value?, edges?, maxGap? })`
+- Lifecycle: Full-only immutable create action이다. source row grain과 최종 source order를 유지한다.
+- `fields`: non-empty unique field 하나 또는 배열이다. missing은 `null`/`undefined`만이며 `NaN`/`Infinity`는
+  invalid value다. 한 group 안의 각 target field는 하나의 non-null scalar type이어야 한다.
+- `groupBy`: 기본 `[]`; anchor와 missing run은 group 밖으로 넘어가지 않는다. `sortBy`는 stable lexicographic
+  sort이고 order 기본은 ascending이다. 계산 뒤 output은 원래 row order로 복원한다.
+- `constant`: `value`가 필수이며 target field type과 일치해야 한다. `sortBy`는 선택 사항이다.
+- `forward`/`backward`: `value`를 금지하고 non-empty `sortBy`가 필요하다. 각각 이전/다음 non-missing anchor를 쓴다.
+- `linear`: `value`를 금지하고 정확히 하나의 ascending numeric 또는 temporal-string sort field가 필요하다.
+  position은 unique해야 하고 행 index가 아니라 실제 x-distance로 finite numeric target을 보간한다.
+- `edges`: 기본 `"keep"`. 필요한 anchor가 없는 eligible edge run은 유지하거나 `"error"`로 거부한다.
+  `maxGap`은 positive safe integer이며 이를 초과한 missing run은 그대로 유지하고 edges error를 적용하지 않는다.
+- Effect: 지정한 target fields만 대체하고 다른 cell을 보존한다. `impute`는 statistical facet topology라
+  group anchor와 interpolation을 child-local source에서 다시 계산한다.
+- Errors: invalid method별 option 조합, missing field, duplicate field/sort role, mixed type, invalid scalar,
+  invalid linear position/target, unfillable `edges:"error"`, duplicate ID 또는 source resolution 오류를 원자적으로 거부한다.
+
+### Formal values — `createImputedData`
+
+- Implemented: `createImputedData(options: ImputedDataOptions): ChartProgram` (Full only).
+- Implemented methods: `"constant" | "forward" | "backward" | "linear"`; edges `"keep" | "error"`.
+- Proposed (NOT IMPLEMENTED): spline/model imputation, callback functions, automatic aggregation과 source replacement/edit revision.
+
+### Value coverage — `createImputedData`
+
+- ✅ Covered: constant, forward, backward, non-uniform-distance linear interpolation, group isolation, stable sort,
+  source-order restoration, edge and max-gap precedence.
+- ✅ Covered: nullish-only missing policy, method/type/field/sort/edge errors and immutable failure.
+- ✅ Covered: transform registry and facet-local statistical replay.
+- Evidence: `test/unit/actions/data/complete-impute-data.test.js`, `test/contracts/transform-registry.test.js`,
+  `test/contracts/phase2-data-types.test.js`.
+
 ## `createStackData`
 
 - Signature: `createStackData({ id, source?, category, group, value, mode?, as? })`
@@ -649,42 +722,44 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 
 ## `createTimeUnitData`
 
-- Optional temporalUnit uses the common explicit input parser and is stored on the timeUnit transform.
-  It controls input interpretation; unit controls the calendar bucket. Output is always a UTC timestamp.
-  Bind output as temporal with temporalUnit:"timestamp" to avoid the legacy numeric-year heuristic.
-
-유효한 input timestamp라도 요청한 bucket 시작이 Date의 표현 범위 밖이면 RangeError로 거절한다.
-NaN bucket을 저장하지 않으며 실패 시 source program과 trace는 유지된다.
-
-- Signature: `createTimeUnitData({ id, source?, field, temporalUnit?, unit, as })`
+- Signature: `createTimeUnitData({ id, source?, field, temporalUnit?, unit, as, timeZone?, weekStartsOn?, weekRule? })`
 - Lifecycle: immutable create-only다. `id`는 필수 새 derived dataset ID이며 existing dataset을 수정하거나 consumer를
   rebind하지 않는다.
 - `source`: existing dataset ID다. 생략하면 current data를 사용하며 안전하게 추론할 수 없으면 오류다.
 - `field`: 모든 row에 존재하는 temporal input field다. Existing temporal normalization과 동일하게 finite timestamp,
-  ISO/date string 또는 four-digit year를 받는다.
-- `unit`: `"year" | "quarter" | "month" | "day" | "hour" | "minute" | "second"`의 closed vocabulary다.
+  ISO/date string 또는 four-digit year를 받는다. `temporalUnit`은 입력 해석만 제어하며 transform에 보존된다.
+- `unit`: `"year" | "quarter" | "month" | "day" | "hour" | "minute" | "second" | "week" | "weekday"`의
+  closed vocabulary다.
 - `as`: source의 어느 row에도 존재하지 않는 새 output field다. Input field와 달라야 한다.
-- Effect: source row order와 모든 existing cell을 보존하고 `as`에 UTC calendar bucket 시작의 finite timestamp를
-  추가한다. Stored provenance는 `{ type: "timeUnit", field, unit, as }`이며 wrapped
-  `materializeTimeUnitData`가 concrete values를 기록한다.
-- UTC policy: year는 1월 1일, quarter는 1·4·7·10월 첫날, 나머지는 requested calendar component의 시작이다.
-  Second는 millisecond를 내림한다. Local timezone, DST와 locale에 의존하지 않는다.
+- `timeZone`: optional non-empty IANA name이다. 생략은 `"UTC"` 계산과 같지만 기존 7-unit 호출은 이전 stored
+  transform shape를 유지한다. host local timezone과 locale에 의존하지 않는다.
+- Week policy: `unit:"week"`에서 `weekStartsOn` 기본은 Monday `1`, `weekRule` 기본은 `"calendar"`다.
+  ISO rule은 Monday만 허용한다. week 전용 options를 다른 unit과 함께 쓰면 오류다.
+- Effect: source row order와 모든 existing cell을 보존한다. `weekday`는 zone-local Sunday `0`부터 Saturday `6`의
+  nominal integer를 추가한다. 다른 unit은 해당 zone civil bucket 시작을 나타내는 finite epoch milliseconds를 추가한다.
+  Output timestamp를 temporal encoding에 연결할 때는 `temporalUnit:"timestamp"`를 사용해 numeric-year heuristic을 피한다.
+- Boundary policy: instant를 Gregorian civil parts로 바꾸고 requested unit 시작을 만든 뒤 instant로 역변환한다.
+  DST fold는 가장 이른 matching instant, gap은 같은 bucket 안의 첫 유효 instant를 선택한다. 완전히 존재하지 않는
+  civil boundary/date 또는 Date 범위 밖 결과는 RangeError다. UTC는 기존 direct arithmetic 결과를 유지한다.
 - Facet: row-preserving transform으로 분류한다. Explicit earlier partition anchor를 사용하면 각 child에서 canonical
   materializer를 replay하고, transform 자체가 latest common anchor이면 materialized rows를 직접 partition한다.
-- 오류: invalid/duplicate ID, unknown source, unknown option/unit, invalid/missing temporal value, input/output identity와
-  existing output collision을 첫 state change 전에 거부한다.
+- 오류: invalid/duplicate ID, unknown source, unknown option/unit/zone/week policy, invalid/missing temporal value,
+  input/output identity, existing output collision와 unrepresentable boundary를 첫 state change 전에 거부한다.
 
 ### Formal values — `createTimeUnitData`
 
-- Implemented: `createTimeUnitData({ id: UserId; source?: UserId; field: FieldName; temporalUnit?: "auto" | "year" | "timestamp"; unit: "year" | "quarter" | "month" | "day" | "hour" | "minute" | "second"; as: FieldName })`.
-- `DatasetTimeUnitTransform = { readonly type: "timeUnit"; readonly field: FieldName; readonly unit: TimeUnit; readonly as: FieldName }`.
+- Implemented: `createTimeUnitData(options: TimeUnitDataOptions): ChartProgram` (Full only).
+- `TimeUnit`은 기존 7개 unit과 `"week" | "weekday"`를 포함한다. Week transform만 normalized
+  `weekStartsOn`과 `weekRule`을 저장하며 explicit `timeZone`은 모든 unit에서 저장한다.
 - Planned (NOT IMPLEMENTED): —
-- Proposed (NOT IMPLEMENTED): Week, local timezone/DST, aggregation, resampling과 edit/revision action은 없다.
+- Proposed (NOT IMPLEMENTED): locale calendar 선택, aggregation, resampling과 edit/revision action.
 
 ### Value coverage — `createTimeUnitData`
 
 - `unit`
-  - ✅ Covered: seven literal boundaries, quarter endpoints, leap-day input, sub-day precision와 early year.
+  - ✅ Covered: 기존 seven boundaries, week/weekday, custom week starts, ISO Monday, quarter/leap/sub-day/early-year.
+- `timeZone`
+  - ✅ Covered: UTC/Seoul/New_York/Kolkata/Lord_Howe/Apia, hour/half-hour offsets, DST gap/fold와 skipped date.
 - `field`, `as`
   - ✅ Covered: timestamp/ISO/date/year inputs, missing/invalid input, distinct output와 collision rejection.
 - Lifecycle and integration
@@ -699,7 +774,7 @@ NaN bucket을 저장하지 않으며 실패 시 source program과 trace는 유�
 결과 field 이름은 일반 own data property로 저장한다. __proto__, constructor, toString도 허용하며
 source row의 prototype을 바꾸거나 결과를 누락하지 않는다. 뒤 operation은 앞의 해당 결과를 field로 읽을 수 있다.
 
-- Signature: `createWindowData({ id, source?, partitionBy?, sortBy?, operations })`
+- Signature: `createWindowData({ id, source?, partitionBy?, sortBy?, operations, temporalUnit? })`
 - Lifecycle: immutable create-only다. `id`는 새 derived dataset ID여야 하며 동일 ID를 다시 만들면 오류다.
   기존 source나 consumer를 교체하거나 rebind하지 않는다.
 - `source`: existing dataset ID다. 생략하면 current data를 사용하고 유일하게 추론할 수 없으면 오류다.
@@ -710,23 +785,30 @@ source row의 prototype을 바꾸거나 결과를 누락하지 않는다. 뒤 op
   - `rowNumber`, `rank`, `denseRank`: `{ op, as }`; rank 계열은 non-empty `sortBy`가 필요하다.
   - `cumulativeSum`: `{ op, field, as }`; field 값은 모두 finite number여야 한다.
   - `lag`, `lead`: `{ op, field, as, offset?, default? }`; offset 기본은 `1`, default 기본은 `null`이다.
-  - `movingMean`, `movingSum`: `{ op, field, as, frame }`; `frame.preceding`은 required non-negative
-    integer, `following`은 optional non-negative integer이며 기본 `0`이다. Sorted partition의 current row를
-    포함하고 양쪽 edge에서는 available rows로 truncate한다. Sum과 mean은 scaled compensated arithmetic을
-    사용하며 input과 모든 materialized output은 finite number여야 한다. 표현 불가능한 prefix/frame output은
-    partial row를 만들기 전에 거부한다.
+  - `movingMean`, `movingSum`: `{ op, field, as, frame, minPeriods?, missing? }`다. Row frame은
+    `{ preceding, following? }`, duration frame은 `{ duration:{ preceding, following?, unit } }`이며 둘을 섞지 않는다.
+    `minPeriods` 기본은 `1`, `missing` 기본은 `"error"`; `"skip"`도 허용한다. Error mode는 nullish/nonfinite를
+    거부한다. Skip mode만 nullish value를 window count와 합계에서 제외하며 NaN/Infinity는 항상 오류다.
+- Row frame: preceding/following은 non-negative safe integer이고 current sorted row를 포함한다. 양쪽 edge는
+  available rows로 truncate한다.
+- Duration frame: unit은 `"millisecond" | "second" | "minute" | "hour" | "day"`; day는 정확히 24시간이다.
+  정확히 하나의 ascending `sortBy`가 필수이며 position은 `temporalUnit`으로 해석한 epoch milliseconds다.
+  Closed lower/upper boundary를 사용하고 동일 timestamp peers는 같은 window와 결과를 공유한다.
+- Numeric policy: moving sum/mean은 scaled compensated rolling arithmetic을 쓰며 final output이 finite여야 한다.
+  Duration은 stable sort와 two pointers로 group마다 sort `O(n log n)`, scan `O(n)`이다.
 - Effect: normalized provenance와 materialized values를 새 dataset에 저장한다. 계산은 partition마다 정렬된
   순서로 수행하지만 최종 rows는 source row order를 보존한다. 모든 input과 output은 구조적으로 복사되고 freeze된다.
 - 오류: duplicate/invalid ID, unknown source, missing field, duplicate sort/output field, output collision,
-  incomparable sort values, invalid operation 또는 operation-specific option을 명확히 거부한다.
+  incomparable sort values, invalid row/duration frame, invalid temporal position, minPeriods/missing policy,
+  nonfinite result 또는 operation-specific option을 명확히 거부한다.
 - Coverage: grammar, public action, direct derived schema, trace, facet replay와 package consumer를 각각 검증한다.
 
 ### Formal values — `createWindowData`
 
-- Implemented: `createWindowData({ id: UserId; source?: UserId; partitionBy?: FieldName | readonly FieldName[]; sortBy?: readonly { field: FieldName; order?: "ascending" | "descending" }[]; operations: readonly WindowOperation[] })`
-- `WindowOperation = { op: "rowNumber" | "rank" | "denseRank"; as: FieldName } | { op: "cumulativeSum"; field: FieldName; as: FieldName } | { op: "lag" | "lead"; field: FieldName; as: FieldName; offset?: PositiveInteger; default?: unknown } | { op: "movingMean" | "movingSum"; field: FieldName; as: FieldName; frame: { preceding: NonNegativeInteger; following?: NonNegativeInteger } }`
+- Implemented: `createWindowData(options: WindowDataOptions): ChartProgram` (Full only).
+- `WindowOperation`은 rank/cumulative/lag/lead와 row 또는 duration frame을 가진 movingMean/movingSum의 strict union이다.
 - Planned (NOT IMPLEMENTED): edit/revision action, percent rank, ntile.
-- Proposed (NOT IMPLEMENTED): duration/weighted windows, `minPeriods`와 missing-row imputation.
+- Proposed (NOT IMPLEMENTED): weighted windows와 calendar-duration windows.
 
 ### Value coverage — `createWindowData`
 
@@ -737,6 +819,8 @@ source row의 prototype을 바꾸거나 결과를 누락하지 않는다. 뒤 op
   - ✅ Covered: all eight operations, offset/frame defaults, one/two-sided and zero frames, truncated edges,
     sequential dependency, output collision, missing fields, invalid values, finite extreme means,
     unrepresentable sum outputs and empty operation list.
+  - ✅ Covered: elapsed-duration frames, irregular positions, closed endpoints, timestamp peers, minPeriods,
+    nullish skip behavior, invalid mixed frame/temporal policies and source-order restoration.
 - Lifecycle and integration
   - ✅ Covered: source inference, duplicate ID rejection, source immutability, trace hierarchy, registry dispatch,
     facet replay, direct `createDerivedData` validation and packaged TypeScript/runtime consumption.

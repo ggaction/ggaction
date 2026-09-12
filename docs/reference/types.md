@@ -39,6 +39,8 @@ interface ChartProgramActions {
   createFoldData(options: FoldDataOptions): ChartProgram;
   createComputedData(options: ComputedDataOptions): ChartProgram;
   createNormalizedData(options: NormalizedDataOptions): ChartProgram;
+  createCompleteData(options: CompleteDataOptions): ChartProgram;
+  createImputedData(options: ImputedDataOptions): ChartProgram;
   createStackData(options: StackDataOptions): ChartProgram;
   createRegressionData(options: RegressionDataOptions): ChartProgram;
   createIntervalData(options: IntervalDataOptions): ChartProgram;

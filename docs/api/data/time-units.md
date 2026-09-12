@@ -5,17 +5,17 @@ title: Time-Unit Data Transforms
 
 # Time-Unit Data Transforms
 
-<div class="docs-concept-flow" role="img" aria-label="Each source timestamp is normalized to the start of its selected UTC calendar unit and stored in a new field">
+<div class="docs-concept-flow" role="img" aria-label="Each source timestamp is normalized to the start of a UTC or named-zone calendar unit and stored in a new field">
   <span>source timestamp<strong>2024-05-17 13:45 UTC</strong></span>
-  <span>UTC month boundary<strong>2024-05-01 00:00 UTC</strong></span>
+  <span>calendar boundary<strong>UTC or IANA zone</strong></span>
   <span>derived field<strong>immutable output row</strong></span>
 </div>
 
-`createTimeUnitData` adds one reproducible UTC calendar field to every source
-row. Use it when timestamps within the same calendar unit need a shared value
-before a later encoding, filter, aggregation, or window operation.
+`createTimeUnitData` adds one reproducible UTC or named-zone calendar field to
+every source row. Use it when timestamps within the same calendar unit need a
+shared value before a later encoding, filter, aggregation, or window operation.
 
-## `createTimeUnitData({ id, source?, field, temporalUnit?, unit, as })`
+## `createTimeUnitData({ id, source?, field, temporalUnit?, unit, as, timeZone?, weekStartsOn?, weekRule? })`
 
 ```javascript
 import { chart } from "ggaction";
@@ -45,18 +45,28 @@ console.log(program.semanticSpec.datasets[1].values[0].month);
 | `source` | existing dataset ID | current dataset |
 | `field` | temporal field name | required |
 | `temporalUnit` | `"auto"`, `"year"`, or `"timestamp"` input mode | existing automatic parser |
-| `unit` | `"year"`, `"quarter"`, `"month"`, `"day"`, `"hour"`, `"minute"`, or `"second"` | required |
+| `unit` | `"year"`, `"quarter"`, `"month"`, `"day"`, `"hour"`, `"minute"`, `"second"`, `"week"`, or `"weekday"` | required |
 | `as` | new output field name | required |
+| `timeZone` | non-empty IANA time-zone name | `"UTC"` |
+| `weekStartsOn` | integer Sunday `0` through Saturday `6`; week only | `1` |
+| `weekRule` | `"calendar"` or `"iso"`; week only | `"calendar"` |
 
-The output is a finite timestamp at the start of the requested UTC unit.
-Quarter starts are January 1, April 1, July 1, and October 1. The action accepts
-the same temporal input forms as a temporal position scale: finite timestamps,
+Except for `weekday`, the output is a finite epoch-millisecond timestamp at the
+start of the requested calendar unit in the selected zone. Quarter starts are
+January 1, April 1, July 1, and October 1. `weekday` returns a nominal integer
+from Sunday `0` through Saturday `6` in the selected zone. The action accepts the
+same temporal input forms as a temporal position scale: finite timestamps,
 parseable temporal strings, date-only strings, and four-digit years.
 
 Input `temporalUnit` and calendar `unit` are independent. For numeric Unix
 milliseconds use `temporalUnit: "timestamp"`. Bind the resulting field with
 `fieldType: "temporal", temporalUnit: "timestamp"`, including small positive
 bucket timestamps. The chosen input unit is stored in the transform.
+
+Week output is the selected local week-start midnight expressed as epoch
+milliseconds. Calendar weeks can start on any requested weekday. ISO weeks
+require Monday and reject another `weekStartsOn` value. Week-only options on a
+different unit are errors.
 
 The source dataset remains unchanged. The derived dataset preserves row order
 and every existing field, then adds `as`. The output name must differ from the
@@ -65,10 +75,16 @@ collisions fail atomically.
 
 ## Boundaries
 
-Time-unit derivation is UTC-only. It does not apply a local timezone, daylight
-saving transition, locale calendar, configurable week, aggregation, resampling,
-or missing-period completion. Create another immutable dataset when a different
-unit or output field is needed.
+Named zones use IANA Gregorian calendar parts. During a daylight-saving fold,
+the action chooses the earliest matching instant. When a requested boundary
+falls in a gap, it chooses the first valid instant in that calendar bucket.
+Non-hour offsets and skipped civil dates follow the same rule; a boundary that
+cannot be represented in the bucket or by JavaScript `Date` is an error. Results
+never depend on the host process time zone or locale.
+
+Locale calendar selection, aggregation, resampling, and missing-period
+completion are separate concerns. Create another immutable dataset when a
+different unit or output field is needed.
 
 ## Related
 

@@ -2,8 +2,8 @@
 
 These actions may appear in traces but are not public direct actions or primitives.
 
-현재 등록된 wrapped method는 direct 207개와 internal 107개로 분리된다. 두 집합은 겹치지 않고 합집합은
-등록된 314개 전체와 같다. [`../ACTION_INDEX.json`](../ACTION_INDEX.json)이 목록을 소유하며,
+현재 등록된 wrapped method는 direct 209개와 internal 109개로 분리된다. 두 집합은 겹치지 않고 합집합은
+등록된 318개 전체와 같다. [`../ACTION_INDEX.json`](../ACTION_INDEX.json)이 목록을 소유하며,
 `test/contracts/action-catalog.test.js`는 wrapper metadata로 runtime을 읽어 누락·중복·orphan과 각 owner 표의 누락을 검사한다.
 
 ## Internal materialization inventory
@@ -20,12 +20,14 @@ domain action을 통해서만 실행한다.
 | `materializeBinData` | reusable one-dimensional bin data actions |
 | `materializeBin2DData` | rectangular 2D-bin data actions |
 | `materializeComposition` | `hconcat`, `vconcat`, and composition edits |
+| `materializeCompleteData` | typed key-domain completion data actions |
 | `materializeComputedData` | bounded row-level arithmetic data actions |
 | `materializeNormalizedData` | row-preserving grouped normalization and baseline transforms |
 | `materializeDensityData` | density data actions |
 | `materializeECDFData` | empirical cumulative distribution data actions |
 | `materializeGradientProfileData` | gradient-plot profile data actions |
 | `materializeHorizonData` | `encodeHorizon` and `editHorizon` derived band data |
+| `materializeImputedData` | grouped missing-value data actions |
 | `materializeGradientPlot` | deferred `createGradientPlot` completion and position encodings |
 | `materializeGradientPlotFill` | gradient-plot body, scale, text, and density-legend consumers |
 | `materializeFilteredData` | filter data actions |

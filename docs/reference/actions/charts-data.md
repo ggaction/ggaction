@@ -580,25 +580,24 @@ kernel to `"gaussian"`, and normalization to `"unit"`.
 ## `createTimeUnitData`
 
 ```javascript
-createTimeUnitData({ id, source?, field, temporalUnit?, unit, as })
+createTimeUnitData({ id, source?, field, temporalUnit?, unit, as, timeZone?, weekStartsOn?, weekRule? })
 ```
 
-Create an immutable row-preserving dataset with one UTC year, quarter, month,
-day, hour, minute, or second bucket-start timestamp field.
+Create an immutable row-preserving dataset with one UTC or IANA-zone calendar
+bucket timestamp, including week, or a nominal local weekday field.
 [Time-unit data transforms](../../api/data/time-units.md)
 
 ## `createWindowData`
 
 ```javascript
-createWindowData({ id, source?, partitionBy?, sortBy?, operations })
+createWindowData({ id, source?, partitionBy?, sortBy?, operations, temporalUnit? })
 ```
 
 Create an immutable derived dataset by applying ordered row-number, rank,
 dense-rank, cumulative-sum, lag, lead, moving-mean, or moving-sum operations
-within optional partitions. Moving frames include the current sorted row, require
-a non-negative `preceding`, default `following` to `0`, and truncate at partition
-edges. The calculation follows a stable sort while the output preserves source
-row order.
+within optional partitions. Moving frames support row counts or closed elapsed
+durations, `minPeriods`, and explicit nullish skipping. The calculation follows
+a stable sort while the output preserves source row order.
 [Window data transforms](../../api/data/window.md)
 
 ## `createBin2DData`

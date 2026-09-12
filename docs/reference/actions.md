@@ -46,6 +46,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createBinData`](./actions/statistics.md#createbindata) | H1 | user-facing | statistics |
 | [`createBoxPlot`](./actions/statistics.md#createboxplot) | H0, H1 | user-facing | statistics |
 | [`createCanvas`](./actions/charts-data.md#createcanvas) | H3 | user-facing | core |
+| [`createCompleteData`](./actions/statistics.md#createcompletedata) | H1 | user-facing | statistics |
 | [`createComputedData`](./actions/statistics.md#createcomputeddata) | H1 | user-facing | statistics |
 | [`createCoordinate`](./actions/advanced.md#semantic-resources-and-regression-layers) | H2 | user-facing | core |
 | [`createData`](./actions/charts-data.md#createdata) | H2 | user-facing | core |
@@ -67,6 +68,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createHistogram`](./actions/charts-data.md#createhistogram) | H0, H1 | user-facing | charts |
 | [`createHorizonPlot`](./actions/statistics.md#createhorizonplot) | H0, H1 | user-facing | statistics |
 | [`createHorizontalGrid`](./actions/advanced.md#directional-grids) | H3 | user-facing | grid |
+| [`createImputedData`](./actions/statistics.md#createimputeddata) | H1 | user-facing | statistics |
 | [`createIntervalData`](./actions/statistics.md#createintervaldata) | H1 | user-facing | statistics |
 | [`createIntervalPlot`](./actions/charts-data.md#createintervalplot) | H0, H1 | user-facing | charts |
 | [`createLegend`](./actions/guides.md#createlegend) | H3 | user-facing | legend_and_title |

@@ -447,6 +447,26 @@ Materialize row-preserving share, z-score, min-max, index, change, or fractional
 percent-change values independently within each group.
 [Source and Derived Data](../api/data/source-and-derived.md#createnormalizeddata-id-source-field-as-groupby-method)
 
+### `createCompleteData`
+
+```javascript
+createCompleteData({ id, source?, key, groupBy?, values?, sequence?, fill?, members? })
+```
+
+Complete one typed key domain independently inside every observed group, with
+explicit fill and source-membership provenance for synthesized rows.
+[Source and Derived Data](../api/data/source-and-derived.md#createcompletedata-id-source-key-groupby-values-sequence-fill-members)
+
+### `createImputedData`
+
+```javascript
+createImputedData({ id, source?, fields, groupBy?, sortBy?, method, value?, edges?, maxGap? })
+```
+
+Replace nullish cells by constant, forward, backward, or distance-based linear
+imputation while preserving group boundaries and final source order.
+[Source and Derived Data](../api/data/source-and-derived.md#createimputeddata-id-source-fields-groupby-sortby-method-value-edges-maxgap)
+
 ### `createStackData`
 
 ```javascript
@@ -919,25 +939,24 @@ resolved provenance stores every positive denominator. [Data](../api/data.md)
 ### `createTimeUnitData`
 
 ```javascript
-createTimeUnitData({ id, source?, field, temporalUnit?, unit, as })
+createTimeUnitData({ id, source?, field, temporalUnit?, unit, as, timeZone?, weekStartsOn?, weekRule? })
 ```
 
-Create an immutable row-preserving dataset with one UTC year, quarter, month,
-day, hour, minute, or second bucket-start timestamp field.
+Create an immutable row-preserving dataset with one UTC or IANA-zone calendar
+bucket timestamp, including week, or a nominal local weekday field.
 [Time-unit data transforms](../api/data/time-units.md)
 
 ### `createWindowData`
 
 ```javascript
-createWindowData({ id, source?, partitionBy?, sortBy?, operations })
+createWindowData({ id, source?, partitionBy?, sortBy?, operations, temporalUnit? })
 ```
 
 Create an immutable derived dataset by applying ordered row-number, rank,
 dense-rank, cumulative-sum, lag, lead, moving-mean, or moving-sum operations
-within optional partitions. Moving frames include the current sorted row, require
-a non-negative `preceding`, default `following` to `0`, and truncate at partition
-edges. The calculation follows a stable sort while the output preserves source
-row order.
+within optional partitions. Moving frames support row counts or closed elapsed
+durations, `minPeriods`, and explicit nullish skipping. The calculation follows
+a stable sort while the output preserves source row order.
 [Window data transforms](../api/data/window.md)
 
 ### `createBin2DData`
@@ -2578,7 +2597,8 @@ See [Action authoring](../extension/action-authoring.md) and
 
 High-level actions call additional wrapped operations for data, scale, mark,
 guide, title, and layout materialization. Names such as
-`materializeDensityData`, `materializeWindowData`, `materializeBin2DData`, `rematerializeScale`, `rematerializePointMark`,
+`materializeCompleteData`, `materializeDensityData`, `materializeImputedData`,
+`materializeWindowData`, `materializeBin2DData`, `rematerializeScale`, `rematerializePointMark`,
 `createCategoricalLegend`, `createSizeLegend`, `rematerializeSizeLegend`,
 `createLegendSymbols`, and `createTitleText` may appear in
 `program.trace`. They are deliberately absent from the public TypeScript

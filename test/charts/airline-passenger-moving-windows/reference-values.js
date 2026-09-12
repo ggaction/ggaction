@@ -41,7 +41,9 @@ function movingTransform(op, { preceding, following = 0 }) {
         op,
         field: "passengers",
         as: op,
-        frame: Object.freeze({ preceding, following })
+        frame: Object.freeze({ preceding, following }),
+        minPeriods: 1,
+        missing: "error"
       })
     ])
   });

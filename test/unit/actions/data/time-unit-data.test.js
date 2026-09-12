@@ -153,7 +153,7 @@ test("rejects invalid calls atomically and owns caller options", () => {
   );
   assert.throws(
     () => source.createTimeUnitData({
-      id: "invalid", field: "date", unit: "week", as: "week"
+      id: "invalid", field: "date", unit: "decade", as: "week"
     }),
     /Unsupported time unit/
   );
@@ -170,4 +170,67 @@ test("rejects invalid calls atomically and owns caller options", () => {
     /Source dataset id/
   );
   assert.equal(source.semanticSpec.datasets.length, 1);
+});
+
+test("creates UTC and regional calendar weeks and nominal weekdays", () => {
+  const source = chart().createData({ id: "source", values: [{
+    date: "2024-01-03T12:00:00Z"
+  }] });
+  const utc = source.createTimeUnitData({
+    id: "utcWeek", field: "date", unit: "week", as: "week"
+  });
+  const seoul = source.createTimeUnitData({
+    id: "seoulWeek", field: "date", unit: "week", as: "week",
+    timeZone: "Asia/Seoul"
+  });
+  const weekday = source.createTimeUnitData({
+    id: "weekday", field: "date", unit: "weekday", as: "weekday",
+    timeZone: "UTC"
+  });
+  assert.equal(utc.semanticSpec.datasets[1].values[0].week,
+    Date.parse("2024-01-01T00:00:00Z"));
+  assert.equal(seoul.semanticSpec.datasets[1].values[0].week,
+    Date.parse("2023-12-31T15:00:00Z"));
+  assert.equal(weekday.semanticSpec.datasets[1].values[0].weekday, 3);
+  assert.deepEqual(utc.semanticSpec.datasets[1].transform[0], {
+    type: "timeUnit", field: "date", unit: "week", as: "week",
+    weekStartsOn: 1, weekRule: "calendar"
+  });
+});
+
+test("resolves DST gaps, folds, non-hour offsets, and skipped dates", () => {
+  const cases = [
+    ["2024-03-10T12:00:00Z", "day", "America/New_York", "2024-03-10T05:00:00Z"],
+    ["2024-03-11T12:00:00Z", "day", "America/New_York", "2024-03-11T04:00:00Z"],
+    ["2024-11-03T05:30:00Z", "hour", "America/New_York", "2024-11-03T05:00:00Z"],
+    ["2024-11-03T06:30:00Z", "hour", "America/New_York", "2024-11-03T05:00:00Z"],
+    ["2024-10-05T15:45:00Z", "hour", "Australia/Lord_Howe", "2024-10-05T15:30:00Z"],
+    ["2024-01-01T00:00:00Z", "day", "Asia/Kolkata", "2023-12-31T18:30:00Z"],
+    ["2011-12-30T12:00:00Z", "day", "Pacific/Apia", "2011-12-30T10:00:00Z"]
+  ];
+  for (const [date, unit, timeZone, expected] of cases) {
+    const program = chart()
+      .createData({ id: "source", values: [{ date }] })
+      .createTimeUnitData({ id: "bucket", field: "date", unit, as: "bucket", timeZone });
+    assert.equal(program.semanticSpec.datasets[1].values[0].bucket, Date.parse(expected));
+  }
+});
+
+test("keeps explicit zones in provenance and rejects week-policy conflicts", () => {
+  const source = chart().createData({ id: "source", values: [{ date: "2024-01-01" }] });
+  const zoned = source.createTimeUnitData({
+    id: "zoned", field: "date", unit: "month", as: "month", timeZone: "UTC"
+  });
+  assert.equal(zoned.semanticSpec.datasets[1].transform[0].timeZone, "UTC");
+  const invalid = [
+    [{ unit: "week", weekRule: "iso", weekStartsOn: 0 }, /ISO weeks require/],
+    [{ unit: "weekday", weekRule: "calendar" }, /require unit week/],
+    [{ unit: "day", weekStartsOn: 1 }, /require unit week/],
+    [{ unit: "day", timeZone: "Not\/A_Zone" }, /Unsupported time zone/]
+  ];
+  invalid.forEach(([options, error], index) => {
+    assert.throws(() => source.createTimeUnitData({
+      id: `invalid${index}`, field: "date", as: "bucket", ...options
+    }), error);
+  });
 });

@@ -71,6 +71,8 @@ corresponding higher-level action when the library should materialize values:
 | `"bin"` | `{ type, field, bin, extent, nice, zero, includeEmpty, members, as, resolved? }` | `createBinData` |
 | `"computed"` | `{ type, as, expression }` | `createComputedData` |
 | `"normalize"` | `{ type, field, as, groupBy, method, ...methodPolicies }` | `createNormalizedData` |
+| `"complete"` | `{ type, key, groupBy, values? or sequence?, fill, members? }` | `createCompleteData` |
+| `"impute"` | `{ type, fields, groupBy, sortBy, method, value?, edges, maxGap? }` | `createImputedData` |
 | `"filter"` | `{ type, field, oneOf }`, `{ type, field, predicate }`, or `{ type, field, range }` | `filterData` |
 | `"fold"` | `{ type, fields, as }` | `createFoldData` |
 | `"regression"` | `{ type, method, x, y, groupBy?, ...methodParameters }` | `createRegressionData` |
@@ -79,8 +81,8 @@ corresponding higher-level action when the library should materialize values:
 | `"interval"` | `{ type, field, groupBy, center, extent, level?, as }` | `createIntervalData` |
 | `"summary"` | `{ type, groupBy, aggregates, members? }` | `createSummaryData` |
 | `"stack"` | `{ type, category, group, value, mode, as }` | `createStackData` |
-| `"timeUnit"` | `{ type, field, unit, as }` | `createTimeUnitData` |
-| `"window"` | `{ type, partitionBy, sortBy, operations }` | `createWindowData` |
+| `"timeUnit"` | `{ type, field, unit, as, temporalUnit?, timeZone?, ...weekPolicy }` | `createTimeUnitData` |
+| `"window"` | `{ type, partitionBy, sortBy, operations, temporalUnit? }` | `createWindowData` |
 
 Chart facades and mark creation require materialized `values` on the selected
 dataset. Passing a definition-only dataset produces an error naming the dataset
@@ -98,8 +100,9 @@ normalized arrays for `partitionBy`, `sortBy`, and `operations`; use
 revision adds `resolved: { bandwidth, extent }` without replacing requested
 `"auto"` values. See the higher-level action
 sections below for accepted values and defaults before constructing normalized
-provenance directly. Time-unit transforms use the same UTC interpretation as
-temporal scales and store a finite bucket-start timestamp; use
+provenance directly. Time-unit transforms use the common temporal input parser,
+then resolve UTC or an explicit IANA-zone calendar boundary. Weekday output is
+nominal; other units store a finite bucket-start timestamp. Use
 `createTimeUnitData` to validate source fields and materialize rows.
 
 `DatasetTransform` and `CreateDerivedDataOptions` export the same public union
@@ -266,6 +269,63 @@ An exact zero denominator rejects by default. Use
 `change` accepts a zero baseline and therefore has no zero-denominator option.
 Share rejects negative input. Every method preserves original row order and
 keeps group calculations independent.
+
+## `createCompleteData({ id, source?, key, groupBy?, values?, sequence?, fill?, members? })` {#createcompletedata-id-source-key-groupby-values-sequence-fill-members}
+
+Materialize missing keys inside each observed group without silently turning
+absence into zero:
+
+```javascript
+const completed = program.createCompleteData({
+  id: "completeSales",
+  source: "sales",
+  groupBy: "region",
+  key: "month",
+  values: [1, 2, 3],
+  fill: { amount: null },
+  members: "sourceRows"
+});
+```
+
+`values` and `sequence` are mutually exclusive. If both are omitted, the action
+uses the key values observed anywhere in the source, preserving typed identity
+and first appearance. A numeric sequence uses finite `start`, `end`, and
+positive `step`. Only observed group tuples are completed; the action does not
+form a Cartesian product of separate grouping fields.
+
+Each group/key pair may have at most one source row. Existing keys outside an
+explicit domain are errors. Original rows keep all cells. A synthesized row gets
+the group and key values, then `fill` values or `null` for the other source fields.
+When `members` is present, original rows contain their source index and synthetic
+rows contain `[]`. Output follows group first appearance and key-domain order and
+is capped at 10,000 rows before allocation.
+
+## `createImputedData({ id, source?, fields, groupBy?, sortBy?, method, value?, edges?, maxGap? })` {#createimputeddata-id-source-fields-groupby-sortby-method-value-edges-maxgap}
+
+Replace explicit `null` or `undefined` cells without changing row grain or final
+source order:
+
+```javascript
+const imputed = completed.createImputedData({
+  id: "imputedSales",
+  fields: "amount",
+  groupBy: "region",
+  sortBy: [{ field: "month" }],
+  method: "linear",
+  edges: "keep"
+});
+```
+
+`constant` requires `value`. `forward` and `backward` copy the nearest available
+anchor in the requested stable group order. `linear` requires one ascending
+numeric or temporal-string sort field and finite numeric target values; it uses
+actual position distance rather than row indexes. No method crosses a group
+boundary.
+
+`edges` defaults to `"keep"`; `"error"` rejects an eligible run with no required
+anchor. `maxGap` is a positive row-count limit. A longer run stays missing and is
+not converted into an edge error. `NaN` and infinities are invalid values rather
+than missing cells.
 
 ## `createStackData({ id, source?, category, group, value, mode?, as? })` {#createstackdata-id-source-category-group-value-mode-as}
 

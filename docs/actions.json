@@ -3,7 +3,7 @@
   "packageVersion": "0.0.13",
   "typeSource": "types/program.d.ts",
   "errorPolicy": "An empty errors array means the compact card has no curated error override; consult the canonical route for validation, inference, and recovery behavior.",
-  "count": 245,
+  "count": 247,
   "cards": [
     {
       "schemaVersion": 3,
@@ -1177,6 +1177,227 @@
     },
     {
       "schemaVersion": 3,
+      "name": "createCompleteData",
+      "layer": "user-facing",
+      "domain": "statistics",
+      "summary": "Complete one typed key domain independently inside every observed group, with explicit fill and source-membership provenance for synthesized rows.",
+      "signature": "createCompleteData(options: CompleteDataOptions): ChartProgram;",
+      "intents": [
+        "create complete data",
+        "create",
+        "add",
+        "statistical layer",
+        "statistical transform",
+        "completed data",
+        "explicit key-domain rows"
+      ],
+      "lifecycle": "Immutable create-only",
+      "resources": {
+        "prerequisites": [
+          "source dataset"
+        ],
+        "owns": [
+          "completed data"
+        ],
+        "idOptions": [
+          "id",
+          "source"
+        ]
+      },
+      "authoringRoles": [
+        "H1"
+      ],
+      "wraps": [
+        "createDerivedData"
+      ],
+      "editableVia": [],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "source",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "omitted optional options",
+          "strategy": "documented-default"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "source dataset"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "id",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "source",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "key",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "groupBy",
+          "required": false,
+          "type": "string | readonly string[] | undefined"
+        },
+        {
+          "name": "fill",
+          "required": false,
+          "type": "Readonly<Record<string, DatasetScalar>> | undefined"
+        },
+        {
+          "name": "members",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "values",
+          "required": false,
+          "type": "readonly [DatasetScalar, ...DatasetScalar[]] | undefined"
+        },
+        {
+          "name": "sequence",
+          "required": false,
+          "type": "{ start: number; end: number; step: number; } | undefined"
+        }
+      ],
+      "callPatterns": [
+        "createCompleteData({ id, key, source?, groupBy?, fill?, members?, values?, sequence? })"
+      ],
+      "snippet": "program.createCompleteData({ id: \"completed\", key: \"period\", groupBy: \"series\", values: [1, 2, 3], members: \"sourceRows\" })",
+      "errors": [],
+      "route": "/reference/actions/statistics/#createcompletedata"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "createImputedData",
+      "layer": "user-facing",
+      "domain": "statistics",
+      "summary": "Replace nullish cells by constant, forward, backward, or distance-based linear imputation while preserving group boundaries and final source order.",
+      "signature": "createImputedData(options: ImputedDataOptions): ChartProgram;",
+      "intents": [
+        "create imputed data",
+        "create",
+        "add",
+        "statistical layer",
+        "statistical transform",
+        "imputed data",
+        "filled missing values"
+      ],
+      "lifecycle": "Immutable create-only",
+      "resources": {
+        "prerequisites": [
+          "source dataset"
+        ],
+        "owns": [
+          "imputed data"
+        ],
+        "idOptions": [
+          "id",
+          "source"
+        ]
+      },
+      "authoringRoles": [
+        "H1"
+      ],
+      "wraps": [
+        "createDerivedData"
+      ],
+      "editableVia": [],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "source",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "omitted optional options",
+          "strategy": "documented-default"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "source dataset"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "id",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "source",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "fields",
+          "required": true,
+          "type": "string | readonly [string, ...string[]]"
+        },
+        {
+          "name": "groupBy",
+          "required": false,
+          "type": "string | readonly string[] | undefined"
+        },
+        {
+          "name": "edges",
+          "required": false,
+          "type": "\"error\" | \"keep\" | undefined"
+        },
+        {
+          "name": "maxGap",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "method",
+          "required": true,
+          "type": "\"backward\" | \"constant\" | \"forward\" | \"linear\""
+        },
+        {
+          "name": "value",
+          "required": false,
+          "type": "DatasetScalar | undefined"
+        },
+        {
+          "name": "sortBy",
+          "required": false,
+          "type": "readonly WindowSort[] | readonly [{ field: string; order?: \"ascending\" | undefined; }] | readonly [WindowSort, ...WindowSort[]] | undefined"
+        }
+      ],
+      "callPatterns": [
+        "createImputedData({ id, fields, method, source?, groupBy?, edges?, maxGap?, value? })"
+      ],
+      "snippet": "program.createImputedData({ id: \"imputed\", fields: \"amount\", groupBy: \"series\", sortBy: [{ field: \"period\" }], method: \"linear\" })",
+      "errors": [],
+      "route": "/reference/actions/statistics/#createimputeddata"
+    },
+    {
+      "schemaVersion": 3,
       "name": "createStackData",
       "layer": "user-facing",
       "domain": "statistics",
@@ -1582,7 +1803,12 @@
           "default"
         ]
       },
-      "units": [],
+      "units": [
+        {
+          "path": "temporalUnit",
+          "unit": "temporal-input"
+        }
+      ],
       "inference": [
         {
           "input": "source",
@@ -1625,10 +1851,15 @@
           "name": "operations",
           "required": true,
           "type": "readonly WindowOperation[]"
+        },
+        {
+          "name": "temporalUnit",
+          "required": false,
+          "type": "TemporalInputUnit | undefined"
         }
       ],
       "callPatterns": [
-        "createWindowData({ id, operations, source?, partitionBy?, sortBy? })"
+        "createWindowData({ id, operations, source?, partitionBy?, sortBy?, temporalUnit? })"
       ],
       "snippet": "program.createWindowData({ id: \"windowed\", operations: [{ op: \"movingMean\", field: \"value\", as: \"movingMean\", frame: { preceding: 2 } }] })",
       "errors": [],
@@ -1639,7 +1870,7 @@
       "name": "createTimeUnitData",
       "layer": "user-facing",
       "domain": "core",
-      "summary": "Create an immutable row-preserving dataset with one UTC year, quarter, month, day, hour, minute, or second bucket-start timestamp field.",
+      "summary": "Create an immutable row-preserving dataset with one UTC or IANA-zone calendar bucket timestamp, including week, or a nominal local weekday field.",
       "signature": "createTimeUnitData(options: TimeUnitDataOptions): ChartProgram;",
       "intents": [
         "create time unit data",
@@ -1719,11 +1950,6 @@
           "type": "string"
         },
         {
-          "name": "unit",
-          "required": true,
-          "type": "TimeUnit"
-        },
-        {
           "name": "temporalUnit",
           "required": false,
           "type": "TemporalInputUnit | undefined"
@@ -1732,12 +1958,32 @@
           "name": "as",
           "required": true,
           "type": "string"
+        },
+        {
+          "name": "timeZone",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "unit",
+          "required": true,
+          "type": "\"day\" | \"hour\" | \"minute\" | \"month\" | \"quarter\" | \"second\" | \"week\" | \"weekday\" | \"year\""
+        },
+        {
+          "name": "weekStartsOn",
+          "required": false,
+          "type": "0 | 1 | 2 | 3 | 4 | 5 | 6 | undefined"
+        },
+        {
+          "name": "weekRule",
+          "required": false,
+          "type": "\"calendar\" | \"iso\" | undefined"
         }
       ],
       "callPatterns": [
-        "createTimeUnitData({ id, field, unit, as, source?, temporalUnit? })"
+        "createTimeUnitData({ id, field, as, unit, source?, temporalUnit?, timeZone?, weekStartsOn? })"
       ],
-      "snippet": "program.createTimeUnitData({ id: \"time-unit-data-1\", field: \"value\", unit: \"month\", as: \"derived\" })",
+      "snippet": "program.createTimeUnitData({ id: \"time-unit-data-1\", field: \"value\", as: \"derived\", unit: \"month\" })",
       "errors": [],
       "route": "/reference/actions/charts-data/#createtimeunitdata"
     },

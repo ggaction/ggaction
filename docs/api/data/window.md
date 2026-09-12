@@ -16,7 +16,7 @@ title: Window Data Transforms
 the result as a new immutable dataset. It is useful when a later mark needs rank,
 running totals, or neighboring values without changing the source rows.
 
-## `createWindowData({ id, source?, partitionBy?, sortBy?, operations })`
+## `createWindowData({ id, source?, partitionBy?, sortBy?, operations, temporalUnit? })`
 
 ```javascript
 const program = chart()
@@ -47,6 +47,7 @@ const program = chart()
 | `partitionBy` | field name or array of field names | one partition |
 | `sortBy` | array of `{ field, order? }` | source order |
 | `operations` | non-empty array of window operations | required |
+| `temporalUnit` | `"auto"`, `"year"`, or `"timestamp"`; duration frames only | existing automatic parser |
 
 `order` accepts `"ascending"` or `"descending"` and defaults to ascending.
 Sorting is stable. Missing sort values are placed after present values for an
@@ -63,8 +64,8 @@ Supported operations are:
 | cumulative sum | `{ op: "cumulativeSum", field, as }` | requires finite numeric values |
 | lag | `{ op: "lag", field, as, offset?, default? }` | defaults to offset `1` and value `null` |
 | lead | `{ op: "lead", field, as, offset?, default? }` | defaults to offset `1` and value `null` |
-| moving mean | `{ op: "movingMean", field, as, frame }` | finite mean inside a row frame |
-| moving sum | `{ op: "movingSum", field, as, frame }` | finite sum inside a row frame |
+| moving mean | `{ op: "movingMean", field, as, frame, minPeriods?, missing? }` | finite mean inside a row or elapsed-duration frame |
+| moving sum | `{ op: "movingSum", field, as, frame, minPeriods?, missing? }` | finite sum inside a row or elapsed-duration frame |
 
 Moving frames always include the current sorted row. `frame.preceding` is a
 required non-negative integer; `frame.following` is optional and defaults to
@@ -86,9 +87,36 @@ const trailing = monthly.createWindowData({
 
 At a partition boundary, the frame uses only available rows. The first value in
 the example uses one row, the second uses two, and later values use three.
-`movingMean` and `movingSum` require finite numeric input and produce finite
-numeric output. Duration-based, weighted, and minimum-period windows are not
-supported.
+`minPeriods` defaults to `1`. `missing` defaults to `"error"`, which rejects
+nullish and non-finite source values. `missing: "skip"` excludes only `null` and
+`undefined` from the valid count and arithmetic; `NaN` and infinities remain
+errors. A frame with fewer valid values than `minPeriods` produces `null`.
+
+Use a duration frame for an elapsed-time window:
+
+```javascript
+const weekly = events.createWindowData({
+  id: "weeklyMean",
+  temporalUnit: "timestamp",
+  sortBy: [{ field: "time", order: "ascending" }],
+  operations: [{
+    op: "movingMean",
+    field: "value",
+    as: "weeklyMean",
+    frame: {
+      duration: { preceding: 7, following: 0, unit: "day" }
+    },
+    minPeriods: 2,
+    missing: "skip"
+  }]
+});
+```
+
+Duration units are `"millisecond"`, `"second"`, `"minute"`, `"hour"`, and
+`"day"`; a day is exactly 24 hours. Duration calls require exactly one ascending
+sort field. Both endpoints are closed, and rows with the same timestamp receive
+the same window result. Irregular spacing therefore uses actual elapsed distance
+instead of a row count. Weighted and calendar-duration windows are not supported.
 
 The action computes each partition in sorted order, then returns the materialized
 rows in their original source order. The source dataset remains unchanged. Output

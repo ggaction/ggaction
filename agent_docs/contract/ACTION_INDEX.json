@@ -274,6 +274,42 @@
       }
     },
     {
+      "name": "createCompleteData",
+      "layer": "user-facing",
+      "domain": "statistics",
+      "status": "implemented",
+      "lifecycle": "Immutable create-only",
+      "update": "Complete a typed key domain within observed groups",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/CORE.md",
+        "anchor": "createcompletedata"
+      }
+    },
+    {
+      "name": "createImputedData",
+      "layer": "user-facing",
+      "domain": "statistics",
+      "status": "implemented",
+      "lifecycle": "Immutable create-only",
+      "update": "Replace explicit missing cells within independent groups",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/CORE.md",
+        "anchor": "createimputeddata"
+      }
+    },
+    {
       "name": "createStackData",
       "layer": "user-facing",
       "domain": "statistics",
@@ -4460,12 +4496,14 @@
       "materializeBinData",
       "materializeBin2DData",
       "materializeComposition",
+      "materializeCompleteData",
       "materializeComputedData",
       "materializeDensityData",
       "materializeECDFData",
       "materializeEmptyMark",
       "materializeGradientProfileData",
       "materializeHorizonData",
+      "materializeImputedData",
       "materializeGradientPlot",
       "materializeGradientPlotFill",
       "materializeFilteredData",

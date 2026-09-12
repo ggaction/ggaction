@@ -781,11 +781,13 @@
         "createfolddata-id-source-fields-as",
         "createcomputeddata-id-source-as-expression",
         "createnormalizeddata-id-source-field-as-groupby-method",
+        "createcompletedata-id-source-key-groupby-values-sequence-fill-members",
+        "createimputeddata-id-source-fields-groupby-sortby-method-value-edges-maxgap",
         "createstackdata-id-source-category-group-value-mode-as",
         "related"
       ],
-      "bytes": 12546,
-      "sha256": "7f590e99d6fed4f6a74455bdc867d9cd0127463b83417c9cf963198e0ca319a7"
+      "bytes": 15264,
+      "sha256": "80bca6e3665fac0dd8c239490f4794b01c1b7b28b9c0da0f5e0886b4b22d1514"
     },
     {
       "order": 51,
@@ -824,12 +826,12 @@
       "source": "api/data/time-units.md",
       "headings": [
         "time-unit-data-transforms",
-        "createtimeunitdata-id-source-field-temporalunit-unit-as",
+        "createtimeunitdata-id-source-field-temporalunit-unit-as-timezone-weekstartson-weekrule",
         "boundaries",
         "related"
       ],
-      "bytes": 2670,
-      "sha256": "0340eef3286a087779b588b64a45b6cc3e44bcab16625e69b798caa2389e58df"
+      "bytes": 3718,
+      "sha256": "86444e44a282cb753a98413d998ef5cdd4f5823ff9b03f5b4da27992c0472ff5"
     },
     {
       "order": 54,
@@ -838,11 +840,11 @@
       "source": "api/data/window.md",
       "headings": [
         "window-data-transforms",
-        "createwindowdata-id-source-partitionby-sortby-operations",
+        "createwindowdata-id-source-partitionby-sortby-operations-temporalunit",
         "related"
       ],
-      "bytes": 3932,
-      "sha256": "54aadf5186fd402e87054ed802e7149b27b9f93437e045f881b38d8ee4ceadc6"
+      "bytes": 5104,
+      "sha256": "944609dcc86dff71290c99520f2f45e85621f1b3f262d7e06447279b880f6916"
     },
     {
       "order": 55,
@@ -1847,8 +1849,8 @@
         "action-reference",
         "exact-action-lookup"
       ],
-      "bytes": 27597,
-      "sha256": "5ccb76eedf87232ffaee30802fd769e8c2a14112dbe9e1e4aea3403b51987b5c"
+      "bytes": 27817,
+      "sha256": "d751435857123a27d10d321dfb769df4d46d0727bdeb365bedd15e5603ed7da1"
     },
     {
       "order": 117,
@@ -1915,8 +1917,8 @@
         "editbin2ddata",
         "related"
       ],
-      "bytes": 24108,
-      "sha256": "dc1207c9229abe872b6ecc3dafd272a60dd1041a124cb9ddee88239f0aee88de"
+      "bytes": 24133,
+      "sha256": "e94f853adb1b3b2f9b9ae56994f8a50d8fdb588589ae5c8895387195becebfc1"
     },
     {
       "order": 118,
@@ -2021,6 +2023,8 @@
         "createfolddata",
         "createcomputeddata",
         "createnormalizeddata",
+        "createcompletedata",
+        "createimputeddata",
         "createstackdata",
         "createhorizonplot",
         "createdensityplot",
@@ -2040,8 +2044,8 @@
         "editviolinplot",
         "related"
       ],
-      "bytes": 12095,
-      "sha256": "aa3f782ee45ae9c50c8d6388e5573fe14d56ae484dfeaffba9bf0f43b55ecdc8"
+      "bytes": 12924,
+      "sha256": "e5a2e4162680d72a62ef4a29d8faee57d2e72c50eb6cb1ab8ae3c196239f4fea"
     },
     {
       "order": 121,
@@ -2143,8 +2147,8 @@
         "rendering-functions",
         "internal-trace-operations"
       ],
-      "bytes": 3283,
-      "sha256": "005ff239adaedd6b7c150ea05bf7bb63e3dd6db009a78ce40e613bf3c08f1606"
+      "bytes": 3336,
+      "sha256": "07e71a60408f6bb50aee48a532d285b2b8dfa4a14e8a7a679429bcfa993f5843"
     },
     {
       "order": 125,
@@ -2156,8 +2160,8 @@
         "exact-typescript-signatures",
         "related"
       ],
-      "bytes": 19128,
-      "sha256": "21db2cd3313d6a6f7d07825ae99cbedd4b79311cf10776ca06e73e717a2ff7f9"
+      "bytes": 19258,
+      "sha256": "c2b599d38aedcf25a7753265d191759c62fb7eab817047b808aa9f6d5482c98b"
     },
     {
       "order": 126,

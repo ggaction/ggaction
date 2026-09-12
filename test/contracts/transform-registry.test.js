@@ -11,6 +11,7 @@ test("keeps every stored dataset transform in the grammar registry", () => {
   const expected = {
     bin: ["materializeBinData", "statistical"],
     bin2d: ["materializeBin2DData", "statistical"],
+    complete: ["materializeCompleteData", "statistical"],
     computed: ["materializeComputedData", "rowPreserving"],
     filter: ["materializeFilteredData", "rowPreserving"],
     fold: ["materializeFoldData", "statistical"],
@@ -22,6 +23,7 @@ test("keeps every stored dataset transform in the grammar registry", () => {
     density: ["materializeDensityData", "statistical"],
     ecdf: ["materializeECDFData", "statistical"],
     horizon: ["materializeHorizonData", "statistical"],
+    impute: ["materializeImputedData", "statistical"],
     interval: ["materializeIntervalData", "statistical"],
     timeUnit: ["materializeTimeUnitData", "rowPreserving"],
     window: ["materializeWindowData", "statistical"],

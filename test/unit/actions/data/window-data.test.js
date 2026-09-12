@@ -140,13 +140,17 @@ test("stores normalized moving frames and materializes sequential moving values"
       op: "movingSum",
       field: "value",
       as: "trailingSum",
-      frame: { preceding: 1, following: 0 }
+      frame: { preceding: 1, following: 0 },
+      minPeriods: 1,
+      missing: "error"
     },
     {
       op: "movingMean",
       field: "trailingSum",
       as: "centeredMean",
-      frame: { preceding: 1, following: 1 }
+      frame: { preceding: 1, following: 1 },
+      minPeriods: 1,
+      missing: "error"
     }
   ]);
   assert.deepEqual(dataset.values.map(row => [row.trailingSum, row.centeredMean]), [
@@ -332,4 +336,156 @@ test("owns operation options and lag defaults deeply", () => {
     missing: true
   });
   assert.equal(program.semanticSpec.datasets[1].transform[0].operations[0].as, "previous");
+});
+
+test("computes closed elapsed-duration windows in source order", () => {
+  const duration = { preceding: 7, unit: "day" };
+  const program = chart()
+    .createData({ id: "source", values: [
+      { t: 864_000_000, x: 10 },
+      { t: 0, x: 2 },
+      { t: 86_400_000, x: 4 }
+    ] })
+    .createWindowData({
+      id: "moving",
+      temporalUnit: "timestamp",
+      sortBy: [{ field: "t" }],
+      operations: [{
+        op: "movingMean", field: "x", as: "mean",
+        frame: { duration }, minPeriods: 1, missing: "error"
+      }]
+    });
+  duration.preceding = 0;
+  assert.deepEqual(program.semanticSpec.datasets[1].values.map(row => row.mean), [10, 2, 3]);
+  assert.deepEqual(program.semanticSpec.datasets[1].transform[0].operations[0], {
+    op: "movingMean",
+    field: "x",
+    as: "mean",
+    frame: { duration: { preceding: 7, following: 0, unit: "day" } },
+    minPeriods: 1,
+    missing: "error"
+  });
+});
+
+test("duration windows include closed boundaries and all timestamp peers", () => {
+  const boundary = chart()
+    .createData({ id: "source", values: [
+      { t: 0, x: 2 }, { t: 604_800_000, x: 4 }
+    ] })
+    .createWindowData({
+      id: "window", temporalUnit: "timestamp", sortBy: [{ field: "t" }],
+      operations: [{
+        op: "movingMean", field: "x", as: "mean",
+        frame: { duration: { preceding: 7, unit: "day" } }
+      }]
+    });
+  assert.deepEqual(boundary.semanticSpec.datasets[1].values.map(row => row.mean), [2, 3]);
+
+  const peers = chart()
+    .createData({ id: "source", values: [
+      { t: 0, x: 2 }, { t: 0, x: 4 }, { t: 1, x: 8 }
+    ] })
+    .createWindowData({
+      id: "window", temporalUnit: "timestamp", sortBy: [{ field: "t" }],
+      operations: [{
+        op: "movingMean", field: "x", as: "mean",
+        frame: { duration: { preceding: 0, unit: "millisecond" } }
+      }]
+    });
+  assert.deepEqual(peers.semanticSpec.datasets[1].values.map(row => row.mean), [3, 3, 8]);
+
+  const temporalPeers = chart()
+    .createData({ id: "source", values: [
+      { t: "2024-01-01T00:00:00Z", x: 2 },
+      { t: "2023-12-31T19:00:00-05:00", x: 4 },
+      { t: "2024-01-01T00:00:01Z", x: 8 }
+    ] })
+    .createWindowData({
+      id: "window", sortBy: [{ field: "t" }], operations: [
+        { op: "rank", as: "rank" },
+        {
+          op: "movingMean", field: "x", as: "mean",
+          frame: { duration: { preceding: 0, unit: "second" } }
+        }
+      ]
+    });
+  assert.deepEqual(
+    temporalPeers.semanticSpec.datasets[1].values.map(row => [row.rank, row.mean]),
+    [[1, 3], [1, 3], [3, 8]]
+  );
+});
+
+test("moving windows skip only nullish values and enforce minPeriods", () => {
+  const source = chart().createData({ id: "source", values: [
+    { t: 0, x: 2 }, { t: 1, x: null }, { t: 2, x: 4 }
+  ] });
+  const skipped = source.createWindowData({
+    id: "skipped", sortBy: [{ field: "t" }], operations: [{
+      op: "movingMean", field: "x", as: "mean", frame: { preceding: 1 },
+      missing: "skip"
+    }]
+  });
+  const minimum = source.createWindowData({
+    id: "minimum", sortBy: [{ field: "t" }], operations: [{
+      op: "movingMean", field: "x", as: "mean", frame: { preceding: 1 },
+      missing: "skip", minPeriods: 2
+    }]
+  });
+  assert.deepEqual(skipped.semanticSpec.datasets[1].values.map(row => row.mean), [2, 2, 4]);
+  assert.deepEqual(minimum.semanticSpec.datasets[1].values.map(row => row.mean),
+    [null, null, null]);
+  assert.throws(() => chart()
+    .createData({ id: "source", values: [{ t: 0, x: NaN }] })
+    .createWindowData({
+      id: "bad", sortBy: [{ field: "t" }], operations: [{
+        op: "movingSum", field: "x", as: "sum", frame: { preceding: 0 }, missing: "skip"
+      }]
+    }), /finite numbers/);
+});
+
+test("duration windows reject row-frame mixing and invalid temporal policies", () => {
+  const source = chart().createData({ id: "source", values: [{ t: 0, x: 2 }] });
+  const invalid = [
+    [{
+      temporalUnit: "timestamp", sortBy: [],
+      operations: [{ op: "movingMean", field: "x", as: "v", frame: {
+        duration: { preceding: 1, unit: "day" }
+      } }]
+    }, /one ascending sortBy/],
+    [{
+      temporalUnit: "timestamp", sortBy: [{ field: "t", order: "descending" }],
+      operations: [{ op: "movingMean", field: "x", as: "v", frame: {
+        duration: { preceding: 1, unit: "day" }
+      } }]
+    }, /one ascending sortBy/],
+    [{
+      sortBy: [{ field: "t" }], operations: [{
+        op: "movingMean", field: "x", as: "v",
+        frame: { preceding: 1, duration: { preceding: 1, unit: "day" } }
+      }]
+    }, /exactly one row or duration mode/],
+    [{
+      temporalUnit: "timestamp", operations: [{ op: "rowNumber", as: "v" }]
+    }, /requires at least one duration/],
+    [{
+      operations: [{ op: "rank", as: "v", missing: "skip" }]
+    }, /Unknown window operation/],
+    [{
+      operations: [{
+        op: "movingMean", field: "x", as: "v", frame: { preceding: 0 }, minPeriods: 0
+      }]
+    }, /positive safe integer/]
+  ];
+  invalid.forEach(([options, error], index) => {
+    assert.throws(() => source.createWindowData({ id: `invalid${index}`, ...options }), error);
+  });
+  assert.throws(() => chart()
+    .createData({ id: "source", values: [{ t: 0, x: 2 }, { x: 4 }] })
+    .createWindowData({
+      id: "missingSort", temporalUnit: "timestamp", sortBy: [{ field: "t" }],
+      operations: [{
+        op: "movingMean", field: "x", as: "mean",
+        frame: { duration: { preceding: 1, unit: "day" } }
+      }]
+    }), /does not contain field "t" at row 1/);
 });

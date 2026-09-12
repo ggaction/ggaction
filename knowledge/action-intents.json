@@ -211,6 +211,14 @@
       "normalized data",
       "group shares and baseline comparisons"
     ],
+    "CompleteData": [
+      "completed data",
+      "explicit key-domain rows"
+    ],
+    "ImputedData": [
+      "imputed data",
+      "filled missing values"
+    ],
     "StackData": [
       "stacked data",
       "reusable stack endpoints and shares"
@@ -863,6 +871,28 @@
       "field": "amount",
       "as": "share",
       "method": "share"
+    },
+    "createCompleteData": {
+      "id": "completed",
+      "key": "period",
+      "groupBy": "series",
+      "values": [
+        1,
+        2,
+        3
+      ],
+      "members": "sourceRows"
+    },
+    "createImputedData": {
+      "id": "imputed",
+      "fields": "amount",
+      "groupBy": "series",
+      "sortBy": [
+        {
+          "field": "period"
+        }
+      ],
+      "method": "linear"
     },
     "createFoldData": {
       "id": "long",

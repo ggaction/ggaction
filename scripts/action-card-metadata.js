@@ -204,7 +204,9 @@ export function optionUnits(action, options) {
     }
     if (unit) units.push({ path: option.name, unit });
   }
-  return units;
+  return action.name === "createTimeUnitData"
+    ? units.sort((left, right) => left.path === "unit" ? -1 : right.path === "unit" ? 1 : 0)
+    : units;
 }
 
 export function optionInference(action, options) {

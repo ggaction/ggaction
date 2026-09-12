@@ -88,6 +88,27 @@ function normalizedDataPrograms() {
     })];
 }
 
+function missingDataPrograms() {
+  const source = chart().createData({ id: "missingSource", values: [
+    { series: "a", period: 1, amount: 2 },
+    { series: "a", period: 3, amount: 6 }
+  ] });
+  const completed = source.createCompleteData({
+    id: "completed",
+    groupBy: "series",
+    key: "period",
+    values: [1, 2, 3],
+    members: "sourceRows"
+  });
+  return [completed, completed.createImputedData({
+    id: "imputed",
+    fields: "amount",
+    groupBy: "series",
+    sortBy: [{ field: "period" }],
+    method: "linear"
+  })];
+}
+
 function collectDirectRelationships(trace, directNames, relationships, observed) {
   if (directNames.has(trace.op)) {
     observed.add(trace.op);
@@ -115,7 +136,8 @@ export async function buildActionRelationships() {
     ...descriptors.map(buildScenario),
     ...selectionLifecyclePrograms(),
     ...focusedScaleEditorPrograms(),
-    ...normalizedDataPrograms()
+    ...normalizedDataPrograms(),
+    ...missingDataPrograms()
   ];
   for (const program of programs) {
     collectDirectRelationships(program.trace, directNames, relationships, observed);

@@ -1,12 +1,15 @@
 import { cloneAndFreeze, isPlainObject } from "../core/immutable.js";
 import {
+  maximumMagnitude,
+  requireFiniteResult,
   stableFiniteMean,
   stableFinitePrefixSums,
   stableFiniteSum
 } from "./numeric.js";
+import { normalizeTemporalValue, validateTemporalUnit } from "./scales/fields.js";
 
 const TRANSFORM_KEYS = [
-  "type", "partitionBy", "sortBy", "operations"
+  "type", "partitionBy", "sortBy", "operations", "temporalUnit"
 ];
 const SORT_KEYS = ["field", "order"];
 const ORDER_VALUES = ["ascending", "descending"];
@@ -17,7 +20,15 @@ const OPERATION_VALUES = [
 const POSITION_OPERATIONS = new Set(OPERATION_VALUES.slice(0, 3));
 const OFFSET_OPERATIONS = new Set(OPERATION_VALUES.slice(4, 6));
 const MOVING_OPERATIONS = new Set(OPERATION_VALUES.slice(-2));
-const FRAME_KEYS = ["preceding", "following"];
+const FRAME_KEYS = ["preceding", "following", "duration"];
+const DURATION_KEYS = ["preceding", "following", "unit"];
+const DURATION_UNITS = Object.freeze({
+  millisecond: 1,
+  second: 1_000,
+  minute: 60_000,
+  hour: 3_600_000,
+  day: 86_400_000
+});
 
 function requireField(value, label) {
   if (typeof value !== "string" || value.length === 0) {
@@ -72,7 +83,7 @@ function operationKeys(operation) {
     return ["op", "field", "as", "offset", "default"];
   }
   if (MOVING_OPERATIONS.has(operation.op)) {
-    return ["op", "field", "as", "frame"];
+    return ["op", "field", "as", "frame", "minPeriods", "missing"];
   }
   return ["op"];
 }
@@ -82,7 +93,29 @@ function validateFrame(frame, operation) {
     throw new TypeError(`Window ${operation} frame must be a plain object.`);
   }
   rejectUnknownKeys(frame, FRAME_KEYS, `window ${operation} frame`);
-  for (const field of FRAME_KEYS) {
+  const duration = Object.hasOwn(frame, "duration");
+  const rows = ["preceding", "following"].some(field => Object.hasOwn(frame, field));
+  if (duration === rows) {
+    throw new Error(`Window ${operation} frame requires exactly one row or duration mode.`);
+  }
+  if (duration) {
+    if (!isPlainObject(frame.duration)) {
+      throw new TypeError(`Window ${operation} duration must be a plain object.`);
+    }
+    rejectUnknownKeys(frame.duration, DURATION_KEYS, `window ${operation} duration`);
+    for (const field of ["preceding", "following"]) {
+      if (!Number.isFinite(frame.duration[field]) || frame.duration[field] < 0) {
+        throw new RangeError(
+          `Window ${operation} duration ${field} must be a non-negative finite number.`
+        );
+      }
+    }
+    if (!Object.hasOwn(DURATION_UNITS, frame.duration.unit)) {
+      throw new Error(`Unsupported window duration unit "${frame.duration.unit}".`);
+    }
+    return;
+  }
+  for (const field of ["preceding", "following"]) {
     if (!Number.isInteger(frame[field]) || frame[field] < 0) {
       throw new RangeError(
         `Window ${operation} frame ${field} must be a non-negative integer.`
@@ -125,6 +158,12 @@ function validateOperations(operations, sortBy) {
     }
     if (MOVING_OPERATIONS.has(operation.op)) {
       validateFrame(operation.frame, operation.op);
+      if (!Number.isSafeInteger(operation.minPeriods) || operation.minPeriods <= 0) {
+        throw new RangeError(`Window ${operation.op} minPeriods must be a positive safe integer.`);
+      }
+      if (!["error", "skip"].includes(operation.missing)) {
+        throw new Error(`Unsupported window ${operation.op} missing policy "${operation.missing}".`);
+      }
     }
   });
 }
@@ -140,6 +179,18 @@ export function validateWindowTransform(transform) {
   validateFieldList(transform.partitionBy, "Window partitionBy");
   validateSortBy(transform.sortBy);
   validateOperations(transform.operations, transform.sortBy);
+  const durationOperations = transform.operations.filter(operation =>
+    MOVING_OPERATIONS.has(operation.op) && Object.hasOwn(operation.frame, "duration")
+  );
+  const hasTemporalUnit = Object.hasOwn(transform, "temporalUnit");
+  if (durationOperations.length > 0) {
+    validateTemporalUnit(transform.temporalUnit);
+    if (transform.sortBy.length !== 1 || transform.sortBy[0].order !== "ascending") {
+      throw new Error("Duration windows require exactly one ascending sortBy field.");
+    }
+  } else if (hasTemporalUnit) {
+    throw new Error("Window temporalUnit requires at least one duration operation.");
+  }
   return transform;
 }
 
@@ -152,7 +203,7 @@ function normalizeSortBy(value) {
   if (value === undefined) return [];
   if (!Array.isArray(value)) return value;
   return value.map(sort => isPlainObject(sort)
-    ? { field: sort.field, order: sort.order ?? "ascending" }
+    ? { ...sort, order: sort.order ?? "ascending" }
     : sort
   );
 }
@@ -171,12 +222,20 @@ function normalizeOperations(value) {
       };
     }
     if (MOVING_OPERATIONS.has(operation.op) && isPlainObject(operation.frame)) {
+      const duration = isPlainObject(operation.frame.duration)
+        ? {
+            ...operation.frame.duration,
+            following: operation.frame.duration.following ?? 0
+          }
+        : undefined;
       return {
         ...operation,
-        frame: {
+        frame: duration === undefined ? {
           ...operation.frame,
           following: operation.frame.following ?? 0
-        }
+        } : { ...operation.frame, duration },
+        minPeriods: operation.minPeriods ?? 1,
+        missing: operation.missing ?? "error"
       };
     }
     return operation;
@@ -186,13 +245,15 @@ function normalizeOperations(value) {
 export function normalizeWindowTransform({
   partitionBy,
   sortBy,
-  operations
+  operations,
+  temporalUnit
 } = {}) {
   const transform = {
     type: "window",
     partitionBy: normalizePartitionBy(partitionBy),
     sortBy: normalizeSortBy(sortBy),
-    operations: normalizeOperations(operations)
+    operations: normalizeOperations(operations),
+    ...(temporalUnit === undefined ? {} : { temporalUnit })
   };
   validateWindowTransform(transform);
   return cloneAndFreeze(transform);
@@ -249,8 +310,14 @@ function validateSourceFields(rows, transform) {
     if (!sourceFields.has(field)) {
       throw new Error(`Window source does not contain field "${field}".`);
     }
+    rows.forEach((row, index) => {
+      if (!Object.hasOwn(row, field)) {
+        throw new Error(`Window source does not contain field "${field}" at row ${index}.`);
+      }
+    });
   }
   const available = new Set(sourceFields);
+  const generated = new Set();
   for (const operation of transform.operations) {
     if (
       !POSITION_OPERATIONS.has(operation.op) &&
@@ -258,10 +325,20 @@ function validateSourceFields(rows, transform) {
     ) {
       throw new Error(`Window source does not contain field "${operation.field}".`);
     }
+    if (!POSITION_OPERATIONS.has(operation.op) && !generated.has(operation.field)) {
+      rows.forEach((row, index) => {
+        if (!Object.hasOwn(row, operation.field)) {
+          throw new Error(
+            `Window source does not contain field "${operation.field}" at row ${index}.`
+          );
+        }
+      });
+    }
     if (available.has(operation.as)) {
       throw new Error(`Window output field "${operation.as}" already exists.`);
     }
     available.add(operation.as);
+    generated.add(operation.as);
   }
 }
 
@@ -316,6 +393,9 @@ function operationValues(
   const values = [];
   for (let index = first; index <= last; index += 1) {
     const value = partition[index].row[operation.field];
+    if (value === null || value === undefined) {
+      if (operation.missing === "skip") continue;
+    }
     if (!Number.isFinite(value)) {
       throw new TypeError(
         `Window ${operation.op} field "${operation.field}" must contain finite numbers.`
@@ -324,6 +404,18 @@ function operationValues(
     values.push(value);
   }
   return values;
+}
+
+function validateOperationValues(partition, operation) {
+  for (const entry of partition) {
+    const value = entry.row[operation.field];
+    if ((value === null || value === undefined) && operation.missing === "skip") continue;
+    if (!Number.isFinite(value)) {
+      throw new TypeError(
+        `Window ${operation.op} field "${operation.field}" must contain finite numbers.`
+      );
+    }
+  }
 }
 
 function stableWindowOutput(operation, calculate) {
@@ -342,7 +434,98 @@ function setWindowOutput(entry, field, value) {
   });
 }
 
-function applyOperation(partition, operation, sortBy) {
+function durationMilliseconds(duration, field) {
+  const value = duration[field] * DURATION_UNITS[duration.unit];
+  if (!Number.isFinite(value)) {
+    throw new RangeError(`Window duration ${field} is outside the finite numeric range.`);
+  }
+  return value;
+}
+
+function durationPositions(partition, transform) {
+  const field = transform.sortBy[0].field;
+  return partition.map((entry, index) => entry.durationTimestamp ??
+    normalizeTemporalValue(entry.row[field], field, index, transform.temporalUnit));
+}
+
+function validDateBoundary(value) {
+  return Number.isFinite(value) && Number.isFinite(new Date(value).getTime());
+}
+
+function applyDurationOperation(partition, operation, transform) {
+  validateOperationValues(partition, operation);
+  const positions = durationPositions(partition, transform);
+  const preceding = durationMilliseconds(operation.frame.duration, "preceding");
+  const following = durationMilliseconds(operation.frame.duration, "following");
+  const rawValues = partition.map(entry => entry.row[operation.field]);
+  const finiteValues = rawValues.filter(Number.isFinite);
+  const scale = maximumMagnitude(finiteValues) || 1;
+  let left = 0;
+  let right = 0;
+  let total = 0;
+  let correction = 0;
+  let count = 0;
+  let ordinary = 0;
+  let ordinaryReliable = true;
+  const add = value => {
+    if (!Number.isFinite(value)) return;
+    if (ordinaryReliable) {
+      ordinary += value;
+      if (!Number.isFinite(ordinary)) ordinaryReliable = false;
+    }
+    const scaled = value / scale;
+    const next = total + scaled;
+    correction += Math.abs(total) >= Math.abs(scaled)
+      ? total - next + scaled
+      : scaled - next + total;
+    total = next;
+    count += 1;
+  };
+  const remove = value => {
+    if (!Number.isFinite(value)) return;
+    if (ordinaryReliable) ordinary -= value;
+    const scaled = -value / scale;
+    const next = total + scaled;
+    correction += Math.abs(total) >= Math.abs(scaled)
+      ? total - next + scaled
+      : scaled - next + total;
+    total = next;
+    count -= 1;
+  };
+  let index = 0;
+  while (index < partition.length) {
+    const timestamp = positions[index];
+    const lower = timestamp - preceding;
+    const upper = timestamp + following;
+    if (!validDateBoundary(lower) || !validDateBoundary(upper)) {
+      throw new RangeError("Window duration boundary is outside the supported Date range.");
+    }
+    while (right < partition.length && positions[right] <= upper) {
+      add(rawValues[right]);
+      right += 1;
+    }
+    while (left < right && positions[left] < lower) {
+      remove(rawValues[left]);
+      left += 1;
+    }
+    let end = index + 1;
+    while (end < partition.length && positions[end] === timestamp) end += 1;
+    let value = null;
+    if (count >= operation.minPeriods) {
+      const sum = requireFiniteResult(ordinaryReliable ? ordinary : (total + correction) * scale,
+        `Window ${operation.op} output "${operation.as}"`);
+      value = operation.op === "movingMean"
+        ? requireFiniteResult(sum / count, `Window ${operation.op} output "${operation.as}"`)
+        : sum;
+    }
+    for (let peer = index; peer < end; peer += 1) {
+      setWindowOutput(partition[peer], operation.as, value);
+    }
+    index = end;
+  }
+}
+
+function applyOperation(partition, operation, sortBy, transform) {
   if (operation.op === "rowNumber") {
     partition.forEach((entry, index) => {
       setWindowOutput(entry, operation.as, index + 1);
@@ -355,7 +538,9 @@ function applyOperation(partition, operation, sortBy) {
     partition.forEach((entry, index) => {
       if (
         index > 0 &&
-        compareEntries(entry, partition[index - 1], sortBy, false) !== 0
+        (Object.hasOwn(entry, "durationTimestamp")
+          ? entry.durationTimestamp !== partition[index - 1].durationTimestamp
+          : compareEntries(entry, partition[index - 1], sortBy, false) !== 0)
       ) {
         rank = index + 1;
         denseRank += 1;
@@ -375,6 +560,11 @@ function applyOperation(partition, operation, sortBy) {
     return;
   }
   if (MOVING_OPERATIONS.has(operation.op)) {
+    if (Object.hasOwn(operation.frame, "duration")) {
+      applyDurationOperation(partition, operation, transform);
+      return;
+    }
+    validateOperationValues(partition, operation);
     const calculate = operation.op === "movingMean"
       ? stableFiniteMean
       : stableFiniteSum;
@@ -385,9 +575,9 @@ function applyOperation(partition, operation, sortBy) {
         index + operation.frame.following
       );
       const values = operationValues(partition, operation, first, last);
-      setWindowOutput(entry, operation.as, stableWindowOutput(operation, label =>
-        calculate(values, label)
-      ));
+      setWindowOutput(entry, operation.as, values.length < operation.minPeriods
+        ? null
+        : stableWindowOutput(operation, label => calculate(values, label)));
     });
     return;
   }
@@ -411,13 +601,28 @@ export function deriveWindowRows(rows, transform) {
   validateSourceFields(rows, transform);
   const entries = rows.map((row, index) => ({ index, row: { ...row } }));
   const partitions = partitionRows(entries, transform.partitionBy);
+  const hasDuration = transform.operations.some(operation =>
+    MOVING_OPERATIONS.has(operation.op) && Object.hasOwn(operation.frame, "duration")
+  );
   for (const partition of partitions) {
     validatePartitionSortValues(partition, transform);
-    partition.sort((left, right) => compareEntries(left, right, transform.sortBy));
+    if (hasDuration) {
+      const field = transform.sortBy[0].field;
+      partition.forEach(entry => {
+        entry.durationTimestamp = normalizeTemporalValue(
+          entry.row[field], field, entry.index, transform.temporalUnit
+        );
+      });
+      partition.sort((left, right) =>
+        left.durationTimestamp - right.durationTimestamp || left.index - right.index
+      );
+    } else {
+      partition.sort((left, right) => compareEntries(left, right, transform.sortBy));
+    }
   }
   for (const operation of transform.operations) {
     for (const partition of partitions) {
-      applyOperation(partition, operation, transform.sortBy);
+      applyOperation(partition, operation, transform.sortBy, transform);
     }
   }
   return cloneAndFreeze(entries.map(entry => entry.row));

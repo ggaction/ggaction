@@ -44,6 +44,8 @@ import {
   createNormalizedData,
   materializeNormalizedData
 } from "./normalize.js";
+import { createCompleteData, materializeCompleteData } from "./complete.js";
+import { createImputedData, materializeImputedData } from "./impute.js";
 import { createStackData, materializeStackData } from "./stack.js";
 import { createBoxSummaryData, createBoxOutlierData, materializeBoxSummaryData, materializeBoxOutlierData } from "./box.js";
 
@@ -86,6 +88,10 @@ export function registerDataActions(ProgramClass) {
   ProgramClass.prototype.materializeComputedData = materializeComputedData;
   ProgramClass.prototype.createNormalizedData = createNormalizedData;
   ProgramClass.prototype.materializeNormalizedData = materializeNormalizedData;
+  ProgramClass.prototype.createCompleteData = createCompleteData;
+  ProgramClass.prototype.materializeCompleteData = materializeCompleteData;
+  ProgramClass.prototype.createImputedData = createImputedData;
+  ProgramClass.prototype.materializeImputedData = materializeImputedData;
   ProgramClass.prototype.createStackData = createStackData;
   ProgramClass.prototype.materializeStackData = materializeStackData;
   ProgramClass.prototype.createTimeUnitData = createTimeUnitData;

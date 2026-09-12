@@ -451,6 +451,22 @@ export interface WindowSort {
   field: string;
   order?: WindowSortOrder;
 }
+export type RowWindowFrame = {
+  preceding: number;
+  following?: number;
+  duration?: never;
+};
+export type DurationWindowUnit = "millisecond" | "second" | "minute" | "hour" | "day";
+export type DurationWindowFrame = {
+  preceding?: never;
+  following?: never;
+  duration: {
+    preceding: number;
+    following?: number;
+    unit: DurationWindowUnit;
+  };
+};
+export type WindowFrame = RowWindowFrame | DurationWindowFrame;
 export type WindowOperation =
   | { op: "rowNumber" | "rank" | "denseRank"; as: string }
   | { op: "cumulativeSum"; field: string; as: string }
@@ -465,10 +481,9 @@ export type WindowOperation =
       op: "movingMean" | "movingSum";
       field: string;
       as: string;
-      frame: {
-        preceding: number;
-        following?: number;
-      };
+      frame: WindowFrame;
+      minPeriods?: number;
+      missing?: "error" | "skip";
     };
 export interface DatasetWindowSort {
   readonly field: string;
@@ -492,16 +507,27 @@ export type DatasetWindowOperation =
       readonly op: "movingMean" | "movingSum";
       readonly field: string;
       readonly as: string;
-      readonly frame: {
-        readonly preceding: number;
-        readonly following: number;
-      };
+      readonly frame:
+        | {
+            readonly preceding: number;
+            readonly following: number;
+          }
+        | {
+            readonly duration: {
+              readonly preceding: number;
+              readonly following: number;
+              readonly unit: DurationWindowUnit;
+            };
+          };
+      readonly minPeriods: number;
+      readonly missing: "error" | "skip";
     };
 export interface DatasetWindowTransform {
   readonly type: "window";
   readonly partitionBy: readonly string[];
   readonly sortBy: readonly DatasetWindowSort[];
   readonly operations: readonly DatasetWindowOperation[];
+  readonly temporalUnit?: TemporalInputUnit;
 }
 export interface ECDFOutputFields {
   value: string;
@@ -531,14 +557,28 @@ export type TimeUnit =
   | "day"
   | "hour"
   | "minute"
-  | "second";
-export interface DatasetTimeUnitTransform {
+  | "second"
+  | "week"
+  | "weekday";
+type DatasetTimeUnitTransformBase = {
   readonly type: "timeUnit";
   readonly field: string;
-  readonly unit: TimeUnit;
   readonly temporalUnit?: TemporalInputUnit;
   readonly as: string;
-}
+  readonly timeZone?: string;
+};
+export type DatasetTimeUnitTransform = DatasetTimeUnitTransformBase & (
+  | {
+      readonly unit: Exclude<TimeUnit, "week">;
+      readonly weekStartsOn?: never;
+      readonly weekRule?: never;
+    }
+  | {
+      readonly unit: "week";
+      readonly weekStartsOn: 0 | 1 | 2 | 3 | 4 | 5 | 6;
+      readonly weekRule: "calendar" | "iso";
+    }
+);
 export interface Bin2DCounts {
   x: number;
   y: number;
@@ -689,6 +729,44 @@ export type DatasetNormalizedTransform = DatasetNormalizedBaseTransform & (
     } & DatasetNormalizeBaselineTransform)
   | ({ readonly method: "change" } & DatasetNormalizeBaselineTransform)
 );
+export type DatasetCompleteTransform = {
+  readonly type: "complete";
+  readonly key: string;
+  readonly groupBy: readonly string[];
+  readonly fill: Readonly<Record<string, DatasetScalar>>;
+  readonly members?: string;
+} & (
+  | { readonly values: readonly DatasetScalar[]; readonly sequence?: never }
+  | {
+      readonly sequence: { readonly start: number; readonly end: number; readonly step: number };
+      readonly values?: never;
+    }
+  | { readonly values?: never; readonly sequence?: never }
+);
+type DatasetImputedBaseTransform = {
+  readonly type: "impute";
+  readonly fields: readonly string[];
+  readonly groupBy: readonly string[];
+  readonly edges: "keep" | "error";
+  readonly maxGap?: number;
+};
+export type DatasetImputedTransform = DatasetImputedBaseTransform & (
+  | {
+      readonly method: "constant";
+      readonly value: DatasetScalar;
+      readonly sortBy: readonly DatasetWindowSort[];
+    }
+  | {
+      readonly method: "forward" | "backward";
+      readonly value?: never;
+      readonly sortBy: readonly [DatasetWindowSort, ...DatasetWindowSort[]];
+    }
+  | {
+      readonly method: "linear";
+      readonly value?: never;
+      readonly sortBy: readonly [{ readonly field: string; readonly order: "ascending" }];
+    }
+);
 export type StackDataMode = "stack" | "fill" | "center" | "diverging";
 export interface StackDataOutputFields {
   start?: string;
@@ -707,7 +785,9 @@ export interface DatasetStackTransform {
 export type DatasetTransform =
   | DatasetBinTransform
   | DatasetBin2DTransform
+  | DatasetCompleteTransform
   | DatasetComputedTransform
+  | DatasetImputedTransform
   | DatasetNormalizedTransform
   | DatasetFilterTransform
   | DatasetFoldTransform
@@ -1761,6 +1841,7 @@ export interface WindowDataOptions {
   partitionBy?: string | readonly string[];
   sortBy?: readonly WindowSort[];
   operations: readonly WindowOperation[];
+  temporalUnit?: TemporalInputUnit;
 }
 
 export interface ECDFDataOptions {
@@ -1773,14 +1854,31 @@ export interface ECDFDataOptions {
   as?: ECDFOutputFields;
 }
 
-export interface TimeUnitDataOptions {
+type TimeUnitDataBaseOptions = {
   id: string;
   source?: string;
   field: string;
-  unit: TimeUnit;
   temporalUnit?: TemporalInputUnit;
   as: string;
-}
+  timeZone?: string;
+};
+export type TimeUnitDataOptions = TimeUnitDataBaseOptions & (
+  | {
+      unit: Exclude<TimeUnit, "week">;
+      weekStartsOn?: never;
+      weekRule?: never;
+    }
+  | {
+      unit: "week";
+      weekRule?: "calendar";
+      weekStartsOn?: 0 | 1 | 2 | 3 | 4 | 5 | 6;
+    }
+  | {
+      unit: "week";
+      weekRule: "iso";
+      weekStartsOn?: 1;
+    }
+);
 
 export interface BinDataOutputFields {
   lower?: string;
@@ -1855,6 +1953,47 @@ export type NormalizedDataOptions = NormalizedDataBaseOptions & (
       zeroDenominator?: NormalizeZeroDenominator;
     } & NormalizeBaselineOptions)
   | ({ method: "change" } & NormalizeBaselineOptions)
+);
+type CompleteDataBaseOptions = {
+  id: string;
+  source?: string;
+  key: string;
+  groupBy?: string | readonly string[];
+  fill?: Readonly<Record<string, DatasetScalar>>;
+  members?: string;
+};
+export type CompleteDataOptions = CompleteDataBaseOptions & (
+  | { values: readonly [DatasetScalar, ...DatasetScalar[]]; sequence?: never }
+  | {
+      values?: never;
+      sequence: { start: number; end: number; step: number };
+    }
+  | { values?: never; sequence?: never }
+);
+type ImputedDataBaseOptions = {
+  id: string;
+  source?: string;
+  fields: string | readonly [string, ...string[]];
+  groupBy?: string | readonly string[];
+  edges?: "keep" | "error";
+  maxGap?: number;
+};
+export type ImputedDataOptions = ImputedDataBaseOptions & (
+  | {
+      method: "constant";
+      value: DatasetScalar;
+      sortBy?: readonly WindowSort[];
+    }
+  | {
+      method: "forward" | "backward";
+      value?: never;
+      sortBy: readonly [WindowSort, ...WindowSort[]];
+    }
+  | {
+      method: "linear";
+      value?: never;
+      sortBy: readonly [{ field: string; order?: "ascending" }];
+    }
 );
 export interface StackDataOptions {
   id: string;
@@ -3856,6 +3995,8 @@ export class ChartProgram {
   createFoldData(options: FoldDataOptions): ChartProgram;
   createComputedData(options: ComputedDataOptions): ChartProgram;
   createNormalizedData(options: NormalizedDataOptions): ChartProgram;
+  createCompleteData(options: CompleteDataOptions): ChartProgram;
+  createImputedData(options: ImputedDataOptions): ChartProgram;
   createStackData(options: StackDataOptions): ChartProgram;
   createRegressionData(options: RegressionDataOptions): ChartProgram;
   createIntervalData(options: IntervalDataOptions): ChartProgram;

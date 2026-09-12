@@ -4596,6 +4596,8 @@ corresponding higher-level action when the library should materialize values:
 | `"bin"` | `{ type, field, bin, extent, nice, zero, includeEmpty, members, as, resolved? }` | `createBinData` |
 | `"computed"` | `{ type, as, expression }` | `createComputedData` |
 | `"normalize"` | `{ type, field, as, groupBy, method, ...methodPolicies }` | `createNormalizedData` |
+| `"complete"` | `{ type, key, groupBy, values? or sequence?, fill, members? }` | `createCompleteData` |
+| `"impute"` | `{ type, fields, groupBy, sortBy, method, value?, edges, maxGap? }` | `createImputedData` |
 | `"filter"` | `{ type, field, oneOf }`, `{ type, field, predicate }`, or `{ type, field, range }` | `filterData` |
 | `"fold"` | `{ type, fields, as }` | `createFoldData` |
 | `"regression"` | `{ type, method, x, y, groupBy?, ...methodParameters }` | `createRegressionData` |
@@ -4604,8 +4606,8 @@ corresponding higher-level action when the library should materialize values:
 | `"interval"` | `{ type, field, groupBy, center, extent, level?, as }` | `createIntervalData` |
 | `"summary"` | `{ type, groupBy, aggregates, members? }` | `createSummaryData` |
 | `"stack"` | `{ type, category, group, value, mode, as }` | `createStackData` |
-| `"timeUnit"` | `{ type, field, unit, as }` | `createTimeUnitData` |
-| `"window"` | `{ type, partitionBy, sortBy, operations }` | `createWindowData` |
+| `"timeUnit"` | `{ type, field, unit, as, temporalUnit?, timeZone?, ...weekPolicy }` | `createTimeUnitData` |
+| `"window"` | `{ type, partitionBy, sortBy, operations, temporalUnit? }` | `createWindowData` |
 
 Chart facades and mark creation require materialized `values` on the selected
 dataset. Passing a definition-only dataset produces an error naming the dataset
@@ -4623,8 +4625,9 @@ normalized arrays for `partitionBy`, `sortBy`, and `operations`; use
 revision adds `resolved: { bandwidth, extent }` without replacing requested
 `"auto"` values. See the higher-level action
 sections below for accepted values and defaults before constructing normalized
-provenance directly. Time-unit transforms use the same UTC interpretation as
-temporal scales and store a finite bucket-start timestamp; use
+provenance directly. Time-unit transforms use the common temporal input parser,
+then resolve UTC or an explicit IANA-zone calendar boundary. Weekday output is
+nominal; other units store a finite bucket-start timestamp. Use
 `createTimeUnitData` to validate source fields and materialize rows.
 
 `DatasetTransform` and `CreateDerivedDataOptions` export the same public union
@@ -4791,6 +4794,63 @@ An exact zero denominator rejects by default. Use
 `change` accepts a zero baseline and therefore has no zero-denominator option.
 Share rejects negative input. Every method preserves original row order and
 keeps group calculations independent.
+
+## `createCompleteData({ id, source?, key, groupBy?, values?, sequence?, fill?, members? })` {#createcompletedata-id-source-key-groupby-values-sequence-fill-members}
+
+Materialize missing keys inside each observed group without silently turning
+absence into zero:
+
+```javascript
+const completed = program.createCompleteData({
+  id: "completeSales",
+  source: "sales",
+  groupBy: "region",
+  key: "month",
+  values: [1, 2, 3],
+  fill: { amount: null },
+  members: "sourceRows"
+});
+```
+
+`values` and `sequence` are mutually exclusive. If both are omitted, the action
+uses the key values observed anywhere in the source, preserving typed identity
+and first appearance. A numeric sequence uses finite `start`, `end`, and
+positive `step`. Only observed group tuples are completed; the action does not
+form a Cartesian product of separate grouping fields.
+
+Each group/key pair may have at most one source row. Existing keys outside an
+explicit domain are errors. Original rows keep all cells. A synthesized row gets
+the group and key values, then `fill` values or `null` for the other source fields.
+When `members` is present, original rows contain their source index and synthetic
+rows contain `[]`. Output follows group first appearance and key-domain order and
+is capped at 10,000 rows before allocation.
+
+## `createImputedData({ id, source?, fields, groupBy?, sortBy?, method, value?, edges?, maxGap? })` {#createimputeddata-id-source-fields-groupby-sortby-method-value-edges-maxgap}
+
+Replace explicit `null` or `undefined` cells without changing row grain or final
+source order:
+
+```javascript
+const imputed = completed.createImputedData({
+  id: "imputedSales",
+  fields: "amount",
+  groupBy: "region",
+  sortBy: [{ field: "month" }],
+  method: "linear",
+  edges: "keep"
+});
+```
+
+`constant` requires `value`. `forward` and `backward` copy the nearest available
+anchor in the requested stable group order. `linear` requires one ascending
+numeric or temporal-string sort field and finite numeric target values; it uses
+actual position distance rather than row indexes. No method crosses a group
+boundary.
+
+`edges` defaults to `"keep"`; `"error"` rejects an eligible run with no required
+anchor. `maxGap` is a positive row-count limit. A longer run stays missing and is
+not converted into an edge error. `NaN` and infinities are invalid values rather
+than missing cells.
 
 ## `createStackData({ id, source?, category, group, value, mode?, as? })` {#createstackdata-id-source-category-group-value-mode-as}
 
@@ -5093,14 +5153,14 @@ work budget. Source values remain unchanged.
 # Time-Unit Data Transforms
 
  source timestamp 2024-05-17 13:45 UTC
- UTC month boundary 2024-05-01 00:00 UTC
+ calendar boundary UTC or IANA zone
  derived field immutable output row
 
-`createTimeUnitData` adds one reproducible UTC calendar field to every source
-row. Use it when timestamps within the same calendar unit need a shared value
-before a later encoding, filter, aggregation, or window operation.
+`createTimeUnitData` adds one reproducible UTC or named-zone calendar field to
+every source row. Use it when timestamps within the same calendar unit need a
+shared value before a later encoding, filter, aggregation, or window operation.
 
-## `createTimeUnitData({ id, source?, field, temporalUnit?, unit, as })`
+## `createTimeUnitData({ id, source?, field, temporalUnit?, unit, as, timeZone?, weekStartsOn?, weekRule? })`
 
 ```javascript
 import { chart } from "ggaction";
@@ -5130,18 +5190,28 @@ console.log(program.semanticSpec.datasets[1].values[0].month);
 | `source` | existing dataset ID | current dataset |
 | `field` | temporal field name | required |
 | `temporalUnit` | `"auto"`, `"year"`, or `"timestamp"` input mode | existing automatic parser |
-| `unit` | `"year"`, `"quarter"`, `"month"`, `"day"`, `"hour"`, `"minute"`, or `"second"` | required |
+| `unit` | `"year"`, `"quarter"`, `"month"`, `"day"`, `"hour"`, `"minute"`, `"second"`, `"week"`, or `"weekday"` | required |
 | `as` | new output field name | required |
+| `timeZone` | non-empty IANA time-zone name | `"UTC"` |
+| `weekStartsOn` | integer Sunday `0` through Saturday `6`; week only | `1` |
+| `weekRule` | `"calendar"` or `"iso"`; week only | `"calendar"` |
 
-The output is a finite timestamp at the start of the requested UTC unit.
-Quarter starts are January 1, April 1, July 1, and October 1. The action accepts
-the same temporal input forms as a temporal position scale: finite timestamps,
+Except for `weekday`, the output is a finite epoch-millisecond timestamp at the
+start of the requested calendar unit in the selected zone. Quarter starts are
+January 1, April 1, July 1, and October 1. `weekday` returns a nominal integer
+from Sunday `0` through Saturday `6` in the selected zone. The action accepts the
+same temporal input forms as a temporal position scale: finite timestamps,
 parseable temporal strings, date-only strings, and four-digit years.
 
 Input `temporalUnit` and calendar `unit` are independent. For numeric Unix
 milliseconds use `temporalUnit: "timestamp"`. Bind the resulting field with
 `fieldType: "temporal", temporalUnit: "timestamp"`, including small positive
 bucket timestamps. The chosen input unit is stored in the transform.
+
+Week output is the selected local week-start midnight expressed as epoch
+milliseconds. Calendar weeks can start on any requested weekday. ISO weeks
+require Monday and reject another `weekStartsOn` value. Week-only options on a
+different unit are errors.
 
 The source dataset remains unchanged. The derived dataset preserves row order
 and every existing field, then adds `as`. The output name must differ from the
@@ -5150,10 +5220,16 @@ collisions fail atomically.
 
 ## Boundaries
 
-Time-unit derivation is UTC-only. It does not apply a local timezone, daylight
-saving transition, locale calendar, configurable week, aggregation, resampling,
-or missing-period completion. Create another immutable dataset when a different
-unit or output field is needed.
+Named zones use IANA Gregorian calendar parts. During a daylight-saving fold,
+the action chooses the earliest matching instant. When a requested boundary
+falls in a gap, it chooses the first valid instant in that calendar bucket.
+Non-hour offsets and skipped civil dates follow the same rule; a boundary that
+cannot be represented in the bucket or by JavaScript `Date` is an error. Results
+never depend on the host process time zone or locale.
+
+Locale calendar selection, aggregation, resampling, and missing-period
+completion are separate concerns. Create another immutable dataset when a
+different unit or output field is needed.
 
 ## Related
 
@@ -5173,7 +5249,7 @@ unit or output field is needed.
 the result as a new immutable dataset. It is useful when a later mark needs rank,
 running totals, or neighboring values without changing the source rows.
 
-## `createWindowData({ id, source?, partitionBy?, sortBy?, operations })`
+## `createWindowData({ id, source?, partitionBy?, sortBy?, operations, temporalUnit? })`
 
 ```javascript
 const program = chart()
@@ -5204,6 +5280,7 @@ const program = chart()
 | `partitionBy` | field name or array of field names | one partition |
 | `sortBy` | array of `{ field, order? }` | source order |
 | `operations` | non-empty array of window operations | required |
+| `temporalUnit` | `"auto"`, `"year"`, or `"timestamp"`; duration frames only | existing automatic parser |
 
 `order` accepts `"ascending"` or `"descending"` and defaults to ascending.
 Sorting is stable. Missing sort values are placed after present values for an
@@ -5220,8 +5297,8 @@ Supported operations are:
 | cumulative sum | `{ op: "cumulativeSum", field, as }` | requires finite numeric values |
 | lag | `{ op: "lag", field, as, offset?, default? }` | defaults to offset `1` and value `null` |
 | lead | `{ op: "lead", field, as, offset?, default? }` | defaults to offset `1` and value `null` |
-| moving mean | `{ op: "movingMean", field, as, frame }` | finite mean inside a row frame |
-| moving sum | `{ op: "movingSum", field, as, frame }` | finite sum inside a row frame |
+| moving mean | `{ op: "movingMean", field, as, frame, minPeriods?, missing? }` | finite mean inside a row or elapsed-duration frame |
+| moving sum | `{ op: "movingSum", field, as, frame, minPeriods?, missing? }` | finite sum inside a row or elapsed-duration frame |
 
 Moving frames always include the current sorted row. `frame.preceding` is a
 required non-negative integer; `frame.following` is optional and defaults to
@@ -5243,9 +5320,36 @@ const trailing = monthly.createWindowData({
 
 At a partition boundary, the frame uses only available rows. The first value in
 the example uses one row, the second uses two, and later values use three.
-`movingMean` and `movingSum` require finite numeric input and produce finite
-numeric output. Duration-based, weighted, and minimum-period windows are not
-supported.
+`minPeriods` defaults to `1`. `missing` defaults to `"error"`, which rejects
+nullish and non-finite source values. `missing: "skip"` excludes only `null` and
+`undefined` from the valid count and arithmetic; `NaN` and infinities remain
+errors. A frame with fewer valid values than `minPeriods` produces `null`.
+
+Use a duration frame for an elapsed-time window:
+
+```javascript
+const weekly = events.createWindowData({
+  id: "weeklyMean",
+  temporalUnit: "timestamp",
+  sortBy: [{ field: "time", order: "ascending" }],
+  operations: [{
+    op: "movingMean",
+    field: "value",
+    as: "weeklyMean",
+    frame: {
+      duration: { preceding: 7, following: 0, unit: "day" }
+    },
+    minPeriods: 2,
+    missing: "skip"
+  }]
+});
+```
+
+Duration units are `"millisecond"`, `"second"`, `"minute"`, `"hour"`, and
+`"day"`; a day is exactly 24 hours. Duration calls require exactly one ascending
+sort field. Both endpoints are closed, and rows with the same timestamp receive
+the same window result. Irregular spacing therefore uses actual elapsed distance
+instead of a row count. Weighted and calendar-duration windows are not supported.
 
 The action computes each partition in sorted order, then returns the materialized
 rows in their original source order. The source dataset remains unchanged. Output
@@ -13420,6 +13524,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createBinData`](./reference/actions/statistics/#createbindata) | H1 | user-facing | statistics |
 | [`createBoxPlot`](./reference/actions/statistics/#createboxplot) | H0, H1 | user-facing | statistics |
 | [`createCanvas`](./reference/actions/charts-data/#createcanvas) | H3 | user-facing | core |
+| [`createCompleteData`](./reference/actions/statistics/#createcompletedata) | H1 | user-facing | statistics |
 | [`createComputedData`](./reference/actions/statistics/#createcomputeddata) | H1 | user-facing | statistics |
 | [`createCoordinate`](./reference/actions/advanced/#semantic-resources-and-regression-layers) | H2 | user-facing | core |
 | [`createData`](./reference/actions/charts-data/#createdata) | H2 | user-facing | core |
@@ -13441,6 +13546,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createHistogram`](./reference/actions/charts-data/#createhistogram) | H0, H1 | user-facing | charts |
 | [`createHorizonPlot`](./reference/actions/statistics/#createhorizonplot) | H0, H1 | user-facing | statistics |
 | [`createHorizontalGrid`](./reference/actions/advanced/#directional-grids) | H3 | user-facing | grid |
+| [`createImputedData`](./reference/actions/statistics/#createimputeddata) | H1 | user-facing | statistics |
 | [`createIntervalData`](./reference/actions/statistics/#createintervaldata) | H1 | user-facing | statistics |
 | [`createIntervalPlot`](./reference/actions/charts-data/#createintervalplot) | H0, H1 | user-facing | charts |
 | [`createLegend`](./reference/actions/guides/#createlegend) | H3 | user-facing | legend_and_title |
@@ -14230,25 +14336,24 @@ kernel to `"gaussian"`, and normalization to `"unit"`.
 ## `createTimeUnitData`
 
 ```javascript
-createTimeUnitData({ id, source?, field, temporalUnit?, unit, as })
+createTimeUnitData({ id, source?, field, temporalUnit?, unit, as, timeZone?, weekStartsOn?, weekRule? })
 ```
 
-Create an immutable row-preserving dataset with one UTC year, quarter, month,
-day, hour, minute, or second bucket-start timestamp field.
+Create an immutable row-preserving dataset with one UTC or IANA-zone calendar
+bucket timestamp, including week, or a nominal local weekday field.
 [Time-unit data transforms](./api/data/time-units/)
 
 ## `createWindowData`
 
 ```javascript
-createWindowData({ id, source?, partitionBy?, sortBy?, operations })
+createWindowData({ id, source?, partitionBy?, sortBy?, operations, temporalUnit? })
 ```
 
 Create an immutable derived dataset by applying ordered row-number, rank,
 dense-rank, cumulative-sum, lag, lead, moving-mean, or moving-sum operations
-within optional partitions. Moving frames include the current sorted row, require
-a non-negative `preceding`, default `following` to `0`, and truncate at partition
-edges. The calculation follows a stable sort while the output preserves source
-row order.
+within optional partitions. Moving frames support row counts or closed elapsed
+durations, `minPeriods`, and explicit nullish skipping. The calculation follows
+a stable sort while the output preserves source row order.
 [Window data transforms](./api/data/window/)
 
 ## `createBin2DData`
@@ -15170,6 +15275,26 @@ createNormalizedData({ id, source?, field, as, groupBy?, method, variance?, zero
 Materialize row-preserving share, z-score, min-max, index, change, or fractional
 percent-change values independently within each group.
 [Source and Derived Data](./api/data/source-and-derived/#createnormalizeddata-id-source-field-as-groupby-method)
+
+## `createCompleteData`
+
+```javascript
+createCompleteData({ id, source?, key, groupBy?, values?, sequence?, fill?, members? })
+```
+
+Complete one typed key domain independently inside every observed group, with
+explicit fill and source-membership provenance for synthesized rows.
+[Source and Derived Data](./api/data/source-and-derived/#createcompletedata-id-source-key-groupby-values-sequence-fill-members)
+
+## `createImputedData`
+
+```javascript
+createImputedData({ id, source?, fields, groupBy?, sortBy?, method, value?, edges?, maxGap? })
+```
+
+Replace nullish cells by constant, forward, backward, or distance-based linear
+imputation while preserving group boundaries and final source order.
+[Source and Derived Data](./api/data/source-and-derived/#createimputeddata-id-source-fields-groupby-sortby-method-value-edges-maxgap)
 
 ## `createStackData`
 
@@ -16180,7 +16305,8 @@ complete Browser Canvas, SVG, Node PNG, and vector PDF examples.
 
 High-level actions call additional wrapped operations for data, scale, mark,
 guide, title, and layout materialization. Names such as
-`materializeDensityData`, `materializeWindowData`, `materializeBin2DData`, `rematerializeScale`, `rematerializePointMark`,
+`materializeCompleteData`, `materializeDensityData`, `materializeImputedData`,
+`materializeWindowData`, `materializeBin2DData`, `rematerializeScale`, `rematerializePointMark`,
 `createCategoricalLegend`, `createSizeLegend`, `rematerializeSizeLegend`,
 `createLegendSymbols`, and `createTitleText` may appear in
 `program.trace`. They are deliberately absent from the public TypeScript
@@ -16228,6 +16354,8 @@ interface ChartProgramActions {
   createFoldData(options: FoldDataOptions): ChartProgram;
   createComputedData(options: ComputedDataOptions): ChartProgram;
   createNormalizedData(options: NormalizedDataOptions): ChartProgram;
+  createCompleteData(options: CompleteDataOptions): ChartProgram;
+  createImputedData(options: ImputedDataOptions): ChartProgram;
   createStackData(options: StackDataOptions): ChartProgram;
   createRegressionData(options: RegressionDataOptions): ChartProgram;
   createIntervalData(options: IntervalDataOptions): ChartProgram;

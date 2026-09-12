@@ -8,6 +8,7 @@ import {
 import { validateDensityTransform } from "./density.js";
 import { validateECDFTransform } from "./ecdf.js";
 import { validateComputedTransform } from "./computed.js";
+import { validateCompleteTransform } from "./complete.js";
 import { validateFilterTransform } from "./filter.js";
 import { validateFoldTransform } from "./fold.js";
 import {
@@ -15,6 +16,7 @@ import {
   validateGradientProfileTransform
 } from "./gradientProfile.js";
 import { validateIntervalTransform } from "./interval.js";
+import { validateImputeTransform } from "./impute.js";
 import {
   requestedHorizonTransform,
   validateHorizonTransform
@@ -67,6 +69,11 @@ const TRANSFORM_POLICIES = Object.freeze({
     validate: validateComputedTransform,
     materializeOp: "materializeComputedData"
   }),
+  complete: Object.freeze({
+    ...findTransformTopology("complete"),
+    validate: validateCompleteTransform,
+    materializeOp: "materializeCompleteData"
+  }),
   boxOutlier: Object.freeze({
     ...findTransformTopology("boxOutlier"),
     validate: validateBoxTransform,
@@ -115,6 +122,11 @@ const TRANSFORM_POLICIES = Object.freeze({
     ...findTransformTopology("interval"),
     validate: validateIntervalTransform,
     materializeOp: "materializeIntervalData"
+  }),
+  impute: Object.freeze({
+    ...findTransformTopology("impute"),
+    validate: validateImputeTransform,
+    materializeOp: "materializeImputedData"
   }),
   markFilter: Object.freeze({
     ...findTransformTopology("markFilter"),

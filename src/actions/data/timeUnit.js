@@ -4,7 +4,10 @@ import {
 } from "../../grammar/timeUnit.js";
 import { derivedCreator, derivedMaterializer } from "./shared.js";
 
-const OPTIONS = Object.freeze(["id", "source", "field", "unit", "as", "temporalUnit"]);
+const OPTIONS = Object.freeze([
+  "id", "source", "field", "unit", "as", "temporalUnit", "timeZone",
+  "weekStartsOn", "weekRule"
+]);
 
 export const materializeTimeUnitData = derivedMaterializer(
   "materializeTimeUnitData",

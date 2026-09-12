@@ -283,6 +283,20 @@ async function testNodeConsumer(directory) {
         .values[0].month,
       Date.UTC(2024, 4, 1)
     );
+    const localWeek = chart()
+      .createData({ id: "weekEvents", values: [{ date: "2024-01-03T12:00:00Z" }] })
+      .createTimeUnitData({
+        id: "localWeek",
+        field: "date",
+        unit: "week",
+        as: "week",
+        timeZone: "Asia/Seoul",
+        weekStartsOn: 1
+      });
+    assert.equal(
+      localWeek.semanticSpec.datasets.find(dataset => dataset.id === "localWeek").values[0].week,
+      Date.parse("2023-12-31T15:00:00Z")
+    );
     const summarized = chart()
       .createData({
         id: "sales",
@@ -383,6 +397,38 @@ async function testNodeConsumer(directory) {
         .values.map(row => row.index),
       [100, -400]
     );
+    const completed = chart()
+      .createData({ id: "sparse", values: [
+        { series: "A", period: 1, amount: 2 },
+        { series: "A", period: 3, amount: 6 }
+      ] })
+      .createCompleteData({
+        id: "completed",
+        key: "period",
+        groupBy: "series",
+        values: [1, 2, 3],
+        members: "sourceRows"
+      });
+    assert.deepEqual(
+      completed.semanticSpec.datasets.find(dataset => dataset.id === "completed").values,
+      [
+        { series: "A", period: 1, amount: 2, sourceRows: [0] },
+        { series: "A", period: 2, amount: null, sourceRows: [] },
+        { series: "A", period: 3, amount: 6, sourceRows: [1] }
+      ]
+    );
+    const imputed = completed.createImputedData({
+      id: "imputed",
+      fields: "amount",
+      groupBy: "series",
+      sortBy: [{ field: "period" }],
+      method: "linear"
+    });
+    assert.deepEqual(
+      imputed.semanticSpec.datasets.find(dataset => dataset.id === "imputed")
+        .values.map(row => row.amount),
+      [2, 4, 6]
+    );
     const stacked = chart()
       .createData({
         id: "stackCells",
@@ -432,6 +478,30 @@ async function testNodeConsumer(directory) {
     assert.deepEqual(
       windowValues.map(row => [row.rowNumber, row.runningValue, row.movingValue]),
       [[2, 5, 2.5], [1, 2, 2], [1, 4, 4]]
+    );
+    const elapsed = chart()
+      .createData({ id: "elapsedSource", values: [
+        { time: 0, value: 2 },
+        { time: 86_400_000, value: null },
+        { time: 604_800_000, value: 6 }
+      ] })
+      .createWindowData({
+        id: "elapsed",
+        temporalUnit: "timestamp",
+        sortBy: [{ field: "time" }],
+        operations: [{
+          op: "movingMean",
+          field: "value",
+          as: "mean",
+          frame: { duration: { preceding: 7, unit: "day" } },
+          missing: "skip",
+          minPeriods: 1
+        }]
+      });
+    assert.deepEqual(
+      elapsed.semanticSpec.datasets.find(dataset => dataset.id === "elapsed")
+        .values.map(row => row.mean),
+      [2, 2, 4]
     );
     const binned = chart()
       .createData({
@@ -1530,8 +1600,8 @@ async function testMcpConsumer(directory) {
     actionCardSchema.properties?.schemaVersion?.const !== 3 ||
     actionCardsSchema.properties?.schemaVersion?.const !== 3 ||
     actionCards.schemaVersion !== 3 ||
-    actionCards.count !== 245 ||
-    actionCards.cards.length !== 245 ||
+    actionCards.count !== 247 ||
+    actionCards.cards.length !== 247 ||
     actionCards.packageVersion !== installedPackage.version
   ) {
     throw new Error("Installed action-card discovery contract is missing or stale.");
@@ -1540,6 +1610,14 @@ async function testMcpConsumer(directory) {
   if (installedCards.get("createNormalizedData")?.signature !==
     "createNormalizedData(options: NormalizedDataOptions): ChartProgram;") {
     throw new Error("Installed normalization discovery metadata is stale.");
+  }
+  if (
+    installedCards.get("createCompleteData")?.signature !==
+      "createCompleteData(options: CompleteDataOptions): ChartProgram;" ||
+    installedCards.get("createImputedData")?.signature !==
+      "createImputedData(options: ImputedDataOptions): ChartProgram;"
+  ) {
+    throw new Error("Installed missing-data discovery metadata is stale.");
   }
   const installedScatter = installedCards.get("createScatterPlot");
   if (
@@ -1726,8 +1804,11 @@ async function testTypeScriptConsumer(directory) {
       type EditECDFPlotOptions,
       type ECDFDataOptions,
       type ColorLayout,
+      type CompleteDataOptions,
       type ComputedDataOptions,
       type ComputedExpression,
+      type DatasetCompleteTransform,
+      type DatasetImputedTransform,
       type DatasetNormalizedTransform,
       type CreateParallelCoordinatesOptions,
       type OrderCategoriesOptions,
@@ -1746,6 +1827,7 @@ async function testTypeScriptConsumer(directory) {
       type JitterMaxOffset,
       type JitterPointsOptions,
       type InsertCompositionChildOptions,
+      type ImputedDataOptions,
       type PackPointsOptions,
       type PointPackingMaxOffset,
       type NonPointQuantitativePositionScaleOptions,
@@ -2677,6 +2759,63 @@ async function testTypeScriptConsumer(directory) {
       variance: "population",
       zeroDenominator: "error"
     };
+    const completeOptions: CompleteDataOptions = {
+      id: "completed",
+      key: "period",
+      groupBy: "series",
+      values: [1, 2, 3],
+      members: "sourceRows"
+    };
+    const completedData: ChartProgram = chart()
+      .createData({ id: "sparse", values: [
+        { series: "A", period: 1, amount: 2 },
+        { series: "A", period: 3, amount: 6 }
+      ] })
+      .createCompleteData(completeOptions);
+    const completeTransform: DatasetCompleteTransform = {
+      type: "complete",
+      key: "period",
+      groupBy: ["series"],
+      values: [1, 2, 3],
+      fill: {},
+      members: "sourceRows"
+    };
+    const imputedOptions: ImputedDataOptions = {
+      id: "imputed",
+      fields: "amount",
+      groupBy: "series",
+      sortBy: [{ field: "period" }],
+      method: "linear"
+    };
+    const imputedData: ChartProgram = completedData.createImputedData(imputedOptions);
+    const imputedTransform: DatasetImputedTransform = {
+      type: "impute",
+      fields: ["amount"],
+      groupBy: ["series"],
+      sortBy: [{ field: "period", order: "ascending" }],
+      method: "linear",
+      edges: "keep"
+    };
+    void completeTransform;
+    void imputedTransform;
+    void imputedData;
+    // @ts-expect-error Complete domains cannot use values and sequence together.
+    const invalidComplete: CompleteDataOptions = {
+      id: "invalidComplete",
+      key: "period",
+      values: [1, 2],
+      sequence: { start: 1, end: 2, step: 1 }
+    };
+    void invalidComplete;
+    // @ts-expect-error Linear imputation does not accept a constant value.
+    const invalidLinearImpute: ImputedDataOptions = {
+      id: "invalidImpute",
+      fields: "amount",
+      method: "linear",
+      sortBy: [{ field: "period" }],
+      value: 0
+    };
+    void invalidLinearImpute;
     const stackOptions: StackDataOptions = {
       id: "stacked",
       category: "category",
@@ -2714,6 +2853,29 @@ async function testTypeScriptConsumer(directory) {
       unit: "month",
       as: "month"
     };
+    const weeklyOptions: TimeUnitDataOptions = {
+      id: "weeklyEvents",
+      field: "date",
+      unit: "week",
+      as: "week",
+      timeZone: "Asia/Seoul",
+      weekRule: "iso",
+      weekStartsOn: 1
+    };
+    const weeklyEvents: ChartProgram = chart()
+      .createData({ id: "weekSource", values: [{ date: "2024-01-03" }] })
+      .createTimeUnitData(weeklyOptions);
+    void weeklyEvents;
+    // @ts-expect-error ISO weeks always start on Monday.
+    const invalidIsoWeek: TimeUnitDataOptions = {
+      id: "invalidWeek",
+      field: "date",
+      unit: "week",
+      as: "week",
+      weekRule: "iso",
+      weekStartsOn: 0
+    };
+    void invalidIsoWeek;
     const windowOptions: WindowDataOptions = {
       id: "ordered",
       partitionBy: "group",
@@ -2743,9 +2905,43 @@ async function testTypeScriptConsumer(directory) {
         op: "movingMean",
         field: "value",
         as: "movingValue",
-        frame: { preceding: 2, following: 0 }
+        frame: { preceding: 2, following: 0 },
+        minPeriods: 1,
+        missing: "error"
       }]
     };
+    const durationWindowOptions: WindowDataOptions = {
+      id: "elapsed",
+      temporalUnit: "timestamp",
+      sortBy: [{ field: "time" }],
+      operations: [{
+        op: "movingMean",
+        field: "value",
+        as: "mean",
+        frame: { duration: { preceding: 7, unit: "day" } },
+        minPeriods: 2,
+        missing: "skip"
+      }]
+    };
+    const durationWindowed: ChartProgram = chart()
+      .createData({ id: "durationSource", values: [
+        { time: 0, value: 2 }, { time: 86_400_000, value: 4 }
+      ] })
+      .createWindowData(durationWindowOptions);
+    void durationWindowed;
+    const invalidDurationFrame: WindowDataOptions = {
+      id: "invalidDuration",
+      temporalUnit: "timestamp",
+      sortBy: [{ field: "time" }],
+      operations: [{
+        op: "movingSum",
+        field: "value",
+        as: "sum",
+        // @ts-expect-error Row and duration frame modes are mutually exclusive.
+        frame: { preceding: 1, duration: { preceding: 1, unit: "day" } }
+      }]
+    };
+    void invalidDurationFrame;
     const binOptions: Bin2DDataOptions = {
       id: "cells",
       x: "x",
@@ -3078,6 +3274,8 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.a
       "fold-data",
       "computed-data",
       "normalized-data",
+      "complete-data",
+      "imputed-data",
       "stack-data",
       "window-data",
       "bin2d-data",

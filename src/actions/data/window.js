@@ -5,7 +5,7 @@ import {
 import { derivedCreator, derivedMaterializer } from "./shared.js";
 
 const OPTIONS = Object.freeze([
-  "id", "source", "partitionBy", "sortBy", "operations"
+  "id", "source", "partitionBy", "sortBy", "operations", "temporalUnit"
 ]);
 
 export const materializeWindowData = derivedMaterializer(

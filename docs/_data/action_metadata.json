@@ -103,6 +103,22 @@
     "layer": "user-facing",
     "domain": "statistics"
   },
+  "createCompleteData": {
+    "operation": "create",
+    "authoringRoles": [
+      "H1"
+    ],
+    "layer": "user-facing",
+    "domain": "statistics"
+  },
+  "createImputedData": {
+    "operation": "create",
+    "authoringRoles": [
+      "H1"
+    ],
+    "layer": "user-facing",
+    "domain": "statistics"
+  },
   "createStackData": {
     "operation": "create",
     "authoringRoles": [

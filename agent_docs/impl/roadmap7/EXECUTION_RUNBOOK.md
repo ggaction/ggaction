@@ -141,7 +141,7 @@ Phase 2는 data-only 기능이다. 새 시각 디자인은 없지만 결과를 �
 2. duration unit은 millisecond/second/minute/hour/day이고 day는 정확히 24시간이다. 달력 하루 의미를 R08에서 가져오지 않는다.
 3. duration frame에는 정확히 하나의 ascending sort가 필수다. temporal value는 기존 temporal helper로 epoch milliseconds가 된다.
 4. interval endpoints는 닫혀 있다. 동일 timestamp peer는 모두 같은 window와 같은 결과를 가진다.
-5. `minPeriods` 기본 1, positive integer다. 지정 field의 nullish는 count와 합계에서 제외한다. `missing: error`는 invalid finite 값이나 계약상 거부 대상에 적용한다.
+5. `minPeriods` 기본 1, positive integer다. `missing` 기본 `error`는 nullish와 nonfinite 값을 거부한다. 명시한 `missing: skip`만 nullish를 count와 합계에서 제외하며 NaN/Infinity는 항상 오류다.
 6. stable sort + two pointers + rolling accumulator로 group당 `O(n log n)+O(n)`을 지킨다. 각 row마다 전체 배열을 filter/find하지 않는다.
 7. 큰 수의 합은 compensated/rescaled helper를 쓰고 최종 nonfinite를 거부한다. 입력 순서로 결과를 복구한다.
 

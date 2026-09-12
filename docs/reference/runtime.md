@@ -113,7 +113,8 @@ complete Browser Canvas, SVG, Node PNG, and vector PDF examples.
 
 High-level actions call additional wrapped operations for data, scale, mark,
 guide, title, and layout materialization. Names such as
-`materializeDensityData`, `materializeWindowData`, `materializeBin2DData`, `rematerializeScale`, `rematerializePointMark`,
+`materializeCompleteData`, `materializeDensityData`, `materializeImputedData`,
+`materializeWindowData`, `materializeBin2DData`, `rematerializeScale`, `rematerializePointMark`,
 `createCategoricalLegend`, `createSizeLegend`, `rematerializeSizeLegend`,
 `createLegendSymbols`, and `createTitleText` may appear in
 `program.trace`. They are deliberately absent from the public TypeScript

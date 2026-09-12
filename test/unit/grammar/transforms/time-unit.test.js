@@ -91,7 +91,7 @@ test("derives frozen source-ordered rows from every accepted temporal input form
 
 test("validates the closed transform and source-field contracts", () => {
   assert.throws(
-    () => normalizeTimeUnitTransform({ field: "date", unit: "week", as: "bucket" }),
+    () => normalizeTimeUnitTransform({ field: "date", unit: "fortnight", as: "bucket" }),
     /Unsupported time unit/
   );
   assert.throws(

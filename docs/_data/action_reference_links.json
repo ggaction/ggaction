@@ -125,6 +125,8 @@
   "createFoldData": "/reference/actions/statistics/#createfolddata",
   "createComputedData": "/reference/actions/statistics/#createcomputeddata",
   "createNormalizedData": "/reference/actions/statistics/#createnormalizeddata",
+  "createCompleteData": "/reference/actions/statistics/#createcompletedata",
+  "createImputedData": "/reference/actions/statistics/#createimputeddata",
   "createStackData": "/reference/actions/statistics/#createstackdata",
   "createHorizonPlot": "/reference/actions/statistics/#createhorizonplot",
   "createDensityPlot": "/reference/actions/statistics/#createdensityplot",

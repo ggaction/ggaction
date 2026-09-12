@@ -55,6 +55,26 @@ Materialize row-preserving share, z-score, min-max, index, change, or fractional
 percent-change values independently within each group.
 [Source and Derived Data](../../api/data/source-and-derived.md#createnormalizeddata-id-source-field-as-groupby-method)
 
+## `createCompleteData`
+
+```javascript
+createCompleteData({ id, source?, key, groupBy?, values?, sequence?, fill?, members? })
+```
+
+Complete one typed key domain independently inside every observed group, with
+explicit fill and source-membership provenance for synthesized rows.
+[Source and Derived Data](../../api/data/source-and-derived.md#createcompletedata-id-source-key-groupby-values-sequence-fill-members)
+
+## `createImputedData`
+
+```javascript
+createImputedData({ id, source?, fields, groupBy?, sortBy?, method, value?, edges?, maxGap? })
+```
+
+Replace nullish cells by constant, forward, backward, or distance-based linear
+imputation while preserving group boundaries and final source order.
+[Source and Derived Data](../../api/data/source-and-derived.md#createimputeddata-id-source-fields-groupby-sortby-method-value-edges-maxgap)
+
 ## `createStackData`
 
 ```javascript

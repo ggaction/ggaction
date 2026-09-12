@@ -222,7 +222,9 @@ test("createDerivedData validates complete normalized moving-window provenance",
         op: "movingMean",
         field: "y",
         as: "movingMean",
-        frame: { preceding: 1, following: 0 }
+        frame: { preceding: 1, following: 0 },
+        minPeriods: 1,
+        missing: "error"
       }]
     }]
   });
@@ -243,7 +245,9 @@ test("createDerivedData validates complete normalized moving-window provenance",
           op: "movingMean",
           field: "y",
           as: "movingMean",
-          frame: { preceding: 1 }
+          frame: { preceding: 1 },
+          minPeriods: 1,
+          missing: "error"
         }]
       }]
     }),

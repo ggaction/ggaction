@@ -21,6 +21,8 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`createFoldData`](current/CORE.md#createfolddata) | statistics | Immutable create-only | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createComputedData`](current/CORE.md#createcomputeddata) | statistics | Immutable create-only | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createNormalizedData`](current/CORE.md#createnormalizeddata) | statistics | Immutable create-only | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`createCompleteData`](current/CORE.md#createcompletedata) | statistics | Immutable create-only | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`createImputedData`](current/CORE.md#createimputeddata) | statistics | Immutable create-only | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createStackData`](current/CORE.md#createstackdata) | statistics | Immutable create-only | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createDensityData`](current/CORE.md#createdensitydata) | core | Immutable create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createRegressionData`](current/CORE.md#createregressiondata) | core | Immutable create-only | Intentional | ✅ / ✅ / ✅ |
