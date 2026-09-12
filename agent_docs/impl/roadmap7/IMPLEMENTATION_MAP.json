@@ -406,7 +406,7 @@
       "spec": "features/20-parallel-scale.md",
       "phase": 5,
       "dependsOn": [],
-      "status": "Proposed",
+      "status": "Implemented-primary",
       "newPublicActions": [
         "editParallelScale"
       ],
@@ -416,13 +416,14 @@
         "src/actions/scales/consumers/common.js",
         "src/actions/coordinates/parallel.js",
         "src/actions/guides/axes/parallel.js",
-        "src/actions/scales/channels.js"
+        "src/actions/scales/channels.js",
+        "src/actions/scales/parallel.js"
       ],
       "existingRegressionTests": [
         "test/contracts/parallel-coordinates.test.js",
         "test/contracts/nested-scale-role-contract.test.js"
       ],
-      "suggestedNewTest": "test/contracts/parallel-scale.test.js",
+      "suggestedNewTest": "test/unit/actions/scales/parallel-scale.test.js",
       "acceptanceCases": [
         "R20-N01",
         "R20-N02",
@@ -444,7 +445,7 @@
       "spec": "features/21-offset-scales.md",
       "phase": 5,
       "dependsOn": [],
-      "status": "Proposed",
+      "status": "Implemented-primary",
       "newPublicActions": [
         "editXOffsetScale",
         "editYOffsetScale"
@@ -459,13 +460,16 @@
         "src/actions/scales/edit.js",
         "src/actions/encodings/offset.js",
         "src/materialization/scales/policies/offset.js",
-        "src/grammar/bars/geometry.js"
+        "src/grammar/bars/geometry.js",
+        "src/actions/scales/offset.js",
+        "src/grammar/scales/definition.js",
+        "src/grammar/scales/ordinal.js"
       ],
       "existingRegressionTests": [
         "test/unit/actions/scales/channel-scale-editors.test.js",
         "test/charts/jobs-grouped-bar/reference-values.test.js"
       ],
-      "suggestedNewTest": "test/contracts/offset-scales.test.js",
+      "suggestedNewTest": "test/unit/actions/scales/offset-scale.test.js",
       "acceptanceCases": [
         "R21-N01",
         "R21-N02",

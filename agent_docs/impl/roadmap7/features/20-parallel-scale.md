@@ -1,7 +1,7 @@
 # R20 — Parallel 차원별 scale 집중 편집
 
-원래 감사 번호: **20**. Primary owner: **Phase 5**. 상태: **Proposed / 구현 전**.
-아래 세부 API·수치 정책의 Gate는 승인됐다. 상태의 `Proposed`는 제품 구현·검증이 아직 완료되지 않았다는 뜻이다.
+원래 감사 번호: **20**. Primary owner: **Phase 5**. 상태: **Implemented-primary** (`eaea2b8b`).
+공개 API, 필드 기반 resolver, 공유 consumer 갱신, 타입·Current 계약·설치 패키지 검증까지 구현됐다.
 
 ## 목적과 현재 연결점
 
@@ -78,9 +78,9 @@ scale ID와 consumer registry가 canonical owner다. focused action은 target+di
 
 ## 완료 조건
 
-- [ ] 위 API의 최단 호출과 explicit 대상 호출, 누락/auto/false/empty 경계를 타입과 runtime으로 동기화했다.
-- [ ] 위 수치 oracle를 실제 capability test에 구현했고 계획 예제를 기대값 생성기로 재사용하지 않았다.
-- [ ] 기존 consumer와 새 consumer에 scale/mark/guide/label/selection/facet/Canvas replay를 검증했다.
-- [ ] Full 등록·타입 export·Current 계약·catalog·card·관계 trace·MCP·문서·installed consumer를 갱신했다.
-- [ ] 미지원 cell은 이유를 적었다. 이 문서에 명시한 필수 cell을 임의 제외하지 않았다.
-- [ ] 해당 Phase의 승인/검증 근거를 기록했다. 추측으로 완료 표시하지 않았다.
+- [x] 위 API의 최단 호출과 explicit 대상 호출, 누락/auto/false/empty 경계를 타입과 runtime으로 동기화했다.
+- [x] 위 수치 oracle를 `test/unit/actions/scales/parallel-scale.test.js`에 독립 기대값으로 구현했다.
+- [x] reorder, shared scale, guides, Canvas replay, 잘못된 target/dimension/type과 오류 원자성을 검증했다.
+- [x] Full 등록·타입 export·Current 계약·catalog·card·관계 trace·MCP·문서·installed consumer를 갱신했다.
+- [x] Basic 미노출과 현재 Parallel quantitative/ordinal 경계를 유지했다.
+- [x] Phase 승인과 `eaea2b8b` 구현·검증 근거를 기록했다.

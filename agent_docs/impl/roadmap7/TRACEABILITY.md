@@ -12,8 +12,8 @@
 | R09 | 2 | [기간 기반 window와 최소 관측수](features/09-duration-windows.md) | [Phase 2 STEP1](phase2/STEP1.md) · `9d4d0840` | primary 구현 완료 / R02 edit 통합 대기 |
 | R10 | 3 | [가중 통계·histogram·KDE](features/10-weighted-statistics.md) | [Phase 3 STEP1](phase3/STEP1.md) · `da0ca4e2`, `276c8318`, `32ddfcdd` | primary 구현 완료 / R02 edit 통합 대기 |
 | R19 | 5 | [다중 채널의 원자적 재인코딩](features/19-atomic-encoding.md) | feature 내 독립 oracle/완료 조건 → Phase 5 STEP1 evidence | Proposed / 미구현 |
-| R20 | 5 | [Parallel 차원별 scale 집중 편집](features/20-parallel-scale.md) | feature 내 독립 oracle/완료 조건 → Phase 5 STEP1 evidence | Proposed / 미구현 |
-| R21 | 5 | [중첩 band offset scale 집중 편집](features/21-offset-scales.md) | feature 내 독립 oracle/완료 조건 → Phase 5 STEP1 evidence | Proposed / 미구현 |
+| R20 | 5 | [Parallel 차원별 scale 집중 편집](features/20-parallel-scale.md) | `test/unit/actions/scales/parallel-scale.test.js`; `test/contracts/phase5-scale-types.test.js`; `eaea2b8b` | Implemented-primary |
+| R21 | 5 | [중첩 band offset scale 집중 편집](features/21-offset-scales.md) | `test/unit/actions/scales/offset-scale.test.js`; grouped-bar chart fixtures; package consumer; `335ce4f0` | Implemented-primary |
 | R22 | 5 | [필드 기반 stroke 색상](features/22-stroke-color.md) | feature 내 독립 oracle/완료 조건 → Phase 5 STEP1 evidence | Proposed / 미구현 |
 | R23 | 5 | [크기 scale의 비선형·단계형 mapping](features/23-size-scale-types.md) | feature 내 독립 oracle/완료 조건 → Phase 5 STEP1 evidence | Proposed / 미구현 |
 | R25 | 11 | [미사용 dataset·scale·coordinate 안전 삭제](features/25-remove-resources.md) | feature 내 독립 oracle/완료 조건 → Phase 11 STEP1 evidence | Proposed / 미구현 |

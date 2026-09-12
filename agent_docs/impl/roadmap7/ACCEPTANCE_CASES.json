@@ -560,8 +560,8 @@
       "kind": "normal",
       "specification": "a의 domain[0,10],value5,local y-range[100,0] → y50. domain[0,20] 후 y75. b와 a의 x 위치는 동일.",
       "owner": "features/20-parallel-scale.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/unit/actions/scales/parallel-scale.test.js and test/contracts/phase5-scale-types.test.js; eaea2b8b"
     },
     {
       "id": "R20-N02",
@@ -570,8 +570,8 @@
       "kind": "normal",
       "specification": "dimensions [a,b]→[b,a] 뒤 dimension:a로 edit → a의 scale만 resolve.",
       "owner": "features/20-parallel-scale.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/unit/actions/scales/parallel-scale.test.js and test/contracts/phase5-scale-types.test.js; eaea2b8b"
     },
     {
       "id": "R20-L01",
@@ -580,8 +580,8 @@
       "kind": "lifecycle",
       "specification": "두 dimensions가 동일 scale이면 두 경로/가이드가 함께 바뀐다.",
       "owner": "features/20-parallel-scale.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/unit/actions/scales/parallel-scale.test.js and test/contracts/phase5-scale-types.test.js; eaea2b8b"
     },
     {
       "id": "R20-E01",
@@ -590,8 +590,8 @@
       "kind": "error",
       "specification": "dimension:\"A 표시명\",dimension:\"0\",Cartesian target,empty patch → Error.",
       "owner": "features/20-parallel-scale.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/unit/actions/scales/parallel-scale.test.js and test/contracts/phase5-scale-types.test.js; eaea2b8b"
     },
     {
       "id": "R20-E02",
@@ -600,8 +600,8 @@
       "kind": "error",
       "specification": "categorical dimension에 log domain 제안 → 호환 오류, 원본 axes/paths 유지.",
       "owner": "features/20-parallel-scale.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/unit/actions/scales/parallel-scale.test.js and test/contracts/phase5-scale-types.test.js; eaea2b8b"
     },
     {
       "id": "R21-N01",
@@ -610,8 +610,8 @@
       "kind": "normal",
       "specification": "S100,n2,pi0,po0,a.5 → starts[0,50],bandwidth50.",
       "owner": "features/21-offset-scales.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/unit/actions/scales/offset-scale.test.js, grouped-bar chart fixtures, and test/contracts/phase5-scale-types.test.js; 335ce4f0"
     },
     {
       "id": "R21-N02",
@@ -620,8 +620,8 @@
       "kind": "normal",
       "specification": "pi.2,po.1 → step50,starts[5,55],bandwidth40.",
       "owner": "features/21-offset-scales.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/unit/actions/scales/offset-scale.test.js, grouped-bar chart fixtures, and test/contracts/phase5-scale-types.test.js; 335ce4f0"
     },
     {
       "id": "R21-N03",
@@ -630,8 +630,8 @@
       "kind": "normal",
       "specification": "S200으로 resize → starts[10,110],bandwidth80.",
       "owner": "features/21-offset-scales.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/unit/actions/scales/offset-scale.test.js, grouped-bar chart fixtures, and test/contracts/phase5-scale-types.test.js; 335ce4f0"
     },
     {
       "id": "R21-N04",
@@ -640,8 +640,8 @@
       "kind": "normal",
       "specification": "domain[u,v]→[v,u] → 부모 A/B와 color legend 순서는 유지, offset 위치만 교환.",
       "owner": "features/21-offset-scales.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/unit/actions/scales/offset-scale.test.js, grouped-bar chart fixtures, and test/contracts/phase5-scale-types.test.js; 335ce4f0"
     },
     {
       "id": "R21-E01",
@@ -650,8 +650,8 @@
       "kind": "error",
       "specification": "range:[0,50],order:[…],type:\"linear\",pi1,align2,missing offset → 각각 오류.",
       "owner": "features/21-offset-scales.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/unit/actions/scales/offset-scale.test.js, grouped-bar chart fixtures, and test/contracts/phase5-scale-types.test.js; 335ce4f0"
     },
     {
       "id": "R21-L01",
@@ -660,8 +660,8 @@
       "kind": "lifecycle",
       "specification": "기존 point-parent/binned-parent fixture 유지, 반복 reencode/Canvas에서도 새 padding 유지.",
       "owner": "features/21-offset-scales.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/unit/actions/scales/offset-scale.test.js, grouped-bar chart fixtures, and test/contracts/phase5-scale-types.test.js; 335ce4f0"
     },
     {
       "id": "R22-N01",

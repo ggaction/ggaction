@@ -269,7 +269,7 @@
       "slug": "parallel-scale",
       "phase": 5,
       "dependsOn": [],
-      "status": "Proposed",
+      "status": "Implemented-primary",
       "scopeSelection": "user-selected",
       "file": "features/20-parallel-scale.md",
       "sources": [
@@ -294,7 +294,7 @@
       "slug": "offset-scales",
       "phase": 5,
       "dependsOn": [],
-      "status": "Proposed",
+      "status": "Implemented-primary",
       "scopeSelection": "user-selected",
       "file": "features/21-offset-scales.md",
       "sources": [
