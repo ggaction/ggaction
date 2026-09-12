@@ -780,11 +780,12 @@
         "createbindata-id-source-field-binoptions",
         "createfolddata-id-source-fields-as",
         "createcomputeddata-id-source-as-expression",
+        "createnormalizeddata-id-source-field-as-groupby-method",
         "createstackdata-id-source-category-group-value-mode-as",
         "related"
       ],
-      "bytes": 11021,
-      "sha256": "4bb435c5ceabe5928dc1d974644f6cea4516ee058171b26054779ee3907ce083"
+      "bytes": 12546,
+      "sha256": "7f590e99d6fed4f6a74455bdc867d9cd0127463b83417c9cf963198e0ca319a7"
     },
     {
       "order": 51,
@@ -1846,8 +1847,8 @@
         "action-reference",
         "exact-action-lookup"
       ],
-      "bytes": 27482,
-      "sha256": "9895277c84c165f52422097ed4dc1d7d11cc36d2d45914a7510fb5903271a780"
+      "bytes": 27597,
+      "sha256": "5ccb76eedf87232ffaee30802fd769e8c2a14112dbe9e1e4aea3403b51987b5c"
     },
     {
       "order": 117,
@@ -2019,6 +2020,7 @@
         "createbindata",
         "createfolddata",
         "createcomputeddata",
+        "createnormalizeddata",
         "createstackdata",
         "createhorizonplot",
         "createdensityplot",
@@ -2038,8 +2040,8 @@
         "editviolinplot",
         "related"
       ],
-      "bytes": 11687,
-      "sha256": "737fee3e12933fb814011f75c9d66014ba67f64010edec28212b5c7d8bd58b65"
+      "bytes": 12095,
+      "sha256": "aa3f782ee45ae9c50c8d6388e5573fe14d56ae484dfeaffba9bf0f43b55ecdc8"
     },
     {
       "order": 121,
@@ -2154,8 +2156,8 @@
         "exact-typescript-signatures",
         "related"
       ],
-      "bytes": 19058,
-      "sha256": "6f553d69c77f38aed0a7b4df951eecd8fbff61fe92bf0c350e342e5cb7332a9e"
+      "bytes": 19128,
+      "sha256": "21db2cd3313d6a6f7d07825ae99cbedd4b79311cf10776ca06e73e717a2ff7f9"
     },
     {
       "order": 126,

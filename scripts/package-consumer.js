@@ -353,6 +353,36 @@ async function testNodeConsumer(directory) {
       computed.semanticSpec.datasets.find(dataset => dataset.id === "shares").values[0].share,
       0.25
     );
+    const classified = chart()
+      .createData({ id: "measurements", values: [{ value: -1 }, { value: 4 }] })
+      .createComputedData({
+        id: "classified",
+        as: "class",
+        expression: {
+          op: "if",
+          condition: { op: "gt", left: { field: "value" }, right: { constant: 0 } },
+          then: { constant: "positive" },
+          else: { constant: "non-positive" }
+        }
+      })
+      .createNormalizedData({
+        id: "indexed",
+        source: "classified",
+        field: "value",
+        as: "index",
+        method: "index",
+        baseline: { value: -1 }
+      });
+    assert.deepEqual(
+      classified.semanticSpec.datasets.find(dataset => dataset.id === "classified")
+        .values.map(row => row.class),
+      ["non-positive", "positive"]
+    );
+    assert.deepEqual(
+      classified.semanticSpec.datasets.find(dataset => dataset.id === "indexed")
+        .values.map(row => row.index),
+      [100, -400]
+    );
     const stacked = chart()
       .createData({
         id: "stackCells",
@@ -1500,13 +1530,17 @@ async function testMcpConsumer(directory) {
     actionCardSchema.properties?.schemaVersion?.const !== 3 ||
     actionCardsSchema.properties?.schemaVersion?.const !== 3 ||
     actionCards.schemaVersion !== 3 ||
-    actionCards.count !== 244 ||
-    actionCards.cards.length !== 244 ||
+    actionCards.count !== 245 ||
+    actionCards.cards.length !== 245 ||
     actionCards.packageVersion !== installedPackage.version
   ) {
     throw new Error("Installed action-card discovery contract is missing or stale.");
   }
   const installedCards = new Map(actionCards.cards.map(card => [card.name, card]));
+  if (installedCards.get("createNormalizedData")?.signature !==
+    "createNormalizedData(options: NormalizedDataOptions): ChartProgram;") {
+    throw new Error("Installed normalization discovery metadata is stale.");
+  }
   const installedScatter = installedCards.get("createScatterPlot");
   if (
     !installedScatter?.authoringRoles.includes("H0") ||
@@ -1694,6 +1728,7 @@ async function testTypeScriptConsumer(directory) {
       type ColorLayout,
       type ComputedDataOptions,
       type ComputedExpression,
+      type DatasetNormalizedTransform,
       type CreateParallelCoordinatesOptions,
       type OrderCategoriesOptions,
       type GradientPlotOptions,
@@ -1714,6 +1749,7 @@ async function testTypeScriptConsumer(directory) {
       type PackPointsOptions,
       type PointPackingMaxOffset,
       type NonPointQuantitativePositionScaleOptions,
+      type NormalizedDataOptions,
       type OpacityScaleOptions,
       type ParallelCoordinatesEncodingOptions,
       type RemoveJitterOptions,
@@ -2622,6 +2658,25 @@ async function testTypeScriptConsumer(directory) {
       as: "share",
       expression: ratioExpression
     };
+    const normalizedOptions: NormalizedDataOptions = {
+      id: "normalized",
+      field: "value",
+      as: "z",
+      method: "zscore",
+      variance: "population"
+    };
+    const normalized: ChartProgram = chart()
+      .createData({ id: "normalizedSource", values: [{ value: 2 }, { value: 4 }] })
+      .createNormalizedData(normalizedOptions);
+    const normalizedTransform: DatasetNormalizedTransform = {
+      type: "normalize",
+      field: "value",
+      as: "z",
+      groupBy: [],
+      method: "zscore",
+      variance: "population",
+      zeroDenominator: "error"
+    };
     const stackOptions: StackDataOptions = {
       id: "stacked",
       category: "category",
@@ -3022,6 +3077,7 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.a
       "bin-data",
       "fold-data",
       "computed-data",
+      "normalized-data",
       "stack-data",
       "window-data",
       "bin2d-data",

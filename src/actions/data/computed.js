@@ -8,14 +8,14 @@ const OPTIONS = Object.freeze(["id", "source", "as", "expression"]);
 
 export const materializeComputedData = derivedMaterializer(
   "materializeComputedData",
-  "Materialize one immutable row-level arithmetic dataset.",
+  "Materialize one immutable row-level typed expression dataset.",
   "computed",
   deriveComputedRows
 );
 
 export const createComputedData = derivedCreator(
   "createComputedData",
-  "Create a finite computed field from a closed arithmetic expression.",
+  "Create a typed computed field from a closed expression.",
   OPTIONS,
   "Computed dataset id",
   "Computed source dataset id",

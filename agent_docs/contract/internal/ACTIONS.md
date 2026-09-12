@@ -21,6 +21,7 @@ domain action을 통해서만 실행한다.
 | `materializeBin2DData` | rectangular 2D-bin data actions |
 | `materializeComposition` | `hconcat`, `vconcat`, and composition edits |
 | `materializeComputedData` | bounded row-level arithmetic data actions |
+| `materializeNormalizedData` | row-preserving grouped normalization and baseline transforms |
 | `materializeDensityData` | density data actions |
 | `materializeECDFData` | empirical cumulative distribution data actions |
 | `materializeGradientProfileData` | gradient-plot profile data actions |

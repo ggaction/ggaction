@@ -622,21 +622,73 @@ export interface DatasetFoldTransform {
 }
 export type ComputedExpression =
   | { readonly field: string }
-  | { readonly constant: number }
+  | { readonly constant: number | string | boolean | null }
   | {
-      readonly op: "negate" | "absolute";
+      readonly op: "negate" | "absolute" | "log" | "sqrt" | "not" | "isNull";
       readonly operand: ComputedExpression;
     }
   | {
-      readonly op: "add" | "subtract" | "multiply" | "divide";
+      readonly op: "add" | "subtract" | "multiply" | "divide" |
+        "eq" | "neq" | "lt" | "lte" | "gt" | "gte";
       readonly left: ComputedExpression;
       readonly right: ComputedExpression;
+    }
+  | {
+      readonly op: "and" | "or" | "coalesce";
+      readonly operands: readonly [ComputedExpression, ComputedExpression, ...ComputedExpression[]];
+    }
+  | {
+      readonly op: "concat";
+      readonly operands: readonly [ComputedExpression, ...ComputedExpression[]];
+    }
+  | {
+      readonly op: "if";
+      readonly condition: ComputedExpression;
+      readonly then: ComputedExpression;
+      readonly else: ComputedExpression;
     };
 export interface DatasetComputedTransform {
   readonly type: "computed";
   readonly as: string;
   readonly expression: ComputedExpression;
 }
+export type NormalizeMethod =
+  | "share"
+  | "zscore"
+  | "minmax"
+  | "index"
+  | "change"
+  | "percentChange";
+export type NormalizeZeroDenominator = "error" | "null" | "zero";
+export type NormalizeBaseline =
+  | { readonly position: "first" | "last" }
+  | { readonly value: number };
+type DatasetNormalizedBaseTransform = {
+  readonly type: "normalize";
+  readonly field: string;
+  readonly as: string;
+  readonly groupBy: readonly string[];
+};
+type DatasetNormalizeBaselineTransform = {
+  readonly baseline: NormalizeBaseline;
+  readonly sortBy: readonly WindowSort[];
+};
+export type DatasetNormalizedTransform = DatasetNormalizedBaseTransform & (
+  | {
+      readonly method: "share" | "minmax";
+      readonly zeroDenominator: NormalizeZeroDenominator;
+    }
+  | {
+      readonly method: "zscore";
+      readonly variance: "population" | "sample";
+      readonly zeroDenominator: NormalizeZeroDenominator;
+    }
+  | ({
+      readonly method: "index" | "percentChange";
+      readonly zeroDenominator: NormalizeZeroDenominator;
+    } & DatasetNormalizeBaselineTransform)
+  | ({ readonly method: "change" } & DatasetNormalizeBaselineTransform)
+);
 export type StackDataMode = "stack" | "fill" | "center" | "diverging";
 export interface StackDataOutputFields {
   start?: string;
@@ -656,6 +708,7 @@ export type DatasetTransform =
   | DatasetBinTransform
   | DatasetBin2DTransform
   | DatasetComputedTransform
+  | DatasetNormalizedTransform
   | DatasetFilterTransform
   | DatasetFoldTransform
   | DatasetRegressionTransform
@@ -1771,6 +1824,38 @@ export interface ComputedDataOptions {
   as: string;
   expression: ComputedExpression;
 }
+type NormalizedDataBaseOptions = {
+  id: string;
+  source?: string;
+  field: string;
+  as: string;
+  groupBy?: string | readonly string[];
+};
+type NormalizeBaselineOptions =
+  | {
+      baseline?: { position: "first" | "last" };
+      sortBy: readonly [WindowSort, ...WindowSort[]];
+    }
+  | {
+      baseline: { value: number };
+      sortBy?: readonly WindowSort[];
+    };
+export type NormalizedDataOptions = NormalizedDataBaseOptions & (
+  | {
+      method: "share" | "minmax";
+      zeroDenominator?: NormalizeZeroDenominator;
+    }
+  | {
+      method: "zscore";
+      variance?: "population" | "sample";
+      zeroDenominator?: NormalizeZeroDenominator;
+    }
+  | ({
+      method: "index" | "percentChange";
+      zeroDenominator?: NormalizeZeroDenominator;
+    } & NormalizeBaselineOptions)
+  | ({ method: "change" } & NormalizeBaselineOptions)
+);
 export interface StackDataOptions {
   id: string;
   source?: string;
@@ -3770,6 +3855,7 @@ export class ChartProgram {
   createBinData(options: BinDataOptions): ChartProgram;
   createFoldData(options: FoldDataOptions): ChartProgram;
   createComputedData(options: ComputedDataOptions): ChartProgram;
+  createNormalizedData(options: NormalizedDataOptions): ChartProgram;
   createStackData(options: StackDataOptions): ChartProgram;
   createRegressionData(options: RegressionDataOptions): ChartProgram;
   createIntervalData(options: IntervalDataOptions): ChartProgram;

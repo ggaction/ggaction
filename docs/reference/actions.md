@@ -74,6 +74,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createLinePlot`](./actions/charts-data.md#createlineplot) | H0 | user-facing | charts |
 | [`createLollipopPlot`](./actions/charts-data.md#createlollipopplot) | H0, H1 | user-facing | charts |
 | [`createMarkLabels`](./actions/marks.md#createmarklabels) | H1, H2 | user-facing | marks |
+| [`createNormalizedData`](./actions/statistics.md#createnormalizeddata) | H1 | user-facing | statistics |
 | [`createParallelAxes`](./actions/advanced.md#createparallelaxes-createparallelaxis-editparallelaxis-removeparallelaxis-removeparallelaxes) | H3 | user-facing | axes |
 | [`createParallelAxis`](./actions/advanced.md#createparallelaxes-createparallelaxis-editparallelaxis-removeparallelaxis-removeparallelaxes) | H3 | user-facing | axes |
 | [`createParallelCoordinates`](./actions/charts-data.md#createparallelcoordinates) | H0 | user-facing | charts |

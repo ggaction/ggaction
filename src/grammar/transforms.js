@@ -20,6 +20,7 @@ import {
   validateHorizonTransform
 } from "./horizon.js";
 import { validateMarkFilterTransform } from "./markFilter.js";
+import { validateNormalizeTransform } from "./normalize.js";
 import { validateRegressionTransform } from "./regression/index.js";
 import { validateWindowTransform } from "./window.js";
 import { validateTimeUnitTransform } from "./timeUnit.js";
@@ -119,6 +120,11 @@ const TRANSFORM_POLICIES = Object.freeze({
     ...findTransformTopology("markFilter"),
     validate: validateMarkFilterTransform,
     materializeOp: "materializeMarkFilteredData"
+  }),
+  normalize: Object.freeze({
+    ...findTransformTopology("normalize"),
+    validate: validateNormalizeTransform,
+    materializeOp: "materializeNormalizedData"
   }),
   regression: Object.freeze({
     ...findTransformTopology("regression"),

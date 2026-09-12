@@ -243,7 +243,7 @@
       "domain": "statistics",
       "status": "implemented",
       "lifecycle": "Immutable create-only",
-      "update": "Create a finite row-level arithmetic field",
+      "update": "Create a typed row-level computed field",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -253,6 +253,24 @@
       "contract": {
         "file": "agent_docs/contract/current/CORE.md",
         "anchor": "createcomputeddata"
+      }
+    },
+    {
+      "name": "createNormalizedData",
+      "layer": "user-facing",
+      "domain": "statistics",
+      "status": "implemented",
+      "lifecycle": "Immutable create-only",
+      "update": "Create row-preserving grouped normalization values",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/CORE.md",
+        "anchor": "createnormalizeddata"
       }
     },
     {
@@ -4454,6 +4472,7 @@
       "materializeFoldData",
       "materializeMarkFilteredData",
       "materializeIntervalData",
+      "materializeNormalizedData",
       "materializeRegressionData",
       "materializeSummaryData",
       "materializeStackData",

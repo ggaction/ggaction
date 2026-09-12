@@ -42,8 +42,18 @@ every source cell. [Source and Derived Data](../../api/data/source-and-derived.m
 createComputedData({ id, source?, as, expression })
 ```
 
-Materialize a finite row-level field from a serializable, closed arithmetic
+Materialize a typed primitive or null field from a serializable, closed
 expression. [Source and Derived Data](../../api/data/source-and-derived.md#createcomputeddata-id-source-as-expression)
+
+## `createNormalizedData`
+
+```javascript
+createNormalizedData({ id, source?, field, as, groupBy?, method, variance?, zeroDenominator?, baseline?, sortBy? })
+```
+
+Materialize row-preserving share, z-score, min-max, index, change, or fractional
+percent-change values independently within each group.
+[Source and Derived Data](../../api/data/source-and-derived.md#createnormalizeddata-id-source-field-as-groupby-method)
 
 ## `createStackData`
 

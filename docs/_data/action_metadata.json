@@ -95,6 +95,14 @@
     "layer": "user-facing",
     "domain": "statistics"
   },
+  "createNormalizedData": {
+    "operation": "create",
+    "authoringRoles": [
+      "H1"
+    ],
+    "layer": "user-facing",
+    "domain": "statistics"
+  },
   "createStackData": {
     "operation": "create",
     "authoringRoles": [

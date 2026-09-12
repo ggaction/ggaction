@@ -204,8 +204,12 @@
       "unpivot fields"
     ],
     "ComputedData": [
-      "computed numeric field",
-      "ratio or difference data"
+      "computed field",
+      "typed formula data"
+    ],
+    "NormalizedData": [
+      "normalized data",
+      "group shares and baseline comparisons"
     ],
     "StackData": [
       "stacked data",
@@ -853,6 +857,12 @@
           "field": "whole"
         }
       }
+    },
+    "createNormalizedData": {
+      "id": "normalized",
+      "field": "amount",
+      "as": "share",
+      "method": "share"
     },
     "createFoldData": {
       "id": "long",

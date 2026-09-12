@@ -3,7 +3,7 @@
   "packageVersion": "0.0.13",
   "typeSource": "types/program.d.ts",
   "errorPolicy": "An empty errors array means the compact card has no curated error override; consult the canonical route for validation, inference, and recovery behavior.",
-  "count": 244,
+  "count": 245,
   "cards": [
     {
       "schemaVersion": 3,
@@ -978,7 +978,7 @@
       "name": "createComputedData",
       "layer": "user-facing",
       "domain": "statistics",
-      "summary": "Materialize a finite row-level field from a serializable, closed arithmetic expression.",
+      "summary": "Materialize a typed primitive or null field from a serializable, closed expression.",
       "signature": "createComputedData(options: ComputedDataOptions): ChartProgram;",
       "intents": [
         "create computed data",
@@ -986,8 +986,8 @@
         "add",
         "statistical layer",
         "statistical transform",
-        "computed numeric field",
-        "ratio or difference data"
+        "computed field",
+        "typed formula data"
       ],
       "lifecycle": "Immutable create-only",
       "resources": {
@@ -995,7 +995,7 @@
           "source dataset"
         ],
         "owns": [
-          "computed numeric field"
+          "computed field"
         ],
         "idOptions": [
           "id",
@@ -1056,6 +1056,124 @@
       "snippet": "program.createComputedData({ id: \"ratios\", as: \"ratio\", expression: { op: \"divide\", left: { field: \"part\" }, right: { field: \"whole\" } } })",
       "errors": [],
       "route": "/reference/actions/statistics/#createcomputeddata"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "createNormalizedData",
+      "layer": "user-facing",
+      "domain": "statistics",
+      "summary": "Materialize row-preserving share, z-score, min-max, index, change, or fractional percent-change values independently within each group.",
+      "signature": "createNormalizedData(options: NormalizedDataOptions): ChartProgram;",
+      "intents": [
+        "create normalized data",
+        "create",
+        "add",
+        "statistical layer",
+        "statistical transform",
+        "normalized data",
+        "group shares and baseline comparisons"
+      ],
+      "lifecycle": "Immutable create-only",
+      "resources": {
+        "prerequisites": [
+          "source dataset"
+        ],
+        "owns": [
+          "normalized data"
+        ],
+        "idOptions": [
+          "id",
+          "source"
+        ]
+      },
+      "authoringRoles": [
+        "H1"
+      ],
+      "wraps": [
+        "createDerivedData"
+      ],
+      "editableVia": [],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "source",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "omitted optional options",
+          "strategy": "documented-default"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "source dataset"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "id",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "source",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "field",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "as",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "groupBy",
+          "required": false,
+          "type": "string | readonly string[] | undefined"
+        },
+        {
+          "name": "method",
+          "required": true,
+          "type": "\"change\" | \"index\" | \"minmax\" | \"percentChange\" | \"share\" | \"zscore\""
+        },
+        {
+          "name": "zeroDenominator",
+          "required": false,
+          "type": "NormalizeZeroDenominator | undefined"
+        },
+        {
+          "name": "variance",
+          "required": false,
+          "type": "\"population\" | \"sample\" | undefined"
+        },
+        {
+          "name": "baseline",
+          "required": false,
+          "type": "{ position: \"first\" | \"last\"; } | undefined"
+        },
+        {
+          "name": "sortBy",
+          "required": false,
+          "type": "readonly [WindowSort, ...WindowSort[]]"
+        }
+      ],
+      "callPatterns": [
+        "createNormalizedData({ id, field, as, method, source?, groupBy?, zeroDenominator?, variance? })"
+      ],
+      "snippet": "program.createNormalizedData({ id: \"normalized\", field: \"amount\", as: \"share\", method: \"share\" })",
+      "errors": [],
+      "route": "/reference/actions/statistics/#createnormalizeddata"
     },
     {
       "schemaVersion": 3,

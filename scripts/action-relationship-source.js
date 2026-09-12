@@ -73,6 +73,21 @@ function focusedScaleEditorPrograms() {
   return [point, polar, line];
 }
 
+function normalizedDataPrograms() {
+  return [chart()
+    .createData({ id: "normalizationSource", values: [
+      { group: "a", value: 1 },
+      { group: "a", value: 3 }
+    ] })
+    .createNormalizedData({
+      id: "normalized",
+      field: "value",
+      as: "share",
+      groupBy: "group",
+      method: "share"
+    })];
+}
+
 function collectDirectRelationships(trace, directNames, relationships, observed) {
   if (directNames.has(trace.op)) {
     observed.add(trace.op);
@@ -99,7 +114,8 @@ export async function buildActionRelationships() {
   const programs = [
     ...descriptors.map(buildScenario),
     ...selectionLifecyclePrograms(),
-    ...focusedScaleEditorPrograms()
+    ...focusedScaleEditorPrograms(),
+    ...normalizedDataPrograms()
   ];
   for (const program of programs) {
     collectDirectRelationships(program.trace, directNames, relationships, observed);

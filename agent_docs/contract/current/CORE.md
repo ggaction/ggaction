@@ -391,30 +391,69 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - `id`, `source`: 새 immutable derived dataset ID와 existing materialized source다. `source` 생략 시
   current data를 사용한다.
 - `as`: 모든 source row에서 아직 존재하지 않는 non-empty output field다.
-- `expression`: callback/string/eval이 아닌 recursive data AST다. Leaf는 `{ field }` 또는 finite
-  `{ constant }`; unary는 `{ op: "negate" | "absolute", operand }`; binary는
-  `{ op: "add" | "subtract" | "multiply" | "divide", left, right }`다.
-- Effect: source row와 모든 existing cell을 보존하고 각 row에 한 finite quantitative output을 추가한다.
+- `expression`: callback/string/eval이 아닌 recursive typed data AST다. Leaf는 `{ field }` 또는 finite
+  number/string/boolean/null `{ constant }`다. 산술, 비교, boolean, `if`, `coalesce`, `concat`,
+  `log`, `sqrt`의 닫힌 node union을 지원한다. `if`·`and`·`or`·`coalesce`는 값 평가를
+  short-circuit하지만 모든 branch의 구조와 field 존재는 먼저 검증한다.
+- Effect: source row와 모든 existing cell을 보존하고 각 row에 한 primitive 또는 null output을 추가한다.
   Serialized transform 자체가 exact formula provenance다. Facet replay에서는 row-preserving transform으로
-  처리한다.
-- 오류: missing/non-finite operand, divide-by-zero, overflow/non-finite result, output collision, unknown 또는
-  malformed expression node를 첫 state change 전에 거부한다. Expression은 depth 16, 128 nodes,
-  `rows × nodes` 10,000,000 work로 제한한다.
-- Coverage: `test/unit/actions/data/computed-data.test.js`가 field/constant, 모든 unary/binary family,
-  nested formula, ownership, mark consumption과 invalid/non-finite matrix를 검증한다.
+  처리한다. undefined cell은 null로 평가하지만 field key 자체가 없는 row는 오류다. 한 materialization의
+  non-null output type은 하나여야 한다.
+- 오류: missing/structured operand, typed-operation mismatch, divide-by-zero, invalid log/sqrt,
+  overflow/non-finite result, mixed output type, output collision, unknown 또는 malformed expression node를
+  첫 state change 전에 거부한다. Expression은 depth 16, 128 nodes, `rows × nodes` 10,000,000 work로 제한한다.
+- Coverage: `test/unit/actions/data/computed-data.test.js`가 기존 산술, nullable/string/boolean,
+  conditional short-circuit, Unicode code-point ordering, ownership, mark consumption과 invalid matrix를 검증한다.
 
 ### Formal values — `createComputedData`
 
 - Implemented: `createComputedData({ id: UserId; source?: UserId; as: FieldName; expression: ComputedExpression }): ChartProgram`
-- Proposed (NOT IMPLEMENTED): callbacks, expression strings, conditionals, group aggregates, null propagation,
-  transcendental functions와 arbitrary code evaluation.
+- Implemented nodes: field; number/string/boolean/null constant; add/subtract/multiply/divide;
+  negate/absolute/log/sqrt; eq/neq/lt/lte/gt/gte; and/or/not/isNull; if/coalesce/concat.
+- Proposed (NOT IMPLEMENTED): callbacks, expression strings, group aggregates, arbitrary regex와 arbitrary code evaluation.
 
 ### Value coverage — `createComputedData`
 
-- ✅ Covered: add/subtract/multiply/divide, negate/absolute, field/finite constant and nested expressions.
-- ✅ Covered: missing/non-finite input, zero denominator, finite overflow and output collision rejection.
-- ✅ Covered: strict node shape/vocabulary, immutable ownership, row grain, depth/node/work bounds.
+- ✅ Covered: arithmetic, comparison, logic, conditional, coalesce/concat, log/sqrt and all primitive constants.
+- ✅ Covered: missing/invalid typed input, lazy value evaluation with eager structural/field validation,
+  zero denominator, invalid domains, finite overflow, mixed output and collision rejection.
+- ✅ Covered: strict node shape/vocabulary, immutable deep ownership, row grain, depth/node/work bounds.
 - Evidence: `test/unit/actions/data/computed-data.test.js`.
+
+## `createNormalizedData`
+
+- Signature: `createNormalizedData({ id, source?, field, as, groupBy?, method, variance?, zeroDenominator?, baseline?, sortBy? })`
+- `field` is finite quantitative input; `as` must not overwrite any source cell. `groupBy` defaults to `[]`
+  and isolates every summary or baseline by scalar group identity while final rows retain source order and grain.
+- `share` computes `x / sum(group)` and rejects every negative input. `minmax` computes
+  `(x-min)/(max-min)`. `zscore` uses the shared stable mean/deviation implementation; `variance` defaults
+  to `"population"` and also accepts `"sample"`.
+- `index`, `change`, and `percentChange` compare against a finite explicit baseline value or a stable
+  first/last row selected by non-empty `sortBy`. Omitted baseline means first. Index has baseline 100;
+  percent change is a fraction and does not multiply by 100.
+- Exact zero denominators reject by default. `zeroDenominator: "null" | "zero"` explicitly substitutes
+  those values for share, minmax, zscore, index, and percentChange. It is invalid for change. Sample zscore
+  with fewer than two group rows always rejects.
+- Effect: stores one `normalize` transform with requested roles and normalized policies, then materializes
+  the output through `materializeNormalizedData`. Its facet topology is statistical, so facet replay
+  recomputes group results from each local source partition.
+- Errors: unknown or method-inapplicable options, missing/non-finite fields, invalid group/sort scalars,
+  duplicate group/sort fields, output collision, negative share inputs, zero denominators, non-finite output,
+  and invalid baseline/variance policies reject before returning changed state.
+
+### Formal values — `createNormalizedData`
+
+- Implemented: `createNormalizedData(options: NormalizedDataOptions): ChartProgram` (Full only).
+- Implemented methods: `"share" | "zscore" | "minmax" | "index" | "change" | "percentChange"`.
+- Proposed (NOT IMPLEMENTED): negative shares, generic lookup/join, source replacement and arbitrary reducers.
+
+### Value coverage — `createNormalizedData`
+
+- ✅ Covered: share/minmax, population/sample zscore, stable ordered and explicit baselines, index/change/fractional
+  percent change, group isolation and source order.
+- ✅ Covered: error/null/zero denominator policies, constant/singleton/negative/missing/collision and option-shape errors.
+- ✅ Covered: empty source, immutable input/program, transform ownership and trace hierarchy.
+- Evidence: `test/unit/actions/data/normalized-data.test.js`, `test/contracts/transform-registry.test.js`.
 
 ## `createStackData`
 

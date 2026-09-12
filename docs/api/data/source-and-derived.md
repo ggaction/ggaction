@@ -70,6 +70,7 @@ corresponding higher-level action when the library should materialize values:
 | `"bin2d"` | `{ type, x, y, bins, extent, includeEmpty, members, as, resolved? }` | `createBin2DData` |
 | `"bin"` | `{ type, field, bin, extent, nice, zero, includeEmpty, members, as, resolved? }` | `createBinData` |
 | `"computed"` | `{ type, as, expression }` | `createComputedData` |
+| `"normalize"` | `{ type, field, as, groupBy, method, ...methodPolicies }` | `createNormalizedData` |
 | `"filter"` | `{ type, field, oneOf }`, `{ type, field, predicate }`, or `{ type, field, range }` | `filterData` |
 | `"fold"` | `{ type, fields, as }` | `createFoldData` |
 | `"regression"` | `{ type, method, x, y, groupBy?, ...methodParameters }` | `createRegressionData` |
@@ -210,7 +211,7 @@ most 64 selected fields and materializes at most 10,000 rows.
 
 ## `createComputedData({ id, source?, as, expression })` {#createcomputeddata-id-source-as-expression}
 
-Add a finite quantitative field to every source row with a serializable formula:
+Add a typed primitive or null field to every source row with a serializable formula:
 
 ```javascript
 const shares = program.createComputedData({
@@ -225,15 +226,46 @@ const shares = program.createComputedData({
 });
 ```
 
-Leaves are `{ field }` and `{ constant }`. Binary nodes support `add`,
-`subtract`, `multiply`, and `divide`; unary nodes support `negate` and
-`absolute`. The action stores this data AST as provenance and never evaluates
-callbacks, source strings, or arbitrary code.
+Leaves are `{ field }` and `{ constant }`; constants may be finite numbers,
+strings, booleans, or null. The closed union includes arithmetic, comparison,
+boolean logic, `if`, `coalesce`, `concat`, `log`, and `sqrt`. Conditional
+and boolean nodes short-circuit value evaluation, while every branch and field
+name is structurally checked first. The action stores this data AST as
+provenance and never evaluates callbacks, source strings, or arbitrary code.
 
-Every referenced cell, constant, intermediate result, and final result must be
-finite. Division by zero and output-field replacement are errors. Expressions
-are bounded to depth 16 and 128 nodes, with at most 10,000,000 evaluated
-row-nodes.
+Arithmetic remains finite and strictly numeric. Other operations do not coerce
+types. Undefined cells normalize to null, but a missing field name is an error.
+Non-null results must have one primitive type across all rows. Expressions are
+bounded to depth 16 and 128 nodes, with at most 10,000,000 row-nodes.
+
+## `createNormalizedData({ id, source?, field, as, groupBy?, method, ... })` {#createnormalizeddata-id-source-field-as-groupby-method}
+
+Materialize common row-preserving comparisons without manually joining group
+statistics back to source rows:
+
+```javascript
+const indexed = program.createNormalizedData({
+  id: "indexed",
+  source: "sales",
+  field: "revenue",
+  as: "revenueIndex",
+  groupBy: "region",
+  method: "index",
+  sortBy: [{ field: "year", order: "ascending" }]
+});
+```
+
+`share`, `minmax`, and `zscore` summarize each group. Z-scores use population
+variance by default and support `variance: "sample"`. `index`, `change`, and
+`percentChange` use a finite explicit baseline or the first/last row from a
+stable non-empty `sortBy`. Index values use 100 as the baseline; percent change
+is a fraction, so a 50% increase produces `0.5`.
+
+An exact zero denominator rejects by default. Use
+`zeroDenominator: "null"` or `"zero"` to select an explicit replacement.
+`change` accepts a zero baseline and therefore has no zero-denominator option.
+Share rejects negative input. Every method preserves original row order and
+keeps group calculations independent.
 
 ## `createStackData({ id, source?, category, group, value, mode?, as? })` {#createstackdata-id-source-category-group-value-mode-as}
 
