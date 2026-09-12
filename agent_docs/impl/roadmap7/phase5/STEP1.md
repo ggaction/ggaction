@@ -5,7 +5,7 @@
 - [x] 범위·현재 source owner·선행 Phase 완료 상태 확인
 - [x] Gate A 자료: 정확한 API/schema/defaults/오류/수치 oracle 작성·검증
 - [x] 명시 승인 범위 기록 후 해당 구현 시작
-- [x] R20/R21 appearance를 primitive render와 target public chain으로 Gate V 확인
+- [x] R20/R21/R23/R22 appearance를 primitive·public·renderer 경로로 Gate V 확인
 - [ ] 아래 wave 구현과 focused/cumulative tests 완료
 - [ ] types/current contracts/catalog/cards/MCP/docs/package 영향 갱신
 - [ ] Gate X 결과와 남은 후속 통합 cell 기록
@@ -49,7 +49,8 @@
 | W1a — R20 Parallel scale | `eaea2b8b` | Parallel numeric/reorder/shared/error unit oracle, strict types, contracts, docs, installed package | R43 facet/repeat 통합은 Phase 10에서 재검증 | complete |
 | W1b — R21 offset scale | `335ce4f0` | 12 focused unit/type cases; 2,357 unit; 578 chart; 336 contract; 47 docs; installed package; 315,821-byte gzip measurement | R19 atomic reencoding과 R43 facet/repeat 통합은 해당 owner Phase에서 재검증 | complete |
 | W2 — R23 size scale types | `1b68a8ba` | 10 focused pure/public cases; 2,357 unit; 342 contract; 47 docs; Canvas/SVG/PNG/PDF; installed package; full/basic gzip 317,613/156,182 bytes | R19/R37/R43 통합은 해당 owner Phase에서 재검증 | complete |
-| W3–W4 — R22/R19 | — | 실행 증거 없음 | stroke color, atomic encoding 전체 | planned |
+| W3 — R22 field stroke | `3fc40a66` | 16 focused stroke/color reassignment cases; 2,361 unit; 357 contract; 578 chart; 47 docs; 73 browser; 216 render; Canvas/SVG/PNG/PDF; installed package; full/basic gzip 323,125/159,342 bytes | R19 atomic payload와 R43 advanced facet matrix는 해당 owner Phase에서 재검증 | complete |
+| W4 — R19 atomic encoding | — | 실행 증거 없음 | encodeChannels final-state plan과 all-consumer preflight 전체 | planned |
 
 ## Gate 연결
 

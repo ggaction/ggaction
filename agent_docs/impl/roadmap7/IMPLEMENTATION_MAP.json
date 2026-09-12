@@ -492,7 +492,7 @@
       "spec": "features/22-stroke-color.md",
       "phase": 5,
       "dependsOn": [],
-      "status": "Proposed",
+      "status": "Implemented-primary",
       "newPublicActions": [
         "editStrokeScale"
       ],
@@ -504,19 +504,29 @@
         "facet"
       ],
       "currentSourceFiles": [
+        "src/actions/encodings/stroke.js",
         "src/actions/encodings/index.js",
-        "src/actions/scales/quantitativeColor.js",
-        "src/actions/guides/legends/index.js",
-        "src/renderers/svg.js",
-        "src/renderers/pdf.js",
-        "src/actions/encodings/ruleAppearance.js",
-        "src/actions/encodings/color/index.js",
+        "src/actions/encodings/remove.js",
+        "src/actions/scales/channels.js",
+        "src/actions/scales/definitions.js",
+        "src/actions/scales/edit.js",
+        "src/actions/scales/editPolicy.js",
+        "src/actions/scales/consumers/common.js",
+        "src/actions/scales/consumers/families.js",
+        "src/actions/guides/legends/categorical/actions.js",
+        "src/actions/guides/legends/categorical/resolve.js",
+        "src/actions/guides/legends/continuous/stroke.js",
+        "src/actions/guides/legends/transition.js",
         "src/grammar/pathSeries.js",
-        "src/core/vocabulary.js"
+        "src/core/vocabulary.js",
+        "src/actions/selection/actions.js",
+        "src/actions/theme/reconcile.js"
       ],
       "existingRegressionTests": [
         "test/unit/actions/marks/filled-mark-stroke.test.js",
-        "test/contracts/item-legend-stroke-spacing.test.js"
+        "test/contracts/item-legend-stroke-spacing.test.js",
+        "test/contracts/stroke-color.test.js",
+        "test/unit/actions/scales/color-field-reassignment.test.js"
       ],
       "suggestedNewTest": "test/contracts/stroke-color.test.js",
       "acceptanceCases": [

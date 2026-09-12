@@ -14,7 +14,7 @@
 | R19 | 5 | [다중 채널의 원자적 재인코딩](features/19-atomic-encoding.md) | feature 내 독립 oracle/완료 조건 → Phase 5 STEP1 evidence | Proposed / 미구현 |
 | R20 | 5 | [Parallel 차원별 scale 집중 편집](features/20-parallel-scale.md) | `test/unit/actions/scales/parallel-scale.test.js`; `test/contracts/phase5-scale-types.test.js`; `eaea2b8b` | Implemented-primary |
 | R21 | 5 | [중첩 band offset scale 집중 편집](features/21-offset-scales.md) | `test/unit/actions/scales/offset-scale.test.js`; grouped-bar chart fixtures; package consumer; `335ce4f0` | Implemented-primary |
-| R22 | 5 | [필드 기반 stroke 색상](features/22-stroke-color.md) | feature 내 독립 oracle/완료 조건 → Phase 5 STEP1 evidence | Proposed / 미구현 |
+| R22 | 5 | [필드 기반 stroke 색상](features/22-stroke-color.md) | feature 내 독립 oracle/완료 조건 → Phase 5 STEP1 evidence | Implemented-primary (`3fc40a66`) |
 | R23 | 5 | [크기 scale의 비선형·단계형 mapping](features/23-size-scale-types.md) | `test/contracts/size-scale-types.test.js`; `test/unit/grammar/scales/size.test.js`; installed package; `1b68a8ba` | Implemented-primary / R19·R37·R43 통합 대기 |
 | R25 | 11 | [미사용 dataset·scale·coordinate 안전 삭제](features/25-remove-resources.md) | feature 내 독립 oracle/완료 조건 → Phase 11 STEP1 evidence | Proposed / 미구현 |
 | R27 | 6 | [좌표 frame 종횡비와 데이터 단위비](features/27-coordinate-aspect.md) | feature 내 독립 oracle/완료 조건 → Phase 6 STEP1 evidence | Proposed / 미구현 |

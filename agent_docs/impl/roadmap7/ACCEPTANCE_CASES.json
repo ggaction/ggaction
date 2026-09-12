@@ -670,8 +670,8 @@
       "kind": "normal",
       "specification": "Point fill field f=[A,A],stroke field s=[U,V] → 동일 fill, 서로 다른 outline.",
       "owner": "features/22-stroke-color.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/contracts/stroke-color.test.js, installed package, browser and renderer suites; 3fc40a66"
     },
     {
       "id": "R22-N02",
@@ -680,8 +680,8 @@
       "kind": "normal",
       "specification": "Line group g=[A,A,B,B],stroke s=[U,U,V,V] 성공; [U,V,V,V]는 A series 오류.",
       "owner": "features/22-stroke-color.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/contracts/stroke-color.test.js, installed package, browser and renderer suites; 3fc40a66"
     },
     {
       "id": "R22-N03",
@@ -690,8 +690,8 @@
       "kind": "normal",
       "specification": "quantitative stroke domain[0,10] endpoints/midpoint는 existing color mapper와 같음.",
       "owner": "features/22-stroke-color.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/contracts/stroke-color.test.js, installed package, browser and renderer suites; 3fc40a66"
     },
     {
       "id": "R22-L01",
@@ -700,8 +700,8 @@
       "kind": "lifecycle",
       "specification": "field→value→field 시 stale legend/scale refs가 없고 fill은 유지.",
       "owner": "features/22-stroke-color.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/contracts/stroke-color.test.js, installed package, browser and renderer suites; 3fc40a66"
     },
     {
       "id": "R22-E01",
@@ -710,8 +710,8 @@
       "kind": "error",
       "specification": "field+value,Text target,invalid color,temporalUnit on nominal → 오류.",
       "owner": "features/22-stroke-color.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/contracts/stroke-color.test.js, installed package, browser and renderer suites; 3fc40a66"
     },
     {
       "id": "R22-L02",
@@ -720,8 +720,8 @@
       "kind": "lifecycle",
       "specification": "Rule constant-only 기존 호출의 요청/graphic/trace 호환 fixture를 별도 보존한다.",
       "owner": "features/22-stroke-color.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/contracts/stroke-color.test.js, installed package, browser and renderer suites; 3fc40a66"
     },
     {
       "id": "R23-N01",

@@ -89,3 +89,29 @@
 | browser bundle | Full/basic/SVG gzip 306,231/152,450/6,418 bytes; ceiling 308,000/153,000/25,000 |
 | appearance | data-only Phase라 새 visual target 없음; 기존 Cartesian/facet Canvas consumer 실행 |
 | Diff 형식 | `git diff --check` 통과 |
+
+## 2026-09-13 Phase 5 R22 구현 검증
+
+`3fc40a66`에서 고정 stroke를 일반 mark family의 독립 field channel로 확장하고
+`editStrokeScale`, categorical/gradient/interval stroke legend, selection, facet, theme,
+renderer와 installed package 경로를 Current로 승격했다. 같은 scale ID에서
+categorical↔quantitative field를 재할당하면 호환되지 않는 이전 domain/range는 새 계열의
+기본값으로 초기화하고, 기본 범례는 공통 배치·텍스트 스타일을 보존해 새 family로 교체한다.
+대상 family에서 손실되는 custom symbol/count/layout은 원본 프로그램을 유지한 채 명시 오류로 거부한다.
+
+| 검증 | 실제 결과 |
+| --- | --- |
+| R22 고정 인수 사례 | R22-N01/N02/N03/L01/E01/L02 전부 passed; `test/contracts/stroke-color.test.js` |
+| 추가 전환 회귀 | stroke와 color categorical↔quantitative 재할당, 기본 범례 family 교체, custom family 설정의 원자적 오류 |
+| 지원 mark | Point/Line/Area/Bar/Rect/Arc/Rule/Tick의 constant/field stroke; Text는 명시 거부 |
+| 생명주기 | field↔constant, scale type/palette, shared color+stroke scale, legend, selection/highlight, facet, theme/Canvas replay |
+| 누적 unit·contract | 2,361/2,361 unit, 357/357 contract, 실패·skip 0 |
+| chart·docs | 578/578 chart, 47/47 docs, generated catalog/cards/signatures/search/LLM 동기화 |
+| renderer·browser | 216/216 render, 73/73 browser, Canvas/SVG/PNG/PDF 경로 통과 |
+| installed package | Node·strict TypeScript·MCP·browser entry·stroke encoding/legend/scale editing 통과 |
+| package artifact | sha256 `ff1471e13b576b850247dfa90b2fb122227f47e4dc427e2274fa058857bc306e`; Full/Basic/SVG gzip 323,125/159,342/6,418 bytes |
+| Diff·syntax | 모든 변경 JavaScript `node --check`, generated freshness checks, `git diff --check` 통과 |
+
+R19의 한 요청 다중 채널 final-state transaction과 R43의 advanced facet matrix는 각각의
+후속 owner에 남아 있다. 이 후속 cell은 R22 primary 구현을 Planned로 되돌리는 사유가 아니며,
+해당 기능 완료 시 R22 조합 회귀를 다시 실행한다.

@@ -22,7 +22,7 @@
 
 순서는 의존성 계약이다. 같은 번호의 소단계는 위에서 아래로 수행한다.
 
-1. Phase 5: R22 → R19 → Phase 5 통합. R23은 완료 checkpoint다.
+1. Phase 5: R19 → Phase 5 통합. R22와 R23은 완료 checkpoint다.
 2. Phase 6: R27 → R29 → 좌표 통합.
 3. Phase 7: R31 → R32 → R33 → R36 → 라벨/참조 통합.
 4. Phase 8: R37 → R38 → R39 → guide 통합.
@@ -47,7 +47,7 @@ R19를 R23/R22보다 먼저 만들지 않는다. R43을 좌표·라벨·guide·t
 | R19 | 원자적 다중 encoding | Proposed | WP5.3 |
 | R20 | Parallel focused scale edit | Implemented-primary | 완료 checkpoint + WP5.4/WP10 |
 | R21 | x/y offset focused scale edit | Implemented-primary | 완료 checkpoint + WP5.4/WP10 |
-| R22 | field stroke·stroke scale·legend | Proposed | WP5.2 |
+| R22 | field stroke·stroke scale·legend | Implemented-primary (`3fc40a66`) | WP5.2 |
 | R23 | nonlinear/discrete size scale | Implemented-primary | 완료 checkpoint + WP5.3/WP8.1/WP10/WP12 |
 | R25 | 안전한 resource 삭제 | Proposed | WP11 |
 | R27 | coordinate aspect | Proposed | WP6.1 |
