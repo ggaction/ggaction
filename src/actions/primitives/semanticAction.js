@@ -151,6 +151,29 @@ export function withPreviewDatasetValues(program, {
   return program._clone({ semanticSpec });
 }
 
+// Final-state planners may need to remove mutually constrained roles before
+// replaying their canonical primitive owners. Keep that speculative clone in
+// the primitive boundary and preserve the caller's layer for later dependency
+// and guide reconciliation.
+export function withoutPreviewLayerEncodings(program, { id, channels }) {
+  const removed = new Set(channels);
+  const semanticSpec = {
+    ...program.semanticSpec,
+    layers: program.semanticSpec.layers.map(layer => {
+      if (layer.id !== id) return layer;
+      return {
+        ...layer,
+        encoding: Object.fromEntries(
+          Object.entries(layer.encoding ?? {}).filter(
+            ([channel]) => !removed.has(channel)
+          )
+        )
+      };
+    })
+  };
+  return program._clone({ semanticSpec });
+}
+
 export function createSemanticPrimitiveAction(validateSemanticValue) {
   return action(
     {

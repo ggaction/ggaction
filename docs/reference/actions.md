@@ -235,6 +235,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editYScale`](./actions/advanced.md#focused-channel-scale-editors) | H2 | user-facing | core |
 | [`encodeAngle`](./actions/encodings.md#encodeangle) | H2 | user-facing | encodings |
 | [`encodeBarWidth`](./actions/encodings.md#encodebarwidth) | H2 | user-facing | encodings |
+| [`encodeChannels`](./actions/encodings.md#encodechannels) | H2 | advanced | encodings |
 | [`encodeColor`](./actions/encodings.md#encodecolor) | H2 | user-facing | encodings |
 | [`encodeDensity`](./actions/encodings.md#encodedensity) | H2 | user-facing | encodings |
 | [`encodeGroup`](./actions/encodings.md#encodegroup) | H2 | user-facing | encodings |

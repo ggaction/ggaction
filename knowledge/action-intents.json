@@ -847,6 +847,10 @@
       "y-offset scale",
       "vertical subgroup placement",
       "nested y band spacing"
+    ],
+    "Channels": [
+      "multiple encodings on one mark",
+      "atomic multi-channel mapping"
     ]
   },
   "summaryOverrides": {
@@ -867,7 +871,8 @@
     "editScale": "Partially edits a named or uniquely resolvable scale and rematerializes its consumers.",
     "editSemantic": "Sets or removes one semantic property inside an extension action.",
     "createGraphics": "Creates one backend-neutral concrete graphic resource inside an extension action.",
-    "editGraphics": "Sets a concrete graphic property or removes a top-level graphic resource inside an extension action."
+    "editGraphics": "Sets a concrete graphic property or removes a top-level graphic resource inside an extension action.",
+    "encodeChannels": "Atomically replaces multiple compatible encoding channels on one explicit mark from one final state."
   },
   "sampleOverrides": {
     "createStackData": {
@@ -1419,6 +1424,17 @@
     "editYOffsetScale": {
       "target": "bars",
       "reverse": true
+    },
+    "encodeChannels": {
+      "target": "points",
+      "channels": {
+        "x": {
+          "field": "b"
+        },
+        "y": {
+          "field": "a"
+        }
+      }
     }
   },
   "callPatternOverrides": {
@@ -1584,6 +1600,10 @@
     ],
     "editYOffsetScale": [
       "editYOffsetScale({ target, domain?, reverse?, padding?, paddingInner?, paddingOuter?, align? })"
+    ],
+    "encodeChannels": [
+      "encodeChannels({ target, channels: { x: { field }, y: { field } } })",
+      "encodeChannels({ target, channels: { color: { field }, stroke: { field }, size: { field } } })"
     ]
   },
   "errorOverrides": {

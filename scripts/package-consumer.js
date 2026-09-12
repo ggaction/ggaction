@@ -106,6 +106,13 @@ async function testNodeConsumer(directory) {
     );
     assert.equal(typeof render, "function");
     assert.equal(program.graphicSpec.objects.point.items.length, 2);
+    const atomic = program.encodeChannels({
+      target: "point",
+      channels: { x: { field: "y" }, y: { field: "x" } }
+    });
+    assert.equal(atomic.semanticSpec.layers[0].encoding.x.field, "y");
+    assert.equal(atomic.semanticSpec.layers[0].encoding.y.field, "x");
+    assert.equal(typeof basicChart().encodeChannels, "undefined");
     const stroked = chart()
       .createCanvas({
         width: 500,
@@ -1733,13 +1740,20 @@ async function testMcpConsumer(directory) {
     actionCardSchema.properties?.schemaVersion?.const !== 3 ||
     actionCardsSchema.properties?.schemaVersion?.const !== 3 ||
     actionCards.schemaVersion !== 3 ||
-    actionCards.count !== 267 ||
-    actionCards.cards.length !== 267 ||
+    actionCards.count !== 268 ||
+    actionCards.cards.length !== 268 ||
     actionCards.packageVersion !== installedPackage.version
   ) {
     throw new Error("Installed action-card discovery contract is missing or stale.");
   }
   const installedCards = new Map(actionCards.cards.map(card => [card.name, card]));
+  if (
+    installedCards.get("encodeChannels")?.signature !==
+      "encodeChannels(options: EncodeChannelsOptions): ChartProgram;" ||
+    installedCards.get("encodeChannels")?.supports.entryPoints.join(",") !== "default"
+  ) {
+    throw new Error("Installed atomic encoding discovery metadata is stale.");
+  }
   if (installedCards.get("createNormalizedData")?.signature !==
     "createNormalizedData(options: NormalizedDataOptions): ChartProgram;") {
     throw new Error("Installed normalization discovery metadata is stale.");
@@ -1960,6 +1974,7 @@ async function testTypeScriptConsumer(directory) {
       type CreateECDFPlotOptions,
       type EditECDFPlotOptions,
       type ECDFDataOptions,
+      type EncodeChannelsOptions,
       type ColorLayout,
       type CompleteDataOptions,
       type ComputedDataOptions,
@@ -2041,6 +2056,13 @@ async function testTypeScriptConsumer(directory) {
     const themeOptions: ApplyThemeOptions = { theme: themeName };
     const themedProgram: ChartProgram = program.applyTheme(themeOptions).removeTheme();
     const basicThemedProgram: BasicChartProgram = basicChart().applyTheme(themeOptions);
+    const atomicOptions: EncodeChannelsOptions = {
+      target: "point",
+      channels: { x: { field: "y" }, y: { field: "x" } }
+    };
+    program.encodeChannels(atomicOptions);
+    // @ts-expect-error Atomic multi-channel encoding is Full only.
+    basicChart().encodeChannels(atomicOptions);
     const polarScatterOptions: CreatePolarScatterPlotOptions = {
       theta: "angle", radius: "distance", point: { radius: 4 }, guides: false
     };
@@ -3565,6 +3587,7 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.a
       "parallel-dimension-scale-editing",
       "offset-scale-editing",
       "stroke-color-encoding-and-legends",
+      "atomic-channel-encoding",
       "facet-grid-repeat-and-named-composition-editing",
       "horizon",
       "violin-plot",

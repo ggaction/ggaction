@@ -16,6 +16,7 @@ import { registerRuleAppearanceEncodingActions } from "./ruleAppearance.js";
 import { registerStrokeEncodingAction } from "./stroke.js";
 import { registerBarWidthEncodingAction } from "./barWidth.js";
 import { registerEncodingRemovalAction } from "./remove.js";
+import { registerAtomicEncodingAction } from "./channels.js";
 
 export function registerEncodingActions(ProgramClass) {
   registerSeriesLayoutAction(ProgramClass);
@@ -36,4 +37,5 @@ export function registerEncodingActions(ProgramClass) {
   registerTextEncodingAction(ProgramClass);
   registerParallelEncodingAction(ProgramClass);
   registerEncodingRemovalAction(ProgramClass);
+  registerAtomicEncodingAction(ProgramClass);
 }

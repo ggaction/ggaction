@@ -3840,6 +3840,59 @@ export type StrokeWidthEncodingOptions =
       scale?: StrokeWidthScaleOptions;
     };
 
+export type SizeEncodingOptions = {
+  field: string;
+  target?: string;
+  fieldType?: "quantitative";
+  scale?: SizeScaleOptions;
+};
+
+export type ShapeEncodingOptions = {
+  field: string;
+  target?: string;
+  fieldType?: "nominal";
+  scale?: ShapeScaleOptions;
+};
+
+export type AngleEncodingOptions =
+  | { target?: string; value: number; field?: never; fieldType?: never }
+  | { target?: string; field: string; fieldType?: "quantitative"; value?: never };
+
+type WithoutEncodingTarget<T> = T extends unknown
+  ? Omit<T, "target" | "coordinate">
+  : never;
+
+export interface EncodingChannelAssignments {
+  x?: WithoutEncodingTarget<PositionEncodingOptions | DatumPositionEncodingOptions>;
+  y?: WithoutEncodingTarget<YPositionEncodingOptions | DatumPositionEncodingOptions>;
+  x2?: WithoutEncodingTarget<SecondaryPositionEncodingOptions>;
+  y2?: WithoutEncodingTarget<SecondaryPositionEncodingOptions>;
+  theta?: WithoutEncodingTarget<ThetaEncodingOptions>;
+  r?: WithoutEncodingTarget<RadialEncodingOptions>;
+  xOffset?: WithoutEncodingTarget<XOffsetEncodingOptions>;
+  yOffset?: WithoutEncodingTarget<YOffsetEncodingOptions>;
+  group?: WithoutEncodingTarget<GroupEncodingOptions>;
+  pathOrder?: WithoutEncodingTarget<PathOrderEncodingOptions>;
+  color?: WithoutEncodingTarget<ColorEncodingOptions>;
+  stroke?: WithoutEncodingTarget<StrokeEncodingOptions>;
+  size?: WithoutEncodingTarget<SizeEncodingOptions>;
+  shape?: WithoutEncodingTarget<ShapeEncodingOptions>;
+  opacity?: WithoutEncodingTarget<OpacityEncodingOptions>;
+  strokeWidth?: WithoutEncodingTarget<StrokeWidthEncodingOptions>;
+  strokeDash?: WithoutEncodingTarget<StrokeDashEncodingOptions>;
+  angle?: WithoutEncodingTarget<AngleEncodingOptions>;
+  text?: WithoutEncodingTarget<TextEncodingOptions>;
+}
+
+type AtLeastOne<T> = {
+  [K in keyof T]-?: Required<Pick<T, K>> & Partial<Omit<T, K>>
+}[keyof T];
+
+export interface EncodeChannelsOptions {
+  target: string;
+  channels: AtLeastOne<EncodingChannelAssignments>;
+}
+
 export type RegressionMethod = "linear" | "polynomial" | "loess";
 export type RegressionInterval = "mean" | "prediction";
 
@@ -4370,12 +4423,9 @@ export class ChartProgram {
   encodeX2(options: SecondaryPositionEncodingOptions): ChartProgram;
   encodeColor(options: ColorEncodingOptions): ChartProgram;
   encodeStrokeDash(options: StrokeDashEncodingOptions): ChartProgram;
-  encodeSize(options: { field: string; target?: string; fieldType?: "quantitative"; scale?: SizeScaleOptions }): ChartProgram;
-  encodeShape(options: { field: string; target?: string; fieldType?: "nominal"; scale?: ShapeScaleOptions }): ChartProgram;
-  encodeAngle(options:
-    | { target?: string; value: number; field?: never; fieldType?: never }
-    | { target?: string; field: string; fieldType?: "quantitative"; value?: never }
-  ): ChartProgram;
+  encodeSize(options: SizeEncodingOptions): ChartProgram;
+  encodeShape(options: ShapeEncodingOptions): ChartProgram;
+  encodeAngle(options: AngleEncodingOptions): ChartProgram;
   encodeOpacity(options: OpacityEncodingOptions): ChartProgram;
   encodeRadius(options: { value: number; target?: string }): ChartProgram;
   encodePointRadius(options: { value: number; target?: string }): ChartProgram;
@@ -4408,6 +4458,7 @@ export class ChartProgram {
   encodeBarWidth(options?: BarWidthOptions): ChartProgram;
   encodeStroke(options: StrokeEncodingOptions): ChartProgram;
   encodeStrokeWidth(options: StrokeWidthEncodingOptions): ChartProgram;
+  encodeChannels(options: EncodeChannelsOptions): ChartProgram;
 
   createRegression(options?: RegressionOptions): ChartProgram;
   editRegression(options: EditRegressionOptions): ChartProgram;

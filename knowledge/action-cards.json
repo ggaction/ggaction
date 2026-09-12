@@ -3,7 +3,7 @@
   "packageVersion": "0.0.13",
   "typeSource": "types/program.d.ts",
   "errorPolicy": "An empty errors array means the compact card has no curated error override; consult the canonical route for validation, inference, and recovery behavior.",
-  "count": 267,
+  "count": 268,
   "cards": [
     {
       "schemaVersion": 3,
@@ -7297,6 +7297,84 @@
     },
     {
       "schemaVersion": 3,
+      "name": "encodeChannels",
+      "layer": "advanced",
+      "domain": "encodings",
+      "summary": "Atomically replaces multiple compatible encoding channels on one explicit mark from one final state.",
+      "signature": "encodeChannels(options: EncodeChannelsOptions): ChartProgram;",
+      "intents": [
+        "encode channels",
+        "encode",
+        "map field",
+        "visual encoding",
+        "field mapping",
+        "multiple encodings on one mark",
+        "atomic multi-channel mapping"
+      ],
+      "lifecycle": "Assignment",
+      "resources": {
+        "prerequisites": [
+          "target mark"
+        ],
+        "owns": [
+          "multiple encodings on one mark assignment"
+        ],
+        "idOptions": [
+          "target"
+        ]
+      },
+      "authoringRoles": [
+        "H2"
+      ],
+      "wraps": [
+        "createCoordinate",
+        "editSemantic",
+        "createScale"
+      ],
+      "editableVia": [
+        "removeEncoding"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "target mark"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "target",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "channels",
+          "required": true,
+          "type": "AtLeastOne<EncodingChannelAssignments>"
+        }
+      ],
+      "callPatterns": [
+        "encodeChannels({ target, channels: { x: { field }, y: { field } } })",
+        "encodeChannels({ target, channels: { color: { field }, stroke: { field }, size: { field } } })"
+      ],
+      "snippet": "program.encodeChannels({ target: \"points\", channels: { x: { field: \"b\" }, y: { field: \"a\" } } })",
+      "errors": [],
+      "route": "/reference/actions/encodings/#encodechannels"
+    },
+    {
+      "schemaVersion": 3,
       "name": "encodeX2",
       "layer": "user-facing",
       "domain": "encodings",
@@ -7844,7 +7922,7 @@
       "layer": "user-facing",
       "domain": "encodings",
       "summary": "Encode or replace a quantitative field as equal-area point size.",
-      "signature": "encodeSize(options: { field: string; target?: string; fieldType?: \"quantitative\"; scale?: SizeScaleOptions }): ChartProgram;",
+      "signature": "encodeSize(options: SizeEncodingOptions): ChartProgram;",
       "intents": [
         "encode size",
         "encode",
@@ -7938,7 +8016,7 @@
       "layer": "user-facing",
       "domain": "encodings",
       "summary": "Encode or replace a nominal field with the shared 12-value point-shape vocabulary.",
-      "signature": "encodeShape(options: { field: string; target?: string; fieldType?: \"nominal\"; scale?: ShapeScaleOptions }): ChartProgram;",
+      "signature": "encodeShape(options: ShapeEncodingOptions): ChartProgram;",
       "intents": [
         "encode shape",
         "encode",
@@ -8032,7 +8110,7 @@
       "layer": "user-facing",
       "domain": "encodings",
       "summary": "Maps a constant or quantitative field to point or tick rotation angle.",
-      "signature": "encodeAngle(options: | { target?: string; value: number; field?: never; fieldType?: never } | { target?: string; field: string; fieldType?: \"quantitative\"; value?: never } ): ChartProgram;",
+      "signature": "encodeAngle(options: AngleEncodingOptions): ChartProgram;",
       "intents": [
         "encode angle",
         "encode",

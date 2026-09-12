@@ -8,6 +8,7 @@ import { planEncodingRematerialization } from "../../materialization/encodings.j
 import { findSemanticScale } from "../../selectors/scales.js";
 import { validateOptionObject } from "../../core/validation.js";
 import { getMarkGraphicTypes, getPositionChannelDefinition } from "../../core/vocabulary.js";
+import { DEFAULT_TICK_COUNT } from "../guides/tickValues.js";
 
 export function validateOptions(args, supported, operation) {
   validateOptionObject(args, supported, operation);
@@ -105,32 +106,99 @@ export function rebindPositionGuides(
   const direction = definition.gridDirection;
   const grid = program.semanticSpec.guides.grid?.[direction];
   const ownsAxis = axis?.scale === previousScale;
+  const refreshesReboundAxis = axis?.scale === nextScale;
   const ownsGrid = grid?.scale === previousScale;
-  if (!ownsAxis && !ownsGrid) return program;
+  if (!ownsAxis && !ownsGrid && !refreshesReboundAxis) return program;
 
   const remaining = program.semanticSpec.layers.some(layer =>
     layer.id !== target && !isSourceOwnedText(layer) && layer.encoding?.[channel]?.scale === previousScale
   );
-  if (remaining) {
+  if ((ownsAxis || ownsGrid) && remaining) {
     throw new Error(
       `Cannot rebind ${channel} guides from shared scale "${previousScale}" while it has other consumers.`
     );
   }
 
   let next = program;
-  if (ownsAxis) {
-    next = next.editSemantic({
-      property: `guide.axis.${definition.guideChannel}.scale`,
-      value: nextScale
-    });
-    for (const component of ["line", "ticks", "labels", "title"]) {
-      const config = next.guideConfigs.axis?.[definition.guideChannel]?.[component];
-      if (config?.scale === previousScale) {
-        next = next._withGuideConfig(definition.guideChannel, component, {
-          ...config,
-          scale: nextScale
-        });
+  if (ownsAxis || refreshesReboundAxis) {
+    const previousAxisConfig = next.guideConfigs.axis?.[definition.guideChannel];
+    const previousTicks = previousAxisConfig?.ticks;
+    const previousLabels = previousAxisConfig?.labels;
+    const labelsFollowTicks = previousTicks !== undefined &&
+      previousLabels !== undefined &&
+      previousTicks.mode === previousLabels.mode &&
+      (previousTicks.mode === "count"
+        ? previousTicks.count === previousLabels.count
+        : previousTicks.values?.length === previousLabels.values?.length &&
+          previousTicks.values.every(
+            (value, index) => Object.is(value, previousLabels.values[index])
+          ));
+    if (ownsAxis) {
+      next = next.editSemantic({
+        property: `guide.axis.${definition.guideChannel}.scale`,
+        value: nextScale
+      });
+      for (const component of ["line", "ticks", "labels", "title"]) {
+        const config = next.guideConfigs.axis?.[definition.guideChannel]?.[component];
+        if (config?.scale === previousScale) {
+          next = next._withGuideConfig(definition.guideChannel, component, {
+            ...config,
+            scale: nextScale
+          });
+        }
       }
+    }
+    const resolved = next.resolvedScales[nextScale] ??
+      findSemanticScale(next, nextScale);
+    const discrete = ["ordinal", "band", "point"].includes(resolved?.type);
+    let ticks = next.guideConfigs.axis?.[definition.guideChannel]?.ticks;
+    if (ticks !== undefined && discrete && ticks.mode !== "values") {
+      ticks = {
+        ...ticks,
+        mode: "values",
+        values: resolved.domain,
+        inferredValues: true
+      };
+      delete ticks.count;
+      next = next._withGuideConfig(definition.guideChannel, "ticks", ticks);
+    } else if (
+      ticks !== undefined &&
+      !discrete &&
+      ticks.mode === "values" &&
+      ticks.inferredValues === true
+    ) {
+      ticks = {
+        ...ticks,
+        mode: "count",
+        count: DEFAULT_TICK_COUNT,
+        inferredValues: true
+      };
+      delete ticks.values;
+      next = next._withGuideConfig(definition.guideChannel, "ticks", ticks);
+    } else if (
+      ticks !== undefined &&
+      discrete &&
+      ticks.inferredValues === true
+    ) {
+      ticks = { ...ticks, values: resolved.domain };
+      next = next._withGuideConfig(definition.guideChannel, "ticks", ticks);
+    }
+    if (previousLabels !== undefined && labelsFollowTicks && ticks !== undefined) {
+      const labels = {
+        ...next.guideConfigs.axis[definition.guideChannel].labels,
+        mode: ticks.mode,
+        inferredValues: ticks.inferredValues === true,
+        ...(ticks.mode === "values"
+          ? { values: ticks.values }
+          : { count: ticks.count })
+      };
+      if (ticks.mode === "values") delete labels.count;
+      else delete labels.values;
+      next = next._withGuideConfig(
+        definition.guideChannel,
+        "labels",
+        labels
+      );
     }
   }
   if (ownsGrid) {

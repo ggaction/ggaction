@@ -1246,6 +1246,24 @@
       }
     },
     {
+      "name": "encodeChannels",
+      "layer": "advanced",
+      "domain": "encodings",
+      "status": "implemented",
+      "lifecycle": "Assignment",
+      "update": "Same action atomically replaces one or more compatible channels on one explicit mark",
+      "audit": "Final-state reassignment — Implemented",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/ENCODINGS.md",
+        "anchor": "encodechannels"
+      }
+    },
+    {
       "name": "encodeX2",
       "layer": "user-facing",
       "domain": "encodings",

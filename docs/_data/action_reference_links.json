@@ -91,6 +91,7 @@
   "layoutLabels": "/reference/actions/marks/#layoutlabels",
   "removeLabelLayout": "/reference/actions/marks/#removelabellayout",
   "layoutSeries": "/reference/actions/encodings/#layoutseries",
+  "encodeChannels": "/reference/actions/encodings/#encodechannels",
   "encodeX": "/reference/actions/encodings/#encodex",
   "encodeY": "/reference/actions/encodings/#encodey",
   "encodeY2": "/reference/actions/encodings/#encodey2",

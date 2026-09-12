@@ -93,10 +93,23 @@ atomic action unless you intentionally need the lower-level steps.
 
 | Relationship | Shortest action | What changes together | Complete example |
 | --- | --- | --- | --- |
+| One mark, several encodings | `encodeChannels({ target: "points", channels: { x: { field: "b" }, y: { field: "a" } } })` | The final channel set, shared scales, marks, dependent labels, and legends | [Encoding action reference](../reference/actions/encodings.md#encodechannels) |
 | Histogram | `encodeHistogram({ field: "value" })` | Bin x, count y, stack policy, and both scales | [Histogram recipe](../recipes/histogram.md) |
 | Density | `encodeDensity({ field: "value" })` | Immutable density data, value/density positions, grouping, and area paths | [Density tutorial](../tutorials/density-area.md) |
 | Horizon | `encodeHorizon({ x: "time", y: "value" })` | Signed bands, folded positions, color, and source-facing x guide | [Horizon recipe](../recipes/horizon.md) |
 | Parallel coordinates | `encodeParallelCoordinates({ dimensions: ["a", "b"] })` | Ordered local scales, row paths, and dimension axes | [Parallel recipe](../recipes/parallel-coordinates.md) |
+
+`encodeChannels` is the Full-only advanced action for a final-state change on
+one explicit mark. Its `channels` object accepts x/y and secondary positions,
+Polar theta/r, offsets, grouping and path order, appearance, angle, and text.
+Each nested payload is the corresponding focused action payload without
+`target` or `coordinate`. Use `scale.id` inside a payload to share a named
+scale. The request is atomic: one invalid field or incompatible shared-scale
+definition leaves the earlier program unchanged, and omitted channels remain
+unchanged. A Cartesian axis rebound across categorical and continuous scale
+families keeps its style and title while its coupled default ticks and labels
+switch to final-domain values or count mode. An incompatible explicit guide or
+grid rejects the whole request without changing the earlier program.
 
 ### Atomic density {#atomic-density}
 

@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "source": "generated lifecycle smoke corpus plus selection lifecycle",
-  "actionCount": 267,
+  "actionCount": 268,
   "relationships": [
     {
       "name": "createCanvas",
@@ -428,6 +428,14 @@
         "createScale",
         "layoutSeries",
         "encodeX"
+      ]
+    },
+    {
+      "name": "encodeChannels",
+      "wraps": [
+        "createCoordinate",
+        "editSemantic",
+        "createScale"
       ]
     },
     {

@@ -1003,8 +1003,8 @@
         "related",
         "explicit-grouping-and-time-inputs"
       ],
-      "bytes": 10593,
-      "sha256": "a843b119ae7c952957f8238cabd0e1dfcf498e2e4eca57bb496dad1b61bef2d6"
+      "bytes": 11710,
+      "sha256": "c9c26c5558a52321bfc0d5f1d6b123e3d67fb409ba4192cbc4a42e288e6186ac"
     },
     {
       "order": 64,
@@ -1852,8 +1852,8 @@
         "action-reference",
         "exact-action-lookup"
       ],
-      "bytes": 30183,
-      "sha256": "fbdd63ba7a2f6bf2af5fdfbe746c75e5b0e8b5d38bac6200d530adb99925464c"
+      "bytes": 30281,
+      "sha256": "4a53b981c755f2885a10a6d55add883c7173e518bed8a8367fe5cb0b04b6ed17"
     },
     {
       "order": 117,
@@ -1974,6 +1974,7 @@
       "headings": [
         "encoding-actions",
         "layoutseries",
+        "encodechannels",
         "encodex",
         "encodey",
         "encodey2",
@@ -2012,8 +2013,8 @@
         "encodebarwidth",
         "related"
       ],
-      "bytes": 18343,
-      "sha256": "f303205f6432d5b6f1e337a20902d406d1c9c9c5e7a47b6275d1375251659151"
+      "bytes": 19715,
+      "sha256": "1145039722794c7766a9369b45eee6f9e2a4a06cb4a5cf9c73e7a1103df315d9"
     },
     {
       "order": 120,
@@ -2165,8 +2166,8 @@
         "exact-typescript-signatures",
         "related"
       ],
-      "bytes": 20580,
-      "sha256": "4d09272cd5710743dd5fec44f7e7e8ad20e831c4234d1e8fb4d6afdbc0c2c41b"
+      "bytes": 20380,
+      "sha256": "c194f4c9fc90b4b1cda919a6796756250f9d1d70212f0c87f9c5af4d39c4f01d"
     },
     {
       "order": 126,

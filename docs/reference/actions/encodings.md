@@ -27,6 +27,36 @@ group. Legacy color.layout, measure.stack and Bar offsets delegate to this actio
 request wins. Color reassignment without layout preserves the stored mode. Stack aliases zero/normalize/null/
 center mean stack/fill/overlay/center. Failed topology, shared-scale or guide validation preserves the previous program.
 
+## `encodeChannels`
+
+```javascript
+encodeChannels({
+  target,
+  channels: {
+    x?, y?, x2?, y2?, theta?, r?, xOffset?, yOffset?,
+    group?, pathOrder?, color?, stroke?, size?, shape?, opacity?,
+    strokeWidth?, strokeDash?, angle?, text?
+  }
+})
+```
+
+Atomically replace one or more encodings on one explicit mark. Each channel
+uses the same options and validation as its focused `encode*` action, without a
+nested `target`, `coordinate`, or `id`; a nested `scale.id` remains valid. The
+request must contain at least one of the 19 listed keys. Omitted channels are
+preserved, and `null` does not remove an encoding.
+
+The action validates one final channel and scale state, then resolves affected
+scales and rematerializes each target, shared-scale consumer, dependent mark,
+and legend once. Channel object insertion order cannot change the result or
+trace order. Conflicting explicit properties for a shared scale ID fail before
+the original program changes. Rebound Cartesian axes keep their style and title;
+coupled default ticks and labels switch between categorical domain values and
+continuous count mode when the final scale family changes. Incompatible explicit
+guide values or a continuous-only grid make the whole request fail atomically.
+This advanced authoring action is available only
+from `ggaction`; use the focused encoding actions from `ggaction/basic`.
+
 ## `encodeX`
 
 ```javascript

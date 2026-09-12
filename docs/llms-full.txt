@@ -6734,10 +6734,23 @@ atomic action unless you intentionally need the lower-level steps.
 
 | Relationship | Shortest action | What changes together | Complete example |
 | --- | --- | --- | --- |
+| One mark, several encodings | `encodeChannels({ target: "points", channels: { x: { field: "b" }, y: { field: "a" } } })` | The final channel set, shared scales, marks, dependent labels, and legends | [Encoding action reference](./reference/actions/encodings/#encodechannels) |
 | Histogram | `encodeHistogram({ field: "value" })` | Bin x, count y, stack policy, and both scales | [Histogram recipe](./recipes/histogram/) |
 | Density | `encodeDensity({ field: "value" })` | Immutable density data, value/density positions, grouping, and area paths | [Density tutorial](./tutorials/density-area/) |
 | Horizon | `encodeHorizon({ x: "time", y: "value" })` | Signed bands, folded positions, color, and source-facing x guide | [Horizon recipe](./recipes/horizon/) |
 | Parallel coordinates | `encodeParallelCoordinates({ dimensions: ["a", "b"] })` | Ordered local scales, row paths, and dimension axes | [Parallel recipe](./recipes/parallel-coordinates/) |
+
+`encodeChannels` is the Full-only advanced action for a final-state change on
+one explicit mark. Its `channels` object accepts x/y and secondary positions,
+Polar theta/r, offsets, grouping and path order, appearance, angle, and text.
+Each nested payload is the corresponding focused action payload without
+`target` or `coordinate`. Use `scale.id` inside a payload to share a named
+scale. The request is atomic: one invalid field or incompatible shared-scale
+definition leaves the earlier program unchanged, and omitted channels remain
+unchanged. A Cartesian axis rebound across categorical and continuous scale
+families keeps its style and title while its coupled default ticks and labels
+switch to final-domain values or count mode. An incompatible explicit guide or
+grid rejects the whole request without changing the earlier program.
 
 ### Atomic density {#atomic-density}
 
@@ -14042,6 +14055,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editYScale`](./reference/actions/advanced/#focused-channel-scale-editors) | H2 | user-facing | core |
 | [`encodeAngle`](./reference/actions/encodings/#encodeangle) | H2 | user-facing | encodings |
 | [`encodeBarWidth`](./reference/actions/encodings/#encodebarwidth) | H2 | user-facing | encodings |
+| [`encodeChannels`](./reference/actions/encodings/#encodechannels) | H2 | advanced | encodings |
 | [`encodeColor`](./reference/actions/encodings/#encodecolor) | H2 | user-facing | encodings |
 | [`encodeDensity`](./reference/actions/encodings/#encodedensity) | H2 | user-facing | encodings |
 | [`encodeGroup`](./reference/actions/encodings/#encodegroup) | H2 | user-facing | encodings |
@@ -15143,6 +15157,36 @@ scales survive. Removing color preserves identity and placement. Switch to overl
 group. Legacy color.layout, measure.stack and Bar offsets delegate to this action; the last explicit layout
 request wins. Color reassignment without layout preserves the stored mode. Stack aliases zero/normalize/null/
 center mean stack/fill/overlay/center. Failed topology, shared-scale or guide validation preserves the previous program.
+
+## `encodeChannels`
+
+```javascript
+encodeChannels({
+  target,
+  channels: {
+    x?, y?, x2?, y2?, theta?, r?, xOffset?, yOffset?,
+    group?, pathOrder?, color?, stroke?, size?, shape?, opacity?,
+    strokeWidth?, strokeDash?, angle?, text?
+  }
+})
+```
+
+Atomically replace one or more encodings on one explicit mark. Each channel
+uses the same options and validation as its focused `encode*` action, without a
+nested `target`, `coordinate`, or `id`; a nested `scale.id` remains valid. The
+request must contain at least one of the 19 listed keys. Omitted channels are
+preserved, and `null` does not remove an encoding.
+
+The action validates one final channel and scale state, then resolves affected
+scales and rematerializes each target, shared-scale consumer, dependent mark,
+and legend once. Channel object insertion order cannot change the result or
+trace order. Conflicting explicit properties for a shared scale ID fail before
+the original program changes. Rebound Cartesian axes keep their style and title;
+coupled default ticks and labels switch between categorical domain values and
+continuous count mode when the final scale family changes. Incompatible explicit
+guide values or a continuous-only grid make the whole request fail atomically.
+This advanced authoring action is available only
+from `ggaction`; use the focused encoding actions from `ggaction/basic`.
 
 ## `encodeX`
 
@@ -16838,9 +16882,9 @@ interface ChartProgramActions {
   encodeX2(options: SecondaryPositionEncodingOptions): ChartProgram;
   encodeColor(options: ColorEncodingOptions): ChartProgram;
   encodeStrokeDash(options: StrokeDashEncodingOptions): ChartProgram;
-  encodeSize(options: { field: string; target?: string; fieldType?: "quantitative"; scale?: SizeScaleOptions }): ChartProgram;
-  encodeShape(options: { field: string; target?: string; fieldType?: "nominal"; scale?: ShapeScaleOptions }): ChartProgram;
-  encodeAngle(options: | { target?: string; value: number; field?: never; fieldType?: never } | { target?: string; field: string; fieldType?: "quantitative"; value?: never } ): ChartProgram;
+  encodeSize(options: SizeEncodingOptions): ChartProgram;
+  encodeShape(options: ShapeEncodingOptions): ChartProgram;
+  encodeAngle(options: AngleEncodingOptions): ChartProgram;
   encodeOpacity(options: OpacityEncodingOptions): ChartProgram;
   encodeRadius(options: { value: number; target?: string }): ChartProgram;
   encodePointRadius(options: { value: number; target?: string }): ChartProgram;
@@ -16867,6 +16911,7 @@ interface ChartProgramActions {
   encodeBarWidth(options?: BarWidthOptions): ChartProgram;
   encodeStroke(options: StrokeEncodingOptions): ChartProgram;
   encodeStrokeWidth(options: StrokeWidthEncodingOptions): ChartProgram;
+  encodeChannels(options: EncodeChannelsOptions): ChartProgram;
   createRegression(options?: RegressionOptions): ChartProgram;
   editRegression(options: EditRegressionOptions): ChartProgram;
   createErrorBar(options?: ErrorBarOptions): ChartProgram;

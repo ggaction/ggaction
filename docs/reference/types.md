@@ -100,9 +100,9 @@ interface ChartProgramActions {
   encodeX2(options: SecondaryPositionEncodingOptions): ChartProgram;
   encodeColor(options: ColorEncodingOptions): ChartProgram;
   encodeStrokeDash(options: StrokeDashEncodingOptions): ChartProgram;
-  encodeSize(options: { field: string; target?: string; fieldType?: "quantitative"; scale?: SizeScaleOptions }): ChartProgram;
-  encodeShape(options: { field: string; target?: string; fieldType?: "nominal"; scale?: ShapeScaleOptions }): ChartProgram;
-  encodeAngle(options: | { target?: string; value: number; field?: never; fieldType?: never } | { target?: string; field: string; fieldType?: "quantitative"; value?: never } ): ChartProgram;
+  encodeSize(options: SizeEncodingOptions): ChartProgram;
+  encodeShape(options: ShapeEncodingOptions): ChartProgram;
+  encodeAngle(options: AngleEncodingOptions): ChartProgram;
   encodeOpacity(options: OpacityEncodingOptions): ChartProgram;
   encodeRadius(options: { value: number; target?: string }): ChartProgram;
   encodePointRadius(options: { value: number; target?: string }): ChartProgram;
@@ -129,6 +129,7 @@ interface ChartProgramActions {
   encodeBarWidth(options?: BarWidthOptions): ChartProgram;
   encodeStroke(options: StrokeEncodingOptions): ChartProgram;
   encodeStrokeWidth(options: StrokeWidthEncodingOptions): ChartProgram;
+  encodeChannels(options: EncodeChannelsOptions): ChartProgram;
   createRegression(options?: RegressionOptions): ChartProgram;
   editRegression(options: EditRegressionOptions): ChartProgram;
   createErrorBar(options?: ErrorBarOptions): ChartProgram;

@@ -44,14 +44,26 @@ encodeChannels({target: string, channels: {
 
 ## 저장 결과와 생명주기
 
-개별 encode 실행을 바로 reduce하면 중간 materialization이 발생하므로 validate/plan/commit 내부를 공유하게 분리한다. 공개 encodeX 등은 기존 동작을 유지하고 batch owner가 final plan을 기존 primitive mutation+materializer로 적용한다. 모든 child trace는 public encodeChannels의 subtree이고 guide/label/highlight는 최종 상태만 관측한다.
+개별 public encode wrapper를 바로 reduce하면 중간 materialization과 가짜 direct-action child가 생기므로
+wrapper와 기존 implementation body의 경계를 분리한다. 공개 encodeX 등은 기존 동작을 유지하고 batch owner는
+동일 implementation body를 private immutable planning program에서 실행해 final frozen state plan을 만든 뒤
+기존 primitive mutation trace와 materializer를 적용한다. 모든 child trace는 public encodeChannels의 subtree이고
+guide/label/highlight는 최종 상태만 관측한다.
 
 ## 구현 순서와 action 계층
 
-1. 단일 encoding validators를 부작용 없는 normalize/plan으로 추출한다.
+1. Core action wrapper가 소유한 implementation body를 package-private invoker로 공유하고 단일 encoding validator와
+   inference를 그대로 재사용한다. Invoker 자체는 package extension API로 export하지 않는다.
 2. channels를 canonical map으로 바꾸고 final draft layer/scales를 만들며 exclusive/shared scale ownership을 검증한다.
+   Bar category/measure x/y 역할을 뒤집을 때는 primitive boundary의 trace-free
+   `withoutPreviewLayerEncodings`가 planning clone에서 이전 두 역할만 분리한다. Encoding action이
+   semantic state를 직접 `_clone`하면 source-boundary 위반이다.
 3. final semantic patch를 wrapped 경로로 적용하고 affected scale/mark를 중복 없이 materialize한다.
 4. existing guides의 semantic channel binding, owner labels, R36 references와 selection replay를 실행한다.
+   Cartesian axis가 categorical↔continuous scale family를 바꾸면 기존 tick/label style은 보존하되,
+   둘이 같은 recipe를 공유하던 경우 final scale에 맞춰 categorical은 final domain `values`, continuous는
+   default `count:5`로 정규화한다. 명시적 values가 새 domain과 맞지 않거나 grid가 새 scale family를
+   지원하지 않으면 조용히 삭제하지 말고 전체 batch를 atomic error로 거부한다.
 5. 단일 encode와 batch 1-channel equivalence 및 입력 키 순서 독립성 tests.
 
 ## 독립 oracle와 인수 테스트
@@ -75,15 +87,17 @@ canonical 순서는 x,y,x2,y2,theta,r,xOffset,yOffset,group,pathOrder,color,stro
 ### 3단계 private 계약
 
 ~~~ts
-normalizeEncodingRequest(channel, payload, originalLayer)
-// → canonical requested payload; writes 없음
+normalizeEncodeChannelsArgs(args)
+// → { target, requestsInCanonicalOrder }; caller write 없음
 planEncodingAssignments(program, target, requests)
-// → { layer, scaleRequests, configPatches, detachedScaleIds, affectedOwners }
+// → { target, originalLayer, finalLayer, state, scaleIds }
 applyEncodingAssignments(program, plan)
-// → wrapped semantic/config changes + 하나의 materialization plan
+// → 원래 runtime class로 state commit; 이후 deduplicated materialization plan
 ~~~
 
-plan.layer는 모든 새 channel을 반영한 완전한 draft다. validation은 이 layer와 final scales를 사용한다. plan 생성 중 encodeX/encodeY 같은 public action을 호출하지 않는다. 기존 단일 encode도 같은 pure normalizer/planner를 소비하되 encodeChannels를 역호출하지 않는다.
+plan의 final layer/state는 모든 새 channel을 반영한 완전한 draft다. validation은 이 state와 final scales를 사용한다.
+plan 생성 중 encodeX/encodeY 같은 public wrapper를 호출하지 않는다. 기존 단일 encode와 batch가 같은 wrapped action
+implementation body를 소비하되 focused action이 encodeChannels를 역호출하지 않는다.
 
 1. target family/coordinate를 확정하고 지원 channel whitelist 검사.
 2. 각 request shape/fieldType/mode 정규화. 기존 style constant와 field channel 전환의 cleanup도 계획한다.
@@ -91,6 +105,10 @@ plan.layer는 모든 새 channel을 반영한 완전한 draft다. validation은 
 4. target의 최종 bindings와 외부 consumer 전체로 domains/roles/series/group/offset/secondary pair를 검증한다.
 5. private immutable draft에 모든 semantic bindings를 기록한다. chart-owned derived data가 필요한 경우 기존 owner executor로 한 번 계산한다.
 6. scales→marks→dependent labels/references→guides→layout→highlights를 deduplicate해 실행한다. 중간 상태의 legend 또는 source label을 생성하지 않는다.
+   Position guide rebind는 original/final scale ID를 모두 사용한다. Axis의 이전 ticks/labels가 같은
+   mode와 values/count를 공유했다면 한 쌍으로 취급하고, final scale이 band/point/ordinal이면 둘 다
+   `{mode:"values", values:finalDomain, inferredValues:true}`, linear/time/transformed이면 둘 다
+   `{mode:"count", count:5, inferredValues:true}`로 바꾼다. 색상·길이·폰트·회전·위치·제목은 보존한다.
 7. detached scale은 기존 owner 규칙에 따라 unreferenced인 것만 정리한다. shared scale은 남긴다.
 
 ### 실패와 trace
@@ -101,8 +119,13 @@ payload key 순열에 따라 state와 sibling trace 순서가 달라지면 실�
 
 - R19-N01: fixed domains0..10/ranges0..100, point a2,b8 → x20,y80에서 x=b,y=a → x80,y20.
 - R19-N02: 한 final draft에서 primary/secondary의 서로 연결된 field 변경, group/pathOrder 동시 변경, parent band/offset 동시 변경 각각 성공.
+- R19-N02의 Bar transpose fixture에는 `createAxes()`를 포함한다. x축은 final quantitative scale과 count
+  recipe, y축은 final categorical scale과 정확한 domain values를 가져야 하고 양쪽 tick/label graphics가
+  성공적으로 다시 만들어져야 한다.
 - R19-E01: valid x + unknown stroke field → 원본 전체 유지.
 - R19-E02: 두 channels가 같은 scale.id에 서로 다른 explicit domain 요청 → Error.
+- 기존 continuous grid를 categorical position으로 옮기는 batch처럼 final guide가 지원되지 않으면 Error이며,
+  original semantic/graphic/config/resolved scale/trace는 그대로다.
 - R19-L01: requests key 순열 전부 같은 normalized result. actual scale/mark refresh count는 owner별1회이며 기존 layout의 명시된 제한 재배치는 별도 기록한다.
 - R19-L02: field-stroke→constant-stroke와 source reencoding 후 R38 override/R32 membership/R36 reference가 최종 상태를 본다.
 

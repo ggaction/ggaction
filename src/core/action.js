@@ -1,6 +1,7 @@
 import { cloneAndFreeze, freezeOwned, isPlainObject } from "./immutable.js";
 
 const metadataByWrappedAction = new WeakMap();
+const implementationByWrappedAction = new WeakMap();
 let actionCompletionHook;
 
 export function setActionCompletionHook(hook) {
@@ -12,6 +13,14 @@ export function setActionCompletionHook(hook) {
 
 export function getWrappedActionMetadata(value) {
   return metadataByWrappedAction.get(value);
+}
+
+export function invokeWrappedActionImplementation(value, program, args = {}) {
+  const implementation = implementationByWrappedAction.get(value);
+  if (implementation === undefined) {
+    throw new TypeError("Expected an action created by action().");
+  }
+  return implementation.call(program, args);
 }
 
 function summarizeObject(value, ancestors = new WeakSet()) {
@@ -161,5 +170,6 @@ export function action(metadata, implementation) {
   };
 
   metadataByWrappedAction.set(wrappedAction, ownedMetadata);
+  implementationByWrappedAction.set(wrappedAction, implementation);
   return wrappedAction;
 }

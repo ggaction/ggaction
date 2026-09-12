@@ -104,6 +104,25 @@ function focusedScaleEditorPrograms() {
   return [point, polar, line, parallel, offsets, yOffsets];
 }
 
+function atomicEncodingPrograms() {
+  return [chart()
+    .createCanvas({ width: 240, height: 180, margin: 20 })
+    .createData({ values: [
+      { x: 1, y: 4, nextX: 2, nextY: 3 },
+      { x: 2, y: 3, nextX: 3, nextY: 2 }
+    ] })
+    .createPointMark({ id: "atomicPoints" })
+    .encodeX({ target: "atomicPoints", field: "x" })
+    .encodeY({ target: "atomicPoints", field: "y" })
+    .encodeChannels({
+      target: "atomicPoints",
+      channels: {
+        x: { field: "nextX" },
+        y: { field: "nextY" }
+      }
+    })];
+}
+
 function normalizedDataPrograms() {
   return [chart()
     .createData({ id: "normalizationSource", values: [
@@ -272,6 +291,7 @@ export async function buildActionRelationships() {
     ...descriptors.map(buildScenario),
     ...selectionLifecyclePrograms(),
     ...focusedScaleEditorPrograms(),
+    ...atomicEncodingPrograms(),
     ...normalizedDataPrograms(),
     ...missingDataPrograms(),
     ...derivedEditingPrograms()

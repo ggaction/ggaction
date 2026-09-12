@@ -481,6 +481,14 @@
       ]
     },
     {
+      "id": "encoding.channels",
+      "phrases": [
+        "atomic encoding update",
+        "encode channels together",
+        "batch encoding channels"
+      ]
+    },
+    {
       "id": "encoding.x",
       "phrases": [
         "x encoding",
@@ -2191,6 +2199,22 @@
       ],
       "baseOptions": {
         "field": "\"y\""
+      }
+    },
+    {
+      "id": "action.encodeChannels",
+      "kind": "action",
+      "name": "encodeChannels",
+      "order": 51,
+      "anchors": [
+        "encoding.channels"
+      ],
+      "covers": [
+        "encoding.channels"
+      ],
+      "baseOptions": {
+        "target": "\"point\"",
+        "channels": "{ x: { field: \"x\" }, y: { field: \"y\" } }"
       }
     },
     {

@@ -220,9 +220,9 @@ test("intent taxonomy covers every supported constraint with exact owners", asyn
   assert.equal(validate(taxonomy), true, JSON.stringify(validate.errors));
   assert.deepEqual(validateResolverKnowledge(), {
     cards: cards.count,
-    constraints: 104,
-    providers: 98,
-    supported: 99,
+    constraints: 105,
+    providers: 99,
+    supported: 100,
     unsupported: 5
   });
   assert.equal(taxonomy.packageVersion, cards.packageVersion);
@@ -301,6 +301,35 @@ test("every exact action name resolves to its compact card without gaps", async 
     assert.equal(first.candidates.length, 1, card.name);
     assert.equal(taskPacketBytes(first) <= 6144, true, card.name);
   }
+});
+
+test("selects atomic channel encoding only for an explicit batch intent", async () => {
+  const packet = searchGgaction(
+    "Create point mark and encode channels together."
+  );
+  assert.deepEqual(packet.matchedConstraints, [
+    "mark.point",
+    "encoding.channels"
+  ]);
+  assert.deepEqual(packet.actionPlan.map(entry => entry.id), [
+    "action.createPointMark",
+    "action.encodeChannels"
+  ]);
+  assert.deepEqual(packet.unresolved, []);
+
+  const { program } = await executeAuthoring(packet, {
+    rows: [{ x: 1, y: 4 }, { x: 2, y: 3 }]
+  });
+  assert.equal(program.semanticSpec.layers[0].encoding.x.field, "x");
+  assert.equal(program.semanticSpec.layers[0].encoding.y.field, "y");
+  assert.equal(program.graphicSpec.objects.point.items.length, 2);
+
+  const ordinary = searchGgaction("Point mark with encode x and encode y.");
+  assert.deepEqual(ordinary.actionPlan.map(entry => entry.id), [
+    "action.createPointMark",
+    "action.encodeX",
+    "action.encodeY"
+  ]);
 });
 
 test("provides exact executable Canvas and SVG authoring bootstraps", async () => {

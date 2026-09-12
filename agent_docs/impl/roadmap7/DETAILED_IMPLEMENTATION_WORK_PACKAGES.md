@@ -332,30 +332,30 @@ Canonical behavior: [R19](features/19-atomic-encoding.md).
    - `planEncodingAssignments(program,target,requests)`: write 없는 final plan을 반환한다.
    - wrapped `encodeChannels`: normalize → plan → commit → materialization plan 적용만 조정한다.
    - `registerAtomicEncodingAction(ProgramClass)`: Full registrar 연결만 담당한다.
-2. **`src/actions/encodings/shared.js` 또는 가까운 family owner**
-   - `normalizeChannelRequest(channel,payload,context)`: focused action과 batch가 공유하는 canonical payload를 만든다.
-   - `prepareChannelAssignment(draft,request)`: final layer/config/scale request만 갱신하고 ChartProgram을 호출하지 않는다.
-   - focused action은 기존 결과와 trace를 유지하면서 이 pure normalizer/planner를 사용한다. focused action이 `encodeChannels`를 호출하는 역의존은 금지한다.
+2. **`src/core/action.js`와 기존 focused family owner**
+   - `invokeWrappedActionImplementation(action,program,args)`: `action()`이 private WeakMap에 보존한 기존 implementation
+     body를 wrapper node 없이 호출한다. `src/extension.js`에서는 export하지 않는다.
+   - focused action은 기존 wrapper, 결과와 trace를 그대로 유지한다. Batch planning만 같은 implementation body를
+     private immutable planning program에서 재사용한다. focused action이 `encodeChannels`를 호출하는 역의존은 금지한다.
+   - planning subclass는 `rematerializeScale`에서 resolved preview/cache만 갱신하고 mark/legend materializer를 no-op한다.
+     다른 public action surface에 transaction mode를 추가하거나 global mutable flag를 두지 않는다.
 3. plan의 최소 논리 shape는 다음 정보를 모두 가져야 한다. 실제 property 이름은 private이지만 항목을 잃으면 안 된다.
 
 ```js
 {
   target,
-  coordinateId,
-  originalLayer,
-  finalLayer,
-  scaleRequestsById,
-  configPatches,
-  detachedScaleIds,
-  affected: {
-    scaleIds, markIds, guideIds, labelIds, referenceIds,
-    selectionIds, compositionIds
+  originalLayer, finalLayer,
+  state: {
+    semanticSpec, graphicSpec, resolvedScales, materializationConfigs,
+    children, compositionSpec, context, trace, actionStack, actionSequence
   },
-  materializationStages
+  scaleIds
 }
 ```
 
-`originalLayer`, caller payload, 기존 scale definition을 직접 수정하지 않는다. plan 값은 deterministic plain data여야 하며 function, `ChartProgram`, backend 객체를 저장하지 않는다.
+`originalLayer`, caller payload, 기존 scale definition을 직접 수정하지 않는다. plan 값은 deterministic frozen state data여야
+하며 function, `ChartProgram` instance 또는 backend 객체를 저장하지 않는다. `state`는 성공한 planning program의 owned
+branches만 참조하고 commit에서 원래 runtime class constructor로 다시 소유된다.
 
 #### normalize 단계
 
@@ -368,7 +368,11 @@ Canonical behavior: [R19](features/19-atomic-encoding.md).
 
 #### final draft와 scale 병합
 
-1. canonical requests를 original layer의 복사본에 모두 적용한 뒤 pair/grain 검증을 한다. x 변경 직후 old y를 검사하는 식의 intermediate validation은 금지한다.
+1. canonical requests를 materialization-deferred immutable planning program에 모두 적용해 pair/grain 검증을 한다.
+   Public focused wrapper를 호출하지 않고 private implementation body만 호출한다. Bar의 x/y category-measure orientation이
+   함께 뒤집히면 primitive boundary의 `withoutPreviewLayerEncodings`로 planning clone의 이전 x/y primary
+   assignment를 trace 없이 먼저 분리하고 두 final request를 적용한다. Action module에서 `_clone`을 직접 호출하지 않는다.
+   Original layer는 guide rebind와 detached-scale 판정을 위해 보존한다.
 2. x/x2와 y/y2는 각 축의 final field type·scale family·secondary ownership으로 검사한다. primary를 바꿨을 때 secondary old binding이 final로 불가능하면 요청이 secondary를 함께 고친 경우 성공하고, 그대로 남아 불가능하면 오류다.
 3. xOffset/yOffset은 final parent x/y가 band-compatible인지 확인한다. parent와 offset이 한 요청에서 함께 바뀌는 경우 final parent를 사용한다.
 4. group/pathOrder는 final item grain과 series family로 검사한다. Line/Area의 color/stroke field도 final series 안에서 값 하나인지 확인한다.
@@ -380,19 +384,27 @@ Canonical behavior: [R19](features/19-atomic-encoding.md).
 
 #### commit과 materialization
 
-1. preflight가 모두 끝난 뒤 wrapped `encodeChannels` action 안에서 semantic/config patch를 canonical channel 순서로 적용한다. public `encodeX`, `encodeY` 등을 연속 호출하지 않는다.
+1. preflight가 모두 끝난 뒤 wrapped `encodeChannels` action 안에서 frozen plan state를 원래 runtime class에 적용한다.
+   Public `encodeX`, `encodeY` wrapper를 연속 호출하지 않는다. Planning implementation body가 호출한 실제
+   `editSemantic`/scale/config child trace는 `encodeChannels` subtree에 보존한다.
 2. 기존 `editSemantic` 및 family-specific wrapped primitive를 재사용한다. child trace는 실제 실행된 의미 변경만 기록한다. `encodeX` 같은 가짜 child node를 직접 생성하지 않는다.
 3. materialization은 `buildMaterializationPlan`의 stage order를 사용한다. affected ID set을 canonical 정렬한 뒤 `{op,args}`가 같은 step을 deduplicate한다.
 4. 최소 dependency 순서는 final scale resolve/materialize → target와 dependent marks → labels/references → guides → occupied layout → highlights다. 현재 planner가 labels/references를 mark/guide 내부 owner로 실행한다면 그 owner action을 한 번만 계획하고 별도 중복 step을 추가하지 않는다.
 5. combined legend는 channel별 중간 legend를 만들지 않는다. final channel binding과 final scale mapper를 읽어 한 번 재생성한다.
 6. rebind가 필요한 axis/legend는 `originalLayer`의 old scale ID와 `finalLayer`의 new scale ID를 비교해 수행한다. final draft를 original인 것처럼 넘겨 old binding 정보를 잃지 않는다.
+   이전 axis ticks와 labels가 같은 mode 및 values/count를 공유하면 coupled inferred recipe로 보고, final
+   ordinal/band/point scale에는 final domain values를, final continuous scale에는 `count:5`를 설정한다.
+   Component style/position/title은 보존한다. Explicit guide values와 새 domain의 충돌 및 continuous-only
+   grid의 categorical 전환은 batch 전체 오류다.
 7. 성공 결과에서 요청되지 않은 channel/config는 보존한다. one-channel batch는 대응 focused action과 `semanticSpec`, `graphicSpec`, `materializationConfigs`, `context`, resolved cache가 deep-equal이어야 한다.
 8. trace 차이는 root `encodeChannels`와 그 아래 실제 wrapped operations뿐이다. 같은 key set의 permutation은 child op/args/order까지 동일해야 한다.
 
 #### 금지 구현
 
 - `requests.reduce((p,r) => p[focusedAction](...))`: intermediate validation과 반복 materialization 때문에 금지.
-- `_clone({semanticSpec: staged})`로 old binding을 덮은 뒤 focused action을 호출하는 방식: detached scale/guide rebind의 old owner를 잃으므로 final planner 대체로 사용 금지.
+- `_clone({semanticSpec: staged})`로 전체 old binding을 덮고 original layer를 버리는 방식: detached scale/guide rebind의
+  old owner를 잃으므로 금지. Bar orientation 전환에서 planning-only x/y 분리는 original layer를 plan에 별도 보존하고
+  final guide/detached-scale 계산에 반드시 사용한다.
 - `Promise.all`이나 mutable draft에 public actions를 적용: action/ID/trace 순서가 비결정적이므로 금지.
 - 동일 scale patch의 object spread last-write: property 충돌을 숨기므로 금지.
 - 실패 뒤 `_nextId`, trace 또는 cache를 되돌리는 보상 transaction: 사전 plan으로 write 자체가 없어야 한다.
@@ -407,10 +419,13 @@ Canonical behavior: [R19](features/19-atomic-encoding.md).
 | R19-N01 | rows `{a:2,b:8}`, x/y domain0..10 range0..100 | x=b,y=a | graphic x80,y20 |
 | secondary | Rect/Rule에 x,x2,y,y2 final pair 동시 변경 | 네 channel batch | 각 endpoint가 새 scale과 field 사용 |
 | offset | grouped Bar의 x parent와 xOffset 동시 변경 | x + xOffset | final band parent로 offset 배치 |
+| axis family | axes가 있는 aggregate Bar category-x/measure-y | category/measure x/y transpose | x ticks+labels count, y ticks+labels final categorical domain, style/title 보존 |
 | series | Line/Area group과 pathOrder 동시 변경 | group + pathOrder | final series partition/order exact |
+| Parallel | existing Parallel line dimensions | color appearance batch | dimensions/scales unchanged, paths recolored once |
 | polar | Polar Point/Arc | theta + r | 같은 final coordinate에서 angle/radius 갱신 |
 | appearance | Point color+stroke+size | 세 channel batch | fill/stroke 독립, size area mapper, final legend symbols |
 | atomic error | valid x + 없는 stroke field | batch throws | original 모든 state branch/trace/ID context 동일 |
+| guide error | continuous grid를 가진 position을 categorical로 변경 | x/y batch throws | grid 자동 삭제 없음, original 전체 동일 |
 | shared conflict | 두 channel이 scale ID `s`에 다른 explicit domain | batch throws | last-write 없음, original 동일 |
 | external consumer | 다른 layer가 `s`를 계속 사용 | incompatible batch | 전체 오류; 외부 layer/guide도 동일 |
 | input safety | 모든 payload와 nested scale/domain deep-freeze | success/error 양쪽 | caller object 변경 없음 |

@@ -252,7 +252,7 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Gzip ceiling |
 | --- | ---: |
-| `ggaction` | 324,000 bytes |
+| `ggaction` | 327,000 bytes |
 | `ggaction/basic` | 160,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 
@@ -1463,6 +1463,27 @@ Encoding planner의 shared-consumer 범위와 incomplete-mark 처리, Canvas/dat
 deferred scale application과 existing incomplete mark 복구도 같은 registry가 소유한다.
 따라서 position action, scale action과 cross-cutting planner에 mark type 목록을 따로
 복제하지 않는다.
+
+Full-only `encodeChannels`는 한 mark의 여러 encoding을 final-state transaction으로 처리한다.
+`normalizeEncodeChannelsArgs → planEncodingAssignments → applyEncodingAssignments` 경계를 가지며,
+19개 channel request를 canonical 순서로 정규화한다. Plan은 caller program을 변경하지 않고 같은
+focused action implementation body를 private immutable planning subclass에서 실행한다. 이 subclass는
+scale preview/cache 갱신만 허용하고 mark·legend materializer를 지연한다. Core의 private
+`invokeWrappedActionImplementation` 경계가 wrapper를 우회하므로 계획 trace에는 가짜 `encodeX` 같은
+direct-action node가 생기지 않고, 실제 primitive semantic/scale child만 열린 `encodeChannels` 아래에 남는다.
+이 internal invocation은 package extension surface로 export하지 않는다.
+
+Planning 결과는 `ChartProgram` instance가 아니라 frozen state branch, original/final layer와 affected scale ID를
+담은 deterministic plan으로 바꾼 뒤 원래 runtime class에 적용한다. Bar의 x/y category-measure orientation을
+함께 바꾸는 경우 planning clone에서 두 이전 primary role만 먼저 분리하고, original layer는 guide rebind와
+detached/shared-scale 계산을 위해 따로 보존한다. 성공 commit 뒤에는 affected scale을 모두 resolve하고
+deduplicated mark/source-dependent mark/guide plan을 한 번 실행한다. 실패한 plan과 materialization은 immutable
+caller에 trace, cache 또는 ID compensation write를 남기지 않는다. 정확한 payload와 지원 channel 계약은
+[encoding action contract](contract/current/ENCODINGS.md#encodechannels)가 소유한다.
+Cartesian axis가 rebind 중 scale family를 categorical과 continuous 사이에서 바꾸면 coupled default
+tick/label recipe도 final scale에 맞춰 domain-values 또는 count mode로 바꾼다. Component style과 title은
+보존한다. 새 family에서 유효하지 않은 explicit guide recipe나 continuous-only grid는 계획을 실패시키며,
+batch가 임의로 guide를 삭제하지 않는다.
 
 ## Mark materialization policy
 

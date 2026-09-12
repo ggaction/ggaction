@@ -79,6 +79,66 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
 - ✅ Covered: caller option and earlier-program immutability plus unsupported `pathOrder` rejection.
 - Evidence: `test/unit/actions/encodings/remove-encoding.test.js`.
 
+## `encodeChannels`
+
+- Signature: `encodeChannels({ target, channels })`.
+- Availability: Full `ggaction` entry only. Basic에는 등록하거나 선언하지 않는다.
+- `target`: 필수 explicit mark ID다. 한 transaction이 여러 mark나 composition child를 수정하지 않는다.
+- `channels`: 최소 한 property가 있는 plain object다. 허용 key는 정확히 `x`, `y`, `x2`, `y2`,
+  `theta`, `r`, `xOffset`, `yOffset`, `group`, `pathOrder`, `color`, `stroke`, `size`, `shape`,
+  `opacity`, `strokeWidth`, `strokeDash`, `angle`, `text`다. `radius`, range action, bar width와
+  Parallel dimension list는 이 API의 alias가 아니다.
+- 각 channel payload는 대응 focused encode action에서 `target`과 `coordinate`를 제거한 동일한
+  exclusive option union을 사용한다. Direct `target`, `coordinate`, `id`는 오류지만
+  `scale.id`는 explicit named scale binding이므로 허용한다. `null`, 배열, primitive와 focused action에서
+  유효하지 않은 empty payload는 제거 요청으로 해석하지 않고 오류다.
+- 생략 channel과 그 config는 그대로 보존한다. 제거는 `removeEncoding` 또는 `removePathOrder`가 소유한다.
+- 입력 property 열거 순서와 무관하게 `x → y → x2 → y2 → theta → r → xOffset → yOffset → group →
+  pathOrder → color → stroke → size → shape → opacity → strokeWidth → strokeDash → angle → text` 순서로
+  요청을 정규화하고 trace state transition을 만든다.
+- 모든 channel의 최종 layer, scale, constant/field ownership과 mark grain을 하나의 immutable draft에서
+  검증한다. 하나라도 실패하면 caller program의 semantic, graphic, config, resolved scale, context, trace와
+  action sequence는 전혀 바뀌지 않는다.
+- 같은 explicit `scale.id`에 여러 channel이 연결될 때 각 명시 property를 병합한다. 같은 값은 허용하고
+  서로 다른 `type`, `domain`, `range`, `reverse`, `clamp`, transform 또는 padding 요청은 channel 이름을
+  포함한 오류로 거부한다. 생략 property는 충돌이 아니다.
+- 최종 affected scale을 먼저 모두 resolve하고 target 및 shared-scale consumer, source-dependent mark,
+  guide와 legend를 deduplicated plan으로 다시 materialize한다. 같은 `{op,args}` mark step과 최종 legend
+  재생성은 각각 한 번뿐이다. 외부 consumer와 호환되지 않는 최종 shared scale은 commit 전에 실패한다.
+- Position scale을 새 ID로 바꾼 existing Cartesian axis는 같은 channel에 rebind한다. 기존 ticks/labels가
+  같은 기본 recipe를 공유했고 scale family가 categorical↔continuous로 바뀌면 style/position/title은
+  유지하면서 categorical은 final domain `values`, continuous는 기본 `count:5`로 함께 전환한다.
+  명시적 values가 final domain과 충돌하거나 continuous-only grid가 categorical scale로 이동하면 전체
+  요청을 오류로 거부하고 원본 guide도 유지한다.
+- Field-driven appearance를 constant로 바꾸면 기존 semantic binding과 owned legend를 제거하고 constant
+  config를 저장한다. 반대 전환은 stale constant config를 제거한다. Guide, label, reference와 selection
+  replay는 최종 channel 집합만 관측한다.
+- 한 channel batch의 `semanticSpec`, `graphicSpec`, `materializationConfigs`, `resolvedScales`, `context`는
+  대응 focused action 결과와 같다. Trace에는 `encodeChannels` root와 실제 semantic/config/scale 및
+  최종 materialization child만 남으며 focused action 이름을 가짜 child로 합성하지 않는다.
+
+### Formal values — `encodeChannels`
+
+- Implemented: `encodeChannels(options: EncodeChannelsOptions)` where `EncodeChannelsOptions.target` is a
+  required `UserId` and `channels` is `AtLeastOne<EncodingChannelAssignments>`.
+- `EncodingChannelAssignments` is a closed 19-key interface. Each optional value is the distributive
+  `WithoutEncodingTarget<FocusedOptions>` union, preserving field/datum/value exclusivity while excluding
+  direct `target` and `coordinate`.
+- Proposed (NOT IMPLEMENTED): multi-mark transactions, coordinate-family conversion, range aliases,
+  Parallel dimension replacement and null-as-removal.
+
+### Value coverage — `encodeChannels`
+
+- ✅ Covered: Full/Basic boundary, all 19 declaration keys, required target, nonempty channels, closed aliases,
+  payload shape and direct-key injection.
+- ✅ Covered: one-channel focused parity, key permutation determinism, x/y swap, x/x2/y/y2 final pairs,
+  parent band plus offset, aggregate Bar x/y role와 axis family transpose, group plus path order, theta plus public
+  `r`, Parallel appearance without dimension replacement, independent Text and all appearance keys.
+- ✅ Covered: identical/conflicting shared scale patches, external consumers, constant/field cleanup, final combined
+  and sampled legends, one final target/shared mark refresh, caller input and earlier-program immutability.
+- Evidence: `test/contracts/atomic-encoding.test.js`, `test/contracts/atomic-encoding-types.test.js`,
+  `test/contracts/shared-scale-refresh.test.js`, `test/unit/actions/scales/scale-consumers.test.js`.
+
 ## `encodeX`
 
 Source-owned Text는 독립 position consumer가 아니므로 encodeX/Y를 직접 적용하면 사전 오류다.

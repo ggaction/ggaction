@@ -549,6 +549,14 @@
     "layer": "user-facing",
     "domain": "encodings"
   },
+  "encodeChannels": {
+    "operation": "encode",
+    "authoringRoles": [
+      "H2"
+    ],
+    "layer": "advanced",
+    "domain": "encodings"
+  },
   "encodeX2": {
     "operation": "encode",
     "authoringRoles": [
