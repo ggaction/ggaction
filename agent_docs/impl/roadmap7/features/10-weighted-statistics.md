@@ -1,7 +1,7 @@
 # R10 — 가중 통계·histogram·KDE
 
-원래 감사 번호: **10**. Primary owner: **Phase 3**. 상태: **Proposed / 구현 전**.
-아래 세부 API·수치 정책의 Gate는 승인됐다. 상태의 `Proposed`는 제품 구현·검증이 아직 완료되지 않았다는 뜻이다.
+원래 감사 번호: **10**. Primary owner: **Phase 3**. 상태: **primary 구현 완료 / R02 edit 통합 대기**.
+`da0ca4e2`에서 weighted summary/bin/KDE, histogram/density/violin 전달, per-profile auto bandwidth, 타입·Current 계약·문서·설치 패키지를 구현했다. `276c8318`은 density mass scaling을, `32ddfcdd`는 histogram의 label/selection/installed browser consumer를 보강했다. `editSummaryData`, `editBinData`, `editDensityData`, generic `editDerivedData`는 R02가 Phase 4에서 닫는다.
 
 ## 목적과 현재 연결점
 
@@ -117,9 +117,9 @@ data creators → statistical encoders → complete facades → edit/replay 모�
 
 ## 완료 조건
 
-- [ ] 위 API의 최단 호출과 explicit 대상 호출, 누락/auto/false/empty 경계를 타입과 runtime으로 동기화했다.
-- [ ] 위 수치 oracle를 실제 capability test에 구현했고 계획 예제를 기대값 생성기로 재사용하지 않았다.
-- [ ] 기존 consumer와 새 consumer에 scale/mark/guide/label/selection/facet/Canvas replay를 검증했다.
-- [ ] Full 등록·타입 export·Current 계약·catalog·card·관계 trace·MCP·문서·installed consumer를 갱신했다.
-- [ ] 미지원 cell은 이유를 적었다. 이 문서에 명시한 필수 cell을 임의 제외하지 않았다.
-- [ ] 해당 Phase의 승인/검증 근거를 기록했다. 추측으로 완료 표시하지 않았다.
+- [x] create/facade/editDensity/editViolin 경로의 최단 호출과 explicit 대상 호출, 누락/auto/false 경계를 타입과 runtime으로 동기화했다. R02 소유 focused data editor는 Phase 4 후속이다.
+- [x] 위 수치 oracle를 실제 capability test에 구현했고 계획 예제를 기대값 생성기로 재사용하지 않았다.
+- [x] 기존 consumer와 새 consumer에 scale/mark/guide/label/selection/facet/Canvas replay를 검증했다.
+- [x] 타입 export·Current 계약·catalog·card·관계 trace·MCP·문서·installed consumer를 갱신했다. 이 기능은 기존 public action을 확장하므로 새 Full action 등록은 없다.
+- [x] weighted CI/regression/arbitrary aggregate/negative weight는 명시 오류로 고정했고, Gradient API에 weight가 유출되지 않음을 검증했다.
+- [x] 해당 Phase의 승인/검증 근거와 Phase 4 후속 경계를 Phase 3 STEP 원장에 기록했다.

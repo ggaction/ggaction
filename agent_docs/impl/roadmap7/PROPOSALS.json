@@ -204,7 +204,7 @@
       "slug": "weighted-statistics",
       "phase": 3,
       "dependsOn": [],
-      "status": "Proposed",
+      "status": "Implemented-primary",
       "scopeSelection": "user-selected",
       "file": "features/10-weighted-statistics.md",
       "sources": [

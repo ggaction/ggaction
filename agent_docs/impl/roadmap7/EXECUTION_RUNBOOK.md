@@ -1,6 +1,6 @@
 # Roadmap 7 — 단계별 구현 실행 명세
 
-문서 상태: **실행 기준**. 기준일 2026-09-13. 사용자는 Roadmap 7의 25개 기능과 Phase 0–12 Gate를 모두 승인했다. 이 승인은 아래에 고정된 공개 계약과 구현 범위를 진행할 권한이며, 아직 구현되지 않은 기능을 Current로 표시해도 된다는 뜻은 아니다. 현재 Phase 1–2의 primary 경로가 구현됐고 Phase 3을 진행 중이다.
+문서 상태: **실행 기준**. 기준일 2026-09-13. 사용자는 Roadmap 7의 25개 기능과 Phase 0–12 Gate를 모두 승인했다. 이 승인은 아래에 고정된 공개 계약과 구현 범위를 진행할 권한이며, 아직 구현되지 않은 기능을 Current로 표시해도 된다는 뜻은 아니다. 현재 Phase 1–3의 primary 경로가 구현됐고 Phase 4를 진행 중이다.
 
 이 문서는 구현 순서와 완료 판정을 한 곳에서 찾게 하는 실행 원장이다. 정확한 필드, union, 수식, 지원 행렬은 각 [기능 명세](features/)가 단일 owner이고, case별 literal 기대값은 [ACCEPTANCE_CASES.json](ACCEPTANCE_CASES.json)이 소유한다. 이 문서와 기능 명세가 충돌하면 기능 명세를 따르고 이 문서를 같은 변경에서 고친다.
 
@@ -174,6 +174,8 @@ R10은 하나의 `StatisticalWeight` 계약을 summary/bin/density와 histogram/
 - omitted unweighted 호출의 기존 output/schema/trace를 유지한다. edit의 `weight:false`만 제거 sentinel이고 create에서 false는 오류다.
 
 R10-N01..L01의 숫자와 scaling invariant를 모두 테스트하고 installed Node/browser에서 동일 결과를 확인한다.
+
+구현 checkpoint: `da0ca4e2`가 W3.1–W3.2 primary 범위를 구현했고 `276c8318`, `32ddfcdd`가 density scaling과 histogram consumer를 보강했다. `editSummaryData`, `editBinData`, `editDensityData`, generic `editDerivedData`는 아래 Phase 4 transaction에 연결한다.
 
 ## 6. Phase 4 — R02 파생 데이터 편집
 

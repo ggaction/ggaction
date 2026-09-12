@@ -2,7 +2,7 @@
 
 문서 상태 — 현재 실행 계획.
 
-사용자가 감사 50개 항목 중 선택한 **25개**를 구현하는 현재 로드맵이다. **Phase 0–2는 완료됐고 Phase 3을 실행 중**이다. 2026-09-13 사용자가 모든 Gate를 명시적으로 승인했으며, 각 Phase의 구현·검증 증거는 STEP 결과 원장에 누적한다. 아직 구현되지 않은 API를 Current로 표시하지 않는다. 탐색 상태는 [ROADMAP_INDEX.json](../ROADMAP_INDEX.json)이 관리한다.
+사용자가 감사 50개 항목 중 선택한 **25개**를 구현하는 현재 로드맵이다. **Phase 0–3은 완료됐고 Phase 4를 실행 중**이다. 2026-09-13 사용자가 모든 Gate를 명시적으로 승인했으며, 각 Phase의 구현·검증 증거는 STEP 결과 원장에 누적한다. 아직 구현되지 않은 API를 Current로 표시하지 않는다. 탐색 상태는 [ROADMAP_INDEX.json](../ROADMAP_INDEX.json)이 관리한다.
 
 ## 의도와 성공 기준
 
@@ -72,8 +72,8 @@ Phase 번호는 권장 구현 순서다. 같은 Phase 안에서도 feature의 de
 | 0 | completed | 선택 범위·계약·baseline 고정 | 전체 계획 | — |
 | 1 | completed | 계산식과 그룹 정규화 | 6, 7 | 0 |
 | 2 | completed | 결측·지역 달력·기간 window | 5, 8, 9 | 1 |
-| 3 | active | 가중 집계와 밀도 | 10 | 2 |
-| 4 | planned | 파생 데이터 편집 | 2 | 1, 2, 3 |
+| 3 | completed-primary | 가중 집계와 밀도 | 10 | 2 |
+| 4 | active | 파생 데이터 편집 | 2 | 1, 2, 3 |
 | 5 | planned | 스케일·stroke·원자적 인코딩 | 20, 21, 23, 22, 19 | 4 |
 | 6 | planned | 좌표 비율과 Polar frame | 27, 29 | 5 |
 | 7 | planned | 라벨 lifecycle와 통계 주석 | 31, 32, 33, 36 | 4, 5, 6 |
@@ -120,6 +120,8 @@ Phase 번호는 권장 구현 순서다. 같은 Phase 안에서도 feature의 de
 - W2: summary/bin/KDE requested weight와explicit/auto bandwidth 처리.
 - W3: histogram/density/violin facade pass-through와group/facet별 기여도.
 - W4: unweighted compatibility와installed browser/Node 통계 검증.
+
+Primary 구현은 `da0ca4e2`, density scaling 보강은 `276c8318`, histogram consumer 보강은 `32ddfcdd`에 있다. focused data editor와 generic derived editor 연결은 Phase 4가 소유한다.
 
 ## Phase 4 — 파생 데이터 편집
 

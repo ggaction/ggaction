@@ -2,14 +2,14 @@
 
 ## 진행 상태
 
-- [ ] 범위·현재 source owner·선행 Phase 완료 상태 확인
-- [ ] Gate A 자료: 정확한 API/schema/defaults/오류/수치 oracle 작성·검증
-- [ ] 명시 승인 범위 기록 후 해당 구현 시작
-- [ ] appearance 대상은 primitive render와 target public chain으로 Gate V 확인
-- [ ] 아래 wave 구현과 focused/cumulative tests 완료
-- [ ] types/current contracts/catalog/cards/MCP/docs/package 영향 갱신
-- [ ] Gate X 결과와 남은 후속 통합 cell 기록
-- [ ] 검증된 coherent change마다 commit/push하고 다음 Gate 범위 확인
+- [x] 범위·현재 source owner·선행 Phase 완료 상태 확인
+- [x] Gate A 자료: 정확한 API/schema/defaults/오류/수치 oracle 작성·검증
+- [x] 명시 승인 범위 기록 후 해당 구현 시작
+- [x] weighted histogram의 graphic/Canvas와 density·violin public consumer 경로로 Gate V 확인
+- [x] 아래 wave 구현과 focused/cumulative tests 완료
+- [x] types/current contracts/catalog/cards/MCP/docs/package 영향 갱신
+- [x] Gate X 결과와 남은 Phase 4 edit 통합 cell 기록
+- [x] 검증된 coherent change를 commit/push하고 Phase 4로 전환
 
 계획 작성 시 모든 체크는 미완료다. Phase 0 은 제품 구현이 없으므로 해당 구현·시각 항목의 미적용 이유를 기록한다. Phase 12 는 새 시각 목표가 없으면 승인된 variant를 현재 코드에서 다시 실행해 검증한다.
 
@@ -41,7 +41,22 @@
 
 | wave | commit | tests/artifacts | remaining | status |
 | --- | --- | --- | --- | --- |
-| 미착수 | — | 실행 증거 없음 | 위 전체 범위 | planned |
+| W1 | `da0ca4e2` | frequency/reliability accumulator, virtual-frequency/inverse-CDF quantile, variance·stderr·nEff literal oracle | Phase 4 edit transaction | completed-primary |
+| W2 | `da0ca4e2`, `276c8318` | summary/bin/KDE weight validation, mass, unit/count scaling, explicit/auto per-profile bandwidth | `editSummaryData`/`editBinData`/`editDensityData`는 R02/Phase 4 | completed-primary |
+| W3 | `da0ca4e2`, `32ddfcdd` | histogram/density/violin pass-through, positive-weight membership/domain, label/selection and grouped/facet replay | generic `editDerivedData`는 R02/Phase 4 | completed-primary |
+| W4 | `da0ca4e2`, `276c8318`, `32ddfcdd` | legacy omission compatibility, Full types/current docs, installed Node/browser weighted consumers | Phase 12 전체 통합 | completed-primary |
+
+## 검증 결과
+
+- Focused weighted suites: 109/109; density scaling 13/13; histogram label/selection consumers 25/25.
+- Unit cumulative: 2,334/2,334.
+- Contract cumulative: 331/331.
+- Documentation: 47/47; generated reference/cards/machine/LLM artifacts synchronized.
+- Installed package: weighted Node summary와 strict TypeScript consumer, browser weighted histogram 1/1 통과. Full/basic/SVG gzip은 309,521/153,436/6,418 bytes로 310,000/155,000/25,000 ceiling 이하다.
+- Package artifact: 494 entries, packed 617,369 bytes, unpacked 3,086,982 bytes로 승인된 한도 이내.
+- 시각 Gate V: weighted histogram은 실제 browser Canvas consumer에서 x/y domain, bar 수와 높이를 검증했다. Density/violin은 기존 graphic-only renderer 경로와 public materialization 회귀를 통과했다.
+
+후속 의무는 누락이 아니다. R02가 `editSummaryData`, `editBinData`, `editDensityData`와 generic `editDerivedData`를 Phase 4에서 같은 weighted materializer에 연결하며, Phase 12가 source edit·facet·labels·selection 전체 흐름을 다시 실행한다.
 
 ## Gate 연결
 

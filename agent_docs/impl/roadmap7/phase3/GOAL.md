@@ -1,6 +1,6 @@
 # Phase 3 — 가중 집계와 밀도
 
-상태: active. 모든 Gate는 승인됐고 Phase 2 완료 근거 `9d4d0840` 이후 이 Phase를 구현한다.
+상태: completed-primary. `da0ca4e2`가 weighted summary/bin/KDE와 histogram/density/violin 전달 경로를 구현했고, `276c8318`과 `32ddfcdd`가 density scaling 및 histogram consumer 회귀를 보강했다. Phase 4의 범용 derived-data edit 통합만 후속 의무로 남는다.
 
 ## 목표와 범위
 

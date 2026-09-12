@@ -288,7 +288,7 @@
       "spec": "features/10-weighted-statistics.md",
       "phase": 3,
       "dependsOn": [],
-      "status": "Proposed",
+      "status": "Implemented-primary",
       "newPublicActions": [],
       "extendedPublicSurfaces": [
         "createSummaryData",
@@ -303,6 +303,7 @@
         "editViolinPlot"
       ],
       "currentSourceFiles": [
+        "src/grammar/weightedStatistics.js",
         "src/grammar/summary.js",
         "src/grammar/bin.js",
         "src/grammar/density.js",
@@ -318,10 +319,18 @@
         "src/actions/violinPlots/edit.js"
       ],
       "existingRegressionTests": [
-        "test/charts/cars-histogram/reference-values.test.js",
+        "test/unit/actions/data/summary-data.test.js",
+        "test/unit/actions/data/bin-data.test.js",
+        "test/unit/actions/data/density-data.test.js",
+        "test/unit/actions/encodings/encode-histogram.test.js",
+        "test/unit/actions/encodings/encode-density.test.js",
+        "test/unit/actions/marks/text-content.test.js",
+        "test/unit/actions/selection/mark-selection.test.js",
+        "test/browser/package-consumer.browser.js",
+        "scripts/package-consumer.js",
         "test/contracts/transform-registry.test.js"
       ],
-      "suggestedNewTest": "test/contracts/weighted-statistics.test.js",
+      "suggestedNewTest": "test/unit/actions/data/summary-data.test.js",
       "acceptanceCases": [
         "R10-N01",
         "R10-N02",
