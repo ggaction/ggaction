@@ -2,7 +2,7 @@
 
 문서 상태 — 현재 실행 계획.
 
-사용자가 감사 50개 항목 중 선택한 **25개**를 구현할 다음 로드맵이다. 현재 단계는 **Phase 0 / planned**이며 이번 변경에서는 문서만 작성한다. 신규 API와 수치 정책은 **Proposed**다. 제품 구현이나 세부 승인 완료를 의미하지 않는다. 탐색 상태는 [ROADMAP_INDEX.json](../ROADMAP_INDEX.json)이 관리하며, 마지막 완료 실행 기록은 Roadmap 6 Phase 11이다.
+사용자가 감사 50개 항목 중 선택한 **25개**를 구현하는 현재 로드맵이다. **Phase 0은 완료됐고 Phase 1을 실행 중**이다. 2026-09-13 사용자가 모든 Gate를 명시적으로 승인했으며, 각 Phase의 구현·검증 증거는 STEP 결과 원장에 누적한다. 아직 구현되지 않은 API를 Current로 표시하지 않는다. 탐색 상태는 [ROADMAP_INDEX.json](../ROADMAP_INDEX.json)이 관리한다.
 
 ## 의도와 성공 기준
 
@@ -65,12 +65,12 @@
 
 ## 실행 순서와 phase 상태
 
-Phase 번호는 권장 구현 순서다. 같은 Phase 안에서도 feature의 dependsOn을 지킨다. Phase 0 에서 계획을 검토하고, 이후 각 Phase는 A(계약), 필요한 V(primitive 시각 목표), X(검증·완료)를 갖는다. Gate는 아직 모두 planned다.
+Phase 번호는 권장 구현 순서다. 같은 Phase 안에서도 feature의 dependsOn을 지킨다. Phase 0 에서 계획을 검토했고, 이후 각 Phase는 A(계약), 필요한 V(primitive 시각 목표), X(검증·완료)를 갖는다. 모든 Gate의 승인 근거는 각 `GATES.md`에 기록했다.
 
 | Phase | status | 목표 | 감사 항목 | 선행 Phase |
 | --- | --- | --- | --- | --- |
-| 0 | planned | 선택 범위·계약·baseline 고정 | 전체 계획 | — |
-| 1 | planned | 계산식과 그룹 정규화 | 6, 7 | 0 |
+| 0 | completed | 선택 범위·계약·baseline 고정 | 전체 계획 | — |
+| 1 | active | 계산식과 그룹 정규화 | 6, 7 | 0 |
 | 2 | planned | 결측·지역 달력·기간 window | 5, 8, 9 | 1 |
 | 3 | planned | 가중 집계와 밀도 | 10 | 2 |
 | 4 | planned | 파생 데이터 편집 | 2 | 1, 2, 3 |
