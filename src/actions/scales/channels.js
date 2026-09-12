@@ -46,7 +46,10 @@ const DEFINITIONS = Object.freeze({
   }),
   editSizeScale: Object.freeze({
     channel: "size",
-    options: Object.freeze(["type", "domain", "range", "unknown"])
+    options: Object.freeze([
+      "type", "domain", "range", "unknown", "clamp", "reverse", "base",
+      "exponent"
+    ])
   }),
   editOpacityScale: Object.freeze({
     channel: "opacity",

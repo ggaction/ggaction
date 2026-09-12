@@ -50,9 +50,18 @@ program
 ```
 
 `encodeSize({ field, target?, fieldType?, scale? })` requires a quantitative
-field. Its scale accepts `id`, `type`, `domain`, and an area `range`; automatic
-range is `[24, 196]`. Circles use `sqrt(area / PI)` as radius and squares use
-`sqrt(area)` as side length, so the two shapes represent equal visual area.
+field. Its scale supports `linear`, `log`, `sqrt`, `pow`, `quantize`, `quantile`,
+and `threshold`. Every range value is an area in square logical pixels; the
+automatic continuous range is `[24, 196]`. Circles use `sqrt(area / PI)` as
+radius and squares use `sqrt(area)` as side length, so the shapes represent
+equal visual area.
+
+Logarithmic size scales require positive values and use base 10 unless `base`
+is supplied. Square-root and power scales require non-negative values; power
+scales require a positive `exponent`. Quantize and quantile require at least two
+nondecreasing area values. Threshold domains are strictly increasing cut points
+and require one more area than cuts. Discrete size legends show every interval
+and therefore reject an explicit sample `count`.
 
 `encodeShape({ field, target?, fieldType?, scale? })` requires a nominal field.
 Its ordinal scale accepts the 12 shared point shapes documented under

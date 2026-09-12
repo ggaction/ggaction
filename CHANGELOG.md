@@ -4,6 +4,12 @@ All notable changes to `ggaction` are recorded in this file.
 
 ## Unreleased
 
+### Added
+
+- Added logarithmic, square-root, power, quantize, quantile, and threshold
+  point-size scales with equal-area geometry, focused scale editing, complete
+  interval legends, source replay, strict types, and installed-package support.
+
 ## [0.0.13] - 2026-09-07
 
 ### Added

@@ -1143,7 +1143,10 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 - `field`: 필수 quantitative field.
 - `target`: optional point ID.
 - `fieldType`: 유일한 값 `"quantitative"`.
-- `scale`: linear size-area scale; auto range는 `[24, 196]`이다.
+- `scale`: `linear | log | sqrt | pow | quantize | quantile | threshold`
+  size-area scale. auto continuous range는 `[24, 196]`이다. `log` base 기본값은 10이고
+  `pow`는 positive finite `exponent`가 필수다. discrete range는 최소 두 개의
+  nonnegative, nondecreasing area를 명시한다.
 - Effect: semantic size를 concrete area로 mapping하고 circle radius=`sqrt(area/pi)`, square side=`sqrt(area)`로
   materialize한다. constant `encodeRadius`와 함께 사용할 수 없다.
 - Reassignment: 다시 호출하면 size field와 compatible scale binding을 교체하고 point 및 existing
@@ -1153,7 +1156,7 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 
 ### Formal values — `encodeSize`
 
-- Implemented: `encodeSize({ field: FieldName; target?: UserId; fieldType?: "quantitative"; scale?: { id?: UserId; type?: "linear"; domain?: ContinuousDomain; range?: "auto" | readonly [NonNegativeFinite, NonNegativeFinite]; unknown?: NonNegativeFinite } })`
+- Implemented: `encodeSize({ field: FieldName; target?: UserId; fieldType?: "quantitative"; scale?: SizeScaleOptions })`, where `SizeScaleOptions` is the closed discriminated union for `linear | log | sqrt | pow | quantize | quantile | threshold`. Continuous ranges are two areas; quantize/quantile ranges contain at least two areas; threshold range length is domain cut count plus one.
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `encodeSize`
@@ -1164,10 +1167,14 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
   - ✅ Covered: auto domain/range `[24, 196]`, representative mapping and explicit values through shared scale tests.
   - ✅ Covered: zero area is accepted, negative/non-finite area rejects, and constant quantitative domains use the
     shared scale-domain policy with shape-independent equal-area output.
+  - ✅ Covered: transformed-domain interpolation for log/pow/sqrt, quantize endpoints, duplicate-preserving
+    quantile cuts, strict threshold cuts, reversed areas with stable interval labels, and invalid family migrations.
 - Interaction
-  - ✅ Covered: constant radius conflict and shape-independent equal-area materialization.
+  - ✅ Covered: constant radius conflict, shape-independent equal-area materialization, discrete legends, shared
+    consumer refresh, and automatic quantile threshold recomputation after a derived-source revision.
 - No proposal: explicit `scale.range` remains the single size-area range API.
-- Evidence: point appearance and regression-guide tests.
+- Evidence: `test/contracts/size-scale-types.test.js`, point appearance, size legend, shared-scale, and
+  regression-guide tests.
 
 ## `encodeShape`
 

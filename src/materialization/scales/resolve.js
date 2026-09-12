@@ -17,6 +17,7 @@ import {
   resolveScaleRange,
   resolveSequentialColorStops,
   resolveShapeRange,
+  resolveSizeScale,
   resolveSizeRange,
   resolveStrokeDashRange,
   resolveStrokeWidthRange,
@@ -217,6 +218,9 @@ export function resolveScaleMaterialization(options) {
         categoryOrder: undefined
       }))
     });
+  }
+  if (channel === "size") {
+    return resolveSizeScale({ ...scale, values: allValues });
   }
   const isSequentialColor = channel === "color" &&
     isContinuousColorScaleType(scale.type);

@@ -78,8 +78,10 @@ const restored = edited.editLegendTitle({ title: false })
   .editLegendTitle({ title: "auto" });
 ```
 
-Size samples retain the encoded area mapping. Count must be an integer from 2
-through 10,000. Size labels use a default gap of 12 pixels after the sample slot, editable through
+Size samples retain the encoded area mapping. For continuous size scales, count
+must be an integer from 2 through 10,000. Discrete quantize, quantile, and
+threshold legends always show every interval and reject explicit `count`.
+Size labels use a default gap of 12 pixels after the sample slot, editable through
 `labels: { offset }`; title styles do not accept an offset. The slot is at least
 32 pixels wide and expands to fit the largest circle. This replaces the previous
 center-relative offset of 28; explicit offsets now measure from the slot edge. Defaults remain size 12/normal for labels and size 13/600 for titles.

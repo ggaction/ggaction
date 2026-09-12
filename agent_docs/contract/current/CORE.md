@@ -1620,17 +1620,24 @@ type EditableCurrentScale = {
 
 ## `editSizeScale`
 
-- Implemented: edits the quantitative area scale bound to point size.
+- Implemented: edits the area scale bound to point size across `linear`, `log`, `sqrt`, `pow`,
+  `quantize`, `quantile`, and `threshold` mappings.
 - Proposed (NOT IMPLEMENTED): —
 
 ### Formal values — `editSizeScale`
 
-- Implemented: `editSizeScale(EditSizeScaleOptions)` with linear domain/range/fallback, `id?`, and `target?`.
+- Implemented: `editSizeScale(EditSizeScaleOptions)` with the state-dependent closed size patch,
+  `id?`, and `target?`. It supports domain/range/fallback/reverse, continuous clamp, log base, and
+  pow exponent. Family changes require an explicit new domain; a discrete destination requires an
+  explicit range; discrete-to-continuous requires an explicit range or `"auto"`.
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `editSizeScale`
 
-- ✅ Covered: inferred range editing, strict option typing, and point rematerialization. Evidence: `test/unit/actions/scales/channel-scale-editors.test.js`, `test/contracts/channel-scale-editor-types.test.js`.
+- ✅ Covered: inferred and explicit selection, strict type unions, transformed/discrete mapping,
+  stale-option removal, reverse, family migration, point/legend rematerialization, source revision,
+  and immutable failures. Evidence: `test/unit/actions/scales/channel-scale-editors.test.js`,
+  `test/contracts/channel-scale-editor-types.test.js`, `test/contracts/size-scale-types.test.js`.
 
 ## `editOpacityScale`
 

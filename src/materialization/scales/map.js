@@ -4,11 +4,13 @@ import {
   isOrdinalScaleType,
   mapContinuousScaleValues,
   mapDiscretizedColors,
+  mapSizeValues,
   mapOrdinalValues,
   mapSequentialColors
 } from "../../grammar/scales/index.js";
 
 export function mapScaleConsumerValues(values, resolvedScale, channel) {
+  if (channel === "size") return mapSizeValues(values, resolvedScale);
   if (channel === "color" && isDiscretizedColorScaleType(resolvedScale.type)) {
     return mapDiscretizedColors(values, resolvedScale);
   }

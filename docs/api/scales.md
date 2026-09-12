@@ -26,6 +26,8 @@ appearance values. Encodings create compatible scales automatically; use
 | Continuous position | `"auto"` | Plot bounds | `type`, `nice`, `zero`, `clamp`, `reverse` |
 | Band/point position | First-appearance order | Plot bounds | padding and alignment |
 | Ordinal appearance/offset | First-appearance order | Palette, patterns, or parent band | explicit domain/range |
+| Continuous size | Numeric extent | Area `[24, 196]` | `linear`, `log`, `sqrt`, `pow`, `clamp`, `reverse` |
+| Discrete size | Type-specific samples or cuts | Explicit nondecreasing areas | `quantize`, `quantile`, `threshold`, `reverse` |
 | Color/strokeDash | First-appearance order | Built-in palette/patterns | palette or explicit range |
 | Sequential/discretized color | Type-specific numeric boundaries | `viridis` or explicit colors | `interpolate`, `clamp`, `reverse` |
 
@@ -61,6 +63,14 @@ The complete family is `editXScale`, `editYScale`, `editThetaScale`,
 `editShapeScale`, `editStrokeWidthScale`, and `editStrokeDashScale`.
 `editRScale` means Polar radial position; point glyph radius remains a constant
 appearance action.
+
+Point size scale ranges are areas rather than radii. Continuous size mappings
+support `linear`, `log`, `sqrt`, and `pow`; `log` defaults to base 10 and `pow`
+requires a positive exponent. Discrete `quantize`, `quantile`, and `threshold`
+mappings require explicit nondecreasing area ranges. Type-family changes require
+an explicit destination domain, and entering a discrete family also requires a
+new range. Use `reverse` to reverse area assignment while retaining domain and
+legend-label order.
 
 Each focused editor accepts an optional `id`, `target`, or both. A supplied pair
 must agree. Without selectors, ggaction first uses the current mark's scale for

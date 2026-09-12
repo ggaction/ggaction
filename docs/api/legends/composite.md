@@ -85,7 +85,9 @@ A point legend combines color and shape only when they encode the same nominal
 field and share an ordered domain. If a matching line layer uses that field and
 color scale, its line is layered behind each typed circle/square symbol. A
 separate `guide.legend.size` block samples five evenly spaced domain values by
-default and maps their areas through the resolved quantitative size scale.
+default for continuous mappings and maps their areas through the resolved size
+scale. Discrete size mappings instead show every interval and its assigned area;
+they reject an explicit sample count.
 Include `"size"` in an explicit channel array to create that block. Omitting
 `channels` infers the available categorical color, shape, and quantitative size
 channels, including color-plus-size and shape-plus-size without requiring all

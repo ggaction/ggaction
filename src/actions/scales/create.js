@@ -14,6 +14,7 @@ import {
   isColorScaleType,
   isContinuousColorScaleType,
   isDiscretizedColorScaleType,
+  normalizeSizeScaleDefinition,
   normalizeScaleDefinition
 } from "../../grammar/scales/index.js";
 import { findSemanticScale } from "../../selectors/scales.js";
@@ -102,6 +103,9 @@ export const createScale = action(
     const offsetScale = consumers.length > 0 && consumers.every(
       consumer => ["xOffset", "yOffset"].includes(consumer.channel)
     );
+    const sizeScale = consumers.length > 0 && consumers.every(
+      consumer => consumer.channel === "size"
+    );
     if (offsetScale && type !== "ordinal") {
       throw new Error(`Scale type "${type}" is not valid for offset positions.`);
     }
@@ -114,29 +118,39 @@ export const createScale = action(
         "Offset scale range is derived from its parent categorical slot."
       );
     }
-    const definition = normalizeScaleDefinition({
-      type,
-      patch: {
-        ...args,
-        ...(requestedRange === undefined ? {} : { range: requestedRange })
-      },
-      allowOrdinalBandParameters: offsetScale,
-      validateDomain: (scaleType, value) =>
-        isDiscretizedColorScaleType(scaleType)
-          ? validateDiscretizedColorDomain(scaleType, value)
-          : hasOrdinalDomain(scaleType)
-            ? validateOrdinalDomain(value)
-            : validateScaleDomain(value),
-      validateRange: (scaleType, value) =>
-        isDiscretizedColorScaleType(scaleType)
-          ? validateDiscretizedColorRange(value)
-          : isContinuousColorScaleType(scaleType)
-            ? validateSequentialColorRange(value)
-            : scaleType === "ordinal"
-              ? validateOrdinalRange(value)
-              : validateScaleRange(value)
-    });
-    if (Object.hasOwn(args, "unknown")) definition.unknown = args.unknown;
+    const definition = sizeScale
+      ? normalizeSizeScaleDefinition({
+          patch: {
+            ...args,
+            type,
+            ...(requestedRange === undefined ? {} : { range: requestedRange })
+          }
+        })
+      : normalizeScaleDefinition({
+          type,
+          patch: {
+            ...args,
+            ...(requestedRange === undefined ? {} : { range: requestedRange })
+          },
+          allowOrdinalBandParameters: offsetScale,
+          validateDomain: (scaleType, value) =>
+            isDiscretizedColorScaleType(scaleType)
+              ? validateDiscretizedColorDomain(scaleType, value)
+              : hasOrdinalDomain(scaleType)
+                ? validateOrdinalDomain(value)
+                : validateScaleDomain(value),
+          validateRange: (scaleType, value) =>
+            isDiscretizedColorScaleType(scaleType)
+              ? validateDiscretizedColorRange(value)
+              : isContinuousColorScaleType(scaleType)
+                ? validateSequentialColorRange(value)
+                : scaleType === "ordinal"
+                  ? validateOrdinalRange(value)
+                  : validateScaleRange(value)
+        });
+    if (Object.hasOwn(args, "unknown") && !sizeScale) {
+      definition.unknown = args.unknown;
+    }
     const existing = findSemanticScale(this, id);
 
     if (existing !== undefined) {

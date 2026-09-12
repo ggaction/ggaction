@@ -29,14 +29,17 @@ With one size-encoded point mark, both `createLegend()` and `createGuides()`
 infer the same block. Multiple size-encoded point marks require `target`.
 Standalone size legends support all four positions, edge layout, grid controls,
 text styles, and borders. A size block paired with a categorical point legend
-supports every edge.
+supports every edge. Continuous size scales use evenly sampled domain values.
+Quantize, quantile, and threshold size scales show every interval and reject an
+explicit `count`.
 
 An explicit `channels` array selects exactly the content to create. On a point
 mark encoding all three channels, use `channels: ["color", "shape", "size"]`
 to include all three, or `["color", "size"]` to show color swatches and size
 samples without a shape explanation. Selecting just `["color"]` or `["shape"]`
 does not add a size block. Sample `count` requires size to be selected in a
-categorical request. Encodings and mark appearance remain unchanged.
+categorical request and requires a continuous size scale. Encodings and mark
+appearance remain unchanged.
 
 Omitting `channels` on a point mark infers its encoded categorical color, shape,
 and quantitative size. Color alone uses swatches; shape uses typed symbols;

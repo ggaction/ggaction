@@ -10338,9 +10338,18 @@ program
 ```
 
 `encodeSize({ field, target?, fieldType?, scale? })` requires a quantitative
-field. Its scale accepts `id`, `type`, `domain`, and an area `range`; automatic
-range is `[24, 196]`. Circles use `sqrt(area / PI)` as radius and squares use
-`sqrt(area)` as side length, so the two shapes represent equal visual area.
+field. Its scale supports `linear`, `log`, `sqrt`, `pow`, `quantize`, `quantile`,
+and `threshold`. Every range value is an area in square logical pixels; the
+automatic continuous range is `[24, 196]`. Circles use `sqrt(area / PI)` as
+radius and squares use `sqrt(area)` as side length, so the shapes represent
+equal visual area.
+
+Logarithmic size scales require positive values and use base 10 unless `base`
+is supplied. Square-root and power scales require non-negative values; power
+scales require a positive `exponent`. Quantize and quantile require at least two
+nondecreasing area values. Threshold domains are strictly increasing cut points
+and require one more area than cuts. Discrete size legends show every interval
+and therefore reject an explicit sample `count`.
 
 `encodeShape({ field, target?, fieldType?, scale? })` requires a nominal field.
 Its ordinal scale accepts the 12 shared point shapes documented under
@@ -10484,6 +10493,8 @@ appearance values. Encodings create compatible scales automatically; use
 | Continuous position | `"auto"` | Plot bounds | `type`, `nice`, `zero`, `clamp`, `reverse` |
 | Band/point position | First-appearance order | Plot bounds | padding and alignment |
 | Ordinal appearance/offset | First-appearance order | Palette, patterns, or parent band | explicit domain/range |
+| Continuous size | Numeric extent | Area `[24, 196]` | `linear`, `log`, `sqrt`, `pow`, `clamp`, `reverse` |
+| Discrete size | Type-specific samples or cuts | Explicit nondecreasing areas | `quantize`, `quantile`, `threshold`, `reverse` |
 | Color/strokeDash | First-appearance order | Built-in palette/patterns | palette or explicit range |
 | Sequential/discretized color | Type-specific numeric boundaries | `viridis` or explicit colors | `interpolate`, `clamp`, `reverse` |
 
@@ -10519,6 +10530,14 @@ The complete family is `editXScale`, `editYScale`, `editThetaScale`,
 `editShapeScale`, `editStrokeWidthScale`, and `editStrokeDashScale`.
 `editRScale` means Polar radial position; point glyph radius remains a constant
 appearance action.
+
+Point size scale ranges are areas rather than radii. Continuous size mappings
+support `linear`, `log`, `sqrt`, and `pow`; `log` defaults to base 10 and `pow`
+requires a positive exponent. Discrete `quantize`, `quantile`, and `threshold`
+mappings require explicit nondecreasing area ranges. Type-family changes require
+an explicit destination domain, and entering a discrete family also requires a
+new range. Use `reverse` to reverse area assignment while retaining domain and
+legend-label order.
 
 Each focused editor accepts an optional `id`, `target`, or both. A supplied pair
 must agree. Without selectors, ggaction first uses the current mark's scale for
@@ -11683,7 +11702,8 @@ editing page when changing an existing guide.
 
 Continuous color legends support point, aggregate-bar, and rect marks. Field
 Opacity legends support Point and Line; discretized color legends support Point, aggregate Bar, and Rect. Interactive legends are unsupported.
-Combined point-series and quantitative-size legends support every edge.
+Combined point-series and size legends support every edge. Continuous size
+blocks sample the domain; discrete size blocks show every interval.
 Side positions stack the blocks; horizontal positions place them in rows. A left block must
 fit outside any left y-axis guides; use sufficient margin and offset.
 Stroke-width legends support all four edges through `createLegend` and
@@ -11728,14 +11748,17 @@ With one size-encoded point mark, both `createLegend()` and `createGuides()`
 infer the same block. Multiple size-encoded point marks require `target`.
 Standalone size legends support all four positions, edge layout, grid controls,
 text styles, and borders. A size block paired with a categorical point legend
-supports every edge.
+supports every edge. Continuous size scales use evenly sampled domain values.
+Quantize, quantile, and threshold size scales show every interval and reject an
+explicit `count`.
 
 An explicit `channels` array selects exactly the content to create. On a point
 mark encoding all three channels, use `channels: ["color", "shape", "size"]`
 to include all three, or `["color", "size"]` to show color swatches and size
 samples without a shape explanation. Selecting just `["color"]` or `["shape"]`
 does not add a size block. Sample `count` requires size to be selected in a
-categorical request. Encodings and mark appearance remain unchanged.
+categorical request and requires a continuous size scale. Encodings and mark
+appearance remain unchanged.
 
 Omitting `channels` on a point mark infers its encoded categorical color, shape,
 and quantitative size. Color alone uses swatches; shape uses typed symbols;
@@ -12096,7 +12119,9 @@ A point legend combines color and shape only when they encode the same nominal
 field and share an ordered domain. If a matching line layer uses that field and
 color scale, its line is layered behind each typed circle/square symbol. A
 separate `guide.legend.size` block samples five evenly spaced domain values by
-default and maps their areas through the resolved quantitative size scale.
+default for continuous mappings and maps their areas through the resolved size
+scale. Discrete size mappings instead show every interval and its assigned area;
+they reject an explicit sample count.
 Include `"size"` in an explicit channel array to create that block. Omitting
 `channels` infers the available categorical color, shape, and quantitative size
 channels, including color-plus-size and shape-plus-size without requiring all
@@ -12199,8 +12224,10 @@ const restored = edited.editLegendTitle({ title: false })
   .editLegendTitle({ title: "auto" });
 ```
 
-Size samples retain the encoded area mapping. Count must be an integer from 2
-through 10,000. Size labels use a default gap of 12 pixels after the sample slot, editable through
+Size samples retain the encoded area mapping. For continuous size scales, count
+must be an integer from 2 through 10,000. Discrete quantize, quantile, and
+threshold legends always show every interval and reject explicit `count`.
+Size labels use a default gap of 12 pixels after the sample slot, editable through
 `labels: { offset }`; title styles do not accept an offset. The slot is at least
 32 pixels wide and expands to fit the largest circle. This replaces the previous
 center-relative offset of 28; explicit offsets now measure from the slot edge. Defaults remain size 12/normal for labels and size 13/600 for titles.
@@ -15454,7 +15481,9 @@ encodeSize({ field, target?, fieldType?, scale? })
 ```
 
 Encode or replace a quantitative field as equal-area point size. The automatic area range
-is `[24, 196]`. [Appearance encodings](./api/appearance/)
+is `[24, 196]`. Size scales support continuous `linear`, `log`, `sqrt`, and
+`pow` mappings plus discrete `quantize`, `quantile`, and `threshold` mappings.
+[Appearance encodings](./api/appearance/)
 
 ## `encodeShape`
 
@@ -16291,7 +16320,7 @@ editParallelScale({ target, dimension, type?, domain?, range?, ...dimensionOptio
 editThetaScale({ id?, target?, type?, domain?, range?, ...angularOptions })
 editRScale({ id?, target?, type?, domain?, range?, radialMapping?, ...radialOptions })
 editColorScale({ id?, target?, type?, domain?, range?, palette?, interpolate?, midpoint?, unknown? })
-editSizeScale({ id?, target?, type?, domain?, range?, unknown? })
+editSizeScale({ id?, target?, type?, domain?, range?, unknown?, clamp?, reverse?, base?, exponent? })
 editOpacityScale({ id?, target?, type?, domain?, range?, nice?, zero?, clamp?, reverse?, unknown? })
 editShapeScale({ id?, target?, type?, domain?, range?, unknown? })
 editStrokeWidthScale({ id?, target?, type?, domain?, range?, ...quantitativeOptions })
@@ -16310,6 +16339,11 @@ The offset editors also require `target`; they resolve only that mark's matching
 nested offset scale. Their concrete range remains derived from the parent
 categorical slot, while the semantic scale owns domain, reverse, padding, and
 alignment.
+Size scale ranges are glyph areas. Continuous size scales accept `clamp` and
+`reverse`; logarithmic scales accept `base`, and power scales require
+`exponent`. Quantize, quantile, and threshold use explicit nondecreasing area
+ranges. A family transition requires an explicit new domain and the destination
+range rules to be satisfied.
 [Scale options](./api/scales/)
 
 ## Semantic resources and regression layers

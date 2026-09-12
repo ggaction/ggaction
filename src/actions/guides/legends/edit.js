@@ -27,6 +27,7 @@ import { findLayer } from "../../../selectors/layers.js";
 import { resolveLegendGraphicPlacement } from
   "../../../materialization/graphicHierarchy.js";
 import { resolveLegendTarget, validateLegendChannels } from "./target.js";
+import { isDiscreteSizeScaleType } from "../../../grammar/scales/index.js";
 import { SIZE_LEGEND_LABELS, SIZE_LEGEND_TITLE_STYLE, resolveSizeLegendLayout, createSizeLegendFromConfig } from "./size.js";
 import {
   STROKE_WIDTH_LEGEND_LABELS,
@@ -221,6 +222,10 @@ function resolveSampledLegendEdit(program, kind, previous, args) {
       throw new Error(`${label} legend does not accept ${key}.`);
     }
   }
+  if (size && args.count !== undefined &&
+    isDiscreteSizeScaleType(program.resolvedScales[previous.scale]?.type)) {
+    throw new Error("Discrete size legends do not support count.");
+  }
   const count = args.count ?? previous.count;
   if (!Number.isInteger(count) || count < 2) {
     throw new RangeError(
@@ -285,8 +290,12 @@ function editSampledLegend(program, kind, previous, args) {
   return next.rematerializeLegend();
 }
 
-function resolveCompanionSizeEdit(previous, size, args) {
+function resolveCompanionSizeEdit(program, previous, size, args) {
   if (size === undefined) return undefined;
+  if (args.count !== undefined &&
+    isDiscreteSizeScaleType(program.resolvedScales[size.scale]?.type)) {
+    throw new Error("Discrete size legends do not support count.");
+  }
   const config = { ...size, count: args.count ?? size.count };
   if (args.labels === undefined && args.titleStyle === undefined) return config;
   const labels = size.inheritAppearance
@@ -357,7 +366,7 @@ function resolveCategoricalEdit(program, kind, previous, size, args, storedOrder
     }
     validateGeneratedItemLimit(args.count, "Size legend count");
   }
-  return { config, order, titleMode, title, titleVisible, sizeConfig: resolveCompanionSizeEdit(previous, size, args) };
+  return { config, order, titleMode, title, titleVisible, sizeConfig: resolveCompanionSizeEdit(program, previous, size, args) };
 }
 
 function editCategorical(program, kind, previous, size, args) {

@@ -1487,12 +1487,59 @@ export type NonPointCategoricalColorScaleOptions = ScaleFields<"id" | "palette">
 };
 export type CategoricalColorScaleOptions =
   NonPointCategoricalColorScaleOptions & { unknown?: string };
-export type SizeScaleOptions = ScaleFields<"id"> & {
-  type?: "linear";
-  domain?: "auto" | readonly [number, number];
-  range?: "auto" | readonly [number, number];
+type SizeScaleCommonOptions = ScaleFields<"id" | "reverse"> & {
   unknown?: number;
 };
+type ContinuousSizeScaleOptions = SizeScaleCommonOptions &
+  ScaleFields<"clamp"> & {
+    domain?: "auto" | readonly [number, number];
+    range?: "auto" | readonly [number, number];
+  };
+export type SizeScaleOptions =
+  | (ContinuousSizeScaleOptions & {
+      type?: "linear";
+      base?: never;
+      exponent?: never;
+    })
+  | (ContinuousSizeScaleOptions & {
+      type: "log";
+      base?: number;
+      exponent?: never;
+    })
+  | (ContinuousSizeScaleOptions & {
+      type: "sqrt";
+      base?: never;
+      exponent?: never;
+    })
+  | (ContinuousSizeScaleOptions & {
+      type: "pow";
+      exponent: number;
+      base?: never;
+    })
+  | (SizeScaleCommonOptions & {
+      type: "quantize";
+      domain?: "auto" | readonly [number, number];
+      range: readonly [number, number, ...number[]];
+      clamp?: never;
+      base?: never;
+      exponent?: never;
+    })
+  | (SizeScaleCommonOptions & {
+      type: "quantile";
+      domain?: "auto" | readonly [number, ...number[]];
+      range: readonly [number, number, ...number[]];
+      clamp?: never;
+      base?: never;
+      exponent?: never;
+    })
+  | (SizeScaleCommonOptions & {
+      type: "threshold";
+      domain: readonly [number, ...number[]];
+      range: readonly [number, number, ...number[]];
+      clamp?: never;
+      base?: never;
+      exponent?: never;
+    });
 export type ShapeScaleOptions = ScaleFields<"id"> & {
   type?: "ordinal";
   domain?: "auto" | readonly unknown[];
@@ -1549,7 +1596,43 @@ export type EditRScaleOptions = FocusedScaleSelection & WithoutScaleId<RadiusSca
 export type EditColorScaleOptions = FocusedScaleSelection & WithoutScaleId<
   CategoricalColorScaleOptions | ContinuousColorScaleOptions | DiscretizedColorScaleOptions
 >;
-export type EditSizeScaleOptions = FocusedScaleSelection & WithoutScaleId<SizeScaleOptions>;
+type ExistingSizeScaleEditPatch = {
+  type?: never;
+  domain?: "auto" | readonly [number, ...number[]];
+  range?: "auto" | readonly [number, number, ...number[]];
+  unknown?: number;
+  clamp?: boolean;
+  reverse?: boolean;
+  base?: number;
+  exponent?: number;
+};
+type SizeScaleTypeEditPatch =
+  | (Omit<WithoutScaleId<SizeScaleOptions>, "type"> & { type?: "linear" })
+  | (Omit<Extract<WithoutScaleId<SizeScaleOptions>, { type: "log" }>, "type"> & {
+      type: "log";
+    })
+  | (Omit<Extract<WithoutScaleId<SizeScaleOptions>, { type: "sqrt" }>, "type"> & {
+      type: "sqrt";
+    })
+  | (Omit<Extract<WithoutScaleId<SizeScaleOptions>, { type: "pow" }>, "type" | "exponent"> & {
+      type: "pow";
+      exponent?: number;
+    })
+  | (Omit<Extract<WithoutScaleId<SizeScaleOptions>, { type: "quantize" }>, "type" | "range"> & {
+      type: "quantize";
+      range?: readonly [number, number, ...number[]];
+    })
+  | (Omit<Extract<WithoutScaleId<SizeScaleOptions>, { type: "quantile" }>, "type" | "range"> & {
+      type: "quantile";
+      range?: readonly [number, number, ...number[]];
+    })
+  | (Omit<Extract<WithoutScaleId<SizeScaleOptions>, { type: "threshold" }>, "type" | "domain" | "range"> & {
+      type: "threshold";
+      domain?: readonly [number, ...number[]];
+      range?: readonly [number, number, ...number[]];
+    });
+export type EditSizeScaleOptions = FocusedScaleSelection &
+  (ExistingSizeScaleEditPatch | SizeScaleTypeEditPatch);
 export type EditOpacityScaleOptions = FocusedScaleSelection & WithoutScaleId<OpacityScaleOptions>;
 export type EditShapeScaleOptions = FocusedScaleSelection & WithoutScaleId<ShapeScaleOptions>;
 export type EditStrokeWidthScaleOptions = FocusedScaleSelection & WithoutScaleId<StrokeWidthScaleOptions>;

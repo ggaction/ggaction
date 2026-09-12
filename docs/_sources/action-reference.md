@@ -1776,7 +1776,9 @@ encodeSize({ field, target?, fieldType?, scale? })
 ```
 
 Encode or replace a quantitative field as equal-area point size. The automatic area range
-is `[24, 196]`. [Appearance encodings](../api/appearance.md)
+is `[24, 196]`. Size scales support continuous `linear`, `log`, `sqrt`, and
+`pow` mappings plus discrete `quantize`, `quantile`, and `threshold` mappings.
+[Appearance encodings](../api/appearance.md)
 
 ### `encodeShape`
 
@@ -2430,7 +2432,7 @@ editParallelScale({ target, dimension, type?, domain?, range?, ...dimensionOptio
 editThetaScale({ id?, target?, type?, domain?, range?, ...angularOptions })
 editRScale({ id?, target?, type?, domain?, range?, radialMapping?, ...radialOptions })
 editColorScale({ id?, target?, type?, domain?, range?, palette?, interpolate?, midpoint?, unknown? })
-editSizeScale({ id?, target?, type?, domain?, range?, unknown? })
+editSizeScale({ id?, target?, type?, domain?, range?, unknown?, clamp?, reverse?, base?, exponent? })
 editOpacityScale({ id?, target?, type?, domain?, range?, nice?, zero?, clamp?, reverse?, unknown? })
 editShapeScale({ id?, target?, type?, domain?, range?, unknown? })
 editStrokeWidthScale({ id?, target?, type?, domain?, range?, ...quantitativeOptions })
@@ -2449,6 +2451,11 @@ The offset editors also require `target`; they resolve only that mark's matching
 nested offset scale. Their concrete range remains derived from the parent
 categorical slot, while the semantic scale owns domain, reverse, padding, and
 alignment.
+Size scale ranges are glyph areas. Continuous size scales accept `clamp` and
+`reverse`; logarithmic scales accept `base`, and power scales require
+`exponent`. Quantize, quantile, and threshold use explicit nondecreasing area
+ranges. A family transition requires an explicit new domain and the destination
+range rules to be satisfied.
 [Scale options](../api/scales.md)
 
 ### Semantic resources and regression layers

@@ -73,6 +73,17 @@ function colorScale(type) {
   };
 }
 
+function sizeScale(type) {
+  return {
+    type,
+    ...(type === "log" ? { domain: [1, 20], base: 2 } : {}),
+    ...(type === "pow" ? { exponent: 2 } : {}),
+    ...(type === "quantize" ? { domain: [1, 20], range: [4, 16] } : {}),
+    ...(type === "quantile" ? { range: [4, 16] } : {}),
+    ...(type === "threshold" ? { domain: [4], range: [4, 16] } : {})
+  };
+}
+
 function positionChannel(type, field = "value") {
   if (type === "time") {
     return { field: "time", fieldType: "temporal", scale: { type } };
@@ -151,7 +162,7 @@ function raincloudScaleOptions(path, type) {
   if (path === "points.size.scale.type") {
     options.points = {
       ...options.points,
-      size: { field: "size", scale: { type } }
+      size: { field: "size", scale: sizeScale(type) }
     };
   }
   if (path === "points.shape.scale.type") {
@@ -245,7 +256,7 @@ function buildScaleWitness(action, path, type) {
     case "encodeColor":
       return completePoint().encodeColor(colorChannel(type));
     case "encodeSize":
-      return completePoint().encodeSize({ field: "size", scale: { type } });
+      return completePoint().encodeSize({ field: "size", scale: sizeScale(type) });
     case "encodeShape":
       return completePoint().encodeShape({ field: "category", scale: { type } });
     case "encodeOpacity":
@@ -355,7 +366,7 @@ function buildScaleWitness(action, path, type) {
       }
       if (path === "size.scale.type") {
         return source().createScatterPlot({
-          x: "x", y: "y", size: { field: "size", scale: { type } }, guides: false
+          x: "x", y: "y", size: { field: "size", scale: sizeScale(type) }, guides: false
         });
       }
       if (path === "shape.scale.type") {
@@ -391,7 +402,7 @@ function buildScaleWitness(action, path, type) {
       }
       if (path === "size.scale.type") {
         return source().createRegressionPlot({
-          x: "x", y: "y", size: { field: "size", scale: { type } },
+          x: "x", y: "y", size: { field: "size", scale: sizeScale(type) },
           band: false, guides: false
         });
       }
@@ -486,7 +497,7 @@ function buildScaleWitness(action, path, type) {
       if (path === "size.scale.type") {
         return source().createPolarScatterPlot({
           theta: { field: "category", fieldType: "nominal" }, radius: "value",
-          size: { field: "size", scale: { type } }, guides: false
+          size: { field: "size", scale: sizeScale(type) }, guides: false
         });
       }
       if (path === "shape.scale.type") {
@@ -565,7 +576,7 @@ function buildScaleWitness(action, path, type) {
       }
       if (path === "size.scale.type") {
         return source().createStripPlot({
-          x: "value", size: { field: "size", scale: { type } }, guides: false
+          x: "value", size: { field: "size", scale: sizeScale(type) }, guides: false
         });
       }
       if (path === "shape.scale.type") {
@@ -599,7 +610,7 @@ function buildScaleWitness(action, path, type) {
       if (path === "size.scale.type") {
         return source().createBeeswarmPlot({
           x: positionChannel("band"), y: "value",
-          size: { field: "size", scale: { type } }, packing: false, guides: false
+          size: { field: "size", scale: sizeScale(type) }, packing: false, guides: false
         });
       }
       if (path === "shape.scale.type") {
@@ -797,14 +808,15 @@ test("derives only role-reachable nested scale type paths", async () => {
   );
 
   assert.equal(scaleTypes.length, 144);
-  assert.equal(scaleTypes.reduce((sum, option) => sum + option.values.length, 0), 543);
+  assert.equal(scaleTypes.reduce((sum, option) => sum + option.values.length, 0), 591);
   assert.doesNotMatch(declarations, /scale\?: ScaleOptions/u);
   assert.equal(options.has("option-path:createScatterPlot.x.scale.palette"), false);
   assert.equal(options.has("option-path:createScatterPlot.x.scale.interpolate"), false);
   assert.equal(options.has("option-path:encodeSize.scale.nice"), false);
   assert.equal(options.has("option-path:encodeSize.scale.palette"), false);
   assert.deepEqual(options.get("option-path:encodeSize.scale.type").values, [
-    "string:linear"
+    "string:linear", "string:log", "string:pow", "string:quantile",
+    "string:quantize", "string:sqrt", "string:threshold"
   ]);
   assert.equal(
     options.get("option-path:createBarPlot.y.scale.type").values.includes("string:log"),
@@ -847,7 +859,7 @@ test("executes every strict nested scale type path and literal", async () => {
       witnesses += 1;
     }
   }
-  assert.equal(witnesses, 543);
+  assert.equal(witnesses, 591);
 });
 
 test("materializes every role-specific nested scale type vocabulary", () => {

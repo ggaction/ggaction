@@ -4,6 +4,7 @@ import {
   isDiscretizedColorScaleType,
   isDiscretePositionScaleType,
   isTransformedScaleType,
+  normalizeSizeScaleDefinition,
   normalizeScaleDefinition,
   SCALE_ROLES,
   validateColorRange,
@@ -46,6 +47,7 @@ export function resolveScaleConsumerChannel(consumers, id) {
 
 function validateRangeForChannel(scale, channel, value) {
   if (value === "auto") return value;
+  if (channel === "size") return validateSizeRange(value);
   if (channel === "theta") return validateThetaRange(value);
   if (channel === "radius") return validateRadialRange(value);
   if (scale.type === "sequential") {
@@ -137,6 +139,17 @@ function normalizeDefinition(program, scale, channel, consumers, patch) {
   if (scale.radialMapping !== undefined && Object.hasOwn(patch, "radialMapping") &&
     patch.radialMapping === undefined && consumers.some(consumer => consumer.encoding.aggregate !== undefined)) {
     throw new Error("Remove measured radius encodings before clearing their scale mapping.");
+  }
+  if (channel === "size") {
+    if (consumers.some(consumer =>
+      consumer.layer.mark?.type !== "point" ||
+      consumer.encoding.fieldType !== "quantitative"
+    )) {
+      throw new Error(
+        `Scale "${scale.id}" has a consumer incompatible with size mapping.`
+      );
+    }
+    return normalizeSizeScaleDefinition({ previous: scale, patch });
   }
   const type = patch.type ?? scale.type;
   validateTypeTransition(scale, type, channel, consumers);

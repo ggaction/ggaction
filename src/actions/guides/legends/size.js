@@ -4,7 +4,12 @@ import {
   validateNonEmptyString,
   validateKeys
 } from "../../../core/validation.js";
-import { mapLinearValues } from "../../../grammar/scales/index.js";
+import {
+  formatDiscretizedIntervals,
+  isDiscreteSizeScaleType,
+  isSizeScaleType,
+  mapSizeValues
+} from "../../../grammar/scales/index.js";
 import { resolveLegendItemLayout } from "../../../layout/legendItems.js";
 import { DEFAULT_COLORS, DEFAULT_FONT_FAMILY } from
   "../../../theme/defaults.js";
@@ -61,16 +66,16 @@ export function resolveSizeLegendPoint(program, requested) {
   return layer;
 }
 
-function requireScale(program, id, type) {
+function requireScale(program, id) {
   const scale = program.resolvedScales[id];
-  if (scale?.type !== type) {
-    throw new Error(`Legend requires resolved ${type} scale "${id}".`);
+  if (!isSizeScaleType(scale?.type)) {
+    throw new Error(`Legend requires resolved size scale "${id}".`);
   }
   return scale;
 }
 
 export function resolveSizeLegendLayout(program, config) {
-  const scale = requireScale(program, config.scale, "linear");
+  const scale = requireScale(program, config.scale);
   const categorical = [program.guideConfigs.legend?.series, program.guideConfigs.legend?.color]
     .find(candidate => candidate?.target === config.target);
   const inherit = config.inheritAppearance === true && categorical !== undefined;
@@ -86,18 +91,25 @@ export function resolveSizeLegendLayout(program, config) {
     columns: categorical.columns, titlePosition: categorical.titlePosition,
     offset: categorical.offset, itemGap: categorical.itemGap
   } : { position };
-  const values = sampleContinuousValues(scale.domain, config.count);
-  const areas = mapLinearValues(values, scale.domain, scale.range, { clamp: scale.clamp ?? false });
+  const discrete = isDiscreteSizeScaleType(scale.type);
+  const values = discrete
+    ? undefined
+    : sampleContinuousValues(scale.domain, config.count);
+  const areas = discrete
+    ? scale.range
+    : mapSizeValues(values, scale);
   const radii = areas.map(area => Math.sqrt(area / Math.PI));
   const radius = Math.max(...radii);
   const width = Math.max(32, radius * 2);
   const { plot, canvas } = resolveContinuousBounds(program);
-  const text = formatContinuousValues(
-    values,
-    scale.domain,
-    "quantitative",
-    config.labels.format
-  );
+  const text = discrete
+    ? formatDiscretizedIntervals(scale.thresholds, config.labels.format)
+    : formatContinuousValues(
+        values,
+        scale.domain,
+        "quantitative",
+        config.labels.format
+      );
   const layout = resolveLegendItemLayout(plot, { ...config, ...geometry, labels, titleStyle }, text, {
     width, height: radius * 2,
     itemBounds: radii.map(r => ({ left: width / 2 - r, right: width / 2 + r, top: -r, bottom: r }))
@@ -121,7 +133,7 @@ export const rematerializeSizeLegend = action(
     if (encoding?.scale === undefined) {
       throw new Error("Size legend target requires a size encoding.");
     }
-    const scale = requireScale(this, encoding.scale, "linear");
+    const scale = requireScale(this, encoding.scale);
     const title = config.inferredTitle === true ? encoding.field : config.title;
     const currentConfig = {
       ...config,
@@ -177,8 +189,12 @@ export function resolveSizeLegendConfig(program, args = {}) {
   if (encoding?.scale === undefined) {
     throw new Error(`Point mark "${layer.id}" requires a size encoding.`);
   }
-  const scale = requireScale(program, encoding.scale, "linear");
-  const count = args.count ?? 5;
+  const scale = requireScale(program, encoding.scale);
+  const discrete = isDiscreteSizeScaleType(scale.type);
+  if (discrete && Object.hasOwn(args, "count")) {
+    throw new Error("Discrete size legends do not support count.");
+  }
+  const count = discrete ? scale.range.length : args.count ?? 5;
   if (!Number.isInteger(count) || count < 2) {
     throw new RangeError("Size legend count must be an integer of at least 2.");
   }
@@ -200,8 +216,8 @@ export function resolveSizeLegendConfig(program, args = {}) {
 }
 
 export function createSizeLegendFromConfig(program, config) {
-  resolveSizeLegendLayout(program, config);
-  const { count } = config;
+  const { radii } = resolveSizeLegendLayout(program, config);
+  const count = radii.length;
   const following = new Set(legendResourcePolicies().filter(policy =>
     policy.kind !== "size" && policy.family !== "categorical" &&
     program.guideConfigs.legend?.[policy.kind] !== undefined
@@ -241,7 +257,7 @@ export function createSizeLegendFromConfig(program, config) {
 export const createSizeLegend = action(
   {
     op: "createSizeLegend",
-    description: "Create a quantitative equal-area point-size legend."
+    description: "Create an equal-area point-size legend."
   },
   function (args = {}) {
     const config = resolveSizeLegendConfig(this, args);

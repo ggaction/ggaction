@@ -1186,6 +1186,32 @@ async function testNodeConsumer(directory) {
     const hiddenSizeLegend = editedSizeLegend.editLegendTitle({ title: false }).editCanvas({ width: 740 });
     assert.equal(hiddenSizeLegend.graphicSpec.objects.sizeLegendTitle, undefined);
     assert.equal(hiddenSizeLegend.editLegendTitle({ title: "auto" }).graphicSpec.objects.sizeLegendTitle.properties.text, "m");
+    for (const create of [chart, basicChart]) {
+      const nonlinearSize = create()
+        .createCanvas({ width: 640, height: 420, margin: { right: 220 } })
+        .createData({ values: [1, 10, 100].map((m, index) => ({ x: index, y: index, m })) })
+        .createPointMark().encodeX({ field: "x" }).encodeY({ field: "y" })
+        .encodeSize({
+          field: "m",
+          scale: { type: "log", domain: [1, 100], range: [4 * Math.PI, 100 * Math.PI] }
+        })
+        .createLegend({ channels: ["size"], count: 3 });
+      assert.ok(Math.abs(
+        nonlinearSize.graphicSpec.objects.point.items[1].properties.radius - Math.sqrt(52)
+      ) < 1e-10);
+      assert.match(renderToSVG(nonlinearSize), /<circle /);
+    }
+    const discreteSize = chart()
+      .createCanvas({ width: 640, height: 420, margin: { right: 220 } })
+      .createData({ values: [9, 10, 19, 20].map((m, index) => ({ x: index, y: index, m })) })
+      .createPointMark().encodeX({ field: "x" }).encodeY({ field: "y" })
+      .encodeSize({ field: "m", scale: { type: "threshold", domain: [10, 20], range: [2, 4, 8] } })
+      .createLegend({ channels: ["size"] });
+    assert.deepEqual(
+      discreteSize.graphicSpec.objects.sizeLegendLabels.items.map(item => item.properties.text),
+      ["< 10", "10–20", "≥ 20"]
+    );
+    assert.throws(() => discreteSize.editLegend({ count: 3 }), /do not support count/);
     for (const create of [chart, basicChart]) for (const position of ["left", "right", "top", "bottom"]) {
       const source = create().createCanvas({ width: 1000, height: 800, margin: 250 })
         .createData({ values: [{ x: 1, y: 2, m: 10 }, { x: 2, y: 3, m: 30 }] })
@@ -3345,6 +3371,16 @@ async function testTypeScriptConsumer(directory) {
     chart().createReferenceBand({ space: "plot", x: [0.2, 0.6] });
     // @ts-expect-error Plot reference coordinates are numeric.
     chart().createReferenceLine({ space: "plot", x: "0.5" });
+    chart().encodeSize({ field: "m", scale: { type: "log", domain: [1, 100], base: 10 } });
+    chart().encodeSize({ field: "m", scale: { type: "pow", domain: [0, 100], exponent: 2 } });
+    chart().encodeSize({ field: "m", scale: { type: "threshold", domain: [10], range: [20, 80] } });
+    chart().editSizeScale({ type: "quantile", domain: "auto", range: [20, 40, 80] });
+    // @ts-expect-error Power size scales require an exponent during encoding.
+    chart().encodeSize({ field: "m", scale: { type: "pow", domain: [0, 100] } });
+    // @ts-expect-error Threshold size scales require one more range area than the type can infer.
+    chart().encodeSize({ field: "m", scale: { type: "threshold", domain: [10], range: [20] } });
+    // @ts-expect-error Discrete size scales do not support clamp.
+    chart().editSizeScale({ type: "quantize", domain: [0, 100], range: [20, 80], clamp: true });
     chart().createMarkLabels();
     chart().createMarkLabels({ source: "bars", content: "share", format: ".0%", layout: { axis: "y" } });
     // @ts-expect-error The facade retains exclusive text branches.

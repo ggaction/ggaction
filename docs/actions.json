@@ -19597,26 +19597,46 @@
         {
           "name": "type",
           "required": false,
-          "type": "\"linear\" | undefined"
+          "type": "\"linear\" | \"log\" | \"pow\" | \"quantile\" | \"quantize\" | \"sqrt\" | \"threshold\" | undefined"
         },
         {
           "name": "domain",
           "required": false,
-          "type": "\"auto\" | readonly [number, number] | undefined"
+          "type": "\"auto\" | readonly [number, number] | readonly [number, ...number[]] | undefined"
         },
         {
           "name": "range",
           "required": false,
-          "type": "\"auto\" | readonly [number, number] | undefined"
+          "type": "\"auto\" | readonly [number, number] | readonly [number, number, ...number[]] | undefined"
         },
         {
           "name": "unknown",
           "required": false,
           "type": "number | undefined"
+        },
+        {
+          "name": "clamp",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "reverse",
+          "required": false,
+          "type": "boolean | undefined"
+        },
+        {
+          "name": "base",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "exponent",
+          "required": false,
+          "type": "number | undefined"
         }
       ],
       "callPatterns": [
-        "editSizeScale({ id?, target?, type?, domain?, range?, unknown? })"
+        "editSizeScale({ id?, target?, type?, domain?, range?, unknown?, clamp?, reverse? })"
       ],
       "snippet": "program.editSizeScale({ range: [20, 200] })",
       "errors": [],

@@ -1389,8 +1389,8 @@
         "point-field-encodings",
         "related"
       ],
-      "bytes": 3341,
-      "sha256": "52d6d79a3266bda669ff57eb796cf4d4f769947c84b1234372b8fe9dbf72016a"
+      "bytes": 3881,
+      "sha256": "510382ac2723048f3c5d876d770b829ad0277e73fb3d8a3886df6e70b23d53c2"
     },
     {
       "order": 87,
@@ -1418,8 +1418,8 @@
         "errors-and-limitations",
         "related"
       ],
-      "bytes": 6158,
-      "sha256": "98525407adb6387ccf0b02075e30778195a0a98f001cebfa41999d7b53448b97"
+      "bytes": 6894,
+      "sha256": "4f3ac5f21b7e98c36f698b0d7464d3007755506ea16fb7d54d08282c0bbe173a"
     },
     {
       "order": 89,
@@ -1558,8 +1558,8 @@
         "errors-and-limitations",
         "related"
       ],
-      "bytes": 3320,
-      "sha256": "11ccad62f4d17c39437eea883a6c354c319ac12c1da217a65e746b8eec396c0b"
+      "bytes": 3391,
+      "sha256": "8abb7cf6a3de9d0ba6f528de0996bdb1dd5f297fcb55fe0e80eef598709ba308"
     },
     {
       "order": 98,
@@ -1573,8 +1573,8 @@
         "related",
         "combined-categorical-and-size-layout"
       ],
-      "bytes": 10449,
-      "sha256": "3d7f468ad1da8af68909c232861c5e483975dc3594bd710a1a8c6b3fed186001"
+      "bytes": 10641,
+      "sha256": "63ca8bc7e17f83f1eb09fd1312040c6bc504d5d62ebe6e79cde14d9eb7dc1932"
     },
     {
       "order": 99,
@@ -1601,8 +1601,8 @@
         "optional-border",
         "related"
       ],
-      "bytes": 3430,
-      "sha256": "7cedb8be84889e7ac51f4f6cecb078cc05a18fbe1e65b7b724f91faaaca4bdf2"
+      "bytes": 3553,
+      "sha256": "885e60183574266572634bbd2ed367785b92f427068f7ce789de875a6606ad24"
     },
     {
       "order": 101,
@@ -1617,8 +1617,8 @@
         "removing-a-legend",
         "related"
       ],
-      "bytes": 11203,
-      "sha256": "869c8b0bd9bc3169eb66f1a90958533216c843a547955eddd10c578da0a715f6"
+      "bytes": 11338,
+      "sha256": "1b17c5199ba345183ba75cefdd56eb24e8d54ae3b05f7560288acc70157cdb7d"
     },
     {
       "order": 102,
@@ -2012,8 +2012,8 @@
         "encodebarwidth",
         "related"
       ],
-      "bytes": 17826,
-      "sha256": "912fdffe5c585a158c90a95471600aee29411abff094328d9a5f8e06e90c1884"
+      "bytes": 17965,
+      "sha256": "6954f77fd683ba0c630dc988b2dcd3ec7389e127b7a655561102fb2e28807dd4"
     },
     {
       "order": 120,
@@ -2120,8 +2120,8 @@
         "directional-grids",
         "related"
       ],
-      "bytes": 10787,
-      "sha256": "d74ed1cd91e8b27e280706cee03370f1a06dce4783af1feb4504bffa64ca023d"
+      "bytes": 11157,
+      "sha256": "6d5ed9803316f86c37be232add320f27ee86cd42c9991cc175988f77b1afeb39"
     },
     {
       "order": 123,

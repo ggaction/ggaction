@@ -419,7 +419,9 @@ encodeSize({ field, target?, fieldType?, scale? })
 ```
 
 Encode or replace a quantitative field as equal-area point size. The automatic area range
-is `[24, 196]`. [Appearance encodings](../../api/appearance.md)
+is `[24, 196]`. Size scales support continuous `linear`, `log`, `sqrt`, and
+`pow` mappings plus discrete `quantize`, `quantile`, and `threshold` mappings.
+[Appearance encodings](../../api/appearance.md)
 
 ## `encodeShape`
 

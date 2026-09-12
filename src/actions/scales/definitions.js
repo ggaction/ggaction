@@ -13,7 +13,6 @@ import {
   validateScaleDomain,
   validateScaleRange,
   validateShapeRange,
-  validateSizeRange,
   validateStrokeDashRange,
   validateStrokeWidthRange,
   validateSequentialColorRange,
@@ -25,6 +24,7 @@ import {
   validateScalePropertyForType,
   validateScaleTypeForRole,
   isDiscretePositionScaleType,
+  normalizeSizeScaleDefinition,
   withScaleUnknown
 } from "../../grammar/scales/index.js";
 import {
@@ -61,6 +61,9 @@ const SEQUENTIAL_COLOR_OPTIONS = [
 const OPACITY_OPTIONS = [...BASE_OPTIONS, ...BOOLEAN_OPTIONS, "unknown"];
 const STROKE_WIDTH_OPTIONS = [
   ...BASE_OPTIONS, ...BOOLEAN_OPTIONS, ...TRANSFORM_OPTIONS
+];
+const SIZE_OPTIONS = [
+  ...UNKNOWN_OPTIONS, "clamp", "reverse", "base", "exponent"
 ];
 
 function optionsObject(options) {
@@ -302,21 +305,23 @@ export function resolveStrokeDashScaleDefinition(program, options) {
 
 export function resolveAppearanceScaleDefinition(program, channel, options) {
   optionsObject(options);
+  if (channel === "size") {
+    validateKeys(options, SIZE_OPTIONS, "scale");
+    const id = validateUserId(options.id ?? channel, "Scale id");
+    const existing = findSemanticScale(program, id);
+    return {
+      id,
+      ...normalizeSizeScaleDefinition({ previous: existing, patch: options })
+    };
+  }
   validateKeys(options, UNKNOWN_OPTIONS, "scale");
   const id = validateUserId(options.id ?? channel, "Scale id");
   const existing = findSemanticScale(program, id);
-  const shape = channel === "shape";
   return withScaleUnknown({
     id,
-    type: shape
-      ? validateOrdinalScaleType(options.type ?? existing?.type ?? "ordinal")
-      : validateLinearScaleType(options.type ?? existing?.type ?? "linear"),
-    domain: shape
-      ? validateOrdinalDomain(options.domain ?? existing?.domain ?? "auto")
-      : validateScaleDomain(options.domain ?? existing?.domain ?? "auto"),
-    range: shape
-      ? validateShapeRange(options.range ?? existing?.range ?? "auto")
-      : validateSizeRange(options.range ?? existing?.range ?? "auto")
+    type: validateOrdinalScaleType(options.type ?? existing?.type ?? "ordinal"),
+    domain: validateOrdinalDomain(options.domain ?? existing?.domain ?? "auto"),
+    range: validateShapeRange(options.range ?? existing?.range ?? "auto")
   }, { ...existing, ...options }, channel);
 }
 
