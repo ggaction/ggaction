@@ -468,18 +468,28 @@ test("computes weighted KDE values, count mass, and positive-weight extent", () 
 });
 
 test("keeps reliability KDE shape invariant under weight scaling", () => {
-  const derive = multiplier => deriveKernelDensity([
+  const derive = (multiplier, normalization = "unit") => deriveKernelDensity([
     { value: 1, w: multiplier },
     { value: 3, w: 3 * multiplier }
   ], {
     field: "value",
     weight: { field: "w", kind: "reliability" },
+    normalization,
     steps: 5
   });
   const original = derive(1);
   const scaled = derive(10);
   assert.equal(original.bandwidth, scaled.bandwidth);
   assert.deepEqual(original.values, scaled.values);
+
+  const originalCount = derive(1, "count");
+  const scaledCount = derive(10, "count");
+  assert.equal(originalCount.bandwidth, scaledCount.bandwidth);
+  originalCount.values.forEach((row, index) => {
+    assert.ok(Math.abs(
+      scaledCount.values[index].value_density - row.value_density * 10
+    ) < 1e-12);
+  });
 });
 
 test("resolves weighted automatic bandwidth independently for each profile", () => {
