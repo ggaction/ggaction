@@ -450,9 +450,14 @@ owned opacity legend and rejects fieldType/scale or selections using that channe
 
 ```javascript
 encodeStroke({ value, target? })
+encodeStroke({ field, target?, fieldType?, temporalUnit?, scale? })
 ```
 
-Assign a constant non-empty stroke string to a rule mark.
+Assign a constant non-empty stroke color or map a categorical, quantitative, or
+temporal field to the outline of a Point, Line, Area, Bar, Rect, Arc, Rule, or
+Tick. Line and Area values must be constant within each final series. Constant
+mode clears the field binding and its own legend; field mode clears the constant
+override. Text outlines are outside this action.
 [Appearance encodings](../../api/appearance.md)
 
 ## `encodeStrokeWidth`

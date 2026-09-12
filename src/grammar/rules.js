@@ -11,6 +11,7 @@ const VALUE_CHANNELS = Object.freeze([
   ...ENDPOINT_CHANNELS,
   "xOffset",
   "yOffset",
+  "stroke",
   "strokeDash",
   "strokeWidth",
   "opacity"

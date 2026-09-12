@@ -191,7 +191,7 @@ export function resolveScaleMaterialization(options) {
   const {
     id,
     scale,
-    channel,
+    channel: requestedChannel,
     consumers,
     valuesByConsumer,
     bounds,
@@ -199,6 +199,7 @@ export function resolveScaleMaterialization(options) {
     markConfigs,
     thetaScales
   } = options;
+  const channel = requestedChannel === "stroke" ? "color" : requestedChannel;
   const allValues = valuesByConsumer
     .flatMap(item => item.values)
     .filter(value => value !== undefined);
@@ -238,7 +239,14 @@ export function resolveScaleMaterialization(options) {
     isDiscretePositionScaleType(scale.type);
 
   if (isSequentialColor || isDiscretizedColor) {
-    for (const consumer of consumers) validateContinuousColorConsumer(consumer.layer, consumer.encoding, scale);
+    for (const consumer of consumers) {
+      validateContinuousColorConsumer(
+        consumer.layer,
+        consumer.encoding,
+        scale,
+        { channel: consumer.channel }
+      );
+    }
   }
   let discretizedScale;
   if (isDiscretizedColor) {

@@ -1429,6 +1429,14 @@
     "layer": "user-facing",
     "domain": "core"
   },
+  "editStrokeScale": {
+    "operation": "edit",
+    "authoringRoles": [
+      "H2"
+    ],
+    "layer": "user-facing",
+    "domain": "core"
+  },
   "editSizeScale": {
     "operation": "edit",
     "authoringRoles": [

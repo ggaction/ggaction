@@ -58,7 +58,7 @@ Representative actions: `createXAxis`, `fitCanvas`. [Documentation](https://ggac
 
 Place categorical and sampled opacity legends on one aligned horizontal reading line.
 
-Representative actions: `createLegend`, `editLegend`. [Documentation](https://ggaction.github.io/ggaction/api/legends/continuous/#continuous-color-and-opacity).
+Representative actions: `createLegend`, `editLegend`. [Documentation](https://ggaction.github.io/ggaction/api/legends/continuous/#continuous-color-stroke-and-opacity).
 
 ### [Line chart](./cars-line-chart/)
 

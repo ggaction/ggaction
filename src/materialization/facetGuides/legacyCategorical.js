@@ -29,6 +29,9 @@ function collection(program, id, items) {
 }
 
 export function resolveLegacyCategoricalLegend(program) {
+  if (program.semanticSpec.layers.some(layer =>
+    layer.encoding?.stroke?.scale !== undefined
+  )) return undefined;
   const encodings = program.semanticSpec.layers.flatMap(layer =>
     layer.encoding?.color === undefined
       ? []

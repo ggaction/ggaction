@@ -25,7 +25,7 @@ export const DEFAULT_GRADIENT_SIZE = Object.freeze({ length: 120, thickness: 12 
 
 const GRADIENT_OPTIONS = Object.freeze(["length", "thickness"]);
 
-function resolveGradientLayout(program, config, scale) {
+export function resolveGradientLayout(program, config, scale) {
   const { plot, canvas } = resolveContinuousBounds(program);
   const vertical = ["right", "left"].includes(config.position);
   const length = config.gradient.length;

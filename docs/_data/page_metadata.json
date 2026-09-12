@@ -410,7 +410,7 @@
   },
   "/api/appearance/mark-style/": {
     "title": "Mark Style",
-    "description": "encodeStroke({ value, target? }) assigns a required non empty constant color string to a rule.",
+    "description": "encodeStroke({ value, target? }) assigns a required non empty constant outline color to a Point, Line, Area, Bar, Rect, Arc, Rule, or Tick.",
     "image": "/assets/images/jobs-grouped-bar.png"
   },
   "/api/scales/": {
@@ -465,7 +465,7 @@
   },
   "/api/legends/categorical/": {
     "title": "Categorical and Size Legends",
-    "description": "Creates inferred legend blocks. It supports combined line series, color stacked histogram, grouped ordinal bar, grouped area, composite point series, quantitative point size,…",
+    "description": "Creates inferred legend blocks. It supports combined line series, color stacked histogram, grouped ordinal bar, grouped area, independent stroke, composite point series,…",
     "image": "/assets/images/cars-line-chart.png"
   },
   "/api/legends/continuous/": {

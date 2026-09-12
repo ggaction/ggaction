@@ -37,7 +37,10 @@ import { resolveRequestedOffsetPolicy } from
 
 export function resolveScaleConsumerChannel(consumers, id) {
   const channels = new Set(
-    consumers.map(consumer => normalizePositionScaleChannel(consumer.channel))
+    consumers.map(consumer => {
+      const channel = normalizePositionScaleChannel(consumer.channel);
+      return channel === "stroke" ? "color" : channel;
+    })
   );
   if (channels.size > 1) {
     throw new Error(`Scale "${id}" cannot be shared across channels.`);
@@ -57,7 +60,7 @@ function validateRangeForChannel(scale, channel, value) {
     return validateDiscretizedColorRange(value);
   }
   if (scale.type !== "ordinal") return validateScaleRange(value);
-  if (channel === "color") return validateColorRange(value);
+  if (["color", "stroke"].includes(channel)) return validateColorRange(value);
   if (channel === "shape") return validateShapeRange(value);
   if (channel === "strokeDash") return validateStrokeDashRange(value);
   if (channel === "size") return validateSizeRange(value);
@@ -74,7 +77,23 @@ function validateTypeTransition(scale, nextType, channel, consumers) {
       throw new Error(`Scale "${scale.id}" has a consumer incompatible with type "${nextType}".`);
     }
     for (const consumer of consumers) {
-      validateContinuousColorConsumer(consumer.layer, consumer.encoding, { type: nextType });
+      validateContinuousColorConsumer(
+        consumer.layer,
+        consumer.encoding,
+        { type: nextType },
+        { channel: consumer.channel }
+      );
+    }
+    return;
+  }
+  if (nextType === "ordinal" && channel === "color") {
+    if (consumers.some(consumer =>
+      !["color", "stroke"].includes(consumer.channel) ||
+      !["nominal", "ordinal"].includes(consumer.encoding.fieldType)
+    )) {
+      throw new Error(
+        `Scale "${scale.id}" has a consumer incompatible with type "ordinal".`
+      );
     }
     return;
   }
@@ -212,7 +231,8 @@ function normalizeDefinition(program, scale, channel, consumers, patch) {
   }
   validateSequentialMidpoint(definition.midpoint, type, definition.domain);
   if (definition.midpoint !== undefined && consumers.some(
-    consumer => consumer.channel !== "color" || consumer.encoding.fieldType !== "quantitative"
+    consumer => !["color", "stroke"].includes(consumer.channel) ||
+      consumer.encoding.fieldType !== "quantitative"
   )) {
     throw new Error("Scale midpoint requires quantitative color consumers.");
   }
@@ -238,7 +258,7 @@ export function prepareScaleEdit(program, scale, channel, consumers, args) {
   }
   if (
     hasPalette &&
-    channel !== "color" &&
+    !["color", "stroke"].includes(channel) &&
     scale.type !== "sequential" &&
     !isDiscretizedColorScaleType(scale.type)
   ) {

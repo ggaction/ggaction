@@ -27,7 +27,11 @@ function appearanceMapper(layer, scales, fieldValues) {
       return fallback.map(() => normalizeStrokeDashPattern(encoding.datum));
     }
     if (encoding?.scale === undefined) return fallback;
-    return mapScaleConsumerValues(fieldValues(encoding.field, channel), scales[encoding.scale], channel);
+    return mapScaleConsumerValues(
+      fieldValues(encoding.field, channel, encoding),
+      scales[encoding.scale],
+      channel
+    );
   };
 }
 
@@ -53,11 +57,15 @@ export function resolveParallelLineMaterialization({
     field => sourceRows.map(row => row[field]));
   return {
     commands: items.map(item => item.commands),
-    strokes: mapAppearance(
-      "color",
-      items.map((_, index) => config.stroke ??
-        existingValue(existingChildren, index, "stroke", defaults.stroke))
-    ),
+    strokes: layer.encoding?.stroke?.scale !== undefined
+      ? mapAppearance("stroke", items.map(() => defaults.stroke))
+      : config.stroke !== undefined
+        ? items.map(() => config.stroke)
+        : mapAppearance(
+            "color",
+            items.map((_, index) =>
+              existingValue(existingChildren, index, "stroke", defaults.stroke))
+          ),
     strokeWidths: mapAppearance(
       "strokeWidth",
       items.map((_, index) => config.strokeWidth ??
@@ -116,11 +124,21 @@ export function resolvePositionedLineMaterialization({
         );
       });
   const appearance = appearanceMapper(layer, resolvedScales,
-    (field, channel) => derivePathSeriesFieldValues(rows, derived.series, field, channel));
+    (field, channel, encoding) => derivePathSeriesFieldValues(
+      rows,
+      derived.series,
+      field,
+      channel,
+      encoding
+    ));
   return {
     commands,
-    strokes: appearance("color", commands.map((_, index) => config.stroke ??
-      existingValue(existingChildren, index, "stroke", defaults.stroke))),
+    strokes: layer.encoding?.stroke?.scale !== undefined
+      ? appearance("stroke", commands.map(() => defaults.stroke))
+      : config.stroke !== undefined
+        ? commands.map(() => config.stroke)
+        : appearance("color", commands.map((_, index) =>
+            existingValue(existingChildren, index, "stroke", defaults.stroke))),
     strokeWidths: appearance("strokeWidth", commands.map((_, index) => config.strokeWidth ??
       existingValue(existingChildren, index, "strokeWidth", defaults.strokeWidth))),
     strokeDashes: appearance("strokeDash", commands.map((_, index) =>

@@ -375,7 +375,7 @@ without changing child programs or facet value order.
 ### `editFacetScales`
 
 ```javascript
-editFacetScales({ x?, y?, xOffset?, yOffset?, color?, size?, shape?, opacity?, strokeDash? })
+editFacetScales({ x?, y?, xOffset?, yOffset?, color?, stroke?, size?, shape?, opacity?, strokeDash? })
 ```
 
 Partially change used facet channels between `"shared"` and `"independent"`.
@@ -1807,9 +1807,14 @@ owned opacity legend and rejects fieldType/scale or selections using that channe
 
 ```javascript
 encodeStroke({ value, target? })
+encodeStroke({ field, target?, fieldType?, temporalUnit?, scale? })
 ```
 
-Assign a constant non-empty stroke string to a rule mark.
+Assign a constant non-empty stroke color or map a categorical, quantitative, or
+temporal field to the outline of a Point, Line, Area, Bar, Rect, Arc, Rule, or
+Tick. Line and Area values must be constant within each final series. Constant
+mode clears the field binding and its own legend; field mode clears the constant
+override. Text outlines are outside this action.
 [Appearance encodings](../api/appearance.md)
 
 ### `encodeStrokeWidth`
@@ -2432,6 +2437,7 @@ editParallelScale({ target, dimension, type?, domain?, range?, ...dimensionOptio
 editThetaScale({ id?, target?, type?, domain?, range?, ...angularOptions })
 editRScale({ id?, target?, type?, domain?, range?, radialMapping?, ...radialOptions })
 editColorScale({ id?, target?, type?, domain?, range?, palette?, interpolate?, midpoint?, unknown? })
+editStrokeScale({ target, type?, domain?, range?, palette?, interpolate?, midpoint?, unknown? })
 editSizeScale({ id?, target?, type?, domain?, range?, unknown?, clamp?, reverse?, base?, exponent? })
 editOpacityScale({ id?, target?, type?, domain?, range?, nice?, zero?, clamp?, reverse?, unknown? })
 editShapeScale({ id?, target?, type?, domain?, range?, unknown? })
@@ -2451,6 +2457,9 @@ The offset editors also require `target`; they resolve only that mark's matching
 nested offset scale. Their concrete range remains derived from the parent
 categorical slot, while the semantic scale owns domain, reverse, padding, and
 alignment.
+`editStrokeScale` likewise requires a mark `target` and rejects raw scale IDs.
+It edits the target's field-driven stroke mapping and accepts a color/stroke
+shared scale when every connected consumer remains compatible.
 Size scale ranges are glyph areas. Continuous size scales accept `clamp` and
 `reverse`; logarithmic scales accept `base`, and power scales require
 `exponent`. Quantize, quantile, and threshold use explicit nondecreasing area

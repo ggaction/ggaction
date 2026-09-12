@@ -1,4 +1,4 @@
-import { noOptions } from "../../../../core/validation.js";
+import { validateOptionObject } from "../../../../core/validation.js";
 import { mapOrdinalValues } from "../../../../grammar/scales/index.js";
 import { DEFAULT_COLORS } from "../../../../theme/defaults.js";
 import { formatVisibleText } from "../../../../core/textMetrics.js";
@@ -11,9 +11,20 @@ import { resolveLegendItemLayout } from "../../../../layout/legendItems.js";
 import { createPointShapeGraphic } from "../../../../grammar/pointShapes.js";
 import { resolveConcreteGraphicBounds } from "../../../../grammar/schemas/graphicBounds.js";
 
-export function activeConfig(program) {
-  const kinds = ["series", "color"]
+const CATEGORICAL_KINDS = Object.freeze(["series", "color", "stroke"]);
+
+export function activeConfig(program, requested) {
+  if (requested !== undefined && !CATEGORICAL_KINDS.includes(requested)) {
+    throw new Error(`Unknown categorical legend kind "${requested}".`);
+  }
+  const kinds = CATEGORICAL_KINDS
     .filter(kind => program.guideConfigs.legend?.[kind] !== undefined);
+  if (requested !== undefined) {
+    if (!kinds.includes(requested)) {
+      throw new Error(`Missing categorical legend config "${requested}".`);
+    }
+    return { kind: requested, config: program.guideConfigs.legend[requested] };
+  }
   if (kinds.length !== 1) {
     throw new Error("Legend component requires one categorical legend config.");
   }
@@ -22,13 +33,13 @@ export function activeConfig(program) {
 }
 
 function prefix(config) {
-  return config.kind === "series" ? "seriesLegend" : "colorLegend";
+  return `${config.kind}Legend`;
 }
 
 export function symbolGraphic(config, type) {
   const onlyDefault = config.symbol.layers.length === 1 &&
     ((config.kind === "series" && type === "line") ||
-      (config.kind === "color" && type === "swatch"));
+      (["color", "stroke"].includes(config.kind) && type === "swatch"));
   if (onlyDefault) return `${prefix(config)}Symbols`;
   const suffix = { line: "Lines", point: "Points", swatch: "Swatches" }[type];
   return `${prefix(config)}Symbol${suffix}`;
@@ -86,19 +97,26 @@ export function resolveLayout(program, config) {
 
 export function resolveAppearance(program, config) {
   let colors = config.domain.map(() => DEFAULT_COLORS.mark);
+  let strokes = config.domain.map(() => "white");
   let dashes = config.domain.map(() => []);
   let shapes = config.domain.map(() => "circle");
   for (let index = 0; index < config.channels.length; index += 1) {
     const scale = program.resolvedScales[config.scales[index]];
     const values = mapOrdinalValues(config.domain, scale.domain, scale.range);
     if (config.channels[index] === "color") colors = values;
+    if (config.channels[index] === "stroke") strokes = values;
     if (config.channels[index] === "strokeDash") dashes = values;
     if (config.channels[index] === "shape") shapes = values;
   }
-  return { colors, dashes, shapes };
+  return { colors, strokes, dashes, shapes };
 }
 
-export { noOptions };
+export function noOptions(args, operation) {
+  validateOptionObject(args, ["kind"], operation);
+  if (args.kind !== undefined && !CATEGORICAL_KINDS.includes(args.kind)) {
+    throw new Error(`Unknown categorical legend kind "${args.kind}".`);
+  }
+}
 
 export function layerFor(config, type) {
   const layer = config.symbol.layers.find(item => item.type === type);

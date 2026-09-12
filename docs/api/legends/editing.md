@@ -195,7 +195,7 @@ const withoutSize = program.removeLegend({
 });
 ```
 
-Accepted channels are `color`, `strokeDash`, `strokeWidth`, `shape`, `size`,
+Accepted channels are `color`, `stroke`, `strokeDash`, `strokeWidth`, `shape`, `size`,
 and `opacity`. In a combined color-and-shape legend, removing `shape` keeps the
 color explanation and removing `color` keeps the shape explanation. The last
 remaining channel removes the block. Partial removal preserves title visibility,

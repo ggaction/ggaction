@@ -10,7 +10,7 @@ export function hasMaterializedLegend(program) {
   return LEGEND_CONFIG_KINDS.some(kind => {
     const config = program.guideConfigs?.legend?.[kind];
     if (config === undefined) return false;
-    if (kind === "series" || kind === "color") {
+    if (["series", "color", "stroke"].includes(kind)) {
       return program.semanticSpec.guides.legend?.[kind] !== undefined;
     }
     return true;

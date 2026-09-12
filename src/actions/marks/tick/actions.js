@@ -138,6 +138,11 @@ export const editTickMark = action(
       );
     }
     const layer = resolveTick(this, args.target, "editTickMark");
+    if (Object.hasOwn(args, "stroke") && layer.encoding?.stroke !== undefined) {
+      throw new Error(
+        "editTickMark stroke conflicts with a field encoding; use encodeStroke with value to replace it."
+      );
+    }
     const config = validateTickConfig(args, {
       ...DEFAULT_TICK_CONFIG,
       ...this.markConfigs[layer.id]
@@ -190,6 +195,7 @@ export const rematerializeTickMark = action(
 
     const x = resolveRowEncodingValues(this, layer, dataset, "x");
     const y = resolveRowEncodingValues(this, layer, dataset, "y");
+    const stroke = resolveRowEncodingValues(this, layer, dataset, "stroke");
     const angles = resolveDirectionValues(dataset.values, layer.encoding?.angle);
     const config = validateTickConfig({}, {
       ...DEFAULT_TICK_CONFIG,
@@ -210,7 +216,7 @@ export const rematerializeTickMark = action(
       y1: segments.map(item => item.y1),
       x2: segments.map(item => item.x2),
       y2: segments.map(item => item.y2),
-      stroke: config.stroke,
+      stroke: stroke ?? config.stroke,
       strokeWidth: config.strokeWidth,
       opacity: config.opacity
     });

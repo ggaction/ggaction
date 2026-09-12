@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "source": "generated lifecycle smoke corpus plus selection lifecycle",
-  "actionCount": 266,
+  "actionCount": 267,
   "relationships": [
     {
       "name": "createCanvas",
@@ -453,7 +453,10 @@
     },
     {
       "name": "encodeStroke",
-      "wraps": []
+      "wraps": [
+        "editSemantic",
+        "createScale"
+      ]
     },
     {
       "name": "encodeStrokeWidth",
@@ -1179,6 +1182,12 @@
     },
     {
       "name": "editColorScale",
+      "wraps": [
+        "editScale"
+      ]
+    },
+    {
+      "name": "editStrokeScale",
       "wraps": [
         "editScale"
       ]

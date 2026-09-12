@@ -44,6 +44,11 @@ export const editPointMark = action(
         "editPointMark fill cannot be combined with a color encoding."
       );
     }
+    if (Object.hasOwn(args, "stroke") && layer.encoding?.stroke !== undefined) {
+      throw new Error(
+        "editPointMark stroke conflicts with a field encoding; use encodeStroke with value to replace it."
+      );
+    }
     if (Object.hasOwn(args, "opacity") && layer.encoding?.opacity?.field !== undefined) {
       throw new Error("editPointMark opacity conflicts with a field encoding; use encodeOpacity with value to replace it.");
     }

@@ -200,6 +200,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editSizeScale`](./actions/advanced.md#focused-channel-scale-editors) | H2 | user-facing | core |
 | [`editStackData`](./actions/statistics.md#focused-statistical-data-editing) | H1, H3 | user-facing | statistics |
 | [`editStrokeDashScale`](./actions/advanced.md#focused-channel-scale-editors) | H2 | user-facing | core |
+| [`editStrokeScale`](./actions/advanced.md#focused-channel-scale-editors) | H2 | user-facing | core |
 | [`editStrokeWidthScale`](./actions/advanced.md#focused-channel-scale-editors) | H2 | user-facing | core |
 | [`editSummaryData`](./actions/statistics.md#focused-statistical-data-editing) | H1, H3 | user-facing | statistics |
 | [`editTextMark`](./actions/marks.md#edittextmark) | H3 | user-facing | marks |

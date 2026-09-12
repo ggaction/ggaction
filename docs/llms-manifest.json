@@ -1003,8 +1003,8 @@
         "related",
         "explicit-grouping-and-time-inputs"
       ],
-      "bytes": 10583,
-      "sha256": "11d8699866fffb7c19f7752241aae133472d9e59a1337a2df7f5ae8a3ef61e19"
+      "bytes": 10593,
+      "sha256": "a843b119ae7c952957f8238cabd0e1dfcf498e2e4eca57bb496dad1b61bef2d6"
     },
     {
       "order": 64,
@@ -1184,8 +1184,8 @@
         "insert-remove-and-reorder-named-concat-children",
         "state-trace-and-action-scope"
       ],
-      "bytes": 16860,
-      "sha256": "51a73b6415a4b941cc9cea064b653dee3e83fdf91eadaef0c23339be92bd61b9"
+      "bytes": 16870,
+      "sha256": "6be8ee4f6c171f12107c8259137879b91fc5b7bb06693d6e9958486696b9b4f3"
     },
     {
       "order": 74,
@@ -1360,8 +1360,8 @@
         "errors-and-limitations",
         "related"
       ],
-      "bytes": 4366,
-      "sha256": "643075fa9bc2587a0af5699b933a39fc75a3b606eb61e06665fd02f51a7e2ffb"
+      "bytes": 4547,
+      "sha256": "5907b997b5493c9cfcd5e12d19510b9ef0dd803f97a984a6fa371e35152aec5d"
     },
     {
       "order": 85,
@@ -1399,12 +1399,12 @@
       "source": "api/appearance/mark-style.md",
       "headings": [
         "mark-style",
-        "line-and-rule-appearance",
+        "stroke-color-and-linerule-appearance",
         "encodebarwidth-band-pixels-target",
         "related"
       ],
-      "bytes": 4578,
-      "sha256": "f27a1887b11ebcd50f724bb74da0e5fe6b6aa22f189ad96ede2185f828c9382d"
+      "bytes": 5896,
+      "sha256": "3ec9cb34c986133648e862ab2766d1e1f6f6c00b56e2e97a40fff9521d708045"
     },
     {
       "order": 88,
@@ -1418,8 +1418,8 @@
         "errors-and-limitations",
         "related"
       ],
-      "bytes": 6894,
-      "sha256": "4f3ac5f21b7e98c36f698b0d7464d3007755506ea16fb7d54d08282c0bbe173a"
+      "bytes": 7393,
+      "sha256": "12aa7ed86693147e9d5591594fa67a5af9abefd9c33c05dbc267c21e09a80ed3"
     },
     {
       "order": 89,
@@ -1558,8 +1558,8 @@
         "errors-and-limitations",
         "related"
       ],
-      "bytes": 3391,
-      "sha256": "8abb7cf6a3de9d0ba6f528de0996bdb1dd5f297fcb55fe0e80eef598709ba308"
+      "bytes": 3488,
+      "sha256": "e88408024e57cb4317b5f4c01d7998dd9edfac88f65c870c50b764583f788d7d"
     },
     {
       "order": 98,
@@ -1573,8 +1573,8 @@
         "related",
         "combined-categorical-and-size-layout"
       ],
-      "bytes": 10641,
-      "sha256": "63ca8bc7e17f83f1eb09fd1312040c6bc504d5d62ebe6e79cde14d9eb7dc1932"
+      "bytes": 11022,
+      "sha256": "3c12ab1eea704a1f7420ed1fd6180ff5385689707918079388acbfb8200e43e9"
     },
     {
       "order": 99,
@@ -1583,11 +1583,11 @@
       "source": "api/legends/continuous.md",
       "headings": [
         "continuous-legends",
-        "continuous-color-and-opacity",
+        "continuous-color-stroke-and-opacity",
         "related"
       ],
-      "bytes": 5305,
-      "sha256": "6799e5ca39b18cfc667f7a977b9e2d2a40c7b54f5291b9f3857a82bb57cca7be"
+      "bytes": 5819,
+      "sha256": "af7c9cab390474079f73843cb4c79540fd663fafcf0fa29402c8217fcbe997e7"
     },
     {
       "order": 100,
@@ -1617,8 +1617,8 @@
         "removing-a-legend",
         "related"
       ],
-      "bytes": 11338,
-      "sha256": "1b17c5199ba345183ba75cefdd56eb24e8d54ae3b05f7560288acc70157cdb7d"
+      "bytes": 11348,
+      "sha256": "edb0362798b5f8dc573c8d4085f4421a95362ca68c463531f6d7c70a1bd41efc"
     },
     {
       "order": 102,
@@ -1852,8 +1852,8 @@
         "action-reference",
         "exact-action-lookup"
       ],
-      "bytes": 30072,
-      "sha256": "ca9a80f977e9a7d054596d05ecff95f56112134a0014355481a41336d7468aec"
+      "bytes": 30183,
+      "sha256": "fbdd63ba7a2f6bf2af5fdfbe746c75e5b0e8b5d38bac6200d530adb99925464c"
     },
     {
       "order": 117,
@@ -1921,8 +1921,8 @@
         "focused-core-data-editing",
         "related"
       ],
-      "bytes": 25596,
-      "sha256": "4955475e2ce6dc98915c37ff24a0a5ec79839025d97d02fdb470af8002a3320a"
+      "bytes": 25605,
+      "sha256": "6a5318e0f4c11da7ae6a6d54f4b93bd313595a0a386eea38e1235aa84486832d"
     },
     {
       "order": 118,
@@ -2012,8 +2012,8 @@
         "encodebarwidth",
         "related"
       ],
-      "bytes": 17965,
-      "sha256": "6954f77fd683ba0c630dc988b2dcd3ec7389e127b7a655561102fb2e28807dd4"
+      "bytes": 18343,
+      "sha256": "f303205f6432d5b6f1e337a20902d406d1c9c9c5e7a47b6275d1375251659151"
     },
     {
       "order": 120,
@@ -2120,8 +2120,8 @@
         "directional-grids",
         "related"
       ],
-      "bytes": 11157,
-      "sha256": "6d5ed9803316f86c37be232add320f27ee86cd42c9991cc175988f77b1afeb39"
+      "bytes": 11473,
+      "sha256": "aea2dffc89606827974c8f07ca553127682d4910a508c74ea01a5104aad585ac"
     },
     {
       "order": 123,
@@ -2165,8 +2165,8 @@
         "exact-typescript-signatures",
         "related"
       ],
-      "bytes": 20516,
-      "sha256": "df6ca845f87997046c19e7b38b23ceea87e3acb59101a384d6d9451981584f5e"
+      "bytes": 20580,
+      "sha256": "4d09272cd5710743dd5fec44f7e7e8ad20e831c4234d1e8fb4d6afdbc0c2c41b"
     },
     {
       "order": 126,

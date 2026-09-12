@@ -35,7 +35,7 @@ function legendCandidates(program) {
     const layer = color[0];
     return {
       target: layer.id,
-      channels: ["color", "shape", "strokeDash"].filter(
+      channels: ["color", "stroke", "shape", "strokeDash"].filter(
         channel => layer.encoding?.[channel]?.scale !== undefined
       )
     };
@@ -45,7 +45,7 @@ function legendCandidates(program) {
       "Shared facet legend requires one unambiguous color legend target."
     );
   }
-  for (const channel of ["shape", "strokeDash", "size", "opacity"]) {
+  for (const channel of ["stroke", "shape", "strokeDash", "size", "opacity"]) {
     const candidates = layers.filter(
       layer => layer.encoding?.[channel]?.scale !== undefined
     );
@@ -105,9 +105,14 @@ function prepareAutoLegendSource(child) {
   }
   const scale = findSemanticScale(
     source,
-    findLayer(source, request.target)?.encoding?.color?.scale
+    findLayer(source, request.target)?.encoding?.[
+      request.channels.includes("color") ? "color" : "stroke"
+    ]?.scale
   );
   const gradient = scale?.type === "sequential";
+  const gradientPrefix = request.channels.includes("color")
+    ? "colorGradient"
+    : "strokeGradient";
   source = source.createLegend({
     target: request.target,
     channels: request.channels,
@@ -122,7 +127,7 @@ function prepareAutoLegendSource(child) {
     const resolved = source.resolvedScales[scale.id];
     source = source
       .editGraphics({
-        target: "colorGradientLabels",
+        target: `${gradientPrefix}Labels`,
         property: "text",
         value: formatDistinctNumericSamples(
           continuousValues(resolved.domain, 5),
@@ -130,9 +135,9 @@ function prepareAutoLegendSource(child) {
         )
       })
       .editGraphics({
-        target: "colorGradientTitle",
+        target: `${gradientPrefix}Title`,
         property: "y",
-        value: source.graphicSpec.objects.colorGradientTitle.properties.y + 8
+        value: source.graphicSpec.objects[`${gradientPrefix}Title`].properties.y + 8
       });
   }
   return source;
@@ -196,7 +201,7 @@ export function prepareSharedFacetLegend(program) {
   if (bounds === undefined) {
     throw new Error("Shared facet legend has no measurable concrete bounds.");
   }
-  const gradient = kinds.includes("gradient");
+  const gradient = kinds.some(kind => ["gradient", "strokeGradient"].includes(kind));
   const placement = promotedLegendPlacement(source, kinds);
   const width = Math.ceil(bounds.right - bounds.left);
   return {

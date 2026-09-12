@@ -7,7 +7,7 @@ title: Continuous Legends
 
 {% include chart-example.html id="multi-legend-layout" %}
 
-## Continuous color and opacity
+## Continuous color, stroke, and opacity
 
 A point `color` encoding with a quantitative or temporal field produces a
 continuous gradient. Right/left positions orient it vertically; top/bottom
@@ -33,6 +33,18 @@ The same recipe works with `editLegend`, `editLegendSymbols`, and
 
 ~~~javascript
 program.createLegend({ channels: ["opacity"], position: "left" });
+~~~
+
+A quantitative or temporal `stroke` encoding creates a separate stroke gradient
+with the same mapping, tick, formatting, edge, and lifecycle rules. Quantize,
+quantile, and threshold stroke scales create a stroke interval legend. Its
+symbols keep the mark's fill and draw the mapped color as the outline. An
+explicit mark `strokeWidth: 0` remains zero.
+
+~~~javascript
+program
+  .encodeStroke({ field: "risk", fieldType: "quantitative" })
+  .createLegend({ channels: ["stroke"] });
 ~~~
 
 For a top or bottom sampled-opacity legend, `titlePosition: "left"` places the
@@ -84,7 +96,7 @@ The default `"auto"` keeps the family's tick-aware label selection. Explicit
 formats are exact, so nearby samples may intentionally display the same text.
 Categorical legends keep their identity labels and accept `"auto"` only.
 
-For a `quantize`, `quantile`, or `threshold` point-color scale, the same call
+For a `quantize`, `quantile`, or `threshold` point-color or supported stroke scale, the same call
 creates ordered swatches and concrete interval labels. Interval
 legends support all four positions with `layout: "edge"`. Side legends use a
 single vertical column, center alignment and a top title. At top/bottom, use

@@ -27,6 +27,39 @@ const LAYER_OPTIONS = Object.freeze({
 
 export function resolveLegendSymbol(program, layer, channels, requested) {
   if (requested !== undefined && requested !== "auto") return requested;
+  if (channels?.length === 1 && channels[0] === "stroke") {
+    const config = program.markConfigs[layer.id] ?? {};
+    const bar = config.barAppearance ?? {};
+    const strokeWidth = bar.strokeWidth ?? config.strokeWidth ?? ({
+      point: 1,
+      line: 2,
+      area: 1,
+      bar: 0.5,
+      rect: 1,
+      arc: 1,
+      rule: 2,
+      tick: 2
+    }[layer.mark.type] ?? 1);
+    if (["line", "rule", "tick"].includes(layer.mark.type)) {
+      return { layers: [{ type: "line", length: 32, lineWidth: strokeWidth }] };
+    }
+    if (layer.mark.type === "point") {
+      return { layers: [{
+        type: "point",
+        size: 5,
+        fill: config.fill ?? "#4c78a8",
+        stroke: "white",
+        strokeWidth
+      }] };
+    }
+    return { layers: [{
+      type: "swatch",
+      width: 14,
+      height: 12,
+      stroke: "white",
+      strokeWidth
+    }] };
+  }
   if (layer.mark?.type !== "point" || !channels?.includes("shape")) return undefined;
   const color = channels.includes("color") ? layer.encoding?.color : undefined;
   const hasMatchingLine = color?.scale !== undefined && program.semanticSpec.layers.some(candidate =>

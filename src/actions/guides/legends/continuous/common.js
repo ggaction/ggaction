@@ -218,18 +218,23 @@ export function resolveContinuousLegendLayer(program, requested, channel) {
   return layer;
 }
 
-export function resolveContinuousColorLayer(program, requested) {
+export function resolveContinuousColorLayer(program, requested, channel = "color") {
   const layer = selectLegendLayer(
     program,
     requested,
-    candidate => ["point", "bar", "rect"].includes(candidate.mark?.type) &&
-      candidate.encoding?.color?.scale !== undefined
+    candidate => (channel === "stroke"
+      ? ["point", "line", "area", "bar", "rect", "arc", "rule", "tick"]
+      : ["point", "bar", "rect"]
+    ).includes(candidate.mark?.type) &&
+      candidate.encoding?.[channel]?.scale !== undefined
   );
   if (layer === undefined) {
     throw new Error(
       requested === undefined
-        ? "color legend requires one eligible point, bar, or rect mark."
-        : `Unknown color legend target "${requested}".`
+        ? channel === "color"
+          ? "color legend requires one eligible point, bar, or rect mark."
+          : "stroke legend requires one eligible mark."
+        : `Unknown ${channel} legend target "${requested}".`
     );
   }
   return layer;

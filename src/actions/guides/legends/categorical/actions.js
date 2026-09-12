@@ -50,14 +50,14 @@ export const rematerializeLegend = action(
   withGuideLayoutValidation(function (args = {}) {
     noOptions(args, "rematerializeLegend");
     let next = this;
-    const hasCategorical =
-      this.guideConfigs.legend?.series !== undefined ||
-      this.guideConfigs.legend?.color !== undefined;
-    if (hasCategorical) {
-      const { kind, config } = activeConfig(this);
-      const definition = resolveCurrentDefinition(this, config);
+    const categoricalKinds = ["series", "color", "stroke"].filter(
+      kind => this.guideConfigs.legend?.[kind] !== undefined
+    );
+    for (const kind of categoricalKinds) {
+      const config = next.guideConfigs.legend[kind];
+      const definition = resolveCurrentDefinition(next, config);
       const symbol = config.inferredSymbol
-        ? normalizeRecipe(resolveLegendSymbol(this, findLayer(this, config.target), definition.channels), kind)
+        ? normalizeRecipe(resolveLegendSymbol(next, findLayer(next, config.target), definition.channels), kind)
         : config.symbol;
       const symbolChanged = !sameGuideValue(symbol, config.symbol);
       const changed = symbolChanged ||
@@ -67,7 +67,7 @@ export const rematerializeLegend = action(
         config.field !== definition.field ||
         config.title !== definition.title;
       next = changed
-        ? this._withLegendConfig(kind, {
+        ? next._withLegendConfig(kind, {
             ...config,
             symbol,
             channels: definition.channels,
@@ -76,10 +76,10 @@ export const rematerializeLegend = action(
             title: definition.title,
             domain: definition.domain
           })
-        : this;
+        : next;
       if (kind === "series") {
         if (!sameValues(
-          this.semanticSpec.guides.legend.series.scales,
+          next.semanticSpec.guides.legend.series.scales,
           definition.scales
         )) {
           next = next.editSemantic({
@@ -87,22 +87,22 @@ export const rematerializeLegend = action(
             value: definition.scales
           });
         }
-        if (this.semanticSpec.guides.legend.series.title !== definition.title) {
+        if (next.semanticSpec.guides.legend.series.title !== definition.title) {
           next = next.editSemantic({
             property: "guide.legend.series.title",
             value: definition.title
           });
         }
       } else {
-        if (this.semanticSpec.guides.legend.color.scale !== definition.scales[0]) {
+        if (next.semanticSpec.guides.legend[kind].scale !== definition.scales[0]) {
           next = next.editSemantic({
-            property: "guide.legend.color.scale",
+            property: `guide.legend.${kind}.scale`,
             value: definition.scales[0]
           });
         }
-        if (this.semanticSpec.guides.legend.color.title !== definition.title) {
+        if (next.semanticSpec.guides.legend[kind].title !== definition.title) {
           next = next.editSemantic({
-            property: "guide.legend.color.title",
+            property: `guide.legend.${kind}.title`,
             value: definition.title
           });
         }
@@ -111,15 +111,19 @@ export const rematerializeLegend = action(
         resolveLayout(next, next.guideConfigs.legend[kind]);
         next = reconcileCategoricalSymbols(next, config, next.guideConfigs.legend[kind]);
       }
-      if (config.border !== false) next = next.rematerializeLegendBackground();
+      if (config.border !== false) {
+        next = next.rematerializeLegendBackground({ kind });
+      }
       next = next
-        .rematerializeLegendSymbols()
-        .rematerializeLegendLabels();
-      if (config.titleVisible !== false) next = next.rematerializeLegendTitle();
+        .rematerializeLegendSymbols({ kind })
+        .rematerializeLegendLabels({ kind });
+      if (config.titleVisible !== false) {
+        next = next.rematerializeLegendTitle({ kind });
+      }
       const hasHighlight = Object.values(
         next.materializationConfigs.highlights ?? {}
       ).some(highlight => highlight.target === config.target);
-      if (hasHighlight) next = next.rematerializeLegendHighlights();
+      if (hasHighlight) next = next.rematerializeLegendHighlights({ kind });
     }
     for (const policy of legendResourcePolicies()) {
       if (
@@ -177,11 +181,10 @@ export const createCategoricalLegend = action(
   { op: "createCategoricalLegend", description: "Create one categorical legend block." },
   withGuideLayoutValidation(function (args = {}) {
     const config = resolveCategoricalLegendConfig(this, args);
-    if (
-      this.semanticSpec.guides.legend?.series !== undefined ||
-      this.semanticSpec.guides.legend?.color !== undefined
-    ) {
-      throw new Error("createCategoricalLegend requires a missing legend.");
+    if (this.semanticSpec.guides.legend?.[config.kind] !== undefined) {
+      throw new Error(
+        `createCategoricalLegend requires a missing legend for ${config.kind}.`
+      );
     }
     resolveLayout(this, config);
     return createCategoricalLegendFromConfig(this, config,
@@ -195,12 +198,12 @@ export function resolveLegendCreationPlan(program, args = {}, layers = program.s
   const channels = args.channels;
   if (channels !== undefined) validateLegendChannels(channels, "createLegend");
   const standalone = [
-    ["size", isSizeLegendPoint, ["color", "shape", "strokeDash", "opacity"]],
+    ["size", isSizeLegendPoint, ["color", "stroke", "shape", "strokeDash", "opacity"]],
     ["strokeWidth", isStrokeWidthLegendLayer, args.target === undefined
-      ? ["color", "shape", "strokeDash", "size", "opacity"]
-      : ["color", "shape", "strokeDash", "opacity"]],
+      ? ["color", "stroke", "shape", "strokeDash", "size", "opacity"]
+      : ["color", "stroke", "shape", "strokeDash", "opacity"]],
     ["opacity", isOpacityLegendLayer,
-      ["color", "shape", "strokeDash", "size"]]
+      ["color", "stroke", "shape", "strokeDash", "size"]]
   ];
   for (const [kind, eligible, otherChannels] of standalone) {
     const explicit = channels?.length === 1 && channels[0] === kind;
@@ -240,6 +243,47 @@ export function resolveLegendCreationPlan(program, args = {}, layers = program.s
   ) {
     return { steps: [{ op: "createIntervalLegend", args }], finish: "auto" };
   }
+  const continuousStrokeCandidates = candidates.filter(layer => {
+    const scale = findSemanticScale(program, layer.encoding?.stroke?.scale);
+    return scale?.type === "sequential";
+  });
+  const continuousStroke = requestedCandidate(
+    program,
+    args.target,
+    continuousStrokeCandidates
+  );
+  if (
+    (channels?.length === 1 && channels[0] === "stroke" && continuousStroke) ||
+    (channels === undefined && continuousStroke &&
+      !["color", "shape", "strokeDash", "size", "opacity", "strokeWidth"].some(
+        channel => continuousStroke.encoding?.[channel]?.scale !== undefined
+      ))
+  ) {
+    return {
+      steps: [{ op: "createStrokeGradientLegend", args: {
+        ...args,
+        channels: ["stroke"]
+      } }],
+      finish: "auto"
+    };
+  }
+  const intervalStrokeCandidates = candidates.filter(layer => {
+    const scale = findSemanticScale(program, layer.encoding?.stroke?.scale);
+    return ["quantize", "quantile", "threshold"].includes(scale?.type);
+  });
+  if (
+    (channels?.length === 1 && channels[0] === "stroke" &&
+      intervalStrokeCandidates.length > 0) ||
+    (channels === undefined && intervalStrokeCandidates.length === 1)
+  ) {
+    return {
+      steps: [{ op: "createStrokeIntervalLegend", args: {
+        ...args,
+        channels: ["stroke"]
+      } }],
+      finish: "auto"
+    };
+  }
   const wantsShape = channels?.includes("shape") === true;
   const wantsSize = channels?.includes("size") === true;
   const pointCandidates = candidates.filter(layer =>
@@ -247,7 +291,7 @@ export function resolveLegendCreationPlan(program, args = {}, layers = program.s
     (channels === undefined
       ? ["color", "shape"].some(channel => layer.encoding?.[channel]?.scale !== undefined)
       : (wantsShape || wantsSize) && channels.every(channel =>
-        ["color", "shape", "size"].includes(channel) && layer.encoding?.[channel]?.scale !== undefined))
+        ["color", "stroke", "shape", "size"].includes(channel) && layer.encoding?.[channel]?.scale !== undefined))
   );
   const requestedPoint = requestedCandidate(program, args.target, pointCandidates);
   const inferredSize = channels === undefined && pointCandidates.some(isSizeLegendPoint);
@@ -264,7 +308,7 @@ export function resolveLegendCreationPlan(program, args = {}, layers = program.s
     if (combined && categoricalArgs.layout === "legacy-bottom") {
       throw new Error('Combined size legends require layout "edge".');
     }
-    const inferredChannels = ["color", "shape"].filter(
+    const inferredChannels = ["color", "stroke", "shape"].filter(
       channel => requestedPoint.encoding?.[channel]?.scale !== undefined
     );
     const { format: sizeFormat, ...categoricalLabels } = categoricalArgs.labels ?? {};
@@ -331,14 +375,14 @@ export const removeCategoricalLegend = action(
   },
   withGuideLayoutValidation(function (args = {}) {
     noOptions(args, "removeCategoricalLegend");
-    const entries = ["series", "color"]
+    const entries = ["series", "color", "stroke"]
       .filter(kind => this.guideConfigs.legend?.[kind] !== undefined);
     if (entries.length === 0) return this;
     if (entries.length !== 1) {
       throw new Error("removeCategoricalLegend requires one active categorical legend.");
     }
     const kind = entries[0];
-    const prefix = kind === "series" ? "seriesLegend" : "colorLegend";
+    const prefix = `${kind}Legend`;
     const targets = Object.keys(this.graphicSpec.objects)
       .filter(id => id.startsWith(prefix));
     let next = this.editSemantic({

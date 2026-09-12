@@ -31,7 +31,7 @@ type MarkSelector =
 - `field`, `channel`, `property` 중 정확히 하나를 사용한다. `field`는 member data에서 item 전체에 unique한
   값, `channel`은 scale 적용 전 resolved semantic encoding 값, `property`는 final `graphicSpec`의 concrete
   scalar 값만 읽는다. 값 비교는 strict하며 coercion하지 않는다. Rect도 공통 channel resolver를 사용하여
-  temporal field/datum과 color를 epoch milliseconds로 정규화하며 field 값은 원본을 유지한다.
+  temporal field/datum과 color/stroke를 epoch milliseconds로 정규화하며 field 값은 원본을 유지한다.
   근거: `test/unit/actions/marks/rect-span.test.js`.
 - `range`의 `inclusive` 기본값은 `true`다. Ordered comparison은 같은 type의 finite number 또는 string만
   비교하고 missing/incompatible item은 제외한다.
@@ -45,7 +45,8 @@ type MarkSelector =
   `channel: "y2"`, concrete pixel 높이는 `property: "height"`로 선택한다.
 - Stable key는 semantic item identity에서 만들며 collection child order를 selector identity로 사용하지 않는다.
   Multi-row path의 field/channel은 series grain에서 값이 하나로 unique할 때만 selectable하다.
-  Explicit tuple group의 각 field를 선택할 수 있으며 Line의 strokeWidth/opacity channel도 series grain이다.
+  Explicit tuple group의 각 field를 선택할 수 있으며 Line/Area의 stroke와 Line의
+  strokeWidth/opacity channel도 series grain이다.
   해당 channel selection이 남아 있으면 constant encoding으로 교체할 수 없다.
 - Empty selection은 `selectMarks`/`highlightMarks`와 `filterMarks`에서 성공이다. Mark filter의 empty view는
   직전 resolved domain을 유지하며 mark items, source labels와 highlight graphics를 비운다. 처음부터 domain을

@@ -50,7 +50,7 @@ const MARK_MATERIALIZATION_POLICIES = Object.freeze({
     op: "rematerializeAreaMark",
     positionEncoding: Object.freeze({ incomplete: "scale", scaleFirst: true }),
     encoding: Object.freeze({
-      sharedChannels: Object.freeze(["color"]),
+      sharedChannels: Object.freeze(["color", "stroke"]),
       skipRematerialization: isIntentionallyEmptyArea
     }),
     scaleApplication: Object.freeze({ default: "defer" })

@@ -44,6 +44,14 @@ const DEFINITIONS = Object.freeze({
       "interpolate", "midpoint", "unknown"
     ])
   }),
+  editStrokeScale: Object.freeze({
+    channel: "stroke",
+    targetOnly: true,
+    options: Object.freeze([
+      "type", "domain", "range", "clamp", "reverse", "palette",
+      "interpolate", "midpoint", "unknown"
+    ])
+  }),
   editSizeScale: Object.freeze({
     channel: "size",
     options: Object.freeze([
@@ -110,10 +118,17 @@ function validateScaleChannel(program, id, channel, operation) {
   if (consumers.length === 0) {
     throw new Error(`${operation} requires a scale bound to the ${channel} channel.`);
   }
-  if (consumers.some(consumer =>
-    normalizePositionScaleChannel(consumer.channel) !== channel
+  const compatible = ["color", "stroke"].includes(channel)
+    ? new Set(["color", "stroke"])
+    : new Set([channel]);
+  if (!consumers.some(consumer =>
+    normalizePositionScaleChannel(consumer.channel) === channel
+  ) || consumers.some(consumer =>
+    !compatible.has(normalizePositionScaleChannel(consumer.channel))
   )) {
-    throw new Error(`Scale "${id}" is not bound exclusively to the ${channel} channel.`);
+    throw new Error(
+      `Scale "${id}" must include a ${channel} channel consumer and no incompatible channel consumers.`
+    );
   }
   return id;
 }
@@ -163,7 +178,14 @@ function createChannelScaleEditor(operation, definition) {
       description: `Edit the scale bound to the ${definition.channel} channel.`
     },
     function (args = {}) {
-      validateOptionObject(args, ["id", "target", ...definition.options], operation);
+      validateOptionObject(
+        args,
+        [...(definition.targetOnly === true ? [] : ["id"]), "target", ...definition.options],
+        operation
+      );
+      if (definition.targetOnly === true && args.target === undefined) {
+        throw new Error(`${operation} requires target.`);
+      }
       if (!definition.options.some(property => Object.hasOwn(args, property))) {
         throw new Error(`${operation} requires at least one editable property.`);
       }

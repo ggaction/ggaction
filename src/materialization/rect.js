@@ -22,7 +22,11 @@ function requiredChannels(layer, mode) {
   const position = mode === RECT_MODES.xSpan ? ["x", "x2"]
     : mode === RECT_MODES.ySpan ? ["y", "y2"]
     : mode === RECT_MODES.ranged ? ["x", "x2", "y", "y2"] : ["x", "y"];
-  return [...position, ...(layer.encoding?.color ? ["color"] : [])];
+  return [
+    ...position,
+    ...(layer.encoding?.color ? ["color"] : []),
+    ...(layer.encoding?.stroke ? ["stroke"] : [])
+  ];
 }
 
 export function resolveRectConsumerValues(layer, dataset, channel) {
@@ -64,12 +68,14 @@ function mappedEncoding(program, layer, dataset, channel) {
   };
 }
 
-function appearance(config, fill) {
+function appearance(config, fill, stroke) {
   return {
     fill,
     opacity: config.opacity,
-    stroke: config.stroke === false ? "transparent" : config.stroke,
-    strokeWidth: config.stroke === false ? 0 : config.strokeWidth
+    stroke: stroke ?? (config.stroke === false ? "transparent" : config.stroke),
+    strokeWidth: stroke === undefined && config.stroke === false
+      ? 0
+      : config.strokeWidth ?? 1
   };
 }
 
@@ -84,6 +90,9 @@ export function resolveRectRows(program, layer, dataset) {
   const color = layer.encoding?.color === undefined
     ? undefined
     : mappedEncoding(program, layer, dataset, "color").values;
+  const stroke = layer.encoding?.stroke === undefined
+    ? undefined
+    : mappedEncoding(program, layer, dataset, "stroke").values;
   const config = program.markConfigs[layer.id] ?? DEFAULT_RECT_MARK;
 
   const rows = rectUsesFields(layer) ? dataset.values : [{}];
@@ -92,7 +101,8 @@ export function resolveRectRows(program, layer, dataset) {
     if (
       (x !== undefined && !Number.isFinite(x.values[index])) ||
       (y !== undefined && !Number.isFinite(y.values[index])) ||
-      typeof fill !== "string"
+      typeof fill !== "string" ||
+      (stroke !== undefined && typeof stroke[index] !== "string")
     ) return [];
 
     let geometry;
@@ -125,7 +135,7 @@ export function resolveRectRows(program, layer, dataset) {
     return [{
       row,
       sourceIndex: index,
-      properties: { ...geometry, ...appearance(config, fill) }
+      properties: { ...geometry, ...appearance(config, fill, stroke?.[index]) }
     }];
   });
 }

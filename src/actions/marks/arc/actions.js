@@ -8,7 +8,10 @@ import {
 import { deriveArcSectors } from "../../../grammar/arcs.js";
 import { buildAnnularSectorCommands } from "../../../grammar/polarPaths.js";
 import { resolvePolarFrame } from "../../../grammar/polar.js";
-import { mapOrdinalValues } from "../../../grammar/scales/index.js";
+import {
+  mapOrdinalValues,
+  readScaleField
+} from "../../../grammar/scales/index.js";
 import { resolveGraphicBounds } from "../../../layout/canvas.js";
 import {
   canMaterializeArc,
@@ -20,6 +23,8 @@ import { DEFAULT_COLORS } from "../../../theme/defaults.js";
 import { resolveMarkGraphicPlacement } from
   "../../../materialization/graphicHierarchy.js";
 import { rematerializeHighlightBaseline } from "../lifecycle.js";
+import { mapScaleConsumerValues } from
+  "../../../materialization/scales/map.js";
 import {
   assertMarkAvailable,
   applyLayeredMarkInheritance,
@@ -163,12 +168,16 @@ const rematerializeArcMark = action(
     const thetaScaleId = layer.encoding.theta.scale;
     const radiusScaleId = layer.encoding?.radius?.scale;
     const colorScaleId = layer.encoding?.color?.scale;
+    const strokeScaleId = layer.encoding?.stroke?.scale;
     let resolved = this.rematerializeScale({ id: thetaScaleId });
     if (radiusScaleId !== undefined) {
       resolved = resolved.rematerializeScale({ id: radiusScaleId });
     }
     if (colorScaleId !== undefined) {
       resolved = resolved.rematerializeScale({ id: colorScaleId });
+    }
+    if (strokeScaleId !== undefined) {
+      resolved = resolved.rematerializeScale({ id: strokeScaleId });
     }
     const config = resolved.markConfigs[id] ?? {};
     const frame = resolvePolarFrame(resolveGraphicBounds(resolved));
@@ -195,12 +204,34 @@ const rematerializeArcMark = action(
           resolved.resolvedScales[colorScaleId].domain,
           resolved.resolvedScales[colorScaleId].range
         );
+    const strokeEncoding = layer.encoding?.stroke;
+    const strokeValues = strokeEncoding === undefined ? undefined : derived.sectors.map(
+      sector => {
+        const values = readScaleField(
+          sector.sourceIndices.map(index => dataset.values[index]),
+          strokeEncoding.field,
+          strokeEncoding.fieldType,
+          { temporalUnit: strokeEncoding.temporalUnit }
+        );
+        if (new Set(values).size !== 1) {
+          throw new Error("Arc stroke requires one value within each sector.");
+        }
+        return values[0];
+      }
+    );
+    const strokes = strokeValues === undefined ? undefined : mapScaleConsumerValues(
+      strokeValues,
+      resolved.resolvedScales[strokeScaleId],
+      "stroke"
+    );
     return editMarkGraphic(resolved, id, {
       length: commands.length,
       commands,
       fill: fills,
       opacity: config.opacity ?? 1,
-      stroke: config.stroke === false ? "transparent" : config.stroke ?? "#ffffff",
+      stroke: strokes ?? (
+        config.stroke === false ? "transparent" : config.stroke ?? "#ffffff"
+      ),
       strokeWidth: config.stroke === false ? 0 : config.strokeWidth ?? 1,
       strokeDash: commands.map(() => [])
     });
@@ -229,6 +260,11 @@ const editArcMark = action(
     });
     if (Object.hasOwn(args, "fill") && layer.encoding?.color !== undefined) {
       throw new Error("editArcMark fill cannot be combined with a color encoding.");
+    }
+    if (Object.hasOwn(args, "stroke") && layer.encoding?.stroke !== undefined) {
+      throw new Error(
+        "editArcMark stroke conflicts with a field encoding; use encodeStroke with value to replace it."
+      );
     }
     if (args.stroke === false && Object.hasOwn(args, "strokeWidth")) {
       throw new Error(

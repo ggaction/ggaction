@@ -126,7 +126,7 @@
   summary: Place categorical and sampled opacity legends on one aligned horizontal reading line.
   actions: createLegend · editLegend
   tasks: relationship guides
-  url: /api/legends/continuous/#continuous-color-and-opacity
+  url: /api/legends/continuous/#continuous-color-stroke-and-opacity
   home_group: essentials
   home_order: 15
 - id: line

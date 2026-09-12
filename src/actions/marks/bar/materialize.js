@@ -97,6 +97,10 @@ export const rematerializeBarMark = action(
     if (colorScaleId !== undefined && args.scales !== false) {
       resolved = resolved.rematerializeScale({ id: colorScaleId });
     }
+    const strokeScaleId = required.layer.encoding?.stroke?.scale;
+    if (strokeScaleId !== undefined && args.scales !== false) {
+      resolved = resolved.rematerializeScale({ id: strokeScaleId });
+    }
 
     if (required.materialization === "aggregate") {
       const offsetChannel = resolveBarOffsetChannel(required.layer);

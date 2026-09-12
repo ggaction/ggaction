@@ -45,11 +45,11 @@ test("owns the implemented semantic and legend vocabularies in one module", () =
   assert.deepEqual(getMarkGraphicTypes("tick"), ["line"]);
   assert.equal(Object.isFrozen(MARK_GRAPHIC_TYPES), true);
   assert.deepEqual(CATEGORICAL_LEGEND_CHANNELS, [
-    "color", "strokeDash", "shape"
+    "color", "stroke", "strokeDash", "shape"
   ]);
   assert.deepEqual(LEGEND_CONFIG_KINDS, [
-    "series", "color", "size", "gradient", "interval", "opacity",
-    "strokeWidth"
+    "series", "color", "stroke", "size", "gradient", "interval",
+    "strokeGradient", "strokeInterval", "opacity", "strokeWidth"
   ]);
   assert.deepEqual(COLOR_LAYOUTS, [
     "stack", "fill", "center", "group", "overlay", "diverging"

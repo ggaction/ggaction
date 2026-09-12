@@ -12,7 +12,7 @@ Exact internal graphic ID spelling is not a public authoring option.
   regression, density, interval/error-band, and box-plot programs whose visible layers share one valid partition anchor.
 - Facet values use source first-appearance order. Explicit `values` is a unique observed-value list whose exact order controls
   child, header and layout order. Omitted `columns` creates one row; a positive integer wraps cells row-major.
-- Omitted scale policies are shared. `x`, `y`, `xOffset`, `color`, `size`, `shape`, `opacity`, and `strokeDash`
+- Omitted scale policies are shared. `x`, `y`, `xOffset`, `color`, `stroke`, `size`, `shape`, `opacity`, and `strokeDash`
   accept `"shared" | "independent"` when the channel is used. Explicit semantic domains override either policy.
   Histogram children share one bin-boundary set only when x is shared.
 - Filter, regression, density, interval, box-summary, and box-outlier dependencies replay topologically from each
@@ -20,7 +20,7 @@ Exact internal graphic ID spelling is not a public authoring option.
   `rebindLayerData` before one deduplicated rematerialization plan runs.
 - `guides.axes` is `"each"` by default. `"outer"` keeps x axes on the bottommost occupied cell in each column and y
   axes on the leftmost occupied cell in each row, including an incomplete final row.
-- `guides.legend` is `false` by default. `"shared"` promotes one compatible categorical, gradient, discretized-color,
+- `guides.legend` is `false` by default. `"shared"` promotes compatible categorical, gradient, discretized-color,
   size, or opacity recipe to a parent-owned concrete guide. Independent or otherwise incompatible child guide
   definitions are rejected before a facet result is returned. Promotion preserves the concrete child legend's
   configured `"left" | "right" | "top" | "bottom"` edge and the horizontal alignment of top/bottom legends. The
@@ -179,7 +179,7 @@ Exact internal graphic ID spelling is not a public authoring option.
 
 ## `editFacetScales`
 
-- Signature: `editFacetScales({ x?, y?, xOffset?, yOffset?, color?, size?, shape?, opacity?, strokeDash? })`.
+- Signature: `editFacetScales({ x?, y?, xOffset?, yOffset?, color?, stroke?, size?, shape?, opacity?, strokeDash? })`.
 - Requires an existing facet composition and at least one used channel whose `"shared" | "independent"` policy
   changes. Omitted channels preserve the complete current policy. Unused channels and conflicting policies on one
   shared scale ID are rejected before child replacement.

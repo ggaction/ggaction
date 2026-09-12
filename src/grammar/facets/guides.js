@@ -3,8 +3,11 @@ import { cloneAndFreeze, isPlainObject } from "../../core/immutable.js";
 const LEGEND_FAMILIES = Object.freeze({
   series: "categorical",
   color: "categorical",
+  stroke: "categorical",
   gradient: "gradient",
   interval: "discretized",
+  strokeGradient: "gradient",
+  strokeInterval: "discretized",
   size: "size",
   opacity: "opacity"
 });

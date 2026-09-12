@@ -19,7 +19,7 @@ function makeEditSymbol(type) {
     { op, description: `Rematerialize categorical legend ${type} symbols.` },
     function (args = {}) {
       noOptions(args, op);
-      const { config } = activeConfig(this);
+      const { config } = activeConfig(this, args.kind);
       const layer = layerFor(config, type);
       const id = symbolGraphic(config, type);
       const dynamicPoint = type === "point" && config.channels.includes("shape");
@@ -52,7 +52,13 @@ function makeEditSymbol(type) {
             value: x1.map(value => value + layer.length)
           })
           .editGraphics({ target: id, property: "y2", value: layout.itemY })
-          .editGraphics({ target: id, property: "stroke", value: appearance.colors })
+          .editGraphics({
+            target: id,
+            property: "stroke",
+            value: config.channels.includes("stroke")
+              ? appearance.strokes
+              : appearance.colors
+          })
           .editGraphics({ target: id, property: "strokeWidth", value: layer.lineWidth })
           .editGraphics({ target: id, property: "strokeDash", value: appearance.dashes });
       }
@@ -67,7 +73,9 @@ function makeEditSymbol(type) {
               y: layout.itemY[index],
               area: Math.PI * layer.size ** 2,
               fill,
-              stroke: layer.stroke,
+              stroke: config.channels.includes("stroke")
+                ? appearance.strokes[index]
+                : layer.stroke,
               strokeWidth: layer.strokeWidth
             });
           });
@@ -86,7 +94,13 @@ function makeEditSymbol(type) {
             property: "fill",
             value: layer.fill ?? appearance.colors
           })
-          .editGraphics({ target: id, property: "stroke", value: layer.stroke })
+          .editGraphics({
+            target: id,
+            property: "stroke",
+            value: config.channels.includes("stroke")
+              ? appearance.strokes
+              : layer.stroke
+          })
           .editGraphics({ target: id, property: "strokeWidth", value: layer.strokeWidth });
       }
       const x = layout.symbolX.map(
@@ -102,7 +116,13 @@ function makeEditSymbol(type) {
         .editGraphics({ target: id, property: "width", value: layer.width })
         .editGraphics({ target: id, property: "height", value: layer.height })
         .editGraphics({ target: id, property: "fill", value: appearance.colors })
-        .editGraphics({ target: id, property: "stroke", value: layer.stroke })
+        .editGraphics({
+          target: id,
+          property: "stroke",
+          value: config.channels.includes("stroke")
+            ? appearance.strokes
+            : layer.stroke
+        })
         .editGraphics({ target: id, property: "strokeWidth", value: layer.strokeWidth });
     }
   );
@@ -115,7 +135,7 @@ function makeCreateSymbol(type, edit) {
     { op, description: `Create categorical legend ${type} symbols.` },
     function (args = {}) {
       noOptions(args, op);
-      const { config } = activeConfig(this);
+      const { config } = activeConfig(this, args.kind);
       layerFor(config, type);
       const id = symbolGraphic(config, type);
       if (this.graphicSpec.objects[id] !== undefined) {
@@ -136,7 +156,7 @@ function makeCreateSymbol(type, edit) {
             ? {}
             : { length: config.domain.length })
         })
-        [edit]();
+        [edit]({ kind: config.kind });
     }
   );
 }
@@ -161,7 +181,7 @@ export const createLegendSymbols = action(
   { op: "createLegendSymbols", description: "Create layered legend symbols." },
   function (args = {}) {
     noOptions(args, "createLegendSymbols");
-    const { config } = activeConfig(this);
+    const { config } = activeConfig(this, args.kind);
     let next = this;
     for (const layer of config.symbol.layers) {
       const operation = {
@@ -169,7 +189,7 @@ export const createLegendSymbols = action(
         point: "createLegendSymbolPoints",
         swatch: "createLegendSymbolSwatches"
       }[layer.type];
-      next = next[operation]();
+      next = next[operation]({ kind: config.kind });
     }
     return next;
   }
@@ -179,7 +199,7 @@ export const rematerializeLegendSymbols = action(
   { op: "rematerializeLegendSymbols", description: "Rematerialize layered legend symbols." },
   function (args = {}) {
     noOptions(args, "rematerializeLegendSymbols");
-    const { config } = activeConfig(this);
+    const { config } = activeConfig(this, args.kind);
     let next = this;
     for (const layer of config.symbol.layers) {
       const operation = {
@@ -187,7 +207,7 @@ export const rematerializeLegendSymbols = action(
         point: "rematerializeLegendSymbolPoints",
         swatch: "rematerializeLegendSymbolSwatches"
       }[layer.type];
-      next = next[operation]();
+      next = next[operation]({ kind: config.kind });
     }
     return next;
   }

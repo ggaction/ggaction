@@ -29,7 +29,7 @@ import { assertEncodingSelectionCompatibility } from "../../materialization/sele
 const OPTIONS = Object.freeze(["target", "channel"]);
 const REMOVABLE_CHANNELS = Object.freeze([
   "x", "y", "x2", "y2", "xOffset", "yOffset", "theta", "radius",
-  "color", "strokeDash", "strokeWidth", "size", "shape", "group",
+  "color", "stroke", "strokeDash", "strokeWidth", "size", "shape", "group",
   "angle", "opacity", "text"
 ]);
 const REMOVE_AXIS = Object.freeze({
@@ -40,6 +40,7 @@ const REMOVE_AXIS = Object.freeze({
 });
 const SPECIALIZED_LEGEND_KIND = Object.freeze({
   color: Object.freeze(["gradient", "interval"]),
+  stroke: Object.freeze(["strokeGradient", "strokeInterval"]),
   size: Object.freeze(["size"]),
   opacity: Object.freeze(["opacity"]),
   strokeWidth: Object.freeze(["strokeWidth"])
@@ -157,7 +158,7 @@ function cleanupPositionGuides(program, removed) {
 }
 
 function reconcileCategoricalLegend(program, target, channels) {
-  const entry = ["series", "color"]
+  const entry = ["series", "color", "stroke"]
     .map(kind => [kind, program.guideConfigs.legend?.[kind]])
     .find(([, config]) =>
       config?.target === target &&
@@ -218,7 +219,7 @@ export const removeEncoding = action(
     }
     const channels = activeCascade(layer, args.channel);
     assertEncodingSelectionCompatibility(this, layer.id, channels);
-    for (const kind of ["series", "color"]) {
+    for (const kind of ["series", "color", "stroke"]) {
       const config = this.guideConfigs.legend?.[kind];
       const order = this.semanticSpec.guides.legend?.[kind]?.order;
       if (config?.target === layer.id && channels.includes(order?.channel) &&

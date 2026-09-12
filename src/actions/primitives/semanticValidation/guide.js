@@ -30,7 +30,7 @@ export function validateGuideSemanticValue(_program, parsed, value) {
     validateParallelAxisTitles(value);
     return;
   }
-  if (["legend.series", "legend.color"].includes(parsed.id) && property === "order") {
+  if (["legend.series", "legend.color", "legend.stroke"].includes(parsed.id) && property === "order") {
     normalizeLegendOrder(value);
     return;
   }

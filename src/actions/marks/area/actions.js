@@ -179,6 +179,7 @@ const rematerializeAreaMark = action(
       );
     }
     const colorEncoding = layer.encoding?.color;
+    const strokeEncoding = layer.encoding?.stroke;
     let resolved = args.scales === false
       ? this
       : this
@@ -187,8 +188,11 @@ const rematerializeAreaMark = action(
     if (args.scales !== false && colorEncoding?.scale !== undefined) {
       resolved = resolved.rematerializeScale({ id: colorEncoding.scale });
     }
+    if (args.scales !== false && strokeEncoding?.scale !== undefined) {
+      resolved = resolved.rematerializeScale({ id: strokeEncoding.scale });
+    }
     const config = this.markConfigs[id];
-    const { paths, fills } = resolveAreaMaterialization({
+    const { paths, fills, strokes } = resolveAreaMaterialization({
       rows: dataset.values,
       layer,
       densityTransform,
@@ -196,7 +200,8 @@ const rematerializeAreaMark = action(
       config
     });
     const existingChildren = resolved.graphicSpec.objects[id].items ?? [];
-    const hasOutline = config.stroke !== undefined || config.strokeFromFill === true;
+    const hasOutline = strokes !== undefined || config.stroke !== undefined ||
+      config.strokeFromFill === true;
     const removesOutline = !hasOutline && existingChildren.some(
       child => child.properties.stroke !== undefined
     );
@@ -210,8 +215,8 @@ const rematerializeAreaMark = action(
       fill: fills,
       opacity: config.opacity,
       ...(hasOutline ? {
-        stroke: config.strokeFromFill === true ? fills : config.stroke,
-        strokeWidth: config.strokeWidth
+        stroke: strokes ?? (config.strokeFromFill === true ? fills : config.stroke),
+        strokeWidth: config.strokeWidth ?? (strokes === undefined ? undefined : 1)
       } : {})
     });
   }
@@ -241,6 +246,11 @@ const editAreaMark = action(
     if (Object.hasOwn(args, "fill") && layer.encoding?.color !== undefined) {
       throw new Error(
         "editAreaMark fill cannot be combined with a color encoding."
+      );
+    }
+    if (Object.hasOwn(args, "stroke") && layer.encoding?.stroke !== undefined) {
+      throw new Error(
+        "editAreaMark stroke conflicts with a field encoding; use encodeStroke with value to replace it."
       );
     }
     if (args.stroke === false && Object.hasOwn(args, "strokeWidth")) {

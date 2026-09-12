@@ -3,7 +3,7 @@
   "packageVersion": "0.0.13",
   "typeSource": "types/program.d.ts",
   "errorPolicy": "An empty errors array means the compact card has no curated error override; consult the canonical route for validation, inference, and recovery behavior.",
-  "count": 266,
+  "count": 267,
   "cards": [
     {
       "schemaVersion": 3,
@@ -7637,8 +7637,8 @@
       "name": "encodeStroke",
       "layer": "user-facing",
       "domain": "encodings",
-      "summary": "Assign a constant non-empty stroke string to a rule mark.",
-      "signature": "encodeStroke(options: { target?: string; value: string }): ChartProgram;",
+      "summary": "Assign a constant non-empty stroke color or map a categorical, quantitative, or temporal field to the outline of a Point, Line, Area, Bar, Rect, Arc, Rule, or Tick.",
+      "signature": "encodeStroke(options: StrokeEncodingOptions): ChartProgram;",
       "intents": [
         "encode stroke",
         "encode",
@@ -7651,19 +7651,24 @@
       "lifecycle": "Assignment",
       "resources": {
         "prerequisites": [
-          "target mark"
+          "target mark",
+          "field in the target dataset"
         ],
         "owns": [
           "stroke color assignment"
         ],
         "idOptions": [
-          "target"
+          "target",
+          "scale"
         ]
       },
       "authoringRoles": [
         "H2"
       ],
-      "wraps": [],
+      "wraps": [
+        "editSemantic",
+        "createScale"
+      ],
       "editableVia": [
         "removeEncoding"
       ],
@@ -7672,17 +7677,27 @@
           "default"
         ]
       },
-      "units": [],
+      "units": [
+        {
+          "path": "temporalUnit",
+          "unit": "temporal-input"
+        }
+      ],
       "inference": [
         {
           "input": "target",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "scale",
           "strategy": "explicit-current-unique-or-error"
         }
       ],
       "completionRequirements": {
         "state": "contextual",
         "requires": [
-          "target mark"
+          "target mark",
+          "field in the target dataset"
         ],
         "allowsEmpty": false
       },
@@ -7694,12 +7709,32 @@
         },
         {
           "name": "value",
-          "required": true,
-          "type": "string"
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "field",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "fieldType",
+          "required": false,
+          "type": "\"nominal\" | \"ordinal\" | \"quantitative\" | \"temporal\" | undefined"
+        },
+        {
+          "name": "temporalUnit",
+          "required": false,
+          "type": "TemporalInputUnit | undefined"
+        },
+        {
+          "name": "scale",
+          "required": false,
+          "type": "DiscretizedColorScaleOptions | CategoricalColorScaleOptions | ContinuousColorScaleOptions | (Omit<...> & { ...; }) | undefined"
         }
       ],
       "callPatterns": [
-        "encodeStroke({ value, target? })"
+        "encodeStroke({ target?, scale?, value?, field?, fieldType?, temporalUnit? })"
       ],
       "snippet": "program.encodeStroke({ value: \"#222222\" })",
       "errors": [],
@@ -9725,7 +9760,7 @@
       "layer": "user-facing",
       "domain": "encodings",
       "summary": "Remove one active semantic encoding, its generated companions, matching guide blocks, and stale concrete values.",
-      "signature": "removeEncoding(options: { target?: string; channel: | \"x\" | \"y\" | \"x2\" | \"y2\" | \"xOffset\" | \"yOffset\" | \"theta\" | \"radius\" | \"color\" | \"strokeDash\" | \"strokeWidth\" | \"size\" | \"shape\" | \"angle\" | \"group\" | \"opacity\" | \"text\"; }): ChartProgram;",
+      "signature": "removeEncoding(options: { target?: string; channel: | \"x\" | \"y\" | \"x2\" | \"y2\" | \"xOffset\" | \"yOffset\" | \"theta\" | \"radius\" | \"color\" | \"stroke\" | \"strokeDash\" | \"strokeWidth\" | \"size\" | \"shape\" | \"angle\" | \"group\" | \"opacity\" | \"text\"; }): ChartProgram;",
       "intents": [
         "remove encoding",
         "remove",
@@ -9781,7 +9816,7 @@
         {
           "name": "channel",
           "required": true,
-          "type": "\"angle\" | \"color\" | \"group\" | \"opacity\" | \"radius\" | \"shape\" | \"size\" | \"strokeDash\" | \"strokeWidth\" | \"text\" | \"theta\" | \"x\" | \"x2\" | \"xOffset\" | \"y\" | \"y2\" | \"yOffset\""
+          "type": "\"angle\" | \"color\" | \"group\" | \"opacity\" | \"radius\" | \"shape\" | \"size\" | \"stroke\" | \"strokeDash\" | \"strokeWidth\" | \"text\" | \"theta\" | \"x\" | \"x2\" | \"xOffset\" | \"y\" | \"y2\" | \"yOffset\""
         }
       ],
       "callPatterns": [
@@ -16697,7 +16732,7 @@
         {
           "name": "channels",
           "required": false,
-          "type": "readonly (\"color\" | \"opacity\" | \"shape\" | \"size\" | \"strokeDash\" | \"strokeWidth\")[] | undefined"
+          "type": "readonly (\"color\" | \"opacity\" | \"shape\" | \"size\" | \"stroke\" | \"strokeDash\" | \"strokeWidth\")[] | undefined"
         },
         {
           "name": "position",
@@ -16851,7 +16886,7 @@
         {
           "name": "channels",
           "required": false,
-          "type": "readonly (\"color\" | \"opacity\" | \"shape\" | \"size\" | \"strokeDash\" | \"strokeWidth\")[] | undefined"
+          "type": "readonly (\"color\" | \"opacity\" | \"shape\" | \"size\" | \"stroke\" | \"strokeDash\" | \"strokeWidth\")[] | undefined"
         },
         {
           "name": "title",
@@ -17582,7 +17617,7 @@
         {
           "name": "channels",
           "required": false,
-          "type": "readonly (\"color\" | \"opacity\" | \"shape\" | \"size\" | \"strokeDash\" | \"strokeWidth\")[] | undefined"
+          "type": "readonly (\"color\" | \"opacity\" | \"shape\" | \"size\" | \"stroke\" | \"strokeDash\" | \"strokeWidth\")[] | undefined"
         }
       ],
       "callPatterns": [
@@ -19521,6 +19556,108 @@
     },
     {
       "schemaVersion": 3,
+      "name": "editStrokeScale",
+      "layer": "user-facing",
+      "domain": "core",
+      "summary": "Edits stroke color scale, including settings for outline color mapping.",
+      "signature": "editStrokeScale(options: EditStrokeScaleOptions): ChartProgram;",
+      "intents": [
+        "edit stroke scale",
+        "edit",
+        "change",
+        "chart setup",
+        "data and scales",
+        "stroke color scale",
+        "outline color mapping"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing stroke color scale"
+        ],
+        "owns": [],
+        "idOptions": [
+          "target"
+        ]
+      },
+      "authoringRoles": [
+        "H2"
+      ],
+      "wraps": [
+        "editScale"
+      ],
+      "editableVia": [
+        "editStrokeScale",
+        "editScale"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit"
+        },
+        {
+          "input": "domain",
+          "strategy": "documented-auto"
+        },
+        {
+          "input": "range",
+          "strategy": "documented-auto"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "existing stroke color scale"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "target",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "palette",
+          "required": false,
+          "type": "\"accent\" | \"bluegreen\" | \"blueorange\" | \"bluepurple\" | \"blues\" | \"brownbluegreen\" | \"browns\" | \"category10\" | \"category20\" | \"category20b\" | \"category20c\" | \"cividis\" | \"dark2\" | ... 60 more ... | undefined"
+        },
+        {
+          "name": "type",
+          "required": false,
+          "type": "\"ordinal\" | \"quantile\" | \"quantize\" | \"sequential\" | \"threshold\" | undefined"
+        },
+        {
+          "name": "domain",
+          "required": false,
+          "type": "\"auto\" | readonly unknown[] | readonly number[] | readonly [unknown, unknown] | readonly [number, number] | undefined"
+        },
+        {
+          "name": "range",
+          "required": false,
+          "type": "\"auto\" | readonly string[] | { readonly palette: Palette; } | readonly [string, string, ...string[]] | undefined"
+        },
+        {
+          "name": "unknown",
+          "required": false,
+          "type": "string | undefined"
+        }
+      ],
+      "callPatterns": [
+        "editStrokeScale({ target, palette?, type?, domain?, range?, unknown? })"
+      ],
+      "snippet": "program.editStrokeScale({ target: \"points\", palette: \"set1\" })",
+      "errors": [],
+      "route": "/reference/actions/advanced/#focused-channel-scale-editors"
+    },
+    {
+      "schemaVersion": 3,
       "name": "editSizeScale",
       "layer": "user-facing",
       "domain": "core",
@@ -20776,7 +20913,7 @@
         {
           "name": "channel",
           "required": false,
-          "type": "\"color\" | \"group\" | \"opacity\" | \"radius\" | \"shape\" | \"size\" | \"strokeDash\" | \"strokeWidth\" | \"theta\" | \"x\" | \"x2\" | \"xOffset\" | \"y\" | \"y2\" | \"yOffset\" | undefined"
+          "type": "\"color\" | \"group\" | \"opacity\" | \"radius\" | \"shape\" | \"size\" | \"stroke\" | \"strokeDash\" | \"strokeWidth\" | \"theta\" | \"x\" | \"x2\" | \"xOffset\" | \"y\" | \"y2\" | \"yOffset\" | undefined"
         },
         {
           "name": "property",
@@ -20990,7 +21127,7 @@
         {
           "name": "channel",
           "required": false,
-          "type": "\"color\" | \"group\" | \"opacity\" | \"radius\" | \"shape\" | \"size\" | \"strokeDash\" | \"strokeWidth\" | \"theta\" | \"x\" | \"x2\" | \"xOffset\" | \"y\" | \"y2\" | \"yOffset\" | undefined"
+          "type": "\"color\" | \"group\" | \"opacity\" | \"radius\" | \"shape\" | \"size\" | \"stroke\" | \"strokeDash\" | \"strokeWidth\" | \"theta\" | \"x\" | \"x2\" | \"xOffset\" | \"y\" | \"y2\" | \"yOffset\" | undefined"
         },
         {
           "name": "property",
@@ -21132,7 +21269,7 @@
         {
           "name": "channel",
           "required": false,
-          "type": "\"color\" | \"group\" | \"opacity\" | \"radius\" | \"shape\" | \"size\" | \"strokeDash\" | \"strokeWidth\" | \"theta\" | \"x\" | \"x2\" | \"xOffset\" | \"y\" | \"y2\" | \"yOffset\" | undefined"
+          "type": "\"color\" | \"group\" | \"opacity\" | \"radius\" | \"shape\" | \"size\" | \"stroke\" | \"strokeDash\" | \"strokeWidth\" | \"theta\" | \"x\" | \"x2\" | \"xOffset\" | \"y\" | \"y2\" | \"yOffset\" | undefined"
         },
         {
           "name": "property",
@@ -25731,6 +25868,11 @@
           "type": "FacetScaleResolution | undefined"
         },
         {
+          "name": "stroke",
+          "required": false,
+          "type": "FacetScaleResolution | undefined"
+        },
+        {
           "name": "size",
           "required": false,
           "type": "FacetScaleResolution | undefined"
@@ -25752,7 +25894,7 @@
         }
       ],
       "callPatterns": [
-        "editFacetScales({ x?, y?, xOffset?, yOffset?, color?, size?, shape?, opacity? })"
+        "editFacetScales({ x?, y?, xOffset?, yOffset?, color?, stroke?, size?, shape? })"
       ],
       "snippet": "program.editFacetScales({ x: \"shared\" })",
       "errors": [],

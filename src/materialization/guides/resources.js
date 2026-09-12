@@ -22,6 +22,14 @@ const LEGEND_RESOURCE_POLICIES = Object.freeze({
       component => `colorLegend${component}`
     ))
   }),
+  stroke: Object.freeze({
+    semanticKind: "stroke",
+    family: "categorical",
+    rematerializeOp: undefined,
+    graphicIds: Object.freeze(CATEGORICAL_COMPONENTS.map(
+      component => `strokeLegend${component}`
+    ))
+  }),
   size: Object.freeze({
     semanticKind: "size",
     family: "size",
@@ -46,6 +54,24 @@ const LEGEND_RESOURCE_POLICIES = Object.freeze({
     graphicIds: Object.freeze([
       "colorLegendBackground", "colorLegendSymbols", "colorLegendLabels",
       "colorLegendTitle"
+    ])
+  }),
+  strokeGradient: Object.freeze({
+    semanticKind: "stroke",
+    family: "continuous",
+    rematerializeOp: "rematerializeStrokeGradientLegend",
+    graphicIds: Object.freeze([
+      "strokeGradientBackground", "strokeGradientStrips", "strokeGradientTicks",
+      "strokeGradientLabels", "strokeGradientTitle"
+    ])
+  }),
+  strokeInterval: Object.freeze({
+    semanticKind: "stroke",
+    family: "interval",
+    rematerializeOp: "rematerializeStrokeIntervalLegend",
+    graphicIds: Object.freeze([
+      "strokeIntervalBackground", "strokeIntervalSymbols",
+      "strokeIntervalLabels", "strokeIntervalTitle"
     ])
   }),
   opacity: Object.freeze({

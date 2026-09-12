@@ -11,10 +11,10 @@ import {
 
 export function mapScaleConsumerValues(values, resolvedScale, channel) {
   if (channel === "size") return mapSizeValues(values, resolvedScale);
-  if (channel === "color" && isDiscretizedColorScaleType(resolvedScale.type)) {
+  if (["color", "stroke"].includes(channel) && isDiscretizedColorScaleType(resolvedScale.type)) {
     return mapDiscretizedColors(values, resolvedScale);
   }
-  if (channel === "color" && isContinuousColorScaleType(resolvedScale.type)) {
+  if (["color", "stroke"].includes(channel) && isContinuousColorScaleType(resolvedScale.type)) {
     return mapSequentialColors(
       values,
       resolvedScale.domain,
@@ -30,7 +30,7 @@ export function mapScaleConsumerValues(values, resolvedScale, channel) {
     );
   }
   if (
-    ["color", "strokeDash", "shape"].includes(channel) &&
+    ["color", "stroke", "strokeDash", "shape"].includes(channel) &&
     isOrdinalScaleType(resolvedScale.type)
   ) {
     return mapOrdinalValues(values, resolvedScale.domain, resolvedScale.range, {

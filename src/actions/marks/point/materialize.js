@@ -338,6 +338,7 @@ export const rematerializePointMark = action(
 
     const positions = resolvePointPositions(resolved, layer, dataset);
     const mappedFill = resolveRowEncodingValues(resolved, layer, dataset, "color");
+    const mappedStroke = resolveRowEncodingValues(resolved, layer, dataset, "stroke");
     const area = resolveRowEncodingValues(resolved, layer, dataset, "size");
     const encodedShape = resolveRowEncodingValues(resolved, layer, dataset, "shape");
     const encodedOpacity = resolveRowEncodingValues(
@@ -426,10 +427,12 @@ export const rematerializePointMark = action(
           y: centerY,
           area: resolvedArea,
           fill: color,
-          ...(typeof config.stroke === "string" ? { stroke: config.stroke } : {}),
-          ...(config.strokeWidth === undefined
-            ? {}
-            : { strokeWidth: config.strokeWidth }),
+          ...(typeof (mappedStroke?.[index] ?? config.stroke) === "string"
+            ? { stroke: mappedStroke?.[index] ?? config.stroke }
+            : {}),
+          ...((mappedStroke !== undefined || config.strokeWidth !== undefined)
+            ? { strokeWidth: config.strokeWidth ?? 1 }
+            : {}),
           opacity,
           angle
         });
@@ -503,15 +506,31 @@ export const rematerializePointMark = action(
       next = next
         .editGraphics({ target: id, property: "width", value: sides })
         .editGraphics({ target: id, property: "height", value: sides })
-        .editGraphics({ target: id, property: "stroke", value: fill ?? DEFAULT_POINT_FILL })
-        .editGraphics({ target: id, property: "strokeWidth", value: 0 });
+        .editGraphics({
+          target: id,
+          property: "stroke",
+          value: mappedStroke ?? fill ?? DEFAULT_POINT_FILL
+        })
+        .editGraphics({
+          target: id,
+          property: "strokeWidth",
+          value: mappedStroke === undefined ? 0 : config.strokeWidth ?? 1
+        });
     }
     if (config.opacity !== undefined) {
       next = next.editGraphics({ target: id, property: "opacity", value: config.opacity });
     } else if (encodedOpacity !== undefined) {
       next = next.editGraphics({ target: id, property: "opacity", value: encodedOpacity });
     }
-    if (config.stroke === false) {
+    if (mappedStroke !== undefined) {
+      next = next
+        .editGraphics({ target: id, property: "stroke", value: mappedStroke })
+        .editGraphics({
+          target: id,
+          property: "strokeWidth",
+          value: config.strokeWidth ?? 1
+        });
+    } else if (config.stroke === false) {
       next = next
         .editGraphics({ target: id, property: "stroke", value: "transparent" })
         .editGraphics({ target: id, property: "strokeWidth", value: 0 });

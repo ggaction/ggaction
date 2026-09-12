@@ -120,7 +120,7 @@ type DashScale = {
   range?: "auto" | readonly DashPattern[];
 };
 type DatasetProperty = "source" | "transform" | "values";
-type ScaledEncodingChannel = "x" | "y" | "y2" | "xOffset" | "theta" | "radius" | "color" | "strokeDash" | "size" | "shape" | "opacity";
+type ScaledEncodingChannel = "x" | "y" | "y2" | "xOffset" | "theta" | "radius" | "color" | "stroke" | "strokeDash" | "size" | "shape" | "opacity";
 type LayerProperty =
   | "data" | "coordinate" | "transform" | "mark.type" | "mark.missing" | "layout.mode"
   | `encoding.${ScaledEncodingChannel}.${"field" | "datum" | "fieldType" | "scale"}`

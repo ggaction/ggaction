@@ -6,6 +6,9 @@ All notable changes to `ggaction` are recorded in this file.
 
 ### Added
 
+- Added independent field-driven stroke color for Point, Line, Area, Bar, Rect,
+  Arc, Rule, and Tick marks, including categorical and continuous scales,
+  focused scale editing, legends, selections, facets, and renderer parity.
 - Added logarithmic, square-root, power, quantize, quantile, and threshold
   point-size scales with equal-area geometry, focused scale editing, complete
   interval legends, source replay, strict types, and installed-package support.

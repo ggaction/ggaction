@@ -136,7 +136,7 @@ const plainPoints = encodedPoints
 ```
 
 The closed channel list is `x`, `y`, `x2`, `y2`, `xOffset`, `yOffset`,
-`theta`, `radius`, `color`, `strokeDash`, `strokeWidth`, `size`, `shape`,
+`theta`, `radius`, `color`, `stroke`, `strokeDash`, `strokeWidth`, `size`, `shape`,
 `angle`, `group`, `opacity`, and `text`. Primary x/y removal also clears its same-mark
 secondary endpoint and offset. Grouped-bar color removal clears its generated
 offset, and matching legends, axes, or grids are removed only when they no

@@ -2,8 +2,27 @@ import { BAR_GRAINS, resolveBarChannels, resolveBarGrain } from "../bars/policy.
 import { validateAggregate, validateAggregateFieldType } from "../aggregate.js";
 import { isDiscretizedColorScaleType } from "./types.js";
 
-export function validateContinuousColorConsumer(layer, encoding, scale, { inferAggregate = false } = {}) {
+export function validateContinuousColorConsumer(layer, encoding, scale, {
+  inferAggregate = false,
+  channel = "color"
+} = {}) {
   const kind = layer.mark?.type;
+  if (channel === "stroke") {
+    if (!["point", "line", "area", "bar", "rect", "arc", "rule", "tick"].includes(kind)) {
+      throw new Error("Continuous stroke requires a supported graphical mark consumer.");
+    }
+    if (!['quantitative', 'temporal'].includes(encoding.fieldType) ||
+      (isDiscretizedColorScaleType(scale.type) && encoding.fieldType !== "quantitative")) {
+      throw new Error(`Scale type "${scale.type}" has an incompatible stroke field type.`);
+    }
+    if (encoding.aggregate !== undefined) {
+      throw new Error("Continuous stroke does not support aggregate.");
+    }
+    if (Object.hasOwn(scale, "unknown") && kind !== "point") {
+      throw new Error("Continuous stroke scale unknown currently requires a row-owned point mark.");
+    }
+    return undefined;
+  }
   if (!["point", "bar", "rect"].includes(kind)) {
     throw new Error("Continuous color requires a Point, aggregate Bar, or Rect consumer.");
   }

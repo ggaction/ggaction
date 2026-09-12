@@ -58,12 +58,14 @@ export function deriveBarAggregates(rows, layer) {
       category: categoryValue,
       ...(identity === undefined ? {} : { series: seriesValue }),
       ...(colorValues === undefined ? {} : { color: colorValue }),
-      rows: []
+      rows: [],
+      sourceIndices: []
     };
     if (identity !== undefined && colorValues !== undefined && group.color !== colorValue) {
       throw new Error("Bar color requires one categorical value within each aggregate cell.");
     }
     group.rows.push(rows[index]);
+    group.sourceIndices.push(index);
     groups.set(key, group);
   }
 
@@ -83,6 +85,7 @@ export function deriveBarAggregates(rows, layer) {
       y: channels.category === "y" ? group.category : value,
       ...(color === undefined ? {} : { color: aggregateColor }),
       ...(identity === undefined ? {} : { series: group.series }),
+      sourceIndices: group.sourceIndices,
       count: group.rows.length
     }];
   });

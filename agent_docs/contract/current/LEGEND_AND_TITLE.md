@@ -5,7 +5,7 @@
 
 ## Shared guide collision contract
 
-- Color/series/gradient/interval/size/opacity/strokeWidth의 네 edge에 같은 검증을 적용한다. 같은 target의 categorical+size는 하나의 group이며 retained border도 bounds에 포함한다.
+- Color/stroke/series/gradient/interval/size/opacity/strokeWidth의 네 edge에 같은 검증을 적용한다. 같은 target의 categorical+size는 하나의 group이며 retained border도 bounds에 포함한다.
 - Axis line/ticks/labels/title는 각자의 position과 실제 stroke·rotation·collection bounds를 사용한다. Axis 내부 component 제약은 axis owner가 별도로 담당한다.
 - 서로 독립적인 legend group과 title↔axis, title↔legend, axis↔legend의 strict intersection은 오류다. 경계가 닿는 것만으로는 오류가 아니다.
 - Create/edit와 Canvas/scale/dependent replay는 해당 aggregate의 최종 guide geometry를 검증한다. 실패 시 이전 program의 semantic/graphic/config/context/trace는 변하지 않는다.
@@ -21,7 +21,7 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 type LegendPosition = "right" | "bottom" | "top" | "left";
 type LegendAlign = "left" | "center" | "right";
 type LegendDirection = "horizontal" | "vertical";
-type LegendChannel = "color" | "strokeDash" | "strokeWidth" | "shape" | "size" | "opacity";
+type LegendChannel = "color" | "stroke" | "strokeDash" | "strokeWidth" | "shape" | "size" | "opacity";
 type LegendSymbolLayer =
   | { type: "line"; length?: NonNegativeFinite; lineWidth?: NonNegativeFinite }
   | { type: "point"; shape?: "circle"; size?: NonNegativeFinite; fill?: NonEmptyString; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite }
@@ -53,7 +53,7 @@ type TitleWrap = "word" | "character";
   먼저 `editLegend({ order: "scale" })`로 policy를 제거할 수 있다. Continuous/interval/size/stroke-width/opacity는 order를 거부한다.
   Complete chart의 nested guide 선언은 가능한 position 역할로 좁힌다: Cartesian categorical 위치는 x/y, Pie·measured radial은 theta이다. 선언된 위치가 quantitative/temporal뿐인 Line·Area·Density와 dimension 축을 사용하는 Parallel은 scale 또는 explicit values만 노출한다. 일반 createLegend/editLegend의 lower 계약은 그대로다.
 - `channels`: unique compatible subset of
-  `"color" | "strokeDash" | "strokeWidth" | "shape" | "size" | "opacity"`. 생략하면
+  `"color" | "stroke" | "strokeDash" | "strokeWidth" | "shape" | "size" | "opacity"`. 생략하면
   target의 compatible channels를 추론한다. Sequential color는 gradient, field-driven opacity는 sampled
   point block을 선택한다. Opacity는 단독 channel만 지원한다.
 - Explicit channels는 생성할 content의 정확한 집합이다. Point의 `["color","shape","size"]`,
@@ -74,7 +74,7 @@ type TitleWrap = "word" | "character";
   `count`를 명시하면 오류다. Reverse는 label/domain 순서를 유지하고 area assignment만 뒤집는다.
 - Explicit `["strokeWidth"]` 또는 유일한 stroke-width-only line/rule은 standalone stroke-width legend를 선택한다.
   Full에서 encoded quantitative scale을 사용하며 count와 네 방향 edge/grid/layout, text styles, border를 지원한다. Basic에는 strokeWidth encoding/family가 없으며 이 변경에서 추가하지 않는다.
-- `position`: categorical과 continuous color/opacity는 left를 포함한 네 방향을 지원한다.
+- `position`: categorical과 continuous color/stroke/opacity는 left를 포함한 네 방향을 지원한다.
   combined point-size legend도 네 방향 edge position을 사용한다. chart-independent default는 `"right"`다.
 - `align`: `"left" | "center" | "right"`, 기본 center. right와 left side position은
   모든 family에서 center만 허용한다. Gradient/opacity도 non-center side alignment를 거절한다. Horizontal non-center legend를 side로 옮길 때는 같은 edit에서 align center를 명시해야 한다.
@@ -107,11 +107,11 @@ type TitleWrap = "word" | "character";
 - Categorical color/series의 hidden title은 grid height, inline prefix/gap과 border/fit에 포함하지 않는다. Hidden titleStyle/text/titlePosition 변경은 visible content geometry를 바꾸지 않는다. Legacy-bottom의 sample anchors는 고정하며 hidden border는 실제 item top에서 시작한다. Title 복원은 저장한 style을 사용하고 visible text가 Canvas를 넘으면 실패한다. Evidence: `test/unit/actions/guides/hidden-legend-bounds.test.js`, `test/contracts/hidden-categorical-layout.test.js`.
 - Opacity symbol은 단일 `{ type?: "point", radius?: number, fill?: string, stroke?: string, strokeWidth?: number }`다. Radius default7은 positive finite, fill/stroke는 non-empty string, strokeWidth는 non-negative finite다. LegendOptions와 focused symbol editor의 TypeScript 선언도 같은 recipe를 허용하며 createGuides.legend로 전달된다. Evidence: `test/contracts/opacity-legend-types.test.js`와 installed package TypeScript consumer.
 - Opacity sample의 occupied radius는 radius+strokeWidth/2다. Labels.offset은 sample 외곽선과 label 사이 실제 거리이며 side의 -2px 보정은 없다. Side minimum pitch는 max(itemGap,occupied diameter,label font height), 첫 itemY는 plot.y+46 이상이면서 visible title 아래 gap12를 확보한다. Horizontal top-title sample center pitch는 max(56,itemGap*2,occupied diameter+itemGap,max label width+itemGap)이며 label은 sample bottom 뒤 offset, title은 sample top 앞12에 배치한다. Inline은 sample occupied diameter와 label width를 포함한 item 사이 itemGap을 둔다. Hidden title은 이 간격에서 제외한다. Shared side lane은 mirrored label의 center 거리를 절대값으로 보존해 큰 left opacity가 label column을 침범하지 않는다. Evidence: `test/unit/actions/guides/opacity-legend-spacing.test.js`, `test/contracts/opacity-legend-spacing.test.js`.
-- Gradient/opacity/interval의 hidden title은 occupied bounds와 background에 포함하지 않는다. Inline opacity는 숨긴 title의 width/gap도 제거한다. Long hidden title을 저장한 채 작은 Canvas로 resize할 수 있지만 보이는 content 또는 title 복원이 넘치면 실패한다.
+- Gradient/opacity/interval의 hidden title은 occupied bounds와 background에 포함하지 않는다. 이 규칙은 color와 stroke gradient/interval에 동일하다. Inline opacity는 숨긴 title의 width/gap도 제거한다. Long hidden title을 저장한 채 작은 Canvas로 resize할 수 있지만 보이는 content 또는 title 복원이 넘치면 실패한다.
 - Sequential midpoint가 있으면 gradient strip은 mark와 같은 mapper로 value를 색에 대응한다. Tick 위치는 value-linear이며 midpoint를 base count samples에 추가·deduplicate한다. Sample을 palette의 균등 위치로 오해하지 않는다. Evidence: `test/charts/color-midpoint/`, `test/unit/actions/scales/midpoint.test.js`.
 - Full의 scale family 전환은 compatible 네 edge gradient↔interval을 같은 transaction으로 재생성한다. 보존·오류·default 정책은 CORE editScale이 소유한다. Explicit hidden/auto title와 이후 focused editor도 정상 적용된다. Evidence: `test/unit/actions/scales/color-transitions.test.js`.
-- `gradient`: sequential color 전용 `{ length?, thickness? }`, defaults `120`과 `12`.
-- Discretized quantitative Point/aggregate Bar/Rect color는 Full과 Basic에서 기본 right/vertical interval swatches를 추론하고 `offset`, `itemGap`,
+- `gradient`: sequential color 또는 stroke 전용 `{ length?, thickness? }`, defaults `120`과 `12`.
+- Discretized quantitative Point/aggregate Bar/Rect color와 지원 stroke mark는 기본 right/vertical interval swatches를 추론하고 `offset`, `itemGap`,
   swatch width/height/stroke, label/title style을 concrete graphics로 materialize한다.
 - Effect: categorical semantics에는 scale/channel/title와 선택적 order policy를 저장하고 placement, recipe, fonts, border는
   graphical config와 concrete collection으로 만든다. resolved appearance domain에 order policy를 적용한 순서를 item order로 사용하며
@@ -157,7 +157,7 @@ type TitleWrap = "word" | "character";
   - ✅ Covered: inferred/explicit line, bar, area and compatible point; sequential point/aggregate-bar gradient;
     ambiguity/invalid target.
 - `channels`
-  - ✅ Covered: color, strokeDash, color+strokeDash, point color-only swatch, point color+shape,
+  - ✅ Covered: color, stroke, strokeDash, color+strokeDash, independent color+stroke blocks, point color-only swatch, point color+shape,
     duplicates/incompatible combinations.
   - ✅ Covered: explicit/inferred standalone point size, createGuides inference, multiple-target ambiguity and
     unchanged composite point-series+size dispatch.
@@ -377,8 +377,8 @@ config normalization과 rematerialization을 공유한다. Evidence:
 - Omitted `channels`는 one stable mark target에 속한 모든 categorical, size, continuous color, interval, opacity와
   stroke-width block을 complete semantic/graphic/config resource 단위로 제거하는 기존 behavior다.
 - Explicit `channels`는 unique non-empty subset of
-  `"color" | "strokeDash" | "strokeWidth" | "shape" | "size" | "opacity"`이며 matching content만
-  제거한다. Combined categorical block의 일부 color/shape/strokeDash만 요청하면 남은 채널로 같은 범례를 재작성한다.
+  `"color" | "stroke" | "strokeDash" | "strokeWidth" | "shape" | "size" | "opacity"`이며 matching content만
+  제거한다. Combined categorical block의 일부 color/shape/strokeDash만 요청하면 남은 채널로 같은 범례를 재작성한다. 독립 stroke block은 stroke 요청으로만 제거한다.
   마지막 채널을 제거하면 block을 삭제한다. Missing block, duplicate/unknown channel과 empty selection도 오류다.
 - Partial categorical 재작성은 title visibility/custom 또는 inferred title, labels/titleStyle, layout/border/order와 explicit recipe를 보존한다.
   Auto recipe는 남은 채널로 재추론한다. Category-to-color/shape/dash scale 배정은 변경하지 않는다.

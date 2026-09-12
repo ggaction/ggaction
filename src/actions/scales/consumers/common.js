@@ -43,7 +43,7 @@ export function requireConsumerDataset(program, consumer) {
 }
 
 export function isDirectCategoricalConsumer(consumer) {
-  return ["color", "strokeDash", "xOffset", "yOffset", "shape"].includes(
+  return ["color", "stroke", "strokeDash", "xOffset", "yOffset", "shape"].includes(
     consumer.channel
   ) && ["nominal", "ordinal"].includes(consumer.encoding.fieldType);
 }

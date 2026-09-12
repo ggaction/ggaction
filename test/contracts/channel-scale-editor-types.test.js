@@ -15,19 +15,22 @@ test("declares channel-specific scale editors with channel-appropriate options",
     await writeFile(file, `
 import type { ChartProgram } from ${JSON.stringify(path.join(root, "types/program.js"))};
 import type { BasicChartProgram } from ${JSON.stringify(path.join(root, "types/basic.js"))};
-import type { EditColorScaleOptions, EditRScaleOptions } from ${JSON.stringify(path.join(root, "types/index.js"))};
+import type { EditColorScaleOptions, EditRScaleOptions, EditStrokeScaleOptions } from ${JSON.stringify(path.join(root, "types/index.js"))};
 declare const p: ChartProgram;
 declare const basic: BasicChartProgram;
 const colorOptions: EditColorScaleOptions = { palette: "set2" };
 const radiusOptions: EditRScaleOptions = { domain: [0, 10] };
+const strokeOptions: EditStrokeScaleOptions = { target: "points", palette: "set2" };
 p.editColorScale(colorOptions);
 p.editRScale(radiusOptions);
+p.editStrokeScale(strokeOptions);
 p.editXScale({ target: "points", type: "log", domain: [1, 100], base: 10 });
 p.editYScale({ id: "y", type: "band", paddingInner: 0.2 });
 p.editThetaScale({ reverse: true, range: [0, 270] });
 p.editRScale({ domain: [0, 10], radialMapping: "area" });
 p.editColorScale({ range: ["#111", "#eee"] });
 p.editColorScale({ type: "sequential", palette: "viridis", midpoint: "auto" });
+p.editStrokeScale({ target: "points", type: "sequential", palette: "viridis" });
 p.editSizeScale({ range: [20, 200], unknown: 20 });
 p.editSizeScale({ reverse: true });
 p.editSizeScale({ type: "log", domain: [1, 100], range: "auto", base: 10 });
@@ -43,6 +46,10 @@ p.editStrokeDashScale({ range: [[], [4, 2]] });
 basic.editColorScale({ range: ["red", "blue"] });
 // @ts-expect-error color scales do not support nice
 p.editColorScale({ nice: true });
+// @ts-expect-error stroke scale editing requires a mark target
+p.editStrokeScale({ range: ["red", "blue"] });
+// @ts-expect-error stroke scale editing resolves through target, not raw scale id
+p.editStrokeScale({ target: "points", id: "stroke", range: ["red", "blue"] });
 // @ts-expect-error quantized size scales do not support clamp
 p.editSizeScale({ type: "quantize", domain: [0, 10], range: [20, 80], clamp: true });
 // @ts-expect-error size scales do not support symlog

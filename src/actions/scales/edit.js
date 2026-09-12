@@ -1,5 +1,8 @@
 import { withGuideLayoutValidation } from "../../materialization/guides/layout.js";
-import { planColorLegendTransition, applyColorLegendTransition } from "../guides/legends/transition.js";
+import {
+  applyColorLegendTransition,
+  planColorLegendTransitions
+} from "../guides/legends/transition.js";
 import { action } from "../../core/action.js";
 import { validateUserId } from "../../core/identifiers.js";
 import { validateOptionObject } from "../../core/validation.js";
@@ -77,10 +80,15 @@ function applyScaleEdit(program, {
   channel,
   consumers,
   definition,
-  legendTransition
+  legendTransitions
 }) {
-  let next = legendTransition === undefined ? program
-    : program.removeLegend({ target: legendTransition.args.target, channels: ["color"] });
+  let next = program;
+  for (const transition of legendTransitions) {
+    next = next.removeLegend({
+      target: transition.args.target,
+      channels: [transition.channel]
+    });
+  }
   for (const property of EDITABLE) {
     if (
       Object.hasOwn(scale, property) &&
@@ -113,7 +121,10 @@ function applyScaleEdit(program, {
       ]);
     }
   }
-  return legendTransition === undefined ? next : applyColorLegendTransition(next, legendTransition);
+  for (const transition of legendTransitions) {
+    next = applyColorLegendTransition(next, transition);
+  }
+  return next;
 }
 
 export const editScale = action(
@@ -132,14 +143,14 @@ export const editScale = action(
     const channel = resolveScaleConsumerChannel(consumers, id);
     const definition = prepareScaleEdit(this, scale, channel, consumers, args);
 
-    const legendTransition = planColorLegendTransition(this, scale, definition.type);
+    const legendTransitions = planColorLegendTransitions(this, scale, definition.type);
     const proposal = {
       id,
       scale,
       channel,
       consumers,
       definition,
-      legendTransition
+      legendTransitions
     };
     // Preflight every dependent mark and guide on a discarded immutable branch.
     if (scale.type !== definition.type) applyScaleEdit(this, proposal);

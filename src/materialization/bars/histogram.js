@@ -7,8 +7,10 @@ import {
   mapContinuousScaleValues,
   mapOrdinalValues,
   readNominalField,
-  readQuantitativeField
+  readQuantitativeField,
+  readScaleField
 } from "../../grammar/scales/index.js";
+import { mapScaleConsumerValues } from "../scales/map.js";
 import { resolveBarColorLayout } from "../../grammar/bars/policy.js";
 import { layoutSeriesPartition } from "../../grammar/seriesLayout.js";
 import {
@@ -174,6 +176,24 @@ export function deriveHistogramRectangles(required, resolved) {
   const layout = resolveBarColorLayout(required.layer);
   const config = resolved.markConfigs[required.layer.id] ?? {};
   const appearance = config.barAppearance ?? {};
+  const stroke = required.layer.encoding?.stroke;
+  const strokeValues = stroke === undefined ? undefined : segments.map(segment => {
+    const values = readScaleField(
+      segment.members,
+      stroke.field,
+      stroke.fieldType,
+      { temporalUnit: stroke.temporalUnit }
+    );
+    if (new Set(values).size !== 1) {
+      throw new Error("Histogram stroke requires one value within each bin/series cell.");
+    }
+    return values[0];
+  });
+  const strokes = strokeValues === undefined ? undefined : mapScaleConsumerValues(
+    strokeValues,
+    resolved.resolvedScales[stroke.scale],
+    "stroke"
+  );
 
   return segments.map((segment, index) => {
     const [x1, x2] = mapContinuousScaleValues(
@@ -203,7 +223,8 @@ export function deriveHistogramRectangles(required, resolved) {
         config.fill ??
         existing[index]?.properties.fill ??
         DEFAULT_BAR_FILL,
-      ...resolveBarAppearance(config, existing[index]?.properties)
+      ...resolveBarAppearance(config, existing[index]?.properties),
+      ...(strokes === undefined ? {} : { stroke: strokes[index] })
     };
   });
 }

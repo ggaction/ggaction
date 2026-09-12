@@ -22,15 +22,18 @@ import { legendResourcePolicy } from
 const FAMILY_ORDER = Object.freeze({
   series: 0,
   color: 0,
+  stroke: 0,
   gradient: 0,
   interval: 0,
+  strokeGradient: 0,
+  strokeInterval: 0,
   size: 1,
   opacity: 2,
   strokeWidth: 3
 });
 
 function categoricalFor(program, target) {
-  return ["series", "color"]
+  return ["series", "color", "stroke"]
     .map(kind => program.guideConfigs.legend?.[kind])
     .find(config => config?.target === target);
 }
@@ -80,8 +83,8 @@ function blockDescriptor(program, kind, config) {
     ...(components.titleId === undefined ? [] : [components.titleId])
   ];
   const bounds = unionConcreteGraphicBounds(program.graphicSpec, foregroundIds);
-  const symbolAnchorIds = kind === "gradient"
-    ? ["colorGradientStrips"]
+  const symbolAnchorIds = ["gradient", "strokeGradient"].includes(kind)
+    ? [kind === "gradient" ? "colorGradientStrips" : "strokeGradientStrips"]
     : components.symbolIds;
   const symbolAnchor = unionConcreteGraphicBounds(
     program.graphicSpec,
@@ -142,7 +145,10 @@ function blockDescriptor(program, kind, config) {
 }
 
 function borderFor(kind, config) {
-  return ["series", "color", "gradient", "opacity", "interval", "strokeWidth", "size"].includes(kind)
+  return [
+    "series", "color", "stroke", "gradient", "strokeGradient", "opacity",
+    "interval", "strokeInterval", "strokeWidth", "size"
+  ].includes(kind)
     ? config.border
     : false;
 }
@@ -154,7 +160,7 @@ function groupBlocks(blocks, configs) {
     const config = configs[block.kind];
     const next = blocks[index + 1];
     if (
-      ["series", "color"].includes(block.kind) &&
+      ["series", "color", "stroke"].includes(block.kind) &&
       next?.kind === "size" && next.target === block.target
     ) {
       groups.push({

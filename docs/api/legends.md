@@ -50,7 +50,8 @@ editing page when changing an existing guide.
 
 ## Errors and limitations
 
-Continuous color legends support point, aggregate-bar, and rect marks. Field
+Continuous color legends support point, aggregate-bar, and rect marks. Continuous
+stroke legends support every stroke-capable mark at its documented item/series grain. Field
 Opacity legends support Point and Line; discretized color legends support Point, aggregate Bar, and Rect. Interactive legends are unsupported.
 Combined point-series and size legends support every edge. Continuous size
 blocks sample the domain; discrete size blocks show every interval.

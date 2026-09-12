@@ -2,8 +2,8 @@
 
 These actions may appear in traces but are not public direct actions or primitives.
 
-현재 등록된 wrapped method는 direct 209개와 internal 109개로 분리된다. 두 집합은 겹치지 않고 합집합은
-등록된 318개 전체와 같다. [`../ACTION_INDEX.json`](../ACTION_INDEX.json)이 목록을 소유하며,
+현재 등록된 wrapped method는 direct 267개와 internal 116개로 분리된다. 두 집합은 겹치지 않고 합집합은
+등록된 383개 전체와 같다. [`../ACTION_INDEX.json`](../ACTION_INDEX.json)이 목록을 소유하며,
 `test/contracts/action-catalog.test.js`는 wrapper metadata로 runtime을 읽어 누락·중복·orphan과 각 owner 표의 누락을 검사한다.
 
 ## Internal materialization inventory
@@ -48,8 +48,10 @@ domain action을 통해서만 실행한다.
 | `rematerializeErrorBandBoundary` | `editErrorBandBoundary` selected boundary appearance |
 | `rematerializeErrorBar` | `editErrorBar` main rule and owned cap reconciliation |
 | `rematerializeGradientLegend` | continuous color legend, scale, and Canvas actions |
+| `rematerializeStrokeGradientLegend` | continuous stroke-color legend, scale, and Canvas actions |
 | `rematerializeGradientPlotLegend` | gradient-plot density legend, Canvas, and appearance edits |
 | `rematerializeIntervalLegend` | discretized color legend, scale, and Canvas actions |
+| `rematerializeStrokeIntervalLegend` | discretized stroke-color legend, scale, and Canvas actions |
 | `rematerializeGrid` | grid aggregate and Canvas actions |
 | `rematerializeHorizontalGrid` | horizontal grid and Canvas actions |
 | `rematerializeHorizontalLegendLane` | top/bottom single occupied-bound alignment, multi-block packing and final Canvas fit |
@@ -106,6 +108,8 @@ type과 direct action 계약에서는 제외되지만 hierarchy는 `trace`에 �
 | `createCategoricalLegend` | `createLegend` | categorical color/shape/stroke-dash block |
 | `createGradientLegend` | `createLegend` | continuous color gradient block |
 | `createIntervalLegend` | `createLegend` | discretized color interval swatch block |
+| `createStrokeGradientLegend` | `createLegend` | continuous stroke-color gradient block |
+| `createStrokeIntervalLegend` | `createLegend` | discretized stroke-color interval block |
 | `createOpacityLegend` | `createLegend` | field-opacity sample block |
 | `removeCategoricalLegend` | `encodeStrokeDash` | compose semantic/graphic primitive removals for a dash-only legend |
 | `removeOpacityLegend` | `encodeOpacity` | compose semantic/graphic primitive removals for an ineligible field-opacity guide |

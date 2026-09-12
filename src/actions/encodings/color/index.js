@@ -150,7 +150,8 @@ const encodeColor = action(
       });
     }
     next = applyEncodingScale(next, scale, requestedScale, {
-      reassignment: layer.encoding?.color?.scale === scale.id
+      reassignment: layer.encoding?.color?.scale === scale.id,
+      allowTypeChange: true
     });
     next = applyColorLayoutCompanion(next, {
       target,

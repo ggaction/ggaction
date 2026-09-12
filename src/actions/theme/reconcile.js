@@ -73,7 +73,10 @@ function mapColorValue(value, names, targetTokens) {
 function isFieldDrivenMark(program, id, property) {
   if (!(["fill", "stroke"].includes(property))) return false;
   const layer = findLayer(program, id);
-  return layer?.encoding?.color?.field !== undefined;
+  return property === "stroke"
+    ? layer?.encoding?.stroke?.field !== undefined ||
+      (layer?.mark?.type === "line" && layer.encoding?.color?.field !== undefined)
+    : layer?.encoding?.color?.field !== undefined;
 }
 
 function isRegressionBand(program, id) {
@@ -133,7 +136,7 @@ function graphicRole(program, id, property) {
   if (component !== undefined) return component;
   const layer = findLayer(program, id);
   if (layer !== undefined && ["fill", "stroke"].includes(property)) {
-    if (layer.encoding?.color?.field !== undefined) return undefined;
+    if (isFieldDrivenMark(program, id, property)) return undefined;
     if (property === "fill" && isRegressionBand(program, id)) {
       return "regressionBand";
     }
@@ -176,7 +179,7 @@ function isOverridden(overrides, key) {
 }
 
 function isFieldDrivenLegendSymbol(id) {
-  return /(?:color|series)Legend(?:Symbol|Symbols|Gradient|Swatches|Lines|Points)/iu
+  return /(?:color|series|stroke)(?:Legend|Gradient|Interval)(?:Symbol|Symbols|Strips|Swatches|Lines|Points)/iu
     .test(id);
 }
 
@@ -271,7 +274,7 @@ function configRole(program, path) {
     const component = componentRole(program, path[1], property);
     if (component !== undefined) return component;
     const layer = findLayer(program, path[1]);
-    if (layer?.encoding?.color?.field !== undefined) return undefined;
+    if (isFieldDrivenMark(program, path[1], property)) return undefined;
     if (property === "fill" && isRegressionBand(program, path[1])) {
       return "regressionBand";
     }
@@ -756,8 +759,11 @@ function addLegendOverrides(overrides, program, args) {
   const prefixes = {
     series: "seriesLegend",
     color: "colorLegend",
+    stroke: "strokeLegend",
     interval: "colorLegend",
     gradient: "colorGradient",
+    strokeInterval: "strokeInterval",
+    strokeGradient: "strokeGradient",
     size: "sizeLegend",
     strokeWidth: "strokeWidthLegend",
     opacity: "opacityLegend"

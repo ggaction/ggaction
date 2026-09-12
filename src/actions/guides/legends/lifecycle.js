@@ -76,11 +76,11 @@ export function createCategoricalLegendFromConfig(program, config, order) {
   } else {
     next = next
       .editSemantic({
-        property: "guide.legend.color.scale",
+        property: `guide.legend.${kind}.scale`,
         value: config.scales[0]
       })
       .editSemantic({
-        property: "guide.legend.color.title",
+        property: `guide.legend.${kind}.title`,
         value: config.title
       });
   }
@@ -91,9 +91,15 @@ export function createCategoricalLegendFromConfig(program, config, order) {
     });
   }
   next = next._withLegendConfig(kind, config);
-  if (config.border !== false) next = next.createLegendBackground();
-  next = next.createLegendSymbols().createLegendLabels();
-  return config.titleVisible === false ? next : next.createLegendTitle();
+  if (config.border !== false) {
+    next = next.createLegendBackground({ kind });
+  }
+  next = next
+    .createLegendSymbols({ kind })
+    .createLegendLabels({ kind });
+  return config.titleVisible === false
+    ? next
+    : next.createLegendTitle({ kind });
 }
 
 // Categorical content precedes its sampled companions in both creation and revision.
@@ -125,7 +131,7 @@ export function reconcileCategoricalSymbols(program, previous, config) {
   for (const layer of config.symbol.layers) {
     if (next.graphicSpec.objects[symbolGraphic(config, layer.type)] === undefined) {
       const suffix = { line: "Lines", point: "Points", swatch: "Swatches" }[layer.type];
-      next = next[`createLegendSymbol${suffix}`]();
+      next = next[`createLegendSymbol${suffix}`]({ kind: config.kind });
     }
   }
   return next;

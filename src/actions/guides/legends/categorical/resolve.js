@@ -17,8 +17,11 @@ function isCategoricalTarget(layer) {
       channel => layer.encoding?.[channel]?.scale !== undefined
     );
   }
-  return ["bar", "area", "arc", "rect"].includes(layer?.mark?.type) &&
-    layer.encoding?.color?.scale !== undefined;
+  return ["bar", "area", "arc", "rect", "rule", "tick"].includes(
+    layer?.mark?.type
+  ) && ["color", "stroke"].some(
+    channel => layer.encoding?.[channel]?.scale !== undefined
+  );
 }
 
 export function resolveTarget(program, requested) {
@@ -45,6 +48,7 @@ export function resolveTarget(program, requested) {
 export const sameValues = sameOrderedValues;
 
 function resolveLegendKind(layer, requestedChannels) {
+  if (sameValues(requestedChannels, ["stroke"])) return "stroke";
   if (["bar", "area", "arc", "rect"].includes(layer.mark.type)) return "color";
   if (
     layer.mark.type === "point" &&
@@ -78,9 +82,9 @@ function resolveOrdinalScales(program, scaleIds) {
 }
 
 export function resolveDefinition(program, layer, requestedChannels, requestedTitle, order) {
-  const channels = requestedChannels ?? (["line", "point"].includes(layer.mark.type)
-    ? CHANNELS.filter(channel => layer.encoding?.[channel]?.scale !== undefined)
-    : ["color"]);
+  const channels = requestedChannels ?? CHANNELS.filter(
+    channel => layer.encoding?.[channel]?.scale !== undefined
+  );
   const kind = resolveLegendKind(layer, channels);
   if (
     !Array.isArray(channels) ||
@@ -92,8 +96,8 @@ export function resolveDefinition(program, layer, requestedChannels, requestedTi
       "Legend channels must be a non-empty unique color/strokeDash/shape array."
     );
   }
-  if (kind === "color" && !sameValues(channels, ["color"])) {
-    throw new Error("Color legends currently support only the color channel.");
+  if (["color", "stroke"].includes(kind) && !sameValues(channels, [kind])) {
+    throw new Error(`${kind} legends currently support only the ${kind} channel.`);
   }
 
   const encodings = channels.map(channel => {
@@ -138,7 +142,7 @@ export function resolveCurrentDefinition(program, config) {
   if (guide === undefined) {
     throw new Error("Legend rematerialization requires semantic guide state.");
   }
-  const channels = config.kind === "series" ? guide.channels : ["color"];
+  const channels = config.kind === "series" ? guide.channels : [config.kind];
   return resolveDefinition(
     program,
     layer,

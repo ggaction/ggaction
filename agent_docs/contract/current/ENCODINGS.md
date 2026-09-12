@@ -45,7 +45,7 @@ Encoding의 `scale` object는 channel에 따라 아래 subset을 사용한다.
 
 - Signature: `removeEncoding({ target?, channel })`.
 - `channel` is the closed vocabulary `"x" | "y" | "x2" | "y2" | "xOffset" | "yOffset" |
-  "theta" | "radius" | "color" | "strokeDash" | "strokeWidth" | "size" | "shape" | "group" |
+  "theta" | "radius" | "color" | "stroke" | "strokeDash" | "strokeWidth" | "size" | "shape" | "group" |
   "angle" | "opacity" | "text"`.
 - `target` resolves the current mark when it owns the requested channel, otherwise the unique active owner;
   ambiguous ownership requires an explicit mark ID. A direct missing assignment is an error.
@@ -486,22 +486,49 @@ encodeX2(options: RulePositionAssignment | AreaSecondaryXAssignment): ChartProgr
 
 ## `encodeStroke`
 
-- Signature: `encodeStroke({ target?, value })`.
-- `target`: current or uniquely eligible rule mark; ambiguity requires an explicit ID.
-- `value`: required non-empty constant graphical stroke string. It creates no scale or legend.
-- Effect: updates immutable rule materialization config and invokes wrapped `rematerializeRuleMark`.
+- Signature: `encodeStroke({ target?, value })` or
+  `encodeStroke({ target?, field, fieldType?, temporalUnit?, scale? })`.
+- `target`: current or uniquely eligible Point, Line, Area, Bar, Rect, Arc, Rule, or Tick mark;
+  ambiguity requires an explicit ID. Text is rejected before any write.
+- Constant mode accepts exactly one non-empty graphical color string, creates no scale, removes an
+  active stroke field binding and its own legend, and rematerializes the target without changing fill.
+- Field mode defaults `fieldType` to `"nominal"`. Nominal/ordinal values use an independent ordinal
+  `stroke` scale by default. Quantitative and temporal values use the same sequential color mapping as
+  `encodeColor`; quantitative values also support quantize, quantile, and threshold scales. Temporal
+  units follow the color temporal contract and are invalid on categorical fields.
+- Point and row-owned marks map each final item. Aggregate/histogram Bar and Arc require one raw stroke
+  value within each final cell/sector. Line and Area require one value within every final series; the
+  action never selects or aggregates a representative row.
+- Stroke and fill are independent channels and scales. An explicitly shared scale ID is allowed only
+  when every color/stroke consumer is compatible. `editStrokeScale({ target, ...patch })` edits the
+  target's stroke scale and refreshes all compatible shared consumers.
+- Categorical, sequential-gradient, and discretized-interval stroke legends are independent blocks.
+  Their samples retain the mark's fill, stroke, and exact stroke width, including width `0`.
+- `value` and `field` are mutually exclusive. Constant↔field reassignment removes stale ownership while
+  retaining unrelated fill, scales, guides, selections, and immutable earlier programs. A selection
+  bound to stroke must be removed before replacement.
 
 ### Formal values — `encodeStroke`
 
-- Implemented: `encodeStroke({ target?: UserId; value: NonEmptyString })`.
-- Planned (NOT IMPLEMENTED): —
-- Proposed (NOT IMPLEMENTED): field-driven stroke color is not part of the current rule contract.
+- Implemented: `encodeStroke(StrokeEncodingOptions)` where `StrokeEncodingOptions` is a `never`-exclusive
+  union of `{ target?; value: NonEmptyString }`, categorical `{ target?; field; fieldType?;
+  scale?: CategoricalColorScaleOptions }`, quantitative `{ target?; field; fieldType: "quantitative";
+  scale?: ContinuousColorScaleOptions | DiscretizedColorScaleOptions }`, and temporal `{ target?; field;
+  fieldType: "temporal"; temporalUnit?; scale?: ContinuousColorScaleOptions }`.
+- Planned (NOT IMPLEMENTED): —.
+- Proposed (NOT IMPLEMENTED): Text outlines and segment-local path colors.
 
 ### Value coverage — `encodeStroke`
 
-- ✅ Covered: inferred/explicit target, replacement, non-empty validation, immutable failure and primitive/public parity.
-- Evidence: `test/unit/actions/encodings/rule-appearance-encodings.test.js` and
-  `test/charts/cars-error-bar/primitive.test.js`.
+- ✅ Covered: eight supported mark families, inferred/explicit target, independent fill/stroke mappings,
+  categorical/continuous/discretized scales and legends, exact endpoints/midpoint, shared-scale editing,
+  series/cell grain validation, selection/highlight replay, facet-shared legends, theme/Canvas replay,
+  field↔constant cleanup, width `0`, invalid unions/Text/missing fields, and immutable failure.
+- ✅ Covered: legacy Rule constant graphic and trace compatibility plus Canvas/SVG/PNG/PDF rendering.
+- Evidence: `test/contracts/stroke-color.test.js`,
+  `test/unit/actions/encodings/rule-appearance-encodings.test.js`,
+  `test/unit/actions/encodings/remove-encoding.test.js`, and
+  `test/unit/actions/marks/filled-mark-stroke.test.js`.
 
 ## `encodeStrokeWidth`
 

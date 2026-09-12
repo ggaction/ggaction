@@ -6777,7 +6777,7 @@ const plainPoints = encodedPoints
 ```
 
 The closed channel list is `x`, `y`, `x2`, `y2`, `xOffset`, `yOffset`,
-`theta`, `radius`, `color`, `strokeDash`, `strokeWidth`, `size`, `shape`,
+`theta`, `radius`, `color`, `stroke`, `strokeDash`, `strokeWidth`, `size`, `shape`,
 `angle`, `group`, `opacity`, and `text`. Primary x/y removal also clears its same-mark
 secondary endpoint and offset. Grouped-bar color removal clears its generated
 offset, and matching legends, axes, or grids are removed only when they no
@@ -8630,7 +8630,7 @@ and source-row count multiplied by child count must not exceed the shared
 | `gap` | `16` | Sets horizontal and vertical cell spacing |
 | `align` | `"center"` | Aligns unequal cells inside grid tracks |
 | `padding` | `0` on every side | Adds scalar or four-side parent padding |
-| `scales` | every channel `"shared"` | Sets `"shared"` or `"independent"` per `x`, `y`, `xOffset`, `yOffset`, `color`, `size`, `shape`, `opacity`, or `strokeDash` |
+| `scales` | every channel `"shared"` | Sets `"shared"` or `"independent"` per `x`, `y`, `xOffset`, `yOffset`, `color`, `stroke`, `size`, `shape`, `opacity`, or `strokeDash` |
 | `guides.axes` | `"each"` | `"outer"` keeps x axes on the bottommost occupied cell in each column and y axes on the leftmost occupied cell in each row |
 | `guides.legend` | `false` | `"shared"` promotes one compatible parent-owned categorical, gradient, discretized-color, size, or opacity legend |
 
@@ -10062,7 +10062,8 @@ See [Scale options](./api/scales/) and [Legends](./api/legends/).
 | `encodeAngle` | `encodeAngle({ field: "direction" })` | Current point or Tick; direct clockwise degrees | Rotated concrete paths or line endpoints |
 | `encodeOpacity` | `encodeOpacity({ value: 0.27 })` | Current Point/Rule/Line | Constant concrete opacity |
 | `encodeOpacity` | `encodeOpacity({ field: "Acceleration" })` | Current Point/Rule/Line; linear scale; range `[0.2, 1]` | Semantic field opacity and concrete values |
-| `encodeStroke` | `encodeStroke({ value: "#334155" })` | Current rule mark | Constant concrete line color |
+| `encodeStroke` | `encodeStroke({ value: "#334155" })` | Current supported mark | Constant concrete outline color |
+| `encodeStroke` | `encodeStroke({ field: "status" })` | Current supported mark; independent ordinal stroke scale | Field-driven item or series outline |
 | `encodeStrokeWidth` | `encodeStrokeWidth({ value: 3 })` | Current Line/Rule | Constant concrete width |
 | `encodeStrokeWidth` | `encodeStrokeWidth({ field: "weight" })` | Current line/rule; quantitative scale; width range `[1, 8]` | Field-driven rule items or line series |
 | `encodeBarWidth` | `encodeBarWidth()` | Current bar; first assignment uses band `0.72` | Saved width; rectangles when positions are complete |
@@ -10089,8 +10090,8 @@ focused pages below for selection, point appearance, and mark-specific style.
 
 ## Errors and limitations
 
-Radius, rule stroke, constant rule width, constant opacity, and both bar width modes are graphical constants.
-Field opacity and field-driven stroke width are semantic encodings.
+Radius, constant stroke, constant rule width, constant opacity, and both bar width modes are graphical constants.
+Field stroke, field opacity, and field-driven stroke width are semantic encodings.
 Angle is a scale-free semantic encoding for point and Tick glyphs; circles
 accept it as a visual no-op.
 Size cannot be combined with a constant radius. Remove that assignment with
@@ -10384,12 +10385,38 @@ titles and styles remain unchanged.
 
 # Mark Style
 
-## Line and Rule appearance
+## Stroke color and Line/Rule appearance
 
-`encodeStroke({ value, target? })` assigns a required non-empty constant color
-string to a rule. `encodeStrokeWidth({ value, target? })` assigns a
+`encodeStroke({ value, target? })` assigns a required non-empty constant outline
+color to a Point, Line, Area, Bar, Rect, Arc, Rule, or Tick. The field form maps
+categorical, quantitative, or temporal data through an independent stroke scale:
+
+```javascript
+program
+  .encodeColor({ field: "group" })
+  .encodeStroke({ field: "status" })
+  .createLegend({ channels: ["color"] })
+  .createLegend({ channels: ["stroke"] });
+```
+
+Line and Area strokes are resolved once per final series, so every contributing
+row must have the same raw field value. Aggregate/histogram bars and Arc sectors
+apply the same rule within each final cell or sector. Point, ranged Bar, Rect,
+Rule, and Tick map final items directly. Text is not supported. Categorical,
+sequential, quantize, quantile, and threshold stroke scales use the same color
+mapping rules as fill while keeping a separate `stroke` scale by default.
+`editStrokeScale({ target, ...patch })` requires the mark target and refreshes
+its stroke legend and every compatible shared color/stroke consumer.
+
+Calling `encodeStroke({ value })` removes the field binding and its stroke
+legend; calling the field form removes the constant override. Neither mode
+changes fill. Existing selections bound to stroke must be removed before this
+replacement. Legend samples preserve the actual fill, stroke, and stroke width,
+including an explicit width of `0`.
+
+`encodeStrokeWidth({ value, target? })` assigns a
 non-negative finite logical Canvas width to every child of the current Line or Rule.
-These constant modes create no scale or legend.
+Constant stroke and width modes create no scale or legend.
 
 `encodeStrokeWidth({ field, target?, fieldType?, scale? })` instead creates an
 independent quantitative width scale for a line or rule. Rules receive one
@@ -10495,8 +10522,8 @@ appearance values. Encodings create compatible scales automatically; use
 | Ordinal appearance/offset | First-appearance order | Palette, patterns, or parent band | explicit domain/range |
 | Continuous size | Numeric extent | Area `[24, 196]` | `linear`, `log`, `sqrt`, `pow`, `clamp`, `reverse` |
 | Discrete size | Type-specific samples or cuts | Explicit nondecreasing areas | `quantize`, `quantile`, `threshold`, `reverse` |
-| Color/strokeDash | First-appearance order | Built-in palette/patterns | palette or explicit range |
-| Sequential/discretized color | Type-specific numeric boundaries | `viridis` or explicit colors | `interpolate`, `clamp`, `reverse` |
+| Color/stroke/strokeDash | First-appearance order | Built-in palette/patterns | palette or explicit range |
+| Sequential/discretized color or stroke | Type-specific numeric boundaries | `viridis` or explicit colors | `interpolate`, `clamp`, `reverse` |
 
 Encoding actions accept a nested `scale` object. Omitted properties use channel
 defaults and stored program state.
@@ -10522,11 +10549,12 @@ program
   .editXScale({ domain: [0, 100], nice: true })
   .editYScale({ zero: false })
   .editColorScale({ palette: "set2" })
+  .editStrokeScale({ target: "points", palette: "set1" })
   .editSizeScale({ range: [20, 200] });
 ```
 
 The complete family is `editXScale`, `editYScale`, `editThetaScale`,
-`editRScale`, `editColorScale`, `editSizeScale`, `editOpacityScale`,
+`editRScale`, `editColorScale`, `editStrokeScale`, `editSizeScale`, `editOpacityScale`,
 `editShapeScale`, `editStrokeWidthScale`, and `editStrokeDashScale`.
 `editRScale` means Polar radial position; point glyph radius remains a constant
 appearance action.
@@ -10539,7 +10567,7 @@ an explicit destination domain, and entering a discrete family also requires a
 new range. Use `reverse` to reverse area assignment while retaining domain and
 legend-label order.
 
-Each focused editor accepts an optional `id`, `target`, or both. A supplied pair
+Most focused editors accept an optional `id`, `target`, or both. A supplied pair
 must agree. Without selectors, ggaction first uses the current mark's scale for
 that channel, then a unique channel scale across the program. Multiple marks
 sharing one scale remain unambiguous; multiple scale IDs require a selector.
@@ -10547,6 +10575,11 @@ The scale must actually be bound to the named channel, so a position scale named
 `color` is rejected by `editColorScale`. Use generic `editScale` for unattached
 named scales. Successful focused edits run through `editScale`, including shared
 mark, axis, grid, and legend refresh.
+
+`editStrokeScale` requires `target` and does not accept `id`. Color and stroke
+use independent generated scale IDs. Authors may explicitly give them the same
+scale ID when every consumer has a compatible field type and color-scale family;
+focused stroke edits then refresh both sets of consumers.
 
 Advanced authors can create a named unattached scale with the same complete
 type vocabulary:
@@ -10607,7 +10640,8 @@ and guides. A band can be shared by bars and point centers, but changing it to
 
 ## Errors and limitations
 
-One scale cannot be shared across different channels. Explicit domains must
+One scale cannot be shared across unrelated channels. Color and stroke are the
+supported appearance-sharing exception and still keep independent IDs by default. Explicit domains must
 contain every observed value required by ordinal consumers. A successful edit
 rematerializes connected marks and guides; a failed edit leaves the earlier
 immutable program unchanged.
@@ -11700,7 +11734,8 @@ editing page when changing an existing guide.
 
 ## Errors and limitations
 
-Continuous color legends support point, aggregate-bar, and rect marks. Field
+Continuous color legends support point, aggregate-bar, and rect marks. Continuous
+stroke legends support every stroke-capable mark at its documented item/series grain. Field
 Opacity legends support Point and Line; discretized color legends support Point, aggregate Bar, and Rect. Interactive legends are unsupported.
 Combined point-series and size legends support every edge. Continuous size
 blocks sample the domain; discrete size blocks show every interval.
@@ -11729,7 +11764,7 @@ instead of resizing the Canvas or dropping symbol layers.
 ## `createLegend(options?)`
 
 Creates inferred legend blocks. It supports combined line-series,
-color-stacked histogram, grouped ordinal-bar, grouped area, composite point-series,
+color-stacked histogram, grouped ordinal-bar, grouped area, independent stroke, composite point-series,
 quantitative point-size, continuous-color gradient, and field-opacity legends.
 It also infers interval swatches for quantize, quantile, and threshold point
 color scales.
@@ -11760,6 +11795,10 @@ does not add a size block. Sample `count` requires size to be selected in a
 categorical request and requires a continuous size scale. Encodings and mark
 appearance remain unchanged.
 
+Stroke may be selected independently with `channels: ["stroke"]`. When Point
+fill and outline use different fields, create separate color and stroke blocks;
+their domains, titles, symbols, edits, highlighting, and removal stay independent.
+
 Omitting `channels` on a point mark infers its encoded categorical color, shape,
 and quantitative size. Color alone uses swatches; shape uses typed symbols;
 color plus size and shape plus size each create both corresponding blocks.
@@ -11770,7 +11809,7 @@ Every categorical legend uses the same right-side default:
 
 | Mark | Channels | Position | Symbol |
 | --- | --- | --- | --- |
-| line | encoded `color` and/or `strokeDash` | `right` | line |
+| line | encoded `color`, `stroke`, and/or `strokeDash` | `right` | line |
 | bar histogram | `color` | `right` | swatch |
 | grouped ordinal bar | `color` | `right` | swatch |
 | grouped area | `color` | `right` | swatch |
@@ -11780,6 +11819,7 @@ Every categorical legend uses the same right-side default:
 | quantitative point size | `size` | all four edges, standalone or combined | five equal-area circles |
 | quantitative/temporal point color | `color` | `right` | continuous gradient with five labels |
 | discretized quantitative point color | `color` | `right/left/top/bottom` | ordered interval swatches |
+| categorical supported-mark stroke | `stroke` | `right/left/top/bottom` | actual fill with mapped outline |
 | quantitative point opacity | `opacity` | `right` | five constant-size circles with sampled opacity |
 
 A shape-only point legend also works when the chart contains unrelated lines.
@@ -11930,7 +11970,7 @@ Combined legends require `layout: "edge"`; `"legacy-bottom"` is unsupported.
 
 # Continuous Legends
 
-## Continuous color and opacity
+## Continuous color, stroke, and opacity
 
 A point `color` encoding with a quantitative or temporal field produces a
 continuous gradient. Right/left positions orient it vertically; top/bottom
@@ -11956,6 +11996,18 @@ The same recipe works with `editLegend`, `editLegendSymbols`, and
 
 ~~~javascript
 program.createLegend({ channels: ["opacity"], position: "left" });
+~~~
+
+A quantitative or temporal `stroke` encoding creates a separate stroke gradient
+with the same mapping, tick, formatting, edge, and lifecycle rules. Quantize,
+quantile, and threshold stroke scales create a stroke interval legend. Its
+symbols keep the mark's fill and draw the mapped color as the outline. An
+explicit mark `strokeWidth: 0` remains zero.
+
+~~~javascript
+program
+  .encodeStroke({ field: "risk", fieldType: "quantitative" })
+  .createLegend({ channels: ["stroke"] });
 ~~~
 
 For a top or bottom sampled-opacity legend, `titlePosition: "left"` places the
@@ -12007,7 +12059,7 @@ The default `"auto"` keeps the family's tick-aware label selection. Explicit
 formats are exact, so nearby samples may intentionally display the same text.
 Categorical legends keep their identity labels and accept `"auto"` only.
 
-For a `quantize`, `quantile`, or `threshold` point-color scale, the same call
+For a `quantize`, `quantile`, or `threshold` point-color or supported stroke scale, the same call
 creates ordered swatches and concrete interval labels. Interval
 legends support all four positions with `layout: "edge"`. Side legends use a
 single vertical column, center alignment and a top title. At top/bottom, use
@@ -12341,7 +12393,7 @@ const withoutSize = program.removeLegend({
 });
 ```
 
-Accepted channels are `color`, `strokeDash`, `strokeWidth`, `shape`, `size`,
+Accepted channels are `color`, `stroke`, `strokeDash`, `strokeWidth`, `shape`, `size`,
 and `opacity`. In a combined color-and-shape legend, removing `shape` keeps the
 color explanation and removing `color` keeps the shape explanation. The last
 remaining channel removes the block. Partial removal preserves title visibility,
@@ -13955,6 +14007,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editSizeScale`](./reference/actions/advanced/#focused-channel-scale-editors) | H2 | user-facing | core |
 | [`editStackData`](./reference/actions/statistics/#focused-statistical-data-editing) | H1, H3 | user-facing | statistics |
 | [`editStrokeDashScale`](./reference/actions/advanced/#focused-channel-scale-editors) | H2 | user-facing | core |
+| [`editStrokeScale`](./reference/actions/advanced/#focused-channel-scale-editors) | H2 | user-facing | core |
 | [`editStrokeWidthScale`](./reference/actions/advanced/#focused-channel-scale-editors) | H2 | user-facing | core |
 | [`editSummaryData`](./reference/actions/statistics/#focused-statistical-data-editing) | H1, H3 | user-facing | statistics |
 | [`editTextMark`](./reference/actions/marks/#edittextmark) | H3 | user-facing | marks |
@@ -14219,7 +14272,7 @@ without changing child programs or facet value order.
 ## `editFacetScales`
 
 ```javascript
-editFacetScales({ x?, y?, xOffset?, yOffset?, color?, size?, shape?, opacity?, strokeDash? })
+editFacetScales({ x?, y?, xOffset?, yOffset?, color?, stroke?, size?, shape?, opacity?, strokeDash? })
 ```
 
 Partially change used facet channels between `"shared"` and `"independent"`.
@@ -15512,9 +15565,14 @@ owned opacity legend and rejects fieldType/scale or selections using that channe
 
 ```javascript
 encodeStroke({ value, target? })
+encodeStroke({ field, target?, fieldType?, temporalUnit?, scale? })
 ```
 
-Assign a constant non-empty stroke string to a rule mark.
+Assign a constant non-empty stroke color or map a categorical, quantitative, or
+temporal field to the outline of a Point, Line, Area, Bar, Rect, Arc, Rule, or
+Tick. Line and Area values must be constant within each final series. Constant
+mode clears the field binding and its own legend; field mode clears the constant
+override. Text outlines are outside this action.
 [Appearance encodings](./api/appearance/)
 
 ## `encodeStrokeWidth`
@@ -16320,6 +16378,7 @@ editParallelScale({ target, dimension, type?, domain?, range?, ...dimensionOptio
 editThetaScale({ id?, target?, type?, domain?, range?, ...angularOptions })
 editRScale({ id?, target?, type?, domain?, range?, radialMapping?, ...radialOptions })
 editColorScale({ id?, target?, type?, domain?, range?, palette?, interpolate?, midpoint?, unknown? })
+editStrokeScale({ target, type?, domain?, range?, palette?, interpolate?, midpoint?, unknown? })
 editSizeScale({ id?, target?, type?, domain?, range?, unknown?, clamp?, reverse?, base?, exponent? })
 editOpacityScale({ id?, target?, type?, domain?, range?, nice?, zero?, clamp?, reverse?, unknown? })
 editShapeScale({ id?, target?, type?, domain?, range?, unknown? })
@@ -16339,6 +16398,9 @@ The offset editors also require `target`; they resolve only that mark's matching
 nested offset scale. Their concrete range remains derived from the parent
 categorical slot, while the semantic scale owns domain, reverse, padding, and
 alignment.
+`editStrokeScale` likewise requires a mark `target` and rejects raw scale IDs.
+It edits the target's field-driven stroke mapping and accepts a color/stroke
+shared scale when every connected consumer remains compatible.
 Size scale ranges are glyph areas. Continuous size scales accept `clamp` and
 `reverse`; logarithmic scales accept `base`, and power scales require
 `exponent`. Quantize, quantile, and threshold use explicit nondecreasing area
@@ -16795,7 +16857,7 @@ interface ChartProgramActions {
   encodeParallelCoordinates(options: ParallelCoordinatesEncodingOptions): ChartProgram;
   removePathOrder(options?: RemovePathOrderOptions): ChartProgram;
   removeCategoryOrder(options: RemoveCategoryOrderOptions): ChartProgram;
-  removeEncoding(options: { target?: string; channel: | "x" | "y" | "x2" | "y2" | "xOffset" | "yOffset" | "theta" | "radius" | "color" | "strokeDash" | "strokeWidth" | "size" | "shape" | "angle" | "group" | "opacity" | "text"; }): ChartProgram;
+  removeEncoding(options: { target?: string; channel: | "x" | "y" | "x2" | "y2" | "xOffset" | "yOffset" | "theta" | "radius" | "color" | "stroke" | "strokeDash" | "strokeWidth" | "size" | "shape" | "angle" | "group" | "opacity" | "text"; }): ChartProgram;
   encodeText(options: TextEncodingOptions): ChartProgram;
   encodeHistogram(options: HistogramEncodingOptions): ChartProgram;
   encodeDensity(options: DensityEncodingOptions): ChartProgram;
@@ -16803,7 +16865,7 @@ interface ChartProgramActions {
   encodeHorizon(options?: HorizonEncodingOptions): ChartProgram;
   editHorizon(options: EditHorizonOptions): ChartProgram;
   encodeBarWidth(options?: BarWidthOptions): ChartProgram;
-  encodeStroke(options: { target?: string; value: string }): ChartProgram;
+  encodeStroke(options: StrokeEncodingOptions): ChartProgram;
   encodeStrokeWidth(options: StrokeWidthEncodingOptions): ChartProgram;
   createRegression(options?: RegressionOptions): ChartProgram;
   editRegression(options: EditRegressionOptions): ChartProgram;
@@ -16935,6 +16997,7 @@ interface ChartProgramActions {
   editThetaScale(options: EditThetaScaleOptions): ChartProgram;
   editRScale(options: EditRScaleOptions): ChartProgram;
   editColorScale(options: EditColorScaleOptions): ChartProgram;
+  editStrokeScale(options: EditStrokeScaleOptions): ChartProgram;
   editSizeScale(options: EditSizeScaleOptions): ChartProgram;
   editOpacityScale(options: EditOpacityScaleOptions): ChartProgram;
   editShapeScale(options: EditShapeScaleOptions): ChartProgram;

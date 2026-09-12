@@ -68,40 +68,44 @@ function createLegendHighlightAction() {
     },
     function (args = {}) {
       noOptions(args, "rematerializeLegendHighlights");
-      const hasCategorical =
-        this.guideConfigs.legend?.series !== undefined ||
-        this.guideConfigs.legend?.color !== undefined;
-      if (!hasCategorical) return this;
-      const { config } = activeConfig(this);
-      const highlights = Object.values(
-        this.materializationConfigs.highlights ?? {}
-      ).map(highlight => ({
-        highlight,
-        states: exactLegendSelection(this, config, highlight)
-      })).filter(entry => entry.states !== undefined);
-      if (highlights.length === 0) return this;
+      const kinds = args.kind === undefined
+        ? ["series", "color", "stroke"].filter(
+            kind => this.guideConfigs.legend?.[kind] !== undefined
+          )
+        : [args.kind];
+      let next = this;
+      for (const kind of kinds) {
+        const { config } = activeConfig(next, kind);
+        const highlights = Object.values(
+          next.materializationConfigs.highlights ?? {}
+        ).map(highlight => ({
+          highlight,
+          states: exactLegendSelection(next, config, highlight)
+        })).filter(entry => entry.states !== undefined);
+        if (highlights.length === 0) continue;
 
-      let next = this.rematerializeLegendSymbols();
-      for (const { highlight, states } of highlights) {
-        for (const layer of config.symbol.layers) {
-          const id = symbolGraphic(config, layer.type);
-          const graphic = next.graphicSpec.objects[id];
-          const selectedStyle = legendLayerStyle(layer, highlight.style);
-          const dimOpacity = highlight.dimOthers === false
-            ? undefined
-            : highlight.dimOthers.opacity;
-          next = next.editGraphics({
-            target: id,
-            property: "items",
-            value: graphic.items.map((child, index) => ({
-              type: child.type ?? graphic.type,
-              properties: states[index]
-                ? { ...child.properties, ...selectedStyle }
-                : dimOpacity === undefined
-                  ? child.properties
-                  : { ...child.properties, opacity: dimOpacity }
-            }))
-          });
+        next = next.rematerializeLegendSymbols({ kind: config.kind });
+        for (const { highlight, states } of highlights) {
+          for (const layer of config.symbol.layers) {
+            const id = symbolGraphic(config, layer.type);
+            const graphic = next.graphicSpec.objects[id];
+            const selectedStyle = legendLayerStyle(layer, highlight.style);
+            const dimOpacity = highlight.dimOthers === false
+              ? undefined
+              : highlight.dimOthers.opacity;
+            next = next.editGraphics({
+              target: id,
+              property: "items",
+              value: graphic.items.map((child, index) => ({
+                type: child.type ?? graphic.type,
+                properties: states[index]
+                  ? { ...child.properties, ...selectedStyle }
+                  : dimOpacity === undefined
+                    ? child.properties
+                    : { ...child.properties, opacity: dimOpacity }
+              }))
+            });
+          }
         }
       }
       return next;

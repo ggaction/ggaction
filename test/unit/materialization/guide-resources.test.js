@@ -13,7 +13,10 @@ test("owns every legend family resource contract in one registry", () => {
 
   assert.deepEqual(
     policies.map(policy => policy.kind),
-    ["series", "color", "size", "gradient", "interval", "opacity", "strokeWidth"]
+    [
+      "series", "color", "stroke", "size", "gradient", "interval",
+      "strokeGradient", "strokeInterval", "opacity", "strokeWidth"
+    ]
   );
   assert.equal(legendResourcePolicy("gradient").semanticKind, "color");
   assert.equal(
@@ -23,6 +26,11 @@ test("owns every legend family resource contract in one registry", () => {
   assert.deepEqual(
     legendGraphicIds("strokeWidth"),
     ["strokeWidthLegendBackground", "strokeWidthLegendSymbols", "strokeWidthLegendLabels", "strokeWidthLegendTitle"]
+  );
+  assert.equal(legendResourcePolicy("strokeGradient").semanticKind, "stroke");
+  assert.equal(
+    legendResourcePolicy("strokeInterval").rematerializeOp,
+    "rematerializeStrokeIntervalLegend"
   );
   assert.deepEqual(
     allLegendGraphicIds(["color", "interval"]),

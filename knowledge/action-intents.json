@@ -809,6 +809,10 @@
       "color scale",
       "color mapping"
     ],
+    "StrokeScale": [
+      "stroke color scale",
+      "outline color mapping"
+    ],
     "SizeScale": [
       "size scale",
       "area mapping"
@@ -1364,6 +1368,10 @@
     },
     "editColorScale": {
       "palette": "set2"
+    },
+    "editStrokeScale": {
+      "target": "points",
+      "palette": "set1"
     },
     "editSizeScale": {
       "range": [

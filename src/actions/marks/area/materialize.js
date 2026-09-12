@@ -8,6 +8,8 @@ import {
   mapContinuousScaleValues,
   mapOrdinalValues
 } from "../../../grammar/scales/index.js";
+import { mapScaleConsumerValues } from
+  "../../../materialization/scales/map.js";
 import { buildAreaCurvePathCommands } from
   "../../../grammar/curveCommands.js";
 import { buildLinearPathCommands } from
@@ -171,5 +173,19 @@ export function resolveAreaMaterialization({
           resolvedScales[colorEncoding.scale].domain,
           resolvedScales[colorEncoding.scale].range
         );
-  return { paths, fills };
+  const strokeEncoding = layer.encoding?.stroke;
+  const strokes = strokeEncoding?.scale === undefined
+    ? undefined
+    : mapScaleConsumerValues(
+        derivePathSeriesFieldValues(
+          rows,
+          derived.series,
+          strokeEncoding.field,
+          "stroke",
+          strokeEncoding
+        ),
+        resolvedScales[strokeEncoding.scale],
+        "stroke"
+      );
+  return { paths, fills, strokes };
 }

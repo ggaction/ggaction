@@ -7,7 +7,7 @@ export const rematerializeLegendLabels = action(
   { op: "rematerializeLegendLabels", description: "Rematerialize categorical legend labels." },
   function (args = {}) {
     noOptions(args, "rematerializeLegendLabels");
-    const { config } = activeConfig(this);
+    const { config } = activeConfig(this, args.kind);
     const id = graphic(config, "Labels");
     if (this.graphicSpec.objects[id]?.type !== "text") {
       throw new Error("rematerializeLegendLabels requires existing legend labels.");
@@ -35,7 +35,7 @@ export const createLegendLabels = action(
   { op: "createLegendLabels", description: "Create categorical legend labels." },
   function (args = {}) {
     noOptions(args, "createLegendLabels");
-    const { config } = activeConfig(this);
+    const { config } = activeConfig(this, args.kind);
     const id = graphic(config, "Labels");
     if (this.graphicSpec.objects[id] !== undefined) {
       throw new Error("createLegendLabels requires missing legend labels.");
@@ -47,7 +47,7 @@ export const createLegendLabels = action(
         length: config.domain.length,
         ...resolveCategoricalLegendPlacement(this)
       })
-      .rematerializeLegendLabels();
+      .rematerializeLegendLabels({ kind: config.kind });
   }
 );
 
@@ -55,7 +55,7 @@ export const rematerializeLegendTitle = action(
   { op: "rematerializeLegendTitle", description: "Rematerialize the categorical legend title." },
   function (args = {}) {
     noOptions(args, "rematerializeLegendTitle");
-    const { config } = activeConfig(this);
+    const { config } = activeConfig(this, args.kind);
     const id = graphic(config, "Title");
     if (this.graphicSpec.objects[id]?.type !== "text") {
       throw new Error("rematerializeLegendTitle requires an existing legend title.");
@@ -85,7 +85,7 @@ export const createLegendTitle = action(
   { op: "createLegendTitle", description: "Create the categorical legend title." },
   function (args = {}) {
     noOptions(args, "createLegendTitle");
-    const { config } = activeConfig(this);
+    const { config } = activeConfig(this, args.kind);
     const id = graphic(config, "Title");
     if (this.graphicSpec.objects[id] !== undefined) {
       throw new Error("createLegendTitle requires a missing legend title.");
@@ -96,7 +96,7 @@ export const createLegendTitle = action(
         type: "text",
         ...resolveCategoricalLegendPlacement(this)
       })
-      .rematerializeLegendTitle();
+      .rematerializeLegendTitle({ kind: config.kind });
   }
 );
 
@@ -104,7 +104,7 @@ export const rematerializeLegendBackground = action(
   { op: "rematerializeLegendBackground", description: "Rematerialize the legend background." },
   function (args = {}) {
     noOptions(args, "rematerializeLegendBackground");
-    const { config } = activeConfig(this);
+    const { config } = activeConfig(this, args.kind);
     if (config.border === false) {
       throw new Error("rematerializeLegendBackground requires border configuration.");
     }
@@ -128,7 +128,7 @@ export const createLegendBackground = action(
   { op: "createLegendBackground", description: "Create the legend background rect." },
   function (args = {}) {
     noOptions(args, "createLegendBackground");
-    const { config } = activeConfig(this);
+    const { config } = activeConfig(this, args.kind);
     const id = graphic(config, "Background");
     if (this.graphicSpec.objects[id] !== undefined) {
       throw new Error("createLegendBackground requires a missing background.");
@@ -139,6 +139,6 @@ export const createLegendBackground = action(
         type: "rect",
         ...resolveCategoricalLegendPlacement(this)
       })
-      .rematerializeLegendBackground();
+      .rematerializeLegendBackground({ kind: config.kind });
   }
 );

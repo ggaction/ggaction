@@ -130,7 +130,7 @@ test("keeps accepted planned capabilities linked and non-public", () => {
   assert.match(currentCorpus, /auto linear range는 `\[0\.2, 1\]`/);
   assert.match(
     currentCorpus,
-    /"color" \| "strokeDash" \| "strokeWidth" \| "shape" \| "size" \| "opacity"/
+    /"color" \| "stroke" \| "strokeDash" \| "strokeWidth" \| "shape" \| "size" \| "opacity"/
   );
   assert.match(currentCorpus, /gradient\?: \{ length\?: PositiveFinite; thickness\?: PositiveFinite \}/);
   assert.doesNotMatch(currentCorpus, /minArea|maxArea/);

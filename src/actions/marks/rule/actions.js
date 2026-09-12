@@ -31,6 +31,8 @@ import { applyOffsetPositionValues } from
   "../../../materialization/rowEncoding.js";
 import { resolveCategorySlotOffset } from
   "../../../materialization/categorySlotOffset.js";
+import { mapScaleConsumerValues } from
+  "../../../materialization/scales/map.js";
 
 const CREATE_OPTIONS = Object.freeze(["id", "data", "stroke", "strokeWidth", "strokeDash", "opacity"]);
 const EDIT_OPTIONS = Object.freeze(["target", "stroke", "strokeWidth", "strokeDash", "opacity"]);
@@ -180,7 +182,7 @@ const rematerializeRuleMark = action(
     const scaleIds = [...new Set(
       [
         "x", "y", "x2", "y2", "xOffset", "yOffset",
-        "strokeDash", "strokeWidth", "opacity"
+        "stroke", "strokeDash", "strokeWidth", "opacity"
       ]
         .map(channel => layer.encoding?.[channel]?.scale)
         .filter(scale => scale !== undefined)
@@ -299,6 +301,7 @@ const rematerializeRuleMark = action(
       ...resolved.markConfigs[id]
     };
     const dashEncoding = layer.encoding?.strokeDash;
+    const strokeEncoding = layer.encoding?.stroke;
     const opacityEncoding = layer.encoding?.opacity;
     const strokeWidthEncoding = layer.encoding?.strokeWidth;
     const strokeDash = dashEncoding?.scale === undefined
@@ -325,6 +328,13 @@ const rematerializeRuleMark = action(
           derived.values.strokeWidth,
           resolved.resolvedScales[strokeWidthEncoding.scale]
         );
+    const stroke = strokeEncoding?.scale === undefined
+      ? resolvedConfig.stroke
+      : mapScaleConsumerValues(
+          derived.values.stroke,
+          resolved.resolvedScales[strokeEncoding.scale],
+          "stroke"
+        );
 
     return editMarkGraphic(resolved, id, {
       length: derived.length,
@@ -332,7 +342,7 @@ const rematerializeRuleMark = action(
       y1,
       x2,
       y2,
-      stroke: resolvedConfig.stroke,
+      stroke,
       strokeWidth,
       strokeDash,
       opacity

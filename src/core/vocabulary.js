@@ -32,6 +32,7 @@ export const ENCODING_CHANNELS = Object.freeze([
   "theta",
   "radius",
   "color",
+  "stroke",
   "strokeDash",
   "strokeWidth",
   "size",
@@ -156,6 +157,7 @@ export const FACET_SCALE_CHANNELS = Object.freeze([
   "xOffset",
   "yOffset",
   "color",
+  "stroke",
   "size",
   "shape",
   "opacity",
@@ -198,6 +200,7 @@ export const STACK_MODES = Object.freeze(["zero", "normalize", "center"]);
 
 export const CATEGORICAL_LEGEND_CHANNELS = Object.freeze([
   "color",
+  "stroke",
   "strokeDash",
   "shape"
 ]);
@@ -212,9 +215,12 @@ export const LEGEND_CHANNELS = Object.freeze([
 export const LEGEND_CONFIG_KINDS = Object.freeze([
   "series",
   "color",
+  "stroke",
   "size",
   "gradient",
   "interval",
+  "strokeGradient",
+  "strokeInterval",
   "opacity",
   "strokeWidth"
 ]);

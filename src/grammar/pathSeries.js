@@ -1,5 +1,9 @@
 import { validateNonEmptyString } from "../core/validation.js";
-import { readNominalField, readQuantitativeField } from "./scales/fields.js";
+import {
+  readNominalField,
+  readQuantitativeField,
+  readScaleField
+} from "./scales/fields.js";
 
 export function normalizeGroupFields(value) {
   const fields = Array.isArray(value) ? [...value] : [value];
@@ -36,9 +40,13 @@ export function readPathSeriesFields(rows, layer) {
   return fields;
 }
 
-function seriesValueIndex(rows, fields, field, channel) {
+function seriesValueIndex(rows, fields, field, channel, encoding = {}) {
   const quantitative = channel === "strokeWidth" || channel === "opacity";
-  const values = quantitative
+  const values = channel === "stroke"
+    ? readScaleField(rows, field, encoding.fieldType ?? "nominal", {
+        temporalUnit: encoding.temporalUnit
+      })
+    : quantitative
     ? readQuantitativeField(rows, field)
     : readNominalField(rows, field);
   const result = new Map();
@@ -56,9 +64,15 @@ function seriesValueIndex(rows, fields, field, channel) {
   return result;
 }
 
-export function derivePathSeriesFieldValues(rows, series, field, channel) {
+export function derivePathSeriesFieldValues(
+  rows,
+  series,
+  field,
+  channel,
+  encoding
+) {
   const fields = Object.keys(series[0]?.key ?? {});
-  const values = seriesValueIndex(rows, fields, field, channel);
+  const values = seriesValueIndex(rows, fields, field, channel, encoding);
   return series.map(item => values.get(JSON.stringify(Object.values(item.key))));
 }
 
@@ -67,16 +81,20 @@ export function validatePathSeriesAppearance(rows, layer) {
       layer.encoding?.parallel !== undefined) return;
   const grouping = readPathSeriesFields(rows, layer);
   const channels = layer.mark.type === "line"
-    ? ["color", "strokeDash", "strokeWidth", "opacity"] : ["color"];
+    ? ["color", "stroke", "strokeDash", "strokeWidth", "opacity"]
+    : ["color", "stroke"];
   for (const channel of channels) {
     const encoding = layer.encoding?.[channel];
     if (encoding?.field === undefined) continue;
-    const allowed = channel === "color" ? ["nominal", "ordinal"]
+    const allowed = ["color", "stroke"].includes(channel)
+      ? channel === "color"
+        ? ["nominal", "ordinal"]
+        : ["nominal", "ordinal", "quantitative", "temporal"]
       : channel === "strokeDash" ? ["nominal"] : ["quantitative"];
     if (!allowed.includes(encoding.fieldType)) {
       throw new Error(`Path ${channel} encoding has an unsupported field type.`);
     }
-    seriesValueIndex(rows, grouping, encoding.field, channel);
+    seriesValueIndex(rows, grouping, encoding.field, channel, encoding);
   }
   return grouping;
 }

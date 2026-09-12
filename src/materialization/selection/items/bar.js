@@ -10,6 +10,7 @@ import {
 import { numericExtent } from "../../../grammar/numeric.js";
 import {
   readNominalField,
+  readScaleField,
   readTemporalField
 } from "../../../grammar/scales/index.js";
 import { findSemanticScale } from "../../../selectors/scales.js";
@@ -52,9 +53,19 @@ function aggregateCellDefinitions(program, layer, dataset) {
   const offsetChannel = resolveBarOffsetChannel(layer);
   const offsetScale = program.resolvedScales[layer.encoding?.[offsetChannel]?.scale];
   const layout = resolveBarColorLayout(layer);
+  const stroke = layer.encoding?.stroke;
 
   function definition(cell, start, end) {
     const members = aggregateMembers(dataset.values, layer, cell, channels);
+    const strokeValues = stroke === undefined ? undefined : readScaleField(
+      members,
+      stroke.field,
+      stroke.fieldType,
+      { temporalUnit: stroke.temporalUnit }
+    );
+    if (strokeValues !== undefined && new Set(strokeValues).size !== 1) {
+      throw new Error("Bar stroke requires one value within each aggregate cell.");
+    }
     return {
       fields: uniqueFields(members),
       channels: {
@@ -62,6 +73,7 @@ function aggregateCellDefinitions(program, layer, dataset) {
         [channels.measure]: start,
         [`${channels.measure}2`]: end,
         ...(cell.color === undefined ? {} : { color: cell.color }),
+        ...(strokeValues === undefined ? {} : { stroke: strokeValues[0] }),
         ...(layer.encoding?.[offsetChannel] === undefined
           ? {}
           : { [offsetChannel]: cell.series ?? cell.color })
@@ -88,8 +100,18 @@ function histogramDefinitions(program, layer, dataset) {
     resolvedScales: program.resolvedScales
   });
   const colorScale = program.resolvedScales[colorEncoding?.scale];
+  const stroke = layer.encoding?.stroke;
   return segments.map(segment => {
     const colorValue = segment.colorValue ?? colorScale?.domain[segment.category];
+    const strokeValues = stroke === undefined ? undefined : readScaleField(
+      segment.members,
+      stroke.field,
+      stroke.fieldType,
+      { temporalUnit: stroke.temporalUnit }
+    );
+    if (strokeValues !== undefined && new Set(strokeValues).size !== 1) {
+      throw new Error("Histogram stroke requires one value within each bin/series cell.");
+    }
     return {
       fields: uniqueFields(segment.members),
       channels: {
@@ -97,7 +119,8 @@ function histogramDefinitions(program, layer, dataset) {
         x2: segment.end,
         y: segment.stackStart,
         y2: segment.stackEnd,
-        ...(colorValue === undefined ? {} : { color: colorValue })
+        ...(colorValue === undefined ? {} : { color: colorValue }),
+        ...(strokeValues === undefined ? {} : { stroke: strokeValues[0] })
       },
       members: segment.members
     };

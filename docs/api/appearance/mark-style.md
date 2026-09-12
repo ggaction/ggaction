@@ -7,12 +7,38 @@ title: Mark Style
 
 {% include chart-example.html id="bar" %}
 
-## Line and Rule appearance
+## Stroke color and Line/Rule appearance
 
-`encodeStroke({ value, target? })` assigns a required non-empty constant color
-string to a rule. `encodeStrokeWidth({ value, target? })` assigns a
+`encodeStroke({ value, target? })` assigns a required non-empty constant outline
+color to a Point, Line, Area, Bar, Rect, Arc, Rule, or Tick. The field form maps
+categorical, quantitative, or temporal data through an independent stroke scale:
+
+```javascript
+program
+  .encodeColor({ field: "group" })
+  .encodeStroke({ field: "status" })
+  .createLegend({ channels: ["color"] })
+  .createLegend({ channels: ["stroke"] });
+```
+
+Line and Area strokes are resolved once per final series, so every contributing
+row must have the same raw field value. Aggregate/histogram bars and Arc sectors
+apply the same rule within each final cell or sector. Point, ranged Bar, Rect,
+Rule, and Tick map final items directly. Text is not supported. Categorical,
+sequential, quantize, quantile, and threshold stroke scales use the same color
+mapping rules as fill while keeping a separate `stroke` scale by default.
+`editStrokeScale({ target, ...patch })` requires the mark target and refreshes
+its stroke legend and every compatible shared color/stroke consumer.
+
+Calling `encodeStroke({ value })` removes the field binding and its stroke
+legend; calling the field form removes the constant override. Neither mode
+changes fill. Existing selections bound to stroke must be removed before this
+replacement. Legend samples preserve the actual fill, stroke, and stroke width,
+including an explicit width of `0`.
+
+`encodeStrokeWidth({ value, target? })` assigns a
 non-negative finite logical Canvas width to every child of the current Line or Rule.
-These constant modes create no scale or legend.
+Constant stroke and width modes create no scale or legend.
 
 `encodeStrokeWidth({ field, target?, fieldType?, scale? })` instead creates an
 independent quantitative width scale for a line or rule. Rules receive one

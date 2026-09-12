@@ -76,7 +76,11 @@ function requireScale(program, id) {
 
 export function resolveSizeLegendLayout(program, config) {
   const scale = requireScale(program, config.scale);
-  const categorical = [program.guideConfigs.legend?.series, program.guideConfigs.legend?.color]
+  const categorical = [
+    program.guideConfigs.legend?.series,
+    program.guideConfigs.legend?.color,
+    program.guideConfigs.legend?.stroke
+  ]
     .find(candidate => candidate?.target === config.target);
   const inherit = config.inheritAppearance === true && categorical !== undefined;
   const labels = inherit ? { ...categorical.labels, offset: config.labels.offset } : config.labels;

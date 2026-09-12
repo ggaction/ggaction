@@ -1305,7 +1305,7 @@
       "domain": "encodings",
       "status": "implemented",
       "lifecycle": "Assignment",
-      "update": "Same action replaces the constant rule stroke",
+      "update": "Same action replaces constant or field-driven stroke color",
       "audit": "Reassignment — Implemented",
       "coverage": {
         "contract": "complete",
@@ -3190,6 +3190,24 @@
       }
     },
     {
+      "name": "editStrokeScale",
+      "layer": "user-facing",
+      "domain": "core",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Delegates target-bound stroke scale edits to `editScale`",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/CORE.md",
+        "anchor": "editstrokescale"
+      }
+    },
+    {
       "name": "editSizeScale",
       "layer": "user-facing",
       "domain": "core",
@@ -4892,6 +4910,8 @@
       "rematerializeScale",
       "rematerializeSideLegendLane",
       "rematerializeSizeLegend",
+      "rematerializeStrokeGradientLegend",
+      "rematerializeStrokeIntervalLegend",
       "rematerializeStrokeWidthLegend",
       "rematerializeThetaGrid",
       "rematerializeTickMark",
@@ -4913,6 +4933,8 @@
       "createCategoricalLegend",
       "createGradientLegend",
       "createIntervalLegend",
+      "createStrokeGradientLegend",
+      "createStrokeIntervalLegend",
       "createOpacityLegend",
       "removeCategoricalLegend",
       "removeOpacityLegend",

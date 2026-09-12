@@ -1,6 +1,10 @@
 import { deriveSeriesBarCells } from "../../grammar/bars/aggregate.js";
 import { resolveBarChannels, resolveBarColorLayout, resolveBarOffsetChannel } from "../../grammar/bars/policy.js";
-import { mapContinuousScaleValues, mapOrdinalPositionValues } from "../../grammar/scales/index.js";
+import {
+  mapContinuousScaleValues,
+  mapOrdinalPositionValues,
+  readScaleField
+} from "../../grammar/scales/index.js";
 import { mapScaleConsumerValues } from "../scales/map.js";
 import { DEFAULT_BAR_FILL, resolveBarAppearance } from "./resolve.js";
 import { resolveBarWidth } from "../../grammar/bars/geometry.js";
@@ -19,6 +23,24 @@ export function deriveAggregateRectangles(required, resolved, widthConfig) {
   const segments = deriveSeriesBarCells(dataset.values, layer, temporal ? undefined : categoryScale.domain,
     grouped ? offsetScale.domain : layer.encoding.group === undefined && color?.fieldType !== "quantitative" ? colorScale?.domain : undefined);
   const fills = color === undefined ? undefined : mapScaleConsumerValues(segments.map(segment => segment.cell.color), colorScale, "color");
+  const stroke = layer.encoding?.stroke;
+  const strokeValues = stroke === undefined ? undefined : segments.map(segment => {
+    const values = readScaleField(
+      segment.cell.sourceIndices.map(index => dataset.values[index]),
+      stroke.field,
+      stroke.fieldType,
+      { temporalUnit: stroke.temporalUnit }
+    );
+    if (new Set(values).size !== 1) {
+      throw new Error("Bar stroke requires one value within each aggregate cell.");
+    }
+    return values[0];
+  });
+  const strokes = strokeValues === undefined ? undefined : mapScaleConsumerValues(
+    strokeValues,
+    resolved.resolvedScales[stroke.scale],
+    "stroke"
+  );
   const config = resolved.markConfigs[layer.id] ?? {};
   const existing = resolved.graphicSpec.objects[layer.id].items;
   const width = resolveBarWidth(widthConfig, grouped ? offsetScale.bandwidth : Math.abs(categoryScale.bandwidth ?? categoryScale.step));
@@ -42,6 +64,7 @@ export function deriveAggregateRectangles(required, resolved, widthConfig) {
     return { x: vertical ? position : Math.min(a, b), y: vertical ? Math.min(a, b) : position,
       width: vertical ? width : Math.abs(a - b), height: vertical ? Math.abs(a - b) : width,
       fill: fills?.[index] ?? config.barAppearance?.fill ?? config.fill ?? DEFAULT_BAR_FILL,
-      ...resolveBarAppearance(config, existing[index]?.properties) };
+      ...resolveBarAppearance(config, existing[index]?.properties),
+      ...(strokes === undefined ? {} : { stroke: strokes[index] }) };
   });
 }

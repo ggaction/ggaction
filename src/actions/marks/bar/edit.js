@@ -40,6 +40,11 @@ export const editBarMark = action(
         "editBarMark fill cannot be combined with a color encoding."
       );
     }
+    if (Object.hasOwn(args, "stroke") && layer.encoding?.stroke !== undefined) {
+      throw new Error(
+        "editBarMark stroke conflicts with a field encoding; use encodeStroke with value to replace it."
+      );
+    }
     if (args.stroke === false && Object.hasOwn(args, "strokeWidth")) {
       throw new Error(
         "editBarMark cannot set strokeWidth while removing stroke."

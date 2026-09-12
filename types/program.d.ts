@@ -145,6 +145,7 @@ export interface FacetScaleResolutions {
   xOffset?: FacetScaleResolution;
   yOffset?: FacetScaleResolution;
   color?: FacetScaleResolution;
+  stroke?: FacetScaleResolution;
   size?: FacetScaleResolution;
   shape?: FacetScaleResolution;
   opacity?: FacetScaleResolution;
@@ -866,7 +867,7 @@ export type MarkSelector = {
   grain?: "item" | "stack";
 } & (
   | { field: string; channel?: never; property?: never }
-  | { channel: "x" | "y" | "x2" | "y2" | "xOffset" | "yOffset" | "theta" | "radius" | "color" | "strokeDash" | "strokeWidth" | "size" | "shape" | "group" | "opacity"; field?: never; property?: never }
+  | { channel: "x" | "y" | "x2" | "y2" | "xOffset" | "yOffset" | "theta" | "radius" | "color" | "stroke" | "strokeDash" | "strokeWidth" | "size" | "shape" | "group" | "opacity"; field?: never; property?: never }
   | { property: MarkGraphicProperty; field?: never; channel?: never }
 ) & (
   | { op: "eq" | "neq" | "gt" | "gte" | "lt" | "lte"; value: unknown }
@@ -1595,6 +1596,10 @@ export type EditRScaleOptions = FocusedScaleSelection & WithoutScaleId<RadiusSca
 };
 export type EditColorScaleOptions = FocusedScaleSelection & WithoutScaleId<
   CategoricalColorScaleOptions | ContinuousColorScaleOptions | DiscretizedColorScaleOptions
+>;
+export type EditStrokeScaleOptions = { target: string } & Omit<
+  EditColorScaleOptions,
+  "id" | "target"
 >;
 type ExistingSizeScaleEditPatch = {
   type?: never;
@@ -3743,6 +3748,42 @@ export type ColorEncodingOptions =
       layout?: never;
     };
 
+export type StrokeEncodingOptions =
+  | {
+      target?: string;
+      value: string;
+      field?: never;
+      fieldType?: never;
+      temporalUnit?: never;
+      scale?: never;
+    }
+  | {
+      target?: string;
+      field: string;
+      value?: never;
+      fieldType?: "nominal" | "ordinal";
+      temporalUnit?: never;
+      scale?: CategoricalColorScaleOptions;
+    }
+  | {
+      target?: string;
+      field: string;
+      value?: never;
+      fieldType: "quantitative";
+      temporalUnit?: never;
+      scale?: ContinuousColorScaleOptions | DiscretizedColorScaleOptions;
+    }
+  | {
+      target?: string;
+      field: string;
+      value?: never;
+      fieldType: "temporal";
+      temporalUnit?: TemporalInputUnit;
+      scale?: Omit<ContinuousColorScaleOptions, "midpoint"> & {
+        midpoint?: "auto";
+      };
+    };
+
 export type OpacityScaleOptions = ScaleFields<
   "id" | "nice" | "zero" | "clamp" | "reverse"
 > & {
@@ -3930,7 +3971,7 @@ export interface RemoveGridOptions {
 export interface RemoveLegendOptions {
   target?: string;
   /** Remove selected content, including part of a combined categorical legend; omission removes every owned block. */
-  channels?: readonly ("color" | "strokeDash" | "strokeWidth" | "shape" | "size" | "opacity")[];
+  channels?: readonly ("color" | "stroke" | "strokeDash" | "strokeWidth" | "shape" | "size" | "opacity")[];
 }
 
 export interface RemoveMarkOptions {
@@ -4003,7 +4044,7 @@ export interface LegendOptions {
   order?: LegendOrder;
   target?: string;
   /** Exact requested content; omission infers encoded point color/shape/size. Explicit subsets include size only when listed. */
-  channels?: readonly ("color" | "strokeDash" | "strokeWidth" | "shape" | "size" | "opacity")[];
+  channels?: readonly ("color" | "stroke" | "strokeDash" | "strokeWidth" | "shape" | "size" | "opacity")[];
   position?: "right" | "left" | "bottom" | "top";
   /** Single top/bottom edge: align complete occupied bounds, including border strokes, to the plot. Side positions require center. */
   align?: "left" | "center" | "right";
@@ -4355,7 +4396,7 @@ export class ChartProgram {
     target?: string;
     channel:
       | "x" | "y" | "x2" | "y2" | "xOffset" | "yOffset"
-      | "theta" | "radius" | "color" | "strokeDash" | "strokeWidth"
+      | "theta" | "radius" | "color" | "stroke" | "strokeDash" | "strokeWidth"
       | "size" | "shape" | "angle" | "group" | "opacity" | "text";
   }): ChartProgram;
   encodeText(options: TextEncodingOptions): ChartProgram;
@@ -4365,7 +4406,7 @@ export class ChartProgram {
   encodeHorizon(options?: HorizonEncodingOptions): ChartProgram;
   editHorizon(options: EditHorizonOptions): ChartProgram;
   encodeBarWidth(options?: BarWidthOptions): ChartProgram;
-  encodeStroke(options: { target?: string; value: string }): ChartProgram;
+  encodeStroke(options: StrokeEncodingOptions): ChartProgram;
   encodeStrokeWidth(options: StrokeWidthEncodingOptions): ChartProgram;
 
   createRegression(options?: RegressionOptions): ChartProgram;
@@ -4500,6 +4541,7 @@ export class ChartProgram {
   editThetaScale(options: EditThetaScaleOptions): ChartProgram;
   editRScale(options: EditRScaleOptions): ChartProgram;
   editColorScale(options: EditColorScaleOptions): ChartProgram;
+  editStrokeScale(options: EditStrokeScaleOptions): ChartProgram;
   editSizeScale(options: EditSizeScaleOptions): ChartProgram;
   editOpacityScale(options: EditOpacityScaleOptions): ChartProgram;
   editShapeScale(options: EditShapeScaleOptions): ChartProgram;

@@ -55,6 +55,7 @@ editParallelScale({ target, dimension, type?, domain?, range?, ...dimensionOptio
 editThetaScale({ id?, target?, type?, domain?, range?, ...angularOptions })
 editRScale({ id?, target?, type?, domain?, range?, radialMapping?, ...radialOptions })
 editColorScale({ id?, target?, type?, domain?, range?, palette?, interpolate?, midpoint?, unknown? })
+editStrokeScale({ target, type?, domain?, range?, palette?, interpolate?, midpoint?, unknown? })
 editSizeScale({ id?, target?, type?, domain?, range?, unknown?, clamp?, reverse?, base?, exponent? })
 editOpacityScale({ id?, target?, type?, domain?, range?, nice?, zero?, clamp?, reverse?, unknown? })
 editShapeScale({ id?, target?, type?, domain?, range?, unknown? })
@@ -74,6 +75,9 @@ The offset editors also require `target`; they resolve only that mark's matching
 nested offset scale. Their concrete range remains derived from the parent
 categorical slot, while the semantic scale owns domain, reverse, padding, and
 alignment.
+`editStrokeScale` likewise requires a mark `target` and rejects raw scale IDs.
+It edits the target's field-driven stroke mapping and accepts a color/stroke
+shared scale when every connected consumer remains compatible.
 Size scale ranges are glyph areas. Continuous size scales accept `clamp` and
 `reverse`; logarithmic scales accept `base`, and power scales require
 `exponent`. Quantize, quantile, and threshold use explicit nondecreasing area

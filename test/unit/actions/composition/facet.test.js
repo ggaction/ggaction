@@ -54,6 +54,7 @@ test("facets one direct-source point chart into immutable shared-scale children"
         xOffset: "shared",
         yOffset: "shared",
         color: "shared",
+        stroke: "shared",
         size: "shared",
         shape: "shared",
         opacity: "shared",

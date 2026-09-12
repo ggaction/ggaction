@@ -46,10 +46,10 @@ const REMOVAL_ANALYSIS_QUESTION =
   "How does the selected measure vary across stable selected source-record order and authentic source categories?";
 const SELECTOR_CHANNELS = Object.freeze([
   "x", "y", "x2", "y2", "xOffset", "yOffset", "theta", "radius",
-  "color", "strokeDash", "size", "shape", "group", "opacity"
+  "color", "stroke", "strokeDash", "size", "shape", "group", "opacity"
 ]);
 const REMOVE_CHANNELS = Object.freeze([
-  "color", "group", "opacity", "radius", "size", "strokeDash", "strokeWidth",
+  "color", "stroke", "group", "opacity", "radius", "size", "strokeDash", "strokeWidth",
   "text", "theta", "x", "x2", "xOffset", "y", "y2", "yOffset"
 ]);
 const GRAPHIC_PROPERTIES = Object.freeze([
@@ -71,7 +71,7 @@ const EXCLUDED_FACADE_ACTIONS = Object.freeze([
 ]);
 const EXCLUDED_ENCODING_ACTIONS = Object.freeze([
   "encodeX", "encodeY", "encodeXRange", "encodeYRange", "encodeX2", "encodeY2",
-  "encodeXOffset", "encodeYOffset", "encodeColor", "encodeOpacity", "encodeSize",
+  "encodeXOffset", "encodeYOffset", "encodeColor", "encodeStroke", "encodeOpacity", "encodeSize",
   "encodeShape", "encodeStrokeWidth", "encodeStrokeDash", "encodeTheta", "encodeR",
   "encodeAngle", "encodeText"
 ]);
@@ -963,6 +963,7 @@ function buildSelectionCoverage(factors) {
 
 function baseEncodingForRemoval(program, target, channel) {
   if (channel === "color") return program.encodeColor({ target, field: "group" });
+  if (channel === "stroke") return program.encodeStroke({ target, field: "group" });
   if (channel === "group") return program.encodeGroup({ target, field: "group" });
   if (channel === "opacity") return program.encodeOpacity({ target, field: "opacity" });
   if (channel === "radius") return program.encodeR({ target, field: "positiveY" });

@@ -18,7 +18,8 @@ title: Appearance Encodings
 | `encodeAngle` | `encodeAngle({ field: "direction" })` | Current point or Tick; direct clockwise degrees | Rotated concrete paths or line endpoints |
 | `encodeOpacity` | `encodeOpacity({ value: 0.27 })` | Current Point/Rule/Line | Constant concrete opacity |
 | `encodeOpacity` | `encodeOpacity({ field: "Acceleration" })` | Current Point/Rule/Line; linear scale; range `[0.2, 1]` | Semantic field opacity and concrete values |
-| `encodeStroke` | `encodeStroke({ value: "#334155" })` | Current rule mark | Constant concrete line color |
+| `encodeStroke` | `encodeStroke({ value: "#334155" })` | Current supported mark | Constant concrete outline color |
+| `encodeStroke` | `encodeStroke({ field: "status" })` | Current supported mark; independent ordinal stroke scale | Field-driven item or series outline |
 | `encodeStrokeWidth` | `encodeStrokeWidth({ value: 3 })` | Current Line/Rule | Constant concrete width |
 | `encodeStrokeWidth` | `encodeStrokeWidth({ field: "weight" })` | Current line/rule; quantitative scale; width range `[1, 8]` | Field-driven rule items or line series |
 | `encodeBarWidth` | `encodeBarWidth()` | Current bar; first assignment uses band `0.72` | Saved width; rectangles when positions are complete |
@@ -49,8 +50,8 @@ focused pages below for selection, point appearance, and mark-specific style.
 
 ## Errors and limitations
 
-Radius, rule stroke, constant rule width, constant opacity, and both bar width modes are graphical constants.
-Field opacity and field-driven stroke width are semantic encodings.
+Radius, constant stroke, constant rule width, constant opacity, and both bar width modes are graphical constants.
+Field stroke, field opacity, and field-driven stroke width are semantic encodings.
 Angle is a scale-free semantic encoding for point and Tick glyphs; circles
 accept it as a visual no-op.
 Size cannot be combined with a constant radius. Remove that assignment with

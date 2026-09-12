@@ -45,7 +45,7 @@ export function resolveMarkFamilyConsumerValues(program, consumer, dataset) {
   }
   const { layer, channel } = consumer;
   const encoding = layer.encoding ?? {};
-  const appearance = ["strokeWidth", "opacity"].includes(channel);
+  const appearance = ["stroke", "strokeWidth", "opacity"].includes(channel);
   if (
     layer.mark?.type === "line" &&
     ((["x", "y"].includes(channel) && encoding.x !== undefined &&
@@ -69,7 +69,8 @@ export function resolveMarkFamilyConsumerValues(program, consumer, dataset) {
             dataset.values,
             derived.series,
             consumer.encoding.field,
-            channel
+            channel,
+            consumer.encoding
           )
         : channel === "x" ? derived.xValues : derived.yValues
     };

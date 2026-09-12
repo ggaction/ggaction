@@ -11,9 +11,18 @@ export function resolveScalePreview(program, id) {
   const scale = findScale(program, id);
   const consumers = findScaleConsumers(program, id);
   if (consumers.length === 0) throw new Error(`Scale "${id}" has no supported consumers.`);
-  const channels = new Set(consumers.map(consumer => normalizePositionScaleChannel(consumer.channel)));
-  if (channels.size !== 1) throw new Error(`Scale "${id}" cannot be shared across channels.`);
-  const channel = channels.values().next().value;
+  const consumerChannels = new Set(consumers.map(
+    consumer => normalizePositionScaleChannel(consumer.channel)
+  ));
+  const families = new Set([...consumerChannels].map(
+    channel => channel === "stroke" ? "color" : channel
+  ));
+  if (families.size !== 1) {
+    throw new Error(`Scale "${id}" cannot be shared across channels.`);
+  }
+  const channel = consumerChannels.size === 1
+    ? consumerChannels.values().next().value
+    : families.values().next().value;
   const valuesByConsumer = consumers.map(consumer => {
     if (program.markConfigs?.[consumer.layer.id]?.markFilter?.empty === true) {
       return { consumer, values: [], categoryOrder: undefined, seriesLayout: undefined };
@@ -24,7 +33,7 @@ export function resolveScalePreview(program, id) {
       seriesLayout: resolveSeriesLayoutScaleValues(program, consumer) };
   });
   const resolvedScale = resolveScaleMaterialization({ id, scale, channel, consumers, valuesByConsumer,
-    bounds: ["color", "strokeDash", "strokeWidth", "shape", "size", "opacity", "xOffset", "yOffset"].includes(channel)
+    bounds: ["color", "stroke", "strokeDash", "strokeWidth", "shape", "size", "opacity", "xOffset", "yOffset"].includes(channel)
       ? undefined : resolveGraphicBounds(program),
     resolvedScales: program.resolvedScales, markConfigs: program.markConfigs, thetaScales: scale.radialMapping === undefined ? undefined : Object.fromEntries(consumers.map(({ layer }) =>
       [layer.id, findSemanticScale(program, layer.encoding?.theta?.scale)])) });

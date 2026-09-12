@@ -13,6 +13,7 @@ import { registerTextEncodingAction } from "./text.js";
 import { registerAppearanceEncodingAction } from "./appearance.js";
 import { registerStrokeDashEncodingActions } from "./strokeDash.js";
 import { registerRuleAppearanceEncodingActions } from "./ruleAppearance.js";
+import { registerStrokeEncodingAction } from "./stroke.js";
 import { registerBarWidthEncodingAction } from "./barWidth.js";
 import { registerEncodingRemovalAction } from "./remove.js";
 
@@ -31,6 +32,7 @@ export function registerEncodingActions(ProgramClass) {
   registerAppearanceEncodingAction(ProgramClass);
   registerAngleEncodingAction(ProgramClass);
   registerRuleAppearanceEncodingActions(ProgramClass);
+  registerStrokeEncodingAction(ProgramClass);
   registerTextEncodingAction(ProgramClass);
   registerParallelEncodingAction(ProgramClass);
   registerEncodingRemovalAction(ProgramClass);

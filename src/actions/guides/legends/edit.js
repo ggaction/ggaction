@@ -23,6 +23,12 @@ import {
 } from "./continuous/common.js";
 import { normalizeOpacitySymbol, createOpacityLegendFromConfig } from "./continuous/opacity.js";
 import { normalizeIntervalLegend, resolveIntervalConfig, resolveIntervalLayout, createIntervalLegendFromConfig } from "./continuous/interval.js";
+import {
+  createStrokeGradientLegendFromConfig,
+  createStrokeIntervalLegendFromConfig,
+  resolveStrokeIntervalConfig,
+  resolveStrokeIntervalLayout
+} from "./continuous/stroke.js";
 import { findLayer } from "../../../selectors/layers.js";
 import { resolveLegendGraphicPlacement } from
   "../../../materialization/graphicHierarchy.js";
@@ -71,7 +77,8 @@ function reconcileGraphic(program, id, shouldExist, definition) {
 }
 
 function resolveContinuousEdit(program, kind, previous, args) {
-  const allowed = kind === "gradient"
+  const gradient = ["gradient", "strokeGradient"].includes(kind);
+  const allowed = gradient
     ? ["target", "position", "align", "offset", "title", "labels",
       "titleStyle", "titlePosition", "border", "count", "gradient"]
     : ["target", "position", "align", "offset", "title", "symbol", "labels",
@@ -86,7 +93,9 @@ function resolveContinuousEdit(program, kind, previous, args) {
   const titleVisible = titleMode === false ? false
     : titleMode === undefined ? previous.titleVisible !== false : true;
   const layer = findLayer(program, previous.target);
-  const inferred = layer?.encoding?.[kind === "gradient" ? "color" : "opacity"]?.field;
+  const channel = kind === "gradient" ? "color"
+    : kind === "strokeGradient" ? "stroke" : "opacity";
+  const inferred = layer?.encoding?.[channel]?.field;
   const title = titleMode === "auto"
     ? inferred
     : typeof titleMode === "string" ? titleMode : previous.title;
@@ -111,14 +120,14 @@ function resolveContinuousEdit(program, kind, previous, args) {
       itemGap: args.itemGap ?? (enteringInline ? 20 : previous.itemGap),
       symbol: args.symbol ?? previous.symbol
     } : {})
-  }, kind);
+  }, gradient ? "gradient" : kind);
   const config = {
     ...previous,
     ...normalized,
     inferredTitle,
     titleVisible
   };
-  if (kind === "gradient") {
+  if (gradient) {
     const gradient = mergeObject(previous.gradient, args.gradient);
     validatePositive(gradient.length, "Gradient length");
     validatePositive(gradient.thickness, "Gradient thickness");
@@ -131,24 +140,29 @@ function resolveContinuousEdit(program, kind, previous, args) {
 
 function editContinuous(program, kind, previous, args) {
   const { config, titleMode, title, titleVisible } = resolveContinuousEdit(program, kind, previous, args);
-  const prefix = kind === "gradient" ? "colorGradient" : "opacityLegend";
+  const prefix = kind === "gradient" ? "colorGradient"
+    : kind === "strokeGradient" ? "strokeGradient" : "opacityLegend";
+  const semanticKind = kind === "gradient" ? "color"
+    : kind === "strokeGradient" ? "stroke" : "opacity";
   let next = program;
   if (titleMode === "auto" || typeof titleMode === "string") {
     next = next.editSemantic({
-      property: `guide.legend.${kind === "gradient" ? "color" : "opacity"}.title`,
+      property: `guide.legend.${semanticKind}.title`,
       value: title
     });
   }
   next = next._withLegendConfig(kind, config);
   next = reconcileGraphic(next, `${prefix}Background`, config.border !== false, {
     type: "rect",
-    before: kind === "gradient" ? "colorGradientStrips" : "opacityLegendSymbols"
+    before: ["gradient", "strokeGradient"].includes(kind)
+      ? `${prefix}Strips`
+      : "opacityLegendSymbols"
   });
   next = reconcileGraphic(next, `${prefix}Title`, titleVisible, { type: "text" });
   return next.rematerializeLegend();
 }
 
-function resolveIntervalEdit(program, previous, args) {
+function resolveIntervalEdit(program, previous, args, channel = "color") {
   for (const key of Object.keys(args)) {
     if (![
       "target", "position", "align", "direction", "offset", "title",
@@ -166,7 +180,7 @@ function resolveIntervalEdit(program, previous, args) {
     ? false
     : titleMode === undefined ? previous.titleVisible !== false : true;
   const title = titleMode === "auto"
-    ? layer?.encoding?.color?.field
+    ? layer?.encoding?.[channel]?.field
     : typeof titleMode === "string" ? titleMode : previous.title;
   const normalized = normalizeIntervalLegend({
     target: previous.target,
@@ -185,29 +199,45 @@ function resolveIntervalEdit(program, previous, args) {
     itemGap: args.itemGap ?? previous.itemGap,
     border: mergeBorder(previous.border, args.border)
   });
-  const config = { ...previous, ...normalized, inferredTitle, titleVisible };
-  const resolved = resolveIntervalConfig(program, config);
-  resolveIntervalLayout(program, resolved.config, resolved.scale);
+  const config = {
+    ...previous,
+    ...normalized,
+    inferredTitle,
+    titleVisible,
+    ...(channel === "stroke" && args.symbol?.strokeWidth !== undefined
+      ? { inferredStrokeWidth: false }
+      : {})
+  };
+  const resolved = channel === "stroke"
+    ? resolveStrokeIntervalConfig(program, config)
+    : resolveIntervalConfig(program, config);
+  (channel === "stroke" ? resolveStrokeIntervalLayout : resolveIntervalLayout)(
+    program,
+    resolved.config,
+    resolved.scale
+  );
   return { normalized, config, titleMode, title, titleVisible };
 }
 
-function editInterval(program, previous, args) {
-  const { normalized, config, titleMode, title, titleVisible } = resolveIntervalEdit(program, previous, args);
-  let next = program._withLegendConfig("interval", config);
+function editInterval(program, previous, args, channel = "color") {
+  const kind = channel === "stroke" ? "strokeInterval" : "interval";
+  const prefix = channel === "stroke" ? "strokeInterval" : "colorLegend";
+  const { normalized, config, titleMode, title, titleVisible } = resolveIntervalEdit(program, previous, args, channel);
+  let next = program._withLegendConfig(kind, config);
   if (titleMode === "auto" || typeof titleMode === "string") {
     next = next.editSemantic({
-      property: "guide.legend.color.title",
+      property: `guide.legend.${channel}.title`,
       value: title
     });
   }
-  next = reconcileGraphic(next, "colorLegendTitle", titleVisible, {
+  next = reconcileGraphic(next, `${prefix}Title`, titleVisible, {
     type: "text"
   });
   next = reconcileGraphic(
     next,
-    "colorLegendBackground",
+    `${prefix}Background`,
     normalized.border !== false,
-    { type: "rect", before: "colorLegendSymbols" }
+    { type: "rect", before: `${prefix}Symbols` }
   );
   return next.rematerializeLegend();
 }
@@ -390,12 +420,12 @@ function editCategorical(program, kind, previous, size, args) {
   }
   next = next._withLegendConfig(kind, config);
   next = reconcileCategoricalSymbols(next, previous, config);
-  next = reconcileGraphic(next, `${kind === "series" ? "series" : "color"}LegendBackground`,
+  next = reconcileGraphic(next, `${kind}LegendBackground`,
     config.border !== false, {
       type: "rect",
       before: [...newSymbols][0]
     });
-  const titleId = `${kind === "series" ? "series" : "color"}LegendTitle`;
+  const titleId = `${kind}LegendTitle`;
   next = reconcileGraphic(next, titleId, titleVisible, {
     type: "text",
     ...(next.graphicSpec.objects.sizeLegendSymbols === undefined
@@ -416,16 +446,16 @@ function editLegendContent(program, target, args) {
   const removed = Object.keys(previous).filter(kind => previous[kind].target === target);
   let view = removed.reduce((next, kind) => next._withoutMaterializationConfig(["guides", "legend", kind]), program);
   const creation = resolveLegendCreationPlan(view, { target, channels });
-  const oldCategorical = removed.find(kind => ["series", "color"].includes(kind));
+  const oldCategorical = removed.find(kind =>
+    ["series", "color", "stroke"].includes(kind)
+  );
   const plans = creation.steps.map(step => {
     const descriptor = resolveLegendStepConfig(view, step);
     const { kind } = descriptor;
-    const otherCategorical = ["series", "color"].some(key => previous[key] !== undefined && previous[key].target !== target);
-    if (previous[kind] !== undefined && previous[kind].target !== target ||
-      ["series", "color"].includes(kind) && otherCategorical) {
+    if (previous[kind] !== undefined && previous[kind].target !== target) {
       throw new Error(`Legend ${kind} content already belongs to another target.`);
     }
-    if (["series", "color"].includes(kind) && oldCategorical !== undefined) {
+    if (["series", "color", "stroke"].includes(kind) && oldCategorical !== undefined) {
       const order = patch.order === undefined ? program.semanticSpec.guides.legend?.[oldCategorical]?.order
         : normalizeLegendOrder(patch.order);
       return { ...resolveCategoricalLegendRevision(view, oldCategorical, previous[oldCategorical],
@@ -433,7 +463,9 @@ function editLegendContent(program, target, args) {
     }
     return { ...descriptor, config: previous[kind]?.target === target ? previous[kind] : descriptor.config };
   });
-  const categorical = plans.find(plan => ["series", "color"].includes(plan.kind));
+  const categorical = plans.find(plan =>
+    ["series", "color", "stroke"].includes(plan.kind)
+  );
   const size = plans.find(plan => plan.kind === "size");
   if (categorical !== undefined) {
     if (size !== undefined && previous.size?.target !== target) {
@@ -453,7 +485,14 @@ function editLegendContent(program, target, args) {
     const plan = plans[0];
     if (plan.kind === "size" || plan.kind === "strokeWidth") {
       plan.config = resolveSampledLegendEdit(view, plan.kind, plan.config, patch).config;
-    } else if (plan.kind === "interval") plan.config = resolveIntervalEdit(view, plan.config, patch).config;
+    } else if (["interval", "strokeInterval"].includes(plan.kind)) {
+      plan.config = resolveIntervalEdit(
+        view,
+        plan.config,
+        patch,
+        plan.kind === "strokeInterval" ? "stroke" : "color"
+      ).config;
+    }
     else plan.config = resolveContinuousEdit(view, plan.kind, plan.config, patch).config;
   }
   // The complete final content and styles are validated before removing resources.
@@ -461,10 +500,14 @@ function editLegendContent(program, target, args) {
   if (categorical !== undefined) resolveLayout(view, categorical.config);
   let next = removeLegendKinds(program, removed);
   for (const { kind, config, order } of plans) {
-    if (["series", "color"].includes(kind)) next = createCategoricalLegendFromConfig(next, config, order);
+    if (["series", "color", "stroke"].includes(kind)) {
+      next = createCategoricalLegendFromConfig(next, config, order);
+    }
     else next = ({ size: createSizeLegendFromConfig, strokeWidth: createStrokeWidthLegendFromConfig,
       gradient: createGradientLegendFromConfig, opacity: createOpacityLegendFromConfig,
-      interval: createIntervalLegendFromConfig })[kind](next, config);
+      interval: createIntervalLegendFromConfig,
+      strokeGradient: createStrokeGradientLegendFromConfig,
+      strokeInterval: createStrokeIntervalLegendFromConfig })[kind](next, config);
   }
   return next.rematerializeLegend();
 }
@@ -485,9 +528,15 @@ export const editLegend = action(
     const target = resolveLegendTarget(this, args.target, "editLegend");
     if (args.channels !== undefined) return editLegendContent(this, target, args);
     const configs = this.guideConfigs.legend ?? {};
-    const categoricalKind = ["series", "color"].find(
+    const categoricalKinds = ["series", "color", "stroke"].filter(
       kind => configs[kind]?.target === target
     );
+    if (categoricalKinds.length > 1) {
+      throw new Error(
+        "editLegend requires channels when a target owns multiple categorical legend blocks."
+      );
+    }
+    const categoricalKind = categoricalKinds[0];
     if (categoricalKind !== undefined) {
       return editCategorical(
         this,
@@ -500,13 +549,16 @@ export const editLegend = action(
     if (configs.interval?.target === target) {
       return editInterval(this, configs.interval, args);
     }
+    if (configs.strokeInterval?.target === target) {
+      return editInterval(this, configs.strokeInterval, args, "stroke");
+    }
     if (configs.strokeWidth?.target === target) {
       return editSampledLegend(this, "strokeWidth", configs.strokeWidth, args);
     }
     if (configs.size?.target === target) {
       return editSampledLegend(this, "size", configs.size, args);
     }
-    const continuousKind = ["gradient", "opacity"].find(
+    const continuousKind = ["gradient", "strokeGradient", "opacity"].find(
       kind => configs[kind]?.target === target
     );
     return editContinuous(this, continuousKind, configs[continuousKind], args);

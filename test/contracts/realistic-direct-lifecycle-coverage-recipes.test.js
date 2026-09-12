@@ -100,7 +100,7 @@ const REMOVAL_SWEEP_TEST_NAME =
 const REMOVAL_ANALYSIS_QUESTION =
   "How does the selected measure vary across stable selected source-record order and authentic source categories?";
 const REMOVAL_CHANNELS = Object.freeze([
-  "color", "group", "opacity", "radius", "size", "strokeDash", "strokeWidth",
+  "color", "stroke", "group", "opacity", "radius", "size", "strokeDash", "strokeWidth",
   "text", "theta", "x", "x2", "xOffset", "y", "y2", "yOffset"
 ]);
 const DIRECT_COVERAGE_TAIL_IDS = Object.freeze([

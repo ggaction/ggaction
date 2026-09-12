@@ -10,7 +10,7 @@ title: Categorical and Size Legends
 ## `createLegend(options?)`
 
 Creates inferred legend blocks. It supports combined line-series,
-color-stacked histogram, grouped ordinal-bar, grouped area, composite point-series,
+color-stacked histogram, grouped ordinal-bar, grouped area, independent stroke, composite point-series,
 quantitative point-size, continuous-color gradient, and field-opacity legends.
 It also infers interval swatches for quantize, quantile, and threshold point
 color scales.
@@ -41,6 +41,10 @@ does not add a size block. Sample `count` requires size to be selected in a
 categorical request and requires a continuous size scale. Encodings and mark
 appearance remain unchanged.
 
+Stroke may be selected independently with `channels: ["stroke"]`. When Point
+fill and outline use different fields, create separate color and stroke blocks;
+their domains, titles, symbols, edits, highlighting, and removal stay independent.
+
 Omitting `channels` on a point mark infers its encoded categorical color, shape,
 and quantitative size. Color alone uses swatches; shape uses typed symbols;
 color plus size and shape plus size each create both corresponding blocks.
@@ -51,7 +55,7 @@ Every categorical legend uses the same right-side default:
 
 | Mark | Channels | Position | Symbol |
 | --- | --- | --- | --- |
-| line | encoded `color` and/or `strokeDash` | `right` | line |
+| line | encoded `color`, `stroke`, and/or `strokeDash` | `right` | line |
 | bar histogram | `color` | `right` | swatch |
 | grouped ordinal bar | `color` | `right` | swatch |
 | grouped area | `color` | `right` | swatch |
@@ -61,6 +65,7 @@ Every categorical legend uses the same right-side default:
 | quantitative point size | `size` | all four edges, standalone or combined | five equal-area circles |
 | quantitative/temporal point color | `color` | `right` | continuous gradient with five labels |
 | discretized quantitative point color | `color` | `right/left/top/bottom` | ordered interval swatches |
+| categorical supported-mark stroke | `stroke` | `right/left/top/bottom` | actual fill with mapped outline |
 | quantitative point opacity | `opacity` | `right` | five constant-size circles with sampled opacity |
 
 A shape-only point legend also works when the chart contains unrelated lines.

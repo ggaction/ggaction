@@ -47,8 +47,8 @@ test("derives immutable means in ordinal x appearance order", () => {
     xValues: [1850, 1860],
     yValues: [3, 9],
     values: [
-      { x: 1850, y: 3, count: 2 },
-      { x: 1860, y: 9, count: 2 }
+      { x: 1850, y: 3, sourceIndices: [0, 2], count: 2 },
+      { x: 1860, y: 9, sourceIndices: [1, 3], count: 2 }
     ]
   });
   assert.equal(Object.isFrozen(derived.values[0]), true);

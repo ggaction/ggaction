@@ -1,8 +1,5 @@
 import { action } from "../../core/action.js";
-import {
-  validateRuleStroke,
-  validateRuleStrokeWidth
-} from "../../grammar/ruleAppearance.js";
+import { validateRuleStrokeWidth } from "../../grammar/ruleAppearance.js";
 import { readQuantitativeField } from "../../grammar/scales/index.js";
 import { resolveStrokeWidthScaleDefinition } from "../scales/definitions.js";
 import {
@@ -18,27 +15,9 @@ import { findLayer } from "../../selectors/layers.js";
 import { validatePathSeriesAppearance } from "../../grammar/pathSeries.js";
 import { assertEncodingSelectionCompatibility } from "../../materialization/selection/compatibility.js";
 
-const STROKE_OPTIONS = Object.freeze(["target", "value"]);
 const WIDTH_OPTIONS = Object.freeze([
   "target", "value", "field", "fieldType", "scale"
 ]);
-
-const encodeStroke = action(
-  {
-    op: "encodeStroke",
-    description: "Set a constant graphical stroke on a rule mark."
-  },
-  function (args = {}) {
-    validateOptions(args, STROKE_OPTIONS, "encodeStroke");
-    const { id } = resolveTarget(this, args.target, ["rule"], "rule mark");
-    return this
-      ._withMarkConfig(id, {
-        ...this.markConfigs[id],
-        stroke: validateRuleStroke(args.value)
-      })
-      .rematerializeRuleMark({ id });
-  }
-);
 
 const encodeStrokeWidth = action(
   {
@@ -119,6 +98,5 @@ const encodeStrokeWidth = action(
 );
 
 export function registerRuleAppearanceEncodingActions(ProgramClass) {
-  ProgramClass.prototype.encodeStroke = encodeStroke;
   ProgramClass.prototype.encodeStrokeWidth = encodeStrokeWidth;
 }

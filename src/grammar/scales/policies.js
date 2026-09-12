@@ -9,9 +9,9 @@ export function validateScaleUnknown(channel, value) {
     }
     return value;
   }
-  if (channel === "color") {
+  if (["color", "stroke"].includes(channel)) {
     if (typeof value !== "string" || value.length === 0) {
-      throw new TypeError("Scale unknown for color must be a non-empty color string.");
+      throw new TypeError(`Scale unknown for ${channel} must be a non-empty color string.`);
     }
     return value;
   }

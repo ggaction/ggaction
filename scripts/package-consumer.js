@@ -106,6 +106,27 @@ async function testNodeConsumer(directory) {
     );
     assert.equal(typeof render, "function");
     assert.equal(program.graphicSpec.objects.point.items.length, 2);
+    const stroked = chart()
+      .createCanvas({
+        width: 500,
+        height: 300,
+        margin: { top: 40, right: 160, bottom: 40, left: 40 }
+      })
+      .createData({ values: [
+        { x: 0, y: 0, outline: "A" },
+        { x: 1, y: 1, outline: "B" }
+      ] })
+      .createPointMark({ id: "strokedPoints", stroke: "black", strokeWidth: 2 })
+      .encodeX({ field: "x" })
+      .encodeY({ field: "y" })
+      .encodeStroke({ field: "outline" })
+      .createLegend({ channels: ["stroke"] })
+      .editStrokeScale({ target: "strokedPoints", range: ["#ff0000", "#0000ff"] });
+    assert.deepEqual(
+      stroked.graphicSpec.objects.strokedPoints.items.map(item => item.properties.stroke),
+      ["#ff0000", "#0000ff"]
+    );
+    assert.equal(stroked.semanticSpec.guides.legend.stroke.scale, "stroke");
     const themed = program.applyTheme({ theme: "dark" });
     assert.equal(themed.graphicSpec.objects.canvas.properties.background, "#0f172a");
     assert.equal(themed.graphicSpec.objects.point.items[0].properties.fill, "#60a5fa");
@@ -1712,8 +1733,8 @@ async function testMcpConsumer(directory) {
     actionCardSchema.properties?.schemaVersion?.const !== 3 ||
     actionCardsSchema.properties?.schemaVersion?.const !== 3 ||
     actionCards.schemaVersion !== 3 ||
-    actionCards.count !== 266 ||
-    actionCards.cards.length !== 266 ||
+    actionCards.count !== 267 ||
+    actionCards.cards.length !== 267 ||
     actionCards.packageVersion !== installedPackage.version
   ) {
     throw new Error("Installed action-card discovery contract is missing or stale.");
@@ -1742,6 +1763,10 @@ async function testMcpConsumer(directory) {
   if (installedCards.get("editParallelScale")?.signature !==
     "editParallelScale(options: EditParallelScaleOptions): ChartProgram;") {
     throw new Error("Installed Parallel scale editing metadata is stale.");
+  }
+  if (installedCards.get("editStrokeScale")?.signature !==
+    "editStrokeScale(options: EditStrokeScaleOptions): ChartProgram;") {
+    throw new Error("Installed stroke scale editing metadata is stale.");
   }
   if (
     installedCards.get("editXOffsetScale")?.signature !==
@@ -1980,6 +2005,8 @@ async function testTypeScriptConsumer(directory) {
       type RepeatChartsOptions,
       type ShapeScaleOptions,
       type SizeScaleOptions,
+      type StrokeEncodingOptions,
+      type EditStrokeScaleOptions,
       type StrokeWidthEncodingOptions,
       type ThetaEncodingOptions,
       type ThetaScaleOptions,
@@ -3272,6 +3299,30 @@ async function testTypeScriptConsumer(directory) {
       .encodeY({ field: "y", fieldType: "quantitative" })
       .encodeStrokeWidth(strokeWidthOptions)
       .createLegend({ channels: ["strokeWidth"] });
+    const strokeOptions: StrokeEncodingOptions = {
+      field: "outline",
+      scale: { domain: ["A", "B"], range: ["red", "blue"] }
+    };
+    const strokeEdit: EditStrokeScaleOptions = {
+      target: "typedStroke",
+      palette: "set2"
+    };
+    const typedStroke: ChartProgram = chart()
+      .createCanvas()
+      .createData({ values: [
+        { x: 0, y: 0, outline: "A" },
+        { x: 1, y: 1, outline: "B" }
+      ] })
+      .createPointMark({ id: "typedStroke" })
+      .encodeX({ field: "x" })
+      .encodeY({ field: "y" })
+      .encodeStroke(strokeOptions)
+      .editStrokeScale(strokeEdit)
+      .createLegend({ channels: ["stroke"] });
+    // @ts-expect-error stroke scale editing requires a mark target
+    typedStroke.editStrokeScale({ palette: "set1" });
+    // @ts-expect-error stroke scale editing rejects raw scale ids
+    typedStroke.editStrokeScale({ target: "typedStroke", id: "stroke", palette: "set1" });
     weightedRules.editLegendLayout({ position: "top", layout: "edge", columns: 3, direction: "vertical", titlePosition: "left" })
       .editLegend({ border: { padding: 8 }, title: false });
     const jitterOffset: JitterMaxOffset = { pixels: 2 };
@@ -3341,6 +3392,7 @@ async function testTypeScriptConsumer(directory) {
     void arcs;
     void weightedArcs;
     void weightedRules;
+    void typedStroke;
     void jittered;
     void packed;
     void pointLayer;
@@ -3512,6 +3564,7 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.a
       "parallel-coordinates",
       "parallel-dimension-scale-editing",
       "offset-scale-editing",
+      "stroke-color-encoding-and-legends",
       "facet-grid-repeat-and-named-composition-editing",
       "horizon",
       "violin-plot",

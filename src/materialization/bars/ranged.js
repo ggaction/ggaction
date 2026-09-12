@@ -1,4 +1,10 @@
-import { mapContinuousScaleValues, mapOrdinalPositionValues, mapOrdinalValues } from "../../grammar/scales/index.js";
+import {
+  mapContinuousScaleValues,
+  mapOrdinalPositionValues,
+  mapOrdinalValues,
+  readScaleField
+} from "../../grammar/scales/index.js";
+import { mapScaleConsumerValues } from "../scales/map.js";
 import { resolveBarWidth } from "../../grammar/bars/geometry.js";
 import {
   DEFAULT_BAR_FILL,
@@ -36,6 +42,14 @@ export function deriveRangedRectangles(required, program, width) {
   const appearanceConfig = color === undefined
     ? config
     : { ...config, stroke: undefined };
+  const stroke = layer.encoding?.stroke;
+  const strokes = stroke === undefined ? undefined : mapScaleConsumerValues(
+    readScaleField(dataset.values, stroke.field, stroke.fieldType, {
+      temporalUnit: stroke.temporalUnit
+    }),
+    program.resolvedScales[stroke.scale],
+    "stroke"
+  );
   return dataset.values.map((_, index) => vertical ? {
     x: centers[index] - band / 2, y: Math.min(first[index], second[index]), width: band,
     height: Math.abs(second[index] - first[index]), fill: fills[index],
@@ -44,7 +58,8 @@ export function deriveRangedRectangles(required, program, width) {
       undefined,
       color === undefined ? DEFAULT_BAR_STROKE : fills[index],
       1
-    )
+    ),
+    ...(strokes === undefined ? {} : { stroke: strokes[index] })
   } : {
     x: Math.min(first[index], second[index]), y: centers[index] - band / 2,
     width: Math.abs(second[index] - first[index]), height: band, fill: fills[index],
@@ -53,6 +68,7 @@ export function deriveRangedRectangles(required, program, width) {
       undefined,
       color === undefined ? DEFAULT_BAR_STROKE : fills[index],
       1
-    )
+    ),
+    ...(strokes === undefined ? {} : { stroke: strokes[index] })
   });
 }

@@ -52,9 +52,10 @@ export const rematerializeScale = action(
       ) {
         continue;
       }
+      const consumerChannel = consumer.channel;
       const materializationMode = getScaleConsumerMaterializationMode(
         consumer.layer,
-        channel
+        consumerChannel
       );
       if (materializationMode === "rematerialize") {
         if (args.marks !== false) {
@@ -71,8 +72,8 @@ export const rematerializeScale = action(
       }
       next = next.editGraphics({
         target: consumer.layer.id,
-        property: channel === "color" ? "fill" : channel,
-        value: mapScaleConsumerValues(values, resolvedScale, channel)
+        property: consumerChannel === "color" ? "fill" : consumerChannel,
+        value: mapScaleConsumerValues(values, resolvedScale, consumerChannel)
       });
     }
 

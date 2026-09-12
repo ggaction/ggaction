@@ -46,10 +46,16 @@ function legendTranslation(prepared, plot, layout) {
       y: layout.legend.y - prepared.bounds.top
     };
   }
-  const strips = prepared.source.graphicSpec.objects.colorGradientStrips;
+  const gradientKind = prepared.kinds?.find(kind =>
+    ["gradient", "strokeGradient"].includes(kind)
+  );
+  const prefix = gradientKind === "strokeGradient"
+    ? "strokeGradient"
+    : "colorGradient";
+  const strips = prepared.source.graphicSpec.objects[`${prefix}Strips`];
   if (strips?.items?.[0] !== undefined) {
     const properties = strips.items[0].properties;
-    const length = prepared.source.guideConfigs.legend.gradient.gradient.length;
+    const length = prepared.source.guideConfigs.legend[gradientKind].gradient.length;
     return {
       x: layout.legend.x - (position === "left"
         ? prepared.bounds.left

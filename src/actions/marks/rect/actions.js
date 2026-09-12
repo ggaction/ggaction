@@ -116,7 +116,7 @@ const rematerializeRectMark = action(
     }
     let next = this;
     if (args.scales !== false) {
-      const ids = new Set(["x", "y", "x2", "y2", "color"].flatMap(channel => {
+      const ids = new Set(["x", "y", "x2", "y2", "color", "stroke"].flatMap(channel => {
         const scale = layer.encoding?.[channel]?.scale;
         return scale === undefined ? [] : [scale];
       }));
@@ -142,6 +142,11 @@ const editRectMark = action(
     const layer = requireRectLayer(this, args.target, "editRectMark");
     if (Object.hasOwn(args, "fill") && layer.encoding?.color !== undefined) {
       throw new Error("editRectMark fill cannot be combined with a color encoding.");
+    }
+    if (Object.hasOwn(args, "stroke") && layer.encoding?.stroke !== undefined) {
+      throw new Error(
+        "editRectMark stroke conflicts with a field encoding; use encodeStroke with value to replace it."
+      );
     }
     const next = this._withMarkConfig(
       layer.id,

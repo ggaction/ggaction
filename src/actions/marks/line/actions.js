@@ -214,7 +214,7 @@ const rematerializeLineMark = action(
     }
     let resolved = this;
     if (args.scales !== false) {
-      const appearance = ["color", "strokeDash", "strokeWidth", "opacity"]
+      const appearance = ["color", "stroke", "strokeDash", "strokeWidth", "opacity"]
         .map(channel => layer.encoding?.[channel]?.scale).filter(scale => scale !== undefined);
       for (const scale of [...positions, ...appearance]) {
         resolved = resolved.rematerializeScale({ id: scale });
@@ -269,9 +269,12 @@ const editLineMark = action(
       predicate: candidate => candidate.mark?.type === "line",
       label: "line mark"
     });
-    if (Object.hasOwn(args, "stroke") && layer.encoding?.color !== undefined) {
+    if (Object.hasOwn(args, "stroke") && (
+      layer.encoding?.color !== undefined ||
+      layer.encoding?.stroke !== undefined
+    )) {
       throw new Error(
-        "editLineMark stroke cannot be combined with a color encoding."
+        "editLineMark stroke cannot be combined with a color encoding or a stroke encoding; use encodeStroke with value to replace it."
       );
     }
     for (const channel of ["strokeWidth", "opacity"]) {

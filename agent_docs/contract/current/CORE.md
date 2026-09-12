@@ -1432,7 +1432,7 @@ type EditableCurrentScale = {
 
 - Implemented family: `editXScale`, `editYScale`, `editXOffsetScale`,
   `editYOffsetScale`, `editParallelScale`, `editThetaScale`, `editRScale`,
-  `editColorScale`, `editSizeScale`, `editOpacityScale`, `editShapeScale`,
+  `editColorScale`, `editStrokeScale`, `editSizeScale`, `editOpacityScale`, `editShapeScale`,
   `editStrokeWidthScale`, and `editStrokeDashScale`.
 - Each action accepts the scale properties valid for its named channel plus
   optional `id` and `target`. At least one scale property is required. `editRScale`
@@ -1454,6 +1454,9 @@ type EditableCurrentScale = {
   and supported explicit `undefined` follows the underlying `editScale` removal
   contract.
 - Available in the Full entry. Basic retains its smaller scale surface.
+- `editStrokeScale` is the deliberate selector exception: `target` is required and raw `id`
+  selection is rejected. A color/stroke shared scale is compatible when every consumer accepts the
+  resulting color family; the edit refreshes both channels without treating stroke as a color alias.
 - Evidence: `test/unit/actions/scales/channel-scale-editors.test.js` and
   `test/contracts/channel-scale-editor-types.test.js`.
 
@@ -1617,6 +1620,26 @@ type EditableCurrentScale = {
 ### Value coverage — `editColorScale`
 
 - ✅ Covered: current, target, explicit ID, unique shared-scale inference, palette and legend refresh, ambiguity, orphan/wrong-channel rejection, and immutable failures. Evidence: `test/unit/actions/scales/channel-scale-editors.test.js`, `test/contracts/channel-scale-editor-types.test.js`.
+
+## `editStrokeScale`
+
+- Implemented: edits the categorical, sequential, or discretized color scale bound to one target mark's
+  field-driven stroke. `target` is mandatory; `id`, current-mark inference, and program-wide unique-scale
+  inference are intentionally absent.
+- A scale explicitly shared by color and stroke is accepted when all consumers support the requested
+  scale family. The edit rematerializes every connected mark and active stroke/color guide atomically.
+
+### Formal values — `editStrokeScale`
+
+- Implemented: `editStrokeScale({ target: UserId } & Omit<EditColorScaleOptions, "id" | "target">)`.
+- Proposed (NOT IMPLEMENTED): selector by raw scale ID.
+
+### Value coverage — `editStrokeScale`
+
+- ✅ Covered: required target, categorical range changes, sequential↔discretized family changes,
+  gradient↔interval legend transitions, compatible color/stroke sharing, wrong/missing target or scale,
+  strict type rejection, and immutable incompatible edits. Evidence: `test/contracts/stroke-color.test.js`,
+  `test/contracts/channel-scale-editor-types.test.js`.
 
 ## `editSizeScale`
 

@@ -158,21 +158,22 @@ export function resolvePositionScaleDefinition(
   return withScaleUnknown(scale, { ...existing, ...options }, channel);
 }
 
-export function resolveColorScaleDefinition(program, options) {
+export function resolveColorScaleDefinition(program, options, channel = "color") {
   optionsObject(options);
   validateKeys(options, COLOR_OPTIONS, "scale");
   validatePaletteRange(options);
-  const id = validateUserId(options.id ?? "color", "Scale id");
+  const id = validateUserId(options.id ?? channel, "Scale id");
   const existing = findSemanticScale(program, id);
+  const previous = existing?.type === "ordinal" ? existing : undefined;
   const range = options.palette === undefined
     ? options.range
     : { palette: options.palette };
   return withScaleUnknown({
     id,
-    type: validateOrdinalScaleType(options.type ?? existing?.type ?? "ordinal"),
-    domain: validateOrdinalDomain(options.domain ?? existing?.domain ?? "auto"),
-    range: validateColorRange(range ?? existing?.range ?? "auto")
-  }, { ...existing, ...options }, "color");
+    type: validateOrdinalScaleType(options.type ?? previous?.type ?? "ordinal"),
+    domain: validateOrdinalDomain(options.domain ?? previous?.domain ?? "auto"),
+    range: validateColorRange(range ?? previous?.range ?? "auto")
+  }, { ...previous, ...options }, channel);
 }
 
 function continuousDomain(value, fieldType) {
@@ -193,14 +194,16 @@ function continuousDomain(value, fieldType) {
 export function resolveSequentialColorScaleDefinition(
   program,
   fieldType,
-  options
+  options,
+  channel = "color"
 ) {
   optionsObject(options);
   validateKeys(options, SEQUENTIAL_COLOR_OPTIONS, "scale");
   validatePaletteRange(options);
-  const id = validateUserId(options.id ?? "color", "Scale id");
+  const id = validateUserId(options.id ?? channel, "Scale id");
   const existing = findSemanticScale(program, id);
-  const type = options.type ?? existing?.type ?? "sequential";
+  const previous = existing?.type === "sequential" ? existing : undefined;
+  const type = options.type ?? previous?.type ?? "sequential";
   if (type !== "sequential") {
     throw new Error(`Unsupported continuous color scale type "${type}".`);
   }
@@ -211,16 +214,16 @@ export function resolveSequentialColorScaleDefinition(
   const scale = {
     id,
     type,
-    domain: continuousDomain(options.domain ?? existing?.domain ?? "auto", fieldType),
+    domain: continuousDomain(options.domain ?? previous?.domain ?? "auto", fieldType),
     range: validateSequentialColorRange(
-      requestedRange ?? existing?.range ?? { palette: "viridis" }
+      requestedRange ?? previous?.range ?? { palette: "viridis" }
     ),
     interpolate: validateContinuousColorInterpolation(
-      options.interpolate ?? existing?.interpolate ?? "rgb"
+      options.interpolate ?? previous?.interpolate ?? "rgb"
     )
   };
   const midpoint = validateSequentialMidpoint(
-    Object.hasOwn(options, "midpoint") ? options.midpoint : existing?.midpoint, type, scale.domain
+    Object.hasOwn(options, "midpoint") ? options.midpoint : previous?.midpoint, type, scale.domain
   );
   if (midpoint !== undefined) {
     if (fieldType !== "quantitative") {
@@ -229,30 +232,34 @@ export function resolveSequentialColorScaleDefinition(
     scale.midpoint = midpoint;
   }
   return withScaleUnknown(
-    assignOptions(scale, options, existing, CLAMP_REVERSE),
-    { ...existing, ...options },
-    "color"
+    assignOptions(scale, options, previous, CLAMP_REVERSE),
+    { ...previous, ...options },
+    channel
   );
 }
 
 export function resolveQuantitativeColorScaleDefinition(
   program,
   fieldType,
-  options
+  options,
+  channel = "color"
 ) {
   optionsObject(options);
-  const type = options.type ?? findSemanticScale(
-    program,
-    options.id ?? "color"
-  )?.type ?? "sequential";
-  const existing = findSemanticScale(program, options.id ?? "color");
-  if (existing !== undefined && existing.type !== type) {
+  const existing = findSemanticScale(program, options.id ?? channel);
+  const existingContinuous = existing !== undefined && (
+    existing.type === "sequential" ||
+    ["quantize", "quantile", "threshold"].includes(existing.type)
+  );
+  const type = options.type ?? (
+    existingContinuous ? existing.type : "sequential"
+  );
+  if (existingContinuous && existing.type !== type) {
     validateKeys(options, type === "sequential" ? SEQUENTIAL_COLOR_OPTIONS : [...COLOR_OPTIONS, ...CLAMP_REVERSE], "scale");
     if (fieldType !== "quantitative") throw new Error("Color scale type transition requires quantitative color.");
-    return { id: existing.id, ...prepareScaleEdit(program, existing, "color", [], options) };
+    return { id: existing.id, ...prepareScaleEdit(program, existing, channel, [], options) };
   }
   if (type === "sequential") {
-    return resolveSequentialColorScaleDefinition(program, fieldType, options);
+    return resolveSequentialColorScaleDefinition(program, fieldType, options, channel);
   }
   validateKeys(options, [...COLOR_OPTIONS, ...CLAMP_REVERSE], "scale");
   if (fieldType !== "quantitative") {
@@ -261,7 +268,7 @@ export function resolveQuantitativeColorScaleDefinition(
   validateScaleTypeForRole(type, SCALE_ROLES.discretizedColor);
   validatePaletteRange(options);
   validateBooleanOptions(options, CLAMP_REVERSE, type);
-  const id = validateUserId(options.id ?? "color", "Scale id");
+  const id = validateUserId(options.id ?? channel, "Scale id");
   const previous = existing?.type === type ? existing : undefined;
   const requestedRange = options.palette === undefined
     ? options.range
@@ -280,7 +287,7 @@ export function resolveQuantitativeColorScaleDefinition(
   return withScaleUnknown(
     assignOptions(scale, options, previous, CLAMP_REVERSE),
     { ...existing, ...options },
-    "color"
+    channel
   );
 }
 

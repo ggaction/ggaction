@@ -5,6 +5,7 @@ import {
   removeOpacityLegend
 } from "./opacity.js";
 import { createIntervalLegend, rematerializeIntervalLegend } from "./interval.js";
+import { registerStrokeColorLegendActions } from "./stroke.js";
 
 export { createGradientLegend, rematerializeGradientLegend } from "./gradient.js";
 export {
@@ -20,6 +21,7 @@ export function registerContinuousLegendActions(ProgramClass) {
   ProgramClass.prototype.rematerializeOpacityLegend = rematerializeOpacityLegend;
   ProgramClass.prototype.removeOpacityLegend = removeOpacityLegend;
   registerIntervalLegendActions(ProgramClass);
+  registerStrokeColorLegendActions(ProgramClass);
 }
 
 export function registerGradientLegendActions(ProgramClass) {

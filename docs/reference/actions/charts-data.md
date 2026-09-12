@@ -167,7 +167,7 @@ without changing child programs or facet value order.
 ## `editFacetScales`
 
 ```javascript
-editFacetScales({ x?, y?, xOffset?, yOffset?, color?, size?, shape?, opacity?, strokeDash? })
+editFacetScales({ x?, y?, xOffset?, yOffset?, color?, stroke?, size?, shape?, opacity?, strokeDash? })
 ```
 
 Partially change used facet channels between `"shared"` and `"independent"`.

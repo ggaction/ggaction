@@ -28,8 +28,8 @@ appearance values. Encodings create compatible scales automatically; use
 | Ordinal appearance/offset | First-appearance order | Palette, patterns, or parent band | explicit domain/range |
 | Continuous size | Numeric extent | Area `[24, 196]` | `linear`, `log`, `sqrt`, `pow`, `clamp`, `reverse` |
 | Discrete size | Type-specific samples or cuts | Explicit nondecreasing areas | `quantize`, `quantile`, `threshold`, `reverse` |
-| Color/strokeDash | First-appearance order | Built-in palette/patterns | palette or explicit range |
-| Sequential/discretized color | Type-specific numeric boundaries | `viridis` or explicit colors | `interpolate`, `clamp`, `reverse` |
+| Color/stroke/strokeDash | First-appearance order | Built-in palette/patterns | palette or explicit range |
+| Sequential/discretized color or stroke | Type-specific numeric boundaries | `viridis` or explicit colors | `interpolate`, `clamp`, `reverse` |
 
 Encoding actions accept a nested `scale` object. Omitted properties use channel
 defaults and stored program state.
@@ -55,11 +55,12 @@ program
   .editXScale({ domain: [0, 100], nice: true })
   .editYScale({ zero: false })
   .editColorScale({ palette: "set2" })
+  .editStrokeScale({ target: "points", palette: "set1" })
   .editSizeScale({ range: [20, 200] });
 ```
 
 The complete family is `editXScale`, `editYScale`, `editThetaScale`,
-`editRScale`, `editColorScale`, `editSizeScale`, `editOpacityScale`,
+`editRScale`, `editColorScale`, `editStrokeScale`, `editSizeScale`, `editOpacityScale`,
 `editShapeScale`, `editStrokeWidthScale`, and `editStrokeDashScale`.
 `editRScale` means Polar radial position; point glyph radius remains a constant
 appearance action.
@@ -72,7 +73,7 @@ an explicit destination domain, and entering a discrete family also requires a
 new range. Use `reverse` to reverse area assignment while retaining domain and
 legend-label order.
 
-Each focused editor accepts an optional `id`, `target`, or both. A supplied pair
+Most focused editors accept an optional `id`, `target`, or both. A supplied pair
 must agree. Without selectors, ggaction first uses the current mark's scale for
 that channel, then a unique channel scale across the program. Multiple marks
 sharing one scale remain unambiguous; multiple scale IDs require a selector.
@@ -80,6 +81,11 @@ The scale must actually be bound to the named channel, so a position scale named
 `color` is rejected by `editColorScale`. Use generic `editScale` for unattached
 named scales. Successful focused edits run through `editScale`, including shared
 mark, axis, grid, and legend refresh.
+
+`editStrokeScale` requires `target` and does not accept `id`. Color and stroke
+use independent generated scale IDs. Authors may explicitly give them the same
+scale ID when every consumer has a compatible field type and color-scale family;
+focused stroke edits then refresh both sets of consumers.
 
 Advanced authors can create a named unattached scale with the same complete
 type vocabulary:
@@ -142,7 +148,8 @@ and guides. A band can be shared by bars and point centers, but changing it to
 
 ## Errors and limitations
 
-One scale cannot be shared across different channels. Explicit domains must
+One scale cannot be shared across unrelated channels. Color and stroke are the
+supported appearance-sharing exception and still keep independent IDs by default. Explicit domains must
 contain every observed value required by ordinal consumers. A successful edit
 rematerializes connected marks and guides; a failed edit leaves the earlier
 immutable program unchanged.

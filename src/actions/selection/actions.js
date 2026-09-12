@@ -2,7 +2,7 @@ import { action } from "../../core/action.js";
 import { validateUserId } from "../../core/identifiers.js";
 import { isPlainObject } from "../../core/immutable.js";
 import { validateKeys } from "../../core/validation.js";
-import { resolveEligibleLayer } from "../../selectors/layers.js";
+import { findLayer, resolveEligibleLayer } from "../../selectors/layers.js";
 import { transformPointHighlightChild } from "../../materialization/selection/point.js";
 import {
   transformPathHighlightProperties,
@@ -58,32 +58,38 @@ function resolveTarget(program, target, label = "mark selection") {
 }
 
 function hasLegendSelection(program, target, selection) {
-  const legend = program.guideConfigs.legend?.series ??
-    program.guideConfigs.legend?.color;
   const selector = program.materializationConfigs.selections?.[selection]?.selector;
-  return legend?.target === target &&
-    selector?.field !== undefined &&
-    selector.field === legend.field;
+  const layer = findLayer(program, target);
+  const field = selector?.field ?? layer?.encoding?.[selector?.channel]?.field;
+  if (field === undefined) return false;
+  return ["series", "color", "stroke"].some(kind => {
+    const legend = program.guideConfigs.legend?.[kind];
+    return legend?.target === target && legend.field === field &&
+      (selector?.channel === undefined || legend.channels.includes(selector.channel));
+  });
 }
 
-function categoricalLegendKind(program, target) {
-  return ["series", "color"].find(
+function categoricalLegendKinds(program, target) {
+  return ["series", "color", "stroke"].filter(
     kind => program.guideConfigs.legend?.[kind]?.target === target
   );
 }
 
 function resetCategoricalLegendSymbols(program, target) {
-  const kind = categoricalLegendKind(program, target);
-  if (kind === undefined) return program;
+  const kinds = categoricalLegendKinds(program, target);
+  if (kinds.length === 0) return program;
   let next = program;
-  for (const id of legendGraphicIds(kind).filter(id => id.includes("Symbol"))) {
-    const graphic = next.graphicSpec.objects[id];
-    if (graphic === undefined) continue;
-    next = graphic.type === "collection"
-      ? next.editGraphics({ target: id, property: "items", value: [] })
-      : next.editGraphics({ target: id, property: "length", value: 0 });
+  for (const kind of kinds) {
+    for (const id of legendGraphicIds(kind).filter(id => id.includes("Symbol"))) {
+      const graphic = next.graphicSpec.objects[id];
+      if (graphic === undefined) continue;
+      next = graphic.type === "collection"
+        ? next.editGraphics({ target: id, property: "items", value: [] })
+        : next.editGraphics({ target: id, property: "length", value: 0 });
+    }
+    next = next.rematerializeLegendSymbols({ kind });
   }
-  return next.rematerializeLegendSymbols();
+  return next;
 }
 
 function targetHighlightEntries(program, target) {

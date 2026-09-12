@@ -181,7 +181,7 @@ test("validates rule appearance without mutating earlier output", () => {
     }),
     /cannot contain negative/
   );
-  assert.throws(() => program.encodeStroke({}), /non-empty/);
+  assert.throws(() => program.encodeStroke({}), /exactly one/);
   assert.throws(
     () => program.encodeStrokeDash({ value: [1] }),
     /even-length/

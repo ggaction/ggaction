@@ -12,11 +12,13 @@ export { removeLegendKinds } from "./lifecycle.js";
 const OPTIONS = Object.freeze(["target", "channels"]);
 
 function legendKindChannels(kind, config) {
-  if (["series", "color"].includes(kind)) return config.channels;
+  if (["series", "color", "stroke"].includes(kind)) return config.channels;
   return {
     size: ["size"],
     gradient: ["color"],
     interval: ["color"],
+    strokeGradient: ["stroke"],
+    strokeInterval: ["stroke"],
     opacity: ["opacity"],
     strokeWidth: ["strokeWidth"]
   }[kind];
@@ -81,7 +83,9 @@ export const removeLegend = action(
         : next.rematerializeLegend();
     }
     const remainingTargetKinds = targetKinds.filter(kind => !kinds.includes(kind));
-    const removedCategorical = kinds.some(kind => ["series", "color"].includes(kind));
+    const removedCategorical = kinds.some(kind =>
+      ["series", "color", "stroke"].includes(kind)
+    );
     if (
       removedCategorical && revision === undefined &&
       remainingTargetKinds.includes("size") &&

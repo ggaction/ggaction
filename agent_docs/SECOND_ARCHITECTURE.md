@@ -252,8 +252,8 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Gzip ceiling |
 | --- | ---: |
-| `ggaction` | 318,000 bytes |
-| `ggaction/basic` | 157,000 bytes |
+| `ggaction` | 324,000 bytes |
+| `ggaction/basic` | 160,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 
 이 값은 current executable regression ceiling이며 측정 결과 자체가 아니다. Canonical numeric owner는
@@ -696,7 +696,7 @@ semantic text  → text collection
 ```text
 position       x, y, x2, y2, xOffset, yOffset
 polar position theta, radius
-appearance     color, strokeDash, size, shape, opacity
+appearance     color, stroke, strokeDash, size, shape, opacity
 grouping       group
 topology       pathOrder
 content        text
@@ -806,7 +806,7 @@ Category position은 width가 필요한 bar에서 `band`, center만 필요한 po
 appearance/offset lookup은 `ordinal`이 소유한다. Band/point는 signed step, aligned start와 각각 positive/zero
 bandwidth를 resolved state에 저장한다. Offset auto range는 positive band bandwidth를 우선하고 point position에서는
 absolute step을 하나의 categorical slot 크기로 사용한다. Channel default ID는 일반적으로
-`x`, `y`, `color`, `size`, `shape`, `strokeDash`, `xOffset`, `yOffset`처럼 channel 이름을 쓴다.
+`x`, `y`, `color`, `stroke`, `size`, `shape`, `strokeDash`, `xOffset`, `yOffset`처럼 channel 이름을 쓴다.
 독립 scale이 필요할 때 명시적 ID를 제공한다.
 
 같은 scale ID를 참조하는 consumer는 domain과 range를 공유한다. 현재 하나의 scale은
@@ -1842,7 +1842,7 @@ Categorical creation와 content revision의 공통 owner는 `actions/guides/lege
 Dependency replay는 inferredSymbol인 recipe만 현재 companion context로 다시 resolve하며 explicit recipe는 보존한다.
 Renderer에는 content 추론·복원 로직을 추가하지 않는다.
 
-Categorical legend는 color, strokeDash, shape와 mark recipe를 하나의 generic legend
+Categorical legend는 color, stroke, strokeDash, shape와 mark recipe를 generic legend
 layout/materialization pipeline으로 조립한다.
 
 ```text
