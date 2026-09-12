@@ -59,6 +59,34 @@ guide/header appearance recipe가 labelMap/side/align을 소유. facet partition
 
 모든 성공 사례에 입력 options deep-freeze와 이전 program semantic/graphic/trace 불변성을 확인한다. 오류 사례는 입력 state와 trace가 동일함을 확인한다. 시각 변화가 있으면 승인된 primitive/public 동일 실행의 graphic·Canvas·PNG parity 및 SVG/PDF 경로를 [검증 계획](../VALIDATION.md)에 따라 검증한다.
 
+## 구현 고정 명세 — typed display map과 header strip
+
+### 타입과 map 동작
+
+새 export DisplayLabelMap=readonly {value:DatasetScalar,label:string}[]를 사용한다. []는 정상 빈 override이며 mapping 없음과 같은 output. "auto"는 저장된 override 제거다. null key는 dataset/guide가 원래 해당 category를 지원할 때만 match하며 새 null-category 지원을 추가하지 않는다.
+
+identity는 typeof+value로 구분하고 finite numeric -0/0은 동일하다. boolean true와 string"true",number1과string"1"은 다르다. label은 empty string 허용. 같은 display label을 여러 raw values에 주는 것은 허용하며 categories를 합치지 않는다. map에 없는 raw value만 기존 formatter로 처리한다.
+
+### guide와 role 처리
+
+labelMap은 Cartesian categorical axes와 Polar categorical theta axis labels, categorical legend blocks에 적용한다. continuous axis/gradient tick/numeric sample values에는 오류. canonical policy는 한 typed mapping helper로 공유한다.
+
+editFacetHeaders role 생략은 all. typography/offset/map/align은 common 또는 row/column override에 저장한다. role:"all" 수정이 이미 저장된 role-specific override를 지우지 않는다. role-specific map:"auto"는 해당 map을 제거하고 common map으로 돌아간다. common map까지 제거해야 formatter 기본으로 복귀한다.
+
+row side는 left/right, column side는 top/bottom. 현재 materializeHeaders는 cell.value를 각 child 위에 한 번 표시하며 별도 row/column strip이 없다. role/side를 사용하지 않은 기존 호출은 이 legacy top-cell header 결과를 유지한다. 명시 role:row/column 또는 side를 처음 사용하면 role-strip mode로 전환하고 row:left,column:top,align:center를 기본으로 제안한다. grid row/column raw values는 cell.value의 표시 문자열을 split하지 말고 compositionSpec의 원래 typed role metadata를 읽는다. role:all+side와 one-field facet role:row는 오류.
+
+### occupied layout
+
+각 role의 final text를 먼저 측정하고 rotated bbox+offset+existing padding으로 strip을 reserve한다. column은 plot x 중심 또는 align 기준에, row는 plot y 기준에 놓는다. 해당 side strip을 panel allocation에서 반영하고 R27 aspect/R29 frame을 그 뒤 재계산한다. final text translate만 바꿔 다른 cell을 침범시키지 않는다. 명시 Canvas 공간이 부족하면 기존 layout error를 사용하고 자동 확장하지 않는다.
+
+### 고정 인수 사례
+
+- R39-N01: raw[1,"1","KR","XX"],map [{value:1,label:"하나"},{value:"KR",label:"한국"}] → ["하나","1","한국","XX"].
+- R39-N02: A와B를 모두"같음"으로 표시 → domain category2 유지.
+- R39-E01: 동일 typed key 중복,role all+side,continuous axis map → 오류.
+- R39-L01: row/column raw"A"를 서로 다른 이름으로 표시하고 replay 후 유지.
+- R39-L02: 긴 header와font 증가 후 occupied strip/child plot 재계산,raw partition IDs 불변.
+
 ## 완료 조건
 
 - [ ] 위 API의 최단 호출과 explicit 대상 호출, 누락/auto/false/empty 경계를 타입과 runtime으로 동기화했다.

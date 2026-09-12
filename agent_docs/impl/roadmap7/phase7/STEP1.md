@@ -23,6 +23,8 @@
 
 ## 반드시 읽을 계약
 
+[상세 구현 진입점](../IMPLEMENTATION_SPEC.md), [제안 정정 기록](../CONTRACT_RESOLUTIONS.md), [구현 연결표](../IMPLEMENTATION_MAP.json), [고정 인수 사례](../ACCEPTANCE_CASES.json)를 사용한다. 해당 Phase의 각 feature에서 구현 고정 명세를 적용하고 case ID를 실제 결과 원장에 연결한다.
+
 - [R31 — 원본 마크를 보존하는 붙임 라벨 삭제](../features/31-remove-labels.md)
 - [R32 — 선택된 final item만 라벨링](../features/32-selected-labels.md)
 - [R33 — 의미 기반 라벨 anchor와 배치 정책](../features/33-semantic-label-anchors.md)

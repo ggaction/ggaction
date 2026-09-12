@@ -80,3 +80,63 @@ R25 removeData({id:logicalOwner})는 standalone owner의 current leaf를 외부�
 - Parallel dimension scale → repeat field substitution → facet shared domains → resource removal: 모든 nested scale reference 수집.
 
 후속 기능이 아직 없으면 기존 기능 단위 tests를 작성하고 해당 통합 case를 추적 원장에 pending으로 남긴다. 미래 함수 stub으로 테스트를 통과시키지 않는다.
+
+## 구체적인 저장 경로 제안 — 2026-09-13
+
+다음은 Phase A에서 검토할 exact schema delta다. 기존 데이터 구조를 읽어 정한 **Proposed** 경로이며 현재 프로그램에 이미 존재한다고 가정하지 않는다. aliases인 markConfigs/guideConfigs를 별도 serialized state로 만들지 않는다.
+
+| 요청 | 저장 경로 | payload | 제거/재생성 |
+| --- | --- | --- | --- |
+| R02 logical current | materializationConfigs.data[family][owner] | {current:snapshotId} | owner 제거 때 해당 entry 제거 |
+| R21 offset 간격 | semanticSpec.scales의 해당 scale | paddingInner,paddingOuter,align | 기존 mark padding은 이관 후 중복 제거 |
+| R27 aspect | semanticSpec.coordinates의 해당 coordinate | aspect object | auto는 property 제거 |
+| R29 frame | 같은 coordinate | polarFrame object | auto는 property 제거 |
+| R32 선택/R33 배치 | materializationConfigs.marks[labelId].labelAuthoring | {selection,placement?} | source는 기존 semantic layer.source만 사용 |
+| 기존 label collision | materializationConfigs.labelLayouts[labelId] | 기존 policy,leaderId | 새 semantic placement와 역할 분리 |
+| R36 통계 요청 | materializationConfigs.marks[referenceId].statisticalReference | 아래 shape | source 제거 closure에 포함 |
+| R37 exact samples | materializationConfigs.guides.legend[kind].sampling | {mode,values?,count?} | generated symbols와 별개 |
+| R38 block override | 같은 kind config.blockOverrides[key] | {title?,text?,symbol?,gap?,labelMap?} | key는 descriptor의 channel-set identity |
+| R39 axis mapping | 기존 해당 axis labels config.labelMap | typed mapping array | auto는 property 제거 |
+| R39 headers | materializationConfigs.facets[compositionId].headers | 기존 common style+아래 추가 fields | source/child 재생성에서 보존 |
+| R47 theme | materializationConfigs.theme | name,tokens?,overrides,scope?,origin? | 기존 name/overrides와 호환 |
+| R49 stroke style | 기존 mark config의 appearance owner | cornerRadius,lineCap,lineJoin,miterLimit | Bar는 기존 barAppearance owner 재사용 |
+
+R37과 R38이 같은 sampled content를 수정할 때 sampling이 유일한 요청 owner다. blockOverrides에는 해당 block의 sampling을 중복 저장하지 않고, editLegendBlock 입력의 values/count는 descriptor를 통해 실제 kind.sampling으로 전달한다. blockOverrides가 values/count를 별도 장기 저장하는 구현은 금지한다. categorical order도 현재 semantic guide order owner에 적용하고 style override map에 복제하지 않는다.
+
+### label과 reference
+
+~~~js
+// label.source는 기존 semantic layer[L].source="bars"에만 저장한다.
+materializationConfigs.marks.L.labelAuthoring = {
+  selection: { kind: "named", id: "top" },
+  placement: { anchor: "outsideEnd", gap: 4, overflow: "hide", leader: false }
+};
+
+// R36: runtime 값4를 요청 mean과 함께 별도 cache에 중복 저장하지 않는다.
+materializationConfigs.marks.meanLine.statisticalReference = {
+  source: "points",
+  axis: "y",
+  population: "boundData",
+  field: { kind: "axis" },
+  statistic: { op: "mean" }
+};
+// band는 statistic 대신 statistics:[lower,upper] 정확히 하나.
+// computed datum은 기존 semantic layer encoding의 datum에 기록,
+// graphicSpec에는 최종 좌표만 기록.
+~~~
+
+named selection을 all로 바꾸면 selection object를 통째로 {kind:"all"}로 교체한다. placement:"auto"는 labelAuthoring.placement를 제거한다. selection entry까지 삭제해 source labels를 다시 전부 생성하는 부작용을 만들지 않는다.
+
+statisticalReference의 source/field는 pure request다. recompute마다 source/data/scale을 현재 program에서 resolve하고, 이전 값에서 encodeY literal만 재사용하지 않는다. dynamic marker가 있으면 auto domain contribution을 제외한다. 별도의 persisted false boolean으로 같은 사실을 중복하지 않는다.
+
+### legend/header
+
+sampled legend는 legacy count만 있으면 읽기에서 {mode:"auto",count:legacyCount}로 normalize한다. 신규 sampling을 저장한 후 old count duplicate를 제거하고 기존 readers가 한 accessor를 사용하게 한다. override key는 JSON.stringify(sortedChannels)이며 kind 변경은 descriptor의 old/new key transition으로 처리한다.
+
+header schema의 추가 fields는 mode:"cell"|"roles", roles:{row?:{...override},column?:{...override}}다. legacy config에 mode가 없으면 cell. role/side의 명시 요청은 mode:"roles"로 전환한다. 기존 fontSize/fontFamily/fontWeight/color/offset은 common owner 그대로, common labelMap/align은 같은 level에 둔다. rowValue/columnValue identity는 compositionSpec의 기존 typed metadata가 소유한다.
+
+### theme 전파
+
+unit theme의 name은 base 이름, tokens는 이번 custom partial만 저장한다. inherited child theme의 origin={ownerCompositionId}는 child의 독립 explicit applyTheme 호출에서 제거한다. parent descendants를 다시 호출하면 origin을 새 owner로 바꾸고 현재 requested theme으로 교체한다. parent removeTheme는 자기 origin을 가진 descendants와 retained source만 제거하고 독립 explicit child theme은 유지한다. parent root와 descendants layout은 postorder로 재계산한다.
+
+이 경로를 구현하면서 schema가 실제 기존 owner와 충돌하면 코드에 임시 parallel registry를 만들지 않는다. 변경된 구체안을 Phase A 자료에 기록하고 기존 승인 범위와 비교한다. 단순 helper 파일 분할은 이 persisted schema를 바꾸지 않는다.

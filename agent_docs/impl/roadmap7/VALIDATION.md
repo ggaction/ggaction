@@ -109,3 +109,13 @@ remaining work, next blocked gate:
 ```
 
 Phase closeout에는 각 selected item의 tests/current contract/installed evidence를 별도로 연결한다. 모든 requested 기능이 Current이고 필수 later-integration cell까지 해결됐을 때만 Roadmap7 완료다.
+
+## 문서 단계의 제안 타입 검사
+
+[IMPLEMENTATION_TYPES.d.ts](IMPLEMENTATION_TYPES.d.ts)와 [유효·오류 예제](IMPLEMENTATION_TYPES.examples.ts)는 제품 구현 이전에 타입 이름과 union을 검사하는 문서 artifact다. 실제 제품 타입/런타임/패키지 검증을 대신하지 않는다.
+
+~~~sh
+./node_modules/.bin/tsc --noEmit --strict --module NodeNext --moduleResolution NodeNext --target ES2022 agent_docs/impl/roadmap7/IMPLEMENTATION_TYPES.examples.ts
+~~~
+
+숫자 범위·기존 target의 mark/scale 호환성·입력 데이터별 필드 존재·저장된 상태에 의존하는 cross-option 조건은 TypeScript만으로 확인할 수 없으며 각 feature의 runtime validator/test가 필수다. Phase에서 실제 types/program.d.ts에 구현할 때 이 문서 파일을 import하지 말고 해당 capability 타입을 정식 owner에 반영한다.

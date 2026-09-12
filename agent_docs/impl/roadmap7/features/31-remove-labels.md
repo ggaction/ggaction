@@ -53,6 +53,32 @@ source ownership record에서 optional label child만 제거한다. stale layout
 
 모든 성공 사례에 입력 options deep-freeze와 이전 program semantic/graphic/trace 불변성을 확인한다. 오류 사례는 입력 state와 trace가 동일함을 확인한다. 시각 변화가 있으면 승인된 primitive/public 동일 실행의 graphic·Canvas·PNG parity 및 SVG/PDF 경로를 [검증 계획](../VALIDATION.md)에 따라 검증한다.
 
+## 구현 고정 명세 — label-only removal closure
+
+RemoveMarkLabelsOptions는 {target:string,source?:never}|{source:string,target?:never}. 추가 key, both/neither, empty ID는 오류다. action target 추론은 없다. target unknown은 Error; source가 존재하나 labels0이면 no-op 성공이다.
+
+### closure 계획
+
+1. mark-label config/semantic source ownership으로 attached Text만 수집한다. Text.mark.type이라는 이유만으로 independent annotation을 삭제하지 않는다.
+2. source를 지정하면 모든 attached labels를 동시에 closure에 넣고 preflight한다. 하나에 external reference가 있으면 일부만 삭제하지 않는다.
+3. closure={labelLayers,labelGraphics,leaderGraphics,labelRecipes,labelOwnedResources,labelTargetSelections,labelTargetHighlights}. source를 target하는 selection/highlight는 포함하지 않는다.
+4. label-target selection을 다른 label이 named membership으로 참조하거나 external reference가 closure 밖이면 거부한다. closure 안의 owned references는 함께 제거할 수 있다.
+5. retained recipe에서 source-label attachment를 없앤다. 기존 saved source program은 새 immutable snapshot으로 교체하며 사용자에게 반환됐던 원래 program을 수정하지 않는다.
+6. currentMark가 삭제 label이면 source로 복귀, unrelated currentMark는 유지. 다른 transient pointers가 삭제 resource를 가리키면 unset, 임의 replacement 금지.
+
+### 재생성 검증
+
+삭제 직후 한 프레임만 확인하지 않는다. source edit, encode, editCanvas, applyTheme, facet/repeat replay를 순서대로 호출한다. label-owned configs/graphics/helper refs가 모두 없어야 하며 자동 createMarkLabels를 replay해 부활하면 실패다. source 자체가 없어졌다는 이유로 통과시키지 않도록 source graphic fingerprint도 확인한다.
+
+### 고정 인수 사례
+
+- R31-N01: B labels[L1,L2]에서 target:L1 → L2와 B 유지.
+- R31-N02: source:B → 모든 labels/leaders 제거,B 유지.
+- R31-N03: 같은 source:B 재호출 → 정상 no-op.
+- R31-E01: target independent Text 또는 target+source → 오류.
+- R31-L01: removed L1을 target한 highlight만 정리, B의 selection은 동일.
+- R31-L02: remove→source reencode→Canvas→theme→facet replay 후 label count0.
+
 ## 완료 조건
 
 - [ ] 위 API의 최단 호출과 explicit 대상 호출, 누락/auto/false/empty 경계를 타입과 runtime으로 동기화했다.

@@ -27,7 +27,7 @@ editYOffsetScale({target: string, ...OffsetScaleEditPatch})
 ## 값·기본값·오류 계약
 
 - target의 해당 offset scale이 반드시 있어야 한다. Cartesian positional scale이나 fixed pixel offset을 대신 고르지 않는다.
-- domain/order/reverse/paddingInner/paddingOuter/align 등 현재 band offset scale이 제공하는 옵션만 노출. 지원하지 않는 property/type은 explicit error.
+- domain/reverse/padding/paddingInner/paddingOuter/align만 노출하고 domain 배열이 순서를 정의한다. order라는 새 옵션은 제공하지 않는다. 지원하지 않는 property/type은 explicit error.
 - offset range는 parent band의 계산된 bandwidth에서 유도한다. absolute range override는 금지하고 parent resize/edit 후 재계산한다.
 - explicit domain은 포함하지 않은 범주가 실제 consumer에 있으면 기존 missing category 정책대로 오류; label display mapping으로 category identity를 바꾸지 않는다.
 - sibling offset consumers/shared scale은 기존 editScale all-consumer validation에 포함.
@@ -50,6 +50,34 @@ xOffset/yOffset를 focused channel dispatch와 consumer enumeration에 연결한
 - legend order는 offset order만 바꿨다고 color scale order까지 바꾸지 않는다.
 
 모든 성공 사례에 입력 options deep-freeze와 이전 program semantic/graphic/trace 불변성을 확인한다. 오류 사례는 입력 state와 trace가 동일함을 확인한다. 시각 변화가 있으면 승인된 primitive/public 동일 실행의 graphic·Canvas·PNG parity 및 SVG/PDF 경로를 [검증 계획](../VALIDATION.md)에 따라 검증한다.
+
+## 구현 고정 명세 — offset padding owner 정리
+
+새 export EditXOffsetScaleOptions/EditYOffsetScaleOptions는 {target:string,domain?,reverse?,padding?,paddingInner?,paddingOuter?,align?}. id/range/type/order는 받지 않는다. domain 배열 자체가 순서 변경이다. paddingInner∈[0,1),paddingOuter>=0,align∈[0,1],padding∈[0,1)이며 finite다. padding과 paddingInner/paddingOuter 동시 제공은 충돌 오류로 제안한다. padding:p는 inner=p,outer=p로 정규화한다.
+
+### 현재 코드와 연결해야 할 지점
+
+현재 resolveOffsetScalePolicy는 markConfigs[target][channel]에서 padding을 읽으며 parent는 band bandwidth뿐 아니라 point step과 binned x slot도 지원한다. 이 기존 부모 지원을 삭제하지 않는다. scale만 수정하고 markConfig의 기존 padding이 다시 덮는 구현은 금지다.
+
+권장 변경은 offset의 requested padding/align을 semantic scale에 한 번 저장하고, markConfigs의 offset 항목에는 자동 생성 소유권 등 필요한 비수치 recipe만 유지하는 것이다. 기존 mark-config padding은 읽기 시 한 번 정규화해 semantic scale로 이관하며 충돌하는 shared owners는 거부한다. editScale/encodeXOffset/encodeYOffset/Canvas replay 모두 같은 owner를 사용한다. 이 저장 위치 변경은 Phase5-A의 schema diff에 포함한다.
+
+### band 계산과 patch
+
+parentSlot=S,n=domain.length,inner=pi,outer=po,align=a일 때:
+step=S/max(1,n-pi+2*po), bandwidth=step*(1-pi),
+start=(S-step*(n-pi))*a, bandStart(i)=start+i*step.
+reverse는 domain identity를 바꾸지 않고 위치 index를 n-1-i로 계산한다. mark band-width 설정은 이 bandwidth를 받은 후 기존 별도 비율을 적용한다.
+
+patch omission은 이전 요청 유지, domain:"auto"는 관측 subgroup 순서 재추론. explicit domain이 current consumer 값을 빠뜨리면 오류다. generic range override는 여전히 거부한다. 같은 offset scale을 쓰는 부모들의 slot 길이가 다르면 shared policy 오류를 보존한다.
+
+### 고정 인수 사례
+
+- R21-N01: S100,n2,pi0,po0,a.5 → starts[0,50],bandwidth50.
+- R21-N02: pi.2,po.1 → step50,starts[5,55],bandwidth40.
+- R21-N03: S200으로 resize → starts[10,110],bandwidth80.
+- R21-N04: domain[u,v]→[v,u] → 부모 A/B와 color legend 순서는 유지, offset 위치만 교환.
+- R21-E01: range:[0,50],order:[…],type:"linear",pi1,align2,missing offset → 각각 오류.
+- R21-L01: 기존 point-parent/binned-parent fixture 유지, 반복 reencode/Canvas에서도 새 padding 유지.
 
 ## 완료 조건
 

@@ -23,6 +23,8 @@
 
 ## 반드시 읽을 계약
 
+[상세 구현 진입점](../IMPLEMENTATION_SPEC.md), [제안 정정 기록](../CONTRACT_RESOLUTIONS.md), [구현 연결표](../IMPLEMENTATION_MAP.json), [고정 인수 사례](../ACCEPTANCE_CASES.json)를 사용한다. 해당 Phase의 각 feature에서 구현 고정 명세를 적용하고 case ID를 실제 결과 원장에 연결한다.
+
 - [R05 — 결측 조합 완성과 대체](../features/05-complete-impute.md)
 - [R08 — 주간·요일·시간대 버킷](../features/08-calendar-buckets.md)
 - [R09 — 기간 기반 window와 최소 관측수](../features/09-duration-windows.md)

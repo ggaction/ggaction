@@ -57,6 +57,40 @@ label config에 `{selection:{kind:"inline", selector}|{kind:"named", id}|{kind:"
 
 모든 성공 사례에 입력 options deep-freeze와 이전 program semantic/graphic/trace 불변성을 확인한다. 오류 사례는 입력 state와 trace가 동일함을 확인한다. 시각 변화가 있으면 승인된 primitive/public 동일 실행의 graphic·Canvas·PNG parity 및 SVG/PDF 경로를 [검증 계획](../VALIDATION.md)에 따라 검증한다.
 
+## 구현 고정 명세 — selection과 label membership
+
+### public/type와 state
+
+CreateMarkLabelsOptions에 SelectAll(두 키 생략),Inline(select),Named(selection)의 배타 union을 붙인다. EditMarkLabelSelectionOptions는 target 필수이고 select/selection/all 중 정확히 하나. all은 true만 허용한다. select의 MarkSelector는 clone/freeze, named ID는 own source target을 검증한다.
+
+label owner의 canonical requested field:
+selection:{kind:"all"} 또는 {kind:"inline",selector:…} 또는 {kind:"named",id:…}.
+계산된 numeric indices를 requested에 저장하지 않는다. selection→all 교체 시 old named edge 제거, selection 객체를 deep merge하지 않는다.
+
+### materialization 단계
+
+1. source data/encodings/filter/layout의 기존 final items를 생성한다.
+2. 기존 selection item adapter로 predicate를 평가한다. input은 unhighlighted final geometry; labels 자신이나 text layout을 predicate source로 사용하지 않는다.
+3. 선택 집합을 source final-item 순서로 정렬한다. top-k의 rank 순서로 labels를 새로 재배열하지 않는다.
+4. 선택된 items만 label content/placement로 보낸다. no-match는 빈 Text collection과 정상 source body. 빈 collection을 invalid source로 오인하지 않는다.
+5. placement→collision→highlight 순으로 마무리한다. named selection edit도 source geometry 변경 없이 membership/labels만 갱신할 수 있어야 한다.
+6. source group cardinality/order 변경 시 predicate를 재평가한다. 캐시된 row index는 재사용하지 않는다.
+
+Line/Area는 기존 selector의 series grain이다. 실제 label content adapter가 지원하지 않는 raw field 선택은 오류다. unsupported family에 억지 series flattening을 추가하지 않는다. facet은 local final items로 평가하며 named selection ID는 child namespace에 매핑한다.
+
+### 참조와 삭제
+
+removeMarkSelection은 named label dependency가 있으면 거부한다. all:true 또는 inline으로 전환하거나 R31로 label을 삭제하면 selection 삭제가 가능하다. label을 삭제하면서 named selection 자체를 삭제하지 않는다. self/label-derived cyclic membership은 생성 전에 거절한다.
+
+### 고정 인수 사례
+
+- R32-N01: source values[1,5,3],select max count2 → source item indices[1,2],texts[5,3],body3.
+- R32-N02: values[5,5,3],max count1,ties:first → index0;ties:all → [0,1].
+- R32-N03: no-match gt10 → labels0,body3,domain 동일.
+- R32-L01: named gt4→gt2 → labels1→2;그 selection 삭제는 먼저 거부.
+- R32-E01: named 다른 source,select+selection,all:false,aggregate에 없는 field → 오류.
+- R32-L02: source order [3,1,5]로 재생성 → selected final indices[0,2],texts[3,5].
+
 ## 완료 조건
 
 - [ ] 위 API의 최단 호출과 explicit 대상 호출, 누락/auto/false/empty 경계를 타입과 runtime으로 동기화했다.

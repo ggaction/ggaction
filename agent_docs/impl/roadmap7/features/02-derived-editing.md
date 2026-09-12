@@ -79,6 +79,57 @@ recompute는 새로운 program에서 downstream snapshots를 새 revision으로 
 
 모든 성공 사례에 입력 options deep-freeze와 이전 program semantic/graphic/trace 불변성을 확인한다. 오류 사례는 입력 state와 trace가 동일함을 확인한다. 시각 변화가 있으면 승인된 primitive/public 동일 실행의 graphic·Canvas·PNG parity 및 SVG/PDF 경로를 [검증 계획](../VALIDATION.md)에 따라 검증한다.
 
+## 구현 고정 명세 — revision 실행기와 편집 표면
+
+### 정규화와 저장 형태
+
+새 export 이름은 EditDerivedDataOptions, DerivedDataDependents, RequestedDatasetTransform 및 각 EditComputedDataOptions/…/EditImputedDataOptions로 제안한다. 반환 타입은 모두 ChartProgram이다. 공통 editor는 definition.type을 필수로 받고 현재 transform.type과 같아야 한다. focused editor는 type을 받지 않는다. source/id/resolved/current/values는 두 입력 모두에서 금지한다. Bin2D의 기존 source 예외는 전용 API에서만 유지한다.
+
+~~~ts
+type DerivedDataDependents = "reject" | "recompute";
+// 아래 shape를 family별로 같은 owner에 저장한다.
+materializationConfigs.data.computed.twice = { current: "twice" };
+// 최초 semanticSpec.datasets의 항목
+{ id: "twice", source: "raw", transform: [
+  { type: "computed", as: "z",
+    expression: { op: "multiply", left: {field:"x"}, right:{constant:2} } }
+], values: [{x:1,z:2},{x:2,z:4},{x:3,z:6}] }
+~~~
+
+수정 후 owner.current만 새 snapshot ID를 가리킨다. source/definition 복사본을 config에도 저장하지 않는다. 새 snapshot.transform이 요청 및 기존 family의 resolved provenance를 소유한다. logical ID는 selector에서 current로 해석하며 semantic dataset.source/layer.data는 해석된 snapshot ID를 기록한다.
+
+| 입력 상태 | 결과 |
+| --- | --- |
+| target 누락 / 원본 dataset / chart-private dataset | Error; 새 snapshot 없음 |
+| 현재 logical owner / 현재 snapshot ID | 해당 owner 편집 |
+| 남아 있는 이전 snapshot ID | edit 거부; source로 읽는 기존 의미는 유지 |
+| 빈 focused patch | Error; dependents만 바꾸는 호출도 거부 |
+| 완전히 같은 canonical requested definition | revision 없음; public action의 기존 no-op trace 규칙 유지 |
+| mode 교체 | 이전 mode 전용 키 제거 후 새 mode의 필수 키 검증 |
+| arrays, expression, aggregates, as 교체 | 전체 교체; 이전 원소/AST 가지 잔존 금지 |
+| 하위 derived + dependents 생략 | 첫 쓰기 이전 reject |
+| 하위 derived + recompute | 모든 도달 가능한 transform과 consumer를 완성해야 성공 |
+
+### 실제 작업 단위
+
+1. bin2d.js의 ownerConfig/resolveBin2DOwner/editedTransform/applyBin2DRevision과 dataProvenance.js의 planDerivedDataRevision을 읽는다. 기존 Bin2D target 추론·동일 id 재생성 계약은 회귀 fixture로 잠근다.
+2. transforms.js의 policy마다 requested extractor, materializeOp, editable 여부, output role extractor를 연결한다. family 문자열을 여러 파일의 switch로 복제하지 않는다.
+3. readonly planning 결과를 {owners, revisions, rebinds, roleChanges, rematerialization, releases}로 둔다. runtime state에 이 plan을 영구 저장하지 않는다.
+4. downstream 탐색은 dataset.source와 live retained recipes를 함께 사용한다. DFS visiting/visited로 cycle 검출, 동일 level의 실행 순서는 semantic dataset 순서로 고정한다. 모든 private downstream은 해당 owner replay adapter를 사용한다.
+5. 새 값과 출력 필드 유효성 검증 후 사본에서 wrapped createDerivedData → materializer → rebindLayerData를 실행한다. 여러 mark를 먼저 모두 rebind하고 마지막에 shared scale 소비자를 검증한다.
+6. literal source field 문자열은 변경하지 않는다. computed.as처럼 단일 output role만 있는 경우 direct encoding field 이동 가능. summary aggregate를 배열 index로 대응시키지 않는다. 안정적 일대일 role이 없는 rename은 기존 field를 유지하거나 오류로 끝낸다.
+7. context.currentData가 old current인 경우만 대응 new current로 복구한다. 영향 없는 context.currentMark/currentScale은 내부 호출의 마지막 대상으로 바뀌지 않게 보존한다.
+8. 각 retired dataset을 live-ref collector로 검사한다. owner.current 교체 전에 release하지 않는다. 다른 retained source가 참조하면 old snapshot을 남긴다.
+
+### 고정 인수 사례
+
+- R02-N01: raw x=[1,2,3] → twice z=2*x → avg mean(z)=4. z=3*x로 recompute 후 z=[3,6,9], avg=6. 이전 program은 z=[2,4,6], avg=4.
+- R02-E01: 같은 입력에서 dependents 생략 → Error, 다섯 canonical state와 resolvedScales/children/compositionSpec까지 동일.
+- R02-E02: z를 w로 rename하지만 downstream expression.field="z" 유지 → 전체 실패.
+- R02-L01: after에서 source:"twice"로 새 summary 생성 → 6; before의 동일 호출 → 4.
+- R02-L02: 두 direct consumers + 영향 없는 sibling → 두 consumer만 새 current 사용, sibling 값/ID 유지.
+- R02-L03: 모든 16개 public standalone create family를 표 기반으로 create/edit/edit/no-op/replay한다. 한 family만 구현하고 공통 editor 완료로 표시하지 않는다.
+
 ## 완료 조건
 
 - [ ] 위 API의 최단 호출과 explicit 대상 호출, 누락/auto/false/empty 경계를 타입과 runtime으로 동기화했다.

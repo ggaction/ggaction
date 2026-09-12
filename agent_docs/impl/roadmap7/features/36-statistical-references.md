@@ -33,7 +33,7 @@ createReferenceBand({...ExistingStyle,source:string,axis:"x"|"y",
 ## 값·기본값·오류 계약
 
 - source는 Cartesian mark ID. axis 필수, field 기본 해당 source axis field. aggregate encoding이면 기본 field는 effective bound derived data의 output role. missing/ambiguous/constant datum axis면 field를 명시하거나 오류.
-- population 기본 boundData: source layer가 bind한 데이터 rows. visibleItems: mark filter 이후 final item의 선택 field 값; 집계 mark는 집계 결과 item, Line/Area/Parallel 등 series grain의 ambiguous scalar는 visibleItems 거부. source selection/highlight는 population을 바꾸지 않는다.
+- population 기본 boundData: markFilter wrapper 앞 source authoring binding의 데이터 rows(구현 고정 명세의 provenance 규칙 적용). visibleItems: mark filter 이후 final item의 선택 field 값; 집계 mark는 집계 결과 item, Line/Area/Parallel 등 series grain의 ambiguous scalar는 visibleItems 거부. source selection/highlight는 population을 바꾸지 않는다.
 - line statistic은 finite quantitative field. quantile p∈[0,1], 기존 summary quantile algorithm. band lower<=upper, 같으면 zero-width 정상; 역전은 오류. empty/nonfinite/missing population은 오류이며 임의 0선 생성 금지.
 - reference는 source axis scale ID를 동적으로 추적한다. source reencode가 다른 field/scale로 바뀌면 field 생략은 새 role을 따르고 field explicit은 유지·검증. reference는 자기 자신/다른 dynamic reference를 source로 삼을 수 없다.
 - 동적 reference의 값은 source scale auto domain에 기여하지 않는다. source domain을 먼저 resolve하고 통계를 표현해 feedback cycle을 막는다. domain 밖 값은 기존 positional out-of-range 정책을 따르며 자동 domain 확장 금지.
@@ -60,6 +60,41 @@ requested source/statistic/population/field-mode를 reference owner config로 �
 - two facets A[1,3], B[10,20]: local means2,15. remove source 이후 dangling reference 없음.
 
 모든 성공 사례에 입력 options deep-freeze와 이전 program semantic/graphic/trace 불변성을 확인한다. 오류 사례는 입력 state와 trace가 동일함을 확인한다. 시각 변화가 있으면 승인된 primitive/public 동일 실행의 graphic·Canvas·PNG parity 및 SVG/PDF 경로를 [검증 계획](../VALIDATION.md)에 따라 검증한다.
+
+## 구현 고정 명세 — dynamic reference의 population
+
+### 정확한 union
+
+ReferenceStatistic={op:"mean"|"median"|"min"|"max"}|{op:"quantile",p:number}.
+dynamic line는 기존 style/id와 source,axis,statistic,population?,field?를 받는다. dynamic band는 statistics:[ReferenceStatistic,ReferenceStatistic]를 받는다. literal x/y,space,data,coordinate,temporalUnit과 혼합하지 않는다. statistical source가 Cartesian quantitative axis를 가져야 하며 temporal 통계는 이번 범위 밖이다.
+
+field 생략은 requested에서 {kind:"axis"}로, 명시는 {kind:"explicit",field}로 구별한다. 추론한 현재 field 이름을 explicit처럼 저장하지 않는다.
+
+### population 결정
+
+| population | row/item origin | filter 영향 |
+| --- | --- | --- |
+| boundData (기본) | source의 authoring binding dataset, mark-filter용 derived wrapper 앞 | filterMarks 영향 없음 |
+| visibleItems | 최종 mark-filter 이후 item scalar | filterMarks 영향 있음 |
+
+현재 filterMarks가 layer.data를 markFilter derived dataset으로 rebind할 수 있으므로 boundData를 단순 현재 layer.data.values로 읽으면 잘못된5를 만들 수 있다. provenanceTransparent markFilter를 따라가서 source authoring binding의 데이터까지만 복원한다. 일반 filterData/computed/summary를 넘어 original raw까지 역추적하지 않는다.
+
+aggregate mark의 axis field 생략은 aggregate final bound output role을 따른다. boundData와 그 role의 population은 transform 이후 authoring data다. explicit field는 그 population 안에 존재해야 한다. visibleItems의 Line/Area/Parallel series scalar는 거부한다.
+
+### 실행
+
+source/field/axis scale dependency 기록 → source scale domain 확정 → 필요하면 source final items 생성 → finite population 검사 → aggregate 계산 → generated datum → existing Rule/Rect materializer. quantile p는 aggregate의 {op:"quantile",probability:p}로 변환한다.
+
+reference가 자기 domain에 기여하지 않도록 consumer policy에 명시한다. mean이 domain 밖이어도 domain 확장하지 않고 기존 positional mapping을 따른다. reference source removal은 기존 source-owned dependent closure로 처리한다. annotation style 편집은 statistic recipe를 literal로 바꾸지 않는다.
+
+### 고정 인수 사례
+
+- R36-N01: y[2,4,6],mean →4.
+- R36-N02: filterMarks gt3 후 boundData4,visibleItems5.
+- R36-N03: selection gt3만 적용 → 둘 다4;selection이 filter가 아님.
+- R36-N04: [0,10,20,30],quantile .25/.75 → band[7.5,22.5].
+- R36-E01: empty values,p1.1,band reversed,statistic+literal,reference source → 오류.
+- R36-L01: source y field 변경 → inferred field는 추적,explicit field는 유지;source scale ID도 동행.
 
 ## 완료 조건
 

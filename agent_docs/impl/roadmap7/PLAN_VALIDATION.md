@@ -22,3 +22,24 @@
 탐색·계약 테스트는 현재 저장소 명령으로 재현할 수 있다. 25개 번호와 의존성·경로 검사는 이번 작성의 일회성 검증기로 PROPOSALS/CANDIDATES/Markdown을 순회하여 확인했다. 이 검증기를 제품 실행 의존성으로 추가하지 않았다.
 
 코드, declarations, current public contracts는 그대로다. 새 API의 runtime/type/render/package 검증은 [VALIDATION.md](VALIDATION.md)의 향후 구현 의무이며 이번에는 실행하지 않았다. audit 폴더의 probe JSON은 이전 감사의 관측 snapshot으로 별도 구분했다.
+
+## 2026-09-13 상세 구현 스펙 검증
+
+시작 revision은 3b61e789, 제품 코드 baseline은 그대로 c0e47da6이다. 기존 로드맵 위에 25개 feature의 구현 고정 명세, 실제 저장 경로 제안, 타입 설계, 작업 연결표, 인수 사례 인덱스를 추가했다. 아래는 문서 검증 결과이며 154개 제안 동작의 runtime 통과 기록이 아니다.
+
+| 검증 | 실제 결과 |
+| --- | --- |
+| 선택 범위·primary Phase·의존성 | 25개 일치, 순환 없음, Phase/CANDIDATES 일치 |
+| 신규 public method 제안 | 32개, 중복 없음, 현재 runtime에 모두 없음 확인 |
+| 기능별 인수 사례 | 154개, 모든 기능에 N(정상)/E(오류)/L(생명주기), planned/runtimeEvidence:null |
+| 코드·기존 테스트 연결 | source 참조147개와 기존 test 참조44개 모두 실제 파일 |
+| 상대 Markdown 링크·JSON | 링크392개와 JSON18개 유효 |
+| 제안 타입 정합성 | tsc strict/noEmit 성공, 유효 예제25개와 expected type error22개 |
+| 현재 계약 회귀 | npm run test:contracts 329/329 통과, 실패/skip0 |
+| 수치·timezone 예제 점검 | nonzero-domain pow/sqrt 수식, Lord_Howe/Apia/NY Intl 경계 성분 별도 확인 |
+| 변경 경계 | tracked 변경은 roadmap7 내부 문서만, src/types/current contracts/knowledge/package 변경 없음 |
+| Diff 형식 | git diff --check 통과 |
+
+제안 타입 검사 명령은 VALIDATION의 문서 단계 항목에 있다. 범위·case ID·경로·링크 검증은 이번 작업의 일회성 검사로 수행했으며 .artifacts/roadmap7-spec/validation.json은 로컬 관측 결과다. 구현 테스트가 이 ignored artifact에 의존하지 않도록 한다.
+
+새 runtime action, SVG/PDF/Canvas 목표 이미지, 패키지 consumer는 이번 문서 요청에서 구현하지 않았다. Gate는 planned이며 사용자 승인 기록이나 Current 기능 승격을 추가하지 않았다.

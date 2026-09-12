@@ -1,6 +1,6 @@
 # 선택 항목과 구현·검증 추적
 
-선택 25개는 각각 하나의 primary Phase를 갖는다. action 개수는 25개와 다르다. 한 기능이 여러 focused action을 만들거나 기존 option union만 확장할 수 있다. PROPOSALS.json이 범위의 machine source다.
+선택 25개는 각각 하나의 primary Phase를 갖는다. action 개수는 25개와 다르다. 한 기능이 여러 focused action을 만들거나 기존 option union만 확장할 수 있다. PROPOSALS.json이 범위의 machine source다. [IMPLEMENTATION_MAP.json](IMPLEMENTATION_MAP.json)은 기존 code/test 및제안 public surface를, [ACCEPTANCE_CASES.json](ACCEPTANCE_CASES.json)은 고정된 N/E/L 사례를 연결한다. 모두 계획이며 통과 증거는 아니다.
 
 | ID | Primary Phase | 계약 | 필수 evidence owner | status |
 | --- | --- | --- | --- | --- |

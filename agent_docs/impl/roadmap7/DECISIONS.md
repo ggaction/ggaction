@@ -1,6 +1,6 @@
 # 권장 설계 결정과 변경 통제
 
-모든 행은 **Proposed**다. 사용자가 25개 항목을 선택한 사실과 여기의 세부 API 승인은 구별한다. 후속 구현자는 새로 발명하지 말고 아래 권장안을 gate review에 제시한다. 승인으로 바뀌면 date, 정확한 사용자 발언, commit, 승인 범위를 해당 phase GATES.md에 기록한다.
+모든 행은 **Proposed**다. 2026-09-13 상세화에서 발견한 baseline 차이와 정책 정정은 [CONTRACT_RESOLUTIONS.md](CONTRACT_RESOLUTIONS.md), 구체적인 실행 계약은 각 feature의 구현 고정 명세를 함께 읽는다. 사용자가 25개 항목을 선택한 사실과 여기의 세부 API 승인은 구별한다. 후속 구현자는 새로 발명하지 말고 아래 권장안을 gate review에 제시한다. 승인으로 바뀌면 date, 정확한 사용자 발언, commit, 승인 범위를 해당 phase GATES.md에 기록한다.
 
 | ID | 권장 결정 | 이유와 버린 대안 | owner |
 | --- | --- | --- | --- |

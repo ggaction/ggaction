@@ -58,6 +58,45 @@ window operation에 normalized frame/minPeriods/missing을 저장한다. Duratio
 
 모든 성공 사례에 입력 options deep-freeze와 이전 program semantic/graphic/trace 불변성을 확인한다. 오류 사례는 입력 state와 trace가 동일함을 확인한다. 시각 변화가 있으면 승인된 primitive/public 동일 실행의 graphic·Canvas·PNG parity 및 SVG/PDF 경로를 [검증 계획](../VALIDATION.md)에 따라 검증한다.
 
+## 구현 고정 명세 — moving window
+
+WindowFrame은 RowWindowFrame | DurationWindowFrame의 배타 union으로 제안한다. WindowOperation의 movingMean/movingSum만 frame/minPeriods/missing을 허용한다. row frame의 기존 preceding/following 기본값과 integer 규칙을 보존한다. duration.preceding은 필수이며 following은0, 둘 다 finite>=0, 단위는 millisecond/second/minute/hour/day다.
+
+### duration과 null 결정표
+
+| 조건 | 결과 |
+| --- | --- |
+| sortBy 생략 / 2개 이상 / descending | duration이면 오류 |
+| row frame만 + temporalUnit | 오류 |
+| duration이 하나 이상 | 정확히 한 sort field에 temporalUnit 적용 |
+| preceding:0,following:0 | 현재 timestamp와 동률인 모든 rows |
+| missing:"skip" + null/undefined | 합과 count에서 제외 |
+| missing:"skip" + NaN/Infinity | TypeError |
+| validCount<minPeriods | null |
+| validCount>=minPeriods | movingMean=sum/count, movingSum=sum |
+| missing row 자신의 output | 그 row의 frame 계산 결과; 자동 null이 아님 |
+
+window source field 자체가 없는 것은 skip 대상이 아니다. 전체 partition에서 source values를 먼저 검증하므로 범위 밖의 잘못된 row를 우연히 못 본 것으로 처리하지 않는다. timestamp가 정상이어도 duration×unit 또는 t±duration이 finite/Date 범위를 벗어나면 RangeError다.
+
+### O(n log n)+O(n) 실행
+
+1. 기존 partitionBy typed grouping과 stable sort를 재사용한다. sort parsing은 row당1회 캐시하며 requested state에 parser 객체를 저장하지 않는다.
+2. 각 duration moving operation에 left/right 포인터, compensated rolling sum, validCount를 둔다. 같은 timestamp 묶음은 같은 [left,right)와 같은 수치를 공유한다.
+3. right는 timestamp<=upper인 동안 포함, left는 timestamp<lower인 동안 제거한다. upper/lower 양끝이 포함되는 부등호를 바꾸지 않는다.
+4. subtraction이 반복되는 sum의 수치 오차는 numeric helper 전략으로 처리한다. 단순 sum 누적값이 Infinity였다가 빠져나가기를 기다리는 방식은 금지한다.
+5. operation별 output을 원본 row index에 기록한다. 여러 operations는 각각 자기 frame/missing/minPeriods를 가진다. 어느 하나 실패하면 dataset 전체를 반환하지 않는다.
+6. row-window와 duration-window가 한 operations 배열에 공존할 수 있다. duration의 temporal sort 제약은 그 호출 전체에 적용한다.
+
+### 고정 인수 사례
+
+- R09-N01: days=[0,1,10],x=[2,4,10],duration preceding7day → means=[2,3,10].
+- R09-N02: ms=[0,604800000],x=[2,4] → means=[2,3]; 두 번째를604800001로 변경 → [2,4].
+- R09-N03: t=[0,0,1],x=[2,4,8],duration0 → [3,3,8].
+- R09-N04: t=[0,1,2],x=[2,null,4],row preceding1,skip → [2,2,4]; minPeriods2 → [null,null,null].
+- R09-N05: unsorted t=[10,0,1],x=[10,2,4]의 N01 조건 → [10,2,3].
+- R09-E01: minPeriods0, mixed frame keys, rank+missing, undefined sort field, all nonfinite → 각 오류.
+- R09-L01: editWindowData와 facet-local replay의 closed-boundary/duplicate 규칙이 같아야 한다.
+
 ## 완료 조건
 
 - [ ] 위 API의 최단 호출과 explicit 대상 호출, 누락/auto/false/empty 경계를 타입과 runtime으로 동기화했다.

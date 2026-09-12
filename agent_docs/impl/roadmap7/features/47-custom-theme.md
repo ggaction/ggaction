@@ -58,6 +58,41 @@ theme requested definition(base+tokens)과 explicit style override registry를 �
 
 모든 성공 사례에 입력 options deep-freeze와 이전 program semantic/graphic/trace 불변성을 확인한다. 오류 사례는 입력 state와 trace가 동일함을 확인한다. 시각 변화가 있으면 승인된 primitive/public 동일 실행의 graphic·Canvas·PNG parity 및 SVG/PDF 경로를 [검증 계획](../VALIDATION.md)에 따라 검증한다.
 
+## 구현 고정 명세 — custom theme과 nested propagation
+
+### 요청/저장 schema
+
+ThemeDefinition=ThemeName|{base:ThemeName,tokens:Partial<ThemeTokens>}.
+ApplyThemeOptions={theme:ThemeDefinition,scope?:"self"|"descendants"}.
+custom object의 base/tokens는 필수이며 tokens:{}는 base와 같은 결과다. tokens는 기존 THEME_TOKENS의18개 key만 받는다(background+16color+fontFamily). theme 이름 문자열의 기존 호출을 보존한다.
+
+현재 config의 name/overrides를 유지하고 custom 요청만 tokens를 추가하는 것을 제안한다.
+{ name:"light", tokens:{mark:"#ff0000"}, overrides:[…기존 explicit…] }
+name이 base의 단일 저장 위치이며 {base:…}를 config에 중복 저장하지 않는다. resolved token 전체를 requested tokens로 저장하지 않는다. composition에는 요청 scope와 descendant replay policy를 같은 theme owner에 저장한다. descendant 적용 origin은 {ownerCompositionId}로 기록해 removeTheme가 독립 child explicit theme을 지우지 않게 한다.
+
+### transition
+
+1. 요청을 validate,clone/freeze.
+2. previous explicit override registry를 보존.
+3. themeTokens(base) 위에 이번 tokens만 overlay. previous custom token은 merge하지 않는다.
+4. unit은 현재 theme reconciler를 실행하고 text metrics/layout/labels/legends 갱신.
+5. composition descendants는 root+모든 child snapshots+retained facet/repeat source에 동일 requested definition을 immutable하게 적용하고 postorder로 ancestor placement 재계산.
+6. composition self는 root canvas appearance만 변경하고 child inherited policy는 유지한다. unit self/descendants는 같은 unit 결과다.
+7. child를 이후 explicit theme으로 편집한 경우 그 실제 요청을 보존하되, 부모에서 다시 descendants 호출하면 새 요청으로 덮는다. replay는 저장된 현재 descendant policy와 explicit child edit 순서를 따라야 한다.
+
+새 explicit style이 theme default와 우연히 같은 값이어도 explicit provenance를 보존한다. 값 비교만으로 override 여부를 추론하지 않는다. categorical palette는 사용자 scale 의미이며 theme mark token으로 대체하지 않는다.
+
+removeTheme 기존 API는 custom tokens도 제거하고 기존 explicit styles를 유지한다. composition descendants로 저장된 policy가 있으면 같은 scope의 inherited theme도 제거하도록 확장하고, 독립 child explicit theme과의 관계는 저장된 provenance로 판별한다. style reset을 수행하지 않는다.
+
+### 고정 인수 사례
+
+- R47-N01: light+mark red,grid green,fontFamily sans-serif → default mark/grid만 변경;explicit blue mark 유지.
+- R47-N02: customA{mark:red,grid:green}→customB{mark:blue} → grid는 base default 복귀.
+- R47-N03: nested concat/facet/repeat descendants → 모든 child font/background 갱신,원래 input programs 불변.
+- R47-N04: composition self → root background만,children 그대로.
+- R47-E01: unknown token,invalid color,fontFamily:"",missing base → 오류.
+- R47-L01: facet source replay로 생성된 새 children도 current theme;labelMap/block overrides/line style는 보존.
+
 ## 완료 조건
 
 - [ ] 위 API의 최단 호출과 explicit 대상 호출, 누락/auto/false/empty 경계를 타입과 runtime으로 동기화했다.

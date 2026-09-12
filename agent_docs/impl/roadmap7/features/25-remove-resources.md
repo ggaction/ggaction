@@ -58,6 +58,51 @@ removeCoordinate({id:string})
 
 모든 성공 사례에 입력 options deep-freeze와 이전 program semantic/graphic/trace 불변성을 확인한다. 오류 사례는 입력 state와 trace가 동일함을 확인한다. 시각 변화가 있으면 승인된 primitive/public 동일 실행의 graphic·Canvas·PNG parity 및 SVG/PDF 경로를 [검증 계획](../VALIDATION.md)에 따라 검증한다.
 
+## 구현 고정 명세 — live reference와 안전 삭제
+
+### collector 반환 계약
+
+~~~ts
+type ResourceReference = {
+  kind: "data" | "scale" | "coordinate" | "mark" | "selection";
+  id: string;                    // 참조되는 실제 현재 resource
+  ownerKind: string;
+  ownerId: string;
+  path: readonly (string | number)[];
+  strength: "live" | "context";
+};
+collectResourceReferences(program, {kind,id}): readonly ResourceReference[];
+~~~
+
+collector는 known schema의 실제 ref만 순회하며 historical trace는 순회하지 않는다. retained source ChartProgram은 자신의 namespace 안에서 검사한다. 서로 다른 program의 같은 문자열 ID를 전역 참조로 취급하지 않는다. 바깥 data와 retained recipe의 연결은 명시 provenance edge로 판단한다.
+
+### 허용/거부 및 순서
+
+1. ID와 kind를 검증하고 resource/standalone owner를 resolve한다. 현재 source state의 소유권으로 internal 여부를 판단한다. 이름 prefix만으로 판단하지 않는다.
+2. live edges를 수집, owner.current 자기 참조는 standalone owner의 removeData에서만 제외한다.
+3. live edges가 하나라도 있으면 Error. 메시지에 action/resource kind/ID와 정렬된 referrer owner/path 목록을 포함한다. 정렬 키는 ownerKind,ownerId,path의 canonical 문자열이다.
+4. live0이면 semantic resource, 그 리소스의 resolved cache/config와 자기-owned unused graphics만 지운다. independent style/token/resource의 같은 문자열 값은 건드리지 않는다.
+5. context-only pointer는 unset. 다른 dataset/scale/coordinate로 대체 선택하지 않는다.
+6. 성공 후 전체 visible graphic의 deep equality와 동일 backend decoded pixels를 확인한다. 데이터 삭제가 축 domain 재추론을 일으키면 hidden consumer 누락이다.
+
+### reference fixture 필수 목록
+
+data: direct layer.data, dataset.source, standalone current, chart-private data owner, retained facet source, retained repeat source, dynamic reference population.
+scale: x/y/x2/y2/theta/radius/color/stroke/size/shape/opacity/strokeWidth/strokeDash/angle 중 실제 scaled channels, x/yOffset, parallel.dimensions[].scale, ordinary/polar/parallel axis, legend binding/recipe, dynamic reference binding.
+coordinate: layer, annotation data space, guides placement, composition child/local recipe.
+selection: highlight와 named label recipe. R25 public 함수에 removeSelection을 새로 추가하지 않고 기존 removeMarkSelection의 preflight가 collector를 사용한다.
+
+각 path는 다른 live edge를 제거한 "참조1개만 남긴 fixture"를 만들어야 한다. 실제 저장되지 않는 resolved 숫자 또는 samples 배열을 fake scale ID ref로 만들지 않는다.
+
+### 고정 인수 사례
+
+- R25-N01: unused D,S,C 제거 → 해당 semantic entries0, 렌더 이전과 동일.
+- R25-N02: context.currentData=D만 참조 → 삭제 후 currentData 없음.
+- R25-N03: trace.args에만 D가 남음 → 삭제 성공.
+- R25-E01: parallel dimension만 S 참조 → Error에 dimension path.
+- R25-E02: live retained facet source만 D 참조 → Error; historical before program은 검사 대상 아님.
+- R25-L01: standalone current를 참조하는 마지막 mark 삭제 후 removeData(logical ID) 성공, 원본 source는 남음.
+
 ## 완료 조건
 
 - [ ] 위 API의 최단 호출과 explicit 대상 호출, 누락/auto/false/empty 경계를 타입과 runtime으로 동기화했다.

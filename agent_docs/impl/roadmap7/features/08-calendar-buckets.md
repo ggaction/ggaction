@@ -55,6 +55,53 @@ timeUnit transform에 unit/timeZone와 week 전용 requested options를 저장�
 
 모든 성공 사례에 입력 options deep-freeze와 이전 program semantic/graphic/trace 불변성을 확인한다. 오류 사례는 입력 state와 trace가 동일함을 확인한다. 시각 변화가 있으면 승인된 primitive/public 동일 실행의 graphic·Canvas·PNG parity 및 SVG/PDF 경로를 [검증 계획](../VALIDATION.md)에 따라 검증한다.
 
+## 구현 고정 명세 — 달력 bucket과 시간대 경계
+
+### public/type 계약
+
+TimeUnitDataOptions와 DatasetTimeUnitTransform에 timeZone을 추가한다. TimeUnit union에 week/weekday를 추가한다. weekStartsOn/weekRule은 unit:"week" branch에서만 존재하도록 타입을 분리한다. weekStartsOn의 숫자는 JS weekday처럼 Sun0…Sat6이다. iso와 Monday calendar는 이 API의 week-start timestamp에서 같은 결과를 내며 week-number/year 계산은 추가하지 않는다.
+
+canonical 요청에는 명시 timezone을 보존한다. timezone 생략+기존 7개 unit 호출은 기존 transform shape를 보존해 불필요한 snapshot 차이를 만들지 않는다. week는 weekRule:"calendar",weekStartsOn:1의 정규 기본값을 기록한다. weekday 결과는 숫자이지만 calendar metadata는 nominal 의미이며 예제 인코딩은 fieldType:"ordinal"을 지정한다.
+
+### helper 계약과 실행 순서
+
+~~~ts
+// private pure adapter; ChartProgram과 backend 객체를 받지 않는다.
+calendarParts(epochMs, timeZone)
+// → {year,month,day,hour,minute,second,millisecond,weekday}
+resolveCalendarBoundary(localParts, timeZone, unit)
+// → 해당 local bucket이 처음 시작하는 finite UTC epoch ms
+bucketTime(epochMs, {unit,timeZone,weekRule,weekStartsOn})
+// → timestamp 또는 weekday integer
+~~~
+
+1. 기존 normalizeTemporalValue로 입력을 instant로 정규화한다. timeZone은 입력 parser에 넘겨 offset 없는 문자열을 새 의미로 해석하지 않는다.
+2. explicit zone과 Gregorian calendar, Latin digits, 0..23 hour cycle로 calendar parts를 구한다. host locale/host TZ를 사용하지 않는다. year0..99는 Date.UTC의1900 보정을 피하는 기존 utcTimestamp를 재사용한다.
+3. year/quarter/month/day/hour/minute/second마다 하위 성분을 버린다. week는 local date에서 (weekday-weekStartsOn+7)%7일을 달력 연산으로 빼고 midnight 경계로 만든다.
+4. local civil boundary를 UTC로 역산할 때 그 날짜 주변 offset 후보와 transition을 검증한다. UTC offset을 한 번 얻어 연중 재사용하거나 day/week를 24h 빼기로 계산하지 않는다.
+5. fold는 같은 bucket 경계의 여러 instant 중 최소값. gap은 요청한 bucket 안에 실제 존재하는 첫 instant. 후보는 다시 calendarParts로 round-trip 검증한다. 역산 가능한 경계가 없거나 Date 범위 밖이면 RangeError; 다른 zone으로 fallback하지 않는다.
+6. UTC 기존 unit 경로는 현재 floorUtcTimeUnit을 재사용한다. 비UTC helper는 단일 owner가 모든 units에서 사용한다.
+
+Date+Intl adapter는 이 계약을 만족하는 권장 구현이다. 알고리즘이 특정 transition 폭을 가정한다면 지원 환경의 전체 fixture로 증명해야 하며, 검증하지 못한 경우 API가 구현됐다고 표시하지 않는다. 대체 의존성 선택은 기존 Phase2-A의 구현 수단 검토 대상이다.
+
+### 고정 인수 사례
+
+| case | instant / unit / zone | 기대 결과 |
+| --- | --- | --- |
+| R08-N01 | 2024-01-03T12:00Z / week / UTC | 2024-01-01T00:00Z |
+| R08-N02 | 같은 instant / week / Asia/Seoul | 2023-12-31T15:00Z |
+| R08-N03 | 2024-03-10T12:00Z / day / America/New_York | 2024-03-10T05:00Z |
+| R08-N04 | 2024-03-11T12:00Z / day / America/New_York | 2024-03-11T04:00Z |
+| R08-N05 | 2024-11-03T05:30Z와06:30Z / hour / America/New_York | 둘 다 2024-11-03T05:00Z |
+| R08-N06 | 2024-10-05T15:45Z / hour / Australia/Lord_Howe | 2024-10-05T15:30Z (local 02:30 최초 유효) |
+| R08-N07 | 2024-01-01T00:00Z / day / Asia/Kolkata | 2023-12-31T18:30Z |
+| R08-N08 | 2011-12-30T12:00Z / day / Pacific/Apia | 2011-12-30T10:00Z (local Dec31) |
+| R08-E01 | iso+weekStartsOn:0 / weekday+weekRule / invalid zone | 각각 오류 |
+
+epoch 정수는 정확히 비교한다. Node/browser 결과를 같은 manifest에서 읽되 production bucket 함수를 expected 생성기로 쓰지 않는다. 과거 timezone 데이터가 지원 환경에서 다르면 실패 원인을 기록하고 해당 환경을 통과로 표시하지 않는다.
+
+- R08-L01: createTimeUnitData → editTimeUnitData(timeZone 변경) → facet replay에서 저장된 zone/unit으로 bucket 재계산, 원본 UTC 결과 불변.
+
 ## 완료 조건
 
 - [ ] 위 API의 최단 호출과 explicit 대상 호출, 누락/auto/false/empty 경계를 타입과 runtime으로 동기화했다.

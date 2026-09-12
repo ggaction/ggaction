@@ -1,0 +1,1131 @@
+{
+  "version": 1,
+  "status": "Proposed",
+  "baseCommit": "c0e47da6e213852213bcb04eb19031a1a6a63cd7",
+  "sourceOfScope": "PROPOSALS.json",
+  "sourceOfBehavior": "features/*.md 구현 고정 명세",
+  "note": "연결표이며 현재 구현이나 테스트 통과 증거가 아님. suggestedNewTest는 미래 소유 위치다.",
+  "features": [
+    {
+      "id": "R02",
+      "spec": "features/02-derived-editing.md",
+      "phase": 4,
+      "dependsOn": [
+        "R05",
+        "R06",
+        "R07",
+        "R08",
+        "R09",
+        "R10"
+      ],
+      "status": "Proposed",
+      "newPublicActions": [
+        "editDerivedData",
+        "editComputedData",
+        "editFilteredData",
+        "editFoldData",
+        "editSummaryData",
+        "editBinData",
+        "editTimeUnitData",
+        "editWindowData",
+        "editDensityData",
+        "editStackData",
+        "editRegressionData",
+        "editIntervalData",
+        "editECDFData",
+        "editNormalizedData",
+        "editCompleteData",
+        "editImputedData"
+      ],
+      "extendedPublicSurfaces": [
+        "editBin2DData",
+        "standalone derived creators",
+        "data resolvers"
+      ],
+      "currentSourceFiles": [
+        "src/actions/data/bin2d.js",
+        "src/actions/data/intervalEdit.js",
+        "src/materialization/dataProvenance.js",
+        "src/grammar/transforms.js",
+        "src/actions/facets/replay.js",
+        "src/selectors/datasets.js",
+        "src/actions/data/shared.js"
+      ],
+      "existingRegressionTests": [
+        "test/unit/actions/data/bin2d-data.test.js",
+        "test/contracts/statistical-owner-revisions.test.js"
+      ],
+      "suggestedNewTest": "test/contracts/derived-editing.test.js",
+      "acceptanceCases": [
+        "R02-N01",
+        "R02-E01",
+        "R02-E02",
+        "R02-L01",
+        "R02-L02",
+        "R02-L03"
+      ],
+      "requiredSurfaceChecklist": [
+        "pure validation/calculation",
+        "wrapped action and immutable state",
+        "requested/resolved and ownership",
+        "edit/reencode/Canvas/source replay/remove",
+        "applicable composition and renderer cells",
+        "Full registration/types/current contracts/knowledge/docs/installed package"
+      ]
+    },
+    {
+      "id": "R05",
+      "spec": "features/05-complete-impute.md",
+      "phase": 2,
+      "dependsOn": [],
+      "status": "Proposed",
+      "newPublicActions": [
+        "createCompleteData",
+        "createImputedData"
+      ],
+      "extendedPublicSurfaces": [],
+      "currentSourceFiles": [
+        "src/grammar/stack.js",
+        "src/grammar/areaSeries.js",
+        "src/grammar/transformTopology.js",
+        "src/actions/data/shared.js",
+        "src/grammar/window.js",
+        "src/grammar/numeric.js"
+      ],
+      "existingRegressionTests": [
+        "test/contracts/transform-registry.test.js"
+      ],
+      "suggestedNewTest": "test/contracts/complete-impute.test.js",
+      "acceptanceCases": [
+        "R05-N01",
+        "R05-N02",
+        "R05-N03",
+        "R05-E01",
+        "R05-E02",
+        "R05-L01"
+      ],
+      "requiredSurfaceChecklist": [
+        "pure validation/calculation",
+        "wrapped action and immutable state",
+        "requested/resolved and ownership",
+        "edit/reencode/Canvas/source replay/remove",
+        "applicable composition and renderer cells",
+        "Full registration/types/current contracts/knowledge/docs/installed package"
+      ]
+    },
+    {
+      "id": "R06",
+      "spec": "features/06-computed-expressions.md",
+      "phase": 1,
+      "dependsOn": [],
+      "status": "Proposed",
+      "newPublicActions": [],
+      "extendedPublicSurfaces": [
+        "createComputedData"
+      ],
+      "currentSourceFiles": [
+        "src/grammar/computed.js",
+        "src/actions/data/computed.js",
+        "src/grammar/transforms.js",
+        "types/program.d.ts",
+        "src/core/immutable.js"
+      ],
+      "existingRegressionTests": [
+        "test/unit/actions/data/computed-data.test.js"
+      ],
+      "suggestedNewTest": "test/contracts/computed-expressions.test.js",
+      "acceptanceCases": [
+        "R06-N01",
+        "R06-N02",
+        "R06-N03",
+        "R06-E01",
+        "R06-E02",
+        "R06-N04",
+        "R06-L01"
+      ],
+      "requiredSurfaceChecklist": [
+        "pure validation/calculation",
+        "wrapped action and immutable state",
+        "requested/resolved and ownership",
+        "edit/reencode/Canvas/source replay/remove",
+        "applicable composition and renderer cells",
+        "Full registration/types/current contracts/knowledge/docs/installed package"
+      ]
+    },
+    {
+      "id": "R07",
+      "spec": "features/07-normalization.md",
+      "phase": 1,
+      "dependsOn": [
+        "R06"
+      ],
+      "status": "Proposed",
+      "newPublicActions": [
+        "createNormalizedData"
+      ],
+      "extendedPublicSurfaces": [],
+      "currentSourceFiles": [
+        "src/grammar/summary.js",
+        "src/grammar/window.js",
+        "src/actions/data/computed.js",
+        "src/grammar/transformTopology.js",
+        "src/grammar/numeric.js"
+      ],
+      "existingRegressionTests": [
+        "test/unit/actions/data/window-data.test.js"
+      ],
+      "suggestedNewTest": "test/contracts/normalization.test.js",
+      "acceptanceCases": [
+        "R07-N01",
+        "R07-N02",
+        "R07-N03",
+        "R07-N04",
+        "R07-E01",
+        "R07-L01"
+      ],
+      "requiredSurfaceChecklist": [
+        "pure validation/calculation",
+        "wrapped action and immutable state",
+        "requested/resolved and ownership",
+        "edit/reencode/Canvas/source replay/remove",
+        "applicable composition and renderer cells",
+        "Full registration/types/current contracts/knowledge/docs/installed package"
+      ]
+    },
+    {
+      "id": "R08",
+      "spec": "features/08-calendar-buckets.md",
+      "phase": 2,
+      "dependsOn": [],
+      "status": "Proposed",
+      "newPublicActions": [],
+      "extendedPublicSurfaces": [
+        "createTimeUnitData"
+      ],
+      "currentSourceFiles": [
+        "src/grammar/timeUnit.js",
+        "src/actions/data/timeUnit.js",
+        "types/program.d.ts",
+        "src/grammar/transforms.js",
+        "src/grammar/scales/fields.js"
+      ],
+      "existingRegressionTests": [
+        "test/unit/grammar/transforms/time-unit.test.js",
+        "test/unit/actions/data/time-unit-data.test.js"
+      ],
+      "suggestedNewTest": "test/contracts/calendar-buckets.test.js",
+      "acceptanceCases": [
+        "R08-N01",
+        "R08-N02",
+        "R08-N03",
+        "R08-N04",
+        "R08-N05",
+        "R08-N06",
+        "R08-N07",
+        "R08-N08",
+        "R08-E01",
+        "R08-L01"
+      ],
+      "requiredSurfaceChecklist": [
+        "pure validation/calculation",
+        "wrapped action and immutable state",
+        "requested/resolved and ownership",
+        "edit/reencode/Canvas/source replay/remove",
+        "applicable composition and renderer cells",
+        "Full registration/types/current contracts/knowledge/docs/installed package"
+      ]
+    },
+    {
+      "id": "R09",
+      "spec": "features/09-duration-windows.md",
+      "phase": 2,
+      "dependsOn": [
+        "R08"
+      ],
+      "status": "Proposed",
+      "newPublicActions": [],
+      "extendedPublicSurfaces": [
+        "createWindowData"
+      ],
+      "currentSourceFiles": [
+        "src/grammar/window.js",
+        "src/actions/data/window.js",
+        "src/grammar/transforms.js",
+        "types/program.d.ts",
+        "src/grammar/numeric.js"
+      ],
+      "existingRegressionTests": [
+        "test/unit/grammar/transforms/window.test.js",
+        "test/unit/actions/data/window-data.test.js"
+      ],
+      "suggestedNewTest": "test/contracts/duration-windows.test.js",
+      "acceptanceCases": [
+        "R09-N01",
+        "R09-N02",
+        "R09-N03",
+        "R09-N04",
+        "R09-N05",
+        "R09-E01",
+        "R09-L01"
+      ],
+      "requiredSurfaceChecklist": [
+        "pure validation/calculation",
+        "wrapped action and immutable state",
+        "requested/resolved and ownership",
+        "edit/reencode/Canvas/source replay/remove",
+        "applicable composition and renderer cells",
+        "Full registration/types/current contracts/knowledge/docs/installed package"
+      ]
+    },
+    {
+      "id": "R10",
+      "spec": "features/10-weighted-statistics.md",
+      "phase": 3,
+      "dependsOn": [],
+      "status": "Proposed",
+      "newPublicActions": [],
+      "extendedPublicSurfaces": [
+        "createSummaryData",
+        "createBinData",
+        "createDensityData",
+        "encodeHistogram",
+        "encodeDensity",
+        "createHistogram",
+        "createDensityPlot",
+        "createViolinPlot",
+        "editDensity",
+        "editViolinPlot"
+      ],
+      "currentSourceFiles": [
+        "src/grammar/summary.js",
+        "src/grammar/bin.js",
+        "src/grammar/density.js",
+        "src/actions/data/summary.js",
+        "src/actions/data/density.js",
+        "types/program.d.ts",
+        "src/grammar/aggregate.js",
+        "src/actions/encodings/histogram.js",
+        "src/actions/encodings/density.js",
+        "src/actions/charts/histogram.js",
+        "src/actions/charts/density.js",
+        "src/actions/violinPlots/create.js",
+        "src/actions/violinPlots/edit.js"
+      ],
+      "existingRegressionTests": [
+        "test/charts/cars-histogram/reference-values.test.js",
+        "test/contracts/transform-registry.test.js"
+      ],
+      "suggestedNewTest": "test/contracts/weighted-statistics.test.js",
+      "acceptanceCases": [
+        "R10-N01",
+        "R10-N02",
+        "R10-N03",
+        "R10-N04",
+        "R10-N05",
+        "R10-E01",
+        "R10-L01"
+      ],
+      "requiredSurfaceChecklist": [
+        "pure validation/calculation",
+        "wrapped action and immutable state",
+        "requested/resolved and ownership",
+        "edit/reencode/Canvas/source replay/remove",
+        "applicable composition and renderer cells",
+        "Full registration/types/current contracts/knowledge/docs/installed package"
+      ]
+    },
+    {
+      "id": "R19",
+      "spec": "features/19-atomic-encoding.md",
+      "phase": 5,
+      "dependsOn": [
+        "R20",
+        "R21",
+        "R22",
+        "R23"
+      ],
+      "status": "Proposed",
+      "newPublicActions": [
+        "encodeChannels"
+      ],
+      "extendedPublicSurfaces": [],
+      "currentSourceFiles": [
+        "src/actions/encodings/index.js",
+        "src/actions/scales/edit.js",
+        "src/actions/encodings/parallel.js",
+        "src/materialization/planner.js",
+        "src/actions/encodings/shared.js",
+        "src/core/vocabulary.js"
+      ],
+      "existingRegressionTests": [
+        "test/contracts/shared-scale-refresh.test.js",
+        "test/unit/actions/scales/scale-consumers.test.js"
+      ],
+      "suggestedNewTest": "test/contracts/atomic-encoding.test.js",
+      "acceptanceCases": [
+        "R19-N01",
+        "R19-N02",
+        "R19-E01",
+        "R19-E02",
+        "R19-L01",
+        "R19-L02"
+      ],
+      "requiredSurfaceChecklist": [
+        "pure validation/calculation",
+        "wrapped action and immutable state",
+        "requested/resolved and ownership",
+        "edit/reencode/Canvas/source replay/remove",
+        "applicable composition and renderer cells",
+        "Full registration/types/current contracts/knowledge/docs/installed package"
+      ]
+    },
+    {
+      "id": "R20",
+      "spec": "features/20-parallel-scale.md",
+      "phase": 5,
+      "dependsOn": [],
+      "status": "Proposed",
+      "newPublicActions": [
+        "editParallelScale"
+      ],
+      "extendedPublicSurfaces": [],
+      "currentSourceFiles": [
+        "src/actions/scales/edit.js",
+        "src/actions/scales/consumers/common.js",
+        "src/actions/coordinates/parallel.js",
+        "src/actions/guides/axes/parallel.js",
+        "src/actions/scales/channels.js"
+      ],
+      "existingRegressionTests": [
+        "test/contracts/parallel-coordinates.test.js",
+        "test/contracts/nested-scale-role-contract.test.js"
+      ],
+      "suggestedNewTest": "test/contracts/parallel-scale.test.js",
+      "acceptanceCases": [
+        "R20-N01",
+        "R20-N02",
+        "R20-L01",
+        "R20-E01",
+        "R20-E02"
+      ],
+      "requiredSurfaceChecklist": [
+        "pure validation/calculation",
+        "wrapped action and immutable state",
+        "requested/resolved and ownership",
+        "edit/reencode/Canvas/source replay/remove",
+        "applicable composition and renderer cells",
+        "Full registration/types/current contracts/knowledge/docs/installed package"
+      ]
+    },
+    {
+      "id": "R21",
+      "spec": "features/21-offset-scales.md",
+      "phase": 5,
+      "dependsOn": [],
+      "status": "Proposed",
+      "newPublicActions": [
+        "editXOffsetScale",
+        "editYOffsetScale"
+      ],
+      "extendedPublicSurfaces": [
+        "encodeXOffset",
+        "encodeYOffset",
+        "editScale"
+      ],
+      "currentSourceFiles": [
+        "src/actions/scales/channels.js",
+        "src/actions/scales/edit.js",
+        "src/actions/encodings/offset.js",
+        "src/materialization/scales/policies/offset.js",
+        "src/grammar/bars/geometry.js"
+      ],
+      "existingRegressionTests": [
+        "test/unit/actions/scales/channel-scale-editors.test.js",
+        "test/charts/jobs-grouped-bar/reference-values.test.js"
+      ],
+      "suggestedNewTest": "test/contracts/offset-scales.test.js",
+      "acceptanceCases": [
+        "R21-N01",
+        "R21-N02",
+        "R21-N03",
+        "R21-N04",
+        "R21-E01",
+        "R21-L01"
+      ],
+      "requiredSurfaceChecklist": [
+        "pure validation/calculation",
+        "wrapped action and immutable state",
+        "requested/resolved and ownership",
+        "edit/reencode/Canvas/source replay/remove",
+        "applicable composition and renderer cells",
+        "Full registration/types/current contracts/knowledge/docs/installed package"
+      ]
+    },
+    {
+      "id": "R22",
+      "spec": "features/22-stroke-color.md",
+      "phase": 5,
+      "dependsOn": [],
+      "status": "Proposed",
+      "newPublicActions": [
+        "editStrokeScale"
+      ],
+      "extendedPublicSurfaces": [
+        "encodeStroke",
+        "createLegend",
+        "editLegend",
+        "selectMarks",
+        "facet"
+      ],
+      "currentSourceFiles": [
+        "src/actions/encodings/index.js",
+        "src/actions/scales/quantitativeColor.js",
+        "src/actions/guides/legends/index.js",
+        "src/renderers/svg.js",
+        "src/renderers/pdf.js",
+        "src/actions/encodings/ruleAppearance.js",
+        "src/actions/encodings/color/index.js",
+        "src/grammar/pathSeries.js",
+        "src/core/vocabulary.js"
+      ],
+      "existingRegressionTests": [
+        "test/unit/actions/marks/filled-mark-stroke.test.js",
+        "test/contracts/item-legend-stroke-spacing.test.js"
+      ],
+      "suggestedNewTest": "test/contracts/stroke-color.test.js",
+      "acceptanceCases": [
+        "R22-N01",
+        "R22-N02",
+        "R22-N03",
+        "R22-L01",
+        "R22-E01",
+        "R22-L02"
+      ],
+      "requiredSurfaceChecklist": [
+        "pure validation/calculation",
+        "wrapped action and immutable state",
+        "requested/resolved and ownership",
+        "edit/reencode/Canvas/source replay/remove",
+        "applicable composition and renderer cells",
+        "Full registration/types/current contracts/knowledge/docs/installed package"
+      ]
+    },
+    {
+      "id": "R23",
+      "spec": "features/23-size-scale-types.md",
+      "phase": 5,
+      "dependsOn": [],
+      "status": "Proposed",
+      "newPublicActions": [],
+      "extendedPublicSurfaces": [
+        "encodeSize",
+        "editSizeScale",
+        "createLegend"
+      ],
+      "currentSourceFiles": [
+        "src/actions/scales/definitions.js",
+        "src/actions/scales/edit.js",
+        "src/actions/guides/legends/size.js",
+        "src/actions/encodings/index.js",
+        "src/grammar/scales/mapping.js",
+        "src/grammar/pointShapes.js"
+      ],
+      "existingRegressionTests": [
+        "test/unit/grammar/scales/transformed.test.js",
+        "test/contracts/size-legend-edges.test.js"
+      ],
+      "suggestedNewTest": "test/contracts/size-scale-types.test.js",
+      "acceptanceCases": [
+        "R23-N01",
+        "R23-N02",
+        "R23-N03",
+        "R23-N04",
+        "R23-N05",
+        "R23-E01",
+        "R23-L01"
+      ],
+      "requiredSurfaceChecklist": [
+        "pure validation/calculation",
+        "wrapped action and immutable state",
+        "requested/resolved and ownership",
+        "edit/reencode/Canvas/source replay/remove",
+        "applicable composition and renderer cells",
+        "Full registration/types/current contracts/knowledge/docs/installed package"
+      ]
+    },
+    {
+      "id": "R25",
+      "spec": "features/25-remove-resources.md",
+      "phase": 11,
+      "dependsOn": [
+        "R02",
+        "R19",
+        "R20",
+        "R21",
+        "R22",
+        "R27",
+        "R29",
+        "R31",
+        "R32",
+        "R36",
+        "R37",
+        "R38",
+        "R39",
+        "R43",
+        "R47",
+        "R49"
+      ],
+      "status": "Proposed",
+      "newPublicActions": [
+        "removeData",
+        "removeScale",
+        "removeCoordinate"
+      ],
+      "extendedPublicSurfaces": [],
+      "currentSourceFiles": [
+        "src/actions/marks/remove.js",
+        "src/actions/data/derived.js",
+        "src/selectors/datasets.js",
+        "src/materialization/guides/resources.js",
+        "src/actions/scales/consumers/common.js",
+        "src/core/programState.js"
+      ],
+      "existingRegressionTests": [
+        "test/contracts/statistical-owner-revisions.test.js"
+      ],
+      "suggestedNewTest": "test/contracts/remove-resources.test.js",
+      "acceptanceCases": [
+        "R25-N01",
+        "R25-N02",
+        "R25-N03",
+        "R25-E01",
+        "R25-E02",
+        "R25-L01"
+      ],
+      "requiredSurfaceChecklist": [
+        "pure validation/calculation",
+        "wrapped action and immutable state",
+        "requested/resolved and ownership",
+        "edit/reencode/Canvas/source replay/remove",
+        "applicable composition and renderer cells",
+        "Full registration/types/current contracts/knowledge/docs/installed package"
+      ]
+    },
+    {
+      "id": "R27",
+      "spec": "features/27-coordinate-aspect.md",
+      "phase": 6,
+      "dependsOn": [],
+      "status": "Proposed",
+      "newPublicActions": [
+        "editCoordinate"
+      ],
+      "extendedPublicSurfaces": [],
+      "currentSourceFiles": [
+        "src/actions/coordinates/actions.js",
+        "src/actions/scales/materialize.js",
+        "src/materialization/planner.js",
+        "src/grammar/coordinates.js",
+        "src/layout/canvas.js"
+      ],
+      "existingRegressionTests": [
+        "test/unit/grammar/polar.test.js",
+        "test/contracts/shared-scale-refresh.test.js"
+      ],
+      "suggestedNewTest": "test/contracts/coordinate-aspect.test.js",
+      "acceptanceCases": [
+        "R27-N01",
+        "R27-N02",
+        "R27-N03",
+        "R27-L01",
+        "R27-E01"
+      ],
+      "requiredSurfaceChecklist": [
+        "pure validation/calculation",
+        "wrapped action and immutable state",
+        "requested/resolved and ownership",
+        "edit/reencode/Canvas/source replay/remove",
+        "applicable composition and renderer cells",
+        "Full registration/types/current contracts/knowledge/docs/installed package"
+      ]
+    },
+    {
+      "id": "R29",
+      "spec": "features/29-polar-frame.md",
+      "phase": 6,
+      "dependsOn": [
+        "R27"
+      ],
+      "status": "Proposed",
+      "newPublicActions": [],
+      "extendedPublicSurfaces": [
+        "editCoordinate"
+      ],
+      "currentSourceFiles": [
+        "src/grammar/polar.js",
+        "src/grammar/polarPaths.js",
+        "src/grammar/polarGuides.js",
+        "src/actions/charts/polar.js"
+      ],
+      "existingRegressionTests": [
+        "test/unit/grammar/polar.test.js",
+        "test/unit/grammar/polar-guides.test.js"
+      ],
+      "suggestedNewTest": "test/contracts/polar-frame.test.js",
+      "acceptanceCases": [
+        "R29-N01",
+        "R29-N02",
+        "R29-N03",
+        "R29-E01",
+        "R29-E02",
+        "R29-L01"
+      ],
+      "requiredSurfaceChecklist": [
+        "pure validation/calculation",
+        "wrapped action and immutable state",
+        "requested/resolved and ownership",
+        "edit/reencode/Canvas/source replay/remove",
+        "applicable composition and renderer cells",
+        "Full registration/types/current contracts/knowledge/docs/installed package"
+      ]
+    },
+    {
+      "id": "R31",
+      "spec": "features/31-remove-labels.md",
+      "phase": 7,
+      "dependsOn": [],
+      "status": "Proposed",
+      "newPublicActions": [
+        "removeMarkLabels"
+      ],
+      "extendedPublicSurfaces": [],
+      "currentSourceFiles": [
+        "src/actions/marks/text/index.js",
+        "src/actions/marks/remove.js",
+        "src/actions/marks/text/layout.js",
+        "src/materialization/planner.js",
+        "src/actions/selection/actions.js"
+      ],
+      "existingRegressionTests": [
+        "test/unit/actions/marks/mark-labels.test.js"
+      ],
+      "suggestedNewTest": "test/contracts/remove-labels.test.js",
+      "acceptanceCases": [
+        "R31-N01",
+        "R31-N02",
+        "R31-N03",
+        "R31-E01",
+        "R31-L01",
+        "R31-L02"
+      ],
+      "requiredSurfaceChecklist": [
+        "pure validation/calculation",
+        "wrapped action and immutable state",
+        "requested/resolved and ownership",
+        "edit/reencode/Canvas/source replay/remove",
+        "applicable composition and renderer cells",
+        "Full registration/types/current contracts/knowledge/docs/installed package"
+      ]
+    },
+    {
+      "id": "R32",
+      "spec": "features/32-selected-labels.md",
+      "phase": 7,
+      "dependsOn": [
+        "R31"
+      ],
+      "status": "Proposed",
+      "newPublicActions": [
+        "editMarkLabelSelection"
+      ],
+      "extendedPublicSurfaces": [
+        "createMarkLabels",
+        "editMarkSelection",
+        "removeMarkSelection"
+      ],
+      "currentSourceFiles": [
+        "src/actions/marks/text/index.js",
+        "src/materialization/selection/state.js",
+        "src/grammar/markFilter.js",
+        "types/program.d.ts",
+        "src/actions/selection/actions.js"
+      ],
+      "existingRegressionTests": [
+        "test/unit/actions/marks/mark-labels.test.js",
+        "test/contracts/mark-label-content.test.js"
+      ],
+      "suggestedNewTest": "test/contracts/selected-labels.test.js",
+      "acceptanceCases": [
+        "R32-N01",
+        "R32-N02",
+        "R32-N03",
+        "R32-L01",
+        "R32-E01",
+        "R32-L02"
+      ],
+      "requiredSurfaceChecklist": [
+        "pure validation/calculation",
+        "wrapped action and immutable state",
+        "requested/resolved and ownership",
+        "edit/reencode/Canvas/source replay/remove",
+        "applicable composition and renderer cells",
+        "Full registration/types/current contracts/knowledge/docs/installed package"
+      ]
+    },
+    {
+      "id": "R33",
+      "spec": "features/33-semantic-label-anchors.md",
+      "phase": 7,
+      "dependsOn": [
+        "R27",
+        "R29",
+        "R32"
+      ],
+      "status": "Proposed",
+      "newPublicActions": [
+        "editMarkLabelPlacement"
+      ],
+      "extendedPublicSurfaces": [
+        "createMarkLabels"
+      ],
+      "currentSourceFiles": [
+        "src/actions/marks/text/layout.js",
+        "src/layout/labels.js",
+        "src/grammar/polar.js",
+        "src/actions/marks/text/index.js",
+        "src/core/textMetrics.js"
+      ],
+      "existingRegressionTests": [
+        "test/unit/layout/labels.test.js",
+        "test/unit/actions/marks/label-layout.test.js"
+      ],
+      "suggestedNewTest": "test/contracts/semantic-label-anchors.test.js",
+      "acceptanceCases": [
+        "R33-N01",
+        "R33-N02",
+        "R33-N03",
+        "R33-E01",
+        "R33-L01",
+        "R33-L02"
+      ],
+      "requiredSurfaceChecklist": [
+        "pure validation/calculation",
+        "wrapped action and immutable state",
+        "requested/resolved and ownership",
+        "edit/reencode/Canvas/source replay/remove",
+        "applicable composition and renderer cells",
+        "Full registration/types/current contracts/knowledge/docs/installed package"
+      ]
+    },
+    {
+      "id": "R36",
+      "spec": "features/36-statistical-references.md",
+      "phase": 7,
+      "dependsOn": [
+        "R02",
+        "R19"
+      ],
+      "status": "Proposed",
+      "newPublicActions": [],
+      "extendedPublicSurfaces": [
+        "createReferenceLine",
+        "createReferenceBand"
+      ],
+      "currentSourceFiles": [
+        "src/actions/marks/references.js",
+        "src/actions/marks/rule/index.js",
+        "src/grammar/summary.js",
+        "src/materialization/planner.js",
+        "src/grammar/aggregate.js",
+        "src/grammar/transformTopology.js"
+      ],
+      "existingRegressionTests": [
+        "test/unit/actions/marks/references.test.js",
+        "test/contracts/reference-marks.test.js"
+      ],
+      "suggestedNewTest": "test/contracts/statistical-references.test.js",
+      "acceptanceCases": [
+        "R36-N01",
+        "R36-N02",
+        "R36-N03",
+        "R36-N04",
+        "R36-E01",
+        "R36-L01"
+      ],
+      "requiredSurfaceChecklist": [
+        "pure validation/calculation",
+        "wrapped action and immutable state",
+        "requested/resolved and ownership",
+        "edit/reencode/Canvas/source replay/remove",
+        "applicable composition and renderer cells",
+        "Full registration/types/current contracts/knowledge/docs/installed package"
+      ]
+    },
+    {
+      "id": "R37",
+      "spec": "features/37-legend-values.md",
+      "phase": 8,
+      "dependsOn": [
+        "R22",
+        "R23"
+      ],
+      "status": "Proposed",
+      "newPublicActions": [],
+      "extendedPublicSurfaces": [
+        "createLegend",
+        "editLegend"
+      ],
+      "currentSourceFiles": [
+        "src/actions/guides/legends/size.js",
+        "src/actions/guides/legends/strokeWidth.js",
+        "src/actions/guides/legends/continuous/opacity.js",
+        "src/actions/guides/legends/edit.js"
+      ],
+      "existingRegressionTests": [
+        "test/unit/actions/guides/legend-content-editing.test.js",
+        "test/contracts/size-legend-edges.test.js"
+      ],
+      "suggestedNewTest": "test/contracts/legend-values.test.js",
+      "acceptanceCases": [
+        "R37-N01",
+        "R37-N02",
+        "R37-E01",
+        "R37-L01",
+        "R37-L02"
+      ],
+      "requiredSurfaceChecklist": [
+        "pure validation/calculation",
+        "wrapped action and immutable state",
+        "requested/resolved and ownership",
+        "edit/reencode/Canvas/source replay/remove",
+        "applicable composition and renderer cells",
+        "Full registration/types/current contracts/knowledge/docs/installed package"
+      ]
+    },
+    {
+      "id": "R38",
+      "spec": "features/38-legend-blocks.md",
+      "phase": 8,
+      "dependsOn": [
+        "R37"
+      ],
+      "status": "Proposed",
+      "newPublicActions": [
+        "editLegendBlock"
+      ],
+      "extendedPublicSurfaces": [],
+      "currentSourceFiles": [
+        "src/actions/guides/legends/edit.js",
+        "src/actions/guides/legends/target.js",
+        "src/actions/guides/legends/transition.js",
+        "src/materialization/legends.js"
+      ],
+      "existingRegressionTests": [
+        "test/contracts/combined-legend-appearance.test.js",
+        "test/contracts/combined-legend-edges.test.js"
+      ],
+      "suggestedNewTest": "test/contracts/legend-blocks.test.js",
+      "acceptanceCases": [
+        "R38-N01",
+        "R38-N02",
+        "R38-E01",
+        "R38-L01",
+        "R38-E02"
+      ],
+      "requiredSurfaceChecklist": [
+        "pure validation/calculation",
+        "wrapped action and immutable state",
+        "requested/resolved and ownership",
+        "edit/reencode/Canvas/source replay/remove",
+        "applicable composition and renderer cells",
+        "Full registration/types/current contracts/knowledge/docs/installed package"
+      ]
+    },
+    {
+      "id": "R39",
+      "spec": "features/39-display-names-headers.md",
+      "phase": 8,
+      "dependsOn": [
+        "R38"
+      ],
+      "status": "Proposed",
+      "newPublicActions": [],
+      "extendedPublicSurfaces": [
+        "categorical-axis-labels",
+        "createLegend",
+        "editLegend",
+        "editLegendBlock",
+        "editFacetHeaders"
+      ],
+      "currentSourceFiles": [
+        "src/actions/guides/axes/labels.js",
+        "src/actions/facets/guides.js",
+        "src/actions/guides/legends/edit.js",
+        "types/program.d.ts",
+        "src/materialization/facets.js",
+        "src/grammar/facets/index.js"
+      ],
+      "existingRegressionTests": [
+        "test/unit/actions/guides/axis-label-actions.test.js",
+        "test/contracts/facet-policy-editing.test.js"
+      ],
+      "suggestedNewTest": "test/contracts/display-names-headers.test.js",
+      "acceptanceCases": [
+        "R39-N01",
+        "R39-N02",
+        "R39-E01",
+        "R39-L01",
+        "R39-L02"
+      ],
+      "requiredSurfaceChecklist": [
+        "pure validation/calculation",
+        "wrapped action and immutable state",
+        "requested/resolved and ownership",
+        "edit/reencode/Canvas/source replay/remove",
+        "applicable composition and renderer cells",
+        "Full registration/types/current contracts/knowledge/docs/installed package"
+      ]
+    },
+    {
+      "id": "R43",
+      "spec": "features/43-polar-parallel-facets.md",
+      "phase": 10,
+      "dependsOn": [
+        "R02",
+        "R20",
+        "R22",
+        "R27",
+        "R29",
+        "R32",
+        "R33",
+        "R37",
+        "R38",
+        "R39",
+        "R47",
+        "R49"
+      ],
+      "status": "Proposed",
+      "newPublicActions": [],
+      "extendedPublicSurfaces": [
+        "facet",
+        "facetGrid",
+        "repeatCharts",
+        "editFacetScales",
+        "editFacetSource"
+      ],
+      "currentSourceFiles": [
+        "src/actions/facets/derive.js",
+        "src/actions/facets/replay.js",
+        "src/grammar/facets/dependencies.js",
+        "src/grammar/facets/scales.js",
+        "src/actions/composition/actions.js",
+        "src/grammar/parallelCoordinates.js",
+        "src/grammar/facets/index.js",
+        "src/materialization/facets.js"
+      ],
+      "existingRegressionTests": [
+        "test/unit/actions/composition/facet-derived-families.test.js",
+        "test/unit/actions/composition/facet-grid-repeat.test.js"
+      ],
+      "suggestedNewTest": "test/contracts/polar-parallel-facets.test.js",
+      "acceptanceCases": [
+        "R43-N01",
+        "R43-N02",
+        "R43-N03",
+        "R43-N04",
+        "R43-E01",
+        "R43-L01",
+        "R43-L02"
+      ],
+      "requiredSurfaceChecklist": [
+        "pure validation/calculation",
+        "wrapped action and immutable state",
+        "requested/resolved and ownership",
+        "edit/reencode/Canvas/source replay/remove",
+        "applicable composition and renderer cells",
+        "Full registration/types/current contracts/knowledge/docs/installed package"
+      ]
+    },
+    {
+      "id": "R47",
+      "spec": "features/47-custom-theme.md",
+      "phase": 9,
+      "dependsOn": [],
+      "status": "Proposed",
+      "newPublicActions": [],
+      "extendedPublicSurfaces": [
+        "applyTheme",
+        "removeTheme"
+      ],
+      "currentSourceFiles": [
+        "src/theme/defaults.js",
+        "src/actions/theme/actions.js",
+        "src/actions/theme/reconcile.js",
+        "src/materialization/composition.js",
+        "src/core/programState.js"
+      ],
+      "existingRegressionTests": [
+        "test/unit/actions/theme.test.js",
+        "test/contracts/theme.test.js"
+      ],
+      "suggestedNewTest": "test/contracts/custom-theme.test.js",
+      "acceptanceCases": [
+        "R47-N01",
+        "R47-N02",
+        "R47-N03",
+        "R47-N04",
+        "R47-E01",
+        "R47-L01"
+      ],
+      "requiredSurfaceChecklist": [
+        "pure validation/calculation",
+        "wrapped action and immutable state",
+        "requested/resolved and ownership",
+        "edit/reencode/Canvas/source replay/remove",
+        "applicable composition and renderer cells",
+        "Full registration/types/current contracts/knowledge/docs/installed package"
+      ]
+    },
+    {
+      "id": "R49",
+      "spec": "features/49-shape-style-details.md",
+      "phase": 9,
+      "dependsOn": [],
+      "status": "Proposed",
+      "newPublicActions": [],
+      "extendedPublicSurfaces": [
+        "applicable mark create/edit",
+        "facade mark options"
+      ],
+      "currentSourceFiles": [
+        "src/actions/marks/bar/index.js",
+        "src/actions/marks/rect/index.js",
+        "src/actions/marks/line/index.js",
+        "src/renderers/canvas/index.js",
+        "src/renderers/svg.js",
+        "src/renderers/pdf.js",
+        "src/grammar/pointShapes.js"
+      ],
+      "existingRegressionTests": [
+        "test/unit/actions/marks/filled-mark-stroke.test.js"
+      ],
+      "suggestedNewTest": "test/contracts/shape-style-details.test.js",
+      "acceptanceCases": [
+        "R49-N01",
+        "R49-N02",
+        "R49-N03",
+        "R49-E01",
+        "R49-L01",
+        "R49-L02"
+      ],
+      "requiredSurfaceChecklist": [
+        "pure validation/calculation",
+        "wrapped action and immutable state",
+        "requested/resolved and ownership",
+        "edit/reencode/Canvas/source replay/remove",
+        "applicable composition and renderer cells",
+        "Full registration/types/current contracts/knowledge/docs/installed package"
+      ]
+    }
+  ]
+}

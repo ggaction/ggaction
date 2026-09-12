@@ -52,10 +52,52 @@ requested legend recipe에 stable channel-set identity와 block override map을 
 - color+size legend에서 size title="규모", values[10,50,100], color title="분류": 독립 결과.
 - root legend move/resize/theme 후 override 유지. channels reorder 후 title가 다른 block으로 이동하지 않음.
 - size block 제거 후 재추가 시 stale title/value 부활 없음.
-- merged color+shape block에서 color title 편집은 단일 block title 변경; shape를 다른 title로 독립 지정 시 명시 오류/분리 절차 검증.
+- merged color+shape block에서 color 또는 shape로 title을 편집하면 동일 block title을 교체한다. 서로 다른 old block overrides가 merge되는 transition의 충돌은 거부한다.
 - categorical에 values, absent channel, symbol unsupported property, oversized label occupied bounds 오류/검증.
 
 모든 성공 사례에 입력 options deep-freeze와 이전 program semantic/graphic/trace 불변성을 확인한다. 오류 사례는 입력 state와 trace가 동일함을 확인한다. 시각 변화가 있으면 승인된 primitive/public 동일 실행의 graphic·Canvas·PNG parity 및 SVG/PDF 경로를 [검증 계획](../VALIDATION.md)에 따라 검증한다.
+
+## 구현 고정 명세 — merged block identity와 편집
+
+EditLegendBlockOptions의 target은 기존 legend API와 같은 semantic owner selector이고 channel은 현재 logical block의 member다. graphic ID/index를 새 selector로 받지 않는다. editable field가 하나 이상 있어야 한다.
+
+### block descriptor와 patch whitelist
+
+private descriptor={key,channels,kind,scaleIds,contentRecipe,styleRecipe}. key는 ASCII sorted channel 집합을 JSON 배열 문자열로 encode한다. 예: ["color","shape"]. channel 순서가 달라도 같은 key다. 이 key는 private이고 사용자가 직접 입력하지 않는다.
+
+| field | 허용 조건 |
+| --- | --- |
+| title:string | 모든 block,빈 문자열로 숨김 |
+| values/count | R37 sampled continuous block |
+| order:Scalar[] | categorical,현재 domain의 정확한 permutation |
+| gap:finite>=0 | block 내부 item gap |
+| text | fontSize,fontFamily,fontWeight,color |
+| symbol | size,fill,stroke,strokeWidth,opacity 중 실제 recipe에서 지원되는 것 |
+| labelMap | R39 categorical block |
+
+symbol.size는 point glyph의 면적px²(finite>=0)이며 radius가 아니다. fill은 filled glyph에만, stroke/strokeWidth는 실제 outline이 있는 glyph에만, opacity는[0,1]에서 허용한다. text.fontSize는finite>0,fontFamily는nonempty,fontWeight/color는기존validator를사용한다. symbol override가 그 block의 data mapping channel을 덮는 경우 거부한다. size block의 symbol.size,opacity block의 symbol.opacity,strokeWidth block의 symbol.strokeWidth,color block의 symbol.fill,stroke block의 symbol.stroke는 충돌이다. text/symbol 객체는 전체 교체하며 미지정 property는 root 공통 스타일로 돌아간다.
+
+### merged block 편집 의미 정정
+
+merged color+shape에서 channel:"color"와 channel:"shape"는 **같은 block을 선택**한다. 한 호출은 그 block 전체를 편집한다. 뒤 호출에서 title을 바꾸면 전체 block의 title을 교체한다. channel별 독립 title을 저장하지 않는다.
+
+초안의 "shape를 다른 title로 지정하면 오류"는 순차 patch인지 독립 title 요청인지 모호했다. 하나의 public patch에는 독립 title 두 개를 표현할 수 없으므로, 정상 순차 편집은 허용한다. 서로 다른 membership에서 유입된 override를 merge하는 transition에서만 충돌을 거부한다. 이는 Proposed 상세 정책의 명료화이며 현재 동작 변경 완료가 아니다.
+
+### transition 표
+
+- key 그대로,root reorder/layout/theme 변경 → override 유지.
+- block 제거 → override 제거; 재추가해도 부활하지 않음.
+- split/merge로 membership 변경 → old override의 적용 가능성을 field별 검사. 한 old block→여러 new blocks는 compatible style만 복사하고 content title/order/values는 명시 재지정 필요하므로 기존 값이 있으면 transition 거부.
+- 여러 old blocks→merged block: 동일한 compatible overrides만 합침; 다른 title/maps/style 또는 invalid field가 있으면 사전 오류. automatic last-wins 금지.
+- scale type 변경으로 기존 values/order가 불가능해짐 → 오류, 명시 compatible content로 먼저 바꿔야 함.
+
+### 고정 인수 사례
+
+- R38-N01: color+size separate blocks → size title/values만 변경,color 유지.
+- R38-N02: merged color+shape title을color로"A",shape로"B" → 하나의 title"B".
+- R38-E01: incompatible overrides의 두 blocks merge → Error.
+- R38-L01: reorder 후 overrides 동일;remove+readd 후 default.
+- R38-E02: absent channel,size block의 symbol.size,categorical values → 오류.
 
 ## 완료 조건
 

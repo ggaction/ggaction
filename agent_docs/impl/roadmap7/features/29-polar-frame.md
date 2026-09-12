@@ -29,7 +29,7 @@ editCoordinate({target: string, polarFrame: "auto" | {
 
 ## 값·기본값·오류 계약
 
-- Polar coordinate에만 적용. 다른 coord이면 오류. radius fraction은 중심에서 bounds 네 변까지 최소 거리(availableRadius)의0..1 배수. px는0<value<=availableRadius. center가 경계에 있어 availableRadius0이면 오류.
+- Polar coordinate에만 적용. 다른 coord이면 오류. radius fraction은 중심에서 bounds 네 변까지 최소 거리(availableRadius)의0초과1이하 배수. px는0<value<=availableRadius. center가 경계에 있어 availableRadius0이면 오류.
 - 중심 값은 Canvas 전체가 아니라 R27 이후 effective plot bounds 기준. x0=left+width*x, y0=top+height*y. fraction1은 원 전체가 frame에 들어가는 최대 반지름.
 - semicycle이라고 자동으로 중심을 경계로 옮기거나 반지름을 늘리지 않는다. 잘리는 원을 허용하는 overflow/viewport 정책은 범위 밖. 반원 사용자도 양수 availableRadius를 가진 중심을 선택한다.
 - radius scale range는 [0, availableFrameRadius] 내에 검증하고 theta range/reverse는 기존 scale이 소유한다. 시작/끝 각도 API를 중복 생성하지 않는다.
@@ -54,6 +54,37 @@ requested polarFrame은 coordinate가 소유. resolvePolarFrame을 유일한 cen
 - 기존 auto frame pixel parity, theta range/reverse 보존, aspect+frame 합성, labels/leaders/polar axes 동반 이동.
 
 모든 성공 사례에 입력 options deep-freeze와 이전 program semantic/graphic/trace 불변성을 확인한다. 오류 사례는 입력 state와 trace가 동일함을 확인한다. 시각 변화가 있으면 승인된 primitive/public 동일 실행의 graphic·Canvas·PNG parity 및 SVG/PDF 경로를 [검증 계획](../VALIDATION.md)에 따라 검증한다.
+
+## 구현 고정 명세 — Polar frame의 단일 계산
+
+PolarFrameOptions="auto"|{center?:{x:number,y:number},radius?:{unit:"fraction"|"px",value:number}}를 제안한다. center/radius object 각각은 전체 교체하며 polarFrame object 자체도 전체 교체다. center만 새로 전달하면 radius는 fraction1로 돌아간다. 유지하려면 기존 requested radius도 함께 전달한다.
+
+### 범위와 수식
+
+center components는 finite[0,1]. radius fraction은 **0<value<=1**, px는 **0<value<=availableRadius**다. 초안의 "0..1" 표현은0 제외로 정정한다. zero radius 그래프를 숨기는 API가 아니다.
+
+effective bounds=(L,T,W,H),cx=L+W*x,cy=T+H*y.
+availableRadius=min(cx-L,L+W-cx,cy-T,T+H-cy).
+R=availableRadius*fraction 또는 px.
+theta degrees는 현재 convention(0위,90오른쪽):
+X=cx+r*sin(theta*pi/180),Y=cy-r*cos(theta*pi/180).
+
+모든 Point/Line/Arc/Pie/Rose/Radar, theta/radius axes/grids, source labels/leaders는 같은 {cx,cy,R}를 받아야 한다. 이미 projection된 graphic을 translate/resize하는 방식은 semantic scale과 guide를 놓치므로 금지한다.
+
+### range와 resize
+
+radius scale range:"auto"는 기존 radial mapping 정책을 R로 계산한다. explicit range는 [0,R] 안이어야 한다. polarFrame과 aspect를 한 coordinate edit에서 같이 바꾸면 aspect→frame→radial range 순으로 최종 상태를 검증한다. theta range/reverse/각도단위는 별도 existing scale 계약 그대로다.
+
+fraction은 Canvas에 비례, px는 값 유지. px가 새 allocation에 들어가지 않으면 전체 resize 실패. full-circle fit이 기준이며 theta span이 반원이라도 availableRadius를 임의 확대하지 않는다.
+
+### 고정 인수 사례
+
+- R29-N01: bounds(0,0,400,200),center(.25,.5),fraction.8 → center(100,100),R80.
+- R29-N02: 같은 frame의 theta0/r80 → (100,20);theta90 → (180,100).
+- R29-N03: bounds(20,30,400,200),동일 요청 → center(120,130),R80.
+- R29-E01: center(.9,.5),px80 → available40이므로 오류.
+- R29-E02: fraction0,center boundary,Cartesian target,nonfinite center → 오류.
+- R29-L01: 모든 Polar guide와 leader가 center 이동에 동행; auto 복구 시 기존 output parity.
 
 ## 완료 조건
 

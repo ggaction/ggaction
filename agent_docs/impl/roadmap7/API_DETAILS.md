@@ -19,9 +19,9 @@ Canonical declarations: repository root `types/program.d.ts`.
 | LegendChannel | 현재 channels union + R22 stroke | R37 sample values를 모든 channel에 허용 금지 |
 | LegendTextPatch | 현재 legend label 집중 편집의 fontSize, fontFamily, fontWeight, color와 지원되는 기존 spacing | 일반 DOM/CSS props 없음 |
 | LegendSymbolPatch | 현재 block channel의 symbol size/fill/stroke/strokeWidth/opacity 등 실제 지원 whitelist | 다른 channel의 scale mapping 우회 금지 |
-| Placement/Statistic/ThemeTokens | 각각 R33/R36/R47에 열거된 closed union을 새 export 타입으로 정의 | callback/임의 token map 없음 |
+| MarkLabelPlacement/ReferenceStatistic/ThemeTokens | 각각 R33/R36/R47에 열거된 closed union을 새 export 타입으로 정의 | callback/임의 token map 없음 |
 
-각 타입의 정확한 export 이름은 Phase A에서 declaration diff로 고정한다. 필수 옵션/union의 `never` 배제를 runtime validator와 동기화한다. 예제를 복사할 때 `...partialDefinition`을 실제 JSON key로 넣지 않는다.
+구체적인 제안 export 이름과 union은 [IMPLEMENTATION_TYPES.d.ts](IMPLEMENTATION_TYPES.d.ts)에 정리했다. Phase A에서는 이 제안과 실제 declaration diff를 검증한다. 필수 옵션/union의 `never` 배제를 runtime validator와 동기화한다. 예제를 복사할 때 `...partialDefinition`을 실제 JSON key로 넣지 않는다.
 
 ## 데이터 create와 edit 표면
 
@@ -65,7 +65,7 @@ R09는 WindowDataOptions root에 새 `temporalUnit?:TemporalInputUnit`을 추가
 
 ## R23 새 size scale 타입의 정확한 값
 
-기존 range는 모든 타입에서 px² 면적이다. continuous type=linear/log/sqrt/pow는 domain:auto 또는2 endpoints, range:auto 또는2 nonnegative increasing areas, unknown은 nonnegative area. 새 타입에도 clamp 기본false, reverse 기본false를 명시 제공하고 기존 linear 기본 output을 유지한다. log base 기본10(>0,!=1), pow exponent필수>0, sqrt는 exponent를 받지 않는다. reverse는 t → 1-t, clamp는 t를[0,1]로 제한. unknown은 기존 missing mapping에서만 사용하고 malformed numeric을 숨기지 않는다.
+기존 range는 모든 타입에서 px² 면적이다. continuous type=linear/log/sqrt/pow는 domain:auto 또는2 endpoints, range:auto 또는2 nonnegative nondecreasing areas, unknown은 nonnegative area. 새 타입에도 clamp 기본false, reverse 기본false를 명시 제공하고 기존 linear 기본 output을 유지한다. log base 기본10(>0,!=1), pow exponent필수>0, sqrt는 exponent를 받지 않는다. reverse는 t → 1-t, clamp는 t를[0,1]로 제한. unknown은 기존 missing mapping에서만 사용하고 malformed numeric을 숨기지 않는다.
 
 quantize: domain auto/strict min<max, range는최소2 nondecreasing areas 필수. quantile: domain auto/finite nonempty sample array, range 최소2필수; auto는 positive/zero를 포함한 consumer field values의 전체 sample이며 source duplicates 유지. threshold: domain strictly increasing cutpoints 최소1개 필수, range length=cuts+1. discrete는 clamp 옵션 없음(outer bins로 매핑), reverse=true는 bucket index를 반전한다. reverse 후 size ordering이 반대가 되는 것은 명시 요청이므로 허용. type migration은 새 타입의 필수range/domain/base/exponent를 검증한다.
 

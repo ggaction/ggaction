@@ -58,6 +58,61 @@ weight?: {field:string; kind:"frequency"|"reliability"}
 
 모든 성공 사례에 입력 options deep-freeze와 이전 program semantic/graphic/trace 불변성을 확인한다. 오류 사례는 입력 state와 trace가 동일함을 확인한다. 시각 변화가 있으면 승인된 primitive/public 동일 실행의 graphic·Canvas·PNG parity 및 SVG/PDF 경로를 [검증 계획](../VALIDATION.md)에 따라 검증한다.
 
+## 구현 고정 명세 — 가중치 전파와 계산
+
+### 입력 타입과 연산 whitelist
+
+새 export StatisticalWeight={field:string,kind:"frequency"|"reliability"}를 SummaryDataOptions/BinDataOptions/DensityDataOptions 및 대응 semantic transform과 histogram/density/violin authoring 옵션에 추가한다. existing ECDF weight:string은 변경하지 않는다. grouped/split violin에서도 group마다 적용한다.
+
+summary의 quantile은 기존 문법을 보존한다.
+
+~~~ts
+{ op: { op:"quantile", probability:0.25 }, field:"x", as:"q25" }
+~~~
+
+새 p 필드를 SummaryAggregateOptions root에 추가하지 않는다. R36의 Statistic.p는 자체 reference API에서만 사용하고 내부 aggregate로 바꿀 때 probability로 변환한다.
+
+weight branch의 whitelist는 count,sum,mean,variance,varianceP,stdev,stdevP,stderr,median,q1,q3 및 parameterized quantile이다. min/max/distinct/valid/missing/first/last/CI는 이 weighted branch에서 명시 거부한다. 필요한 extent min/max는 private 계산이며 public weighted aggregate를 자동 추가하지 않는다. count는 value field가 없어도 가능하고 weight만 검증한다. 그 외 연산은 field 필수다.
+
+### 계층별 정확한 weight 위치와 해제
+
+| API | 위치 | 생략 / 해제 |
+| --- | --- | --- |
+| createSummaryData/createBinData/createDensityData | root weight | 생략=unweighted |
+| encodeHistogram/encodeDensity | root weight | 새 encoding 요청에서 생략=unweighted |
+| createHistogram/createDensityPlot | root weight | 하위 encoder root로 그대로 전달 |
+| createViolinPlot | density.weight | 하위 density transform weight로 전달 |
+| editSummaryData/editBinData/editDensityData/editDensity | root weight | 생략=유지,false=제거 |
+| editViolinPlot | density.weight | 생략=유지,false=제거 |
+| editDerivedData | complete definition.weight | definition에서 생략하면 제거 |
+
+weight:false는 edit 전용 patch sentinel이고 canonical transform에는 저장하지 않는다. create/encode에서 false는 오류다. ViolinPlotDensityOptions의 기존 parent GradientPlotDensityOptions를 통째로 확장해 미선택 Gradient API까지 weight가 새지 않도록 violin-own 옵션에서만 추가한다. 이 해제 규칙도 Proposed이며 Phase3/4의 타입·runtime에 함께 반영한다.
+
+### 계산 알고리즘
+
+1. 모든 요청 value fields와 weight를 먼저 검증한다. 0 weight row의 invalid numeric도 오류다. group은 원본 first appearance로 유지한다.
+2. positive weights만 통계 membership에 넣는다. all-zero group은 오류다. frequency의 각 w와 W는 safe integer, virtual rows를 할당하지 않는다.
+3. 안정적 계산은 w/max(w)로 scaling 가능하다. mean과 reliability variance/SE는 scaling에 불변, weighted sum/count/count-density는 원래 weight 크기를 반영해 마지막 finite 검증한다. 중간 W2 overflow 때문에 정상 reliability mean을 실패시키지 않는다.
+4. Q=sum(w*(x-mean)^2), varianceP=Q/W. frequency sample=Q/(W-1), reliability sample=Q/(W-W2/W). 분모<=0은 요청한 sample statistic 또는 auto bandwidth에서만 오류다. population만 요청한 한 positive observation은0.
+5. frequency quantile은 sorted 값과 cumulative integer weights에서 rank floor((W-1)*p),ceil((W-1)*p)의 값을 binary search하고 기존 linear interpolation. reliability는 동일 x의 weights를 합치고 최소 cumulative/W>=p인 x. p0은 min, p1은 max.
+6. bins는 positive-weight extent, 각 bin mass=sum(weights). includeEmpty가 켜진 빈 bin mass0은 허용하며 group total0과 구별한다. last upper endpoint 기존 포함 규칙 유지.
+7. Gaussian KDE unit=sum(w*exp(-.5*((x-xi)/h)^2))/(W*h*sqrt(2*pi)); count는 W배. bandwidth:auto는 feature 수식을 사용한다. explicit positive h는 effective sample size1에도 허용한다.
+8. 현재 density grid/extent/kernel/output-order/work-budget는 유지한다. finite grid의 적분을 무조건1로 다시 정규화하지 않는다.
+
+### 계층별 완료 의무
+
+data creators → statistical encoders → complete facades → edit/replay 모두 weight를 보존한다. histogram bin count를 다시 단순 row count로 덮지 않는다. violin은 먼저 weighted profile을 계산한 뒤 기존 unit/count/width 정규화를 적용하며 반쪽/그룹 profile끼리 weights를 섞지 않는다. 새 facade의 옵션만 받고 하위 requested transform에 weight가 없는 구현은 실패다.
+
+### 고정 인수 사례
+
+- R10-N01: x=[1,3],w=[1,3],frequency → count4,sum10,mean2.5,varP.75,var1,stderr.5.
+- R10-N02: 같은 reliability → nEff1.6,var2,stderr1.118033988749895.
+- R10-N03: frequency q25=2.5,median3; reliability q25=1,median3. 작은 expanded sample [1,3,3,3]을 독립 oracle로 사용한다.
+- R10-N04: h1,xEval1,unit density=(1+3*exp(-2))/(4*sqrt(2*pi)); count=4배.
+- R10-N05: x=[1,3,1000],w=[1,3,0]의 auto domain은1..3, members는[0,1].
+- R10-E01: all-zero group / frequency.5 / sum weights>MAX_SAFE_INTEGER / weighted CI → 오류.
+- R10-L01: 모든 reliability weights를10배로 바꾸면 mean/variance/SE/unit-density 동일, count/sum/count-density는10배.
+
 ## 완료 조건
 
 - [ ] 위 API의 최단 호출과 explicit 대상 호출, 누락/auto/false/empty 경계를 타입과 runtime으로 동기화했다.

@@ -1,0 +1,1547 @@
+{
+  "version": 1,
+  "status": "planned",
+  "note": "명세 사례 인덱스. 테스트에 독립 fixture/expected로 옮기며 제품에서 이 JSON을 import하지 않는다. runtimeEvidence:null은 미실행이다.",
+  "cases": [
+    {
+      "id": "R02-N01",
+      "feature": "R02",
+      "phase": 4,
+      "kind": "normal",
+      "specification": "raw x=[1,2,3] → twice z=2*x → avg mean(z)=4. z=3*x로 recompute 후 z=[3,6,9], avg=6. 이전 program은 z=[2,4,6], avg=4.",
+      "owner": "features/02-derived-editing.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R02-E01",
+      "feature": "R02",
+      "phase": 4,
+      "kind": "error",
+      "specification": "같은 입력에서 dependents 생략 → Error, 다섯 canonical state와 resolvedScales/children/compositionSpec까지 동일.",
+      "owner": "features/02-derived-editing.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R02-E02",
+      "feature": "R02",
+      "phase": 4,
+      "kind": "error",
+      "specification": "z를 w로 rename하지만 downstream expression.field=\"z\" 유지 → 전체 실패.",
+      "owner": "features/02-derived-editing.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R02-L01",
+      "feature": "R02",
+      "phase": 4,
+      "kind": "lifecycle",
+      "specification": "after에서 source:\"twice\"로 새 summary 생성 → 6; before의 동일 호출 → 4.",
+      "owner": "features/02-derived-editing.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R02-L02",
+      "feature": "R02",
+      "phase": 4,
+      "kind": "lifecycle",
+      "specification": "두 direct consumers + 영향 없는 sibling → 두 consumer만 새 current 사용, sibling 값/ID 유지.",
+      "owner": "features/02-derived-editing.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R02-L03",
+      "feature": "R02",
+      "phase": 4,
+      "kind": "lifecycle",
+      "specification": "모든 16개 public standalone create family를 표 기반으로 create/edit/edit/no-op/replay한다. 한 family만 구현하고 공통 editor 완료로 표시하지 않는다.",
+      "owner": "features/02-derived-editing.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R05-N01",
+      "feature": "R05",
+      "phase": 2,
+      "kind": "normal",
+      "specification": "A의 (t,v)=[(1,2),(3,6)], values=[1,2,3] → [2,null,6], members=[[0],[],[1]].",
+      "owner": "features/05-complete-impute.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R05-N02",
+      "feature": "R05",
+      "phase": 2,
+      "kind": "normal",
+      "specification": "(t,v)=[(1,2),(2,null),(5,10)], linear → [2,4,10].",
+      "owner": "features/05-complete-impute.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R05-N03",
+      "feature": "R05",
+      "phase": 2,
+      "kind": "normal",
+      "specification": "v=[null,2,null,null,8,null], forward,maxGap:1 → [null,2,null,null,8,8].",
+      "owner": "features/05-complete-impute.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R05-E01",
+      "feature": "R05",
+      "phase": 2,
+      "kind": "error",
+      "specification": "위 입력 edges:error → leading run 때문에 실패. leading row를 제거하면 maxGap 초과 internal run은 그대로 두고 성공.",
+      "owner": "features/05-complete-impute.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R05-E02",
+      "feature": "R05",
+      "phase": 2,
+      "kind": "error",
+      "specification": "같은 group/key 중복, unknown field, values:[1,1], size10001 → 각각 오류.",
+      "owner": "features/05-complete-impute.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R05-L01",
+      "feature": "R05",
+      "phase": 2,
+      "kind": "lifecycle",
+      "specification": "source empty, values:[1,2], groupBy:[] → 2 synthetic rows; groupBy:[\"g\"] → 0 rows.",
+      "owner": "features/05-complete-impute.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R06-N01",
+      "feature": "R06",
+      "phase": 1,
+      "kind": "normal",
+      "specification": "x=[-2,0,4], if(gt(x,0),log(x),null) → [null,null,1.3862943611198906].",
+      "owner": "features/06-computed-expressions.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R06-N02",
+      "feature": "R06",
+      "phase": 1,
+      "kind": "normal",
+      "specification": "name=[\"A\",null,\"C\"], concat(coalesce(name,\"Unknown\"),\"!\") → [\"A!\",\"Unknown!\",\"C!\"].",
+      "owner": "features/06-computed-expressions.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R06-N03",
+      "feature": "R06",
+      "phase": 1,
+      "kind": "normal",
+      "specification": "if(true,1,divide(1,0)) → 1; and(false,gt(log(-1),0)) → false.",
+      "owner": "features/06-computed-expressions.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R06-E01",
+      "feature": "R06",
+      "phase": 1,
+      "kind": "error",
+      "specification": "if(true,1,{field:\"typo\"})에서 typo가 없는 row → 선택되지 않아도 Error.",
+      "owner": "features/06-computed-expressions.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R06-E02",
+      "feature": "R06",
+      "phase": 1,
+      "kind": "error",
+      "specification": "rows x=[-1,1], if(gt(x,0),1,\"negative\") → 출력 mixed type TypeError.",
+      "owner": "features/06-computed-expressions.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R06-N04",
+      "feature": "R06",
+      "phase": 1,
+      "kind": "normal",
+      "specification": "lt(\"😀\",\"\\uE000\") → false. UTF-16 비교 구현을 검출하는 fixture.",
+      "owner": "features/06-computed-expressions.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R06-L01",
+      "feature": "R06",
+      "phase": 1,
+      "kind": "lifecycle",
+      "specification": "computed 문자열 결과 → nominal mark → editComputedData → facet/source replay에서 AST 요청·output type·원본 불변성 유지.",
+      "owner": "features/06-computed-expressions.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R07-N01",
+      "feature": "R07",
+      "phase": 1,
+      "kind": "normal",
+      "specification": "[2,4], share → [1/3,2/3], minmax → [0,1], population zscore → [-1,1].",
+      "owner": "features/07-normalization.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R07-N02",
+      "feature": "R07",
+      "phase": 1,
+      "kind": "normal",
+      "specification": "[2,4], sample zscore → [-0.7071067811865475,0.7071067811865475].",
+      "owner": "features/07-normalization.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R07-N03",
+      "feature": "R07",
+      "phase": 1,
+      "kind": "normal",
+      "specification": "rows [{t:2,x:15},{t:1,x:10}], ascending first → index [150,100], change [5,0], percentChange [.5,0].",
+      "owner": "features/07-normalization.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R07-N04",
+      "feature": "R07",
+      "phase": 1,
+      "kind": "normal",
+      "specification": "zscore [3,3], zero policy → [0,0]; null policy → [null,null]. share [3,3]는 [.5,.5]로 정상이다.",
+      "owner": "features/07-normalization.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R07-E01",
+      "feature": "R07",
+      "phase": 1,
+      "kind": "error",
+      "specification": "share [-1,2], sample zscore [1], baseline position without sortBy, change+zeroDenominator → 오류.",
+      "owner": "features/07-normalization.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R07-L01",
+      "feature": "R07",
+      "phase": 1,
+      "kind": "lifecycle",
+      "specification": "A[1,3], B[2,2]의 facet-local share → [.25,.75] / [.5,.5], 전체 sum8 기준을 재사용하지 않는다.",
+      "owner": "features/07-normalization.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R08-N01",
+      "feature": "R08",
+      "phase": 2,
+      "kind": "normal",
+      "specification": "2024-01-03T12:00Z / week / UTC | 2024-01-01T00:00Z",
+      "owner": "features/08-calendar-buckets.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R08-N02",
+      "feature": "R08",
+      "phase": 2,
+      "kind": "normal",
+      "specification": "같은 instant / week / Asia/Seoul | 2023-12-31T15:00Z",
+      "owner": "features/08-calendar-buckets.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R08-N03",
+      "feature": "R08",
+      "phase": 2,
+      "kind": "normal",
+      "specification": "2024-03-10T12:00Z / day / America/New_York | 2024-03-10T05:00Z",
+      "owner": "features/08-calendar-buckets.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R08-N04",
+      "feature": "R08",
+      "phase": 2,
+      "kind": "normal",
+      "specification": "2024-03-11T12:00Z / day / America/New_York | 2024-03-11T04:00Z",
+      "owner": "features/08-calendar-buckets.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R08-N05",
+      "feature": "R08",
+      "phase": 2,
+      "kind": "normal",
+      "specification": "2024-11-03T05:30Z와06:30Z / hour / America/New_York | 둘 다 2024-11-03T05:00Z",
+      "owner": "features/08-calendar-buckets.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R08-N06",
+      "feature": "R08",
+      "phase": 2,
+      "kind": "normal",
+      "specification": "2024-10-05T15:45Z / hour / Australia/Lord_Howe | 2024-10-05T15:30Z (local 02:30 최초 유효)",
+      "owner": "features/08-calendar-buckets.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R08-N07",
+      "feature": "R08",
+      "phase": 2,
+      "kind": "normal",
+      "specification": "2024-01-01T00:00Z / day / Asia/Kolkata | 2023-12-31T18:30Z",
+      "owner": "features/08-calendar-buckets.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R08-N08",
+      "feature": "R08",
+      "phase": 2,
+      "kind": "normal",
+      "specification": "2011-12-30T12:00Z / day / Pacific/Apia | 2011-12-30T10:00Z (local Dec31)",
+      "owner": "features/08-calendar-buckets.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R08-E01",
+      "feature": "R08",
+      "phase": 2,
+      "kind": "error",
+      "specification": "iso+weekStartsOn:0 / weekday+weekRule / invalid zone | 각각 오류",
+      "owner": "features/08-calendar-buckets.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R08-L01",
+      "feature": "R08",
+      "phase": 2,
+      "kind": "lifecycle",
+      "specification": "createTimeUnitData → editTimeUnitData(timeZone 변경) → facet replay에서 저장된 zone/unit으로 bucket 재계산, 원본 UTC 결과 불변.",
+      "owner": "features/08-calendar-buckets.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R09-N01",
+      "feature": "R09",
+      "phase": 2,
+      "kind": "normal",
+      "specification": "days=[0,1,10],x=[2,4,10],duration preceding7day → means=[2,3,10].",
+      "owner": "features/09-duration-windows.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R09-N02",
+      "feature": "R09",
+      "phase": 2,
+      "kind": "normal",
+      "specification": "ms=[0,604800000],x=[2,4] → means=[2,3]; 두 번째를604800001로 변경 → [2,4].",
+      "owner": "features/09-duration-windows.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R09-N03",
+      "feature": "R09",
+      "phase": 2,
+      "kind": "normal",
+      "specification": "t=[0,0,1],x=[2,4,8],duration0 → [3,3,8].",
+      "owner": "features/09-duration-windows.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R09-N04",
+      "feature": "R09",
+      "phase": 2,
+      "kind": "normal",
+      "specification": "t=[0,1,2],x=[2,null,4],row preceding1,skip → [2,2,4]; minPeriods2 → [null,null,null].",
+      "owner": "features/09-duration-windows.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R09-N05",
+      "feature": "R09",
+      "phase": 2,
+      "kind": "normal",
+      "specification": "unsorted t=[10,0,1],x=[10,2,4]의 N01 조건 → [10,2,3].",
+      "owner": "features/09-duration-windows.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R09-E01",
+      "feature": "R09",
+      "phase": 2,
+      "kind": "error",
+      "specification": "minPeriods0, mixed frame keys, rank+missing, undefined sort field, all nonfinite → 각 오류.",
+      "owner": "features/09-duration-windows.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R09-L01",
+      "feature": "R09",
+      "phase": 2,
+      "kind": "lifecycle",
+      "specification": "editWindowData와 facet-local replay의 closed-boundary/duplicate 규칙이 같아야 한다.",
+      "owner": "features/09-duration-windows.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R10-N01",
+      "feature": "R10",
+      "phase": 3,
+      "kind": "normal",
+      "specification": "x=[1,3],w=[1,3],frequency → count4,sum10,mean2.5,varP.75,var1,stderr.5.",
+      "owner": "features/10-weighted-statistics.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R10-N02",
+      "feature": "R10",
+      "phase": 3,
+      "kind": "normal",
+      "specification": "같은 reliability → nEff1.6,var2,stderr1.118033988749895.",
+      "owner": "features/10-weighted-statistics.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R10-N03",
+      "feature": "R10",
+      "phase": 3,
+      "kind": "normal",
+      "specification": "frequency q25=2.5,median3; reliability q25=1,median3. 작은 expanded sample [1,3,3,3]을 독립 oracle로 사용한다.",
+      "owner": "features/10-weighted-statistics.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R10-N04",
+      "feature": "R10",
+      "phase": 3,
+      "kind": "normal",
+      "specification": "h1,xEval1,unit density=(1+3*exp(-2))/(4*sqrt(2*pi)); count=4배.",
+      "owner": "features/10-weighted-statistics.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R10-N05",
+      "feature": "R10",
+      "phase": 3,
+      "kind": "normal",
+      "specification": "x=[1,3,1000],w=[1,3,0]의 auto domain은1..3, members는[0,1].",
+      "owner": "features/10-weighted-statistics.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R10-E01",
+      "feature": "R10",
+      "phase": 3,
+      "kind": "error",
+      "specification": "all-zero group / frequency.5 / sum weights>MAX_SAFE_INTEGER / weighted CI → 오류.",
+      "owner": "features/10-weighted-statistics.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R10-L01",
+      "feature": "R10",
+      "phase": 3,
+      "kind": "lifecycle",
+      "specification": "모든 reliability weights를10배로 바꾸면 mean/variance/SE/unit-density 동일, count/sum/count-density는10배.",
+      "owner": "features/10-weighted-statistics.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R19-N01",
+      "feature": "R19",
+      "phase": 5,
+      "kind": "normal",
+      "specification": "fixed domains0..10/ranges0..100, point a2,b8 → x20,y80에서 x=b,y=a → x80,y20.",
+      "owner": "features/19-atomic-encoding.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R19-N02",
+      "feature": "R19",
+      "phase": 5,
+      "kind": "normal",
+      "specification": "한 final draft에서 primary/secondary의 서로 연결된 field 변경, group/pathOrder 동시 변경, parent band/offset 동시 변경 각각 성공.",
+      "owner": "features/19-atomic-encoding.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R19-E01",
+      "feature": "R19",
+      "phase": 5,
+      "kind": "error",
+      "specification": "valid x + unknown stroke field → 원본 전체 유지.",
+      "owner": "features/19-atomic-encoding.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R19-E02",
+      "feature": "R19",
+      "phase": 5,
+      "kind": "error",
+      "specification": "두 channels가 같은 scale.id에 서로 다른 explicit domain 요청 → Error.",
+      "owner": "features/19-atomic-encoding.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R19-L01",
+      "feature": "R19",
+      "phase": 5,
+      "kind": "lifecycle",
+      "specification": "requests key 순열 전부 같은 normalized result. actual scale/mark refresh count는 owner별1회이며 기존 layout의 명시된 제한 재배치는 별도 기록한다.",
+      "owner": "features/19-atomic-encoding.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R19-L02",
+      "feature": "R19",
+      "phase": 5,
+      "kind": "lifecycle",
+      "specification": "field-stroke→constant-stroke와 source reencoding 후 R38 override/R32 membership/R36 reference가 최종 상태를 본다.",
+      "owner": "features/19-atomic-encoding.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R20-N01",
+      "feature": "R20",
+      "phase": 5,
+      "kind": "normal",
+      "specification": "a의 domain[0,10],value5,local y-range[100,0] → y50. domain[0,20] 후 y75. b와 a의 x 위치는 동일.",
+      "owner": "features/20-parallel-scale.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R20-N02",
+      "feature": "R20",
+      "phase": 5,
+      "kind": "normal",
+      "specification": "dimensions [a,b]→[b,a] 뒤 dimension:a로 edit → a의 scale만 resolve.",
+      "owner": "features/20-parallel-scale.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R20-L01",
+      "feature": "R20",
+      "phase": 5,
+      "kind": "lifecycle",
+      "specification": "두 dimensions가 동일 scale이면 두 경로/가이드가 함께 바뀐다.",
+      "owner": "features/20-parallel-scale.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R20-E01",
+      "feature": "R20",
+      "phase": 5,
+      "kind": "error",
+      "specification": "dimension:\"A 표시명\",dimension:\"0\",Cartesian target,empty patch → Error.",
+      "owner": "features/20-parallel-scale.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R20-E02",
+      "feature": "R20",
+      "phase": 5,
+      "kind": "error",
+      "specification": "categorical dimension에 log domain 제안 → 호환 오류, 원본 axes/paths 유지.",
+      "owner": "features/20-parallel-scale.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R21-N01",
+      "feature": "R21",
+      "phase": 5,
+      "kind": "normal",
+      "specification": "S100,n2,pi0,po0,a.5 → starts[0,50],bandwidth50.",
+      "owner": "features/21-offset-scales.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R21-N02",
+      "feature": "R21",
+      "phase": 5,
+      "kind": "normal",
+      "specification": "pi.2,po.1 → step50,starts[5,55],bandwidth40.",
+      "owner": "features/21-offset-scales.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R21-N03",
+      "feature": "R21",
+      "phase": 5,
+      "kind": "normal",
+      "specification": "S200으로 resize → starts[10,110],bandwidth80.",
+      "owner": "features/21-offset-scales.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R21-N04",
+      "feature": "R21",
+      "phase": 5,
+      "kind": "normal",
+      "specification": "domain[u,v]→[v,u] → 부모 A/B와 color legend 순서는 유지, offset 위치만 교환.",
+      "owner": "features/21-offset-scales.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R21-E01",
+      "feature": "R21",
+      "phase": 5,
+      "kind": "error",
+      "specification": "range:[0,50],order:[…],type:\"linear\",pi1,align2,missing offset → 각각 오류.",
+      "owner": "features/21-offset-scales.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R21-L01",
+      "feature": "R21",
+      "phase": 5,
+      "kind": "lifecycle",
+      "specification": "기존 point-parent/binned-parent fixture 유지, 반복 reencode/Canvas에서도 새 padding 유지.",
+      "owner": "features/21-offset-scales.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R22-N01",
+      "feature": "R22",
+      "phase": 5,
+      "kind": "normal",
+      "specification": "Point fill field f=[A,A],stroke field s=[U,V] → 동일 fill, 서로 다른 outline.",
+      "owner": "features/22-stroke-color.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R22-N02",
+      "feature": "R22",
+      "phase": 5,
+      "kind": "normal",
+      "specification": "Line group g=[A,A,B,B],stroke s=[U,U,V,V] 성공; [U,V,V,V]는 A series 오류.",
+      "owner": "features/22-stroke-color.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R22-N03",
+      "feature": "R22",
+      "phase": 5,
+      "kind": "normal",
+      "specification": "quantitative stroke domain[0,10] endpoints/midpoint는 existing color mapper와 같음.",
+      "owner": "features/22-stroke-color.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R22-L01",
+      "feature": "R22",
+      "phase": 5,
+      "kind": "lifecycle",
+      "specification": "field→value→field 시 stale legend/scale refs가 없고 fill은 유지.",
+      "owner": "features/22-stroke-color.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R22-E01",
+      "feature": "R22",
+      "phase": 5,
+      "kind": "error",
+      "specification": "field+value,Text target,invalid color,temporalUnit on nominal → 오류.",
+      "owner": "features/22-stroke-color.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R22-L02",
+      "feature": "R22",
+      "phase": 5,
+      "kind": "lifecycle",
+      "specification": "Rule constant-only 기존 호출의 요청/graphic/trace 호환 fixture를 별도 보존한다.",
+      "owner": "features/22-stroke-color.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R23-N01",
+      "feature": "R23",
+      "phase": 5,
+      "kind": "normal",
+      "specification": "log d[1,100],A[4π,100π],x10 → area52π,r7.211102550927978.",
+      "owner": "features/23-size-scale-types.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R23-N02",
+      "feature": "R23",
+      "phase": 5,
+      "kind": "normal",
+      "specification": "pow2 d[1,9],range[0,80],x5 → area24; normalize-then-square는 잘못된20.",
+      "owner": "features/23-size-scale-types.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R23-N03",
+      "feature": "R23",
+      "phase": 5,
+      "kind": "normal",
+      "specification": "sqrt d[1,9],range[0,100],x4 → area50.",
+      "owner": "features/23-size-scale-types.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R23-N04",
+      "feature": "R23",
+      "phase": 5,
+      "kind": "normal",
+      "specification": "thresholds[10,20],range[2,4,8],x[9,10,19,20] → [2,4,4,8].",
+      "owner": "features/23-size-scale-types.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R23-N05",
+      "feature": "R23",
+      "phase": 5,
+      "kind": "normal",
+      "specification": "quantile samples[0,0,0,10],range[1,2,3,4] → cuts[0,0,2.5], x0은 area3.",
+      "owner": "features/23-size-scale-types.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R23-E01",
+      "feature": "R23",
+      "phase": 5,
+      "kind": "error",
+      "specification": "negative log input, wrong range count, stale domain meaning after type change, discrete legend values → 오류.",
+      "owner": "features/23-size-scale-types.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R23-L01",
+      "feature": "R23",
+      "phase": 5,
+      "kind": "lifecycle",
+      "specification": "quantile auto source edit → thresholds 재계산, mark/legend/highlight가 같은 area mapper 사용; type migration → Canvas/theme 후 요청 보존.",
+      "owner": "features/23-size-scale-types.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R25-N01",
+      "feature": "R25",
+      "phase": 11,
+      "kind": "normal",
+      "specification": "unused D,S,C 제거 → 해당 semantic entries0, 렌더 이전과 동일.",
+      "owner": "features/25-remove-resources.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R25-N02",
+      "feature": "R25",
+      "phase": 11,
+      "kind": "normal",
+      "specification": "context.currentData=D만 참조 → 삭제 후 currentData 없음.",
+      "owner": "features/25-remove-resources.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R25-N03",
+      "feature": "R25",
+      "phase": 11,
+      "kind": "normal",
+      "specification": "trace.args에만 D가 남음 → 삭제 성공.",
+      "owner": "features/25-remove-resources.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R25-E01",
+      "feature": "R25",
+      "phase": 11,
+      "kind": "error",
+      "specification": "parallel dimension만 S 참조 → Error에 dimension path.",
+      "owner": "features/25-remove-resources.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R25-E02",
+      "feature": "R25",
+      "phase": 11,
+      "kind": "error",
+      "specification": "live retained facet source만 D 참조 → Error; historical before program은 검사 대상 아님.",
+      "owner": "features/25-remove-resources.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R25-L01",
+      "feature": "R25",
+      "phase": 11,
+      "kind": "lifecycle",
+      "specification": "standalone current를 참조하는 마지막 mark 삭제 후 removeData(logical ID) 성공, 원본 source는 남음.",
+      "owner": "features/25-remove-resources.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R27-N01",
+      "feature": "R27",
+      "phase": 6,
+      "kind": "normal",
+      "specification": "allocated(0,0,400,300),x[0,100],y[0,50],data ratio1 → (0,50,400,200), px/unit 4/4.",
+      "owner": "features/27-coordinate-aspect.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R27-N02",
+      "feature": "R27",
+      "phase": 6,
+      "kind": "normal",
+      "specification": "위 ratio2 → (0,100,400,100), px/unit 4/2.",
+      "owner": "features/27-coordinate-aspect.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R27-N03",
+      "feature": "R27",
+      "phase": 6,
+      "kind": "normal",
+      "specification": "allocated(10,20,300,200),frame ratio1,alignX:end → (110,20,200,200).",
+      "owner": "features/27-coordinate-aspect.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R27-L01",
+      "feature": "R27",
+      "phase": 6,
+      "kind": "lifecycle",
+      "specification": "object→auto → 원래 allocation. 작은→큰 Canvas 왕복 후 최초 frame 동일.",
+      "owner": "features/27-coordinate-aspect.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R27-E01",
+      "feature": "R27",
+      "phase": 6,
+      "kind": "error",
+      "specification": "ratio0,span0,multiple distinct scale pairs,nonlinear axis → 원본 유지 오류.",
+      "owner": "features/27-coordinate-aspect.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R29-N01",
+      "feature": "R29",
+      "phase": 6,
+      "kind": "normal",
+      "specification": "bounds(0,0,400,200),center(.25,.5),fraction.8 → center(100,100),R80.",
+      "owner": "features/29-polar-frame.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R29-N02",
+      "feature": "R29",
+      "phase": 6,
+      "kind": "normal",
+      "specification": "같은 frame의 theta0/r80 → (100,20);theta90 → (180,100).",
+      "owner": "features/29-polar-frame.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R29-N03",
+      "feature": "R29",
+      "phase": 6,
+      "kind": "normal",
+      "specification": "bounds(20,30,400,200),동일 요청 → center(120,130),R80.",
+      "owner": "features/29-polar-frame.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R29-E01",
+      "feature": "R29",
+      "phase": 6,
+      "kind": "error",
+      "specification": "center(.9,.5),px80 → available40이므로 오류.",
+      "owner": "features/29-polar-frame.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R29-E02",
+      "feature": "R29",
+      "phase": 6,
+      "kind": "error",
+      "specification": "fraction0,center boundary,Cartesian target,nonfinite center → 오류.",
+      "owner": "features/29-polar-frame.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R29-L01",
+      "feature": "R29",
+      "phase": 6,
+      "kind": "lifecycle",
+      "specification": "모든 Polar guide와 leader가 center 이동에 동행; auto 복구 시 기존 output parity.",
+      "owner": "features/29-polar-frame.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R31-N01",
+      "feature": "R31",
+      "phase": 7,
+      "kind": "normal",
+      "specification": "B labels[L1,L2]에서 target:L1 → L2와 B 유지.",
+      "owner": "features/31-remove-labels.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R31-N02",
+      "feature": "R31",
+      "phase": 7,
+      "kind": "normal",
+      "specification": "source:B → 모든 labels/leaders 제거,B 유지.",
+      "owner": "features/31-remove-labels.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R31-N03",
+      "feature": "R31",
+      "phase": 7,
+      "kind": "normal",
+      "specification": "같은 source:B 재호출 → 정상 no-op.",
+      "owner": "features/31-remove-labels.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R31-E01",
+      "feature": "R31",
+      "phase": 7,
+      "kind": "error",
+      "specification": "target independent Text 또는 target+source → 오류.",
+      "owner": "features/31-remove-labels.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R31-L01",
+      "feature": "R31",
+      "phase": 7,
+      "kind": "lifecycle",
+      "specification": "removed L1을 target한 highlight만 정리, B의 selection은 동일.",
+      "owner": "features/31-remove-labels.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R31-L02",
+      "feature": "R31",
+      "phase": 7,
+      "kind": "lifecycle",
+      "specification": "remove→source reencode→Canvas→theme→facet replay 후 label count0.",
+      "owner": "features/31-remove-labels.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R32-N01",
+      "feature": "R32",
+      "phase": 7,
+      "kind": "normal",
+      "specification": "source values[1,5,3],select max count2 → source item indices[1,2],texts[5,3],body3.",
+      "owner": "features/32-selected-labels.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R32-N02",
+      "feature": "R32",
+      "phase": 7,
+      "kind": "normal",
+      "specification": "values[5,5,3],max count1,ties:first → index0;ties:all → [0,1].",
+      "owner": "features/32-selected-labels.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R32-N03",
+      "feature": "R32",
+      "phase": 7,
+      "kind": "normal",
+      "specification": "no-match gt10 → labels0,body3,domain 동일.",
+      "owner": "features/32-selected-labels.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R32-L01",
+      "feature": "R32",
+      "phase": 7,
+      "kind": "lifecycle",
+      "specification": "named gt4→gt2 → labels1→2;그 selection 삭제는 먼저 거부.",
+      "owner": "features/32-selected-labels.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R32-E01",
+      "feature": "R32",
+      "phase": 7,
+      "kind": "error",
+      "specification": "named 다른 source,select+selection,all:false,aggregate에 없는 field → 오류.",
+      "owner": "features/32-selected-labels.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R32-L02",
+      "feature": "R32",
+      "phase": 7,
+      "kind": "lifecycle",
+      "specification": "source order [3,1,5]로 재생성 → selected final indices[0,2],texts[3,5].",
+      "owner": "features/32-selected-labels.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R33-N01",
+      "feature": "R33",
+      "phase": 7,
+      "kind": "normal",
+      "specification": "vertical positive bar end(50,20),bbox20×10,gap4 → outside bbox bottom16. negative end(50,100) → bbox top104.",
+      "owner": "features/33-semantic-label-anchors.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R33-N02",
+      "feature": "R33",
+      "phase": 7,
+      "kind": "normal",
+      "specification": "stacked [2,3]는 segment별 baseline/end를 사용; 두 labels가 total5 끝을 공유하면 실패.",
+      "owner": "features/33-semantic-label-anchors.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R33-N03",
+      "feature": "R33",
+      "phase": 7,
+      "kind": "normal",
+      "specification": "donut inner40/outer80,theta0..90 → boundary anchor angle45,r84; text center는 support distance를 더한 값.",
+      "owner": "features/33-semantic-label-anchors.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R33-E01",
+      "feature": "R33",
+      "phase": 7,
+      "kind": "error",
+      "specification": "Point insideEnd,Line placement object,gap<0 → 오류.",
+      "owner": "features/33-semantic-label-anchors.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R33-L01",
+      "feature": "R33",
+      "phase": 7,
+      "kind": "lifecycle",
+      "specification": "font-size edit→fit 재판정;source reverse/Canvas/frame edit→vector 재계산.",
+      "owner": "features/33-semantic-label-anchors.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R33-L02",
+      "feature": "R33",
+      "phase": 7,
+      "kind": "lifecycle",
+      "specification": "hide 또는 R31 removal 뒤 leader graphics/config0.",
+      "owner": "features/33-semantic-label-anchors.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R36-N01",
+      "feature": "R36",
+      "phase": 7,
+      "kind": "normal",
+      "specification": "y[2,4,6],mean →4.",
+      "owner": "features/36-statistical-references.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R36-N02",
+      "feature": "R36",
+      "phase": 7,
+      "kind": "normal",
+      "specification": "filterMarks gt3 후 boundData4,visibleItems5.",
+      "owner": "features/36-statistical-references.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R36-N03",
+      "feature": "R36",
+      "phase": 7,
+      "kind": "normal",
+      "specification": "selection gt3만 적용 → 둘 다4;selection이 filter가 아님.",
+      "owner": "features/36-statistical-references.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R36-N04",
+      "feature": "R36",
+      "phase": 7,
+      "kind": "normal",
+      "specification": "[0,10,20,30],quantile .25/.75 → band[7.5,22.5].",
+      "owner": "features/36-statistical-references.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R36-E01",
+      "feature": "R36",
+      "phase": 7,
+      "kind": "error",
+      "specification": "empty values,p1.1,band reversed,statistic+literal,reference source → 오류.",
+      "owner": "features/36-statistical-references.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R36-L01",
+      "feature": "R36",
+      "phase": 7,
+      "kind": "lifecycle",
+      "specification": "source y field 변경 → inferred field는 추적,explicit field는 유지;source scale ID도 동행.",
+      "owner": "features/36-statistical-references.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R37-N01",
+      "feature": "R37",
+      "phase": 8,
+      "kind": "normal",
+      "specification": "domain[0,100],values[10,50,100] → labels3,symbols3,domain unchanged.",
+      "owner": "features/37-legend-values.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R37-N02",
+      "feature": "R37",
+      "phase": 8,
+      "kind": "normal",
+      "specification": "auto count5→values3→values:auto → 이전 count5 복구.",
+      "owner": "features/37-legend-values.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R37-E01",
+      "feature": "R37",
+      "phase": 8,
+      "kind": "error",
+      "specification": "[50,10],duplicates,[],length101,outside-domain,count+values → 오류.",
+      "owner": "features/37-legend-values.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R37-L01",
+      "feature": "R37",
+      "phase": 8,
+      "kind": "lifecycle",
+      "specification": "domain100→40 while values100 → editScale/상위 data-edit 전체 실패.",
+      "owner": "features/37-legend-values.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R37-L02",
+      "feature": "R37",
+      "phase": 8,
+      "kind": "lifecycle",
+      "specification": "theme/legend move/Canvas 후 exact values와 invisible0 symbol 정책 유지.",
+      "owner": "features/37-legend-values.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R38-N01",
+      "feature": "R38",
+      "phase": 8,
+      "kind": "normal",
+      "specification": "color+size separate blocks → size title/values만 변경,color 유지.",
+      "owner": "features/38-legend-blocks.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R38-N02",
+      "feature": "R38",
+      "phase": 8,
+      "kind": "normal",
+      "specification": "merged color+shape title을color로\"A\",shape로\"B\" → 하나의 title\"B\".",
+      "owner": "features/38-legend-blocks.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R38-E01",
+      "feature": "R38",
+      "phase": 8,
+      "kind": "error",
+      "specification": "incompatible overrides의 두 blocks merge → Error.",
+      "owner": "features/38-legend-blocks.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R38-L01",
+      "feature": "R38",
+      "phase": 8,
+      "kind": "lifecycle",
+      "specification": "reorder 후 overrides 동일;remove+readd 후 default.",
+      "owner": "features/38-legend-blocks.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R38-E02",
+      "feature": "R38",
+      "phase": 8,
+      "kind": "error",
+      "specification": "absent channel,size block의 symbol.size,categorical values → 오류.",
+      "owner": "features/38-legend-blocks.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R39-N01",
+      "feature": "R39",
+      "phase": 8,
+      "kind": "normal",
+      "specification": "raw[1,\"1\",\"KR\",\"XX\"],map [{value:1,label:\"하나\"},{value:\"KR\",label:\"한국\"}] → [\"하나\",\"1\",\"한국\",\"XX\"].",
+      "owner": "features/39-display-names-headers.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R39-N02",
+      "feature": "R39",
+      "phase": 8,
+      "kind": "normal",
+      "specification": "A와B를 모두\"같음\"으로 표시 → domain category2 유지.",
+      "owner": "features/39-display-names-headers.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R39-E01",
+      "feature": "R39",
+      "phase": 8,
+      "kind": "error",
+      "specification": "동일 typed key 중복,role all+side,continuous axis map → 오류.",
+      "owner": "features/39-display-names-headers.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R39-L01",
+      "feature": "R39",
+      "phase": 8,
+      "kind": "lifecycle",
+      "specification": "row/column raw\"A\"를 서로 다른 이름으로 표시하고 replay 후 유지.",
+      "owner": "features/39-display-names-headers.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R39-L02",
+      "feature": "R39",
+      "phase": 8,
+      "kind": "lifecycle",
+      "specification": "긴 header와font 증가 후 occupied strip/child plot 재계산,raw partition IDs 불변.",
+      "owner": "features/39-display-names-headers.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R43-N01",
+      "feature": "R43",
+      "phase": 10,
+      "kind": "normal",
+      "specification": "Polar A r[1,2],B r[10,20],zero:false → shared[1,20],independent[1,2]/[10,20]. zero/nice는 explicit fixture 설정대로.",
+      "owner": "features/43-polar-parallel-facets.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R43-N02",
+      "feature": "R43",
+      "phase": 10,
+      "kind": "normal",
+      "specification": "Pie A[1,1],B[1,3] → 180/180°,90/270°.",
+      "owner": "features/43-polar-parallel-facets.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R43-N03",
+      "feature": "R43",
+      "phase": 10,
+      "kind": "normal",
+      "specification": "theta categories A[a,b],B[b,c] → shared[a,b,c];child local radii 유지.",
+      "owner": "features/43-polar-parallel-facets.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R43-N04",
+      "feature": "R43",
+      "phase": 10,
+      "kind": "normal",
+      "specification": "Parallel dims a:[0,1],b:[0,1000] → 각 domain 분리.",
+      "owner": "features/43-polar-parallel-facets.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R43-E01",
+      "feature": "R43",
+      "phase": 10,
+      "kind": "error",
+      "specification": "outer axes,duplicate repeated dimension,Pie theta substitution,empty independent auto → 오류.",
+      "owner": "features/43-polar-parallel-facets.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R43-L01",
+      "feature": "R43",
+      "phase": 10,
+      "kind": "lifecycle",
+      "specification": "source edit→scale policy edit→Canvas→theme→replay 후 frame/headers/selection/style 모두 유지.",
+      "owner": "features/43-polar-parallel-facets.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R43-L02",
+      "feature": "R43",
+      "phase": 10,
+      "kind": "lifecycle",
+      "specification": "chart 계약의7 family 각각 facet/facetGrid와 지원 repeat cell의 primitive/public/render/type/package 증거를 닫는다.",
+      "owner": "features/43-polar-parallel-facets.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R47-N01",
+      "feature": "R47",
+      "phase": 9,
+      "kind": "normal",
+      "specification": "light+mark red,grid green,fontFamily sans-serif → default mark/grid만 변경;explicit blue mark 유지.",
+      "owner": "features/47-custom-theme.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R47-N02",
+      "feature": "R47",
+      "phase": 9,
+      "kind": "normal",
+      "specification": "customA{mark:red,grid:green}→customB{mark:blue} → grid는 base default 복귀.",
+      "owner": "features/47-custom-theme.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R47-N03",
+      "feature": "R47",
+      "phase": 9,
+      "kind": "normal",
+      "specification": "nested concat/facet/repeat descendants → 모든 child font/background 갱신,원래 input programs 불변.",
+      "owner": "features/47-custom-theme.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R47-N04",
+      "feature": "R47",
+      "phase": 9,
+      "kind": "normal",
+      "specification": "composition self → root background만,children 그대로.",
+      "owner": "features/47-custom-theme.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R47-E01",
+      "feature": "R47",
+      "phase": 9,
+      "kind": "error",
+      "specification": "unknown token,invalid color,fontFamily:\"\",missing base → 오류.",
+      "owner": "features/47-custom-theme.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R47-L01",
+      "feature": "R47",
+      "phase": 9,
+      "kind": "lifecycle",
+      "specification": "facet source replay로 생성된 새 children도 current theme;labelMap/block overrides/line style는 보존.",
+      "owner": "features/47-custom-theme.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R49-N01",
+      "feature": "R49",
+      "phase": 9,
+      "kind": "normal",
+      "specification": "rect100×20,r50 → resolved r10; r0은 기존 graphic과 동등.",
+      "owner": "features/49-shape-style-details.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R49-N02",
+      "feature": "R49",
+      "phase": 9,
+      "kind": "normal",
+      "specification": "line(0,0)→(10,0),width4 → butt x[0,10],round/square[-2,12],y[-2,2].",
+      "owner": "features/49-shape-style-details.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R49-N03",
+      "feature": "R49",
+      "phase": 9,
+      "kind": "normal",
+      "specification": "normalized negative Bar에도 같은 radius clamp;stacked 각 segment4corner rounding.",
+      "owner": "features/49-shape-style-details.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R49-E01",
+      "feature": "R49",
+      "phase": 9,
+      "kind": "error",
+      "specification": "Point cornerRadius,negative r,cap:\"flat\",miterLimit0 → 오류.",
+      "owner": "features/49-shape-style-details.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R49-L01",
+      "feature": "R49",
+      "phase": 9,
+      "kind": "lifecycle",
+      "specification": "round node 다음 omitted-cap node → 둘째는butt;Canvas state leak 검출.",
+      "owner": "features/49-shape-style-details.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    },
+    {
+      "id": "R49-L02",
+      "feature": "R49",
+      "phase": 9,
+      "kind": "lifecycle",
+      "specification": "mark→legend→highlight에 동일 stroke style,resize/theme/reencode 후 유지.",
+      "owner": "features/49-shape-style-details.md",
+      "status": "planned",
+      "runtimeEvidence": null
+    }
+  ]
+}

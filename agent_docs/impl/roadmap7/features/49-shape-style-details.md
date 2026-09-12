@@ -62,6 +62,42 @@ mark semantic style/requested override가 source of truth. normalized graphic sh
 
 모든 성공 사례에 입력 options deep-freeze와 이전 program semantic/graphic/trace 불변성을 확인한다. 오류 사례는 입력 state와 trace가 동일함을 확인한다. 시각 변화가 있으면 승인된 primitive/public 동일 실행의 graphic·Canvas·PNG parity 및 SVG/PDF 경로를 [검증 계획](../VALIDATION.md)에 따라 검증한다.
 
+## 구현 고정 명세 — concrete path와 stroke bounds
+
+### property matrix
+
+| family | cornerRadius | lineCap/lineJoin/miterLimit |
+| --- | --- | --- |
+| Bar,Rect | 지원 | 기존 stroked outline에 지원 |
+| Line,Area,Rule,Tick,Arc | 오류 | 지원 |
+| Point | 오류 | 지원;circle에서 cap/join 시각효과 없음 |
+| Text | 오류 | 이번 범위에서 오류 |
+
+기본 cornerRadius0,lineCap butt,lineJoin miter,miterLimit10. optional key 생략은 기존 output/trace/schema를 가능한 한 유지한다. edit의 omission은 유지,cornerRadius0은 rounding 해제다. enum unknown/negative radius/nonpositive miterLimit는 오류. 모든 facade가 적용 가능한 mark 옵션을 하위에 전달해야 한다.
+
+### concrete 표현
+
+requested radius는 mark style owner에 보존, resolved rounded rect는 기존 ConcretePathCommand(M/L/C/Z)로 materialize한다. 새 backend별 rounded rectangle primitive를 만들지 않는다. cornerRadius0은 기존 rect path를 유지하고 0보다 크면 같은 graphic ID/parent ownership의 path로 전환한다.
+
+normalized rectangle x,y,w,h,r=min(requested,w/2,h/2). cubic quarter-circle coefficient k=4*(sqrt(2)-1)/3. top-left에서(x+r,y)로 시작해 직선과4개 cubic으로 clockwise closed path를 만든다. control point는 각 tangent 방향으로 k*r. 동일한 concrete commands를 Canvas/SVG/PDF가 소비하므로 backend native roundRect와 혼용하지 않는다.
+
+lineCap/lineJoin/miterLimit는 shared concrete stroke attrs로 저장한다. renderer draw마다 명시 default 또는 node 값을 설정해 이전 node의 cap/join이 다음 node에 새지 않게 한다. SVG는 stroke-linecap/stroke-linejoin/stroke-miterlimit,Canvas/PDF context는 같은 숫자/enum semantics.
+
+### geometry bounds
+
+butt endpoint는 tangent 방향 추가0,round는 radius=strokeWidth/2 반원,square는 tangent 방향strokeWidth/2 사각 확장. closed path는 cap 영향 없음.
+miter length는 halfWidth/sin(turnInteriorAngle/2). miterLimit와 비교하는 ratio는 miterLength/halfWidth다. limit 초과는 bevel fallback. zero-length segments는 기존 drawable 정책대로 처리하고 divide-by-zero를 만들지 않는다.
+occupied/hit/highlight bounds는 이 paint extension을 반영한다. 보수적인 bbox를 쓰면 실제 stroke를 반드시 포함해야 하며 margin을 무한 크게 잡는 회피는 금지한다.
+
+### 고정 인수 사례
+
+- R49-N01: rect100×20,r50 → resolved r10; r0은 기존 graphic과 동등.
+- R49-N02: line(0,0)→(10,0),width4 → butt x[0,10],round/square[-2,12],y[-2,2].
+- R49-N03: normalized negative Bar에도 같은 radius clamp;stacked 각 segment4corner rounding.
+- R49-E01: Point cornerRadius,negative r,cap:"flat",miterLimit0 → 오류.
+- R49-L01: round node 다음 omitted-cap node → 둘째는butt;Canvas state leak 검출.
+- R49-L02: mark→legend→highlight에 동일 stroke style,resize/theme/reencode 후 유지.
+
 ## 완료 조건
 
 - [ ] 위 API의 최단 호출과 explicit 대상 호출, 누락/auto/false/empty 경계를 타입과 runtime으로 동기화했다.

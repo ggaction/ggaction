@@ -32,7 +32,7 @@ editStrokeScale({target: string, ...ColorScaleEditPatch})
 ## 값·기본값·오류 계약
 
 - value와 field는 exclusive union. fieldType 추론과 temporalUnit 적용은 encodeColor와 같은 policy를 사용하고 불일치하면 오류. temporal 색상은 기존 continuous color temporal mapping을 재사용하고 nominal/ordinal에 temporalUnit을 주면 오류. 기존 color는 fill/기존 mark 역할 의미를 유지한다.
-- 선을 그리는 모든 기존 mark family(Point, Line, Area, Bar, Rect, Arc, Rule, Tick, Text 중 현재 stroke를 지원하는 것)에 공통 적용. 지원 없는 primitive는 명시 거부; 조용히 fill로 대체 금지.
+- Point, Line, Area, Bar, Rect, Arc, Rule, Tick에 구현 고정 명세의 grain으로 적용한다. Text는 이번 stroke encoding 지원에서 제외한다. 지원 없는 primitive는 명시 거부; 조용히 fill로 대체 금지.
 - line/area는 개별 segment마다 임의 stroke를 바꾸지 않는다. 기존 series/group grain에서 stroke 값이 일정해야 하며 다르면 group encoding을 요구한다. point/bar/rect/arc는 item grain.
 - color와 stroke는 독립 scale identity를 기본으로 한다. 같은 scale ID를 explicit 공유하면 domain/type/palette compatibility 검증. encoding된 stroke를 style stroke로 override하는 기존 precedence를 결정표로 유지.
 - categorical와 continuous stroke legends 모두 지원. sample은 실제 mark의 fill+stroke 조합을 보존하고 strokeWidth=0이면 보이지 않는 sample을 자동 굵게 만들지 않는다.
@@ -57,6 +57,43 @@ semantic encoding.stroke={field, type, scale} 및 style constant가 current gram
 - nominal → quantitative scale edit, explicit shared color/stroke scale, facet shared legend 필수.
 
 모든 성공 사례에 입력 options deep-freeze와 이전 program semantic/graphic/trace 불변성을 확인한다. 오류 사례는 입력 state와 trace가 동일함을 확인한다. 시각 변화가 있으면 승인된 primitive/public 동일 실행의 graphic·Canvas·PNG parity 및 SVG/PDF 경로를 [검증 계획](../VALIDATION.md)에 따라 검증한다.
+
+## 구현 고정 명세 — stroke의 독립 channel
+
+### baseline와 새 지원행렬
+
+현재 encodeStroke는 ruleAppearance.js의 Rule constant-only action이다. 기존 encodeStroke({value})가 이미 모든 marks를 지원한다고 문서화하지 않는다. 이 기능에서 value와 field 양쪽을 다음 지원행렬로 확장한다.
+
+| semantic family | stroke 대상 grain | 지원 |
+| --- | --- | --- |
+| point,bar,rect,arc,rule,tick | final item | constant/field |
+| line,area (Polar/Parallel line 포함) | 최종 series | constant/field; series 내 값 일정 |
+| text | 없음 | 이번 신규 stroke encoding은 명시 거부 |
+
+Text의 concrete outline schema를 추가하는 일은 선택된 기능에 포함하지 않는다. filled marks의 stroke:false는 기존 mark style 문법이며 encodeStroke value의 새 union으로 추가하지 않는다. value는 기존 stroke color validator가 허용하는 string이다.
+
+새 export StrokeEncodingOptions는 value branch와 field branch를 never로 배타화한다. field branch의 fieldType/temporalUnit/scale union은 ColorEncodingOptions에서 같은 조건으로 파생한다. EditStrokeScaleOptions는 target 필수 및 color-compatible patch다.
+
+### 전환 및 우선순위
+
+1. field 호출: 기존 constant stroke override를 해당 owner에서 제거하고 encoding.stroke={field,fieldType,scale,…필요한 temporalUnit} 기록. constant 호출: stroke semantic encoding 제거, 기존 stroke legend dependency 해제, constant config 저장.
+2. data stroke가 있을 때 style edit으로 field mapping을 몰래 덮지 않는다. field에서 constant로 전환하는 domain action은 encodeStroke({value})다. generic mark edit의 충돌 정책은 기존 encoded appearance 규칙과 맞춰 사전 오류로 제안한다.
+3. fill color와 stroke는 독립 ID가 기본. explicit scale.id 공유 시 공통 color mapping capability를 검증하고 color/stroke가 섞인 소비자라는 이유만으로 editStrokeScale를 거부하지 않는다.
+4. Line/Area에서 color도 stroke에 그려지는 기존 의미는 유지한다. 양쪽 channel이 설정되면 stroke가 선 outline의 최종 paint, color의 semantic binding/legend는 보존한다. 실제 sample은 동일 appearance resolver를 사용한다.
+5. strokeWidth0 또는 stroke paint 투명값을 자동 보정하지 않는다. item filter 후 최종 eligible series grain에서 field 일관성을 검증한다.
+
+### 연결점 전수 점검
+
+ruleAppearance registrar, shared channel vocabulary, semantic encoding validation/types, scale consumers, pathSeries appearance, 각 mark materializer, legend family resolver/sample style, selector channel union, facet scale resolution, theme reconcile, R19 payload를 모두 수정한다. R43의 stroke shared/independent은 color와 같은 compatibility 원칙을 사용한다.
+
+### 고정 인수 사례
+
+- R22-N01: Point fill field f=[A,A],stroke field s=[U,V] → 동일 fill, 서로 다른 outline.
+- R22-N02: Line group g=[A,A,B,B],stroke s=[U,U,V,V] 성공; [U,V,V,V]는 A series 오류.
+- R22-N03: quantitative stroke domain[0,10] endpoints/midpoint는 existing color mapper와 같음.
+- R22-L01: field→value→field 시 stale legend/scale refs가 없고 fill은 유지.
+- R22-E01: field+value,Text target,invalid color,temporalUnit on nominal → 오류.
+- R22-L02: Rule constant-only 기존 호출의 요청/graphic/trace 호환 fixture를 별도 보존한다.
 
 ## 완료 조건
 

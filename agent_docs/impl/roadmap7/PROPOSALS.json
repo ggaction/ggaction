@@ -53,13 +53,16 @@
         "src/actions/data/intervalEdit.js",
         "src/materialization/dataProvenance.js",
         "src/grammar/transforms.js",
-        "src/actions/facets/replay.js"
+        "src/actions/facets/replay.js",
+        "src/selectors/datasets.js",
+        "src/actions/data/shared.js"
       ],
       "acceptanceSections": [
         "값·기본값·오류 계약",
         "저장 결과와 생명주기",
         "독립 oracle와 인수 테스트",
-        "완료 조건"
+        "완료 조건",
+        "구현 고정 명세"
       ]
     },
     {
@@ -76,13 +79,16 @@
         "src/grammar/stack.js",
         "src/grammar/areaSeries.js",
         "src/grammar/transformTopology.js",
-        "src/actions/data/shared.js"
+        "src/actions/data/shared.js",
+        "src/grammar/window.js",
+        "src/grammar/numeric.js"
       ],
       "acceptanceSections": [
         "값·기본값·오류 계약",
         "저장 결과와 생명주기",
         "독립 oracle와 인수 테스트",
-        "완료 조건"
+        "완료 조건",
+        "구현 고정 명세"
       ]
     },
     {
@@ -99,13 +105,15 @@
         "src/grammar/computed.js",
         "src/actions/data/computed.js",
         "src/grammar/transforms.js",
-        "types/program.d.ts"
+        "types/program.d.ts",
+        "src/core/immutable.js"
       ],
       "acceptanceSections": [
         "값·기본값·오류 계약",
         "저장 결과와 생명주기",
         "독립 oracle와 인수 테스트",
-        "완료 조건"
+        "완료 조건",
+        "구현 고정 명세"
       ]
     },
     {
@@ -124,13 +132,15 @@
         "src/grammar/summary.js",
         "src/grammar/window.js",
         "src/actions/data/computed.js",
-        "src/grammar/transformTopology.js"
+        "src/grammar/transformTopology.js",
+        "src/grammar/numeric.js"
       ],
       "acceptanceSections": [
         "값·기본값·오류 계약",
         "저장 결과와 생명주기",
         "독립 oracle와 인수 테스트",
-        "완료 조건"
+        "완료 조건",
+        "구현 고정 명세"
       ]
     },
     {
@@ -147,13 +157,15 @@
         "src/grammar/timeUnit.js",
         "src/actions/data/timeUnit.js",
         "types/program.d.ts",
-        "src/grammar/transforms.js"
+        "src/grammar/transforms.js",
+        "src/grammar/scales/fields.js"
       ],
       "acceptanceSections": [
         "값·기본값·오류 계약",
         "저장 결과와 생명주기",
         "독립 oracle와 인수 테스트",
-        "완료 조건"
+        "완료 조건",
+        "구현 고정 명세"
       ]
     },
     {
@@ -172,13 +184,15 @@
         "src/grammar/window.js",
         "src/actions/data/window.js",
         "src/grammar/transforms.js",
-        "types/program.d.ts"
+        "types/program.d.ts",
+        "src/grammar/numeric.js"
       ],
       "acceptanceSections": [
         "값·기본값·오류 계약",
         "저장 결과와 생명주기",
         "독립 oracle와 인수 테스트",
-        "완료 조건"
+        "완료 조건",
+        "구현 고정 명세"
       ]
     },
     {
@@ -197,13 +211,21 @@
         "src/grammar/density.js",
         "src/actions/data/summary.js",
         "src/actions/data/density.js",
-        "types/program.d.ts"
+        "types/program.d.ts",
+        "src/grammar/aggregate.js",
+        "src/actions/encodings/histogram.js",
+        "src/actions/encodings/density.js",
+        "src/actions/charts/histogram.js",
+        "src/actions/charts/density.js",
+        "src/actions/violinPlots/create.js",
+        "src/actions/violinPlots/edit.js"
       ],
       "acceptanceSections": [
         "값·기본값·오류 계약",
         "저장 결과와 생명주기",
         "독립 oracle와 인수 테스트",
-        "완료 조건"
+        "완료 조건",
+        "구현 고정 명세"
       ]
     },
     {
@@ -225,13 +247,16 @@
         "src/actions/encodings/index.js",
         "src/actions/scales/edit.js",
         "src/actions/encodings/parallel.js",
-        "src/materialization/planner.js"
+        "src/materialization/planner.js",
+        "src/actions/encodings/shared.js",
+        "src/core/vocabulary.js"
       ],
       "acceptanceSections": [
         "값·기본값·오류 계약",
         "저장 결과와 생명주기",
         "독립 oracle와 인수 테스트",
-        "완료 조건"
+        "완료 조건",
+        "구현 고정 명세"
       ]
     },
     {
@@ -248,13 +273,15 @@
         "src/actions/scales/edit.js",
         "src/actions/scales/consumers/common.js",
         "src/actions/coordinates/parallel.js",
-        "src/actions/guides/axes/parallel.js"
+        "src/actions/guides/axes/parallel.js",
+        "src/actions/scales/channels.js"
       ],
       "acceptanceSections": [
         "값·기본값·오류 계약",
         "저장 결과와 생명주기",
         "독립 oracle와 인수 테스트",
-        "완료 조건"
+        "완료 조건",
+        "구현 고정 명세"
       ]
     },
     {
@@ -271,13 +298,15 @@
         "src/actions/scales/channels.js",
         "src/actions/scales/edit.js",
         "src/actions/encodings/offset.js",
-        "src/materialization/scales/policies/offset.js"
+        "src/materialization/scales/policies/offset.js",
+        "src/grammar/bars/geometry.js"
       ],
       "acceptanceSections": [
         "값·기본값·오류 계약",
         "저장 결과와 생명주기",
         "독립 oracle와 인수 테스트",
-        "완료 조건"
+        "완료 조건",
+        "구현 고정 명세"
       ]
     },
     {
@@ -295,13 +324,18 @@
         "src/actions/scales/quantitativeColor.js",
         "src/actions/guides/legends/index.js",
         "src/renderers/svg.js",
-        "src/renderers/pdf.js"
+        "src/renderers/pdf.js",
+        "src/actions/encodings/ruleAppearance.js",
+        "src/actions/encodings/color/index.js",
+        "src/grammar/pathSeries.js",
+        "src/core/vocabulary.js"
       ],
       "acceptanceSections": [
         "값·기본값·오류 계약",
         "저장 결과와 생명주기",
         "독립 oracle와 인수 테스트",
-        "완료 조건"
+        "완료 조건",
+        "구현 고정 명세"
       ]
     },
     {
@@ -318,13 +352,16 @@
         "src/actions/scales/definitions.js",
         "src/actions/scales/edit.js",
         "src/actions/guides/legends/size.js",
-        "src/actions/encodings/index.js"
+        "src/actions/encodings/index.js",
+        "src/grammar/scales/mapping.js",
+        "src/grammar/pointShapes.js"
       ],
       "acceptanceSections": [
         "값·기본값·오류 계약",
         "저장 결과와 생명주기",
         "독립 oracle와 인수 테스트",
-        "완료 조건"
+        "완료 조건",
+        "구현 고정 명세"
       ]
     },
     {
@@ -359,13 +396,15 @@
         "src/actions/data/derived.js",
         "src/selectors/datasets.js",
         "src/materialization/guides/resources.js",
-        "src/actions/scales/consumers/common.js"
+        "src/actions/scales/consumers/common.js",
+        "src/core/programState.js"
       ],
       "acceptanceSections": [
         "값·기본값·오류 계약",
         "저장 결과와 생명주기",
         "독립 oracle와 인수 테스트",
-        "완료 조건"
+        "완료 조건",
+        "구현 고정 명세"
       ]
     },
     {
@@ -382,13 +421,15 @@
         "src/actions/coordinates/actions.js",
         "src/actions/scales/materialize.js",
         "src/materialization/planner.js",
-        "src/grammar/coordinates.js"
+        "src/grammar/coordinates.js",
+        "src/layout/canvas.js"
       ],
       "acceptanceSections": [
         "값·기본값·오류 계약",
         "저장 결과와 생명주기",
         "독립 oracle와 인수 테스트",
-        "완료 조건"
+        "완료 조건",
+        "구현 고정 명세"
       ]
     },
     {
@@ -413,7 +454,8 @@
         "값·기본값·오류 계약",
         "저장 결과와 생명주기",
         "독립 oracle와 인수 테스트",
-        "완료 조건"
+        "완료 조건",
+        "구현 고정 명세"
       ]
     },
     {
@@ -430,13 +472,15 @@
         "src/actions/marks/text/index.js",
         "src/actions/marks/remove.js",
         "src/actions/marks/text/layout.js",
-        "src/materialization/planner.js"
+        "src/materialization/planner.js",
+        "src/actions/selection/actions.js"
       ],
       "acceptanceSections": [
         "값·기본값·오류 계약",
         "저장 결과와 생명주기",
         "독립 oracle와 인수 테스트",
-        "완료 조건"
+        "완료 조건",
+        "구현 고정 명세"
       ]
     },
     {
@@ -455,13 +499,15 @@
         "src/actions/marks/text/index.js",
         "src/materialization/selection/state.js",
         "src/grammar/markFilter.js",
-        "types/program.d.ts"
+        "types/program.d.ts",
+        "src/actions/selection/actions.js"
       ],
       "acceptanceSections": [
         "값·기본값·오류 계약",
         "저장 결과와 생명주기",
         "독립 oracle와 인수 테스트",
-        "완료 조건"
+        "완료 조건",
+        "구현 고정 명세"
       ]
     },
     {
@@ -482,13 +528,15 @@
         "src/actions/marks/text/layout.js",
         "src/layout/labels.js",
         "src/grammar/polar.js",
-        "src/actions/marks/text/index.js"
+        "src/actions/marks/text/index.js",
+        "src/core/textMetrics.js"
       ],
       "acceptanceSections": [
         "값·기본값·오류 계약",
         "저장 결과와 생명주기",
         "독립 oracle와 인수 테스트",
-        "완료 조건"
+        "완료 조건",
+        "구현 고정 명세"
       ]
     },
     {
@@ -508,13 +556,16 @@
         "src/actions/marks/references.js",
         "src/actions/marks/rule/index.js",
         "src/grammar/summary.js",
-        "src/materialization/planner.js"
+        "src/materialization/planner.js",
+        "src/grammar/aggregate.js",
+        "src/grammar/transformTopology.js"
       ],
       "acceptanceSections": [
         "값·기본값·오류 계약",
         "저장 결과와 생명주기",
         "독립 oracle와 인수 테스트",
-        "완료 조건"
+        "완료 조건",
+        "구현 고정 명세"
       ]
     },
     {
@@ -540,7 +591,8 @@
         "값·기본값·오류 계약",
         "저장 결과와 생명주기",
         "독립 oracle와 인수 테스트",
-        "완료 조건"
+        "완료 조건",
+        "구현 고정 명세"
       ]
     },
     {
@@ -565,7 +617,8 @@
         "값·기본값·오류 계약",
         "저장 결과와 생명주기",
         "독립 oracle와 인수 테스트",
-        "완료 조건"
+        "완료 조건",
+        "구현 고정 명세"
       ]
     },
     {
@@ -584,13 +637,16 @@
         "src/actions/guides/axes/labels.js",
         "src/actions/facets/guides.js",
         "src/actions/guides/legends/edit.js",
-        "types/program.d.ts"
+        "types/program.d.ts",
+        "src/materialization/facets.js",
+        "src/grammar/facets/index.js"
       ],
       "acceptanceSections": [
         "값·기본값·오류 계약",
         "저장 결과와 생명주기",
         "독립 oracle와 인수 테스트",
-        "완료 조건"
+        "완료 조건",
+        "구현 고정 명세"
       ]
     },
     {
@@ -622,13 +678,16 @@
         "src/grammar/facets/dependencies.js",
         "src/grammar/facets/scales.js",
         "src/actions/composition/actions.js",
-        "src/grammar/parallelCoordinates.js"
+        "src/grammar/parallelCoordinates.js",
+        "src/grammar/facets/index.js",
+        "src/materialization/facets.js"
       ],
       "acceptanceSections": [
         "값·기본값·오류 계약",
         "저장 결과와 생명주기",
         "독립 oracle와 인수 테스트",
-        "완료 조건"
+        "완료 조건",
+        "구현 고정 명세"
       ]
     },
     {
@@ -645,13 +704,15 @@
         "src/theme/defaults.js",
         "src/actions/theme/actions.js",
         "src/actions/theme/reconcile.js",
-        "src/materialization/composition.js"
+        "src/materialization/composition.js",
+        "src/core/programState.js"
       ],
       "acceptanceSections": [
         "값·기본값·오류 계약",
         "저장 결과와 생명주기",
         "독립 oracle와 인수 테스트",
-        "완료 조건"
+        "완료 조건",
+        "구현 고정 명세"
       ]
     },
     {
@@ -670,13 +731,15 @@
         "src/actions/marks/line/index.js",
         "src/renderers/canvas/index.js",
         "src/renderers/svg.js",
-        "src/renderers/pdf.js"
+        "src/renderers/pdf.js",
+        "src/grammar/pointShapes.js"
       ],
       "acceptanceSections": [
         "값·기본값·오류 계약",
         "저장 결과와 생명주기",
         "독립 oracle와 인수 테스트",
-        "완료 조건"
+        "완료 조건",
+        "구현 고정 명세"
       ]
     }
   ]

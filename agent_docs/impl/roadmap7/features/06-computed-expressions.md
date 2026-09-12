@@ -61,6 +61,54 @@ Expression = ExistingArithmetic
 
 모든 성공 사례에 입력 options deep-freeze와 이전 program semantic/graphic/trace 불변성을 확인한다. 오류 사례는 입력 state와 trace가 동일함을 확인한다. 시각 변화가 있으면 승인된 primitive/public 동일 실행의 graphic·Canvas·PNG parity 및 SVG/PDF 경로를 [검증 계획](../VALIDATION.md)에 따라 검증한다.
 
+## 구현 고정 명세 — typed AST
+
+### 닫힌 node union
+
+현재 export ComputedExpression을 직접 확장한다. 새로운 Expression이라는 병행 public 타입을 만들지 않는다.
+
+| node | 정확한 own keys | 평가 타입 |
+| --- | --- | --- |
+| field | field | row own value; undefined는 null로 정규화 |
+| constant | constant | finite number/string/boolean/null |
+| add/subtract/multiply/divide | op,left,right | finite number → finite number |
+| negate/absolute/log/sqrt | op,operand | finite number → finite number |
+| eq/neq/lt/lte/gt/gte | op,left,right | 동형 scalar 비교 → boolean |
+| and/or | op,operands | boolean 배열, 길이>=2 → boolean |
+| not | op,operand | boolean → boolean |
+| isNull | op,operand | scalar → boolean |
+| if | op,condition,then,else | condition boolean; 한 branch 결과 |
+| coalesce | op,operands | 길이>=2, 첫 non-null 결과 |
+| concat | op,operands | 길이>=1, 모든 결과 string → string |
+
+eq/neq에서 null==null은 true, null==non-null은 false. non-null끼리 다른 primitive type이면 TypeError. ordered boolean 비교는 false<true로 정의한다. ordered 문자열은 Unicode code point의 사전순이며 Array.from(string)의 codePointAt(0) 순으로 비교한다. JS 기본 '<'의 UTF-16 code-unit 순서에 의존하지 않는다.
+
+### 2단계 검증
+
+1. validateExpression은 모든 branch를 순회한다. root depth1, 실제 node 방문 수, unknown keys, node arity, constant type, field 이름을 검사한다. depth16/nodes128은 허용, 각각17/129는 RangeError. cycle 입력도 depth 한계 이전/동시에 결정적으로 거절한다.
+2. field dependency set을 만든 뒤 모든 row에서 모든 referenced field의 own-property 존재를 검증한다. 빈 source는 구조만 검사하고 []를 반환한다. schema가 없는 빈 source에 가상 field 오류를 만들지 않는다.
+3. work=rows.length*nodes를 evaluation 전에 검사한다. 10,000,000 허용, 그 초과 거부. lazy branch도 work 예산에는 포함된다.
+4. evaluate는 if/and/or/coalesce의 선택되지 않은 값 연산을 실행하지 않는다. 평가되는 field만 scalar type 검증한다. 구조·field 존재와 실제 값 검증을 섞지 않는다.
+5. arithmetic operand의 null/string/boolean은 TypeError, 0 나누기·음수 sqrt·비양수 log·nonfinite 결과는 RangeError.
+6. output row를 만들 때 첫 non-null primitive type을 기록하고 이후 불일치하면 전체 실패. all-null output은 허용하며 arbitrary numeric metadata를 만들지 않는다.
+
+### 재생성·성능·회귀
+
+computed는 rowPreserving 그대로다. normalizeExpression은 새 operands/condition/then/else도 깊이 복사해야 한다. 기존 recursive clone이 left/right/operand만 처리하는 것을 놓치지 않는다. 새 evaluator가 null을 반환해도 기존 quantitative consumers의 오류를 완화하지 않는다.
+
+현재 테스트 owner는 test/unit/actions/data/computed-data.test.js. AST validator/evaluator에 대한 새 pure tests는 test/unit/grammar/transforms/computed.test.js에 작성할 수 있다. test expected를 deriveComputedRows로 계산하지 않는다.
+
+### 고정 인수 사례
+
+- R06-N01: x=[-2,0,4], if(gt(x,0),log(x),null) → [null,null,1.3862943611198906].
+- R06-N02: name=["A",null,"C"], concat(coalesce(name,"Unknown"),"!") → ["A!","Unknown!","C!"].
+- R06-N03: if(true,1,divide(1,0)) → 1; and(false,gt(log(-1),0)) → false.
+- R06-E01: if(true,1,{field:"typo"})에서 typo가 없는 row → 선택되지 않아도 Error.
+- R06-E02: rows x=[-1,1], if(gt(x,0),1,"negative") → 출력 mixed type TypeError.
+- R06-N04: lt("😀","\uE000") → false. UTF-16 비교 구현을 검출하는 fixture.
+
+- R06-L01: computed 문자열 결과 → nominal mark → editComputedData → facet/source replay에서 AST 요청·output type·원본 불변성 유지.
+
 ## 완료 조건
 
 - [ ] 위 API의 최단 호출과 explicit 대상 호출, 누락/auto/false/empty 경계를 타입과 runtime으로 동기화했다.

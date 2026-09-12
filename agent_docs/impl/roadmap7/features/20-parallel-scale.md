@@ -50,6 +50,32 @@ scale ID와 consumer registry가 canonical owner다. focused action은 target+di
 
 모든 성공 사례에 입력 options deep-freeze와 이전 program semantic/graphic/trace 불변성을 확인한다. 오류 사례는 입력 state와 trace가 동일함을 확인한다. 시각 변화가 있으면 승인된 primitive/public 동일 실행의 graphic·Canvas·PNG parity 및 SVG/PDF 경로를 [검증 계획](../VALIDATION.md)에 따라 검증한다.
 
+## 구현 고정 명세 — Parallel dimension resolver
+
+새 export EditParallelScaleOptions={target:string,dimension:string}&WithoutId<QuantitativePositionScaleOptions|CategoricalPositionScaleOptions>로 제안한다. union의 분산 Omit으로 각 branch를 보존한다. 새 API는 id/target 추론을 제공하지 않는다. 적어도 하나의 scale patch가 필수다.
+
+### 정확한 resolution 절차
+
+1. requireLayer(target), layer의 coordinate family=parallel, encoding.parallel.dimensions 존재 확인.
+2. dimensions.filter(d=>d.field===dimension)의 개수가 정확히1이어야 한다. label/title/index로 찾지 않는다.
+3. dimension.scale ID를 requireSemanticScale로 확인한다. findScaleConsumers의 role=parallelDimension과 field도 함께 전달한다.
+4. quantitative는 현재 Parallel이 지원하는 continuous type/domain/range/nice/zero/clamp/reverse/base/exponent/constant만, ordinal은 현재 지원 categorical type/domain/range/reverse/padding/align/unknown patch만 허용한다. 현재 Parallel fieldType은 quantitative/ordinal뿐이며 nominal/time 지원을 새로 추가하지 않는다. current compatibility policy에 없는 옵션은 generic EditScaleOptions에 있다는 이유로 허용하지 않는다.
+5. generic editScale({id,...patch})를 wrapped child로 호출한다. 공유된 모든 dimension과 외부 consumer의 validation을 보존한다.
+
+현재 channels.js의 validateScaleChannel은 한 channel에 exclusive하게 bound된 scale만 허용한다. 이 함수를 그대로 editYScale에 우회 연결하면 Parallel role을 잃으므로 role-aware resolver를 별도로 공유한다.
+
+### update closure
+
+수정된 scale → dimension의 normalized position → 해당 series path → dimension line/ticks/labels/title/grid → attached series endpoint labels → highlights. 차원 reorder는 위치 index만 바꾸며 field와 guide ownership은 유지한다. Canvas 변경은 explicit range와 auto range의 기존 의미를 보존한다.
+
+### 고정 인수 사례
+
+- R20-N01: a의 domain[0,10],value5,local y-range[100,0] → y50. domain[0,20] 후 y75. b와 a의 x 위치는 동일.
+- R20-N02: dimensions [a,b]→[b,a] 뒤 dimension:a로 edit → a의 scale만 resolve.
+- R20-L01: 두 dimensions가 동일 scale이면 두 경로/가이드가 함께 바뀐다.
+- R20-E01: dimension:"A 표시명",dimension:"0",Cartesian target,empty patch → Error.
+- R20-E02: categorical dimension에 log domain 제안 → 호환 오류, 원본 axes/paths 유지.
+
 ## 완료 조건
 
 - [ ] 위 API의 최단 호출과 explicit 대상 호출, 누락/auto/false/empty 경계를 타입과 runtime으로 동기화했다.

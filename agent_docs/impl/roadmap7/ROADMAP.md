@@ -12,13 +12,14 @@
 
 ## 먼저 읽을 순서
 
-1. [IMPLEMENTER_START_HERE.md](IMPLEMENTER_START_HERE.md) — 구현자 인계·작업 순서.
+1. [IMPLEMENTER_START_HERE.md](IMPLEMENTER_START_HERE.md) — 구현자 인계·작업 순서. 상세 실행은 [IMPLEMENTATION_SPEC.md](IMPLEMENTATION_SPEC.md), 정정된 제안은 [CONTRACT_RESOLUTIONS.md](CONTRACT_RESOLUTIONS.md)를 먼저 읽는다.
 2. [COMMON_CONTRACT.md](COMMON_CONTRACT.md) — 공통 불변조건 12개.
 3. [API_DETAILS.md](API_DETAILS.md) — 실제 current 타입 연결과 빠뜨리면 안 되는 옵션 의미.
 4. [DECISIONS.md](DECISIONS.md) — 권장안 26개와 gate별 concrete 설계 검증.
 5. [STATE_AND_REPLAY.md](STATE_AND_REPLAY.md) — 데이터 revision·소유권·재실행·참조.
 6. [IMPLEMENTATION_EXAMPLES.md](IMPLEMENTATION_EXAMPLES.md) — 구체적인 호출과 독립 기대 결과.
-7. 아래 해당 feature와 Phase 문서, [VALIDATION.md](VALIDATION.md).
+7. 아래 해당 feature의 **구현 고정 명세**와 Phase 문서, [VALIDATION.md](VALIDATION.md).
+8. [IMPLEMENTATION_TYPES.d.ts](IMPLEMENTATION_TYPES.d.ts) — 컴파일 검사 가능한 제안 타입. [구현 연결표](IMPLEMENTATION_MAP.json)와 [고정 인수 사례](ACCEPTANCE_CASES.json) — 모든25개 기능의 code/test/case 인계.
 
 ## 정확한 선택 범위
 

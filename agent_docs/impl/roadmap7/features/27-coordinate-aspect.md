@@ -57,6 +57,39 @@ requested aspect는 semantic coordinate definition에 저장. allocated bounds�
 
 모든 성공 사례에 입력 options deep-freeze와 이전 program semantic/graphic/trace 불변성을 확인한다. 오류 사례는 입력 state와 trace가 동일함을 확인한다. 시각 변화가 있으면 승인된 primitive/public 동일 실행의 graphic·Canvas·PNG parity 및 SVG/PDF 경로를 [검증 계획](../VALIDATION.md)에 따라 검증한다.
 
+## 구현 고정 명세 — aspect bounds resolver
+
+### 저장·타입
+
+baseline에는 createCoordinate만 있고 editCoordinate는 없다. **editCoordinate는 이 Phase에서 추가하는 신규 Full public action**이다. EditCoordinateOptions={target:string,aspect?:CoordinateAspect,polarFrame?:PolarFrameOptions}로 제안하며 적어도 하나의 patch가 필요하다. type/layers/id 교체는 받지 않는다. R29에서 polarFrame branch를 완성한다. 등록·타입·action contract/card를 기존 옵션 확장으로 누락하지 않는다.
+
+CoordinateAspect="auto"|{mode:"frame"|"data",ratio:number,alignX?,alignY?}를 export하고 editCoordinate의 해당 옵션으로 연결한다. mode가 바뀌거나 aspect object를 전달하면 이전 object와 merge하지 않는다. object 내부 생략 align은 center. aspect 생략은 이전 요청 유지, "auto"는 override 제거다.
+
+requested aspect는 semantic coordinate 하나가 소유한다. layout의 allocated plot과 aspect 결과인 effective plot을 구분한다. 계산된 effective bounds를 다음 실행의 allocated input으로 사용하지 않는다.
+
+### 정확한 수식
+
+allocated={left:L,top:T,width:W,height:H}, requested frame ratio q:
+w=min(W,H*q), h=w/q.
+align fraction은 start0,center.5,end1.
+effective.left=L+(W-w)*ax, effective.top=T+(H-h)*ay.
+
+data mode는 final nice-resolved x/y continuous linear domains의 절대 span dx,dy로 q=ratio*dx/dy. dx/dy와 q가 finite positive여야 한다. reverse는 domain span을 바꾸지 않는다. domain을 늘이거나 mark coords만 scale하지 않는다.
+
+### 적용 범위
+
+frame는 Cartesian/Polar/Parallel. data는 Cartesian의 모든 active positional consumers에서 유일하게 결정되는 linear quantitative x/y pair만. incomplete coordinate나 pair ambiguity, temporal/log/sqrt/band, explicit range가 요청한 unit ratio와 충돌하는 경우 오류다. data-mode의 auto ranges가 effective frame에 맞아야 한다. explicit ranges는 같은 px/unit ratio와 방향을 검증하며 조용히 덮어쓰지 않는다.
+
+layout은 먼저 기존 guide/title/legend occupied allocation을 계산하고 그 결과에 aspect를1회 적용한다. aspect 변경으로 guide measurement가 달라지는 기존 제한 재배치는 original allocation을 다시 입력으로 사용하며 축소된 frame에 재귀 적용하지 않는다. 두 동일 final requests의 Canvas/coordinate edit 순서가 달라도 같은 graphicSpec여야 한다.
+
+### 고정 인수 사례
+
+- R27-N01: allocated(0,0,400,300),x[0,100],y[0,50],data ratio1 → (0,50,400,200), px/unit 4/4.
+- R27-N02: 위 ratio2 → (0,100,400,100), px/unit 4/2.
+- R27-N03: allocated(10,20,300,200),frame ratio1,alignX:end → (110,20,200,200).
+- R27-L01: object→auto → 원래 allocation. 작은→큰 Canvas 왕복 후 최초 frame 동일.
+- R27-E01: ratio0,span0,multiple distinct scale pairs,nonlinear axis → 원본 유지 오류.
+
 ## 완료 조건
 
 - [ ] 위 API의 최단 호출과 explicit 대상 호출, 누락/auto/false/empty 경계를 타입과 runtime으로 동기화했다.

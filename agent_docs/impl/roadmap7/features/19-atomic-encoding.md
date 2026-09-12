@@ -64,6 +64,48 @@ encodeChannels({target: string, channels: {
 
 모든 성공 사례에 입력 options deep-freeze와 이전 program semantic/graphic/trace 불변성을 확인한다. 오류 사례는 입력 state와 trace가 동일함을 확인한다. 시각 변화가 있으면 승인된 primitive/public 동일 실행의 graphic·Canvas·PNG parity 및 SVG/PDF 경로를 [검증 계획](../VALIDATION.md)에 따라 검증한다.
 
+## 구현 고정 명세 — final-state encoding transaction
+
+### payload와 순서
+
+새 export EncodeChannelsOptions의 target은 필수다. channels 값은 대응 단일 encoding의 payload에서 target/coordinate를 제거한 타입을 사용한다. channel 객체의 id는 금지하지만 nested scale.id는 기존 explicit named scale 사용을 위해 허용한다. r만 public spelling이고 radius/yRange 같은 alias는 금지한다.
+
+canonical 순서는 x,y,x2,y2,theta,r,xOffset,yOffset,group,pathOrder,color,stroke,size,shape,opacity,strokeWidth,strokeDash,angle,text다. 이 순서는 요청 정규화·trace를 위한 순서이며 materialization dependency 순서와 다르다.
+
+### 3단계 private 계약
+
+~~~ts
+normalizeEncodingRequest(channel, payload, originalLayer)
+// → canonical requested payload; writes 없음
+planEncodingAssignments(program, target, requests)
+// → { layer, scaleRequests, configPatches, detachedScaleIds, affectedOwners }
+applyEncodingAssignments(program, plan)
+// → wrapped semantic/config changes + 하나의 materialization plan
+~~~
+
+plan.layer는 모든 새 channel을 반영한 완전한 draft다. validation은 이 layer와 final scales를 사용한다. plan 생성 중 encodeX/encodeY 같은 public action을 호출하지 않는다. 기존 단일 encode도 같은 pure normalizer/planner를 소비하되 encodeChannels를 역호출하지 않는다.
+
+1. target family/coordinate를 확정하고 지원 channel whitelist 검사.
+2. 각 request shape/fieldType/mode 정규화. 기존 style constant와 field channel 전환의 cleanup도 계획한다.
+3. 동일 scale ID에 여러 request가 닿으면 canonical requested scale definition이 호환되는지 비교한다. 서로 다른 domain/range/type 요청은 마지막 key 우선이 아니라 Error.
+4. target의 최종 bindings와 외부 consumer 전체로 domains/roles/series/group/offset/secondary pair를 검증한다.
+5. private immutable draft에 모든 semantic bindings를 기록한다. chart-owned derived data가 필요한 경우 기존 owner executor로 한 번 계산한다.
+6. scales→marks→dependent labels/references→guides→layout→highlights를 deduplicate해 실행한다. 중간 상태의 legend 또는 source label을 생성하지 않는다.
+7. detached scale은 기존 owner 규칙에 따라 unreferenced인 것만 정리한다. shared scale은 남긴다.
+
+### 실패와 trace
+
+payload key 순열에 따라 state와 sibling trace 순서가 달라지면 실패다. one-channel batch는 대응 단일 encode와 semanticSpec/graphicSpec/설정의 결과가 같아야 한다. trace root만 encodeChannels이며 의미 있는 child semantic/materialize action은 유지한다. 가짜 encodeX trace를 수동 합성하지 않는다.
+
+### 고정 인수 사례
+
+- R19-N01: fixed domains0..10/ranges0..100, point a2,b8 → x20,y80에서 x=b,y=a → x80,y20.
+- R19-N02: 한 final draft에서 primary/secondary의 서로 연결된 field 변경, group/pathOrder 동시 변경, parent band/offset 동시 변경 각각 성공.
+- R19-E01: valid x + unknown stroke field → 원본 전체 유지.
+- R19-E02: 두 channels가 같은 scale.id에 서로 다른 explicit domain 요청 → Error.
+- R19-L01: requests key 순열 전부 같은 normalized result. actual scale/mark refresh count는 owner별1회이며 기존 layout의 명시된 제한 재배치는 별도 기록한다.
+- R19-L02: field-stroke→constant-stroke와 source reencoding 후 R38 override/R32 membership/R36 reference가 최종 상태를 본다.
+
 ## 완료 조건
 
 - [ ] 위 API의 최단 호출과 explicit 대상 호출, 누락/auto/false/empty 경계를 타입과 runtime으로 동기화했다.
