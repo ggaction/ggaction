@@ -49,6 +49,7 @@ selection and highlight assignments remain active.
 ```javascript
 editXScale({ id?, target?, type?, domain?, range?, ...positionOptions })
 editYScale({ id?, target?, type?, domain?, range?, ...positionOptions })
+editParallelScale({ target, dimension, type?, domain?, range?, ...dimensionOptions })
 editThetaScale({ id?, target?, type?, domain?, range?, ...angularOptions })
 editRScale({ id?, target?, type?, domain?, range?, radialMapping?, ...radialOptions })
 editColorScale({ id?, target?, type?, domain?, range?, palette?, interpolate?, midpoint?, unknown? })
@@ -64,6 +65,9 @@ ID. Explicit `id` and `target` selectors must agree. Otherwise the current
 mark's channel scale wins, followed by a unique channel scale across all marks;
 ambiguity is an error. Every action delegates to `editScale`, which validates
 the channel-specific patch and refreshes all shared marks and guides.
+`editParallelScale` is the field-selected exception: both `target` and the
+exact Parallel `dimension` field are required, and its generated scale ID is
+resolved internally.
 [Scale options](../../api/scales.md)
 
 ## Semantic resources and regression layers

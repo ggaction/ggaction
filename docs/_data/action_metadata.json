@@ -1381,6 +1381,14 @@
     "layer": "user-facing",
     "domain": "core"
   },
+  "editParallelScale": {
+    "operation": "edit",
+    "authoringRoles": [
+      "H2"
+    ],
+    "layer": "user-facing",
+    "domain": "core"
+  },
   "editThetaScale": {
     "operation": "edit",
     "authoringRoles": [

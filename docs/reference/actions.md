@@ -178,6 +178,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editNormalizedData`](./actions/statistics.md#focused-statistical-data-editing) | H1, H3 | user-facing | statistics |
 | [`editOpacityScale`](./actions/advanced.md#focused-channel-scale-editors) | H2 | user-facing | core |
 | [`editParallelAxis`](./actions/advanced.md#createparallelaxes-createparallelaxis-editparallelaxis-removeparallelaxis-removeparallelaxes) | H3 | user-facing | axes |
+| [`editParallelScale`](./actions/advanced.md#focused-channel-scale-editors) | H2 | user-facing | core |
 | [`editPointMark`](./actions/marks.md#editpointmark) | H3 | user-facing | marks |
 | [`editRadialAxis`](./actions/guides.md#editradialaxis) | H3 | user-facing | axes |
 | [`editRadialAxisLabels`](./actions/guides.md#editradialaxislabels) | H3 | user-facing | axes |

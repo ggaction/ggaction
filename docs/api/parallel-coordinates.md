@@ -117,6 +117,29 @@ ticks, labels, and positions in the same action. Axes omitted with
 `guides: false` stay absent. Axes owned by another independent Parallel layer
 keep their own dimension assignment.
 
+## Edit one dimension scale
+
+Use `editParallelScale` when the dimension field should stay in place and only
+its scale definition should change. Both selectors are explicit: `target` is
+the Parallel line layer and `dimension` is the exact stored field name.
+
+```javascript
+const revised = program.editParallelScale({
+  target: "parallelLines",
+  dimension: "Horsepower",
+  domain: [0, 300],
+  reverse: true
+});
+```
+
+The action resolves the dimension's nested scale and applies the same atomic
+validation as `editScale`. It refreshes every consumer of a shared scale and
+the matching paths and dimension axes. Reordering dimensions does not change
+field selection. Titles, display labels, and numeric positions are not valid
+dimension selectors. Quantitative and ordinal dimensions retain their
+respective continuous or point-scale option vocabularies, and an empty patch
+is an error.
+
 ## Appearance, guides, and revisions
 
 - `color` and `strokeDash` reuse the line-series encoding vocabulary.
@@ -124,7 +147,7 @@ keep their own dimension assignment.
   `opacity`. Curved and closed paths are rejected.
 - Omitted guides create dimension axes and any applicable legend. Use
   `guides: false` to omit all guides.
-- `editCanvas`, dimension `editScale`, data revisions, and `filterMarks`
+- `editCanvas`, `editParallelScale`, data revisions, and `filterMarks`
   rematerialize paths, axes, and legends together.
 - `selectMarks`, `highlightMarks`, and `filterMarks` operate at source-row
   grain. Text is not attached automatically because a path has no unique text

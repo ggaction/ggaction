@@ -726,13 +726,14 @@
         "dimensions",
         "row-identity-and-missing-values",
         "advanced-encoding",
+        "edit-one-dimension-scale",
         "appearance-guides-and-revisions",
         "limitations",
         "related",
         "edit-a-dimension-axis"
       ],
-      "bytes": 5097,
-      "sha256": "09dc32642c053e79f8a41d5fce892d80ccda94aa78b85d453ac55afe16a26276"
+      "bytes": 5979,
+      "sha256": "1f216c76159eeb9b10e5bd30b69d636270497e0ef132cb6998f99e9ac1823f5d"
     },
     {
       "order": 48,
@@ -1850,8 +1851,8 @@
         "action-reference",
         "exact-action-lookup"
       ],
-      "bytes": 29735,
-      "sha256": "633b797b2f08511271fee6ae6525b967de89978e99d49a570ceaf6fbc488cadc"
+      "bytes": 29848,
+      "sha256": "071cb33ac800a555c724639ed4fb82992c142fa3c5b51cb065b9756077c3e1c6"
     },
     {
       "order": 117,
@@ -2118,8 +2119,8 @@
         "directional-grids",
         "related"
       ],
-      "bytes": 10092,
-      "sha256": "4ad7c5618fd6257c0f836c10dcc1b5d7aa2fa9e4bb027e746ac8193bcf19bfb6"
+      "bytes": 10351,
+      "sha256": "8ab2b005c324792d1aabac9fc8727a8cda87eb2fd6c9ac3c71b2410a51e63df8"
     },
     {
       "order": 123,
@@ -2163,8 +2164,8 @@
         "exact-typescript-signatures",
         "related"
       ],
-      "bytes": 20310,
-      "sha256": "5fc6de6a75fed1c603dae75c6d9f254c9c25a10a0e2bd8e4f48e35478dcfbddb"
+      "bytes": 20380,
+      "sha256": "a408a97431065883ee60bc01f51986b403195aba459451782927b2878090aec8"
     },
     {
       "order": 126,

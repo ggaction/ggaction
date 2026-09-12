@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "source": "generated lifecycle smoke corpus plus selection lifecycle",
-  "actionCount": 263,
+  "actionCount": 264,
   "relationships": [
     {
       "name": "createCanvas",
@@ -1141,6 +1141,12 @@
     },
     {
       "name": "editYScale",
+      "wraps": [
+        "editScale"
+      ]
+    },
+    {
+      "name": "editParallelScale",
       "wraps": [
         "editScale"
       ]

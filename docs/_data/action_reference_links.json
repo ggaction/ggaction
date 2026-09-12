@@ -206,6 +206,7 @@
   "removeMarkSelection": "/reference/actions/advanced/#removemarkselection",
   "editXScale": "/reference/actions/advanced/#focused-channel-scale-editors",
   "editYScale": "/reference/actions/advanced/#focused-channel-scale-editors",
+  "editParallelScale": "/reference/actions/advanced/#focused-channel-scale-editors",
   "editThetaScale": "/reference/actions/advanced/#focused-channel-scale-editors",
   "editRScale": "/reference/actions/advanced/#focused-channel-scale-editors",
   "editColorScale": "/reference/actions/advanced/#focused-channel-scale-editors",

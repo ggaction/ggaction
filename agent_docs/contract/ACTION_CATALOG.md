@@ -177,6 +177,7 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`editScale`](current/CORE.md#editscale) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editXScale`](current/CORE.md#editxscale) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editYScale`](current/CORE.md#edityscale) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editParallelScale`](current/CORE.md#editparallelscale) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editThetaScale`](current/CORE.md#editthetascale) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editRScale`](current/CORE.md#editrscale) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editColorScale`](current/CORE.md#editcolorscale) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |

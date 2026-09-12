@@ -253,6 +253,7 @@ interface ChartProgramActions {
   editScale(options: EditScaleOptions): ChartProgram;
   editXScale(options: EditXScaleOptions): ChartProgram;
   editYScale(options: EditYScaleOptions): ChartProgram;
+  editParallelScale(options: EditParallelScaleOptions): ChartProgram;
   editThetaScale(options: EditThetaScaleOptions): ChartProgram;
   editRScale(options: EditRScaleOptions): ChartProgram;
   editColorScale(options: EditColorScaleOptions): ChartProgram;

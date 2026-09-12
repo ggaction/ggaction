@@ -1430,7 +1430,7 @@ type EditableCurrentScale = {
 
 ## Focused channel scale editors
 
-- Implemented family: `editXScale`, `editYScale`, `editThetaScale`, `editRScale`,
+- Implemented family: `editXScale`, `editYScale`, `editParallelScale`, `editThetaScale`, `editRScale`,
   `editColorScale`, `editSizeScale`, `editOpacityScale`, `editShapeScale`,
   `editStrokeWidthScale`, and `editStrokeDashScale`.
 - Each action accepts the scale properties valid for its named channel plus
@@ -1483,6 +1483,28 @@ type EditableCurrentScale = {
 ### Value coverage — `editYScale`
 
 - ✅ Covered: current-mark inference, reverse editing, channel validation, and wrapped rematerialization. Evidence: `test/unit/actions/scales/channel-scale-editors.test.js`, `test/contracts/channel-scale-editor-types.test.js`.
+
+## `editParallelScale`
+
+- Implemented: edits one scale nested in a Parallel line's ordered dimensions. `target` and `dimension` are both required; the dimension selector is the exact stored field identity and never an index, title, or display label.
+- Resolution requires an existing Parallel coordinate, a stored `encoding.parallel.dimensions` array, exactly one matching field, and an existing semantic scale. It delegates the resolved scale ID to wrapped `editScale`, so shared consumers, paths, attached source marks, Parallel axes, layout, and highlights observe the same atomic preflight and rematerialization rules.
+- Quantitative dimensions accept the current continuous position options. Ordinal dimensions accept point-scale domain/range/reverse/padding/align/fallback options. At least one editable property is required; `id`, inferred target, and properties from the other branch are errors.
+- Reordering dimensions does not change selection by field. An explicit shared scale is edited for every consumer, subject to `editScale`'s all-consumer compatibility checks.
+- Available only in the Full entry.
+- Proposed (NOT IMPLEMENTED): drag-to-reorder axes and scale separation.
+
+### Formal values — `editParallelScale`
+
+- Implemented: `editParallelScale({ target: UserId; dimension: FieldName } & WithoutScaleId<QuantitativePositionScaleOptions | CategoricalPositionScaleOptions>)`.
+- Proposed (NOT IMPLEMENTED): —.
+
+### Value coverage — `editParallelScale`
+
+- `target`: ✅ Covered explicit Parallel layer, missing target, unknown/wrong-family target.
+- `dimension`: ✅ Covered exact quantitative/ordinal field, post-reorder identity, unknown/empty field; title/index inference is absent by contract.
+- scale patch: ✅ Covered domain, reverse, ordinal domain ordering, empty patch, branch-incompatible padding/type, path and axis refresh.
+- lifecycle: ✅ Covered immutable prior program, wrapped trace, Canvas-compatible explicit range, and field-based resolution after dimension reorder.
+- Evidence: `test/unit/actions/scales/parallel-scale.test.js`, `test/contracts/phase5-scale-types.test.js`.
 
 ## `editThetaScale`
 

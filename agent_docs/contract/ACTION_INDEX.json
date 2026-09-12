@@ -3082,6 +3082,24 @@
       }
     },
     {
+      "name": "editParallelScale",
+      "layer": "user-facing",
+      "domain": "core",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Edits one Parallel dimension scale selected by target and field identity",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/CORE.md",
+        "anchor": "editparallelscale"
+      }
+    },
+    {
       "name": "editThetaScale",
       "layer": "user-facing",
       "domain": "core",

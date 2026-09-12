@@ -1530,6 +1530,12 @@ export type EditXScaleOptions = FocusedScaleSelection & WithoutScaleId<
   QuantitativePositionScaleOptions | TemporalPositionScaleOptions | CategoricalPositionScaleOptions
 >;
 export type EditYScaleOptions = EditXScaleOptions;
+export type EditParallelScaleOptions = {
+  target: string;
+  dimension: string;
+} & WithoutScaleId<
+  QuantitativePositionScaleOptions | CategoricalPositionScaleOptions
+>;
 export type EditThetaScaleOptions = FocusedScaleSelection & WithoutScaleId<ThetaScaleOptions>;
 export type EditRScaleOptions = FocusedScaleSelection & WithoutScaleId<RadiusScaleOptions> & {
   radialMapping?: RadialMapping;
@@ -4395,6 +4401,7 @@ export class ChartProgram {
   editScale(options: EditScaleOptions): ChartProgram;
   editXScale(options: EditXScaleOptions): ChartProgram;
   editYScale(options: EditYScaleOptions): ChartProgram;
+  editParallelScale(options: EditParallelScaleOptions): ChartProgram;
   editThetaScale(options: EditThetaScaleOptions): ChartProgram;
   editRScale(options: EditRScaleOptions): ChartProgram;
   editColorScale(options: EditColorScaleOptions): ChartProgram;

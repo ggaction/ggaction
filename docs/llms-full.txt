@@ -4354,6 +4354,29 @@ ticks, labels, and positions in the same action. Axes omitted with
 `guides: false` stay absent. Axes owned by another independent Parallel layer
 keep their own dimension assignment.
 
+## Edit one dimension scale
+
+Use `editParallelScale` when the dimension field should stay in place and only
+its scale definition should change. Both selectors are explicit: `target` is
+the Parallel line layer and `dimension` is the exact stored field name.
+
+```javascript
+const revised = program.editParallelScale({
+  target: "parallelLines",
+  dimension: "Horsepower",
+  domain: [0, 300],
+  reverse: true
+});
+```
+
+The action resolves the dimension's nested scale and applies the same atomic
+validation as `editScale`. It refreshes every consumer of a shared scale and
+the matching paths and dimension axes. Reordering dimensions does not change
+field selection. Titles, display labels, and numeric positions are not valid
+dimension selectors. Quantitative and ordinal dimensions retain their
+respective continuous or point-scale option vocabularies, and an empty patch
+is an error.
+
 ## Appearance, guides, and revisions
 
 - `color` and `strokeDash` reuse the line-series encoding vocabulary.
@@ -4361,7 +4384,7 @@ keep their own dimension assignment.
  `opacity`. Curved and closed paths are rejected.
 - Omitted guides create dimension axes and any applicable legend. Use
  `guides: false` to omit all guides.
-- `editCanvas`, dimension `editScale`, data revisions, and `filterMarks`
+- `editCanvas`, `editParallelScale`, data revisions, and `filterMarks`
  rematerialize paths, axes, and legends together.
 - `selectMarks`, `highlightMarks`, and `filterMarks` operate at source-row
  grain. Text is not attached automatically because a path has no unique text
@@ -13840,6 +13863,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editNormalizedData`](./reference/actions/statistics/#focused-statistical-data-editing) | H1, H3 | user-facing | statistics |
 | [`editOpacityScale`](./reference/actions/advanced/#focused-channel-scale-editors) | H2 | user-facing | core |
 | [`editParallelAxis`](./reference/actions/advanced/#createparallelaxes-createparallelaxis-editparallelaxis-removeparallelaxis-removeparallelaxes) | H3 | user-facing | axes |
+| [`editParallelScale`](./reference/actions/advanced/#focused-channel-scale-editors) | H2 | user-facing | core |
 | [`editPointMark`](./reference/actions/marks/#editpointmark) | H3 | user-facing | marks |
 | [`editRadialAxis`](./reference/actions/guides/#editradialaxis) | H3 | user-facing | axes |
 | [`editRadialAxisLabels`](./reference/actions/guides/#editradialaxislabels) | H3 | user-facing | axes |
@@ -16216,6 +16240,7 @@ selection and highlight assignments remain active.
 ```javascript
 editXScale({ id?, target?, type?, domain?, range?, ...positionOptions })
 editYScale({ id?, target?, type?, domain?, range?, ...positionOptions })
+editParallelScale({ target, dimension, type?, domain?, range?, ...dimensionOptions })
 editThetaScale({ id?, target?, type?, domain?, range?, ...angularOptions })
 editRScale({ id?, target?, type?, domain?, range?, radialMapping?, ...radialOptions })
 editColorScale({ id?, target?, type?, domain?, range?, palette?, interpolate?, midpoint?, unknown? })
@@ -16231,6 +16256,9 @@ ID. Explicit `id` and `target` selectors must agree. Otherwise the current
 mark's channel scale wins, followed by a unique channel scale across all marks;
 ambiguity is an error. Every action delegates to `editScale`, which validates
 the channel-specific patch and refreshes all shared marks and guides.
+`editParallelScale` is the field-selected exception: both `target` and the
+exact Parallel `dimension` field are required, and its generated scale ID is
+resolved internally.
 [Scale options](./api/scales/)
 
 ## Semantic resources and regression layers
@@ -16816,6 +16844,7 @@ interface ChartProgramActions {
   editScale(options: EditScaleOptions): ChartProgram;
   editXScale(options: EditXScaleOptions): ChartProgram;
   editYScale(options: EditYScaleOptions): ChartProgram;
+  editParallelScale(options: EditParallelScaleOptions): ChartProgram;
   editThetaScale(options: EditThetaScaleOptions): ChartProgram;
   editRScale(options: EditRScaleOptions): ChartProgram;
   editColorScale(options: EditColorScaleOptions): ChartProgram;

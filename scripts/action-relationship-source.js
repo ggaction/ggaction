@@ -70,7 +70,16 @@ function focusedScaleEditorPrograms() {
     .encodeStrokeDash({ field: "group" })
     .editStrokeWidthScale({ range: [1, 8] })
     .editStrokeDashScale({ range: [[], [6, 2]] });
-  return [point, polar, line];
+  const parallel = chart()
+    .createCanvas({ width: 320, height: 240, margin: 30 })
+    .createData({ values })
+    .createParallelCoordinates({
+      id: "parallelLines", dimensions: ["x", "y", "amount"], guides: false
+    })
+    .editParallelScale({
+      target: "parallelLines", dimension: "amount", reverse: true
+    });
+  return [point, polar, line, parallel];
 }
 
 function normalizedDataPrograms() {

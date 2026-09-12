@@ -230,6 +230,7 @@ export type {
   EditScaleOptions,
   EditXScaleOptions,
   EditYScaleOptions,
+  EditParallelScaleOptions,
   EditThetaScaleOptions,
   EditRScaleOptions,
   EditColorScaleOptions,

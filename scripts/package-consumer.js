@@ -866,6 +866,19 @@ async function testNodeConsumer(directory) {
         guides: false
       });
     assert.equal(parallelFacade.graphicSpec.objects.parallelCoordinates.items.length, 2);
+    const scaledParallel = parallelFacade.editParallelScale({
+      target: "parallelCoordinates", dimension: "first", reverse: true
+    });
+    assert.equal(
+      scaledParallel.semanticSpec.scales.find(scale =>
+        scale.id === "parallelCoordinates-parallel-0"
+      ).reverse,
+      true
+    );
+    assert.notDeepEqual(
+      scaledParallel.graphicSpec.objects.parallelCoordinates.items,
+      parallelFacade.graphicSpec.objects.parallelCoordinates.items
+    );
     const revisedParallel = parallelFacade.editCanvas({ width: 520, height: 400, margin: 70 })
       .createAxes().encodeParallelCoordinates({
         target: "parallelCoordinates", dimensions: ["second", "first"], key: "key"
@@ -1653,8 +1666,8 @@ async function testMcpConsumer(directory) {
     actionCardSchema.properties?.schemaVersion?.const !== 3 ||
     actionCardsSchema.properties?.schemaVersion?.const !== 3 ||
     actionCards.schemaVersion !== 3 ||
-    actionCards.count !== 263 ||
-    actionCards.cards.length !== 263 ||
+    actionCards.count !== 264 ||
+    actionCards.cards.length !== 264 ||
     actionCards.packageVersion !== installedPackage.version
   ) {
     throw new Error("Installed action-card discovery contract is missing or stale.");
@@ -1679,6 +1692,10 @@ async function testMcpConsumer(directory) {
       "editComputedData(options: EditComputedDataOptions): ChartProgram;"
   ) {
     throw new Error("Installed derived-data editing metadata is stale.");
+  }
+  if (installedCards.get("editParallelScale")?.signature !==
+    "editParallelScale(options: EditParallelScaleOptions): ChartProgram;") {
+    throw new Error("Installed Parallel scale editing metadata is stale.");
   }
   const installedScatter = installedCards.get("createScatterPlot");
   if (
@@ -1880,6 +1897,7 @@ async function testTypeScriptConsumer(directory) {
       type HorizonEncodingOptions,
       type HistogramEncodingOptions,
       type EditHorizonOptions,
+      type EditParallelScaleOptions,
       type FitCanvasOptions,
       type FacetGridOptions,
       type FoldDataOptions,
@@ -2463,6 +2481,13 @@ async function testTypeScriptConsumer(directory) {
         { "row key": "b", first: 2, second: 3, group: "B" }
       ] })
       .createParallelCoordinates(parallelOptions);
+    const parallelScaleEdit: EditParallelScaleOptions = {
+      target: "parallelCoordinates", dimension: "first", reverse: true
+    };
+    const parallelScaleEdited: ChartProgram = parallelFacade.editParallelScale(
+      parallelScaleEdit
+    );
+    void parallelScaleEdited;
     const parallelAxisOptions: import("ggaction").CreateParallelAxisOptions = {
       field: "first", line: false, labels: false, title: false, ticks: { values: [1, 2] }
     };
@@ -3392,6 +3417,7 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.a
       "bin2d-data",
       "binned-heatmap",
       "parallel-coordinates",
+      "parallel-dimension-scale-editing",
       "facet-grid-repeat-and-named-composition-editing",
       "horizon",
       "violin-plot",

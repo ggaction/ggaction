@@ -828,6 +828,11 @@
     "StrokeDashScale": [
       "stroke-dash scale",
       "dash-pattern mapping"
+    ],
+    "ParallelScale": [
+      "parallel dimension scale",
+      "field-selected parallel scale",
+      "parallel axis domain"
     ]
   },
   "summaryOverrides": {
@@ -1059,11 +1064,15 @@
     },
     "editFilteredData": {
       "target": "filtered",
-      "oneOf": [1]
+      "oneOf": [
+        1
+      ]
     },
     "editFoldData": {
       "target": "folded",
-      "fields": ["value"]
+      "fields": [
+        "value"
+      ]
     },
     "editSummaryData": {
       "target": "summary",
@@ -1118,7 +1127,10 @@
     },
     "editCompleteData": {
       "target": "complete",
-      "values": [1, 2]
+      "values": [
+        1,
+        2
+      ]
     },
     "editImputedData": {
       "target": "imputed",
@@ -1375,6 +1387,11 @@
           2
         ]
       ]
+    },
+    "editParallelScale": {
+      "target": "parallelLines",
+      "dimension": "amount",
+      "reverse": true
     }
   },
   "callPatternOverrides": {
