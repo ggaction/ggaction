@@ -86,6 +86,24 @@ test("preserves dumbbell start/end roles when values reverse or coincide", () =>
   );
 });
 
+test("omits only the ambiguous default dumbbell value-axis title", () => {
+  const horizontal = base().createDumbbellPlot({
+    category: "category", start: "before", end: "after"
+  });
+  assert.equal(horizontal.graphicSpec.objects.xAxisTitle, undefined);
+  assert.equal(horizontal.graphicSpec.objects.yAxisTitle.properties.text, "category");
+  assert.ok(horizontal.graphicSpec.objects.xAxisLine);
+  assert.ok(horizontal.graphicSpec.objects.xAxisLabels);
+
+  const vertical = base().createDumbbellPlot({
+    id: "vertical", category: "category", start: "before", end: "after",
+    orientation: "vertical",
+    guides: { axes: { y: { title: { text: "Before to after" } } } }
+  });
+  assert.equal(vertical.graphicSpec.objects.yAxisTitle.properties.text, "Before to after");
+  assert.equal(vertical.graphicSpec.objects.xAxisTitle.properties.text, "category");
+});
+
 test("labels endpoint fields explicitly and owns both dumbbell label children", () => {
   const program = base().createDumbbellPlot({
     id: "labeled", category: "category", start: "before", end: "after",

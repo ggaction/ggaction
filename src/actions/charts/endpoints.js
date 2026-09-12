@@ -210,6 +210,24 @@ function normalizeLabels(value, operation, allowEndpoint) {
   return { ...value };
 }
 
+function normalizeDumbbellGuides(value, orientation, operation) {
+  const guides = normalizeGuides(value, operation);
+  if (guides === false || guides.axes === false) return guides;
+  const channel = orientation === "horizontal" ? "x" : "y";
+  const axes = guides.axes ?? {};
+  const axis = axes[channel];
+  if (axis === false || isPlainObject(axis) && Object.hasOwn(axis, "title")) {
+    return guides;
+  }
+  return {
+    ...guides,
+    axes: {
+      ...axes,
+      [channel]: { ...(axis ?? {}), title: false }
+    }
+  };
+}
+
 function labelOptions(labels, defaultField) {
   const { endpoint: _endpoint, ...options } = labels;
   const hasContent = ["field", "value", "content"].some(key => Object.hasOwn(options, key));
@@ -325,7 +343,7 @@ export const createDumbbellPlot = action(
     const startPoint = normalizePoint(args.startPoint, operation, "startPoint");
     const endPoint = normalizePoint(args.endPoint, operation, "endPoint");
     const connector = normalizeRule(args.connector, operation, "connector");
-    const guides = normalizeGuides(args.guides, operation);
+    const guides = normalizeDumbbellGuides(args.guides, orientation, operation);
     const labels = normalizeLabels(args.labels, operation, true);
     const sharedScale = start.scale ?? end.scale;
     const prepared = prepareData(this, {

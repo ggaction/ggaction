@@ -96,6 +96,8 @@ finite nonzero와 signed value를 지원한다. Stable owner는 Point, stem id�
 connector?, labels?, guides? })`는 start/end Point와 connector를 하나의 quantitative scale에 둔다. 역할은 값
 크기와 독립이라 역전되거나 같아도 style과 label이 교환되지 않는다. Stable end owner는 `id`, 다른 child는
 `${id}Start`와 `${id}Connector`다. Label endpoint 기본은 end이며 start/end/both를 지원한다.
+서로 다른 두 value field가 한 scale을 공유하므로 기본 value-axis title은 생략한다. 명시적인
+`guides.axes.<value channel>.title`은 그대로 적용하며 category-axis title과 나머지 axis component는 유지한다.
 
 ### Formal values — `createDumbbellPlot`
 
@@ -105,7 +107,8 @@ connector?, labels?, guides? })`는 start/end Point와 connector를 하나의 qu
 
 ### Value coverage — `createDumbbellPlot`
 
-- ✅ Covered: start>end/start=end, shared scale/grain, endpoint style/label, summary, remove/edit와 immutable failure.
+- ✅ Covered: start>end/start=end, shared scale/grain, endpoint style/label, summary, ambiguous default value-axis
+  title 생략과 explicit title, remove/edit와 immutable failure.
 - Evidence: `test/unit/actions/charts/endpoint-facades.test.js`, `test/contracts/endpoint-facade-types.test.js`.
 
 ## `editEndpointPlot`

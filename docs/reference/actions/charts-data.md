@@ -238,6 +238,9 @@ createDumbbellPlot({ id?, data?, coordinate?, category, start, end, orientation?
 
 Create named start and end points with a connector. Endpoint identity stays
 attached to its field and appearance when values reverse or coincide.
+Because two fields share the value scale, its ambiguous axis title is omitted by
+default. Set `guides.axes.x.title` for a horizontal plot or
+`guides.axes.y.title` for a vertical plot to provide one explicitly.
 
 ## `editEndpointPlot`
 
