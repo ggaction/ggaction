@@ -6,10 +6,10 @@
 - [x] Gate A 자료: 정확한 API/schema/defaults/오류/수치 oracle 작성·검증
 - [x] 명시 승인 범위 기록 후 해당 구현 시작
 - [x] R20/R21/R23/R22 appearance를 primitive·public·renderer 경로로 Gate V 확인
-- [ ] 아래 wave 구현과 focused/cumulative tests 완료
-- [ ] types/current contracts/catalog/cards/MCP/docs/package 영향 갱신
-- [ ] Gate X 결과와 남은 후속 통합 cell 기록
-- [ ] 검증된 coherent change마다 commit/push하고 다음 Gate 범위 확인
+- [x] 아래 wave 구현과 focused/cumulative tests 완료
+- [x] types/current contracts/catalog/cards/MCP/docs/package 영향 갱신
+- [x] Gate X 결과와 남은 후속 통합 cell 기록
+- [x] 마지막 구현 commit `58d9e51a`; 이 원장 commit을 push한 뒤 Phase 6 진행
 
 계획 작성 시 모든 체크는 미완료다. Phase 0 은 제품 구현이 없으므로 해당 구현·시각 항목의 미적용 이유를 기록한다. Phase 12 는 새 시각 목표가 없으면 승인된 variant를 현재 코드에서 다시 실행해 검증한다.
 
@@ -50,7 +50,9 @@
 | W1b — R21 offset scale | `335ce4f0` | 12 focused unit/type cases; 2,357 unit; 578 chart; 336 contract; 47 docs; installed package; 315,821-byte gzip measurement | R19 atomic reencoding과 R43 facet/repeat 통합은 해당 owner Phase에서 재검증 | complete |
 | W2 — R23 size scale types | `1b68a8ba` | 10 focused pure/public cases; 2,357 unit; 342 contract; 47 docs; Canvas/SVG/PNG/PDF; installed package; full/basic gzip 317,613/156,182 bytes | R19/R37/R43 통합은 해당 owner Phase에서 재검증 | complete |
 | W3 — R22 field stroke | `3fc40a66` | 16 focused stroke/color reassignment cases; 2,361 unit; 357 contract; 578 chart; 47 docs; 73 browser; 216 render; Canvas/SVG/PNG/PDF; installed package; full/basic gzip 323,125/159,342 bytes | R19 atomic payload와 R43 advanced facet matrix는 해당 owner Phase에서 재검증 | complete |
-| W4 — R19 atomic encoding | — | 실행 증거 없음 | encodeChannels final-state plan과 all-consumer preflight 전체 | planned |
+| W4 — R19 atomic encoding | `58d9e51a` | 23 focused runtime/type cases; final-state x/y·secondary·offset·series·Polar·Parallel·appearance; invalid field/shared scale/grid atomicity; deterministic trace | R32/R36/R38이 추가할 미래 consumer는 해당 Phase에서 R19-L02 재검증 | complete-primary |
+| W5 — Phase 5 integration | `58d9e51a` | one-channel parity; R20 Parallel appearance; R21 band+offset; R22 stroke field↔constant; R23 size+combined legend; external shared consumer refresh | R37/R38/R43의 새 consumer만 후속 | complete-primary |
+| cumulative | `58d9e51a` | unit 2,362/2,362; contracts 381/381; docs 47/47; 268 cards; package 502 entries, 648,591 packed, 3,264,595 unpacked; tar SHA-256 `b768b34024f20085dc2d160eca0257283bd36ef841b5e4f1cb767b94f93e40f5`; full/basic/svg gzip 325,478/159,697/6,418 | Phase 12 전체 chart/render/browser/realistic matrix 재실행 | passed-primary |
 
 ## Gate 연결
 

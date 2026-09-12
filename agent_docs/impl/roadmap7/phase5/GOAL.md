@@ -1,6 +1,6 @@
 # Phase 5 — 스케일·stroke·원자적 인코딩
 
-상태: active. 모든 Gate는 승인됐고 Phase 4 구현 근거 `d29287c9` 이후 이 Phase를 실행한다.
+상태: completed-primary. 모든 Gate는 승인됐고 Phase 5의 마지막 구현 근거는 `58d9e51a`다.
 
 ## 목표와 범위
 
@@ -25,3 +25,6 @@
 이 Phase에 배정되지 않은 선택 기능은 해당 owner Phase에서 구현한다. 감사에서 선택하지 않은 나머지 25개는 추가하지 않는다. 독립적인 저작 의미가 필요할 때만 action을 추가하고, 타입과 문서만 있는 API를 만들지 않는다.
 
 [STEP1.md](STEP1.md)의 체크리스트와 [GATES.md](GATES.md)의 상태를 함께 갱신한다. 실패한 테스트나 미실행 backend는 완료 근거가 아니다. 다음 Phase를 진행하기 위해 이름만 있는 stub을 commit하지 않는다.
+
+R20/R21/R23/R22/R19의 현재 제품 surface와 상호 통합은 완료했다. R37/R38/R43이 추가할 후속
+legend/composition consumer는 각 primary Phase에서 다시 검증하며 Phase 5 기능을 재구현하지 않는다.

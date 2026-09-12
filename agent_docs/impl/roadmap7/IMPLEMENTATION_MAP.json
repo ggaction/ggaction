@@ -366,24 +366,27 @@
         "R22",
         "R23"
       ],
-      "status": "Proposed",
+      "status": "Implemented-primary",
       "newPublicActions": [
         "encodeChannels"
       ],
       "extendedPublicSurfaces": [],
       "currentSourceFiles": [
+        "src/actions/encodings/channels.js",
         "src/actions/encodings/index.js",
-        "src/actions/scales/edit.js",
-        "src/actions/encodings/parallel.js",
-        "src/materialization/planner.js",
         "src/actions/encodings/shared.js",
-        "src/core/vocabulary.js"
+        "src/actions/primitives/semanticAction.js",
+        "src/core/action.js",
+        "src/materialization/planner.js",
+        "types/program.d.ts"
       ],
       "existingRegressionTests": [
         "test/contracts/shared-scale-refresh.test.js",
-        "test/unit/actions/scales/scale-consumers.test.js"
+        "test/unit/actions/scales/scale-consumers.test.js",
+        "test/contracts/stroke-color.test.js",
+        "test/contracts/combined-legend-appearance.test.js"
       ],
-      "suggestedNewTest": "test/contracts/atomic-encoding.test.js",
+      "suggestedNewTest": null,
       "acceptanceCases": [
         "R19-N01",
         "R19-N02",
@@ -399,7 +402,13 @@
         "edit/reencode/Canvas/source replay/remove",
         "applicable composition and renderer cells",
         "Full registration/types/current contracts/knowledge/docs/installed package"
-      ]
+      ],
+      "implementedTests": [
+        "test/contracts/atomic-encoding.test.js",
+        "test/contracts/atomic-encoding-types.test.js",
+        "scripts/package-consumer.js"
+      ],
+      "implementationCommit": "58d9e51a"
     },
     {
       "id": "R20",

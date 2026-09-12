@@ -1,7 +1,8 @@
 # R19 — 다중 채널의 원자적 재인코딩
 
-원래 감사 번호: **19**. Primary owner: **Phase 5**. 상태: **Proposed / 구현 전**.
-아래 세부 API·수치 정책의 Gate는 승인됐다. 상태의 `Proposed`는 제품 구현·검증이 아직 완료되지 않았다는 뜻이다.
+원래 감사 번호: **19**. Primary owner: **Phase 5**. 상태: **Implemented-primary**.
+구현 checkpoint는 `58d9e51a`다. 현재 존재하는 focused scale·stroke·size·guide·legend·Parallel
+consumer 통합은 완료했다. R32/R36/R38이 추가할 미래 consumer와의 R19-L02 통합은 각 primary Phase에서 닫는다.
 
 ## 목적과 현재 연결점
 
@@ -131,9 +132,10 @@ payload key 순열에 따라 state와 sibling trace 순서가 달라지면 실�
 
 ## 완료 조건
 
-- [ ] 위 API의 최단 호출과 explicit 대상 호출, 누락/auto/false/empty 경계를 타입과 runtime으로 동기화했다.
-- [ ] 위 수치 oracle를 실제 capability test에 구현했고 계획 예제를 기대값 생성기로 재사용하지 않았다.
-- [ ] 기존 consumer와 새 consumer에 scale/mark/guide/label/selection/facet/Canvas replay를 검증했다.
-- [ ] Full 등록·타입 export·Current 계약·catalog·card·관계 trace·MCP·문서·installed consumer를 갱신했다.
-- [ ] 미지원 cell은 이유를 적었다. 이 문서에 명시한 필수 cell을 임의 제외하지 않았다.
-- [ ] 해당 Phase의 승인/검증 근거를 기록했다. 추측으로 완료 표시하지 않았다.
+- [x] 위 API의 최단 호출과 explicit 대상 호출, 누락/auto/false/empty 경계를 타입과 runtime으로 동기화했다.
+- [x] 위 수치 oracle를 실제 capability test에 구현했고 계획 예제를 기대값 생성기로 재사용하지 않았다.
+- [x] 현재 존재하는 consumer에 scale/mark/guide/label/selection/facet/Canvas replay를 검증했다. R32/R36/R38의
+  미래 consumer 통합은 `ACCEPTANCE_CASES.json`의 R19-L02에 planned로 유지한다.
+- [x] Full 등록·타입 export·Current 계약·catalog·card·관계 trace·MCP·문서·installed consumer를 갱신했다.
+- [x] 미지원 cell은 이유를 적었다. 이 문서에 명시한 필수 cell을 임의 제외하지 않았다.
+- [x] 해당 Phase의 승인/검증 근거를 기록했다. 구현 `58d9e51a`와 Phase 5 STEP 원장을 사용한다.

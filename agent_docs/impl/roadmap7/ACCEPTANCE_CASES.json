@@ -500,8 +500,8 @@
       "kind": "normal",
       "specification": "fixed domains0..10/ranges0..100, point a2,b8 → x20,y80에서 x=b,y=a → x80,y20.",
       "owner": "features/19-atomic-encoding.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/contracts/atomic-encoding.test.js (fixed-scale x/y swap x80,y20); 58d9e51a"
     },
     {
       "id": "R19-N02",
@@ -510,8 +510,8 @@
       "kind": "normal",
       "specification": "한 final draft에서 primary/secondary의 서로 연결된 field 변경, group/pathOrder 동시 변경, parent band/offset 동시 변경 각각 성공.",
       "owner": "features/19-atomic-encoding.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/contracts/atomic-encoding.test.js (Rect endpoints, band/offset, Bar axis transpose, group/pathOrder, Polar and Parallel); 58d9e51a"
     },
     {
       "id": "R19-E01",
@@ -520,8 +520,8 @@
       "kind": "error",
       "specification": "valid x + unknown stroke field → 원본 전체 유지.",
       "owner": "features/19-atomic-encoding.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/contracts/atomic-encoding.test.js (invalid field, unsupported family and incompatible grid preserve all caller state); 58d9e51a"
     },
     {
       "id": "R19-E02",
@@ -530,8 +530,8 @@
       "kind": "error",
       "specification": "두 channels가 같은 scale.id에 서로 다른 explicit domain 요청 → Error.",
       "owner": "features/19-atomic-encoding.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/contracts/atomic-encoding.test.js (conflicting explicit shared-scale domain preflight); 58d9e51a"
     },
     {
       "id": "R19-L01",
@@ -540,8 +540,8 @@
       "kind": "lifecycle",
       "specification": "requests key 순열 전부 같은 normalized result. actual scale/mark refresh count는 owner별1회이며 기존 layout의 명시된 제한 재배치는 별도 기록한다.",
       "owner": "features/19-atomic-encoding.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/contracts/atomic-encoding.test.js (key permutation determinism and deduplicated scale/mark/legend refresh); 58d9e51a"
     },
     {
       "id": "R19-L02",

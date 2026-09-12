@@ -11,7 +11,7 @@
 | R08 | 2 | [주간·요일·시간대 버킷](features/08-calendar-buckets.md) | [Phase 2 STEP1](phase2/STEP1.md) · `9d4d0840` | primary 구현 완료 / R02 edit 통합 대기 |
 | R09 | 2 | [기간 기반 window와 최소 관측수](features/09-duration-windows.md) | [Phase 2 STEP1](phase2/STEP1.md) · `9d4d0840` | primary 구현 완료 / R02 edit 통합 대기 |
 | R10 | 3 | [가중 통계·histogram·KDE](features/10-weighted-statistics.md) | [Phase 3 STEP1](phase3/STEP1.md) · `da0ca4e2`, `276c8318`, `32ddfcdd` | primary 구현 완료 / R02 edit 통합 대기 |
-| R19 | 5 | [다중 채널의 원자적 재인코딩](features/19-atomic-encoding.md) | feature 내 독립 oracle/완료 조건 → Phase 5 STEP1 evidence | Proposed / 미구현 |
+| R19 | 5 | [다중 채널의 원자적 재인코딩](features/19-atomic-encoding.md) | `test/contracts/atomic-encoding.test.js`; strict types; installed package; `58d9e51a` | Implemented-primary / R32·R36·R38 미래 consumer 통합 대기 |
 | R20 | 5 | [Parallel 차원별 scale 집중 편집](features/20-parallel-scale.md) | `test/unit/actions/scales/parallel-scale.test.js`; `test/contracts/phase5-scale-types.test.js`; `eaea2b8b` | Implemented-primary |
 | R21 | 5 | [중첩 band offset scale 집중 편집](features/21-offset-scales.md) | `test/unit/actions/scales/offset-scale.test.js`; grouped-bar chart fixtures; package consumer; `335ce4f0` | Implemented-primary |
 | R22 | 5 | [필드 기반 stroke 색상](features/22-stroke-color.md) | feature 내 독립 oracle/완료 조건 → Phase 5 STEP1 evidence | Implemented-primary (`3fc40a66`) |
@@ -33,7 +33,8 @@
 ## 후속 통합 의무
 
 - R02 data revisions는 Phase 7의 labels/references, Phase 8의 legend content, Phase 10의 Polar/Parallel source replay, Phase 11의 resources와 다시 검증한다.
-- R20/21/22/23 scale consumers는 R19 atomic final validation과 R43 nested/facet resolution을 검증한다.
+- R20/21/22/23 scale consumers의 R19 atomic final validation은 `58d9e51a`에서 완료했다. R43
+  nested/facet resolution과 R32/R36/R38의 새 consumer는 각 primary Phase에서 재검증한다.
 - R27/29 frame은 R33 anchors, R39 header occupied layout, R43 local panels에서 검증한다.
 - R31/32/33 label selection/removal은 R36 source dependency와 R47 theme font 재배치에서 검증한다.
 - R37/38/39 guide recipes는 R47 theme, R43 source replay 후 content와 style 보존을 검증한다.

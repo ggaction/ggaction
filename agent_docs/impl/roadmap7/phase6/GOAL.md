@@ -1,6 +1,6 @@
 # Phase 6 — 좌표 비율과 Polar frame
 
-상태: planned. 이 문서는 실행 계획이며 구현 또는 승인 완료 기록이 아니다.
+상태: active. 모든 Gate는 승인됐고 Phase 5 구현 근거 `58d9e51a` 이후 이 Phase를 실행한다.
 
 ## 목표와 범위
 

@@ -16,9 +16,9 @@
 | 승인된 미래 계약 읽기 | [`contract/planned/`](contract/planned/) |
 | 현재 개발 순서 확인 | [`impl/README.md`](impl/README.md) |
 
-**현재 활성 계획은 Roadmap 7 Phase 5**다. [상세 로드맵](impl/roadmap7/ROADMAP.md)은
+**현재 활성 계획은 Roadmap 7 Phase 6**이다. [상세 로드맵](impl/roadmap7/ROADMAP.md)은
 사용자가 선택한 차트 저작 연산 25개를 다루며, [구현자 인계](impl/roadmap7/IMPLEMENTER_START_HERE.md)에서
-읽기 순서와 작업 절차를 제공한다. Phase 1의 R06/R07은 `b891d1d5`, Phase 2의 R05/R08/R09는 `9d4d0840`, Phase 3의 R10은 `da0ca4e2`·`276c8318`·`32ddfcdd`, Phase 4의 R02는 `d29287c9`에서 primary 구현됐고 나머지는 Phase별 원장이 상태를 소유한다.
+읽기 순서와 작업 절차를 제공한다. Phase 1의 R06/R07은 `b891d1d5`, Phase 2의 R05/R08/R09는 `9d4d0840`, Phase 3의 R10은 `da0ca4e2`·`276c8318`·`32ddfcdd`, Phase 4의 R02는 `d29287c9`, Phase 5의 마지막 R19는 `58d9e51a`에서 primary 구현됐고 나머지는 Phase별 원장이 상태를 소유한다.
 
 [Roadmap 6](impl/roadmap6/ROADMAP.md)은 Phase 0–11을 완료했다. 마지막 완료 owner는
 [Roadmap 6 Phase 11](impl/roadmap6/phase11/REVIEW.md)이며 당시 closeout은 과거 기록으로 보존한다.

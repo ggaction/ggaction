@@ -45,7 +45,7 @@ R19를 R23/R22보다 먼저 만들지 않는다. R43을 좌표·라벨·guide·t
 | R08 | week/weekday/timeZone bucket | Implemented-primary | 완료 checkpoint + WP12 |
 | R09 | duration window | Implemented-primary | 완료 checkpoint + WP12 |
 | R10 | 가중 통계 | Implemented-primary | 완료 checkpoint + WP7.4/WP10/WP12 |
-| R19 | 원자적 다중 encoding | Proposed | WP5.3 |
+| R19 | 원자적 다중 encoding | Implemented-primary (`58d9e51a`) | 완료 checkpoint + WP7/WP8/WP10/WP12 |
 | R20 | Parallel focused scale edit | Implemented-primary | 완료 checkpoint + WP5.4/WP10 |
 | R21 | x/y offset focused scale edit | Implemented-primary | 완료 checkpoint + WP5.4/WP10 |
 | R22 | field stroke·stroke scale·legend | Implemented-primary (`3fc40a66`) | 완료 checkpoint + WP5.4/WP10 |

@@ -243,7 +243,7 @@
         "R22",
         "R23"
       ],
-      "status": "Proposed",
+      "status": "Implemented-primary",
       "scopeSelection": "user-selected",
       "file": "features/19-atomic-encoding.md",
       "sources": [
@@ -319,7 +319,7 @@
       "slug": "stroke-color",
       "phase": 5,
       "dependsOn": [],
-      "status": "Proposed",
+      "status": "Implemented-primary",
       "scopeSelection": "user-selected",
       "file": "features/22-stroke-color.md",
       "sources": [
