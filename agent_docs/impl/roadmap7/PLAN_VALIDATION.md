@@ -57,6 +57,22 @@
 | 문서 링크 | roadmap7 Markdown 38개 상대 링크 검사 통과 |
 | 제품 변경 경계 | 이 runbook checkpoint는 `agent_docs/impl/roadmap7` 문서만 변경 |
 
+## 2026-09-13 구현자 작업 패킷 보강
+
+상세 구현 작업 패킷의 기준 checkpoint를 `68843532`로 갱신하고, 기능별 계약을 복제하지 않는 실행 규약을 추가했다. 구현자가 한 WP를 독립적으로 수행할 때 필요한 입력표, Core/Transaction/Consumers/Surface 네 구간, 정상·경계·오류 원자성·생명주기·통합의 다섯 테스트 묶음, 생성물과 packed package까지의 체크포인트 기록 순서를 고정했다.
+
+| 검증 | 실제 결과 |
+| --- | --- |
+| canonical owner | API·기본값·수식은 feature에 남고 작업 패킷은 실행 순서만 소유 |
+| 구현 누락 방지 | state owner, resolved output, cleanup, consumer, oracle, public surface를 작업 전에 모두 식별 |
+| 거짓 완료 방지 | 네 patch 구간과 다섯 test 묶음이 닫히기 전 Current 승격 금지 |
+| 원자성 | program의 8개 canonical branch와 caller input까지 오류 전후 비교 |
+| 생성물 순서 | owner 수정 → generator → stale check → packed consumer → 상태 원장 순서 |
+| 현재 작업 보호 | 기존 R22 source 변경은 이 문서 보강에 포함하거나 되돌리지 않음 |
+| 문서 탐색 계약 | `node --test test/contracts/agent-docs-navigation.test.js`: 7/7 통과 |
+| 제안 타입 | `IMPLEMENTATION_TYPES.examples.ts` strict/noEmit 통과 |
+| Diff 형식 | `git diff --check` 통과 |
+
 ## 2026-09-13 Phase 2 구현 검증
 
 `9d4d0840`에서 R05 complete/impute, R08 week/weekday/IANA timeZone, R09 elapsed-duration window의 primary create 경로를 구현했다. R02가 소유하는 edit/revision 경로는 Phase 4의 명시적 후속 의무로 유지한다.

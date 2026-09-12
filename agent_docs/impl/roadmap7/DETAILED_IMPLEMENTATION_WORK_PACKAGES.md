@@ -1,6 +1,6 @@
 # Roadmap 7 — 상세 구현 작업 패킷
 
-작성 기준: 2026-09-13. 현재 branch `codex/roadmap7-authoring-refinement`, 실행 기준 revision `3f19d66d`. 이 문서는 이미 승인된 Roadmap 7을 구현자가 기능 단위로 끝까지 실행하기 위한 **작업 분해와 종료 절차**다. 공개 API의 정확한 의미·수식·기본값은 각 `features/*.md`가 canonical owner이며, 이 문서는 그 계약을 어느 파일에 어떤 순서로 구현하고 무엇으로 검증할지를 소유한다.
+작성 기준: 2026-09-13. 현재 branch `codex/roadmap7-authoring-refinement`, 마지막 검증 완료 checkpoint `68843532`. 이 문서는 이미 승인된 Roadmap 7을 구현자가 기능 단위로 끝까지 실행하기 위한 **작업 분해와 종료 절차**다. 공개 API의 정확한 의미·수식·기본값은 각 `features/*.md`가 canonical owner이며, 이 문서는 그 계약을 어느 파일에 어떤 순서로 구현하고 무엇으로 검증할지를 소유한다.
 
 ## 1. 현재 상태와 실행 경계
 
@@ -79,6 +79,71 @@ R19를 R23/R22보다 먼저 만들지 않는다. R43을 좌표·라벨·guide·t
 10. **기록**: feature/Phase STEP/PROPOSALS/IMPLEMENTATION_MAP/TRACEABILITY/ACCEPTANCE_CASES를 실제 증거와 맞춘 뒤 commit/push한다.
 
 오류 경로에서는 입력 `ChartProgram`의 `semanticSpec`, `graphicSpec`, `materializationConfigs`, `context`, `trace`, `resolvedScales`, `children`, `compositionSpec`이 모두 같아야 한다. options와 nested arrays/AST/data rows는 deep-freeze한다. 테스트 expected는 production 함수를 호출해 만들지 않는다.
+
+### 구현자가 작업 패킷을 소비하는 정확한 방법
+
+한 번에 하나의 `WPx.y`만 활성 작업으로 잡는다. 작업을 시작할 때 아래 표를 로컬 메모나 해당 Phase `STEP1.md`에 채우고, 빈 칸이 있으면 코드를 쓰기 전에 owning 문서와 source에서 답을 찾는다. 공개 계약을 임의로 보완하거나 비슷해 보이는 다른 action의 기본값을 복사하지 않는다.
+
+| 필드 | 반드시 적을 내용 | 권위 |
+| --- | --- | --- |
+| Feature | R번호, Primary Phase, 선행 기능의 실제 완료 revision | ROADMAP, IMPLEMENTATION_MAP |
+| Public call | 최소 호출 1개와 모든 옵션을 쓴 호출 1개 | 해당 `features/*.md`, IMPLEMENTATION_TYPES.d.ts |
+| Existing control | 가장 가까운 현행 action 호출과 보존해야 할 결과 | current contract, source, 기존 test |
+| Requested owner | 요청을 장기 보존할 semantic/config의 정확한 path | feature의 구현 고정 명세, STATE_AND_REPLAY |
+| Resolved output | 매번 다시 계산할 값과 graphic path | feature, materializer source |
+| Cleanup | mode 전환·remove 때 지울 old-only key/resource | feature의 전환표 |
+| Consumers | scale/mark/guide/selection/label/facet/theme/renderer 중 required 항목 | IMPLEMENTATION_MAP, 해당 WP |
+| Oracle | production helper를 쓰지 않은 literal expected | ACCEPTANCE_CASES, feature |
+| Failure proof | 오류 class와 호출 전후 동일해야 하는 state | COMMON_CONTRACT, 해당 WP |
+| Public surface | runtime/type/current contract/generated/package 변경 목록 | 아래 공개 surface 표 |
+
+작업 중 문서의 파일 경로가 현재 source와 다르면 이름이 같은 새 파일을 즉시 만들지 않는다. `rg`로 현재 registrar, state writer, reader, materializer, remover를 찾아 역할 owner가 이동했는지 확인한다. 이동했다면 이 문서의 경로도 같은 checkpoint에서 고친다. 문서의 **행동 계약**과 source의 **현재 구조**가 충돌하면 임시 compatibility registry나 중복 state를 만들지 않고, 이미 승인된 동작을 현재 구조의 한 owner에 구현한다.
+
+### 패치의 네 구간과 통과 조건
+
+각 WP의 diff는 아래 네 구간을 모두 포함해야 한다. 구간을 여러 commit으로 나눌 수 있지만 네 구간이 닫히기 전에는 feature 상태를 `Implemented-primary`나 `Current`로 바꾸지 않는다.
+
+1. **Core**: closed validator, canonical normalizer, pure 계산과 독립 unit oracle. 이 구간은 trace/ID/program write를 하지 않는다.
+2. **Transaction**: public action, owner write, final-state preflight, deterministic materialization, cleanup. 실패 fixture에서 이전 program과 caller input이 그대로여야 한다.
+3. **Consumers**: 지원행렬의 mark/guide/selection/labels/composition/render 경로. 한 대표 mark만 성공한 상태로 family 전체를 완료 처리하지 않는다.
+4. **Surface**: Full registry, declarations, Current contract, generated inventories/docs, installed package. 런타임만 있거나 타입만 있는 상태를 공개 완료로 간주하지 않는다.
+
+다음 조건이면 해당 구간은 실패다.
+
+- 요청 omission과 reset을 같은 뜻으로 처리한다.
+- auto/requested 값을 resolved 숫자·배열로 덮어쓴다.
+- 입력 key 순서, object insertion order, 첫 resource 순서에 결과가 의존한다.
+- public action을 내부에서 순차 호출해 중간-invalid 상태를 외부 계약처럼 검증한다.
+- 오류 뒤 trace 길이, current pointer, cached scale, generated child ID 중 하나라도 달라진다.
+- mark와 legend/highlight가 서로 다른 mapper·formatter·style resolver를 사용한다.
+- facet/repeat가 retained source 대신 이전 child graphic이나 partitioned snapshot을 복제한다.
+- generated 문서를 직접 편집하거나 roadmap JSON을 제품/test 실행 의존성으로 import한다.
+
+### 테스트 구현 형식
+
+각 기능의 새 capability test는 최소한 아래 다섯 묶음을 분리한다. 같은 happy-path 프로그램을 약간 바꿔 숫자만 늘리지 않는다.
+
+1. **Normal**: 최소 호출, 모든 옵션 호출, explicit target, 독립 literal 수치·geometry.
+2. **Boundary**: 최소/최대, empty/nullish, zero, reverse, repeated category, mode별 유효 경계.
+3. **Error atomicity**: malformed shape, unknown key/field/target, ambiguous owner, incompatible consumer. 호출 전 program 전체와 deep-frozen options를 비교한다.
+4. **Lifecycle**: create → edit → reset 또는 field/value 전환 → source/Canvas replay → remove. 오래된 owner·graphic·legend가 부활하지 않는지 확인한다.
+5. **Integration**: 해당 feature의 required mark/guide/composition/renderer/package cell. 후속 R43 소유 cell이면 현재 STEP에 `pending(R43)`로 남기고 R43/Phase12에서 반드시 닫는다.
+
+수치 expected는 상수나 별도 oracle 함수로 작성하고 구현 mapper를 호출해 expected를 만들지 않는다. renderer 검증은 backend끼리 pixel exact를 요구하지 않지만, 한 backend 안에서 같은 실행의 primitive/public 의미와 decoded output을 비교한다. `assert.throws`만으로 원자성을 증명하지 말고 호출 전 program의 모든 canonical state branch를 `deepStrictEqual`로 확인한다.
+
+### 체크포인트 기록 규칙
+
+기능 checkpoint를 닫을 때 다음 순서를 지킨다.
+
+1. focused unit/contract/type tests를 실행하고 정확한 pass/fail/skip 수를 기록한다.
+2. 영향받은 기존 regression과 renderer를 실행한다.
+3. owner source를 갱신한 뒤 generator를 실행하고 check 명령으로 stale output이 없는지 확인한다.
+4. packed tarball을 설치한 소비자에서 runtime과 strict TypeScript를 실행한다.
+5. feature status, `IMPLEMENTATION_MAP.json`, `ACCEPTANCE_CASES.json`, Phase STEP, Current contract를 동일 사실로 맞춘다.
+6. `git diff --check`, 예상 파일만 바뀌었는지, caller-owned 입력을 mutate하는 코드가 없는지 확인한다.
+7. coherent checkpoint를 commit/push한 뒤 다음 WP로 이동한다.
+
+테스트를 실행하지 못했으면 원인과 미실행 범위를 적고 `passed`로 기록하지 않는다. 한 인수 case의 일부 경로만 통과하면 `partial`이며, 후속 owner와 닫을 Phase를 함께 적는다. 과거 revision의 green 결과는 그 뒤 관련 source가 바뀌었으면 현재 checkpoint의 누적 증거가 아니다.
 
 ### 공개 surface의 정확한 동기화 위치
 

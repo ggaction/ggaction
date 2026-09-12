@@ -21,6 +21,17 @@
 7. **검증 결과를 기록한다.** 기능별 oracle, scoped/cumulative tests, package consumer의 실제 결과를 STEP의 commit/artifact와 연결한다. 실행하지 않은 것은 미실행으로 적는다.
 8. **Commit하고 push한다.** 검증된 coherent diff를 기록한 뒤 다음 작업으로 진행한다. PR/publish는 별도 authorization을 확인한다.
 
+위 순서를 기억에 의존해 축약하지 않는다. [상세 구현 작업 패킷의 공통 절차](DETAILED_IMPLEMENTATION_WORK_PACKAGES.md#2-모든-작업-패킷의-공통-절차)에 있는 입력표, Core/Transaction/Consumers/Surface 네 구간, 다섯 테스트 묶음과 체크포인트 기록 순서를 그대로 사용한다. 기능 계약은 `features/*.md`, 작업 순서와 수정 위치는 상세 작업 패킷, literal 기대값은 `ACCEPTANCE_CASES.json`이 각각 소유한다. 같은 사실을 추측으로 합치지 않는다.
+
+각 작업을 마칠 때 다음 질문에 모두 `예`라고 답할 수 있어야 한다.
+
+- 최소 호출과 최대 옵션 호출이 실제 public action으로 실행되는가?
+- omission, reset, mode 전환에서 old-only state가 남지 않는가?
+- 오류가 state, trace, ID allocation, caller input을 전혀 바꾸지 않는가?
+- mark, guide, highlight, facet/repeat가 같은 requested owner와 mapper를 읽는가?
+- Current 문서와 타입이 실제 packed runtime보다 앞서거나 뒤처지지 않는가?
+- `passed`라고 기록한 case마다 현재 revision에서 실행한 test 증거가 있는가?
+
 ## 추측으로 채우지 않을 항목
 
 | 잘못 구현하기 쉬운 해석 | 정확한 계약 |
