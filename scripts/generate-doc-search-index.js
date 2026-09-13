@@ -220,13 +220,18 @@ export async function buildDocSearchIndex() {
       const actionName = section.heading.label.match(/^([A-Za-z][A-Za-z0-9]*)/)?.[1];
       const action = metadata.get(actionName);
       const card = cards.get(actionName);
+      const sectionUrl = `${page.url}#${section.heading.id}`;
+      const canonical = card?.route === sectionUrl;
+      const namedType = page.url === "/reference/types/" && section.heading.id.startsWith("type-");
       entries.push({
         pageTitle: page.title,
         sectionTitle: section.heading.label,
-        url: `${page.url}#${section.heading.id}`,
+        url: sectionUrl,
+        ...(canonical ? { actionName } : {}),
         kind: searchKind(page.url, section.heading.label),
-        summary: summary(cleanText(section.body.join("\n")) || pageSummary),
-        keywords: action
+        summary: namedType ? `Exact TypeScript definition for ${section.heading.label}.`
+          : summary((canonical && card.summary) || cleanText(section.body.join("\n")) || pageSummary),
+        keywords: namedType ? [section.heading.label] : action
           ? [
               action.name,
               action.layer,
@@ -235,23 +240,25 @@ export async function buildDocSearchIndex() {
               ...(card?.wraps ?? []),
               ...(card?.editableVia ?? []),
               ...(card?.intents ?? []),
-              ...(card?.options.flatMap(option => [option.name, option.type]) ?? []),
-              ...(card ? [card.signature] : []),
-              ...technicalKeywords(section.body.join("\n")),
+              ...(card?.options.map(option => option.name) ?? []),
+              ...technicalKeywords(section.body.join("\n")).slice(0, 48),
               ...chartKeywords(chartMetadata.get(`${page.url}#${section.heading.id}`)),
               ...aliases(page.url)
             ]
           : [
               page.title,
               section.heading.label,
-              ...technicalKeywords(section.body.join("\n")),
+              ...technicalKeywords(section.body.join("\n")).slice(0, page.url === "/reference/types/" ? 12 : 96),
               ...chartKeywords(chartMetadata.get(`${page.url}#${section.heading.id}`)),
               ...aliases(page.url)
             ]
       });
     }
   }
-  return entries;
+  return entries.map(entry => ({
+    ...entry,
+    keywords: [...new Set(entry.keywords)].slice(0, entry.actionName ? 64 : 60)
+  }));
 }
 
 export async function generateDocSearchIndex({ check = false } = {}) {

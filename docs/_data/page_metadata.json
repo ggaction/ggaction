@@ -566,11 +566,11 @@
   },
   "/reference/actions/advanced/": {
     "title": "Advanced Chart Actions",
-    "description": "Author explicit semantic resources and control individual Cartesian axis and grid components."
+    "description": "Assign atomic channels and manage reusable final-item selections."
   },
   "/reference/actions/extension/": {
     "title": "Extension Actions",
-    "description": "Register wrapped extension actions and use low-level semantic, graphic, and scale primitives."
+    "description": "Edit semantic and concrete graphics through extension primitives."
   },
   "/reference/runtime/": {
     "title": "Program and Rendering Functions",

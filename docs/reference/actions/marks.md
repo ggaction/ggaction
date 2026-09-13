@@ -6,9 +6,39 @@ description: Create, edit, jitter, and remove semantic chart marks.
 
 # Mark Actions
 
-These are direct immutable `ChartProgram` actions. Each accepts one option object and returns a new program.
+Each declared action has an exact signature and its own stable link. Option tables are generated from types; behavior prose names the owning workflow and its constraints. API layer and H0–H4 authoring role are independent classifications.
 
 ## `createPointMark`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+```typescript
+createPointMark(options?: StrokeStyleDetails & { id?: string; data?: string; shape?: PointShape; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
+```
+
+Named option contracts: [`StrokeStyleDetails`](./../types.md#type-strokestyledetails) · [`PointShape`](./../types.md#type-pointshape).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
+| `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
+| `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `id` | Optional / branch-dependent | `string \| undefined` |
+| `data` | Optional / branch-dependent | `string \| undefined` |
+| `shape` | Optional / branch-dependent | `PointShape \| undefined` |
+| `fill` | Optional / branch-dependent | `string \| undefined` |
+| `opacity` | Optional / branch-dependent | `number \| undefined` |
+| `stroke` | Optional / branch-dependent | `FilledMarkStroke \| undefined` |
+| `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
 createPointMark({ id?, data?, shape?, fill?, opacity?, stroke?, strokeWidth? } = {})
@@ -17,16 +47,37 @@ createPointMark({ id?, data?, shape?, fill?, opacity?, stroke?, strokeWidth? } =
 Create a semantic point mark with one of 12 equal-area shape realizations.
 `stroke: false` disables the outline and its width at creation. [Marks](../../api/marks.md)
 
-## `editPointMark`
-
-```javascript
-editPointMark({ target?, shape?, fill?, opacity?, stroke?, strokeWidth? })
-```
-
-Change constant point shape, fill, opacity, or outline appearance and rematerialize its concrete items.
-`stroke: false` disables the outline and its width. [Marks](../../api/marks.md)
 
 ## `createTickMark`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+```typescript
+createTickMark(options?: StrokeStyleDetails & { id?: string; data?: string; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }): ChartProgram;
+```
+
+Named option contracts: [`StrokeStyleDetails`](./../types.md#type-strokestyledetails).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
+| `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
+| `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `id` | Optional / branch-dependent | `string \| undefined` |
+| `data` | Optional / branch-dependent | `string \| undefined` |
+| `length` | Optional / branch-dependent | `number \| undefined` |
+| `stroke` | Optional / branch-dependent | `string \| undefined` |
+| `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
+| `opacity` | Optional / branch-dependent | `number \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
 createTickMark({ id?, data?, length?, stroke?, strokeWidth?, opacity? } = {})
@@ -35,189 +86,47 @@ createTickMark({ id?, data?, length?, stroke?, strokeWidth?, opacity? } = {})
 Create a centered line glyph that materializes after both x and y are complete.
 Length defaults to `14`; stroke width defaults to `2`. [Marks](../../api/marks.md)
 
-## `editTickMark`
-
-```javascript
-editTickMark({ target?, length?, stroke?, strokeWidth?, opacity? })
-```
-
-Partially edit Tick length or constant line appearance while preserving data,
-position, and other assignments. [Marks](../../api/marks.md)
-
-## `jitterPoints`
-
-```javascript
-jitterPoints({ target?, channel, maxOffset, seed?, key? })
-```
-
-Assign deterministic bounded graphical jitter to one Cartesian point mark. Use
-exactly one of `maxOffset.pixels` or `maxOffset.band`; calling the action again
-replaces the previous policy from the semantic base positions. [Point marks](../../api/marks/point.md)
-
-## `removeJitter`
-
-```javascript
-removeJitter({ target? } = {})
-```
-
-Remove the target point mark's jitter assignment and restore positions derived
-directly from its semantic encodings. [Point marks](../../api/marks/point.md)
-
-## `packPoints`
-
-```javascript
-packPoints({ target?, channel, maxOffset?, padding?, key?, overflow? })
-```
-
-Deterministically displace Point glyphs only on a categorical x or y axis to
-avoid overlap while preserving measure coordinates. The default overflow policy
-fails atomically; `"overlap"` records unresolved best-effort placements.
-[Point marks](../../api/marks/point.md)
-
-## `removePointPacking`
-
-```javascript
-removePointPacking({ target? } = {})
-```
-
-Remove stored point packing and rematerialize the current semantic scale
-positions. [Point marks](../../api/marks/point.md)
-
-## `removeMark`
-
-```javascript
-removeMark({ target? })
-```
-
-Remove one stable mark owner and its owned state while preserving source data
-and independently shared resources. [Marks](../../api/marks.md)
-
-## `createLineMark`
-
-```javascript
-createLineMark({ id?, data?, stroke?, strokeWidth?, opacity?, curve?, closed? } = {})
-```
-
-Create a semantic line mark and empty path collection. Curve defaults to
-`"linear"`; explicit curve and `strokeWidth` values are retained during
-rematerialization. A compatible layered source can provide data, positions,
-shared scales, and a grain-preserving aggregate such as `mean`; bar-only bin,
-stack, and offset policies are not inherited. `closed: true` closes each Polar
-series as a radar path.
-[Marks](../../api/marks.md)
-
-## `editLineMark`
-
-```javascript
-editLineMark({ target?, stroke?, strokeWidth?, opacity?, curve?, closed? })
-```
-
-Edit line appearance and rematerialize concrete path commands without changing
-semantic encodings. [Marks](../../api/marks.md)
-
-## `createBarMark`
-
-```javascript
-createBarMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth? } = {})
-```
-
-Create a semantic bar mark and empty rect collection.
-`stroke: false` disables the outline and its width at creation. [Marks](../../api/marks.md)
-
-## `editBarMark`
-
-```javascript
-editBarMark({ target?, fill?, opacity?, stroke?, strokeWidth? })
-```
-
-Edit whole-bar appearance and rematerialize every concrete rectangle.
-`stroke: false` removes the visible outline; constant fill conflicts with a
-field-driven color encoding. [Marks](../../api/marks.md)
-
-## `createAreaMark`
-
-```javascript
-createAreaMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth?, curve?, missing? } = {})
-```
-
-Create a semantic area mark and empty path collection. Fixed fill defaults to
-`"#4c78a8"`; opacity defaults to `0.2`. Optional outlines default to width `1`.
-Curve defaults to `"linear"` and accepts the shared eight-value vocabulary.
-[Marks](../../api/marks.md)
-
-Area `missing` defaults to `"error"`. `"break"` splits null/undefined measured endpoints into closed segments with at least two samples; independent positions and nonfinite values remain strict. Density/Horizon missing policies are not reinterpreted.
-
-## `editAreaMark`
-
-```javascript
-editAreaMark({ target?, fill?, opacity?, stroke?, strokeWidth?, curve?, missing? })
-```
-
-Edit constant area appearance. `stroke: false` removes an existing outline.
-[Marks](../../api/marks.md)
-
-## `createArcMark`
-
-```javascript
-createArcMark({ id?, data?, innerRadius?, padAngle?, fill?, opacity?, stroke?, strokeWidth? } = {})
-```
-
-Create a semantic arc mark and empty closed-path collection. Direct
-quantitative theta, category counts, or category-weighted sums materialize
-proportional pie or donut sectors; categorical theta plus radius materializes
-radial sectors. [Marks](../../api/marks/line-area.md#arc-marks)
-
-## `editArcMark`
-
-```javascript
-editArcMark({ target?, innerRadius?, padAngle?, fill?, opacity?, stroke?, strokeWidth? })
-```
-
-Edit arc geometry or appearance and rematerialize complete sector paths.
-`stroke: false` disables the outline and its width.
-[Marks](../../api/marks/line-area.md#arc-marks)
-
-## `createRuleMark`
-
-```javascript
-createRuleMark({ id?, data?, stroke?, strokeWidth?, strokeDash?, opacity? } = {})
-```
-
-Create a semantic rule mark and empty line collection. The first omitted ID is
-`"rule"`; data defaults to current data. [Marks](../../api/marks.md)
-
-## `editRuleMark`
-
-```javascript
-editRuleMark({ target?, stroke?, strokeWidth?, strokeDash?, opacity? })
-```
-
-Edit constant Rule appearance through the four existing encoding owners. At least
-one style is required; field appearance conflicts with scalar editing. Creation
-accepts the same styles. [Rule marks](../../api/marks/rule.md)
-
-## `createRectMark`
-
-```javascript
-createRectMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth? } = {})
-```
-
-Create a semantic rect mark and empty rect collection. Two discrete x/y bands
-or complete x/x2 and y/y2 endpoint pairs materialize observed cells. Rects do
-not infer bar aggregation, baseline, stack, or width semantics.
-[Rect marks](../../api/marks/rect.md)
-
-## `editRectMark`
-
-```javascript
-editRectMark({ target?, fill?, opacity?, stroke?, strokeWidth? })
-```
-
-Edit rect appearance and rematerialize complete cells. Constant fill conflicts
-with field-driven color. `stroke: false` disables the outline.
-[Rect marks](../../api/marks/rect.md)
 
 ## `createReferenceLine`
+
+**API layer:** user-facing. **Authoring roles:** H1, H2.
+
+```typescript
+createReferenceLine(options: CreateReferenceLineOptions): ChartProgram;
+```
+
+Named option contracts: [`CreateReferenceLineOptions`](./../types.md#type-createreferencelineoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Optional / branch-dependent | `string \| undefined` |
+| `source` | Optional / branch-dependent | `string \| undefined` |
+| `x` | Optional / branch-dependent | `unknown` |
+| `y` | Optional / branch-dependent | `unknown` |
+| `space` | Optional / branch-dependent | `"data" \| "plot" \| undefined` |
+| `data` | Optional / branch-dependent | `string \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `temporalUnit` | Optional / branch-dependent | `TemporalInputUnit \| undefined` |
+| `stroke` | Optional / branch-dependent | `string \| undefined` |
+| `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
+| `strokeDash` | Optional / branch-dependent | `DashPattern \| DashStyle \| undefined` |
+| `opacity` | Optional / branch-dependent | `number \| undefined` |
+| `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
+| `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
+| `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `axis` | Optional / branch-dependent | `"x" \| "y"` |
+| `population` | Optional / branch-dependent | `"boundData" \| "visibleItems" \| undefined` |
+| `field` | Optional / branch-dependent | `string \| undefined` |
+| `statistic` | Optional / branch-dependent | `ReferenceStatistic` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
 createReferenceLine({ id?, x?, y?, space?, source?, data?, coordinate?, temporalUnit?, stroke?, strokeWidth?, strokeDash?, opacity? })
@@ -240,7 +149,48 @@ Source binding is selected at creation, so rebinding or removing the source does
 The shared scale still drives both marks. Add text with `createMarkLabels({ source: id, value: "Target" })`.
 [Reference marks](../../api/marks/rule.md#reference-lines-and-bands)
 
+
 ## `createReferenceBand`
+
+**API layer:** user-facing. **Authoring roles:** H1, H2.
+
+```typescript
+createReferenceBand(options: CreateReferenceBandOptions): ChartProgram;
+```
+
+Named option contracts: [`CreateReferenceBandOptions`](./../types.md#type-createreferencebandoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Optional / branch-dependent | `string \| undefined` |
+| `source` | Optional / branch-dependent | `string \| undefined` |
+| `x` | Optional / branch-dependent | `readonly [unknown, unknown] \| readonly [number, number] \| undefined` |
+| `y` | Optional / branch-dependent | `readonly [unknown, unknown] \| readonly [number, number] \| undefined` |
+| `space` | Optional / branch-dependent | `"data" \| "plot" \| undefined` |
+| `data` | Optional / branch-dependent | `string \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+| `temporalUnit` | Optional / branch-dependent | `TemporalInputUnit \| undefined` |
+| `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
+| `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
+| `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `cornerRadius` | Optional / branch-dependent | `number \| undefined` |
+| `fill` | Optional / branch-dependent | `string \| undefined` |
+| `opacity` | Optional / branch-dependent | `number \| undefined` |
+| `stroke` | Optional / branch-dependent | `string \| false \| undefined` |
+| `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
+| `axis` | Optional / branch-dependent | `"x" \| "y"` |
+| `population` | Optional / branch-dependent | `"boundData" \| "visibleItems" \| undefined` |
+| `field` | Optional / branch-dependent | `string \| undefined` |
+| `statistics` | Optional / branch-dependent | `readonly [ReferenceStatistic, ReferenceStatistic]` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
 createReferenceBand({ id?, x?, y?, space?, source?, data?, coordinate?, temporalUnit?, fill?, opacity?, stroke?, strokeWidth? })
@@ -256,7 +206,49 @@ To set `strokeWidth`, also provide a stroke color. Positions, appearance, scale,
 is needed. Both reference facades are available in the full entry point.
 [Reference marks](../../api/marks/rule.md#reference-lines-and-bands)
 
+
 ## `createMarkLabels`
+
+**API layer:** user-facing. **Authoring roles:** H1, H2.
+
+```typescript
+createMarkLabels(options?: CreateMarkLabelsOptions): ChartProgram;
+```
+
+Named option contracts: [`CreateMarkLabelsOptions`](./../types.md#type-createmarklabelsoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Optional / branch-dependent | `string \| undefined` |
+| `source` | Optional / branch-dependent | `string \| undefined` |
+| `fill` | Optional / branch-dependent | `string \| undefined` |
+| `opacity` | Optional / branch-dependent | `number \| undefined` |
+| `fontSize` | Optional / branch-dependent | `number \| undefined` |
+| `fontFamily` | Optional / branch-dependent | `string \| undefined` |
+| `fontWeight` | Optional / branch-dependent | `string \| number \| undefined` |
+| `align` | Optional / branch-dependent | `"center" \| "end" \| "left" \| "right" \| "start" \| undefined` |
+| `baseline` | Optional / branch-dependent | `"alphabetic" \| "bottom" \| "hanging" \| "ideographic" \| "middle" \| "top" \| undefined` |
+| `rotation` | Optional / branch-dependent | `RotationInput \| undefined` |
+| `dx` | Optional / branch-dependent | `number \| undefined` |
+| `dy` | Optional / branch-dependent | `number \| undefined` |
+| `layout` | Optional / branch-dependent | `false \| Omit<LabelLayoutOptions, "target"> \| undefined` |
+| `placement` | Optional / branch-dependent | `MarkLabelPlacement \| undefined` |
+| `format` | Optional / branch-dependent | `ValueFormat \| undefined` |
+| `field` | Optional / branch-dependent | `string \| undefined` |
+| `value` | Optional / branch-dependent | `unknown` |
+| `content` | Optional / branch-dependent | `"category" \| "share" \| "value" \| undefined` |
+| `normalizeBy` | Optional / branch-dependent | `"category" \| "source" \| undefined` |
+| `select` | Optional / branch-dependent | `MarkSelector \| undefined` |
+| `selection` | Optional / branch-dependent | `string \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
 createMarkLabels({ id?, source?, field?, value?, content?, normalizeBy?, format?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy?, layout?, placement?, select?, selection? } = {})
@@ -274,7 +266,32 @@ keeps its percentage of the complete source.
 `placement` applies the semantic boundary policy described below during creation.
 [Text marks](../../api/marks/text.md)
 
+
 ## `editMarkLabelSelection`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+```typescript
+editMarkLabelSelection(options: EditMarkLabelSelectionOptions): ChartProgram;
+```
+
+Named option contracts: [`EditMarkLabelSelectionOptions`](./../types.md#type-editmarklabelselectionoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Required | `string` |
+| `select` | Optional / branch-dependent | `MarkSelector \| undefined` |
+| `selection` | Optional / branch-dependent | `string \| undefined` |
+| `all` | Optional / branch-dependent | `true \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
 editMarkLabelSelection({ target, select })
@@ -289,7 +306,30 @@ replay named labels, while selection removal is rejected until dependent labels 
 rebound with this action or removed.
 [Text marks](../../api/marks/text.md#editmarklabelselectionoptions)
 
+
 ## `editMarkLabelPlacement`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+```typescript
+editMarkLabelPlacement(options: EditMarkLabelPlacementOptions): ChartProgram;
+```
+
+Named option contracts: [`EditMarkLabelPlacementOptions`](./../types.md#type-editmarklabelplacementoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Required | `string` |
+| `placement` | Required | `"auto" \| MarkLabelPlacement` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
 editMarkLabelPlacement({ target, placement: { anchor, gap?, overflow?, leader? } })
@@ -308,7 +348,30 @@ is explicit.
 Pass `"auto"` to restore the legacy source anchor and remove the owned placement leader.
 [Text marks](../../api/marks/text.md#editmarklabelplacementoptions)
 
+
 ## `removeMarkLabels`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+```typescript
+removeMarkLabels(options: RemoveMarkLabelsOptions): ChartProgram;
+```
+
+Named option contracts: [`RemoveMarkLabelsOptions`](./../types.md#type-removemarklabelsoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| undefined` |
+| `source` | Optional / branch-dependent | `string \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
 removeMarkLabels({ target })
@@ -323,7 +386,48 @@ and theme edits do not recreate them. Independent Text and annotations continue
 to use `removeMark`.
 [Text marks](../../api/marks/text.md#removemarklabelsoptions)
 
+
 ## `createAnnotation`
+
+**API layer:** user-facing. **Authoring roles:** H1, H2.
+
+```typescript
+createAnnotation(options: CreateAnnotationOptions): ChartProgram;
+```
+
+Named option contracts: [`CreateAnnotationOptions`](./../types.md#type-createannotationoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `fill` | Optional / branch-dependent | `string \| undefined` |
+| `opacity` | Optional / branch-dependent | `number \| undefined` |
+| `fontSize` | Optional / branch-dependent | `number \| undefined` |
+| `fontFamily` | Optional / branch-dependent | `string \| undefined` |
+| `fontWeight` | Optional / branch-dependent | `string \| number \| undefined` |
+| `align` | Optional / branch-dependent | `"center" \| "end" \| "left" \| "right" \| "start" \| undefined` |
+| `baseline` | Optional / branch-dependent | `"alphabetic" \| "bottom" \| "hanging" \| "ideographic" \| "middle" \| "top" \| undefined` |
+| `rotation` | Optional / branch-dependent | `RotationInput \| undefined` |
+| `dx` | Optional / branch-dependent | `number \| undefined` |
+| `dy` | Optional / branch-dependent | `number \| undefined` |
+| `id` | Optional / branch-dependent | `string \| undefined` |
+| `text` | Required | `unknown` |
+| `format` | Optional / branch-dependent | `ValueFormat \| undefined` |
+| `layout` | Optional / branch-dependent | `false \| Omit<LabelLayoutOptions, "target"> \| undefined` |
+| `x` | Optional / branch-dependent | `unknown` |
+| `y` | Optional / branch-dependent | `unknown` |
+| `space` | Optional / branch-dependent | `"data" \| "plot" \| undefined` |
+| `source` | Optional / branch-dependent | `string \| undefined` |
+| `data` | Optional / branch-dependent | `string \| undefined` |
+| `coordinate` | Optional / branch-dependent | `string \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
 createAnnotation({ id?, text, format?, source?, x?, y?, space?, data?, coordinate?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy?, layout? })
@@ -346,7 +450,42 @@ Omit `layout` or pass `false` to retain the exact anchor. A layout object accept
 `editTextMark`, `layoutLabels`, `removeLabelLayout`, `editScale`, and `removeMark`.
 [Text marks](../../api/marks/text.md#createannotationoptions)
 
+
 ## `createTextMark`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+```typescript
+createTextMark(options?: TextMarkOptions): ChartProgram;
+```
+
+Named option contracts: [`TextMarkOptions`](./../types.md#type-textmarkoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Optional / branch-dependent | `string \| undefined` |
+| `data` | Optional / branch-dependent | `string \| undefined` |
+| `source` | Optional / branch-dependent | `string \| undefined` |
+| `text` | Optional / branch-dependent | `unknown` |
+| `fill` | Optional / branch-dependent | `string \| undefined` |
+| `opacity` | Optional / branch-dependent | `number \| undefined` |
+| `fontSize` | Optional / branch-dependent | `number \| undefined` |
+| `fontFamily` | Optional / branch-dependent | `string \| undefined` |
+| `fontWeight` | Optional / branch-dependent | `string \| number \| undefined` |
+| `align` | Optional / branch-dependent | `"center" \| "end" \| "left" \| "right" \| "start" \| undefined` |
+| `baseline` | Optional / branch-dependent | `"alphabetic" \| "bottom" \| "hanging" \| "ideographic" \| "middle" \| "top" \| undefined` |
+| `rotation` | Optional / branch-dependent | `RotationInput \| undefined` |
+| `dx` | Optional / branch-dependent | `number \| undefined` |
+| `dy` | Optional / branch-dependent | `number \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
 createTextMark({ id?, data?, source?, text?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy? } = {})
@@ -366,7 +505,39 @@ radians. `createMarkLabels`, `createAnnotation`, and `editTextMark` share this
 input contract.
 [Text marks](../../api/marks/text.md)
 
+
 ## `editTextMark`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+```typescript
+editTextMark(options: EditTextMarkOptions): ChartProgram;
+```
+
+Named option contracts: [`EditTextMarkOptions`](./../types.md#type-edittextmarkoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| undefined` |
+| `fill` | Optional / branch-dependent | `string \| undefined` |
+| `opacity` | Optional / branch-dependent | `number \| undefined` |
+| `fontSize` | Optional / branch-dependent | `number \| undefined` |
+| `fontFamily` | Optional / branch-dependent | `string \| undefined` |
+| `fontWeight` | Optional / branch-dependent | `string \| number \| undefined` |
+| `align` | Optional / branch-dependent | `"center" \| "end" \| "left" \| "right" \| "start" \| undefined` |
+| `baseline` | Optional / branch-dependent | `"alphabetic" \| "bottom" \| "hanging" \| "ideographic" \| "middle" \| "top" \| undefined` |
+| `rotation` | Optional / branch-dependent | `RotationInput \| undefined` |
+| `dx` | Optional / branch-dependent | `number \| undefined` |
+| `dy` | Optional / branch-dependent | `number \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
 editTextMark({ target?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy? })
@@ -375,7 +546,34 @@ editTextMark({ target?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, al
 Edit text typography and graphical offsets without changing its semantic
 source or position. [Text marks](../../api/marks/text.md)
 
+
 ## `layoutLabels`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+```typescript
+layoutLabels(options?: LabelLayoutOptions): ChartProgram;
+```
+
+Named option contracts: [`LabelLayoutOptions`](./../types.md#type-labellayoutoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| undefined` |
+| `axis` | Optional / branch-dependent | `LabelLayoutAxis \| undefined` |
+| `padding` | Optional / branch-dependent | `number \| undefined` |
+| `maxDisplacement` | Optional / branch-dependent | `number \| undefined` |
+| `bounds` | Optional / branch-dependent | `LabelLayoutBounds \| undefined` |
+| `leader` | Optional / branch-dependent | `false \| LabelLeaderOptions \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
 layoutLabels({ target?, axis?, padding?, maxDisplacement?, bounds?, leader? } = {})
@@ -387,7 +585,29 @@ bounds when possible. Optional leaders connect displaced labels to their
 stored source anchors. Impossible layouts retain a stable best effort and a
 warning summary. [Text marks](../../api/marks/text.md)
 
+
 ## `removeLabelLayout`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+```typescript
+removeLabelLayout(options?: RemoveLabelLayoutOptions): ChartProgram;
+```
+
+Named option contracts: [`RemoveLabelLayoutOptions`](./../types.md#type-removelabellayoutoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
 removeLabelLayout({ target? } = {})
@@ -414,6 +634,744 @@ Timestamp means Unix milliseconds; year means UTC January 1. Omission preserves
 the existing parser. Same-binding reassignment retains an explicit unit; a new
 binding clears it. Domains and tick values are already normalized timestamps.
 [Temporal input](../../api/position/temporal.md)
+
+
+## `editPointMark`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+```typescript
+editPointMark(options: StrokeStyleDetails & { target?: string; shape?: PointShape; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
+```
+
+Named option contracts: [`StrokeStyleDetails`](./../types.md#type-strokestyledetails) · [`PointShape`](./../types.md#type-pointshape).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
+| `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
+| `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `target` | Optional / branch-dependent | `string \| undefined` |
+| `shape` | Optional / branch-dependent | `PointShape \| undefined` |
+| `fill` | Optional / branch-dependent | `string \| undefined` |
+| `opacity` | Optional / branch-dependent | `number \| undefined` |
+| `stroke` | Optional / branch-dependent | `FilledMarkStroke \| undefined` |
+| `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editPointMark({ target?, shape?, fill?, opacity?, stroke?, strokeWidth? })
+```
+
+Change constant point shape, fill, opacity, or outline appearance and rematerialize its concrete items.
+`stroke: false` disables the outline and its width. [Marks](../../api/marks.md)
+
+
+## `editTickMark`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+```typescript
+editTickMark(options: StrokeStyleDetails & { target?: string; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }): ChartProgram;
+```
+
+Named option contracts: [`StrokeStyleDetails`](./../types.md#type-strokestyledetails).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
+| `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
+| `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `target` | Optional / branch-dependent | `string \| undefined` |
+| `length` | Optional / branch-dependent | `number \| undefined` |
+| `stroke` | Optional / branch-dependent | `string \| undefined` |
+| `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
+| `opacity` | Optional / branch-dependent | `number \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editTickMark({ target?, length?, stroke?, strokeWidth?, opacity? })
+```
+
+Partially edit Tick length or constant line appearance while preserving data,
+position, and other assignments. [Marks](../../api/marks.md)
+
+
+## `jitterPoints`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+```typescript
+jitterPoints(options: JitterPointsOptions): ChartProgram;
+```
+
+Named option contracts: [`JitterPointsOptions`](./../types.md#type-jitterpointsoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| undefined` |
+| `channel` | Required | `"x" \| "y"` |
+| `maxOffset` | Required | `JitterMaxOffset` |
+| `seed` | Optional / branch-dependent | `string \| number \| undefined` |
+| `key` | Optional / branch-dependent | `string \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+jitterPoints({ target?, channel, maxOffset, seed?, key? })
+```
+
+Assign deterministic bounded graphical jitter to one Cartesian point mark. Use
+exactly one of `maxOffset.pixels` or `maxOffset.band`; calling the action again
+replaces the previous policy from the semantic base positions. [Point marks](../../api/marks/point.md)
+
+
+## `removeJitter`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+```typescript
+removeJitter(options?: RemoveJitterOptions): ChartProgram;
+```
+
+Named option contracts: [`RemoveJitterOptions`](./../types.md#type-removejitteroptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+removeJitter({ target? } = {})
+```
+
+Remove the target point mark's jitter assignment and restore positions derived
+directly from its semantic encodings. [Point marks](../../api/marks/point.md)
+
+
+## `packPoints`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+```typescript
+packPoints(options: PackPointsOptions): ChartProgram;
+```
+
+Named option contracts: [`PackPointsOptions`](./../types.md#type-packpointsoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| undefined` |
+| `channel` | Required | `"x" \| "y"` |
+| `maxOffset` | Optional / branch-dependent | `PointPackingMaxOffset \| undefined` |
+| `padding` | Optional / branch-dependent | `number \| undefined` |
+| `key` | Optional / branch-dependent | `string \| undefined` |
+| `overflow` | Optional / branch-dependent | `"error" \| "overlap" \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+packPoints({ target?, channel, maxOffset?, padding?, key?, overflow? })
+```
+
+Deterministically displace Point glyphs only on a categorical x or y axis to
+avoid overlap while preserving measure coordinates. The default overflow policy
+fails atomically; `"overlap"` records unresolved best-effort placements.
+[Point marks](../../api/marks/point.md)
+
+
+## `removePointPacking`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+```typescript
+removePointPacking(options?: RemovePointPackingOptions): ChartProgram;
+```
+
+Named option contracts: [`RemovePointPackingOptions`](./../types.md#type-removepointpackingoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+removePointPacking({ target? } = {})
+```
+
+Remove stored point packing and rematerialize the current semantic scale
+positions. [Point marks](../../api/marks/point.md)
+
+
+## `removeMark`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+```typescript
+removeMark(options?: RemoveMarkOptions): ChartProgram;
+```
+
+Named option contracts: [`RemoveMarkOptions`](./../types.md#type-removemarkoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+removeMark({ target? })
+```
+
+Remove one stable mark owner and its owned state while preserving source data
+and independently shared resources. [Marks](../../api/marks.md)
+
+
+## `createLineMark`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+```typescript
+createLineMark(options?: StrokeStyleDetails & { id?: string; data?: string; strokeWidth?: number; curve?: CurveInterpolation; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
+```
+
+Named option contracts: [`StrokeStyleDetails`](./../types.md#type-strokestyledetails) · [`CurveInterpolation`](./../types.md#type-curveinterpolation).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
+| `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
+| `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `id` | Optional / branch-dependent | `string \| undefined` |
+| `data` | Optional / branch-dependent | `string \| undefined` |
+| `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
+| `curve` | Optional / branch-dependent | `CurveInterpolation \| undefined` |
+| `stroke` | Optional / branch-dependent | `string \| undefined` |
+| `opacity` | Optional / branch-dependent | `number \| undefined` |
+| `closed` | Optional / branch-dependent | `boolean \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createLineMark({ id?, data?, stroke?, strokeWidth?, opacity?, curve?, closed? } = {})
+```
+
+Create a semantic line mark and empty path collection. Curve defaults to
+`"linear"`; explicit curve and `strokeWidth` values are retained during
+rematerialization. A compatible layered source can provide data, positions,
+shared scales, and a grain-preserving aggregate such as `mean`; bar-only bin,
+stack, and offset policies are not inherited. `closed: true` closes each Polar
+series as a radar path.
+[Marks](../../api/marks.md)
+
+
+## `editLineMark`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+```typescript
+editLineMark(options: StrokeStyleDetails & { target?: string; strokeWidth?: number; curve?: CurveInterpolation; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
+```
+
+Named option contracts: [`StrokeStyleDetails`](./../types.md#type-strokestyledetails) · [`CurveInterpolation`](./../types.md#type-curveinterpolation).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
+| `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
+| `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `target` | Optional / branch-dependent | `string \| undefined` |
+| `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
+| `curve` | Optional / branch-dependent | `CurveInterpolation \| undefined` |
+| `stroke` | Optional / branch-dependent | `string \| undefined` |
+| `opacity` | Optional / branch-dependent | `number \| undefined` |
+| `closed` | Optional / branch-dependent | `boolean \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editLineMark({ target?, stroke?, strokeWidth?, opacity?, curve?, closed? })
+```
+
+Edit line appearance and rematerialize concrete path commands without changing
+semantic encodings. [Marks](../../api/marks.md)
+
+
+## `createBarMark`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+```typescript
+createBarMark(options?: RectStyleDetails & { id?: string; data?: string; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
+```
+
+Named option contracts: [`RectStyleDetails`](./../types.md#type-rectstyledetails).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
+| `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
+| `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `cornerRadius` | Optional / branch-dependent | `number \| undefined` |
+| `id` | Optional / branch-dependent | `string \| undefined` |
+| `data` | Optional / branch-dependent | `string \| undefined` |
+| `fill` | Optional / branch-dependent | `string \| undefined` |
+| `opacity` | Optional / branch-dependent | `number \| undefined` |
+| `stroke` | Optional / branch-dependent | `FilledMarkStroke \| undefined` |
+| `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createBarMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth? } = {})
+```
+
+Create a semantic bar mark and empty rect collection.
+`stroke: false` disables the outline and its width at creation. [Marks](../../api/marks.md)
+
+
+## `editBarMark`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+```typescript
+editBarMark(options: RectStyleDetails & { target?: string; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
+```
+
+Named option contracts: [`RectStyleDetails`](./../types.md#type-rectstyledetails).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
+| `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
+| `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `cornerRadius` | Optional / branch-dependent | `number \| undefined` |
+| `target` | Optional / branch-dependent | `string \| undefined` |
+| `fill` | Optional / branch-dependent | `string \| undefined` |
+| `opacity` | Optional / branch-dependent | `number \| undefined` |
+| `stroke` | Optional / branch-dependent | `FilledMarkStroke \| undefined` |
+| `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editBarMark({ target?, fill?, opacity?, stroke?, strokeWidth? })
+```
+
+Edit whole-bar appearance and rematerialize every concrete rectangle.
+`stroke: false` removes the visible outline; constant fill conflicts with a
+field-driven color encoding. [Marks](../../api/marks.md)
+
+
+## `createAreaMark`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+```typescript
+createAreaMark(options?: StrokeStyleDetails & { id?: string; data?: string; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }): ChartProgram;
+```
+
+Named option contracts: [`StrokeStyleDetails`](./../types.md#type-strokestyledetails) · [`CurveInterpolation`](./../types.md#type-curveinterpolation).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
+| `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
+| `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `id` | Optional / branch-dependent | `string \| undefined` |
+| `data` | Optional / branch-dependent | `string \| undefined` |
+| `fill` | Optional / branch-dependent | `string \| undefined` |
+| `opacity` | Optional / branch-dependent | `number \| undefined` |
+| `stroke` | Optional / branch-dependent | `string \| undefined` |
+| `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
+| `curve` | Optional / branch-dependent | `CurveInterpolation \| undefined` |
+| `missing` | Optional / branch-dependent | `"break" \| "error" \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createAreaMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth?, curve?, missing? } = {})
+```
+
+Create a semantic area mark and empty path collection. Fixed fill defaults to
+`"#4c78a8"`; opacity defaults to `0.2`. Optional outlines default to width `1`.
+Curve defaults to `"linear"` and accepts the shared eight-value vocabulary.
+[Marks](../../api/marks.md)
+
+Area `missing` defaults to `"error"`. `"break"` splits null/undefined measured endpoints into closed segments with at least two samples; independent positions and nonfinite values remain strict. Density/Horizon missing policies are not reinterpreted.
+
+
+## `createRuleMark`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+```typescript
+createRuleMark(options?: { id?: string; data?: string } & RuleStyleOptions): ChartProgram;
+```
+
+Named option contracts: [`RuleStyleOptions`](./../types.md#type-rulestyleoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Optional / branch-dependent | `string \| undefined` |
+| `data` | Optional / branch-dependent | `string \| undefined` |
+| `stroke` | Optional / branch-dependent | `string \| undefined` |
+| `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
+| `strokeDash` | Optional / branch-dependent | `DashPattern \| DashStyle \| undefined` |
+| `opacity` | Optional / branch-dependent | `number \| undefined` |
+| `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
+| `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
+| `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createRuleMark({ id?, data?, stroke?, strokeWidth?, strokeDash?, opacity? } = {})
+```
+
+Create a semantic rule mark and empty line collection. The first omitted ID is
+`"rule"`; data defaults to current data. [Marks](../../api/marks.md)
+
+
+## `editRuleMark`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+```typescript
+editRuleMark(options: { target?: string } & RuleStyleOptions): ChartProgram;
+```
+
+Named option contracts: [`RuleStyleOptions`](./../types.md#type-rulestyleoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| undefined` |
+| `stroke` | Optional / branch-dependent | `string \| undefined` |
+| `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
+| `strokeDash` | Optional / branch-dependent | `DashPattern \| DashStyle \| undefined` |
+| `opacity` | Optional / branch-dependent | `number \| undefined` |
+| `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
+| `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
+| `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editRuleMark({ target?, stroke?, strokeWidth?, strokeDash?, opacity? })
+```
+
+Edit constant Rule appearance through the four existing encoding owners. At least
+one style is required; field appearance conflicts with scalar editing. Creation
+accepts the same styles. [Rule marks](../../api/marks/rule.md)
+
+
+## `editAreaMark`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+```typescript
+editAreaMark(options: StrokeStyleDetails & { target?: string; fill?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }): ChartProgram;
+```
+
+Named option contracts: [`StrokeStyleDetails`](./../types.md#type-strokestyledetails) · [`CurveInterpolation`](./../types.md#type-curveinterpolation).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
+| `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
+| `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `target` | Optional / branch-dependent | `string \| undefined` |
+| `fill` | Optional / branch-dependent | `string \| undefined` |
+| `opacity` | Optional / branch-dependent | `number \| undefined` |
+| `stroke` | Optional / branch-dependent | `string \| false \| undefined` |
+| `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
+| `curve` | Optional / branch-dependent | `CurveInterpolation \| undefined` |
+| `missing` | Optional / branch-dependent | `"break" \| "error" \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editAreaMark({ target?, fill?, opacity?, stroke?, strokeWidth?, curve?, missing? })
+```
+
+Edit constant area appearance. `stroke: false` removes an existing outline.
+[Marks](../../api/marks.md)
+
+
+## `createArcMark`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+```typescript
+createArcMark(options?: StrokeStyleDetails & { id?: string; data?: string; innerRadius?: number; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
+```
+
+Named option contracts: [`StrokeStyleDetails`](./../types.md#type-strokestyledetails).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
+| `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
+| `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `id` | Optional / branch-dependent | `string \| undefined` |
+| `data` | Optional / branch-dependent | `string \| undefined` |
+| `innerRadius` | Optional / branch-dependent | `number \| undefined` |
+| `padAngle` | Optional / branch-dependent | `number \| undefined` |
+| `fill` | Optional / branch-dependent | `string \| undefined` |
+| `opacity` | Optional / branch-dependent | `number \| undefined` |
+| `stroke` | Optional / branch-dependent | `string \| undefined` |
+| `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createArcMark({ id?, data?, innerRadius?, padAngle?, fill?, opacity?, stroke?, strokeWidth? } = {})
+```
+
+Create a semantic arc mark and empty closed-path collection. Direct
+quantitative theta, category counts, or category-weighted sums materialize
+proportional pie or donut sectors; categorical theta plus radius materializes
+radial sectors. [Marks](../../api/marks/line-area.md#arc-marks)
+
+
+## `editArcMark`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+```typescript
+editArcMark(options: StrokeStyleDetails & { target?: string; innerRadius?: number; padAngle?: number; fill?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; }): ChartProgram;
+```
+
+Named option contracts: [`StrokeStyleDetails`](./../types.md#type-strokestyledetails).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
+| `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
+| `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `target` | Optional / branch-dependent | `string \| undefined` |
+| `innerRadius` | Optional / branch-dependent | `number \| undefined` |
+| `padAngle` | Optional / branch-dependent | `number \| undefined` |
+| `fill` | Optional / branch-dependent | `string \| undefined` |
+| `opacity` | Optional / branch-dependent | `number \| undefined` |
+| `stroke` | Optional / branch-dependent | `string \| false \| undefined` |
+| `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editArcMark({ target?, innerRadius?, padAngle?, fill?, opacity?, stroke?, strokeWidth? })
+```
+
+Edit arc geometry or appearance and rematerialize complete sector paths.
+`stroke: false` disables the outline and its width.
+[Marks](../../api/marks/line-area.md#arc-marks)
+
+
+## `createRectMark`
+
+**API layer:** user-facing. **Authoring roles:** H2.
+
+```typescript
+createRectMark(options?: RectMarkOptions): ChartProgram;
+```
+
+Named option contracts: [`RectMarkOptions`](./../types.md#type-rectmarkoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Optional / branch-dependent | `string \| undefined` |
+| `data` | Optional / branch-dependent | `string \| undefined` |
+| `fill` | Optional / branch-dependent | `string \| undefined` |
+| `opacity` | Optional / branch-dependent | `number \| undefined` |
+| `stroke` | Optional / branch-dependent | `string \| false \| undefined` |
+| `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
+| `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
+| `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
+| `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `cornerRadius` | Optional / branch-dependent | `number \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+createRectMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth? } = {})
+```
+
+Create a semantic rect mark and empty rect collection. Two discrete x/y bands
+or complete x/x2 and y/y2 endpoint pairs materialize observed cells. Rects do
+not infer bar aggregation, baseline, stack, or width semantics.
+[Rect marks](../../api/marks/rect.md)
+
+
+## `editRectMark`
+
+**API layer:** user-facing. **Authoring roles:** H3.
+
+```typescript
+editRectMark(options: EditRectMarkOptions): ChartProgram;
+```
+
+Named option contracts: [`EditRectMarkOptions`](./../types.md#type-editrectmarkoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Optional / branch-dependent | `string \| undefined` |
+| `lineCap` | Optional / branch-dependent | `"butt" \| "round" \| "square" \| undefined` |
+| `lineJoin` | Optional / branch-dependent | `"bevel" \| "miter" \| "round" \| undefined` |
+| `miterLimit` | Optional / branch-dependent | `number \| undefined` |
+| `cornerRadius` | Optional / branch-dependent | `number \| undefined` |
+| `fill` | Optional / branch-dependent | `string \| undefined` |
+| `opacity` | Optional / branch-dependent | `number \| undefined` |
+| `stroke` | Optional / branch-dependent | `string \| false \| undefined` |
+| `strokeWidth` | Optional / branch-dependent | `number \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+editRectMark({ target?, fill?, opacity?, stroke?, strokeWidth? })
+```
+
+Edit rect appearance and rematerialize complete cells. Constant fill conflicts
+with field-driven color. `stroke: false` disables the outline.
+[Rect marks](../../api/marks/rect.md)
+
 
 ## Related
 

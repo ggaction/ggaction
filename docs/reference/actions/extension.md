@@ -1,12 +1,99 @@
 ---
 layout: default
 title: Extension Actions
-description: Register wrapped extension actions and use low-level semantic, graphic, and scale primitives.
+description: Edit semantic and concrete graphics through extension primitives.
 ---
 
 # Extension Actions
 
-Import extension-authoring APIs from `ggaction/extension`; installable packages register on the complete chart program, while ordinary chart authors should prefer chart actions.
+Each declared action has an exact signature and its own stable link. Option tables are generated from types; behavior prose names the owning workflow and its constraints. API layer and H0–H4 authoring role are independent classifications.
+
+## `editSemantic`
+
+**API layer:** primitive. **Authoring roles:** H4.
+
+```typescript
+editSemantic(options: EditSemanticOptions): ChartProgram;
+```
+
+Named option contracts: [`EditSemanticOptions`](./../types.md#type-editsemanticoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `property` | Required | `string` |
+| `value` | Optional / branch-dependent | `unknown` |
+| `remove` | Optional / branch-dependent | `boolean \| undefined` |
+
+</details>
+
+Behavior, inference, resets, and errors: [Extension and scale contracts](./extension.md#extension-actions).
+
+
+
+## `createGraphics`
+
+**API layer:** primitive. **Authoring roles:** H4.
+
+```typescript
+createGraphics(options: { id: string; type: GraphicType; length?: number; parent?: string; before?: string; after?: string; }): ChartProgram;
+```
+
+Named option contracts: [`GraphicType`](./../types.md#type-graphictype).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Required | `string` |
+| `type` | Required | `GraphicType` |
+| `length` | Optional / branch-dependent | `number \| undefined` |
+| `parent` | Optional / branch-dependent | `string \| undefined` |
+| `before` | Optional / branch-dependent | `string \| undefined` |
+| `after` | Optional / branch-dependent | `string \| undefined` |
+
+</details>
+
+Behavior, inference, resets, and errors: [Extension and scale contracts](./extension.md#extension-actions).
+
+
+
+## `editGraphics`
+
+**API layer:** primitive. **Authoring roles:** H4.
+
+```typescript
+editGraphics(options: EditGraphicsOptions): ChartProgram;
+```
+
+Named option contracts: [`EditGraphicsOptions`](./../types.md#type-editgraphicsoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Required | `string` |
+| `property` | Optional / branch-dependent | `string \| undefined` |
+| `value` | Optional / branch-dependent | `unknown` |
+| `remove` | Optional / branch-dependent | `boolean \| undefined` |
+
+</details>
+
+Behavior, inference, resets, and errors: [Extension and scale contracts](./extension.md#extension-actions).
+
+
+
+## Extension and scale contracts
 
 Import `action`, `registerExtension`, and `ChartProgram` from
 `ggaction/extension`. Primitive methods are available on programs used by

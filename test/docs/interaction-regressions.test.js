@@ -1,0 +1,68 @@
+import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
+import test from "node:test";
+import { chromium } from "playwright";
+
+const read = file => readFile(new URL(`../../${file}`, import.meta.url), "utf8");
+
+test("search recovers from a failed request and routes every exact action with correct keyboard boundaries", async () => {
+  const browser = await chromium.launch();
+  const page = await browser.newPage();
+  try {
+    let attempts = 0;
+    const index = await read("docs/search-index.json");
+    await page.route("https://docs.test/search-index.json", route => {
+      attempts++;
+      return route.fulfill(attempts === 1 ? { status: 503, body: "Unavailable" }
+        : { contentType: "application/json", body: index });
+    });
+    await page.setContent('<base href="https://docs.test/"><div class="docs-search"><input id="docs-search-input"><ul id="docs-search-results" hidden></ul></div><div id="docs-search-config" data-root-url="/" data-index-url="/search-index.json"></div>');
+    await page.addScriptTag({ content: await read("docs/assets/js/docs-search.js") });
+    const input = page.locator("input");
+    await input.focus();
+    await page.getByRole("button", { name: "Retry search" }).waitFor();
+    assert.equal(await input.isEnabled(), true);
+    await page.getByRole("button", { name: "Retry search" }).click();
+    await input.fill("legend");
+    await page.locator('[role="option"]').first().waitFor();
+    const count = await page.locator('[role="option"]').count();
+    await input.press("ArrowUp");
+    assert.equal(await input.getAttribute("aria-activedescendant"), `docs-search-option-${count - 1}`);
+    await input.press("ArrowDown");
+    assert.equal(await input.getAttribute("aria-activedescendant"), "docs-search-option-0");
+    const links = JSON.parse(await read("docs/_data/action_reference_links.json"));
+    for (const [name, route] of Object.entries(links)) {
+      await input.fill(name);
+      await page.waitForFunction(expected => document.querySelector('[role="option"]')?.getAttribute("href") === expected,
+        `https://docs.test${route}`);
+    }
+    await input.press("Escape");
+    assert.equal(await input.getAttribute("aria-expanded"), "false");
+    assert.equal(await input.getAttribute("aria-activedescendant"), null);
+    assert.equal(attempts, 2);
+  } finally { await browser.close(); }
+});
+
+test("action filtering updates TOC visibility and counts and a hidden hash target can be revealed", async () => {
+  const browser = await chromium.launch();
+  const page = await browser.newPage();
+  try {
+    const metadata = JSON.parse(await read("docs/_data/action_metadata.json"));
+    const names = Object.keys(metadata).slice(0, 35);
+    await page.setContent('<a class="docs-brand" href="https://docs.test/"></a><main class="docs-content">' + names.map(name =>
+      `<h2 id="${name.toLowerCase()}"><code>${name}</code></h2><p>Behavior of ${name}</p>`
+    ).join("") + '</main>');
+    for (const file of ["action-metadata", "docs-content", "docs-toc"]) {
+      await page.addScriptTag({ content: await read(`docs/assets/js/${file}.js`) });
+    }
+    assert.match(await page.locator(".docs-page-toc summary").innerText(), /35 actions · 0 other sections/);
+    const filter = page.locator("#docs-action-filter-input");
+    await filter.fill(names[0]);
+    assert.equal(await page.locator(".docs-action-heading:not([hidden])").count(), 1);
+    assert.equal(await page.locator(".docs-page-toc li:not([hidden])").count(), 1);
+    assert.match(await page.locator(".docs-page-toc summary").innerText(), /1 actions/);
+    await page.evaluate(id => { location.hash = id; }, names[1].toLowerCase());
+    await page.waitForFunction(() => document.querySelector("#docs-action-filter-input").value === "");
+    assert.equal(await page.locator(".docs-action-heading:not([hidden])").count(), 35);
+  } finally { await browser.close(); }
+});

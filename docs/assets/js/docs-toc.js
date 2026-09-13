@@ -27,15 +27,21 @@
 
   const navigation = document.createElement("details");
   navigation.className = "docs-page-toc";
-  navigation.open = !window.matchMedia("(max-width: 860px)").matches;
+  navigation.open = headings.length <= 30 && !window.matchMedia("(max-width: 860px)").matches;
 
   const summary = document.createElement("summary");
   const title = document.createElement("strong");
   title.textContent = "On this page";
   const count = document.createElement("span");
-  count.textContent = headings.length > 30
-    ? `${navigationHeadings.length} categories · ${headings.length - navigationHeadings.length} actions`
-    : `${headings.length} sections`;
+  const visible = heading => !heading.closest("[hidden]");
+  function updateCount() {
+    const shown = headings.filter(visible);
+    const actions = shown.filter(heading => heading.dataset.actionName).length;
+    count.textContent = actions > 0
+      ? `${actions} actions · ${shown.length - actions} other sections`
+      : `${shown.length} sections`;
+  }
+  updateCount();
   summary.append(title, count);
   navigation.append(summary);
 
@@ -68,8 +74,10 @@
   function updateCurrentSection() {
     scheduled = false;
     const top = currentSectionOffset();
-    let current = navigationHeadings[0];
-    for (const heading of navigationHeadings) {
+    const shown = navigationHeadings.filter(visible);
+    if (shown.length === 0) return;
+    let current = shown[0];
+    for (const heading of shown) {
       if (heading.getBoundingClientRect().top > top) break;
       current = heading;
     }
@@ -101,5 +109,10 @@
   }
   window.addEventListener("scroll", scheduleUpdate, { passive: true });
   window.addEventListener("resize", scheduleUpdate);
+  document.addEventListener("docs:sections-changed", () => {
+    for (const [heading, item] of items) item.hidden = !visible(heading);
+    updateCount();
+    scheduleUpdate();
+  });
   updateCurrentSection();
 })();

@@ -231,6 +231,10 @@ try {
   await results.first().waitFor({ state: "visible" });
   const resultCount = await results.count();
   assert.equal(resultCount > 0 && resultCount <= 8, true);
+  await search.press("ArrowUp");
+  assert.equal(await search.getAttribute("aria-activedescendant"), `docs-search-option-${resultCount - 1}`);
+  await search.press("ArrowDown");
+  assert.equal(await search.getAttribute("aria-activedescendant"), "docs-search-option-0");
   assert.equal(await desktop.locator(".docs-search-snippet").count(), resultCount);
   assert.equal(await desktop.locator(".docs-search-kind").count(), resultCount);
   const urls = await results.evaluateAll(links => links.map(link => link.href));
@@ -286,6 +290,39 @@ try {
   assert.equal(await search.getAttribute("aria-expanded"), "false");
   assert.equal(await desktop.locator(".docs-search__control kbd").isVisible(), true);
   assert.deepEqual(desktopErrors, []);
+
+  const actionLinks = JSON.parse(await readFile(path.resolve("docs/_data/action_reference_links.json"), "utf8"));
+  for (const [name, destination] of Object.entries(actionLinks)) {
+    await search.fill(name);
+    await desktop.waitForFunction(expected => document.querySelector("#docs-search-results a")?.href === expected,
+      new URL(destination.slice(1), baseUrl).href);
+  }
+  await search.press("Escape");
+
+  await desktop.goto(`${baseUrl}reference/actions/statistics/`, { waitUntil: "networkidle" });
+  const familyFilter = desktop.locator("#docs-action-filter-input");
+  await familyFilter.fill("editComputedData");
+  assert.equal(await desktop.locator('.docs-action-heading:not([hidden])').count(), 1);
+  assert.equal(await desktop.locator('.docs-page-toc a[href="#createcomputeddata"]').evaluate(link => link.parentElement.hidden), true);
+  await desktop.evaluate(() => { location.hash = "createcomputeddata"; });
+  await desktop.waitForFunction(() => document.querySelector("#docs-action-filter-input").value === "");
+  await assertFragmentPlacement(desktop, "#createcomputeddata", "filtered action hash recovery");
+  await assertAccessible(desktop, "action family filtering and option contracts");
+
+  const recoveryContext = await browser.newContext();
+  const recovery = await recoveryContext.newPage();
+  let searchRequests = 0;
+  await recovery.route("**/search-index.json", route => {
+    searchRequests++;
+    return searchRequests === 1 ? route.fulfill({ status: 503, body: "Unavailable" }) : route.continue();
+  });
+  await recovery.goto(baseUrl, { waitUntil: "networkidle" });
+  await recovery.locator("#docs-search-input").focus();
+  await recovery.getByRole("button", { name: "Retry search" }).click();
+  await recovery.locator("#docs-search-input").fill("editComputedData");
+  await recovery.waitForFunction(() => document.querySelector("#docs-search-results a")?.href.endsWith("#editcomputeddata"));
+  assert.equal(searchRequests, 2);
+  await recoveryContext.close();
 
   await desktop.goto(`${baseUrl}reference/actions/`, { waitUntil: "networkidle" });
   const actionLookup = desktop.locator("#docs-action-lookup-input");
@@ -557,7 +594,7 @@ try {
 
   await mobile.goto(`${baseUrl}reference/types/`, { waitUntil: "networkidle" });
   assert.equal(await mobile.locator(".docs-code-label").first().textContent(), "Type contract");
-  assert.equal(await mobile.locator(".docs-copy-button").count(), 1);
+  assert.equal(await mobile.locator(".docs-copy-button").count(), await mobile.locator("pre code").count());
   await mobileContext.close();
 
   const noScriptMobileContext = await browser.newContext({

@@ -40,6 +40,7 @@ export async function declaredActionSignatures() {
 
 export async function buildSignatureSection() {
   const signatures = await declaredActionSignatures();
+  const namedTypes = await buildNamedTypeSection(signatures);
   return [
     begin,
     "## Exact TypeScript signatures",
@@ -52,7 +53,44 @@ export async function buildSignatureSection() {
     ...signatures.map(signature => `  ${signature}`),
     "}",
     "```",
+    "",
+    namedTypes,
     end
+  ].join("\n");
+}
+
+export async function publicOptionDeclarations() {
+  const source = (await readFile(declarationFile, "utf8")).split("export class ChartProgram {")[0];
+  const starts = [...source.matchAll(/^export (?:interface|type) ([A-Za-z][A-Za-z0-9]*)\b/gm)];
+  return new Map(starts.map((match, index) => [
+    match[1], source.slice(match.index, starts[index + 1]?.index ?? source.length).trim()
+  ]));
+}
+
+async function buildNamedTypeSection(signatures) {
+  const declarations = await publicOptionDeclarations();
+  const required = new Set();
+  const queue = signatures.join("\n").match(/\b[A-Z][A-Za-z0-9]+\b/g) ?? [];
+  while (queue.length) {
+    const name = queue.pop();
+    if (name === "ChartProgram" || required.has(name) || !declarations.has(name)) continue;
+    required.add(name);
+    queue.push(...(declarations.get(name).match(/\b[A-Z][A-Za-z0-9]+\b/g) ?? []));
+  }
+  return [
+    "## Named option contracts", "",
+    "These declarations are generated from the same source as the action signatures. Follow named nested types to inspect union branches, required combinations, and shared styles. The raw [declaration file](../types/program.d.ts) is also available.", "",
+    ...[...required].sort().flatMap(name => {
+      const related = [...new Set(declarations.get(name).match(/\b[A-Z][A-Za-z0-9]+\b/g) ?? [])]
+        .filter(other => other !== name && required.has(other))
+        .map(other => "[`" + other + "`](#type-" + other.toLowerCase() + ")");
+      return [
+      `### \`${name}\` {#type-${name.toLowerCase()}}`, "",
+      '<details markdown="1">', `<summary>Expand ${name}</summary>`, "",
+      "```typescript", declarations.get(name), "```", "", "</details>", "",
+      ...(related.length ? ["Related types: " + related.join(" · ") + ".", ""] : [])
+      ];
+    })
   ].join("\n");
 }
 

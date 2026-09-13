@@ -2533,7 +2533,7 @@
       ],
       "snippet": "program.editDerivedData({ target: \"computed\", definition: { type: \"computed\", as: \"result\", expression: { field: \"value\" } } })",
       "errors": [],
-      "route": "/reference/actions/charts-data/#focused-core-data-editing"
+      "route": "/reference/actions/charts-data/#editderiveddata"
     },
     {
       "schemaVersion": 3,
@@ -2619,7 +2619,7 @@
       ],
       "snippet": "program.editComputedData({ target: \"computed\", expression: { field: \"value\" } })",
       "errors": [],
-      "route": "/reference/actions/statistics/#focused-statistical-data-editing"
+      "route": "/reference/actions/statistics/#editcomputeddata"
     },
     {
       "schemaVersion": 3,
@@ -2714,7 +2714,7 @@
       ],
       "snippet": "program.editFilteredData({ target: \"filtered\", oneOf: [1] })",
       "errors": [],
-      "route": "/reference/actions/charts-data/#focused-core-data-editing"
+      "route": "/reference/actions/charts-data/#editfiltereddata"
     },
     {
       "schemaVersion": 3,
@@ -2800,7 +2800,7 @@
       ],
       "snippet": "program.editFoldData({ target: \"folded\", fields: [\"value\"] })",
       "errors": [],
-      "route": "/reference/actions/statistics/#focused-statistical-data-editing"
+      "route": "/reference/actions/statistics/#editfolddata"
     },
     {
       "schemaVersion": 3,
@@ -2896,7 +2896,7 @@
       ],
       "snippet": "program.editSummaryData({ target: \"summary\", aggregates: [{ op: \"count\", as: \"count\" }] })",
       "errors": [],
-      "route": "/reference/actions/statistics/#focused-statistical-data-editing"
+      "route": "/reference/actions/statistics/#editsummarydata"
     },
     {
       "schemaVersion": 3,
@@ -3036,7 +3036,7 @@
       ],
       "snippet": "program.editBinData({ target: \"bins\", maxBins: 12 })",
       "errors": [],
-      "route": "/reference/actions/statistics/#focused-statistical-data-editing"
+      "route": "/reference/actions/statistics/#editbindata"
     },
     {
       "schemaVersion": 3,
@@ -3151,7 +3151,7 @@
       ],
       "snippet": "program.editTimeUnitData({ target: \"buckets\", unit: \"month\" })",
       "errors": [],
-      "route": "/reference/actions/charts-data/#focused-core-data-editing"
+      "route": "/reference/actions/charts-data/#edittimeunitdata"
     },
     {
       "schemaVersion": 3,
@@ -3251,7 +3251,7 @@
       ],
       "snippet": "program.editWindowData({ target: \"windowed\", operations: [{ op: \"rowNumber\", as: \"rowNumber\" }] })",
       "errors": [],
-      "route": "/reference/actions/charts-data/#focused-core-data-editing"
+      "route": "/reference/actions/charts-data/#editwindowdata"
     },
     {
       "schemaVersion": 3,
@@ -3388,7 +3388,7 @@
       ],
       "snippet": "program.editDensityData({ target: \"density\", steps: 64 })",
       "errors": [],
-      "route": "/reference/actions/charts-data/#focused-core-data-editing"
+      "route": "/reference/actions/charts-data/#editdensitydata"
     },
     {
       "schemaVersion": 3,
@@ -3489,7 +3489,7 @@
       ],
       "snippet": "program.editStackData({ target: \"stacked\", mode: \"fill\" })",
       "errors": [],
-      "route": "/reference/actions/statistics/#focused-statistical-data-editing"
+      "route": "/reference/actions/statistics/#editstackdata"
     },
     {
       "schemaVersion": 3,
@@ -3614,7 +3614,7 @@
       ],
       "snippet": "program.editRegressionData({ target: \"regression\", method: \"loess\" })",
       "errors": [],
-      "route": "/reference/actions/charts-data/#focused-core-data-editing"
+      "route": "/reference/actions/charts-data/#editregressiondata"
     },
     {
       "schemaVersion": 3,
@@ -3725,7 +3725,7 @@
       ],
       "snippet": "program.editIntervalData({ target: \"interval\", center: \"median\", extent: \"iqr\" })",
       "errors": [],
-      "route": "/reference/actions/statistics/#focused-statistical-data-editing"
+      "route": "/reference/actions/statistics/#editintervaldata"
     },
     {
       "schemaVersion": 3,
@@ -3826,7 +3826,7 @@
       ],
       "snippet": "program.editECDFData({ target: \"ecdf\", missing: \"error\" })",
       "errors": [],
-      "route": "/reference/actions/statistics/#focused-statistical-data-editing"
+      "route": "/reference/actions/statistics/#editecdfdata"
     },
     {
       "schemaVersion": 3,
@@ -3942,7 +3942,7 @@
       ],
       "snippet": "program.editNormalizedData({ target: \"normalized\", method: \"minmax\" })",
       "errors": [],
-      "route": "/reference/actions/statistics/#focused-statistical-data-editing"
+      "route": "/reference/actions/statistics/#editnormalizeddata"
     },
     {
       "schemaVersion": 3,
@@ -4048,7 +4048,7 @@
       ],
       "snippet": "program.editCompleteData({ target: \"complete\", values: [1, 2] })",
       "errors": [],
-      "route": "/reference/actions/statistics/#focused-statistical-data-editing"
+      "route": "/reference/actions/statistics/#editcompletedata"
     },
     {
       "schemaVersion": 3,
@@ -4159,7 +4159,7 @@
       ],
       "snippet": "program.editImputedData({ target: \"imputed\", value: 0 })",
       "errors": [],
-      "route": "/reference/actions/statistics/#focused-statistical-data-editing"
+      "route": "/reference/actions/statistics/#editimputeddata"
     },
     {
       "schemaVersion": 3,
@@ -8100,7 +8100,7 @@
       ],
       "snippet": "program.encodeChannels({ target: \"points\", channels: { x: { field: \"b\" }, y: { field: \"a\" } } })",
       "errors": [],
-      "route": "/reference/actions/encodings/#encodechannels"
+      "route": "/reference/actions/advanced/#encodechannels"
     },
     {
       "schemaVersion": 3,
@@ -12506,7 +12506,7 @@
       ],
       "snippet": "program.editErrorBand({ opacity: 0.35 })",
       "errors": [],
-      "route": "/reference/actions/statistics/#editerrorband-and-editerrorbandboundary"
+      "route": "/reference/actions/statistics/#editerrorband"
     },
     {
       "schemaVersion": 3,
@@ -12629,7 +12629,7 @@
       ],
       "snippet": "program.editErrorBandBoundary({ boundary: \"both\" })",
       "errors": [],
-      "route": "/reference/actions/statistics/#editerrorband-and-editerrorbandboundary"
+      "route": "/reference/actions/statistics/#editerrorbandboundary"
     },
     {
       "schemaVersion": 3,
@@ -13496,7 +13496,7 @@
       ],
       "snippet": "program.createParallelAxes({})",
       "errors": [],
-      "route": "/reference/actions/advanced/#createparallelaxes-createparallelaxis-editparallelaxis-removeparallelaxis-removeparallelaxes"
+      "route": "/reference/actions/guides/#createparallelaxes"
     },
     {
       "schemaVersion": 3,
@@ -13599,7 +13599,7 @@
       ],
       "snippet": "program.createParallelAxis({ field: \"value\" })",
       "errors": [],
-      "route": "/reference/actions/advanced/#createparallelaxes-createparallelaxis-editparallelaxis-removeparallelaxis-removeparallelaxes"
+      "route": "/reference/actions/guides/#createparallelaxis"
     },
     {
       "schemaVersion": 3,
@@ -13699,7 +13699,7 @@
       ],
       "snippet": "program.editParallelAxis({ field: \"value\" })",
       "errors": [],
-      "route": "/reference/actions/advanced/#createparallelaxes-createparallelaxis-editparallelaxis-removeparallelaxis-removeparallelaxes"
+      "route": "/reference/actions/guides/#editparallelaxis"
     },
     {
       "schemaVersion": 3,
@@ -13774,7 +13774,7 @@
       ],
       "snippet": "program.removeParallelAxis({ field: \"value\" })",
       "errors": [],
-      "route": "/reference/actions/advanced/#createparallelaxes-createparallelaxis-editparallelaxis-removeparallelaxis-removeparallelaxes"
+      "route": "/reference/actions/guides/#removeparallelaxis"
     },
     {
       "schemaVersion": 3,
@@ -13855,7 +13855,7 @@
       ],
       "snippet": "program.removeParallelAxes({})",
       "errors": [],
-      "route": "/reference/actions/advanced/#createparallelaxes-createparallelaxis-editparallelaxis-removeparallelaxis-removeparallelaxes"
+      "route": "/reference/actions/guides/#removeparallelaxes"
     },
     {
       "schemaVersion": 3,
@@ -14064,7 +14064,7 @@
       ],
       "snippet": "program.createXAxis({})",
       "errors": [],
-      "route": "/reference/actions/advanced/#complete-single-channel-axes"
+      "route": "/reference/actions/guides/#createxaxis"
     },
     {
       "schemaVersion": 3,
@@ -14172,7 +14172,7 @@
       ],
       "snippet": "program.createYAxis({})",
       "errors": [],
-      "route": "/reference/actions/advanced/#complete-single-channel-axes"
+      "route": "/reference/actions/guides/#createyaxis"
     },
     {
       "schemaVersion": 3,
@@ -14269,7 +14269,7 @@
       ],
       "snippet": "program.createXAxisLine({})",
       "errors": [],
-      "route": "/reference/actions/advanced/#axis-lines-ticks-and-labels"
+      "route": "/reference/actions/guides/#createxaxisline"
     },
     {
       "schemaVersion": 3,
@@ -14366,7 +14366,7 @@
       ],
       "snippet": "program.createYAxisLine({})",
       "errors": [],
-      "route": "/reference/actions/advanced/#axis-lines-ticks-and-labels"
+      "route": "/reference/actions/guides/#createyaxisline"
     },
     {
       "schemaVersion": 3,
@@ -14444,7 +14444,7 @@
       ],
       "snippet": "program.editXAxisLine({ color: \"#f28e2b\" })",
       "errors": [],
-      "route": "/reference/actions/advanced/#axis-lines-ticks-and-labels"
+      "route": "/reference/actions/guides/#editxaxisline"
     },
     {
       "schemaVersion": 3,
@@ -14522,7 +14522,7 @@
       ],
       "snippet": "program.editYAxisLine({ color: \"#f28e2b\" })",
       "errors": [],
-      "route": "/reference/actions/advanced/#axis-lines-ticks-and-labels"
+      "route": "/reference/actions/guides/#edityaxisline"
     },
     {
       "schemaVersion": 3,
@@ -14642,7 +14642,7 @@
       ],
       "snippet": "program.createXAxisTicks({})",
       "errors": [],
-      "route": "/reference/actions/advanced/#axis-lines-ticks-and-labels"
+      "route": "/reference/actions/guides/#createxaxisticks"
     },
     {
       "schemaVersion": 3,
@@ -14762,7 +14762,7 @@
       ],
       "snippet": "program.createYAxisTicks({})",
       "errors": [],
-      "route": "/reference/actions/advanced/#axis-lines-ticks-and-labels"
+      "route": "/reference/actions/guides/#createyaxisticks"
     },
     {
       "schemaVersion": 3,
@@ -14863,7 +14863,7 @@
       ],
       "snippet": "program.editXAxisTicks({ color: \"#f28e2b\" })",
       "errors": [],
-      "route": "/reference/actions/advanced/#axis-lines-ticks-and-labels"
+      "route": "/reference/actions/guides/#editxaxisticks"
     },
     {
       "schemaVersion": 3,
@@ -14964,7 +14964,7 @@
       ],
       "snippet": "program.editYAxisTicks({ color: \"#f28e2b\" })",
       "errors": [],
-      "route": "/reference/actions/advanced/#axis-lines-ticks-and-labels"
+      "route": "/reference/actions/guides/#edityaxisticks"
     },
     {
       "schemaVersion": 3,
@@ -15145,7 +15145,7 @@
       ],
       "snippet": "program.createXAxisLabels({})",
       "errors": [],
-      "route": "/reference/actions/advanced/#axis-lines-ticks-and-labels"
+      "route": "/reference/actions/guides/#createxaxislabels"
     },
     {
       "schemaVersion": 3,
@@ -15326,7 +15326,7 @@
       ],
       "snippet": "program.createYAxisLabels({})",
       "errors": [],
-      "route": "/reference/actions/advanced/#axis-lines-ticks-and-labels"
+      "route": "/reference/actions/guides/#createyaxislabels"
     },
     {
       "schemaVersion": 3,
@@ -15490,7 +15490,7 @@
       ],
       "snippet": "program.editXAxisLabels({ labelMap: \"auto\" })",
       "errors": [],
-      "route": "/reference/actions/advanced/#axis-lines-ticks-and-labels"
+      "route": "/reference/actions/guides/#editxaxislabels"
     },
     {
       "schemaVersion": 3,
@@ -15654,7 +15654,7 @@
       ],
       "snippet": "program.editYAxisLabels({ labelMap: \"auto\" })",
       "errors": [],
-      "route": "/reference/actions/advanced/#axis-lines-ticks-and-labels"
+      "route": "/reference/actions/guides/#edityaxislabels"
     },
     {
       "schemaVersion": 3,
@@ -15760,7 +15760,7 @@
       ],
       "snippet": "program.createXAxisTicksAndLabels({})",
       "errors": [],
-      "route": "/reference/actions/advanced/#ticklabel-groups-and-axis-titles"
+      "route": "/reference/actions/guides/#createxaxisticksandlabels"
     },
     {
       "schemaVersion": 3,
@@ -15866,7 +15866,7 @@
       ],
       "snippet": "program.createYAxisTicksAndLabels({})",
       "errors": [],
-      "route": "/reference/actions/advanced/#ticklabel-groups-and-axis-titles"
+      "route": "/reference/actions/guides/#createyaxisticksandlabels"
     },
     {
       "schemaVersion": 3,
@@ -15955,7 +15955,7 @@
       ],
       "snippet": "program.editXAxisTicksAndLabels({ position: \"bottom\" })",
       "errors": [],
-      "route": "/reference/actions/advanced/#ticklabel-groups-and-axis-titles"
+      "route": "/reference/actions/guides/#editxaxisticksandlabels"
     },
     {
       "schemaVersion": 3,
@@ -16044,7 +16044,7 @@
       ],
       "snippet": "program.editYAxisTicksAndLabels({ position: \"left\" })",
       "errors": [],
-      "route": "/reference/actions/advanced/#ticklabel-groups-and-axis-titles"
+      "route": "/reference/actions/guides/#edityaxisticksandlabels"
     },
     {
       "schemaVersion": 3,
@@ -16179,7 +16179,7 @@
       ],
       "snippet": "program.createXAxisTitle({})",
       "errors": [],
-      "route": "/reference/actions/advanced/#ticklabel-groups-and-axis-titles"
+      "route": "/reference/actions/guides/#createxaxistitle"
     },
     {
       "schemaVersion": 3,
@@ -16314,7 +16314,7 @@
       ],
       "snippet": "program.createYAxisTitle({})",
       "errors": [],
-      "route": "/reference/actions/advanced/#ticklabel-groups-and-axis-titles"
+      "route": "/reference/actions/guides/#createyaxistitle"
     },
     {
       "schemaVersion": 3,
@@ -16431,7 +16431,7 @@
       ],
       "snippet": "program.editXAxisTitle({ text: \"Chart title\" })",
       "errors": [],
-      "route": "/reference/actions/advanced/#ticklabel-groups-and-axis-titles"
+      "route": "/reference/actions/guides/#editxaxistitle"
     },
     {
       "schemaVersion": 3,
@@ -16548,7 +16548,7 @@
       ],
       "snippet": "program.editYAxisTitle({ text: \"Chart title\" })",
       "errors": [],
-      "route": "/reference/actions/advanced/#ticklabel-groups-and-axis-titles"
+      "route": "/reference/actions/guides/#edityaxistitle"
     },
     {
       "schemaVersion": 3,
@@ -16639,7 +16639,7 @@
       ],
       "snippet": "program.editXAxis({ position: \"bottom\" })",
       "errors": [],
-      "route": "/reference/actions/advanced/#complete-single-channel-axes"
+      "route": "/reference/actions/guides/#editxaxis"
     },
     {
       "schemaVersion": 3,
@@ -16728,7 +16728,7 @@
       ],
       "snippet": "program.editYAxis({ position: \"left\" })",
       "errors": [],
-      "route": "/reference/actions/advanced/#complete-single-channel-axes"
+      "route": "/reference/actions/guides/#edityaxis"
     },
     {
       "schemaVersion": 3,
@@ -16807,7 +16807,7 @@
       ],
       "snippet": "program.removeXAxis({})",
       "errors": [],
-      "route": "/reference/actions/advanced/#complete-axis-removal"
+      "route": "/reference/actions/guides/#removexaxis"
     },
     {
       "schemaVersion": 3,
@@ -16886,7 +16886,7 @@
       ],
       "snippet": "program.removeYAxis({})",
       "errors": [],
-      "route": "/reference/actions/advanced/#complete-axis-removal"
+      "route": "/reference/actions/guides/#removeyaxis"
     },
     {
       "schemaVersion": 3,
@@ -17093,7 +17093,7 @@
       ],
       "snippet": "program.createHorizontalGrid({})",
       "errors": [],
-      "route": "/reference/actions/advanced/#directional-grids"
+      "route": "/reference/actions/guides/#createhorizontalgrid"
     },
     {
       "schemaVersion": 3,
@@ -17213,7 +17213,7 @@
       ],
       "snippet": "program.createVerticalGrid({})",
       "errors": [],
-      "route": "/reference/actions/advanced/#directional-grids"
+      "route": "/reference/actions/guides/#createverticalgrid"
     },
     {
       "schemaVersion": 3,
@@ -17308,7 +17308,7 @@
       ],
       "snippet": "program.editHorizontalGrid({ count: 5 })",
       "errors": [],
-      "route": "/reference/actions/advanced/#directional-grids"
+      "route": "/reference/actions/guides/#edithorizontalgrid"
     },
     {
       "schemaVersion": 3,
@@ -17403,7 +17403,7 @@
       ],
       "snippet": "program.editVerticalGrid({ count: 5 })",
       "errors": [],
-      "route": "/reference/actions/advanced/#directional-grids"
+      "route": "/reference/actions/guides/#editverticalgrid"
     },
     {
       "schemaVersion": 3,
@@ -17482,7 +17482,7 @@
       ],
       "snippet": "program.editGrid({ horizontal: { color: \"#dddddd\" } })",
       "errors": [],
-      "route": "/reference/actions/advanced/#directional-grids"
+      "route": "/reference/actions/guides/#editgrid"
     },
     {
       "schemaVersion": 3,
@@ -17559,7 +17559,7 @@
       ],
       "snippet": "program.removeGrid({})",
       "errors": [],
-      "route": "/reference/actions/advanced/#directional-grids"
+      "route": "/reference/actions/guides/#removegrid"
     },
     {
       "schemaVersion": 3,
@@ -18161,7 +18161,7 @@
       ],
       "snippet": "program.editLegendLayout({ layout: \"edge\" })",
       "errors": [],
-      "route": "/reference/actions/guides/#focused-legend-edits"
+      "route": "/reference/actions/guides/#editlegendlayout"
     },
     {
       "schemaVersion": 3,
@@ -18270,7 +18270,7 @@
       ],
       "snippet": "program.editLegendLabels({ offset: 1 })",
       "errors": [],
-      "route": "/reference/actions/guides/#focused-legend-edits"
+      "route": "/reference/actions/guides/#editlegendlabels"
     },
     {
       "schemaVersion": 3,
@@ -18370,7 +18370,7 @@
       ],
       "snippet": "program.editLegendTitle({ title: \"title\" })",
       "errors": [],
-      "route": "/reference/actions/guides/#focused-legend-edits"
+      "route": "/reference/actions/guides/#editlegendtitle"
     },
     {
       "schemaVersion": 3,
@@ -18460,7 +18460,7 @@
       ],
       "snippet": "program.editLegendSymbols({ count: 5 })",
       "errors": [],
-      "route": "/reference/actions/guides/#focused-legend-edits"
+      "route": "/reference/actions/guides/#editlegendsymbols"
     },
     {
       "schemaVersion": 3,
@@ -18535,7 +18535,7 @@
       ],
       "snippet": "program.editLegendBorder({ border: true })",
       "errors": [],
-      "route": "/reference/actions/guides/#focused-legend-edits"
+      "route": "/reference/actions/guides/#editlegendborder"
     },
     {
       "schemaVersion": 3,
@@ -19075,7 +19075,7 @@
       ],
       "snippet": "program.createCoordinate({})",
       "errors": [],
-      "route": "/reference/actions/advanced/#semantic-resources-and-regression-layers"
+      "route": "/reference/actions/charts-data/#createcoordinate"
     },
     {
       "schemaVersion": 3,
@@ -19154,7 +19154,7 @@
       ],
       "snippet": "program.editCoordinate({ target: \"polar\", polarFrame: { center: { x: 0.25, y: 0.5 }, radius: { unit: \"fraction\", value: 0.8 } } })",
       "errors": [],
-      "route": "/reference/actions/advanced/#semantic-resources-and-regression-layers"
+      "route": "/reference/actions/charts-data/#editcoordinate"
     },
     {
       "schemaVersion": 3,
@@ -19338,7 +19338,7 @@
       ],
       "snippet": "program.createScale({ id: \"scale-1\" })",
       "errors": [],
-      "route": "/reference/actions/extension/#extension-actions"
+      "route": "/reference/actions/charts-data/#createscale"
     },
     {
       "schemaVersion": 3,
@@ -19518,7 +19518,7 @@
       ],
       "snippet": "program.editScale({ type: \"linear\" })",
       "errors": [],
-      "route": "/reference/actions/extension/#extension-actions"
+      "route": "/reference/actions/charts-data/#editscale"
     },
     {
       "schemaVersion": 3,
@@ -19689,7 +19689,7 @@
       ],
       "snippet": "program.editXScale({ reverse: true })",
       "errors": [],
-      "route": "/reference/actions/advanced/#focused-channel-scale-editors"
+      "route": "/reference/actions/charts-data/#editxscale"
     },
     {
       "schemaVersion": 3,
@@ -19860,7 +19860,7 @@
       ],
       "snippet": "program.editYScale({ reverse: true })",
       "errors": [],
-      "route": "/reference/actions/advanced/#focused-channel-scale-editors"
+      "route": "/reference/actions/charts-data/#edityscale"
     },
     {
       "schemaVersion": 3,
@@ -19984,7 +19984,7 @@
           "fix": "Use domain for subgroup order; the parent category slot owns the concrete range and the scale type is ordinal."
         }
       ],
-      "route": "/reference/actions/advanced/#focused-channel-scale-editors"
+      "route": "/reference/actions/charts-data/#editxoffsetscale"
     },
     {
       "schemaVersion": 3,
@@ -20108,7 +20108,7 @@
           "fix": "Use domain for subgroup order; the parent category slot owns the concrete range and the scale type is ordinal."
         }
       ],
-      "route": "/reference/actions/advanced/#focused-channel-scale-editors"
+      "route": "/reference/actions/charts-data/#edityoffsetscale"
     },
     {
       "schemaVersion": 3,
@@ -20277,7 +20277,7 @@
       ],
       "snippet": "program.editParallelScale({ target: \"parallelLines\", dimension: \"amount\", reverse: true })",
       "errors": [],
-      "route": "/reference/actions/advanced/#focused-channel-scale-editors"
+      "route": "/reference/actions/charts-data/#editparallelscale"
     },
     {
       "schemaVersion": 3,
@@ -20428,7 +20428,7 @@
       ],
       "snippet": "program.editThetaScale({ reverse: true })",
       "errors": [],
-      "route": "/reference/actions/advanced/#focused-channel-scale-editors"
+      "route": "/reference/actions/charts-data/#editthetascale"
     },
     {
       "schemaVersion": 3,
@@ -20566,7 +20566,7 @@
       ],
       "snippet": "program.editRScale({ reverse: true })",
       "errors": [],
-      "route": "/reference/actions/advanced/#focused-channel-scale-editors"
+      "route": "/reference/actions/charts-data/#editrscale"
     },
     {
       "schemaVersion": 3,
@@ -20698,7 +20698,7 @@
       ],
       "snippet": "program.editColorScale({ palette: \"set2\" })",
       "errors": [],
-      "route": "/reference/actions/advanced/#focused-channel-scale-editors"
+      "route": "/reference/actions/charts-data/#editcolorscale"
     },
     {
       "schemaVersion": 3,
@@ -20800,7 +20800,7 @@
       ],
       "snippet": "program.editStrokeScale({ target: \"points\", palette: \"set1\" })",
       "errors": [],
-      "route": "/reference/actions/advanced/#focused-channel-scale-editors"
+      "route": "/reference/actions/charts-data/#editstrokescale"
     },
     {
       "schemaVersion": 3,
@@ -20923,7 +20923,7 @@
       ],
       "snippet": "program.editSizeScale({ range: [20, 200] })",
       "errors": [],
-      "route": "/reference/actions/advanced/#focused-channel-scale-editors"
+      "route": "/reference/actions/charts-data/#editsizescale"
     },
     {
       "schemaVersion": 3,
@@ -21046,7 +21046,7 @@
       ],
       "snippet": "program.editOpacityScale({ range: [0.2, 0.9] })",
       "errors": [],
-      "route": "/reference/actions/advanced/#focused-channel-scale-editors"
+      "route": "/reference/actions/charts-data/#editopacityscale"
     },
     {
       "schemaVersion": 3,
@@ -21149,7 +21149,7 @@
       ],
       "snippet": "program.editShapeScale({ range: [\"circle\", \"diamond\"] })",
       "errors": [],
-      "route": "/reference/actions/advanced/#focused-channel-scale-editors"
+      "route": "/reference/actions/charts-data/#editshapescale"
     },
     {
       "schemaVersion": 3,
@@ -21282,7 +21282,7 @@
       ],
       "snippet": "program.editStrokeWidthScale({ range: [1, 8] })",
       "errors": [],
-      "route": "/reference/actions/advanced/#focused-channel-scale-editors"
+      "route": "/reference/actions/charts-data/#editstrokewidthscale"
     },
     {
       "schemaVersion": 3,
@@ -21380,7 +21380,7 @@
       ],
       "snippet": "program.editStrokeDashScale({ range: [[], [4, 2]] })",
       "errors": [],
-      "route": "/reference/actions/advanced/#focused-channel-scale-editors"
+      "route": "/reference/actions/charts-data/#editstrokedashscale"
     },
     {
       "schemaVersion": 3,
@@ -21466,7 +21466,7 @@
           "fix": "Provide exactly one valid DatasetTransform object."
         }
       ],
-      "route": "/reference/actions/advanced/#semantic-resources-and-regression-layers"
+      "route": "/reference/actions/charts-data/#createderiveddata"
     },
     {
       "schemaVersion": 3,
@@ -21647,7 +21647,7 @@
       ],
       "snippet": "program.createRegressionBand({ id: \"regression-band-1\", data: \"data-1\", x: \"x\", lower: \"lower\", upper: \"upper\", coordinate: \"coordinate-1\", xScale: \"x-scale\", yScale: \"y-scale\" })",
       "errors": [],
-      "route": "/reference/actions/advanced/#semantic-resources-and-regression-layers"
+      "route": "/reference/actions/statistics/#createregressionband"
     },
     {
       "schemaVersion": 3,
@@ -21767,7 +21767,7 @@
       ],
       "snippet": "program.editRegressionBand({ lineCap: \"butt\" })",
       "errors": [],
-      "route": "/reference/actions/advanced/#semantic-resources-and-regression-layers"
+      "route": "/reference/actions/statistics/#editregressionband"
     },
     {
       "schemaVersion": 3,
@@ -21931,7 +21931,7 @@
       ],
       "snippet": "program.createRegressionLine({ id: \"regression-line-1\", data: \"data-1\", x: \"x\", y: \"y\", coordinate: \"coordinate-1\", xScale: \"x-scale\", yScale: \"y-scale\" })",
       "errors": [],
-      "route": "/reference/actions/advanced/#semantic-resources-and-regression-layers"
+      "route": "/reference/actions/statistics/#createregressionline"
     },
     {
       "schemaVersion": 3,
@@ -22032,7 +22032,7 @@
       ],
       "snippet": "program.editRegressionLine({ lineCap: \"butt\" })",
       "errors": [],
-      "route": "/reference/actions/advanced/#semantic-resources-and-regression-layers"
+      "route": "/reference/actions/statistics/#editregressionline"
     },
     {
       "schemaVersion": 3,
@@ -22392,7 +22392,7 @@
       ],
       "snippet": "program.selectMarks({ field: \"category\", op: \"eq\", value: \"A\" })",
       "errors": [],
-      "route": "/reference/actions/advanced/#reusable-mark-selections"
+      "route": "/reference/actions/advanced/#selectmarks"
     },
     {
       "schemaVersion": 3,
@@ -22902,7 +22902,7 @@
           "fix": "Use either { property, value } or { property, remove: true }."
         }
       ],
-      "route": "/reference/actions/extension/#extension-actions"
+      "route": "/reference/actions/extension/#editsemantic"
     },
     {
       "schemaVersion": 3,
@@ -23013,7 +23013,7 @@
       ],
       "snippet": "program.createGraphics({ id: \"graphic-1\", type: \"collection\" })",
       "errors": [],
-      "route": "/reference/actions/extension/#extension-actions"
+      "route": "/reference/actions/extension/#creategraphics"
     },
     {
       "schemaVersion": 3,
@@ -23099,7 +23099,7 @@
           "fix": "Use either { target, property, value } or { target, remove: true }."
         }
       ],
-      "route": "/reference/actions/extension/#extension-actions"
+      "route": "/reference/actions/extension/#editgraphics"
     },
     {
       "schemaVersion": 3,

@@ -35,6 +35,25 @@
   position: relative;
 }
 
+.docs-search-status {
+  display: block;
+  margin-top: 0.25rem;
+  color: var(--docs-muted);
+  font-size: 0.75rem;
+  line-height: 1.4;
+}
+
+.docs-search > button {
+  min-height: 2.5rem;
+  margin-top: 0.4rem;
+  padding: 0.35rem 0.65rem;
+  border: 1px solid var(--docs-border);
+  border-radius: 0.35rem;
+  background: white;
+  color: var(--docs-accent);
+  font: inherit;
+}
+
 .docs-search__control kbd {
   position: absolute;
   top: 50%;

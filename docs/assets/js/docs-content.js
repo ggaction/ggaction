@@ -24,6 +24,7 @@
       if (!metadata) continue;
 
       heading.classList.add("docs-action-heading");
+      heading.dataset.actionName = name;
       heading.dataset.tocLabel = name;
       code.textContent = name;
 
@@ -83,12 +84,34 @@
         const matches = !query || [
           region.name, region.operation, ...(region.authoringRoles ?? []), region.layer, region.domain
         ].join(" ").toLowerCase().includes(query);
-        for (const node of region.nodes) node.hidden = !matches;
+        for (const node of region.nodes) {
+          node.hidden = !matches;
+          const scrollRegion = node.closest(".docs-scroll-region");
+          if (scrollRegion) scrollRegion.hidden = !matches;
+        }
         if (matches) visible += 1;
       }
       status.textContent = `${visible} of ${regions.length} actions`;
+      document.dispatchEvent(new CustomEvent("docs:sections-changed"));
     }
     input.addEventListener("input", update);
+    function revealTarget(hash) {
+      if (!hash) return;
+      let target;
+      try { target = document.getElementById(decodeURIComponent(hash.slice(1))); }
+      catch { return; }
+      if (!target?.closest("[hidden]")) return;
+      input.value = "";
+      update();
+      target.scrollIntoView({ block: "start" });
+    }
+    window.addEventListener("hashchange", () => revealTarget(window.location.hash));
+    document.addEventListener("click", event => {
+      const link = event.target.closest("a[href]");
+      if (!link) return;
+      const url = new URL(link.href, document.baseURI);
+      if (url.origin === location.origin && url.pathname === location.pathname) revealTarget(url.hash);
+    });
     update();
   }
 
@@ -178,6 +201,7 @@
   function wrapScrollable(element, className, label) {
     const region = document.createElement("div");
     region.className = `docs-scroll-region ${className}`;
+    region.hidden = element.hidden;
     element.before(region);
     region.append(element);
     const update = () => updateOverflow(region, element, label);

@@ -918,7 +918,7 @@ test("classifies every declared ChartProgram action in the reference", async () 
   assert.equal(new Set(methods).size, methods.length);
   for (const method of methods) {
     assert.equal(
-      references.filter(section => documentedCalls(section).has(method)).length,
+      references.filter(section => section.split("\n").includes("## `" + method + "`")).length,
       1,
       `${method} must have one canonical family reference`
     );

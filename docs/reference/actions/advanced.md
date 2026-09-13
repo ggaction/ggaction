@@ -1,16 +1,102 @@
 ---
 layout: default
 title: Advanced Chart Actions
-description: Author explicit semantic resources and control individual Cartesian axis and grid components.
+description: Assign atomic channels and manage reusable final-item selections.
 ---
 
 # Advanced Chart Actions
 
-Use these actions when the complete chart and guide facades do not expose the required control.
+Each declared action has an exact signature and its own stable link. Option tables are generated from types; behavior prose names the owning workflow and its constraints. API layer and H0–H4 authoring role are independent classifications.
 
-Use these actions for explicit semantic resources or focused axis control.
+## `encodeChannels`
 
-## Reusable mark selections
+**API layer:** advanced. **Authoring roles:** H2.
+
+```typescript
+encodeChannels(options: EncodeChannelsOptions): ChartProgram;
+```
+
+Named option contracts: [`EncodeChannelsOptions`](./../types.md#type-encodechannelsoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `target` | Required | `string` |
+| `channels` | Required | `AtLeastOne<EncodingChannelAssignments>` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
+
+```javascript
+encodeChannels({
+  target,
+  channels: {
+    x?, y?, x2?, y2?, theta?, r?, xOffset?, yOffset?,
+    group?, pathOrder?, color?, stroke?, size?, shape?, opacity?,
+    strokeWidth?, strokeDash?, angle?, text?
+  }
+})
+```
+
+Atomically replace one or more encodings on one explicit mark. Each channel
+uses the same options and validation as its focused `encode*` action, without a
+nested `target`, `coordinate`, or `id`; a nested `scale.id` remains valid. The
+request must contain at least one of the 19 listed keys. Omitted channels are
+preserved, and `null` does not remove an encoding.
+
+The action validates one final channel and scale state, then resolves affected
+scales and rematerializes each target, shared-scale consumer, dependent mark,
+and legend once. Channel object insertion order cannot change the result or
+trace order. Conflicting explicit properties for a shared scale ID fail before
+the original program changes. Rebound Cartesian axes keep their style and title;
+coupled default ticks and labels switch between categorical domain values and
+continuous count mode when the final scale family changes. Incompatible explicit
+guide values or a continuous-only grid make the whole request fail atomically.
+This advanced authoring action is available only
+from `ggaction`; use the focused encoding actions from `ggaction/basic`.
+
+
+## `selectMarks`
+
+**API layer:** advanced. **Authoring roles:** H3.
+
+```typescript
+selectMarks(options: SelectMarksOptions): ChartProgram;
+```
+
+Named option contracts: [`SelectMarksOptions`](./../types.md#type-selectmarksoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `id` | Optional / branch-dependent | `string \| undefined` |
+| `target` | Optional / branch-dependent | `string \| undefined` |
+| `grain` | Optional / branch-dependent | `"item" \| "stack" \| undefined` |
+| `field` | Optional / branch-dependent | `string \| undefined` |
+| `channel` | Optional / branch-dependent | `"color" \| "group" \| "opacity" \| "radius" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth" \| "theta" \| "x" \| "x2" \| "xOffset" \| "y" \| "y2" \| "yOffset" \| undefined` |
+| `property` | Optional / branch-dependent | `MarkGraphicProperty \| undefined` |
+| `op` | Required | `"eq" \| "gt" \| "gte" \| "lt" \| "lte" \| "max" \| "min" \| "neq" \| "oneOf" \| "range"` |
+| `value` | Optional / branch-dependent | `unknown` |
+| `values` | Optional / branch-dependent | `readonly unknown[]` |
+| `min` | Optional / branch-dependent | `string \| number` |
+| `max` | Optional / branch-dependent | `string \| number` |
+| `inclusive` | Optional / branch-dependent | `boolean \| undefined` |
+| `count` | Optional / branch-dependent | `number \| undefined` |
+| `groupBy` | Optional / branch-dependent | `string \| readonly string[] \| undefined` |
+| `ties` | Optional / branch-dependent | `"all" \| "first" \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
 selectMarks({ id?, target?, grain?, field | channel | property, op, ...operatorOptions })
@@ -23,7 +109,42 @@ support `"stack"`. Fields are data values, channels are pre-scale semantic
 values, and properties are concrete graphical values.
 [Mark selection and highlighting](../../api/appearance/selection-and-highlighting.md#mark-selection-and-highlighting)
 
+
 ## `editMarkSelection`
+
+**API layer:** advanced. **Authoring roles:** H3.
+
+```typescript
+editMarkSelection(options: EditMarkSelectionOptions): ChartProgram;
+```
+
+Named option contracts: [`EditMarkSelectionOptions`](./../types.md#type-editmarkselectionoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `selection` | Optional / branch-dependent | `string \| undefined` |
+| `grain` | Optional / branch-dependent | `"item" \| "stack" \| undefined` |
+| `field` | Optional / branch-dependent | `string \| undefined` |
+| `channel` | Optional / branch-dependent | `"color" \| "group" \| "opacity" \| "radius" \| "shape" \| "size" \| "stroke" \| "strokeDash" \| "strokeWidth" \| "theta" \| "x" \| "x2" \| "xOffset" \| "y" \| "y2" \| "yOffset" \| undefined` |
+| `property` | Optional / branch-dependent | `MarkGraphicProperty \| undefined` |
+| `op` | Required | `"eq" \| "gt" \| "gte" \| "lt" \| "lte" \| "max" \| "min" \| "neq" \| "oneOf" \| "range"` |
+| `value` | Optional / branch-dependent | `unknown` |
+| `values` | Optional / branch-dependent | `readonly unknown[]` |
+| `min` | Optional / branch-dependent | `string \| number` |
+| `max` | Optional / branch-dependent | `string \| number` |
+| `inclusive` | Optional / branch-dependent | `boolean \| undefined` |
+| `count` | Optional / branch-dependent | `number \| undefined` |
+| `groupBy` | Optional / branch-dependent | `string \| readonly string[] \| undefined` |
+| `ties` | Optional / branch-dependent | `"all" \| "first" \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
 editMarkSelection({ selection?, grain?, field | channel | property, op, ...operatorOptions })
@@ -34,7 +155,29 @@ mark target. Dependent highlights and exact categorical legend reflection are
 replayed from a clean baseline.
 [Selection lifecycle](../../api/appearance/selection-and-highlighting.md#editing-and-removing-stored-intent)
 
+
 ## `removeMarkSelection`
+
+**API layer:** advanced. **Authoring roles:** H3.
+
+```typescript
+removeMarkSelection(options?: RemoveMarkSelectionOptions): ChartProgram;
+```
+
+Named option contracts: [`RemoveMarkSelectionOptions`](./../types.md#type-removemarkselectionoptions).
+
+<details markdown="1">
+<summary>Declared options</summary>
+
+Generated from the current TypeScript declaration. Union branches can require different combinations; optional does not mean every combination is valid.
+
+| Option | Presence | Type |
+| --- | --- | --- |
+| `selection` | Optional / branch-dependent | `string \| undefined` |
+
+</details>
+
+The following call patterns are abbreviated examples; the declaration above owns the complete option set.
 
 ```javascript
 removeMarkSelection({ selection? } = {})
@@ -44,236 +187,42 @@ Release one stored selection after removing its dependent highlight. Other
 selection and highlight assignments remain active.
 [Selection lifecycle](../../api/appearance/selection-and-highlighting.md#editing-and-removing-stored-intent)
 
-## Focused channel scale editors
 
-```javascript
-editXScale({ id?, target?, type?, domain?, range?, ...positionOptions })
-editYScale({ id?, target?, type?, domain?, range?, ...positionOptions })
-editXOffsetScale({ target, domain?, reverse?, padding?, paddingInner?, paddingOuter?, align? })
-editYOffsetScale({ target, domain?, reverse?, padding?, paddingInner?, paddingOuter?, align? })
-editParallelScale({ target, dimension, type?, domain?, range?, ...dimensionOptions })
-editThetaScale({ id?, target?, type?, domain?, range?, ...angularOptions })
-editRScale({ id?, target?, type?, domain?, range?, radialMapping?, ...radialOptions })
-editColorScale({ id?, target?, type?, domain?, range?, palette?, interpolate?, midpoint?, unknown? })
-editStrokeScale({ target, type?, domain?, range?, palette?, interpolate?, midpoint?, unknown? })
-editSizeScale({ id?, target?, type?, domain?, range?, unknown?, clamp?, reverse?, base?, exponent? })
-editOpacityScale({ id?, target?, type?, domain?, range?, nice?, zero?, clamp?, reverse?, unknown? })
-editShapeScale({ id?, target?, type?, domain?, range?, unknown? })
-editStrokeWidthScale({ id?, target?, type?, domain?, range?, ...quantitativeOptions })
-editStrokeDashScale({ id?, target?, type?, domain?, range? })
-```
+## Previous reference location {#reusable-mark-selections}
 
-Edit the scale bound to one semantic channel without requiring its generated
-ID. Explicit `id` and `target` selectors must agree. Otherwise the current
-mark's channel scale wins, followed by a unique channel scale across all marks;
-ambiguity is an error. Every action delegates to `editScale`, which validates
-the channel-specific patch and refreshes all shared marks and guides.
-`editParallelScale` is the field-selected exception: both `target` and the
-exact Parallel `dimension` field are required, and its generated scale ID is
-resolved internally.
-The offset editors also require `target`; they resolve only that mark's matching
-nested offset scale. Their concrete range remains derived from the parent
-categorical slot, while the semantic scale owns domain, reverse, padding, and
-alignment.
-`editStrokeScale` likewise requires a mark `target` and rejects raw scale IDs.
-It edits the target's field-driven stroke mapping and accepts a color/stroke
-shared scale when every connected consumer remains compatible.
-Size scale ranges are glyph areas. Continuous size scales accept `clamp` and
-`reverse`; logarithmic scales accept `base`, and power scales require
-`exponent`. Quantize, quantile, and threshold use explicit nondecreasing area
-ranges. A family transition requires an explicit new domain and the destination
-range rules to be satisfied.
-[Scale options](../../api/scales.md)
+This contract moved: [open the current action or shared contract](./advanced.md#selectmarks).
 
-## Semantic resources and regression layers
+## Previous reference location {#focused-channel-scale-editors}
 
-```javascript
-createCoordinate({ id?, type?, layers? })
-editCoordinate({ target, aspect?, polarFrame? })
-createDerivedData({
-  id,
-  source,
-  transform: [DatasetTransform]
-})
-createRegressionBand({
-  id, data, x, lower, upper, groupBy?, coordinate, xScale, yScale,
-  color?, opacity?, stroke?, strokeWidth?, curve?, missing?
-})
-editRegressionBand({ target?, color?, opacity?, stroke?, strokeWidth?, curve?, missing? })
-createRegressionLine({
-  id, data, x, y, groupBy?, coordinate, xScale, yScale,
-  colorScale?, strokeWidth?, curve?, missing?
-})
-editRegressionLine({ target?, strokeWidth?, curve?, missing? })
-```
+This contract moved: [open the current action or shared contract](./charts-data.md#focused-channel-scale-editors).
 
-These actions explicitly author named semantic resources or the component
-layers normally owned by `createRegression`.
+## Previous reference location {#semantic-resources-and-regression-layers}
 
-`createCoordinate.type` accepts `"cartesian"`, `"polar"`, or `"parallel"`.
-Parallel coordinates normally create their resource through
-`encodeParallelCoordinates` or `createParallelCoordinates`.
+This contract moved: [open the current action or shared contract](./statistics.md#semantic-resources-and-regression-layers).
 
-`editCoordinate.aspect` accepts `"auto"` or a frame/data ratio request with
-optional start/center/end alignment. Frame mode supports Cartesian, Polar, and
-Parallel coordinates. Data mode requires one complete Cartesian quantitative
-linear x/y scale pair and preserves equal-unit intent through scale-domain and
-Canvas edits. The target coordinate ID is always explicit.
-`editCoordinate.polarFrame` accepts `"auto"` or a Polar-only center/radius
-request. Center values are normalized effective-bound fractions; radius is a
-fraction of the largest fitting radius or a positive fixed pixel value. The
-frame object is replaced as a whole, and aspect is resolved before the Polar
-frame and radial scale range.
+## Previous reference location {#createparallelaxes-createparallelaxis-editparallelaxis-removeparallelaxis-removeparallelaxes}
 
-`createDerivedData` stores immutable source and transform provenance only; it
-does not materialize values. Chart facades and mark creation reject definition-only
-datasets with an error explaining that materialized values are required.
-Its public `DatasetTransform` union is listed in the canonical
-[transform table](../../api/data/source-and-derived.md#create-derived-data).
-A bare object, empty array, or multi-transform pipeline is invalid. Focused
-`create*Data` helpers validate fields, apply defaults, and materialize values;
-raw provenance objects have their own normalized requirements.
+This contract moved: [open the current action or shared contract](./guides.md#createparallelaxes-createparallelaxis-editparallelaxis-removeparallelaxis-removeparallelaxes).
 
-## `createParallelAxes`, `createParallelAxis`, `editParallelAxis`, `removeParallelAxis`, `removeParallelAxes`
+## Previous reference location {#complete-single-channel-axes}
 
-```javascript
-createParallelAxes({ target?, coordinate? })
-createParallelAxis({ field, target?, line?, ticks?, labels?, ticksAndLabels?, title? })
-editParallelAxis({ field, target?, line?, ticks?, labels?, ticksAndLabels?, title? })
-removeParallelAxis({ field, target? })
-removeParallelAxes({ target?, coordinate? })
-```
+This contract moved: [open the current action or shared contract](./guides.md#complete-single-channel-axes).
 
-Full-only field-selected Parallel guides. Create requires missing resources;
-edit/removal requires existing resources. Component `false` skips creation or
-removes an existing component. Group and individual tick/label options are
-exclusive. Field recipes and explicit titles survive dimension reordering.
-The last component removal clears the guide owner. [Axes](../../api/axes.md) owns
-exact styles, defaults, inference, validation and replay behavior.
+## Previous reference location {#complete-axis-removal}
 
-## Complete single-channel axes
+This contract moved: [open the current action or shared contract](./guides.md#complete-axis-removal).
 
-```javascript
-createXAxis({ scale?, coordinate?, position?, line?, ticksAndLabels?, title? })
-createYAxis({ scale?, coordinate?, position?, line?, ticksAndLabels?, title? })
-editXAxis({ position?, line?: false | {...}, ticks?: false | {...},
-  labels?: false | {...}, ticksAndLabels?: false | {...}, title?: false | {...} })
-editYAxis({ position?, line?: false | {...}, ticks?: false | {...},
-  labels?: false | {...}, ticksAndLabels?: false | {...}, title?: false | {...} })
-```
+## Previous reference location {#axis-lines-ticks-and-labels}
 
-Cartesian and Polar complete-axis creators accept `false` for `line`,
-`ticksAndLabels`, or `title` to omit those components; at least one must remain
-enabled. Complete-axis edits update only the selected components of an existing axis.
-Each component accepts its edit object or `false` for removal. Use
-`ticksAndLabels` for a coordinated tick/label edit or removal, or `ticks` and
-`labels` for independent edits/removals; do not combine both forms. Removal
-preserves scale, coordinate, encoding, and data, while the last component also
-cleans the empty axis state.
+This contract moved: [open the current action or shared contract](./guides.md#axis-lines-ticks-and-labels).
 
-## Complete axis removal
+## Previous reference location {#ticklabel-groups-and-axis-titles}
 
-```javascript
-removeXAxis({ coordinate?, scale? })
-removeYAxis({ coordinate?, scale? })
-```
+This contract moved: [open the current action or shared contract](./guides.md#ticklabel-groups-and-axis-titles).
 
-Remove one complete Cartesian axis. Optional selectors must match the existing
-resource. [Axes](../../api/axes.md)
+## Previous reference location {#directional-grids}
 
-## Axis lines, ticks, and labels
-
-```javascript
-createXAxisLine({ scale?, position?, color?, lineWidth? })
-createYAxisLine({ scale?, position?, color?, lineWidth? })
-editXAxisLine({ position?, color?, lineWidth? })
-editYAxisLine({ position?, color?, lineWidth? })
-
-createXAxisTicks({ scale?, position?, count?, values?, length?, color?, lineWidth? })
-createYAxisTicks({ scale?, position?, count?, values?, length?, color?, lineWidth? })
-editXAxisTicks({ position?, count?, values?, length?, color?, lineWidth? })
-editYAxisTicks({ position?, count?, values?, length?, color?, lineWidth? })
-
-createXAxisLabels({
-  scale?, position?, count?, values?, offset?, format?, color?,
-  fontSize?, fontFamily?, fontWeight?
-})
-createYAxisLabels({
-  scale?, position?, count?, values?, offset?, format?, color?,
-  fontSize?, fontFamily?, fontWeight?
-})
-editXAxisLabels({
-  position?, count?, values?, offset?, format?, color?,
-  fontSize?, fontFamily?, fontWeight?
-})
-editYAxisLabels({
-  position?, count?, values?, offset?, format?, color?,
-  fontSize?, fontFamily?, fontWeight?
-})
-```
-
-Axis `position` is `"bottom" | "top"` for x and `"left" | "right"` for y.
-Label `format` accepts `"auto"`, `{ decimals }`, `.0`–`.12` precision with
-`f`, `%`, or `e`, or a UTC sequence of `%Y/%m/%d/%b` directives and literals
-when compatible with the resolved scale. Use `%%` for a literal percent;
-unknown or dangling directives reject.
-
-## Tick/label groups and axis titles
-
-```javascript
-createXAxisTicksAndLabels({ scale?, position?, count?, values?, ticks?, labels? })
-createYAxisTicksAndLabels({ scale?, position?, count?, values?, ticks?, labels? })
-editXAxisTicksAndLabels({ position?, count?, values?, ticks?, labels? })
-editYAxisTicksAndLabels({ position?, count?, values?, ticks?, labels? })
-
-createXAxisTitle({
-  text?, scale?, position?, at?, offset?, rotation?, color?,
-  fontSize?, fontFamily?, fontWeight?
-})
-createYAxisTitle({
-  text?, scale?, position?, at?, offset?, rotation?, color?,
-  fontSize?, fontFamily?, fontWeight?
-})
-editXAxisTitle({
-  text?, position?, at?, offset?, rotation?, color?,
-  fontSize?, fontFamily?, fontWeight?
-})
-editYAxisTitle({
-  text?, position?, at?, offset?, rotation?, color?,
-  fontSize?, fontFamily?, fontWeight?
-})
-```
-
-Cartesian title `rotation` accepts a finite legacy number in radians or
-`{ value, unit: "degrees" | "radians" }`. Both forms normalize to concrete
-radians. Polar component `angle` remains degree-valued placement.
-
-## Directional grids
-
-```javascript
-createHorizontalGrid({ scale?, coordinate?, count?, values?, color?, lineWidth?, strokeDash? })
-createVerticalGrid({ scale?, coordinate?, count?, values?, color?, lineWidth?, strokeDash? })
-editHorizontalGrid({ count?, values?, color?, lineWidth?, strokeDash? })
-editVerticalGrid({ count?, values?, color?, lineWidth?, strokeDash? })
-editGrid({
-  horizontal?: { count?, values?, color?, lineWidth?, strokeDash? },
-  vertical?: { count?, values?, color?, lineWidth?, strokeDash? }
-})
-```
-
-Directional grid edits require an existing grid. Their `values` option accepts
-an exact finite array or `"auto"` to restore current axis/scale inference.
-`editGrid` applies one or both directional edits through the same actions.
-
-```javascript
-removeGrid({ horizontal?, vertical? })
-```
-
-Remove all existing directions when omitted, or only directions selected with
-`true`.
-
-See [Coordinates](../../api/coordinates.md) and
-[Advanced axis components](../../advanced/axis-components.md).
+This contract moved: [open the current action or shared contract](./guides.md#directional-grids).
 
 ## Related
 

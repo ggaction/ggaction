@@ -4,6 +4,7 @@ import { fileURLToPath } from "node:url";
 
 import { buildRuntimeSignatureSection } from "./generate-doc-signatures.js";
 import { authoringRoles } from "./action-card-metadata.js";
+import { explicitActionPages } from "./doc-action-entries.js";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 const docsRoot = path.join(root, "docs");
@@ -134,7 +135,7 @@ export async function buildDocActionReference() {
   const chartSection = h2Section(source, "Chart Authoring API", "Advanced Chart API");
   const blocks = h3Blocks(chartSection);
   const outputs = new Map();
-  const locations = new Map();
+  let locations = new Map();
 
   for (const family of families) {
     const selected = blocks.filter(block => {
@@ -211,9 +212,16 @@ export async function buildDocActionReference() {
     throw new Error(`Reference locations are missing: ${missing.map(action => action.name).join(", ")}`);
   }
 
+  const explicit = await explicitActionPages({
+    catalog, sections: [chartSection, advanced, extension],
+    legacyLocations: locations, families, page
+  });
+  for (const [file, body] of explicit.outputs) outputs.set(file, body);
+  locations = explicit.locations;
+
   const cards = [
     ...families.map(family => [family.title, `/reference/actions/${family.id}/`, family.description]),
-    ["Advanced chart actions", "/reference/actions/advanced/", "Explicit resources and focused axis or grid control."],
+    ["Advanced chart actions", "/reference/actions/advanced/", "Atomic channel changes and reusable mark selections."],
     ["Extension actions", "/reference/actions/extension/", "Wrapped actions and public authoring primitives."],
     ["Program and rendering functions", "/reference/runtime/", "Package functions, renderers, and internal trace boundaries."],
     ["Exact TypeScript contract", "/reference/types/", "The complete generated `ChartProgram` action interface."]

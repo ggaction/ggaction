@@ -14,7 +14,7 @@ Every direct action accepts one option object and returns a new immutable `Chart
   <a href="{{ '/reference/actions/encodings/' | relative_url }}"><strong>Encoding Actions</strong><span>Map fields and constants to position, grouping, color, shape, size, and appearance.</span></a>
   <a href="{{ '/reference/actions/statistics/' | relative_url }}"><strong>Statistical Layer Actions</strong><span>Create and edit regression, density, interval, error, and box-plot layers.</span></a>
   <a href="{{ '/reference/actions/guides/' | relative_url }}"><strong>Guide, Axis, Grid, and Title Actions</strong><span>Create, edit, and remove axes, grids, legends, and chart titles.</span></a>
-  <a href="{{ '/reference/actions/advanced/' | relative_url }}"><strong>Advanced chart actions</strong><span>Explicit resources and focused axis or grid control.</span></a>
+  <a href="{{ '/reference/actions/advanced/' | relative_url }}"><strong>Advanced chart actions</strong><span>Atomic channel changes and reusable mark selections.</span></a>
   <a href="{{ '/reference/actions/extension/' | relative_url }}"><strong>Extension actions</strong><span>Wrapped actions and public authoring primitives.</span></a>
   <a href="{{ '/reference/runtime/' | relative_url }}"><strong>Program and rendering functions</strong><span>Package functions, renderers, and internal trace boundaries.</span></a>
   <a href="{{ '/reference/types/' | relative_url }}"><strong>Exact TypeScript contract</strong><span>The complete generated `ChartProgram` action interface.</span></a>
@@ -48,11 +48,11 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createCanvas`](./actions/charts-data.md#createcanvas) | H3 | user-facing | core |
 | [`createCompleteData`](./actions/statistics.md#createcompletedata) | H1 | user-facing | statistics |
 | [`createComputedData`](./actions/statistics.md#createcomputeddata) | H1 | user-facing | statistics |
-| [`createCoordinate`](./actions/advanced.md#semantic-resources-and-regression-layers) | H2 | user-facing | core |
+| [`createCoordinate`](./actions/charts-data.md#createcoordinate) | H2 | user-facing | core |
 | [`createData`](./actions/charts-data.md#createdata) | H2 | user-facing | core |
 | [`createDensityData`](./actions/charts-data.md#createdensitydata) | H2 | user-facing | core |
 | [`createDensityPlot`](./actions/statistics.md#createdensityplot) | H0, H1 | user-facing | statistics |
-| [`createDerivedData`](./actions/advanced.md#semantic-resources-and-regression-layers) | H2 | user-facing | core |
+| [`createDerivedData`](./actions/charts-data.md#createderiveddata) | H2 | user-facing | core |
 | [`createDotPlot`](./actions/charts-data.md#createdotplot) | H0, H1 | user-facing | charts |
 | [`createDumbbellPlot`](./actions/charts-data.md#createdumbbellplot) | H0, H1 | user-facing | charts |
 | [`createECDFData`](./actions/statistics.md#createecdfdata) | H1 | user-facing | statistics |
@@ -61,13 +61,13 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createErrorBar`](./actions/statistics.md#createerrorbar) | H1 | user-facing | statistics |
 | [`createFoldData`](./actions/statistics.md#createfolddata) | H1 | user-facing | statistics |
 | [`createGradientPlot`](./actions/statistics.md#creategradientplot) | H0, H1 | user-facing | statistics |
-| [`createGraphics`](./actions/extension.md#extension-actions) | H4 | primitive | primitives |
+| [`createGraphics`](./actions/extension.md#creategraphics) | H4 | primitive | primitives |
 | [`createGrid`](./actions/guides.md#creategrid) | H3 | user-facing | grid |
 | [`createGuides`](./actions/guides.md#createguides) | H3 | user-facing | legend_and_title |
 | [`createHeatmap`](./actions/charts-data.md#createheatmap) | H0 | user-facing | charts |
 | [`createHistogram`](./actions/charts-data.md#createhistogram) | H0, H1 | user-facing | charts |
 | [`createHorizonPlot`](./actions/statistics.md#createhorizonplot) | H0, H1 | user-facing | statistics |
-| [`createHorizontalGrid`](./actions/advanced.md#directional-grids) | H3 | user-facing | grid |
+| [`createHorizontalGrid`](./actions/guides.md#createhorizontalgrid) | H3 | user-facing | grid |
 | [`createImputedData`](./actions/statistics.md#createimputeddata) | H1 | user-facing | statistics |
 | [`createIntervalData`](./actions/statistics.md#createintervaldata) | H1 | user-facing | statistics |
 | [`createIntervalPlot`](./actions/charts-data.md#createintervalplot) | H0, H1 | user-facing | charts |
@@ -77,8 +77,8 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createLollipopPlot`](./actions/charts-data.md#createlollipopplot) | H0, H1 | user-facing | charts |
 | [`createMarkLabels`](./actions/marks.md#createmarklabels) | H1, H2 | user-facing | marks |
 | [`createNormalizedData`](./actions/statistics.md#createnormalizeddata) | H1 | user-facing | statistics |
-| [`createParallelAxes`](./actions/advanced.md#createparallelaxes-createparallelaxis-editparallelaxis-removeparallelaxis-removeparallelaxes) | H3 | user-facing | axes |
-| [`createParallelAxis`](./actions/advanced.md#createparallelaxes-createparallelaxis-editparallelaxis-removeparallelaxis-removeparallelaxes) | H3 | user-facing | axes |
+| [`createParallelAxes`](./actions/guides.md#createparallelaxes) | H3 | user-facing | axes |
+| [`createParallelAxis`](./actions/guides.md#createparallelaxis) | H3 | user-facing | axes |
 | [`createParallelCoordinates`](./actions/charts-data.md#createparallelcoordinates) | H0 | user-facing | charts |
 | [`createPiePlot`](./actions/charts-data.md#createpieplot) | H0 | user-facing | charts |
 | [`createPointMark`](./actions/marks.md#createpointmark) | H2 | user-facing | marks |
@@ -97,14 +97,14 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createReferenceBand`](./actions/marks.md#createreferenceband) | H1, H2 | user-facing | marks |
 | [`createReferenceLine`](./actions/marks.md#createreferenceline) | H1, H2 | user-facing | marks |
 | [`createRegression`](./actions/statistics.md#createregression) | H1 | user-facing | statistics |
-| [`createRegressionBand`](./actions/advanced.md#semantic-resources-and-regression-layers) | H1 | user-facing | statistics |
+| [`createRegressionBand`](./actions/statistics.md#createregressionband) | H1 | user-facing | statistics |
 | [`createRegressionData`](./actions/charts-data.md#createregressiondata) | H2 | user-facing | core |
-| [`createRegressionLine`](./actions/advanced.md#semantic-resources-and-regression-layers) | H1 | user-facing | statistics |
+| [`createRegressionLine`](./actions/statistics.md#createregressionline) | H1 | user-facing | statistics |
 | [`createRegressionPlot`](./actions/charts-data.md#createregressionplot) | H0, H1 | user-facing | charts |
 | [`createRosePlot`](./actions/charts-data.md#createroseplot) | H0 | user-facing | charts |
 | [`createRugPlot`](./actions/charts-data.md#createrugplot) | H0 | user-facing | charts |
 | [`createRuleMark`](./actions/marks.md#createrulemark) | H2 | user-facing | marks |
-| [`createScale`](./actions/extension.md#extension-actions) | H2 | user-facing | core |
+| [`createScale`](./actions/charts-data.md#createscale) | H2 | user-facing | core |
 | [`createScatterPlot`](./actions/charts-data.md#createscatterplot) | H0 | user-facing | charts |
 | [`createStackData`](./actions/statistics.md#createstackdata) | H1 | user-facing | statistics |
 | [`createStripPlot`](./actions/charts-data.md#createstripplot) | H0 | user-facing | charts |
@@ -119,70 +119,70 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`createTickMark`](./actions/marks.md#createtickmark) | H2 | user-facing | marks |
 | [`createTimeUnitData`](./actions/charts-data.md#createtimeunitdata) | H2 | user-facing | core |
 | [`createTitle`](./actions/guides.md#createtitle) | H3 | user-facing | legend_and_title |
-| [`createVerticalGrid`](./actions/advanced.md#directional-grids) | H3 | user-facing | grid |
+| [`createVerticalGrid`](./actions/guides.md#createverticalgrid) | H3 | user-facing | grid |
 | [`createViolinPlot`](./actions/statistics.md#createviolinplot) | H0, H1 | user-facing | statistics |
 | [`createWindowData`](./actions/charts-data.md#createwindowdata) | H2 | user-facing | core |
-| [`createXAxis`](./actions/advanced.md#complete-single-channel-axes) | H3 | user-facing | axes |
-| [`createXAxisLabels`](./actions/advanced.md#axis-lines-ticks-and-labels) | H3 | user-facing | axes |
-| [`createXAxisLine`](./actions/advanced.md#axis-lines-ticks-and-labels) | H3 | user-facing | axes |
-| [`createXAxisTicks`](./actions/advanced.md#axis-lines-ticks-and-labels) | H3 | user-facing | axes |
-| [`createXAxisTicksAndLabels`](./actions/advanced.md#ticklabel-groups-and-axis-titles) | H3 | user-facing | axes |
-| [`createXAxisTitle`](./actions/advanced.md#ticklabel-groups-and-axis-titles) | H3 | user-facing | axes |
-| [`createYAxis`](./actions/advanced.md#complete-single-channel-axes) | H3 | user-facing | axes |
-| [`createYAxisLabels`](./actions/advanced.md#axis-lines-ticks-and-labels) | H3 | user-facing | axes |
-| [`createYAxisLine`](./actions/advanced.md#axis-lines-ticks-and-labels) | H3 | user-facing | axes |
-| [`createYAxisTicks`](./actions/advanced.md#axis-lines-ticks-and-labels) | H3 | user-facing | axes |
-| [`createYAxisTicksAndLabels`](./actions/advanced.md#ticklabel-groups-and-axis-titles) | H3 | user-facing | axes |
-| [`createYAxisTitle`](./actions/advanced.md#ticklabel-groups-and-axis-titles) | H3 | user-facing | axes |
+| [`createXAxis`](./actions/guides.md#createxaxis) | H3 | user-facing | axes |
+| [`createXAxisLabels`](./actions/guides.md#createxaxislabels) | H3 | user-facing | axes |
+| [`createXAxisLine`](./actions/guides.md#createxaxisline) | H3 | user-facing | axes |
+| [`createXAxisTicks`](./actions/guides.md#createxaxisticks) | H3 | user-facing | axes |
+| [`createXAxisTicksAndLabels`](./actions/guides.md#createxaxisticksandlabels) | H3 | user-facing | axes |
+| [`createXAxisTitle`](./actions/guides.md#createxaxistitle) | H3 | user-facing | axes |
+| [`createYAxis`](./actions/guides.md#createyaxis) | H3 | user-facing | axes |
+| [`createYAxisLabels`](./actions/guides.md#createyaxislabels) | H3 | user-facing | axes |
+| [`createYAxisLine`](./actions/guides.md#createyaxisline) | H3 | user-facing | axes |
+| [`createYAxisTicks`](./actions/guides.md#createyaxisticks) | H3 | user-facing | axes |
+| [`createYAxisTicksAndLabels`](./actions/guides.md#createyaxisticksandlabels) | H3 | user-facing | axes |
+| [`createYAxisTitle`](./actions/guides.md#createyaxistitle) | H3 | user-facing | axes |
 | [`editArcMark`](./actions/marks.md#editarcmark) | H3 | user-facing | marks |
 | [`editAreaMark`](./actions/marks.md#editareamark) | H3 | user-facing | marks |
 | [`editBarMark`](./actions/marks.md#editbarmark) | H3 | user-facing | marks |
 | [`editBin2DData`](./actions/charts-data.md#editbin2ddata) | H2 | user-facing | core |
-| [`editBinData`](./actions/statistics.md#focused-statistical-data-editing) | H1, H3 | user-facing | statistics |
+| [`editBinData`](./actions/statistics.md#editbindata) | H1, H3 | user-facing | statistics |
 | [`editBoxPlot`](./actions/statistics.md#editboxplot) | H1, H3 | user-facing | statistics |
 | [`editCanvas`](./actions/charts-data.md#editcanvas) | H3 | user-facing | core |
-| [`editColorScale`](./actions/advanced.md#focused-channel-scale-editors) | H2 | user-facing | core |
-| [`editCompleteData`](./actions/statistics.md#focused-statistical-data-editing) | H1, H3 | user-facing | statistics |
+| [`editColorScale`](./actions/charts-data.md#editcolorscale) | H2 | user-facing | core |
+| [`editCompleteData`](./actions/statistics.md#editcompletedata) | H1, H3 | user-facing | statistics |
 | [`editCompositionLayout`](./actions/charts-data.md#editcompositionlayout) | H3 | user-facing | composition |
-| [`editComputedData`](./actions/statistics.md#focused-statistical-data-editing) | H1, H3 | user-facing | statistics |
-| [`editCoordinate`](./actions/advanced.md#semantic-resources-and-regression-layers) | H2 | user-facing | core |
+| [`editComputedData`](./actions/statistics.md#editcomputeddata) | H1, H3 | user-facing | statistics |
+| [`editCoordinate`](./actions/charts-data.md#editcoordinate) | H2 | user-facing | core |
 | [`editDensity`](./actions/encodings.md#editdensity) | H2, H3 | user-facing | encodings |
-| [`editDensityData`](./actions/charts-data.md#focused-core-data-editing) | H2 | user-facing | core |
-| [`editDerivedData`](./actions/charts-data.md#focused-core-data-editing) | H2 | user-facing | core |
-| [`editECDFData`](./actions/statistics.md#focused-statistical-data-editing) | H1, H3 | user-facing | statistics |
+| [`editDensityData`](./actions/charts-data.md#editdensitydata) | H2 | user-facing | core |
+| [`editDerivedData`](./actions/charts-data.md#editderiveddata) | H2 | user-facing | core |
+| [`editECDFData`](./actions/statistics.md#editecdfdata) | H1, H3 | user-facing | statistics |
 | [`editECDFPlot`](./actions/charts-data.md#editecdfplot) | H1, H3 | user-facing | charts |
 | [`editEndpointPlot`](./actions/charts-data.md#editendpointplot) | H1, H3 | user-facing | charts |
-| [`editErrorBand`](./actions/statistics.md#editerrorband-and-editerrorbandboundary) | H1, H3 | user-facing | statistics |
-| [`editErrorBandBoundary`](./actions/statistics.md#editerrorband-and-editerrorbandboundary) | H1, H3 | user-facing | statistics |
+| [`editErrorBand`](./actions/statistics.md#editerrorband) | H1, H3 | user-facing | statistics |
+| [`editErrorBandBoundary`](./actions/statistics.md#editerrorbandboundary) | H1, H3 | user-facing | statistics |
 | [`editErrorBar`](./actions/statistics.md#editerrorbar) | H1, H3 | user-facing | statistics |
 | [`editFacetGuides`](./actions/charts-data.md#editfacetguides) | H3 | user-facing | composition |
 | [`editFacetHeaders`](./actions/charts-data.md#editfacetheaders) | H3 | user-facing | composition |
 | [`editFacetScales`](./actions/charts-data.md#editfacetscales) | H3 | user-facing | composition |
 | [`editFacetSource`](./actions/charts-data.md#editfacetsource) | H3 | user-facing | composition |
-| [`editFilteredData`](./actions/charts-data.md#focused-core-data-editing) | H2 | user-facing | core |
-| [`editFoldData`](./actions/statistics.md#focused-statistical-data-editing) | H1, H3 | user-facing | statistics |
+| [`editFilteredData`](./actions/charts-data.md#editfiltereddata) | H2 | user-facing | core |
+| [`editFoldData`](./actions/statistics.md#editfolddata) | H1, H3 | user-facing | statistics |
 | [`editGradientPlot`](./actions/statistics.md#editgradientplot) | H1, H3 | user-facing | statistics |
-| [`editGraphics`](./actions/extension.md#extension-actions) | H4 | primitive | primitives |
-| [`editGrid`](./actions/advanced.md#directional-grids) | H3 | user-facing | grid |
+| [`editGraphics`](./actions/extension.md#editgraphics) | H4 | primitive | primitives |
+| [`editGrid`](./actions/guides.md#editgrid) | H3 | user-facing | grid |
 | [`editHorizon`](./actions/encodings.md#edithorizon) | H2, H3 | user-facing | encodings |
-| [`editHorizontalGrid`](./actions/advanced.md#directional-grids) | H3 | user-facing | grid |
-| [`editImputedData`](./actions/statistics.md#focused-statistical-data-editing) | H1, H3 | user-facing | statistics |
-| [`editIntervalData`](./actions/statistics.md#focused-statistical-data-editing) | H1, H3 | user-facing | statistics |
+| [`editHorizontalGrid`](./actions/guides.md#edithorizontalgrid) | H3 | user-facing | grid |
+| [`editImputedData`](./actions/statistics.md#editimputeddata) | H1, H3 | user-facing | statistics |
+| [`editIntervalData`](./actions/statistics.md#editintervaldata) | H1, H3 | user-facing | statistics |
 | [`editLegend`](./actions/guides.md#editlegend) | H3 | user-facing | legend_and_title |
 | [`editLegendBlock`](./actions/guides.md#editlegendblock) | H3 | user-facing | legend_and_title |
-| [`editLegendBorder`](./actions/guides.md#focused-legend-edits) | H3 | user-facing | legend_and_title |
-| [`editLegendLabels`](./actions/guides.md#focused-legend-edits) | H3 | user-facing | legend_and_title |
-| [`editLegendLayout`](./actions/guides.md#focused-legend-edits) | H3 | user-facing | legend_and_title |
-| [`editLegendSymbols`](./actions/guides.md#focused-legend-edits) | H3 | user-facing | legend_and_title |
-| [`editLegendTitle`](./actions/guides.md#focused-legend-edits) | H3 | user-facing | legend_and_title |
+| [`editLegendBorder`](./actions/guides.md#editlegendborder) | H3 | user-facing | legend_and_title |
+| [`editLegendLabels`](./actions/guides.md#editlegendlabels) | H3 | user-facing | legend_and_title |
+| [`editLegendLayout`](./actions/guides.md#editlegendlayout) | H3 | user-facing | legend_and_title |
+| [`editLegendSymbols`](./actions/guides.md#editlegendsymbols) | H3 | user-facing | legend_and_title |
+| [`editLegendTitle`](./actions/guides.md#editlegendtitle) | H3 | user-facing | legend_and_title |
 | [`editLineMark`](./actions/marks.md#editlinemark) | H3 | user-facing | marks |
 | [`editMarkLabelPlacement`](./actions/marks.md#editmarklabelplacement) | H3 | user-facing | marks |
 | [`editMarkLabelSelection`](./actions/marks.md#editmarklabelselection) | H3 | user-facing | marks |
 | [`editMarkSelection`](./actions/advanced.md#editmarkselection) | H3 | advanced | mark-selection |
-| [`editNormalizedData`](./actions/statistics.md#focused-statistical-data-editing) | H1, H3 | user-facing | statistics |
-| [`editOpacityScale`](./actions/advanced.md#focused-channel-scale-editors) | H2 | user-facing | core |
-| [`editParallelAxis`](./actions/advanced.md#createparallelaxes-createparallelaxis-editparallelaxis-removeparallelaxis-removeparallelaxes) | H3 | user-facing | axes |
-| [`editParallelScale`](./actions/advanced.md#focused-channel-scale-editors) | H2 | user-facing | core |
+| [`editNormalizedData`](./actions/statistics.md#editnormalizeddata) | H1, H3 | user-facing | statistics |
+| [`editOpacityScale`](./actions/charts-data.md#editopacityscale) | H2 | user-facing | core |
+| [`editParallelAxis`](./actions/guides.md#editparallelaxis) | H3 | user-facing | axes |
+| [`editParallelScale`](./actions/charts-data.md#editparallelscale) | H2 | user-facing | core |
 | [`editPointMark`](./actions/marks.md#editpointmark) | H3 | user-facing | marks |
 | [`editRadialAxis`](./actions/guides.md#editradialaxis) | H3 | user-facing | axes |
 | [`editRadialAxisLabels`](./actions/guides.md#editradialaxislabels) | H3 | user-facing | axes |
@@ -193,20 +193,20 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editRaincloudPlot`](./actions/charts-data.md#editraincloudplot) | H1, H3 | user-facing | charts |
 | [`editRectMark`](./actions/marks.md#editrectmark) | H3 | user-facing | marks |
 | [`editRegression`](./actions/statistics.md#editregression) | H1, H3 | user-facing | statistics |
-| [`editRegressionBand`](./actions/advanced.md#semantic-resources-and-regression-layers) | H1, H3 | user-facing | statistics |
-| [`editRegressionData`](./actions/charts-data.md#focused-core-data-editing) | H2 | user-facing | core |
-| [`editRegressionLine`](./actions/advanced.md#semantic-resources-and-regression-layers) | H1, H3 | user-facing | statistics |
-| [`editRScale`](./actions/advanced.md#focused-channel-scale-editors) | H2 | user-facing | core |
+| [`editRegressionBand`](./actions/statistics.md#editregressionband) | H1, H3 | user-facing | statistics |
+| [`editRegressionData`](./actions/charts-data.md#editregressiondata) | H2 | user-facing | core |
+| [`editRegressionLine`](./actions/statistics.md#editregressionline) | H1, H3 | user-facing | statistics |
+| [`editRScale`](./actions/charts-data.md#editrscale) | H2 | user-facing | core |
 | [`editRuleMark`](./actions/marks.md#editrulemark) | H3 | user-facing | marks |
-| [`editScale`](./actions/extension.md#extension-actions) | H2 | user-facing | core |
-| [`editSemantic`](./actions/extension.md#extension-actions) | H4 | primitive | primitives |
-| [`editShapeScale`](./actions/advanced.md#focused-channel-scale-editors) | H2 | user-facing | core |
-| [`editSizeScale`](./actions/advanced.md#focused-channel-scale-editors) | H2 | user-facing | core |
-| [`editStackData`](./actions/statistics.md#focused-statistical-data-editing) | H1, H3 | user-facing | statistics |
-| [`editStrokeDashScale`](./actions/advanced.md#focused-channel-scale-editors) | H2 | user-facing | core |
-| [`editStrokeScale`](./actions/advanced.md#focused-channel-scale-editors) | H2 | user-facing | core |
-| [`editStrokeWidthScale`](./actions/advanced.md#focused-channel-scale-editors) | H2 | user-facing | core |
-| [`editSummaryData`](./actions/statistics.md#focused-statistical-data-editing) | H1, H3 | user-facing | statistics |
+| [`editScale`](./actions/charts-data.md#editscale) | H2 | user-facing | core |
+| [`editSemantic`](./actions/extension.md#editsemantic) | H4 | primitive | primitives |
+| [`editShapeScale`](./actions/charts-data.md#editshapescale) | H2 | user-facing | core |
+| [`editSizeScale`](./actions/charts-data.md#editsizescale) | H2 | user-facing | core |
+| [`editStackData`](./actions/statistics.md#editstackdata) | H1, H3 | user-facing | statistics |
+| [`editStrokeDashScale`](./actions/charts-data.md#editstrokedashscale) | H2 | user-facing | core |
+| [`editStrokeScale`](./actions/charts-data.md#editstrokescale) | H2 | user-facing | core |
+| [`editStrokeWidthScale`](./actions/charts-data.md#editstrokewidthscale) | H2 | user-facing | core |
+| [`editSummaryData`](./actions/statistics.md#editsummarydata) | H1, H3 | user-facing | statistics |
 | [`editTextMark`](./actions/marks.md#edittextmark) | H3 | user-facing | marks |
 | [`editThetaAxis`](./actions/guides.md#editthetaaxis) | H3 | user-facing | axes |
 | [`editThetaAxisLabels`](./actions/guides.md#editthetaaxislabels) | H3 | user-facing | axes |
@@ -214,32 +214,32 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editThetaAxisTicks`](./actions/guides.md#editthetaaxisticks) | H3 | user-facing | axes |
 | [`editThetaAxisTitle`](./actions/guides.md#editthetaaxistitle) | H3 | user-facing | axes |
 | [`editThetaGrid`](./actions/guides.md#editthetagrid) | H3 | user-facing | grid |
-| [`editThetaScale`](./actions/advanced.md#focused-channel-scale-editors) | H2 | user-facing | core |
+| [`editThetaScale`](./actions/charts-data.md#editthetascale) | H2 | user-facing | core |
 | [`editTickMark`](./actions/marks.md#edittickmark) | H3 | user-facing | marks |
-| [`editTimeUnitData`](./actions/charts-data.md#focused-core-data-editing) | H2 | user-facing | core |
+| [`editTimeUnitData`](./actions/charts-data.md#edittimeunitdata) | H2 | user-facing | core |
 | [`editTitle`](./actions/guides.md#edittitle) | H3 | user-facing | legend_and_title |
-| [`editVerticalGrid`](./actions/advanced.md#directional-grids) | H3 | user-facing | grid |
+| [`editVerticalGrid`](./actions/guides.md#editverticalgrid) | H3 | user-facing | grid |
 | [`editViolinPlot`](./actions/statistics.md#editviolinplot) | H1, H3 | user-facing | statistics |
-| [`editWindowData`](./actions/charts-data.md#focused-core-data-editing) | H2 | user-facing | core |
-| [`editXAxis`](./actions/advanced.md#complete-single-channel-axes) | H3 | user-facing | axes |
-| [`editXAxisLabels`](./actions/advanced.md#axis-lines-ticks-and-labels) | H3 | user-facing | axes |
-| [`editXAxisLine`](./actions/advanced.md#axis-lines-ticks-and-labels) | H3 | user-facing | axes |
-| [`editXAxisTicks`](./actions/advanced.md#axis-lines-ticks-and-labels) | H3 | user-facing | axes |
-| [`editXAxisTicksAndLabels`](./actions/advanced.md#ticklabel-groups-and-axis-titles) | H3 | user-facing | axes |
-| [`editXAxisTitle`](./actions/advanced.md#ticklabel-groups-and-axis-titles) | H3 | user-facing | axes |
-| [`editXOffsetScale`](./actions/advanced.md#focused-channel-scale-editors) | H2 | user-facing | core |
-| [`editXScale`](./actions/advanced.md#focused-channel-scale-editors) | H2 | user-facing | core |
-| [`editYAxis`](./actions/advanced.md#complete-single-channel-axes) | H3 | user-facing | axes |
-| [`editYAxisLabels`](./actions/advanced.md#axis-lines-ticks-and-labels) | H3 | user-facing | axes |
-| [`editYAxisLine`](./actions/advanced.md#axis-lines-ticks-and-labels) | H3 | user-facing | axes |
-| [`editYAxisTicks`](./actions/advanced.md#axis-lines-ticks-and-labels) | H3 | user-facing | axes |
-| [`editYAxisTicksAndLabels`](./actions/advanced.md#ticklabel-groups-and-axis-titles) | H3 | user-facing | axes |
-| [`editYAxisTitle`](./actions/advanced.md#ticklabel-groups-and-axis-titles) | H3 | user-facing | axes |
-| [`editYOffsetScale`](./actions/advanced.md#focused-channel-scale-editors) | H2 | user-facing | core |
-| [`editYScale`](./actions/advanced.md#focused-channel-scale-editors) | H2 | user-facing | core |
+| [`editWindowData`](./actions/charts-data.md#editwindowdata) | H2 | user-facing | core |
+| [`editXAxis`](./actions/guides.md#editxaxis) | H3 | user-facing | axes |
+| [`editXAxisLabels`](./actions/guides.md#editxaxislabels) | H3 | user-facing | axes |
+| [`editXAxisLine`](./actions/guides.md#editxaxisline) | H3 | user-facing | axes |
+| [`editXAxisTicks`](./actions/guides.md#editxaxisticks) | H3 | user-facing | axes |
+| [`editXAxisTicksAndLabels`](./actions/guides.md#editxaxisticksandlabels) | H3 | user-facing | axes |
+| [`editXAxisTitle`](./actions/guides.md#editxaxistitle) | H3 | user-facing | axes |
+| [`editXOffsetScale`](./actions/charts-data.md#editxoffsetscale) | H2 | user-facing | core |
+| [`editXScale`](./actions/charts-data.md#editxscale) | H2 | user-facing | core |
+| [`editYAxis`](./actions/guides.md#edityaxis) | H3 | user-facing | axes |
+| [`editYAxisLabels`](./actions/guides.md#edityaxislabels) | H3 | user-facing | axes |
+| [`editYAxisLine`](./actions/guides.md#edityaxisline) | H3 | user-facing | axes |
+| [`editYAxisTicks`](./actions/guides.md#edityaxisticks) | H3 | user-facing | axes |
+| [`editYAxisTicksAndLabels`](./actions/guides.md#edityaxisticksandlabels) | H3 | user-facing | axes |
+| [`editYAxisTitle`](./actions/guides.md#edityaxistitle) | H3 | user-facing | axes |
+| [`editYOffsetScale`](./actions/charts-data.md#edityoffsetscale) | H2 | user-facing | core |
+| [`editYScale`](./actions/charts-data.md#edityscale) | H2 | user-facing | core |
 | [`encodeAngle`](./actions/encodings.md#encodeangle) | H2 | user-facing | encodings |
 | [`encodeBarWidth`](./actions/encodings.md#encodebarwidth) | H2 | user-facing | encodings |
-| [`encodeChannels`](./actions/encodings.md#encodechannels) | H2 | advanced | encodings |
+| [`encodeChannels`](./actions/advanced.md#encodechannels) | H2 | advanced | encodings |
 | [`encodeColor`](./actions/encodings.md#encodecolor) | H2 | user-facing | encodings |
 | [`encodeDensity`](./actions/encodings.md#encodedensity) | H2 | user-facing | encodings |
 | [`encodeGroup`](./actions/encodings.md#encodegroup) | H2 | user-facing | encodings |
@@ -283,7 +283,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`removeCoordinate`](./actions/charts-data.md#removecoordinate) | H2 | user-facing | core |
 | [`removeData`](./actions/charts-data.md#removedata) | H2 | user-facing | core |
 | [`removeEncoding`](./actions/encodings.md#removeencoding) | H2, H3 | user-facing | encodings |
-| [`removeGrid`](./actions/advanced.md#directional-grids) | H3 | user-facing | grid |
+| [`removeGrid`](./actions/guides.md#removegrid) | H3 | user-facing | grid |
 | [`removeJitter`](./actions/marks.md#removejitter) | H3 | user-facing | marks |
 | [`removeLabelLayout`](./actions/marks.md#removelabellayout) | H3 | user-facing | marks |
 | [`removeLegend`](./actions/guides.md#removelegend) | H3 | user-facing | legend_and_title |
@@ -292,8 +292,8 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`removeMarkHighlight`](./actions/charts-data.md#removemarkhighlight) | H3 | user-facing | mark-selection |
 | [`removeMarkLabels`](./actions/marks.md#removemarklabels) | H3 | user-facing | marks |
 | [`removeMarkSelection`](./actions/advanced.md#removemarkselection) | H3 | advanced | mark-selection |
-| [`removeParallelAxes`](./actions/advanced.md#createparallelaxes-createparallelaxis-editparallelaxis-removeparallelaxis-removeparallelaxes) | H3 | user-facing | axes |
-| [`removeParallelAxis`](./actions/advanced.md#createparallelaxes-createparallelaxis-editparallelaxis-removeparallelaxis-removeparallelaxes) | H3 | user-facing | axes |
+| [`removeParallelAxes`](./actions/guides.md#removeparallelaxes) | H3 | user-facing | axes |
+| [`removeParallelAxis`](./actions/guides.md#removeparallelaxis) | H3 | user-facing | axes |
 | [`removePathOrder`](./actions/encodings.md#removepathorder) | H2, H3 | user-facing | encodings |
 | [`removePointPacking`](./actions/marks.md#removepointpacking) | H3 | user-facing | marks |
 | [`removePointRadius`](./actions/encodings.md#removepointradius) | H2, H3 | user-facing | encodings |
@@ -302,9 +302,9 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`removeTheme`](./actions/charts-data.md#removetheme) | H3 | user-facing | core |
 | [`removeThetaAxis`](./actions/guides.md#removethetaaxis) | H3 | user-facing | axes |
 | [`removeTitle`](./actions/guides.md#removetitle) | H3 | user-facing | legend_and_title |
-| [`removeXAxis`](./actions/advanced.md#complete-axis-removal) | H3 | user-facing | axes |
-| [`removeYAxis`](./actions/advanced.md#complete-axis-removal) | H3 | user-facing | axes |
+| [`removeXAxis`](./actions/guides.md#removexaxis) | H3 | user-facing | axes |
+| [`removeYAxis`](./actions/guides.md#removeyaxis) | H3 | user-facing | axes |
 | [`reorderCompositionChildren`](./actions/charts-data.md#reordercompositionchildren) | H3 | user-facing | composition |
 | [`repeatCharts`](./actions/charts-data.md#repeatcharts) | H0 | user-facing | composition |
 | [`replaceCompositionChild`](./actions/charts-data.md#replacecompositionchild) | H3 | user-facing | composition |
-| [`selectMarks`](./actions/advanced.md#reusable-mark-selections) | H3 | advanced | mark-selection |
+| [`selectMarks`](./actions/advanced.md#selectmarks) | H3 | advanced | mark-selection |

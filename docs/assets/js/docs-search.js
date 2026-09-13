@@ -9,6 +9,14 @@
   let sections;
   let loading;
   let activeIndex = -1;
+  const status = document.createElement("span");
+  status.className = "docs-search-status";
+  status.setAttribute("role", "status");
+  const retry = document.createElement("button");
+  retry.type = "button";
+  retry.textContent = "Retry search";
+  retry.hidden = true;
+  (input.closest(".docs-search__control") ?? input).after(status, retry);
 
   function searchable(value) {
     return value
@@ -27,6 +35,8 @@
     if (sections) return sections;
     if (loading) return loading;
     setBusy(true);
+    status.textContent = "Loading search…";
+    retry.hidden = true;
     loading = fetch(config.dataset.indexUrl, {
       headers: { Accept: "application/json" }
     }).then(response => {
@@ -35,13 +45,17 @@
     }).then(index => {
       if (!Array.isArray(index)) throw new Error("Search index must be an array.");
       sections = index;
+      status.textContent = "";
       return sections;
     }).catch(() => {
-      input.disabled = true;
-      input.placeholder = "Search unavailable";
       clearResults();
-      return [];
-    }).finally(() => setBusy(false));
+      status.textContent = "Search could not load. Retry or use the page navigation.";
+      retry.hidden = false;
+      return undefined;
+    }).finally(() => {
+      loading = undefined;
+      setBusy(false);
+    });
     return loading;
   }
 
@@ -51,6 +65,7 @@
     activeIndex = -1;
     input.removeAttribute("aria-activedescendant");
     input.setAttribute("aria-expanded", "false");
+    status.textContent = "";
   }
 
   function options() {
@@ -82,7 +97,7 @@
     void loadSections();
   }, { once: true });
 
-  input.addEventListener("input", async () => {
+  async function updateResults() {
     const query = searchable(input.value);
     if (query.length < 2) {
       clearResults();
@@ -91,6 +106,7 @@
 
     const searchableSections = await loadSections();
     if (query !== searchable(input.value)) return;
+    if (!searchableSections) return;
 
     const queryCompact = query.replaceAll(" ", "");
     const queryTokens = query.split(" ");
@@ -106,7 +122,9 @@
         const compact = combined.replaceAll(" ", "");
         const allTokens = queryTokens.every(token => combined.includes(token));
         const compactKeywordValues = keywordValues.map(value => value.replaceAll(" ", ""));
-        const score = sectionTitle === query || sectionTitle.replaceAll(" ", "") === queryCompact
+        const score = section.actionName?.toLowerCase() === queryCompact
+          ? 100
+          : sectionTitle === query || sectionTitle.replaceAll(" ", "") === queryCompact
           ? 12
           : pageTitle === query || pageTitle.replaceAll(" ", "") === queryCompact
             ? 11
@@ -177,6 +195,13 @@
     }
     results.hidden = false;
     input.setAttribute("aria-expanded", "true");
+    status.textContent = `${matches.length} ${matches.length === 1 ? "result" : "results"}`;
+  }
+  input.addEventListener("input", updateResults);
+  retry.addEventListener("click", async () => {
+    await loadSections();
+    await updateResults();
+    input.focus();
   });
 
   input.addEventListener("keydown", event => {
@@ -189,7 +214,9 @@
     if (["ArrowDown", "ArrowUp"].includes(event.key)) {
       if (options().length === 0) return;
       event.preventDefault();
-      setActive(activeIndex + (event.key === "ArrowDown" ? 1 : -1));
+      setActive(activeIndex === -1
+        ? (event.key === "ArrowDown" ? 0 : options().length - 1)
+        : activeIndex + (event.key === "ArrowDown" ? 1 : -1));
       return;
     }
 
