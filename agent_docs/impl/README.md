@@ -4,7 +4,7 @@
 
 ## 현재 작업
 
-- **현재 활성 계획은 Roadmap 7 Phase 8**이다. Phase 1–5 완료 revision은 각 STEP 원장이 소유하고, Phase 6 coordinate aspect와 Polar frame은 `ded3b073`, `4aa9da65`, Phase 7 label/reference와 통합은 `73e3d53e`부터 `5832228c`까지 primary 구현했다. Phase 8은 R37 exact sampled legend values부터 진행한다.
+- **현재 활성 계획은 Roadmap 7 Phase 9**다. Phase 1–7 완료 revision은 각 STEP 원장이 소유하고, Phase 8의 R37/R38/R39는 `8760111d`·`7ffafe02`·`20a25911`에서 primary 구현했다. 현재는 R47 custom theme와 R49 shape style을 진행한다.
 - [`roadmap7/ROADMAP.md`](roadmap7/ROADMAP.md) — 범위·의존성·Phase 0–12
 - [`roadmap7/IMPLEMENTER_START_HERE.md`](roadmap7/IMPLEMENTER_START_HERE.md) — 구현자 인계와 검증 순서
 - Roadmap 6 Phase 0–11은 완료된 이력으로 보존한다.

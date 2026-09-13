@@ -1310,8 +1310,8 @@
       "kind": "normal",
       "specification": "raw[1,\"1\",\"KR\",\"XX\"],map [{value:1,label:\"하나\"},{value:\"KR\",label:\"한국\"}] → [\"하나\",\"1\",\"한국\",\"XX\"].",
       "owner": "features/39-display-names-headers.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "20a25911; test/unit/grammar/display-labels.test.js; test/unit/actions/guides/axis-display-labels.test.js; test/contracts/legend-blocks.test.js"
     },
     {
       "id": "R39-N02",
@@ -1320,8 +1320,8 @@
       "kind": "normal",
       "specification": "A와B를 모두\"같음\"으로 표시 → domain category2 유지.",
       "owner": "features/39-display-names-headers.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "20a25911; test/unit/grammar/display-labels.test.js; test/contracts/legend-blocks.test.js; test/contracts/display-label-rendering.test.js"
     },
     {
       "id": "R39-E01",
@@ -1330,8 +1330,8 @@
       "kind": "error",
       "specification": "동일 typed key 중복,role all+side,continuous axis map → 오류.",
       "owner": "features/39-display-names-headers.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "20a25911; test/unit/grammar/display-labels.test.js; test/unit/actions/guides/axis-display-labels.test.js; test/unit/actions/composition/facet-display-headers.test.js"
     },
     {
       "id": "R39-L01",
@@ -1340,8 +1340,8 @@
       "kind": "lifecycle",
       "specification": "row/column raw\"A\"를 서로 다른 이름으로 표시하고 replay 후 유지.",
       "owner": "features/39-display-names-headers.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "20a25911; test/unit/actions/composition/facet-display-headers.test.js; test/contracts/display-label-rendering.test.js"
     },
     {
       "id": "R39-L02",
@@ -1350,8 +1350,8 @@
       "kind": "lifecycle",
       "specification": "긴 header와font 증가 후 occupied strip/child plot 재계산,raw partition IDs 불변.",
       "owner": "features/39-display-names-headers.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "20a25911; test/unit/grammar/layout/facets.test.js; test/unit/actions/composition/facet-display-headers.test.js; test/contracts/display-label-rendering.test.js"
     },
     {
       "id": "R43-N01",

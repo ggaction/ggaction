@@ -662,16 +662,20 @@
       "dependsOn": [
         "R38"
       ],
-      "status": "Proposed",
+      "status": "Implemented-primary",
       "scopeSelection": "user-selected",
       "file": "features/39-display-names-headers.md",
       "sources": [
+        "src/grammar/displayLabels.js",
         "src/actions/guides/axes/labels.js",
-        "src/actions/facets/guides.js",
-        "src/actions/guides/legends/edit.js",
-        "types/program.d.ts",
+        "src/actions/guides/polar/axes/labels.js",
+        "src/actions/guides/legends/blocks.js",
+        "src/actions/guides/legends/categorical/components.js",
+        "src/actions/facets/actions.js",
+        "src/materialization/facetHeaders.js",
+        "src/layout/facets.js",
         "src/materialization/facets.js",
-        "src/grammar/facets/index.js"
+        "types/program.d.ts"
       ],
       "acceptanceSections": [
         "값·기본값·오류 계약",
@@ -679,7 +683,8 @@
         "독립 oracle와 인수 테스트",
         "완료 조건",
         "구현 고정 명세"
-      ]
+      ],
+      "implementationCommit": "20a25911"
     },
     {
       "id": "R43",

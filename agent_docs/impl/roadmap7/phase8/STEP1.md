@@ -6,9 +6,9 @@
 - [x] Gate A 자료: 정확한 API/schema/defaults/오류/수치 oracle 작성·검증
 - [x] 명시 승인 범위 기록 후 해당 구현 시작
 - [x] R37 appearance 대상은 primitive render와 target public chain으로 Gate V 확인
-- [ ] 아래 wave 구현과 focused/cumulative tests 완료
-- [ ] types/current contracts/catalog/cards/MCP/docs/package 영향 갱신
-- [ ] Gate X 결과와 남은 후속 통합 cell 기록
+- [x] 아래 wave 구현과 focused/cumulative tests 완료
+- [x] types/current contracts/catalog/cards/MCP/docs/package 영향 갱신
+- [x] Gate X 결과와 남은 후속 통합 cell 기록
 - [x] R37 coherent source/test change를 검증하고 commit/push
 - [x] R38 block identity/override/transition/public-package change를 검증하고 commit/push
 
@@ -48,7 +48,8 @@
 | W1 R37 시각 증거 | `547eae1b` | independent lower-level program과 public program의 graphic equivalence 및 decoded PNG pixel hash 일치 | R38/R39의 새 시각 target | passed |
 | W2 R38 제품 | `7ffafe02` | `test/contracts/legend-blocks.test.js`, `legend-block-types.test.js`; unit 2,373; contracts 460; docs 47; charts 578; render 216; browser 73; lower-level/public decoded PNG pixel hash; installed Node/TypeScript/MCP/browser consumer | R19 atomic reencoding과 R43 facet/repeat, R47 custom theme token 통합 | Implemented-primary |
 | W2 R38 package | `7ffafe02` | 273 cards; package 511 entries, 677,508 packed, 3,405,192 unpacked; tar SHA-256 `4f41e6bbbfe63558aff7fcc28a7dfa19a8c1c8bedee5ea06df191ed376be1b91`; Full/Basic/SVG gzip 342,342/166,468/6,418 | Jekyll build는 host Ruby 2.6.10으로 미실행; coverage는 R38 transition 기준 통과, 기존 creation/scale-definition/transforms 기준 미달 유지 | passed-primary |
-| W3–W4 | — | 실행 전 | R39, Phase 8 통합 | planned |
+| W3–W4 R39 제품 | `20a25911` | `display-labels`, Cartesian/Polar axis, legend block, facet header unit·contract tests; unit 2,390; contracts 465; docs 47; charts 578; render 216; browser 73; realistic 243; 실패·skip 0 | R47 theme replay와 R43 advanced facet/repeat 소비 회귀 | Implemented-primary |
+| W3–W4 R39 시각·패키지 | `20a25911` | lower-level/public graphic 동등성과 same-run decoded PNG pixel hash; 273 cards; package 513 entries, 682,551 packed, 3,429,929 unpacked; tar SHA-256 `06cea24893e9e4d6570ae272680aedd834dcba2f139c0404b87d351ac09fe48d`; Full/Basic/SVG gzip 345,403/167,086/6,432; MCP cold start 577 ms | host Ruby 2.6.10으로 Jekyll 미실행; coverage는 기존 `legends/creation.js`, `scales/definition.js`, `transforms.js` 기준 미달 유지 | passed-primary |
 
 ## Gate 연결
 

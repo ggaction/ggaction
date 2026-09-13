@@ -1,6 +1,6 @@
 {
   "phase": 8,
-  "status": "active",
+  "status": "completed-primary",
   "scope": "implementation",
   "candidates": [
     {
@@ -11,13 +11,15 @@
     },
     {
       "id": "R38",
-      "status": "Proposed",
-      "file": "../features/38-legend-blocks.md"
+      "status": "Implemented-primary",
+      "file": "../features/38-legend-blocks.md",
+      "implementationCommit": "7ffafe02"
     },
     {
       "id": "R39",
-      "status": "Proposed",
-      "file": "../features/39-display-names-headers.md"
+      "status": "Implemented-primary",
+      "file": "../features/39-display-names-headers.md",
+      "implementationCommit": "20a25911"
     }
   ]
 }

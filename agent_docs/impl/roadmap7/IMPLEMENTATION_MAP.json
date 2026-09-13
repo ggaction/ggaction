@@ -1034,7 +1034,7 @@
       "dependsOn": [
         "R38"
       ],
-      "status": "Proposed",
+      "status": "Implemented-primary",
       "newPublicActions": [],
       "extendedPublicSurfaces": [
         "categorical-axis-labels",
@@ -1044,12 +1044,15 @@
         "editFacetHeaders"
       ],
       "currentSourceFiles": [
+        "src/grammar/displayLabels.js",
         "src/actions/guides/axes/labels.js",
-        "src/actions/facets/guides.js",
-        "src/actions/guides/legends/edit.js",
-        "types/program.d.ts",
+        "src/actions/guides/polar/axes/labels.js",
+        "src/actions/guides/legends/blocks.js",
+        "src/actions/facets/actions.js",
+        "src/materialization/facetHeaders.js",
+        "src/layout/facets.js",
         "src/materialization/facets.js",
-        "src/grammar/facets/index.js"
+        "types/program.d.ts"
       ],
       "existingRegressionTests": [
         "test/unit/actions/guides/axis-label-actions.test.js",
@@ -1070,7 +1073,8 @@
         "edit/reencode/Canvas/source replay/remove",
         "applicable composition and renderer cells",
         "Full registration/types/current contracts/knowledge/docs/installed package"
-      ]
+      ],
+      "implementationCommit": "20a25911"
     },
     {
       "id": "R43",

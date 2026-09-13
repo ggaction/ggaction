@@ -1,6 +1,6 @@
 # Phase 8 — 범례 content와 표시명
 
-상태: active. 모든 Gate는 승인됐다. R37 primary는 `8760111d`, decoded-PNG parity는 `547eae1b`, R38 channel-targeted legend block editing은 `7ffafe02`에서 구현됐다. 현재 실행 대상은 R39 typed display names와 facet header 배치다.
+상태: completed-primary. 모든 Gate는 승인됐고 R37 primary는 `8760111d`, decoded-PNG parity는 `547eae1b`, R38 channel-targeted legend block editing은 `7ffafe02`, R39 typed display names와 facet header 배치는 `20a25911`에서 구현·검증됐다.
 
 ## 목표와 범위
 

@@ -2,7 +2,7 @@
 
 문서 상태 — 현재 실행 계획.
 
-사용자가 감사 50개 항목 중 선택한 **25개**를 구현하는 현재 로드맵이다. **Phase 0–7 primary와 Phase 8의 R37·R38을 완료했고 R39를 실행한다**. 2026-09-13 사용자가 모든 Gate를 명시적으로 승인했으며, 각 Phase의 구현·검증 증거는 STEP 결과 원장에 누적한다. 아직 구현되지 않은 API를 Current로 표시하지 않는다. 탐색 상태는 [ROADMAP_INDEX.json](../ROADMAP_INDEX.json)이 관리한다.
+사용자가 감사 50개 항목 중 선택한 **25개**를 구현하는 현재 로드맵이다. **Phase 0–8 primary를 완료했고 Phase 9의 R47·R49 구현 고정 명세를 검증한다**. 2026-09-13 사용자가 모든 Gate를 명시적으로 승인했으며, 각 Phase의 구현·검증 증거는 STEP 결과 원장에 누적한다. 아직 구현되지 않은 API를 Current로 표시하지 않는다. 탐색 상태는 [ROADMAP_INDEX.json](../ROADMAP_INDEX.json)이 관리한다.
 
 ## 의도와 성공 기준
 
@@ -77,8 +77,8 @@ Phase 번호는 권장 구현 순서다. 같은 Phase 안에서도 feature의 de
 | 5 | completed-primary | 스케일·stroke·원자적 인코딩 | 20, 21, 23, 22, 19 | 4 |
 | 6 | completed-primary | 좌표 비율과 Polar frame | 27, 29 | 5 |
 | 7 | completed-primary | 라벨 lifecycle와 통계 주석 | 31, 32, 33, 36 | 4, 5, 6 |
-| 8 | active | 범례 content와 표시명 | 37, 38, 39 | 5, 7 |
-| 9 | planned | 사용자 theme와 형상 스타일 | 47, 49 | 7, 8 |
+| 8 | completed-primary | 범례 content와 표시명 | 37, 38, 39 | 5, 7 |
+| 9 | active | 사용자 theme와 형상 스타일 | 47, 49 | 7, 8 |
 | 10 | planned | Polar·Parallel facet와 repeat | 43 | 4, 5, 6, 7, 8, 9 |
 | 11 | planned | 미사용 자원 삭제 | 25 | 10 |
 | 12 | planned | 25개 항목 통합·계약·패키지 마감 | 전체 통합 | 11 |

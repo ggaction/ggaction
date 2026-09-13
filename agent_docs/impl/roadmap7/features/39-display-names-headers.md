@@ -1,6 +1,6 @@
 # R39 — 범주 표시명과 facet header 배치
 
-원래 감사 번호: **39**. Primary owner: **Phase 8**. 상태: **Proposed / 구현 전**.
+원래 감사 번호: **39**. Primary owner: **Phase 8**. 상태: **Implemented-primary (`20a25911`)**.
 아래 API, typed identity, reset, facet migration, layout 수치 정책의 Gate는 승인됐다. 상태의
 `Proposed`는 제품 코드, current contract, generated artifact와 검증이 아직 완료되지 않았다는 뜻이다.
 
@@ -747,15 +747,21 @@ owner, mapped text measurement, facet reservation 중 어느 invariant가 깨졌
 
 ## 17. 완료 조건
 
-- [ ] R39-N01/N02/L01/L02와 invalid/reset/replay cases가 literal oracle로 통과했다.
-- [ ] axis, legend, facet 어느 surface도 map으로 raw domain, row, partition identity를 바꾸지 않는다.
-- [ ] mapped 최종 문자열이 measurement와 concrete graphic의 유일한 text source다.
-- [ ] legacy facet 호출은 기존 그래픽 결과를 보존하고 명시 row/column 호출만 role mode를 활성화한다.
-- [ ] role strips, title, shared legend, child snapshots가 겹치지 않고 padding/reservation이 한 번씩만
+- [x] R39-N01/N02/L01/L02와 invalid/reset/replay cases가 literal oracle로 통과했다.
+- [x] axis, legend, facet 어느 surface도 map으로 raw domain, row, partition identity를 바꾸지 않는다.
+- [x] mapped 최종 문자열이 measurement와 concrete graphic의 유일한 text source다.
+- [x] legacy facet 호출은 기존 그래픽 결과를 보존하고 명시 row/column 호출만 role mode를 활성화한다.
+- [x] role strips, title, shared legend, child snapshots가 겹치지 않고 padding/reservation이 한 번씩만
   반영된다.
-- [ ] unsupported continuous/radial/sampled cases가 input과 이전 program을 바꾸지 않고 오류를 낸다.
-- [ ] Full/Basic 타입·runtime 경계, current 계약, catalog/card/MCP, docs와 installed consumers가
+- [x] unsupported continuous/radial/sampled cases가 input과 이전 program을 바꾸지 않고 오류를 낸다.
+- [x] Full/Basic 타입·runtime 경계, current 계약, catalog/card/MCP, docs와 installed consumers가
   동기화됐다.
-- [ ] generated freshness, renderer parity, package budget와 전체 필수 test 결과를 Phase 8 ledger에
+- [x] generated freshness, renderer parity, package budget와 전체 필수 test 결과를 Phase 8 ledger에
   기록했다.
-- [ ] 위 근거가 현재 revision에서 확인되기 전에는 상태를 `Implemented-primary`로 바꾸지 않는다.
+- [x] 위 근거가 현재 revision에서 확인되기 전에는 상태를 `Implemented-primary`로 바꾸지 않는다.
+
+구현 근거는 제품 commit `20a25911`과 [Phase 8 결과 원장](../phase8/STEP1.md)에 있다. 누적 결과는 unit
+2,390, contracts 465, docs 47, charts 578, render 216, browser 73, realistic 243이며 모두 실패·skip 0이다.
+lower-level/public concrete graphic과 same-run decoded PNG pixel hash가 일치했다. installed tar SHA-256은
+`06cea24893e9e4d6570ae272680aedd834dcba2f139c0404b87d351ac09fe48d`다. 전체 coverage 명령은 R39 추가
+source가 아닌 기존 세 기준 미달 때문에 exit 1이므로 성공 근거에 포함하지 않는다.

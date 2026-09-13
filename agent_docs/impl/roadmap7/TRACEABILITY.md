@@ -25,7 +25,7 @@
 | R36 | 7 | [데이터를 추적하는 통계 참조선·밴드](features/36-statistical-references.md) | `test/contracts/statistical-references.test.js`; `test/contracts/label-reference-lifecycle.test.js`; `d7136174`; `5832228c` | Implemented-primary / R25 resource collector 통합 대기 |
 | R37 | 8 | [연속 범례의 명시적인 표본값](features/37-legend-values.md) | `test/contracts/legend-values.test.js`; installed package/browser consumers; `8760111d`; pixel parity `547eae1b` | Implemented-primary / R38 block selector·R43/R47 consumer 통합 대기 |
 | R38 | 8 | [결합 범례의 channel block별 편집](features/38-legend-blocks.md) | `test/contracts/legend-blocks.test.js`; strict Full/Basic types; installed package/browser consumers; `7ffafe02` | Implemented-primary / R19·R43·R47 후속 consumer 통합 대기 |
-| R39 | 8 | [범주 표시명과 facet header 배치](features/39-display-names-headers.md) | feature 내 독립 oracle/완료 조건 → Phase 8 STEP1 evidence | Proposed / 미구현 |
+| R39 | 8 | [범주 표시명과 facet header 배치](features/39-display-names-headers.md) | R39-N01/N02/E01/L01/L02; display-label/axis/legend/facet tests; decoded PNG parity; package consumers; `20a25911` | Implemented-primary |
 | R43 | 10 | [Polar·Parallel facet와 repeat 지원](features/43-polar-parallel-facets.md) | feature 내 독립 oracle/완료 조건 → Phase 10 STEP1 evidence | Proposed / 미구현 |
 | R47 | 9 | [사용자 theme tokens와 composition 전파](features/47-custom-theme.md) | feature 내 독립 oracle/완료 조건 → Phase 9 STEP1 evidence | Proposed / 미구현 |
 | R49 | 9 | [둥근 모서리와 stroke cap·join](features/49-shape-style-details.md) | feature 내 독립 oracle/완료 조건 → Phase 9 STEP1 evidence | Proposed / 미구현 |

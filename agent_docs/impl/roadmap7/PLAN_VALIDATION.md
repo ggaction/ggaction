@@ -273,3 +273,26 @@ trace를 보존한 채 거부한다. Root title edit 뒤에도 explicit block ti
 | docs build 환경 | source generation과 docs tests는 통과; host Ruby 2.6.10이라 Ruby 3.2+가 필요한 locked Jekyll build는 미실행 |
 | 열린 통합 cell | R39 labelMap/header, R19 atomic reencoding, R47 custom theme tokens, R43 facet/repeat consumer |
 | 상태 연결 | R38 Implemented-primary, Phase 8 active, R39 display names와 facet headers가 다음 WP |
+
+## 2026-09-13 R39와 Phase 8 closeout 검증
+
+R39는 `20a25911`에서 raw category identity와 표시 문자열을 분리하는 typed `labelMap`을 Cartesian
+categorical axis, Polar theta categorical axis, categorical legend block에 연결했다. facet header는
+legacy common mode를 보존하면서 명시 row/column role mode, side, align, occupied strip reservation을
+추가했다. 동일 display label은 raw domain을 합치지 않고 explicit empty label은 빈 concrete text로
+유지된다. 연속·radial·sampled surface와 잘못된 typed map은 candidate materialization 전에 거부한다.
+
+| 검증 | 실제 결과 |
+| --- | --- |
+| R39 acceptance | R39-N01/N02/E01/L01/L02 passed; grammar/axis/legend/facet literal-oracle tests |
+| public surface | 기존 axis label actions와 aggregate facades, `editLegendBlock`, `editFacetHeaders`; 새 public action count 0 |
+| lifecycle | domain/source replay, legend transition/reorder/remove, facet source/layout/theme/Canvas 뒤 requested map과 raw identity 유지 |
+| 시각 oracle | lower-level/public concrete graphic hierarchy와 same-run decoded PNG pixel hash 일치 |
+| 누적 | unit 2,390/2,390; contracts 465/465; docs 47/47; charts 578/578; render 216/216; browser 73/73; realistic 243/243 |
+| generated artifacts | contracts catalog/relations/cards와 docs capabilities/actions/machine/search/reference/metadata/signatures/examples freshness 11개 통과 |
+| installed package | 513 entries; packed 682,551; unpacked 3,429,929; SHA-256 `06cea24893e9e4d6570ae272680aedd834dcba2f139c0404b87d351ac09fe48d` |
+| browser bundles·MCP | Full/Basic/SVG gzip 345,403/167,086/6,432 bytes; MCP cold start 577 ms |
+| coverage 관측 | R39 추가 source의 기준 미달 없음; 전체 명령은 기존 `legends/creation.js`, `scales/definition.js`, `transforms.js` 네 floor 때문에 exit 1 |
+| docs build 환경 | source generation과 docs tests 통과; host Ruby 2.6.10이라 Ruby 3.2+ locked Jekyll build 미실행 |
+| 열린 통합 cell | R47 theme token replay와 R43 Polar/Parallel facet·repeat에서 label/header/legend recipe 소비 회귀 |
+| 상태 연결 | Phase 8 completed-primary, Phase 9 active, R47·R49 구현 고정 명세가 다음 WP |

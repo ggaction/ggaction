@@ -1,6 +1,6 @@
 # 구현자 인계 — 여기부터 시작
 
-사용자는 감사 번호 25개와 Phase 0–12 Gate를 모두 승인했다. Phase 0–7 primary 구현과 R37 exact sampled legend values가 완료됐고, 현재 작업은 Phase 8의 R38 combined legend block editing이다. 승인된 공개 API·옵션·수식은 구현 계약이지만, 실제 source·tests·types·Current contract 증거가 없는 기능을 구현 완료로 간주하지 않는다.
+사용자는 감사 번호 25개와 Phase 0–12 Gate를 모두 승인했다. Phase 0–8 primary 구현이 완료됐고, 현재 작업은 Phase 9의 R47 custom theme와 R49 shape style이다. 승인된 공개 API·옵션·수식은 구현 계약이지만, 실제 source·tests·types·Current contract 증거가 없는 기능을 구현 완료로 간주하지 않는다.
 
 ## 첫 작업
 
@@ -23,7 +23,7 @@
 
 위 순서를 기억에 의존해 축약하지 않는다. [상세 구현 작업 패킷의 공통 절차](DETAILED_IMPLEMENTATION_WORK_PACKAGES.md#2-모든-작업-패킷의-공통-절차)와 [무추론 실행 규약](DETAILED_IMPLEMENTATION_WORK_PACKAGES.md#저성능-구현-모델을-위한-무추론-실행-규약)에 있는 입력표, Core/Transaction/Consumers/Surface 네 구간, 다섯 테스트 묶음과 체크포인트 기록 순서를 그대로 사용한다. 기능 계약은 `features/*.md`, 작업 순서와 수정 위치는 상세 작업 패킷, literal 기대값은 `ACCEPTANCE_CASES.json`이 각각 소유한다. 같은 사실을 추측으로 합치지 않는다.
 
-현재 구현은 [WP8.2 R38 `editLegendBlock`](DETAILED_IMPLEMENTATION_WORK_PACKAGES.md#wp82--r38-editlegendblock)이다. Phase 7의 R31 `73e3d53e`, R32 `ee3f3b02`, R33 `95968031`, R36 `d7136174`와 통합 `5832228c`, R37 제품 `8760111d`와 시각 증거 `547eae1b`를 다시 구현하지 않는다. R38은 logical block descriptor, block별 requested override, merge/split/reorder/remove transition, materialization 순서와 Full-only public surface를 계약 순서대로 구현한다.
+현재 구현 준비 대상은 [WP9.1 R47 custom theme](DETAILED_IMPLEMENTATION_WORK_PACKAGES.md#wp91--r47-custom-theme)와 [WP9.2 R49 shape style](DETAILED_IMPLEMENTATION_WORK_PACKAGES.md#wp92--r49-shape-style-details)이다. Phase 8의 R37 제품 `8760111d`와 시각 증거 `547eae1b`, R38 `7ffafe02`, R39 `20a25911`를 다시 구현하지 않는다. Phase 9는 두 feature 문서와 무추론 명세에 고정된 token owner, explicit precedence, descendant replay, concrete geometry와 renderer 행렬을 순서대로 따른다.
 
 각 작업을 마칠 때 다음 질문에 모두 `예`라고 답할 수 있어야 한다.
 
