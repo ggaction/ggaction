@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "status": "In progress",
+  "status": "completed",
   "baseCommit": "c0e47da6e213852213bcb04eb19031a1a6a63cd7",
   "sourceOfScope": "PROPOSALS.json",
   "sourceOfBehavior": "features/*.md 구현 고정 명세",
@@ -18,7 +18,7 @@
         "R09",
         "R10"
       ],
-      "status": "Implemented-primary",
+      "status": "Current",
       "newPublicActions": [
         "editDerivedData",
         "editComputedData",
@@ -85,7 +85,7 @@
       "spec": "features/05-complete-impute.md",
       "phase": 2,
       "dependsOn": [],
-      "status": "Implemented-primary",
+      "status": "Current",
       "newPublicActions": [
         "createCompleteData",
         "createImputedData"
@@ -130,7 +130,7 @@
       "spec": "features/06-computed-expressions.md",
       "phase": 1,
       "dependsOn": [],
-      "status": "Implemented-primary",
+      "status": "Current",
       "newPublicActions": [],
       "extendedPublicSurfaces": [
         "createComputedData"
@@ -172,7 +172,7 @@
       "dependsOn": [
         "R06"
       ],
-      "status": "Implemented-primary",
+      "status": "Current",
       "newPublicActions": [
         "createNormalizedData"
       ],
@@ -211,7 +211,7 @@
       "spec": "features/08-calendar-buckets.md",
       "phase": 2,
       "dependsOn": [],
-      "status": "Implemented-primary",
+      "status": "Current",
       "newPublicActions": [],
       "extendedPublicSurfaces": [
         "createTimeUnitData"
@@ -258,7 +258,7 @@
       "dependsOn": [
         "R08"
       ],
-      "status": "Implemented-primary",
+      "status": "Current",
       "newPublicActions": [],
       "extendedPublicSurfaces": [
         "createWindowData"
@@ -300,7 +300,7 @@
       "spec": "features/10-weighted-statistics.md",
       "phase": 3,
       "dependsOn": [],
-      "status": "Implemented-primary",
+      "status": "Current",
       "newPublicActions": [],
       "extendedPublicSurfaces": [
         "createSummaryData",
@@ -372,7 +372,7 @@
         "R22",
         "R23"
       ],
-      "status": "Implemented-primary",
+      "status": "Current",
       "newPublicActions": [
         "encodeChannels"
       ],
@@ -421,7 +421,7 @@
       "spec": "features/20-parallel-scale.md",
       "phase": 5,
       "dependsOn": [],
-      "status": "Implemented-primary",
+      "status": "Current",
       "newPublicActions": [
         "editParallelScale"
       ],
@@ -461,7 +461,7 @@
       "spec": "features/21-offset-scales.md",
       "phase": 5,
       "dependsOn": [],
-      "status": "Implemented-primary",
+      "status": "Current",
       "newPublicActions": [
         "editXOffsetScale",
         "editYOffsetScale"
@@ -509,7 +509,7 @@
       "spec": "features/22-stroke-color.md",
       "phase": 5,
       "dependsOn": [],
-      "status": "Implemented-primary",
+      "status": "Current",
       "newPublicActions": [
         "editStrokeScale"
       ],
@@ -569,7 +569,7 @@
       "spec": "features/23-size-scale-types.md",
       "phase": 5,
       "dependsOn": [],
-      "status": "Implemented-primary",
+      "status": "Current",
       "newPublicActions": [],
       "extendedPublicSurfaces": [
         "encodeSize",
@@ -636,7 +636,7 @@
         "R47",
         "R49"
       ],
-      "status": "Implemented-primary",
+      "status": "Current",
       "newPublicActions": [
         "removeData",
         "removeScale",
@@ -679,7 +679,7 @@
       "spec": "features/27-coordinate-aspect.md",
       "phase": 6,
       "dependsOn": [],
-      "status": "Implemented-primary",
+      "status": "Current",
       "newPublicActions": [
         "editCoordinate"
       ],
@@ -724,7 +724,7 @@
       "dependsOn": [
         "R27"
       ],
-      "status": "Implemented-primary",
+      "status": "Current",
       "newPublicActions": [],
       "extendedPublicSurfaces": [
         "editCoordinate"
@@ -774,7 +774,7 @@
       "spec": "features/31-remove-labels.md",
       "phase": 7,
       "dependsOn": [],
-      "status": "Implemented-primary",
+      "status": "Current",
       "newPublicActions": [
         "removeMarkLabels"
       ],
@@ -819,7 +819,7 @@
       "dependsOn": [
         "R31"
       ],
-      "status": "Implemented-primary",
+      "status": "Current",
       "newPublicActions": [
         "editMarkLabelSelection"
       ],
@@ -872,7 +872,7 @@
         "R29",
         "R32"
       ],
-      "status": "Implemented-primary",
+      "status": "Current",
       "newPublicActions": [
         "editMarkLabelPlacement"
       ],
@@ -917,7 +917,7 @@
         "R02",
         "R19"
       ],
-      "status": "Implemented-primary",
+      "status": "Current",
       "newPublicActions": [],
       "extendedPublicSurfaces": [
         "createReferenceLine",
@@ -963,7 +963,7 @@
         "R22",
         "R23"
       ],
-      "status": "Implemented-primary",
+      "status": "Current",
       "newPublicActions": [],
       "extendedPublicSurfaces": [
         "createLegend",
@@ -1013,7 +1013,7 @@
       "dependsOn": [
         "R37"
       ],
-      "status": "Implemented-primary",
+      "status": "Current",
       "newPublicActions": [
         "editLegendBlock"
       ],
@@ -1053,7 +1053,7 @@
       "dependsOn": [
         "R38"
       ],
-      "status": "Implemented-primary",
+      "status": "Current",
       "newPublicActions": [],
       "extendedPublicSurfaces": [
         "categorical-axis-labels",
@@ -1113,7 +1113,7 @@
         "R47",
         "R49"
       ],
-      "status": "Implemented-primary",
+      "status": "Current",
       "newPublicActions": [],
       "extendedPublicSurfaces": [
         "facet",
@@ -1177,7 +1177,7 @@
       "spec": "features/47-custom-theme.md",
       "phase": 9,
       "dependsOn": [],
-      "status": "Implemented-primary",
+      "status": "Current",
       "newPublicActions": [],
       "extendedPublicSurfaces": [
         "applyTheme",
@@ -1219,7 +1219,7 @@
       "spec": "features/49-shape-style-details.md",
       "phase": 9,
       "dependsOn": [],
-      "status": "Implemented-primary",
+      "status": "Current",
       "newPublicActions": [],
       "extendedPublicSurfaces": [
         "applicable mark create/edit",

@@ -98,5 +98,5 @@ share의 음수는 항상 RangeError다. 초안의 "기본 음수 거부"가 음
 - [x] 위 수치 oracle를 `test/unit/actions/data/normalized-data.test.js`에 독립 기대값으로 구현했다.
 - [x] group/facet-local replay, quantitative consumer와 Canvas materialization을 검증했다.
 - [x] Full 등록·타입 export·Current 계약·catalog·card·관계 trace·MCP·문서·installed consumer를 갱신했다.
-- [ ] `editNormalizedData`와 source revision replay는 R02/Phase 4에서 같은 materializer로 검증한다.
+- [x] `editNormalizedData`와 source revision replay는 `test/unit/actions/data/derived-editing.test.js`와 `test/contracts/advanced-authoring-integration.test.js`에서 같은 materializer와 downstream consumer로 검증했다 (`d29287c9`, `8c4b56ad`).
 - [x] Phase 1 승인과 `b891d1d5` 검증 근거를 `phase1/STEP1.md`에 기록했다. appearance 전용 Gate V는 data-only라 새 시각 목표가 없다.

@@ -1,9 +1,9 @@
 {
   "version": 2,
-  "activeRoadmap": "roadmap7",
-  "activePhase": 12,
-  "lastCompletedRoadmap": "roadmap6",
-  "lastCompletedPhase": 11,
+  "activeRoadmap": null,
+  "activePhase": null,
+  "lastCompletedRoadmap": "roadmap7",
+  "lastCompletedPhase": 12,
   "roadmaps": [
     {
       "id": "roadmap1",
@@ -112,8 +112,8 @@
     {
       "id": "roadmap7",
       "title": "Detailed Chart Authoring Operations",
-      "status": "active",
-      "role": "current-execution-plan",
+      "status": "completed",
+      "role": "historical-execution-record",
       "file": "agent_docs/impl/roadmap7/ROADMAP.md"
     }
   ]

@@ -19,6 +19,9 @@ V는 새로운 appearance가 있는 경우에 적용한다. data-only 범위는 
 - Contract revision: `67480f52` — 25개 기능의 상세 구현 계약, 고정 인수 사례, 타입 제안과 source/test 연결표
 - User approval: 2026-09-13 — “게이트 모두 승인”; 이 파일 표의 A/V/X 범위 전체
 - Evidence policy: 승인된 계약이 바뀌지 않는 한 재승인을 요구하지 않는다. 구현 commit, 실행 test, primitive/public render와 남은 integration cell은 각 Phase STEP 결과 원장에 계속 추가한다.
-- Remaining: GOAL/STEP/features의 구현과 검증 증거. 승인 자체는 완료됐지만 검증되지 않은 기능을 Current 또는 완료로 표시하지 않는다.
+- Product evidence: 25 features, 154 acceptance cases, 32 public actions와 installed package를
+  `phase12/STEP1.md`에서 대조했다. 최종 제품·시나리오 검증 head는 `63857cb1`이다.
+- Remaining Roadmap scope: 없음. 저장소 전체 realistic option-inventory 부채와 로컬 Ruby/Jekyll
+  환경 제한은 STEP에 실패·미실행으로 명시했으며 승인이나 성공으로 바꾸지 않았다.
 
 이 파일을 읽는 행위는 승인에 해당하지 않는다. PR/publish/deploy는 별도 요청 범위다.

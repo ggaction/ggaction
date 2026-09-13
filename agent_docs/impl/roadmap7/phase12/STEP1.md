@@ -2,14 +2,14 @@
 
 ## 진행 상태
 
-- [ ] 범위·현재 source owner·선행 Phase 완료 상태 확인
-- [ ] Gate A 자료: 정확한 API/schema/defaults/오류/수치 oracle 작성·검증
-- [ ] 명시 승인 범위 기록 후 해당 구현 시작
-- [ ] appearance 대상은 primitive render와 target public chain으로 Gate V 확인
-- [ ] 아래 wave 구현과 focused/cumulative tests 완료
-- [ ] types/current contracts/catalog/cards/MCP/docs/package 영향 갱신
-- [ ] Gate X 결과와 남은 후속 통합 cell 기록
-- [ ] 검증된 coherent change마다 commit/push하고 다음 Gate 범위 확인
+- [x] 범위·현재 source owner·선행 Phase 완료 상태 확인
+- [x] Gate A 자료: 정확한 API/schema/defaults/오류/수치 oracle 작성·검증
+- [x] 명시 승인 범위 기록 후 해당 구현 시작
+- [x] appearance 대상은 primitive render와 target public chain으로 Gate V 확인
+- [x] 아래 wave 구현과 focused/cumulative tests 완료
+- [x] types/current contracts/catalog/cards/MCP/docs/package 영향 갱신
+- [x] Gate X 결과와 남은 후속 통합 cell 기록
+- [x] 검증된 coherent change마다 commit/push하고 다음 Gate 범위 확인
 
 계획 작성 시 모든 체크는 미완료다. Phase 0 은 제품 구현이 없으므로 해당 구현·시각 항목의 미적용 이유를 기록한다. Phase 12 는 새 시각 목표가 없으면 승인된 variant를 현재 코드에서 다시 실행해 검증한다.
 
@@ -42,7 +42,36 @@
 
 | wave | commit | tests/artifacts | remaining | status |
 | --- | --- | --- | --- | --- |
-| 미착수 | — | 실행 증거 없음 | 위 전체 범위 | planned |
+| W1 exact reconciliation | `c5281654` | 25 features, 154 passed cases, 32 Roadmap public actions; phase/trace/status/commit/evidence/runtime/type/Current/docs/knowledge exact reconciliation | 없음 | completed |
+| W2 누적 lifecycle | `8c4b56ad`, `895d7607` | data revision→atomic encoding→labels/reference→facet/repeat→theme/style→resource cleanup 네 흐름; label dependency cleanup과 R43 모든 family replay | 없음 | completed |
+| W3 현실 데이터 보강 | `4035c7c2`…`e4424c5e`, `63857cb1` | empty facet cell, horizon extent, legend lane, radar profiles, raincloud density, interval span을 실제 데이터에서 검증; R25 세 제거 API를 5개 TT dataset 직접 trace로 검증 | 저장소 전체 exhaustive option audit의 기존 부채는 아래에 분리 | completed-roadmap-scope |
+| W3 전체·패키지 | `63857cb1` | `npm test` 3,590/3,590; smoke 119/119; package 521 entries와 installed Node/TypeScript/browser/MCP; bundle 측정 | Jekyll build는 로컬 Ruby 2.6.10 때문에 미실행 | completed-with-recorded-environment-limit |
+| W4/W5 상태·문서 closeout | 이 STEP을 포함하는 closeout checkpoint | 25개 모두 Current, acceptance 154개 passed, generated/current/public owner 동기화, active pointer 종료 | publish/deploy는 별도 작업 | completed |
+
+## 최종 검증 원장
+
+| 검증 | 실제 결과 |
+| --- | --- |
+| machine reconciliation | 25 features, 154 acceptance cases, 32 public actions. Phase·trace·status·implementation commit·runtime evidence·runtime/type/Current contract·public docs·knowledge가 exact 일치 |
+| 전체 테스트 | `npm test`: 3,590 passed, 0 failed, 0 skipped |
+| 현실형 focused contracts | direct lifecycle, hierarchical facade matrix, lifecycle factor effects 23 passed; 실제 50-dataset sweep과 8×24 hierarchical profiles 포함 |
+| generated smoke | 119/119, 실패 0, 19 dataset |
+| full realistic 실행 | immutable audit `2026-09-13T16-15-53-856Z-29696-5fa0fc78`: 3,600/3,600 실행 성공, resource gate 성공, runtime 실패 0 |
+| Roadmap 신규 제거 증거 | 위 audit에서 누락됐던 `removeData`, `removeScale`, `removeCoordinate`와 각 `id` path를 `63857cb1`에서 5회·5 datasets 직접 trace로 보강해 최소 5회·3 datasets 정책을 충족 |
+| repository-wide realistic coverage | full audit는 기존 `origin/main`의 exhaustive public-option 부채까지 함께 hard-gate하여 실패했다. 보강 전 결과는 actions 3, top-level options 583, nested options 2,482, literals 2,808, diversity 86 누락이었다. `63857cb1`은 Roadmap의 action 3/path 3을 닫았으며 나머지는 Roadmap 7 제품 실패로 재분류하지 않는다. 이 명령을 passed로 기록하지 않는다 |
+| package | `/Users/hyeonjeon/Projects/ggaction-clean-20260905/.artifacts/release/ggaction-0.0.13.tgz`; 521 entries; 704,296 packed; 3,543,003 unpacked; SHA-256 `dfb0c837da4a8d6d87bf9455582b211e974e7192c2f478d43082183366716c96` |
+| installed consumer | Node, extension, SVG/PNG/PDF, strict TypeScript, Basic boundary, browser, local MCP와 Roadmap 7 기능 소비 전부 통과 |
+| browser bundle | Full 1,350,565 minified / 358,202 gzip; Basic 642,459 / 173,757 gzip; SVG installed consumer 21,075 / 6,742 gzip |
+| docs | generated freshness와 docs tests 47/47 통과. `npm run docs:verify`는 preflight에서 Ruby 3.2+ 필요 조건에 대해 로컬 2.6.10을 발견해 중단; build/browser 결과를 성공으로 기록하지 않음 |
+| 범위 밖 작업 | npm publish와 docs deploy는 실행하지 않음 |
+
+## 종료 판정
+
+선택 25개 기능, 32개 공개 액션, 154개 고정 사례와 필수 후속 integration cell은 모두
+Current source와 실행 증거에 연결됐다. 사용자 승인 없이 삭제하거나 future로 이동한 선택 항목은
+없다. 저장소 전체 realistic option-inventory 부채와 로컬 Jekyll 환경은 이 Roadmap의 구현 결과와
+분리해 그대로 노출한다. 따라서 Roadmap 7 제품 범위는 완료하며 main 반영 뒤 이 기록을 역사적
+실행 원장으로 보존한다.
 
 ## Gate 연결
 

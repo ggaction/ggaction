@@ -1,8 +1,8 @@
 # Roadmap 7 — 무추론 구현 명세
 
-작성 기준: 2026-09-13. 기준 branch `codex/roadmap7-authoring-refinement`, 현재 제품 인계 기준 HEAD는 `c29f496c`다. Phase 9는 제품 checkpoint `1c5192f2`와 상태 checkpoint `39be3e3e`, Phase 10은 foundation `89f1c54e`, runtime `4dbdaf85`, 종료 checkpoint `ebf3562a`, Phase 11 R25는 제품·Current·문서·설치 패키지 `c29f496c`에서 완료됐다. 현재 실행점은 Phase 12 전체 통합이다.
+작성 기준: 2026-09-13. 기준 branch `codex/roadmap7-authoring-refinement`, 최종 제품 검증 기준 HEAD는 `63857cb1`다. Phase 9는 제품 checkpoint `1c5192f2`와 상태 checkpoint `39be3e3e`, Phase 10은 foundation `89f1c54e`, runtime `4dbdaf85`, 종료 checkpoint `ebf3562a`, Phase 11 R25는 `c29f496c`, Phase 12 현실 시나리오 보강은 `63857cb1`에서 완료됐다. 최종 결과와 환경 한계는 [Phase 12 실행·증거 원장](phase12/STEP1.md)이 소유한다.
 
-이 문서는 구현자가 설계를 새로 해석하지 않고 남은 Roadmap 7을 실행하도록 만든 코드 수준 명세다. 공개 의미·기본값·수식은 각 `features/*.md`가 소유하고, 이 문서는 **수정 파일, 함수 경계, 상태 경로, 실행 순서, 삭제 규칙, 테스트 묶음과 종료 조건**을 소유한다. 두 문서가 다르면 feature 계약을 따르고 같은 checkpoint에서 이 문서를 고친다. 완료된 R02/R05/R06/R07/R08/R09/R10/R19/R20/R21/R22/R23/R27/R29/R31/R32/R33/R36/R37/R38/R39/R43/R47/R49 제품 코드는 다시 구현하지 않는다. R31/R32/R33/R37/R38/R39/R47/R49의 non-Cartesian facet/repeat 소비 cell은 R43 `ebf3562a`에서 검증됐다.
+이 문서는 구현자가 설계를 새로 해석하지 않고 Roadmap 7을 재현하거나 회귀를 수정하도록 만든 코드 수준 명세다. 공개 의미·기본값·수식은 각 `features/*.md`가 소유하고, 이 문서는 **수정 파일, 함수 경계, 상태 경로, 실행 순서, 삭제 규칙, 테스트 묶음과 종료 조건**을 소유한다. 두 문서가 다르면 feature 계약을 따르고 같은 checkpoint에서 이 문서를 고친다. 완료된 R02/R05/R06/R07/R08/R09/R10/R19/R20/R21/R22/R23/R27/R29/R31/R32/R33/R36/R37/R38/R39/R43/R47/R49 제품 코드는 다시 구현하지 않는다. R31/R32/R33/R37/R38/R39/R47/R49의 non-Cartesian facet/repeat 소비 cell은 R43 `ebf3562a`에서 검증됐다.
 
 ## 0. 현재 인계 상태와 다음 실행점
 
@@ -16,7 +16,7 @@
 | Phase 10 W10.4–W10.5 | 완료 | `4dbdaf85`, `ebf3562a` | 재구현 금지 |
 | Phase 10 W10.6 | 완료 | `ebf3562a`; Phase 10 STEP 원장 | Phase 12 누적 회귀만 |
 | Phase 11 R25 | 완료 | `c29f496c` | 재구현 금지; Phase 12 누적 cleanup flow만 검증 |
-| Phase 12 통합 | active | 없음 | 25개 exact reconciliation, 네 누적 flow, 전체 검증과 main 반영 |
+| Phase 12 통합 | 완료 | `c5281654`, `8c4b56ad`, `63857cb1` | exact reconciliation과 네 누적 flow를 회귀 기준으로 보존 |
 
 ### 인계 직후 실행할 명령
 
@@ -30,7 +30,7 @@ npm run test:unit
 npm run test:contracts
 ```
 
-예상 branch는 `codex/roadmap7-authoring-refinement`, 예상 최신 두 제품 commit은 `4dbdaf85`, `89f1c54e`다. working tree가 더 최신이면 사용자 작업을 되돌리지 말고 diff를 분류한다. pass count가 달라도 test 0 failure가 우선이며, 숫자를 문서에 억지로 맞추지 않는다.
+완료 branch는 `codex/roadmap7-authoring-refinement`, 최종 제품 검증 checkpoint는 `63857cb1`다. working tree가 더 최신이면 사용자 작업을 되돌리지 말고 diff를 분류한다. pass count가 달라도 test 0 failure가 우선이며, 숫자를 문서에 억지로 맞추지 않는다.
 
 ### Phase 10에서 완료한 여섯 가지 감사
 

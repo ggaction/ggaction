@@ -16,14 +16,13 @@
 | 승인된 미래 계약 읽기 | [`contract/planned/`](contract/planned/) |
 | 현재 개발 순서 확인 | [`impl/README.md`](impl/README.md) |
 
-**현재 활성 계획은 Roadmap 7 Phase 12**다. [상세 로드맵](impl/roadmap7/ROADMAP.md)은
-사용자가 선택한 차트 저작 연산 25개를 다루며, [구현자 인계](impl/roadmap7/IMPLEMENTER_START_HERE.md)에서
-읽기 순서와 작업 절차를 제공한다. Phase 0–11의 완료 해시는 Phase별 원장이 소유하며,
-R43은 `ebf3562a`, R25는 `c29f496c`에서 primary 구현을 닫았다. 현재는 25개 전체의
-통합·계약·패키지 검증과 main 반영을 진행한다.
+현재 활성 Roadmap은 없다. 마지막 완료 owner는 **Roadmap 7 Phase 12**다.
+[상세 로드맵](impl/roadmap7/ROADMAP.md)은 사용자가 선택한 차트 저작 연산 25개의 구현 이력이며,
+[저추론 구현 명세](impl/roadmap7/LOW_INFERENCE_IMPLEMENTATION_SPEC.md)는 더 낮은 성능의 구현자도
+같은 결과를 재현·감사할 수 있도록 함수·state·검증 순서를 보존한다. 최종 통합 결과는
+[Phase 12 STEP1](impl/roadmap7/phase12/STEP1.md)에 있다.
 
-[Roadmap 6](impl/roadmap6/ROADMAP.md)은 Phase 0–11을 완료했다. 마지막 완료 owner는
-[Roadmap 6 Phase 11](impl/roadmap6/phase11/REVIEW.md)이며 당시 closeout은 과거 기록으로 보존한다.
+[Roadmap 6](impl/roadmap6/ROADMAP.md)은 Phase 0–11을 완료했으며 당시 closeout은 과거 기록으로 보존한다.
 Nullable active pointer와 마지막 완료 owner의 machine-readable source는
 [`impl/ROADMAP_INDEX.json`](impl/ROADMAP_INDEX.json)이다.
 

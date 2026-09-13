@@ -124,5 +124,5 @@ field가 row에 없으면 오류, own field의 undefined/null만 결측이다. c
 - [x] 위 수치 oracle를 `test/unit/actions/data/complete-impute-data.test.js`에 독립 기대값으로 구현했다.
 - [x] point/quantitative encoding과 complete→impute→window→facet-local Canvas replay를 검증했다.
 - [x] Full 등록·타입 export·Current 계약·catalog·card·관계 trace·MCP·문서·installed consumer를 갱신했다.
-- [ ] `editCompleteData`/`editImputedData`, source revision 뒤 label/selection/reference consumer는 R02/Phase 4와 Phase 12에서 검증한다.
+- [x] `editCompleteData`/`editImputedData`, source revision 뒤 label/selection/reference consumer는 `test/unit/actions/data/derived-editing.test.js`, `test/contracts/advanced-authoring-integration.test.js`, `test/contracts/label-reference-lifecycle.test.js`에서 검증했다 (`d29287c9`, `5832228c`, `8c4b56ad`).
 - [x] Phase 2 승인과 `9d4d0840` 검증 근거를 `phase2/STEP1.md`에 기록했다. appearance 전용 Gate V는 data-only라 새 시각 목표가 없다.

@@ -1,8 +1,13 @@
 # Roadmap 7 — 차트 저작 연산의 세부 완성
 
-문서 상태 — 현재 실행 계획.
+> **문서 상태 — 완료된 실행 기록.** Phase 0–12를 완료했다. 정확한 제품 계약은
+> [ACTION_INDEX.json](../../contract/ACTION_INDEX.json), 최종 Roadmap 증거는
+> [Phase 12 STEP1](phase12/STEP1.md), 실행 위치는 [ROADMAP_INDEX.json](../ROADMAP_INDEX.json)이 소유한다.
 
-사용자가 감사 50개 항목 중 선택한 **25개**를 구현하는 현재 로드맵이다. **Phase 0–11 primary를 완료했고 Phase 12 전체 통합·계약·패키지 마감을 실행한다**. R43 Polar·Parallel facet/repeat는 `ebf3562a`, R25 안전한 named resource 삭제는 `c29f496c`에서 Current·문서·설치 패키지까지 닫혔다. 2026-09-13 사용자가 모든 Gate와 최종 main 반영을 명시적으로 승인했으며, 각 Phase의 구현·검증 증거는 STEP 결과 원장에 누적한다. 탐색 상태는 [ROADMAP_INDEX.json](../ROADMAP_INDEX.json)이 관리한다.
+사용자가 감사 50개 항목 중 선택한 **25개**를 구현한 로드맵이다. Phase 0–12를 완료했으며
+R43 Polar·Parallel facet/repeat는 `ebf3562a`, R25 안전한 named resource 삭제는 `c29f496c`,
+전체 통합과 현실 시나리오 보강은 `63857cb1`까지 검증했다. 2026-09-13 사용자가 모든 Gate와
+최종 main 반영을 명시적으로 승인했으며, 각 Phase의 구현·검증 증거는 STEP 결과 원장에 보존한다.
 
 ## 의도와 성공 기준
 
@@ -72,16 +77,16 @@ Phase 번호는 권장 구현 순서다. 같은 Phase 안에서도 feature의 de
 | 0 | completed | 선택 범위·계약·baseline 고정 | 전체 계획 | — |
 | 1 | completed | 계산식과 그룹 정규화 | 6, 7 | 0 |
 | 2 | completed | 결측·지역 달력·기간 window | 5, 8, 9 | 1 |
-| 3 | completed-primary | 가중 집계와 밀도 | 10 | 2 |
-| 4 | completed-primary | 파생 데이터 편집 | 2 | 1, 2, 3 |
-| 5 | completed-primary | 스케일·stroke·원자적 인코딩 | 20, 21, 23, 22, 19 | 4 |
-| 6 | completed-primary | 좌표 비율과 Polar frame | 27, 29 | 5 |
-| 7 | completed-primary | 라벨 lifecycle와 통계 주석 | 31, 32, 33, 36 | 4, 5, 6 |
-| 8 | completed-primary | 범례 content와 표시명 | 37, 38, 39 | 5, 7 |
-| 9 | completed-primary | 사용자 theme와 형상 스타일 | 47, 49 | 7, 8 |
-| 10 | completed-primary | Polar·Parallel facet와 repeat | 43 | 4, 5, 6, 7, 8, 9 |
-| 11 | active | 미사용 자원 삭제 | 25 | 10 |
-| 12 | planned | 25개 항목 통합·계약·패키지 마감 | 전체 통합 | 11 |
+| 3 | completed | 가중 집계와 밀도 | 10 | 2 |
+| 4 | completed | 파생 데이터 편집 | 2 | 1, 2, 3 |
+| 5 | completed | 스케일·stroke·원자적 인코딩 | 20, 21, 23, 22, 19 | 4 |
+| 6 | completed | 좌표 비율과 Polar frame | 27, 29 | 5 |
+| 7 | completed | 라벨 lifecycle와 통계 주석 | 31, 32, 33, 36 | 4, 5, 6 |
+| 8 | completed | 범례 content와 표시명 | 37, 38, 39 | 5, 7 |
+| 9 | completed | 사용자 theme와 형상 스타일 | 47, 49 | 7, 8 |
+| 10 | completed | Polar·Parallel facet와 repeat | 43 | 4, 5, 6, 7, 8, 9 |
+| 11 | completed | 미사용 자원 삭제 | 25 | 10 |
+| 12 | completed | 25개 항목 통합·계약·패키지 마감 | 전체 통합 | 11 |
 
 큰 위험은 앞에서 수치와 계약으로 정리하고, 다른 기능을 소비하는 작업은 뒤에 둔다. 데이터 편집은 새 transforms 이후, atomic encoding은 focused scales·stroke·size 이후, Polar/Parallel facets는 좌표·guide·labels·theme 이후, 자원 삭제는 모든 새 참조 schema 이후에 구현한다.
 
@@ -220,8 +225,11 @@ Primary 구현은 `da0ca4e2`, density scaling 보강은 `276c8318`, histogram co
 - 코드 기준: `c0e47da6e213852213bcb04eb19031a1a6a63cd7`, package 0.0.13.
 - 기존 감사: direct methods 244, user-facing 238. probe 20개는 미지원 경계 15개와 지원 대조군 5개를 확인한 기록이며 버그 총수가 아니다.
 - [audit/BASELINE.md](audit/BASELINE.md)와 보존된 관측 JSON을 참고한다. 실제 동작의 최종 권위는 현재 source/declarations/executable tests다.
-- 문서 작성 검증은 [PLAN_VALIDATION.md](PLAN_VALIDATION.md). 향후 구현 테스트와 분리한다.
+- 계획 작성부터 최종 구현까지의 검증 이력은 [PLAN_VALIDATION.md](PLAN_VALIDATION.md), 최종
+  통합 결과는 [Phase 12 STEP1](phase12/STEP1.md)이 소유한다.
 
 ## 변경·완료 규칙
 
-각 coherent change마다 검증·commit·push한다. Planned/Current inventory는 승인되거나 구현된 부분만 승격한다. 모든 25개와 필수 통합 cells가 닫히기 전에는 Roadmap 완료로 표시하지 않는다. 사용자는 이후 Roadmap 7 전체 구현과 최종 PR 생성·main 머지를 명시적으로 승인했으므로 검증 완료 뒤 같은 revision으로 수행한다. package publish와 docs 배포는 별도 명시가 없으면 수행하지 않는다.
+각 coherent change마다 검증·commit·push했다. 선택 25개와 필수 통합 cell은 모두 Current와 실행
+증거에 연결했고 Roadmap을 완료로 닫았다. 사용자가 승인한 main 반영은 검증된 descendant revision으로
+수행한다. package publish와 docs 배포는 별도 명시가 없으므로 이 기록에 포함하지 않는다.

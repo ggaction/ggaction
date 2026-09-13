@@ -103,5 +103,5 @@ window source field 자체가 없는 것은 skip 대상이 아니다. 전체 par
 - [x] 위 수치 oracle를 `test/unit/actions/data/window-data.test.js`에 독립 기대값으로 구현했다.
 - [x] same-instant peer/rank, source-order output, point encoding과 facet-local Canvas replay를 검증했다.
 - [x] Full 타입·Current 계약·catalog·card·MCP·문서·installed consumer를 갱신했다.
-- [ ] `editWindowData`와 source revision replay는 R02/Phase 4에서 같은 two-pointer materializer로 검증한다.
+- [x] `editWindowData`와 source revision replay는 `test/unit/actions/data/derived-editing.test.js`와 `test/contracts/advanced-authoring-integration.test.js`에서 같은 duration-window materializer로 검증했다 (`d29287c9`, `8c4b56ad`).
 - [x] Phase 2 승인과 `9d4d0840` 검증 근거를 `phase2/STEP1.md`에 기록했다. appearance 전용 Gate V는 data-only라 새 시각 목표가 없다.

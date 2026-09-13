@@ -1,7 +1,7 @@
 {
   "version": 1,
   "baseCommit": "c0e47da6e213852213bcb04eb19031a1a6a63cd7",
-  "status": "In progress",
+  "status": "completed",
   "scopeSelection": "user-selected",
   "selectedAuditIds": [
     2,
@@ -45,7 +45,7 @@
         "R09",
         "R10"
       ],
-      "status": "Implemented-primary",
+      "status": "Current",
       "scopeSelection": "user-selected",
       "file": "features/02-derived-editing.md",
       "sources": [
@@ -73,7 +73,7 @@
       "slug": "complete-impute",
       "phase": 2,
       "dependsOn": [],
-      "status": "Implemented-primary",
+      "status": "Current",
       "scopeSelection": "user-selected",
       "file": "features/05-complete-impute.md",
       "sources": [
@@ -102,7 +102,7 @@
       "slug": "computed-expressions",
       "phase": 1,
       "dependsOn": [],
-      "status": "Implemented-primary",
+      "status": "Current",
       "scopeSelection": "user-selected",
       "file": "features/06-computed-expressions.md",
       "sources": [
@@ -130,7 +130,7 @@
       "dependsOn": [
         "R06"
       ],
-      "status": "Implemented-primary",
+      "status": "Current",
       "scopeSelection": "user-selected",
       "file": "features/07-normalization.md",
       "sources": [
@@ -156,7 +156,7 @@
       "slug": "calendar-buckets",
       "phase": 2,
       "dependsOn": [],
-      "status": "Implemented-primary",
+      "status": "Current",
       "scopeSelection": "user-selected",
       "file": "features/08-calendar-buckets.md",
       "sources": [
@@ -184,7 +184,7 @@
       "dependsOn": [
         "R08"
       ],
-      "status": "Implemented-primary",
+      "status": "Current",
       "scopeSelection": "user-selected",
       "file": "features/09-duration-windows.md",
       "sources": [
@@ -210,7 +210,7 @@
       "slug": "weighted-statistics",
       "phase": 3,
       "dependsOn": [],
-      "status": "Implemented-primary",
+      "status": "Current",
       "scopeSelection": "user-selected",
       "file": "features/10-weighted-statistics.md",
       "sources": [
@@ -249,7 +249,7 @@
         "R22",
         "R23"
       ],
-      "status": "Implemented-primary",
+      "status": "Current",
       "scopeSelection": "user-selected",
       "file": "features/19-atomic-encoding.md",
       "sources": [
@@ -276,7 +276,7 @@
       "slug": "parallel-scale",
       "phase": 5,
       "dependsOn": [],
-      "status": "Implemented-primary",
+      "status": "Current",
       "scopeSelection": "user-selected",
       "file": "features/20-parallel-scale.md",
       "sources": [
@@ -302,7 +302,7 @@
       "slug": "offset-scales",
       "phase": 5,
       "dependsOn": [],
-      "status": "Implemented-primary",
+      "status": "Current",
       "scopeSelection": "user-selected",
       "file": "features/21-offset-scales.md",
       "sources": [
@@ -328,7 +328,7 @@
       "slug": "stroke-color",
       "phase": 5,
       "dependsOn": [],
-      "status": "Implemented-primary",
+      "status": "Current",
       "scopeSelection": "user-selected",
       "file": "features/22-stroke-color.md",
       "sources": [
@@ -358,7 +358,7 @@
       "slug": "size-scale-types",
       "phase": 5,
       "dependsOn": [],
-      "status": "Implemented-primary",
+      "status": "Current",
       "scopeSelection": "user-selected",
       "file": "features/23-size-scale-types.md",
       "sources": [
@@ -406,7 +406,7 @@
         "R47",
         "R49"
       ],
-      "status": "Implemented-primary",
+      "status": "Current",
       "scopeSelection": "user-selected",
       "file": "features/25-remove-resources.md",
       "sources": [
@@ -433,7 +433,7 @@
       "slug": "coordinate-aspect",
       "phase": 6,
       "dependsOn": [],
-      "status": "Implemented-primary",
+      "status": "Current",
       "scopeSelection": "user-selected",
       "file": "features/27-coordinate-aspect.md",
       "sources": [
@@ -463,7 +463,7 @@
       "dependsOn": [
         "R27"
       ],
-      "status": "Implemented-primary",
+      "status": "Current",
       "scopeSelection": "user-selected",
       "file": "features/29-polar-frame.md",
       "sources": [
@@ -495,7 +495,7 @@
       "slug": "remove-labels",
       "phase": 7,
       "dependsOn": [],
-      "status": "Implemented-primary",
+      "status": "Current",
       "scopeSelection": "user-selected",
       "file": "features/31-remove-labels.md",
       "sources": [
@@ -524,7 +524,7 @@
       "dependsOn": [
         "R31"
       ],
-      "status": "Implemented-primary",
+      "status": "Current",
       "scopeSelection": "user-selected",
       "file": "features/32-selected-labels.md",
       "sources": [
@@ -556,7 +556,7 @@
         "R29",
         "R32"
       ],
-      "status": "Implemented-primary",
+      "status": "Current",
       "scopeSelection": "user-selected",
       "file": "features/33-semantic-label-anchors.md",
       "sources": [
@@ -585,7 +585,7 @@
         "R02",
         "R19"
       ],
-      "status": "Implemented-primary",
+      "status": "Current",
       "scopeSelection": "user-selected",
       "file": "features/36-statistical-references.md",
       "sources": [
@@ -616,7 +616,7 @@
         "R22",
         "R23"
       ],
-      "status": "Implemented-primary",
+      "status": "Current",
       "scopeSelection": "user-selected",
       "file": "features/37-legend-values.md",
       "sources": [
@@ -646,7 +646,7 @@
       "dependsOn": [
         "R37"
       ],
-      "status": "Implemented-primary",
+      "status": "Current",
       "scopeSelection": "user-selected",
       "file": "features/38-legend-blocks.md",
       "sources": [
@@ -680,7 +680,7 @@
       "dependsOn": [
         "R38"
       ],
-      "status": "Implemented-primary",
+      "status": "Current",
       "scopeSelection": "user-selected",
       "file": "features/39-display-names-headers.md",
       "sources": [
@@ -724,7 +724,7 @@
         "R47",
         "R49"
       ],
-      "status": "Implemented-primary",
+      "status": "Current",
       "scopeSelection": "user-selected",
       "file": "features/43-polar-parallel-facets.md",
       "sources": [
@@ -753,7 +753,7 @@
       "slug": "custom-theme",
       "phase": 9,
       "dependsOn": [],
-      "status": "Implemented-primary",
+      "status": "Current",
       "scopeSelection": "user-selected",
       "file": "features/47-custom-theme.md",
       "sources": [
@@ -780,7 +780,7 @@
       "slug": "shape-style-details",
       "phase": 9,
       "dependsOn": [],
-      "status": "Implemented-primary",
+      "status": "Current",
       "scopeSelection": "user-selected",
       "file": "features/49-shape-style-details.md",
       "sources": [

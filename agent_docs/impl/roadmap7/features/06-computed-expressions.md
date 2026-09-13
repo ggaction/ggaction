@@ -115,5 +115,5 @@ computed는 rowPreserving 그대로다. normalizeExpression은 새 operands/cond
 - [x] 위 수치 oracle를 `test/unit/actions/data/computed-data.test.js`에 독립 기대값으로 구현했다.
 - [x] 수치·문자열·null consumer와 facet/Canvas materialization을 검증했다.
 - [x] Full 등록·타입 export·Current 계약·catalog·card·관계 trace·MCP·문서·installed consumer를 갱신했다.
-- [ ] `editComputedData`와 source revision replay는 R02/Phase 4에서 같은 evaluator로 검증한다.
+- [x] `editComputedData`와 source revision replay는 `test/unit/actions/data/derived-editing.test.js`, `test/contracts/advanced-authoring-integration.test.js`, `test/contracts/label-reference-lifecycle.test.js`에서 같은 evaluator와 downstream replay로 검증했다 (`d29287c9`, `5832228c`, `8c4b56ad`).
 - [x] Phase 1 승인과 `b891d1d5` 검증 근거를 `phase1/STEP1.md`에 기록했다. appearance 전용 Gate V는 data-only라 새 시각 목표가 없다.

@@ -2,19 +2,20 @@
 
 이 디렉터리는 현재 architecture/contract와 별도로 구현 순서와 협업 진행 기록을 관리한다.
 
-## 현재 작업
+## 현재 상태
 
-- **현재 활성 계획은 Roadmap 7 Phase 12**다. Phase 0–11 완료 revision은 각 STEP 원장이
-  소유하고, R43은 `ebf3562a`, R25는 `c29f496c`에서 primary 구현을 닫았다.
-  현재는 25개 전체의 통합·계약·패키지 검증과 main 반영을 진행한다.
-- [`roadmap7/ROADMAP.md`](roadmap7/ROADMAP.md) — 범위·의존성·Phase 0–12
-- [`roadmap7/IMPLEMENTER_START_HERE.md`](roadmap7/IMPLEMENTER_START_HERE.md) — 구현자 인계와 검증 순서
+- 현재 활성 계획은 없다. 마지막 완료 owner는 **Roadmap 7 Phase 12**다.
+- [`roadmap7/ROADMAP.md`](roadmap7/ROADMAP.md) — 완료된 범위·의존성·Phase 0–12 실행 기록
+- [`roadmap7/LOW_INFERENCE_IMPLEMENTATION_SPEC.md`](roadmap7/LOW_INFERENCE_IMPLEMENTATION_SPEC.md) —
+  낮은 성능의 구현자도 결과를 재현·감사할 수 있는 상세 함수·state·검증 명세
+- [`roadmap7/phase12/STEP1.md`](roadmap7/phase12/STEP1.md) — 25개 기능, 154개 사례,
+  전체 테스트·현실 시나리오·패키지 closeout
 - Roadmap 6 Phase 0–11은 완료된 이력으로 보존한다.
 - [`roadmap6/phase11/REVIEW.md`](roadmap6/phase11/REVIEW.md) — 234개 action의 계층·card·MCP·package
   통합 검증과 최종 closeout
 - [`roadmap6/TRACEABILITY.md`](roadmap6/TRACEABILITY.md) — 실행 대상 47개 항목과 작업·검증 조건
 - [`roadmap6/DESIGN_DECISIONS.md`](roadmap6/DESIGN_DECISIONS.md) — 공통 결정과 migration
-- 마지막 완료 owner는 [Roadmap 6 Phase 11](roadmap6/phase11/REVIEW.md)이다.
+- Roadmap 6의 마지막 owner는 [Phase 11](roadmap6/phase11/REVIEW.md)이다.
 - [`ROADMAP_INDEX.json`](ROADMAP_INDEX.json) — nullable active Roadmap/Phase와 마지막 완료 owner의 machine-readable source
 
 ## 개발 이력
@@ -33,6 +34,7 @@
 - [`roadmap5.3/ROADMAP.md`](roadmap5.3/ROADMAP.md) — completed, LLM knowledge/MCP 실험과 non-integration 결과
 - [`roadmap5.4/ROADMAP.md`](roadmap5.4/ROADMAP.md) — completed, compact knowledge delivery와 local MCP integration
 - [`roadmap6/ROADMAP.md`](roadmap6/ROADMAP.md) — completed, hierarchical chart authoring과 action consistency
+- [`roadmap7/ROADMAP.md`](roadmap7/ROADMAP.md) — completed, detailed chart authoring operations 25개와 전체 integration closeout
 
 ## 재사용하는 개발 절차
 

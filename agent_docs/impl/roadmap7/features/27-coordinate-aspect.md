@@ -97,7 +97,7 @@ layout은 먼저 기존 guide/title/legend occupied allocation을 계산하고 �
 
 - [x] 위 API의 최단 호출과 explicit 대상 호출, 누락/auto/false/empty 경계를 타입과 runtime으로 동기화했다.
 - [x] 위 수치 oracle를 실제 capability test에 구현했고 계획 예제를 기대값 생성기로 재사용하지 않았다.
-- [ ] R29와 합친 Polar mark/guide 및 Canvas/SVG/PNG/PDF closeout은 WP6.3에서 검증한다.
+- [x] R29와 합친 Polar mark/guide 및 Canvas/SVG/PNG/PDF closeout은 `test/contracts/polar-frame.test.js`와 `test/contracts/polar-parallel-facets.test.js`에서 검증했다 (`4aa9da65`, `ebf3562a`).
 - [x] Full 등록·타입 export·Current 계약·catalog·card·관계 trace·MCP·문서·installed consumer를 갱신했다.
 - [x] data-mode의 temporal/nonlinear/incomplete/multiple-pair/explicit-range 미지원 cell을 사전 오류로 고정했다.
 - [x] 해당 Phase의 승인과 R27 primary 검증 근거를 `phase6/STEP1.md`에 기록했다.

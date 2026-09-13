@@ -116,4 +116,22 @@ capability는 0이며 47개 항목은 모두 evidence에 연결됐다.
 - 전체 항목: [`roadmap6/TRACEABILITY.md`](roadmap6/TRACEABILITY.md)
 - Closeout: [`roadmap6/phase11/REVIEW.md`](roadmap6/phase11/REVIEW.md)
 
+## Roadmap 7 — Detailed Chart Authoring Operations
+
+사용자가 선택한 감사 항목 25개를 Phase 0~12에서 완료했다. Typed computed/complete/impute/normalize와
+달력·기간 window, 가중 통계, 16개 파생 데이터 editor, atomic multi-channel encoding, Parallel·offset·
+stroke·size scale, coordinate aspect·Polar frame, selected/semantic label lifecycle, 동적 통계 참조,
+exact legend samples·block editing·display labels, custom theme·shape details, Polar·Parallel facet/repeat,
+안전한 named resource 삭제를 Current surface로 통합했다.
+
+32개 공개 액션과 154개 인수 사례를 runtime, strict declarations, Current contracts, generated knowledge,
+public docs와 installed package에서 대조했다. 전체 테스트 3,590개와 smoke 119개가 통과했다. 실제 데이터
+감사에서 발견한 empty facet, horizon extent, legend lane, sparse radar, dense raincloud, timestamp interval과
+신규 resource-removal trace 문제도 수정했다. 저장소 전체 exhaustive realistic option coverage의 기존 부채와
+로컬 Ruby 2.6.10의 Jekyll 제한은 성공으로 숨기지 않고 closeout 원장에 분리했다.
+
+- 기록: [`roadmap7/ROADMAP.md`](roadmap7/ROADMAP.md)
+- 재현 명세: [`roadmap7/LOW_INFERENCE_IMPLEMENTATION_SPEC.md`](roadmap7/LOW_INFERENCE_IMPLEMENTATION_SPEC.md)
+- Closeout: [`roadmap7/phase12/STEP1.md`](roadmap7/phase12/STEP1.md)
+
 Machine-readable 상태와 nullable active pointer는 [`ROADMAP_INDEX.json`](ROADMAP_INDEX.json)이 소유한다.

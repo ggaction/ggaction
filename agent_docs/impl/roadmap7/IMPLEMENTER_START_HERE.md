@@ -1,8 +1,10 @@
 # 구현자 인계 — 여기부터 시작
 
-사용자는 감사 번호 25개와 Phase 0–12 Gate를 모두 승인했다. Phase 0–11은 완료됐고
-R43은 `ebf3562a`, R25는 제품·Current·문서·설치 패키지 checkpoint `c29f496c`까지
-push됐다. **현재 작업은 [Phase 12 전체 통합과 main 반영](LOW_INFERENCE_IMPLEMENTATION_SPEC.md#7-phase-12--전체-통합과-main-merge-전-closeout)**이다. 승인된 공개 API·옵션·수식은 구현 계약이지만, 실제 source·tests·types·Current contract 증거가 없는 기능을 구현 완료로 간주하지 않는다.
+사용자는 감사 번호 25개와 Phase 0–12 Gate를 모두 승인했다. Roadmap 7 제품 범위는
+Phase 12 최종 제품 checkpoint `63857cb1`과 [실행·증거 원장](phase12/STEP1.md)에서 완료됐다.
+이 문서는 완료된 구현을 재현·감사하거나 후속 회귀를 고칠 때 쓰는 진입점이다. 승인된 공개
+API·옵션·수식은 구현 계약이지만, 실제 source·tests·types·Current contract 증거가 없는 기능을
+구현 완료로 간주하지 않는다.
 
 ## 첫 작업
 
@@ -25,7 +27,7 @@ push됐다. **현재 작업은 [Phase 12 전체 통합과 main 반영](LOW_INFER
 
 위 순서를 기억에 의존해 축약하지 않는다. [상세 구현 작업 패킷의 공통 절차](DETAILED_IMPLEMENTATION_WORK_PACKAGES.md#2-모든-작업-패킷의-공통-절차)와 [무추론 실행 규약](DETAILED_IMPLEMENTATION_WORK_PACKAGES.md#저성능-구현-모델을-위한-무추론-실행-규약)에 있는 입력표, Core/Transaction/Consumers/Surface 네 구간, 다섯 테스트 묶음과 체크포인트 기록 순서를 그대로 사용한다. 기능 계약은 `features/*.md`, 작업 순서와 수정 위치는 상세 작업 패킷, literal 기대값은 `ACCEPTANCE_CASES.json`이 각각 소유한다. 같은 사실을 추측으로 합치지 않는다.
 
-현재 실행 대상은 [Phase 12 closeout](LOW_INFERENCE_IMPLEMENTATION_SPEC.md#7-phase-12--전체-통합과-main-merge-전-closeout)이다. Phase 11 이전 제품을 다시 구현하지 않고 25개 feature/status/evidence를 기계적으로 대조한 뒤 네 누적 flow, 전체 test/renderer/browser/realistic/docs/package를 검증하고 main에 반영한다.
+재검증이나 회귀 수정은 [Phase 12 closeout](LOW_INFERENCE_IMPLEMENTATION_SPEC.md#7-phase-12--전체-통합과-main-merge-전-closeout)의 기계적 대조와 네 누적 flow부터 시작한다. 완료 checkpoint의 제품을 다시 구현하지 않고 25개 feature/status/evidence, test/renderer/browser/realistic/docs/package 증거를 현재 revision에서 다시 확인한다.
 
 각 작업을 마칠 때 다음 질문에 모두 `예`라고 답할 수 있어야 한다.
 

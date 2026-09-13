@@ -1,6 +1,6 @@
 # Roadmap 7 — 단계별 구현 실행 명세
 
-문서 상태: **실행 기준**. 기준일 2026-09-13. 사용자는 Roadmap 7의 25개 기능과 Phase 0–12 Gate를 모두 승인했다. Phase 0–11은 완료됐고 R43은 `89f1c54e`, `4dbdaf85`, `ebf3562a`, R25는 `c29f496c`에서 종료됐다. 현재는 Phase 12 전체 통합과 main 반영을 진행한다.
+문서 상태: **완료된 실행 기준**. 기준일 2026-09-13. 사용자는 Roadmap 7의 25개 기능과 Phase 0–12 Gate를 모두 승인했다. R43은 `89f1c54e`, `4dbdaf85`, `ebf3562a`, R25는 `c29f496c`, Phase 12 제품 검증은 `63857cb1`에서 종료됐다. 이 runbook은 같은 계약을 재현하거나 회귀를 고칠 때 사용하며 최종 수치와 한계는 [Phase 12 실행·증거 원장](phase12/STEP1.md)을 따른다.
 
 이 문서는 구현 순서와 완료 판정을 한 곳에서 찾게 하는 실행 원장이다. 코드 수준의 함수·requested state·preflight·cleanup·test 절차는 [LOW_INFERENCE_IMPLEMENTATION_SPEC.md](LOW_INFERENCE_IMPLEMENTATION_SPEC.md)를 따른다. 정확한 필드, union, 수식, 지원 행렬은 각 [기능 명세](features/)가 단일 owner이고, case별 literal 기대값은 [ACCEPTANCE_CASES.json](ACCEPTANCE_CASES.json)이 소유한다. 이 문서와 기능 명세가 충돌하면 기능 명세를 따르고 이 문서를 같은 변경에서 고친다.
 

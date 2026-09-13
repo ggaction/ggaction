@@ -1,7 +1,8 @@
 # Phase 12 — 25개 항목 통합·계약·패키지 마감
 
-상태: active. Phase 11 R25가 `c29f496c`에서 완료되어, 선택 25개 전체의 machine
-reconciliation, 네 누적 프로그램, 전체 검증과 main 반영을 실행한다.
+상태: completed. 선택 25개 전체의 machine reconciliation, 네 누적 프로그램,
+Current/문서/패키지 대조와 Roadmap 범위 검증을 완료했다. 제품·시나리오 보강의 최종 검증
+head는 `63857cb1`이며 세부 결과는 [STEP1.md](STEP1.md)의 원장이 소유한다.
 
 ## 목표와 범위
 
@@ -21,4 +22,6 @@ reconciliation, 네 누적 프로그램, 전체 검증과 main 반영을 실행�
 
 이 Phase에 배정되지 않은 선택 기능은 해당 owner Phase에서 구현한다. 감사에서 선택하지 않은 나머지 25개는 추가하지 않는다. 독립적인 저작 의미가 필요할 때만 action을 추가하고, 타입과 문서만 있는 API를 만들지 않는다.
 
-[STEP1.md](STEP1.md)의 체크리스트와 [GATES.md](GATES.md)의 상태를 함께 갱신한다. 실패한 테스트나 미실행 backend는 완료 근거가 아니다. 다음 Phase를 진행하기 위해 이름만 있는 stub을 commit하지 않는다.
+[STEP1.md](STEP1.md)의 체크리스트와 [GATES.md](GATES.md)의 상태를 함께 갱신했다. Jekyll
+build의 로컬 Ruby 제한과 저장소 전체 realistic option-inventory 감사의 기존 부채는 성공으로
+기록하지 않았고 Roadmap 7 기능 증거와 분리했다. 이 Roadmap 다음 Phase는 없다.

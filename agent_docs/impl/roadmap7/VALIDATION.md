@@ -1,6 +1,6 @@
 # 구현 검증 계획과 증거 기준
 
-여기의 명령은 **향후 구현 검증 계획**이다. 현재 문서 작성에서 실행한 것은 [PLAN_VALIDATION.md](PLAN_VALIDATION.md)에 별도로 기록한다. baseline은 c0e47da6e213852213bcb04eb19031a1a6a63cd7이고 사용자 선택 25개는 아직 미구현이다.
+여기의 명령과 증거 기준은 Roadmap 7 구현에 적용한 검증 계약이며 후속 회귀에서도 그대로 사용한다. 원래 baseline은 c0e47da6e213852213bcb04eb19031a1a6a63cd7이고 사용자 선택 25개는 모두 구현·Current 승격됐다. 단계별 결과는 [PLAN_VALIDATION.md](PLAN_VALIDATION.md), 최종 실행 수치와 환경 한계는 [Phase 12 실행·증거 원장](phase12/STEP1.md)이 소유한다.
 
 ## 테스트 계층과 파일 소유권
 
@@ -108,7 +108,7 @@ known unsupported cells and reason:
 remaining work, next blocked gate:
 ```
 
-Phase closeout에는 각 selected item의 tests/current contract/installed evidence를 별도로 연결한다. 모든 requested 기능이 Current이고 필수 later-integration cell까지 해결됐을 때만 Roadmap7 완료다.
+Phase closeout에는 각 selected item의 tests/current contract/installed evidence를 별도로 연결한다. 모든 requested 기능이 Current이고 필수 later-integration cell까지 해결됐을 때만 Roadmap7 완료다. 최종 closeout은 25개 기능, 154개 acceptance case, 32개 Roadmap 공개 action의 exact reconciliation과 `npm test` 3,590/3,590을 통과했다. 현실 시나리오 3,600/3,600은 실행 성공했지만 저장소 전체 exhaustive option-inventory gate는 기존 전역 커버리지 부채 때문에 실패했으므로 성공으로 기록하지 않는다. 로컬 Ruby 2.6.10 환경의 Jekyll build도 Ruby 3.2+ preflight에서 중단됐으며 generated freshness와 docs tests 47/47만 성공 증거다.
 
 ## 문서 단계의 제안 타입 검사
 

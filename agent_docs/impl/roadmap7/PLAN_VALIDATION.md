@@ -386,3 +386,25 @@ Polar/Parallel facet·repeat 항목은 R43 owner checkpoint `ebf3562a`에서 모
 | 공개 경계 | strict types, Current composition contract, public/generated docs, installed Node/TypeScript/browser consumer 갱신 |
 | 제품 checkpoint | foundation `89f1c54e`, runtime `4dbdaf85`, 종료 감사·공개 경계 `ebf3562a` |
 | 다음 owner | Phase 11 R25 safe named resource removal |
+
+## 2026-09-13 Phase 12 최종 closeout 검증
+
+Roadmap 7의 선택 25개를 source, executable evidence, types, Current contracts, public docs,
+knowledge metadata와 installed package까지 기계적으로 대조했다. `PROPOSALS.json`,
+`IMPLEMENTATION_MAP.json`, `ACCEPTANCE_CASES.json`, `TRACEABILITY.md`와 Phase 원장은 모두
+완료 상태를 가리킨다. 자세한 명령, artifact와 환경 한계는 [Phase 12 실행·증거 원장](phase12/STEP1.md)이
+canonical owner다.
+
+| 검증 | 실제 결과 |
+| --- | --- |
+| 정확한 범위 대조 | 25 features, 154 passed acceptance cases, 32 Roadmap 7 public actions가 phase·trace·implementation commit·runtime/type/Current/docs/knowledge까지 일치 |
+| 전체 회귀 | `npm test`: 3,590/3,590 통과, 실패·skip 0 |
+| 누적 lifecycle | data revision, atomic encoding, labels/reference, Polar/Parallel facet/repeat, theme/style, resource cleanup 네 흐름 통과 |
+| 현실형 focused | 23/23 통과; 실제 50-dataset sweep과 8 datasets×24 hierarchical profiles 포함 |
+| generated smoke | 119/119 통과, 19 datasets |
+| full realistic execution | immutable audit에서 3,600/3,600 실행 성공, runtime failure 0, resource gate 통과 |
+| realistic inventory 한계 | 저장소 전체 exhaustive option inventory는 기존 전역 커버리지 부채 때문에 실패했다. `63857cb1`에서 Roadmap 신규 `removeData`/`removeScale`/`removeCoordinate`와 각 `id` path를 5 datasets에 보강했지만 전체 명령을 passed로 기록하지 않는다 |
+| package | 521 entries, 704,296 packed, 3,543,003 unpacked; SHA-256 `dfb0c837da4a8d6d87bf9455582b211e974e7192c2f478d43082183366716c96` |
+| installed consumers | Node, extension, SVG/PNG/PDF, strict TypeScript, Basic boundary, browser, MCP와 Roadmap 7 API 소비 통과 |
+| bundle | Full 358,202 gzip, Basic 173,757 gzip, SVG installed consumer 6,742 gzip |
+| docs | generated freshness와 docs tests 47/47 통과. 로컬 Ruby 2.6.10이라 Ruby 3.2+ Jekyll preflight에서 중단됐으며 build/browser를 성공으로 기록하지 않는다 |

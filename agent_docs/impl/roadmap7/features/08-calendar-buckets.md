@@ -108,5 +108,5 @@ epoch 정수는 정확히 비교한다. Node/browser 결과를 같은 manifest�
 - [x] 위 timezone 수치 oracle를 `test/unit/actions/data/time-unit-data.test.js`에 고정 epoch 기대값으로 구현했다.
 - [x] ordinal weekday/temporal week consumer와 facet-local Canvas replay를 검증했다.
 - [x] Full 타입·Current 계약·catalog·card·MCP·문서·installed consumer를 갱신했다.
-- [ ] `editTimeUnitData`와 source revision replay는 R02/Phase 4에서 같은 boundary owner로 검증한다.
+- [x] `editTimeUnitData`와 source revision replay는 `test/unit/actions/data/derived-editing.test.js`와 `test/contracts/advanced-authoring-integration.test.js`에서 같은 calendar boundary owner로 검증했다 (`d29287c9`, `8c4b56ad`).
 - [x] Phase 2 승인과 `9d4d0840` 검증 근거를 `phase2/STEP1.md`에 기록했다. appearance 전용 Gate V는 data-only라 새 시각 목표가 없다.

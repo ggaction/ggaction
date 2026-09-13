@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "status": "in-progress",
+  "status": "completed",
   "note": "명세 사례 인덱스. 테스트에 독립 fixture/expected로 옮기며 제품에서 이 JSON을 import하지 않는다. runtimeEvidence:null은 미실행이다.",
   "cases": [
     {
