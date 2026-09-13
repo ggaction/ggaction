@@ -1,8 +1,49 @@
 # Roadmap 7 — 무추론 구현 명세
 
-작성 기준: 2026-09-13. 기준 branch `codex/roadmap7-authoring-refinement`. Phase 8 완료 checkpoint는 `20a25911`, R47 제품 checkpoint는 `ce286929`, R49 제품·renderer·declaration checkpoint는 `0e09691a`–`31a2eee9`다. R49 lifecycle·Current/docs/package closeout 전에는 Phase 9 완료로 기록하지 않는다.
+작성 기준: 2026-09-13. 기준 branch `codex/roadmap7-authoring-refinement`, 인계 기준 HEAD는 `4dbdaf85`다. Phase 9는 제품 checkpoint `1c5192f2`와 상태 checkpoint `39be3e3e`에서 완료됐다. Phase 10은 foundation checkpoint `89f1c54e`와 runtime 후보 checkpoint `4dbdaf85`까지 push됐다. 아래 Phase 10 종료 감사를 통과하기 전에는 R43 또는 Phase 10을 완료로 기록하지 않는다.
 
-이 문서는 구현자가 설계를 새로 해석하지 않고 남은 Roadmap 7을 실행하도록 만든 코드 수준 명세다. 공개 의미·기본값·수식은 각 `features/*.md`가 소유하고, 이 문서는 **수정 파일, 함수 경계, 상태 경로, 실행 순서, 삭제 규칙, 테스트 묶음과 종료 조건**을 소유한다. 두 문서가 다르면 feature 계약을 따르고 같은 checkpoint에서 이 문서를 고친다. 완료된 R02/R05/R06/R07/R08/R09/R10/R19/R20/R21/R22/R23/R27/R29/R31/R32/R33/R36/R37/R38/R39와 이미 push된 R47/R49 제품 코드는 다시 구현하지 않는다. R49 closeout은 누락된 lifecycle·계약·문서·package 증거만 보강한다. R31/R32/R33/R37/R38/R39/R47/R49의 non-Cartesian facet/repeat 소비 cell은 R43에서 현재 action을 consumer로 검증한다.
+이 문서는 구현자가 설계를 새로 해석하지 않고 남은 Roadmap 7을 실행하도록 만든 코드 수준 명세다. 공개 의미·기본값·수식은 각 `features/*.md`가 소유하고, 이 문서는 **수정 파일, 함수 경계, 상태 경로, 실행 순서, 삭제 규칙, 테스트 묶음과 종료 조건**을 소유한다. 두 문서가 다르면 feature 계약을 따르고 같은 checkpoint에서 이 문서를 고친다. 완료된 R02/R05/R06/R07/R08/R09/R10/R19/R20/R21/R22/R23/R27/R29/R31/R32/R33/R36/R37/R38/R39/R47/R49 제품 코드는 다시 구현하지 않는다. R31/R32/R33/R37/R38/R39/R47/R49의 non-Cartesian facet/repeat 소비 cell만 R43에서 현재 action의 consumer 통합으로 검증한다.
+
+## 0. 현재 인계 상태와 다음 실행점
+
+이 표는 계획 상태가 아니라 실제 push된 제품 증거를 기준으로 한다. `implemented candidate`는 코드가 있다는 뜻이며 Current 계약·공개 문서·installed package·전체 회귀가 끝났다는 뜻이 아니다.
+
+| 범위 | 실제 상태 | 재사용할 revision | 다음 작업 |
+| --- | --- | --- | --- |
+| Phase 0–8 | 완료 | 각 STEP 결과 원장, Phase 8 `20a25911` | 재구현 금지; R43/R25 consumer 회귀만 추가 |
+| Phase 9 R47/R49 | 완료 | `1c5192f2`, `39be3e3e` | 재구현 금지; R43 child replay 회귀만 추가 |
+| Phase 10 W10.1–W10.3 | implemented candidate | `89f1c54e` | 3-pass 경계·empty transform·binding 불변식 감사 |
+| Phase 10 W10.4–W10.5 | implemented candidate | `4dbdaf85` | label/Canvas/empty guide lifecycle와 package/docs 마감 |
+| Phase 10 W10.6 | 미완료 | unit 2453, contracts 472가 위 HEAD에서 통과 | 아래 종료 감사, 전체 suite, Current/public/generated/package 동기화 |
+| Phase 11 R25 | 미착수 | 없음 | Phase 10 status checkpoint 뒤 시작 |
+| Phase 12 통합 | 미착수 | 없음 | Phase 11 완료 뒤 25개 exact reconciliation과 main 반영 |
+
+### 인계 직후 실행할 명령
+
+다른 디렉터리를 조사하지 않는다. 아래 명령은 저장소 root에서 실행한다.
+
+```sh
+git status --short
+git branch --show-current
+git log -3 --oneline
+npm run test:unit
+npm run test:contracts
+```
+
+예상 branch는 `codex/roadmap7-authoring-refinement`, 예상 최신 두 제품 commit은 `4dbdaf85`, `89f1c54e`다. working tree가 더 최신이면 사용자 작업을 되돌리지 말고 diff를 분류한다. pass count가 달라도 test 0 failure가 우선이며, 숫자를 문서에 억지로 맞추지 않는다.
+
+### Phase 10에서 바로 닫을 여섯 가지 감사
+
+아래는 선택 사항이 아니다. 각 항목은 기존 성공 fixture를 복제하지 말고 누락된 경계 하나를 독립 test로 고정한다.
+
+1. **3-pass atomicity**: `derive.js`가 candidate 생성, 전체 child domain 해결, 최종 materialization을 논리적으로 분리하는지 확인한다. 현재 함수명이 다르거나 `deriveCellProgram` 안에 남아 있으면 W10.2의 세 이름으로 추출한다. 첫 child의 graphic materialization이 둘째 child의 domain 오류보다 먼저 caller-visible parent state를 만들 수 없어야 한다.
+2. **transform 뒤 empty**: raw partition에는 행이 있지만 row-preserving filter 또는 통계 transform 뒤 final rows가 0인 cell을 만든다. shared/explicit domain은 semantic layer·coordinate·정상 empty graphic·local guide를 유지하고, independent auto는 고정 오류를 내며 원본 8개 branch와 `_actionSequence`를 보존해야 한다.
+3. **source-owned Text lifecycle**: R31/R32/R33의 attached label이 있는 Polar unit을 facet/facetGrid하고 source edit, scale edit, theme, Canvas edit를 거친다. 각 child가 자신의 final items로 membership/placement/leader를 다시 계산해야 한다. `repeatCharts`가 primary mark 하나와 그 mark의 dependent label을 함께 반복할 수 있는 것이 승인 계약이면 dependent Text를 eligible-layer count에서 제외하고 같은 replay를 검증한다. 독립 Text layer나 다른 source의 label은 여전히 거부한다.
+4. **composition Canvas replay**: unit을 먼저 resize한 뒤 `editFacetSource`하는 경우뿐 아니라 facet/repeat parent에서 지원되는 Canvas edit 진입점이 retained source와 모든 child의 local range/frame을 다시 계산하는지 확인한다. 공개 parent edit가 현재 계약상 없다면 성공을 모사하지 말고 R43 feature와 Current 계약에 정확한 제한을 한 곳에 기록한다.
+5. **full-grid empty non-Cartesian panel**: Polar와 Parallel 각각에 missing pair를 만든다. header slot과 grid coordinate가 유지되고 sibling이 이동하지 않으며, shared domain의 axes/grid는 empty child의 local coordinate를 사용해야 한다. Pie/Rose/Radar empty graphic은 family의 canonical empty representation과 일치해야 한다.
+6. **public/package closeout**: `types/program.d.ts`, strict positive/negative type fixture, `agent_docs/contract/current/COMPOSITION.md`, `ACTION_INDEX.json`, action relations/cards, `docs/api/composition.md`, generated reference, packed Node/TypeScript/MCP consumer가 `theta`, public `r`, `parallelDimensions`, `{parallelDimension}`과 거부 표를 같은 의미로 노출해야 한다.
+
+이 여섯 감사를 통과한 제품·계약·문서 checkpoint를 commit/push한 뒤에만 feature/Phase/PROPOSALS 상태를 별도 checkpoint에서 닫고 `activePhase`를 11로 이동한다.
 
 ## 1. 구현자가 지켜야 할 실행 형식
 
