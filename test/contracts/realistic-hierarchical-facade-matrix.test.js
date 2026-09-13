@@ -23,7 +23,8 @@ const DATASETS = Object.freeze([
   "tt-london-marathon-winners",
   "tt-himalayan-peaks",
   "tt-us-tornadoes",
-  "tt-voter-turnout"
+  "tt-voter-turnout",
+  "tt-tour-de-france-winners"
 ]);
 
 function nestedTraceValues(args, path) {
@@ -70,7 +71,7 @@ function record(stats, dataset, count = 1) {
 }
 
 test("covers every hierarchical facade option, literal and diversity requirement", {
-  timeout: 120_000
+  timeout: 180_000
 }, async () => {
   const inventory = await buildPublicOptionInventory(actionCards);
   const options = inventory.optionPaths.filter(option =>

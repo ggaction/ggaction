@@ -891,16 +891,29 @@ function appendRadar(program, index) {
   const source = `${suffix}-data`;
   const long = ![3, 7, 11, 19].includes(index);
   const hasColor = index % 11 !== 0;
-  const next = program.createSummaryData({
-    id: source,
-    source: "analysisRows",
-    groupBy: long ? ["group", "bucket"] : "group",
-    aggregates: [
-      { op: "mean", field: "positiveX", as: "positiveX" },
-      { op: "mean", field: "positiveY", as: "positiveY" },
-      { op: "mean", field: "size", as: "size" }
-    ]
-  });
+  const aggregates = [
+    { op: "mean", field: "positiveX", as: "positiveX" },
+    { op: "mean", field: "positiveY", as: "positiveY" },
+    { op: "mean", field: "size", as: "size" }
+  ];
+  const next = long
+    ? program.createSummaryData({
+        id: `${source}-summary`,
+        source: "analysisRows",
+        groupBy: "bucket",
+        aggregates
+      }).createComputedData({
+        id: source,
+        source: `${source}-summary`,
+        as: "group",
+        expression: { constant: "All observations" }
+      })
+    : program.createSummaryData({
+        id: source,
+        source: "analysisRows",
+        groupBy: "group",
+        aggregates
+      });
   const options = {
     id: suffix,
     data: source,
