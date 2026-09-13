@@ -5,10 +5,10 @@
 - [x] 범위·현재 source owner·선행 Phase 완료 상태 확인
 - [x] Gate A 자료: 정확한 API/schema/defaults/오류/수치 oracle 작성·검증
 - [x] 명시 승인 범위 기록 후 해당 구현 시작
-- [ ] appearance 대상은 primitive render와 target public chain으로 Gate V 확인
-- [ ] 아래 wave 구현과 focused/cumulative tests 완료
-- [ ] types/current contracts/catalog/cards/MCP/docs/package 영향 갱신
-- [ ] Gate X 결과와 남은 후속 통합 cell 기록
+- [x] appearance 대상은 public Polar chain의 literal geometry와 Canvas/SVG/PNG/PDF로 Gate V 확인
+- [x] 아래 wave 구현과 focused/cumulative tests 완료
+- [x] types/current contracts/catalog/cards/MCP/docs/package 영향 갱신
+- [x] Gate X 결과와 남은 후속 통합 cell 기록
 - [x] R27 구현 commit `ded3b073` push; R29와 Phase 6 closeout은 계속 진행
 
 계획 작성 시 모든 체크는 미완료다. Phase 0 은 제품 구현이 없으므로 해당 구현·시각 항목의 미적용 이유를 기록한다. Phase 12 는 새 시각 목표가 없으면 승인된 variant를 현재 코드에서 다시 실행해 검증한다.
@@ -45,7 +45,8 @@
 | W1 — R27 aspect pure bounds | `ded3b073` | frame/data literal bounds, align, reverse span, Polar/Parallel frame 적용 | R29 Polar frame과 결합 renderer matrix | complete-primary |
 | W2 — R27 domain→aspect→range | `ded3b073` | 10 focused runtime/type cases; Canvas/domain edit replay; axes/grids/shared pair; invalid/ambiguous/explicit-range atomicity | R29 radius range 통합 | complete-primary |
 | R27 public/package | `ded3b073` | unit 2,362/2,362; contracts 392/392; docs 47/47; 269 cards; package 505 entries, 652,810 packed, 3,284,572 unpacked; tar SHA-256 `bacc29844ff00a7eef0b4b025b7e6984a2101538a3d1b2050f2b7acb1f038364`; full/basic/svg gzip 328,029/161,789/6,418 | R29 확장 뒤 재생성·재측정 | passed-primary |
-| W3/W4 — R29 + Phase 6 closeout | — | 실행 증거 없음 | polar center/radius, overflow lifecycle, combined renderer matrix | active |
+| W3 — R29 frame resolver와 consumers | `4aa9da65` | R29-N01–N03/E01–E02/L01; point/line/arc/selection/axes/grids/labels가 한 center/R 사용; aspect→frame→radius range; object replacement와 auto | R33 label leader, R43 local panel 회귀 | complete-primary |
+| W4 — R29 lifecycle와 Phase 6 closeout | `4aa9da65` | focused 61/61; unit 2,365/2,365; contracts 399/399; docs 47/47; Canvas/SVG/PNG/PDF; package 505 entries, 654,251 packed, 3,291,157 unpacked; tar SHA-256 `a968d1faf1a4f59b3a32c317de4dbfdf6cbb45cc4744de7d29a8e6b2475e5c96`; full/basic/svg gzip 328,676/162,451/6,418 | Phase 7 R31부터 진행 | passed-primary |
 
 ## Gate 연결
 

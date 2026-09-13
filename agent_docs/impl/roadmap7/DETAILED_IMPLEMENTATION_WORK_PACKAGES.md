@@ -1,6 +1,6 @@
 # Roadmap 7 — 상세 구현 작업 패킷
 
-작성 기준: 2026-09-13. 현재 branch `codex/roadmap7-authoring-refinement`, 마지막 구현 검증 checkpoint `ded3b073`. 이 문서는 이미 승인된 Roadmap 7을 구현자가 기능 단위로 끝까지 실행하기 위한 **작업 분해와 종료 절차**다. 공개 API의 정확한 의미·수식·기본값은 각 `features/*.md`가 canonical owner이며, 이 문서는 그 계약을 어느 파일에 어떤 순서로 구현하고 무엇으로 검증할지를 소유한다.
+작성 기준: 2026-09-13. 현재 branch `codex/roadmap7-authoring-refinement`, 마지막 구현 검증 checkpoint `4aa9da65`. 이 문서는 이미 승인된 Roadmap 7을 구현자가 기능 단위로 끝까지 실행하기 위한 **작업 분해와 종료 절차**다. Phase 7 이후의 함수·state·transition·test를 한 문서에서 기계적으로 실행하려면 [무추론 구현 명세](LOW_INFERENCE_IMPLEMENTATION_SPEC.md)를 함께 따른다. 공개 API의 정확한 의미·수식·기본값은 각 `features/*.md`가 canonical owner이며, 이 문서는 그 계약을 어느 파일에 어떤 순서로 구현하고 무엇으로 검증할지를 소유한다.
 
 ## 1. 현재 상태와 실행 경계
 
@@ -17,7 +17,8 @@
 | R23 size scale types | Implemented-primary | `1b68a8ba` | R19/R37/R43 통합 |
 | R22 field stroke | Implemented-primary | `3fc40a66`, 기록 `0a2fed94` | R19/R43 통합 |
 | R19 atomic encoding | Implemented-primary | `58d9e51a`, 기록 `13acb276` | R32/R36/R38/R43 새 consumer 통합 |
-| R27 coordinate aspect | Implemented-primary | `ded3b073` | R29와 Phase 6 renderer closeout |
+| R27 coordinate aspect | Implemented-primary | `ded3b073` | R33/R39/R43 소비 회귀 |
+| R29 Polar frame | Implemented-primary | `4aa9da65` | R33 label anchor와 R43 local panel 소비 회귀 |
 
 완료 checkpoint의 pure core나 public API를 다른 이름으로 다시 만들지 않는다. 후속 기능이 새 consumer를 추가할 때 기존 owner에 consumer path와 regression만 보강한다.
 
@@ -25,15 +26,14 @@
 
 순서는 의존성 계약이다. 같은 번호의 소단계는 위에서 아래로 수행한다.
 
-1. Phase 6: R29 → R27+R29 좌표 통합.
-2. Phase 7: R31 → R32 → R33 → R36 → 라벨/참조 통합.
-3. Phase 8: R37 → R38 → R39 → guide 통합.
-4. Phase 9: R47 → R49 → renderer/style 통합.
-5. Phase 10: R43 family matrix 전체.
-6. Phase 11: R25 reference registry와 안전 삭제.
-7. Phase 12: 25개 기능의 전체 lifecycle·metadata·package closeout.
+1. Phase 7: R31 → R32 → R33 → R36 → 라벨/참조 통합.
+2. Phase 8: R37 → R38 → R39 → guide 통합.
+3. Phase 9: R47 → R49 → renderer/style 통합.
+4. Phase 10: R43 family matrix 전체.
+5. Phase 11: R25 reference registry와 안전 삭제.
+6. Phase 12: 25개 기능의 전체 lifecycle·metadata·package closeout.
 
-R19와 R27의 완료 checkpoint를 다시 구현하지 않는다. R43을 좌표·라벨·guide·theme보다 먼저 만들지 않는다. R25는 모든 새 reference schema가 생긴 뒤 구현한다.
+R19, R27, R29의 완료 checkpoint를 다시 구현하지 않는다. R43을 좌표·라벨·guide·theme보다 먼저 만들지 않는다. R25는 모든 새 reference schema가 생긴 뒤 구현한다.
 
 ### 선택 25개와 이 문서의 작업 owner
 
@@ -52,8 +52,8 @@ R19와 R27의 완료 checkpoint를 다시 구현하지 않는다. R43을 좌표�
 | R22 | field stroke·stroke scale·legend | Implemented-primary (`3fc40a66`) | 완료 checkpoint + WP5.4/WP10 |
 | R23 | nonlinear/discrete size scale | Implemented-primary | 완료 checkpoint + WP5.3/WP8.1/WP10/WP12 |
 | R25 | 안전한 resource 삭제 | Proposed | WP11 |
-| R27 | coordinate aspect | Implemented-primary (`ded3b073`) | 완료 checkpoint + WP6.3/WP10/WP12 |
-| R29 | Polar frame | Proposed | WP6.2 |
+| R27 | coordinate aspect | Implemented-primary (`ded3b073`) | 완료 checkpoint + WP7.3/WP8.3/WP10/WP12 |
+| R29 | Polar frame | Implemented-primary (`4aa9da65`) | 완료 checkpoint + WP7.3/WP10/WP12 |
 | R31 | attached labels 삭제 | Proposed | WP7.1 |
 | R32 | selected final-item labels | Proposed | WP7.2 |
 | R33 | semantic label anchors | Proposed | WP7.3 |

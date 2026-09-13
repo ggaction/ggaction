@@ -2,7 +2,7 @@
 
 문서 상태 — 현재 실행 계획.
 
-사용자가 감사 50개 항목 중 선택한 **25개**를 구현하는 현재 로드맵이다. **Phase 0–5는 완료됐고 Phase 6을 실행 중**이다. 2026-09-13 사용자가 모든 Gate를 명시적으로 승인했으며, 각 Phase의 구현·검증 증거는 STEP 결과 원장에 누적한다. 아직 구현되지 않은 API를 Current로 표시하지 않는다. 탐색 상태는 [ROADMAP_INDEX.json](../ROADMAP_INDEX.json)이 관리한다.
+사용자가 감사 50개 항목 중 선택한 **25개**를 구현하는 현재 로드맵이다. **Phase 0–6은 완료됐고 Phase 7을 실행 중**이다. 2026-09-13 사용자가 모든 Gate를 명시적으로 승인했으며, 각 Phase의 구현·검증 증거는 STEP 결과 원장에 누적한다. 아직 구현되지 않은 API를 Current로 표시하지 않는다. 탐색 상태는 [ROADMAP_INDEX.json](../ROADMAP_INDEX.json)이 관리한다.
 
 ## 의도와 성공 기준
 
@@ -12,7 +12,7 @@
 
 ## 먼저 읽을 순서
 
-1. [IMPLEMENTER_START_HERE.md](IMPLEMENTER_START_HERE.md) — 구현자 인계·작업 순서. 공통 규약은 [IMPLEMENTATION_SPEC.md](IMPLEMENTATION_SPEC.md), 남은 기능의 파일별 원자 작업은 [DETAILED_IMPLEMENTATION_WORK_PACKAGES.md](DETAILED_IMPLEMENTATION_WORK_PACKAGES.md), Phase별 기계적인 실행은 [EXECUTION_RUNBOOK.md](EXECUTION_RUNBOOK.md), 정정된 제안은 [CONTRACT_RESOLUTIONS.md](CONTRACT_RESOLUTIONS.md)를 먼저 읽는다.
+1. [IMPLEMENTER_START_HERE.md](IMPLEMENTER_START_HERE.md) — 구현자 인계·작업 순서. 공통 규약은 [IMPLEMENTATION_SPEC.md](IMPLEMENTATION_SPEC.md), 남은 기능의 파일별 원자 작업은 [DETAILED_IMPLEMENTATION_WORK_PACKAGES.md](DETAILED_IMPLEMENTATION_WORK_PACKAGES.md), 저성능 구현자를 위한 코드 수준 절차는 [LOW_INFERENCE_IMPLEMENTATION_SPEC.md](LOW_INFERENCE_IMPLEMENTATION_SPEC.md), Phase별 기계적인 실행은 [EXECUTION_RUNBOOK.md](EXECUTION_RUNBOOK.md), 정정된 제안은 [CONTRACT_RESOLUTIONS.md](CONTRACT_RESOLUTIONS.md)를 먼저 읽는다.
 2. [COMMON_CONTRACT.md](COMMON_CONTRACT.md) — 공통 불변조건 12개.
 3. [API_DETAILS.md](API_DETAILS.md) — 실제 current 타입 연결과 빠뜨리면 안 되는 옵션 의미.
 4. [DECISIONS.md](DECISIONS.md) — 권장안 26개와 gate별 concrete 설계 검증.
@@ -75,8 +75,8 @@ Phase 번호는 권장 구현 순서다. 같은 Phase 안에서도 feature의 de
 | 3 | completed-primary | 가중 집계와 밀도 | 10 | 2 |
 | 4 | completed-primary | 파생 데이터 편집 | 2 | 1, 2, 3 |
 | 5 | completed-primary | 스케일·stroke·원자적 인코딩 | 20, 21, 23, 22, 19 | 4 |
-| 6 | active | 좌표 비율과 Polar frame | 27, 29 | 5 |
-| 7 | planned | 라벨 lifecycle와 통계 주석 | 31, 32, 33, 36 | 4, 5, 6 |
+| 6 | completed-primary | 좌표 비율과 Polar frame | 27, 29 | 5 |
+| 7 | active | 라벨 lifecycle와 통계 주석 | 31, 32, 33, 36 | 4, 5, 6 |
 | 8 | planned | 범례 content와 표시명 | 37, 38, 39 | 5, 7 |
 | 9 | planned | 사용자 theme와 형상 스타일 | 47, 49 | 7, 8 |
 | 10 | planned | Polar·Parallel facet와 repeat | 43 | 4, 5, 6, 7, 8, 9 |

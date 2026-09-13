@@ -1,16 +1,16 @@
 {
   "phase": 6,
-  "status": "Proposed",
+  "status": "completed-primary",
   "scope": "implementation",
   "candidates": [
     {
       "id": "R27",
-      "status": "Proposed",
+      "status": "Implemented-primary",
       "file": "../features/27-coordinate-aspect.md"
     },
     {
       "id": "R29",
-      "status": "Proposed",
+      "status": "Implemented-primary",
       "file": "../features/29-polar-frame.md"
     }
   ]

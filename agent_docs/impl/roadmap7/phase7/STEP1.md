@@ -2,9 +2,9 @@
 
 ## 진행 상태
 
-- [ ] 범위·현재 source owner·선행 Phase 완료 상태 확인
-- [ ] Gate A 자료: 정확한 API/schema/defaults/오류/수치 oracle 작성·검증
-- [ ] 명시 승인 범위 기록 후 해당 구현 시작
+- [x] 범위·현재 source owner·선행 Phase 완료 상태 확인
+- [x] Gate A 자료: 정확한 API/schema/defaults/오류/수치 oracle 작성·검증
+- [x] 명시 승인 범위 기록 후 해당 구현 시작
 - [ ] appearance 대상은 primitive render와 target public chain으로 Gate V 확인
 - [ ] 아래 wave 구현과 focused/cumulative tests 완료
 - [ ] types/current contracts/catalog/cards/MCP/docs/package 영향 갱신
@@ -23,7 +23,7 @@
 
 ## 반드시 읽을 계약
 
-[상세 구현 진입점](../IMPLEMENTATION_SPEC.md), [제안 정정 기록](../CONTRACT_RESOLUTIONS.md), [구현 연결표](../IMPLEMENTATION_MAP.json), [고정 인수 사례](../ACCEPTANCE_CASES.json)를 사용한다. 해당 Phase의 각 feature에서 구현 고정 명세를 적용하고 case ID를 실제 결과 원장에 연결한다.
+[상세 구현 진입점](../IMPLEMENTATION_SPEC.md), [무추론 코드 수준 명세](../LOW_INFERENCE_IMPLEMENTATION_SPEC.md), [제안 정정 기록](../CONTRACT_RESOLUTIONS.md), [구현 연결표](../IMPLEMENTATION_MAP.json), [고정 인수 사례](../ACCEPTANCE_CASES.json)를 사용한다. 해당 Phase의 각 feature에서 구현 고정 명세를 적용하고 case ID를 실제 결과 원장에 연결한다.
 
 - [R31 — 원본 마크를 보존하는 붙임 라벨 삭제](../features/31-remove-labels.md)
 - [R32 — 선택된 final item만 라벨링](../features/32-selected-labels.md)

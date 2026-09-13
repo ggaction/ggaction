@@ -860,8 +860,8 @@
       "kind": "normal",
       "specification": "allocated(0,0,400,300),x[0,100],y[0,50],data ratio1 → (0,50,400,200), px/unit 4/4.",
       "owner": "features/27-coordinate-aspect.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/contracts/coordinate-aspect.test.js and test/contracts/coordinate-aspect-types.test.js; ded3b073"
     },
     {
       "id": "R27-N02",
@@ -870,8 +870,8 @@
       "kind": "normal",
       "specification": "위 ratio2 → (0,100,400,100), px/unit 4/2.",
       "owner": "features/27-coordinate-aspect.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/contracts/coordinate-aspect.test.js and test/contracts/coordinate-aspect-types.test.js; ded3b073"
     },
     {
       "id": "R27-N03",
@@ -880,8 +880,8 @@
       "kind": "normal",
       "specification": "allocated(10,20,300,200),frame ratio1,alignX:end → (110,20,200,200).",
       "owner": "features/27-coordinate-aspect.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/contracts/coordinate-aspect.test.js and test/contracts/coordinate-aspect-types.test.js; ded3b073"
     },
     {
       "id": "R27-L01",
@@ -890,8 +890,8 @@
       "kind": "lifecycle",
       "specification": "object→auto → 원래 allocation. 작은→큰 Canvas 왕복 후 최초 frame 동일.",
       "owner": "features/27-coordinate-aspect.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/contracts/coordinate-aspect.test.js and test/contracts/coordinate-aspect-types.test.js; ded3b073"
     },
     {
       "id": "R27-E01",
@@ -900,8 +900,8 @@
       "kind": "error",
       "specification": "ratio0,span0,multiple distinct scale pairs,nonlinear axis → 원본 유지 오류.",
       "owner": "features/27-coordinate-aspect.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/contracts/coordinate-aspect.test.js and test/contracts/coordinate-aspect-types.test.js; ded3b073"
     },
     {
       "id": "R29-N01",
@@ -910,8 +910,8 @@
       "kind": "normal",
       "specification": "bounds(0,0,400,200),center(.25,.5),fraction.8 → center(100,100),R80.",
       "owner": "features/29-polar-frame.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/contracts/polar-frame.test.js, test/contracts/coordinate-aspect-types.test.js, and test/unit/grammar/polar.test.js; 4aa9da65"
     },
     {
       "id": "R29-N02",
@@ -920,8 +920,8 @@
       "kind": "normal",
       "specification": "같은 frame의 theta0/r80 → (100,20);theta90 → (180,100).",
       "owner": "features/29-polar-frame.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/contracts/polar-frame.test.js, test/contracts/coordinate-aspect-types.test.js, and test/unit/grammar/polar.test.js; 4aa9da65"
     },
     {
       "id": "R29-N03",
@@ -930,8 +930,8 @@
       "kind": "normal",
       "specification": "bounds(20,30,400,200),동일 요청 → center(120,130),R80.",
       "owner": "features/29-polar-frame.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/contracts/polar-frame.test.js, test/contracts/coordinate-aspect-types.test.js, and test/unit/grammar/polar.test.js; 4aa9da65"
     },
     {
       "id": "R29-E01",
@@ -940,8 +940,8 @@
       "kind": "error",
       "specification": "center(.9,.5),px80 → available40이므로 오류.",
       "owner": "features/29-polar-frame.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/contracts/polar-frame.test.js, test/contracts/coordinate-aspect-types.test.js, and test/unit/grammar/polar.test.js; 4aa9da65"
     },
     {
       "id": "R29-E02",
@@ -950,8 +950,8 @@
       "kind": "error",
       "specification": "fraction0,center boundary,Cartesian target,nonfinite center → 오류.",
       "owner": "features/29-polar-frame.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/contracts/polar-frame.test.js, test/contracts/coordinate-aspect-types.test.js, and test/unit/grammar/polar.test.js; 4aa9da65"
     },
     {
       "id": "R29-L01",
@@ -960,8 +960,8 @@
       "kind": "lifecycle",
       "specification": "모든 Polar guide와 leader가 center 이동에 동행; auto 복구 시 기존 output parity.",
       "owner": "features/29-polar-frame.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/contracts/polar-frame.test.js, test/contracts/coordinate-aspect-types.test.js, and test/unit/grammar/polar.test.js; 4aa9da65"
     },
     {
       "id": "R31-N01",

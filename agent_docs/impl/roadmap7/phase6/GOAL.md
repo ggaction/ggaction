@@ -1,6 +1,6 @@
 # Phase 6 — 좌표 비율과 Polar frame
 
-상태: active. 모든 Gate는 승인됐고 Phase 5 구현 근거 `58d9e51a` 이후 이 Phase를 실행한다.
+상태: completed-primary. R27 `ded3b073`과 R29 `4aa9da65`에서 구현·검증을 완료했다. R33 label anchor와 R43 local panel 소비 회귀는 해당 primary Phase가 소유한다.
 
 ## 목표와 범위
 

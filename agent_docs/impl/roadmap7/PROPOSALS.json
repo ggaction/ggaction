@@ -450,7 +450,7 @@
       "dependsOn": [
         "R27"
       ],
-      "status": "Proposed",
+      "status": "Implemented-primary",
       "scopeSelection": "user-selected",
       "file": "features/29-polar-frame.md",
       "sources": [

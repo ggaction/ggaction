@@ -17,8 +17,8 @@
 | R22 | 5 | [필드 기반 stroke 색상](features/22-stroke-color.md) | feature 내 독립 oracle/완료 조건 → Phase 5 STEP1 evidence | Implemented-primary (`3fc40a66`) |
 | R23 | 5 | [크기 scale의 비선형·단계형 mapping](features/23-size-scale-types.md) | `test/contracts/size-scale-types.test.js`; `test/unit/grammar/scales/size.test.js`; installed package; `1b68a8ba` | Implemented-primary / R19·R37·R43 통합 대기 |
 | R25 | 11 | [미사용 dataset·scale·coordinate 안전 삭제](features/25-remove-resources.md) | feature 내 독립 oracle/완료 조건 → Phase 11 STEP1 evidence | Proposed / 미구현 |
-| R27 | 6 | [좌표 frame 종횡비와 데이터 단위비](features/27-coordinate-aspect.md) | feature 내 독립 oracle/완료 조건 → Phase 6 STEP1 evidence | Proposed / 미구현 |
-| R29 | 6 | [Polar 중심과 frame 반지름·배치](features/29-polar-frame.md) | feature 내 독립 oracle/완료 조건 → Phase 6 STEP1 evidence | Proposed / 미구현 |
+| R27 | 6 | [좌표 frame 종횡비와 데이터 단위비](features/27-coordinate-aspect.md) | `test/contracts/coordinate-aspect.test.js`; strict types; installed package; `ded3b073` | Implemented-primary / R33·R39·R43 소비 회귀 대기 |
+| R29 | 6 | [Polar 중심과 frame 반지름·배치](features/29-polar-frame.md) | `test/contracts/polar-frame.test.js`; pure grammar/type/MCP/package; `4aa9da65` | Implemented-primary / R33·R43 소비 회귀 대기 |
 | R31 | 7 | [원본 마크를 보존하는 붙임 라벨 삭제](features/31-remove-labels.md) | feature 내 독립 oracle/완료 조건 → Phase 7 STEP1 evidence | Proposed / 미구현 |
 | R32 | 7 | [선택된 final item만 라벨링](features/32-selected-labels.md) | feature 내 독립 oracle/완료 조건 → Phase 7 STEP1 evidence | Proposed / 미구현 |
 | R33 | 7 | [의미 기반 라벨 anchor와 배치 정책](features/33-semantic-label-anchors.md) | feature 내 독립 oracle/완료 조건 → Phase 7 STEP1 evidence | Proposed / 미구현 |

@@ -1,7 +1,7 @@
 # R29 — Polar 중심과 frame 반지름·배치
 
-원래 감사 번호: **29**. Primary owner: **Phase 6**. 상태: **Proposed / 구현 전**.
-아래 세부 API·수치 정책의 Gate는 승인됐다. 상태의 `Proposed`는 제품 구현·검증이 아직 완료되지 않았다는 뜻이다.
+원래 감사 번호: **29**. Primary owner: **Phase 6**. 상태: **Implemented-primary (`4aa9da65`)**.
+후속 R33 label anchor와 R43 local panel 통합은 각 primary Phase에서 누적 검증한다.
 
 ## 목적과 현재 연결점
 
@@ -95,9 +95,9 @@ fraction은 Canvas에 비례, px는 값 유지. px가 새 allocation에 들어�
 
 ## 완료 조건
 
-- [ ] 위 API의 최단 호출과 explicit 대상 호출, 누락/auto/false/empty 경계를 타입과 runtime으로 동기화했다.
-- [ ] 위 수치 oracle를 실제 capability test에 구현했고 계획 예제를 기대값 생성기로 재사용하지 않았다.
-- [ ] 기존 consumer와 새 consumer에 scale/mark/guide/label/selection/facet/Canvas replay를 검증했다.
-- [ ] Full 등록·타입 export·Current 계약·catalog·card·관계 trace·MCP·문서·installed consumer를 갱신했다.
-- [ ] 미지원 cell은 이유를 적었다. 이 문서에 명시한 필수 cell을 임의 제외하지 않았다.
-- [ ] 해당 Phase의 승인/검증 근거를 기록했다. 추측으로 완료 표시하지 않았다.
+- [x] 위 API의 최단 호출과 explicit 대상 호출, 누락/auto/false/empty 경계를 타입과 runtime으로 동기화했다.
+- [x] 위 수치 oracle를 실제 capability test에 구현했고 계획 예제를 기대값 생성기로 재사용하지 않았다.
+- [x] 기존 consumer와 새 consumer에 scale/mark/guide/label/selection/Canvas replay를 검증했다. R43 facet local-frame cell은 R43 primary Phase가 소유한다.
+- [x] Full 등록·타입 export·Current 계약·catalog·card·관계 trace·MCP·문서·installed consumer를 갱신했다.
+- [x] 후속 R33 label leader와 R43 local panel cell의 owner를 남겼다.
+- [x] Phase 6 STEP1에 구현·검증 근거를 기록했다.

@@ -132,3 +132,18 @@ Roadmap 7의 기능별 행동 계약을 새 문서로 복제하지 않고, 기�
 - `node --test test/contracts/agent-docs-navigation.test.js`: 7/7 통과.
 - `tsc --noEmit --strict ... agent_docs/impl/roadmap7/IMPLEMENTATION_TYPES.examples.ts`: 통과.
 - `git diff --check`: 통과.
+
+## 2026-09-13 Phase 6 closeout와 무추론 명세 검증
+
+R29 Polar frame을 `4aa9da65`에서 구현한 뒤 Phase 6을 closed-primary로 기록하고, Phase 7 이후 구현자가 설계 판단을 다시 하지 않도록 [LOW_INFERENCE_IMPLEMENTATION_SPEC.md](LOW_INFERENCE_IMPLEMENTATION_SPEC.md)를 추가했다. 이 문서는 880줄이며 R31/R32/R33/R36/R37/R38/R39/R47/R49/R43/R25와 Phase 12 closeout을 public union, exact requested-state path, pure helper, preflight/commit 순서, cleanup transition, literal oracle, renderer/package 종료 조건으로 분해한다.
+
+| 검증 | 실제 결과 |
+| --- | --- |
+| R29 focused | 61/61 통과 |
+| R29 누적 | unit 2,365/2,365; contracts 399/399; docs 47/47 |
+| installed package | 505 entries; packed 654,251; unpacked 3,291,157; SHA-256 `a968d1faf1a4f59b3a32c317de4dbfdf6cbb45cc4744de7d29a8e6b2475e5c96` |
+| browser bundles | Full/Basic/SVG gzip 328,676/162,451/6,418 bytes |
+| 상태 연결 | Phase 6 completed-primary, Phase 7 active, R31이 다음 WP |
+| 문서 탐색 계약 | `node --test test/contracts/agent-docs-navigation.test.js`: 7/7 통과 |
+| 명세 적용 범위 | 완료 checkpoint 재구현 금지; 남은 11개 feature와 Phase 12의 exact execution owner |
+| 오류 원자성 | program 8개 canonical branch, caller input, trace/ID sequence 비교를 공통 test 형식으로 고정 |

@@ -1,11 +1,11 @@
 # Roadmap 7 — 구현 상세 스펙 진입점
 
-작성 기준: 2026-09-13, 원래 코드 baseline c0e47da6e213852213bcb04eb19031a1a6a63cd7, 문서 작업 시작 revision 3b61e789. 상태: **승인된 실행 계약 / Phase 1–4 완료, Phase 5 진행 중**. 이 파일은 선택된 25개 기능을 작은 작업으로 구현할 때의 공통 실행 규약이다. 단계별 기계적인 작업과 종료 조건은 [EXECUTION_RUNBOOK.md](EXECUTION_RUNBOOK.md), 정확한 기능별 계약은 `features/*.md`가 소유한다. 구현자가 계약을 스스로 보완할 수 없는 경우에는 [상세 작업 패킷의 무추론 실행 규약](DETAILED_IMPLEMENTATION_WORK_PACKAGES.md#저성능-구현-모델을-위한-무추론-실행-규약)과 해당 WP의 자료구조·금지 구현·고정 fixture를 그대로 따른다.
+작성 기준: 2026-09-13, 원래 코드 baseline c0e47da6e213852213bcb04eb19031a1a6a63cd7, 문서 작업 시작 revision 3b61e789. 상태: **승인된 실행 계약 / Phase 0–6 완료, Phase 7 진행 중**. 이 파일은 선택된 25개 기능을 작은 작업으로 구현할 때의 공통 실행 규약이다. 단계별 기계적인 작업과 종료 조건은 [EXECUTION_RUNBOOK.md](EXECUTION_RUNBOOK.md), 정확한 기능별 계약은 `features/*.md`가 소유한다. 구현자가 계약을 스스로 보완할 수 없는 경우에는 [LOW_INFERENCE_IMPLEMENTATION_SPEC.md](LOW_INFERENCE_IMPLEMENTATION_SPEC.md)와 [상세 작업 패킷의 무추론 실행 규약](DETAILED_IMPLEMENTATION_WORK_PACKAGES.md#저성능-구현-모델을-위한-무추론-실행-규약)의 함수·state·transition·fixture 순서를 그대로 따른다.
 
 ## 문서 읽는 순서와 권위
 
 1. 현재 저장소 AGENTS와 [ROADMAP](ROADMAP.md)에서 사용자 범위/승인/활성 Phase 확인.
-2. 이 파일과 [EXECUTION_RUNBOOK](EXECUTION_RUNBOOK.md), [CONTRACT_RESOLUTIONS](CONTRACT_RESOLUTIONS.md)에서 baseline 차이, 단계별 작업, 정정된 제안 확인.
+2. 이 파일과 [무추론 구현 명세](LOW_INFERENCE_IMPLEMENTATION_SPEC.md), [EXECUTION_RUNBOOK](EXECUTION_RUNBOOK.md), [CONTRACT_RESOLUTIONS](CONTRACT_RESOLUTIONS.md)에서 baseline 차이, 단계별 작업, 정정된 제안 확인.
 3. [COMMON_CONTRACT](COMMON_CONTRACT.md), [STATE_AND_REPLAY](STATE_AND_REPLAY.md)에서 상태 경계 확인.
 4. 해당 features 문서의 API, **구현 고정 명세**, 독립 oracle를 함께 읽는다.
 5. [IMPLEMENTATION_MAP.json](IMPLEMENTATION_MAP.json)의 실제 code/test 연결점과 [ACCEPTANCE_CASES.json](ACCEPTANCE_CASES.json)의 case ID를 사용한다.
@@ -20,7 +20,7 @@
 
 | 영역 | baseline 사실 | 구현자가 해야 할 변화 |
 | --- | --- | --- |
-| coordinate | createCoordinate만 존재 | R27에서 editCoordinate 신규 action/type/registry 추가;R29 옵션 확장 |
+| coordinate | `editCoordinate`의 aspect+Polar frame이 Current (`ded3b073`,`4aa9da65`) | R33 label anchors, R39 occupied header, R43 child-local frame이 같은 resolver를 소비 |
 | computed | finite numeric binary/unary AST만 | 모든 AST branch structural preflight+lazy typed evaluator |
 | derived data | bin2d만 standalone current owner 보유 | public standalone16 family current owner/revision executor |
 | offsets | mark config padding이 resolved policy 입력 | semantic scale padding 단일 owner로 migration |

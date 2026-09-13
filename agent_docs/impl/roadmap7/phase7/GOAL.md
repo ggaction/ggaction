@@ -1,6 +1,6 @@
 # Phase 7 — 라벨 lifecycle와 통계 주석
 
-상태: planned. 이 문서는 실행 계획이며 구현 또는 승인 완료 기록이 아니다.
+상태: active. 모든 Gate는 승인됐고 Phase 6 완료 근거 `ded3b073`, `4aa9da65` 이후 R31부터 실행한다.
 
 ## 목표와 범위
 

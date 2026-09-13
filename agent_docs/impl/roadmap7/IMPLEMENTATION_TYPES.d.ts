@@ -178,7 +178,10 @@ export type PolarFrameOptions = "auto" | {
   center?: { x: number; y: number };
   radius?: { unit: "fraction" | "px"; value: number };
 };
-export type EditCoordinateOptions = { target: string; aspect?: CoordinateAspect; polarFrame?: PolarFrameOptions };
+export type EditCoordinateOptions = { target: string } & (
+  | { aspect: CoordinateAspect; polarFrame?: PolarFrameOptions }
+  | { aspect?: CoordinateAspect; polarFrame: PolarFrameOptions }
+);
 export type RemoveMarkLabelsOptions =
   | { target: string; source?: never } | { source: string; target?: never };
 type LabelSelection =

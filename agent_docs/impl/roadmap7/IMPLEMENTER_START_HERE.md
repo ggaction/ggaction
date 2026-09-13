@@ -1,12 +1,12 @@
 # 구현자 인계 — 여기부터 시작
 
-사용자는 감사 번호 25개와 Phase 0–12 Gate를 모두 승인했다. Phase 0–5와 Phase 6의 R27 primary 구현이 완료됐고, 현재 첫 작업은 Phase 6의 R29 Polar frame이다. 승인된 공개 API·옵션·수식은 구현 계약이지만, 실제 source·tests·types·Current contract 증거가 없는 기능을 구현 완료로 간주하지 않는다.
+사용자는 감사 번호 25개와 Phase 0–12 Gate를 모두 승인했다. Phase 0–6 primary 구현이 완료됐고, 현재 첫 작업은 Phase 7의 R31 attached-label 삭제다. 승인된 공개 API·옵션·수식은 구현 계약이지만, 실제 source·tests·types·Current contract 증거가 없는 기능을 구현 완료로 간주하지 않는다.
 
 ## 첫 작업
 
 1. 저장소 root와 실제 수정 영역의 AGENTS.md를 읽는다. 다른 project 디렉터리는 조사하지 않는다.
 2. git status/branch/log와 agent_docs/impl/ROADMAP_INDEX.json을 확인한다. 다른 사람의 수정은 보존한다.
-3. ROADMAP → [IMPLEMENTATION_SPEC](IMPLEMENTATION_SPEC.md) → [상세 구현 작업 패킷](DETAILED_IMPLEMENTATION_WORK_PACKAGES.md) → [EXECUTION_RUNBOOK](EXECUTION_RUNBOOK.md) → [CONTRACT_RESOLUTIONS](CONTRACT_RESOLUTIONS.md) → COMMON_CONTRACT → API_DETAILS → DECISIONS → 현재 Phase의 GOAL/STEP/GATES → 해당 feature의 구현 고정 명세 순서로 읽는다. [IMPLEMENTATION_MAP](IMPLEMENTATION_MAP.json)과 [ACCEPTANCE_CASES](ACCEPTANCE_CASES.json)로 code/test/case 연결을 확인한다.
+3. ROADMAP → [IMPLEMENTATION_SPEC](IMPLEMENTATION_SPEC.md) → [상세 구현 작업 패킷](DETAILED_IMPLEMENTATION_WORK_PACKAGES.md) → [무추론 구현 명세](LOW_INFERENCE_IMPLEMENTATION_SPEC.md) → [EXECUTION_RUNBOOK](EXECUTION_RUNBOOK.md) → [CONTRACT_RESOLUTIONS](CONTRACT_RESOLUTIONS.md) → COMMON_CONTRACT → API_DETAILS → DECISIONS → 현재 Phase의 GOAL/STEP/GATES → 해당 feature의 구현 고정 명세 순서로 읽는다. [IMPLEMENTATION_MAP](IMPLEMENTATION_MAP.json)과 [ACCEPTANCE_CASES](ACCEPTANCE_CASES.json)로 code/test/case 연결을 확인한다.
 4. ACTION_INDEX에서 가장 가까운 현재 action의 contract.file/anchor와 관련 source/type/tests를 확인한다. Proposed 문구를 현재 동작의 증거로 삼지 않는다.
 5. Gate의 실제 사용자 승인을 확인한다. 계획을 approved로 임의 수정하지 않는다. 이미 승인된 범위는 계속 진행한다.
 
@@ -23,7 +23,7 @@
 
 위 순서를 기억에 의존해 축약하지 않는다. [상세 구현 작업 패킷의 공통 절차](DETAILED_IMPLEMENTATION_WORK_PACKAGES.md#2-모든-작업-패킷의-공통-절차)와 [무추론 실행 규약](DETAILED_IMPLEMENTATION_WORK_PACKAGES.md#저성능-구현-모델을-위한-무추론-실행-규약)에 있는 입력표, Core/Transaction/Consumers/Surface 네 구간, 다섯 테스트 묶음과 체크포인트 기록 순서를 그대로 사용한다. 기능 계약은 `features/*.md`, 작업 순서와 수정 위치는 상세 작업 패킷, literal 기대값은 `ACCEPTANCE_CASES.json`이 각각 소유한다. 같은 사실을 추측으로 합치지 않는다.
 
-현재 첫 구현은 [WP6.2 R29 Polar frame](DETAILED_IMPLEMENTATION_WORK_PACKAGES.md#wp62--r29-polar-frame)이다. `editCoordinate`의 기존 R27 aspect 동작을 보존하면서 `polarFrame`을 같은 원자적 patch에 추가한다. `src/grammar/polar.js`의 단일 frame resolver와 모든 Polar mark/guide/radius-range consumer를 먼저 전수 검색하고, R29-N01–N03/E01–E02/L01을 독립 literal oracle로 구현한다. R27+R29 결합 호출은 반드시 aspect → frame → radial range 순서로 사전 검증하고, WP6.3의 Canvas/SVG/PNG/PDF closeout을 닫은 뒤 Phase 7로 이동한다.
+현재 첫 구현은 [WP7.1 R31 attached-label 삭제](DETAILED_IMPLEMENTATION_WORK_PACKAGES.md#wp71--r31-removemarklabels)다. label ID와 source mark ID에서 삭제 closure를 먼저 읽기 전용으로 계산하고, source mark/data/scales/guides는 보존한다. label semantic/graphic/config/leader/collision entry와 label 전용 selection dependency를 한 transaction에서 제거하고 source/Canvas replay 뒤 부활하지 않음을 검증한 뒤 R32로 이동한다.
 
 각 작업을 마칠 때 다음 질문에 모두 `예`라고 답할 수 있어야 한다.
 

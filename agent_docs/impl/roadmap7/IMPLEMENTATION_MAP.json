@@ -711,7 +711,7 @@
       "dependsOn": [
         "R27"
       ],
-      "status": "Proposed",
+      "status": "Implemented-primary",
       "newPublicActions": [],
       "extendedPublicSurfaces": [
         "editCoordinate"
@@ -731,7 +731,11 @@
       ],
       "existingRegressionTests": [
         "test/unit/grammar/polar.test.js",
-        "test/unit/grammar/polar-guides.test.js"
+        "test/unit/grammar/polar-guides.test.js",
+        "test/contracts/polar-frame.test.js",
+        "test/contracts/coordinate-aspect-types.test.js",
+        "test/contracts/compact-task-resolver.test.js",
+        "test/contracts/source-boundaries.test.js"
       ],
       "suggestedNewTest": "test/contracts/polar-frame.test.js",
       "acceptanceCases": [
