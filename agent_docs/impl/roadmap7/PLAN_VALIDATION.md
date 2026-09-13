@@ -178,3 +178,26 @@ R32는 `ee3f3b02`에서 `createMarkLabels`의 inline/named/all membership과 Ful
 | coverage 관측 | 전체 coverage 실행은 완료됐으나 이번 변경 파일 밖의 기존 `legends/transition.js`, `legends/creation.js`, `scales/definition.js`, `transforms.js` 기준 미달로 policy exit만 실패 |
 | 열린 통합 cell | child-local facet/repeat와 named selection namespace는 R43에서 검증 |
 | 상태 연결 | Phase 7 active, R32 Implemented-primary, R33이 다음 WP |
+
+## 2026-09-13 R33 primary 구현 검증
+
+R33은 `95968031`에서 `createMarkLabels({placement})`와 Full 전용
+`editMarkLabelPlacement`를 구현했다. requested anchor/gap/overflow/leader는 label owner
+config에 저장하고, 실제 좌표·bbox·fallback은 source의 현재 final item geometry에서 매번
+재질화한다. Bar는 부호·reverse·0·stack segment의 semantic endpoints, Rect는 유일한
+interval axis, Arc는 angular-midpoint의 annular sector, Polar Point는 radial outward
+boundary를 사용한다.
+
+| 검증 | 실제 결과 |
+| --- | --- |
+| R33 acceptance | R33-N01/N02/N03/E01/L01/L02 passed; `test/contracts/semantic-label-anchors.test.js`, `test/unit/layout/semantic-label-placement.test.js` |
+| fit·오류 정책 | bbox edge gap; hide/outside 1회 fallback/allow; Arc inner-hole·angular fit; Point/Line/Rule/방향 없는 Rect의 미지원 anchor 사전 오류 |
+| leader 생명주기 | source boundary→최종 bbox nearest edge; hidden/empty/이동0은 0개; placement/collision leader 중복 거부; auto·label/source removal cleanup |
+| 누적 | unit 2,373/2,373; contracts 428/428; docs 47/47; browser 73/73; 실패·skip 0 |
+| public knowledge | Full runtime/type/Current catalog; 272 compact cards 중 265 user-facing; placement intent·relationship·MCP routing |
+| installed package | Node·strict TypeScript·MCP·tutorials·browser 통과; 508 entries; packed 664,519; unpacked 3,341,308; SHA-256 `a09a1c895f3394b9ef7d2ac9fd55fa0d0c04d2bf7dc997a9df880e2b761fcedc` |
+| browser bundles | Full/Basic/SVG gzip 334,645/162,451/6,418 bytes; Basic method surface 불변 |
+| generated artifacts | catalog/relationships/cards와 capabilities/reference/actions/signatures/metadata/search/machine freshness checks 통과 |
+| docs build 환경 | source generation과 47개 docs tests는 통과; host Ruby 2.6.10이라 Ruby 3.2+가 필요한 locked Jekyll build는 미실행 |
+| 열린 통합 cell | source-owned Text facet/repeat child-local replay와 R31/R32 조합은 R43에서 검증 |
+| 상태 연결 | Phase 7 active, R33 Implemented-primary, R36이 다음 WP |

@@ -7,7 +7,8 @@
 - [x] 명시 승인 범위 기록 후 해당 구현 시작
 - [x] W1 R31 label-only removal primary 구현·공개 surface·package 검증
 - [x] W2 R32 selected final-item labels primary 구현·공개 surface·package 검증
-- [ ] appearance 대상은 primitive render와 target public chain으로 Gate V 확인
+- [x] W3 R33 semantic label anchors primary 구현·공개 surface·package 검증
+- [x] R33 appearance 대상은 independent geometry oracle와 Canvas/SVG/PNG/PDF 경로로 Gate V 확인
 - [ ] 아래 wave 구현과 focused/cumulative tests 완료
 - [ ] types/current contracts/catalog/cards/MCP/docs/package 영향 갱신
 - [ ] Gate X 결과와 남은 후속 통합 cell 기록
@@ -51,6 +52,8 @@
 | W1 — public/package | `73e3d53e` | unit 2,365/2,365; contracts 406/406; docs 47/47; 270 cards; package 506 entries, 655,742 packed, 3,299,314 unpacked; tar SHA-256 `f9065e1f4e93aa708ebb87d34c96905778acb563c99a61e86254057a25ccd55f`; Full/Basic/SVG gzip 329,513/162,451/6,418 | R32가 label requested state를 확장한 뒤 재생성·재측정 | passed-primary |
 | W2 — R32 selected final-item labels | `ee3f3b02` | R32-N01/N02/N03/L01/E01/L02; inline/named/all requested membership; source-stable order; no-match; named dependency; reorder·selection edit·category order·layout·highlight replay; share content는 전체 final source item을 분모로 유지 | R43에서 child-local facet/repeat와 named selection namespace 통합 | complete-primary |
 | W2 — public/package | `ee3f3b02` | unit 2,365/2,365; contracts 417/417; docs 47/47; browser 73/73; 271 cards(264 user-facing); package 508 entries, 658,057 packed, 3,310,799 unpacked; tar SHA-1 `c7ac391db14378489d54cfe86c80035fe58469dc`, SHA-256 `8a650ee9bedc3d93e1a77a5393426c0ff64ea7d6a4345dd0a1e85f70f4c2067c`; Full/Basic/SVG gzip 330,551/162,451/6,418 | 전체 coverage 실행은 변경 파일 밖의 기존 4개 파일 기준 미달만 보고; R33 뒤 재생성·재측정 | passed-primary |
+| W3 — R33 semantic label anchors | `95968031` | R33-N01/N02/N03/E01/L01/L02; Bar signed/reversed/zero/stack segment endpoints, directed Rect, Arc annular-sector fit, Cartesian·Polar Point support; hide/outside/allow; post-anchor dx/dy; placement/collision leader ownership·cleanup·atomic conflict; font/source/Canvas/Polar replay; Canvas/SVG/PNG/PDF parity | R43에서 source-owned Text facet/repeat child-local replay 통합 | complete-primary |
+| W3 — public/package | `95968031` | unit 2,373/2,373; contracts 428/428; docs 47/47; browser 73/73; 272 cards(265 user-facing); package 508 entries, 664,519 packed, 3,341,308 unpacked; tar SHA-256 `a09a1c895f3394b9ef7d2ac9fd55fa0d0c04d2bf7dc997a9df880e2b761fcedc`; Full/Basic/SVG gzip 334,645/162,451/6,418; catalog/relations/cards와 7개 docs freshness checks 통과 | Jekyll build는 host Ruby 2.6.10 때문에 미실행(Ruby 3.2+ 필요); R36 뒤 재생성·재측정 | passed-primary |
 
 ## Gate 연결
 
