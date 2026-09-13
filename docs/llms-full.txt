@@ -4532,6 +4532,7 @@ operation; marks and renderers never mutate source values.
 | Family | Actions | Use |
 | --- | --- | --- |
 | [Source and derived data](./api/data/source-and-derived/) | `createData`, `createDerivedData` | Store source rows or explicit transform provenance |
+| [Safe resource removal](./api/data/source-and-derived/#removedata-id) | `removeData` | Delete one named dataset only after all live consumers are gone |
 | [Reusable summaries](./api/data/source-and-derived/#createsummarydata-id-source-groupby-aggregates-members) | `createSummaryData` | Materialize grouped multi-aggregate rows with optional members |
 | [Reusable bins](./api/data/source-and-derived/#createbindata-id-source-field-binoptions) | `createBinData` | Materialize shared one-dimensional bounds, counts, and optional members |
 | [Wide-to-long data](./api/data/source-and-derived/#createfolddata-id-source-fields-as) | `createFoldData` | Materialize selected fields as stable key/value rows |
@@ -5045,6 +5046,33 @@ const after = before.editComputedData({
 // before still has mean 4; after has mean 6.
 // A later source: "twice" resolves to the new current revision in after.
 ```
+
+## `removeData({ id })` {#removedata-id}
+
+Full programs can delete one named dataset after its final live consumer has
+been removed:
+
+```javascript
+const cleaned = program
+  .removeMark({ target: "temporaryPoints" })
+  .removeData({ id: "temporaryRows" });
+```
+
+The ID is always explicit. `removeData` does not infer the current dataset and
+does not support batches, cascading deletion, or `force`. It rejects a dataset
+still used by a mark, another derived dataset, a retained facet recipe, or a
+chart-owned statistical resource. The error lists each owner and its exact
+reference path, so callers can remove or rebind those consumers first.
+
+A current-data pointer alone does not keep a dataset alive. Successful removal
+clears that pointer without selecting a replacement. Historical action traces
+also do not keep resources alive. A standalone logical transform can be removed
+by its logical ID after its final consumer is gone; its current revision and
+owner record are deleted together while its upstream source remains.
+
+Removal changes no graphics, domains, layout, or composition children. It is
+available from `ggaction` and absent from `ggaction/basic`. Concat parents do not
+offer cross-child removal; call the action in the program that owns the resource.
 
 ## Related
 
@@ -10998,6 +11026,22 @@ program.encodeX({
 and guides. A band can be shared by bars and point centers, but changing it to
 `point` is rejected while a bar requires its bandwidth.
 
+## `removeScale({ id })`
+
+Use the Full-only removal action to delete an unattached named scale:
+
+```javascript
+const cleaned = program.removeScale({ id: "temporaryColor" });
+```
+
+The ID is required. Every mark encoding, offset, Parallel dimension, axis,
+grid, legend, and retained authoring recipe is checked before deletion. A live
+reference rejects with its owner and exact path. A current-scale pointer alone
+is cleared and does not block deletion. On success, the semantic definition and
+its resolved cache entry are removed together; existing graphics and layout are
+left exactly as authored. The action does not rewire consumers, infer a
+replacement, cascade, or operate across concat children.
+
 ## Focused scale families
 
  [Position scales Linear, transformed, time, band, and point mappings.](./api/scales/position/)
@@ -11585,6 +11629,22 @@ frame, then the radial scale range. Points, lines, arcs, Polar axes, grids, and
 selection geometry all consume that same resolved frame. Fraction radii resize
 with the Canvas; pixel radii remain fixed and reject a later Canvas size that
 cannot contain them.
+
+## `removeCoordinate({ id })`
+
+Full programs can remove an unattached named coordinate with an explicit ID:
+
+```javascript
+const cleaned = program.removeCoordinate({ id: "temporaryFrame" });
+```
+
+The action checks layer, guide, annotation, and retained data-space bindings.
+If any remain, it rejects with the owner and exact reference path. A
+current-coordinate pointer alone is cleared and does not block removal.
+Successful removal does not move a layer, infer another coordinate, rebuild a
+guide, or change concrete graphics. Batch, cascade, and concat-wide deletion
+are not supported. The action is available from `ggaction` and absent from
+`ggaction/basic`.
 
 ## Errors and limitations
 
@@ -14677,6 +14737,8 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`packPoints`](./reference/actions/marks/#packpoints) | H3 | user-facing | marks |
 | [`removeCategoryOrder`](./reference/actions/encodings/#removecategoryorder) | H2, H3 | user-facing | encodings |
 | [`removeCompositionChild`](./reference/actions/charts-data/#removecompositionchild) | H3 | user-facing | composition |
+| [`removeCoordinate`](./reference/actions/charts-data/#removecoordinate) | H2 | user-facing | core |
+| [`removeData`](./reference/actions/charts-data/#removedata) | H2 | user-facing | core |
 | [`removeEncoding`](./reference/actions/encodings/#removeencoding) | H2, H3 | user-facing | encodings |
 | [`removeGrid`](./reference/actions/advanced/#directional-grids) | H3 | user-facing | grid |
 | [`removeJitter`](./reference/actions/marks/#removejitter) | H3 | user-facing | marks |
@@ -14693,6 +14755,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`removePointPacking`](./reference/actions/marks/#removepointpacking) | H3 | user-facing | marks |
 | [`removePointRadius`](./reference/actions/encodings/#removepointradius) | H2, H3 | user-facing | encodings |
 | [`removeRadialAxis`](./reference/actions/guides/#removeradialaxis) | H3 | user-facing | axes |
+| [`removeScale`](./reference/actions/charts-data/#removescale) | H2 | user-facing | core |
 | [`removeTheme`](./reference/actions/charts-data/#removetheme) | H3 | user-facing | core |
 | [`removeThetaAxis`](./reference/actions/guides/#removethetaaxis) | H3 | user-facing | axes |
 | [`removeTitle`](./reference/actions/guides/#removetitle) | H3 | user-facing | legend_and_title |
@@ -14928,6 +14991,41 @@ createData({ id?, values })
 ```
 
 Create one immutable named dataset. [Data](./api/data/)
+
+## `removeData`
+
+```javascript
+removeData({ id })
+```
+
+Remove one explicitly named dataset only when no mark, downstream dataset,
+retained recipe, or owned resource still refers to it. Context and historical
+trace mentions do not keep it alive. A standalone logical derived-data owner
+removes its current snapshot and owner record together. This Full-only action
+does not infer, cascade, or change graphics.
+[Source and Derived Data](./api/data/source-and-derived/#removedata-id)
+
+## `removeScale`
+
+```javascript
+removeScale({ id })
+```
+
+Remove one explicitly named unused semantic scale and its resolved cache entry.
+Every encoding, Parallel dimension, guide, and retained authoring binding is
+checked first. The Full-only action does not rewire consumers or rebuild
+graphics. [Scale Options](./api/scales/#removescale-id)
+
+## `removeCoordinate`
+
+```javascript
+removeCoordinate({ id })
+```
+
+Remove one explicitly named unused coordinate after checking layer, guide,
+annotation, and retained data-space bindings. A context pointer is cleared, but
+no replacement coordinate is inferred. This action is Full-only.
+[Coordinates](./api/coordinates/#removecoordinate-id)
 
 ## `bindMarkData`
 
@@ -17519,6 +17617,9 @@ interface ChartProgramActions {
   applyTheme(options: ApplyThemeOptions): ChartProgram;
   removeTheme(): ChartProgram;
   createData(options: { id?: string; values: readonly unknown[] }): ChartProgram;
+  removeData(options: RemoveResourceOptions): ChartProgram;
+  removeScale(options: RemoveResourceOptions): ChartProgram;
+  removeCoordinate(options: RemoveResourceOptions): ChartProgram;
   bindMarkData(options: BindMarkDataOptions): ChartProgram;
   filterData(options: FilterDataOptions): ChartProgram;
   filterMarks(options: FilterMarksOptions): ChartProgram;

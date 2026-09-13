@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "source": "generated lifecycle smoke corpus plus selection lifecycle",
-  "actionCount": 273,
+  "actionCount": 276,
   "relationships": [
     {
       "name": "createCanvas",
@@ -47,6 +47,18 @@
       "wraps": [
         "editSemantic"
       ]
+    },
+    {
+      "name": "removeData",
+      "wraps": []
+    },
+    {
+      "name": "removeScale",
+      "wraps": []
+    },
+    {
+      "name": "removeCoordinate",
+      "wraps": []
     },
     {
       "name": "bindMarkData",

@@ -32,6 +32,7 @@ export type {
   BinDataOptions,
   BinDataOutputFields,
   BindMarkDataOptions,
+  RemoveResourceOptions,
   CanvasOptions,
   FitCanvasOptions,
   FoldDataOptions,

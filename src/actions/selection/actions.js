@@ -2,6 +2,7 @@ import { action } from "../../core/action.js";
 import { validateUserId } from "../../core/identifiers.js";
 import { isPlainObject } from "../../core/immutable.js";
 import { validateKeys } from "../../core/validation.js";
+import { collectResourceReferences } from "../../core/resourceReferences.js";
 import { findLayer, resolveEligibleLayer } from "../../selectors/layers.js";
 import { isSourceOwnedText } from "../../grammar/text.js";
 import { transformPointHighlightChild } from "../../materialization/selection/point.js";
@@ -103,12 +104,19 @@ function targetHighlightEntries(program, target) {
 }
 
 function namedLabelDependents(program, selection) {
+  const referenced = new Set(collectResourceReferences(program, {
+    kind: "selection",
+    id: selection
+  }).filter(reference =>
+    reference.ownerKind === "markConfig" &&
+    reference.path.join(".") === "labelAuthoring.selection.id"
+  ).map(reference => reference.ownerId));
   return Object.entries(program.markConfigs)
     .filter(([id, config]) => {
       const layer = findLayer(program, id);
       return isSourceOwnedText(layer) &&
         config?.labelAuthoring?.selection?.kind === "named" &&
-        config.labelAuthoring.selection.id === selection;
+        referenced.has(id);
     })
     .map(([id]) => id)
     .sort();

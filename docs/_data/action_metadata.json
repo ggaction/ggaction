@@ -47,6 +47,30 @@
     "layer": "user-facing",
     "domain": "core"
   },
+  "removeData": {
+    "operation": "remove",
+    "authoringRoles": [
+      "H2"
+    ],
+    "layer": "user-facing",
+    "domain": "core"
+  },
+  "removeScale": {
+    "operation": "remove",
+    "authoringRoles": [
+      "H2"
+    ],
+    "layer": "user-facing",
+    "domain": "core"
+  },
+  "removeCoordinate": {
+    "operation": "remove",
+    "authoringRoles": [
+      "H2"
+    ],
+    "layer": "user-facing",
+    "domain": "core"
+  },
   "bindMarkData": {
     "operation": "edit",
     "authoringRoles": [

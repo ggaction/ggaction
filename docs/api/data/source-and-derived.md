@@ -487,6 +487,33 @@ const after = before.editComputedData({
 // A later source: "twice" resolves to the new current revision in after.
 ```
 
+## `removeData({ id })` {#removedata-id}
+
+Full programs can delete one named dataset after its final live consumer has
+been removed:
+
+```javascript
+const cleaned = program
+  .removeMark({ target: "temporaryPoints" })
+  .removeData({ id: "temporaryRows" });
+```
+
+The ID is always explicit. `removeData` does not infer the current dataset and
+does not support batches, cascading deletion, or `force`. It rejects a dataset
+still used by a mark, another derived dataset, a retained facet recipe, or a
+chart-owned statistical resource. The error lists each owner and its exact
+reference path, so callers can remove or rebind those consumers first.
+
+A current-data pointer alone does not keep a dataset alive. Successful removal
+clears that pointer without selecting a replacement. Historical action traces
+also do not keep resources alive. A standalone logical transform can be removed
+by its logical ID after its final consumer is gone; its current revision and
+owner record are deleted together while its upstream source remains.
+
+Removal changes no graphics, domains, layout, or composition children. It is
+available from `ggaction` and absent from `ggaction/basic`. Concat parents do not
+offer cross-child removal; call the action in the program that owns the resource.
+
 ## Related
 
 [Data overview](../data.md) · [Chart API](../index.md) · [Action reference](../../reference/actions.md)

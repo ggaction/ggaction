@@ -252,7 +252,7 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Gzip ceiling |
 | --- | ---: |
-| `ggaction` | 355,000 bytes |
+| `ggaction` | 360,000 bytes |
 | `ggaction/basic` | 174,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 
@@ -2877,6 +2877,15 @@ Roadmap 3 이후에는 nested Cartesian/Polar composition, Cartesian facet found
 Roadmap 7에서는 facet/repeat가 complete Polar와 Parallel source까지 확장됐다. Candidate derivation, 모든 child의
 domain resolution, final materialization을 분리하며 theta/radius와 Parallel dimension domain, 빈 child semantics,
 shared legend, label/selection/theme/style replay를 같은 immutable composition transaction에서 처리한다.
+
+같은 로드맵에서 named data·scale·coordinate의 수명주기는 cross-domain reference registry로 통합됐다.
+Registry는 semantic layer와 derived source, mark·guide·selection·data-owner config, facet provenance와 current
+context를 typed edge로 읽고 historical trace나 우연히 같은 문자열인 field/style token은 제외한다. Public
+resource removal은 이 read-only graph에서 live edge가 0인 경우에만 semantic entry와 해당 cache/context를
+한 immutable commit으로 정리한다. Standalone derived owner는 current snapshot과 owner registry를 함께
+해제하지만 chart-owned dataset은 기존 owner action을 거치게 한다. 기존 derived revision release,
+mark/selection teardown도 같은 reference model을 소비하므로 새 replay config가 생기면 collector fixture를
+추가하지 않은 채 삭제 정책만 별도로 확장할 수 없다.
 
 Roadmap 4에서는 Parallel coordinate가 세 번째 current coordinate family가 되었다. Public
 `createParallelCoordinates` facade는 coordinate, line mark, ordered dimension encoding, optional color와 applicable

@@ -20,6 +20,7 @@ import { registerViolinPlotActions } from "./violinPlots/index.js";
 import { registerErrorBandActions } from "./errorBands/index.js";
 import { registerChartActions } from "./charts/index.js";
 import { registerThemeActions } from "./theme/index.js";
+import { registerResourceActions } from "./resources/index.js";
 import {
   applyCompositionTheme,
   removeCompositionTheme
@@ -51,4 +52,5 @@ export function registerActions(ProgramClass) {
   registerChartActions(ProgramClass);
   registerCategoryOrderActions(ProgramClass);
   registerSelectionActions(ProgramClass);
+  registerResourceActions(ProgramClass);
 }

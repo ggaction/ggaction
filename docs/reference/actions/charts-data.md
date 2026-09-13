@@ -228,6 +228,41 @@ createData({ id?, values })
 
 Create one immutable named dataset. [Data](../../api/data.md)
 
+## `removeData`
+
+```javascript
+removeData({ id })
+```
+
+Remove one explicitly named dataset only when no mark, downstream dataset,
+retained recipe, or owned resource still refers to it. Context and historical
+trace mentions do not keep it alive. A standalone logical derived-data owner
+removes its current snapshot and owner record together. This Full-only action
+does not infer, cascade, or change graphics.
+[Source and Derived Data](../../api/data/source-and-derived.md#removedata-id)
+
+## `removeScale`
+
+```javascript
+removeScale({ id })
+```
+
+Remove one explicitly named unused semantic scale and its resolved cache entry.
+Every encoding, Parallel dimension, guide, and retained authoring binding is
+checked first. The Full-only action does not rewire consumers or rebuild
+graphics. [Scale Options](../../api/scales.md#removescale-id)
+
+## `removeCoordinate`
+
+```javascript
+removeCoordinate({ id })
+```
+
+Remove one explicitly named unused coordinate after checking layer, guide,
+annotation, and retained data-space bindings. A context pointer is cleared, but
+no replacement coordinate is inferred. This action is Full-only.
+[Coordinates](../../api/coordinates.md#removecoordinate-id)
+
 ## `bindMarkData`
 
 ```javascript

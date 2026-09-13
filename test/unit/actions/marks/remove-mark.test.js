@@ -118,6 +118,44 @@ test("removes unreferenced Polar axes and grids with their mark", () => {
   }
 });
 
+test("removes owned Parallel axes and rejects an external registry reference", () => {
+  const before = chart()
+    .createCanvas({ width: 320, height: 220, margin: 30 })
+    .createData({ id: "rows", values: rows })
+    .createParallelCoordinates({
+      id: "parallel",
+      dimensions: ["x", "y"]
+    });
+  const removed = before.removeMark({ target: "parallel" });
+
+  assert.deepEqual(removed.semanticSpec.layers, []);
+  assert.equal(removed.semanticSpec.guides.axis, undefined);
+  assert.equal(removed.guideConfigs.axis, undefined);
+  for (const id of [
+    "parallelAxisLines",
+    "parallelAxisTicks",
+    "parallelAxisLabels",
+    "parallelAxisTitles"
+  ]) {
+    assert.ok(before.graphicSpec.objects[id]);
+    assert.equal(removed.graphicSpec.objects[id], undefined);
+  }
+
+  const externallyReferenced = before._withMarkConfig("external", {
+    errorBandBoundary: { owner: "parallel" }
+  });
+  const semantic = externallyReferenced.semanticSpec;
+  const graphic = externallyReferenced.graphicSpec;
+  const trace = externallyReferenced.trace;
+  assert.throws(
+    () => externallyReferenced.removeMark({ target: "parallel" }),
+    /markConfig "external" at \.errorBandBoundary\.owner/
+  );
+  assert.strictEqual(externallyReferenced.semanticSpec, semantic);
+  assert.strictEqual(externallyReferenced.graphicSpec, graphic);
+  assert.strictEqual(externallyReferenced.trace, trace);
+});
+
 test("requires a stable unambiguous owner", () => {
   const program = layeredProgram();
   assert.throws(() => program.removeMark({ target: "missing" }), /Unknown mark target/);

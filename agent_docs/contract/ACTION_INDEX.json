@@ -134,9 +134,9 @@
       "layer": "user-facing",
       "domain": "core",
       "status": "implemented",
-      "lifecycle": "Immutable create-only",
-      "update": "Create a new dataset ID",
-      "audit": "Intentional",
+      "lifecycle": "Mutable resource",
+      "update": "Create a new dataset ID or use `removeData` when it is unreferenced",
+      "audit": "Complete",
       "coverage": {
         "contract": "complete",
         "effects": "complete",
@@ -145,6 +145,60 @@
       "contract": {
         "file": "agent_docs/contract/current/CORE.md",
         "anchor": "createdata"
+      }
+    },
+    {
+      "name": "removeData",
+      "layer": "user-facing",
+      "domain": "core",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Removes one unreferenced named or standalone logical dataset",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/CORE.md",
+        "anchor": "removedata"
+      }
+    },
+    {
+      "name": "removeScale",
+      "layer": "user-facing",
+      "domain": "core",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Removes one unreferenced named scale and resolved cache entry",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/CORE.md",
+        "anchor": "removescale"
+      }
+    },
+    {
+      "name": "removeCoordinate",
+      "layer": "user-facing",
+      "domain": "core",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Removes one unreferenced named coordinate",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/CORE.md",
+        "anchor": "removecoordinate"
       }
     },
     {
@@ -3087,7 +3141,7 @@
       "domain": "core",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "`editCoordinate` changes coordinate layout constraints",
+      "update": "`editCoordinate` changes layout constraints; `removeCoordinate` deletes an unreferenced coordinate",
       "audit": "Intentional",
       "coverage": {
         "contract": "complete",
@@ -3123,7 +3177,7 @@
       "domain": "core",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "`editScale`",
+      "update": "`editScale` changes the scale; `removeScale` deletes it when unreferenced",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",

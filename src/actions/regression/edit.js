@@ -334,7 +334,11 @@ export const editRegression = action(
         const bandConfig = next.markConfigs[bandId];
         next = next._withMarkConfig(bandId, {
             ...bandConfig,
-            errorBand: { ...bandConfig.errorBand, data: dataId }
+            errorBand: {
+              ...bandConfig.errorBand,
+              source: dataId,
+              data: dataId
+            }
           });
       }
 
@@ -365,10 +369,7 @@ export const editRegression = action(
         next = next.rematerializeLineMark({ id: current.lineId });
       }
 
-      if (changesStatistics) {
-        next = next.releaseDerivedData(revision.release);
-      }
-      return next._withMarkConfig(owner.id, {
+      next = next._withMarkConfig(owner.id, {
         ...next.markConfigs[owner.id],
         regression: {
           ...current,
@@ -382,6 +383,10 @@ export const editRegression = action(
           parameters
         }
       });
+      if (changesStatistics) {
+        next = next.releaseDerivedData(revision.release);
+      }
+      return next;
     };
     return applyEdit(this);
   }

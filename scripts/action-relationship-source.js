@@ -217,6 +217,17 @@ function labelRemovalPrograms() {
   ];
 }
 
+function resourceRemovalPrograms() {
+  const program = chart()
+    .createData({ id: "unusedData", values: [] })
+    .createScale({ id: "unusedScale", type: "linear" })
+    .createCoordinate({ id: "unusedCoordinate", type: "cartesian" });
+  return [program
+    .removeData({ id: "unusedData" })
+    .removeScale({ id: "unusedScale" })
+    .removeCoordinate({ id: "unusedCoordinate" })];
+}
+
 function normalizedDataPrograms() {
   return [chart()
     .createData({ id: "normalizationSource", values: [
@@ -389,6 +400,7 @@ export async function buildActionRelationships() {
     ...legendBlockPrograms(),
     ...coordinateAspectPrograms(),
     ...labelRemovalPrograms(),
+    ...resourceRemovalPrograms(),
     ...normalizedDataPrograms(),
     ...missingDataPrograms(),
     ...derivedEditingPrograms()

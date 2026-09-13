@@ -10,6 +10,7 @@ import {
 import { requireLayer } from "../../selectors/layers.js";
 import { applyLayerDataRematerialization } from
   "../../materialization/dependencies.js";
+import { collectResourceReferences } from "../../core/resourceReferences.js";
 
 const OPTIONS = Object.freeze(["id", "source", "transform"]);
 const RELEASE_OPTIONS = Object.freeze(["id"]);
@@ -61,17 +62,26 @@ export const releaseDerivedData = action(
     if (dataset === undefined || dataset.source === undefined) {
       throw new Error(`Unknown derived dataset "${validatedId}".`);
     }
-    const referenced = this.semanticSpec.layers.some(
-      layer => layer.data === validatedId
-    ) || this.semanticSpec.datasets.some(
-      candidate => candidate.source === validatedId
+    const references = collectResourceReferences(this, {
+      kind: "data",
+      id: validatedId
+    });
+    const selfOwners = references.filter(reference =>
+      reference.ownerKind === "dataOwner" &&
+      reference.path.at(-1) === "current"
     );
-    return referenced
-      ? this
-      : this.editSemantic({
-          property: `dataset[${validatedId}]`,
-          remove: true
-        });
+    if (references.some(reference =>
+      reference.strength === "live" && !selfOwners.includes(reference)
+    )) return this;
+    let next = this.editSemantic({
+      property: `dataset[${validatedId}]`,
+      remove: true
+    });
+    for (const owner of selfOwners) {
+      const [, family, ownerId] = owner.path;
+      next = next._withoutMaterializationConfig(["data", family, ownerId]);
+    }
+    return next;
   }
 );
 

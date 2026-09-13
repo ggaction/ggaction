@@ -764,8 +764,8 @@
         "errors-and-limitations",
         "related"
       ],
-      "bytes": 2788,
-      "sha256": "69821f7421cb6e3089e0ea2c82aee3e7426fba4b2f9559143c4352661cdf9647"
+      "bytes": 2943,
+      "sha256": "d5ae48913d0d5f7131549fdb22248bb8332c5ba23e9fb879f63741a5f1070a38"
     },
     {
       "order": 50,
@@ -786,10 +786,11 @@
         "createimputeddata-id-source-fields-groupby-sortby-method-value-edges-maxgap",
         "createstackdata-id-source-category-group-value-mode-as",
         "editing-derived-data",
+        "removedata-id",
         "related"
       ],
-      "bytes": 20645,
-      "sha256": "09dedf647c9355418d9f7288ef86aa45f7ab11056402412d588b2120df58488b"
+      "bytes": 21915,
+      "sha256": "87f138b8c7101b32b174514bede5edd60f6701e0eacdc12be204de7e1ce71ccb"
     },
     {
       "order": 51,
@@ -1418,12 +1419,13 @@
       "headings": [
         "scale-options",
         "at-a-glance",
+        "removescale-id",
         "focused-scale-families",
         "errors-and-limitations",
         "related"
       ],
-      "bytes": 7393,
-      "sha256": "12aa7ed86693147e9d5591594fa67a5af9abefd9c33c05dbc267c21e09a80ed3"
+      "bytes": 8095,
+      "sha256": "fa69cc76a187b374b34cf811d52b079ec3eac2af6969c3eabf35b58d98ace355"
     },
     {
       "order": 89,
@@ -1508,11 +1510,12 @@
         "at-a-glance",
         "createcoordinate-id-type-layers",
         "editcoordinate-target-aspect-polarframe",
+        "removecoordinate-id",
         "errors-and-limitations",
         "related"
       ],
-      "bytes": 5212,
-      "sha256": "17c4a8141ad5b7f2b5eaee0ca7dd487cea8f34bcf979e163bb7b8b8954afc566"
+      "bytes": 5876,
+      "sha256": "afbcece42de07b61ee2179d77d85f107994f3d3e61e70e068474a0d05b1d8222"
     },
     {
       "order": 95,
@@ -1858,8 +1861,8 @@
         "action-reference",
         "exact-action-lookup"
       ],
-      "bytes": 30824,
-      "sha256": "adfb1736fb0f0db2b777de2bf76f8e66db265d903f5a41da0f24086b462eb62b"
+      "bytes": 31108,
+      "sha256": "394e5d5179bc758e6e61192faa6f20adda094465a7868206b8bd3b1e875f42b4"
     },
     {
       "order": 117,
@@ -1886,6 +1889,9 @@
         "editfacetscales",
         "editfacetguides",
         "createdata",
+        "removedata",
+        "removescale",
+        "removecoordinate",
         "bindmarkdata",
         "createscatterplot",
         "createdotplot",
@@ -1927,8 +1933,8 @@
         "focused-core-data-editing",
         "related"
       ],
-      "bytes": 27176,
-      "sha256": "838120ff1e4854a4f779be9724651fb24e4e3819c990a5e472cd9401e85c8b0a"
+      "bytes": 28343,
+      "sha256": "9358ee899f04f148898dae382b1382af32d09486dca0e0f7a7378f35cc88563e"
     },
     {
       "order": 118,
@@ -2176,8 +2182,8 @@
         "exact-typescript-signatures",
         "related"
       ],
-      "bytes": 21017,
-      "sha256": "005cb8e50985ce95158e3ce5baa7cc5a61909823a25aabc65f2b63cee3bc065a"
+      "bytes": 21204,
+      "sha256": "7fcfdd20d792cac133dcf1241ce2be27b89fd886355ef677735ea8e7adeeb250"
     },
     {
       "order": 126,

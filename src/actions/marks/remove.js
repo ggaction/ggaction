@@ -10,6 +10,10 @@ import {
   getPositionChannelDefinition,
   POSITION_CHANNELS
 } from "../../core/vocabulary.js";
+import {
+  canonicalResourcePath,
+  collectResourceReferences
+} from "../../core/resourceReferences.js";
 
 const OPTIONS = Object.freeze(["target"]);
 const REMOVE_AXIS = Object.freeze({
@@ -94,6 +98,37 @@ function collectClosure(program, root) {
   };
   visit(root);
   return result;
+}
+
+function externalMarkReferences(program, ids) {
+  const closure = new Set(ids);
+  const references = ids.flatMap(id => collectResourceReferences(program, {
+    kind: "mark",
+    id
+  })).filter(reference => {
+    if (reference.strength === "context") return false;
+    if (["layer", "markConfig"].includes(reference.ownerKind)) {
+      return !closure.has(reference.ownerId);
+    }
+    if (["selection", "highlight", "legend"].includes(reference.ownerKind)) {
+      return false;
+    }
+    if (
+      reference.ownerKind === "axis" &&
+      reference.ownerId === "parallel.axes"
+    ) {
+      return false;
+    }
+    return true;
+  });
+  const unique = new Map(references.map(reference => [[
+    reference.ownerKind,
+    reference.ownerId,
+    canonicalResourcePath(reference.path)
+  ].join("\u0000"), reference]));
+  return [...unique.entries()]
+    .sort(([left], [right]) => left < right ? -1 : left > right ? 1 : 0)
+    .map(([, reference]) => reference);
 }
 
 function ownedDerivedData(program, ids) {
@@ -219,10 +254,25 @@ export const removeMark = action(
     validateKeys(args, OPTIONS, "removeMark");
     const owner = resolveOwner(this, args.target);
     const ids = collectClosure(this, owner.id);
+    const external = externalMarkReferences(this, ids);
+    if (external.length > 0) {
+      throw new Error(
+        `removeMark cannot remove externally referenced marks: ${external.map(
+          reference => `${reference.ownerKind} "${reference.ownerId}" at ` +
+            canonicalResourcePath(reference.path)
+        ).join("; ")}.`
+      );
+    }
     const previousLayers = ids.map(id => findLayer(this, id));
     const derived = ownedDerivedData(this, ids);
     const positionScales = usedPositionScales(this, ids);
     let next = this;
+
+    if (ids.includes(next.guideConfigs.axis?.parallel?.axes?.target)) {
+      next = next.removeParallelAxes({
+        target: next.guideConfigs.axis.parallel.axes.target
+      });
+    }
 
     const legendTargets = [...new Set(Object.values(next.guideConfigs.legend ?? {})
       .filter(config => ids.includes(config?.target))

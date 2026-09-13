@@ -280,6 +280,8 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`packPoints`](./actions/marks.md#packpoints) | H3 | user-facing | marks |
 | [`removeCategoryOrder`](./actions/encodings.md#removecategoryorder) | H2, H3 | user-facing | encodings |
 | [`removeCompositionChild`](./actions/charts-data.md#removecompositionchild) | H3 | user-facing | composition |
+| [`removeCoordinate`](./actions/charts-data.md#removecoordinate) | H2 | user-facing | core |
+| [`removeData`](./actions/charts-data.md#removedata) | H2 | user-facing | core |
 | [`removeEncoding`](./actions/encodings.md#removeencoding) | H2, H3 | user-facing | encodings |
 | [`removeGrid`](./actions/advanced.md#directional-grids) | H3 | user-facing | grid |
 | [`removeJitter`](./actions/marks.md#removejitter) | H3 | user-facing | marks |
@@ -296,6 +298,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`removePointPacking`](./actions/marks.md#removepointpacking) | H3 | user-facing | marks |
 | [`removePointRadius`](./actions/encodings.md#removepointradius) | H2, H3 | user-facing | encodings |
 | [`removeRadialAxis`](./actions/guides.md#removeradialaxis) | H3 | user-facing | axes |
+| [`removeScale`](./actions/charts-data.md#removescale) | H2 | user-facing | core |
 | [`removeTheme`](./actions/charts-data.md#removetheme) | H3 | user-facing | core |
 | [`removeThetaAxis`](./actions/guides.md#removethetaaxis) | H3 | user-facing | axes |
 | [`removeTitle`](./actions/guides.md#removetitle) | H3 | user-facing | legend_and_title |

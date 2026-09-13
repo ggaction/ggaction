@@ -337,6 +337,7 @@ export const editBoxPlot = action(
           ...next.markConfigs[current.whiskerId],
           errorBar: {
             ...next.markConfigs[current.whiskerId].errorBar,
+            source: summaryRevision.id,
             data: summaryRevision.id
           }
         });

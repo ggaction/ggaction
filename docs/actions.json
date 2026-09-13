@@ -3,7 +3,7 @@
   "packageVersion": "0.0.13",
   "typeSource": "types/program.d.ts",
   "errorPolicy": "An empty errors array means the compact card has no curated error override; consult the canonical route for validation, inference, and recovery behavior.",
-  "count": 273,
+  "count": 276,
   "cards": [
     {
       "schemaVersion": 3,
@@ -430,7 +430,7 @@
         "dataset",
         "rows"
       ],
-      "lifecycle": "Immutable create-only",
+      "lifecycle": "Mutable resource",
       "resources": {
         "prerequisites": [],
         "owns": [
@@ -446,7 +446,9 @@
       "wraps": [
         "editSemantic"
       ],
-      "editableVia": [],
+      "editableVia": [
+        "removeData"
+      ],
       "supports": {
         "entryPoints": [
           "default",
@@ -483,6 +485,185 @@
       "snippet": "program.createData({ values: [{ category: \"A\", value: 1 }] })",
       "errors": [],
       "route": "/reference/actions/charts-data/#createdata"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "removeData",
+      "layer": "user-facing",
+      "domain": "core",
+      "summary": "Remove one explicitly named dataset only when no mark, downstream dataset, retained recipe, or owned resource still refers to it.",
+      "signature": "removeData(options: RemoveResourceOptions): ChartProgram;",
+      "intents": [
+        "remove data",
+        "remove",
+        "delete",
+        "chart setup",
+        "data and scales",
+        "dataset",
+        "rows"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing dataset",
+          "source dataset"
+        ],
+        "owns": [],
+        "idOptions": [
+          "id"
+        ]
+      },
+      "authoringRoles": [
+        "H2"
+      ],
+      "wraps": [],
+      "editableVia": [],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "existing dataset",
+          "source dataset"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "id",
+          "required": true,
+          "type": "string"
+        }
+      ],
+      "callPatterns": [
+        "removeData({ id })"
+      ],
+      "snippet": "program.removeData({ id: \"unusedData\" })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#removedata"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "removeScale",
+      "layer": "user-facing",
+      "domain": "core",
+      "summary": "Remove one explicitly named unused semantic scale and its resolved cache entry.",
+      "signature": "removeScale(options: RemoveResourceOptions): ChartProgram;",
+      "intents": [
+        "remove scale",
+        "remove",
+        "delete",
+        "chart setup",
+        "data and scales",
+        "scale",
+        "domain-to-range mapping"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing scale"
+        ],
+        "owns": [],
+        "idOptions": [
+          "id"
+        ]
+      },
+      "authoringRoles": [
+        "H2"
+      ],
+      "wraps": [],
+      "editableVia": [],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "existing scale"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "id",
+          "required": true,
+          "type": "string"
+        }
+      ],
+      "callPatterns": [
+        "removeScale({ id })"
+      ],
+      "snippet": "program.removeScale({ id: \"unusedScale\" })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#removescale"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "removeCoordinate",
+      "layer": "user-facing",
+      "domain": "core",
+      "summary": "Remove one explicitly named unused coordinate after checking layer, guide, annotation, and retained data-space bindings.",
+      "signature": "removeCoordinate(options: RemoveResourceOptions): ChartProgram;",
+      "intents": [
+        "remove coordinate",
+        "remove",
+        "delete",
+        "chart setup",
+        "data and scales",
+        "coordinate system",
+        "Cartesian or polar space"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing coordinate system"
+        ],
+        "owns": [],
+        "idOptions": [
+          "id"
+        ]
+      },
+      "authoringRoles": [
+        "H2"
+      ],
+      "wraps": [],
+      "editableVia": [],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "existing coordinate system"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "id",
+          "required": true,
+          "type": "string"
+        }
+      ],
+      "callPatterns": [
+        "removeCoordinate({ id })"
+      ],
+      "snippet": "program.removeCoordinate({ id: \"unusedCoordinate\" })",
+      "errors": [],
+      "route": "/reference/actions/charts-data/#removecoordinate"
     },
     {
       "schemaVersion": 3,
@@ -18851,7 +19032,8 @@
         "editSemantic"
       ],
       "editableVia": [
-        "editCoordinate"
+        "editCoordinate",
+        "removeCoordinate"
       ],
       "supports": {
         "entryPoints": [
@@ -19007,7 +19189,8 @@
         "editSemantic"
       ],
       "editableVia": [
-        "editScale"
+        "editScale",
+        "removeScale"
       ],
       "supports": {
         "entryPoints": [

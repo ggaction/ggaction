@@ -1486,6 +1486,15 @@
     "removeMarkLabels": {
       "source": "bars"
     },
+    "removeData": {
+      "id": "unusedData"
+    },
+    "removeScale": {
+      "id": "unusedScale"
+    },
+    "removeCoordinate": {
+      "id": "unusedCoordinate"
+    },
     "editMarkLabelPlacement": {
       "target": "labels",
       "placement": {

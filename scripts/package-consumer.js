@@ -90,6 +90,19 @@ async function testNodeConsumer(directory) {
       .encodeX({ field: "x" })
       .encodeY({ field: "y" })
       .encodeRadius({ value: 3 });
+    const resourceCleanup = chart()
+      .createData({ id: "unusedData", values: [] })
+      .createScale({ id: "unusedScale", type: "linear" })
+      .createCoordinate({ id: "unusedCoordinate", type: "cartesian" })
+      .removeData({ id: "unusedData" })
+      .removeScale({ id: "unusedScale" })
+      .removeCoordinate({ id: "unusedCoordinate" });
+    assert.deepEqual(resourceCleanup.semanticSpec.datasets, []);
+    assert.deepEqual(resourceCleanup.semanticSpec.scales, []);
+    assert.deepEqual(resourceCleanup.semanticSpec.coordinates, []);
+    assert.equal(basicChart().removeData, undefined);
+    assert.equal(basicChart().removeScale, undefined);
+    assert.equal(basicChart().removeCoordinate, undefined);
     const jittered = program.jitterPoints({
       channel: "x",
       maxOffset: { pixels: 2 },
@@ -1991,8 +2004,8 @@ async function testMcpConsumer(directory) {
     actionCardSchema.properties?.schemaVersion?.const !== 3 ||
     actionCardsSchema.properties?.schemaVersion?.const !== 3 ||
     actionCards.schemaVersion !== 3 ||
-    actionCards.count !== 273 ||
-    actionCards.cards.length !== 273 ||
+    actionCards.count !== 276 ||
+    actionCards.cards.length !== 276 ||
     actionCards.packageVersion !== installedPackage.version
   ) {
     throw new Error("Installed action-card discovery contract is missing or stale.");
@@ -2355,6 +2368,7 @@ async function testTypeScriptConsumer(directory) {
       type RemoveJitterOptions,
       type RemoveCompositionChildOptions,
       type RemovePointPackingOptions,
+      type RemoveResourceOptions,
       type ReorderCompositionChildrenOptions,
       type RepeatChartsOptions,
       type ShapeScaleOptions,
@@ -2396,6 +2410,14 @@ async function testTypeScriptConsumer(directory) {
     const themeOptions: ApplyThemeOptions = { theme: themeName };
     const themedProgram: ChartProgram = program.applyTheme(themeOptions).removeTheme();
     const basicThemedProgram: BasicChartProgram = basicChart().applyTheme(themeOptions);
+    const removeResourceOptions: RemoveResourceOptions = { id: "unused" };
+    program.removeData(removeResourceOptions);
+    program.removeScale(removeResourceOptions);
+    program.removeCoordinate(removeResourceOptions);
+    // @ts-expect-error Safe named-resource removal is Full only.
+    basicChart().removeData(removeResourceOptions);
+    // @ts-expect-error Safe removal requires one explicit string ID.
+    program.removeScale({ id: ["x"] });
     const atomicOptions: EncodeChannelsOptions = {
       target: "point",
       channels: { x: { field: "y" }, y: { field: "x" } }
@@ -4030,6 +4052,7 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.a
       "fold-data",
       "computed-data",
       "derived-data-editing",
+      "safe-resource-removal",
       "normalized-data",
       "complete-data",
       "imputed-data",

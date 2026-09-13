@@ -24,6 +24,9 @@ interface ChartProgramActions {
   applyTheme(options: ApplyThemeOptions): ChartProgram;
   removeTheme(): ChartProgram;
   createData(options: { id?: string; values: readonly unknown[] }): ChartProgram;
+  removeData(options: RemoveResourceOptions): ChartProgram;
+  removeScale(options: RemoveResourceOptions): ChartProgram;
+  removeCoordinate(options: RemoveResourceOptions): ChartProgram;
   bindMarkData(options: BindMarkDataOptions): ChartProgram;
   filterData(options: FilterDataOptions): ChartProgram;
   filterMarks(options: FilterMarksOptions): ChartProgram;

@@ -136,6 +136,22 @@ program.encodeX({
 and guides. A band can be shared by bars and point centers, but changing it to
 `point` is rejected while a bar requires its bandwidth.
 
+## `removeScale({ id })`
+
+Use the Full-only removal action to delete an unattached named scale:
+
+```javascript
+const cleaned = program.removeScale({ id: "temporaryColor" });
+```
+
+The ID is required. Every mark encoding, offset, Parallel dimension, axis,
+grid, legend, and retained authoring recipe is checked before deletion. A live
+reference rejects with its owner and exact path. A current-scale pointer alone
+is cleared and does not block deletion. On success, the semantic definition and
+its resolved cache entry are removed together; existing graphics and layout are
+left exactly as authored. The action does not rewire consumers, infer a
+replacement, cascade, or operate across concat children.
+
 ## Focused scale families
 
 <div class="docs-entry-grid docs-entry-grid--two">

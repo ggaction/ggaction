@@ -144,6 +144,22 @@ selection geometry all consume that same resolved frame. Fraction radii resize
 with the Canvas; pixel radii remain fixed and reject a later Canvas size that
 cannot contain them.
 
+## `removeCoordinate({ id })`
+
+Full programs can remove an unattached named coordinate with an explicit ID:
+
+```javascript
+const cleaned = program.removeCoordinate({ id: "temporaryFrame" });
+```
+
+The action checks layer, guide, annotation, and retained data-space bindings.
+If any remain, it rejects with the owner and exact reference path. A
+current-coordinate pointer alone is cleared and does not block removal.
+Successful removal does not move a layer, infer another coordinate, rebuild a
+guide, or change concrete graphics. Batch, cascade, and concat-wide deletion
+are not supported. The action is available from `ggaction` and absent from
+`ggaction/basic`.
+
 ## Errors and limitations
 
 A layer cannot be silently moved from one coordinate to another, and Cartesian

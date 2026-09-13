@@ -242,6 +242,85 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
     completion 정책이 먼저 필요하다.
 - Evidence: `test/unit/actions/data/create-data.test.js`.
 
+## `removeData`
+
+- Signature: `removeData({ id })`
+- 목적과 범위: Full entry의 unit 또는 facet parent에서 현재 참조가 없는 named dataset 하나를
+  제거한다. `id`는 필수 user ID다. current/unique resource 추론, batch, cascade, force는 지원하지 않는다.
+- 참조 계약: layer binding, 다른 dataset의 `source`, materialization data owner, composite mark의
+  retained data/source, facet·repeat source가 live edge다. Historical trace argument와 이전 immutable
+  program은 참조가 아니다. `context.currentData`만 target을 가리키면 삭제할 수 있고 pointer를
+  `undefined`로 만든다.
+- 소유권: mark·statistical facade가 만든 private dataset은 직접 제거하지 않고 owning mark/action을
+  요구한다. Top-level derived action이 만든 standalone logical owner는 logical ID로 제거한다. 이때
+  `owner.current` 자기 edge만 제외하며, 외부 edge가 0이면 current snapshot과 owner registry를 함께
+  지우고 upstream source는 보존한다.
+- 원자성과 결과: 모든 known-schema edge를 먼저 수집해 `ownerKind`, `ownerId`, canonical path 순으로
+  정렬한다. 하나라도 남으면 `Cannot remove data "<id>"; live references: ...`로 거부한다. 성공은
+  `semanticSpec.datasets`와 필요한 standalone owner/current pointer만 바꾸며 `graphicSpec`과 `children`은
+  reference-identical하다. domain, layout, mark 또는 guide를 재물질화하지 않는다.
+- 적용 제한: concat composition parent는 거부한다. 같은 문자열 ID를 가진 child resource는 다른 program
+  namespace이므로 parent의 전역 참조로 추론하지 않는다.
+
+### Formal values — `removeData`
+
+- Implemented: `removeData({ readonly id: UserId }): ChartProgram`
+- Proposed (NOT IMPLEMENTED): batch removal, cascade, orphan collection, force removal.
+
+### Value coverage — `removeData`
+
+- ✅ Covered: unused source, context-only/trace-only mention, derived source and direct layer rejection.
+- ✅ Covered: standalone owner success/consumer rejection, private statistical dataset rejection, facet source와
+  concat scope, deterministic error paths, immutable failure.
+- Evidence: `test/unit/actions/resources/remove.test.js`,
+  `test/unit/core/resource-references.test.js`, `test/contracts/remove-resources.test.js`.
+
+## `removeScale`
+
+- Signature: `removeScale({ id })`
+- 목적과 범위: Full unit 또는 facet parent에서 참조 없는 named semantic scale을 제거한다. ID는
+  필수이며 target/current 추론, batch와 cascade를 지원하지 않는다.
+- live edge: 모든 scaled encoding, offset, Parallel dimension, semantic/config guide와 retained recipe의
+  실제 scale ID가 참조다. resolved domain/range/sample 값과 같은 문자열의 text/color/style token은
+  참조가 아니다. `context.currentScale`은 삭제를 막지 않으며 성공 시 unset한다.
+- 결과: semantic scale과 같은 ID의 `resolvedScales` cache를 함께 제거한다. live edge가 있으면 정렬된
+  referrer path를 포함해 원자적으로 거부한다. 성공 전후 `graphicSpec`과 `children`은 같은 object이며
+  mark/domain/layout을 다시 계산하지 않는다.
+
+### Formal values — `removeScale`
+
+- Implemented: `removeScale({ readonly id: UserId }): ChartProgram`
+- Proposed (NOT IMPLEMENTED): consumer rewiring, replacement-scale inference, cascade.
+
+### Value coverage — `removeScale`
+
+- ✅ Covered: unused semantic/cache cleanup, context-only removal, wrong kind/unknown ID.
+- ✅ Covered: Cartesian position과 Parallel dimension rejection, canonical indexed path, visual invariance.
+- Evidence: `test/unit/actions/resources/remove.test.js`,
+  `test/unit/core/resource-references.test.js`, `test/contracts/remove-resources.test.js`.
+
+## `removeCoordinate`
+
+- Signature: `removeCoordinate({ id })`
+- 목적과 범위: Full unit 또는 facet parent에서 참조 없는 named coordinate를 제거한다. Layer,
+  semantic/config guide, annotation·statistical retained data-space binding이 live edge다. Concrete pixel
+  geometry나 graphic parent ID는 coordinate edge가 아니다.
+- 결과: semantic coordinate만 제거한다. `context.currentCoordinate`만 가리키면 unset하고 삭제한다.
+  다른 coordinate를 자동 선택하지 않으며 mark, scale, guide와 concrete graphics를 재물질화하지 않는다.
+  live edge, wrong kind, unknown ID, concat parent와 closed option 오류는 caller state와 trace를 유지한다.
+
+### Formal values — `removeCoordinate`
+
+- Implemented: `removeCoordinate({ readonly id: UserId }): ChartProgram`
+- Proposed (NOT IMPLEMENTED): layer migration, replacement-coordinate inference, cascade.
+
+### Value coverage — `removeCoordinate`
+
+- ✅ Covered: empty coordinate와 context pointer cleanup, attached layer rejection, wrong/unknown ID.
+- ✅ Covered: facet parent success, concat rejection, graphics/children identity와 rendered-call equality.
+- Evidence: `test/unit/actions/resources/remove.test.js`,
+  `test/unit/core/resource-references.test.js`, `test/contracts/remove-resources.test.js`.
+
 ## `bindMarkData`
 
 - Signature: `bindMarkData({ target, data })`
