@@ -313,10 +313,10 @@ const POLAR_FRAME = deepFreeze({
 });
 
 const POLAR_ROWS = deepFreeze([
-  { panel: "A", angle: 0, radius: 1 },
-  { panel: "A", angle: 90, radius: 2 },
-  { panel: "B", angle: 0, radius: 10 },
-  { panel: "B", angle: 90, radius: 20 }
+  { panel: "A", angle: 0, radius: 1, distance: 2 },
+  { panel: "A", angle: 90, radius: 2, distance: 4 },
+  { panel: "B", angle: 0, radius: 10, distance: 20 },
+  { panel: "B", angle: 90, radius: 20, distance: 40 }
 ]);
 
 function polarUnit(values = POLAR_ROWS, canvas = {
@@ -438,6 +438,30 @@ test("replays Polar frame, local domains, headers, labels, highlights, and theme
     "applyTheme",
     "editFacetSource"
   ]);
+
+  const withoutLabels = base
+    .removeMarkLabels({ source: "points" })
+    .encodeR({
+      target: "points",
+      field: "distance",
+      scale: { id: "radius", nice: false, zero: false }
+    })
+    .editCanvas({ width: 380, height: 340 })
+    .applyTheme({ theme: "dark" })
+    .facet({ field: "panel" });
+  assert.deepEqual(withoutLabels.trace.children.slice(-5).map(node => node.op), [
+    "removeMarkLabels",
+    "encodeR",
+    "editCanvas",
+    "applyTheme",
+    "facet"
+  ]);
+  assert.equal(Object.values(withoutLabels.children).every(child =>
+    child.semanticSpec.layers[0].encoding.radius.field === "distance" &&
+    child.semanticSpec.layers.every(layer => layer.id !== "labels") &&
+    child.graphicSpec.objects.labels === undefined &&
+    child.markConfigs.labels === undefined
+  ), true);
 });
 
 test("preserves Parallel siblings across scale, repeat, and facet edits before complete resource cleanup", () => {
