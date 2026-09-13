@@ -235,17 +235,23 @@ export function createSemanticPrimitiveAction(validateSemanticValue) {
           parsed.kind === "layer" &&
           parsed.path.length === 0 &&
           this.context.currentMark === parsed.id;
+        const clearsCurrentGuide =
+          parsed.kind === "guide" &&
+          parsed.path.length === 2 &&
+          this.context.currentGuide === parsed.id;
         const removesScale = parsed.kind === "scale" && parsed.path.length === 0;
         const resolvedScales = removesScale ? Object.fromEntries(Object.entries(this.resolvedScales).filter(([id]) => id !== parsed.id)) : this.resolvedScales;
         return this._clone({
           semanticSpec,
           ...(removesScale ? { resolvedScales: freezeOwned(resolvedScales) } : {}),
-          ...(clearsCurrentData || clearsCurrentMark || (removesScale && this.context.currentScale === parsed.id)
+          ...(clearsCurrentData || clearsCurrentMark || clearsCurrentGuide ||
+              (removesScale && this.context.currentScale === parsed.id)
             ? { context: freezeOwned({
                 ...this.context,
                 ...(removesScale && this.context.currentScale === parsed.id ? { currentScale: undefined } : {}),
                 ...(clearsCurrentData ? { currentData: undefined } : {}),
-                ...(clearsCurrentMark ? { currentMark: undefined } : {})
+                ...(clearsCurrentMark ? { currentMark: undefined } : {}),
+                ...(clearsCurrentGuide ? { currentGuide: undefined } : {})
               }) }
             : {})
         });

@@ -67,7 +67,9 @@ test("keeps removed dimensions hidden and adds default axes only for an aggregat
   assert.ok(config(q, "d").line);
   const restored = q.createParallelAxis({ field: "b" });
   assert.equal(restored.graphicSpec.objects.parallelAxisLines.items.length, 4);
-  const selected = base().removeParallelAxes().createParallelAxis({ field: "b" });
+  const withoutAxes = base().removeParallelAxes();
+  assert.equal(withoutAxes.context.currentGuide, undefined);
+  const selected = withoutAxes.createParallelAxis({ field: "b" });
   const added = selected.encodeParallelCoordinates({ target: "lines", dimensions: ["d", "b", "a"] });
   assert.equal(added.graphicSpec.objects.parallelAxisLines.items.length, 1);
   assert.equal(config(added, "d").line, undefined);

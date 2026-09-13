@@ -211,7 +211,7 @@ Full-only Parallel axes는 encoded field별로 line/ticks/labels/title을 소유
 
 ### Formal values — `removeParallelAxes`
 
-- Implemented: Removes the complete owner, semantic overrides, recipes and graphics; optional selectors assert the stored owner.
+- Implemented: Removes the complete owner, semantic overrides, recipes and graphics; optional selectors assert the stored owner. If `context.currentGuide` points at the removed Parallel axis owner, the same immutable transition clears that transient pointer.
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `removeParallelAxes`
@@ -1103,6 +1103,7 @@ Ticks/labels의 count와 values는 배타적이고 같은 existing mode/default 
 - Existing x-axis semantic branch, four concrete axis components and stored guide config를 함께 제거한다.
 - Optional selector는 제거할 resource와 정확히 일치해야 하며 missing resource는 오류다. Mark, scale,
   coordinate와 independently shared resources는 보존한다.
+- `context.currentGuide`가 제거된 axis를 가리키면 해당 transient pointer를 함께 비운다.
 
 ### Formal values — `removeXAxis`
 

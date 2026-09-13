@@ -64,6 +64,8 @@ test("removes semantic encoding and guide branches with structural pruning", () 
     mark: { type: "point" }
   });
   assert.deepEqual(withoutGuide.semanticSpec.guides, {});
+  assert.equal(encoded.context.currentGuide, "legend.opacity");
+  assert.equal(withoutGuide.context.currentGuide, undefined);
   assert.equal(idempotent.semanticSpec, withoutGuide.semanticSpec);
   assert.deepEqual(idempotent.trace.children.at(-1).args, {
     property: "guide.legend.opacity",
