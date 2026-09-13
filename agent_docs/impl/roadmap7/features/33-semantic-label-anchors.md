@@ -2,7 +2,7 @@
 
 원래 감사 번호: **33**. Primary owner: **Phase 7**. 상태: **Implemented-primary** (`95968031`).
 아래 세부 API·수치 정책과 primary 제품 구현·검증이 완료됐다. source-owned Text의
-facet/repeat child-local replay 조합은 계획대로 R43 owner에 남아 있다.
+facet/repeat child-local placement·leader replay 조합도 `ebf3562a`에서 완료됐다.
 
 ## 목적과 현재 연결점
 
@@ -105,7 +105,7 @@ Arc: angular midpoint를 wrap-aware하게 구하고 inner boundary outward=-radi
 
 - [x] 위 API의 최단 호출과 explicit 대상 호출, 누락/auto/false/empty 경계를 타입과 runtime으로 동기화했다.
 - [x] 위 수치 oracle를 실제 capability test에 구현했고 계획 예제를 기대값 생성기로 재사용하지 않았다.
-- [x] 기존 consumer와 새 consumer에 scale/mark/guide/label/selection/Canvas replay를 검증했다. facet/repeat child-local 조합은 R43에서 완결한다.
+- [x] 기존 consumer와 새 consumer에 scale/mark/guide/label/selection/Canvas replay를 검증했고 facet/repeat child-local 조합은 R43 `ebf3562a`에서 완결했다.
 - [x] Full 등록·타입 export·Current 계약·catalog·card·관계 trace·MCP·문서·installed consumer를 갱신했다.
 - [x] 미지원 cell과 R43 후속 owner를 기록했다. 이 문서의 primary 필수 cell은 제외하지 않았다.
 - [x] 해당 Phase의 승인/검증 근거를 `PLAN_VALIDATION.md`와 `phase7/STEP1.md`에 실제 결과로 기록했다.

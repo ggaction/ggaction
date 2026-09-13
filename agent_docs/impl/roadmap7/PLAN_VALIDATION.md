@@ -367,3 +367,22 @@ R47/R49 제품 checkpoint 이후 남은 Roadmap 7을 구현자가 새 설계를 
 | Diff·JSON | IMPLEMENTATION_MAP parse와 `git diff --check` 통과 |
 
 실행 진입 문서의 오래된 “R47/R49 구현 시작” 문구는 실제 checkpoint를 보존하고 R49 closeout부터 시작하도록 교정했다. `stroke`는 이미 current facet policy에 있으므로 R43 신규 key 목록에서 제거하고 non-Cartesian consumer 통합으로 분류했다. `editFacetGuides`와 facet-guide materialization 파일은 R43 extended surface/source map에 추가했다.
+
+## 2026-09-13 R43과 Phase 10 closeout 검증
+
+위의 Phase 7–9 표에 당시 `열린 통합 cell`로 남긴 R31/R32/R33/R37/R38/R39/R47/R49의
+Polar/Parallel facet·repeat 항목은 R43 owner checkpoint `ebf3562a`에서 모두 닫혔다. 이는 과거 checkpoint의
+상태를 지우는 보정이 아니라, 각 deferred cell의 최종 owner와 runtime evidence를 연결하는 종료 기록이다.
+
+| 검증 | 실제 결과 |
+| --- | --- |
+| 지원 family | Polar Point/Line/direct Arc/Pie/Rose/Radar와 Parallel facet/facetGrid |
+| repeat | eligible theta/r, 정확히 한 Parallel dimension, target-owned statistical reference와 attached Text dependent |
+| transaction | semantic candidate → all-child domain resolution → final local materialization; partial parent commit 없음 |
+| 빈 child | transform 뒤 empty여도 semantic layer/coordinate와 canonical empty graphic 유지; shared/explicit-domain guide 허용 |
+| scale/guide | theta/public r/parallelDimensions shared·independent, child-local ranges/frame/positions, compatible shared legend |
+| lifecycle | R31/R32/R33 label·selection·placement·leader, R37/R38 legend recipe, R39 header, R47 theme, R49 style replay |
+| Canvas | composition direct edit는 거부; revised unit `editCanvas` 뒤 `editFacetSource({program})`로 전체 child/layout 재계산 |
+| 공개 경계 | strict types, Current composition contract, public/generated docs, installed Node/TypeScript/browser consumer 갱신 |
+| 제품 checkpoint | foundation `89f1c54e`, runtime `4dbdaf85`, 종료 감사·공개 경계 `ebf3562a` |
+| 다음 owner | Phase 11 R25 safe named resource removal |

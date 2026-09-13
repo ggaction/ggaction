@@ -1094,7 +1094,7 @@
         "R47",
         "R49"
       ],
-      "status": "Proposed",
+      "status": "Implemented-primary",
       "newPublicActions": [],
       "extendedPublicSurfaces": [
         "facet",
@@ -1122,7 +1122,7 @@
         "test/unit/actions/composition/facet-derived-families.test.js",
         "test/unit/actions/composition/facet-grid-repeat.test.js"
       ],
-      "suggestedNewTest": "test/contracts/polar-parallel-facets.test.js",
+      "suggestedNewTest": null,
       "acceptanceCases": [
         "R43-N01",
         "R43-N02",
@@ -1139,7 +1139,19 @@
         "edit/reencode/Canvas/source replay/remove",
         "applicable composition and renderer cells",
         "Full registration/types/current contracts/knowledge/docs/installed package"
-      ]
+      ],
+      "implementedTests": [
+        "test/unit/grammar/facet-dependencies.test.js",
+        "test/unit/grammar/facet-scales.test.js",
+        "test/unit/actions/composition/polar-facets.test.js",
+        "test/unit/actions/composition/parallel-facets.test.js",
+        "test/unit/actions/composition/non-cartesian-repeat.test.js",
+        "test/contracts/polar-parallel-facets.test.js",
+        "test/contracts/composition-phase10-types.test.js",
+        "test/contracts/composition-family-matrix.test.js",
+        "scripts/package-consumer.js"
+      ],
+      "implementationCommit": "ebf3562a"
     },
     {
       "id": "R47",

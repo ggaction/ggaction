@@ -1,6 +1,7 @@
 # Phase 11 — 미사용 자원 삭제
 
-상태: planned. 이 문서는 실행 계획이며 구현 또는 승인 완료 기록이 아니다.
+상태: active. Phase 10 R43이 `ebf3562a`에서 완료되어, 이미 승인된 R25의 reference
+inventory와 reject-only 안전 삭제 구현을 시작한다. 아직 R25 제품 완료 기록은 아니다.
 
 ## 목표와 범위
 

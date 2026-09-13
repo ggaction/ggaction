@@ -706,7 +706,7 @@
         "R47",
         "R49"
       ],
-      "status": "Proposed",
+      "status": "Implemented-primary",
       "scopeSelection": "user-selected",
       "file": "features/43-polar-parallel-facets.md",
       "sources": [
@@ -725,7 +725,8 @@
         "독립 oracle와 인수 테스트",
         "완료 조건",
         "구현 고정 명세"
-      ]
+      ],
+      "implementationCommit": "ebf3562a"
     },
     {
       "id": "R47",

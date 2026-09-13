@@ -15,6 +15,7 @@ test("creates stable row-column cells and preserves the missing pair as blank", 
     ]
   );
   const blank = program.children["matrix-row-2-column-2"];
-  assert.equal(blank.semanticSpec.layers.length, 0);
+  assert.equal(blank.semanticSpec.layers.length, 1);
+  assert.deepEqual(blank.graphicSpec.objects.result.items, []);
   assert.equal(blank.graphicSpec.objects.canvas.type, "canvas");
 });

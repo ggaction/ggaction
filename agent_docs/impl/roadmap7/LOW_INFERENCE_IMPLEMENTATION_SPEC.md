@@ -1,8 +1,8 @@
 # Roadmap 7 — 무추론 구현 명세
 
-작성 기준: 2026-09-13. 기준 branch `codex/roadmap7-authoring-refinement`, 인계 기준 HEAD는 `4dbdaf85`다. Phase 9는 제품 checkpoint `1c5192f2`와 상태 checkpoint `39be3e3e`에서 완료됐다. Phase 10은 foundation checkpoint `89f1c54e`와 runtime 후보 checkpoint `4dbdaf85`까지 push됐다. 아래 Phase 10 종료 감사를 통과하기 전에는 R43 또는 Phase 10을 완료로 기록하지 않는다.
+작성 기준: 2026-09-13. 기준 branch `codex/roadmap7-authoring-refinement`, 현재 제품 인계 기준 HEAD는 `ebf3562a`다. Phase 9는 제품 checkpoint `1c5192f2`와 상태 checkpoint `39be3e3e`에서 완료됐다. Phase 10은 foundation `89f1c54e`, runtime `4dbdaf85`, 종료 감사·Current·문서·설치 패키지 `ebf3562a`에서 완료됐다. 현재 실행점은 Phase 11 R25다.
 
-이 문서는 구현자가 설계를 새로 해석하지 않고 남은 Roadmap 7을 실행하도록 만든 코드 수준 명세다. 공개 의미·기본값·수식은 각 `features/*.md`가 소유하고, 이 문서는 **수정 파일, 함수 경계, 상태 경로, 실행 순서, 삭제 규칙, 테스트 묶음과 종료 조건**을 소유한다. 두 문서가 다르면 feature 계약을 따르고 같은 checkpoint에서 이 문서를 고친다. 완료된 R02/R05/R06/R07/R08/R09/R10/R19/R20/R21/R22/R23/R27/R29/R31/R32/R33/R36/R37/R38/R39/R47/R49 제품 코드는 다시 구현하지 않는다. R31/R32/R33/R37/R38/R39/R47/R49의 non-Cartesian facet/repeat 소비 cell만 R43에서 현재 action의 consumer 통합으로 검증한다.
+이 문서는 구현자가 설계를 새로 해석하지 않고 남은 Roadmap 7을 실행하도록 만든 코드 수준 명세다. 공개 의미·기본값·수식은 각 `features/*.md`가 소유하고, 이 문서는 **수정 파일, 함수 경계, 상태 경로, 실행 순서, 삭제 규칙, 테스트 묶음과 종료 조건**을 소유한다. 두 문서가 다르면 feature 계약을 따르고 같은 checkpoint에서 이 문서를 고친다. 완료된 R02/R05/R06/R07/R08/R09/R10/R19/R20/R21/R22/R23/R27/R29/R31/R32/R33/R36/R37/R38/R39/R43/R47/R49 제품 코드는 다시 구현하지 않는다. R31/R32/R33/R37/R38/R39/R47/R49의 non-Cartesian facet/repeat 소비 cell은 R43 `ebf3562a`에서 검증됐다.
 
 ## 0. 현재 인계 상태와 다음 실행점
 
@@ -10,12 +10,12 @@
 
 | 범위 | 실제 상태 | 재사용할 revision | 다음 작업 |
 | --- | --- | --- | --- |
-| Phase 0–8 | 완료 | 각 STEP 결과 원장, Phase 8 `20a25911` | 재구현 금지; R43/R25 consumer 회귀만 추가 |
-| Phase 9 R47/R49 | 완료 | `1c5192f2`, `39be3e3e` | 재구현 금지; R43 child replay 회귀만 추가 |
-| Phase 10 W10.1–W10.3 | implemented candidate | `89f1c54e` | 3-pass 경계·empty transform·binding 불변식 감사 |
-| Phase 10 W10.4–W10.5 | implemented candidate | `4dbdaf85` | label/Canvas/empty guide lifecycle와 package/docs 마감 |
-| Phase 10 W10.6 | 미완료 | unit 2453, contracts 472가 위 HEAD에서 통과 | 아래 종료 감사, 전체 suite, Current/public/generated/package 동기화 |
-| Phase 11 R25 | 미착수 | 없음 | Phase 10 status checkpoint 뒤 시작 |
+| Phase 0–8 | 완료 | 각 STEP 결과 원장, Phase 8 `20a25911` | 재구현 금지; R25 consumer 회귀만 추가 |
+| Phase 9 R47/R49 | 완료 | `1c5192f2`, `39be3e3e` | 재구현 금지; R25/Phase 12 회귀만 추가 |
+| Phase 10 W10.1–W10.3 | 완료 | `89f1c54e`, `ebf3562a` | 재구현 금지 |
+| Phase 10 W10.4–W10.5 | 완료 | `4dbdaf85`, `ebf3562a` | 재구현 금지 |
+| Phase 10 W10.6 | 완료 | `ebf3562a`; Phase 10 STEP 원장 | Phase 12 누적 회귀만 |
+| Phase 11 R25 | active | 없음 | 아래 R25 명세의 W11.1부터 순서대로 구현 |
 | Phase 12 통합 | 미착수 | 없음 | Phase 11 완료 뒤 25개 exact reconciliation과 main 반영 |
 
 ### 인계 직후 실행할 명령
@@ -32,9 +32,10 @@ npm run test:contracts
 
 예상 branch는 `codex/roadmap7-authoring-refinement`, 예상 최신 두 제품 commit은 `4dbdaf85`, `89f1c54e`다. working tree가 더 최신이면 사용자 작업을 되돌리지 말고 diff를 분류한다. pass count가 달라도 test 0 failure가 우선이며, 숫자를 문서에 억지로 맞추지 않는다.
 
-### Phase 10에서 바로 닫을 여섯 가지 감사
+### Phase 10에서 완료한 여섯 가지 감사
 
-아래는 선택 사항이 아니다. 각 항목은 기존 성공 fixture를 복제하지 말고 누락된 경계 하나를 독립 test로 고정한다.
+아래 여섯 항목은 `ebf3562a`에서 Current·문서·설치 패키지와 함께 닫혔다. 후속 구현자는
+성공 fixture를 복제하거나 다른 API로 다시 만들지 말고 Phase 12 누적 회귀에서 보존한다.
 
 1. **3-pass atomicity**: `derive.js`가 candidate 생성, 전체 child domain 해결, 최종 materialization을 논리적으로 분리하는지 확인한다. 현재 함수명이 다르거나 `deriveCellProgram` 안에 남아 있으면 W10.2의 세 이름으로 추출한다. 첫 child의 graphic materialization이 둘째 child의 domain 오류보다 먼저 caller-visible parent state를 만들 수 없어야 한다.
 2. **transform 뒤 empty**: raw partition에는 행이 있지만 row-preserving filter 또는 통계 transform 뒤 final rows가 0인 cell을 만든다. shared/explicit domain은 semantic layer·coordinate·정상 empty graphic·local guide를 유지하고, independent auto는 고정 오류를 내며 원본 8개 branch와 `_actionSequence`를 보존해야 한다.
@@ -43,7 +44,8 @@ npm run test:contracts
 5. **full-grid empty non-Cartesian panel**: Polar와 Parallel 각각에 missing pair를 만든다. header slot과 grid coordinate가 유지되고 sibling이 이동하지 않으며, shared domain의 axes/grid는 empty child의 local coordinate를 사용해야 한다. Pie/Rose/Radar empty graphic은 family의 canonical empty representation과 일치해야 한다.
 6. **public/package closeout**: `types/program.d.ts`, strict positive/negative type fixture, `agent_docs/contract/current/COMPOSITION.md`, `ACTION_INDEX.json`, action relations/cards, `docs/api/composition.md`, generated reference, packed Node/TypeScript/MCP consumer가 `theta`, public `r`, `parallelDimensions`, `{parallelDimension}`과 거부 표를 같은 의미로 노출해야 한다.
 
-이 여섯 감사를 통과한 제품·계약·문서 checkpoint를 commit/push한 뒤에만 feature/Phase/PROPOSALS 상태를 별도 checkpoint에서 닫고 `activePhase`를 11로 이동한다.
+여섯 감사의 제품 checkpoint는 `ebf3562a`이고, 별도 상태 checkpoint에서 feature/Phase/PROPOSALS를
+닫고 `activePhase`를 11로 이동했다.
 
 ## 1. 구현자가 지켜야 할 실행 형식
 
@@ -597,16 +599,17 @@ custom theme의 mark/text/highlight tokens, R38 block override, R39 header/font,
 5. legend/highlight/facet replay가 source style과 theme policy를 유지한다.
 6. Canvas/SVG/PDF가 같은 concrete commands와 attrs를 소비한다.
 
-## 5. Phase 10 — R43 non-Cartesian facet/repeat
+## 5. Phase 10 — R43 non-Cartesian facet/repeat — 완료
 
 ### 현재 코드 기준선과 먼저 제거할 오해
 
-이 절의 경로와 함수 이름은 `31a2eee9` 이후 source를 기준으로 한다. 구현자는 아래 현재 동작을 먼저 재현한 뒤 변경한다.
+이 절의 경로와 함수 이름은 Phase 10 구현 전 출발점 `31a2eee9`를 기록한다. 아래 제한은
+`89f1c54e`, `4dbdaf85`, `ebf3562a`에서 제거됐으며, 현재 구현에 다시 도입하면 회귀다.
 
-- `src/grammar/facets/index.js`의 `requireSupportedLayer`는 x/y Cartesian 완성도를 요구하고 Arc·Polar·Parallel을 거부한다.
-- `src/actions/facets/actions.js`의 `resolveRepeatDefinition`은 `"x" | "y"`, 직접 Cartesian mark 하나, transform 없는 dataset만 허용한다.
-- `src/core/vocabulary.js`의 `FACET_SCALE_CHANNELS`에는 theta/radius와 Parallel dimension policy가 없다. `stroke`는 이미 있으므로 새 channel처럼 다시 구현하지 않는다.
-- `src/actions/facets/derive.js`는 빈 partition에서 source mark를 삭제한다. R43에서는 panel/header와 source recipe를 보존해야 하므로 이 branch를 유지하면 실패다.
+- 구현 전 `src/grammar/facets/index.js`의 `requireSupportedLayer`는 x/y Cartesian 완성도만 요구하고 Arc·Polar·Parallel을 거부했다.
+- 구현 전 `src/actions/facets/actions.js`의 `resolveRepeatDefinition`은 `"x" | "y"`, 직접 Cartesian mark 하나, transform 없는 dataset만 허용했다.
+- 구현 전 `src/core/vocabulary.js`의 `FACET_SCALE_CHANNELS`에는 theta/r와 Parallel dimension policy가 없었다. `stroke`는 기존 channel을 그대로 재사용했다.
+- 구현 전 `src/actions/facets/derive.js`는 빈 partition에서 source mark를 삭제했다. 현재는 semantic layer·coordinate와 canonical empty graphic을 보존한다.
 - `src/materialization/facetGuides/placement.js`는 x/y axis만 child ownership 대상으로 본다. Polar/Parallel axis를 outer로 승격하는 코드를 추가하지 않는다.
 - `compositionSpec.facet`이 field/grid/repeat/scales/guides를 보존하고 `children`이 실제 child program을 보존한다. 별도 serialized source snapshot을 중복 추가하지 않는다.
 
@@ -796,7 +799,7 @@ repeat child ID는 기존 `${id}-field-${index+1}` 규칙을 유지한다. field
 9. R47 theme frame을 child materialization 뒤 재생하고 R49 explicit style을 덮지 않는다. highlight는 최종 source graphic을 clone한다.
 10. `materializeFacetGraphics`는 child snapshot을 namespace/translate만 한다. family geometry를 parent에서 다시 계산하지 않는다.
 
-`editFacetScales`, `editFacetGuides`, `editFacetSource`, composition theme replay, composition Canvas edit가 모두 위 동일 pipeline으로 들어와야 한다. initial create에만 통과하는 별도 분기를 만들지 않는다.
+`editFacetScales`, `editFacetGuides`, `editFacetSource`와 composition theme replay가 모두 위 동일 pipeline으로 들어온다. Canvas는 composition parent action이 아니라 revised unit의 `editCanvas` 뒤 `editFacetSource`를 호출해 replay한다. initial create에만 통과하는 별도 분기를 만들지 않는다.
 
 ### W10.6 — 파일별 테스트 배치와 종료 판정
 
@@ -827,7 +830,7 @@ family matrix는 다음 evidence를 빠짐없이 가진다.
 
 각 성공 test는 caller options deep-freeze, original program 8개 branch와 `_actionSequence` 불변, child ID/order, semantic data rebinding, concrete item count/path, local frame/range를 검사한다. renderer test는 같은 `graphicSpec`을 소비하는지 확인하며 renderer 안에서 semantic family를 다시 추론하지 않는다.
 
-Phase 10은 다음이 모두 충족돼야 종료한다.
+Phase 10은 아래 조건을 모두 충족해 `ebf3562a`에서 종료됐다.
 
 - 7 family의 facet/facetGrid와 표의 repeat cell이 실제 runtime/type test를 통과한다.
 - `editFacetSource`의 data revision, `editFacetScales`, Canvas, theme, labels/highlight/style lifecycle이 통과한다.

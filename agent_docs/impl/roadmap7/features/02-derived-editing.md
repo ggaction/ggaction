@@ -1,7 +1,7 @@
 # R02 — 파생 데이터 정의 편집과 종속 갱신
 
 원래 감사 번호: **2**. Primary owner: **Phase 4**. 상태: **Implemented-primary**.
-아래 API·revision transaction·16개 family 편집은 `d29287c9`에서 구현됐다. Phase 7의 동적 reference, Phase 8의 새 legend content, Phase 10의 Polar/Parallel facet 확장, Phase 11의 범용 resource collector와 결합하는 후속 통합은 각 기능 owner가 다시 검증한다.
+아래 API·revision transaction·16개 family 편집은 `d29287c9`에서 구현됐다. Phase 7의 동적 reference와 Phase 10의 Polar/Parallel facet source replay 통합은 각각 `5832228c`, `ebf3562a`에서 검증됐다. Phase 11의 범용 resource collector 결합은 R25 owner가 검증한다.
 
 ## 목적과 현재 연결점
 

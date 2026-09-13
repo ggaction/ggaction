@@ -1,7 +1,8 @@
 # Phase 10 — Polar·Parallel facet와 repeat
 
-상태: active. 모든 Gate는 승인됐고 Phase 9 primary가 완료됐다. 현재 작업은 R43의
-Polar·Parallel facet/repeat 지원을 계약의 W1–W6 순서로 구현·검증하는 것이다.
+상태: completed-primary. 모든 Gate가 승인된 범위에서 R43 foundation `89f1c54e`,
+runtime `4dbdaf85`, 종료 감사·Current·문서·설치 패키지 `ebf3562a`로 구현·검증됐다.
+일곱 non-Cartesian family, 지원 repeat 역할과 선행 label/legend/theme/style 소비 셀을 닫았다.
 
 ## 목표와 범위
 
@@ -19,6 +20,10 @@ Polar·Parallel facet/repeat 지원을 계약의 W1–W6 순서로 구현·검�
 6. W6: 모든 matrix와Cartesian facet/repeat 기존 지원 회귀.
 
 ## 경계와 다음 작업
+
+다음 active Phase는 Phase 11 R25 안전한 named resource 삭제다. R43의 별도 public action은
+추가하지 않았으며 기존 `facet`, `facetGrid`, `repeatCharts`, `editFacetScales`,
+`editFacetGuides`, `editFacetSource`의 지원 범위를 확장했다.
 
 이 Phase에 배정되지 않은 선택 기능은 해당 owner Phase에서 구현한다. 감사에서 선택하지 않은 나머지 25개는 추가하지 않는다. 독립적인 저작 의미가 필요할 때만 action을 추가하고, 타입과 문서만 있는 API를 만들지 않는다.
 

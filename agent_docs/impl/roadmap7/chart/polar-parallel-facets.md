@@ -1,12 +1,12 @@
 # Polar·Parallel facet/repeat chart 구현 계약
 
-상태: Proposed. Primary Phase 10. API·기본값·stored-result·오류는 [R43](../features/43-polar-parallel-facets.md)가 canonical이고 이 문서는 실행 chart matrix를 소유한다.
+상태: Implemented-primary (`ebf3562a`). Primary Phase 10. API·기본값·stored-result·오류는 [R43](../features/43-polar-parallel-facets.md)가 canonical이고 이 문서는 실행 chart matrix를 소유한다.
 
 ## 차트와 공개 저작 의도
 
 한 source program에서 그룹별 Polar scatter/line/sector/Rose/Pie/Radar/Parallel panels를 만들고, 한 field role을 여러 변수로 바꿔 반복한다. 현재 Cartesian facet/repeat의 provenance·소유권 규칙을 유지한다. 입력 chart는 그대로 보존되고 별도의 composition program을 반환한다.
 
-권장 public chain 표기(아직 실행 가능한 새 지원이라고 주장하지 않음):
+검증된 public chain 표기:
 
 ```text
 기존 createPolarScatterPlot/createRadarPlot/createRosePlot/createPiePlot 또는

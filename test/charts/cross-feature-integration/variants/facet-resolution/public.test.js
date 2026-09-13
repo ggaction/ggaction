@@ -38,12 +38,15 @@ test("replays regression data independently in every shared-scale facet cell", (
     y: "shared",
     xOffset: "shared",
     yOffset: "shared",
+    theta: "shared",
+    r: "shared",
     color: "shared",
     stroke: "shared",
     size: "shared",
     shape: "shared",
     opacity: "shared",
-    strokeDash: "shared"
+    strokeDash: "shared",
+    parallelDimensions: "shared"
   });
   expected.cells.forEach((cell, index) => {
     const child = program.children[`facet-cell-${index + 1}`];

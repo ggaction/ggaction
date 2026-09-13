@@ -423,13 +423,13 @@ Visual primitive는 R38 public action이나 production block helper를 호출해
 7. generated artifacts 생성 후 freshness tests.
 8. focused → unit → contracts → docs → render/browser → installed package 순서로 실행.
 
-R38를 `Implemented-primary`로 바꾸려면 R38-N01/N02/E01/L01/E02가 모두 현재 revision에서 passed이고, Full/Basic surface 경계·same-run pixel parity·packed consumer가 통과해야 한다. R39 `labelMap`, R43 advanced facet family, R47 custom theme token 소비는 pending integration으로 남기되 R38 동작을 미리 stub으로 만들지 않는다.
+R38-N01/N02/E01/L01/E02와 Full/Basic surface 경계·same-run pixel parity·packed consumer는 Phase 8에서 통과했다. R39 `labelMap`과 R47 custom theme token 소비는 각 owner checkpoint에서 닫혔고, R43은 exact sampled size block을 shared Polar legend로 승격한 뒤 block title/text/gap/values 요청 상태를 보존하는 계약 검증으로 닫혔다.
 
 ## 완료 조건
 
-- [ ] 위 API의 최단 호출과 explicit 대상 호출, 누락/auto/false/empty 경계를 타입과 runtime으로 동기화했다.
-- [ ] 위 수치 oracle를 실제 capability test에 구현했고 계획 예제를 기대값 생성기로 재사용하지 않았다.
-- [ ] 기존 consumer와 새 consumer에 scale/mark/guide/label/selection/facet/Canvas replay를 검증했다.
-- [ ] Full 등록·타입 export·Current 계약·catalog·card·관계 trace·MCP·문서·installed consumer를 갱신했다.
-- [ ] 미지원 cell은 이유를 적었다. 이 문서에 명시한 필수 cell을 임의 제외하지 않았다.
-- [ ] 해당 Phase의 승인/검증 근거를 기록했다. 추측으로 완료 표시하지 않았다.
+- [x] 위 API의 최단 호출과 explicit 대상 호출, 누락/auto/false/empty 경계를 타입과 runtime으로 동기화했다.
+- [x] 위 수치 oracle를 실제 capability test에 구현했고 계획 예제를 기대값 생성기로 재사용하지 않았다.
+- [x] 기존 consumer와 새 consumer에 scale/mark/guide/label/selection/facet/Canvas replay를 검증했다.
+- [x] Full 등록·타입 export·Current 계약·catalog·card·관계 trace·MCP·문서·installed consumer를 갱신했다.
+- [x] 미지원 cell은 이유를 적었다. 이 문서에 명시한 필수 cell을 임의 제외하지 않았다.
+- [x] 해당 Phase의 승인/검증 근거를 기록했다. Phase 8 제품·종료 checkpoint와 R43 `ebf3562a`가 증거다.

@@ -134,3 +134,21 @@ test("repeats a Polar role together with its attached label lifecycle", () => {
     /does not support mark "note"/
   );
 });
+
+test("repeats a primary mark together with its statistical-reference dependent", () => {
+  const base = source()
+    .createPointMark({ id: "mark", data: "values" })
+    .encodeX({ target: "mark", field: "a" })
+    .encodeY({ target: "mark", field: "b" })
+    .createReferenceLine({
+      id: "average", source: "mark", axis: "y", statistic: { op: "mean" }
+    });
+  const repeated = base.repeatCharts({
+    target: "mark", channel: "x", fields: ["a", "c"]
+  });
+
+  assert.equal(Object.values(repeated.children).every(child =>
+    child.semanticSpec.layers.some(layer => layer.id === "average") &&
+    child.markConfigs.average.statisticalReference.source === "mark" &&
+    child.graphicSpec.objects.average.items.length === 1), true);
+});

@@ -1360,8 +1360,8 @@
       "kind": "normal",
       "specification": "Polar A r[1,2],B r[10,20],zero:false → shared[1,20],independent[1,2]/[10,20]. zero/nice는 explicit fixture 설정대로.",
       "owner": "features/43-polar-parallel-facets.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/contracts/polar-parallel-facets.test.js (shared and independent Polar domains); 89f1c54e, ebf3562a"
     },
     {
       "id": "R43-N02",
@@ -1370,8 +1370,8 @@
       "kind": "normal",
       "specification": "Pie A[1,1],B[1,3] → 180/180°,90/270°.",
       "owner": "features/43-polar-parallel-facets.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/contracts/polar-parallel-facets.test.js (literal local Pie spans); 89f1c54e, ebf3562a"
     },
     {
       "id": "R43-N03",
@@ -1380,8 +1380,8 @@
       "kind": "normal",
       "specification": "theta categories A[a,b],B[b,c] → shared[a,b,c];child local radii 유지.",
       "owner": "features/43-polar-parallel-facets.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/contracts/polar-parallel-facets.test.js (typed theta union and local frames); 89f1c54e, ebf3562a"
     },
     {
       "id": "R43-N04",
@@ -1390,8 +1390,8 @@
       "kind": "normal",
       "specification": "Parallel dims a:[0,1],b:[0,1000] → 각 domain 분리.",
       "owner": "features/43-polar-parallel-facets.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/contracts/polar-parallel-facets.test.js and test/unit/actions/composition/parallel-facets.test.js (dimension-separated domains); 89f1c54e, ebf3562a"
     },
     {
       "id": "R43-E01",
@@ -1400,8 +1400,8 @@
       "kind": "error",
       "specification": "outer axes,duplicate repeated dimension,Pie theta substitution,empty independent auto → 오류.",
       "owner": "features/43-polar-parallel-facets.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/contracts/polar-parallel-facets.test.js and composition-phase10-types.test.js (outer axes, duplicate dimension, Pie/Radar repeat, empty independent auto); 4dbdaf85, ebf3562a"
     },
     {
       "id": "R43-L01",
@@ -1410,8 +1410,8 @@
       "kind": "lifecycle",
       "specification": "source edit→scale policy edit→Canvas→theme→replay 후 frame/headers/selection/style 모두 유지.",
       "owner": "features/43-polar-parallel-facets.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/contracts/polar-parallel-facets.test.js (source/scale/Canvas/theme/header/selection/label/style replay); scripts/package-consumer.js; ebf3562a"
     },
     {
       "id": "R43-L02",
@@ -1420,8 +1420,8 @@
       "kind": "lifecycle",
       "specification": "chart 계약의7 family 각각 facet/facetGrid와 지원 repeat cell의 primitive/public/render/type/package 증거를 닫는다.",
       "owner": "features/43-polar-parallel-facets.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/contracts/polar-parallel-facets.test.js and composition-family-matrix.test.js (seven families, Canvas/SVG/PNG/PDF); installed Node/TypeScript/MCP package consumer; ebf3562a"
     },
     {
       "id": "R47-N01",

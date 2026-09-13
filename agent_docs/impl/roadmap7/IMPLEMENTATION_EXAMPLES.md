@@ -138,4 +138,4 @@ const panels = polar.facet({
 });
 ```
 
-기존 facade 옵션 이름은 radius이고, 새 facet resolution의 사용자 r는 semantic radius로 normalize한다. 각 child는 자기 plot bounds에서 중심과 radius를 계산한다. A의 자동 radial max는2, B는20이며 원본 polar program은 그대로다. guides:false는 이 수치 fixture를 단순화하기 위한 선택이다. R43 완료에는 별도로 guide/legend/header/label/theme가 있는 전체 fixture가 필요하다.
+기존 facade 옵션 이름은 radius이고, facet resolution의 사용자 r는 semantic radius로 normalize한다. 각 child는 자기 plot bounds에서 중심과 radius를 계산한다. A의 자동 radial max는2, B는20이며 원본 polar program은 그대로다. guides:false는 이 수치 fixture를 단순화하기 위한 선택이다. R43의 guide/legend/header/label/theme 전체 fixture와 shared exact sampled legend 계약은 `test/contracts/polar-parallel-facets.test.js`에서 검증되고 제품 checkpoint `ebf3562a`에 포함됐다.

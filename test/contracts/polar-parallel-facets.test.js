@@ -278,6 +278,79 @@ test("replays selected Polar labels, placement, leaders, theme, and revised Canv
   assert.equal(base.graphicSpec, before);
 });
 
+test("replays named Polar label membership independently in every child", () => {
+  const values = [
+    { panel: "A", angle: 0, radius: 1 },
+    { panel: "A", angle: 90, radius: 2 },
+    { panel: "B", angle: 0, radius: 10 },
+    { panel: "B", angle: 90, radius: 20 }
+  ];
+  const named = source(values).createPolarScatterPlot({
+    id: "points", theta: "angle",
+    radius: { field: "radius", scale: { nice: false, zero: false } },
+    guides: false
+  }).selectMarks({
+    id: "largest", target: "points", field: "radius", op: "max"
+  }).createMarkLabels({
+    id: "labels", source: "points", field: "radius", selection: "largest"
+  });
+  const faceted = named.facet({ field: "panel" });
+
+  assert.deepEqual(Object.values(faceted.children).map(child =>
+    child.graphicSpec.objects.labels.items.map(item => item.properties.text)), [
+    ["2"], ["20"]
+  ]);
+  for (const child of Object.values(faceted.children)) {
+    assert.deepEqual(child.markConfigs.labels.labelAuthoring.selection, {
+      kind: "named", id: "largest"
+    });
+    assert.equal(child.materializationConfigs.selections.largest.target, "points");
+  }
+});
+
+test("promotes exact sampled Polar legend blocks without losing requested state", () => {
+  const values = [
+    { panel: "A", angle: 0, radius: 1, magnitude: 1 },
+    { panel: "A", angle: 90, radius: 2, magnitude: 10 },
+    { panel: "B", angle: 0, radius: 10, magnitude: 10 },
+    { panel: "B", angle: 90, radius: 20, magnitude: 20 }
+  ];
+  const unit = chart()
+    .createCanvas({
+      width: 420, height: 320,
+      margin: { top: 70, right: 130, bottom: 70, left: 70 }
+    })
+    .createData({ id: "values", values })
+    .createPolarScatterPlot({
+      id: "points", theta: "angle",
+      radius: { field: "radius", scale: { nice: false, zero: false } },
+      size: {
+        field: "magnitude", scale: { domain: [1, 20], range: [20, 200] }
+      },
+      guides: false
+    })
+    .createLegend({
+      target: "points", channels: ["size"], values: [1, 10, 20]
+    })
+    .editLegendBlock({
+      target: "points", channel: "size", title: "Magnitude",
+      text: { color: "#123456" }
+    });
+  const faceted = unit.facet({
+    field: "panel", guides: { legend: "shared" }
+  });
+
+  assert.deepEqual(faceted.guideConfigs.legend.size.sampling, {
+    mode: "values", values: [1, 10, 20], count: 5
+  });
+  assert.deepEqual(faceted.guideConfigs.legend.size.blockOverrides, {
+    '["size"]': { title: "Magnitude", text: { color: "#123456" } }
+  });
+  assert.equal(faceted.graphicSpec.objects["facet-shared-legend"].type, "canvas");
+  assert.equal(Object.values(faceted.children).every(child =>
+    child.graphicSpec.objects.sizeLegendLabels.items.length === 3), true);
+});
+
 test("does not resurrect removed Polar labels in facet or repeat replay", () => {
   const values = [
     { panel: "A", angle: 0, radius: 1, distance: 10 },

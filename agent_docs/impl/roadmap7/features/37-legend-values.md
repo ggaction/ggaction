@@ -1,7 +1,7 @@
 # R37 — 연속 범례의 명시적인 표본값
 
 원래 감사 번호: **37**. Primary owner: **Phase 8**. 상태: **Implemented-primary**.
-제품 구현은 `8760111d`, 같은 실행의 primitive/public decoded-PNG 동등성 보강은 `547eae1b`에 있다. R38 block selector와 R43/R47 후속 consumer 통합은 각 기능 owner에 남아 있다.
+제품 구현은 `8760111d`, 같은 실행의 primitive/public decoded-PNG 동등성 보강은 `547eae1b`에 있다. R38 block selector와 R47 theme 소비는 각 owner checkpoint에서 완료됐고, shared Polar facet의 exact sampled legend 승격과 요청 상태 보존은 R43 checkpoint `ebf3562a`에서 검증됐다.
 
 ## 목적과 현재 연결점
 

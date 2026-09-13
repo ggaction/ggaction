@@ -670,7 +670,7 @@ visual evidence는 primitive와 target public action을 같은 run manifest에 �
 - [x] circle/rect/line/path Canvas state reset을 모두 검증했다.
 - [x] SVG/PDF가 같은 concrete semantics를 소비한다.
 - [x] direct marks와 applicable facade nested style을 모두 연결했다.
-- [x] legend/highlight/R38/R47/facet lifecycle을 검증했다.
+- [x] legend/highlight/R38/R47/facet lifecycle을 검증했고, R43 Polar/Parallel child-local style replay를 `ebf3562a`에서 재검증했다.
 - [x] R49-N01~N03, E01, L01, L02에 runtime evidence를 연결했다.
 - [x] Full/Basic types/current contract/catalog/cards/docs/package/MCP consumer를 갱신했다.
 - [x] Phase 9 STEP 원장에 commit, 명령, pass/fail/skip, artifact를 기록했다.

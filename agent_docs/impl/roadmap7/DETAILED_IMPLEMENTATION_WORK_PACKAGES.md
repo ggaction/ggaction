@@ -1,6 +1,6 @@
 # Roadmap 7 — 상세 구현 작업 패킷
 
-작성 기준: 2026-09-13. 현재 branch `codex/roadmap7-authoring-refinement`, Phase 9 완료 checkpoint `39be3e3e`, R43 foundation/runtime 후보 checkpoint `89f1c54e`, `4dbdaf85`다. 이 문서는 이미 승인된 Roadmap 7을 구현자가 기능 단위로 끝까지 실행하기 위한 **작업 분해와 종료 절차**다. R43 lifecycle·Current/docs/package 종료 감사 전에는 Phase 10을 완료로 기록하지 않는다. Phase 10 이후의 함수·state·transition·test를 한 문서에서 기계적으로 실행하려면 [무추론 구현 명세](LOW_INFERENCE_IMPLEMENTATION_SPEC.md)를 함께 따른다. 공개 API의 정확한 의미·수식·기본값은 각 `features/*.md`가 canonical owner이며, 이 문서는 그 계약을 어느 파일에 어떤 순서로 구현하고 무엇으로 검증할지를 소유한다.
+작성 기준: 2026-09-13. 현재 branch `codex/roadmap7-authoring-refinement`, Phase 9 완료 checkpoint `39be3e3e`, R43 완료 checkpoint `89f1c54e`, `4dbdaf85`, `ebf3562a`다. 이 문서는 이미 승인된 Roadmap 7을 구현자가 기능 단위로 끝까지 실행하기 위한 **작업 분해와 종료 절차**다. Phase 11 이후의 함수·state·transition·test를 한 문서에서 기계적으로 실행하려면 [무추론 구현 명세](LOW_INFERENCE_IMPLEMENTATION_SPEC.md)를 함께 따른다. 공개 API의 정확한 의미·수식·기본값은 각 `features/*.md`가 canonical owner이며, 이 문서는 그 계약을 어느 파일에 어떤 순서로 구현하고 무엇으로 검증할지를 소유한다.
 
 ## 1. 현재 상태와 실행 경계
 
@@ -28,7 +28,7 @@
 | R39 typed display names와 facet header strips | Implemented-primary | `20a25911` | R43/R47 소비 회귀 |
 | R47 custom theme | Implemented-primary | `ce286929`, Phase 완료 `39be3e3e` | R43 consumer 회귀 |
 | R49 shape style details | Implemented-primary | `1c5192f2`, Phase 완료 `39be3e3e` | R43 consumer 회귀 |
-| R43 Polar/Parallel facet·repeat | implemented candidate | `89f1c54e`, `4dbdaf85` | 여섯 가지 종료 감사와 Current/docs/package |
+| R43 Polar/Parallel facet·repeat | Implemented-primary | `89f1c54e`, `4dbdaf85`, `ebf3562a` | Phase 12 누적 회귀만 |
 
 완료 checkpoint의 pure core나 public API를 다른 이름으로 다시 만들지 않는다. 후속 기능이 새 consumer를 추가할 때 기존 owner에 consumer path와 regression만 보강한다.
 
@@ -36,7 +36,7 @@
 
 순서는 의존성 계약이다. 같은 번호의 소단계는 위에서 아래로 수행한다.
 
-1. Phase 10: 기존 R43 후보 코드는 보존하고 3-pass/empty/Text/Canvas/grid 경계 → Current/docs/package → Phase 상태 closeout을 수행한다.
+1. Phase 10: 완료. 기존 R43 checkpoint를 재구현하지 않는다.
 2. Phase 11: R25 reference registry와 안전 삭제.
 3. Phase 12: 25개 기능의 전체 lifecycle·metadata·package closeout.
 
@@ -68,7 +68,7 @@ R19, R27, R29의 완료 checkpoint를 다시 구현하지 않는다. R43을 좌�
 | R37 | exact sampled legend values | Implemented-primary (`8760111d`) | 완료 checkpoint + WP8.2/WP10/WP12 |
 | R38 | combined legend block edit | Implemented-primary (`7ffafe02`) | 완료 checkpoint + WP8.3/WP10/WP12 |
 | R39 | typed display names·header strips | Implemented-primary (`20a25911`) | 완료 checkpoint + WP9/WP10/WP12 |
-| R43 | Polar/Parallel facet·repeat | implemented candidate (`89f1c54e`, `4dbdaf85`); closeout 미완료 | WP10 |
+| R43 | Polar/Parallel facet·repeat | Implemented-primary (`89f1c54e`, `4dbdaf85`, `ebf3562a`) | WP10 완료 |
 | R47 | custom theme·descendant propagation | Implemented-primary (`39be3e3e`) | 완료 checkpoint + WP10/WP12 |
 | R49 | corner/cap/join style | Implemented-primary (`39be3e3e`) | 완료 checkpoint + WP10/WP12 |
 
@@ -187,7 +187,7 @@ R19, R27, R29의 완료 checkpoint를 다시 구현하지 않는다. R43을 좌�
 2. **Boundary**: 최소/최대, empty/nullish, zero, reverse, repeated category, mode별 유효 경계.
 3. **Error atomicity**: malformed shape, unknown key/field/target, ambiguous owner, incompatible consumer. 호출 전 program 전체와 deep-frozen options를 비교한다.
 4. **Lifecycle**: create → edit → reset 또는 field/value 전환 → source/Canvas replay → remove. 오래된 owner·graphic·legend가 부활하지 않는지 확인한다.
-5. **Integration**: 해당 feature의 required mark/guide/composition/renderer/package cell. 후속 R43 소유 cell이면 현재 STEP에 `pending(R43)`로 남기고 R43/Phase12에서 반드시 닫는다.
+5. **Integration**: 해당 feature의 required mark/guide/composition/renderer/package cell. 과거 `pending(R43)`로 남긴 cell은 R43 checkpoint `ebf3562a`와 TRACEABILITY의 runtime evidence로 닫혔다. Phase 12에서는 이를 누적 회귀로 다시 실행한다.
 
 수치 expected는 상수나 별도 oracle 함수로 작성하고 구현 mapper를 호출해 expected를 만들지 않는다. renderer 검증은 backend끼리 pixel exact를 요구하지 않지만, 한 backend 안에서 같은 실행의 primitive/public 의미와 decoded output을 비교한다. `assert.throws`만으로 원자성을 증명하지 말고 호출 전 program의 모든 canonical state branch를 `deepStrictEqual`로 확인한다.
 

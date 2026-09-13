@@ -367,22 +367,39 @@ root Canvas만 늘려 내부를 왼쪽/위쪽에 남기지 않고 intrinsic layo
 배치한다. 명시적 child dimension은 보존한다.
 Parent canvas 크기는 normalized child 크기, gap과 padding으로 결정되며 renderer는 이 완성된 parent
 `graphicSpec`만 읽는다. Nested composition도 동일한 snapshot protocol을 재귀적으로 사용한다.
-따라서 nested Cartesian and Polar compositions는 같은 retained-child와 concrete-snapshot 계약을 따른다.
+따라서 nested Cartesian, Polar, Parallel compositions는 같은 retained-child와 concrete-snapshot 계약을 따른다.
 
 Chainable `facet({ field })`은 complete unit program을 composition parent로 전환한다. 모든 visible layer의
 dataset ancestry에서 하나의 latest common row-preserving partition anchor를 먼저 확정하고, field value를 해당
 materialized ancestor의 first-appearance order로 해석한다. 각 cell은 anchor를 보존한 채 namespaced filtered
 dataset을 만들고, supported descendant transform을 topological order로 replay한 뒤 repeated layer를 wrapped
 `rebindLayerData`로 명시적으로 연결한 immutable child program이다. Raw facet value는 header text에만 사용하고
-generated dataset, child, graphic ID에는 포함하지 않는다.
+generated dataset, child, graphic ID에는 포함하지 않는다. Facet과 facetGrid는 complete Cartesian뿐 아니라
+Polar Point/Line/direct Arc/Pie/Rose/Radar와 Parallel unit source를 받는다. Repeat는 Cartesian x/y, raw role을
+직접 치환해도 facade 의미가 유지되는 Polar theta/r, 정확히 한 Parallel dimension을 치환한다. Pie/Radar의 raw
+role처럼 facade가 파생 의미를 소유하는 위치와 여러 Parallel dimension을 한 번에 치환하는 요청은 preflight에서
+거부한다. Target mark가 소유하는 statistical-reference dependent와 attached Text label은 target과 함께 반복하며,
+무관한 visible layer가 섞인 source는 부분 반복하지 않는다.
 
-Facet은 channel별 `shared | independent` scale policy를 저장한다. Shared automatic domain은 full-source order와
+Facet은 x/y/color/fill/stroke/size/opacity/theta/public `r`/`parallelDimensions`별
+`shared | independent` scale policy를 저장한다. Public `r`는 저장 전 semantic `radius` role로 정규화한다.
+Shared automatic domain은 full-source order와
 cell 결과의 deterministic union을 사용하고, independent automatic domain은 child별 결과를 보존하며 explicit
 semantic domain은 항상 우선한다. Shared histogram x는 template bin boundary를 공유하고 independent x는 cell별
-boundary를 다시 계산한다. Child scale을 먼저 해결한 다음 mark와 guide는 scale을 재추론하지 않는 하나의
-deduplicated plan으로 rematerialize하고, parent가 namespaced child Canvas snapshot을
-attach한다. Axes는 기본적으로 cell-owned이고 `guides.axes: "outer"`이면 column별 bottommost occupied cell과
-row별 leftmost occupied cell만 유지한다. Explicit `guides.legend: "shared"`는 compatible categorical, gradient,
+boundary를 다시 계산한다. Shared는 domain만 공유한다. Polar frame의 center/radius와 Parallel dimension position은
+각 child plot bounds에서 계산하므로 child-local range와 geometry를 parent 값으로 덮지 않는다.
+
+Facet materialization은 세 단계를 한 transaction으로 수행한다. 첫 단계는 partition, descendant transform replay,
+layer rebind, stored label/selection/placement/theme/style intent replay까지 마친 semantic child candidate를 만든다.
+둘째 단계는 모든 candidate를 본 뒤 shared 또는 independent effective domain을 결정한다. 셋째 단계는 확정된
+domain과 child-local range로 mark, guide, label, leader를 한 번 materialize하고 parent가 namespaced Canvas snapshot을
+attach한다. Transform 뒤 row가 없어도 child의 semantic layer와 coordinate는 유지하며 concrete mark collection은
+canonical empty `items: []`가 된다. Shared 또는 explicit-domain guide는 빈 child에도 유지할 수 있다. Independent
+automatic domain을 빈 child에서 추론해야 하는 요청은 결정론적 오류다.
+
+Axes는 기본적으로 cell-owned이다. Cartesian에서만 `guides.axes: "outer"`가 column별 bottommost occupied cell과
+row별 leftmost occupied cell을 유지하며 Polar/Parallel outer-axis 요청은 preflight에서 거부한다. Explicit
+`guides.legend: "shared"`는 compatible categorical, gradient,
 discretized-color, size 또는 opacity recipe를 parent-owned concrete graphic으로 승격한다. Guide preparation은
 source legend의 concrete bounds와 `left | right | top | bottom` edge, horizontal alignment를 함께 보존한다. Facet
 layout은 side edge면 width lane, top/bottom edge면 height lane을 child grid 전에 확정하고, placement는 그 lane과
@@ -395,6 +412,11 @@ materialize한다. `editFacetScales`와 `editFacetGuides`는 parent에 retained�
 state와 current field/data/value definition에서 stable child IDs를 다시 derive/replay한 뒤 complete children과 parent
 snapshot을 atomically 교체한다. Renderer는 concat과 마찬가지로 완성된 parent `graphicSpec`만 읽는다.
 각 repeated header의 horizontal anchor는 child Canvas center가 아니라 translated child plot center다.
+
+Composition parent는 ordinary unit Canvas editor의 target이 아니다. Facet source의 Canvas를 바꾸려면 retained
+source와 동등한 revised unit program에서 `editCanvas(...)`를 수행한 다음
+`facet.editFacetSource({ program: revisedUnit })`로 atomically 교체한다. 이 경로는 child-local Polar frame,
+Parallel positions, scale range, label/leader와 parent layout을 다시 계산한다.
 
 Facet replay의 pure dataset dependency planner는 visible layer에서 source 방향으로 ancestry를
 검증하고, 모든 branch가 공유하는 latest row-preserving partition anchor와 deterministic topological replay order를
@@ -455,15 +477,17 @@ requested provenance를 보존하고 complete consumer transition을 speculative
 replay에서는 `resolved`를 제거하고 child partition에서 다시 계산한다. Exact option과 owner inference는
 [`CORE.md`](contract/current/CORE.md#editbin2ddata)가 소유한다.
 
-Facet scale grammar는 channel별 shared/independent intent를 pure normalized plan으로 소유한다. Omitted
+Facet scale grammar는 Cartesian/appearance channel, Polar theta/radius와 Parallel dimension별
+shared/independent intent를 pure normalized plan으로 소유한다. Omitted
 channel은 shared이며, 같은 scale ID에 연결된 channel들이 서로 다른 policy를 요청하면 state 변경 전에 거부한다.
 Shared automatic continuous domain은 child domain의 min/max union, discrete domain은 child order의 stable union,
 quantile domain은 duplicate를 보존한 sample merge다. Independent automatic domain은 child별 결과를 보존하고,
 어느 policy에서도 explicit semantic domain이 우선한다. Public facet runtime은 이 결과를 각 child의 concrete
 resolved scale에 적용한 뒤 dependent mark와 guide를 다시 materialize한다.
 
-Advanced facet guide grammar도 pure ownership plan으로 분리된다. Outer axes는 각 column의 bottommost occupied
-cell과 각 row의 leftmost occupied cell을 선택하고, retained child guide bounds를 parent 좌표로 번역한다. Shared
+Advanced facet guide grammar도 pure ownership plan으로 분리된다. Cartesian outer axes는 각 column의 bottommost
+occupied cell과 각 row의 leftmost occupied cell을 선택하고, retained child guide bounds를 parent 좌표로 번역한다.
+Polar/Parallel outer axes는 지원하지 않는다. Shared
 legend는 child-specific target을 제외한 canonical config와 represented resolved scales가 concretely compatible할
 때만 categorical, gradient, discretized, size 또는 opacity recipe를 한 parent source에서 promote한다. 이 plan은
 child guide removal과 parent promotion의 입력이며 `composeFacetGuides` wrapped action이 parent snapshot에 적용한다.
@@ -2789,7 +2813,6 @@ encoding, guide, layout, materialization primitive가 여러 vertical slice에�
 
 - semanticSpec 전체를 입력받아 자동으로 graphicSpec을 compile하는 기능
 - animation과 transition
-- Polar source의 theta/radius scale과 guide를 반복하는 facet
 - 한 channel의 여러 독립 guide 자동 배치
 - 임의의 외부 chart specification ingestion
 - source dataset values의 in-place update
@@ -2847,9 +2870,13 @@ state, explicit materialization, action trace, package boundary와 충돌하지 
 - Statistical composite를 facet할 때 raw partition 뒤 registered transform을 cell-local ID로 replay하고,
   body/sibling layer뿐 아니라 owner의 private source/profile identity도 explicit wrapped transition으로 함께 rebind한다.
 
-Roadmap 3 이후에는 nested Cartesian/Polar composition, Cartesian facet, broad guide editing hierarchy와 generic
+Roadmap 3 이후에는 nested Cartesian/Polar composition, Cartesian facet foundation, broad guide editing hierarchy와 generic
 `editScale`도 현재 구현 계약이다. 반대로 animation과 transition 등 구현되지 않은 초기 아이디어는
 현재 API인 것처럼 public documentation이나 새 코드에서 가정하지 않는다.
+
+Roadmap 7에서는 facet/repeat가 complete Polar와 Parallel source까지 확장됐다. Candidate derivation, 모든 child의
+domain resolution, final materialization을 분리하며 theta/radius와 Parallel dimension domain, 빈 child semantics,
+shared legend, label/selection/theme/style replay를 같은 immutable composition transaction에서 처리한다.
 
 Roadmap 4에서는 Parallel coordinate가 세 번째 current coordinate family가 되었다. Public
 `createParallelCoordinates` facade는 coordinate, line mark, ordered dimension encoding, optional color와 applicable

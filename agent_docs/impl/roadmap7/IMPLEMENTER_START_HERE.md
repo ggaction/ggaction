@@ -1,6 +1,6 @@
 # 구현자 인계 — 여기부터 시작
 
-사용자는 감사 번호 25개와 Phase 0–12 Gate를 모두 승인했다. Phase 0–9는 완료됐고 Phase 10 R43은 foundation `89f1c54e`, runtime 후보 `4dbdaf85`까지 push됐다. **현재 첫 작업은 [무추론 구현 명세의 Phase 10 종료 감사](LOW_INFERENCE_IMPLEMENTATION_SPEC.md#phase-10에서-바로-닫을-여섯-가지-감사)를 수행해 R43의 lifecycle·Current/docs/package 증거를 닫는 것**이다. 그 다음은 Phase 11 R25, Phase 12 전체 통합과 main 반영이다. 승인된 공개 API·옵션·수식은 구현 계약이지만, 실제 source·tests·types·Current contract 증거가 없는 기능을 구현 완료로 간주하지 않는다.
+사용자는 감사 번호 25개와 Phase 0–12 Gate를 모두 승인했다. Phase 0–10은 완료됐고 Phase 10 R43은 foundation `89f1c54e`, runtime `4dbdaf85`, 종료 감사·Current·문서·설치 패키지 `ebf3562a`까지 push됐다. **현재 첫 작업은 [Phase 11 R25 안전한 named resource 삭제](LOW_INFERENCE_IMPLEMENTATION_SPEC.md#6-phase-11--r25-safe-named-resource-removal)**다. 그 다음은 Phase 12 전체 통합과 main 반영이다. 승인된 공개 API·옵션·수식은 구현 계약이지만, 실제 source·tests·types·Current contract 증거가 없는 기능을 구현 완료로 간주하지 않는다.
 
 ## 첫 작업
 
@@ -23,7 +23,7 @@
 
 위 순서를 기억에 의존해 축약하지 않는다. [상세 구현 작업 패킷의 공통 절차](DETAILED_IMPLEMENTATION_WORK_PACKAGES.md#2-모든-작업-패킷의-공통-절차)와 [무추론 실행 규약](DETAILED_IMPLEMENTATION_WORK_PACKAGES.md#저성능-구현-모델을-위한-무추론-실행-규약)에 있는 입력표, Core/Transaction/Consumers/Surface 네 구간, 다섯 테스트 묶음과 체크포인트 기록 순서를 그대로 사용한다. 기능 계약은 `features/*.md`, 작업 순서와 수정 위치는 상세 작업 패킷, literal 기대값은 `ACCEPTANCE_CASES.json`이 각각 소유한다. 같은 사실을 추측으로 합치지 않는다.
 
-현재 구현 준비 대상은 [Phase 10 R43 종료 감사](LOW_INFERENCE_IMPLEMENTATION_SPEC.md#phase-10에서-바로-닫을-여섯-가지-감사)다. Phase 9 이전 제품과 R43의 이미 push된 foundation/runtime checkpoint를 다른 helper나 API로 다시 만들지 않는다. R43은 3-pass atomicity → transform-empty → source-owned Text → Canvas → full-grid empty → public/package 순서로 누락을 닫는다. 이후 R25는 typed reference registry → reject-only removal → 기존 owner lifecycle 연결 순서로 진행하고, Phase 12에서 25개 전체를 대조한다.
+현재 구현 준비 대상은 [Phase 11 R25](LOW_INFERENCE_IMPLEMENTATION_SPEC.md#6-phase-11--r25-safe-named-resource-removal)다. Phase 10 이전 제품과 R43의 완료 checkpoint를 다른 helper나 API로 다시 만들지 않는다. R25는 typed reference registry → 전체 read-only reference plan → reject-only removal → 기존 owner lifecycle 연결 순서로 진행하고, Phase 12에서 25개 전체를 대조한다.
 
 각 작업을 마칠 때 다음 질문에 모두 `예`라고 답할 수 있어야 한다.
 

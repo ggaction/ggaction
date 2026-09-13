@@ -582,5 +582,5 @@ large-font visual test는 텍스트가 바뀌었다는 assertion만으로 끝내
 - [x] explicit color/font, data palette, R38/R39/R49 consumer를 보존했다.
 - [x] Full registry/types/current contract/catalog/cards/MCP/docs/package consumer를 갱신했다.
 - [x] Canvas/SVG/PDF와 installed Node/TypeScript/browser/MCP 검증을 기록했다.
-- [x] 실행하지 않은 후속 R43 cell은 owner와 pending 이유를 기록했다.
+- [x] R43 Polar/Parallel child-local theme replay와 parent-owned header/shared guide 소비를 `ebf3562a`에서 검증했다.
 - [x] Phase 9 STEP 원장에 commit, 명령, pass/fail/skip, artifact를 기록했다.

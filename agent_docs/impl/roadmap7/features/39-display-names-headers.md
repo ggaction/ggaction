@@ -1,8 +1,9 @@
 # R39 — 범주 표시명과 facet header 배치
 
 원래 감사 번호: **39**. Primary owner: **Phase 8**. 상태: **Implemented-primary (`20a25911`)**.
-아래 API, typed identity, reset, facet migration, layout 수치 정책의 Gate는 승인됐다. 상태의
-`Proposed`는 제품 코드, current contract, generated artifact와 검증이 아직 완료되지 않았다는 뜻이다.
+아래 API, typed identity, reset, facet migration, layout 수치 정책은 제품 코드, Current 계약, generated artifact와
+회귀 검증까지 완료됐다. Polar/Parallel facet·repeat에서 raw identity와 label/header recipe를 소비하는 통합은
+R43 checkpoint `ebf3562a`에서 추가로 검증됐다.
 
 ## 1. 목적
 
@@ -561,9 +562,9 @@ title과 겹치면 안 된다. lane 계산 뒤 전체 parent layout과 shared le
 
 현재 facet parent Canvas는 canonical auto size이므로 role lanes만큼 parent size가 결정론적으로
 늘어난다. child Canvas와 plot size는 바꾸지 않는다. 앞으로 explicit parent Canvas mode가 생기면
-그 bounds 안에 lanes가 맞지 않을 때 기존 layout error를 내고 자동 확장하지 않는다. R43에서 child
-panel size를 재분배하게 되면 `reservation → panel allocation → R27 aspect → R29 polar frame → guide
-placement` 순서로 연결한다.
+그 bounds 안에 lanes가 맞지 않을 때 기존 layout error를 내고 자동 확장하지 않는다. R43의 Polar/Parallel
+child materialization은 `reservation → panel allocation → R27 aspect → R29 polar frame → guide placement`
+순서를 사용하며, raw partition identity와 header display label을 분리한 상태로 보존한다.
 
 ## 12. action transaction과 lifecycle
 

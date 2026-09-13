@@ -2,7 +2,7 @@
 
 문서 상태 — 현재 실행 계획.
 
-사용자가 감사 50개 항목 중 선택한 **25개**를 구현하는 현재 로드맵이다. **Phase 0–9 primary를 완료했고 Phase 10의 R43 Polar·Parallel facet/repeat를 구현한다**. 2026-09-13 사용자가 모든 Gate를 명시적으로 승인했으며, 각 Phase의 구현·검증 증거는 STEP 결과 원장에 누적한다. 아직 구현되지 않은 API를 Current로 표시하지 않는다. 탐색 상태는 [ROADMAP_INDEX.json](../ROADMAP_INDEX.json)이 관리한다.
+사용자가 감사 50개 항목 중 선택한 **25개**를 구현하는 현재 로드맵이다. **Phase 0–10 primary를 완료했고 Phase 11의 R25 안전한 named resource 삭제를 구현한다**. R43 Polar·Parallel facet/repeat는 `ebf3562a`에서 Current·문서·설치 패키지까지 닫혔다. 2026-09-13 사용자가 모든 Gate를 명시적으로 승인했으며, 각 Phase의 구현·검증 증거는 STEP 결과 원장에 누적한다. 아직 구현되지 않은 API를 Current로 표시하지 않는다. 탐색 상태는 [ROADMAP_INDEX.json](../ROADMAP_INDEX.json)이 관리한다.
 
 ## 의도와 성공 기준
 
@@ -79,8 +79,8 @@ Phase 번호는 권장 구현 순서다. 같은 Phase 안에서도 feature의 de
 | 7 | completed-primary | 라벨 lifecycle와 통계 주석 | 31, 32, 33, 36 | 4, 5, 6 |
 | 8 | completed-primary | 범례 content와 표시명 | 37, 38, 39 | 5, 7 |
 | 9 | completed-primary | 사용자 theme와 형상 스타일 | 47, 49 | 7, 8 |
-| 10 | active | Polar·Parallel facet와 repeat | 43 | 4, 5, 6, 7, 8, 9 |
-| 11 | planned | 미사용 자원 삭제 | 25 | 10 |
+| 10 | completed-primary | Polar·Parallel facet와 repeat | 43 | 4, 5, 6, 7, 8, 9 |
+| 11 | active | 미사용 자원 삭제 | 25 | 10 |
 | 12 | planned | 25개 항목 통합·계약·패키지 마감 | 전체 통합 | 11 |
 
 큰 위험은 앞에서 수치와 계약으로 정리하고, 다른 기능을 소비하는 작업은 뒤에 둔다. 데이터 편집은 새 transforms 이후, atomic encoding은 focused scales·stroke·size 이후, Polar/Parallel facets는 좌표·guide·labels·theme 이후, 자원 삭제는 모든 새 참조 schema 이후에 구현한다.
@@ -191,6 +191,9 @@ Primary 구현은 `da0ca4e2`, density scaling 보강은 `276c8318`, histogram co
 - W4: one-dimensional theta/r/parallelDimension repeat field substitution.
 - W5: local guides/shared compatible legends/header/labels/theme/styles의namespace/replay.
 - W6: 모든 matrix와Cartesian facet/repeat 기존 지원 회귀.
+
+제품과 종료 감사는 `89f1c54e`, `4dbdaf85`, `ebf3562a`에서 완료됐다. 상세 수치와
+설치 패키지 identity는 [Phase 10 결과 원장](phase10/STEP1.md)이 소유한다.
 
 ## Phase 11 — 미사용 자원 삭제
 
