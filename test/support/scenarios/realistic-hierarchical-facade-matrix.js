@@ -775,6 +775,20 @@ function numericLegendValues(program, data, field) {
   return [low, low + (high - low) / 2, high];
 }
 
+function everyGroupVaries(program, data, groupField, valueField) {
+  const rows = program.semanticSpec.datasets.find(dataset => dataset.id === data)?.values ?? [];
+  const groups = new Map();
+  for (const row of rows) {
+    if (!Number.isFinite(row[valueField])) continue;
+    const values = groups.get(row[groupField]) ?? [];
+    values.push(row[valueField]);
+    groups.set(row[groupField], values);
+  }
+  return groups.size > 0 && [...groups.values()].every(values =>
+    values.length > 1 && new Set(values).size > 1
+  );
+}
+
 function fieldValue(program, data, field) {
   const rows = program.semanticSpec.datasets.find(dataset => dataset.id === data)?.values ?? [];
   return rows.find(row => row[field] !== undefined)?.[field];
@@ -1272,6 +1286,13 @@ function appendRaincloud(program, index) {
   const valueScaleId = `${suffix}-value`;
   const hasColor = ![1, 2, 3].includes(index);
   const valueExtent = numericFieldExtent(program, "analysisRows", "positiveY");
+  const groupedValuesVary = everyGroupVaries(
+    program,
+    "analysisRows",
+    "group",
+    "positiveY"
+  );
+  const automaticBandwidth = index % 5 === 0 && groupedValuesVary;
   const intervalExtent = ["stderr", "stdev", "ci", "iqr"][Math.floor(index / 2) % 4];
   const valueScale = numericScale(valueScaleId, index);
   if (index % 2 === 1 && valueScale.type === "log") {
@@ -1281,7 +1302,7 @@ function appendRaincloud(program, index) {
   const density = index === 0
     ? false
     : {
-        bandwidth: index % 5 === 0
+        bandwidth: automaticBandwidth
           ? "auto"
           : Math.max((valueExtent[1] - valueExtent[0]) / 10, Number.EPSILON),
         extent: index % 4 === 0
@@ -1292,7 +1313,9 @@ function appendRaincloud(program, index) {
         normalization: index % 2 === 0 ? "unit" : "count",
         width: {
           band: 0.55 + (index % 3) * 0.1,
-          resolve: index % 2 === 0 ? "shared" : "independent"
+          resolve: index % 2 === 0 || index % 5 === 0 || !groupedValuesVary
+            ? "shared"
+            : "independent"
         },
         area: {
           ...strokeDetails(index),
@@ -1380,7 +1403,7 @@ function appendRaincloud(program, index) {
                   : index % 4 === 0 ? { pixels: 6 } : { band: 0.1 },
                 padding: index % 3,
                 key: "id",
-                overflow: index === 0 ? "error" : "overlap"
+                overflow: "overlap"
               },
           ...(index === 0 ? {} : { size: sizeChannel(`${suffix}-size`, index) }),
           shape: shapeChannel(`${suffix}-shape`, index),
@@ -1446,7 +1469,18 @@ function appendRaincloud(program, index) {
     if (index === 3) options.guides.grid.vertical = true;
     if (index === 4) options.guides.grid.horizontal = true;
   }
-  const created = program.createRaincloudPlot(options);
+  const bestEffort = program.createRaincloudPlot(options);
+  const unresolved = bestEffort.materializationConfigs.pointPacking?.[guideTarget]
+    ?.resolved?.unresolvedItemCount;
+  const created = index === 0 && unresolved === 0
+    ? program.createRaincloudPlot({
+        ...options,
+        points: {
+          ...options.points,
+          packing: { ...options.points.packing, overflow: "error" }
+        }
+      })
+    : bestEffort;
   const owner = Object.keys(created.markConfigs).find(id =>
     created.markConfigs[id].raincloudPlot?.id === suffix);
   return removeWitness(created, owner);
