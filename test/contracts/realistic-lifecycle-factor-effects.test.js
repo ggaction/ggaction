@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import test from "node:test";
 
+import { assertAnalyticLayerIntegrity } from "../oracles/analytic-layer-integrity.js";
 import { assertGraphicIntegrity } from "../oracles/graphic-integrity.js";
 import { releaseTidyTuesdaySourceCache } from "../support/datasets/tidytuesday.js";
 import { REALISTIC_LIFECYCLE_SCENARIO_RECIPES } from
@@ -122,5 +123,35 @@ test("every realistic lifecycle factor has a final or explicit transient effect"
         releaseTidyTuesdaySourceCache(dataset);
       }
     }
+  }
+});
+
+test("scales explicit intervals to the authentic New Zealand name time span", () => {
+  const dataset = "tt-new-zealand-names";
+  const recipe = REALISTIC_LIFECYCLE_SCENARIO_RECIPES.find(candidate =>
+    candidate.id === "realistic-action-direct-data-resources"
+  );
+  try {
+    const factors = Object.freeze({
+      dataset,
+      width: 1_040,
+      background: "#f8fafc",
+      bandwidth: 0.7,
+      steps: 48,
+      bins: 5,
+      includeEmpty: true
+    });
+    const program = recipe.build(factors);
+    assertGraphicIntegrity(program, `${dataset} direct data resources`);
+    assertAnalyticLayerIntegrity(program, `${dataset} direct data resources`);
+    const intervals = program.graphicSpec.objects.directIntervalPlotInterval.items;
+    assert.ok(intervals.length > 0);
+    assert.ok(intervals.every(item =>
+      Number.isFinite(item.properties.y1) &&
+      Number.isFinite(item.properties.y2) &&
+      Math.abs(item.properties.y2 - item.properties.y1) > 0
+    ));
+  } finally {
+    releaseTidyTuesdaySourceCache(dataset);
   }
 });

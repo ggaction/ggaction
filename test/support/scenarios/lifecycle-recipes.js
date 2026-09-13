@@ -1150,14 +1150,26 @@ function addDirectDerivedDataEdits(program) {
 }
 
 function buildDirectDataResources(factors) {
-  const rows = styleRows(factors.dataset).map(row => ({
+  const sourceRows = styleRows(factors.dataset);
+  const xValues = sourceRows.map(row => row.x);
+  const xMinimum = Math.min(...xValues);
+  const xMaximum = Math.max(...xValues);
+  const ordinarySpan = xMaximum - xMinimum;
+  const magnitude = Math.max(1, Math.abs(xMinimum), Math.abs(xMaximum));
+  const stableSpan = Number.isFinite(ordinarySpan) && ordinarySpan > 0
+    ? ordinarySpan
+    : magnitude;
+  const intervalHalfSpan = Math.max(
+    stableSpan / 100,
+    Number.EPSILON * magnitude
+  );
+  const rows = sourceRows.map(row => ({
     ...row,
     endpointStart: row.positive - 1,
-    intervalLower: row.x - 1,
+    intervalLower: row.x - intervalHalfSpan,
     intervalCenter: row.x,
-    intervalUpper: row.x + 1
+    intervalUpper: row.x + intervalHalfSpan
   }));
-  const xValues = rows.map(row => row.x);
   const width = factors.dataset.startsWith("tt-") ? factors.width * 2 : factors.width;
   const ordered = [...xValues].sort((left, right) => left - right);
   const spread = ordered[Math.floor((ordered.length - 1) * 0.75)] -
