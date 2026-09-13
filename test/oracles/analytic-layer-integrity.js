@@ -168,6 +168,7 @@ export function inspectAnalyticLayerIntegrity(program) {
       const items = materializedItems(owner);
       metrics.itemCount += items.length;
       if (items.length === 0) {
+        if (declaredEmpty) continue;
         issues.push(`${layerPath} graphic owner "${layer.id}" has no materialized items.`);
         continue;
       }

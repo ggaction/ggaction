@@ -138,15 +138,21 @@ test("accepts a facet-grid cell explicitly declared empty", () => {
     children: {
       populated: pointProgram("points"),
       "missing-pair": {
-        semanticSpec: { layers: [] },
-        graphicSpec: { objects: {} }
+        semanticSpec: {
+          layers: [{ id: "points", mark: { type: "point" } }]
+        },
+        graphicSpec: {
+          objects: {
+            points: { type: "circle", items: [] }
+          }
+        }
       }
     }
   };
 
   assert.deepEqual(assertAnalyticLayerIntegrity(composition), {
     leafProgramCount: 2,
-    layerCount: 1,
+    layerCount: 2,
     itemCount: 1,
     nonDegenerateItemCount: 1
   });
