@@ -34,14 +34,20 @@ import {
 } from "./materialize.js";
 import { resolveLineBins } from "../../../grammar/lineSeries.js";
 import { requireSemanticScale } from "../../../selectors/scales.js";
+import {
+  requestedStrokeDetails,
+  STROKE_STYLE_PROPERTIES
+} from "../../../grammar/strokeStyle.js";
 
 const DEFAULT_LINE_STROKE = DEFAULT_COLORS.mark;
 const DEFAULT_LINE_WIDTH = 2;
 const CREATE_OPTIONS = Object.freeze([
-  "id", "data", "stroke", "strokeWidth", "opacity", "curve", "closed"
+  "id", "data", "stroke", "strokeWidth", "opacity", "curve", "closed",
+  ...STROKE_STYLE_PROPERTIES
 ]);
 const EDIT_OPTIONS = Object.freeze([
-  "target", "stroke", "strokeWidth", "opacity", "curve", "closed"
+  "target", "stroke", "strokeWidth", "opacity", "curve", "closed",
+  ...STROKE_STYLE_PROPERTIES
 ]);
 const REMATERIALIZE_OPTIONS = Object.freeze(["id", "scales"]);
 
@@ -74,14 +80,15 @@ function validatePolarLineConfig(layer, config) {
   }
 }
 
-function applyLineMaterialization(program, id, materialization) {
+function applyLineMaterialization(program, id, materialization, config) {
   return editMarkGraphic(program, id, {
     length: materialization.commands.length,
     commands: materialization.commands,
     stroke: materialization.strokes,
     strokeWidth: materialization.strokeWidths,
     strokeDash: materialization.strokeDashes,
-    ...(materialization.opacities === undefined ? {} : { opacity: materialization.opacities })
+    ...(materialization.opacities === undefined ? {} : { opacity: materialization.opacities }),
+    ...requestedStrokeDetails(config, "Line mark")
   });
 }
 
@@ -92,6 +99,7 @@ const createLineMark = action(
   },
   function (args = {}) {
     validateMarkOptions(args, CREATE_OPTIONS, "createLineMark");
+    const strokeDetails = requestedStrokeDetails(args, "createLineMark");
     const id = resolveMarkId(this, args.id, {
       defaultId: "line",
       label: "Line mark id",
@@ -142,7 +150,8 @@ const createLineMark = action(
         {
           ...(Object.hasOwn(args, "strokeWidth") ? { strokeWidth } : {}),
           ...(Object.hasOwn(args, "curve") ? { curve } : {}),
-          ...(Object.hasOwn(args, "closed") ? { closed } : {})
+          ...(Object.hasOwn(args, "closed") ? { closed } : {}),
+          ...strokeDetails
         }
       );
     created = materializeInheritedMark(created, id);
@@ -231,7 +240,7 @@ const rematerializeLineMark = action(
     };
     if (parallel !== undefined) {
       return applyLineMaterialization(resolved, id,
-        resolveParallelLineMaterialization({ ...shared, parallel }));
+        resolveParallelLineMaterialization({ ...shared, parallel }), config);
     }
 
     const materialization = resolvePositionedLineMaterialization({
@@ -252,7 +261,8 @@ const rematerializeLineMark = action(
     return applyLineMaterialization(
       resolved,
       id,
-      materialization
+      materialization,
+      config
     );
   }
 );
@@ -264,6 +274,7 @@ const editLineMark = action(
   },
   function (args = {}) {
     validateMarkOptions(args, EDIT_OPTIONS, "editLineMark");
+    const strokeDetails = requestedStrokeDetails(args, "editLineMark");
     if (!EDIT_OPTIONS.slice(1).some(key => Object.hasOwn(args, key))) {
       throw new Error("editLineMark requires stroke, strokeWidth, opacity, curve, or closed.");
     }
@@ -293,6 +304,7 @@ const editLineMark = action(
       throw new Error("Line closed requires theta/radius Polar position encodings.");
     }
     const config = { ...this.markConfigs[layer.id] };
+    Object.assign(config, strokeDetails);
     for (const [key, validate] of Object.entries({
       stroke: validateNonEmptyString,
       strokeWidth: validateNonNegativeFinite,

@@ -9,9 +9,14 @@ import { canMaterializeBar } from "../../../materialization/marks/index.js";
 import { DEFAULT_BAR_STROKE_WIDTH } from "../../../materialization/bars/resolve.js";
 import { resolveEligibleLayer } from "../../../selectors/layers.js";
 import { validateMarkOptions } from "../shared.js";
+import { requestedRectStyleDetails } from
+  "../../../grammar/roundedRect.js";
+import { STROKE_STYLE_PROPERTIES } from
+  "../../../grammar/strokeStyle.js";
 
 const EDIT_OPTIONS = Object.freeze([
-  "target", "fill", "opacity", "stroke", "strokeWidth"
+  "target", "fill", "opacity", "stroke", "strokeWidth", "cornerRadius",
+  ...STROKE_STYLE_PROPERTIES
 ]);
 
 export const editBarMark = action(
@@ -21,7 +26,11 @@ export const editBarMark = action(
   },
   function (args = {}) {
     validateMarkOptions(args, EDIT_OPTIONS, "editBarMark");
-    const changes = ["fill", "opacity", "stroke", "strokeWidth"];
+    const styleDetails = requestedRectStyleDetails(args, "editBarMark");
+    const changes = [
+      "fill", "opacity", "stroke", "strokeWidth", "cornerRadius",
+      ...STROKE_STYLE_PROPERTIES
+    ];
     if (!changes.some(key => Object.hasOwn(args, key))) {
       throw new Error(
         "editBarMark requires fill, opacity, stroke, or strokeWidth."
@@ -53,6 +62,7 @@ export const editBarMark = action(
 
     const config = { ...this.markConfigs[layer.id] };
     const appearance = { ...config.barAppearance };
+    Object.assign(appearance, styleDetails);
     if (Object.hasOwn(args, "fill")) {
       appearance.fill = validateNonEmptyString(args.fill, "Bar fill");
     }

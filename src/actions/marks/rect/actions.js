@@ -14,6 +14,7 @@ import {
   assertMarkAvailable,
   applyLayeredMarkInheritance,
   materializeInheritedMark,
+  replaceMarkGraphicItems,
   resolveLayeredMarkInheritance,
   resolveMarkData,
   resolveMarkId,
@@ -22,9 +23,15 @@ import {
 import { resolveMarkGraphicPlacement } from
   "../../../materialization/graphicHierarchy.js";
 import { rematerializeHighlightBaseline } from "../lifecycle.js";
+import {
+  requestedRectStyleDetails
+} from "../../../grammar/roundedRect.js";
+import { STROKE_STYLE_PROPERTIES } from
+  "../../../grammar/strokeStyle.js";
 
 const STYLE_OPTIONS = Object.freeze([
-  "fill", "opacity", "stroke", "strokeWidth"
+  "fill", "opacity", "stroke", "strokeWidth", "cornerRadius",
+  ...STROKE_STYLE_PROPERTIES
 ]);
 const CREATE_OPTIONS = Object.freeze(["id", "data", ...STYLE_OPTIONS]);
 const EDIT_OPTIONS = Object.freeze(["target", ...STYLE_OPTIONS]);
@@ -45,6 +52,7 @@ const createRectMark = action(
   { op: "createRectMark", description: "Create a semantic rectangular cell layer." },
   function (args = {}) {
     validateMarkOptions(args, CREATE_OPTIONS, "createRectMark");
+    requestedRectStyleDetails(args, "createRectMark");
     const id = resolveMarkId(this, args.id, {
       defaultId: "rect",
       label: "Rect mark id",
@@ -99,7 +107,13 @@ const rematerializeRectMark = action(
     const layer = findLayer(this, id);
     const graphic = this.graphicSpec.objects[id];
     if (layer?.mark?.type !== "rect") throw new Error(`Unknown rect mark "${id}".`);
-    if (graphic?.type !== "rect" || !Array.isArray(graphic.items)) {
+    const roundedCollection = graphic?.type === "collection" &&
+      Object.hasOwn(this.markConfigs[id] ?? {}, "cornerRadius") &&
+      graphic.items?.every(item => ["rect", "path"].includes(item.type));
+    if (
+      (graphic?.type !== "rect" && !roundedCollection) ||
+      !Array.isArray(graphic.items)
+    ) {
       throw new Error(`Rect mark "${id}" requires rect collection graphics.`);
     }
     if (this.markConfigs[id]?.gradientPlot?.materialized === true) {
@@ -110,9 +124,7 @@ const rematerializeRectMark = action(
       throw new Error(`Rect mark "${id}" requires an existing dataset.`);
     }
     if (!canMaterializeRect(this, layer)) {
-      return graphic.items.length === 0
-        ? this
-        : this.editGraphics({ target: id, property: "items", value: [] });
+      return replaceMarkGraphicItems(this, id, "rect", []);
     }
     let next = this;
     if (args.scales !== false) {
@@ -124,11 +136,12 @@ const rematerializeRectMark = action(
         next = next.rematerializeScale({ id: scale, marks: false });
       }
     }
-    return next.editGraphics({
-      target: id,
-      property: "items",
-      value: resolveRectGraphicItems(next, layer, dataset)
-    });
+    return replaceMarkGraphicItems(
+      next,
+      id,
+      "rect",
+      resolveRectGraphicItems(next, layer, dataset)
+    );
   }
 );
 
@@ -136,6 +149,7 @@ const editRectMark = action(
   { op: "editRectMark", description: "Edit rectangular cell appearance." },
   function (args = {}) {
     validateMarkOptions(args, EDIT_OPTIONS, "editRectMark");
+    requestedRectStyleDetails(args, "editRectMark");
     if (!STYLE_OPTIONS.some(option => Object.hasOwn(args, option))) {
       throw new Error("editRectMark requires at least one editable property.");
     }

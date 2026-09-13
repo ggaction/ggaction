@@ -7,6 +7,8 @@ import { resolveCoordinateBounds } from "./coordinateBounds.js";
 import { RECT_MODES, resolveRectMode, rectUsesFields } from "../grammar/rects.js";
 import { DEFAULT_RECT_MARK } from "./rectConfig.js";
 import { mapScaleConsumerValues } from "./scales/map.js";
+import { materializeRectItem } from "../grammar/roundedRect.js";
+import { requestedStrokeDetails } from "../grammar/strokeStyle.js";
 
 function optionalValues(rows, encoding, length, channel) {
   if (Object.hasOwn(encoding, "datum")) {
@@ -75,7 +77,8 @@ function appearance(config, fill, stroke) {
     stroke: stroke ?? (config.stroke === false ? "transparent" : config.stroke),
     strokeWidth: stroke === undefined && config.stroke === false
       ? 0
-      : config.strokeWidth ?? 1
+      : config.strokeWidth ?? 1,
+    ...requestedStrokeDetails(config, "Rect mark")
   };
 }
 
@@ -141,8 +144,8 @@ export function resolveRectRows(program, layer, dataset) {
 }
 
 export function resolveRectGraphicItems(program, layer, dataset) {
-  return resolveRectRows(program, layer, dataset).map(item => ({
-    type: "rect",
-    properties: item.properties
-  }));
+  const radius = program.markConfigs[layer.id]?.cornerRadius ?? 0;
+  return resolveRectRows(program, layer, dataset).map(item =>
+    materializeRectItem(item.properties, radius)
+  );
 }

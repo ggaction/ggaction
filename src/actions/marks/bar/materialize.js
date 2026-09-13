@@ -12,10 +12,26 @@ import {
 import { rematerializeHighlightBaseline } from "../lifecycle.js";
 import { offsetCategoryRectangles } from
   "../../../materialization/categorySlotOffset.js";
+import { materializeRectItem } from "../../../grammar/roundedRect.js";
+import { STROKE_STYLE_PROPERTIES } from
+  "../../../grammar/strokeStyle.js";
+import { replaceMarkGraphicItems } from "../shared.js";
 
 const REMATERIALIZE_OPTIONS = Object.freeze(["id", "scales"]);
 
 function editRectangles(program, id, rectangles) {
+  const appearance = program.markConfigs[id]?.barAppearance ?? {};
+  const hasShapeStyle = ["cornerRadius", ...STROKE_STYLE_PROPERTIES]
+    .some(property => Object.hasOwn(appearance, property));
+  if (hasShapeStyle) {
+    const radius = appearance.cornerRadius ?? 0;
+    return replaceMarkGraphicItems(
+      program,
+      id,
+      "rect",
+      rectangles.map(rectangle => materializeRectItem(rectangle, radius))
+    );
+  }
   let next = program
     .editGraphics({ target: id, property: "length", value: rectangles.length })
     .editGraphics({

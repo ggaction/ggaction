@@ -1,5 +1,6 @@
 import { cloneAndFreeze } from "../core/immutable.js";
 import { buildLinearPathCommands } from "./pathCommands.js";
+import { requestedStrokeDetails } from "./strokeStyle.js";
 
 export const POINT_SHAPES = cloneAndFreeze([
   "circle",
@@ -109,12 +110,13 @@ function normalizePolygon(points, x, y, area) {
   }));
 }
 
-function appearance(fill, stroke, strokeWidth, opacity) {
+function appearance(fill, stroke, strokeWidth, opacity, strokeDetails) {
   return {
     fill,
     ...(stroke === undefined ? {} : { stroke }),
     ...(strokeWidth === undefined ? {} : { strokeWidth }),
-    ...(opacity === undefined ? {} : { opacity })
+    ...(opacity === undefined ? {} : { opacity }),
+    ...requestedStrokeDetails(strokeDetails, "Point shape")
   };
 }
 
@@ -127,7 +129,10 @@ export function createPointShapeGraphic({
   stroke,
   strokeWidth,
   opacity,
-  angle
+  angle,
+  lineCap,
+  lineJoin,
+  miterLimit
 }) {
   const validated = validatePointShape(shape);
   if (![x, y, area].every(Number.isFinite) || area < 0) {
@@ -136,7 +141,11 @@ export function createPointShapeGraphic({
   if (typeof fill !== "string" || fill.length === 0) {
     throw new TypeError("Point shape fill must be a non-empty string.");
   }
-  const shared = appearance(fill, stroke, strokeWidth, opacity);
+  const shared = appearance(fill, stroke, strokeWidth, opacity, {
+    ...(lineCap === undefined ? {} : { lineCap }),
+    ...(lineJoin === undefined ? {} : { lineJoin }),
+    ...(miterLimit === undefined ? {} : { miterLimit })
+  });
   if (angle !== undefined && !Number.isFinite(angle)) {
     throw new TypeError("Point shape angle must be finite degrees.");
   }

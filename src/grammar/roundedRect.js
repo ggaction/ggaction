@@ -1,4 +1,5 @@
 import { freezeOwned, isPlainObject } from "../core/immutable.js";
+import { requestedStrokeDetails } from "./strokeStyle.js";
 
 export const ROUNDED_RECT_K = 4 * (Math.sqrt(2) - 1) / 3;
 
@@ -17,6 +18,18 @@ export function validateCornerRadius(value, label = "Rect style") {
     throw new RangeError(`${label} cornerRadius must not be negative.`);
   }
   return value;
+}
+
+export function requestedRectStyleDetails(request = {}, label = "Rect style") {
+  if (!isPlainObject(request)) {
+    throw new TypeError(`${label} details must be a plain object.`);
+  }
+  return freezeOwned({
+    ...requestedStrokeDetails(request, label),
+    ...(Object.hasOwn(request, "cornerRadius")
+      ? { cornerRadius: validateCornerRadius(request.cornerRadius, label) }
+      : {})
+  });
 }
 
 export function normalizeRectGeometry({ x, y, width, height }) {

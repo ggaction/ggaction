@@ -4,6 +4,7 @@ import {
   validateUnitInterval
 } from "../core/validation.js";
 import { DEFAULT_COLORS } from "../theme/defaults.js";
+import { requestedRectStyleDetails } from "../grammar/roundedRect.js";
 
 export const DEFAULT_RECT_MARK = Object.freeze({
   fill: DEFAULT_COLORS.mark,
@@ -13,7 +14,10 @@ export const DEFAULT_RECT_MARK = Object.freeze({
 });
 
 export function normalizeRectMarkConfig(patch, previous = DEFAULT_RECT_MARK) {
-  const result = { ...previous };
+  const result = {
+    ...previous,
+    ...requestedRectStyleDetails(patch, "Rect")
+  };
   if (Object.hasOwn(patch, "fill")) {
     result.fill = validateNonEmptyString(patch.fill, "Rect fill");
   }

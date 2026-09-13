@@ -1,6 +1,10 @@
 import { action } from "../../../core/action.js";
 import { validatePointShape } from "../../../grammar/pointShapes.js";
 import { getPointGraphicType } from "../../../grammar/schemas/mark.js";
+import {
+  requestedStrokeDetails,
+  STROKE_STYLE_PROPERTIES
+} from "../../../grammar/strokeStyle.js";
 import { resolveMarkGraphicPlacement } from
   "../../../materialization/graphicHierarchy.js";
 import {
@@ -14,7 +18,8 @@ import {
 } from "../shared.js";
 
 const OPTIONS = Object.freeze([
-  "id", "data", "shape", "fill", "opacity", "stroke", "strokeWidth"
+  "id", "data", "shape", "fill", "opacity", "stroke", "strokeWidth",
+  ...STROKE_STYLE_PROPERTIES
 ]);
 
 export const createPointMark = action(
@@ -24,6 +29,7 @@ export const createPointMark = action(
   },
   function (args = {}) {
     validateMarkOptions(args, OPTIONS, "createPointMark");
+    requestedStrokeDetails(args, "createPointMark");
     const id = resolveMarkId(this, args.id, {
       defaultId: "point",
       label: "Point mark id",
@@ -65,7 +71,7 @@ export const createPointMark = action(
       ._withMarkConfig(id, { shape });
     const created = materializeInheritedMark(next, id);
     const appearance = Object.fromEntries(
-      ["fill", "opacity", "stroke", "strokeWidth"]
+      ["fill", "opacity", "stroke", "strokeWidth", ...STROKE_STYLE_PROPERTIES]
         .filter(property => Object.hasOwn(args, property))
         .map(property => [property, args[property]])
     );

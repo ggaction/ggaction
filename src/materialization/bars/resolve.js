@@ -3,6 +3,7 @@ import { findDataset } from "../../selectors/datasets.js";
 import { findLayer } from "../../selectors/layers.js";
 import { findSemanticScale } from "../../selectors/scales.js";
 import { BAR_GRAINS, resolveBarGrain } from "../../grammar/bars/policy.js";
+import { requestedStrokeDetails } from "../../grammar/strokeStyle.js";
 
 export const DEFAULT_BAR_FILL = DEFAULT_COLORS.mark;
 export const DEFAULT_BAR_STROKE = "white";
@@ -25,7 +26,8 @@ export function resolveBarAppearance(
       ? 0
       : appearance.strokeWidth ?? config.strokeWidth ??
         existing?.strokeWidth ?? DEFAULT_BAR_STROKE_WIDTH,
-    ...(opacity === undefined ? {} : { opacity })
+    ...(opacity === undefined ? {} : { opacity }),
+    ...requestedStrokeDetails(appearance, "Bar mark")
   };
 }
 
@@ -40,9 +42,10 @@ export function requireCompleteBar(program, id) {
     throw new Error(`Bar mark "${id}" requires an existing dataset.`);
   }
   const graphic = program.graphicSpec.objects[id];
-  const rectCollection = graphic?.type === "collection" &&
-    graphic.items?.every(child => child.type === "rect");
-  if (graphic?.type !== "rect" && !rectCollection) {
+  const roundedCollection = graphic?.type === "collection" &&
+    Object.hasOwn(program.markConfigs[id]?.barAppearance ?? {}, "cornerRadius") &&
+    graphic.items?.every(child => ["rect", "path"].includes(child.type));
+  if (graphic?.type !== "rect" && !roundedCollection) {
     throw new Error(`Bar mark "${id}" requires rect graphics.`);
   }
 

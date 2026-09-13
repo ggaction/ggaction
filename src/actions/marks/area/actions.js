@@ -27,9 +27,14 @@ import { resolveMarkGraphicPlacement } from
   "../../../materialization/graphicHierarchy.js";
 import { rematerializeHighlightBaseline } from "../lifecycle.js";
 import { resolveAreaMaterialization } from "./materialize.js";
+import {
+  requestedStrokeDetails,
+  STROKE_STYLE_PROPERTIES
+} from "../../../grammar/strokeStyle.js";
 
 const AREA_OPTIONS = Object.freeze([
-  "fill", "opacity", "stroke", "strokeWidth", "curve"
+  "fill", "opacity", "stroke", "strokeWidth", "curve",
+  ...STROKE_STYLE_PROPERTIES
 ]);
 const CREATE_OPTIONS = Object.freeze(["id", "data", "missing", ...AREA_OPTIONS]);
 const EDIT_OPTIONS = Object.freeze(["target", "missing", ...AREA_OPTIONS]);
@@ -58,6 +63,7 @@ const createAreaMark = action(
   },
   function (args = {}) {
     validateMarkOptions(args, CREATE_OPTIONS, "createAreaMark");
+    const strokeDetails = requestedStrokeDetails(args, "createAreaMark");
     const id = resolveMarkId(this, args.id, {
       defaultId: "area",
       label: "Area mark id",
@@ -95,7 +101,8 @@ const createAreaMark = action(
         fill,
         opacity,
         ...(Object.hasOwn(args, "curve") ? { curve } : {}),
-        ...(stroke === undefined ? {} : { stroke, strokeWidth })
+        ...(stroke === undefined ? {} : { stroke, strokeWidth }),
+        ...strokeDetails
       });
     return materializeInheritedMark(created, id);
   }
@@ -217,7 +224,8 @@ const rematerializeAreaMark = action(
       ...(hasOutline ? {
         stroke: strokes ?? (config.strokeFromFill === true ? fills : config.stroke),
         strokeWidth: config.strokeWidth ?? (strokes === undefined ? undefined : 1)
-      } : {})
+      } : {}),
+      ...requestedStrokeDetails(config, "Area mark")
     });
   }
 );
@@ -229,7 +237,11 @@ const editAreaMark = action(
   },
   function (args = {}) {
     validateMarkOptions(args, EDIT_OPTIONS, "editAreaMark");
-    const changes = ["fill", "opacity", "stroke", "strokeWidth", "curve", "missing"];
+    const strokeDetails = requestedStrokeDetails(args, "editAreaMark");
+    const changes = [
+      "fill", "opacity", "stroke", "strokeWidth", "curve", "missing",
+      ...STROKE_STYLE_PROPERTIES
+    ];
     if (!changes.some(key => Object.hasOwn(args, key))) {
       throw new Error(
         "editAreaMark requires fill, opacity, stroke, strokeWidth, or curve."
@@ -258,6 +270,7 @@ const editAreaMark = action(
     }
 
     let config = { ...this.markConfigs[layer.id] };
+    Object.assign(config, strokeDetails);
     if (Object.hasOwn(args, "fill")) {
       config.fill = validateNonEmptyString(args.fill, "Area fill");
       if (config.errorBand !== undefined) config.errorBand = { ...config.errorBand, fill: config.fill };

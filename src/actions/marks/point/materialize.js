@@ -37,6 +37,8 @@ import {
   "../../../materialization/rowEncoding.js";
 import { offsetCategoryPositions } from
   "../../../materialization/categorySlotOffset.js";
+import { requestedStrokeDetails } from
+  "../../../grammar/strokeStyle.js";
 
 const REMATERIALIZE_OPTIONS = Object.freeze(["id"]);
 const DEFAULT_POINT_FILL = DEFAULT_COLORS.mark;
@@ -79,7 +81,11 @@ function incompleteShapeGraphic(shape, properties, angle) {
     ? "path"
     : getPointGraphicType(shape);
   const incomplete = type === "path"
-    ? { fill: properties.fill, opacity: properties.opacity }
+    ? {
+        fill: properties.fill,
+        opacity: properties.opacity,
+        ...requestedStrokeDetails(properties, "Point mark")
+      }
     : properties;
   return { type, properties: compactProperties(incomplete) };
 }
@@ -352,6 +358,7 @@ export const rematerializePointMark = action(
     );
     const angles = resolveDirectionValues(dataset.values, layer.encoding?.angle);
     const config = resolved.markConfigs[id] ?? {};
+    const strokeDetails = requestedStrokeDetails(config, "Point mark");
     const fill = mappedFill ?? config.fill ?? DEFAULT_POINT_FILL;
     const shapes = encodedShape ?? dataset.values.map(() => config.shape ?? "circle");
     const existingChildren = graphic.items ?? [];
@@ -421,7 +428,8 @@ export const rematerializePointMark = action(
             x: centerX,
             y: centerY,
             fill: color,
-            opacity
+            opacity,
+            ...strokeDetails
           }, angle);
         }
         return createPointShapeGraphic({
@@ -437,7 +445,8 @@ export const rematerializePointMark = action(
             ? { strokeWidth: config.strokeWidth ?? 1 }
             : {}),
           opacity,
-          angle
+          angle,
+          ...strokeDetails
         });
       });
       return jittered.program.editGraphics({
@@ -544,6 +553,9 @@ export const rematerializePointMark = action(
         property: "strokeWidth",
         value: config.strokeWidth
       });
+    }
+    for (const [property, value] of Object.entries(strokeDetails)) {
+      next = next.editGraphics({ target: id, property, value });
     }
     return next;
   }

@@ -35,9 +35,14 @@ import {
   resolveMarkId,
   validateMarkOptions
 } from "../shared.js";
+import {
+  requestedStrokeDetails,
+  STROKE_STYLE_PROPERTIES
+} from "../../../grammar/strokeStyle.js";
 
 const ARC_OPTIONS = Object.freeze([
-  "innerRadius", "padAngle", "fill", "opacity", "stroke", "strokeWidth"
+  "innerRadius", "padAngle", "fill", "opacity", "stroke", "strokeWidth",
+  ...STROKE_STYLE_PROPERTIES
 ]);
 const CREATE_OPTIONS = Object.freeze(["id", "data", ...ARC_OPTIONS]);
 const EDIT_OPTIONS = Object.freeze(["target", ...ARC_OPTIONS]);
@@ -52,9 +57,14 @@ function validateInnerRadius(value) {
   return value;
 }
 
-function normalizeConfig(args, previous = {}, { allowStrokeRemoval = false } = {}) {
+function normalizeConfig(
+  args,
+  previous = {},
+  { allowStrokeRemoval = false, strokeDetails = {} } = {}
+) {
   let config = {
     ...previous,
+    ...strokeDetails,
     ...(Object.hasOwn(args, "innerRadius")
       ? { innerRadius: validateInnerRadius(args.innerRadius), innerRadiusExplicit: true }
       : {}),
@@ -98,6 +108,7 @@ const createArcMark = action(
   },
   function (args = {}) {
     validateMarkOptions(args, CREATE_OPTIONS, "createArcMark");
+    const strokeDetails = requestedStrokeDetails(args, "createArcMark");
     const id = resolveMarkId(this, args.id, {
       defaultId: "arc",
       label: "Arc mark id",
@@ -117,7 +128,7 @@ const createArcMark = action(
       opacity: 1,
       stroke: "#ffffff",
       strokeWidth: 1
-    });
+    }, { strokeDetails });
     let created = this
       .editSemantic({ property: `layer[${id}].mark.type`, value: "arc" })
       .editSemantic({ property: `layer[${id}].data`, value: data });
@@ -233,7 +244,8 @@ const rematerializeArcMark = action(
         config.stroke === false ? "transparent" : config.stroke ?? "#ffffff"
       ),
       strokeWidth: config.stroke === false ? 0 : config.strokeWidth ?? 1,
-      strokeDash: commands.map(() => [])
+      strokeDash: commands.map(() => []),
+      ...requestedStrokeDetails(config, "Arc mark")
     });
   }
 );
@@ -245,6 +257,7 @@ const editArcMark = action(
   },
   function (args = {}) {
     validateMarkOptions(args, EDIT_OPTIONS, "editArcMark");
+    const strokeDetails = requestedStrokeDetails(args, "editArcMark");
     if (Object.keys(args).every(key => key === "target")) {
       throw new Error(
         "editArcMark requires innerRadius, padAngle, fill, opacity, stroke, or strokeWidth."
@@ -281,7 +294,8 @@ const editArcMark = action(
     const next = this._withMarkConfig(
       layer.id,
       normalizeConfig(args, this.markConfigs[layer.id], {
-        allowStrokeRemoval: true
+        allowStrokeRemoval: true,
+        strokeDetails
       })
     );
     if (!canMaterializeArc(next, layer)) return next;

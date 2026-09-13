@@ -10,9 +10,14 @@ import {
 } from "../shared.js";
 import { resolveMarkGraphicPlacement } from
   "../../../materialization/graphicHierarchy.js";
+import { requestedRectStyleDetails } from
+  "../../../grammar/roundedRect.js";
+import { STROKE_STYLE_PROPERTIES } from
+  "../../../grammar/strokeStyle.js";
 
 const CREATE_OPTIONS = Object.freeze([
-  "id", "data", "fill", "opacity", "stroke", "strokeWidth"
+  "id", "data", "fill", "opacity", "stroke", "strokeWidth",
+  "cornerRadius", ...STROKE_STYLE_PROPERTIES
 ]);
 
 export const createBarMark = action(
@@ -22,6 +27,7 @@ export const createBarMark = action(
   },
   function (args = {}) {
     validateMarkOptions(args, CREATE_OPTIONS, "createBarMark");
+    requestedRectStyleDetails(args, "createBarMark");
     const id = resolveMarkId(this, args.id, {
       defaultId: "bar",
       label: "Bar mark id",
@@ -56,7 +62,10 @@ export const createBarMark = action(
       });
     created = materializeInheritedMark(created, id);
     const appearance = Object.fromEntries(
-      ["fill", "opacity", "stroke", "strokeWidth"]
+      [
+        "fill", "opacity", "stroke", "strokeWidth", "cornerRadius",
+        ...STROKE_STYLE_PROPERTIES
+      ]
         .filter(property => Object.hasOwn(args, property))
         .map(property => [property, args[property]])
     );

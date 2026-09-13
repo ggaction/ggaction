@@ -17,6 +17,10 @@ import { resolveRowEncodingValues } from
 import { findDataset } from "../../../selectors/datasets.js";
 import { findLayer } from "../../../selectors/layers.js";
 import { DEFAULT_COLORS } from "../../../theme/defaults.js";
+import {
+  requestedStrokeDetails,
+  STROKE_STYLE_PROPERTIES
+} from "../../../grammar/strokeStyle.js";
 import { rematerializeHighlightBaseline } from "../lifecycle.js";
 import {
   applyLayeredMarkInheritance,
@@ -30,7 +34,7 @@ import {
 } from "../shared.js";
 
 const APPEARANCE_OPTIONS = Object.freeze([
-  "length", "stroke", "strokeWidth", "opacity"
+  "length", "stroke", "strokeWidth", "opacity", ...STROKE_STYLE_PROPERTIES
 ]);
 const CREATE_OPTIONS = Object.freeze(["id", "data", ...APPEARANCE_OPTIONS]);
 const EDIT_OPTIONS = Object.freeze(["target", ...APPEARANCE_OPTIONS]);
@@ -66,6 +70,7 @@ function resolveTick(program, requested, operation) {
 
 function validateTickConfig(args, current = DEFAULT_TICK_CONFIG) {
   return {
+    ...current,
     length: Object.hasOwn(args, "length")
       ? validatePositiveFinite(args.length, "Tick length")
       : current.length,
@@ -77,7 +82,8 @@ function validateTickConfig(args, current = DEFAULT_TICK_CONFIG) {
       : current.strokeWidth,
     opacity: Object.hasOwn(args, "opacity")
       ? validateUnitInterval(args.opacity, "Tick opacity")
-      : current.opacity
+      : current.opacity,
+    ...requestedStrokeDetails(args, "Tick")
   };
 }
 
@@ -88,6 +94,7 @@ export const createTickMark = action(
   },
   function (args = {}) {
     validateMarkOptions(args, CREATE_OPTIONS, "createTickMark");
+    requestedStrokeDetails(args, "createTickMark");
     const id = resolveMarkId(this, args.id, {
       defaultId: "tick",
       label: "Tick mark id",
@@ -132,6 +139,7 @@ export const editTickMark = action(
   },
   function (args = {}) {
     validateMarkOptions(args, EDIT_OPTIONS, "editTickMark");
+    requestedStrokeDetails(args, "editTickMark");
     if (!APPEARANCE_OPTIONS.some(property => Object.hasOwn(args, property))) {
       throw new Error(
         "editTickMark requires length, stroke, strokeWidth, or opacity."
@@ -218,7 +226,8 @@ export const rematerializeTickMark = action(
       y2: segments.map(item => item.y2),
       stroke: stroke ?? config.stroke,
       strokeWidth: config.strokeWidth,
-      opacity: config.opacity
+      opacity: config.opacity,
+      ...requestedStrokeDetails(config, "Tick mark")
     });
   }
 );

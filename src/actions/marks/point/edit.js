@@ -6,12 +6,17 @@ import {
   validateUnitInterval
 } from "../../../core/validation.js";
 import { validatePointShape } from "../../../grammar/pointShapes.js";
+import {
+  requestedStrokeDetails,
+  STROKE_STYLE_PROPERTIES
+} from "../../../grammar/strokeStyle.js";
 import { resolveEligibleLayer } from "../../../selectors/layers.js";
 import { rematerializeExistingLegend } from "../../encodings/shared.js";
 import { validateMarkOptions } from "../shared.js";
 
 const OPTIONS = Object.freeze([
-  "target", "shape", "fill", "opacity", "stroke", "strokeWidth"
+  "target", "shape", "fill", "opacity", "stroke", "strokeWidth",
+  ...STROKE_STYLE_PROPERTIES
 ]);
 
 export const editPointMark = action(
@@ -21,7 +26,11 @@ export const editPointMark = action(
   },
   function (args = {}) {
     validateMarkOptions(args, OPTIONS, "editPointMark");
-    const editable = ["shape", "fill", "opacity", "stroke", "strokeWidth"];
+    const strokeDetails = requestedStrokeDetails(args, "editPointMark");
+    const editable = [
+      "shape", "fill", "opacity", "stroke", "strokeWidth",
+      ...STROKE_STYLE_PROPERTIES
+    ];
     if (!editable.some(property => Object.hasOwn(args, property))) {
       throw new Error(
         "editPointMark requires shape, fill, opacity, stroke, or strokeWidth."
@@ -53,6 +62,7 @@ export const editPointMark = action(
       throw new Error("editPointMark opacity conflicts with a field encoding; use encodeOpacity with value to replace it.");
     }
     const config = { ...this.markConfigs[id] };
+    Object.assign(config, strokeDetails);
     if (Object.hasOwn(args, "shape")) {
       config.shape = validatePointShape(args.shape);
     }

@@ -33,9 +33,17 @@ import { resolveCategorySlotOffset } from
   "../../../materialization/categorySlotOffset.js";
 import { mapScaleConsumerValues } from
   "../../../materialization/scales/map.js";
+import {
+  requestedStrokeDetails,
+  STROKE_STYLE_PROPERTIES
+} from "../../../grammar/strokeStyle.js";
 
-const CREATE_OPTIONS = Object.freeze(["id", "data", "stroke", "strokeWidth", "strokeDash", "opacity"]);
-const EDIT_OPTIONS = Object.freeze(["target", "stroke", "strokeWidth", "strokeDash", "opacity"]);
+const APPEARANCE_OPTIONS = Object.freeze([
+  "stroke", "strokeWidth", "strokeDash", "opacity",
+  ...STROKE_STYLE_PROPERTIES
+]);
+const CREATE_OPTIONS = Object.freeze(["id", "data", ...APPEARANCE_OPTIONS]);
+const EDIT_OPTIONS = Object.freeze(["target", ...APPEARANCE_OPTIONS]);
 const REMATERIALIZE_OPTIONS = Object.freeze(["id"]);
 const SPAN_OPTIONS = Object.freeze(["id", "orientation", "size"]);
 const DEFAULT_RULE_CONFIG = Object.freeze({
@@ -89,6 +97,7 @@ const createRuleMark = action(
   },
   function (args = {}) {
     validateMarkOptions(args, CREATE_OPTIONS, "createRuleMark");
+    const strokeDetails = requestedStrokeDetails(args, "createRuleMark");
     const id = resolveMarkId(this, args.id, {
       defaultId: "rule",
       label: "Rule mark id",
@@ -117,6 +126,7 @@ const createRuleMark = action(
       })
       ._withMarkConfig(id, {
         ...DEFAULT_RULE_CONFIG,
+        ...strokeDetails,
         ...(inherited === undefined
           ? {}
           : {
@@ -134,6 +144,7 @@ const editRuleMark = action(
   { op: "editRuleMark", description: "Edit constant rule appearance through its encoding owners." },
   function (args = {}) {
     validateMarkOptions(args, EDIT_OPTIONS, "editRuleMark");
+    const strokeDetails = requestedStrokeDetails(args, "editRuleMark");
     if (args.target !== undefined) validateUserId(args.target, "Rule mark id");
     const layer = resolveEligibleLayer(this, {
       target: args.target,
@@ -141,8 +152,16 @@ const editRuleMark = action(
       label: "rule mark"
     });
     const appearance = planRuleAppearance(args, layer);
-    if (appearance.length === 0) throw new Error("editRuleMark requires an appearance change.");
-    return applyRuleAppearance(this, layer.id, appearance);
+    if (appearance.length === 0 && Object.keys(strokeDetails).length === 0) {
+      throw new Error("editRuleMark requires an appearance change.");
+    }
+    const configured = this._withMarkConfig(layer.id, {
+      ...this.markConfigs[layer.id],
+      ...strokeDetails
+    });
+    return appearance.length === 0
+      ? configured.rematerializeRuleMark({ id: layer.id })
+      : applyRuleAppearance(configured, layer.id, appearance);
   }
 );
 
@@ -345,7 +364,8 @@ const rematerializeRuleMark = action(
       stroke,
       strokeWidth,
       strokeDash,
-      opacity
+      opacity,
+      ...requestedStrokeDetails(resolvedConfig, "Rule mark")
     });
   }
 );

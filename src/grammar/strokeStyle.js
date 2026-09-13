@@ -6,6 +6,11 @@ export const DEFAULT_MITER_LIMIT = 10;
 
 export const LINE_CAPS = Object.freeze(["butt", "round", "square"]);
 export const LINE_JOINS = Object.freeze(["miter", "round", "bevel"]);
+export const STROKE_STYLE_PROPERTIES = Object.freeze([
+  "lineCap",
+  "lineJoin",
+  "miterLimit"
+]);
 
 function validateEnum(value, values, property, label) {
   if (typeof value !== "string") {
