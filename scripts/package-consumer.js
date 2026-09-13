@@ -103,6 +103,109 @@ async function testNodeConsumer(directory) {
     assert.equal(basicChart().removeData, undefined);
     assert.equal(basicChart().removeScale, undefined);
     assert.equal(basicChart().removeCoordinate, undefined);
+    const installedDataFlow = chart()
+      .createData({ id: "flowRaw", values: [
+        { group: "A", t: 0, value: 2, weight: 1 },
+        { group: "A", t: 2, value: 6, weight: 3 }
+      ] })
+      .createCompleteData({
+        id: "flowComplete", source: "flowRaw", key: "t", groupBy: "group",
+        values: [0, 1, 2], fill: { weight: 2 }
+      })
+      .createImputedData({
+        id: "flowImputed", source: "flowComplete", fields: "value",
+        groupBy: "group", method: "linear", sortBy: [{ field: "t" }]
+      })
+      .createComputedData({
+        id: "flowComputed", source: "flowImputed", as: "doubled",
+        expression: { op: "multiply", left: { field: "value" }, right: { constant: 2 } }
+      })
+      .createNormalizedData({
+        id: "flowNormalized", source: "flowComputed", field: "doubled",
+        as: "share", groupBy: "group", method: "share"
+      })
+      .createWindowData({
+        id: "flowMoving", source: "flowNormalized", temporalUnit: "timestamp",
+        partitionBy: "group", sortBy: [{ field: "t" }], operations: [{
+          op: "movingSum", field: "share", as: "trailing",
+          frame: { duration: { preceding: 1, unit: "millisecond" } }
+        }]
+      })
+      .createSummaryData({
+        id: "flowWeighted", source: "flowMoving", groupBy: "group",
+        aggregates: [{ op: "mean", field: "trailing", as: "mean" }],
+        weight: { field: "weight", kind: "frequency" }
+      });
+    const installedDataRevision = installedDataFlow.editCompleteData({
+      target: "flowComplete", fill: { value: 8, weight: 2 },
+      dependents: "recompute"
+    });
+    const installedSummaryId = installedDataRevision.materializationConfigs
+      .data.summary.flowWeighted.current;
+    assert.deepEqual(installedDataRevision.semanticSpec.datasets.find(
+      dataset => dataset.id === installedSummaryId
+    ).values, [{ group: "A", mean: 2 / 3 }]);
+    assert.equal(installedDataRevision.semanticSpec.datasets.some(
+      dataset => dataset.id === "flowComplete"
+    ), false);
+    const installedAppearance = chart()
+      .createCanvas({
+        width: 760, height: 600,
+        margin: { top: 140, right: 240, bottom: 140, left: 90 }
+      })
+      .createData({ id: "appearanceRows", values: [
+        { x: 0, y: 1, other: 9, group: "A", magnitude: 10 },
+        { x: 1, y: 3, other: 4, group: "B", magnitude: 50 },
+        { x: 2, y: 2, other: 12, group: "C", magnitude: 100 }
+      ] })
+      .createPointMark({ id: "appearancePoints", stroke: "#111827", strokeWidth: 3 })
+      .encodeChannels({ target: "appearancePoints", channels: {
+        x: { field: "x" }, y: { field: "y" }, color: { field: "group" },
+        stroke: { field: "group" },
+        size: { field: "magnitude", scale: { domain: [0, 100], range: [20, 120] } }
+      } })
+      .createLegend({
+        target: "appearancePoints", channels: ["color", "stroke", "size"]
+      })
+      .selectMarks({
+        id: "appearanceSelection", target: "appearancePoints",
+        field: "other", op: "max", count: 2
+      })
+      .createMarkLabels({
+        id: "appearanceLabels", source: "appearancePoints", field: "other",
+        selection: "appearanceSelection", placement: { anchor: "center" }
+      })
+      .createReferenceLine({
+        id: "appearanceMean", source: "appearancePoints", axis: "y",
+        statistic: { op: "mean" }
+      })
+      .encodeChannels({ target: "appearancePoints", channels: {
+        y: { field: "other", scale: { id: "appearanceY", nice: false, zero: false } },
+        stroke: { value: "#0f172a" }
+      } })
+      .editLegendBlock({
+        target: "appearancePoints", channel: "color",
+        labelMap: [{ value: "A", label: "Alpha" }]
+      })
+      .applyTheme({
+        theme: { base: "light", tokens: {
+          background: "#fff7ed", fontFamily: "PackageConsumer"
+        } }
+      })
+      .editPointMark({
+        target: "appearancePoints", strokeWidth: 5,
+        lineCap: "square", lineJoin: "round", miterLimit: 6
+      });
+    assert.deepEqual(installedAppearance.graphicSpec.objects.appearanceLabels.items.map(
+      item => item.properties.text
+    ), ["9", "12"]);
+    assert.deepEqual(installedAppearance.semanticSpec.datasets.find(
+      dataset => dataset.id === "appearanceMean-statistical-reference-data"
+    ).values, [{ value: 25 / 3 }]);
+    assert.equal(installedAppearance.graphicSpec.objects.appearancePoints.items[0]
+      .properties.lineCap, "square");
+    assert.equal(installedAppearance.removeTheme().graphicSpec.objects.canvas
+      .properties.background, "white");
     const jittered = program.jitterPoints({
       channel: "x",
       maxOffset: { pixels: 2 },
@@ -1608,17 +1711,38 @@ async function testNodeConsumer(directory) {
         radius: { field: "radius", scale: { nice: false, zero: false } },
         guides: false
       })
+      .createThetaGrid({ coordinate: "polar", scale: "theta", values: [0, 90] })
+      .editCoordinate({
+        target: "polar",
+        aspect: { mode: "frame", ratio: 1 },
+        polarFrame: {
+          center: { x: 0.25, y: 0.5 },
+          radius: { unit: "fraction", value: 0.8 }
+        }
+      })
       .createMarkLabels({
         id: "packagePolarLabels", source: "packagePolar", field: "radius"
       });
     const packagePolarUnit = createPackagePolarUnit(packagePolarRows);
     const packagePolarFacet = packagePolarUnit.facet({
-      id: "packagePolarFacet", field: "panel", scales: { r: "independent" }
-    });
+      id: "packagePolarFacet", field: "panel"
+    })
+      .editFacetHeaders({ labelMap: [{ value: "A", label: "Alpha" }] })
+      .editFacetScales({ r: "independent" })
+      .applyTheme({
+        theme: { base: "light", tokens: { background: "#fff7ed" } },
+        scope: "descendants"
+      });
     assert.deepEqual(Object.values(packagePolarFacet.children).map(child =>
       child.resolvedScales.radius.domain), [[1, 2], [10, 20]]);
+    assert.deepEqual(Object.values(packagePolarFacet.children).map(child =>
+      child.resolvedScales.radius.range), [[0, 24], [0, 24]]);
+    assert.deepEqual(packagePolarFacet.graphicSpec.objects["packagePolarFacet-headers"]
+      .items.map(item => item.properties.text), ["Alpha", "B"]);
     assert.equal(Object.values(packagePolarFacet.children).every(child =>
-      child.graphicSpec.objects.packagePolarLabels.items.length === 2), true);
+      child.graphicSpec.objects.packagePolarLabels.items.length === 2 &&
+      child.graphicSpec.objects.thetaGridLines.items.length === 2 &&
+      child.graphicSpec.objects.canvas.properties.background === "#fff7ed"), true);
     const packagePolarRepeat = packagePolarUnit.repeatCharts({
       id: "packagePolarRepeat", target: "packagePolar", channel: "r",
       fields: ["radius", "distance"]
@@ -1637,14 +1761,16 @@ async function testNodeConsumer(directory) {
     assert.equal(Object.values(resizedPackagePolarFacet.children).every(child =>
       child.graphicSpec.objects.canvas.properties.width === 260 &&
       child.graphicSpec.objects.canvas.properties.height === 240), true);
+    assert.deepEqual(Object.values(resizedPackagePolarFacet.children).map(child =>
+      child.resolvedScales.radius.range), [[0, 32], [0, 32]]);
     assert.match(renderToSVG(resizedPackagePolarFacet), /^<svg/);
     const packageParallelUnit = chart()
       .createCanvas({ width: 240, height: 180, margin: 35 })
       .createData({ id: "packageParallelData", values: [
-        { panel: "A", a: 1, b: 100, c: 5 },
-        { panel: "A", a: 2, b: 200, c: 6 },
-        { panel: "B", a: 10, b: 1000, c: 50 },
-        { panel: "B", a: 20, b: 2000, c: 60 }
+        { panel: "A", a: 1, b: 100, c: 5, d: 50 },
+        { panel: "A", a: 2, b: 200, c: 6, d: 60 },
+        { panel: "B", a: 10, b: 1000, c: 50, d: 500 },
+        { panel: "B", a: 20, b: 2000, c: 60, d: 600 }
       ] })
       .createParallelCoordinates({
         id: "packageParallel",
@@ -1653,22 +1779,43 @@ async function testNodeConsumer(directory) {
           { field: "b", scale: { zero: false, nice: false } }
         ],
         guides: false
-      });
-    const packageParallelFacet = packageParallelUnit.facet({
+      })
+      .createParallelAxes()
+      .editParallelAxis({ field: "a", title: { text: "Primary" } });
+    const packageParallelEdited = packageParallelUnit.editParallelScale({
+      target: "packageParallel", dimension: "a", domain: [0, 20]
+    });
+    const packageParallelFacet = packageParallelEdited.facet({
       id: "packageParallelFacet", field: "panel",
       scales: { parallelDimensions: "shared" }
     });
     assert.deepEqual(Object.values(packageParallelFacet.children).map(child =>
       child.resolvedScales["packageParallel-parallel-0"].domain),
-    [[1, 20], [1, 20]]);
-    const packageParallelRepeat = packageParallelUnit.repeatCharts({
+    [[0, 20], [0, 20]]);
+    assert.deepEqual(Object.values(packageParallelFacet.children).map(child =>
+      child.graphicSpec.objects.parallelAxisTitles.items.map(
+        item => item.properties.text
+      )), [["Primary", "b"], ["Primary", "b"]]);
+    const packageParallelRepeat = packageParallelEdited.repeatCharts({
       id: "packageParallelRepeat", target: "packageParallel",
-      channel: { parallelDimension: "a" }, fields: ["a", "c"]
+      channel: { parallelDimension: "a" }, fields: ["c", "d"]
     });
     assert.deepEqual(Object.values(packageParallelRepeat.children).map(child =>
       child.semanticSpec.layers[0].encoding.parallel.dimensions.map(
         dimension => dimension.field
-      )), [["a", "b"], ["c", "b"]]);
+      )), [["c", "b"], ["d", "b"]]);
+    const packageParallelScales = packageParallelEdited.semanticSpec.layers[0]
+      .encoding.parallel.dimensions.map(dimension => dimension.scale);
+    const packageParallelCleaned = packageParallelEdited
+      .removeMark({ target: "packageParallel" })
+      .removeScale({ id: packageParallelScales[0] })
+      .removeScale({ id: packageParallelScales[1] })
+      .removeData({ id: "packageParallelData" })
+      .removeCoordinate({ id: "parallel" });
+    assert.deepEqual(packageParallelCleaned.semanticSpec.datasets, []);
+    assert.deepEqual(packageParallelCleaned.semanticSpec.scales, []);
+    assert.deepEqual(packageParallelCleaned.semanticSpec.coordinates, []);
+    assert.equal(packageParallelCleaned.context.currentGuide, undefined);
     for (const method of [
       "facetGrid", "repeatCharts", "editFacetSource",
       "insertCompositionChild", "removeCompositionChild", "reorderCompositionChildren"
@@ -4053,6 +4200,7 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.a
       "computed-data",
       "derived-data-editing",
       "safe-resource-removal",
+      "advanced-authoring-integration",
       "normalized-data",
       "complete-data",
       "imputed-data",
