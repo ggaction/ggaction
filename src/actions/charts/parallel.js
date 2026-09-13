@@ -107,6 +107,10 @@ export const createParallelCoordinates = action(
     if (strokeDash !== undefined) {
       next = next.encodeStrokeDash(targetArgs(strokeDash, id));
     }
-    return applyFacadeGuides(next, guides, id);
+    next = applyFacadeGuides(next, guides, id);
+    return next._withMarkConfig(id, {
+      ...next.markConfigs[id],
+      compositionRole: "parallel"
+    });
   }
 );

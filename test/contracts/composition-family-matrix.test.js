@@ -85,21 +85,30 @@ test("executes named composition edits across Cartesian, Polar, and Parallel chi
   }
 });
 
-test("keeps Polar and Parallel facet/repeat combinations explicitly unsupported", () => {
-  for (const program of [polar(), parallel()]) {
-    const graphics = program.graphicSpec;
-    const trace = program.trace;
-    assert.throws(
-      () => program.facetGrid({
-        rows: { field: "group" }, columns: { field: "angle" }
-      }),
-      /complete materializable Cartesian mark/
-    );
-    assert.throws(
-      () => program.repeatCharts({ channel: "x", fields: ["x", "y"] }),
-      /complete Cartesian mark/
-    );
-    assert.equal(program.graphicSpec, graphics);
-    assert.equal(program.trace, trace);
+test("executes Polar and Parallel facet, grid, and repeat families", () => {
+  const radial = polar();
+  const profile = parallel();
+  const programs = [
+    radial.facet({ field: "group" }),
+    radial.facetGrid({ rows: { field: "group" }, columns: { field: "angle" } }),
+    radial.repeatCharts({ channel: "theta", fields: ["angle", "group"] }),
+    radial.repeatCharts({ channel: "r", fields: ["radius", "x"] }),
+    profile.facet({ field: "group" }),
+    profile.facetGrid({ rows: { field: "group" }, columns: { field: "angle" } }),
+    profile.repeatCharts({ channel: { parallelDimension: "a" }, fields: ["a", "x"] })
+  ];
+  for (const program of programs) {
+    const context = createMockCanvasContext();
+    render(program, context);
+    assert.match(renderToSVG(program), /<svg/u);
+    assert.ok(program.compositionSpec.children.length >= 2);
   }
+  assert.throws(
+    () => radial.facet({ field: "group", guides: { axes: "outer" } }),
+    /do not support outer axes/
+  );
+  assert.throws(
+    () => profile.repeatCharts({ channel: { parallelDimension: "a" }, fields: ["b"] }),
+    /unique fields/
+  );
 });

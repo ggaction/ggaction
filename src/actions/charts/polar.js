@@ -81,7 +81,11 @@ export const createPolarScatterPlot = action(
     if (color !== undefined) next = next.encodeColor(targetArgs(color, id));
     if (size !== undefined) next = next.encodeSize(targetArgs(size, id));
     if (shape !== undefined) next = next.encodeShape(targetArgs(shape, id));
-    return applyFacadeGuides(next, guides, id);
+    next = applyFacadeGuides(next, guides, id);
+    return next._withMarkConfig(id, {
+      ...next.markConfigs[id],
+      compositionRole: "polar-point"
+    });
   }
 );
 
@@ -121,6 +125,10 @@ export const createPolarLinePlot = action(
     if (groupBy !== undefined) next = next.encodeGroup({ target: id, fields: groupBy });
     if (color !== undefined) next = next.encodeColor(targetArgs(color, id));
     if (strokeDash !== undefined) next = next.encodeStrokeDash(targetArgs(strokeDash, id));
-    return applyFacadeGuides(next, guides, id);
+    next = applyFacadeGuides(next, guides, id);
+    return next._withMarkConfig(id, {
+      ...next.markConfigs[id],
+      compositionRole: "polar-line"
+    });
   }
 );

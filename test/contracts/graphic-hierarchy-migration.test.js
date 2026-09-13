@@ -422,7 +422,7 @@ test("locks the complete public graphic hierarchy inventory", () => {
       }
       assert.equal(drawOrder[0], "canvas");
       const expectedDrawLength = chart.id === "facet-grid"
-        ? 19
+        ? 20
         : chart.id === "repeat-charts"
           ? 15
           : undefined;

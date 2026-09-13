@@ -285,7 +285,7 @@ export const createRadarPlot = action(
     }
 
     category = scaleWithOrder(category, order, operation);
-    return next.createPolarLinePlot({
+    next = next.createPolarLinePlot({
       id,
       data,
       ...(args.coordinate === undefined ? {} : { coordinate: args.coordinate }),
@@ -296,6 +296,10 @@ export const createRadarPlot = action(
       ...(strokeDash === undefined ? {} : { strokeDash }),
       line: { ...line, closed: true },
       guides
+    });
+    return next._withMarkConfig(id, {
+      ...next.markConfigs[id],
+      compositionRole: "radar"
     });
   }
 );

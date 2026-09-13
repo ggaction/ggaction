@@ -4,6 +4,7 @@ import { readQuantitativeField } from "../../grammar/scales/index.js";
 import { BAR_GRAINS, resolveBarGrain } from "../../grammar/bars/policy.js";
 import { resolveFacetScaleDomains } from "../../grammar/facets/scales.js";
 import {
+  applyLayerEmptyDataView,
   applyMaterializationPlan,
   planScaleGuideRematerialization
 } from "../../materialization/dependencies.js";
@@ -84,12 +85,7 @@ function deriveCellProgram(
     });
     source = id;
   }
-  if (requireDataset(child, cell.data).values.length === 0) {
-    while (child.semanticSpec.layers.length > 0) {
-      child = child.removeMark({ target: child.semanticSpec.layers[0].id });
-    }
-    return child;
-  }
+  const empty = requireDataset(child, cell.data).values.length === 0;
   const datasets = new Map([[definition.data, cell.data]]);
   for (const replay of definition.dependencies.replay) {
     const source = datasets.get(replay.source);
@@ -125,7 +121,15 @@ function deriveCellProgram(
         statisticalReference: { ...statistical, dataId: data }
       });
     }
-    child = child.rebindLayerData({ id: layer.id, data });
+    child = empty
+      ? applyLayerEmptyDataView(
+          child.editSemantic({
+            property: `layer[${layer.id}].data`,
+            value: data
+          }),
+          layer.id
+        )
+      : child.rebindLayerData({ id: layer.id, data });
     child = applySharedHistogramBoundaries(
       child,
       layer.id,
@@ -144,6 +148,7 @@ function deriveCellProgram(
     }
     child = child.rebindGradientPlotProfile({ id, profile, source });
   }
+  if (empty) return child;
   const scaleIds = [...new Set(child.semanticSpec.layers.flatMap(getLayerScaleIds))];
   return applyMaterializationPlan(child, buildMaterializationPlan({
     scales: scaleIds.map(id => ({
@@ -153,7 +158,13 @@ function deriveCellProgram(
   }));
 }
 
-function applyResolvedDomains(program, childId, resolution, baseResolved) {
+function applyResolvedDomains(
+  program,
+  childId,
+  resolution,
+  baseResolved,
+  { marks: materializeMarks = true } = {}
+) {
   let next = program;
   for (const [id, scaleResolution] of Object.entries(resolution.scales)) {
     const current = next.resolvedScales[id];
@@ -163,19 +174,22 @@ function applyResolvedDomains(program, childId, resolution, baseResolved) {
     const shared = scaleResolution.policy === "shared"
       ? baseResolved?.[id]
       : undefined;
+    const semanticDomain = findSemanticScale(next, id)?.domain;
+    const domain = scaleResolution.childDomains[childId] ??
+      scaleResolution.domain ?? semanticDomain;
     next = next._withResolvedScale(id, {
       ...current,
       ...shared,
-      domain: scaleResolution.childDomains[childId]
+      domain
     });
   }
-  const marks = next.semanticSpec.layers.flatMap(layer => {
+  const marks = materializeMarks ? next.semanticSpec.layers.flatMap(layer => {
     const step = getMarkMaterializationStep(next, layer);
     if (step === undefined) return [];
     return ["bar", "line", "area", "arc"].includes(layer.mark?.type)
       ? [{ ...step, args: { ...step.args, scales: false } }]
       : [step];
-  });
+  }) : [];
   const guides = Object.keys(resolution.scales).flatMap(id =>
     planScaleGuideRematerialization(next, id)
   );
@@ -206,12 +220,18 @@ export function deriveFacetChildren(
     cell.id,
     deriveCellProgram(template, definition, cell, bins, scales)
   ]));
+  const populatedIds = new Set(definition.cells.flatMap(cell =>
+    requireDataset(independentlyResolved[cell.id], cell.data).values.length > 0
+      ? [cell.id]
+      : []
+  ));
   return resolveFacetChildrenScales(
     template,
     definition.cells.map(cell => cell.id),
     independentlyResolved,
     scales,
-    closeInheritedAction
+    closeInheritedAction,
+    populatedIds
   );
 }
 
@@ -220,14 +240,18 @@ export function resolveFacetChildrenScales(
   cellIds,
   independentlyResolved,
   scales = {},
-  closeInheritedAction = false
+  closeInheritedAction = false,
+  populatedIds = undefined
 ) {
   const populated = Object.fromEntries(cellIds.flatMap(id => {
     const child = independentlyResolved[id];
     if (child === undefined) {
       throw new Error(`Facet derivation is missing child "${id}".`);
     }
-    return child.semanticSpec.layers.length > 0 ? [[id, child]] : [];
+    const populated = populatedIds === undefined
+      ? child.semanticSpec.layers.length > 0
+      : populatedIds.has(id);
+    return populated ? [[id, child]] : [];
   }));
   if (Object.keys(populated).length === 0) {
     throw new Error("Facet derivation requires at least one populated cell.");
@@ -241,6 +265,18 @@ export function resolveFacetChildrenScales(
     scales,
     template.resolvedScales
   );
+  const emptyIds = cellIds.filter(id => !Object.hasOwn(populated, id));
+  const scalesById = new Map(template.semanticSpec.scales.map(scale => [scale.id, scale]));
+  for (const childId of emptyIds) {
+    const unresolved = Object.entries(resolution.scales).find(([id, value]) =>
+      value.policy === "independent" && scalesById.get(id)?.domain === "auto"
+    );
+    if (unresolved !== undefined) {
+      throw new Error(
+        `Facet child "${childId}" cannot resolve independent scale "${unresolved[0]}" from an empty partition.`
+      );
+    }
+  }
   const resolvedChildren = Object.fromEntries(
     cellIds.map(id => {
       const child = independentlyResolved[id];
@@ -251,7 +287,8 @@ export function resolveFacetChildrenScales(
         child,
         id,
         resolution,
-        template.resolvedScales
+        template.resolvedScales,
+        { marks: Object.hasOwn(populated, id) }
       );
       return [id, closeInheritedAction ? resolved._exitAction() : resolved];
     })

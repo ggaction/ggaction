@@ -26666,7 +26666,7 @@
         {
           "name": "channel",
           "required": true,
-          "type": "\"x\" | \"y\""
+          "type": "\"r\" | \"theta\" | \"x\" | \"y\" | { parallelDimension: string; }"
         },
         {
           "name": "fields",
@@ -26960,6 +26960,16 @@
           "type": "FacetScaleResolution | undefined"
         },
         {
+          "name": "theta",
+          "required": false,
+          "type": "FacetScaleResolution | undefined"
+        },
+        {
+          "name": "r",
+          "required": false,
+          "type": "FacetScaleResolution | undefined"
+        },
+        {
           "name": "color",
           "required": false,
           "type": "FacetScaleResolution | undefined"
@@ -26988,10 +26998,15 @@
           "name": "strokeDash",
           "required": false,
           "type": "FacetScaleResolution | undefined"
+        },
+        {
+          "name": "parallelDimensions",
+          "required": false,
+          "type": "FacetScaleResolution | undefined"
         }
       ],
       "callPatterns": [
-        "editFacetScales({ x?, y?, xOffset?, yOffset?, color?, stroke?, size?, shape? })"
+        "editFacetScales({ x?, y?, xOffset?, yOffset?, theta?, r?, color?, stroke? })"
       ],
       "snippet": "program.editFacetScales({ x: \"shared\" })",
       "errors": [],

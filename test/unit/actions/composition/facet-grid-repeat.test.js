@@ -82,10 +82,29 @@ test("materializes full combinations with an explicit blank child", () => {
   const empty = program.compositionSpec.facet.grid.cells.find(cell => cell.empty);
 
   assert.deepEqual([empty.rowValue, empty.columnValue], ["A", "Y"]);
-  assert.equal(program.children[empty.id].semanticSpec.layers.length, 0);
+  assert.equal(program.children[empty.id].semanticSpec.layers.length, 1);
+  assert.equal(program.children[empty.id].graphicSpec.objects.points.items.length, 0);
   assert.equal(program.children[empty.id].graphicSpec.objects.canvas.type, "canvas");
   assert.equal(program.compositionSpec.children.length, 6);
   assert.equal(program.graphicSpec.objects["matrix-headers"].items.length, 6);
+});
+
+test("rejects independent auto domains for empty panels but accepts explicit domains", () => {
+  const base = scatter();
+  const options = {
+    rows: { field: "row" }, columns: { field: "column" },
+    combinations: "full", scales: { x: "independent" }
+  };
+  assert.throws(
+    () => base.facetGrid(options),
+    /cannot resolve independent scale "x" from an empty partition/
+  );
+  const explicit = base.editScale({ id: "x", domain: [0, 10] })
+    .facetGrid(options);
+  const empty = explicit.compositionSpec.facet.grid.cells.find(cell => cell.empty);
+  assert.deepEqual(explicit.children[empty.id].resolvedScales.x.domain, [0, 10]);
+  assert.equal(explicit.children[empty.id].semanticSpec.layers.length, 1);
+  assert.equal(explicit.children[empty.id].graphicSpec.objects.points.items.length, 0);
 });
 
 test("replays a grid source recipe while preserving policy and parent styling", () => {
@@ -94,7 +113,7 @@ test("replays a grid source recipe while preserving policy and parent styling", 
       id: "matrix",
       rows: { field: "row" },
       columns: { field: "column" },
-      combinations: "full",
+      combinations: "observed",
       scales: { x: "independent" }
     })
     .editFacetHeaders({ color: "#123456" })
@@ -195,7 +214,7 @@ test("rejects malformed grid, repeat, and source revisions atomically", () => {
   );
   assert.throws(
     () => base.repeatCharts({ channel: "theta", fields: ["x"] }),
-    /channel must be/
+    /eligible complete mark/
   );
   assert.throws(
     () => base.repeatCharts({ channel: "x", fields: ["x", "x"] }),

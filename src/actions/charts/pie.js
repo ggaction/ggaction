@@ -44,5 +44,9 @@ export const createPiePlot = action({
     ...(aggregate === "sum" ? { weight: args.value } : {})
   });
   if (color !== undefined) next = next.encodeColor({ ...color, target: id });
-  return applyFacadeGuides(next, guides, id, args.guides ?? {});
+  next = applyFacadeGuides(next, guides, id, args.guides ?? {});
+  return next._withMarkConfig(id, {
+    ...next.markConfigs[id],
+    compositionRole: "pie"
+  });
 });

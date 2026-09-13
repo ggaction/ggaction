@@ -150,8 +150,13 @@ function validateFacetSpec(compositionSpec) {
         "compositionSpec.facet.repeat requires target, channel, and fields."
       );
     }
+    const repeatChannel = ["x", "y", "theta", "r"].includes(repeat.channel) ||
+      (isPlainObject(repeat.channel) &&
+        Object.keys(repeat.channel).length === 1 &&
+        typeof repeat.channel.parallelDimension === "string" &&
+        repeat.channel.parallelDimension.length > 0);
     if (typeof repeat.target !== "string" || repeat.target.length === 0 ||
-        !["x", "y"].includes(repeat.channel) ||
+        !repeatChannel ||
         !Array.isArray(repeat.fields) || repeat.fields.length === 0 ||
         repeat.fields.some(field => typeof field !== "string" || field.length === 0) ||
         new Set(repeat.fields).size !== repeat.fields.length) {

@@ -35,7 +35,11 @@ function createMeasuredPlot(program, args, { operation, defaultId, mapping }) {
     ...(aggregate === "sum" ? { field: args.value } : {}),
     ...(radiusScale === undefined ? {} : { scale: radiusScale }) });
   if (color !== undefined) next = next.encodeColor({ ...color, target: id });
-  return applyFacadeGuides(next, guides, id, args.guides ?? {});
+  next = applyFacadeGuides(next, guides, id, args.guides ?? {});
+  return next._withMarkConfig(id, {
+    ...next.markConfigs[id],
+    compositionRole: "rose"
+  });
 }
 
 export const createRosePlot = action({ op: "createRosePlot", description: "Create equal-angle sectors with area proportional to category count or sum." }, function (args = {}) {

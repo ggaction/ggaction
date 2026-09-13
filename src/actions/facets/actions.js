@@ -28,6 +28,7 @@ import { applyCompositionState } from "../composition/actions.js";
 import { replayCompositionThemeState } from "../theme/composition.js";
 import { findDataset } from "../../selectors/datasets.js";
 import { findLayer } from "../../selectors/layers.js";
+import { findSemanticScale } from "../../selectors/scales.js";
 import { normalizeDisplayLabelMap } from "../../grammar/displayLabels.js";
 import {
   createDefaultFacetHeaders,
@@ -248,8 +249,20 @@ function resolveRepeatDefinition(program, args) {
     throw new TypeError("repeatCharts options must be a plain object.");
   }
   const id = validateUserId(args.id ?? "repeat", "Repeat id");
-  if (!["x", "y"].includes(args.channel)) {
-    throw new Error('repeatCharts channel must be "x" or "y".');
+  const parallelChannel = isPlainObject(args.channel);
+  if (parallelChannel) {
+    const keys = Object.keys(args.channel);
+    if (keys.length !== 1 || keys[0] !== "parallelDimension" ||
+        typeof args.channel.parallelDimension !== "string" ||
+        args.channel.parallelDimension.length === 0) {
+      throw new Error(
+        "repeatCharts Parallel channel must contain exactly one non-empty parallelDimension."
+      );
+    }
+  } else if (!["x", "y", "theta", "r"].includes(args.channel)) {
+    throw new Error(
+      'repeatCharts channel must be "x", "y", "theta", "r", or one parallelDimension.'
+    );
   }
   if (!Array.isArray(args.fields) || args.fields.length === 0 ||
       args.fields.some(field => typeof field !== "string" || field.length === 0)) {
@@ -258,29 +271,46 @@ function resolveRepeatDefinition(program, args) {
   if (new Set(args.fields).size !== args.fields.length) {
     throw new Error("repeatCharts fields must be unique.");
   }
-  const eligible = program.semanticSpec.layers.filter(layer =>
-    layer.encoding?.x?.scale !== undefined &&
-    layer.encoding?.y?.scale !== undefined &&
-    layer.encoding?.[args.channel]?.field !== undefined &&
-    ["point", "line", "area", "bar", "rule", "tick", "rect"].includes(layer.mark?.type)
-  );
+  const family = resolveFacetFamily(program.semanticSpec).family;
+  const semanticChannel = args.channel === "r" ? "radius" : args.channel;
+  const eligible = program.semanticSpec.layers.filter(layer => {
+    if (parallelChannel) {
+      const matches = (layer.encoding?.parallel?.dimensions ?? []).filter(
+        dimension => dimension.field === args.channel.parallelDimension
+      );
+      return family === "parallel" && layer.mark?.type === "line" && matches.length === 1;
+    }
+    if (["x", "y"].includes(args.channel)) {
+      return family === "cartesian" &&
+        layer.encoding?.x?.scale !== undefined &&
+        layer.encoding?.y?.scale !== undefined &&
+        layer.encoding?.[args.channel]?.field !== undefined &&
+        ["point", "line", "area", "bar", "rule", "tick", "rect"].includes(layer.mark?.type);
+    }
+    const role = program.markConfigs[layer.id]?.compositionRole;
+    if (family !== "polar" || ["pie", "radar"].includes(role)) return false;
+    return ["point", "line", "arc"].includes(layer.mark?.type) &&
+      layer.encoding?.[semanticChannel]?.field !== undefined;
+  });
   let target;
   if (args.target !== undefined) {
     target = validateUserId(args.target, "Repeat target");
     if (!eligible.some(layer => layer.id === target)) {
-      throw new Error(`repeatCharts target "${target}" is not an eligible Cartesian mark.`);
+      throw new Error(
+        `repeatCharts target "${target}" is not eligible for the requested field role.`
+      );
     }
   } else if (eligible.length === 1) {
     target = eligible[0].id;
   } else {
     throw new Error(
       eligible.length === 0
-        ? "repeatCharts requires one complete Cartesian mark."
+        ? "repeatCharts requires one eligible complete mark for the requested field role."
         : "repeatCharts target is ambiguous; provide target."
     );
   }
   if (program.semanticSpec.layers.length !== 1) {
-    throw new Error("repeatCharts currently supports one direct Cartesian mark only.");
+    throw new Error("repeatCharts currently supports one direct mark only.");
   }
   const config = program.markConfigs[target] ?? {};
   const composite = [
@@ -295,14 +325,23 @@ function resolveRepeatDefinition(program, args) {
   if (dataset?.transform?.length > 0) {
     throw new Error("repeatCharts does not rewrite a derived dataset dependency.");
   }
-  const encoding = layer.encoding[args.channel];
+  const encoding = parallelChannel
+    ? layer.encoding.parallel
+    : layer.encoding[semanticChannel];
+  const dimensionIndex = parallelChannel
+    ? encoding.dimensions.findIndex(
+        dimension => dimension.field === args.channel.parallelDimension
+      )
+    : undefined;
   return {
     id,
     target,
-    channel: args.channel,
+    channel: parallelChannel ? { ...args.channel } : args.channel,
+    policyKey: parallelChannel ? "parallelDimensions" : args.channel,
     fields: [...args.fields],
     data: layer.data,
     encoding,
+    ...(dimensionIndex === undefined ? {} : { dimensionIndex }),
     cells: args.fields.map((field, index) => ({
       id: `${id}-field-${index + 1}`,
       field,
@@ -326,15 +365,52 @@ function repeatEncodingArgs(definition, field) {
   };
 }
 
+function parallelRepeatDimensions(program, definition, field) {
+  return definition.encoding.dimensions.map((dimension, index) => {
+    const semanticScale = findSemanticScale(program, dimension.scale);
+    if (semanticScale === undefined) {
+      throw new Error(`repeatCharts Parallel dimension scale "${dimension.scale}" is missing.`);
+    }
+    const { id: _id, ...scale } = semanticScale;
+    void _id;
+    const replacement = index === definition.dimensionIndex;
+    return {
+      field: replacement ? field : dimension.field,
+      fieldType: dimension.fieldType,
+      title: replacement && dimension.title === dimension.field
+        ? field
+        : dimension.title,
+      scale
+    };
+  });
+}
+
+function deriveRepeatedProgram(template, definition, field) {
+  if (isPlainObject(definition.channel)) {
+    return template.encodeParallelCoordinates({
+      target: definition.target,
+      coordinate: findLayer(template, definition.target).coordinate,
+      dimensions: parallelRepeatDimensions(template, definition, field),
+      ...(definition.encoding.key === undefined ? {} : { key: definition.encoding.key }),
+      missing: definition.encoding.missing
+    });
+  }
+  const operation = {
+    x: "encodeX",
+    y: "encodeY",
+    theta: "encodeTheta",
+    r: "encodeR"
+  }[definition.channel];
+  return template[operation](repeatEncodingArgs(definition, field));
+}
+
 function deriveRepeatChildren(base, definition, scales, closeInheritedAction) {
   const template = base.semanticSpec.title.text === undefined
     ? base
     : base.removeTitle();
   const independentlyResolved = Object.fromEntries(definition.cells.map(cell => [
     cell.id,
-    template[definition.channel === "x" ? "encodeX" : "encodeY"](
-      repeatEncodingArgs(definition, cell.field)
-    )
+    deriveRepeatedProgram(template, definition, cell.field)
   ]));
   return resolveFacetChildrenScales(
     template,
@@ -348,7 +424,7 @@ function deriveRepeatChildren(base, definition, scales, closeInheritedAction) {
 export const repeatCharts = action(
   {
     op: "repeatCharts",
-    description: "Repeat one direct Cartesian chart across an ordered field list."
+    description: "Repeat one direct chart across an ordered field-role list."
   },
   function (args = {}) {
     validateOptionObject(args, REPEAT_OPTIONS, "repeatCharts");
@@ -359,7 +435,7 @@ export const repeatCharts = action(
     const definition = resolveRepeatDefinition(this, args);
     const requestedScales = {
       ...(args.scales ?? {}),
-      [definition.channel]: args.scales?.[definition.channel] ?? "independent"
+      [definition.policyKey]: args.scales?.[definition.policyKey] ?? "independent"
     };
     const scalePolicies = normalizeFacetScalePolicies(
       this.semanticSpec,
@@ -646,11 +722,33 @@ function adoptUnitState(program, actionOwner) {
   if (program.actionStack.length !== 0) {
     throw new Error("editFacetSource program has an unfinished action stack.");
   }
+  const seedId = actionOwner.compositionSpec.children.find(id =>
+    actionOwner.children[id]?.semanticSpec.layers.length > 0
+  ) ?? actionOwner.compositionSpec.children[0];
+  const retained = actionOwner.children[seedId]?.materializationConfigs ?? {};
+  const {
+    canvas: _retainedCanvas,
+    theme: _retainedTheme,
+    facets: _retainedFacets,
+    ...retainedRecipe
+  } = retained;
+  void _retainedCanvas;
+  void _retainedTheme;
+  void _retainedFacets;
   return new actionOwner.constructor({
     semanticSpec: program.semanticSpec,
     graphicSpec: program.graphicSpec,
     resolvedScales: program.resolvedScales,
-    materializationConfigs: program.materializationConfigs,
+    materializationConfigs: freezeOwned({
+      ...program.materializationConfigs,
+      ...retainedRecipe,
+      ...(program.materializationConfigs.canvas === undefined
+        ? {}
+        : { canvas: program.materializationConfigs.canvas }),
+      ...(program.materializationConfigs.theme === undefined
+        ? {}
+        : { theme: program.materializationConfigs.theme })
+    }),
     children: {},
     context: program.context,
     trace: actionOwner.trace,

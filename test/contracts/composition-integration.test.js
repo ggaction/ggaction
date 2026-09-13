@@ -56,15 +56,16 @@ test("retains Polar children in horizontal and nested concat compositions", () =
   assert.equal(polar.compositionSpec, undefined);
 });
 
-test("rejects unsupported Polar facet before changing the source program", () => {
+test("facets a Polar program without changing the source program", () => {
   const polar = polarProgram();
   const graphics = polar.graphicSpec;
   const trace = polar.trace;
 
-  assert.throws(
-    () => polar.facet({ field: "group" }),
-    /must be a complete materializable Cartesian mark/
-  );
+  const faceted = polar.facet({ field: "group" });
+  assert.equal(faceted.compositionSpec.type, "facet");
+  assert.equal(faceted.compositionSpec.children.length, 2);
+  assert.deepEqual(Object.values(faceted.children).map(child =>
+    child.graphicSpec.objects.point.items.length), [2, 2]);
   assert.equal(polar.graphicSpec, graphics);
   assert.equal(polar.trace, trace);
   assert.equal(polar.compositionSpec, undefined);
