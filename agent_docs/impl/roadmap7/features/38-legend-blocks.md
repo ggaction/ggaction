@@ -1,7 +1,7 @@
 # R38 — 결합 범례의 channel block별 편집
 
 원래 감사 번호: **38**. Primary owner: **Phase 8**. 상태: **Implemented-primary**.
-아래 세부 API·수치 정책의 Gate는 승인됐고 현재 제품·타입·계약·문서·설치 패키지에 구현됐다. 정확한 제품 commit과 누적 검증 수치는 Phase 8 `STEP1.md` 결과 원장에 기록한다. R39의 `labelMap`과 facet header 통합은 아직 이 API에 포함하지 않는다.
+아래 세부 API·수치 정책의 Gate는 승인됐고 제품 commit `7ffafe02`에서 제품·타입·계약·문서·설치 패키지에 구현됐다. 누적 검증 수치는 Phase 8 `STEP1.md` 결과 원장에 기록한다. R39의 `labelMap`과 facet header 통합은 아직 이 API에 포함하지 않는다.
 
 ## 목적과 현재 연결점
 

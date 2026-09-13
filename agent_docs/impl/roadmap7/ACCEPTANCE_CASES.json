@@ -1260,8 +1260,8 @@
       "kind": "normal",
       "specification": "color+size separate blocks → size title/values만 변경,color 유지.",
       "owner": "features/38-legend-blocks.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/contracts/legend-blocks.test.js (separate categorical+size block title, exact samples, text, gap and symbol mapping); 7ffafe02"
     },
     {
       "id": "R38-N02",
@@ -1270,8 +1270,8 @@
       "kind": "normal",
       "specification": "merged color+shape title을color로\"A\",shape로\"B\" → 하나의 title\"B\".",
       "owner": "features/38-legend-blocks.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/contracts/legend-blocks.test.js (merged color/shape member selectors share one canonical override and final title); 7ffafe02"
     },
     {
       "id": "R38-E01",
@@ -1280,8 +1280,8 @@
       "kind": "error",
       "specification": "incompatible overrides의 두 blocks merge → Error.",
       "owner": "features/38-legend-blocks.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/contracts/legend-blocks.test.js (incompatible style and categorical order merge conflicts preserve prior state); 7ffafe02"
     },
     {
       "id": "R38-L01",
@@ -1290,8 +1290,8 @@
       "kind": "lifecycle",
       "specification": "reorder 후 overrides 동일;remove+readd 후 default.",
       "owner": "features/38-legend-blocks.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/contracts/legend-blocks.test.js (layout/Canvas/theme replay, selective removal and recreate cleanup); 7ffafe02"
     },
     {
       "id": "R38-E02",
@@ -1300,8 +1300,8 @@
       "kind": "error",
       "specification": "absent channel,size block의 symbol.size,categorical values → 오류.",
       "owner": "features/38-legend-blocks.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/contracts/legend-blocks.test.js (absent target/channel, mapping conflicts, invalid values/order/gap/nested options and empty edit atomic rejection); 7ffafe02"
     },
     {
       "id": "R39-N01",

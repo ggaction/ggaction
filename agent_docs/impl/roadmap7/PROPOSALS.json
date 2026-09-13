@@ -628,14 +628,21 @@
       "dependsOn": [
         "R37"
       ],
-      "status": "Proposed",
+      "status": "Implemented-primary",
       "scopeSelection": "user-selected",
       "file": "features/38-legend-blocks.md",
       "sources": [
+        "src/actions/guides/legends/blocks.js",
         "src/actions/guides/legends/edit.js",
         "src/actions/guides/legends/target.js",
         "src/actions/guides/legends/transition.js",
-        "src/materialization/legends.js"
+        "src/actions/guides/legends/categorical/actions.js",
+        "src/actions/guides/legends/size.js",
+        "src/actions/guides/legends/strokeWidth.js",
+        "src/actions/guides/legends/continuous/gradient.js",
+        "src/actions/guides/legends/continuous/interval.js",
+        "src/actions/guides/legends/continuous/opacity.js",
+        "src/actions/guides/legends/continuous/stroke.js"
       ],
       "acceptanceSections": [
         "값·기본값·오류 계약",
@@ -643,7 +650,8 @@
         "독립 oracle와 인수 테스트",
         "완료 조건",
         "구현 고정 명세"
-      ]
+      ],
+      "implementationCommit": "7ffafe02"
     },
     {
       "id": "R39",

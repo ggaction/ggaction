@@ -242,3 +242,34 @@ R37은 `8760111d`에서 sampled continuous legend의 exact value state machine�
 | docs build 환경 | source generation과 docs tests는 통과; host Ruby 2.6.10이라 Ruby 3.2+가 필요한 locked Jekyll build는 미실행 |
 | 열린 통합 cell | combined/multi-block selection은 R38, custom theme replay는 R47, Polar/Parallel facet/repeat consumer는 R43 |
 | 상태 연결 | R37 Implemented-primary, Phase 8 active, R38 `editLegendBlock`이 다음 WP |
+
+## 2026-09-13 R38 primary 구현 검증
+
+R38은 `7ffafe02`에서 Full 전용 `editLegendBlock`을 구현했다. Selector는 explicit legend target과 현재
+block의 member channel을 요구하며 canonical identity는 ASCII 정렬 channel 집합이다. Block-local title,
+gap, item text와 지원되는 symbol patch는 각 legend kind config의 `blockOverrides[key]`에 저장한다. Exact
+sample은 R37 sampling owner, categorical order는 기존 semantic guide order owner를 그대로 사용한다.
+Rematerializer는 persisted base config를 바꾸지 않고 effective block config로 geometry와 occupied bounds를
+다시 계산한다.
+
+Content replacement, partial legend removal, encoding removal과 color scale family transition은 graphic 삭제
+전에 old/new descriptors를 비교한다. 같은 key는 상태를 유지하고, compatible style은 새 key로 옮기며,
+서로 다른 blocks의 override/order가 충돌하거나 gradient가 symbol override를 받을 수 없으면 원본 program과
+trace를 보존한 채 거부한다. Root title edit 뒤에도 explicit block title visibility가 우선하며 block 제거 후
+재생성에는 stale override와 exact sample이 돌아오지 않는다.
+
+| 검증 | 실제 결과 |
+| --- | --- |
+| R38 acceptance | R38-N01/N02/E01/L01/E02 passed; `test/contracts/legend-blocks.test.js` 12개 runtime cases와 `legend-block-types.test.js` |
+| family 범위 | categorical merged members, continuous size/opacity/strokeWidth samples, color/stroke interval, color/stroke gradient style validation |
+| 상태·전이 | same-key preserve, membership migration, conflicting merge, ordinal↔interval↔gradient compatible migration, removal/recreate, root title precedence |
+| 독립 시각 oracle | lower-level literal graphic edit와 public block symbol edit의 graphic hierarchy 및 same-run decoded PNG pixel hash 일치 |
+| 누적 | unit 2,373/2,373; contracts 460/460; docs 47/47; charts 578/578; render 216/216; browser 73/73 |
+| public knowledge | Full runtime/type/Current catalog; 273 compact cards; relations, MCP metadata, action reference, signatures, search, machine/LLM docs freshness 통과 |
+| installed package | Node·strict TypeScript·MCP·tutorials·browser 통과; 511 entries; packed 677,508; unpacked 3,405,192; SHA-256 `4f41e6bbbfe63558aff7fcc28a7dfa19a8c1c8bedee5ea06df191ed376be1b91` |
+| browser bundles | Full/Basic/SVG gzip 342,342/166,468/6,418 bytes; `editLegendBlock`은 Basic method surface에 없음 |
+| package 예산 | R38 전 tarball이 510 entries·670,837 packed·3,373,720 unpacked로 기존 상한 여유 1 entry/163/280 bytes뿐이어서 511/680,000/3,410,000으로 조정. 공용 replay 증가를 반영해 Full/Basic ceiling은 343,000/167,000으로 조정하고 SVG는 유지 |
+| coverage | 이번 변경의 critical `legends/transition.js`는 95% lines·85% branches·100% functions 기준 통과. 전체 명령은 기존 `legends/creation.js`, `scales/definition.js`, `transforms.js` 미달 때문에 exit 1이며 이를 성공으로 기록하지 않음 |
+| docs build 환경 | source generation과 docs tests는 통과; host Ruby 2.6.10이라 Ruby 3.2+가 필요한 locked Jekyll build는 미실행 |
+| 열린 통합 cell | R39 labelMap/header, R19 atomic reencoding, R47 custom theme tokens, R43 facet/repeat consumer |
+| 상태 연결 | R38 Implemented-primary, Phase 8 active, R39 display names와 facet headers가 다음 WP |

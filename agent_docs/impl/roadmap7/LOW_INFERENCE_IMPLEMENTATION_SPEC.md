@@ -381,6 +381,8 @@ create에서 `values:"auto"`는 오류이고 omission이 auto다. values는 leng
 
 ### R38 — `editLegendBlock`
 
+상태: **Implemented-primary (`7ffafe02`)**. 아래 내용은 구현을 다시 만드는 지시가 아니라 R39 `labelMap`, R43 facet/repeat, R47 custom theme와 Phase 12 closeout이 보존해야 하는 회귀 계약이다. Runtime owner는 `src/actions/guides/legends/blocks.js`와 `target.js`/`transition.js`다.
+
 #### public action과 block identity
 
 새 action은 Full-only다. target은 기존 legend owner target, channel은 현재 logical block member다. editable field가 하나 이상 필요하다.

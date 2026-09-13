@@ -10,6 +10,7 @@
 - [ ] types/current contracts/catalog/cards/MCP/docs/package 영향 갱신
 - [ ] Gate X 결과와 남은 후속 통합 cell 기록
 - [x] R37 coherent source/test change를 검증하고 commit/push
+- [x] R38 block identity/override/transition/public-package change를 검증하고 commit/push
 
 계획 작성 시 모든 체크는 미완료다. Phase 0 은 제품 구현이 없으므로 해당 구현·시각 항목의 미적용 이유를 기록한다. Phase 12 는 새 시각 목표가 없으면 승인된 variant를 현재 코드에서 다시 실행해 검증한다.
 
@@ -45,7 +46,9 @@
 | --- | --- | --- | --- | --- |
 | W1 R37 제품 | `8760111d` | `test/contracts/legend-values.test.js`; unit 2,373; contracts 447; docs 47; browser 73; installed Node/TypeScript/MCP/browser consumer | R38 selector 전 combined/multi-block root values는 명시 거부 | Implemented-primary |
 | W1 R37 시각 증거 | `547eae1b` | independent lower-level program과 public program의 graphic equivalence 및 decoded PNG pixel hash 일치 | R38/R39의 새 시각 target | passed |
-| W2–W4 | — | 실행 전 | R38, R39, Phase 8 통합 | planned |
+| W2 R38 제품 | `7ffafe02` | `test/contracts/legend-blocks.test.js`, `legend-block-types.test.js`; unit 2,373; contracts 460; docs 47; charts 578; render 216; browser 73; lower-level/public decoded PNG pixel hash; installed Node/TypeScript/MCP/browser consumer | R19 atomic reencoding과 R43 facet/repeat, R47 custom theme token 통합 | Implemented-primary |
+| W2 R38 package | `7ffafe02` | 273 cards; package 511 entries, 677,508 packed, 3,405,192 unpacked; tar SHA-256 `4f41e6bbbfe63558aff7fcc28a7dfa19a8c1c8bedee5ea06df191ed376be1b91`; Full/Basic/SVG gzip 342,342/166,468/6,418 | Jekyll build는 host Ruby 2.6.10으로 미실행; coverage는 R38 transition 기준 통과, 기존 creation/scale-definition/transforms 기준 미달 유지 | passed-primary |
+| W3–W4 | — | 실행 전 | R39, Phase 8 통합 | planned |
 
 ## Gate 연결
 

@@ -1,6 +1,6 @@
 # Roadmap 7 — 상세 구현 작업 패킷
 
-작성 기준: 2026-09-13. 현재 branch `codex/roadmap7-authoring-refinement`, 마지막 제품 구현 checkpoint `8760111d`, 시각 증거 checkpoint `547eae1b`. 이 문서는 이미 승인된 Roadmap 7을 구현자가 기능 단위로 끝까지 실행하기 위한 **작업 분해와 종료 절차**다. Phase 8 이후의 함수·state·transition·test를 한 문서에서 기계적으로 실행하려면 [무추론 구현 명세](LOW_INFERENCE_IMPLEMENTATION_SPEC.md)를 함께 따른다. 공개 API의 정확한 의미·수식·기본값은 각 `features/*.md`가 canonical owner이며, 이 문서는 그 계약을 어느 파일에 어떤 순서로 구현하고 무엇으로 검증할지를 소유한다.
+작성 기준: 2026-09-13. 현재 branch `codex/roadmap7-authoring-refinement`, 마지막 제품 구현 checkpoint `7ffafe02`다. 이 문서는 이미 승인된 Roadmap 7을 구현자가 기능 단위로 끝까지 실행하기 위한 **작업 분해와 종료 절차**다. Phase 8 이후의 함수·state·transition·test를 한 문서에서 기계적으로 실행하려면 [무추론 구현 명세](LOW_INFERENCE_IMPLEMENTATION_SPEC.md)를 함께 따른다. 공개 API의 정확한 의미·수식·기본값은 각 `features/*.md`가 canonical owner이며, 이 문서는 그 계약을 어느 파일에 어떤 순서로 구현하고 무엇으로 검증할지를 소유한다.
 
 ## 1. 현재 상태와 실행 경계
 
@@ -24,6 +24,7 @@
 | R33 semantic label anchors | Implemented-primary | `95968031` | R43 facet/repeat 소비 회귀 |
 | R36 dynamic statistical references | Implemented-primary | `d7136174`, 통합 `5832228c` | R25 resource collector 통합 |
 | R37 exact sampled legend values | Implemented-primary | `8760111d`, 시각 증거 `547eae1b` | R38 block selector와 R43/R47 소비 회귀 |
+| R38 channel-targeted legend block edit | Implemented-primary | `7ffafe02` | R19/R39/R43/R47 소비 회귀 |
 
 완료 checkpoint의 pure core나 public API를 다른 이름으로 다시 만들지 않는다. 후속 기능이 새 consumer를 추가할 때 기존 owner에 consumer path와 regression만 보강한다.
 
@@ -31,7 +32,7 @@
 
 순서는 의존성 계약이다. 같은 번호의 소단계는 위에서 아래로 수행한다.
 
-1. Phase 8: R38 → R39 → guide 통합. R37은 완료 checkpoint다.
+1. Phase 8: R39 → guide 통합. R37·R38은 완료 checkpoint다.
 2. Phase 9: R47 → R49 → renderer/style 통합.
 3. Phase 10: R43 family matrix 전체.
 4. Phase 11: R25 reference registry와 안전 삭제.
@@ -63,7 +64,7 @@ R19, R27, R29의 완료 checkpoint를 다시 구현하지 않는다. R43을 좌�
 | R33 | semantic label anchors | Implemented-primary (`95968031`) | 완료 checkpoint + WP10/WP12 |
 | R36 | dynamic statistical references | Implemented-primary (`d7136174`, 통합 `5832228c`) | 완료 checkpoint + WP11/WP12 |
 | R37 | exact sampled legend values | Implemented-primary (`8760111d`) | 완료 checkpoint + WP8.2/WP10/WP12 |
-| R38 | combined legend block edit | Proposed | WP8.2 |
+| R38 | combined legend block edit | Implemented-primary (`7ffafe02`) | 완료 checkpoint + WP8.3/WP10/WP12 |
 | R39 | typed display names·header strips | Proposed | WP8.3 |
 | R43 | Polar/Parallel facet·repeat | Proposed | WP10 |
 | R47 | custom theme·descendant propagation | Proposed | WP9.1 |
@@ -613,13 +614,15 @@ Canonical behavior: [R37](features/37-legend-values.md).
 
 Canonical behavior: [R38](features/38-legend-blocks.md).
 
+상태: **Implemented-primary (`7ffafe02`)**. 아래 항목은 완료된 구현 경계이며 R39·R43·R47·Phase 12에서 새 consumer regression만 추가한다.
+
 구현자는 feature의 [현행 코드에 대조한 무추론 구현 명세](features/38-legend-blocks.md#현행-코드에-대조한-무추론-구현-명세)를 그대로 따른다. override owner는 각 `guides.legend[kind].blockOverrides[key]`이며 별도 `guides.legendBlocks` state를 만들지 않는다.
 
 1. **`src/actions/guides/legends/target.js`**에 merged legend의 canonical block descriptor를 만든다. identity는 sorted channel set과 channel role이며 배열 index가 아니다.
 2. `editLegendBlock({target,channel,...})`은 target legend 안에서 해당 channel이 속한 block을 정확히 하나 resolve한다.
 3. R38에서는 title/text/symbol/gap을 block override owner에 저장한다. R39가 추가하는 labelMap도 이후 같은 owner를 사용한다. values/count/order는 각 canonical content owner로 전달하고 override에 복제하지 않는다.
 4. 같은 block에 대한 순차 edit는 정상 전체 patch 적용이다. 서로 다른 기존 block을 merge하는 transition에서만 incompatible overrides를 충돌로 본다.
-5. split에서 compatible style만 새 block들로 복사한다. 기존 title/order/values가 있으면 자동 분배하지 않고 transition 전체를 거부한다. merge에서는 모든 유입 override가 동일하고 새 block에 유효할 때만 합친다.
+5. 한 old categorical block의 membership만 바뀌면 compatible style은 새 key로 이동하고 block-local title은 거부한다. 기존 categorical order는 semantic order owner에서 새 kind로 옮기며 domain을 다시 검증한다. 실제 split에서는 content title/order를 자동 분배하지 않는다. Merge는 모든 유입 override와 order가 동일하고 새 block에 유효할 때만 합친다.
 6. **`src/actions/guides/legends/transition.js`, `src/materialization/legends.js`**에서 merge/split/reorder 뒤 descriptor로 다시 resolve한다.
 7. 신규 `test/contracts/legend-blocks.test.js`: merged channel targeting, sequential edits, merge conflict, split/reorder persistence, removal, invalid channel.
 
