@@ -27,6 +27,9 @@ const GRAPHIC_PROPERTIES = Object.freeze({
     "stroke",
     "strokeWidth",
     "strokeDash",
+    "lineCap",
+    "lineJoin",
+    "miterLimit",
     "fontSize",
     "fontFamily",
     "fontWeight",
@@ -44,6 +47,9 @@ const GRAPHIC_PROPERTIES = Object.freeze({
     "fill",
     "stroke",
     "strokeWidth",
+    "lineCap",
+    "lineJoin",
+    "miterLimit",
     "opacity",
     "length"
   ]),
@@ -55,6 +61,9 @@ const GRAPHIC_PROPERTIES = Object.freeze({
     "fill",
     "stroke",
     "strokeWidth",
+    "lineCap",
+    "lineJoin",
+    "miterLimit",
     "opacity",
     "length"
   ]),
@@ -66,6 +75,9 @@ const GRAPHIC_PROPERTIES = Object.freeze({
     "stroke",
     "strokeWidth",
     "strokeDash",
+    "lineCap",
+    "lineJoin",
+    "miterLimit",
     "opacity",
     "length"
   ]),
@@ -89,6 +101,9 @@ const GRAPHIC_PROPERTIES = Object.freeze({
     "stroke",
     "strokeWidth",
     "strokeDash",
+    "lineCap",
+    "lineJoin",
+    "miterLimit",
     "opacity",
     "length"
   ])

@@ -22,7 +22,16 @@ function tree() {
       points: {
         type: "circle",
         items: [
-          { id: "points:0", properties: { x: 10, y: 20, radius: 3, strokeWidth: 2 } },
+          {
+            id: "points:0",
+            properties: {
+              x: 10,
+              y: 20,
+              radius: 3,
+              stroke: "black",
+              strokeWidth: 2
+            }
+          },
           { id: "points:1", properties: { x: 30, y: 40, radius: 4 } }
         ]
       },
@@ -30,6 +39,7 @@ function tree() {
         type: "path",
         properties: {
           commands: [{ op: "M", x: 0, y: 5 }, { op: "L", x: 50, y: 25 }],
+          stroke: "black",
           strokeWidth: 2
         }
       }
@@ -62,15 +72,15 @@ test("resolves item, path, and subtree bounds through one shared policy", () => 
     bottom: 24
   });
   assert.deepEqual(resolveConcreteGraphicBounds(spec, "path"), {
-    left: -1,
-    right: 51,
-    top: 4,
-    bottom: 26
+    left: -0.37139067635410367,
+    right: 50.3713906763541,
+    top: 4.071523309114741,
+    bottom: 25.928476690885258
   });
   assert.deepEqual(unionConcreteGraphicBounds(spec, ["points", "path"]), {
-    left: -1,
-    right: 51,
-    top: 4,
+    left: -0.37139067635410367,
+    right: 50.3713906763541,
+    top: 4.071523309114741,
     bottom: 44
   });
 });

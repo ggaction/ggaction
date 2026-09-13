@@ -66,6 +66,41 @@ function componentIds(program, kind) {
   return { titleId, labelId, backgroundId, symbolIds };
 }
 
+function legendGraphicBounds(program, id) {
+  let bounds = resolveConcreteGraphicBounds(program.graphicSpec, id);
+  const graphic = program.graphicSpec.objects[id];
+  if (!id.includes("LegendSymbol") || graphic?.type !== "line") return bounds;
+  const properties = graphic.items?.map(item => item.properties) ??
+    [graphic.properties];
+  for (const item of properties) {
+    if (
+      Object.hasOwn(item, "lineCap") ||
+      typeof item.stroke !== "string" ||
+      !(item.strokeWidth > 0)
+    ) continue;
+    const extent = item.strokeWidth / 2;
+    bounds = {
+      left: Math.min(bounds.left, Math.min(item.x1, item.x2) - extent),
+      right: Math.max(bounds.right, Math.max(item.x1, item.x2) + extent),
+      top: Math.min(bounds.top, Math.min(item.y1, item.y2) - extent),
+      bottom: Math.max(bounds.bottom, Math.max(item.y1, item.y2) + extent)
+    };
+  }
+  return bounds;
+}
+
+function unionLegendBounds(program, ids) {
+  return ids.map(id => legendGraphicBounds(program, id))
+    .reduce((result, bounds) => result === undefined
+      ? bounds
+      : {
+          left: Math.min(result.left, bounds.left),
+          right: Math.max(result.right, bounds.right),
+          top: Math.min(result.top, bounds.top),
+          bottom: Math.max(result.bottom, bounds.bottom)
+        }, undefined);
+}
+
 function textAnchor(program, id) {
   const graphic = program.graphicSpec.objects[id];
   const properties = graphic.items?.[0]?.properties ?? graphic.properties;
@@ -82,18 +117,12 @@ function blockDescriptor(program, kind, config) {
     components.labelId,
     ...(components.titleId === undefined ? [] : [components.titleId])
   ];
-  const bounds = unionConcreteGraphicBounds(program.graphicSpec, foregroundIds);
+  const bounds = unionLegendBounds(program, foregroundIds);
   const symbolAnchorIds = ["gradient", "strokeGradient"].includes(kind)
     ? [kind === "gradient" ? "colorGradientStrips" : "strokeGradientStrips"]
     : components.symbolIds;
-  const symbolAnchor = unionConcreteGraphicBounds(
-    program.graphicSpec,
-    symbolAnchorIds
-  );
-  const symbolBounds = unionConcreteGraphicBounds(
-    program.graphicSpec,
-    components.symbolIds
-  );
+  const symbolAnchor = unionLegendBounds(program, symbolAnchorIds);
+  const symbolBounds = unionLegendBounds(program, components.symbolIds);
   const labels = resolveConcreteGraphicBounds(
     program.graphicSpec,
     components.labelId
@@ -135,7 +164,7 @@ function blockDescriptor(program, kind, config) {
       x: textAnchor(program, components.labelId),
       width: labels.right - labels.left
     },
-    occupiedBounds: unionConcreteGraphicBounds(program.graphicSpec, [
+    occupiedBounds: unionLegendBounds(program, [
       ...foregroundIds,
       ...(components.backgroundId === undefined ? [] : [components.backgroundId])
     ]),
@@ -288,9 +317,9 @@ function horizontalGroups(program, groups) {
       .filter(id => id !== titleId);
     if (atomic) contentIds.push(...group.blocks.slice(1).flatMap(block =>
       block.backgroundId === undefined ? [] : [block.backgroundId]));
-    const content = unionConcreteGraphicBounds(program.graphicSpec, contentIds);
-    const foreground = unionConcreteGraphicBounds(
-      program.graphicSpec,
+    const content = unionLegendBounds(program, contentIds);
+    const foreground = unionLegendBounds(
+      program,
       [...contentIds, ...(titleId === undefined ? [] : [titleId])]
     );
     if (content === undefined || foreground === undefined) {
@@ -410,7 +439,7 @@ export const rematerializeSideLegendLane = action(
       }
       for (const block of blocks) {
         if (block.backgroundId === undefined || plan.backgrounds.some(item => item.id === block.backgroundId)) continue;
-        const bounds = unionConcreteGraphicBounds(next.graphicSpec, block.foregroundIds);
+        const bounds = unionLegendBounds(next, block.foregroundIds);
         const background = resolveLegendBackgroundFromBounds([bounds], block.border, canvas, "Legend");
         next = editLegendBackground(next, block.backgroundId, background, block.border);
       }

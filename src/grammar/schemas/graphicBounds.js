@@ -3,6 +3,7 @@ import {
   resolveTextBounds
 } from "../../core/textMetrics.js";
 import { interpolateNumber } from "../numeric.js";
+import { resolveStrokeDetails } from "../strokeStyle.js";
 import {
   findGraphic,
   findGraphicParent,
@@ -174,15 +175,101 @@ function endpointDirection(start, command, end, reverse = false) {
   return undefined;
 }
 
-function includeMiter(bounds, point, incoming, outgoing, strokeExtent) {
+function includeCircle(bounds, point, radius) {
+  return includeExtent(
+    bounds,
+    point.x - radius,
+    point.x + radius,
+    point.y - radius,
+    point.y + radius
+  );
+}
+
+function includeEndpointCap(
+  bounds,
+  point,
+  direction,
+  strokeExtent,
+  lineCap,
+  atStart
+) {
+  if (lineCap === "butt" || direction === undefined) return bounds;
+  if (lineCap === "round") {
+    return includeCircle(bounds, point, strokeExtent);
+  }
+  const sign = atStart ? -1 : 1;
+  const center = {
+    x: point.x + direction.x * strokeExtent * sign,
+    y: point.y + direction.y * strokeExtent * sign
+  };
+  const normal = { x: -direction.y, y: direction.x };
+  return includeExtent(
+    bounds,
+    center.x - Math.abs(normal.x) * strokeExtent,
+    center.x + Math.abs(normal.x) * strokeExtent,
+    center.y - Math.abs(normal.y) * strokeExtent,
+    center.y + Math.abs(normal.y) * strokeExtent
+  );
+}
+
+function segmentStrokeBounds(start, end, strokeExtent, lineCap = "butt") {
+  const command = { op: "L", x: end.x, y: end.y };
+  const direction = endpointDirection(start, command, end);
+  let bounds = includeExtent(
+    undefined,
+    start.x,
+    start.x,
+    start.y,
+    start.y
+  );
+  bounds = includeExtent(bounds, end.x, end.x, end.y, end.y);
+  if (direction === undefined) {
+    return lineCap === "butt"
+      ? bounds
+      : includeCircle(bounds, start, strokeExtent);
+  }
+  const normal = { x: -direction.y, y: direction.x };
+  for (const point of [start, end]) {
+    bounds = includeExtent(
+      bounds,
+      point.x - Math.abs(normal.x) * strokeExtent,
+      point.x + Math.abs(normal.x) * strokeExtent,
+      point.y - Math.abs(normal.y) * strokeExtent,
+      point.y + Math.abs(normal.y) * strokeExtent
+    );
+  }
+  bounds = includeEndpointCap(
+    bounds, start, direction, strokeExtent, lineCap, true
+  );
+  bounds = includeEndpointCap(
+    bounds, end, direction, strokeExtent, lineCap, false
+  );
+  return bounds;
+}
+
+function includeJoin(
+  bounds,
+  point,
+  incoming,
+  outgoing,
+  strokeExtent,
+  lineJoin,
+  miterLimit
+) {
   if (incoming === undefined || outgoing === undefined) return;
   const cross = incoming.x * outgoing.y - incoming.y * outgoing.x;
   if (Math.abs(cross) <= EPSILON) return;
+  if (lineJoin === "round") {
+    includeCircle(bounds, point, strokeExtent);
+    return;
+  }
+  if (lineJoin === "bevel") return;
   const normalX = -incoming.y - outgoing.y;
   const normalY = incoming.x + outgoing.x;
   const normalLength = Math.hypot(normalX, normalY);
+  if (!(normalLength > EPSILON)) return;
   const ratio = 2 / normalLength;
-  if (ratio > 10 * (1 + EPSILON)) return;
+  if (ratio > miterLimit * (1 + EPSILON)) return;
   const distance = strokeExtent * ratio * (cross > 0 ? -1 : 1) / normalLength;
   includeExtent(
     bounds,
@@ -193,16 +280,11 @@ function includeMiter(bounds, point, incoming, outgoing, strokeExtent) {
   );
 }
 
-function pathStrokeBounds(commands, bounds, strokeExtent) {
-  const expanded = box(
-    bounds.left, bounds.right, bounds.top, bounds.bottom, strokeExtent
-  );
-  if (!(strokeExtent > 0)) return expanded;
+function pathStrokeBounds(commands, bounds, strokeExtent, details) {
+  if (!(strokeExtent > 0)) return bounds;
   const start = { x: commands[0].x, y: commands[0].y };
   let current = start;
-  let firstDirection;
-  let previousDirection;
-  let segmentCount = 0;
+  const segments = [];
   for (const command of commands.slice(1)) {
     const end = command.op === "Z"
       ? start
@@ -210,31 +292,94 @@ function pathStrokeBounds(commands, bounds, strokeExtent) {
     const outgoing = endpointDirection(current, command, end);
     const incoming = endpointDirection(current, command, end, true);
     if (outgoing !== undefined || incoming !== undefined) {
-      if (segmentCount > 0) {
-        includeMiter(expanded, current, previousDirection, outgoing, strokeExtent);
-      } else {
-        firstDirection = outgoing;
-      }
-      previousDirection = incoming;
-      segmentCount += 1;
+      segments.push({
+        start: current,
+        end,
+        command,
+        outgoing,
+        incoming
+      });
     }
     current = end;
     if (command.op === "Z") break;
   }
-  if (commands.at(-1)?.op === "Z" && segmentCount > 1) {
-    includeMiter(
+  let expanded = bounds;
+  for (const segment of segments) {
+    let segmentBounds;
+    if (segment.command.op === "C") {
+      const centerline = resolvePathCommandBounds([
+        { op: "M", ...segment.start },
+        segment.command
+      ]);
+      segmentBounds = box(
+        centerline.left,
+        centerline.right,
+        centerline.top,
+        centerline.bottom,
+        strokeExtent
+      );
+    } else {
+      segmentBounds = segmentStrokeBounds(
+          segment.start,
+          segment.end,
+          strokeExtent,
+          "butt"
+      );
+    }
+    expanded = unionBounds([expanded, segmentBounds]);
+  }
+  for (let index = 1; index < segments.length; index += 1) {
+    includeJoin(
+      expanded,
+      segments[index].start,
+      segments[index - 1].incoming,
+      segments[index].outgoing,
+      strokeExtent,
+      details.lineJoin,
+      details.miterLimit
+    );
+  }
+  const closed = commands.at(-1)?.op === "Z";
+  if (closed && segments.length > 1) {
+    includeJoin(
       expanded,
       start,
-      previousDirection,
-      firstDirection,
-      strokeExtent
+      segments.at(-1).incoming,
+      segments[0].outgoing,
+      strokeExtent,
+      details.lineJoin,
+      details.miterLimit
+    );
+  } else if (!closed && segments.length > 0) {
+    expanded = includeEndpointCap(
+      expanded,
+      segments[0].start,
+      segments[0].outgoing,
+      strokeExtent,
+      details.lineCap,
+      true
+    );
+    expanded = includeEndpointCap(
+      expanded,
+      segments.at(-1).end,
+      segments.at(-1).incoming,
+      strokeExtent,
+      details.lineCap,
+      false
     );
   }
   return expanded;
 }
 
+function hasActiveStroke(properties) {
+  return typeof properties.stroke === "string" &&
+    (properties.strokeWidth ?? 0) > 0;
+}
+
 function primitiveBounds(type, properties = {}) {
-  const strokeExtent = (properties.strokeWidth ?? 0) / 2;
+  const strokeExtent = hasActiveStroke(properties)
+    ? properties.strokeWidth / 2
+    : 0;
   if (type === "circle") {
     if (![properties.x, properties.y, properties.radius].every(Number.isFinite)) {
       return undefined;
@@ -261,12 +406,11 @@ function primitiveBounds(type, properties = {}) {
   if (type === "line") {
     if (![properties.x1, properties.y1, properties.x2, properties.y2]
       .every(Number.isFinite)) return undefined;
-    return box(
-      Math.min(properties.x1, properties.x2),
-      Math.max(properties.x1, properties.x2),
-      Math.min(properties.y1, properties.y2),
-      Math.max(properties.y1, properties.y2),
-      strokeExtent
+    return segmentStrokeBounds(
+      { x: properties.x1, y: properties.y1 },
+      { x: properties.x2, y: properties.y2 },
+      strokeExtent,
+      resolveStrokeDetails(properties).lineCap
     );
   }
   if (type === "text") {
@@ -283,7 +427,12 @@ function primitiveBounds(type, properties = {}) {
     if (!Array.isArray(commands)) return undefined;
     const bounds = resolvePathCommandBounds(commands);
     if (bounds === undefined) return undefined;
-    return pathStrokeBounds(commands, bounds, strokeExtent);
+    return pathStrokeBounds(
+      commands,
+      bounds,
+      strokeExtent,
+      resolveStrokeDetails(properties)
+    );
   }
   return undefined;
 }

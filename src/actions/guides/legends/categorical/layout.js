@@ -88,11 +88,17 @@ function resolveSampleBounds(program, config, width) {
       if (layer.type === "line") {
         const x = (width - layer.length) / 2;
         return { type: "line", properties: { x1: x, x2: x + layer.length, y1: 0, y2: 0,
+          stroke: layer.stroke ?? (config.channels.includes("stroke")
+            ? appearance.strokes[index]
+            : appearance.colors[index]),
           strokeWidth: layer.lineWidth, opacity: layer.opacity } };
       }
       if (layer.type === "swatch") {
         return { type: "rect", properties: { x: (width - layer.width) / 2, y: -layer.height / 2,
           width: layer.width, height: layer.height, strokeWidth: layer.strokeWidth,
+          stroke: config.channels.includes("stroke")
+            ? appearance.strokes[index]
+            : layer.stroke,
           opacity: layer.opacity } };
       }
       if (config.channels.includes("shape")) {
@@ -101,9 +107,31 @@ function resolveSampleBounds(program, config, width) {
           stroke: layer.stroke, strokeWidth: layer.strokeWidth, opacity: layer.opacity });
       }
       return { type: "circle", properties: { x: width / 2, y: 0, radius: layer.size,
+        stroke: config.channels.includes("stroke")
+          ? appearance.strokes[index]
+          : layer.stroke,
         strokeWidth: layer.strokeWidth, opacity: layer.opacity } };
     });
-    return resolveConcreteGraphicBounds({ objects: { sample: { type: "collection", items } }, order: ["sample"] }, "sample");
+    return items.map((item, itemIndex) => {
+      const bounds = resolveConcreteGraphicBounds({
+        objects: { sample: item },
+        order: ["sample"]
+      }, "sample");
+      if (config.symbol.layers[itemIndex].type !== "line") return bounds;
+      const extent = config.symbol.layers[itemIndex].lineWidth / 2;
+      return {
+        ...bounds,
+        left: bounds.left - extent,
+        right: bounds.right + extent
+      };
+    }).reduce((result, bounds) => result === undefined
+      ? bounds
+      : {
+          left: Math.min(result.left, bounds.left),
+          right: Math.max(result.right, bounds.right),
+          top: Math.min(result.top, bounds.top),
+          bottom: Math.max(result.bottom, bounds.bottom)
+        }, undefined);
   });
 }
 

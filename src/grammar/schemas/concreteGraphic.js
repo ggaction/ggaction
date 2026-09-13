@@ -1,6 +1,11 @@
 import { isPlainObject } from "../../core/immutable.js";
 import { validatePathCommands } from "../pathCommands.js";
 import { validateFillPaint } from "../paint.js";
+import {
+  validateLineCap,
+  validateLineJoin,
+  validateMiterLimit
+} from "../strokeStyle.js";
 import { validateGraphicProperty } from "./graphic.js";
 
 const FINITE_PROPERTIES = new Set([
@@ -69,6 +74,9 @@ export function validateConcreteGraphicValue(type, property, value) {
       `${type}.strokeDash must be an array of non-negative finite numbers.`
     );
   }
+  if (property === "lineCap") validateLineCap(value, `${type} graphic`);
+  if (property === "lineJoin") validateLineJoin(value, `${type} graphic`);
+  if (property === "miterLimit") validateMiterLimit(value, `${type} graphic`);
   if (type === "path" && property === "commands") {
     validatePathCommands(value);
   }
