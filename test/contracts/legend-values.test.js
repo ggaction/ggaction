@@ -11,6 +11,8 @@ import { renderToPDF } from "../../src/renderers/pdf.js";
 import { renderToPNG } from "../../src/renderers/png.js";
 import { renderToSVG } from "../../src/renderers/svg.js";
 import { createMockCanvasContext, findCanvasCalls } from "../support/canvas.js";
+import { assertChartProgramsEquivalent } from "../support/chart-equivalence.js";
+import { assertRenderedPNG } from "../support/png.js";
 
 const root = fileURLToPath(new URL("../../", import.meta.url));
 
@@ -97,7 +99,7 @@ function texts(program, prefix) {
   );
 }
 
-test("stores exact size samples without changing the scale or mark mapping", () => {
+test("stores exact size samples without changing the scale or mark mapping", async () => {
   const base = sizeBase();
   const beforeScale = structuredClone(base.semanticSpec.scales.find(
     scale => scale.id === "size"
@@ -142,7 +144,27 @@ test("stores exact size samples without changing the scale or mark mapping", () 
       property: "text",
       value: ["10", "50", "100"]
     });
-  assert.deepEqual(program.graphicSpec, lowerLevelEquivalent.graphicSpec);
+  assertChartProgramsEquivalent({
+    primitiveProgram: lowerLevelEquivalent,
+    publicProgram: program,
+    compareSemanticSpec: false
+  });
+  const renderOptions = {
+    width: 760,
+    height: 600,
+    pixelRatio: 1,
+    colors: ["#4c78a8"],
+    minimumInkPixels: 100
+  };
+  const primitivePixels = await assertRenderedPNG(lowerLevelEquivalent, {
+    ...renderOptions,
+    name: "legend-values-primitive"
+  });
+  const publicPixels = await assertRenderedPNG(program, {
+    ...renderOptions,
+    name: "legend-values-user-facing"
+  });
+  assert.equal(publicPixels.pixelHash, primitivePixels.pixelHash);
 });
 
 test("maps exact opacity and stroke-width samples through their real scales", () => {
