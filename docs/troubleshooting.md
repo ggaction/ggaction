@@ -50,11 +50,14 @@ Omit an ID only when the current state has one unambiguous candidate.
 Some actions intentionally leave empty graphics until the semantic relationship
 is complete:
 
-- A line needs temporal x and a compatible aggregate y.
+- A direct Cartesian line needs quantitative or temporal x and quantitative y;
+  aggregation is optional and belongs to the chosen line recipe.
 - A histogram needs binned x and count/zero-stack y; prefer `encodeHistogram`.
-- The current grouped bar flow needs ordinal x, a compatible aggregate y, grouped color/xOffset,
-  then `encodeBarWidth`.
-- Points need concrete x/y and a radius to be visible.
+- A grouped bar needs a discrete category, a quantitative measure, grouping,
+  and a matching directional offset. The default band width is available without a
+  separate `encodeBarWidth`; call that action to choose another width.
+- Points need concrete x/y. A default radius is supplied; an explicit radius
+  or size encoding changes it and is not a prerequisite for materialization.
 
 Keep the documented action order or use the atomic action when one is provided.
 
@@ -133,12 +136,17 @@ result is valid, so confirm the exact field spelling, value type, and predicate:
 
 ```javascript
 const filtered = program.filterData({
+  id: "selectedOrigins",
   field: "Origin",
   oneOf: ["Japan", "USA"]
 });
 ```
 
 Then inspect the derived dataset row count and the final graphic item count.
+This continuation assumes `program` has one current source dataset containing
+`Origin`. Pass `source` when selecting another dataset. An empty derived dataset
+is valid; a subsequent chart that needs an automatic domain can still require
+explicit bounds or a non-empty input.
 Filtering a numeric field with string values—or a date string with a `Date`
 object—does not coerce the comparison silently.
 

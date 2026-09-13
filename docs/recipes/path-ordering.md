@@ -15,7 +15,7 @@ title: Path Ordering Recipe
 import { chart } from "ggaction";
 
 const program = chart()
-  .createCanvas()
+  .createCanvas({ margin: { top: 60, right: 180, bottom: 70, left: 70 } })
   .createData({ values: observations })
   .createLineMark()
   .encodeX({ field: "fertility" })
@@ -27,6 +27,9 @@ const program = chart()
 
 `observations` is an array of plain row objects. Source rows may be shuffled;
 the order field controls vertices independently inside each color/group series.
+Each row has finite `fertility`, `life_expect`, and `year`, plus a non-empty
+`country`. Provide several years per country. The explicit right margin is
+for the country legend; longer names may require a wider margin.
 
 ## You must decide
 

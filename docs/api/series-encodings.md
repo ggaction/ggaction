@@ -14,12 +14,13 @@ title: Series Encodings
 | `encodeGroup` | `encodeGroup({ field: "country" })` or `{ fields: ["country", "scenario"] }` | Current Line/Area; nominal fields | Explicit path identity without a scale |
 | `encodeOpacity` | `encodeOpacity({ field: "quality" })` | Current Point/Rule/Line; quantitative field | One opacity per item or series |
 | `encodeColor` | `encodeColor({ field: "group" })` | Current mark, nominal default or explicit ordinal field type, color scale | Semantic grouping and concrete color |
+| `encodeStroke` | `encodeStroke({ field: "status" })` | Current supported mark; independent stroke scale | Item or series outline color without replacing fill |
 | `encodeStrokeDash` | `encodeStrokeDash({ field: "group" })` | Current line/rule mark and dash scale | Field-driven or constant concrete dash |
 | `encodeStrokeWidth` | `encodeStrokeWidth({ field: "weight" })` | Current line/rule; independent quantitative scale | Rule-item or line-series widths |
 | `encodePathOrder` | `encodePathOrder({ field: "year" })` | Current or unique compatible Cartesian path; ascending default | Stable per-series vertex order without a scale |
 | `encodeParallelCoordinates` | `encodeParallelCoordinates({ dimensions: ["a", "b"] })` | Current line, Parallel coordinate, local scales, `break` missing policy | One row path across ordered dimension axes |
 
-Series appearance is authored through color, stroke dash, stroke width, and opacity. Each
+Series appearance is authored through color, stroke color, stroke dash, stroke width, and opacity. Each
 focused page owns the complete options, replacement behavior, and errors for
 that encoding.
 
@@ -75,6 +76,7 @@ values reject the complete action instead of producing a partial path.
 <div class="docs-entry-grid docs-entry-grid--two">
   <a href="{{ '/api/series/color/' | relative_url }}"><strong>Color</strong><span>Categorical and continuous color, grouping layouts, and aggregate bars.</span></a>
   <a href="{{ '/api/series/stroke-dash/' | relative_url }}"><strong>Stroke dash</strong><span>Constant and field-driven dash patterns for lines and rules.</span></a>
+  <a href="{{ '/api/appearance/mark-style/' | relative_url }}"><strong>Stroke color and width</strong><span>Independent outline encodings at final-item or complete-series grain.</span></a>
 </div>
 
 Parallel coordinates use one atomic ordered-dimension assignment rather than

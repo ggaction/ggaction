@@ -18,14 +18,16 @@ const program = chart()
   .createCanvas({ margin: { top: 70, right: 150, bottom: 70, left: 70 } })
   .createData({ values: cars })
   .createGradientPlot({
-    x: "Origin",
-    y: "Acceleration"
+    x: { field: "Origin", fieldType: "nominal" },
+    y: { field: "Acceleration", fieldType: "quantitative" }
   })
   .encodeColor({ field: "Origin" });
 ```
 
-`cars` is an array of plain row objects with one categorical field and one
-quantitative measure.
+`cars` contains plain rows with non-empty categorical `Origin` and finite
+numeric `Acceleration`. Use axis option objects for this facade; the nominal
+and quantitative roles determine the orientation. Provide several observations
+per origin so each density profile describes a distribution.
 
 ## You must decide
 

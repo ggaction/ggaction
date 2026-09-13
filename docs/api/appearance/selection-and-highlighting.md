@@ -91,10 +91,10 @@ const reused = selected.highlightMarks({
 });
 ```
 
-Current highlighting supports point, bar, rect, line, area, arc, and rule marks. Points
+Current highlighting supports point, bar, rect, line, area, arc, rule, and Tick marks. Points
 support fill, shape, size, outline, and logical offset. Bars support fill and
 outline. Areas and arc sectors support fill, optional outline, opacity, and path
-offset. Lines and rules support stroke, width, named or numeric `strokeDash`,
+offset. Lines, rules, and Ticks support stroke, width, named or numeric `strokeDash`,
 and logical offset. Each mark rejects options it cannot represent. `dimOthers`
 defaults to `false`;
 `true` uses opacity `0.25`. `bringToFront` defaults to `true` and keeps every
@@ -109,6 +109,7 @@ graphic attached to one selected semantic item together.
 | Area | `color`/`fill`, `opacity`, `stroke`, `strokeWidth`, `offset` | `shape`, `size`, `strokeDash` |
 | Arc | `color`/`fill`, `opacity`, `stroke`, `strokeWidth`, `offset` | `shape`, `size`, `strokeDash` |
 | Rule | `color`/`stroke`, `opacity`, `strokeWidth`, `strokeDash`, `offset` | `fill`, `shape`, `size` |
+| Tick | `color`/`stroke`, `opacity`, `strokeWidth`, `strokeDash`, `offset` | `fill`, `shape`, `size` |
 
 All calls reject unknown options, ambiguous targets, incompatible grain, and
 invalid values before creating selection or highlight state. `strokeWidth`

@@ -8,7 +8,7 @@ title: Text Marks
 {% include chart-example.html id="annotation" %}
 
 Text marks turn data values into visible labels. Add one after a compatible point,
-bar, rect, rule, or arc layer and ggaction persists that layer as the annotation
+line, bar, rect, rule, or arc layer and ggaction persists that layer as the annotation
 source.
 
 ## `createAnnotation(options)`
@@ -262,7 +262,7 @@ const labels = layeredChart
 
 An explicit source wins over the current mark and dataset. Use either `source`
 or `data`; supplying both is an error. The source must be an existing point,
-bar, rect, rule, or arc, but its position encodings may still be incomplete.
+line, bar, rect, rule, or arc, but its position encodings may still be incomplete.
 Labels appear when the source becomes complete. They follow later source
 position and scale changes, disappear when a required position is removed, and
 return when it is restored. `source` is a creation option; `editTextMark` edits
@@ -353,9 +353,12 @@ Semantic content requires an attached Bar or Arc. For Point, Rule, Rect,
 ranged Bar, or an independent text layer, choose a `field` or constant
 `value` explicitly. Histogram intervals and quantitative Arc theta have no
 inferred category label. Source completion, position changes, and scale
-edits replay the stored content alongside the label anchors. For existing facet
-child programs, add labels after faceting; the current facet template contract
-does not support pre-existing text layers.
+edits replay the stored content alongside the label anchors. Add source-attached
+labels to the unit template before faceting; supported facet replay retains
+them in each child. Parent facet headers and titles use their own composition
+actions. A parent composition is not a unit mark target. Independent text
+layers have separate source/position requirements; attached-label support does
+not imply every independent-text template is replayable.
 
 Arc-source text is anchored halfway between each sector's inner and outer radii
 at its angular midpoint. The anchor is derived from the materialized sector path,

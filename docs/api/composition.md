@@ -361,11 +361,17 @@ See the [runnable repeat example](https://github.com/ggaction/ggaction/tree/main
 
 ```javascript
 const revised = row.editCompositionLayout({
-  columns: 2,
   gap: 28,
   align: "start",
   padding: { left: 12, right: 12 }
 });
+```
+
+This continuation edits the `row` concat created above. For a one-field facet,
+use its own retained parent to change the number of columns:
+
+```javascript
+const twoColumns = faceted.editCompositionLayout({ columns: 2, gap: 28 });
 ```
 
 At least one option is required. Omitted values retain their current settings;

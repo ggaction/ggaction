@@ -128,10 +128,11 @@ frame and radial scale range.
 `createDerivedData` stores immutable source and transform provenance only; it
 does not materialize values. Chart facades and mark creation reject definition-only
 datasets with an error explaining that materialized values are required.
-Its public `DatasetTransform` union supports `filter`, `regression`, `density`,
-`interval`, `timeUnit`, `window`, and `bin2d` objects. A bare object, empty
-array, or multi-transform pipeline is invalid. See the runnable filter example and exact transform
-requirements in [Source and derived data](../../api/data/source-and-derived.md#create-derived-data).
+Its public `DatasetTransform` union is listed in the canonical
+[transform table](../../api/data/source-and-derived.md#create-derived-data).
+A bare object, empty array, or multi-transform pipeline is invalid. Focused
+`create*Data` helpers validate fields, apply defaults, and materialize values;
+raw provenance objects have their own normalized requirements.
 
 ## `createParallelAxes`, `createParallelAxis`, `editParallelAxis`, `removeParallelAxis`, `removeParallelAxes`
 

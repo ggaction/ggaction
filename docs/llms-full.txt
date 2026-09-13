@@ -491,18 +491,26 @@ fluent chain. See [Canvas](./api/canvas/), [Data](./api/data/), and the
 
 ## Common task families
 
-Add chart-specific actions after Canvas and data setup:
+Choose one independent flow after Canvas and data setup. These are alternatives
+from `buildChart(rows)`, not sequential layers sharing one x scale.
 
 ```javascript
 // Binned one-dimensional distribution with axes.
-program = program.createHistogram({ field: "value", guides: {} })
+const histogram = buildChart(rows).createHistogram({ field: "value", guides: {} })
+```
+
+Here `rows` contains finite numeric `value`. For the separate regression task,
+provide finite `x` and `y`, at least three observations, and distinct x values:
+
+```javascript
 
 // Point layer with a fitted line and confidence band.
-program = program.createPointMark({})
-program = program.encodeX({ field: "x" })
-program = program.encodeY({ field: "y" })
-program = program.createRegression({})
-program = program.createAxes({})
+const regression = buildChart(rows)
+  .createPointMark({})
+  .encodeX({ field: "x" })
+  .encodeY({ field: "y" })
+  .createRegression({})
+  .createAxes({})
 ```
 
 Use [Basic Charts](./api/basic-charts/) for histogram, scatter, line, bar, and
@@ -1638,8 +1646,9 @@ program.encodeColor({ field: "job", layout: "group" });
 
 ## Key action trace
 
-Grouped color owns the matching offset encoding. Width is the final graphical
-decision that makes concrete grouped rectangles possible.
+Grouped color owns the matching offset encoding. Completed positions and
+group offsets can materialize rectangles with the default width. This example
+uses `encodeBarWidth` to record its explicit band width before guide creation.
 
 ```text
 program
@@ -1807,7 +1816,7 @@ const program = chart()
 ```
 
 The value stays on y; y2 stores a constant zero. Both endpoints contribute to the automatic domain.
-The default opacity is 0.2. The [canonical executable example](https://github.com/ggaction/ggaction/blob/codex/roadmap6-hierarchical-actions/examples/area-layout/program.js)
+The default opacity is 0.2. The [canonical executable example](https://github.com/ggaction/ggaction/blob/main/examples/area-layout/program.js)
 uses the same action flow and includes independent variants for the remaining cases.
 
 ## Choose bounds and orientation
@@ -2389,6 +2398,82 @@ contains a [runnable browser example](https://github.com/ggaction/ggaction/tree/
 and the [canonical programs](https://github.com/ggaction/ggaction/blob/main/examples/mark-selection/program.js)
 used by the acceptance and PNG tests below.
 
+## Complete program
+
+Follow [Getting Started](./getting-started/) to create a browser module and
+`<canvas id="chart"></canvas>`. Save the Cars data under `public/cars.json`:
+
+```bash
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/main/data/cars.json --output public/cars.json
+```
+
+This complete point workflow matches the canonical program used for its image.
+The earlier snippets are alternatives for the matching point, bar, or line base.
+
+```javascript
+import { chart, render } from "ggaction";
+
+const response = await fetch("/cars.json");
+if (!response.ok) throw new Error(`Failed to load data: ${response.status}`);
+const cars = await response.json();
+
+function validCars(cars) {
+  return cars.filter(row =>
+    Number.isFinite(row.Horsepower) &&
+    Number.isFinite(row.Miles_per_Gallon) &&
+    typeof row.Origin === "string" &&
+    row.Origin.length > 0
+  );
+}
+
+function createGroupedMaximumPointHighlight(cars) {
+  const rows = validCars(cars);
+  return chart()
+    .createCanvas({
+      width: 760,
+      height: 440,
+      margin: { top: 90, right: 170, bottom: 60, left: 70 }
+    })
+    .createData({ id: "cars", values: rows })
+    .createPointMark({ id: "points" })
+    .encodeX({ field: "Horsepower" })
+    .encodeY({ field: "Miles_per_Gallon" })
+    .encodeColor({ field: "Origin" })
+    .encodeRadius({ value: 3 })
+    .createGuides({
+      axes: {
+        x: { title: { text: "Horsepower" } },
+        y: { title: { text: "Miles per Gallon" } }
+      },
+      legend: { channels: ["color"] }
+    })
+    .createTitle({
+      text: "Highest-Horsepower Car in Each Origin",
+      subtitle: "Selected points are enlarged, offset, and drawn in front"
+    })
+    .highlightMarks({
+      target: "points",
+      select: {
+        field: "Horsepower",
+        op: "max",
+        groupBy: "Origin"
+      },
+      color: "#dc2626",
+      opacity: 1,
+      stroke: "#ffffff",
+      strokeWidth: 1.5,
+      shape: "diamond",
+      size: 5.5,
+      offset: { x: 7, y: -7 },
+      dimOthers: { opacity: 0.18 },
+      bringToFront: true
+    });
+}
+
+const program = createGroupedMaximumPointHighlight(cars);
+render(program, document.querySelector("#chart").getContext("2d"));
+```
+
 ## Highlight grouped maximum points
 
 ![Maximum-horsepower point in each Origin highlighted as a red diamond](./assets/images/mark-selection-points.png)
@@ -2559,7 +2644,11 @@ are rejected before the caller program changes.
 Use `editEndpointPlot` when a source or semantic role changes:
 
 ```javascript
-const revised = changes.editEndpointPlot({
+const withReplacement = changes.createData({
+  id: "replacement",
+  values: values.map(row => ({ ...row, after: row.after + 1 }))
+});
+const revised = withReplacement.editEndpointPlot({
   data: "replacement",
   start: "after",
   end: "before",
@@ -2605,7 +2694,8 @@ const program = chart()
     groupBy: "group",
     weight: "weight",
     color: "group",
-    labels: { dx: 10 }
+    labels: { dx: 10 },
+    guides: false
   });
 
 render(program, document.querySelector("#chart").getContext("2d"));
@@ -2613,6 +2703,11 @@ render(program, document.querySelector("#chart").getContext("2d"));
 
 The runnable repository version is in
 [`examples/ecdf-plot`](https://github.com/ggaction/ggaction/tree/main/examples/ecdf-plot).
+
+This example uses colored paths and endpoint labels without axes or a legend,
+matching the repository program and image. To add a legend, reserve space on
+its chosen edge before creating guides; the 55-pixel margin is for this
+guide-free example. Use a browser module with a `<canvas id="chart"></canvas>`.
 
 ## How the step data is defined
 
@@ -3110,7 +3205,7 @@ options only when that composition is intentional.
 import { chart } from "ggaction";
 
 const program = chart()
-  .createCanvas()
+  .createCanvas({ margin: { top: 60, right: 60, bottom: 90, left: 60 } })
   .createData({ values })
   .createAreaMark({ curve: "monotone" })
   .encodeHorizon({ x: "time", y: "value" })
@@ -3118,6 +3213,10 @@ const program = chart()
 ```
 
 ## You must decide
+
+`values` contains finite numeric `value` and ordered numeric or ISO-date
+`time` values, with one observation per time. For example, use monthly dates
+such as `"2024-01-01"`. The bottom margin accommodates their automatic labels.
 
 - The ordered quantitative or temporal x field
 - The quantitative y field
@@ -3190,7 +3289,7 @@ options to reuse its fields, data, coordinate, and scales.
 import { chart } from "ggaction";
 
 const program = chart()
-  .createCanvas()
+  .createCanvas({ margin: { top: 60, right: 180, bottom: 80, left: 70 } })
   .createData({ values })
   .createErrorBand({
     x: { field: "time", fieldType: "temporal" },
@@ -3202,6 +3301,12 @@ const program = chart()
 ```
 
 ## You must decide
+
+`values` contains ISO date strings in `time`, finite numbers in `value`, and
+non-empty `series` names. Supply at least two observations per time/series
+cell for the default sample confidence interval, and several times per series
+for a path. The right margin reserves space for short series names; larger
+legend text needs more room.
 
 - Quantitative or temporal independent-position field
 - Quantitative interval field
@@ -3540,14 +3645,16 @@ const program = chart()
   .createCanvas({ margin: { top: 70, right: 150, bottom: 70, left: 70 } })
   .createData({ values: cars })
   .createGradientPlot({
-    x: "Origin",
-    y: "Acceleration"
+    x: { field: "Origin", fieldType: "nominal" },
+    y: { field: "Acceleration", fieldType: "quantitative" }
   })
   .encodeColor({ field: "Origin" });
 ```
 
-`cars` is an array of plain row objects with one categorical field and one
-quantitative measure.
+`cars` contains plain rows with non-empty categorical `Origin` and finite
+numeric `Acceleration`. Use axis option objects for this facade; the nominal
+and quantitative roles determine the orientation. Provide several observations
+per origin so each density profile describes a distribution.
 
 ## You must decide
 
@@ -3628,7 +3735,7 @@ rows when every label still cannot fit.
 import { chart } from "ggaction";
 
 const program = chart()
-  .createCanvas()
+  .createCanvas({ margin: { top: 60, right: 180, bottom: 70, left: 70 } })
   .createData({ values: observations })
   .createLineMark()
   .encodeX({ field: "fertility" })
@@ -3640,6 +3747,9 @@ const program = chart()
 
 `observations` is an array of plain row objects. Source rows may be shuffled;
 the order field controls vertices independently inside each color/group series.
+Each row has finite `fertility`, `life_expect`, and `year`, plus a non-empty
+`country`. Provide several years per country. The explicit right margin is
+for the country legend; longer names may require a wider margin.
 
 ## You must decide
 
@@ -3709,11 +3819,14 @@ Omit an ID only when the current state has one unambiguous candidate.
 Some actions intentionally leave empty graphics until the semantic relationship
 is complete:
 
-- A line needs temporal x and a compatible aggregate y.
+- A direct Cartesian line needs quantitative or temporal x and quantitative y;
+ aggregation is optional and belongs to the chosen line recipe.
 - A histogram needs binned x and count/zero-stack y; prefer `encodeHistogram`.
-- The current grouped bar flow needs ordinal x, a compatible aggregate y, grouped color/xOffset,
- then `encodeBarWidth`.
-- Points need concrete x/y and a radius to be visible.
+- A grouped bar needs a discrete category, a quantitative measure, grouping,
+ and a matching directional offset. The default band width is available without a
+ separate `encodeBarWidth`; call that action to choose another width.
+- Points need concrete x/y. A default radius is supplied; an explicit radius
+ or size encoding changes it and is not a prerequisite for materialization.
 
 Keep the documented action order or use the atomic action when one is provided.
 
@@ -3792,12 +3905,17 @@ result is valid, so confirm the exact field spelling, value type, and predicate:
 
 ```javascript
 const filtered = program.filterData({
+  id: "selectedOrigins",
   field: "Origin",
   oneOf: ["Japan", "USA"]
 });
 ```
 
 Then inspect the derived dataset row count and the final graphic item count.
+This continuation assumes `program` has one current source dataset containing
+`Origin`. Pass `source` when selecting another dataset. An empty derived dataset
+is valid; a subsequent chart that needs an automatic domain can still require
+explicit bounds or a non-empty input.
 Filtering a numeric field with string values—or a date string with a `Date`
 object—does not coerce the comparison silently.
 
@@ -3924,7 +4042,7 @@ filters to narrow the analytical relationship you want to express.
 # All Chart Examples
 
 This catalog includes every maintained public chart example. Start with the
-[curated gallery](./) when you want a shorter representative set.
+[curated gallery](./gallery/) when you want a shorter representative set.
 
 <!-- Source: /api/ -->
 
@@ -4536,13 +4654,18 @@ operation; marks and renderers never mutate source values.
 | [Reusable summaries](./api/data/source-and-derived/#createsummarydata-id-source-groupby-aggregates-members) | `createSummaryData` | Materialize grouped multi-aggregate rows with optional members |
 | [Reusable bins](./api/data/source-and-derived/#createbindata-id-source-field-binoptions) | `createBinData` | Materialize shared one-dimensional bounds, counts, and optional members |
 | [Wide-to-long data](./api/data/source-and-derived/#createfolddata-id-source-fields-as) | `createFoldData` | Materialize selected fields as stable key/value rows |
-| [Computed data](./api/data/source-and-derived/#createcomputeddata-id-source-as-expression) | `createComputedData` | Add a finite field from a closed arithmetic expression |
+| [Computed data](./api/data/source-and-derived/#createcomputeddata-id-source-as-expression) | `createComputedData` | Add numeric, string, boolean, or nullable values using the closed expression grammar |
+| [Normalization](./api/data/source-and-derived/#createnormalizeddata-id-source-field-as-groupby-method) | `createNormalizedData` | Preserve rows while expressing values relative to a group, baseline, or range |
+| [Missing keys](./api/data/source-and-derived/#createcompletedata-id-source-key-groupby-values-sequence-fill-members) | `createCompleteData` | Add missing key/group rows on an explicit domain |
+| [Missing values](./api/data/source-and-derived/#createimputeddata-id-source-fields-groupby-sortby-method-value-edges-maxgap) | `createImputedData` | Fill selected values with an explicit method and ordering policy |
+| [Empirical distributions](./tutorials/ecdf/#reuse-the-derived-rows) | `createECDFData` | Reduce observations to ordered support, mass, and probability rows |
 | [Stack data](./api/data/source-and-derived/#createstackdata-id-source-category-group-value-mode-as) | `createStackData` | Materialize reusable stack endpoints, values, and shares |
 | [Filtering](./api/data/filtering/) | `filterData`, `filterMarks`, `removeMarkFilter` | Derive rows or revise and remove one visual-layer filter |
 | [Statistical transforms](./api/data/statistical-transforms/) | `createRegressionData`, `createIntervalData`, `createDensityData` | Materialize fitted, interval, or density rows |
-| [Time-unit transforms](./api/data/time-units/) | `createTimeUnitData` | Add reproducible UTC calendar bucket fields |
+| [Time-unit transforms](./api/data/time-units/) | `createTimeUnitData` | Add calendar buckets with UTC or an explicit IANA zone and calendar policies |
 | [Window transforms](./api/data/window/) | `createWindowData` | Compute ordered values within partitions while preserving source row order |
 | [Rectangular 2D bins](./api/data/bin2d/) | `createBin2DData` | Aggregate two quantitative fields into immutable ranged cells |
+| [Derived revisions](./api/data/source-and-derived/#editing-derived-data) | Focused `edit*Data` actions | Revise one transform and explicitly recompute dependent revisions |
 
 ## Shared invariants
 
@@ -5028,10 +5151,14 @@ const before = chart()
     aggregates: [{ op: "mean", field: "scaled", as: "mean" }]
   });
 
-// Throws because "average" depends on "twice".
-before.editComputedData({ target: "twice", expression: {
-  op: "multiply", left: { field: "x" }, right: { constant: 3 }
-} });
+// Expected failure: an existing descendant requires an explicit replay policy.
+try {
+  before.editComputedData({ target: "twice", expression: {
+    op: "multiply", left: { field: "x" }, right: { constant: 3 }
+  } });
+} catch (error) {
+  console.log(error.message);
+}
 
 const after = before.editComputedData({
   target: "twice",
@@ -5148,6 +5275,7 @@ graphics, and connected guides.
 
 ```javascript
 const filtered = chart()
+  .createCanvas()
   .createData({ id: "cars", values: cars })
   .createPointMark({ id: "points" })
   .encodeX({ field: "Displacement" })
@@ -6334,7 +6462,7 @@ Reference marks remain editable with ordinary mark, encoding, and scale actions.
 # Text marks
 
 Text marks turn data values into visible labels. Add one after a compatible point,
-bar, rect, rule, or arc layer and ggaction persists that layer as the annotation
+line, bar, rect, rule, or arc layer and ggaction persists that layer as the annotation
 source.
 
 ## `createAnnotation(options)`
@@ -6588,7 +6716,7 @@ const labels = layeredChart
 
 An explicit source wins over the current mark and dataset. Use either `source`
 or `data`; supplying both is an error. The source must be an existing point,
-bar, rect, rule, or arc, but its position encodings may still be incomplete.
+line, bar, rect, rule, or arc, but its position encodings may still be incomplete.
 Labels appear when the source becomes complete. They follow later source
 position and scale changes, disappear when a required position is removed, and
 return when it is restored. `source` is a creation option; `editTextMark` edits
@@ -6679,9 +6807,12 @@ Semantic content requires an attached Bar or Arc. For Point, Rule, Rect,
 ranged Bar, or an independent text layer, choose a `field` or constant
 `value` explicitly. Histogram intervals and quantitative Arc theta have no
 inferred category label. Source completion, position changes, and scale
-edits replay the stored content alongside the label anchors. For existing facet
-child programs, add labels after faceting; the current facet template contract
-does not support pre-existing text layers.
+edits replay the stored content alongside the label anchors. Add source-attached
+labels to the unit template before faceting; supported facet replay retains
+them in each child. Parent facet headers and titles use their own composition
+actions. A parent composition is not a unit mark target. Independent text
+layers have separate source/position requirements; attached-label support does
+not imply every independent-text template is replayable.
 
 Arc-source text is anchored halfway between each sector's inner and outer radii
 at its angular midpoint. The anchor is derived from the materialized sector path,
@@ -8120,6 +8251,7 @@ const program = chart()
   .createCanvas()
   .createData({ values })
   .createViolinPlot({
+    id: "violins",
     x: "category",
     y: "value"
   });
@@ -9114,11 +9246,17 @@ See the [runnable repeat example](https://github.com/ggaction/ggaction/tree/main
 
 ```javascript
 const revised = row.editCompositionLayout({
-  columns: 2,
   gap: 28,
   align: "start",
   padding: { left: 12, right: 12 }
 });
+```
+
+This continuation edits the `row` concat created above. For a one-field facet,
+use its own retained parent to change the number of columns:
+
+```javascript
+const twoColumns = faceted.editCompositionLayout({ columns: 2, gap: 28 });
 ```
 
 At least one option is required. Omitted values retain their current settings;
@@ -9644,13 +9782,18 @@ outputs must be quantitative.
 | `target` | bar mark ID | current mark |
 | `coordinate` | coordinate ID | layer coordinate, then `"main"` |
 | `scale.id` | scale ID | `"x"` |
-| `scale.type` | `"ordinal"` | `"ordinal"` |
+| `scale.type` | `"band"` | `"band"` |
 | `scale.domain` | `"auto"` or unique nominal values | `"auto"` |
 | `scale.range` | `"auto"` or two finite numbers | `"auto"` |
 
 ```javascript
 program.encodeX({ field: "year", fieldType: "ordinal" });
 ```
+
+`fieldType: "ordinal"` describes ordered categories. Their positional scale is
+`band`, which supplies positive width; `scale.type: "ordinal"` is a different
+lookup-scale family and is rejected for this position channel. A `point` scale
+supplies centers without bandwidth and cannot define bar widths.
 
 Automatic domains preserve first-appearance order. Automatic ranges use the
 horizontal plot bounds and resolve a shared `step` and `bandwidth`. This action
@@ -10031,12 +10174,13 @@ mark-owned padding policies must be resolved before they can be migrated.
 | `encodeGroup` | `encodeGroup({ field: "country" })` or `{ fields: ["country", "scenario"] }` | Current Line/Area; nominal fields | Explicit path identity without a scale |
 | `encodeOpacity` | `encodeOpacity({ field: "quality" })` | Current Point/Rule/Line; quantitative field | One opacity per item or series |
 | `encodeColor` | `encodeColor({ field: "group" })` | Current mark, nominal default or explicit ordinal field type, color scale | Semantic grouping and concrete color |
+| `encodeStroke` | `encodeStroke({ field: "status" })` | Current supported mark; independent stroke scale | Item or series outline color without replacing fill |
 | `encodeStrokeDash` | `encodeStrokeDash({ field: "group" })` | Current line/rule mark and dash scale | Field-driven or constant concrete dash |
 | `encodeStrokeWidth` | `encodeStrokeWidth({ field: "weight" })` | Current line/rule; independent quantitative scale | Rule-item or line-series widths |
 | `encodePathOrder` | `encodePathOrder({ field: "year" })` | Current or unique compatible Cartesian path; ascending default | Stable per-series vertex order without a scale |
 | `encodeParallelCoordinates` | `encodeParallelCoordinates({ dimensions: ["a", "b"] })` | Current line, Parallel coordinate, local scales, `break` missing policy | One row path across ordered dimension axes |
 
-Series appearance is authored through color, stroke dash, stroke width, and opacity. Each
+Series appearance is authored through color, stroke color, stroke dash, stroke width, and opacity. Each
 focused page owns the complete options, replacement behavior, and errors for
 that encoding.
 
@@ -10091,6 +10235,7 @@ values reject the complete action instead of producing a partial path.
 
  [Color Categorical and continuous color, grouping layouts, and aggregate bars.](./api/series/color/)
  [Stroke dash Constant and field-driven dash patterns for lines and rules.](./api/series/stroke-dash/)
+ [Stroke color and width Independent outline encodings at final-item or complete-series grain.](./api/appearance/mark-style/)
 
 Parallel coordinates use one atomic ordered-dimension assignment rather than
 separate x/y calls. See [Parallel Coordinates](./api/parallel-coordinates/) for
@@ -10548,10 +10693,10 @@ const reused = selected.highlightMarks({
 });
 ```
 
-Current highlighting supports point, bar, rect, line, area, arc, and rule marks. Points
+Current highlighting supports point, bar, rect, line, area, arc, rule, and Tick marks. Points
 support fill, shape, size, outline, and logical offset. Bars support fill and
 outline. Areas and arc sectors support fill, optional outline, opacity, and path
-offset. Lines and rules support stroke, width, named or numeric `strokeDash`,
+offset. Lines, rules, and Ticks support stroke, width, named or numeric `strokeDash`,
 and logical offset. Each mark rejects options it cannot represent. `dimOthers`
 defaults to `false`;
 `true` uses opacity `0.25`. `bringToFront` defaults to `true` and keeps every
@@ -10566,6 +10711,7 @@ graphic attached to one selected semantic item together.
 | Area | `color`/`fill`, `opacity`, `stroke`, `strokeWidth`, `offset` | `shape`, `size`, `strokeDash` |
 | Arc | `color`/`fill`, `opacity`, `stroke`, `strokeWidth`, `offset` | `shape`, `size`, `strokeDash` |
 | Rule | `color`/`stroke`, `opacity`, `strokeWidth`, `strokeDash`, `offset` | `fill`, `shape`, `size` |
+| Tick | `color`/`stroke`, `opacity`, `strokeWidth`, `strokeDash`, `offset` | `fill`, `shape`, `size` |
 
 All calls reject unknown options, ambiguous targets, incompatible grain, and
 invalid values before creating selection or highlight state. `strokeWidth`
@@ -10951,7 +11097,13 @@ program
 
 The complete family is `editXScale`, `editYScale`, `editThetaScale`,
 `editRScale`, `editColorScale`, `editStrokeScale`, `editSizeScale`, `editOpacityScale`,
-`editShapeScale`, `editStrokeWidthScale`, and `editStrokeDashScale`.
+`editShapeScale`, `editStrokeWidthScale`, `editStrokeDashScale`,
+`editXOffsetScale`, `editYOffsetScale`, and `editParallelScale`.
+
+Offset editors require `target`; they edit that mark's nested offset scale.
+`editParallelScale` requires both `target` and the exact `dimension` field.
+`editStrokeScale` also requires `target` and does not accept a raw scale ID.
+Other focused selectors follow the rules below.
 `editRScale` means Polar radial position; point glyph radius remains a constant
 appearance action.
 
@@ -11084,13 +11236,16 @@ require explicit removal and recreation; see [color transitions](./api/scales/di
 | `band` | Discrete category position that needs positive bandwidth, especially bars |
 | `point` | Discrete point/rule centers and compatible shared centers; never bar width |
 | `ordinal` | Nominal or ordinal color, nominal shape/stroke dash, and xOffset lookup |
-| `sequential` | Quantitative/temporal point color and quantitative aggregate-bar color |
-| `quantize`, `quantile`, `threshold` | Quantitative point color |
+| `sequential` | Compatible Point/Bar/Rect color and supported quantitative/temporal stroke consumers |
+| `quantize`, `quantile`, `threshold` | Supported quantitative color/stroke consumers and Point size; see the channel-specific matrix |
 | `unknown` fallback | Row-owned point x/y/color/size/shape/opacity only |
 
 The field type, channel, mark recipe, and all consumers of a shared scale must
 agree. `editScale` validates that complete matrix before applying any semantic
 or graphical change.
+This page owns position scales. For appearance consumers and their exact mark
+restrictions, use the [scale-family matrix](./api/scales/) and
+[field stroke](./api/appearance/mark-style/#stroke-color-and-linerule-appearance).
 
 ## Continuous scales
 
@@ -11284,6 +11439,10 @@ legends, and renderers receive only concrete CSS colors. Explicit `range` and
 `palette` cannot be supplied together.
 
 ## Continuous point and aggregate-bar color
+
+This section also applies to Rect color: one value per final cell. Keep this
+anchor for existing links. Independent field-driven stroke has its own channel
+and compatible continuous color scale; see [Mark Style](./api/appearance/mark-style/).
 
 Quantitative or temporal point color uses `fieldType: "quantitative"` or
 `"temporal"` and an internal sequential scale. Aggregate bars support
@@ -11899,9 +12058,10 @@ UTC time formats compose `%Y` (year), `%m` (two-digit month), `%d` (two-digit
 day), and `%b` (English abbreviated month) with literals, for example `%b %Y`,
 `%Y-%m`, or `%Y/%m/%d`; use `%%` for a literal percent sign. Every time format
 must contain at least one date directive, and unknown or dangling directives
-are rejected. Numeric formats require a linear scale, time formats require a
-time scale, and ordinal labels use `"auto"`. The existing `{ decimals:
-nonNegativeInteger }` form remains available for linear labels. Explicit
+are rejected. Numeric formats apply to quantitative scales, including log,
+sqrt, pow, and symlog; time formats require a time scale. Discrete labels use
+`"auto"` and may apply `labelMap`. The existing `{ decimals:
+nonNegativeInteger }` form remains available for numeric labels. Explicit
 formats remain exact and may intentionally produce repeated display strings.
 
 The selected coordinate ID is stored on each semantic axis. Canvas size and
@@ -13944,7 +14104,8 @@ which installed face satisfies that family.
 | Family | Must be a non-empty string; availability is controlled by the host/backend |
 | Size | Must be a positive finite number in logical chart pixels |
 | Weight | A non-empty string or finite number; numeric renderer weights are rounded to the nearest hundred and clamped to 100–900 |
-| Measurement | Uses the active backend, so fallback faces can change glyph widths and bounds |
+| Authoring bounds | Deterministic estimates from text, size, and broad family/weight factors; no backend `measureText` call |
+| Painted glyphs | The host/backend resolves the actual face; its glyph widths can differ from the estimated bounds |
 | SVG | Emits `font-family`, `font-size`, and normalized `font-weight`; the consumer still resolves the font |
 | Canvas, PNG, PDF | Draw through the Canvas-compatible backend with the resolved host/native font |
 
@@ -13979,11 +14140,12 @@ global theme or rewrite every axis and legend.
 
 ## Loading in browsers
 
-Load required web fonts before building and rendering charts whose layout
-depends on them. A common host pattern is to wait for
-`document.fonts.ready`, then create or rebuild the program. If the first render
-uses a fallback and the font arrives later, ggaction does not automatically
-remeasure or rerender that immutable snapshot.
+Load required web fonts before rendering so the backend can use the intended
+face. Waiting for `document.fonts.ready` does not change ggaction's deterministic
+text estimates into browser measurements. Rebuilding the same program with the
+same styles retains those estimates. If a font arrives after drawing, rerender
+explicitly to update the painted glyphs; immutable snapshots do not rerender
+automatically.
 
 ```javascript
 await document.fonts.ready;
@@ -13995,8 +14157,8 @@ render(program, context);
 
 - Use a complete fallback stack, not one unqualified family name.
 - Install or load the approved fonts in every renderer environment.
-- Build the program only after those fonts are ready when text bounds affect
- layout.
+- Render after fonts are ready and allow space for differences between
+ estimated bounds and actual glyphs, especially in dense labels and legends.
 - Compare text wrapping, axis labels, legends, and title bounds in browser and
  Node artifacts.
 - Avoid depending on an intermediate numeric weight such as `650` remaining
@@ -14129,7 +14291,7 @@ runtime tests.
 # Advanced Axis Components
 
 Use these actions when a complete `createAxes` call is not sufficient. All
-component actions require a resolved linear, time, or ordinal scale and Canvas
+component actions require a resolved compatible quantitative, time, band, or point scale and Canvas
 bounds. x supports `bottom` and `top`; y supports `left` and `right`.
 
 ## Complete single-channel axes
@@ -14212,16 +14374,17 @@ program.editYAxisLabels({ offset: 16, fontSize: 13 });
 ```
 
 Labels accept `scale` on creation plus `position`, `count`, `values`, `offset`,
-`format`, `color`, `fontSize`, `fontFamily`, and `fontWeight`. Format is
+`format`, `color`, `fontSize`, `fontFamily`, `fontWeight`, `rotation`, `maxWidth`,
+`wrap`, `lineHeight`, `overlap`, and `labelMap`. Format is
 `"auto"`, `{ decimals: nonNegativeInteger }`, a closed numeric string, or a
 validated time directive sequence. Default offsets are 18 for x and 12 for y;
 default font size is 12.
 
 | Scale | Explicit format strings |
 | --- | --- |
-| Linear | `.0f`, `.1f`, `.2f`, `.0%`, `.1%`, `.2e` |
+| Quantitative (linear/log/sqrt/pow/symlog) | `.0f`–`.12f`, `.0%`–`.12%`, `.0e`–`.12e` |
 | Time | UTC `%Y`, `%m`, `%d`, `%b` directives plus literals; `%%` is a literal percent |
-| Ordinal | none; use `"auto"` |
+| Discrete band/point | use `"auto"`; `labelMap` changes display text without changing category identity |
 
 Automatic time labels select year, month, day, hour, minute, or second
 precision from the resolved domain span, then minimally refine that precision
@@ -14251,8 +14414,9 @@ program.editYAxisTicksAndLabels({
 
 Shared options are `scale` (create only), `position`, and either `count` or
 `values`. Nested `ticks` accepts `length`, `color`, and `lineWidth`; nested
-`labels` accepts `offset`, `format`, `color`, `fontSize`, `fontFamily`, and
-`fontWeight`.
+`labels` accepts the same text style, format, rotation, wrapping, overlap, and
+label-map options as standalone Cartesian labels. Its count/values belong to
+the shared ticks-and-labels request. See [axis label layout](./api/axes/).
 
 ## Titles
 
@@ -14342,7 +14506,7 @@ remain available for custom layering and editing.
 | Semantic marks | rule | area | bar + rule + point | rect + rule | area |
 | Position | categorical, quantitative, or temporal independent axis; interval on the other | quantitative/temporal independent axis; x/x2 or y/y2 interval | categorical axis; quantitative interval axis | categorical axis; sampled quantitative profile | categorical center; quantitative density profile |
 | Nominal color | — | grouped area fill | body fill through ranged-bar color | category hue with density modulation | category or two-value split fill |
-| Appearance | stroke, width, dash, opacity, optional caps | fill, opacity, 8 curves, styled boundaries | fixed defaults; 1.5px median/whiskers | structured gradient fill, width, optional center rule | fill, opacity, outline, 8 curves, shared/independent width |
+| Appearance | stroke, width, dash, opacity, optional caps | fill, opacity, 8 curves, styled boundaries | configurable component styles and whiskers | structured gradient fill, width, optional center rule | fill, opacity, outline, 8 curves, shared/independent width |
 | Automatic guides | interval and independent axes; perpendicular grid | interval and independent axes; perpendicular grid | opt-in categorical/linear axes and horizontal grid | categorical/linear axes, grid, density legend | categorical/linear axes; horizontal grid |
 | Legend | — | categorical | optional ranged-bar color legend | neutral density; categorical color when requested | optional category or split legend |
 | Selection/highlight | rule | series | component | category strip | full or split profile |
@@ -14397,19 +14561,22 @@ pass `guides: {}` or nested options to create applicable guides.
 
 ### Data, transforms, and heatmaps
 
-The public one-transform derived-data union covers rectangular 2D bins,
-filters, regression, density, Horizon folding, intervals, UTC time units, and
-window operations. Arbitrary transform pipelines and transforms outside that
-documented union are not implemented. Interactive legends are also not
-implemented.
+The public one-transform derived-data union includes reusable bins, computed
+fields, folds, summaries, stacks, normalized data, completed keys, imputed values,
+ECDFs, filters, regression, density, Horizon folding, intervals, time units,
+windows, and rectangular 2D bins. The
+[canonical transform table](./api/data/source-and-derived/#create-derived-data)
+owns the exact tag set and normalized forms. Arbitrary multi-transform
+pipelines and interactive legends are not implemented.
 Pre-gridded heatmaps do not synthesize missing cells. Binned heatmaps support
 fixed rectangular bins only; weighted, adaptive, hexagonal, and overflow bins
 are not implemented. Cell text must be added as a separate text layer.
 
 ### Guides and interval charts
 
-Categorical legends support all four edges; point composite and size legends
-support right and left side layouts.
+Categorical, point composite, and size legends support all four edges;
+edge-specific alignment and combined-block layout rules are documented in
+[Legends](./api/legends/).
 Error bars support vertical and horizontal statistical intervals, existing
 center/lower/upper fields, optional caps, and constant rule appearance.
 Error bands support vertical and horizontal statistical or explicit ranges and
@@ -14431,8 +14598,10 @@ Violin plots support the same category/measure orientation family, symmetric
 full profiles, one-sided placement, two-value split halves, shared or
 category-local density width, density revision, source filtering, profile
 selection/highlighting, Cartesian facet replay, and compatible overlay scales.
-Raincloud components, more than two split values, adaptive bandwidth, and
-Polar violin placement are not implemented.
+For a density-plus-observations chart, use the separate
+[`createRaincloudPlot`](./reference/actions/charts-data/#createraincloudplot)
+facade. Violin itself does not own raincloud components. More than two split
+values, adaptive bandwidth, and Polar violin placement are not implemented.
 
 ### Selection, appearance, and text
 
@@ -14955,7 +15124,7 @@ repeat field list changes.
 ## `editFacetHeaders`
 
 ```javascript
-editFacetHeaders({ fontSize?, fontFamily?, fontWeight?, color?, offset? })
+editFacetHeaders({ fontSize?, fontFamily?, fontWeight?, color?, offset?, role?, labelMap?, side?, align? })
 ```
 
 Edit the parent-owned repeated facet headers and rebuild the parent snapshot
@@ -17294,10 +17463,11 @@ frame and radial scale range.
 `createDerivedData` stores immutable source and transform provenance only; it
 does not materialize values. Chart facades and mark creation reject definition-only
 datasets with an error explaining that materialized values are required.
-Its public `DatasetTransform` union supports `filter`, `regression`, `density`,
-`interval`, `timeUnit`, `window`, and `bin2d` objects. A bare object, empty
-array, or multi-transform pipeline is invalid. See the runnable filter example and exact transform
-requirements in [Source and derived data](./api/data/source-and-derived/#create-derived-data).
+Its public `DatasetTransform` union is listed in the canonical
+[transform table](./api/data/source-and-derived/#create-derived-data).
+A bare object, empty array, or multi-transform pipeline is invalid. Focused
+`create*Data` helpers validate fields, apply defaults, and materialize values;
+raw provenance objects have their own normalized requirements.
 
 ## `createParallelAxes`, `createParallelAxis`, `editParallelAxis`, `removeParallelAxis`, `removeParallelAxes`
 
@@ -17482,7 +17652,10 @@ See [Action authoring](./extension/action-authoring/) and
 ## Program functions
 
 Package-level functions create, compose, or render programs. They are not
-chainable actions and do not modify the action trace.
+chainable methods. `hconcat` and `vconcat` create a new composition program and
+record their wrapped composition action and children in its trace. They leave
+input programs unchanged. `chart` starts an empty trace; rendering reads the
+concrete graphics without recording an authoring action.
 
 ### Exact TypeScript signatures
 
@@ -17944,13 +18117,21 @@ creating or using a complete chart program.
 import { chart } from "ggaction";
 import "ggaction-example-extension";
 
-const program = chart().setPointOpacity({ target: "points", value: 0.5 });
+const program = chart()
+  .createCanvas()
+  .createGraphics({ id: "points", type: "circle", parent: "canvas" })
+  .setPointOpacity({ target: "points", value: 0.5 });
 ```
 
 Registration affects `chart()` from `ggaction`, including programs created
 before the import because methods live on the shared full-program prototype. It
 does not add methods to `ggaction/basic`. An extension package must preserve its
 registration module as a package side effect so bundlers do not remove it.
+
+This registration example edits an existing primitive circle. It does not
+create a semantic Point mark or define its position. For ordinary chart
+appearance, use `encodeOpacity` on a semantic mark so later materialization
+retains the requested opacity. Both language examples require the target first.
 
 The entire action map is validated before any method is installed. Extension
 names must be unique, action keys must match their wrapped `op`, and built-in,
@@ -17990,10 +18171,7 @@ const setPointOpacityAction = action<SetPointOpacityOptions>(
     description: "Set the opacity of a point mark."
   },
   function ({ target, value }) {
-    const withTarget = this.graphicSpec.objects[target] === undefined
-      ? this.createGraphics({ id: target, type: "circle" })
-      : this;
-    return withTarget.editGraphics({
+    return this.editGraphics({
       target,
       property: "opacity",
       value
@@ -18027,6 +18205,8 @@ registerExtension({
 });
 
 export const extensionProgram = chart()
+  .createCanvas()
+  .createGraphics({ id: "points", type: "circle", parent: "canvas" })
   .setPointOpacity({ target: "points", value: 0.5 })
   .markReady();
 

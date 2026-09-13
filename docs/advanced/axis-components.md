@@ -8,7 +8,7 @@ title: Advanced Axis Components
 {% include chart-example.html id="scatterplot" %}
 
 Use these actions when a complete `createAxes` call is not sufficient. All
-component actions require a resolved linear, time, or ordinal scale and Canvas
+component actions require a resolved compatible quantitative, time, band, or point scale and Canvas
 bounds. x supports `bottom` and `top`; y supports `left` and `right`.
 
 ## Complete single-channel axes
@@ -93,16 +93,17 @@ program.editYAxisLabels({ offset: 16, fontSize: 13 });
 ```
 
 Labels accept `scale` on creation plus `position`, `count`, `values`, `offset`,
-`format`, `color`, `fontSize`, `fontFamily`, and `fontWeight`. Format is
+`format`, `color`, `fontSize`, `fontFamily`, `fontWeight`, `rotation`, `maxWidth`,
+`wrap`, `lineHeight`, `overlap`, and `labelMap`. Format is
 `"auto"`, `{ decimals: nonNegativeInteger }`, a closed numeric string, or a
 validated time directive sequence. Default offsets are 18 for x and 12 for y;
 default font size is 12.
 
 | Scale | Explicit format strings |
 | --- | --- |
-| Linear | `.0f`, `.1f`, `.2f`, `.0%`, `.1%`, `.2e` |
+| Quantitative (linear/log/sqrt/pow/symlog) | `.0f`–`.12f`, `.0%`–`.12%`, `.0e`–`.12e` |
 | Time | UTC `%Y`, `%m`, `%d`, `%b` directives plus literals; `%%` is a literal percent |
-| Ordinal | none; use `"auto"` |
+| Discrete band/point | use `"auto"`; `labelMap` changes display text without changing category identity |
 
 Automatic time labels select year, month, day, hour, minute, or second
 precision from the resolved domain span, then minimally refine that precision
@@ -132,8 +133,9 @@ program.editYAxisTicksAndLabels({
 
 Shared options are `scale` (create only), `position`, and either `count` or
 `values`. Nested `ticks` accepts `length`, `color`, and `lineWidth`; nested
-`labels` accepts `offset`, `format`, `color`, `fontSize`, `fontFamily`, and
-`fontWeight`.
+`labels` accepts the same text style, format, rotation, wrapping, overlap, and
+label-map options as standalone Cartesian labels. Its count/values belong to
+the shared ticks-and-labels request. See [axis label layout](../api/axes.md).
 
 ## Titles
 

@@ -11,6 +11,82 @@ contains a [runnable browser example](https://github.com/ggaction/ggaction/tree/
 and the [canonical programs](https://github.com/ggaction/ggaction/blob/main/examples/mark-selection/program.js)
 used by the acceptance and PNG tests below.
 
+## Complete program
+
+Follow [Getting Started](../getting-started.md) to create a browser module and
+`<canvas id="chart"></canvas>`. Save the Cars data under `public/cars.json`:
+
+```bash
+curl --fail --location https://raw.githubusercontent.com/ggaction/ggaction/main/data/cars.json --output public/cars.json
+```
+
+This complete point workflow matches the canonical program used for its image.
+The earlier snippets are alternatives for the matching point, bar, or line base.
+
+```javascript
+import { chart, render } from "ggaction";
+
+const response = await fetch("/cars.json");
+if (!response.ok) throw new Error(`Failed to load data: ${response.status}`);
+const cars = await response.json();
+
+function validCars(cars) {
+  return cars.filter(row =>
+    Number.isFinite(row.Horsepower) &&
+    Number.isFinite(row.Miles_per_Gallon) &&
+    typeof row.Origin === "string" &&
+    row.Origin.length > 0
+  );
+}
+
+function createGroupedMaximumPointHighlight(cars) {
+  const rows = validCars(cars);
+  return chart()
+    .createCanvas({
+      width: 760,
+      height: 440,
+      margin: { top: 90, right: 170, bottom: 60, left: 70 }
+    })
+    .createData({ id: "cars", values: rows })
+    .createPointMark({ id: "points" })
+    .encodeX({ field: "Horsepower" })
+    .encodeY({ field: "Miles_per_Gallon" })
+    .encodeColor({ field: "Origin" })
+    .encodeRadius({ value: 3 })
+    .createGuides({
+      axes: {
+        x: { title: { text: "Horsepower" } },
+        y: { title: { text: "Miles per Gallon" } }
+      },
+      legend: { channels: ["color"] }
+    })
+    .createTitle({
+      text: "Highest-Horsepower Car in Each Origin",
+      subtitle: "Selected points are enlarged, offset, and drawn in front"
+    })
+    .highlightMarks({
+      target: "points",
+      select: {
+        field: "Horsepower",
+        op: "max",
+        groupBy: "Origin"
+      },
+      color: "#dc2626",
+      opacity: 1,
+      stroke: "#ffffff",
+      strokeWidth: 1.5,
+      shape: "diamond",
+      size: 5.5,
+      offset: { x: 7, y: -7 },
+      dimOthers: { opacity: 0.18 },
+      bringToFront: true
+    });
+}
+
+const program = createGroupedMaximumPointHighlight(cars);
+render(program, document.querySelector("#chart").getContext("2d"));
+```
+
 ## Highlight grouped maximum points
 
 ![Maximum-horsepower point in each Origin highlighted as a red diamond](../assets/images/mark-selection-points.png)

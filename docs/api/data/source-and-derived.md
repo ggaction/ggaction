@@ -468,10 +468,14 @@ const before = chart()
     aggregates: [{ op: "mean", field: "scaled", as: "mean" }]
   });
 
-// Throws because "average" depends on "twice".
-before.editComputedData({ target: "twice", expression: {
-  op: "multiply", left: { field: "x" }, right: { constant: 3 }
-} });
+// Expected failure: an existing descendant requires an explicit replay policy.
+try {
+  before.editComputedData({ target: "twice", expression: {
+    op: "multiply", left: { field: "x" }, right: { constant: 3 }
+  } });
+} catch (error) {
+  console.log(error.message);
+}
 
 const after = before.editComputedData({
   target: "twice",

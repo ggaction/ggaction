@@ -44,18 +44,26 @@ fluent chain. See [Canvas](./api/canvas.md), [Data](./api/data.md), and the
 
 ## Common task families
 
-Add chart-specific actions after Canvas and data setup:
+Choose one independent flow after Canvas and data setup. These are alternatives
+from `buildChart(rows)`, not sequential layers sharing one x scale.
 
 ```javascript
 // Binned one-dimensional distribution with axes.
-program = program.createHistogram({ field: "value", guides: {} })
+const histogram = buildChart(rows).createHistogram({ field: "value", guides: {} })
+```
+
+Here `rows` contains finite numeric `value`. For the separate regression task,
+provide finite `x` and `y`, at least three observations, and distinct x values:
+
+```javascript
 
 // Point layer with a fitted line and confidence band.
-program = program.createPointMark({})
-program = program.encodeX({ field: "x" })
-program = program.encodeY({ field: "y" })
-program = program.createRegression({})
-program = program.createAxes({})
+const regression = buildChart(rows)
+  .createPointMark({})
+  .encodeX({ field: "x" })
+  .encodeY({ field: "y" })
+  .createRegression({})
+  .createAxes({})
 ```
 
 Use [Basic Charts](./api/basic-charts.md) for histogram, scatter, line, bar, and

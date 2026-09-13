@@ -15,7 +15,7 @@ title: Error Band Recipe
 import { chart } from "ggaction";
 
 const program = chart()
-  .createCanvas()
+  .createCanvas({ margin: { top: 60, right: 180, bottom: 80, left: 70 } })
   .createData({ values })
   .createErrorBand({
     x: { field: "time", fieldType: "temporal" },
@@ -27,6 +27,12 @@ const program = chart()
 ```
 
 ## You must decide
+
+`values` contains ISO date strings in `time`, finite numbers in `value`, and
+non-empty `series` names. Supply at least two observations per time/series
+cell for the default sample confidence interval, and several times per series
+for a path. The right margin reserves space for short series names; larger
+legend text needs more room.
 
 - Quantitative or temporal independent-position field
 - Quantitative interval field

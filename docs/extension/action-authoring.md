@@ -53,13 +53,21 @@ creating or using a complete chart program.
 import { chart } from "ggaction";
 import "ggaction-example-extension";
 
-const program = chart().setPointOpacity({ target: "points", value: 0.5 });
+const program = chart()
+  .createCanvas()
+  .createGraphics({ id: "points", type: "circle", parent: "canvas" })
+  .setPointOpacity({ target: "points", value: 0.5 });
 ```
 
 Registration affects `chart()` from `ggaction`, including programs created
 before the import because methods live on the shared full-program prototype. It
 does not add methods to `ggaction/basic`. An extension package must preserve its
 registration module as a package side effect so bundlers do not remove it.
+
+This registration example edits an existing primitive circle. It does not
+create a semantic Point mark or define its position. For ordinary chart
+appearance, use `encodeOpacity` on a semantic mark so later materialization
+retains the requested opacity. Both language examples require the target first.
 
 The entire action map is validated before any method is installed. Extension
 names must be unique, action keys must match their wrapped `op`, and built-in,
@@ -99,10 +107,7 @@ const setPointOpacityAction = action<SetPointOpacityOptions>(
     description: "Set the opacity of a point mark."
   },
   function ({ target, value }) {
-    const withTarget = this.graphicSpec.objects[target] === undefined
-      ? this.createGraphics({ id: target, type: "circle" })
-      : this;
-    return withTarget.editGraphics({
+    return this.editGraphics({
       target,
       property: "opacity",
       value
@@ -136,6 +141,8 @@ registerExtension({
 });
 
 export const extensionProgram = chart()
+  .createCanvas()
+  .createGraphics({ id: "points", type: "circle", parent: "canvas" })
   .setPointOpacity({ target: "points", value: 0.5 })
   .markReady();
 

@@ -23,10 +23,7 @@ const setPointOpacityAction = action<SetPointOpacityOptions>(
     description: "Set the opacity of a point mark."
   },
   function ({ target, value }) {
-    const withTarget = this.graphicSpec.objects[target] === undefined
-      ? this.createGraphics({ id: target, type: "circle" })
-      : this;
-    return withTarget.editGraphics({
+    return this.editGraphics({
       target,
       property: "opacity",
       value
@@ -60,6 +57,8 @@ registerExtension({
 });
 
 export const extensionProgram = chart()
+  .createCanvas()
+  .createGraphics({ id: "points", type: "circle", parent: "canvas" })
   .setPointOpacity({ target: "points", value: 0.5 })
   .markReady();
 

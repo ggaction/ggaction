@@ -75,6 +75,7 @@ graphics, and connected guides.
 
 ```javascript
 const filtered = chart()
+  .createCanvas()
   .createData({ id: "cars", values: cars })
   .createPointMark({ id: "points" })
   .encodeX({ field: "Displacement" })

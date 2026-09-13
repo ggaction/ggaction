@@ -15,7 +15,7 @@ title: Horizon Chart Recipe
 import { chart } from "ggaction";
 
 const program = chart()
-  .createCanvas()
+  .createCanvas({ margin: { top: 60, right: 60, bottom: 90, left: 60 } })
   .createData({ values })
   .createAreaMark({ curve: "monotone" })
   .encodeHorizon({ x: "time", y: "value" })
@@ -23,6 +23,10 @@ const program = chart()
 ```
 
 ## You must decide
+
+`values` contains finite numeric `value` and ordered numeric or ISO-date
+`time` values, with one observation per time. For example, use monthly dates
+such as `"2024-01-01"`. The bottom margin accommodates their automatic labels.
 
 - The ordered quantitative or temporal x field
 - The quantitative y field

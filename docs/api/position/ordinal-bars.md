@@ -25,13 +25,18 @@ title: Bar Positions
 | `target` | bar mark ID | current mark |
 | `coordinate` | coordinate ID | layer coordinate, then `"main"` |
 | `scale.id` | scale ID | `"x"` |
-| `scale.type` | `"ordinal"` | `"ordinal"` |
+| `scale.type` | `"band"` | `"band"` |
 | `scale.domain` | `"auto"` or unique nominal values | `"auto"` |
 | `scale.range` | `"auto"` or two finite numbers | `"auto"` |
 
 ```javascript
 program.encodeX({ field: "year", fieldType: "ordinal" });
 ```
+
+`fieldType: "ordinal"` describes ordered categories. Their positional scale is
+`band`, which supplies positive width; `scale.type: "ordinal"` is a different
+lookup-scale family and is rejected for this position channel. A `point` scale
+supplies centers without bandwidth and cannot define bar widths.
 
 Automatic domains preserve first-appearance order. Automatic ranges use the
 horizontal plot bounds and resolve a shared `step` and `bandwidth`. This action

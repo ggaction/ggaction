@@ -7,7 +7,7 @@ description: Browse every maintained ggaction chart example by analytical task.
 # All Chart Examples
 
 This catalog includes every maintained public chart example. Start with the
-[curated gallery](../index.md) when you want a shorter representative set.
+[curated gallery](../gallery.md) when you want a shorter representative set.
 
 {% include gallery-filter.html %}
 

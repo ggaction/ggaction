@@ -404,7 +404,7 @@ repeat field list changes.
 ### `editFacetHeaders`
 
 ```javascript
-editFacetHeaders({ fontSize?, fontFamily?, fontWeight?, color?, offset? })
+editFacetHeaders({ fontSize?, fontFamily?, fontWeight?, color?, offset?, role?, labelMap?, side?, align? })
 ```
 
 Edit the parent-owned repeated facet headers and rebuild the parent snapshot
@@ -2699,10 +2699,11 @@ frame and radial scale range.
 `createDerivedData` stores immutable source and transform provenance only; it
 does not materialize values. Chart facades and mark creation reject definition-only
 datasets with an error explaining that materialized values are required.
-Its public `DatasetTransform` union supports `filter`, `regression`, `density`,
-`interval`, `timeUnit`, `window`, and `bin2d` objects. A bare object, empty
-array, or multi-transform pipeline is invalid. See the runnable filter example and exact transform
-requirements in [Source and derived data](../api/data/source-and-derived.md#create-derived-data).
+Its public `DatasetTransform` union is listed in the canonical
+[transform table](../api/data/source-and-derived.md#create-derived-data).
+A bare object, empty array, or multi-transform pipeline is invalid. Focused
+`create*Data` helpers validate fields, apply defaults, and materialize values;
+raw provenance objects have their own normalized requirements.
 
 ### `createParallelAxes`, `createParallelAxis`, `editParallelAxis`, `removeParallelAxis`, `removeParallelAxes`
 
@@ -2888,7 +2889,10 @@ and advanced actions instead of calling an undeclared runtime method.
 ## Program functions
 
 Package-level functions create, compose, or render programs. They are not
-chainable actions and do not modify the action trace.
+chainable methods. `hconcat` and `vconcat` create a new composition program and
+record their wrapped composition action and children in its trace. They leave
+input programs unchanged. `chart` starts an empty trace; rendering reads the
+concrete graphics without recording an authoring action.
 
 <!-- BEGIN GENERATED RUNTIME SIGNATURES -->
 <!-- END GENERATED RUNTIME SIGNATURES -->

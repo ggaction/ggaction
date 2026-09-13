@@ -18,7 +18,8 @@ which installed face satisfies that family.
 | Family | Must be a non-empty string; availability is controlled by the host/backend |
 | Size | Must be a positive finite number in logical chart pixels |
 | Weight | A non-empty string or finite number; numeric renderer weights are rounded to the nearest hundred and clamped to 100–900 |
-| Measurement | Uses the active backend, so fallback faces can change glyph widths and bounds |
+| Authoring bounds | Deterministic estimates from text, size, and broad family/weight factors; no backend `measureText` call |
+| Painted glyphs | The host/backend resolves the actual face; its glyph widths can differ from the estimated bounds |
 | SVG | Emits `font-family`, `font-size`, and normalized `font-weight`; the consumer still resolves the font |
 | Canvas, PNG, PDF | Draw through the Canvas-compatible backend with the resolved host/native font |
 
@@ -53,11 +54,12 @@ global theme or rewrite every axis and legend.
 
 ## Loading in browsers
 
-Load required web fonts before building and rendering charts whose layout
-depends on them. A common host pattern is to wait for
-`document.fonts.ready`, then create or rebuild the program. If the first render
-uses a fallback and the font arrives later, ggaction does not automatically
-remeasure or rerender that immutable snapshot.
+Load required web fonts before rendering so the backend can use the intended
+face. Waiting for `document.fonts.ready` does not change ggaction's deterministic
+text estimates into browser measurements. Rebuilding the same program with the
+same styles retains those estimates. If a font arrives after drawing, rerender
+explicitly to update the painted glyphs; immutable snapshots do not rerender
+automatically.
 
 ```javascript
 await document.fonts.ready;
@@ -69,8 +71,8 @@ render(program, context);
 
 - Use a complete fallback stack, not one unqualified family name.
 - Install or load the approved fonts in every renderer environment.
-- Build the program only after those fonts are ready when text bounds affect
-  layout.
+- Render after fonts are ready and allow space for differences between
+  estimated bounds and actual glyphs, especially in dense labels and legends.
 - Compare text wrapping, axis labels, legends, and title bounds in browser and
   Node artifacts.
 - Avoid depending on an intermediate numeric weight such as `650` remaining

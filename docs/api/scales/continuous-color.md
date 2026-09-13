@@ -42,6 +42,10 @@ legends, and renderers receive only concrete CSS colors. Explicit `range` and
 
 ## Continuous point and aggregate-bar color
 
+This section also applies to Rect color: one value per final cell. Keep this
+anchor for existing links. Independent field-driven stroke has its own channel
+and compatible continuous color scale; see [Mark Style](../appearance/mark-style.md).
+
 Quantitative or temporal point color uses `fieldType: "quantitative"` or
 `"temporal"` and an internal sequential scale. Aggregate bars support
 quantitative sequential color with one aggregate value per final rectangle.

@@ -58,7 +58,11 @@ are rejected before the caller program changes.
 Use `editEndpointPlot` when a source or semantic role changes:
 
 ```javascript
-const revised = changes.editEndpointPlot({
+const withReplacement = changes.createData({
+  id: "replacement",
+  values: values.map(row => ({ ...row, after: row.after + 1 }))
+});
+const revised = withReplacement.editEndpointPlot({
   data: "replacement",
   start: "after",
   end: "before",

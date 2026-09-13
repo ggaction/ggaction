@@ -191,7 +191,7 @@ repeat field list changes.
 ## `editFacetHeaders`
 
 ```javascript
-editFacetHeaders({ fontSize?, fontFamily?, fontWeight?, color?, offset? })
+editFacetHeaders({ fontSize?, fontFamily?, fontWeight?, color?, offset?, role?, labelMap?, side?, align? })
 ```
 
 Edit the parent-owned repeated facet headers and rebuild the parent snapshot

@@ -9,7 +9,10 @@ description: Create, compose, render, and inspect programs without confusing pac
 ## Program functions
 
 Package-level functions create, compose, or render programs. They are not
-chainable actions and do not modify the action trace.
+chainable methods. `hconcat` and `vconcat` create a new composition program and
+record their wrapped composition action and children in its trace. They leave
+input programs unchanged. `chart` starts an empty trace; rendering reads the
+concrete graphics without recording an authoring action.
 
 <!-- BEGIN GENERATED RUNTIME SIGNATURES -->
 ### Exact TypeScript signatures

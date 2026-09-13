@@ -18,13 +18,16 @@ title: Position Scales
 | `band` | Discrete category position that needs positive bandwidth, especially bars |
 | `point` | Discrete point/rule centers and compatible shared centers; never bar width |
 | `ordinal` | Nominal or ordinal color, nominal shape/stroke dash, and xOffset lookup |
-| `sequential` | Quantitative/temporal point color and quantitative aggregate-bar color |
-| `quantize`, `quantile`, `threshold` | Quantitative point color |
+| `sequential` | Compatible Point/Bar/Rect color and supported quantitative/temporal stroke consumers |
+| `quantize`, `quantile`, `threshold` | Supported quantitative color/stroke consumers and Point size; see the channel-specific matrix |
 | `unknown` fallback | Row-owned point x/y/color/size/shape/opacity only |
 
 The field type, channel, mark recipe, and all consumers of a shared scale must
 agree. `editScale` validates that complete matrix before applying any semantic
 or graphical change.
+This page owns position scales. For appearance consumers and their exact mark
+restrictions, use the [scale-family matrix](../scales.md) and
+[field stroke](../appearance/mark-style.md#stroke-color-and-linerule-appearance).
 
 ## Continuous scales
 

@@ -18,6 +18,7 @@ const program = chart()
   .createCanvas()
   .createData({ values })
   .createViolinPlot({
+    id: "violins",
     x: "category",
     y: "value"
   });

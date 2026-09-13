@@ -68,8 +68,8 @@
         "terminal-limitations-and-open-decisions",
         "compact-knowledge-route"
       ],
-      "bytes": 4447,
-      "sha256": "4f22a8f9c26cda5c805926cbb28aa1ffbd0927801fca50a3f1b1d1937012629c"
+      "bytes": 4696,
+      "sha256": "8f41973da7c3d27edf4bb31080eb944c92f26a875df6b188bcc3c3c4865d10be"
     },
     {
       "order": 5,
@@ -196,8 +196,8 @@
         "key-action-trace",
         "run-and-continue"
       ],
-      "bytes": 3915,
-      "sha256": "dec61c7ba09a43e226e1da00d8d77aa9d7f23a938ec8ee698dff3feb5ca01fee"
+      "bytes": 4009,
+      "sha256": "84b3a3a070ed06774c39f7767007031337cc35efa46eecc50ae4525edc4c29a5"
     },
     {
       "order": 13,
@@ -226,8 +226,8 @@
         "separate-series-identity-placement-and-color",
         "keep-gaps-explicit"
       ],
-      "bytes": 3378,
-      "sha256": "527d377eca38404321274c937ec823f36b92074e1d4672489c525a8c94795e16"
+      "bytes": 3347,
+      "sha256": "77d214a45205de7444c568e5ef854c363fdac5ead8045b9065d154131010bbea"
     },
     {
       "order": 15,
@@ -301,14 +301,15 @@
       "source": "tutorials/mark-selection.md",
       "headings": [
         "mark-selection-and-highlighting-tutorial",
+        "complete-program",
         "highlight-grouped-maximum-points",
         "select-a-complete-histogram-stack",
         "highlight-one-line-series",
         "choose-filtering-reusable-selection-or-highlighting",
         "run-and-continue"
       ],
-      "bytes": 4055,
-      "sha256": "20a22c4403de106a21f782447559cbbd04ab529ce7343cce6cf3d7a0666fd1cb"
+      "bytes": 6264,
+      "sha256": "f2d5d9bafe0904cb82faf0e375b43adb0a00917821bff7046d8157efa227976a"
     },
     {
       "order": 20,
@@ -318,8 +319,8 @@
       "headings": [
         "dot-lollipop-and-dumbbell-plots"
       ],
-      "bytes": 2281,
-      "sha256": "c6677d38c6bac4ae8976dae316c6080234e3e3daf887fd43725af61168e5571f"
+      "bytes": 2423,
+      "sha256": "a2a30ba7e3f14dd2ddc4bf36ce7741dddd387144467936162ecd97ef762f1739"
     },
     {
       "order": 21,
@@ -334,8 +335,8 @@
         "missing-values-and-grouping",
         "revise-the-statistical-source"
       ],
-      "bytes": 3596,
-      "sha256": "9daaf1424ee786f4b78d0fc24c36aae15efe7b1cf8a903ddda39097485652512"
+      "bytes": 3923,
+      "sha256": "a783250809fde29087178c2874e39288ef1ab71fafc4fdfb1778e29f137e4f5d"
     },
     {
       "order": 22,
@@ -466,8 +467,8 @@
         "the-library-infers",
         "continue"
       ],
-      "bytes": 1018,
-      "sha256": "0fcd56f90b7e4ed5d4911e8330da425302f77f901cdb560ca174dd18651f52de"
+      "bytes": 1304,
+      "sha256": "e4aba555e6dca08da360b6bd861035b60f059e69c64c25bb44fa18fb72a9f547"
     },
     {
       "order": 31,
@@ -496,8 +497,8 @@
         "the-library-infers",
         "continue"
       ],
-      "bytes": 1078,
-      "sha256": "0bf29c9cdf2b6786381ea2444aa7151df8baa14d5a167c9f57fb8656d953fdfe"
+      "bytes": 1470,
+      "sha256": "1b7bc7ee81c431a5ff67903d1892b87c27e0c3ffdd6840a350ac95a5ecc53df7"
     },
     {
       "order": 33,
@@ -601,8 +602,8 @@
         "the-library-infers",
         "continue"
       ],
-      "bytes": 1064,
-      "sha256": "0144b03c96e2d475b43c9446daee8d985342dacfafc070503522b8b1ecf15c6b"
+      "bytes": 1329,
+      "sha256": "bb6e9f3c8f6d916bea99364dce2b5b57fb17372408e593081b72ef3279dcd933"
     },
     {
       "order": 40,
@@ -631,8 +632,8 @@
         "the-library-infers",
         "continue"
       ],
-      "bytes": 1034,
-      "sha256": "2bcdb7b21b89841196f0ec943b62a8c70767f73805e19b8cc0cbee9c5d17a016"
+      "bytes": 1308,
+      "sha256": "13294d316c432df3ea303663c643eb8549a63087587d74356a45b5a50097cc5d"
     },
     {
       "order": 42,
@@ -656,8 +657,8 @@
         "node-png-or-pdf-export-is-unavailable-in-the-browser",
         "inspect-the-program"
       ],
-      "bytes": 7770,
-      "sha256": "b78d0da025cc240d8397bb9bf964a27b79d178f8d5f336cf91f12bc88f317cf7"
+      "bytes": 8363,
+      "sha256": "94277ab0adac21de4579f7d21ca2b45130ed8638338fa9f83d6b0c43994f9ee5"
     },
     {
       "order": 43,
@@ -679,8 +680,8 @@
       "headings": [
         "all-chart-examples"
       ],
-      "bytes": 163,
-      "sha256": "172be01238f35219cc46d38fb9bbaaf2a707fd82df8b187ed6546f696bd6d99f"
+      "bytes": 171,
+      "sha256": "2bb03530bfcd668328fabb354e319c82f11fdf5261f30466f3f1ef1982a6ea75"
     },
     {
       "order": 45,
@@ -764,8 +765,8 @@
         "errors-and-limitations",
         "related"
       ],
-      "bytes": 2943,
-      "sha256": "d5ae48913d0d5f7131549fdb22248bb8332c5ba23e9fb879f63741a5f1070a38"
+      "bytes": 3966,
+      "sha256": "393198acee3cd3e0481cefbae8aa4c18e69223197d8d6ff159f4e10b1cbf718d"
     },
     {
       "order": 50,
@@ -789,8 +790,8 @@
         "removedata-id",
         "related"
       ],
-      "bytes": 21915,
-      "sha256": "87f138b8c7101b32b174514bede5edd60f6701e0eacdc12be204de7e1ce71ccb"
+      "bytes": 22009,
+      "sha256": "793e43a81ace9a2e84170f0ba549431de4e6add69928152d90de588b8e2dd03b"
     },
     {
       "order": 51,
@@ -804,8 +805,8 @@
         "removemarkfilter-target",
         "related"
       ],
-      "bytes": 5016,
-      "sha256": "dc65c31863b435fd797d570f08f67a6df0f60299f49f0352a0a643d5c43f85bb"
+      "bytes": 5034,
+      "sha256": "89c4194711ca2ad144e02f8662c34bf63a1ce1b45c7524fa06aaa1c4104f33bc"
     },
     {
       "order": 52,
@@ -967,8 +968,8 @@
         "removelabellayoutoptions",
         "related"
       ],
-      "bytes": 18783,
-      "sha256": "2068ee5b6ce15e394745453d9c1495d813e2e88c14c036830c63bbac9700a3ef"
+      "bytes": 19038,
+      "sha256": "35ab4174333134ef7c44dc1dbba55e12221cef6e79228d93b0c5d231f5a71b90"
     },
     {
       "order": 62,
@@ -1112,8 +1113,8 @@
         "current-boundary",
         "related"
       ],
-      "bytes": 4151,
-      "sha256": "8117fbe8d22c43f593bf11c1b7ace72f0285be8ccf131b2a13233cae5df65e72"
+      "bytes": 4170,
+      "sha256": "34d30d7d5edadd8836ba357d8ee996bcca87dc0c7f68e9b8c118cdb1aef117b0"
     },
     {
       "order": 70,
@@ -1188,8 +1189,8 @@
         "insert-remove-and-reorder-named-concat-children",
         "state-trace-and-action-scope"
       ],
-      "bytes": 19965,
-      "sha256": "b12da65a0cca70cc1819ae6545db714f54ba5bd13a7439244434b560f8518a5d"
+      "bytes": 20186,
+      "sha256": "2e323e55d96e5a147d76cec3e183f97229617c9cc6024c583f9d0e6d191a9652"
     },
     {
       "order": 74,
@@ -1256,8 +1257,8 @@
         "errors-and-limitations",
         "related"
       ],
-      "bytes": 4845,
-      "sha256": "7a9fc14e0c8a21788a8bc3e2686344747177c7ac71853d4ebc4285a36df6dcef"
+      "bytes": 5141,
+      "sha256": "3a2ea78e007affe0524b131f10fdf8ce0a1fb6f0ab1c17724d54bf74fee7cada"
     },
     {
       "order": 78,
@@ -1320,8 +1321,8 @@
         "errors-and-limitations",
         "related"
       ],
-      "bytes": 4679,
-      "sha256": "24d24deff86f01474ce6059b86e55a087401591cc9cca5a504480c342f81754e"
+      "bytes": 4981,
+      "sha256": "6c40450d1a608646d0b341d54dd5d41a15cc6a3c851bd32b7aad4a30469c476a"
     },
     {
       "order": 82,
@@ -1378,8 +1379,8 @@
         "editing-and-removing-stored-intent",
         "related"
       ],
-      "bytes": 7188,
-      "sha256": "e4e05a298ac8c1494e264c57b4d6de6365db16c16e60e271b47c179d1fe8c0f2"
+      "bytes": 7306,
+      "sha256": "d6f8f4087251ea7ce8936cef95ce41c1e3c1ea35d6da9f8bd7b9d09d3704b8f3"
     },
     {
       "order": 86,
@@ -1424,8 +1425,8 @@
         "errors-and-limitations",
         "related"
       ],
-      "bytes": 8113,
-      "sha256": "7d1f86f32f38176488a4d8f728dd2fca759ed365fdd49f915e0383dc0b2d2ebc"
+      "bytes": 8452,
+      "sha256": "b9549ae0a59ca908df1fe93d466a9e1f6a3648931b5ed3710bcdf1eec22d701d"
     },
     {
       "order": 89,
@@ -1441,8 +1442,8 @@
         "measured-radius-scales",
         "related"
       ],
-      "bytes": 5858,
-      "sha256": "a207389f7e2db482af83770f7cf5ccdfa0e249dd77803814e5aa329c8117e430"
+      "bytes": 6165,
+      "sha256": "07aa2c91bc5e9e18b2f2b979e6d38be5be022009e7ec28c5c29f435f02923e17"
     },
     {
       "order": 90,
@@ -1470,8 +1471,8 @@
         "explicit-color-midpoint",
         "related"
       ],
-      "bytes": 5660,
-      "sha256": "a66aa2c701333bab1bb9457fe6a6d6a76c8c9e7d0e2354fdc3f817d678577a36"
+      "bytes": 5904,
+      "sha256": "f212334e9f60580b4c0abfc73e9e7fc4ae41c84f5b034427a342623b65105351"
     },
     {
       "order": 92,
@@ -1533,8 +1534,8 @@
         "errors-and-limitations",
         "related"
       ],
-      "bytes": 19041,
-      "sha256": "b2b1adaeee314e48ebc429f97b4208a517fd75a531e0854f650b1f7b9cc4bf7c"
+      "bytes": 19108,
+      "sha256": "65fddcfe57f907a43baf4c568d4d4e98dae11577600a448c5a033273880c6b52"
     },
     {
       "order": 96,
@@ -1791,8 +1792,8 @@
         "reproducibility-checklist",
         "related"
       ],
-      "bytes": 2998,
-      "sha256": "6e6729e957a0137348e2645025673ac5c53b3af8f1a588d9526f53e54f73ad47"
+      "bytes": 3287,
+      "sha256": "4fced11a7e063a64e00216c34c4bf47ef94283e866d8892aadbba9cb37d74406"
     },
     {
       "order": 113,
@@ -1825,8 +1826,8 @@
         "ticks-and-labels-together",
         "titles"
       ],
-      "bytes": 6559,
-      "sha256": "5f197387dd238576aa723007322a9d3f05e20b4cf94f1ddc46ed6f9ec851ed74"
+      "bytes": 6905,
+      "sha256": "f9a2f87f3ba84279386c280654067c1bb63cccb14de71617882fddf8d828b2d5"
     },
     {
       "order": 115,
@@ -1849,8 +1850,8 @@
         "selection-appearance-and-text",
         "coordinates-and-composition"
       ],
-      "bytes": 12099,
-      "sha256": "8118a2f7cc7ddb795e7179ebadf334ea8bd2528cff2dd4e082b7c7c5e7264e42"
+      "bytes": 12501,
+      "sha256": "7011e5b33397bfd6ccb16e251542ad375de66e92b2c55647605119a2fa972f4d"
     },
     {
       "order": 116,
@@ -1933,8 +1934,8 @@
         "focused-core-data-editing",
         "related"
       ],
-      "bytes": 28343,
-      "sha256": "9358ee899f04f148898dae382b1382af32d09486dca0e0f7a7378f35cc88563e"
+      "bytes": 28376,
+      "sha256": "21a0625432c7b7928c05defcfbdf977d1de94899c0726c78ba2143016a4888e2"
     },
     {
       "order": 118,
@@ -2137,8 +2138,8 @@
         "directional-grids",
         "related"
       ],
-      "bytes": 12228,
-      "sha256": "8d53c11c61bc42173470518efd30ef27bfb1788963868535a5cb5b6a2e36b849"
+      "bytes": 12230,
+      "sha256": "403b10ae7f7f95e6e214c2d3679d5c18442ca928b7714395367639cee4745d83"
     },
     {
       "order": 123,
@@ -2169,8 +2170,8 @@
         "rendering-functions",
         "internal-trace-operations"
       ],
-      "bytes": 3336,
-      "sha256": "07e71a60408f6bb50aee48a532d285b2b8dfa4a14e8a7a679429bcfa993f5843"
+      "bytes": 3574,
+      "sha256": "e8dfe1b0f0d4c0fed23fa3e1cbd92ecfbf5dee99760d07b18b5f46e1c53a6a1b"
     },
     {
       "order": 125,
@@ -2196,8 +2197,8 @@
         "isolated-program-classes",
         "action-contract"
       ],
-      "bytes": 5245,
-      "sha256": "9461583ca4ff6b3d8878f76a711d08e20e80358a37b08a160213415383d78a71"
+      "bytes": 5577,
+      "sha256": "b8b70d460993f57a20f096da5178ab7d82298ad27a15060792208420fb8935e1"
     },
     {
       "order": 127,

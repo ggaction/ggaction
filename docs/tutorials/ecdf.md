@@ -33,7 +33,8 @@ const program = chart()
     groupBy: "group",
     weight: "weight",
     color: "group",
-    labels: { dx: 10 }
+    labels: { dx: 10 },
+    guides: false
   });
 
 render(program, document.querySelector("#chart").getContext("2d"));
@@ -41,6 +42,11 @@ render(program, document.querySelector("#chart").getContext("2d"));
 
 The runnable repository version is in
 [`examples/ecdf-plot`](https://github.com/ggaction/ggaction/tree/main/examples/ecdf-plot).
+
+This example uses colored paths and endpoint labels without axes or a legend,
+matching the repository program and image. To add a legend, reserve space on
+its chosen edge before creating guides; the 55-pixel margin is for this
+guide-free example. Use a browser module with a `<canvas id="chart"></canvas>`.
 
 ## How the step data is defined
 

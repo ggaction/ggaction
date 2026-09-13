@@ -61,7 +61,13 @@ program
 
 The complete family is `editXScale`, `editYScale`, `editThetaScale`,
 `editRScale`, `editColorScale`, `editStrokeScale`, `editSizeScale`, `editOpacityScale`,
-`editShapeScale`, `editStrokeWidthScale`, and `editStrokeDashScale`.
+`editShapeScale`, `editStrokeWidthScale`, `editStrokeDashScale`,
+`editXOffsetScale`, `editYOffsetScale`, and `editParallelScale`.
+
+Offset editors require `target`; they edit that mark's nested offset scale.
+`editParallelScale` requires both `target` and the exact `dimension` field.
+`editStrokeScale` also requires `target` and does not accept a raw scale ID.
+Other focused selectors follow the rules below.
 `editRScale` means Polar radial position; point glyph radius remains a constant
 appearance action.
 

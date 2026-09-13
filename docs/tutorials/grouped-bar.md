@@ -103,8 +103,9 @@ program.encodeColor({ field: "job", layout: "group" });
 
 ## Key action trace
 
-Grouped color owns the matching offset encoding. Width is the final graphical
-decision that makes concrete grouped rectangles possible.
+Grouped color owns the matching offset encoding. Completed positions and
+group offsets can materialize rectangles with the default width. This example
+uses `encodeBarWidth` to record its explicit band width before guide creation.
 
 ```text
 program

@@ -51,7 +51,7 @@ remain available for custom layering and editing.
 | Semantic marks | rule | area | bar + rule + point | rect + rule | area |
 | Position | categorical, quantitative, or temporal independent axis; interval on the other | quantitative/temporal independent axis; x/x2 or y/y2 interval | categorical axis; quantitative interval axis | categorical axis; sampled quantitative profile | categorical center; quantitative density profile |
 | Nominal color | — | grouped area fill | body fill through ranged-bar color | category hue with density modulation | category or two-value split fill |
-| Appearance | stroke, width, dash, opacity, optional caps | fill, opacity, 8 curves, styled boundaries | fixed defaults; 1.5px median/whiskers | structured gradient fill, width, optional center rule | fill, opacity, outline, 8 curves, shared/independent width |
+| Appearance | stroke, width, dash, opacity, optional caps | fill, opacity, 8 curves, styled boundaries | configurable component styles and whiskers | structured gradient fill, width, optional center rule | fill, opacity, outline, 8 curves, shared/independent width |
 | Automatic guides | interval and independent axes; perpendicular grid | interval and independent axes; perpendicular grid | opt-in categorical/linear axes and horizontal grid | categorical/linear axes, grid, density legend | categorical/linear axes; horizontal grid |
 | Legend | — | categorical | optional ranged-bar color legend | neutral density; categorical color when requested | optional category or split legend |
 | Selection/highlight | rule | series | component | category strip | full or split profile |
@@ -106,19 +106,22 @@ pass `guides: {}` or nested options to create applicable guides.
 
 ### Data, transforms, and heatmaps
 
-The public one-transform derived-data union covers rectangular 2D bins,
-filters, regression, density, Horizon folding, intervals, UTC time units, and
-window operations. Arbitrary transform pipelines and transforms outside that
-documented union are not implemented. Interactive legends are also not
-implemented.
+The public one-transform derived-data union includes reusable bins, computed
+fields, folds, summaries, stacks, normalized data, completed keys, imputed values,
+ECDFs, filters, regression, density, Horizon folding, intervals, time units,
+windows, and rectangular 2D bins. The
+[canonical transform table](./api/data/source-and-derived.md#create-derived-data)
+owns the exact tag set and normalized forms. Arbitrary multi-transform
+pipelines and interactive legends are not implemented.
 Pre-gridded heatmaps do not synthesize missing cells. Binned heatmaps support
 fixed rectangular bins only; weighted, adaptive, hexagonal, and overflow bins
 are not implemented. Cell text must be added as a separate text layer.
 
 ### Guides and interval charts
 
-Categorical legends support all four edges; point composite and size legends
-support right and left side layouts.
+Categorical, point composite, and size legends support all four edges;
+edge-specific alignment and combined-block layout rules are documented in
+[Legends](./api/legends.md).
 Error bars support vertical and horizontal statistical intervals, existing
 center/lower/upper fields, optional caps, and constant rule appearance.
 Error bands support vertical and horizontal statistical or explicit ranges and
@@ -140,8 +143,10 @@ Violin plots support the same category/measure orientation family, symmetric
 full profiles, one-sided placement, two-value split halves, shared or
 category-local density width, density revision, source filtering, profile
 selection/highlighting, Cartesian facet replay, and compatible overlay scales.
-Raincloud components, more than two split values, adaptive bandwidth, and
-Polar violin placement are not implemented.
+For a density-plus-observations chart, use the separate
+[`createRaincloudPlot`](./reference/actions/charts-data.md#createraincloudplot)
+facade. Violin itself does not own raincloud components. More than two split
+values, adaptive bandwidth, and Polar violin placement are not implemented.
 
 ### Selection, appearance, and text
 

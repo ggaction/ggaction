@@ -131,7 +131,7 @@
   },
   "/recipes/horizon/": {
     "title": "Horizon Chart Recipe",
-    "description": "Use editHorizon({ bands, baseline, extent, palette }) to create a revised immutable result. Use resolve: \"independent\" only when group local amplitude comparison is intentional.",
+    "description": "values contains finite numeric value and ordered numeric or ISO date time values, with one observation per time. For example, use monthly dates such as \"2024 01 01\".",
     "image": "/assets/images/gapminder-horizon.png"
   },
   "/recipes/error-bar/": {
@@ -141,7 +141,7 @@
   },
   "/recipes/error-band/": {
     "title": "Error Band Recipe",
-    "description": "When one compatible layer is already encoded, omitted data, coordinate, position fields, scales, and explicit grouping are reused when the interval axis is unambiguous.",
+    "description": "values contains ISO date strings in time, finite numbers in value, and non empty series names.",
     "image": "/assets/images/gapminder-error-band.png"
   },
   "/recipes/box-plot/": {
@@ -176,7 +176,7 @@
   },
   "/recipes/gradient-plot/": {
     "title": "Gradient Plot Recipe",
-    "description": "cars is an array of plain row objects with one categorical field and one quantitative measure.",
+    "description": "cars contains plain rows with non empty categorical Origin and finite numeric Acceleration.",
     "image": "/assets/images/cars-gradient-plot.png"
   },
   "/recipes/annotations/": {
@@ -280,7 +280,7 @@
   },
   "/api/marks/text/": {
     "title": "Text Marks",
-    "description": "Text marks turn data values into visible labels. Add one after a compatible point, bar, rect, rule, or arc layer and ggaction persists that layer as the annotation source.",
+    "description": "Text marks turn data values into visible labels. Add one after a compatible point, line, bar, rect, rule, or arc layer and ggaction persists that layer as the annotation source.",
     "image": "/assets/images/annotated-imdb-scatterplot.png"
   },
   "/api/marks/rect/": {
@@ -360,7 +360,7 @@
   },
   "/api/position/ordinal-bars/": {
     "title": "Ordinal Bar Positions",
-    "description": "Automatic domains preserve first appearance order. Automatic ranges use the horizontal plot bounds and resolve a shared step and bandwidth.",
+    "description": "fieldType: \"ordinal\" describes ordered categories. Their positional scale is band, which supplies positive width; scale.type: \"ordinal\" is a different lookup scale family and is…",
     "image": "/assets/images/jobs-grouped-bar.png"
   },
   "/api/position/category-ordering/": {
@@ -380,7 +380,7 @@
   },
   "/api/series-encodings/": {
     "title": "Series Encodings",
-    "description": "Series appearance is authored through color, stroke dash, stroke width, and opacity.",
+    "description": "Series appearance is authored through color, stroke color, stroke dash, stroke width, and opacity.",
     "image": "/assets/images/cars-line-chart.png"
   },
   "/api/series/color/": {
@@ -533,7 +533,7 @@
   },
   "/advanced/axis-components/": {
     "title": "Advanced Axis Components",
-    "description": "Use these actions when a complete createAxes call is not sufficient. All component actions require a resolved linear, time, or ordinal scale and Canvas bounds.",
+    "description": "Use these actions when a complete createAxes call is not sufficient. All component actions require a resolved compatible quantitative, time, band, or point scale and Canvas…",
     "image": "/assets/images/cars-scatterplot.png"
   },
   "/supported-features/": {
