@@ -1,7 +1,7 @@
 # R07 — 그룹 정규화·기준값 비교
 
-원래 감사 번호: **7**. Primary owner: **Phase 1**. 상태: **primary 구현 완료 / R02 edit 통합 대기**.
-`b891d1d5`에서 grouped normalization, statistical facet replay, 공개 create API·타입·Current 계약·설치 패키지를 구현했다. `editNormalizedData`와 source revision 재실행은 R02가 소유하므로 Phase 4에서 닫는다.
+원래 감사 번호: **7**. Primary owner: **Phase 1**. 상태: **Implemented-primary** (`b891d1d5`).
+Grouped normalization, statistical facet replay, 공개 create API·타입·Current 계약·설치 패키지를 구현했다. R02의 `editNormalizedData`와 Phase 12의 downstream revision은 `d29287c9`, `8c4b56ad`에서 닫혔다.
 
 ## 목적과 현재 연결점
 

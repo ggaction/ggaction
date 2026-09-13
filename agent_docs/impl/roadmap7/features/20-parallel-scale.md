@@ -52,7 +52,7 @@ scale ID와 consumer registry가 canonical owner다. focused action은 target+di
 
 ## 구현 고정 명세 — Parallel dimension resolver
 
-새 export EditParallelScaleOptions={target:string,dimension:string}&WithoutId<QuantitativePositionScaleOptions|CategoricalPositionScaleOptions>로 제안한다. union의 분산 Omit으로 각 branch를 보존한다. 새 API는 id/target 추론을 제공하지 않는다. 적어도 하나의 scale patch가 필수다.
+제품 export EditParallelScaleOptions={target:string,dimension:string}&WithoutId<QuantitativePositionScaleOptions|CategoricalPositionScaleOptions>를 사용한다. union의 분산 Omit으로 각 branch를 보존한다. 새 API는 id/target 추론을 제공하지 않는다. 적어도 하나의 scale patch가 필수다.
 
 ### 정확한 resolution 절차
 

@@ -1,7 +1,7 @@
 # R09 — 기간 기반 window와 최소 관측수
 
-원래 감사 번호: **9**. Primary owner: **Phase 2**. 상태: **primary 구현 완료 / R02 edit 통합 대기**.
-`9d4d0840`에서 elapsed-duration frame, closed peers, minPeriods/missing, stable temporal sort와 public 타입·Current 계약·facet replay·설치 패키지를 구현했다. `editWindowData`는 R02가 소유하므로 Phase 4에서 닫는다.
+원래 감사 번호: **9**. Primary owner: **Phase 2**. 상태: **Implemented-primary** (`9d4d0840`).
+Elapsed-duration frame, closed peers, minPeriods/missing, stable temporal sort와 public 타입·Current 계약·facet replay·설치 패키지를 구현했다. R02의 `editWindowData`와 Phase 12의 duration-window downstream revision은 `d29287c9`, `8c4b56ad`에서 닫혔다.
 
 ## 목적과 현재 연결점
 
@@ -60,7 +60,7 @@ window operation에 normalized frame/minPeriods/missing을 저장한다. Duratio
 
 ## 구현 고정 명세 — moving window
 
-WindowFrame은 RowWindowFrame | DurationWindowFrame의 배타 union으로 제안한다. WindowOperation의 movingMean/movingSum만 frame/minPeriods/missing을 허용한다. row frame의 기존 preceding/following 기본값과 integer 규칙을 보존한다. duration.preceding은 필수이며 following은0, 둘 다 finite>=0, 단위는 millisecond/second/minute/hour/day다.
+WindowFrame은 RowWindowFrame | DurationWindowFrame의 배타 union이다. WindowOperation의 movingMean/movingSum만 frame/minPeriods/missing을 허용한다. row frame의 기존 preceding/following 기본값과 integer 규칙을 보존한다. duration.preceding은 필수이며 following은0, 둘 다 finite>=0, 단위는 millisecond/second/minute/hour/day다.
 
 ### duration과 null 결정표
 

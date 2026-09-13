@@ -491,7 +491,7 @@
       "specification": "모든 reliability weights를10배로 바꾸면 mean/variance/SE/unit-density 동일, count/sum/count-density는10배.",
       "owner": "features/10-weighted-statistics.md",
       "status": "passed",
-      "runtimeEvidence": "reliability scale invariance and count/sum/count-density scaling, grouped/facet auto bandwidth, label/selection membership: weighted data/facade/text/selection unit suites; da0ca4e2, 276c8318, 32ddfcdd"
+      "runtimeEvidence": "test/unit/actions/data/summary-data.test.js; test/unit/actions/data/density-data.test.js; test/contracts/advanced-authoring-integration.test.js; da0ca4e2, 276c8318, 32ddfcdd, 8c4b56ad"
     },
     {
       "id": "R19-N01",
@@ -550,8 +550,8 @@
       "kind": "lifecycle",
       "specification": "field-stroke→constant-stroke와 source reencoding 후 R38 override/R32 membership/R36 reference가 최종 상태를 본다.",
       "owner": "features/19-atomic-encoding.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/contracts/advanced-authoring-integration.test.js (final y/stroke reencoding, R38 block map, R32 named label membership, R36 axis-role reference); 8c4b56ad"
     },
     {
       "id": "R20-N01",
@@ -1020,8 +1020,8 @@
       "kind": "lifecycle",
       "specification": "remove→source reencode→Canvas→theme→facet replay 후 label count0.",
       "owner": "features/31-remove-labels.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/contracts/advanced-authoring-integration.test.js (removeMarkLabels -> encodeR -> editCanvas -> applyTheme -> facet, zero label resurrection); 895d7607"
     },
     {
       "id": "R32-N01",

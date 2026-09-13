@@ -6,12 +6,14 @@
     {
       "id": "R27",
       "status": "Implemented-primary",
-      "file": "../features/27-coordinate-aspect.md"
+      "file": "../features/27-coordinate-aspect.md",
+      "implementationCommit": "ded3b073"
     },
     {
       "id": "R29",
       "status": "Implemented-primary",
-      "file": "../features/29-polar-frame.md"
+      "file": "../features/29-polar-frame.md",
+      "implementationCommit": "4aa9da65"
     }
   ]
 }

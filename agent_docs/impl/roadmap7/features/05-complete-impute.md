@@ -1,7 +1,7 @@
 # R05 — 결측 조합 완성과 대체
 
-원래 감사 번호: **5**. Primary owner: **Phase 2**. 상태: **primary 구현 완료 / R02 edit 통합 대기**.
-`9d4d0840`에서 complete/impute grammar·materializer·public API·facet replay·타입·Current 계약·설치 패키지를 구현했다. `editCompleteData`와 `editImputedData`는 R02가 소유하므로 Phase 4에서 닫는다.
+원래 감사 번호: **5**. Primary owner: **Phase 2**. 상태: **Implemented-primary** (`9d4d0840`).
+Complete/impute grammar·materializer·public API·facet replay·타입·Current 계약·설치 패키지를 구현했다. R02의 `editCompleteData`·`editImputedData` revision과 Phase 12의 complete→impute 누적 provenance는 `d29287c9`, `8c4b56ad`에서 닫혔다.
 
 ## 목적과 현재 연결점
 

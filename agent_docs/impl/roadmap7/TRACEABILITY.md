@@ -1,17 +1,17 @@
 # 선택 항목과 구현·검증 추적
 
-선택 25개는 각각 하나의 primary Phase를 갖는다. action 개수는 25개와 다르다. 한 기능이 여러 focused action을 만들거나 기존 option union만 확장할 수 있다. PROPOSALS.json이 범위의 machine source다. [IMPLEMENTATION_MAP.json](IMPLEMENTATION_MAP.json)은 기존 code/test 및제안 public surface를, [ACCEPTANCE_CASES.json](ACCEPTANCE_CASES.json)은 고정된 N/E/L 사례를 연결한다. 모두 계획이며 통과 증거는 아니다.
+선택 25개는 각각 하나의 primary Phase를 갖는다. action 개수는 25개와 다르다. 한 기능이 여러 focused action을 만들거나 기존 option union만 확장할 수 있다. PROPOSALS.json이 범위의 machine source다. [IMPLEMENTATION_MAP.json](IMPLEMENTATION_MAP.json)은 실제 code/test/public surface를, [ACCEPTANCE_CASES.json](ACCEPTANCE_CASES.json)은 고정된 N/E/L 사례와 실행 증거를 연결한다.
 
 | ID | Primary Phase | 계약 | 필수 evidence owner | status |
 | --- | --- | --- | --- | --- |
 | R02 | 4 | [파생 데이터 정의 편집과 종속 갱신](features/02-derived-editing.md) | [Phase 4 STEP1](phase4/STEP1.md) · `d29287c9`; references `5832228c`; composition `ebf3562a`; resource release `c29f496c` | Implemented-primary |
-| R05 | 2 | [결측 조합 완성과 대체](features/05-complete-impute.md) | [Phase 2 STEP1](phase2/STEP1.md) · `9d4d0840` | primary 구현 완료 / R02 edit 통합 대기 |
-| R06 | 1 | [조건·문자열·null 계산식](features/06-computed-expressions.md) | [Phase 1 STEP1](phase1/STEP1.md) · `b891d1d5` | primary 구현 완료 / R02 edit 통합 대기 |
-| R07 | 1 | [그룹 정규화·기준값 비교](features/07-normalization.md) | [Phase 1 STEP1](phase1/STEP1.md) · `b891d1d5` | primary 구현 완료 / R02 edit 통합 대기 |
-| R08 | 2 | [주간·요일·시간대 버킷](features/08-calendar-buckets.md) | [Phase 2 STEP1](phase2/STEP1.md) · `9d4d0840` | primary 구현 완료 / R02 edit 통합 대기 |
-| R09 | 2 | [기간 기반 window와 최소 관측수](features/09-duration-windows.md) | [Phase 2 STEP1](phase2/STEP1.md) · `9d4d0840` | primary 구현 완료 / R02 edit 통합 대기 |
-| R10 | 3 | [가중 통계·histogram·KDE](features/10-weighted-statistics.md) | [Phase 3 STEP1](phase3/STEP1.md) · `da0ca4e2`, `276c8318`, `32ddfcdd` | primary 구현 완료 / R02 edit 통합 대기 |
-| R19 | 5 | [다중 채널의 원자적 재인코딩](features/19-atomic-encoding.md) | `test/contracts/atomic-encoding.test.js`; strict types; installed package; `58d9e51a` | Implemented-primary / R32·R36·R38 미래 consumer 통합 대기 |
+| R05 | 2 | [결측 조합 완성과 대체](features/05-complete-impute.md) | [Phase 2 STEP1](phase2/STEP1.md) · `9d4d0840`; R02/Phase 12 `d29287c9`, `8c4b56ad` | Implemented-primary |
+| R06 | 1 | [조건·문자열·null 계산식](features/06-computed-expressions.md) | [Phase 1 STEP1](phase1/STEP1.md) · `b891d1d5`; R02/Phase 12 `d29287c9`, `8c4b56ad` | Implemented-primary |
+| R07 | 1 | [그룹 정규화·기준값 비교](features/07-normalization.md) | [Phase 1 STEP1](phase1/STEP1.md) · `b891d1d5`; R02/Phase 12 `d29287c9`, `8c4b56ad` | Implemented-primary |
+| R08 | 2 | [주간·요일·시간대 버킷](features/08-calendar-buckets.md) | [Phase 2 STEP1](phase2/STEP1.md) · `9d4d0840`; R02 `d29287c9` | Implemented-primary |
+| R09 | 2 | [기간 기반 window와 최소 관측수](features/09-duration-windows.md) | [Phase 2 STEP1](phase2/STEP1.md) · `9d4d0840`; R02/Phase 12 `d29287c9`, `8c4b56ad` | Implemented-primary |
+| R10 | 3 | [가중 통계·histogram·KDE](features/10-weighted-statistics.md) | [Phase 3 STEP1](phase3/STEP1.md) · `da0ca4e2`, `276c8318`, `32ddfcdd`; R02/Phase 12 `d29287c9`, `8c4b56ad` | Implemented-primary |
+| R19 | 5 | [다중 채널의 원자적 재인코딩](features/19-atomic-encoding.md) | `test/contracts/atomic-encoding.test.js`; strict types; installed package; `58d9e51a`; final consumer flow `8c4b56ad` | Implemented-primary |
 | R20 | 5 | [Parallel 차원별 scale 집중 편집](features/20-parallel-scale.md) | `test/unit/actions/scales/parallel-scale.test.js`; `test/contracts/phase5-scale-types.test.js`; `eaea2b8b` | Implemented-primary |
 | R21 | 5 | [중첩 band offset scale 집중 편집](features/21-offset-scales.md) | `test/unit/actions/scales/offset-scale.test.js`; grouped-bar chart fixtures; package consumer; `335ce4f0` | Implemented-primary |
 | R22 | 5 | [필드 기반 stroke 색상](features/22-stroke-color.md) | feature 내 독립 oracle/완료 조건 → Phase 5 STEP1 evidence | Implemented-primary (`3fc40a66`) |
@@ -41,4 +41,4 @@
 - R37/38/39 guide recipes의 R47 theme·R49 style 보존과 R43 source replay를 모두 검증했다.
 - R25 collector는 `c29f496c`에서 semantic/config/composition/context와 기존 owner lifecycle에 연결됐다.
 
-Phase 12는 후속 통합 cells를 전부 Current evidence로 닫는다. 최초 Phase의 scoped tests 통과만으로 통합 의무를 삭제하지 않는다.
+Phase 12의 네 누적 저작 흐름은 `test/contracts/advanced-authoring-integration.test.js`와 설치 패키지 소비자가 소유한다. R19-L02와 R31-L02를 포함한 후속 통합 cells는 `8c4b56ad`에서 실행 가능한 evidence로 닫혔다.

@@ -1,6 +1,6 @@
 # 구현 완료 후 성립해야 하는 호출과 결과
 
-상태: **Proposed acceptance examples**. 아래 새 API는 현재 실행할 수 있다고 보장하지 않는다. 구현 Gate에서 strict types/runtime fixture로 옮기고, 실제 결과를 검증한다. 현재 factory는 `import { chart } from "ggaction"`다. scope나 옵션 해석은 각 feature 명세가 우선한다.
+상태: **구현 완료 acceptance examples**. 아래 API는 제품 surface에 구현됐으며 대응 사례는 `ACCEPTANCE_CASES.json`의 stable runtime evidence와 strict type/package consumer에서 검증한다. 현재 factory는 `import { chart } from "ggaction"`다. scope나 옵션 해석은 각 feature 명세와 current contract가 우선한다.
 
 ## 1. 파생 식 수정과 downstream 재계산
 

@@ -2,7 +2,7 @@
 
 원래 감사 번호: **22**. Primary owner: **Phase 5**. 상태: **Implemented-primary**.
 구현 checkpoint는 `3fc40a66`이다. R22의 독립 기능·생명주기·패키지 검증은 완료됐고,
-R19의 다중 채널 원자적 재인코딩 payload 통합은 같은 Phase의 후속 owner에 남아 있다.
+R19의 다중 채널 원자적 재인코딩 payload와 field→constant stroke 전환은 `58d9e51a`, 최종 legend/label/reference 소비는 `8c4b56ad`에서 검증됐다.
 
 ## 목적과 현재 연결점
 
@@ -78,7 +78,7 @@ Text의 concrete outline schema를 추가하는 일은 선택된 기능에 포�
 ### 전환 및 우선순위
 
 1. field 호출: 기존 constant stroke override를 해당 owner에서 제거하고 encoding.stroke={field,fieldType,scale,…필요한 temporalUnit} 기록. constant 호출: stroke semantic encoding 제거, 기존 stroke legend dependency 해제, constant config 저장.
-2. data stroke가 있을 때 style edit으로 field mapping을 몰래 덮지 않는다. field에서 constant로 전환하는 domain action은 encodeStroke({value})다. generic mark edit의 충돌 정책은 기존 encoded appearance 규칙과 맞춰 사전 오류로 제안한다.
+2. data stroke가 있을 때 style edit으로 field mapping을 몰래 덮지 않는다. field에서 constant로 전환하는 domain action은 encodeStroke({value})다. generic mark edit의 충돌 정책은 기존 encoded appearance 규칙과 맞춰 사전 오류를 낸다.
 3. fill color와 stroke는 독립 ID가 기본. explicit scale.id 공유 시 공통 color mapping capability를 검증하고 color/stroke가 섞인 소비자라는 이유만으로 editStrokeScale를 거부하지 않는다.
 4. Line/Area에서 color도 stroke에 그려지는 기존 의미는 유지한다. 양쪽 channel이 설정되면 stroke가 선 outline의 최종 paint, color의 semantic binding/legend는 보존한다. 실제 sample은 동일 appearance resolver를 사용한다.
 5. strokeWidth0 또는 stroke paint 투명값을 자동 보정하지 않는다. item filter 후 최종 eligible series grain에서 field 일관성을 검증한다.

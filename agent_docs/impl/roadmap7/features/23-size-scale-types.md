@@ -76,7 +76,7 @@ SizeScaleOptions를 discriminated union으로 교체한다. 공통 id/unknown/re
 | quantile | auto 또는 finite nonempty samples | 최소2 areas 필수 | 기존 quantile at i/k, 오른쪽 bucket |
 | threshold | finite strictly increasing cutpoints>=1 | cutpoints+1 areas 필수 | upperBound(cutpoints,x) |
 
-continuous t=(f(x)-f(d0))/(f(d1)-f(d0)), clamp 적용 후 reverse면1-t, area=A0+t*(A1-A0). sqrt/pow를 이미 정규화된 t에 적용하는 잘못된 구현을 피하기 위해 domain[1,9] 같은 nonzero fixture가 필요하다. zero span의 기존 linear 정책은 유지하고 새 continuous type은 transformed endpoints가 같으면 RangeError로 제안한다.
+continuous t=(f(x)-f(d0))/(f(d1)-f(d0)), clamp 적용 후 reverse면1-t, area=A0+t*(A1-A0). sqrt/pow를 이미 정규화된 t에 적용하는 잘못된 구현을 피하기 위해 domain[1,9] 같은 nonzero fixture가 필요하다. zero span의 기존 linear 정책은 유지하고 새 continuous type은 transformed endpoints가 같으면 RangeError를 낸다.
 
 ### type 변경 규칙
 

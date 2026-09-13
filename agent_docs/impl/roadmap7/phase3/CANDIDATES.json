@@ -1,12 +1,13 @@
 {
   "phase": 3,
-  "status": "Proposed",
+  "status": "completed-primary",
   "scope": "implementation",
   "candidates": [
     {
       "id": "R10",
-      "status": "Proposed",
-      "file": "../features/10-weighted-statistics.md"
+      "status": "Implemented-primary",
+      "file": "../features/10-weighted-statistics.md",
+      "implementationCommit": "32ddfcdd"
     }
   ]
 }

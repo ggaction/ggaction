@@ -1,7 +1,7 @@
 # R29 — Polar 중심과 frame 반지름·배치
 
 원래 감사 번호: **29**. Primary owner: **Phase 6**. 상태: **Implemented-primary (`4aa9da65`)**.
-후속 R33 label anchor와 R43 local panel 통합은 각 primary Phase에서 누적 검증한다.
+R33 label anchor는 `95968031`, R43 local panel composition은 `ebf3562a`, label 제거 뒤 frame replay 수명주기는 `895d7607`에서 누적 검증됐다.
 
 ## 목적과 현재 연결점
 
@@ -64,7 +64,7 @@ requested polarFrame은 coordinate가 소유. resolvePolarFrame을 유일한 cen
 
 ## 구현 고정 명세 — Polar frame의 단일 계산
 
-PolarFrameOptions="auto"|{center?:{x:number,y:number},radius?:{unit:"fraction"|"px",value:number}}를 제안한다. center/radius object 각각은 전체 교체하며 polarFrame object 자체도 전체 교체다. center만 새로 전달하면 radius는 fraction1로 돌아간다. 유지하려면 기존 requested radius도 함께 전달한다.
+PolarFrameOptions="auto"|{center?:{x:number,y:number},radius?:{unit:"fraction"|"px",value:number}}를 사용한다. center/radius object 각각은 전체 교체하며 polarFrame object 자체도 전체 교체다. center만 새로 전달하면 radius는 fraction1로 돌아간다. 유지하려면 기존 requested radius도 함께 전달한다.
 
 ### 범위와 수식
 
@@ -99,5 +99,5 @@ fraction은 Canvas에 비례, px는 값 유지. px가 새 allocation에 들어�
 - [x] 위 수치 oracle를 실제 capability test에 구현했고 계획 예제를 기대값 생성기로 재사용하지 않았다.
 - [x] 기존 consumer와 새 consumer에 scale/mark/guide/label/selection/Canvas replay를 검증했다. R43 facet local-frame cell은 R43 primary Phase가 소유한다.
 - [x] Full 등록·타입 export·Current 계약·catalog·card·관계 trace·MCP·문서·installed consumer를 갱신했다.
-- [x] 후속 R33 label leader와 R43 local panel cell의 owner를 남겼다.
+- [x] R33 label leader와 R43 local panel cell은 `ebf3562a`, 전체 frame/source/theme replay는 `8c4b56ad`에서 닫혔다.
 - [x] Phase 6 STEP1에 구현·검증 근거를 기록했다.

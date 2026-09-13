@@ -4,7 +4,7 @@
   "baseCommit": "c0e47da6e213852213bcb04eb19031a1a6a63cd7",
   "sourceOfScope": "PROPOSALS.json",
   "sourceOfBehavior": "features/*.md 구현 고정 명세",
-  "note": "연결표다. Implemented-primary 항목의 통과 증거는 해당 Phase STEP 원장에 있고, Proposed 항목의 suggestedNewTest는 미래 소유 위치다.",
+  "note": "완료 연결표다. 모든 항목의 통과 증거는 해당 Phase STEP 원장과 ACCEPTANCE_CASES.json의 stable runtimeEvidence에 있고, currentSourceFiles·implementedTests·implementationCommit이 실제 제품 owner를 연결한다.",
   "features": [
     {
       "id": "R02",
@@ -122,7 +122,8 @@
         "edit/reencode/Canvas/source replay/remove",
         "applicable composition and renderer cells",
         "Full registration/types/current contracts/knowledge/docs/installed package"
-      ]
+      ],
+      "implementationCommit": "9d4d0840"
     },
     {
       "id": "R06",
@@ -161,7 +162,8 @@
         "edit/reencode/Canvas/source replay/remove",
         "applicable composition and renderer cells",
         "Full registration/types/current contracts/knowledge/docs/installed package"
-      ]
+      ],
+      "implementationCommit": "b891d1d5"
     },
     {
       "id": "R07",
@@ -201,7 +203,8 @@
         "edit/reencode/Canvas/source replay/remove",
         "applicable composition and renderer cells",
         "Full registration/types/current contracts/knowledge/docs/installed package"
-      ]
+      ],
+      "implementationCommit": "b891d1d5"
     },
     {
       "id": "R08",
@@ -245,7 +248,8 @@
         "edit/reencode/Canvas/source replay/remove",
         "applicable composition and renderer cells",
         "Full registration/types/current contracts/knowledge/docs/installed package"
-      ]
+      ],
+      "implementationCommit": "9d4d0840"
     },
     {
       "id": "R09",
@@ -288,7 +292,8 @@
         "edit/reencode/Canvas/source replay/remove",
         "applicable composition and renderer cells",
         "Full registration/types/current contracts/knowledge/docs/installed package"
-      ]
+      ],
+      "implementationCommit": "9d4d0840"
     },
     {
       "id": "R10",
@@ -354,7 +359,8 @@
         "edit/reencode/Canvas/source replay/remove",
         "applicable composition and renderer cells",
         "Full registration/types/current contracts/knowledge/docs/installed package"
-      ]
+      ],
+      "implementationCommit": "32ddfcdd"
     },
     {
       "id": "R19",
@@ -447,7 +453,8 @@
         "edit/reencode/Canvas/source replay/remove",
         "applicable composition and renderer cells",
         "Full registration/types/current contracts/knowledge/docs/installed package"
-      ]
+      ],
+      "implementationCommit": "eaea2b8b"
     },
     {
       "id": "R21",
@@ -494,7 +501,8 @@
         "edit/reencode/Canvas/source replay/remove",
         "applicable composition and renderer cells",
         "Full registration/types/current contracts/knowledge/docs/installed package"
-      ]
+      ],
+      "implementationCommit": "335ce4f0"
     },
     {
       "id": "R22",
@@ -553,7 +561,8 @@
         "edit/reencode/Canvas/source replay/remove",
         "applicable composition and renderer cells",
         "Full registration/types/current contracts/knowledge/docs/installed package"
-      ]
+      ],
+      "implementationCommit": "3fc40a66"
     },
     {
       "id": "R23",
@@ -602,7 +611,8 @@
         "edit/reencode/Canvas/source replay/remove",
         "applicable composition and renderer cells",
         "Full registration/types/current contracts/knowledge/docs/installed package"
-      ]
+      ],
+      "implementationCommit": "1b68a8ba"
     },
     {
       "id": "R25",
@@ -704,7 +714,8 @@
         "edit/reencode/Canvas/source replay/remove",
         "applicable composition and renderer cells",
         "Full registration/types/current contracts/knowledge/docs/installed package"
-      ]
+      ],
+      "implementationCommit": "ded3b073"
     },
     {
       "id": "R29",
@@ -755,7 +766,8 @@
         "edit/reencode/Canvas/source replay/remove",
         "applicable composition and renderer cells",
         "Full registration/types/current contracts/knowledge/docs/installed package"
-      ]
+      ],
+      "implementationCommit": "4aa9da65"
     },
     {
       "id": "R31",
@@ -797,7 +809,8 @@
         "edit/reencode/Canvas/source replay/remove",
         "applicable composition and renderer cells",
         "Full registration/types/current contracts/knowledge/docs/installed package"
-      ]
+      ],
+      "implementationCommit": "73e3d53e"
     },
     {
       "id": "R32",
@@ -847,7 +860,8 @@
         "edit/reencode/Canvas/source replay/remove",
         "applicable composition and renderer cells",
         "Full registration/types/current contracts/knowledge/docs/installed package"
-      ]
+      ],
+      "implementationCommit": "ee3f3b02"
     },
     {
       "id": "R33",
@@ -892,7 +906,8 @@
         "edit/reencode/Canvas/source replay/remove",
         "applicable composition and renderer cells",
         "Full registration/types/current contracts/knowledge/docs/installed package"
-      ]
+      ],
+      "implementationCommit": "95968031"
     },
     {
       "id": "R36",
@@ -937,7 +952,8 @@
         "edit/reencode/Canvas/source replay/remove",
         "applicable composition and renderer cells",
         "Full registration/types/current contracts/knowledge/docs/installed package"
-      ]
+      ],
+      "implementationCommit": "d7136174"
     },
     {
       "id": "R37",
@@ -997,7 +1013,7 @@
       "dependsOn": [
         "R37"
       ],
-      "status": "Proposed",
+      "status": "Implemented-primary",
       "newPublicActions": [
         "editLegendBlock"
       ],
@@ -1027,7 +1043,8 @@
         "edit/reencode/Canvas/source replay/remove",
         "applicable composition and renderer cells",
         "Full registration/types/current contracts/knowledge/docs/installed package"
-      ]
+      ],
+      "implementationCommit": "7ffafe02"
     },
     {
       "id": "R39",

@@ -1,32 +1,37 @@
 {
   "phase": 5,
-  "status": "Proposed",
+  "status": "completed-primary",
   "scope": "implementation",
   "candidates": [
     {
       "id": "R20",
-      "status": "Proposed",
-      "file": "../features/20-parallel-scale.md"
+      "status": "Implemented-primary",
+      "file": "../features/20-parallel-scale.md",
+      "implementationCommit": "eaea2b8b"
     },
     {
       "id": "R21",
-      "status": "Proposed",
-      "file": "../features/21-offset-scales.md"
+      "status": "Implemented-primary",
+      "file": "../features/21-offset-scales.md",
+      "implementationCommit": "335ce4f0"
     },
     {
       "id": "R23",
-      "status": "Proposed",
-      "file": "../features/23-size-scale-types.md"
+      "status": "Implemented-primary",
+      "file": "../features/23-size-scale-types.md",
+      "implementationCommit": "1b68a8ba"
     },
     {
       "id": "R22",
-      "status": "Proposed",
-      "file": "../features/22-stroke-color.md"
+      "status": "Implemented-primary",
+      "file": "../features/22-stroke-color.md",
+      "implementationCommit": "3fc40a66"
     },
     {
       "id": "R19",
-      "status": "Proposed",
-      "file": "../features/19-atomic-encoding.md"
+      "status": "Implemented-primary",
+      "file": "../features/19-atomic-encoding.md",
+      "implementationCommit": "58d9e51a"
     }
   ]
 }

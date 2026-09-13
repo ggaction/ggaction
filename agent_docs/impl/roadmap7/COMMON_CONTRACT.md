@@ -1,6 +1,6 @@
 # 공통 계약 C01–C12
 
-상태: Proposed. 각 기능 문서가 특별히 다른 동작을 명시하면 해당 규칙이 우선한다. 기존 API의 이미 보장된 기본값을 이 문서의 새 기본값으로 소급 변경하지 않는다. 이 문서는 현재 public contract가 아니다.
+상태: **승인·구현 완료된 Roadmap 7 공통 구현 계약 기록**. 각 기능 문서가 특별히 다른 동작을 명시하면 해당 규칙이 우선한다. 기존 API의 이미 보장된 기본값을 이 문서의 새 기본값으로 소급 변경하지 않는다. 현재 public contract의 최종 owner는 `agent_docs/contract/current`, 제품 타입과 source다.
 
 ## C01 — 계층과 불변성
 
@@ -66,7 +66,7 @@ Complete output 상한10,000 rows는 preflight count로 적용. AST depth16/node
 
 한 기능 완료 surface: Full method registry, internal wrapped actions, types와 exports, current contract, ACTION_INDEX, generated catalog/relations/cards, docs signatures/reference, MCP tools/resources/task resolver, runtime and strict type consumer, package installed Node/browser, renderer entries. capability only인 기존 option 확장은 direct method를 인위적으로 늘리지 않는다.
 
-Proposed 후보는 이 Roadmap의 PROPOSALS.json 및 phase-local CANDIDATES.json에만 둔다. 세부 계약 승인 이전 Planned/current inventory 오염 금지. Gate 후 승인 범위만 Planned → Implemented/Current 이동. 문서/타입만 선언하고 함수가 없는 ghost API는 금지다.
+계획 당시 후보는 이 Roadmap의 PROPOSALS.json 및 phase-local CANDIDATES.json에서 관리했다. 세부 계약 승인 전에는 current inventory를 바꾸지 않았고 Gate 뒤 승인 범위만 Implemented/Current로 이동했다. 문서/타입만 선언하고 함수가 없는 ghost API는 금지다.
 
 ## C12 — 검증과 종료
 

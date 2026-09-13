@@ -1,7 +1,7 @@
 # R31 — 원본 마크를 보존하는 붙임 라벨 삭제
 
 원래 감사 번호: **31**. Primary owner: **Phase 7**. 상태: **Implemented-primary (`73e3d53e`)**.
-Full public action, label-only 삭제 transaction, 타입·Current 계약·knowledge·문서·installed package 검증을 완료했다. R43 source-owned Text facet/repeat의 `R31-L02` local replay도 `ebf3562a`에서 닫혔다.
+Full public action, label-only 삭제 transaction, 타입·Current 계약·knowledge·문서·installed package 검증을 완료했다. R43 source-owned Text facet/repeat와 remove→reencode→Canvas→theme→facet의 `R31-L02` replay는 `ebf3562a`, `895d7607`에서 닫혔다.
 
 ## 목적과 현재 연결점
 

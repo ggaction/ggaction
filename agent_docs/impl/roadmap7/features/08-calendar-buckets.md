@@ -1,7 +1,7 @@
 # R08 — 주간·요일·시간대 버킷
 
-원래 감사 번호: **8**. Primary owner: **Phase 2**. 상태: **primary 구현 완료 / R02 edit 통합 대기**.
-`9d4d0840`에서 week/weekday, IANA timeZone, fold/gap boundary, public 타입·Current 계약·facet replay·설치 패키지를 구현했다. `editTimeUnitData`는 R02가 소유하므로 Phase 4에서 닫는다.
+원래 감사 번호: **8**. Primary owner: **Phase 2**. 상태: **Implemented-primary** (`9d4d0840`).
+Week/weekday, IANA timeZone, fold/gap boundary, public 타입·Current 계약·facet replay·설치 패키지를 구현했다. R02의 `editTimeUnitData` revision은 `d29287c9`에서 닫혔다.
 
 ## 목적과 현재 연결점
 

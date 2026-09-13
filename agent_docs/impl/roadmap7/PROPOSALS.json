@@ -92,7 +92,8 @@
         "독립 oracle와 인수 테스트",
         "완료 조건",
         "구현 고정 명세"
-      ]
+      ],
+      "implementationCommit": "9d4d0840"
     },
     {
       "id": "R06",
@@ -117,7 +118,8 @@
         "독립 oracle와 인수 테스트",
         "완료 조건",
         "구현 고정 명세"
-      ]
+      ],
+      "implementationCommit": "b891d1d5"
     },
     {
       "id": "R07",
@@ -144,7 +146,8 @@
         "독립 oracle와 인수 테스트",
         "완료 조건",
         "구현 고정 명세"
-      ]
+      ],
+      "implementationCommit": "b891d1d5"
     },
     {
       "id": "R08",
@@ -169,7 +172,8 @@
         "독립 oracle와 인수 테스트",
         "완료 조건",
         "구현 고정 명세"
-      ]
+      ],
+      "implementationCommit": "9d4d0840"
     },
     {
       "id": "R09",
@@ -196,7 +200,8 @@
         "독립 oracle와 인수 테스트",
         "완료 조건",
         "구현 고정 명세"
-      ]
+      ],
+      "implementationCommit": "9d4d0840"
     },
     {
       "id": "R10",
@@ -229,7 +234,8 @@
         "독립 oracle와 인수 테스트",
         "완료 조건",
         "구현 고정 명세"
-      ]
+      ],
+      "implementationCommit": "32ddfcdd"
     },
     {
       "id": "R19",
@@ -260,7 +266,8 @@
         "독립 oracle와 인수 테스트",
         "완료 조건",
         "구현 고정 명세"
-      ]
+      ],
+      "implementationCommit": "58d9e51a"
     },
     {
       "id": "R20",
@@ -285,7 +292,8 @@
         "독립 oracle와 인수 테스트",
         "완료 조건",
         "구현 고정 명세"
-      ]
+      ],
+      "implementationCommit": "eaea2b8b"
     },
     {
       "id": "R21",
@@ -310,7 +318,8 @@
         "독립 oracle와 인수 테스트",
         "완료 조건",
         "구현 고정 명세"
-      ]
+      ],
+      "implementationCommit": "335ce4f0"
     },
     {
       "id": "R22",
@@ -339,7 +348,8 @@
         "독립 oracle와 인수 테스트",
         "완료 조건",
         "구현 고정 명세"
-      ]
+      ],
+      "implementationCommit": "3fc40a66"
     },
     {
       "id": "R23",
@@ -369,7 +379,8 @@
         "독립 oracle와 인수 테스트",
         "완료 조건",
         "구현 고정 명세"
-      ]
+      ],
+      "implementationCommit": "1b68a8ba"
     },
     {
       "id": "R25",
@@ -440,7 +451,8 @@
         "독립 oracle와 인수 테스트",
         "완료 조건",
         "구현 고정 명세"
-      ]
+      ],
+      "implementationCommit": "ded3b073"
     },
     {
       "id": "R29",
@@ -473,7 +485,8 @@
         "독립 oracle와 인수 테스트",
         "완료 조건",
         "구현 고정 명세"
-      ]
+      ],
+      "implementationCommit": "4aa9da65"
     },
     {
       "id": "R31",
@@ -499,7 +512,8 @@
         "독립 oracle와 인수 테스트",
         "완료 조건",
         "구현 고정 명세"
-      ]
+      ],
+      "implementationCommit": "73e3d53e"
     },
     {
       "id": "R32",
@@ -528,7 +542,8 @@
         "독립 oracle와 인수 테스트",
         "완료 조건",
         "구현 고정 명세"
-      ]
+      ],
+      "implementationCommit": "ee3f3b02"
     },
     {
       "id": "R33",
@@ -557,7 +572,8 @@
         "독립 oracle와 인수 테스트",
         "완료 조건",
         "구현 고정 명세"
-      ]
+      ],
+      "implementationCommit": "95968031"
     },
     {
       "id": "R36",
@@ -587,7 +603,8 @@
         "독립 oracle와 인수 테스트",
         "완료 조건",
         "구현 고정 명세"
-      ]
+      ],
+      "implementationCommit": "d7136174"
     },
     {
       "id": "R37",

@@ -1,7 +1,7 @@
 # R27 — 좌표 frame 종횡비와 데이터 단위비
 
 원래 감사 번호: **27**. Primary owner: **Phase 6**. 상태: **Implemented-primary**.
-아래 세부 API·수치 정책은 `ded3b073`에서 구현됐다. R29와 합친 Polar·renderer closeout은 Phase 6에 남아 있다.
+아래 세부 API·수치 정책은 `ded3b073`에서 구현됐다. R29 Polar frame과의 결합은 `4aa9da65`, R43 composition·renderer closeout은 `ebf3562a`, 최종 Polar 수명주기 통합은 `895d7607`에서 검증됐다.
 
 ## 목적과 현재 연결점
 
@@ -64,7 +64,7 @@ requested aspect는 semantic coordinate definition에 저장. allocated bounds�
 
 ### 저장·타입
 
-baseline에는 createCoordinate만 있고 editCoordinate는 없다. **editCoordinate는 이 Phase에서 추가하는 신규 Full public action**이다. EditCoordinateOptions={target:string,aspect?:CoordinateAspect,polarFrame?:PolarFrameOptions}로 제안하며 적어도 하나의 patch가 필요하다. type/layers/id 교체는 받지 않는다. R29에서 polarFrame branch를 완성한다. 등록·타입·action contract/card를 기존 옵션 확장으로 누락하지 않는다.
+baseline에는 createCoordinate만 있었고 **editCoordinate는 이 Phase에서 추가한 Full public action**이다. EditCoordinateOptions={target:string,aspect?:CoordinateAspect,polarFrame?:PolarFrameOptions}이며 적어도 하나의 patch가 필요하다. type/layers/id 교체는 받지 않는다. R29에서 polarFrame branch를 완성했다. 등록·타입·action contract/card까지 현재 제품 surface에 포함한다.
 
 CoordinateAspect="auto"|{mode:"frame"|"data",ratio:number,alignX?,alignY?}를 export하고 editCoordinate의 해당 옵션으로 연결한다. mode가 바뀌거나 aspect object를 전달하면 이전 object와 merge하지 않는다. object 내부 생략 align은 center. aspect 생략은 이전 요청 유지, "auto"는 override 제거다.
 

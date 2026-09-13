@@ -53,7 +53,7 @@ xOffset/yOffset를 focused channel dispatch와 consumer enumeration에 연결한
 
 ## 구현 고정 명세 — offset padding owner 정리
 
-새 export EditXOffsetScaleOptions/EditYOffsetScaleOptions는 {target:string,domain?,reverse?,padding?,paddingInner?,paddingOuter?,align?}. id/range/type/order는 받지 않는다. domain 배열 자체가 순서 변경이다. paddingInner∈[0,1),paddingOuter>=0,align∈[0,1],padding∈[0,1)이며 finite다. padding과 paddingInner/paddingOuter 동시 제공은 충돌 오류로 제안한다. padding:p는 inner=p,outer=p로 정규화한다.
+제품 export EditXOffsetScaleOptions/EditYOffsetScaleOptions는 {target:string,domain?,reverse?,padding?,paddingInner?,paddingOuter?,align?}다. id/range/type/order는 받지 않는다. domain 배열 자체가 순서 변경이다. paddingInner∈[0,1),paddingOuter>=0,align∈[0,1],padding∈[0,1)이며 finite다. padding과 paddingInner/paddingOuter 동시 제공은 충돌 오류다. padding:p는 inner=p,outer=p로 정규화한다.
 
 ### 현재 코드와 연결해야 할 지점
 

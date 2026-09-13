@@ -1,7 +1,7 @@
 # R10 — 가중 통계·histogram·KDE
 
-원래 감사 번호: **10**. Primary owner: **Phase 3**. 상태: **primary 구현 완료 / R02 edit 통합 대기**.
-`da0ca4e2`에서 weighted summary/bin/KDE, histogram/density/violin 전달, per-profile auto bandwidth, 타입·Current 계약·문서·설치 패키지를 구현했다. `276c8318`은 density mass scaling을, `32ddfcdd`는 histogram의 label/selection/installed browser consumer를 보강했다. `editSummaryData`, `editBinData`, `editDensityData`, generic `editDerivedData`는 R02가 Phase 4에서 닫는다.
+원래 감사 번호: **10**. Primary owner: **Phase 3**. 상태: **Implemented-primary** (`32ddfcdd`).
+`da0ca4e2`에서 weighted summary/bin/KDE, histogram/density/violin 전달, per-profile auto bandwidth, 타입·Current 계약·문서·설치 패키지를 구현했다. `276c8318`은 density mass scaling을, `32ddfcdd`는 histogram의 label/selection/installed browser consumer를 보강했다. `editSummaryData`, `editBinData`, `editDensityData`, generic `editDerivedData`는 R02 `d29287c9`에서, weighted summary 전체 provenance revision은 Phase 12 `8c4b56ad`에서 닫혔다.
 
 ## 목적과 현재 연결점
 
@@ -86,7 +86,7 @@ weight branch의 whitelist는 count,sum,mean,variance,varianceP,stdev,stdevP,std
 | editViolinPlot | density.weight | 생략=유지,false=제거 |
 | editDerivedData | complete definition.weight | definition에서 생략하면 제거 |
 
-weight:false는 edit 전용 patch sentinel이고 canonical transform에는 저장하지 않는다. create/encode에서 false는 오류다. ViolinPlotDensityOptions의 기존 parent GradientPlotDensityOptions를 통째로 확장해 미선택 Gradient API까지 weight가 새지 않도록 violin-own 옵션에서만 추가한다. 이 해제 규칙도 Proposed이며 Phase3/4의 타입·runtime에 함께 반영한다.
+weight:false는 edit 전용 patch sentinel이고 canonical transform에는 저장하지 않는다. create/encode에서 false는 오류다. ViolinPlotDensityOptions의 기존 parent GradientPlotDensityOptions를 통째로 확장해 미선택 Gradient API까지 weight가 새지 않도록 violin-own 옵션에서만 추가한다. 이 해제 규칙은 Phase3/4의 타입·runtime에 함께 반영됐다.
 
 ### 계산 알고리즘
 

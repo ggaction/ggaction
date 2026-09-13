@@ -1,6 +1,7 @@
 /**
- * Roadmap 7 Proposed 타입 설계. 제품 타입/런타임 구현이 아니다.
- * baseline 타입을 재사용하여 이름·union 오류를 문서 단계에서 검사한다.
+ * Roadmap 7 구현 전 타입 설계의 역사적 compile mirror. 제품에서 import하지 않는다.
+ * 현재 정확한 선언은 repository root types/program.d.ts가 소유한다.
+ * baseline 타입을 재사용하여 이름·union 오류를 문서 단계에서 검사했다.
  * 숫자 범위, existing target capability, nonempty patch는 runtime 검증 의무다.
  */
 import type * as C from "../../../types/program.js";

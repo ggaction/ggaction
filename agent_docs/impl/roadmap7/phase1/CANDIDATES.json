@@ -1,17 +1,19 @@
 {
   "phase": 1,
-  "status": "completed",
+  "status": "completed-primary",
   "scope": "implementation",
   "candidates": [
     {
       "id": "R06",
-      "status": "implemented-primary",
-      "file": "../features/06-computed-expressions.md"
+      "status": "Implemented-primary",
+      "file": "../features/06-computed-expressions.md",
+      "implementationCommit": "b891d1d5"
     },
     {
       "id": "R07",
-      "status": "implemented-primary",
-      "file": "../features/07-normalization.md"
+      "status": "Implemented-primary",
+      "file": "../features/07-normalization.md",
+      "implementationCommit": "b891d1d5"
     }
   ]
 }

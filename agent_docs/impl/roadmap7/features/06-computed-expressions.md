@@ -1,7 +1,7 @@
 # R06 — 조건·문자열·null 계산식
 
-원래 감사 번호: **6**. Primary owner: **Phase 1**. 상태: **primary 구현 완료 / R02 edit 통합 대기**.
-`b891d1d5`에서 typed AST·평가·facet/encoding 연결·공개 타입·Current 계약·설치 패키지를 구현했다. `editComputedData`와 source revision 재실행은 R02가 소유하므로 Phase 4에서 닫는다.
+원래 감사 번호: **6**. Primary owner: **Phase 1**. 상태: **Implemented-primary** (`b891d1d5`).
+Typed AST·평가·facet/encoding 연결·공개 타입·Current 계약·설치 패키지를 구현했다. R02의 `editComputedData`와 Phase 12의 complete→computed downstream revision은 `d29287c9`, `8c4b56ad`에서 닫혔다.
 
 ## 목적과 현재 연결점
 

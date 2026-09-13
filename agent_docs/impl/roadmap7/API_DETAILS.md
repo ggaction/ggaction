@@ -1,6 +1,6 @@
 # API 계약 보충과 타입 동결 체크
 
-상태: Proposed. feature의 TypeScript block은 설계 표기이며 현재 export를 선언한 것이 아니다. `...ExistingOptions`는 해당 current type의 모든 기존 옵션을 그대로 보존한다는 뜻이다. 구현자가 빈 interface나 any로 대체하지 않도록 아래 연결표를 사용한다.
+상태: **구현 완료된 타입 연결 기록**. feature의 TypeScript block은 구현 목표를 고정한 설계 표기이고, 현재 export의 정확한 선언은 repository root `types/program.d.ts`가 소유한다. `...ExistingOptions`는 해당 current type의 모든 기존 옵션을 그대로 보존한다는 뜻이다. 구현 결과를 빈 interface나 `any`로 약화하지 않도록 아래 연결표를 사용한다.
 
 ## 기존 타입 재사용
 

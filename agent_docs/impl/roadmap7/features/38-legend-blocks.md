@@ -1,7 +1,7 @@
 # R38 — 결합 범례의 channel block별 편집
 
 원래 감사 번호: **38**. Primary owner: **Phase 8**. 상태: **Implemented-primary**.
-아래 세부 API·수치 정책의 Gate는 승인됐고 제품 commit `7ffafe02`에서 제품·타입·계약·문서·설치 패키지에 구현됐다. 누적 검증 수치는 Phase 8 `STEP1.md` 결과 원장에 기록한다. R39의 `labelMap`과 facet header 통합은 아직 이 API에 포함하지 않는다.
+아래 세부 API·수치 정책의 Gate는 승인됐고 제품 commit `7ffafe02`에서 제품·타입·계약·문서·설치 패키지에 구현됐다. 누적 검증 수치는 Phase 8 `STEP1.md` 결과 원장에 기록한다. R39 typed `labelMap`은 `20a25911`, R43 facet header 통합은 `ebf3562a`, 최종 composition 검증은 `8c4b56ad`에서 완료됐다.
 
 ## 목적과 현재 연결점
 
@@ -95,7 +95,7 @@ R38의 `text`는 **item label style만** 뜻한다. `labels.offset`과 numeric `
 
 merged color+shape에서 channel:"color"와 channel:"shape"는 **같은 block을 선택**한다. 한 호출은 그 block 전체를 편집한다. 뒤 호출에서 title을 바꾸면 전체 block의 title을 교체한다. channel별 독립 title을 저장하지 않는다.
 
-초안의 "shape를 다른 title로 지정하면 오류"는 순차 patch인지 독립 title 요청인지 모호했다. 하나의 public patch에는 독립 title 두 개를 표현할 수 없으므로, 정상 순차 편집은 허용한다. 서로 다른 membership에서 유입된 override를 merge하는 transition에서만 충돌을 거부한다. 이는 Proposed 상세 정책의 명료화이며 현재 동작 변경 완료가 아니다.
+초안의 "shape를 다른 title로 지정하면 오류"는 순차 patch인지 독립 title 요청인지 모호했다. 하나의 public patch에는 독립 title 두 개를 표현할 수 없으므로, 정상 순차 편집은 허용한다. 서로 다른 membership에서 유입된 override를 merge하는 transition에서만 충돌을 거부한다. 이 정책은 `7ffafe02`의 현재 동작이다.
 
 ### transition 표
 

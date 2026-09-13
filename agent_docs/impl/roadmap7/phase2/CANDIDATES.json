@@ -1,22 +1,25 @@
 {
   "phase": 2,
-  "status": "completed",
+  "status": "completed-primary",
   "scope": "implementation",
   "candidates": [
     {
       "id": "R05",
-      "status": "implemented-primary",
-      "file": "../features/05-complete-impute.md"
+      "status": "Implemented-primary",
+      "file": "../features/05-complete-impute.md",
+      "implementationCommit": "9d4d0840"
     },
     {
       "id": "R08",
-      "status": "implemented-primary",
-      "file": "../features/08-calendar-buckets.md"
+      "status": "Implemented-primary",
+      "file": "../features/08-calendar-buckets.md",
+      "implementationCommit": "9d4d0840"
     },
     {
       "id": "R09",
-      "status": "implemented-primary",
-      "file": "../features/09-duration-windows.md"
+      "status": "Implemented-primary",
+      "file": "../features/09-duration-windows.md",
+      "implementationCommit": "9d4d0840"
     }
   ]
 }
