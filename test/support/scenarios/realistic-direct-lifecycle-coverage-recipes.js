@@ -995,18 +995,25 @@ function baseEncodingForRemoval(program, target, channel) {
 }
 
 function buildRemovalCoverage(factors) {
-  const { program: initial } = createBase(
+  const { view, program: initial } = createBase(
     factors.dataset,
     "style",
     "analysisRows",
     { removalProjection: true, singleSeriesProjection: true }
   );
-  let program = initial.filterData({
-    id: "removalMaterialRows",
-    source: "analysisRows",
-    field: "rowOrdinal",
-    range: { min: 1, max: 12, inclusive: true }
-  });
+  let program = initial
+    .createData({ id: "unusedRemovalData", values: view.rows.slice(0, 1) })
+    .createScale({ id: "unusedRemovalScale", type: "linear" })
+    .createCoordinate({ id: "unusedRemovalCoordinate", type: "cartesian" })
+    .removeData({ id: "unusedRemovalData" })
+    .removeScale({ id: "unusedRemovalScale" })
+    .removeCoordinate({ id: "unusedRemovalCoordinate" })
+    .filterData({
+      id: "removalMaterialRows",
+      source: "analysisRows",
+      field: "rowOrdinal",
+      range: { min: 1, max: 12, inclusive: true }
+    });
   for (const channel of REMOVE_CHANNELS) {
     const target = `remove-${channel}`;
     if (channel === "text") {
@@ -2528,7 +2535,9 @@ const REMOVAL_RECIPE = makeRecipe({
   removalProjection: true,
   singleSeriesProjection: true,
   build: buildRemovalCoverage,
-  expectedDirectActions: ["removeEncoding"]
+  expectedDirectActions: [
+    "removeData", "removeScale", "removeCoordinate", "removeEncoding"
+  ]
 });
 
 const STATISTICAL_RECIPE = makeRecipe({
