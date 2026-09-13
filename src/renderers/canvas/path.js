@@ -3,6 +3,7 @@ import { validateConcreteGraphicProperties } from
   "../../grammar/schemas/concreteGraphic.js";
 import { resolvePathCommandBounds } from "../../grammar/schemas/graphicBounds.js";
 import { applyCanvasFill } from "./fill.js";
+import { applyCanvasStroke } from "./stroke.js";
 
 function drawPath(context, child, collectionId) {
   const properties = child.properties ?? {};
@@ -82,9 +83,7 @@ function drawPath(context, child, collectionId) {
     context.fill();
   }
   if (hasStroke) {
-    context.strokeStyle = properties.stroke;
-    context.lineWidth = strokeWidth;
-    context.setLineDash(strokeDash);
+    applyCanvasStroke(context, properties, strokeDash);
     context.stroke();
   }
 }

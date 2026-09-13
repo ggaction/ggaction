@@ -2,6 +2,7 @@ import { requireFiniteProperty } from "./validation.js";
 import { validateConcreteGraphicProperties } from
   "../../grammar/schemas/concreteGraphic.js";
 import { applyCanvasFill } from "./fill.js";
+import { applyCanvasStroke } from "./stroke.js";
 
 function drawRect(context, child, collectionId) {
   const properties = child.properties ?? {};
@@ -42,9 +43,7 @@ function drawRect(context, child, collectionId) {
     bottom: y + height
   }, graphicId);
   context.fillRect(x, y, width, height);
-  context.strokeStyle = properties.stroke;
-  context.lineWidth = strokeWidth;
-  context.setLineDash([]);
+  applyCanvasStroke(context, properties);
   context.beginPath();
   context.moveTo(x, y);
   context.lineTo(x + width, y);

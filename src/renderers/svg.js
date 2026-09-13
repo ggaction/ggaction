@@ -113,6 +113,21 @@ function requireStrokeDash(properties, graphicId) {
   return strokeDash;
 }
 
+function strokeDetailAttributes(properties, strokeWidth) {
+  if (typeof properties.stroke !== "string" || !(strokeWidth > 0)) return [];
+  return [
+    ["stroke-linecap", Object.hasOwn(properties, "lineCap")
+      ? properties.lineCap
+      : undefined],
+    ["stroke-linejoin", Object.hasOwn(properties, "lineJoin")
+      ? properties.lineJoin
+      : undefined],
+    ["stroke-miterlimit", Object.hasOwn(properties, "miterLimit")
+      ? formatNumber(properties.miterLimit)
+      : undefined]
+  ];
+}
+
 function requireCanvasGeometry(id, canvas, { nested }) {
   const properties = canvas.properties ?? {};
   const width = requireFiniteProperty(properties, "width", id);
@@ -200,6 +215,7 @@ function serializeCircle(state, graphicId, properties) {
     ["stroke-width", strokeWidth === undefined
       ? undefined
       : formatNumber(strokeWidth)],
+    ...strokeDetailAttributes(properties, strokeWidth),
     ["opacity", formatNumber(requireOpacity(properties, graphicId))]
   ]);
 }
@@ -240,6 +256,7 @@ function serializeRect(state, graphicId, properties) {
     ["fill", fill],
     ["stroke", properties.stroke],
     ["stroke-width", formatNumber(strokeWidth)],
+    ...strokeDetailAttributes(properties, strokeWidth),
     ["opacity", formatNumber(requireOpacity(properties, graphicId))]
   ]);
 }
@@ -268,6 +285,7 @@ function serializeLine(state, graphicId, properties) {
     ["fill", "none"],
     ["stroke", properties.stroke],
     ["stroke-width", formatNumber(strokeWidth)],
+    ...strokeDetailAttributes(properties, strokeWidth),
     ["stroke-dasharray", strokeDash.length === 0
       ? undefined
       : strokeDash.map(formatNumber).join(" ")],
@@ -332,6 +350,7 @@ function serializePath(state, graphicId, properties) {
     ["stroke-width", strokeWidth === undefined
       ? undefined
       : formatNumber(strokeWidth)],
+    ...strokeDetailAttributes(properties, strokeWidth),
     ["stroke-dasharray", strokeDash.length === 0
       ? undefined
       : strokeDash.map(formatNumber).join(" ")],

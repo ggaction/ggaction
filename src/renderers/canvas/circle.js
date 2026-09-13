@@ -1,6 +1,7 @@
 import { requireFiniteProperty } from "./validation.js";
 import { validateConcreteGraphicProperties } from
   "../../grammar/schemas/concreteGraphic.js";
+import { applyCanvasStroke } from "./stroke.js";
 
 function drawCircle(context, child, collectionId) {
   const properties = child.properties ?? {};
@@ -43,9 +44,7 @@ function drawCircle(context, child, collectionId) {
         `Graphic "${graphicId}" requires a non-negative strokeWidth.`
       );
     }
-    context.strokeStyle = properties.stroke;
-    context.lineWidth = strokeWidth;
-    context.setLineDash([]);
+    applyCanvasStroke(context, properties);
     context.stroke();
   }
 }

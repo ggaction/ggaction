@@ -189,6 +189,52 @@ test("writes one logical-size vector PDF page with metadata and text", async t =
   assert.match(content, /\bc\b/);
 });
 
+test("writes explicit and reset stroke details through shared Canvas drawers", async t => {
+  const directory = await mkdtemp(join(tmpdir(), "ggaction-pdf-stroke-"));
+  t.after(() => rm(directory, { recursive: true, force: true }));
+  const output = join(directory, "stroke-details.pdf");
+  const line = (id, y, details = {}) => ({
+    id,
+    type: "line",
+    properties: {
+      x1: 10,
+      y1: y,
+      x2: 90,
+      y2: y,
+      stroke: "black",
+      strokeWidth: 4,
+      ...details
+    }
+  });
+  const graphicSpec = {
+    objects: {
+      canvas: {
+        type: "canvas",
+        properties: { width: 100, height: 80 },
+        children: ["lines"]
+      },
+      lines: {
+        type: "collection",
+        items: [
+          line("lines:explicit", 20, {
+            lineCap: "round",
+            lineJoin: "bevel",
+            miterLimit: 3
+          }),
+          line("lines:default", 50)
+        ]
+      }
+    },
+    order: ["canvas"]
+  };
+
+  await renderToPDF({ graphicSpec }, { output });
+  const source = (await readFile(output)).toString("latin1");
+
+  assert.match(source, /\/LC 1\s+\/LJ 2\s+\/LW 4\s+\/ML 3/);
+  assert.match(source, /\/LC 0\s+\/LJ 0\s+\/LW 4\s+\/ML 10/);
+});
+
 test("preserves hconcat text translations when child margins differ", async t => {
   const directory = await mkdtemp(join(tmpdir(), "ggaction-pdf-concat-"));
   t.after(() => rm(directory, { recursive: true, force: true }));

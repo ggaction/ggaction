@@ -1,6 +1,7 @@
 import { requireFiniteProperty } from "./validation.js";
 import { validateConcreteGraphicProperties } from
   "../../grammar/schemas/concreteGraphic.js";
+import { applyCanvasStroke } from "./stroke.js";
 
 function drawLine(context, child, collectionId) {
   const properties = child.properties ?? {};
@@ -32,10 +33,8 @@ function drawLine(context, child, collectionId) {
     throw new Error(`Graphic "${graphicId}" requires opacity from 0 to 1.`);
   }
 
-  context.strokeStyle = properties.stroke;
-  context.lineWidth = strokeWidth;
   context.globalAlpha = opacity;
-  context.setLineDash(properties.strokeDash ?? []);
+  applyCanvasStroke(context, properties, properties.strokeDash ?? []);
   context.beginPath();
   context.moveTo(x1, y1);
   context.lineTo(x2, y2);

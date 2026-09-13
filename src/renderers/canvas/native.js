@@ -9,10 +9,10 @@ import { validateConcreteGraphicProperties } from
 const MAX_NATIVE_VALUE = 16_777_216;
 const NATIVE_PROPERTIES = {
   canvas: ["x", "y", "width", "height"],
-  circle: ["x", "y", "radius", "strokeWidth"],
-  rect: ["x", "y", "width", "height", "strokeWidth"],
-  line: ["x1", "y1", "x2", "y2", "strokeWidth"],
-  path: ["strokeWidth"],
+  circle: ["x", "y", "radius", "strokeWidth", "miterLimit"],
+  rect: ["x", "y", "width", "height", "strokeWidth", "miterLimit"],
+  line: ["x1", "y1", "x2", "y2", "strokeWidth", "miterLimit"],
+  path: ["strokeWidth", "miterLimit"],
   text: ["x", "y", "fontSize"]
 };
 const COMMAND_PROPERTIES = ["x", "y", "x1", "y1", "x2", "y2"];

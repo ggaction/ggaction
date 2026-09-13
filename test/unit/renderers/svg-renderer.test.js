@@ -204,6 +204,53 @@ test("serializes the complete concrete primitive surface deterministically", () 
   );
 });
 
+test("serializes only explicitly requested active stroke details", () => {
+  const legacy = completeGraphicSpec();
+  assert.doesNotMatch(
+    renderToSVG({ graphicSpec: legacy }),
+    /stroke-(?:linecap|linejoin|miterlimit)=/
+  );
+
+  const styled = completeGraphicSpec();
+  const details = [
+    { lineCap: "butt", lineJoin: "bevel", miterLimit: 2.5 },
+    { lineCap: "round", lineJoin: "round", miterLimit: 3 },
+    { lineCap: "square", lineJoin: "miter", miterLimit: 4 },
+    { lineCap: "round", lineJoin: "bevel", miterLimit: 5 }
+  ];
+  for (const [index, detail] of details.entries()) {
+    Object.assign(styled.objects.plot.items[index].properties, detail);
+  }
+  styled.objects.plot.items.push({
+    id: "plot:fill-only",
+    type: "circle",
+    properties: {
+      x: 130,
+      y: 30,
+      radius: 4,
+      fill: "red",
+      ...details[1]
+    }
+  });
+  const svg = renderToSVG({ graphicSpec: styled });
+
+  for (const [elementPattern, detail] of [
+    ['rect x="10"', details[0]],
+    ['circle cx="30"', details[1]],
+    ['line x1="5"', details[2]],
+    ["path", details[3]]
+  ]) {
+    const tag = svg.match(new RegExp(`<${elementPattern}[^>]+>`))[0];
+    assert.match(tag, new RegExp(`stroke-linecap="${detail.lineCap}"`));
+    assert.match(tag, new RegExp(`stroke-linejoin="${detail.lineJoin}"`));
+    assert.match(tag, new RegExp(
+      `stroke-miterlimit="${detail.miterLimit}"`
+    ));
+  }
+  const fillOnly = svg.match(/<circle cx="130"[^>]+>/)[0];
+  assert.doesNotMatch(fillOnly, /stroke-(?:linecap|linejoin|miterlimit)=/);
+});
+
 test("normalizes numeric font weights consistently with Canvas-compatible targets", () => {
   const graphicSpec = completeGraphicSpec();
   graphicSpec.objects.plot.items.find(

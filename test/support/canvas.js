@@ -4,6 +4,9 @@ export function createMockCanvasContext() {
   let strokeStyle = "#000000";
   let globalAlpha = 1;
   let lineWidth = 1;
+  let lineCap = "butt";
+  let lineJoin = "miter";
+  let miterLimit = 10;
   let font = "10px sans-serif";
   let textAlign = "start";
   let textBaseline = "alphabetic";
@@ -46,6 +49,33 @@ export function createMockCanvasContext() {
     set lineWidth(value) {
       lineWidth = value;
       calls.push({ op: "setLineWidth", value });
+    },
+
+    get lineCap() {
+      return lineCap;
+    },
+
+    set lineCap(value) {
+      lineCap = value;
+      calls.push({ op: "setLineCap", value });
+    },
+
+    get lineJoin() {
+      return lineJoin;
+    },
+
+    set lineJoin(value) {
+      lineJoin = value;
+      calls.push({ op: "setLineJoin", value });
+    },
+
+    get miterLimit() {
+      return miterLimit;
+    },
+
+    set miterLimit(value) {
+      miterLimit = value;
+      calls.push({ op: "setMiterLimit", value });
     },
 
     get font() {
