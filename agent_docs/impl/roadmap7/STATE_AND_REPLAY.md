@@ -98,7 +98,7 @@ R25 removeData({id:logicalOwner})는 standalone owner의 current leaf를 외부�
 | R38 block override | materializationConfigs.guides.legend[kind].blockOverrides[key] | R38 {title?,text?,symbol?,gap?}; R39 뒤 labelMap? 추가 | config가 target/kind를 소유하며 key는 descriptor의 channel-set identity |
 | R39 axis mapping | 기존 해당 axis labels config.labelMap | typed mapping array | auto는 property 제거 |
 | R39 headers | materializationConfigs.facets[compositionId].headers | 기존 common style+아래 추가 fields | source/child 재생성에서 보존 |
-| R47 theme | materializationConfigs.theme | name,tokens?,overrides,scope?,origin? | 기존 name/overrides와 호환 |
+| R47 theme | materializationConfigs.theme | frames,descendantFrames?,localOrder,overrides | legacy name/overrides를 accessor에서 lazy-adopt |
 | R49 stroke style | 기존 mark config의 appearance owner | cornerRadius,lineCap,lineJoin,miterLimit | Bar는 기존 barAppearance owner 재사용 |
 
 R37과 R38이 같은 sampled content를 수정할 때 sampling이 유일한 요청 owner다. blockOverrides에는 해당 block의 sampling을 중복 저장하지 않고, editLegendBlock 입력의 values/count는 descriptor를 통해 실제 kind.sampling으로 전달한다. blockOverrides가 values/count를 별도 장기 저장하는 구현은 금지한다. categorical order도 현재 semantic guide order owner에 적용하고 style override map에 복제하지 않는다.
@@ -137,6 +137,6 @@ header schema의 추가 fields는 mode:"cell"|"roles", roles:{row?:{...override}
 
 ### theme 전파
 
-unit theme의 name은 base 이름, tokens는 이번 custom partial만 저장한다. inherited child theme의 origin={ownerCompositionId}는 child의 독립 explicit applyTheme 호출에서 제거한다. parent descendants를 다시 호출하면 origin을 새 owner로 바꾸고 현재 requested theme으로 교체한다. parent removeTheme는 자기 origin을 가진 descendants와 retained source만 제거하고 독립 explicit child theme은 유지한다. parent root와 descendants layout은 postorder로 재계산한다.
+각 theme frame은 owner,scope,base 이름,이번 custom partial만 저장한다. resolved 전체 tokens는 저장하지 않는다. 같은 owner를 재적용하면 이전 frame을 list 어디에서든 제거한 뒤 newest 위치에 한 번 추가하고, 다른 composition owner와 child local frame은 원래 순서로 보존한다. 그러므로 theme끼리의 우선순위는 local/inherited 종류가 아니라 실제 호출 순서다. parent removeTheme는 자기 owner frame만 root/descendants/retained source에서 제거해 아래 child local 또는 다른 parent frame을 복원한다. parent root와 descendants layout은 postorder로 재계산한다. exact state와 remove 순서는 [R47 canonical spec](features/47-custom-theme.md)을 따른다.
 
 이 경로를 구현하면서 schema가 실제 기존 owner와 충돌하면 코드에 임시 parallel registry를 만들지 않는다. 변경된 구체안을 Phase A 자료에 기록하고 기존 승인 범위와 비교한다. 단순 helper 파일 분할은 이 persisted schema를 바꾸지 않는다.

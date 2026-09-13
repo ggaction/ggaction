@@ -515,138 +515,46 @@ R22 stroke와 R23 size가 있는 한 combined legend에서 size exact values, co
 
 ## 4. Phase 9 — custom theme와 shape style
 
-### R47 — custom theme definition과 descendants propagation
+Phase 9 구현자는 이 절과 함께 아래 두 canonical feature 계약을 반드시 읽는다.
 
-#### exact public input
+- [R47 custom theme canonical spec](features/47-custom-theme.md): exact public types, 18-token schema, provenance frame state, composition 전파/복원, font/layout 순서, 오류와 acceptance oracle
+- [R49 shape style canonical spec](features/49-shape-style-details.md): family matrix, requested owner, rounded-path commands, rect/path transition, stroke bounds, renderer/facade/legend/highlight와 acceptance oracle
 
-```ts
-type ThemeDefinition = ThemeName | {
-  base: ThemeName;
-  tokens: Partial<ThemeTokens>;
-};
-type ApplyThemeOptions = {
-  theme: ThemeDefinition;
-  scope?: "self" | "descendants";
-};
-```
+두 feature 문서가 API와 의미의 최종 owner다. 이 절은 실행 순서와 cross-feature 종료 조건만 소유한다.
 
-`theme` string 기존 호출은 그대로다. object의 root keys는 base/tokens 정확히 둘이며 둘 다 필수다. tokens `{}`는 base-only와 같은 output이다. `scope` 생략은 unit self, composition descendants다. unit에서 self/descendants는 같은 unit 결과다.
+### R47 실행 순서
 
-허용 token은 `src/theme/defaults.js`의 다음 18개로 닫는다.
+1. `src/theme/defaults.js`에 18-key closed schema, `normalizeThemeDefinition`, `resolveThemeTokens`를 구현한다.
+2. 기존 theme state를 canonical frame state로 lazy-adopt하고 같은 owner upsert/remove helper를 pure test로 고정한다.
+3. unit built-in/custom transition을 before/after effective tokens로 reconcile한다.
+4. explicit color/font와 default highlight provenance를 trace에서 값 비교 없이 수집한다.
+5. composition `self`와 `descendants`를 분리하고 current children, nested compositions, retained facet/repeat source에 owner frame을 postorder로 전파한다.
+6. parent remove는 자기 owner frame만 제거해 아래 child local/other parent frame을 복원한다.
+7. font change는 text → labels → axes → legends → title → headers → unit layout → nested/outer composition layout 순서로 계산한다.
 
-```text
-background, mark, text, strongText, mutedText, axis, axisTitle, grid,
-border, sizeSymbol, regressionBand, boxLine, boxMedian, referenceLine,
-referenceBand, gradientCenter, highlight, fontFamily
-```
+Theme precedence는 `explicit user style > latest applicable theme frame > earlier frame > built-in light`다. unit/local 여부에 고정 우선순위를 부여하지 않는다. 새 custom 요청은 이전 custom partial token과 merge하지 않는다.
 
-앞 17개는 기존 renderer-neutral color validator, fontFamily는 nonempty string validator를 사용한다.
+### R49 실행 순서
 
-#### requested state
+1. `src/grammar/strokeStyle.js`와 `src/grammar/roundedRect.js` pure helper를 먼저 구현한다.
+2. concrete circle/rect/line/path schema와 painted bounds를 확장한다.
+3. primitive Canvas/SVG/PDF에서 cap/join/miter attrs와 context reset을 검증한다.
+4. direct Bar/Rect rounded path와 모든 strokable mark requested state/materializer를 연결한다.
+5. 기존 facade nested style object, automatic legend symbol, source highlight clone을 연결한다.
+6. resize/reencode/theme/facet replay와 package consumer를 검증한다.
 
-unit theme owner는 기존 `materializationConfigs.theme`를 확장한다.
-
-```js
-{
-  name: baseThemeName,
-  tokens: frozenPartialTokens,       // resolved full token set 저장 금지
-  overrides: existingExplicitRegistry,
-  scope: "self" | "descendants",
-  origin?: { ownerCompositionId: string, kind: "inherited" }
-}
-```
-
-새 apply는 previous custom tokens와 merge하지 않는다. base 위에 이번 tokens만 overlay한다. `overrides`는 보존한다. 값이 theme default와 같아도 explicit provenance를 값 비교로 지우지 않는다.
-
-composition owner는 현재 root theme config와 retained facet/repeat source에 descendant policy를 저장한다. 외부에서 concat/facet에 전달됐던 원래 child program은 수정하지 않는다.
-
-#### code owner와 실행 순서
-
-1. `src/theme/defaults.js`에서 `THEME_TOKEN_KEYS`, `normalizeThemeDefinition`, `resolveThemeTokens`를 export한다.
-2. `src/actions/theme/actions.js`의 closed keys를 theme/scope로 확장하고 최종 requested config를 만든다.
-3. `src/actions/theme/reconcile.js`는 `resolvedTokens`를 명시 입력으로 받고 explicit provenance를 우선한다. palette/data-driven color는 mark token으로 덮지 않는다.
-4. 새 `src/actions/theme/composition.js` 또는 현재 composition helper에 immutable postorder walker를 둔다. root → retained sources/children에 requested policy를 기록하고, leaf unit reconcile 후 parent layout을 안쪽에서 바깥쪽으로 다시 계산한다.
-5. fontFamily 변경은 text → label fit/collision → axis/legend/header metrics → child layout → parent Canvas fitting 순서로 refresh한다.
-6. child에 직접 applyTheme하면 inherited origin 대신 explicit local owner가 된다. 이후 parent descendants apply는 새 명시 호출이므로 child requested definition을 새 inherited 요청으로 교체하되 child의 explicit mark/guide style은 보존한다.
-7. `removeTheme`은 self에서는 current theme tokens를 base light로 돌리고 explicit styles를 유지한다. descendants policy가 있으면 그 origin을 가진 child inherited theme만 제거한다. 다른 origin 또는 independent explicit child theme을 지우지 않는다.
-
-#### precedence oracle
-
-```text
-explicit mark/guide style
-> unit custom token
-> inherited custom token
-> built-in base token
-```
-
-custom A `{mark:red,grid:green}` 뒤 custom B `{mark:blue}`면 grid는 base default로 돌아간다. categorical palette, encoded color/stroke, R38 block override, R49 explicit style은 유지된다.
-
-#### tests
-
-- 새 `test/contracts/custom-theme.test.js`, 기존 `theme.test.js`, all-unit-theme contracts, facet/concat 회귀.
-- light+mark red/grid green/font custom에서 default-only nodes만 바뀌고 explicit blue는 blue다.
-- nested concat+facet+repeat descendants는 generated children과 replay source 모두 같은 current policy를 쓴다.
-- composition self는 root background만 바꾸고 child graphics/configs를 그대로 둔다.
-- original input programs는 before/after deep-equal이다.
-- unknown token, invalid color, empty font, missing base, extra root key는 원자적 오류다.
-- existing light/dark pixel parity를 보존하고 large font에서 occupied layout을 다시 계산한다.
-
-### R49 — rounded corners와 concrete stroke cap/join
-
-#### family × property matrix
-
-| family | `cornerRadius` | `lineCap/lineJoin/miterLimit` |
-| --- | --- | --- |
-| Bar, Rect | 지원 | stroked outline에 지원 |
-| Line, Area, Rule, Tick, Arc | 오류 | 지원 |
-| Point | 오류 | 지원; circle에서는 저장되지만 시각 효과 없음 |
-| Text | 오류 | 오류 |
-
-기본은 cornerRadius0, lineCap butt, lineJoin miter, miterLimit10이다. create/edit omission은 기존 requested state를 유지한다. explicit cornerRadius0은 rounding을 해제한다. cornerRadius는 finite nonnegative, miterLimit은 finite positive, enum은 닫힌 집합이다.
-
-#### source files
-
-1. 새 `src/grammar/strokeStyle.js`: common enum/default/number validator와 family compatibility.
-2. 새 `src/grammar/roundedRect.js`: normalized rect와 concrete `M/L/C/Z` commands.
-3. Bar: `src/actions/marks/bar/create.js`, `edit.js`, `materialize.js`.
-4. Rect: `src/actions/marks/rect/actions.js`.
-5. Line/Area: 각 `actions.js`, `materialize.js`.
-6. Rule/Tick/Arc/Point: 각 family create/edit/materialize owner.
-7. concrete schema validator, painted-bounds owner, `src/renderers/canvas/*`, `src/renderers/svg.js`, `src/renderers/pdf.js`.
-8. applicable chart facades가 nested mark style을 전달하는 options라면 같은 fields를 whitelist/type에 추가한다. facade에서 새 의미를 재정의하지 않는다.
-
-#### rounded rect algorithm
-
-requested radius는 mark config에 보존한다. materialization 때 `x=min(x1,x2)`, `y=min(y1,y2)`, `w=abs(x2-x1)`, `h=abs(y2-y1)`, `r=min(requested,w/2,h/2)`를 계산한다. r0은 기존 Rect graphic parity를 유지한다. r>0은 같은 graphic ID/parent 자리에 backend-neutral path를 만든다.
-
-quarter-circle cubic coefficient는 `k = 4 * (sqrt(2) - 1) / 3`이다. 시작점 `(x+r,y)`, clockwise로 top/right/bottom/left straight segment와 네 cubic, 마지막 Z를 만든다. 각 tangent control offset은 `k*r`다. backend native `roundRect`와 혼용하지 않는다. negative/reversed Bar도 위 normalized bounds를 사용하며 stacked Bar 각 segment 네 corner를 동일하게 round한다.
-
-#### stroke attrs와 painted bounds
-
-- concrete node는 `lineCap`, `lineJoin`, `miterLimit`을 명시한다. renderer draw마다 defaults 또는 node value를 설정해 이전 node state가 다음 node에 새지 않게 한다.
-- SVG는 `stroke-linecap`, `stroke-linejoin`, `stroke-miterlimit`; Canvas/PDF는 같은 enum/number 의미를 쓴다.
-- butt endpoint tangent 확장0, round/square는 `strokeWidth/2` 확장이다. closed path는 cap 영향을 받지 않는다.
-- miter length는 `halfWidth / sin(turnInteriorAngle/2)`, ratio는 `miterLength/halfWidth`; miterLimit 초과는 bevel fallback이다.
-- zero-length segment에서 divide-by-zero를 만들지 않고 existing drawable policy를 따른다.
-- hit/selection/layout/clip bounds는 paint extension을 포함한다.
-
-#### legend, highlight, lifecycle
-
-legend symbol과 highlight clone은 source requested style/concrete attrs를 같은 helper로 받아야 한다. theme는 explicit style을 덮지 않는다. reencode/source/Canvas/facet replay 뒤 style owner를 다시 읽는다. Line endpoint arrow의 크기 계산에 cap을 전파하지 않는다.
-
-#### tests
-
-- 새 `test/contracts/shape-style-details.test.js`와 pure grammar/renderer unit tests.
-- rect100×20/r50은 resolved r10; r0은 기존 graphic/pixels와 동등하다.
-- line `(0,0)→(10,0)`, width4는 butt x `[0,10]`, round/square x `[-2,12]`, y `[-2,2]`다.
-- negative Bar와 stacked segments 각각 clamp를 검증한다.
-- Point cornerRadius, negative radius, cap flat, miterLimit0, unsupported family/property는 오류다.
-- round node 다음 omitted-cap node가 butt인지 검사해 Canvas/PDF state leak를 잡는다.
-- mark→legend→highlight, Canvas/SVG/PNG/PDF, resize/theme/reencode/facet persistence를 검증한다.
+Rounded Rect/Bar는 requested radius를 config에 보존하고 item마다 clamp한다. r=0 item은 rect, r>0 item은 shared 10-command cubic path다. path가 하나라도 있으면 stable owner는 typed-item collection이고 전부 r=0이면 homogeneous rect로 복귀한다. cap/join/miter의 default는 butt/miter/10이며 Canvas/PDF는 매 stroke마다 세 값을 명시한다.
 
 ### Phase 9 closeout fixture
 
-custom theme의 mark/text tokens, R38 block override, R49 explicit round/cap/join을 같은 chart에 적용한다. explicit property가 theme보다 우선하고, custom A→B transition에서 A-only token만 base로 돌아가며 explicit shape style은 유지돼야 한다. 세 vector/raster backend가 같은 concrete commands와 attrs를 소비해야 한다.
+custom theme의 mark/text/highlight tokens, R38 block override, R39 header/font, R49 explicit round/cap/join을 같은 chart에 적용한다. 다음을 한 lifecycle에서 확인한다.
+
+1. explicit property가 theme보다 우선한다.
+2. custom A→B transition에서 A-only token은 B base로 돌아간다.
+3. parent descendants 제거 뒤 child local theme가 복원된다.
+4. R49 requested style과 actual radius가 분리되어 resize 뒤 다시 clamp된다.
+5. legend/highlight/facet replay가 source style과 theme policy를 유지한다.
+6. Canvas/SVG/PDF가 같은 concrete commands와 attrs를 소비한다.
 
 ## 5. Phase 10 — R43 non-Cartesian facet/repeat
 

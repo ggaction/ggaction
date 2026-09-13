@@ -296,3 +296,24 @@ legacy common mode를 보존하면서 명시 row/column role mode, side, align, 
 | docs build 환경 | source generation과 docs tests 통과; host Ruby 2.6.10이라 Ruby 3.2+ locked Jekyll build 미실행 |
 | 열린 통합 cell | R47 theme token replay와 R43 Polar/Parallel facet·repeat에서 label/header/legend recipe 소비 회귀 |
 | 상태 연결 | Phase 8 completed-primary, Phase 9 active, R47·R49 구현 고정 명세가 다음 WP |
+
+## 2026-09-13 Phase 9 저추론 구현 명세 검증
+
+R47과 R49의 기존 방향 문서를 현재 source owner에 맞춘 canonical 구현 계약으로 확장했다. 이 checkpoint는 제품 구현 결과가 아니다. 두 기능의 acceptance case 12개는 계속 `planned`이고 `runtimeEvidence:null`이다.
+
+| 검증 | 실제 결과 |
+| --- | --- |
+| R47 공개 계약 | built-in/custom union, 18-key closed token, unit/composition scope와 validation 순서 고정 |
+| R47 상태·우선순위 | owner frame list, same-owner replacement, latest-call precedence, parent-only removal과 child theme 복원 고정 |
+| R47 consumer | explicit color/font, data palette, default highlight provenance, R38 block, R39 header, retained facet/repeat와 postorder font layout 명시 |
+| R49 공개 계약 | `StrokeStyleDetails`, `RectStyleDetails`, family별 지원/오류와 existing facade pass-through 고정 |
+| R49 geometry | normalized rect, cubic coefficient, fixed 10-command path, r0 rect ↔ rounded typed collection transition 고정 |
+| R49 stroke | optional concrete attrs, butt/miter/10 fallback, line cap exact bounds, miterLimit fallback, Canvas/PDF state reset와 SVG mapping 고정 |
+| 인수 사례 | R47 6개와 R49 6개의 specification을 새 state/geometry oracle로 보강; 모두 planned 유지 |
+| 제안 타입 | `IMPLEMENTATION_TYPES.examples.ts` strict/noEmit 통과 |
+| 탐색·문서 | agent-docs navigation 7/7, docs 47/47 통과 |
+| 현재 계약 회귀 | `npm run test:contracts` 465/465 통과, 실패·skip 0 |
+| 변경 경계 | 이 checkpoint는 `agent_docs/impl/roadmap7` 내부 문서와 planned case 설명만 변경; 제품 src/types/current contract 변경 없음 |
+| Diff·JSON | `ACCEPTANCE_CASES.json` parse와 `git diff --check` 통과 |
+
+기존 low-inference/work-package/state 문서에 있던 `unit custom > inherited custom` 고정 우선순위는 나중 부모 호출과 부모 제거 사례를 동시에 표현하지 못했다. 이를 실제 호출 순서와 owner frame 복원 규칙으로 통일했다. R49는 option 생략 시 legacy graphic/serialization parity를 위해 concrete attrs를 optional로 두고 renderer와 bounds resolver가 default를 보충하도록 고정했다.

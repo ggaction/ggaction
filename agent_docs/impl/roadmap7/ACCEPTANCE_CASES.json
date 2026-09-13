@@ -1428,7 +1428,7 @@
       "feature": "R47",
       "phase": 9,
       "kind": "normal",
-      "specification": "light+mark red,grid green,fontFamily sans-serif → default mark/grid만 변경;explicit blue mark 유지.",
+      "specification": "light+mark red,grid green,font RoadmapTest → default role만 변경; explicit blue mark, categorical palette, explicit block font 유지; partial 3-key만 저장.",
       "owner": "features/47-custom-theme.md",
       "status": "planned",
       "runtimeEvidence": null
@@ -1438,7 +1438,7 @@
       "feature": "R47",
       "phase": 9,
       "kind": "normal",
-      "specification": "customA{mark:red,grid:green}→customB{mark:blue} → grid는 base default 복귀.",
+      "specification": "customA{mark:red,grid:green}→customB{mark:blue} → previous partial merge 없이 grid는 B base default 복귀.",
       "owner": "features/47-custom-theme.md",
       "status": "planned",
       "runtimeEvidence": null
@@ -1448,7 +1448,7 @@
       "feature": "R47",
       "phase": 9,
       "kind": "normal",
-      "specification": "nested concat/facet/repeat descendants → 모든 child font/background 갱신,원래 input programs 불변.",
+      "specification": "nested concat/facet/repeat descendants → root/current children/retained source font·background 갱신, postorder layout, 원래 input programs 불변.",
       "owner": "features/47-custom-theme.md",
       "status": "planned",
       "runtimeEvidence": null
@@ -1458,7 +1458,7 @@
       "feature": "R47",
       "phase": 9,
       "kind": "normal",
-      "specification": "composition self → root background만,children 그대로.",
+      "specification": "composition self → root Canvas background만 변경; children,descendantFrames,parent-owned guide/header 그대로.",
       "owner": "features/47-custom-theme.md",
       "status": "planned",
       "runtimeEvidence": null
@@ -1468,7 +1468,7 @@
       "feature": "R47",
       "phase": 9,
       "kind": "error",
-      "specification": "unknown token,invalid color,fontFamily:\"\",missing base → 오류.",
+      "specification": "unknown token,invalid color,fontFamily:\"\",missing base/tokens,extra key,bad scope → class/key가 있는 원자적 오류.",
       "owner": "features/47-custom-theme.md",
       "status": "planned",
       "runtimeEvidence": null
@@ -1478,7 +1478,7 @@
       "feature": "R47",
       "phase": 9,
       "kind": "lifecycle",
-      "specification": "facet source replay로 생성된 새 children도 current theme;labelMap/block overrides/line style는 보존.",
+      "specification": "child local A→parent descendants B→child local C→parent reapply/remove에서 C 복원; future facet child도 current policy, labelMap/block/R49 style 유지.",
       "owner": "features/47-custom-theme.md",
       "status": "planned",
       "runtimeEvidence": null
@@ -1488,7 +1488,7 @@
       "feature": "R49",
       "phase": 9,
       "kind": "normal",
-      "specification": "rect100×20,r50 → resolved r10; r0은 기존 graphic과 동등.",
+      "specification": "rect100×20,r50 → requested50/resolved10,exact 10-command path; r0 edit은 같은 owner의 homogeneous rect와 legacy pixel로 복귀.",
       "owner": "features/49-shape-style-details.md",
       "status": "planned",
       "runtimeEvidence": null
@@ -1498,7 +1498,7 @@
       "feature": "R49",
       "phase": 9,
       "kind": "normal",
-      "specification": "line(0,0)→(10,0),width4 → butt x[0,10],round/square[-2,12],y[-2,2].",
+      "specification": "line(0,0)→(10,0),width4 → butt bounds [0,10]×[-2,2],round/square [-2,12]×[-2,2].",
       "owner": "features/49-shape-style-details.md",
       "status": "planned",
       "runtimeEvidence": null
@@ -1508,7 +1508,7 @@
       "feature": "R49",
       "phase": 9,
       "kind": "normal",
-      "specification": "normalized negative Bar에도 같은 radius clamp;stacked 각 segment4corner rounding.",
+      "specification": "negative/reversed Bar normalized; stacked 각 segment의 네 corner를 requested radius에서 독립 clamp하고 item identity 유지.",
       "owner": "features/49-shape-style-details.md",
       "status": "planned",
       "runtimeEvidence": null
@@ -1518,7 +1518,7 @@
       "feature": "R49",
       "phase": 9,
       "kind": "error",
-      "specification": "Point cornerRadius,negative r,cap:\"flat\",miterLimit0 → 오류.",
+      "specification": "Point cornerRadius,negative/NaN radius,cap:\"flat\",join:\"sharp\",miterLimit0,Text join → class/property가 있는 원자적 오류.",
       "owner": "features/49-shape-style-details.md",
       "status": "planned",
       "runtimeEvidence": null
@@ -1528,7 +1528,7 @@
       "feature": "R49",
       "phase": 9,
       "kind": "lifecycle",
-      "specification": "round node 다음 omitted-cap node → 둘째는butt;Canvas state leak 검출.",
+      "specification": "round/round/3 node 다음 omitted-style node → circle/rect/line/path Canvas·PDF 모두 butt/miter/10; context state leak 검출.",
       "owner": "features/49-shape-style-details.md",
       "status": "planned",
       "runtimeEvidence": null
@@ -1538,7 +1538,7 @@
       "feature": "R49",
       "phase": 9,
       "kind": "lifecycle",
-      "specification": "mark→legend→highlight에 동일 stroke style,resize/theme/reencode 후 유지.",
+      "specification": "mark→auto legend→highlight→resize/reencode/theme/facet replay에 requested radius와 cap/join/miter 유지; R38 override 보존.",
       "owner": "features/49-shape-style-details.md",
       "status": "planned",
       "runtimeEvidence": null

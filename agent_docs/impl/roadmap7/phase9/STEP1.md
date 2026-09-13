@@ -3,7 +3,7 @@
 ## 진행 상태
 
 - [x] 범위·현재 source owner·선행 Phase 완료 상태 확인
-- [ ] Gate A 자료: 정확한 API/schema/defaults/오류/수치 oracle 작성·검증
+- [x] Gate A 자료: 정확한 API/schema/defaults/오류/수치 oracle 작성·검증
 - [x] 명시 승인 범위 기록 후 해당 구현 시작
 - [ ] appearance 대상은 primitive render와 target public chain으로 Gate V 확인
 - [ ] 아래 wave 구현과 focused/cumulative tests 완료
@@ -43,7 +43,7 @@
 
 | wave | commit | tests/artifacts | remaining | status |
 | --- | --- | --- | --- | --- |
-| 미착수 | — | 실행 증거 없음 | 위 전체 범위 | planned |
+| Gate A 구현 고정 명세 | 이 변경의 commit | R47/R49 canonical feature spec, low-inference/work-package/state 계약 정합성, docs navigation/docs/diff 검증 | W1–W5 제품 코드와 Gate V/X 실행 증거 | ready-to-implement |
 
 ## Gate 연결
 

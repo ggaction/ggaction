@@ -651,10 +651,10 @@ Canonical behavior: [R47](features/47-custom-theme.md).
 
 1. **`src/theme/defaults.js`**가 소유하는 token key 전체를 closed schema로 export한다. unknown token, non-string value, invalid color/font를 key별 validator로 거부한다.
 2. `applyTheme`은 built-in name 또는 `{base,tokens}`를 받는다. partial tokens는 base 위에 merge한다.
-3. precedence는 explicit mark/guide style > current unit custom tokens > inherited tokens > built-in base다.
-4. `scope:"self"|"descendants"`를 구현한다. unit 기본은 self, composition 기본은 descendants다. descendants는 child와 retained source recipe에 origin owner를 기록한다.
-5. child에 직접 applyTheme하면 inherited origin을 제거하고 explicit owner가 된다.
-6. parent removeTheme는 자기 origin인 descendants만 제거한다. 독립 child theme은 보존한다.
+3. precedence는 explicit mark/guide style > 호출 순서상 latest applicable theme frame > earlier frame > built-in light다. local/inherited라는 이유만으로 고정 우선순위를 주지 않는다.
+4. `scope:"self"|"descendants"`를 구현한다. unit 기본은 self, composition 기본은 descendants다. descendants는 child와 retained source recipe에 composition owner frame을 기록한다.
+5. 같은 owner의 재적용은 기존 frame을 제거한 뒤 newest 위치에 한 번 추가한다. 다른 owner와 child local frame은 아래에 보존한다.
+6. parent removeTheme는 자기 owner frame만 전체 tree와 retained source에서 제거해 아래 child/other-parent frame을 복원한다.
 7. nested composition은 postorder로 text metrics, occupied guides, child placement를 다시 계산한다.
 8. palette/data-driven color는 theme mark token으로 덮지 않는다.
 9. 신규 `test/contracts/custom-theme.test.js`: partial merge, precedence, descendants, explicit child, remove, nested replay, invalid keys.
@@ -667,10 +667,10 @@ Canonical behavior: [R49](features/49-shape-style-details.md).
 2. `cornerRadius`는 finite nonnegative. 각 corner radius는 실제 rect width/height 절반으로 clamp한다.
 3. rounded rect를 backend별 roundRect 호출에 맡기지 않고 shared concrete `M/L/C/Z` cubic path로 materialize한다.
 4. negative/reversed bars도 normalized bounds에서 같은 path를 만든다. zero width/height 경계를 결정적으로 처리한다.
-5. cap/join은 graphic attrs에 concrete value로 저장한다. 기본은 lineCap butt, lineJoin miter, miterLimit 10이다. `miterLimit`은 항상 positive finite이며 round/bevel join과 함께 저장할 수 있다. join 전환 때 임의로 삭제하지 않는다.
+5. cap/join은 graphic attrs에 concrete value로 저장한다. 기본은 lineCap butt, lineJoin miter, miterLimit 10이다. `miterLimit`은 항상 positive finite이며 round/bevel join과 함께 저장할 수 있다. join 또는 stroke 전환 때 requested 값을 임의로 삭제하지 않는다.
 6. painted bounds는 strokeWidth와 cap/join/miter 확장을 포함한다. clipping/layout이 fill bounds만 읽지 않게 한다.
 7. Canvas/SVG/PDF renderer는 graphic attrs를 그대로 번역하고 mark 의미를 재추론하지 않는다.
-8. legend symbol/highlight/facet cloned item도 같은 attrs/path를 사용한다.
+8. automatic legend symbol/highlight/facet replay item도 같은 attrs/path를 사용한다. R49는 legend/highlight 전용 공개 style option을 추가하지 않는다.
 9. 신규 `test/contracts/shape-style-details.test.js`: radius clamp, negative bar, round/square cap, miter/bevel/round join, invalid combinations, edit/theme/Canvas/facet persistence.
 
 ### WP9.3 — Phase 9 closeout
