@@ -2,6 +2,7 @@ import { action } from "../../core/action.js";
 import { validateUserId } from "../../core/identifiers.js";
 import { validateNonEmptyString, validateOptionObject } from "../../core/validation.js";
 import { normalizeGroupFields } from "../../grammar/pathSeries.js";
+import { STROKE_STYLE_PROPERTIES } from "../../grammar/strokeStyle.js";
 import {
   applyFacadeGuides,
   normalizeAppearance,
@@ -20,7 +21,9 @@ const OPTIONS = Object.freeze([
 const EDIT_OPTIONS = Object.freeze([
   "target", "data", "coordinate", "field", "groupBy", "weight", "missing", "as", "color"
 ]);
-const LINE_OPTIONS = Object.freeze(["strokeWidth", "stroke", "opacity"]);
+const LINE_OPTIONS = Object.freeze([
+  "strokeWidth", "stroke", "opacity", ...STROKE_STYLE_PROPERTIES
+]);
 const LABEL_OPTIONS = Object.freeze([
   "field", "value", "content", "normalizeBy", "format", "layout", "fill",
   "opacity", "fontSize", "fontFamily", "fontWeight", "align", "baseline",

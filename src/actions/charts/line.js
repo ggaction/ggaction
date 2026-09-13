@@ -1,5 +1,6 @@
 import { action } from "../../core/action.js";
 import { normalizeGroupFields } from "../../grammar/pathSeries.js";
+import { STROKE_STYLE_PROPERTIES } from "../../grammar/strokeStyle.js";
 import {
   applyFacadeGuides,
   normalizeAppearance,
@@ -19,7 +20,8 @@ const OPTIONS = Object.freeze([
   "strokeDash", "line", "guides"
 ]);
 const LINE_OPTIONS = Object.freeze([
-  "strokeWidth", "curve", "stroke", "opacity", "closed"
+  "strokeWidth", "curve", "stroke", "opacity", "closed",
+  ...STROKE_STYLE_PROPERTIES
 ]);
 
 export const createLinePlot = action(

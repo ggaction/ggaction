@@ -2,6 +2,7 @@ import { action } from "../../core/action.js";
 import { validateOptionObject } from "../../core/validation.js";
 import { findDataset } from "../../selectors/datasets.js";
 import { findLayer } from "../../selectors/layers.js";
+import { STROKE_STYLE_PROPERTIES } from "../../grammar/strokeStyle.js";
 import {
   applyFacadeGuides,
   normalizeAppearance,
@@ -25,7 +26,8 @@ const DENSITY_OPTIONS = Object.freeze([
 const WIDTH_OPTIONS = Object.freeze(["band", "resolve"]);
 const SPLIT_OPTIONS = Object.freeze(["field", "domain"]);
 const AREA_OPTIONS = Object.freeze([
-  "fill", "opacity", "stroke", "strokeWidth", "curve"
+  "fill", "opacity", "stroke", "strokeWidth", "curve",
+  ...STROKE_STYLE_PROPERTIES
 ]);
 const CATEGORICAL_TYPES = Object.freeze(["nominal", "ordinal"]);
 const OPERATION = "createViolinPlot";

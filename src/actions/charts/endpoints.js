@@ -1,4 +1,5 @@
 import { action } from "../../core/action.js";
+import { STROKE_STYLE_PROPERTIES } from "../../grammar/strokeStyle.js";
 import { isPlainObject } from "../../core/immutable.js";
 import { validateUserId } from "../../core/identifiers.js";
 import { isNominalValue } from "../../grammar/scales/fields.js";
@@ -31,9 +32,12 @@ const DUMBBELL_OPTIONS = Object.freeze([
 const CATEGORY_OPTIONS = Object.freeze(["field", "fieldType", "scale"]);
 const VALUE_OPTIONS = Object.freeze(["field", "fieldType", "scale"]);
 const POINT_OPTIONS = Object.freeze([
-  "shape", "fill", "opacity", "stroke", "strokeWidth", "radius"
+  "shape", "fill", "opacity", "stroke", "strokeWidth", "radius",
+  ...STROKE_STYLE_PROPERTIES
 ]);
-const RULE_OPTIONS = Object.freeze(["stroke", "strokeWidth", "strokeDash", "opacity"]);
+const RULE_OPTIONS = Object.freeze([
+  "stroke", "strokeWidth", "strokeDash", "opacity", ...STROKE_STYLE_PROPERTIES
+]);
 const LABEL_OPTIONS = Object.freeze([
   "endpoint", "field", "value", "content", "normalizeBy", "format", "layout",
   "fill", "opacity", "fontSize", "fontFamily", "fontWeight", "align", "baseline",

@@ -32,6 +32,8 @@ import {
   resolveFacadeId,
   validateFacadeOptions
 } from "../charts/shared.js";
+import { RECT_STYLE_PROPERTIES } from "../../grammar/roundedRect.js";
+import { STROKE_STYLE_PROPERTIES } from "../../grammar/strokeStyle.js";
 
 const COMMON_OPTIONS = Object.freeze([
   "id", "x", "y", "space", "source", "data", "coordinate", "temporalUnit"
@@ -40,10 +42,10 @@ const DYNAMIC_OPTIONS = Object.freeze([
   "id", "source", "axis", "population", "field", "statistic", "statistics"
 ]);
 const LINE_STYLE = Object.freeze([
-  "stroke", "strokeWidth", "strokeDash", "opacity"
+  "stroke", "strokeWidth", "strokeDash", "opacity", ...STROKE_STYLE_PROPERTIES
 ]);
 const BAND_STYLE = Object.freeze([
-  "fill", "opacity", "stroke", "strokeWidth"
+  "fill", "opacity", "stroke", "strokeWidth", ...RECT_STYLE_PROPERTIES
 ]);
 const MATERIALIZE_OPTIONS = Object.freeze(["id"]);
 const SERIES_MARKS = new Set(["line", "area"]);

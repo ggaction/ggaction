@@ -41,6 +41,8 @@ test("owns the implemented semantic and legend vocabularies in one module", () =
   assert.deepEqual(getMarkGraphicTypes("point"), [
     "circle", "rect", "path", "collection"
   ]);
+  assert.deepEqual(getMarkGraphicTypes("bar"), ["rect", "collection"]);
+  assert.deepEqual(getMarkGraphicTypes("rect"), ["rect", "collection"]);
   assert.deepEqual(getMarkGraphicTypes("arc"), ["path"]);
   assert.deepEqual(getMarkGraphicTypes("tick"), ["line"]);
   assert.equal(Object.isFrozen(MARK_GRAPHIC_TYPES), true);

@@ -6,6 +6,10 @@ import {
 } from "../../core/validation.js";
 import { DEFAULT_COLORS } from "../../theme/defaults.js";
 import { validateCurveInterpolation } from "../../grammar/curveCommands.js";
+import {
+  requestedStrokeDetails,
+  STROKE_STYLE_PROPERTIES
+} from "../../grammar/strokeStyle.js";
 import { createResolvedIntervalData } from "../data/intervalEdit.js";
 import { resolveIntervalComposite } from "../intervals/resolve.js";
 import { errorBandBoundaries, resolveBoundaryAppearance } from "./edit.js";
@@ -21,6 +25,7 @@ const OPTIONS = Object.freeze([
   "fill",
   "opacity",
   "curve",
+  ...STROKE_STYLE_PROPERTIES,
   "boundaries"
 ]);
 
@@ -96,11 +101,24 @@ export const createErrorBandBoundary = action(
     strokeWidth,
     strokeDash,
     opacity,
-    curve
+    curve,
+    lineCap,
+    lineJoin,
+    miterLimit
   } = {}) {
     const vertical = orientation === "vertical";
     let next = this
-      .createLineMark({ id, data, strokeWidth, curve })
+      .createLineMark({
+        id,
+        data,
+        strokeWidth,
+        curve,
+        ...requestedStrokeDetails(Object.fromEntries([
+          ["lineCap", lineCap],
+          ["lineJoin", lineJoin],
+          ["miterLimit", miterLimit]
+        ].filter(([, value]) => value !== undefined)), "Error-band boundary")
+      })
       .encodeY(positionOptions({
         target: id,
         field: vertical ? bound : position.field,
@@ -160,6 +178,7 @@ export const createErrorBand = action(
   },
   function (args = {}) {
     validateKeys(args, OPTIONS, "createErrorBand");
+    const strokeDetails = requestedStrokeDetails(args, "createErrorBand");
     const resolved = resolveErrorBand(this, args);
     const curve = validateCurveInterpolation(args.curve ?? "linear");
     const boundaries = resolveBoundaries(args.boundaries, curve);
@@ -170,7 +189,8 @@ export const createErrorBand = action(
       data: resolved.dataId,
       ...(args.fill === undefined ? {} : { fill: args.fill }),
       ...(args.opacity === undefined ? {} : { opacity: args.opacity }),
-      ...(Object.hasOwn(args, "curve") ? { curve } : {})
+      ...(Object.hasOwn(args, "curve") ? { curve } : {}),
+      ...strokeDetails
     });
     const vertical = resolved.orientation === "vertical";
     next = next[vertical ? "encodeX" : "encodeY"](positionArgs(resolved));

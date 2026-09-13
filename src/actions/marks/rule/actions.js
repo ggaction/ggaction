@@ -10,10 +10,12 @@ import {
 } from "../../../grammar/scales/index.js";
 import { deriveRuleValues, resolveRuleMode } from "../../../grammar/rules.js";
 import { resolveCoordinateBounds } from "../../../materialization/coordinateBounds.js";
+import { readRectItemGeometry } from "../../../grammar/roundedRect.js";
 import { findDataset } from "../../../selectors/datasets.js";
 import { findLayer, resolveEligibleLayer } from "../../../selectors/layers.js";
 import { applyRuleAppearance, planRuleAppearance } from "./appearance.js";
 import { DEFAULT_COLORS } from "../../../theme/defaults.js";
+import { rematerializeExistingLegend } from "../../encodings/shared.js";
 import {
   assertMarkAvailable,
   applyLayeredMarkInheritance,
@@ -159,9 +161,10 @@ const editRuleMark = action(
       ...this.markConfigs[layer.id],
       ...strokeDetails
     });
-    return appearance.length === 0
+    const materialized = appearance.length === 0
       ? configured.rematerializeRuleMark({ id: layer.id })
       : applyRuleAppearance(configured, layer.id, appearance);
+    return rematerializeExistingLegend(materialized);
   }
 );
 
@@ -273,7 +276,11 @@ const rematerializeRuleMark = action(
         startY = endY = mapped.y[index];
       } else if (mode === "box-span") {
         const owner = resolved.graphicSpec.objects[boxSpan];
-        const box = owner?.items?.[index]?.properties;
+        const item = owner?.items?.[index];
+        const box = readRectItemGeometry({
+          type: item?.type ?? owner?.type,
+          properties: item?.properties
+        });
         if (box === undefined) throw new Error(`Rule mark "${id}" requires box span owner "${boxSpan}".`);
         if (layer.encoding?.x?.fieldType === "quantitative") {
           startX = endX = mapped.x[index];

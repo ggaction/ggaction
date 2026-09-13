@@ -13,13 +13,13 @@ export const MARK_TYPES = Object.freeze([
 export const MARK_GRAPHIC_TYPES = Object.freeze({
   point: Object.freeze(["circle", "rect", "path", "collection"]),
   line: Object.freeze(["path"]),
-  bar: Object.freeze(["rect"]),
+  bar: Object.freeze(["rect", "collection"]),
   area: Object.freeze(["path"]),
   arc: Object.freeze(["path"]),
   rule: Object.freeze(["line"]),
   tick: Object.freeze(["line"]),
   text: Object.freeze(["text"]),
-  rect: Object.freeze(["rect"])
+  rect: Object.freeze(["rect", "collection"])
 });
 
 export const ENCODING_CHANNELS = Object.freeze([

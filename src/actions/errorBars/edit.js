@@ -31,15 +31,20 @@ import {
   releaseIntervalRevision,
   resolveIntervalOwner
 } from "../data/intervalEdit.js";
+import {
+  requestedStrokeDetails,
+  STROKE_STYLE_PROPERTIES
+} from "../../grammar/strokeStyle.js";
 
 export const ERROR_BAR_EDIT_OPTIONS = Object.freeze([
   "target", "data", "x", "y", "xOffset", "yOffset", "groupBy",
   "caps", "capSize", "stroke", "strokeWidth", "strokeDash", "opacity",
-  "statistics"
+  "statistics", ...STROKE_STYLE_PROPERTIES
 ]);
 
 export const ERROR_BAR_APPEARANCE_OPTIONS = Object.freeze([
-  "caps", "capSize", "stroke", "strokeWidth", "strokeDash", "opacity"
+  "caps", "capSize", "stroke", "strokeWidth", "strokeDash", "opacity",
+  ...STROKE_STYLE_PROPERTIES
 ]);
 const STATISTICS_OPTIONS = Object.freeze(["center", "extent", "method", "level"]);
 const EDIT_POLICY = Object.freeze({
@@ -81,7 +86,15 @@ export function resolveErrorBarAppearance(args, { defaults, operation }) {
     args.opacity ?? defaults.opacity,
     `${operation} opacity`
   );
-  return { caps, capSize, stroke, strokeWidth, strokeDash, opacity };
+  return {
+    caps,
+    capSize,
+    stroke,
+    strokeWidth,
+    strokeDash,
+    opacity,
+    ...requestedStrokeDetails({ ...defaults, ...args }, operation)
+  };
 }
 
 const REMATERIALIZE_OPTIONS = Object.freeze(["id"]);
@@ -307,7 +320,8 @@ function capArgs(config, id, intervalField) {
     stroke: config.stroke,
     strokeWidth: config.strokeWidth,
     strokeDash: config.strokeDash,
-    opacity: config.opacity
+    opacity: config.opacity,
+    ...requestedStrokeDetails(config, "Error bar")
   };
 }
 
@@ -323,6 +337,7 @@ function rematerializeRuleAppearance(program, id, config, fixedSpan) {
       strokeWidth: config.strokeWidth,
       strokeDash: config.strokeDash,
       opacity: config.opacity,
+      ...requestedStrokeDetails(config, "Error bar"),
       ...(fixedSpan === undefined ? {} : { fixedSpan })
     })
     .rematerializeRuleMark({ id });

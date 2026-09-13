@@ -1,5 +1,6 @@
 import { action } from "../../core/action.js";
 import { isBarCategoryEncoding } from "../../grammar/bars/policy.js";
+import { RECT_STYLE_PROPERTIES } from "../../grammar/roundedRect.js";
 import {
   applyFacadeGuides,
   inferFacadeFieldType,
@@ -19,7 +20,7 @@ const OPTIONS = Object.freeze([
   "id", "data", "coordinate", "x", "y", "color", "width", "bar", "guides"
 ]);
 const BAR_OPTIONS = Object.freeze([
-  "fill", "opacity", "stroke", "strokeWidth"
+  "fill", "opacity", "stroke", "strokeWidth", ...RECT_STYLE_PROPERTIES
 ]);
 
 export const createBarPlot = action(

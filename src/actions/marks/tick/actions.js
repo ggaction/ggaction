@@ -22,6 +22,7 @@ import {
   STROKE_STYLE_PROPERTIES
 } from "../../../grammar/strokeStyle.js";
 import { rematerializeHighlightBaseline } from "../lifecycle.js";
+import { rematerializeExistingLegend } from "../../encodings/shared.js";
 import {
   applyLayeredMarkInheritance,
   assertMarkAvailable,
@@ -155,9 +156,10 @@ export const editTickMark = action(
       ...DEFAULT_TICK_CONFIG,
       ...this.markConfigs[layer.id]
     });
-    return this
+    const materialized = this
       ._withMarkConfig(layer.id, config)
       .rematerializeTickMark({ id: layer.id });
+    return rematerializeExistingLegend(materialized);
   }
 );
 

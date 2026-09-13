@@ -10,6 +10,10 @@ import {
 } from "../../core/validation.js";
 import { validateCurveInterpolation } from "../../grammar/curveCommands.js";
 import { normalizeStrokeDashPattern } from "../../grammar/scales/index.js";
+import {
+  requestedStrokeDetails,
+  STROKE_STYLE_PROPERTIES
+} from "../../grammar/strokeStyle.js";
 import { findLayer } from "../../selectors/layers.js";
 import { findSemanticScale } from "../../selectors/scales.js";
 import { removeOwnedMark } from "../marks/remove.js";
@@ -32,7 +36,8 @@ import {
 } from "../data/intervalEdit.js";
 
 export const ERROR_BAND_BOUNDARY_OPTIONS = Object.freeze([
-  "stroke", "strokeWidth", "strokeDash", "opacity", "curve"
+  "stroke", "strokeWidth", "strokeDash", "opacity", "curve",
+  ...STROKE_STYLE_PROPERTIES
 ]);
 
 export function resolveBoundaryAppearance(value, { defaults, operation }) {
@@ -49,12 +54,19 @@ export function resolveBoundaryAppearance(value, { defaults, operation }) {
   validateNonNegativeFinite(strokeWidth, `${operation} strokeWidth`);
   const resolvedStrokeDash = normalizeStrokeDashPattern(strokeDash);
   validateUnitInterval(opacity, `${operation} opacity`);
-  return { stroke, strokeWidth, strokeDash: resolvedStrokeDash, opacity, curve };
+  return {
+    stroke,
+    strokeWidth,
+    strokeDash: resolvedStrokeDash,
+    opacity,
+    curve,
+    ...requestedStrokeDetails({ ...defaults, ...value }, operation)
+  };
 }
 
 const EDIT_OPTIONS = Object.freeze([
   "target", "data", "x", "y", "groupBy", "fill", "opacity", "curve",
-  "statistics", "boundaries"
+  "statistics", "boundaries", ...STROKE_STYLE_PROPERTIES
 ]);
 const STATISTICS_OPTIONS = Object.freeze(["center", "extent", "method", "level"]);
 const EDIT_POLICY = Object.freeze({
@@ -331,7 +343,8 @@ function currentBoundaryAppearance(program, id) {
     strokeWidth: config.strokeWidth,
     strokeDash: config.strokeDash,
     opacity: config.opacity,
-    curve: config.curve ?? "linear"
+    curve: config.curve ?? "linear",
+    ...requestedStrokeDetails(config, "Error-band boundary")
   };
 }
 
@@ -397,7 +410,8 @@ export const rematerializeErrorBandBoundary = action(
         strokeWidth: args.strokeWidth,
         strokeDash: args.strokeDash,
         opacity: args.opacity,
-        curve: args.curve
+        curve: args.curve,
+        ...requestedStrokeDetails(args, "Error-band boundary")
       })
       .editGraphics({
         target: id,
@@ -416,12 +430,13 @@ export const editErrorBand = action(
   function (args = {}) {
     validateOptionObject(args, EDIT_OPTIONS, "editErrorBand");
     if (!["data", "x", "y", "groupBy", "fill", "opacity", "curve",
-      "statistics", "boundaries"]
+      "statistics", "boundaries", ...STROKE_STYLE_PROPERTIES]
       .some(key => Object.hasOwn(args, key))) {
       throw new Error("editErrorBand requires at least one change.");
     }
     const owner = resolveOwner(this, args.target);
     const config = { ...this.markConfigs[owner.id] };
+    Object.assign(config, requestedStrokeDetails(args, "editErrorBand"));
     const errorBand = { ...config.errorBand };
     if (Object.hasOwn(args, "fill")) {
       if (args.fill === false) {

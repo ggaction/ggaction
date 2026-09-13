@@ -22,6 +22,7 @@ import { findLayer } from "../../../selectors/layers.js";
 import { validateCurveInterpolation } from "../../../grammar/curveCommands.js";
 import { resolveEligibleLayer } from "../../../selectors/layers.js";
 import { canMaterializeArea } from "../../../materialization/marks/index.js";
+import { rematerializeExistingLegend } from "../../encodings/shared.js";
 import { findUpstreamTransform } from "../../../materialization/dataProvenance.js";
 import { resolveMarkGraphicPlacement } from
   "../../../materialization/graphicHierarchy.js";
@@ -321,9 +322,10 @@ const editAreaMark = action(
       }
       next = next.editSemantic({ property: `layer[${layer.id}].mark.missing`, value: missing });
     }
-    return canMaterializeArea(next, layer)
+    const materialized = canMaterializeArea(next, layer)
       ? next.rematerializeAreaMark({ id: layer.id })
       : next;
+    return rematerializeExistingLegend(materialized);
   }
 );
 

@@ -1,5 +1,6 @@
 import { action } from "../../core/action.js";
 import { validateNonEmptyString } from "../../core/validation.js";
+import { RECT_STYLE_PROPERTIES } from "../../grammar/roundedRect.js";
 import {
   applyFacadeGuides,
   normalizeAppearance,
@@ -16,7 +17,7 @@ const OPTIONS = Object.freeze([
   "binBoundaries", "stack", "xScale", "yScale", "weight", "color", "bar", "guides"
 ]);
 const BAR_OPTIONS = Object.freeze([
-  "fill", "opacity", "stroke", "strokeWidth"
+  "fill", "opacity", "stroke", "strokeWidth", ...RECT_STYLE_PROPERTIES
 ]);
 const HISTOGRAM_OPTIONS = Object.freeze([
   "maxBins", "binStep", "binBoundaries", "stack", "xScale", "yScale", "weight"

@@ -2,6 +2,7 @@ import { action } from "../../core/action.js";
 import { validateNonNegativeFinite, validateOptionObject } from
   "../../core/validation.js";
 import { normalizeGroupFields } from "../../grammar/pathSeries.js";
+import { STROKE_STYLE_PROPERTIES } from "../../grammar/strokeStyle.js";
 import {
   applyFacadeGuides,
   normalizeAppearance,
@@ -20,10 +21,12 @@ const POSITION_OPTIONS = Object.freeze([
   "field", "fieldType", "temporalUnit", "scale"
 ]);
 const POINT_OPTIONS = Object.freeze([
-  "shape", "fill", "opacity", "stroke", "strokeWidth", "radius"
+  "shape", "fill", "opacity", "stroke", "strokeWidth", "radius",
+  ...STROKE_STYLE_PROPERTIES
 ]);
 const LINE_OPTIONS = Object.freeze([
-  "strokeWidth", "curve", "stroke", "opacity", "closed"
+  "strokeWidth", "curve", "stroke", "opacity", "closed",
+  ...STROKE_STYLE_PROPERTIES
 ]);
 
 function position(value, operation, channel) {

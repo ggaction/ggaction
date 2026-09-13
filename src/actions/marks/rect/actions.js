@@ -22,6 +22,7 @@ import {
 } from "../shared.js";
 import { resolveMarkGraphicPlacement } from
   "../../../materialization/graphicHierarchy.js";
+import { rematerializeExistingLegend } from "../../encodings/shared.js";
 import { rematerializeHighlightBaseline } from "../lifecycle.js";
 import {
   requestedRectStyleDetails
@@ -174,9 +175,10 @@ const editRectMark = action(
           : this.markConfigs[layer.id]?.fillExplicit ?? false
       }
     );
-    return canMaterializeRect(next, layer)
+    const materialized = canMaterializeRect(next, layer)
       ? next.rematerializeRectMark({ id: layer.id })
       : next;
+    return rematerializeExistingLegend(materialized);
   }
 );
 

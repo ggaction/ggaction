@@ -10,7 +10,7 @@ function translateCommand(command, offset) {
 }
 
 export function transformPathHighlightProperties(properties, style) {
-  const { offset, ...appearance } = style;
+  const { offset = { x: 0, y: 0 }, ...appearance } = style;
   return {
     ...properties,
     ...appearance,

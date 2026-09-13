@@ -1,4 +1,5 @@
 import { action } from "../../core/action.js";
+import { STROKE_STYLE_PROPERTIES } from "../../grammar/strokeStyle.js";
 import { normalizeGroupFields } from "../../grammar/pathSeries.js";
 import { normalizeAreaBound, validateAreaEndpointPair } from "../../grammar/areaEndpoints.js";
 import {
@@ -31,7 +32,10 @@ export const createAreaPlot = action({ op: OPERATION, description: "Create a sim
   const upper = ranged ? measurement.upper : { datum: args.baseline ?? 0 };
   validateAreaEndpointPair(normalizeAreaBound(lower), normalizeAreaBound(upper));
   const groupBy = args.groupBy === undefined ? undefined : normalizeGroupFields(args.groupBy);
-  const area = omitUndefinedOptions(normalizeAppearance(args.area, ["fill", "opacity", "stroke", "strokeWidth", "curve"], `${OPERATION} area`));
+  const area = omitUndefinedOptions(normalizeAppearance(args.area, [
+    "fill", "opacity", "stroke", "strokeWidth", "curve",
+    ...STROKE_STYLE_PROPERTIES
+  ], `${OPERATION} area`));
   const color = args.color === undefined ? undefined : normalizeCategoricalColor(args.color, `${OPERATION} color`);
   if (color !== undefined && area.fill !== undefined) throw new Error("createAreaPlot area.fill cannot be combined with color.");
   const guides = normalizeCategoricalGuides(args.guides, OPERATION, color);

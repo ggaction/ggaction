@@ -1,4 +1,5 @@
 import { action } from "../../core/action.js";
+import { STROKE_STYLE_PROPERTIES } from "../../grammar/strokeStyle.js";
 import { validateNonEmptyString, validateOptionObject, validateUnitInterval } from "../../core/validation.js";
 import {
   applyFacadeGuides, normalizeAppearance, normalizeFieldEncoding, normalizeGuides,
@@ -51,7 +52,8 @@ export const createHorizonPlot = action({
   const { id: requestedId, data: requestedData, coordinate, x: requestedX, y: requestedY,
     area: requestedArea, guides: requestedGuides, ...horizon } = omitUndefinedOptions(args);
   const { opacity, ...area } = omitUndefinedOptions(normalizeAppearance(requestedArea,
-    ["opacity", "stroke", "strokeWidth", "curve"], `${OPERATION} area`));
+    ["opacity", "stroke", "strokeWidth", "curve", ...STROKE_STYLE_PROPERTIES],
+    `${OPERATION} area`));
   for (const [key, value] of Object.entries({ ...horizon, ...area })) {
     if (value === null) throw new TypeError(`${OPERATION} ${key} cannot be null.`);
   }

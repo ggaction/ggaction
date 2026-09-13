@@ -7,6 +7,14 @@ import {
   validateUnitInterval
 } from "../../core/validation.js";
 import { validatePointShape } from "../../grammar/pointShapes.js";
+import {
+  requestedRectStyleDetails,
+  RECT_STYLE_PROPERTIES
+} from "../../grammar/roundedRect.js";
+import {
+  requestedStrokeDetails,
+  STROKE_STYLE_PROPERTIES
+} from "../../grammar/strokeStyle.js";
 import { DEFAULT_COLORS } from "../../theme/defaults.js";
 import { normalizeGuides } from "../charts/shared.js";
 
@@ -45,24 +53,30 @@ function plainOptions(value, keys, label, operation = "createBoxPlot") {
   return value;
 }
 
-function resolveAppearance(value, defaults, label, operation) {
+function resolveAppearance(value, defaults, label, operation, details) {
   const options = plainOptions(
     value,
-    Object.keys(defaults),
+    [
+      ...Object.keys(defaults),
+      ...(details === requestedRectStyleDetails
+        ? RECT_STYLE_PROPERTIES
+        : STROKE_STYLE_PROPERTIES)
+    ],
     label,
     operation
   );
-  return Object.freeze(Object.fromEntries(
-    Object.entries(defaults).map(([key, fallback]) => [
-      key,
-      options[key] === undefined
-        ? fallback
-        : APPEARANCE_VALIDATORS[key](
-            options[key],
-            `createBoxPlot ${label}.${key}`
-          )
-    ])
-  ));
+  return Object.freeze({
+    ...Object.fromEntries(Object.entries(defaults).map(([key, fallback]) => [
+        key,
+        options[key] === undefined
+          ? fallback
+          : APPEARANCE_VALIDATORS[key](
+              options[key],
+              `${operation} ${label}.${key}`
+            )
+      ])),
+    ...details(options, `${operation} ${label}`)
+  });
 }
 
 export function resolveBoxPosition(value, label, operation = "createBoxPlot") {
@@ -122,13 +136,31 @@ export function resolveBoxWidth(value, operation = "createBoxPlot") {
 }
 
 export function resolveBoxAppearance(value, operation = "createBoxPlot") {
-  return resolveAppearance(value, DEFAULT_BOX, "box", operation);
+  return resolveAppearance(
+    value,
+    DEFAULT_BOX,
+    "box",
+    operation,
+    requestedRectStyleDetails
+  );
 }
 
 export function resolveBoxMedianAppearance(value, operation = "createBoxPlot") {
-  return resolveAppearance(value, DEFAULT_MEDIAN, "median", operation);
+  return resolveAppearance(
+    value,
+    DEFAULT_MEDIAN,
+    "median",
+    operation,
+    requestedStrokeDetails
+  );
 }
 
 export function resolveBoxOutlierAppearance(value, operation = "createBoxPlot") {
-  return resolveAppearance(value, DEFAULT_OUTLIER, "outlier", operation);
+  return resolveAppearance(
+    value,
+    DEFAULT_OUTLIER,
+    "outlier",
+    operation,
+    requestedStrokeDetails
+  );
 }

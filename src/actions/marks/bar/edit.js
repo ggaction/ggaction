@@ -13,6 +13,7 @@ import { requestedRectStyleDetails } from
   "../../../grammar/roundedRect.js";
 import { STROKE_STYLE_PROPERTIES } from
   "../../../grammar/strokeStyle.js";
+import { rematerializeExistingLegend } from "../../encodings/shared.js";
 
 const EDIT_OPTIONS = Object.freeze([
   "target", "fill", "opacity", "stroke", "strokeWidth", "cornerRadius",
@@ -98,8 +99,9 @@ export const editBarMark = action(
       ...config,
       barAppearance: appearance
     });
-    return canMaterializeBar(next, layer)
+    const materialized = canMaterializeBar(next, layer)
       ? next.rematerializeBarMark({ id: layer.id })
       : next;
+    return rematerializeExistingLegend(materialized);
   }
 );

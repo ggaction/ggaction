@@ -6,6 +6,7 @@ import {
 } from "../../../grammar/markSelection.js";
 import { unionConcreteGraphicBounds } from
   "../../../grammar/schemas/graphicBounds.js";
+import { readRectItemGeometry } from "../../../grammar/roundedRect.js";
 
 export function itemKey(layer, grain, index) {
   return `${layer.id}/${grain}/${index}`;
@@ -54,14 +55,15 @@ export function uniqueFields(rows) {
 
 function requireResolvedGraphic(program, layer, type) {
   const graphic = program.graphicSpec.objects[layer.id];
+  const types = Array.isArray(type) ? type : [type];
   const compatibleCollection = graphic?.type === "collection" &&
-    graphic.items?.every(child => child.type === type);
+    graphic.items?.every(child => types.includes(child.type));
   if (
-    (graphic?.type !== type && !compatibleCollection) ||
+    (!types.includes(graphic?.type) && !compatibleCollection) ||
     !Array.isArray(graphic.items)
   ) {
     throw new Error(
-      `Mark "${layer.id}" requires a materialized ${type} collection for selection.`
+      `Mark "${layer.id}" requires a materialized ${types.join("/")} collection for selection.`
     );
   }
   return graphic;
@@ -76,6 +78,13 @@ export function concreteProperties(properties) {
       (Number.isFinite(value) || typeof value === "string")
     )
   );
+}
+
+function selectableGraphicProperties(item) {
+  return {
+    ...concreteProperties(item?.properties),
+    ...(readRectItemGeometry(item) ?? {})
+  };
 }
 
 function sharedConcreteProperties(items) {
@@ -118,7 +127,10 @@ export function finalizeItems(program, layer, grain, definitions, graphicType) {
     const items = indices.map(childIndex => graphic.items[childIndex]);
     const properties = definition.properties ?? (
       items.length === 1
-        ? concreteProperties(items[0].properties)
+        ? selectableGraphicProperties({
+            type: items[0].type ?? graphic.type,
+            properties: items[0].properties
+          })
         : {
             ...sharedConcreteProperties(items),
             ...collectionBounds(program, items)

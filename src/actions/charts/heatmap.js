@@ -5,6 +5,7 @@ import {
   validateOptionObject
 } from "../../core/validation.js";
 import { requireDataset } from "../../selectors/datasets.js";
+import { RECT_STYLE_PROPERTIES } from "../../grammar/roundedRect.js";
 import {
   applyFacadeGuides,
   normalizeAppearance,
@@ -22,7 +23,7 @@ const OPTIONS = [
   "id", "data", "coordinate", "x", "y", "bin", "color", "rect", "guides"
 ];
 const RECT_OPTIONS = [
-  "opacity", "stroke", "strokeWidth"
+  "opacity", "stroke", "strokeWidth", ...RECT_STYLE_PROPERTIES
 ];
 const BIN_OPTIONS = [
   "bins", "extent", "includeEmpty"

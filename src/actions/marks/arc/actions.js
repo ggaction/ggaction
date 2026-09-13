@@ -22,6 +22,7 @@ import { findLayer, resolveEligibleLayer } from "../../../selectors/layers.js";
 import { DEFAULT_COLORS } from "../../../theme/defaults.js";
 import { resolveMarkGraphicPlacement } from
   "../../../materialization/graphicHierarchy.js";
+import { rematerializeExistingLegend } from "../../encodings/shared.js";
 import { rematerializeHighlightBaseline } from "../lifecycle.js";
 import { mapScaleConsumerValues } from
   "../../../materialization/scales/map.js";
@@ -298,12 +299,14 @@ const editArcMark = action(
         strokeDetails
       })
     );
-    if (!canMaterializeArc(next, layer)) return next;
-    let rematerialized = next.rematerializeArcMark({ id: layer.id });
-    for (const step of getSourceDependentMarkSteps(rematerialized, layer.id)) {
-      rematerialized = rematerialized[step.op](step.args);
+    let materialized = next;
+    if (canMaterializeArc(next, layer)) {
+      materialized = next.rematerializeArcMark({ id: layer.id });
+      for (const step of getSourceDependentMarkSteps(materialized, layer.id)) {
+        materialized = materialized[step.op](step.args);
+      }
     }
-    return rematerialized;
+    return rematerializeExistingLegend(materialized);
   }
 );
 

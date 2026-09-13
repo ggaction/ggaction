@@ -1,5 +1,6 @@
 import { createPointShapeGraphic } from "../../grammar/pointShapes.js";
 import { finiteMidpoint } from "../../grammar/numeric.js";
+import { requestedStrokeDetails } from "../../grammar/strokeStyle.js";
 
 function pointCenterAndArea(child) {
   const properties = child.properties;
@@ -75,7 +76,8 @@ export function transformPointHighlightChild(child, style) {
       ? (child.properties.opacity === undefined ? {} : { opacity: child.properties.opacity })
       : { opacity: style.opacity }),
     ...(style.stroke === undefined ? {} : { stroke: style.stroke }),
-    ...(style.strokeWidth === undefined ? {} : { strokeWidth: style.strokeWidth })
+    ...(style.strokeWidth === undefined ? {} : { strokeWidth: style.strokeWidth }),
+    ...requestedStrokeDetails(child.properties, "Point highlight source")
   };
   if (style.shape !== undefined) {
     return createPointShapeGraphic({

@@ -1,4 +1,5 @@
 import { action } from "../../core/action.js";
+import { STROKE_STYLE_PROPERTIES } from "../../grammar/strokeStyle.js";
 import { validateNonEmptyString, validateOptionObject } from "../../core/validation.js";
 import {
   applyFacadeGuides, normalizeAppearance, normalizeCategoricalColor, normalizeCategoricalGuides,
@@ -8,7 +9,10 @@ import {
 const OPERATION = "createDensityPlot";
 const OPTIONS = ["id", "data", "coordinate", "field", "groupBy", "bandwidth", "extent", "steps",
   "kernel", "normalization", "weight", "as", "densityChannel", "valueScale", "densityScale", "color", "area", "guides"];
-const AREA_OPTIONS = ["fill", "opacity", "stroke", "strokeWidth", "curve"];
+const AREA_OPTIONS = [
+  "fill", "opacity", "stroke", "strokeWidth", "curve",
+  ...STROKE_STYLE_PROPERTIES
+];
 
 export const createDensityPlot = action({
   op: OPERATION, description: "Create a baseline kernel-density area plot with optional explicit groups."

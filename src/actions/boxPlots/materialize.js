@@ -9,6 +9,8 @@ import {
 import { findDataset } from "../../selectors/datasets.js";
 import { findLayer } from "../../selectors/layers.js";
 import { resolveBoxOrientation } from "./resolve.js";
+import { requestedRectStyleDetails } from "../../grammar/roundedRect.js";
+import { requestedStrokeDetails } from "../../grammar/strokeStyle.js";
 import { resolvePlotGraphicPlacement } from
   "../../materialization/graphicHierarchy.js";
 
@@ -43,6 +45,7 @@ export const materializeBoxPlot = action(
     const whiskerId = `${ownerId}Whisker`;
     const medianId = `${ownerId}Median`;
     const outlierId = `${ownerId}Outliers`;
+    const boxStyleDetails = requestedRectStyleDetails(config.box, "Box body");
     let next = this._withMarkConfig(ownerId, {
       ...this.markConfigs[ownerId],
       boxPlot: {
@@ -61,7 +64,10 @@ export const materializeBoxPlot = action(
       fill: config.box.fill,
       opacity: config.box.opacity,
       stroke: config.box.stroke,
-      strokeWidth: config.box.strokeWidth
+      strokeWidth: config.box.strokeWidth,
+      ...(Object.keys(boxStyleDetails).length === 0
+        ? {}
+        : { barAppearance: boxStyleDetails })
     }).createBoxSummaryData({
       id: summaryId,
       source,
@@ -165,7 +171,8 @@ export const materializeBoxPlot = action(
         categoryScale: category.scale,
         measureScale: measure.scale,
         stroke: config.median.stroke,
-        strokeWidth: config.median.strokeWidth
+        strokeWidth: config.median.strokeWidth,
+        ...requestedStrokeDetails(config.median, "Box median")
       });
     if (hasOutliers) {
       next = next.createBoxOutliers({
@@ -180,7 +187,8 @@ export const materializeBoxPlot = action(
         measureScale: measure.scale,
         shape: config.outlier.shape,
         radius: config.outlier.radius,
-        opacity: config.outlier.opacity
+        opacity: config.outlier.opacity,
+        ...requestedStrokeDetails(config.outlier, "Box outlier")
       });
     }
     next = next._withMarkConfig(ownerId, {

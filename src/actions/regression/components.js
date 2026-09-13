@@ -9,19 +9,27 @@ import {
   REGRESSION_UPPER_FIELD
 } from "../../grammar/regression/index.js";
 import { validateAreaCreateOutline } from "../marks/area/index.js";
+import {
+  requestedStrokeDetails,
+  STROKE_STYLE_PROPERTIES
+} from "../../grammar/strokeStyle.js";
 
 const BAND_OPTIONS = Object.freeze([
   "id", "data", "x", "lower", "upper", "groupBy", "coordinate", "xScale", "yScale",
-  "color", "opacity", "stroke", "strokeWidth", "curve"
+  "color", "opacity", "stroke", "strokeWidth", "curve",
+  ...STROKE_STYLE_PROPERTIES
 ]);
 const LINE_OPTIONS = Object.freeze([
   "id", "data", "x", "y", "groupBy", "coordinate", "xScale", "yScale", "colorScale",
-  "strokeWidth", "curve"
+  "strokeWidth", "curve", ...STROKE_STYLE_PROPERTIES
 ]);
 const EDIT_BAND_OPTIONS = Object.freeze([
-  "target", "color", "opacity", "stroke", "strokeWidth", "curve"
+  "target", "color", "opacity", "stroke", "strokeWidth", "curve",
+  ...STROKE_STYLE_PROPERTIES
 ]);
-const EDIT_LINE_OPTIONS = Object.freeze(["target", "strokeWidth", "curve"]);
+const EDIT_LINE_OPTIONS = Object.freeze([
+  "target", "strokeWidth", "curve", ...STROKE_STYLE_PROPERTIES
+]);
 
 function isRegressionLayer(program, layer, type) {
   const dataset = findDataset(program, layer.data);
@@ -93,7 +101,8 @@ export const createRegressionBand = action(
         coordinate: args.coordinate,
         fill: args.color ?? DEFAULT_COLORS.regressionBand,
         opacity: args.opacity ?? 0.18,
-        ...(args.curve === undefined ? {} : { curve: args.curve })
+        ...(args.curve === undefined ? {} : { curve: args.curve }),
+        ...requestedStrokeDetails(args, "createRegressionBand")
       })
       .editSemantic({
         property: `layer[${id}].encoding.y.title`,
@@ -119,7 +128,10 @@ export const editRegressionBand = action(
   },
   function (args = {}) {
     validateKeys(args, EDIT_BAND_OPTIONS, "editRegressionBand");
-    const changes = ["color", "opacity", "stroke", "strokeWidth", "curve"];
+    const changes = [
+      "color", "opacity", "stroke", "strokeWidth", "curve",
+      ...STROKE_STYLE_PROPERTIES
+    ];
     if (!changes.some(key => Object.hasOwn(args, key))) {
       throw new Error(
         "editRegressionBand requires color, opacity, stroke, strokeWidth, or curve."
@@ -139,7 +151,8 @@ export const editRegressionBand = action(
       ...(Object.hasOwn(args, "strokeWidth")
         ? { strokeWidth: args.strokeWidth }
         : {}),
-      ...(Object.hasOwn(args, "curve") ? { curve: args.curve } : {})
+      ...(Object.hasOwn(args, "curve") ? { curve: args.curve } : {}),
+      ...requestedStrokeDetails(args, "editRegressionBand")
     });
   }
 );
@@ -152,8 +165,8 @@ export const editRegressionLine = action(
   function (args = {}) {
     validateKeys(args, EDIT_LINE_OPTIONS, "editRegressionLine");
     if (
-      !Object.hasOwn(args, "strokeWidth") &&
-      !Object.hasOwn(args, "curve")
+      !["strokeWidth", "curve", ...STROKE_STYLE_PROPERTIES]
+        .some(property => Object.hasOwn(args, property))
     ) {
       throw new Error("editRegressionLine requires strokeWidth or curve.");
     }
@@ -168,7 +181,8 @@ export const editRegressionLine = action(
       ...(Object.hasOwn(args, "strokeWidth")
         ? { strokeWidth: args.strokeWidth }
         : {}),
-      ...(Object.hasOwn(args, "curve") ? { curve: args.curve } : {})
+      ...(Object.hasOwn(args, "curve") ? { curve: args.curve } : {}),
+      ...requestedStrokeDetails(args, "editRegressionLine")
     });
   }
 );
@@ -186,7 +200,8 @@ export const createRegressionLine = action(
         id,
         data: args.data,
         strokeWidth: args.strokeWidth ?? 3,
-        ...(args.curve === undefined ? {} : { curve: args.curve })
+        ...(args.curve === undefined ? {} : { curve: args.curve }),
+        ...requestedStrokeDetails(args, "createRegressionLine")
       })
       .encodeX({
         target: id,

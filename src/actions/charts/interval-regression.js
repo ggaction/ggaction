@@ -1,6 +1,7 @@
 import { action } from "../../core/action.js";
 import { validateNonNegativeFinite } from "../../core/validation.js";
 import { findDataset } from "../../selectors/datasets.js";
+import { STROKE_STYLE_PROPERTIES } from "../../grammar/strokeStyle.js";
 import {
   applyFacadeGuides,
   normalizeAppearance,
@@ -18,10 +19,12 @@ const INTERVAL_OPTIONS = Object.freeze([
   "color", "point", "errorBar", "guides"
 ]);
 const POINT_OPTIONS = Object.freeze([
-  "shape", "fill", "opacity", "stroke", "strokeWidth", "radius"
+  "shape", "fill", "opacity", "stroke", "strokeWidth", "radius",
+  ...STROKE_STYLE_PROPERTIES
 ]);
 const ERROR_BAR_OPTIONS = Object.freeze([
-  "caps", "capSize", "stroke", "strokeWidth", "strokeDash", "opacity"
+  "caps", "capSize", "stroke", "strokeWidth", "strokeDash", "opacity",
+  ...STROKE_STYLE_PROPERTIES
 ]);
 
 function intervalChannel(value, operation, channel, id) {

@@ -49,8 +49,13 @@ export function resolveCategoricalLegendRevision(program, kind, previous, channe
   const config = {
     ...previous,
     ...definition,
-    symbol: normalizeRecipe(resolveLegendSymbol(program, layer, channels,
-      previous.inferredSymbol ? undefined : previous.symbol), definition.kind)
+    symbol: normalizeRecipe(resolveLegendSymbol(
+      program,
+      layer,
+      channels,
+      previous.inferredSymbol ? undefined : previous.symbol,
+      definition.kind
+    ), definition.kind, { internal: previous.inferredSymbol })
   };
   if (validateLayout) resolveLayout(program, config);
   return { kind, config, order };

@@ -1,14 +1,19 @@
 import { action } from "../../core/action.js";
 import { validateKeys } from "../../core/validation.js";
+import {
+  requestedStrokeDetails,
+  STROKE_STYLE_PROPERTIES
+} from "../../grammar/strokeStyle.js";
 
 const MEDIAN_OPTIONS = Object.freeze([
   "id", "owner", "data", "category", "categoryType", "measure",
   "coordinate", "categoryScale", "measureScale", "orientation", "stroke",
-  "strokeWidth"
+  "strokeWidth", ...STROKE_STYLE_PROPERTIES
 ]);
 const OUTLIER_OPTIONS = Object.freeze([
   "id", "data", "category", "categoryType", "measure", "coordinate",
-  "categoryScale", "measureScale", "orientation", "shape", "radius", "opacity"
+  "categoryScale", "measureScale", "orientation", "shape", "radius", "opacity",
+  ...STROKE_STYLE_PROPERTIES
 ]);
 
 export const createBoxMedian = action(
@@ -23,7 +28,11 @@ export const createBoxMedian = action(
     }
     const categoryAction = args.orientation === "vertical" ? "encodeX" : "encodeY";
     const measureAction = args.orientation === "vertical" ? "encodeY" : "encodeX";
-    let next = this.createRuleMark({ id: args.id, data: args.data });
+    let next = this.createRuleMark({
+      id: args.id,
+      data: args.data,
+      ...requestedStrokeDetails(args, "Box median")
+    });
     next = next[categoryAction]({
       target: args.id,
       field: args.category,
@@ -65,7 +74,8 @@ export const createBoxOutliers = action(
       id: args.id,
       data: args.data,
       shape: args.shape,
-      fill: "#111111"
+      fill: "#111111",
+      ...requestedStrokeDetails(args, "Box outlier")
     });
     next = next[categoryAction]({
       target: args.id,

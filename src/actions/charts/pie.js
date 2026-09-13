@@ -1,4 +1,5 @@
 import { action } from "../../core/action.js";
+import { STROKE_STYLE_PROPERTIES } from "../../grammar/strokeStyle.js";
 import {
   applyFacadeGuides, normalizeAppearance, normalizeCategoricalColor, normalizeCategoricalGuides,
   normalizeArcCategory, normalizeCategoryAggregate, omitUndefinedOptions,
@@ -7,7 +8,10 @@ import {
 
 const OPERATION = "createPiePlot";
 const OPTIONS = ["id", "data", "coordinate", "category", "value", "aggregate", "color", "arc", "guides"];
-const ARC_OPTIONS = ["innerRadius", "padAngle", "fill", "opacity", "stroke", "strokeWidth"];
+const ARC_OPTIONS = [
+  "innerRadius", "padAngle", "fill", "opacity", "stroke", "strokeWidth",
+  ...STROKE_STYLE_PROPERTIES
+];
 function guideOptions(value, color) {
   const guides = normalizeCategoricalGuides(value, OPERATION, color);
   if (guides === false) return false;

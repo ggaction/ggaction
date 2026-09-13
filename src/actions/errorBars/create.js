@@ -12,6 +12,7 @@ import {
   validateCategoricalFieldType
 } from "../../grammar/scales/index.js";
 import { normalizeOffsetPadding } from "../../grammar/bars/geometry.js";
+import { STROKE_STYLE_PROPERTIES } from "../../grammar/strokeStyle.js";
 import { createResolvedIntervalData, ownOptions } from
   "../data/intervalEdit.js";
 import { resolveIntervalComposite } from "../intervals/resolve.js";
@@ -32,7 +33,8 @@ const OPTIONS = Object.freeze([
   "stroke",
   "strokeWidth",
   "strokeDash",
-  "opacity"
+  "opacity",
+  ...STROKE_STYLE_PROPERTIES
 ]);
 
 const OFFSET_OPTIONS = Object.freeze([
@@ -127,7 +129,8 @@ function resolveErrorBarOffset(program, args, resolved, operation) {
 
 function resolveAppearance(args) {
   return resolveErrorBarAppearance(ownOptions(args, [
-    "caps", "capSize", "stroke", "strokeWidth", "strokeDash", "opacity"
+    "caps", "capSize", "stroke", "strokeWidth", "strokeDash", "opacity",
+    ...STROKE_STYLE_PROPERTIES
   ]), {
     defaults: {
       caps: true,
@@ -152,7 +155,8 @@ export const createErrorBarCap = action(
       "intervalField", "coordinate", "positionScale", "intervalScale", "positionTemporalUnit",
       "offsetChannel", "offsetField", "offsetFieldType", "offsetScale",
       "offsetPaddingInner", "offsetPaddingOuter",
-      "capSize", "stroke", "strokeWidth", "strokeDash", "opacity"
+      "capSize", "stroke", "strokeWidth", "strokeDash", "opacity",
+      ...STROKE_STYLE_PROPERTIES
     ], "createErrorBarCap");
     if (!["vertical", "horizontal"].includes(args.orientation)) {
       throw new Error(`Unsupported error-bar orientation "${args.orientation}".`);
@@ -170,7 +174,13 @@ export const createErrorBarCap = action(
     const positionAction = vertical ? "encodeX" : "encodeY";
     const intervalAction = vertical ? "encodeY" : "encodeX";
     let next = this
-      .createRuleMark({ id: args.id, data: args.data })
+      .createRuleMark({
+        id: args.id,
+        data: args.data,
+        ...Object.fromEntries(STROKE_STYLE_PROPERTIES.flatMap(property =>
+          Object.hasOwn(args, property) ? [[property, args[property]]] : []
+        ))
+      })
       [positionAction]({
         target: args.id,
         field: args.positionField,
@@ -256,7 +266,13 @@ export const createErrorBar = action(
     const resolved = resolveErrorBar(this, args);
     const appearance = resolveAppearance(args);
     let next = createResolvedIntervalData(this, resolved);
-    next = next.createRuleMark({ id: resolved.id, data: resolved.dataId });
+    next = next.createRuleMark({
+      id: resolved.id,
+      data: resolved.dataId,
+      ...Object.fromEntries(STROKE_STYLE_PROPERTIES.flatMap(property =>
+        Object.hasOwn(appearance, property) ? [[property, appearance[property]]] : []
+      ))
+    });
     const positionAction = resolved.position.channel === "x" ? "encodeX" : "encodeY";
     const intervalAction = resolved.interval.channel === "x" ? "encodeX" : "encodeY";
     const secondaryAction = resolved.interval.channel === "x" ? "encodeX2" : "encodeY2";
@@ -312,7 +328,10 @@ export const createErrorBar = action(
           stroke: appearance.stroke,
           strokeWidth: appearance.strokeWidth,
           strokeDash: appearance.strokeDash,
-          opacity: appearance.opacity
+          opacity: appearance.opacity,
+          ...Object.fromEntries(STROKE_STYLE_PROPERTIES.flatMap(property =>
+            Object.hasOwn(appearance, property) ? [[property, appearance[property]]] : []
+          ))
         });
       }
     }

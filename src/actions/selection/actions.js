@@ -397,6 +397,15 @@ function transformRectangularProperties(properties, style, offset = false) {
   };
 }
 
+function transformRectangularHighlightChild(item, style, offset) {
+  return {
+    ...item,
+    properties: item.type === "path"
+      ? transformPathHighlightProperties(item.properties, style)
+      : transformRectangularProperties(item.properties, style, offset)
+  };
+}
+
 function applyRectangularHighlight(
   program,
   args,
@@ -411,12 +420,8 @@ function applyRectangularHighlight(
     throw new Error(`${operation} requires a ${markType} selection.`);
   }
   if (keys.length === 0) return program;
-  return editSelectedItems(program, resolved, keys, item => ({
-    ...item,
-    properties: transformRectangularProperties(
-      item.properties, args.style, offset
-    )
-  }));
+  return editSelectedItems(program, resolved, keys, item =>
+    transformRectangularHighlightChild(item, args.style, offset));
 }
 
 export const applyBarHighlight = action(

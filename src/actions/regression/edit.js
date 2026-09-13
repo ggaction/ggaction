@@ -9,6 +9,10 @@ import {
 } from "../../core/validation.js";
 import { normalizeRegressionParameters } from "../../grammar/regression/index.js";
 import { validateCurveInterpolation } from "../../grammar/curveCommands.js";
+import {
+  requestedStrokeDetails,
+  STROKE_STYLE_PROPERTIES
+} from "../../grammar/strokeStyle.js";
 import { planDerivedDataRevision } from
   "../../materialization/dataProvenance.js";
 import { findLayer } from "../../selectors/layers.js";
@@ -21,9 +25,12 @@ const OPTIONS = Object.freeze([
   "confidenceMethod", "level", "confidence", "interval", "band", "line"
 ]);
 const BAND_OPTIONS = Object.freeze([
-  "color", "opacity", "stroke", "strokeWidth", "curve"
+  "color", "opacity", "stroke", "strokeWidth", "curve",
+  ...STROKE_STYLE_PROPERTIES
 ]);
-const LINE_OPTIONS = Object.freeze(["strokeWidth", "curve"]);
+const LINE_OPTIONS = Object.freeze([
+  "strokeWidth", "curve", ...STROKE_STYLE_PROPERTIES
+]);
 
 function resolveRegressionOwner(program, requested) {
   const eligible = program.semanticSpec.layers.filter(
@@ -80,6 +87,7 @@ function validateBandPatch(value) {
   if (Object.hasOwn(patch, "curve")) {
     validateCurveInterpolation(patch.curve);
   }
+  requestedStrokeDetails(patch, "editRegression band");
   return patch;
 }
 
@@ -94,6 +102,7 @@ function validateLinePatch(value) {
   if (Object.hasOwn(patch, "curve")) {
     validateCurveInterpolation(patch.curve);
   }
+  requestedStrokeDetails(patch, "editRegression line");
   return patch;
 }
 

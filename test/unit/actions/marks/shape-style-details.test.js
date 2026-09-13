@@ -172,3 +172,151 @@ test("rejects invalid and unsupported shape details before resolving targets", (
     assert.equal(JSON.stringify(program), before);
   }
 });
+
+test("keeps rounded Bar and Rect marks compatible with later encodings", () => {
+  const bar = base()
+    .createBarMark({ id: "bars", cornerRadius: 8, ...DETAILS })
+    .encodeX({ field: "category", fieldType: "nominal" })
+    .encodeY({ field: "value" })
+    .encodeColor({ field: "category", layout: "group" });
+  const rect = base()
+    .createRectMark({ id: "cells", cornerRadius: 8, ...DETAILS })
+    .encodeX({ field: "category", fieldType: "nominal" })
+    .encodeY({ field: "category", fieldType: "nominal" })
+    .encodeColor({ field: "value", fieldType: "quantitative" });
+
+  for (const [program, id] of [[bar, "bars"], [rect, "cells"]]) {
+    assert.equal(program.graphicSpec.objects[id].type, "collection");
+    assert.equal(program.graphicSpec.objects[id].items.every(
+      item => item.type === "path" && item.properties.commands.length === 10
+    ), true);
+    assertDetails(program.graphicSpec.objects[id].items[0].properties);
+  }
+});
+
+test("derives selections, highlights, and source-owned labels from rounded rectangles", () => {
+  for (const [kind, program] of [
+    ["Bar", base()
+      .createBarMark({ id: "mark", cornerRadius: 9, ...DETAILS })
+      .encodeX({ field: "category", fieldType: "nominal" })
+      .encodeY({ field: "value" })],
+    ["Rect", base()
+      .createRectMark({ id: "mark", cornerRadius: 9, ...DETAILS })
+      .encodeX({ field: "category", fieldType: "nominal" })
+      .encodeY({ field: "category", fieldType: "nominal" })]
+  ]) {
+    const labelled = program.createTextMark({
+      id: "labels",
+      source: "mark",
+      text: "label"
+    });
+    const highlighted = program
+      .selectMarks({ id: "largest", target: "mark", field: "value", op: "max" })
+      .highlightMarks({ selection: "largest", color: "#dc2626" });
+
+    assert.equal(labelled.graphicSpec.objects.labels.items.length, rows.length, kind);
+    assert.equal(labelled.graphicSpec.objects.labels.items.every(item =>
+      Number.isFinite(item.properties.x) && Number.isFinite(item.properties.y)
+    ), true, kind);
+    assert.equal(highlighted.graphicSpec.objects.mark.type, "collection", kind);
+    assert.equal(highlighted.graphicSpec.objects.mark.items.every(item =>
+      item.type === "path" && item.properties.commands.length === 10
+    ), true, kind);
+    assertDetails(highlighted.graphicSpec.objects.mark.items.at(-1).properties);
+    assert.equal(
+      highlighted.graphicSpec.objects.mark.items.at(-1).properties.fill,
+      "#dc2626",
+      kind
+    );
+  }
+});
+
+test("inherits detailed source style into inferred categorical legends", () => {
+  const rounded = base()
+    .editCanvas({
+      width: 500,
+      margin: { top: 40, right: 140, bottom: 60, left: 60 }
+    })
+    .createBarMark({
+      id: "bars",
+      cornerRadius: 7,
+      stroke: "black",
+      ...DETAILS
+    })
+    .encodeX({ field: "category", fieldType: "nominal" })
+    .encodeY({ field: "value" })
+    .encodeColor({ field: "category", layout: "group" })
+    .createLegend({ target: "bars", channels: ["color"] });
+  const symbols = rounded.graphicSpec.objects.colorLegendSymbols;
+
+  assert.equal(rounded.guideConfigs.legend.color.inferredSymbol, true);
+  assert.equal(symbols.type, "collection");
+  assert.equal(symbols.items.every(item =>
+    item.type === "path" && item.properties.commands.length === 10
+  ), true);
+  assertDetails(symbols.items[0].properties);
+
+  const overridden = rounded.editLegendBlock({
+    target: "bars",
+    channel: "color",
+    symbol: { stroke: "#111827" }
+  });
+  assert.equal(
+    overridden.graphicSpec.objects.colorLegendSymbols.items[0].properties.stroke,
+    "#111827"
+  );
+  assertDetails(
+    overridden.graphicSpec.objects.colorLegendSymbols.items[0].properties
+  );
+
+  const reset = overridden.editBarMark({ target: "bars", cornerRadius: 0 });
+  assert.equal(reset.graphicSpec.objects.colorLegendSymbols.type, "rect");
+  assert.equal(
+    reset.graphicSpec.objects.colorLegendSymbols.items[0].properties.commands,
+    undefined
+  );
+  assert.equal(
+    reset.graphicSpec.objects.colorLegendSymbols.items[0].properties.stroke,
+    "#111827"
+  );
+  assertDetails(reset.graphicSpec.objects.colorLegendSymbols.items[0].properties);
+});
+
+test("inherits line details into series legends without extending legend recipes", () => {
+  const legendRows = [
+    { x: 0, y: 1, category: "A" },
+    { x: 1, y: 2, category: "A" },
+    { x: 0, y: 3, category: "B" },
+    { x: 1, y: 4, category: "B" }
+  ];
+  const source = chart()
+    .createCanvas({
+      width: 500,
+      height: 300,
+      margin: { top: 40, right: 140, bottom: 60, left: 60 }
+    })
+    .createData({ id: "values", values: legendRows });
+  const line = source
+    .createLineMark({ id: "lines", ...DETAILS })
+    .encodeX({ field: "x" })
+    .encodeY({ field: "y" })
+    .encodeGroup({ field: "category" })
+    .encodeColor({ field: "category" })
+    .createLegend({ target: "lines", channels: ["color"] });
+
+  assertDetails(line.graphicSpec.objects.seriesLegendSymbols.items[0].properties);
+  for (const symbol of [
+    { cornerRadius: 2 },
+    { lineCap: "round" }
+  ]) {
+    assert.throws(
+      () => source
+        .createBarMark({ id: "bars" })
+        .encodeX({ field: "category", fieldType: "nominal" })
+        .encodeY({ field: "y" })
+        .encodeColor({ field: "category", layout: "group" })
+        .createLegend({ symbol }),
+      /Unknown createLegend\.symbol option/
+    );
+  }
+});

@@ -12,6 +12,11 @@ import { createPointShapeGraphic } from "../../../../grammar/pointShapes.js";
 import { resolveConcreteGraphicBounds } from "../../../../grammar/schemas/graphicBounds.js";
 import { resolveEffectiveLegendBlockConfig } from "../blocks.js";
 import { resolveDisplayLabel } from "../../../../grammar/displayLabels.js";
+import {
+  materializeRectItem,
+  requestedRectStyleDetails
+} from "../../../../grammar/roundedRect.js";
+import { requestedStrokeDetails } from "../../../../grammar/strokeStyle.js";
 
 const CATEGORICAL_KINDS = Object.freeze(["series", "color", "stroke"]);
 
@@ -91,26 +96,32 @@ function resolveSampleBounds(program, config, width) {
           stroke: layer.stroke ?? (config.channels.includes("stroke")
             ? appearance.strokes[index]
             : appearance.colors[index]),
-          strokeWidth: layer.lineWidth, opacity: layer.opacity } };
+          strokeWidth: layer.lineWidth, opacity: layer.opacity,
+          ...requestedStrokeDetails(layer, "Legend line symbol") } };
       }
       if (layer.type === "swatch") {
-        return { type: "rect", properties: { x: (width - layer.width) / 2, y: -layer.height / 2,
+        const details = requestedRectStyleDetails(layer, "Legend swatch symbol");
+        return materializeRectItem({ x: (width - layer.width) / 2, y: -layer.height / 2,
           width: layer.width, height: layer.height, strokeWidth: layer.strokeWidth,
           stroke: config.channels.includes("stroke")
             ? appearance.strokes[index]
             : layer.stroke,
-          opacity: layer.opacity } };
+          opacity: layer.opacity,
+          ...requestedStrokeDetails(details, "Legend swatch symbol")
+        }, details.cornerRadius ?? 0);
       }
       if (config.channels.includes("shape")) {
         return createPointShapeGraphic({ shape: appearance.shapes[index], x: width / 2, y: 0,
           area: Math.PI * layer.size ** 2, fill: layer.fill ?? appearance.colors[index],
-          stroke: layer.stroke, strokeWidth: layer.strokeWidth, opacity: layer.opacity });
+          stroke: layer.stroke, strokeWidth: layer.strokeWidth, opacity: layer.opacity,
+          ...requestedStrokeDetails(layer, "Legend point symbol") });
       }
       return { type: "circle", properties: { x: width / 2, y: 0, radius: layer.size,
         stroke: config.channels.includes("stroke")
           ? appearance.strokes[index]
           : layer.stroke,
-        strokeWidth: layer.strokeWidth, opacity: layer.opacity } };
+        strokeWidth: layer.strokeWidth, opacity: layer.opacity,
+        ...requestedStrokeDetails(layer, "Legend point symbol") } };
     });
     return items.map((item, itemIndex) => {
       const bounds = resolveConcreteGraphicBounds({

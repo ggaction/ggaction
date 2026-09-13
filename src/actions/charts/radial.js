@@ -1,4 +1,5 @@
 import { action } from "../../core/action.js";
+import { STROKE_STYLE_PROPERTIES } from "../../grammar/strokeStyle.js";
 import {
   applyFacadeGuides, normalizeAppearance, normalizeArcCategory, normalizeCategoryAggregate,
   normalizeCategoricalColor, normalizeCategoricalGuides, omitUndefinedOptions,
@@ -6,7 +7,10 @@ import {
 } from "./shared.js";
 
 const OPTIONS = ["id", "data", "coordinate", "category", "value", "aggregate", "radiusScale", "color", "arc", "guides"];
-const ARC_OPTIONS = ["innerRadius", "padAngle", "fill", "opacity", "stroke", "strokeWidth"];
+const ARC_OPTIONS = [
+  "innerRadius", "padAngle", "fill", "opacity", "stroke", "strokeWidth",
+  ...STROKE_STYLE_PROPERTIES
+];
 const RADIUS_OPTIONS = ["id", "type", "domain", "range", "zero", "nice", "reverse", "clamp"];
 
 function createMeasuredPlot(program, args, { operation, defaultId, mapping }) {

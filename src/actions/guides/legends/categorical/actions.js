@@ -62,7 +62,17 @@ export const rematerializeLegend = action(
       const stored = next.guideConfigs.legend[kind];
       const definition = resolveCurrentDefinition(next, stored);
       const symbol = stored.inferredSymbol
-        ? normalizeRecipe(resolveLegendSymbol(next, findLayer(next, stored.target), definition.channels), kind)
+        ? normalizeRecipe(
+            resolveLegendSymbol(
+              next,
+              findLayer(next, stored.target),
+              definition.channels,
+              undefined,
+              kind
+            ),
+            kind,
+            { internal: true }
+          )
         : stored.symbol;
       const symbolChanged = !sameGuideValue(symbol, stored.symbol);
       const changed = symbolChanged ||
@@ -171,14 +181,21 @@ export function resolveCategoricalLegendConfig(program, args = {}) {
     args.title,
     args.order === undefined ? undefined : normalizeLegendOrder(args.order)
   );
+  const inferredSymbol = args.symbol === undefined || args.symbol === "auto";
   const options = normalizeOptions({ ...args,
-    symbol: resolveLegendSymbol(program, layer, definition.channels, args.symbol)
-  }, definition.kind);
+    symbol: resolveLegendSymbol(
+      program,
+      layer,
+      definition.channels,
+      args.symbol,
+      definition.kind
+    )
+  }, definition.kind, { internalSymbol: inferredSymbol });
   const config = {
     target: layer.id,
     ...definition,
     inferredTitle: !Object.hasOwn(args, "title"),
-    inferredSymbol: args.symbol === undefined || args.symbol === "auto",
+    inferredSymbol,
     position: options.position,
     align: options.align,
     direction: options.direction,

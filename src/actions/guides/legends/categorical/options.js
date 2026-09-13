@@ -88,7 +88,7 @@ function normalizeBorder(border) {
   return normalized;
 }
 
-export function normalizeOptions(args, kind) {
+export function normalizeOptions(args, kind, { internalSymbol = false } = {}) {
   validateOptionObject(args, OPTIONS, "createLegend");
   if (Object.hasOwn(args, "labels")) {
     validateObject(args.labels, TEXT_OPTIONS, "createLegend.labels");
@@ -191,7 +191,7 @@ export function normalizeOptions(args, kind) {
     offset,
     titlePosition,
     title: args.title,
-    symbol: normalizeRecipe(args.symbol, kind),
+    symbol: normalizeRecipe(args.symbol, kind, { internal: internalSymbol }),
     labels,
     titleStyle,
     itemGap,

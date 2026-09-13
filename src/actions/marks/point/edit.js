@@ -100,9 +100,6 @@ export const editPointMark = action(
     const next = this
       ._withMarkConfig(id, config)
       .rematerializePointMark({ id });
-    const legend = next.guideConfigs.legend?.series;
-    return legend?.target === id && legend.channels.includes("shape")
-      ? rematerializeExistingLegend(next)
-      : next;
+    return rematerializeExistingLegend(next);
   }
 );

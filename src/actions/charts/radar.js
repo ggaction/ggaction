@@ -1,4 +1,5 @@
 import { action } from "../../core/action.js";
+import { STROKE_STYLE_PROPERTIES } from "../../grammar/strokeStyle.js";
 import { isPlainObject } from "../../core/immutable.js";
 import { validateNonEmptyString, validateOptionObject } from
   "../../core/validation.js";
@@ -31,7 +32,8 @@ const CATEGORY_SCALE_OPTIONS = Object.freeze([
 const WIDE_OPTIONS = Object.freeze(["fields", "as"]);
 const WIDE_AS_OPTIONS = Object.freeze(["key", "value"]);
 const LINE_OPTIONS = Object.freeze([
-  "strokeWidth", "curve", "stroke", "opacity", "closed"
+  "strokeWidth", "curve", "stroke", "opacity", "closed",
+  ...STROKE_STYLE_PROPERTIES
 ]);
 
 function normalizeCategory(value, operation) {

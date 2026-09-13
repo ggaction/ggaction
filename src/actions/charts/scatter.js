@@ -1,5 +1,6 @@
 import { action } from "../../core/action.js";
 import { validateNonNegativeFinite } from "../../core/validation.js";
+import { STROKE_STYLE_PROPERTIES } from "../../grammar/strokeStyle.js";
 import {
   applyFacadeGuides,
   normalizeAppearance,
@@ -18,7 +19,8 @@ const OPTIONS = Object.freeze([
   "point", "guides"
 ]);
 const POINT_OPTIONS = Object.freeze([
-  "shape", "fill", "opacity", "stroke", "strokeWidth", "radius"
+  "shape", "fill", "opacity", "stroke", "strokeWidth", "radius",
+  ...STROKE_STYLE_PROPERTIES
 ]);
 
 export const createScatterPlot = action(

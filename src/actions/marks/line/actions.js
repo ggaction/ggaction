@@ -23,6 +23,7 @@ import {
   resolveCoordinateBounds,
   resolveCoordinatePolarFrame
 } from "../../../materialization/coordinateBounds.js";
+import { rematerializeExistingLegend } from "../../encodings/shared.js";
 import { canMaterializeLine } from "../../../materialization/marks/index.js";
 import { resolveMarkGraphicPlacement } from
   "../../../materialization/graphicHierarchy.js";
@@ -316,9 +317,10 @@ const editLineMark = action(
     }
     validatePolarLineConfig(layer, config);
     const next = this._withMarkConfig(layer.id, config);
-    return canMaterializeLine(next, layer)
+    const materialized = canMaterializeLine(next, layer)
       ? next.rematerializeLineMark({ id: layer.id })
       : next;
+    return rematerializeExistingLegend(materialized);
   }
 );
 

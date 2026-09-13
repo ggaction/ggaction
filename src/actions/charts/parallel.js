@@ -1,5 +1,6 @@
 import { action } from "../../core/action.js";
 import { resolveParallelCoordinate } from "../coordinates/parallel.js";
+import { STROKE_STYLE_PROPERTIES } from "../../grammar/strokeStyle.js";
 import {
   applyFacadeGuides,
   normalizeAppearance,
@@ -17,7 +18,8 @@ const OPTIONS = Object.freeze([
   "color", "strokeDash", "line", "guides"
 ]);
 const LINE_OPTIONS = Object.freeze([
-  "strokeWidth", "stroke", "opacity", "curve", "closed"
+  "strokeWidth", "stroke", "opacity", "curve", "closed",
+  ...STROKE_STYLE_PROPERTIES
 ]);
 
 function scopeParallelGuides(guides, coordinate) {

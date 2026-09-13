@@ -1,4 +1,5 @@
 import { action } from "../../core/action.js";
+import { STROKE_STYLE_PROPERTIES } from "../../grammar/strokeStyle.js";
 import { isPlainObject } from "../../core/immutable.js";
 import { validateNonEmptyString, validateNonNegativeFinite, validateOptionObject } from
   "../../core/validation.js";
@@ -19,12 +20,15 @@ import {
 
 const RUG_OPTIONS = Object.freeze(["id", "data", "coordinate", "x", "y", "edge", "tick", "guides"]);
 const MEASURE_OPTIONS = Object.freeze(["field", "fieldType", "temporalUnit", "scale"]);
-const TICK_OPTIONS = Object.freeze(["length", "stroke", "strokeWidth", "opacity"]);
+const TICK_OPTIONS = Object.freeze([
+  "length", "stroke", "strokeWidth", "opacity", ...STROKE_STYLE_PROPERTIES
+]);
 const STRIP_OPTIONS = Object.freeze([
   "id", "data", "coordinate", "x", "y", "color", "size", "shape", "point", "jitter", "guides"
 ]);
 const POINT_OPTIONS = Object.freeze([
-  "radius", "shape", "fill", "opacity", "stroke", "strokeWidth"
+  "radius", "shape", "fill", "opacity", "stroke", "strokeWidth",
+  ...STROKE_STYLE_PROPERTIES
 ]);
 const JITTER_OPTIONS = Object.freeze(["maxOffset", "seed", "key"]);
 

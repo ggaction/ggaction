@@ -1,6 +1,7 @@
 import { action } from "../../core/action.js";
 import { validateKeys } from "../../core/validation.js";
 import { normalizeRegressionParameters } from "../../grammar/regression/index.js";
+import { STROKE_STYLE_PROPERTIES } from "../../grammar/strokeStyle.js";
 import {
   findRegressionPoint,
   inferRegressionGroup,
@@ -49,11 +50,18 @@ export const createRegression = action(
     if (band !== false) {
       validateKeys(
         band,
-        ["color", "opacity", "stroke", "strokeWidth", "curve"],
+        [
+          "color", "opacity", "stroke", "strokeWidth", "curve",
+          ...STROKE_STYLE_PROPERTIES
+        ],
         "regression band"
       );
     }
-    validateKeys(line, ["strokeWidth", "curve"], "regression line");
+    validateKeys(
+      line,
+      ["strokeWidth", "curve", ...STROKE_STYLE_PROPERTIES],
+      "regression line"
+    );
     const colorEncoding = point.encoding?.color;
     const namespace = point.id;
     const dataId = `${namespace}RegressionData`;

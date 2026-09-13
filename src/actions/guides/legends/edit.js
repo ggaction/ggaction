@@ -384,6 +384,9 @@ function resolveCategoricalEdit(program, kind, previous, size, args, storedOrder
     throw new Error("Categorical legend labels do not accept format.");
   }
   const { format: _sizeFormat, ...categoricalLabels } = mergedLabels;
+  const inferredSymbol = args.symbol === undefined
+    ? previous.inferredSymbol
+    : args.symbol === "auto";
   const normalized = normalizeOptions({
     target: previous.target,
     channels: previous.channels,
@@ -398,17 +401,23 @@ function resolveCategoricalEdit(program, kind, previous, size, args, storedOrder
     titlePosition: args.titlePosition ?? previous.titlePosition,
     title,
     symbol: args.symbol === undefined ? previous.symbol
-      : resolveLegendSymbol(program, findLayer(program, previous.target), previous.channels, args.symbol),
+      : resolveLegendSymbol(
+          program,
+          findLayer(program, previous.target),
+          previous.channels,
+          args.symbol,
+          kind
+        ),
     labels: categoricalLabels,
     titleStyle: mergeObject(previous.titleStyle, args.titleStyle),
     itemGap: args.itemGap ?? previous.itemGap,
     border: mergeBorder(previous.border, args.border)
-  }, kind);
+  }, kind, { internalSymbol: inferredSymbol });
   const config = {
     ...previous,
     ...normalized,
     inferredTitle,
-    inferredSymbol: args.symbol === undefined ? previous.inferredSymbol : args.symbol === "auto",
+    inferredSymbol,
     titleVisible
   };
   const order = args.order === undefined

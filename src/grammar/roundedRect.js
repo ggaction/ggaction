@@ -1,7 +1,14 @@
 import { freezeOwned, isPlainObject } from "../core/immutable.js";
-import { requestedStrokeDetails } from "./strokeStyle.js";
+import {
+  requestedStrokeDetails,
+  STROKE_STYLE_PROPERTIES
+} from "./strokeStyle.js";
 
 export const ROUNDED_RECT_K = 4 * (Math.sqrt(2) - 1) / 3;
+export const RECT_STYLE_PROPERTIES = Object.freeze([
+  "cornerRadius",
+  ...STROKE_STYLE_PROPERTIES
+]);
 
 function requireFinite(value, property) {
   if (!Number.isFinite(value)) {
@@ -142,4 +149,32 @@ export function materializeRectItem(properties, requestedRadius = 0) {
           ...appearance
         })
       });
+}
+
+export function readRectItemGeometry(item) {
+  if (!isPlainObject(item) || !isPlainObject(item.properties)) return undefined;
+  if (item.type === "rect") {
+    try {
+      return normalizeRectGeometry(item.properties);
+    } catch {
+      return undefined;
+    }
+  }
+  const commands = item.type === "path" ? item.properties.commands : undefined;
+  if (
+    !Array.isArray(commands) ||
+    commands.length !== 10 ||
+    commands.map(command => command?.op).join("") !== "MLCLCLCLCZ"
+  ) return undefined;
+  const geometry = {
+    x: commands[7].x,
+    y: commands[0].y,
+    width: commands[2].x - commands[7].x,
+    height: commands[4].y - commands[0].y
+  };
+  try {
+    return normalizeRectGeometry(geometry);
+  } catch {
+    return undefined;
+  }
 }

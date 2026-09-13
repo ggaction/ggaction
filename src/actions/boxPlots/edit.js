@@ -24,6 +24,8 @@ import {
   resolveBoxWidth
 } from "./options.js";
 import { resolveBoxOrientation } from "./resolve.js";
+import { requestedRectStyleDetails } from "../../grammar/roundedRect.js";
+import { requestedStrokeDetails } from "../../grammar/strokeStyle.js";
 
 const OPTIONS = Object.freeze([
   "target", "data", "x", "y", "whisker", "width", "outliers", "box",
@@ -252,6 +254,8 @@ export const editBoxPlot = action(
       { ...current.outlier, ...outlierPatch },
       "editBoxPlot"
     );
+    const boxStyleDetails = requestedRectStyleDetails(box, "Box body");
+    const medianStyleDetails = requestedStrokeDetails(median, "Box median");
     if (Object.hasOwn(boxPatch, "fill") && owner.encoding?.color !== undefined) {
       throw new Error(
         "editBoxPlot box.fill cannot be combined with a color encoding."
@@ -360,7 +364,10 @@ export const editBoxPlot = action(
           fill: box.fill,
           opacity: box.opacity,
           stroke: box.stroke,
-          strokeWidth: box.strokeWidth
+          strokeWidth: box.strokeWidth,
+          ...(Object.keys(boxStyleDetails).length === 0
+            ? {}
+            : { barAppearance: boxStyleDetails })
         });
         next = updateBoxPositions(next, owner, current, candidate, {
           outlierDataId: outlierRevision?.id,
@@ -385,7 +392,8 @@ export const editBoxPlot = action(
             measureScale: measure.scale,
             shape: outlier.shape,
             radius: outlier.radius,
-            opacity: outlier.opacity
+            opacity: outlier.opacity,
+            ...requestedStrokeDetails(outlier, "Box outlier")
           });
         }
         next = next
@@ -394,12 +402,19 @@ export const editBoxPlot = action(
             target: current.medianId,
             value: median.strokeWidth
           });
+        if (Object.keys(medianStyleDetails).length > 0) {
+          next = next.editRuleMark({
+            target: current.medianId,
+            ...medianStyleDetails
+          });
+        }
         if (findLayer(next, current.outlierId) !== undefined) {
           next = next
             .editPointMark({
               target: current.outlierId,
               shape: outlier.shape,
-              opacity: outlier.opacity
+              opacity: outlier.opacity,
+              ...requestedStrokeDetails(outlier, "Box outlier")
             })
             .encodeRadius({ target: current.outlierId, value: outlier.radius });
         }
@@ -445,7 +460,10 @@ export const editBoxPlot = action(
       fill: box.fill,
       opacity: box.opacity,
       stroke: box.stroke,
-      strokeWidth: box.strokeWidth
+      strokeWidth: box.strokeWidth,
+      ...(Object.keys(boxStyleDetails).length === 0
+        ? {}
+        : { barAppearance: boxStyleDetails })
     });
 
     if (changesBox) next = next.rematerializeBarMark({ id: owner.id });
@@ -456,13 +474,20 @@ export const editBoxPlot = action(
           target: current.medianId,
           value: median.strokeWidth
         });
+      if (Object.keys(medianStyleDetails).length > 0) {
+        next = next.editRuleMark({
+          target: current.medianId,
+          ...medianStyleDetails
+        });
+      }
     }
     if (findLayer(next, current.outlierId) !== undefined && changesOutlier) {
       next = next
         .editPointMark({
           target: current.outlierId,
           shape: outlier.shape,
-          opacity: outlier.opacity
+          opacity: outlier.opacity,
+          ...requestedStrokeDetails(outlier, "Box outlier")
         })
         .encodeRadius({ target: current.outlierId, value: outlier.radius });
     }
