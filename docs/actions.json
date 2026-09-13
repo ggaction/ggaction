@@ -3,7 +3,7 @@
   "packageVersion": "0.0.13",
   "typeSource": "types/program.d.ts",
   "errorPolicy": "An empty errors array means the compact card has no curated error override; consult the canonical route for validation, inference, and recovery behavior.",
-  "count": 272,
+  "count": 273,
   "cards": [
     {
       "schemaVersion": 3,
@@ -17390,6 +17390,126 @@
       "snippet": "program.editLegend({ channels: [\"color\", \"size\"], count: 3 })",
       "errors": [],
       "route": "/reference/actions/guides/#editlegend"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "editLegendBlock",
+      "layer": "user-facing",
+      "domain": "legend_and_title",
+      "summary": "Edit one logical legend block without changing sibling blocks on the same mark.",
+      "signature": "editLegendBlock(options: EditLegendBlockOptions): ChartProgram;",
+      "intents": [
+        "edit legend block",
+        "edit",
+        "change",
+        "legend or title",
+        "chart annotation",
+        "legend block",
+        "one encoded legend channel group"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing legend block",
+          "compatible scale or encoding context"
+        ],
+        "owns": [],
+        "idOptions": [
+          "target"
+        ]
+      },
+      "authoringRoles": [
+        "H3"
+      ],
+      "wraps": [
+        "editSemantic"
+      ],
+      "editableVia": [
+        "editLegendBlock"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [
+        {
+          "path": "count",
+          "unit": "count"
+        }
+      ],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit"
+        },
+        {
+          "input": "values",
+          "strategy": "documented-auto"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "existing legend block",
+          "compatible scale or encoding context"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "target",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "channel",
+          "required": true,
+          "type": "\"color\" | \"opacity\" | \"shape\" | \"size\" | \"stroke\" | \"strokeDash\" | \"strokeWidth\""
+        },
+        {
+          "name": "title",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "values",
+          "required": false,
+          "type": "\"auto\" | readonly [number, ...number[]] | undefined"
+        },
+        {
+          "name": "count",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "order",
+          "required": false,
+          "type": "readonly CategoryValue[] | undefined"
+        },
+        {
+          "name": "gap",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "text",
+          "required": false,
+          "type": "LegendBlockTextPatch | undefined"
+        },
+        {
+          "name": "symbol",
+          "required": false,
+          "type": "LegendBlockSymbolPatch | undefined"
+        }
+      ],
+      "callPatterns": [
+        "editLegendBlock({ target, channel, title?, values?, count?, order?, gap?, text? })",
+        "editLegendBlock({ target, channel, symbol? })"
+      ],
+      "snippet": "program.editLegendBlock({ target: \"points\", channel: \"size\", title: \"Magnitude\" })",
+      "errors": [],
+      "route": "/reference/actions/guides/#editlegendblock"
     },
     {
       "schemaVersion": 3,

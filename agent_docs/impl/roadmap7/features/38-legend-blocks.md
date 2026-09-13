@@ -1,7 +1,7 @@
 # R38 — 결합 범례의 channel block별 편집
 
-원래 감사 번호: **38**. Primary owner: **Phase 8**. 상태: **Proposed / 구현 전**.
-아래 세부 API·수치 정책의 Gate는 승인됐다. 상태의 `Proposed`는 제품 구현·검증이 아직 완료되지 않았다는 뜻이다.
+원래 감사 번호: **38**. Primary owner: **Phase 8**. 상태: **Implemented-primary**.
+아래 세부 API·수치 정책의 Gate는 승인됐고 현재 제품·타입·계약·문서·설치 패키지에 구현됐다. 정확한 제품 commit과 누적 검증 수치는 Phase 8 `STEP1.md` 결과 원장에 기록한다. R39의 `labelMap`과 facet header 통합은 아직 이 API에 포함하지 않는다.
 
 ## 목적과 현재 연결점
 
@@ -101,7 +101,7 @@ merged color+shape에서 channel:"color"와 channel:"shape"는 **같은 block을
 
 - key 그대로,root reorder/layout/theme 변경 → override 유지.
 - block 제거 → override 제거; 재추가해도 부활하지 않음.
-- split/merge로 membership 변경 → old override의 적용 가능성을 field별 검사. 한 old block→여러 new blocks는 compatible style만 복사하고 content title/order/values는 명시 재지정 필요하므로 기존 값이 있으면 transition 거부.
+- membership이 한 old categorical block→한 new categorical block으로 바뀌면 compatible style은 새 key로 옮기고 block-local title은 거부한다. 기존 categorical order는 별도 `semanticSpec.guides.legend[kind].order` owner에서 새 kind로 이동하며, 기존 categorical revision validator가 같은 domain인지 확인한다. 실제 split처럼 한 old block이 여러 new block으로 갈라지면 content title/order는 명시 재지정이 필요하므로 기존 값이 있으면 transition을 거부한다.
 - 여러 old blocks→merged block: 동일한 compatible overrides만 합침; 다른 title/maps/style 또는 invalid field가 있으면 사전 오류. automatic last-wins 금지.
 - scale type 변경으로 기존 values/order가 불가능해짐 → 오류, 명시 compatible content로 먼저 바꿔야 함.
 

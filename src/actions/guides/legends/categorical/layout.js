@@ -10,6 +10,7 @@ import {
 import { resolveLegendItemLayout } from "../../../../layout/legendItems.js";
 import { createPointShapeGraphic } from "../../../../grammar/pointShapes.js";
 import { resolveConcreteGraphicBounds } from "../../../../grammar/schemas/graphicBounds.js";
+import { resolveEffectiveLegendBlockConfig } from "../blocks.js";
 
 const CATEGORICAL_KINDS = Object.freeze(["series", "color", "stroke"]);
 
@@ -23,13 +24,27 @@ export function activeConfig(program, requested) {
     if (!kinds.includes(requested)) {
       throw new Error(`Missing categorical legend config "${requested}".`);
     }
-    return { kind: requested, config: program.guideConfigs.legend[requested] };
+    return {
+      kind: requested,
+      config: resolveEffectiveLegendBlockConfig(
+        program,
+        requested,
+        program.guideConfigs.legend[requested]
+      )
+    };
   }
   if (kinds.length !== 1) {
     throw new Error("Legend component requires one categorical legend config.");
   }
   const kind = kinds[0];
-  return { kind, config: program.guideConfigs.legend[kind] };
+  return {
+    kind,
+    config: resolveEffectiveLegendBlockConfig(
+      program,
+      kind,
+      program.guideConfigs.legend[kind]
+    )
+  };
 }
 
 function prefix(config) {
@@ -64,19 +79,20 @@ function resolveSampleBounds(program, config, width) {
       if (layer.type === "line") {
         const x = (width - layer.length) / 2;
         return { type: "line", properties: { x1: x, x2: x + layer.length, y1: 0, y2: 0,
-          strokeWidth: layer.lineWidth } };
+          strokeWidth: layer.lineWidth, opacity: layer.opacity } };
       }
       if (layer.type === "swatch") {
         return { type: "rect", properties: { x: (width - layer.width) / 2, y: -layer.height / 2,
-          width: layer.width, height: layer.height, strokeWidth: layer.strokeWidth } };
+          width: layer.width, height: layer.height, strokeWidth: layer.strokeWidth,
+          opacity: layer.opacity } };
       }
       if (config.channels.includes("shape")) {
         return createPointShapeGraphic({ shape: appearance.shapes[index], x: width / 2, y: 0,
           area: Math.PI * layer.size ** 2, fill: layer.fill ?? appearance.colors[index],
-          stroke: layer.stroke, strokeWidth: layer.strokeWidth });
+          stroke: layer.stroke, strokeWidth: layer.strokeWidth, opacity: layer.opacity });
       }
       return { type: "circle", properties: { x: width / 2, y: 0, radius: layer.size,
-        strokeWidth: layer.strokeWidth } };
+        strokeWidth: layer.strokeWidth, opacity: layer.opacity } };
     });
     return resolveConcreteGraphicBounds({ objects: { sample: { type: "collection", items } }, order: ["sample"] }, "sample");
   });

@@ -196,6 +196,7 @@
   "editRadialGrid": "/reference/actions/guides/#editradialgrid",
   "createLegend": "/reference/actions/guides/#createlegend",
   "editLegend": "/reference/actions/guides/#editlegend",
+  "editLegendBlock": "/reference/actions/guides/#editlegendblock",
   "editLegendLayout": "/reference/actions/guides/#focused-legend-edits",
   "editLegendLabels": "/reference/actions/guides/#focused-legend-edits",
   "editLegendTitle": "/reference/actions/guides/#focused-legend-edits",

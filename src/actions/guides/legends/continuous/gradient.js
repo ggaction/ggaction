@@ -20,6 +20,7 @@ import {
 } from "./common.js";
 import { resolveLegendGraphicPlacement } from
   "../../../../materialization/graphicHierarchy.js";
+import { resolveEffectiveLegendBlockConfig } from "../blocks.js";
 
 export const DEFAULT_GRADIENT_SIZE = Object.freeze({ length: 120, thickness: 12 });
 
@@ -30,14 +31,15 @@ export function resolveGradientLayout(program, config, scale) {
   const vertical = ["right", "left"].includes(config.position);
   const length = config.gradient.length;
   const thickness = config.gradient.thickness;
+  const titleGap = config.blockGap ?? 12;
   let x;
   let y;
   if (config.position === "right") {
     x = plot.x + plot.width + config.offset;
-    y = plot.y + 46;
+    y = plot.y + 46 + titleGap - 12;
   } else if (config.position === "left") {
     x = plot.x - config.offset - thickness;
-    y = plot.y + 46;
+    y = plot.y + 46 + titleGap - 12;
   } else {
     x = config.align === "left" ? plot.x
       : config.align === "right" ? plot.x + plot.width - length
@@ -46,13 +48,13 @@ export function resolveGradientLayout(program, config, scale) {
       ? plot.y - config.offset - thickness - config.labels.offset -
         config.labels.fontSize
       : plot.y + plot.height + config.offset +
-        (config.titleVisible === false ? 0 : config.titleStyle.fontSize + 12);
+        (config.titleVisible === false ? 0 : config.titleStyle.fontSize + titleGap);
   }
   const title = vertical
     ? { x, y: plot.y + 20, align: "left" }
     : {
         x: x + length / 2,
-        y: y - 12 - config.titleStyle.fontSize / 2,
+        y: y - titleGap - config.titleStyle.fontSize / 2,
         align: "center"
       };
   const values = [...sampleContinuousValues(scale.domain, config.count)];
@@ -172,7 +174,8 @@ export const rematerializeGradientLegend = action(
     if (stored === undefined) {
       throw new Error("Gradient legend requires stored configuration.");
     }
-    const { scale, encoding, config } = resolveGradientConfig(this, stored);
+    const { scale, encoding, config: currentConfig } = resolveGradientConfig(this, stored);
+    const config = resolveEffectiveLegendBlockConfig(this, "gradient", currentConfig);
     const layout = resolveGradientLayout(this, config, scale);
     const stripCount = 60;
     const stripSize = layout.length / stripCount;
@@ -202,7 +205,7 @@ export const rematerializeGradientLegend = action(
         property: "guide.legend.color.title",
         value: config.title
       })
-      ._withLegendConfig("gradient", config)
+      ._withLegendConfig("gradient", currentConfig)
       .editGraphics({
         target: "colorGradientStrips",
         property: "length",

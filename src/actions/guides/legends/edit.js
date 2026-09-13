@@ -41,6 +41,7 @@ import {
   createStrokeWidthLegendFromConfig
 } from "./strokeWidth.js";
 import { normalizeLegendSampling } from "./sampling.js";
+import { planLegendBlockTransitions } from "./transition.js";
 
 const OPTIONS = Object.freeze([
   "target", "channels", "position", "layout", "align", "direction", "columns", "offset",
@@ -468,7 +469,7 @@ function editLegendContent(program, target, args) {
   const oldCategorical = removed.find(kind =>
     ["series", "color", "stroke"].includes(kind)
   );
-  const plans = creation.steps.map(step => {
+  let plans = creation.steps.map(step => {
     const descriptor = resolveLegendStepConfig(view, step);
     const { kind } = descriptor;
     if (previous[kind] !== undefined && previous[kind].target !== target) {
@@ -514,6 +515,7 @@ function editLegendContent(program, target, args) {
     }
     else plan.config = resolveContinuousEdit(view, plan.kind, plan.config, patch).config;
   }
+  plans = planLegendBlockTransitions(program, target, plans);
   // The complete final content and styles are validated before removing resources.
   for (const { kind, config } of plans) view = view._withLegendConfig(kind, config);
   if (categorical !== undefined) resolveLayout(view, categorical.config);

@@ -1124,6 +1124,19 @@ async function testNodeConsumer(directory) {
     assert.deepEqual(Object.keys(colorSizeContent.guideConfigs.legend), ["color", "size"]);
     assert.equal(colorSizeContent.graphicSpec.objects.sizeLegendSymbols.items.length, 3);
     assert.match(renderToSVG(colorSizeContent), /<svg /);
+    const blockEdited = colorSizeContent.editLegendBlock({
+      target: "contentPoints",
+      channel: "size",
+      title: "Magnitude",
+      values: [4, 9],
+      text: { color: "purple" },
+      symbol: { fill: "orange", opacity: 1 }
+    });
+    assert.equal(blockEdited.graphicSpec.objects.sizeLegendTitle.properties.text, "Magnitude");
+    assert.deepEqual(blockEdited.graphicSpec.objects.sizeLegendLabels.items.map(item => item.properties.text), ["4", "9"]);
+    assert.equal(blockEdited.graphicSpec.objects.sizeLegendLabels.items[0].properties.fill, "purple");
+    assert.equal(blockEdited.graphicSpec.objects.sizeLegendSymbols.items[0].properties.fill, "orange");
+    assert.equal(typeof basicChart().editLegendBlock, "undefined");
     for (const create of [chart, basicChart]) for (const position of ["top", "bottom"]) {
       const source = create().createCanvas({ width: 1200, height: 1000, margin: 300 })
         .createData({ values: [{ x: 1, y: 1, g: "A", m: 0 }, { x: 2, y: 2, g: "B", m: 10 }] })
@@ -1857,13 +1870,24 @@ async function testMcpConsumer(directory) {
     actionCardSchema.properties?.schemaVersion?.const !== 3 ||
     actionCardsSchema.properties?.schemaVersion?.const !== 3 ||
     actionCards.schemaVersion !== 3 ||
-    actionCards.count !== 272 ||
-    actionCards.cards.length !== 272 ||
+    actionCards.count !== 273 ||
+    actionCards.cards.length !== 273 ||
     actionCards.packageVersion !== installedPackage.version
   ) {
     throw new Error("Installed action-card discovery contract is missing or stale.");
   }
   const installedCards = new Map(actionCards.cards.map(card => [card.name, card]));
+  if (
+    installedCards.get("editLegendBlock")?.signature !==
+      "editLegendBlock(options: EditLegendBlockOptions): ChartProgram;" ||
+    installedCards.get("editLegendBlock")?.supports.entryPoints.join(",") !== "default" ||
+    installedCards.get("editLegendBlock")?.inference.find(entry =>
+      entry.input === "target")?.strategy !== "explicit" ||
+    installedCards.get("editLegendBlock")?.callPatterns.some(pattern =>
+      pattern.includes("symbol")) !== true
+  ) {
+    throw new Error("Installed legend-block discovery metadata is stale.");
+  }
     if (
       installedCards.get("editMarkLabelSelection")?.signature !==
       "editMarkLabelSelection(options: EditMarkLabelSelectionOptions): ChartProgram;" ||
@@ -3741,6 +3765,22 @@ async function testTypeScriptConsumer(directory) {
     chart().createTextMark({ source: 1 });
     // @ts-expect-error Source is a creation option, not an appearance edit.
     chart().editTextMark({ source: "points", dx: 2 });
+
+    chart().editLegendBlock({
+      target: "points",
+      channel: "size",
+      title: "Magnitude",
+      values: [4, 9],
+      gap: 0,
+      text: {},
+      symbol: { fill: "orange", strokeWidth: 2, opacity: 1 }
+    });
+    // @ts-expect-error Block editing is Full-only.
+    basicChart().editLegendBlock({ target: "points", channel: "color", title: "Group" });
+    // @ts-expect-error R39 owns labelMap.
+    chart().editLegendBlock({ target: "points", channel: "color", labelMap: [] });
+    // @ts-expect-error Explicit block samples are non-empty.
+    chart().editLegendBlock({ target: "points", channel: "size", values: [] });
 
     const opacityLegendTypes = chart().createCanvas({ width: 1200, height: 1000, margin: 300 })
       .createData({ values: [{ x: 0, y: 0, m: 0 }, { x: 1, y: 1, m: 1 }] })

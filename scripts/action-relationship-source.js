@@ -123,6 +123,26 @@ function atomicEncodingPrograms() {
     })];
 }
 
+function legendBlockPrograms() {
+  return [chart()
+    .createCanvas({ width: 760, height: 600, margin: 160 })
+    .createData({ values: [
+      { x: 0, y: 0, group: "A", value: 0 },
+      { x: 1, y: 1, group: "B", value: 100 }
+    ] })
+    .createPointMark({ id: "legendBlockPoints" })
+    .encodeX({ field: "x" })
+    .encodeY({ field: "y" })
+    .encodeColor({ field: "group" })
+    .encodeSize({ field: "value" })
+    .createLegend({ channels: ["color", "size"] })
+    .editLegendBlock({
+      target: "legendBlockPoints",
+      channel: "size",
+      title: "Magnitude"
+    })];
+}
+
 function coordinateAspectPrograms() {
   const base = chart()
     .createCanvas({ width: 320, height: 240, margin: 20 })
@@ -366,6 +386,7 @@ export async function buildActionRelationships() {
     ...selectionLifecyclePrograms(),
     ...focusedScaleEditorPrograms(),
     ...atomicEncodingPrograms(),
+    ...legendBlockPrograms(),
     ...coordinateAspectPrograms(),
     ...labelRemovalPrograms(),
     ...normalizedDataPrograms(),

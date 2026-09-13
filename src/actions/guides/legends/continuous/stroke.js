@@ -31,6 +31,7 @@ import {
 } from "./common.js";
 import { DEFAULT_GRADIENT_SIZE } from "./gradient.js";
 import { normalizeIntervalLegend } from "./interval.js";
+import { resolveEffectiveLegendBlockConfig } from "../blocks.js";
 
 const GRADIENT_OPTIONS = Object.freeze(["length", "thickness"]);
 
@@ -89,14 +90,15 @@ function resolveGradientLayout(program, config, scale) {
   const { plot, canvas } = resolveContinuousBounds(program);
   const vertical = ["right", "left"].includes(config.position);
   const { length, thickness } = config.gradient;
+  const titleGap = config.blockGap ?? 12;
   let x;
   let y;
   if (config.position === "right") {
     x = plot.x + plot.width + config.offset;
-    y = plot.y + 46;
+    y = plot.y + 46 + titleGap - 12;
   } else if (config.position === "left") {
     x = plot.x - config.offset - thickness;
-    y = plot.y + 46;
+    y = plot.y + 46 + titleGap - 12;
   } else {
     x = config.align === "left" ? plot.x
       : config.align === "right" ? plot.x + plot.width - length
@@ -105,11 +107,11 @@ function resolveGradientLayout(program, config, scale) {
       ? plot.y - config.offset - thickness - config.labels.offset -
         config.labels.fontSize
       : plot.y + plot.height + config.offset +
-        (config.titleVisible === false ? 0 : config.titleStyle.fontSize + 12);
+        (config.titleVisible === false ? 0 : config.titleStyle.fontSize + titleGap);
   }
   const title = vertical
     ? { x, y: plot.y + 20, align: "left" }
-    : { x: x + length / 2, y: y - 12 - config.titleStyle.fontSize / 2,
+    : { x: x + length / 2, y: y - titleGap - config.titleStyle.fontSize / 2,
         align: "center" };
   const values = [...sampleContinuousValues(scale.domain, config.count)];
   if (scale.midpoint !== undefined && !values.includes(scale.midpoint)) {
@@ -216,7 +218,8 @@ export const rematerializeStrokeGradientLegend = action(
     if (stored === undefined) {
       throw new Error("Stroke gradient legend requires stored configuration.");
     }
-    const { encoding, scale, config } = resolveGradientConfig(this, stored);
+    const { encoding, scale, config: currentConfig } = resolveGradientConfig(this, stored);
+    const config = resolveEffectiveLegendBlockConfig(this, "strokeGradient", currentConfig);
     const layout = resolveGradientLayout(this, config, scale);
     const fill = sampleFill(this, config.target);
     const width = strokeWidth(this, config.target);
@@ -245,7 +248,7 @@ export const rematerializeStrokeGradientLegend = action(
     let next = this
       .editSemantic({ property: "guide.legend.stroke.scale", value: encoding.scale })
       .editSemantic({ property: "guide.legend.stroke.title", value: config.title })
-      ._withLegendConfig("strokeGradient", config);
+      ._withLegendConfig("strokeGradient", currentConfig);
     next = editLegendBackground(
       next,
       "strokeGradientBackground",
@@ -419,13 +422,14 @@ export const rematerializeStrokeIntervalLegend = action(
     if (stored === undefined) {
       throw new Error("Stroke interval legend requires stored configuration.");
     }
-    const { encoding, scale, config } = resolveStrokeIntervalConfig(this, stored);
+    const { encoding, scale, config: currentConfig } = resolveStrokeIntervalConfig(this, stored);
+    const config = resolveEffectiveLegendBlockConfig(this, "strokeInterval", currentConfig);
     const layout = resolveStrokeIntervalLayout(this, config, scale);
-    const fill = sampleFill(this, config.target);
+    const fill = config.blockSymbol?.fill ?? sampleFill(this, config.target);
     let next = this
       .editSemantic({ property: "guide.legend.stroke.scale", value: encoding.scale })
       .editSemantic({ property: "guide.legend.stroke.title", value: config.title })
-      ._withLegendConfig("strokeInterval", config);
+      ._withLegendConfig("strokeInterval", currentConfig);
     next = editGraphicProperties(next, "strokeIntervalSymbols", {
       length: scale.range.length,
       x: layout.symbolX,
@@ -434,7 +438,10 @@ export const rematerializeStrokeIntervalLegend = action(
       height: config.symbol.height,
       fill,
       stroke: scale.range,
-      strokeWidth: config.symbol.strokeWidth
+      strokeWidth: config.symbol.strokeWidth,
+      ...(config.blockSymbol?.opacity === undefined
+        ? {}
+        : { opacity: config.blockSymbol.opacity })
     });
     next = editGraphicProperties(next, "strokeIntervalLabels", {
       length: layout.labels.length,

@@ -4,6 +4,7 @@ import { registerSizeLegendActions } from "./size.js";
 import { registerStrokeWidthLegendActions } from "./strokeWidth.js";
 import { registerFocusedLegendActions } from "./focused.js";
 import { removeLegend } from "./remove.js";
+import { editLegendBlock } from "./blocks.js";
 
 export function registerLegendActions(ProgramClass) {
   registerCategoricalLegendActions(ProgramClass);
@@ -11,5 +12,6 @@ export function registerLegendActions(ProgramClass) {
   registerSizeLegendActions(ProgramClass);
   registerStrokeWidthLegendActions(ProgramClass);
   registerFocusedLegendActions(ProgramClass);
+  ProgramClass.prototype.editLegendBlock = editLegendBlock;
   ProgramClass.prototype.removeLegend = removeLegend;
 }

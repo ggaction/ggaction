@@ -6,6 +6,7 @@ import {
   createCategoricalLegendFromConfig
 } from "./lifecycle.js";
 import { resolveLegendTarget, validateLegendChannels } from "./target.js";
+import { planLegendBlockTransitions } from "./transition.js";
 
 export { removeLegendKinds } from "./lifecycle.js";
 
@@ -48,8 +49,13 @@ function resolveRequestedRemoval(program, target, channels) {
   // Remove departing sibling configs from the immutable layout preflight view.
   const view = kinds.reduce((next, kind) =>
     next._withoutMaterializationConfig(["guides", "legend", kind]), program);
-  const revision = partial === undefined ? undefined
+  const resolved = partial === undefined ? undefined
     : resolveCategoricalLegendRevision(view, partial.kind, partial.config, partial.channels);
+  const revision = resolved === undefined ? undefined : planLegendBlockTransitions(
+    program,
+    target,
+    [{ ...resolved, kind: resolved.config.kind }]
+  )[0];
   return { kinds, revision };
 }
 

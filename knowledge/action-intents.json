@@ -683,6 +683,10 @@
       "legend",
       "encoding key"
     ],
+    "LegendBlock": [
+      "legend block",
+      "one encoded legend channel group"
+    ],
     "LegendLayout": [
       "legend layout",
       "legend position and flow"
@@ -970,6 +974,11 @@
         "size"
       ],
       "count": 3
+    },
+    "editLegendBlock": {
+      "target": "points",
+      "channel": "size",
+      "title": "Magnitude"
     },
     "encodeR": {
       "field": "value"
@@ -1486,6 +1495,10 @@
     }
   },
   "callPatternOverrides": {
+    "editLegendBlock": [
+      "editLegendBlock({ target, channel, title?, values?, count?, order?, gap?, text? })",
+      "editLegendBlock({ target, channel, symbol? })"
+    ],
     "createReferenceLine": [
       "createReferenceLine({ y: 5 })",
       "createReferenceLine({ space: \"plot\", x: 0.5 })"

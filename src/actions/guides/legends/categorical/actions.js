@@ -27,6 +27,10 @@ import {
   sameValues
 } from "./resolve.js";
 import { readLegendSampling } from "../sampling.js";
+import {
+  reconcileLegendBlockTitleGraphic,
+  resolveEffectiveLegendBlockConfig
+} from "../blocks.js";
 
 function finishLegend(program) {
   return hasLegendLane(program) ? program.rematerializeLegend() : program;
@@ -55,21 +59,21 @@ export const rematerializeLegend = action(
       kind => this.guideConfigs.legend?.[kind] !== undefined
     );
     for (const kind of categoricalKinds) {
-      const config = next.guideConfigs.legend[kind];
-      const definition = resolveCurrentDefinition(next, config);
-      const symbol = config.inferredSymbol
-        ? normalizeRecipe(resolveLegendSymbol(next, findLayer(next, config.target), definition.channels), kind)
-        : config.symbol;
-      const symbolChanged = !sameGuideValue(symbol, config.symbol);
+      const stored = next.guideConfigs.legend[kind];
+      const definition = resolveCurrentDefinition(next, stored);
+      const symbol = stored.inferredSymbol
+        ? normalizeRecipe(resolveLegendSymbol(next, findLayer(next, stored.target), definition.channels), kind)
+        : stored.symbol;
+      const symbolChanged = !sameGuideValue(symbol, stored.symbol);
       const changed = symbolChanged ||
-        !sameValues(config.channels, definition.channels) ||
-        !sameValues(config.domain, definition.domain) ||
-        !sameValues(config.scales, definition.scales) ||
-        config.field !== definition.field ||
-        config.title !== definition.title;
+        !sameValues(stored.channels, definition.channels) ||
+        !sameValues(stored.domain, definition.domain) ||
+        !sameValues(stored.scales, definition.scales) ||
+        stored.field !== definition.field ||
+        stored.title !== definition.title;
       next = changed
         ? next._withLegendConfig(kind, {
-            ...config,
+            ...stored,
             symbol,
             channels: definition.channels,
             scales: definition.scales,
@@ -78,6 +82,13 @@ export const rematerializeLegend = action(
             domain: definition.domain
           })
         : next;
+      const config = resolveEffectiveLegendBlockConfig(
+        next,
+        kind,
+        next.guideConfigs.legend[kind]
+      );
+      next = reconcileLegendBlockTitleGraphic(next, kind,
+        config.titleVisible !== false);
       if (kind === "series") {
         if (!sameValues(
           next.semanticSpec.guides.legend.series.scales,
@@ -109,8 +120,8 @@ export const rematerializeLegend = action(
         }
       }
       if (symbolChanged) {
-        resolveLayout(next, next.guideConfigs.legend[kind]);
-        next = reconcileCategoricalSymbols(next, config, next.guideConfigs.legend[kind]);
+        resolveLayout(next, config);
+        next = reconcileCategoricalSymbols(next, stored, config);
       }
       if (config.border !== false) {
         next = next.rematerializeLegendBackground({ kind });
@@ -131,6 +142,13 @@ export const rematerializeLegend = action(
         policy.rematerializeOp !== undefined &&
         this.guideConfigs.legend?.[policy.kind] !== undefined
       ) {
+        const config = resolveEffectiveLegendBlockConfig(
+          next,
+          policy.kind,
+          next.guideConfigs.legend[policy.kind]
+        );
+        next = reconcileLegendBlockTitleGraphic(next, policy.kind,
+          config.titleVisible !== false);
         next = next[policy.rematerializeOp]();
       }
     }

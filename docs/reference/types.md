@@ -242,6 +242,7 @@ interface ChartProgramActions {
   removeGrid(options?: RemoveGridOptions): ChartProgram;
   createLegend(options?: LegendOptions): ChartProgram;
   editLegend(options: EditLegendOptions): ChartProgram;
+  editLegendBlock(options: EditLegendBlockOptions): ChartProgram;
   editLegendLayout(options: EditLegendLayoutOptions): ChartProgram;
   editLegendLabels(options: EditLegendLabelsOptions): ChartProgram;
   editLegendTitle(options: EditLegendTitleOptions): ChartProgram;

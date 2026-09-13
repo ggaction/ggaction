@@ -25,6 +25,7 @@ import { applyDetachedScaleRematerialization } from "../../materialization/depen
 import { findDataset } from "../../selectors/datasets.js";
 import { assertPathGroupCompatible, validatePathGroupAppearance } from "../../materialization/marks/grouping.js";
 import { assertEncodingSelectionCompatibility } from "../../materialization/selection/compatibility.js";
+import { planLegendBlockTransitions } from "../guides/legends/transition.js";
 
 const OPTIONS = Object.freeze(["target", "channel"]);
 const REMOVABLE_CHANNELS = Object.freeze([
@@ -173,7 +174,10 @@ function reconcileCategoricalLegend(program, target, channels) {
   if (remaining.length === 0) {
     return removeLegendKinds(program, [kind]);
   }
-  const revision = resolveCategoricalLegendRevision(program, kind, config, remaining);
+  const resolved = resolveCategoricalLegendRevision(program, kind, config, remaining);
+  const revision = planLegendBlockTransitions(program, target, [
+    { ...resolved, kind: resolved.config.kind }
+  ])[0];
   const next = removeLegendKinds(program, [kind]);
   return createCategoricalLegendFromConfig(next, revision.config, revision.order);
 }

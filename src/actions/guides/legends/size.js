@@ -34,6 +34,7 @@ import {
   readLegendSampling,
   resolveLegendSampleValues
 } from "./sampling.js";
+import { resolveEffectiveLegendBlockConfig } from "./blocks.js";
 
 const SIZE_OPTIONS = Object.freeze(["target", "count", "values", "position", "layout", "align",
   "direction", "columns", "titlePosition", "offset", "itemGap", "title", "labels", "titleStyle", "border"]);
@@ -86,8 +87,15 @@ export function resolveSizeLegendLayout(program, config) {
   ]
     .find(candidate => candidate?.target === config.target);
   const inherit = config.inheritAppearance === true && categorical !== undefined;
-  const labels = inherit ? { ...categorical.labels, offset: config.labels.offset } : config.labels;
-  const titleStyle = inherit ? categorical.titleStyle : config.titleStyle;
+  const inheritedLabels = inherit ? { ...categorical.labels, offset: config.labels.offset } : config.labels;
+  const inheritedTitleStyle = inherit ? categorical.titleStyle : config.titleStyle;
+  const effective = resolveEffectiveLegendBlockConfig(program, "size", {
+    ...config,
+    labels: inheritedLabels,
+    titleStyle: inheritedTitleStyle
+  });
+  const labels = effective.labels;
+  const titleStyle = effective.titleStyle;
   const position = categorical?.position ?? config.position;
   if (categorical?.layout === "legacy-bottom") {
     throw new Error('Combined size legends require layout "edge".');
@@ -96,7 +104,7 @@ export function resolveSizeLegendLayout(program, config) {
   const geometry = horizontal ? {
     position, align: categorical.align, direction: categorical.direction,
     columns: categorical.columns, titlePosition: categorical.titlePosition,
-    offset: categorical.offset, itemGap: categorical.itemGap
+    offset: categorical.offset, itemGap: effective.blockGap ?? categorical.itemGap
   } : { position };
   const discrete = isDiscreteSizeScaleType(scale.type);
   if (discrete && readLegendSampling(config).mode === "values") {
@@ -104,7 +112,7 @@ export function resolveSizeLegendLayout(program, config) {
   }
   const values = discrete
     ? undefined
-    : resolveLegendSampleValues(config, scale, "Size legend");
+    : resolveLegendSampleValues(effective, scale, "Size legend");
   const areas = discrete
     ? scale.range
     : mapSizeValues(values, scale);
@@ -120,13 +128,22 @@ export function resolveSizeLegendLayout(program, config) {
         "quantitative",
         config.labels.format
       );
-  const layout = resolveLegendItemLayout(plot, { ...config, ...geometry, labels, titleStyle }, text, {
-    width, height: radius * 2,
-    itemBounds: radii.map(r => ({ left: width / 2 - r, right: width / 2 + r, top: -r, bottom: r }))
+  const symbolStroke = effective.blockSymbol?.strokeWidth ?? 0;
+  const symbolExtent = symbolStroke / 2;
+  const sampleWidth = width + symbolStroke;
+  const layout = resolveLegendItemLayout(plot, { ...effective, ...geometry, labels, titleStyle }, text, {
+    width: sampleWidth, height: radius * 2 + symbolStroke,
+    itemBounds: radii.map(r => ({
+      left: sampleWidth / 2 - r - symbolExtent,
+      right: sampleWidth / 2 + r + symbolExtent,
+      top: -r - symbolExtent,
+      bottom: r + symbolExtent
+    }))
   });
-  assertLegendBoundsInsideCanvas(layout.bounds, canvas, "Size legend layout", { ...config, ...geometry });
-  const background = resolveLegendBackgroundFromBounds(layout.bounds, config.border, canvas, "Size legend", { ...config, ...geometry });
-  return { ...layout, symbolX: layout.symbolX.map(x => x + width / 2), radii, text, labels, titleStyle, background };
+  assertLegendBoundsInsideCanvas(layout.bounds, canvas, "Size legend layout", { ...effective, ...geometry });
+  const background = resolveLegendBackgroundFromBounds(layout.bounds, effective.border, canvas, "Size legend", { ...effective, ...geometry });
+  return { ...layout, symbolX: layout.symbolX.map(x => x + sampleWidth / 2), radii, text,
+    labels, titleStyle, background, config: effective };
 }
 
 export const rematerializeSizeLegend = action(
@@ -152,6 +169,7 @@ export const rematerializeSizeLegend = action(
       domain: scale.domain
     };
     const layout = resolveSizeLegendLayout(this, currentConfig);
+    const effective = layout.config;
     const { itemY, symbolX, labelX, radii, labels, titleStyle } = layout;
     let next = this
       .editSemantic({ property: "guide.legend.size.scale", value: encoding.scale })
@@ -168,9 +186,10 @@ export const rematerializeSizeLegend = action(
       .editGraphics({
         target: "sizeLegendSymbols",
         property: "fill",
-        value: DEFAULT_COLORS.sizeSymbol
+        value: effective.blockSymbol?.fill ?? DEFAULT_COLORS.sizeSymbol
       })
-      .editGraphics({ target: "sizeLegendSymbols", property: "opacity", value: 0.7 })
+      .editGraphics({ target: "sizeLegendSymbols", property: "opacity",
+        value: effective.blockSymbol?.opacity ?? 0.7 })
       .editGraphics({ target: "sizeLegendLabels", property: "length", value: radii.length })
       .editGraphics({ target: "sizeLegendLabels", property: "x", value: labelX })
       .editGraphics({ target: "sizeLegendLabels", property: "y", value: itemY })
@@ -180,12 +199,20 @@ export const rematerializeSizeLegend = action(
         value: layout.text
       });
     next = editLegendBackground(next, "sizeLegendBackground", layout.background, currentConfig.border);
+    if (effective.blockSymbol?.stroke !== undefined) {
+      next = next.editGraphics({ target: "sizeLegendSymbols", property: "stroke",
+        value: effective.blockSymbol.stroke });
+    }
+    if (effective.blockSymbol?.strokeWidth !== undefined) {
+      next = next.editGraphics({ target: "sizeLegendSymbols", property: "strokeWidth",
+        value: effective.blockSymbol.strokeWidth });
+    }
     next = styleContinuousText(next, "sizeLegendLabels", labels);
-    if (currentConfig.titleVisible === false) return next;
+    if (effective.titleVisible === false) return next;
     next = next
       .editGraphics({ target: "sizeLegendTitle", property: "x", value: layout.title.x })
       .editGraphics({ target: "sizeLegendTitle", property: "y", value: layout.title.y })
-      .editGraphics({ target: "sizeLegendTitle", property: "text", value: title });
+      .editGraphics({ target: "sizeLegendTitle", property: "text", value: effective.title });
     return styleContinuousText(next, "sizeLegendTitle", titleStyle, { align: layout.title.align });
   }
 );

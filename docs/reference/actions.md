@@ -169,6 +169,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editImputedData`](./actions/statistics.md#focused-statistical-data-editing) | H1, H3 | user-facing | statistics |
 | [`editIntervalData`](./actions/statistics.md#focused-statistical-data-editing) | H1, H3 | user-facing | statistics |
 | [`editLegend`](./actions/guides.md#editlegend) | H3 | user-facing | legend_and_title |
+| [`editLegendBlock`](./actions/guides.md#editlegendblock) | H3 | user-facing | legend_and_title |
 | [`editLegendBorder`](./actions/guides.md#focused-legend-edits) | H3 | user-facing | legend_and_title |
 | [`editLegendLabels`](./actions/guides.md#focused-legend-edits) | H3 | user-facing | legend_and_title |
 | [`editLegendLayout`](./actions/guides.md#focused-legend-edits) | H3 | user-facing | legend_and_title |

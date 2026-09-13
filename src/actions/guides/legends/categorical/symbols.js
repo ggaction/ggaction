@@ -12,6 +12,12 @@ import {
 import { resolveCategoricalLegendPlacement } from "../lifecycle.js";
 import { createPointShapeGraphic } from "../../../../grammar/pointShapes.js";
 
+function applyLayerOpacity(program, id, opacity) {
+  return opacity === undefined
+    ? program
+    : program.editGraphics({ target: id, property: "opacity", value: opacity });
+}
+
 function makeEditSymbol(type) {
   const suffix = { line: "Lines", point: "Points", swatch: "Swatches" }[type];
   const op = `rematerializeLegendSymbol${suffix}`;
@@ -43,7 +49,7 @@ function makeEditSymbol(type) {
         const x1 = layout.symbolX.map(
           value => value + (symbolWidth(config) - layer.length) / 2
         );
-        return next
+        return applyLayerOpacity(next
           .editGraphics({ target: id, property: "x1", value: x1 })
           .editGraphics({ target: id, property: "y1", value: layout.itemY })
           .editGraphics({
@@ -55,12 +61,13 @@ function makeEditSymbol(type) {
           .editGraphics({
             target: id,
             property: "stroke",
-            value: config.channels.includes("stroke")
+            value: layer.stroke ?? (config.channels.includes("stroke")
               ? appearance.strokes
-              : appearance.colors
+              : appearance.colors)
           })
           .editGraphics({ target: id, property: "strokeWidth", value: layer.lineWidth })
-          .editGraphics({ target: id, property: "strokeDash", value: appearance.dashes });
+          .editGraphics({ target: id, property: "strokeDash", value: appearance.dashes }),
+        id, layer.opacity);
       }
       if (type === "point") {
         const x = layout.symbolX.map(value => value + symbolWidth(config) / 2);
@@ -76,7 +83,8 @@ function makeEditSymbol(type) {
               stroke: config.channels.includes("stroke")
                 ? appearance.strokes[index]
                 : layer.stroke,
-              strokeWidth: layer.strokeWidth
+              strokeWidth: layer.strokeWidth,
+              opacity: layer.opacity
             });
           });
           return next.editGraphics({
@@ -85,7 +93,7 @@ function makeEditSymbol(type) {
             value: items
           });
         }
-        return next
+        return applyLayerOpacity(next
           .editGraphics({ target: id, property: "x", value: x })
           .editGraphics({ target: id, property: "y", value: layout.itemY })
           .editGraphics({ target: id, property: "radius", value: layer.size })
@@ -101,12 +109,13 @@ function makeEditSymbol(type) {
               ? appearance.strokes
               : layer.stroke
           })
-          .editGraphics({ target: id, property: "strokeWidth", value: layer.strokeWidth });
+          .editGraphics({ target: id, property: "strokeWidth", value: layer.strokeWidth }),
+        id, layer.opacity);
       }
       const x = layout.symbolX.map(
         value => value + (symbolWidth(config) - layer.width) / 2
       );
-      return next
+      return applyLayerOpacity(next
         .editGraphics({ target: id, property: "x", value: x })
         .editGraphics({
           target: id,
@@ -115,7 +124,7 @@ function makeEditSymbol(type) {
         })
         .editGraphics({ target: id, property: "width", value: layer.width })
         .editGraphics({ target: id, property: "height", value: layer.height })
-        .editGraphics({ target: id, property: "fill", value: appearance.colors })
+        .editGraphics({ target: id, property: "fill", value: layer.fill ?? appearance.colors })
         .editGraphics({
           target: id,
           property: "stroke",
@@ -123,7 +132,8 @@ function makeEditSymbol(type) {
             ? appearance.strokes
             : layer.stroke
         })
-        .editGraphics({ target: id, property: "strokeWidth", value: layer.strokeWidth });
+        .editGraphics({ target: id, property: "strokeWidth", value: layer.strokeWidth }),
+      id, layer.opacity);
     }
   );
 }

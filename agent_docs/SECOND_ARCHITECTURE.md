@@ -252,8 +252,8 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Gzip ceiling |
 | --- | ---: |
-| `ggaction` | 339,000 bytes |
-| `ggaction/basic` | 163,500 bytes |
+| `ggaction` | 343,000 bytes |
+| `ggaction/basic` | 167,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 
 이 값은 current executable regression ceiling이며 측정 결과 자체가 아니다. Canonical numeric owner는
@@ -1888,6 +1888,15 @@ Categorical creation와 content revision의 공통 owner는 `actions/guides/lege
 관리한다. Symbol component type/order reconciliation도 같은 lifecycle owner에서 editor와 rematerializeLegend가 공유한다.
 Dependency replay는 inferredSymbol인 recipe만 현재 companion context로 다시 resolve하며 explicit recipe는 보존한다.
 Renderer에는 content 추론·복원 로직을 추가하지 않는다.
+
+Full 전용 `editLegendBlock`은 한 target 안의 logical legend block을 member channel로 선택한다. Stable identity는
+ASCII 정렬한 channel 집합의 JSON key이며 concrete graphic ID나 display index를 상태에 저장하지 않는다. 각
+kind config의 `blockOverrides[key]`는 block-local title, gap, item text style과 허용된 symbol style만 소유한다.
+Exact sampled values/count는 기존 sampling config, categorical order는 기존 semantic guide order가 계속 유일
+owner다. Materializer는 base config에 override를 합친 ephemeral effective config로 graphics와 occupied bounds를
+다시 계산하고 persisted base config는 유지한다. Content revision, partial removal, encoding removal과 color scale
+family transition은 graphic 삭제 전에 old/new descriptors를 비교해 compatible override만 이동시키며 충돌은
+원본 program과 trace를 바꾸지 않고 거부한다.
 
 Categorical legend는 color, stroke, strokeDash, shape와 mark recipe를 generic legend
 layout/materialization pipeline으로 조립한다.

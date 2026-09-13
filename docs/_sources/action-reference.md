@@ -2421,6 +2421,27 @@ Sampled size, opacity, and stroke-width legends also accept exact numeric
 dependent replay that would invalidate a stored exact sample fails atomically.
 [Legends](../api/legends.md)
 
+### `editLegendBlock`
+
+```javascript
+editLegendBlock({
+  target, channel, title?, values?, count?, order?, gap?, text?, symbol?
+})
+```
+
+Edit one logical legend block without changing sibling blocks on the same mark.
+Both the mark `target` and a channel currently represented by the legend are
+required. Merged categorical channels share one block identity, so selecting
+color or shape in a color-and-shape block edits the same state.
+
+Continuous size, opacity, and stroke-width blocks accept exact `values` or an
+automatic `count`; categorical blocks accept an exact full-domain `order`.
+`text` changes item-label typography and color, `symbol` changes supported
+sample appearance, and `gap` changes internal spacing. Empty `text` or `symbol`
+objects restore the base style. A symbol property that would replace the data
+mapping is rejected. Empty `title` hides the selected block. Full programs only.
+[Editing legends](../api/legends/editing.md#editing-one-legend-block)
+
 ### Focused legend edits
 
 ```javascript

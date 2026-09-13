@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "source": "generated lifecycle smoke corpus plus selection lifecycle",
-  "actionCount": 272,
+  "actionCount": 273,
   "relationships": [
     {
       "name": "createCanvas",
@@ -1076,6 +1076,12 @@
       "name": "editLegend",
       "wraps": [
         "createGraphics",
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "editLegendBlock",
+      "wraps": [
         "editSemantic"
       ]
     },

@@ -2884,6 +2884,24 @@
       }
     },
     {
+      "name": "editLegendBlock",
+      "layer": "user-facing",
+      "domain": "legend_and_title",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Edit one channel-identified legend block without changing sibling blocks",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/LEGEND_AND_TITLE.md",
+        "anchor": "editlegendblock"
+      }
+    },
+    {
       "name": "editLegendLayout",
       "layer": "user-facing",
       "domain": "legend_and_title",

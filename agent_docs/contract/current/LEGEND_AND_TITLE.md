@@ -292,6 +292,66 @@ encoding removal/recreation, combined legend와 Polar 가이드를 검증한다.
   `test/unit/actions/guides/stroke-width-legend.test.js`,
   `test/unit/actions/guides/legend-lifecycle.test.js`, and regression-scatterplot left-legend variant.
 
+## `editLegendBlock`
+
+- Signature: `editLegendBlock({ target, channel, title?, values?, count?, order?, gap?, text?, symbol? })`.
+- Full 전용 H3 action이다. `target` mark ID와 현재 범례에 실제 존재하는 `channel`을 모두 명시해야 하며,
+  두 selector 외 최소 한 change가 필요하다. Basic에는 이 method가 없다.
+- Block identity는 graphic ID나 배열 위치가 아니라 정렬된 channel 집합이다. 따라서 merged
+  color+shape block은 color와 shape 어느 channel로 선택해도 같은 title/text/symbol/gap state를 편집하고,
+  순차 호출은 마지막 명시 객체로 교체한다. 별도 size/opacity/strokeWidth block은 sibling categorical
+  block을 바꾸지 않는다.
+- `title`은 string이며 `""`는 그 block title graphic을 숨긴다. Nonempty title은 semantic guide title과
+  block override를 함께 갱신하고 field inference를 해제한다.
+- `values`와 `count`는 continuous size, opacity, strokeWidth sampled block에서 기존 exact-sampling 계약을
+  사용한다. `values:"auto"`는 기억한 automatic count로 돌아간다. Categorical, discrete size,
+  color/stroke gradient와 interval block은 이를 거부한다.
+- `order`는 현재 categorical domain의 typed scalar 전체를 정확히 한 번 포함한 permutation이어야 한다.
+  Partial list, duplicate, missing/extra value와 display text 기반 비교는 거부한다. 결과는 기존 semantic
+  legend order owner에 `{ values }`로 저장된다.
+- `gap`은 non-negative finite block-internal spacing이다. Root position, align, direction, columns와
+  edge-lane order는 바꾸지 않는다. Gradient에서는 기존 12-pixel title/sample spacing을 기준으로 적용된다.
+- `text`는 item labels의 `fontSize`, `fontFamily`, `fontWeight`, `color`만 받는 closed object다.
+  `text:{}`는 block-local text override 전체를 지워 현재 root/base style로 돌아간다. Label offset과
+  numeric format은 이 action의 text patch가 아니다.
+- `symbol`은 `size`, `fill`, `stroke`, `strokeWidth`, `opacity`만 받는 closed object다. `size`는 point
+  glyph area px²이고 내부 radius로 한 번 변환된다. 객체는 전체 교체이므로 생략한 이전 속성은 base
+  recipe로 돌아가며 `symbol:{}`는 override를 완전히 지운다.
+- Mapping channel을 덮는 symbol property는 오류다: size block의 size, opacity block의 opacity,
+  strokeWidth block의 strokeWidth, categorical color block의 fill, categorical stroke block의 stroke,
+  color interval의 fill, stroke interval의 stroke. Gradient block은 모든 symbol property를 거부한다.
+  Recipe에 해당 glyph type이 없어서 적용 가능한 layer가 하나도 없는 property도 오류다.
+- Override는 현재 legend kind config 안의 canonical channel-set key에 저장한다. Exact samples는 sampling,
+  categorical order는 semantic order owner에만 저장하여 derived values와 concrete IDs를 복제하지 않는다.
+  Canvas/layout/theme/scale/data replay는 현재 base style 위에 override를 다시 적용한다.
+- Content change나 encoding removal에서 같은 key는 그대로 유지한다. Membership이 바뀌면 compatible
+  text/symbol/gap만 새 block에 옮긴다. Title 또는 explicit order가 있는 split/key change는 거부한다.
+  여러 old blocks의 merge는 override와 order가 canonical deep-equal일 때만 허용한다. Removed block
+  state는 삭제되어 같은 channel을 다시 만들 때 부활하지 않는다.
+- Ordinal↔gradient/interval scale-family transition도 title/content ambiguity는 거부하고 compatible
+  text/gap과 destination이 지원하는 symbol patch만 이동한다. 모든 transition과 layout 오류는 이전
+  semantic/graphic/config/context/trace와 caller input을 바꾸지 않는다.
+
+### Formal values — `editLegendBlock`
+
+- Implemented: `editLegendBlock({ target: UserId; channel: LegendChannel; title?: string; values?: readonly [number, ...number[]] | "auto"; count?: IntegerIn[2,10_000]; order?: readonly CategoryValue[]; gap?: NonNegativeFinite; text?: { fontSize?: PositiveFinite; fontFamily?: NonEmptyString; fontWeight?: FontWeight; color?: NonEmptyString }; symbol?: { size?: NonNegativeFinite; fill?: NonEmptyString; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; opacity?: UnitInterval } }): ChartProgram`.
+- Planned (NOT IMPLEMENTED): R39가 categorical display-name `labelMap`을 같은 block selector에 추가한다.
+- Proposed (NOT IMPLEMENTED): —
+
+### Value coverage — `editLegendBlock`
+
+- ✅ Covered: separate categorical+size edits, merged-member identity, exact sampling/order ownership,
+  nonempty/hidden title, text/symbol replacement and stale-property cleanup.
+- ✅ Covered: categorical, sampled size/opacity/strokeWidth, interval and gradient effective materialization,
+  block gap, Canvas/layout/theme replay, removal/recreation and Full/Basic boundary.
+- ✅ Covered: split/merge/content removal and ordinal↔continuous family transition preflight, incompatible
+  title/order/symbol conflicts and complete immutable rejection.
+- ✅ Covered: strict declarations, packed Node/TypeScript consumer, lower-level graphic equivalence and same-run
+  decoded-PNG pixel hash.
+- Evidence: `test/contracts/legend-blocks.test.js`, `test/contracts/legend-block-types.test.js`,
+  `test/unit/actions/guides/legend-channel-selection.test.js`,
+  `test/unit/actions/scales/color-transitions.test.js`, and `scripts/package-consumer.js`.
+
 ## `editLegendLayout`
 
 - Signature: `editLegendLayout({ target?, position?, layout?, align?, direction?, columns?, offset?, titlePosition?, itemGap? })`.

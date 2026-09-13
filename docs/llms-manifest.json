@@ -1562,8 +1562,8 @@
         "errors-and-limitations",
         "related"
       ],
-      "bytes": 3803,
-      "sha256": "723e4736f560a25a7e9ccec7628288fa4e9033036b2621e9185c8152812c612a"
+      "bytes": 4161,
+      "sha256": "b414aad91afb58c45b2dd97c1fa06ff6e9430c77a2deb44bb2c29ae10a3f16bb"
     },
     {
       "order": 98,
@@ -1617,12 +1617,13 @@
         "editing-legends",
         "updates-and-trace",
         "replacing-legend-content",
+        "editing-one-legend-block",
         "focused-edits",
         "removing-a-legend",
         "related"
       ],
-      "bytes": 12443,
-      "sha256": "3406fdb648a4ba07b77e03862339a5c0fc64994ee8e5f65b57f76a67fe5ac754"
+      "bytes": 14460,
+      "sha256": "7ec2ca08f94213dd5144213188fb29c60f50e1fc2dc0d7bb3e10b592ff97167a"
     },
     {
       "order": 102,
@@ -1844,8 +1845,8 @@
         "selection-appearance-and-text",
         "coordinates-and-composition"
       ],
-      "bytes": 11809,
-      "sha256": "887a6f0025bb8e77a322d9de720c5516b91ae5338c5d77bec52ccea63e47b6a2"
+      "bytes": 11825,
+      "sha256": "1d84e2333263c08173c048818a042b7ddc1b1a014f6fd98ffee69ba203e7b826"
     },
     {
       "order": 116,
@@ -1856,8 +1857,8 @@
         "action-reference",
         "exact-action-lookup"
       ],
-      "bytes": 30717,
-      "sha256": "f8e6e1778c33e6f3d7729dc09ca7fb457e5770774c63721ed181abb457aa664c"
+      "bytes": 30824,
+      "sha256": "adfb1736fb0f0db2b777de2bf76f8e66db265d903f5a41da0f24086b462eb62b"
     },
     {
       "order": 117,
@@ -2098,6 +2099,7 @@
         "editradialgrid",
         "createlegend",
         "editlegend",
+        "editlegendblock",
         "focused-legend-edits",
         "removelegend",
         "createtitle",
@@ -2105,8 +2107,8 @@
         "removetitle",
         "related"
       ],
-      "bytes": 13381,
-      "sha256": "c91c7b7e86bd4381d43396b5639ae125ee0d37bc0e5677a6dcf38a82e6c94c31"
+      "bytes": 14350,
+      "sha256": "08ebf46f9136bd1e3197224d7d307d524f612c78111bb1cb641b0ff48ca11f2a"
     },
     {
       "order": 122,
@@ -2173,8 +2175,8 @@
         "exact-typescript-signatures",
         "related"
       ],
-      "bytes": 20672,
-      "sha256": "f11c4ddbec0eb4cfa0185c2d7fd9202ce11d0e81ec1cc756e1c3c98015ab45d1"
+      "bytes": 20738,
+      "sha256": "ec8f43e1c3185d443cc9688e5014e93ed4496f870fe4190dcdf3d082d56aad2a"
     },
     {
       "order": 126,

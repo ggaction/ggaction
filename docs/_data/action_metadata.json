@@ -1293,6 +1293,14 @@
     "layer": "user-facing",
     "domain": "legend_and_title"
   },
+  "editLegendBlock": {
+    "operation": "edit",
+    "authoringRoles": [
+      "H3"
+    ],
+    "layer": "user-facing",
+    "domain": "legend_and_title"
+  },
   "editLegendLayout": {
     "operation": "edit",
     "authoringRoles": [

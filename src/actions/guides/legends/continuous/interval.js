@@ -26,6 +26,7 @@ import {
 } from "./common.js";
 import { resolveLegendGraphicPlacement } from
   "../../../../materialization/graphicHierarchy.js";
+import { resolveEffectiveLegendBlockConfig } from "../blocks.js";
 
 const OPTIONS = [
   "target", "channels", "position", "align", "offset", "title",
@@ -133,12 +134,13 @@ export const rematerializeIntervalLegend = /* @__PURE__ */ action(
     if (stored === undefined) {
       throw new Error("Interval legend requires stored configuration.");
     }
-    const { encoding, scale, config } = resolveIntervalConfig(this, stored);
+    const { encoding, scale, config: currentConfig } = resolveIntervalConfig(this, stored);
+    const config = resolveEffectiveLegendBlockConfig(this, "interval", currentConfig);
     const layout = resolveIntervalLayout(this, config, scale);
     let next = editGraphicProperties(this
       .editSemantic({ property: "guide.legend.color.scale", value: encoding.scale })
       .editSemantic({ property: "guide.legend.color.title", value: config.title })
-      ._withLegendConfig("interval", config), "colorLegendSymbols", {
+      ._withLegendConfig("interval", currentConfig), "colorLegendSymbols", {
       length: scale.range.length,
       x: layout.symbolX,
       y: layout.itemY.map(value => value - config.symbol.height / 2),
@@ -146,7 +148,10 @@ export const rematerializeIntervalLegend = /* @__PURE__ */ action(
       height: config.symbol.height,
       fill: scale.range,
       stroke: config.symbol.stroke,
-      strokeWidth: config.symbol.strokeWidth
+      strokeWidth: config.symbol.strokeWidth,
+      ...(config.blockSymbol?.opacity === undefined
+        ? {}
+        : { opacity: config.blockSymbol.opacity })
     });
     next = editGraphicProperties(next, "colorLegendLabels", {
       length: layout.labels.length,

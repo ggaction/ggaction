@@ -21,6 +21,7 @@ import {
 import { resolveLegendGraphicPlacement } from
   "../../../../materialization/graphicHierarchy.js";
 import { resolveLegendSampleValues } from "../sampling.js";
+import { resolveEffectiveLegendBlockConfig } from "../blocks.js";
 
 const SYMBOL_OPTIONS = Object.freeze([
   "type", "radius", "fill", "stroke", "strokeWidth"
@@ -222,7 +223,8 @@ export const rematerializeOpacityLegend = /* @__PURE__ */ action(
     if (stored === undefined) {
       throw new Error("Opacity legend requires stored configuration.");
     }
-    const { encoding, scale, config } = resolveOpacityConfig(this, stored);
+    const { encoding, scale, config: currentConfig } = resolveOpacityConfig(this, stored);
+    const config = resolveEffectiveLegendBlockConfig(this, "opacity", currentConfig);
     const layout = resolveOpacityLayout(this, config, scale);
     const opacities = mapLinearValues(layout.values, scale.domain, scale.range, {
       clamp: scale.clamp ?? false
@@ -236,7 +238,7 @@ export const rematerializeOpacityLegend = /* @__PURE__ */ action(
         property: "guide.legend.opacity.title",
         value: config.title
       })
-      ._withLegendConfig("opacity", config)
+      ._withLegendConfig("opacity", currentConfig)
       .editGraphics({
         target: "opacityLegendSymbols",
         property: "length",

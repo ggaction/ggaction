@@ -98,8 +98,8 @@ strictly increasing values inside the effective scale domain. They are not
 sorted or clamped. Layout, title, style, theme, and Canvas edits preserve the
 array. A later scale, data, encoding, or facet change that would put a stored
 sample outside its effective domain fails without changing the earlier
-program. On a combined categorical and size legend, exact samples currently
-require a standalone sampled legend target.
+program. On a combined or multi-block legend, use `editLegendBlock()` to name
+the sampled channel whose values should change.
 
 Size samples retain the encoded area mapping. For continuous size scales, count
 must be an integer from 2 through 10,000 when automatic sampling is active.
@@ -164,6 +164,54 @@ removed blocks lose their settings. A style patch in the same edit applies to
 the final content. In categorical-size legends, shared label/title-style edits
 merge only the supplied leaves into each block's effective style; changing a
 title or count preserves independent size styles. Other targets remain intact.
+
+## Editing one legend block
+
+Use `editLegendBlock()` when one mark has several legend blocks and an edit
+must apply to only one of them. Both selectors are required: `target` is the
+owning mark ID and `channel` identifies the logical block.
+
+```javascript
+const edited = program.editLegendBlock({
+  target: "points",
+  channel: "size",
+  title: "Magnitude",
+  values: [10, 50, 100],
+  gap: 36,
+  text: { fontSize: 14, color: "#334155" },
+  symbol: {
+    fill: "#f97316",
+    stroke: "#111827",
+    strokeWidth: 2,
+    opacity: 0.7
+  }
+});
+```
+
+This changes the size samples and leaves a categorical color or shape block on
+the same target unchanged. If color and shape are merged into one categorical
+block, selecting either member edits that same block; a later call replaces the
+earlier block-local value.
+
+The action accepts `title`, `values`, `count`, `order`, `gap`, `text`, and
+`symbol`. An empty title hides only that block's title. Exact `values` and
+`count` apply to continuous size, opacity, and stroke-width blocks. `order`
+applies to a categorical block and must list every current category exactly
+once. `text` changes item-label typography and color. `symbol.size` is point
+area in square pixels. Empty `text` or `symbol` objects remove that local patch
+and restore the current base style.
+
+Symbol properties cannot replace the mapping the block explains. For example,
+a size block rejects `symbol.size`, an opacity block rejects `symbol.opacity`,
+a categorical color block rejects `symbol.fill`, and a categorical stroke
+block rejects `symbol.stroke`. Gradient blocks accept label, title, and gap
+edits but no symbol patch.
+
+Block state follows its channel set through layout, Canvas, theme, data, and
+compatible scale-family updates. Removing a block discards its local state.
+Changing membership rejects a title or order whose destination would be
+ambiguous, and merging independently edited blocks requires their local styles
+to agree. `editLegendBlock()` is available on Full programs only.
 
 ## Focused edits
 

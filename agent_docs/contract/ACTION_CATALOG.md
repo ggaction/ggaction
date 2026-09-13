@@ -166,6 +166,7 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`removeGrid`](current/GRID.md#removegrid) | grid | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createLegend`](current/LEGEND_AND_TITLE.md#createlegend) | legend_and_title | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editLegend`](current/LEGEND_AND_TITLE.md#editlegend) | legend_and_title | Mutable resource | Complete | ✅ / ✅ / ✅ |
+| user-facing | [`editLegendBlock`](current/LEGEND_AND_TITLE.md#editlegendblock) | legend_and_title | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editLegendLayout`](current/LEGEND_AND_TITLE.md#editlegendlayout) | legend_and_title | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editLegendLabels`](current/LEGEND_AND_TITLE.md#editlegendlabels) | legend_and_title | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editLegendTitle`](current/LEGEND_AND_TITLE.md#editlegendtitle) | legend_and_title | Mutable resource | Complete | ✅ / ✅ / ✅ |

@@ -4224,6 +4224,36 @@ export interface LegendOptions {
   border?: boolean | LegendBorderOptions;
 }
 
+export type LegendChannel = NonNullable<LegendOptions["channels"]>[number];
+
+export interface LegendBlockTextPatch {
+  fontSize?: number;
+  fontFamily?: string;
+  fontWeight?: string | number;
+  color?: string;
+}
+
+export interface LegendBlockSymbolPatch {
+  /** Point glyph area in square pixels. */
+  size?: number;
+  fill?: string;
+  stroke?: string;
+  strokeWidth?: number;
+  opacity?: number;
+}
+
+export interface EditLegendBlockOptions {
+  target: string;
+  channel: LegendChannel;
+  title?: string;
+  values?: readonly [number, ...number[]] | "auto";
+  count?: number;
+  order?: readonly CategoryValue[];
+  gap?: number;
+  text?: LegendBlockTextPatch;
+  symbol?: LegendBlockSymbolPatch;
+}
+
 export interface EditLegendOptions
   extends Omit<LegendOptions, "title" | "values"> {
   /** Exact final content set for the whole target; omission preserves content. */
@@ -4680,6 +4710,7 @@ export class ChartProgram {
   /** Combined categorical and size legends support all four edges with layout "edge". */
   createLegend(options?: LegendOptions): ChartProgram;
   editLegend(options: EditLegendOptions): ChartProgram;
+  editLegendBlock(options: EditLegendBlockOptions): ChartProgram;
   editLegendLayout(options: EditLegendLayoutOptions): ChartProgram;
   editLegendLabels(options: EditLegendLabelsOptions): ChartProgram;
   editLegendTitle(options: EditLegendTitleOptions): ChartProgram;

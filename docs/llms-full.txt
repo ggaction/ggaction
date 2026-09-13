@@ -11956,6 +11956,7 @@ Cartesian or Polar coordinate. Ambiguous resources require explicit IDs.
 | --- | --- | --- | --- |
 | `createLegend` | `createLegend()` | Current/unique compatible mark; right position | Categorical, size, stroke-width, gradient, interval, or opacity guide; sampled channels accept exact `values` |
 | `editLegend` | `editLegend({ position: "left" })` | Unique existing legend; omitted properties retained | Rematerialized content, layout, and appearance |
+| `editLegendBlock` | `editLegendBlock({ target: "points", channel: "size", title: "Magnitude" })` | Explicit mark and represented channel | Only the selected logical block is rematerialized |
 | Focused edits | `editLegendLabels({ fontSize: 11 })` | Same target inference as `editLegend` | One legend component rematerialized |
 | `removeLegend` | `removeLegend({ channels: ["size"] })` | Existing legend owner; omitted channels remove all | Selected complete blocks removed |
 
@@ -11997,7 +11998,9 @@ gradient, and order are unsupported; edit quantitative mapping through `editScal
 Continuous size, opacity, and stroke-width legends accept `values` for exact
 ascending samples. Exact values must fit the effective domain and cannot be
 combined with `count`; use `editLegend({ values: "auto" })` to return to the
-remembered automatic sample count.
+remembered automatic sample count. Use `editLegendBlock()` when a target has
+multiple blocks and only one block's samples, order, title, labels, spacing, or
+supported symbol appearance should change.
 Right-side layout requires sufficient right margin; bottom layout requires
 sufficient bottom margin; top layout requires enough top margin for its title,
 item grid, offset, and optional border. The library reports a layout error
@@ -12567,8 +12570,8 @@ strictly increasing values inside the effective scale domain. They are not
 sorted or clamped. Layout, title, style, theme, and Canvas edits preserve the
 array. A later scale, data, encoding, or facet change that would put a stored
 sample outside its effective domain fails without changing the earlier
-program. On a combined categorical and size legend, exact samples currently
-require a standalone sampled legend target.
+program. On a combined or multi-block legend, use `editLegendBlock()` to name
+the sampled channel whose values should change.
 
 Size samples retain the encoded area mapping. For continuous size scales, count
 must be an integer from 2 through 10,000 when automatic sampling is active.
@@ -12633,6 +12636,54 @@ removed blocks lose their settings. A style patch in the same edit applies to
 the final content. In categorical-size legends, shared label/title-style edits
 merge only the supplied leaves into each block's effective style; changing a
 title or count preserves independent size styles. Other targets remain intact.
+
+## Editing one legend block
+
+Use `editLegendBlock()` when one mark has several legend blocks and an edit
+must apply to only one of them. Both selectors are required: `target` is the
+owning mark ID and `channel` identifies the logical block.
+
+```javascript
+const edited = program.editLegendBlock({
+  target: "points",
+  channel: "size",
+  title: "Magnitude",
+  values: [10, 50, 100],
+  gap: 36,
+  text: { fontSize: 14, color: "#334155" },
+  symbol: {
+    fill: "#f97316",
+    stroke: "#111827",
+    strokeWidth: 2,
+    opacity: 0.7
+  }
+});
+```
+
+This changes the size samples and leaves a categorical color or shape block on
+the same target unchanged. If color and shape are merged into one categorical
+block, selecting either member edits that same block; a later call replaces the
+earlier block-local value.
+
+The action accepts `title`, `values`, `count`, `order`, `gap`, `text`, and
+`symbol`. An empty title hides only that block's title. Exact `values` and
+`count` apply to continuous size, opacity, and stroke-width blocks. `order`
+applies to a categorical block and must list every current category exactly
+once. `text` changes item-label typography and color. `symbol.size` is point
+area in square pixels. Empty `text` or `symbol` objects remove that local patch
+and restore the current base style.
+
+Symbol properties cannot replace the mapping the block explains. For example,
+a size block rejects `symbol.size`, an opacity block rejects `symbol.opacity`,
+a categorical color block rejects `symbol.fill`, and a categorical stroke
+block rejects `symbol.stroke`. Gradient blocks accept label, title, and gap
+edits but no symbol patch.
+
+Block state follows its channel set through layout, Canvas, theme, data, and
+compatible scale-family updates. Removing a block discards its local state.
+Changing membership rejects a title or order whose destination would be
+ambiguous, and merging independently edited blocks requires their local styles
+to agree. `editLegendBlock()` is available on Full programs only.
 
 ## Focused edits
 
@@ -14030,7 +14081,7 @@ remain available for custom layering and editing.
 | Coordinates | Named Cartesian, Polar, and Parallel resources; x/y use Cartesian, theta/radius use Polar, and ordered dimensions use Parallel |
 | Scales | Linear/log/pow/sqrt/symlog position across compatible marks, UTC time, band/point position with semantic explicit/count/category/summary ordering, ordinal/sequential/quantize/quantile/threshold color, point-item unknown fallbacks, named/direct stroke dash, and padded band-local xOffset/yOffset |
 | Aggregates | count, sum, mean, median, min/max, distinct/valid/missing, sample/population dispersion, quartiles, standard error, normal 95% mean endpoints, parameterized quantile, and ordered first/last |
-| Guides | Automatic Cartesian x/y and Polar theta/radius axes, closed numeric/UTC label formats, independently editable Cartesian and Polar grids, editable four-edge categorical and continuous legends, and right-side interval legends |
+| Guides | Automatic Cartesian x/y and Polar theta/radius axes, closed numeric/UTC label formats, independently editable Cartesian and Polar grids, editable four-edge categorical, interval, and continuous legends, and channel-identified block editing |
 | Titles | One four-edge title with an optional subtitle, deterministic word/character wrapping, and partial editing |
 | Rendering | Browser Canvas, browser-safe SVG string, Node PNG, and single-page vector PDF |
 | Graphics | Concrete canvas, circle, line, rect, text, `M/L/C/Z` command paths, shared 8-value line/area curves, and heterogeneous drawable collections |
@@ -14271,6 +14322,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editImputedData`](./reference/actions/statistics/#focused-statistical-data-editing) | H1, H3 | user-facing | statistics |
 | [`editIntervalData`](./reference/actions/statistics/#focused-statistical-data-editing) | H1, H3 | user-facing | statistics |
 | [`editLegend`](./reference/actions/guides/#editlegend) | H3 | user-facing | legend_and_title |
+| [`editLegendBlock`](./reference/actions/guides/#editlegendblock) | H3 | user-facing | legend_and_title |
 | [`editLegendBorder`](./reference/actions/guides/#focused-legend-edits) | H3 | user-facing | legend_and_title |
 | [`editLegendLabels`](./reference/actions/guides/#focused-legend-edits) | H3 | user-facing | legend_and_title |
 | [`editLegendLayout`](./reference/actions/guides/#focused-legend-edits) | H3 | user-facing | legend_and_title |
@@ -16649,6 +16701,27 @@ Sampled size, opacity, and stroke-width legends also accept exact numeric
 dependent replay that would invalidate a stored exact sample fails atomically.
 [Legends](./api/legends/)
 
+## `editLegendBlock`
+
+```javascript
+editLegendBlock({
+  target, channel, title?, values?, count?, order?, gap?, text?, symbol?
+})
+```
+
+Edit one logical legend block without changing sibling blocks on the same mark.
+Both the mark `target` and a channel currently represented by the legend are
+required. Merged categorical channels share one block identity, so selecting
+color or shape in a color-and-shape block edits the same state.
+
+Continuous size, opacity, and stroke-width blocks accept exact `values` or an
+automatic `count`; categorical blocks accept an exact full-domain `order`.
+`text` changes item-label typography and color, `symbol` changes supported
+sample appearance, and `gap` changes internal spacing. Empty `text` or `symbol`
+objects restore the base style. A symbol property that would replace the data
+mapping is rejected. Empty `title` hides the selected block. Full programs only.
+[Editing legends](./api/legends/editing/#editing-one-legend-block)
+
 ## Focused legend edits
 
 ```javascript
@@ -17384,6 +17457,7 @@ interface ChartProgramActions {
   removeGrid(options?: RemoveGridOptions): ChartProgram;
   createLegend(options?: LegendOptions): ChartProgram;
   editLegend(options: EditLegendOptions): ChartProgram;
+  editLegendBlock(options: EditLegendBlockOptions): ChartProgram;
   editLegendLayout(options: EditLegendLayoutOptions): ChartProgram;
   editLegendLabels(options: EditLegendLabelsOptions): ChartProgram;
   editLegendTitle(options: EditLegendTitleOptions): ChartProgram;
