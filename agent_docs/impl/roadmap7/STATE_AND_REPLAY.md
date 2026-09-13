@@ -1,6 +1,9 @@
 # 상태·소유권·재실행의 구현 계약
 
-상태: 부분 Current. R02 logical data owner와 revision transaction은 `d29287c9`에서 Current가 됐고 Phase 7까지의 label/reference owner는 `5832228c`에서 통합 검증됐다. 아직 구현되지 않은 row는 각 Primary Phase 전까지 Proposed이며, 아래 전체 순서는 Roadmap 7 통합 계약이다.
+상태: Current. R02 logical data owner와 revision transaction은 `d29287c9`, Phase 7
+label/reference owner는 `5832228c`, Polar/Parallel composition replay는 `ebf3562a`,
+cross-domain reference registry와 안전 삭제는 `c29f496c`에서 통합 검증됐다. 아래 순서는
+Roadmap 7의 현재 state와 replay 계약이다.
 
 ## 권장 owner map
 

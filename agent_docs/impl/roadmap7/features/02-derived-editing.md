@@ -1,7 +1,7 @@
 # R02 — 파생 데이터 정의 편집과 종속 갱신
 
 원래 감사 번호: **2**. Primary owner: **Phase 4**. 상태: **Implemented-primary**.
-아래 API·revision transaction·16개 family 편집은 `d29287c9`에서 구현됐다. Phase 7의 동적 reference와 Phase 10의 Polar/Parallel facet source replay 통합은 각각 `5832228c`, `ebf3562a`에서 검증됐다. Phase 11의 범용 resource collector 결합은 R25 owner가 검증한다.
+아래 API·revision transaction·16개 family 편집은 `d29287c9`에서 구현됐다. Phase 7의 동적 reference, Phase 10의 Polar/Parallel facet source replay, Phase 11의 범용 resource collector 결합은 각각 `5832228c`, `ebf3562a`, `c29f496c`에서 검증됐다.
 
 ## 목적과 현재 연결점
 
@@ -136,5 +136,5 @@ materializationConfigs.data.computed.twice = { current: "twice" };
 - [x] 위 수치 oracle를 실제 capability test에 구현했고 계획 예제를 기대값 생성기로 재사용하지 않았다.
 - [x] 현재 존재하는 scale/mark/guide/label/selection/facet/Canvas consumer replay를 검증했다.
 - [x] Full 등록·타입 export·Current 계약·catalog·card·관계 trace·MCP·문서·installed consumer를 갱신했다.
-- [x] 아직 제품에 없는 R36/R37/R38/R43/R25 consumer cell은 해당 Primary Phase의 후속 통합으로 남겼다.
+- [x] R36/R37/R38/R43/R25 consumer cell은 각 Primary Phase에서 후속 통합했고, 최종 근거는 `5832228c`, `ebf3562a`, `c29f496c`와 TRACEABILITY에 기록했다.
 - [x] Phase 4 승인과 `d29287c9` 구현, unit 2,344개·contract 333개·docs 47개·installed package 결과를 STEP 원장에 기록했다.

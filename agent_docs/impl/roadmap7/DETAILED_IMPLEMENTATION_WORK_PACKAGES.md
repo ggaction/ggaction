@@ -1,6 +1,6 @@
 # Roadmap 7 — 상세 구현 작업 패킷
 
-작성 기준: 2026-09-13. 현재 branch `codex/roadmap7-authoring-refinement`, Phase 9 완료 checkpoint `39be3e3e`, R43 완료 checkpoint `89f1c54e`, `4dbdaf85`, `ebf3562a`다. 이 문서는 이미 승인된 Roadmap 7을 구현자가 기능 단위로 끝까지 실행하기 위한 **작업 분해와 종료 절차**다. Phase 11 이후의 함수·state·transition·test를 한 문서에서 기계적으로 실행하려면 [무추론 구현 명세](LOW_INFERENCE_IMPLEMENTATION_SPEC.md)를 함께 따른다. 공개 API의 정확한 의미·수식·기본값은 각 `features/*.md`가 canonical owner이며, 이 문서는 그 계약을 어느 파일에 어떤 순서로 구현하고 무엇으로 검증할지를 소유한다.
+작성 기준: 2026-09-13. 현재 branch `codex/roadmap7-authoring-refinement`, Phase 9 완료 checkpoint `39be3e3e`, R43 완료 checkpoint `89f1c54e`, `4dbdaf85`, `ebf3562a`, R25 완료 checkpoint `c29f496c`다. 이 문서는 이미 승인된 Roadmap 7을 구현자가 기능 단위로 끝까지 실행하기 위한 **작업 분해와 종료 절차**다. 현재 남은 실행은 Phase 12 전체 통합이다. 공개 API의 정확한 의미·수식·기본값은 각 `features/*.md`가 canonical owner이며, 이 문서는 그 계약을 어느 파일에 어떤 순서로 구현하고 무엇으로 검증할지를 소유한다.
 
 ## 1. 현재 상태와 실행 경계
 
@@ -58,7 +58,7 @@ R19, R27, R29의 완료 checkpoint를 다시 구현하지 않는다. R43을 좌�
 | R21 | x/y offset focused scale edit | Implemented-primary | 완료 checkpoint + WP5.4/WP10 |
 | R22 | field stroke·stroke scale·legend | Implemented-primary (`3fc40a66`) | 완료 checkpoint + WP5.4/WP10 |
 | R23 | nonlinear/discrete size scale | Implemented-primary | 완료 checkpoint + WP5.3/WP8.1/WP10/WP12 |
-| R25 | 안전한 resource 삭제 | Proposed | WP11 |
+| R25 | 안전한 resource 삭제 | Implemented-primary (`c29f496c`) | WP11 완료; WP12 누적 cleanup 검증 |
 | R27 | coordinate aspect | Implemented-primary (`ded3b073`) | 완료 checkpoint + WP7.3/WP8.3/WP10/WP12 |
 | R29 | Polar frame | Implemented-primary (`4aa9da65`) | 완료 checkpoint + WP7.3/WP10/WP12 |
 | R31 | attached labels 삭제 | Implemented-primary (`73e3d53e`) | 완료 checkpoint + WP10/WP12 |

@@ -1,7 +1,7 @@
 # R36 — 데이터를 추적하는 통계 참조선·밴드
 
 원래 감사 번호: **36**. Primary owner: **Phase 7**. 상태: **Implemented-primary (`d7136174`; 통합 `5832228c`)**.
-아래 세부 API·수치 정책과 lifecycle은 제품 코드·공개 surface·패키지에서 구현됐고 Phase 7 통합 검증까지 완료했다. R25의 범용 resource collector 통합만 해당 후속 Phase가 소유한다.
+아래 세부 API·수치 정책과 lifecycle은 제품 코드·공개 surface·패키지에서 구현됐고 Phase 7 통합 검증까지 완료했다. R25의 범용 resource collector 통합도 `c29f496c`에서 완료됐다.
 
 ## 목적과 현재 연결점
 
@@ -105,5 +105,5 @@ reference가 자기 domain에 기여하지 않도록 consumer policy에 명시�
 - [x] 위 수치 oracle를 `test/contracts/statistical-references.test.js`에 독립 기대값으로 구현했다.
 - [x] scale/mark/guide/label/selection/facet/Canvas replay와 aggregate series·binned scale policy를 `test/contracts/statistical-references.test.js`와 `test/contracts/label-reference-lifecycle.test.js`에서 검증했다.
 - [x] Full 등록·타입 export·Current 계약·catalog·card·관계 trace·MCP·문서·installed consumer를 갱신했다.
-- [x] Polar/Parallel, grouped lines, weight, callback은 이 Phase의 미지원 범위로 유지했고 범용 resource collector는 R25 owner에 연결했다.
+- [x] Polar/Parallel, grouped lines, weight, callback은 이 Phase의 미지원 범위로 유지했고 범용 resource collector는 R25 `c29f496c`에 연결했다.
 - [x] Phase 7 구현 `d7136174`와 통합 수정 `5832228c`, 실제 누적 검증을 Phase 7 STEP1에 기록했다.

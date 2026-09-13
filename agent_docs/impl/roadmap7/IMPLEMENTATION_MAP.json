@@ -626,7 +626,7 @@
         "R47",
         "R49"
       ],
-      "status": "Proposed",
+      "status": "Implemented-primary",
       "newPublicActions": [
         "removeData",
         "removeScale",
@@ -634,15 +634,16 @@
       ],
       "extendedPublicSurfaces": [],
       "currentSourceFiles": [
-        "src/actions/marks/remove.js",
+        "src/core/resourceReferences.js",
+        "src/actions/resources/remove.js",
+        "src/core/programState.js",
         "src/actions/data/derived.js",
-        "src/selectors/datasets.js",
-        "src/materialization/guides/resources.js",
-        "src/actions/scales/consumers/common.js",
-        "src/core/programState.js"
+        "src/actions/marks/remove.js",
+        "src/actions/selection/actions.js"
       ],
       "existingRegressionTests": [
-        "test/contracts/statistical-owner-revisions.test.js"
+        "test/contracts/statistical-owner-revisions.test.js",
+        "test/unit/actions/marks/remove-mark.test.js"
       ],
       "suggestedNewTest": "test/contracts/remove-resources.test.js",
       "acceptanceCases": [
@@ -660,7 +661,8 @@
         "edit/reencode/Canvas/source replay/remove",
         "applicable composition and renderer cells",
         "Full registration/types/current contracts/knowledge/docs/installed package"
-      ]
+      ],
+      "implementationCommit": "c29f496c"
     },
     {
       "id": "R27",

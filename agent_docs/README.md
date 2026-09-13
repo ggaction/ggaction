@@ -16,11 +16,11 @@
 | 승인된 미래 계약 읽기 | [`contract/planned/`](contract/planned/) |
 | 현재 개발 순서 확인 | [`impl/README.md`](impl/README.md) |
 
-**현재 활성 계획은 Roadmap 7 Phase 10**이다. [상세 로드맵](impl/roadmap7/ROADMAP.md)은
+**현재 활성 계획은 Roadmap 7 Phase 12**다. [상세 로드맵](impl/roadmap7/ROADMAP.md)은
 사용자가 선택한 차트 저작 연산 25개를 다루며, [구현자 인계](impl/roadmap7/IMPLEMENTER_START_HERE.md)에서
-읽기 순서와 작업 절차를 제공한다. Phase 1–9의 완료 해시는 Phase별 원장이 소유하며,
-Phase 9의 R47과 R49는 각각 `ce286929`와 `1c5192f2`에서 primary 구현을 닫았다.
-현재는 R43의 Polar·Parallel facet와 repeat 지원을 진행한다.
+읽기 순서와 작업 절차를 제공한다. Phase 0–11의 완료 해시는 Phase별 원장이 소유하며,
+R43은 `ebf3562a`, R25는 `c29f496c`에서 primary 구현을 닫았다. 현재는 25개 전체의
+통합·계약·패키지 검증과 main 반영을 진행한다.
 
 [Roadmap 6](impl/roadmap6/ROADMAP.md)은 Phase 0–11을 완료했다. 마지막 완료 owner는
 [Roadmap 6 Phase 11](impl/roadmap6/phase11/REVIEW.md)이며 당시 closeout은 과거 기록으로 보존한다.

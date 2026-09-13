@@ -1,7 +1,8 @@
 # Phase 11 — 미사용 자원 삭제
 
-상태: active. Phase 10 R43이 `ebf3562a`에서 완료되어, 이미 승인된 R25의 reference
-inventory와 reject-only 안전 삭제 구현을 시작한다. 아직 R25 제품 완료 기록은 아니다.
+상태: completed-primary. R25 typed reference inventory, reject-only 안전 삭제, 기존
+derived/mark/selection 수명주기 통합과 Current·문서·설치 패키지가 제품 checkpoint
+`c29f496c`에서 구현·검증됐다.
 
 ## 목표와 범위
 
@@ -19,6 +20,7 @@ inventory와 reject-only 안전 삭제 구현을 시작한다. 아직 R25 제품
 
 ## 경계와 다음 작업
 
-이 Phase에 배정되지 않은 선택 기능은 해당 owner Phase에서 구현한다. 감사에서 선택하지 않은 나머지 25개는 추가하지 않는다. 독립적인 저작 의미가 필요할 때만 action을 추가하고, 타입과 문서만 있는 API를 만들지 않는다.
+다음 active Phase는 Phase 12 전체 통합·계약·패키지 마감이다. R25 public 범위는 세
+named resource action으로 닫혔으며 cascade, force, batch와 concat cross-child 삭제는 추가하지 않았다.
 
 [STEP1.md](STEP1.md)의 체크리스트와 [GATES.md](GATES.md)의 상태를 함께 갱신한다. 실패한 테스트나 미실행 backend는 완료 근거가 아니다. 다음 Phase를 진행하기 위해 이름만 있는 stub을 commit하지 않는다.

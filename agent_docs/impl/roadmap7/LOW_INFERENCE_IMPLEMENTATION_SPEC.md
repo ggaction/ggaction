@@ -1,6 +1,6 @@
 # Roadmap 7 — 무추론 구현 명세
 
-작성 기준: 2026-09-13. 기준 branch `codex/roadmap7-authoring-refinement`, 현재 제품 인계 기준 HEAD는 `ebf3562a`다. Phase 9는 제품 checkpoint `1c5192f2`와 상태 checkpoint `39be3e3e`에서 완료됐다. Phase 10은 foundation `89f1c54e`, runtime `4dbdaf85`, 종료 감사·Current·문서·설치 패키지 `ebf3562a`에서 완료됐다. 현재 실행점은 Phase 11 R25다.
+작성 기준: 2026-09-13. 기준 branch `codex/roadmap7-authoring-refinement`, 현재 제품 인계 기준 HEAD는 `c29f496c`다. Phase 9는 제품 checkpoint `1c5192f2`와 상태 checkpoint `39be3e3e`, Phase 10은 foundation `89f1c54e`, runtime `4dbdaf85`, 종료 checkpoint `ebf3562a`, Phase 11 R25는 제품·Current·문서·설치 패키지 `c29f496c`에서 완료됐다. 현재 실행점은 Phase 12 전체 통합이다.
 
 이 문서는 구현자가 설계를 새로 해석하지 않고 남은 Roadmap 7을 실행하도록 만든 코드 수준 명세다. 공개 의미·기본값·수식은 각 `features/*.md`가 소유하고, 이 문서는 **수정 파일, 함수 경계, 상태 경로, 실행 순서, 삭제 규칙, 테스트 묶음과 종료 조건**을 소유한다. 두 문서가 다르면 feature 계약을 따르고 같은 checkpoint에서 이 문서를 고친다. 완료된 R02/R05/R06/R07/R08/R09/R10/R19/R20/R21/R22/R23/R27/R29/R31/R32/R33/R36/R37/R38/R39/R43/R47/R49 제품 코드는 다시 구현하지 않는다. R31/R32/R33/R37/R38/R39/R47/R49의 non-Cartesian facet/repeat 소비 cell은 R43 `ebf3562a`에서 검증됐다.
 
@@ -15,8 +15,8 @@
 | Phase 10 W10.1–W10.3 | 완료 | `89f1c54e`, `ebf3562a` | 재구현 금지 |
 | Phase 10 W10.4–W10.5 | 완료 | `4dbdaf85`, `ebf3562a` | 재구현 금지 |
 | Phase 10 W10.6 | 완료 | `ebf3562a`; Phase 10 STEP 원장 | Phase 12 누적 회귀만 |
-| Phase 11 R25 | active | 없음 | 아래 R25 명세의 W11.1부터 순서대로 구현 |
-| Phase 12 통합 | 미착수 | 없음 | Phase 11 완료 뒤 25개 exact reconciliation과 main 반영 |
+| Phase 11 R25 | 완료 | `c29f496c` | 재구현 금지; Phase 12 누적 cleanup flow만 검증 |
+| Phase 12 통합 | active | 없음 | 25개 exact reconciliation, 네 누적 flow, 전체 검증과 main 반영 |
 
 ### 인계 직후 실행할 명령
 

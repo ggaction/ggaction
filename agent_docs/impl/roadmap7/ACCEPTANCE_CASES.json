@@ -800,8 +800,8 @@
       "kind": "normal",
       "specification": "unused D,S,C 제거 → 해당 semantic entries0, 렌더 이전과 동일.",
       "owner": "features/25-remove-resources.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/contracts/remove-resources.test.js; test/unit/actions/resources/remove.test.js; test/unit/core/resource-references.test.js; c29f496c"
     },
     {
       "id": "R25-N02",
@@ -810,8 +810,8 @@
       "kind": "normal",
       "specification": "context.currentData=D만 참조 → 삭제 후 currentData 없음.",
       "owner": "features/25-remove-resources.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/contracts/remove-resources.test.js; test/unit/actions/resources/remove.test.js; test/unit/core/resource-references.test.js; c29f496c"
     },
     {
       "id": "R25-N03",
@@ -820,8 +820,8 @@
       "kind": "normal",
       "specification": "trace.args에만 D가 남음 → 삭제 성공.",
       "owner": "features/25-remove-resources.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/contracts/remove-resources.test.js; test/unit/actions/resources/remove.test.js; test/unit/core/resource-references.test.js; c29f496c"
     },
     {
       "id": "R25-E01",
@@ -830,8 +830,8 @@
       "kind": "error",
       "specification": "parallel dimension만 S 참조 → Error에 dimension path.",
       "owner": "features/25-remove-resources.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/contracts/remove-resources.test.js; test/unit/actions/resources/remove.test.js; test/unit/core/resource-references.test.js; c29f496c"
     },
     {
       "id": "R25-E02",
@@ -840,8 +840,8 @@
       "kind": "error",
       "specification": "live retained facet source만 D 참조 → Error; historical before program은 검사 대상 아님.",
       "owner": "features/25-remove-resources.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/contracts/remove-resources.test.js; test/unit/actions/resources/remove.test.js; test/unit/core/resource-references.test.js; c29f496c"
     },
     {
       "id": "R25-L01",
@@ -850,8 +850,8 @@
       "kind": "lifecycle",
       "specification": "standalone current를 참조하는 마지막 mark 삭제 후 removeData(logical ID) 성공, 원본 source는 남음.",
       "owner": "features/25-remove-resources.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/contracts/remove-resources.test.js; test/unit/actions/resources/remove.test.js; test/unit/core/resource-references.test.js; c29f496c"
     },
     {
       "id": "R27-N01",

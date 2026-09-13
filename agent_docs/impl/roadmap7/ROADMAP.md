@@ -2,7 +2,7 @@
 
 문서 상태 — 현재 실행 계획.
 
-사용자가 감사 50개 항목 중 선택한 **25개**를 구현하는 현재 로드맵이다. **Phase 0–10 primary를 완료했고 Phase 11의 R25 안전한 named resource 삭제를 구현한다**. R43 Polar·Parallel facet/repeat는 `ebf3562a`에서 Current·문서·설치 패키지까지 닫혔다. 2026-09-13 사용자가 모든 Gate를 명시적으로 승인했으며, 각 Phase의 구현·검증 증거는 STEP 결과 원장에 누적한다. 아직 구현되지 않은 API를 Current로 표시하지 않는다. 탐색 상태는 [ROADMAP_INDEX.json](../ROADMAP_INDEX.json)이 관리한다.
+사용자가 감사 50개 항목 중 선택한 **25개**를 구현하는 현재 로드맵이다. **Phase 0–11 primary를 완료했고 Phase 12 전체 통합·계약·패키지 마감을 실행한다**. R43 Polar·Parallel facet/repeat는 `ebf3562a`, R25 안전한 named resource 삭제는 `c29f496c`에서 Current·문서·설치 패키지까지 닫혔다. 2026-09-13 사용자가 모든 Gate와 최종 main 반영을 명시적으로 승인했으며, 각 Phase의 구현·검증 증거는 STEP 결과 원장에 누적한다. 탐색 상태는 [ROADMAP_INDEX.json](../ROADMAP_INDEX.json)이 관리한다.
 
 ## 의도와 성공 기준
 

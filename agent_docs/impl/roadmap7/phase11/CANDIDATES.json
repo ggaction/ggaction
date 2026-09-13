@@ -1,12 +1,13 @@
 {
   "phase": 11,
-  "status": "active",
+  "status": "completed-primary",
   "scope": "implementation",
   "candidates": [
     {
       "id": "R25",
-      "status": "Proposed",
-      "file": "../features/25-remove-resources.md"
+      "status": "Implemented-primary",
+      "file": "../features/25-remove-resources.md",
+      "implementationCommit": "c29f496c"
     }
   ]
 }

@@ -395,16 +395,16 @@
         "R47",
         "R49"
       ],
-      "status": "Proposed",
+      "status": "Implemented-primary",
       "scopeSelection": "user-selected",
       "file": "features/25-remove-resources.md",
       "sources": [
-        "src/actions/marks/remove.js",
+        "src/core/resourceReferences.js",
+        "src/actions/resources/remove.js",
+        "src/core/programState.js",
         "src/actions/data/derived.js",
-        "src/selectors/datasets.js",
-        "src/materialization/guides/resources.js",
-        "src/actions/scales/consumers/common.js",
-        "src/core/programState.js"
+        "src/actions/marks/remove.js",
+        "src/actions/selection/actions.js"
       ],
       "acceptanceSections": [
         "값·기본값·오류 계약",
@@ -412,7 +412,8 @@
         "독립 oracle와 인수 테스트",
         "완료 조건",
         "구현 고정 명세"
-      ]
+      ],
+      "implementationCommit": "c29f496c"
     },
     {
       "id": "R27",

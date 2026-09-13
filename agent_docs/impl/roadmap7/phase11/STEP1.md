@@ -2,14 +2,14 @@
 
 ## 진행 상태
 
-- [ ] 범위·현재 source owner·선행 Phase 완료 상태 확인
-- [ ] Gate A 자료: 정확한 API/schema/defaults/오류/수치 oracle 작성·검증
-- [ ] 명시 승인 범위 기록 후 해당 구현 시작
-- [ ] appearance 대상은 primitive render와 target public chain으로 Gate V 확인
-- [ ] 아래 wave 구현과 focused/cumulative tests 완료
-- [ ] types/current contracts/catalog/cards/MCP/docs/package 영향 갱신
-- [ ] Gate X 결과와 남은 후속 통합 cell 기록
-- [ ] 검증된 coherent change마다 commit/push하고 다음 Gate 범위 확인
+- [x] 범위·현재 source owner·선행 Phase 완료 상태 확인
+- [x] Gate A 자료: 정확한 API/schema/defaults/오류/수치 oracle 작성·검증
+- [x] 명시 승인 범위 기록 후 해당 구현 시작
+- [x] appearance 대상은 primitive render와 target public chain으로 Gate V 확인
+- [x] 아래 wave 구현과 focused/cumulative tests 완료
+- [x] types/current contracts/catalog/cards/MCP/docs/package 영향 갱신
+- [x] Gate X 결과와 남은 후속 통합 cell 기록
+- [x] 검증된 coherent change마다 commit/push하고 다음 Gate 범위 확인
 
 계획 작성 시 모든 체크는 미완료다. Phase 0 은 제품 구현이 없으므로 해당 구현·시각 항목의 미적용 이유를 기록한다. Phase 12 는 새 시각 목표가 없으면 승인된 variant를 현재 코드에서 다시 실행해 검증한다.
 
@@ -42,7 +42,11 @@
 
 | wave | commit | tests/artifacts | remaining | status |
 | --- | --- | --- | --- | --- |
-| 미착수 | — | 실행 증거 없음 | 위 전체 범위 | planned |
+| W1–W2 typed reference graph | `c29f496c` | semantic/config/composition/context의 owner-relative data·scale·coordinate·mark·selection edges; sort/dedup/freeze; trace·field·style false-positive 제외; 119개 smoke program 구조 대조 | 없음 | passed-primary |
+| W3 safe public removal | `c29f496c` | Full-only 세 action, unit/facet commit, concat reject, wrong-kind/internal-owner 오류, context/cache/standalone-owner cleanup, strict types | 없음 | passed-primary |
+| W4 owner lifecycle | `c29f496c` | R02 `releaseDerivedData` registry 연결, regression·box revision stale source 수정, mark external-ref preflight, Parallel axis teardown, named-label selection registry 연결 | 없음 | passed-primary |
+| W5 invariance·public surfaces | `c29f496c` | R25-N01/N02/N03/E01/E02/L01, xOffset·legend·Polar guide·annotation one-edge fixtures, deterministic errors, Canvas-call과 decoded PNG hash parity, Current/catalog/cards/MCP/docs/installed package | Phase 12 누적 25개 통합 | passed-primary |
+| Phase 11 누적 검증 | `c29f496c` + 상태 checkpoint | unit 2,476/2,476; contracts 485/485; charts 578/578; render 216/216; docs 47/47; package 521 entries, 704,263 packed, 3,542,730 unpacked; tar SHA-256 `66b594bf65a96ebfd0f8f90aaac2b7e91185a61110daa6fb4973a797248b3887`; Full/Basic/SVG gzip 358,177/173,733/6,742; installed Node/strict TypeScript/MCP/browser 통과 | Phase 12 browser·realistic·4개 누적 flow와 final main 반영 | passed-primary |
 
 ## Gate 연결
 
