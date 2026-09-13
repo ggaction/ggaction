@@ -73,6 +73,8 @@ p.editComputedData({ as: "result" });
 p.editDerivedData({ target: "computed", definition: { type: "computed", source: "raw", as: "z", expression: { field: "x" } } });
 // @ts-expect-error horizon is chart-owned and not in the editable transform union
 const horizon: RequestedDatasetTransform = { type: "horizon" };
+// @ts-expect-error statistical reference data is chart-owned and not editable
+const statisticalReference: RequestedDatasetTransform = { type: "statisticalReference", target: "mean" };
 // @ts-expect-error dependents is a closed policy
 p.editFoldData({ target: "fold", fields: ["a"], dependents: "cascade" });
 // @ts-expect-error filter modes are mutually exclusive

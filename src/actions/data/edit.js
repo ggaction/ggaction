@@ -198,6 +198,9 @@ function downstreamDatasets(program, root) {
           `"${child.transform[0].type ?? "unknown"}".`
         );
       }
+      // Statistical reference data is an owned cache. Its mark lifecycle
+      // reconnects and recomputes it after the visible source mark is rebound.
+      if (child.transform[0].type === "statisticalReference") continue;
       result.push(child);
       visit(child.id);
     }

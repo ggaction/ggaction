@@ -30,7 +30,10 @@ function resolveScalePreviewAtBounds(program, id, bounds) {
     ? consumerChannels.values().next().value
     : families.values().next().value;
   const valuesByConsumer = consumers.map(consumer => {
-    if (program.markConfigs?.[consumer.layer.id]?.markFilter?.empty === true) {
+    if (
+      program.markConfigs?.[consumer.layer.id]?.markFilter?.empty === true ||
+      program.markConfigs?.[consumer.layer.id]?.statisticalReference !== undefined
+    ) {
       return { consumer, values: [], categoryOrder: undefined, seriesLayout: undefined };
     }
     return { consumer,

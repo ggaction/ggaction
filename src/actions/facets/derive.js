@@ -115,6 +115,13 @@ function deriveCellProgram(
         `Facet layer "${layer.id}" has no replayed dataset in cell "${cell.id}".`
       );
     }
+    const statistical = child.markConfigs[layer.id]?.statisticalReference;
+    if (statistical !== undefined) {
+      child = child._withMarkConfig(layer.id, {
+        ...child.markConfigs[layer.id],
+        statisticalReference: { ...statistical, dataId: data }
+      });
+    }
     child = child.rebindLayerData({ id: layer.id, data });
     child = applySharedHistogramBoundaries(
       child,

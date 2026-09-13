@@ -53,12 +53,20 @@ test("data references retain lower-chain parity and selection after resize and s
 test("Rule guide examples execute with complete Canvas setup and explicit field types", () => {
   const source = readFileSync(new URL("../../docs/api/marks/rule.md", import.meta.url), "utf8");
   const blocks = [...source.matchAll(/```javascript\n([\s\S]*?)```/g)].map(match => match[1]);
-  assert.equal(blocks.length, 2);
-  for (const [index, name] of ["threshold", "program"].entries()) {
+  assert.equal(blocks.length, 3);
+  for (const [index, name] of ["threshold", "program", "summarized"].entries()) {
     const code = blocks[index].replace('import { chart } from "ggaction";', "");
     const p = new Function("chart", `${code}\nreturn ${name};`)(chart);
-    const id = index === 0 ? "rule" : "referenceLine";
+    const id = index === 0 ? "rule" : index === 1 ? "referenceLine" : "mean";
     assert.equal(p.graphicSpec.objects[id].items.length, 1);
-    assert.ok(renderToSVG(p).includes(index === 0 ? "#dc2626" : "Target"));
+    const svg = renderToSVG(p);
+    assert.ok(index === 0
+        ? svg.includes("#dc2626")
+      : index === 1
+        ? svg.includes("Target")
+        : svg.includes("#94a3b8"));
+    if (index === 2) {
+      assert.equal(p.graphicSpec.objects["middle-half"].items.length, 1);
+    }
   }
 });

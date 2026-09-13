@@ -41,6 +41,12 @@ function ownedChildren(program, id) {
     program.semanticSpec.layers
       .filter(layer => layer.source === id)
       .map(layer => layer.id)
+  ).concat(
+    program.semanticSpec.layers
+      .filter(layer =>
+        program.markConfigs[layer.id]?.statisticalReference?.source === id
+      )
+      .map(layer => layer.id)
   ).filter(child => child !== undefined && child !== id && findLayer(program, child) !== undefined);
 }
 
@@ -48,6 +54,9 @@ function ownership(program) {
   const ownerByChild = new Map();
   for (const layer of program.semanticSpec.layers) {
     for (const child of ownedChildren(program, layer.id)) {
+      if (program.markConfigs[child]?.statisticalReference !== undefined) {
+        continue;
+      }
       ownerByChild.set(child, layer.id);
     }
   }
@@ -101,7 +110,8 @@ function ownedDerivedData(program, ids) {
       config.gradientPlot?.profileId,
       config.violinPlot?.materialized === true ? layer?.data : undefined,
       config.ecdfPlot?.data,
-      config.endpointPlot?.data
+      config.endpointPlot?.data,
+      config.statisticalReference?.dataId
     ]) {
       if (candidate !== undefined) candidates.add(candidate);
     }

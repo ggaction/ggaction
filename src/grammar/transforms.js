@@ -62,6 +62,8 @@ import {
   validateSummaryTransform
 } from "./summary.js";
 import { normalizeStackTransform, validateStackTransform } from "./stack.js";
+import { validateStatisticalReferenceTransform } from
+  "./statisticalReference.js";
 import { findTransformTopology } from "./transformTopology.js";
 
 function requestedTransform(transform) {
@@ -447,6 +449,13 @@ const TRANSFORM_POLICIES = Object.freeze({
       transform.as,
       ["start", "end", "value", "share"]
     )
+  }),
+  statisticalReference: Object.freeze({
+    ...findTransformTopology("statisticalReference"),
+    validate: validateStatisticalReferenceTransform,
+    materializeOp: "materializeStatisticalReferenceData",
+    replayTransform: requestedTransform,
+    outputRoles: () => ({})
   }),
   timeUnit: Object.freeze({
     ...findTransformTopology("timeUnit"),

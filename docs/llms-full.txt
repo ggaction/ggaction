@@ -6216,6 +6216,37 @@ the chart extent must stay fixed. For a position independent of the data range, 
 Plot y fractions increase from bottom to top. A plot band can use `x: [0.2, 0.6]` for 20%–60% of the width.
 Both resize with the Canvas. Existing data is required, but may be empty for plot references.
 
+Statistical references keep the same Rule and Rect editing surface while deriving their positions from a source mark:
+
+```javascript
+const summarized = chart()
+  .createCanvas({ width: 480, height: 320, margin: 40 })
+  .createData({ values: [{ x: 0, y: 3 }, { x: 1, y: 8 }, { x: 2, y: 13 }] })
+  .createPointMark({ id: "observations" })
+  .encodeX({ field: "x", fieldType: "quantitative" })
+  .encodeY({ field: "y", fieldType: "quantitative" })
+  .createReferenceLine({
+    id: "mean",
+    source: "observations",
+    axis: "y",
+    statistic: { op: "mean" }
+  })
+  .createReferenceBand({
+    id: "middle-half",
+    source: "observations",
+    axis: "y",
+    statistics: [
+      { op: "quantile", p: 0.25 },
+      { op: "quantile", p: 0.75 }
+    ]
+  });
+```
+
+The default `boundData` population ignores `filterMarks`. Choose `visibleItems` to recompute after mark filtering.
+Selections and highlights do not filter statistical populations. An omitted `field` follows the source axis after
+re-encoding; an explicit field remains fixed. Statistical values use the source scale but never expand its automatic
+domain. They recompute for source-data, encoding, scale, Canvas, and facet replay, and are removed with their source.
+
 Reference marks remain editable with ordinary mark, encoding, and scale actions. Refer to the
 [reference-line contract](./reference/actions/marks/#createreferenceline) and
 [reference-band contract](./reference/actions/marks/#createreferenceband) for binding, defaults, and removal behavior.

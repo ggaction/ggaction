@@ -106,6 +106,27 @@ async function testNodeConsumer(directory) {
     );
     assert.equal(typeof render, "function");
     assert.equal(program.graphicSpec.objects.point.items.length, 2);
+    const statisticalReferences = program
+      .createReferenceLine({
+        id: "packageMean",
+        source: "point",
+        axis: "y",
+        statistic: { op: "mean" }
+      })
+      .createReferenceBand({
+        id: "packageRange",
+        source: "point",
+        axis: "y",
+        statistics: [{ op: "min" }, { op: "max" }]
+      });
+    assert.deepEqual(
+      statisticalReferences.semanticSpec.datasets.find(dataset =>
+        dataset.id === "packageMean-statistical-reference-data"
+      ).values,
+      [{ value: 3 }]
+    );
+    assert.equal(statisticalReferences.graphicSpec.objects.packageMean.items.length, 1);
+    assert.equal(statisticalReferences.graphicSpec.objects.packageRange.items.length, 1);
     const atomic = program.encodeChannels({
       target: "point",
       channels: { x: { field: "y" }, y: { field: "x" } }
@@ -2142,6 +2163,8 @@ async function testTypeScriptConsumer(directory) {
       type EditFacetSourceOptions,
       type CreateDerivedDataOptions,
       type CreateScatterPlotOptions,
+      type CreateReferenceBandOptions,
+      type CreateReferenceLineOptions,
       type DatasetTransform,
       type JitterMaxOffset,
       type JitterPointsOptions,
@@ -2170,6 +2193,7 @@ async function testTypeScriptConsumer(directory) {
       type SummaryDataOptions,
       type StackDataOptions,
       type StatisticalWeight,
+      type ReferenceStatistic,
       type TimeUnitDataOptions,
       type ViolinPlotOptions,
       type WindowDataOptions,
@@ -2204,6 +2228,20 @@ async function testTypeScriptConsumer(directory) {
     program.encodeChannels(atomicOptions);
     // @ts-expect-error Atomic multi-channel encoding is Full only.
     basicChart().encodeChannels(atomicOptions);
+    const referenceStatistic: ReferenceStatistic = { op: "quantile", p: 0.5 };
+    const referenceLineOptions: CreateReferenceLineOptions = {
+      source: "point", axis: "y", statistic: referenceStatistic
+    };
+    const referenceBandOptions: CreateReferenceBandOptions = {
+      source: "point", axis: "y",
+      statistics: [{ op: "min" }, { op: "max" }]
+    };
+    program.createReferenceLine(referenceLineOptions);
+    program.createReferenceBand(referenceBandOptions);
+    // @ts-expect-error Dynamic reference lines use singular statistic.
+    program.createReferenceLine({ source: "point", axis: "y", statistics: [{ op: "mean" }] });
+    // @ts-expect-error Dynamic reference bands require exactly two statistics.
+    program.createReferenceBand({ source: "point", axis: "y", statistics: [{ op: "mean" }] });
     const coordinateOptions: EditCoordinateOptions = {
       target: "main",
       aspect: { mode: "frame", ratio: 1, alignX: "center" }
@@ -3775,6 +3813,7 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.a
       "offset-scale-editing",
       "stroke-color-encoding-and-legends",
       "atomic-channel-encoding",
+      "statistical-references",
       "coordinate-aspect-and-polar-frame-editing",
       "facet-grid-repeat-and-named-composition-editing",
       "horizon",

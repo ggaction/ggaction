@@ -655,8 +655,9 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 ## `createReferenceLine`
 
-- Signature: `createReferenceLine({ id?, x?, y?, space?, source?, data?, coordinate?, temporalUnit?, stroke?, strokeWidth?, strokeDash?, opacity? })`.
-- Aggregate create-only. 정확히 한 x/y 상수로 한 Rule을 만들고 반대 축 전체 plot bounds를 잇는다.
+- Literal signature: `createReferenceLine({ id?, x?, y?, space?, source?, data?, coordinate?, temporalUnit?, stroke?, strokeWidth?, strokeDash?, opacity? })`.
+- Statistical signature: `createReferenceLine({ id?, source, axis, statistic, population?, field?, stroke?, strokeWidth?, strokeDash?, opacity? })`.
+- Aggregate create-only. Literal branch는 정확히 한 x/y 상수로 한 Rule을 만들고 반대 축 전체 plot bounds를 잇는다.
   문자열은 field 이름이 아닌 literal datum이다. Source의 선택 축 scale/coordinate/data/fieldType/temporalUnit을
   사용한다. Data space가 기본이며 explicit source → current eligible → unique eligible Cartesian layer 순이다.
   선택 축 encoding/scale이 없는 source, source-owned Text와 polar/parallel source는 제외한다. 모호하면 명시적 source가 필요하다.
@@ -666,34 +667,54 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
   다른 definition 충돌 규칙도 그대로 따른다. Plot space의 source/temporalUnit과 data space의 data/coordinate는 오류다.
 - Data space의 temporalUnit은 source 기본값을 명시적으로 override할 수 있다. 참조 datum도 자동 도메인에
   기여한다. Source 도메인을 동결하거나 복제하지 않으며 explicit domain을 사용하면 범위를 고정할 수 있다.
+- Statistical branch는 non-reference Cartesian source mark ID, `axis: "x"|"y"`, 하나의 `statistic`을 요구한다.
+  `statistic`은 `{op:"mean"|"median"|"min"|"max"}` 또는 `{op:"quantile",p}`이고 p는 inclusive [0,1]이다.
+  `field` 생략은 source의 현재 axis field 역할을 매 replay마다 추적하며, 명시한 field는 source reencode 뒤에도 유지된다.
+  source axis는 quantitative field와 named scale을 가져야 한다. literal x/y/space/data/coordinate/temporalUnit과
+  statistical keys를 혼합하거나 line에 `statistics`를 쓰면 원자적으로 오류다.
+- `population` 기본 `boundData`는 현재 authoring dataset을 사용하되 source의 `filterMarks` 전용 wrapper만
+  provenance-transparent하게 역추적한다. `visibleItems`는 `filterMarks` 이후 최종 item grain에서 scalar를 읽는다.
+  selection/highlight는 두 population 모두 바꾸지 않는다. Line/Area/Parallel의 visible item scalar는 모호하므로 오류다.
+  missing/nonfinite/empty population은 오류다.
+- Statistical value는 `${id}-statistical-reference-data`라는 owned one-row dataset의 `value` field로 materialize된다.
+  requested recipe는 `markConfigs[id].statisticalReference`에 source/axis/population/field mode/statistics/dataId로 남는다.
+  이 datum은 source 자동 scale domain에 기여하지 않아 feedback cycle을 만들지 않는다. source reencode와 scale 변경,
+  derived data edit, mark filter, Canvas replay에서 다시 계산한다. source 제거는 reference와 owned dataset까지 제거한다.
+  facet child에서는 각 partition의 source data로 local statistic을 계산한다.
 - 기본 ID=`referenceLine`, stroke=#64748b, strokeWidth=1, strokeDash=dashed, opacity=1. 추가 unnamed role은 오류다.
   스타일은 RuleStyleOptions의 기존 검증과 하위 appearance encoders를 따른다.
-- 전체 하위 chain 사전 검증 후 createScale(plot only), createRuleMark, encodeX 또는 encodeY를 wrapped children으로 실행한다.
-  새 dataset·종속 source link·전용 registry를 만들지 않는다. Source를 나중에 다른 scale로 rebind하거나 제거해도
-  참조는 유지된다. 기존 공유 scale의 편집은 참조를 rematerialize한다. Canvas/margin 편집도 span을 다시 계산한다.
+- Literal branch는 전체 하위 chain 사전 검증 후 createScale(plot only), createRuleMark, encodeX 또는 encodeY를
+  wrapped children으로 실행한다. 새 dataset·종속 source link·전용 registry를 만들지 않으며 source rebind/removal과
+  독립적이다. 두 branch 모두 기존 공유 scale의 편집과 Canvas/margin 편집에서 span을 다시 계산한다.
 - 편집은 encodeX/Y/X2/Y2, editRuleMark, editScale, removeMark. 라벨은 createMarkLabels의 explicit value/field로 붙인다.
   removeMark는 label children을 제거하지만 일반 named scale은 유지한다. 편집한 plot scale이 원래 정의와 달라지면
   같은 ID로 재생성할 때 충돌한다. Full API 전용이며 Basic에는 없다.
 
 ### Formal values — `createReferenceLine`
 
-- Implemented: `createReferenceLine(options: CreateReferenceLineOptions)`; exclusive axis, data datum은 lower position datum,
-  plot datum은 UnitInterval, IDs는 UserId, temporalUnit은 auto/year/timestamp, style은 RuleStyleOptions.
+- Implemented: `createReferenceLine(options: CreateReferenceLineOptions)`; literal은 exclusive x/y와 data datum 또는
+  UnitInterval plot datum, dynamic은 source/axis와 `ReferenceStatistic`, optional population/field, style은 RuleStyleOptions.
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `createReferenceLine`
 
-- ✅ Covered: source inference/ambiguity, empty data, scalar/category/year/timestamp, domain contribution, log/reverse,
-  lower-chain trace, immutable errors, resize, labels, removal/recreation, styles, types, Full/Basic boundaries and PNG parity.
+- ✅ Covered: literal source inference/ambiguity, empty data, scalar/category/year/timestamp, domain contribution, log/reverse,
+  dynamic mean/quantile, bound/visible filter semantics, selection invariance, axis/field replay, domain exclusion, derived edits,
+  facet-local values, owned deletion, strict/atomic errors, lower-chain trace, resize, labels, styles, types, Full/Basic boundaries and PNG parity.
 - Evidence: `test/unit/actions/marks/references.test.js`, `test/contracts/reference-marks.test.js`,
-  `test/contracts/text-content-types.test.js`, `test/browser/package-consumer.browser.js`.
+  `test/contracts/statistical-references.test.js`, `test/contracts/text-content-types.test.js`,
+  `test/browser/package-consumer.browser.js`.
 
 ## `createReferenceBand`
 
-- Signature: `createReferenceBand({ id?, x?, y?, space?, source?, data?, coordinate?, temporalUnit?, fill?, opacity?, stroke?, strokeWidth? })`.
+- Literal signature: `createReferenceBand({ id?, x?, y?, space?, source?, data?, coordinate?, temporalUnit?, fill?, opacity?, stroke?, strokeWidth? })`.
+- Statistical signature: `createReferenceBand({ id?, source, axis, statistics, population?, field?, fill?, opacity?, stroke?, strokeWidth? })`.
 - createReferenceLine의 coordinate/data/source/scale/ID 충돌과 생명주기 규칙을 공유한다. 정확히 하나의
   x:[lower,upper] 또는 y:[lower,upper]를 받으며 data source는 quantitative/temporal 축만 가능하다.
   Plot endpoints는 각각 finite [0,1]. 뒤집힌 endpoint는 양의 Rect bounds, 같은 endpoint는 빈 collection이다.
+- Statistical branch는 정확히 두 `ReferenceStatistic`을 `statistics` tuple로 받는다. 계산값 lower<=upper를 요구하며
+  같으면 zero-width band로 허용하고 역전은 오류다. one-row dataset은 `lower`/`upper` field를 가진다. line의
+  population, field mode, scale-domain exclusion, replay, facet, source removal 규칙을 공유한다.
 - 기본 ID=`referenceBand`, fill=#94a3b8, opacity=.15, stroke=false. strokeWidth만 주면 false와 충돌하므로 색도 명시한다.
   스타일은 RectMarkOptions를 따른다. createScale(plot only), createRectMark, primary encodeX/Y, secondary encodeX2/Y2로
   내려간다. 하위 primary/secondary 전부 사전 검증하므로 두 번째 endpoint가 잘못되어도 partial trace가 없다.
@@ -702,16 +723,19 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 ### Formal values — `createReferenceBand`
 
-- Implemented: `createReferenceBand(options: CreateReferenceBandOptions)`; exclusive two-value axis tuple,
-  data는 quantitative/temporal datum pair, plot은 UnitInterval pair. Style은 RectMarkOptions, binding은 위 shared rules.
+- Implemented: `createReferenceBand(options: CreateReferenceBandOptions)`; literal은 exclusive two-value axis tuple과
+  quantitative/temporal datum pair 또는 UnitInterval pair, dynamic은 source/axis와 exact statistic pair를 쓴다.
+  Style은 RectMarkOptions, binding은 위 shared rules.
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `createReferenceBand`
 
-- ✅ Covered: both axes, data/plot, zero/reversed extent, exact two endpoints, invalid second endpoint atomicity,
-  categorical rejection, time/log/reverse, row independence, resize, lower-chain parity, highlighting, styles and PNG.
+- ✅ Covered: literal both axes, data/plot, zero/reversed extent, exact endpoints, invalid endpoint atomicity,
+  categorical rejection, time/log/reverse, dynamic exact quantiles and reversed-statistic rejection, row independence,
+  filter/selection/reencode/derived/facet/removal lifecycle, resize, lower-chain parity, highlighting, styles and PNG.
 - Evidence: `test/unit/actions/marks/references.test.js`, `test/contracts/reference-marks.test.js`,
-  `test/contracts/text-content-types.test.js`, `test/browser/package-consumer.browser.js`.
+  `test/contracts/statistical-references.test.js`, `test/contracts/text-content-types.test.js`,
+  `test/browser/package-consumer.browser.js`.
 
 ## `createMarkLabels`
 

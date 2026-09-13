@@ -18,6 +18,7 @@ const TRANSFORM_TOPOLOGY = Object.freeze({
   regression: Object.freeze({ facetTopology: "statistical" }),
   summary: Object.freeze({ facetTopology: "statistical" }),
   stack: Object.freeze({ facetTopology: "statistical" }),
+  statisticalReference: Object.freeze({ facetTopology: "statistical" }),
   timeUnit: Object.freeze({ facetTopology: "rowPreserving" }),
   window: Object.freeze({ facetTopology: "statistical" })
 });

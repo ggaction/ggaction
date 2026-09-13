@@ -7,6 +7,8 @@ import {
 import { BAR_GRAINS, resolveBarGrain } from "../bars/policy.js";
 import { planFacetDependencies } from "./dependencies.js";
 import { readNominalField } from "../scales/index.js";
+import { resolveRectMode } from "../rects.js";
+import { resolveRuleMode } from "../rules.js";
 
 const SUPPORTED_MARKS = new Set([
   "point", "line", "area", "bar", "rule", "tick", "rect"
@@ -39,10 +41,15 @@ function requireSupportedLayer(layer) {
       `facet requires bar mark "${layer.id}" to be a complete histogram, aggregate, or ranged bar.`
     );
   }
-  if (
-    layer.encoding?.x?.scale === undefined ||
-    layer.encoding?.y?.scale === undefined
-  ) {
+  const complete = (
+    layer.encoding?.x?.scale !== undefined &&
+    layer.encoding?.y?.scale !== undefined
+  ) || (
+    layer.mark.type === "rule" && resolveRuleMode(layer) !== undefined
+  ) || (
+    layer.mark.type === "rect" && resolveRectMode(layer) !== undefined
+  );
+  if (!complete) {
     throw new Error(
       `Facet layer "${layer.id}" must be a complete materializable Cartesian mark.`
     );

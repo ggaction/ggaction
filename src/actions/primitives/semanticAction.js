@@ -151,6 +151,26 @@ export function withPreviewDatasetValues(program, {
   return program._clone({ semanticSpec });
 }
 
+// Owned materializers may refresh a generated derived dataset at a stable ID.
+// Keep that privileged immutable transition inside the semantic primitive
+// boundary; public editSemantic still rejects every post-creation dataset edit.
+export function withRematerializedDerivedDataset(program, {
+  id,
+  source,
+  transform,
+  values
+}) {
+  const semanticSpec = {
+    ...program.semanticSpec,
+    datasets: program.semanticSpec.datasets.map(dataset =>
+      dataset.id === id
+        ? { ...dataset, source, transform: [transform], values }
+        : dataset
+    )
+  };
+  return program._clone({ semanticSpec });
+}
+
 // Final-state planners may need to remove mutually constrained roles before
 // replaying their canonical primitive owners. Keep that speculative clone in
 // the primitive boundary and preserve the caller's layer for later dependency

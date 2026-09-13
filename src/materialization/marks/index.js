@@ -36,6 +36,9 @@ export function getScaleConsumerMarkSteps(program, scaleIds) {
 }
 
 export function getMarkRematerializationStep(program, layer) {
+  if (program.markConfigs?.[layer.id]?.statisticalReference !== undefined) {
+    return { op: "rematerializeStatisticalReference", args: { id: layer.id } };
+  }
   if (program.markConfigs?.[layer.id]?.markFilter?.empty === true) {
     return { op: "materializeEmptyMark", args: { id: layer.id } };
   }
@@ -54,15 +57,18 @@ export function getMarkMaterializationStep(program, layer) {
 }
 
 export function getSourceDependentMarkSteps(program, sourceId) {
-  return (program.semanticSpec.layers ?? []).flatMap(layer =>
-    layer.source === sourceId &&
-    getMarkMaterializationPolicy(layer)?.sourceDependent === true
+  return (program.semanticSpec.layers ?? []).flatMap(layer => {
+    const sourceOwned = layer.source === sourceId &&
+      getMarkMaterializationPolicy(layer)?.sourceDependent === true;
+    const statistical = program.markConfigs?.[layer.id]
+      ?.statisticalReference?.source === sourceId;
+    return sourceOwned || statistical
       ? [getMarkMaterializationStep(program, layer) ??
           getExistingMarkRematerializationStep(program, layer)].filter(
           step => step !== undefined
         )
-      : []
-  );
+      : [];
+  });
 }
 
 export function getPositionEncodingMaterializationSteps(program, layer, scaleId) {

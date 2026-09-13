@@ -18,8 +18,7 @@ export {
   resolveSeriesLayoutScaleValues
 } from "./seriesLayout.js";
 
-export function resolveConsumerValues(program, consumer) {
-  const dataset = requireConsumerDataset(program, consumer);
+export function resolveConsumerValuesForDataset(program, consumer, dataset) {
   if (consumer.layer.mark.type === "rect") return resolveMarkFamilyConsumerValues(program, consumer, dataset).values;
   if (Object.hasOwn(consumer.encoding, "datum")) {
     if (consumer.layer.mark.type === "area") {
@@ -66,6 +65,14 @@ export function resolveConsumerValues(program, consumer) {
   return family.matched
     ? family.values
     : readConsumerFieldValues(program, consumer, dataset, scale);
+}
+
+export function resolveConsumerValues(program, consumer) {
+  return resolveConsumerValuesForDataset(
+    program,
+    consumer,
+    requireConsumerDataset(program, consumer)
+  );
 }
 
 export function resolveConsumerCategoryOrder(program, consumer) {

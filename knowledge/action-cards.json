@@ -4480,16 +4480,16 @@
       },
       "units": [
         {
+          "path": "temporalUnit",
+          "unit": "temporal-input"
+        },
+        {
           "path": "strokeWidth",
           "unit": "logical-pixel"
         },
         {
           "path": "opacity",
           "unit": "probability"
-        },
-        {
-          "path": "temporalUnit",
-          "unit": "temporal-input"
         }
       ],
       "inference": [
@@ -4524,6 +4524,41 @@
           "type": "string | undefined"
         },
         {
+          "name": "source",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "x",
+          "required": false,
+          "type": "unknown"
+        },
+        {
+          "name": "y",
+          "required": false,
+          "type": "unknown"
+        },
+        {
+          "name": "space",
+          "required": false,
+          "type": "\"data\" | \"plot\" | undefined"
+        },
+        {
+          "name": "data",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "coordinate",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "temporalUnit",
+          "required": false,
+          "type": "TemporalInputUnit | undefined"
+        },
+        {
           "name": "stroke",
           "required": false,
           "type": "string | undefined"
@@ -4544,39 +4579,24 @@
           "type": "number | undefined"
         },
         {
-          "name": "space",
+          "name": "axis",
           "required": false,
-          "type": "\"data\" | \"plot\" | undefined"
+          "type": "\"x\" | \"y\""
         },
         {
-          "name": "source",
+          "name": "population",
+          "required": false,
+          "type": "\"boundData\" | \"visibleItems\" | undefined"
+        },
+        {
+          "name": "field",
           "required": false,
           "type": "string | undefined"
         },
         {
-          "name": "temporalUnit",
+          "name": "statistic",
           "required": false,
-          "type": "TemporalInputUnit | undefined"
-        },
-        {
-          "name": "data",
-          "required": false,
-          "type": "string | undefined"
-        },
-        {
-          "name": "coordinate",
-          "required": false,
-          "type": "string | undefined"
-        },
-        {
-          "name": "x",
-          "required": false,
-          "type": "unknown"
-        },
-        {
-          "name": "y",
-          "required": false,
-          "type": "unknown"
+          "type": "ReferenceStatistic"
         }
       ],
       "callPatterns": [
@@ -4640,16 +4660,16 @@
       },
       "units": [
         {
+          "path": "temporalUnit",
+          "unit": "temporal-input"
+        },
+        {
           "path": "opacity",
           "unit": "probability"
         },
         {
           "path": "strokeWidth",
           "unit": "logical-pixel"
-        },
-        {
-          "path": "temporalUnit",
-          "unit": "temporal-input"
         }
       ],
       "inference": [
@@ -4684,6 +4704,41 @@
           "type": "string | undefined"
         },
         {
+          "name": "source",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "x",
+          "required": false,
+          "type": "readonly [unknown, unknown] | readonly [number, number] | undefined"
+        },
+        {
+          "name": "y",
+          "required": false,
+          "type": "readonly [unknown, unknown] | readonly [number, number] | undefined"
+        },
+        {
+          "name": "space",
+          "required": false,
+          "type": "\"data\" | \"plot\" | undefined"
+        },
+        {
+          "name": "data",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "coordinate",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "temporalUnit",
+          "required": false,
+          "type": "TemporalInputUnit | undefined"
+        },
+        {
           "name": "fill",
           "required": false,
           "type": "string | undefined"
@@ -4704,39 +4759,24 @@
           "type": "number | undefined"
         },
         {
-          "name": "space",
+          "name": "axis",
           "required": false,
-          "type": "\"data\" | \"plot\" | undefined"
+          "type": "\"x\" | \"y\""
         },
         {
-          "name": "source",
+          "name": "population",
+          "required": false,
+          "type": "\"boundData\" | \"visibleItems\" | undefined"
+        },
+        {
+          "name": "field",
           "required": false,
           "type": "string | undefined"
         },
         {
-          "name": "temporalUnit",
+          "name": "statistics",
           "required": false,
-          "type": "TemporalInputUnit | undefined"
-        },
-        {
-          "name": "data",
-          "required": false,
-          "type": "string | undefined"
-        },
-        {
-          "name": "coordinate",
-          "required": false,
-          "type": "string | undefined"
-        },
-        {
-          "name": "x",
-          "required": false,
-          "type": "readonly [unknown, unknown] | readonly [number, number] | undefined"
-        },
-        {
-          "name": "y",
-          "required": false,
-          "type": "readonly [unknown, unknown] | readonly [number, number] | undefined"
+          "type": "readonly [ReferenceStatistic, ReferenceStatistic]"
         }
       ],
       "callPatterns": [

@@ -22,7 +22,8 @@ const OWNED_MARK_ROLES = Object.freeze([
   "errorBar",
   "gradientPlot",
   "ecdfPlot",
-  "regression"
+  "regression",
+  "statisticalReference"
 ]);
 
 export const createDerivedData = action(

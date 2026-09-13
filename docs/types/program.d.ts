@@ -801,6 +801,10 @@ export interface DatasetStackTransform {
   readonly mode: StackDataMode;
   readonly as: Required<StackDataOutputFields>;
 }
+interface DatasetStatisticalReferenceTransform {
+  readonly type: "statisticalReference";
+  readonly target: string;
+}
 export type DatasetTransform =
   | DatasetBinTransform
   | DatasetBin2DTransform
@@ -817,12 +821,13 @@ export type DatasetTransform =
   | DatasetIntervalTransform
   | DatasetSummaryTransform
   | DatasetStackTransform
+  | DatasetStatisticalReferenceTransform
   | DatasetTimeUnitTransform
   | DatasetWindowTransform;
 type RequestedTransform<T> = T extends unknown ? Omit<T, "resolved"> : never;
 export type RequestedDatasetTransform = RequestedTransform<Exclude<
   DatasetTransform,
-  DatasetHorizonTransform
+  DatasetHorizonTransform | DatasetStatisticalReferenceTransform
 >>;
 export type DerivedDataDependents = "reject" | "recompute";
 export interface EditDerivedDataOptions {
@@ -3894,10 +3899,33 @@ type ReferenceBinding<DataValue, PlotValue> =
   | ({ space: "plot"; data?: string; coordinate?: string;
        source?: never; temporalUnit?: never } & ReferenceAxis<PlotValue>);
 
-export type CreateReferenceLineOptions = { id?: string } & RuleStyleOptions &
-  ReferenceBinding<unknown, number>;
-export type CreateReferenceBandOptions = Omit<RectMarkOptions, "data"> &
-  ReferenceBinding<readonly [unknown, unknown], readonly [number, number]>;
+export type ReferenceStatistic =
+  | { readonly op: "mean" | "median" | "min" | "max"; readonly p?: never }
+  | { readonly op: "quantile"; readonly p: number };
+type DynamicReferenceBinding = {
+  readonly id?: string;
+  readonly source: string;
+  readonly axis: "x" | "y";
+  readonly population?: "boundData" | "visibleItems";
+  readonly field?: string;
+  readonly x?: never;
+  readonly y?: never;
+  readonly space?: never;
+  readonly data?: never;
+  readonly coordinate?: never;
+  readonly temporalUnit?: never;
+};
+export type CreateReferenceLineOptions =
+  | ({ id?: string } & RuleStyleOptions & ReferenceBinding<unknown, number>)
+  | (DynamicReferenceBinding & RuleStyleOptions & {
+      readonly statistic: ReferenceStatistic;
+    });
+export type CreateReferenceBandOptions =
+  | (Omit<RectMarkOptions, "data"> &
+      ReferenceBinding<readonly [unknown, unknown], readonly [number, number]>)
+  | (DynamicReferenceBinding & Omit<RectMarkOptions, "id" | "data" | "source"> & {
+      readonly statistics: readonly [ReferenceStatistic, ReferenceStatistic];
+    });
 
 export type StrokeWidthEncodingOptions =
   | {

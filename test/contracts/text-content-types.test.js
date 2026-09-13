@@ -16,7 +16,7 @@ test("text content and precision types match their runtime vocabularies", async 
     const paddedCalls = [...Array(10).keys()].flatMap(precision => ["f", "%", "e"].map(suffix =>
       `p.encodeText({ value: 0.125, format: ".0${precision}${suffix}" });`));
     await writeFile(file, `
-import type { ChartProgram, TextEncodingOptions, DatumPositionEncodingOptions, CreateMarkLabelsOptions, EditMarkLabelPlacementOptions, EditMarkLabelSelectionOptions, MarkLabelPlacement, RemoveMarkLabelsOptions, CreateAnnotationOptions, CreateReferenceLineOptions, CreateReferenceBandOptions, RotationInput } from ${JSON.stringify(path.join(root, "types/index.js"))};
+import type { ChartProgram, TextEncodingOptions, DatumPositionEncodingOptions, CreateMarkLabelsOptions, EditMarkLabelPlacementOptions, EditMarkLabelSelectionOptions, MarkLabelPlacement, RemoveMarkLabelsOptions, CreateAnnotationOptions, ReferenceStatistic, CreateReferenceLineOptions, CreateReferenceBandOptions, RotationInput } from ${JSON.stringify(path.join(root, "types/index.js"))};
 import type { BasicChartProgram } from ${JSON.stringify(path.join(root, "types/basic.js"))};
 declare const p: ChartProgram;
 declare const basic: BasicChartProgram;
@@ -84,6 +84,17 @@ const referenceBand: CreateReferenceBandOptions = { space: "plot", x: [0.2, 0.6]
 p.createReferenceLine(referenceLine);
 p.createReferenceBand(referenceBand);
 p.createReferenceLine({ x: "2021-01-01", temporalUnit: "timestamp" });
+const statistic: ReferenceStatistic = { op: "quantile", p: 0.5 };
+p.createReferenceLine({ source: "bars", axis: "y", statistic });
+p.createReferenceBand({ source: "bars", axis: "y", field: "value", statistics: [{ op: "min" }, { op: "max" }] });
+// @ts-expect-error Dynamic and literal bindings are exclusive.
+p.createReferenceLine({ source: "bars", axis: "y", y: 5, statistic: { op: "mean" } });
+// @ts-expect-error Lines take one statistic.
+p.createReferenceLine({ source: "bars", axis: "y", statistics: [{ op: "mean" }, { op: "max" }] });
+// @ts-expect-error Bands take exactly two statistics.
+p.createReferenceBand({ source: "bars", axis: "y", statistics: [{ op: "mean" }] });
+// @ts-expect-error Simple statistics do not accept p.
+p.createReferenceLine({ source: "bars", axis: "y", statistic: { op: "mean", p: 0.5 } });
 const textDatum: DatumPositionEncodingOptions = { datum: 8, scale: { domain: [0, 10] } };
 p.createTextMark({ data: "data", text: "note" }).encodeX(textDatum).encodeY({ datum: "B", fieldType: "nominal" });
 const explicitRotation: RotationInput = { value: 90, unit: "degrees" };

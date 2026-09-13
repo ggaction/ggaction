@@ -2,8 +2,8 @@
 
 These actions may appear in traces but are not public direct actions or primitives.
 
-현재 등록된 wrapped method는 direct 272개와 internal 117개로 분리된다. 두 집합은 겹치지 않고 합집합은
-등록된 389개 전체와 같다. [`../ACTION_INDEX.json`](../ACTION_INDEX.json)이 목록을 소유하며,
+현재 등록된 wrapped method는 direct 272개와 internal 119개로 분리된다. 두 집합은 겹치지 않고 합집합은
+등록된 391개 전체와 같다. [`../ACTION_INDEX.json`](../ACTION_INDEX.json)이 목록을 소유하며,
 `test/contracts/action-catalog.test.js`는 wrapper metadata로 runtime을 읽어 누락·중복·orphan과 각 owner 표의 누락을 검사한다.
 
 ## Internal materialization inventory
@@ -38,6 +38,7 @@ domain action을 통해서만 실행한다.
 | `materializeRegressionData` | regression data actions |
 | `materializeSummaryData` | grouped summary data actions |
 | `materializeStackData` | reusable category/series stack data actions |
+| `materializeStatisticalReferenceData` | dynamic reference generated data |
 | `materializeTimeUnitData` | time-unit data actions |
 | `materializeWindowData` | window data actions |
 | `materializeRuleSpan` | error-bar cap components and rule rematerialization |
@@ -76,6 +77,7 @@ domain action을 통해서만 실행한다.
 | `rematerializeScale` | scale-owning encoding and Canvas actions |
 | `rematerializeSideLegendLane` | left/right categorical legend lane packing and Canvas actions |
 | `rematerializeSizeLegend` | point size legend, scale, and Canvas actions |
+| `rematerializeStatisticalReference` | dynamic reference source, filter, scale, Canvas, and facet lifecycle |
 | `rematerializeStrokeWidthLegend` | line/rule stroke-width legend, scale, and Canvas actions |
 | `rematerializeThetaGrid` | theta grid, scale, and Canvas actions |
 | `rematerializeTextMark` | text mark, position, content, and appearance actions |
