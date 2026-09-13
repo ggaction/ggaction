@@ -23,7 +23,7 @@
 
 ## 반드시 읽을 계약
 
-[상세 구현 진입점](../IMPLEMENTATION_SPEC.md), [제안 정정 기록](../CONTRACT_RESOLUTIONS.md), [구현 연결표](../IMPLEMENTATION_MAP.json), [고정 인수 사례](../ACCEPTANCE_CASES.json)를 사용한다. 해당 Phase의 각 feature에서 구현 고정 명세를 적용하고 case ID를 실제 결과 원장에 연결한다.
+[상세 구현 진입점](../IMPLEMENTATION_SPEC.md), [Phase 10–12 무추론 명세](../LOW_INFERENCE_IMPLEMENTATION_SPEC.md#7-phase-12--전체-통합과-main-merge-전-closeout), [제안 정정 기록](../CONTRACT_RESOLUTIONS.md), [구현 연결표](../IMPLEMENTATION_MAP.json), [고정 인수 사례](../ACCEPTANCE_CASES.json)를 사용한다. 해당 Phase의 각 feature에서 구현 고정 명세를 적용하고 case ID를 실제 결과 원장에 연결한다.
 
 선택 25개 전체의 최종 통합. 신규 기능 추가는 없다.
 

@@ -237,7 +237,7 @@ export type EditFacetHeadersOptions = C.EditFacetHeadersOptions & {
 );
 export type FacetScaleResolutions = C.FacetScaleResolutions & {
   theta?: C.FacetScaleResolution; r?: C.FacetScaleResolution;
-  stroke?: C.FacetScaleResolution; parallelDimensions?: C.FacetScaleResolution;
+  parallelDimensions?: C.FacetScaleResolution;
 };
 export type RepeatChartsOptions = Omit<C.RepeatChartsOptions, "channel" | "scales"> & {
   channel: "x" | "y" | "theta" | "r" | { parallelDimension: string };

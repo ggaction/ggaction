@@ -1,6 +1,6 @@
 # Roadmap 7 — 구현 상세 스펙 진입점
 
-작성 기준: 2026-09-13, 원래 코드 baseline c0e47da6e213852213bcb04eb19031a1a6a63cd7, 문서 작업 시작 revision 3b61e789. 상태: **승인된 실행 계약 / Phase 0–8 완료, Phase 9 진행 중**. 이 파일은 선택된 25개 기능을 작은 작업으로 구현할 때의 공통 실행 규약이다. 단계별 기계적인 작업과 종료 조건은 [EXECUTION_RUNBOOK.md](EXECUTION_RUNBOOK.md), 정확한 기능별 계약은 `features/*.md`가 소유한다. 구현자가 계약을 스스로 보완할 수 없는 경우에는 [LOW_INFERENCE_IMPLEMENTATION_SPEC.md](LOW_INFERENCE_IMPLEMENTATION_SPEC.md)와 [상세 작업 패킷의 무추론 실행 규약](DETAILED_IMPLEMENTATION_WORK_PACKAGES.md#저성능-구현-모델을-위한-무추론-실행-규약)의 함수·state·transition·fixture 순서를 그대로 따른다.
+작성 기준: 2026-09-13, 원래 코드 baseline c0e47da6e213852213bcb04eb19031a1a6a63cd7, 문서 작업 시작 revision 3b61e789. 상태: **승인된 실행 계약 / Phase 0–8 완료, Phase 9 제품 checkpoint 후 closeout 진행 중**. R47은 `ce286929`, R49는 `0e09691a`–`31a2eee9`에 제품·renderer·declaration checkpoint가 있고 lifecycle·Current/docs/package closeout은 아직 남아 있다. 이 파일은 선택된 25개 기능을 작은 작업으로 구현할 때의 공통 실행 규약이다. 단계별 기계적인 작업과 종료 조건은 [EXECUTION_RUNBOOK.md](EXECUTION_RUNBOOK.md), 정확한 기능별 계약은 `features/*.md`가 소유한다. 구현자가 계약을 스스로 보완할 수 없는 경우에는 [LOW_INFERENCE_IMPLEMENTATION_SPEC.md](LOW_INFERENCE_IMPLEMENTATION_SPEC.md)와 [상세 작업 패킷의 무추론 실행 규약](DETAILED_IMPLEMENTATION_WORK_PACKAGES.md#저성능-구현-모델을-위한-무추론-실행-규약)의 함수·state·transition·fixture 순서를 그대로 따른다.
 
 ## 문서 읽는 순서와 권위
 

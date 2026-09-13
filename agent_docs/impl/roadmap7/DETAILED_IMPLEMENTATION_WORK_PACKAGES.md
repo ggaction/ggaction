@@ -1,6 +1,6 @@
 # Roadmap 7 — 상세 구현 작업 패킷
 
-작성 기준: 2026-09-13. 현재 branch `codex/roadmap7-authoring-refinement`, 마지막 제품 구현 checkpoint `20a25911`이다. 이 문서는 이미 승인된 Roadmap 7을 구현자가 기능 단위로 끝까지 실행하기 위한 **작업 분해와 종료 절차**다. Phase 8 이후의 함수·state·transition·test를 한 문서에서 기계적으로 실행하려면 [무추론 구현 명세](LOW_INFERENCE_IMPLEMENTATION_SPEC.md)를 함께 따른다. 공개 API의 정확한 의미·수식·기본값은 각 `features/*.md`가 canonical owner이며, 이 문서는 그 계약을 어느 파일에 어떤 순서로 구현하고 무엇으로 검증할지를 소유한다.
+작성 기준: 2026-09-13. 현재 branch `codex/roadmap7-authoring-refinement`, Phase 8 완료 checkpoint `20a25911`, R47 제품 checkpoint `ce286929`, R49 제품·renderer·declaration checkpoint `0e09691a`–`31a2eee9`다. 이 문서는 이미 승인된 Roadmap 7을 구현자가 기능 단위로 끝까지 실행하기 위한 **작업 분해와 종료 절차**다. R49 lifecycle·Current/docs/package closeout 전에는 Phase 9를 완료로 기록하지 않는다. Phase 8 이후의 함수·state·transition·test를 한 문서에서 기계적으로 실행하려면 [무추론 구현 명세](LOW_INFERENCE_IMPLEMENTATION_SPEC.md)를 함께 따른다. 공개 API의 정확한 의미·수식·기본값은 각 `features/*.md`가 canonical owner이며, 이 문서는 그 계약을 어느 파일에 어떤 순서로 구현하고 무엇으로 검증할지를 소유한다.
 
 ## 1. 현재 상태와 실행 경계
 
@@ -26,6 +26,8 @@
 | R37 exact sampled legend values | Implemented-primary | `8760111d`, 시각 증거 `547eae1b` | R38 block selector와 R43/R47 소비 회귀 |
 | R38 channel-targeted legend block edit | Implemented-primary | `7ffafe02` | R19/R39/R43/R47 소비 회귀 |
 | R39 typed display names와 facet header strips | Implemented-primary | `20a25911` | R43/R47 소비 회귀 |
+| R47 custom theme | 제품 checkpoint, closeout 증거 있음 | `ce286929` | R49 결합 lifecycle과 R43 consumer 회귀 |
+| R49 shape style details | 제품·renderer·declaration checkpoint, closeout 미완료 | `0e09691a`–`31a2eee9` | lifecycle·Current/docs/package 후 Phase 9 closeout |
 
 완료 checkpoint의 pure core나 public API를 다른 이름으로 다시 만들지 않는다. 후속 기능이 새 consumer를 추가할 때 기존 owner에 consumer path와 regression만 보강한다.
 
@@ -33,7 +35,7 @@
 
 순서는 의존성 계약이다. 같은 번호의 소단계는 위에서 아래로 수행한다.
 
-1. Phase 9: R47 → R49 → renderer/style 통합. Phase 8은 완료 checkpoint다.
+1. Phase 9: 기존 R47/R49 제품 코드는 보존하고 R49 lifecycle → Current/docs/package → Phase 상태 closeout만 수행한다.
 2. Phase 10: R43 family matrix 전체.
 3. Phase 11: R25 reference registry와 안전 삭제.
 4. Phase 12: 25개 기능의 전체 lifecycle·metadata·package closeout.
@@ -67,8 +69,8 @@ R19, R27, R29의 완료 checkpoint를 다시 구현하지 않는다. R43을 좌�
 | R38 | combined legend block edit | Implemented-primary (`7ffafe02`) | 완료 checkpoint + WP8.3/WP10/WP12 |
 | R39 | typed display names·header strips | Implemented-primary (`20a25911`) | 완료 checkpoint + WP9/WP10/WP12 |
 | R43 | Polar/Parallel facet·repeat | Proposed | WP10 |
-| R47 | custom theme·descendant propagation | Proposed | WP9.1 |
-| R49 | corner/cap/join style | Proposed | WP9.2 |
+| R47 | custom theme·descendant propagation | 제품 checkpoint `ce286929`; Phase closeout 전 | WP9.1 + WP9.2 lifecycle |
+| R49 | corner/cap/join style | 제품 checkpoint `31a2eee9`; closeout 미완료 | WP9.2 |
 
 ## 2. 모든 작업 패킷의 공통 절차
 
@@ -689,7 +691,7 @@ Canonical behavior: [R43](features/43-polar-parallel-facets.md), canonical matri
 
 ### WP10.2 — family domain resolver
 
-1. `src/grammar/facets/scales.js`에 theta/r/stroke/parallelDimensions shared/independent를 추가한다. 기본은 shared다.
+1. `src/grammar/facets/scales.js`에 theta/r/parallelDimensions shared/independent를 추가하고 기존 stroke binding을 non-Cartesian family에서도 수집한다. facet/facetGrid 기본은 shared이고 repeat의 교체 역할 기본은 기존 x/y처럼 independent다.
 2. shared numeric domain은 각 panel의 local effective values union, categorical은 typed-key ordered union이다.
 3. Parallel domain은 dimension field별이다. 서로 다른 dimension의 값을 한 extent로 합치지 않는다.
 4. shared 의미 domain과 child-local pixel range/coordinate frame을 분리한다.
@@ -733,7 +735,7 @@ Canonical behavior: [R25](features/25-remove-resources.md).
 
 ### WP11.1 — reference registry
 
-1. 신규 `src/core/resourceReferences.js`에 `collectResourceReferences(program,{kind,id})`를 둔다.
+1. 신규 `src/core/resourceReferences.js`에 `collectResourceReferences(program,{kind,id})`와 owner-relative canonical path formatter를 둔다.
 2. 각 owner module은 known schema의 typed reference edge만 반환한다. semantic 전체 문자열 검색은 금지한다.
 3. edge는 `kind,id,ownerKind,ownerId,path,strength`를 포함한다. 정렬은 ownerKind→ownerId→canonical path다.
 4. historical trace는 제외한다. replay용 retained source/template는 live다. context current pointer는 context strength다.

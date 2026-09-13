@@ -1,8 +1,8 @@
 # Roadmap 7 — 무추론 구현 명세
 
-작성 기준: 2026-09-13. 기준 branch `codex/roadmap7-authoring-refinement`, 마지막 완료 제품 checkpoint `20a25911`, R37 시각 증거 checkpoint `547eae1b`.
+작성 기준: 2026-09-13. 기준 branch `codex/roadmap7-authoring-refinement`. Phase 8 완료 checkpoint는 `20a25911`, R47 제품 checkpoint는 `ce286929`, R49 제품·renderer·declaration checkpoint는 `0e09691a`–`31a2eee9`다. R49 lifecycle·Current/docs/package closeout 전에는 Phase 9 완료로 기록하지 않는다.
 
-이 문서는 구현자가 설계를 새로 해석하지 않고 남은 Roadmap 7을 실행하도록 만든 코드 수준 명세다. 공개 의미·기본값·수식은 각 `features/*.md`가 소유하고, 이 문서는 **수정 파일, 함수 경계, 상태 경로, 실행 순서, 삭제 규칙, 테스트 묶음과 종료 조건**을 소유한다. 두 문서가 다르면 feature 계약을 따르고 같은 checkpoint에서 이 문서를 고친다. 완료된 R02/R05/R06/R07/R08/R09/R10/R19/R20/R21/R22/R23/R27/R29/R31/R32/R33/R36/R37/R38/R39는 다시 구현하지 않는다. R31/R32/R33/R37/R38/R39의 facet/repeat·theme 소비 cell만 R43/R47에서 현재 action을 consumer로 검증한다.
+이 문서는 구현자가 설계를 새로 해석하지 않고 남은 Roadmap 7을 실행하도록 만든 코드 수준 명세다. 공개 의미·기본값·수식은 각 `features/*.md`가 소유하고, 이 문서는 **수정 파일, 함수 경계, 상태 경로, 실행 순서, 삭제 규칙, 테스트 묶음과 종료 조건**을 소유한다. 두 문서가 다르면 feature 계약을 따르고 같은 checkpoint에서 이 문서를 고친다. 완료된 R02/R05/R06/R07/R08/R09/R10/R19/R20/R21/R22/R23/R27/R29/R31/R32/R33/R36/R37/R38/R39와 이미 push된 R47/R49 제품 코드는 다시 구현하지 않는다. R49 closeout은 누락된 lifecycle·계약·문서·package 증거만 보강한다. R31/R32/R33/R37/R38/R39/R47/R49의 non-Cartesian facet/repeat 소비 cell은 R43에서 현재 action을 consumer로 검증한다.
 
 ## 1. 구현자가 지켜야 할 실행 형식
 
@@ -558,185 +558,453 @@ custom theme의 mark/text/highlight tokens, R38 block override, R39 header/font,
 
 ## 5. Phase 10 — R43 non-Cartesian facet/repeat
 
-R43은 한 family가 성공하면 끝나는 기능이 아니다. 아래 7개 family 각각에 facet, facetGrid, source replay, local coordinate, supported guide, renderer evidence가 있어야 한다.
+### 현재 코드 기준선과 먼저 제거할 오해
 
-```text
-Polar Point, Polar Line, Arc, Pie, Rose, Radar, ParallelCoordinates
+이 절의 경로와 함수 이름은 `31a2eee9` 이후 source를 기준으로 한다. 구현자는 아래 현재 동작을 먼저 재현한 뒤 변경한다.
+
+- `src/grammar/facets/index.js`의 `requireSupportedLayer`는 x/y Cartesian 완성도를 요구하고 Arc·Polar·Parallel을 거부한다.
+- `src/actions/facets/actions.js`의 `resolveRepeatDefinition`은 `"x" | "y"`, 직접 Cartesian mark 하나, transform 없는 dataset만 허용한다.
+- `src/core/vocabulary.js`의 `FACET_SCALE_CHANNELS`에는 theta/radius와 Parallel dimension policy가 없다. `stroke`는 이미 있으므로 새 channel처럼 다시 구현하지 않는다.
+- `src/actions/facets/derive.js`는 빈 partition에서 source mark를 삭제한다. R43에서는 panel/header와 source recipe를 보존해야 하므로 이 branch를 유지하면 실패다.
+- `src/materialization/facetGuides/placement.js`는 x/y axis만 child ownership 대상으로 본다. Polar/Parallel axis를 outer로 승격하는 코드를 추가하지 않는다.
+- `compositionSpec.facet`이 field/grid/repeat/scales/guides를 보존하고 `children`이 실제 child program을 보존한다. 별도 serialized source snapshot을 중복 추가하지 않는다.
+
+R43은 위 제한을 단순히 지우는 작업이 아니다. family 판정, partition/replay, scale-domain resolution, local coordinate, guide ownership을 같은 transaction에서 완성해야 한다.
+
+### 공개 타입과 canonical 저장 형태
+
+제품 선언은 `types/program.d.ts`의 기존 타입을 아래처럼 확장한다. `stroke`는 기존 field를 그대로 사용한다.
+
+```ts
+export interface FacetScaleResolutions {
+  // existing x/y/xOffset/yOffset/color/stroke/size/shape/opacity/strokeDash
+  theta?: "shared" | "independent";
+  r?: "shared" | "independent";
+  parallelDimensions?: "shared" | "independent";
+}
+
+export type RepeatChannel =
+  | "x"
+  | "y"
+  | "theta"
+  | "r"
+  | { readonly parallelDimension: string };
 ```
 
-### public option normalization
+규칙은 다음과 같다.
 
-1. `FacetScaleResolutions`에 `theta`, `r`, `stroke`, `parallelDimensions`를 추가한다. 값은 shared/independent다. 새 기본은 shared다.
-2. public alias는 `r` 하나다. `radius`를 동시에 또는 별도 public key로 받지 않는다. 내부에서는 semantic radius channel로 한 번 정규화한다.
-3. `repeatCharts.channel`은 기존 x/y에 `theta`, `r`, `{parallelDimension:string}`을 추가한다.
-4. repeat fields는 nonempty unique field names다. 2D repeat, facet values edit, cell override를 추가하지 않는다.
-5. existing target inference가 정확히 하나의 eligible layer를 결정할 때만 생략을 허용한다. 새 family 때문에 first-match 추론을 만들지 않는다.
+1. public key는 `r` 하나다. `scales.radius`, repeat channel `"radius"`, `{parallelDimension:""}`는 type과 runtime 모두 거부한다.
+2. `compositionSpec.facet.scales`에는 public round-trip 형태인 `r`를 저장한다. layer 조회와 scale binding에서만 `r -> radius`로 한 번 변환한다. 동일 object에 `r`와 `radius`를 같이 저장하지 않는다.
+3. facet/facetGrid의 새 policy 기본값은 shared다. repeatCharts는 기존 x/y 동작처럼 **교체되는 역할 하나만** 명시 요청이 없을 때 independent로 덮어쓴다. 다른 channel 기본은 shared다.
+4. `parallelDimensions`는 v1에서 모든 dimension에 적용되는 단일 policy다. dimension별 policy map을 받지 않는다.
+5. `compositionSpec.facet.repeat.channel`은 string 또는 frozen `{parallelDimension}` object를 그대로 보존한다. resolved dimension index를 requested state로 저장하지 않는다.
 
-### 파일별 작업
+`src/core/vocabulary.js`에는 public option key와 semantic scale binding을 분리한다.
 
-1. `src/grammar/facets/dependencies.js`
-   - layer encoding의 theta/r/stroke scale을 수집한다.
-   - Parallel `dimensions[].scale`, coordinate, attached labels/selection, dynamic references, legend blocks/sampling/map, theme/style requested refs를 typed descriptor로 수집한다.
-   - replay DAG를 row-preserving transform과 statistical transform 단계로 구분한다.
-2. `src/actions/facets/derive.js`
-   - current `deriveCellProgram`의 early empty-mark deletion을 family-aware empty materialization으로 바꾼다.
-   - raw source partition → row-preserving replay → statistical replay → layer rebind 순서를 지킨다.
-   - graphic crop/clone을 쓰지 않는다.
-3. `src/grammar/facets/scales.js`
-   - theta/r/stroke/parallel dimension domain resolver를 추가한다.
-   - shared semantic domain과 child-local pixel range를 다른 object/path로 보존한다.
-4. `src/actions/facets/actions.js`
-   - family eligibility와 repeat role substitution을 closed switch로 구현한다.
-   - 모든 requested field/type/role compatibility를 child ID 생성 전에 검사한다.
-5. `src/actions/facets/replay.js`
-   - retained source와 child provenance mapping을 사용해 source edit/Canvas/theme 후 같은 6단계 pipeline을 재실행한다.
-6. `src/actions/facets/guides.js`, `src/materialization/facetGuides/*`, `src/materialization/facets.js`
-   - non-Cartesian axes/grids는 per-panel internal만 허용한다.
-   - compatible shared categorical/size/stroke legend와 R37/R38/R39 content를 parent에 조합한다.
-7. `src/grammar/parallelCoordinates.js`
-   - dimension list/order/type/scale compatibility와 dimension별 domain을 독립적으로 해결한다.
+```js
+FACET_SCALE_OPTION_KEYS = [
+  "x", "y", "xOffset", "yOffset", "theta", "r",
+  "color", "stroke", "size", "shape", "opacity", "strokeDash",
+  "parallelDimensions"
+];
 
-### 정확한 child pipeline
+facetSemanticChannel("r") === "radius";
+```
 
-각 public facet/facetGrid/repeat 호출은 모든 child를 private candidate로 만든 뒤 한 번에 commit한다.
+기존 `FACET_SCALE_CHANNELS`를 public key 목록으로 재정의하거나 위 별도 상수를 추가할 수 있지만, `layer.encoding.r`를 읽는 구현은 금지한다. `editFacetScales` unknown/applicability 검사, `usedFacetScalePolicies`, `normalizeFacetScalePolicies`가 같은 상수와 adapter를 사용해야 한다.
 
-1. retained source에서 source-grain data와 provenance DAG를 resolve한다.
-2. partition key를 typed identity로 group하고 requested values/combinations order를 보존한다.
-3. 각 partition에서 row-preserving transforms를 실행한 다음 statistical transforms를 topology 순서로 실행한다.
-4. 모든 child local outputs를 확보한 뒤 shared/independent domains를 계산한다.
-5. child local Canvas/plot allocation을 만들고 R27 aspect, R29 Polar frame, position range를 순서대로 resolve한다.
-6. mark/series/path → R32 selection membership → R33 labels → local guides → shared-compatible legend → R39 header strips → R47 theme/R49 style → parent placement 순서로 materialize한다.
-7. semantic/config/graphic IDs를 namespace map으로 다시 연결하고 parent occupied layout을 계산한다.
+### 내부 family와 binding descriptor
 
-어느 child에서든 실패하면 parent semantic, children, compositionSpec, trace, ID sequence를 모두 버린다.
+`src/grammar/facets/dependencies.js`에 pure `resolveFacetFamily`와 `collectFacetScaleBindings` 역할을 둔다. 함수가 반환하는 최소 형태는 다음과 같다.
 
-### family domain rules
+```ts
+type FacetFamily = "cartesian" | "polar" | "parallel";
+type FacetScaleBinding = {
+  layerId: string;
+  scaleId: string;
+  policyKey: keyof FacetScaleResolutions;
+  semanticChannel: string;
+  dimensionField?: string;
+  dimensionIndex?: number;
+};
+```
 
-- Polar quantitative shared domain은 child local effective values의 union이다. categorical theta shared domain은 requested order 또는 child 순서의 first-appearance typed union이다.
-- independent domain은 child별이다. explicit domain은 먼저 적용하고, independent auto + value 0개는 오류다.
-- Pie는 partition마다 local measure 합을 requested angular span에 정규화한다. 전체 facet rows 합을 분모로 쓰지 않는다.
-- Rose는 theta category domain과 r aggregate domain을 독립 계산한다.
-- Radar는 dimension order와 closed path를 보존하고 missing dimension을 임의 0으로 채우지 않는다.
-- Parallel shared domain은 dimension field별 union이다. 서로 다른 dimension 수치를 한 extent에 합치지 않는다.
-- shared scale은 domain 의미만 공유한다. radius range와 R29 center/R, Parallel x dimension positions는 child bounds에서 계산한다.
+- Cartesian primary layer는 기존 지원표를 그대로 따른다.
+- Polar primary layer는 coordinate type이 polar이고 Point/Line/Arc가 완성된 theta/radius recipe를 가져야 한다. Pie는 radius encoding이 없어도 완성된 theta aggregate Arc로 인정한다.
+- Parallel primary layer는 coordinate type parallel, Line, `encoding.parallel.dimensions.length >= 2`, 모든 dimension scale 존재를 요구한다.
+- source-owned Text, attached label, statistical-reference child는 primary family 판정에서 제외하고 source owner와 함께 replay할 dependent로 수집한다.
+- primary layers가 Cartesian/Polar/Parallel을 섞으면 facet/facetGrid 전에 오류다. concat이 가능한 사실을 mixed-family facet 허용으로 해석하지 않는다.
 
-### repeat substitution rules
+binding은 ordinary encoding의 실제 `scale`과 Parallel `dimensions[i].scale`을 모두 수집한다. Parallel은 각 scale ID를 별도 binding으로 만들되 policyKey는 모두 `parallelDimensions`다. 같은 scale ID가 서로 다른 policy key에 묶여 conflict하면 기존 conflicting-channel error 규칙을 사용한다.
 
-- theta/r repeat는 직접 field-bound role을 가진 Polar Point/Line/Arc/Rose만 허용한다. Pie/Radar에는 오류다.
-- `{parallelDimension:"a"}` + fields `["c","d"]`는 `[a,b,…]`를 child별 `[c,b,…]`, `[d,b,…]`로 바꾼다.
-- 교체 dimension의 scale/guide/label binding만 옮기고 sibling dimension은 동일하게 유지한다.
-- replacement가 sibling field와 중복되거나 field type/scale type이 incompatible하면 모든 child 생성 전에 오류다.
-- computed AST나 다른 문자열에서 field 이름을 전역 치환하지 않는다.
+Pie/Rose/Radar repeat 판정을 trace 문자열에 의존하지 않는다. 다음 explicit requested marker를 해당 facade가 mark config에 기록한다.
 
-### guides와 empty cells
+```ts
+compositionRole?: "pie" | "rose" | "radar" | "polar-line" | "polar-point" | "parallel";
+```
 
-- non-Cartesian `guides.axes` omission은 each다. explicit outer는 오류이며 local로 downgrade하지 않는다.
-- shared legend는 모든 child의 channel kind, semantic scale type/domain, R37 samples, R38 override, R39 labels가 compatible해야 한다.
-- empty cell은 child ID/header/panel을 유지하고 mark item 0이다. explicit/shared domain이 있으면 guide를 그 domain으로 만들 수 있다.
-- 모든 cells가 empty이거나 independent auto domain을 계산할 값이 없는 cell은 기존 empty-domain error를 낸다. `[0,1]`을 만들지 않는다.
+`createPiePlot`, `createRosePlot`, `createRadarPlot`, `createPolarLinePlot`, `createPolarScatterPlot`, `createParallelCoordinates`가 자신의 stable owner config에 이 값을 쓴다. 기존 config를 교체하지 말고 merge한다. marker가 없는 direct primitive는 semantic encoding으로 판정한다. marker가 없는 closed Polar Line처럼 Radar와 구별할 수 없는 경우 repeat만 보수적으로 거부하고 facet/facetGrid는 허용한다.
 
-### required matrix and tests
+### W10.1 — family preflight와 dependency DAG
 
-새 `test/contracts/polar-parallel-facets.test.js`와 기존 `facet-derived-families.test.js`, `facet-grid-repeat.test.js`, `parallel-coordinates.test.js`, Polar contracts를 실행한다.
+수정 순서는 다음과 같다.
 
-| family | facet | facetGrid | repeat | 필수 추가 assertion |
+1. `src/grammar/facets/index.js`
+   - `requireSupportedLayers`가 `resolveFacetFamily`를 호출하고 family를 definition에 포함한다.
+   - facet field와 grid field 검증, child/work budget는 기존 순서를 유지한다.
+   - family/모든 layer 완성도 검사를 `planFacetDependencies`와 child ID 생성 전에 끝낸다.
+2. `src/grammar/facets/dependencies.js`
+   - dataset path의 기존 source/row-preserving/statistical 분류를 보존한다.
+   - 반환값에 `family`, `primaryLayers`, `dependentLayers`, `scaleBindings`, `coordinates`를 추가한다.
+   - replay 배열은 topology 순서이고 각 entry의 현재 `kind`을 보존한다. row-preserving 뒤 statistical이 실행되는지 test에서 확인한다.
+   - Parallel dimension, mark selection/label recipe, dynamic reference population, legend recipe, theme/style은 dataset transform으로 위장하지 말고 별도 dependent descriptor로 둔다.
+3. 모든 collector는 known schema property만 읽는다. `JSON.stringify(program).includes(id)`, key 이름 재귀 검색, trace 검색을 쓰지 않는다.
+
+dependency 결과는 clone-and-freeze한다. 같은 dataset이 여러 layer path에 나타나도 replay ID는 한 번만 나오며, 깊이가 같으면 원래 semantic dataset 순서가 tie-break다.
+
+### W10.2 — child를 만드는 3-pass transaction
+
+기존 `deriveCellProgram` 한 번으로 filtering부터 final graphics까지 끝내지 않는다. `src/actions/facets/derive.js`를 다음 세 역할로 나눈다.
+
+```text
+buildFacetCellCandidate    // partition, transform replay, semantic rebind; final mark materialization 금지
+resolveFacetChildrenScales // 모든 candidate를 보고 shared/independent domain 결정
+materializeFacetCell       // resolved domain/local frame 적용 후 marks→guides→labels/theme/style
+```
+
+각 public facet/facetGrid는 다음 순서를 정확히 지킨다.
+
+1. original unit program과 caller options의 canonical snapshot을 잡는다.
+2. 모든 requested values/grid combinations와 dependency plan을 검증한다.
+3. 각 cell에서 anchor source를 filter한다. grid는 row filter 뒤 column filter의 현재 결정적 ID 규칙을 유지한다.
+4. partition된 source를 입력으로 row-preserving transform을 replay하고 그 뒤 statistical transform을 topology 순서로 replay한다.
+5. layer data reference와 statistical reference `dataId`, gradient profile source/profile 같은 config reference를 **semantic candidate**에 rebind한다.
+6. candidate 단계에서는 public `bindMarkData`를 호출하지 않는다. 그 action은 즉시 materialize하므로 empty/shared domain을 알기 전에 실패할 수 있다. facet 전용 wrapped child `rebindFacetLayerData`를 `src/actions/facets/replay.js`에 두고 `editSemantic`만 실행한다.
+7. 모든 nonempty candidate의 effective values로 domain을 계산한다. empty candidate는 domain sample에 참여하지 않는다.
+8. policy별 domain을 각 child `resolvedScales`에 넣고 child-local Canvas/coordinate range를 다시 계산한다.
+9. marks, source-dependent labels/references, local guides, theme/style/highlight를 결정적 plan으로 materialize한다.
+10. 모든 child가 성공한 뒤에만 `applyCompositionState`로 parent children/compositionSpec을 commit한다.
+
+어느 cell이든 실패하면 원본의 semanticSpec, graphicSpec, resolvedScales, materializationConfigs, children, compositionSpec, context, trace, `_actionSequence`가 변하지 않아야 한다. 보상 rollback을 작성하지 않는다. private candidate가 실패해도 그 trace/ID는 반환 program에 들어가지 않는다.
+
+#### 빈 panel 규칙
+
+- 빈 cell도 원래 semantic layer와 configs, coordinate, child ID를 유지한다.
+- concrete mark owner는 해당 type의 정상 empty 형태를 사용한다. collection이면 items `[]`, 단일 path 계열이면 empty collection 또는 family가 이미 사용하는 empty representation을 한 곳에서 정한다. source layer를 삭제하지 않는다.
+- shared 또는 explicit domain이면 local axes/grid를 materialize할 수 있다.
+- independent auto policy가 필요한 scale에 값이 없으면 `Facet child "<id>" cannot resolve independent scale "<scale>" from an empty partition.` 형태의 오류를 child 생성 전 preflight 결과로 낸다.
+- 모든 cells가 empty이면 기존 `requires at least one populated cell` 오류를 유지한다. 임의 `[0,1]` domain을 만들지 않는다.
+
+### W10.3 — scale domain과 local coordinate
+
+`src/grammar/facets/scales.js`의 public 함수는 기존 이름을 유지하고 binding-aware 입력을 받도록 확장한다.
+
+1. `normalizeFacetScalePolicies`는 public option keys를 closed validation하고 `{channels, scales, bindings}`를 반환한다.
+2. `resolveFacetScaleDomains`는 ordinary scale과 Parallel dimension scale을 동일 scale-ID 단위로 처리한다.
+3. explicit semantic domain은 shared/independent 모두 우선한다.
+4. quantitative/temporal continuous shared domain은 child-local effective domain들의 min/max union이다. scale `zero`, `nice`, transform은 각 child에서 이미 적용된 동일 정책을 사용한다.
+5. nominal/ordinal shared domain은 explicit requested domain이 있으면 그대로, auto면 partition order의 typed first-appearance union이다. 문자열 `"1"`과 숫자 `1`을 합치지 않는다.
+6. Parallel shared domain은 dimension field별 scale ID로 union한다. dimension a와 b의 값을 한 array로 합치지 않는다.
+7. shared는 domain만 공유한다. resolved range, polar frame center/radius, Parallel dimension x position은 child Canvas bounds에서 다시 계산한다.
+
+고정 pure tests:
+
+- Polar r: A `[1,2]`, B `[10,20]`, `zero:false`, `nice:false` → shared `[1,20]`; independent A `[1,2]`, B `[10,20]`.
+- theta ordinal: A `["a","b"]`, B `["b","c"]` → shared `["a","b","c"]`.
+- Parallel: a A/B union `[0,2]`, b A/B union `[0,2000]`; a와 b domain object가 reference와 값 모두 분리.
+- reverse/radialMapping은 domain union을 뒤집지 않고 mapper/range 단계에서 적용.
+
+### W10.4 — repeat role substitution
+
+`resolveRepeatDefinition`을 export하지 않은 pure helper로 유지하되 closed dispatch를 추가한다.
+
+```text
+"x"                 -> encodeX
+"y"                 -> encodeY
+"theta"             -> encodeTheta
+"r"                 -> encodeR, stored semantic channel radius
+{parallelDimension}  -> encodeParallelCoordinates의 dimensions list 교체
+```
+
+모든 fields를 먼저 검사하고 하나라도 실패하면 child를 만들지 않는다.
+
+- x/y의 기존 direct Cartesian 제한과 오류를 보존한다.
+- Polar Point/Line의 theta/r는 원래 encoding의 fieldType, temporalUnit, aggregate/bin/stack/weight, scale request를 그대로 쓰고 field만 교체한다.
+- direct Arc와 Rose는 교체하는 semantic role이 실제 field-bound일 때만 허용한다. Rose r measure 교체는 aggregate와 radialMapping을 보존한다.
+- Pie marker 또는 theta aggregate-only Arc는 theta/r repeat를 거부한다.
+- Radar marker는 theta/r repeat를 거부한다. ordinary closed Polar Line marker는 Polar Line 규칙을 따른다.
+- Parallel object는 key가 정확히 `parallelDimension` 하나여야 한다. 원래 dimensions에서 field가 정확히 한 번 일치해야 한다.
+- Parallel replacement field는 source rows에서 원래 fieldType과 호환돼야 하고 sibling dimension field와 중복되면 오류다.
+- Parallel child는 교체 dimension의 `field`, `title`, scale definition/domain을 새 field에 맞게 만들고 index와 다른 dimensions/key/missing 정책을 보존한다. title은 원래 title이 field와 같았으면 새 field로, explicit custom title이면 그대로 보존한다.
+- computed AST, label text, config 문자열을 전역 replace하지 않는다.
+
+repeat child ID는 기존 `${id}-field-${index+1}` 규칙을 유지한다. fields order가 child order와 header values order다.
+
+### W10.5 — family materialization, guides, replay
+
+`materializeFacetCell`은 기존 materialization planner를 사용한다. 별도 semantic-to-graphic compiler를 만들지 않는다.
+
+1. child-local Canvas와 `editCoordinate`가 저장한 R27 aspect/R29 polarFrame requested state를 적용한다.
+2. Point/Line/Arc/Parallel mark를 materialize한다. Pie share의 분모는 현재 partition의 유효 measure 합이다.
+3. R32 selection membership과 R33 label placement를 현재 child final items에서 다시 계산한다.
+4. R36 statistical reference는 child의 rebound population/data ID를 사용한다.
+5. Polar theta/radius axes/grid와 Parallel axes는 각 child 내부에서 유지한다.
+6. `guides.axes:"outer"`는 family가 polar 또는 parallel이면 public action, `editFacetGuides`, `editFacetSource` 모두 같은 오류로 거부한다.
+7. shared legend는 color/stroke/size/shape/strokeDash/opacity 등 기존 compatible family만 parent로 승격한다. theta/r/Parallel positional axis를 legend로 승격하지 않는다.
+8. R37 exact samples, R38 blockOverrides, R39 labelMap과 header strips의 requested state가 모든 child에서 같아야 shared legend compatibility가 성립한다.
+9. R47 theme frame을 child materialization 뒤 재생하고 R49 explicit style을 덮지 않는다. highlight는 최종 source graphic을 clone한다.
+10. `materializeFacetGraphics`는 child snapshot을 namespace/translate만 한다. family geometry를 parent에서 다시 계산하지 않는다.
+
+`editFacetScales`, `editFacetGuides`, `editFacetSource`, composition theme replay, composition Canvas edit가 모두 위 동일 pipeline으로 들어와야 한다. initial create에만 통과하는 별도 분기를 만들지 않는다.
+
+### W10.6 — 파일별 테스트 배치와 종료 판정
+
+아래 파일을 역할 owner로 사용한다.
+
+| 파일 | 반드시 소유할 검증 |
+| --- | --- |
+| `test/unit/grammar/facet-dependencies.test.js` | family/dependent/DAG/binding descriptor와 cycle/missing refs |
+| `test/unit/grammar/facet-scales.test.js` | theta/r adapter, typed union, Parallel field별 domains, empty policy |
+| `test/unit/actions/composition/polar-facets.test.js` | Point/Line/Arc/Pie/Rose/Radar facet+grid, source replay |
+| `test/unit/actions/composition/parallel-facets.test.js` | dimensions domain/order/axes/empty/source replay |
+| `test/unit/actions/composition/non-cartesian-repeat.test.js` | theta/r/parallelDimension 성공·거부·title/scale 이동 |
+| `test/contracts/polar-parallel-facets.test.js` | R43-N01..L02, immutability, full lifecycle, package-independent public surface |
+| `test/contracts/composition-phase10-types.test.js` | 새 positive union과 `radius`, empty object, duplicate shape의 type errors |
+| `test/contracts/composition-family-matrix.test.js` | 기존 explicit unsupported test를 required matrix 성공/explicit rejection으로 교체 |
+
+family matrix는 다음 evidence를 빠짐없이 가진다.
+
+| family | facet | facetGrid | repeat | renderer |
 | --- | --- | --- | --- | --- |
-| Polar Point | required | required | theta/r | shared theta union, local R29 frame |
-| Polar Line | required | required | theta/r | series/path order, local selected labels |
-| Arc | required | required | theta/r if direct-bound | angle/r bounds, empty panel |
-| Pie | required | required | rejected | per-panel 360° local shares |
-| Rose | required | required | theta/r | category/r aggregate 분리 |
-| Radar | required | required | rejected | dimension order, closed path |
-| Parallel | required | required | parallelDimension | field별 domains, dimension order |
+| Polar Point | required | required | theta,r | Canvas/SVG/PNG/PDF |
+| Polar Line | required | required | theta,r | Canvas/SVG/PNG/PDF |
+| Arc direct | required | required | direct-bound theta/r | Canvas/SVG/PNG/PDF |
+| Pie | required | required | rejected | Canvas/SVG/PNG/PDF |
+| Rose | required | required | theta,r measure/category role | Canvas/SVG/PNG/PDF |
+| Radar | required | required | rejected | Canvas/SVG/PNG/PDF |
+| Parallel | required | required | parallelDimension | Canvas/SVG/PNG/PDF |
 
-고정 oracle는 Polar A r `[1,2]`, B `[10,20]` shared `[1,20]`/independent `[1,2]`,`[10,20]`; theta A `[a,b]`, B `[b,c]` shared `[a,b,c]`; Pie `[1,1]`과 `[1,3]`은 180/180°, 90/270°; Parallel a `[0,1]`, b `[0,1000]`은 서로 다른 domains다.
+각 성공 test는 caller options deep-freeze, original program 8개 branch와 `_actionSequence` 불변, child ID/order, semantic data rebinding, concrete item count/path, local frame/range를 검사한다. renderer test는 같은 `graphicSpec`을 소비하는지 확인하며 renderer 안에서 semantic family를 다시 추론하지 않는다.
 
-R43-L02는 표의 각 required cell에 runtime, types, Canvas/SVG/PNG/PDF, installed package 증거를 기록해야 passed다.
+Phase 10은 다음이 모두 충족돼야 종료한다.
+
+- 7 family의 facet/facetGrid와 표의 repeat cell이 실제 runtime/type test를 통과한다.
+- `editFacetSource`의 data revision, `editFacetScales`, Canvas, theme, labels/highlight/style lifecycle이 통과한다.
+- Current COMPOSITION contract, ACTION_INDEX coverage, docs composition/Polar/Parallel pages와 generated artifacts가 실제 제품과 같다.
+- packed tarball의 Node, strict TypeScript, MCP consumer가 새 union을 사용한다.
+- 기존 Cartesian facet/grid/repeat 전체 회귀와 chart/render/browser suite가 통과한다.
 
 ## 6. Phase 11 — R25 safe named resource removal
 
-### public actions
+### 공개 API, 적용 범위, 오류 형식
 
-Full-only `removeData({id})`, `removeScale({id})`, `removeCoordinate({id})`를 추가한다. options는 id 정확히 하나이며 target inference/cascade/batch는 없다. unknown ID, wrong kind, chart-owned internal resource는 오류다.
-
-### typed reference registry
-
-새 `src/core/resourceReferences.js`에 다음 internal API를 둔다.
+Full entry에만 다음 direct actions를 추가한다.
 
 ```ts
+removeData(options: { readonly id: string }): ChartProgram;
+removeScale(options: { readonly id: string }): ChartProgram;
+removeCoordinate(options: { readonly id: string }): ChartProgram;
+```
+
+- options는 plain object이고 key는 `id` 하나다. omission, empty string, unknown key, wrong kind를 거부한다.
+- target/context inference, batch, cascade, force 옵션을 추가하지 않는다.
+- unit과 facet composition parent에서 reference preflight를 수행한다. composition parent의 retained source/child가 target을 참조하면 거부한다.
+- 성공은 visible graphic과 children을 바꾸지 않는다. 삭제 때문에 domain/layout을 다시 추론하지 않는다.
+
+오류 메시지의 안정 형식은 다음과 같다.
+
+```text
+Cannot remove <kind> "<id>"; live references: <ownerKind> "<ownerId>" at <path>; ...
+```
+
+referrer는 `ownerKind`, `ownerId`, canonical path의 ASCII 순서다. test는 전체 문장보다 kind/id와 정렬된 referrer suffix를 검사한다.
+
+### reference edge와 path 규칙
+
+`src/core/resourceReferences.js`가 다음 frozen 값을 소유한다.
+
+```ts
+type ResourceKind = "data" | "scale" | "coordinate" | "mark" | "selection";
 type ResourceReference = {
-  kind: "data" | "scale" | "coordinate" | "mark" | "selection";
+  kind: ResourceKind;
   id: string;
   ownerKind: string;
   ownerId: string;
   path: readonly (string | number)[];
   strength: "live" | "context";
 };
-collectResourceReferences(program, {kind,id}): readonly ResourceReference[];
 ```
 
-collector는 known schema만 읽는다. JSON/string 전체 검색, 이름 prefix, trace args, resolved numeric 값으로 reference를 추측하지 않는다. 정렬 키는 ownerKind → ownerId → canonical path string이다. 반환 배열과 path는 freeze한다.
+`path`는 owner-relative known-schema path다. 예:
 
-### owner collectors
+- layer data: ownerKind `layer`, ownerId `points`, path `["data"]`
+- Parallel scale: `["encoding","parallel","dimensions",0,"scale"]`
+- legend scale: ownerKind `legend`, ownerId `categorical`, path `["scales",0]`
+- facet source: ownerKind `composition`, ownerId facet ID, path `["facet","data"]`
+- current pointer: ownerKind `context`, ownerId `program`, path `["currentData"]`, strength context
 
-각 owner module에 private collector를 두고 root registry가 조합한다.
+`canonicalResourcePath`는 identifier key는 `.key`, numeric index는 `[n]`로 format한다. 반환 배열, 각 edge, path는 freeze한다. 동일 edge는 kind/id/ownerKind/ownerId/path/strength exact key로 deduplicate한다.
 
-| resource | 반드시 등록할 live path |
+### collector가 반드시 순회할 schema
+
+central collector는 아래 closed functions로 나눈다. 함수 이름은 고정하되 한 파일 안의 private 함수로 시작해도 된다.
+
+```text
+collectSemanticDataReferences
+collectSemanticScaleReferences
+collectSemanticCoordinateReferences
+collectMarkConfigReferences
+collectGuideConfigReferences
+collectSelectionReferences
+collectDataOwnerReferences
+collectCompositionReferences
+collectContextReferences
+```
+
+#### data
+
+- every `semanticSpec.layers[i].data`
+- every derived dataset `semanticSpec.datasets[i].source`
+- `materializationConfigs.data[family][owner].current/source/previous` 중 실제 replay/live field
+- box/error/gradient/regression/violin/ecdf/interval/endpoint/raincloud/statistical-reference mark config의 data/source/profile/current IDs
+- facet parent `compositionSpec.facet.data`, current grid/repeat retained source, child provenance link
+- dynamic statistical population의 stored data ID
+
+trace args와 이전 program object는 제외한다. `materializationConfigs` 안에 현재 replay에 쓰는 template/program이 있으면 live이고 그 nested namespace는 별도 program으로 순회한다.
+
+#### scale
+
+- every ordinary `layer.encoding[channel].scale` for current scaled channel vocabulary
+- `layer.encoding.parallel.dimensions[i].scale`
+- semantic axis/grid `scale`, Parallel axis `scales[]`
+- guide config의 `scale`, `scales[]`, legend binding/sampling/block recipe가 실제 ID를 저장하는 path
+- dynamic reference axis binding과 mark config의 named scale field
+- facet scale binding/provenance가 실제 scale ID를 저장하는 경우
+
+resolved domain/range/sample numeric arrays는 참조가 아니다. 문자열 token 값이 scale ID와 같아도 edge가 아니다.
+
+#### coordinate
+
+- `layer.coordinate`
+- semantic axis/grid coordinate binding
+- Parallel axis config와 Polar guide placement가 실제 coordinate ID를 저장하는 path
+- annotation/statistical reference의 data-space coordinate
+- facet/repeat retained/local coordinate recipe의 명시 ID
+
+graphic parent ID나 translated numeric center/radius는 coordinate reference가 아니다.
+
+#### mark와 selection
+
+- attached label `source`, statistical reference `source`, owned-child relation
+- selection config `target`
+- highlight config `selection`과 `target`
+- named label selection ID
+
+R25 public API는 mark/selection removal을 추가하지 않는다. 이 edge는 기존 `removeMark`, `removeMarkLabels`, `removeMarkSelection`, derived release preflight가 같은 registry를 재사용하기 위해 필요하다.
+
+### ownership 판정
+
+`resolveResourceOwnership(program,{kind,id})`는 이름 prefix를 보지 않는다.
+
+1. semantic array의 exact ID 또는 data logical owner exact ID를 찾는다.
+2. 현재 mark/data/facet config에 명시된 owner relation을 수집한다.
+3. live owner가 있는 generated resource는 `chart-owned`다. 사용자는 owner action을 호출해야 한다.
+4. standalone data owner는 `standalone`이다. 외부 live edge가 없으면 logical owner와 current snapshot을 같이 지울 수 있다.
+5. 명시 owner metadata가 없고 exact semantic entry가 있으면 user-addressable named resource다.
+
+구조적 owner metadata가 없는 오래된 program에서 이름 모양만 보고 internal로 판정하지 않는다. 반대로 owner config가 남아 있는데 현재 direct layer edge가 없다는 이유로 user resource로 낮추지 않는다.
+
+### preflight와 commit algorithm
+
+`src/actions/resources/remove.js`에 공통 `planResourceRemoval`과 세 wrapped action을 둔다. `src/actions/resources/index.js`가 Full registrar만 제공한다.
+
+```text
+validate options/id
+resolve exact resource and ownership
+collect and sort all references
+remove allowed self-edge
+reject any live edge
+build immutable removal plan
+apply semantic/cache/config/context cleanup
+assert visible graphic/children unchanged
+return new program
+```
+
+세부 규칙:
+
+1. wrong kind는 unknown과 구별한다. 예를 들어 dataset ID를 `removeScale`에 주면 `Resource "D" exists as data, not scale.` 오류다.
+2. standalone `removeData({id: logicalOwner})`만 `dataOwner.current` 자기 edge를 제외한다. current snapshot에 다른 layer/dataset/config edge가 있으면 거부한다.
+3. live edge가 하나라도 있으면 semantic/config/resolved/context/trace에 write하지 않는다.
+4. data 성공은 semantic dataset entry를 제거한다. standalone은 owner config와 current snapshot을 함께 제거하고 upstream source는 보존한다.
+5. scale 성공은 semantic scale과 같은 ID의 `resolvedScales` cache를 제거한다. unrelated guide/mark config는 건드리지 않는다.
+6. coordinate 성공은 semantic coordinate만 제거한다. concrete mark/guide/layout은 live edge가 0이므로 이미 target을 사용하지 않아야 한다.
+7. context-only edge는 삭제를 막지 않는다. 성공 commit에서 해당 current pointer를 `undefined`로 하고 다른 resource를 자동 선택하지 않는다.
+8. graphicSpec과 composition children은 reference-identical이어야 한다. materialization을 호출하지 않는다.
+9. public domain action trace 아래에는 필요한 semantic/config primitive child만 남긴다. 실패는 새 trace node를 caller-visible state에 남기지 않는다.
+
+composition parent에서 top-level semantic array를 갱신할 때 public `editSemantic`의 composition 제한을 우회하는 임의 `_clone`을 action 본문에 흩뿌리지 않는다. `src/core/programState.js`에 pure `removeNamedSemanticResourceState` 하나를 두고 unit/composition 모두 같은 array/cache/context cleanup을 사용한다. 이 helper는 trace를 만들지 않고 public export하지 않는다.
+
+### 기존 lifecycle과 연결
+
+- `releaseDerivedData`는 layer/dataset 두 곳만 보는 현재 shortcut을 버리고 data live edges를 사용한다. 참조가 있으면 현재 idempotent no-op behavior를 보존하고, 참조가 없을 때만 제거한다.
+- `removeMark`는 owner closure를 먼저 계산하고 그 closure 내부 edge를 제외한 외부 refs를 preflight한다. 기존 복합 owner 삭제를 cascade public resource deletion으로 바꾸지 않는다.
+- `removeMarkSelection`과 `removeMarkLabels`는 named label/highlight edge를 registry에서 읽되 현재 오류 의미를 보존한다.
+- R02 standalone revision release는 새 current를 모든 consumer에 bind한 뒤 old snapshot edges를 다시 수집해 0일 때만 제거한다.
+
+### W11 tests
+
+| 파일 | 반드시 소유할 검증 |
 | --- | --- |
-| data | layer.data, dataset.source, standalone owner.current, chart-private owner, retained facet/repeat source, dynamic statistical population |
-| scale | x/y/x2/y2/theta/r/color/stroke/size/shape/opacity/strokeWidth/strokeDash/angle, x/yOffset, Parallel dimensions, axes/grids, legend binding/sampling/block recipe, dynamic reference axis |
-| coordinate | layer.coordinate, annotation data space, axis/grid placement, retained/local composition recipe |
-| mark | attached label source, dynamic reference source, selection target, owned-child relation |
-| selection | highlight selection, R32 named label selection |
+| `test/unit/core/resource-references.test.js` | 모든 known path, dedup, sort, freeze, namespace, no false positive |
+| `test/unit/actions/resources/remove.test.js` | 세 action 정상/오류/context/standalone commit |
+| `test/contracts/remove-resources.test.js` | R25-N01..L01, owner actions, composition retained source, pixel invariant |
+| `test/contracts/remove-resource-types.test.js` | Full positive, Basic/invalid options negative |
+| `test/contracts/package-boundaries.test.js` | runtime/type/export/Basic absence/packed contents |
 
-`context.currentData/currentScale/currentCoordinate`는 context strength다. historical trace는 제외한다. retained source/template는 replay에 쓰이므로 live다. retained program 안의 ID namespace는 그 program 내부에서만 해석한다.
+각 live path는 다른 edge를 모두 제거한 one-edge fixture로 검증한다. 최소 fixture는 다음과 같다.
 
-### removal algorithm
+1. unused D/S/C 삭제: semantic count 각각 1 감소, graphics와 decoded PNG hash 동일.
+2. currentData/currentScale/currentCoordinate만 target: 삭제 성공, pointer 없음.
+3. trace args에만 ID: 삭제 성공.
+4. direct layer data, child dataset source, retained facet source, dynamic population 각각 data 삭제 거부.
+5. xOffset, stroke legend, Parallel dimension 각각 scale 삭제 거부. E01은 Parallel path를 literal로 검사.
+6. Polar axis와 annotation 각각 coordinate 삭제 거부.
+7. token/color/text가 우연히 ID와 같아도 edge 0.
+8. insertion order를 반대로 만든 두 program의 referrer error suffix 동일.
+9. 마지막 mark/label/selection owner 제거 뒤 standalone logical data 삭제 성공, upstream source 유지.
+10. unknown/wrong kind/chart-owned internal/error 모두 program 8개 branch, `_actionSequence`, caller options 불변.
 
-1. kind-specific selector로 exact ID와 ownership을 resolve한다.
-2. chart-owned internal 여부를 stored ownership metadata로 판정한다. 이름으로 추측하지 않는다.
-3. `collectResourceReferences`를 호출한다. standalone logical data의 removeData에서만 owner.current 자기 edge를 제외한다.
-4. live edge가 하나라도 있으면 sorted `ownerKind/ownerId/path`를 포함한 Error를 던지고 아무 write도 하지 않는다.
-5. live 0이면 semantic resource, resolved cache, 직접 config, 자기-owned이며 이제 unused인 graphic/helper만 제거한다.
-6. context edge만 있으면 pointer를 unset한다. 다른 resource를 current로 자동 선택하지 않는다.
-7. standalone logical data는 logical owner registry와 current snapshot을 같이 제거하되 원본 upstream source는 유지한다.
-8. 성공 후 visible graphic deep equality와 same-run Canvas/PNG equality를 검사한다. 변화하면 collector가 숨은 consumer를 놓친 것이다.
-
-`src/actions/resources/remove.js`를 새 owner로 만들고 Full registrar에만 연결한다. 기존 `removeMark`, `removeEncoding`, `releaseDerivedData`, `removeMarkSelection`의 preflight가 같은 collector를 재사용하되 기존 public behavior를 바꾸지 않는다.
-
-### one-edge fixtures
-
-새 `test/contracts/remove-resources.test.js`에서 각 live path마다 다른 edge를 모두 제거한 fixture를 만든다. 여러 edge가 동시에 있는 fixture 하나로 registry 전체를 검증했다고 간주하지 않는다.
-
-- unused D/S/C 삭제, context-only 삭제, trace-only 삭제 성공.
-- Parallel dimension만 S를 참조, retained facet만 D를 참조, named label만 selection을 참조하는 각각의 오류.
-- error referrer order는 insertion order와 무관해야 한다.
-- theme token 문자열이 resource ID와 같아도 edge로 잡지 않는다.
-- 마지막 mark/label 제거 후 logical data 삭제 성공, upstream source 유지.
-- wrong kind/internal/unknown은 canonical state와 caller input이 동일한 오류다.
+Phase 11 종료 시 세 action은 ACTION_INDEX의 Current owner 하나, Full runtime/types, current CORE contract, removal intent/card/relation/MCP/docs와 installed package evidence를 가져야 한다. Basic method surface는 그대로다.
 
 ## 7. Phase 12 — 전체 통합과 main merge 전 closeout
 
-### machine reconciliation
+Phase 12는 새 제품 API를 만드는 단계가 아니다. 누락을 발견하면 해당 feature owner로 돌아가 제품 checkpoint를 따로 만들고 검증한 뒤 다시 closeout한다.
 
-1. `PROPOSALS.json`, `IMPLEMENTATION_MAP.json`, feature files의 25개 ID set을 exact 비교한다.
-2. 모든 feature status가 Implemented-primary 이상이고 `ACCEPTANCE_CASES.json`의 각 case가 실제 test path+revision을 가져야 한다.
-3. 각 direct action은 Current contract owner 정확히 하나, ACTION_INDEX entry, executable test, type method, intent provider, package consumer를 가져야 한다.
-4. required integration cell에 planned/partial/pending이 하나라도 있으면 Roadmap을 completed로 바꾸지 않는다.
-5. completed roadmap 문서를 stable product test에서 import하지 않는다.
+### W12.1 machine reconciliation
 
-### four cumulative programs
+다음 대조를 script 또는 일회성 Node 명령으로 실행하고 결과를 STEP 원장에 기록한다.
 
-각 프로그램은 before program 불변, deterministic trace, literal semantic/graphic assertion, applicable renderer, packed install 실행을 가진다.
+1. `PROPOSALS.json` selected IDs, `IMPLEMENTATION_MAP.json.features[].id`, feature filenames, `TRACEABILITY.md` rows가 정확히 같은 25개 set인지 확인한다.
+2. 각 feature status가 Implemented-primary 이상이고 implementationCommit이 실제 ancestor commit인지 확인한다.
+3. `ACCEPTANCE_CASES.json` 모든 case가 `passed`, non-null runtimeEvidence, 실제 존재하는 stable test path를 가지는지 확인한다.
+4. 새 direct action마다 ACTION_INDEX implemented entry 정확히 하나, current contract anchor, Full runtime method, declaration method, action card, relationship, intent provider, public docs route가 있는지 확인한다.
+5. 계획/roadmap 파일을 src 또는 stable product test가 import하지 않는지 `rg`로 확인한다.
+6. `Current`, `Planned`, `Proposed`, `partial`, `pending` 상태를 owner별로 검사하고 required integration cell에 partial/pending이 하나라도 있으면 closeout을 멈춘다.
 
-1. complete → impute → computed → normalize → window → weighted summary → R02 source revision.
-2. atomic x/y/color/stroke/size → combined legend values/block/display map → selected semantic labels → dynamic reference → custom theme/style.
-3. R27 aspect + R29 Polar frame → Polar facet → source replay → theme → Canvas resize.
-4. Parallel dimension scale → repeat dimension substitution → facet shared domains → labels/guides → unused resource removal.
+### W12.2 네 개의 누적 프로그램
 
-### exact generation and validation order
+`test/contracts/roadmap-authoring-integration.test.js` 같은 roadmap 이름을 쓰지 않는다. stable capability 이름인 `test/contracts/advanced-authoring-integration.test.js`에 다음 네 test를 둔다.
 
-Owner source를 먼저 고친 다음 실행한다.
+1. **data provenance**: complete → impute → computed → normalize → duration window → weighted summary → R02 source revision. 각 derived owner/current ID, row order, literal values, old snapshot release를 검사한다.
+2. **appearance authoring**: atomic x/y/color/stroke/size → combined legend exact values/block labelMap → selected semantic labels → dynamic reference → custom theme → R49 style. explicit style precedence와 removeTheme 복원을 검사한다.
+3. **Polar composition**: R27 aspect + R29 frame → Polar facet/grid → source edit → shared/independent edit → theme → Canvas resize. requested frame과 local effective radius, headers, label/highlight를 검사한다.
+4. **Parallel cleanup**: dimension scale edit → parallelDimension repeat → facet shared domains → labels/guides → owner teardown → unused resource removal. dimension별 domain과 sibling preservation을 검사한다.
+
+각 test는 before program, caller inputs, deterministic action op sequence, semantic IDs, resolved numeric values, concrete graphic properties를 literal로 검사한다. 같은 four programs를 packed consumer에서 축약 실행하되 계획 문서를 import하지 않는다.
+
+### W12.3 생성과 검증의 정확한 순서
+
+owner source와 hand-written docs를 먼저 수정한 뒤 다음을 실행한다.
 
 ```sh
 npm run contracts:catalog
@@ -753,6 +1021,14 @@ npm run test:realistic
 npm run contracts:catalog:check
 npm run contracts:relations:check
 npm run contracts:cards:check
+npm run docs:capabilities:check
+npm run docs:reference:check
+npm run docs:actions:check
+npm run docs:signatures:check
+npm run docs:metadata:check
+npm run docs:search:check
+npm run docs:machine:check
+npm run examples:index:check
 npm run test:docs
 npm run package:check
 npm run package:pack
@@ -762,15 +1038,26 @@ npm test
 git diff --check
 ```
 
-환경 preflight가 성공하면 docs built/browser와 realistic audit를 추가한다. skip/failure를 passed로 기록하지 않는다. package tar SHA-256, entry count, packed/unpacked bytes, full/basic/svg gzip을 Phase 12 STEP에 적는다.
+`docs:preflight`가 성공할 때만 Jekyll build/browser 검증을 추가한다. 환경 실패를 passed로 적지 않는다. 이미 같은 head에서 통과했고 관련 input이 변하지 않은 check만 재사용할 수 있다.
 
-### closeout and external actions
+package 기록은 tarball absolute path, SHA-256, entry count, packed/unpacked bytes, Full/Basic/SVG gzip, Node/TypeScript/MCP/browser consumer 결과를 포함한다. 임시 repack의 hash를 registry artifact evidence라고 부르지 않는다.
 
-1. 제품 commit을 push한다.
-2. feature/PROPOSALS/IMPLEMENTATION_MAP/ACCEPTANCE_CASES/TRACEABILITY/Phase STEP/GOAL/ROADMAP/ROADMAP_INDEX를 실제 revision과 수치로 맞추고 기록 commit을 push한다.
-3. 사용자가 이미 승인한 범위에 따라 동일 verified head로 PR을 만들고 required CI를 확인해 main에 merge한다.
-4. Roadmap 7 관련 open issues를 구현·검증 근거와 merge revision으로 닫는다.
-5. package publish와 docs deployment는 현재 승인 범위가 아니므로 별도 명시 요청 전 실행하지 않는다.
+### W12.4 문서와 상태 closeout 순서
+
+1. current contracts와 ACTION_INDEX coverage/evidence를 제품 head에 맞춘다.
+2. public docs와 generated artifacts를 맞춘다.
+3. feature files, PROPOSALS, IMPLEMENTATION_MAP, ACCEPTANCE_CASES, TRACEABILITY, STATE_AND_REPLAY를 실제 revision과 evidence로 갱신한다.
+4. Phase 9–12 STEP/GOAL/CANDIDATES를 실제 상태로 닫고 ROADMAP과 ROADMAP_INDEX를 completed로 갱신한다.
+5. `SECOND_ARCHITECTURE.md`는 R43이 composition materialization/state boundary를 바꾸거나 R25가 cross-domain resource registry를 도입한 실제 결과를 현재 구조로 기록한다. exact option 표를 복사하지 않는다.
+6. closeout diff 자체의 navigation/contracts/docs/package freshness를 다시 검사하고 commit/push한다.
+
+상태 문서를 제품보다 먼저 Current로 바꾸지 않는다. implementationCommit은 실제 제품 commit을, closeout STEP은 실제 검증 head를 가리킨다.
+
+### W12.5 main 반영과 issue closeout
+
+사용자의 기존 요청은 Roadmap 7 구현을 main에 반영하고 관련 issue를 닫는 범위를 포함한다. 최종 verified head가 origin/main의 descendant인지 확인하고, 원격 main이 새 commit을 가리키면 검증을 무효화하지 말고 fetch 후 영향 범위를 다시 확인한다. fast-forward 가능한 동일 head를 main에 push하고 remote SHA를 읽어 확인한다.
+
+Roadmap 7 issue는 각 issue가 요구한 feature/case와 merge revision을 comment에 연결한 뒤 close한다. package publish와 docs deploy는 별도 명시 요청이 없으므로 실행하지 않는다.
 
 ## 8. 기능별 완료 보고 형식
 

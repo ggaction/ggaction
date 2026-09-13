@@ -1101,17 +1101,22 @@
         "facetGrid",
         "repeatCharts",
         "editFacetScales",
+        "editFacetGuides",
         "editFacetSource"
       ],
       "currentSourceFiles": [
         "src/actions/facets/derive.js",
         "src/actions/facets/replay.js",
+        "src/actions/facets/guides.js",
         "src/grammar/facets/dependencies.js",
         "src/grammar/facets/scales.js",
+        "src/core/vocabulary.js",
         "src/actions/composition/actions.js",
         "src/grammar/parallelCoordinates.js",
         "src/grammar/facets/index.js",
-        "src/materialization/facets.js"
+        "src/materialization/facets.js",
+        "src/materialization/facetGuides/placement.js",
+        "src/materialization/facetGuides/preparation.js"
       ],
       "existingRegressionTests": [
         "test/unit/actions/composition/facet-derived-families.test.js",

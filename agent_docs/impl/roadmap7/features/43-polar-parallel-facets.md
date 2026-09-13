@@ -29,6 +29,7 @@ repeatCharts({target?:string, fields:readonly [string,...string[]],
   ...ExistingRepeatLayout})
 // 기존 x/y repeat 호출은 그대로; 2차원 repeat와 fields edit는 추가하지 않음.
 // FacetScaleResolutions에 theta/r 및 parallelDimensions policy 추가.
+// stroke는 기존 policy를 그대로 사용하며 non-Cartesian consumer만 확장.
 parallelDimensions?: "shared"|"independent" // 모든 차원에 공통 v1 policy
 ```
 
@@ -71,9 +72,11 @@ parallelDimensions?: "shared"|"independent" // 모든 차원에 공통 v1 policy
 
 ### public 옵션 정규화
 
-FacetScaleResolutions에 theta,r,stroke,parallelDimensions를 추가한다. r은 semantic radius로 한 번 정규화하며 radius alias를 동시에 받지 않는다. theta/r/parallelDimensions의 새 기본은 shared. stroke도 existing color 기본과 같은 shared다. 기존 x/y 옵션과 기본은 그대로 보존한다.
+FacetScaleResolutions에 theta,r,parallelDimensions를 추가한다. stroke는 이미 존재하므로 새 key를 중복 정의하지 않고 non-Cartesian binding만 연결한다. r은 semantic radius로 한 번 정규화하며 radius alias를 동시에 받지 않는다. facet/facetGrid에서 theta/r/parallelDimensions의 새 기본은 shared다. repeatCharts는 기존 x/y와 같이 교체 역할만 명시 policy가 없을 때 independent로 정규화하고 다른 channel은 shared를 유지한다. 기존 x/y 옵션과 기본은 그대로 보존한다.
 
-repeatCharts.channel은 기존 "x"|"y"에 "theta"|"r"|{parallelDimension:string}을 추가한다. fields는 nonempty unique field names. target 추론은 현재 유일한 target 규칙을 보존하며 field substitution이 불가능한 facade에 새 추론을 하지 않는다.
+`compositionSpec.facet.scales`에는 public round-trip key `r`를 저장하고, scale binding에서만 semantic `radius`로 바꾼다. `layer.encoding.r`나 stored `scales.radius`를 만들지 않는다. Parallel v1 policy는 모든 dimensions에 공통이며 per-dimension policy map은 범위 밖이다.
+
+repeatCharts.channel은 기존 "x"|"y"에 "theta"|"r"|{parallelDimension:string}을 추가한다. fields는 nonempty unique field names. target 추론은 현재 유일한 target 규칙을 보존하며 field substitution이 불가능한 facade에 새 추론을 하지 않는다. Pie/Rose/Radar와 ordinary direct Arc/Polar Line을 trace 문자열로 구별하지 않는다. facade는 stable mark config의 composition role을 기록하고, marker가 없는 direct primitive는 semantic encoding으로 판정한다.
 
 ### 6단계 child 생성
 

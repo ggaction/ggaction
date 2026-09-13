@@ -345,3 +345,25 @@ Basic bundle은 composition/selection 구현을 정적으로 포함하지 않도
 | docs build 환경 | generation과 docs tests 통과; host Ruby 2.6.10이라 Ruby 3.2+ locked Jekyll build 미실행 |
 | 열린 통합 cell | R47-L01의 R49 style 보존은 R49 owner, Polar/Parallel facet 확장은 R43 owner에서 재검증 |
 | 상태 연결 | R47 Implemented-primary, Phase 9 active, R49 rounded rect·stroke cap/join/miter가 다음 WP |
+
+## 2026-09-13 Phase 10–12 저추론 인계 명세 보강
+
+R47/R49 제품 checkpoint 이후 남은 Roadmap 7을 구현자가 새 설계를 만들지 않고 수행하도록 `LOW_INFERENCE_IMPLEMENTATION_SPEC.md`의 R43, R25, Phase 12 절을 현재 source 기준으로 다시 분해했다. 이 checkpoint는 제품 구현이나 Current 승격 기록이 아니다. R49 lifecycle·Current/docs/package closeout, R43, R25, Phase 12의 순서는 그대로다.
+
+| 검증 | 실제 결과 |
+| --- | --- |
+| R43 출발점 | 현재 Cartesian-only family guard, x/y-only repeat, 빈 child mark 삭제, x/y guide ownership의 정확한 함수와 파일 확인 |
+| R43 public/storage | public `r`와 semantic `radius` adapter, Parallel 공통 policy, repeat 교체 역할 기본, stored round-trip key를 고정 |
+| R43 transaction | family/dependency preflight → semantic child candidate → 전체 domain resolution → local materialization → parent commit의 3-pass 경계 명시 |
+| R43 matrix | Polar Point/Line/Arc/Pie/Rose/Radar/Parallel의 facet·facetGrid·지원 repeat·4 renderer·package cell 명시 |
+| R25 registry | owner-relative typed path, closed schema collectors, structural ownership, live/context 구별, deterministic error와 unit/composition preflight 명시 |
+| R25 fixtures | data/scale/coordinate/mark/selection path별 one-edge fixture, false-positive, context/trace, standalone owner, pixel invariant 명시 |
+| Phase 12 | 25-ID machine reconciliation, stable capability 통합 tests 4개, generation/test/package 순서, status/main/issue closeout 순서 명시 |
+| 선택·경로 정합성 | PROPOSALS/IMPLEMENTATION_MAP/feature ID 25개 일치; roadmap Markdown link 454개, mapped source/test path 265개 존재 |
+| 제안 타입 | `IMPLEMENTATION_TYPES.examples.ts` strict/noEmit 통과 |
+| 계약 탐색 | `npm run test:contracts` 468/468 통과, 실패·skip 0 |
+| 내부 문서 탐색 | `agent-docs-navigation.test.js` 7/7 통과 |
+| 공개 문서 관측 | `npm run test:docs` 43/47 통과. R49 이후 미재생성 search/actions/signatures 3개와 Quarto module-count fixture 1개가 실패했으며 Phase 9 closeout에서 해결해야 함 |
+| Diff·JSON | IMPLEMENTATION_MAP parse와 `git diff --check` 통과 |
+
+실행 진입 문서의 오래된 “R47/R49 구현 시작” 문구는 실제 checkpoint를 보존하고 R49 closeout부터 시작하도록 교정했다. `stroke`는 이미 current facet policy에 있으므로 R43 신규 key 목록에서 제거하고 non-Cartesian consumer 통합으로 분류했다. `editFacetGuides`와 facet-guide materialization 파일은 R43 extended surface/source map에 추가했다.
