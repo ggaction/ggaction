@@ -12,7 +12,7 @@ import {
   mapOrdinalValues,
   readScaleField
 } from "../../../grammar/scales/index.js";
-import { resolveGraphicBounds } from "../../../layout/canvas.js";
+import { resolveCoordinateBounds } from "../../../materialization/coordinateBounds.js";
 import {
   canMaterializeArc,
   getSourceDependentMarkSteps
@@ -180,7 +180,9 @@ const rematerializeArcMark = action(
       resolved = resolved.rematerializeScale({ id: strokeScaleId });
     }
     const config = resolved.markConfigs[id] ?? {};
-    const frame = resolvePolarFrame(resolveGraphicBounds(resolved));
+    const frame = resolvePolarFrame(
+      resolveCoordinateBounds(resolved, layer.coordinate)
+    );
     const derived = deriveArcSectors(dataset.values, layer, {
       thetaScale: resolved.resolvedScales[thetaScaleId],
       ...(radiusScaleId === undefined

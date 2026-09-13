@@ -173,7 +173,8 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`createTitle`](current/LEGEND_AND_TITLE.md#createtitle) | legend_and_title | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editTitle`](current/LEGEND_AND_TITLE.md#edittitle) | legend_and_title | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`removeTitle`](current/LEGEND_AND_TITLE.md#removetitle) | legend_and_title | Mutable resource | Complete | ✅ / ✅ / ✅ |
-| user-facing | [`createCoordinate`](current/CORE.md#createcoordinate) | core | Structural create-only | Intentional | ✅ / ✅ / ✅ |
+| user-facing | [`createCoordinate`](current/CORE.md#createcoordinate) | core | Mutable resource | Intentional | ✅ / ✅ / ✅ |
+| user-facing | [`editCoordinate`](current/CORE.md#editcoordinate) | core | Mutable resource | Coordinate aspect — Implemented | ✅ / ✅ / ✅ |
 | user-facing | [`createScale`](current/CORE.md#createscale) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editScale`](current/CORE.md#editscale) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editXScale`](current/CORE.md#editxscale) | core | Mutable resource | Complete | ✅ / ✅ / ✅ |

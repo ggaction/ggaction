@@ -9,7 +9,7 @@ import {
   validateNonNegativeFinite,
   validatePositiveFinite
 } from "../../../core/validation.js";
-import { resolveGraphicBounds } from "../../../layout/canvas.js";
+import { resolveGuideCoordinateBounds } from "../../../materialization/coordinateBounds.js";
 import {
   isTransformedScaleType,
   mapContinuousScaleValues,
@@ -198,7 +198,11 @@ function unionLabelBounds(records) {
 
 function resolve(program, channel, config) {
   const scale = program.resolvedScales[config.scale];
-  const bounds = resolveGraphicBounds(program);
+  const bounds = resolveGuideCoordinateBounds(program, {
+    coordinate: program.semanticSpec.guides.axis?.[channel]?.coordinate,
+    scale: config.scale,
+    channel
+  });
   const discrete = ["ordinal", "band", "point"].includes(scale?.type);
   if ((
     !["linear", "time", "ordinal", "band", "point"].includes(scale?.type) &&

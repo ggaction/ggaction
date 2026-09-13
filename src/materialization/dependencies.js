@@ -19,6 +19,7 @@ import {
   planScaleGuideRematerialization
 } from "./scaleGuideDependencies.js";
 import { planLayoutRematerialization } from "./layout.js";
+import { requireCoordinate } from "../selectors/coordinates.js";
 
 export function planCanvasRematerialization(program) {
   const marks = [];
@@ -59,6 +60,41 @@ export function planCanvasRematerialization(program) {
   }
   const layout = planLayoutRematerialization(program);
   return buildMaterializationPlan({ scales, marks, guides, layout });
+}
+
+export function planCoordinateRematerialization(program, target) {
+  requireCoordinate(program, target);
+  const layers = program.semanticSpec.layers.filter(
+    layer => layer.coordinate === target
+  );
+  const scaleIds = [...new Set(layers.flatMap(layer => [
+    ...["x", "y", "x2", "y2", "theta", "radius"].map(
+      channel => layer.encoding?.[channel]?.scale
+    ),
+    ...(layer.encoding?.parallel?.dimensions ?? []).map(
+      dimension => dimension.scale
+    )
+  ]).filter(id => id !== undefined))];
+  const directMarks = layers
+    .map(layer => getMarkMaterializationStep(program, layer))
+    .filter(step => step !== undefined);
+  const marks = [
+    ...directMarks,
+    ...directMarks.flatMap(step =>
+      getSourceDependentMarkSteps(program, step.args.id)
+    )
+  ];
+  return buildMaterializationPlan({
+    scales: scaleIds.map(id => ({
+      op: "rematerializeScale",
+      args: { id, guides: false, marks: false }
+    })),
+    marks: reusePlannedMarkScales(program, marks, scaleIds),
+    guides: scaleIds.flatMap(id =>
+      planScaleGuideRematerialization(program, id)
+    ),
+    layout: planLayoutRematerialization(program)
+  });
 }
 
 export function planLayerDataRematerialization(program, id) {

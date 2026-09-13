@@ -89,6 +89,7 @@ range rules to be satisfied.
 
 ```javascript
 createCoordinate({ id?, type?, layers? })
+editCoordinate({ target, aspect })
 createDerivedData({
   id,
   source,
@@ -112,6 +113,12 @@ layers normally owned by `createRegression`.
 `createCoordinate.type` accepts `"cartesian"`, `"polar"`, or `"parallel"`.
 Parallel coordinates normally create their resource through
 `encodeParallelCoordinates` or `createParallelCoordinates`.
+
+`editCoordinate.aspect` accepts `"auto"` or a frame/data ratio request with
+optional start/center/end alignment. Frame mode supports Cartesian, Polar, and
+Parallel coordinates. Data mode requires one complete Cartesian quantitative
+linear x/y scale pair and preserves equal-unit intent through scale-domain and
+Canvas edits. The target coordinate ID is always explicit.
 
 `createDerivedData` stores immutable source and transform provenance only; it
 does not materialize values. Chart facades and mark creation reject definition-only

@@ -123,6 +123,22 @@ function atomicEncodingPrograms() {
     })];
 }
 
+function coordinateAspectPrograms() {
+  const base = chart()
+    .createCanvas({ width: 320, height: 240, margin: 20 })
+    .createData({ values: [
+      { x: 0, y: 0 },
+      { x: 10, y: 5 }
+    ] })
+    .createPointMark({ id: "aspectPoints" })
+    .encodeX({ target: "aspectPoints", field: "x" })
+    .encodeY({ target: "aspectPoints", field: "y" });
+  return [base.editCoordinate({
+    target: "main",
+    aspect: { mode: "data", ratio: 1 }
+  })];
+}
+
 function normalizedDataPrograms() {
   return [chart()
     .createData({ id: "normalizationSource", values: [
@@ -292,6 +308,7 @@ export async function buildActionRelationships() {
     ...selectionLifecyclePrograms(),
     ...focusedScaleEditorPrograms(),
     ...atomicEncodingPrograms(),
+    ...coordinateAspectPrograms(),
     ...normalizedDataPrograms(),
     ...missingDataPrograms(),
     ...derivedEditingPrograms()

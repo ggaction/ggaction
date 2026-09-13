@@ -81,6 +81,6 @@ export const createCoordinate = action(
   }
 );
 
-export function registerCoordinateActions(ProgramClass) {
+export function registerBasicCoordinateActions(ProgramClass) {
   ProgramClass.prototype.createCoordinate = createCoordinate;
 }

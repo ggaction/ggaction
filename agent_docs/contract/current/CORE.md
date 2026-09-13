@@ -1267,6 +1267,48 @@ source row의 prototype을 바꾸거나 결과를 누락하지 않는다. 뒤 op
   - ✅ Covered: omission/empty, one/multiple existing IDs, duplicates, unknown layer, reattachment conflict.
 - Evidence: `test/unit/actions/coordinates/create-coordinate.test.js`.
 
+## `editCoordinate`
+
+- Signature: `editCoordinate({ target, aspect })`.
+- `target`: required existing coordinate ID. The action does not infer a coordinate.
+- `aspect`: `"auto"` or `{ mode, ratio, alignX?, alignY? }`.
+  - `mode: "frame"` fixes the effective plot width/height ratio.
+  - `mode: "data"` fixes `(pixels per x unit) / (pixels per y unit)` and is available only for one complete Cartesian
+    quantitative linear x/y scale pair.
+  - `ratio` must be a positive finite number. `alignX` and `alignY` accept `"start" | "center" | "end"` and default
+    to `"center"`.
+  - `"auto"` removes the stored aspect request and returns to the complete allocated plot bounds.
+- Effect: stores normalized requested aspect on the semantic coordinate, resolves one largest-fit effective rectangle inside
+  the allocated plot, then rematerializes coordinate scales, marks, dependent labels, guides, layout resources, and highlights.
+  Allocated Canvas bounds remain unchanged.
+- Data mode uses the absolute spans of the final nice-resolved domains. Reversed domains retain their direction. Explicit
+  ranges must already equal the requested effective range and direction; they are never silently replaced.
+- The whole edit is immutable and atomic. Incomplete/nonlinear/ambiguous positional consumers, zero spans, incompatible
+  explicit ranges, and invalid options reject before any resulting program or trace is exposed.
+- This action is available from the complete `ggaction` entry and absent from `ggaction/basic`.
+
+### Formal values — `editCoordinate`
+
+- Implemented: `editCoordinate({ target: UserId; aspect: "auto" | { mode: "frame" | "data"; ratio: PositiveFiniteNumber; alignX?: "start" | "center" | "end"; alignY?: "start" | "center" | "end" } })`.
+- Planned in the same action: `polarFrame` from Roadmap 7 R29.
+- Proposed (NOT IMPLEMENTED): coordinate type, attached-layer, viewport, clipping, and transpose edits.
+
+### Value coverage — `editCoordinate`
+
+- Target and registration
+  - ✅ Covered: exact existing ID, unknown ID, required target, Full-only runtime and declaration boundary.
+- Frame aspect
+  - ✅ Covered: centered largest fit, independent horizontal/vertical alignment, Polar and Parallel frame consumers, `"auto"`
+    reset, Canvas resize replay.
+- Data aspect
+  - ✅ Covered: exact unit-ratio oracles, absolute reversed spans, domain edit replay, shared mark/axis/grid effective bounds,
+    zero span, nonlinear scale, explicit-range conflict, and multiple x/y pair rejection.
+- Immutability and lifecycle
+  - ✅ Covered: caller-owned nested option preservation, prior program preservation, discarded-branch preflight, source/Canvas
+    rematerialization, and trace ownership.
+- Evidence: `test/contracts/coordinate-aspect.test.js`, `test/contracts/coordinate-aspect-types.test.js`,
+  `test/contracts/shared-scale-refresh.test.js`, and the installed package consumer.
+
 ## `createScale`
 
 - Signature: `createScale({ id, type?, domain?, range?, nice?, zero?, clamp?, reverse?, base?, exponent?, constant?, paddingInner?, paddingOuter?, padding?, align?, palette?, interpolate?, midpoint?, radialMapping?, unknown? })`.

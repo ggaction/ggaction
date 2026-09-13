@@ -32,7 +32,7 @@ import {
 } from "./shared.js";
 
 function labelGeometry(program, kind, config, angle = resolveAngle(program, kind, {})) {
-  const frame = resolvePolarFrameForProgram(program);
+  const frame = resolvePolarFrameForProgram(program, config.coordinate);
   const mapped = mapPolarGuideValues(program, config);
   const text = formatPolarGuideValues(program, config, mapped.values);
   const geometry = {

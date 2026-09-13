@@ -1503,11 +1503,12 @@
         "coordinates",
         "at-a-glance",
         "createcoordinate-id-type-layers",
+        "editcoordinate-target-aspect",
         "errors-and-limitations",
         "related"
       ],
-      "bytes": 2458,
-      "sha256": "a4766ad16fbc095e74a59690bd328f27ab3106b325e3bdb214840a4d265b14b8"
+      "bytes": 4129,
+      "sha256": "015d42f825d81b28311aa46b2b8d548569385371ab7b01ca3295d89614d2dfcd"
     },
     {
       "order": 95,
@@ -1852,8 +1853,8 @@
         "action-reference",
         "exact-action-lookup"
       ],
-      "bytes": 30281,
-      "sha256": "4a53b981c755f2885a10a6d55add883c7173e518bed8a8367fe5cb0b04b6ed17"
+      "bytes": 30402,
+      "sha256": "33e35f0e5018c718ca8ac68954241cda7a50a4640e3ea212dd66f3583aacc4cc"
     },
     {
       "order": 117,
@@ -2121,8 +2122,8 @@
         "directional-grids",
         "related"
       ],
-      "bytes": 11473,
-      "sha256": "aea2dffc89606827974c8f07ca553127682d4910a508c74ea01a5104aad585ac"
+      "bytes": 11879,
+      "sha256": "f74c75e08cf3ae9514d6eb69a82befb20cd597fd9815ccc248f158627cccc376"
     },
     {
       "order": 123,
@@ -2166,8 +2167,8 @@
         "exact-typescript-signatures",
         "related"
       ],
-      "bytes": 20380,
-      "sha256": "c194f4c9fc90b4b1cda919a6796756250f9d1d70212f0c87f9c5af4d39c4f01d"
+      "bytes": 20444,
+      "sha256": "97c9d4ec3ac6785c6e080731d8ee894b6e12e81c8ba34859dc185d61b74f0deb"
     },
     {
       "order": 126,

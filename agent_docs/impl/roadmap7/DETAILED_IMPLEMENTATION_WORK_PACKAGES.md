@@ -451,8 +451,8 @@ Canonical behavior: [R27](features/27-coordinate-aspect.md).
 3. frame ratio는 `width/height=ratio`. data ratio는 `(pixelsPerXUnit)/(pixelsPerYUnit)=ratio`가 되도록 domain span을 사용한다.
 4. `alignX/alignY`로 leftover 공간을 배치한다. allocated bounds는 보존하고 effective plot bounds를 별도로 반환한다.
 5. data mode는 Cartesian linear quantitative x/y만 허용한다. nice가 반영된 resolved domain의 절대 span을 사용하며 reverse는 span에 영향을 주지 않는다. temporal/log/sqrt/pow/band/categorical, zero/nonfinite span, 서로 다른 scale pair는 사전 오류다.
-6. **`src/actions/coordinates/actions.js`**에 Full action `editCoordinate`를 추가한다. target은 coordinate ID이며 유일 추론을 새로 만들지 않는다. 현재 `registerCoordinateActions`가 Basic에도 쓰이므로 `registerBasicCoordinateActions`에는 `createCoordinate`만 두고 Full registrar가 basic registrar+`editCoordinate`를 등록하게 분리한다. `src/actions/basic.js`는 basic registrar를 import해야 한다.
-7. **`src/materialization/planner.js`, `src/actions/scales/materialize.js`, `src/layout/canvas.js`**에서 domain → aspect → range 순서를 고정한다.
+6. **`src/actions/coordinates/edit.js`**에 Full action `editCoordinate`를 추가한다. target은 coordinate ID이며 유일 추론을 새로 만들지 않는다. 현재 `registerCoordinateActions`가 Basic에도 쓰이므로 `registerBasicCoordinateActions`에는 `createCoordinate`만 두고 Full registrar가 basic registrar+`editCoordinate`를 등록하게 분리한다. `src/actions/basic.js`는 basic registrar를 import해야 한다.
+7. **`src/materialization/coordinateBounds.js`, `src/materialization/dependencies.js`, `src/actions/scales/preview.js`**에서 domain → aspect → range 순서를 고정한다. 기존 Canvas allocation owner는 `src/layout/canvas.js`를 그대로 사용한다.
 8. shared scales가 있어도 각 coordinate의 pixel range는 자기 effective bounds다.
 9. 타입/current contract/registry/docs/package를 동기화한다.
 10. 신규 `test/contracts/coordinate-aspect.test.js`에 frame/data 수식, align, reverse, resize, categorical/zero-span/overflow atomic error를 둔다.

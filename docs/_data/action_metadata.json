@@ -1357,6 +1357,14 @@
     "layer": "user-facing",
     "domain": "core"
   },
+  "editCoordinate": {
+    "operation": "edit",
+    "authoringRoles": [
+      "H2"
+    ],
+    "layer": "user-facing",
+    "domain": "core"
+  },
   "createScale": {
     "operation": "create",
     "authoringRoles": [

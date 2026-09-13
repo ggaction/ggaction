@@ -78,7 +78,7 @@ const ENTITY_PATHS = Object.freeze({
   },
   coordinate: {
     collection: "coordinates",
-    properties: new Set(["type"])
+    properties: new Set(["type", "aspect", "polarFrame"])
   }
 });
 

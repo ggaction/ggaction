@@ -6,7 +6,7 @@ import {
   transformedTicks
 } from "../../../../grammar/scales/index.js";
 import { niceTicks } from "../../../../grammar/ticks.js";
-import { resolveGraphicBounds } from "../../../../layout/canvas.js";
+import { resolveCoordinateBounds } from "../../../../materialization/coordinateBounds.js";
 import { findCoordinate } from "../../../../selectors/coordinates.js";
 import { findLayer } from "../../../../selectors/layers.js";
 import { formatAxisValue } from "../policy.js";
@@ -85,7 +85,11 @@ function componentValues(program, dimension, config) {
 }
 
 export function resolveStyledParallelAxes(program, dimensions) {
-  const bounds = resolveGraphicBounds(program);
+  const stored = program.guideConfigs.axis?.parallel?.axes;
+  const layer = stored === undefined
+    ? undefined
+    : findLayer(program, stored.target);
+  const bounds = resolveCoordinateBounds(program, layer?.coordinate);
   const step = bounds.width / (dimensions.length - 1);
   const configs = resolveParallelAxisConfigs(program, dimensions);
   const titles = program.semanticSpec.guides.axis?.parallel?.titles ?? [];

@@ -3,7 +3,7 @@ import {
   readScaleField
 } from "../grammar/scales/index.js";
 import { normalizePositionDatum } from "../grammar/positionDatum.js";
-import { resolveGraphicBounds } from "../layout/canvas.js";
+import { resolveCoordinateBounds } from "./coordinateBounds.js";
 import { RECT_MODES, resolveRectMode, rectUsesFields } from "../grammar/rects.js";
 import { DEFAULT_RECT_MARK } from "./rectConfig.js";
 import { mapScaleConsumerValues } from "./scales/map.js";
@@ -82,7 +82,7 @@ function appearance(config, fill, stroke) {
 export function resolveRectRows(program, layer, dataset) {
   const mode = resolveRectMode(layer);
   if (mode === undefined) return [];
-  const bounds = resolveGraphicBounds(program);
+  const bounds = resolveCoordinateBounds(program, layer.coordinate);
   const x = layer.encoding.x === undefined ? undefined : mappedEncoding(program, layer, dataset, "x");
   const y = layer.encoding.y === undefined ? undefined : mappedEncoding(program, layer, dataset, "y");
   const x2 = layer.encoding.x2 === undefined ? undefined : mappedEncoding(program, layer, dataset, "x2");

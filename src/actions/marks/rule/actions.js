@@ -9,7 +9,7 @@ import {
   normalizeStrokeDashPattern
 } from "../../../grammar/scales/index.js";
 import { deriveRuleValues, resolveRuleMode } from "../../../grammar/rules.js";
-import { resolveGraphicBounds } from "../../../layout/canvas.js";
+import { resolveCoordinateBounds } from "../../../materialization/coordinateBounds.js";
 import { findDataset } from "../../../selectors/datasets.js";
 import { findLayer, resolveEligibleLayer } from "../../../selectors/layers.js";
 import { applyRuleAppearance, planRuleAppearance } from "./appearance.js";
@@ -226,7 +226,7 @@ const rematerializeRuleMark = action(
         channel
       });
     }
-    const bounds = resolveGraphicBounds(resolved);
+    const bounds = resolveCoordinateBounds(resolved, layer.coordinate);
     const x1 = [];
     const y1 = [];
     const x2 = [];

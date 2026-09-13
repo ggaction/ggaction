@@ -145,6 +145,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editCompleteData`](./actions/statistics.md#focused-statistical-data-editing) | H1, H3 | user-facing | statistics |
 | [`editCompositionLayout`](./actions/charts-data.md#editcompositionlayout) | H3 | user-facing | composition |
 | [`editComputedData`](./actions/statistics.md#focused-statistical-data-editing) | H1, H3 | user-facing | statistics |
+| [`editCoordinate`](./actions/advanced.md#semantic-resources-and-regression-layers) | H2 | user-facing | core |
 | [`editDensity`](./actions/encodings.md#editdensity) | H2, H3 | user-facing | encodings |
 | [`editDensityData`](./actions/charts-data.md#focused-core-data-editing) | H2 | user-facing | core |
 | [`editDerivedData`](./actions/charts-data.md#focused-core-data-editing) | H2 | user-facing | core |

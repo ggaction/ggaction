@@ -1,4 +1,7 @@
-import { validateCoordinateType } from "../../../grammar/coordinates.js";
+import {
+  normalizeCoordinateAspect,
+  validateCoordinateType
+} from "../../../grammar/coordinates.js";
 import { validateScaleSemanticValue } from "./scale.js";
 import { validateDatasetSemanticValue } from "./dataset.js";
 import { validateLayerSemanticValue } from "./layer.js";
@@ -27,6 +30,8 @@ export function createSemanticValueValidator({
       validateScaleSemanticValue(program, parsed, value);
     } else if (parsed.kind === "coordinate" && parsed.path[0] === "type") {
       validateCoordinateType(value);
+    } else if (parsed.kind === "coordinate" && parsed.path[0] === "aspect") {
+      normalizeCoordinateAspect(value);
     } else if (parsed.kind === "guide") {
       validateGuideSemanticValue(program, parsed, value);
     } else if (parsed.kind === "title") {

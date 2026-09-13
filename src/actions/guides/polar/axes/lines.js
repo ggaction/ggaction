@@ -23,8 +23,8 @@ import {
   withAxisSemantics
 } from "./shared.js";
 
-function lineGeometry(program, kind, angle, scale) {
-  const frame = resolvePolarFrameForProgram(program);
+function lineGeometry(program, kind, angle, scale, coordinate) {
+  const frame = resolvePolarFrameForProgram(program, coordinate);
   if (kind === "theta") {
     return { commands: buildPolarCircleCommands(frame, frame.availableRadius) };
   }
@@ -52,7 +52,13 @@ function makeEditLine(kind) {
     const config = { ...previous, ...args };
     validatePolarLineStyle(config, `${prefix(kind)} axis line`);
     const angle = resolveAngle(this, kind, {});
-    const geometry = lineGeometry(this, kind, angle, previous.scale);
+    const geometry = lineGeometry(
+      this,
+      kind,
+      angle,
+      previous.scale,
+      previous.coordinate
+    );
     let next = this._withGuideConfig(kind, "line", config);
     for (const [property, value] of Object.entries(geometry)) {
       next = next.editGraphics({ target: names.line, property, value });
@@ -91,7 +97,7 @@ function makeCreateLine(kind) {
       lineWidth: args.lineWidth ?? POLAR_AXIS_DEFAULTS.line.lineWidth
     };
     validatePolarLineStyle(config, `${prefix(kind)} axis line`);
-    lineGeometry(this, kind, angle, resources.scale);
+    lineGeometry(this, kind, angle, resources.scale, resources.coordinate);
     let next = withAxisSemantics(this, kind, resources);
     if (kind === "radius" &&
         next.guideConfigs.axis?.radius?.layout === undefined) {

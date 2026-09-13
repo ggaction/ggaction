@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "source": "generated lifecycle smoke corpus plus selection lifecycle",
-  "actionCount": 268,
+  "actionCount": 269,
   "relationships": [
     {
       "name": "createCanvas",
@@ -1130,6 +1130,12 @@
     },
     {
       "name": "createCoordinate",
+      "wraps": [
+        "editSemantic"
+      ]
+    },
+    {
+      "name": "editCoordinate",
       "wraps": [
         "editSemantic"
       ]

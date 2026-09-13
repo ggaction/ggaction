@@ -7,7 +7,7 @@ import {
   validateNonEmptyString,
   validateNonNegativeFinite
 } from "../../../core/validation.js";
-import { resolveGraphicBounds } from "../../../layout/canvas.js";
+import { resolveGuideCoordinateBounds } from "../../../materialization/coordinateBounds.js";
 import {
   isTransformedScaleType,
   mapContinuousScaleValues,
@@ -50,7 +50,11 @@ function titleBounds(geometry, config, text) {
 }
 
 function inferredTitleOffset(program, channel, config) {
-  const plot = resolveGraphicBounds(program);
+  const plot = resolveGuideCoordinateBounds(program, {
+    coordinate: program.semanticSpec.guides.axis?.[channel]?.coordinate,
+    scale: config.scale,
+    channel
+  });
   const canvas = findCanvasGraphic(program)?.properties;
   const labels = program.graphicSpec.objects[`${channel}AxisLabels`]
     ? resolveConcreteGraphicBounds(program.graphicSpec, `${channel}AxisLabels`)
@@ -151,7 +155,11 @@ export function inferAxisTitleText(program, channel, scaleId) {
 
 function resolveGeometry(program, channel, config) {
   const scale = program.resolvedScales[config.scale];
-  const bounds = resolveGraphicBounds(program);
+  const bounds = resolveGuideCoordinateBounds(program, {
+    coordinate: program.semanticSpec.guides.axis?.[channel]?.coordinate,
+    scale: config.scale,
+    channel
+  });
   const discrete = ["ordinal", "band", "point"].includes(scale?.type);
   if ((
     !["linear", "time", "ordinal", "band", "point"].includes(scale?.type) &&

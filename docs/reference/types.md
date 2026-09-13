@@ -250,6 +250,7 @@ interface ChartProgramActions {
   editTitle(options: EditTitleOptions): ChartProgram;
   removeTitle(): ChartProgram;
   createCoordinate(options?: CreateCoordinateOptions): ChartProgram;
+  editCoordinate(options: EditCoordinateOptions): ChartProgram;
   createScale(options: CreateScaleOptions): ChartProgram;
   editScale(options: EditScaleOptions): ChartProgram;
   editXScale(options: EditXScaleOptions): ChartProgram;

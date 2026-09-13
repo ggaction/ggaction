@@ -12,6 +12,7 @@ title: Coordinates
 | Action | Shortest call | Inference/defaults | Result |
 | --- | --- | --- | --- |
 | `createCoordinate` | `createCoordinate()` | ID `main`, type `cartesian` | Named semantic coordinate, optionally attached to layers |
+| `editCoordinate` | `editCoordinate({ target: "main", aspect: { mode: "frame", ratio: 1 } })` | Explicit target; centered alignment | Largest-fit effective plot bounds and rematerialized consumers |
 
 Position encoding actions normally manage coordinates automatically:
 
@@ -67,6 +68,55 @@ renderer.
 the complete ordered dimension assignment on one line layer. Each dimension
 uses its own namespaced scale and axis. Use the complete
 [Parallel Coordinates API](./parallel-coordinates.md) for that contract.
+
+## `editCoordinate({ target, aspect })`
+
+Use this complete-entry action to constrain the shape of an existing coordinate
+without changing the Canvas or its allocated plot rectangle.
+
+```javascript
+const square = program.editCoordinate({
+  target: "main",
+  aspect: {
+    mode: "frame",
+    ratio: 1,
+    alignX: "center",
+    alignY: "center"
+  }
+});
+```
+
+`mode: "frame"` treats `ratio` as effective plot width divided by height.
+ggaction places the largest matching rectangle inside the current plot allocation.
+`alignX` and `alignY` accept `"start"`, `"center"`, or `"end"`; both default to
+`"center"`.
+
+`mode: "data"` treats `ratio` as x pixels per data unit divided by y pixels per
+data unit. It requires a complete Cartesian coordinate whose active layers all
+share one quantitative linear x/y scale pair:
+
+```javascript
+const equalUnits = program.editCoordinate({
+  target: "main",
+  aspect: { mode: "data", ratio: 1 }
+});
+```
+
+Data aspect uses the final resolved domain spans, including `nice`, and preserves
+reversed domain direction. A domain or Canvas edit recomputes the effective bounds,
+scale ranges, marks, axes, and grids from the stored request. Explicit scale ranges
+must already agree with the requested effective bounds.
+
+Use `aspect: "auto"` to remove the constraint:
+
+```javascript
+const automatic = equalUnits.editCoordinate({
+  target: "main",
+  aspect: "auto"
+});
+```
+
+The action is available from `ggaction` and is absent from `ggaction/basic`.
 
 ## Errors and limitations
 

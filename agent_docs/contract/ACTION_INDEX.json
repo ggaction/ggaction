@@ -3014,8 +3014,8 @@
       "layer": "user-facing",
       "domain": "core",
       "status": "implemented",
-      "lifecycle": "Structural create-only",
-      "update": "Create another coordinate and rebind encodings",
+      "lifecycle": "Mutable resource",
+      "update": "`editCoordinate` changes coordinate layout constraints",
       "audit": "Intentional",
       "coverage": {
         "contract": "complete",
@@ -3025,6 +3025,24 @@
       "contract": {
         "file": "agent_docs/contract/current/CORE.md",
         "anchor": "createcoordinate"
+      }
+    },
+    {
+      "name": "editCoordinate",
+      "layer": "user-facing",
+      "domain": "core",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Edits an existing coordinate layout constraint",
+      "audit": "Coordinate aspect — Implemented",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/CORE.md",
+        "anchor": "editcoordinate"
       }
     },
     {

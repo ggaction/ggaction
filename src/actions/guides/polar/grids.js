@@ -103,7 +103,7 @@ function resolveConfig(program, kind, args, resources, previous) {
 }
 
 function resolveGeometry(program, kind, config) {
-  const frame = resolvePolarFrameForProgram(program);
+  const frame = resolvePolarFrameForProgram(program, config.coordinate);
   const mapped = mapPolarGuideValues(program, config);
   if (kind === "theta") {
     return { values: mapped.values, ...resolveThetaSpokes({

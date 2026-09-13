@@ -113,6 +113,14 @@ async function testNodeConsumer(directory) {
     assert.equal(atomic.semanticSpec.layers[0].encoding.x.field, "y");
     assert.equal(atomic.semanticSpec.layers[0].encoding.y.field, "x");
     assert.equal(typeof basicChart().encodeChannels, "undefined");
+    const aspect = program.editCoordinate({
+      target: "main",
+      aspect: { mode: "frame", ratio: 1 }
+    });
+    assert.deepEqual(aspect.semanticSpec.coordinates[0].aspect, {
+      mode: "frame", ratio: 1, alignX: "center", alignY: "center"
+    });
+    assert.equal(typeof basicChart().editCoordinate, "undefined");
     const stroked = chart()
       .createCanvas({
         width: 500,
@@ -1740,13 +1748,20 @@ async function testMcpConsumer(directory) {
     actionCardSchema.properties?.schemaVersion?.const !== 3 ||
     actionCardsSchema.properties?.schemaVersion?.const !== 3 ||
     actionCards.schemaVersion !== 3 ||
-    actionCards.count !== 268 ||
-    actionCards.cards.length !== 268 ||
+    actionCards.count !== 269 ||
+    actionCards.cards.length !== 269 ||
     actionCards.packageVersion !== installedPackage.version
   ) {
     throw new Error("Installed action-card discovery contract is missing or stale.");
   }
   const installedCards = new Map(actionCards.cards.map(card => [card.name, card]));
+  if (
+    installedCards.get("editCoordinate")?.signature !==
+      "editCoordinate(options: EditCoordinateOptions): ChartProgram;" ||
+    installedCards.get("editCoordinate")?.supports.entryPoints.join(",") !== "default"
+  ) {
+    throw new Error("Installed coordinate aspect discovery metadata is stale.");
+  }
   if (
     installedCards.get("encodeChannels")?.signature !==
       "encodeChannels(options: EncodeChannelsOptions): ChartProgram;" ||
@@ -1975,6 +1990,7 @@ async function testTypeScriptConsumer(directory) {
       type EditECDFPlotOptions,
       type ECDFDataOptions,
       type EncodeChannelsOptions,
+      type EditCoordinateOptions,
       type ColorLayout,
       type CompleteDataOptions,
       type ComputedDataOptions,
@@ -2063,6 +2079,13 @@ async function testTypeScriptConsumer(directory) {
     program.encodeChannels(atomicOptions);
     // @ts-expect-error Atomic multi-channel encoding is Full only.
     basicChart().encodeChannels(atomicOptions);
+    const coordinateOptions: EditCoordinateOptions = {
+      target: "main",
+      aspect: { mode: "frame", ratio: 1, alignX: "center" }
+    };
+    program.editCoordinate(coordinateOptions);
+    // @ts-expect-error Coordinate editing is Full only.
+    basicChart().editCoordinate(coordinateOptions);
     const polarScatterOptions: CreatePolarScatterPlotOptions = {
       theta: "angle", radius: "distance", point: { radius: 4 }, guides: false
     };
@@ -3588,6 +3611,7 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.a
       "offset-scale-editing",
       "stroke-color-encoding-and-legends",
       "atomic-channel-encoding",
+      "coordinate-aspect-editing",
       "facet-grid-repeat-and-named-composition-editing",
       "horizon",
       "violin-plot",

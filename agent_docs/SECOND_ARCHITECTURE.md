@@ -252,8 +252,8 @@ Production Vite consumer의 minimal build는 다음 gzip upper bound를 넘지 �
 
 | Entry | Gzip ceiling |
 | --- | ---: |
-| `ggaction` | 327,000 bytes |
-| `ggaction/basic` | 160,000 bytes |
+| `ggaction` | 329,000 bytes |
+| `ggaction/basic` | 163,000 bytes |
 | `ggaction/svg` | 25,000 bytes |
 
 이 값은 current executable regression ceiling이며 측정 결과 자체가 아니다. Canonical numeric owner는
@@ -846,8 +846,24 @@ unattached scale은 channel을 모르므로 fallback validation을 consumer atta
 Coordinate는 named semantic resource이며 layer가 ID로 참조한다.
 
 ```javascript
-{ id: "main", type: "cartesian" }
+{
+  id: "main",
+  type: "cartesian",
+  aspect: { mode: "data", ratio: 1, alignX: "center", alignY: "center" }
+}
 ```
+
+`aspect`는 optional requested state다. Canvas margin과 guide/title/legend가 정한 rectangle은 allocated plot
+bounds이고, `layout/aspect.js`가 그 안의 largest-fit effective bounds를 계산한다. `frame` ratio는 width/height,
+`data` ratio는 x와 y의 pixels-per-unit 비다. 계산된 effective bounds는 semantic state에 저장하지 않고 다음
+layout pass의 allocated input으로 재사용하지 않는다. `materialization/coordinateBounds.js`가 coordinate별 effective bounds와
+scale-consumer bounds를 소유하고 position scale, mark, axis와 grid가 같은 결과를 읽는다.
+
+`data` aspect는 하나의 complete Cartesian quantitative linear x/y scale pair만 허용한다. Auto scale domain을
+먼저 해결하고 final domain span으로 aspect를 계산한 뒤 effective range를 해결하므로 순서는
+`domain → aspect → range → marks → guides → layout → highlight`다. Domain/Canvas 변경과 `editCoordinate`는
+cross-cutting materialization plan으로 pair의 두 scale과 모든 consumer를 함께 갱신한다. 실패하는 final
+geometry는 버려지는 immutable branch에서 먼저 검증한다. `"auto"`는 semantic aspect override를 제거한다.
 
 Vocabulary에는 `cartesian`, `polar`, `parallel`이 있다. x/y positional encoding은 명시하지 않으면
 `main` Cartesian coordinate를 생성하고 저장한다. theta/radius positional encoding은 compatible한
@@ -1781,7 +1797,9 @@ logical Canvas bounds
       └─ plot bounds { left, right, top, bottom, width, height }
 ```
 
-Position scale, axis, grid, title, legend는 같은 resolved Canvas/plot bounds를 사용한다.
+Position scale, mark, axis와 grid는 같은 coordinate effective plot bounds를 사용한다. Aspect가 없는 coordinate의
+effective bounds는 allocated bounds와 같다. Title과 legend는 기존 occupied-layout allocation을 먼저 정하며,
+그 결과에 aspect를 한 번 적용한다.
 Width, height 또는 margin이 바뀌면 auto positional range와 그 consumer를 다시
 materialize한다. Background-only 변경은 geometry rematerialization을 유발하지 않는다.
 

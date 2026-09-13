@@ -8,10 +8,13 @@
 동일 단위를 같은 길이로 보이게 하는 분석적 필요와 단순 frame 모양을 구분한다. viewport/clipping(#28), transpose(#26), responsive host 관측(#46)을 포함하지 않는다.
 
 현재 파일(저장소 root 상대 경로):
-- `src/actions/coordinates/actions.js`
-- `src/actions/scales/materialize.js`
-- `src/materialization/planner.js`
 - `src/grammar/coordinates.js`
+- `src/layout/aspect.js`
+- `src/materialization/coordinateBounds.js`
+- `src/actions/coordinates/edit.js`
+- `src/materialization/dependencies.js`
+- `src/actions/scales/preview.js`
+- `src/actions/scales/edit.js`
 
 관련 항목: 공통 계약 C01–C12만 선행. 파일이 후속 작업에서 이동하면 역할 owner를 찾아 경로를 갱신하고 비슷한 이름의 구현을 새로 중복 생성하지 않는다.
 

@@ -10,7 +10,7 @@ import {
   isTransformedScaleType,
   mapContinuousScaleValues
 } from "../../../grammar/scales/index.js";
-import { resolveGraphicBounds } from "../../../layout/canvas.js";
+import { resolveGuideCoordinateBounds } from "../../../materialization/coordinateBounds.js";
 import { resolveGridLineGeometry } from "../../../layout/grid.js";
 import { DEFAULT_COLORS } from "../../../theme/defaults.js";
 import { findCoordinate } from "../../../selectors/coordinates.js";
@@ -248,7 +248,12 @@ export function editGridConfig(previous, args) {
 
 export function resolveGridGeometry(program, config) {
   const scale = program.resolvedScales[config.scale];
-  const bounds = resolveGraphicBounds(program);
+  const channel = config.direction === "horizontal" ? "y" : "x";
+  const bounds = resolveGuideCoordinateBounds(program, {
+    coordinate: config.coordinate,
+    scale: config.scale,
+    channel
+  });
   if ((
     !["linear", "time"].includes(scale?.type) &&
     !isTransformedScaleType(scale?.type)

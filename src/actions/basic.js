@@ -1,6 +1,6 @@
 import { registerBasicCanvasActions } from "./canvas/index.js";
 import { registerBasicChartActions } from "./charts/basic.js";
-import { registerCoordinateActions } from "./coordinates/actions.js";
+import { registerBasicCoordinateActions } from "./coordinates/actions.js";
 import { registerBasicDataActions } from "./data/basic.js";
 import { registerBasicEncodingActions } from "./encodings/basic.js";
 import { registerBasicGuideActions } from "./guides/basic.js";
@@ -17,7 +17,7 @@ export function registerBasicActions(ProgramClass) {
   registerBasicMarkActions(ProgramClass);
   registerBasicScaleActions(ProgramClass);
   registerBasicEncodingActions(ProgramClass);
-  registerCoordinateActions(ProgramClass);
+  registerBasicCoordinateActions(ProgramClass);
   registerBasicGuideActions(ProgramClass);
   registerBasicChartActions(ProgramClass);
 }

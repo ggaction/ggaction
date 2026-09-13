@@ -17,7 +17,7 @@ import {
 } from "../../../grammar/pointPacking.js";
 import { polarToCartesian, resolvePolarFrame } from "../../../grammar/polar.js";
 import { resolveDirectionValues } from "../../../grammar/direction.js";
-import { resolveGraphicBounds } from "../../../layout/canvas.js";
+import { resolveCoordinateBounds } from "../../../materialization/coordinateBounds.js";
 import { validateMarkOptions } from "../shared.js";
 import {
   DEFAULT_COLORS,
@@ -52,7 +52,7 @@ function resolvePointPositions(program, layer, dataset) {
   if (theta === undefined || radius === undefined) {
     return { x: undefined, y: undefined };
   }
-  const frame = resolvePolarFrame(resolveGraphicBounds(program));
+  const frame = resolvePolarFrame(resolveCoordinateBounds(program, layer.coordinate));
   const positions = theta.map((angle, index) => {
     const distance = radius[index];
     return Number.isFinite(angle) && Number.isFinite(distance)
@@ -180,7 +180,7 @@ function applyPointJitter(program, {
       `Point jitter on "${id}" requires a resolved ${policy.channel} scale.`
     );
   }
-  const bounds = resolveGraphicBounds(program);
+  const bounds = resolveCoordinateBounds(program, layer.coordinate);
   const entries = resolveJitterEntries({
     policy,
     dataset,
@@ -270,7 +270,7 @@ function applyPointPacking(program, {
       fixedHalfExtent: extent[policy.channel === "x" ? "y" : "x"]
     }];
   });
-  const bounds = resolveGraphicBounds(program);
+  const bounds = resolveCoordinateBounds(program, layer.coordinate);
   const resolution = resolvePointPacking({
     target: id,
     policy,

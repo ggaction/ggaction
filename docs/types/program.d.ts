@@ -1043,7 +1043,8 @@ export interface SemanticScale {
 
 export interface SemanticCoordinate {
   readonly id: string;
-  readonly type?: "cartesian" | "polar";
+  readonly type?: "cartesian" | "polar" | "parallel";
+  readonly aspect?: CoordinateAspect;
   readonly layers?: readonly string[];
   readonly [key: string]: unknown;
 }
@@ -1401,6 +1402,19 @@ export interface CreateCoordinateOptions {
   id?: string;
   type?: "cartesian" | "polar" | "parallel";
   layers?: readonly string[];
+}
+
+export type CoordinateAspectAlign = "start" | "center" | "end";
+export type CoordinateAspect = "auto" | {
+  mode: "frame" | "data";
+  ratio: number;
+  alignX?: CoordinateAspectAlign;
+  alignY?: CoordinateAspectAlign;
+};
+
+export interface EditCoordinateOptions {
+  target: string;
+  aspect: CoordinateAspect;
 }
 
 export type RadialMapping = "area" | "radius-length";
@@ -4582,6 +4596,7 @@ export class ChartProgram {
   removeTitle(): ChartProgram;
 
   createCoordinate(options?: CreateCoordinateOptions): ChartProgram;
+  editCoordinate(options: EditCoordinateOptions): ChartProgram;
   createScale(options: CreateScaleOptions): ChartProgram;
   editScale(options: EditScaleOptions): ChartProgram;
   editXScale(options: EditXScaleOptions): ChartProgram;

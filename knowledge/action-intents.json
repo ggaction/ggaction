@@ -851,6 +851,12 @@
     "Channels": [
       "multiple encodings on one mark",
       "atomic multi-channel mapping"
+    ],
+    "CoordinateAspect": [
+      "coordinate aspect ratio",
+      "equal data units",
+      "equal axis units",
+      "square plot frame"
     ]
   },
   "summaryOverrides": {
@@ -1435,6 +1441,13 @@
           "field": "a"
         }
       }
+    },
+    "editCoordinate": {
+      "target": "main",
+      "aspect": {
+        "mode": "data",
+        "ratio": 1
+      }
     }
   },
   "callPatternOverrides": {
@@ -1604,6 +1617,10 @@
     "encodeChannels": [
       "encodeChannels({ target, channels: { x: { field }, y: { field } } })",
       "encodeChannels({ target, channels: { color: { field }, stroke: { field }, size: { field } } })"
+    ],
+    "editCoordinate": [
+      "editCoordinate({ target, aspect: { mode: \"frame\" | \"data\", ratio, alignX?, alignY? } })",
+      "editCoordinate({ target, aspect: \"auto\" })"
     ]
   },
   "errorOverrides": {

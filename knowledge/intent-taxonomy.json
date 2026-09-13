@@ -687,6 +687,15 @@
       ]
     },
     {
+      "id": "layout.coordinateAspect",
+      "phrases": [
+        "coordinate aspect ratio",
+        "equal data units",
+        "equal axis units",
+        "square plot frame"
+      ]
+    },
+    {
       "id": "layout.legend.bottom",
       "phrases": [
         "legend at bottom",
@@ -2524,6 +2533,22 @@
         "guide.subtitle": {
           "subtitle": "\"Chart subtitle\""
         }
+      }
+    },
+    {
+      "id": "action.editCoordinate",
+      "kind": "action",
+      "name": "editCoordinate",
+      "order": 80,
+      "anchors": [
+        "layout.coordinateAspect"
+      ],
+      "covers": [
+        "layout.coordinateAspect"
+      ],
+      "baseOptions": {
+        "target": "\"main\"",
+        "aspect": "{ mode: \"data\", ratio: 1 }"
       }
     },
     {

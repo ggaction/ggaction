@@ -8,8 +8,11 @@ import { validateUserId } from "../../core/identifiers.js";
 import { validateOptionObject } from "../../core/validation.js";
 import { getMarkMaterializationStep, getSourceDependentMarkSteps } from "../../materialization/marks/index.js";
 import {
-  applyMaterializationPlan
+  applyMaterializationPlan,
+  planCoordinateRematerialization
 } from "../../materialization/dependencies.js";
+import { findDataAspectCoordinatesForScale } from
+  "../../materialization/coordinateBounds.js";
 import {
   findSemanticScale,
   requireSemanticScale
@@ -112,8 +115,21 @@ function applyScaleEdit(program, {
   }
   if (consumers.length === 0) return next;
 
-  next = next.rematerializeScale({ id });
-  next = applyMaterializationPlan(next, planMarkRematerialization(next, consumers));
+  const aspectCoordinates = findDataAspectCoordinatesForScale(next, id);
+  if (aspectCoordinates.length > 0) {
+    for (const coordinate of aspectCoordinates) {
+      next = applyMaterializationPlan(
+        next,
+        planCoordinateRematerialization(next, coordinate.id)
+      );
+    }
+  } else {
+    next = next.rematerializeScale({ id });
+    next = applyMaterializationPlan(
+      next,
+      planMarkRematerialization(next, consumers)
+    );
+  }
   if (["xOffset", "yOffset"].includes(channel)) {
     for (const consumer of consumers) {
       next = next._withoutMaterializationConfig([

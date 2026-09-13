@@ -220,6 +220,7 @@
   "editStrokeWidthScale": "/reference/actions/advanced/#focused-channel-scale-editors",
   "editStrokeDashScale": "/reference/actions/advanced/#focused-channel-scale-editors",
   "createCoordinate": "/reference/actions/advanced/#semantic-resources-and-regression-layers",
+  "editCoordinate": "/reference/actions/advanced/#semantic-resources-and-regression-layers",
   "createDerivedData": "/reference/actions/advanced/#semantic-resources-and-regression-layers",
   "createRegressionBand": "/reference/actions/advanced/#semantic-resources-and-regression-layers",
   "editRegressionBand": "/reference/actions/advanced/#semantic-resources-and-regression-layers",

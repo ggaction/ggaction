@@ -30,7 +30,7 @@ import {
 } from "./shared.js";
 
 function titleGeometry(program, kind, config, angle = resolveAngle(program, kind, {})) {
-  const frame = resolvePolarFrameForProgram(program);
+  const frame = resolvePolarFrameForProgram(program, config.coordinate);
   return kind === "theta"
     ? resolveThetaAxisTitle({ frame, offset: config.offset })
     : resolveRadialAxisTitle({

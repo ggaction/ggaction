@@ -3,7 +3,7 @@
   "packageVersion": "0.0.13",
   "typeSource": "types/program.d.ts",
   "errorPolicy": "An empty errors array means the compact card has no curated error override; consult the canonical route for validation, inference, and recovery behavior.",
-  "count": 268,
+  "count": 269,
   "cards": [
     {
       "schemaVersion": 3,
@@ -18030,7 +18030,7 @@
         "coordinate system",
         "Cartesian or polar space"
       ],
-      "lifecycle": "Structural create-only",
+      "lifecycle": "Mutable resource",
       "resources": {
         "prerequisites": [],
         "owns": [
@@ -18046,7 +18046,9 @@
       "wraps": [
         "editSemantic"
       ],
-      "editableVia": [],
+      "editableVia": [
+        "editCoordinate"
+      ],
       "supports": {
         "entryPoints": [
           "default",
@@ -18086,6 +18088,80 @@
         "createCoordinate({ id?, type?, layers? })"
       ],
       "snippet": "program.createCoordinate({})",
+      "errors": [],
+      "route": "/reference/actions/advanced/#semantic-resources-and-regression-layers"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "editCoordinate",
+      "layer": "user-facing",
+      "domain": "core",
+      "summary": "Edits coordinate system, including settings for Cartesian or polar space.",
+      "signature": "editCoordinate(options: EditCoordinateOptions): ChartProgram;",
+      "intents": [
+        "edit coordinate",
+        "edit",
+        "change",
+        "chart setup",
+        "data and scales",
+        "coordinate system",
+        "Cartesian or polar space"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing coordinate system"
+        ],
+        "owns": [],
+        "idOptions": [
+          "target"
+        ]
+      },
+      "authoringRoles": [
+        "H2"
+      ],
+      "wraps": [
+        "editSemantic"
+      ],
+      "editableVia": [
+        "editCoordinate"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "existing coordinate system"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "target",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "aspect",
+          "required": true,
+          "type": "CoordinateAspect"
+        }
+      ],
+      "callPatterns": [
+        "editCoordinate({ target, aspect: { mode: \"frame\" | \"data\", ratio, alignX?, alignY? } })",
+        "editCoordinate({ target, aspect: \"auto\" })"
+      ],
+      "snippet": "program.editCoordinate({ target: \"main\", aspect: { mode: \"data\", ratio: 1 } })",
       "errors": [],
       "route": "/reference/actions/advanced/#semantic-resources-and-regression-layers"
     },

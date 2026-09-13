@@ -13,7 +13,7 @@ import {
   mapOrdinalPositionValues
 } from "../../../grammar/scales/index.js";
 import { formatTimeTick, formatTimeTicks } from "../../../grammar/ticks.js";
-import { resolveGraphicBounds } from "../../../layout/canvas.js";
+import { resolveCoordinateBounds } from "../../../materialization/coordinateBounds.js";
 import { findCoordinate } from "../../../selectors/coordinates.js";
 import { DEFAULT_COLORS, DEFAULT_FONT_FAMILY } from
   "../../../theme/defaults.js";
@@ -160,8 +160,8 @@ export function resolvePolarGuideResources(program, kind, args, operation) {
   });
 }
 
-export function resolvePolarFrameForProgram(program) {
-  const bounds = resolveGraphicBounds(program);
+export function resolvePolarFrameForProgram(program, coordinate) {
+  const bounds = resolveCoordinateBounds(program, coordinate);
   if (bounds === undefined) {
     throw new Error("Polar guides require graphical Canvas bounds.");
   }

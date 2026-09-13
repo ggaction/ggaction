@@ -220,9 +220,9 @@ test("intent taxonomy covers every supported constraint with exact owners", asyn
   assert.equal(validate(taxonomy), true, JSON.stringify(validate.errors));
   assert.deepEqual(validateResolverKnowledge(), {
     cards: cards.count,
-    constraints: 105,
-    providers: 99,
-    supported: 100,
+    constraints: 106,
+    providers: 100,
+    supported: 101,
     unsupported: 5
   });
   assert.equal(taxonomy.packageVersion, cards.packageVersion);
@@ -330,6 +330,32 @@ test("selects atomic channel encoding only for an explicit batch intent", async 
     "action.encodeX",
     "action.encodeY"
   ]);
+});
+
+test("routes equal-unit layout intent through explicit coordinate editing", async () => {
+  const packet = searchGgaction("scatter plot with equal axis units");
+  assert.deepEqual(packet.matchedConstraints, [
+    "chart.scatter",
+    "layout.coordinateAspect"
+  ]);
+  assert.deepEqual(packet.actionPlan.map(entry => entry.id), [
+    "action.createScatterPlot",
+    "action.editCoordinate"
+  ]);
+  assert.deepEqual(packet.unresolved, []);
+
+  const { program } = await executeAuthoring(packet, {
+    rows: [{ x: 0, y: 0 }, { x: 100, y: 50 }]
+  });
+  assert.deepEqual(program.semanticSpec.coordinates[0].aspect, {
+    mode: "data", ratio: 1, alignX: "center", alignY: "center"
+  });
+  const x = program.resolvedScales.x;
+  const y = program.resolvedScales.y;
+  assert.equal(
+    Math.abs(x.range[1] - x.range[0]) / Math.abs(x.domain[1] - x.domain[0]),
+    Math.abs(y.range[1] - y.range[0]) / Math.abs(y.domain[1] - y.domain[0])
+  );
 });
 
 test("provides exact executable Canvas and SVG authoring bootstraps", async () => {

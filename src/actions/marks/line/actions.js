@@ -19,7 +19,7 @@ import { DEFAULT_COLORS } from "../../../theme/defaults.js";
 import { findDataset } from "../../../selectors/datasets.js";
 import { findLayer, resolveEligibleLayer } from "../../../selectors/layers.js";
 import { validateCurveInterpolation } from "../../../grammar/curveCommands.js";
-import { resolveGraphicBounds } from "../../../layout/canvas.js";
+import { resolveCoordinateBounds } from "../../../materialization/coordinateBounds.js";
 import { canMaterializeLine } from "../../../materialization/marks/index.js";
 import { resolveMarkGraphicPlacement } from
   "../../../materialization/graphicHierarchy.js";
@@ -223,7 +223,7 @@ const rematerializeLineMark = action(
     const shared = {
       rows: dataset.values, layer, config, existingChildren,
       resolvedScales: resolved.resolvedScales,
-      bounds: resolveGraphicBounds(resolved),
+      bounds: resolveCoordinateBounds(resolved, layer.coordinate),
       defaults: { stroke: DEFAULT_LINE_STROKE, strokeWidth: DEFAULT_LINE_WIDTH }
     };
     if (parallel !== undefined) {
