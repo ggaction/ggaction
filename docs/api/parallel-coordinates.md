@@ -156,8 +156,11 @@ is an error.
 ## Limitations
 
 Temporal dimensions, curved paths, path bundling, interactive brushing,
-drag-to-reorder axes, faceting, and shared Parallel axes across composed child
-programs are not implemented.
+drag-to-reorder axes, outer shared Parallel axes, and automatic scale sharing
+across unrelated composed child programs are not implemented. `facet` and
+`facetGrid` repeat a Parallel chart by source fields with shared or independent
+per-dimension domains. `repeatCharts({ channel: { parallelDimension: field },
+fields })` replaces exactly one stored dimension role.
 
 ## Related
 

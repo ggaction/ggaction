@@ -26329,7 +26329,7 @@
       "name": "facet",
       "layer": "user-facing",
       "domain": "composition",
-      "summary": "Repeat one complete chart by a field on its common row-preserving dataset ancestor.",
+      "summary": "Repeat one complete Cartesian, Polar, or Parallel chart by a field on its common row-preserving dataset ancestor.",
       "signature": "facet(options: FacetOptions): ChartProgram;",
       "intents": [
         "facet",
@@ -26458,7 +26458,7 @@
       "name": "facetGrid",
       "layer": "user-facing",
       "domain": "composition",
-      "summary": "Repeat one supported Cartesian chart over two ordered categorical fields.",
+      "summary": "Repeat one supported Cartesian, Polar, or Parallel chart over two ordered categorical fields.",
       "signature": "facetGrid(options: FacetGridOptions): ChartProgram;",
       "intents": [
         "facet grid",
@@ -26585,7 +26585,7 @@
       "name": "repeatCharts",
       "layer": "user-facing",
       "domain": "composition",
-      "summary": "Repeat one direct Cartesian mark by replacing its x or y field.",
+      "summary": "Repeat one direct mark by replacing Cartesian x/y, eligible Polar theta/public r, or one { parallelDimension: field }.",
       "signature": "repeatCharts(options: RepeatChartsOptions): ChartProgram;",
       "intents": [
         "repeat charts",

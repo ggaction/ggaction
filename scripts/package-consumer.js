@@ -1575,9 +1575,87 @@ async function testNodeConsumer(directory) {
       fields: ["x", "y", "z"]
     });
     const revisedGrid = grid.editFacetSource({ program: comparisonUnit });
-    assert.equal(grid.children["packageGrid-row-2-column-2"].semanticSpec.layers.length, 0);
+    const emptyGridCell = grid.children["packageGrid-row-2-column-2"];
+    assert.equal(emptyGridCell.semanticSpec.layers.length, 1);
+    assert.deepEqual(emptyGridCell.graphicSpec.objects.comparisonPoint.items, []);
     assert.deepEqual(repeated.compositionSpec.facet.repeat.fields, ["x", "y", "z"]);
     assert.deepEqual(revisedGrid.compositionSpec.children, grid.compositionSpec.children);
+    const packagePolarRows = [
+      { panel: "A", angle: 0, bearing: 45, radius: 1, distance: 10 },
+      { panel: "A", angle: 90, bearing: 135, radius: 2, distance: 20 },
+      { panel: "B", angle: 0, bearing: 45, radius: 10, distance: 100 },
+      { panel: "B", angle: 90, bearing: 135, radius: 20, distance: 200 }
+    ];
+    const createPackagePolarUnit = values => chart()
+      .createCanvas({ width: 220, height: 200, margin: 40 })
+      .createData({ id: "packagePolarData", values })
+      .createPolarScatterPlot({
+        id: "packagePolar",
+        theta: { field: "angle", scale: { nice: false, zero: false } },
+        radius: { field: "radius", scale: { nice: false, zero: false } },
+        guides: false
+      })
+      .createMarkLabels({
+        id: "packagePolarLabels", source: "packagePolar", field: "radius"
+      });
+    const packagePolarUnit = createPackagePolarUnit(packagePolarRows);
+    const packagePolarFacet = packagePolarUnit.facet({
+      id: "packagePolarFacet", field: "panel", scales: { r: "independent" }
+    });
+    assert.deepEqual(Object.values(packagePolarFacet.children).map(child =>
+      child.resolvedScales.radius.domain), [[1, 2], [10, 20]]);
+    assert.equal(Object.values(packagePolarFacet.children).every(child =>
+      child.graphicSpec.objects.packagePolarLabels.items.length === 2), true);
+    const packagePolarRepeat = packagePolarUnit.repeatCharts({
+      id: "packagePolarRepeat", target: "packagePolar", channel: "r",
+      fields: ["radius", "distance"]
+    });
+    assert.deepEqual(Object.values(packagePolarRepeat.children).map(child =>
+      child.semanticSpec.layers.find(layer => layer.id === "packagePolar")
+        .encoding.radius.field), ["radius", "distance"]);
+    assert.equal(Object.values(packagePolarRepeat.children).every(child =>
+      child.semanticSpec.layers.some(layer =>
+        layer.id === "packagePolarLabels" && layer.source === "packagePolar"
+      )), true);
+    const resizedPackagePolarFacet = packagePolarFacet.editFacetSource({
+      program: createPackagePolarUnit(packagePolarRows)
+        .editCanvas({ width: 260, height: 240 })
+    });
+    assert.equal(Object.values(resizedPackagePolarFacet.children).every(child =>
+      child.graphicSpec.objects.canvas.properties.width === 260 &&
+      child.graphicSpec.objects.canvas.properties.height === 240), true);
+    assert.match(renderToSVG(resizedPackagePolarFacet), /^<svg/);
+    const packageParallelUnit = chart()
+      .createCanvas({ width: 240, height: 180, margin: 35 })
+      .createData({ id: "packageParallelData", values: [
+        { panel: "A", a: 1, b: 100, c: 5 },
+        { panel: "A", a: 2, b: 200, c: 6 },
+        { panel: "B", a: 10, b: 1000, c: 50 },
+        { panel: "B", a: 20, b: 2000, c: 60 }
+      ] })
+      .createParallelCoordinates({
+        id: "packageParallel",
+        dimensions: [
+          { field: "a", scale: { zero: false, nice: false } },
+          { field: "b", scale: { zero: false, nice: false } }
+        ],
+        guides: false
+      });
+    const packageParallelFacet = packageParallelUnit.facet({
+      id: "packageParallelFacet", field: "panel",
+      scales: { parallelDimensions: "shared" }
+    });
+    assert.deepEqual(Object.values(packageParallelFacet.children).map(child =>
+      child.resolvedScales["packageParallel-parallel-0"].domain),
+    [[1, 20], [1, 20]]);
+    const packageParallelRepeat = packageParallelUnit.repeatCharts({
+      id: "packageParallelRepeat", target: "packageParallel",
+      channel: { parallelDimension: "a" }, fields: ["a", "c"]
+    });
+    assert.deepEqual(Object.values(packageParallelRepeat.children).map(child =>
+      child.semanticSpec.layers[0].encoding.parallel.dimensions.map(
+        dimension => dimension.field
+      )), [["a", "b"], ["c", "b"]]);
     for (const method of [
       "facetGrid", "repeatCharts", "editFacetSource",
       "insertCompositionChild", "removeCompositionChild", "reorderCompositionChildren"
@@ -2254,6 +2332,7 @@ async function testTypeScriptConsumer(directory) {
       type EditYOffsetScaleOptions,
       type FitCanvasOptions,
       type FacetGridOptions,
+      type FacetScaleResolutions,
       type FoldDataOptions,
       type EditAxisOptions,
       type EditFacetSourceOptions,
@@ -3159,8 +3238,27 @@ async function testTypeScriptConsumer(directory) {
     const repeatOptions: RepeatChartsOptions = {
       id: "typedRepeat", target: "metric", channel: "x", fields: ["x", "y", "z"]
     };
+    const polarRepeatOptions: RepeatChartsOptions = {
+      id: "typedPolarRepeat", target: "polarPoints", channel: "r",
+      fields: ["radius", "distance"]
+    };
+    const parallelRepeatOptions: RepeatChartsOptions = {
+      id: "typedParallelRepeat", target: "parallelCoordinates",
+      channel: { parallelDimension: "first" }, fields: ["first", "third"]
+    };
+    const nonCartesianFacetScales: FacetScaleResolutions = {
+      theta: "shared", r: "independent", parallelDimensions: "shared"
+    };
     const typedGrid: ChartProgram = comparisonUnit.facetGrid(gridOptions);
     const typedRepeat: ChartProgram = comparisonUnit.repeatCharts(repeatOptions);
+    comparisonUnit.repeatCharts(polarRepeatOptions);
+    comparisonUnit.repeatCharts(parallelRepeatOptions);
+    comparisonUnit.editFacetScales(nonCartesianFacetScales);
+    const invalidFacetScales: FacetScaleResolutions = {
+      // @ts-expect-error Semantic radius is exposed as r, never radius.
+      radius: "shared"
+    };
+    void invalidFacetScales;
     const sourceEditOptions: EditFacetSourceOptions = { program: comparisonUnit };
     const typedRevisedGrid: ChartProgram = typedGrid.editFacetSource(sourceEditOptions);
     const insertOptions: InsertCompositionChildOptions = {
@@ -3947,6 +4045,7 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.a
       "statistical-references",
       "coordinate-aspect-and-polar-frame-editing",
       "facet-grid-repeat-and-named-composition-editing",
+      "non-cartesian-facet-grid-and-repeat",
       "horizon",
       "violin-plot",
       "polar-radar-rug-strip-ecdf-facades",

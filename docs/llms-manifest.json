@@ -656,8 +656,8 @@
         "node-png-or-pdf-export-is-unavailable-in-the-browser",
         "inspect-the-program"
       ],
-      "bytes": 7553,
-      "sha256": "b8516ec21c219f78c08a3c084d397a2fa7ea0af4b8dbfc5e80d2ad10a64ec0b2"
+      "bytes": 7770,
+      "sha256": "b78d0da025cc240d8397bb9bf964a27b79d178f8d5f336cf91f12bc88f317cf7"
     },
     {
       "order": 43,
@@ -732,8 +732,8 @@
         "related",
         "edit-a-dimension-axis"
       ],
-      "bytes": 5979,
-      "sha256": "1f216c76159eeb9b10e5bd30b69d636270497e0ef132cb6998f99e9ac1823f5d"
+      "bytes": 6235,
+      "sha256": "4b38d4c607b529b3cffcca2f669e938ac7b6b298520a7c103d4ae2349c4694d1"
     },
     {
       "order": 48,
@@ -1187,8 +1187,8 @@
         "insert-remove-and-reorder-named-concat-children",
         "state-trace-and-action-scope"
       ],
-      "bytes": 18224,
-      "sha256": "6d63769684b03e8bf382fa98a1424a7078c80f7cb361fee7f201a4c42a25f955"
+      "bytes": 19965,
+      "sha256": "b12da65a0cca70cc1819ae6545db714f54ba5bd13a7439244434b560f8518a5d"
     },
     {
       "order": 74,
@@ -1846,8 +1846,8 @@
         "selection-appearance-and-text",
         "coordinates-and-composition"
       ],
-      "bytes": 11825,
-      "sha256": "1d84e2333263c08173c048818a042b7ddc1b1a014f6fd98ffee69ba203e7b826"
+      "bytes": 12099,
+      "sha256": "8118a2f7cc7ddb795e7179ebadf334ea8bd2528cff2dd4e082b7c7c5e7264e42"
     },
     {
       "order": 116,
@@ -1927,8 +1927,8 @@
         "focused-core-data-editing",
         "related"
       ],
-      "bytes": 26568,
-      "sha256": "fc116dcf26ab327156142e5b7793dbd301f5e573d46967fce0fa4f6bcd09f3b4"
+      "bytes": 27176,
+      "sha256": "838120ff1e4854a4f779be9724651fb24e4e3819c990a5e472cd9401e85c8b0a"
     },
     {
       "order": 118,

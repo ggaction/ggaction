@@ -33,6 +33,8 @@ p.repeatCharts({ channel: "theta", fields: ["angle", "bearing"] });
 p.repeatCharts({ channel: "r", fields: ["sales", "profit"] });
 p.repeatCharts({ channel: { parallelDimension: "sales" }, fields: ["profit"] });
 p.editFacetScales({ theta: "shared", r: "independent", parallelDimensions: "shared" });
+// @ts-expect-error semantic radius is exposed through public r only.
+p.editFacetScales({ radius: "shared" });
 p.facet({ field: "region", values: ["west", "east"] });
 const insert: InsertCompositionChildOptions = { id: "detail", program: child, after: "overview" };
 p.insertCompositionChild(insert).removeCompositionChild({ target: "detail" });

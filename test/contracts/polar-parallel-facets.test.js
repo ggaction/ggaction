@@ -192,3 +192,118 @@ test("rejects unsupported non-Cartesian policies without changing caller state",
     assert.equal(JSON.stringify(program), before);
   }
 });
+
+test("preserves canonical empty graphics for every non-Cartesian full-grid family", () => {
+  const missingRows = rows.filter(row => !(
+    row.panel === "B" && row.column === "Y"
+  ));
+  for (const [name, unit] of Object.entries(families(missingRows))) {
+    const before = unit.graphicSpec;
+    const grid = unit.facetGrid({
+      id: "matrix",
+      rows: { field: "panel" },
+      columns: { field: "column" },
+      combinations: "full"
+    });
+    const empty = grid.children["matrix-row-2-column-2"];
+    const graphic = empty.graphicSpec.objects.mark;
+
+    assert.equal(grid.compositionSpec.children.length, 4, name);
+    assert.equal(grid.compositionSpec.facet.grid.cells.at(-1).empty, true, name);
+    assert.equal(empty.semanticSpec.layers.length, unit.semanticSpec.layers.length, name);
+    assert.equal(empty.semanticSpec.coordinates[0].type,
+      unit.semanticSpec.coordinates[0].type, name);
+    assert.deepEqual(graphic.items, [], name);
+    assert.equal(grid.graphicSpec.objects["matrix-headers"].items.length, 4, name);
+    assert.equal(unit.graphicSpec, before, name);
+  }
+});
+
+test("replays selected Polar labels, placement, leaders, theme, and revised Canvas per child", () => {
+  const values = [
+    { panel: "A", angle: 0, radius: 1 },
+    { panel: "A", angle: 90, radius: 2 },
+    { panel: "B", angle: 0, radius: 10 },
+    { panel: "B", angle: 90, radius: 20 }
+  ];
+  const labeledUnit = (sourceValues = values) => chart()
+    .createCanvas({ width: 340, height: 320, margin: 70 })
+    .createData({ id: "values", values: sourceValues })
+    .createPolarScatterPlot({
+      id: "points",
+      theta: { field: "angle", scale: { nice: false, zero: false } },
+      radius: { field: "radius", scale: { nice: false, zero: false } },
+      guides: false
+    })
+    .createMarkLabels({
+      id: "labels",
+      source: "points",
+      field: "radius",
+      select: { field: "radius", op: "max", count: 1 },
+      placement: {
+        anchor: "outsideEnd",
+        gap: 5,
+        overflow: "allow",
+        leader: { stroke: "#ff0000" }
+      }
+    });
+  const base = labeledUnit();
+  const before = base.graphicSpec;
+  const faceted = base.facet({ field: "panel" })
+    .editFacetScales({ r: "independent" })
+    .applyTheme({ theme: "dark", scope: "descendants" });
+
+  assert.deepEqual(Object.values(faceted.children).map(child =>
+    child.graphicSpec.objects.labels.items.map(item => item.properties.text)), [
+    ["2"], ["20"]
+  ]);
+  for (const child of Object.values(faceted.children)) {
+    assert.equal(child.markConfigs.labels.labelAuthoring.selection.kind, "inline");
+    assert.equal(child.markConfigs.labels.labelAuthoring.placement.anchor, "outsideEnd");
+    assert.equal(child.graphicSpec.objects["labels-placement-leaders"].items.length, 1);
+    assert.equal(child.materializationConfigs.theme.frames.at(-1).name, "dark");
+  }
+
+  const revisedValues = values.map(row => ({ ...row, radius: row.radius * 2 }));
+  const replayed = faceted.editFacetSource({
+    program: labeledUnit(revisedValues).editCanvas({ width: 380, height: 360 })
+  });
+  assert.deepEqual(Object.values(replayed.children).map(child =>
+    child.graphicSpec.objects.labels.items.map(item => item.properties.text)), [
+    ["4"], ["40"]
+  ]);
+  assert.equal(Object.values(replayed.children).every(child =>
+    child.graphicSpec.objects.canvas.properties.width === 380 &&
+    child.graphicSpec.objects.canvas.properties.height === 360), true);
+  assert.equal(base.graphicSpec, before);
+});
+
+test("does not resurrect removed Polar labels in facet or repeat replay", () => {
+  const values = [
+    { panel: "A", angle: 0, radius: 1, distance: 10 },
+    { panel: "A", angle: 90, radius: 2, distance: 20 },
+    { panel: "B", angle: 0, radius: 10, distance: 100 },
+    { panel: "B", angle: 90, radius: 20, distance: 200 }
+  ];
+  const removed = source(values).createPolarScatterPlot({
+    id: "points",
+    theta: "angle",
+    radius: { field: "radius", scale: { nice: false, zero: false } },
+    guides: false
+  }).createMarkLabels({
+    id: "labels", source: "points", field: "radius"
+  }).removeMarkLabels({ source: "points" });
+  const faceted = removed.facet({ field: "panel" });
+  const repeated = removed.repeatCharts({
+    target: "points", channel: "r", fields: ["radius", "distance"]
+  });
+
+  for (const child of [
+    ...Object.values(faceted.children),
+    ...Object.values(repeated.children)
+  ]) {
+    assert.equal(child.semanticSpec.layers.some(layer => layer.id === "labels"), false);
+    assert.equal(child.graphicSpec.objects.labels, undefined);
+    assert.equal(child.markConfigs.labels, undefined);
+  }
+});

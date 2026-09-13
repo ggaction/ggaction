@@ -351,10 +351,12 @@ program references stay unchanged while placements and snapshots are rebuilt.
 facet({ id?, field, data?, values?, columns?, gap?, align?, padding?, scales?, guides? })
 ```
 
-Repeat one complete chart by a field on its common row-preserving dataset
-ancestor. Values preserve source first appearance; scale policies can be
-`"shared"` or `"independent"` by supported channel, and layered regression
-data and other supported statistical descendants are recomputed per cell.
+Repeat one complete Cartesian, Polar, or Parallel chart by a field on its common
+row-preserving dataset ancestor. Values preserve source first appearance;
+scale policies can be `"shared"` or `"independent"` by supported role, including
+Polar `theta`/public `r` and all `parallelDimensions`. Layered regression data,
+other supported statistical descendants, attached labels, and references are
+recomputed per cell.
 `guides: { axes: "outer" }` keeps axes only on occupied outer cells, while
 `guides: { legend: "shared" }` promotes one compatible parent-owned legend at
 the child legend's configured `left`, `right`, `top`, or `bottom` edge. Top and
@@ -368,9 +370,11 @@ See [Program composition](../api/composition.md#repeat-the-current-chart-by-a-fi
 facetGrid({ id?, data?, rows, columns, combinations?, gap?, align?, padding?, scales?, guides? })
 ```
 
-Repeat one supported Cartesian chart over two ordered categorical fields.
+Repeat one supported Cartesian, Polar, or Parallel chart over two ordered
+categorical fields.
 `combinations: "observed"` retains the coordinates of observed pairs;
-`"full"` also creates explicit blank cells for missing pairs.
+`"full"` also creates explicit empty cells that retain their semantic layers,
+coordinate, header, and shared or explicit-domain local guides.
 
 ### `repeatCharts`
 
@@ -378,10 +382,12 @@ Repeat one supported Cartesian chart over two ordered categorical fields.
 repeatCharts({ id?, target?, channel, fields, columns?, gap?, align?, padding?, scales?, guides? })
 ```
 
-Repeat one direct Cartesian mark by replacing its x or y field. The repeated
-channel is independently scaled by default; request a shared policy explicitly
-to use the union domain. Polar roles, Parallel dimensions, and composite roles
-are rejected with explicit errors.
+Repeat one direct mark by replacing Cartesian `x`/`y`, eligible Polar
+`theta`/public `r`, or one `{ parallelDimension: field }`. The repeated role is
+independently scaled by default; request a shared policy explicitly to use the
+union domain. Attached labels and statistical references owned by the target
+replay with it. Pie/Radar raw positional roles, derived targets, unrelated
+layers, and composite roles are rejected with explicit errors.
 
 ### `editFacetSource`
 
@@ -407,12 +413,14 @@ without changing child programs or facet value order.
 ### `editFacetScales`
 
 ```javascript
-editFacetScales({ x?, y?, xOffset?, yOffset?, color?, stroke?, size?, shape?, opacity?, strokeDash? })
+editFacetScales({ x?, y?, xOffset?, yOffset?, theta?, r?, color?, stroke?, size?, shape?, opacity?, strokeDash?, parallelDimensions? })
 ```
 
 Partially change used facet channels between `"shared"` and `"independent"`.
 Every cell is rederived from the retained pre-facet program while field, data,
-value order, child IDs, layout, guides, headers, and title are preserved.
+value order, child IDs, layout, guides, headers, and title are preserved. Public
+`r` addresses semantic radius; `parallelDimensions` applies the policy separately
+to every Parallel dimension.
 
 ### `editFacetGuides`
 
@@ -422,7 +430,8 @@ editFacetGuides({ axes?, legend? })
 
 Partially change axes between `"each"` and `"outer"`, or legend ownership
 between `false` and `"shared"`. Shared legend promotion requires concretely
-compatible child scales and guide recipes.
+compatible child scales and guide recipes. Polar and Parallel axes remain
+child-local and reject `"outer"`.
 
 ### `createData`
 

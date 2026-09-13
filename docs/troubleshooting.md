@@ -169,8 +169,11 @@ program.facet({
 });
 ```
 
-Polar sources cannot currently be faceted. They can still be children of
-`hconcat` or `vconcat`.
+Polar and Parallel sources can be faceted, but their axes stay local to each
+panel. Use `theta` and public `r` for Polar scale policies, or
+`parallelDimensions` for all Parallel dimension scales. Requesting
+`guides: { axes: "outer" }` for either coordinate family fails before partial
+composition state is stored.
 
 ## Browser Canvas renders nothing
 

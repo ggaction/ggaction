@@ -4311,7 +4311,7 @@
       "domain": "composition",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Repeats one Cartesian position across fields",
+      "update": "Repeats one eligible Cartesian or Polar role or one Parallel dimension across fields",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",

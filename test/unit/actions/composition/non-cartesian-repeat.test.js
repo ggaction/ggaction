@@ -97,3 +97,40 @@ test("repeats exactly one Parallel dimension and preserves sibling roles", () =>
     /unique fields/
   );
 });
+
+test("repeats a Polar role together with its attached label lifecycle", () => {
+  const base = source().createPolarScatterPlot({
+    id: "mark",
+    theta: "angle",
+    radius: { field: "radius", scale: { zero: false, nice: false } },
+    guides: false
+  }).createMarkLabels({
+    id: "labels", source: "mark", field: "radius"
+  });
+  const repeated = base.repeatCharts({
+    target: "mark", channel: "r", fields: ["radius", "distance"]
+  });
+
+  assert.deepEqual(Object.values(repeated.children).map(child =>
+    child.semanticSpec.layers.map(layer => [layer.id, layer.source])), [
+    [["mark", undefined], ["labels", "mark"]],
+    [["mark", undefined], ["labels", "mark"]]
+  ]);
+  assert.deepEqual(Object.values(repeated.children).map(child =>
+    child.graphicSpec.objects.labels.items.map(item => item.properties.text)), [
+    ["1", "2"],
+    ["1", "2"]
+  ]);
+  assert.deepEqual(Object.values(repeated.children).map(child =>
+    child.graphicSpec.objects.labels.items.map(item => item.properties.y)), [
+    [110, 30],
+    [110, 30]
+  ]);
+  assert.throws(
+    () => base.createTextMark({ id: "note", data: "values" })
+      .repeatCharts({
+        target: "mark", channel: "r", fields: ["radius", "distance"]
+      }),
+    /does not support mark "note"/
+  );
+});

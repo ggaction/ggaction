@@ -309,7 +309,14 @@ function resolveRepeatDefinition(program, args) {
         : "repeatCharts target is ambiguous; provide target."
     );
   }
-  if (program.semanticSpec.layers.length !== 1) {
+  const unrelatedLayers = program.semanticSpec.layers.filter(layer => {
+    if (layer.id === target) return false;
+    const attachedLabel = layer.mark?.type === "text" && layer.source === target;
+    const statisticalReference = program.markConfigs[layer.id]
+      ?.statisticalReference?.source === target;
+    return !attachedLabel && !statisticalReference;
+  });
+  if (unrelatedLayers.length > 0) {
     throw new Error("repeatCharts currently supports one direct mark only.");
   }
   const config = program.markConfigs[target] ?? {};

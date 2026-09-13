@@ -145,8 +145,8 @@ and source-row count multiplied by child count must not exceed the shared
 | `gap` | `16` | Sets horizontal and vertical cell spacing |
 | `align` | `"center"` | Aligns unequal cells inside grid tracks |
 | `padding` | `0` on every side | Adds scalar or four-side parent padding |
-| `scales` | every channel `"shared"` | Sets `"shared"` or `"independent"` per `x`, `y`, `xOffset`, `yOffset`, `color`, `stroke`, `size`, `shape`, `opacity`, or `strokeDash` |
-| `guides.axes` | `"each"` | `"outer"` keeps x axes on the bottommost occupied cell in each column and y axes on the leftmost occupied cell in each row |
+| `scales` | every used role `"shared"` | Sets `"shared"` or `"independent"` per `x`, `y`, `xOffset`, `yOffset`, `theta`, public `r`, `color`, `stroke`, `size`, `shape`, `opacity`, `strokeDash`, or all `parallelDimensions` |
+| `guides.axes` | `"each"` | `"outer"` keeps occupied-edge Cartesian x/y axes; Polar and Parallel axes remain local and reject `"outer"` |
 | `guides.legend` | `false` | `"shared"` promotes one compatible parent-owned categorical, gradient, discretized-color, size, or opacity legend |
 
 Author the legend position on the unit chart before calling `facet`. Promotion
@@ -192,16 +192,36 @@ density, interval/error-band, and box-summary/outlier datasets are replayed
 after the cell filter, so each panel receives a fresh statistical result rather
 than a clipped copy of the full-chart result.
 
-The current Cartesian slice supports point, line, area, histogram, aggregate
-bar, ranged bar, rule, regression, density, interval/error-band, and box-plot
-layers when they share one valid row-preserving partition ancestor. A shared
-legend is accepted only when every represented child scale and legend recipe is
-concretely compatible; scale resolution alone does not make a guide shareable.
-Polar and Parallel sources cannot currently be faceted. Calling `facet` on a
-Polar source throws before creating partial children because theta/radius
-facet scale and guide resolution are not implemented. A Parallel source is
-rejected because a dimension-axis list needs a different facet resolver. Both
-families remain supported as concat children.
+The Cartesian slice supports point, line, area, histogram, aggregate bar,
+ranged bar, rule, regression, density, interval/error-band, and box-plot layers.
+Polar Point, Line, direct Arc, Pie, Rose, and Radar charts and Parallel-coordinate
+charts can also be faceted when their visible layers share one valid
+row-preserving partition ancestor and one coordinate family. Public scale
+policy `r` addresses the semantic radius role; `radius` is not an alias.
+`parallelDimensions` applies one policy independently to every dimension scale,
+so unrelated units are never merged into one domain. Shared domains do not
+share pixel ranges: every Polar frame and Parallel dimension position is
+resolved against its child Canvas.
+
+These are fragments that require already-complete unit programs:
+
+```javascript
+const radialPanels = polarUnit.facet({
+  field: "region",
+  scales: { theta: "shared", r: "independent" }
+});
+
+const parallelPanels = parallelUnit.facet({
+  field: "region",
+  scales: { parallelDimensions: "shared" }
+});
+```
+
+A shared legend is accepted only when every represented child scale and legend
+recipe is concretely compatible; scale resolution alone does not make a guide
+shareable. Polar theta/radius axes and Parallel dimension axes remain inside
+each panel. Requesting outer axes for either family fails before a composition
+is returned.
 
 Create a chart title after `facet` so the title is owned directly by the
 parent. A title that already fits the unit Canvas is promoted for authoring
@@ -279,15 +299,16 @@ const matrix = unit.facetGrid({
 Omitted row or column `values` use source first-appearance order. `"observed"`
 creates children only for pairs present in the source while retaining each
 pair's actual grid coordinates. `"full"` creates the Cartesian
-product. A missing pair remains a named, mark-free Canvas with a header, so
-neighboring cells never shift into its position. Shared domains are inferred
-from populated cells; an empty cell has no inferred local scale or guide.
+product. A missing pair remains a named Canvas with its semantic layers,
+coordinate, canonical empty graphics, and header, so neighboring cells never
+shift into its position. Shared domains are inferred from populated cells and
+allow the empty child to materialize local axes or grids. An independent
+automatic domain with no final values is an error; an explicit domain is valid.
 
 The child limit is 100 after applying the combination policy. The same
 10,000,000-unit partition-work limit used by `facet` applies. `facetGrid`
-supports the same Cartesian chart families, scale policies, axis policies, and
-compatible shared legends as `facet`. Polar and Parallel sources fail before
-state changes with coordinate-specific resolver errors.
+supports the same Cartesian, Polar, and Parallel chart families, scale policies,
+axis restrictions, and compatible shared legends as `facet`.
 
 See the [runnable grid example](https://github.com/ggaction/ggaction/tree/main/examples/facet-grid)
 for a 2 × 3 full grid with one missing source pair.
@@ -309,17 +330,32 @@ const metrics = unit.repeatCharts({
 });
 ```
 
-The action currently accepts `x` or `y` on one direct Cartesian mark. `target`
-may be omitted only when exactly one mark is eligible. Child IDs and headers
-follow the ordered field list. The repeated channel defaults to independent
-domains; requesting it as shared produces the union domain. Other used
-channels default to shared, and one compatible non-repeated legend may be
-promoted to the parent.
+The action accepts `x` or `y` on one direct Cartesian mark, `theta` or public
+`r` on eligible Polar Point/Line/direct Arc/Rose roles, and one
+`{ parallelDimension: field }` on Parallel coordinates. The Parallel form
+replaces exactly one dimension and preserves its position, field type, explicit
+title, sibling dimensions, row key, and missing-value policy. `target` may be
+omitted only when exactly one primary mark is eligible. Attached labels and
+statistical-reference dependents owned by that target replay with it. Child IDs
+and headers follow the ordered field list.
+
+This fragment requires a complete Parallel-coordinate unit:
+
+```javascript
+const comparisons = parallelUnit.repeatCharts({
+  channel: { parallelDimension: "horsepower" },
+  fields: ["horsepower", "weight", "displacement"]
+});
+```
+
+The repeated role defaults to independent domains; requesting it as shared
+produces the union domain. Other used roles default to shared, and one compatible
+non-repeated legend may be promoted to the parent.
 
 Every repeated field can describe a different quantity, so outer-axis
-promotion is rejected. Composite roles, derived dependencies, Polar roles,
-and Parallel dimension lists also fail atomically with a reason specific to
-the missing model. See the [runnable repeat example](https://github.com/ggaction/ggaction/tree/main/examples/repeat-charts).
+promotion is rejected. Pie and Radar raw theta/r repetition, composite roles,
+derived target datasets, and unrelated sibling layers also fail atomically.
+See the [runnable repeat example](https://github.com/ggaction/ggaction/tree/main/examples/repeat-charts).
 
 ## Edit the layout
 
@@ -360,6 +396,10 @@ order, child IDs, layout, headers, and title. Omitted policies retain their
 current values. Scale edits require an effective change on a channel used by
 the repeated chart.
 
+For Polar and Parallel facets, use `theta`, public `r`, or
+`parallelDimensions`. Their axes remain per panel, so `axes: "outer"` is
+rejected at creation and during guide editing.
+
 Policy edits immutably rederive every cell from the retained pre-facet program.
 This reruns supported statistical descendants, histogram binning, scale
 resolution, marks, guides, selections, and highlights instead of modifying a
@@ -384,6 +424,10 @@ the stored partition dataset and fields or repeated target role, and every
 stored ordered value must remain observed. To change a partition dataset ID,
 facet domain, or repeat field list, create a new composition from the revised
 unit with the desired recipe.
+
+Composition Canvas dimensions are inferred from the child Canvases. To resize
+every facet or repeat cell, call `editCanvas` on the revised complete unit and
+pass that unit to `editFacetSource`; `editCanvas` itself accepts unit programs.
 
 The call is atomic: an invalid new unit changes neither the existing parent nor
 the caller-owned program.

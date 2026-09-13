@@ -139,3 +139,45 @@ test("normalizes each Pie partition by its local denominator", () => {
   });
   assert.deepEqual(spans, [[180, 180], [90, 270]]);
 });
+
+test("treats a replayed transform with no final rows as an empty Polar cell", () => {
+  const values = [
+    { panel: "A", keep: true, angle: "a", radius: 1 },
+    { panel: "A", keep: true, angle: "b", radius: 2 },
+    { panel: "B", keep: false, angle: "b", radius: 10 },
+    { panel: "B", keep: false, angle: "c", radius: 20 }
+  ];
+  const unit = chart()
+    .createCanvas({ width: 420, height: 420, margin: 100 })
+    .createData({ id: "raw", values })
+    .filterData({
+      id: "eligible", source: "raw", field: "keep", oneOf: [true]
+    })
+    .createPolarScatterPlot({
+      id: "points",
+      theta: { field: "angle", fieldType: "nominal" },
+      radius: { field: "radius", scale: { zero: false, nice: false } },
+      guides: { axes: { theta: { title: false }, radius: { title: false } } }
+    });
+  const before = unit.graphicSpec;
+  const faceted = unit.facet({
+    data: "raw", field: "panel", values: ["A", "B"]
+  });
+  const empty = faceted.children["facet-cell-2"];
+
+  assert.equal(empty.semanticSpec.layers[0].data, "facet-cell-2-eligible-data");
+  assert.equal(empty.semanticSpec.coordinates[0].type, "polar");
+  assert.deepEqual(empty.graphicSpec.objects.points.items, []);
+  assert.equal(empty.graphicSpec.objects.thetaAxisLine.type, "path");
+  assert.equal(empty.graphicSpec.objects.radialAxisLine.type, "line");
+  assert.throws(
+    () => unit.facet({
+      data: "raw",
+      field: "panel",
+      values: ["A", "B"],
+      scales: { theta: "independent", r: "independent" }
+    }),
+    /Facet child "facet-cell-2" cannot resolve independent scale "theta" from an empty partition\./
+  );
+  assert.equal(unit.graphicSpec, before);
+});

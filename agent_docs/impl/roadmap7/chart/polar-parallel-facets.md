@@ -14,8 +14,11 @@
 → source.facet(기존 field/values/layout 옵션 + 새 scale resolution)
 → editFacetHeaders(role,labelMap,side)
 → applyTheme(custom theme,descendants)
-→ editCanvas(기존 크기 옵션)
+→ revisedUnit.editCanvas(기존 크기 옵션)
+→ facet.editFacetSource({ program: revisedUnit })
 ```
+
+composition 자체에는 `editCanvas`가 없다. parent composition Canvas는 child Canvas와 layout에서 자동 파생된다. 따라서 Canvas 변경을 replay하려면 source unit을 먼저 `editCanvas`로 수정한 뒤 그 unit을 `editFacetSource`에 전달한다.
 
 정확한 현재 facade 이름/필수 field options는 ACTION_INDEX와 types에서 가져와 Gate V의 **실행 가능한 fixture**로 확정한다. 이 pseudocode를 그대로 public example로 복사하지 않는다. 낮은 계층 variant는 data → coordinate → mark → encode → axes/legend의 현재 public chain을 사용한다.
 

@@ -84,7 +84,7 @@ remain available for custom layering and editing.
 
 | Area | Supported now |
 | --- | --- |
-| Program model | Immutable unit or composition `ChartProgram`, hierarchical trace, nested Cartesian/Polar horizontal or vertical composition, stable child replacement, and Cartesian facet repetition |
+| Program model | Immutable unit or composition `ChartProgram`, hierarchical trace, nested Cartesian/Polar/Parallel composition, stable child replacement, and Cartesian/Polar/Parallel facet, grid, and eligible field-role repetition |
 | Canvas | Create/edit width, height, background, margin |
 | Data | Immutable arrays of plain row objects, named filters, stable window operations, rectangular 2D bins, grouped interval summaries, grouped linear/polynomial/LOESS regression, grouped kernel-density derivations, and immutable Horizon band revisions |
 | Coordinates | Named Cartesian, Polar, and Parallel resources; x/y use Cartesian, theta/radius use Polar, and ordered dimensions use Parallel |
@@ -163,9 +163,13 @@ for anchors.
 
 ### Coordinates and composition
 
-Polar charts may be direct or nested concat children. Faceting a Polar source is
-not implemented and fails before partial child state is created.
+Polar Point/Line/direct Arc/Pie/Rose/Radar charts support facet and facet-grid
+composition with shared or independent theta/radius meaning domains and
+child-local frames and axes. Eligible direct Polar roles support one-dimensional
+theta or radius repetition; Pie and Radar raw positional-role repetition is
+explicitly rejected.
 Parallel coordinates support quantitative/ordinal dimensions, open linear
-paths, dimension-local axes, color/stroke-dash legends, selection and filtering.
-Temporal dimensions, curved paths, axis drag reordering, brushing, bundling,
-faceting, and shared Parallel coordinates across child programs are not implemented.
+paths, dimension-local axes, color/stroke-dash legends, selection, filtering,
+faceting, and exact one-dimension field repetition. Temporal dimensions, curved
+paths, axis drag reordering, brushing, bundling, outer shared Parallel axes,
+and automatic cross-composition scale sharing are not implemented.

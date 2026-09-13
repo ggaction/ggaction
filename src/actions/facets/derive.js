@@ -60,7 +60,7 @@ function applySharedHistogramBoundaries(program, layerId, boundaries) {
   });
 }
 
-function deriveCellProgram(
+function buildFacetCellCandidate(
   base,
   definition,
   cell,
@@ -85,7 +85,6 @@ function deriveCellProgram(
     });
     source = id;
   }
-  const empty = requireDataset(child, cell.data).values.length === 0;
   const datasets = new Map([[definition.data, cell.data]]);
   for (const replay of definition.dependencies.replay) {
     const source = datasets.get(replay.source);
@@ -107,6 +106,7 @@ function deriveCellProgram(
     });
     datasets.set(replay.id, id);
   }
+  const reboundData = new Map();
   for (const layer of definition.dependencies.layers) {
     const data = datasets.get(layer.data);
     if (data === undefined) {
@@ -114,6 +114,7 @@ function deriveCellProgram(
         `Facet layer "${layer.id}" has no replayed dataset in cell "${cell.id}".`
       );
     }
+    reboundData.set(layer.id, data);
     const statistical = child.markConfigs[layer.id]?.statisticalReference;
     if (statistical !== undefined) {
       child = child._withMarkConfig(layer.id, {
@@ -121,15 +122,7 @@ function deriveCellProgram(
         statisticalReference: { ...statistical, dataId: data }
       });
     }
-    child = empty
-      ? applyLayerEmptyDataView(
-          child.editSemantic({
-            property: `layer[${layer.id}].data`,
-            value: data
-          }),
-          layer.id
-        )
-      : child.rebindLayerData({ id: layer.id, data });
+    child = child.rebindLayerData({ id: layer.id, data });
     child = applySharedHistogramBoundaries(
       child,
       layer.id,
@@ -148,14 +141,26 @@ function deriveCellProgram(
     }
     child = child.rebindGradientPlotProfile({ id, profile, source });
   }
-  if (empty) return child;
+  const primaryLayers = definition.dependencies.primaryLayers ??
+    definition.dependencies.layers.map(layer => layer.id);
+  const populated = primaryLayers.some(id => {
+    const data = reboundData.get(id);
+    return data !== undefined && requireDataset(child, data).values.length > 0;
+  });
+  if (!populated) {
+    for (const layer of definition.dependencies.layers) {
+      child = applyLayerEmptyDataView(child, layer.id);
+    }
+    return { program: child, populated: false };
+  }
   const scaleIds = [...new Set(child.semanticSpec.layers.flatMap(getLayerScaleIds))];
-  return applyMaterializationPlan(child, buildMaterializationPlan({
+  const program = applyMaterializationPlan(child, buildMaterializationPlan({
     scales: scaleIds.map(id => ({
       op: "rematerializeScale",
       args: { id, guides: false, marks: false }
     }))
   }));
+  return { program, populated: true };
 }
 
 function applyResolvedDomains(
@@ -199,6 +204,22 @@ function applyResolvedDomains(
   );
 }
 
+function materializeFacetCell(
+  child,
+  childId,
+  resolution,
+  baseResolved,
+  populated
+) {
+  return applyResolvedDomains(
+    child,
+    childId,
+    resolution,
+    baseResolved,
+    { marks: populated }
+  );
+}
+
 export function deriveFacetChildren(
   base,
   definition,
@@ -216,14 +237,15 @@ export function deriveFacetChildren(
   const bins = xPolicy === "shared"
     ? sharedHistogramBoundaries(template)
     : new Map();
-  const independentlyResolved = Object.fromEntries(definition.cells.map(cell => [
+  const candidates = Object.fromEntries(definition.cells.map(cell => [
     cell.id,
-    deriveCellProgram(template, definition, cell, bins, scales)
+    buildFacetCellCandidate(template, definition, cell, bins, scales)
   ]));
-  const populatedIds = new Set(definition.cells.flatMap(cell =>
-    requireDataset(independentlyResolved[cell.id], cell.data).values.length > 0
-      ? [cell.id]
-      : []
+  const independentlyResolved = Object.fromEntries(Object.entries(candidates).map(
+    ([id, candidate]) => [id, candidate.program]
+  ));
+  const populatedIds = new Set(Object.entries(candidates).flatMap(
+    ([id, candidate]) => candidate.populated ? [id] : []
   ));
   return resolveFacetChildrenScales(
     template,
@@ -283,12 +305,12 @@ export function resolveFacetChildrenScales(
       if (child.semanticSpec.layers.length === 0) {
         return [id, closeInheritedAction ? child._exitAction() : child];
       }
-      const resolved = applyResolvedDomains(
+      const resolved = materializeFacetCell(
         child,
         id,
         resolution,
         template.resolvedScales,
-        { marks: Object.hasOwn(populated, id) }
+        Object.hasOwn(populated, id)
       );
       return [id, closeInheritedAction ? resolved._exitAction() : resolved];
     })
