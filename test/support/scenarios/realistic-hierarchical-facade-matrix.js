@@ -225,11 +225,28 @@ function colorChannel(id, index, { categorical = false, layout = false, temporal
 }
 
 function sizeChannel(id, index) {
+  const type = [
+    "linear", "log", "pow", "sqrt", "quantize", "quantile", "threshold"
+  ][index % 7];
+  const common = { id, type, unknown: 4, reverse: index % 3 === 0 };
+  let scale;
+  if (type === "quantize" || type === "quantile") {
+    scale = { ...common, domain: "auto", range: [4, 16, 36] };
+  } else if (type === "threshold") {
+    scale = { ...common, domain: [12, 36], range: [4, 16, 36] };
+  } else {
+    scale = {
+      ...common,
+      domain: "auto",
+      range: "auto",
+      clamp: index % 2 === 0,
+      ...(type === "log" ? { base: 2 } : {}),
+      ...(type === "pow" ? { exponent: 2 } : {})
+    };
+  }
   return {
     field: "size", fieldType: "quantitative",
-    scale: {
-      id, type: "linear", domain: "auto", range: "auto", unknown: 4
-    }
+    scale
   };
 }
 
@@ -315,7 +332,11 @@ function polarTicksAndLabels(index, discrete) {
     };
   }
   const { count, ...rest } = options;
-  return { ...rest, values: [1, 2, 3] };
+  return {
+    ...rest,
+    values: [1, 2, 3],
+    labels: { ...rest.labels, labelMap: "auto" }
+  };
 }
 
 function cartesianTicksAndLabels(index, discrete, format = "auto") {
@@ -343,16 +364,20 @@ function axis(scaleId, coordinate, index, channel, discrete = false, values, for
   const position = channel === "x"
     ? (index % 2 === 0 ? "bottom" : "top")
     : index % 8 === 0 ? "right" : "left";
+  const ticksAndLabels = index % 13 === 0
+    ? false
+    : values === undefined
+      ? cartesianTicksAndLabels(index, discrete, format)
+      : ticksAndLabelsWithValues(index, values, false, format);
+  if (discrete && ticksAndLabels !== false) {
+    ticksAndLabels.labels = { ...ticksAndLabels.labels, labelMap: "auto" };
+  }
   return {
     scale: scaleId,
     coordinate,
     position,
     line: index % 11 === 0 ? false : { color: "#475569", lineWidth: 1.2 },
-    ticksAndLabels: index % 13 === 0
-      ? false
-      : values === undefined
-        ? cartesianTicksAndLabels(index, discrete, format)
-        : ticksAndLabelsWithValues(index, values, false, format),
+    ticksAndLabels,
     title: index % 17 === 0 ? false : axisTitle(`${channel.toUpperCase()} value`, index)
   };
 }
@@ -384,7 +409,8 @@ function legendSymbol(index, kind) {
 }
 
 function legend(target, index, {
-  orderChannel, orderValues, continuous = false, kind = "filled", temporal = false
+  orderChannel, orderValues, continuous = false, kind = "filled", temporal = false,
+  sampledValues
 } = {}) {
   const legacy = index === 14;
   const position = legacy
@@ -397,6 +423,34 @@ function legend(target, index, {
         ? "top"
         : index % 20 === 15 ? "bottom" : "right";
   const side = position === "right" || position === "left";
+  if (sampledValues !== undefined) {
+    return {
+      target,
+      channels: ["size"],
+      layout: "edge",
+      position,
+      align: side ? "center" : "left",
+      direction: side ? "vertical" : "horizontal",
+      columns: side ? 1 : 3,
+      offset: 28,
+      titlePosition: side ? "top" : "left",
+      title: "Measured size",
+      values: sampledValues,
+      itemGap: 20,
+      labels: {
+        offset: 8,
+        format: ".1f",
+        color: "#334155",
+        fontSize: 11,
+        fontFamily: "sans-serif",
+        fontWeight: 500
+      },
+      titleStyle: {
+        color: "#0f172a", fontSize: 12, fontFamily: "sans-serif", fontWeight: 700
+      },
+      border: { color: "#cbd5e1", lineWidth: 1, padding: 8, background: "#ffffff" }
+    };
+  }
   if (continuous === "interval") {
     return {
       target,
@@ -509,7 +563,8 @@ function cartesianGuides({
   id, coordinate, xScale, yScale, index, hasColor = true, horizon = false,
   rug = false, xDiscrete = false, yDiscrete = false, continuousColor = false,
   legendKind = "filled", legendOrderValues, legendOrderChannel,
-  legendTemporal = false, xValues, yValues, xFormat = "auto", yFormat = "auto"
+  legendTemporal = false, legendSampleValues,
+  xValues, yValues, xFormat = "auto", yFormat = "auto"
 }) {
   if (index === 0) return false;
   if (index === 1) return { axes: false, grid: false, legend: false };
@@ -559,7 +614,8 @@ function cartesianGuides({
           kind: legendKind,
           orderValues: legendOrderValues,
           orderChannel: legendOrderChannel,
-          temporal: legendTemporal
+          temporal: legendTemporal,
+          sampledValues: legendSampleValues
         })
   };
 }
@@ -587,7 +643,7 @@ function polarGuides({
   id, coordinate, thetaScale, radiusScale, index, hasColor = true,
   discreteTheta: requestedDiscreteTheta, continuousColor = false,
   legendKind = "filled", legendOrderChannel, legendOrderValues,
-  legendTemporal = false, radiusValues
+  legendTemporal = false, legendSampleValues, radiusValues
 }) {
   if (index === 0) return false;
   if (index === 1) return { axes: false, grid: false, legend: false };
@@ -622,7 +678,8 @@ function polarGuides({
           orderValues: legendOrderValues,
           continuous: continuousColor,
           kind: legendKind,
-          temporal: legendTemporal
+          temporal: legendTemporal,
+          sampledValues: legendSampleValues
         })
   };
 }
@@ -686,6 +743,11 @@ function numericFieldExtent(program, data, field) {
   return low === high ? [low, low + 1] : [low, high];
 }
 
+function numericLegendValues(program, data, field) {
+  const [low, high] = numericFieldExtent(program, data, field);
+  return [low, low + (high - low) / 2, high];
+}
+
 function fieldValue(program, data, field) {
   const rows = program.semanticSpec.datasets.find(dataset => dataset.id === data)?.values ?? [];
   return rows.find(row => row[field] !== undefined)?.[field];
@@ -740,7 +802,14 @@ function appendPolarScatter(program, index) {
     legendKind: "point",
     legendTemporal: [12, 13, 15].includes(index),
     legendOrderChannel: index === 14 ? "theta" : undefined,
-    legendOrderValues: categoryValues(program, "analysisRows", "group"),
+    legendOrderValues: categoryValues(
+      program,
+      "analysisRows",
+      index === 14 ? "bucket" : "group"
+    ),
+    legendSampleValues: hasSize && index === 3
+      ? numericLegendValues(program, "analysisRows", "size")
+      : undefined,
     radiusValues: [numericFieldValue(program, "analysisRows", "positiveY")]
   });
   return removeWitness(program.createPolarScatterPlot(options), suffix);
@@ -778,7 +847,11 @@ function appendPolarLine(program, index) {
     thetaScale: `${suffix}-theta`, radiusScale: `${suffix}-radius`, index, hasColor,
     legendKind: "path",
     legendOrderChannel: index === 14 ? "theta" : undefined,
-    legendOrderValues: categoryValues(program, "analysisRows", "group"),
+    legendOrderValues: categoryValues(
+      program,
+      "analysisRows",
+      index === 14 ? "bucket" : "group"
+    ),
     radiusValues: [numericFieldValue(program, "analysisRows", "positiveY")]
   });
   return removeWitness(program.createPolarLinePlot(options), suffix);
@@ -980,8 +1053,15 @@ function appendStrip(program, index) {
     yDiscrete: mode === 1 || mode === 3,
     legendKind: "point",
     legendTemporal: [12, 13, 15].includes(index),
-    legendOrderValues: categoryValues(program, "analysisRows", "group"),
+    legendOrderValues: categoryValues(
+      program,
+      "analysisRows",
+      [5, 14].includes(index) ? "bucket" : "group"
+    ),
     legendOrderChannel: index === 5 ? "y" : index === 14 ? "x" : undefined,
+    legendSampleValues: hasSize && index === 8
+      ? numericLegendValues(program, "analysisRows", "size")
+      : undefined,
     xValues: index === 12
       ? [numericFieldValue(program, "analysisRows", "positiveX")]
       : undefined,
@@ -1111,8 +1191,15 @@ function appendBeeswarm(program, index) {
     yDiscrete: mode !== 2,
     legendKind: "point",
     legendTemporal: [12, 13, 15].includes(index),
-    legendOrderValues: categoryValues(program, "analysisRows", "group"),
+    legendOrderValues: categoryValues(
+      program,
+      "analysisRows",
+      [5, 14].includes(index) ? "bucket" : "group"
+    ),
     legendOrderChannel: index === 5 ? "y" : index === 14 ? "x" : undefined,
+    legendSampleValues: hasSize && index === 8
+      ? numericLegendValues(program, "analysisRows", "size")
+      : undefined,
     xValues: index === 12
       ? [numericFieldValue(program, "analysisRows", "positiveX")]
       : undefined,
@@ -1424,6 +1511,9 @@ function appendDensity(program, index) {
     steps: 32 + index,
     kernel: ["epanechnikov", "gaussian", "triangular", "uniform"][index % 4],
     normalization: index % 2 === 0 ? "unit" : "count",
+    weight: index % 2 === 0
+      ? { field: "rowOrdinal", kind: "frequency" }
+      : { field: "size", kind: "reliability" },
     as: ["densityValue", "densityEstimate"],
     densityChannel: index % 2 === 0 ? "x" : "y",
     valueScale: numericScale(`${suffix}-value`, index),

@@ -193,13 +193,33 @@ the same target unchanged. If color and shape are merged into one categorical
 block, selecting either member edits that same block; a later call replaces the
 earlier block-local value.
 
-The action accepts `title`, `values`, `count`, `order`, `gap`, `text`, and
-`symbol`. An empty title hides only that block's title. Exact `values` and
+The action accepts `title`, `values`, `count`, `order`, `gap`, `text`, `symbol`,
+and `labelMap`. An empty title hides only that block's title. Exact `values` and
 `count` apply to continuous size, opacity, and stroke-width blocks. `order`
 applies to a categorical block and must list every current category exactly
 once. `text` changes item-label typography and color. `symbol.size` is point
 area in square pixels. Empty `text` or `symbol` objects remove that local patch
 and restore the current base style.
+
+Use `labelMap` on a categorical block to change reader-facing names while
+preserving the typed raw domain and block order:
+
+```javascript
+const localized = program.editLegendBlock({
+  target: "points",
+  channel: "color",
+  labelMap: [
+    { value: "KR", label: "대한민국" },
+    { value: "US", label: "미국" }
+  ]
+});
+```
+
+Unmapped categories keep their normal visible text. Duplicate display labels
+and empty labels are valid and do not merge symbols. `labelMap: []` stores an
+empty map; `labelMap: "auto"` removes only this block override. Sampled numeric,
+gradient, and interval blocks reject display maps because their labels describe
+numeric intervals or samples rather than categorical identities.
 
 Symbol properties cannot replace the mapping the block explains. For example,
 a size block rejects `symbol.size`, an opacity block rejects `symbol.opacity`,
@@ -209,7 +229,7 @@ edits but no symbol patch.
 
 Block state follows its channel set through layout, Canvas, theme, data, and
 compatible scale-family updates. Removing a block discards its local state.
-Changing membership rejects a title or order whose destination would be
+Changing membership rejects a title, order, or display map whose destination would be
 ambiguous, and merging independently edited blocks requires their local styles
 to agree. `editLegendBlock()` is available on Full programs only.
 

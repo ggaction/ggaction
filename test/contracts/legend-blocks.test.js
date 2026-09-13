@@ -125,6 +125,62 @@ test("treats every member of one merged block as the same selector", () => {
   assert.equal(edited.graphicSpec.objects.seriesLegendTitle.properties.text, "B");
 });
 
+test("maps categorical legend labels by typed raw value and resets the block override", () => {
+  const original = combined();
+  const mapped = original.editLegendBlock({
+    target: "points",
+    channel: "shape",
+    labelMap: [
+      { value: "A", label: "같음" },
+      { value: "B", label: "같음" },
+      { value: "future", label: "미래" }
+    ]
+  });
+
+  assert.deepEqual(
+    itemProperties(mapped, "seriesLegendLabels").map(item => item.text),
+    ["같음", "같음", "C"]
+  );
+  assert.equal(itemProperties(mapped, "seriesLegendSymbolPoints").length, 3);
+  assert.deepEqual(mapped.resolvedScales.color.domain, ["A", "B", "C"]);
+  assert.deepEqual(
+    mapped.guideConfigs.legend.series.blockOverrides['["color","shape"]'].labelMap,
+    [
+      { value: "A", label: "같음" },
+      { value: "B", label: "같음" },
+      { value: "future", label: "미래" }
+    ]
+  );
+
+  const reset = mapped.editLegendBlock({
+    target: "points",
+    channel: "color",
+    labelMap: "auto"
+  });
+  assert.equal(reset.guideConfigs.legend.series.blockOverrides, undefined);
+  assert.deepEqual(
+    itemProperties(reset, "seriesLegendLabels").map(item => item.text),
+    ["A", "B", "C"]
+  );
+  assert.equal(original.guideConfigs.legend.series.blockOverrides, undefined);
+});
+
+test("rejects display maps for non-categorical legend blocks atomically", () => {
+  const original = combined();
+  const before = state(original);
+  for (const channel of ["size"]) {
+    assert.throws(
+      () => original.editLegendBlock({
+        target: "points",
+        channel,
+        labelMap: []
+      }),
+      /labelMap requires a categorical block/
+    );
+  }
+  assert.equal(state(original), before);
+});
+
 test("replaces symbol patches completely and removes stale concrete properties", () => {
   const original = combined();
   const categorical = original
@@ -298,6 +354,39 @@ test("preserves compatible overrides and rejects ambiguous structural transition
     /transition.*title/iu
   );
   assert.equal(state(titled), titledState);
+
+  const mapped = pointBase()
+    .encodeColor({ field: "group" })
+    .encodeShape({ field: "group" })
+    .createLegend({ target: "points", channels: ["color"] })
+    .editLegendBlock({
+      target: "points",
+      channel: "color",
+      labelMap: [{ value: "A", label: "Alpha" }]
+    });
+  const mappedState = state(mapped);
+  assert.throws(
+    () => mapped.editLegend({ target: "points", channels: ["color", "shape"] }),
+    /transition.*labelMap/iu
+  );
+  assert.equal(state(mapped), mappedState);
+
+  const equalMaps = [{ value: "A", label: "Alpha" }];
+  const mergedMaps = pointBase()
+    .encodeColor({ field: "group" })
+    .encodeStroke({ field: "group" })
+    .createLegend({ target: "points", channels: ["color"] })
+    .createLegend({ target: "points", channels: ["stroke"] })
+    .editLegendBlock({ target: "points", channel: "color", labelMap: equalMaps })
+    .editLegendBlock({ target: "points", channel: "stroke", labelMap: equalMaps })
+    .editLegend({ target: "points", channels: ["color", "stroke"] });
+  assert.deepEqual(
+    itemProperties(mergedMaps, "seriesLegendLabels").map(item => item.text),
+    ["Alpha", "B", "C"]
+  );
+  assert.deepEqual(mergedMaps.guideConfigs.legend.series.blockOverrides, {
+    '["color","stroke"]': { labelMap: equalMaps }
+  });
 
   const conflicting = pointBase()
     .encodeColor({ field: "group" })

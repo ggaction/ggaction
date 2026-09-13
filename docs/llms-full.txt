@@ -8882,6 +8882,40 @@ const emphasized = faceted.editFacetHeaders({
 Facet-header weights follow the shared
 [Canvas font-weight policy](./api/marks/text/#font-weights).
 
+An unqualified edit updates the common header style and keeps the existing
+one-header-per-cell layout. A row or column role switches to separate strips:
+
+```javascript
+const labeledMatrix = matrix
+  .editFacetHeaders({
+    labelMap: [{ value: "Q1", label: "First quarter" }]
+  })
+  .editFacetHeaders({
+    role: "row",
+    side: "left",
+    align: "center",
+    labelMap: [{ value: "North", label: "Northern region" }]
+  })
+  .editFacetHeaders({
+    role: "column",
+    side: "bottom",
+    align: "start"
+  });
+```
+
+Row-column grids create one header for each occupied column, followed by one
+for each occupied row. One-field facets and `repeatCharts` support the column
+role and retain one header per cell. Row sides are `left` or `right`; column
+sides are `top` or `bottom`. Role settings override the common style and map.
+`labelMap: "auto"` on a role returns to the common map, while an unqualified
+reset returns to the normal visible formatter. Typed raw values remain the
+partition identity. Duplicate display text and `""` are allowed; an empty
+mapped header keeps its stable item position and reserves no strip space.
+
+Header strips are measured before child placement. Changes to fonts, labels,
+sides, composition layout, titles, or shared legends therefore rebuild the
+required parent space without moving or rewriting child program identity.
+
 ## Build a row and column facet grid
 
 Use `facetGrid` when two source fields define the comparison:
@@ -11551,6 +11585,29 @@ subset in the requested order. Discrete axes reject `count` so categories are
 not silently omitted. Reversed ranges and Canvas rematerialization preserve
 the stored category values.
 
+Categorical Cartesian labels and categorical theta labels can replace display
+text without changing raw categories:
+
+```javascript
+const named = program.createXAxisLabels({
+  labelMap: [
+    { value: 1, label: "One" },
+    { value: "1", label: "String one" },
+    { value: "KR", label: "South Korea" }
+  ]
+});
+```
+
+Map lookup uses the typed raw value, so `1` and `"1"` remain distinct. Values
+missing from the map use the normal formatter. Repeated visible labels do not
+merge scale entries, ticks, legend symbols, or selections. An empty label
+hides that text while retaining its item; `labelMap: []` stores an explicit
+empty map and `labelMap: "auto"` removes the map. Cartesian continuous axes,
+continuous theta axes, radial axes, and Parallel dimension axes reject this
+option. The same option is available in focused label actions, nested
+ticks-and-labels options, complete Cartesian axes, and categorical theta
+facades.
+
 For a binned histogram x encoding, omitted tick options use the inferred bin
 boundaries. This keeps the axis aligned with every rect edge. Explicit
 `ticksAndLabels.count` or `ticksAndLabels.values` takes precedence. Count y
@@ -12665,13 +12722,33 @@ the same target unchanged. If color and shape are merged into one categorical
 block, selecting either member edits that same block; a later call replaces the
 earlier block-local value.
 
-The action accepts `title`, `values`, `count`, `order`, `gap`, `text`, and
-`symbol`. An empty title hides only that block's title. Exact `values` and
+The action accepts `title`, `values`, `count`, `order`, `gap`, `text`, `symbol`,
+and `labelMap`. An empty title hides only that block's title. Exact `values` and
 `count` apply to continuous size, opacity, and stroke-width blocks. `order`
 applies to a categorical block and must list every current category exactly
 once. `text` changes item-label typography and color. `symbol.size` is point
 area in square pixels. Empty `text` or `symbol` objects remove that local patch
 and restore the current base style.
+
+Use `labelMap` on a categorical block to change reader-facing names while
+preserving the typed raw domain and block order:
+
+```javascript
+const localized = program.editLegendBlock({
+  target: "points",
+  channel: "color",
+  labelMap: [
+    { value: "KR", label: "대한민국" },
+    { value: "US", label: "미국" }
+  ]
+});
+```
+
+Unmapped categories keep their normal visible text. Duplicate display labels
+and empty labels are valid and do not merge symbols. `labelMap: []` stores an
+empty map; `labelMap: "auto"` removes only this block override. Sampled numeric,
+gradient, and interval blocks reject display maps because their labels describe
+numeric intervals or samples rather than categorical identities.
 
 Symbol properties cannot replace the mapping the block explains. For example,
 a size block rejects `symbol.size`, an opacity block rejects `symbol.opacity`,
@@ -12681,7 +12758,7 @@ edits but no symbol patch.
 
 Block state follows its channel set through layout, Canvas, theme, data, and
 compatible scale-family updates. Removing a block discards its local state.
-Changing membership rejects a title or order whose destination would be
+Changing membership rejects a title, order, or display map whose destination would be
 ambiguous, and merging independently edited blocks requires their local styles
 to agree. `editLegendBlock()` is available on Full programs only.
 
@@ -17398,7 +17475,7 @@ interface ChartProgramActions {
   createAxes(options?: CreateAxesOptions): ChartProgram;
   createXAxis(options?: CompleteAxisOptions<XAxisPosition>): ChartProgram;
   createYAxis(options?: CompleteAxisOptions<YAxisPosition>): ChartProgram;
-  createThetaAxis(options?: CompletePolarAxisOptions): ChartProgram;
+  createThetaAxis(options?: CompleteThetaAxisOptions): ChartProgram;
   createRadialAxis(options?: CompleteRadialAxisOptions): ChartProgram;
   createThetaAxisLine(options?: CreateThetaAxisLineOptions): ChartProgram;
   createRadialAxisLine(options?: CreateRadialAxisLineOptions): ChartProgram;
@@ -17412,7 +17489,7 @@ interface ChartProgramActions {
   editRadialAxisLine(options?: AxisLineStyleOptions): ChartProgram;
   editThetaAxisTicks(options?: PolarTickOptions): ChartProgram;
   editRadialAxisTicks(options?: PolarTickOptions): ChartProgram;
-  editThetaAxisLabels(options?: PolarLabelOptions): ChartProgram;
+  editThetaAxisLabels(options?: ThetaAxisLabelOptions): ChartProgram;
   editRadialAxisLabels(options?: PolarLabelOptions): ChartProgram;
   editThetaAxisTitle(options?: PolarTitleOptions): ChartProgram;
   editRadialAxisTitle(options?: RadialTitleOptions): ChartProgram;
@@ -17438,7 +17515,7 @@ interface ChartProgramActions {
   editYAxisTitle(options?: Omit<AxisTitleOptions<YAxisPosition>, "scale">): ChartProgram;
   editXAxis(options: EditAxisOptions<XAxisPosition>): ChartProgram;
   editYAxis(options: EditAxisOptions<YAxisPosition>): ChartProgram;
-  editThetaAxis(options: Omit<EditPolarAxisOptions, "angle">): ChartProgram;
+  editThetaAxis(options: EditThetaAxisOptions): ChartProgram;
   editRadialAxis(options: EditRadialAxisOptions): ChartProgram;
   removeXAxis(options?: RemoveAxisOptions): ChartProgram;
   removeYAxis(options?: RemoveAxisOptions): ChartProgram;
@@ -17797,6 +17874,11 @@ program
 Collection item IDs are generated as `symbols:0`, `symbols:1`, and so on.
 Each item stores its own concrete primitive type. Shared properties such as
 `opacity` can then be broadcast to every compatible item.
+
+A concrete text graphic accepts an empty `text` string. This lets a high-level
+display-name action hide one rendered label while retaining stable collection
+identity. High-level titles, annotations, and text authoring actions still
+apply their own non-empty input rules.
 
 `parent` attaches a named graphic to an existing Canvas or collection. Attached
 IDs are stored in the parent's `children` list; repeated drawable instances stay

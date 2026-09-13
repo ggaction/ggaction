@@ -15,6 +15,7 @@ test("legend block declarations expose the closed Full-only contract", async () 
     await writeFile(file, `
 import type {
   ChartProgram,
+  DisplayLabelMap,
   EditLegendBlockOptions,
   LegendBlockSymbolPatch,
   LegendBlockTextPatch,
@@ -27,17 +28,20 @@ const channel: LegendChannel = "strokeWidth";
 const text: LegendBlockTextPatch = { fontSize: 14, fontFamily: "Inter", fontWeight: 600, color: "navy" };
 const symbol: LegendBlockSymbolPatch = { size: 64, fill: "white", stroke: "black", strokeWidth: 2, opacity: 0.6 };
 const options: EditLegendBlockOptions = { target: "points", channel: "size", values: [10], text: {}, symbol: {} };
+const labels: DisplayLabelMap = [{ value: 1, label: "one" }, { value: "1", label: "string one" }];
 program.editLegendBlock(options);
 program.editLegendBlock({ target: "points", channel, count: 3, gap: 0, title: "Weight", text, symbol });
 program.editLegendBlock({ target: "points", channel: "color", values: "auto", order: [1, "2", true] });
+program.editLegendBlock({ target: "points", channel: "color", labelMap: labels });
+program.editLegendBlock({ target: "points", channel: "color", labelMap: "auto" });
 // @ts-expect-error editLegendBlock is Full-only.
 basic.editLegendBlock({ target: "points", channel: "color", title: "Group" });
 // @ts-expect-error target is required.
 program.editLegendBlock({ channel: "color", title: "Group" });
 // @ts-expect-error channel is required.
 program.editLegendBlock({ target: "points", title: "Group" });
-// @ts-expect-error R39 owns labelMap.
-program.editLegendBlock({ target: "points", channel: "color", labelMap: [] });
+// @ts-expect-error display labels must be strings.
+program.editLegendBlock({ target: "points", channel: "color", labelMap: [{ value: "A", label: 1 }] });
 // @ts-expect-error symbol keys are closed.
 program.editLegendBlock({ target: "points", channel: "color", symbol: { radius: 4 } });
 // @ts-expect-error text keys are closed.

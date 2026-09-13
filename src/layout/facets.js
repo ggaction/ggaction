@@ -1,4 +1,4 @@
-import { cloneAndFreeze } from "../core/immutable.js";
+import { cloneAndFreeze, isPlainObject } from "../core/immutable.js";
 import {
   DEFAULT_COMPOSITION_LAYOUT,
   normalizeCompositionAlign,
@@ -52,6 +52,49 @@ function alignedOffset(remaining, align) {
   return remaining / 2;
 }
 
+const ZERO_SIDES = Object.freeze({ top: 0, right: 0, bottom: 0, left: 0 });
+
+function normalizeHeaderLayout(value, rows) {
+  if (value === undefined) {
+    return {
+      outer: ZERO_SIDES,
+      cellRows: { top: Array(rows).fill(0), bottom: Array(rows).fill(0) }
+    };
+  }
+  if (!isPlainObject(value) || Object.keys(value).some(
+    key => !["outer", "cellRows"].includes(key)
+  )) {
+    throw new TypeError("Facet headerLayout must contain outer and cellRows.");
+  }
+  const outer = { ...ZERO_SIDES, ...(value.outer ?? {}) };
+  if (!isPlainObject(value.outer ?? {}) || Object.keys(outer).some(
+    key => !Object.hasOwn(ZERO_SIDES, key)
+  )) {
+    throw new TypeError("Facet headerLayout.outer must contain side reservations.");
+  }
+  for (const [side, amount] of Object.entries(outer)) {
+    validateCompositionSpacing(amount, `Facet headerLayout.outer.${side}`);
+  }
+  const sourceRows = value.cellRows ?? {};
+  if (!isPlainObject(sourceRows) || Object.keys(sourceRows).some(
+    key => !["top", "bottom"].includes(key)
+  )) {
+    throw new TypeError("Facet headerLayout.cellRows must contain top and bottom arrays.");
+  }
+  const cellRows = Object.fromEntries(["top", "bottom"].map(side => {
+    const amounts = sourceRows[side] ?? Array(rows).fill(0);
+    if (!Array.isArray(amounts) || amounts.length !== rows) {
+      throw new RangeError(`Facet headerLayout.cellRows.${side} must match row count.`);
+    }
+    amounts.forEach((amount, index) => validateCompositionSpacing(
+      amount,
+      `Facet headerLayout.cellRows.${side}[${index}]`
+    ));
+    return [side, [...amounts]];
+  }));
+  return { outer, cellRows };
+}
+
 export function resolveFacetLayout({
   children,
   columns,
@@ -63,7 +106,8 @@ export function resolveFacetLayout({
   sharedLegendGap = DEFAULT_FACET_LEGEND_GAP,
   sharedLegendWidth = DEFAULT_FACET_LEGEND_WIDTH,
   sharedLegendHeight = DEFAULT_FACET_LEGEND_HEIGHT,
-  sharedLegendPosition = "right"
+  sharedLegendPosition = "right",
+  headerLayout
 } = {}) {
   const values = children?.map(child => child?.value);
   const coordinates = resolveGridCoordinates(children ?? [], columns);
@@ -106,6 +150,7 @@ export function resolveFacetLayout({
     : 0;
   const rowCount = coordinates?.rows ??
     Math.ceil(resolvedChildren.length / resolvedColumns);
+  const headers = normalizeHeaderLayout(headerLayout, rowCount);
   const columnWidths = Array(resolvedColumns).fill(-Infinity);
   const rowHeights = Array(rowCount).fill(-Infinity);
   resolvedChildren.forEach((child, index) => {
@@ -119,12 +164,14 @@ export function resolveFacetLayout({
     rowHeights[row] = Math.max(rowHeights[row], child.height);
   });
   const columnStarts = columnWidths.map((_, column) =>
-    resolvedPadding.left + columnWidths.slice(0, column)
+    resolvedPadding.left + headers.outer.left + columnWidths.slice(0, column)
       .reduce((sum, width) => sum + width, 0) + resolvedGap * column
   );
   const rowStarts = rowHeights.map((_, row) =>
-    resolvedTitleHeight + resolvedPadding.top + rowHeights.slice(0, row)
-      .reduce((sum, height) => sum + height, 0) + resolvedGap * row
+    resolvedTitleHeight + resolvedPadding.top + headers.outer.top +
+    rowHeights.slice(0, row).reduce((sum, height, index) =>
+      sum + headers.cellRows.top[index] + height + headers.cellRows.bottom[index], 0) +
+    resolvedGap * row + headers.cellRows.top[row]
   );
   const placements = resolvedChildren.map((child, index) => {
     const column = coordinates === undefined
@@ -153,12 +200,18 @@ export function resolveFacetLayout({
     };
   });
   const gridWidth = resolvedPadding.left +
+    headers.outer.left +
     columnWidths.reduce((sum, width) => sum + width, 0) +
     resolvedGap * Math.max(0, resolvedColumns - 1) +
+    headers.outer.right +
     resolvedPadding.right;
   const gridHeight = resolvedTitleHeight + resolvedPadding.top +
+    headers.outer.top +
     rowHeights.reduce((sum, height) => sum + height, 0) +
+    headers.cellRows.top.reduce((sum, amount) => sum + amount, 0) +
+    headers.cellRows.bottom.reduce((sum, amount) => sum + amount, 0) +
     resolvedGap * Math.max(0, rowCount - 1) +
+    headers.outer.bottom +
     resolvedPadding.bottom;
   return cloneAndFreeze({
     columns: resolvedColumns,
@@ -167,6 +220,7 @@ export function resolveFacetLayout({
     align: resolvedAlign,
     padding: resolvedPadding,
     titleHeight: resolvedTitleHeight,
+    headerLayout: headers,
     gridWidth,
     width: gridWidth + (sideLegend ? legendLane : 0),
     height: gridHeight + (sideLegend ? 0 : legendLane),

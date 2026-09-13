@@ -202,7 +202,14 @@ export interface EditFacetHeadersOptions {
   fontWeight?: string | number;
   color?: string;
   offset?: number;
+  role?: FacetHeaderRole;
+  labelMap?: DisplayLabelMap | "auto";
+  side?: FacetHeaderSide;
+  align?: FacetHeaderAlign;
 }
+export type FacetHeaderRole = "all" | "row" | "column";
+export type FacetHeaderSide = "top" | "bottom" | "left" | "right";
+export type FacetHeaderAlign = "start" | "center" | "end";
 export interface ConcatCompositionSpec {
   readonly id: string;
   readonly direction: "horizontal" | "vertical";
@@ -305,6 +312,13 @@ export type FilterDataOptions = {
   field: string;
 } & FilterModeOptions;
 export type DatasetScalar = string | number | boolean | null;
+export type DisplayLabelMap = ReadonlyArray<Readonly<{
+  value: DatasetScalar;
+  label: string;
+}>>;
+export interface DisplayLabelOptions {
+  labelMap?: DisplayLabelMap | "auto";
+}
 export type DatasetFilterTransform = {
   type: "filter";
   field: string;
@@ -1148,7 +1162,7 @@ export interface AxisTicksAndLabelsOptions<P extends string> {
   count?: number;
   values?: readonly AxisValue[];
   ticks?: AxisTickStyleOptions;
-  labels?: AxisLabelStyleOptions & AxisLabelLayoutOptions;
+  labels?: AxisLabelStyleOptions & AxisLabelLayoutOptions & DisplayLabelOptions;
 }
 export interface AxisTitleOptions<P extends string> {
   text?: string;
@@ -1188,7 +1202,7 @@ export interface AxisTickOptions<P extends string>
   values?: readonly AxisValue[];
 }
 export interface AxisLabelOptions<P extends string>
-  extends AxisLabelStyleOptions, AxisLabelLayoutOptions {
+  extends AxisLabelStyleOptions, AxisLabelLayoutOptions, DisplayLabelOptions {
   scale?: string;
   position?: P;
   count?: number;
@@ -1244,6 +1258,11 @@ export interface PolarTicksAndLabelsOptions {
   ticks?: AxisTickStyleOptions;
   labels?: AxisLabelStyleOptions;
 }
+export type ThetaAxisLabelOptions = PolarLabelOptions & DisplayLabelOptions;
+export interface ThetaTicksAndLabelsOptions
+  extends Omit<PolarTicksAndLabelsOptions, "labels"> {
+  labels?: AxisLabelStyleOptions & DisplayLabelOptions;
+}
 export interface PolarTitleOptions {
   text?: string;
   offset?: number;
@@ -1266,7 +1285,8 @@ export type CreateThetaAxisTicksOptions = Omit<PolarTickOptions, "count" | "valu
 export type CreateRadialAxisTicksOptions = Omit<PolarTickOptions, "count" | "values"> &
   PolarAxisTickSelection & PolarGuideResourceOptions;
 export type CreateThetaAxisLabelsOptions = Omit<PolarLabelOptions, "count" | "values"> &
-  PolarAxisTickSelection & Omit<PolarGuideResourceOptions, "angle">;
+  PolarAxisTickSelection & Omit<PolarGuideResourceOptions, "angle"> &
+  DisplayLabelOptions;
 export type CreateRadialAxisLabelsOptions = Omit<PolarLabelOptions, "count" | "values"> &
   PolarAxisTickSelection & PolarGuideResourceOptions;
 export type CreateThetaAxisTitleOptions = PolarTitleOptions &
@@ -1276,6 +1296,10 @@ export interface CompletePolarAxisOptions extends Omit<PolarGuideResourceOptions
   line?: false | AxisLineStyleOptions;
   ticksAndLabels?: false | PolarTicksAndLabelsOptions;
   title?: false | PolarTitleOptions;
+}
+export interface CompleteThetaAxisOptions
+  extends Omit<CompletePolarAxisOptions, "ticksAndLabels"> {
+  ticksAndLabels?: false | ThetaTicksAndLabelsOptions;
 }
 export interface CompleteRadialAxisOptions
   extends Omit<CompletePolarAxisOptions, "title"> {
@@ -1289,6 +1313,11 @@ export interface EditPolarAxisOptions {
   labels?: false | PolarLabelOptions;
   ticksAndLabels?: false | PolarTicksAndLabelsOptions;
   title?: false | PolarTitleOptions;
+}
+export interface EditThetaAxisOptions
+  extends Omit<EditPolarAxisOptions, "angle" | "labels" | "ticksAndLabels"> {
+  labels?: false | ThetaAxisLabelOptions;
+  ticksAndLabels?: false | ThetaTicksAndLabelsOptions;
 }
 export interface EditRadialAxisOptions
   extends Omit<EditPolarAxisOptions, "title"> {
@@ -1352,6 +1381,16 @@ type CartesianAxesOptions = Omit<
 > & {
   coordinate?: { id?: string; type?: "auto" | "cartesian" };
 };
+type CAxisTicks<P extends string> = Omit<AxisTicksAndLabelsOptions<P>, "labels"> & {
+  labels?: AxisLabelStyleOptions & AxisLabelLayoutOptions;
+};
+type CAxis<P extends string> = Omit<CompleteAxisOptions<P>, "ticksAndLabels"> & {
+  ticksAndLabels?: false | Omit<CAxisTicks<P>, "scale" | "position">;
+};
+type CAxes = Omit<CartesianAxesOptions, "x" | "y"> & {
+  x?: false | CAxis<XAxisPosition>;
+  y?: false | CAxis<YAxisPosition>;
+};
 type CartesianGridOptions = Pick<CreateGridOptions, "horizontal" | "vertical">;
 type FilledMarkLegendOptions = Omit<LegendOptions, "symbol"> & {
   symbol?: "auto"
@@ -1366,7 +1405,10 @@ type CategoricalLegendTextOptions = {
   fontWeight?: string | number;
   format?: "auto";
 };
-type PathLegendOptions = Omit<LegendOptions, "symbol" | "gradient" | "count" | "labels"> & {
+type PathLegendOptions = Omit<
+  LegendOptions,
+  "symbol" | "gradient" | "count" | "values" | "labels"
+> & {
   symbol?: "auto" | { length?: number; lineWidth?: number }
     | { layers: readonly LegendSymbolLayer[] };
   labels?: CategoricalLegendTextOptions;
@@ -1382,9 +1424,20 @@ type CartesianPathGuideOptions = Omit<CartesianGuideOptions, "legend"> & {
 type CartesianCategoricalGuideOptions = Omit<CartesianGuideOptions, "legend"> & {
   legend?: false | (Omit<
     FilledMarkLegendOptions,
-    "count" | "gradient" | "labels" | "order"
+    "count" | "values" | "gradient" | "labels" | "order"
   > & {
     labels?: CategoricalLegendTextOptions;
+    order?: CartesianLegendOrder;
+  });
+};
+type CPathGuides = Omit<CartesianPathGuideOptions, "axes"> & {
+  axes?: false | CAxes;
+};
+type CCategoricalGuides = Omit<CartesianCategoricalGuideOptions, "axes"> & {
+  axes?: false | CAxes;
+};
+type ColorGuides = Omit<CartesianGuideOptions, "legend"> & {
+  legend?: false | (Omit<FilledMarkLegendOptions, "values" | "order"> & {
     order?: CartesianLegendOrder;
   });
 };
@@ -2973,7 +3026,8 @@ type CategoricalThetaTicksAndLabelsOptions = Omit<
   "count" | "labels"
 > & {
   count?: never;
-  labels?: Omit<AxisLabelStyleOptions, "format"> & { format?: "auto" };
+  labels?: Omit<AxisLabelStyleOptions, "format"> & DisplayLabelOptions &
+    { format?: "auto" };
 };
 type CategoricalThetaAxisOptions = Omit<CompletePolarAxisOptions, "ticksAndLabels"> & {
   ticksAndLabels?: false | CategoricalThetaTicksAndLabelsOptions;
@@ -3045,7 +3099,8 @@ export interface RugTickOptions {
   strokeWidth?: number;
   opacity?: number;
 }
-export type RugGuideOptions = Omit<CartesianGuideOptions, "legend"> & {
+export type RugGuideOptions = Omit<CartesianGuideOptions, "axes" | "legend"> & {
+  axes?: false | CAxes;
   legend?: false;
 };
 export type CreateRugPlotOptions = {
@@ -3247,7 +3302,7 @@ export interface CreateLinePlotOptions {
     opacity?: number;
     closed?: false;
   };
-  guides?: false | CartesianPathGuideOptions;
+  guides?: false | CPathGuides;
 }
 
 type BasicHistogramEncoding =
@@ -3273,7 +3328,7 @@ export interface CreateBarPlotOptions {
     stroke?: FilledMarkStroke;
     strokeWidth?: number;
   };
-  guides?: false | CartesianGuideOptions;
+  guides?: false | ColorGuides;
 }
 
 export type CreateHistogramOptions = BasicHistogramEncoding & {
@@ -3292,7 +3347,7 @@ export type CreateHistogramOptions = BasicHistogramEncoding & {
 };
 
 export type HorizonPlotGuideOptions = {
-  axes?: false | (Omit<CartesianAxesOptions, "y"> & { y?: false });
+  axes?: false | (Omit<CAxes, "y"> & { y?: false });
   grid?: false | (Pick<CartesianGridOptions, "vertical"> & { horizontal?: false });
   legend?: false;
 };
@@ -3315,7 +3370,7 @@ export interface CreateHorizonPlotOptions {
 }
 
 export type DensityPlotLegendOptions = Omit<PieLegendOptions, "order"> & { order?: LegendValueOrder };
-export type DensityPlotGuideOptions = Omit<CartesianCategoricalGuideOptions, "legend"> & {
+export type DensityPlotGuideOptions = Omit<CCategoricalGuides, "legend"> & {
   legend?: false | DensityPlotLegendOptions;
 };
 export interface CreateDensityPlotOptions {
@@ -3358,7 +3413,7 @@ export type PieColor = string | {
 };
 export type PieLegendOptions = Omit<
   FilledMarkLegendOptions,
-  "count" | "gradient" | "channels" | "order" | "labels"
+  "count" | "values" | "gradient" | "channels" | "order" | "labels"
 > & {
   channels?: readonly ["color"];
   order?: LegendValueOrder | { channel: "theta"; values?: never };
@@ -4252,6 +4307,7 @@ export interface EditLegendBlockOptions {
   gap?: number;
   text?: LegendBlockTextPatch;
   symbol?: LegendBlockSymbolPatch;
+  labelMap?: DisplayLabelMap | "auto";
 }
 
 export interface EditLegendOptions
@@ -4650,7 +4706,7 @@ export class ChartProgram {
   createAxes(options?: CreateAxesOptions): ChartProgram;
   createXAxis(options?: CompleteAxisOptions<XAxisPosition>): ChartProgram;
   createYAxis(options?: CompleteAxisOptions<YAxisPosition>): ChartProgram;
-  createThetaAxis(options?: CompletePolarAxisOptions): ChartProgram;
+  createThetaAxis(options?: CompleteThetaAxisOptions): ChartProgram;
   createRadialAxis(options?: CompleteRadialAxisOptions): ChartProgram;
   createThetaAxisLine(options?: CreateThetaAxisLineOptions): ChartProgram;
   createRadialAxisLine(options?: CreateRadialAxisLineOptions): ChartProgram;
@@ -4664,7 +4720,7 @@ export class ChartProgram {
   editRadialAxisLine(options?: AxisLineStyleOptions): ChartProgram;
   editThetaAxisTicks(options?: PolarTickOptions): ChartProgram;
   editRadialAxisTicks(options?: PolarTickOptions): ChartProgram;
-  editThetaAxisLabels(options?: PolarLabelOptions): ChartProgram;
+  editThetaAxisLabels(options?: ThetaAxisLabelOptions): ChartProgram;
   editRadialAxisLabels(options?: PolarLabelOptions): ChartProgram;
   editThetaAxisTitle(options?: PolarTitleOptions): ChartProgram;
   editRadialAxisTitle(options?: RadialTitleOptions): ChartProgram;
@@ -4690,7 +4746,7 @@ export class ChartProgram {
   editYAxisTitle(options?: Omit<AxisTitleOptions<YAxisPosition>, "scale">): ChartProgram;
   editXAxis(options: EditAxisOptions<XAxisPosition>): ChartProgram;
   editYAxis(options: EditAxisOptions<YAxisPosition>): ChartProgram;
-  editThetaAxis(options: Omit<EditPolarAxisOptions, "angle">): ChartProgram;
+  editThetaAxis(options: EditThetaAxisOptions): ChartProgram;
   editRadialAxis(options: EditRadialAxisOptions): ChartProgram;
   removeXAxis(options?: RemoveAxisOptions): ChartProgram;
   removeYAxis(options?: RemoveAxisOptions): ChartProgram;

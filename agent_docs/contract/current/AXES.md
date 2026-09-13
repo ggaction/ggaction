@@ -50,7 +50,7 @@ Cartesian line/ticks/labels/title의 실제 occupied bounds는 각 component pos
 
 - Create parameters: `scale?`, `position?`, `count?`, `values?`, `offset?`, `format?`, `color?`,
   `fontSize?`, `fontFamily?`, `fontWeight?`, `rotation?`, `maxWidth?`, `wrap?`, `lineHeight?`,
-  `overlap?`; edit에서는 scale을 제외한다.
+  `overlap?`, `labelMap?`; edit에서는 scale을 제외한다.
 - `count`/`values`: tick contract와 같으며 existing ticks가 있으면 생략 시 그 정책을 재사용한다.
 - `offset`: non-negative finite number; x default `18`, y default `12`.
 - `format`: `"auto" | { decimals: nonNegativeInteger } | AxisFormatString`. Numeric token은 `.0`–`.12`
@@ -67,12 +67,19 @@ Cartesian line/ticks/labels/title의 실제 occupied bounds는 각 component pos
 - `lineHeight`: fontSize 이상의 finite number다. 생략하면 `fontSize * 1.2`다.
 - `overlap`: `"error" | "allow"`, 기본값은 `"error"`다. Allow는 label-label 교차만 허용하며 Canvas
   overflow와 explicit axis-title collision은 계속 거부한다.
+- `labelMap`: band/point/ordinal Cartesian scale에서만 쓰는 typed
+  `readonly { value: DatasetScalar; label: string }[] | "auto"`다. `1`과 `"1"`은 서로 다른 key이고,
+  `0`과 `-0`은 같은 key다. 중복 raw key는 거부하고 중복 label과 빈 label은 허용한다. Array는
+  전체 교체하며 `[]`는 명시적 empty map, `"auto"`는 저장된 map 제거다. Mapping이 있으면 raw
+  tick value로 먼저 찾고, 없는 값만 기존 formatter를 사용한다. Raw scale domain과 tick values는
+  바뀌지 않는다. Continuous Cartesian scale은 array와 `"auto"`를 모두 거부한다.
 - Effect: formatted text, aligned data-space coordinates와 font style을 text collection에 저장한다.
   Time `auto`는 domain-span precision에서 시작해 distinct resolved ticks가 같은 label이면 최소 한 단계씩
   precision을 높인다. Empty-string nominal values는 semantic domain에는 그대로 남고 visible label은
   deterministic `(empty)`로 표시한다. Explicit format은 그대로 유지한다. ticks와 count/values 정책이
   충돌하면 거부한다. 매우 긴 valid temporal domain은 legacy fixed interval이 requested count를 크게
   초과할 때만 nice multi-year step으로 전환한다. Wrapped line과 rotation-aware occupied bounds는
+  mapping이 적용된 최종 문자열을 측정한다. Parallel field-axis label에는 `labelMap`이 노출되지 않는다.
   materialization에서 확정하므로 renderer는 text를 다시 측정하거나 줄바꿈하지 않는다. Canvas/scale replay는
   stored policy와 원래 tick value text에서 같은 concrete line을 재생성한다. Total concrete label line은
   `10,000`개를 넘을 수 없다.
@@ -82,7 +89,7 @@ Cartesian line/ticks/labels/title의 실제 occupied bounds는 각 component pos
 - Create: `scale?`, `position?`, `count?`, `values?`, `ticks?`, `labels?`.
 - Edit: create option에서 scale을 제외하며 빈 edit는 오류다.
 - `ticks`: `{ length?, color?, lineWidth? }`.
-- `labels`: `{ offset?, format?, color?, fontSize?, fontFamily?, fontWeight?, rotation?, maxWidth?, wrap?, lineHeight?, overlap? }`.
+- `labels`: `{ offset?, format?, color?, fontSize?, fontFamily?, fontWeight?, rotation?, maxWidth?, wrap?, lineHeight?, overlap?, labelMap? }`; `labelMap`은 categorical Cartesian scale 전용이다.
 - Effect: shared count/values를 tick과 label child에 원자적으로 전달한다. nested appearance는 해당 child만 바꾼다.
 
 ## Shared axis-title contract
@@ -449,12 +456,12 @@ Ticks/labels의 count와 values는 배타적이고 같은 existing mode/default 
 
 ### Formal values — `createThetaAxisLabels`
 
-- Implemented: missing theta labels creation with inferred/explicit scale and coordinate and the corresponding style options; angle is not accepted; count and values are exclusive.
+- Implemented: missing theta labels creation with inferred/explicit scale and coordinate and the corresponding style options; angle is not accepted; count and values are exclusive. Categorical theta는 typed `labelMap?: DisplayLabelMap | "auto"`를 지원한다.
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `createThetaAxisLabels`
 
-- ✅ Covered: full/Basic classification, independent creation and aggregate equivalence, create order, restore, resource/style errors, angle ownership, scale/Canvas replay and immutability.
+- ✅ Covered: full/Basic classification, independent creation and aggregate equivalence, create order, restore, categorical typed display map/reset, continuous-theta rejection, resource/style errors, angle ownership, scale/Canvas replay and immutability.
 - Evidence: `test/unit/actions/guides/polar-component-creation.test.js`, `test/contracts/polar-component-types.test.js`, `test/unit/actions/guides/polar-axis-actions.test.js`.
 
 ## `createRadialAxisLabels`
@@ -554,12 +561,12 @@ Ticks/labels의 count와 values는 배타적이고 같은 existing mode/default 
 
 ### Formal values — `editThetaAxisLabels`
 
-- Implemented: `editThetaAxisLabels({ count?, values?, offset?, format?, color?, fontSize?, fontFamily?, fontWeight? } = {})`.
+- Implemented: `editThetaAxisLabels({ count?, values?, offset?, format?, color?, fontSize?, fontFamily?, fontWeight?, labelMap? } = {})`; `labelMap`은 categorical theta 전용이고 `"auto"`는 map만 제거한다.
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `editThetaAxisLabels`
 
-- ✅ Covered: tick synchronization, formatting, alignment and style.
+- ✅ Covered: tick synchronization, typed display mapping/reset, continuous rejection, formatting, alignment and style.
 - No proposal; Evidence: Polar axis unit tests.
 
 ## `editRadialAxisLabels`
@@ -819,7 +826,7 @@ Ticks/labels의 count와 values는 배타적이고 같은 existing mode/default 
 
 ### Formal values — `createXAxisLabels`
 
-- Implemented: `createXAxisLabels({ scale?: UserId; position?: AxisPositionX; count?: PositiveInteger; values?: readonly TickValue[]; ...LabelOptions } = {})`; `count | values` 중 최대 하나.
+- Implemented: `createXAxisLabels({ scale?: UserId; position?: AxisPositionX; count?: PositiveInteger; values?: readonly TickValue[]; labelMap?: DisplayLabelMap | "auto"; ...LabelOptions } = {})`; `count | values` 중 최대 하나이며 `labelMap`은 categorical scale 전용이다.
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `createXAxisLabels`
@@ -834,7 +841,10 @@ Ticks/labels의 count와 values는 배타적이고 같은 existing mode/default 
     coarse-format preservation와 Canvas rematerialization stability.
 - `color`, `fontSize`, `fontFamily`, `fontWeight`
   - ✅ Covered: defaults, representative string/numeric weight and invalid classes.
-- Evidence: `test/unit/actions/guides/axis-label-actions.test.js`, temporal/ordinal axis tests.
+- `labelMap`: ✅ Covered typed `1`/`"1"`, fallback, duplicate/empty labels, full replacement/reset,
+  mapped-text layout and continuous-scale atomic rejection.
+- Evidence: `test/unit/actions/guides/axis-label-actions.test.js`,
+  `test/unit/actions/guides/axis-display-labels.test.js`, temporal/ordinal axis tests.
 
 ## `createYAxisLabels`
 
@@ -843,7 +853,7 @@ Ticks/labels의 count와 values는 배타적이고 같은 existing mode/default 
 
 ### Formal values — `createYAxisLabels`
 
-- Implemented: x label schema와 같고 `position?: AxisPositionY`.
+- Implemented: x label schema와 같고 `position?: AxisPositionY`; categorical y의 `labelMap` 정책도 같다.
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `createYAxisLabels`
@@ -861,7 +871,7 @@ Ticks/labels의 count와 values는 배타적이고 같은 existing mode/default 
 
 ### Formal values — `editXAxisLabels`
 
-- Implemented: create x label schema에서 `scale`을 제외한다.
+- Implemented: create x label schema에서 `scale`을 제외한다. `labelMap:"auto"`는 기존 map을 제거한다.
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `editXAxisLabels`

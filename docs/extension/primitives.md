@@ -117,6 +117,11 @@ Collection item IDs are generated as `symbols:0`, `symbols:1`, and so on.
 Each item stores its own concrete primitive type. Shared properties such as
 `opacity` can then be broadcast to every compatible item.
 
+A concrete text graphic accepts an empty `text` string. This lets a high-level
+display-name action hide one rendered label while retaining stable collection
+identity. High-level titles, annotations, and text authoring actions still
+apply their own non-empty input rules.
+
 `parent` attaches a named graphic to an existing Canvas or collection. Attached
 IDs are stored in the parent's `children` list; repeated drawable instances stay
 separate in the owning graphic's `items` list. Omitting `parent` preserves

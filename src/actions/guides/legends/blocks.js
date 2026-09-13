@@ -23,9 +23,11 @@ import {
   resolveLegendBlock
 } from "./target.js";
 import { validateFontWeight } from "./categorical/validation.js";
+import { normalizeDisplayLabelMap } from "../../../grammar/displayLabels.js";
 
 const OPTIONS = Object.freeze([
-  "target", "channel", "title", "values", "count", "order", "gap", "text", "symbol"
+  "target", "channel", "title", "values", "count", "order", "gap", "text", "symbol",
+  "labelMap"
 ]);
 const TEXT_OPTIONS = Object.freeze(["fontSize", "fontFamily", "fontWeight", "color"]);
 const SYMBOL_OPTIONS = Object.freeze(["size", "fill", "stroke", "strokeWidth", "opacity"]);
@@ -124,6 +126,12 @@ function normalizeSymbolPatch(value, descriptor) {
 
 export function validateLegendBlockOverride(descriptor, override) {
   if (override.symbol !== undefined) normalizeSymbolPatch(override.symbol, descriptor);
+  if (override.labelMap !== undefined) {
+    if (descriptor.family !== "categorical") {
+      throw new Error("editLegendBlock labelMap requires a categorical block.");
+    }
+    normalizeDisplayLabelMap(override.labelMap, "editLegendBlock labelMap");
+  }
   return override;
 }
 
@@ -166,6 +174,8 @@ export function patchLegendBlockOverride(config, key, patch) {
   if (Object.hasOwn(patch, "symbol")) {
     entry = withoutEmptyNested(entry, "symbol", patch.symbol);
   }
+  if (Object.hasOwn(patch, "labelMap")) entry.labelMap = patch.labelMap;
+  if (patch.removeLabelMap === true) delete entry.labelMap;
   const blockOverrides = { ...(config.blockOverrides ?? {}) };
   if (Object.keys(entry).length === 0) delete blockOverrides[key];
   else blockOverrides[key] = entry;
@@ -216,7 +226,10 @@ export function resolveEffectiveLegendBlockConfig(program, kind, config) {
     ...(override.gap === undefined ? {} : { itemGap: override.gap, blockGap: override.gap }),
     ...(override.text === undefined
       ? {}
-      : { labels: { ...config.labels, ...override.text } })
+      : { labels: { ...config.labels, ...override.text } }),
+    ...(Object.hasOwn(override, "labelMap")
+      ? { labelMap: override.labelMap }
+      : {})
   };
   if (override.symbol === undefined) return effective;
   if (["series", "color", "stroke"].includes(kind)) {
@@ -324,6 +337,18 @@ function normalizeBlockPatch(args, descriptor) {
   if (Object.hasOwn(args, "text")) patch.text = normalizeTextPatch(args.text);
   if (Object.hasOwn(args, "symbol")) {
     patch.symbol = normalizeSymbolPatch(args.symbol, descriptor);
+  }
+  if (Object.hasOwn(args, "labelMap")) {
+    if (descriptor.family !== "categorical") {
+      throw new Error("editLegendBlock labelMap requires a categorical block.");
+    }
+    if (args.labelMap === "auto") patch.removeLabelMap = true;
+    else {
+      patch.labelMap = normalizeDisplayLabelMap(
+        args.labelMap,
+        "editLegendBlock labelMap"
+      );
+    }
   }
   return patch;
 }

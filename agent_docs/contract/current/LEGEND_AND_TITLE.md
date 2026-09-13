@@ -294,7 +294,7 @@ encoding removal/recreation, combined legend와 Polar 가이드를 검증한다.
 
 ## `editLegendBlock`
 
-- Signature: `editLegendBlock({ target, channel, title?, values?, count?, order?, gap?, text?, symbol? })`.
+- Signature: `editLegendBlock({ target, channel, title?, values?, count?, order?, gap?, text?, symbol?, labelMap? })`.
 - Full 전용 H3 action이다. `target` mark ID와 현재 범례에 실제 존재하는 `channel`을 모두 명시해야 하며,
   두 selector 외 최소 한 change가 필요하다. Basic에는 이 method가 없다.
 - Block identity는 graphic ID나 배열 위치가 아니라 정렬된 channel 집합이다. 따라서 merged
@@ -309,6 +309,12 @@ encoding removal/recreation, combined legend와 Polar 가이드를 검증한다.
 - `order`는 현재 categorical domain의 typed scalar 전체를 정확히 한 번 포함한 permutation이어야 한다.
   Partial list, duplicate, missing/extra value와 display text 기반 비교는 거부한다. 결과는 기존 semantic
   legend order owner에 `{ values }`로 저장된다.
+- `labelMap`은 categorical block에서만 허용하는 typed
+  `readonly { value: DatasetScalar; label: string }[] | "auto"`다. Raw typed value를 표시 문자열로만
+  바꾸며 semantic domain, order, symbol count와 selection identity는 유지한다. 같은 label을 여러
+  category에 쓰거나 `""`로 text를 숨길 수 있다. Array는 전체 교체하고 `[]`는 empty map을 저장하며
+  `"auto"`는 이 block의 map override만 제거한다. Sampled size/opacity/strokeWidth, gradient와 interval
+  block은 map을 거부한다.
 - `gap`은 non-negative finite block-internal spacing이다. Root position, align, direction, columns와
   edge-lane order는 바꾸지 않는다. Gradient에서는 기존 12-pixel title/sample spacing을 기준으로 적용된다.
 - `text`는 item labels의 `fontSize`, `fontFamily`, `fontWeight`, `color`만 받는 closed object다.
@@ -325,7 +331,7 @@ encoding removal/recreation, combined legend와 Polar 가이드를 검증한다.
   categorical order는 semantic order owner에만 저장하여 derived values와 concrete IDs를 복제하지 않는다.
   Canvas/layout/theme/scale/data replay는 현재 base style 위에 override를 다시 적용한다.
 - Content change나 encoding removal에서 같은 key는 그대로 유지한다. Membership이 바뀌면 compatible
-  text/symbol/gap만 새 block에 옮긴다. Title 또는 explicit order가 있는 split/key change는 거부한다.
+  text/symbol/gap만 새 block에 옮긴다. Title, explicit order 또는 labelMap이 있는 split/key change는 거부한다.
   여러 old blocks의 merge는 override와 order가 canonical deep-equal일 때만 허용한다. Removed block
   state는 삭제되어 같은 channel을 다시 만들 때 부활하지 않는다.
 - Ordinal↔gradient/interval scale-family transition도 title/content ambiguity는 거부하고 compatible
@@ -334,8 +340,7 @@ encoding removal/recreation, combined legend와 Polar 가이드를 검증한다.
 
 ### Formal values — `editLegendBlock`
 
-- Implemented: `editLegendBlock({ target: UserId; channel: LegendChannel; title?: string; values?: readonly [number, ...number[]] | "auto"; count?: IntegerIn[2,10_000]; order?: readonly CategoryValue[]; gap?: NonNegativeFinite; text?: { fontSize?: PositiveFinite; fontFamily?: NonEmptyString; fontWeight?: FontWeight; color?: NonEmptyString }; symbol?: { size?: NonNegativeFinite; fill?: NonEmptyString; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; opacity?: UnitInterval } }): ChartProgram`.
-- Planned (NOT IMPLEMENTED): R39가 categorical display-name `labelMap`을 같은 block selector에 추가한다.
+- Implemented: `editLegendBlock({ target: UserId; channel: LegendChannel; title?: string; values?: readonly [number, ...number[]] | "auto"; count?: IntegerIn[2,10_000]; order?: readonly CategoryValue[]; gap?: NonNegativeFinite; text?: { fontSize?: PositiveFinite; fontFamily?: NonEmptyString; fontWeight?: FontWeight; color?: NonEmptyString }; symbol?: { size?: NonNegativeFinite; fill?: NonEmptyString; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; opacity?: UnitInterval }; labelMap?: DisplayLabelMap | "auto" }): ChartProgram`.
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `editLegendBlock`
@@ -344,6 +349,8 @@ encoding removal/recreation, combined legend와 Polar 가이드를 검증한다.
   nonempty/hidden title, text/symbol replacement and stale-property cleanup.
 - ✅ Covered: categorical, sampled size/opacity/strokeWidth, interval and gradient effective materialization,
   block gap, Canvas/layout/theme replay, removal/recreation and Full/Basic boundary.
+- ✅ Covered: categorical typed label mapping, duplicate visible labels without symbol merging, reset/fallback,
+  unsupported-family rejection and immutable raw domain.
 - ✅ Covered: split/merge/content removal and ordinal↔continuous family transition preflight, incompatible
   title/order/symbol conflicts and complete immutable rejection.
 - ✅ Covered: strict declarations, packed Node/TypeScript consumer, lower-level graphic equivalence and same-run

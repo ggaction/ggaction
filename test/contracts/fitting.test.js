@@ -65,7 +65,17 @@ test("keeps fitting inside one authoring trace and preserves semantic state", ()
 test("publishes Cartesian label layout without leaking it to Parallel labels", () => {
   const program = read("types/program.d.ts");
   assert.match(program, /^export interface AxisLabelLayoutOptions \{$/m);
-  assert.match(program, /extends AxisLabelStyleOptions, AxisLabelLayoutOptions \{/u);
-  assert.match(program, /labels\?: AxisLabelStyleOptions & AxisLabelLayoutOptions;/u);
+  assert.match(
+    program,
+    /extends AxisLabelStyleOptions, AxisLabelLayoutOptions, DisplayLabelOptions \{/u
+  );
+  assert.match(
+    program,
+    /labels\?: AxisLabelStyleOptions & AxisLabelLayoutOptions & DisplayLabelOptions;/u
+  );
   assert.match(program, /ParallelAxisLabelsOptions = AxisLabelStyleOptions & ParallelAxisTickSelection;/u);
+  assert.doesNotMatch(
+    program,
+    /ParallelAxisLabelsOptions = [^;]*DisplayLabelOptions/u
+  );
 });

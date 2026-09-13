@@ -23,6 +23,7 @@ import {
 } from "../../../grammar/schemas/graphicTree.js";
 import { valuesFromTickConfig } from "../tickValues.js";
 import { formatAxisValue, validateAxisFormat } from "../axes/policy.js";
+import { resolveDisplayLabel } from "../../../grammar/displayLabels.js";
 
 export const POLAR_AXIS_DEFAULTS = Object.freeze({
   angle: 90,
@@ -199,6 +200,13 @@ export function mapPolarGuideValues(program, config) {
 
 export function formatPolarGuideValues(program, config, values) {
   const scale = program.resolvedScales[config.scale];
+  if (["ordinal", "band", "point"].includes(scale.type)) {
+    return values.map(value => resolveDisplayLabel(
+      value,
+      config.labelMap,
+      String
+    ));
+  }
   if (scale.type === "time" && config.format === "auto") {
     return formatTimeTicks(values, scale.domain);
   }

@@ -1,6 +1,11 @@
 import { action } from "../../../../core/action.js";
-import { formatVisibleText } from "../../../../core/textMetrics.js";
-import { activeConfig, graphic, noOptions, resolveLayout } from "./layout.js";
+import {
+  activeConfig,
+  categoricalLegendLabels,
+  graphic,
+  noOptions,
+  resolveLayout
+} from "./layout.js";
 import { resolveCategoricalLegendPlacement } from "../lifecycle.js";
 
 export const rematerializeLegendLabels = action(
@@ -20,7 +25,7 @@ export const rematerializeLegendLabels = action(
       .editGraphics({
         target: id,
         property: "text",
-        value: config.domain.map(formatVisibleText)
+        value: categoricalLegendLabels(config)
       })
       .editGraphics({ target: id, property: "fill", value: config.labels.color })
       .editGraphics({ target: id, property: "fontSize", value: config.labels.fontSize })

@@ -6,6 +6,8 @@ export type {
   AxisTickOptions,
   AxisTicksAndLabelsOptions,
   AxisTitleOptions,
+  DisplayLabelMap,
+  DisplayLabelOptions,
   ApplyThemeOptions,
   BarWidthOptions,
   BasicSeriesLayoutOptions,

@@ -882,7 +882,7 @@ test("directly covers every newly targeted action option and broad maximal paths
   const newActionOptions = inventory.optionPaths.filter(option =>
     option.required && NEW_DIRECT_ACTIONS.includes(option.action)
   );
-  assert.equal(newActionOptions.length, 50);
+  assert.equal(newActionOptions.length, 51);
   assert.deepEqual(
     newActionOptions.filter(option => !directlyObserves(entries, option)).map(option => option.id),
     []

@@ -26,6 +26,22 @@ export const LABEL_EDIT_OPTIONS = Object.freeze([
   "count", "values", "offset", "format", "color", "fontSize",
   "fontFamily", "fontWeight"
 ]);
+const THETA_LABEL_CREATE_OPTIONS = Object.freeze([
+  ...LABEL_CREATE_OPTIONS,
+  "labelMap"
+]);
+const THETA_LABEL_EDIT_OPTIONS = Object.freeze([
+  ...LABEL_EDIT_OPTIONS,
+  "labelMap"
+]);
+
+export function labelCreateOptions(kind) {
+  return kind === "theta" ? THETA_LABEL_CREATE_OPTIONS : LABEL_CREATE_OPTIONS;
+}
+
+export function labelEditOptions(kind) {
+  return kind === "theta" ? THETA_LABEL_EDIT_OPTIONS : LABEL_EDIT_OPTIONS;
+}
 export const TITLE_CREATE_OPTIONS = Object.freeze([
   "scale", "coordinate", "angle", "text", "offset", "color", "fontSize",
   "fontFamily", "fontWeight", "position"

@@ -210,6 +210,27 @@ function quantitativeScale(id, type, { point = false, index = 0 } = {}) {
   return Object.fromEntries(Object.entries(common).filter(([, value]) => value !== undefined));
 }
 
+function sizeScale(id, index) {
+  const type = [
+    "linear", "log", "pow", "sqrt", "quantize", "quantile", "threshold"
+  ][index % 7];
+  const common = { id, type, unknown: 4, reverse: index % 3 === 0 };
+  if (type === "quantize" || type === "quantile") {
+    return { ...common, domain: "auto", range: [4, 16, 36] };
+  }
+  if (type === "threshold") {
+    return { ...common, domain: [12, 36], range: [4, 16, 36] };
+  }
+  return {
+    ...common,
+    domain: "auto",
+    range: "auto",
+    clamp: index % 2 === 0,
+    ...(type === "log" ? { base: 2 } : {}),
+    ...(type === "pow" ? { exponent: 2 } : {})
+  };
+}
+
 function categoricalScale(id, type, index, { point = false } = {}) {
   const scale = type === "band"
     ? {
@@ -631,6 +652,12 @@ function labelStyle(format, index) {
   };
 }
 
+function exactScaleSamples(scale) {
+  const low = Math.min(...scale.domain);
+  const high = Math.max(...scale.domain);
+  return [low, low + (high - low) / 2, high];
+}
+
 function titleStyle(text, at, index) {
   return {
     text,
@@ -757,7 +784,14 @@ function guideOptions(variant, program, options, action) {
         line: index === 11 ? false : lineStyle(),
         ticksAndLabels: index === 12
           ? false
-          : { ...ticks, ticks: tickStyle(), labels: labelStyle(format, index) },
+          : {
+              ...ticks,
+              ticks: tickStyle(),
+              labels: {
+                ...labelStyle(format, index),
+                ...(categorical ? { labelMap: "auto" } : {})
+              }
+            },
         title: index === 10
           ? false
           : titleStyle(
@@ -802,6 +836,39 @@ function guideOptions(variant, program, options, action) {
       titleStyle: { color: "#0f172a", fontSize: 12, fontFamily: "sans-serif", fontWeight: 700 },
       border: { color: "#cbd5e1", lineWidth: 1, padding: 9, background: "#ffffff" } };
   }
+  const size = layer.encoding.size;
+  if (size !== undefined && index === 1) {
+    const scale = program.resolvedScales[size.scale];
+    legend = {
+      target: options.id,
+      channels: ["size"],
+      position: "right",
+      layout: "edge",
+      align: "center",
+      direction: "vertical",
+      columns: 1,
+      offset: 32,
+      titlePosition: "top",
+      title: "Positive secondary size",
+      values: exactScaleSamples(scale),
+      labels: {
+        offset: 8,
+        color: "#334155",
+        fontSize: 11,
+        fontFamily: "sans-serif",
+        fontWeight: 500,
+        format: ".1f"
+      },
+      titleStyle: {
+        color: "#0f172a",
+        fontSize: 12,
+        fontFamily: "sans-serif",
+        fontWeight: 700
+      },
+      itemGap: 22,
+      border: { color: "#cbd5e1", lineWidth: 1, padding: 9, background: "#ffffff" }
+    };
+  }
   if (!parallel && axes.y && ["left", "right"].includes(legend.position)) {
     axes.y.position = legend.position === "right" ? "left" : "right";
   }
@@ -845,7 +912,7 @@ function scatterOptions(factors, view) {
     ...(index === 35 ? {} : { color: scatterColor(index) }),
     ...(index % 4 >= 2 || index === 35 ? {} : { size: {
       field: "positiveSecondary", fieldType: "quantitative",
-      scale: { id: "mainSize", type: "linear", domain: "auto", range: "auto", unknown: 4 }
+      scale: sizeScale("mainSize", index)
     } }),
     shape: {
       field: "subgroup", fieldType: "nominal",

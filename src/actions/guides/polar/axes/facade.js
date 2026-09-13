@@ -8,7 +8,7 @@ import {
   validateEnabledAxisComponents
 } from "../../axes/components.js";
 import {
-  LABEL_EDIT_OPTIONS,
+  labelEditOptions,
   LINE_EDIT_OPTIONS,
   prefix,
   resolveAngle,
@@ -54,7 +54,7 @@ export function validatePolarAxisArgs(kind, args, operation) {
     if (Object.hasOwn(args.ticksAndLabels, "labels")) {
       validateObject(
         args.ticksAndLabels.labels,
-        LABEL_EDIT_OPTIONS.filter(key => !["count", "values"].includes(key)),
+        labelEditOptions(kind).filter(key => !["count", "values"].includes(key)),
         `${operation}.ticksAndLabels.labels`
       );
     }
@@ -131,7 +131,7 @@ function validateAxisEditArgs(kind, args, operation) {
     validateModeOptions(args.ticks, `${operation}.ticks`);
   }
   if (Object.hasOwn(args, "labels") && args.labels !== false) {
-    validateObject(args.labels, LABEL_EDIT_OPTIONS, `${operation}.labels`);
+    validateObject(args.labels, labelEditOptions(kind), `${operation}.labels`);
     validateModeOptions(args.labels, `${operation}.labels`);
   }
   if (args.ticksAndLabels !== undefined &&
@@ -155,7 +155,7 @@ function validateAxisEditArgs(kind, args, operation) {
     if (args.ticksAndLabels.labels !== undefined) {
       validateObject(
         args.ticksAndLabels.labels,
-        LABEL_EDIT_OPTIONS.filter(key => !["count", "values"].includes(key)),
+        labelEditOptions(kind).filter(key => !["count", "values"].includes(key)),
         `${operation}.ticksAndLabels.labels`
       );
     }

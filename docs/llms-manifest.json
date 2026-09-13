@@ -1187,8 +1187,8 @@
         "insert-remove-and-reorder-named-concat-children",
         "state-trace-and-action-scope"
       ],
-      "bytes": 16870,
-      "sha256": "6be8ee4f6c171f12107c8259137879b91fc5b7bb06693d6e9958486696b9b4f3"
+      "bytes": 18224,
+      "sha256": "6d63769684b03e8bf382fa98a1424a7078c80f7cb361fee7f201a4c42a25f955"
     },
     {
       "order": 74,
@@ -1529,8 +1529,8 @@
         "errors-and-limitations",
         "related"
       ],
-      "bytes": 18114,
-      "sha256": "0aff754c17fdb38f50500794aaf070c988ebb4aa771624cf56f36261e66a7409"
+      "bytes": 19041,
+      "sha256": "b2b1adaeee314e48ebc429f97b4208a517fd75a531e0854f650b1f7b9cc4bf7c"
     },
     {
       "order": 96,
@@ -1622,8 +1622,8 @@
         "removing-a-legend",
         "related"
       ],
-      "bytes": 14460,
-      "sha256": "7ec2ca08f94213dd5144213188fb29c60f50e1fc2dc0d7bb3e10b592ff97167a"
+      "bytes": 15198,
+      "sha256": "127692d6dbf1b9dc94ef601c1104f0f90ebbcb7eb43335f413c3f968ac719394"
     },
     {
       "order": 102,
@@ -2175,8 +2175,8 @@
         "exact-typescript-signatures",
         "related"
       ],
-      "bytes": 20738,
-      "sha256": "ec8f43e1c3185d443cc9688e5014e93ed4496f870fe4190dcdf3d082d56aad2a"
+      "bytes": 20727,
+      "sha256": "80a00867514f8e2e906a6bb2ed8a4bb8a34ebbd3d88ee360728ee0be45fb321e"
     },
     {
       "order": 126,
@@ -2204,8 +2204,8 @@
         "editgraphics-target-property-value-remove",
         "scale-materialization"
       ],
-      "bytes": 12366,
-      "sha256": "5107d985379cb6d304e56daa9fa755bc9dd93f1c7e07506eb8b01832215ab55c"
+      "bytes": 12638,
+      "sha256": "81c950b55130aff7070cc3040b38d4095a522c7e730c96a56ab64bd7a7887bd3"
     }
   ]
 }

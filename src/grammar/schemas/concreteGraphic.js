@@ -42,9 +42,13 @@ export function validateConcreteGraphicValue(type, property, value) {
     throw new RangeError(`${type}.opacity must be between 0 and 1.`);
   }
   if (STRING_PROPERTIES.has(property) && (
-    typeof value !== "string" || value.length === 0
+    typeof value !== "string" || property !== "text" && value.length === 0
   )) {
-    throw new TypeError(`${type}.${property} must be a non-empty string.`);
+    throw new TypeError(
+      property === "text"
+        ? `${type}.${property} must be a string.`
+        : `${type}.${property} must be a non-empty string.`
+    );
   }
   if (property === "fontWeight" && !(
     (typeof value === "string" && value.length > 0) || Number.isFinite(value)

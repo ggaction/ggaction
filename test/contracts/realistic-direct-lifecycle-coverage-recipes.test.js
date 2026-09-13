@@ -917,8 +917,8 @@ test("locks the disjoint corrected hard-requirement partition at 918", async () 
     "MarkGraphicProperty-fd2942b95187",
     "literal-dfcfe8a02b6b"
   ]);
-  assert.equal(REALISTIC_DIRECT_LIFECYCLE_COVERAGE_EXCLUDED_ACTIONS.length, 27);
-  assert.equal(new Set(REALISTIC_DIRECT_LIFECYCLE_COVERAGE_EXCLUDED_ACTIONS).size, 27);
+  assert.equal(REALISTIC_DIRECT_LIFECYCLE_COVERAGE_EXCLUDED_ACTIONS.length, 28);
+  assert.equal(new Set(REALISTIC_DIRECT_LIFECYCLE_COVERAGE_EXCLUDED_ACTIONS).size, 28);
   if (baselineAudit === undefined) return;
 
   const inventory = await inventoryPromise;

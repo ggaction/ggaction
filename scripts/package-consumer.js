@@ -106,6 +106,41 @@ async function testNodeConsumer(directory) {
     );
     assert.equal(typeof render, "function");
     assert.equal(program.graphicSpec.objects.point.items.length, 2);
+    const installedDisplayAxis = basicChart()
+      .createCanvas({ width: 360, height: 240, margin: 70 })
+      .createData({ values: [
+        { category: 1, value: 1 },
+        { category: "1", value: 2 }
+      ] })
+      .createPointMark()
+      .encodeX({ field: "category", fieldType: "nominal" })
+      .encodeY({ field: "value" })
+      .createXAxisLabels({
+        labelMap: [
+          { value: 1, label: "One" },
+          { value: "1", label: "String one" }
+        ]
+      });
+    assert.deepEqual(installedDisplayAxis.graphicSpec.objects.xAxisLabels.items.map(
+      item => item.properties.text
+    ), ["One", "String one"]);
+    assert.match(renderToSVG(installedDisplayAxis), />One<.*>String one</s);
+    const installedFacetHeaders = chart()
+      .createCanvas({ width: 240, height: 180, margin: 45 })
+      .createData({ values: [
+        { x: 1, y: 2, row: "A", column: "X" },
+        { x: 2, y: 3, row: "B", column: "Y" }
+      ] })
+      .createPointMark()
+      .encodeX({ field: "x" })
+      .encodeY({ field: "y" })
+      .facetGrid({ rows: { field: "row" }, columns: { field: "column" } })
+      .editFacetHeaders({ role: "row", labelMap: [{ value: "A", label: "Alpha" }] })
+      .editFacetHeaders({ role: "column", side: "bottom" });
+    assert.deepEqual(installedFacetHeaders.graphicSpec.objects["facetGrid-headers"].items.map(
+      item => item.properties.text
+    ), ["X", "Y", "Alpha", "B"]);
+    assert.match(renderToSVG(installedFacetHeaders), />Alpha</);
     const statisticalReferences = program
       .createReferenceLine({
         id: "packageMean",
@@ -1136,6 +1171,14 @@ async function testNodeConsumer(directory) {
     assert.deepEqual(blockEdited.graphicSpec.objects.sizeLegendLabels.items.map(item => item.properties.text), ["4", "9"]);
     assert.equal(blockEdited.graphicSpec.objects.sizeLegendLabels.items[0].properties.fill, "purple");
     assert.equal(blockEdited.graphicSpec.objects.sizeLegendSymbols.items[0].properties.fill, "orange");
+    const namedLegend = colorSizeContent.editLegendBlock({
+      target: "contentPoints",
+      channel: "color",
+      labelMap: [{ value: "A", label: "Alpha" }]
+    });
+    assert.deepEqual(namedLegend.graphicSpec.objects.colorLegendLabels.items.map(
+      item => item.properties.text
+    ), ["Alpha", "B"]);
     assert.equal(typeof basicChart().editLegendBlock, "undefined");
     for (const create of [chart, basicChart]) for (const position of ["top", "bottom"]) {
       const source = create().createCanvas({ width: 1200, height: 1000, margin: 300 })
@@ -2167,6 +2210,8 @@ async function testTypeScriptConsumer(directory) {
       type ChartProgram,
       type ApplyThemeOptions,
       type AxisLabelLayoutOptions,
+      type DisplayLabelMap,
+      type EditFacetHeadersOptions,
       type Bin2DDataOptions,
       type BinDataOptions,
       type EditBin2DDataOptions,
@@ -2392,6 +2437,18 @@ async function testTypeScriptConsumer(directory) {
     };
     program.fitCanvas(fitOptions);
     program.createXAxisLabels(labelLayout);
+    const displayLabels: DisplayLabelMap = [
+      { value: 1, label: "One" },
+      { value: "1", label: "String one" }
+    ];
+    program.createXAxisLabels({ labelMap: displayLabels });
+    const facetHeaderOptions: EditFacetHeadersOptions = {
+      role: "column",
+      labelMap: displayLabels,
+      side: "bottom",
+      align: "start"
+    };
+    program.editFacetHeaders(facetHeaderOptions);
     // @ts-expect-error Canvas fitting is Full only
     basicChart().fitCanvas(fitOptions);
     const roseOptions: import("ggaction").CreateRosePlotOptions = { category: "category", radiusScale: { range: [70, 140] } };
@@ -3777,8 +3834,9 @@ async function testTypeScriptConsumer(directory) {
     });
     // @ts-expect-error Block editing is Full-only.
     basicChart().editLegendBlock({ target: "points", channel: "color", title: "Group" });
-    // @ts-expect-error R39 owns labelMap.
     chart().editLegendBlock({ target: "points", channel: "color", labelMap: [] });
+    // @ts-expect-error Display labels must be strings.
+    chart().editLegendBlock({ target: "points", channel: "color", labelMap: [{ value: "A", label: 1 }] });
     // @ts-expect-error Explicit block samples are non-empty.
     chart().editLegendBlock({ target: "points", channel: "size", values: [] });
 

@@ -18,7 +18,6 @@ import {
 import { resolveFacetLayout } from "../../layout/facets.js";
 import { compositionChildDescriptor } from
   "../../materialization/composition.js";
-import { DEFAULT_COLORS, DEFAULT_FONT_FAMILY } from "../../theme/defaults.js";
 import { deriveFacetChildren } from "./derive.js";
 import { resolveFacetChildrenScales } from "./derive.js";
 import { replayDerivedData } from "./replay.js";
@@ -26,6 +25,12 @@ import { composeFacetGuides } from "./guides.js";
 import { applyCompositionState } from "../composition/actions.js";
 import { findDataset } from "../../selectors/datasets.js";
 import { findLayer } from "../../selectors/layers.js";
+import { normalizeDisplayLabelMap } from "../../grammar/displayLabels.js";
+import {
+  createDefaultFacetHeaders,
+  normalizeFacetHeadersConfig,
+  resolveFacetHeaderConfig
+} from "../../materialization/facetHeaders.js";
 
 const FACET_OPTIONS = Object.freeze([
   "id", "field", "data", "values", "columns", "gap", "align", "padding", "scales",
@@ -42,15 +47,12 @@ const REPEAT_OPTIONS = Object.freeze([
 const SOURCE_EDIT_OPTIONS = Object.freeze(["program"]);
 const GUIDE_OPTIONS = Object.freeze(["axes", "legend"]);
 const HEADER_OPTIONS = Object.freeze([
-  "fontSize", "fontFamily", "fontWeight", "color", "offset"
+  "fontSize", "fontFamily", "fontWeight", "color", "offset", "role",
+  "labelMap", "side", "align"
 ]);
-const DEFAULT_HEADERS = Object.freeze({
-  fontSize: 12,
-  fontFamily: DEFAULT_FONT_FAMILY,
-  fontWeight: 600,
-  color: DEFAULT_COLORS.strongText,
-  offset: 10
-});
+const HEADER_STYLE_OPTIONS = Object.freeze([
+  "fontSize", "fontFamily", "fontWeight", "color", "offset", "align"
+]);
 
 function normalizeGuides(guides) {
   if (guides === undefined) return { axes: "each", legend: false };
@@ -222,7 +224,7 @@ export const facet = action(
     };
     return applyCompositionState(
       this._withMaterializationConfig(["facets", definition.id], {
-        headers: DEFAULT_HEADERS
+        headers: createDefaultFacetHeaders()
       }),
       {
         children: derived.children,
@@ -394,7 +396,7 @@ export const repeatCharts = action(
     };
     return applyCompositionState(
       this._withMaterializationConfig(["facets", definition.id], {
-        headers: DEFAULT_HEADERS
+        headers: createDefaultFacetHeaders()
       }),
       { children: derived.children, compositionSpec },
       compositionSpec.children
@@ -461,7 +463,7 @@ export const facetGrid = action(
     };
     return applyCompositionState(
       this._withMaterializationConfig(["facets", definition.id], {
-        headers: DEFAULT_HEADERS
+        headers: createDefaultFacetHeaders()
       }),
       { children: derived.children, compositionSpec },
       compositionSpec.children
@@ -486,18 +488,73 @@ export const editFacetHeaders = action(
       allowEmpty: false,
       emptyMessage: "editFacetHeaders requires at least one change."
     });
-    const headers = { ...config.headers, ...args };
-    validatePositiveFinite(headers.fontSize, "Facet header fontSize");
-    validateNonEmptyString(headers.fontFamily, "Facet header fontFamily");
-    validateNonEmptyString(headers.color, "Facet header color");
-    validateNonNegativeFinite(headers.offset, "Facet header offset");
-    if (!(
-      (typeof headers.fontWeight === "string" && headers.fontWeight.length > 0) ||
-      Number.isFinite(headers.fontWeight)
-    )) {
-      throw new TypeError(
-        "Facet header fontWeight must be a non-empty string or number."
-      );
+    const role = args.role ?? "all";
+    if (!["all", "row", "column"].includes(role)) {
+      throw new Error(`Unknown facet header role "${role}".`);
+    }
+    if (role === "all" && Object.hasOwn(args, "side")) {
+      throw new Error("editFacetHeaders side requires an explicit row or column role.");
+    }
+    if (role === "row" && this.compositionSpec.facet.grid === undefined) {
+      throw new Error("editFacetHeaders row role requires a row-column facet grid.");
+    }
+    if (Object.hasOwn(args, "side")) {
+      const sides = role === "row" ? ["left", "right"] : ["top", "bottom"];
+      if (!sides.includes(args.side)) {
+        throw new Error(`editFacetHeaders ${role} side must be ${sides.join(" or ")}.`);
+      }
+    }
+    if (Object.hasOwn(args, "align") &&
+        !["start", "center", "end"].includes(args.align)) {
+      throw new Error("editFacetHeaders align must be start, center, or end.");
+    }
+    if (role === "all" && Object.keys(args).every(key => key === "role")) {
+      throw new Error("editFacetHeaders requires at least one change.");
+    }
+    const current = normalizeFacetHeadersConfig(config.headers);
+    const owner = role === "all" ? "common" : role;
+    const patch = { ...current[owner] };
+    for (const key of HEADER_STYLE_OPTIONS) {
+      if (Object.hasOwn(args, key)) patch[key] = args[key];
+    }
+    if (Object.hasOwn(args, "side")) patch.side = args.side;
+    if (Object.hasOwn(args, "labelMap")) {
+      if (args.labelMap === "auto") delete patch.labelMap;
+      else {
+        patch.labelMap = normalizeDisplayLabelMap(
+          args.labelMap,
+          `editFacetHeaders ${role} labelMap`
+        );
+      }
+    }
+    const headers = {
+      ...current,
+      ...(role === "all" ? {} : { mode: "roles" }),
+      [owner]: patch
+    };
+    for (const headerRole of ["all", "row", "column"]) {
+      const resolved = resolveFacetHeaderConfig(headers, headerRole);
+      validatePositiveFinite(resolved.fontSize, `Facet ${headerRole} header fontSize`);
+      validateNonEmptyString(resolved.fontFamily, `Facet ${headerRole} header fontFamily`);
+      validateNonEmptyString(resolved.color, `Facet ${headerRole} header color`);
+      validateNonNegativeFinite(resolved.offset, `Facet ${headerRole} header offset`);
+      if (!(
+        (typeof resolved.fontWeight === "string" && resolved.fontWeight.length > 0) ||
+        Number.isFinite(resolved.fontWeight)
+      )) {
+        throw new TypeError(
+          `Facet ${headerRole} header fontWeight must be a non-empty string or number.`
+        );
+      }
+      if (!["start", "center", "end"].includes(resolved.align)) {
+        throw new Error(`Facet ${headerRole} header align must be start, center, or end.`);
+      }
+      if (resolved.labelMap !== undefined) {
+        normalizeDisplayLabelMap(
+          resolved.labelMap,
+          `Facet ${headerRole} header labelMap`
+        );
+      }
     }
     return this
       ._withMaterializationConfig(["facets", id], { ...config, headers })

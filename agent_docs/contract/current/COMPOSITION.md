@@ -28,8 +28,10 @@ Exact internal graphic ID spelling is not a public authoring option.
   categorical legend defaults to `"right"`; facet itself has no separate legend-position option.
 - The result is a composition parent whose `children` retain immutable filtered programs and whose `graphicSpec` contains the complete namespaced nested-Canvas snapshot.
 - Canonical title order is `.facet(...).createTitle(...)`. A valid title authored before `facet` is promoted once to the parent.
-- Parent title alignment uses the translated child-plot union. Each facet header is centered on its own translated
-  child plot; neither anchor uses the child Canvas, axis-reserved margin, facet padding, or shared legend extent.
+- Parent title alignment uses the translated child-plot union. Legacy facet headers remain one item per cell and
+  align to each translated child plot. Explicit row/column role headers align to the occupied translated plot union
+  for their row or column; neither long-axis anchor uses the child Canvas, axis-reserved margin, facet padding, or
+  shared legend extent.
 - Empty-string facet values remain semantic values and render with the deterministic visible header `(empty)`.
 - Facet child cardinality는 최대 `100`이며 child derivation 전 `partitionRows * childCount <= 10,000,000`
   work budget을 검증한다.
@@ -133,22 +135,37 @@ Exact internal graphic ID spelling is not a public authoring option.
 
 ## `editFacetHeaders`
 
-- Signature: `editFacetHeaders({ fontSize?, fontFamily?, fontWeight?, color?, offset? })`.
+- Signature: `editFacetHeaders({ fontSize?, fontFamily?, fontWeight?, color?, offset?, role?, labelMap?, side?, align? })`.
 - Requires a facet composition and at least one appearance change.
-- Headers are one parent-owned repeated concrete resource. Each header is centered on its child plot bounds. Editing
-  them preserves child identity, semantic facet values, shared scales, and layout order, then rematerializes the
-  parent snapshot. A header edit that cannot fit above every child plot without clipping or overlap fails atomically.
+- Unqualified edits use `role:"all"` and update common style/mapping while preserving the legacy one-header-per-cell
+  topology. `role:"row" | "column"` activates role mode. A row-column grid then owns one header per occupied
+  numeric column followed by one per occupied numeric row. One-field facets and repeats support only the column role
+  and keep one header per cell, including wrapped physical rows.
+- Common config is the fallback for each role; a role-specific style, alignment or `labelMap` wins. Role
+  `labelMap:"auto"` removes that override and falls back to the common map; common `"auto"` falls back to
+  `formatVisibleText`. Typed raw values remain the identity, so `1` and `"1"` may display differently without
+  changing partitions. Duplicate visible labels and `""` are valid; empty mapped text keeps the item identity but
+  reserves no strip space.
+- Row sides are `left | right`; column sides are `top | bottom`. `align:"start" | "center" | "end"` applies
+  along the occupied plot span. `side` requires an explicit row/column role. Role strips reserve measured space in
+  the parent layout before child placement, so font, map, side, layout, title and shared-legend changes converge.
+- Editing preserves child identity, semantic facet values, shared scales and layout order, then rematerializes the
+  parent snapshot. Clipping, snapshot intersection or header-header overlap fails atomically.
 
 ### Formal values — `editFacetHeaders`
 
-- Implemented: `editFacetHeaders({ fontSize?: PositiveFinite; fontFamily?: NonEmptyString; fontWeight?: NonEmptyString | Finite; color?: NonEmptyString; offset?: NonNegativeFinite }): ChartProgram`.
+- Implemented: `editFacetHeaders({ fontSize?: PositiveFinite; fontFamily?: NonEmptyString; fontWeight?: NonEmptyString | Finite; color?: NonEmptyString; offset?: NonNegativeFinite; role?: "all" | "row" | "column"; labelMap?: DisplayLabelMap | "auto"; side?: "top" | "bottom" | "left" | "right"; align?: "start" | "center" | "end" }): ChartProgram`, with the role-specific side restrictions above.
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `editFacetHeaders`
 
-- ✅ Covered: child-plot centering, partial edit, immutable prior state, layout-edit convergence, empty edit rejection,
-  and non-facet rejection.
-- Evidence: `test/unit/actions/composition/facet.test.js`, `test/charts/cars-origin-scatterplot-facet/facet-variants.test.js`.
+- ✅ Covered: legacy child-plot alignment, typed common and role maps, precedence/reset, deterministic row/column
+  item order, four sides, three alignments, empty labels, exact strip reservation, source/layout replay, immutable
+  prior state, invalid role/side/map, empty edit and non-facet rejection.
+- Evidence: `test/unit/actions/composition/facet.test.js`,
+  `test/unit/actions/composition/facet-display-headers.test.js`,
+  `test/unit/grammar/layout/facets.test.js`, and
+  `test/charts/cars-origin-scatterplot-facet/facet-variants.test.js`.
 
 ## `editCompositionLayout`
 

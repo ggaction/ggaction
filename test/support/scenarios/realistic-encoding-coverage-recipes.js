@@ -430,13 +430,16 @@ function addOffsets(program) {
     .encodeXOffset({
       target: vertical, field: "group", fieldType: "nominal",
       scale: {
-        id: "x-offset-nominal-scale", type: "ordinal", domain: "auto", range: "auto"
-      },
-      paddingInner: 0.08, paddingOuter: 0.04
+        id: "x-offset-nominal-scale", type: "ordinal", domain: "auto", range: "auto",
+        padding: 0.08, align: 0, reverse: false
+      }
     })
     .encodeXOffset({
       target: vertical, field: "group", fieldType: "ordinal",
-      scale: { id: "x-offset-scale", type: "ordinal", domain: "auto", range: "auto" },
+      scale: {
+        id: "x-offset-scale", type: "ordinal", domain: "auto", range: "auto",
+        paddingInner: 0.12, paddingOuter: 0.06, align: 1, reverse: true
+      },
       paddingInner: 0.12, paddingOuter: 0.06
     })
     .encodeColor({ target: vertical, field: "group", layout: "group" });
@@ -455,13 +458,16 @@ function addOffsets(program) {
     .encodeYOffset({
       target: horizontal, field: "group", fieldType: "nominal",
       scale: {
-        id: "y-offset-nominal-scale", type: "ordinal", domain: "auto", range: "auto"
-      },
-      paddingInner: 0.08, paddingOuter: 0.04
+        id: "y-offset-nominal-scale", type: "ordinal", domain: "auto", range: "auto",
+        padding: 0.08, align: 0, reverse: false
+      }
     })
     .encodeYOffset({
       target: horizontal, field: "group", fieldType: "ordinal",
-      scale: { id: "y-offset-scale", type: "ordinal", domain: "auto", range: "auto" },
+      scale: {
+        id: "y-offset-scale", type: "ordinal", domain: "auto", range: "auto",
+        paddingInner: 0.12, paddingOuter: 0.06, align: 1, reverse: true
+      },
       paddingInner: 0.12, paddingOuter: 0.06
     })
     .encodeColor({ target: horizontal, field: "group", layout: "group" });
@@ -777,7 +783,52 @@ function addAppearanceEncodings(program) {
   });
   next = positionedPoint(next, "size").encodeSize({
     target: "size", field: "size", fieldType: "quantitative",
-    scale: { id: "size-scale", type: "linear", domain: "auto", range: "auto", unknown: 4 }
+    scale: {
+      id: "size-scale", type: "linear", domain: "auto", range: "auto",
+      clamp: false, reverse: false, unknown: 4
+    }
+  });
+  next = positionedPoint(next, "size-log").encodeSize({
+    target: "size-log", field: "size", fieldType: "quantitative",
+    scale: {
+      id: "size-log-scale", type: "log", domain: "auto", range: "auto",
+      base: 2, clamp: false, reverse: true, unknown: 4
+    }
+  });
+  next = positionedPoint(next, "size-pow").encodeSize({
+    target: "size-pow", field: "size", fieldType: "quantitative",
+    scale: {
+      id: "size-pow-scale", type: "pow", domain: "auto", range: "auto",
+      exponent: 2, clamp: true, reverse: false, unknown: 4
+    }
+  });
+  next = positionedPoint(next, "size-sqrt").encodeSize({
+    target: "size-sqrt", field: "size", fieldType: "quantitative",
+    scale: {
+      id: "size-sqrt-scale", type: "sqrt", domain: "auto", range: "auto",
+      clamp: true, reverse: true, unknown: 4
+    }
+  });
+  next = positionedPoint(next, "size-quantize").encodeSize({
+    target: "size-quantize", field: "size", fieldType: "quantitative",
+    scale: {
+      id: "size-quantize-scale", type: "quantize", domain: "auto",
+      range: [4, 9, 16], reverse: false, unknown: 4
+    }
+  });
+  next = positionedPoint(next, "size-quantile").encodeSize({
+    target: "size-quantile", field: "size", fieldType: "quantitative",
+    scale: {
+      id: "size-quantile-scale", type: "quantile", domain: "auto",
+      range: [4, 9, 16], reverse: true, unknown: 4
+    }
+  });
+  next = positionedPoint(next, "size-threshold").encodeSize({
+    target: "size-threshold", field: "size", fieldType: "quantitative",
+    scale: {
+      id: "size-threshold-scale", type: "threshold", domain: [2, 4],
+      range: [4, 9, 16], reverse: false, unknown: 4
+    }
   });
   next = positionedPoint(next, "shape-circle").encodeShape({
     target: "shape-circle", field: "group", fieldType: "nominal",

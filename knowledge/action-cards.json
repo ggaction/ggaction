@@ -14557,6 +14557,10 @@
           "strategy": "explicit-current-unique-or-error"
         },
         {
+          "input": "labelMap",
+          "strategy": "documented-auto"
+        },
+        {
           "input": "omitted optional options",
           "strategy": "documented-default"
         }
@@ -14588,6 +14592,11 @@
           "name": "values",
           "required": false,
           "type": "readonly AxisValue[] | undefined"
+        },
+        {
+          "name": "labelMap",
+          "required": false,
+          "type": "\"auto\" | DisplayLabelMap | undefined"
         },
         {
           "name": "offset",
@@ -14646,7 +14655,7 @@
         }
       ],
       "callPatterns": [
-        "createXAxisLabels({ scale?, position?, count?, values?, offset?, format?, color?, fontSize? })"
+        "createXAxisLabels({ scale?, position?, count?, values?, labelMap?, offset?, format?, color? })"
       ],
       "snippet": "program.createXAxisLabels({})",
       "errors": [],
@@ -14729,6 +14738,10 @@
           "strategy": "explicit-current-unique-or-error"
         },
         {
+          "input": "labelMap",
+          "strategy": "documented-auto"
+        },
+        {
           "input": "omitted optional options",
           "strategy": "documented-default"
         }
@@ -14760,6 +14773,11 @@
           "name": "values",
           "required": false,
           "type": "readonly AxisValue[] | undefined"
+        },
+        {
+          "name": "labelMap",
+          "required": false,
+          "type": "\"auto\" | DisplayLabelMap | undefined"
         },
         {
           "name": "offset",
@@ -14818,7 +14836,7 @@
         }
       ],
       "callPatterns": [
-        "createYAxisLabels({ scale?, position?, count?, values?, offset?, format?, color?, fontSize? })"
+        "createYAxisLabels({ scale?, position?, count?, values?, labelMap?, offset?, format?, color? })"
       ],
       "snippet": "program.createYAxisLabels({})",
       "errors": [],
@@ -14890,7 +14908,12 @@
           "unit": "count"
         }
       ],
-      "inference": [],
+      "inference": [
+        {
+          "input": "labelMap",
+          "strategy": "documented-auto"
+        }
+      ],
       "completionRequirements": {
         "state": "contextual",
         "requires": [
@@ -14900,6 +14923,11 @@
         "allowsEmpty": false
       },
       "options": [
+        {
+          "name": "labelMap",
+          "required": false,
+          "type": "\"auto\" | DisplayLabelMap | undefined"
+        },
         {
           "name": "offset",
           "required": false,
@@ -14972,9 +15000,9 @@
         }
       ],
       "callPatterns": [
-        "editXAxisLabels({ offset?, format?, color?, fontSize?, fontFamily?, fontWeight?, rotation?, maxWidth? })"
+        "editXAxisLabels({ labelMap?, offset?, format?, color?, fontSize?, fontFamily?, fontWeight?, rotation? })"
       ],
-      "snippet": "program.editXAxisLabels({ offset: 1 })",
+      "snippet": "program.editXAxisLabels({ labelMap: \"auto\" })",
       "errors": [],
       "route": "/reference/actions/advanced/#axis-lines-ticks-and-labels"
     },
@@ -15044,7 +15072,12 @@
           "unit": "count"
         }
       ],
-      "inference": [],
+      "inference": [
+        {
+          "input": "labelMap",
+          "strategy": "documented-auto"
+        }
+      ],
       "completionRequirements": {
         "state": "contextual",
         "requires": [
@@ -15054,6 +15087,11 @@
         "allowsEmpty": false
       },
       "options": [
+        {
+          "name": "labelMap",
+          "required": false,
+          "type": "\"auto\" | DisplayLabelMap | undefined"
+        },
         {
           "name": "offset",
           "required": false,
@@ -15126,9 +15164,9 @@
         }
       ],
       "callPatterns": [
-        "editYAxisLabels({ offset?, format?, color?, fontSize?, fontFamily?, fontWeight?, rotation?, maxWidth? })"
+        "editYAxisLabels({ labelMap?, offset?, format?, color?, fontSize?, fontFamily?, fontWeight?, rotation? })"
       ],
-      "snippet": "program.editYAxisLabels({ offset: 1 })",
+      "snippet": "program.editYAxisLabels({ labelMap: \"auto\" })",
       "errors": [],
       "route": "/reference/actions/advanced/#axis-lines-ticks-and-labels"
     },
@@ -15228,7 +15266,7 @@
         {
           "name": "labels",
           "required": false,
-          "type": "(AxisLabelStyleOptions & AxisLabelLayoutOptions) | undefined"
+          "type": "(AxisLabelStyleOptions & AxisLabelLayoutOptions & DisplayLabelOptions) | undefined"
         }
       ],
       "callPatterns": [
@@ -15334,7 +15372,7 @@
         {
           "name": "labels",
           "required": false,
-          "type": "(AxisLabelStyleOptions & AxisLabelLayoutOptions) | undefined"
+          "type": "(AxisLabelStyleOptions & AxisLabelLayoutOptions & DisplayLabelOptions) | undefined"
         }
       ],
       "callPatterns": [
@@ -15423,7 +15461,7 @@
         {
           "name": "labels",
           "required": false,
-          "type": "(AxisLabelStyleOptions & AxisLabelLayoutOptions) | undefined"
+          "type": "(AxisLabelStyleOptions & AxisLabelLayoutOptions & DisplayLabelOptions) | undefined"
         }
       ],
       "callPatterns": [
@@ -15512,7 +15550,7 @@
         {
           "name": "labels",
           "required": false,
-          "type": "(AxisLabelStyleOptions & AxisLabelLayoutOptions) | undefined"
+          "type": "(AxisLabelStyleOptions & AxisLabelLayoutOptions & DisplayLabelOptions) | undefined"
         }
       ],
       "callPatterns": [
@@ -17446,6 +17484,10 @@
         {
           "input": "values",
           "strategy": "documented-auto"
+        },
+        {
+          "input": "labelMap",
+          "strategy": "documented-auto"
         }
       ],
       "completionRequirements": {
@@ -17501,6 +17543,11 @@
           "name": "symbol",
           "required": false,
           "type": "LegendBlockSymbolPatch | undefined"
+        },
+        {
+          "name": "labelMap",
+          "required": false,
+          "type": "\"auto\" | DisplayLabelMap | undefined"
         }
       ],
       "callPatterns": [
@@ -22753,7 +22800,7 @@
       "layer": "user-facing",
       "domain": "axes",
       "summary": "Create the complete outer circular theta axis.",
-      "signature": "createThetaAxis(options?: CompletePolarAxisOptions): ChartProgram;",
+      "signature": "createThetaAxis(options?: CompleteThetaAxisOptions): ChartProgram;",
       "intents": [
         "create theta axis",
         "create",
@@ -22817,19 +22864,9 @@
       },
       "options": [
         {
-          "name": "line",
-          "required": false,
-          "type": "false | AxisLineStyleOptions | undefined"
-        },
-        {
           "name": "ticksAndLabels",
           "required": false,
-          "type": "false | PolarTicksAndLabelsOptions | undefined"
-        },
-        {
-          "name": "title",
-          "required": false,
-          "type": "false | PolarTitleOptions | undefined"
+          "type": "false | ThetaTicksAndLabelsOptions | undefined"
         },
         {
           "name": "scale",
@@ -22840,10 +22877,20 @@
           "name": "coordinate",
           "required": false,
           "type": "string | undefined"
+        },
+        {
+          "name": "line",
+          "required": false,
+          "type": "false | AxisLineStyleOptions | undefined"
+        },
+        {
+          "name": "title",
+          "required": false,
+          "type": "false | PolarTitleOptions | undefined"
         }
       ],
       "callPatterns": [
-        "createThetaAxis({ scale?, coordinate?, line?, ticksAndLabels?, title? })"
+        "createThetaAxis({ scale?, coordinate?, ticksAndLabels?, line?, title? })"
       ],
       "snippet": "program.createThetaAxis({})",
       "errors": [],
@@ -22967,7 +23014,7 @@
       "layer": "user-facing",
       "domain": "axes",
       "summary": "Edit selected theta-axis components.",
-      "signature": "editThetaAxis(options: Omit<EditPolarAxisOptions, \"angle\">): ChartProgram;",
+      "signature": "editThetaAxis(options: EditThetaAxisOptions): ChartProgram;",
       "intents": [
         "edit theta axis",
         "edit",
@@ -23015,6 +23062,16 @@
       },
       "options": [
         {
+          "name": "labels",
+          "required": false,
+          "type": "false | ThetaAxisLabelOptions | undefined"
+        },
+        {
+          "name": "ticksAndLabels",
+          "required": false,
+          "type": "false | ThetaTicksAndLabelsOptions | undefined"
+        },
+        {
           "name": "line",
           "required": false,
           "type": "false | AxisLineStyleOptions | undefined"
@@ -23025,23 +23082,13 @@
           "type": "false | PolarTickOptions | undefined"
         },
         {
-          "name": "labels",
-          "required": false,
-          "type": "false | PolarLabelOptions | undefined"
-        },
-        {
-          "name": "ticksAndLabels",
-          "required": false,
-          "type": "false | PolarTicksAndLabelsOptions | undefined"
-        },
-        {
           "name": "title",
           "required": false,
           "type": "false | PolarTitleOptions | undefined"
         }
       ],
       "callPatterns": [
-        "editThetaAxis({ line?, ticks?, labels?, ticksAndLabels?, title? })"
+        "editThetaAxis({ labels?, ticksAndLabels?, line?, ticks?, title? })"
       ],
       "snippet": "program.editThetaAxis({ line: { color: \"#222222\" } })",
       "errors": [],
@@ -24173,6 +24220,10 @@
           "strategy": "explicit-current-unique-or-error"
         },
         {
+          "input": "labelMap",
+          "strategy": "documented-auto"
+        },
+        {
           "input": "omitted optional options",
           "strategy": "documented-default"
         }
@@ -24234,6 +24285,11 @@
           "name": "coordinate",
           "required": false,
           "type": "string | undefined"
+        },
+        {
+          "name": "labelMap",
+          "required": false,
+          "type": "\"auto\" | DisplayLabelMap | undefined"
         }
       ],
       "callPatterns": [
@@ -24249,7 +24305,7 @@
       "layer": "user-facing",
       "domain": "axes",
       "summary": "Edit perimeter theta labels.",
-      "signature": "editThetaAxisLabels(options?: PolarLabelOptions): ChartProgram;",
+      "signature": "editThetaAxisLabels(options?: ThetaAxisLabelOptions): ChartProgram;",
       "intents": [
         "edit theta axis labels",
         "edit",
@@ -24296,7 +24352,12 @@
           "unit": "logical-pixel"
         }
       ],
-      "inference": [],
+      "inference": [
+        {
+          "input": "labelMap",
+          "strategy": "documented-auto"
+        }
+      ],
       "completionRequirements": {
         "state": "contextual",
         "requires": [
@@ -24345,6 +24406,11 @@
           "name": "fontWeight",
           "required": false,
           "type": "string | number | undefined"
+        },
+        {
+          "name": "labelMap",
+          "required": false,
+          "type": "\"auto\" | DisplayLabelMap | undefined"
         }
       ],
       "callPatterns": [
@@ -26362,7 +26428,12 @@
           "unit": "logical-pixel"
         }
       ],
-      "inference": [],
+      "inference": [
+        {
+          "input": "labelMap",
+          "strategy": "documented-auto"
+        }
+      ],
       "completionRequirements": {
         "state": "contextual",
         "requires": [
@@ -26396,10 +26467,30 @@
           "name": "offset",
           "required": false,
           "type": "number | undefined"
+        },
+        {
+          "name": "role",
+          "required": false,
+          "type": "FacetHeaderRole | undefined"
+        },
+        {
+          "name": "labelMap",
+          "required": false,
+          "type": "\"auto\" | DisplayLabelMap | undefined"
+        },
+        {
+          "name": "side",
+          "required": false,
+          "type": "FacetHeaderSide | undefined"
+        },
+        {
+          "name": "align",
+          "required": false,
+          "type": "FacetHeaderAlign | undefined"
         }
       ],
       "callPatterns": [
-        "editFacetHeaders({ fontSize?, fontFamily?, fontWeight?, color?, offset? })"
+        "editFacetHeaders({ fontSize?, fontFamily?, fontWeight?, color?, offset?, role?, labelMap?, side? })"
       ],
       "snippet": "program.editFacetHeaders({ fontSize: 1 })",
       "errors": [],
@@ -27949,7 +28040,7 @@
         {
           "name": "guides",
           "required": false,
-          "type": "false | CartesianPathGuideOptions | undefined"
+          "type": "false | CPathGuides | undefined"
         }
       ],
       "callPatterns": [
@@ -29113,7 +29204,7 @@
         {
           "name": "guides",
           "required": false,
-          "type": "false | CartesianGuideOptions | undefined"
+          "type": "false | ColorGuides | undefined"
         }
       ],
       "callPatterns": [

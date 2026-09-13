@@ -2241,7 +2241,7 @@
       "domain": "axes",
       "status": "implemented",
       "lifecycle": "Aggregate create-only",
-      "update": "Channel axis or component edits",
+      "update": "Channel axis or component edits; categorical x/y/theta labelMap values are preserved by the owning axis",
       "audit": "Intentional",
       "coverage": {
         "contract": "complete",
@@ -2259,7 +2259,7 @@
       "domain": "axes",
       "status": "implemented",
       "lifecycle": "Aggregate create-only",
-      "update": "X-axis component edits",
+      "update": "X-axis component edits, including typed categorical display labels",
       "audit": "Intentional",
       "coverage": {
         "contract": "complete",
@@ -2277,7 +2277,7 @@
       "domain": "axes",
       "status": "implemented",
       "lifecycle": "Aggregate create-only",
-      "update": "Y-axis component edits",
+      "update": "Y-axis component edits, including typed categorical display labels",
       "audit": "Intentional",
       "coverage": {
         "contract": "complete",
@@ -2439,7 +2439,7 @@
       "domain": "axes",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "`editXAxisLabels`",
+      "update": "`editXAxisLabels` edits style, layout, and typed categorical display labels",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -2457,7 +2457,7 @@
       "domain": "axes",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "`editYAxisLabels`",
+      "update": "`editYAxisLabels` edits style, layout, and typed categorical display labels",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -2475,7 +2475,7 @@
       "domain": "axes",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edits x-axis labels",
+      "update": "Edits x-axis label style/layout and sets or resets a typed categorical labelMap",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -2493,7 +2493,7 @@
       "domain": "axes",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edits y-axis labels",
+      "update": "Edits y-axis label style/layout and sets or resets a typed categorical labelMap",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -2511,7 +2511,7 @@
       "domain": "axes",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "`editXAxisTicksAndLabels`",
+      "update": "`editXAxisTicksAndLabels` edits ticks and label style/layout, including typed categorical display labels",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -2529,7 +2529,7 @@
       "domain": "axes",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "`editYAxisTicksAndLabels`",
+      "update": "`editYAxisTicksAndLabels` edits ticks and label style/layout, including typed categorical display labels",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -2547,7 +2547,7 @@
       "domain": "axes",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edits x-axis ticks and labels",
+      "update": "Edits x-axis ticks and labels, including typed categorical labelMap set/reset",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -2565,7 +2565,7 @@
       "domain": "axes",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edits y-axis ticks and labels",
+      "update": "Edits y-axis ticks and labels, including typed categorical labelMap set/reset",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -2655,7 +2655,7 @@
       "domain": "axes",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edits or removes selected existing x-axis components",
+      "update": "Edits or removes selected existing x-axis components, including typed categorical display labels",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -2673,7 +2673,7 @@
       "domain": "axes",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edits or removes selected existing y-axis components",
+      "update": "Edits or removes selected existing y-axis components, including typed categorical display labels",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -2889,7 +2889,7 @@
       "domain": "legend_and_title",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edit one channel-identified legend block without changing sibling blocks",
+      "update": "Edit one channel-identified legend block, including typed categorical display labels, without changing sibling blocks",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -3717,7 +3717,7 @@
       "domain": "axes",
       "status": "implemented",
       "lifecycle": "Aggregate create-only",
-      "update": "Focused theta-axis edits",
+      "update": "Focused theta-axis edits, including typed categorical display labels",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -3753,7 +3753,7 @@
       "domain": "axes",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edits selected theta-axis components",
+      "update": "Edits selected theta-axis components, including typed categorical display labels",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -3969,7 +3969,7 @@
       "domain": "axes",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edited by editThetaAxisLabels; removed with the owning complete axis",
+      "update": "Edited by editThetaAxisLabels, including typed categorical display labels; removed with the owning complete axis",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -3987,7 +3987,7 @@
       "domain": "axes",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edits theta labels",
+      "update": "Edits theta label style and sets or resets a typed categorical labelMap",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -4347,7 +4347,7 @@
       "domain": "composition",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Edits parent-owned facet headers",
+      "update": "Edits parent-owned common, row, or column facet headers, including side, alignment, style, and typed display labels",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",

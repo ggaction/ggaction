@@ -116,6 +116,45 @@ test("reserves a shared legend lane on its configured edge", () => {
   );
 });
 
+test("reserves outer and per-row facet header lanes exactly once", () => {
+  const four = ["a", "b", "c", "d"].map((id, index) => ({
+    id,
+    value: index,
+    width: 100,
+    height: 80,
+    widthMode: "explicit",
+    heightMode: "explicit"
+  }));
+  const outer = resolveFacetLayout({
+    children: four,
+    columns: 2,
+    gap: 10,
+    padding: 0,
+    headerLayout: {
+      outer: { left: 16.2, top: 14 },
+      cellRows: { top: [0, 0], bottom: [0, 0] }
+    }
+  });
+  assert.equal(outer.width, 226.2);
+  assert.equal(outer.height, 184);
+  assert.deepEqual(outer.children.map(item => [item.x, item.y]), [
+    [16.2, 14], [126.2, 14], [16.2, 104], [126.2, 104]
+  ]);
+
+  const rows = resolveFacetLayout({
+    children: four,
+    columns: 2,
+    gap: 10,
+    padding: 0,
+    headerLayout: {
+      outer: {},
+      cellRows: { top: [14, 14], bottom: [0, 0] }
+    }
+  });
+  assert.equal(rows.height, 198);
+  assert.deepEqual(rows.children.map(item => item.y), [14, 14, 118, 118]);
+});
+
 test("rejects invalid grid options without mutating inputs", () => {
   const snapshot = structuredClone(children);
   assert.throws(() => resolveFacetLayout({ children, columns: 0 }), /positive integer/);

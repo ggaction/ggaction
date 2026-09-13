@@ -582,6 +582,7 @@ function buildBinnedHeatmap(factors) {
       extent: { x: editedX, y: editedY },
       includeEmpty: !factors.includeEmpty,
       members: true,
+      dependents: "recompute",
       as: {
         x0: "heatmapLeft",
         x1: "heatmapRight",
@@ -687,7 +688,6 @@ function densityPlacement(factors, view) {
       split: { field: "subgroup", domain: view.splitDomain },
       scale: {
         type: "band", domain: "auto", range: "auto", align: 0.5,
-        padding: 0.12,
         paddingInner: DENSITY_CATEGORY_PADDING_INNER,
         paddingOuter: DENSITY_CATEGORY_PADDING_OUTER,
         reverse: factors.reverse
@@ -700,7 +700,6 @@ function densityPlacement(factors, view) {
     width,
     scale: {
       type: "band", domain: "auto", range: "auto", align: 0.5,
-      padding: 0.12,
       paddingInner: DENSITY_CATEGORY_PADDING_INNER,
       paddingOuter: DENSITY_CATEGORY_PADDING_OUTER,
       reverse: factors.reverse

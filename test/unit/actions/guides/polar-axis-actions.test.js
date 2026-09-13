@@ -56,6 +56,46 @@ test("creates complete theta and radial axes above marks", () => {
   assert.equal(base.semanticSpec.guides.axis, undefined);
 });
 
+test("maps categorical theta labels without widening continuous or radial labels", () => {
+  const categorical = chart()
+    .createCanvas({ width: 360, height: 360, margin: 80 })
+    .createData({ values: [
+      { category: "A", value: 10 },
+      { category: "B", value: 20 }
+    ] })
+    .createPointMark()
+    .encodeTheta({ field: "category", fieldType: "nominal" })
+    .encodeR({ field: "value", scale: { zero: true } });
+  const mapped = categorical.createThetaAxis({
+    ticksAndLabels: {
+      values: ["A", "B"],
+      labels: { labelMap: [{ value: "A", label: "Alpha" }] }
+    },
+    title: false
+  });
+  assert.deepEqual(
+    mapped.graphicSpec.objects.thetaAxisLabels.items.map(item => item.properties.text),
+    ["Alpha", "B"]
+  );
+  const reset = mapped.editThetaAxis({
+    labels: { labelMap: "auto" }
+  });
+  assert.deepEqual(
+    reset.graphicSpec.objects.thetaAxisLabels.items.map(item => item.properties.text),
+    ["A", "B"]
+  );
+  assert.equal(Object.hasOwn(reset.guideConfigs.axis.theta.labels, "labelMap"), false);
+
+  assert.throws(
+    () => mapped.createRadialAxisLabels({ labelMap: [] }),
+    /Unknown createRadialAxisLabels option "labelMap"/
+  );
+  assert.throws(
+    () => polarProgram().createThetaAxisLabels({ labelMap: [] }),
+    /labelMap requires a categorical theta scale/
+  );
+});
+
 test("edits focused Polar axis components without raw graphic targets", () => {
   const created = polarProgram()
     .createThetaAxis()

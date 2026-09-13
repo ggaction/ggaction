@@ -85,10 +85,8 @@ function validatePrimitive(type, properties, path, issues) {
       issues.push(`${path}.properties.${property} is required.`);
     }
   }
-  if (type === "text" && (
-    typeof properties.text !== "string" || properties.text.length === 0
-  )) {
-    issues.push(`${path}.properties.text must be a non-empty string.`);
+  if (type === "text" && typeof properties.text !== "string") {
+    issues.push(`${path}.properties.text must be a string.`);
   }
   if (type === "text" && !(properties.fontSize > 0)) {
     issues.push(`${path}.properties.fontSize must be positive.`);

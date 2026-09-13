@@ -29,15 +29,15 @@ const actionCards = JSON.parse(readFileSync(
 const inventoryPromise = buildPublicOptionInventory(actionCards);
 const ACTIONS = new Set(REALISTIC_CARTESIAN_FACADE_COVERAGE_EXPECTED_ACTIONS);
 const EXPECTED_TARGETS = Object.freeze({
-  createScatterPlot: Object.freeze({ requirements: 349, diversity: 8 }),
-  createBarPlot: Object.freeze({ requirements: 360, diversity: 9 }),
+  createScatterPlot: Object.freeze({ requirements: 368, diversity: 8 }),
+  createBarPlot: Object.freeze({ requirements: 364, diversity: 9 }),
   createLinePlot: Object.freeze({ requirements: 305, diversity: 6 }),
   createParallelCoordinates: Object.freeze({ requirements: 104, diversity: 3 })
 });
 const EXPECTED_REQUIREMENT_DIGESTS = Object.freeze({
   // Locked after public declarations match the runtime-supported facade branches.
-  createScatterPlot: "4c0b67a3a615760d3feab0bed7f6e418c2109e3f41984378698b851832cd7d62",
-  createBarPlot: "0b93c3029a1ed7e7d008c59011ae0d608bbb261da106ed3bbb863c54c16bc63c",
+  createScatterPlot: "1b7137e612176fa01fefa88f88c90bd91d81ec198dbec8269940c5bd4e9528f2",
+  createBarPlot: "ed8c63abfaa9eef616168b39a392c687b1d774a1f2153ea108b9e0edfde49c52",
   createLinePlot: "1fd4d09918ee99e78dcd24696da6bb56ed015d18b4d650513af1b6b56c6de264",
   createParallelCoordinates: "1274630d5931a9a2335d086d3748943fa523aac16127219db675b1044ccb7090"
 });
@@ -632,9 +632,9 @@ test("locks the exact assigned option, literal, aggregate, and diversity target 
     actionRequirementCount += requirementIds.length;
     diversityCount += diversityIds.length;
   }
-  assert.equal(actionRequirementCount, 1118);
+  assert.equal(actionRequirementCount, 1141);
   assert.equal(target.familyLiterals.length, 15);
-  assert.equal(actionRequirementCount + target.familyLiterals.length, 1133);
+  assert.equal(actionRequirementCount + target.familyLiterals.length, 1156);
   assert.equal(diversityCount, 26);
 });
 

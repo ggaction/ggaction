@@ -719,6 +719,11 @@ function buildCartesianGuideLifecycle(factors) {
       count: 4,
       border: { color: "#cbd5e1", lineWidth: 1, padding: 10 }
     })
+    .editLegendBlock({
+      target: "guidePoints",
+      channel: "color",
+      title: "Encoded style block"
+    })
     .editLegendLayout({
       target: "guidePoints",
       position: "bottom",
@@ -1962,8 +1967,8 @@ function realisticLifecycleMetadata(base, factors) {
     "action-facet-scale-lifecycle": ["create", "edit", "compose"],
     "action-facet-grid-lifecycle": ["create", "edit", "compose"],
     "action-repeat-charts-lifecycle": ["create", "compose"],
-    "action-direct-data-resources": ["create", "edit"],
-    "action-direct-point-text": ["create", "edit"],
+    "action-direct-data-resources": ["create", "edit", "filter"],
+    "action-direct-point-text": ["create", "edit", "remove"],
     "action-direct-ranged-marks": ["create", "edit"],
     "action-direct-bar-offsets": ["create", "edit"],
     "action-direct-histogram": ["create", "edit"],
@@ -2310,7 +2315,7 @@ export const LIFECYCLE_EXPECTED_ACTIONS = Object.freeze([
   "editGradientPlot", "createViolinPlot", "editXAxisTicksAndLabels",
   "editYAxisTicksAndLabels", "editXAxis", "editYAxis", "removeXAxis",
   "removeYAxis", "editHorizontalGrid", "editVerticalGrid", "editGrid",
-  "editLegend", "editLegendLayout", "editLegendLabels", "editLegendTitle",
+  "editLegend", "editLegendBlock", "editLegendLayout", "editLegendLabels", "editLegendTitle",
   "editLegendSymbols", "editLegendBorder", "removeLegend", "editTitle",
   "removeTitle", "createRegressionBand", "editRegressionBand",
   "createRegressionLine", "editRegressionLine", "filterMarks", "editMarkLabelSelection",

@@ -2284,7 +2284,6 @@ function buildFacetGuides(factors) {
       target: "xOffsetBars",
       field: "subgroup",
       fieldType: "nominal",
-      scale: { range: [-8, 8] },
       paddingInner: 0.15,
       paddingOuter: 0.1
     })
@@ -2317,7 +2316,6 @@ function buildFacetGuides(factors) {
       target: "yOffsetBars",
       field: "subgroup",
       fieldType: "nominal",
-      scale: { range: [-6, 6] },
       paddingInner: 0.15,
       paddingOuter: 0.1
     })

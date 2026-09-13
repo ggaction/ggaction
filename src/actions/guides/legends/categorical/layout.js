@@ -11,6 +11,7 @@ import { resolveLegendItemLayout } from "../../../../layout/legendItems.js";
 import { createPointShapeGraphic } from "../../../../grammar/pointShapes.js";
 import { resolveConcreteGraphicBounds } from "../../../../grammar/schemas/graphicBounds.js";
 import { resolveEffectiveLegendBlockConfig } from "../blocks.js";
+import { resolveDisplayLabel } from "../../../../grammar/displayLabels.js";
 
 const CATEGORICAL_KINDS = Object.freeze(["series", "color", "stroke"]);
 
@@ -72,6 +73,14 @@ export function symbolWidth(config) {
   }));
 }
 
+export function categoricalLegendLabels(config) {
+  return config.domain.map(value => resolveDisplayLabel(
+    value,
+    config.labelMap,
+    formatVisibleText
+  ));
+}
+
 function resolveSampleBounds(program, config, width) {
   const appearance = resolveAppearance(program, config);
   return config.domain.map((_, index) => {
@@ -102,7 +111,7 @@ export function resolveLayout(program, config) {
   const { plot, canvas } = resolveContinuousBounds(program,
     "Legend layout requires Canvas bounds, width, and height.");
   const width = symbolWidth(config);
-  const layout = resolveLegendItemLayout(plot, config, config.domain.map(formatVisibleText), {
+  const layout = resolveLegendItemLayout(plot, config, categoricalLegendLabels(config), {
     width, height: 0, itemBounds: resolveSampleBounds(program, config, width)
   }, canvas);
   assertLegendBoundsInsideCanvas(layout.bounds, canvas, "Categorical legend layout", config);

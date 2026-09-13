@@ -38,11 +38,15 @@ import {
 import { resolveConcreteGraphicBounds } from
   "../../../grammar/schemas/graphicBounds.js";
 import { wrapText } from "../../../layout/text.js";
+import {
+  normalizeDisplayLabelMap,
+  resolveDisplayLabel
+} from "../../../grammar/displayLabels.js";
 
 const OPTIONS = [
   "scale", "position", "count", "values", "offset", "format", "color",
   "fontSize", "fontFamily", "fontWeight", "rotation", "maxWidth", "wrap",
-  "lineHeight", "overlap"
+  "lineHeight", "overlap", "labelMap"
 ];
 
 const DEFAULTS = {
@@ -136,6 +140,24 @@ function validateConfig(channel, config) {
   }
 }
 
+function normalizeAxisLabelMap(program, config, args, operation) {
+  if (!Object.hasOwn(args, "labelMap")) return config;
+  const scale = program.resolvedScales[config.scale];
+  if (!["ordinal", "band", "point"].includes(scale?.type)) {
+    throw new Error(`${operation} labelMap requires a categorical scale.`);
+  }
+  const next = { ...config };
+  if (args.labelMap === "auto") {
+    delete next.labelMap;
+  } else {
+    next.labelMap = normalizeDisplayLabelMap(
+      args.labelMap,
+      `${operation} labelMap`
+    );
+  }
+  return next;
+}
+
 function assertTickCompatibility(ticks, config, operation) {
   if (!ticks) return;
   if (ticks.scale !== config.scale || ticks.mode !== config.mode) throw new Error(`${operation} conflicts with axis ticks.`);
@@ -204,6 +226,9 @@ function resolve(program, channel, config) {
     channel
   });
   const discrete = ["ordinal", "band", "point"].includes(scale?.type);
+  if (config.labelMap !== undefined && !discrete) {
+    throw new Error("Axis labelMap requires a categorical scale.");
+  }
   if ((
     !["linear", "time", "ordinal", "band", "point"].includes(scale?.type) &&
     !isTransformedScaleType(scale?.type)
@@ -221,9 +246,7 @@ function resolve(program, channel, config) {
   const positions = discrete
     ? mapOrdinalPositionValues(values, scale)
     : mapContinuousScaleValues(values, scale);
-  const text = scale.type === "time" && config.format === "auto"
-    ? formatTimeTicks(values, scale.domain)
-    : values.map(value => formatAxisValue(
+  const fallback = value => formatAxisValue(
         value,
         scale.type,
         config.format,
@@ -232,7 +255,12 @@ function resolve(program, channel, config) {
           : isTransformedScaleType(scale.type)
             ? formatTransformedTick(scale.type, item)
             : String(item)
-      ));
+      );
+  const text = discrete
+    ? values.map(value => resolveDisplayLabel(value, config.labelMap, fallback))
+    : scale.type === "time" && config.format === "auto"
+      ? formatTimeTicks(values, scale.domain)
+      : values.map(fallback);
   const geometry = {
     values,
     ...resolveAxisLabelGeometry({
@@ -298,13 +326,14 @@ function makeEdit(channel) {
     const mode = Object.hasOwn(args, "values") || inferredValues !== undefined
       ? "values"
       : Object.hasOwn(args, "count") ? "count" : previous.mode;
-    const config = normalizeLabelLayout({
+    let config = normalizeLabelLayout({
       ...previous,
       ...args,
       ...(inferredValues === undefined ? {} : { values: inferredValues }),
       ...(explicitMode ? { inferredValues: false } : {}),
       mode
     }, args, op);
+    config = normalizeAxisLabelMap(this, config, args, op);
     if (mode === "values") delete config.count; else delete config.values;
     validateConfig(channel, config);
     assertTickCompatibility(this.guideConfigs.axis?.[channel]?.ticks, config, op);
@@ -353,8 +382,15 @@ function makeCreate(channel) {
     const ticks = this.guideConfigs.axis?.[channel]?.ticks;
     const hasValues = Object.hasOwn(args, "values");
     const hasCount = Object.hasOwn(args, "count");
-    const mode = hasValues ? "values" : hasCount ? "count" : ticks?.mode ?? "count";
-    const config = normalizeLabelLayout({
+    const resolvedScale = this.resolvedScales[scale];
+    const inferredDiscreteValues = !hasValues && !hasCount && ticks === undefined &&
+      ["ordinal", "band", "point"].includes(resolvedScale?.type)
+      ? resolvedScale.domain
+      : undefined;
+    const mode = hasValues || inferredDiscreteValues !== undefined
+      ? "values"
+      : hasCount ? "count" : ticks?.mode ?? "count";
+    let config = normalizeLabelLayout({
       scale,
       position: defaultAxisPosition(channel),
       offset: channel === "x" ? 18 : 12,
@@ -366,10 +402,16 @@ function makeCreate(channel) {
       rotation: DEFAULTS.rotation,
       overlap: DEFAULTS.overlap,
       ...args,
-      inferredValues: !hasValues && !hasCount && ticks?.inferredValues === true,
+      inferredValues: !hasValues && !hasCount &&
+        (ticks?.inferredValues === true || inferredDiscreteValues !== undefined),
       mode
     }, args, op);
-    if (mode === "values") config.values ??= ticks?.values; else config.count ??= ticks?.count ?? DEFAULTS.count;
+    config = normalizeAxisLabelMap(this, config, args, op);
+    if (mode === "values") {
+      config.values ??= ticks?.values ?? inferredDiscreteValues;
+    } else {
+      config.count ??= ticks?.count ?? DEFAULTS.count;
+    }
     validateConfig(channel, config);
     assertTickCompatibility(ticks, config, op);
     resolve(this, channel, config);

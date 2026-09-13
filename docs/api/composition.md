@@ -226,6 +226,40 @@ const emphasized = faceted.editFacetHeaders({
 Facet-header weights follow the shared
 [Canvas font-weight policy](./marks/text.md#font-weights).
 
+An unqualified edit updates the common header style and keeps the existing
+one-header-per-cell layout. A row or column role switches to separate strips:
+
+```javascript
+const labeledMatrix = matrix
+  .editFacetHeaders({
+    labelMap: [{ value: "Q1", label: "First quarter" }]
+  })
+  .editFacetHeaders({
+    role: "row",
+    side: "left",
+    align: "center",
+    labelMap: [{ value: "North", label: "Northern region" }]
+  })
+  .editFacetHeaders({
+    role: "column",
+    side: "bottom",
+    align: "start"
+  });
+```
+
+Row-column grids create one header for each occupied column, followed by one
+for each occupied row. One-field facets and `repeatCharts` support the column
+role and retain one header per cell. Row sides are `left` or `right`; column
+sides are `top` or `bottom`. Role settings override the common style and map.
+`labelMap: "auto"` on a role returns to the common map, while an unqualified
+reset returns to the normal visible formatter. Typed raw values remain the
+partition identity. Duplicate display text and `""` are allowed; an empty
+mapped header keeps its stable item position and reserves no strip space.
+
+Header strips are measured before child placement. Changes to fonts, labels,
+sides, composition layout, titles, or shared legends therefore rebuild the
+required parent space without moving or rewriting child program identity.
+
 ## Build a row and column facet grid
 
 {% include chart-example.html id="facet-grid" %}

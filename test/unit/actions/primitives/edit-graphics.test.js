@@ -431,6 +431,12 @@ test("shares concrete value validation with renderers", () => {
   );
 
   const text = chart().createGraphics({ id: "label", type: "text" });
+  const hidden = text.editGraphics({
+    target: "label",
+    property: "text",
+    value: ""
+  });
+  assert.equal(hidden.graphicSpec.objects.label.properties.text, "");
   assert.throws(
     () => text.editGraphics({
       target: "label",

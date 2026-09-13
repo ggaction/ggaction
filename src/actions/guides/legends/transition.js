@@ -61,6 +61,9 @@ function planChannelLegendTransition(program, scale, nextType, channel) {
   if (blockOverride?.title !== undefined) {
     throw new Error(`${channel} legend transition cannot distribute a legend block title; edit the destination block explicitly.`);
   }
+  if (blockOverride?.labelMap !== undefined) {
+    throw new Error(`${channel} legend transition cannot distribute a legend block labelMap; edit the destination block explicitly.`);
+  }
   if (blockOverride?.symbol !== undefined && ["gradient", "strokeGradient"].includes(to)) {
     throw new Error(`${channel} legend transition cannot apply symbol overrides to a gradient block.`);
   }
@@ -162,6 +165,9 @@ export function planLegendBlockTransitions(program, target, plans) {
       override = old.config.blockOverrides?.[old.key];
       if (override?.title !== undefined) {
         transitionError(target, incoming, descriptor, "title");
+      }
+      if (override?.labelMap !== undefined) {
+        transitionError(target, incoming, descriptor, "labelMap");
       }
     } else if (incoming.length > 1) {
       const overrides = incoming.map(old => old.config.blockOverrides?.[old.key]);

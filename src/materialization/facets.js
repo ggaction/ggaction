@@ -1,9 +1,4 @@
 import { resolveGraphicBounds } from "../layout/canvas.js";
-import {
-  formatVisibleText,
-  resolveTextBounds,
-  textBoundsIntersect
-} from "../core/textMetrics.js";
 import { resolvePlacedPlotBounds } from "../layout/composition.js";
 import {
   alignedTextAnchor,
@@ -17,6 +12,10 @@ import {
   clearCompositionChildren,
   compositionChildDescriptor
 } from "./composition.js";
+import {
+  materializeFacetHeaders,
+  prepareFacetHeaders
+} from "./facetHeaders.js";
 
 const ZERO_MARGIN = { top: 0, right: 0, bottom: 0, left: 0 };
 
@@ -48,61 +47,6 @@ function titleLayout(program) {
     throw new Error("Facet parent title offset places text outside the Canvas.");
   }
   return { config, block, top, height: Math.ceil(top + block.height) };
-}
-
-function collection(program, id, items) {
-  return program
-    .createGraphics({ id, type: "collection", parent: "canvas" })
-    .editGraphics({ target: id, property: "items", value: items });
-}
-
-function assertFacetHeadersFit(items, layout, plotById) {
-  const previous = [];
-  for (let index = 0; index < items.length; index += 1) {
-    const bounds = resolveTextBounds(items[index].properties);
-    const cell = layout.children[index];
-    const plot = plotById.get(cell.id);
-    if (bounds.left < 0 || bounds.right > layout.width ||
-      bounds.top < 0 || bounds.bottom > layout.height ||
-      previous.some(item => textBoundsIntersect(item, bounds)) ||
-      textBoundsIntersect(bounds, {
-        left: cell.x + plot.x,
-        right: cell.x + plot.x + plot.width,
-        top: cell.y + plot.y,
-        bottom: cell.y + plot.y + plot.height
-      })) {
-      throw new Error(
-        "Facet headers require sufficient non-overlapping space above every child plot."
-      );
-    }
-    previous.push(bounds);
-  }
-}
-
-function materializeHeaders(program, layout, plots, config) {
-  const plotById = new Map(plots.map(plot => [plot.id, plot]));
-  const items = layout.children.map(cell => {
-    const plot = plotById.get(cell.id);
-    if (plot === undefined) {
-      throw new Error(`Facet header requires plot bounds for "${cell.id}".`);
-    }
-    return {
-      type: "text",
-      properties: {
-        x: cell.x + plot.x + plot.width / 2,
-        y: cell.y + config.offset,
-        text: formatVisibleText(cell.value),
-        fill: config.color,
-        fontSize: config.fontSize,
-        fontFamily: config.fontFamily,
-        fontWeight: config.fontWeight,
-        textAlign: "center",
-        textBaseline: "middle"
-      }
-    };
-  });
-  assertFacetHeadersFit(items, layout, plotById);
-  return collection(program, `${program.compositionSpec.id}-headers`, items);
 }
 
 function materializeTitleComponent(program, id, lines, centers, style, plot, top) {
@@ -162,6 +106,10 @@ export function resolveFacetProgramLayout(program, preparedLegend) {
   }
   const title = titleLayout(program);
   const spec = program.compositionSpec;
+  const preparedHeaders = prepareFacetHeaders(
+    program,
+    facetConfig(program).headers
+  );
   const gridCells = new Map(
     (spec.facet.grid?.cells ?? []).map(cell => [cell.id, cell])
   );
@@ -179,6 +127,7 @@ export function resolveFacetProgramLayout(program, preparedLegend) {
     align: spec.align,
     padding: spec.padding,
     titleHeight: title.height,
+    headerLayout: preparedHeaders.headerLayout,
     sharedLegend: spec.facet.guides.legend === "shared",
     ...(preparedLegend === undefined ? {} : {
       sharedLegendGap: preparedLegend.reservation.gap,
@@ -195,16 +144,15 @@ export function resolveFacetProgramLayout(program, preparedLegend) {
     placements: layout.children,
     plots
   });
-  return { layout, title, plot, plots };
+  return { layout, title, plot, plots, preparedHeaders };
 }
 
 export function materializeFacetGraphics(program) {
   const preparedLegend = prepareSharedFacetLegend(program);
-  const { layout, title, plot, plots } = resolveFacetProgramLayout(
+  const { layout, title, plot, plots, preparedHeaders } = resolveFacetProgramLayout(
     program,
     preparedLegend
   );
-  const config = facetConfig(program);
   let next = clearCompositionChildren(program);
   if (next.graphicSpec.objects.canvas === undefined) {
     next = next.createGraphics({ id: "canvas", type: "canvas" });
@@ -225,7 +173,7 @@ export function materializeFacetGraphics(program) {
     });
     next = attachSnapshotObject(next, snapshot, snapshot.order[0], "canvas");
   }
-  next = materializeHeaders(next, layout, plots, config.headers);
+  next = materializeFacetHeaders(next, layout, plots, preparedHeaders);
   next = next.composeFacetGuides({ layout, plot });
   if (title.height > 0) next = materializeTitle(next, plot, title);
   return next._withCanvasConfig({

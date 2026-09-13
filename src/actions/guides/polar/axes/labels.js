@@ -20,8 +20,8 @@ import {
 } from "../resolve.js";
 import {
   componentResources,
-  LABEL_CREATE_OPTIONS,
-  LABEL_EDIT_OPTIONS,
+  labelCreateOptions,
+  labelEditOptions,
   operations,
   prefix,
   resolveAngle,
@@ -30,6 +30,8 @@ import {
   validateObject,
   withAxisSemantics
 } from "./shared.js";
+import { normalizeDisplayLabelMap } from
+  "../../../../grammar/displayLabels.js";
 
 function labelGeometry(program, kind, config, angle = resolveAngle(program, kind, {})) {
   const frame = resolvePolarFrameForProgram(program, config.coordinate);
@@ -115,6 +117,23 @@ function resolveLabelConfig(program, kind, args, resources, previous) {
     fontWeight: args.fontWeight ?? previous?.fontWeight ??
       POLAR_AXIS_DEFAULTS.labels.fontWeight
   };
+  const labelScale = program.resolvedScales[resources.scale];
+  if (Object.hasOwn(args, "labelMap")) {
+    if (kind !== "theta" || !["ordinal", "band", "point"].includes(labelScale?.type)) {
+      throw new Error(`${prefix(kind)} axis labelMap requires a categorical theta scale.`);
+    }
+    if (args.labelMap === "auto") delete config.labelMap;
+    else {
+      config.labelMap = normalizeDisplayLabelMap(
+        args.labelMap,
+        `${prefix(kind)} axis labelMap`
+      );
+    }
+  }
+  if (config.labelMap !== undefined &&
+      (kind !== "theta" || !["ordinal", "band", "point"].includes(labelScale?.type))) {
+    throw new Error(`${prefix(kind)} axis labelMap requires a categorical theta scale.`);
+  }
   validatePolarTickConfig(config, `${kind}-axis labels`);
   validateNonNegativeFinite(config.offset, "Polar axis label offset");
   validatePolarLabelFormat(config.format);
@@ -128,7 +147,7 @@ function makeEditLabels(kind) {
     op: operation.edit,
     description: `Edit the Polar ${kind}-axis labels.`
   }, function (args = {}) {
-    validateObject(args, LABEL_EDIT_OPTIONS, operation.edit);
+    validateObject(args, labelEditOptions(kind), operation.edit);
     validateModeOptions(args, operation.edit);
     const names = polarGuideNames(kind);
     const previous = this.guideConfigs.axis?.[kind]?.labels;
@@ -172,7 +191,7 @@ function makeCreateLabels(kind) {
     op: operation.create,
     description: `Create the Polar ${kind}-axis labels.`
   }, function (args = {}) {
-    validateComponentCreateArgs(kind, args, LABEL_CREATE_OPTIONS, operation.create);
+    validateComponentCreateArgs(kind, args, labelCreateOptions(kind), operation.create);
     validateModeOptions(args, operation.create);
     const names = polarGuideNames(kind);
     if (this.graphicSpec.objects[names.labels] !== undefined) {

@@ -30,7 +30,8 @@ const LABEL_OPTIONS = Object.freeze([
   "maxWidth",
   "wrap",
   "lineHeight",
-  "overlap"
+  "overlap",
+  "labelMap"
 ]);
 const SHARED_CREATE = Object.freeze(["scale", "position", "count", "values"]);
 const SHARED_EDIT = Object.freeze(["position", "count", "values"]);

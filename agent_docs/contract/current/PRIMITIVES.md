@@ -148,6 +148,9 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 - concrete value classes
   - ✅ Covered: finite geometry, non-negative dimensions/strokes, `[0,1]` opacity, non-empty appearance strings,
     Canvas text vocabulary and renderer-shared validation.
+  - ✅ Covered: a concrete text graphic accepts `text:""` so a high-level display map can retain stable item
+    identity while rendering no glyph. High-level titles, annotations and author-supplied text contracts keep their
+    own non-empty validation.
   - ✅ Covered: finite/non-negative/unit-interval boundaries and font/text vocabularies are shared with renderers.
     Exhaustive backend parsing of arbitrary accepted color strings is outside library validation. Renderer output
     capacity is checked separately and atomically: Canvas/PNG enforce physical side and total-pixel limits; all
