@@ -1,6 +1,6 @@
 # Roadmap 7 — 단계별 구현 실행 명세
 
-문서 상태: **실행 기준**. 기준일 2026-09-13. 사용자는 Roadmap 7의 25개 기능과 Phase 0–12 Gate를 모두 승인했다. 이 승인은 아래에 고정된 공개 계약과 구현 범위를 진행할 권한이며, 아직 구현되지 않은 기능을 Current로 표시해도 된다는 뜻은 아니다. 현재 Phase 0–6 primary 경로가 구현됐고 Phase 7의 R31부터 진행한다.
+문서 상태: **실행 기준**. 기준일 2026-09-13. 사용자는 Roadmap 7의 25개 기능과 Phase 0–12 Gate를 모두 승인했다. 이 승인은 아래에 고정된 공개 계약과 구현 범위를 진행할 권한이며, 아직 구현되지 않은 기능을 Current로 표시해도 된다는 뜻은 아니다. 현재 Phase 0–6과 R31 primary 경로가 구현됐고 Phase 7의 R32부터 진행한다.
 
 이 문서는 구현 순서와 완료 판정을 한 곳에서 찾게 하는 실행 원장이다. 코드 수준의 함수·requested state·preflight·cleanup·test 절차는 [LOW_INFERENCE_IMPLEMENTATION_SPEC.md](LOW_INFERENCE_IMPLEMENTATION_SPEC.md)를 따른다. 정확한 필드, union, 수식, 지원 행렬은 각 [기능 명세](features/)가 단일 owner이고, case별 literal 기대값은 [ACCEPTANCE_CASES.json](ACCEPTANCE_CASES.json)이 소유한다. 이 문서와 기능 명세가 충돌하면 기능 명세를 따르고 이 문서를 같은 변경에서 고친다.
 

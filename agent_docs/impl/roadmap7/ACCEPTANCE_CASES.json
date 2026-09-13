@@ -970,8 +970,8 @@
       "kind": "normal",
       "specification": "B labels[L1,L2]에서 target:L1 → L2와 B 유지.",
       "owner": "features/31-remove-labels.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/contracts/remove-labels.test.js; 73e3d53e"
     },
     {
       "id": "R31-N02",
@@ -980,8 +980,8 @@
       "kind": "normal",
       "specification": "source:B → 모든 labels/leaders 제거,B 유지.",
       "owner": "features/31-remove-labels.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/contracts/remove-labels.test.js; 73e3d53e"
     },
     {
       "id": "R31-N03",
@@ -990,8 +990,8 @@
       "kind": "normal",
       "specification": "같은 source:B 재호출 → 정상 no-op.",
       "owner": "features/31-remove-labels.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/contracts/remove-labels.test.js; 73e3d53e"
     },
     {
       "id": "R31-E01",
@@ -1000,8 +1000,8 @@
       "kind": "error",
       "specification": "target independent Text 또는 target+source → 오류.",
       "owner": "features/31-remove-labels.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/contracts/remove-labels.test.js; 73e3d53e"
     },
     {
       "id": "R31-L01",
@@ -1010,8 +1010,8 @@
       "kind": "lifecycle",
       "specification": "removed L1을 target한 highlight만 정리, B의 selection은 동일.",
       "owner": "features/31-remove-labels.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/contracts/remove-labels.test.js; 73e3d53e"
     },
     {
       "id": "R31-L02",

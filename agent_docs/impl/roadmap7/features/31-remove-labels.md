@@ -1,7 +1,7 @@
 # R31 — 원본 마크를 보존하는 붙임 라벨 삭제
 
-원래 감사 번호: **31**. Primary owner: **Phase 7**. 상태: **Proposed / 구현 전**.
-아래 세부 API·수치 정책의 Gate는 승인됐다. 상태의 `Proposed`는 제품 구현·검증이 아직 완료되지 않았다는 뜻이다.
+원래 감사 번호: **31**. Primary owner: **Phase 7**. 상태: **Implemented-primary (`73e3d53e`)**.
+Full public action, label-only 삭제 transaction, 타입·Current 계약·knowledge·문서·installed package 검증을 완료했다. R43이 source-owned Text facet/repeat를 구현할 때 `R31-L02`의 facet replay cell을 닫는다.
 
 ## 목적과 현재 연결점
 
@@ -81,9 +81,10 @@ RemoveMarkLabelsOptions는 {target:string,source?:never}|{source:string,target?:
 
 ## 완료 조건
 
-- [ ] 위 API의 최단 호출과 explicit 대상 호출, 누락/auto/false/empty 경계를 타입과 runtime으로 동기화했다.
-- [ ] 위 수치 oracle를 실제 capability test에 구현했고 계획 예제를 기대값 생성기로 재사용하지 않았다.
-- [ ] 기존 consumer와 새 consumer에 scale/mark/guide/label/selection/facet/Canvas replay를 검증했다.
-- [ ] Full 등록·타입 export·Current 계약·catalog·card·관계 trace·MCP·문서·installed consumer를 갱신했다.
-- [ ] 미지원 cell은 이유를 적었다. 이 문서에 명시한 필수 cell을 임의 제외하지 않았다.
-- [ ] 해당 Phase의 승인/검증 근거를 기록했다. 추측으로 완료 표시하지 않았다.
+- [x] target/source의 최단·명시 호출과 누락/both/empty/unknown-key 경계를 타입과 runtime으로 동기화했다.
+- [x] R31-N01/N02/N03/E01/L01을 독립 expected state와 action trace로 검증했다.
+- [x] source edit, reencode, Canvas, theme replay 뒤 삭제된 label/config/leader가 부활하지 않음을 검증했다.
+- [x] Full 등록·타입 export·Current 계약·catalog·card·관계 trace·MCP·문서·installed consumer를 갱신했다.
+- [x] Basic 미등록, 독립 Text 거부, 외부 legend 참조 거부와 zero-label source no-op을 명시했다.
+- [ ] R43 source-owned Text facet/repeat 지원 뒤 `R31-L02`의 local child replay를 추가한다. 현재 facet validator가 이 label family를 거부하므로 성공을 모사하지 않는다.
+- [x] Phase 7 STEP1에 `73e3d53e`와 실제 검증 수치·package identity를 기록했다.

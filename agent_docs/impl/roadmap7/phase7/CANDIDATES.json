@@ -5,8 +5,9 @@
   "candidates": [
     {
       "id": "R31",
-      "status": "Proposed",
-      "file": "../features/31-remove-labels.md"
+      "status": "Implemented-primary",
+      "file": "../features/31-remove-labels.md",
+      "implementationCommit": "73e3d53e"
     },
     {
       "id": "R32",

@@ -19,7 +19,7 @@
 | R25 | 11 | [미사용 dataset·scale·coordinate 안전 삭제](features/25-remove-resources.md) | feature 내 독립 oracle/완료 조건 → Phase 11 STEP1 evidence | Proposed / 미구현 |
 | R27 | 6 | [좌표 frame 종횡비와 데이터 단위비](features/27-coordinate-aspect.md) | `test/contracts/coordinate-aspect.test.js`; strict types; installed package; `ded3b073` | Implemented-primary / R33·R39·R43 소비 회귀 대기 |
 | R29 | 6 | [Polar 중심과 frame 반지름·배치](features/29-polar-frame.md) | `test/contracts/polar-frame.test.js`; pure grammar/type/MCP/package; `4aa9da65` | Implemented-primary / R33·R43 소비 회귀 대기 |
-| R31 | 7 | [원본 마크를 보존하는 붙임 라벨 삭제](features/31-remove-labels.md) | feature 내 독립 oracle/완료 조건 → Phase 7 STEP1 evidence | Proposed / 미구현 |
+| R31 | 7 | [원본 마크를 보존하는 붙임 라벨 삭제](features/31-remove-labels.md) | `test/contracts/remove-labels.test.js`; strict types; cards/MCP; installed package; `73e3d53e` | Implemented-primary / R43 facet·repeat 소비 회귀 대기 |
 | R32 | 7 | [선택된 final item만 라벨링](features/32-selected-labels.md) | feature 내 독립 oracle/완료 조건 → Phase 7 STEP1 evidence | Proposed / 미구현 |
 | R33 | 7 | [의미 기반 라벨 anchor와 배치 정책](features/33-semantic-label-anchors.md) | feature 내 독립 oracle/완료 조건 → Phase 7 STEP1 evidence | Proposed / 미구현 |
 | R36 | 7 | [데이터를 추적하는 통계 참조선·밴드](features/36-statistical-references.md) | feature 내 독립 oracle/완료 조건 → Phase 7 STEP1 evidence | Proposed / 미구현 |

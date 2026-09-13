@@ -481,11 +481,12 @@
       "slug": "remove-labels",
       "phase": 7,
       "dependsOn": [],
-      "status": "Proposed",
+      "status": "Implemented-primary",
       "scopeSelection": "user-selected",
       "file": "features/31-remove-labels.md",
       "sources": [
         "src/actions/marks/text/index.js",
+        "src/actions/marks/text/removal.js",
         "src/actions/marks/remove.js",
         "src/actions/marks/text/layout.js",
         "src/materialization/planner.js",

@@ -760,20 +760,24 @@
       "spec": "features/31-remove-labels.md",
       "phase": 7,
       "dependsOn": [],
-      "status": "Proposed",
+      "status": "Implemented-primary",
       "newPublicActions": [
         "removeMarkLabels"
       ],
       "extendedPublicSurfaces": [],
       "currentSourceFiles": [
         "src/actions/marks/text/index.js",
+        "src/actions/marks/text/removal.js",
         "src/actions/marks/remove.js",
         "src/actions/marks/text/layout.js",
         "src/materialization/planner.js",
         "src/actions/selection/actions.js"
       ],
       "existingRegressionTests": [
-        "test/unit/actions/marks/mark-labels.test.js"
+        "test/unit/actions/marks/mark-labels.test.js",
+        "test/contracts/remove-labels.test.js",
+        "test/contracts/text-content-types.test.js",
+        "test/contracts/package-boundaries.test.js"
       ],
       "suggestedNewTest": "test/contracts/remove-labels.test.js",
       "acceptanceCases": [

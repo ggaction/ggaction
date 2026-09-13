@@ -147,3 +147,18 @@ R29 Polar frame을 `4aa9da65`에서 구현한 뒤 Phase 6을 closed-primary로 �
 | 문서 탐색 계약 | `node --test test/contracts/agent-docs-navigation.test.js`: 7/7 통과 |
 | 명세 적용 범위 | 완료 checkpoint 재구현 금지; 남은 11개 feature와 Phase 12의 exact execution owner |
 | 오류 원자성 | program 8개 canonical branch, caller input, trace/ID sequence 비교를 공통 test 형식으로 고정 |
+
+## 2026-09-13 R31 primary 구현 검증
+
+R31 `removeMarkLabels`를 `73e3d53e`에서 Full 전용 public action으로 구현했다. `target`과 `source`는 정확히 하나만 허용하며 자동 대상 추론은 없다. 삭제 plan은 모든 대상 label과 외부 참조를 쓰기 전에 수집·검증하고, label semantic/graphic/config/leader 및 label-target selection/highlight만 제거한다. source mark와 source selection은 보존하며, 존재하는 source의 label 0개 호출은 reference-identical 성공 no-op이다.
+
+| 검증 | 실제 결과 |
+| --- | --- |
+| R31 acceptance | R31-N01/N02/N03/E01/L01 passed; `test/contracts/remove-labels.test.js` |
+| 누적 | unit 2,365/2,365; contracts 406/406; docs 47/47 |
+| public knowledge | Full runtime/type/Current catalog; 270 compact cards; removal intent·relationship·MCP routing |
+| installed package | 506 entries; packed 655,742; unpacked 3,299,314; SHA-256 `f9065e1f4e93aa708ebb87d34c96905778acb563c99a61e86254057a25ccd55f` |
+| browser bundles | Full/Basic/SVG gzip 329,513/162,451/6,418 bytes; Basic method surface 불변 |
+| lifecycle | remove → source edit/reencode → Canvas → theme 뒤 label/config/leader 0, source 생존 |
+| 열린 통합 cell | R31-L02의 source-owned Text facet/repeat replay는 해당 family를 구현하는 R43에서 검증 |
+| 상태 연결 | Phase 7 active, R31 Implemented-primary, R32가 다음 WP |

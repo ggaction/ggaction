@@ -5,6 +5,7 @@
 - [x] 범위·현재 source owner·선행 Phase 완료 상태 확인
 - [x] Gate A 자료: 정확한 API/schema/defaults/오류/수치 oracle 작성·검증
 - [x] 명시 승인 범위 기록 후 해당 구현 시작
+- [x] W1 R31 label-only removal primary 구현·공개 surface·package 검증
 - [ ] appearance 대상은 primitive render와 target public chain으로 Gate V 확인
 - [ ] 아래 wave 구현과 focused/cumulative tests 완료
 - [ ] types/current contracts/catalog/cards/MCP/docs/package 영향 갱신
@@ -45,7 +46,8 @@
 
 | wave | commit | tests/artifacts | remaining | status |
 | --- | --- | --- | --- | --- |
-| 미착수 | — | 실행 증거 없음 | 위 전체 범위 | planned |
+| W1 — R31 label-only closure | `73e3d53e` | R31-N01/N02/N03/E01/L01; target/source exclusive union; deterministic multi-label preflight; semantic/graphic/config/leader/label-target selection·highlight cleanup; source/context 불변성·atomic error | R43에서 source-owned Text facet/repeat replay로 R31-L02 완결 | complete-primary |
+| W1 — public/package | `73e3d53e` | unit 2,365/2,365; contracts 406/406; docs 47/47; 270 cards; package 506 entries, 655,742 packed, 3,299,314 unpacked; tar SHA-256 `f9065e1f4e93aa708ebb87d34c96905778acb563c99a61e86254057a25ccd55f`; Full/Basic/SVG gzip 329,513/162,451/6,418 | R32가 label requested state를 확장한 뒤 재생성·재측정 | passed-primary |
 
 ## Gate 연결
 

@@ -1,6 +1,6 @@
 # Roadmap 7 — 상세 구현 작업 패킷
 
-작성 기준: 2026-09-13. 현재 branch `codex/roadmap7-authoring-refinement`, 마지막 구현 검증 checkpoint `4aa9da65`. 이 문서는 이미 승인된 Roadmap 7을 구현자가 기능 단위로 끝까지 실행하기 위한 **작업 분해와 종료 절차**다. Phase 7 이후의 함수·state·transition·test를 한 문서에서 기계적으로 실행하려면 [무추론 구현 명세](LOW_INFERENCE_IMPLEMENTATION_SPEC.md)를 함께 따른다. 공개 API의 정확한 의미·수식·기본값은 각 `features/*.md`가 canonical owner이며, 이 문서는 그 계약을 어느 파일에 어떤 순서로 구현하고 무엇으로 검증할지를 소유한다.
+작성 기준: 2026-09-13. 현재 branch `codex/roadmap7-authoring-refinement`, 마지막 구현 검증 checkpoint `73e3d53e`. 이 문서는 이미 승인된 Roadmap 7을 구현자가 기능 단위로 끝까지 실행하기 위한 **작업 분해와 종료 절차**다. Phase 7 이후의 함수·state·transition·test를 한 문서에서 기계적으로 실행하려면 [무추론 구현 명세](LOW_INFERENCE_IMPLEMENTATION_SPEC.md)를 함께 따른다. 공개 API의 정확한 의미·수식·기본값은 각 `features/*.md`가 canonical owner이며, 이 문서는 그 계약을 어느 파일에 어떤 순서로 구현하고 무엇으로 검증할지를 소유한다.
 
 ## 1. 현재 상태와 실행 경계
 
@@ -19,6 +19,7 @@
 | R19 atomic encoding | Implemented-primary | `58d9e51a`, 기록 `13acb276` | R32/R36/R38/R43 새 consumer 통합 |
 | R27 coordinate aspect | Implemented-primary | `ded3b073` | R33/R39/R43 소비 회귀 |
 | R29 Polar frame | Implemented-primary | `4aa9da65` | R33 label anchor와 R43 local panel 소비 회귀 |
+| R31 attached label removal | Implemented-primary | `73e3d53e` | R43 source-owned Text facet/repeat 소비 회귀 |
 
 완료 checkpoint의 pure core나 public API를 다른 이름으로 다시 만들지 않는다. 후속 기능이 새 consumer를 추가할 때 기존 owner에 consumer path와 regression만 보강한다.
 
@@ -54,7 +55,7 @@ R19, R27, R29의 완료 checkpoint를 다시 구현하지 않는다. R43을 좌�
 | R25 | 안전한 resource 삭제 | Proposed | WP11 |
 | R27 | coordinate aspect | Implemented-primary (`ded3b073`) | 완료 checkpoint + WP7.3/WP8.3/WP10/WP12 |
 | R29 | Polar frame | Implemented-primary (`4aa9da65`) | 완료 checkpoint + WP7.3/WP10/WP12 |
-| R31 | attached labels 삭제 | Proposed | WP7.1 |
+| R31 | attached labels 삭제 | Implemented-primary (`73e3d53e`) | 완료 checkpoint + WP10/WP12 |
 | R32 | selected final-item labels | Proposed | WP7.2 |
 | R33 | semantic label anchors | Proposed | WP7.3 |
 | R36 | dynamic statistical references | Proposed | WP7.4 |
