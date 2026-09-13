@@ -1985,7 +1985,7 @@ function realisticLifecycleMetadata(base, factors) {
     "action-facet-scale-lifecycle": ["create", "edit", "compose"],
     "action-facet-grid-lifecycle": ["create", "edit", "compose"],
     "action-repeat-charts-lifecycle": ["create", "compose"],
-    "action-direct-data-resources": ["create", "edit", "filter"],
+    "action-direct-data-resources": ["create", "edit", "filter", "remove"],
     "action-direct-point-text": ["create", "edit", "remove"],
     "action-direct-ranged-marks": ["create", "edit"],
     "action-direct-bar-offsets": ["create", "edit"],
