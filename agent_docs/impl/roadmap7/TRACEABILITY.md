@@ -27,8 +27,8 @@
 | R38 | 8 | [결합 범례의 channel block별 편집](features/38-legend-blocks.md) | `test/contracts/legend-blocks.test.js`; strict Full/Basic types; installed package/browser consumers; `7ffafe02` | Implemented-primary / R19·R43·R47 후속 consumer 통합 대기 |
 | R39 | 8 | [범주 표시명과 facet header 배치](features/39-display-names-headers.md) | R39-N01/N02/E01/L01/L02; display-label/axis/legend/facet tests; decoded PNG parity; package consumers; `20a25911` | Implemented-primary |
 | R43 | 10 | [Polar·Parallel facet와 repeat 지원](features/43-polar-parallel-facets.md) | feature 내 독립 oracle/완료 조건 → Phase 10 STEP1 evidence | Proposed / 미구현 |
-| R47 | 9 | [사용자 theme tokens와 composition 전파](features/47-custom-theme.md) | feature 내 독립 oracle/완료 조건 → Phase 9 STEP1 evidence | Proposed / 미구현 |
-| R49 | 9 | [둥근 모서리와 stroke cap·join](features/49-shape-style-details.md) | feature 내 독립 oracle/완료 조건 → Phase 9 STEP1 evidence | Proposed / 미구현 |
+| R47 | 9 | [사용자 theme tokens와 composition 전파](features/47-custom-theme.md) | theme unit/composition/contracts/render/package; R47-N01~N04/E01/L01; `ce286929`; R49 결합 lifecycle `1c5192f2` | Implemented-primary / R43 local-panel 소비 회귀 대기 |
+| R49 | 9 | [둥근 모서리와 stroke cap·join](features/49-shape-style-details.md) | rounded geometry/bounds/renderers/direct marks/facades/types/docs/package; R49-N01~N03/E01/L01/L02; `f650bba2`…`1c5192f2` | Implemented-primary / R43 local-panel 소비 회귀 대기 |
 
 ## 후속 통합 의무
 
@@ -37,7 +37,7 @@
   nested/facet resolution과 R32/R36/R38의 새 consumer는 각 primary Phase에서 재검증한다.
 - R27/29 frame은 R33 anchors, R39 header occupied layout, R43 local panels에서 검증한다.
 - R31/32/33 label selection/removal은 R36 source dependency와 R47 theme font 재배치에서 검증한다.
-- R37/38/39 guide recipes는 R47 theme, R43 source replay 후 content와 style 보존을 검증한다.
+- R37/38/39 guide recipes의 R47 theme 소비와 R49 style/block/display-label 보존은 Phase 9에서 검증했다. R43 source replay 뒤 다시 검증한다.
 - R25 collector는 위 모든 참조를 포함해야 한다.
 
 Phase 12는 후속 통합 cells를 전부 Current evidence로 닫는다. 최초 Phase의 scoped tests 통과만으로 통합 의무를 삭제하지 않는다.

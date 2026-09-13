@@ -1,7 +1,8 @@
 # R49 — 둥근 모서리와 stroke cap·join
 
-원래 감사 번호: **49**. Primary owner: **Phase 9**. 상태: **Proposed / 구현 전**.
-아래 API, concrete 표현, 렌더러, painted bounds, 오류, 수치 oracle의 Gate는 승인됐다. `Proposed`는 제품 구현과 검증이 아직 완료되지 않았다는 뜻이다.
+원래 감사 번호: **49**. Primary owner: **Phase 9**. 상태: **Implemented-primary**.
+제품 구현과 검증은 `f650bba2`, `998ab022`, `354c0e8d`, `31a2eee9`, `1c5192f2`에 있다.
+API, concrete 표현, 렌더러, painted bounds, 오류, facade와 전체 lifecycle의 승인된 범위를 모두 완료했다.
 
 이 문서는 R49의 canonical 구현 계약이다. 구현자는 backend native rounded rectangle이나 renderer별 추론으로 의미를 바꾸지 않는다. 같은 requested mark style에서 하나의 renderer-neutral concrete geometry와 stroke attrs를 만들고 Canvas/SVG/PDF가 그대로 소비해야 한다.
 
@@ -661,15 +662,15 @@ visual evidence는 primitive와 target public action을 같은 run manifest에 �
 
 ## 23. 완료 조건
 
-- [ ] exact public 타입과 runtime whitelist/validator가 동기화됐다.
-- [ ] requested radius와 actual per-item radius를 분리했다.
-- [ ] 10-command common rounded path와 r0 rect parity를 검증했다.
-- [ ] rect/path collection transition에서 owner/item identity를 보존했다.
-- [ ] line cap exact bounds와 miterLimit fallback을 검증했다.
-- [ ] circle/rect/line/path Canvas state reset을 모두 검증했다.
-- [ ] SVG/PDF가 같은 concrete semantics를 소비한다.
-- [ ] direct marks와 applicable facade nested style을 모두 연결했다.
-- [ ] legend/highlight/R38/R47/facet lifecycle을 검증했다.
-- [ ] R49-N01~N03, E01, L01, L02에 runtime evidence를 연결했다.
-- [ ] Full/Basic types/current contract/catalog/cards/docs/package/MCP consumer를 갱신했다.
-- [ ] Phase 9 STEP 원장에 commit, 명령, pass/fail/skip, artifact를 기록했다.
+- [x] exact public 타입과 runtime whitelist/validator가 동기화됐다.
+- [x] requested radius와 actual per-item radius를 분리했다.
+- [x] 10-command common rounded path와 r0 rect parity를 검증했다.
+- [x] rect/path collection transition에서 owner/item identity를 보존했다.
+- [x] line cap exact bounds와 miterLimit fallback을 검증했다.
+- [x] circle/rect/line/path Canvas state reset을 모두 검증했다.
+- [x] SVG/PDF가 같은 concrete semantics를 소비한다.
+- [x] direct marks와 applicable facade nested style을 모두 연결했다.
+- [x] legend/highlight/R38/R47/facet lifecycle을 검증했다.
+- [x] R49-N01~N03, E01, L01, L02에 runtime evidence를 연결했다.
+- [x] Full/Basic types/current contract/catalog/cards/docs/package/MCP consumer를 갱신했다.
+- [x] Phase 9 STEP 원장에 commit, 명령, pass/fail/skip, artifact를 기록했다.

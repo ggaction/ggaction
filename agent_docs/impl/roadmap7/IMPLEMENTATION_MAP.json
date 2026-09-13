@@ -1146,7 +1146,7 @@
       "spec": "features/47-custom-theme.md",
       "phase": 9,
       "dependsOn": [],
-      "status": "Proposed",
+      "status": "Implemented-primary",
       "newPublicActions": [],
       "extendedPublicSurfaces": [
         "applyTheme",
@@ -1157,7 +1157,8 @@
         "src/actions/theme/actions.js",
         "src/actions/theme/reconcile.js",
         "src/materialization/composition.js",
-        "src/core/programState.js"
+        "src/core/programState.js",
+        "types/program.d.ts"
       ],
       "existingRegressionTests": [
         "test/unit/actions/theme.test.js",
@@ -1179,27 +1180,33 @@
         "edit/reencode/Canvas/source replay/remove",
         "applicable composition and renderer cells",
         "Full registration/types/current contracts/knowledge/docs/installed package"
-      ]
+      ],
+      "implementationCommit": "ce286929"
     },
     {
       "id": "R49",
       "spec": "features/49-shape-style-details.md",
       "phase": 9,
       "dependsOn": [],
-      "status": "Proposed",
+      "status": "Implemented-primary",
       "newPublicActions": [],
       "extendedPublicSurfaces": [
         "applicable mark create/edit",
         "facade mark options"
       ],
       "currentSourceFiles": [
-        "src/actions/marks/bar/index.js",
-        "src/actions/marks/rect/index.js",
-        "src/actions/marks/line/index.js",
-        "src/renderers/canvas/index.js",
+        "src/grammar/strokeStyle.js",
+        "src/grammar/roundedRect.js",
+        "src/grammar/schemas/graphicBounds.js",
+        "src/actions/marks/shared.js",
+        "src/actions/marks/bar/materialize.js",
+        "src/materialization/rect.js",
+        "src/actions/guides/legends/categorical/symbols.js",
+        "src/actions/selection/actions.js",
+        "src/renderers/canvas/stroke.js",
         "src/renderers/svg.js",
-        "src/renderers/pdf.js",
-        "src/grammar/pointShapes.js"
+        "types/program.d.ts",
+        "types/basic.d.ts"
       ],
       "existingRegressionTests": [
         "test/unit/actions/marks/filled-mark-stroke.test.js"
@@ -1220,7 +1227,8 @@
         "edit/reencode/Canvas/source replay/remove",
         "applicable composition and renderer cells",
         "Full registration/types/current contracts/knowledge/docs/installed package"
-      ]
+      ],
+      "implementationCommit": "1c5192f2"
     }
   ]
 }

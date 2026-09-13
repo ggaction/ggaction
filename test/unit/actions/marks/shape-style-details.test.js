@@ -348,7 +348,11 @@ test("replays rounded highlighted bars through resize, reencode, theme, and face
     .editLegendBlock({
       target: "bars",
       channel: "color",
-      symbol: { stroke: "#111827" }
+      symbol: { stroke: "#111827" },
+      labelMap: [
+        { value: "S1", label: "Series one" },
+        { value: "S2", label: "Series two" }
+      ]
     })
     .selectMarks({ id: "largest", target: "bars", channel: "y", op: "max" })
     .highlightMarks({ selection: "largest", color: "#dc2626" });
@@ -377,6 +381,17 @@ test("replays rounded highlighted bars through resize, reencode, theme, and face
     assert.equal(symbols.items[0].properties.stroke, "#111827");
     assert.equal(symbols.items[0].properties.commands.length, 10);
     assertDetails(symbols.items[0].properties);
+    assert.deepEqual(
+      program.graphicSpec.objects.colorLegendLabels.items.map(item => item.properties.text),
+      ["Series one", "Series two"]
+    );
+    assert.deepEqual(
+      program.guideConfigs.legend.color.blockOverrides['["color"]'].labelMap,
+      [
+        { value: "S1", label: "Series one" },
+        { value: "S2", label: "Series two" }
+      ]
+    );
   };
 
   const authored = remember(buildSource());

@@ -1,6 +1,8 @@
 # Phase 9 — 사용자 theme와 형상 스타일
 
-상태: active. 모든 Gate는 승인됐고 Phase 8 primary가 완료됐다. 현재 작업은 R47·R49의 구현 고정 명세 검증이며, 제품 구현 완료 기록은 아직 아니다.
+상태: completed-primary. 모든 Gate가 승인된 범위에서 R47은 `ce286929`, R49는
+`f650bba2`, `998ab022`, `354c0e8d`, `31a2eee9`, `1c5192f2`로 구현·검증됐다.
+R47-L01을 포함한 Phase 9 acceptance case도 모두 runtime evidence와 연결됐다.
 
 ## 목표와 범위
 

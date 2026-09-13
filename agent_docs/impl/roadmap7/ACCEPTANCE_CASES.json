@@ -1480,8 +1480,8 @@
       "kind": "lifecycle",
       "specification": "child local A→parent descendants B→child local C→parent reapply/remove에서 C 복원; future facet child도 current policy, labelMap/block/R49 style 유지.",
       "owner": "features/47-custom-theme.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/unit/actions/theme-composition.test.js (child-local theme restoration, parent reapply/remove, future facet/repeat/concat children) and test/unit/actions/marks/shape-style-details.test.js (R38 block symbol+labelMap and R49 style through theme/facet replay); ce286929; 1c5192f2"
     },
     {
       "id": "R49-N01",
@@ -1490,8 +1490,8 @@
       "kind": "normal",
       "specification": "rect100×20,r50 → requested50/resolved10,exact 10-command path; r0 edit은 같은 owner의 homogeneous rect와 legacy pixel로 복귀.",
       "owner": "features/49-shape-style-details.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/unit/grammar/rounded-rect.test.js and test/unit/actions/marks/shape-style-details.test.js (requested 50, resolved 10, exact 10 commands, radius-zero Rect restoration); f650bba2; 998ab022"
     },
     {
       "id": "R49-N02",
@@ -1500,8 +1500,8 @@
       "kind": "normal",
       "specification": "line(0,0)→(10,0),width4 → butt bounds [0,10]×[-2,2],round/square [-2,12]×[-2,2].",
       "owner": "features/49-shape-style-details.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/unit/grammar/graphic-bounds.test.js and test/unit/grammar/stroke-style.test.js (exact butt/round/square bounds and shared defaults); f650bba2"
     },
     {
       "id": "R49-N03",
@@ -1510,8 +1510,8 @@
       "kind": "normal",
       "specification": "negative/reversed Bar normalized; stacked 각 segment의 네 corner를 requested radius에서 독립 clamp하고 item identity 유지.",
       "owner": "features/49-shape-style-details.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/unit/actions/marks/shape-style-details.test.js (negative/reversed and stacked Bar normalization, per-item clamp, stable owner/item identity); 998ab022"
     },
     {
       "id": "R49-E01",
@@ -1520,8 +1520,8 @@
       "kind": "error",
       "specification": "Point cornerRadius,negative/NaN radius,cap:\"flat\",join:\"sharp\",miterLimit0,Text join → class/property가 있는 원자적 오류.",
       "owner": "features/49-shape-style-details.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/unit/grammar/stroke-style.test.js, test/unit/actions/marks/shape-style-details.test.js, and test/contracts/shape-style-details-types.test.js (closed enums, ranges, unsupported families, atomic runtime/type rejection); f650bba2; 998ab022"
     },
     {
       "id": "R49-L01",
@@ -1530,8 +1530,8 @@
       "kind": "lifecycle",
       "specification": "round/round/3 node 다음 omitted-style node → circle/rect/line/path Canvas·PDF 모두 butt/miter/10; context state leak 검출.",
       "owner": "features/49-shape-style-details.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/unit/renderers/canvas-stroke-details.test.js, test/unit/renderers/pdf-renderer.test.js, and test/unit/renderers/svg-renderer.test.js (explicit-to-default circle/rect/line/path isolation and backend parity); f650bba2; 1c5192f2"
     },
     {
       "id": "R49-L02",
@@ -1540,8 +1540,8 @@
       "kind": "lifecycle",
       "specification": "mark→auto legend→highlight→resize/reencode/theme/facet replay에 requested radius와 cap/join/miter 유지; R38 override 보존.",
       "owner": "features/49-shape-style-details.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/unit/actions/marks/shape-style-details.test.js and test/unit/actions/theme-composition.test.js (legend override+labelMap, highlight, resize, reencode, theme apply/remove, facet/source replay, immutability); 1c5192f2"
     }
   ]
 }

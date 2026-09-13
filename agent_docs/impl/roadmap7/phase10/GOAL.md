@@ -1,6 +1,7 @@
 # Phase 10 — Polar·Parallel facet와 repeat
 
-상태: planned. 이 문서는 실행 계획이며 구현 또는 승인 완료 기록이 아니다.
+상태: active. 모든 Gate는 승인됐고 Phase 9 primary가 완료됐다. 현재 작업은 R43의
+Polar·Parallel facet/repeat 지원을 계약의 W1–W6 순서로 구현·검증하는 것이다.
 
 ## 목표와 범위
 

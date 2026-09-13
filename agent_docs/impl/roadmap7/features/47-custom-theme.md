@@ -2,7 +2,8 @@
 
 원래 감사 번호: **47**. Primary owner: **Phase 9**. 상태: **Implemented-primary**.
 제품 구현은 `ce286929`에 있다. R47의 독립 schema·state·unit·composition·renderer·package 범위는 검증됐고,
-R49 style 보존까지 포함한 결합 lifecycle cell `R47-L01`만 R49 구현 완료 시 함께 닫는다.
+R49 style, R38 block override와 표시명 보존을 포함한 결합 lifecycle cell `R47-L01`도
+`test/unit/actions/theme-composition.test.js`와 `test/unit/actions/marks/shape-style-details.test.js`에서 닫혔다.
 
 이 문서는 R47의 canonical 구현 계약이다. 구현자는 여기서 정한 의미를 다른 방식으로 재설계하지 않는다. 파일이 이동했으면 같은 책임의 현재 owner를 찾아 수정하고, 비슷한 이름의 두 번째 theme 시스템을 만들지 않는다.
 
@@ -574,11 +575,11 @@ large-font visual test는 텍스트가 바뀌었다는 assertion만으로 끝내
 
 - [x] exact public 타입과 runtime closed validation이 동기화됐다.
 - [x] frame owner/order/remove/replay state test가 통과했다.
-- [ ] R47-N01~N04, E01, L01이 실제 runtime evidence와 연결됐다.
+- [x] R47-N01~N04, E01, L01이 실제 runtime evidence와 연결됐다.
 - [x] built-in light/dark unit pixel parity를 보존했다.
 - [x] nested composition의 current/future child와 parent-owned header/guide를 검증했다.
 - [x] font metrics부터 outer layout까지 재계산했다.
-- [ ] explicit color/font, data palette, R38/R39/R49 consumer를 보존했다.
+- [x] explicit color/font, data palette, R38/R39/R49 consumer를 보존했다.
 - [x] Full registry/types/current contract/catalog/cards/MCP/docs/package consumer를 갱신했다.
 - [x] Canvas/SVG/PDF와 installed Node/TypeScript/browser/MCP 검증을 기록했다.
 - [x] 실행하지 않은 후속 R43 cell은 owner와 pending 이유를 기록했다.

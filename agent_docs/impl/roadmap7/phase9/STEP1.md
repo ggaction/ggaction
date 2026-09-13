@@ -8,10 +8,10 @@
 - [x] R47 appearance 대상은 primitive render와 target public chain으로 Gate V 확인
 - [x] R47 W1–W2 구현과 focused/cumulative tests 완료
 - [x] R47 types/current contracts/catalog/cards/MCP/docs/package 영향 갱신
-- [ ] R49 W3–W5 구현과 focused/cumulative tests 완료
-- [ ] Gate X 결과와 남은 후속 통합 cell 기록
+- [x] R49 W3–W5 구현과 focused/cumulative tests 완료
+- [x] Gate X 결과와 남은 후속 통합 cell 기록
 - [x] R47 coherent source/test change를 검증하고 commit/push
-- [ ] R49 coherent change를 검증하고 commit/push
+- [x] R49 coherent change를 검증하고 commit/push
 
 계획 작성 시 모든 체크는 미완료다. Phase 0 은 제품 구현이 없으므로 해당 구현·시각 항목의 미적용 이유를 기록한다. Phase 12 는 새 시각 목표가 없으면 승인된 variant를 현재 코드에서 다시 실행해 검증한다.
 
@@ -49,6 +49,10 @@
 | W1 R47 schema·unit theme | `ce286929` | exact 18-token resolver/frame state; custom replacement; explicit mark/guide/title/legend/header/highlight provenance; font metric rematerialization; Basic entry | R49 style가 포함된 R47-L01 결합 cell | Implemented-primary |
 | W2 R47 composition | `ce286929` | self/descendants, nested concat/facet/repeat, future facet/repeat/insert/replace child replay, newest owner 제거와 child-local 복원, caller immutability | R43 Polar/Parallel facet 확장 뒤 재검증 | Implemented-primary |
 | W1–W2 R47 누적·패키지 | `ce286929` | unit 2,415; contracts 467; docs 47; render 216; browser 73; package 515 entries, 688,044 packed, 3,456,776 unpacked; Full/Basic/SVG gzip 349,174/169,234/6,432 | host Ruby 2.6.10으로 Jekyll build 미실행; R49 W3–W5 | passed-primary |
+| W3 R49 geometry·renderer | `f650bba2` | shared stroke defaults/validation; deterministic rounded-rect path; painted bounds; Canvas/SVG/PDF explicit/default state parity | facade, legend, highlight와 replay 연결 | Implemented-primary |
+| W4 R49 marks·facades | `998ab022`, `354c0e8d` | Point/Tick/Line/Bar/Area/Arc/Rule/Rect create/edit; applicable chart/composite/statistical facade pass-through; strict types; rect/path owner identity | current contracts/docs와 cumulative lifecycle | Implemented-primary |
+| W5 R49 lifecycle·publication | `31a2eee9`, `1c5192f2` | R38 block symbol+labelMap, highlight, resize, reencode, R47 apply/remove, facet and source replay; 243 realistic scenarios; generated docs/contracts; installed package | R43 Polar/Parallel facet consumer 재검증 | Implemented-primary |
+| Phase 9 누적·패키지 | `1c5192f2` | unit 2,441; contracts 468; charts 578; render 216; browser 73; docs 47; realistic 243; package 518 entries, 696,794 packed, 3,505,863 unpacked; Full/Basic/SVG gzip 353,071/172,136/6,742 | R43의 새 local panel/facet/repeat 소비 cell | passed-primary |
 
 ## Gate 연결
 

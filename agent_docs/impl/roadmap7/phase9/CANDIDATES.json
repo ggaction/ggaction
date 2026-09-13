@@ -1,6 +1,6 @@
 {
   "phase": 9,
-  "status": "active",
+  "status": "completed-primary",
   "scope": "implementation",
   "candidates": [
     {
@@ -11,8 +11,9 @@
     },
     {
       "id": "R49",
-      "status": "Proposed",
-      "file": "../features/49-shape-style-details.md"
+      "status": "Implemented-primary",
+      "file": "../features/49-shape-style-details.md",
+      "implementationCommit": "1c5192f2"
     }
   ]
 }
