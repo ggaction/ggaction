@@ -804,7 +804,7 @@
       "dependsOn": [
         "R31"
       ],
-      "status": "Proposed",
+      "status": "Implemented-primary",
       "newPublicActions": [
         "editMarkLabelSelection"
       ],
@@ -814,15 +814,20 @@
         "removeMarkSelection"
       ],
       "currentSourceFiles": [
-        "src/actions/marks/text/index.js",
-        "src/materialization/selection/state.js",
-        "src/grammar/markFilter.js",
-        "types/program.d.ts",
-        "src/actions/selection/actions.js"
+        "src/grammar/markLabelSelection.js",
+        "src/actions/marks/text/actions.js",
+        "src/actions/marks/text/selection.js",
+        "src/actions/selection/actions.js",
+        "src/materialization/text.js",
+        "src/actions/categoryOrder/index.js",
+        "types/program.d.ts"
       ],
       "existingRegressionTests": [
-        "test/unit/actions/marks/mark-labels.test.js",
-        "test/contracts/mark-label-content.test.js"
+        "test/contracts/selected-labels.test.js",
+        "test/contracts/text-content-types.test.js",
+        "test/contracts/package-boundaries.test.js",
+        "scripts/package-consumer.js",
+        "test/browser/package-consumer.browser.js"
       ],
       "suggestedNewTest": "test/contracts/selected-labels.test.js",
       "acceptanceCases": [

@@ -1,7 +1,7 @@
 # R32 — 선택된 final item만 라벨링
 
-원래 감사 번호: **32**. Primary owner: **Phase 7**. 상태: **Proposed / 구현 전**.
-아래 세부 API·수치 정책의 Gate는 승인됐다. 상태의 `Proposed`는 제품 구현·검증이 아직 완료되지 않았다는 뜻이다.
+원래 감사 번호: **32**. Primary owner: **Phase 7**. 상태: **Implemented-primary (`ee3f3b02`)**.
+Full public action과 create 확장, source-final-item membership, 타입·Current 계약·knowledge·문서·installed package 검증을 완료했다. R43이 child-local facet/repeat와 named selection namespace 통합 셀을 닫는다.
 
 ## 목적과 현재 연결점
 
@@ -93,9 +93,9 @@ removeMarkSelection은 named label dependency가 있으면 거부한다. all:tru
 
 ## 완료 조건
 
-- [ ] 위 API의 최단 호출과 explicit 대상 호출, 누락/auto/false/empty 경계를 타입과 runtime으로 동기화했다.
-- [ ] 위 수치 oracle를 실제 capability test에 구현했고 계획 예제를 기대값 생성기로 재사용하지 않았다.
-- [ ] 기존 consumer와 새 consumer에 scale/mark/guide/label/selection/facet/Canvas replay를 검증했다.
-- [ ] Full 등록·타입 export·Current 계약·catalog·card·관계 trace·MCP·문서·installed consumer를 갱신했다.
-- [ ] 미지원 cell은 이유를 적었다. 이 문서에 명시한 필수 cell을 임의 제외하지 않았다.
-- [ ] 해당 Phase의 승인/검증 근거를 기록했다. 추측으로 완료 표시하지 않았다.
+- [x] 위 API의 최단 호출과 explicit 대상 호출, 누락/auto/false/empty 경계를 타입과 runtime으로 동기화했다.
+- [x] 위 수치 oracle를 실제 capability test에 구현했고 계획 예제를 기대값 생성기로 재사용하지 않았다.
+- [x] 기존 consumer와 새 consumer에 scale/mark/guide/label/selection/Canvas replay를 검증했다. facet/repeat local integration은 R43 owner에 명시적으로 연결했다.
+- [x] Full 등록·타입 export·Current 계약·catalog·card·관계 trace·MCP·문서·installed consumer를 갱신했다.
+- [x] 미지원 cell은 이유와 R43 owner를 적었다. 이 문서에 명시한 primary cell을 임의 제외하지 않았다.
+- [x] 해당 Phase의 승인/검증 근거를 Phase 7 STEP1에 기록했다.

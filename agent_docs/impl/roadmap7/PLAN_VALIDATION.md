@@ -162,3 +162,19 @@ R31 `removeMarkLabels`를 `73e3d53e`에서 Full 전용 public action으로 구�
 | lifecycle | remove → source edit/reencode → Canvas → theme 뒤 label/config/leader 0, source 생존 |
 | 열린 통합 cell | R31-L02의 source-owned Text facet/repeat replay는 해당 family를 구현하는 R43에서 검증 |
 | 상태 연결 | Phase 7 active, R31 Implemented-primary, R32가 다음 WP |
+
+## 2026-09-13 R32 primary 구현 검증
+
+R32는 `ee3f3b02`에서 `createMarkLabels`의 inline/named/all membership과 Full 전용 `editMarkLabelSelection`을 구현했다. canonical requested state에는 selector 또는 named ID만 저장하고 resolved index는 저장하지 않는다. membership은 현재 source final items에서 다시 계산하며 label 순서는 source 순서를 유지한다. `content:"share"`의 분모도 선택된 부분집합이 아니라 전체 final source items로 고정했다.
+
+| 검증 | 실제 결과 |
+| --- | --- |
+| R32 acceptance | R32-N01/N02/N03/L01/E01/L02 passed; `test/contracts/selected-labels.test.js` |
+| 누적 | unit 2,365/2,365; contracts 417/417; docs 47/47; browser 73/73 |
+| public knowledge | Full runtime/type/Current catalog; 271 compact cards 중 264 user-facing; selection intent·relationship·MCP routing |
+| installed package | Node·strict TypeScript·MCP·tutorials·browser 통과; 508 entries; packed 658,057; unpacked 3,310,799; SHA-256 `8a650ee9bedc3d93e1a77a5393426c0ff64ea7d6a4345dd0a1e85f70f4c2067c` |
+| browser bundles | Full/Basic/SVG gzip 330,551/162,451/6,418 bytes; Basic method surface 불변 |
+| lifecycle | source edit·named selection edit·category order·label layout·highlight 뒤 membership과 geometry 재생성; named dependency removal 보호 |
+| coverage 관측 | 전체 coverage 실행은 완료됐으나 이번 변경 파일 밖의 기존 `legends/transition.js`, `legends/creation.js`, `scales/definition.js`, `transforms.js` 기준 미달로 policy exit만 실패 |
+| 열린 통합 cell | child-local facet/repeat와 named selection namespace는 R43에서 검증 |
+| 상태 연결 | Phase 7 active, R32 Implemented-primary, R33이 다음 WP |

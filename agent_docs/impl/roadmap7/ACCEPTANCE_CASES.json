@@ -1030,8 +1030,8 @@
       "kind": "normal",
       "specification": "source values[1,5,3],select max count2 → source item indices[1,2],texts[5,3],body3.",
       "owner": "features/32-selected-labels.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/contracts/selected-labels.test.js; ee3f3b02"
     },
     {
       "id": "R32-N02",
@@ -1040,8 +1040,8 @@
       "kind": "normal",
       "specification": "values[5,5,3],max count1,ties:first → index0;ties:all → [0,1].",
       "owner": "features/32-selected-labels.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/contracts/selected-labels.test.js; ee3f3b02"
     },
     {
       "id": "R32-N03",
@@ -1050,8 +1050,8 @@
       "kind": "normal",
       "specification": "no-match gt10 → labels0,body3,domain 동일.",
       "owner": "features/32-selected-labels.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/contracts/selected-labels.test.js; ee3f3b02"
     },
     {
       "id": "R32-L01",
@@ -1060,8 +1060,8 @@
       "kind": "lifecycle",
       "specification": "named gt4→gt2 → labels1→2;그 selection 삭제는 먼저 거부.",
       "owner": "features/32-selected-labels.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/contracts/selected-labels.test.js; ee3f3b02"
     },
     {
       "id": "R32-E01",
@@ -1070,8 +1070,8 @@
       "kind": "error",
       "specification": "named 다른 source,select+selection,all:false,aggregate에 없는 field → 오류.",
       "owner": "features/32-selected-labels.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/contracts/selected-labels.test.js; ee3f3b02"
     },
     {
       "id": "R32-L02",
@@ -1080,8 +1080,8 @@
       "kind": "lifecycle",
       "specification": "source order [3,1,5]로 재생성 → selected final indices[0,2],texts[3,5].",
       "owner": "features/32-selected-labels.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/contracts/selected-labels.test.js; ee3f3b02"
     },
     {
       "id": "R33-N01",

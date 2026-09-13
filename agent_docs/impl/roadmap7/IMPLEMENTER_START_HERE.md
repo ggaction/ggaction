@@ -1,6 +1,6 @@
 # 구현자 인계 — 여기부터 시작
 
-사용자는 감사 번호 25개와 Phase 0–12 Gate를 모두 승인했다. Phase 0–6과 R31 primary 구현이 완료됐고, 현재 작업은 Phase 7의 R32 selected final-item labels다. 승인된 공개 API·옵션·수식은 구현 계약이지만, 실제 source·tests·types·Current contract 증거가 없는 기능을 구현 완료로 간주하지 않는다.
+사용자는 감사 번호 25개와 Phase 0–12 Gate를 모두 승인했다. Phase 0–6과 R31·R32 primary 구현이 완료됐고, 현재 작업은 Phase 7의 R33 semantic label anchors다. 승인된 공개 API·옵션·수식은 구현 계약이지만, 실제 source·tests·types·Current contract 증거가 없는 기능을 구현 완료로 간주하지 않는다.
 
 ## 첫 작업
 
@@ -23,7 +23,7 @@
 
 위 순서를 기억에 의존해 축약하지 않는다. [상세 구현 작업 패킷의 공통 절차](DETAILED_IMPLEMENTATION_WORK_PACKAGES.md#2-모든-작업-패킷의-공통-절차)와 [무추론 실행 규약](DETAILED_IMPLEMENTATION_WORK_PACKAGES.md#저성능-구현-모델을-위한-무추론-실행-규약)에 있는 입력표, Core/Transaction/Consumers/Surface 네 구간, 다섯 테스트 묶음과 체크포인트 기록 순서를 그대로 사용한다. 기능 계약은 `features/*.md`, 작업 순서와 수정 위치는 상세 작업 패킷, literal 기대값은 `ACCEPTANCE_CASES.json`이 각각 소유한다. 같은 사실을 추측으로 합치지 않는다.
 
-현재 구현은 [WP7.2 R32 selected labels](DETAILED_IMPLEMENTATION_WORK_PACKAGES.md#wp72--r32-selected-labels)다. R31 `removeMarkLabels`의 완료 checkpoint `73e3d53e`를 다시 구현하지 않는다. source의 final-item grain에서 inline selector 또는 named selection을 평가하고, requested membership만 영속화하며 resolved item index는 저장하지 않는다. edit/reencode/selection edit/Canvas 뒤 membership을 다시 계산하고 R31 삭제 closure와 named-selection 참조 보호를 함께 검증한다.
+현재 구현은 [WP7.3 R33 semantic label anchors](DETAILED_IMPLEMENTATION_WORK_PACKAGES.md#wp73--r33-semantic-label-anchors)다. R31 `73e3d53e`와 R32 `ee3f3b02`의 완료 checkpoint를 다시 구현하지 않는다. `createMarkLabels`의 placement union과 `editMarkLabelPlacement`를 추가하고, signed/stacked Bar와 Arc의 semantic geometry에서 anchor·bbox·leader를 계산한다. requested placement만 `labelAuthoring`에 보존하며 edit/reencode/selection edit/Canvas/aspect 뒤 geometry를 재생성한다. Point는 center만 허용하고 Line/Parallel의 기존 endpoint 경로는 유지한다.
 
 각 작업을 마칠 때 다음 질문에 모두 `예`라고 답할 수 있어야 한다.
 

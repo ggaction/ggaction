@@ -11,8 +11,9 @@
     },
     {
       "id": "R32",
-      "status": "Proposed",
-      "file": "../features/32-selected-labels.md"
+      "status": "Implemented-primary",
+      "file": "../features/32-selected-labels.md",
+      "implementationCommit": "ee3f3b02"
     },
     {
       "id": "R33",
