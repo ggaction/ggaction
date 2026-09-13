@@ -135,7 +135,7 @@ Roadmap 7의 기능별 행동 계약을 새 문서로 복제하지 않고, 기�
 
 ## 2026-09-13 Phase 6 closeout와 무추론 명세 검증
 
-R29 Polar frame을 `4aa9da65`에서 구현한 뒤 Phase 6을 closed-primary로 기록하고, Phase 7 이후 구현자가 설계 판단을 다시 하지 않도록 [LOW_INFERENCE_IMPLEMENTATION_SPEC.md](LOW_INFERENCE_IMPLEMENTATION_SPEC.md)를 추가했다. 이 문서는 880줄이며 R31/R32/R33/R36/R37/R38/R39/R47/R49/R43/R25와 Phase 12 closeout을 public union, exact requested-state path, pure helper, preflight/commit 순서, cleanup transition, literal oracle, renderer/package 종료 조건으로 분해한다.
+R29 Polar frame을 `4aa9da65`에서 구현한 뒤 Phase 6을 closed-primary로 기록하고, Phase 7 이후 구현자가 설계 판단을 다시 하지 않도록 [LOW_INFERENCE_IMPLEMENTATION_SPEC.md](LOW_INFERENCE_IMPLEMENTATION_SPEC.md)를 추가했다. 이 문서는 R31/R32/R33/R36/R37/R38/R39/R47/R49/R43/R25와 Phase 12 closeout을 public union, exact requested-state path, pure helper, preflight/commit 순서, cleanup transition, literal oracle, renderer/package 종료 조건으로 분해한다.
 
 | 검증 | 실제 결과 |
 | --- | --- |

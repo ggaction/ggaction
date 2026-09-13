@@ -95,7 +95,7 @@ R25 removeData({id:logicalOwner})는 standalone owner의 current leaf를 외부�
 | 기존 label collision | materializationConfigs.labelLayouts[labelId] | 기존 policy,leaderId | 새 semantic placement와 역할 분리 |
 | R36 통계 요청 | materializationConfigs.marks[referenceId].statisticalReference | 아래 shape | source 제거 closure에 포함 |
 | R37 exact samples | materializationConfigs.guides.legend[kind].sampling | {mode,values?,count?} | generated symbols와 별개 |
-| R38 block override | 같은 kind config.blockOverrides[key] | {title?,text?,symbol?,gap?,labelMap?} | key는 descriptor의 channel-set identity |
+| R38 block override | materializationConfigs.guides.legend[kind].blockOverrides[key] | R38 {title?,text?,symbol?,gap?}; R39 뒤 labelMap? 추가 | config가 target/kind를 소유하며 key는 descriptor의 channel-set identity |
 | R39 axis mapping | 기존 해당 axis labels config.labelMap | typed mapping array | auto는 property 제거 |
 | R39 headers | materializationConfigs.facets[compositionId].headers | 기존 common style+아래 추가 fields | source/child 재생성에서 보존 |
 | R47 theme | materializationConfigs.theme | name,tokens?,overrides,scope?,origin? | 기존 name/overrides와 호환 |

@@ -613,9 +613,11 @@ Canonical behavior: [R37](features/37-legend-values.md).
 
 Canonical behavior: [R38](features/38-legend-blocks.md).
 
+구현자는 feature의 [현행 코드에 대조한 무추론 구현 명세](features/38-legend-blocks.md#현행-코드에-대조한-무추론-구현-명세)를 그대로 따른다. override owner는 각 `guides.legend[kind].blockOverrides[key]`이며 별도 `guides.legendBlocks` state를 만들지 않는다.
+
 1. **`src/actions/guides/legends/target.js`**에 merged legend의 canonical block descriptor를 만든다. identity는 sorted channel set과 channel role이며 배열 index가 아니다.
 2. `editLegendBlock({target,channel,...})`은 target legend 안에서 해당 channel이 속한 block을 정확히 하나 resolve한다.
-3. title/text/symbol/gap/labelMap은 block override owner에 저장한다. values/count/order는 각 canonical content owner로 전달하고 override에 복제하지 않는다.
+3. R38에서는 title/text/symbol/gap을 block override owner에 저장한다. R39가 추가하는 labelMap도 이후 같은 owner를 사용한다. values/count/order는 각 canonical content owner로 전달하고 override에 복제하지 않는다.
 4. 같은 block에 대한 순차 edit는 정상 전체 patch 적용이다. 서로 다른 기존 block을 merge하는 transition에서만 incompatible overrides를 충돌로 본다.
 5. split에서 compatible style만 새 block들로 복사한다. 기존 title/order/values가 있으면 자동 분배하지 않고 transition 전체를 거부한다. merge에서는 모든 유입 override가 동일하고 새 block에 유효할 때만 합친다.
 6. **`src/actions/guides/legends/transition.js`, `src/materialization/legends.js`**에서 merge/split/reorder 뒤 descriptor로 다시 resolve한다.

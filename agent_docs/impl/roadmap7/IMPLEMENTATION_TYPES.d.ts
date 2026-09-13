@@ -222,9 +222,10 @@ export type EditLegendOptions = Omit<C.EditLegendOptions, "channels"> & {
 };
 export type EditLegendBlockOptions = {
   target: string; channel: LegendChannel; title?: string;
-  values?: NonEmpty<number> | "auto"; count?: number; order?: readonly Scalar[]; gap?: number;
+  values?: NonEmpty<number> | "auto"; count?: number; order?: readonly C.CategoryValue[]; gap?: number;
   text?: Pick<C.LegendTextOptions, "fontSize" | "fontFamily" | "fontWeight" | "color">;
   symbol?: { size?: number; fill?: string; stroke?: string; strokeWidth?: number; opacity?: number };
+  /** R39 addition. Omit this property from the R38 product checkpoint. */
   labelMap?: DisplayLabelMap | "auto";
 };
 export type EditFacetHeadersOptions = C.EditFacetHeadersOptions & {

@@ -392,43 +392,45 @@ type EditLegendBlockOptions = {
   title?: string;
   values?: readonly [number, ...number[]] | "auto";
   count?: number;
-  order?: readonly DatasetScalar[];
+  order?: readonly CategoryValue[];
   gap?: number;
-  text?: { fontSize?: number; fontFamily?: string; fontWeight?: FontWeight; color?: string };
+  text?: { fontSize?: number; fontFamily?: string; fontWeight?: string | number; color?: string };
   symbol?: { size?: number; fill?: string; stroke?: string; strokeWidth?: number; opacity?: number };
-  labelMap?: DisplayLabelMap | "auto";
 };
 ```
+
+R38에서는 `labelMap`을 받지 않는다. 해당 키는 runtime unknown-key 오류이고 TypeScript에서도 거부한다. R39가 구현될 때만 같은 options type에 `labelMap?: DisplayLabelMap | "auto"`를 추가한다.
 
 `src/actions/guides/legends/target.js`에 private descriptor를 추가한다.
 
 ```js
 {
-  key: JSON.stringify([...channels].sort()),
+  target,
+  key: JSON.stringify([...channels].sort((a, b) => a < b ? -1 : a > b ? 1 : 0)),
   channels: frozenSortedChannels,
   kind,
+  family,
   scaleIds,
-  contentRecipe,
-  styleRecipe
+  config
 }
 ```
 
-graphic ID/index는 identity가 아니다. merged color+shape에서 color와 shape는 같은 descriptor를 선택한다.
+실제 구현은 locale sort 대신 ASCII comparator를 쓰며 config의 원본 channels 배열을 변경하지 않는다. graphic ID/index는 identity가 아니다. merged color+shape에서 color와 shape는 같은 descriptor를 선택한다. content/style recipe 복제 객체는 만들지 않는다.
 
 #### storage와 patch 규칙
 
-canonical owner는 `materializationConfigs.guides.legendBlocks[target][descriptor.key]`다. 한 override object에 `content`와 `style`을 나누어 저장하고 resolved geometry나 graphic IDs를 저장하지 않는다.
+canonical owner는 `materializationConfigs.guides.legend[kind].blockOverrides[descriptor.key]`다. 별도 `guides.legendBlocks` sibling을 만들지 않는다. config가 target과 kind를 이미 소유하므로 R38 override에는 title/text/symbol/gap만 저장하고 resolved geometry나 graphic IDs를 저장하지 않는다. R39 구현 뒤에는 같은 entry가 labelMap도 소유한다. values/count는 R37 sampling, order는 semantic guide가 유일 owner다.
 
-- title은 모든 block에서 허용하고 `""`는 제목 숨김이다.
+- title은 모든 block에서 허용하고 `""`는 제목 숨김이다. semantic title은 nonempty validator를 유지하므로 마지막 nonempty title을 보존하고 effective `titleVisible:false`로 materialize한다.
 - values/count는 R37 sampled block만 허용하며 sampling owner로 전달한다.
 - order는 categorical block에서 current raw domain의 exact typed permutation만 허용한다.
 - gap은 finite nonnegative다.
-- text/symbol object는 그 하위 object 전체 교체다. 생략 property는 root common style로 돌아간다.
+- text/symbol object는 그 하위 object 전체 교체다. text는 label font/color만 바꾸고 title font style은 건드리지 않는다. 생략 property는 현재 root common style로 돌아간다.
 - data mapping과 같은 visual property는 constant override로 덮을 수 없다: size block의 symbol.size, opacity의 opacity, strokeWidth의 strokeWidth, color의 fill, stroke의 stroke는 오류다.
 
 #### 코드 owner와 transition
 
-1. 새 `src/actions/guides/legends/blocks.js`에 resolver, validator, action, override applicator를 둔다.
+1. 새 `src/actions/guides/legends/blocks.js`에 resolver, validator, action, effective-config applicator를 둔다. exact helper/state/transaction/transition 표는 [R38 feature의 현행 코드 무추론 명세](features/38-legend-blocks.md#현행-코드에-대조한-무추론-구현-명세)가 canonical owner다.
 2. `src/actions/guides/legends/index.js`에서 Full registrar에만 등록한다.
 3. `src/actions/guides/legends/transition.js`가 old/new descriptors를 비교해 transition plan을 만든다.
 4. key 동일/reorder/layout/theme는 override 유지다.
