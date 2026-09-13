@@ -5,8 +5,9 @@
   "candidates": [
     {
       "id": "R47",
-      "status": "Proposed",
-      "file": "../features/47-custom-theme.md"
+      "status": "Implemented-primary",
+      "file": "../features/47-custom-theme.md",
+      "implementationCommit": "ce286929"
     },
     {
       "id": "R49",

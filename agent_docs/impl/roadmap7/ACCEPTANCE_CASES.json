@@ -1430,8 +1430,8 @@
       "kind": "normal",
       "specification": "light+mark red,grid green,font RoadmapTest → default role만 변경; explicit blue mark, categorical palette, explicit block font 유지; partial 3-key만 저장.",
       "owner": "features/47-custom-theme.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/unit/actions/theme.test.js (custom 3-token request, explicit mark/font/block and field palette precedence); ce286929"
     },
     {
       "id": "R47-N02",
@@ -1440,8 +1440,8 @@
       "kind": "normal",
       "specification": "customA{mark:red,grid:green}→customB{mark:blue} → previous partial merge 없이 grid는 B base default 복귀.",
       "owner": "features/47-custom-theme.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/unit/theme/defaults.test.js and test/unit/actions/theme.test.js (partial replacement without merge); ce286929"
     },
     {
       "id": "R47-N03",
@@ -1450,8 +1450,8 @@
       "kind": "normal",
       "specification": "nested concat/facet/repeat descendants → root/current children/retained source font·background 갱신, postorder layout, 원래 input programs 불변.",
       "owner": "features/47-custom-theme.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/unit/actions/theme-composition.test.js (nested concat/facet/repeat propagation, source replay, font/background and caller immutability); ce286929"
     },
     {
       "id": "R47-N04",
@@ -1460,8 +1460,8 @@
       "kind": "normal",
       "specification": "composition self → root Canvas background만 변경; children,descendantFrames,parent-owned guide/header 그대로.",
       "owner": "features/47-custom-theme.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/unit/actions/theme-composition.test.js (composition self root-only identity oracle); ce286929"
     },
     {
       "id": "R47-E01",
@@ -1470,8 +1470,8 @@
       "kind": "error",
       "specification": "unknown token,invalid color,fontFamily:\"\",missing base/tokens,extra key,bad scope → class/key가 있는 원자적 오류.",
       "owner": "features/47-custom-theme.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/unit/theme/defaults.test.js, test/unit/actions/theme.test.js, and test/contracts/theme.test.js (closed validation and atomic rejection); ce286929"
     },
     {
       "id": "R47-L01",

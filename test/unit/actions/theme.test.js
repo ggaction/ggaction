@@ -3,6 +3,8 @@ import test from "node:test";
 
 import { chart } from "../../../src/index.js";
 import { chart as basicChart } from "../../../src/basic.js";
+import { resolveConcreteGraphicBounds } from
+  "../../../src/grammar/schemas/graphicBounds.js";
 
 const rows = [
   { x: 1, y: 3, group: "A" },
@@ -58,6 +60,11 @@ test("applies custom partial tokens and resets omitted tokens to the new base", 
   assert.equal(customA.graphicSpec.objects.xAxisTitle.properties.fontFamily, "RoadmapTest");
   assert.equal(customB.graphicSpec.objects.point.items[0].properties.fill, "#0000ff");
   assert.equal(customB.graphicSpec.objects.xAxisLabels.items[0].properties.fontFamily, "sans-serif");
+  assert.deepEqual(customA.materializationConfigs.theme.frames.at(-1).tokens, {
+    mark: "#ff0000",
+    grid: "#00ff00",
+    fontFamily: "RoadmapTest"
+  });
   assert.deepEqual(customB.materializationConfigs.theme.frames.at(-1).tokens, {
     mark: "#0000ff"
   });
@@ -80,6 +87,42 @@ test("preserves explicit font families under a custom font token", () => {
     program.graphicSpec.objects.yAxisLabels.items[0].properties.fontFamily,
     "RoadmapTest"
   );
+});
+
+test("rematerializes font-dependent text resources before returning", () => {
+  const source = chart()
+    .createCanvas({ width: 300, height: 200, margin: 60 })
+    .createData({
+      values: [
+        { category: "MMMMMMMMMM", value: 1 },
+        { category: "iiiiiiiiii", value: 2 }
+      ]
+    })
+    .createPointMark()
+    .encodeX({ field: "category", fieldType: "nominal" })
+    .encodeY({ field: "value" })
+    .createAxes();
+  const beforeBounds = resolveConcreteGraphicBounds(
+    source.graphicSpec,
+    "xAxisLabels"
+  );
+  const themed = source.applyTheme({
+    theme: { base: "light", tokens: { fontFamily: "monospace" } }
+  });
+  const afterBounds = resolveConcreteGraphicBounds(
+    themed.graphicSpec,
+    "xAxisLabels"
+  );
+  const operations = [];
+  const visit = node => {
+    operations.push(node.op);
+    for (const child of node.children ?? []) visit(child);
+  };
+  visit(themed.trace.children.at(-1));
+
+  assert.notDeepEqual(afterBounds, beforeBounds);
+  assert.equal(operations.includes("editXAxisLabels"), true);
+  assert.equal(operations.includes("editYAxisLabels"), true);
 });
 
 test("resolves default highlight paint from the active theme", () => {

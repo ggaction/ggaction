@@ -111,6 +111,43 @@ test("removes only the parent frame and restores nested child themes", () => {
   assert.equal(restored.materializationConfigs.theme, undefined);
 });
 
+test("preserves a later child theme below a reapplied parent policy", () => {
+  const source = hconcat({
+    id: "pair",
+    programs: [{ id: "left", program: pointChart() }, pointChart()]
+  }).applyTheme({
+    theme: { base: "light", tokens: { mark: "red" } },
+    scope: "descendants"
+  });
+  const childC = source.children.left.applyTheme({
+    theme: { base: "light", tokens: { mark: "green" } }
+  });
+  const withChildC = source.replaceCompositionChild({
+    target: "left",
+    program: childC
+  });
+  const reapplied = withChildC.applyTheme({
+    theme: { base: "light", tokens: { mark: "purple" } },
+    scope: "descendants"
+  });
+  const restored = reapplied.removeTheme();
+
+  assert.equal(
+    reapplied.children.left.graphicSpec.objects.point.items[0].properties.fill,
+    "purple"
+  );
+  assert.deepEqual(
+    reapplied.children.left.materializationConfigs.theme.frames.map(
+      frame => frame.owner
+    ),
+    ["local", "composition:pair"]
+  );
+  assert.equal(
+    restored.children.left.graphicSpec.objects.point.items[0].properties.fill,
+    "green"
+  );
+});
+
 test("removes the most recent direct composition scope first", () => {
   const pair = hconcat({ programs: [pointChart(), pointChart()] })
     .applyTheme({ theme: "dark", scope: "descendants" })
@@ -216,6 +253,8 @@ test("propagates one ancestor theme through nested facet and repeat compositions
     channel: "x",
     fields: ["x", "y"]
   });
+  const facetedSnapshot = JSON.stringify(faceted);
+  const repeatedSnapshot = JSON.stringify(repeated);
   const nested = hconcat({
     id: "nested",
     programs: [
@@ -223,12 +262,34 @@ test("propagates one ancestor theme through nested facet and repeat compositions
       { id: "repeated", program: repeated }
     ]
   }).applyTheme({
-    theme: { base: "dark", tokens: { mark: "#ff0000" } },
+    theme: {
+      base: "dark",
+      tokens: {
+        background: "#010203",
+        mark: "#ff0000",
+        fontFamily: "Theme Mono"
+      }
+    },
     scope: "descendants"
   });
 
+  assert.equal(nested.graphicSpec.objects.canvas.properties.background, "#010203");
   for (const composition of Object.values(nested.children)) {
+    assert.equal(
+      composition.graphicSpec.objects.canvas.properties.background,
+      "#010203"
+    );
+    const headers = composition.graphicSpec.objects[
+      `${composition.compositionSpec.id}-headers`
+    ];
+    if (headers !== undefined) {
+      assert.equal(headers.items[0].properties.fontFamily, "Theme Mono");
+    }
     for (const child of Object.values(composition.children)) {
+      assert.equal(
+        child.graphicSpec.objects.canvas.properties.background,
+        "#010203"
+      );
       assert.equal(
         child.graphicSpec.objects.point.items[0].properties.fill,
         "#ff0000"
@@ -239,6 +300,8 @@ test("propagates one ancestor theme through nested facet and repeat compositions
       );
     }
   }
+  assert.equal(JSON.stringify(faceted), facetedSnapshot);
+  assert.equal(JSON.stringify(repeated), repeatedSnapshot);
 });
 
 test("themes default facet headers and preserves explicit header styles", () => {

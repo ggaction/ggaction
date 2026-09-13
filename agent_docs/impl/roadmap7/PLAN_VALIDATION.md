@@ -317,3 +317,31 @@ R47과 R49의 기존 방향 문서를 현재 source owner에 맞춘 canonical �
 | Diff·JSON | `ACCEPTANCE_CASES.json` parse와 `git diff --check` 통과 |
 
 기존 low-inference/work-package/state 문서에 있던 `unit custom > inherited custom` 고정 우선순위는 나중 부모 호출과 부모 제거 사례를 동시에 표현하지 못했다. 이를 실제 호출 순서와 owner frame 복원 규칙으로 통일했다. R49는 option 생략 시 legacy graphic/serialization parity를 위해 concrete attrs를 optional로 두고 renderer와 bounds resolver가 default를 보충하도록 고정했다.
+
+## 2026-09-13 R47 custom theme primary 구현 검증
+
+R47은 `ce286929`에서 built-in theme 이름과 custom partial token을 하나의 immutable frame model로 통합했다.
+Unit은 local owner 하나를 유지하고, composition은 self와 descendants owner를 분리한다. 같은 owner의 재적용은
+이전 frame을 제거한 뒤 newest 위치에 넣으며, parent removal은 해당 owner만 제거해 그 아래 child-local theme를
+복원한다. Descendant policy는 현재 nested concat/facet/repeat뿐 아니라 facet/repeat source 재생과 concat
+insert/replace로 생기는 future child에도 적용된다.
+
+Theme reconcile은 색 문자열의 우연한 동일성만 사용하지 않고 trace에서 explicit mark, Canvas, Cartesian·Polar·
+Parallel guide, title, legend root/block, facet header, statistical/reference component provenance를 수집한다.
+기본 highlight paint는 active `highlight` token을 따르고 explicit highlight는 유지한다. `fontFamily` 변경은 Text,
+axis, title, legend와 facet header를 실제 owner action으로 다시 materialize한 뒤 composition snapshot/layout을 만든다.
+Basic bundle은 composition/selection 구현을 정적으로 포함하지 않도록 등록 경계를 분리했다.
+
+| 검증 | 실제 결과 |
+| --- | --- |
+| R47 acceptance | R47-N01/N02/N03/N04/E01 passed; R49 style까지 요구하는 R47-L01은 planned 유지 |
+| unit·state | `test/unit/theme/`, `test/unit/actions/theme.test.js`, `theme-composition.test.js`; 누적 2,415/2,415 |
+| contracts·docs | contracts 467/467; docs 47/47; catalog/relations/cards/reference/actions/signatures/metadata/search/machine freshness 통과 |
+| composition lifecycle | nested concat/facet/repeat, self root identity, facet/repeat source replay, concat insert/replace, parent reapply/remove와 child C 복원 |
+| renderer·browser | render 216/216; browser 73/73; dark-theme primitive/public Canvas·SVG·PNG·PDF parity 유지 |
+| installed package | Node·strict TypeScript·MCP·tutorial/browser consumer 통과; 515 entries, packed 688,044, unpacked 3,456,776 bytes |
+| browser bundles | Full/Basic/SVG gzip 349,174/169,234/6,432 bytes; ceilings 352,000/171,000/25,000 |
+| source/package 경계 | source-boundary와 acyclic import graph 통과; Basic은 264 modules로 composition/selection 정적 유입 제거 |
+| docs build 환경 | generation과 docs tests 통과; host Ruby 2.6.10이라 Ruby 3.2+ locked Jekyll build 미실행 |
+| 열린 통합 cell | R47-L01의 R49 style 보존은 R49 owner, Polar/Parallel facet 확장은 R43 owner에서 재검증 |
+| 상태 연결 | R47 Implemented-primary, Phase 9 active, R49 rounded rect·stroke cap/join/miter가 다음 WP |
