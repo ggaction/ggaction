@@ -13,6 +13,7 @@ import {
   requestedStrokeDetails,
   STROKE_STYLE_PROPERTIES
 } from "../../../../grammar/strokeStyle.js";
+import { findLayerMatching } from "../../../../selectors/layers.js";
 
 const LAYER_OPTIONS = Object.freeze({
   line: Object.freeze(["type", "length", "lineWidth"]),
@@ -87,19 +88,13 @@ export function resolveLegendSymbol(program, layer, channels, requested, kind) {
   }
   if (layer.mark?.type === "point" && channels?.includes("shape")) {
     const color = channels.includes("color") ? layer.encoding?.color : undefined;
-    const hasMatchingLine = color?.scale !== undefined &&
-      program.semanticSpec.layers.some(candidate =>
+    const matchingLine = color?.scale === undefined
+      ? undefined
+      : findLayerMatching(program, candidate =>
         candidate.mark?.type === "line" &&
         candidate.encoding?.color?.field === color.field &&
         candidate.encoding?.color?.scale === color.scale
       );
-    const matchingLine = hasMatchingLine
-      ? program.semanticSpec.layers.find(candidate =>
-          candidate.mark?.type === "line" &&
-          candidate.encoding?.color?.field === color.field &&
-          candidate.encoding?.color?.scale === color.scale
-        )
-      : undefined;
     const lineDetails = matchingLine === undefined
       ? {}
       : requestedStrokeDetails(
@@ -107,7 +102,7 @@ export function resolveLegendSymbol(program, layer, channels, requested, kind) {
           "Legend line source"
         );
     return { layers: [
-      ...(hasMatchingLine ? [{
+      ...(matchingLine !== undefined ? [{
         type: "line",
         length: 32,
         lineWidth: 3,

@@ -243,6 +243,15 @@ test("forwards details through composite owners and all generated children", () 
   assertStyledMark(box, "boxPlot", { rounded: true });
   assertStyledMark(box, "boxPlotMedian");
   assertStyledMark(box, "boxPlotOutliers");
+
+  const gradient = base().createGradientPlot({
+    x: { field: "category", fieldType: "nominal" },
+    y: { field: "value" },
+    density: { bandwidth: 1, extent: [0, 5] },
+    center: DETAILS,
+    guides: false
+  });
+  assertStyledMark(gradient, "gradientPlotCenter");
 });
 
 test("replays composite style edits across generated children and representation resets", () => {
@@ -336,4 +345,23 @@ test("replays composite style edits across generated children and representation
     assert.equal(regression.markConfigs[id].lineCap, "square", `${id} edit`);
     assert.equal(regression.graphicSpec.objects[id].items[0].properties.lineCap, "square");
   }
+
+  const gradient = base()
+    .createGradientPlot({
+      x: { field: "category", fieldType: "nominal" },
+      y: { field: "value" },
+      density: { bandwidth: 1, extent: [0, 5] },
+      center: DETAILS,
+      guides: false
+    })
+    .editGradientPlot({ center: { lineCap: "square" } });
+  assert.equal(
+    gradient.markConfigs.gradientPlot.gradientPlot.center.lineCap,
+    "square"
+  );
+  assert.equal(gradient.markConfigs.gradientPlotCenter.lineCap, "square");
+  assert.equal(
+    gradient.graphicSpec.objects.gradientPlotCenter.items[0].properties.lineCap,
+    "square"
+  );
 });

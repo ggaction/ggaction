@@ -11,7 +11,7 @@ const edgeReferences = {
 };
 // Align the literal occupied content, including sample strokes or unused slots.
 for (const edge of ["top", "bottom"]) {
-  const r = edgeReferences[edge], dx = 500 - ((r.x[0] - 1) + (r.labelX[1] + 14.64)) / 2;
+  const r = edgeReferences[edge], dx = 500 - (r.x[0] + (r.labelX[1] + 14.64)) / 2;
   r.x = r.x.map(x => x + dx);
   r.labelX = r.labelX.map(x => x + dx);
   r.title = [r.title[0] + dx, r.title[1]];

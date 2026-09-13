@@ -1012,6 +1012,14 @@ export type PointShape =
   | "star"
   | "hexagon"
   | "wye";
+export type StrokeStyleDetails = {
+  lineCap?: "butt" | "round" | "square";
+  lineJoin?: "miter" | "round" | "bevel";
+  miterLimit?: number;
+};
+export type RectStyleDetails = StrokeStyleDetails & {
+  cornerRadius?: number;
+};
 export type PaletteName =
   | "accent"
   | "category10" | "category20" | "category20b" | "category20c"
@@ -2362,7 +2370,7 @@ export interface ErrorBarOffsetChannel {
   paddingOuter?: number;
 }
 
-export interface ErrorBarOptions {
+export interface ErrorBarOptions extends StrokeStyleDetails {
   id?: string;
   target?: string;
   data?: string;
@@ -2380,7 +2388,7 @@ export interface ErrorBarOptions {
   opacity?: number;
 }
 
-export interface EditErrorBarOptions {
+export interface EditErrorBarOptions extends StrokeStyleDetails {
   target?: string;
   data?: string;
   x?: ErrorBarPositionChannel | ErrorBarIntervalChannel;
@@ -2432,17 +2440,17 @@ export interface BoxPlotOptions {
   whisker?: BoxPlotWhisker;
   width?: { band?: number };
   outliers?: boolean;
-  box?: {
+  box?: RectStyleDetails & {
     fill?: string;
     opacity?: number;
     stroke?: string;
     strokeWidth?: number;
   };
-  median?: {
+  median?: StrokeStyleDetails & {
     stroke?: string;
     strokeWidth?: number;
   };
-  outlier?: {
+  outlier?: StrokeStyleDetails & {
     shape?: PointShape;
     radius?: number;
     opacity?: number;
@@ -2458,17 +2466,17 @@ export interface EditBoxPlotOptions {
   whisker?: BoxPlotWhisker;
   width?: { band?: number };
   outliers?: boolean;
-  box?: {
+  box?: RectStyleDetails & {
     fill?: string;
     opacity?: number;
     stroke?: string;
     strokeWidth?: number;
   };
-  median?: {
+  median?: StrokeStyleDetails & {
     stroke?: string;
     strokeWidth?: number;
   };
-  outlier?: {
+  outlier?: StrokeStyleDetails & {
     shape?: PointShape;
     radius?: number;
     opacity?: number;
@@ -2490,7 +2498,7 @@ export interface GradientPlotAppearanceOptions {
   opacity?: readonly [number, number];
 }
 
-export interface GradientPlotCenterOptions {
+export interface GradientPlotCenterOptions extends StrokeStyleDetails {
   type?: "mean" | "median";
   stroke?: string;
   strokeWidth?: number;
@@ -2552,7 +2560,7 @@ export type ViolinPlotColorOptions =
       layout?: "overlay";
     };
 
-export interface ViolinPlotAreaOptions {
+export interface ViolinPlotAreaOptions extends StrokeStyleDetails {
   fill?: string;
   opacity?: number;
   stroke?: string;
@@ -2813,7 +2821,7 @@ export interface CreateParallelCoordinatesOptions {
   missing?: ParallelMissingPolicy;
   color?: LineCategoricalColorChannel;
   strokeDash?: BasicStrokeDashChannel;
-  line?: {
+  line?: StrokeStyleDetails & {
     strokeWidth?: number;
     stroke?: string;
     opacity?: number;
@@ -2832,7 +2840,7 @@ export interface CreateScatterPlotOptions {
   color?: BasicColorChannel;
   size?: BasicSizeChannel;
   shape?: BasicShapeChannel;
-  point?: {
+  point?: StrokeStyleDetails & {
     radius?: number;
     shape?: PointShape;
     fill?: string;
@@ -2843,7 +2851,7 @@ export interface CreateScatterPlotOptions {
   guides?: false | CartesianGuideOptions;
 }
 
-export interface IntervalPlotErrorBarOptions {
+export interface IntervalPlotErrorBarOptions extends StrokeStyleDetails {
   caps?: boolean;
   capSize?: number;
   stroke?: string;
@@ -2965,7 +2973,7 @@ export interface CreateECDFPlotOptions {
   missing?: "drop" | "error";
   as?: ECDFOutputFields;
   color?: string | LineCategoricalColorChannel;
-  line?: { strokeWidth?: number; stroke?: string; opacity?: number };
+  line?: StrokeStyleDetails & { strokeWidth?: number; stroke?: string; opacity?: number };
   labels?: false | EndpointLabelOptions;
   guides?: false | CartesianPathGuideOptions;
 }
@@ -3117,7 +3125,7 @@ export type RugMeasureChannel = string | (
       scale?: NonPointTemporalPositionScaleOptions;
     }
 );
-export interface RugTickOptions {
+export interface RugTickOptions extends StrokeStyleDetails {
   length?: number;
   stroke?: string;
   strokeWidth?: number;
@@ -3160,7 +3168,7 @@ export type CreateStripPlotOptions = {
   color?: BasicColorChannel;
   size?: BasicSizeChannel;
   shape?: BasicShapeChannel;
-  point?: {
+  point?: StrokeStyleDetails & {
     radius?: number;
     shape?: PointShape;
     fill?: string;
@@ -3187,7 +3195,7 @@ export type CreateBeeswarmPlotOptions = {
   color?: BasicColorChannel;
   size?: BasicSizeChannel;
   shape?: BasicShapeChannel;
-  point?: {
+  point?: StrokeStyleDetails & {
     radius?: number;
     shape?: PointShape;
     fill?: string;
@@ -3301,7 +3309,7 @@ export type CreateAreaPlotOptions = {
   groupBy?: string | readonly [string, ...string[]];
   layout?: Exclude<ColorLayout, "group">; missing?: "error" | "break";
   color?: string | { field: string; fieldType?: "nominal" | "ordinal"; scale?: NonPointCategoricalColorScaleOptions; palette?: Palette };
-  area?: { fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation };
+  area?: StrokeStyleDetails & { fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation };
   guides?: false | DensityPlotGuideOptions;
 } & (
   | { valueChannel?: "y"; x: AreaPlotIndependentChannel; y: Exclude<AreaPlotMeasureChannel, { lower: unknown }>; baseline?: number }
@@ -3319,7 +3327,7 @@ export interface CreateLinePlotOptions {
   color?: LineCategoricalColorChannel;
   groupBy?: string | readonly [string, ...string[]];
   strokeDash?: BasicStrokeDashChannel;
-  line?: {
+  line?: StrokeStyleDetails & {
     strokeWidth?: number;
     curve?: CurveInterpolation;
     stroke?: string;
@@ -3346,7 +3354,7 @@ export interface CreateBarPlotOptions {
   y: BarYPositionChannel;
   color?: BarColorChannel;
   width?: Omit<BarWidthOptions, "target">;
-  bar?: {
+  bar?: RectStyleDetails & {
     fill?: string;
     opacity?: number;
     stroke?: FilledMarkStroke;
@@ -3361,7 +3369,7 @@ export type CreateHistogramOptions = BasicHistogramEncoding & {
   coordinate?: string;
   field: string;
   color?: HistogramCategoricalColorChannel;
-  bar?: {
+  bar?: RectStyleDetails & {
     fill?: string;
     opacity?: number;
     stroke?: FilledMarkStroke;
@@ -3389,7 +3397,7 @@ export interface CreateHorizonPlotOptions {
   missing?: HorizonMissingPolicy;
   overflow?: HorizonOverflowPolicy;
   palette?: HorizonPaletteOptions;
-  area?: { opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation };
+  area?: StrokeStyleDetails & { opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation };
   guides?: false | HorizonPlotGuideOptions;
 }
 
@@ -3420,7 +3428,7 @@ export interface CreateDensityPlotOptions {
     palette?: Palette;
     layout?: "overlay";
   };
-  area?: { fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation };
+  area?: StrokeStyleDetails & { fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation };
   guides?: false | DensityPlotGuideOptions;
 }
 
@@ -3449,7 +3457,7 @@ export type CreatePiePlotOptions = {
   coordinate?: string;
   category: PieCategory;
   color?: false | PieColor;
-  arc?: { innerRadius?: number; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number };
+  arc?: StrokeStyleDetails & { innerRadius?: number; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number };
   guides?: false | { axes?: false; grid?: false; legend?: false | PieLegendOptions };
 } & ({ value?: never; aggregate?: "count" } | { value: string; aggregate: "sum" });
 
@@ -3460,7 +3468,7 @@ export type MeasuredRadialGuideOptions = {
 };
 export type CreateRosePlotOptions = Omit<CreatePiePlotOptions, "guides" | "arc" | "aggregate" | "value"> & {
   radiusScale?: MeasuredRadiusScaleOptions;
-  arc?: { innerRadius?: number; padAngle?: 0; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number };
+  arc?: StrokeStyleDetails & { innerRadius?: number; padAngle?: 0; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number };
   guides?: false | MeasuredRadialGuideOptions;
 } & ({ value?: never; aggregate?: "count" } | { value: string; aggregate: "sum" });
 export type CreateRadialBarPlotOptions = CreateRosePlotOptions;
@@ -3469,7 +3477,7 @@ export interface HeatmapBaseOptions {
   id?: string;
   data?: string;
   coordinate?: string;
-  rect?: {
+  rect?: RectStyleDetails & {
     opacity?: number;
     stroke?: string | false;
     strokeWidth?: number;
@@ -3554,7 +3562,7 @@ export type ErrorBandIntervalChannel =
   | ErrorBandStatisticalIntervalChannel
   | ErrorBandExplicitIntervalChannel;
 
-export interface ErrorBandOptions {
+export interface ErrorBandOptions extends StrokeStyleDetails {
   id?: string;
   target?: string;
   data?: string;
@@ -3565,16 +3573,16 @@ export interface ErrorBandOptions {
   fill?: string;
   opacity?: number;
   curve?: CurveInterpolation;
-  boundaries?: false | {
+  boundaries?: false | (StrokeStyleDetails & {
     stroke?: string;
     strokeWidth?: number;
     strokeDash?: DashStyle | DashPattern;
     opacity?: number;
     curve?: CurveInterpolation;
-  };
+  });
 }
 
-export interface EditErrorBandOptions {
+export interface EditErrorBandOptions extends StrokeStyleDetails {
   target?: string;
   data?: string;
   x?: ErrorBandPositionChannel | ErrorBandIntervalChannel;
@@ -3589,16 +3597,16 @@ export interface EditErrorBandOptions {
     method?: ConfidenceIntervalMethod;
     level?: number;
   };
-  boundaries?: false | {
+  boundaries?: false | (StrokeStyleDetails & {
     stroke?: string;
     strokeWidth?: number;
     strokeDash?: DashStyle | DashPattern;
     opacity?: number;
     curve?: CurveInterpolation;
-  };
+  });
 }
 
-export interface EditErrorBandBoundaryOptions {
+export interface EditErrorBandBoundaryOptions extends StrokeStyleDetails {
   target?: string;
   boundary?: "both" | "lower" | "upper";
   stroke?: string;
@@ -3715,7 +3723,7 @@ export interface RemoveLabelLayoutOptions {
   target?: string;
 }
 
-export interface RectMarkOptions {
+export interface RectMarkOptions extends RectStyleDetails {
   id?: string;
   data?: string;
   fill?: string;
@@ -3964,7 +3972,7 @@ export type OpacityEncodingOptions =
 
 export type StrokeWidthScaleOptions = NonPointQuantitativePositionScaleOptions;
 
-export interface RuleStyleOptions {
+export interface RuleStyleOptions extends StrokeStyleDetails {
   stroke?: string;
   strokeWidth?: number;
   strokeDash?: DashStyle | DashPattern;
@@ -4078,7 +4086,7 @@ export interface EncodeChannelsOptions {
 export type RegressionMethod = "linear" | "polynomial" | "loess";
 export type RegressionInterval = "mean" | "prediction";
 
-export interface RegressionBandOptions {
+export interface RegressionBandOptions extends StrokeStyleDetails {
   color?: string;
   opacity?: number;
   stroke?: string;
@@ -4086,7 +4094,7 @@ export interface RegressionBandOptions {
   curve?: CurveInterpolation;
 }
 
-export interface CreateRegressionBandOptions {
+export interface CreateRegressionBandOptions extends StrokeStyleDetails {
   id: string;
   data: string;
   x: string;
@@ -4103,7 +4111,7 @@ export interface CreateRegressionBandOptions {
   curve?: CurveInterpolation;
 }
 
-export interface CreateRegressionLineOptions {
+export interface CreateRegressionLineOptions extends StrokeStyleDetails {
   id: string;
   data: string;
   x: string;
@@ -4159,7 +4167,7 @@ type RegressionCommonOptions = {
   x?: string;
   y?: string;
   groupBy?: string | false;
-  line?: { strokeWidth?: number; curve?: CurveInterpolation };
+  line?: StrokeStyleDetails & { strokeWidth?: number; curve?: CurveInterpolation };
 };
 
 export type RegressionOptions = RegressionCommonOptions & (
@@ -4188,7 +4196,7 @@ export interface EditRegressionOptions {
   confidence?: number;
   interval?: RegressionInterval;
   band?: false | RegressionBandOptions;
-  line?: { strokeWidth?: number; curve?: CurveInterpolation };
+  line?: StrokeStyleDetails & { strokeWidth?: number; curve?: CurveInterpolation };
 }
 
 export interface RemoveAxisOptions {
@@ -4514,7 +4522,7 @@ export class ChartProgram {
   editImputedData(options: EditImputedDataOptions): ChartProgram;
   editBin2DData(options: EditBin2DDataOptions): ChartProgram;
 
-  createPointMark(options?: {
+  createPointMark(options?: StrokeStyleDetails & {
     id?: string;
     data?: string;
     shape?: PointShape;
@@ -4523,7 +4531,7 @@ export class ChartProgram {
     stroke?: FilledMarkStroke;
     strokeWidth?: number;
   }): ChartProgram;
-  editPointMark(options: {
+  editPointMark(options: StrokeStyleDetails & {
     target?: string;
     shape?: PointShape;
     fill?: string;
@@ -4531,7 +4539,7 @@ export class ChartProgram {
     stroke?: FilledMarkStroke;
     strokeWidth?: number;
   }): ChartProgram;
-  createTickMark(options?: {
+  createTickMark(options?: StrokeStyleDetails & {
     id?: string;
     data?: string;
     length?: number;
@@ -4539,7 +4547,7 @@ export class ChartProgram {
     strokeWidth?: number;
     opacity?: number;
   }): ChartProgram;
-  editTickMark(options: {
+  editTickMark(options: StrokeStyleDetails & {
     target?: string;
     length?: number;
     stroke?: string;
@@ -4550,7 +4558,7 @@ export class ChartProgram {
   removeJitter(options?: RemoveJitterOptions): ChartProgram;
   packPoints(options: PackPointsOptions): ChartProgram;
   removePointPacking(options?: RemovePointPackingOptions): ChartProgram;
-  createLineMark(options?: {
+  createLineMark(options?: StrokeStyleDetails & {
     id?: string;
     data?: string;
     strokeWidth?: number;
@@ -4559,7 +4567,7 @@ export class ChartProgram {
     opacity?: number;
     closed?: boolean;
   }): ChartProgram;
-  editLineMark(options: {
+  editLineMark(options: StrokeStyleDetails & {
     target?: string;
     strokeWidth?: number;
     curve?: CurveInterpolation;
@@ -4567,7 +4575,7 @@ export class ChartProgram {
     opacity?: number;
     closed?: boolean;
   }): ChartProgram;
-  createBarMark(options?: {
+  createBarMark(options?: RectStyleDetails & {
     id?: string;
     data?: string;
     fill?: string;
@@ -4575,14 +4583,14 @@ export class ChartProgram {
     stroke?: FilledMarkStroke;
     strokeWidth?: number;
   }): ChartProgram;
-  editBarMark(options: {
+  editBarMark(options: RectStyleDetails & {
     target?: string;
     fill?: string;
     opacity?: number;
     stroke?: FilledMarkStroke;
     strokeWidth?: number;
   }): ChartProgram;
-  createAreaMark(options?: {
+  createAreaMark(options?: StrokeStyleDetails & {
     id?: string;
     data?: string;
     fill?: string;
@@ -4592,7 +4600,7 @@ export class ChartProgram {
     curve?: CurveInterpolation;
     missing?: "error" | "break";
   }): ChartProgram;
-  createArcMark(options?: {
+  createArcMark(options?: StrokeStyleDetails & {
     id?: string;
     data?: string;
     innerRadius?: number;
@@ -4602,7 +4610,7 @@ export class ChartProgram {
     stroke?: string;
     strokeWidth?: number;
   }): ChartProgram;
-  editArcMark(options: {
+  editArcMark(options: StrokeStyleDetails & {
     target?: string;
     innerRadius?: number;
     padAngle?: number;
@@ -4626,7 +4634,7 @@ export class ChartProgram {
   editTextMark(options: EditTextMarkOptions): ChartProgram;
   layoutLabels(options?: LabelLayoutOptions): ChartProgram;
   removeLabelLayout(options?: RemoveLabelLayoutOptions): ChartProgram;
-  editAreaMark(options: {
+  editAreaMark(options: StrokeStyleDetails & {
     target?: string;
     fill?: string;
     opacity?: number;
@@ -4822,7 +4830,7 @@ export class ChartProgram {
   editStrokeDashScale(options: EditStrokeDashScaleOptions): ChartProgram;
   createDerivedData(options: CreateDerivedDataOptions): ChartProgram;
   createRegressionBand(options: CreateRegressionBandOptions): ChartProgram;
-  editRegressionBand(options: {
+  editRegressionBand(options: StrokeStyleDetails & {
     target?: string;
     color?: string;
     opacity?: number;
@@ -4831,7 +4839,7 @@ export class ChartProgram {
     curve?: CurveInterpolation;
   }): ChartProgram;
   createRegressionLine(options: CreateRegressionLineOptions): ChartProgram;
-  editRegressionLine(options: {
+  editRegressionLine(options: StrokeStyleDetails & {
     target?: string;
     strokeWidth?: number;
     curve?: CurveInterpolation;

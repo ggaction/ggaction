@@ -50,7 +50,7 @@ function widthPrimitive(base, edge) {
   // Slot92, labels7.32/14.64, gap32 => width261.96; occupied first sample starts29px inside slot.
   const start = 240 + (520 - 261.96) / 2;
   const second = start + 111.32 + 32;
-  const dx = 500 - ((start + 29) + (second + 104 + 14.64)) / 2;
+  const dx = 500 - ((start + 30) + (second + 104 + 14.64)) / 2;
   const r={x:[start+30+dx,second+30+dx],y:[140,140],labelX:[start+104+dx,second+104+dx],title:[500+dx,91.5],align:"center"};
   return base.createGraphics({id:"strokeWidthLegendSymbols",type:"line",length:2,parent:"canvas"})
     .editGraphics({target:"strokeWidthLegendSymbols",property:"x1",value:r.x})

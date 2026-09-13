@@ -43,6 +43,8 @@ export type {
   ColorLayout,
   SeriesLayoutOptions,
   BasicSeriesLayoutOptions,
+  StrokeStyleDetails,
+  RectStyleDetails,
   CreateAreaPlotOptions,
   AreaPlotIndependentChannel,
   AreaPlotMeasureChannel,

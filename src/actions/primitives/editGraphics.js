@@ -63,6 +63,32 @@ function replaceDrawableItems(value, id, type) {
   });
 }
 
+export function replaceGraphicItems(program, target, baseType, items) {
+  let next = program.editGraphics({ target, property: "items", value: items });
+  const graphic = next.graphicSpec.objects[target];
+  if (
+    graphic.type !== "collection" ||
+    !graphic.items.every(item => item.type === baseType)
+  ) return next;
+  const normalized = freezeOwned({
+    ...graphic,
+    type: baseType,
+    items: freezeOwned(graphic.items.map(item => freezeOwned({
+      id: item.id,
+      properties: item.properties
+    })))
+  });
+  return next._clone({
+    graphicSpec: freezeOwned({
+      ...next.graphicSpec,
+      objects: freezeOwned({
+        ...next.graphicSpec.objects,
+        [target]: normalized
+      })
+    })
+  });
+}
+
 function editGeneratedItem(owner, itemIndex, property, value) {
   const items = [...owner.items];
   const item = items[itemIndex];

@@ -14,12 +14,12 @@ import {
   assertMarkAvailable,
   applyLayeredMarkInheritance,
   materializeInheritedMark,
-  replaceMarkGraphicItems,
   resolveLayeredMarkInheritance,
   resolveMarkData,
   resolveMarkId,
   validateMarkOptions
 } from "../shared.js";
+import { replaceGraphicItems } from "../../primitives/editGraphics.js";
 import { resolveMarkGraphicPlacement } from
   "../../../materialization/graphicHierarchy.js";
 import { rematerializeExistingLegend } from "../../encodings/shared.js";
@@ -125,7 +125,7 @@ const rematerializeRectMark = action(
       throw new Error(`Rect mark "${id}" requires an existing dataset.`);
     }
     if (!canMaterializeRect(this, layer)) {
-      return replaceMarkGraphicItems(this, id, "rect", []);
+      return replaceGraphicItems(this, id, "rect", []);
     }
     let next = this;
     if (args.scales !== false) {
@@ -137,7 +137,7 @@ const rematerializeRectMark = action(
         next = next.rematerializeScale({ id: scale, marks: false });
       }
     }
-    return replaceMarkGraphicItems(
+    return replaceGraphicItems(
       next,
       id,
       "rect",

@@ -2,6 +2,10 @@ export function findLayer(program, id) {
   return program.semanticSpec.layers.find(layer => layer.id === id);
 }
 
+export function findLayerMatching(program, predicate) {
+  return program.semanticSpec.layers.find(predicate);
+}
+
 export function hasLayer(program, id) {
   return findLayer(program, id) !== undefined;
 }

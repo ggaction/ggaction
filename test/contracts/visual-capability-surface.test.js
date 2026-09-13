@@ -77,8 +77,8 @@ test("keeps approved visual evidence owned by current capabilities", () => {
 test("keeps closed polar lines and advanced facets in the strict public types", () => {
   const declarations = readFileSync(new URL("../../types/program.d.ts", import.meta.url), "utf8");
   const rootDeclarations = readFileSync(new URL("../../types/index.d.ts", import.meta.url), "utf8");
-  assert.match(declarations, /createLineMark\(options\?: \{[\s\S]*?closed\?: boolean;/);
-  assert.match(declarations, /editLineMark\(options: \{[\s\S]*?closed\?: boolean;/);
+  assert.match(declarations, /createLineMark\(options\?: StrokeStyleDetails & \{[\s\S]*?closed\?: boolean;/);
+  assert.match(declarations, /editLineMark\(options: StrokeStyleDetails & \{[\s\S]*?closed\?: boolean;/);
   assert.match(declarations, /export interface FacetGuideOptions \{[\s\S]*?axes\?: "each" \| "outer";/);
   assert.match(declarations, /guides\?: FacetGuideOptions/);
   assert.match(rootDeclarations, /FacetGuideOptions/);

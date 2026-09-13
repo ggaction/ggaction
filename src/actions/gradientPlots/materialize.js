@@ -4,6 +4,7 @@ import { action } from "../../core/action.js";
 import { validateUserId } from "../../core/identifiers.js";
 import { isPlainObject } from "../../core/immutable.js";
 import { GRADIENT_PROFILE_FIELDS } from "../../grammar/gradientProfile.js";
+import { requestedStrokeDetails } from "../../grammar/strokeStyle.js";
 import {
   mapContinuousScaleValues,
   mapOrdinalPositionValues
@@ -248,7 +249,8 @@ export const materializeGradientPlot = action(
         orientation,
         size: Math.max(1, categoryScale.bandwidth * config.width.band - 16),
         stroke: config.center.stroke,
-        strokeWidth: config.center.strokeWidth
+        strokeWidth: config.center.strokeWidth,
+        ...requestedStrokeDetails(config.center, "Gradient plot center")
       });
     }
     const guides = config.guides;

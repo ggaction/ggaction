@@ -50,7 +50,7 @@ test("compact action cards are generated from the current action contract", asyn
   assert.match(artifact.errorPolicy, /curated error override/);
   assert.equal(stats.count, context.actions.length);
   assert.equal(stats.maxBytes <= 3328, true);
-  assert.equal(stats.medianBytes <= 1792, true);
+  assert.equal(stats.medianBytes <= 1856, true);
   assert.deepEqual(
     artifact.cards.map(card => card.name),
     context.actions.map(action => action.name)

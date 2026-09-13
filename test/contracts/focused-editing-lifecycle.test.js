@@ -89,9 +89,9 @@ test("promotes the approved mark and scale parameter extensions", () => {
   for (const extension of EXTENSIONS) {
     assert.equal(planned.has(extension), false, extension);
   }
-  assert.match(declarations, /createPointMark\(options\?: \{[\s\S]*?fill\?: string;[\s\S]*?opacity\?: number;/);
-  assert.match(declarations, /createBarMark\(options\?: \{[\s\S]*?stroke\?: string;[\s\S]*?strokeWidth\?: number;/);
-  assert.match(declarations, /createLineMark\(options\?: \{[\s\S]*?stroke\?: string;[\s\S]*?opacity\?: number;/);
+  assert.match(declarations, /createPointMark\(options\?: StrokeStyleDetails & \{[\s\S]*?fill\?: string;[\s\S]*?opacity\?: number;/);
+  assert.match(declarations, /createBarMark\(options\?: RectStyleDetails & \{[\s\S]*?stroke\?: FilledMarkStroke;[\s\S]*?strokeWidth\?: number;/);
+  assert.match(declarations, /createLineMark\(options\?: StrokeStyleDetails & \{[\s\S]*?stroke\?: string;[\s\S]*?opacity\?: number;/);
   assert.match(declarations, /export interface EditScaleOptions \{[\s\S]*?palette\?: Palette;/);
 });
 

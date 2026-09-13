@@ -14,7 +14,6 @@ import {
   POSITION_CHANNELS
 } from "../../core/vocabulary.js";
 import { validateOptionObject } from "../../core/validation.js";
-import { freezeOwned } from "../../core/immutable.js";
 
 export function validateMarkOptions(args, supported, operation) {
   validateOptionObject(args, supported, operation);
@@ -245,31 +244,4 @@ export function editMarkGraphic(program, target, properties) {
     program = program.editGraphics({ target, property, value });
   }
   return program;
-}
-
-export function replaceMarkGraphicItems(program, target, baseType, items) {
-  let next = program.editGraphics({ target, property: "items", value: items });
-  const graphic = next.graphicSpec.objects[target];
-  if (
-    graphic.type !== "collection" ||
-    !graphic.items.every(item => item.type === baseType)
-  ) return next;
-  const normalized = freezeOwned({
-    ...graphic,
-    type: baseType,
-    items: freezeOwned(graphic.items.map(item => freezeOwned({
-      id: item.id,
-      properties: item.properties
-    })))
-  });
-  next = next._clone({
-    graphicSpec: freezeOwned({
-      ...next.graphicSpec,
-      objects: freezeOwned({
-        ...next.graphicSpec.objects,
-        [target]: normalized
-      })
-    })
-  });
-  return next;
 }

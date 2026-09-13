@@ -16,7 +16,7 @@ import {
   requestedRectStyleDetails
 } from "../../../../grammar/roundedRect.js";
 import { requestedStrokeDetails } from "../../../../grammar/strokeStyle.js";
-import { replaceMarkGraphicItems } from "../../../marks/shared.js";
+import { replaceGraphicItems } from "../../../primitives/editGraphics.js";
 
 function applyLayerOpacity(program, id, opacity) {
   return opacity === undefined
@@ -142,7 +142,7 @@ function makeEditSymbol(type) {
       const strokes = config.channels.includes("stroke")
         ? appearance.strokes
         : config.domain.map(() => layer.stroke);
-      return replaceMarkGraphicItems(
+      return replaceGraphicItems(
         next,
         id,
         "rect",

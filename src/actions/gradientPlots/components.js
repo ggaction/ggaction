@@ -2,6 +2,10 @@ import { assertGuideOptions, guideConflict } from "../guides/reuse.js";
 import { action } from "../../core/action.js";
 import { validateKeys } from "../../core/validation.js";
 import { GRADIENT_PROFILE_FIELDS } from "../../grammar/gradientProfile.js";
+import {
+  requestedStrokeDetails,
+  STROKE_STYLE_PROPERTIES
+} from "../../grammar/strokeStyle.js";
 import { resolveGraphicBounds } from "../../layout/canvas.js";
 import { findLayer } from "../../selectors/layers.js";
 import { createDensityLegendPaint } from "./paint.js";
@@ -9,7 +13,7 @@ import { createDensityLegendPaint } from "./paint.js";
 const CENTER_OPTIONS = Object.freeze([
   "id", "owner", "data", "category", "categoryType", "coordinate",
   "categoryScale", "measureScale", "orientation", "size", "stroke",
-  "strokeWidth"
+  "strokeWidth", ...STROKE_STYLE_PROPERTIES
 ]);
 const LEGEND_OPTIONS = Object.freeze(["owner", "title", "position"]);
 
@@ -23,7 +27,11 @@ export const createGradientPlotCenter = action(
     const categoryAction = args.orientation === "vertical" ? "encodeX" : "encodeY";
     const measureAction = args.orientation === "vertical" ? "encodeY" : "encodeX";
     const spanOrientation = args.orientation === "vertical" ? "horizontal" : "vertical";
-    let next = this.createRuleMark({ id: args.id, data: args.data });
+    let next = this.createRuleMark({
+      id: args.id,
+      data: args.data,
+      ...requestedStrokeDetails(args, "createGradientPlotCenter")
+    });
     next = next[categoryAction]({
       target: args.id,
       field: args.category,

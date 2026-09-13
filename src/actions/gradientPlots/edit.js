@@ -7,6 +7,7 @@ import { findDataset } from "../../selectors/datasets.js";
 import { findLayer } from "../../selectors/layers.js";
 import { removeOwnedMark } from "../marks/remove.js";
 import { GRADIENT_PROFILE_FIELDS } from "../../grammar/gradientProfile.js";
+import { requestedStrokeDetails } from "../../grammar/strokeStyle.js";
 import { removeGradientPlotLegend } from "./components.js";
 import {
   resolveDistributionRoles,
@@ -38,6 +39,13 @@ function patch(value, label) {
 
 function removeCenter(program, id) {
   return removeOwnedMark(program, id, true);
+}
+
+function editCenterStrokeDetails(program, id, center) {
+  const details = requestedStrokeDetails(center, "Gradient plot center");
+  return Object.keys(details).length === 0
+    ? program
+    : program.editRuleMark({ target: id, ...details });
 }
 
 function roleCandidate(program, owner, current, args) {
@@ -219,10 +227,11 @@ export const editGradientPlot = action(
             orientation: candidate.orientation,
             size: spanSize,
             stroke: center.stroke,
-            strokeWidth: center.strokeWidth
+            strokeWidth: center.strokeWidth,
+            ...requestedStrokeDetails(center, "Gradient plot center")
           });
         } else if (retainedCenter) {
-          next = next
+          next = editCenterStrokeDetails(next, current.centerId, center)
             .encodeStroke({ target: current.centerId, value: center.stroke })
             .encodeStrokeWidth({
               target: current.centerId,
@@ -291,10 +300,11 @@ export const editGradientPlot = action(
         orientation: current.orientation,
         size: 1,
         stroke: center.stroke,
-        strokeWidth: center.strokeWidth
+        strokeWidth: center.strokeWidth,
+        ...requestedStrokeDetails(center, "Gradient plot center")
       });
     } else if (center !== false) {
-      next = next
+      next = editCenterStrokeDetails(next, current.centerId, center)
         .encodeStroke({ target: current.centerId, value: center.stroke })
         .encodeStrokeWidth({ target: current.centerId, value: center.strokeWidth });
     }

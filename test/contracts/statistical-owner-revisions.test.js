@@ -28,11 +28,11 @@ test("publishes statistical-owner revision options as current behavior", () => {
   );
   assert.match(
     declarations,
-    /interface EditErrorBarOptions \{[\s\S]*data\?: string;[\s\S]*x\?: ErrorBarPositionChannel \| ErrorBarIntervalChannel;[\s\S]*y\?: ErrorBarPositionChannel \| ErrorBarIntervalChannel;[\s\S]*groupBy\?: string \| false;[\s\S]*statistics\?: \{[\s\S]*center\?: IntervalCenter;[\s\S]*extent\?: IntervalExtent;[\s\S]*level\?: number;/
+    /interface EditErrorBarOptions extends StrokeStyleDetails \{[\s\S]*data\?: string;[\s\S]*x\?: ErrorBarPositionChannel \| ErrorBarIntervalChannel;[\s\S]*y\?: ErrorBarPositionChannel \| ErrorBarIntervalChannel;[\s\S]*groupBy\?: string \| false;[\s\S]*statistics\?: \{[\s\S]*center\?: IntervalCenter;[\s\S]*extent\?: IntervalExtent;[\s\S]*level\?: number;/
   );
   assert.match(
     declarations,
-    /interface EditErrorBandOptions \{[\s\S]*data\?: string;[\s\S]*x\?: ErrorBandPositionChannel \| ErrorBandIntervalChannel;[\s\S]*y\?: ErrorBandPositionChannel \| ErrorBandIntervalChannel;[\s\S]*groupBy\?: string \| false;[\s\S]*statistics\?: \{[\s\S]*boundaries\?: false \| \{/
+    /interface EditErrorBandOptions extends StrokeStyleDetails \{[\s\S]*data\?: string;[\s\S]*x\?: ErrorBandPositionChannel \| ErrorBandIntervalChannel;[\s\S]*y\?: ErrorBandPositionChannel \| ErrorBandIntervalChannel;[\s\S]*groupBy\?: string \| false;[\s\S]*statistics\?: \{[\s\S]*boundaries\?: false \| \(StrokeStyleDetails & \{/
   );
   assert.match(
     declarations,

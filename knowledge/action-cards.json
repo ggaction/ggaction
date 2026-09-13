@@ -4206,7 +4206,7 @@
       "layer": "user-facing",
       "domain": "marks",
       "summary": "Create a semantic point mark with one of 12 equal-area shape realizations.",
-      "signature": "createPointMark(options?: { id?: string; data?: string; shape?: PointShape; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;",
+      "signature": "createPointMark(options?: StrokeStyleDetails & { id?: string; data?: string; shape?: PointShape; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;",
       "intents": [
         "create point mark",
         "create",
@@ -4275,6 +4275,21 @@
       },
       "options": [
         {
+          "name": "lineCap",
+          "required": false,
+          "type": "\"butt\" | \"round\" | \"square\" | undefined"
+        },
+        {
+          "name": "lineJoin",
+          "required": false,
+          "type": "\"bevel\" | \"miter\" | \"round\" | undefined"
+        },
+        {
+          "name": "miterLimit",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
           "name": "id",
           "required": false,
           "type": "string | undefined"
@@ -4311,7 +4326,7 @@
         }
       ],
       "callPatterns": [
-        "createPointMark({ id?, data?, shape?, fill?, opacity?, stroke?, strokeWidth? })"
+        "createPointMark({ id?, data?, lineCap?, lineJoin?, miterLimit?, shape?, fill?, opacity? })"
       ],
       "snippet": "program.createPointMark({})",
       "errors": [],
@@ -4323,7 +4338,7 @@
       "layer": "user-facing",
       "domain": "marks",
       "summary": "Creates short tick glyphs for compact one-dimensional distributions or aligned value marks.",
-      "signature": "createTickMark(options?: { id?: string; data?: string; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }): ChartProgram;",
+      "signature": "createTickMark(options?: StrokeStyleDetails & { id?: string; data?: string; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }): ChartProgram;",
       "intents": [
         "create tick mark",
         "create",
@@ -4396,6 +4411,21 @@
       },
       "options": [
         {
+          "name": "lineCap",
+          "required": false,
+          "type": "\"butt\" | \"round\" | \"square\" | undefined"
+        },
+        {
+          "name": "lineJoin",
+          "required": false,
+          "type": "\"bevel\" | \"miter\" | \"round\" | undefined"
+        },
+        {
+          "name": "miterLimit",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
           "name": "id",
           "required": false,
           "type": "string | undefined"
@@ -4427,7 +4457,7 @@
         }
       ],
       "callPatterns": [
-        "createTickMark({ id?, data?, length?, stroke?, strokeWidth?, opacity? })"
+        "createTickMark({ id?, data?, lineCap?, lineJoin?, miterLimit?, length?, stroke?, strokeWidth? })"
       ],
       "snippet": "program.createTickMark({})",
       "errors": [],
@@ -4580,6 +4610,21 @@
         },
         {
           "name": "opacity",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "lineCap",
+          "required": false,
+          "type": "\"butt\" | \"round\" | \"square\" | undefined"
+        },
+        {
+          "name": "lineJoin",
+          "required": false,
+          "type": "\"bevel\" | \"miter\" | \"round\" | undefined"
+        },
+        {
+          "name": "miterLimit",
           "required": false,
           "type": "number | undefined"
         },
@@ -4742,6 +4787,26 @@
           "name": "temporalUnit",
           "required": false,
           "type": "TemporalInputUnit | undefined"
+        },
+        {
+          "name": "lineCap",
+          "required": false,
+          "type": "\"butt\" | \"round\" | \"square\" | undefined"
+        },
+        {
+          "name": "lineJoin",
+          "required": false,
+          "type": "\"bevel\" | \"miter\" | \"round\" | undefined"
+        },
+        {
+          "name": "miterLimit",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "cornerRadius",
+          "required": false,
+          "type": "number | undefined"
         },
         {
           "name": "fill",
@@ -5914,7 +5979,7 @@
       "layer": "user-facing",
       "domain": "marks",
       "summary": "Change constant point shape, fill, opacity, or outline appearance and rematerialize its concrete items.",
-      "signature": "editPointMark(options: { target?: string; shape?: PointShape; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;",
+      "signature": "editPointMark(options: StrokeStyleDetails & { target?: string; shape?: PointShape; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;",
       "intents": [
         "edit point mark",
         "edit",
@@ -5971,6 +6036,21 @@
       },
       "options": [
         {
+          "name": "lineCap",
+          "required": false,
+          "type": "\"butt\" | \"round\" | \"square\" | undefined"
+        },
+        {
+          "name": "lineJoin",
+          "required": false,
+          "type": "\"bevel\" | \"miter\" | \"round\" | undefined"
+        },
+        {
+          "name": "miterLimit",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
           "name": "target",
           "required": false,
           "type": "string | undefined"
@@ -6002,7 +6082,7 @@
         }
       ],
       "callPatterns": [
-        "editPointMark({ target?, shape?, fill?, opacity?, stroke?, strokeWidth? })"
+        "editPointMark({ target?, lineCap?, lineJoin?, miterLimit?, shape?, fill?, opacity?, stroke? })"
       ],
       "snippet": "program.editPointMark({ fill: \"#f28e2b\" })",
       "errors": [],
@@ -6014,7 +6094,7 @@
       "layer": "user-facing",
       "domain": "marks",
       "summary": "Partially edit Tick length or constant line appearance while preserving data, position, and other assignments.",
-      "signature": "editTickMark(options: { target?: string; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }): ChartProgram;",
+      "signature": "editTickMark(options: StrokeStyleDetails & { target?: string; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }): ChartProgram;",
       "intents": [
         "edit tick mark",
         "edit",
@@ -6075,6 +6155,21 @@
       },
       "options": [
         {
+          "name": "lineCap",
+          "required": false,
+          "type": "\"butt\" | \"round\" | \"square\" | undefined"
+        },
+        {
+          "name": "lineJoin",
+          "required": false,
+          "type": "\"bevel\" | \"miter\" | \"round\" | undefined"
+        },
+        {
+          "name": "miterLimit",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
           "name": "target",
           "required": false,
           "type": "string | undefined"
@@ -6101,9 +6196,9 @@
         }
       ],
       "callPatterns": [
-        "editTickMark({ target?, length?, stroke?, strokeWidth?, opacity? })"
+        "editTickMark({ target?, lineCap?, lineJoin?, miterLimit?, length?, stroke?, strokeWidth?, opacity? })"
       ],
-      "snippet": "program.editTickMark({ length: 1 })",
+      "snippet": "program.editTickMark({ lineCap: \"butt\" })",
       "errors": [],
       "route": "/reference/actions/marks/#edittickmark"
     },
@@ -6496,7 +6591,7 @@
       "layer": "user-facing",
       "domain": "marks",
       "summary": "Create a semantic line mark and empty path collection.",
-      "signature": "createLineMark(options?: { id?: string; data?: string; strokeWidth?: number; curve?: CurveInterpolation; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;",
+      "signature": "createLineMark(options?: StrokeStyleDetails & { id?: string; data?: string; strokeWidth?: number; curve?: CurveInterpolation; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;",
       "intents": [
         "create line mark",
         "create",
@@ -6565,6 +6660,21 @@
       },
       "options": [
         {
+          "name": "lineCap",
+          "required": false,
+          "type": "\"butt\" | \"round\" | \"square\" | undefined"
+        },
+        {
+          "name": "lineJoin",
+          "required": false,
+          "type": "\"bevel\" | \"miter\" | \"round\" | undefined"
+        },
+        {
+          "name": "miterLimit",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
           "name": "id",
           "required": false,
           "type": "string | undefined"
@@ -6601,7 +6711,7 @@
         }
       ],
       "callPatterns": [
-        "createLineMark({ id?, data?, strokeWidth?, curve?, stroke?, opacity?, closed? })"
+        "createLineMark({ id?, data?, lineCap?, lineJoin?, miterLimit?, strokeWidth?, curve?, stroke? })"
       ],
       "snippet": "program.createLineMark({})",
       "errors": [],
@@ -6613,7 +6723,7 @@
       "layer": "user-facing",
       "domain": "marks",
       "summary": "Edit line appearance and rematerialize concrete path commands without changing semantic encodings.",
-      "signature": "editLineMark(options: { target?: string; strokeWidth?: number; curve?: CurveInterpolation; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;",
+      "signature": "editLineMark(options: StrokeStyleDetails & { target?: string; strokeWidth?: number; curve?: CurveInterpolation; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;",
       "intents": [
         "edit line mark",
         "edit",
@@ -6670,6 +6780,21 @@
       },
       "options": [
         {
+          "name": "lineCap",
+          "required": false,
+          "type": "\"butt\" | \"round\" | \"square\" | undefined"
+        },
+        {
+          "name": "lineJoin",
+          "required": false,
+          "type": "\"bevel\" | \"miter\" | \"round\" | undefined"
+        },
+        {
+          "name": "miterLimit",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
           "name": "target",
           "required": false,
           "type": "string | undefined"
@@ -6701,9 +6826,9 @@
         }
       ],
       "callPatterns": [
-        "editLineMark({ target?, strokeWidth?, curve?, stroke?, opacity?, closed? })"
+        "editLineMark({ target?, lineCap?, lineJoin?, miterLimit?, strokeWidth?, curve?, stroke?, opacity? })"
       ],
-      "snippet": "program.editLineMark({ strokeWidth: 2 })",
+      "snippet": "program.editLineMark({ lineCap: \"butt\" })",
       "errors": [],
       "route": "/reference/actions/marks/#editlinemark"
     },
@@ -6713,7 +6838,7 @@
       "layer": "user-facing",
       "domain": "marks",
       "summary": "Create a semantic bar mark and empty rect collection.",
-      "signature": "createBarMark(options?: { id?: string; data?: string; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;",
+      "signature": "createBarMark(options?: RectStyleDetails & { id?: string; data?: string; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;",
       "intents": [
         "create bar mark",
         "create",
@@ -6782,6 +6907,26 @@
       },
       "options": [
         {
+          "name": "lineCap",
+          "required": false,
+          "type": "\"butt\" | \"round\" | \"square\" | undefined"
+        },
+        {
+          "name": "lineJoin",
+          "required": false,
+          "type": "\"bevel\" | \"miter\" | \"round\" | undefined"
+        },
+        {
+          "name": "miterLimit",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "cornerRadius",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
           "name": "id",
           "required": false,
           "type": "string | undefined"
@@ -6813,7 +6958,7 @@
         }
       ],
       "callPatterns": [
-        "createBarMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth? })"
+        "createBarMark({ id?, data?, lineCap?, lineJoin?, miterLimit?, cornerRadius?, fill?, opacity? })"
       ],
       "snippet": "program.createBarMark({})",
       "errors": [],
@@ -6825,7 +6970,7 @@
       "layer": "user-facing",
       "domain": "marks",
       "summary": "Edit whole-bar appearance and rematerialize every concrete rectangle.",
-      "signature": "editBarMark(options: { target?: string; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;",
+      "signature": "editBarMark(options: RectStyleDetails & { target?: string; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;",
       "intents": [
         "edit bar mark",
         "edit",
@@ -6882,6 +7027,26 @@
       },
       "options": [
         {
+          "name": "lineCap",
+          "required": false,
+          "type": "\"butt\" | \"round\" | \"square\" | undefined"
+        },
+        {
+          "name": "lineJoin",
+          "required": false,
+          "type": "\"bevel\" | \"miter\" | \"round\" | undefined"
+        },
+        {
+          "name": "miterLimit",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "cornerRadius",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
           "name": "target",
           "required": false,
           "type": "string | undefined"
@@ -6908,9 +7073,9 @@
         }
       ],
       "callPatterns": [
-        "editBarMark({ target?, fill?, opacity?, stroke?, strokeWidth? })"
+        "editBarMark({ target?, lineCap?, lineJoin?, miterLimit?, cornerRadius?, fill?, opacity?, stroke? })"
       ],
-      "snippet": "program.editBarMark({ fill: \"#f28e2b\" })",
+      "snippet": "program.editBarMark({ lineCap: \"butt\" })",
       "errors": [],
       "route": "/reference/actions/marks/#editbarmark"
     },
@@ -6920,7 +7085,7 @@
       "layer": "user-facing",
       "domain": "marks",
       "summary": "Create a semantic area mark and empty path collection.",
-      "signature": "createAreaMark(options?: { id?: string; data?: string; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; missing?: \"error\" | \"break\"; }): ChartProgram;",
+      "signature": "createAreaMark(options?: StrokeStyleDetails & { id?: string; data?: string; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; missing?: \"error\" | \"break\"; }): ChartProgram;",
       "intents": [
         "create area mark",
         "create",
@@ -6987,6 +7152,21 @@
       },
       "options": [
         {
+          "name": "lineCap",
+          "required": false,
+          "type": "\"butt\" | \"round\" | \"square\" | undefined"
+        },
+        {
+          "name": "lineJoin",
+          "required": false,
+          "type": "\"bevel\" | \"miter\" | \"round\" | undefined"
+        },
+        {
+          "name": "miterLimit",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
           "name": "id",
           "required": false,
           "type": "string | undefined"
@@ -7028,7 +7208,7 @@
         }
       ],
       "callPatterns": [
-        "createAreaMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth?, curve?, missing? })"
+        "createAreaMark({ id?, data?, lineCap?, lineJoin?, miterLimit?, fill?, opacity?, stroke? })"
       ],
       "snippet": "program.createAreaMark({})",
       "errors": [],
@@ -7138,10 +7318,25 @@
           "name": "opacity",
           "required": false,
           "type": "number | undefined"
+        },
+        {
+          "name": "lineCap",
+          "required": false,
+          "type": "\"butt\" | \"round\" | \"square\" | undefined"
+        },
+        {
+          "name": "lineJoin",
+          "required": false,
+          "type": "\"bevel\" | \"miter\" | \"round\" | undefined"
+        },
+        {
+          "name": "miterLimit",
+          "required": false,
+          "type": "number | undefined"
         }
       ],
       "callPatterns": [
-        "createRuleMark({ id?, data?, stroke?, strokeWidth?, strokeDash?, opacity? })"
+        "createRuleMark({ id?, data?, stroke?, strokeWidth?, strokeDash?, opacity?, lineCap?, lineJoin? })"
       ],
       "snippet": "program.createRuleMark({})",
       "errors": [],
@@ -7236,10 +7431,25 @@
           "name": "opacity",
           "required": false,
           "type": "number | undefined"
+        },
+        {
+          "name": "lineCap",
+          "required": false,
+          "type": "\"butt\" | \"round\" | \"square\" | undefined"
+        },
+        {
+          "name": "lineJoin",
+          "required": false,
+          "type": "\"bevel\" | \"miter\" | \"round\" | undefined"
+        },
+        {
+          "name": "miterLimit",
+          "required": false,
+          "type": "number | undefined"
         }
       ],
       "callPatterns": [
-        "editRuleMark({ target?, stroke?, strokeWidth?, strokeDash?, opacity? })"
+        "editRuleMark({ target?, stroke?, strokeWidth?, strokeDash?, opacity?, lineCap?, lineJoin?, miterLimit? })"
       ],
       "snippet": "program.editRuleMark({ stroke: \"#334155\" })",
       "errors": [],
@@ -7251,7 +7461,7 @@
       "layer": "user-facing",
       "domain": "marks",
       "summary": "Edit constant area appearance.",
-      "signature": "editAreaMark(options: { target?: string; fill?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; curve?: CurveInterpolation; missing?: \"error\" | \"break\"; }): ChartProgram;",
+      "signature": "editAreaMark(options: StrokeStyleDetails & { target?: string; fill?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; curve?: CurveInterpolation; missing?: \"error\" | \"break\"; }): ChartProgram;",
       "intents": [
         "edit area mark",
         "edit",
@@ -7308,6 +7518,21 @@
       },
       "options": [
         {
+          "name": "lineCap",
+          "required": false,
+          "type": "\"butt\" | \"round\" | \"square\" | undefined"
+        },
+        {
+          "name": "lineJoin",
+          "required": false,
+          "type": "\"bevel\" | \"miter\" | \"round\" | undefined"
+        },
+        {
+          "name": "miterLimit",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
           "name": "target",
           "required": false,
           "type": "string | undefined"
@@ -7344,9 +7569,9 @@
         }
       ],
       "callPatterns": [
-        "editAreaMark({ target?, fill?, opacity?, stroke?, strokeWidth?, curve?, missing? })"
+        "editAreaMark({ target?, lineCap?, lineJoin?, miterLimit?, fill?, opacity?, stroke?, strokeWidth? })"
       ],
-      "snippet": "program.editAreaMark({ fill: \"#f28e2b\" })",
+      "snippet": "program.editAreaMark({ lineCap: \"butt\" })",
       "errors": [],
       "route": "/reference/actions/marks/#editareamark"
     },
@@ -11247,7 +11472,7 @@
         {
           "name": "line",
           "required": false,
-          "type": "{ strokeWidth?: number | undefined; curve?: CurveInterpolation | undefined; } | undefined"
+          "type": "(StrokeStyleDetails & { strokeWidth?: number | undefined; curve?: CurveInterpolation | undefined; }) | undefined"
         },
         {
           "name": "method",
@@ -11431,7 +11656,7 @@
         {
           "name": "line",
           "required": false,
-          "type": "{ strokeWidth?: number | undefined; curve?: CurveInterpolation | undefined; } | undefined"
+          "type": "(StrokeStyleDetails & { strokeWidth?: number | undefined; curve?: CurveInterpolation | undefined; }) | undefined"
         }
       ],
       "callPatterns": [
@@ -11610,6 +11835,21 @@
           "name": "opacity",
           "required": false,
           "type": "number | undefined"
+        },
+        {
+          "name": "lineCap",
+          "required": false,
+          "type": "\"butt\" | \"round\" | \"square\" | undefined"
+        },
+        {
+          "name": "lineJoin",
+          "required": false,
+          "type": "\"bevel\" | \"miter\" | \"round\" | undefined"
+        },
+        {
+          "name": "miterLimit",
+          "required": false,
+          "type": "number | undefined"
         }
       ],
       "callPatterns": [
@@ -11762,6 +12002,21 @@
           "name": "statistics",
           "required": false,
           "type": "{ center?: IntervalCenter | undefined; extent?: IntervalExtent | undefined; method?: ConfidenceIntervalMethod | undefined; level?: number | undefined; } | undefined"
+        },
+        {
+          "name": "lineCap",
+          "required": false,
+          "type": "\"butt\" | \"round\" | \"square\" | undefined"
+        },
+        {
+          "name": "lineJoin",
+          "required": false,
+          "type": "\"bevel\" | \"miter\" | \"round\" | undefined"
+        },
+        {
+          "name": "miterLimit",
+          "required": false,
+          "type": "number | undefined"
         }
       ],
       "callPatterns": [
@@ -11908,7 +12163,22 @@
         {
           "name": "boundaries",
           "required": false,
-          "type": "false | { stroke?: string | undefined; strokeWidth?: number | undefined; strokeDash?: DashPattern | DashStyle | undefined; opacity?: number | undefined; curve?: CurveInterpolation | undefined; } | undefined"
+          "type": "false | (StrokeStyleDetails & { stroke?: string | undefined; strokeWidth?: number | undefined; strokeDash?: DashPattern | DashStyle | undefined; opacity?: number | undefined; curve?: CurveInterpolation | undefined; }) | undefined"
+        },
+        {
+          "name": "lineCap",
+          "required": false,
+          "type": "\"butt\" | \"round\" | \"square\" | undefined"
+        },
+        {
+          "name": "lineJoin",
+          "required": false,
+          "type": "\"bevel\" | \"miter\" | \"round\" | undefined"
+        },
+        {
+          "name": "miterLimit",
+          "required": false,
+          "type": "number | undefined"
         }
       ],
       "callPatterns": [
@@ -12032,7 +12302,22 @@
         {
           "name": "boundaries",
           "required": false,
-          "type": "false | { stroke?: string | undefined; strokeWidth?: number | undefined; strokeDash?: DashPattern | DashStyle | undefined; opacity?: number | undefined; curve?: CurveInterpolation | undefined; } | undefined"
+          "type": "false | (StrokeStyleDetails & { stroke?: string | undefined; strokeWidth?: number | undefined; strokeDash?: DashPattern | DashStyle | undefined; opacity?: number | undefined; curve?: CurveInterpolation | undefined; }) | undefined"
+        },
+        {
+          "name": "lineCap",
+          "required": false,
+          "type": "\"butt\" | \"round\" | \"square\" | undefined"
+        },
+        {
+          "name": "lineJoin",
+          "required": false,
+          "type": "\"bevel\" | \"miter\" | \"round\" | undefined"
+        },
+        {
+          "name": "miterLimit",
+          "required": false,
+          "type": "number | undefined"
         }
       ],
       "callPatterns": [
@@ -12141,10 +12426,25 @@
           "name": "curve",
           "required": false,
           "type": "CurveInterpolation | undefined"
+        },
+        {
+          "name": "lineCap",
+          "required": false,
+          "type": "\"butt\" | \"round\" | \"square\" | undefined"
+        },
+        {
+          "name": "lineJoin",
+          "required": false,
+          "type": "\"bevel\" | \"miter\" | \"round\" | undefined"
+        },
+        {
+          "name": "miterLimit",
+          "required": false,
+          "type": "number | undefined"
         }
       ],
       "callPatterns": [
-        "editErrorBandBoundary({ target?, boundary?, stroke?, strokeWidth?, strokeDash?, opacity?, curve? })"
+        "editErrorBandBoundary({ target?, boundary?, stroke?, strokeWidth?, strokeDash?, opacity?, curve?, lineCap? })"
       ],
       "snippet": "program.editErrorBandBoundary({ boundary: \"both\" })",
       "errors": [],
@@ -12280,17 +12580,17 @@
         {
           "name": "box",
           "required": false,
-          "type": "{ fill?: string | undefined; opacity?: number | undefined; stroke?: string | undefined; strokeWidth?: number | undefined; } | undefined"
+          "type": "(StrokeStyleDetails & { cornerRadius?: number | undefined; } & { fill?: string | undefined; opacity?: number | undefined; stroke?: string | undefined; strokeWidth?: number | undefined; }) | undefined"
         },
         {
           "name": "median",
           "required": false,
-          "type": "{ stroke?: string | undefined; strokeWidth?: number | undefined; } | undefined"
+          "type": "(StrokeStyleDetails & { stroke?: string | undefined; strokeWidth?: number | undefined; }) | undefined"
         },
         {
           "name": "outlier",
           "required": false,
-          "type": "{ shape?: PointShape | undefined; radius?: number | undefined; opacity?: number | undefined; } | undefined"
+          "type": "(StrokeStyleDetails & { shape?: PointShape | undefined; radius?: number | undefined; opacity?: number | undefined; }) | undefined"
         },
         {
           "name": "guides",
@@ -12414,17 +12714,17 @@
         {
           "name": "box",
           "required": false,
-          "type": "{ fill?: string | undefined; opacity?: number | undefined; stroke?: string | undefined; strokeWidth?: number | undefined; } | undefined"
+          "type": "(StrokeStyleDetails & { cornerRadius?: number | undefined; } & { fill?: string | undefined; opacity?: number | undefined; stroke?: string | undefined; strokeWidth?: number | undefined; }) | undefined"
         },
         {
           "name": "median",
           "required": false,
-          "type": "{ stroke?: string | undefined; strokeWidth?: number | undefined; } | undefined"
+          "type": "(StrokeStyleDetails & { stroke?: string | undefined; strokeWidth?: number | undefined; }) | undefined"
         },
         {
           "name": "outlier",
           "required": false,
-          "type": "{ shape?: PointShape | undefined; radius?: number | undefined; opacity?: number | undefined; } | undefined"
+          "type": "(StrokeStyleDetails & { shape?: PointShape | undefined; radius?: number | undefined; opacity?: number | undefined; }) | undefined"
         }
       ],
       "callPatterns": [
@@ -21142,6 +21442,21 @@
           "name": "curve",
           "required": false,
           "type": "CurveInterpolation | undefined"
+        },
+        {
+          "name": "lineCap",
+          "required": false,
+          "type": "\"butt\" | \"round\" | \"square\" | undefined"
+        },
+        {
+          "name": "lineJoin",
+          "required": false,
+          "type": "\"bevel\" | \"miter\" | \"round\" | undefined"
+        },
+        {
+          "name": "miterLimit",
+          "required": false,
+          "type": "number | undefined"
         }
       ],
       "callPatterns": [
@@ -21157,7 +21472,7 @@
       "layer": "user-facing",
       "domain": "statistics",
       "summary": "Edits regression band, including settings for uncertainty interval.",
-      "signature": "editRegressionBand(options: { target?: string; color?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; curve?: CurveInterpolation; }): ChartProgram;",
+      "signature": "editRegressionBand(options: StrokeStyleDetails & { target?: string; color?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; curve?: CurveInterpolation; }): ChartProgram;",
       "intents": [
         "edit regression band",
         "edit",
@@ -21219,6 +21534,21 @@
       },
       "options": [
         {
+          "name": "lineCap",
+          "required": false,
+          "type": "\"butt\" | \"round\" | \"square\" | undefined"
+        },
+        {
+          "name": "lineJoin",
+          "required": false,
+          "type": "\"bevel\" | \"miter\" | \"round\" | undefined"
+        },
+        {
+          "name": "miterLimit",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
           "name": "target",
           "required": false,
           "type": "string | undefined"
@@ -21250,9 +21580,9 @@
         }
       ],
       "callPatterns": [
-        "editRegressionBand({ target?, color?, opacity?, stroke?, strokeWidth?, curve? })"
+        "editRegressionBand({ target?, lineCap?, lineJoin?, miterLimit?, color?, opacity?, stroke?, strokeWidth? })"
       ],
-      "snippet": "program.editRegressionBand({ color: \"#f28e2b\" })",
+      "snippet": "program.editRegressionBand({ lineCap: \"butt\" })",
       "errors": [],
       "route": "/reference/actions/advanced/#semantic-resources-and-regression-layers"
     },
@@ -21396,6 +21726,21 @@
           "name": "curve",
           "required": false,
           "type": "CurveInterpolation | undefined"
+        },
+        {
+          "name": "lineCap",
+          "required": false,
+          "type": "\"butt\" | \"round\" | \"square\" | undefined"
+        },
+        {
+          "name": "lineJoin",
+          "required": false,
+          "type": "\"bevel\" | \"miter\" | \"round\" | undefined"
+        },
+        {
+          "name": "miterLimit",
+          "required": false,
+          "type": "number | undefined"
         }
       ],
       "callPatterns": [
@@ -21411,7 +21756,7 @@
       "layer": "user-facing",
       "domain": "statistics",
       "summary": "Edits regression line, including settings for fitted curve.",
-      "signature": "editRegressionLine(options: { target?: string; strokeWidth?: number; curve?: CurveInterpolation; }): ChartProgram;",
+      "signature": "editRegressionLine(options: StrokeStyleDetails & { target?: string; strokeWidth?: number; curve?: CurveInterpolation; }): ChartProgram;",
       "intents": [
         "edit regression line",
         "edit",
@@ -21469,6 +21814,21 @@
       },
       "options": [
         {
+          "name": "lineCap",
+          "required": false,
+          "type": "\"butt\" | \"round\" | \"square\" | undefined"
+        },
+        {
+          "name": "lineJoin",
+          "required": false,
+          "type": "\"bevel\" | \"miter\" | \"round\" | undefined"
+        },
+        {
+          "name": "miterLimit",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
           "name": "target",
           "required": false,
           "type": "string | undefined"
@@ -21485,9 +21845,9 @@
         }
       ],
       "callPatterns": [
-        "editRegressionLine({ target?, strokeWidth?, curve? })"
+        "editRegressionLine({ target?, lineCap?, lineJoin?, miterLimit?, strokeWidth?, curve? })"
       ],
-      "snippet": "program.editRegressionLine({ strokeWidth: 2 })",
+      "snippet": "program.editRegressionLine({ lineCap: \"butt\" })",
       "errors": [],
       "route": "/reference/actions/advanced/#semantic-resources-and-regression-layers"
     },
@@ -22564,7 +22924,7 @@
       "layer": "user-facing",
       "domain": "marks",
       "summary": "Create a semantic arc mark and empty closed-path collection.",
-      "signature": "createArcMark(options?: { id?: string; data?: string; innerRadius?: number; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;",
+      "signature": "createArcMark(options?: StrokeStyleDetails & { id?: string; data?: string; innerRadius?: number; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;",
       "intents": [
         "create arc mark",
         "create",
@@ -22639,6 +22999,21 @@
       },
       "options": [
         {
+          "name": "lineCap",
+          "required": false,
+          "type": "\"butt\" | \"round\" | \"square\" | undefined"
+        },
+        {
+          "name": "lineJoin",
+          "required": false,
+          "type": "\"bevel\" | \"miter\" | \"round\" | undefined"
+        },
+        {
+          "name": "miterLimit",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
           "name": "id",
           "required": false,
           "type": "string | undefined"
@@ -22680,7 +23055,7 @@
         }
       ],
       "callPatterns": [
-        "createArcMark({ id?, data?, innerRadius?, padAngle?, fill?, opacity?, stroke?, strokeWidth? })"
+        "createArcMark({ id?, data?, lineCap?, lineJoin?, miterLimit?, innerRadius?, padAngle?, fill? })"
       ],
       "snippet": "program.createArcMark({})",
       "errors": [],
@@ -22692,7 +23067,7 @@
       "layer": "user-facing",
       "domain": "marks",
       "summary": "Edit arc geometry or appearance and rematerialize complete sector paths.",
-      "signature": "editArcMark(options: { target?: string; innerRadius?: number; padAngle?: number; fill?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; }): ChartProgram;",
+      "signature": "editArcMark(options: StrokeStyleDetails & { target?: string; innerRadius?: number; padAngle?: number; fill?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; }): ChartProgram;",
       "intents": [
         "edit arc mark",
         "edit",
@@ -22757,6 +23132,21 @@
       },
       "options": [
         {
+          "name": "lineCap",
+          "required": false,
+          "type": "\"butt\" | \"round\" | \"square\" | undefined"
+        },
+        {
+          "name": "lineJoin",
+          "required": false,
+          "type": "\"bevel\" | \"miter\" | \"round\" | undefined"
+        },
+        {
+          "name": "miterLimit",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
           "name": "target",
           "required": false,
           "type": "string | undefined"
@@ -22793,9 +23183,9 @@
         }
       ],
       "callPatterns": [
-        "editArcMark({ target?, innerRadius?, padAngle?, fill?, opacity?, stroke?, strokeWidth? })"
+        "editArcMark({ target?, lineCap?, lineJoin?, miterLimit?, innerRadius?, padAngle?, fill?, opacity? })"
       ],
-      "snippet": "program.editArcMark({ innerRadius: 1 })",
+      "snippet": "program.editArcMark({ lineCap: \"butt\" })",
       "errors": [],
       "route": "/reference/actions/marks/#editarcmark"
     },
@@ -26787,7 +27177,7 @@
         {
           "name": "point",
           "required": false,
-          "type": "{ radius?: number | undefined; shape?: PointShape | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; } | undefined"
+          "type": "(StrokeStyleDetails & { radius?: number | undefined; shape?: PointShape | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; }) | undefined"
         },
         {
           "name": "guides",
@@ -26881,7 +27271,7 @@
         {
           "name": "point",
           "required": false,
-          "type": "{ radius?: number | undefined; shape?: PointShape | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; } | undefined"
+          "type": "(StrokeStyleDetails & { radius?: number | undefined; shape?: PointShape | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; }) | undefined"
         },
         {
           "name": "labels",
@@ -27018,7 +27408,7 @@
         {
           "name": "point",
           "required": false,
-          "type": "{ radius?: number | undefined; shape?: PointShape | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; } | undefined"
+          "type": "(StrokeStyleDetails & { radius?: number | undefined; shape?: PointShape | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; }) | undefined"
         },
         {
           "name": "stem",
@@ -27160,12 +27550,12 @@
         {
           "name": "startPoint",
           "required": false,
-          "type": "{ radius?: number | undefined; shape?: PointShape | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; } | undefined"
+          "type": "(StrokeStyleDetails & { radius?: number | undefined; shape?: PointShape | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; }) | undefined"
         },
         {
           "name": "endPoint",
           "required": false,
-          "type": "{ radius?: number | undefined; shape?: PointShape | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; } | undefined"
+          "type": "(StrokeStyleDetails & { radius?: number | undefined; shape?: PointShape | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; }) | undefined"
         },
         {
           "name": "connector",
@@ -27469,7 +27859,7 @@
         {
           "name": "line",
           "required": false,
-          "type": "{ strokeWidth?: number | undefined; stroke?: string | undefined; opacity?: number | undefined; } | undefined"
+          "type": "(StrokeStyleDetails & { strokeWidth?: number | undefined; stroke?: string | undefined; opacity?: number | undefined; }) | undefined"
         },
         {
           "name": "labels",
@@ -27718,7 +28108,7 @@
         {
           "name": "point",
           "required": false,
-          "type": "{ radius?: number | undefined; shape?: PointShape | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; } | undefined"
+          "type": "(StrokeStyleDetails & { radius?: number | undefined; shape?: PointShape | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; }) | undefined"
         },
         {
           "name": "errorBar",
@@ -27859,7 +28249,7 @@
         {
           "name": "point",
           "required": false,
-          "type": "{ radius?: number | undefined; shape?: PointShape | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; } | undefined"
+          "type": "(StrokeStyleDetails & { radius?: number | undefined; shape?: PointShape | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; }) | undefined"
         },
         {
           "name": "guides",
@@ -27909,7 +28299,7 @@
         {
           "name": "line",
           "required": false,
-          "type": "{ strokeWidth?: number | undefined; curve?: CurveInterpolation | undefined; } | undefined"
+          "type": "(StrokeStyleDetails & { strokeWidth?: number | undefined; curve?: CurveInterpolation | undefined; }) | undefined"
         },
         {
           "name": "band",
@@ -28040,7 +28430,7 @@
         {
           "name": "line",
           "required": false,
-          "type": "{ strokeWidth?: number | undefined; curve?: CurveInterpolation | undefined; stroke?: string | undefined; opacity?: number | undefined; closed?: false | undefined; } | undefined"
+          "type": "(StrokeStyleDetails & { strokeWidth?: number | undefined; curve?: CurveInterpolation | undefined; stroke?: string | undefined; opacity?: number | undefined; closed?: false | undefined; }) | undefined"
         },
         {
           "name": "guides",
@@ -28166,7 +28556,7 @@
         {
           "name": "point",
           "required": false,
-          "type": "{ radius?: number | undefined; shape?: PointShape | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; } | undefined"
+          "type": "(StrokeStyleDetails & { radius?: number | undefined; shape?: PointShape | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; }) | undefined"
         },
         {
           "name": "guides",
@@ -28292,7 +28682,7 @@
         {
           "name": "line",
           "required": false,
-          "type": "(Omit<{ strokeWidth?: number | undefined; curve?: CurveInterpolation | undefined; stroke?: string | undefined; opacity?: number | undefined; closed?: false | undefined; }, \"closed\" | \"curve\"> & { ...; }) | undefined"
+          "type": "(Omit<StrokeStyleDetails & { strokeWidth?: number | undefined; curve?: CurveInterpolation | undefined; stroke?: string | undefined; opacity?: number | undefined; closed?: false | undefined; }, \"closed\" | \"curve\"> & { ...; }) | undefined"
         },
         {
           "name": "guides",
@@ -28411,7 +28801,7 @@
         {
           "name": "line",
           "required": false,
-          "type": "(Omit<{ strokeWidth?: number | undefined; curve?: CurveInterpolation | undefined; stroke?: string | undefined; opacity?: number | undefined; closed?: false | undefined; }, \"closed\" | \"curve\"> & { ...; }) | undefined"
+          "type": "(Omit<StrokeStyleDetails & { strokeWidth?: number | undefined; curve?: CurveInterpolation | undefined; stroke?: string | undefined; opacity?: number | undefined; closed?: false | undefined; }, \"closed\" | \"curve\"> & { ...; }) | undefined"
         },
         {
           "name": "guides",
@@ -28660,7 +29050,7 @@
         {
           "name": "point",
           "required": false,
-          "type": "{ radius?: number | undefined; shape?: PointShape | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; } | undefined"
+          "type": "(StrokeStyleDetails & { radius?: number | undefined; shape?: PointShape | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; }) | undefined"
         },
         {
           "name": "guides",
@@ -28790,7 +29180,7 @@
         {
           "name": "point",
           "required": false,
-          "type": "{ radius?: number | undefined; shape?: PointShape | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; } | undefined"
+          "type": "(StrokeStyleDetails & { radius?: number | undefined; shape?: PointShape | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; }) | undefined"
         },
         {
           "name": "packing",
@@ -29204,7 +29594,7 @@
         {
           "name": "bar",
           "required": false,
-          "type": "{ fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; } | undefined"
+          "type": "(StrokeStyleDetails & { cornerRadius?: number | undefined; } & { fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; }) | undefined"
         },
         {
           "name": "guides",
@@ -29368,7 +29758,7 @@
         {
           "name": "bar",
           "required": false,
-          "type": "{ fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; } | undefined"
+          "type": "(StrokeStyleDetails & { cornerRadius?: number | undefined; } & { fill?: string | undefined; opacity?: number | undefined; stroke?: FilledMarkStroke | undefined; strokeWidth?: number | undefined; }) | undefined"
         },
         {
           "name": "guides",
@@ -29495,7 +29885,7 @@
         {
           "name": "rect",
           "required": false,
-          "type": "{ opacity?: number | undefined; stroke?: string | false | undefined; strokeWidth?: number | undefined; } | undefined"
+          "type": "(StrokeStyleDetails & { cornerRadius?: number | undefined; } & { opacity?: number | undefined; stroke?: string | false | undefined; strokeWidth?: number | undefined; }) | undefined"
         },
         {
           "name": "guides",
@@ -29629,7 +30019,7 @@
         {
           "name": "line",
           "required": false,
-          "type": "{ strokeWidth?: number | undefined; stroke?: string | undefined; opacity?: number | undefined; curve?: \"linear\" | undefined; closed?: false | undefined; } | undefined"
+          "type": "(StrokeStyleDetails & { strokeWidth?: number | undefined; stroke?: string | undefined; opacity?: number | undefined; curve?: \"linear\" | undefined; closed?: false | undefined; }) | undefined"
         },
         {
           "name": "guides",
@@ -29747,10 +30137,30 @@
           "name": "strokeWidth",
           "required": false,
           "type": "number | undefined"
+        },
+        {
+          "name": "lineCap",
+          "required": false,
+          "type": "\"butt\" | \"round\" | \"square\" | undefined"
+        },
+        {
+          "name": "lineJoin",
+          "required": false,
+          "type": "\"bevel\" | \"miter\" | \"round\" | undefined"
+        },
+        {
+          "name": "miterLimit",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "cornerRadius",
+          "required": false,
+          "type": "number | undefined"
         }
       ],
       "callPatterns": [
-        "createRectMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth? })"
+        "createRectMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth?, lineCap?, lineJoin? })"
       ],
       "snippet": "program.createRectMark({})",
       "errors": [],
@@ -29824,6 +30234,26 @@
           "type": "string | undefined"
         },
         {
+          "name": "lineCap",
+          "required": false,
+          "type": "\"butt\" | \"round\" | \"square\" | undefined"
+        },
+        {
+          "name": "lineJoin",
+          "required": false,
+          "type": "\"bevel\" | \"miter\" | \"round\" | undefined"
+        },
+        {
+          "name": "miterLimit",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
+          "name": "cornerRadius",
+          "required": false,
+          "type": "number | undefined"
+        },
+        {
           "name": "fill",
           "required": false,
           "type": "string | undefined"
@@ -29845,9 +30275,9 @@
         }
       ],
       "callPatterns": [
-        "editRectMark({ target?, fill?, opacity?, stroke?, strokeWidth? })"
+        "editRectMark({ target?, lineCap?, lineJoin?, miterLimit?, cornerRadius?, fill?, opacity?, stroke? })"
       ],
-      "snippet": "program.editRectMark({ fill: \"#f28e2b\" })",
+      "snippet": "program.editRectMark({ lineCap: \"butt\" })",
       "errors": [],
       "route": "/reference/actions/marks/#editrectmark"
     },
@@ -29947,7 +30377,7 @@
         {
           "name": "arc",
           "required": false,
-          "type": "{ innerRadius?: number | undefined; padAngle?: number | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: string | undefined; strokeWidth?: number | undefined; } | undefined"
+          "type": "(StrokeStyleDetails & { innerRadius?: number | undefined; padAngle?: number | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: string | undefined; strokeWidth?: number | undefined; }) | undefined"
         },
         {
           "name": "guides",
@@ -30075,7 +30505,7 @@
         {
           "name": "arc",
           "required": false,
-          "type": "{ innerRadius?: number | undefined; padAngle?: 0 | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: string | undefined; strokeWidth?: number | undefined; } | undefined"
+          "type": "(StrokeStyleDetails & { innerRadius?: number | undefined; padAngle?: 0 | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: string | undefined; strokeWidth?: number | undefined; }) | undefined"
         },
         {
           "name": "guides",
@@ -30202,7 +30632,7 @@
         {
           "name": "arc",
           "required": false,
-          "type": "{ innerRadius?: number | undefined; padAngle?: 0 | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: string | undefined; strokeWidth?: number | undefined; } | undefined"
+          "type": "(StrokeStyleDetails & { innerRadius?: number | undefined; padAngle?: 0 | undefined; fill?: string | undefined; opacity?: number | undefined; stroke?: string | undefined; strokeWidth?: number | undefined; }) | undefined"
         },
         {
           "name": "guides",
@@ -30399,7 +30829,7 @@
         {
           "name": "area",
           "required": false,
-          "type": "{ fill?: string | undefined; opacity?: number | undefined; stroke?: string | undefined; strokeWidth?: number | undefined; curve?: CurveInterpolation | undefined; } | undefined"
+          "type": "(StrokeStyleDetails & { fill?: string | undefined; opacity?: number | undefined; stroke?: string | undefined; strokeWidth?: number | undefined; curve?: CurveInterpolation | undefined; }) | undefined"
         },
         {
           "name": "guides",
@@ -30563,7 +30993,7 @@
         {
           "name": "area",
           "required": false,
-          "type": "{ opacity?: number | undefined; stroke?: string | undefined; strokeWidth?: number | undefined; curve?: CurveInterpolation | undefined; } | undefined"
+          "type": "(StrokeStyleDetails & { opacity?: number | undefined; stroke?: string | undefined; strokeWidth?: number | undefined; curve?: CurveInterpolation | undefined; }) | undefined"
         },
         {
           "name": "guides",
@@ -30688,7 +31118,7 @@
         {
           "name": "area",
           "required": false,
-          "type": "{ fill?: string | undefined; opacity?: number | undefined; stroke?: string | undefined; strokeWidth?: number | undefined; curve?: CurveInterpolation | undefined; } | undefined"
+          "type": "(StrokeStyleDetails & { fill?: string | undefined; opacity?: number | undefined; stroke?: string | undefined; strokeWidth?: number | undefined; curve?: CurveInterpolation | undefined; }) | undefined"
         },
         {
           "name": "guides",

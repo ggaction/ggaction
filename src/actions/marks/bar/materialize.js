@@ -15,7 +15,7 @@ import { offsetCategoryRectangles } from
 import { materializeRectItem } from "../../../grammar/roundedRect.js";
 import { STROKE_STYLE_PROPERTIES } from
   "../../../grammar/strokeStyle.js";
-import { replaceMarkGraphicItems } from "../shared.js";
+import { replaceGraphicItems } from "../../primitives/editGraphics.js";
 
 const REMATERIALIZE_OPTIONS = Object.freeze(["id", "scales"]);
 
@@ -25,7 +25,7 @@ function editRectangles(program, id, rectangles) {
     .some(property => Object.hasOwn(appearance, property));
   if (hasShapeStyle) {
     const radius = appearance.cornerRadius ?? 0;
-    return replaceMarkGraphicItems(
+    return replaceGraphicItems(
       program,
       id,
       "rect",

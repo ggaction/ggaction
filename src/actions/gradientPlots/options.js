@@ -5,6 +5,10 @@ import {
   validateUnitInterval
 } from "../../core/validation.js";
 import { normalizePalette } from "../../grammar/palettes.js";
+import {
+  requestedStrokeDetails,
+  STROKE_STYLE_PROPERTIES
+} from "../../grammar/strokeStyle.js";
 
 export const GRADIENT_PLOT_OPTIONS = Object.freeze([
   "id", "target", "data", "x", "y", "coordinate", "density", "width",
@@ -90,7 +94,7 @@ export function resolveGradientCenter(
   if (value === false) return false;
   const options = plain(
     value,
-    ["type", "stroke", "strokeWidth"],
+    ["type", "stroke", "strokeWidth", ...STROKE_STYLE_PROPERTIES],
     "center",
     operation
   );
@@ -108,7 +112,11 @@ export function resolveGradientCenter(
       : validateNonNegativeFinite(
           options.strokeWidth,
           `${operation} center.strokeWidth`
-        )
+        ),
+    ...requestedStrokeDetails(
+      { ...(previous ?? {}), ...options },
+      `${operation} center`
+    )
   });
 }
 
