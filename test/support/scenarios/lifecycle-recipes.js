@@ -1184,7 +1184,13 @@ function buildDirectDataResources(factors) {
       width,
       background: factors.background
     })
-    .createData({ id: "directSource", values: rows });
+    .createData({ id: "directSource", values: rows })
+    .createData({ id: "unusedLifecycleData", values: [] })
+    .createScale({ id: "unusedLifecycleScale", type: "linear" })
+    .createCoordinate({ id: "unusedLifecycleCoordinate", type: "cartesian" })
+    .removeData({ id: "unusedLifecycleData" })
+    .removeScale({ id: "unusedLifecycleScale" })
+    .removeCoordinate({ id: "unusedLifecycleCoordinate" });
   program = addDirectDerivedDataEdits(program);
   return program
     .createDensityData({
@@ -2060,6 +2066,7 @@ function lifecycleSignature(base, factors) {
     "action-repeat-charts-lifecycle": ["repeatCharts"],
     "action-direct-data-resources": [
       "editCanvas", "createDensityData", "createBin2DData", "createDerivedData", "createScale",
+      "removeData", "removeScale", "removeCoordinate",
       "createNormalizedData", "createCompleteData", "createImputedData", "editDerivedData",
       "editComputedData", "editFilteredData", "editFoldData", "editSummaryData",
       "editBinData", "editTimeUnitData", "editWindowData", "editDensityData",
@@ -2343,6 +2350,7 @@ export const LIFECYCLE_EXPECTED_ACTIONS = Object.freeze([
   "createBeeswarmPlot", "createRaincloudPlot", "editRaincloudPlot",
   "createECDFData", "createDotPlot",
   "createLollipopPlot", "createDumbbellPlot", "editEndpointPlot",
+  "removeData", "removeScale", "removeCoordinate",
   "createECDFPlot", "editECDFPlot", "createIntervalPlot", "createRegressionPlot",
   "editXScale", "editYScale", "editThetaScale", "editRScale", "editColorScale",
   "editSizeScale", "editOpacityScale", "editShapeScale", "editStrokeWidthScale",
