@@ -15,6 +15,7 @@ import {
   resolveDerivedDataOwner,
   reviseDerivedData
 } from "./edit.js";
+import { normalizeDatasetTransformEdit } from "../../grammar/transforms.js";
 export { materializeBin2DData } from "./bin2dMaterialize.js";
 
 const OPTIONS = Object.freeze([
@@ -91,32 +92,18 @@ function requireCompleteEditOutputFields(value, members) {
 }
 
 function editedTransform(owner, previous, args) {
-  const prior = requestedBin2DTransform(previous.transform[0]);
-  const option = property => Object.hasOwn(args, property)
-    ? args[property]
-    : prior[property];
-  const members = option("members");
-  let as = option("as");
-  if (!Object.hasOwn(args, "as")) {
-    as = { ...as };
-    if (members && as.members === undefined) {
-      as.members = `__${owner}_members`;
-    } else if (!members) {
-      delete as.members;
-    }
-  }
-  const transform = normalizeBin2DTransform({
-    id: owner,
-    x: option("x"),
-    y: option("y"),
-    bins: option("bins"),
-    extent: option("extent"),
-    includeEmpty: option("includeEmpty"),
-    members,
-    as
-  });
+  const patch = Object.fromEntries(EDITABLE.flatMap(property =>
+    property !== "source" && Object.hasOwn(args, property)
+      ? [[property, args[property]]]
+      : []
+  ));
+  const transform = normalizeDatasetTransformEdit(
+    previous.transform[0],
+    patch,
+    owner
+  );
   if (Object.hasOwn(args, "as")) {
-    requireCompleteEditOutputFields(args.as, members);
+    requireCompleteEditOutputFields(args.as, transform.members);
   }
   return transform;
 }

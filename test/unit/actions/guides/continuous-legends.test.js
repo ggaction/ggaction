@@ -3,6 +3,8 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import { chart } from "../../../../src/index.js";
+import { resolveLegendStepConfig } from
+  "../../../../src/actions/guides/legends/creation.js";
 
 const rows = Object.freeze([
   Object.freeze({ x: 1, y: 2, value: 8 }),
@@ -24,6 +26,37 @@ function pointProgram({ position = "right", top = 100, right = 150, bottom = 100
     .encodeX({ field: "x" })
     .encodeY({ field: "y" });
 }
+
+test("resolves continuous stroke legend steps through the shared facade planner", () => {
+  const gradient = pointProgram()
+    .encodeStroke({ field: "value", fieldType: "quantitative" });
+  const interval = pointProgram()
+    .encodeStroke({
+      field: "value",
+      fieldType: "quantitative",
+      scale: {
+        type: "quantize",
+        domain: [8, 24.8],
+        range: ["#111111", "#eeeeee"]
+      }
+    });
+
+  const gradientStep = resolveLegendStepConfig(gradient, {
+    op: "createStrokeGradientLegend",
+    args: { target: "points", channels: ["stroke"] }
+  });
+  const intervalStep = resolveLegendStepConfig(interval, {
+    op: "createStrokeIntervalLegend",
+    args: { target: "points", channels: ["stroke"] }
+  });
+
+  assert.equal(gradientStep.kind, "strokeGradient");
+  assert.equal(gradientStep.config.target, "points");
+  assert.equal(gradientStep.config.scale, "stroke");
+  assert.equal(intervalStep.kind, "strokeInterval");
+  assert.equal(intervalStep.config.target, "points");
+  assert.equal(intervalStep.config.scale, "stroke");
+});
 
 test("rejects continuous legend sample counts above the generated item limit", () => {
   const base = pointProgram()

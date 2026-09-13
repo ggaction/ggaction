@@ -131,10 +131,23 @@ function normalizeBinEdit(transform, patch) {
 }
 
 function normalizeBin2DEdit(transform, patch, owner) {
+  const base = requestedOptions(transform);
+  const members = patch.members ?? base.members;
+  let as = patch.as ?? base.as;
+  if (!Object.hasOwn(patch, "as")) {
+    as = { ...as };
+    if (members && as.members === undefined) {
+      as.members = `__${owner}_members`;
+    } else if (!members) {
+      delete as.members;
+    }
+  }
   return normalizeBin2DTransform({
     id: owner,
-    ...requestedOptions(transform),
-    ...patch
+    ...base,
+    ...patch,
+    members,
+    as
   });
 }
 
@@ -454,8 +467,7 @@ const TRANSFORM_POLICIES = Object.freeze({
     ...findTransformTopology("statisticalReference"),
     validate: validateStatisticalReferenceTransform,
     materializeOp: "materializeStatisticalReferenceData",
-    replayTransform: requestedTransform,
-    outputRoles: () => ({})
+    replayTransform: requestedTransform
   }),
   timeUnit: Object.freeze({
     ...findTransformTopology("timeUnit"),

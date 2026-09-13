@@ -167,6 +167,28 @@ test("preserves explicit highlight paint across theme changes", () => {
   );
 });
 
+test("infers theme-owned paint when replaying legacy highlight state", () => {
+  const highlighted = pointChart().highlightMarks({
+    id: "legacyHighlight",
+    select: { field: "x", op: "max" }
+  });
+  const current = highlighted.materializationConfigs.highlights.legacyHighlight;
+  const { paintSource: _paintSource, ...legacyConfig } = current;
+  const legacy = highlighted._withHighlightConfig("legacyHighlight", legacyConfig);
+  const themed = legacy.applyTheme({
+    theme: { base: "light", tokens: { highlight: "#00aa55" } }
+  });
+
+  assert.equal(
+    themed.materializationConfigs.highlights.legacyHighlight.paintSource,
+    "theme"
+  );
+  assert.equal(
+    themed.graphicSpec.objects.point.items.at(-1).properties.fill,
+    "#00aa55"
+  );
+});
+
 test("themes resources created later and supports the Basic entry", () => {
   const dark = pointChart(() => basicChart().applyTheme({ theme: "dark" }));
   assert.equal(dark.graphicSpec.objects.canvas.properties.background, "#0f172a");

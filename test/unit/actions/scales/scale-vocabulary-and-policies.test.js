@@ -350,3 +350,15 @@ test("rejects role-irrelevant opacity and stroke-width scale options", () => {
     0.25
   );
 });
+
+test("rejects conflicting shorthand and explicit band padding", () => {
+  assert.throws(
+    () => chart().createScale({
+      id: "categories",
+      type: "band",
+      padding: 0.2,
+      paddingInner: 0.1
+    }),
+    /padding cannot be combined with paddingInner or paddingOuter/
+  );
+});
