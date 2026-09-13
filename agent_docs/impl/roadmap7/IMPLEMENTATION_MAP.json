@@ -945,23 +945,26 @@
         "R22",
         "R23"
       ],
-      "status": "Proposed",
+      "status": "Implemented-primary",
       "newPublicActions": [],
       "extendedPublicSurfaces": [
         "createLegend",
         "editLegend"
       ],
       "currentSourceFiles": [
+        "src/actions/guides/legends/sampling.js",
         "src/actions/guides/legends/size.js",
         "src/actions/guides/legends/strokeWidth.js",
         "src/actions/guides/legends/continuous/opacity.js",
-        "src/actions/guides/legends/edit.js"
+        "src/actions/guides/legends/edit.js",
+        "src/actions/guides/legends/creation.js",
+        "src/actions/scales/edit.js"
       ],
       "existingRegressionTests": [
         "test/unit/actions/guides/legend-content-editing.test.js",
         "test/contracts/size-legend-edges.test.js"
       ],
-      "suggestedNewTest": "test/contracts/legend-values.test.js",
+      "suggestedNewTest": null,
       "acceptanceCases": [
         "R37-N01",
         "R37-N02",
@@ -976,7 +979,14 @@
         "edit/reencode/Canvas/source replay/remove",
         "applicable composition and renderer cells",
         "Full registration/types/current contracts/knowledge/docs/installed package"
-      ]
+      ],
+      "implementedTests": [
+        "test/contracts/legend-values.test.js",
+        "test/unit/actions/guides/legend-content-editing.test.js",
+        "test/browser/package-consumer.browser.js",
+        "scripts/package-consumer.js"
+      ],
+      "implementationCommit": "8760111d"
     },
     {
       "id": "R38",

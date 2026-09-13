@@ -220,3 +220,25 @@ R36은 `d7136174`에서 literal reference와 구별되는 dynamic statistical re
 | docs build 환경 | source generation과 47개 docs tests는 통과; host Ruby 2.6.10이라 Ruby 3.2+가 필요한 locked Jekyll build는 미실행 |
 | 남은 통합 cell | R31/R32/R33 advanced facet/repeat는 R43, 범용 statistical reference resource edge는 R25에서 검증 |
 | 상태 연결 | Phase 7 completed-primary, Phase 8 active, R37 exact legend values가 다음 WP |
+
+## 2026-09-13 R37 primary 구현과 시각 동등성 검증
+
+R37은 `8760111d`에서 sampled continuous legend의 exact value state machine을 구현했다. 요청 상태는 각 legend config의 `sampling` 한 곳에 저장되며, exact mode에서도 이전 automatic count를 보존한다. size, opacity, strokeWidth 값은 실제 scale mapper로 계산하고 raw sample 순서는 reverse와 독립적으로 유지한다. scale/domain/data/facet replay에서 저장된 값이 invalid해지면 변경 전 상태와 trace를 보존한 채 상위 연산 전체를 거부한다.
+
+`547eae1b`에서는 동일 base에서 만든 lower-level `editGraphics` 프로그램과 public `createLegend({values})` 프로그램을 같은 실행에서 렌더링해 graphic hierarchy와 decoded PNG pixel hash가 같은지 검증했다.
+
+| 검증 | 실제 결과 |
+| --- | --- |
+| R37 acceptance | R37-N01/N02/E01/L01/L02 passed; `test/contracts/legend-values.test.js` 9/9 |
+| 상태 전이 | auto count5 → exact values → exact replacement → `values:"auto"` count5 복구; exact에서 count-only와 values+count 충돌 거부 |
+| 값 검증 | 길이 1..100, finite, strictly increasing, -0/0 중복, domain/log positivity, unsupported/discrete/gradient/multi-block 오류 |
+| mapper·layout | size area, opacity, strokeWidth 실제 mapper; mapped zero의 label/slot 유지; reverse는 mapped appearance만 역전; horizontal one-value 유한 좌표 |
+| lifecycle | scale shrink와 inferred-domain data rebind 원자적 오류; shared/independent facet 검증; theme/layout/Canvas replay |
+| renderer | Browser Canvas, SVG, Node PNG, PDF 통과; lower-level/public decoded PNG pixel hash 일치 |
+| 누적 | unit 2,373/2,373; contracts 447/447; docs 47/47; browser 73/73; 실패·skip 0 |
+| public/package | runtime types, Current contracts, catalog/cards/relations/MCP/generated docs, installed Node·strict TypeScript·browser consumer 동기화 |
+| package artifact | 510 entries; packed 670,837 bytes; unpacked 3,373,720 bytes; SHA-256 `f1e4b9d0c31bb1a8e6f34efbaef308b382b11bcaf2a276736fae99c8a8d2298d` |
+| browser bundles | Full/Basic/SVG gzip 338,739/163,400/6,418 bytes |
+| docs build 환경 | source generation과 docs tests는 통과; host Ruby 2.6.10이라 Ruby 3.2+가 필요한 locked Jekyll build는 미실행 |
+| 열린 통합 cell | combined/multi-block selection은 R38, custom theme replay는 R47, Polar/Parallel facet/repeat consumer는 R43 |
+| 상태 연결 | R37 Implemented-primary, Phase 8 active, R38 `editLegendBlock`이 다음 WP |

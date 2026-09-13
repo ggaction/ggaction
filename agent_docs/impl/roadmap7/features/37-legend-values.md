@@ -1,23 +1,26 @@
 # R37 — 연속 범례의 명시적인 표본값
 
-원래 감사 번호: **37**. Primary owner: **Phase 8**. 상태: **Proposed / 구현 전**.
-아래 세부 API·수치 정책의 Gate는 승인됐다. 상태의 `Proposed`는 제품 구현·검증이 아직 완료되지 않았다는 뜻이다.
+원래 감사 번호: **37**. Primary owner: **Phase 8**. 상태: **Implemented-primary**.
+제품 구현은 `8760111d`, 같은 실행의 primitive/public decoded-PNG 동등성 보강은 `547eae1b`에 있다. R38 block selector와 R43/R47 후속 consumer 통합은 각 기능 owner에 남아 있다.
 
 ## 목적과 현재 연결점
 
 사용자가 설명하려는 수치 기준을 범례에서 정확히 선택한다. guide sample을 바꾸기 위해 실제 data scale domain을 왜곡하는 우회를 없앤다.
 
 현재 파일(저장소 root 상대 경로):
+- `src/actions/guides/legends/sampling.js`
 - `src/actions/guides/legends/size.js`
 - `src/actions/guides/legends/strokeWidth.js`
 - `src/actions/guides/legends/continuous/opacity.js`
 - `src/actions/guides/legends/edit.js`
+- `src/actions/guides/legends/creation.js`
+- `src/actions/scales/edit.js`
 
 관련 항목: R22, R23. 파일이 후속 작업에서 이동하면 역할 owner를 찾아 경로를 갱신하고 비슷한 이름의 구현을 새로 중복 생성하지 않는다.
 
 ## 권장 공개 API
 
-아래는 설계용 TypeScript다. 참조 타입은 [공통 계약](../COMMON_CONTRACT.md) 또는 current `types/program.d.ts`에서 가져오고, 실제 export 타입 이름은 API 동결 Gate에서 기록한다. API 예제를 현재 라이브러리에서 실행 가능하다고 문서화하지 않는다.
+아래는 현재 TypeScript 계약의 요약이다. 정확한 export는 `types/program.d.ts`의 `LegendOptions`와 `EditLegendOptions`가 소유한다.
 
 ```ts
 createLegend({...ExistingOptions,values?:readonly number[]})
@@ -88,9 +91,9 @@ symbol area0/opacity0/width0은 보이지 않아도 text label과 item gap을 �
 
 ## 완료 조건
 
-- [ ] 위 API의 최단 호출과 explicit 대상 호출, 누락/auto/false/empty 경계를 타입과 runtime으로 동기화했다.
-- [ ] 위 수치 oracle를 실제 capability test에 구현했고 계획 예제를 기대값 생성기로 재사용하지 않았다.
-- [ ] 기존 consumer와 새 consumer에 scale/mark/guide/label/selection/facet/Canvas replay를 검증했다.
-- [ ] Full 등록·타입 export·Current 계약·catalog·card·관계 trace·MCP·문서·installed consumer를 갱신했다.
-- [ ] 미지원 cell은 이유를 적었다. 이 문서에 명시한 필수 cell을 임의 제외하지 않았다.
-- [ ] 해당 Phase의 승인/검증 근거를 기록했다. 추측으로 완료 표시하지 않았다.
+- [x] 위 API의 최단 호출과 explicit 대상 호출, 누락/auto/false/empty 경계를 타입과 runtime으로 동기화했다.
+- [x] 위 수치 oracle를 실제 capability test에 구현했고 계획 예제를 기대값 생성기로 재사용하지 않았다.
+- [x] 기존 consumer와 새 consumer에 scale/mark/guide/label/selection/facet/Canvas replay를 검증했다.
+- [x] Full 등록·타입 export·Current 계약·catalog·card·관계 trace·MCP·문서·installed consumer를 갱신했다.
+- [x] 미지원 cell은 이유를 적었다. combined/multi-block 대상은 R38 selector가 생기기 전 root `values`를 명시 오류로 거부한다.
+- [x] 해당 Phase의 승인/검증 근거를 기록했다. `test/contracts/legend-values.test.js`, Phase 8 STEP1, `8760111d`, `547eae1b`가 증거다.

@@ -5,11 +5,11 @@
 - [x] 범위·현재 source owner·선행 Phase 완료 상태 확인
 - [x] Gate A 자료: 정확한 API/schema/defaults/오류/수치 oracle 작성·검증
 - [x] 명시 승인 범위 기록 후 해당 구현 시작
-- [ ] appearance 대상은 primitive render와 target public chain으로 Gate V 확인
+- [x] R37 appearance 대상은 primitive render와 target public chain으로 Gate V 확인
 - [ ] 아래 wave 구현과 focused/cumulative tests 완료
 - [ ] types/current contracts/catalog/cards/MCP/docs/package 영향 갱신
 - [ ] Gate X 결과와 남은 후속 통합 cell 기록
-- [ ] 검증된 coherent change마다 commit/push하고 다음 Gate 범위 확인
+- [x] R37 coherent source/test change를 검증하고 commit/push
 
 계획 작성 시 모든 체크는 미완료다. Phase 0 은 제품 구현이 없으므로 해당 구현·시각 항목의 미적용 이유를 기록한다. Phase 12 는 새 시각 목표가 없으면 승인된 variant를 현재 코드에서 다시 실행해 검증한다.
 
@@ -43,7 +43,9 @@
 
 | wave | commit | tests/artifacts | remaining | status |
 | --- | --- | --- | --- | --- |
-| 미착수 | — | 실행 증거 없음 | 위 전체 범위 | planned |
+| W1 R37 제품 | `8760111d` | `test/contracts/legend-values.test.js`; unit 2,373; contracts 447; docs 47; browser 73; installed Node/TypeScript/MCP/browser consumer | R38 selector 전 combined/multi-block root values는 명시 거부 | Implemented-primary |
+| W1 R37 시각 증거 | `547eae1b` | independent lower-level program과 public program의 graphic equivalence 및 decoded PNG pixel hash 일치 | R38/R39의 새 시각 target | passed |
+| W2–W4 | — | 실행 전 | R38, R39, Phase 8 통합 | planned |
 
 ## Gate 연결
 

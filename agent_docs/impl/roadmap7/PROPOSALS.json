@@ -598,14 +598,17 @@
         "R22",
         "R23"
       ],
-      "status": "Proposed",
+      "status": "Implemented-primary",
       "scopeSelection": "user-selected",
       "file": "features/37-legend-values.md",
       "sources": [
+        "src/actions/guides/legends/sampling.js",
         "src/actions/guides/legends/size.js",
         "src/actions/guides/legends/strokeWidth.js",
         "src/actions/guides/legends/continuous/opacity.js",
-        "src/actions/guides/legends/edit.js"
+        "src/actions/guides/legends/edit.js",
+        "src/actions/guides/legends/creation.js",
+        "src/actions/scales/edit.js"
       ],
       "acceptanceSections": [
         "값·기본값·오류 계약",
@@ -613,7 +616,8 @@
         "독립 oracle와 인수 테스트",
         "완료 조건",
         "구현 고정 명세"
-      ]
+      ],
+      "implementationCommit": "8760111d"
     },
     {
       "id": "R38",

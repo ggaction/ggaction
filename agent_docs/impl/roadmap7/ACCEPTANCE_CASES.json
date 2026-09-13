@@ -1210,8 +1210,8 @@
       "kind": "normal",
       "specification": "domain[0,100],values[10,50,100] → labels3,symbols3,domain unchanged.",
       "owner": "features/37-legend-values.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/contracts/legend-values.test.js (exact labels, real size mapper, unchanged scale/marks, primitive/decoded-PNG parity); 8760111d, 547eae1b"
     },
     {
       "id": "R37-N02",
@@ -1220,8 +1220,8 @@
       "kind": "normal",
       "specification": "auto count5→values3→values:auto → 이전 count5 복구.",
       "owner": "features/37-legend-values.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/contracts/legend-values.test.js (auto count memory, exact replacement, auto reset); 8760111d"
     },
     {
       "id": "R37-E01",
@@ -1230,8 +1230,8 @@
       "kind": "error",
       "specification": "[50,10],duplicates,[],length101,outside-domain,count+values → 오류.",
       "owner": "features/37-legend-values.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/contracts/legend-values.test.js (descending, duplicate, -0/0, empty, 101, NaN, outside, conflict, unsupported and multi-block atomic rejection); 8760111d"
     },
     {
       "id": "R37-L01",
@@ -1240,8 +1240,8 @@
       "kind": "lifecycle",
       "specification": "domain100→40 while values100 → editScale/상위 data-edit 전체 실패.",
       "owner": "features/37-legend-values.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/contracts/legend-values.test.js (scale shrink and inferred-domain data rebind atomic rejection; log validation); 8760111d"
     },
     {
       "id": "R37-L02",
@@ -1250,8 +1250,8 @@
       "kind": "lifecycle",
       "specification": "theme/legend move/Canvas 후 exact values와 invisible0 symbol 정책 유지.",
       "owner": "features/37-legend-values.md",
-      "status": "planned",
-      "runtimeEvidence": null
+      "status": "passed",
+      "runtimeEvidence": "test/contracts/legend-values.test.js (theme/layout/Canvas replay and Canvas/SVG/PNG/PDF); 8760111d, 547eae1b"
     },
     {
       "id": "R38-N01",

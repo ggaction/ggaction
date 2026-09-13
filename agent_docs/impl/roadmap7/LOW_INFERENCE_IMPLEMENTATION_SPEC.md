@@ -1,6 +1,6 @@
 # Roadmap 7 — 무추론 구현 명세
 
-작성 기준: 2026-09-13. 기준 branch `codex/roadmap7-authoring-refinement`, 마지막 완료 제품 checkpoint `5832228c`.
+작성 기준: 2026-09-13. 기준 branch `codex/roadmap7-authoring-refinement`, 마지막 완료 제품 checkpoint `8760111d`, 시각 증거 checkpoint `547eae1b`.
 
 이 문서는 구현자가 설계를 새로 해석하지 않고 남은 Roadmap 7을 실행하도록 만든 코드 수준 명세다. 공개 의미·기본값·수식은 각 `features/*.md`가 소유하고, 이 문서는 **수정 파일, 함수 경계, 상태 경로, 실행 순서, 삭제 규칙, 테스트 묶음과 종료 조건**을 소유한다. 두 문서가 다르면 feature 계약을 따르고 같은 checkpoint에서 이 문서를 고친다. 완료된 R02/R05/R06/R07/R08/R09/R10/R19/R20/R21/R22/R23/R27/R29/R31/R32/R33/R36은 다시 구현하지 않는다. R31/R32/R33의 facet/repeat cell만 R43에서 현재 action을 consumer로 검증한다.
 
@@ -330,6 +330,8 @@ labels와 references가 source scale domain contributor가 되지 않고, select
 ## 3. Phase 8 — legend content, block identity, display names
 
 ### R37 — exact sampled legend values
+
+상태: **Implemented-primary**. `8760111d`의 제품 코드를 다시 만들지 않는다. `547eae1b`가 independent lower-level/public graphic·decoded-PNG parity를 소유한다. 아래 내용은 R38/R43/R47 consumer가 따라야 할 회귀 계약이다.
 
 #### 적용 범위와 state machine
 

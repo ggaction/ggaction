@@ -1,12 +1,13 @@
 {
   "phase": 8,
-  "status": "Proposed",
+  "status": "active",
   "scope": "implementation",
   "candidates": [
     {
       "id": "R37",
-      "status": "Proposed",
-      "file": "../features/37-legend-values.md"
+      "status": "Implemented-primary",
+      "file": "../features/37-legend-values.md",
+      "implementationCommit": "8760111d"
     },
     {
       "id": "R38",

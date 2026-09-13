@@ -1,6 +1,6 @@
 # Roadmap 7 — 상세 구현 작업 패킷
 
-작성 기준: 2026-09-13. 현재 branch `codex/roadmap7-authoring-refinement`, 마지막 구현 검증 checkpoint `5832228c`. 이 문서는 이미 승인된 Roadmap 7을 구현자가 기능 단위로 끝까지 실행하기 위한 **작업 분해와 종료 절차**다. Phase 8 이후의 함수·state·transition·test를 한 문서에서 기계적으로 실행하려면 [무추론 구현 명세](LOW_INFERENCE_IMPLEMENTATION_SPEC.md)를 함께 따른다. 공개 API의 정확한 의미·수식·기본값은 각 `features/*.md`가 canonical owner이며, 이 문서는 그 계약을 어느 파일에 어떤 순서로 구현하고 무엇으로 검증할지를 소유한다.
+작성 기준: 2026-09-13. 현재 branch `codex/roadmap7-authoring-refinement`, 마지막 제품 구현 checkpoint `8760111d`, 시각 증거 checkpoint `547eae1b`. 이 문서는 이미 승인된 Roadmap 7을 구현자가 기능 단위로 끝까지 실행하기 위한 **작업 분해와 종료 절차**다. Phase 8 이후의 함수·state·transition·test를 한 문서에서 기계적으로 실행하려면 [무추론 구현 명세](LOW_INFERENCE_IMPLEMENTATION_SPEC.md)를 함께 따른다. 공개 API의 정확한 의미·수식·기본값은 각 `features/*.md`가 canonical owner이며, 이 문서는 그 계약을 어느 파일에 어떤 순서로 구현하고 무엇으로 검증할지를 소유한다.
 
 ## 1. 현재 상태와 실행 경계
 
@@ -23,6 +23,7 @@
 | R32 selected final-item labels | Implemented-primary | `ee3f3b02` | R43 facet/repeat 소비 회귀 |
 | R33 semantic label anchors | Implemented-primary | `95968031` | R43 facet/repeat 소비 회귀 |
 | R36 dynamic statistical references | Implemented-primary | `d7136174`, 통합 `5832228c` | R25 resource collector 통합 |
+| R37 exact sampled legend values | Implemented-primary | `8760111d`, 시각 증거 `547eae1b` | R38 block selector와 R43/R47 소비 회귀 |
 
 완료 checkpoint의 pure core나 public API를 다른 이름으로 다시 만들지 않는다. 후속 기능이 새 consumer를 추가할 때 기존 owner에 consumer path와 regression만 보강한다.
 
@@ -30,7 +31,7 @@
 
 순서는 의존성 계약이다. 같은 번호의 소단계는 위에서 아래로 수행한다.
 
-1. Phase 8: R37 → R38 → R39 → guide 통합.
+1. Phase 8: R38 → R39 → guide 통합. R37은 완료 checkpoint다.
 2. Phase 9: R47 → R49 → renderer/style 통합.
 3. Phase 10: R43 family matrix 전체.
 4. Phase 11: R25 reference registry와 안전 삭제.
@@ -61,7 +62,7 @@ R19, R27, R29의 완료 checkpoint를 다시 구현하지 않는다. R43을 좌�
 | R32 | selected final-item labels | Implemented-primary (`ee3f3b02`) | 완료 checkpoint + WP10/WP12 |
 | R33 | semantic label anchors | Implemented-primary (`95968031`) | 완료 checkpoint + WP10/WP12 |
 | R36 | dynamic statistical references | Implemented-primary (`d7136174`, 통합 `5832228c`) | 완료 checkpoint + WP11/WP12 |
-| R37 | exact sampled legend values | Proposed | WP8.1 |
+| R37 | exact sampled legend values | Implemented-primary (`8760111d`) | 완료 checkpoint + WP8.2/WP10/WP12 |
 | R38 | combined legend block edit | Proposed | WP8.2 |
 | R39 | typed display names·header strips | Proposed | WP8.3 |
 | R43 | Polar/Parallel facet·repeat | Proposed | WP10 |
@@ -596,6 +597,8 @@ Canonical behavior: [R36](features/36-statistical-references.md).
 ### WP8.1 — R37 exact legend values
 
 Canonical behavior: [R37](features/37-legend-values.md).
+
+상태: **완료**. 제품 구현은 `8760111d`, primitive/public decoded-PNG parity는 `547eae1b`다. 아래 절차는 회귀와 후속 consumer 연결을 위한 기록이며 다시 구현하지 않는다.
 
 1. sampled continuous legend config를 `{mode:"auto",count?}` 또는 `{mode:"values",values,count?}`로 정규화한다. values mode의 count는 비활성 상태로 보존한 이전 auto count이며 한 public 요청에서 values와 count를 함께 받지 않는다.
 2. requested owner는 각 legend kind config의 `sampling` 하나다. legacy count는 accessor에서 읽고 신규 write 후 중복 count를 제거한다.

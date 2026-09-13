@@ -1,6 +1,6 @@
 {
   "phase": 7,
-  "status": "Proposed",
+  "status": "completed-primary",
   "scope": "implementation",
   "candidates": [
     {
@@ -17,13 +17,15 @@
     },
     {
       "id": "R33",
-      "status": "Proposed",
-      "file": "../features/33-semantic-label-anchors.md"
+      "status": "Implemented-primary",
+      "file": "../features/33-semantic-label-anchors.md",
+      "implementationCommit": "95968031"
     },
     {
       "id": "R36",
-      "status": "Proposed",
-      "file": "../features/36-statistical-references.md"
+      "status": "Implemented-primary",
+      "file": "../features/36-statistical-references.md",
+      "implementationCommit": "d7136174"
     }
   ]
 }
