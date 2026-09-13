@@ -136,7 +136,7 @@ program.encodeX({
 and guides. A band can be shared by bars and point centers, but changing it to
 `point` is rejected while a bar requires its bandwidth.
 
-## `removeScale({ id })`
+## `removeScale({ id })` {#removescale-id}
 
 Use the Full-only removal action to delete an unattached named scale:
 

@@ -144,7 +144,7 @@ selection geometry all consume that same resolved frame. Fraction radii resize
 with the Canvas; pixel radii remain fixed and reject a later Canvas size that
 cannot contain them.
 
-## `removeCoordinate({ id })`
+## `removeCoordinate({ id })` {#removecoordinate-id}
 
 Full programs can remove an unattached named coordinate with an explicit ID:
 
