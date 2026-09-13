@@ -715,7 +715,7 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 ## `createMarkLabels`
 
-- Signature: `createMarkLabels({ id?, source?, field?, value?, content?, normalizeBy?, format?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy?, layout?, select?, selection? } = {})`.
+- Signature: `createMarkLabels({ id?, source?, field?, value?, content?, normalizeBy?, format?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy?, layout?, select?, selection?, placement? } = {})`.
 - Aggregate create-only facade: wrapped `createTextMark`, `encodeText`, then optional `layoutLabels` remain visible children.
   Subsequent edits use those child resources through `editTextMark`, `encodeText`, `layoutLabels`, and `removeLabelLayout`.
 - The source uses exactly the explicit/current/unique inference of `createTextMark`; no eligible source is an error.
@@ -727,8 +727,9 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
   Point/Line/Rule/Rect require an explicit field or constant rather than guessing one position channel as the value.
   `format` defaults to `"auto"`, including fractional shares; specify `".0%"` or another percent token for percentages.
 - Appearance defaults to centered/middle text at the source's existing final-item anchor. Other appearance defaults and
-  source-fill contrast use `createTextMark`. No sign-dependent offsets are inferred; use explicit baseline/dx/dy for endpoint
-  placement. Explicit appearance overrides the facade defaults.
+  source-fill contrast use `createTextMark`. Semantic placement is opt-in; when omitted, no sign-dependent offset is inferred.
+  An outside semantic placement uses the ordinary text fill unless the author supplied an explicit fill, while inside and
+  center Arc/Rect labels retain source-fill contrast. Explicit appearance overrides the facade defaults.
 - A Line source creates one label per final series item. Its anchor is the last concrete path coordinate and an explicit
   field reads the final ordered member row. This supports endpoint labels without changing Line path or selection grain.
 - `rotation` inherits the shared Text `RotationInput`: a legacy finite number means radians, while an exact
@@ -748,6 +749,9 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
   is rebound or removed.
 - Semantic label content is resolved over the complete final source before membership is applied. In particular, selecting one
   pie-share label preserves its percentage of the complete pie instead of renormalizing the visible label subset to 100%.
+- Optional `placement` assigns the semantic boundary policy documented by `editMarkLabelPlacement` during creation. A complete
+  Polar Point is an eligible explicit/current/unique label source for `center` and `outsideEnd` placement without inventing
+  Cartesian position encodings.
 - Source filtering/encoding/scale/Canvas edits replay content, appearance and optional layout through existing text dependencies.
   `removeMarkLabels` removes attached labels without removing their source; `removeMark` still removes a source and all owned labels.
 
@@ -755,7 +759,8 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 - Implemented: `createMarkLabels(options?: CreateMarkLabelsOptions)`; ID/source and appearance use `TextMarkOptions`, content uses
   the exclusive `TextEncodingOptions` branches plus omission, `layout?: false | Omit<LabelLayoutOptions, "target">`, and the
-  exclusive omitted/`select: MarkSelector`/`selection: string` membership branches.
+  exclusive omitted/`select: MarkSelector`/`selection: string` membership branches. `placement?: MarkLabelPlacement` uses the
+  same closed object as `editMarkLabelPlacement`.
 - Proposed (NOT IMPLEMENTED): automatic point measure selection and layout assignment before source completion.
 
 ### Value coverage — `createMarkLabels`
@@ -765,7 +770,8 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
   inline/named/all membership, rank ties and source order, empty matches, complete-source share denominators, selection edit/removal dependencies,
   invalid-state atomicity, literal primitive/public graphics and Canvas/PNG equality, public types and installed package/browser discovery.
 - Evidence: `test/unit/actions/marks/mark-labels.test.js`, `test/contracts/mark-label-content.test.js`,
-  `test/contracts/selected-labels.test.js`, `test/contracts/text-content-types.test.js`, `scripts/package-consumer.js`,
+  `test/contracts/selected-labels.test.js`, `test/contracts/semantic-label-anchors.test.js`,
+  `test/contracts/text-content-types.test.js`, `scripts/package-consumer.js`,
   `test/browser/package-consumer.browser.js`.
 
 ## `editMarkLabelSelection`
@@ -799,6 +805,54 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 - ⚠️ Facet/repeat replay is deferred to the accepted R43 composition integration owner.
 - Evidence: `test/contracts/selected-labels.test.js`, `test/contracts/text-content-types.test.js`,
   `test/contracts/package-boundaries.test.js`, `scripts/package-consumer.js`, `test/browser/package-consumer.browser.js`.
+
+## `editMarkLabelPlacement`
+
+- Signature: `editMarkLabelPlacement({ target, placement: MarkLabelPlacement | "auto" })`.
+- Full-only mutable-resource action. `target` is required and must name one attached source-owned Text label layer. Independent
+  Text and annotations are rejected. `placement` is required; `"auto"` removes the semantic override and restores the existing
+  source-family anchor behavior without changing label content, selection, typography, or optional collision layout.
+- `MarkLabelPlacement` requires `anchor: "center" | "insideStart" | "insideEnd" | "outsideStart" | "outsideEnd"`.
+  `gap` defaults to 4 logical pixels and must be non-negative. `overflow` defaults to `"hide"` and accepts `"hide"`,
+  `"outside"`, or `"allow"`. `leader` defaults to false; an object accepts optional line `stroke` and `strokeWidth`.
+- Cartesian Bar supports every anchor. Start and end are each final segment's mapped semantic endpoints, so signed, reversed,
+  ranged, histogram, and stacked bars follow their own final direction. A zero-length interval uses the quantitative scale's
+  final increase direction and does not fail other labels. A Rect supports every anchor only when exactly one x/x2 or y/y2
+  interval role exists; otherwise it supports center only.
+- Arc/Pie/Rose uses the pad-adjusted sector midpoint ray. Start is the inner boundary and end is the outer boundary. Point
+  supports center; Polar Point additionally supports outsideEnd using the final radial direction and concrete point bounds.
+  An outsideStart label that cannot remain on the inner-boundary side of the Polar center is hidden unless overflow is
+  explicitly `"allow"`; it never flips onto the opposite ray. Line retains its endpoint label behavior and rejects the
+  placement object. Rule and other families reject it.
+- Gap measures from the source boundary to the nearest edge of the measured, rotated text bbox. Non-cardinal rays include the
+  bbox support distance, so an Arc's text center lies beyond `outerRadius + gap`. Explicit dx/dy applies after this semantic
+  position. Requested placement lives only at `markConfigs[target].labelAuthoring.placement`; resolved point, vector, fit,
+  fallback, and numeric item positions remain materialized output.
+- Center and inside interval labels require full bbox containment. Arc containment checks the annular radii, including edge
+  crossing of the inner hole, and the angular sector. Failed fit hides the item, performs one corresponding outside-boundary
+  fallback, or retains overflow according to the requested policy. It never shrinks text or loops through candidates.
+- A placement leader is a label-owned line from the actual source boundary to the nearest final visible text edge. Hidden and
+  empty labels produce no leader. Collision layout runs after semantic placement and then updates placement leaders. A
+  placement leader and `layoutLabels` leader cannot own the same label simultaneously; the conflicting request is atomic.
+- Source encoding/data/scale/filter/selection edits, text edits, category order, Canvas/aspect/Polar frame edits, highlights,
+  and collision layout replay placement from the latest source geometry. `"auto"`, fit hiding, `removeMarkLabels`, and source
+  removal delete stale placement leaders.
+
+### Formal values — `editMarkLabelPlacement`
+
+- Implemented: `editMarkLabelPlacement({ target: string, placement: MarkLabelPlacement | "auto" })`; object replacement is
+  whole-policy semantics with normalized defaults. `MarkLabelPlacementLeaderOptions` accepts only `stroke` and `strokeWidth`.
+- Proposed (NOT IMPLEMENTED): Line/Parallel interior anchors and R43 child-local facet/repeat label placement replay.
+
+### Value coverage — `editMarkLabelPlacement`
+
+- ✅ Covered: signed/reversed/zero/stacked Bar geometry; directed Rect; Cartesian and Polar Point; Arc annular support distance
+  and moved frame; hide/outside/allow fit; font/Canvas/scale replay; collision movement; owned leader creation/reset/removal;
+  invalid family/policy and dual-leader atomicity; Full types and Canvas/SVG/PNG/PDF output.
+- ⚠️ Facet/repeat replay is deferred to the accepted R43 composition integration owner. Parallel retains its existing series
+  endpoint labels and currently has no source-owned Text label path to which this action applies.
+- Evidence: `test/unit/layout/semantic-label-placement.test.js`, `test/contracts/semantic-label-anchors.test.js`,
+  `test/contracts/text-content-types.test.js`, installed package and browser consumers.
 
 ## `removeMarkLabels`
 

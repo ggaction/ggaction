@@ -191,6 +191,8 @@ function actionResources(action, optionNames, intentSource) {
 
   if (action.name === "editMarkLabelSelection") {
     prerequisites.push("attached label");
+  } else if (action.name === "editMarkLabelPlacement") {
+    prerequisites.push("attached label with a supported source geometry");
   } else if (action.name === "removeMarkLabels") {
     prerequisites.push("existing source mark or attached label");
   } else if (["edit", "remove", "layout", "jitter", "pack", "order", "replace"].includes(operation)) {

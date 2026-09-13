@@ -3597,6 +3597,27 @@ export interface LabelLeaderOptions {
   opacity?: number;
 }
 
+export type MarkLabelAnchor =
+  | "center"
+  | "insideStart"
+  | "insideEnd"
+  | "outsideStart"
+  | "outsideEnd";
+
+export interface MarkLabelPlacementLeaderOptions {
+  stroke?: string;
+  strokeWidth?: number;
+}
+
+export interface MarkLabelPlacement {
+  anchor: MarkLabelAnchor;
+  /** Pixel gap between the source boundary and the nearest text edge. Defaults to 4. */
+  gap?: number;
+  /** Inside-fit behavior. Defaults to hide. */
+  overflow?: "hide" | "outside" | "allow";
+  leader?: false | MarkLabelPlacementLeaderOptions;
+}
+
 export interface LabelLayoutOptions {
   target?: string;
   axis?: LabelLayoutAxis;
@@ -3641,6 +3662,7 @@ export type MarkLabelSelectionOptions =
 
 export type CreateMarkLabelsOptions = Omit<TextMarkOptions, "data" | "text"> & {
   layout?: false | Omit<LabelLayoutOptions, "target">;
+  placement?: MarkLabelPlacement;
 } & (
   | (TextEncodingOptions extends infer Options
       ? Options extends TextEncodingOptions ? Omit<Options, "target"> : never
@@ -3654,6 +3676,12 @@ export type EditMarkLabelSelectionOptions = { target: string } & (
   | { selection: string; select?: never; all?: never }
   | { all: true; select?: never; selection?: never }
 );
+
+/** Replace semantic placement or reset one attached label layer to its legacy anchor. */
+export interface EditMarkLabelPlacementOptions {
+  target: string;
+  placement: MarkLabelPlacement | "auto";
+}
 
 /** Remove one attached label layer or every attached label owned by a source mark. */
 export type RemoveMarkLabelsOptions =
@@ -4448,6 +4476,7 @@ export class ChartProgram {
   createTextMark(options?: TextMarkOptions): ChartProgram;
   createMarkLabels(options?: CreateMarkLabelsOptions): ChartProgram;
   editMarkLabelSelection(options: EditMarkLabelSelectionOptions): ChartProgram;
+  editMarkLabelPlacement(options: EditMarkLabelPlacementOptions): ChartProgram;
   removeMarkLabels(options: RemoveMarkLabelsOptions): ChartProgram;
   createAnnotation(options: CreateAnnotationOptions): ChartProgram;
   createReferenceLine(options: CreateReferenceLineOptions): ChartProgram;

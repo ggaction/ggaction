@@ -16,7 +16,7 @@ test("text content and precision types match their runtime vocabularies", async 
     const paddedCalls = [...Array(10).keys()].flatMap(precision => ["f", "%", "e"].map(suffix =>
       `p.encodeText({ value: 0.125, format: ".0${precision}${suffix}" });`));
     await writeFile(file, `
-import type { ChartProgram, TextEncodingOptions, DatumPositionEncodingOptions, CreateMarkLabelsOptions, EditMarkLabelSelectionOptions, RemoveMarkLabelsOptions, CreateAnnotationOptions, CreateReferenceLineOptions, CreateReferenceBandOptions, RotationInput } from ${JSON.stringify(path.join(root, "types/index.js"))};
+import type { ChartProgram, TextEncodingOptions, DatumPositionEncodingOptions, CreateMarkLabelsOptions, EditMarkLabelPlacementOptions, EditMarkLabelSelectionOptions, MarkLabelPlacement, RemoveMarkLabelsOptions, CreateAnnotationOptions, CreateReferenceLineOptions, CreateReferenceBandOptions, RotationInput } from ${JSON.stringify(path.join(root, "types/index.js"))};
 import type { BasicChartProgram } from ${JSON.stringify(path.join(root, "types/basic.js"))};
 declare const p: ChartProgram;
 declare const basic: BasicChartProgram;
@@ -31,8 +31,21 @@ const editLabelSelection: EditMarkLabelSelectionOptions = { target: "bars-labels
 p.editMarkLabelSelection(editLabelSelection);
 p.editMarkLabelSelection({ target: "bars-labels", select: { field: "value", op: "gt", value: 2 } });
 p.editMarkLabelSelection({ target: "bars-labels", selection: "focus" });
+const placement: MarkLabelPlacement = { anchor: "outsideEnd", gap: 4, overflow: "outside", leader: { strokeWidth: 1 } };
+p.createMarkLabels({ source: "bars", placement });
+const editPlacement: EditMarkLabelPlacementOptions = { target: "bars-labels", placement: "auto" };
+p.editMarkLabelPlacement(editPlacement);
+p.editMarkLabelPlacement({ target: "bars-labels", placement: { anchor: "insideEnd", leader: false } });
 // @ts-expect-error Selected-label editing is Full-only.
 basic.editMarkLabelSelection({ target: "bars-labels", all: true });
+// @ts-expect-error Semantic label placement editing is Full-only.
+basic.editMarkLabelPlacement({ target: "bars-labels", placement: "auto" });
+// @ts-expect-error Placement requires a closed anchor.
+p.createMarkLabels({ placement: { anchor: "edge" } });
+// @ts-expect-error Placement objects require an anchor.
+p.editMarkLabelPlacement({ target: "bars-labels", placement: { gap: 4 } });
+// @ts-expect-error Placement reset is the exact auto token.
+p.editMarkLabelPlacement({ target: "bars-labels", placement: "default" });
 // @ts-expect-error Label creation selection modes are exclusive.
 p.createMarkLabels({ select: { field: "value", op: "max" }, selection: "focus" });
 // @ts-expect-error Label selection editing requires exactly one replacement.

@@ -208,6 +208,18 @@ test("routes selected-label reset to the exact attached-label editor", () => {
   assert.deepEqual(packet.unsupported, []);
 });
 
+test("routes semantic label placement to the exact attached-label editor", () => {
+  const packet = JSON.parse(searchGgactionText("labels outside bars"));
+  assert.deepEqual(packet.matchedConstraints, ["layout.labels.semanticPlacement"]);
+  assert.deepEqual(packet.actionPlan.map(step => step.name), ["editMarkLabelPlacement"]);
+  assert.deepEqual(packet.exactCalls, [
+    'program.editMarkLabelPlacement({ target: "labels", placement: { anchor: "outsideEnd" } })'
+  ]);
+  assert.deepEqual(packet.unmatchedRequirements, []);
+  assert.deepEqual(packet.unresolved, []);
+  assert.deepEqual(packet.unsupported, []);
+});
+
 test("rejects legacy unresolved entries that omit their explicit resource", () => {
   assert.throws(
     () => docsFallbackResources({

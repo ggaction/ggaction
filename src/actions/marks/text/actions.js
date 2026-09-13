@@ -13,7 +13,11 @@ import {
   canMaterializeText,
   isTextSource
 } from "../../../materialization/marks/index.js";
-import { resolveTextGraphicItems } from "../../../materialization/text.js";
+import {
+  resolveTextGraphicItems,
+  validateSourceMarkLabelPlacement
+} from "../../../materialization/text.js";
+import { markLabelPlacementLeaderId } from "../../../layout/labels.js";
 import { resolveMarkSelection } from
   "../../../materialization/selection/state.js";
 import { rematerializeLabelsBeforeHighlights } from
@@ -55,6 +59,13 @@ function eligibleSource(program, layer, requestedData) {
     !sourceMatchesData(program, layer, requestedData)
   ) return false;
   if (layer.mark.type === "arc") return canMaterializeArc(program, layer);
+  if (
+    layer.mark.type === "point" &&
+    findCoordinate(program, layer.coordinate)?.type === "polar"
+  ) {
+    return layer.encoding?.theta?.scale !== undefined &&
+      layer.encoding?.radius?.scale !== undefined;
+  }
   if (layer.mark.type === "rect" && (canMaterializeRect(program, layer) ||
     program.markConfigs[layer.id]?.gradientPlot?.materialized === true)) return true;
   const encodings = resolveCompatibleEncodings(program, layer, "text");
@@ -97,7 +108,9 @@ function textInheritance(program, source) {
     source: source.id,
     data: source.data,
     coordinate: source.coordinate,
-    encoding: source.mark.type === "arc"
+    encoding: source.mark.type === "arc" ||
+      (source.mark.type === "point" &&
+        findCoordinate(program, source.coordinate)?.type === "polar")
       ? {}
       : resolveCompatibleEncodings(program, source, "text")
   };
@@ -167,7 +180,7 @@ const createTextMark = action(
 
 const LABEL_OPTIONS = Object.freeze([
   "id", "source", "field", "value", "content", "normalizeBy", "format", "layout",
-  "select", "selection",
+  "select", "selection", "placement",
   ...STYLE_OPTIONS
 ]);
 
@@ -328,6 +341,17 @@ const createMarkLabels = action(
     const id = validateUserId(args.id === undefined ? `${inherited.source}-labels` : args.id, "Text mark id");
     assertMarkAvailable(this, id);
     const selection = normalizeLabelSelectionCreate(args);
+    const placement = args.placement === undefined
+      ? undefined
+      : validateSourceMarkLabelPlacement(this, inherited.source, args.placement);
+    if (
+      placement?.leader !== undefined && placement.leader !== false &&
+      this.graphicSpec.objects[markLabelPlacementLeaderId(id)] !== undefined
+    ) {
+      throw new Error(
+        `Mark label placement leader graphic "${markLabelPlacementLeaderId(id)}" already exists.`
+      );
+    }
     if (selection.kind === "inline") {
       resolveMarkSelection(this, inherited.source, selection.selector);
     } else if (selection.kind === "named") {
@@ -364,7 +388,10 @@ const createMarkLabels = action(
       });
       next = next._withMarkConfig(id, {
         ...next.markConfigs[id],
-        labelAuthoring: { selection }
+        labelAuthoring: {
+          selection,
+          ...(placement === undefined ? {} : { placement })
+        }
       });
       next = next.encodeText({ target: id, ...encoding });
       next = rematerializeLabelsBeforeHighlights(
@@ -409,9 +436,11 @@ const rematerializeTextMark = action(
         : this.editGraphics({ target: id, property: "length", value: 0 });
       return replayLayout && next.materializationConfigs.labelLayouts?.[id] !== undefined
         ? next.materializeLabelLayout({ id, rematerializeBase: false })
-        : next;
+        : layer.source === undefined
+          ? next
+          : next.materializeMarkLabelPlacement({ id });
     }
-    const next = this.editGraphics({
+    let next = this.editGraphics({
       target: id,
       property: "items",
       value: resolveTextGraphicItems(
@@ -420,9 +449,12 @@ const rematerializeTextMark = action(
         this.markConfigs[id] ?? DEFAULT_TEXT_MARK
       )
     });
-    return replayLayout && next.materializationConfigs.labelLayouts?.[id] !== undefined
-      ? next.materializeLabelLayout({ id, rematerializeBase: false })
-      : next;
+    if (replayLayout && next.materializationConfigs.labelLayouts?.[id] !== undefined) {
+      return next.materializeLabelLayout({ id, rematerializeBase: false });
+    }
+    return layer.source === undefined
+      ? next
+      : next.materializeMarkLabelPlacement({ id });
   }
 );
 

@@ -85,7 +85,8 @@ from that final ordered row. Format defaults to
 
 Text is centered horizontally and vertically at the existing source anchor. Use
 `baseline: "bottom", dy: -4` to place labels above an endpoint, or other ordinary
-text style options. `layout: {}` enables collision avoidance, and a layout object
+text style options. Use `placement` when the offset should follow a mark boundary,
+sign, stack segment, or Polar frame. `layout: {}` enables collision avoidance, and a layout object
 accepts `layoutLabels` options except `target`. Omission or `false` preserves source
 anchors without collision layout. An incomplete explicit source is supported when
 layout is disabled; call `layoutLabels` after completing it.
@@ -156,6 +157,49 @@ labels. Removing that selection is rejected while a label refers to it; switch t
 label to `all:true` or an inline selector, or remove the label first. Source edits,
 mark filters, category ordering, Canvas changes, and themes reevaluate membership
 without turning resolved item indices into persistent state.
+
+## `editMarkLabelPlacement(options)`
+
+Attach the label position to the meaning of the source geometry:
+
+```javascript
+const outside = labeled.editMarkLabelPlacement({
+  target: "piePlot-labels",
+  placement: {
+    anchor: "outsideEnd",
+    gap: 4,
+    overflow: "outside",
+    leader: { stroke: "#64748b", strokeWidth: 1 }
+  }
+});
+
+const restored = outside.editMarkLabelPlacement({
+  target: "piePlot-labels",
+  placement: "auto"
+});
+```
+
+The same placement object is accepted by `createMarkLabels`. `anchor` is one of
+`center`, `insideStart`, `insideEnd`, `outsideStart`, or `outsideEnd`. `gap`
+defaults to 4 logical pixels and measures from the mark boundary to the nearest
+edge of the measured text box. `overflow` defaults to `hide`; use `outside` for
+one fallback beyond the corresponding boundary or `allow` to keep an inside
+label that does not fit. `leader` defaults to `false`.
+
+Bar start/end positions follow each final segment, including negative, stacked,
+ranged, and reversed bars. Arc start/end positions mean the inner and outer
+radius on the sector midpoint ray. An `outsideStart` label that would pass through
+the Polar center is hidden unless `overflow: "allow"` is explicit. A directed Rect
+interval supports the same anchors. Cartesian Point supports `center`; Polar Point also supports
+`outsideEnd`. Line keeps its existing series-endpoint label behavior and rejects
+this placement object. Rule labels reject it as well.
+
+Text size, source data and encodings, scale reversal, Canvas size, Polar frame,
+selection membership, and collision layout all recompute the final position.
+Hidden labels have no leader. A placement leader and a `layoutLabels` leader are
+exclusive, while placement leaders can follow collision movement when the
+collision layout itself has no leader. `placement: "auto"` removes only this
+semantic override and restores the legacy source anchor.
 
 ## `removeMarkLabels(options)`
 

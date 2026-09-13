@@ -170,7 +170,23 @@ test("action cards separate entry support, units, inference, and completion", as
   ]);
   assert.deepEqual(byName.get("editMarkLabelSelection").editableVia, [
     "editMarkLabelSelection",
+    "editMarkLabelPlacement",
     "removeMarkLabels"
+  ]);
+  assert.deepEqual(byName.get("editMarkLabelPlacement").inference, [
+    { input: "target", strategy: "explicit" },
+    { input: "placement", strategy: "documented-auto" }
+  ]);
+  assert.deepEqual(byName.get("editMarkLabelPlacement").resources.prerequisites, [
+    "attached label with a supported source geometry"
+  ]);
+  assert.deepEqual(byName.get("editMarkLabelPlacement").editableVia, [
+    "editMarkLabelPlacement",
+    "removeMarkLabels"
+  ]);
+  assert.deepEqual(byName.get("editMarkLabelPlacement").units, [
+    { path: "placement.gap", unit: "logical-pixel" },
+    { path: "placement.leader.strokeWidth", unit: "logical-pixel" }
   ]);
   assert.equal(byName.get("createScatterPlot").completionRequirements.state, "complete");
   assert.equal(byName.get("editSemantic").completionRequirements.state, "not-applicable");

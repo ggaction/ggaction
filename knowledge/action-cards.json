@@ -3,7 +3,7 @@
   "packageVersion": "0.0.13",
   "typeSource": "types/program.d.ts",
   "errorPolicy": "An empty errors array means the compact card has no curated error override; consult the canonical route for validation, inference, and recovery behavior.",
-  "count": 271,
+  "count": 272,
   "cards": [
     {
       "schemaVersion": 3,
@@ -4787,6 +4787,7 @@
       ],
       "editableVia": [
         "editMarkLabelSelection",
+        "editMarkLabelPlacement",
         "removeMarkLabels"
       ],
       "supports": {
@@ -4795,6 +4796,14 @@
         ]
       },
       "units": [
+        {
+          "path": "placement.gap",
+          "unit": "logical-pixel"
+        },
+        {
+          "path": "placement.leader.strokeWidth",
+          "unit": "logical-pixel"
+        },
         {
           "path": "opacity",
           "unit": "probability"
@@ -4896,6 +4905,11 @@
           "type": "false | Omit<LabelLayoutOptions, \"target\"> | undefined"
         },
         {
+          "name": "placement",
+          "required": false,
+          "type": "MarkLabelPlacement | undefined"
+        },
+        {
           "name": "format",
           "required": false,
           "type": "ValueFormat | undefined"
@@ -4933,7 +4947,7 @@
       ],
       "callPatterns": [
         "createMarkLabels()",
-        "createMarkLabels({ source?, content?, select? | selection?, format?, layout? })"
+        "createMarkLabels({ source?, content?, select? | selection?, placement?, format?, layout? })"
       ],
       "snippet": "program.createMarkLabels({})",
       "errors": [],
@@ -4972,6 +4986,7 @@
       "wraps": [],
       "editableVia": [
         "editMarkLabelSelection",
+        "editMarkLabelPlacement",
         "removeMarkLabels"
       ],
       "supports": {
@@ -5025,6 +5040,91 @@
       "snippet": "program.editMarkLabelSelection({ target: \"labels\", all: true })",
       "errors": [],
       "route": "/reference/actions/marks/#editmarklabelselection"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "editMarkLabelPlacement",
+      "layer": "user-facing",
+      "domain": "marks",
+      "summary": "Replace semantic placement for one attached label layer.",
+      "signature": "editMarkLabelPlacement(options: EditMarkLabelPlacementOptions): ChartProgram;",
+      "intents": [
+        "edit mark label placement",
+        "edit",
+        "change",
+        "graphical mark",
+        "mark appearance",
+        "semantic mark label placement",
+        "inside or outside label anchors"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "attached label with a supported source geometry"
+        ],
+        "owns": [],
+        "idOptions": [
+          "target"
+        ]
+      },
+      "authoringRoles": [
+        "H3"
+      ],
+      "wraps": [],
+      "editableVia": [
+        "editMarkLabelPlacement",
+        "removeMarkLabels"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [
+        {
+          "path": "placement.gap",
+          "unit": "logical-pixel"
+        },
+        {
+          "path": "placement.leader.strokeWidth",
+          "unit": "logical-pixel"
+        }
+      ],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit"
+        },
+        {
+          "input": "placement",
+          "strategy": "documented-auto"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "attached label with a supported source geometry"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "target",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "placement",
+          "required": true,
+          "type": "\"auto\" | MarkLabelPlacement"
+        }
+      ],
+      "callPatterns": [
+        "editMarkLabelPlacement({ target, placement: anchor policy | auto })"
+      ],
+      "snippet": "program.editMarkLabelPlacement({ target: \"labels\", placement: { anchor: \"outsideEnd\", gap: 4 } })",
+      "errors": [],
+      "route": "/reference/actions/marks/#editmarklabelplacement"
     },
     {
       "schemaVersion": 3,

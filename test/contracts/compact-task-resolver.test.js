@@ -220,9 +220,9 @@ test("intent taxonomy covers every supported constraint with exact owners", asyn
   assert.equal(validate(taxonomy), true, JSON.stringify(validate.errors));
   assert.deepEqual(validateResolverKnowledge(), {
     cards: cards.count,
-    constraints: 109,
-    providers: 103,
-    supported: 104,
+    constraints: 110,
+    providers: 104,
+    supported: 105,
     unsupported: 5
   });
   assert.equal(taxonomy.packageVersion, cards.packageVersion);
@@ -379,6 +379,20 @@ test("routes moved Polar-frame intent through the Polar coordinate editor", asyn
     center: { x: 0.4, y: 0.5 },
     radius: { unit: "fraction", value: 0.9 }
   });
+});
+
+test("routes semantic mark-label placement through its explicit editor", () => {
+  const packet = searchGgaction("labels outside bars");
+  assert.deepEqual(packet.matchedConstraints, [
+    "layout.labels.semanticPlacement"
+  ]);
+  assert.deepEqual(packet.actionPlan.map(entry => entry.id), [
+    "action.editMarkLabelPlacement"
+  ]);
+  assert.deepEqual(packet.exactCalls, [
+    'program.editMarkLabelPlacement({ target: "labels", placement: { anchor: "outsideEnd" } })'
+  ]);
+  assert.deepEqual(packet.unresolved, []);
 });
 
 test("provides exact executable Canvas and SVG authoring bootstraps", async () => {

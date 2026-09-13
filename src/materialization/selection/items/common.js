@@ -131,6 +131,9 @@ export function finalizeItems(program, layer, grain, definitions, graphicType) {
       fields: cloneAndFreeze(definition.fields),
       channels: cloneAndFreeze(definition.channels),
       properties: cloneAndFreeze(properties),
+      ...(definition.geometry === undefined
+        ? {}
+        : { geometry: cloneAndFreeze(definition.geometry) }),
       members: Object.freeze([...definition.members]),
       graphicIds: Object.freeze(items.map((child, childOffset) =>
         child.id ?? graphicId(layer, indices[childOffset])

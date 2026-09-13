@@ -47,6 +47,19 @@ export function resolveArcItems(program, layer, dataset) {
           (sector.innerRadius + sector.outerRadius) / 2
         )
       },
+      geometry: {
+        kind: "arc",
+        centerX: frame.centerX,
+        centerY: frame.centerY,
+        startTheta: sector.startTheta +
+          Math.sign(sector.endTheta - sector.startTheta) *
+          (program.markConfigs[layer.id]?.padAngle ?? 0) / 2,
+        endTheta: sector.endTheta -
+          Math.sign(sector.endTheta - sector.startTheta) *
+          (program.markConfigs[layer.id]?.padAngle ?? 0) / 2,
+        innerRadius: sector.innerRadius,
+        outerRadius: sector.outerRadius
+      },
       members
     };
   });

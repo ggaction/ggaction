@@ -380,6 +380,14 @@
     "layer": "user-facing",
     "domain": "marks"
   },
+  "editMarkLabelPlacement": {
+    "operation": "edit",
+    "authoringRoles": [
+      "H3"
+    ],
+    "layer": "user-facing",
+    "domain": "marks"
+  },
   "removeMarkLabels": {
     "operation": "remove",
     "authoringRoles": [

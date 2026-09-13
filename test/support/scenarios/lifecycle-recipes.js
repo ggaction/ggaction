@@ -1293,6 +1293,12 @@ function buildDirectPointText(factors) {
       target: "selectedAppearanceLabels",
       select: { field: "positive", op: "min", count: 2 }
     })
+    .editMarkLabelPlacement({
+      target: "selectedAppearanceLabels",
+      placement: {
+        anchor: "center"
+      }
+    })
     .createMarkLabels({
       id: "removableAppearanceLabels",
       source: "appearancePoints",
@@ -2045,7 +2051,7 @@ function lifecycleSignature(base, factors) {
     ],
     "action-direct-point-text": [
       "encodeRadius", "encodeOpacity", "editOpacityScale", "createTextMark", "encodeText",
-      "editTextMark", "createMarkLabels", "editMarkLabelSelection", "removeMarkLabels",
+      "editTextMark", "createMarkLabels", "editMarkLabelSelection", "editMarkLabelPlacement", "removeMarkLabels",
       "editStrokeScale"
     ],
     "action-direct-ranged-marks": [
@@ -2308,6 +2314,7 @@ export const LIFECYCLE_EXPECTED_ACTIONS = Object.freeze([
   "editLegendSymbols", "editLegendBorder", "removeLegend", "editTitle",
   "removeTitle", "createRegressionBand", "editRegressionBand",
   "createRegressionLine", "editRegressionLine", "filterMarks", "editMarkLabelSelection",
+  "editMarkLabelPlacement",
   "removeMarkLabels", "editCoordinate", "editXOffsetScale", "editYOffsetScale",
   "editParallelScale", "editStrokeScale",
   "removeMarkHighlight", "highlightMarks", "editThetaAxis", "editRadialAxis",

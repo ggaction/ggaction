@@ -86,6 +86,7 @@
   "createReferenceBand": "/reference/actions/marks/#createreferenceband",
   "createMarkLabels": "/reference/actions/marks/#createmarklabels",
   "editMarkLabelSelection": "/reference/actions/marks/#editmarklabelselection",
+  "editMarkLabelPlacement": "/reference/actions/marks/#editmarklabelplacement",
   "removeMarkLabels": "/reference/actions/marks/#removemarklabels",
   "createAnnotation": "/reference/actions/marks/#createannotation",
   "createTextMark": "/reference/actions/marks/#createtextmark",

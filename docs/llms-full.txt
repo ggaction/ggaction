@@ -6307,7 +6307,8 @@ from that final ordered row. Format defaults to
 
 Text is centered horizontally and vertically at the existing source anchor. Use
 `baseline: "bottom", dy: -4` to place labels above an endpoint, or other ordinary
-text style options. `layout: {}` enables collision avoidance, and a layout object
+text style options. Use `placement` when the offset should follow a mark boundary,
+sign, stack segment, or Polar frame. `layout: {}` enables collision avoidance, and a layout object
 accepts `layoutLabels` options except `target`. Omission or `false` preserves source
 anchors without collision layout. An incomplete explicit source is supported when
 layout is disabled; call `layoutLabels` after completing it.
@@ -6378,6 +6379,49 @@ labels. Removing that selection is rejected while a label refers to it; switch t
 label to `all:true` or an inline selector, or remove the label first. Source edits,
 mark filters, category ordering, Canvas changes, and themes reevaluate membership
 without turning resolved item indices into persistent state.
+
+## `editMarkLabelPlacement(options)`
+
+Attach the label position to the meaning of the source geometry:
+
+```javascript
+const outside = labeled.editMarkLabelPlacement({
+  target: "piePlot-labels",
+  placement: {
+    anchor: "outsideEnd",
+    gap: 4,
+    overflow: "outside",
+    leader: { stroke: "#64748b", strokeWidth: 1 }
+  }
+});
+
+const restored = outside.editMarkLabelPlacement({
+  target: "piePlot-labels",
+  placement: "auto"
+});
+```
+
+The same placement object is accepted by `createMarkLabels`. `anchor` is one of
+`center`, `insideStart`, `insideEnd`, `outsideStart`, or `outsideEnd`. `gap`
+defaults to 4 logical pixels and measures from the mark boundary to the nearest
+edge of the measured text box. `overflow` defaults to `hide`; use `outside` for
+one fallback beyond the corresponding boundary or `allow` to keep an inside
+label that does not fit. `leader` defaults to `false`.
+
+Bar start/end positions follow each final segment, including negative, stacked,
+ranged, and reversed bars. Arc start/end positions mean the inner and outer
+radius on the sector midpoint ray. An `outsideStart` label that would pass through
+the Polar center is hidden unless `overflow: "allow"` is explicit. A directed Rect
+interval supports the same anchors. Cartesian Point supports `center`; Polar Point also supports
+`outsideEnd`. Line keeps its existing series-endpoint label behavior and rejects
+this placement object. Rule labels reject it as well.
+
+Text size, source data and encodings, scale reversal, Canvas size, Polar frame,
+selection membership, and collision layout all recompute the final position.
+Hidden labels have no leader. A placement leader and a `layoutLabels` leader are
+exclusive, while placement leaders can follow collision movement when the
+collision layout itself has no leader. `placement: "auto"` removes only this
+semantic override and restores the legacy source anchor.
 
 ## `removeMarkLabels(options)`
 
@@ -14154,6 +14198,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editLegendSymbols`](./reference/actions/guides/#focused-legend-edits) | H3 | user-facing | legend_and_title |
 | [`editLegendTitle`](./reference/actions/guides/#focused-legend-edits) | H3 | user-facing | legend_and_title |
 | [`editLineMark`](./reference/actions/marks/#editlinemark) | H3 | user-facing | marks |
+| [`editMarkLabelPlacement`](./reference/actions/marks/#editmarklabelplacement) | H3 | user-facing | marks |
 | [`editMarkLabelSelection`](./reference/actions/marks/#editmarklabelselection) | H3 | user-facing | marks |
 | [`editMarkSelection`](./reference/actions/advanced/#editmarkselection) | H3 | advanced | mark-selection |
 | [`editNormalizedData`](./reference/actions/statistics/#focused-statistical-data-editing) | H1, H3 | user-facing | statistics |
@@ -15192,7 +15237,7 @@ is needed. Both reference facades are available in the full entry point.
 ## `createMarkLabels`
 
 ```javascript
-createMarkLabels({ id?, source?, field?, value?, content?, normalizeBy?, format?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy?, layout?, select?, selection? } = {})
+createMarkLabels({ id?, source?, field?, value?, content?, normalizeBy?, format?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy?, layout?, placement?, select?, selection? } = {})
 ```
 
 Create final-item labels on an existing mark through text creation, encoding, and
@@ -15204,6 +15249,7 @@ for an inline predicate or `selection: id` for a live stored selection on the sa
 source. Empty matches are valid, and selected labels keep source item order.
 Semantic content is computed before membership filtering, so a selected share label
 keeps its percentage of the complete source.
+`placement` applies the semantic boundary policy described below during creation.
 [Text marks](./api/marks/text/)
 
 ## `editMarkLabelSelection`
@@ -15220,6 +15266,25 @@ branch is required and `target` is never inferred. Inline selectors reuse
 replay named labels, while selection removal is rejected until dependent labels are
 rebound with this action or removed.
 [Text marks](./api/marks/text/#editmarklabelselectionoptions)
+
+## `editMarkLabelPlacement`
+
+```javascript
+editMarkLabelPlacement({ target, placement: { anchor, gap?, overflow?, leader? } })
+editMarkLabelPlacement({ target, placement: "auto" })
+```
+
+Replace semantic placement for one attached label layer. `anchor` is `center`,
+`insideStart`, `insideEnd`, `outsideStart`, or `outsideEnd`; `gap` defaults to 4 pixels.
+For inside anchors, `overflow` defaults to `hide`, can retry once outside with `outside`,
+or can retain an overlong label with `allow`. Optional owned leaders connect the source
+boundary to the final text box and replay after collision layout. Bar, directed Rect,
+Arc, Cartesian Point, and Polar Point sources are supported. Line keeps endpoint layout,
+Rule is rejected, and conflicting placement/collision leaders fail atomically.
+Arc outside-start labels hide instead of crossing the Polar center unless `overflow: "allow"`
+is explicit.
+Pass `"auto"` to restore the legacy source anchor and remove the owned placement leader.
+[Text marks](./api/marks/text/#editmarklabelplacementoptions)
 
 ## `removeMarkLabels`
 
@@ -17078,6 +17143,7 @@ interface ChartProgramActions {
   createTextMark(options?: TextMarkOptions): ChartProgram;
   createMarkLabels(options?: CreateMarkLabelsOptions): ChartProgram;
   editMarkLabelSelection(options: EditMarkLabelSelectionOptions): ChartProgram;
+  editMarkLabelPlacement(options: EditMarkLabelPlacementOptions): ChartProgram;
   removeMarkLabels(options: RemoveMarkLabelsOptions): ChartProgram;
   createAnnotation(options: CreateAnnotationOptions): ChartProgram;
   createReferenceLine(options: CreateReferenceLineOptions): ChartProgram;

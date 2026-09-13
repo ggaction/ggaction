@@ -265,6 +265,11 @@
       "selected mark labels",
       "label membership"
     ],
+    "MarkLabelPlacement": [
+      "semantic mark label placement",
+      "inside or outside label anchors",
+      "bar end labels"
+    ],
     "Annotation": [
       "annotation",
       "anchored note",
@@ -1471,6 +1476,13 @@
     },
     "removeMarkLabels": {
       "source": "bars"
+    },
+    "editMarkLabelPlacement": {
+      "target": "labels",
+      "placement": {
+        "anchor": "outsideEnd",
+        "gap": 4
+      }
     }
   },
   "callPatternOverrides": {
@@ -1484,7 +1496,7 @@
     ],
     "createMarkLabels": [
       "createMarkLabels()",
-      "createMarkLabels({ source?, content?, select? | selection?, format?, layout? })"
+      "createMarkLabels({ source?, content?, select? | selection?, placement?, format?, layout? })"
     ],
     "createAnnotation": [
       "createAnnotation({ text, source? })",
@@ -1651,6 +1663,9 @@
     "removeMarkLabels": [
       "removeMarkLabels({ target })",
       "removeMarkLabels({ source })"
+    ],
+    "editMarkLabelPlacement": [
+      "editMarkLabelPlacement({ target, placement: anchor policy | auto })"
     ]
   },
   "errorOverrides": {

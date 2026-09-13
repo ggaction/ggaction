@@ -4,6 +4,7 @@ import { validateOptionObject } from "../../../core/validation.js";
 import { isSourceOwnedText } from "../../../grammar/text.js";
 import { isTextSource } from "../../../materialization/marks/index.js";
 import { findLayer } from "../../../selectors/layers.js";
+import { markLabelPlacementLeaderId } from "../../../layout/labels.js";
 
 const REMOVE_MARK_LABELS_OPTIONS = Object.freeze(["target", "source"]);
 
@@ -44,8 +45,14 @@ function collectAttachedLabelRemoval(program, labels) {
   const targets = new Set(labelIds);
   const sourceByLabel = new Map(labels.map(layer => [layer.id, layer.source]));
   const leaderIds = labelIds.flatMap(id => {
-    const leaderId = program.materializationConfigs.labelLayouts?.[id]?.leaderId;
-    return leaderId === undefined ? [] : [leaderId];
+    const ids = [];
+    const layoutLeader = program.materializationConfigs.labelLayouts?.[id]?.leaderId;
+    if (layoutLeader !== undefined) ids.push(layoutLeader);
+    const placement = program.markConfigs[id]?.labelAuthoring?.placement;
+    if (placement?.leader !== undefined && placement.leader !== false) {
+      ids.push(markLabelPlacementLeaderId(id));
+    }
+    return ids;
   });
   const selectionIds = Object.entries(
     program.materializationConfigs.selections ?? {}

@@ -53,8 +53,9 @@ const explicitLifecycleEditors = Object.freeze({
   jitterPoints: ["jitterPoints", "removeJitter"],
   packPoints: ["packPoints", "removePointPacking"],
   filterMarks: ["removeMarkFilter"],
-  createMarkLabels: ["editMarkLabelSelection", "removeMarkLabels"],
-  editMarkLabelSelection: ["editMarkLabelSelection", "removeMarkLabels"],
+  createMarkLabels: ["editMarkLabelSelection", "editMarkLabelPlacement", "removeMarkLabels"],
+  editMarkLabelSelection: ["editMarkLabelSelection", "editMarkLabelPlacement", "removeMarkLabels"],
+  editMarkLabelPlacement: ["editMarkLabelPlacement", "removeMarkLabels"],
   selectMarks: ["editMarkSelection", "removeMarkSelection"],
   editMarkSelection: ["editMarkSelection", "removeMarkSelection"],
   highlightMarks: ["removeMarkHighlight"],
@@ -81,6 +82,7 @@ const selectorInputs = new Set([
 ]);
 const explicitSelectorActions = new Set([
   "editMarkLabelSelection",
+  "editMarkLabelPlacement",
   "removeMarkLabels"
 ]);
 
@@ -188,6 +190,12 @@ function includesNumber(type) {
 
 export function optionUnits(action, options) {
   const units = [];
+  if (["createMarkLabels", "editMarkLabelPlacement"].includes(action.name)) {
+    units.push(
+      { path: "placement.gap", unit: "logical-pixel" },
+      { path: "placement.leader.strokeWidth", unit: "logical-pixel" }
+    );
+  }
   for (const option of options) {
     let unit;
     if (option.name === "temporalUnit") unit = "temporal-input";

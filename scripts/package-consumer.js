@@ -1592,6 +1592,26 @@ async function testNodeConsumer(directory) {
     assert.deepEqual(selectedSemanticLabels.graphicSpec.objects.text.items.map(i => i.properties.text), ["75.0%"]);
     assert.deepEqual(selectedSemanticLabels.editMarkLabelSelection({ target: "text", all: true })
       .graphicSpec.objects.text.items.map(i => i.properties.text), ["25.0%", "75.0%"]);
+    const placedSemanticLabels = semanticLabels.editMarkLabelPlacement({
+      target: "text",
+      placement: {
+        anchor: "outsideEnd",
+        gap: 8,
+        leader: { stroke: "#123456", strokeWidth: 2 }
+      }
+    });
+    assert.equal(placedSemanticLabels.markConfigs.text.labelAuthoring.placement.anchor, "outsideEnd");
+    assert.equal(placedSemanticLabels.graphicSpec.objects["text-placement-leaders"].items.length, 2);
+    assert.notDeepEqual(
+      placedSemanticLabels.graphicSpec.objects.text.items.map(i => [i.properties.x, i.properties.y]),
+      semanticLabels.graphicSpec.objects.text.items.map(i => [i.properties.x, i.properties.y])
+    );
+    const resetSemanticLabels = placedSemanticLabels.editMarkLabelPlacement({
+      target: "text",
+      placement: "auto"
+    });
+    assert.equal(resetSemanticLabels.markConfigs.text.labelAuthoring.placement, undefined);
+    assert.equal(resetSemanticLabels.graphicSpec.objects["text-placement-leaders"], undefined);
     const labelsRemoved = semanticLabels.removeMarkLabels({ source: "piePlot" })
       .editCanvas({ width: 520 })
       .applyTheme({ theme: "dark" });
@@ -1789,21 +1809,29 @@ async function testMcpConsumer(directory) {
     actionCardSchema.properties?.schemaVersion?.const !== 3 ||
     actionCardsSchema.properties?.schemaVersion?.const !== 3 ||
     actionCards.schemaVersion !== 3 ||
-    actionCards.count !== 271 ||
-    actionCards.cards.length !== 271 ||
+    actionCards.count !== 272 ||
+    actionCards.cards.length !== 272 ||
     actionCards.packageVersion !== installedPackage.version
   ) {
     throw new Error("Installed action-card discovery contract is missing or stale.");
   }
   const installedCards = new Map(actionCards.cards.map(card => [card.name, card]));
-  if (
-    installedCards.get("editMarkLabelSelection")?.signature !==
+    if (
+      installedCards.get("editMarkLabelSelection")?.signature !==
       "editMarkLabelSelection(options: EditMarkLabelSelectionOptions): ChartProgram;" ||
     installedCards.get("editMarkLabelSelection")?.supports.entryPoints.join(",") !== "default" ||
     installedCards.get("editMarkLabelSelection")?.inference.find(entry => entry.input === "target")?.strategy !== "explicit"
   ) {
-    throw new Error("Installed selected-label discovery metadata is stale.");
-  }
+      throw new Error("Installed selected-label discovery metadata is stale.");
+    }
+    if (
+      installedCards.get("editMarkLabelPlacement")?.signature !==
+        "editMarkLabelPlacement(options: EditMarkLabelPlacementOptions): ChartProgram;" ||
+      installedCards.get("editMarkLabelPlacement")?.supports.entryPoints.join(",") !== "default" ||
+      installedCards.get("editMarkLabelPlacement")?.inference.find(entry => entry.input === "target")?.strategy !== "explicit"
+    ) {
+      throw new Error("Installed semantic label-placement discovery metadata is stale.");
+    }
   if (
     installedCards.get("editCoordinate")?.signature !==
       "editCoordinate(options: EditCoordinateOptions): ChartProgram;" ||
@@ -1977,6 +2005,19 @@ async function testMcpConsumer(directory) {
       selectedLabelPacket.unresolved?.length !== 0
     ) {
       throw new Error("Installed MCP did not route selected-label editing.");
+    }
+    const labelPlacementResult = await client.callTool({
+      name: "search_ggaction",
+      arguments: { query: "labels outside bars" }
+    });
+    const labelPlacementPacket = JSON.parse(labelPlacementResult.content[0].text);
+    if (
+      labelPlacementPacket.actionPlan?.map(step => step.name).join(",") !== "editMarkLabelPlacement" ||
+      labelPlacementPacket.exactCalls?.join(",") !==
+        'program.editMarkLabelPlacement({ target: "labels", placement: { anchor: "outsideEnd" } })' ||
+      labelPlacementPacket.unresolved?.length !== 0
+    ) {
+      throw new Error("Installed MCP did not route semantic label placement.");
     }
     const resources = await client.listResources();
     if (
@@ -3574,6 +3615,20 @@ async function testTypeScriptConsumer(directory) {
     chart().editMarkLabelSelection({ target: "bars-labels", select: { field: "value", op: "gt", value: 2 } });
     chart().editMarkLabelSelection({ target: "bars-labels", selection: "focus" });
     chart().editMarkLabelSelection({ target: "bars-labels", all: true });
+    chart().editMarkLabelPlacement({ target: "bars-labels", placement: "auto" });
+    chart().editMarkLabelPlacement({
+      target: "bars-labels",
+      placement: {
+        anchor: "outsideEnd",
+        gap: 8,
+        overflow: "outside",
+        leader: { stroke: "#475569", strokeWidth: 2 }
+      }
+    });
+    // @ts-expect-error Semantic placement requires a supported anchor.
+    chart().editMarkLabelPlacement({ target: "bars-labels", placement: { anchor: "baseline" } });
+    // @ts-expect-error Semantic placement gaps must be numeric.
+    chart().createMarkLabels({ placement: { anchor: "center", gap: "-1" } });
     // @ts-expect-error Label creation selection branches are exclusive.
     chart().createMarkLabels({ select: { field: "value", op: "max" }, selection: "focus" });
     // @ts-expect-error Label selection editing requires a replacement branch.
@@ -3698,6 +3753,7 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.a
       "point-packing",
       "mark-label-removal",
       "selected-mark-labels",
+      "semantic-label-placement",
       "beeswarm-plot",
       "raincloud-plot",
       "path-order",

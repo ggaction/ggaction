@@ -837,7 +837,7 @@
       "domain": "marks",
       "status": "implemented",
       "lifecycle": "Aggregate create-only",
-      "update": "`editMarkLabelSelection`, `encodeText`, `editTextMark`, `layoutLabels`, `removeLabelLayout`; source-owner removal cleans up labels",
+      "update": "`editMarkLabelSelection`, `editMarkLabelPlacement`, `encodeText`, `editTextMark`, `layoutLabels`, `removeLabelLayout`; source-owner removal cleans up labels",
       "audit": "Intentional",
       "coverage": {
         "contract": "complete",
@@ -865,6 +865,24 @@
       "contract": {
         "file": "agent_docs/contract/current/MARKS.md",
         "anchor": "editmarklabelselection"
+      }
+    },
+    {
+      "name": "editMarkLabelPlacement",
+      "layer": "user-facing",
+      "domain": "marks",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Replace semantic placement or reset one attached label to its legacy source anchor",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/MARKS.md",
+        "anchor": "editmarklabelplacement"
       }
     },
     {
@@ -4950,6 +4968,7 @@
       "materializeWindowData",
       "materializeRuleSpan",
       "materializeLabelLayout",
+      "materializeMarkLabelPlacement",
       "rematerializeArcMark",
       "rematerializeAreaMark",
       "rematerializeBarMark",

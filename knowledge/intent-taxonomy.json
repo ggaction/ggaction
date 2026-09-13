@@ -745,6 +745,16 @@
       ]
     },
     {
+      "id": "layout.labels.semanticPlacement",
+      "phrases": [
+        "labels outside bars",
+        "bar end labels",
+        "inside arc labels",
+        "semantic label placement",
+        "reset label placement"
+      ]
+    },
+    {
       "id": "selection.labels.membership",
       "phrases": [
         "select labels",
@@ -2683,6 +2693,22 @@
       "baseOptions": {
         "target": "\"labels\"",
         "all": "true"
+      }
+    },
+    {
+      "id": "action.editMarkLabelPlacement",
+      "kind": "action",
+      "name": "editMarkLabelPlacement",
+      "order": 80,
+      "anchors": [
+        "layout.labels.semanticPlacement"
+      ],
+      "covers": [
+        "layout.labels.semanticPlacement"
+      ],
+      "baseOptions": {
+        "target": "\"labels\"",
+        "placement": "{ anchor: \"outsideEnd\" }"
       }
     },
     {

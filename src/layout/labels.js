@@ -19,6 +19,349 @@ const MAX_EXHAUSTIVE_OFFSET_STEPS = 28;
 const MAX_SEARCH_DISPLACEMENT = 1_000_000;
 const DISTANT_RING_COUNT = 16;
 const DISTANT_ANGLE_COUNT = 32;
+const PLACEMENT_OPTIONS = Object.freeze([
+  "anchor", "gap", "overflow", "leader"
+]);
+const PLACEMENT_LEADER_OPTIONS = Object.freeze(["stroke", "strokeWidth"]);
+const SEMANTIC_ANCHORS = new Set([
+  "center", "insideStart", "insideEnd", "outsideStart", "outsideEnd"
+]);
+const OVERFLOW_POLICIES = new Set(["hide", "outside", "allow"]);
+
+export const DEFAULT_MARK_LABEL_PLACEMENT = cloneAndFreeze({
+  gap: 4,
+  overflow: "hide",
+  leader: false
+});
+
+export function markLabelPlacementLeaderId(target) {
+  return `${target}-placement-leaders`;
+}
+
+function normalizePlacementLeader(value) {
+  if (value === undefined || value === false) return false;
+  validateOptionObject(value, PLACEMENT_LEADER_OPTIONS, "mark label placement leader");
+  const leader = { stroke: "#94a3b8", strokeWidth: 1, ...value };
+  if (typeof leader.stroke !== "string" || leader.stroke.length === 0) {
+    throw new TypeError("Mark label placement leader stroke must be a non-empty string.");
+  }
+  validateNonNegativeFinite(
+    leader.strokeWidth,
+    "Mark label placement leader strokeWidth"
+  );
+  return leader;
+}
+
+export function normalizeMarkLabelPlacement(value) {
+  validateOptionObject(value, PLACEMENT_OPTIONS, "mark label placement", {
+    allowEmpty: false,
+    emptyError: TypeError
+  });
+  if (!SEMANTIC_ANCHORS.has(value.anchor)) {
+    throw new Error(`Unsupported mark label anchor "${value.anchor}".`);
+  }
+  const gap = value.gap ?? DEFAULT_MARK_LABEL_PLACEMENT.gap;
+  const overflowPolicy = value.overflow ?? DEFAULT_MARK_LABEL_PLACEMENT.overflow;
+  validateNonNegativeFinite(gap, "Mark label placement gap");
+  if (!OVERFLOW_POLICIES.has(overflowPolicy)) {
+    throw new Error(`Unsupported mark label overflow "${overflowPolicy}".`);
+  }
+  return cloneAndFreeze({
+    anchor: value.anchor,
+    gap,
+    overflow: overflowPolicy,
+    leader: normalizePlacementLeader(value.leader)
+  });
+}
+
+function finitePoint(value, label) {
+  if (
+    !isPlainObject(value) ||
+    !Number.isFinite(value.x) ||
+    !Number.isFinite(value.y)
+  ) {
+    throw new TypeError(`${label} requires finite x and y.`);
+  }
+  return value;
+}
+
+function unitVector(value, label) {
+  finitePoint(value, label);
+  const length = Math.hypot(value.x, value.y);
+  if (!Number.isFinite(length) || length <= 0) {
+    throw new RangeError(`${label} requires a non-zero direction.`);
+  }
+  return { x: value.x / length, y: value.y / length };
+}
+
+function validateIntervalBounds(bounds) {
+  if (
+    !isPlainObject(bounds) ||
+    ![bounds.left, bounds.right, bounds.top, bounds.bottom].every(Number.isFinite) ||
+    bounds.right < bounds.left ||
+    bounds.bottom < bounds.top
+  ) {
+    throw new RangeError("Interval label placement requires ordered finite bounds.");
+  }
+}
+
+function validatePlacementGeometry(geometry, anchor) {
+  if (!isPlainObject(geometry)) {
+    throw new TypeError("Mark label placement requires source geometry.");
+  }
+  if (geometry.kind === "interval") {
+    finitePoint(geometry.center, "Interval label center");
+    for (const role of ["start", "end"]) {
+      finitePoint(geometry[role]?.point, `Interval label ${role}`);
+      unitVector(geometry[role]?.outward, `Interval label ${role}`);
+    }
+    validateIntervalBounds(geometry.bounds);
+    return;
+  }
+  if (geometry.kind === "arc") {
+    if (![geometry.centerX, geometry.centerY, geometry.startTheta,
+      geometry.endTheta, geometry.innerRadius, geometry.outerRadius]
+      .every(Number.isFinite)) {
+      throw new TypeError("Arc label placement requires finite sector geometry.");
+    }
+    if (
+      geometry.innerRadius < 0 ||
+      geometry.outerRadius <= geometry.innerRadius ||
+      geometry.startTheta === geometry.endTheta ||
+      Math.abs(geometry.endTheta - geometry.startTheta) > 360
+    ) {
+      throw new RangeError("Arc label placement requires an ordered annular sector.");
+    }
+    return;
+  }
+  if (geometry.kind === "point") {
+    finitePoint(geometry.center, "Point label center");
+    if (anchor === "outsideEnd") {
+      finitePoint(geometry.end?.point, "Polar Point label boundary");
+      unitVector(geometry.end?.outward, "Polar Point label direction");
+    }
+    return;
+  }
+  throw new Error(`Unsupported mark label placement geometry "${geometry.kind}".`);
+}
+
+export function assertMarkLabelPlacementSupport({ markType, coordinateType, intervalAxis }, placement) {
+  const anchor = placement.anchor;
+  if (markType === "bar" || markType === "arc") return placement;
+  if (markType === "rect") {
+    if (anchor === "center" || intervalAxis !== undefined) return placement;
+    throw new Error("Rect semantic label placement requires one explicit interval axis.");
+  }
+  if (markType === "point") {
+    if (anchor === "center" || (coordinateType === "polar" && anchor === "outsideEnd")) {
+      return placement;
+    }
+    throw new Error(
+      coordinateType === "polar"
+        ? `Polar Point does not support mark label anchor "${anchor}".`
+        : `Point does not support mark label anchor "${anchor}".`
+    );
+  }
+  if (markType === "line") {
+    throw new Error("Line labels retain the endpoint API and do not accept semantic placement objects.");
+  }
+  if (markType === "rule") {
+    throw new Error("Rule labels do not support semantic placement objects.");
+  }
+  throw new Error(`Mark type "${markType}" does not support semantic label placement.`);
+}
+
+function localTextBounds(text) {
+  return resolveTextBounds({ ...text, x: 0, y: 0 });
+}
+
+function projectionRange(bounds, direction) {
+  const values = [
+    { x: bounds.left, y: bounds.top },
+    { x: bounds.right, y: bounds.top },
+    { x: bounds.right, y: bounds.bottom },
+    { x: bounds.left, y: bounds.bottom }
+  ].map(point => point.x * direction.x + point.y * direction.y);
+  return { minimum: Math.min(...values), maximum: Math.max(...values) };
+}
+
+function boundaryCandidate(boundary, direction, gap, text) {
+  const resolvedDirection = unitVector(direction, "Mark label placement direction");
+  const support = projectionRange(localTextBounds(text), resolvedDirection);
+  const distance = gap - support.minimum;
+  return {
+    x: boundary.x + resolvedDirection.x * distance + (text.dx ?? 0),
+    y: boundary.y + resolvedDirection.y * distance + (text.dy ?? 0),
+    sourceX: boundary.x,
+    sourceY: boundary.y
+  };
+}
+
+function centerCandidate(center, text) {
+  return {
+    x: center.x + (text.dx ?? 0),
+    y: center.y + (text.dy ?? 0),
+    sourceX: center.x,
+    sourceY: center.y
+  };
+}
+
+function candidateBounds(candidate, text) {
+  return resolveTextBounds({ ...text, x: candidate.x, y: candidate.y });
+}
+
+function intervalContains(bounds, container) {
+  const epsilon = 1e-9;
+  return bounds.left >= container.left - epsilon &&
+    bounds.right <= container.right + epsilon &&
+    bounds.top >= container.top - epsilon &&
+    bounds.bottom <= container.bottom + epsilon;
+}
+
+function distanceToRectangle(centerX, centerY, bounds) {
+  const x = Math.max(bounds.left, Math.min(centerX, bounds.right));
+  const y = Math.max(bounds.top, Math.min(centerY, bounds.bottom));
+  return Math.hypot(x - centerX, y - centerY);
+}
+
+function thetaForPoint(point, geometry) {
+  return Math.atan2(point.x - geometry.centerX, geometry.centerY - point.y) *
+    180 / Math.PI;
+}
+
+function angleWithin(theta, start, end) {
+  const sweep = end - start;
+  if (Math.abs(sweep) >= 360 - 1e-9) return true;
+  const direction = Math.sign(sweep);
+  const progress = ((direction * (theta - start)) % 360 + 360) % 360;
+  return progress <= Math.abs(sweep) + 1e-9;
+}
+
+function arcContains(bounds, geometry) {
+  const points = [
+    { x: bounds.left, y: bounds.top },
+    { x: bounds.right, y: bounds.top },
+    { x: bounds.right, y: bounds.bottom },
+    { x: bounds.left, y: bounds.bottom },
+    { x: (bounds.left + bounds.right) / 2, y: bounds.top },
+    { x: bounds.right, y: (bounds.top + bounds.bottom) / 2 },
+    { x: (bounds.left + bounds.right) / 2, y: bounds.bottom },
+    { x: bounds.left, y: (bounds.top + bounds.bottom) / 2 }
+  ];
+  const minimumRadius = distanceToRectangle(
+    geometry.centerX,
+    geometry.centerY,
+    bounds
+  );
+  const maximumRadius = Math.max(...points.slice(0, 4).map(point =>
+    Math.hypot(point.x - geometry.centerX, point.y - geometry.centerY)
+  ));
+  const epsilon = 1e-9;
+  return minimumRadius >= geometry.innerRadius - epsilon &&
+    maximumRadius <= geometry.outerRadius + epsilon &&
+    points.every(point => angleWithin(
+      thetaForPoint(point, geometry),
+      geometry.startTheta,
+      geometry.endTheta
+    ));
+}
+
+function arcRole(geometry, role) {
+  const theta = geometry.startTheta +
+    (geometry.endTheta - geometry.startTheta) / 2;
+  const radians = theta * Math.PI / 180;
+  const radial = { x: Math.sin(radians), y: -Math.cos(radians) };
+  const radius = role === "start" ? geometry.innerRadius : geometry.outerRadius;
+  return {
+    point: {
+      x: geometry.centerX + radial.x * radius,
+      y: geometry.centerY + radial.y * radius
+    },
+    outward: role === "start"
+      ? { x: -radial.x, y: -radial.y }
+      : radial
+  };
+}
+
+function geometryRole(geometry, role) {
+  return geometry.kind === "arc" ? arcRole(geometry, role) : geometry[role];
+}
+
+function geometryCenter(geometry) {
+  if (geometry.kind !== "arc") return geometry.center;
+  const role = arcRole(geometry, "end");
+  const radius = (geometry.innerRadius + geometry.outerRadius) / 2;
+  return {
+    x: geometry.centerX + role.outward.x * radius,
+    y: geometry.centerY + role.outward.y * radius
+  };
+}
+
+function candidateForAnchor(anchor, geometry, placement, text) {
+  if (anchor === "center") return centerCandidate(geometryCenter(geometry), text);
+  const roleName = anchor.endsWith("Start") ? "start" : "end";
+  const role = geometryRole(geometry, roleName);
+  const outside = anchor.startsWith("outside");
+  const direction = outside
+    ? role.outward
+    : { x: -role.outward.x, y: -role.outward.y };
+  return boundaryCandidate(role.point, direction, placement.gap, text);
+}
+
+function arcOutsideStartCrossesCenter(candidate, geometry, text) {
+  if (geometry.kind !== "arc") return false;
+  const radial = arcRole(geometry, "end").outward;
+  const projections = projectionRange(candidateBounds(candidate, text), radial);
+  const centerProjection = geometry.centerX * radial.x + geometry.centerY * radial.y;
+  return projections.minimum < centerProjection - 1e-9;
+}
+
+function fitsSource(candidate, geometry, text) {
+  if (geometry.kind === "point") return true;
+  const bounds = candidateBounds(candidate, text);
+  return geometry.kind === "arc"
+    ? arcContains(bounds, geometry)
+    : intervalContains(bounds, geometry.bounds);
+}
+
+function outsideFallback(anchor) {
+  return anchor === "insideStart" ? "outsideStart" : "outsideEnd";
+}
+
+export function resolveMarkLabelPlacement({ placement, geometry, text } = {}) {
+  const normalized = normalizeMarkLabelPlacement(placement);
+  validatePlacementGeometry(geometry, normalized.anchor);
+  let anchor = normalized.anchor;
+  let candidate = candidateForAnchor(anchor, geometry, normalized, text);
+  const requiresFit = anchor === "center" || anchor.startsWith("inside");
+  if (requiresFit && !fitsSource(candidate, geometry, text)) {
+    if (normalized.overflow === "hide") {
+      return cloneAndFreeze({ visible: false, anchor, fallback: false });
+    }
+    if (normalized.overflow === "outside") {
+      anchor = outsideFallback(anchor);
+      candidate = candidateForAnchor(anchor, geometry, normalized, text);
+    }
+  }
+  if (
+    anchor === "outsideStart" &&
+    normalized.overflow !== "allow" &&
+    arcOutsideStartCrossesCenter(candidate, geometry, text)
+  ) {
+    return cloneAndFreeze({
+      visible: false,
+      anchor,
+      fallback: anchor !== normalized.anchor
+    });
+  }
+  return cloneAndFreeze({
+    visible: true,
+    anchor,
+    fallback: anchor !== normalized.anchor,
+    ...candidate,
+    bounds: candidateBounds(candidate, text)
+  });
+}
 
 export const DEFAULT_LABEL_LAYOUT_GEOMETRY = cloneAndFreeze({
   axis: "both",

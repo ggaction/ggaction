@@ -483,6 +483,14 @@ test.before(async () => {
         target: "text",
         select: { field: "value", op: "max" }
       });
+      const placedSemanticLabels = semanticLabels.editMarkLabelPlacement({
+        target: "text",
+        placement: {
+          anchor: "outsideEnd",
+          gap: 8,
+          leader: { stroke: "#123456", strokeWidth: 2 }
+        }
+      });
       const labelsRemoved = semanticLabels.removeMarkLabels({ source: "piePlot" })
         .editCanvas({ width: 520 })
         .applyTheme({ theme: "dark" });
@@ -531,6 +539,11 @@ test.before(async () => {
         semanticFiltered: semanticLabels.filterMarks({ target: "piePlot", field: "category", op: "eq", value: "B" })
           .graphicSpec.objects.text.items.map(i => i.properties.text),
         semanticSelected: selectedSemanticLabels.graphicSpec.objects.text.items.map(i => i.properties.text),
+        semanticPlacement: [
+          placedSemanticLabels.markConfigs.text.labelAuthoring.placement.anchor,
+          placedSemanticLabels.graphicSpec.objects["text-placement-leaders"].items.length,
+          basicChart().editMarkLabelPlacement === undefined
+        ],
         semanticLabelsRemoved: [
           labelsRemoved.semanticSpec.layers.some(layer => layer.id === "piePlot"),
           labelsRemoved.semanticSpec.layers.some(layer => layer.id === "text"),
@@ -722,6 +735,7 @@ test("imports and renders the packed browser entries", async () => {
     semanticTextSVG: true,
     semanticFiltered: ["100.0%"],
     semanticSelected: ["75.0%"],
+    semanticPlacement: ["outsideEnd", 2, true],
     semanticLabelsRemoved: [true, false, true, true],
     commonFormats: [["2.00e+0", "6.00e+0"], ["1.0e+1", "2.0e+1", "3.0e+1"], 20, null,
       ["4.0", "6.5", "9.0"]],

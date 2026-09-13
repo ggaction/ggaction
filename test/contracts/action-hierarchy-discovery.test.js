@@ -106,7 +106,7 @@ test("discovery separates completion from resource validity", async () => {
     state,
     entries.length
   ])), {
-    contextual: 237,
+    contextual: 238,
     deferred: 2,
     complete: 29,
     "not-applicable": 3
@@ -129,7 +129,9 @@ test("discovery separates completion from resource validity", async () => {
       card.name
     );
     const optionNames = new Set(card.options.map(option => option.name));
-    assert.ok(card.units.every(entry => optionNames.has(entry.path)), card.name);
+    assert.ok(card.units.every(entry =>
+      optionNames.has(entry.path.split(".")[0])
+    ), card.name);
     assert.ok(card.inference.every(entry =>
       entry.input === "omitted optional options" || optionNames.has(entry.input)
     ), card.name);

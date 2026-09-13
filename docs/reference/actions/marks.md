@@ -259,7 +259,7 @@ is needed. Both reference facades are available in the full entry point.
 ## `createMarkLabels`
 
 ```javascript
-createMarkLabels({ id?, source?, field?, value?, content?, normalizeBy?, format?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy?, layout?, select?, selection? } = {})
+createMarkLabels({ id?, source?, field?, value?, content?, normalizeBy?, format?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy?, layout?, placement?, select?, selection? } = {})
 ```
 
 Create final-item labels on an existing mark through text creation, encoding, and
@@ -271,6 +271,7 @@ for an inline predicate or `selection: id` for a live stored selection on the sa
 source. Empty matches are valid, and selected labels keep source item order.
 Semantic content is computed before membership filtering, so a selected share label
 keeps its percentage of the complete source.
+`placement` applies the semantic boundary policy described below during creation.
 [Text marks](../../api/marks/text.md)
 
 ## `editMarkLabelSelection`
@@ -287,6 +288,25 @@ branch is required and `target` is never inferred. Inline selectors reuse
 replay named labels, while selection removal is rejected until dependent labels are
 rebound with this action or removed.
 [Text marks](../../api/marks/text.md#editmarklabelselectionoptions)
+
+## `editMarkLabelPlacement`
+
+```javascript
+editMarkLabelPlacement({ target, placement: { anchor, gap?, overflow?, leader? } })
+editMarkLabelPlacement({ target, placement: "auto" })
+```
+
+Replace semantic placement for one attached label layer. `anchor` is `center`,
+`insideStart`, `insideEnd`, `outsideStart`, or `outsideEnd`; `gap` defaults to 4 pixels.
+For inside anchors, `overflow` defaults to `hide`, can retry once outside with `outside`,
+or can retain an overlong label with `allow`. Optional owned leaders connect the source
+boundary to the final text box and replay after collision layout. Bar, directed Rect,
+Arc, Cartesian Point, and Polar Point sources are supported. Line keeps endpoint layout,
+Rule is rejected, and conflicting placement/collision leaders fail atomically.
+Arc outside-start labels hide instead of crossing the Polar center unless `overflow: "allow"`
+is explicit.
+Pass `"auto"` to restore the legacy source anchor and remove the owned placement leader.
+[Text marks](../../api/marks/text.md#editmarklabelplacementoptions)
 
 ## `removeMarkLabels`
 

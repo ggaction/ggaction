@@ -175,6 +175,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`editLegendSymbols`](./actions/guides.md#focused-legend-edits) | H3 | user-facing | legend_and_title |
 | [`editLegendTitle`](./actions/guides.md#focused-legend-edits) | H3 | user-facing | legend_and_title |
 | [`editLineMark`](./actions/marks.md#editlinemark) | H3 | user-facing | marks |
+| [`editMarkLabelPlacement`](./actions/marks.md#editmarklabelplacement) | H3 | user-facing | marks |
 | [`editMarkLabelSelection`](./actions/marks.md#editmarklabelselection) | H3 | user-facing | marks |
 | [`editMarkSelection`](./actions/advanced.md#editmarkselection) | H3 | advanced | mark-selection |
 | [`editNormalizedData`](./actions/statistics.md#focused-statistical-data-editing) | H1, H3 | user-facing | statistics |

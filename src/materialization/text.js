@@ -1,10 +1,19 @@
 import { resolveBarChannels } from "../grammar/bars/policy.js";
+import {
+  assertMarkLabelPlacementSupport,
+  normalizeMarkLabelPlacement,
+  resolveMarkLabelPlacement
+} from "../layout/labels.js";
 import { resolveMarkLabelValues } from "../grammar/markLabels.js";
 import { formatTextValue } from "../grammar/text.js";
 import { normalizePositionDatum } from "../grammar/positionDatum.js";
 import { mapOrdinalPositionValues } from "../grammar/scales/index.js";
 import { findDataset } from "../selectors/datasets.js";
+import { findCoordinate } from "../selectors/coordinates.js";
 import { findLayer } from "../selectors/layers.js";
+import { unionConcreteGraphicBounds } from
+  "../grammar/schemas/graphicBounds.js";
+import { polarDirection } from "../grammar/polar.js";
 import { resolveMarkItems } from "./selection/policies/index.js";
 import { resolveMarkSelection } from "./selection/state.js";
 import { mapScaleConsumerValues } from "./scales/map.js";
@@ -84,6 +93,172 @@ function sourceAnchor(program, source, item) {
   return { x: item.properties.x, y: item.properties.y };
 }
 
+function explicitIntervalAxis(source) {
+  const axes = ["x", "y"].filter(axis =>
+    source.encoding?.[axis] !== undefined &&
+    source.encoding?.[`${axis}2`] !== undefined
+  );
+  return axes.length === 1 ? axes[0] : undefined;
+}
+
+function sourcePlacementContext(program, source) {
+  const coordinateType = findCoordinate(program, source.coordinate)?.type;
+  return {
+    markType: source.mark.type,
+    coordinateType,
+    intervalAxis: source.mark.type === "bar"
+      ? resolveBarChannels(source).measure
+      : source.mark.type === "rect"
+        ? explicitIntervalAxis(source)
+        : undefined
+  };
+}
+
+export function validateSourceMarkLabelPlacement(program, sourceId, value) {
+  const source = findLayer(program, sourceId);
+  if (source === undefined) {
+    throw new Error(`Unknown mark label placement source "${sourceId}".`);
+  }
+  const placement = normalizeMarkLabelPlacement(value);
+  assertMarkLabelPlacementSupport(sourcePlacementContext(program, source), placement);
+  return placement;
+}
+
+function rectangleBounds(item) {
+  const { x, y, width, height } = item.properties;
+  if (![x, y, width, height].every(Number.isFinite)) {
+    throw new TypeError("Interval mark label placement requires finite rectangle geometry.");
+  }
+  return {
+    left: Math.min(x, x + width),
+    right: Math.max(x, x + width),
+    top: Math.min(y, y + height),
+    bottom: Math.max(y, y + height)
+  };
+}
+
+function mappedChannel(program, source, item, channel) {
+  const value = item.channels[channel];
+  const primary = channel === "x2" ? "x" : channel === "y2" ? "y" : channel;
+  const scale = program.resolvedScales[
+    source.encoding?.[channel]?.scale ?? source.encoding?.[primary]?.scale
+  ];
+  return value === undefined || scale === undefined
+    ? undefined
+    : mapScaleConsumerValues([value], scale, channel)[0];
+}
+
+function scaleIncreaseDirection(program, source, axis) {
+  const scale = program.resolvedScales[source.encoding?.[axis]?.scale];
+  const domain = scale?.domain;
+  if (!Array.isArray(domain) || domain.length < 2) {
+    return axis === "x" ? { x: 1, y: 0 } : { x: 0, y: -1 };
+  }
+  const mapped = mapScaleConsumerValues(
+    [domain[0], domain.at(-1)],
+    scale,
+    axis
+  );
+  const delta = mapped[1] - mapped[0];
+  if (!Number.isFinite(delta) || delta === 0) {
+    return axis === "x" ? { x: 1, y: 0 } : { x: 0, y: -1 };
+  }
+  return axis === "x"
+    ? { x: Math.sign(delta), y: 0 }
+    : { x: 0, y: Math.sign(delta) };
+}
+
+function intervalPlacementGeometry(program, source, item, axis) {
+  const bounds = rectangleBounds(item);
+  const primary = mappedChannel(program, source, item, axis);
+  const secondary = mappedChannel(program, source, item, `${axis}2`);
+  if (![primary, secondary].every(Number.isFinite)) {
+    throw new TypeError(
+      `${source.mark.type === "bar" ? "Bar" : "Rect"} semantic label placement requires resolved ${axis}/${axis}2 endpoints.`
+    );
+  }
+  const cross = axis === "x"
+    ? (bounds.top + bounds.bottom) / 2
+    : (bounds.left + bounds.right) / 2;
+  const start = axis === "x" ? { x: primary, y: cross } : { x: cross, y: primary };
+  const end = axis === "x" ? { x: secondary, y: cross } : { x: cross, y: secondary };
+  const delta = { x: end.x - start.x, y: end.y - start.y };
+  const length = Math.hypot(delta.x, delta.y);
+  const endOutward = length > 0
+    ? { x: delta.x / length, y: delta.y / length }
+    : scaleIncreaseDirection(program, source, axis);
+  return {
+    kind: "interval",
+    center: {
+      x: (bounds.left + bounds.right) / 2,
+      y: (bounds.top + bounds.bottom) / 2
+    },
+    start: {
+      point: start,
+      outward: { x: -endOutward.x, y: -endOutward.y }
+    },
+    end: { point: end, outward: endOutward },
+    bounds
+  };
+}
+
+function pointPlacementGeometry(program, source, item) {
+  const center = { x: item.properties.x, y: item.properties.y };
+  const coordinateType = findCoordinate(program, source.coordinate)?.type;
+  if (coordinateType !== "polar") return { kind: "point", center };
+  const thetaScale = program.resolvedScales[source.encoding?.theta?.scale];
+  const theta = item.channels.theta === undefined || thetaScale === undefined
+    ? undefined
+    : mapScaleConsumerValues([item.channels.theta], thetaScale, "theta")[0];
+  const outward = Number.isFinite(theta) ? polarDirection(theta) : { x: 0, y: -1 };
+  const objectBounds = unionConcreteGraphicBounds(
+    program.graphicSpec,
+    item.graphicIds
+  );
+  const corners = objectBounds === undefined ? [] : [
+    { x: objectBounds.left, y: objectBounds.top },
+    { x: objectBounds.right, y: objectBounds.top },
+    { x: objectBounds.right, y: objectBounds.bottom },
+    { x: objectBounds.left, y: objectBounds.bottom }
+  ];
+  const support = Math.max(0, ...corners.map(point =>
+    (point.x - center.x) * outward.x + (point.y - center.y) * outward.y
+  ));
+  return {
+    kind: "point",
+    center,
+    end: {
+      point: {
+        x: center.x + outward.x * support,
+        y: center.y + outward.y * support
+      },
+      outward
+    }
+  };
+}
+
+function sourcePlacementGeometry(program, source, item) {
+  if (source.mark.type === "bar") {
+    return intervalPlacementGeometry(
+      program,
+      source,
+      item,
+      resolveBarChannels(source).measure
+    );
+  }
+  if (source.mark.type === "rect") {
+    const axis = explicitIntervalAxis(source);
+    return axis === undefined
+      ? { kind: "point", center: sourceAnchor(program, source, item) }
+      : intervalPlacementGeometry(program, source, item, axis);
+  }
+  if (source.mark.type === "arc") return item.geometry;
+  if (source.mark.type === "point") {
+    return pointPlacementGeometry(program, source, item);
+  }
+  return { kind: "point", center: sourceAnchor(program, source, item) };
+}
+
 function contentValue(encoding, rowOrItem, source) {
   return Object.hasOwn(encoding, "field")
     ? source === undefined
@@ -92,8 +267,7 @@ function contentValue(encoding, rowOrItem, source) {
     : encoding.datum;
 }
 
-function concreteItem(config, position, value, format) {
-  const text = formatTextValue(value, format);
+function concreteTextItem(config, position, text, { offsets = true } = {}) {
   const x = position.x;
   const y = position.y;
   if (text === undefined || !Number.isFinite(x) || !Number.isFinite(y)) {
@@ -102,8 +276,8 @@ function concreteItem(config, position, value, format) {
   return {
     type: "text",
     properties: {
-      x: x + config.dx,
-      y: y + config.dy,
+      x: x + (offsets ? config.dx : 0),
+      y: y + (offsets ? config.dy : 0),
       text,
       fill: config.fill,
       opacity: config.opacity,
@@ -115,6 +289,10 @@ function concreteItem(config, position, value, format) {
       rotation: config.rotation
     }
   };
+}
+
+function concreteItem(config, position, value, format) {
+  return concreteTextItem(config, position, formatTextValue(value, format));
 }
 
 function relativeLuminance(color) {
@@ -184,16 +362,54 @@ function resolveSourceTextItems(program, layer, config) {
     allItems.map((item, index) => [item.key, resolvedValues[index]])
   );
   return items.flatMap(item => {
-    const anchor = sourceAnchor(program, source, item);
-    const concrete = concreteItem(
-      sourceTextConfig(config, source, item),
-      anchor,
+    let resolvedConfig = sourceTextConfig(config, source, item);
+    const text = formatTextValue(
       values === undefined
         ? contentValue(layer.encoding.text, item, source)
         : values.get(item.key),
       layer.encoding.text.format
     );
-    return concrete === undefined ? [] : [{ graphic: concrete, anchor }];
+    if (text === undefined) return [];
+    const placement = program.markConfigs[layer.id]?.labelAuthoring?.placement;
+    if (placement === undefined) {
+      const anchor = sourceAnchor(program, source, item);
+      const concrete = concreteTextItem(resolvedConfig, anchor, text);
+      return concrete === undefined ? [] : [{ graphic: concrete, anchor }];
+    }
+    assertMarkLabelPlacementSupport(sourcePlacementContext(program, source), placement);
+    const resolved = resolveMarkLabelPlacement({
+      placement,
+      geometry: sourcePlacementGeometry(program, source, item),
+      text: {
+        text,
+        fontSize: resolvedConfig.fontSize,
+        fontFamily: resolvedConfig.fontFamily,
+        fontWeight: resolvedConfig.fontWeight,
+        textAlign: resolvedConfig.align,
+        textBaseline: resolvedConfig.baseline,
+        rotation: resolvedConfig.rotation,
+        dx: resolvedConfig.dx,
+        dy: resolvedConfig.dy
+      }
+    });
+    if (!resolved.visible) return [];
+    if (
+      resolved.anchor.startsWith("outside") &&
+      config.fillExplicit !== true
+    ) {
+      resolvedConfig = config;
+    }
+    const anchor = { x: resolved.sourceX, y: resolved.sourceY };
+    return [{
+      graphic: concreteTextItem(
+        resolvedConfig,
+        { x: resolved.x, y: resolved.y },
+        text,
+        { offsets: false }
+      ),
+      anchor,
+      placement: resolved
+    }];
   });
 }
 

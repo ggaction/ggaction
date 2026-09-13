@@ -5,6 +5,7 @@ import { validateKeys } from "../../core/validation.js";
 import { findDataset } from "../../selectors/datasets.js";
 import { findLayer } from "../../selectors/layers.js";
 import { applyDetachedScaleRematerialization } from "../../materialization/dependencies.js";
+import { markLabelPlacementLeaderId } from "../../layout/labels.js";
 import {
   getPositionChannelDefinition,
   POSITION_CHANNELS
@@ -229,6 +230,15 @@ export const removeMark = action(
         next.graphicSpec.objects[labelLayout.leaderId] !== undefined
       ) {
         next = next.editGraphics({ target: labelLayout.leaderId, remove: true });
+      }
+      const placement = next.markConfigs[id]?.labelAuthoring?.placement;
+      const placementLeaderId = markLabelPlacementLeaderId(id);
+      if (
+        placement?.leader !== undefined &&
+        placement.leader !== false &&
+        next.graphicSpec.objects[placementLeaderId] !== undefined
+      ) {
+        next = next.editGraphics({ target: placementLeaderId, remove: true });
       }
       if (findLayer(next, id) !== undefined) {
         next = next.editSemantic({ property: `layer[${id}]`, remove: true });

@@ -189,6 +189,10 @@ function labelRemovalPrograms() {
       target: "relationshipLabels",
       select: { field: "value", op: "min" }
     }),
+    labeled.editMarkLabelPlacement({
+      target: "relationshipLabels",
+      placement: { anchor: "outsideEnd" }
+    }),
     labeled.removeMarkLabels({ source: "relationshipBars" })
   ];
 }
