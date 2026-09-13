@@ -1,7 +1,7 @@
 # R27 — 좌표 frame 종횡비와 데이터 단위비
 
-원래 감사 번호: **27**. Primary owner: **Phase 6**. 상태: **Proposed / 구현 전**.
-아래 세부 API·수치 정책의 Gate는 승인됐다. 상태의 `Proposed`는 제품 구현·검증이 아직 완료되지 않았다는 뜻이다.
+원래 감사 번호: **27**. Primary owner: **Phase 6**. 상태: **Implemented-primary**.
+아래 세부 API·수치 정책은 `ded3b073`에서 구현됐다. R29와 합친 Polar·renderer closeout은 Phase 6에 남아 있다.
 
 ## 목적과 현재 연결점
 
@@ -95,9 +95,9 @@ layout은 먼저 기존 guide/title/legend occupied allocation을 계산하고 �
 
 ## 완료 조건
 
-- [ ] 위 API의 최단 호출과 explicit 대상 호출, 누락/auto/false/empty 경계를 타입과 runtime으로 동기화했다.
-- [ ] 위 수치 oracle를 실제 capability test에 구현했고 계획 예제를 기대값 생성기로 재사용하지 않았다.
-- [ ] 기존 consumer와 새 consumer에 scale/mark/guide/label/selection/facet/Canvas replay를 검증했다.
-- [ ] Full 등록·타입 export·Current 계약·catalog·card·관계 trace·MCP·문서·installed consumer를 갱신했다.
-- [ ] 미지원 cell은 이유를 적었다. 이 문서에 명시한 필수 cell을 임의 제외하지 않았다.
-- [ ] 해당 Phase의 승인/검증 근거를 기록했다. 추측으로 완료 표시하지 않았다.
+- [x] 위 API의 최단 호출과 explicit 대상 호출, 누락/auto/false/empty 경계를 타입과 runtime으로 동기화했다.
+- [x] 위 수치 oracle를 실제 capability test에 구현했고 계획 예제를 기대값 생성기로 재사용하지 않았다.
+- [ ] R29와 합친 Polar mark/guide 및 Canvas/SVG/PNG/PDF closeout은 WP6.3에서 검증한다.
+- [x] Full 등록·타입 export·Current 계약·catalog·card·관계 trace·MCP·문서·installed consumer를 갱신했다.
+- [x] data-mode의 temporal/nonlinear/incomplete/multiple-pair/explicit-range 미지원 cell을 사전 오류로 고정했다.
+- [x] 해당 Phase의 승인과 R27 primary 검증 근거를 `phase6/STEP1.md`에 기록했다.

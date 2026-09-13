@@ -667,21 +667,25 @@
       "spec": "features/27-coordinate-aspect.md",
       "phase": 6,
       "dependsOn": [],
-      "status": "Proposed",
+      "status": "Implemented-primary",
       "newPublicActions": [
         "editCoordinate"
       ],
       "extendedPublicSurfaces": [],
       "currentSourceFiles": [
-        "src/actions/coordinates/actions.js",
-        "src/actions/scales/materialize.js",
-        "src/materialization/planner.js",
         "src/grammar/coordinates.js",
-        "src/layout/canvas.js"
+        "src/layout/aspect.js",
+        "src/materialization/coordinateBounds.js",
+        "src/actions/coordinates/edit.js",
+        "src/materialization/dependencies.js",
+        "src/actions/scales/preview.js",
+        "src/actions/scales/edit.js"
       ],
       "existingRegressionTests": [
-        "test/unit/grammar/polar.test.js",
-        "test/contracts/shared-scale-refresh.test.js"
+        "test/contracts/coordinate-aspect.test.js",
+        "test/contracts/coordinate-aspect-types.test.js",
+        "test/contracts/shared-scale-refresh.test.js",
+        "test/contracts/source-boundaries.test.js"
       ],
       "suggestedNewTest": "test/contracts/coordinate-aspect.test.js",
       "acceptanceCases": [

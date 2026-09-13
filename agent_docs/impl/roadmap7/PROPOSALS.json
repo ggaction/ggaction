@@ -421,15 +421,17 @@
       "slug": "coordinate-aspect",
       "phase": 6,
       "dependsOn": [],
-      "status": "Proposed",
+      "status": "Implemented-primary",
       "scopeSelection": "user-selected",
       "file": "features/27-coordinate-aspect.md",
       "sources": [
-        "src/actions/coordinates/actions.js",
-        "src/actions/scales/materialize.js",
-        "src/materialization/planner.js",
         "src/grammar/coordinates.js",
-        "src/layout/canvas.js"
+        "src/layout/aspect.js",
+        "src/materialization/coordinateBounds.js",
+        "src/actions/coordinates/edit.js",
+        "src/materialization/dependencies.js",
+        "src/actions/scales/preview.js",
+        "src/actions/scales/edit.js"
       ],
       "acceptanceSections": [
         "값·기본값·오류 계약",

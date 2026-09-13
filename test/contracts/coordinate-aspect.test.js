@@ -188,6 +188,15 @@ test("recomputes coupled ranges after domain and Canvas edits and auto restores 
 test("rejects invalid or ambiguous data aspects atomically", () => {
   const base = pointProgram();
   for (const operation of [
+    program => program.editCoordinate({ target: "main" }),
+    program => program.editCoordinate({ aspect: { mode: "frame", ratio: 1 } }),
+    program => program.editCoordinate({ target: "main", aspect: false }),
+    program => program.editCoordinate({ target: "main", aspect: {} }),
+    program => program.editCoordinate({
+      target: "main",
+      aspect: { mode: "frame", ratio: 1 },
+      type: "polar"
+    }),
     program => program.editCoordinate({ target: "main", aspect: { mode: "data", ratio: 0 } }),
     program => program.editCoordinate({ target: "main", aspect: { mode: "data", ratio: Infinity } }),
     program => program.editCoordinate({ target: "main", aspect: { mode: "unknown", ratio: 1 } }),
