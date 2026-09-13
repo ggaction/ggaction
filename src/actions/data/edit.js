@@ -301,13 +301,18 @@ function applyRevisionPlan(program, resolved, plan) {
   let next = program;
   for (const revision of plan.revisions) {
     const policy = findTransformPolicy(revision.transform.type);
-    next = next
-      .createDerivedData({
-        id: revision.id,
-        source: revision.source,
-        transform: [revision.transform]
-      })
-      [policy.materializeOp]({ id: revision.id });
+    next = next.createDerivedData({
+      id: revision.id,
+      source: revision.source,
+      transform: [revision.transform]
+    });
+    if (revision.transform.type === "markFilter") {
+      next = next.rebindLayerData({
+        id: revision.transform.target,
+        data: revision.source
+      });
+    }
+    next = next[policy.materializeOp]({ id: revision.id });
   }
 
   const consumers = plan.revisions.flatMap(revision =>

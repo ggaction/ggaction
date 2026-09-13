@@ -22,7 +22,10 @@ export function resolveSeriesLayoutDomain({
     (_, index) => seriesLayouts[index] !== undefined
   );
   const directConsumers = valuesByConsumer.filter(
-    ({ consumer }, index) => seriesLayouts[index] === undefined && !isSourceOwnedText(consumer.layer)
+    ({ consumer, scalePolicy }, index) =>
+      scalePolicy !== false &&
+      seriesLayouts[index] === undefined &&
+      !isSourceOwnedText(consumer.layer)
   );
   const compatibleDirect = directConsumers.every(({ consumer }) =>
     layoutConsumers.every(({ consumer: layoutConsumer }) => {

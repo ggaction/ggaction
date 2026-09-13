@@ -34,7 +34,15 @@ function resolveScalePreviewAtBounds(program, id, bounds) {
       program.markConfigs?.[consumer.layer.id]?.markFilter?.empty === true ||
       program.markConfigs?.[consumer.layer.id]?.statisticalReference !== undefined
     ) {
-      return { consumer, values: [], categoryOrder: undefined, seriesLayout: undefined };
+      return {
+        consumer,
+        values: [],
+        categoryOrder: undefined,
+        seriesLayout: undefined,
+        ...(program.markConfigs?.[consumer.layer.id]?.statisticalReference === undefined
+          ? {}
+          : { scalePolicy: false })
+      };
     }
     return { consumer,
       values: resolveConsumerValues(program, consumer),

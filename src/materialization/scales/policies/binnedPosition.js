@@ -13,8 +13,8 @@ export function resolveBinnedPositionDomain({
       consumer.encoding.bin !== undefined
   );
   if (binnedPositions.length === 0) return undefined;
-  const independentConsumers = valuesByConsumer.filter(({ consumer }) =>
-    !isSourceOwnedText(consumer.layer)
+  const independentConsumers = valuesByConsumer.filter(({ consumer, scalePolicy }) =>
+    scalePolicy !== false && !isSourceOwnedText(consumer.layer)
   );
   if (channel !== "x" || binnedPositions.length !== independentConsumers.length) {
     throw new Error(

@@ -229,6 +229,30 @@ test("keeps statistical values out of automatic source scale domains", () => {
   assert.ok(program.graphicSpec.objects.farMean.items[0].properties.y1 < 40);
 });
 
+test("follows binned scales without joining their scale policy", () => {
+  const program = chart()
+    .createCanvas({ width: 300, height: 200, margin: 30 })
+    .createData({ values: [
+      { value: 1 }, { value: 2 }, { value: 3 }, { value: 4 }
+    ] })
+    .createHistogram({
+      id: "histogram",
+      field: "value",
+      maxBins: 2,
+      guides: false
+    })
+    .createReferenceLine({
+      id: "midpoint",
+      source: "histogram",
+      axis: "x",
+      statistic: { op: "mean" }
+    });
+
+  assert.deepEqual(referenceValues(program, "midpoint"), { value: 2.5 });
+  assert.deepEqual(program.resolvedScales.x.domain, [0, 4]);
+  assert.equal(program.graphicSpec.objects.midpoint.items[0].properties.x1, 180);
+});
+
 test("recomputes after derived edits and removes the owned closure", () => {
   const multiply = constant => ({
     op: "multiply",
