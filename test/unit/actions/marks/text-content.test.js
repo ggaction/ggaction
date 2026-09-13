@@ -142,8 +142,10 @@ test("labels added to facet children use each rebound source dataset", () => {
     .createBarPlot({ x: "category", y: { field: "value", aggregate: "sum" }, guides: false });
   const global = p.createTextMark().encodeText({ content: "share", format: ".0%" });
   assert.deepEqual(labels(global), ["50%", "50%"]);
-  // Text-bearing facet templates are not supported by the current facet contract.
-  assert.throws(() => global.facet({ field: "panel" }), /does not support mark.*text/);
+  const globalFaceted = global.facet({ field: "panel" });
+  assert.deepEqual(Object.values(globalFaceted.children).map(labels), [
+    ["25%", "75%"], ["75%", "25%"]
+  ]);
   const faceted = p.facet({ field: "panel", guides: { legend: false } });
   const annotated = Object.values(faceted.children).map(child => child
     .createTextMark().encodeText({ content: "share", format: ".0%" }));

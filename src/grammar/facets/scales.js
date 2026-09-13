@@ -3,6 +3,7 @@ import {
   FACET_SCALE_CHANNELS,
   FACET_SCALE_RESOLUTIONS
 } from "../../core/vocabulary.js";
+import { collectFacetScaleBindings } from "./dependencies.js";
 import { resolveHistogramBins } from "../histogram.js";
 import {
   hasOrdinalDomain,
@@ -63,30 +64,25 @@ function normalizeRequestedPolicies(requested) {
 
 function usedScaleChannels(semanticSpec, scales) {
   const used = new Map();
-  for (const layer of semanticSpec.layers) {
-    for (const channel of FACET_SCALE_CHANNELS) {
-      const id = layer.encoding?.[channel]?.scale;
-      if (id === undefined) continue;
-      if (!scales.has(id)) {
-        throw new Error(
-          `Facet layer "${layer.id}" references missing scale "${id}".`
-        );
-      }
-      if (!used.has(id)) used.set(id, new Set());
-      used.get(id).add(channel);
+  const bindings = collectFacetScaleBindings(semanticSpec);
+  for (const binding of bindings) {
+    if (!scales.has(binding.scaleId)) {
+      throw new Error(
+        `Facet layer "${binding.layerId}" references missing scale "${binding.scaleId}".`
+      );
     }
+    if (!used.has(binding.scaleId)) used.set(binding.scaleId, new Set());
+    used.get(binding.scaleId).add(binding.policyKey);
   }
-  return used;
+  return { used, bindings };
 }
 
 export function normalizeFacetScalePolicies(semanticSpec, requested = {}) {
   const scales = requireScaleDefinitions(semanticSpec);
   const channels = normalizeRequestedPolicies(requested);
-  const used = usedScaleChannels(semanticSpec, scales);
+  const { used, bindings } = usedScaleChannels(semanticSpec, scales);
   for (const channel of Object.keys(requested)) {
-    const applicable = semanticSpec.layers.some(
-      layer => layer.encoding?.[channel]?.scale !== undefined
-    );
+    const applicable = bindings.some(binding => binding.policyKey === channel);
     if (!applicable) {
       throw new Error(
         `Facet scale channel "${channel}" is not used by an affected layer.`
@@ -107,7 +103,7 @@ export function normalizeFacetScalePolicies(semanticSpec, requested = {}) {
       channels: attached
     };
   }
-  return cloneAndFreeze({ channels, scales: scalePolicies });
+  return cloneAndFreeze({ channels, scales: scalePolicies, bindings });
 }
 
 function requireChildDomains(resolvedByChild, scaleId) {
@@ -210,7 +206,8 @@ export function resolveFacetScaleDomains(
   }
   return cloneAndFreeze({
     channels: normalized.channels,
-    scales: resolved
+    scales: resolved,
+    bindings: normalized.bindings
   });
 }
 

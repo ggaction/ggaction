@@ -50,7 +50,7 @@ for (const [operation, id, mapping] of [["createRosePlot", "rosePlot", "area"], 
     assert.equal(filtered.graphicSpec.objects[id].items.length, 2);
     assert.equal(JSON.stringify(p), before);
   });
-  test(`${operation} retains measured child state in composition and rejects unsupported Arc facets`, () => {
+  test(`${operation} retains measured child state in concat and facet compositions`, () => {
     const p = base()[operation]({ ...options });
     const before = JSON.stringify(p);
     const smaller = p.editScale({ id: "radius", domain: [0, 8] });
@@ -64,7 +64,11 @@ for (const [operation, id, mapping] of [["createRosePlot", "rosePlot", "area"], 
       assert.equal(Object.values(current.graphicSpec.objects).filter(object =>
         object.type === "path" && object.items?.length === 3).length, 2);
     }
-    reject(p, q => q.facet({ field: "category" }), /does not support.*arc/);
+    const faceted = p.facet({ field: "category", values: ["A", "B", "C"] });
+    assert.deepEqual(Object.values(faceted.children).map(child =>
+      child.graphicSpec.objects[id].items.length), [1, 1, 1]);
+    assert.deepEqual(Object.values(faceted.children).map(child =>
+      child.resolvedScales.radius.domain), [[0, 4], [0, 4], [0, 4]]);
     assert.equal(JSON.stringify(p), before);
   });
   test(`${operation} validates its closed options and measurement constraints atomically`, () => {

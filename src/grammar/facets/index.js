@@ -4,20 +4,8 @@ import {
   validateGeneratedItemLimit,
   validateWorkLimit
 } from "../../core/validation.js";
-import { BAR_GRAINS, resolveBarGrain } from "../bars/policy.js";
-import { planFacetDependencies } from "./dependencies.js";
+import { planFacetDependencies, resolveFacetFamily } from "./dependencies.js";
 import { readNominalField } from "../scales/index.js";
-import { resolveRectMode } from "../rects.js";
-import { resolveRuleMode } from "../rules.js";
-
-const SUPPORTED_MARKS = new Set([
-  "point", "line", "area", "bar", "rule", "tick", "rect"
-]);
-const SUPPORTED_BAR_GRAINS = new Set([
-  BAR_GRAINS.histogram,
-  BAR_GRAINS.aggregate,
-  BAR_GRAINS.ranged
-]);
 const MAX_FACET_CHILDREN = 100;
 
 function requireFacetField(field, label = "facet") {
@@ -25,45 +13,6 @@ function requireFacetField(field, label = "facet") {
     throw new TypeError(`${label} requires a non-empty field.`);
   }
   return field;
-}
-
-function requireSupportedLayer(layer) {
-  if (!SUPPORTED_MARKS.has(layer.mark?.type)) {
-    throw new Error(
-      `facet does not support mark "${layer.id}" of type ${layer.mark?.type ?? "incomplete"}.`
-    );
-  }
-  if (
-    layer.mark.type === "bar" &&
-    !SUPPORTED_BAR_GRAINS.has(resolveBarGrain(layer))
-  ) {
-    throw new Error(
-      `facet requires bar mark "${layer.id}" to be a complete histogram, aggregate, or ranged bar.`
-    );
-  }
-  const complete = (
-    layer.encoding?.x?.scale !== undefined &&
-    layer.encoding?.y?.scale !== undefined
-  ) || (
-    layer.mark.type === "rule" && resolveRuleMode(layer) !== undefined
-  ) || (
-    layer.mark.type === "rect" && resolveRectMode(layer) !== undefined
-  );
-  if (!complete) {
-    throw new Error(
-      `Facet layer "${layer.id}" must be a complete materializable Cartesian mark.`
-    );
-  }
-  if (typeof layer.data !== "string" || layer.data.length === 0) {
-    throw new Error(`Facet layer "${layer.id}" requires a dataset.`);
-  }
-}
-
-function requireSupportedLayers(semanticSpec) {
-  if (!Array.isArray(semanticSpec.layers) || semanticSpec.layers.length === 0) {
-    throw new Error("facet requires at least one materializable layer.");
-  }
-  for (const layer of semanticSpec.layers) requireSupportedLayer(layer);
 }
 
 function requirePartitionDataset(semanticSpec, id) {
@@ -136,9 +85,10 @@ export function resolveFacetDefinition(semanticSpec, options = {}) {
   }
   const field = requireFacetField(options.field);
   const id = validateUserId(options.id ?? "facet", "Facet id");
-  requireSupportedLayers(semanticSpec);
+  const family = resolveFacetFamily(semanticSpec);
   const dependencies = planFacetDependencies(semanticSpec, {
     field,
+    family,
     ...(options.data === undefined ? {} : { data: options.data })
   });
   const data = dependencies.anchor;
@@ -159,6 +109,7 @@ export function resolveFacetDefinition(semanticSpec, options = {}) {
   );
   return cloneAndFreeze({
     id,
+    family: family.family,
     data,
     field,
     values,
@@ -188,9 +139,10 @@ export function resolveFacetGridDefinition(semanticSpec, options = {}) {
     throw new Error('facetGrid combinations must be "observed" or "full".');
   }
   const id = validateUserId(options.id ?? "facetGrid", "Facet grid id");
-  requireSupportedLayers(semanticSpec);
+  const family = resolveFacetFamily(semanticSpec);
   const dependencies = planFacetDependencies(semanticSpec, {
     field: rows.field,
+    family,
     ...(options.data === undefined ? {} : { data: options.data })
   });
   const data = dependencies.anchor;
@@ -232,6 +184,7 @@ export function resolveFacetGridDefinition(semanticSpec, options = {}) {
   );
   return cloneAndFreeze({
     id,
+    family: family.family,
     data,
     dependencies,
     grid: {

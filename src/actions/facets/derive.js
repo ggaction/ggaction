@@ -7,7 +7,10 @@ import {
   applyMaterializationPlan,
   planScaleGuideRematerialization
 } from "../../materialization/dependencies.js";
-import { getMarkMaterializationStep } from "../../materialization/marks/index.js";
+import {
+  getLayerScaleIds,
+  getMarkMaterializationStep
+} from "../../materialization/marks/index.js";
 import { buildMaterializationPlan } from "../../materialization/planner.js";
 import { requireDataset } from "../../selectors/datasets.js";
 import { requireLayer } from "../../selectors/layers.js";
@@ -141,11 +144,7 @@ function deriveCellProgram(
     }
     child = child.rebindGradientPlotProfile({ id, profile, source });
   }
-  const scaleIds = [...new Set(child.semanticSpec.layers.flatMap(layer =>
-    Object.values(layer.encoding ?? {})
-      .map(encoding => encoding?.scale)
-      .filter(id => id !== undefined)
-  ))];
+  const scaleIds = [...new Set(child.semanticSpec.layers.flatMap(getLayerScaleIds))];
   return applyMaterializationPlan(child, buildMaterializationPlan({
     scales: scaleIds.map(id => ({
       op: "rematerializeScale",
@@ -173,7 +172,7 @@ function applyResolvedDomains(program, childId, resolution, baseResolved) {
   const marks = next.semanticSpec.layers.flatMap(layer => {
     const step = getMarkMaterializationStep(next, layer);
     if (step === undefined) return [];
-    return ["bar", "line", "area"].includes(layer.mark?.type)
+    return ["bar", "line", "area", "arc"].includes(layer.mark?.type)
       ? [{ ...step, args: { ...step.args, scales: false } }]
       : [step];
   });

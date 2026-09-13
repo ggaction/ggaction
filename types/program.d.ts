@@ -168,12 +168,15 @@ export interface FacetScaleResolutions {
   y?: FacetScaleResolution;
   xOffset?: FacetScaleResolution;
   yOffset?: FacetScaleResolution;
+  theta?: FacetScaleResolution;
+  r?: FacetScaleResolution;
   color?: FacetScaleResolution;
   stroke?: FacetScaleResolution;
   size?: FacetScaleResolution;
   shape?: FacetScaleResolution;
   opacity?: FacetScaleResolution;
   strokeDash?: FacetScaleResolution;
+  parallelDimensions?: FacetScaleResolution;
 }
 export interface FacetGuideOptions {
   axes?: "each" | "outer";
@@ -210,7 +213,7 @@ export interface FacetGridOptions {
 export interface RepeatChartsOptions {
   id?: string;
   target?: string;
-  channel: "x" | "y";
+  channel: "x" | "y" | "theta" | "r" | { parallelDimension: string };
   fields: readonly [string, ...string[]];
   columns?: number;
   gap?: number;
@@ -269,7 +272,7 @@ export interface FacetCompositionSpec {
     };
     readonly repeat?: {
       readonly target: string;
-      readonly channel: "x" | "y";
+      readonly channel: "x" | "y" | "theta" | "r" | { readonly parallelDimension: string };
       readonly fields: readonly string[];
     };
     readonly scales: Readonly<Required<FacetScaleResolutions>>;

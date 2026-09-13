@@ -27,6 +27,7 @@ test("resolves direct-source facet values in first-appearance order", () => {
 
   assert.deepEqual(definition, {
     id: "facet",
+    family: "cartesian",
     data: "cars",
     field: "group",
     values: ["Japan", "USA", "Europe"],
@@ -34,7 +35,15 @@ test("resolves direct-source facet values in first-appearance order", () => {
       field: "group",
       anchor: "cars",
       replay: [],
-      layers: [{ id: "points", data: "cars" }]
+      layers: [{ id: "points", data: "cars" }],
+      family: "cartesian",
+      primaryLayers: ["points"],
+      dependentLayers: [],
+      scaleBindings: [
+        { layerId: "points", scaleId: "x", policyKey: "x", semanticChannel: "x" },
+        { layerId: "points", scaleId: "y", policyKey: "y", semanticChannel: "y" }
+      ],
+      coordinates: ["main"]
     },
     cells: [
       { id: "facet-cell-1", data: "facet-cell-1-data", value: "Japan" },

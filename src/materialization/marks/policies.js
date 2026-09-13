@@ -58,6 +58,7 @@ const MARK_MATERIALIZATION_POLICIES = Object.freeze({
   arc: Object.freeze({
     canMaterialize: canMaterializeArc,
     op: "rematerializeArcMark",
+    acceptsResolvedScales: true,
     positionEncoding: Object.freeze({ incomplete: "scale", scaleFirst: false }),
     encoding: Object.freeze({ completeOnly: true }),
     scaleApplication: Object.freeze({ default: "defer" })

@@ -29,6 +29,10 @@ const repeat: RepeatChartsOptions = {
   target: "points", channel: "x", fields: ["sales", "profit"], columns: 2
 };
 p.repeatCharts(repeat).editFacetSource({ program: child });
+p.repeatCharts({ channel: "theta", fields: ["angle", "bearing"] });
+p.repeatCharts({ channel: "r", fields: ["sales", "profit"] });
+p.repeatCharts({ channel: { parallelDimension: "sales" }, fields: ["profit"] });
+p.editFacetScales({ theta: "shared", r: "independent", parallelDimensions: "shared" });
 p.facet({ field: "region", values: ["west", "east"] });
 const insert: InsertCompositionChildOptions = { id: "detail", program: child, after: "overview" };
 p.insertCompositionChild(insert).removeCompositionChild({ target: "detail" });
@@ -36,8 +40,10 @@ const reorder: ReorderCompositionChildrenOptions = { order: ["detail", "overview
 p.reorderCompositionChildren(reorder);
 // @ts-expect-error grid requires both rows and columns.
 p.facetGrid({ rows: { field: "region" } });
-// @ts-expect-error repeat channel is Cartesian x or y.
-p.repeatCharts({ channel: "theta", fields: ["sales"] });
+// @ts-expect-error semantic radius is exposed through public r only.
+p.repeatCharts({ channel: "radius", fields: ["sales"] });
+// @ts-expect-error Parallel repeat requires one named dimension.
+p.repeatCharts({ channel: {}, fields: ["sales"] });
 // @ts-expect-error repeat fields are non-empty.
 p.repeatCharts({ channel: "x", fields: [] });
 // @ts-expect-error insert needs a stable child id.

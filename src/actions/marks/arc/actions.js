@@ -47,7 +47,7 @@ const ARC_OPTIONS = Object.freeze([
 ]);
 const CREATE_OPTIONS = Object.freeze(["id", "data", ...ARC_OPTIONS]);
 const EDIT_OPTIONS = Object.freeze(["target", ...ARC_OPTIONS]);
-const REMATERIALIZE_OPTIONS = Object.freeze(["id"]);
+const REMATERIALIZE_OPTIONS = Object.freeze(["id", "scales"]);
 
 function validateInnerRadius(value) {
   if (!Number.isFinite(value) || value < 0 || value >= 1) {
@@ -165,6 +165,9 @@ const rematerializeArcMark = action(
   },
   function (args = {}) {
     validateMarkOptions(args, REMATERIALIZE_OPTIONS, "rematerializeArcMark");
+    if (args.scales !== undefined && typeof args.scales !== "boolean") {
+      throw new TypeError("rematerializeArcMark scales must be a boolean.");
+    }
     const id = validateUserId(args.id, "Arc mark id");
     const highlighted = rematerializeHighlightBaseline(this, {
       target: id,
@@ -181,14 +184,16 @@ const rematerializeArcMark = action(
     const radiusScaleId = layer.encoding?.radius?.scale;
     const colorScaleId = layer.encoding?.color?.scale;
     const strokeScaleId = layer.encoding?.stroke?.scale;
-    let resolved = this.rematerializeScale({ id: thetaScaleId });
-    if (radiusScaleId !== undefined) {
+    let resolved = args.scales === false
+      ? this
+      : this.rematerializeScale({ id: thetaScaleId });
+    if (radiusScaleId !== undefined && args.scales !== false) {
       resolved = resolved.rematerializeScale({ id: radiusScaleId });
     }
-    if (colorScaleId !== undefined) {
+    if (colorScaleId !== undefined && args.scales !== false) {
       resolved = resolved.rematerializeScale({ id: colorScaleId });
     }
-    if (strokeScaleId !== undefined) {
+    if (strokeScaleId !== undefined && args.scales !== false) {
       resolved = resolved.rematerializeScale({ id: strokeScaleId });
     }
     const config = resolved.markConfigs[id] ?? {};

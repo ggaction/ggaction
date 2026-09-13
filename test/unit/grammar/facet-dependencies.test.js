@@ -1,7 +1,11 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
-import { planFacetDependencies } from "../../../src/grammar/facets/dependencies.js";
+import {
+  collectFacetScaleBindings,
+  planFacetDependencies,
+  resolveFacetFamily
+} from "../../../src/grammar/facets/dependencies.js";
 import { expectedFacetReplay } from "../../oracles/facet-dependencies.js";
 
 const rows = [
@@ -148,4 +152,30 @@ test("rejects invalid explicit anchors and absent facet fields", () => {
     () => planFacetDependencies(semanticSpec, { field: "missing" }),
     /Facet field "missing" is missing/
   );
+});
+
+test("classifies Polar and Parallel primary families with canonical bindings", () => {
+  const polar = {
+    coordinates: [{ id: "polar", type: "polar" }],
+    layers: [{ id: "points", data: "cars", coordinate: "polar", mark: { type: "point" },
+      encoding: { theta: { scale: "theta" }, radius: { scale: "radius" } } }]
+  };
+  const parallel = {
+    coordinates: [{ id: "parallel", type: "parallel" }],
+    layers: [{ id: "paths", data: "cars", coordinate: "parallel", mark: { type: "line" },
+      encoding: { parallel: { dimensions: [
+        { field: "a", scale: "aScale" }, { field: "b", scale: "bScale" }
+      ] } } }]
+  };
+  assert.equal(resolveFacetFamily(polar).family, "polar");
+  assert.equal(resolveFacetFamily(parallel).family, "parallel");
+  assert.deepEqual(collectFacetScaleBindings(polar).map(binding =>
+    [binding.policyKey, binding.semanticChannel]), [["theta", "theta"], ["r", "radius"]]);
+  assert.deepEqual(collectFacetScaleBindings(parallel).map(binding =>
+    [binding.policyKey, binding.dimensionField]),
+  [["parallelDimensions", "a"], ["parallelDimensions", "b"]]);
+  assert.throws(() => resolveFacetFamily({ layers: [
+    polar.layers[0],
+    { ...parallel.layers[0], id: "paths", data: "cars" }
+  ], coordinates: [...polar.coordinates, ...parallel.coordinates] }), /one coordinate family/);
 });

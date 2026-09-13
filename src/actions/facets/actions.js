@@ -11,6 +11,8 @@ import {
   resolveFacetDefinition,
   resolveFacetGridDefinition
 } from "../../grammar/facets/index.js";
+import { collectFacetScaleBindings, resolveFacetFamily } from
+  "../../grammar/facets/dependencies.js";
 import {
   FACET_SCALE_CHANNELS,
   normalizeFacetScalePolicies
@@ -77,11 +79,14 @@ function requireFacetProgram(program, operation) {
 }
 
 function usedFacetScalePolicies(program, policies) {
-  return Object.fromEntries(FACET_SCALE_CHANNELS.flatMap(channel =>
-    program.semanticSpec.layers.some(
-      layer => layer.encoding?.[channel]?.scale !== undefined
-    ) ? [[channel, policies[channel]]] : []
-  ));
+  const used = new Set(
+    collectFacetScaleBindings(program.semanticSpec).map(binding => binding.policyKey)
+  );
+  return Object.fromEntries(
+    FACET_SCALE_CHANNELS.flatMap(channel =>
+      used.has(channel) ? [[channel, policies[channel]]] : []
+    )
+  );
 }
 
 function facetUnitTemplate(program) {
@@ -151,11 +156,7 @@ function rederiveFacet(program, { scales, guides }) {
         columns: current.facet.grid.columns,
         combinations: current.facet.grid.combinations
       });
-  const request = Object.fromEntries(FACET_SCALE_CHANNELS.flatMap(channel =>
-    program.semanticSpec.layers.some(
-      layer => layer.encoding?.[channel]?.scale !== undefined
-    ) ? [[channel, scales[channel]]] : []
-  ));
+  const request = usedFacetScalePolicies(program, scales);
   const normalized = normalizeFacetScalePolicies(program.semanticSpec, request);
   const template = facetUnitTemplate(program);
   const derived = deriveFacetChildren(template, definition, {
@@ -190,6 +191,9 @@ export const facet = action(
     validateOptionObject(args, FACET_OPTIONS, "facet");
     const guides = normalizeGuides(args.guides);
     const definition = resolveFacetDefinition(this.semanticSpec, args);
+    if (definition.family !== "cartesian" && guides.axes === "outer") {
+      throw new Error("Polar and Parallel facets do not support outer axes.");
+    }
     const scalePolicies = normalizeFacetScalePolicies(
       this.semanticSpec,
       args.scales ?? {}
@@ -417,6 +421,9 @@ export const facetGrid = action(
     validateOptionObject(args, FACET_GRID_OPTIONS, "facetGrid");
     const guides = normalizeGuides(args.guides);
     const definition = resolveFacetGridDefinition(this.semanticSpec, args);
+    if (definition.family !== "cartesian" && guides.axes === "outer") {
+      throw new Error("Polar and Parallel facets do not support outer axes.");
+    }
     const scalePolicies = normalizeFacetScalePolicies(
       this.semanticSpec,
       args.scales ?? {}
@@ -579,8 +586,8 @@ export const editFacetScales = action(
       emptyMessage: "editFacetScales requires at least one channel policy change."
     });
     for (const channel of Object.keys(args)) {
-      if (!this.semanticSpec.layers.some(
-        layer => layer.encoding?.[channel]?.scale !== undefined
+      if (!collectFacetScaleBindings(this.semanticSpec).some(
+        binding => binding.policyKey === channel
       )) {
         throw new Error(
           `Facet scale channel "${channel}" is not used by an affected layer.`
@@ -615,6 +622,10 @@ export const editFacetGuides = action(
     });
     const current = this.compositionSpec.facet;
     const guides = normalizeGuides({ ...current.guides, ...args });
+    const family = resolveFacetFamily(this.semanticSpec).family;
+    if (family !== "cartesian" && guides.axes === "outer") {
+      throw new Error("Polar and Parallel facets do not support outer axes.");
+    }
     if (current.repeat !== undefined && guides.axes === "outer") {
       throw new Error("repeatCharts does not promote axes across different repeated fields.");
     }

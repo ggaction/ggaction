@@ -156,13 +156,20 @@ export const FACET_SCALE_CHANNELS = Object.freeze([
   "y",
   "xOffset",
   "yOffset",
+  "theta",
+  "r",
   "color",
   "stroke",
   "size",
   "shape",
   "opacity",
-  "strokeDash"
+  "strokeDash",
+  "parallelDimensions"
 ]);
+
+export function facetSemanticChannel(channel) {
+  return channel === "r" ? "radius" : channel;
+}
 
 export const FACET_SCALE_RESOLUTIONS = Object.freeze([
   "shared",

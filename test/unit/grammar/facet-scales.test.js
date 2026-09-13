@@ -46,14 +46,14 @@ test("normalizes omitted channels to shared and owns closed keys", () => {
   });
   assert.equal(normalized.channels.x, "independent");
   assert.equal(normalized.channels.y, "shared");
-  assert.equal(normalized.channels.theta, undefined);
+  assert.equal(normalized.channels.theta, "shared");
   assert.deepEqual(normalized.scales.x, {
     policy: "independent",
     channels: ["x"]
   });
   assert.equal(Object.isFrozen(normalized), true);
   assert.throws(
-    () => normalizeFacetScalePolicies(semanticSpec, { theta: "shared" }),
+    () => normalizeFacetScalePolicies(semanticSpec, { radius: "shared" }),
     /Unknown facet scale channel/
   );
   assert.throws(
@@ -63,6 +63,56 @@ test("normalizes omitted channels to shared and owns closed keys", () => {
   assert.throws(
     () => normalizeFacetScalePolicies(semanticSpec, { size: "independent" }),
     /is not used by an affected layer/
+  );
+});
+
+test("adapts public r to radius and keeps Parallel dimension domains separate", () => {
+  const polarSpec = {
+    layers: [{
+      id: "points",
+      encoding: {
+        theta: { field: "angle", scale: "theta" },
+        radius: { field: "distance", scale: "radius" }
+      }
+    }],
+    scales: [
+      { id: "theta", type: "point", domain: "auto", range: "auto" },
+      { id: "radius", type: "linear", domain: "auto", range: "auto" }
+    ]
+  };
+  const polar = resolveFacetScaleDomains(polarSpec, {
+    a: { theta: { domain: ["a", "b"] }, radius: { domain: [1, 2] } },
+    b: { theta: { domain: ["b", "c"] }, radius: { domain: [10, 20] } }
+  }, { r: "independent" });
+  assert.deepEqual(polar.scales.theta.domain, ["a", "b", "c"]);
+  assert.deepEqual(polar.scales.radius.childDomains, {
+    a: [1, 2], b: [10, 20]
+  });
+  assert.equal(polar.bindings.find(binding => binding.scaleId === "radius").policyKey, "r");
+
+  const parallelSpec = {
+    layers: [{
+      id: "lines",
+      encoding: { parallel: { dimensions: [
+        { field: "a", scale: "aScale" },
+        { field: "b", scale: "bScale" }
+      ] } }
+    }],
+    scales: [
+      { id: "aScale", type: "linear", domain: "auto", range: "auto" },
+      { id: "bScale", type: "linear", domain: "auto", range: "auto" }
+    ]
+  };
+  const parallel = resolveFacetScaleDomains(parallelSpec, {
+    left: { aScale: { domain: [0, 1] }, bScale: { domain: [0, 1000] } },
+    right: { aScale: { domain: [1, 2] }, bScale: { domain: [1000, 2000] } }
+  });
+  assert.deepEqual(parallel.scales.aScale.domain, [0, 2]);
+  assert.deepEqual(parallel.scales.bScale.domain, [0, 2000]);
+  assert.notEqual(parallel.scales.aScale.domain, parallel.scales.bScale.domain);
+  assert.deepEqual(
+    parallel.bindings.map(binding => [binding.dimensionField, binding.dimensionIndex]),
+    [["a", 0], ["b", 1]]
   );
 });
 
