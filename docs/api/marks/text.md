@@ -91,9 +91,31 @@ anchors without collision layout. An incomplete explicit source is supported whe
 layout is disabled; call `layoutLabels` after completing it.
 
 The result is an ordinary text layer: edit it with `encodeText`, `editTextMark`,
-`layoutLabels`, or `removeLabelLayout`. Source changes replay the labels. The existing
-mark ownership rule removes attached labels when their source is removed; it does
-not support removing an attached label layer alone.
+`layoutLabels`, or `removeLabelLayout`. Source changes replay the labels. Remove one
+attached label with `removeMarkLabels({ target: "piePlot-labels" })`, or remove every
+label on a source with `removeMarkLabels({ source: "piePlot" })`. Removing the source
+with `removeMark` still removes all labels it owns.
+
+## `removeMarkLabels(options)`
+
+Use exactly one explicit selector:
+
+```javascript
+const oneRemoved = labeled.removeMarkLabels({ target: "piePlot-labels" });
+const allRemoved = labeled.removeMarkLabels({ source: "piePlot" });
+```
+
+`target` must identify source-owned Text; independent Text and `createAnnotation`
+results use `removeMark`. `source` removes all attached label layers owned by that
+Point, Line, Bar, Rule, Rect, or Arc mark while preserving the source itself. Calling
+the source form when that source has no labels succeeds without changing chart
+resources.
+
+Removal also clears the selected labels' layout settings, generated leader lines,
+and label-target selection/highlight state. Source-target interaction remains. If
+another retained resource refers to a requested label, the complete operation fails
+before any label is removed. Later source encoding/style, scale, Canvas, and theme
+edits do not recreate removed labels.
 
 ## `createTextMark(options?)`
 

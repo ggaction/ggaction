@@ -3643,6 +3643,11 @@ export type CreateMarkLabelsOptions = Omit<TextMarkOptions, "data" | "text"> & {
   | { field?: never; value?: never; content?: never; normalizeBy?: never; format?: TextFormat }
 );
 
+/** Remove one attached label layer or every attached label owned by a source mark. */
+export type RemoveMarkLabelsOptions =
+  | { target: string; source?: never }
+  | { source: string; target?: never };
+
 type AnnotationBaseOptions = Omit<TextMarkOptions, "id" | "data" | "source" | "text"> & {
   id?: string;
   text: unknown;
@@ -4430,6 +4435,7 @@ export class ChartProgram {
   editRuleMark(options: { target?: string } & RuleStyleOptions): ChartProgram;
   createTextMark(options?: TextMarkOptions): ChartProgram;
   createMarkLabels(options?: CreateMarkLabelsOptions): ChartProgram;
+  removeMarkLabels(options: RemoveMarkLabelsOptions): ChartProgram;
   createAnnotation(options: CreateAnnotationOptions): ChartProgram;
   createReferenceLine(options: CreateReferenceLineOptions): ChartProgram;
   createReferenceBand(options: CreateReferenceBandOptions): ChartProgram;

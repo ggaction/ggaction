@@ -1460,6 +1460,9 @@
           "value": 0.8
         }
       }
+    },
+    "removeMarkLabels": {
+      "source": "bars"
     }
   },
   "callPatternOverrides": {
@@ -1633,6 +1636,10 @@
     "editCoordinate": [
       "editCoordinate({ target, aspect: { mode: \"frame\" | \"data\", ratio, alignX?, alignY? } | \"auto\" })",
       "editCoordinate({ target, polarFrame: { center?, radius? } | \"auto\" })"
+    ],
+    "removeMarkLabels": [
+      "removeMarkLabels({ target })",
+      "removeMarkLabels({ source })"
     ]
   },
   "errorOverrides": {

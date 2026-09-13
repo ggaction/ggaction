@@ -479,6 +479,9 @@ test.before(async () => {
       render(semanticLabels, document.getElementById("semantic-labels").getContext("2d"));
       const semanticLabelSVG = renderToSVG(semanticLabels);
       const scientificLabels = semanticLabels.encodeText({ content: "value", format: ".2e" });
+      const labelsRemoved = semanticLabels.removeMarkLabels({ source: "piePlot" })
+        .editCanvas({ width: 520 })
+        .applyTheme({ theme: "dark" });
       const formattedSizeLegend = editedSizeLegend.editLegendLabels({ format: ".1e", offset: 20 });
       const formattedCombined = legendContentBase.createLegend({
         channels: ["color", "size"], count: 3, labels: { format: ".1f" }
@@ -523,6 +526,12 @@ test.before(async () => {
         semanticTextSVG: semanticLabelSVG.includes("25.0%") && semanticLabelSVG.includes("75.0%"),
         semanticFiltered: semanticLabels.filterMarks({ target: "piePlot", field: "category", op: "eq", value: "B" })
           .graphicSpec.objects.text.items.map(i => i.properties.text),
+        semanticLabelsRemoved: [
+          labelsRemoved.semanticSpec.layers.some(layer => layer.id === "piePlot"),
+          labelsRemoved.semanticSpec.layers.some(layer => layer.id === "text"),
+          labelsRemoved.graphicSpec.objects.text === undefined,
+          labelsRemoved.materializationConfigs.labelLayouts?.text === undefined
+        ],
         commonFormats: [
           scientificLabels.graphicSpec.objects.text.items.map(i => i.properties.text),
           formattedSizeLegend.graphicSpec.objects.sizeLegendLabels.items.map(i => i.properties.text),
@@ -707,6 +716,7 @@ test("imports and renders the packed browser entries", async () => {
     semanticTexts: ["25.0%", "75.0%"],
     semanticTextSVG: true,
     semanticFiltered: ["100.0%"],
+    semanticLabelsRemoved: [true, false, true, true],
     commonFormats: [["2.00e+0", "6.00e+0"], ["1.0e+1", "2.0e+1", "3.0e+1"], 20, null,
       ["4.0", "6.5", "9.0"]],
     intervalPosition: "top",

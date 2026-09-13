@@ -745,6 +745,15 @@
       ]
     },
     {
+      "id": "lifecycle.labels.remove",
+      "phrases": [
+        "remove mark labels",
+        "remove labels",
+        "delete mark labels",
+        "delete attached labels"
+      ]
+    },
+    {
       "id": "layout.jitter",
       "phrases": [
         "jitter points",
@@ -2649,6 +2658,21 @@
       ],
       "baseOptions": {
         "axis": "\"y\""
+      }
+    },
+    {
+      "id": "action.removeMarkLabels",
+      "kind": "action",
+      "name": "removeMarkLabels",
+      "order": 80,
+      "anchors": [
+        "lifecycle.labels.remove"
+      ],
+      "covers": [
+        "lifecycle.labels.remove"
+      ],
+      "baseOptions": {
+        "source": "\"bars\""
       }
     },
     {

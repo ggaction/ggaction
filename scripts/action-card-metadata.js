@@ -77,6 +77,7 @@ const selectorInputs = new Set([
   "before",
   "after"
 ]);
+const explicitSelectorActions = new Set(["removeMarkLabels"]);
 
 const logicalPixelNames = new Set([
   "width",
@@ -218,7 +219,9 @@ export function optionInference(action, options) {
     } else if (selectorInputs.has(option.name)) {
       inference.push({
         input: option.name,
-        strategy: option.required ? "explicit" : "explicit-current-unique-or-error"
+        strategy: option.required || explicitSelectorActions.has(action.name)
+          ? "explicit"
+          : "explicit-current-unique-or-error"
       });
     }
     if (option.type.includes('"auto"')) {

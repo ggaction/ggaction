@@ -268,6 +268,21 @@ Point/Line/Rule/Rect require a field or constant. A Line creates one label per
 series at its final path coordinate. The default ID is `<source>-labels`.
 [Text marks](../../api/marks/text.md)
 
+## `removeMarkLabels`
+
+```javascript
+removeMarkLabels({ target })
+removeMarkLabels({ source })
+```
+
+Remove one attached label layer by ID, or every attached label owned by a source
+mark. Exactly one selector is required. The source mark, its selections, and
+unrelated labels remain. Label layout policies, generated leaders, and interaction
+state attached to removed labels are cleaned up, so later source, scale, Canvas,
+and theme edits do not recreate them. Independent Text and annotations continue
+to use `removeMark`.
+[Text marks](../../api/marks/text.md#removemarklabelsoptions)
+
 ## `createAnnotation`
 
 ```javascript

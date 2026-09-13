@@ -159,6 +159,27 @@ function coordinateAspectPrograms() {
   ];
 }
 
+function labelRemovalPrograms() {
+  const labeled = chart()
+    .createCanvas({ width: 240, height: 180, margin: 20 })
+    .createData({ values: [
+      { category: "a", value: 2 },
+      { category: "b", value: 4 }
+    ] })
+    .createBarPlot({
+      id: "relationshipBars",
+      x: "category",
+      y: { field: "value", aggregate: "sum" },
+      guides: false
+    })
+    .createMarkLabels({
+      id: "relationshipLabels",
+      source: "relationshipBars",
+      field: "value"
+    });
+  return [labeled.removeMarkLabels({ source: "relationshipBars" })];
+}
+
 function normalizedDataPrograms() {
   return [chart()
     .createData({ id: "normalizationSource", values: [
@@ -329,6 +350,7 @@ export async function buildActionRelationships() {
     ...focusedScaleEditorPrograms(),
     ...atomicEncodingPrograms(),
     ...coordinateAspectPrograms(),
+    ...labelRemovalPrograms(),
     ...normalizedDataPrograms(),
     ...missingDataPrograms(),
     ...derivedEditingPrograms()

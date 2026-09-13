@@ -876,8 +876,8 @@
         "tick-marks",
         "related"
       ],
-      "bytes": 5151,
-      "sha256": "7659dfbb1800d3d3d66a59d7da08ed5fda4cca28d6fa7aa42730a4c2860694f5"
+      "bytes": 5171,
+      "sha256": "afe215a136fc1ad07edd0564b859837085464053c234ede242755e232cb2709a"
     },
     {
       "order": 57,
@@ -955,6 +955,7 @@
         "text-marks",
         "createannotationoptions",
         "createmarklabelsoptions",
+        "removemarklabelsoptions",
         "createtextmarkoptions",
         "font-weights",
         "encodetext-target-field-value-content-normalizeby-format",
@@ -963,8 +964,8 @@
         "removelabellayoutoptions",
         "related"
       ],
-      "bytes": 13566,
-      "sha256": "60e6a930d24ab2ab4042bd5270705aa890ffb85491c3136685bdf2ab74cde652"
+      "bytes": 14596,
+      "sha256": "22cf6027469487ba70e47bfe0a463f9734d1422d65a289e4e96835f17ed668aa"
     },
     {
       "order": 62,
@@ -1853,8 +1854,8 @@
         "action-reference",
         "exact-action-lookup"
       ],
-      "bytes": 30402,
-      "sha256": "33e35f0e5018c718ca8ac68954241cda7a50a4640e3ea212dd66f3583aacc4cc"
+      "bytes": 30499,
+      "sha256": "7635ba8eacbac3bf9854f6ff4746cfb64747200c7209a284064a0502bc538916"
     },
     {
       "order": 117,
@@ -1956,6 +1957,7 @@
         "createreferenceline",
         "createreferenceband",
         "createmarklabels",
+        "removemarklabels",
         "createannotation",
         "createtextmark",
         "edittextmark",
@@ -1964,8 +1966,8 @@
         "position-capability-matrix",
         "related"
       ],
-      "bytes": 15323,
-      "sha256": "fc1381434323a6df03be9f7722000d72546a19ae16caf66b8dadefc5b9532ab2"
+      "bytes": 15903,
+      "sha256": "fab3143c68944868686f0cd717aadd5b984d9e3b12e098423f5f552734d12b19"
     },
     {
       "order": 119,
@@ -2167,8 +2169,8 @@
         "exact-typescript-signatures",
         "related"
       ],
-      "bytes": 20444,
-      "sha256": "97c9d4ec3ac6785c6e080731d8ee894b6e12e81c8ba34859dc185d61b74f0deb"
+      "bytes": 20512,
+      "sha256": "ebcc1f3bf86b8cc3998e891f7715569171bcde2002d6dbd8fb6f18dbe2179276"
     },
     {
       "order": 126,

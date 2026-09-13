@@ -388,6 +388,7 @@ export type {
   TextMarkOptions,
   DatumPositionEncodingOptions,
   CreateMarkLabelsOptions,
+  RemoveMarkLabelsOptions,
   CreateAnnotationOptions,
   CreateReferenceLineOptions,
   CreateReferenceBandOptions,

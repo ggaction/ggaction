@@ -220,9 +220,9 @@ test("intent taxonomy covers every supported constraint with exact owners", asyn
   assert.equal(validate(taxonomy), true, JSON.stringify(validate.errors));
   assert.deepEqual(validateResolverKnowledge(), {
     cards: cards.count,
-    constraints: 107,
-    providers: 101,
-    supported: 102,
+    constraints: 108,
+    providers: 102,
+    supported: 103,
     unsupported: 5
   });
   assert.equal(taxonomy.packageVersion, cards.packageVersion);

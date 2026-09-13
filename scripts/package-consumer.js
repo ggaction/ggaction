@@ -1585,6 +1585,13 @@ async function testNodeConsumer(directory) {
       .graphicSpec.objects.text.items.map(i => i.properties.text), ["100.0%"]);
     assert.deepEqual(semanticLabels.encodeText({ content: "value", format: "auto" }).graphicSpec.objects.text.items.map(i => i.properties.text), ["2", "6"]);
     assert.deepEqual(semanticLabels.encodeText({ content: "value", format: ".2e" }).graphicSpec.objects.text.items.map(i => i.properties.text), ["2.00e+0", "6.00e+0"]);
+    const labelsRemoved = semanticLabels.removeMarkLabels({ source: "piePlot" })
+      .editCanvas({ width: 520 })
+      .applyTheme({ theme: "dark" });
+    assert.equal(labelsRemoved.semanticSpec.layers.some(layer => layer.id === "piePlot"), true);
+    assert.equal(labelsRemoved.semanticSpec.layers.some(layer => layer.id === "text"), false);
+    assert.equal(labelsRemoved.graphicSpec.objects.text, undefined);
+    assert.equal(labelsRemoved.materializationConfigs.labelLayouts?.text, undefined);
     const utcText = chart().createCanvas({ width: 320, height: 200, margin: 30 })
       .createData({ values: [{ x: 1, y: 2, date: "2024-03-05T00:00:00Z" }] })
       .createPointMark().encodeX({ field: "x" }).encodeY({ field: "y" })
@@ -1775,8 +1782,8 @@ async function testMcpConsumer(directory) {
     actionCardSchema.properties?.schemaVersion?.const !== 3 ||
     actionCardsSchema.properties?.schemaVersion?.const !== 3 ||
     actionCards.schemaVersion !== 3 ||
-    actionCards.count !== 269 ||
-    actionCards.cards.length !== 269 ||
+    actionCards.count !== 270 ||
+    actionCards.cards.length !== 270 ||
     actionCards.packageVersion !== installedPackage.version
   ) {
     throw new Error("Installed action-card discovery contract is missing or stale.");
@@ -1788,6 +1795,14 @@ async function testMcpConsumer(directory) {
     installedCards.get("editCoordinate")?.supports.entryPoints.join(",") !== "default"
   ) {
     throw new Error("Installed coordinate aspect discovery metadata is stale.");
+  }
+  if (
+    installedCards.get("removeMarkLabels")?.signature !==
+      "removeMarkLabels(options: RemoveMarkLabelsOptions): ChartProgram;" ||
+    installedCards.get("removeMarkLabels")?.supports.entryPoints.join(",") !== "default" ||
+    installedCards.get("removeMarkLabels")?.inference.some(entry => entry.strategy !== "explicit")
+  ) {
+    throw new Error("Installed mark-label removal discovery metadata is stale.");
   }
   if (
     installedCards.get("encodeChannels")?.signature !==
@@ -1922,6 +1937,19 @@ async function testMcpConsumer(directory) {
     const authoringFile = path.join(directory, "mcp-authoring-smoke.mjs");
     await writeFile(authoringFile, authoringSource);
     run(process.execPath, [authoringFile], directory);
+    const labelRemovalResult = await client.callTool({
+      name: "search_ggaction",
+      arguments: { query: "remove labels from bar" }
+    });
+    const labelRemovalPacket = JSON.parse(labelRemovalResult.content[0].text);
+    if (
+      labelRemovalPacket.actionPlan?.map(step => step.name).join(",") !== "removeMarkLabels" ||
+      labelRemovalPacket.exactCalls?.join(",") !==
+        'program.removeMarkLabels({ source: "bars" })' ||
+      labelRemovalPacket.unresolved?.length !== 0
+    ) {
+      throw new Error("Installed MCP did not route attached-label removal.");
+    }
     const resources = await client.listResources();
     if (
       resources.resources.length !== 9 ||
@@ -3513,6 +3541,12 @@ async function testTypeScriptConsumer(directory) {
     chart().editSizeScale({ type: "quantize", domain: [0, 100], range: [20, 80], clamp: true });
     chart().createMarkLabels();
     chart().createMarkLabels({ source: "bars", content: "share", format: ".0%", layout: { axis: "y" } });
+    chart().removeMarkLabels({ target: "bars-labels" });
+    chart().removeMarkLabels({ source: "bars" });
+    // @ts-expect-error Label removal requires exactly one selector.
+    chart().removeMarkLabels({});
+    // @ts-expect-error Label target and source are exclusive.
+    chart().removeMarkLabels({ target: "bars-labels", source: "bars" });
     // @ts-expect-error The facade retains exclusive text branches.
     chart().createMarkLabels({ field: "x", content: "value" });
     // @ts-expect-error Layout target is facade-owned.
@@ -3623,6 +3657,7 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.a
       "numeric-font-weight",
       "point-jitter",
       "point-packing",
+      "mark-label-removal",
       "beeswarm-plot",
       "raincloud-plot",
       "path-order",

@@ -16,13 +16,24 @@ test("text content and precision types match their runtime vocabularies", async 
     const paddedCalls = [...Array(10).keys()].flatMap(precision => ["f", "%", "e"].map(suffix =>
       `p.encodeText({ value: 0.125, format: ".0${precision}${suffix}" });`));
     await writeFile(file, `
-import type { ChartProgram, TextEncodingOptions, DatumPositionEncodingOptions, CreateMarkLabelsOptions, CreateAnnotationOptions, CreateReferenceLineOptions, CreateReferenceBandOptions, RotationInput } from ${JSON.stringify(path.join(root, "types/index.js"))};
+import type { ChartProgram, TextEncodingOptions, DatumPositionEncodingOptions, CreateMarkLabelsOptions, RemoveMarkLabelsOptions, CreateAnnotationOptions, CreateReferenceLineOptions, CreateReferenceBandOptions, RotationInput } from ${JSON.stringify(path.join(root, "types/index.js"))};
+import type { BasicChartProgram } from ${JSON.stringify(path.join(root, "types/basic.js"))};
 declare const p: ChartProgram;
+declare const basic: BasicChartProgram;
 const shared: TextEncodingOptions = { content: "share", normalizeBy: "category", format: ".1%" };
 p.encodeText(shared);
 const labels: CreateMarkLabelsOptions = { source: "bars", content: "share", normalizeBy: "category", layout: { axis: "y" } };
 p.createMarkLabels(labels);
 p.createMarkLabels();
+const removeLabels: RemoveMarkLabelsOptions = { source: "bars" };
+p.removeMarkLabels(removeLabels);
+p.removeMarkLabels({ target: "bars-labels" });
+// @ts-expect-error Attached labels are Full-only.
+basic.removeMarkLabels({ source: "bars" });
+// @ts-expect-error Label removal requires exactly one selector.
+p.removeMarkLabels({});
+// @ts-expect-error Label target and source are exclusive.
+p.removeMarkLabels({ target: "bars-labels", source: "bars" });
 const annotation: CreateAnnotationOptions = { text: "Peak", x: 8, y: 9, dx: 4 };
 p.createAnnotation(annotation);
 p.createAnnotation({ text: "mark", source: "points", layout: false });

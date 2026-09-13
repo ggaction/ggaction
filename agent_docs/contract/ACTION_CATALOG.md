@@ -53,6 +53,7 @@ Contract conventions live in [`README.md`](README.md); shared formal notation li
 | user-facing | [`createReferenceLine`](current/MARKS.md#createreferenceline) | marks | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createReferenceBand`](current/MARKS.md#createreferenceband) | marks | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createMarkLabels`](current/MARKS.md#createmarklabels) | marks | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
+| user-facing | [`removeMarkLabels`](current/MARKS.md#removemarklabels) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`createAnnotation`](current/MARKS.md#createannotation) | marks | Aggregate create-only | Intentional | ✅ / ✅ / ✅ |
 | user-facing | [`createTextMark`](current/MARKS.md#createtextmark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |
 | user-facing | [`editTextMark`](current/MARKS.md#edittextmark) | marks | Mutable resource | Complete | ✅ / ✅ / ✅ |

@@ -60,7 +60,7 @@ each type infers its ID and current dataset when those choices are unambiguous.
 | Reference line / band | `createReferenceLine` / `createReferenceBand` | Rule/Rect and position encodings | Line/Rect collection |
 | Rule | `createRuleMark` | Encoding actions | Line collection |
 | Tick | `createTickMark` | `editTickMark` | Centered line collection |
-| Text | `createTextMark` | `editTextMark`, `layoutLabels`, `removeLabelLayout` | Text collection |
+| Text | `createTextMark` | `editTextMark`, `layoutLabels`, `removeLabelLayout`, `removeMarkLabels` | Text collection |
 | Rect | `createRectMark` | `editRectMark` | Rect collection |
 
 Use `removeMark({ target? })` to remove one complete stable mark owner. It also

@@ -74,6 +74,7 @@ test("keeps the basic entry focused on common Cartesian charts", () => {
   }
   for (const method of [
     "createMarkLabels",
+    "removeMarkLabels",
     "createRegression",
     "encodeTheta",
     "facet",

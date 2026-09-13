@@ -285,6 +285,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`removeMark`](./actions/marks.md#removemark) | H3 | user-facing | marks |
 | [`removeMarkFilter`](./actions/charts-data.md#removemarkfilter) | H3 | user-facing | mark-selection |
 | [`removeMarkHighlight`](./actions/charts-data.md#removemarkhighlight) | H3 | user-facing | mark-selection |
+| [`removeMarkLabels`](./actions/marks.md#removemarklabels) | H3 | user-facing | marks |
 | [`removeMarkSelection`](./actions/advanced.md#removemarkselection) | H3 | advanced | mark-selection |
 | [`removeParallelAxes`](./actions/advanced.md#createparallelaxes-createparallelaxis-editparallelaxis-removeparallelaxis-removeparallelaxes) | H3 | user-facing | axes |
 | [`removeParallelAxis`](./actions/advanced.md#createparallelaxes-createparallelaxis-editparallelaxis-removeparallelaxis-removeparallelaxes) | H3 | user-facing | axes |

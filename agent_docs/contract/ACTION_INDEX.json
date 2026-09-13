@@ -850,6 +850,24 @@
       }
     },
     {
+      "name": "removeMarkLabels",
+      "layer": "user-facing",
+      "domain": "marks",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Removes one attached label or every label owned by a source mark",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/MARKS.md",
+        "anchor": "removemarklabels"
+      }
+    },
+    {
       "name": "createAnnotation",
       "layer": "user-facing",
       "domain": "marks",

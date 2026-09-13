@@ -184,6 +184,18 @@ test("does not require or authorize documentation for a terminal unsupported res
   }
 });
 
+test("routes attached-label removal to its explicit source selector", () => {
+  const packet = JSON.parse(searchGgactionText("remove labels from bar"));
+  assert.deepEqual(packet.matchedConstraints, ["lifecycle.labels.remove"]);
+  assert.deepEqual(packet.actionPlan.map(step => step.name), ["removeMarkLabels"]);
+  assert.deepEqual(packet.exactCalls, [
+    'program.removeMarkLabels({ source: "bars" })'
+  ]);
+  assert.deepEqual(packet.unmatchedRequirements, []);
+  assert.deepEqual(packet.unresolved, []);
+  assert.deepEqual(packet.unsupported, []);
+});
+
 test("rejects legacy unresolved entries that omit their explicit resource", () => {
   assert.throws(
     () => docsFallbackResources({

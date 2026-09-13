@@ -3,7 +3,7 @@
   "packageVersion": "0.0.13",
   "typeSource": "types/program.d.ts",
   "errorPolicy": "An empty errors array means the compact card has no curated error override; consult the canonical route for validation, inference, and recovery behavior.",
-  "count": 269,
+  "count": 270,
   "cards": [
     {
       "schemaVersion": 3,
@@ -4925,6 +4925,84 @@
       "snippet": "program.createMarkLabels({})",
       "errors": [],
       "route": "/reference/actions/marks/#createmarklabels"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "removeMarkLabels",
+      "layer": "user-facing",
+      "domain": "marks",
+      "summary": "Remove one attached label layer by ID, or every attached label owned by a source mark.",
+      "signature": "removeMarkLabels(options: RemoveMarkLabelsOptions): ChartProgram;",
+      "intents": [
+        "remove mark labels",
+        "remove",
+        "delete",
+        "graphical mark",
+        "mark appearance",
+        "mark labels",
+        "final-item values"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "existing source mark or attached label"
+        ],
+        "owns": [],
+        "idOptions": [
+          "target",
+          "source"
+        ]
+      },
+      "authoringRoles": [
+        "H3"
+      ],
+      "wraps": [
+        "editGraphics",
+        "editSemantic"
+      ],
+      "editableVia": [],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit"
+        },
+        {
+          "input": "source",
+          "strategy": "explicit"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "existing source mark or attached label"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "target",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "source",
+          "required": false,
+          "type": "string | undefined"
+        }
+      ],
+      "callPatterns": [
+        "removeMarkLabels({ target })",
+        "removeMarkLabels({ source })"
+      ],
+      "snippet": "program.removeMarkLabels({ source: \"bars\" })",
+      "errors": [],
+      "route": "/reference/actions/marks/#removemarklabels"
     },
     {
       "schemaVersion": 3,

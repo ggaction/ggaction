@@ -154,6 +154,13 @@ test("action cards separate entry support, units, inference, and completion", as
   assert.ok(byName.get("createScatterPlot").inference.some(entry =>
     entry.input === "data" && entry.strategy === "explicit-current-unique-or-error"
   ));
+  assert.deepEqual(byName.get("removeMarkLabels").inference, [
+    { input: "target", strategy: "explicit" },
+    { input: "source", strategy: "explicit" }
+  ]);
+  assert.deepEqual(byName.get("removeMarkLabels").resources.prerequisites, [
+    "existing source mark or attached label"
+  ]);
   assert.equal(byName.get("createScatterPlot").completionRequirements.state, "complete");
   assert.equal(byName.get("editSemantic").completionRequirements.state, "not-applicable");
 });

@@ -739,7 +739,7 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 - Complete child effects are preflighted on a discarded immutable branch. Invalid source/content/appearance/layout or ID
   collisions leave the input program and trace unchanged. No additional facade registry or semantic resource is created.
 - Source filtering/encoding/scale/Canvas edits replay content, appearance and optional layout through existing text dependencies.
-  Existing `removeMark` ownership applies: attached text cannot be removed alone; removing its source owner cleans up labels.
+  `removeMarkLabels` removes attached labels without removing their source; `removeMark` still removes a source and all owned labels.
 
 ### Formal values — `createMarkLabels`
 
@@ -754,6 +754,40 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
   invalid-state atomicity, literal primitive/public graphics and Canvas/PNG equality, public types and installed package/browser discovery.
 - Evidence: `test/unit/actions/marks/mark-labels.test.js`, `test/contracts/mark-label-content.test.js`,
   `test/contracts/text-content-types.test.js`, `scripts/package-consumer.js`, `test/browser/package-consumer.browser.js`.
+
+## `removeMarkLabels`
+
+- Signature: `removeMarkLabels({ target } | { source })`. Exactly one selector is required and no target inference occurs.
+- Full-only mutable-resource action. `target` accepts one source-owned Text label layer. Independent Text and annotations use
+  `removeMark`. `source` accepts one existing Point/Line/Bar/Rule/Rect/Arc label source and removes every attached Text layer
+  whose semantic `source` is that ID. An existing source with zero attached labels is a successful no-op.
+- The action preflights the complete requested label set before applying any change. An external layer, legend, shared leader,
+  or retained authoring config that refers to a removal resource rejects the whole operation. It never cascades into an
+  independent owner.
+- The owned closure contains each selected label semantic layer and graphic, its text/label-layout/point-layout configs,
+  generated leader graphic, and selection/highlight configs whose target is a removed label. Selections and highlights whose
+  target is the source mark are preserved.
+- If `currentMark` is a removed label, it returns to that label's source. A removed current selection is unset. Unrelated
+  context remains unchanged. Target IDs are processed in deterministic lexical order.
+- Removing the semantic ownership layer and all replay configs is persistent: later source encoding/style edits, scale edits,
+  Canvas edits, and theme reconciliation cannot recreate a removed label. Facet/repeat cloning of this removal lifecycle is
+  tracked by Roadmap 7 R43 because the current composition boundary does not yet accept source-owned Text labels.
+
+### Formal values — `removeMarkLabels`
+
+- Implemented: `RemoveMarkLabelsOptions = { target: string; source?: never } | { source: string; target?: never }`.
+- Proposed (NOT IMPLEMENTED): R43 composition replay for source-owned labels across facet/repeat children.
+- Missing selector, both selectors, invalid/empty IDs, unknown resources, independent Text targets, extra keys, and external
+  references are errors. Every error leaves semantic, graphic, config, context, and trace state unchanged.
+
+### Value coverage — `removeMarkLabels`
+
+- ✅ Covered: one of multiple labels, source-wide removal, zero-label no-op, leader/config cleanup, label-target interaction
+  cleanup with source selection preservation, current context repair, invalid and external-reference atomicity, replay after
+  source/scale/Canvas/theme edits, Full types, Basic exclusion, compact knowledge, and installed package/browser consumers.
+- ⚠️ Composition replay is deferred to the accepted R43 composition integration owner.
+- Evidence: `test/contracts/remove-labels.test.js`, `test/contracts/text-content-types.test.js`,
+  `test/contracts/package-boundaries.test.js`, `scripts/package-consumer.js`, `test/browser/package-consumer.browser.js`.
 
 ## `createAnnotation`
 

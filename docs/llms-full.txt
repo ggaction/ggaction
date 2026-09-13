@@ -5694,7 +5694,7 @@ each type infers its ID and current dataset when those choices are unambiguous.
 | Reference line / band | `createReferenceLine` / `createReferenceBand` | Rule/Rect and position encodings | Line/Rect collection |
 | Rule | `createRuleMark` | Encoding actions | Line collection |
 | Tick | `createTickMark` | `editTickMark` | Centered line collection |
-| Text | `createTextMark` | `editTextMark`, `layoutLabels`, `removeLabelLayout` | Text collection |
+| Text | `createTextMark` | `editTextMark`, `layoutLabels`, `removeLabelLayout`, `removeMarkLabels` | Text collection |
 | Rect | `createRectMark` | `editRectMark` | Rect collection |
 
 Use `removeMark({ target? })` to remove one complete stable mark owner. It also
@@ -6313,9 +6313,31 @@ anchors without collision layout. An incomplete explicit source is supported whe
 layout is disabled; call `layoutLabels` after completing it.
 
 The result is an ordinary text layer: edit it with `encodeText`, `editTextMark`,
-`layoutLabels`, or `removeLabelLayout`. Source changes replay the labels. The existing
-mark ownership rule removes attached labels when their source is removed; it does
-not support removing an attached label layer alone.
+`layoutLabels`, or `removeLabelLayout`. Source changes replay the labels. Remove one
+attached label with `removeMarkLabels({ target: "piePlot-labels" })`, or remove every
+label on a source with `removeMarkLabels({ source: "piePlot" })`. Removing the source
+with `removeMark` still removes all labels it owns.
+
+## `removeMarkLabels(options)`
+
+Use exactly one explicit selector:
+
+```javascript
+const oneRemoved = labeled.removeMarkLabels({ target: "piePlot-labels" });
+const allRemoved = labeled.removeMarkLabels({ source: "piePlot" });
+```
+
+`target` must identify source-owned Text; independent Text and `createAnnotation`
+results use `removeMark`. `source` removes all attached label layers owned by that
+Point, Line, Bar, Rule, Rect, or Arc mark while preserving the source itself. Calling
+the source form when that source has no labels succeeds without changing chart
+resources.
+
+Removal also clears the selected labels' layout settings, generated leader lines,
+and label-target selection/highlight state. Source-target interaction remains. If
+another retained resource refers to a requested label, the complete operation fails
+before any label is removed. Later source encoding/style, scale, Canvas, and theme
+edits do not recreate removed labels.
 
 ## `createTextMark(options?)`
 
@@ -14181,6 +14203,7 @@ Use document search with `Ctrl+K`, or filter the alphabetical list by action nam
 | [`removeMark`](./reference/actions/marks/#removemark) | H3 | user-facing | marks |
 | [`removeMarkFilter`](./reference/actions/charts-data/#removemarkfilter) | H3 | user-facing | mark-selection |
 | [`removeMarkHighlight`](./reference/actions/charts-data/#removemarkhighlight) | H3 | user-facing | mark-selection |
+| [`removeMarkLabels`](./reference/actions/marks/#removemarklabels) | H3 | user-facing | marks |
 | [`removeMarkSelection`](./reference/actions/advanced/#removemarkselection) | H3 | advanced | mark-selection |
 | [`removeParallelAxes`](./reference/actions/advanced/#createparallelaxes-createparallelaxis-editparallelaxis-removeparallelaxis-removeparallelaxes) | H3 | user-facing | axes |
 | [`removeParallelAxis`](./reference/actions/advanced/#createparallelaxes-createparallelaxis-editparallelaxis-removeparallelaxis-removeparallelaxes) | H3 | user-facing | axes |
@@ -15115,6 +15138,21 @@ optional collision layout. The default content is the source's semantic value;
 Point/Line/Rule/Rect require a field or constant. A Line creates one label per
 series at its final path coordinate. The default ID is `<source>-labels`.
 [Text marks](./api/marks/text/)
+
+## `removeMarkLabels`
+
+```javascript
+removeMarkLabels({ target })
+removeMarkLabels({ source })
+```
+
+Remove one attached label layer by ID, or every attached label owned by a source
+mark. Exactly one selector is required. The source mark, its selections, and
+unrelated labels remain. Label layout policies, generated leaders, and interaction
+state attached to removed labels are cleaned up, so later source, scale, Canvas,
+and theme edits do not recreate them. Independent Text and annotations continue
+to use `removeMark`.
+[Text marks](./api/marks/text/#removemarklabelsoptions)
 
 ## `createAnnotation`
 
@@ -16957,6 +16995,7 @@ interface ChartProgramActions {
   editRuleMark(options: { target?: string } & RuleStyleOptions): ChartProgram;
   createTextMark(options?: TextMarkOptions): ChartProgram;
   createMarkLabels(options?: CreateMarkLabelsOptions): ChartProgram;
+  removeMarkLabels(options: RemoveMarkLabelsOptions): ChartProgram;
   createAnnotation(options: CreateAnnotationOptions): ChartProgram;
   createReferenceLine(options: CreateReferenceLineOptions): ChartProgram;
   createReferenceBand(options: CreateReferenceBandOptions): ChartProgram;
