@@ -631,6 +631,36 @@ test("keeps known video-game facets and complete-case parallel profiles nonempty
   }
 });
 
+test("reserves a complete side-legend lane for long Christmas-song labels", () => {
+  const dataset = "tt-christmas-songs";
+  const recipe = REALISTIC_GUIDE_SCALE_RECIPES.find(candidate =>
+    candidate.id === "realistic-guide-scale-facet-policies"
+  );
+  try {
+    const domains = recipe.factorsForDataset(dataset);
+    assert.notEqual(domains, undefined, `${dataset} eligibility`);
+    const fieldPair = domains.fieldPair.find(candidate =>
+      candidate.bindingId === "eligible:peak_position-by-song"
+    );
+    const variant = domains.variant.find(candidate =>
+      candidate.id === "shared-then-independent-center"
+    );
+    assert.notEqual(fieldPair, undefined, "authentic song binding");
+    assert.notEqual(variant, undefined, "shared-to-independent facet variant");
+    const factors = Object.freeze({ dataset, fieldPair, variant });
+    const program = recipe.build(factors);
+    assertGraphicIntegrity(program, `${dataset} long-label side legend`);
+    assertAnalyticLayerIntegrity(program, `${dataset} long-label side legend`);
+    const canvas = program.trace.children.find(entry => entry.op === "createCanvas").args;
+    assert.equal(canvas.width, 1_900);
+    assert.equal(canvas.height, 1_300);
+    assert.ok(canvas.margin.right > 400, "long labels expand the side-legend lane");
+    assert.ok(canvas.width - canvas.margin.left - canvas.margin.right > 0);
+  } finally {
+    releaseTidyTuesdaySourceCache(dataset);
+  }
+});
+
 test("filters transit parallel dimensions before its deterministic sample", () => {
   const dataset = "tt-transit-costs";
   const recipe = REALISTIC_GUIDE_SCALE_RECIPES.find(value =>

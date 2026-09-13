@@ -1,6 +1,7 @@
 import { createHash } from "node:crypto";
 
 import { chart } from "../../../src/index.js";
+import { measureTextWidth } from "../../../src/core/textMetrics.js";
 import { PALETTE_NAMES } from "../../../src/grammar/palettes.js";
 
 import { tidyTuesdaySourceEntries } from "../datasets/tidytuesday.js";
@@ -30,6 +31,12 @@ const FACET_CANVAS = Object.freeze({
   height: 1_300,
   background: "#ffffff",
   margin: Object.freeze({ top: 325, right: 400, bottom: 325, left: 400 })
+});
+const FACET_SIDE_LEGEND = Object.freeze({
+  offset: 150,
+  symbolWidth: 15,
+  labels: Object.freeze({ offset: 8, fontSize: 11, fontFamily: "sans-serif" }),
+  titleStyle: Object.freeze({ fontSize: 12, fontFamily: "sans-serif", fontWeight: 700 })
 });
 
 const NUMERIC_FORMAT_VARIANTS = Object.freeze([
@@ -190,8 +197,19 @@ function canvas() {
   return { ...CANVAS, margin: { ...CANVAS.margin } };
 }
 
-function facetCanvas() {
-  return { ...FACET_CANVAS, margin: { ...FACET_CANVAS.margin } };
+function facetCanvas(view, context) {
+  const labels = [...new Set(view.rows.map(row => String(row.category)))];
+  const widestLabel = Math.max(...labels.map(label =>
+    measureTextWidth(label, FACET_SIDE_LEGEND.labels)
+  ));
+  const titleWidth = measureTextWidth(context.dimensionText, FACET_SIDE_LEGEND.titleStyle);
+  const itemWidth = FACET_SIDE_LEGEND.symbolWidth +
+    FACET_SIDE_LEGEND.labels.offset + widestLabel;
+  const right = Math.max(
+    FACET_CANVAS.margin.right,
+    Math.ceil(FACET_SIDE_LEGEND.offset + Math.max(itemWidth, titleWidth) + 1)
+  );
+  return { ...FACET_CANVAS, margin: { ...FACET_CANVAS.margin, right } };
 }
 
 function aggregateFor(variant) {
@@ -2194,7 +2212,7 @@ function buildFacetGuides(factors) {
   const firstPolicy = factors.variant.first;
   const secondPolicy = firstPolicy === "independent" ? "shared" : "independent";
   let program = chart()
-    .createCanvas(facetCanvas())
+    .createCanvas(facetCanvas(view, context))
     .createData({ id: "analysisRows", values: view.rows })
     .createPointMark({
       id: "facetPoints",
@@ -2367,11 +2385,11 @@ function buildFacetGuides(factors) {
       position: "right",
       align: "center",
       direction: "vertical",
-      offset: 150,
+      offset: FACET_SIDE_LEGEND.offset,
       title: context.dimensionText,
       symbol: "auto",
-      labels: { offset: 8, fontSize: 11 },
-      titleStyle: { fontSize: 12, fontWeight: 700 }
+      labels: FACET_SIDE_LEGEND.labels,
+      titleStyle: FACET_SIDE_LEGEND.titleStyle
     })
     .facet({
       field: "subgroup",
