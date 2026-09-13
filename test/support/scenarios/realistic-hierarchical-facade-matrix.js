@@ -760,6 +760,16 @@ function numericFieldExtent(program, data, field) {
   return low === high ? [low, low + 1] : [low, high];
 }
 
+function horizonMagnitudeExtent(program, data, field, baseline) {
+  const rows = program.semanticSpec.datasets.find(dataset => dataset.id === data)?.values ?? [];
+  let extent = 0;
+  for (const row of rows) {
+    const value = row[field];
+    if (Number.isFinite(value)) extent = Math.max(extent, Math.abs(value - baseline));
+  }
+  return extent > 0 ? extent : 1;
+}
+
 function numericLegendValues(program, data, field) {
   const [low, high] = numericFieldExtent(program, data, field);
   return [low, low + (high - low) / 2, high];
@@ -1583,6 +1593,7 @@ function appendHorizon(program, index) {
   const suffix = `matrix-horizon-${index}`;
   const temporalUnit = TEMPORAL_UNITS[index % 3];
   const bands = 2 + index % 3;
+  const baseline = index % 2 === 0 ? 0 : 1;
   const options = {
     id: suffix,
     data: "analysisRows",
@@ -1601,8 +1612,10 @@ function appendHorizon(program, index) {
     },
     groupBy: index % 5 === 0 ? false : "group",
     bands,
-    baseline: index % 2 === 0 ? 0 : 1,
-    extent: index % 3 === 0 ? "auto" : 1000000,
+    baseline,
+    extent: index % 3 === 0
+      ? "auto"
+      : horizonMagnitudeExtent(program, "analysisRows", "positiveY", baseline),
     resolve: index % 2 === 0 ? "shared" : "independent",
     missing: index % 2 === 0 ? "break" : "error",
     overflow: index % 2 === 0 ? "clip" : "error",

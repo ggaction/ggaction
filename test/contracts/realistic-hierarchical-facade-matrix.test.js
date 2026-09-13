@@ -22,7 +22,8 @@ const DATASETS = Object.freeze([
   "tt-global-temperatures",
   "tt-london-marathon-winners",
   "tt-himalayan-peaks",
-  "tt-us-tornadoes"
+  "tt-us-tornadoes",
+  "tt-voter-turnout"
 ]);
 
 function nestedTraceValues(args, path) {
