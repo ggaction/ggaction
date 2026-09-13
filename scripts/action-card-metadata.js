@@ -53,6 +53,8 @@ const explicitLifecycleEditors = Object.freeze({
   jitterPoints: ["jitterPoints", "removeJitter"],
   packPoints: ["packPoints", "removePointPacking"],
   filterMarks: ["removeMarkFilter"],
+  createMarkLabels: ["editMarkLabelSelection", "removeMarkLabels"],
+  editMarkLabelSelection: ["editMarkLabelSelection", "removeMarkLabels"],
   selectMarks: ["editMarkSelection", "removeMarkSelection"],
   editMarkSelection: ["editMarkSelection", "removeMarkSelection"],
   highlightMarks: ["removeMarkHighlight"],
@@ -77,7 +79,10 @@ const selectorInputs = new Set([
   "before",
   "after"
 ]);
-const explicitSelectorActions = new Set(["removeMarkLabels"]);
+const explicitSelectorActions = new Set([
+  "editMarkLabelSelection",
+  "removeMarkLabels"
+]);
 
 const logicalPixelNames = new Set([
   "width",

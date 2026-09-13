@@ -16,7 +16,7 @@ test("text content and precision types match their runtime vocabularies", async 
     const paddedCalls = [...Array(10).keys()].flatMap(precision => ["f", "%", "e"].map(suffix =>
       `p.encodeText({ value: 0.125, format: ".0${precision}${suffix}" });`));
     await writeFile(file, `
-import type { ChartProgram, TextEncodingOptions, DatumPositionEncodingOptions, CreateMarkLabelsOptions, RemoveMarkLabelsOptions, CreateAnnotationOptions, CreateReferenceLineOptions, CreateReferenceBandOptions, RotationInput } from ${JSON.stringify(path.join(root, "types/index.js"))};
+import type { ChartProgram, TextEncodingOptions, DatumPositionEncodingOptions, CreateMarkLabelsOptions, EditMarkLabelSelectionOptions, RemoveMarkLabelsOptions, CreateAnnotationOptions, CreateReferenceLineOptions, CreateReferenceBandOptions, RotationInput } from ${JSON.stringify(path.join(root, "types/index.js"))};
 import type { BasicChartProgram } from ${JSON.stringify(path.join(root, "types/basic.js"))};
 declare const p: ChartProgram;
 declare const basic: BasicChartProgram;
@@ -25,6 +25,22 @@ p.encodeText(shared);
 const labels: CreateMarkLabelsOptions = { source: "bars", content: "share", normalizeBy: "category", layout: { axis: "y" } };
 p.createMarkLabels(labels);
 p.createMarkLabels();
+p.createMarkLabels({ source: "bars", select: { field: "value", op: "max", count: 2 } });
+p.createMarkLabels({ source: "bars", selection: "focus" });
+const editLabelSelection: EditMarkLabelSelectionOptions = { target: "bars-labels", all: true };
+p.editMarkLabelSelection(editLabelSelection);
+p.editMarkLabelSelection({ target: "bars-labels", select: { field: "value", op: "gt", value: 2 } });
+p.editMarkLabelSelection({ target: "bars-labels", selection: "focus" });
+// @ts-expect-error Selected-label editing is Full-only.
+basic.editMarkLabelSelection({ target: "bars-labels", all: true });
+// @ts-expect-error Label creation selection modes are exclusive.
+p.createMarkLabels({ select: { field: "value", op: "max" }, selection: "focus" });
+// @ts-expect-error Label selection editing requires exactly one replacement.
+p.editMarkLabelSelection({ target: "bars-labels" });
+// @ts-expect-error all is a true-only reset branch.
+p.editMarkLabelSelection({ target: "bars-labels", all: false });
+// @ts-expect-error Label selection replacement branches are exclusive.
+p.editMarkLabelSelection({ target: "bars-labels", all: true, selection: "focus" });
 const removeLabels: RemoveMarkLabelsOptions = { source: "bars" };
 p.removeMarkLabels(removeLabels);
 p.removeMarkLabels({ target: "bars-labels" });

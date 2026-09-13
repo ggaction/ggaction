@@ -837,7 +837,7 @@
       "domain": "marks",
       "status": "implemented",
       "lifecycle": "Aggregate create-only",
-      "update": "`encodeText`, `editTextMark`, `layoutLabels`, `removeLabelLayout`; source-owner removal cleans up labels",
+      "update": "`editMarkLabelSelection`, `encodeText`, `editTextMark`, `layoutLabels`, `removeLabelLayout`; source-owner removal cleans up labels",
       "audit": "Intentional",
       "coverage": {
         "contract": "complete",
@@ -847,6 +847,24 @@
       "contract": {
         "file": "agent_docs/contract/current/MARKS.md",
         "anchor": "createmarklabels"
+      }
+    },
+    {
+      "name": "editMarkLabelSelection",
+      "layer": "user-facing",
+      "domain": "marks",
+      "status": "implemented",
+      "lifecycle": "Mutable resource",
+      "update": "Replace one attached label membership with inline, named, or all-final-items selection",
+      "audit": "Complete",
+      "coverage": {
+        "contract": "complete",
+        "effects": "complete",
+        "tests": "complete"
+      },
+      "contract": {
+        "file": "agent_docs/contract/current/MARKS.md",
+        "anchor": "editmarklabelselection"
       }
     },
     {

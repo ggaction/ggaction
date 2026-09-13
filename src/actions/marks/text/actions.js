@@ -14,6 +14,12 @@ import {
   isTextSource
 } from "../../../materialization/marks/index.js";
 import { resolveTextGraphicItems } from "../../../materialization/text.js";
+import { resolveMarkSelection } from
+  "../../../materialization/selection/state.js";
+import { rematerializeLabelsBeforeHighlights } from
+  "../../selection/actions.js";
+import { normalizeLabelSelectionCreate } from
+  "../../../grammar/markLabelSelection.js";
 import { findLayer, resolveEligibleLayer } from "../../../selectors/layers.js";
 import {
   applyLayeredMarkInheritance,
@@ -161,6 +167,7 @@ const createTextMark = action(
 
 const LABEL_OPTIONS = Object.freeze([
   "id", "source", "field", "value", "content", "normalizeBy", "format", "layout",
+  "select", "selection",
   ...STYLE_OPTIONS
 ]);
 
@@ -320,6 +327,21 @@ const createMarkLabels = action(
     }
     const id = validateUserId(args.id === undefined ? `${inherited.source}-labels` : args.id, "Text mark id");
     assertMarkAvailable(this, id);
+    const selection = normalizeLabelSelectionCreate(args);
+    if (selection.kind === "inline") {
+      resolveMarkSelection(this, inherited.source, selection.selector);
+    } else if (selection.kind === "named") {
+      const definition = this.materializationConfigs.selections?.[selection.id];
+      if (definition === undefined) {
+        throw new Error(`Unknown label selection "${selection.id}".`);
+      }
+      if (definition.target !== inherited.source) {
+        throw new Error(
+          `Label selection "${selection.id}" must target source mark "${inherited.source}".`
+        );
+      }
+      resolveMarkSelection(this, inherited.source, definition.selector);
+    }
     const style = Object.fromEntries(STYLE_OPTIONS
       .filter(option => Object.hasOwn(args, option))
       .map(option => [option, args[option]]));
@@ -337,9 +359,20 @@ const createMarkLabels = action(
       throw new Error("createMarkLabels layout target is owned by the created label layer.");
     }
     const apply = program => {
-      const next = program.createTextMark({
+      let next = program.createTextMark({
         id, source: inherited.source, align: "center", baseline: "middle", ...style
-      }).encodeText({ target: id, ...encoding });
+      });
+      next = next._withMarkConfig(id, {
+        ...next.markConfigs[id],
+        labelAuthoring: { selection }
+      });
+      next = next.encodeText({ target: id, ...encoding });
+      next = rematerializeLabelsBeforeHighlights(
+        next,
+        inherited.source,
+        [id],
+        { skipWithoutHighlights: true }
+      );
       return layout === undefined ? next : next.layoutLabels({ ...layout, target: id });
     };
     if (layout !== undefined) {

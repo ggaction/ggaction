@@ -86,6 +86,7 @@ interface ChartProgramActions {
   editRuleMark(options: { target?: string } & RuleStyleOptions): ChartProgram;
   createTextMark(options?: TextMarkOptions): ChartProgram;
   createMarkLabels(options?: CreateMarkLabelsOptions): ChartProgram;
+  editMarkLabelSelection(options: EditMarkLabelSelectionOptions): ChartProgram;
   removeMarkLabels(options: RemoveMarkLabelsOptions): ChartProgram;
   createAnnotation(options: CreateAnnotationOptions): ChartProgram;
   createReferenceLine(options: CreateReferenceLineOptions): ChartProgram;

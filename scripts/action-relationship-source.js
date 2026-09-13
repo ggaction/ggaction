@@ -172,12 +172,25 @@ function labelRemovalPrograms() {
       y: { field: "value", aggregate: "sum" },
       guides: false
     })
+    .selectMarks({
+      id: "relationshipSelection",
+      target: "relationshipBars",
+      field: "value",
+      op: "max"
+    })
     .createMarkLabels({
       id: "relationshipLabels",
       source: "relationshipBars",
-      field: "value"
+      field: "value",
+      selection: "relationshipSelection"
     });
-  return [labeled.removeMarkLabels({ source: "relationshipBars" })];
+  return [
+    labeled.editMarkLabelSelection({
+      target: "relationshipLabels",
+      select: { field: "value", op: "min" }
+    }),
+    labeled.removeMarkLabels({ source: "relationshipBars" })
+  ];
 }
 
 function normalizedDataPrograms() {

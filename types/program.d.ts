@@ -3634,6 +3634,11 @@ export type TextEncodingOptions = {
 );
 
 /** Attached final-item labels; lower text actions own subsequent edits. */
+export type MarkLabelSelectionOptions =
+  | { select?: never; selection?: never }
+  | { select: MarkSelector; selection?: never }
+  | { selection: string; select?: never };
+
 export type CreateMarkLabelsOptions = Omit<TextMarkOptions, "data" | "text"> & {
   layout?: false | Omit<LabelLayoutOptions, "target">;
 } & (
@@ -3641,6 +3646,13 @@ export type CreateMarkLabelsOptions = Omit<TextMarkOptions, "data" | "text"> & {
       ? Options extends TextEncodingOptions ? Omit<Options, "target"> : never
       : never)
   | { field?: never; value?: never; content?: never; normalizeBy?: never; format?: TextFormat }
+) & MarkLabelSelectionOptions;
+
+/** Replace the requested final-item membership of one attached label layer. */
+export type EditMarkLabelSelectionOptions = { target: string } & (
+  | { select: MarkSelector; selection?: never; all?: never }
+  | { selection: string; select?: never; all?: never }
+  | { all: true; select?: never; selection?: never }
 );
 
 /** Remove one attached label layer or every attached label owned by a source mark. */
@@ -4435,6 +4447,7 @@ export class ChartProgram {
   editRuleMark(options: { target?: string } & RuleStyleOptions): ChartProgram;
   createTextMark(options?: TextMarkOptions): ChartProgram;
   createMarkLabels(options?: CreateMarkLabelsOptions): ChartProgram;
+  editMarkLabelSelection(options: EditMarkLabelSelectionOptions): ChartProgram;
   removeMarkLabels(options: RemoveMarkLabelsOptions): ChartProgram;
   createAnnotation(options: CreateAnnotationOptions): ChartProgram;
   createReferenceLine(options: CreateReferenceLineOptions): ChartProgram;

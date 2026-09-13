@@ -41,6 +41,12 @@ function semanticResource(program, collection, id) {
   return resource;
 }
 
+function currentDerivedDataset(program, family, id) {
+  const current = program.materializationConfigs.data[family]?.[id]?.current;
+  assert.equal(typeof current, "string", `missing ${family} owner: ${id}`);
+  return semanticResource(program, "datasets", current);
+}
+
 function renderedObject(program, id) {
   const object = program.graphicSpec.objects[id];
   assert.ok(object, `missing rendered object: ${id}`);
@@ -115,7 +121,7 @@ test("calls every user-facing action directly from a generated scenario root", (
     directTraceOperations(buildScenario(descriptor), directOperations);
   }
 
-  assert.equal(publicActions.length, 238);
+  assert.equal(publicActions.length, 264);
   assert.deepEqual(
     publicActions.filter(operation => !directOperations.has(operation)),
     []
@@ -136,6 +142,92 @@ test("retains direct action effects in final semantic and graphic state", () => 
     semanticResource(resources, "scales", "manualScale").range,
     [150, 800]
   );
+  assert.deepEqual(
+    currentDerivedDataset(resources, "computed", "editComputed")
+      .values.map(row => row.computed),
+    [2, 3, 4, 5]
+  );
+  assert.deepEqual(
+    currentDerivedDataset(resources, "filter", "editFiltered")
+      .values.map(row => row.group),
+    ["b", "b"]
+  );
+  assert.deepEqual(
+    currentDerivedDataset(resources, "fold", "editFold")
+      .transform[0].fields,
+    ["a"]
+  );
+  assert.equal(
+    currentDerivedDataset(resources, "summary", "editSummary")
+      .values[0].summaryValue,
+    10
+  );
+  assert.deepEqual(
+    currentDerivedDataset(resources, "bin", "editBin")
+      .transform[0].resolved.boundaries,
+    [0, 3, 4]
+  );
+  assert.equal(
+    currentDerivedDataset(resources, "timeUnit", "editTime")
+      .transform[0].unit,
+    "month"
+  );
+  assert.equal(
+    currentDerivedDataset(resources, "window", "editWindow")
+      .transform[0].operations[0].op,
+    "rank"
+  );
+  assert.equal(
+    currentDerivedDataset(resources, "density", "editDensity")
+      .transform[0].steps,
+    10
+  );
+  assert.equal(
+    currentDerivedDataset(resources, "stack", "editStack")
+      .transform[0].mode,
+    "fill"
+  );
+  assert.equal(
+    currentDerivedDataset(resources, "regression", "editRegression")
+      .transform[0].method,
+    "polynomial"
+  );
+  assert.deepEqual(
+    currentDerivedDataset(resources, "interval", "editInterval")
+      .transform[0],
+    {
+      type: "interval",
+      field: "value",
+      groupBy: [],
+      center: "median",
+      extent: "iqr",
+      as: {
+        center: "__editInterval_center",
+        lower: "__editInterval_lower",
+        upper: "__editInterval_upper"
+      }
+    }
+  );
+  assert.equal(
+    currentDerivedDataset(resources, "ecdf", "editECDF")
+      .transform[0].missing,
+    "error"
+  );
+  assert.deepEqual(
+    currentDerivedDataset(resources, "normalize", "editNormalized")
+      .values.map(row => row.normalized),
+    [0, 1 / 3, 2 / 3, 1]
+  );
+  assert.deepEqual(
+    currentDerivedDataset(resources, "complete", "editComplete")
+      .values.filter(row => row.category === "c3").map(row => row.group),
+    ["a", "b"]
+  );
+  assert.deepEqual(
+    currentDerivedDataset(resources, "impute", "editImputed")
+      .values.map(row => row.missing),
+    [1, 2, 1, 4]
+  );
   assertRenderedItems(resources, "resourcePoints");
 
   const appearance = buildLifecycleRecipe("action-direct-point-text");
@@ -143,6 +235,11 @@ test("retains direct action effects in final semantic and graphic state", () => 
   assert.ok(points.every(item => item.properties.radius === 3));
   assert.ok(points.every(item => item.properties.opacity >= 0.2));
   assert.ok(points.every(item => item.properties.opacity <= 0.9));
+  assert.deepEqual(semanticResource(appearance, "scales", "stroke").range, {
+    palette: "set1"
+  });
+  assert.equal(assertRenderedItems(appearance, "selectedAppearanceLabels").length, 2);
+  assert.equal(appearance.graphicSpec.objects.removableAppearanceLabels, undefined);
   const labels = assertRenderedItems(appearance, "appearanceLabels");
   assert.ok(labels.every(item => item.properties.fill === "#111827"));
   assert.ok(labels.every(item => item.properties.fontSize === 10));
@@ -165,6 +262,7 @@ test("retains direct action effects in final semantic and graphic state", () => 
 
   const horizontalBars = buildLifecycleRecipe("action-direct-bar-offsets");
   assert.ok(semanticResource(horizontalBars, "layers", "offsetBars").encoding.yOffset);
+  assert.equal(semanticResource(horizontalBars, "scales", "yOffset").paddingInner, 0.04);
   assert.ok(assertRenderedItems(horizontalBars, "offsetBars").every(item =>
     item.properties.opacity === 0.8 && item.properties.stroke === "#334155"
   ));
@@ -172,6 +270,7 @@ test("retains direct action effects in final semantic and graphic state", () => 
     orientation: "vertical"
   });
   assert.ok(semanticResource(verticalBars, "layers", "offsetBars").encoding.xOffset);
+  assert.equal(semanticResource(verticalBars, "scales", "xOffset").paddingInner, 0.04);
   assertRenderedItems(verticalBars, "offsetBars");
 
   const histogram = buildLifecycleRecipe("action-direct-histogram");
@@ -188,9 +287,17 @@ test("retains direct action effects in final semantic and graphic state", () => 
     semanticResource(parallel, "coordinates", "parallelDirect").type,
     "parallel"
   );
+  assert.deepEqual(
+    semanticResource(parallel, "coordinates", "parallelDirect").aspect,
+    { mode: "frame", ratio: 1, alignX: "center", alignY: "center" }
+  );
   assert.equal(
     semanticResource(parallel, "layers", "parallelLines").encoding.parallel.dimensions.length,
     4
+  );
+  assert.equal(
+    semanticResource(parallel, "scales", "parallelLines-parallel-1").reverse,
+    true
   );
   assertRenderedItems(parallel, "parallelLines");
 

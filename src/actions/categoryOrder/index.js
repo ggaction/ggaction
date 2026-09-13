@@ -8,7 +8,10 @@ import {
   applyMaterializationPlan,
   planScaleGuideRematerialization
 } from "../../materialization/dependencies.js";
-import { getMarkMaterializationStep } from "../../materialization/marks/index.js";
+import {
+  getMarkMaterializationStep,
+  getSourceDependentMarkSteps
+} from "../../materialization/marks/index.js";
 import { buildMaterializationPlan } from "../../materialization/planner.js";
 import {
   CATEGORY_ORDER_CHANNELS,
@@ -56,14 +59,22 @@ function resolveAssignment(program, args, operation, { activeOnly = false } = {}
 
 function rematerializeAssignment(program, scaleId) {
   const consumers = findScaleConsumers(program, scaleId);
+  const directMarks = consumers.map(consumer =>
+    getMarkMaterializationStep(program, consumer.layer)
+  );
   return applyMaterializationPlan(program, buildMaterializationPlan({
     scales: [{
       op: "rematerializeScale",
       args: { id: scaleId, guides: false, marks: false }
     }],
-    marks: consumers.map(consumer =>
-      getMarkMaterializationStep(program, consumer.layer)
-    ),
+    marks: [
+      ...directMarks,
+      ...directMarks.flatMap(step =>
+        step === undefined
+          ? []
+          : getSourceDependentMarkSteps(program, step.args.id)
+      )
+    ],
     guides: planScaleGuideRematerialization(program, scaleId)
   }));
 }

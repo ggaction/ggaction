@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "source": "generated lifecycle smoke corpus plus selection lifecycle",
-  "actionCount": 270,
+  "actionCount": 271,
   "relationships": [
     {
       "name": "createCanvas",
@@ -295,6 +295,10 @@
         "createTextMark",
         "encodeText"
       ]
+    },
+    {
+      "name": "editMarkLabelSelection",
+      "wraps": []
     },
     {
       "name": "removeMarkLabels",

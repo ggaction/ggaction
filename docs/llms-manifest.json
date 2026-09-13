@@ -955,6 +955,7 @@
         "text-marks",
         "createannotationoptions",
         "createmarklabelsoptions",
+        "editmarklabelselectionoptions",
         "removemarklabelsoptions",
         "createtextmarkoptions",
         "font-weights",
@@ -964,8 +965,8 @@
         "removelabellayoutoptions",
         "related"
       ],
-      "bytes": 14596,
-      "sha256": "22cf6027469487ba70e47bfe0a463f9734d1422d65a289e4e96835f17ed668aa"
+      "bytes": 16793,
+      "sha256": "e6776e8e355e1ef314d41301f2cdb8bad8e669f1c5ff8a190ef70732de99593d"
     },
     {
       "order": 62,
@@ -1854,8 +1855,8 @@
         "action-reference",
         "exact-action-lookup"
       ],
-      "bytes": 30499,
-      "sha256": "7635ba8eacbac3bf9854f6ff4746cfb64747200c7209a284064a0502bc538916"
+      "bytes": 30608,
+      "sha256": "058203d652fb5509f4473f45ef910a45c990b74e148bfedd35f571a7cadfedfc"
     },
     {
       "order": 117,
@@ -1957,6 +1958,7 @@
         "createreferenceline",
         "createreferenceband",
         "createmarklabels",
+        "editmarklabelselection",
         "removemarklabels",
         "createannotation",
         "createtextmark",
@@ -1966,8 +1968,8 @@
         "position-capability-matrix",
         "related"
       ],
-      "bytes": 15903,
-      "sha256": "fab3143c68944868686f0cd717aadd5b984d9e3b12e098423f5f552734d12b19"
+      "bytes": 16904,
+      "sha256": "b49e06baa2c5f504ada8decc1064331e5cfadae48dbdd4e0edb60bd88b62f0d6"
     },
     {
       "order": 119,
@@ -2169,8 +2171,8 @@
         "exact-typescript-signatures",
         "related"
       ],
-      "bytes": 20512,
-      "sha256": "ebcc1f3bf86b8cc3998e891f7715569171bcde2002d6dbd8fb6f18dbe2179276"
+      "bytes": 20592,
+      "sha256": "0a7358485f44558f938f843c80d52409ca596380a7ed1867506c1e5e08562602"
     },
     {
       "order": 126,

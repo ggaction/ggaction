@@ -1585,6 +1585,13 @@ async function testNodeConsumer(directory) {
       .graphicSpec.objects.text.items.map(i => i.properties.text), ["100.0%"]);
     assert.deepEqual(semanticLabels.encodeText({ content: "value", format: "auto" }).graphicSpec.objects.text.items.map(i => i.properties.text), ["2", "6"]);
     assert.deepEqual(semanticLabels.encodeText({ content: "value", format: ".2e" }).graphicSpec.objects.text.items.map(i => i.properties.text), ["2.00e+0", "6.00e+0"]);
+    const selectedSemanticLabels = semanticLabels.editMarkLabelSelection({
+      target: "text",
+      select: { field: "value", op: "max" }
+    });
+    assert.deepEqual(selectedSemanticLabels.graphicSpec.objects.text.items.map(i => i.properties.text), ["75.0%"]);
+    assert.deepEqual(selectedSemanticLabels.editMarkLabelSelection({ target: "text", all: true })
+      .graphicSpec.objects.text.items.map(i => i.properties.text), ["25.0%", "75.0%"]);
     const labelsRemoved = semanticLabels.removeMarkLabels({ source: "piePlot" })
       .editCanvas({ width: 520 })
       .applyTheme({ theme: "dark" });
@@ -1782,13 +1789,21 @@ async function testMcpConsumer(directory) {
     actionCardSchema.properties?.schemaVersion?.const !== 3 ||
     actionCardsSchema.properties?.schemaVersion?.const !== 3 ||
     actionCards.schemaVersion !== 3 ||
-    actionCards.count !== 270 ||
-    actionCards.cards.length !== 270 ||
+    actionCards.count !== 271 ||
+    actionCards.cards.length !== 271 ||
     actionCards.packageVersion !== installedPackage.version
   ) {
     throw new Error("Installed action-card discovery contract is missing or stale.");
   }
   const installedCards = new Map(actionCards.cards.map(card => [card.name, card]));
+  if (
+    installedCards.get("editMarkLabelSelection")?.signature !==
+      "editMarkLabelSelection(options: EditMarkLabelSelectionOptions): ChartProgram;" ||
+    installedCards.get("editMarkLabelSelection")?.supports.entryPoints.join(",") !== "default" ||
+    installedCards.get("editMarkLabelSelection")?.inference.find(entry => entry.input === "target")?.strategy !== "explicit"
+  ) {
+    throw new Error("Installed selected-label discovery metadata is stale.");
+  }
   if (
     installedCards.get("editCoordinate")?.signature !==
       "editCoordinate(options: EditCoordinateOptions): ChartProgram;" ||
@@ -1949,6 +1964,19 @@ async function testMcpConsumer(directory) {
       labelRemovalPacket.unresolved?.length !== 0
     ) {
       throw new Error("Installed MCP did not route attached-label removal.");
+    }
+    const selectedLabelResult = await client.callTool({
+      name: "search_ggaction",
+      arguments: { query: "show all labels" }
+    });
+    const selectedLabelPacket = JSON.parse(selectedLabelResult.content[0].text);
+    if (
+      selectedLabelPacket.actionPlan?.map(step => step.name).join(",") !== "editMarkLabelSelection" ||
+      selectedLabelPacket.exactCalls?.join(",") !==
+        'program.editMarkLabelSelection({ target: "labels", all: true })' ||
+      selectedLabelPacket.unresolved?.length !== 0
+    ) {
+      throw new Error("Installed MCP did not route selected-label editing.");
     }
     const resources = await client.listResources();
     if (
@@ -3541,6 +3569,17 @@ async function testTypeScriptConsumer(directory) {
     chart().editSizeScale({ type: "quantize", domain: [0, 100], range: [20, 80], clamp: true });
     chart().createMarkLabels();
     chart().createMarkLabels({ source: "bars", content: "share", format: ".0%", layout: { axis: "y" } });
+    chart().createMarkLabels({ source: "bars", select: { field: "value", op: "max", count: 2 } });
+    chart().createMarkLabels({ source: "bars", selection: "focus" });
+    chart().editMarkLabelSelection({ target: "bars-labels", select: { field: "value", op: "gt", value: 2 } });
+    chart().editMarkLabelSelection({ target: "bars-labels", selection: "focus" });
+    chart().editMarkLabelSelection({ target: "bars-labels", all: true });
+    // @ts-expect-error Label creation selection branches are exclusive.
+    chart().createMarkLabels({ select: { field: "value", op: "max" }, selection: "focus" });
+    // @ts-expect-error Label selection editing requires a replacement branch.
+    chart().editMarkLabelSelection({ target: "bars-labels" });
+    // @ts-expect-error all is true-only.
+    chart().editMarkLabelSelection({ target: "bars-labels", all: false });
     chart().removeMarkLabels({ target: "bars-labels" });
     chart().removeMarkLabels({ source: "bars" });
     // @ts-expect-error Label removal requires exactly one selector.
@@ -3658,6 +3697,7 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.a
       "point-jitter",
       "point-packing",
       "mark-label-removal",
+      "selected-mark-labels",
       "beeswarm-plot",
       "raincloud-plot",
       "path-order",

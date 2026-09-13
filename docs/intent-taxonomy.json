@@ -745,6 +745,15 @@
       ]
     },
     {
+      "id": "selection.labels.membership",
+      "phrases": [
+        "select labels",
+        "edit label selection",
+        "label only selected items",
+        "show all labels"
+      ]
+    },
+    {
       "id": "lifecycle.labels.remove",
       "phrases": [
         "remove mark labels",
@@ -2658,6 +2667,22 @@
       ],
       "baseOptions": {
         "axis": "\"y\""
+      }
+    },
+    {
+      "id": "action.editMarkLabelSelection",
+      "kind": "action",
+      "name": "editMarkLabelSelection",
+      "order": 80,
+      "anchors": [
+        "selection.labels.membership"
+      ],
+      "covers": [
+        "selection.labels.membership"
+      ],
+      "baseOptions": {
+        "target": "\"labels\"",
+        "all": "true"
       }
     },
     {

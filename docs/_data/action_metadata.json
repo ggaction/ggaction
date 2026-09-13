@@ -372,6 +372,14 @@
     "layer": "user-facing",
     "domain": "marks"
   },
+  "editMarkLabelSelection": {
+    "operation": "edit",
+    "authoringRoles": [
+      "H3"
+    ],
+    "layer": "user-facing",
+    "domain": "marks"
+  },
   "removeMarkLabels": {
     "operation": "remove",
     "authoringRoles": [

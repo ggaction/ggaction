@@ -259,14 +259,34 @@ is needed. Both reference facades are available in the full entry point.
 ## `createMarkLabels`
 
 ```javascript
-createMarkLabels({ id?, source?, field?, value?, content?, normalizeBy?, format?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy?, layout? } = {})
+createMarkLabels({ id?, source?, field?, value?, content?, normalizeBy?, format?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy?, layout?, select?, selection? } = {})
 ```
 
 Create final-item labels on an existing mark through text creation, encoding, and
 optional collision layout. The default content is the source's semantic value;
 Point/Line/Rule/Rect require a field or constant. A Line creates one label per
 series at its final path coordinate. The default ID is `<source>-labels`.
+Omit `select` and `selection` to label every final item. Pass `select: MarkSelector`
+for an inline predicate or `selection: id` for a live stored selection on the same
+source. Empty matches are valid, and selected labels keep source item order.
+Semantic content is computed before membership filtering, so a selected share label
+keeps its percentage of the complete source.
 [Text marks](../../api/marks/text.md)
+
+## `editMarkLabelSelection`
+
+```javascript
+editMarkLabelSelection({ target, select })
+editMarkLabelSelection({ target, selection })
+editMarkLabelSelection({ target, all: true })
+```
+
+Replace one attached label layer's final-item membership. Exactly one replacement
+branch is required and `target` is never inferred. Inline selectors reuse
+`MarkSelector`; named selections must target the same source mark. Selection edits
+replay named labels, while selection removal is rejected until dependent labels are
+rebound with this action or removed.
+[Text marks](../../api/marks/text.md#editmarklabelselectionoptions)
 
 ## `removeMarkLabels`
 

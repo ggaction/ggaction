@@ -715,7 +715,7 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 ## `createMarkLabels`
 
-- Signature: `createMarkLabels({ id?, source?, field?, value?, content?, normalizeBy?, format?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy?, layout? } = {})`.
+- Signature: `createMarkLabels({ id?, source?, field?, value?, content?, normalizeBy?, format?, fill?, opacity?, fontSize?, fontFamily?, fontWeight?, align?, baseline?, rotation?, dx?, dy?, layout?, select?, selection? } = {})`.
 - Aggregate create-only facade: wrapped `createTextMark`, `encodeText`, then optional `layoutLabels` remain visible children.
   Subsequent edits use those child resources through `editTextMark`, `encodeText`, `layoutLabels`, and `removeLabelLayout`.
 - The source uses exactly the explicit/current/unique inference of `createTextMark`; no eligible source is an error.
@@ -738,22 +738,67 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
   without layout, complete the source, then call `layoutLabels`. Best-effort layout warnings retain the lower action contract.
 - Complete child effects are preflighted on a discarded immutable branch. Invalid source/content/appearance/layout or ID
   collisions leave the input program and trace unchanged. No additional facade registry or semantic resource is created.
+- Omitting both `select` and `selection` labels every source final item. `select` accepts the existing `MarkSelector` grammar;
+  `selection` names one stored selection whose target must equal the label source. These branches are exclusive. Requested
+  state is stored as `labelAuthoring.selection` with kind `all`, `inline`, or `named`; resolved keys and row indices are never
+  stored. Empty membership is a successful empty Text collection and does not alter the source body or scale domain.
+- Inline and named selectors evaluate the source's current unhighlighted final-item grain after mark filtering. Rank selectors
+  choose membership with the existing count/ties rules, then labels retain source item order. Named selection edits replay
+  dependent labels before source highlights are reapplied. Removing a referenced named selection is rejected until the label
+  is rebound or removed.
+- Semantic label content is resolved over the complete final source before membership is applied. In particular, selecting one
+  pie-share label preserves its percentage of the complete pie instead of renormalizing the visible label subset to 100%.
 - Source filtering/encoding/scale/Canvas edits replay content, appearance and optional layout through existing text dependencies.
   `removeMarkLabels` removes attached labels without removing their source; `removeMark` still removes a source and all owned labels.
 
 ### Formal values — `createMarkLabels`
 
 - Implemented: `createMarkLabels(options?: CreateMarkLabelsOptions)`; ID/source and appearance use `TextMarkOptions`, content uses
-  the exclusive `TextEncodingOptions` branches plus omission, and `layout?: false | Omit<LabelLayoutOptions, "target">`.
+  the exclusive `TextEncodingOptions` branches plus omission, `layout?: false | Omit<LabelLayoutOptions, "target">`, and the
+  exclusive omitted/`select: MarkSelector`/`selection: string` membership branches.
 - Proposed (NOT IMPLEMENTED): automatic point measure selection and layout assignment before source completion.
 
 ### Value coverage — `createMarkLabels`
 
 - ✅ Covered: shortest call, source-owned IDs, explicit/inferred Point/Bar/Line/Rule/Rect/Arc sources, all text content branches, appearance overrides,
   incomplete source completion, optional layout and lower edits, resize/filter replay, source removal, nested trace,
+  inline/named/all membership, rank ties and source order, empty matches, complete-source share denominators, selection edit/removal dependencies,
   invalid-state atomicity, literal primitive/public graphics and Canvas/PNG equality, public types and installed package/browser discovery.
 - Evidence: `test/unit/actions/marks/mark-labels.test.js`, `test/contracts/mark-label-content.test.js`,
-  `test/contracts/text-content-types.test.js`, `scripts/package-consumer.js`, `test/browser/package-consumer.browser.js`.
+  `test/contracts/selected-labels.test.js`, `test/contracts/text-content-types.test.js`, `scripts/package-consumer.js`,
+  `test/browser/package-consumer.browser.js`.
+
+## `editMarkLabelSelection`
+
+- Signature: `editMarkLabelSelection({ target, select } | { target, selection } | { target, all: true })`.
+- Full-only mutable-resource action. `target` is required and must name an attached source-owned Text label; independent Text
+  and annotations are rejected. Exactly one replacement branch is required. `all` accepts only `true`; false does not mean
+  removal or preserve.
+- The replacement is whole-object semantics. `select` normalizes and owns a cloned `MarkSelector`; `selection` stores a live
+  named-selection ID after checking that the named target equals the label source; `all:true` removes the former inline/named
+  dependency. Old branch-only fields do not survive a mode transition.
+- Validation resolves the selector against the source's final-item adapter before the first write. Unknown IDs, missing fields
+  at aggregate/series grain, unsupported grain, wrong source, invalid selector, extra keys, both/neither branches, and non-label
+  targets are atomic errors.
+- A successful edit rematerializes label content and optional collision layout. When the source has an active highlight, it
+  derives membership and anchors from a clean source baseline and reapplies the highlight afterward. Source graphics,
+  semantics, scale domains, selections, and unrelated labels remain owned by their existing actions.
+
+### Formal values — `editMarkLabelSelection`
+
+- Implemented: `EditMarkLabelSelectionOptions = { target: string } & ({ select: MarkSelector } | { selection: string } |
+  { all: true })`, with exclusive branches expressed by `never` properties in declarations.
+- Proposed (NOT IMPLEMENTED): R43 child-local selector evaluation and named-selection namespacing for source-owned Text in
+  facet/repeat compositions.
+
+### Value coverage — `editMarkLabelSelection`
+
+- ✅ Covered: inline→all and named→all replacement, named selection live edit, deletion guard and release, final source order,
+  first/all ties, empty membership, aggregate field validation, highlight-before-label ordering, filter/reencode/Canvas/theme
+  replay, caller/program immutability, Full types, Basic exclusion, compact knowledge, and installed package/browser consumers.
+- ⚠️ Facet/repeat replay is deferred to the accepted R43 composition integration owner.
+- Evidence: `test/contracts/selected-labels.test.js`, `test/contracts/text-content-types.test.js`,
+  `test/contracts/package-boundaries.test.js`, `scripts/package-consumer.js`, `test/browser/package-consumer.browser.js`.
 
 ## `removeMarkLabels`
 

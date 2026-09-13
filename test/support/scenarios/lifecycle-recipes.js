@@ -978,6 +978,172 @@ function buildRepeatChartsLifecycle(factors) {
     });
 }
 
+function addDirectDerivedDataEdits(program) {
+  const values = [
+    {
+      group: "a", category: "c1", x: 1, y: 2, value: 1,
+      a: 1, b: 2, when: "2024-01-01T00:00:00Z", order: 1,
+      missing: null
+    },
+    {
+      group: "a", category: "c2", x: 2, y: 4, value: 2,
+      a: 2, b: 3, when: "2024-01-02T00:00:00Z", order: 2,
+      missing: 2
+    },
+    {
+      group: "b", category: "c1", x: 3, y: 6, value: 3,
+      a: 3, b: 4, when: "2024-01-03T00:00:00Z", order: 3,
+      missing: null
+    },
+    {
+      group: "b", category: "c2", x: 4, y: 8, value: 4,
+      a: 4, b: 5, when: "2024-01-04T00:00:00Z", order: 4,
+      missing: 4
+    }
+  ];
+  return program
+    .createData({ id: "editSource", values })
+    .createComputedData({
+      id: "editComputed",
+      source: "editSource",
+      as: "computed",
+      expression: { field: "x" }
+    })
+    .editComputedData({
+      target: "editComputed",
+      expression: {
+        op: "multiply",
+        left: { field: "x" },
+        right: { constant: 2 }
+      }
+    })
+    .editDerivedData({
+      target: "editComputed",
+      definition: {
+        type: "computed",
+        as: "computed",
+        expression: {
+          op: "add",
+          left: { field: "x" },
+          right: { constant: 1 }
+        }
+      }
+    })
+    .filterData({
+      id: "editFiltered",
+      source: "editSource",
+      field: "group",
+      oneOf: ["a"]
+    })
+    .editFilteredData({ target: "editFiltered", oneOf: ["b"] })
+    .createFoldData({
+      id: "editFold",
+      source: "editSource",
+      fields: ["a", "b"],
+      as: { key: "foldKey", value: "foldValue" }
+    })
+    .editFoldData({ target: "editFold", fields: ["a"] })
+    .createSummaryData({
+      id: "editSummary",
+      source: "editSource",
+      aggregates: [{ op: "mean", field: "value", as: "summaryValue" }]
+    })
+    .editSummaryData({
+      target: "editSummary",
+      aggregates: [{ op: "sum", field: "value", as: "summaryValue" }]
+    })
+    .createBinData({
+      id: "editBin",
+      source: "editSource",
+      field: "value",
+      boundaries: [0, 2, 4]
+    })
+    .editBinData({ target: "editBin", boundaries: [0, 3, 4] })
+    .createTimeUnitData({
+      id: "editTime",
+      source: "editSource",
+      field: "when",
+      unit: "day",
+      as: "bucket"
+    })
+    .editTimeUnitData({ target: "editTime", unit: "month" })
+    .createWindowData({
+      id: "editWindow",
+      source: "editSource",
+      sortBy: [{ field: "order" }],
+      operations: [{ op: "rowNumber", as: "rank" }]
+    })
+    .editWindowData({
+      target: "editWindow",
+      operations: [{ op: "rank", as: "rank" }]
+    })
+    .createDensityData({
+      id: "editDensity",
+      source: "editSource",
+      field: "value",
+      steps: 8
+    })
+    .editDensityData({ target: "editDensity", steps: 10 })
+    .createStackData({
+      id: "editStack",
+      source: "editSource",
+      category: "category",
+      group: "group",
+      value: "value"
+    })
+    .editStackData({ target: "editStack", mode: "fill" })
+    .createRegressionData({
+      id: "editRegression",
+      source: "editSource",
+      x: "x",
+      y: "y"
+    })
+    .editRegressionData({ target: "editRegression", method: "polynomial" })
+    .createIntervalData({
+      id: "editInterval",
+      source: "editSource",
+      field: "value"
+    })
+    .editIntervalData({
+      target: "editInterval",
+      center: "median",
+      extent: "iqr"
+    })
+    .createECDFData({
+      id: "editECDF",
+      source: "editSource",
+      field: "value"
+    })
+    .editECDFData({ target: "editECDF", missing: "error" })
+    .createNormalizedData({
+      id: "editNormalized",
+      source: "editSource",
+      field: "value",
+      as: "normalized",
+      method: "share"
+    })
+    .editNormalizedData({ target: "editNormalized", method: "minmax" })
+    .createCompleteData({
+      id: "editComplete",
+      source: "editSource",
+      key: "category",
+      groupBy: "group",
+      values: ["c1", "c2"]
+    })
+    .editCompleteData({
+      target: "editComplete",
+      values: ["c1", "c2", "c3"]
+    })
+    .createImputedData({
+      id: "editImputed",
+      source: "editSource",
+      fields: "missing",
+      method: "constant",
+      value: 0
+    })
+    .editImputedData({ target: "editImputed", value: 1 });
+}
+
 function buildDirectDataResources(factors) {
   const rows = styleRows(factors.dataset).map(row => ({
     ...row,
@@ -995,13 +1161,15 @@ function buildDirectDataResources(factors) {
   const bandwidth = factors.dataset.startsWith("tt-")
     ? spread * factors.bandwidth
     : factors.bandwidth;
-  return chart()
+  let program = chart()
     .createCanvas(cartesianCanvas(factors))
     .editCanvas({
       width,
       background: factors.background
     })
-    .createData({ id: "directSource", values: rows })
+    .createData({ id: "directSource", values: rows });
+  program = addDirectDerivedDataEdits(program);
+  return program
     .createDensityData({
       id: "directDensity",
       source: "directSource",
@@ -1106,6 +1274,8 @@ function buildDirectPointText(factors) {
     .createPointMark({ id: "appearancePoints" })
     .encodeX({ target: "appearancePoints", field: "x" })
     .encodeY({ target: "appearancePoints", field: "positive" })
+    .encodeStroke({ target: "appearancePoints", field: "color" })
+    .editStrokeScale({ target: "appearancePoints", palette: "set1" })
     .encodeRadius({ target: "appearancePoints", value: factors.radius })
     .encodeOpacity({
       target: "appearancePoints",
@@ -1113,6 +1283,22 @@ function buildDirectPointText(factors) {
       scale: { range: factors.opacityRange }
     })
     .editOpacityScale({ target: "appearancePoints", range: factors.opacityRange })
+    .createMarkLabels({
+      id: "selectedAppearanceLabels",
+      source: "appearancePoints",
+      field: "label",
+      select: { field: "positive", op: "max", count: 2 }
+    })
+    .editMarkLabelSelection({
+      target: "selectedAppearanceLabels",
+      select: { field: "positive", op: "min", count: 2 }
+    })
+    .createMarkLabels({
+      id: "removableAppearanceLabels",
+      source: "appearancePoints",
+      field: "label"
+    })
+    .removeMarkLabels({ target: "removableAppearanceLabels" })
     .createTextMark({ id: "appearanceLabels", data: "appearanceRows" })
     .encodeX({ target: "appearanceLabels", field: "x", scale: { id: "x" } })
     .encodeY({
@@ -1219,6 +1405,10 @@ function buildDirectBarOffsets(factors) {
         target: "offsetBars",
         field: "group",
         paddingInner: factors.padding
+      })
+      .editYOffsetScale({
+        target: "offsetBars",
+        paddingInner: factors.padding / 2
       });
   } else {
     program = program
@@ -1232,6 +1422,10 @@ function buildDirectBarOffsets(factors) {
         target: "offsetBars",
         field: "group",
         paddingInner: factors.padding
+      })
+      .editXOffsetScale({
+        target: "offsetBars",
+        paddingInner: factors.padding / 2
       });
   }
   return program
@@ -1274,6 +1468,10 @@ function buildDirectParallel(factors) {
     .createCanvas(cartesianCanvas(factors))
     .createData({ id: "parallelRows", values: styleRows(factors.dataset) })
     .createCoordinate({ id: "parallelDirect", type: "parallel" })
+    .editCoordinate({
+      target: "parallelDirect",
+      aspect: { mode: "frame", ratio: 1 }
+    })
     .createLineMark({ id: "parallelLines", data: "parallelRows", opacity: 0.5 })
     .encodeParallelCoordinates({
       target: "parallelLines",
@@ -1286,6 +1484,11 @@ function buildDirectParallel(factors) {
       ],
       key: "id",
       missing: factors.missing
+    })
+    .editParallelScale({
+      target: "parallelLines",
+      dimension: "positive",
+      reverse: true
     })
     .createParallelAxes()
     .editParallelAxis({ field: "x", title: { text: "Primary dimension" }, line: { lineWidth: 2 } })
@@ -1833,11 +2036,17 @@ function lifecycleSignature(base, factors) {
     "action-facet-grid-lifecycle": ["facetGrid", "editFacetSource"],
     "action-repeat-charts-lifecycle": ["repeatCharts"],
     "action-direct-data-resources": [
-      "editCanvas", "createDensityData", "createBin2DData", "createDerivedData", "createScale"
+      "editCanvas", "createDensityData", "createBin2DData", "createDerivedData", "createScale",
+      "createNormalizedData", "createCompleteData", "createImputedData", "editDerivedData",
+      "editComputedData", "editFilteredData", "editFoldData", "editSummaryData",
+      "editBinData", "editTimeUnitData", "editWindowData", "editDensityData",
+      "editStackData", "editRegressionData", "editIntervalData", "editECDFData",
+      "editNormalizedData", "editCompleteData", "editImputedData"
     ],
     "action-direct-point-text": [
       "encodeRadius", "encodeOpacity", "editOpacityScale", "createTextMark", "encodeText",
-      "editTextMark"
+      "editTextMark", "createMarkLabels", "editMarkLabelSelection", "removeMarkLabels",
+      "editStrokeScale"
     ],
     "action-direct-ranged-marks": [
       "createRuleMark", "editRuleMark", "encodeX2", "encodeY2", "createRectMark", "editRectMark",
@@ -1845,7 +2054,8 @@ function lifecycleSignature(base, factors) {
     ],
     "action-direct-histogram": ["createBarMark", "encodeHistogram", "editBarMark"],
     "action-direct-parallel": [
-      "createCoordinate", "createLineMark", "encodeParallelCoordinates",
+      "createCoordinate", "editCoordinate", "createLineMark", "encodeParallelCoordinates",
+      "editParallelScale",
       "createParallelAxes", "createParallelAxis", "editParallelAxis", "removeParallelAxis", "removeParallelAxes"
     ],
     "action-direct-regression-components": [
@@ -1880,6 +2090,7 @@ function lifecycleSignature(base, factors) {
     return [
       "createBarMark",
       factors.orientation === "horizontal" ? "encodeYOffset" : "encodeXOffset",
+      factors.orientation === "horizontal" ? "editYOffsetScale" : "editXOffsetScale",
       "editBarMark"
     ];
   }
@@ -2081,6 +2292,11 @@ export const REALISTIC_LIFECYCLE_REQUIRED_FEATURES = Object.freeze([
 export const LIFECYCLE_EXPECTED_ACTIONS = Object.freeze([
   "filterData", "createRegressionData", "createWindowData", "createTimeUnitData",
   "createIntervalData", "createTickMark", "editTickMark", "removeMark",
+  "createNormalizedData", "createCompleteData", "createImputedData",
+  "editDerivedData", "editComputedData", "editFilteredData", "editFoldData",
+  "editSummaryData", "editBinData", "editTimeUnitData", "editWindowData",
+  "editDensityData", "editStackData", "editRegressionData", "editIntervalData",
+  "editECDFData", "editNormalizedData", "editCompleteData", "editImputedData",
   "editAreaMark", "editRuleMark", "encodeShape", "encodeAngle", "removePointRadius",
   "encodeYOffset", "encodeParallelCoordinates", "removeEncoding", "encodeHorizon",
   "editHorizon", "createRegression", "editRegression", "editErrorBar",
@@ -2091,7 +2307,9 @@ export const LIFECYCLE_EXPECTED_ACTIONS = Object.freeze([
   "editLegend", "editLegendLayout", "editLegendLabels", "editLegendTitle",
   "editLegendSymbols", "editLegendBorder", "removeLegend", "editTitle",
   "removeTitle", "createRegressionBand", "editRegressionBand",
-  "createRegressionLine", "editRegressionLine", "filterMarks",
+  "createRegressionLine", "editRegressionLine", "filterMarks", "editMarkLabelSelection",
+  "removeMarkLabels", "editCoordinate", "editXOffsetScale", "editYOffsetScale",
+  "editParallelScale", "editStrokeScale",
   "removeMarkHighlight", "highlightMarks", "editThetaAxis", "editRadialAxis",
   "editThetaGrid", "editRadialGrid", "replaceCompositionChild", "editFacetScales",
   "facetGrid", "repeatCharts", "editFacetSource", "insertCompositionChild",

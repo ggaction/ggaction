@@ -161,6 +161,17 @@ test("action cards separate entry support, units, inference, and completion", as
   assert.deepEqual(byName.get("removeMarkLabels").resources.prerequisites, [
     "existing source mark or attached label"
   ]);
+  assert.deepEqual(byName.get("editMarkLabelSelection").inference, [
+    { input: "target", strategy: "explicit" },
+    { input: "selection", strategy: "explicit" }
+  ]);
+  assert.deepEqual(byName.get("editMarkLabelSelection").resources.prerequisites, [
+    "attached label"
+  ]);
+  assert.deepEqual(byName.get("editMarkLabelSelection").editableVia, [
+    "editMarkLabelSelection",
+    "removeMarkLabels"
+  ]);
   assert.equal(byName.get("createScatterPlot").completionRequirements.state, "complete");
   assert.equal(byName.get("editSemantic").completionRequirements.state, "not-applicable");
 });

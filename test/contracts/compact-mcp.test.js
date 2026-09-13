@@ -196,6 +196,18 @@ test("routes attached-label removal to its explicit source selector", () => {
   assert.deepEqual(packet.unsupported, []);
 });
 
+test("routes selected-label reset to the exact attached-label editor", () => {
+  const packet = JSON.parse(searchGgactionText("show all labels"));
+  assert.deepEqual(packet.matchedConstraints, ["selection.labels.membership"]);
+  assert.deepEqual(packet.actionPlan.map(step => step.name), ["editMarkLabelSelection"]);
+  assert.deepEqual(packet.exactCalls, [
+    'program.editMarkLabelSelection({ target: "labels", all: true })'
+  ]);
+  assert.deepEqual(packet.unmatchedRequirements, []);
+  assert.deepEqual(packet.unresolved, []);
+  assert.deepEqual(packet.unsupported, []);
+});
+
 test("rejects legacy unresolved entries that omit their explicit resource", () => {
   assert.throws(
     () => docsFallbackResources({

@@ -3,7 +3,7 @@
   "packageVersion": "0.0.13",
   "typeSource": "types/program.d.ts",
   "errorPolicy": "An empty errors array means the compact card has no curated error override; consult the canonical route for validation, inference, and recovery behavior.",
-  "count": 270,
+  "count": 271,
   "cards": [
     {
       "schemaVersion": 3,
@@ -4773,7 +4773,8 @@
         ],
         "idOptions": [
           "id",
-          "source"
+          "source",
+          "selection"
         ]
       },
       "authoringRoles": [
@@ -4785,10 +4786,8 @@
         "encodeText"
       ],
       "editableVia": [
-        "encodeText",
-        "editTextMark",
-        "layoutLabels",
-        "removeLabelLayout"
+        "editMarkLabelSelection",
+        "removeMarkLabels"
       ],
       "supports": {
         "entryPoints": [
@@ -4812,6 +4811,10 @@
       "inference": [
         {
           "input": "source",
+          "strategy": "explicit-current-unique-or-error"
+        },
+        {
+          "input": "selection",
           "strategy": "explicit-current-unique-or-error"
         },
         {
@@ -4916,15 +4919,112 @@
           "name": "normalizeBy",
           "required": false,
           "type": "\"category\" | \"source\" | undefined"
+        },
+        {
+          "name": "select",
+          "required": false,
+          "type": "MarkSelector | undefined"
+        },
+        {
+          "name": "selection",
+          "required": false,
+          "type": "string | undefined"
         }
       ],
       "callPatterns": [
         "createMarkLabels()",
-        "createMarkLabels({ source?, content: \"share\", format: \".0%\", layout? })"
+        "createMarkLabels({ source?, content?, select? | selection?, format?, layout? })"
       ],
       "snippet": "program.createMarkLabels({})",
       "errors": [],
       "route": "/reference/actions/marks/#createmarklabels"
+    },
+    {
+      "schemaVersion": 3,
+      "name": "editMarkLabelSelection",
+      "layer": "user-facing",
+      "domain": "marks",
+      "summary": "Replace one attached label layer's final-item membership.",
+      "signature": "editMarkLabelSelection(options: EditMarkLabelSelectionOptions): ChartProgram;",
+      "intents": [
+        "edit mark label selection",
+        "edit",
+        "change",
+        "graphical mark",
+        "mark appearance",
+        "selected mark labels",
+        "label membership"
+      ],
+      "lifecycle": "Mutable resource",
+      "resources": {
+        "prerequisites": [
+          "attached label"
+        ],
+        "owns": [],
+        "idOptions": [
+          "target",
+          "selection"
+        ]
+      },
+      "authoringRoles": [
+        "H3"
+      ],
+      "wraps": [],
+      "editableVia": [
+        "editMarkLabelSelection",
+        "removeMarkLabels"
+      ],
+      "supports": {
+        "entryPoints": [
+          "default"
+        ]
+      },
+      "units": [],
+      "inference": [
+        {
+          "input": "target",
+          "strategy": "explicit"
+        },
+        {
+          "input": "selection",
+          "strategy": "explicit"
+        }
+      ],
+      "completionRequirements": {
+        "state": "contextual",
+        "requires": [
+          "attached label"
+        ],
+        "allowsEmpty": false
+      },
+      "options": [
+        {
+          "name": "target",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "select",
+          "required": false,
+          "type": "MarkSelector | undefined"
+        },
+        {
+          "name": "selection",
+          "required": false,
+          "type": "string | undefined"
+        },
+        {
+          "name": "all",
+          "required": false,
+          "type": "true | undefined"
+        }
+      ],
+      "callPatterns": [
+        "editMarkLabelSelection({ target, select | selection | all: true })"
+      ],
+      "snippet": "program.editMarkLabelSelection({ target: \"labels\", all: true })",
+      "errors": [],
+      "route": "/reference/actions/marks/#editmarklabelselection"
     },
     {
       "schemaVersion": 3,

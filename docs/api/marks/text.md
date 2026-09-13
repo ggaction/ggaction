@@ -96,6 +96,67 @@ attached label with `removeMarkLabels({ target: "piePlot-labels" })`, or remove 
 label on a source with `removeMarkLabels({ source: "piePlot" })`. Removing the source
 with `removeMark` still removes all labels it owns.
 
+To label a subset, pass an inline `MarkSelector` with `select`, or a reusable stored
+selection ID with `selection`:
+
+```javascript
+const selectedLabels = chart()
+  .createCanvas()
+  .createData({ values: [
+    { category: "A", value: 1 },
+    { category: "B", value: 5 },
+    { category: "C", value: 3 }
+  ] })
+  .createBarPlot({
+    id: "bars",
+    x: "category",
+    y: { field: "value", aggregate: "sum" },
+    guides: false
+  })
+  .createMarkLabels({
+    source: "bars",
+    field: "value",
+    select: { field: "value", op: "max", count: 2 }
+  });
+// Labels: 5, 3. All three bars remain.
+```
+
+The selector evaluates the source's current final items after mark filtering.
+Rank selection uses the existing `count`, `groupBy`, and `ties` rules, then keeps
+labels in source item order. A selector that matches nothing creates a valid empty
+label collection. `select` and `selection` are exclusive; a named selection must
+target the same source mark. Stored label state contains the selector request, not
+resolved row numbers or item indices. Semantic values are resolved over the complete
+final source before membership filtering. For example, selecting the largest pie
+slice preserves its share of the complete pie instead of renormalizing the one
+visible label to 100%.
+
+## `editMarkLabelSelection(options)`
+
+Replace the complete membership request for an existing attached label layer:
+
+```javascript
+const inline = labeled.editMarkLabelSelection({
+  target: "piePlot-labels",
+  select: { field: "value", op: "max", count: 3 }
+});
+const named = inline.editMarkLabelSelection({
+  target: "piePlot-labels",
+  selection: "focus"
+});
+const all = named.editMarkLabelSelection({
+  target: "piePlot-labels",
+  all: true
+});
+```
+
+Exactly one of `select`, `selection`, or `all:true` is required, and `target` is
+always explicit. Editing a named selection automatically reevaluates dependent
+labels. Removing that selection is rejected while a label refers to it; switch the
+label to `all:true` or an inline selector, or remove the label first. Source edits,
+mark filters, category ordering, Canvas changes, and themes reevaluate membership
+without turning resolved item indices into persistent state.
+
 ## `removeMarkLabels(options)`
 
 Use exactly one explicit selector:

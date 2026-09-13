@@ -189,7 +189,9 @@ function actionResources(action, optionNames, intentSource) {
   const resource = aliases[0];
   const prerequisites = [];
 
-  if (action.name === "removeMarkLabels") {
+  if (action.name === "editMarkLabelSelection") {
+    prerequisites.push("attached label");
+  } else if (action.name === "removeMarkLabels") {
     prerequisites.push("existing source mark or attached label");
   } else if (["edit", "remove", "layout", "jitter", "pack", "order", "replace"].includes(operation)) {
     prerequisites.push(`existing ${resource}`);

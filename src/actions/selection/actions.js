@@ -3,6 +3,7 @@ import { validateUserId } from "../../core/identifiers.js";
 import { isPlainObject } from "../../core/immutable.js";
 import { validateKeys } from "../../core/validation.js";
 import { findLayer, resolveEligibleLayer } from "../../selectors/layers.js";
+import { isSourceOwnedText } from "../../grammar/text.js";
 import { transformPointHighlightChild } from "../../materialization/selection/point.js";
 import {
   transformPathHighlightProperties,
@@ -97,7 +98,25 @@ function targetHighlightEntries(program, target) {
     .filter(([, config]) => config.target === target);
 }
 
-function rebuildTargetHighlights(program, target) {
+function namedLabelDependents(program, selection) {
+  return Object.entries(program.markConfigs)
+    .filter(([id, config]) => {
+      const layer = findLayer(program, id);
+      return isSourceOwnedText(layer) &&
+        config?.labelAuthoring?.selection?.kind === "named" &&
+        config.labelAuthoring.selection.id === selection;
+    })
+    .map(([id]) => id)
+    .sort();
+}
+
+function rematerializeLabels(program, ids) {
+  let next = program;
+  for (const id of ids) next = next.rematerializeTextMark({ id });
+  return next;
+}
+
+function rebuildTargetHighlights(program, target, { labels = [] } = {}) {
   const layer = resolveTarget(program, target, "highlight mark");
   const highlights = targetHighlightEntries(program, target);
   let baseline = program;
@@ -111,10 +130,24 @@ function rebuildTargetHighlights(program, target) {
   baseline = baseline[requireSelectionPolicy(
     layer.mark.type
   ).rematerializeOp]({ id: target });
+  baseline = rematerializeLabels(baseline, labels);
   baseline = resetCategoricalLegendSymbols(baseline, target);
   return highlights.length === 0
     ? baseline
     : baseline.rematerializeMarkHighlights({ target, highlights });
+}
+
+export function rematerializeLabelsBeforeHighlights(
+  program,
+  target,
+  labels,
+  { skipWithoutHighlights = false } = {}
+) {
+  return targetHighlightEntries(program, target).length === 0
+    ? skipWithoutHighlights
+      ? program
+      : rematerializeLabels(program, labels)
+    : rebuildTargetHighlights(program, target, { labels });
 }
 
 function selectedKeys(args, resolved) {
@@ -204,7 +237,7 @@ export const editMarkSelection = action(
       current.definition.target,
       selectorFrom(args)
     );
-    const next = this
+    let next = this
       ._withSelectionConfig(current.id, {
         target: current.definition.target,
         selector: replacement.selector
@@ -213,9 +246,15 @@ export const editMarkSelection = action(
     const hasDependentHighlight = Object.values(
       next.materializationConfigs.highlights ?? {}
     ).some(config => config.selection === current.id);
-    return hasDependentHighlight
-      ? rebuildTargetHighlights(next, current.definition.target)
-      : next;
+    const labels = namedLabelDependents(this, current.id);
+    if (hasDependentHighlight) {
+      return rematerializeLabelsBeforeHighlights(
+        next,
+        current.definition.target,
+        labels
+      );
+    }
+    return rematerializeLabels(next, labels);
   }
 );
 
@@ -251,6 +290,12 @@ export const removeMarkSelection = action(
   function (args = {}) {
     validateKeys(args, REMOVE_SELECTION_OPTIONS, "removeMarkSelection");
     const current = resolveStoredSelection(this, args.selection);
+    const labelDependents = namedLabelDependents(this, current.id);
+    if (labelDependents.length > 0) {
+      throw new Error(
+        `Selection "${current.id}" is referenced by attached labels: ${labelDependents.join(", ")}.`
+      );
+    }
     const hasDependentHighlight = Object.values(
       this.materializationConfigs.highlights ?? {}
     ).some(config => config.selection === current.id);

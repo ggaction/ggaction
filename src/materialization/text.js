@@ -6,6 +6,7 @@ import { mapOrdinalPositionValues } from "../grammar/scales/index.js";
 import { findDataset } from "../selectors/datasets.js";
 import { findLayer } from "../selectors/layers.js";
 import { resolveMarkItems } from "./selection/policies/index.js";
+import { resolveMarkSelection } from "./selection/state.js";
 import { mapScaleConsumerValues } from "./scales/map.js";
 import { resolveRowEncodingValues } from "./rowEncoding.js";
 
@@ -147,15 +148,49 @@ function resolveSourceTextItems(program, layer, config) {
   if (source === undefined) {
     throw new Error(`Text mark "${layer.id}" requires source layer "${layer.source}".`);
   }
-  const items = resolveMarkItems(program, source.id);
-  const values = layer.encoding.text.content === undefined ? undefined
-    : resolveMarkLabelValues(source, items, layer.encoding.text);
-  return items.flatMap((item, index) => {
+  const requested = program.markConfigs[layer.id]?.labelAuthoring?.selection ?? {
+    kind: "all"
+  };
+  let allItems;
+  let items;
+  if (requested.kind === "all") {
+    allItems = resolveMarkItems(program, source.id);
+    items = allItems;
+  } else if (requested.kind === "inline") {
+    const resolved = resolveMarkSelection(program, source.id, requested.selector);
+    allItems = resolved.items;
+    const selected = new Set(resolved.keys);
+    items = allItems.filter(item => selected.has(item.key));
+  } else if (requested.kind === "named") {
+    const definition = program.materializationConfigs.selections?.[requested.id];
+    if (definition === undefined) {
+      throw new Error(`Unknown label selection "${requested.id}".`);
+    }
+    if (definition.target !== source.id) {
+      throw new Error(
+        `Label selection "${requested.id}" must target source mark "${source.id}".`
+      );
+    }
+    const resolved = resolveMarkSelection(program, source.id, definition.selector);
+    allItems = resolved.items;
+    const selected = new Set(resolved.keys);
+    items = allItems.filter(item => selected.has(item.key));
+  } else {
+    throw new Error(`Unknown label selection kind "${requested.kind}".`);
+  }
+  const resolvedValues = layer.encoding.text.content === undefined ? undefined
+    : resolveMarkLabelValues(source, allItems, layer.encoding.text);
+  const values = resolvedValues === undefined ? undefined : new Map(
+    allItems.map((item, index) => [item.key, resolvedValues[index]])
+  );
+  return items.flatMap(item => {
     const anchor = sourceAnchor(program, source, item);
     const concrete = concreteItem(
       sourceTextConfig(config, source, item),
       anchor,
-      values === undefined ? contentValue(layer.encoding.text, item, source) : values[index],
+      values === undefined
+        ? contentValue(layer.encoding.text, item, source)
+        : values.get(item.key),
       layer.encoding.text.format
     );
     return concrete === undefined ? [] : [{ graphic: concrete, anchor }];
