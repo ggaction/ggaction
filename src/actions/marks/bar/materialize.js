@@ -97,8 +97,8 @@ export const rematerializeBarMark = action(
     const highlighted = rematerializeHighlightBaseline(this, {
       target: id,
       operation: "rematerializeBarMark",
-      resetProperty: "length",
-      resetValue: 0
+      resetProperty: "items",
+      resetValue: []
     });
     if (highlighted !== undefined) return highlighted;
     const required = requireCompleteBar(this, id);

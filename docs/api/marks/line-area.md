@@ -12,7 +12,7 @@ values; areas close two edges or one density edge against a baseline.
 
 ## Line marks
 
-### `createLineMark({ id?, data?, stroke?, strokeWidth?, opacity?, curve?, closed? } = {})`
+### `createLineMark({ id?, data?, stroke?, strokeWidth?, opacity?, curve?, closed?, lineCap?, lineJoin?, miterLimit? } = {})`
 
 ```javascript
 const program = chart()
@@ -54,7 +54,7 @@ line vertices use the shared bar centers. Incompatible bin, stack, or offset
 policies are not transferred. Pass `data` explicitly to assemble an independent
 line with explicit encodings and scale IDs.
 
-### `editLineMark({ target?, stroke?, strokeWidth?, opacity?, curve?, closed? })`
+### `editLineMark({ target?, stroke?, strokeWidth?, opacity?, curve?, closed?, lineCap?, lineJoin?, miterLimit? })`
 
 ```javascript
 program.editLineMark({
@@ -74,6 +74,9 @@ Materialization rejects any line or complete area that would expand beyond
 
 A constant `stroke` conflicts with field-driven `encodeColor`. Appearance is
 stored and reapplied whenever scale, Canvas, or grouping changes rebuild paths.
+`lineCap`, `lineJoin`, and `miterLimit` use the closed values and defaults in
+[Mark Style](../appearance/mark-style.md#stroke-caps-joins-and-rounded-rectangles).
+They remain authored state when a path changes between open and closed forms.
 
 ## Polar lines and radar paths
 
@@ -100,7 +103,7 @@ through the shared line materialization lifecycle.
 
 ## Area marks
 
-### `createAreaMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth?, curve?, missing? } = {})`
+### `createAreaMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth?, curve?, missing?, lineCap?, lineJoin?, miterLimit? } = {})`
 
 ```javascript
 const area = chart()
@@ -118,7 +121,7 @@ without creating a scale or legend. For a center-stacked area,
 `encodeColor({ field, layout: "center" })` can author the matching group and
 center y policy atomically.
 
-### `editAreaMark({ target?, fill?, opacity?, stroke?, strokeWidth?, curve?, missing? })`
+### `editAreaMark({ target?, fill?, opacity?, stroke?, strokeWidth?, curve?, missing?, lineCap?, lineJoin?, miterLimit? })`
 
 ```javascript
 program.editAreaMark({
@@ -133,10 +136,11 @@ program.editAreaMark({
 requires an active outline. Constant fill cannot replace a field-driven color
 encoding. Complete paths rematerialize immediately; incomplete paths retain the
 configuration until their encodings become renderable.
+Area stroke details use the same shared Mark Style contract as Line.
 
 ## Arc marks
 
-### `createArcMark({ id?, data?, innerRadius?, padAngle?, fill?, opacity?, stroke?, strokeWidth? } = {})`
+### `createArcMark({ id?, data?, innerRadius?, padAngle?, fill?, opacity?, stroke?, strokeWidth?, lineCap?, lineJoin?, miterLimit? } = {})`
 
 ```javascript
 const donut = chart()
@@ -155,12 +159,13 @@ radial sectors; repeated rows in one angle band are drawn larger first so
 smaller overlays remain visible. Arc graphics are ordinary closed path
 commands, so renderers do not interpret Polar semantics.
 
-### `editArcMark({ target?, innerRadius?, padAngle?, fill?, opacity?, stroke?, strokeWidth? })`
+### `editArcMark({ target?, innerRadius?, padAngle?, fill?, opacity?, stroke?, strokeWidth?, lineCap?, lineJoin?, miterLimit? })`
 
 Geometry and appearance edits rebuild complete sectors. An incomplete arc
 retains the edited settings until both required encodings exist. Constant
 `fill` cannot replace a field-driven color encoding. `stroke: false` disables
 the outline and stored width; a later string stroke restores width `1`.
+Arc stroke cap/join values are retained for the closed path and later replay.
 
 ## Related
 

@@ -35,9 +35,60 @@ Every ordinary mark requires materialized `values` on its selected dataset, incl
 dataset from `createDerivedData` is rejected with an error explaining the required value-producing data action.
 Definition registration and internal layer rebinding remain available without automatic transform execution.
 
+## Shared stroke and rounded-rectangle style details
+
+The existing create/edit actions expose one closed, renderer-neutral stroke vocabulary:
+
+```typescript
+type LineCap = "butt" | "round" | "square";
+type LineJoin = "miter" | "round" | "bevel";
+
+type StrokeStyleDetails = {
+  lineCap?: LineCap;
+  lineJoin?: LineJoin;
+  miterLimit?: PositiveFinite;
+};
+
+type RectStyleDetails = StrokeStyleDetails & {
+  cornerRadius?: NonNegativeFinite;
+};
+```
+
+- Point, Tick, Line, Area, Arc, and Rule accept `StrokeStyleDetails`. Bar and Rect accept
+  `RectStyleDetails`. Text rejects all four fields, and every non-rectangular family rejects
+  `cornerRadius` through its existing closed option validator.
+- Effective omitted defaults are `lineCap: "butt"`, `lineJoin: "miter"`, `miterLimit: 10`, and
+  `cornerRadius: 0`. Omitted defaults are not persisted or serialized, so an old program keeps its
+  previous semantic, graphic, trace, and pixel result. An explicit default value is stored as authored intent.
+- `lineCap` and `lineJoin` are exact lowercase closed enums. `miterLimit` must be a finite number greater
+  than zero, and `cornerRadius` must be a finite non-negative number. Enum/type/non-finite failures are
+  `TypeError` or the existing unknown-option `Error`; invalid numeric ranges are `RangeError`. Validation
+  finishes before target resolution and materialization, so failure preserves the earlier program.
+- Stroke details remain requested mark appearance even while an outline is disabled. Re-enabling the stroke
+  restores them. Theme application changes paint defaults but never rewrites these explicit geometry details.
+- A positive Bar/Rect radius converts each concrete rectangle to one deterministic 10-command path and clamps
+  the effective radius independently to `min(requested, width / 2, height / 2)`. Reversed rectangles are
+  normalized first. Setting radius to zero restores a homogeneous rect owner while retaining stable owner/item IDs.
+- Resize, scale/data/encoding edits, legend and highlight replay, theme apply/remove, and facet source replay
+  rematerialize from the requested value. Inferred legend symbols inherit source radius and stroke details; an
+  explicit `editLegendBlock` symbol paint override is applied afterward and remains authoritative.
+- Canvas and PDF set effective cap/join/miter values for every circle, rect, line, and path draw, including
+  omitted defaults, preventing context leakage. SVG emits the attributes only for explicitly authored active
+  strokes. Painted bounds include exact cap and join extents and honor the effective miter limit.
+- The same fields pass through existing facade style objects such as `point`, `line`, `area`, `arc`, `tick`,
+  `stem`, `errorBar`, and `boundaries`; Bar/Rect-owned `bar`, `rect`, `box`, and reference-band styles also
+  accept `cornerRadius`. No generic style action or legend-only geometry option is added.
+
+Evidence: `test/unit/grammar/stroke-style.test.js`, `test/unit/grammar/rounded-rect.test.js`,
+`test/unit/grammar/graphic-bounds.test.js`, `test/unit/renderers/canvas-stroke-details.test.js`,
+`test/unit/renderers/svg-renderer.test.js`, `test/unit/renderers/pdf-renderer.test.js`,
+`test/unit/actions/marks/shape-style-details.test.js`,
+`test/unit/actions/charts/shape-style-details-facades.test.js`, and
+`test/contracts/shape-style-details-types.test.js`.
+
 ## `createPointMark`
 
-- Signature: `createPointMark({ id?, data?, shape?, fill?, opacity?, stroke?, strokeWidth? } = {})`
+- Signature: `createPointMark({ id?, data?, shape?, fill?, opacity?, stroke?, strokeWidth?, lineCap?, lineJoin?, miterLimit? } = {})`
 - `id`: Implemented optional 새 layer/graphic ID. 첫 unnamed point는 `"point"`; 동일 type이 이미 있으면 required다.
 - `data`: Implemented, existing dataset ID. 생략하면 current data를 사용한다.
 - `shape`
@@ -61,7 +112,7 @@ Definition registration and internal layer rebinding remain available without au
 
 ### Formal values — `createPointMark`
 
-- Implemented: `createPointMark({ id?: UserId; data?: UserId; shape?: PointShape; fill?: NonEmptyString; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite } = {})`
+- Implemented: `createPointMark({ id?: UserId; data?: UserId; shape?: PointShape; fill?: NonEmptyString; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite } = {})`
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
@@ -83,7 +134,7 @@ Definition registration and internal layer rebinding remain available without au
 ## `editPointMark`
 
 - Implemented: immutable constant shape and appearance edits for existing point marks.
-- Signature: `editPointMark({ target?, shape?, fill?, opacity?, stroke?, strokeWidth? })`.
+- Signature: `editPointMark({ target?, shape?, fill?, opacity?, stroke?, strokeWidth?, lineCap?, lineJoin?, miterLimit? })`.
 - `target`은 existing point mark다. current compatible mark 또는 유일한 point mark로 infer하며
   ambiguity는 explicit target을 요구한다.
 - `shape`은 shared `PointShape` 12종 중 하나다. Field-driven `encodeShape`가 있으면 constant shape
@@ -99,7 +150,7 @@ Definition registration and internal layer rebinding remain available without au
 
 ### Formal values — `editPointMark`
 
-- Implemented: `editPointMark({ target?: UserId; shape?: PointShape; fill?: NonEmptyString; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite })`.
+- Implemented: `editPointMark({ target?: UserId; shape?: PointShape; fill?: NonEmptyString; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite })`.
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
@@ -115,7 +166,7 @@ Definition registration and internal layer rebinding remain available without au
 
 ## `createTickMark`
 
-- Signature: `createTickMark({ id?, data?, length?, stroke?, strokeWidth?, opacity? } = {})`.
+- Signature: `createTickMark({ id?, data?, length?, stroke?, strokeWidth?, opacity?, lineCap?, lineJoin?, miterLimit? } = {})`.
 - `id`: 첫 unnamed Tick은 `"tick"`을 사용한다. 같은 type의 두 번째 mark는 explicit ID가 필요하다.
 - `data`: existing dataset ID. 생략하면 current data를 사용하고, compatible current/unique Cartesian
   layer가 있으면 data, coordinate와 x/y field encoding을 shared layered-inference policy로 상속한다.
@@ -131,7 +182,7 @@ Definition registration and internal layer rebinding remain available without au
 
 ### Formal values — `createTickMark`
 
-- Implemented: `createTickMark({ id?: UserId; data?: UserId; length?: PositiveFinite; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; opacity?: UnitInterval } = {})`.
+- Implemented: `createTickMark({ id?: UserId; data?: UserId; length?: PositiveFinite; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; opacity?: UnitInterval; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite } = {})`.
 - Implemented direction assignment은 `encodeAngle`이 소유한다.
 - Proposed (NOT IMPLEMENTED): x-only rug placement inference.
 
@@ -146,7 +197,7 @@ Definition registration and internal layer rebinding remain available without au
 
 ## `editTickMark`
 
-- Signature: `editTickMark({ target?, length?, stroke?, strokeWidth?, opacity? })`.
+- Signature: `editTickMark({ target?, length?, stroke?, strokeWidth?, opacity?, lineCap?, lineJoin?, miterLimit? })`.
 - `target`: current compatible Tick, otherwise unique Tick으로 infer하며 ambiguity는 explicit target을 요구한다.
 - 최소 한 edit property가 필요하다. Omitted properties는 current config를 보존한다.
 - Validation은 create action과 동일한 positive length, non-empty stroke, non-negative width와 unit opacity를 사용한다.
@@ -155,7 +206,7 @@ Definition registration and internal layer rebinding remain available without au
 
 ### Formal values — `editTickMark`
 
-- Implemented: `editTickMark({ target?: UserId; length?: PositiveFinite; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; opacity?: UnitInterval })`.
+- Implemented: `editTickMark({ target?: UserId; length?: PositiveFinite; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; opacity?: UnitInterval; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite })`.
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `editTickMark`
@@ -293,7 +344,7 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 ## `createLineMark`
 
-- Signature: `createLineMark({ id?, data?, stroke?, strokeWidth?, opacity?, curve?, closed? } = {})`
+- Signature: `createLineMark({ id?, data?, stroke?, strokeWidth?, opacity?, curve?, closed?, lineCap?, lineJoin?, miterLimit? } = {})`
 - `id`, `data`: `createPointMark`와 같은 ID/data 계약이다.
 - `strokeWidth`: Implemented, non-negative finite number이며 concrete default는 `2`다. 명시한 값은
   mark materialization config에 저장되어 path 재생성 후에도 유지된다.
@@ -322,7 +373,7 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 ### Formal values — `createLineMark`
 
-- Implemented: `createLineMark({ id?: UserId; data?: UserId; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; opacity?: UnitInterval; curve?: CurveInterpolation; closed?: boolean } = {})`
+- Implemented: `createLineMark({ id?: UserId; data?: UserId; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; opacity?: UnitInterval; curve?: CurveInterpolation; closed?: boolean; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite } = {})`
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
@@ -348,7 +399,7 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 ## `editLineMark`
 
-- Signature: `editLineMark({ target?, stroke?, strokeWidth?, opacity?, curve?, closed? })`.
+- Signature: `editLineMark({ target?, stroke?, strokeWidth?, opacity?, curve?, closed?, lineCap?, lineJoin?, miterLimit? })`.
 - `target`: existing line mark. Current compatible mark 또는 유일한 line mark로 infer하며 ambiguity는 explicit target을 요구한다.
 - `strokeWidth`: non-negative finite number. Active field width와 scalar edit는 충돌한다. Constant mode에서
   전달되면 stored line config와 every concrete series path를 갱신한다. `opacity`도 active field와 scalar edit가
@@ -361,7 +412,7 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 ### Formal values — `editLineMark`
 
-- Implemented: `editLineMark({ target?: UserId; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; opacity?: UnitInterval; curve?: CurveInterpolation; closed?: boolean })`.
+- Implemented: `editLineMark({ target?: UserId; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; opacity?: UnitInterval; curve?: CurveInterpolation; closed?: boolean; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite })`.
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
@@ -377,7 +428,7 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 ## `createBarMark`
 
-- Signature: `createBarMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth? } = {})`
+- Signature: `createBarMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, lineCap?, lineJoin?, miterLimit? } = {})`
 - `id`, `data`: 첫 unnamed bar의 deterministic `"bar"` 또는 explicit 새 ID와 optional existing/current data다.
 - Effect: semantic `bar` layer와 길이 0의 rect collection을 만든다. 관련 x/y/grouping semantics가
   완성될 때 rect가 materialize된다.
@@ -388,7 +439,7 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 ### Formal values — `createBarMark`
 
-- Implemented: `createBarMark({ id?: UserId; data?: UserId; fill?: NonEmptyString; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite } = {})`
+- Implemented: `createBarMark({ id?: UserId; data?: UserId; fill?: NonEmptyString; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite; cornerRadius?: NonNegativeFinite; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite } = {})`
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `createBarMark`
@@ -404,7 +455,7 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 ## `editBarMark`
 
-- Signature: `editBarMark({ target?, fill?, opacity?, stroke?, strokeWidth? })`.
+- Signature: `editBarMark({ target?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, lineCap?, lineJoin?, miterLimit? })`.
 - `target`: current compatible bar, unique bar, or explicit existing bar ID.
 - `fill`: non-empty constant color. Field-driven color encoding과 함께 사용할 수 없다.
 - `opacity`: unit interval. `stroke`: non-empty color or `false`; false는 concrete transparent zero-width outline로
@@ -414,7 +465,7 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 ### Formal values — `editBarMark`
 
-- Implemented: `editBarMark({ target?: UserId; fill?: NonEmptyString; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite })`.
+- Implemented: `editBarMark({ target?: UserId; fill?: NonEmptyString; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite; cornerRadius?: NonNegativeFinite; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite })`.
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
@@ -429,7 +480,7 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 ## `createAreaMark`
 
-- Signature: `createAreaMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth?, curve?, missing? } = {})`
+- Signature: `createAreaMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth?, curve?, missing?, lineCap?, lineJoin?, miterLimit? } = {})`
 - `id`, `data`: 첫 unnamed area의 deterministic `"area"` 또는 explicit 새 ID와 optional existing/current dataset이다.
 - `fill`: Implemented, non-empty color string. 기본값은 theme mark color `"#4c78a8"`다.
 - `opacity`: Implemented, `[0, 1]` finite number. 기본값은 `0.2`다.
@@ -444,7 +495,7 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 ### Formal values — `createAreaMark`
 
-- Implemented: `createAreaMark({ id?: UserId; data?: UserId; fill?: NonEmptyString; opacity?: UnitInterval; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; curve?: CurveInterpolation; missing?: "error" | "break" } = {})`
+- Implemented: `createAreaMark({ id?: UserId; data?: UserId; fill?: NonEmptyString; opacity?: UnitInterval; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; curve?: CurveInterpolation; missing?: "error" | "break"; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite } = {})`
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
@@ -470,7 +521,7 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 ## `editAreaMark`
 
-- Signature: `editAreaMark({ target?, fill?, opacity?, stroke?, strokeWidth?, curve?, missing? })`.
+- Signature: `editAreaMark({ target?, fill?, opacity?, stroke?, strokeWidth?, curve?, missing?, lineCap?, lineJoin?, miterLimit? })`.
 - `target`: existing area mark. Current compatible mark 또는 유일한 area mark를 infer하고 ambiguity는
   explicit target을 요구한다.
 - `fill`, `opacity`: constant graphical appearance다. Field-driven color encoding이 있으면 fill edit는
@@ -484,7 +535,7 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 ### Formal values — `editAreaMark`
 
-- Implemented: `editAreaMark({ target?: UserId; fill?: NonEmptyString; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite; curve?: CurveInterpolation; missing?: "error" | "break" })`.
+- Implemented: `editAreaMark({ target?: UserId; fill?: NonEmptyString; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite; curve?: CurveInterpolation; missing?: "error" | "break"; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite })`.
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
@@ -500,7 +551,7 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 ## `createArcMark`
 
-- Signature: `createArcMark({ id?, data?, innerRadius?, padAngle?, fill?, opacity?, stroke?, strokeWidth? } = {})`.
+- Signature: `createArcMark({ id?, data?, innerRadius?, padAngle?, fill?, opacity?, stroke?, strokeWidth?, lineCap?, lineJoin?, miterLimit? } = {})`.
 - The first inferred ID is `"arc"`; data follows the shared current/explicit dataset contract.
 - `innerRadius` is a ratio in `[0, 1)` of the available Polar radius. `padAngle` is a non-negative degree value.
 - Default appearance is theme fill, opacity `1`, white stroke, and stroke width `1`.
@@ -513,7 +564,7 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 ### Formal values — `createArcMark`
 
-- Implemented: `createArcMark({ id?: UserId; data?: UserId; innerRadius?: number; padAngle?: NonNegativeFinite; fill?: NonEmptyString; opacity?: UnitInterval; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite } = {})`, where `0 <= innerRadius < 1`.
+- Implemented: `createArcMark({ id?: UserId; data?: UserId; innerRadius?: number; padAngle?: NonNegativeFinite; fill?: NonEmptyString; opacity?: UnitInterval; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite } = {})`, where `0 <= innerRadius < 1`.
 - Proposed (NOT IMPLEMENTED): explicit secondary theta/radius endpoints.
 
 ### Value coverage — `createArcMark`
@@ -527,7 +578,7 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 ## `editArcMark`
 
-- Signature: `editArcMark({ target?, innerRadius?, padAngle?, fill?, opacity?, stroke?, strokeWidth? })`.
+- Signature: `editArcMark({ target?, innerRadius?, padAngle?, fill?, opacity?, stroke?, strokeWidth?, lineCap?, lineJoin?, miterLimit? })`.
 - Target inference follows other focused mark editors. At least one edited property is required.
 - Complete arcs rematerialize immediately; incomplete arcs retain the configuration until their encodings complete.
 - Constant fill cannot replace a field-driven color encoding. Geometry edits re-resolve automatic radial ranges.
@@ -536,7 +587,7 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 ### Formal values — `editArcMark`
 
-- Implemented: `editArcMark({ target?: UserId; innerRadius?: number; padAngle?: NonNegativeFinite; fill?: NonEmptyString; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite })`.
+- Implemented: `editArcMark({ target?: UserId; innerRadius?: number; padAngle?: NonNegativeFinite; fill?: NonEmptyString; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite })`.
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `editArcMark`
@@ -548,7 +599,7 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 ## `createRuleMark`
 
-- Signature: `createRuleMark({ id?, data?, stroke?, strokeWidth?, strokeDash?, opacity? } = {})`.
+- Signature: `createRuleMark({ id?, data?, stroke?, strokeWidth?, strokeDash?, opacity?, lineCap?, lineJoin?, miterLimit? } = {})`.
 - `id`: 첫 unnamed rule은 deterministic `"rule"`을 사용한다. 동일 type의 두 번째 rule은 explicit ID가
   필요하며 numbered public ID를 만들지 않는다.
 - `data`: existing dataset ID. 생략하면 current dataset을 사용하며 안전한 current source가 없으면 오류다.
@@ -565,7 +616,7 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 ### Formal values — `createRuleMark`
 
-- Implemented: `createRuleMark({ id?: UserId; data?: UserId; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; strokeDash?: DashStyle | DashPattern; opacity?: UnitInterval } = {})`.
+- Implemented: `createRuleMark({ id?: UserId; data?: UserId; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; strokeDash?: DashStyle | DashPattern; opacity?: UnitInterval; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite } = {})`.
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `createRuleMark`
@@ -578,7 +629,7 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 ## `editRuleMark`
 
-- Signature: `editRuleMark({ target?, stroke?, strokeWidth?, strokeDash?, opacity? })`.
+- Signature: `editRuleMark({ target?, stroke?, strokeWidth?, strokeDash?, opacity?, lineCap?, lineJoin?, miterLimit? })`.
 - Target resolution is explicit Rule → current Rule → unique Rule. Missing, non-Rule and ambiguous targets fail.
 - At least one style is required. Full closed-option and value validation happens before the first child action.
 - Requested children run in stroke → strokeWidth → strokeDash → opacity order and reuse their encoding owners.
@@ -590,7 +641,7 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 ### Formal values — `editRuleMark`
 
-- Implemented: `editRuleMark({ target?: UserId; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; strokeDash?: DashStyle | DashPattern; opacity?: UnitInterval })`.
+- Implemented: `editRuleMark({ target?: UserId; stroke?: NonEmptyString; strokeWidth?: NonNegativeFinite; strokeDash?: DashStyle | DashPattern; opacity?: UnitInterval; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite })`.
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `editRuleMark`
@@ -601,7 +652,7 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 ## `createRectMark`
 
-- Signature: `createRectMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth? } = {})`.
+- Signature: `createRectMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, lineCap?, lineJoin?, miterLimit? } = {})`.
 - The first omitted ID resolves to `"rect"`. Data is explicit or inferred from the current dataset; a newly layered
   rect may inherit one unique compatible Cartesian source's data, coordinate, and position encodings.
 - Rect is a distinct semantic mark. It materializes two discrete band positions (`x` and `y`), two complete
@@ -624,7 +675,7 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 ### Formal values — `createRectMark`
 
-- Implemented: `createRectMark({ id?: UserId; data?: UserId; fill?: NonEmptyString; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite } = {})`.
+- Implemented: `createRectMark({ id?: UserId; data?: UserId; fill?: NonEmptyString; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite; cornerRadius?: NonNegativeFinite; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite } = {})`.
 - Proposed (NOT IMPLEMENTED): categorical cell completion and automatic missing-cell placeholders.
 
 ### Value coverage — `createRectMark`
@@ -636,7 +687,7 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 ## `editRectMark`
 
-- Signature: `editRectMark({ target?, fill?, opacity?, stroke?, strokeWidth? })`.
+- Signature: `editRectMark({ target?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, lineCap?, lineJoin?, miterLimit? })`.
 - At least one property is required. Omitted target resolves only one eligible rect. Omitted properties preserve the
   immutable mark configuration; `stroke: false` disables the stroke and rejects a simultaneous width.
 - Constant fill and `encodeColor` are mutually exclusive. Complete cells rematerialize immediately; incomplete rects
@@ -644,7 +695,7 @@ mark/guide를 다시 계산한다. Explicit domain과 consumer가 없는 named s
 
 ### Formal values — `editRectMark`
 
-- Implemented: `editRectMark({ target?: UserId; fill?: NonEmptyString; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite })`.
+- Implemented: `editRectMark({ target?: UserId; fill?: NonEmptyString; opacity?: UnitInterval; stroke?: NonEmptyString | false; strokeWidth?: NonNegativeFinite; cornerRadius?: NonNegativeFinite; lineCap?: LineCap; lineJoin?: LineJoin; miterLimit?: PositiveFinite })`.
 - Proposed (NOT IMPLEMENTED): —
 
 ### Value coverage — `editRectMark`

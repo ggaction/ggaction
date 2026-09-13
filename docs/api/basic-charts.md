@@ -22,6 +22,11 @@ These actions are conveniences over the regular mark, encoding, and guide
 actions. They call those wrapped actions as trace children; they do not add a
 second chart specification or compile semantics during rendering.
 
+Their existing nested mark styles accept the same shape details as direct
+marks: Point, Line, Area, Arc, Rule, and Tick styles accept `lineCap`,
+`lineJoin`, and `miterLimit`; Bar and Rect styles also accept `cornerRadius`.
+See [Mark Style](./appearance/mark-style.md#stroke-caps-joins-and-rounded-rectangles).
+
 ## Choose a facade
 
 | Facade | Shortest complete decision | Guides when omitted |

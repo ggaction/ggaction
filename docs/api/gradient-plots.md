@@ -58,7 +58,7 @@ createGradientPlot({
   density?: { bandwidth?, extent?, steps?, kernel?, normalization? },
   width?: { band? },
   gradient?: { palette?, opacity? },
-  center?: false | { type?, stroke?, strokeWidth? },
+  center?: false | { type?, stroke?, strokeWidth?, lineCap?, lineJoin?, miterLimit? },
   guides?: false | { axes?, grid?, legend? }
 } = {})
 ```
@@ -70,7 +70,9 @@ createGradientPlot({
 - `width.band` defaults to `0.7` of the category band.
 - `gradient` defaults to `blues` with opacity `[0, 1]`.
 - `center` defaults to a median rule with a `1.5` logical-pixel dark stroke;
-  `false` removes the complete optional component.
+  `false` removes the complete optional component. Its cap/join/miter values
+  follow the shared [Mark Style](./appearance/mark-style.md#stroke-caps-joins-and-rounded-rectangles)
+  contract; it does not accept `cornerRadius`.
 - `guides: false` omits all guide resources. Nested `false` values omit only
   that component.
 

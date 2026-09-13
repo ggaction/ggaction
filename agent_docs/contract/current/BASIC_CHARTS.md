@@ -18,6 +18,10 @@ Basic Chart facade는 existing domain action을 wrapped child로 조합하는 us
 - Optional encodings appear in state and trace only when requested.
 - Scatter `point.stroke`, Bar/Histogram `bar.stroke` accept a non-empty color string or `false`, matching their
   child mark creation/edit owners. `false` disables the outline and its width; incompatible width edits remain errors.
+- Existing nested `point`, `line`, `area`, and `tick` styles accept `lineCap`, `lineJoin`, and `miterLimit`;
+  nested `bar` and `rect` styles additionally accept `cornerRadius`. The facade validates and forwards only to the
+  existing mark owner. Exact values, defaults, replay, and unsupported-family errors are owned by
+  [the shared mark-style contract](MARKS.md#shared-stroke-and-rounded-rectangle-style-details).
 
 ## Facade guide reuse
 

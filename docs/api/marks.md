@@ -99,6 +99,11 @@ those graphics.
 
 ## Tick marks
 
+`createTickMark({ id?, data?, length?, stroke?, strokeWidth?, opacity?, lineCap?, lineJoin?, miterLimit? } = {})`
+creates a Tick, and
+`editTickMark({ target?, length?, stroke?, strokeWidth?, opacity?, lineCap?, lineJoin?, miterLimit? })`
+updates it.
+
 `createTickMark` creates a centered fixed-length line glyph for every source
 row after both x and y encodings are complete:
 
@@ -122,6 +127,9 @@ const rug = chart()
 
 The default length is `14`, stroke width is `2`, opacity is `1`, and stroke
 uses the theme mark color. `editTickMark` partially edits those values.
+Tick cap/join/miter options follow the shared
+[Mark Style](./appearance/mark-style.md#stroke-caps-joins-and-rounded-rectangles)
+contract.
 Incomplete x or y is retained semantically without fabricated geometry.
 Fixed-y rug plots use an explicit y field; x-only plot-edge placement is not
 inferred.

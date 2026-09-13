@@ -59,12 +59,18 @@ createErrorBand({
   fill?: string;
   opacity?: number;
   curve?: CurveInterpolation;
+  lineCap?: "butt" | "round" | "square";
+  lineJoin?: "miter" | "round" | "bevel";
+  miterLimit?: number;
   boundaries?: false | {
     stroke?: string;
     strokeWidth?: number;
     strokeDash?: DashStyle | readonly number[];
     opacity?: number;
     curve?: CurveInterpolation;
+    lineCap?: "butt" | "round" | "square";
+    lineJoin?: "miter" | "round" | "bevel";
+    miterLimit?: number;
   };
 } = {})
 ```

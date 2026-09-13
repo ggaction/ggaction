@@ -320,3 +320,110 @@ test("inherits line details into series legends without extending legend recipes
     );
   }
 });
+
+test("replays rounded highlighted bars through resize, reencode, theme, and facet source edits", () => {
+  const lifecycleRows = Object.freeze([
+    Object.freeze({ category: "A", series: "S1", facet: "F1", value: 2, next: 3 }),
+    Object.freeze({ category: "B", series: "S2", facet: "F1", value: 4, next: 5 }),
+    Object.freeze({ category: "A", series: "S1", facet: "F2", value: 3, next: 4 }),
+    Object.freeze({ category: "B", series: "S2", facet: "F2", value: 5, next: 6 })
+  ]);
+  const buildSource = (values = lifecycleRows) => chart()
+    .createCanvas({
+      width: 700,
+      height: 400,
+      margin: { top: 40, right: 150, bottom: 60, left: 60 }
+    })
+    .createData({ id: "values", values })
+    .createBarMark({
+      id: "bars",
+      cornerRadius: 11,
+      stroke: "black",
+      ...DETAILS
+    })
+    .encodeX({ field: "category", fieldType: "nominal" })
+    .encodeY({ field: "value", aggregate: "sum" })
+    .encodeColor({ field: "series", fieldType: "nominal", layout: "group" })
+    .createLegend({ target: "bars", channels: ["color"] })
+    .editLegendBlock({
+      target: "bars",
+      channel: "color",
+      symbol: { stroke: "#111827" }
+    })
+    .selectMarks({ id: "largest", target: "bars", channel: "y", op: "max" })
+    .highlightMarks({ selection: "largest", color: "#dc2626" });
+  const snapshots = [];
+  const remember = program => {
+    snapshots.push([program, JSON.stringify(program)]);
+    return program;
+  };
+  const assertLifecycleStyle = program => {
+    assert.deepEqual(program.markConfigs.bars.barAppearance, {
+      cornerRadius: 11,
+      stroke: "black",
+      ...DETAILS
+    });
+    const owner = program.graphicSpec.objects.bars;
+    assert.equal(owner.type, "collection");
+    assert.equal(owner.items.every(item =>
+      item.type === "path" && item.properties.commands.length === 10
+    ), true);
+    for (const item of owner.items) assertDetails(item.properties);
+    assert.equal(owner.items.some(item => item.properties.fill === "#dc2626"), true);
+  };
+  const assertLegendStyle = program => {
+    const symbols = program.graphicSpec.objects.colorLegendSymbols;
+    assert.equal(symbols.type, "collection");
+    assert.equal(symbols.items[0].properties.stroke, "#111827");
+    assert.equal(symbols.items[0].properties.commands.length, 10);
+    assertDetails(symbols.items[0].properties);
+  };
+
+  const authored = remember(buildSource());
+  const resized = remember(authored.editCanvas({ width: 760 }));
+  const reencoded = remember(resized.encodeY({
+    target: "bars",
+    field: "next",
+    aggregate: "sum"
+  }));
+  const themed = remember(reencoded.applyTheme({
+    theme: {
+      base: "dark",
+      tokens: { mark: "#00ff00", fontFamily: "Theme Mono" }
+    }
+  }));
+  const restored = remember(themed.removeTheme());
+
+  for (const program of [authored, resized, reencoded, themed, restored]) {
+    assertLifecycleStyle(program);
+    assertLegendStyle(program);
+  }
+
+  const faceted = remember(restored.facet({
+    id: "panels",
+    field: "facet",
+    guides: { legend: "shared" }
+  }));
+  const revisedRows = lifecycleRows.map(row => Object.freeze({
+    ...row,
+    next: row.next + 10
+  }));
+  const revisedSource = remember(buildSource(revisedRows)
+    .editCanvas({ width: 760 })
+    .encodeY({ target: "bars", field: "next", aggregate: "sum" })
+    .applyTheme({
+      theme: {
+        base: "dark",
+        tokens: { mark: "#00ff00", fontFamily: "Theme Mono" }
+      }
+    })
+    .removeTheme());
+  const replayed = faceted.editFacetSource({ program: revisedSource });
+
+  assert.deepEqual(replayed.compositionSpec.children, faceted.compositionSpec.children);
+  assertLegendStyle(replayed);
+  for (const child of Object.values(replayed.children)) assertLifecycleStyle(child);
+  for (const [program, snapshot] of snapshots) {
+    assert.equal(JSON.stringify(program), snapshot);
+  }
+});

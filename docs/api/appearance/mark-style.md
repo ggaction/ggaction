@@ -7,6 +7,52 @@ title: Mark Style
 
 {% include chart-example.html id="bar" %}
 
+## Stroke caps, joins, and rounded rectangles
+
+Every strokable mark style accepts `lineCap`, `lineJoin`, and `miterLimit`:
+
+| Option | Accepted values | Effective default |
+| --- | --- | --- |
+| `lineCap` | `"butt"`, `"round"`, or `"square"` | `"butt"` |
+| `lineJoin` | `"miter"`, `"round"`, or `"bevel"` | `"miter"` |
+| `miterLimit` | finite number greater than `0` | `10` |
+
+Bar and Rect styles also accept a non-negative finite `cornerRadius`, which
+defaults to `0`. The requested radius is measured in logical Canvas pixels and
+is clamped separately for each item to half its smaller side:
+
+```javascript
+const rounded = chart()
+  .createCanvas({ width: 640, height: 360, margin: 50 })
+  .createData({ values: rows })
+  .createBarMark({
+    cornerRadius: 8,
+    stroke: "#0f172a",
+    strokeWidth: 1.5,
+    lineCap: "round",
+    lineJoin: "round",
+    miterLimit: 4
+  })
+  .encodeX({ field: "category", fieldType: "nominal" })
+  .encodeY({ field: "value", aggregate: "sum" });
+```
+
+A positive radius rounds all four corners. `cornerRadius: 0` restores square
+rectangles. Resizing, re-encoding, data and scale edits, selection highlights,
+automatic legends, themes, and facet source replay preserve the requested
+style and recalculate geometry. An explicit legend-block symbol color still
+wins over the inherited source color.
+
+Point, Line, Area, Arc, Rule, and Tick accept the three stroke-detail options.
+Bar and Rect accept all four. Text does not accept them, and `cornerRadius` is
+rejected by every non-rectangular family. The same options pass through existing
+high-level nested styles such as `point`, `line`, `area`, `arc`, `tick`, `bar`,
+`rect`, `box`, `stem`, `errorBar`, `boundaries`, and reference styles.
+
+Defaults are applied without adding omitted properties to serialized graphics.
+Explicit values remain stored even while a stroke is disabled, so restoring the
+stroke restores the authored cap, join, and miter limit.
+
 ## Stroke color and Line/Rule appearance
 
 `encodeStroke({ value, target? })` assigns a required non-empty constant outline

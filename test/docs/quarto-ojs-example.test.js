@@ -128,7 +128,7 @@ test("executes the example program against the package source", async () => {
   );
   assert.equal(wide.semanticSpec.datasets.length, 1);
   assert.equal(Object.keys(wide.graphicSpec.objects).length, 17);
-  assert.equal(example.flattenTrace(wide.trace).length - 1, 256);
+  assert.equal(example.flattenTrace(wide.trace).length - 1, 250);
 
   const narrow = example.buildProgram(240);
   assert.equal(

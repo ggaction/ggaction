@@ -11,7 +11,7 @@ Point marks represent individual observations or derived items. Their semantic
 type is `point`; circle, square, diamond, and other symbols are graphical
 realizations of that meaning.
 
-## `createPointMark({ id?, data?, shape?, fill?, opacity?, stroke?, strokeWidth? } = {})`
+## `createPointMark({ id?, data?, shape?, fill?, opacity?, stroke?, strokeWidth?, lineCap?, lineJoin?, miterLimit? } = {})`
 
 | Option | Type | Default or inference |
 | --- | --- | --- |
@@ -22,6 +22,9 @@ realizations of that meaning.
 | `opacity` | number from `0` to `1` | `1` |
 | `stroke` | non-empty color string | no outline |
 | `strokeWidth` | non-negative number | `0` |
+| `lineCap` | `"butt"`, `"round"`, or `"square"` | `"butt"` |
+| `lineJoin` | `"miter"`, `"round"`, or `"bevel"` | `"miter"` |
+| `miterLimit` | positive finite number | `10` |
 
 ```javascript
 const program = chart()
@@ -43,7 +46,7 @@ Use `encodePointRadius({ value })` for another constant radius or `encodeSize`
 for a field-driven area mapping. `removePointRadius()` returns an explicitly
 sized point mark to the theme radius without changing Polar position.
 
-## `editPointMark({ target?, shape?, fill?, opacity?, stroke?, strokeWidth? })`
+## `editPointMark({ target?, shape?, fill?, opacity?, stroke?, strokeWidth?, lineCap?, lineJoin?, miterLimit? })`
 
 ```javascript
 const diamonds = program.editPointMark({
@@ -64,6 +67,11 @@ fill conflicts with a semantic color encoding.
 Pass `stroke: false` to disable an existing outline. This removes its stored
 width, rejects a simultaneous `strokeWidth`, and a later string stroke restores
 the point default width `1`.
+
+The cap, join, and miter options follow the shared
+[Mark Style](../appearance/mark-style.md#stroke-caps-joins-and-rounded-rectangles)
+contract. They are retained even though a circular glyph has no visible cap or
+corner, so a later shape or stroke replay does not discard authored style.
 
 ## `jitterPoints({ target?, channel, maxOffset, seed?, key? })`
 

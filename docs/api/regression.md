@@ -62,8 +62,10 @@ program.createRegression({
 | `band.opacity` | number from `0` to `1` | `0.18` |
 | `band.stroke` | non-empty color string | no outline |
 | `band.strokeWidth` | non-negative finite number | `1` with stroke |
+| `band.lineCap`, `band.lineJoin`, `band.miterLimit` | shared stroke-detail values | butt, miter, `10` |
 | `line.strokeWidth` | non-negative finite number | `3` |
 | `line.curve` | supported curve interpolation | `"linear"` |
+| `line.lineCap`, `line.lineJoin`, `line.miterLimit` | shared stroke-detail values | butt, miter, `10` |
 
 Choose another model or interval without coordinating its child layers:
 

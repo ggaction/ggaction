@@ -10,7 +10,7 @@ title: Rule Marks
 Rule marks represent reference lines and intervals. They use concrete line
 primitives without exposing a renderer-specific path format.
 
-## `createRuleMark({ id?, data? } = {})`
+## `createRuleMark({ id?, data?, stroke?, strokeWidth?, strokeDash?, opacity?, lineCap?, lineJoin?, miterLimit? } = {})`
 
 ```javascript
 import { chart } from "ggaction";
@@ -38,7 +38,7 @@ rule, while datum x symmetrically creates a vertical full-span rule. Field
 endpoints preserve the orthogonal inherited channel for interval construction.
 Rules created with explicit `data` do not apply this provenance-based cleanup.
 
-Rule creation and `editRuleMark({ target?, stroke?, strokeWidth?, strokeDash?, opacity? })`
+Rule creation and `editRuleMark({ target?, stroke?, strokeWidth?, strokeDash?, opacity?, lineCap?, lineJoin?, miterLimit? })`
 accept constant styles. They validate all options before delegating requested
 styles in the following order:
 
@@ -50,6 +50,9 @@ styles in the following order:
 At least one style is required for editing. Scalar edits reject active field
 encodings; use the corresponding encoder with `{ value }` to replace them.
 Styles persist while endpoints are incomplete and after Canvas resizing.
+`lineCap`, `lineJoin`, and `miterLimit` use the shared closed vocabulary in
+[Mark Style](../appearance/mark-style.md#stroke-caps-joins-and-rounded-rectangles)
+and apply to every final rule segment, including reference and error components.
 
 `encodeStrokeWidth({ field, scale? })` maps a non-negative quantitative field
 to one concrete width per rule item. Use `createLegend({ channels:

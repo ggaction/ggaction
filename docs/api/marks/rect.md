@@ -10,7 +10,7 @@ title: Rect Marks
 Rect marks represent independent two-dimensional cells. They are distinct from
 bars: rects do not infer aggregation, a zero baseline, stacking, or bar width.
 
-## `createRectMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth? } = {})`
+## `createRectMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, lineCap?, lineJoin?, miterLimit? } = {})`
 
 ```javascript
 const program = chart()
@@ -77,7 +77,7 @@ Until one supported topology is complete, semantic intent is retained and the
 rect collection stays empty. Missing endpoint or color values omit only their
 row. `encodeColor` accepts categorical and continuous color scales.
 
-## `editRectMark({ target?, fill?, opacity?, stroke?, strokeWidth? })`
+## `editRectMark({ target?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, lineCap?, lineJoin?, miterLimit? })`
 
 ```javascript
 const outlined = program.editRectMark({
@@ -90,6 +90,12 @@ const outlined = program.editRectMark({
 The target is inferred when exactly one rect is eligible. Constant `fill`
 cannot be combined with a field-driven color encoding. Use `stroke: false` to
 remove the outline; a simultaneous `strokeWidth` is invalid.
+
+`cornerRadius` is a non-negative logical-pixel value. Each completed cell or
+range clamps it to half its smaller side; setting it to `0` returns to square
+rectangles. `lineCap`, `lineJoin`, and `miterLimit` follow the shared
+[Mark Style](../appearance/mark-style.md#stroke-caps-joins-and-rounded-rectangles)
+contract and remain requested state across rematerialization.
 
 ## Cell labels and selection
 

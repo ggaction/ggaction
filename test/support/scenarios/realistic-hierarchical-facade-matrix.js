@@ -19,6 +19,8 @@ const INTERPOLATIONS = Object.freeze([
   "rgb", "hsl", "hsl-long", "lab", "hcl", "hcl-long", "cubehelix",
   "cubehelix-long"
 ]);
+const LINE_CAPS = Object.freeze(["butt", "round", "square"]);
+const LINE_JOINS = Object.freeze(["miter", "round", "bevel"]);
 
 export const REALISTIC_HIERARCHICAL_FACADE_ACTIONS = Object.freeze([
   "createAreaPlot", "createDensityPlot", "createHorizonPlot", "createPiePlot",
@@ -31,6 +33,21 @@ export const REALISTIC_HIERARCHICAL_FACADE_PROFILE_COUNT = 24;
 
 function clean(value) {
   return Object.fromEntries(Object.entries(value).filter(([, child]) => child !== undefined));
+}
+
+function strokeDetails(index) {
+  return {
+    lineCap: LINE_CAPS[index % LINE_CAPS.length],
+    lineJoin: LINE_JOINS[index % LINE_JOINS.length],
+    miterLimit: 2 + index % 5
+  };
+}
+
+function rectDetails(index) {
+  return {
+    ...strokeDetails(index),
+    cornerRadius: [0, 4, 10][index % 3]
+  };
 }
 
 function numericScale(id, index, { horizon = false, measured = false } = {}) {
@@ -783,6 +800,7 @@ function appendPolarScatter(program, index) {
     ...(hasSize ? { size: sizeChannel(`${suffix}-size`, index) } : {}),
     shape: shapeChannel(`${suffix}-shape`, index),
     point: {
+      ...strokeDetails(index),
       ...(hasSize ? {} : { radius: 3 + index % 3 }),
       shape: POINT_SHAPES[index % POINT_SHAPES.length],
       ...(hasColor ? {} : { fill: "#2563eb" }),
@@ -835,6 +853,7 @@ function appendPolarLine(program, index) {
       ? { field: "group", fieldType: "nominal", scale: { id: `${suffix}-dash`, type: "ordinal", domain: "auto", range: "auto" } }
       : { value: DASHES[index % DASHES.length] },
     line: {
+      ...strokeDetails(index),
       strokeWidth: 1.5 + index % 3 * 0.25,
       curve: "linear",
       ...(hasColor ? {} : { stroke: "#475569" }),
@@ -883,6 +902,7 @@ function appendRadar(program, index) {
       ? { field: "group", fieldType: "nominal", scale: { id: `${suffix}-dash`, type: "ordinal", domain: "auto", range: "auto" } }
       : { value: DASHES[index % DASHES.length] },
     line: {
+      ...strokeDetails(index),
       strokeWidth: 1.5, curve: "linear",
       ...(hasColor ? {} : { stroke: "#475569" }), opacity: 0.58, closed: true
     },
@@ -936,6 +956,7 @@ function appendRug(program, index) {
       ? { x: measure, edge }
       : { y: measure, edge }),
     tick: {
+      ...strokeDetails(index),
       length: 10 + index % 4,
       stroke: "#334155",
       strokeWidth: 1 + index % 2 * 0.25,
@@ -1033,6 +1054,7 @@ function appendStrip(program, index) {
     ...(hasSize ? { size: sizeChannel(`${suffix}-size`, index) } : {}),
     shape: shapeChannel(`${suffix}-shape`, index),
     point: {
+      ...strokeDetails(index),
       ...(hasSize ? {} : { radius: 3 + index % 3 }),
       shape: POINT_SHAPES[index % POINT_SHAPES.length],
       ...(hasColor ? {} : { fill: "#2563eb" }),
@@ -1164,6 +1186,7 @@ function appendBeeswarm(program, index) {
     ...(hasSize ? { size: sizeChannel(`${suffix}-size`, index) } : {}),
     shape: shapeChannel(`${suffix}-shape`, index),
     point: {
+      ...strokeDetails(index),
       ...(hasSize ? {} : { radius: 3 + index % 3 }),
       shape: POINT_SHAPES[index % POINT_SHAPES.length],
       ...(hasColor ? {} : { fill: "#2563eb" }),
@@ -1249,6 +1272,7 @@ function appendRaincloud(program, index) {
           resolve: index % 2 === 0 ? "shared" : "independent"
         },
         area: {
+          ...strokeDetails(index),
           ...(hasColor ? {} : { fill: "#93c5fd" }),
           opacity: 0.45 + index / 100,
           stroke: "#1d4ed8",
@@ -1268,11 +1292,13 @@ function appendRaincloud(program, index) {
           width: { band: 0.18 + index % 3 * 0.03 },
           outliers: index % 4 === 0,
           box: {
+            ...rectDetails(index),
             ...(hasColor ? {} : { fill: "#eff6ff" }),
             opacity: 0.75, stroke: "#1e40af", strokeWidth: 1
           },
-          median: { stroke: "#172554", strokeWidth: 1.5 },
+          median: { ...strokeDetails(index), stroke: "#172554", strokeWidth: 1.5 },
           outlier: {
+            ...strokeDetails(index),
             shape: POINT_SHAPES[index % POINT_SHAPES.length],
             radius: 2.5 + index % 3,
             opacity: 0.6
@@ -1287,6 +1313,7 @@ function appendRaincloud(program, index) {
             level: 0.9 + index % 2 * 0.05
           } : {}),
           point: {
+            ...strokeDetails(index),
             radius: 3 + index % 3,
             shape: POINT_SHAPES[index % POINT_SHAPES.length],
             ...(hasColor ? {} : { fill: "#1d4ed8" }), opacity: 0.85,
@@ -1294,6 +1321,7 @@ function appendRaincloud(program, index) {
             ...(index % 3 === 0 ? {} : { strokeWidth: 0.8 })
           },
           errorBar: {
+            ...strokeDetails(index),
             caps: index % 3 !== 0,
             capSize: 7 + index % 3,
             stroke: "#1e3a8a", strokeWidth: 1.2,
@@ -1311,6 +1339,7 @@ function appendRaincloud(program, index) {
           size: sizeChannel(`${suffix}-size`, index),
           shape: shapeChannel(`${suffix}-shape`, index),
           point: {
+            ...strokeDetails(index),
             shape: POINT_SHAPES[index % POINT_SHAPES.length],
             opacity: 0.55 + index / 100,
             ...(hasColor ? {} : { fill: "#2563eb" }),
@@ -1333,6 +1362,7 @@ function appendRaincloud(program, index) {
           ...(index === 0 ? {} : { size: sizeChannel(`${suffix}-size`, index) }),
           shape: shapeChannel(`${suffix}-shape`, index),
           point: {
+            ...strokeDetails(index),
             ...(index === 0 ? { radius: 0.5 } : {}),
             shape: POINT_SHAPES[index % POINT_SHAPES.length],
             opacity: 0.55 + index / 100,
@@ -1475,6 +1505,7 @@ function appendArea(program, index) {
     missing: index % 2 === 0 ? "break" : "error",
     color: colorChannel(`${suffix}-color`, index, { categorical: true }),
     area: {
+      ...strokeDetails(index),
       fill: index % 11 === 0 ? "#bfdbfe" : undefined,
       opacity: 0.2 + index / 100,
       stroke: "#2563eb",
@@ -1522,6 +1553,7 @@ function appendDensity(program, index) {
       : densityScale(`${suffix}-density`, index + 1),
     ...(grouped ? { color: colorChannel(`${suffix}-color`, index, { categorical: true, layout: true }) } : {}),
     area: {
+      ...strokeDetails(index),
       fill: grouped ? undefined : "#bfdbfe",
       opacity: 0.28,
       stroke: "#2563eb",
@@ -1579,6 +1611,7 @@ function appendHorizon(program, index) {
       negative: horizonPalette(index, bands, true)
     },
     area: {
+      ...strokeDetails(index),
       opacity: 0.45,
       stroke: "#475569",
       strokeWidth: 0.8,
@@ -1620,6 +1653,7 @@ function radialOptions(program, action, index) {
       : false,
     ...(measured ? { radiusScale: numericScale(`${suffix}-radius`, index, { measured: true }) } : {}),
     arc: {
+      ...strokeDetails(index),
       innerRadius: index % 3 * 0.15,
       padAngle: measured ? 0 : index % 3,
       ...(hasColor ? {} : { fill: "#60a5fa" }),

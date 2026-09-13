@@ -1,5 +1,11 @@
 # Current Composite Mark contracts
 
+Composite appearance objects reuse ordinary mark style ownership. `box` accepts `cornerRadius`, `lineCap`,
+`lineJoin`, and `miterLimit`; whisker, cap, median, outlier, and other strokable child styles accept the three
+stroke details appropriate to their Rule or Point family. Create/edit actions forward the requested fields to every
+generated child and preserve them during topology/statistics replay. Exact values and errors are defined by
+[the shared mark-style contract](MARKS.md#shared-stroke-and-rounded-rectangle-style-details).
+
 ## `createBoxPlot`
 
 ```typescript
@@ -20,15 +26,25 @@ createBoxPlot({
     opacity?: UnitInterval;
     stroke?: NonEmptyString;
     strokeWidth?: NonNegativeFinite;
+    cornerRadius?: NonNegativeFinite;
+    lineCap?: LineCap;
+    lineJoin?: LineJoin;
+    miterLimit?: PositiveFinite;
   };
   median?: {
     stroke?: NonEmptyString;
     strokeWidth?: NonNegativeFinite;
+    lineCap?: LineCap;
+    lineJoin?: LineJoin;
+    miterLimit?: PositiveFinite;
   };
   outlier?: {
     shape?: PointShape;
     radius?: PositiveFinite;
     opacity?: UnitInterval;
+    lineCap?: LineCap;
+    lineJoin?: LineJoin;
+    miterLimit?: PositiveFinite;
   };
   guides?: false | CreateGuidesOptions;
 } = {}): ChartProgram;

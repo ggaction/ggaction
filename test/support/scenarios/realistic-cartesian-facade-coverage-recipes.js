@@ -16,6 +16,23 @@ const ACTIONS = Object.freeze([
   "createLinePlot",
   "createParallelCoordinates"
 ]);
+const LINE_CAPS = Object.freeze(["butt", "round", "square"]);
+const LINE_JOINS = Object.freeze(["miter", "round", "bevel"]);
+
+function strokeDetails(index) {
+  return {
+    lineCap: LINE_CAPS[index % LINE_CAPS.length],
+    lineJoin: LINE_JOINS[index % LINE_JOINS.length],
+    miterLimit: 2 + index % 5
+  };
+}
+
+function rectDetails(index) {
+  return {
+    ...strokeDetails(index),
+    cornerRadius: [0, 4, 10][index % 3]
+  };
+}
 const AGGREGATE_OPERATIONS = Object.freeze([
   "ciLower", "ciUpper", "distinct", "max", "median", "min", "missing",
   "q1", "q3", "stderr", "stdev", "stdevP", "valid", "variance", "varianceP"
@@ -922,6 +939,7 @@ function scatterOptions(factors, view) {
       }
     },
     point: {
+      ...strokeDetails(index),
       shape: index % 2 === 0 ? "circle" : "square",
       ...(index === 35 ? { fill: "#2563eb", radius: 4 } : {}),
       opacity: 0.6 + index / 100,
@@ -947,6 +965,7 @@ function barOptions(factors, view) {
       ? {}
       : { width: index % 2 === 0 ? { band: 0.72 } : { pixels: 18 } }),
     bar: {
+      ...rectDetails(index),
       ...(index === 35 ? { fill: "#2563eb" } : {}),
       opacity: 0.55 + index / 100,
       ...(index === 0 ? { stroke: false } : { stroke: "#ffffff", strokeWidth: 0.7 })
@@ -974,6 +993,7 @@ function lineOptions(factors, view) {
     ...(aggregateLine ? {} : { groupBy: index === 33 ? ["category", "subgroup"] : "category" }),
     strokeDash: aggregateLine ? { value: DASH_VALUES[index % DASH_VALUES.length] } : strokeDash(index),
     line: {
+      ...strokeDetails(index),
       strokeWidth: 1.8,
       curve: CURVES[index % CURVES.length],
       ...(index === 35 ? { stroke: "#2563eb" } : {}),
@@ -1024,6 +1044,7 @@ function parallelOptions(factors, view) {
       : { color }),
     strokeDash: strokeDash(index),
     line: {
+      ...strokeDetails(index),
       strokeWidth: 1.35,
       ...(index === 35 ? { stroke: "#2563eb" } : {}),
       opacity: 0.48,

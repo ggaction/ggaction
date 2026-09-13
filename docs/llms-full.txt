@@ -3978,6 +3978,11 @@ These actions are conveniences over the regular mark, encoding, and guide
 actions. They call those wrapped actions as trace children; they do not add a
 second chart specification or compile semantics during rendering.
 
+Their existing nested mark styles accept the same shape details as direct
+marks: Point, Line, Area, Arc, Rule, and Tick styles accept `lineCap`,
+`lineJoin`, and `miterLimit`; Bar and Rect styles also accept `cornerRadius`.
+See [Mark Style](./api/appearance/mark-style/#stroke-caps-joins-and-rounded-rectangles).
+
 ## Choose a facade
 
 | Facade | Shortest complete decision | Guides when omitted |
@@ -5733,6 +5738,11 @@ those graphics.
 
 ## Tick marks
 
+`createTickMark({ id?, data?, length?, stroke?, strokeWidth?, opacity?, lineCap?, lineJoin?, miterLimit? } = {})`
+creates a Tick, and
+`editTickMark({ target?, length?, stroke?, strokeWidth?, opacity?, lineCap?, lineJoin?, miterLimit? })`
+updates it.
+
 `createTickMark` creates a centered fixed-length line glyph for every source
 row after both x and y encodings are complete:
 
@@ -5756,6 +5766,9 @@ const rug = chart()
 
 The default length is `14`, stroke width is `2`, opacity is `1`, and stroke
 uses the theme mark color. `editTickMark` partially edits those values.
+Tick cap/join/miter options follow the shared
+[Mark Style](./api/appearance/mark-style/#stroke-caps-joins-and-rounded-rectangles)
+contract.
 Incomplete x or y is retained semantically without fabricated geometry.
 Fixed-y rug plots use an explicit y field; x-only plot-edge placement is not
 inferred.
@@ -5783,7 +5796,7 @@ Point marks represent individual observations or derived items. Their semantic
 type is `point`; circle, square, diamond, and other symbols are graphical
 realizations of that meaning.
 
-## `createPointMark({ id?, data?, shape?, fill?, opacity?, stroke?, strokeWidth? } = {})`
+## `createPointMark({ id?, data?, shape?, fill?, opacity?, stroke?, strokeWidth?, lineCap?, lineJoin?, miterLimit? } = {})`
 
 | Option | Type | Default or inference |
 | --- | --- | --- |
@@ -5794,6 +5807,9 @@ realizations of that meaning.
 | `opacity` | number from `0` to `1` | `1` |
 | `stroke` | non-empty color string | no outline |
 | `strokeWidth` | non-negative number | `0` |
+| `lineCap` | `"butt"`, `"round"`, or `"square"` | `"butt"` |
+| `lineJoin` | `"miter"`, `"round"`, or `"bevel"` | `"miter"` |
+| `miterLimit` | positive finite number | `10` |
 
 ```javascript
 const program = chart()
@@ -5815,7 +5831,7 @@ Use `encodePointRadius({ value })` for another constant radius or `encodeSize`
 for a field-driven area mapping. `removePointRadius()` returns an explicitly
 sized point mark to the theme radius without changing Polar position.
 
-## `editPointMark({ target?, shape?, fill?, opacity?, stroke?, strokeWidth? })`
+## `editPointMark({ target?, shape?, fill?, opacity?, stroke?, strokeWidth?, lineCap?, lineJoin?, miterLimit? })`
 
 ```javascript
 const diamonds = program.editPointMark({
@@ -5836,6 +5852,11 @@ fill conflicts with a semantic color encoding.
 Pass `stroke: false` to disable an existing outline. This removes its stored
 width, rejects a simultaneous `strokeWidth`, and a later string stroke restores
 the point default width `1`.
+
+The cap, join, and miter options follow the shared
+[Mark Style](./api/appearance/mark-style/#stroke-caps-joins-and-rounded-rectangles)
+contract. They are retained even though a circular glyph has no visible cap or
+corner, so a later shape or stroke replay does not discard authored style.
 
 ## `jitterPoints({ target?, channel, maxOffset, seed?, key? })`
 
@@ -5906,7 +5927,7 @@ values; areas close two edges or one density edge against a baseline.
 
 ## Line marks
 
-### `createLineMark({ id?, data?, stroke?, strokeWidth?, opacity?, curve?, closed? } = {})`
+### `createLineMark({ id?, data?, stroke?, strokeWidth?, opacity?, curve?, closed?, lineCap?, lineJoin?, miterLimit? } = {})`
 
 ```javascript
 const program = chart()
@@ -5948,7 +5969,7 @@ line vertices use the shared bar centers. Incompatible bin, stack, or offset
 policies are not transferred. Pass `data` explicitly to assemble an independent
 line with explicit encodings and scale IDs.
 
-### `editLineMark({ target?, stroke?, strokeWidth?, opacity?, curve?, closed? })`
+### `editLineMark({ target?, stroke?, strokeWidth?, opacity?, curve?, closed?, lineCap?, lineJoin?, miterLimit? })`
 
 ```javascript
 program.editLineMark({
@@ -5968,6 +5989,9 @@ Materialization rejects any line or complete area that would expand beyond
 
 A constant `stroke` conflicts with field-driven `encodeColor`. Appearance is
 stored and reapplied whenever scale, Canvas, or grouping changes rebuild paths.
+`lineCap`, `lineJoin`, and `miterLimit` use the closed values and defaults in
+[Mark Style](./api/appearance/mark-style/#stroke-caps-joins-and-rounded-rectangles).
+They remain authored state when a path changes between open and closed forms.
 
 ## Polar lines and radar paths
 
@@ -5994,7 +6018,7 @@ through the shared line materialization lifecycle.
 
 ## Area marks
 
-### `createAreaMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth?, curve?, missing? } = {})`
+### `createAreaMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth?, curve?, missing?, lineCap?, lineJoin?, miterLimit? } = {})`
 
 ```javascript
 const area = chart()
@@ -6012,7 +6036,7 @@ without creating a scale or legend. For a center-stacked area,
 `encodeColor({ field, layout: "center" })` can author the matching group and
 center y policy atomically.
 
-### `editAreaMark({ target?, fill?, opacity?, stroke?, strokeWidth?, curve?, missing? })`
+### `editAreaMark({ target?, fill?, opacity?, stroke?, strokeWidth?, curve?, missing?, lineCap?, lineJoin?, miterLimit? })`
 
 ```javascript
 program.editAreaMark({
@@ -6027,10 +6051,11 @@ program.editAreaMark({
 requires an active outline. Constant fill cannot replace a field-driven color
 encoding. Complete paths rematerialize immediately; incomplete paths retain the
 configuration until their encodings become renderable.
+Area stroke details use the same shared Mark Style contract as Line.
 
 ## Arc marks
 
-### `createArcMark({ id?, data?, innerRadius?, padAngle?, fill?, opacity?, stroke?, strokeWidth? } = {})`
+### `createArcMark({ id?, data?, innerRadius?, padAngle?, fill?, opacity?, stroke?, strokeWidth?, lineCap?, lineJoin?, miterLimit? } = {})`
 
 ```javascript
 const donut = chart()
@@ -6049,12 +6074,13 @@ radial sectors; repeated rows in one angle band are drawn larger first so
 smaller overlays remain visible. Arc graphics are ordinary closed path
 commands, so renderers do not interpret Polar semantics.
 
-### `editArcMark({ target?, innerRadius?, padAngle?, fill?, opacity?, stroke?, strokeWidth? })`
+### `editArcMark({ target?, innerRadius?, padAngle?, fill?, opacity?, stroke?, strokeWidth?, lineCap?, lineJoin?, miterLimit? })`
 
 Geometry and appearance edits rebuild complete sectors. An incomplete arc
 retains the edited settings until both required encodings exist. Constant
 `fill` cannot replace a field-driven color encoding. `stroke: false` disables
 the outline and stored width; a later string stroke restores width `1`.
+Arc stroke cap/join values are retained for the closed path and later replay.
 
 ## Related
 
@@ -6079,7 +6105,7 @@ Missing independent positions, invalid group keys, NaN and Infinity remain error
 Bar marks represent binned counts, aggregate categories, grouped or stacked
 partitions, and observed quantitative intervals.
 
-## `createBarMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth? } = {})`
+## `createBarMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, lineCap?, lineJoin?, miterLimit? } = {})`
 
 ```javascript
 const program = chart()
@@ -6092,9 +6118,16 @@ The first ID is `"bar"` and data defaults to current data. Creation starts with
 an empty rect collection because binning, aggregation, stacking, grouping, and
 width determine the final rectangle count and geometry.
 
-Creation-time `fill`, `opacity`, `stroke`, and `strokeWidth` use the same
+Creation-time `fill`, `opacity`, `stroke`, `strokeWidth`, `cornerRadius`, `lineCap`,
+`lineJoin`, and `miterLimit` use the same
 validation and persistent materialization config as `editBarMark`. Constant
 fill conflicts with a later field-driven color encoding.
+
+A positive `cornerRadius` rounds all four corners of every final bar and is
+clamped independently to half that bar's smaller side. Stacked and grouped
+segments keep their own radius calculation. Set it to `0` to restore square
+rectangles. Stroke cap/join details and the requested radius survive Canvas,
+encoding, theme, highlight, legend, and facet replay.
 
 For an aggregate bar, combine an ordinal position and quantitative aggregate.
 Complete aggregate and ranged bars immediately use the default `0.72` band
@@ -6113,7 +6146,7 @@ bars or `encodeYOffset` for horizontal bars internally.
 Observed interval bars instead combine one categorical axis with `encodeYRange`
 or `encodeXRange`.
 
-## `editBarMark({ target?, fill?, opacity?, stroke?, strokeWidth? })` {#edit-bar-mark}
+## `editBarMark({ target?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, lineCap?, lineJoin?, miterLimit? })` {#edit-bar-mark}
 
 ```javascript
 program.editBarMark({
@@ -6128,6 +6161,9 @@ conflicts with field-driven color, while opacity and outline remain editable.
 Geometry and semantic aggregation are unchanged and appearance is reapplied
 after Canvas or scale rematerialization.
 
+See [Mark Style](./api/appearance/mark-style/#stroke-caps-joins-and-rounded-rectangles)
+for the closed cap/join values, defaults, and high-level pass-through rules.
+
 ## Related
 
 [Histogram positions](./api/position/histogram/) ·
@@ -6141,7 +6177,7 @@ after Canvas or scale rematerialization.
 Rule marks represent reference lines and intervals. They use concrete line
 primitives without exposing a renderer-specific path format.
 
-## `createRuleMark({ id?, data? } = {})`
+## `createRuleMark({ id?, data?, stroke?, strokeWidth?, strokeDash?, opacity?, lineCap?, lineJoin?, miterLimit? } = {})`
 
 ```javascript
 import { chart } from "ggaction";
@@ -6169,7 +6205,7 @@ rule, while datum x symmetrically creates a vertical full-span rule. Field
 endpoints preserve the orthogonal inherited channel for interval construction.
 Rules created with explicit `data` do not apply this provenance-based cleanup.
 
-Rule creation and `editRuleMark({ target?, stroke?, strokeWidth?, strokeDash?, opacity? })`
+Rule creation and `editRuleMark({ target?, stroke?, strokeWidth?, strokeDash?, opacity?, lineCap?, lineJoin?, miterLimit? })`
 accept constant styles. They validate all options before delegating requested
 styles in the following order:
 
@@ -6181,6 +6217,9 @@ styles in the following order:
 At least one style is required for editing. Scalar edits reject active field
 encodings; use the corresponding encoder with `{ value }` to replace them.
 Styles persist while endpoints are incomplete and after Canvas resizing.
+`lineCap`, `lineJoin`, and `miterLimit` use the shared closed vocabulary in
+[Mark Style](./api/appearance/mark-style/#stroke-caps-joins-and-rounded-rectangles)
+and apply to every final rule segment, including reference and error components.
 
 `encodeStrokeWidth({ field, scale? })` maps a non-negative quantitative field
 to one concrete width per rule item. Use `createLegend({ channels:
@@ -6700,7 +6739,7 @@ source relation.
 Rect marks represent independent two-dimensional cells. They are distinct from
 bars: rects do not infer aggregation, a zero baseline, stacking, or bar width.
 
-## `createRectMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth? } = {})`
+## `createRectMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, lineCap?, lineJoin?, miterLimit? } = {})`
 
 ```javascript
 const program = chart()
@@ -6767,7 +6806,7 @@ Until one supported topology is complete, semantic intent is retained and the
 rect collection stays empty. Missing endpoint or color values omit only their
 row. `encodeColor` accepts categorical and continuous color scales.
 
-## `editRectMark({ target?, fill?, opacity?, stroke?, strokeWidth? })`
+## `editRectMark({ target?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, lineCap?, lineJoin?, miterLimit? })`
 
 ```javascript
 const outlined = program.editRectMark({
@@ -6780,6 +6819,12 @@ const outlined = program.editRectMark({
 The target is inferred when exactly one rect is eligible. Constant `fill`
 cannot be combined with a field-driven color encoding. Use `stroke: false` to
 remove the outline; a simultaneous `strokeWidth` is invalid.
+
+`cornerRadius` is a non-negative logical-pixel value. Each completed cell or
+range clamps it to half its smaller side; setting it to `0` returns to square
+rectangles. `lineCap`, `lineJoin`, and `miterLimit` follow the shared
+[Mark Style](./api/appearance/mark-style/#stroke-caps-joins-and-rounded-rectangles)
+contract and remain requested state across rematerialization.
 
 ## Cell labels and selection
 
@@ -7060,8 +7105,10 @@ program.createRegression({
 | `band.opacity` | number from `0` to `1` | `0.18` |
 | `band.stroke` | non-empty color string | no outline |
 | `band.strokeWidth` | non-negative finite number | `1` with stroke |
+| `band.lineCap`, `band.lineJoin`, `band.miterLimit` | shared stroke-detail values | butt, miter, `10` |
 | `line.strokeWidth` | non-negative finite number | `3` |
 | `line.curve` | supported curve interpolation | `"linear"` |
+| `line.lineCap`, `line.lineJoin`, `line.miterLimit` | shared stroke-detail values | butt, miter, `10` |
 
 Choose another model or interval without coordinating its child layers:
 
@@ -7210,6 +7257,9 @@ createErrorBar({
   strokeWidth?: number;
   strokeDash?: "solid" | "dashed" | "dotted" | "dashdot" | readonly number[];
   opacity?: number;
+  lineCap?: "butt" | "round" | "square";
+  lineJoin?: "miter" | "round" | "bevel";
+  miterLimit?: number;
 } = {})
 ```
 
@@ -7413,6 +7463,9 @@ Set `caps: false` to omit cap layers. `capSize` must be positive and affects
 enabled caps only. `strokeWidth` is non-negative, `opacity` is between `0` and
 `1`, and `strokeDash` accepts a named style or an explicit non-negative dash
 array. The same appearance is assigned to the main rule and both caps.
+Cap/join/miter values use the shared
+[Mark Style](./api/appearance/mark-style/#stroke-caps-joins-and-rounded-rectangles)
+contract and replay across all generated Rule children.
 
 ```javascript
 const styled = intervals.createErrorBar({
@@ -7447,7 +7500,8 @@ const edited = intervals.editErrorBar({
 ```
 
 The options are `target`, `data`, `x`, `y`, `xOffset`, `yOffset`, `groupBy`,
-`caps`, `capSize`, `stroke`, `strokeWidth`, `strokeDash`, `opacity`, and
+`caps`, `capSize`, `stroke`, `strokeWidth`, `strokeDash`, `opacity`, `lineCap`,
+`lineJoin`, `miterLimit`, and
 `statistics`. Omitted values retain their current setting.
 Omit `target` when the current or unique error bar is unambiguous.
 
@@ -7545,12 +7599,18 @@ createErrorBand({
   fill?: string;
   opacity?: number;
   curve?: CurveInterpolation;
+  lineCap?: "butt" | "round" | "square";
+  lineJoin?: "miter" | "round" | "bevel";
+  miterLimit?: number;
   boundaries?: false | {
     stroke?: string;
     strokeWidth?: number;
     strokeDash?: DashStyle | readonly number[];
     opacity?: number;
     curve?: CurveInterpolation;
+    lineCap?: "butt" | "round" | "square";
+    lineJoin?: "miter" | "round" | "bevel";
+    miterLimit?: number;
   };
 } = {})
 ```
@@ -7768,9 +7828,9 @@ createBoxPlot({
 | `whisker` | `{ type: "tukey", factor? }` or `{ type: "minmax" }` | Tukey with factor `1.5` |
 | `width` | `{ band }`, where `0 < band < 1` | `{ band: 0.7 }` |
 | `outliers` | create Tukey outlier resources | `true` |
-| `box` | `fill`, `opacity`, `stroke`, `strokeWidth` | blue, opaque, `1.5` stroke |
-| `median` | `stroke`, `strokeWidth` | dark stroke with width `1.5` |
-| `outlier` | `shape`, `radius`, `opacity` | black diamond, radius `3`, opacity `0.75` |
+| `box` | `fill`, `opacity`, `stroke`, `strokeWidth`, `cornerRadius`, and stroke details | blue, opaque, `1.5` stroke, square corners |
+| `median` | `stroke`, `strokeWidth`, and stroke details | dark stroke with width `1.5` |
+| `outlier` | `shape`, `radius`, `opacity`, and stroke details | black diamond, radius `3`, opacity `0.75` |
 | `guides` | `false` or applicable axis/grid/legend options | omitted: no guides; explicit `{}` creates applicable guides |
 
 `createBoxPlot()` may also establish an incomplete owner first. Compatible
@@ -7810,6 +7870,8 @@ program.createBoxPlot({
 
 Set `outliers: false` to keep the Tukey summary and whiskers without creating
 an outlier dataset, layer, or graphic.
+The shape-detail vocabulary and lifecycle follow
+[Mark Style](./api/appearance/mark-style/#stroke-caps-joins-and-rounded-rectangles).
 
 ## Editing a box plot
 
@@ -7934,7 +7996,7 @@ createGradientPlot({
   density?: { bandwidth?, extent?, steps?, kernel?, normalization? },
   width?: { band? },
   gradient?: { palette?, opacity? },
-  center?: false | { type?, stroke?, strokeWidth? },
+  center?: false | { type?, stroke?, strokeWidth?, lineCap?, lineJoin?, miterLimit? },
   guides?: false | { axes?, grid?, legend? }
 } = {})
 ```
@@ -7946,7 +8008,9 @@ createGradientPlot({
 - `width.band` defaults to `0.7` of the category band.
 - `gradient` defaults to `blues` with opacity `[0, 1]`.
 - `center` defaults to a median rule with a `1.5` logical-pixel dark stroke;
- `false` removes the complete optional component.
+ `false` removes the complete optional component. Its cap/join/miter values
+ follow the shared [Mark Style](./api/appearance/mark-style/#stroke-caps-joins-and-rounded-rectangles)
+ contract; it does not accept `cornerRadius`.
 - `guides: false` omits all guide resources. Nested `false` values omit only
  that component.
 
@@ -8105,6 +8169,9 @@ When `strokeWidth` is supplied without a constant stroke, each outline follows
 its materialized fill. A category-color legend is omitted by default because
 the categorical axis already identifies the same field; request
 `guides: { legend: {} }` to show it explicitly.
+The `area` style also accepts `lineCap`, `lineJoin`, and `miterLimit` from the
+shared [Mark Style](./api/appearance/mark-style/#stroke-caps-joins-and-rounded-rectangles)
+contract.
 
 ## Editing
 
@@ -10589,6 +10656,52 @@ titles and styles remain unchanged.
 <!-- Source: /api/appearance/mark-style/ -->
 
 # Mark Style
+
+## Stroke caps, joins, and rounded rectangles
+
+Every strokable mark style accepts `lineCap`, `lineJoin`, and `miterLimit`:
+
+| Option | Accepted values | Effective default |
+| --- | --- | --- |
+| `lineCap` | `"butt"`, `"round"`, or `"square"` | `"butt"` |
+| `lineJoin` | `"miter"`, `"round"`, or `"bevel"` | `"miter"` |
+| `miterLimit` | finite number greater than `0` | `10` |
+
+Bar and Rect styles also accept a non-negative finite `cornerRadius`, which
+defaults to `0`. The requested radius is measured in logical Canvas pixels and
+is clamped separately for each item to half its smaller side:
+
+```javascript
+const rounded = chart()
+  .createCanvas({ width: 640, height: 360, margin: 50 })
+  .createData({ values: rows })
+  .createBarMark({
+    cornerRadius: 8,
+    stroke: "#0f172a",
+    strokeWidth: 1.5,
+    lineCap: "round",
+    lineJoin: "round",
+    miterLimit: 4
+  })
+  .encodeX({ field: "category", fieldType: "nominal" })
+  .encodeY({ field: "value", aggregate: "sum" });
+```
+
+A positive radius rounds all four corners. `cornerRadius: 0` restores square
+rectangles. Resizing, re-encoding, data and scale edits, selection highlights,
+automatic legends, themes, and facet source replay preserve the requested
+style and recalculate geometry. An explicit legend-block symbol color still
+wins over the inherited source color.
+
+Point, Line, Area, Arc, Rule, and Tick accept the three stroke-detail options.
+Bar and Rect accept all four. Text does not accept them, and `cornerRadius` is
+rejected by every non-rectangular family. The same options pass through existing
+high-level nested styles such as `point`, `line`, `area`, `arc`, `tick`, `bar`,
+`rect`, `box`, `stem`, `errorBar`, `boundaries`, and reference styles.
+
+Defaults are applied without adding omitted properties to serialized graphics.
+Explicit values remain stored even while a stroke is disabled, so restoring the
+stroke restores the authored cap, join, and miter limit.
 
 ## Stroke color and Line/Rule appearance
 
@@ -17384,21 +17497,21 @@ interface ChartProgramActions {
   editCompleteData(options: EditCompleteDataOptions): ChartProgram;
   editImputedData(options: EditImputedDataOptions): ChartProgram;
   editBin2DData(options: EditBin2DDataOptions): ChartProgram;
-  createPointMark(options?: { id?: string; data?: string; shape?: PointShape; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
-  editPointMark(options: { target?: string; shape?: PointShape; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
-  createTickMark(options?: { id?: string; data?: string; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }): ChartProgram;
-  editTickMark(options: { target?: string; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }): ChartProgram;
+  createPointMark(options?: StrokeStyleDetails & { id?: string; data?: string; shape?: PointShape; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
+  editPointMark(options: StrokeStyleDetails & { target?: string; shape?: PointShape; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
+  createTickMark(options?: StrokeStyleDetails & { id?: string; data?: string; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }): ChartProgram;
+  editTickMark(options: StrokeStyleDetails & { target?: string; length?: number; stroke?: string; strokeWidth?: number; opacity?: number; }): ChartProgram;
   jitterPoints(options: JitterPointsOptions): ChartProgram;
   removeJitter(options?: RemoveJitterOptions): ChartProgram;
   packPoints(options: PackPointsOptions): ChartProgram;
   removePointPacking(options?: RemovePointPackingOptions): ChartProgram;
-  createLineMark(options?: { id?: string; data?: string; strokeWidth?: number; curve?: CurveInterpolation; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
-  editLineMark(options: { target?: string; strokeWidth?: number; curve?: CurveInterpolation; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
-  createBarMark(options?: { id?: string; data?: string; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
-  editBarMark(options: { target?: string; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
-  createAreaMark(options?: { id?: string; data?: string; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }): ChartProgram;
-  createArcMark(options?: { id?: string; data?: string; innerRadius?: number; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
-  editArcMark(options: { target?: string; innerRadius?: number; padAngle?: number; fill?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; }): ChartProgram;
+  createLineMark(options?: StrokeStyleDetails & { id?: string; data?: string; strokeWidth?: number; curve?: CurveInterpolation; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
+  editLineMark(options: StrokeStyleDetails & { target?: string; strokeWidth?: number; curve?: CurveInterpolation; stroke?: string; opacity?: number; closed?: boolean; }): ChartProgram;
+  createBarMark(options?: RectStyleDetails & { id?: string; data?: string; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
+  editBarMark(options: RectStyleDetails & { target?: string; fill?: string; opacity?: number; stroke?: FilledMarkStroke; strokeWidth?: number; }): ChartProgram;
+  createAreaMark(options?: StrokeStyleDetails & { id?: string; data?: string; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }): ChartProgram;
+  createArcMark(options?: StrokeStyleDetails & { id?: string; data?: string; innerRadius?: number; padAngle?: number; fill?: string; opacity?: number; stroke?: string; strokeWidth?: number; }): ChartProgram;
+  editArcMark(options: StrokeStyleDetails & { target?: string; innerRadius?: number; padAngle?: number; fill?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; }): ChartProgram;
   createRectMark(options?: RectMarkOptions): ChartProgram;
   editRectMark(options: EditRectMarkOptions): ChartProgram;
   createRuleMark(options?: { id?: string; data?: string } & RuleStyleOptions): ChartProgram;
@@ -17414,7 +17527,7 @@ interface ChartProgramActions {
   editTextMark(options: EditTextMarkOptions): ChartProgram;
   layoutLabels(options?: LabelLayoutOptions): ChartProgram;
   removeLabelLayout(options?: RemoveLabelLayoutOptions): ChartProgram;
-  editAreaMark(options: { target?: string; fill?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }): ChartProgram;
+  editAreaMark(options: StrokeStyleDetails & { target?: string; fill?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; curve?: CurveInterpolation; missing?: "error" | "break"; }): ChartProgram;
   encodeX(options: PositionEncodingOptions | DatumPositionEncodingOptions): ChartProgram;
   encodeY(options: YPositionEncodingOptions | DatumPositionEncodingOptions): ChartProgram;
   encodeTheta(options: ThetaEncodingOptions): ChartProgram;
@@ -17592,9 +17705,9 @@ interface ChartProgramActions {
   editStrokeDashScale(options: EditStrokeDashScaleOptions): ChartProgram;
   createDerivedData(options: CreateDerivedDataOptions): ChartProgram;
   createRegressionBand(options: CreateRegressionBandOptions): ChartProgram;
-  editRegressionBand(options: { target?: string; color?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; curve?: CurveInterpolation; }): ChartProgram;
+  editRegressionBand(options: StrokeStyleDetails & { target?: string; color?: string; opacity?: number; stroke?: string | false; strokeWidth?: number; curve?: CurveInterpolation; }): ChartProgram;
   createRegressionLine(options: CreateRegressionLineOptions): ChartProgram;
-  editRegressionLine(options: { target?: string; strokeWidth?: number; curve?: CurveInterpolation; }): ChartProgram;
+  editRegressionLine(options: StrokeStyleDetails & { target?: string; strokeWidth?: number; curve?: CurveInterpolation; }): ChartProgram;
   editCompositionLayout(options: EditCompositionLayoutOptions): ChartProgram;
   replaceCompositionChild(options: ReplaceCompositionChildOptions): ChartProgram;
   insertCompositionChild(options: InsertCompositionChildOptions): ChartProgram;

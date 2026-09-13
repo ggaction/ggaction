@@ -29,17 +29,17 @@ const actionCards = JSON.parse(readFileSync(
 const inventoryPromise = buildPublicOptionInventory(actionCards);
 const ACTIONS = new Set(REALISTIC_CARTESIAN_FACADE_COVERAGE_EXPECTED_ACTIONS);
 const EXPECTED_TARGETS = Object.freeze({
-  createScatterPlot: Object.freeze({ requirements: 368, diversity: 8 }),
-  createBarPlot: Object.freeze({ requirements: 364, diversity: 9 }),
-  createLinePlot: Object.freeze({ requirements: 305, diversity: 6 }),
-  createParallelCoordinates: Object.freeze({ requirements: 104, diversity: 3 })
+  createScatterPlot: Object.freeze({ requirements: 377, diversity: 8 }),
+  createBarPlot: Object.freeze({ requirements: 374, diversity: 9 }),
+  createLinePlot: Object.freeze({ requirements: 314, diversity: 6 }),
+  createParallelCoordinates: Object.freeze({ requirements: 113, diversity: 3 })
 });
 const EXPECTED_REQUIREMENT_DIGESTS = Object.freeze({
   // Locked after public declarations match the runtime-supported facade branches.
-  createScatterPlot: "1b7137e612176fa01fefa88f88c90bd91d81ec198dbec8269940c5bd4e9528f2",
-  createBarPlot: "ed8c63abfaa9eef616168b39a392c687b1d774a1f2153ea108b9e0edfde49c52",
-  createLinePlot: "1fd4d09918ee99e78dcd24696da6bb56ed015d18b4d650513af1b6b56c6de264",
-  createParallelCoordinates: "1274630d5931a9a2335d086d3748943fa523aac16127219db675b1044ccb7090"
+  createScatterPlot: "ef900734cb074b9996319d415cd25feec62b566658b00b26bff6cc37f4657206",
+  createBarPlot: "5060d9180dbcc9180cd46388a8965472fc4cfa517bc53e3e7fc04448ec109e7c",
+  createLinePlot: "d28bb6c4dfa13b660f9a0d993a9e4761f51468a219a6d721b1b5b2353bb2f563",
+  createParallelCoordinates: "b059e4f47b4b9ef40c081ea84f0a2e8706881b617b06949237e1264224e990b8"
 });
 const EXPECTED_DIVERSITY_DIGESTS = Object.freeze({
   createScatterPlot: "759d425e12a6c5b8bc8cbafd963a619324844000bcceefadcd7086802483d828",
@@ -206,6 +206,29 @@ function targetInventory(inventory) {
     return ACTIONS.has(action) && !OTHER_RECIPE_DIVERSITY_IDS.has(requirement.id);
   });
   return Object.freeze({ options, literals, familyLiterals, diversity });
+}
+
+function graphicBounds(graphic) {
+  const { properties = {} } = graphic;
+  if (["x", "y", "width", "height"].every(key => Number.isFinite(properties[key]))) {
+    return {
+      x: properties.x,
+      y: properties.y,
+      width: properties.width,
+      height: properties.height
+    };
+  }
+  const commands = properties.commands ?? [];
+  const xs = commands.flatMap(command => [command.x, command.x1, command.x2]).filter(Number.isFinite);
+  const ys = commands.flatMap(command => [command.y, command.y1, command.y2]).filter(Number.isFinite);
+  const x = Math.min(...xs);
+  const y = Math.min(...ys);
+  return {
+    x,
+    y,
+    width: Math.max(...xs) - x,
+    height: Math.max(...ys) - y
+  };
 }
 
 function nestedTraceValues(args, path) {
@@ -554,15 +577,16 @@ test("normalizes exact continuous-color facade bars before native rendering", {
       assert.deepEqual(measureScale.domain, [0, 1], label);
       assert.ok(bars.length > 0, label);
       for (const bar of bars) {
-        assert.equal(bar.properties[measure], start, label);
+        const bounds = graphicBounds(bar);
+        assert.equal(bounds[measure], start, label);
         assert.equal(
-          bar.properties[measure === "x" ? "width" : "height"],
+          bounds[measure === "x" ? "width" : "height"],
           span,
           label
         );
         assert.ok(["x", "y", "width", "height"].every(property =>
-          Number.isFinite(bar.properties[property]) &&
-          Math.abs(bar.properties[property]) <= 2_300
+          Number.isFinite(bounds[property]) &&
+          Math.abs(bounds[property]) <= 2_300
         ), label);
       }
       assertGraphicIntegrity(program, label);
@@ -573,7 +597,7 @@ test("normalizes exact continuous-color facade bars before native rendering", {
       render(program, context);
       assert.deepEqual([canvas.width, canvas.height], [2_300, 1_220], label);
       for (const bar of bars) {
-        const { x, y, width, height } = bar.properties;
+        const { x, y, width, height } = graphicBounds(bar);
         const pixel = [...context.getImageData(
           Math.round(x + width / 2),
           Math.round(y + height / 2),
@@ -632,9 +656,9 @@ test("locks the exact assigned option, literal, aggregate, and diversity target 
     actionRequirementCount += requirementIds.length;
     diversityCount += diversityIds.length;
   }
-  assert.equal(actionRequirementCount, 1141);
+  assert.equal(actionRequirementCount, 1178);
   assert.equal(target.familyLiterals.length, 15);
-  assert.equal(actionRequirementCount + target.familyLiterals.length, 1156);
+  assert.equal(actionRequirementCount + target.familyLiterals.length, 1193);
   assert.equal(diversityCount, 26);
 });
 

@@ -47,6 +47,9 @@ createErrorBar({
   strokeWidth?: number;
   strokeDash?: "solid" | "dashed" | "dotted" | "dashdot" | readonly number[];
   opacity?: number;
+  lineCap?: "butt" | "round" | "square";
+  lineJoin?: "miter" | "round" | "bevel";
+  miterLimit?: number;
 } = {})
 ```
 
@@ -250,6 +253,9 @@ Set `caps: false` to omit cap layers. `capSize` must be positive and affects
 enabled caps only. `strokeWidth` is non-negative, `opacity` is between `0` and
 `1`, and `strokeDash` accepts a named style or an explicit non-negative dash
 array. The same appearance is assigned to the main rule and both caps.
+Cap/join/miter values use the shared
+[Mark Style](./appearance/mark-style.md#stroke-caps-joins-and-rounded-rectangles)
+contract and replay across all generated Rule children.
 
 ```javascript
 const styled = intervals.createErrorBar({
@@ -284,7 +290,8 @@ const edited = intervals.editErrorBar({
 ```
 
 The options are `target`, `data`, `x`, `y`, `xOffset`, `yOffset`, `groupBy`,
-`caps`, `capSize`, `stroke`, `strokeWidth`, `strokeDash`, `opacity`, and
+`caps`, `capSize`, `stroke`, `strokeWidth`, `strokeDash`, `opacity`, `lineCap`,
+`lineJoin`, `miterLimit`, and
 `statistics`. Omitted values retain their current setting.
 Omit `target` when the current or unique error bar is unambiguous.
 

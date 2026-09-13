@@ -712,8 +712,8 @@
         "other-complete-chart-facades",
         "advanced-authoring"
       ],
-      "bytes": 10940,
-      "sha256": "f77104c48491adfeabe4f4d0fc49f8245d3d058fbd60685f494f74328213a4a9"
+      "bytes": 11253,
+      "sha256": "acb407e5e827374d76ad2579948f95301f41ac0713d1fc4f40a3f01cac747efd"
     },
     {
       "order": 47,
@@ -876,8 +876,8 @@
         "tick-marks",
         "related"
       ],
-      "bytes": 5171,
-      "sha256": "afe215a136fc1ad07edd0564b859837085464053c234ede242755e232cb2709a"
+      "bytes": 5562,
+      "sha256": "8073d08f713f307a51f26184e43157a127169899f4eefbf8fe471be021e7c4da"
     },
     {
       "order": 57,
@@ -886,15 +886,15 @@
       "source": "api/marks/point.md",
       "headings": [
         "point-marks",
-        "createpointmark-id-data-shape-fill-opacity-stroke-strokewidth",
-        "editpointmark-target-shape-fill-opacity-stroke-strokewidth",
+        "createpointmark-id-data-shape-fill-opacity-stroke-strokewidth-linecap-linejoin-miterlimit",
+        "editpointmark-target-shape-fill-opacity-stroke-strokewidth-linecap-linejoin-miterlimit",
         "jitterpoints-target-channel-maxoffset-seed-key",
         "removejitter-target",
         "continue-with-encodings",
         "errors-and-limitations"
       ],
-      "bytes": 4872,
-      "sha256": "bec5a70ed420e6c9951db294317186ca10d6496bd5e36d58a9cc9809adeabbc3"
+      "bytes": 5405,
+      "sha256": "decfd5f3e7a0f551404c9b05947d3cb3ef3a372996fb6cfd62ec45d4116376ae"
     },
     {
       "order": 58,
@@ -904,19 +904,19 @@
       "headings": [
         "line-and-area-marks",
         "line-marks",
-        "createlinemark-id-data-stroke-strokewidth-opacity-curve-closed",
-        "editlinemark-target-stroke-strokewidth-opacity-curve-closed",
+        "createlinemark-id-data-stroke-strokewidth-opacity-curve-closed-linecap-linejoin-miterlimit",
+        "editlinemark-target-stroke-strokewidth-opacity-curve-closed-linecap-linejoin-miterlimit",
         "polar-lines-and-radar-paths",
         "area-marks",
-        "createareamark-id-data-fill-opacity-stroke-strokewidth-curve-missing",
-        "editareamark-target-fill-opacity-stroke-strokewidth-curve-missing",
+        "createareamark-id-data-fill-opacity-stroke-strokewidth-curve-missing-linecap-linejoin-miterlimit",
+        "editareamark-target-fill-opacity-stroke-strokewidth-curve-missing-linecap-linejoin-miterlimit",
         "arc-marks",
-        "createarcmark-id-data-innerradius-padangle-fill-opacity-stroke-strokewidth",
-        "editarcmark-target-innerradius-padangle-fill-opacity-stroke-strokewidth",
+        "createarcmark-id-data-innerradius-padangle-fill-opacity-stroke-strokewidth-linecap-linejoin-miterlimit",
+        "editarcmark-target-innerradius-padangle-fill-opacity-stroke-strokewidth-linecap-linejoin-miterlimit",
         "related"
       ],
-      "bytes": 7594,
-      "sha256": "1163cab7d974a539a72470f4bbecf4b49b94408eecd593042ada341ad451291e"
+      "bytes": 8186,
+      "sha256": "9c88b9c726ae944d55edb999390069e8b9c80c117c6e14c515f5667d8db0b5fd"
     },
     {
       "order": 59,
@@ -925,12 +925,12 @@
       "source": "api/marks/bar.md",
       "headings": [
         "bar-marks",
-        "createbarmark-id-data-fill-opacity-stroke-strokewidth",
+        "createbarmark-id-data-fill-opacity-stroke-strokewidth-cornerradius-linecap-linejoin-miterlimit",
         "edit-bar-mark",
         "related"
       ],
-      "bytes": 2136,
-      "sha256": "c4a72d27c161660e18d91e6c3d2a4e6ec2679329fccffca89cc42447c4f38911"
+      "bytes": 2812,
+      "sha256": "e66e393635c8dcfa9c79bf65d8f21d4f910dd8bb5ab3ad944a9cdd469e983060"
     },
     {
       "order": 60,
@@ -939,12 +939,12 @@
       "source": "api/marks/rule.md",
       "headings": [
         "rule-marks",
-        "createrulemark-id-data",
+        "createrulemark-id-data-stroke-strokewidth-strokedash-opacity-linecap-linejoin-miterlimit",
         "reference-lines-and-bands",
         "related"
       ],
-      "bytes": 5244,
-      "sha256": "30d0115424a9ea951e263aa29e2163eb6cad1d103a1ade319bbe32d030bfeb1b"
+      "bytes": 5599,
+      "sha256": "75fbf207068c39f2f799820b8c39bc990b418ae3c229eeadbacc8ef3fd1e75bc"
     },
     {
       "order": 61,
@@ -976,13 +976,13 @@
       "source": "api/marks/rect.md",
       "headings": [
         "rect-marks",
-        "createrectmark-id-data-fill-opacity-stroke-strokewidth",
-        "editrectmark-target-fill-opacity-stroke-strokewidth",
+        "createrectmark-id-data-fill-opacity-stroke-strokewidth-cornerradius-linecap-linejoin-miterlimit",
+        "editrectmark-target-fill-opacity-stroke-strokewidth-cornerradius-linecap-linejoin-miterlimit",
         "cell-labels-and-selection",
         "related"
       ],
-      "bytes": 4618,
-      "sha256": "58bf14d2d903ee7c90ee80ebcfddbe795b4d4b215f63104821875edafcd8f6aa"
+      "bytes": 5088,
+      "sha256": "4899d1d4ef2e46a85d4c3fba0e0d188a46483d3da706c1c7c95c9cf2ca103d6a"
     },
     {
       "order": 63,
@@ -1023,8 +1023,8 @@
         "errors-and-limitations",
         "related"
       ],
-      "bytes": 6621,
-      "sha256": "c0a6b114b8790e44da4f10c2f937d8830ec531d52133f3a831d279c6ef25b1ae"
+      "bytes": 6831,
+      "sha256": "73d8169f8de5abcfc44e828f4b55f062f88dedcb61467c0bc3a74d793ded0693"
     },
     {
       "order": 65,
@@ -1045,8 +1045,8 @@
         "errors-and-current-limitations",
         "related"
       ],
-      "bytes": 10690,
-      "sha256": "35a074fe671ec27b4009b30d52d723d4051e515e1511d1e5f35a803bc058fdcc"
+      "bytes": 11010,
+      "sha256": "c6a96c9cb0eba8cf53c6bce12eb173efa5ac425b89f8526dec6d39698c95673d"
     },
     {
       "order": 66,
@@ -1060,8 +1060,8 @@
         "inference-and-ownership",
         "editing-the-band"
       ],
-      "bytes": 7602,
-      "sha256": "10be443705b47415e8b8191f85f170537e8deb6112680a200489cdf2e80d72d5"
+      "bytes": 7820,
+      "sha256": "1d3b9872aa4819fd507fcdfa4b6a5ccb7022b5947eed1377a38080627ad2d383"
     },
     {
       "order": 67,
@@ -1077,8 +1077,8 @@
         "current-limitations",
         "related"
       ],
-      "bytes": 6443,
-      "sha256": "06e320f8ec9d5b036d514dca84acec858b27f9b4892e3304f1d77cd47dad14a4"
+      "bytes": 6669,
+      "sha256": "d6ac3111a82d752c3b52f303ec19f860a5ba107d8872e7f1249bbc63d8750fa6"
     },
     {
       "order": 68,
@@ -1093,8 +1093,8 @@
         "current-limitations",
         "related"
       ],
-      "bytes": 4556,
-      "sha256": "4d985cbdac64637b18db222f7c4b50c06c444ff211ad98c7edf628d669f5755f"
+      "bytes": 4765,
+      "sha256": "7115a675b2a9936a447cc254a480485f73ccf3ba2ec4bda4d0b52ce7185d52fc"
     },
     {
       "order": 69,
@@ -1111,8 +1111,8 @@
         "current-boundary",
         "related"
       ],
-      "bytes": 3971,
-      "sha256": "83a9f9245ad89fb11ec777d14f7cf2b2bc1c4ee5ddb95cd47efeb662659439ea"
+      "bytes": 4151,
+      "sha256": "8117fbe8d22c43f593bf11c1b7ace72f0285be8ccf131b2a13233cae5df65e72"
     },
     {
       "order": 70,
@@ -1402,12 +1402,13 @@
       "source": "api/appearance/mark-style.md",
       "headings": [
         "mark-style",
+        "stroke-caps-joins-and-rounded-rectangles",
         "stroke-color-and-linerule-appearance",
         "encodebarwidth-band-pixels-target",
         "related"
       ],
-      "bytes": 5896,
-      "sha256": "3ec9cb34c986133648e862ab2766d1e1f6f6c00b56e2e97a40fff9521d708045"
+      "bytes": 7835,
+      "sha256": "a5345f9c96ff6dd969c6602e33289c6d3a99ab8f0cb3a7701b34be3c5595163e"
     },
     {
       "order": 88,
@@ -2175,8 +2176,8 @@
         "exact-typescript-signatures",
         "related"
       ],
-      "bytes": 20727,
-      "sha256": "80a00867514f8e2e906a6bb2ed8a4bb8a34ebbd3d88ee360728ee0be45fb321e"
+      "bytes": 21017,
+      "sha256": "005cb8e50985ce95158e3ce5baa7cc5a61909823a25aabc65f2b63cee3bc065a"
     },
     {
       "order": 126,

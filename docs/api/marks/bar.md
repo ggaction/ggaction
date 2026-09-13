@@ -10,7 +10,7 @@ title: Bar Marks
 Bar marks represent binned counts, aggregate categories, grouped or stacked
 partitions, and observed quantitative intervals.
 
-## `createBarMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth? } = {})`
+## `createBarMark({ id?, data?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, lineCap?, lineJoin?, miterLimit? } = {})`
 
 ```javascript
 const program = chart()
@@ -23,9 +23,16 @@ The first ID is `"bar"` and data defaults to current data. Creation starts with
 an empty rect collection because binning, aggregation, stacking, grouping, and
 width determine the final rectangle count and geometry.
 
-Creation-time `fill`, `opacity`, `stroke`, and `strokeWidth` use the same
+Creation-time `fill`, `opacity`, `stroke`, `strokeWidth`, `cornerRadius`, `lineCap`,
+`lineJoin`, and `miterLimit` use the same
 validation and persistent materialization config as `editBarMark`. Constant
 fill conflicts with a later field-driven color encoding.
+
+A positive `cornerRadius` rounds all four corners of every final bar and is
+clamped independently to half that bar's smaller side. Stacked and grouped
+segments keep their own radius calculation. Set it to `0` to restore square
+rectangles. Stroke cap/join details and the requested radius survive Canvas,
+encoding, theme, highlight, legend, and facet replay.
 
 For an aggregate bar, combine an ordinal position and quantitative aggregate.
 Complete aggregate and ranged bars immediately use the default `0.72` band
@@ -44,7 +51,7 @@ bars or `encodeYOffset` for horizontal bars internally.
 Observed interval bars instead combine one categorical axis with `encodeYRange`
 or `encodeXRange`.
 
-## `editBarMark({ target?, fill?, opacity?, stroke?, strokeWidth? })` {#edit-bar-mark}
+## `editBarMark({ target?, fill?, opacity?, stroke?, strokeWidth?, cornerRadius?, lineCap?, lineJoin?, miterLimit? })` {#edit-bar-mark}
 
 ```javascript
 program.editBarMark({
@@ -58,6 +65,9 @@ The current or only bar is inferred when `target` is omitted. Constant fill
 conflicts with field-driven color, while opacity and outline remain editable.
 Geometry and semantic aggregation are unchanged and appearance is reapplied
 after Canvas or scale rematerialization.
+
+See [Mark Style](../appearance/mark-style.md#stroke-caps-joins-and-rounded-rectangles)
+for the closed cap/join values, defaults, and high-level pass-through rules.
 
 ## Related
 

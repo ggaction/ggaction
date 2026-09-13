@@ -11,6 +11,11 @@ sampled density intensities, extent, center, and count; they never contain color
 objects. Categories retain first source appearance order, use one shared observed or explicit value extent, and use one global
 intensity domain.
 
+The optional center Rule style accepts `lineCap`, `lineJoin`, and `miterLimit` and forwards them through create/edit
+replay. It does not accept `cornerRadius`; the generated gradient body has no new public Rect-style branch. Exact
+stroke values and defaults are owned by
+[the shared mark-style contract](MARKS.md#shared-stroke-and-rounded-rectangle-style-details).
+
 The body fill is a backend-neutral `LinearGradientPaint`. With no color encoding, `gradient.palette` supplies the density
 palette. A later categorical `encodeColor` owns category hue and density modulates that hue's lightness and opacity. The
 neutral density legend remains independent from the categorical hue scale.
@@ -32,7 +37,10 @@ createGradientPlot({
   center?: false | {
     type?: "mean" | "median",
     stroke?: NonEmptyString,
-    strokeWidth?: NonNegativeFinite
+    strokeWidth?: NonNegativeFinite,
+    lineCap?: LineCap,
+    lineJoin?: LineJoin,
+    miterLimit?: PositiveFinite
   },
   guides?: false | CreateGuidesOptions
 } = {})

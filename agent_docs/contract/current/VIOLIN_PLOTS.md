@@ -1,5 +1,9 @@
 # Violin plot contract
 
+The existing `area` style accepts `lineCap`, `lineJoin`, and `miterLimit` and forwards them to the generated Area
+owner through create/edit and lifecycle replay. It rejects `cornerRadius`. Exact values and defaults are owned by
+[the shared mark-style contract](MARKS.md#shared-stroke-and-rounded-rectangle-style-details).
+
 ## `createViolinPlot`
 
 ```javascript

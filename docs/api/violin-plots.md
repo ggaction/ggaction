@@ -101,6 +101,9 @@ When `strokeWidth` is supplied without a constant stroke, each outline follows
 its materialized fill. A category-color legend is omitted by default because
 the categorical axis already identifies the same field; request
 `guides: { legend: {} }` to show it explicitly.
+The `area` style also accepts `lineCap`, `lineJoin`, and `miterLimit` from the
+shared [Mark Style](./appearance/mark-style.md#stroke-caps-joins-and-rounded-rectangles)
+contract.
 
 ## Editing
 

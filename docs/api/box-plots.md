@@ -55,9 +55,9 @@ createBoxPlot({
 | `whisker` | `{ type: "tukey", factor? }` or `{ type: "minmax" }` | Tukey with factor `1.5` |
 | `width` | `{ band }`, where `0 < band < 1` | `{ band: 0.7 }` |
 | `outliers` | create Tukey outlier resources | `true` |
-| `box` | `fill`, `opacity`, `stroke`, `strokeWidth` | blue, opaque, `1.5` stroke |
-| `median` | `stroke`, `strokeWidth` | dark stroke with width `1.5` |
-| `outlier` | `shape`, `radius`, `opacity` | black diamond, radius `3`, opacity `0.75` |
+| `box` | `fill`, `opacity`, `stroke`, `strokeWidth`, `cornerRadius`, and stroke details | blue, opaque, `1.5` stroke, square corners |
+| `median` | `stroke`, `strokeWidth`, and stroke details | dark stroke with width `1.5` |
+| `outlier` | `shape`, `radius`, `opacity`, and stroke details | black diamond, radius `3`, opacity `0.75` |
 | `guides` | `false` or applicable axis/grid/legend options | omitted: no guides; explicit `{}` creates applicable guides |
 
 `createBoxPlot()` may also establish an incomplete owner first. Compatible
@@ -97,6 +97,8 @@ program.createBoxPlot({
 
 Set `outliers: false` to keep the Tukey summary and whiskers without creating
 an outlier dataset, layer, or graphic.
+The shape-detail vocabulary and lifecycle follow
+[Mark Style](./appearance/mark-style.md#stroke-caps-joins-and-rounded-rectangles).
 
 ## Editing a box plot
 

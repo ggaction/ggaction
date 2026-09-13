@@ -858,7 +858,10 @@ function buildPointLabels(factors) {
       fill: factors.fill,
       opacity: factors.opacity,
       stroke: "#ffffff",
-      strokeWidth: 0.8
+      strokeWidth: 0.8,
+      lineCap: "round",
+      lineJoin: "bevel",
+      miterLimit: 4
     });
   if (factors.strokeRemoval) {
     program = program.editPointMark({ target: "observations", stroke: false });
@@ -1126,7 +1129,10 @@ function buildArc(factors) {
       ...(factors.colorEncoding ? {} : { fill: staticFill }),
       opacity: factors.opacity,
       stroke: "#ffffff",
-      strokeWidth: 1.2
+      strokeWidth: 1.2,
+      lineCap: "round",
+      lineJoin: "bevel",
+      miterLimit: 4
     })
     .editArcMark({ target: "shareArcs", stroke: false })
     .editArcMark({ target: "shareArcs", stroke: "#ffffff", strokeWidth: 1.2 });

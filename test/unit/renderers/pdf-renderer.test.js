@@ -193,35 +193,71 @@ test("writes explicit and reset stroke details through shared Canvas drawers", a
   const directory = await mkdtemp(join(tmpdir(), "ggaction-pdf-stroke-"));
   t.after(() => rm(directory, { recursive: true, force: true }));
   const output = join(directory, "stroke-details.pdf");
-  const line = (id, y, details = {}) => ({
-    id,
-    type: "line",
-    properties: {
-      x1: 10,
-      y1: y,
-      x2: 90,
-      y2: y,
-      stroke: "black",
-      strokeWidth: 4,
-      ...details
-    }
+  const explicit = Object.freeze({
+    lineCap: "round",
+    lineJoin: "bevel",
+    miterLimit: 3
   });
+  const stroke = Object.freeze({ stroke: "black", strokeWidth: 4 });
   const graphicSpec = {
     objects: {
       canvas: {
         type: "canvas",
-        properties: { width: 100, height: 80 },
-        children: ["lines"]
+        properties: { width: 120, height: 120 },
+        children: ["shapes"]
       },
-      lines: {
+      shapes: {
         type: "collection",
         items: [
-          line("lines:explicit", 20, {
-            lineCap: "round",
-            lineJoin: "bevel",
-            miterLimit: 3
-          }),
-          line("lines:default", 50)
+          {
+            id: "shapes:rect-explicit",
+            type: "rect",
+            properties: {
+              x: 10, y: 10, width: 20, height: 10, fill: "white", ...stroke, ...explicit
+            }
+          },
+          {
+            id: "shapes:rect-default",
+            type: "rect",
+            properties: { x: 40, y: 10, width: 20, height: 10, fill: "white", ...stroke }
+          },
+          {
+            id: "shapes:circle-explicit",
+            type: "circle",
+            properties: { x: 20, y: 40, radius: 5, fill: "white", ...stroke, ...explicit }
+          },
+          {
+            id: "shapes:circle-default",
+            type: "circle",
+            properties: { x: 50, y: 40, radius: 5, fill: "white", ...stroke }
+          },
+          {
+            id: "shapes:line-explicit",
+            type: "line",
+            properties: { x1: 10, y1: 65, x2: 30, y2: 65, ...stroke, ...explicit }
+          },
+          {
+            id: "shapes:line-default",
+            type: "line",
+            properties: { x1: 40, y1: 65, x2: 60, y2: 65, ...stroke }
+          },
+          {
+            id: "shapes:path-explicit",
+            type: "path",
+            properties: {
+              commands: [{ op: "M", x: 10, y: 90 }, { op: "L", x: 30, y: 90 }],
+              ...stroke,
+              ...explicit
+            }
+          },
+          {
+            id: "shapes:path-default",
+            type: "path",
+            properties: {
+              commands: [{ op: "M", x: 40, y: 90 }, { op: "L", x: 60, y: 90 }],
+              ...stroke
+            }
+          }
         ]
       }
     },
@@ -229,10 +265,31 @@ test("writes explicit and reset stroke details through shared Canvas drawers", a
   };
 
   await renderToPDF({ graphicSpec }, { output });
-  const source = (await readFile(output)).toString("latin1");
+  const buffer = await readFile(output);
+  const source = buffer.toString("latin1");
+  const content = decodedPDFStreams(buffer);
 
   assert.match(source, /\/LC 1\s+\/LJ 2\s+\/LW 4\s+\/ML 3/);
   assert.match(source, /\/LC 0\s+\/LJ 0\s+\/LW 4\s+\/ML 10/);
+  const resources = [...source.matchAll(
+    /(\d+) 0 obj\s*<<([\s\S]*?)>>\s*endobj/g
+  )];
+  const resourceFor = pattern => {
+    const objectNumber = resources.find(([, , body]) => pattern.test(body))?.[1];
+    return objectNumber === undefined
+      ? undefined
+      : source.match(new RegExp(`(/G\\d+)\\s+${objectNumber} 0 R`))?.[1];
+  };
+  const explicitResource = resourceFor(
+    /\/LC 1\s+\/LJ 2\s+\/LW 4\s+\/ML 3/
+  );
+  const defaultResource = resourceFor(
+    /\/LC 0\s+\/LJ 0\s+\/LW 4\s+\/ML 10/
+  );
+  assert.ok(explicitResource);
+  assert.ok(defaultResource);
+  assert.equal(content.split(`${explicitResource} gs`).length - 1, 4);
+  assert.equal(content.split(`${defaultResource} gs`).length - 1, 4);
 });
 
 test("preserves hconcat text translations when child margins differ", async t => {

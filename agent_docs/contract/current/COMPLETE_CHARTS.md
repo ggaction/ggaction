@@ -7,6 +7,12 @@ Data는 explicit/current/unique, coordinate는 explicit/bound/unique/family defa
 Guide 생략/{}는 자기 layer의 compatible guide를 확보하고 false는 이번 확보만 생략한다.
 기존 guide를 삭제하거나 충돌하는 resource를 덮지 않는다. 모든 실패는 caller와 이전 program/trace를 보존한다.
 
+Every existing nested strokable mark style forwards `lineCap`, `lineJoin`, and `miterLimit` to its ordinary mark
+owner. Bar/Rect-owned nested styles also forward `cornerRadius`. This includes Polar, endpoint, statistical,
+density, rug, strip, raincloud, and other composite facade branches; unsupported branches remain closed-key errors.
+The exact vocabulary, defaults, geometry, and replay behavior live in
+[the shared mark-style contract](MARKS.md#shared-stroke-and-rounded-rectangle-style-details).
+
 ## `createECDFPlot`
 
 `createECDFPlot({ id?, data?, coordinate?, field, groupBy?, weight?, missing?, as?, color?, line?, labels?, guides? })`
