@@ -128,7 +128,7 @@ test("edits the bounded stroke-width legend surface", () => {
     titleStyle: { color: "#654321", fontSize: 15 }
   });
 
-  assert.equal(edited.guideConfigs.legend.strokeWidth.count, 3);
+  assert.equal(edited.guideConfigs.legend.strokeWidth.sampling.count, 3);
   assert.equal(edited.semanticSpec.guides.legend.strokeWidth.title, "Line weight");
   assert.equal(edited.graphicSpec.objects.strokeWidthLegendSymbols.items.length, 3);
   assert.equal(
@@ -143,5 +143,5 @@ test("edits the bounded stroke-width legend surface", () => {
     edited.graphicSpec.objects.strokeWidthLegendTitle.properties.fontSize,
     15
   );
-  assert.equal(program.guideConfigs.legend.strokeWidth.count, 5);
+  assert.equal(program.guideConfigs.legend.strokeWidth.sampling.count, 5);
 });

@@ -2853,7 +2853,7 @@
       "domain": "legend_and_title",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "`editLegend`",
+      "update": "`editLegend` edits content, layout, appearance, and exact sampled values",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",
@@ -2871,7 +2871,7 @@
       "domain": "legend_and_title",
       "status": "implemented",
       "lifecycle": "Mutable resource",
-      "update": "Replaces whole-target legend content and edits categorical, continuous, interval, size, and bounded stroke-width appearance",
+      "update": "Replace whole-target legend content, edit categorical, continuous, interval, size, and stroke-width appearance, or enter/reset exact sampled values",
       "audit": "Complete",
       "coverage": {
         "contract": "complete",

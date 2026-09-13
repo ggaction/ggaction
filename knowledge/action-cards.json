@@ -17166,6 +17166,11 @@
           "type": "string | undefined"
         },
         {
+          "name": "values",
+          "required": false,
+          "type": "readonly number[] | undefined"
+        },
+        {
           "name": "count",
           "required": false,
           "type": "number | undefined"
@@ -17266,6 +17271,10 @@
       ],
       "inference": [
         {
+          "input": "values",
+          "strategy": "documented-auto"
+        },
+        {
           "input": "target",
           "strategy": "explicit-current-unique-or-error"
         }
@@ -17288,6 +17297,11 @@
           "name": "title",
           "required": false,
           "type": "string | false | undefined"
+        },
+        {
+          "name": "values",
+          "required": false,
+          "type": "\"auto\" | readonly number[] | undefined"
         },
         {
           "name": "layout",
@@ -17371,7 +17385,7 @@
         }
       ],
       "callPatterns": [
-        "editLegend({ target?, channels?, title?, layout?, order?, position?, align?, direction? })"
+        "editLegend({ target?, channels?, title?, values?, layout?, order?, position?, align? })"
       ],
       "snippet": "program.editLegend({ channels: [\"color\", \"size\"], count: 3 })",
       "errors": [],

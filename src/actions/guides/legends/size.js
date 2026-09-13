@@ -1,6 +1,5 @@
 import { action } from "../../../core/action.js";
 import {
-  validateGeneratedItemLimit,
   validateNonEmptyString,
   validateKeys
 } from "../../../core/validation.js";
@@ -26,13 +25,17 @@ import {
   resolveContinuousBounds,
   resolveLegendBackgroundFromBounds,
   formatContinuousValues,
-  sampleContinuousValues,
   selectLegendLayer,
   styleContinuousText
 } from "./continuous/common.js";
 import { legendResourcePolicies } from "../../../materialization/guides/resources.js";
+import {
+  normalizeLegendSampling,
+  readLegendSampling,
+  resolveLegendSampleValues
+} from "./sampling.js";
 
-const SIZE_OPTIONS = Object.freeze(["target", "count", "position", "layout", "align",
+const SIZE_OPTIONS = Object.freeze(["target", "count", "values", "position", "layout", "align",
   "direction", "columns", "titlePosition", "offset", "itemGap", "title", "labels", "titleStyle", "border"]);
 
 export const SIZE_LEGEND_LABELS = Object.freeze({
@@ -96,9 +99,12 @@ export function resolveSizeLegendLayout(program, config) {
     offset: categorical.offset, itemGap: categorical.itemGap
   } : { position };
   const discrete = isDiscreteSizeScaleType(scale.type);
+  if (discrete && readLegendSampling(config).mode === "values") {
+    throw new Error("Discrete size legends do not support exact values.");
+  }
   const values = discrete
     ? undefined
-    : sampleContinuousValues(scale.domain, config.count);
+    : resolveLegendSampleValues(config, scale, "Size legend");
   const areas = discrete
     ? scale.range
     : mapSizeValues(values, scale);
@@ -195,14 +201,14 @@ export function resolveSizeLegendConfig(program, args = {}) {
   }
   const scale = requireScale(program, encoding.scale);
   const discrete = isDiscreteSizeScaleType(scale.type);
-  if (discrete && Object.hasOwn(args, "count")) {
-    throw new Error("Discrete size legends do not support count.");
+  if (discrete && (Object.hasOwn(args, "count") || Object.hasOwn(args, "values"))) {
+    throw new Error("Discrete size legends do not support count or exact values.");
   }
-  const count = discrete ? scale.range.length : args.count ?? 5;
-  if (!Number.isInteger(count) || count < 2) {
-    throw new RangeError("Size legend count must be an integer of at least 2.");
-  }
-  validateGeneratedItemLimit(count, "Size legend count");
+  const sampling = discrete ? undefined : normalizeLegendSampling(args, {
+    operation: "create",
+    label: "Size legend"
+  });
+  const count = discrete ? scale.range.length : undefined;
   return {
     target: layer.id,
     scale: encoding.scale,
@@ -210,7 +216,7 @@ export function resolveSizeLegendConfig(program, args = {}) {
     title: args.title ?? encoding.field,
     inferredTitle: args.title === undefined,
     domain: scale.domain,
-    count,
+    ...(discrete ? { count } : { sampling }),
     inheritAppearance: args.inheritAppearance === true,
     labels: normalizeLegendTextOptions(args.labels, "createLegend.labels", SIZE_LEGEND_LABELS),
     titleStyle: normalizeLegendTitleOptions(args.titleStyle, "createLegend.titleStyle", SIZE_LEGEND_TITLE_STYLE),

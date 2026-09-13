@@ -4212,6 +4212,8 @@ export interface LegendOptions {
   offset?: number;
   titlePosition?: "top" | "left";
   title?: string;
+  /** Exact ascending samples for continuous size, opacity, or stroke-width legends. Cannot be combined with count. */
+  values?: readonly number[];
   count?: number;
   gradient?: { length?: number; thickness?: number };
   symbol?: LegendSymbolRecipe;
@@ -4223,10 +4225,12 @@ export interface LegendOptions {
 }
 
 export interface EditLegendOptions
-  extends Omit<LegendOptions, "title"> {
+  extends Omit<LegendOptions, "title" | "values"> {
   /** Exact final content set for the whole target; omission preserves content. */
   channels?: LegendOptions["channels"];
   title?: string | "auto" | false;
+  /** Replace exact samples, or reset them to the remembered automatic count. */
+  values?: readonly number[] | "auto";
 }
 
 export interface EditLegendLayoutOptions {

@@ -78,8 +78,32 @@ const restored = edited.editLegendTitle({ title: false })
   .editLegendTitle({ title: "auto" });
 ```
 
+For continuous size, opacity, and stroke-width legends, `values` replaces the
+automatic samples with exact values:
+
+```javascript
+const exact = program.editLegend({ values: [10, 50, 100] });
+const automatic = exact.editLegend({ values: "auto" });
+const automaticWithNewCount = exact.editLegend({
+  values: "auto",
+  count: 4
+});
+```
+
+Entering exact mode remembers the previous automatic count. Replacing the
+array keeps that remembered count, and `values: "auto"` restores it. A
+count-only edit while exact mode is active is an error; give the reset and the
+new count together when both are intended. Exact arrays contain 1–100 finite,
+strictly increasing values inside the effective scale domain. They are not
+sorted or clamped. Layout, title, style, theme, and Canvas edits preserve the
+array. A later scale, data, encoding, or facet change that would put a stored
+sample outside its effective domain fails without changing the earlier
+program. On a combined categorical and size legend, exact samples currently
+require a standalone sampled legend target.
+
 Size samples retain the encoded area mapping. For continuous size scales, count
-must be an integer from 2 through 10,000. Discrete quantize, quantile, and
+must be an integer from 2 through 10,000 when automatic sampling is active.
+Discrete quantize, quantile, and
 threshold legends always show every interval and reject explicit `count`.
 Size labels use a default gap of 12 pixels after the sample slot, editable through
 `labels: { offset }`; title styles do not accept an offset. The slot is at least

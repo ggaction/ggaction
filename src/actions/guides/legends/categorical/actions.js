@@ -26,6 +26,7 @@ import {
   resolveTarget,
   sameValues
 } from "./resolve.js";
+import { readLegendSampling } from "../sampling.js";
 
 function finishLegend(program) {
   return hasLegendLane(program) ? program.rematerializeLegend() : program;
@@ -299,6 +300,11 @@ export function resolveLegendCreationPlan(program, args = {}, layers = program.s
     throw new Error("Combined size legend requires one eligible point mark or an explicit target.");
   }
   if (requestedPoint !== undefined) {
+    if (Object.hasOwn(args, "values")) {
+      throw new Error(
+        "Combined and categorical legends require a channel block selector for exact values."
+      );
+    }
     const { count, ...categoricalArgs } = args;
     const combined = requestedPoint.encoding?.size?.scale !== undefined &&
       (channels === undefined || wantsSize);
@@ -338,7 +344,8 @@ export function resolveLegendCreationPlan(program, args = {}, layers = program.s
       if (existing !== undefined && existing.target !== size.target) {
         throw new Error("Combined point series legend requires the active size legend to share its target.");
       }
-      if (existing !== undefined && count !== undefined && existing.count !== count) {
+      if (existing !== undefined && count !== undefined &&
+        readLegendSampling(existing).count !== count) {
         throw new Error("Existing size legend count must be edited before recreating the categorical block.");
       }
     }

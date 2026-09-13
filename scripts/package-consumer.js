@@ -1428,6 +1428,33 @@ async function testNodeConsumer(directory) {
       ),
       [1, 6]
     );
+    const exactWidthLegend = weightedRules.editLegend({
+      values: [0, 5, 10]
+    });
+    assert.deepEqual(
+      exactWidthLegend.graphicSpec.objects.strokeWidthLegendLabels.items.map(
+        item => item.properties.text
+      ),
+      ["0", "5", "10"]
+    );
+    assert.deepEqual(
+      exactWidthLegend.graphicSpec.objects.strokeWidthLegendSymbols.items.map(
+        item => item.properties.strokeWidth
+      ),
+      [1, 3.5, 6]
+    );
+    assert.deepEqual(exactWidthLegend.guideConfigs.legend.strokeWidth.sampling, {
+      mode: "values", values: [0, 5, 10], count: 5
+    });
+    assert.equal(
+      exactWidthLegend.editLegend({ values: "auto" })
+        .graphicSpec.objects.strokeWidthLegendSymbols.items.length,
+      5
+    );
+    assert.throws(
+      () => exactWidthLegend.editScale({ id: "strokeWidth", domain: [0, 4] }),
+      /outside the scale domain/
+    );
     for (const position of ["right", "left", "top", "bottom"]) {
       const roomy = weightedRules.removeLegend().editCanvas({ width: 1000, height: 800, margin: 250 });
       const edge = roomy.createLegend({ channels: ["strokeWidth"], position, count: 3, border: true });
@@ -2829,6 +2856,8 @@ async function testTypeScriptConsumer(directory) {
     program.orderCategories({ channel: "theta", values: ["C"] }).removeCategoryOrder({ channel: "theta" });
     program.createLegend({ order: { channel: "theta" } }).editLegend({ order: "scale" });
     program.editLegend({ order: { values: ["C", 1, false] } });
+    program.createLegend({ channels: ["size"], values: [1, 2, 3] });
+    program.editLegend({ values: [1, 2, 3] }).editLegend({ values: "auto", count: 4 });
     program.editLegend({ channels: ["color", "shape", "size"], count: 3 });
     program.editLegendLayout({ position: "top", layout: "edge", direction: "horizontal", columns: 2, titlePosition: "left" });
     program.editLegend({ channels: ["size"], position: "top", columns: 2, border: true, count: 3, title: "Mass", labels: { offset: 12, fontWeight: 700 }, titleStyle: { color: "red" } })
@@ -2846,6 +2875,10 @@ async function testTypeScriptConsumer(directory) {
 
     // @ts-expect-error legend order policies are exclusive
     program.editLegend({ order: { channel: "theta", values: ["C"] } });
+    // @ts-expect-error Creation does not accept the edit-only exact-value reset.
+    program.createLegend({ channels: ["size"], values: "auto" });
+    // @ts-expect-error Exact legend samples must be numeric.
+    program.editLegend({ values: ["1", "2"] });
     // @ts-expect-error radius is not a categorical order channel
     program.orderCategories({ channel: "radius", values: [1] });
     const barOptions: CreateBarPlotOptions = {

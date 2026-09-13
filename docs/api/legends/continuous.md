@@ -87,6 +87,26 @@ including `editLegendLayout`; `"left"` is unsupported.
 
 Their requested sample `count` is limited to the inclusive range `2`–`10,000`.
 
+Continuous size, opacity, and stroke-width legends can instead show exact
+numeric samples. Pass a finite, strictly increasing array with 1–100 values.
+The array is used as written: ggaction does not sort or deduplicate it. Every
+value must lie inside the effective scale domain, and log scales require
+positive values. `count` and `values` cannot appear in the same call.
+
+~~~javascript
+program.createLegend({
+  channels: ["opacity"],
+  values: [0, 0.25, 0.5, 1]
+});
+~~~
+
+Each supplied value goes through the channel's actual scale mapper. Reversing
+the scale therefore reverses the symbol appearance while the label order stays
+ascending. A mapped opacity, area, or width of zero keeps its label and layout
+slot. Exact values do not change the scale domain or the encoded marks.
+Discrete size legends continue to show every interval. Gradient color and
+stroke legends continue to use `count` for their tick labels.
+
 Continuous legend labels accept the same explicit value formats as axes and
 Text: `.0f`–`.12f`, `.0%`–`.12%`, `.0e`–`.12e`, or a compatible UTC pattern
 using `%Y`, `%m`, `%d`, `%b`, and `%%`. Set the token in `labels.format` on

@@ -255,7 +255,7 @@ Edit the existing radial grid. [Grids](../../api/grids.md#editing-grids)
 createLegend({
   target?, channels?, position?, layout?, align?, direction?, columns?, offset?,
   titlePosition?, title?, symbol?, labels?, titleStyle?, itemGap?, border?, count?,
-  gradient?, order?
+  values?, gradient?, order?
 })
 ```
 
@@ -277,6 +277,10 @@ with a 40-pixel occupied-bound gap. Categorical `layout` defaults to `"edge"`;
 `"legacy-bottom"` explicitly selects the former Canvas-bottom compact row and
 requires bottom position. Categorical `order` accepts `"scale"`, `{ values: [...] }`,
 or `{ channel: "x" | "y" | "theta" }` while preserving each category's color/shape/dash.
+Continuous size, opacity, and stroke-width legends accept 1–100 exact,
+finite, strictly increasing `values`. They use the actual channel scale without
+changing its domain or the encoded marks. `values` cannot be combined with
+`count` and is unsupported for discrete size and gradient legends.
 [Legends](../../api/legends.md)
 
 ## `editLegend`
@@ -284,7 +288,7 @@ or `{ channel: "x" | "y" | "theta" }` while preserving each category's color/sha
 ```javascript
 editLegend({
   target?, channels?, position?, layout?, align?, direction?, columns?, offset?, titlePosition?,
-  title?, symbol?, labels?, titleStyle?, itemGap?, border?, count?, gradient?, order?
+  title?, symbol?, labels?, titleStyle?, itemGap?, border?, count?, values?, gradient?, order?
 })
 ```
 
@@ -305,6 +309,9 @@ standalone size or stroke-width legend accepts the bounded `title`, `count`,
 `labels`, and `titleStyle` subset and remains right-positioned. Count and text
 styles persist through Canvas/scale/data replay; `false` hides a title and
 `"auto"` restores it from the encoded field.
+Sampled size, opacity, and stroke-width legends also accept exact numeric
+`values`; `values: "auto"` restores the remembered automatic count. A scale or
+dependent replay that would invalidate a stored exact sample fails atomically.
 [Legends](../../api/legends.md)
 
 ## Focused legend edits

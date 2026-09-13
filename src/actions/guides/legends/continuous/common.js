@@ -25,9 +25,11 @@ import { findLayer } from "../../../../selectors/layers.js";
 import { isOpacityLegendLayer } from "../../../../materialization/legends.js";
 import { findCanvasGraphic } from
   "../../../../materialization/graphicHierarchy.js";
+import { normalizeLegendSampling } from "../sampling.js";
 
 const OPTIONS = [
   "target", "channels", "position", "align", "offset", "title", "count",
+  "values",
   "gradient", "symbol", "labels", "titleStyle", "itemGap", "border",
   "direction", "columns", "titlePosition"
 ];
@@ -129,13 +131,24 @@ export function normalizeContinuousLegend(args, kind) {
   if (["left", "right"].includes(position) && align !== "center") {
     throw new Error("Side continuous legends require center alignment.");
   }
-  const count = args.count ?? 5;
-  if (!Number.isInteger(count) || count < 2) {
-    throw new RangeError(
-      "Continuous legend count must be an integer of at least 2."
-    );
+  if (kind === "gradient" && Object.hasOwn(args, "values")) {
+    throw new Error("Gradient legends do not support exact sample values.");
   }
-  validateGeneratedItemLimit(count, "Continuous legend count");
+  const sampling = kind === "opacity"
+    ? normalizeLegendSampling(args, {
+        operation: "create",
+        label: "Opacity legend"
+      })
+    : undefined;
+  const count = kind === "gradient" ? args.count ?? 5 : undefined;
+  if (kind === "gradient") {
+    if (!Number.isInteger(count) || count < 2) {
+      throw new RangeError(
+        "Continuous legend count must be an integer of at least 2."
+      );
+    }
+    validateGeneratedItemLimit(count, "Continuous legend count");
+  }
   const offset = args.offset ?? 30;
   validateNonNegative(offset, "Legend offset");
   const titlePosition = args.titlePosition ?? "top";
@@ -171,7 +184,7 @@ export function normalizeContinuousLegend(args, kind) {
     position,
     align,
     offset,
-    count,
+    ...(kind === "gradient" ? { count } : { sampling }),
     title: args.title,
     inferredTitle: args.title === undefined,
     labels: normalizeLegendTextOptions(

@@ -22,6 +22,8 @@ import {
   prepareScaleEdit,
   resolveScaleConsumerChannel
 } from "./editPolicy.js";
+import { hasExactLegendSamplingForScale } from
+  "../guides/legends/sampling.js";
 
 const OPTIONS = Object.freeze([
   "id", "type", "domain", "range", "nice", "zero", "clamp", "reverse",
@@ -169,7 +171,12 @@ export const editScale = action(
       legendTransitions
     };
     // Preflight every dependent mark and guide on a discarded immutable branch.
-    if (scale.type !== definition.type) applyScaleEdit(this, proposal);
+    if (
+      scale.type !== definition.type ||
+      hasExactLegendSamplingForScale(this, id)
+    ) {
+      applyScaleEdit(this, proposal);
+    }
     return applyScaleEdit(this, proposal);
   })
 );

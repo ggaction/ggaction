@@ -24,7 +24,7 @@ test("replaces every point legend content subset without changing encoded marks"
       assert.deepEqual(actual.semanticSpec.layers, original.semanticSpec.layers);
       assert.deepEqual(actual.semanticSpec.scales, original.semanticSpec.scales);
       assert.deepEqual(actual.graphicSpec.objects.points, original.graphicSpec.objects.points);
-      if (channels.includes("size")) assert.equal(actual.guideConfigs.legend.size.count, from.includes("size") ? 3 : 5);
+      if (channels.includes("size")) assert.equal(actual.guideConfigs.legend.size.sampling.count, from.includes("size") ? 3 : 5);
       assert.deepEqual(actual.editCanvas({ width: 1100 }).graphicSpec,
         original.editCanvas({ width: 1100 }).editLegend({ channels }).graphicSpec);
     }
@@ -42,7 +42,7 @@ test("keeps categorical titles, style, order and recipe while adding or replacin
   assert.equal(combined.graphicSpec.objects.seriesLegendTitle, undefined);
   assert.deepEqual(combined.guideConfigs.legend.series.labels, original.guideConfigs.legend.color.labels);
   assert.deepEqual(combined.guideConfigs.legend.series.domain, ["B", "A"]);
-  assert.equal(combined.guideConfigs.legend.size.count, 3);
+  assert.equal(combined.guideConfigs.legend.size.sampling.count, 3);
   const shaped = combined.editLegend({ channels: ["shape"], title: "auto", labels: { fontSize: 14 } });
   assert.equal(shaped.guideConfigs.legend.series.title, "g");
   assert.equal(shaped.guideConfigs.legend.series.labels.fontWeight, 700);
@@ -104,7 +104,7 @@ test("content selection names the whole target and preserves unrelated owners", 
   assert.deepEqual(edited.guideConfigs.legend.strokeWidth, multiple.guideConfigs.legend.strokeWidth);
   const width = multiple.editLegend({ target: "widths", channels: ["strokeWidth"], count: 3, title: false });
   assert.equal(width.graphicSpec.objects.strokeWidthLegendTitle, undefined);
-  assert.equal(width.guideConfigs.legend.strokeWidth.count, 3);
+  assert.equal(width.guideConfigs.legend.strokeWidth.sampling.count, 3);
 });
 
 

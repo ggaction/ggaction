@@ -100,7 +100,7 @@ test("validates stroke-width edits before changing stored state", () => {
       /does not accept|at least 2|positive|non-empty/
     );
   }
-  assert.equal(program.guideConfigs.legend.strokeWidth.count, 5);
+  assert.equal(program.guideConfigs.legend.strokeWidth.sampling.count, 5);
   assert.equal(program.trace.children.at(-1).op, "createLegend");
 });
 
@@ -109,7 +109,7 @@ test("routes compatible focused stroke-width edits through editLegend", () => {
     .editLegendLabels({ color: "#123456" })
     .editLegendTitle({ title: "Weight", fontWeight: 700 })
     .editLegendSymbols({ count: 4 });
-  assert.equal(program.guideConfigs.legend.strokeWidth.count, 4);
+  assert.equal(program.guideConfigs.legend.strokeWidth.sampling.count, 4);
   assert.equal(
     program.graphicSpec.objects.strokeWidthLegendLabels.items[0].properties.fill,
     "#123456"
@@ -133,7 +133,7 @@ test("removes one complete composite block and preserves retained blocks", () =>
   assert.equal(removed.semanticSpec.guides.legend.series, undefined);
   assert.equal(removed.graphicSpec.objects.seriesLegendSymbolPoints, undefined);
   assert.ok(removed.guideConfigs.legend.size);
-  assert.equal(removed.guideConfigs.legend.size.count, sizeBefore.count);
+  assert.equal(removed.guideConfigs.legend.size.sampling.count, sizeBefore.sampling.count);
   assert.equal(removed.guideConfigs.legend.size.inheritAppearance, false);
   assert.ok(removed.graphicSpec.objects.sizeLegendSymbols);
   assert.ok(removed.guideConfigs.legend.opacity);
@@ -148,7 +148,7 @@ test("removes one complete composite block and preserves retained blocks", () =>
     channels: ["color", "shape"]
   });
   assert.ok(recreated.guideConfigs.legend.series);
-  assert.equal(recreated.guideConfigs.legend.size.count, sizeBefore.count);
+  assert.equal(recreated.guideConfigs.legend.size.sampling.count, sizeBefore.sampling.count);
   assert.ok(recreated.graphicSpec.objects.seriesLegendSymbolPoints);
   assert.ok(recreated.graphicSpec.objects.sizeLegendSymbols);
 });

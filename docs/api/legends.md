@@ -19,8 +19,8 @@ title: Legends
 
 | Action | Shortest call | Inference/defaults | Result |
 | --- | --- | --- | --- |
-| `createLegend` | `createLegend()` | Current/unique compatible mark; right position | Categorical, size, stroke-width, gradient, interval, or opacity guide |
-| `editLegend` | `editLegend({ position: "left" })` | Unique existing legend; omitted properties retained | Rematerialized layout and appearance |
+| `createLegend` | `createLegend()` | Current/unique compatible mark; right position | Categorical, size, stroke-width, gradient, interval, or opacity guide; sampled channels accept exact `values` |
+| `editLegend` | `editLegend({ position: "left" })` | Unique existing legend; omitted properties retained | Rematerialized content, layout, and appearance |
 | Focused edits | `editLegendLabels({ fontSize: 11 })` | Same target inference as `editLegend` | One legend component rematerialized |
 | `removeLegend` | `removeLegend({ channels: ["size"] })` | Existing legend owner; omitted channels remove all | Selected complete blocks removed |
 
@@ -63,6 +63,10 @@ Stroke-width legends support all four edges through `createLegend` and
 label/title styles, and border are editable. Side positions require vertical
 direction, center alignment, one column, and a top title. Symbol recipes,
 gradient, and order are unsupported; edit quantitative mapping through `editScale`.
+Continuous size, opacity, and stroke-width legends accept `values` for exact
+ascending samples. Exact values must fit the effective domain and cannot be
+combined with `count`; use `editLegend({ values: "auto" })` to return to the
+remembered automatic sample count.
 Right-side layout requires sufficient right margin; bottom layout requires
 sufficient bottom margin; top layout requires enough top margin for its title,
 item grid, offset, and optional border. The library reports a layout error

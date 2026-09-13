@@ -1,6 +1,5 @@
 import { action } from "../../../core/action.js";
 import {
-  validateGeneratedItemLimit,
   validateNonEmptyString,
   validateKeys
 } from "../../../core/validation.js";
@@ -21,12 +20,15 @@ import {
   resolveContinuousBounds,
   resolveLegendBackgroundFromBounds,
   formatContinuousValues,
-  sampleContinuousValues,
   selectLegendLayer,
   styleContinuousText
 } from "./continuous/common.js";
+import {
+  normalizeLegendSampling,
+  resolveLegendSampleValues
+} from "./sampling.js";
 
-const OPTIONS = Object.freeze(["target", "count", "position", "layout", "align",
+const OPTIONS = Object.freeze(["target", "count", "values", "position", "layout", "align",
   "direction", "columns", "titlePosition", "offset", "itemGap", "title", "labels", "titleStyle", "border"]);
 
 export const STROKE_WIDTH_LEGEND_LABELS = Object.freeze({
@@ -76,7 +78,7 @@ function requireScale(program, id) {
 export function resolveStrokeWidthLegendLayout(program, config) {
   const scale = requireScale(program, config.scale);
   const { plot, canvas } = resolveContinuousBounds(program);
-  const values = sampleContinuousValues(scale.domain, config.count);
+  const values = resolveLegendSampleValues(config, scale, "Stroke-width legend");
   const widths = mapContinuousScaleValues(values, scale);
   const labels = formatContinuousValues(
     values,
@@ -162,20 +164,17 @@ export function resolveStrokeWidthLegendConfig(program, args = {}) {
   const layer = resolveLayer(program, args.target);
   const encoding = layer.encoding.strokeWidth;
   requireScale(program, encoding.scale);
-  const count = args.count ?? 5;
-  if (!Number.isInteger(count) || count < 2) {
-    throw new RangeError(
-      "Stroke-width legend count must be an integer of at least 2."
-    );
-  }
-  validateGeneratedItemLimit(count, "Stroke-width legend count");
+  const sampling = normalizeLegendSampling(args, {
+    operation: "create",
+    label: "Stroke-width legend"
+  });
   return {
     target: layer.id,
     scale: encoding.scale,
     ...normalizeItemLegendLayout({ ...args, itemGap: args.itemGap ?? 32 }),
     title: args.title ?? encoding.field,
     inferredTitle: args.title === undefined,
-    count,
+    sampling,
     labels: normalizeLegendTextOptions(args.labels, "createLegend.labels", STROKE_WIDTH_LEGEND_LABELS),
     titleStyle: normalizeLegendTitleOptions(args.titleStyle, "createLegend.titleStyle", STROKE_WIDTH_LEGEND_TITLE_STYLE),
     border: normalizeLegendBorder(args.border),
@@ -184,8 +183,8 @@ export function resolveStrokeWidthLegendConfig(program, args = {}) {
 }
 
 export function createStrokeWidthLegendFromConfig(program, config) {
-  resolveStrokeWidthLegendLayout(program, config);
-  const { count } = config;
+  const layout = resolveStrokeWidthLegendLayout(program, config);
+  const count = layout.widths.length;
   let next = program
     .editSemantic({ property: "guide.legend.strokeWidth.scale", value: config.scale })
     .editSemantic({ property: "guide.legend.strokeWidth.title", value: config.title })

@@ -41,7 +41,7 @@ type TitleWrap = "word" | "character";
 - Sampled opacity legend는 active quantitative opacity scale이 있는 Point와 Line을 지원한다.
   Line도 기존 circle sample recipe를 사용하며 constant assignment는 자신의 opacity block만 제거한다.
 
-- Signature: `createLegend({ target?, channels?, position?, layout?, align?, direction?, columns?, offset?, titlePosition?, title?, symbol?, labels?, titleStyle?, itemGap?, border?, count?, gradient?, order? })`.
+- Signature: `createLegend({ target?, channels?, position?, layout?, align?, direction?, columns?, offset?, titlePosition?, title?, symbol?, labels?, titleStyle?, itemGap?, border?, count?, values?, gradient?, order? })`.
 - `target`: compatible mark ID; 생략하면 current 또는 유일한 eligible mark를 추론한다. Sequential gradient는
   point와 aggregate bar를 지원한다.
 - `order`: categorical 전용 `"scale" | { values: readonly CategoryValue[] } | { channel: "x"|"y"|"theta" }`.
@@ -103,6 +103,8 @@ type TitleWrap = "word" | "character";
 - `border`: `false | true | { color?, lineWidth?, padding?, background? }`; false가 default이며 true는
   default bordered background를 만든다.
 - `count`: integer `2..10,000`; size, stroke-width, gradient tick-label 또는 opacity sample count이며 default `5`.
+- `values`: continuous size, opacity, stroke-width sampled legend 전용 `readonly number[]`다. 길이 `1..100`, 모든 값이 finite이고 엄격히 오름차순이어야 하며 caller 순서를 정렬하거나 중복을 제거하지 않는다. `-0` 뒤의 `0`도 중복으로 거절한다. `count`와 같은 호출에 함께 쓸 수 없다. Discrete size, categorical/combined legend와 color/stroke gradient는 거절한다.
+- Exact sample은 effective scale domain 안에 있어야 하고 log scale에서는 모두 양수여야 한다. Label 순서는 supplied value 순서이며 reverse는 이 순서를 바꾸지 않고 실제 channel mapper의 symbol appearance만 뒤집는다. Area/opacity/stroke-width가 0이어도 label과 item slot은 유지한다. Exact sample은 mark encoding이나 scale domain을 변경하지 않는다.
 - Interval item content는 공통 pure layout에서 text/swatch를 측정한 뒤 edge에 배치한다. Right 기본 origin은 plot.right+offset30, titleY=plot.y+20, itemY=plot.y+52+index*max(itemGap28,symbolHeight,labelFontSize)다. Left는 visible content 전체 폭을 빼고 label을 swatch 오른쪽에 둔다. Top/bottom은 plot 폭에 align하며 top title-grid gap12, inline title-grid gap20이다. Horizontal columns omission은 전 항목 한 row이며 direction은 cell fill 순서를 정한다. Hidden title은 grid/border 측정에서 제외한다. Interval background도 multi-block lane의 group bounds에 포함한다.
 - Categorical color/series의 hidden title은 grid height, inline prefix/gap과 border/fit에 포함하지 않는다. Hidden titleStyle/text/titlePosition 변경은 visible content geometry를 바꾸지 않는다. Legacy-bottom의 sample anchors는 고정하며 hidden border는 실제 item top에서 시작한다. Title 복원은 저장한 style을 사용하고 visible text가 Canvas를 넘으면 실패한다. Evidence: `test/unit/actions/guides/hidden-legend-bounds.test.js`, `test/contracts/hidden-categorical-layout.test.js`.
 - Opacity symbol은 단일 `{ type?: "point", radius?: number, fill?: string, stroke?: string, strokeWidth?: number }`다. Radius default7은 positive finite, fill/stroke는 non-empty string, strokeWidth는 non-negative finite다. LegendOptions와 focused symbol editor의 TypeScript 선언도 같은 recipe를 허용하며 createGuides.legend로 전달된다. Evidence: `test/contracts/opacity-legend-types.test.js`와 installed package TypeScript consumer.
@@ -142,7 +144,7 @@ type TitleWrap = "word" | "character";
 
 ### Formal values — `createLegend`
 
-- Implemented: `createLegend({ target?: UserId; channels?: readonly LegendChannel[]; position?: LegendPosition; layout?: "edge" | "legacy-bottom"; align?: LegendAlign; direction?: LegendDirection; columns?: PositiveInteger; offset?: NonNegativeFinite; titlePosition?: "top" | "left"; title?: NonEmptyString; symbol?: "auto" | LegendSymbolLayer | { layers: readonly LegendSymbolLayer[] }; labels?: LegendTextOptions; titleStyle?: TextStyle; itemGap?: PositiveFinite; border?: LegendBorder; count?: IntegerAtLeast2; gradient?: { length?: PositiveFinite; thickness?: PositiveFinite }; order?: "scale" | { values: readonly CategoryValue[] } | { channel: "x"|"y"|"theta" } } = {})`
+- Implemented: `createLegend({ target?: UserId; channels?: readonly LegendChannel[]; position?: LegendPosition; layout?: "edge" | "legacy-bottom"; align?: LegendAlign; direction?: LegendDirection; columns?: PositiveInteger; offset?: NonNegativeFinite; titlePosition?: "top" | "left"; title?: NonEmptyString; symbol?: "auto" | LegendSymbolLayer | { layers: readonly LegendSymbolLayer[] }; labels?: LegendTextOptions; titleStyle?: TextStyle; itemGap?: PositiveFinite; border?: LegendBorder; count?: IntegerAtLeast2; values?: readonly number[]; gradient?: { length?: PositiveFinite; thickness?: PositiveFinite }; order?: "scale" | { values: readonly CategoryValue[] } | { channel: "x"|"y"|"theta" } } = {})`
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
@@ -201,6 +203,10 @@ type TitleWrap = "word" | "character";
 - `count`
   - ✅ Covered: omission→5, integer `>=2`, `<2`/non-integer rejection for size block.
 - ✅ Covered: gradient tick-label and opacity sample count with the same boundary contract.
+- `values`
+  - ✅ Covered: continuous size/opacity/stroke-width exact samples, one-value and zero appearance, actual scale mapping, reverse, format, no mark/scale mutation and lower-level graphic equivalence.
+  - ✅ Covered: empty, length101, non-finite, duplicate, descending, count conflict, out-of-domain, log-domain and unsupported-family rejection with immutable caller/state.
+  - Evidence: `test/contracts/legend-values.test.js` and packed Node/browser consumers.
 - ✅ Covered: quantize/quantile/threshold interval labels, swatches, reverse와 exact primitive/public parity.
 - `gradient`
   - ✅ Covered: positive length/thickness, four position-derived orientations, point/aggregate-bar consumers and
@@ -224,15 +230,17 @@ encoding removal/recreation, combined legend와 Polar 가이드를 검증한다.
 
 ## `editLegend`
 
-- Signature: `editLegend({ target?, channels?, position?, layout?, align?, direction?, columns?, offset?, titlePosition?, title?, symbol?, labels?, titleStyle?, itemGap?, border?, count?, gradient?, order? })`.
+- Signature: `editLegend({ target?, channels?, position?, layout?, align?, direction?, columns?, offset?, titlePosition?, title?, symbol?, labels?, titleStyle?, itemGap?, border?, count?, values?, gradient?, order? })`.
 - `target` selects an existing logical legend by mark ID. It may be omitted only when exactly one target owns all
   active blocks; independent targets are ambiguous.
 - At least one non-target change is required. Mark encodings and scale bindings remain unchanged.
 - Explicit `channels`는 target 전체의 최종 non-empty content 집합이다. 기존 createLegend의 compatible subset만 허용하며 child selector가 아니다. Omission은 기존 content를 유지한다. 같은 kind의 config/count/title visibility를 보존하고 categorical color↔series revision은 styles/order/compatible explicit recipe를 보존한다. 새 block은 생성 기본값을 사용하고 제외된 block과 그 설정은 제거한다. 같은 호출의 style/layout patch는 최종 content에 적용한다. 다른 target의 occupied resource나 unsupported combination은 오류다.
 - 새 categorical+size의 size block은 위치와 무관하게 categorical labels/titleStyle을 상속한다. Default title color는 두 block 모두#334155다. 기존 standalone size를 결합하면 저장된 자체 style을 보존하며 standalone default title#0f172a는 유지한다. Size label offset default12 및 명시 shared offset도 유지한다. Evidence: `test/unit/actions/guides/combined-legend-appearance.test.js`, `test/contracts/combined-legend-appearance.test.js`, `test/unit/actions/guides/legend-family-lifecycle.test.js`.
 - Categorical+size의 labels/titleStyle patch는 각 block의 유효 스타일에 요청한 leaf만 병합한다. Title/count만 바꾸면 size의 자체 스타일과 inheritance를 보존한다. Inherited size label offset은 sample slot edge 기준 default12다. 생성 시 명시한 shared labels.offset은 size에도 보존하고 후속 inherited typography 편집에서도 유지한다.
-- Omitted values remain unchanged. Nested `labels`, `titleStyle`, `border`, and `gradient` objects merge supplied
+- Omitted properties remain unchanged. Nested `labels`, `titleStyle`, `border`, and `gradient` objects merge supplied
   leaves. `title` accepts a custom non-empty string, `"auto"` for field inference, or `false` to hide its graphic.
+- Continuous sampled size/opacity/stroke-width blocks accept `values: readonly number[] | "auto"`. An exact array enters or replaces exact mode while retaining the last automatic count. `values: "auto"` restores that count; it may accompany `count` to choose a new automatic count. Exact mode rejects a count-only edit and every edit rejects an exact array combined with count. New writes use canonical `{ sampling: { mode: "auto", count } }` or `{ sampling: { mode: "values", values, count } }`; legacy root `count` remains readable and is removed from continuous sampled configs on the next write.
+- Exact values survive legend layout/style/title, theme and Canvas replay. Scale, data, encoding or facet replay that makes a stored exact value invalid fails before returning a new program. Shared facets validate against the shared effective domain; independent facets require the values to fit every participating domain. A combined categorical+size target rejects root `values` until an explicit block selector chooses one sampled block.
 - Categorical `layout` omission은 stored edge/legacy-bottom을 보존한다. Style/title/border edit나 Canvas/scale/encoding replay가
   mode를 바꾸지 않는다. Explicit editLegend/editLegendLayout({layout})만 mode를 전환한다.
 - Categorical and combined point-size legends accept all four edges. Left requires center alignment and vertical flow. Edge 변경 시 omitted direction은 새 edge의 default로 추론한다. `count` rematerializes an existing size block.
@@ -253,7 +261,7 @@ encoding removal/recreation, combined legend와 Polar 가이드를 검증한다.
 
 ### Formal values — `editLegend`
 
-- Implemented: the signature above with `title?: NonEmptyString | "auto" | false` and `channels?: readonly LegendChannel[]` for whole-target replacement.
+- Implemented: the signature above with `title?: NonEmptyString | "auto" | false`, `channels?: readonly LegendChannel[]` for whole-target replacement, and `values?: readonly number[] | "auto"` for standalone sampled content.
 - Planned (NOT IMPLEMENTED): —
 - Proposed (NOT IMPLEMENTED): —
 
@@ -270,6 +278,7 @@ encoding removal/recreation, combined legend와 Polar 가이드를 검증한다.
 - ✅ Covered: standalone size count, exact equal-area radii, labels/titleStyle/offset, custom/hidden/auto title, focused editors, invalid/missing/ambiguous options, independent owners and Canvas/scale/filter replay.
 - ✅ Covered: stroke-width count, labels/titleStyle, custom/hidden/auto title, four-edge layout, borders, bounded option rejection and
   scale/Canvas rematerialization.
+- ✅ Covered: exact sampled values state transitions, remembered automatic count, reverse mapping, zero samples, scale/facet invalidation, theme/layout/Canvas replay, all renderer paths and strict TypeScript declarations (`test/contracts/legend-values.test.js`).
 - ✅ Covered: Canvas/edit action-order convergence, insufficient margin, immutability, trace, browser/PNG parity.
 - ✅ Covered: explicit edge/legacy-bottom default, mode transitions, focused color/title style preservation,
   Full/Basic nested creation, Canvas/scale/encoding-removal replay and incompatible legacy grid controls.

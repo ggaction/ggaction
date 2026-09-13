@@ -105,6 +105,8 @@ test.before(async () => {
           title: "Weight",
           labels: { color: "#123456" }
         });
+      const exactWidthLegend = editedLegend.editLegend({ values: [2, 5, 8] });
+      const automaticWidthLegend = exactWidthLegend.editLegend({ values: "auto" });
       const removedLegend = editedLegend.removeLegend({
         channels: ["strokeWidth"]
       });
@@ -651,12 +653,21 @@ test.before(async () => {
         legendCanvas: [legendCanvas.width, legendCanvas.height],
         widthLegendPosition: editedLegend.guideConfigs.legend.strokeWidth.position,
         widthLegendSVG: renderToSVG(editedLegend).startsWith("<svg "),
-        legendCount: editedLegend.guideConfigs.legend.strokeWidth.count,
+        legendCount: editedLegend.guideConfigs.legend.strokeWidth.sampling.count,
         legendTitle:
           editedLegend.graphicSpec.objects.strokeWidthLegendTitle.properties.text,
         legendLabelColor:
           editedLegend.graphicSpec.objects.strokeWidthLegendLabels.items[0]
             .properties.fill,
+        exactLegendValues: exactWidthLegend.guideConfigs.legend.strokeWidth.sampling.values,
+        exactLegendLabels: exactWidthLegend.graphicSpec.objects.strokeWidthLegendLabels.items.map(
+          item => item.properties.text
+        ),
+        exactLegendWidths: exactWidthLegend.graphicSpec.objects.strokeWidthLegendSymbols.items.map(
+          item => item.properties.strokeWidth
+        ),
+        restoredLegendCount:
+          automaticWidthLegend.guideConfigs.legend.strokeWidth.sampling.count,
         selectiveLegendRemoved:
           removedLegend.guideConfigs.legend === undefined &&
           removedLegend.graphicSpec.objects.strokeWidthLegendSymbols === undefined &&
@@ -821,6 +832,10 @@ test("imports and renders the packed browser entries", async () => {
     legendCount: 3,
     legendTitle: "Weight",
     legendLabelColor: "#123456",
+    exactLegendValues: [2, 5, 8],
+    exactLegendLabels: ["2", "5", "8"],
+    exactLegendWidths: [1, 4, 7],
+    restoredLegendCount: 3,
     selectiveLegendRemoved: true,
     axisCanvas: [240, 180],
     axisComponentsRemoved: true,

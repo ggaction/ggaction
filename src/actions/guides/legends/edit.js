@@ -4,7 +4,6 @@ import { normalizeLegendOrder } from "../../../grammar/categoryOrder.js";
 import { resolveDefinition } from "./categorical/resolve.js";
 import { action } from "../../../core/action.js";
 import {
-  validateGeneratedItemLimit,
   validateOptionObject
 } from "../../../core/validation.js";
 import { normalizeOptions } from "./categorical/options.js";
@@ -41,11 +40,12 @@ import {
   resolveStrokeWidthLegendLayout,
   createStrokeWidthLegendFromConfig
 } from "./strokeWidth.js";
+import { normalizeLegendSampling } from "./sampling.js";
 
 const OPTIONS = Object.freeze([
   "target", "channels", "position", "layout", "align", "direction", "columns", "offset",
   "titlePosition", "title", "symbol", "labels", "titleStyle", "itemGap",
-  "border", "count", "gradient", "order"
+  "border", "count", "values", "gradient", "order"
 ]);
 
 function mergeObject(previous, patch) {
@@ -82,7 +82,7 @@ function resolveContinuousEdit(program, kind, previous, args) {
     ? ["target", "position", "align", "offset", "title", "labels",
       "titleStyle", "titlePosition", "border", "count", "gradient"]
     : ["target", "position", "align", "offset", "title", "symbol", "labels",
-      "titleStyle", "titlePosition", "itemGap", "border", "count"];
+      "titleStyle", "titlePosition", "itemGap", "border", "count", "values"];
   for (const key of Object.keys(args)) {
     if (!allowed.includes(key)) throw new Error(`${kind} legend does not accept ${key}.`);
   }
@@ -103,12 +103,17 @@ function resolveContinuousEdit(program, kind, previous, args) {
   const enteringInline = kind === "opacity" &&
     titlePosition === "left" && previous.titlePosition !== "left";
   const labels = mergeObject(previous.labels, args.labels);
+  const sampling = gradient ? undefined : normalizeLegendSampling(args, {
+    previous,
+    operation: "edit",
+    label: "Opacity legend"
+  });
   const normalized = normalizeContinuousLegend({
     target: previous.target,
     position: args.position ?? previous.position,
     align: args.align ?? previous.align,
     offset: args.offset ?? previous.offset,
-    count: args.count ?? previous.count,
+    ...(gradient ? { count: args.count ?? previous.count } : {}),
     titlePosition,
     title,
     labels: enteringInline && args.labels?.offset === undefined
@@ -121,9 +126,11 @@ function resolveContinuousEdit(program, kind, previous, args) {
       symbol: args.symbol ?? previous.symbol
     } : {})
   }, gradient ? "gradient" : kind);
+  const { count: _legacyCount, ...canonicalPrevious } = previous;
   const config = {
-    ...previous,
+    ...(gradient ? previous : canonicalPrevious),
     ...normalized,
+    ...(gradient ? {} : { sampling }),
     inferredTitle,
     titleVisible
   };
@@ -245,24 +252,23 @@ function editInterval(program, previous, args, channel = "color") {
 function resolveSampledLegendEdit(program, kind, previous, args) {
   const size = kind === "size";
   const label = size ? "size" : "stroke-width";
-  const allowed = ["target", "title", "count", "labels", "titleStyle",
+  const allowed = ["target", "title", "count", "values", "labels", "titleStyle",
     "position", "layout", "align", "direction", "columns", "titlePosition", "offset", "itemGap", "border"];
   for (const key of Object.keys(args)) {
     if (!allowed.includes(key)) {
       throw new Error(`${label} legend does not accept ${key}.`);
     }
   }
-  if (size && args.count !== undefined &&
-    isDiscreteSizeScaleType(program.resolvedScales[previous.scale]?.type)) {
-    throw new Error("Discrete size legends do not support count.");
+  const discrete = size &&
+    isDiscreteSizeScaleType(program.resolvedScales[previous.scale]?.type);
+  if (discrete && (args.count !== undefined || args.values !== undefined)) {
+    throw new Error("Discrete size legends do not support count or exact values.");
   }
-  const count = args.count ?? previous.count;
-  if (!Number.isInteger(count) || count < 2) {
-    throw new RangeError(
-      `${label} legend count must be an integer of at least 2.`
-    );
-  }
-  validateGeneratedItemLimit(count, `${label} legend count`);
+  const sampling = discrete ? undefined : normalizeLegendSampling(args, {
+    previous,
+    operation: "edit",
+    label: `${size ? "Size" : "Stroke-width"} legend`
+  });
   const layer = findLayer(program, previous.target);
   const titleMode = args.title;
   const inferredTitle = titleMode === "auto"
@@ -274,12 +280,14 @@ function resolveSampledLegendEdit(program, kind, previous, args) {
   const title = titleMode === "auto"
     ? layer?.encoding?.[kind]?.field
     : typeof titleMode === "string" ? titleMode : previous.title;
+  const { count: _legacyCount, ...continuousPrevious } = previous;
+  const canonicalPrevious = discrete ? previous : continuousPrevious;
   const config = {
-    ...previous,
+    ...canonicalPrevious,
     title,
     inferredTitle,
     titleVisible,
-    count,
+    ...(discrete ? {} : { sampling }),
     ...(size ? { inheritAppearance: false } : {}),
     labels: normalizeLegendTextOptions(
       args.labels,
@@ -322,11 +330,23 @@ function editSampledLegend(program, kind, previous, args) {
 
 function resolveCompanionSizeEdit(program, previous, size, args) {
   if (size === undefined) return undefined;
-  if (args.count !== undefined &&
-    isDiscreteSizeScaleType(program.resolvedScales[size.scale]?.type)) {
-    throw new Error("Discrete size legends do not support count.");
+  const discrete = isDiscreteSizeScaleType(
+    program.resolvedScales[size.scale]?.type
+  );
+  if (discrete && (args.count !== undefined || args.values !== undefined)) {
+    throw new Error("Discrete size legends do not support count or exact values.");
   }
-  const config = { ...size, count: args.count ?? size.count };
+  const sampling = discrete ? undefined : normalizeLegendSampling(args, {
+    previous: size,
+    operation: "edit",
+    label: "Size legend"
+  });
+  const { count: _legacyCount, ...continuousSize } = size;
+  const canonicalSize = discrete ? size : continuousSize;
+  const config = {
+    ...canonicalSize,
+    ...(discrete ? {} : { sampling })
+  };
   if (args.labels === undefined && args.titleStyle === undefined) return config;
   const labels = size.inheritAppearance
     ? { ...previous.labels, offset: size.labels.offset } : size.labels ?? SIZE_LEGEND_LABELS;
@@ -338,6 +358,11 @@ function resolveCompanionSizeEdit(program, previous, size, args) {
 }
 
 function resolveCategoricalEdit(program, kind, previous, size, args, storedOrder = program.semanticSpec.guides.legend?.[kind]?.order) {
+  if (args.values !== undefined) {
+    throw new Error(
+      "Combined and categorical legends require a channel block selector for exact values."
+    );
+  }
   if (args.gradient !== undefined) {
     throw new Error("Categorical legends do not accept gradient.");
   }
@@ -390,12 +415,6 @@ function resolveCategoricalEdit(program, kind, previous, size, args, storedOrder
     : normalizeLegendOrder(args.order);
   // Resolve the final domain before changing semantic/config/graphic state.
   resolveDefinition(program, findLayer(program, previous.target), previous.channels, title, order);
-  if (args.count !== undefined) {
-    if (!Number.isInteger(args.count) || args.count < 2) {
-      throw new RangeError("Size legend count must be an integer of at least 2.");
-    }
-    validateGeneratedItemLimit(args.count, "Size legend count");
-  }
   return { config, order, titleMode, title, titleVisible, sizeConfig: resolveCompanionSizeEdit(program, previous, size, args) };
 }
 
@@ -528,6 +547,14 @@ export const editLegend = action(
     const target = resolveLegendTarget(this, args.target, "editLegend");
     if (args.channels !== undefined) return editLegendContent(this, target, args);
     const configs = this.guideConfigs.legend ?? {};
+    const ownedKinds = Object.keys(configs).filter(
+      kind => configs[kind]?.target === target
+    );
+    if (args.values !== undefined && ownedKinds.length > 1) {
+      throw new Error(
+        "A target with multiple legend blocks requires a channel block selector for exact values."
+      );
+    }
     const categoricalKinds = ["series", "color", "stroke"].filter(
       kind => configs[kind]?.target === target
     );

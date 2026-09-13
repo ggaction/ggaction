@@ -11954,8 +11954,8 @@ Cartesian or Polar coordinate. Ambiguous resources require explicit IDs.
 
 | Action | Shortest call | Inference/defaults | Result |
 | --- | --- | --- | --- |
-| `createLegend` | `createLegend()` | Current/unique compatible mark; right position | Categorical, size, stroke-width, gradient, interval, or opacity guide |
-| `editLegend` | `editLegend({ position: "left" })` | Unique existing legend; omitted properties retained | Rematerialized layout and appearance |
+| `createLegend` | `createLegend()` | Current/unique compatible mark; right position | Categorical, size, stroke-width, gradient, interval, or opacity guide; sampled channels accept exact `values` |
+| `editLegend` | `editLegend({ position: "left" })` | Unique existing legend; omitted properties retained | Rematerialized content, layout, and appearance |
 | Focused edits | `editLegendLabels({ fontSize: 11 })` | Same target inference as `editLegend` | One legend component rematerialized |
 | `removeLegend` | `removeLegend({ channels: ["size"] })` | Existing legend owner; omitted channels remove all | Selected complete blocks removed |
 
@@ -11994,6 +11994,10 @@ Stroke-width legends support all four edges through `createLegend` and
 label/title styles, and border are editable. Side positions require vertical
 direction, center alignment, one column, and a top title. Symbol recipes,
 gradient, and order are unsupported; edit quantitative mapping through `editScale`.
+Continuous size, opacity, and stroke-width legends accept `values` for exact
+ascending samples. Exact values must fit the effective domain and cannot be
+combined with `count`; use `editLegend({ values: "auto" })` to return to the
+remembered automatic sample count.
 Right-side layout requires sufficient right margin; bottom layout requires
 sufficient bottom margin; top layout requires enough top margin for its title,
 item grid, offset, and optional border. The library reports a layout error
@@ -12297,6 +12301,26 @@ including `editLegendLayout`; `"left"` is unsupported.
 
 Their requested sample `count` is limited to the inclusive range `2`–`10,000`.
 
+Continuous size, opacity, and stroke-width legends can instead show exact
+numeric samples. Pass a finite, strictly increasing array with 1–100 values.
+The array is used as written: ggaction does not sort or deduplicate it. Every
+value must lie inside the effective scale domain, and log scales require
+positive values. `count` and `values` cannot appear in the same call.
+
+~~~javascript
+program.createLegend({
+  channels: ["opacity"],
+  values: [0, 0.25, 0.5, 1]
+});
+~~~
+
+Each supplied value goes through the channel's actual scale mapper. Reversing
+the scale therefore reverses the symbol appearance while the label order stays
+ascending. A mapped opacity, area, or width of zero keeps its label and layout
+slot. Exact values do not change the scale domain or the encoded marks.
+Discrete size legends continue to show every interval. Gradient color and
+stroke legends continue to use `count` for their tick labels.
+
 Continuous legend labels accept the same explicit value formats as axes and
 Text: `.0f`–`.12f`, `.0%`–`.12%`, `.0e`–`.12e`, or a compatible UTC pattern
 using `%Y`, `%m`, `%d`, `%b`, and `%%`. Set the token in `labels.format` on
@@ -12523,8 +12547,32 @@ const restored = edited.editLegendTitle({ title: false })
   .editLegendTitle({ title: "auto" });
 ```
 
+For continuous size, opacity, and stroke-width legends, `values` replaces the
+automatic samples with exact values:
+
+```javascript
+const exact = program.editLegend({ values: [10, 50, 100] });
+const automatic = exact.editLegend({ values: "auto" });
+const automaticWithNewCount = exact.editLegend({
+  values: "auto",
+  count: 4
+});
+```
+
+Entering exact mode remembers the previous automatic count. Replacing the
+array keeps that remembered count, and `values: "auto"` restores it. A
+count-only edit while exact mode is active is an error; give the reset and the
+new count together when both are intended. Exact arrays contain 1–100 finite,
+strictly increasing values inside the effective scale domain. They are not
+sorted or clamped. Layout, title, style, theme, and Canvas edits preserve the
+array. A later scale, data, encoding, or facet change that would put a stored
+sample outside its effective domain fails without changing the earlier
+program. On a combined categorical and size legend, exact samples currently
+require a standalone sampled legend target.
+
 Size samples retain the encoded area mapping. For continuous size scales, count
-must be an integer from 2 through 10,000. Discrete quantize, quantile, and
+must be an integer from 2 through 10,000 when automatic sampling is active.
+Discrete quantize, quantile, and
 threshold legends always show every interval and reject explicit `count`.
 Size labels use a default gap of 12 pixels after the sample slot, editable through
 `labels: { offset }`; title styles do not accept an offset. The slot is at least
@@ -16542,7 +16590,7 @@ Edit the existing radial grid. [Grids](./api/grids/#editing-grids)
 createLegend({
   target?, channels?, position?, layout?, align?, direction?, columns?, offset?,
   titlePosition?, title?, symbol?, labels?, titleStyle?, itemGap?, border?, count?,
-  gradient?, order?
+  values?, gradient?, order?
 })
 ```
 
@@ -16564,6 +16612,10 @@ with a 40-pixel occupied-bound gap. Categorical `layout` defaults to `"edge"`;
 `"legacy-bottom"` explicitly selects the former Canvas-bottom compact row and
 requires bottom position. Categorical `order` accepts `"scale"`, `{ values: [...] }`,
 or `{ channel: "x" | "y" | "theta" }` while preserving each category's color/shape/dash.
+Continuous size, opacity, and stroke-width legends accept 1–100 exact,
+finite, strictly increasing `values`. They use the actual channel scale without
+changing its domain or the encoded marks. `values` cannot be combined with
+`count` and is unsupported for discrete size and gradient legends.
 [Legends](./api/legends/)
 
 ## `editLegend`
@@ -16571,7 +16623,7 @@ or `{ channel: "x" | "y" | "theta" }` while preserving each category's color/sha
 ```javascript
 editLegend({
   target?, channels?, position?, layout?, align?, direction?, columns?, offset?, titlePosition?,
-  title?, symbol?, labels?, titleStyle?, itemGap?, border?, count?, gradient?, order?
+  title?, symbol?, labels?, titleStyle?, itemGap?, border?, count?, values?, gradient?, order?
 })
 ```
 
@@ -16592,6 +16644,9 @@ standalone size or stroke-width legend accepts the bounded `title`, `count`,
 `labels`, and `titleStyle` subset and remains right-positioned. Count and text
 styles persist through Canvas/scale/data replay; `false` hides a title and
 `"auto"` restores it from the encoded field.
+Sampled size, opacity, and stroke-width legends also accept exact numeric
+`values`; `values: "auto"` restores the remembered automatic count. A scale or
+dependent replay that would invalidate a stored exact sample fails atomically.
 [Legends](./api/legends/)
 
 ## Focused legend edits

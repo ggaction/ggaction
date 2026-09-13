@@ -14,13 +14,13 @@ import {
   resolveContinuousLegendLayer,
   resolveLegendBackgroundFromBounds,
   resolveLegendTextBounds,
-  sampleContinuousValues,
   styleContinuousText,
   validateNonNegative,
   validatePositive
 } from "./common.js";
 import { resolveLegendGraphicPlacement } from
   "../../../../materialization/graphicHierarchy.js";
+import { resolveLegendSampleValues } from "../sampling.js";
 
 const SYMBOL_OPTIONS = Object.freeze([
   "type", "radius", "fill", "stroke", "strokeWidth"
@@ -85,7 +85,7 @@ function resolveOpacityConfig(program, config) {
 function resolveOpacityLayout(program, config, scale) {
   const { plot, canvas } = resolveContinuousBounds(program);
   const vertical = ["right", "left"].includes(config.position);
-  const values = sampleContinuousValues(scale.domain, config.count);
+  const values = resolveLegendSampleValues(config, scale, "Opacity legend");
   const texts = formatContinuousValues(
     values,
     scale.domain,
@@ -166,8 +166,9 @@ function resolveOpacityLayout(program, config, scale) {
         config.labels.offset - symbolExtent
       : plot.y + plot.height + config.offset +
         (config.titleVisible === false ? 0 : config.titleStyle.fontSize + 12) + symbolExtent;
+    const samplePitch = values.length === 1 ? 0 : width / (values.length - 1);
     symbols = values.map((_, index) => ({
-      x: startX + index * width / (values.length - 1),
+      x: startX + index * samplePitch,
       y
     }));
     labels = symbols.map(symbol => ({
