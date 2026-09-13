@@ -1,6 +1,6 @@
 # Roadmap 7 — 상세 구현 작업 패킷
 
-작성 기준: 2026-09-13. 현재 branch `codex/roadmap7-authoring-refinement`, 마지막 구현 검증 checkpoint `73e3d53e`. 이 문서는 이미 승인된 Roadmap 7을 구현자가 기능 단위로 끝까지 실행하기 위한 **작업 분해와 종료 절차**다. Phase 7 이후의 함수·state·transition·test를 한 문서에서 기계적으로 실행하려면 [무추론 구현 명세](LOW_INFERENCE_IMPLEMENTATION_SPEC.md)를 함께 따른다. 공개 API의 정확한 의미·수식·기본값은 각 `features/*.md`가 canonical owner이며, 이 문서는 그 계약을 어느 파일에 어떤 순서로 구현하고 무엇으로 검증할지를 소유한다.
+작성 기준: 2026-09-13. 현재 branch `codex/roadmap7-authoring-refinement`, 마지막 구현 검증 checkpoint `5832228c`. 이 문서는 이미 승인된 Roadmap 7을 구현자가 기능 단위로 끝까지 실행하기 위한 **작업 분해와 종료 절차**다. Phase 8 이후의 함수·state·transition·test를 한 문서에서 기계적으로 실행하려면 [무추론 구현 명세](LOW_INFERENCE_IMPLEMENTATION_SPEC.md)를 함께 따른다. 공개 API의 정확한 의미·수식·기본값은 각 `features/*.md`가 canonical owner이며, 이 문서는 그 계약을 어느 파일에 어떤 순서로 구현하고 무엇으로 검증할지를 소유한다.
 
 ## 1. 현재 상태와 실행 경계
 
@@ -20,6 +20,9 @@
 | R27 coordinate aspect | Implemented-primary | `ded3b073` | R33/R39/R43 소비 회귀 |
 | R29 Polar frame | Implemented-primary | `4aa9da65` | R33 label anchor와 R43 local panel 소비 회귀 |
 | R31 attached label removal | Implemented-primary | `73e3d53e` | R43 source-owned Text facet/repeat 소비 회귀 |
+| R32 selected final-item labels | Implemented-primary | `ee3f3b02` | R43 facet/repeat 소비 회귀 |
+| R33 semantic label anchors | Implemented-primary | `95968031` | R43 facet/repeat 소비 회귀 |
+| R36 dynamic statistical references | Implemented-primary | `d7136174`, 통합 `5832228c` | R25 resource collector 통합 |
 
 완료 checkpoint의 pure core나 public API를 다른 이름으로 다시 만들지 않는다. 후속 기능이 새 consumer를 추가할 때 기존 owner에 consumer path와 regression만 보강한다.
 
@@ -27,12 +30,11 @@
 
 순서는 의존성 계약이다. 같은 번호의 소단계는 위에서 아래로 수행한다.
 
-1. Phase 7: R31 → R32 → R33 → R36 → 라벨/참조 통합.
-2. Phase 8: R37 → R38 → R39 → guide 통합.
-3. Phase 9: R47 → R49 → renderer/style 통합.
-4. Phase 10: R43 family matrix 전체.
-5. Phase 11: R25 reference registry와 안전 삭제.
-6. Phase 12: 25개 기능의 전체 lifecycle·metadata·package closeout.
+1. Phase 8: R37 → R38 → R39 → guide 통합.
+2. Phase 9: R47 → R49 → renderer/style 통합.
+3. Phase 10: R43 family matrix 전체.
+4. Phase 11: R25 reference registry와 안전 삭제.
+5. Phase 12: 25개 기능의 전체 lifecycle·metadata·package closeout.
 
 R19, R27, R29의 완료 checkpoint를 다시 구현하지 않는다. R43을 좌표·라벨·guide·theme보다 먼저 만들지 않는다. R25는 모든 새 reference schema가 생긴 뒤 구현한다.
 
@@ -56,9 +58,9 @@ R19, R27, R29의 완료 checkpoint를 다시 구현하지 않는다. R43을 좌�
 | R27 | coordinate aspect | Implemented-primary (`ded3b073`) | 완료 checkpoint + WP7.3/WP8.3/WP10/WP12 |
 | R29 | Polar frame | Implemented-primary (`4aa9da65`) | 완료 checkpoint + WP7.3/WP10/WP12 |
 | R31 | attached labels 삭제 | Implemented-primary (`73e3d53e`) | 완료 checkpoint + WP10/WP12 |
-| R32 | selected final-item labels | Proposed | WP7.2 |
-| R33 | semantic label anchors | Proposed | WP7.3 |
-| R36 | dynamic statistical references | Proposed | WP7.4 |
+| R32 | selected final-item labels | Implemented-primary (`ee3f3b02`) | 완료 checkpoint + WP10/WP12 |
+| R33 | semantic label anchors | Implemented-primary (`95968031`) | 완료 checkpoint + WP10/WP12 |
+| R36 | dynamic statistical references | Implemented-primary (`d7136174`, 통합 `5832228c`) | 완료 checkpoint + WP11/WP12 |
 | R37 | exact sampled legend values | Proposed | WP8.1 |
 | R38 | combined legend block edit | Proposed | WP8.2 |
 | R39 | typed display names·header strips | Proposed | WP8.3 |

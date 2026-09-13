@@ -1,6 +1,6 @@
 # Phase 7 — 라벨 lifecycle와 통계 주석
 
-상태: active. 모든 Gate는 승인됐다. R31 primary는 `73e3d53e`, R32 primary는 `ee3f3b02`에서 완료했고, 현재 실행 대상은 R33 semantic label anchors다. R31·R32의 facet/repeat 통합 셀은 R43이 소유한다.
+상태: completed-primary. 모든 Gate는 승인됐다. R31 `73e3d53e`, R32 `ee3f3b02`, R33 `95968031`, R36 `d7136174`와 label/reference 통합 `5832228c`를 구현·검증했다. R31·R32·R33의 advanced facet/repeat 통합 셀은 R43이 소유한다.
 
 ## 목표와 범위
 

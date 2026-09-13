@@ -856,7 +856,7 @@
         "R29",
         "R32"
       ],
-      "status": "Proposed",
+      "status": "Implemented-primary",
       "newPublicActions": [
         "editMarkLabelPlacement"
       ],
@@ -900,7 +900,7 @@
         "R02",
         "R19"
       ],
-      "status": "Proposed",
+      "status": "Implemented-primary",
       "newPublicActions": [],
       "extendedPublicSurfaces": [
         "createReferenceLine",
@@ -908,10 +908,11 @@
       ],
       "currentSourceFiles": [
         "src/actions/marks/references.js",
-        "src/actions/marks/rule/index.js",
-        "src/grammar/summary.js",
-        "src/materialization/planner.js",
-        "src/grammar/aggregate.js",
+        "src/grammar/statisticalReference.js",
+        "src/actions/scales/preview.js",
+        "src/actions/data/edit.js",
+        "src/actions/facets/derive.js",
+        "src/materialization/marks/index.js",
         "src/grammar/transformTopology.js"
       ],
       "existingRegressionTests": [

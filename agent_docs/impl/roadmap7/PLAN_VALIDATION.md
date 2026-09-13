@@ -201,3 +201,22 @@ boundary를 사용한다.
 | docs build 환경 | source generation과 47개 docs tests는 통과; host Ruby 2.6.10이라 Ruby 3.2+가 필요한 locked Jekyll build는 미실행 |
 | 열린 통합 cell | source-owned Text facet/repeat child-local replay와 R31/R32 조합은 R43에서 검증 |
 | 상태 연결 | Phase 7 active, R33 Implemented-primary, R36이 다음 WP |
+
+## 2026-09-13 R36와 Phase 7 closeout 검증
+
+R36은 `d7136174`에서 literal reference와 구별되는 dynamic statistical reference를 구현했다. reference owner는 source·axis·statistic·population·field mode를 requested state로 보존하고, generated dataset의 scalar 또는 band datum을 현재 source에서 다시 계산한다. `boundData`는 transparent mark filter 앞 authoring binding을, `visibleItems`는 최종 filter 뒤 item grain을 사용한다. source scale domain을 먼저 확정하고 reference consumer의 domain contribution을 차단해 통계값과 scale 사이의 feedback cycle도 제거했다.
+
+통합 검증에서 두 결함을 추가로 찾고 `5832228c`에서 고쳤다. 첫째, statistical reference가 aggregate series와 binned-position scale policy의 direct consumer로 계산돼 기존 source scale을 잘못 바꿀 수 있었다. statistical materialization의 scale policy 참여를 끄고 두 policy가 해당 consumer를 제외하도록 고쳤다. 둘째, derived data edit가 downstream `markFilter`를 새 upstream revision에 rebind하기 전에 filter revision을 materialize해 stale rows를 유지했다. filter target binding을 먼저 바꾼 뒤 새 revision을 계산하도록 순서를 고쳤다.
+
+| 검증 | 실제 결과 |
+| --- | --- |
+| R36 acceptance | R36-N01/N02/N03/N04/E01/L01 passed; `test/contracts/statistical-references.test.js`, `test/contracts/label-reference-lifecycle.test.js` |
+| lifecycle | derived revision → markFilter → named selection → selected semantic label/layout → bound/visible reference → highlight → source removal; facet-local reference; aggregate/binned scale policy |
+| 누적 | unit 2,373/2,373; contracts 438/438; docs 47/47; browser 73/73; 실패·skip 0 |
+| public knowledge | Full runtime/type/Current catalog; 272 compact cards 중 265 user-facing; statistical reference intent·relationship·MCP routing |
+| installed package | Node·strict TypeScript·MCP·browser 통과; 509 entries; packed 669,178; unpacked 3,366,497; SHA-256 `6fa1a3bb32be99744333688f813146dd18b8d3aeaa4ab67e0fd0725e2a3dd5e4` |
+| browser bundles | Full/Basic/SVG gzip 337,773/162,623/6,418 bytes |
+| generated artifacts | catalog/relationships/cards와 capabilities/reference/actions/signatures/metadata/search/machine freshness checks 통과 |
+| docs build 환경 | source generation과 47개 docs tests는 통과; host Ruby 2.6.10이라 Ruby 3.2+가 필요한 locked Jekyll build는 미실행 |
+| 남은 통합 cell | R31/R32/R33 advanced facet/repeat는 R43, 범용 statistical reference resource edge는 R25에서 검증 |
+| 상태 연결 | Phase 7 completed-primary, Phase 8 active, R37 exact legend values가 다음 WP |

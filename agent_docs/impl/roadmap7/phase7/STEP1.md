@@ -9,10 +9,11 @@
 - [x] W2 R32 selected final-item labels primary 구현·공개 surface·package 검증
 - [x] W3 R33 semantic label anchors primary 구현·공개 surface·package 검증
 - [x] R33 appearance 대상은 independent geometry oracle와 Canvas/SVG/PNG/PDF 경로로 Gate V 확인
-- [ ] 아래 wave 구현과 focused/cumulative tests 완료
-- [ ] types/current contracts/catalog/cards/MCP/docs/package 영향 갱신
-- [ ] Gate X 결과와 남은 후속 통합 cell 기록
-- [ ] 검증된 coherent change마다 commit/push하고 다음 Gate 범위 확인
+- [x] W4 R36 dynamic statistical references primary 구현·공개 surface·package 검증
+- [x] W5 label/reference/data-edit/scale-policy 통합과 focused/cumulative tests 완료
+- [x] types/current contracts/catalog/cards/MCP/docs/package 영향 갱신
+- [x] Gate X 결과와 남은 후속 통합 cell 기록
+- [x] 검증된 coherent change를 `d7136174`, `5832228c`로 commit/push하고 Phase 8 범위 확인
 
 계획 작성 시 모든 체크는 미완료다. Phase 0 은 제품 구현이 없으므로 해당 구현·시각 항목의 미적용 이유를 기록한다. Phase 12 는 새 시각 목표가 없으면 승인된 variant를 현재 코드에서 다시 실행해 검증한다.
 
@@ -54,6 +55,9 @@
 | W2 — public/package | `ee3f3b02` | unit 2,365/2,365; contracts 417/417; docs 47/47; browser 73/73; 271 cards(264 user-facing); package 508 entries, 658,057 packed, 3,310,799 unpacked; tar SHA-1 `c7ac391db14378489d54cfe86c80035fe58469dc`, SHA-256 `8a650ee9bedc3d93e1a77a5393426c0ff64ea7d6a4345dd0a1e85f70f4c2067c`; Full/Basic/SVG gzip 330,551/162,451/6,418 | 전체 coverage 실행은 변경 파일 밖의 기존 4개 파일 기준 미달만 보고; R33 뒤 재생성·재측정 | passed-primary |
 | W3 — R33 semantic label anchors | `95968031` | R33-N01/N02/N03/E01/L01/L02; Bar signed/reversed/zero/stack segment endpoints, directed Rect, Arc annular-sector fit, Cartesian·Polar Point support; hide/outside/allow; post-anchor dx/dy; placement/collision leader ownership·cleanup·atomic conflict; font/source/Canvas/Polar replay; Canvas/SVG/PNG/PDF parity | R43에서 source-owned Text facet/repeat child-local replay 통합 | complete-primary |
 | W3 — public/package | `95968031` | unit 2,373/2,373; contracts 428/428; docs 47/47; browser 73/73; 272 cards(265 user-facing); package 508 entries, 664,519 packed, 3,341,308 unpacked; tar SHA-256 `a09a1c895f3394b9ef7d2ac9fd55fa0d0c04d2bf7dc997a9df880e2b761fcedc`; Full/Basic/SVG gzip 334,645/162,451/6,418; catalog/relations/cards와 7개 docs freshness checks 통과 | Jekyll build는 host Ruby 2.6.10 때문에 미실행(Ruby 3.2+ 필요); R36 뒤 재생성·재측정 | passed-primary |
+| W4 — R36 dynamic statistical references | `d7136174` | R36-N01/N02/N03/N04/E01/L01; mean/median/min/max/quantile; boundData/visibleItems; generated statistical datasets; source/derived/filter/scale/facet/Canvas replay; removal closure; domain contribution 차단 | R25 범용 resource collector가 live statistical reference edge를 다시 전수 검증 | complete-primary |
+| W5 — Phase 7 integration | `5832228c` | derived revision → markFilter → named selection → selected semantic label/layout → bound/visible reference → highlight → source removal; aggregate series와 binned scale policy에서 statistical consumer 제외 | R31/R32/R33의 advanced facet/repeat child-local replay는 R43 owner | complete-primary |
+| Phase 7 public/package | `5832228c` | unit 2,373/2,373; contracts 438/438; docs 47/47; browser 73/73; 272 cards(265 user-facing); package 509 entries, 669,178 packed, 3,366,497 unpacked; tar SHA-256 `6fa1a3bb32be99744333688f813146dd18b8d3aeaa4ab67e0fd0725e2a3dd5e4`; Full/Basic/SVG gzip 337,773/162,623/6,418; installed Node/strict TypeScript/MCP/browser와 generated freshness 통과 | Jekyll build는 host Ruby 2.6.10 때문에 미실행(Ruby 3.2+ 필요); R43/R25 후속 cell 유지 | passed-primary |
 
 ## Gate 연결
 

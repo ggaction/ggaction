@@ -2,9 +2,9 @@
 
 ## 진행 상태
 
-- [ ] 범위·현재 source owner·선행 Phase 완료 상태 확인
-- [ ] Gate A 자료: 정확한 API/schema/defaults/오류/수치 oracle 작성·검증
-- [ ] 명시 승인 범위 기록 후 해당 구현 시작
+- [x] 범위·현재 source owner·선행 Phase 완료 상태 확인
+- [x] Gate A 자료: 정확한 API/schema/defaults/오류/수치 oracle 작성·검증
+- [x] 명시 승인 범위 기록 후 해당 구현 시작
 - [ ] appearance 대상은 primitive render와 target public chain으로 Gate V 확인
 - [ ] 아래 wave 구현과 focused/cumulative tests 완료
 - [ ] types/current contracts/catalog/cards/MCP/docs/package 영향 갱신

@@ -1,7 +1,7 @@
 # R36 — 데이터를 추적하는 통계 참조선·밴드
 
-원래 감사 번호: **36**. Primary owner: **Phase 7**. 상태: **Proposed / 구현 전**.
-아래 세부 API·수치 정책의 Gate는 승인됐다. 상태의 `Proposed`는 제품 구현·검증이 아직 완료되지 않았다는 뜻이다.
+원래 감사 번호: **36**. Primary owner: **Phase 7**. 상태: **Implemented-primary (`d7136174`; 통합 `5832228c`)**.
+아래 세부 API·수치 정책과 lifecycle은 제품 코드·공개 surface·패키지에서 구현됐고 Phase 7 통합 검증까지 완료했다. R25의 범용 resource collector 통합만 해당 후속 Phase가 소유한다.
 
 ## 목적과 현재 연결점
 
@@ -9,15 +9,18 @@
 
 현재 파일(저장소 root 상대 경로):
 - `src/actions/marks/references.js`
-- `src/actions/marks/rule/index.js`
-- `src/grammar/summary.js`
-- `src/materialization/planner.js`
+- `src/grammar/statisticalReference.js`
+- `src/actions/scales/preview.js`
+- `src/actions/data/edit.js`
+- `src/actions/facets/derive.js`
+- `src/materialization/marks/index.js`
+- `src/grammar/transformTopology.js`
 
 관련 항목: R02, R19. 파일이 후속 작업에서 이동하면 역할 owner를 찾아 경로를 갱신하고 비슷한 이름의 구현을 새로 중복 생성하지 않는다.
 
-## 권장 공개 API
+## 공개 API
 
-아래는 설계용 TypeScript다. 참조 타입은 [공통 계약](../COMMON_CONTRACT.md) 또는 current `types/program.d.ts`에서 가져오고, 실제 export 타입 이름은 API 동결 Gate에서 기록한다. API 예제를 현재 라이브러리에서 실행 가능하다고 문서화하지 않는다.
+아래 union은 `types/program.d.ts`와 runtime validator에 동일하게 구현됐다. `ReferenceStatistic`은 공개 타입으로 export되며 기존 literal signature와 dynamic signature를 구별한다.
 
 ```ts
 createReferenceLine({...ExistingStyle,
@@ -98,9 +101,9 @@ reference가 자기 domain에 기여하지 않도록 consumer policy에 명시�
 
 ## 완료 조건
 
-- [ ] 위 API의 최단 호출과 explicit 대상 호출, 누락/auto/false/empty 경계를 타입과 runtime으로 동기화했다.
-- [ ] 위 수치 oracle를 실제 capability test에 구현했고 계획 예제를 기대값 생성기로 재사용하지 않았다.
-- [ ] 기존 consumer와 새 consumer에 scale/mark/guide/label/selection/facet/Canvas replay를 검증했다.
-- [ ] Full 등록·타입 export·Current 계약·catalog·card·관계 trace·MCP·문서·installed consumer를 갱신했다.
-- [ ] 미지원 cell은 이유를 적었다. 이 문서에 명시한 필수 cell을 임의 제외하지 않았다.
-- [ ] 해당 Phase의 승인/검증 근거를 기록했다. 추측으로 완료 표시하지 않았다.
+- [x] 위 API의 최단 호출과 explicit 대상 호출, 누락/auto/false/empty 경계를 타입과 runtime으로 동기화했다.
+- [x] 위 수치 oracle를 `test/contracts/statistical-references.test.js`에 독립 기대값으로 구현했다.
+- [x] scale/mark/guide/label/selection/facet/Canvas replay와 aggregate series·binned scale policy를 `test/contracts/statistical-references.test.js`와 `test/contracts/label-reference-lifecycle.test.js`에서 검증했다.
+- [x] Full 등록·타입 export·Current 계약·catalog·card·관계 trace·MCP·문서·installed consumer를 갱신했다.
+- [x] Polar/Parallel, grouped lines, weight, callback은 이 Phase의 미지원 범위로 유지했고 범용 resource collector는 R25 owner에 연결했다.
+- [x] Phase 7 구현 `d7136174`와 통합 수정 `5832228c`, 실제 누적 검증을 Phase 7 STEP1에 기록했다.

@@ -21,8 +21,8 @@
 | R29 | 6 | [Polar 중심과 frame 반지름·배치](features/29-polar-frame.md) | `test/contracts/polar-frame.test.js`; pure grammar/type/MCP/package; `4aa9da65` | Implemented-primary / R33·R43 소비 회귀 대기 |
 | R31 | 7 | [원본 마크를 보존하는 붙임 라벨 삭제](features/31-remove-labels.md) | `test/contracts/remove-labels.test.js`; strict types; cards/MCP; installed package; `73e3d53e` | Implemented-primary / R43 facet·repeat 소비 회귀 대기 |
 | R32 | 7 | [선택된 final item만 라벨링](features/32-selected-labels.md) | `test/contracts/selected-labels.test.js`; strict types; cards/MCP; installed package; `ee3f3b02` | Implemented-primary / R43 facet·repeat 소비 회귀 대기 |
-| R33 | 7 | [의미 기반 라벨 anchor와 배치 정책](features/33-semantic-label-anchors.md) | feature 내 독립 oracle/완료 조건 → Phase 7 STEP1 evidence | Proposed / 미구현 |
-| R36 | 7 | [데이터를 추적하는 통계 참조선·밴드](features/36-statistical-references.md) | feature 내 독립 oracle/완료 조건 → Phase 7 STEP1 evidence | Proposed / 미구현 |
+| R33 | 7 | [의미 기반 라벨 anchor와 배치 정책](features/33-semantic-label-anchors.md) | `test/contracts/semantic-label-anchors.test.js`; `test/unit/layout/semantic-label-placement.test.js`; `95968031` | Implemented-primary / R43 facet·repeat 소비 회귀 대기 |
+| R36 | 7 | [데이터를 추적하는 통계 참조선·밴드](features/36-statistical-references.md) | `test/contracts/statistical-references.test.js`; `test/contracts/label-reference-lifecycle.test.js`; `d7136174`; `5832228c` | Implemented-primary / R25 resource collector 통합 대기 |
 | R37 | 8 | [연속 범례의 명시적인 표본값](features/37-legend-values.md) | feature 내 독립 oracle/완료 조건 → Phase 8 STEP1 evidence | Proposed / 미구현 |
 | R38 | 8 | [결합 범례의 channel block별 편집](features/38-legend-blocks.md) | feature 내 독립 oracle/완료 조건 → Phase 8 STEP1 evidence | Proposed / 미구현 |
 | R39 | 8 | [범주 표시명과 facet header 배치](features/39-display-names-headers.md) | feature 내 독립 oracle/완료 조건 → Phase 8 STEP1 evidence | Proposed / 미구현 |
@@ -32,7 +32,7 @@
 
 ## 후속 통합 의무
 
-- R02 data revisions는 Phase 7의 labels/references, Phase 8의 legend content, Phase 10의 Polar/Parallel source replay, Phase 11의 resources와 다시 검증한다.
+- R02 data revisions는 Phase 7 labels/references 통합을 `5832228c`에서 검증했다. Phase 8의 legend content, Phase 10의 Polar/Parallel source replay, Phase 11의 resources에서 다시 검증한다.
 - R20/21/22/23 scale consumers의 R19 atomic final validation은 `58d9e51a`에서 완료했다. R43
   nested/facet resolution과 R32/R36/R38의 새 consumer는 각 primary Phase에서 재검증한다.
 - R27/29 frame은 R33 anchors, R39 header occupied layout, R43 local panels에서 검증한다.

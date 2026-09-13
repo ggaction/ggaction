@@ -2,7 +2,7 @@
 
 문서 상태 — 현재 실행 계획.
 
-사용자가 감사 50개 항목 중 선택한 **25개**를 구현하는 현재 로드맵이다. **Phase 0–6과 Phase 7의 R31·R32 primary 구현이 완료됐고 R33을 실행한다**. 2026-09-13 사용자가 모든 Gate를 명시적으로 승인했으며, 각 Phase의 구현·검증 증거는 STEP 결과 원장에 누적한다. 아직 구현되지 않은 API를 Current로 표시하지 않는다. 탐색 상태는 [ROADMAP_INDEX.json](../ROADMAP_INDEX.json)이 관리한다.
+사용자가 감사 50개 항목 중 선택한 **25개**를 구현하는 현재 로드맵이다. **Phase 0–7 primary 구현을 완료했고 Phase 8의 R37을 실행한다**. 2026-09-13 사용자가 모든 Gate를 명시적으로 승인했으며, 각 Phase의 구현·검증 증거는 STEP 결과 원장에 누적한다. 아직 구현되지 않은 API를 Current로 표시하지 않는다. 탐색 상태는 [ROADMAP_INDEX.json](../ROADMAP_INDEX.json)이 관리한다.
 
 ## 의도와 성공 기준
 
