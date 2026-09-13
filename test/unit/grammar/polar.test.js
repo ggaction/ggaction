@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 import {
+  normalizePolarFrameOptions,
   polarDirection,
   polarToCartesian,
   resolvePolarFrame,
@@ -26,6 +27,78 @@ test("resolves a centered Polar frame from the limiting plot dimension", () => {
     availableRadius: 60
   });
   assert.equal(Object.isFrozen(frame), true);
+});
+
+test("normalizes closed Polar frame requests without mutating caller input", () => {
+  const input = Object.freeze({
+    center: Object.freeze({ x: 0.25, y: 0.5 }),
+    radius: Object.freeze({ unit: "fraction", value: 0.8 })
+  });
+  const normalized = normalizePolarFrameOptions(input);
+  assert.deepEqual(normalized, input);
+  assert.notEqual(normalized, input);
+  assert.equal(Object.isFrozen(normalized.center), true);
+  assert.equal(Object.isFrozen(normalized.radius), true);
+  assert.deepEqual(normalizePolarFrameOptions({}), {
+    center: { x: 0.5, y: 0.5 },
+    radius: { unit: "fraction", value: 1 }
+  });
+  assert.deepEqual(normalizePolarFrameOptions({
+    radius: { unit: "px", value: 24 }
+  }), {
+    center: { x: 0.5, y: 0.5 },
+    radius: { unit: "px", value: 24 }
+  });
+});
+
+test("resolves moved fraction and pixel Polar frames from exact geometry", () => {
+  const frameBounds = { x: 0, y: 0, width: 400, height: 200 };
+  assert.deepEqual(resolvePolarFrame(frameBounds, {
+    center: { x: 0.25, y: 0.5 },
+    radius: { unit: "fraction", value: 0.8 }
+  }), {
+    centerX: 100,
+    centerY: 100,
+    availableRadius: 80
+  });
+  assert.deepEqual(resolvePolarFrame(frameBounds, {
+    radius: { unit: "px", value: 60 }
+  }), {
+    centerX: 200,
+    centerY: 100,
+    availableRadius: 60
+  });
+});
+
+test("rejects malformed or overflowing requested Polar frames", () => {
+  for (const input of [
+    false,
+    { unknown: true },
+    { center: { x: -0.1, y: 0.5 } },
+    { center: { x: 0.5, y: Infinity } },
+    { center: { x: 0.5, y: 0.5, z: 0 } },
+    { radius: { unit: "fraction", value: 0 } },
+    { radius: { unit: "fraction", value: 1.1 } },
+    { radius: { unit: "px", value: NaN } },
+    { radius: { unit: "em", value: 1 } },
+    { radius: { unit: "px", value: 1, extra: true } }
+  ]) {
+    assert.throws(() => normalizePolarFrameOptions(input));
+  }
+  assert.throws(
+    () => resolvePolarFrame(
+      { x: 0, y: 0, width: 400, height: 200 },
+      { center: { x: 0.9, y: 0.5 }, radius: { unit: "px", value: 80 } }
+    ),
+    /exceeds the maximum radius 40/
+  );
+  assert.throws(
+    () => resolvePolarFrame(
+      { x: 0, y: 0, width: 400, height: 200 },
+      { center: { x: 0, y: 0.5 } }
+    ),
+    /positive radius/
+  );
 });
 
 test("maps public degrees clockwise from 12 o'clock", () => {

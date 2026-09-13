@@ -1269,7 +1269,7 @@ source row의 prototype을 바꾸거나 결과를 누락하지 않는다. 뒤 op
 
 ## `editCoordinate`
 
-- Signature: `editCoordinate({ target, aspect })`.
+- Signature: `editCoordinate({ target, aspect?, polarFrame? })`; at least one patch is required.
 - `target`: required existing coordinate ID. The action does not infer a coordinate.
 - `aspect`: `"auto"` or `{ mode, ratio, alignX?, alignY? }`.
   - `mode: "frame"` fixes the effective plot width/height ratio.
@@ -1278,6 +1278,15 @@ source row의 prototype을 바꾸거나 결과를 누락하지 않는다. 뒤 op
   - `ratio` must be a positive finite number. `alignX` and `alignY` accept `"start" | "center" | "end"` and default
     to `"center"`.
   - `"auto"` removes the stored aspect request and returns to the complete allocated plot bounds.
+- `polarFrame`: `"auto"` or `{ center?, radius? }`, available only for a Polar coordinate.
+  - `center: { x, y }` uses finite fractions from 0 through 1 inside the aspect-adjusted effective bounds and defaults to
+    `{ x: 0.5, y: 0.5 }`.
+  - `radius` is `{ unit: "fraction", value }` with `0 < value <= 1` or `{ unit: "px", value }` with a positive
+    finite value. It defaults to `{ unit: "fraction", value: 1 }`.
+  - The frame object is a complete replacement. Supplying only center restores the default radius; supplying only radius
+    restores the default center. `"auto"` removes the stored request.
+  - The resolved maximum is the minimum distance from the requested center to the four effective-bound edges. A pixel
+    radius larger than that maximum and a boundary center reject rather than clamp.
 - Effect: stores normalized requested aspect on the semantic coordinate, resolves one largest-fit effective rectangle inside
   the allocated plot, then rematerializes coordinate scales, marks, dependent labels, guides, layout resources, and highlights.
   Allocated Canvas bounds remain unchanged.
@@ -1289,8 +1298,8 @@ source row의 prototype을 바꾸거나 결과를 누락하지 않는다. 뒤 op
 
 ### Formal values — `editCoordinate`
 
-- Implemented: `editCoordinate({ target: UserId; aspect: "auto" | { mode: "frame" | "data"; ratio: PositiveFiniteNumber; alignX?: "start" | "center" | "end"; alignY?: "start" | "center" | "end" } })`.
-- Planned in the same action: `polarFrame` from Roadmap 7 R29.
+- Implemented: `editCoordinate({ target: UserId; aspect?: CoordinateAspect; polarFrame?: PolarFrameOptions })`, with at
+  least one patch required by the public type union.
 - Proposed (NOT IMPLEMENTED): coordinate type, attached-layer, viewport, clipping, and transpose edits.
 
 ### Value coverage — `editCoordinate`
@@ -1303,6 +1312,9 @@ source row의 prototype을 바꾸거나 결과를 누락하지 않는다. 뒤 op
 - Data aspect
   - ✅ Covered: exact unit-ratio oracles, absolute reversed spans, domain edit replay, shared mark/axis/grid effective bounds,
     zero span, nonlinear scale, explicit-range conflict, and multiple x/y pair rejection.
+- Polar frame
+  - ✅ Covered: centered defaults, moved fractional center/radius, fixed-pixel radius, exact point/line/arc and Polar-guide
+    geometry, object replacement, aspect-before-frame ordering, Canvas resize, overflow atomicity, and `"auto"` reset.
 - Immutability and lifecycle
   - ✅ Covered: caller-owned nested option preservation, prior program preservation, discarded-branch preflight, source/Canvas
     rematerialization, and trace ownership.

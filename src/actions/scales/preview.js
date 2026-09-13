@@ -1,4 +1,5 @@
 import { resolveScaleRange } from "../../grammar/scales/index.js";
+import { resolvePolarFrame } from "../../grammar/polar.js";
 import { resolveArcAutoPositionRange, validateMeasuredRadiusConsumers } from "../../materialization/scales/policies/arc.js";
 import { findSemanticScale } from "../../selectors/scales.js";
 import { normalizePositionScaleChannel } from "../../core/vocabulary.js";
@@ -7,6 +8,7 @@ import {
   resolveDataAspectScalePair,
   resolveScaleConsumerBounds
 } from "../../materialization/coordinateBounds.js";
+import { requireCoordinate } from "../../selectors/coordinates.js";
 import { resolveScaleMaterialization } from "../../materialization/scales/resolve.js";
 import { findScale, findScaleConsumers, resolveConsumerCategoryOrder,
   resolveConsumerValues, resolveSeriesLayoutScaleValues } from "./consumers/index.js";
@@ -36,12 +38,38 @@ function resolveScalePreviewAtBounds(program, id, bounds) {
       categoryOrder: resolveConsumerCategoryOrder(program, consumer),
       seriesLayout: resolveSeriesLayoutScaleValues(program, consumer) };
   });
+  const polarFrame = channel === "radius"
+    ? resolveSharedRadiusFrame(program, consumers, bounds)
+    : undefined;
   const resolvedScale = resolveScaleMaterialization({ id, scale, channel, consumers, valuesByConsumer,
     bounds: ["color", "stroke", "strokeDash", "strokeWidth", "shape", "size", "opacity", "xOffset", "yOffset"].includes(channel)
       ? undefined : bounds,
-    resolvedScales: program.resolvedScales, markConfigs: program.markConfigs, thetaScales: scale.radialMapping === undefined ? undefined : Object.fromEntries(consumers.map(({ layer }) =>
+    resolvedScales: program.resolvedScales, markConfigs: program.markConfigs, polarFrame,
+    thetaScales: scale.radialMapping === undefined ? undefined : Object.fromEntries(consumers.map(({ layer }) =>
       [layer.id, findSemanticScale(program, layer.encoding?.theta?.scale)])) });
   return { channel, consumers, valuesByConsumer, resolvedScale };
+}
+
+function resolveSharedRadiusFrame(program, consumers, bounds) {
+  const coordinateIds = [...new Set(consumers.map(({ layer }) => layer.coordinate))];
+  if (coordinateIds.some(id => id === undefined)) {
+    throw new Error("Radius scale consumers require stored Polar coordinates.");
+  }
+  const frames = coordinateIds.map(id => {
+    const coordinate = requireCoordinate(program, id);
+    if (coordinate.type !== "polar") {
+      throw new Error("Radius scale consumers require Polar coordinates.");
+    }
+    return resolvePolarFrame(bounds, coordinate.polarFrame);
+  });
+  if (frames.slice(1).some(
+    frame => Math.abs(frame.availableRadius - frames[0].availableRadius) > 1e-9
+  )) {
+    throw new Error(
+      "A radius scale cannot be shared across coordinates with different Polar frames."
+    );
+  }
+  return frames[0];
 }
 
 function dataAspectScaleIds(program) {
@@ -88,11 +116,13 @@ export function resolveScalePreview(program, id) {
 }
 
 export function validatePendingMeasuredScale(program, scale, consumers) {
+  const bounds = resolveScaleConsumerBounds(program, consumers);
   const range = resolveArcAutoPositionRange({ consumers, scale, channel: "radius",
     range: resolveScaleRange(
       scale.range,
       "radius",
-      resolveScaleConsumerBounds(program, consumers)
+      bounds,
+      resolveSharedRadiusFrame(program, consumers, bounds)
     ), markConfigs: program.markConfigs });
   validateMeasuredRadiusConsumers({ scale, domain: scale.domain, range, consumers,
     markConfigs: program.markConfigs, thetaScales: {} });

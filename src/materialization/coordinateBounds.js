@@ -1,4 +1,5 @@
 import { isSourceOwnedText } from "../grammar/text.js";
+import { resolvePolarFrame } from "../grammar/polar.js";
 import { resolveEffectiveBounds } from "../layout/aspect.js";
 import { resolveGraphicBounds } from "../layout/canvas.js";
 import { findCoordinate, requireCoordinate } from "../selectors/coordinates.js";
@@ -133,6 +134,17 @@ export function resolveCoordinateBounds(program, target, {
   });
   validateExplicitDataRanges(program, pair, bounds);
   return bounds;
+}
+
+export function resolveCoordinatePolarFrame(program, target, options) {
+  const coordinate = requireCoordinate(program, target);
+  if (coordinate.type !== "polar") {
+    throw new Error(`Coordinate "${coordinate.id}" is not Polar.`);
+  }
+  return resolvePolarFrame(
+    resolveCoordinateBounds(program, coordinate.id, options),
+    coordinate.polarFrame
+  );
 }
 
 function consumerCoordinateIds(consumers) {

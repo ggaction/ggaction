@@ -94,10 +94,10 @@ export function resolveContinuousDomain({ domain, values, type, nice, zero }) {
   return resolved;
 }
 
-export function resolveScaleRange(range, channel, bounds) {
+export function resolveScaleRange(range, channel, bounds, polarFrame) {
   validatePositionChannel(channel);
   if (POLAR_POSITION_CHANNELS.includes(channel)) {
-    return resolvePolarScaleRange(range, channel, bounds);
+    return resolvePolarScaleRange(range, channel, bounds, polarFrame);
   }
   const validated = validateScaleRange(range);
   if (validated !== "auto") return validated;

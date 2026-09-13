@@ -3034,7 +3034,7 @@
       "status": "implemented",
       "lifecycle": "Mutable resource",
       "update": "Edits an existing coordinate layout constraint",
-      "audit": "Coordinate aspect — Implemented",
+      "audit": "Coordinate aspect and Polar frame — Implemented",
       "coverage": {
         "contract": "complete",
         "effects": "complete",

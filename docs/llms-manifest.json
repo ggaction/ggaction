@@ -1503,12 +1503,12 @@
         "coordinates",
         "at-a-glance",
         "createcoordinate-id-type-layers",
-        "editcoordinate-target-aspect",
+        "editcoordinate-target-aspect-polarframe",
         "errors-and-limitations",
         "related"
       ],
-      "bytes": 4129,
-      "sha256": "015d42f825d81b28311aa46b2b8d548569385371ab7b01ca3295d89614d2dfcd"
+      "bytes": 5212,
+      "sha256": "17c4a8141ad5b7f2b5eaee0ca7dd487cea8f34bcf979e163bb7b8b8954afc566"
     },
     {
       "order": 95,
@@ -2122,8 +2122,8 @@
         "directional-grids",
         "related"
       ],
-      "bytes": 11879,
-      "sha256": "f74c75e08cf3ae9514d6eb69a82befb20cd597fd9815ccc248f158627cccc376"
+      "bytes": 12228,
+      "sha256": "8d53c11c61bc42173470518efd30ef27bfb1788963868535a5cb5b6a2e36b849"
     },
     {
       "order": 123,

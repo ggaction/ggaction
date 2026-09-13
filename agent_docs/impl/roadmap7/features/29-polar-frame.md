@@ -9,9 +9,16 @@ Polar frame의 배치를 coordinate 의미로 저작한다. 이미 가능한 the
 
 현재 파일(저장소 root 상대 경로):
 - `src/grammar/polar.js`
-- `src/grammar/polarPaths.js`
-- `src/grammar/polarGuides.js`
-- `src/actions/charts/polar.js`
+- `src/materialization/coordinateBounds.js`
+- `src/actions/coordinates/edit.js`
+- `src/actions/scales/preview.js`
+- `src/materialization/scales/resolve.js`
+- `src/grammar/scales/continuous.js`
+- `src/actions/marks/point/materialize.js`
+- `src/actions/marks/line/materialize.js`
+- `src/actions/marks/arc/actions.js`
+- `src/materialization/selection/items/arc.js`
+- `src/actions/guides/polar/resolve.js`
 
 관련 항목: R27. 파일이 후속 작업에서 이동하면 역할 owner를 찾아 경로를 갱신하고 비슷한 이름의 구현을 새로 중복 생성하지 않는다.
 

@@ -12,7 +12,7 @@ title: Coordinates
 | Action | Shortest call | Inference/defaults | Result |
 | --- | --- | --- | --- |
 | `createCoordinate` | `createCoordinate()` | ID `main`, type `cartesian` | Named semantic coordinate, optionally attached to layers |
-| `editCoordinate` | `editCoordinate({ target: "main", aspect: { mode: "frame", ratio: 1 } })` | Explicit target; centered alignment | Largest-fit effective plot bounds and rematerialized consumers |
+| `editCoordinate` | `editCoordinate({ target: "main", aspect: { mode: "frame", ratio: 1 } })` | Explicit target; at least one patch | Effective plot bounds or a Polar center/radius, then rematerialized consumers |
 
 Position encoding actions normally manage coordinates automatically:
 
@@ -69,7 +69,7 @@ the complete ordered dimension assignment on one line layer. Each dimension
 uses its own namespaced scale and axis. Use the complete
 [Parallel Coordinates API](./parallel-coordinates.md) for that contract.
 
-## `editCoordinate({ target, aspect })`
+## `editCoordinate({ target, aspect?, polarFrame? })`
 
 Use this complete-entry action to constrain the shape of an existing coordinate
 without changing the Canvas or its allocated plot rectangle.
@@ -117,6 +117,32 @@ const automatic = equalUnits.editCoordinate({
 ```
 
 The action is available from `ggaction` and is absent from `ggaction/basic`.
+
+For a Polar coordinate, `polarFrame` moves the center and constrains the radial
+extent inside the aspect-adjusted effective bounds:
+
+```javascript
+const movedPolar = polarProgram.editCoordinate({
+  target: "polar",
+  polarFrame: {
+    center: { x: 0.25, y: 0.5 },
+    radius: { unit: "fraction", value: 0.8 }
+  }
+});
+```
+
+Center coordinates are finite fractions from 0 through 1. Fraction radius must
+be greater than 0 and at most 1; pixel radius must be positive and fit between
+the center and every frame edge. The object is a complete replacement:
+omitting center restores `{ x: 0.5, y: 0.5 }`, and omitting radius restores
+`{ unit: "fraction", value: 1 }`. Use `polarFrame: "auto"` to remove the
+stored request.
+
+When one call supplies both patches, ggaction resolves aspect, then the Polar
+frame, then the radial scale range. Points, lines, arcs, Polar axes, grids, and
+selection geometry all consume that same resolved frame. Fraction radii resize
+with the Canvas; pixel radii remain fixed and reject a later Canvas size that
+cannot contain them.
 
 ## Errors and limitations
 

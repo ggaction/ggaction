@@ -2503,7 +2503,7 @@ range rules to be satisfied.
 
 ```javascript
 createCoordinate({ id?, type?, layers? })
-editCoordinate({ target, aspect })
+editCoordinate({ target, aspect?, polarFrame? })
 createDerivedData({
   id,
   source,
@@ -2533,6 +2533,11 @@ optional start/center/end alignment. Frame mode supports Cartesian, Polar, and
 Parallel coordinates. Data mode requires one complete Cartesian quantitative
 linear x/y scale pair and preserves equal-unit intent through scale-domain and
 Canvas edits. The target coordinate ID is always explicit.
+`editCoordinate.polarFrame` accepts `"auto"` or a Polar-only center/radius
+request. Center values are normalized effective-bound fractions; radius is a
+fraction of the largest fitting radius or a positive fixed pixel value. The
+frame object is replaced as a whole, and aspect is resolved before the Polar
+frame and radial scale range.
 
 `createDerivedData` stores immutable source and transform provenance only; it
 does not materialize values. Chart facades and mark creation reject definition-only

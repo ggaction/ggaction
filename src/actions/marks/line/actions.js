@@ -19,7 +19,10 @@ import { DEFAULT_COLORS } from "../../../theme/defaults.js";
 import { findDataset } from "../../../selectors/datasets.js";
 import { findLayer, resolveEligibleLayer } from "../../../selectors/layers.js";
 import { validateCurveInterpolation } from "../../../grammar/curveCommands.js";
-import { resolveCoordinateBounds } from "../../../materialization/coordinateBounds.js";
+import {
+  resolveCoordinateBounds,
+  resolveCoordinatePolarFrame
+} from "../../../materialization/coordinateBounds.js";
 import { canMaterializeLine } from "../../../materialization/marks/index.js";
 import { resolveMarkGraphicPlacement } from
   "../../../materialization/graphicHierarchy.js";
@@ -240,7 +243,10 @@ const rematerializeLineMark = action(
             layer,
             requireSemanticScale(resolved, xScaleId)
           ).boundaries,
-      polar
+      polar,
+      ...(polar
+        ? { polarFrame: resolveCoordinatePolarFrame(resolved, layer.coordinate) }
+        : {})
     });
 
     return applyLineMaterialization(

@@ -15,9 +15,12 @@ import {
   normalizePointPackingPolicy,
   resolvePointPacking
 } from "../../../grammar/pointPacking.js";
-import { polarToCartesian, resolvePolarFrame } from "../../../grammar/polar.js";
+import { polarToCartesian } from "../../../grammar/polar.js";
 import { resolveDirectionValues } from "../../../grammar/direction.js";
-import { resolveCoordinateBounds } from "../../../materialization/coordinateBounds.js";
+import {
+  resolveCoordinateBounds,
+  resolveCoordinatePolarFrame
+} from "../../../materialization/coordinateBounds.js";
 import { validateMarkOptions } from "../shared.js";
 import {
   DEFAULT_COLORS,
@@ -52,7 +55,7 @@ function resolvePointPositions(program, layer, dataset) {
   if (theta === undefined || radius === undefined) {
     return { x: undefined, y: undefined };
   }
-  const frame = resolvePolarFrame(resolveCoordinateBounds(program, layer.coordinate));
+  const frame = resolveCoordinatePolarFrame(program, layer.coordinate);
   const positions = theta.map((angle, index) => {
     const distance = radius[index];
     return Number.isFinite(angle) && Number.isFinite(distance)

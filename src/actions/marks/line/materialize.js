@@ -88,6 +88,7 @@ export function resolvePositionedLineMaterialization({
   config,
   existingChildren,
   polar,
+  polarFrame,
   defaults
 }) {
   const xScaleId = layer.encoding?.x?.scale;
@@ -106,7 +107,7 @@ export function resolvePositionedLineMaterialization({
         thetaFieldType: derived.thetaFieldType,
         thetaScale: resolvedScales[thetaScaleId],
         radiusScale: resolvedScales[radiusScaleId],
-        frame: resolvePolarFrame(bounds),
+        frame: polarFrame ?? resolvePolarFrame(bounds),
         closed: config.closed ?? false
       }))
     : derived.series.map(series => {

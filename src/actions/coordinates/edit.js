@@ -2,27 +2,28 @@ import { action } from "../../core/action.js";
 import { validateUserId } from "../../core/identifiers.js";
 import { validateOptionObject } from "../../core/validation.js";
 import { normalizeCoordinateAspect } from "../../grammar/coordinates.js";
+import { normalizePolarFrameOptions } from "../../grammar/polar.js";
 import {
   applyMaterializationPlan,
   planCoordinateRematerialization
 } from "../../materialization/dependencies.js";
 import { requireCoordinate } from "../../selectors/coordinates.js";
 
-const EDIT_COORDINATE_OPTIONS = Object.freeze(["target", "aspect"]);
+const EDIT_COORDINATE_OPTIONS = Object.freeze(["target", "aspect", "polarFrame"]);
 
-function applyAspectPatch(program, target, aspect) {
+function applyCoordinatePatch(program, target, property, value) {
   const coordinate = requireCoordinate(program, target);
-  if (aspect === "auto") {
-    return coordinate.aspect === undefined
+  if (value === "auto") {
+    return coordinate[property] === undefined
       ? program
       : program.editSemantic({
-          property: `coordinate[${target}].aspect`,
+          property: `coordinate[${target}].${property}`,
           remove: true
         });
   }
   return program.editSemantic({
-    property: `coordinate[${target}].aspect`,
-    value: aspect
+    property: `coordinate[${target}].${property}`,
+    value
   });
 }
 
@@ -34,16 +35,35 @@ export const editCoordinate = action(
   function (args = {}) {
     validateOptionObject(args, EDIT_COORDINATE_OPTIONS, "editCoordinate", {
       allowEmpty: false,
-      emptyMessage: "editCoordinate requires aspect changes.",
+      emptyMessage: "editCoordinate requires aspect or polarFrame changes.",
       emptyError: Error
     });
     const target = validateUserId(args.target, "Coordinate id");
-    requireCoordinate(this, target);
-    if (!Object.hasOwn(args, "aspect")) {
-      throw new Error("editCoordinate requires aspect changes.");
+    const coordinate = requireCoordinate(this, target);
+    const hasAspect = Object.hasOwn(args, "aspect");
+    const hasPolarFrame = Object.hasOwn(args, "polarFrame");
+    if (!hasAspect && !hasPolarFrame) {
+      throw new Error("editCoordinate requires aspect or polarFrame changes.");
     }
-    const aspect = normalizeCoordinateAspect(args.aspect);
-    const proposed = applyAspectPatch(this, target, aspect);
+    const aspect = hasAspect ? normalizeCoordinateAspect(args.aspect) : undefined;
+    if (hasPolarFrame && coordinate.type !== "polar") {
+      throw new Error("editCoordinate polarFrame requires a Polar coordinate.");
+    }
+    const polarFrame = hasPolarFrame
+      ? normalizePolarFrameOptions(args.polarFrame)
+      : undefined;
+    let proposed = this;
+    if (hasAspect) {
+      proposed = applyCoordinatePatch(proposed, target, "aspect", aspect);
+    }
+    if (hasPolarFrame) {
+      proposed = applyCoordinatePatch(
+        proposed,
+        target,
+        "polarFrame",
+        polarFrame
+      );
+    }
     const plan = planCoordinateRematerialization(proposed, target);
     // Validate the complete dependent geometry on a discarded immutable branch.
     applyMaterializationPlan(proposed, plan);

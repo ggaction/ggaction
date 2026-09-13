@@ -1,8 +1,7 @@
 import { deriveArcSectors } from "../../../grammar/arcs.js";
 import { resolvePolarPoint } from "../../../grammar/polarPaths.js";
-import { resolvePolarFrame } from "../../../grammar/polar.js";
 import { readScaleField } from "../../../grammar/scales/index.js";
-import { resolveCoordinateBounds } from "../../../materialization/coordinateBounds.js";
+import { resolveCoordinatePolarFrame } from "../../coordinateBounds.js";
 import {
   concreteProperties,
   finalizeItems,
@@ -12,9 +11,7 @@ import {
 export function resolveArcItems(program, layer, dataset) {
   const thetaScale = program.resolvedScales[layer.encoding?.theta?.scale];
   const radiusScale = program.resolvedScales[layer.encoding?.radius?.scale];
-  const frame = resolvePolarFrame(
-    resolveCoordinateBounds(program, layer.coordinate)
-  );
+  const frame = resolveCoordinatePolarFrame(program, layer.coordinate);
   const derived = deriveArcSectors(dataset.values, layer, {
     thetaScale,
     ...(radiusScale === undefined ? {} : { radiusScale }),

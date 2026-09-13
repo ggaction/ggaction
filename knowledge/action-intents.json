@@ -857,6 +857,12 @@
       "equal data units",
       "equal axis units",
       "square plot frame"
+    ],
+    "PolarFrameOptions": [
+      "polar frame",
+      "polar center and radius",
+      "move polar chart center",
+      "fixed radial extent"
     ]
   },
   "summaryOverrides": {
@@ -1443,10 +1449,16 @@
       }
     },
     "editCoordinate": {
-      "target": "main",
-      "aspect": {
-        "mode": "data",
-        "ratio": 1
+      "target": "polar",
+      "polarFrame": {
+        "center": {
+          "x": 0.25,
+          "y": 0.5
+        },
+        "radius": {
+          "unit": "fraction",
+          "value": 0.8
+        }
       }
     }
   },
@@ -1619,8 +1631,8 @@
       "encodeChannels({ target, channels: { color: { field }, stroke: { field }, size: { field } } })"
     ],
     "editCoordinate": [
-      "editCoordinate({ target, aspect: { mode: \"frame\" | \"data\", ratio, alignX?, alignY? } })",
-      "editCoordinate({ target, aspect: \"auto\" })"
+      "editCoordinate({ target, aspect: { mode: \"frame\" | \"data\", ratio, alignX?, alignY? } | \"auto\" })",
+      "editCoordinate({ target, polarFrame: { center?, radius? } | \"auto\" })"
     ]
   },
   "errorOverrides": {

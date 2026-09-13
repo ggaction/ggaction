@@ -120,6 +120,33 @@ async function testNodeConsumer(directory) {
     assert.deepEqual(aspect.semanticSpec.coordinates[0].aspect, {
       mode: "frame", ratio: 1, alignX: "center", alignY: "center"
     });
+    const polarFrame = chart()
+      .createCanvas({ width: 400, height: 200, margin: 0 })
+      .createData({ values: [
+        { angle: 0, radius: 80 },
+        { angle: 90, radius: 80 }
+      ] })
+      .createPolarScatterPlot({
+        id: "polarPoints",
+        theta: { field: "angle", scale: { domain: [0, 360] } },
+        radius: { field: "radius", scale: { domain: [0, 80] } },
+        guides: false
+      })
+      .editCoordinate({
+        target: "polar",
+        polarFrame: {
+          center: { x: 0.25, y: 0.5 },
+          radius: { unit: "fraction", value: 0.8 }
+        }
+      });
+    assert.deepEqual(polarFrame.resolvedScales.radius.range, [0, 80]);
+    assert.deepEqual(
+      polarFrame.graphicSpec.objects.polarPoints.items.map(item => [
+        Math.round(item.properties.x),
+        Math.round(item.properties.y)
+      ]),
+      [[100, 20], [180, 100]]
+    );
     assert.equal(typeof basicChart().editCoordinate, "undefined");
     const stroked = chart()
       .createCanvas({
@@ -1991,6 +2018,7 @@ async function testTypeScriptConsumer(directory) {
       type ECDFDataOptions,
       type EncodeChannelsOptions,
       type EditCoordinateOptions,
+      type PolarFrameOptions,
       type ColorLayout,
       type CompleteDataOptions,
       type ComputedDataOptions,
@@ -2084,6 +2112,11 @@ async function testTypeScriptConsumer(directory) {
       aspect: { mode: "frame", ratio: 1, alignX: "center" }
     };
     program.editCoordinate(coordinateOptions);
+    const polarFrameOptions: PolarFrameOptions = {
+      center: { x: 0.25, y: 0.5 },
+      radius: { unit: "fraction", value: 0.8 }
+    };
+    program.editCoordinate({ target: "polar", polarFrame: polarFrameOptions });
     // @ts-expect-error Coordinate editing is Full only.
     basicChart().editCoordinate(coordinateOptions);
     const polarScatterOptions: CreatePolarScatterPlotOptions = {
@@ -3611,7 +3644,7 @@ if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.a
       "offset-scale-editing",
       "stroke-color-encoding-and-legends",
       "atomic-channel-encoding",
-      "coordinate-aspect-editing",
+      "coordinate-aspect-and-polar-frame-editing",
       "facet-grid-repeat-and-named-composition-editing",
       "horizon",
       "violin-plot",

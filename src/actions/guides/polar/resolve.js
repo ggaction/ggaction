@@ -5,7 +5,6 @@ import {
   validateNonNegativeFinite,
   validatePositiveFinite
 } from "../../../core/validation.js";
-import { resolvePolarFrame } from "../../../grammar/polar.js";
 import {
   formatTransformedTick,
   isTransformedScaleType,
@@ -13,7 +12,8 @@ import {
   mapOrdinalPositionValues
 } from "../../../grammar/scales/index.js";
 import { formatTimeTick, formatTimeTicks } from "../../../grammar/ticks.js";
-import { resolveCoordinateBounds } from "../../../materialization/coordinateBounds.js";
+import { resolveCoordinatePolarFrame } from
+  "../../../materialization/coordinateBounds.js";
 import { findCoordinate } from "../../../selectors/coordinates.js";
 import { DEFAULT_COLORS, DEFAULT_FONT_FAMILY } from
   "../../../theme/defaults.js";
@@ -161,11 +161,7 @@ export function resolvePolarGuideResources(program, kind, args, operation) {
 }
 
 export function resolvePolarFrameForProgram(program, coordinate) {
-  const bounds = resolveCoordinateBounds(program, coordinate);
-  if (bounds === undefined) {
-    throw new Error("Polar guides require graphical Canvas bounds.");
-  }
-  return resolvePolarFrame(bounds);
+  return resolveCoordinatePolarFrame(program, coordinate);
 }
 
 export function resolvePolarTickValues(program, config) {

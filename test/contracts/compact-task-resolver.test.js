@@ -220,9 +220,9 @@ test("intent taxonomy covers every supported constraint with exact owners", asyn
   assert.equal(validate(taxonomy), true, JSON.stringify(validate.errors));
   assert.deepEqual(validateResolverKnowledge(), {
     cards: cards.count,
-    constraints: 106,
-    providers: 100,
-    supported: 101,
+    constraints: 107,
+    providers: 101,
+    supported: 102,
     unsupported: 5
   });
   assert.equal(taxonomy.packageVersion, cards.packageVersion);
@@ -356,6 +356,29 @@ test("routes equal-unit layout intent through explicit coordinate editing", asyn
     Math.abs(x.range[1] - x.range[0]) / Math.abs(x.domain[1] - x.domain[0]),
     Math.abs(y.range[1] - y.range[0]) / Math.abs(y.domain[1] - y.domain[0])
   );
+});
+
+test("routes moved Polar-frame intent through the Polar coordinate editor", async () => {
+  const packet = searchGgaction(
+    "polar scatter plot with an off-center polar plot"
+  );
+  assert.deepEqual(packet.matchedConstraints, [
+    "chart.polarScatter",
+    "layout.polarFrame"
+  ]);
+  assert.deepEqual(packet.actionPlan.map(entry => entry.id), [
+    "action.createPolarScatterPlot",
+    "action.editPolarFrame"
+  ]);
+  assert.deepEqual(packet.unresolved, []);
+
+  const { program } = await executeAuthoring(packet, {
+    rows: [{ angle: 0, distance: 1 }, { angle: 90, distance: 2 }]
+  });
+  assert.deepEqual(program.semanticSpec.coordinates[0].polarFrame, {
+    center: { x: 0.4, y: 0.5 },
+    radius: { unit: "fraction", value: 0.9 }
+  });
 });
 
 test("provides exact executable Canvas and SVG authoring bootstraps", async () => {

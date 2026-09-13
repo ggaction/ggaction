@@ -462,14 +462,69 @@ Canonical behavior: [R27](features/27-coordinate-aspect.md).
 
 Canonical behavior: [R29](features/29-polar-frame.md).
 
-1. R27의 `editCoordinate`에 `polarFrame` patch를 연결한다. Cartesian coordinate에 쓰면 오류다.
-2. **`src/grammar/polar.js`**에 하나의 `resolvePolarFrame(effectiveBounds, requestedFrame)` pure owner를 둔다.
-3. center fraction은 effective local bounds의 normalized 좌표다. radius fraction은 `0 < value <= 1`, px는 positive finite다. polarFrame 객체와 그 안의 center/radius 객체는 모두 전체 교체이며, center만 다시 주면 radius는 기본 fraction 1로 돌아간다.
-4. radius는 center에서 네 frame edge까지 최소 거리 안에 있어야 한다. 범위를 넘으면 축소하지 않고 atomic error다.
-5. **`src/grammar/polarPaths.js`, `src/grammar/polarGuides.js`, `src/actions/charts/polar.js`**의 mark/axis/grid/label 경로에 동일 center/radius를 전달한다.
-6. `polarFrame:"auto"`는 property를 제거하고 current auto center/radius 정책으로 복귀한다.
-7. Canvas resize와 aspect 이후 frame을 재계산한다. requested fraction/px 객체를 resolved 숫자로 덮지 않는다.
-8. 신규 `test/contracts/polar-frame.test.js`와 polar unit tests에 moved center, fraction/px, guide 일치, overflow, wrong coordinate, lifecycle을 둔다.
+#### 공개 입력과 저장 계약
+
+1. `EditCoordinateOptions`를 다음 **적어도 하나 필수** union으로 바꾼다. 별도 `editPolarFrame` action을 만들지 않는다.
+
+   ```ts
+   type EditCoordinateOptions = { target: string } & (
+     | { aspect: CoordinateAspect; polarFrame?: PolarFrameOptions }
+     | { aspect?: CoordinateAspect; polarFrame: PolarFrameOptions }
+   );
+   type PolarFrameOptions = "auto" | {
+     center?: { x: number; y: number };
+     radius?: { unit: "fraction" | "px"; value: number };
+   };
+   ```
+
+2. `src/actions/coordinates/edit.js`의 closed key는 정확히 `target,aspect,polarFrame`다. target은 기존 coordinate ID를 명시해야 하며 추론하지 않는다. aspect와 polarFrame이 모두 빠지면 runtime/type 양쪽에서 오류다.
+3. omission은 해당 기존 property 유지, `"auto"`는 해당 semantic coordinate property 제거, object는 전체 교체다. `polarFrame:{}`은 허용하며 `center:{x:.5,y:.5},radius:{unit:"fraction",value:1}`로 정규화해 저장한다. center만 주면 radius 기본값으로, radius만 주면 center 기본값으로 돌아간다.
+4. `normalizePolarFrameOptions`은 `src/grammar/polar.js`가 소유한다. root/center/radius의 unknown key를 모두 거부하고 caller object를 변경하지 않으며, 아래 normalized object를 clone+freeze한다.
+5. center x/y는 각각 finite `0 <= value <= 1`; radius fraction은 finite `0 < value <= 1`; px는 finite `value > 0`다. boolean, numeric string, NaN, Infinity, sparse object를 coercion하지 않는다.
+6. polarFrame patch는 Polar coordinate만 허용한다. Cartesian/Parallel target은 requested state를 쓰기 전에 오류다. aspect patch도 같은 호출에 있으면 최종 candidate에서 aspect → polarFrame → radial range 순서로 검증하며 어느 단계든 실패하면 두 patch 모두 노출하지 않는다.
+
+#### 단일 계산 owner와 scale 순서
+
+7. `src/grammar/polar.js`의 기존 `resolvePolarFrame(bounds)`를 `resolvePolarFrame(bounds, requestedFrame = "auto")`로 확장한다. auto/undefined는 기존 pixel parity를 보존한다.
+8. effective bounds `(L,T,W,H)`, normalized center `(x,y)`에 대해
+   `cx=L+W*x`, `cy=T+H*y`,
+   `maximum=min(cx-L,L+W-cx,cy-T,T+H-cy)`다.
+   fraction이면 `R=maximum*value`, px이면 `R=value`다. 반환의 기존 `availableRadius` 필드는 모든 현행 consumer가 radial maximum으로 사용하므로 **선택된 R**을 담는다.
+9. `maximum <= 0`이거나 px R이 maximum보다 크면 오류다. 자동 clamp, center 이동, Canvas 확대, theta span을 근거로 한 반원 확대를 하지 않는다.
+10. `src/materialization/coordinateBounds.js`에 program state를 해석하는 `resolveCoordinatePolarFrame(program,target,options?)`를 둔다. 이 함수만 semantic coordinate의 requested polarFrame과 R27 effective bounds를 결합한다. pure grammar resolver는 program을 읽지 않는다.
+11. radius scale은 domain → R27 effective bounds → R29 frame → range 순서다. `src/actions/scales/preview.js`, `src/materialization/scales/resolve.js`, `src/grammar/scales/continuous.js`가 resolved frame을 range resolver에 전달한다. auto range는 `[0,R]`; explicit range의 모든 값은 `[0,R]` 안이어야 한다.
+12. 하나의 radius scale을 여러 coordinates가 공유하면 각 coordinate의 resolved R이 같을 때만 허용한다. 다르면 하나의 global resolved range를 만들 수 없으므로 쓰기 전에 오류다. theta range/reverse는 변경하지 않는다.
+
+#### 반드시 바꿀 consumer 목록
+
+13. 구현 시작 때 `rg -n 'resolvePolarFrame\\(' src` 결과를 고정하고 아래 직접 호출을 모두 program helper 또는 explicit requestedFrame 입력으로 바꾼다.
+    - `src/actions/marks/point/materialize.js`: Polar point x/y.
+    - `src/actions/marks/line/materialize.js`: Polar line/Radar path commands.
+    - `src/actions/marks/arc/actions.js`: Arc/Pie/Rose sector paths.
+    - `src/materialization/selection/items/arc.js`: Arc final-item selection 위치.
+    - `src/actions/guides/polar/resolve.js`: theta/radius axes, ticks, labels, titles, grids가 공유하는 frame.
+14. `src/grammar/polarPaths.js`, `src/grammar/polarGuides.js`, `src/grammar/polarLineCommands.js`는 전달받은 resolved frame을 사용한다. 이 pure geometry 파일들이 semantic coordinate를 다시 찾게 만들지 않는다.
+15. `src/actions/primitives/semanticValidation/index.js`와 semantic path schema에 coordinate.polarFrame validation을 연결한다. raw `editSemantic`도 invalid stored state를 만들 수 없어야 한다.
+16. `planCoordinateRematerialization`은 coordinate의 theta/radius scales → source marks → dependent labels/selections → Polar guides → layout/highlights 순서를 유지한다. 이미 projection된 graphic의 사후 translate/scale은 금지한다.
+
+#### 고정 테스트와 완료 순서
+
+17. `test/unit/grammar/polar.test.js`에 normalizer closed-key/default/freeze와 pure resolver auto/fraction/px/boundary를 추가한다.
+18. 신규 `test/contracts/polar-frame.test.js`는 아래 literal oracle을 계획 코드와 독립된 숫자로 assert한다.
+
+| case | input | exact result |
+| --- | --- | --- |
+| R29-N01 | bounds(0,0,400,200), center(.25,.5), fraction .8 | center(100,100), R80 |
+| R29-N02 | 위 frame, theta0/r80와 theta90/r80 | (100,20), (180,100) |
+| R29-N03 | bounds(20,30,400,200), 같은 요청 | center(120,130), R80 |
+| R29-E01 | center(.9,.5), px80 | maximum40, 전체 호출 오류 |
+| R29-E02 | fraction0, boundary center, Cartesian target, nonfinite center | 각 입력 사전 오류, 원본 state/trace 동일 |
+| R29-L01 | frame edit 뒤 point/line/arc/axes/grids/selection/labels | 모두 동일 center/R 사용; auto 복구 parity |
+
+19. lifecycle 묶음은 fraction Canvas 확대·축소 비례, px Canvas 확대 후 값 유지, px가 새 bounds를 넘는 resize 전체 오류, aspect+polarFrame 한 호출, polarFrame object replacement, auto reset을 포함한다.
+20. `test/contracts/coordinate-aspect-types.test.js` 또는 별도 type test에서 combined/각 단독 patch positive, empty patch/잘못된 unit/Basic method negative를 검증한다.
+21. runtime/types/current CORE/ACTION_INDEX는 기존 `editCoordinate` 한 action을 확장한다. 새 action-card 수를 늘리지 않고 signature/options/callPatterns를 재생성한다. API docs, intent taxonomy, relationship observation, installed Node/TypeScript/MCP consumer를 함께 갱신한다.
+22. focused unit+contract → 전체 unit/contracts/docs → package pack/installed consumer/bundle 순서로 실행한다. 그 뒤 WP6.3에서 R27/R29 결합 Canvas/SVG/PNG/PDF 증거와 Phase 6 상태를 닫는다.
 
 ### WP6.3 — Phase 6 closeout
 

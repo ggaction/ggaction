@@ -696,6 +696,15 @@
       ]
     },
     {
+      "id": "layout.polarFrame",
+      "phrases": [
+        "move polar chart center",
+        "polar frame radius",
+        "fixed polar radius",
+        "off-center polar plot"
+      ]
+    },
+    {
       "id": "layout.legend.bottom",
       "phrases": [
         "legend at bottom",
@@ -2549,6 +2558,22 @@
       "baseOptions": {
         "target": "\"main\"",
         "aspect": "{ mode: \"data\", ratio: 1 }"
+      }
+    },
+    {
+      "id": "action.editPolarFrame",
+      "kind": "action",
+      "name": "editCoordinate",
+      "order": 80,
+      "anchors": [
+        "layout.polarFrame"
+      ],
+      "covers": [
+        "layout.polarFrame"
+      ],
+      "baseOptions": {
+        "target": "\"polar\"",
+        "polarFrame": "{ center: { x: 0.4, y: 0.5 }, radius: { unit: \"fraction\", value: 0.9 } }"
       }
     },
     {

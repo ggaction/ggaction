@@ -18153,15 +18153,20 @@
         },
         {
           "name": "aspect",
-          "required": true,
-          "type": "CoordinateAspect"
+          "required": false,
+          "type": "CoordinateAspect | undefined"
+        },
+        {
+          "name": "polarFrame",
+          "required": false,
+          "type": "PolarFrameOptions | undefined"
         }
       ],
       "callPatterns": [
-        "editCoordinate({ target, aspect: { mode: \"frame\" | \"data\", ratio, alignX?, alignY? } })",
-        "editCoordinate({ target, aspect: \"auto\" })"
+        "editCoordinate({ target, aspect: { mode: \"frame\" | \"data\", ratio, alignX?, alignY? } | \"auto\" })",
+        "editCoordinate({ target, polarFrame: { center?, radius? } | \"auto\" })"
       ],
-      "snippet": "program.editCoordinate({ target: \"main\", aspect: { mode: \"data\", ratio: 1 } })",
+      "snippet": "program.editCoordinate({ target: \"polar\", polarFrame: { center: { x: 0.25, y: 0.5 }, radius: { unit: \"fraction\", value: 0.8 } } })",
       "errors": [],
       "route": "/reference/actions/advanced/#semantic-resources-and-regression-layers"
     },

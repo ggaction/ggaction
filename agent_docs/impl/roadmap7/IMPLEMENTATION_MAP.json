@@ -718,9 +718,16 @@
       ],
       "currentSourceFiles": [
         "src/grammar/polar.js",
-        "src/grammar/polarPaths.js",
-        "src/grammar/polarGuides.js",
-        "src/actions/charts/polar.js"
+        "src/materialization/coordinateBounds.js",
+        "src/actions/coordinates/edit.js",
+        "src/actions/scales/preview.js",
+        "src/materialization/scales/resolve.js",
+        "src/grammar/scales/continuous.js",
+        "src/actions/marks/point/materialize.js",
+        "src/actions/marks/line/materialize.js",
+        "src/actions/marks/arc/actions.js",
+        "src/materialization/selection/items/arc.js",
+        "src/actions/guides/polar/resolve.js"
       ],
       "existingRegressionTests": [
         "test/unit/grammar/polar.test.js",

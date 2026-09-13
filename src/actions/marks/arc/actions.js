@@ -7,12 +7,12 @@ import {
 } from "../../../core/validation.js";
 import { deriveArcSectors } from "../../../grammar/arcs.js";
 import { buildAnnularSectorCommands } from "../../../grammar/polarPaths.js";
-import { resolvePolarFrame } from "../../../grammar/polar.js";
 import {
   mapOrdinalValues,
   readScaleField
 } from "../../../grammar/scales/index.js";
-import { resolveCoordinateBounds } from "../../../materialization/coordinateBounds.js";
+import { resolveCoordinatePolarFrame } from
+  "../../../materialization/coordinateBounds.js";
 import {
   canMaterializeArc,
   getSourceDependentMarkSteps
@@ -180,9 +180,7 @@ const rematerializeArcMark = action(
       resolved = resolved.rematerializeScale({ id: strokeScaleId });
     }
     const config = resolved.markConfigs[id] ?? {};
-    const frame = resolvePolarFrame(
-      resolveCoordinateBounds(resolved, layer.coordinate)
-    );
+    const frame = resolveCoordinatePolarFrame(resolved, layer.coordinate);
     const derived = deriveArcSectors(dataset.values, layer, {
       thetaScale: resolved.resolvedScales[thetaScaleId],
       ...(radiusScaleId === undefined

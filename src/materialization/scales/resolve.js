@@ -97,7 +97,8 @@ function resolveRange({
   isSequentialColor,
   isDiscretizedColor,
   isOrdinalOffset,
-  discretizedScale
+  discretizedScale,
+  polarFrame
 }) {
   if (channel === "color") {
     if (isDiscretizedColor) return discretizedScale.range;
@@ -115,7 +116,7 @@ function resolveRange({
     scale,
     channel,
     domain,
-    range: resolveScaleRange(scale.range, channel, bounds),
+    range: resolveScaleRange(scale.range, channel, bounds, polarFrame),
     markConfigs
   });
 }
@@ -197,7 +198,8 @@ export function resolveScaleMaterialization(options) {
     bounds,
     resolvedScales,
     markConfigs,
-    thetaScales
+    thetaScales,
+    polarFrame
   } = options;
   const channel = requestedChannel === "stroke" ? "color" : requestedChannel;
   const allValues = valuesByConsumer
@@ -302,7 +304,8 @@ export function resolveScaleMaterialization(options) {
     isSequentialColor,
     isDiscretizedColor,
     isOrdinalOffset,
-    discretizedScale
+    discretizedScale,
+    polarFrame
   });
   validateSequentialMidpoint(scale.midpoint, scale.type, domain);
   if (scale.midpoint !== undefined && (channel !== "color" || consumers.some(

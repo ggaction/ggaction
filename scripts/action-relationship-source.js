@@ -133,10 +133,30 @@ function coordinateAspectPrograms() {
     .createPointMark({ id: "aspectPoints" })
     .encodeX({ target: "aspectPoints", field: "x" })
     .encodeY({ target: "aspectPoints", field: "y" });
-  return [base.editCoordinate({
-    target: "main",
-    aspect: { mode: "data", ratio: 1 }
-  })];
+  const polar = chart()
+    .createCanvas({ width: 320, height: 240, margin: 20 })
+    .createData({ values: [
+      { theta: 0, radius: 1 },
+      { theta: 90, radius: 2 }
+    ] })
+    .createPolarScatterPlot({
+      theta: "theta",
+      radius: "radius",
+      guides: false
+    });
+  return [
+    base.editCoordinate({
+      target: "main",
+      aspect: { mode: "data", ratio: 1 }
+    }),
+    polar.editCoordinate({
+      target: "polar",
+      polarFrame: {
+        center: { x: 0.25, y: 0.5 },
+        radius: { unit: "fraction", value: 0.8 }
+      }
+    })
+  ];
 }
 
 function normalizedDataPrograms() {

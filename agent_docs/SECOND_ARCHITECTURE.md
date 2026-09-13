@@ -865,6 +865,14 @@ scale-consumer bounds를 소유하고 position scale, mark, axis와 grid가 같�
 cross-cutting materialization plan으로 pair의 두 scale과 모든 consumer를 함께 갱신한다. 실패하는 final
 geometry는 버려지는 immutable branch에서 먼저 검증한다. `"auto"`는 semantic aspect override를 제거한다.
 
+Polar coordinate의 optional `polarFrame`도 requested state다. `center`는 aspect 적용 뒤 effective bounds의
+fraction이고, `radius`는 중심에서 네 변까지의 최소 거리 비율 또는 고정 px다.
+`grammar/polar.js`가 하나의 resolved `{centerX,centerY,availableRadius}`를 만들고
+`materialization/coordinateBounds.js`가 semantic request와 effective bounds를 결합한다. Radius scale, Point,
+Line, Arc, selection item, Polar axis와 grid는 모두 같은 resolved frame을 읽는다. 순서는
+`domain → aspect → polarFrame → radial range → marks → guides → layout → highlight`이며, px radius가 resize된
+bounds에 들어가지 않으면 Canvas edit 전체가 실패한다. Requested fraction/px 객체를 resolved 숫자로 덮지 않는다.
+
 Vocabulary에는 `cartesian`, `polar`, `parallel`이 있다. x/y positional encoding은 명시하지 않으면
 `main` Cartesian coordinate를 생성하고 저장한다. theta/radius positional encoding은 compatible한
 유일한 기존 Polar coordinate를 재사용하거나 `polar` coordinate를 생성하고 저장한다. 여러 compatible

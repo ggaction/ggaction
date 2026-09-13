@@ -1045,6 +1045,7 @@ export interface SemanticCoordinate {
   readonly id: string;
   readonly type?: "cartesian" | "polar" | "parallel";
   readonly aspect?: CoordinateAspect;
+  readonly polarFrame?: Exclude<PolarFrameOptions, "auto">;
   readonly layers?: readonly string[];
   readonly [key: string]: unknown;
 }
@@ -1412,10 +1413,25 @@ export type CoordinateAspect = "auto" | {
   alignY?: CoordinateAspectAlign;
 };
 
-export interface EditCoordinateOptions {
+export type PolarFrameCenter = {
+  x: number;
+  y: number;
+};
+export type PolarFrameRadius =
+  | { unit: "fraction"; value: number }
+  | { unit: "px"; value: number };
+export type PolarFrameOptions = "auto" | {
+  center?: PolarFrameCenter;
+  radius?: PolarFrameRadius;
+};
+
+type EditCoordinateTarget = {
   target: string;
-  aspect: CoordinateAspect;
-}
+};
+export type EditCoordinateOptions = EditCoordinateTarget & (
+  | { aspect: CoordinateAspect; polarFrame?: PolarFrameOptions }
+  | { aspect?: CoordinateAspect; polarFrame: PolarFrameOptions }
+);
 
 export type RadialMapping = "area" | "radius-length";
 
