@@ -9,12 +9,15 @@ import {
   highlightMarks,
   placeSelectedMarkItemsLast,
   rematerializeMarkHighlights,
+  rematerializeThemeHighlights,
   removeMarkHighlight,
   removeMarkSelection,
   selectMarks
 } from "./actions.js";
+import { registerThemeHighlightReconciler } from "../theme/reconcile.js";
 
 export function registerSelectionActions(ProgramClass) {
+  registerThemeHighlightReconciler(rematerializeThemeHighlights);
   ProgramClass.prototype.selectMarks = selectMarks;
   ProgramClass.prototype.editMarkSelection = editMarkSelection;
   ProgramClass.prototype.removeMarkHighlight = removeMarkHighlight;

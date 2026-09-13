@@ -297,7 +297,7 @@
       "name": "applyTheme",
       "layer": "user-facing",
       "domain": "core",
-      "summary": "Apply persistent visual defaults to existing resources and resources created by later actions.",
+      "summary": "Use \"light\", \"dark\", or a custom partial definition such as:",
       "signature": "applyTheme(options: ApplyThemeOptions): ChartProgram;",
       "intents": [
         "apply theme",
@@ -343,11 +343,16 @@
         {
           "name": "theme",
           "required": true,
-          "type": "ThemeName"
+          "type": "ThemeDefinition"
+        },
+        {
+          "name": "scope",
+          "required": false,
+          "type": "\"descendants\" | \"self\" | undefined"
         }
       ],
       "callPatterns": [
-        "applyTheme({ theme })"
+        "applyTheme({ theme, scope? })"
       ],
       "snippet": "program.applyTheme({ theme: \"dark\" })",
       "errors": [],
@@ -358,7 +363,7 @@
       "name": "removeTheme",
       "layer": "user-facing",
       "domain": "core",
-      "summary": "Remove the active program theme and restore inherited library defaults while preserving local styles.",
+      "summary": "Remove the most recently applied theme scope on that receiver.",
       "signature": "removeTheme(): ChartProgram;",
       "intents": [
         "remove theme",

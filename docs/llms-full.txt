@@ -14575,13 +14575,39 @@ default overflow policy rejects an unsatisfied minimum plot atomically;
 ## `applyTheme`
 
 ```javascript
-applyTheme({ theme: "light" | "dark" })
+applyTheme({ theme, scope? })
 ```
 
-Apply persistent visual defaults to existing resources and resources created by
-later actions. Local styles take precedence, including an explicitly authored
-value that equals a theme default. Theme changes preserve data, statistics,
-scales, grouping, category order, and field-driven palettes.
+Use `"light"`, `"dark"`, or a custom partial definition such as:
+
+```javascript
+program.applyTheme({
+  theme: {
+    base: "light",
+    tokens: {
+      mark: "#b91c1c",
+      grid: "#d1fae5",
+      fontFamily: "Inter"
+    }
+  }
+});
+```
+
+Custom definitions accept these token keys: `background`, `mark`, `text`,
+`strongText`, `mutedText`, `axis`, `axisTitle`, `grid`, `border`,
+`sizeSymbol`, `regressionBand`, `boxLine`, `boxMedian`, `referenceLine`,
+`referenceBand`, `gradientCenter`, `highlight`, and `fontFamily`. A new theme
+replaces the previous request; omitted partial tokens come from the new base.
+
+A unit chart defaults to `scope: "self"`. A composition defaults to
+`scope: "descendants"`, which updates its root, current nested children, and
+children later rebuilt by facet or repeat edits. Use `scope: "self"` on a
+composition to change only its root Canvas background.
+
+Explicit mark, guide, title, legend block, facet header, and highlight styles
+take precedence. Field-driven palettes, semantic data, scales, grouping,
+statistics, and ordering are preserved. Font token changes recalculate text
+bounds and composition layout.
 
 ## `removeTheme`
 
@@ -14589,8 +14615,9 @@ scales, grouping, category order, and field-driven palettes.
 removeTheme()
 ```
 
-Remove the active program theme and restore inherited library defaults while
-preserving local styles.
+Remove the most recently applied theme scope on that receiver. Composition
+removal deletes only that composition's frame, so a previously hidden child or
+ancestor theme becomes active again. Explicit local styles remain unchanged.
 
 ## `editCompositionLayout`
 

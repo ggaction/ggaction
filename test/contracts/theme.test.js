@@ -5,7 +5,7 @@ import test from "node:test";
 import { fileURLToPath } from "node:url";
 
 import { PUBLIC_CHARTS } from "../../examples/registry.js";
-import { chart } from "../../src/index.js";
+import { chart, hconcat } from "../../src/index.js";
 import { chart as basicChart } from "../../src/basic.js";
 import { loadDataset } from "../support/data.js";
 
@@ -40,12 +40,76 @@ test("publishes program theme lifecycle in runtime, types, and the Current catal
   const basic = read("types/basic.d.ts");
   const rootTypes = read("types/index.d.ts");
   assert.match(program, /^export type ThemeName = "light" \| "dark";$/m);
+  assert.match(program, /^export interface ThemeTokens \{$/m);
+  assert.match(program, /^export type ThemeDefinition =$/m);
   assert.match(program, /^export interface ApplyThemeOptions \{$/m);
   assert.match(program, /^  applyTheme\(options: ApplyThemeOptions\): ChartProgram;$/m);
   assert.match(program, /^  removeTheme\(\): ChartProgram;$/m);
   for (const source of [basic, rootTypes]) {
     assert.match(source, /^  ThemeName,?$/m);
+    assert.match(source, /^  ThemeDefinition,?$/m);
+    assert.match(source, /^  ThemeTokens,?$/m);
     assert.match(source, /^  ApplyThemeOptions,?$/m);
+  }
+});
+
+function unit(fill) {
+  return chart()
+    .createCanvas({ width: 200, height: 140, margin: 30 })
+    .createData({ values: [{ x: 1, y: 2 }] })
+    .createPointMark(fill === undefined ? {} : { fill })
+    .encodeX({ field: "x" })
+    .encodeY({ field: "y" });
+}
+
+test("publishes custom tokens and composition theme scope as current behavior", () => {
+  const left = unit();
+  const right = unit("#0000ff");
+  const source = hconcat({
+    id: "pair",
+    programs: [{ id: "left", program: left }, { id: "right", program: right }]
+  });
+  const options = {
+    theme: {
+      base: "light",
+      tokens: { mark: "#ff0000", background: "#ffeeee" }
+    },
+    scope: "descendants"
+  };
+  const snapshot = JSON.stringify(options);
+  const themed = source.applyTheme(options);
+  const removed = themed.removeTheme();
+
+  assert.equal(themed.graphicSpec.objects.canvas.properties.background, "#ffeeee");
+  assert.equal(
+    themed.children.left.graphicSpec.objects.point.items[0].properties.fill,
+    "#ff0000"
+  );
+  assert.equal(
+    themed.children.right.graphicSpec.objects.point.items[0].properties.fill,
+    "#0000ff"
+  );
+  assert.deepEqual(themed.materializationConfigs.theme.descendantFrames.map(
+    frame => frame.owner
+  ), ["composition:pair"]);
+  assert.equal(removed.materializationConfigs.theme, undefined);
+  assert.equal(JSON.stringify(options), snapshot);
+  assert.equal(JSON.stringify(left), JSON.stringify(unit()));
+});
+
+test("rejects malformed custom theme definitions before changing state", () => {
+  const source = unit();
+  const snapshot = JSON.stringify(source);
+  for (const request of [
+    { theme: { base: "light" } },
+    { theme: { base: "light", tokens: {}, extra: true } },
+    { theme: { base: "light", tokens: { unknown: "red" } } },
+    { theme: { base: "light", tokens: { mark: 42 } } },
+    { theme: { base: "light", tokens: { fontFamily: "" } } },
+    { theme: "light", scope: "tree" }
+  ]) {
+    assert.throws(() => source.applyTheme(request));
+    assert.equal(JSON.stringify(source), snapshot);
   }
 });
 

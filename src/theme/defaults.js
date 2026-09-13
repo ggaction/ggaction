@@ -23,6 +23,56 @@ export const DEFAULT_COLORS = Object.freeze({
 
 export const THEME_NAMES = Object.freeze(["light", "dark"]);
 
+export const THEME_TOKEN_KEYS = Object.freeze([
+  "background",
+  "mark",
+  "text",
+  "strongText",
+  "mutedText",
+  "axis",
+  "axisTitle",
+  "grid",
+  "border",
+  "sizeSymbol",
+  "regressionBand",
+  "boxLine",
+  "boxMedian",
+  "referenceLine",
+  "referenceBand",
+  "gradientCenter",
+  "highlight",
+  "fontFamily"
+]);
+
+const THEME_DEFINITION_KEYS = Object.freeze(["base", "tokens"]);
+
+function isPlainObject(value) {
+  if (value === null || typeof value !== "object" || Array.isArray(value)) {
+    return false;
+  }
+  const prototype = Object.getPrototypeOf(value);
+  return prototype === Object.prototype || prototype === null;
+}
+
+function own(value) {
+  return Object.freeze({ ...value });
+}
+
+function validateKeys(value, allowed, label) {
+  const supported = new Set(allowed);
+  const unknown = Object.keys(value).find(key => !supported.has(key));
+  if (unknown !== undefined) {
+    throw new Error(`Unknown ${label} option "${unknown}".`);
+  }
+}
+
+function validateNonEmptyString(value, label) {
+  if (typeof value !== "string" || value.length === 0) {
+    throw new TypeError(`${label} must be a non-empty string.`);
+  }
+  return value;
+}
+
 export const THEME_TOKENS = Object.freeze({
   light: Object.freeze({
     background: "white",
@@ -53,4 +103,55 @@ export const THEME_TOKENS = Object.freeze({
 
 export function themeTokens(name = "light") {
   return THEME_TOKENS[name];
+}
+
+function validateThemeName(value, label) {
+  if (!THEME_NAMES.includes(value)) {
+    throw new Error(`Unsupported ${label} "${value}".`);
+  }
+  return value;
+}
+
+function normalizeThemeTokens(tokens) {
+  if (!isPlainObject(tokens)) {
+    throw new TypeError("applyTheme theme.tokens must be a plain object.");
+  }
+  validateKeys(tokens, THEME_TOKEN_KEYS, "applyTheme theme.tokens");
+  const normalized = {};
+  for (const [key, value] of Object.entries(tokens)) {
+    validateNonEmptyString(value, `applyTheme theme.tokens.${key}`);
+    normalized[key] = value;
+  }
+  return own(normalized);
+}
+
+export function normalizeThemeDefinition(definition) {
+  if (typeof definition === "string") {
+    return own({
+      name: validateThemeName(definition, "theme"),
+      tokens: own({})
+    });
+  }
+  if (!isPlainObject(definition)) {
+    throw new TypeError(
+      "applyTheme theme must be a built-in name or a plain { base, tokens } object."
+    );
+  }
+  validateKeys(definition, THEME_DEFINITION_KEYS, "applyTheme theme");
+  if (!Object.hasOwn(definition, "base") ||
+      !Object.hasOwn(definition, "tokens")) {
+    throw new Error("applyTheme custom theme requires base and tokens.");
+  }
+  return own({
+    name: validateThemeName(definition.base, "theme base"),
+    tokens: normalizeThemeTokens(definition.tokens)
+  });
+}
+
+export function resolveThemeTokens(definition = "light") {
+  const normalized = normalizeThemeDefinition(definition);
+  return own({
+    ...THEME_TOKENS[normalized.name],
+    ...normalized.tokens
+  });
 }

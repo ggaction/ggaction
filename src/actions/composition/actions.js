@@ -12,6 +12,7 @@ import { namespaceGraphicSnapshot } from "../../materialization/compositionSnaps
 import { materializeCompositionGraphics } from
   "../../materialization/composition.js";
 import { materializeFacetGraphics } from "../../materialization/facets.js";
+import { replayInheritedThemeFrames } from "../theme/composition.js";
 
 const CONCAT_OPTIONS = Object.freeze([
   "id", "programs", "gap", "align", "padding"
@@ -245,10 +246,14 @@ const replaceCompositionChild = action(
     if (!(args.program instanceof CoreChartProgram)) {
       throw new TypeError("replaceCompositionChild program must be a ChartProgram.");
     }
-    childDescriptor({ id: target, program: args.program });
+    const replacement = replayInheritedThemeFrames(
+      args.program,
+      this.materializationConfigs.theme
+    );
+    childDescriptor({ id: target, program: replacement });
     const children = freezeOwned({
       ...this.children,
-      [target]: args.program
+      [target]: replacement
     });
     return applyCompositionState(this, {
       children,
@@ -283,7 +288,11 @@ const insertCompositionChild = action(
     if (args.before !== undefined && args.after !== undefined) {
       throw new Error("insertCompositionChild before and after are mutually exclusive.");
     }
-    childDescriptor({ id, program: args.program });
+    const inserted = replayInheritedThemeFrames(
+      args.program,
+      this.materializationConfigs.theme
+    );
+    childDescriptor({ id, program: inserted });
     const order = [...this.compositionSpec.children];
     if (args.before !== undefined || args.after !== undefined) {
       const property = args.before !== undefined ? "before" : "after";
@@ -295,7 +304,7 @@ const insertCompositionChild = action(
       order.push(id);
     }
     return applyCompositionState(this, {
-      children: freezeOwned({ ...this.children, [id]: args.program }),
+      children: freezeOwned({ ...this.children, [id]: inserted }),
       compositionSpec: { ...this.compositionSpec, children: order }
     }, [id]);
   }

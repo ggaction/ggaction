@@ -116,70 +116,96 @@ Current direct-action contracts for this domain. Shared notation and lifecycle r
 
 ## `applyTheme`
 
-- Signature: `applyTheme({ theme })`
-- 목적과 필수 state: Unit program에 지속되는 시각 기본값을 적용한다. Canvas나 mark가
-  생기기 전에도 호출할 수 있으며, 기존 inherited style과 이후 action이 만드는 resource에
-  같은 theme을 적용한다.
+- Signature: `applyTheme({ theme, scope? })`
+- 목적과 필수 state: Unit 또는 composition program에 지속되는 시각 기본값을 적용한다. Canvas나
+  mark가 생기기 전에도 호출할 수 있고, 이후 action이 만드는 resource에도 active policy를 적용한다.
 - `theme`
-  - Status: Implemented. 정확히 `"light" | "dark"`다.
-  - Effect: Canvas background와 기존 mark/text/axis/axis-title/grid/legend/title color token을
-    원자적으로 교체한다. Box/reference처럼 이전 component가 shared token 밖의 기본색을 쓰는
-    경우에도 concrete role을 판정해 읽을 수 있는 dark mark color로 수렴한다. `light`는 library
-    default이고 `dark`는 어두운 Canvas에서 읽을 수 있는 대응 token 집합이다.
-- 우선순위와 상호작용: explicit local style > program theme > library default다. 사용자가
-  현재 theme이나 library default와 같은 값을 명시해도 local override로 저장한다. Field-driven
-  color/palette, highlight/selection policy, opacity, geometry, spacing, statistics, grouping,
-  domain과 order는 바꾸지 않는다.
-- 오류: options 생략/빈 object, unknown theme/option, composition program 호출을 거부한다.
-- Coverage: `test/unit/actions/theme.test.js`가 immediate/later apply, light↔dark swap,
-  same-value override, Parallel/Polar/legend/title/Box/reference, semantic stability와 immutability를
-  검증한다. `test/contracts/theme.test.js`는 public unit chart corpus 전체를 검증한다.
+  - Status: Implemented. `"light" | "dark"` 또는
+    `{ base: "light" | "dark", tokens: Partial<ThemeTokens> }`다.
+  - Custom object는 `base`와 `tokens`를 모두 요구한다. `tokens`는 `background`, `mark`, `text`,
+    `strongText`, `mutedText`, `axis`, `axisTitle`, `grid`, `border`, `sizeSymbol`,
+    `regressionBand`, `boxLine`, `boxMedian`, `referenceLine`, `referenceBand`,
+    `gradientCenter`, `highlight`, `fontFamily`의 closed vocabulary다. 값은 non-empty string이다.
+  - Partial token은 base 위에 한 번만 overlay한다. 다음 `applyTheme`은 이전 partial token과 merge하지
+    않으므로 생략한 token은 새 base 값으로 돌아간다.
+- `scope`
+  - Status: Implemented. `"self" | "descendants"`다.
+  - Unit 기본값은 `self`이며 `descendants`도 unit state에서는 `self`로 정규화한다.
+  - Composition 기본값은 `descendants`다. `self`는 composition root Canvas background만 바꾼다.
+    `descendants`는 root, 현재 nested child, facet/repeat 재생으로 생기는 future child와 parent-owned
+    facet header/shared guide를 갱신한다.
+- 우선순위와 상호작용: explicit user style > newest applicable theme request > earlier request >
+  built-in light다. 같은 값으로 직접 지정한 style도 explicit이다. Parent theme은 child-local frame을
+  덮어쓰지 않고 아래에 보존하므로 parent removal 뒤 newest child frame이 복원된다. Field-driven
+  palette, categorical legend symbol, semantic state, resolved scale, grouping, 통계와 order는 보존한다.
+  기본 highlight paint는 active `highlight` token을 사용하고 explicit highlight paint는 보존한다.
+  `fontFamily` 변경은 Text, axis, legend, title, facet header를 다시 materialize해 text bounds와
+  composition layout을 검증한다.
+- 상태와 불변성: request는 owner/scope/base/partial token frame으로 immutable하게 저장한다. Full
+  resolved token object와 계산된 layout을 theme request state에 저장하지 않는다. Composition 전파는
+  retained child input을 변경하지 않고 postorder로 새 snapshots를 만든다.
+- 오류: non-object/empty options, unknown root/token key, missing `base`/`tokens`, invalid theme/scope,
+  empty 또는 non-string token을 거부한다. 전체 candidate materialization이 실패하면 receiver와 caller
+  input은 변경되지 않는다.
+- Coverage: `test/unit/theme/defaults.test.js`, `test/unit/theme/state.test.js`,
+  `test/unit/actions/theme.test.js`, `test/unit/actions/theme-composition.test.js`가 schema, frame ordering,
+  custom replacement, explicit provenance, highlight/font, self/descendant 전파, nested removal과 facet replay를
+  검증한다. `test/contracts/theme.test.js`는 runtime/type/Current surface와 public chart corpus를 검증한다.
 
 ### Formal values — `applyTheme`
 
-- Implemented: `applyTheme({ theme: "light" | "dark" }): ChartProgram`
-- Proposed (NOT IMPLEMENTED): custom theme-token object와 composition-wide theme propagation.
+- Implemented: `applyTheme({ theme: ThemeName | { base: ThemeName; tokens: Partial<ThemeTokens> }; scope?: "self" | "descendants" }): ChartProgram`
+- `ThemeName = "light" | "dark"`이며 `ThemeTokens`는 위 18개 required string property다.
+- Proposed (NOT IMPLEMENTED): No proposal. Theme creation/import와 arbitrary token vocabulary는 현재 범위 밖이다.
 
 ### Value coverage — `applyTheme`
 
-- `theme`
-  - ✅ Covered: `"light"`, `"dark"`, repeated apply, swap, apply-before-resources와 invalid value rejection.
-- Local override
-  - ✅ Covered: custom value, built-in default와 같은 explicit value, theme 적용 전후 authored value,
-    Parallel field별 override, facade/component override와 field-driven mark/legend appearance 보존.
-- Semantic boundary
-  - ✅ Covered: semantic spec와 resolved scale byte-equivalent snapshot, statistical regression output,
-    draw order, source program immutability, public unit chart 51개 corpus.
+- Theme definition
+  - ✅ Covered: built-in light/dark, custom partial, exact 18-token vocabulary, input ownership/freeze,
+    replacement without partial merge, malformed/unknown values와 atomic rejection.
+- Scope와 lifecycle
+  - ✅ Covered: unit normalization, composition default descendants, explicit self, nested concat/facet,
+    future facet source replay, same-owner reapply, newest direct-scope removal과 child-local restoration.
+- Explicit precedence
+  - ✅ Covered: mark/Canvas, Cartesian/Polar/Parallel guides, title/subtitle, legend root/block,
+    facet headers, statistical/reference components, field-driven palettes와 default/explicit highlight.
+- Layout와 semantic boundary
+  - ✅ Covered: font-dependent resource rematerialization, composition snapshot/layout rebuild, semantic spec,
+    resolved scales, statistics, ordering과 caller program immutability.
 - Visual boundary
   - ✅ Covered: `dark-theme-scatterplot`의 explicit low-level style primitive와 public `applyTheme`
     program 사이 exact graphic/renderer/decoded PNG pixel equivalence.
-- Proposed custom/composition values는 token validation과 child-owner propagation 계약 뒤에 검토한다.
-- Evidence: `test/unit/actions/theme.test.js`, `test/contracts/theme.test.js`,
+- Evidence: `test/unit/theme/`, `test/unit/actions/theme.test.js`,
+  `test/unit/actions/theme-composition.test.js`, `test/contracts/theme.test.js`,
   `test/charts/dark-theme-scatterplot/`.
 
 ## `removeTheme`
 
 - Signature: `removeTheme()`
-- 목적과 필수 state: active program theme을 제거하고 inherited style을 library default로 되돌린다.
-- Effect: active theme metadata를 제거한다. Explicit local style과 semantic/scale state는 보존한다.
-- 오류와 상호작용: active theme이 없거나 option을 전달하면 거부한다. 이전 immutable themed
-  program은 그대로 유지된다.
-- Coverage: `test/unit/actions/theme.test.js`가 dark reset, local override 보존, invalid lifecycle,
-  source immutability를 검증한다.
+- 목적과 필수 state: receiver가 직접 적용한 가장 최근 theme scope 하나를 제거한다.
+- Unit effect: local frame을 제거하고 inherited frame 또는 built-in light default를 드러낸다.
+- Composition effect: `localOrder`의 newest `self` 또는 `descendants` owner만 제거한다. Descendant
+  removal은 nested children과 future-child policy에서 그 parent owner만 제거하고, 보존된 child-local
+  또는 다른 ancestor frame으로 color/font/layout을 다시 계산한다. `self` removal은 root Canvas만
+  이전 applicable background로 되돌린다.
+- 우선순위와 상호작용: explicit local style과 다른 owner의 frame은 보존한다. 마지막 frame이 사라지면
+  theme config를 제거한다. 이전 immutable program과 composition input은 그대로다.
+- 오류: direct active theme이 없거나 option을 전달하면 거부한다.
+- Coverage: unit reset, self/descendants newest-scope removal, nested owner-only restoration, explicit style,
+  highlight와 facet replay는 theme unit/contract suites가 검증한다.
 
 ### Formal values — `removeTheme`
 
 - Implemented: `removeTheme(): ChartProgram`
-- Proposed (NOT IMPLEMENTED): resource-subtree별 partial theme removal.
+- Proposed (NOT IMPLEMENTED): No proposal. Scope를 지정하는 selective removal은 현재 범위 밖이다.
 
 ### Value coverage — `removeTheme`
 
-- Active lifecycle
-  - ✅ Covered: dark→library default, local value 유지, theme metadata 제거와 inactive rejection.
-- Arguments
-  - ✅ Covered: no arguments only; unknown option rejection.
-- Partial removal은 program-wide precedence를 모호하게 하므로 현재 future proposal이다.
-- Evidence: `test/unit/actions/theme.test.js`.
+- ✅ Covered: unit active/inactive lifecycle, no-argument validation, built-in fallback와 explicit preservation.
+- ✅ Covered: composition self/descendants ordering, same-owner replacement, nested child frame restoration,
+  root/child rematerialization과 empty-state cleanup.
+- Evidence: `test/unit/actions/theme.test.js`,
+  `test/unit/actions/theme-composition.test.js`, `test/contracts/theme.test.js`.
 
 ## `createData`
 

@@ -36,6 +36,94 @@ test("applies, swaps, and removes persistent theme defaults immutably", () => {
   assert.equal(JSON.stringify(base), snapshot);
 });
 
+test("applies custom partial tokens and resets omitted tokens to the new base", () => {
+  const base = pointChart().createAxes();
+  const customA = base.applyTheme({
+    theme: {
+      base: "light",
+      tokens: {
+        mark: "#ff0000",
+        grid: "#00ff00",
+        fontFamily: "RoadmapTest"
+      }
+    },
+    scope: "descendants"
+  });
+  const customB = customA.applyTheme({
+    theme: { base: "light", tokens: { mark: "#0000ff" } }
+  });
+
+  assert.equal(customA.graphicSpec.objects.point.items[0].properties.fill, "#ff0000");
+  assert.equal(customA.graphicSpec.objects.xAxisLabels.items[0].properties.fontFamily, "RoadmapTest");
+  assert.equal(customA.graphicSpec.objects.xAxisTitle.properties.fontFamily, "RoadmapTest");
+  assert.equal(customB.graphicSpec.objects.point.items[0].properties.fill, "#0000ff");
+  assert.equal(customB.graphicSpec.objects.xAxisLabels.items[0].properties.fontFamily, "sans-serif");
+  assert.deepEqual(customB.materializationConfigs.theme.frames.at(-1).tokens, {
+    mark: "#0000ff"
+  });
+  assert.deepEqual(customB.materializationConfigs.theme.localOrder, ["self"]);
+});
+
+test("preserves explicit font families under a custom font token", () => {
+  const program = pointChart()
+    .createXAxisLabels({ fontFamily: "ExplicitFont" })
+    .createYAxisLabels()
+    .applyTheme({
+      theme: { base: "light", tokens: { fontFamily: "RoadmapTest" } }
+    });
+
+  assert.equal(
+    program.graphicSpec.objects.xAxisLabels.items[0].properties.fontFamily,
+    "ExplicitFont"
+  );
+  assert.equal(
+    program.graphicSpec.objects.yAxisLabels.items[0].properties.fontFamily,
+    "RoadmapTest"
+  );
+});
+
+test("resolves default highlight paint from the active theme", () => {
+  const highlighted = pointChart().highlightMarks({
+    select: { field: "x", op: "max" }
+  });
+  const themed = highlighted.applyTheme({
+    theme: { base: "light", tokens: { highlight: "#00aa55" } }
+  });
+  const restored = themed.removeTheme();
+
+  assert.equal(
+    themed.graphicSpec.objects.point.items.at(-1).properties.fill,
+    "#00aa55"
+  );
+  assert.equal(
+    restored.graphicSpec.objects.point.items.at(-1).properties.fill,
+    "#dc2626"
+  );
+  assert.equal(
+    themed.materializationConfigs.highlights.pointSelection.paintSource,
+    "theme"
+  );
+});
+
+test("preserves explicit highlight paint across theme changes", () => {
+  const highlighted = pointChart().highlightMarks({
+    select: { field: "x", op: "max" },
+    fill: "#dc2626"
+  });
+  const themed = highlighted.applyTheme({
+    theme: { base: "light", tokens: { highlight: "#00aa55" } }
+  });
+
+  assert.equal(
+    themed.graphicSpec.objects.point.items.at(-1).properties.fill,
+    "#dc2626"
+  );
+  assert.equal(
+    themed.materializationConfigs.highlights.pointSelection.paintSource,
+    "explicit"
+  );
+});
+
 test("themes resources created later and supports the Basic entry", () => {
   const dark = pointChart(() => basicChart().applyTheme({ theme: "dark" }));
   assert.equal(dark.graphicSpec.objects.canvas.properties.background, "#0f172a");
@@ -90,6 +178,30 @@ test("preserves same-value styles authored through complete axis and legend faca
   assert.equal(program.graphicSpec.objects.colorLegendLabels.items[0].properties.fill, "#334155");
   assert.equal(program.graphicSpec.objects.colorLegendTitle.properties.fill, "#334155");
   assert.equal(program.graphicSpec.objects.colorLegendBackground.properties.stroke, "#cbd5e1");
+});
+
+test("preserves explicit legend block text under custom theme tokens", () => {
+  const program = pointChart()
+    .editCanvas({
+      margin: { top: 70, right: 180, bottom: 70, left: 70 }
+    })
+    .encodeColor({ field: "group" })
+    .createLegend({ target: "point", channels: ["color"] })
+    .editLegendBlock({
+      target: "point",
+      channel: "color",
+      text: { color: "#334155", fontFamily: "Explicit Serif" }
+    })
+    .applyTheme({
+      theme: {
+        base: "dark",
+        tokens: { text: "#abcdef", fontFamily: "Theme Mono" }
+      }
+    });
+
+  const label = program.graphicSpec.objects.colorLegendLabels.items[0].properties;
+  assert.equal(label.fill, "#334155");
+  assert.equal(label.fontFamily, "Explicit Serif");
 });
 
 test("preserves field-driven mark and categorical legend appearance", () => {

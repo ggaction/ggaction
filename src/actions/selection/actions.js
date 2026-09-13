@@ -23,6 +23,10 @@ import {
   normalizeDimOthers,
   validateUnitInterval
 } from "../../materialization/selection/styles.js";
+import {
+  normalizeThemeState,
+  resolveEffectiveThemeTokens
+} from "../theme/state.js";
 
 const SELECTOR_KEYS = Object.freeze([
   "grain", "field", "channel", "property", "op", "value", "values", "min", "max",
@@ -194,9 +198,10 @@ function editSelectedItems(
 }
 
 function applyHighlight(program, config, keys) {
+  const style = resolveHighlightStyle(program, config);
   let next = program[requireSelectionPolicy(config.markType).applyHighlightOp]({
     selection: config.selection,
-    style: config.style,
+    style,
     keys
   });
   if (config.dimOthers !== false) {
@@ -209,6 +214,60 @@ function applyHighlight(program, config, keys) {
   return config.bringToFront
     ? next.placeSelectedMarkItemsLast({ selection: config.selection, keys })
     : next;
+}
+
+function highlightPaintProperty(markType) {
+  return ["line", "rule", "tick"].includes(markType) ? "stroke" : "fill";
+}
+
+function requestedPaintSource(args, markType, style) {
+  const property = highlightPaintProperty(markType);
+  const explicit = args.color !== undefined || args[property] !== undefined;
+  if (explicit) return "explicit";
+  return Object.hasOwn(style, property) ? "theme" : "preserve";
+}
+
+function tracePaintSource(program, id, config) {
+  let source;
+  for (const node of program.trace.children) {
+    if (node.op !== "highlightMarks") continue;
+    const requestedId = node.args.selection ?? node.args.id ??
+      `${node.args.target ?? config.target}Selection`;
+    if (requestedId !== id) continue;
+    const property = highlightPaintProperty(config.markType);
+    const explicit = node.args.color !== undefined ||
+      node.args[property] !== undefined;
+    source = explicit
+      ? "explicit"
+      : Object.hasOwn(config.style, property) ? "theme" : "preserve";
+  }
+  return source ?? "explicit";
+}
+
+function normalizeStoredHighlightConfig(program, id, config) {
+  return config.paintSource === undefined
+    ? { ...config, paintSource: tracePaintSource(program, id, config) }
+    : config;
+}
+
+function resolveHighlightStyle(program, config) {
+  if (config.paintSource !== "theme") return config.style;
+  const property = highlightPaintProperty(config.markType);
+  return {
+    ...config.style,
+    [property]: resolveEffectiveThemeTokens(normalizeThemeState(
+      program.materializationConfigs.theme
+    )).highlight
+  };
+}
+
+export function rematerializeThemeHighlights(program) {
+  const targets = [...new Set(Object.values(
+    program.materializationConfigs.highlights ?? {}
+  ).map(config => config.target))];
+  let next = program;
+  for (const target of targets) next = rebuildTargetHighlights(next, target);
+  return next;
 }
 
 export const selectMarks = action(
@@ -466,7 +525,7 @@ export const rematerializeMarkHighlights = action(
     }
     const prepared = args.highlights.map(([id, config]) => ({
       id,
-      config,
+      config: normalizeStoredHighlightConfig(this, id, config),
       keys: resolveStoredSelection(this, config.selection).keys
     }));
     let next = this;
@@ -543,6 +602,7 @@ export const highlightMarks = action(
       selection,
       markType: layer.mark.type,
       style,
+      paintSource: requestedPaintSource(args, layer.mark.type, style),
       dimOthers,
       bringToFront
     };

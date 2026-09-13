@@ -153,6 +153,8 @@ export function materializeFacetGraphics(program) {
     program,
     preparedLegend
   );
+  const background = program.graphicSpec.objects.canvas?.properties
+    ?.background ?? "white";
   let next = clearCompositionChildren(program);
   if (next.graphicSpec.objects.canvas === undefined) {
     next = next.createGraphics({ id: "canvas", type: "canvas" });
@@ -160,7 +162,7 @@ export function materializeFacetGraphics(program) {
   for (const [property, value] of Object.entries({
     width: layout.width,
     height: layout.height,
-    background: "white"
+    background
   })) {
     next = next.editGraphics({ target: "canvas", property, value });
   }

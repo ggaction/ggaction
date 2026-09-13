@@ -182,7 +182,10 @@ test("preserves role header policy through layout and source replay", () => {
   const replayed = original.editFacetSource({ program: unit(revisedRows) });
 
   assert.deepEqual(text(relaid), ["X", "Y", "행 A", "B"]);
-  assert.equal(relaid.materializationConfigs.theme.name, "dark");
+  assert.equal(
+    relaid.materializationConfigs.theme.frames.at(-1).name,
+    "dark"
+  );
   assert.deepEqual(text(replayed), ["X", "Y", "행 A", "B"]);
   assert.equal(replayed.materializationConfigs.facets.matrix.headers.mode, "roles");
   assert.equal(replayed.materializationConfigs.facets.matrix.headers.column.side, "bottom");

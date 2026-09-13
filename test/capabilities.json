@@ -116,6 +116,12 @@
     ],
     "support": [
       { "type": "prefix", "path": "unit/support/" }
+    ],
+    "theme": [
+      { "type": "prefix", "path": "unit/theme/" },
+      { "type": "file", "path": "unit/actions/theme.test.js" },
+      { "type": "file", "path": "unit/actions/theme-composition.test.js" },
+      { "type": "file", "path": "contracts/theme.test.js" }
     ]
   }
 }

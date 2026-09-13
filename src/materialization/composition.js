@@ -121,6 +121,8 @@ export function clearCompositionChildren(program) {
 export function materializeCompositionGraphics(program) {
   program._assertCompositionProgram("materializeCompositionGraphics");
   const layout = resolveCompositionProgramLayout(program);
+  const background = program.graphicSpec.objects.canvas?.properties
+    ?.background ?? "white";
   let next = clearCompositionChildren(program);
   if (next.graphicSpec.objects.canvas === undefined) {
     next = next.createGraphics({ id: "canvas", type: "canvas" });
@@ -128,7 +130,7 @@ export function materializeCompositionGraphics(program) {
   for (const [property, value] of Object.entries({
     width: layout.width,
     height: layout.height,
-    background: "white"
+    background
   })) {
     next = next.editGraphics({ target: "canvas", property, value });
   }

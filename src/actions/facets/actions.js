@@ -23,6 +23,7 @@ import { resolveFacetChildrenScales } from "./derive.js";
 import { replayDerivedData } from "./replay.js";
 import { composeFacetGuides } from "./guides.js";
 import { applyCompositionState } from "../composition/actions.js";
+import { replayCompositionThemeState } from "../theme/composition.js";
 import { findDataset } from "../../selectors/datasets.js";
 import { findLayer } from "../../selectors/layers.js";
 import { normalizeDisplayLabelMap } from "../../grammar/displayLabels.js";
@@ -98,6 +99,9 @@ function facetUnitTemplate(program) {
     resolvedScales: program.resolvedScales,
     materializationConfigs: freezeOwned({
       ...unitConfigs,
+      ...(seed.materializationConfigs.theme === undefined
+        ? {}
+        : { theme: seed.materializationConfigs.theme }),
       ...(seed.materializationConfigs.guides === undefined
         ? {}
         : { guides: seed.materializationConfigs.guides }),
@@ -710,7 +714,10 @@ export const editFacetSource = action(
         ...this.semanticSpec.title
       });
     }
-    return revised;
+    return replayCompositionThemeState(
+      revised,
+      this.materializationConfigs.theme
+    );
   }
 );
 

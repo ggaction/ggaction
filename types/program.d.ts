@@ -2,8 +2,32 @@ import type { RegisteredExtensionActions } from "./extension.js";
 
 export type TemporalInputUnit = "auto" | "year" | "timestamp";
 export type ThemeName = "light" | "dark";
+export interface ThemeTokens {
+  background: string;
+  mark: string;
+  text: string;
+  strongText: string;
+  mutedText: string;
+  axis: string;
+  axisTitle: string;
+  grid: string;
+  border: string;
+  sizeSymbol: string;
+  regressionBand: string;
+  boxLine: string;
+  boxMedian: string;
+  referenceLine: string;
+  referenceBand: string;
+  gradientCenter: string;
+  highlight: string;
+  fontFamily: string;
+}
+export type ThemeDefinition =
+  | ThemeName
+  | { base: ThemeName; tokens: Partial<ThemeTokens> };
 export interface ApplyThemeOptions {
-  theme: ThemeName;
+  theme: ThemeDefinition;
+  scope?: "self" | "descendants";
 }
 export type FieldType = "quantitative" | "temporal" | "ordinal" | "nominal";
 export type GraphicType =
